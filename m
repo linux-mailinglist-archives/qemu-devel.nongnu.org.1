@@ -2,83 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC3CAF9133
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA32FAF912E
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:14:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXeLv-00026J-Pa; Fri, 04 Jul 2025 07:13:11 -0400
+	id 1uXeLw-0002AH-QC; Fri, 04 Jul 2025 07:13:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeLa-0001qK-R6; Fri, 04 Jul 2025 07:12:51 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1uXeLc-0001rf-Pm
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:12:53 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeLZ-0002cq-1F; Fri, 04 Jul 2025 07:12:50 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-236192f8770so5821835ad.0; 
- Fri, 04 Jul 2025 04:12:46 -0700 (PDT)
+ id 1uXeLa-0002hV-4R
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:12:51 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-313eeb77b1fso801265a91.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:12:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751627565; x=1752232365; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1751627568; x=1752232368; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s6UGTgPYir33A0rgIBH+C4iVYyQtEZW7GZky2on9WjU=;
- b=QjYJCxhtVICYs5lG54LZAopHkXNbhHAOwVpfek4dMj3rwgo5nWxIaK9T8GQWX2wBfd
- 2Of1BDi5+Muw7leP/WcejQJlCa0uYwZms5ASvS/WYAqgDVIHbjIz6ijrSs6c7PN0QYhk
- SJ5MG/0Fi+tQHm3Ny6+AYm6R2lqDi1+3MpkFFtu8/sOOst4JibLo4/KEh0uLMqVi//4D
- uP5ABFRFRtR0m+GQZ7LbRIEySMad5vTOEjv3LN2rHjnRuEtPgBC2uCeZeNZwjDh527gq
- I6HVKsgnbWQmJnoT+ga4oFQntt8Y5hlFdUCmwTbNorV9XtuDdVuqRbP9v4cyoTdlBESz
- riOQ==
+ bh=f6KX8jP7UkcyaoRzueCmnlg+C4AdUvngebBI+d4Y+5g=;
+ b=Kw67Sy4Fp7UG9hHqQT5LxG8cZfA80Fk88HKdH//lwKRxuOv3XujHhbXgB2hBr0zFBw
+ YUQXAb5ySkHNivqauRBbZkPGin7M5MR5IQmbesgus3w/k1mwrcAIe0vWpjVOhEajmLB/
+ S+iMtN8bPlG+5gdR83wgjWcrEkpQh42KquCXEZzZ4ArZ1+8M1GWKj6tSGaiiGsPK4YPY
+ Z7JrEGaFYleNt9HJTc1nJIbBhR3/7+E4Nl5kRxbSCUm+t8RnmWV594DgSNeRMOtIIls6
+ A1QPkPOrVrAnZZHagO2AIVb01dOWmwV9b7fWGXwFS9D/ipZunL6K9u+7v7qN9qOlN0Od
+ RJNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751627565; x=1752232365;
+ d=1e100.net; s=20230601; t=1751627568; x=1752232368;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s6UGTgPYir33A0rgIBH+C4iVYyQtEZW7GZky2on9WjU=;
- b=P8UOpSl3TGRltn2Kf3u6BZ8rA5s24Bht24ohoyAtchvVKfF8UIAPfObVA1PPT3Y98x
- P78BwOJg84UnN0u9q1iDqIRChL5sFZDXHI9Yp07BLQ9XM1kISeam4edzLhOvwP/5s4Yq
- lbEiQ+WlwneAikHOB/MOdPYkVLi3sat69wrAZUVrxWA46ai4ZsZnEskjHspCurBqmRn4
- ADbY0TVmtlv8GMvzMPn8HsFjIGNzVyCvCDXI/2J1I/kgLZwXmBe3pk2s7K8OMYHcpYTY
- KVbCE/3g/aAMcbf/n8dYQRjHORW9MSIMvmWm8QhT7eSMXb5AEw/hmQhDhncNlUhNfp5W
- 5dCg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWKImpDQ6trDm3joNWynfe5HfSahSVOq9QF6rWxd/XlbQRSIB5xIj5ZHzVSEmaMjv/jbP3SW6G1omPwv9M=@nongnu.org
-X-Gm-Message-State: AOJu0YxtPZ6UiqJkorukaW6GxalUs9SRqz24XK6VQ9mu1vTvMgTpJEUy
- I8Qm18bY9WH/6Yf4z+slF8+U0gjwgKkuFVuJDxjTCxbDBNopTqpgBOnJDZxopA==
-X-Gm-Gg: ASbGnculzt6hglV4yzIJqpskNE+LSy0QxGP6w4iCjXUAhQ2PjqgLY/JH6O6t5cJnV03
- HSxIIzlcbkDOkgt4qwgGU0gpwA1jts/leUlee2DZEe48x0mDk67rPAWORPXK1otsdOPGjMzZ/4q
- uEJZHvHeixzsggi60AktH6ciJfUNbe1AlABjByIbneTHbROk2nSCToEZidZ0EHabfpjPjTwpFNl
- v0u2hey3/9W2oT56DEp6ZyRYa4EFdhNfOqnHsBRtNr7apexbNMpjaX404uXJaQQviMZK5/WWNNo
- KKra0sTU1ewaJLf5AEw0eX28HFTrC5YLbmK5mg2TBS3gJbe7KbexR2TVJb94JYjZABw1KCU9i5w
- 9RKOPosPts/wNOAan+9jNDSSoKQ7KQKx/qG7RMJWEe4UxzWwF2RByoHaEQh34Zi/dibE=
-X-Google-Smtp-Source: AGHT+IHs6p+BA2JJOIcVeEjWoz6p3TD+YAHGkfDpP0BUEy1TbBBo1sAF1L2jkKy+hDijgRZjyK22TA==
-X-Received: by 2002:a17:903:11c8:b0:234:11e2:f41 with SMTP id
- d9443c01a7336-23c84ad0d7cmr39714455ad.6.1751627564972; 
- Fri, 04 Jul 2025 04:12:44 -0700 (PDT)
+ bh=f6KX8jP7UkcyaoRzueCmnlg+C4AdUvngebBI+d4Y+5g=;
+ b=exwllr3NvZSs+nPVwGivWloP6ioggtfLJayM6eH5lw4kmMy3ExuF5rh5sjZRoGGSL3
+ ho0G2dt/oKBcSltVGqLlb9mPFj9Py4/Z7I8vcuy+vnObqjKLxSNPZiarp0Gv1ah5CAx+
+ hkiqXsvWJc+hNLFn4AXstkup3nBtKb8gDHwNhNjVA2mf9+8hqHpWiLrOhpYK9GTQWVYs
+ 7UDHKNb6iTqdiJIFJkj8ZcmqDoMHE9bJIkbH/5tyW3m9AOKPZK37PD/kyoyjGwbph/jr
+ UMbdYR6OkQ9snUDTfJhjSY3m2FcSuP6LeRN/hrKxxbH/awICmptMFu/Vxubu6r10ablm
+ K4ig==
+X-Gm-Message-State: AOJu0Yy9sOWIs1qjRQ/2S5ZjJ5JIMCqQXDkXA3t0hzIk8TnYtA7slPmn
+ eiXhHgEt9ThovT6cBRYBXt2MHhaYhY0ui0/Tav/DZ/M10x/g9num6zKyVUO+0g==
+X-Gm-Gg: ASbGnct42nVaXhOrqjo3s9dz9bsddDy8eyK2V5lxsJhlqqBo3rCSY5gDTafpUxs799D
+ vducK+IHWeIOE7z7WfP/nxnWtndCYzur0ncy4VM8KO+n+TVHPt4KWXYBsexxxj2uERnj4vJYTcR
+ Ds6vjoc6niGbDnxnavgrJO2ZUMTLOwgtWbsm9jlihtMbgj3WEWKIqXp9UUQ40AyVmNGHLtk8IoP
+ L/jekZVmak5PreV27RWYrAvFirMnCXZhT9pEtFAQfKG5xk69h/wJd5/ohJEI8QNBhzihdtpwYSs
+ M8AwEeBVa42di63yLGFS+2g3X04GrjlIZDbU1uK8RpYXd+JabEzWs/kQo69Il4HlZ8HNDtTNjk9
+ hE0ZA2A8qsQ+BNvHQXnwKgnz9HCuAs8lsz5UIqRAwdVvFppOXtKimNqUgwmelxmTyMJU=
+X-Google-Smtp-Source: AGHT+IGgRY28PWwgmSkXeDvpdbwEVulbOWWy5S6yZxXZsaN4O+fWEN98L3TDaBed9BrLfOS3QVrWkA==
+X-Received: by 2002:a17:90b:2ed0:b0:311:c1ec:7d0a with SMTP id
+ 98e67ed59e1d1-31aaddba4a9mr2547159a91.25.1751627568232; 
+ Fri, 04 Jul 2025 04:12:48 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.12.42
+ d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.12.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 04:12:44 -0700 (PDT)
+ Fri, 04 Jul 2025 04:12:47 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-trivial@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 05/40] target/riscv/cpu.c: fix zama16b order in isa_edata_arr[]
-Date: Fri,  4 Jul 2025 21:11:32 +1000
-Message-ID: <20250704111207.591994-6-alistair.francis@wdc.com>
+ Andrew Jones <ajones@ventanamicro.com>,
+ =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 06/40] target/riscv/tcg: restrict satp_mode changes in
+ cpu_set_profile
+Date: Fri,  4 Jul 2025 21:11:33 +1000
+Message-ID: <20250704111207.591994-7-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250704111207.591994-1-alistair.francis@wdc.com>
 References: <20250704111207.591994-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,32 +108,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Put it after zalrsc and before zawrs.
+We're changing 'mmu' to true regardless of whether the profile is
+being enabled or not, and at the same time we're changing satp_mode to
+profile->enabled.
 
-Cc: qemu-trivial@nongnu.org
-Fixes: a60ce58fd9 ("target/riscv: Support Zama16b extension")
+This will promote a situation where we'll set mmu=on without a virtual
+memory mode, which is a mistake.
+
+Only touch 'mmu' and satp_mode if the profile is being enabled.
+
+Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+Fixes: 55398025e7 ("target/riscv: add satp_mode profile support")
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250522113344.823294-1-dbarboza@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Tested-by: Björn Töpel <bjorn@rivosinc.com>
+Message-ID: <20250528184407.1451983-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/tcg/tcg-cpu.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 629ac37501..fe21e0fb44 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -127,8 +127,8 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
-     ISA_EXT_DATA_ENTRY(zabha, PRIV_VERSION_1_13_0, ext_zabha),
-     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
--    ISA_EXT_DATA_ENTRY(zama16b, PRIV_VERSION_1_13_0, ext_zama16b),
-     ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
-+    ISA_EXT_DATA_ENTRY(zama16b, PRIV_VERSION_1_13_0, ext_zama16b),
-     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
-     ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
-     ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 55fd9e5584..39de32cf76 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -1365,16 +1365,16 @@ static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
+ 
+     if (profile->enabled) {
+         cpu->env.priv_ver = profile->priv_spec;
+-    }
+ 
+ #ifndef CONFIG_USER_ONLY
+-    if (profile->satp_mode != RISCV_PROFILE_ATTR_UNUSED) {
+-        object_property_set_bool(obj, "mmu", true, NULL);
+-        const char *satp_prop = satp_mode_str(profile->satp_mode,
+-                                              riscv_cpu_is_32bit(cpu));
+-        object_property_set_bool(obj, satp_prop, profile->enabled, NULL);
+-    }
++        if (profile->satp_mode != RISCV_PROFILE_ATTR_UNUSED) {
++            object_property_set_bool(obj, "mmu", true, NULL);
++            const char *satp_prop = satp_mode_str(profile->satp_mode,
++                                                  riscv_cpu_is_32bit(cpu));
++            object_property_set_bool(obj, satp_prop, true, NULL);
++        }
+ #endif
++    }
+ 
+     for (i = 0; misa_bits[i] != 0; i++) {
+         uint32_t bit = misa_bits[i];
 -- 
 2.50.0
 
