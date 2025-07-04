@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D03AF9179
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D3DAF9159
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:20:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXeOx-0000Ls-3S; Fri, 04 Jul 2025 07:16:22 -0400
+	id 1uXeOl-00085F-Ri; Fri, 04 Jul 2025 07:16:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeNC-00056b-3X
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:14:34 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1uXeND-0005M5-UU
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:14:35 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeNA-0004Of-9p
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:14:29 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-237e6963f63so6010885ad.2
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:14:26 -0700 (PDT)
+ id 1uXeNB-0004S3-I2
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:14:31 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-23c8a5053c2so2285455ad.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:14:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751627665; x=1752232465; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1751627668; x=1752232468; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CXLfUly98A1gi7Wq/mV90ppTT7V7dWfvuoZOQ7SK3E0=;
- b=XNZicDpm6hVECsqPbgKCGXZBT48w7484R6QJOD6QUjHtKQEwLQQcP+kQXLZhRTR2ZS
- 0+62BGx7vxqBWZUPXRRWXh7tR/kW8oY0bI9zyefJMHY8tTM2+AJwea4EC+6J29SHyL0a
- 3w/QNS9t192NJhqfpFQEeRYmCUkzlVv/TwdhJWf/jJAW7h9udhHadmaZptgFBUNBjIyz
- Y6ZCmCgdnkvaZienDkXSuwNGk4gAqOSappzhpk0XMxmMhdJV/v+z98geoyaxrmxgukCm
- gE1y0iYt0xpGxvGCvxgaMuVtdPHfOcmSFXQ9tBG8a+kJDzGG+BZ+cOFxdU4IfsQnKqsT
- GXKA==
+ bh=6LeQAAogdZ6utUWU8uZD20yEC9hkJc37e9nimWKPLx0=;
+ b=kCJfBjNaW7DnUcznVJSlyQ1k7U6JLfuSVxo6vamiPtPybEH/KKKFAu3ZznGW/CtQev
+ kx7agtkEUdH/ip2EV9O9LBEOiywhF8uhtnqDcP6RuHwOYogCHphdDlR6lXeL2taJvTgy
+ M0zW3nuN11C0qvoYx66+FUeuuebCrwKCNnQ5w6+Q2ihreB7LGrxqqUpKePTtu4sD7jzO
+ UfgYPJIYITq1uk6iqL56PRNN8ywVq+Y7YqdUO0JxoH/noojp83yhPB2QM5nTJC9or/Gy
+ UKgpSfemV0tXJwdiFfUQKVaALxgISqQUIW8yznwYrEf6AY2k1m1jRpgv7FYDS820MzJS
+ 8S5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751627665; x=1752232465;
+ d=1e100.net; s=20230601; t=1751627668; x=1752232468;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CXLfUly98A1gi7Wq/mV90ppTT7V7dWfvuoZOQ7SK3E0=;
- b=DD6iCz+37CjTJQtsQVCUMKIqNsNuXsaxXIzyCzYBwzVQ2q+/VV6HYi1STA77FV+kEx
- oX6+VnLLPt8FWtu/M6Bte/OyDKzaPGRbGV+ACfjdjyGH8Z2ul2iACcMuEjicwsOmphk7
- tZnD4SgCEz9trzpKDZmScIQXcACzy3N7zzrfL8ZWY9LZ83fqg1j7xrm/Yt+Jgn7IAquj
- XbSlz/Xn5CvQxuZ203bv7qH6V56pQh5rDryqMdp+v96iEvCbwG+AeMsgFnYcqJh8r1+C
- DqhJG1ffJK3Xr+UYlXly3LKz9r2NLMJNT9k9Ge1qkNJ1JvuVL0im7fmhagmnRG9puMrR
- U/mw==
-X-Gm-Message-State: AOJu0Yz+17rfanea299k5VP9DdAlBakIaFmA8YZfvvQCidUWUR4eYmUR
- zBChVn4R771y+dTl3QMEerZovijCO7PM7CMQEHTtdnudBjcuzGsEkcqT7SYDhg==
-X-Gm-Gg: ASbGnct+Y1Ir7yeQfR9VE8yzQdw8jF7zM1XwHdnbZ7EWf7vgrw9++e37xjYc3ZnNqBa
- eAcc7lssiY69IZmxHztoVBmn0MuWNUnKlNTPVjCJckhpTIBEf+eYFkEyM8nOAwLxz0BkqASzuUl
- b67kxTzc9R0Fp/bCe6Z3re6khtpfAOVRaJ4vX7k3HbUWVIdEewH44IEfXzg+zvAg1vcSR1jW3fS
- 3+b6QoEDd5o3nvFbtBcRvbV4oMutngidyoR66ieDlzlFHg7pHy0TjERnQE3xz299n31bpNnq2r6
- o4dKKsaaAzgdfk7b95hKL/K1yAc8brUatAxK1WWIpWsSO0ORfuzme9rtXMWVWRVJOJyIxlc8wm6
- 756lpp8TXWodvbPpTQpEv5k3olAi1dbsiF4T47uBvGpQibMrN4iyT3W7vUJloNz3Mv6ljc7ewZZ
- JNlg==
-X-Google-Smtp-Source: AGHT+IFFm7Pp2naGyzWIyCF7ipF3SqCeDNNl5dLiArGDQEPY+IQZHATd6D26qm6sjTi8H9WsPO+bpw==
-X-Received: by 2002:a17:902:ce85:b0:237:ec18:eae5 with SMTP id
- d9443c01a7336-23c8754b117mr24607885ad.27.1751627664950; 
- Fri, 04 Jul 2025 04:14:24 -0700 (PDT)
+ bh=6LeQAAogdZ6utUWU8uZD20yEC9hkJc37e9nimWKPLx0=;
+ b=AvwbmgRlTqmOP39ezeVAHnOVStruneEvSELEf8O4s6gUCXULZ5oS4+RWVd80OI2E43
+ fk+gUIol0E59xmiuBA6spLSkDrqyQDgA6fiK9hRIqKkYR5mryvlIfATkKoDbfuBR7jBk
+ wac/1mJV5xD3Fnt/IKhXyEea6gLbiv2N59LzWmUOVFn2zJXOlIOamOOP5k+lVI+TpEoA
+ YMvdi12egre+n9L/2zuVJNs2opooHjFLCWAFUcZx/S2tR7P1WJ2201J0IRqE7FqPj+xG
+ JiksM50+ICblnSGaAdNAYkgEHzuOyf8kZi1ey45whFmzW9fnhZKTjCukq3MyxM1NdAW7
+ LmqQ==
+X-Gm-Message-State: AOJu0YwnItwhCGEfaFhBvmh9fGuWatx2PRJXtcO40XLj8ZlMKUAVZ8bG
+ kE0Q6EyHkVBTawhrpfdNDZAefgXWuQ8S7Qp57sNfjhOzM68W8OERZrThOdwBXw==
+X-Gm-Gg: ASbGnctY1gJIBRIHzp8xSDwvXKKNkpqtle+Qnf5kyPkNvpKlASlghzNyGd2o/Ne++tb
+ 7VM2oie0cUwgisokZR31M6NAQOiI0MaGuHxzARmUFlzGyukmv3fMXPBJNxC+Er/Lp5/zVNb/hkF
+ /tozxDkCEzHzJZrWJhZCDFB7wSi7HYc2O3ggCQQGflZWgo0stebzfkD/i69Lb9pwEk4zrls7gnh
+ LNN95faUgeRZI31BFSCq2x+/57UZk6q0MiLqVyUzlLaAuVp574TfT5AKVfjMvJKBtjpGEBPLJ0I
+ zneylRjYdG4aMA7akILDtlGqjdXYDdRf/FYRuzI76XdXaWVC6Rbw+k/ArX6Lj2I2qzeybt7IZ4s
+ FzXFuAypUn5o1+j+nSyfDB75vTWBM9nUvkn0YNOyrMDwxgZw2vVaLhKyIrDShs1VBwS4=
+X-Google-Smtp-Source: AGHT+IHgIhtJkgUSheu5mR9p8B+GF/abC0ifNtVn4z7tskl9K2HaIPavnUbm7fdqKF38JOIL65FrIA==
+X-Received: by 2002:a17:903:faf:b0:236:9726:7264 with SMTP id
+ d9443c01a7336-23c8609c053mr38721285ad.5.1751627667985; 
+ Fri, 04 Jul 2025 04:14:27 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.14.22
+ d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.14.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 04:14:24 -0700 (PDT)
+ Fri, 04 Jul 2025 04:14:27 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Charalampos Mitrodimas <charmitro@posteo.net>,
+Cc: alistair23@gmail.com, Vasilis Liaskovitis <vliaskovitis@suse.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 38/40] tests/tcg/riscv64: Add test for MEPC bit masking
-Date: Fri,  4 Jul 2025 21:12:05 +1000
-Message-ID: <20250704111207.591994-39-alistair.francis@wdc.com>
+Subject: [PULL 39/40] target/riscv: Add a property to set vill bit on reserved
+ usage of vsetvli instruction
+Date: Fri,  4 Jul 2025 21:12:06 +1000
+Message-ID: <20250704111207.591994-40-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250704111207.591994-1-alistair.francis@wdc.com>
 References: <20250704111207.591994-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,123 +104,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Vasilis Liaskovitis <vliaskovitis@suse.com>
 
-Add a regression test to verify that MEPC properly masks the lower
-bits when an address with mode bits is written to it, as required by
-the RISC-V Privileged Architecture specification.
+Usage of vsetvli instruction is reserved if VLMAX is changed when vsetvli rs1
+and rd arguments are x0.
 
-The test sets STVEC to an address with bit 0 set (vectored mode),
-triggers an illegal instruction exception, copies STVEC to MEPC in the
-trap handler, and verifies that MEPC masks bits [1:0] correctly for
-IALIGN=32.
+In this case, if the new property is true, only the vill bit will be set.
 
-Without the fix, MEPC retains the mode bits (returns non-zero/FAIL).
-With the fix, MEPC clears bits [1:0] (returns 0/PASS).
+See https://github.com/riscv/riscv-isa-manual/blob/main/src/v-st-ext.adoc#avl-encoding
+According to the spec, the above use cases are reserved, and
+"Implementations may set vill in either case."
 
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2422
+Signed-off-by: Vasilis Liaskovitis <vliaskovitis@suse.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20250703182157.281320-3-charmitro@posteo.net>
+Message-ID: <20250618213542.22873-1-vliaskovitis@suse.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- tests/tcg/riscv64/Makefile.softmmu-target |  4 ++
- tests/tcg/riscv64/test-mepc-masking.S     | 73 +++++++++++++++++++++++
- 2 files changed, 77 insertions(+)
- create mode 100644 tests/tcg/riscv64/test-mepc-masking.S
+ target/riscv/helper.h                   |  2 +-
+ target/riscv/cpu_cfg_fields.h.inc       |  1 +
+ target/riscv/cpu.c                      |  1 +
+ target/riscv/vector_helper.c            | 12 +++++++++++-
+ target/riscv/insn_trans/trans_rvv.c.inc |  4 ++--
+ 5 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/tests/tcg/riscv64/Makefile.softmmu-target b/tests/tcg/riscv64/Makefile.softmmu-target
-index 7c1d44d3f4..3ca595335d 100644
---- a/tests/tcg/riscv64/Makefile.softmmu-target
-+++ b/tests/tcg/riscv64/Makefile.softmmu-target
-@@ -20,5 +20,9 @@ EXTRA_RUNS += run-issue1060
- run-issue1060: issue1060
- 	$(call run-test, $<, $(QEMU) $(QEMU_OPTS)$<)
+diff --git a/target/riscv/helper.h b/target/riscv/helper.h
+index 85d73e492d..f712b1c368 100644
+--- a/target/riscv/helper.h
++++ b/target/riscv/helper.h
+@@ -159,7 +159,7 @@ DEF_HELPER_FLAGS_3(hyp_hsv_d, TCG_CALL_NO_WG, void, env, tl, tl)
+ #endif
  
-+EXTRA_RUNS += run-test-mepc-masking
-+run-test-mepc-masking: test-mepc-masking
-+	$(call run-test, $<, $(QEMU) $(QEMU_OPTS)$<)
+ /* Vector functions */
+-DEF_HELPER_3(vsetvl, tl, env, tl, tl)
++DEF_HELPER_4(vsetvl, tl, env, tl, tl, tl)
+ DEF_HELPER_5(vle8_v, void, ptr, ptr, tl, env, i32)
+ DEF_HELPER_5(vle16_v, void, ptr, ptr, tl, env, i32)
+ DEF_HELPER_5(vle32_v, void, ptr, ptr, tl, env, i32)
+diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
+index 33c4f9bac8..98ceb7b340 100644
+--- a/target/riscv/cpu_cfg_fields.h.inc
++++ b/target/riscv/cpu_cfg_fields.h.inc
+@@ -114,6 +114,7 @@ BOOL_FIELD(ext_supm)
+ BOOL_FIELD(rvv_ta_all_1s)
+ BOOL_FIELD(rvv_ma_all_1s)
+ BOOL_FIELD(rvv_vl_half_avl)
++BOOL_FIELD(rvv_vsetvl_x0_vill)
+ /* Named features  */
+ BOOL_FIELD(ext_svade)
+ BOOL_FIELD(ext_zic64b)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index e3f8ecef68..6f1d0618f1 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2632,6 +2632,7 @@ static const Property riscv_cpu_properties[] = {
+     DEFINE_PROP_BOOL("rvv_ta_all_1s", RISCVCPU, cfg.rvv_ta_all_1s, false),
+     DEFINE_PROP_BOOL("rvv_ma_all_1s", RISCVCPU, cfg.rvv_ma_all_1s, false),
+     DEFINE_PROP_BOOL("rvv_vl_half_avl", RISCVCPU, cfg.rvv_vl_half_avl, false),
++    DEFINE_PROP_BOOL("rvv_vsetvl_x0_vill", RISCVCPU, cfg.rvv_vsetvl_x0_vill, false),
+ 
+     /*
+      * write_misa() is marked as experimental for now so mark
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 5dc1c10012..b41c29da0b 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -35,7 +35,7 @@
+ #include <math.h>
+ 
+ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
+-                            target_ulong s2)
++                            target_ulong s2, target_ulong x0)
+ {
+     int vlmax, vl;
+     RISCVCPU *cpu = env_archcpu(env);
+@@ -83,6 +83,16 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
+     } else {
+         vl = vlmax;
+     }
 +
- # We don't currently support the multiarch system tests
- undefine MULTIARCH_TESTS
-diff --git a/tests/tcg/riscv64/test-mepc-masking.S b/tests/tcg/riscv64/test-mepc-masking.S
-new file mode 100644
-index 0000000000..fccd2a7ac4
---- /dev/null
-+++ b/tests/tcg/riscv64/test-mepc-masking.S
-@@ -0,0 +1,73 @@
-+/*
-+ * Test for MEPC masking bug fix
-+ *
-+ * This test verifies that MEPC properly masks the lower bits according
-+ * to the RISC-V specification when vectored mode bits from STVEC are
-+ * written to MEPC.
-+ */
++    if (cpu->cfg.rvv_vsetvl_x0_vill && x0 && (env->vl != vl)) {
++        /* only set vill bit. */
++        env->vill = 1;
++        env->vtype = 0;
++        env->vl = 0;
++        env->vstart = 0;
++        return 0;
++    }
 +
-+	.option	norvc
-+
-+	.text
-+	.global _start
-+_start:
-+	/* Set up machine trap vector */
-+	lla	t0, machine_trap_handler
-+	csrw	mtvec, t0
-+
-+	/* Set STVEC with vectored mode (mode bits = 01) */
-+	li	t0, 0x80004001
-+	csrw	stvec, t0
-+
-+	/* Clear medeleg to handle exceptions in M-mode */
-+	csrw	medeleg, zero
-+
-+	/* Trigger illegal instruction exception */
-+	.word	0xffffffff
-+
-+test_completed:
-+	/* Exit with result in a0 */
-+	/* a0 = 0: success (bits [1:0] were masked) */
-+	/* a0 != 0: failure (some bits were not masked) */
-+	j	_exit
-+
-+machine_trap_handler:
-+	/* Check if illegal instruction (mcause = 2) */
-+	csrr	t0, mcause
-+	li	t1, 2
-+	bne	t0, t1, skip_test
-+
-+	/* Test: Copy STVEC (with mode bits) to MEPC */
-+	csrr	t0, stvec	/* t0 = 0x80004001 */
-+	csrw	mepc, t0	/* Write to MEPC */
-+	csrr	t1, mepc	/* Read back MEPC */
-+
-+	/* Check if bits [1:0] are masked (IALIGN=32 without RVC) */
-+	andi	a0, t1, 3	/* a0 = 0 if both bits masked correctly */
-+
-+	/* Set correct return address */
-+	lla	t0, test_completed
-+	csrw	mepc, t0
-+
-+skip_test:
-+	mret
-+
-+/* Exit with semihosting */
-+_exit:
-+	lla	a1, semiargs
-+	li	t0, 0x20026	/* ADP_Stopped_ApplicationExit */
-+	sd	t0, 0(a1)
-+	sd	a0, 8(a1)
-+	li	a0, 0x20	/* TARGET_SYS_EXIT_EXTENDED */
-+
-+	/* Semihosting call sequence */
-+	.balign	16
-+	slli	zero, zero, 0x1f
-+	ebreak
-+	srai	zero, zero, 0x7
-+	j	.
-+
-+	.data
-+	.balign	8
-+semiargs:
-+	.space	16
+     env->vl = vl;
+     env->vtype = s2;
+     env->vstart = 0;
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index 4cd030c7eb..610bf9ff30 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -202,7 +202,7 @@ static bool do_vsetvl(DisasContext *s, int rd, int rs1, TCGv s2)
+         s1 = get_gpr(s, rs1, EXT_ZERO);
+     }
+ 
+-    gen_helper_vsetvl(dst, tcg_env, s1, s2);
++    gen_helper_vsetvl(dst, tcg_env, s1, s2, tcg_constant_tl((int) (rd == 0 && rs1 == 0)));
+     gen_set_gpr(s, rd, dst);
+     finalize_rvv_inst(s);
+ 
+@@ -222,7 +222,7 @@ static bool do_vsetivli(DisasContext *s, int rd, TCGv s1, TCGv s2)
+ 
+     dst = dest_gpr(s, rd);
+ 
+-    gen_helper_vsetvl(dst, tcg_env, s1, s2);
++    gen_helper_vsetvl(dst, tcg_env, s1, s2, tcg_constant_tl(0));
+     gen_set_gpr(s, rd, dst);
+     finalize_rvv_inst(s);
+     gen_update_pc(s, s->cur_insn_len);
 -- 
 2.50.0
 
