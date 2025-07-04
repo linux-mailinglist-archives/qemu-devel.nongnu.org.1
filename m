@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4C3AF9118
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC3CAF9133
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:16:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXeLp-0001tD-PC; Fri, 04 Jul 2025 07:13:05 -0400
+	id 1uXeLv-00026J-Pa; Fri, 04 Jul 2025 07:13:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeLY-0001nC-TQ
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:12:49 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1uXeLa-0001qK-R6; Fri, 04 Jul 2025 07:12:51 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeLU-0002YE-Mf
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:12:46 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-234c5b57557so8804725ad.3
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:12:43 -0700 (PDT)
+ id 1uXeLZ-0002cq-1F; Fri, 04 Jul 2025 07:12:50 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-236192f8770so5821835ad.0; 
+ Fri, 04 Jul 2025 04:12:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751627562; x=1752232362; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1751627565; x=1752232365; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G7kVqX7i2Q5mE5/XYi8yZYkv70bcetDYLM46qvs6C6w=;
- b=DvDmru+UZzbz8fuVagmTvp+FeEK7Ht2HjOJUdifc2uAYHgchd6eSWDdoNmAv3kExPn
- OyPZTM4FnqV8L41Tkb3Hs1SojF863bQezoauN/Vo2p2VHIMO0Q3KBiGi/VpfQxbmTxsH
- Im0Fy6X7SN7X9SxS1wxd+OWuT5mAGGfFXke0Y5DMMTb+hkTVKMczKmDNOnYpAyKxd7uZ
- yBGk5OxNKjsiIaaLp1HeEhuCVUiZv3Gh2csahYa57FNKqh/HBdOaA+BBR4K2zGN3uE8O
- 6vyYkV/9MfIrA4bjFRwhzvo57uY3/Vl+7YI66bTjHiR+8m3QDF9KttYspdLWEx2028sK
- 1HXg==
+ bh=s6UGTgPYir33A0rgIBH+C4iVYyQtEZW7GZky2on9WjU=;
+ b=QjYJCxhtVICYs5lG54LZAopHkXNbhHAOwVpfek4dMj3rwgo5nWxIaK9T8GQWX2wBfd
+ 2Of1BDi5+Muw7leP/WcejQJlCa0uYwZms5ASvS/WYAqgDVIHbjIz6ijrSs6c7PN0QYhk
+ SJ5MG/0Fi+tQHm3Ny6+AYm6R2lqDi1+3MpkFFtu8/sOOst4JibLo4/KEh0uLMqVi//4D
+ uP5ABFRFRtR0m+GQZ7LbRIEySMad5vTOEjv3LN2rHjnRuEtPgBC2uCeZeNZwjDh527gq
+ I6HVKsgnbWQmJnoT+ga4oFQntt8Y5hlFdUCmwTbNorV9XtuDdVuqRbP9v4cyoTdlBESz
+ riOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751627562; x=1752232362;
+ d=1e100.net; s=20230601; t=1751627565; x=1752232365;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G7kVqX7i2Q5mE5/XYi8yZYkv70bcetDYLM46qvs6C6w=;
- b=pj1QAPsrV9PegUsZkpbiKtq4YB14fSMs0EcQQ1bwJlvEalIPPpLvhNk54lbPeAlzg7
- j3pv52EdygNLggxG+188kiZ+XmBFtB4HrUDi1/1i+7oNvIm95P+1l6TxghOkhwnTlCxG
- VtipqOV6+ija3CtlRbxQK5Qrc/V18UOsD2AQvgQLHBCr/R1gykUQnWxz7X0HvPbtqzG0
- +zMxVZ5WYqktGA2yYWV5J4s+BY+KGoHCg3gFXFzu3VkNIMlJAslsjsj8jMTIFGwLE+iS
- U1OfQNxqPqF/ix8DumWftxEuwOs1CdrZpzU41Q1R5HbFz/blNARTYfT+sH2ARkr5wrsT
- 0KPA==
-X-Gm-Message-State: AOJu0YyAWnMu7ht+xtaMWQ10KuU4Mn8E7ZYt/Nl4185sGAof/fSPKe8P
- SN1xSERBvT7Q5PAUK1N1Jd/5xrAwxlU2+j3hXGH7ni43CbmpxruekDGuq6uteg==
-X-Gm-Gg: ASbGnctw9wXcarV7XTEAHQzyXA84CeZu9farLNXdGrE5z+UleOWO/EJJ4ye6E7MWYDU
- gK1R9xVVMPN9dZuSH/eUXHffEGyjPng+8GXKx1wTlgyC0miswGcbbFj1rrUthk4ZjCM7muF9gHn
- +qxhIs30q1RPWqi0VACNN2hdK7HXdIkqjO64ZmymnE2vKct+Xn4UXyCzPUcMxPS+4LlYNkMYKdG
- n52kssT3cznA2DKHs7cq7cmlKymnKvsZO5HdX1gFFCHmK6EgedKWdCk5KLBbrPNsyMTwxY9LBHs
- O9x/XaLn/oU8VXVBfNURMQHXr8PE6zaCht0GDrUvi1gO/rpkqgMGWDdzvcpZ8kNLECixbjbv3iN
- WJO9zxjzCPIa798MmJirBdzQDz+jqim08EFvWURBaEHavRh1d6Y0PilPLJA3uU9ozTb8=
-X-Google-Smtp-Source: AGHT+IEqZ9t9gLCIEUtlypjOFw4OuB8ySGRHy3zwhutL5SAtVvLuG+JGs059VMoCjgZFuwIt3V3gOA==
-X-Received: by 2002:a17:903:1b68:b0:235:27b6:a897 with SMTP id
- d9443c01a7336-23c85e9c18fmr38715885ad.34.1751627561973; 
- Fri, 04 Jul 2025 04:12:41 -0700 (PDT)
+ bh=s6UGTgPYir33A0rgIBH+C4iVYyQtEZW7GZky2on9WjU=;
+ b=P8UOpSl3TGRltn2Kf3u6BZ8rA5s24Bht24ohoyAtchvVKfF8UIAPfObVA1PPT3Y98x
+ P78BwOJg84UnN0u9q1iDqIRChL5sFZDXHI9Yp07BLQ9XM1kISeam4edzLhOvwP/5s4Yq
+ lbEiQ+WlwneAikHOB/MOdPYkVLi3sat69wrAZUVrxWA46ai4ZsZnEskjHspCurBqmRn4
+ ADbY0TVmtlv8GMvzMPn8HsFjIGNzVyCvCDXI/2J1I/kgLZwXmBe3pk2s7K8OMYHcpYTY
+ KVbCE/3g/aAMcbf/n8dYQRjHORW9MSIMvmWm8QhT7eSMXb5AEw/hmQhDhncNlUhNfp5W
+ 5dCg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWKImpDQ6trDm3joNWynfe5HfSahSVOq9QF6rWxd/XlbQRSIB5xIj5ZHzVSEmaMjv/jbP3SW6G1omPwv9M=@nongnu.org
+X-Gm-Message-State: AOJu0YxtPZ6UiqJkorukaW6GxalUs9SRqz24XK6VQ9mu1vTvMgTpJEUy
+ I8Qm18bY9WH/6Yf4z+slF8+U0gjwgKkuFVuJDxjTCxbDBNopTqpgBOnJDZxopA==
+X-Gm-Gg: ASbGnculzt6hglV4yzIJqpskNE+LSy0QxGP6w4iCjXUAhQ2PjqgLY/JH6O6t5cJnV03
+ HSxIIzlcbkDOkgt4qwgGU0gpwA1jts/leUlee2DZEe48x0mDk67rPAWORPXK1otsdOPGjMzZ/4q
+ uEJZHvHeixzsggi60AktH6ciJfUNbe1AlABjByIbneTHbROk2nSCToEZidZ0EHabfpjPjTwpFNl
+ v0u2hey3/9W2oT56DEp6ZyRYa4EFdhNfOqnHsBRtNr7apexbNMpjaX404uXJaQQviMZK5/WWNNo
+ KKra0sTU1ewaJLf5AEw0eX28HFTrC5YLbmK5mg2TBS3gJbe7KbexR2TVJb94JYjZABw1KCU9i5w
+ 9RKOPosPts/wNOAan+9jNDSSoKQ7KQKx/qG7RMJWEe4UxzWwF2RByoHaEQh34Zi/dibE=
+X-Google-Smtp-Source: AGHT+IHs6p+BA2JJOIcVeEjWoz6p3TD+YAHGkfDpP0BUEy1TbBBo1sAF1L2jkKy+hDijgRZjyK22TA==
+X-Received: by 2002:a17:903:11c8:b0:234:11e2:f41 with SMTP id
+ d9443c01a7336-23c84ad0d7cmr39714455ad.6.1751627564972; 
+ Fri, 04 Jul 2025 04:12:44 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.12.39
+ d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.12.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 04:12:41 -0700 (PDT)
+ Fri, 04 Jul 2025 04:12:44 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Jim Shu <jim.shu@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 04/40] target/riscv: Enable/Disable S/VS-mode Timer when STCE
- bit is changed
-Date: Fri,  4 Jul 2025 21:11:31 +1000
-Message-ID: <20250704111207.591994-5-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-trivial@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 05/40] target/riscv/cpu.c: fix zama16b order in isa_edata_arr[]
+Date: Fri,  4 Jul 2025 21:11:32 +1000
+Message-ID: <20250704111207.591994-6-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250704111207.591994-1-alistair.francis@wdc.com>
 References: <20250704111207.591994-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,212 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jim Shu <jim.shu@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Updating STCE will enable/disable SSTC in S-mode or/and VS-mode, so we
-also need to update S/VS-mode Timer and S/VSTIP bits in $mip CSR.
+Put it after zalrsc and before zawrs.
 
-Signed-off-by: Jim Shu <jim.shu@sifive.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250519143518.11086-5-jim.shu@sifive.com>
+Cc: qemu-trivial@nongnu.org
+Fixes: a60ce58fd9 ("target/riscv: Support Zama16b extension")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250522113344.823294-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/time_helper.h |  1 +
- target/riscv/csr.c         | 46 ++++++++++++++++++++++++++++++++++++++
- target/riscv/time_helper.c | 46 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 93 insertions(+)
+ target/riscv/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/time_helper.h b/target/riscv/time_helper.h
-index cacd79b80c..af1f634f89 100644
---- a/target/riscv/time_helper.h
-+++ b/target/riscv/time_helper.h
-@@ -25,6 +25,7 @@
- void riscv_timer_write_timecmp(CPURISCVState *env, QEMUTimer *timer,
-                                uint64_t timecmp, uint64_t delta,
-                                uint32_t timer_irq);
-+void riscv_timer_stce_changed(CPURISCVState *env, bool is_m_mode, bool enable);
- void riscv_timer_init(RISCVCPU *cpu);
- 
- #endif
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index d8102943dd..1151ebb6ad 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -3181,6 +3181,7 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
-     const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
-     uint64_t mask = MENVCFG_FIOM | MENVCFG_CBIE | MENVCFG_CBCFE |
-                     MENVCFG_CBZE | MENVCFG_CDE;
-+    bool stce_changed = false;
- 
-     if (riscv_cpu_mxl(env) == MXL_RV64) {
-         mask |= (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
-@@ -3206,8 +3207,18 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
-         if ((val & MENVCFG_DTE) == 0) {
-             env->mstatus &= ~MSTATUS_SDT;
-         }
-+
-+        if (cfg->ext_sstc &&
-+            ((env->menvcfg & MENVCFG_STCE) != (val & MENVCFG_STCE))) {
-+            stce_changed = true;
-+        }
-     }
-     env->menvcfg = (env->menvcfg & ~mask) | (val & mask);
-+
-+    if (stce_changed) {
-+        riscv_timer_stce_changed(env, true, !!(val & MENVCFG_STCE));
-+    }
-+
-     return write_henvcfg(env, CSR_HENVCFG, env->henvcfg, ra);
- }
- 
-@@ -3230,12 +3241,23 @@ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
-                     (cfg->ext_smcdeleg ? MENVCFG_CDE : 0) |
-                     (cfg->ext_ssdbltrp ? MENVCFG_DTE : 0);
-     uint64_t valh = (uint64_t)val << 32;
-+    bool stce_changed = false;
-+
-+    if (cfg->ext_sstc &&
-+        ((env->menvcfg & MENVCFG_STCE) != (valh & MENVCFG_STCE))) {
-+        stce_changed = true;
-+    }
- 
-     if ((valh & MENVCFG_DTE) == 0) {
-         env->mstatus &= ~MSTATUS_SDT;
-     }
- 
-     env->menvcfg = (env->menvcfg & ~mask) | (valh & mask);
-+
-+    if (stce_changed) {
-+        riscv_timer_stce_changed(env, true, !!(valh & MENVCFG_STCE));
-+    }
-+
-     return write_henvcfgh(env, CSR_HENVCFGH, env->henvcfg >> 32, ra);
- }
- 
-@@ -3313,8 +3335,10 @@ static RISCVException read_henvcfg(CPURISCVState *env, int csrno,
- static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
-                                     target_ulong val, uintptr_t ra)
- {
-+    const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
-     uint64_t mask = HENVCFG_FIOM | HENVCFG_CBIE | HENVCFG_CBCFE | HENVCFG_CBZE;
-     RISCVException ret;
-+    bool stce_changed = false;
- 
-     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_HSENVCFG);
-     if (ret != RISCV_EXCP_NONE) {
-@@ -3340,6 +3364,11 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
-             get_field(val, HENVCFG_PMM) != PMM_FIELD_RESERVED) {
-             mask |= HENVCFG_PMM;
-         }
-+
-+        if (cfg->ext_sstc &&
-+            ((env->henvcfg & HENVCFG_STCE) != (val & HENVCFG_STCE))) {
-+            stce_changed = true;
-+        }
-     }
- 
-     env->henvcfg = val & mask;
-@@ -3347,6 +3376,10 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
-         env->vsstatus &= ~MSTATUS_SDT;
-     }
- 
-+    if (stce_changed) {
-+        riscv_timer_stce_changed(env, false, !!(val & HENVCFG_STCE));
-+    }
-+
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -3368,19 +3401,32 @@ static RISCVException read_henvcfgh(CPURISCVState *env, int csrno,
- static RISCVException write_henvcfgh(CPURISCVState *env, int csrno,
-                                      target_ulong val, uintptr_t ra)
- {
-+    const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
-     uint64_t mask = env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE |
-                                     HENVCFG_ADUE | HENVCFG_DTE);
-     uint64_t valh = (uint64_t)val << 32;
-     RISCVException ret;
-+    bool stce_changed = false;
- 
-     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_HSENVCFG);
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
-     }
-+
-+    if (cfg->ext_sstc &&
-+        ((env->henvcfg & HENVCFG_STCE) != (valh & HENVCFG_STCE))) {
-+        stce_changed = true;
-+    }
-+
-     env->henvcfg = (env->henvcfg & 0xFFFFFFFF) | (valh & mask);
-     if ((env->henvcfg & HENVCFG_DTE) == 0) {
-         env->vsstatus &= ~MSTATUS_SDT;
-     }
-+
-+    if (stce_changed) {
-+        riscv_timer_stce_changed(env, false, !!(val & HENVCFG_STCE));
-+    }
-+
-     return RISCV_EXCP_NONE;
- }
- 
-diff --git a/target/riscv/time_helper.c b/target/riscv/time_helper.c
-index aebf0798d0..400e917354 100644
---- a/target/riscv/time_helper.c
-+++ b/target/riscv/time_helper.c
-@@ -140,6 +140,52 @@ void riscv_timer_write_timecmp(CPURISCVState *env, QEMUTimer *timer,
-     timer_mod(timer, next);
- }
- 
-+/*
-+ * When disabling xenvcfg.STCE, the S/VS Timer may be disabled at the same time.
-+ * It is safe to call this function regardless of whether the timer has been
-+ * deleted or not. timer_del() will do nothing if the timer has already
-+ * been deleted.
-+ */
-+static void riscv_timer_disable_timecmp(CPURISCVState *env, QEMUTimer *timer,
-+                                 uint32_t timer_irq)
-+{
-+    /* Disable S-mode Timer IRQ and HW-based STIP */
-+    if ((timer_irq == MIP_STIP) && !get_field(env->menvcfg, MENVCFG_STCE)) {
-+        riscv_cpu_update_mip(env, timer_irq, BOOL_TO_MASK(0));
-+        timer_del(timer);
-+        return;
-+    }
-+
-+    /* Disable VS-mode Timer IRQ and HW-based VSTIP */
-+    if ((timer_irq == MIP_VSTIP) &&
-+        (!get_field(env->menvcfg, MENVCFG_STCE) ||
-+         !get_field(env->henvcfg, HENVCFG_STCE))) {
-+        env->vstime_irq = 0;
-+        riscv_cpu_update_mip(env, 0, BOOL_TO_MASK(0));
-+        timer_del(timer);
-+        return;
-+    }
-+}
-+
-+/* Enable or disable S/VS-mode Timer when xenvcfg.STCE is changed */
-+void riscv_timer_stce_changed(CPURISCVState *env, bool is_m_mode, bool enable)
-+{
-+    if (enable) {
-+        riscv_timer_write_timecmp(env, env->vstimer, env->vstimecmp,
-+                                  env->htimedelta, MIP_VSTIP);
-+    } else {
-+        riscv_timer_disable_timecmp(env, env->vstimer, MIP_VSTIP);
-+    }
-+
-+    if (is_m_mode) {
-+        if (enable) {
-+            riscv_timer_write_timecmp(env, env->stimer, env->stimecmp, 0, MIP_STIP);
-+        } else {
-+            riscv_timer_disable_timecmp(env, env->stimer, MIP_STIP);
-+        }
-+    }
-+}
-+
- void riscv_timer_init(RISCVCPU *cpu)
- {
-     CPURISCVState *env;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 629ac37501..fe21e0fb44 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -127,8 +127,8 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
+     ISA_EXT_DATA_ENTRY(zabha, PRIV_VERSION_1_13_0, ext_zabha),
+     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
+-    ISA_EXT_DATA_ENTRY(zama16b, PRIV_VERSION_1_13_0, ext_zama16b),
+     ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
++    ISA_EXT_DATA_ENTRY(zama16b, PRIV_VERSION_1_13_0, ext_zama16b),
+     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+     ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
+     ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
 -- 
 2.50.0
 
