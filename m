@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3C4AF8FE0
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 12:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE49AAF8FE2
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 12:20:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXdRx-00066Y-1t; Fri, 04 Jul 2025 06:15:21 -0400
+	id 1uXdRy-0006By-QA; Fri, 04 Jul 2025 06:15:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRo-00064W-Oa
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:15:12 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRw-000683-0t
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:15:20 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRm-0006cZ-Os
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:15:12 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-453066fad06so5177255e9.2
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 03:15:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRr-0006db-QR
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:15:17 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-451d54214adso4993035e9.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 03:15:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751624109; x=1752228909; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751624113; x=1752228913; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=o6bhqsFMFs7mcPHK86doFfOhErUfzngUDVxx9M5BYVo=;
- b=KJTukJXFPns2BhaHHaD6SLOj32PiZ8x+ZiZ2yXGUdDYm/UUz3LYhpwzcdaUQajV8+A
- ZETRcvIY2ZlGUws84/vCqx0DHcVjgWa6WLXfHG4iyBx7jydmtCezz5o2k++iZlnBei76
- +pZx6nEpbH000ABSiU9pwdFV3PGtiOiaE6oaGRnz07Tb5KBuQenT0ctG5HiBD/rDp5Kq
- Zj1lxSeIfLrOlRzCZnp3Ve+TfZut3WammpsVLjNazeUJeEFnuvk4Hpa72tGhnKLYAo9T
- qA7pTvUrqrkBZNyQD4BAXIwky84ViK4oE52UGZ5xraI/IOR0pzjtDCYZoPZdaCrmQ3Cp
- ZvqQ==
+ :reply-to; bh=VLdxvBumjozr6AaX1LMKeVrCwgZ9kkvv1MIJjkhu7gw=;
+ b=UliwEVu2iH6fMFNPE+dGUvZd8o8jlPdK7KqC69OA7ufYk4z4LOAt53HKy/ZNFcqLw2
+ Db4Rxak0ZW57mWj9CJDPZ/myY/b1h2tIUxQI0bYAAJoK0NvNDaTwaBnmuZ8QuQXCUM3X
+ Y77elkIPsmMYAjGHfJUT5FRIp7d1Q+P7vTfTT5qcutj03S5Ph/bPS5yBZSQaoJ6yixzM
+ N34MzkMm95gmvqHxkqxyBDszR91J0qaF5mQsj+vHQe/LxJLTQa65Vnpo2NXXLX2nwGBu
+ +3ct++djo/BJuyhQQ3pQOHOQ7YwLH8sZulWngC23UKeKHJctIUCnDLV50qPgG7OwTD9d
+ ab3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751624109; x=1752228909;
+ d=1e100.net; s=20230601; t=1751624113; x=1752228913;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o6bhqsFMFs7mcPHK86doFfOhErUfzngUDVxx9M5BYVo=;
- b=VL7KyIlzVuWNR6i8Q73VQjuk3CkwRsIjVr6PBs/sBk4tNJN15s0eX95twDAQRuoO+A
- E7/fmir+1WmBNprjAjdhBYuSuZ3snoCbE3eTFQHk77xF9v4SkyLM2g3+YfZYDyDk10zB
- C2hj8/mGMyi+Z+q2Fy9yt321HNu4thlIDF2zsmKn3CA5VZF/Kc6LHxzhxhlJoZDBw/GZ
- iA0uDwNk3XQu3sqTR7yP26pylfa1nc+vHJxcz95F4Qagz1QlY3aKdygEr5UeoQe9KGc5
- A68pGuLG+hqnwwxaTlL0vtHSDvrtwtGtdXFj8dvHSaEQA83aSnX+spBenJ5HWL1NQNt0
- 5Q5Q==
-X-Gm-Message-State: AOJu0Yzj74vjSf7Fjh/4iwMrhcbqltLsZbQJ/cE+EYQk3933T7uRnyyG
- SFlbQpF04fu7AX/4KgWtLTtoERY3kOzHy68C6w/47YsLAABZsuHrd2U25unt5ilYL+9m8LuwYJ3
- TNYGGruI=
-X-Gm-Gg: ASbGncsgHWifdY2tAXwr6NrSm8Q+NHFj2BlJaN1UYlB/Pb9kvQlrIbyVDkfgsmpvrqP
- r7VUuSF2avbbRvmTp6zWsp6YowI+jB29YlRK/p+k5fTtkf+HNnt4S/UfSUDLXcb4k5NSDj1/2d8
- 2FHFNmeVQTq2/96UkFaGJXjgWw7SjNq0nh4DYsvdOHJVFWCcsA1g0qd4y2O3JmLh1bmqoShWQ9n
- W8WHplX3W2AhPyWc8FFsukzWaHbg+Tq1MPwWEKos8QzIGNZ8f/A+ZDsfGDoFz4qIuCv6wc+UL7Z
- jTwGYUw7zwu/TGSK7iESdtcdwHhZSiUJdli101b0nFZx0w2A5Liao8uFwt13A3pUmLl2xRkEQHL
- mXWTUELqkBB6Wc8xC/Ue7uJBr+r4A9167RBY6
-X-Google-Smtp-Source: AGHT+IEENzCbIdg7CplaJct7Up06tSjJHrmqapkzmUFTTiK2sRR+WHLgxWxJCZgTGJiLmUP2yOnCdg==
-X-Received: by 2002:a05:600d:1a:b0:450:d00d:cc with SMTP id
- 5b1f17b1804b1-454b306c4c4mr16348295e9.2.1751624108585; 
- Fri, 04 Jul 2025 03:15:08 -0700 (PDT)
+ bh=VLdxvBumjozr6AaX1LMKeVrCwgZ9kkvv1MIJjkhu7gw=;
+ b=LfN5Aatv3sEgD/YylHw7b+KCl3m/7DmiyraX3J5Y2+kPcwvaPsv5teLny1qwi8CnRd
+ NdnRvdH8JJ3UzNsIgHj7MjRJrHUgLEREgcfXWwA3InNIhNnS4Qo8N31cVVxqTiDYO+lE
+ PSpDoZaTFlocDKg8+Bo3CGtyrYWXQwfkRE6d2OIbnWiZ2uBXY7VQrk+CIytpweACZutk
+ eZvouD71YcCzi8mnb+5WEka6bnPQN1l8BmyY5NhWJOtfOFOIYocqtzYdkxez/lga+KjW
+ OPFCdHy2PUyvJDTknOiRX/7gZ26A01h4lzp0Vup5rRE4schgkEZQ+zScA10AqqwjkfPb
+ MTvw==
+X-Gm-Message-State: AOJu0Yygo+pcHG1adZ9sqF9AMq+kJTv8BUbSoWtKc5gVViEismiyKvsZ
+ Fgz3VAjNSvNDdM/mAWH1+n41gHLYCSprxookw3Bh+ibjN6QFQkq1Afskj7IS+Wph+dK8BJj3jLL
+ 2+EYmOeM=
+X-Gm-Gg: ASbGncsOy4boHrrUBGZ8GaxKJEdLFRh6nRSsx8f7rx6fB8T1vJfMPRatctb+jm3urkZ
+ LXViuh/c8Iycq/67KEBMbcmW7b9U9lNK4t9yZYj+YFEZuVJeNyJ73CCpCK2xXn6hUSFtPcxYWLB
+ uD5w6IyohywsBgRlpDwwM5nB5l8C30KKu4oVMJpjiNgi7Jhl9TSiWDrcJfFBRmmJKH+KxQvkxbl
+ guLdI4pi7S4wd98d9+kYYrMqBXlh7d00eZjoeePymPiHj3r6hDSKy7Wz8PFzN4/y5GIog++OHzk
+ JZJnsUdng+ufFRi2gXEVBb8vIT6LS4UV2kz+sZdIk/olj/IwP/LjA3qN/qb4FHLJxSwdHF6wtig
+ R2qb6o5alBSQ9skNsf40PAcS47a0ZuPLdXQPlIHTvLnAYomg=
+X-Google-Smtp-Source: AGHT+IFY/oMcoCkngkbc2pXXcV1O5nES63mgCHkFSqX3Obiii3KFGcQH/3cYI1Uq/xN+ri4HFI3Stw==
+X-Received: by 2002:a05:600d:16:b0:450:d00d:d0 with SMTP id
+ 5b1f17b1804b1-454b3ab5cefmr12197045e9.19.1751624113201; 
+ Fri, 04 Jul 2025 03:15:13 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454adc71aadsm39418505e9.25.2025.07.04.03.15.07
+ 5b1f17b1804b1-454b1695577sm22359315e9.27.2025.07.04.03.15.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Jul 2025 03:15:08 -0700 (PDT)
+ Fri, 04 Jul 2025 03:15:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/31] accel/tcg: Factor tcg_dump_stats() out for re-use
-Date: Fri,  4 Jul 2025 12:14:08 +0200
-Message-ID: <20250704101433.8813-8-philmd@linaro.org>
+Subject: [PULL 08/31] accel/hvf: Restrict internal declarations
+Date: Fri,  4 Jul 2025 12:14:09 +0200
+Message-ID: <20250704101433.8813-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250704101433.8813-1-philmd@linaro.org>
 References: <20250704101433.8813-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,55 +96,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Common code only needs to know whether HVF is enabled and
+the QOM type. Move the rest to "hvf_int.h", removing the
+need for COMPILING_PER_TARGET #ifdef'ry.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20250703173248.44995-11-philmd@linaro.org>
+Message-Id: <20250703173248.44995-15-philmd@linaro.org>
 ---
- accel/tcg/internal-common.h |  2 ++
- accel/tcg/monitor.c         | 11 ++++++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ include/system/hvf.h     | 38 --------------------------------------
+ include/system/hvf_int.h | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 38 deletions(-)
 
-diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
-index 1dbc45dd955..77a3a0684a5 100644
---- a/accel/tcg/internal-common.h
-+++ b/accel/tcg/internal-common.h
-@@ -139,4 +139,6 @@ G_NORETURN void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr);
- void tb_phys_invalidate(TranslationBlock *tb, tb_page_addr_t page_addr);
- void tb_set_jmp_target(TranslationBlock *tb, int n, uintptr_t addr);
+diff --git a/include/system/hvf.h b/include/system/hvf.h
+index a9a502f0c8f..d3dcf088b3f 100644
+--- a/include/system/hvf.h
++++ b/include/system/hvf.h
+@@ -14,10 +14,6 @@
+ #define HVF_H
  
-+void tcg_dump_stats(GString *buf);
+ #include "qemu/accel.h"
+-#include "qemu/queue.h"
+-#include "exec/vaddr.h"
+-#include "qom/object.h"
+-#include "exec/vaddr.h"
+ 
+ #ifdef COMPILING_PER_TARGET
+ # ifdef CONFIG_HVF
+@@ -40,38 +36,4 @@ typedef struct HVFState HVFState;
+ DECLARE_INSTANCE_CHECKER(HVFState, HVF_STATE,
+                          TYPE_HVF_ACCEL)
+ 
+-#ifdef COMPILING_PER_TARGET
+-struct hvf_sw_breakpoint {
+-    vaddr pc;
+-    vaddr saved_insn;
+-    int use_count;
+-    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
+-};
+-
+-struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu,
+-                                                 vaddr pc);
+-int hvf_sw_breakpoints_active(CPUState *cpu);
+-
+-int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
+-int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
+-int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
+-int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
+-void hvf_arch_remove_all_hw_breakpoints(void);
+-
+-/*
+- * hvf_update_guest_debug:
+- * @cs: CPUState for the CPU to update
+- *
+- * Update guest to enable or disable debugging. Per-arch specifics will be
+- * handled by calling down to hvf_arch_update_guest_debug.
+- */
+-int hvf_update_guest_debug(CPUState *cpu);
+-void hvf_arch_update_guest_debug(CPUState *cpu);
+-
+-/*
+- * Return whether the guest supports debugging.
+- */
+-bool hvf_arch_supports_guest_debug(void);
+-#endif /* COMPILING_PER_TARGET */
+-
+ #endif
+diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
+index d774e58df91..4f6db40c34e 100644
+--- a/include/system/hvf_int.h
++++ b/include/system/hvf_int.h
+@@ -12,6 +12,8 @@
+ #define HVF_INT_H
+ 
+ #include "qemu/queue.h"
++#include "exec/vaddr.h"
++#include "qom/object.h"
+ 
+ #ifdef __aarch64__
+ #include <Hypervisor/Hypervisor.h>
+@@ -77,4 +79,36 @@ int hvf_put_registers(CPUState *);
+ int hvf_get_registers(CPUState *);
+ void hvf_kick_vcpu_thread(CPUState *cpu);
+ 
++struct hvf_sw_breakpoint {
++    vaddr pc;
++    vaddr saved_insn;
++    int use_count;
++    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
++};
++
++struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu,
++                                                 vaddr pc);
++int hvf_sw_breakpoints_active(CPUState *cpu);
++
++int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
++int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
++int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
++int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
++void hvf_arch_remove_all_hw_breakpoints(void);
++
++/*
++ * hvf_update_guest_debug:
++ * @cs: CPUState for the CPU to update
++ *
++ * Update guest to enable or disable debugging. Per-arch specifics will be
++ * handled by calling down to hvf_arch_update_guest_debug.
++ */
++int hvf_update_guest_debug(CPUState *cpu);
++void hvf_arch_update_guest_debug(CPUState *cpu);
++
++/*
++ * Return whether the guest supports debugging.
++ */
++bool hvf_arch_supports_guest_debug(void);
 +
  #endif
-diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
-index 6d9cc11d94c..e7ed7281a4b 100644
---- a/accel/tcg/monitor.c
-+++ b/accel/tcg/monitor.c
-@@ -200,6 +200,13 @@ static void dump_exec_info(GString *buf)
-     tcg_dump_flush_info(buf);
- }
- 
-+void tcg_dump_stats(GString *buf)
-+{
-+    dump_accel_info(buf);
-+    dump_exec_info(buf);
-+    dump_drift_info(buf);
-+}
-+
- HumanReadableText *qmp_x_query_jit(Error **errp)
- {
-     g_autoptr(GString) buf = g_string_new("");
-@@ -209,9 +216,7 @@ HumanReadableText *qmp_x_query_jit(Error **errp)
-         return NULL;
-     }
- 
--    dump_accel_info(buf);
--    dump_exec_info(buf);
--    dump_drift_info(buf);
-+    tcg_dump_stats(buf);
- 
-     return human_readable_text_from_str(buf);
- }
 -- 
 2.49.0
 
