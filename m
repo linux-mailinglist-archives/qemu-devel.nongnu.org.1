@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958F1AF9231
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 14:08:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CAF8AF9256
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 14:16:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXfC7-00073S-8Z; Fri, 04 Jul 2025 08:07:07 -0400
+	id 1uXfKL-0000ua-54; Fri, 04 Jul 2025 08:15:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXfC2-00071z-9t
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 08:07:02 -0400
-Received: from p-east3-cluster1-host4-snip4-10.eps.apple.com ([57.103.87.43]
- helo=outbound.qs.icloud.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXfBz-0006BA-2a
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 08:07:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- bh=ABXss1yk4Otbr4a1J29CZmIZb6m6sxx+cAVHmTUup8Y=;
- h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
- b=AcaKGYn4MEpK3S2v1/QuwObM6rcsjprm876hznScwg4EiBJ4CeMUnF/gEx1uL2iZl
- ePDwsE7Hx4KUi3uBKE0lqW+jOMj7/0QuLXKHli6O7A3YJmvH7/yFQVV9RJEUTKAzMU
- NDffQMeB3zFNGVP1sLDJ31Sq006+Wk2unqALokqSEYjxSmH8/sZ3wghQ6KbFJvLRK6
- rijJw7zMIiQgvyQv3F2j2eKdaZxHy7+xgktjS4qHpSkIwpCBjj/veSfkJbqZsLWual
- mQw1Jp6eVoNj9EbAkQ4CHTxMUd/l+AqCeB3+Q/JHf9aMREFZCyk2MUmqFN0N42nYhr
- bKDH6EVa7E7cg==
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
- by outbound.qs.icloud.com (Postfix) with ESMTPS id 6E3A01800D04;
- Fri,  4 Jul 2025 12:06:51 +0000 (UTC)
-Received: from smtpclient.apple (qs-asmtp-me-k8s.p00.prod.me.com
- [17.57.155.37])
- by outbound.qs.icloud.com (Postfix) with ESMTPSA id 8A609180025D;
- Fri,  4 Jul 2025 12:06:01 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v4 27/65] accel/hvf: Implement get_vcpu_stats()
-From: Mads Ynddal <mads@ynddal.dk>
-In-Reply-To: <20250702185332.43650-28-philmd@linaro.org>
-Date: Fri, 4 Jul 2025 14:05:50 +0200
-Cc: qemu-devel@nongnu.org,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <AAAC3128-4BA8-4085-920A-9512786CA343@ynddal.dk>
-References: <20250702185332.43650-1-philmd@linaro.org>
- <20250702185332.43650-28-philmd@linaro.org>
-To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-Proofpoint-GUID: JJs5KPXV5DnKbWZS6g9rLCjIM9OPNCHq
-X-Proofpoint-ORIG-GUID: JJs5KPXV5DnKbWZS6g9rLCjIM9OPNCHq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDA5MSBTYWx0ZWRfX1khnz0mrRzvc
- 3Msr0mo3VWHQCABmGuGGqRFrM6H9mxyhXsRlSIt6J6+WMS4/dNXWx8J6dvz+s9jG1a6LbiOKavr
- RLjRonlkcrwa+6fLp3geFinWngrQdpoyG/SU/DETVr3uAqiMV7lTPswUe32nR2HP2TL7rijEXSk
- xFOyNOSx2yibd/0JCvS7Re9bRAUk4nxw2bpGKuq5KjDNrLgR4GyLLtVPD0YdwODIhsB12u7KT3Z
- epswYIDWMNc6WU9uualLUevrHMje9OKQm99U3cPSl1BS9z8g4gdeidlnQsKjBAfboNG9P29NY=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-04_04,2025-07-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- suspectscore=0 malwarescore=0 mlxscore=0 spamscore=0 clxscore=1030
- phishscore=0 mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506060001 definitions=main-2507040091
-Received-SPF: pass client-ip=57.103.87.43; envelope-from=mads@ynddal.dk;
- helo=outbound.qs.icloud.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXfJx-0000rQ-LQ
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 08:15:15 -0400
+Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXfJq-0001fk-K9
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 08:15:11 -0400
+Received: by mail-yw1-x1129.google.com with SMTP id
+ 00721157ae682-70e3980757bso7720747b3.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 05:15:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1751631302; x=1752236102; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Yim1rEzPel4pu+PfAZneNAEGt32iL8SSue5oPN+mJR4=;
+ b=D5cVoI4mFgq3rON5tErx+NJAf6PLQNRw7RlPAvMFsFREmiPZizhLeS6T9SFpYBbE84
+ DuiYdR2Nc6rw49QgkdGQ3Hz83ZJBIG5e/G6SmAHNgRW7VxMAA3oTGL5car3NTMBxTYqc
+ 2q1k2PF/a3jFzY/mCae3SAu8BbtmQwkQyBwLy6ImT6AQN0y2fP7t03dygyAZLvZtUvV3
+ DLF6pdaVGYvgcKCntSX5OIVlIhXpWn2m9WKsFsaBiDQQszz9tETml//7/EzB3CcoJZ35
+ 4pNQQ1BEAfp3O0o2+jCjSFHRDcgNV3FXKWLNycvTUwN3zmr9OoUJyU6w8KMawp8mZ+Yl
+ 4uHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751631302; x=1752236102;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Yim1rEzPel4pu+PfAZneNAEGt32iL8SSue5oPN+mJR4=;
+ b=Xrs0f4h4T6z3GOwfkCCQ9T20Uyr8702inRvKT5eeOpKZ+kKF2XX06uFIKGeRILSUid
+ yYdf5nWSAJGrsOEG7Q/P1EiK4Oq0EgnyDBwIcEX5QWqQA9FY3G7hAFB1P4TD5Aw48VjB
+ 0eFHmxuIMCrkZEfdMkR1OpEp4occwQPPsAJ77wkjFFMpaLM5vmwOxt9eEDQMpeWji/uo
+ bB+Izb+shYa6VgVxqF/xvNyfs5rpw6dSm6myMnsAjERglgxNpT7a11Jk1+r5Fs9iNAl6
+ S+36N/VScxt1KhQje8A6khxiHaVx50GnwqLT6u9aH0f7mPPsRYEu+DnXVViQT/BdV1El
+ iIkg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUPDve+IU6TzEKIxq1NbCmomhXEBAFkt11bs063izp5La5EfnwKmuXI9X0P36Q/3T2gvnqXXW8/9Wkq@nongnu.org
+X-Gm-Message-State: AOJu0YzBDLlwQ1Yvb7NP7j+/THDD0GsQT8lvtApRQ/hoU85CKBVLBy4i
+ N6AGQzw2V30SKq7Yh42iDUASa/cDNxjJxhUfnf/Ho3DvCxaxw3P82ZbNBF83RRLpMkxl2JpM7C/
+ WpS6Iz7/LWMgoBZr2lj8cU5OjNycHhlIYidkhDV5JpQ==
+X-Gm-Gg: ASbGncuqCc59iGgF1VUcusd0gcSsdK7R6fOFEZ5mY8A/7czSgvSNYXblrNKQzbOcBME
+ 4bKNpQrH/z1xSglqwY6z2ajcXRH//GAjrsHhMBYy4foVM+glm5QtCHMnw1JqhGVPwzFyepYOs9x
+ C2rPM/HFguI5dhWZK9SqXEiI9vIcMtKdARPxqpKQLil46j
+X-Google-Smtp-Source: AGHT+IGoBwoaGQVH7nWc7tDC/eJyZ2kBXCEXTZzppq7Asc85tnvKSczyIO6hVwKvOCzuROExznn8VmRm5ylZWfkONE4=
+X-Received: by 2002:a05:690c:4491:b0:70e:61b:afed with SMTP id
+ 00721157ae682-71667e2423emr33546617b3.7.1751631302462; Fri, 04 Jul 2025
+ 05:15:02 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250702163115.251445-1-eric.auger@redhat.com>
+ <20250702163115.251445-4-eric.auger@redhat.com>
+In-Reply-To: <20250702163115.251445-4-eric.auger@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 4 Jul 2025 13:14:50 +0100
+X-Gm-Features: Ac12FXzlUZA2mdd605D54nUYuLELbwtpcCj1kcW_KBcQ-ibk8gKaJ9TVi0D6mIM
+Message-ID: <CAFEAcA_4AAprfa_TV48rwbxx7ndjbFYy74ykQQ8s=Ej-nBe4EA@mail.gmail.com>
+Subject: Re: [PATCH v7 3/4] target/arm: Enable feature ARM_FEATURE_EL2 if EL2
+ is supported
+To: Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ miguel.luis@oracle.com, richard.henderson@linaro.org, maz@kernel.org, 
+ gkulkarni@amperecomputing.com, gankulkarni@os.amperecomputing.com, 
+ hi@alyssa.is
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1129.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.218, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,118 +96,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-> On 2 Jul 2025, at 20.52, Philippe Mathieu-Daud=C3=A9 =
-<philmd@linaro.org> wrote:
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+On Wed, 2 Jul 2025 at 17:31, Eric Auger <eric.auger@redhat.com> wrote:
+>
+> From: Haibo Xu <haibo.xu@linaro.org>
+>
+> KVM_CAP_ARM_EL2 must be supported by the cpu to enable ARM_FEATURE_EL2.
+> In case the host does support NV, expose the feature.
+>
+> Signed-off-by: Haibo Xu <haibo.xu@linaro.org>
+> Signed-off-by: Miguel Luis <miguel.luis@oracle.com>
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>
 > ---
-> accel/hvf/hvf-accel-ops.c | 19 +++++++++++++++++++
-> 1 file changed, 19 insertions(+)
->=20
-> diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-> index e7f40888c26..c07ebf8a652 100644
-> --- a/accel/hvf/hvf-accel-ops.c
-> +++ b/accel/hvf/hvf-accel-ops.c
-> @@ -358,6 +358,12 @@ static inline int =
-hvf_gdbstub_sstep_flags(AccelState *as)
->     return SSTEP_ENABLE | SSTEP_NOIRQ;
-> }
->=20
-> +static void do_hvf_get_vcpu_exec_time(CPUState *cpu, run_on_cpu_data =
-arg)
-> +{
-> +    int r =3D hv_vcpu_get_exec_time(cpu->accel->fd, arg.host_ptr);
-> +    assert_hvf_ok(r);
-> +}
+> v2 -> v3:
+> - check pmu->has_el2 on kvm_arch_init_vcpu() when setting
+>   KVM_ARM_VCPU_HAS_EL2 feature (Peter)
+>
+> v1 -> v2:
+> - remove isar_feature_aa64_aa32_el2 modif in target/arm/cpu.h
+>   [Richard] and use el2_supported in kvm_arch_init_vcpu
+> ---
+>  target/arm/kvm.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index e5708e54ae..46e5f19637 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -250,6 +250,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+>       */
+>      int fdarray[3];
+>      bool sve_supported;
+> +    bool el2_supported;
+>      bool pmu_supported = false;
+>      uint64_t features = 0;
+>      int err;
+> @@ -269,6 +270,14 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+>          init.features[0] |= 1 << KVM_ARM_VCPU_SVE;
+>      }
+>
+> +    /*
+> +     * Ask for EL2 if supported.
+> +     */
+> +    el2_supported = kvm_arm_el2_supported();
+> +    if (el2_supported) {
+> +        init.features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2;
+> +    }
 > +
-> static void hvf_accel_class_init(ObjectClass *oc, const void *data)
-> {
->     AccelClass *ac =3D ACCEL_CLASS(oc);
-> @@ -583,6 +589,16 @@ static void hvf_remove_all_breakpoints(CPUState =
-*cpu)
->     }
-> }
->=20
-> +static void hvf_get_vcpu_stats(CPUState *cpu, GString *buf)
-> +{
-> +    uint64_t time_us; /* units of mach_absolute_time() */
+>      /*
+>       * Ask for Pointer Authentication if supported, so that we get
+>       * the unsanitized field values for AA64ISAR1_EL1.
+> @@ -422,6 +431,10 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+>      features |= 1ULL << ARM_FEATURE_AARCH64;
+>      features |= 1ULL << ARM_FEATURE_GENERIC_TIMER;
+>
+> +    if (el2_supported) {
+> +        features |= 1ULL << ARM_FEATURE_EL2;
+> +    }
 > +
-> +    run_on_cpu(cpu, do_hvf_get_vcpu_exec_time, =
-RUN_ON_CPU_HOST_PTR(&time_us));
-> +
-> +    g_string_append_printf(buf, "HVF cumulative execution time: =
-%llu.%.3llus\n",
-> +                                time_us / 1000000, (time_us % =
-1000000) / 1000);
-> +}
-> +
-> static void hvf_accel_ops_class_init(ObjectClass *oc, const void =
-*data)
-> {
->     AccelOpsClass *ops =3D ACCEL_OPS_CLASS(oc);
-> @@ -601,7 +617,10 @@ static void hvf_accel_ops_class_init(ObjectClass =
-*oc, const void *data)
->     ops->remove_breakpoint =3D hvf_remove_breakpoint;
->     ops->remove_all_breakpoints =3D hvf_remove_all_breakpoints;
->     ops->update_guest_debug =3D hvf_update_guest_debug;
-> +
-> +    ops->get_vcpu_stats =3D hvf_get_vcpu_stats;
-> };
-> +
-> static const TypeInfo hvf_accel_ops_type =3D {
->     .name =3D ACCEL_OPS_NAME("hvf"),
->=20
-> --=20
-> 2.49.0
->=20
+>      ahcf->features = features;
+>
+>      return true;
+> @@ -1887,6 +1900,9 @@ int kvm_arch_init_vcpu(CPUState *cs)
+>          cpu->kvm_init_features[0] |= (1 << KVM_ARM_VCPU_PTRAUTH_ADDRESS |
+>                                        1 << KVM_ARM_VCPU_PTRAUTH_GENERIC);
+>      }
+> +    if (cpu->has_el2 && kvm_arm_el2_supported()) {
+> +        cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2;
+> +    }
+>
+>      /* Do KVM_ARM_VCPU_INIT ioctl */
+>      ret = kvm_arm_vcpu_init(cpu);
+> --
 
-This doesn't return the right time for me (M3 Pro). If you tested on =
-Intel, it might have a different time scale for mach units?
+How does this interact with creating an aarch32 VM with
+"-cpu host,aarch64=off" ?  Looking at the kernel, it will
+fail vcpu_init if you ask for a vcpu with both EL1_32BIT
+and HAS_EL2. I guess since the virt board will only request
+HAS_EL2 if you say virtualization=on this is fine. Do we
+give a sensible error message if the user tries
+ -accel kvm -M virt,virtualization=on -cpu host,aarch64=off   ?
 
-This is what I needed to change to make it work. Tested with 'yes > =
-/dev/null' in the guest and 'info accel' in monitor.
-
-
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index cf623a1ea4..5b3bcd553d 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -59,6 +59,7 @@
- #include "system/hvf.h"
- #include "system/hvf_int.h"
- #include "hw/core/cpu.h"
-+#include <mach/mach_time.h>
-
- HVFState *hvf_state;
-
-@@ -340,12 +341,16 @@ static void hvf_remove_all_breakpoints(CPUState =
-*cpu)
-
- static void hvf_get_vcpu_stats(CPUState *cpu, GString *buf)
- {
--    uint64_t time_us; /* units of mach_absolute_time() */
-+    uint64_t time_mach; /* units of mach_absolute_time() */
-
--    run_on_cpu(cpu, do_hvf_get_vcpu_exec_time, =
-RUN_ON_CPU_HOST_PTR(&time_us));
-+    run_on_cpu(cpu, do_hvf_get_vcpu_exec_time, =
-RUN_ON_CPU_HOST_PTR(&time_mach));
-+
-+    mach_timebase_info_data_t timebase;
-+    mach_timebase_info(&timebase);
-+    uint64_t time_ns =3D time_mach * timebase.numer / timebase.denom;
-
-     g_string_append_printf(buf, "HVF cumulative execution time: =
-%llu.%.3llus\n",
--                                time_us / 1000000, (time_us % 1000000) =
-/ 1000);
-+                                time_ns / 1000000000, (time_ns % =
-1000000000) / 1000000);
- }
-
- static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
-
-
+-- PMM
 
