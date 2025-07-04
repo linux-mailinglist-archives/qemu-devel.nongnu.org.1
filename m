@@ -2,72 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2E62AF8CBC
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DA9AF8CBA
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:52:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXc4y-0001AQ-5X; Fri, 04 Jul 2025 04:47:35 -0400
+	id 1uXc8V-0007cd-OE; Fri, 04 Jul 2025 04:51:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc4O-0000Yb-M6
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc4M-0001ab-Bz
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751618813;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wdgzniatKvacCN5OOUKzv155pnYD6csvOM5DcHK/tos=;
- b=IFyPogOS3zhaZT/oXcRBcmoYiqzQBIjGSU+jSC6CpCvomeJzbiWOMZ6seHqIASZMpDVRxD
- L+ysGPcxqET/6Sv7kxmgMkAtCSTIMxzXzNF3i5hc6H8zj08MJCCtAf+yDTt2zIlc+K8AJC
- oyOtLyD/wP7mQuim7WZ/zFRX2SlUaMw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-2jjezp29PP6QkWM6ABW47g-1; Fri,
- 04 Jul 2025 04:46:49 -0400
-X-MC-Unique: 2jjezp29PP6QkWM6ABW47g-1
-X-Mimecast-MFC-AGG-ID: 2jjezp29PP6QkWM6ABW47g_1751618808
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CE344180028A; Fri,  4 Jul 2025 08:46:48 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.44.32.43])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E18F419560A7; Fri,  4 Jul 2025 08:46:45 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 27/27] vfio: doc changes for cpr
-Date: Fri,  4 Jul 2025 10:45:28 +0200
-Message-ID: <20250704084528.1412959-28-clg@redhat.com>
-In-Reply-To: <20250704084528.1412959-1-clg@redhat.com>
-References: <20250704084528.1412959-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXc8I-0007Mh-Ig
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:51:00 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXc8E-0003xB-CP
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:50:57 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3a53359dea5so308873f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 01:50:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1751619052; x=1752223852; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YNocy2E2dhCsi506OeGp2hXY5Vxma9BXb9HS1RRlbco=;
+ b=crqAn9jWlJw8eahfRrjVnyzqK2rmBkh0xWGuQ6GMAnPj60kY3NfawTtScRDC6ETkq0
+ a+unyGte8Ez7F5pRQUBKt3ee7b5YtV3AUSa9yzB64G3D1fJHpHAUJ4UzedEksaD4xcTY
+ okIK+G4ADq7DgxTKV2cj8S87BOiEgxoqpxGBODvmPYtfvk7KomJkaloY3CBbQv8OLyaC
+ USTeu8VXSPEfFLb/SmWMTqSyu+yvU9AEfgtC7aCfRmv58ABCGyOK/lXH0YZpvcx36zTx
+ x/WZnSvwX+3aSmC8gYWk8LD6N2CiPdA+i1ekrAtY5hTLsh4riIWWK2lEwoJLv1pNjy8g
+ tvRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751619052; x=1752223852;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YNocy2E2dhCsi506OeGp2hXY5Vxma9BXb9HS1RRlbco=;
+ b=CJmdF1a7E0Ikucwcu0yRrDNRuam9sJl+SJO1PxxpB29CiDqy4lBD7Xgg6intfL4znG
+ P8dTGNWsBkduI1vXmLD+ae40UxKpzXaUsF67o24FWVDEq70d5xATKqDzK0vNwoaKlB+B
+ yY/6SM2xUv4/OpwGaKwUbDGOFhawrmN0Ktjo6V+JEfWAwpoelAO5Pjmo02Ai6EqLgWnp
+ yLG+XTX/Bbhn3dLnQbxP6EbHMbFbK+S6AsscGAaH7DfCovk6kcx+s8lRlTnglLewVKg2
+ Wl8nWQMJFFovW030EdRdT0gCqQBkvMircx0sOyznx6Am7Fkq6qcg85lj73DlkP2N3RgC
+ crXg==
+X-Gm-Message-State: AOJu0YzwJop8X/5jBpq9jwdos9YH/qlYqGXwIjer8yDpzdeJipBoLJJW
+ 2k8LJdgh8tozSsKAH3HFqBgHTwU0NqU/zc3QWsgPgwT3LDBgofWug+X8N0tilj8K9a25VjquSwI
+ hUfl/n+I=
+X-Gm-Gg: ASbGnct43nuKv4RxCgRMOwIHFaveN2cPJz9G6pMNHJmTs0hZ02AtEJaKzMcLePDDXJG
+ vhPCu+VCENNJmsVWJ2W+C60T4roEZEgr+dol5PjYNcS5zHj3h3xE0mMBMD2turWZvOuxee9JNHm
+ ZpCbuYB4R2VMK5/BxWm3mUAHJa+eNgGwIkFMNo6bP/yPZ8JEjE6u5Xh85T6d93IutjlxH9z7BIA
+ 1LRcP8Iqi7f+bheemOIbDcrPRkjUh+tpQQP7VtdW6cshDIgKAQ6oWCeQffGkseK50L9lvR3ql9a
+ JorYrLaAR86M+oZAIxr1E2kr250Qa+x8duR5MzpbQ05mTJMR4VUlQ5EdB+ZxeGCSnuQpyeT02eS
+ C8MSQ1BE78h0hHhpOMkgF4tXPLQQ1rb6ksIanb/Wx
+X-Google-Smtp-Source: AGHT+IEgvtfFT1LLCLlak3qDg5T2cYQnoemQi7HOV9Wp2edcJa8imErupzONEgp5FU98nmgZiSWknA==
+X-Received: by 2002:a05:6000:38a:b0:3a4:f5f6:b4ab with SMTP id
+ ffacd0b85a97d-3b4970391abmr895738f8f.30.1751619051468; 
+ Fri, 04 Jul 2025 01:50:51 -0700 (PDT)
+Received: from [192.168.69.218] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b471b966c0sm1940136f8f.52.2025.07.04.01.50.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 04 Jul 2025 01:50:50 -0700 (PDT)
+Message-ID: <5bd77f3f-745e-450d-9e6d-657da6195c1e@linaro.org>
+Date: Fri, 4 Jul 2025 10:50:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 00/39] accel: Preparatory cleanups for split-accel
+To: qemu-devel@nongnu.org
+Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250703173248.44995-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250703173248.44995-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,60 +101,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Steve Sistare <steven.sistare@oracle.com>
+On 3/7/25 19:32, Philippe Mathieu-Daudé wrote:
 
-Update documentation to say that cpr-transfer supports vfio and iommufd.
+> Philippe Mathieu-Daudé (39):
+>    hw/core/machine: Display CPU model name in 'info cpus' command
+>    system/memory: Restrict eventfd dispatch_write() to emulators
+>    system/runstate: Document qemu_add_vm_change_state_handler()
+>    system/cpus: Assert interrupt handling is done with BQL locked
+>    accel/kvm: Remove kvm_init_cpu_signals() stub
+>    accel/kvm: Reduce kvm_create_vcpu() declaration scope
+>    accel/tcg: Remove 'info opcount' and @x-query-opcount
+>    accel/tcg: Remove profiler leftover
+>    accel/tcg: Factor tcg_dump_flush_info() out
+>    accel/tcg: Factor tcg_dump_stats() out for re-use
+>    accel/tcg: Extract statistic related code to tcg-stats.c
+>    accel: Move supports_guest_debug() declaration to AccelClass
+>    accel: Move cpus_are_resettable() declaration to AccelClass
+>    accel/hvf: Restrict internal declarations
+>    accel/hvf: Move per-cpu method declarations to hvf-accel-ops.c
+>    accel/hvf: Move generic method declarations to hvf-all.c
+>    cpus: Document CPUState::vcpu_dirty field
+>    accel/hvf: Replace @dirty field by generic CPUState::vcpu_dirty field
+>    accel/nvmm: Replace @dirty field by generic CPUState::vcpu_dirty field
+>    accel/whpx: Replace @dirty field by generic CPUState::vcpu_dirty field
+>    accel/kvm: Remove kvm_cpu_synchronize_state() stub
+>    accel/system: Document cpu_synchronize_state()
+>    accel/system: Document cpu_synchronize_state_post_init/reset()
+>    accel/nvmm: Expose nvmm_enabled() to common code
+>    accel/whpx: Expose whpx_enabled() to common code
+>    accel/dummy: Extract 'dummy-cpus.h' header from 'system/cpus.h'
+>    accel: Pass old/new interrupt mask to handle_interrupt() handler
+>    accel: Expose and register generic_handle_interrupt()
+>    accel: Keep reference to AccelOpsClass in AccelClass
+>    accel: Propagate AccelState to AccelClass::init_machine()
+>    accel/kvm: Prefer local AccelState over global MachineState::accel
+>    accel/tcg: Prefer local AccelState over global current_accel()
+>    accel: Directly pass AccelState argument to AccelClass::has_memory()
+>    accel/kvm: Directly pass KVMState argument to do_kvm_create_vm()
+>    accel: Remove unused MachineState argument of AccelClass::setup_post()
+>    accel: Pass AccelState argument to gdbstub_supported_sstep_flags()
+>    accel: Rename 'system/accel-ops.h' -> 'accel/accel-cpu-ops.h'
+>    accel: Extract AccelClass definition to 'accel/accel-ops.h'
+>    MAINTAINERS: Add me as reviewer of overall accelerators section
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/qemu-devel/1751493538-202042-22-git-send-email-steven.sistare@oracle.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- docs/devel/migration/CPR.rst | 5 ++---
- qapi/migration.json          | 6 ++++--
- 2 files changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/docs/devel/migration/CPR.rst b/docs/devel/migration/CPR.rst
-index 7897873c86e6cfdf9760a26a3c150d05d02b7518..0a0fd4f6dc31912b6f5ad52d8bce7b4d36da0e9f 100644
---- a/docs/devel/migration/CPR.rst
-+++ b/docs/devel/migration/CPR.rst
-@@ -152,8 +152,7 @@ cpr-transfer mode
- This mode allows the user to transfer a guest to a new QEMU instance
- on the same host with minimal guest pause time, by preserving guest
- RAM in place, albeit with new virtual addresses in new QEMU.  Devices
--and their pinned memory pages will also be preserved in a future QEMU
--release.
-+and their pinned memory pages are also preserved for VFIO and IOMMUFD.
- 
- The user starts new QEMU on the same host as old QEMU, with command-
- line arguments to create the same machine, plus the ``-incoming``
-@@ -322,6 +321,6 @@ Futures
- 
- cpr-transfer mode is based on a capability to transfer open file
- descriptors from old to new QEMU.  In the future, descriptors for
--vfio, iommufd, vhost, and char devices could be transferred,
-+vhost, and char devices could be transferred,
- preserving those devices and their kernel state without interruption,
- even if they do not explicitly support live migration.
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 4963f6ca1275b60ee6dc86948f7f6f7d6c42aeee..e8a7d3b2a95cf932d2e697756f150d28e23f0439 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -620,8 +620,10 @@
- #
- # @cpr-transfer: This mode allows the user to transfer a guest to a
- #     new QEMU instance on the same host with minimal guest pause
--#     time by preserving guest RAM in place.  Devices and their pinned
--#     pages will also be preserved in a future QEMU release.
-+#     time by preserving guest RAM in place.
-+#
-+#     Devices and their pinned pages are also preserved for VFIO and
-+#     IOMMUFD. (since 10.1)
- #
- #     The user starts new QEMU on the same host as old QEMU, with
- #     command-line arguments to create the same machine, plus the
--- 
-2.50.0
-
+Non-controversial patches queued to accel-next, thanks.
 
