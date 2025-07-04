@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896D8AF913E
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E718AAF9157
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXeOB-0006bU-Vg; Fri, 04 Jul 2025 07:15:32 -0400
+	id 1uXeOG-0007NM-NN; Fri, 04 Jul 2025 07:15:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeMw-0004dr-Vf
+ id 1uXeMw-0004dR-TG
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:14:16 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeMp-0004KA-9b
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:14:13 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-2350fc2591dso8705175ad.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:14:06 -0700 (PDT)
+ id 1uXeMs-0004KY-Su
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:14:12 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-237e6963f63so6009795ad.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:14:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751627646; x=1752232446; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1751627649; x=1752232449; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=agWjWYPtfbUFcF7BoNC4FyaeOOST0sty4z+xdnIJbn4=;
- b=QD4KRN7SfpDArzNy36WPmIYYrkCXqe+qW64ytY23BO4zd+2b7cg7LoIORB5ddR+bgu
- Pufv0BHckxbmNOEProm2mPAJ2h5FCkdQO41kWQct3TrwTBxWp+sK94gqvUD8cVIMqOYI
- F9HOaCBg2aWOCpjm3E7B7xorDUSa04FS+5Ftx85El7ev7XuFiOge76aPv7fZ6/Q2pA+1
- MA5HhJ+LdvJBPt8S+Am5s4QFXIVbNxkvji0a2JtF+KcWoitVGQr+i7ourEloCtDWBrUZ
- cGUtdkLwY8LQHCSBWg+GzjPJwqqlzB0SqRBLqdpjmzQCcnIw+HUBy8ETf09cz2E1n7kl
- BQcw==
+ bh=/FDGTLzU29AMUyiC6maYWsyWx2QHHgsFZ6hlg6REl7I=;
+ b=Ax8hl7VtEMFZw6DOS0n1bpL/nHamvOX2H2eBIbGLJqmxp1oJV7Yy+JJ4v/NkpThRHf
+ 2CXgr0l5/qwnSOA4iwuIojgTvijiWT4VUGU2/qLc9e0Jqg4PexLboaBA6vQbHOE+geR8
+ Kz8H0fsVawbULNMQ2Pcc2WgCoSbcDb/U5snW0t+ffq9EsUDTWU9V8A7Kk43YKsXsL3KV
+ 8oZTbBnIjK//tL6V/YDzfaAZsn1Xm0s1/NpJdd1kjBUl/AdgDUhCCrTCvbnRoZRTRbzo
+ QHX1WxsM2hF0wHGxZ6r6mvs+4dSDZbyn9ZU9MAJvJZzVdhQpF0RtUUYXif2oSi79u3sg
+ uCmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751627646; x=1752232446;
+ d=1e100.net; s=20230601; t=1751627649; x=1752232449;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=agWjWYPtfbUFcF7BoNC4FyaeOOST0sty4z+xdnIJbn4=;
- b=UPdzgbVCpT9fb1B1xntkQ8eV2DqSIgal0SiPeT9NJC2l5U66WybxFEgk8iklUryTYu
- JLuuznGWL3KoyLuFx+hNK0F/nSW43iw2xBtxFSHDYSO1wyJmmU6oQ5J2tizmT1n4J0+C
- i8HpLTDhmiuwEMx1gKn5BYtFO27mx7gMfErjky0tdVqvHoL7nqHbGmClkKpQiLM2Ti0O
- TpcfZyKvQgrKHmEr1r+5WafY4PTVCkPXcu7k7VCQ8sj2pDrvcWxXdec5xidB2xgT55zp
- ZuEb5bKvOFs8x9JLn+7Ttjs66C+WTgdb25ERbpLQCXQwVpc0fsBzcOy5dTn1j1aEcKEy
- 2s1A==
-X-Gm-Message-State: AOJu0YzWXmOKdSQckQBZvpP+LxtxdV4vsLh/solFWFWOnPuA2qiletB3
- qQB9qYO1trhNXfBuGI2x214SGJlqx9MIZkwLGgLFeHbdnW+CPGsACmZYabKgtw==
-X-Gm-Gg: ASbGncvcE8oKqTvBZFKsUEOmZIhAfXjx8oibkvwdDUUO0VLLgUaJVTdDs0k8VUNKLjW
- aL2s4CShDqt8fRpgEWBl9/88/M22x48M46rhC0LkTss0Le4oVHaVEhuZGkriz4NEBxc/H8q0c3+
- dQCLXP2TJP+6kCrGQIlLCn2Z4/S8bW1vaiMb5ktyKw3ZjMljl73vC9QEc8JRERAdsyxPgufVhNu
- 5E/mluvR8z16KyK29/MF6WXrf7qFEvFf5ipn1pQSOQUsx/ZXNvuie91Tir9UEuepYNsL8iCLABm
- Kmj1mBNrapMtdMNlDRO2QreJh5UAcIfQeG08Dsck6LxmINjTM8/K/nc4xrq1aoytR4z+tuNBD3H
- /9YYGvsWd/JQ+oysydywY7lI6a7gM8D1Vxna5QD0fFh5R8m+RMDWyXbpC3Cq7btaQekW2qUzkZp
- vvfg==
-X-Google-Smtp-Source: AGHT+IGnGRObkw2OfpEbr9WQI1mqYlyep8f1xKw1FLOPyk+OO6+/81243lcUKu/EZZdgmsR8lJ7zJQ==
-X-Received: by 2002:a17:903:198c:b0:237:e3bc:7691 with SMTP id
- d9443c01a7336-23c85938d6fmr41255045ad.13.1751627645572; 
- Fri, 04 Jul 2025 04:14:05 -0700 (PDT)
+ bh=/FDGTLzU29AMUyiC6maYWsyWx2QHHgsFZ6hlg6REl7I=;
+ b=Ko8kf+pweMMCazQa24pFxvR7DO9nQCSUyju3McxdwOyu7KIuF5nHbX9XEoQ2F/Rpka
+ Elh8zHKMOJGAGjLHBOPJVFEGpnKSOmf3Z/o+dbQ8B2v+WDN/CvFAW46F3JJs5PcMrGpi
+ +esXLQaS4bfXtKWqTJMLcOVpXzV1B72+Yu8KROJzIGV+LjxeADVeZoHa8ihMnZ1s5MpG
+ yMHQg3yWgbM9xO0pNMZddyMQPexpoEpRZ/N2bAsWOdTc4C140SWsD+u9vzSE/619DgmS
+ 3Hh9nFCVYGlzoxgy9jW24NZKBLMj6ECBCuIkPFQ4hElIp0q9m2U16Ci6q/7PKgjoKzX3
+ 6kxg==
+X-Gm-Message-State: AOJu0YxelhxJ/kKzNss4fJxQnvqlF4n5HXnXjxDGmTY2En4vv0tc1aAc
+ xmf1yBwCNwbSFV2BI58k8RTCfzzyLqMSgmIBeWADVyeoCchNBWbI8MX9mO8ICA==
+X-Gm-Gg: ASbGnctK8WP3IsdQEwBiLhIoeJLUh+KI7uKvuF8LJnS5lpPYNoN8DjOdmKtZ2J5PGog
+ Ibd3RdjboR5b32bmZYa5y0WeAnIwjfCvNhMt1AAKX9MqCSrNoA9nvYLcfFE3sMsDpjBI9VH3g9M
+ SmheRYVqpbXqjGpZRebMCkjuJ0LFPJw+pfs2NaKJ/i5/HVs+Hc2kA4Pygp3C6UwIQbL9YgB05oa
+ rDx1bmTajkjuu9gsHcboJuPzQgcapOIvLIJDPIBgQDXUJBiLEUz9UAOhl2P7lW7q7mgB54sYRGH
+ 3nJz/XR/rLWh+YT5+ewdmycOLlDB9loV1ozqlAgRDB3siW12oer02FJ5Fc9PJp+6CMh4Ad0zhz8
+ +Wg1v0GXOZfK2vB26n68SBkCBO45KT4toYUeWKLEciW6kan7L6g7SveZ6PDflX6s+ODc=
+X-Google-Smtp-Source: AGHT+IGn5B8RRHA20CnIdt22valKPd5RCshwdujQa7vPEHBxY64GCzoW9OguwpoF8hZ8ennsDboYZA==
+X-Received: by 2002:a17:902:d2c5:b0:234:8c64:7885 with SMTP id
+ d9443c01a7336-23c875dd89dmr28124745ad.53.1751627649192; 
+ Fri, 04 Jul 2025 04:14:09 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.14.02
+ d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.14.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 04:14:05 -0700 (PDT)
+ Fri, 04 Jul 2025 04:14:08 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Joel Stanley <joel@jms.id.au>,
+Cc: alistair23@gmail.com, Huang Borong <3543977024@qq.com>,
+ Yu Hu <huyu@bosc.ac.cn>, Ran Wang <wangran@bosc.ac.cn>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 32/40] hw/riscv/virt: Use setprop_sized_cells for pcie
-Date: Fri,  4 Jul 2025 21:11:59 +1000
-Message-ID: <20250704111207.591994-33-alistair.francis@wdc.com>
+Subject: [PULL 33/40] target/riscv: Add BOSC's Xiangshan Kunminghu CPU
+Date: Fri,  4 Jul 2025 21:12:00 +1000
+Message-ID: <20250704111207.591994-34-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250704111207.591994-1-alistair.francis@wdc.com>
 References: <20250704111207.591994-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
 X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,39 +104,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joel Stanley <joel@jms.id.au>
+From: Huang Borong <3543977024@qq.com>
 
-The current device tree property uses two cells for the address (and for
-the size), but assumes the they are less than 32 bits by hard coding the
-high cell to zero.
+Add a CPU entry for the Xiangshan Kunminghu CPU, an open-source,
+high-performance RISC-V processor. More details can be found at:
+https://github.com/OpenXiangShan/XiangShan
 
-Use qemu_fdt_setprop_sized_cells to do the job of splitting the upper
-and lower 32 bits across cells.
+Note: The ISA extensions supported by the Xiangshan Kunminghu CPU are
+categorized based on four RISC-V specifications: Volume I: Unprivileged
+Architecture, Volume II: Privileged Architecture, AIA, and RVA23. The
+extensions within each category are organized according to the chapter
+order in the specifications.
 
+Signed-off-by: Yu Hu <huyu@bosc.ac.cn>
+Signed-off-by: Ran Wang <wangran@bosc.ac.cn>
+Signed-off-by: Borong Huang <3543977024@qq.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Message-ID: <20250604025450.85327-13-joel@jms.id.au>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250425122212.364-1-wangran@bosc.ac.cn>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/riscv/cpu-qom.h |  1 +
+ target/riscv/cpu.c     | 58 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 59 insertions(+)
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 67490c5c69..47e573f85a 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -894,8 +894,8 @@ static void create_fdt_pcie(RISCVVirtState *s,
-     if (s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC) {
-         qemu_fdt_setprop_cell(ms->fdt, name, "msi-parent", msi_pcie_phandle);
-     }
--    qemu_fdt_setprop_cells(ms->fdt, name, "reg", 0,
--        s->memmap[VIRT_PCIE_ECAM].base, 0, s->memmap[VIRT_PCIE_ECAM].size);
-+    qemu_fdt_setprop_sized_cells(ms->fdt, name, "reg", 2,
-+        s->memmap[VIRT_PCIE_ECAM].base, 2, s->memmap[VIRT_PCIE_ECAM].size);
-     qemu_fdt_setprop_sized_cells(ms->fdt, name, "ranges",
-         1, FDT_PCI_RANGE_IOPORT, 2, 0,
-         2, s->memmap[VIRT_PCIE_PIO].base, 2, s->memmap[VIRT_PCIE_PIO].size,
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index 1ee05eb393..75f4e43408 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -55,6 +55,7 @@
+ #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
+ #define TYPE_RISCV_CPU_TT_ASCALON       RISCV_CPU_TYPE_NAME("tt-ascalon")
+ #define TYPE_RISCV_CPU_XIANGSHAN_NANHU  RISCV_CPU_TYPE_NAME("xiangshan-nanhu")
++#define TYPE_RISCV_CPU_XIANGSHAN_KMH    RISCV_CPU_TYPE_NAME("xiangshan-kunminghu")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
+ 
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 758f254c15..e3f8ecef68 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -3206,6 +3206,64 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .cfg.max_satp_mode = VM_1_10_SV39,
+     ),
+ 
++    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_XIANGSHAN_KMH, TYPE_RISCV_VENDOR_CPU,
++        .misa_mxl_max = MXL_RV64,
++        .misa_ext = RVG | RVC | RVB | RVS | RVU | RVH | RVV,
++        .priv_spec = PRIV_VERSION_1_13_0,
++    /*
++     * The RISC-V Instruction Set Manual: Volume I
++     * Unprivileged Architecture
++     */
++    .cfg.ext_zicntr = true,
++    .cfg.ext_zihpm = true,
++    .cfg.ext_zihintntl = true,
++    .cfg.ext_zihintpause = true,
++    .cfg.ext_zimop = true,
++    .cfg.ext_zcmop = true,
++    .cfg.ext_zicond = true,
++    .cfg.ext_zawrs = true,
++    .cfg.ext_zacas = true,
++    .cfg.ext_zfh = true,
++    .cfg.ext_zfa = true,
++    .cfg.ext_zcb = true,
++    .cfg.ext_zbc = true,
++    .cfg.ext_zvfh = true,
++    .cfg.ext_zkn = true,
++    .cfg.ext_zks = true,
++    .cfg.ext_zkt = true,
++    .cfg.ext_zvbb = true,
++    .cfg.ext_zvkt = true,
++    /*
++     * The RISC-V Instruction Set Manual: Volume II
++     * Privileged Architecture
++     */
++    .cfg.ext_smstateen = true,
++    .cfg.ext_smcsrind = true,
++    .cfg.ext_sscsrind = true,
++    .cfg.ext_svnapot = true,
++    .cfg.ext_svpbmt = true,
++    .cfg.ext_svinval = true,
++    .cfg.ext_sstc = true,
++    .cfg.ext_sscofpmf = true,
++    .cfg.ext_ssdbltrp = true,
++    .cfg.ext_ssnpm = true,
++    .cfg.ext_smnpm = true,
++    .cfg.ext_smmpm = true,
++    .cfg.ext_sspm = true,
++    .cfg.ext_supm = true,
++    /* The RISC-V Advanced Interrupt Architecture */
++    .cfg.ext_smaia = true,
++    .cfg.ext_ssaia = true,
++    /* RVA23 Profiles */
++    .cfg.ext_zicbom = true,
++    .cfg.ext_zicbop = true,
++    .cfg.ext_zicboz = true,
++    .cfg.ext_svade = true,
++        .cfg.mmu = true,
++        .cfg.pmp = true,
++        .cfg.max_satp_mode = VM_1_10_SV48,
++    ),
++
+ #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+     DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE128, TYPE_RISCV_DYNAMIC_CPU,
+         .cfg.max_satp_mode = VM_1_10_SV57,
 -- 
 2.50.0
 
