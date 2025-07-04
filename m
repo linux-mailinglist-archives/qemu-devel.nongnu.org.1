@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A20AF9838
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E164CAF98AC
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:38:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjHF-0003Hn-FN; Fri, 04 Jul 2025 12:28:41 -0400
+	id 1uXjGM-0007eE-Iy; Fri, 04 Jul 2025 12:27:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjFc-00069m-ND
+ id 1uXjFb-0005yC-Md
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:27:00 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjFX-0006zZ-OD
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:27:00 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4531e146a24so7213615e9.0
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:26:55 -0700 (PDT)
+ id 1uXjFZ-0006zi-Gb
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:58 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3a507e88b0aso848812f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:26:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751646414; x=1752251214; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751646415; x=1752251215; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BQPq3LL1k9Hbuv+vQcvRxaAWa2tKEi3ud/jXWeiywVU=;
- b=m9xzDbw33ipKRNaC4YlCbDqPrvT4eEmpWzIEzdVrJXlWl2iEdf3x3mR0RESzaZRhmr
- s5RiC1MkC0WKg/flbj7B95AS14YrcUoRyzkO7SQVbQW1w046d7A2uNzXK64qTHZnN+2j
- jleyD+wh0g3zhFQV3nCa7iOkoUnkUI32UFKfSR07BFwJew06XLqITKCfq8DIXDRjlPAy
- XN1pQRhOwBeJC699ao5olrk9o7Ubfq1k5beVDC/gtzUrSKWZDL37ugxz9TdSRPCbWpIb
- Ueici9OjbSgpUvM/rnzWGHgq59O6+Pwn2FNwIsUKbTIwoVPHdrCm5IsnCJ1US1gpp82q
- 9VMA==
+ :reply-to; bh=SRH0loritoMIYj/jPR+rUTfl0mRjYm32LpALRWJqQHc=;
+ b=AMljl6H7UrO415TICMd06pNZ7Z0nm9HM9XldB0URrwWsxMXBeBaP0fCMTnH/pa3kG7
+ dIQ1pCmOCp5o3JlZCsCPJfi4f3S2/eYMteu8tjrXAuzyn2JueaB0zBAkHw4LbnsleuIc
+ d/U4/65MzNjXrw3JZzu5csp3EaiN+ZM68J+L5eccT0kKegWie9F54tJ7TH0sFsWgSkY3
+ 8/Oa0jHtRDK+CS845yW1UrJKBGnUwFCU4bH35Qzu8gVw1PVSZNAaUdv0A4u0knmr5e9p
+ IZluJraACnSVjwsRPaOpL4e2K7kQ0cnC9NsL/SoNSTSw1/aLr6QjiAMZpySVM/HEIyDN
+ s90g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751646414; x=1752251214;
+ d=1e100.net; s=20230601; t=1751646415; x=1752251215;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BQPq3LL1k9Hbuv+vQcvRxaAWa2tKEi3ud/jXWeiywVU=;
- b=OCPnh/zJqqzXb8jsHlW/2ghKDK2VN5epDHGJ8HhNRRj+khRdos8Ysmg2Md9WFflSBs
- rtYWR9ZWvcYxPXRW1x74xG/e4fhHeLfBUQtstBT9MjvIwx11upmeS959Icu9fGHs6dJR
- f7uihmRLD6MvJgaGbw/d0dZiYAJ7roEr9oQ586TM1Foz/bHtO+jU8ZT+nn9l+sci+05u
- BIg4yU7T34vKP3w5H4KGwKqdS0NMkvYrwaaS9EsivSwBGYrP8F114N/0pTat6UkLEEhP
- /bb8PLMRFagUAVZLzwNlrSjNlIuaXu516Rep8/5xVVQjfWT+8gep2NLXNCrSk/W2rTC/
- 9dew==
-X-Gm-Message-State: AOJu0Yxgn9aUYsi2ukXzIGk2KzkETSXoCL62GbZgnADjqAgoa2V5EbDh
- eJL7/4oWGd5oQkJ8o0uk5rAHtEg6tU/HJdihqP5EkKhLjkKhtAnacnfRZ6/oPGMhlwo9d+DYw2h
- UuHnu
-X-Gm-Gg: ASbGncuUXQe+knagleATXdcfUfQoioob1UhrxAEH00XDVB32Ydf25UDBxGT0w+bC91V
- mb6ofsY3KMVk4AvfOL7KEi0EWERgreK8WhOBoU8iFAJBBtTcSjDxRsfukR95EWUsx69NOlJ3AgY
- UiDYncKi9G3m8p2Z3mqZx5ogJ5yGP4whHBY3usNbolzrw86I/jGV3/VYDPShnR+NMWMgg8k5WlX
- rNv9tDjAHzSyTbTe2ThWSG1LUshbRtwNZhoPQnK3RjgvDaS8KcABzyWCh0lMljn8HdFUvwuDhSA
- jtk3Sfy5dq8KqtH/rVXuCJT7MHY+WvhePgW2o+NxImz3V8bJX/W/WspMDJPAcv4giIyC
-X-Google-Smtp-Source: AGHT+IGisCsW8pwaQABfznBOe1FEUVGmDAE/dIzlIAvOH5kxFBwtNIwry4TQYwEnwKKSawYV5UKE4Q==
-X-Received: by 2002:a05:600c:348d:b0:450:cabd:160 with SMTP id
- 5b1f17b1804b1-454b3109201mr36245885e9.3.1751646414053; 
+ bh=SRH0loritoMIYj/jPR+rUTfl0mRjYm32LpALRWJqQHc=;
+ b=ToLfQDatwuSf1LtWT3SzshEMasY6QNPAYnCgJh6iitRUto9hkljPpgvYJRGzXKYopM
+ ENnfhQrBbDsX9xLfsalAytTQmHZJdeiSaDMDcHsWW56KsQCHn1ZZn2h+0jq3GmJtmN5s
+ rooopRb85jr0U6hTVQAZ8UIluVE26tvkVuTsip/wkuFoMOn+LRjbGVYDS8hqIATsf8ew
+ JuPlUQ6H8i+s3O3M+yNmHejeN3woi0ld8/YW7SdQxOAjvxEUfPJec6aIZTMa0XT0AXQz
+ ogaHA3stOHZdkozr0DrLrvIpkAok3vAPqew4eSeV+oXOVy2x5D/dh972ovGoFAu8ugpY
+ EWLA==
+X-Gm-Message-State: AOJu0YwfLRDFhKBwQO442tpki3c087GV5qZIvAp++H6/LG/dc8mH+AR5
+ /HFdIyB7/DoQyMEAWiKJSmNN/LZJ9UUJcztY22nt/1c3ZcrUHpsd+zLsNbJ2aoRKyYQjHTi0L1D
+ 8/6gK
+X-Gm-Gg: ASbGncvDIE4w9u/BBavvxYmpeDzvs/0L2/yt3uedJ8rzwrr16p5rtr9uT9A3bjqeYi6
+ RVEkHf50730zaZwIhSom+IxYu3/4zRVyxceB2OaGliLivwl0hHNFaGYeTfj+vJ32FJ+6IoLHwnQ
+ kqzzYCgpJGNCE4W3H/IoSvvRLQ180s845tTDl7Ae9Njgb5MvGIxrtk/DXLjbu7Zav3eXV/TAPDK
+ JHC467uEEFAryP0xIGZV8qKF7M91CtvF3pnDFKcUu5w/ruu4kWie+YP4h44e9humntEwOFseF7K
+ uFMjvbBkPLA66f4cxOU7XsWnuih5v5BPXwg0fnQCRHtgd599EoH6OXdKzwRWbU/bDdY+
+X-Google-Smtp-Source: AGHT+IGPOPkZKv/HdueKrLSPYRV5gKqKMTxUFMheGYKcc1zyKtX93MSBI2yXWU47k4ASF+ayJCuV/Q==
+X-Received: by 2002:a05:6000:4207:b0:3a4:ef33:e60 with SMTP id
+ ffacd0b85a97d-3b49661d63fmr2446143f8f.40.1751646414947; 
  Fri, 04 Jul 2025 09:26:54 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.26.53
+ ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.26.54
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 09:26:53 -0700 (PDT)
+ Fri, 04 Jul 2025 09:26:54 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 118/119] target/arm: Enable FEAT_SME2p1 on -cpu max
-Date: Fri,  4 Jul 2025 17:24:58 +0100
-Message-ID: <20250704162501.249138-119-peter.maydell@linaro.org>
+Subject: [PULL 119/119] linux-user/aarch64: Set hwcap bits for SME2p1/SVE2p1
+Date: Fri,  4 Jul 2025 17:24:59 +0100
+Message-ID: <20250704162501.249138-120-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704162501.249138-1-peter.maydell@linaro.org>
 References: <20250704162501.249138-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,83 +100,31 @@ From: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250704142112.1018902-107-richard.henderson@linaro.org
+Message-id: 20250704142112.1018902-108-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/emulation.rst |  6 ++++++
- target/arm/tcg/cpu64.c        | 10 ++++++++--
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ linux-user/elfload.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 78c2fd2113c..890dc6fee21 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -129,16 +129,22 @@ the following architecture extensions:
- - FEAT_SM3 (Advanced SIMD SM3 instructions)
- - FEAT_SM4 (Advanced SIMD SM4 instructions)
- - FEAT_SME (Scalable Matrix Extension)
-+- FEAT_SME2 (Scalable Matrix Extension version 2)
-+- FEAT_SME2p1 (Scalable Matrix Extension version 2.1)
-+- FEAT_SME_B16B16 (Non-widening BFloat16 arithmetic for SME2)
- - FEAT_SME_FA64 (Full A64 instruction set in Streaming SVE mode)
-+- FEAT_SME_F16F16 (Non-widening half-precision FP16 arithmetic for SME2)
- - FEAT_SME_F64F64 (Double-precision floating-point outer product instructions)
- - FEAT_SME_I16I64 (16-bit to 64-bit integer widening outer product instructions)
- - FEAT_SVE (Scalable Vector Extension)
- - FEAT_SVE_AES (Scalable Vector AES instructions)
-+- FEAT_SVE_B16B16 (Non-widening BFloat16 arithmetic for SVE2)
- - FEAT_SVE_BitPerm (Scalable Vector Bit Permutes instructions)
- - FEAT_SVE_PMULL128 (Scalable Vector PMULL instructions)
- - FEAT_SVE_SHA3 (Scalable Vector SHA3 instructions)
- - FEAT_SVE_SM4 (Scalable Vector SM4 instructions)
- - FEAT_SVE2 (Scalable Vector Extension version 2)
-+- FEAT_SVE2p1 (Scalable Vector Extension version 2.1)
- - FEAT_SPECRES (Speculation restriction instructions)
- - FEAT_SSBS (Speculative Store Bypass Safe)
- - FEAT_SSBS2 (MRS and MSR instructions for SSBS version 2)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 937f29e253d..d0df50a2f34 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1201,7 +1201,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-      */
-     t = FIELD_DP64(t, ID_AA64PFR1, MTE, 3);       /* FEAT_MTE3 */
-     t = FIELD_DP64(t, ID_AA64PFR1, RAS_FRAC, 0);  /* FEAT_RASv1p1 + FEAT_DoubleFault */
--    t = FIELD_DP64(t, ID_AA64PFR1, SME, 1);       /* FEAT_SME */
-+    t = FIELD_DP64(t, ID_AA64PFR1, SME, 2);       /* FEAT_SME2 */
-     t = FIELD_DP64(t, ID_AA64PFR1, CSV2_FRAC, 0); /* FEAT_CSV2_3 */
-     t = FIELD_DP64(t, ID_AA64PFR1, NMI, 1);       /* FEAT_NMI */
-     SET_IDREG(isar, ID_AA64PFR1, t);
-@@ -1250,10 +1250,11 @@ void aarch64_max_tcg_initfn(Object *obj)
-     FIELD_DP64_IDREG(isar, ID_AA64MMFR3, SPEC_FPACC, 1); /* FEAT_FPACC_SPEC */
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 2add1665c75..ea214105ff8 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -915,6 +915,14 @@ uint64_t get_elf_hwcap2(void)
+     GET_FEATURE_ID(aa64_sme_fa64, ARM_HWCAP2_A64_SME_FA64);
+     GET_FEATURE_ID(aa64_hbc, ARM_HWCAP2_A64_HBC);
+     GET_FEATURE_ID(aa64_mops, ARM_HWCAP2_A64_MOPS);
++    GET_FEATURE_ID(aa64_sve2p1, ARM_HWCAP2_A64_SVE2P1);
++    GET_FEATURE_ID(aa64_sme2, (ARM_HWCAP2_A64_SME2 |
++                               ARM_HWCAP2_A64_SME_I16I32 |
++                               ARM_HWCAP2_A64_SME_BI32I32));
++    GET_FEATURE_ID(aa64_sme2p1, ARM_HWCAP2_A64_SME2P1);
++    GET_FEATURE_ID(aa64_sme_b16b16, ARM_HWCAP2_A64_SME_B16B16);
++    GET_FEATURE_ID(aa64_sme_f16f16, ARM_HWCAP2_A64_SME_F16F16);
++    GET_FEATURE_ID(aa64_sve_b16b16, ARM_HWCAP2_A64_SVE_B16B16);
  
-     t = GET_IDREG(isar, ID_AA64ZFR0);
--    t = FIELD_DP64(t, ID_AA64ZFR0, SVEVER, 1);
-+    t = FIELD_DP64(t, ID_AA64ZFR0, SVEVER, 2);    /* FEAT_SVE2p1 */
-     t = FIELD_DP64(t, ID_AA64ZFR0, AES, 2);       /* FEAT_SVE_PMULL128 */
-     t = FIELD_DP64(t, ID_AA64ZFR0, BITPERM, 1);   /* FEAT_SVE_BitPerm */
-     t = FIELD_DP64(t, ID_AA64ZFR0, BFLOAT16, 2);  /* FEAT_BF16, FEAT_EBF16 */
-+    t = FIELD_DP64(t, ID_AA64ZFR0, B16B16, 1);    /* FEAT_SVE_B16B16 */
-     t = FIELD_DP64(t, ID_AA64ZFR0, SHA3, 1);      /* FEAT_SVE_SHA3 */
-     t = FIELD_DP64(t, ID_AA64ZFR0, SM4, 1);       /* FEAT_SVE_SM4 */
-     t = FIELD_DP64(t, ID_AA64ZFR0, I8MM, 1);      /* FEAT_I8MM */
-@@ -1269,11 +1270,16 @@ void aarch64_max_tcg_initfn(Object *obj)
- 
-     t = GET_IDREG(isar, ID_AA64SMFR0);
-     t = FIELD_DP64(t, ID_AA64SMFR0, F32F32, 1);   /* FEAT_SME */
-+    t = FIELD_DP64(t, ID_AA64SMFR0, BI32I32, 1);  /* FEAT_SME2 */
-     t = FIELD_DP64(t, ID_AA64SMFR0, B16F32, 1);   /* FEAT_SME */
-     t = FIELD_DP64(t, ID_AA64SMFR0, F16F32, 1);   /* FEAT_SME */
-     t = FIELD_DP64(t, ID_AA64SMFR0, I8I32, 0xf);  /* FEAT_SME */
-+    t = FIELD_DP64(t, ID_AA64SMFR0, F16F16, 1);   /* FEAT_SME_F16F16 */
-+    t = FIELD_DP64(t, ID_AA64SMFR0, B16B16, 1);   /* FEAT_SME_B16B16 */
-+    t = FIELD_DP64(t, ID_AA64SMFR0, I16I32, 5);   /* FEAT_SME2 */
-     t = FIELD_DP64(t, ID_AA64SMFR0, F64F64, 1);   /* FEAT_SME_F64F64 */
-     t = FIELD_DP64(t, ID_AA64SMFR0, I16I64, 0xf); /* FEAT_SME_I16I64 */
-+    t = FIELD_DP64(t, ID_AA64SMFR0, SMEVER, 2);   /* FEAT_SME2p1 */
-     t = FIELD_DP64(t, ID_AA64SMFR0, FA64, 1);     /* FEAT_SME_FA64 */
-     SET_IDREG(isar, ID_AA64SMFR0, t);
- 
+     return hwcaps;
+ }
 -- 
 2.43.0
 
