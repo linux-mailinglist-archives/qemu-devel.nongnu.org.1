@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43B5AF9812
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64266AF982B
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:28:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjE8-0008Oj-P7; Fri, 04 Jul 2025 12:25:28 -0400
+	id 1uXjE8-0008Oi-A4; Fri, 04 Jul 2025 12:25:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjE4-0008Lw-IT
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:24 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1uXjE3-0008KY-4l
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:23 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjE1-00067n-SL
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:24 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-453749af004so5390745e9.1
+ id 1uXjE1-000681-GT
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:22 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-453398e90e9so7306345e9.1
  for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:25:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751646319; x=1752251119; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751646320; x=1752251120; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7c4SCBPBgFQ7HiqrH6euDpAw542dy85MtrPOPy42xtg=;
- b=N/U8DOHPVOKGHAuuPQrtvMzOhpwaaWdQ1V51N4kH4PERHjwZvoYjjloMi4qAVZzDqW
- clZYZ07aCZa8jeB44uZS8a2y2BNYau44TAtQV3nBPkKLPXzQwzuKBDBKLXFD2KxxOaWW
- HUHM/I9xPyRYHykHAiYwc/4pVISZDvq4swaHnRPz6HMVmhwL0IE+XxsffuFMYS59/ISK
- GvIaBrlEV5Hkr7jfh7wMhaA2plOlxnmjxqkXMZYdmwVyGKnfchgE956p/uskj3Z7r1Jj
- eQkOvSaUuxviypEyXafpAyhPQ5HC1Tg7ATT7k/WhhfZW3OwUakZRpmCfgs8Onq8WCQuv
- 7y/w==
+ :reply-to; bh=VdKchwbJEZ+nSckIGEWeS64CtMCPrL6GOAZLbL9tqic=;
+ b=uP8BdVO5o79VUDTRZSZDq57gHJ0LZv2oI4FRow/H0P++cWro1pN5moD+HRt5/kGmYS
+ wqTyvQzoVA9gEaD6bbXZWTt5GFFSwtgUm+wolU/aNpWnYqBx8nx53Jdwk+sXbatuaNWa
+ 6/eXV9I0+cbwOmZIS1LILqKebR1RZZqiYO37wXBPMyu+A+Vr6AHWCA2TS1icZT2JrdZf
+ R46/W8tSQRhj6uHAJlxp/CSsyAaL/Za6J9CxWXiKgsMI5UAYINqj2xe3cLovqyXLM8im
+ LkSCShr1RYjB6/TSMox9178pRMyCrHUaN58JVFHLlM4nTvEcf22k7QcTJpTJ/FASRlp1
+ RpKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751646319; x=1752251119;
+ d=1e100.net; s=20230601; t=1751646320; x=1752251120;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7c4SCBPBgFQ7HiqrH6euDpAw542dy85MtrPOPy42xtg=;
- b=aJ2vWMGCJLPmSzhUEL7bf2ZyAQABiOEasOItFrBHEClmB+bkrDjMfMn8xrs67U1H+Y
- k9dsjJmDxgUZu3t3vEGFgBUd17og/8l9f4zDd4ckEO9JZTbz9Q66X5skbq2WsNyM1yFf
- KXBJYDBBsp3/Fl9CsMEN4wEBvWHX1p9M11OeEC7o61wXqcUIAumk87U+DCtWts1FXGXn
- PQmteQD8u3rMgvMB8GfCwdt264H6WpHgv797FFq7xGlVdCscHK3za80y2taoF7hYppYo
- XMa6nFVwkAgXLQVlmmMFVhU1mopMUaimotsFTS0crgDHCfcSFzvA+2v1O2ipnz02NacL
- rNbw==
-X-Gm-Message-State: AOJu0YxFVpuMj3dIztvgVhjgunop5iaQ4+i8Z2DLmldlu7W7gRoF5ZWT
- WKP5bTrCEc1SPjx0Hl3aefL8zGaQw9znYBaaRPvQNBRFaVqENy0PrBxs2K8npmLzED7gKiTeNLR
- 7VJr8
-X-Gm-Gg: ASbGncvFE4nsxNukGXm2AGJn55aNqqgE+SNDXcoysX2ldkKWyd/+haAaJb4jqS9WBw4
- fjxuueiqXLkl3ZEtwugaghu7Eig7Ulc4UKeV82gxvDCV24d3Ks9j4MUCegKfR1TnxypnhO4GJPS
- 24l7p3MSEGvXbOWwM2IjvNmoVNleDY3XmKDqWUDpQZc5N7c0sf1izRzcVMcuE0HQogvFEvMA34F
- mWNLUczSzo6IJ9Baa4dc7Z31G3FMDqiPahAgtHjlyhrFSurJTSfdge/9ZnQ2nTluRAt292vIVg7
- eP1b8mcm1CMGXphURDnOvUT14G9XyilYj87ry7yaVrIE/u/6/gWxFxfcniBImSmeyspO
-X-Google-Smtp-Source: AGHT+IGsFdZfAoRABm8aMH82NTS11QoInSsPtRui9zZHYJADBAJSGd6Kyxw/0oWzxjKfL4xycjpn1g==
-X-Received: by 2002:a05:600c:35c2:b0:442:e9eb:cba2 with SMTP id
- 5b1f17b1804b1-454b9cf5297mr2687485e9.0.1751646319071; 
+ bh=VdKchwbJEZ+nSckIGEWeS64CtMCPrL6GOAZLbL9tqic=;
+ b=j4g9yCyAToxzyhBtgzHgRU4px6w4CZdeDhLb5al7NF5brVmR3YnaCj/E0K78Xi6jkh
+ tSgGFRRSylvkjF83HMotQvwhXqNoN3tEUEtQbZlHdtINR3QZUmZMCWuglPHHftF/pViM
+ FldqtVOKvkgnpzAbFnMdW3h8ZhQ/DOptIZ5k0yI0A9VWajTa9d/8ow0naDKLzMhNwqbS
+ kFlnoniFBH/UroByb6zgQ3Zqdvena2RivwBcQU5coHIgpT6/QGoXnE8Hbqd3OThE4DzJ
+ t7E6/FXQmiTy6hKWe0HKMMm6B7bYaUGNkb20+pTQ3dP12MVgTmVI1CoOzvCE3PxU+LM8
+ 41cg==
+X-Gm-Message-State: AOJu0YxA2JLff87yTAUZxl+8QGSQ7q0V7UGbYCDWR9ltiVBs3TFRgTYM
+ FXPcxilsNXMuh1qzIipeFFgAItsoFWlsrF5EVThBxcmRyLSObTEiXcL8zJKjqs5CfA3XCWhWpck
+ a5kcf
+X-Gm-Gg: ASbGncszow10Os9aaTSuXWe+FFqTGYKce8LSDl0n3/X7pcYO8Lms6WPsqOOODaMLZoU
+ DhKnttKnKtQL9AerzffGrgRzfJNkTwWu1p3caPee04LCEKhmamRxGE/KnvW3MHebio6tH7g/KfV
+ vWSdFvSeIGT7ZfEmFlsFAPNeOVGq+dEPG6HbscPbCexbWLVfEZYa1aNhmHsEv1pvdIvHIBoNr0D
+ T/Qo5uXBLTHOkPCYcNiFY7OzeP9iqH6vCGx71Capzu25glRN2HbEId6yzrVtPMHpfZTUnCScBny
+ SaXU32JTE++oZDtStT1SpRnCfCJihrLHNtNgWmEG+mcTlCXtS6R93IuVnSTy9sUXbSMc
+X-Google-Smtp-Source: AGHT+IH4BqLtEhBTNP91QcXX/00HgnAisu9VG+gxVIf93epbZke4Ahz++3FEE+yxVfnHxCedVbq/EA==
+X-Received: by 2002:a05:600c:1c03:b0:43c:f513:9591 with SMTP id
+ 5b1f17b1804b1-454b3124faemr34179895e9.14.1751646319926; 
  Fri, 04 Jul 2025 09:25:19 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.25.18
+ ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.25.19
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 09:25:18 -0700 (PDT)
+ Fri, 04 Jul 2025 09:25:19 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 017/119] target/arm: Fix FMMLA (64-bit element) for 128-bit VL
-Date: Fri,  4 Jul 2025 17:23:17 +0100
-Message-ID: <20250704162501.249138-18-peter.maydell@linaro.org>
+Subject: [PULL 018/119] target/arm: Disable FEAT_F64MM if maximum SVE vector
+ size too small
+Date: Fri,  4 Jul 2025 17:23:18 +0100
+Message-ID: <20250704162501.249138-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704162501.249138-1-peter.maydell@linaro.org>
 References: <20250704162501.249138-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,52 +99,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
+All F64MM instructions operate on a 256-bit vector.
+If only 128-bit vectors is supported by the cpu,
+then the cpu cannot enable F64MM.
+
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250704142112.1018902-6-richard.henderson@linaro.org
+Message-id: 20250704142112.1018902-7-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate-sve.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ target/arm/cpu64.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 588a5b006b8..a0de5b488d6 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -7025,17 +7025,26 @@ DO_ZPZZ_FP(FMINNMP, aa64_sve2, sve2_fminnmp_zpzz)
- DO_ZPZZ_FP(FMAXP, aa64_sve2, sve2_fmaxp_zpzz)
- DO_ZPZZ_FP(FMINP, aa64_sve2, sve2_fminp_zpzz)
- 
-+static bool do_fmmla(DisasContext *s, arg_rrrr_esz *a,
-+                     gen_helper_gvec_4_ptr *fn)
-+{
-+    if (sve_access_check(s)) {
-+        if (vec_full_reg_size(s) < 4 * memop_size(a->esz)) {
-+            unallocated_encoding(s);
-+        } else {
-+            gen_gvec_fpst_zzzz(s, fn, a->rd, a->rn, a->rm, a->ra, 0, FPST_A64);
-+        }
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 1f3406708bd..77e7c4a6a52 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -259,6 +259,13 @@ void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp)
+     /* From now on sve_max_vq is the actual maximum supported length. */
+     cpu->sve_max_vq = max_vq;
+     cpu->sve_vq.map = vq_map;
++
++    /* FEAT_F64MM requires the existence of a 256-bit vector size. */
++    if (max_vq < 2) {
++        uint64_t t = GET_IDREG(&cpu->isar, ID_AA64ZFR0);
++        t = FIELD_DP64(t, ID_AA64ZFR0, F64MM, 0);
++        SET_IDREG(&cpu->isar, ID_AA64ZFR0, t);
 +    }
-+    return true;
-+}
-+
-+TRANS_FEAT_NONSTREAMING(FMMLA_s, aa64_sve_f32mm, do_fmmla, a, gen_helper_fmmla_s)
-+TRANS_FEAT_NONSTREAMING(FMMLA_d, aa64_sve_f64mm, do_fmmla, a, gen_helper_fmmla_d)
-+
- /*
-  * SVE Integer Multiply-Add (unpredicated)
-  */
+ }
  
--TRANS_FEAT_NONSTREAMING(FMMLA_s, aa64_sve_f32mm, gen_gvec_fpst_zzzz,
--                        gen_helper_fmmla_s, a->rd, a->rn, a->rm, a->ra,
--                        0, FPST_A64)
--TRANS_FEAT_NONSTREAMING(FMMLA_d, aa64_sve_f64mm, gen_gvec_fpst_zzzz,
--                        gen_helper_fmmla_d, a->rd, a->rn, a->rm, a->ra,
--                        0, FPST_A64)
--
- static gen_helper_gvec_4 * const sqdmlal_zzzw_fns[] = {
-     NULL,                           gen_helper_sve2_sqdmlal_zzzw_h,
-     gen_helper_sve2_sqdmlal_zzzw_s, gen_helper_sve2_sqdmlal_zzzw_d,
+ /*
 -- 
 2.43.0
 
