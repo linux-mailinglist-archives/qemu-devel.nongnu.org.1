@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84973AF95AD
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FB8AF95B6
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:39:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXhUc-0004We-IB; Fri, 04 Jul 2025 10:34:23 -0400
+	id 1uXhZG-0003em-Nx; Fri, 04 Jul 2025 10:39:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXhPM-0002kn-Kk
+ id 1uXhPN-0002oO-AF
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:29:02 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXhPJ-0001bF-25
+ id 1uXhPK-0001br-8y
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:28:56 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-2eb6c422828so1287397fac.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 07:28:52 -0700 (PDT)
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-2edec6c5511so332951fac.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 07:28:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751639332; x=1752244132; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751639333; x=1752244133; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=og0z3O2MJT0QCwzRYtxsXjZzBvNbK6+O59Vlkv9/sNA=;
- b=B5uIsCCn9hWIRiwze9TN3NKNFXJRytSf+ytvFnVFN6PlLQAi47s7bxUOYEI3WtX4WM
- RC3Qf+n2uqs12ZHpFcPD1GBRVhmtRA2160xNq5vCSOovywezeKKswx0zqnOCLAgqsXJ7
- 9bB7vv53blVrvHuKwAH5mJVV1L/KrkJqjNjRNEb5jGm4Lk0kT6hGB1v/V89T9mbBe6pO
- 1zklytFHVaKfXdzU3Bf1z+3QttLrYtB31Zn2HN4iGJjgvu1nj1D9ssrYp8fvLYWHl4sM
- 8vors1edqNV4ewgHrbQUfErZffC2piXiwa7F/QyXzK0fQ5Q1K1NR+nI0r9a5QQ8D3Mrp
- XL5Q==
+ bh=4S5DImbXjjY+eFLsTDqYqykqt+YEQuqnqHK47/Xsuvg=;
+ b=SoNQ71BslvopJNP6wpLo4aRpK+kVPxv1p7u0uX06msz7zNz0C2ipBhITp/2X0fXaCx
+ Z5M0wqZyUzS8KoMX53vgNYf1Dipf5ovwG5IvYeU3KkiyOyCSqjcvIo9ln28uvo9S6MWg
+ qfD6+XWdCoUeX1uMJz/dzaiYOA5hkEzjuOf1MIw/M0P/XIyba75neThrRohRPpuatMgU
+ umM7MIjBXjLIuG5Ofp7+z/il5lwSNl40JaGbqxqeRlrwJcwOH/32OXnOdNcRRFrr0zwy
+ pX2E/3bjs+xwqtf1f4e7OeDJtoZEs18m0gmGDAb39NaCfQn4DQixzfR7+JADsrLsi7bU
+ k1dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751639332; x=1752244132;
+ d=1e100.net; s=20230601; t=1751639333; x=1752244133;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=og0z3O2MJT0QCwzRYtxsXjZzBvNbK6+O59Vlkv9/sNA=;
- b=v7btj+ThEXp29CXaPxumtSUIRSEsQLlApkUIuctviooVr7wi3Fyfzzu6tXremAh3tJ
- 1e90aQFfcjSp2PDpvtBLhcTyHRp6eoleNcFBPSOQ+7IdGgRD8PcksHlzELDFlT2/63pG
- tu67wUgaqXHX4qFNyuMCpZ0wND9DBRJ5t6ntbU1nfKO/1anx4G37hAeFBmHTHCZnEFhK
- jU+RiSjn0+OUfwvYBtXtV1vdx/5A1QU3JvqaYwuPNuJC/PTa+l2MXzAWzepFG+L77wQk
- wG6U9YqENue6DGuiEVGz5r5c0VqQwcVsXNj34hqbsAaRT+f5utL/dfLKXK+10c5Rqa4p
- zPrA==
-X-Gm-Message-State: AOJu0YyZ7X2XY8oFXPTjayg68JwJ8vAnG34PCGRc4IizvZPhZYztU+fx
- RxZNzC85agtOoFBjUhorsljjU12VbUkQ9Ft81mjrfxQLhqkxM1q5nRbwm7U4HwXNZ1XOPR8t0VC
- mi859PcU=
-X-Gm-Gg: ASbGnctC0Bwo+OZDN9IIw3svMh7kwvS/rmgOPSCX/IFvUJq0h/fVPCpi24fOZTOKc+K
- JFtarJaoNYap2KEGBQZJquXtOaqJ2w5Ae4QOM7C0QG2wmXlX2QS2ZAxI7U1CA/3QEN4bOvX+89e
- Ut6dwtgpeWtlv9blQ1elCfwkvx8mQ7R7z3PFhDw9PL85SYy/4gcESRkIe+KbK54/cru7jPTEJt7
- 6LmQTdkFBw0RnQC/NBpvdE51gAEo4Le/1+3AToFRiixA/Ghb0K3XtFu7FkH0gwZHC9dzKOYb3ia
- iqxwhXTqZlVeAHUt/rxsoe15FzyLpuGol24XGF0W6RL72PeE3YwpnTN1ZQuU9DtQVhlrDbvIlrc
- 7CFiHzgdWw3RBTGl67rnW3eKLxIMjKmQcVxAxY+wayg9CZCiv
-X-Google-Smtp-Source: AGHT+IEISd7p5+pDIB9TYfaP6swFpVEtHQsqfTBeWYx7y+R8faMccIbJDv2nUa8JXd2PAjgK5J92rg==
-X-Received: by 2002:a05:6870:3906:b0:2da:87a2:f223 with SMTP id
- 586e51a60fabf-2f791f2bc81mr2469391fac.11.1751639331612; 
- Fri, 04 Jul 2025 07:28:51 -0700 (PDT)
+ bh=4S5DImbXjjY+eFLsTDqYqykqt+YEQuqnqHK47/Xsuvg=;
+ b=K7vY0XYwAj7JJYxMsFMBdCfS9KPnijU2Af1EqbGmQ97iUsSpDLwqMX+IWTV3XFbkzg
+ VDBeDyuLybpQiLQGffpomCoR4E1Zw461J6mtZVpE/orkRDZ+WTMglRpuz9Gl/PqmYlql
+ zLL6zwIrJr873xAZcZkHHC9JNxZxhza7kmgiw7SsSh36t2a0jDBfKg2LiCcACM4De2pX
+ Ral3LGlZwVYQYnhY4R3Hx6wvnBqvW3myB9HrVknJmgZx084+H7RSq0RPcA/jDmGdVsnc
+ nMV0xzg++WTrsFMBi5zpvGNnG2n3LMAtATpBgs4SqiXF6v0ajaXcUksMQHSNg3LfmaaS
+ ZMGg==
+X-Gm-Message-State: AOJu0YwSCVWMPKHfnH21ZNvjBx8+pH72SF2oAtQDS/iQeo1e909WGEIi
+ giIH1leAG4q/zagbmwn9JM0Qiu2r1gjYGL0H0c230+0emOnC1/2ERCdOj9uj2MQYKI2BPwnLHQl
+ 9lUATS/E=
+X-Gm-Gg: ASbGncsZmWi9rIw7zHAeSdUoiZbb1tPTO+yXoOsS5V/QeONoc1ia+Rcimmhx76nPhcL
+ A7f1o9xiVexZhD4ZhpBncK5iBLGihxOuwQBxNmiAyHW2yAmqxXE6a9yfYESQd3V1adfRSoNmEAF
+ ZMlDIl6MTD8RsgnmZBroJteNmk4Jb84lzAVv6v5GyEaztgRcdT9qMHG9IpHZ/7wKckifsQafvyc
+ W5RDNc91kQlteLC+qrY63eHenWPV3CUkqmN23ye1O5xY6F+xQSaWqBP5hrQtTaC4YAKtH1OMONS
+ ORFRK2BPP/g0UleaahJEzbOiD6xIdmKw+2GNdqp4hCFMYFyp5zF83t41SqndpB/VXnOF5uls9Sv
+ Vu1nuRbBPSZiF/Q0mY1bbuWh676/dlurd7Ld4Z6B8kK5Pzanx
+X-Google-Smtp-Source: AGHT+IF7znS/79boWlSSG2fV/KDTrZn6U745N63XCz9qtO9xpg4fyywWik8li9Ba7MopFkX/VrvDyA==
+X-Received: by 2002:a05:6870:2150:b0:2ef:e34c:e4bc with SMTP id
+ 586e51a60fabf-2f796c1e893mr1680097fac.25.1751639332594; 
+ Fri, 04 Jul 2025 07:28:52 -0700 (PDT)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2f78ff55633sm531448fac.20.2025.07.04.07.28.50
+ 586e51a60fabf-2f78ff55633sm531448fac.20.2025.07.04.07.28.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 07:28:51 -0700 (PDT)
+ Fri, 04 Jul 2025 07:28:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	peter.maydell@linaro.org
-Subject: [PATCH v4 093/108] target/arm: Implement SME2 counted predicate
- register load/store
-Date: Fri,  4 Jul 2025 08:20:56 -0600
-Message-ID: <20250704142112.1018902-94-richard.henderson@linaro.org>
+Subject: [PATCH v4 094/108] target/arm: Split the ST_zpri and ST_zprr patterns
+Date: Fri,  4 Jul 2025 08:20:57 -0600
+Message-ID: <20250704142112.1018902-95-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704142112.1018902-1-richard.henderson@linaro.org>
 References: <20250704142112.1018902-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x29.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,715 +99,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement the SVE2p1 consecutive register LD1/ST1,
-and the SME2 strided register LD1/ST1.
+The msz > esz encodings are reserved, and some of
+them are about to be reused.  Split these patterns
+so that the new insns do not overlap.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper-sve.h    |  16 ++
- target/arm/tcg/sve_helper.c    | 493 +++++++++++++++++++++++++++++++++
- target/arm/tcg/translate-sve.c | 103 +++++++
- target/arm/tcg/sve.decode      |  50 ++++
- 4 files changed, 662 insertions(+)
+ target/arm/tcg/sve.decode | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/target/arm/tcg/helper-sve.h b/target/arm/tcg/helper-sve.h
-index 5f4b4aa036..c4736d7510 100644
---- a/target/arm/tcg/helper-sve.h
-+++ b/target/arm/tcg/helper-sve.h
-@@ -3048,3 +3048,19 @@ DEF_HELPER_FLAGS_3(pmov_pv_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
- DEF_HELPER_FLAGS_3(pmov_vp_h, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
- DEF_HELPER_FLAGS_3(pmov_vp_s, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
- DEF_HELPER_FLAGS_3(pmov_vp_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_5(sve2p1_ld1bb_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_ld1hh_le_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_ld1hh_be_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_ld1ss_le_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_ld1ss_be_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_ld1dd_le_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_ld1dd_be_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+
-+DEF_HELPER_FLAGS_5(sve2p1_st1bb_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_st1hh_le_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_st1hh_be_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_st1ss_le_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_st1ss_be_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_st1dd_le_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-+DEF_HELPER_FLAGS_5(sve2p1_st1dd_be_c, TCG_CALL_NO_WG, void, env, ptr, tl, i32, i32)
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 42b05756a9..e6342990fa 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -7586,6 +7586,499 @@ DO_ST1_ZPZ_D(dd_be, zd, MO_64)
- #undef DO_ST1_ZPZ_S
- #undef DO_ST1_ZPZ_D
- 
-+/*
-+ * SVE2.1 consecutive register load/store
-+ */
-+
-+static unsigned sve2p1_cont_ldst_elements(SVEContLdSt *info, vaddr addr,
-+                                          uint32_t png, intptr_t reg_max,
-+                                          int N, int v_esz)
-+{
-+    const int esize = 1 << v_esz;
-+    intptr_t reg_off_first = -1, reg_off_last = -1, reg_off_split;
-+    DecodeCounter p = decode_counter(png, reg_max, v_esz);
-+    unsigned b_count = p.count << v_esz;
-+    unsigned b_stride = 1 << (v_esz + p.lg2_stride);
-+    intptr_t page_split;
-+
-+    /* Set all of the element indices to -1, and the TLB data to 0. */
-+    memset(info, -1, offsetof(SVEContLdSt, page));
-+    memset(info->page, 0, sizeof(info->page));
-+
-+    if (p.invert) {
-+        if (b_count >= reg_max * N) {
-+            return 0;
-+        }
-+        reg_off_first = b_count;
-+        reg_off_last = reg_max * N - b_stride;
-+    } else {
-+        if (b_count == 0) {
-+            return 0;
-+        }
-+        reg_off_first = 0;
-+        reg_off_last = MIN(b_count - esize, reg_max * N - b_stride);
-+    }
-+
-+    info->reg_off_first[0] = reg_off_first;
-+    info->mem_off_first[0] = reg_off_first;
-+
-+    page_split = -(addr | TARGET_PAGE_MASK);
-+    if (reg_off_last + esize <= page_split || reg_off_first >= page_split) {
-+        /* The entire operation fits within a single page. */
-+        info->reg_off_last[0] = reg_off_last;
-+        return b_stride;
-+    }
-+
-+    info->page_split = page_split;
-+    reg_off_split = ROUND_DOWN(page_split, esize);
-+
-+    /*
-+     * This is the last full element on the first page, but it is not
-+     * necessarily active.  If there is no full element, i.e. the first
-+     * active element is the one that's split, this value remains -1.
-+     * It is useful as iteration bounds.
-+     */
-+    if (reg_off_split != 0) {
-+        info->reg_off_last[0] = ROUND_DOWN(reg_off_split - esize, b_stride);
-+    }
-+
-+    /* Determine if an unaligned element spans the pages.  */
-+    if (page_split & (esize - 1)) {
-+        /* It is helpful to know if the split element is active. */
-+        if ((reg_off_split & (b_stride - 1)) == 0) {
-+            info->reg_off_split = reg_off_split;
-+            info->mem_off_split = reg_off_split;
-+        }
-+        reg_off_split += esize;
-+    }
-+
-+    /*
-+     * We do want the first active element on the second page, because
-+     * this may affect the address reported in an exception.
-+     */
-+    reg_off_split = ROUND_UP(reg_off_split, b_stride);
-+    if (reg_off_split <= reg_off_last) {
-+        info->reg_off_first[1] = reg_off_split;
-+        info->mem_off_first[1] = reg_off_split;
-+        info->reg_off_last[1] = reg_off_last;
-+    }
-+    return b_stride;
-+}
-+
-+static void sve2p1_cont_ldst_watchpoints(SVEContLdSt *info, CPUARMState *env,
-+                                         target_ulong addr, unsigned estride,
-+                                         int esize, int wp_access, uintptr_t ra)
-+{
-+#ifndef CONFIG_USER_ONLY
-+    intptr_t count_off, count_last;
-+    int flags0 = info->page[0].flags;
-+    int flags1 = info->page[1].flags;
-+
-+    if (likely(!((flags0 | flags1) & TLB_WATCHPOINT))) {
-+        return;
-+    }
-+
-+    /* Indicate that watchpoints are handled. */
-+    info->page[0].flags = flags0 & ~TLB_WATCHPOINT;
-+    info->page[1].flags = flags1 & ~TLB_WATCHPOINT;
-+
-+    if (flags0 & TLB_WATCHPOINT) {
-+        count_off = info->reg_off_first[0];
-+        count_last = info->reg_off_split;
-+        if (count_last < 0) {
-+            count_last = info->reg_off_last[0];
-+        }
-+        do {
-+            cpu_check_watchpoint(env_cpu(env), addr + count_off,
-+                                 esize, info->page[0].attrs, wp_access, ra);
-+            count_off += estride;
-+        } while (count_off <= count_last);
-+    }
-+
-+    count_off = info->reg_off_first[1];
-+    if ((flags1 & TLB_WATCHPOINT) && count_off >= 0) {
-+        count_last = info->reg_off_last[1];
-+        do {
-+            cpu_check_watchpoint(env_cpu(env), addr + count_off,
-+                                 esize, info->page[1].attrs,
-+                                 wp_access, ra);
-+            count_off += estride;
-+        } while (count_off <= count_last);
-+    }
-+#endif
-+}
-+
-+static void sve2p1_cont_ldst_mte_check(SVEContLdSt *info, CPUARMState *env,
-+                                       target_ulong addr, unsigned estride,
-+                                       int esize, uint32_t mtedesc,
-+                                       uintptr_t ra)
-+{
-+    intptr_t count_off, count_last;
-+
-+    /*
-+     * TODO: estride is always a small power of two, <= 8.
-+     * Manipulate the stride within the loops such that
-+     *   - first iteration hits addr + off, as required,
-+     *   - second iteration hits ALIGN_UP(addr, 16),
-+     *   - other iterations advance addr by 16.
-+     * This will minimize the probing to once per MTE granule.
-+     */
-+
-+    /* Process the page only if MemAttr == Tagged. */
-+    if (info->page[0].tagged) {
-+        count_off = info->reg_off_first[0];
-+        count_last = info->reg_off_split;
-+        if (count_last < 0) {
-+            count_last = info->reg_off_last[0];
-+        }
-+
-+        do {
-+            mte_check(env, mtedesc, addr + count_off, ra);
-+            count_off += estride;
-+        } while (count_off <= count_last);
-+    }
-+
-+    count_off = info->reg_off_first[1];
-+    if (count_off >= 0 && info->page[1].tagged) {
-+        count_last = info->reg_off_last[1];
-+        do {
-+            mte_check(env, mtedesc, addr + count_off, ra);
-+            count_off += estride;
-+        } while (count_off <= count_last);
-+    }
-+}
-+
-+static inline QEMU_ALWAYS_INLINE
-+void sve2p1_ld1_c(CPUARMState *env, ARMVectorReg *zd, const vaddr addr,
-+                  uint32_t png, uint32_t desc,
-+                  const uintptr_t ra, const MemOp esz,
-+                  sve_ldst1_host_fn *host_fn,
-+                  sve_ldst1_tlb_fn *tlb_fn)
-+{
-+    const unsigned N = (desc >> SIMD_DATA_SHIFT) & 1 ? 4 : 2;
-+    const unsigned rstride = 1 << ((desc >> (SIMD_DATA_SHIFT + 1)) % 4);
-+    uint32_t mtedesc = desc >> (SIMD_DATA_SHIFT + SVE_MTEDESC_SHIFT);
-+    const intptr_t reg_max = simd_oprsz(desc);
-+    const unsigned esize = 1 << esz;
-+    intptr_t count_off, count_last;
-+    intptr_t reg_off, reg_last, reg_n;
-+    SVEContLdSt info;
-+    unsigned estride, flags;
-+    void *host;
-+
-+    estride = sve2p1_cont_ldst_elements(&info, addr, png, reg_max, N, esz);
-+    if (estride == 0) {
-+        /* The entire predicate was false; no load occurs.  */
-+        for (unsigned n = 0; n < N; n++) {
-+            memset(zd + n * rstride, 0, reg_max);
-+        }
-+        return;
-+    }
-+
-+    /* Probe the page(s).  Exit with exception for any invalid page. */
-+    sve_cont_ldst_pages(&info, FAULT_ALL, env, addr, MMU_DATA_LOAD, ra);
-+
-+    /* Handle watchpoints for all active elements. */
-+    sve2p1_cont_ldst_watchpoints(&info, env, addr, estride,
-+                                 esize, BP_MEM_READ, ra);
-+
-+    /*
-+     * Handle mte checks for all active elements.
-+     * Since TBI must be set for MTE, !mtedesc => !mte_active.
-+     */
-+    if (mtedesc) {
-+        sve2p1_cont_ldst_mte_check(&info, env, estride, addr,
-+                                   esize, mtedesc, ra);
-+    }
-+
-+    flags = info.page[0].flags | info.page[1].flags;
-+    if (unlikely(flags != 0)) {
-+        /*
-+         * At least one page includes MMIO.
-+         * Any bus operation can fail with cpu_transaction_failed,
-+         * which for ARM will raise SyncExternal.  Perform the load
-+         * into scratch memory to preserve register state until the end.
-+         */
-+        ARMVectorReg scratch[4] = { };
-+
-+        count_off = info.reg_off_first[0];
-+        count_last = info.reg_off_last[1];
-+        if (count_last < 0) {
-+            count_last = info.reg_off_split;
-+            if (count_last < 0) {
-+                count_last = info.reg_off_last[0];
-+            }
-+        }
-+        reg_off = count_off % reg_max;
-+        reg_n = count_off / reg_max;
-+
-+        do {
-+            reg_last = MIN(count_last - count_off, reg_max - esize);
-+            do {
-+                tlb_fn(env, &scratch[reg_n], reg_off, addr + count_off, ra);
-+                reg_off += estride;
-+                count_off += estride;
-+            } while (reg_off <= reg_last);
-+            reg_off = 0;
-+            reg_n++;
-+        } while (count_off <= count_last);
-+
-+        for (unsigned n = 0; n < N; ++n) {
-+            memcpy(&zd[n * rstride], &scratch[n], reg_max);
-+        }
-+        return;
-+    }
-+
-+    /* The entire operation is in RAM, on valid pages. */
-+
-+    for (unsigned n = 0; n < N; ++n) {
-+        memset(&zd[n * rstride], 0, reg_max);
-+    }
-+
-+    count_off = info.reg_off_first[0];
-+    count_last = info.reg_off_last[0];
-+    reg_off = count_off % reg_max;
-+    reg_n = count_off / reg_max;
-+    host = info.page[0].host;
-+
-+    set_helper_retaddr(ra);
-+
-+    do {
-+        reg_last = MIN(count_last - reg_n * reg_max, reg_max - esize);
-+        do {
-+            host_fn(&zd[reg_n * rstride], reg_off, host + count_off);
-+            reg_off += estride;
-+            count_off += estride;
-+        } while (reg_off <= reg_last);
-+        reg_off = 0;
-+        reg_n++;
-+    } while (count_off <= count_last);
-+
-+    clear_helper_retaddr();
-+
-+    /*
-+     * Use the slow path to manage the cross-page misalignment.
-+     * But we know this is RAM and cannot trap.
-+     */
-+    count_off = info.reg_off_split;
-+    if (unlikely(count_off >= 0)) {
-+        reg_off = count_off % reg_max;
-+        reg_n = count_off / reg_max;
-+        tlb_fn(env, &zd[reg_n * rstride], reg_off, addr + count_off, ra);
-+    }
-+
-+    count_off = info.reg_off_first[1];
-+    if (unlikely(count_off >= 0)) {
-+        count_last = info.reg_off_last[1];
-+        reg_off = count_off % reg_max;
-+        reg_n = count_off / reg_max;
-+        host = info.page[1].host;
-+
-+        set_helper_retaddr(ra);
-+
-+        do {
-+            reg_last = MIN(count_last - reg_n * reg_max, reg_max - esize);
-+            do {
-+                host_fn(&zd[reg_n * rstride], reg_off, host + count_off);
-+                reg_off += estride;
-+                count_off += estride;
-+            } while (reg_off <= reg_last);
-+            reg_off = 0;
-+            reg_n++;
-+        } while (count_off <= count_last);
-+
-+        clear_helper_retaddr();
-+    }
-+}
-+
-+void HELPER(sve2p1_ld1bb_c)(CPUARMState *env, void *vd, target_ulong addr,
-+                            uint32_t png, uint32_t desc)
-+{
-+    sve2p1_ld1_c(env, vd, addr, png, desc, GETPC(), MO_8,
-+                 sve_ld1bb_host, sve_ld1bb_tlb);
-+}
-+
-+#define DO_LD1_2(NAME, ESZ)                                             \
-+void HELPER(sve2p1_##NAME##_le_c)(CPUARMState *env, void *vd,           \
-+                                  target_ulong addr, uint32_t png,      \
-+                                  uint32_t desc)                        \
-+{                                                                       \
-+    sve2p1_ld1_c(env, vd, addr, png, desc, GETPC(), ESZ,                \
-+                 sve_##NAME##_le_host, sve_##NAME##_le_tlb);            \
-+}                                                                       \
-+void HELPER(sve2p1_##NAME##_be_c)(CPUARMState *env, void *vd,           \
-+                                  target_ulong addr, uint32_t png,      \
-+                                  uint32_t desc)                        \
-+{                                                                       \
-+    sve2p1_ld1_c(env, vd, addr, png, desc, GETPC(), ESZ,                \
-+                 sve_##NAME##_be_host, sve_##NAME##_be_tlb);            \
-+}
-+
-+DO_LD1_2(ld1hh, MO_16)
-+DO_LD1_2(ld1ss, MO_32)
-+DO_LD1_2(ld1dd, MO_64)
-+
-+#undef DO_LD1_2
-+
-+static inline QEMU_ALWAYS_INLINE
-+void sve2p1_st1_c(CPUARMState *env, ARMVectorReg *zd, const vaddr addr,
-+                  uint32_t png, uint32_t desc,
-+                  const uintptr_t ra, const int esz,
-+                  sve_ldst1_host_fn *host_fn,
-+                  sve_ldst1_tlb_fn *tlb_fn)
-+{
-+    const unsigned N = (desc >> SIMD_DATA_SHIFT) & 1 ? 4 : 2;
-+    const unsigned rstride = 1 << ((desc >> (SIMD_DATA_SHIFT + 1)) % 4);
-+    uint32_t mtedesc = desc >> (SIMD_DATA_SHIFT + SVE_MTEDESC_SHIFT);
-+    const intptr_t reg_max = simd_oprsz(desc);
-+    const unsigned esize = 1 << esz;
-+    intptr_t count_off, count_last;
-+    intptr_t reg_off, reg_last, reg_n;
-+    SVEContLdSt info;
-+    unsigned estride, flags;
-+    void *host;
-+
-+    estride = sve2p1_cont_ldst_elements(&info, addr, png, reg_max, N, esz);
-+    if (estride == 0) {
-+        /* The entire predicate was false; no store occurs.  */
-+        return;
-+    }
-+
-+    /* Probe the page(s).  Exit with exception for any invalid page. */
-+    sve_cont_ldst_pages(&info, FAULT_ALL, env, addr, MMU_DATA_STORE, ra);
-+
-+    /* Handle watchpoints for all active elements. */
-+    sve2p1_cont_ldst_watchpoints(&info, env, addr, estride,
-+                                 esize, BP_MEM_WRITE, ra);
-+
-+    /*
-+     * Handle mte checks for all active elements.
-+     * Since TBI must be set for MTE, !mtedesc => !mte_active.
-+     */
-+    if (mtedesc) {
-+        sve2p1_cont_ldst_mte_check(&info, env, estride, addr,
-+                                   esize, mtedesc, ra);
-+    }
-+
-+    flags = info.page[0].flags | info.page[1].flags;
-+    if (unlikely(flags != 0)) {
-+        /*
-+         * At least one page includes MMIO.
-+         * Any bus operation can fail with cpu_transaction_failed,
-+         * which for ARM will raise SyncExternal.  Perform the load
-+         * into scratch memory to preserve register state until the end.
-+         */
-+        count_off = info.reg_off_first[0];
-+        count_last = info.reg_off_last[1];
-+        if (count_last < 0) {
-+            count_last = info.reg_off_split;
-+            if (count_last < 0) {
-+                count_last = info.reg_off_last[0];
-+            }
-+        }
-+        reg_off = count_off % reg_max;
-+        reg_n = count_off / reg_max;
-+
-+        do {
-+            reg_last = MIN(count_last - count_off, reg_max - esize);
-+            do {
-+                tlb_fn(env, &zd[reg_n * rstride], reg_off, addr + count_off, ra);
-+                reg_off += estride;
-+                count_off += estride;
-+            } while (reg_off <= reg_last);
-+            reg_off = 0;
-+            reg_n++;
-+        } while (count_off <= count_last);
-+        return;
-+    }
-+
-+    /* The entire operation is in RAM, on valid pages. */
-+
-+    count_off = info.reg_off_first[0];
-+    count_last = info.reg_off_last[0];
-+    reg_off = count_off % reg_max;
-+    reg_n = count_off / reg_max;
-+    host = info.page[0].host;
-+
-+    set_helper_retaddr(ra);
-+
-+    do {
-+        reg_last = MIN(count_last - reg_n * reg_max, reg_max - esize);
-+        do {
-+            host_fn(&zd[reg_n * rstride], reg_off, host + count_off);
-+            reg_off += estride;
-+            count_off += estride;
-+        } while (reg_off <= reg_last);
-+        reg_off = 0;
-+        reg_n++;
-+    } while (count_off <= count_last);
-+
-+    clear_helper_retaddr();
-+
-+    /*
-+     * Use the slow path to manage the cross-page misalignment.
-+     * But we know this is RAM and cannot trap.
-+     */
-+    count_off = info.reg_off_split;
-+    if (unlikely(count_off >= 0)) {
-+        reg_off = count_off % reg_max;
-+        reg_n = count_off / reg_max;
-+        tlb_fn(env, &zd[reg_n * rstride], reg_off, addr + count_off, ra);
-+    }
-+
-+    count_off = info.reg_off_first[1];
-+    if (unlikely(count_off >= 0)) {
-+        count_last = info.reg_off_last[1];
-+        reg_off = count_off % reg_max;
-+        reg_n = count_off / reg_max;
-+        host = info.page[1].host;
-+
-+        set_helper_retaddr(ra);
-+
-+        do {
-+            reg_last = MIN(count_last - reg_n * reg_max, reg_max - esize);
-+            do {
-+                host_fn(&zd[reg_n * rstride], reg_off, host + count_off);
-+                reg_off += estride;
-+                count_off += estride;
-+            } while (reg_off <= reg_last);
-+            reg_off = 0;
-+            reg_n++;
-+        } while (count_off <= count_last);
-+
-+        clear_helper_retaddr();
-+    }
-+}
-+
-+void HELPER(sve2p1_st1bb_c)(CPUARMState *env, void *vd, target_ulong addr,
-+                           uint32_t png, uint32_t desc)
-+{
-+    sve2p1_st1_c(env, vd, addr, png, desc, GETPC(), MO_8,
-+                 sve_st1bb_host, sve_st1bb_tlb);
-+}
-+
-+#define DO_ST1_2(NAME, ESZ)                                             \
-+void HELPER(sve2p1_##NAME##_le_c)(CPUARMState *env, void *vd,           \
-+                                  target_ulong addr, uint32_t png,      \
-+                                  uint32_t desc)                        \
-+{                                                                       \
-+    sve2p1_st1_c(env, vd, addr, png, desc, GETPC(), ESZ,                \
-+                 sve_##NAME##_le_host, sve_##NAME##_le_tlb);            \
-+}                                                                       \
-+void HELPER(sve2p1_##NAME##_be_c)(CPUARMState *env, void *vd,           \
-+                                  target_ulong addr, uint32_t png,      \
-+                                  uint32_t desc)                        \
-+{                                                                       \
-+    sve2p1_st1_c(env, vd, addr, png, desc, GETPC(), ESZ,                \
-+                 sve_##NAME##_be_host, sve_##NAME##_be_tlb);            \
-+}
-+
-+DO_ST1_2(st1hh, MO_16)
-+DO_ST1_2(st1ss, MO_32)
-+DO_ST1_2(st1dd, MO_64)
-+
-+#undef DO_ST1_2
-+
- void HELPER(sve2_eor3)(void *vd, void *vn, void *vm, void *vk, uint32_t desc)
- {
-     intptr_t i, opr_sz = simd_oprsz(desc) / 8;
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 02f885dd48..dfb53e4bf4 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -7863,3 +7863,106 @@ TRANS_FEAT(UQCVTN_sh, aa64_sme2_or_sve2p1, gen_gvec_ool_zz,
-            gen_helper_sme2_uqcvtn_sh, a->rd, a->rn, 0)
- TRANS_FEAT(SQCVTUN_sh, aa64_sme2_or_sve2p1, gen_gvec_ool_zz,
-            gen_helper_sme2_sqcvtun_sh, a->rd, a->rn, 0)
-+
-+static bool gen_ldst_c(DisasContext *s, TCGv_i64 addr, int zd, int png,
-+                       MemOp esz, bool is_write, int n, bool strided)
-+{
-+    typedef void ldst_c_fn(TCGv_env, TCGv_ptr, TCGv_i64,
-+                           TCGv_i32, TCGv_i32);
-+    static ldst_c_fn * const f_ldst[2][2][4] = {
-+        { { gen_helper_sve2p1_ld1bb_c,
-+            gen_helper_sve2p1_ld1hh_le_c,
-+            gen_helper_sve2p1_ld1ss_le_c,
-+            gen_helper_sve2p1_ld1dd_le_c, },
-+          { gen_helper_sve2p1_ld1bb_c,
-+            gen_helper_sve2p1_ld1hh_be_c,
-+            gen_helper_sve2p1_ld1ss_be_c,
-+            gen_helper_sve2p1_ld1dd_be_c, } },
-+
-+        { { gen_helper_sve2p1_st1bb_c,
-+            gen_helper_sve2p1_st1hh_le_c,
-+            gen_helper_sve2p1_st1ss_le_c,
-+            gen_helper_sve2p1_st1dd_le_c, },
-+          { gen_helper_sve2p1_st1bb_c,
-+            gen_helper_sve2p1_st1hh_be_c,
-+            gen_helper_sve2p1_st1ss_be_c,
-+            gen_helper_sve2p1_st1dd_be_c, } }
-+    };
-+
-+    TCGv_i32 t_png, t_desc;
-+    TCGv_ptr t_zd;
-+    uint32_t desc, lg2_rstride = 0;
-+    bool be = s->be_data == MO_BE;
-+
-+    assert(n == 2 || n == 4);
-+    if (strided) {
-+        lg2_rstride = 3;
-+        if (n == 4) {
-+            /* Validate ZD alignment. */
-+            if (zd & 4) {
-+                return false;
-+            }
-+            lg2_rstride = 2;
-+        }
-+        /* Ignore non-temporal bit */
-+        zd &= ~8;
-+    }
-+
-+    if (strided || !dc_isar_feature(aa64_sve2p1, s)
-+        ? !sme_sm_enabled_check(s)
-+        : !sve_access_check(s)) {
-+        return true;
-+    }
-+
-+    if (!s->mte_active[0]) {
-+        addr = clean_data_tbi(s, addr);
-+    }
-+
-+    desc = n == 2 ? 0 : 1;
-+    desc = desc | (lg2_rstride << 1);
-+    desc = make_svemte_desc(s, vec_full_reg_size(s), 1, esz, is_write, desc);
-+    t_desc = tcg_constant_i32(desc);
-+
-+    t_png = tcg_temp_new_i32();
-+    tcg_gen_ld16u_i32(t_png, tcg_env,
-+                      pred_full_reg_offset(s, png) ^
-+                      (HOST_BIG_ENDIAN ? 6 : 0));
-+
-+    t_zd = tcg_temp_new_ptr();
-+    tcg_gen_addi_ptr(t_zd, tcg_env, vec_full_reg_offset(s, zd));
-+
-+    f_ldst[is_write][be][esz](tcg_env, t_zd, addr, t_png, t_desc);
-+    return true;
-+}
-+
-+static bool gen_ldst_zcrr_c(DisasContext *s, arg_zcrr_ldst *a,
-+                            bool is_write, bool strided)
-+{
-+    TCGv_i64 addr = tcg_temp_new_i64();
-+
-+    tcg_gen_shli_i64(addr, cpu_reg(s, a->rm), a->esz);
-+    tcg_gen_add_i64(addr, addr, cpu_reg_sp(s, a->rn));
-+    return gen_ldst_c(s, addr, a->rd, a->png, a->esz, is_write,
-+                      a->nreg, strided);
-+}
-+
-+static bool gen_ldst_zcri_c(DisasContext *s, arg_zcri_ldst *a,
-+                            bool is_write, bool strided)
-+{
-+    TCGv_i64 addr = tcg_temp_new_i64();
-+
-+    tcg_gen_addi_i64(addr, cpu_reg_sp(s, a->rn),
-+                     a->imm * a->nreg * vec_full_reg_size(s));
-+    return gen_ldst_c(s, addr, a->rd, a->png, a->esz, is_write,
-+                      a->nreg, strided);
-+}
-+
-+TRANS_FEAT(LD1_zcrr, aa64_sme2_or_sve2p1, gen_ldst_zcrr_c, a, false, false)
-+TRANS_FEAT(LD1_zcri, aa64_sme2_or_sve2p1, gen_ldst_zcri_c, a, false, false)
-+TRANS_FEAT(ST1_zcrr, aa64_sme2_or_sve2p1, gen_ldst_zcrr_c, a, true, false)
-+TRANS_FEAT(ST1_zcri, aa64_sme2_or_sve2p1, gen_ldst_zcri_c, a, true, false)
-+
-+TRANS_FEAT(LD1_zcrr_stride, aa64_sme2, gen_ldst_zcrr_c, a, false, true)
-+TRANS_FEAT(LD1_zcri_stride, aa64_sme2, gen_ldst_zcri_c, a, false, true)
-+TRANS_FEAT(ST1_zcrr_stride, aa64_sme2, gen_ldst_zcrr_c, a, true, true)
-+TRANS_FEAT(ST1_zcri_stride, aa64_sme2, gen_ldst_zcri_c, a, true, true)
 diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
-index 52a56d3341..bf3d4f4853 100644
+index bf3d4f4853..7020771898 100644
 --- a/target/arm/tcg/sve.decode
 +++ b/target/arm/tcg/sve.decode
-@@ -1812,3 +1812,53 @@ SCLAMP          01000100 .. 0 ..... 110000 ..... .....          @rda_rn_rm
- UCLAMP          01000100 .. 0 ..... 110001 ..... .....          @rda_rn_rm
+@@ -252,7 +252,7 @@
  
- FCLAMP          01100100 .. 1 ..... 001001 ..... .....          @rda_rn_rm
-+
-+### SVE2p1 multi-vec contiguous load
-+
-+&zcrr_ldst      rd png rn rm esz nreg
-+&zcri_ldst      rd png rn imm esz nreg
-+%png            10:3 !function=plus_8
-+%zd_ax2         1:4 !function=times_2
-+%zd_ax4         2:3 !function=times_4
-+
-+LD1_zcrr        10100000000 rm:5 0 esz:2 ... rn:5 .... - \
-+                &zcrr_ldst %png rd=%zd_ax2 nreg=2
-+LD1_zcrr        10100000000 rm:5 1 esz:2 ... rn:5 ... 0- \
-+                &zcrr_ldst %png rd=%zd_ax4 nreg=4
-+
-+ST1_zcrr        10100000001 rm:5 0 esz:2 ... rn:5 .... - \
-+                &zcrr_ldst %png rd=%zd_ax2 nreg=2
-+ST1_zcrr        10100000001 rm:5 1 esz:2 ... rn:5 ... 0- \
-+                &zcrr_ldst %png rd=%zd_ax4 nreg=4
-+
-+LD1_zcri        101000000100 imm:s4 0 esz:2 ... rn:5 .... - \
-+                &zcri_ldst %png rd=%zd_ax2 nreg=2
-+LD1_zcri        101000000100 imm:s4 1 esz:2 ... rn:5 ... 0- \
-+                &zcri_ldst %png rd=%zd_ax4 nreg=4
-+
-+ST1_zcri        101000000110 imm:s4 0 esz:2 ... rn:5 .... - \
-+                &zcri_ldst %png rd=%zd_ax2 nreg=2
-+ST1_zcri        101000000110 imm:s4 1 esz:2 ... rn:5 ... 0- \
-+                &zcri_ldst %png rd=%zd_ax4 nreg=4
-+
-+# Note: N bit and 0 bit (for nreg4) still mashed in rd.
-+# This is handled within gen_ldst_c().
-+LD1_zcrr_stride 10100001000 rm:5 0 esz:2 ... rn:5 rd:5 \
-+                &zcrr_ldst %png nreg=2
-+LD1_zcrr_stride 10100001000 rm:5 1 esz:2 ... rn:5 rd:5 \
-+                &zcrr_ldst %png nreg=4
-+
-+ST1_zcrr_stride 10100001001 rm:5 0 esz:2 ... rn:5 rd:5 \
-+                &zcrr_ldst %png nreg=2
-+ST1_zcrr_stride 10100001001 rm:5 1 esz:2 ... rn:5 rd:5 \
-+                &zcrr_ldst %png nreg=4
-+
-+LD1_zcri_stride 101000010100 imm:s4 0 esz:2 ... rn:5 rd:5 \
-+                &zcri_ldst %png nreg=2
-+LD1_zcri_stride 101000010100 imm:s4 1 esz:2 ... rn:5 rd:5 \
-+                &zcri_ldst %png nreg=4
-+
-+ST1_zcri_stride 101000010110 imm:s4 0 esz:2 ... rn:5 rd:5 \
-+                &zcri_ldst %png nreg=2
-+ST1_zcri_stride 101000010110 imm:s4 1 esz:2 ... rn:5 rd:5 \
-+                &zcri_ldst %png nreg=4
+ # Stores; user must fill in ESZ, MSZ, NREG as needed.
+ @rprr_store         ....... ..    ..     rm:5 ... pg:3 rn:5 rd:5    &rprr_store
+-@rpri_store_msz     ....... msz:2 .. . imm:s4 ... pg:3 rn:5 rd:5    &rpri_store
++@rpri_store         ....... ..    .. . imm:s4 ... pg:3 rn:5 rd:5    &rpri_store
+ @rprr_store_esz_n0  ....... ..    esz:2  rm:5 ... pg:3 rn:5 rd:5 \
+                     &rprr_store nreg=0
+ @rprr_scatter_store ....... msz:2 ..     rm:5 ... pg:3 rn:5 rd:5 \
+@@ -1334,8 +1334,16 @@ STR_zri         1110010 11 0.     ..... 010 ... ..... .....     @rd_rn_i9
+ 
+ # SVE contiguous store (scalar plus immediate)
+ # ST1B, ST1H, ST1W, ST1D; require msz <= esz
+-ST_zpri         1110010 .. esz:2  0.... 111 ... ..... ..... \
+-                @rpri_store_msz nreg=0
++ST_zpri         1110010 00 esz:2  0.... 111 ... ..... ..... \
++                @rpri_store msz=0 nreg=0
++ST_zpri         1110010 01 esz:2  0.... 111 ... ..... ..... \
++                @rpri_store msz=1 nreg=0
++ST_zpri         1110010 10 10     0.... 111 ... ..... ..... \
++                @rpri_store msz=2 esz=2 nreg=0
++ST_zpri         1110010 10 11     0.... 111 ... ..... ..... \
++                @rpri_store msz=2 esz=3 nreg=0
++ST_zpri         1110010 11 11     0.... 111 ... ..... ..... \
++                @rpri_store msz=3 esz=3 nreg=0
+ 
+ # SVE contiguous store (scalar plus scalar)
+ # ST1B, ST1H, ST1W, ST1D; require msz <= esz
+@@ -1344,20 +1352,22 @@ ST_zprr         1110010 00 ..     ..... 010 ... ..... ..... \
+                 @rprr_store_esz_n0 msz=0
+ ST_zprr         1110010 01 ..     ..... 010 ... ..... ..... \
+                 @rprr_store_esz_n0 msz=1
+-ST_zprr         1110010 10 ..     ..... 010 ... ..... ..... \
+-                @rprr_store_esz_n0 msz=2
++ST_zprr         1110010 10 10     ..... 010 ... ..... ..... \
++                @rprr_store msz=2 esz=2 nreg=0
++ST_zprr         1110010 10 11     ..... 010 ... ..... ..... \
++                @rprr_store msz=2 esz=3 nreg=0
+ ST_zprr         1110010 11 11     ..... 010 ... ..... ..... \
+                 @rprr_store msz=3 esz=3 nreg=0
+ 
+ # SVE contiguous non-temporal store (scalar plus immediate)  (nreg == 0)
+ # SVE store multiple structures (scalar plus immediate)      (nreg != 0)
+ ST_zpri         1110010 .. nreg:2 1.... 111 ... ..... ..... \
+-                @rpri_store_msz esz=%size_23
++                @rpri_store msz=%size_23 esz=%size_23
+ 
+ # SVE contiguous non-temporal store (scalar plus scalar)     (nreg == 0)
+ # SVE store multiple structures (scalar plus scalar)         (nreg != 0)
+-ST_zprr         1110010 msz:2 nreg:2 ..... 011 ... ..... ..... \
+-                @rprr_store esz=%size_23
++ST_zprr         1110010 .. nreg:2 ..... 011 ... ..... ..... \
++                @rprr_store msz=%size_23 esz=%size_23
+ 
+ # SVE 32-bit scatter store (scalar plus 32-bit scaled offsets)
+ # Require msz > 0 && msz <= esz.
 -- 
 2.43.0
 
