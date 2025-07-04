@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71240AF9568
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF27FAF9580
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:30:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXhKv-0000dk-L5; Fri, 04 Jul 2025 10:24:22 -0400
+	id 1uXhKY-0008EC-57; Fri, 04 Jul 2025 10:23:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXhIA-000502-98
+ id 1uXhIA-000503-D9
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:21:32 -0400
 Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXhI7-0005Q4-IV
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:21:29 -0400
+ id 1uXhI7-0005Qk-Ib
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:21:30 -0400
 Received: by mail-oa1-x2f.google.com with SMTP id
- 586e51a60fabf-2efc0ed41efso403637fac.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 07:21:26 -0700 (PDT)
+ 586e51a60fabf-2f77591f208so515719fac.0
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 07:21:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751638885; x=1752243685; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751638886; x=1752243686; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1CvnYhdClMbhruEBotoxV/Si4Ta54uQOuX2WFi9R0V0=;
- b=UX6PdGV/ZFIMkpM1pUk5Y0BJaIH+zz4o311IvRfnJkjhjdeqiQSOibwenV0csP+LZu
- uL9jcIQHRSf3N1LSO7MDkTr1hcf+f//1gukPD7Ejyd2LSraQTI2w1jwdVXVCFbEVtrFL
- yVmq6vRPuW3c+vEhoSXeexxSk6xal916N2x7K5kJv9X1KvqNa652CiFldnBo+9zcCRHY
- qTPcUe/mYgJ9uokyG8g/eMtCh/beUdu+fsq3qoEQADIJW0fYDV618GgE09kZ00X649M1
- UZrdfsafO7Szrogf9Q3Fht25FjnU/wXz8AXzVvsUTK4YxuaXEj8dXQ5rm7J5OR8SCHe5
- eGFQ==
+ bh=zli7CnBxcZoWcfFlVjjdFH46Lnu/RU9mJkmtTaLHjlQ=;
+ b=rwe5smuho1ybzkHBJBiZzDjCm3Xr9PJocSCrqiXQaOox75fi2rb9Sqr3sdTT1Mi/+R
+ XwuPetp7Hhl8HoNDvb3AQzHpM5iMyumWJBjnUgwkNfVogMIAxSFeZiO8LAhBZeyutW1M
+ hsVFWk3U8rCRsp3o0L10MQ+OPCGC21SAfirEXGJDwzX6yTjwhcpc2ZpAK4a0MYqL0+Av
+ KY8IYnNuQ8oCKtD9G6NzR3MsmtPElnJ+hhrBrkllbAf2rvfIw4E1vHxqsSkovyI65v0K
+ 6/vZ9XuUbgCHfhhJ3TXntv7KU2yMnjy4lFpJNP+dmdIQCm2HZVD3Vwdya/1ing7LZq+M
+ 9ISg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751638885; x=1752243685;
+ d=1e100.net; s=20230601; t=1751638886; x=1752243686;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1CvnYhdClMbhruEBotoxV/Si4Ta54uQOuX2WFi9R0V0=;
- b=oAgVRPPnPR7LZxJL/VK+Rei+LDqrjeFID3f7NlbX50vpkFrV76N8d2kNojcS/yKqu/
- spdKxGUmIew0otacSBDtIR2ZqBqfKfmSaJraj09S1ztHFbXYfIYEp6os3SNYURIVwmRR
- 1Bq6/rKYb7uNGQSqTgcWoqVWJTWJ3A1UDnMEm/rQ7GHJJ+NB/2qJrSeHWSICUs42eJJy
- xYo4NvOp3J45rrHFEKN24d15h00ZqdIizpU0aGNNSHJCAV0Sl9nTq6aVEjFjGm3MV0pH
- OblkFBfsFsaULPLhlteOIxyCohtrPw5wSO8KXrDJW7QYrq2okeNszZ9tmOj34nddHsxG
- T+XQ==
-X-Gm-Message-State: AOJu0YwNsfjACzFv+lsGBNknA4tC40PtWNdF5PnDeJ41ieovz+rRBNF9
- BPtvOQBeGYLORXbpDmSqKDwzNLJgV1weyCIhbB//MKhvv1f1KXvKblsJI6fiqtB7/bKeAiIHVkm
- JtNh+78Y=
-X-Gm-Gg: ASbGncvt5EjALNNPf0yqxhAaAf8Hl7Vl/qf4EZqbQBANJ8XN4DZKADH8l+WtlDuya0q
- PNl4BwnWZh1g4kuAyofBaxW1wgCI2KOH2CFSPATTlC66Liq5zsBFHhpJ/ALiWDluiN3cHQ7CY64
- ZwO26bPVRQMVn85AlS9vC1n9VGM0+0RxRWR/TmV4LLYXFtVly56C8hJ22Oc+MD9qbvhE4vEYTey
- Jx1buCsdRWD1p0vsB+59W9OfEmy0Ref16UJAt0/aQQaNG7dTTJPCNOJZcQcWfIYN6GxfHPPhnrr
- bQA0UUCUyMSl4K6fk7bKe3ByPasCCvk1vlWIuFIwQewSFf8X4IyjsyiWHGo2WkEPi3DOMPT0kKJ
- WZfHWCc5pSEXo5Ac+MMa0q2olguwUnBin5dZpavrZVC3DtVlY
-X-Google-Smtp-Source: AGHT+IH1NfTc1UxZ6awm2+MboMpIQKkdBqVgfpBqh/UfWsawdLoz7Kh1EtAURJedl0ZkybZAvCEuiw==
-X-Received: by 2002:a05:6870:ebcd:b0:2c7:6150:fff7 with SMTP id
- 586e51a60fabf-2f796ce49bcmr1769357fac.35.1751638885391; 
- Fri, 04 Jul 2025 07:21:25 -0700 (PDT)
+ bh=zli7CnBxcZoWcfFlVjjdFH46Lnu/RU9mJkmtTaLHjlQ=;
+ b=cAekeXgapr32HPU8P+2BZ1y7N3+bTv2b5Jj6Sv6dH9x7CamUcdsab/eH2xsgUOLfLY
+ 4C3ZxrE2UZCHYFcsglvgdkHhEXZWmj2yXMqBTerb2PekoZHCacEpHSiMwjWsc0wspVx7
+ NnnyMIf4xxPdd9xhjLz592bLyTymVJfPVqlfeyteMAjOSff7hN7yNbQQ6WMkaaH2cSUE
+ Sa2lOkDfixgl9MJ4Gg2VixZmtaoy0Av8kT4g1k40qIuqu91FjD5ct101RhSG+cGMC7V/
+ 3VgFwudszF6f86G6biFCP5wrL/leLlA6NoKnCR8EuCi1XTPLoPopcu6lDw3OwZDbq6VA
+ woZA==
+X-Gm-Message-State: AOJu0YyqzBDZPDrL3IQ2LMRt8IlrndOpKAejsJm++v1316mu0laP5zD6
+ QV6vl2ad+AuuyI8E5U69gd8D0VhYrq2r/BgCSYakl5aYExaeS1P5ikxOtlyAxWugJJAYJ1goai2
+ ljmdCtXo=
+X-Gm-Gg: ASbGncsJXKJtxShoS2L2em4foIfOsf+E/9MWH+ljEKawIK22CONqkJkNXSoRAcVZ1rd
+ jNyFPQbrMViJb/6cuGmsPu0aaCFEQLjZO0mYCmJbB9jFmxVL98KFPEWBpzAKWGFvk56q9Hw+RkN
+ g84TNnYHlH2gj8Sxu4VrDkgAY9b3d3eJB/0UD7rf9gTEsxKV8O1NP15yeWt4wms+BQyIHH//oXS
+ YT7cB1CrhlwUfPvpt7WvG2wQ+eqcvzc+OjGl8mRhpg6MYPdbZzc3SnyZ+QJOrTlJpkE8FCNKDQV
+ kptbMCVDOIDxCznMlMFBu5vnFjtiKVB+BU0f5fMuq7vdkMdFhW2/W7C0trh9CCR/DSZUTgfcqNt
+ pEhj9QCZ4b+cuH2c01aZ0nD9f2qhpfu99JopW9DZSZxByM2ev
+X-Google-Smtp-Source: AGHT+IHYjHRamIYHXSMNeTIZ1EdnaL9nhwbnOLmAbma5vi0NPG8ytkaYFy9039nT6nQJpjfkwQdunQ==
+X-Received: by 2002:a05:6870:e243:b0:2d4:e101:13f1 with SMTP id
+ 586e51a60fabf-2f791fb366fmr2213415fac.13.1751638886254; 
+ Fri, 04 Jul 2025 07:21:26 -0700 (PDT)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2f78ff0471esm528016fac.3.2025.07.04.07.21.24
+ 586e51a60fabf-2f78ff0471esm528016fac.3.2025.07.04.07.21.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 07:21:24 -0700 (PDT)
+ Fri, 04 Jul 2025 07:21:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	peter.maydell@linaro.org,
-	qemu-stable@nongnu.org
-Subject: [PATCH v4 009/108] target/arm: Fix bfdotadd_ebf vs nan selection
-Date: Fri,  4 Jul 2025 08:19:32 -0600
-Message-ID: <20250704142112.1018902-10-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org, peter.maydell@linaro.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v4 010/108] target/arm: Remove CPUARMState.vfp.scratch
+Date: Fri,  4 Jul 2025 08:19:33 -0600
+Message-ID: <20250704142112.1018902-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704142112.1018902-1-richard.henderson@linaro.org>
 References: <20250704142112.1018902-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2001:4860:4864:20::2f;
  envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2f.google.com
@@ -100,105 +100,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement FPProcessNaNs4 within bfdotadd_ebf, rather than
-simply letting NaNs propagate through the function.
+The last use of this field was removed in b2fc7be972b9.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 0e1850182a1 ("target/arm: Implement FPCR.EBF=1 semantics for bfdotadd()")
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/vec_helper.c | 75 ++++++++++++++++++++++++++-----------
- 1 file changed, 53 insertions(+), 22 deletions(-)
+ target/arm/cpu.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index 986eaf8ffa..3b7f308803 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -2989,31 +2989,62 @@ float32 bfdotadd(float32 sum, uint32_t e1, uint32_t e2, float_status *fpst)
- float32 bfdotadd_ebf(float32 sum, uint32_t e1, uint32_t e2,
-                      float_status *fpst, float_status *fpst_odd)
- {
--    /*
--     * Compare f16_dotadd() in sme_helper.c, but here we have
--     * bfloat16 inputs. In particular that means that we do not
--     * want the FPCR.FZ16 flush semantics, so we use the normal
--     * float_status for the input handling here.
--     */
--    float64 e1r = float32_to_float64(e1 << 16, fpst);
--    float64 e1c = float32_to_float64(e1 & 0xffff0000u, fpst);
--    float64 e2r = float32_to_float64(e2 << 16, fpst);
--    float64 e2c = float32_to_float64(e2 & 0xffff0000u, fpst);
--    float64 t64;
-+    float32 s1r = e1 << 16;
-+    float32 s1c = e1 & 0xffff0000u;
-+    float32 s2r = e2 << 16;
-+    float32 s2c = e2 & 0xffff0000u;
-     float32 t32;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 0338153923..96a4907266 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -669,9 +669,6 @@ typedef struct CPUArchState {
  
--    /*
--     * The ARM pseudocode function FPDot performs both multiplies
--     * and the add with a single rounding operation.  Emulate this
--     * by performing the first multiply in round-to-odd, then doing
--     * the second multiply as fused multiply-add, and rounding to
--     * float32 all in one step.
--     */
--    t64 = float64_mul(e1r, e2r, fpst_odd);
--    t64 = float64r32_muladd(e1c, e2c, t64, 0, fpst);
-+    /* C.f. FPProcessNaNs4 */
-+    if (float32_is_any_nan(s1r) || float32_is_any_nan(s1c) ||
-+        float32_is_any_nan(s2r) || float32_is_any_nan(s2c)) {
-+        if (float32_is_signaling_nan(s1r, fpst)) {
-+            t32 = s1r;
-+        } else if (float32_is_signaling_nan(s1c, fpst)) {
-+            t32 = s1c;
-+        } else if (float32_is_signaling_nan(s2r, fpst)) {
-+            t32 = s2r;
-+        } else if (float32_is_signaling_nan(s2c, fpst)) {
-+            t32 = s2c;
-+        } else if (float32_is_any_nan(s1r)) {
-+            t32 = s1r;
-+        } else if (float32_is_any_nan(s1c)) {
-+            t32 = s1c;
-+        } else if (float32_is_any_nan(s2r)) {
-+            t32 = s2r;
-+        } else {
-+            t32 = s2c;
-+        }
-+        /*
-+         * FPConvertNaN(FPProcessNaN(t32)) will be done as part
-+         * of the final addition below.
-+         */
-+    } else {
-+        /*
-+         * Compare f16_dotadd() in sme_helper.c, but here we have
-+         * bfloat16 inputs. In particular that means that we do not
-+         * want the FPCR.FZ16 flush semantics, so we use the normal
-+         * float_status for the input handling here.
-+         */
-+        float64 e1r = float32_to_float64(s1r, fpst);
-+        float64 e1c = float32_to_float64(s1c, fpst);
-+        float64 e2r = float32_to_float64(s2r, fpst);
-+        float64 e2c = float32_to_float64(s2c, fpst);
-+        float64 t64;
+         uint32_t xregs[16];
  
--    /* This conversion is exact, because we've already rounded. */
--    t32 = float64_to_float32(t64, fpst);
-+        /*
-+         * The ARM pseudocode function FPDot performs both multiplies
-+         * and the add with a single rounding operation.  Emulate this
-+         * by performing the first multiply in round-to-odd, then doing
-+         * the second multiply as fused multiply-add, and rounding to
-+         * float32 all in one step.
-+         */
-+        t64 = float64_mul(e1r, e2r, fpst_odd);
-+        t64 = float64r32_muladd(e1c, e2c, t64, 0, fpst);
-+
-+        /* This conversion is exact, because we've already rounded. */
-+        t32 = float64_to_float32(t64, fpst);
-+    }
+-        /* Scratch space for aa32 neon expansion.  */
+-        uint32_t scratch[8];
+-
+         /* There are a number of distinct float control structures. */
+         float_status fp_status[FPST_COUNT];
  
-     /* The final accumulation step is not fused. */
-     return float32_add(sum, t32, fpst);
 -- 
 2.43.0
 
