@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD98AF9815
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27704AF9831
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:29:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjDu-00088R-SS; Fri, 04 Jul 2025 12:25:14 -0400
+	id 1uXjDu-00088d-1x; Fri, 04 Jul 2025 12:25:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjDq-00086d-Nr
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:10 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1uXjDr-00086w-SS
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:12 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjDp-0005sT-18
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:10 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-451e2f0d9c2so7682085e9.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:25:08 -0700 (PDT)
+ id 1uXjDp-0005yH-Rc
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:11 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4537edf2c3cso11807095e9.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:25:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751646307; x=1752251107; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751646308; x=1752251108; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IJZT982rv2FiWLlGvuubYPPwI8y9TaD7lxYnflFDfTs=;
- b=kw4vZ3nq7i7REMV+Nahhh92hikKHnQG5PQ2cMir+JE206I012dck0Dl2y5hHxSo1Ou
- ff4EDceINowmy5kZCMIF7wPSV1a/4zmsSCQDTSCsaXh7ia5US6W3on5Fl8WnNapOYrFE
- ty9OMeJjTDZcwtKGLz4eTPUREdt9hLjWcgpWyD4GhHmcSMXXazVQfKzgnA/vBHBg8T+6
- 5UwJrQYv3Ho9VqhTnXkN21dhVzB4tX+jiz1qPt/2UyHeM7lsOafrWovZOKKac1fu4pLS
- qzcp+nFDnApeBnZ9+KyIGuSORGoBLmFCcX5QgOuFXCQG9rizzPsEZRca+oTZXozPvt77
- OR+Q==
+ :reply-to; bh=d/LfvC3NRJWTIueu6Kv0svLLOIPKIUa3RlTtXD3PzRg=;
+ b=u5ZVDZln6xgbwH8knvLNpQ8f5v8HPxw1WO1SujB4fjplKSZ9MEck5xSoJZbREvLziD
+ gwqS9MRrI98/ZmSBopxxwKf/ATspQNRm6+uHwPdQuIcdIr7/fGKawsIBoFzTTreXA1Jg
+ EQduhjWWpNUKNzN6igFR9PvXNRkHsWl3WG4/ewUY70aR0NwhO5fQN7P/CXkXeV1OxP24
+ gI5WLvavN6Q6qpCghNcoowcFPwI+LmgXY+DBfI26CC8cVjl5MFguysWWS997KfPyTzv8
+ Urpzz4mrjp0sMRXXBrAUcYiS1jTQmesB+2h8sMFYYveHR4ea3LQxLbQ4Gv1zq2qY7Spy
+ OwTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751646307; x=1752251107;
+ d=1e100.net; s=20230601; t=1751646308; x=1752251108;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IJZT982rv2FiWLlGvuubYPPwI8y9TaD7lxYnflFDfTs=;
- b=Ca+sufr3EBpy5ZuzjGcmJof2T3sEvrQRdfDSc0JEETPMBCzEAPEibFPhmFZ5Y3ajpF
- ZmNrwH6k/xggnjtqArNZ8ghjBlgPgYVICdvaBEJz2Wm5ko7WitJZ9aIp0/OGUkHLe4Xf
- xFakFWWLAbXs+kwcUJ8dxdJ1MOogCFEyg2Mo2YpCOWA0PC9KV4lehq9Cf8dr7iv3aAzu
- tqNWh790pZS5/3caMgrQC0P6+QAR2y6klSHUA0BPKSf3Mx9Q9G8Y5XMzdERvpgbdCLCU
- OTqEL+69tgAomKSSx13BV/b/yXZZPD09vOGDXO8JpL3G3sPdw5PsOIk78Uw3k7fYLqSH
- NdNQ==
-X-Gm-Message-State: AOJu0Yy5xU+8DXt1GVWKYQ9cUxfDUVOp8KIgsaFZQ8PLCe0Z7e9yTDes
- kcNcxv/pwYEtK4F3npBvqroySp00FeZY4MfoGJdDjNyF3lHkc2LRpvlMNvgA97NPf8KbxgFVgFx
- qnxXu
-X-Gm-Gg: ASbGncsAR85ys459lMTHLK49qdyMzQBQ4DmfqnacN/dJMLn1IOPg4aNDgkasPX5Pt+p
- 5R7nS+Ei62t83ceccKmI9Gp8HwxRfeyoLn6Yi6d/LO3nXu/vSzh+o/GMEv0OO3EjfW7uTc7JjwB
- vT3r2/QUZg8rVK6K2zCE1YdGqBjSZLGSYjvXyYt2DzNcwbAwLHtwQm+gO4kBiyyV2c1lCoaDTeO
- xMO/aAe1nnV2pKyYf6dF7PlFJyyGgAPclyWhwsma9JoIx2xCtdY/c5V6CGXzliP7FGK/3AZEPF+
- LWE2NC5kbkJeG/iJvrXdmdNMY21CCcVOTnTPYy76HxK81LPDz2O3wFkoN6aLVdytWW1+aibmlyZ
- P0zo=
-X-Google-Smtp-Source: AGHT+IEkd3lgkCato2O43K96ck/dFsBWMSzKV/LkfESqbwoIZo333m/0TDGYARTgyitAPTvQoBE9Lg==
-X-Received: by 2002:a05:600c:1f82:b0:453:ec2:c7b2 with SMTP id
- 5b1f17b1804b1-454b26b2c22mr36722285e9.7.1751646307367; 
- Fri, 04 Jul 2025 09:25:07 -0700 (PDT)
+ bh=d/LfvC3NRJWTIueu6Kv0svLLOIPKIUa3RlTtXD3PzRg=;
+ b=Xr/JuQTj2RwOtOR8v+wlusNxf43mtwHnKEzcwnWxrUA8iJULW6WQak1miJa1TXqX1V
+ O+174Fm6R4G83yavPBTRXJCuE/rXwLB+Y6rKtx1lUPs6UwTQ+4NgFnB1KmqikElOA7Kk
+ x4wzlnWE4Ee4boKRdLe9H10g0WTZEt1U1OvPPE92g4BDLloIiZONffMxS62/NiFP0yNk
+ fFSFbDpQKDL9ZgQ8HKSpEQnxthQnGq6InH2ruspMYMZMxQHAgxxon/vXiaC24JO1r0yT
+ RyV6+R0plObAvnAcsD84e6gbWKQ3qQoWsNUzSxi2Dq3Ez2uFYWK2942/MG208Dqtj+89
+ R3/g==
+X-Gm-Message-State: AOJu0Ywx/CNT+VlFG+8XndMPWj3WOZ/NWDsk71hTPLK2D/uYfnhlUNLi
+ apr+r6kaHdFgTWVaNF7aonH0qIdVUEFQ7ruqDFwNAX7nfIGJ9cq2befRsxzN4ADNUVWdkF63TAX
+ mUnoV
+X-Gm-Gg: ASbGnctTByiY14Ydx1LP4b2XlJ8/g1t0nt3lVjiWNTfuKJH6Qbdfb/85FAR1UZj8gxw
+ /F1dULGcxv89pKvyKmcxdOVQCwrqxSxi44X5ixmwKO9Gsvb6wW2WYxSqOYWfoMohGDSNowarx2d
+ z/bTIKjDPDWHu520shZuUiNF//MSzDtUcbGILdeVVnV+jgbGORUudelvCHkckivEJ1lNlrtW+Gr
+ xpVMClszY7DpnQfSrm9QYkQ8mz+dakqzvA/29fTfyy/yBoTHhcBFESjEOWay0wJWcmyg2kKb1LG
+ CrFGO6BcDPNXNZy2TEKIK1MLhlZVp+43EFlotUDBpC/+4iUt0UjQAlFZ787kCFupfsUr
+X-Google-Smtp-Source: AGHT+IHOjKAvkLt/51nVnbJGX61nFsWcEcXrag0hCWPzrdYmw9+SKiH9Kich9iGJajSw8nFpy4+sBg==
+X-Received: by 2002:a05:600c:8b52:b0:442:f98e:f37 with SMTP id
+ 5b1f17b1804b1-454b30df071mr30296615e9.21.1751646308227; 
+ Fri, 04 Jul 2025 09:25:08 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.25.06
+ ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.25.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 09:25:06 -0700 (PDT)
+ Fri, 04 Jul 2025 09:25:07 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 004/119] target/arm: Fix function_return helper load alignment
- checks
-Date: Fri,  4 Jul 2025 17:23:04 +0100
-Message-ID: <20250704162501.249138-5-peter.maydell@linaro.org>
+Subject: [PULL 005/119] target/arm: Fix VLDR helper load alignment checks
+Date: Fri,  4 Jul 2025 17:23:05 +0100
+Message-ID: <20250704162501.249138-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704162501.249138-1-peter.maydell@linaro.org>
 References: <20250704162501.249138-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,31 +98,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: William Kosasih <kosasihwilliam4@gmail.com>
 
-This patch adds alignment checks in the load operations (when unstacking the
-return pc and psr) in the FunctionReturn pseudocode.
+This patch adds alignment checks in the load operations in the VLDR
+instruction.
 
 Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
 Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250703085604.154449-4-kosasihwilliam4@gmail.com
+Message-id: 20250703085604.154449-5-kosasihwilliam4@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/m_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/tcg/mve_helper.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
-index f342d934896..28307b56151 100644
---- a/target/arm/tcg/m_helper.c
-+++ b/target/arm/tcg/m_helper.c
-@@ -1946,7 +1946,7 @@ static bool do_v7m_function_return(ARMCPU *cpu)
-          * do them as secure, so work out what MMU index that is.
-          */
-         mmu_idx = arm_v7m_mmu_idx_for_secstate(env, true);
--        oi = make_memop_idx(MO_LEUL, arm_to_core_mmu_idx(mmu_idx));
-+        oi = make_memop_idx(MO_LEUL | MO_ALIGN, arm_to_core_mmu_idx(mmu_idx));
-         newpc = cpu_ldl_mmu(env, frameptr, oi, 0);
-         newpsr = cpu_ldl_mmu(env, frameptr + 4, oi, 0);
+diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
+index 506d1c34757..8834523c23f 100644
+--- a/target/arm/tcg/mve_helper.c
++++ b/target/arm/tcg/mve_helper.c
+@@ -148,13 +148,15 @@ static void mve_advance_vpt(CPUARMState *env)
+ }
  
+ /* For loads, predicated lanes are zeroed instead of keeping their old values */
+-#define DO_VLDR(OP, MSIZE, LDTYPE, ESIZE, TYPE)                         \
++#define DO_VLDR(OP, MFLAG, MSIZE, MTYPE, LDTYPE, ESIZE, TYPE)           \
+     void HELPER(mve_##OP)(CPUARMState *env, void *vd, uint32_t addr)    \
+     {                                                                   \
+         TYPE *d = vd;                                                   \
+         uint16_t mask = mve_element_mask(env);                          \
+         uint16_t eci_mask = mve_eci_mask(env);                          \
+         unsigned b, e;                                                  \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MFLAG | MO_ALIGN, mmu_idx);        \
+         /*                                                              \
+          * R_SXTM allows the dest reg to become UNKNOWN for abandoned   \
+          * beats so we don't care if we update part of the dest and     \
+@@ -163,7 +165,7 @@ static void mve_advance_vpt(CPUARMState *env)
+         for (b = 0, e = 0; b < 16; b += ESIZE, e++) {                   \
+             if (eci_mask & (1 << b)) {                                  \
+                 d[H##ESIZE(e)] = (mask & (1 << b)) ?                    \
+-                    cpu_##LDTYPE##_data_ra(env, addr, GETPC()) : 0;     \
++                    (MTYPE)cpu_##LDTYPE##_mmu(env, addr, oi, GETPC()) : 0;\
+             }                                                           \
+             addr += MSIZE;                                              \
+         }                                                               \
+@@ -185,20 +187,20 @@ static void mve_advance_vpt(CPUARMState *env)
+         mve_advance_vpt(env);                                           \
+     }
+ 
+-DO_VLDR(vldrb, 1, ldub, 1, uint8_t)
+-DO_VLDR(vldrh, 2, lduw, 2, uint16_t)
+-DO_VLDR(vldrw, 4, ldl, 4, uint32_t)
++DO_VLDR(vldrb, MO_UB, 1, uint8_t, ldb, 1, uint8_t)
++DO_VLDR(vldrh, MO_TEUW, 2, uint16_t, ldw, 2, uint16_t)
++DO_VLDR(vldrw, MO_TEUL, 4, uint32_t, ldl, 4, uint32_t)
+ 
+ DO_VSTR(vstrb, 1, stb, 1, uint8_t)
+ DO_VSTR(vstrh, 2, stw, 2, uint16_t)
+ DO_VSTR(vstrw, 4, stl, 4, uint32_t)
+ 
+-DO_VLDR(vldrb_sh, 1, ldsb, 2, int16_t)
+-DO_VLDR(vldrb_sw, 1, ldsb, 4, int32_t)
+-DO_VLDR(vldrb_uh, 1, ldub, 2, uint16_t)
+-DO_VLDR(vldrb_uw, 1, ldub, 4, uint32_t)
+-DO_VLDR(vldrh_sw, 2, ldsw, 4, int32_t)
+-DO_VLDR(vldrh_uw, 2, lduw, 4, uint32_t)
++DO_VLDR(vldrb_sh, MO_SB, 1, int8_t, ldb, 2, int16_t)
++DO_VLDR(vldrb_sw, MO_SB, 1, int8_t, ldb, 4, int32_t)
++DO_VLDR(vldrb_uh, MO_UB, 1, uint8_t, ldb, 2, uint16_t)
++DO_VLDR(vldrb_uw, MO_UB, 1, uint8_t, ldb, 4, uint32_t)
++DO_VLDR(vldrh_sw, MO_TESW, 2, int16_t, ldw, 4, int32_t)
++DO_VLDR(vldrh_uw, MO_TEUW, 2, uint16_t, ldw, 4, uint32_t)
+ 
+ DO_VSTR(vstrb_h, 1, stb, 2, int16_t)
+ DO_VSTR(vstrb_w, 1, stb, 4, int32_t)
 -- 
 2.43.0
 
