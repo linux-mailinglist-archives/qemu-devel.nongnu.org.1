@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A7CAF93F9
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 15:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE46BAF944D
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 15:34:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXgPl-0007qy-K5; Fri, 04 Jul 2025 09:25:17 -0400
+	id 1uXgXc-0004Q1-Bs; Fri, 04 Jul 2025 09:33:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXgPh-0007qX-0Q
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 09:25:13 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXgXQ-0004M6-1D
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 09:33:19 -0400
+Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXgPe-00054J-Ut
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 09:25:12 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3a4fd1ba177so682140f8f.0
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 06:25:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXgXK-0003Zf-FY
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 09:33:09 -0400
+Received: by mail-yb1-xb2c.google.com with SMTP id
+ 3f1490d57ef6-e7db5c13088so825588276.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 06:33:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751635509; x=1752240309; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=YlPfivgchPNQdEOzqEtSvldwfqBebST1wJYyAXBd+8I=;
- b=ubqLMKBByx1JLj/gHvgE82lIZFzD1Vqzr6JYhOx7nNecBd4Lw4FrM540CKooHB1kjc
- 1S9Sw87NZbGXycvaQO3tlR4n/oS9kG9o6vU2CaU9bys4JHQmMMpi4yyU5vrPh4kHe+ND
- go5mbrGhXgsqhrwRIxJs1+XqyPbUiDUEgtuYJzFtvOR+UWj2w1QRq0gL4W733TAKjtXW
- 03PgxHggIKXkv/ycc6vyrfjefB43kFpVtlKknkZaO6pY65teORC3jW+a3RiGNkNr9a6n
- vlC9OjZz7kzdfosq0SLLQ3xw90AzWUEC9bb8nrPTQqo4P1zTrORzclqb+YtCT94rz8O0
- xD9w==
+ d=linaro.org; s=google; t=1751635985; x=1752240785; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DwaDmSI+c+ULG0pcs+kC8v9tTILpDgFwM3hxFcbfcyI=;
+ b=dVsEBwQi7oMDmlAbrc/SnV87WqdsKBjUWIfRfMt05aEMa8k8yPorOeke6mFAM/sEsZ
+ d1h4+IdureXF7l1N9h1YKYyDp7xTdwzgL4LGTE9dPR4AQ3d+7vAtOyO06vrXxtFFOkBW
+ be1S7Qd+qhsJs9OV4fh3W/4Kh9lXlpPkCAOT2WSQXrqD1vxq4VXKPl0DNLfd+j+LK8Mh
+ Q04iOU/lnTOgkzFGDphxJvw0kPjM+Oq8O3maXYFlW5K/LndnmNFu4dmhpwaGkDRLSBLk
+ gZNam0Oz3XyS02+EzUTI7uVKVHfB1TCKtqJqXiroYX/CVJV1Be9IFmJDml1+O3iOTeGA
+ OiwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751635509; x=1752240309;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1751635985; x=1752240785;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YlPfivgchPNQdEOzqEtSvldwfqBebST1wJYyAXBd+8I=;
- b=vPMsH9MiE0Y/HH3nDVjKHlcwDaTHTInKZtkLAgoVuxEVlMCm38vnXwVsew89qzltgv
- RtbqWKczIqtQ8oABlI8oiox99RpIf4g2K4G0uFpYphguL0c+nmmaqxNr9jg8ngTkL14v
- x1LwJn2byOf31HqgsXdKQ5u51SiyqLh4KgG5UKba90EHoeVjYathgjBw7p91D7G34uTY
- W5aoCQcQYKXPnCmOZaf532E/vC3x4sj2BVnUDXlCBIhpjOf/1Aow23qLp5KAN39NxXYQ
- FeblI8g5deEa95FWgnVl4cWmGDozfmCLuuIBdIumZkOdG4oXS6E0BS5VTCkmvaq8fX7x
- sCeA==
-X-Gm-Message-State: AOJu0YzwK88T+709dEr7ck3StDGitZdgVp4EsMVy2/3i7XkmeTbO5IEK
- GKkD9tjIcK8DjCiPqK3ByE/qT0iOgXmZyEgRIjT5EWuByduj0nMPh9ef2SO1ouSAKAaunvTAX7H
- 7+kGe
-X-Gm-Gg: ASbGnctV6pOnta79A1YZIYZSOlnl2U64R1FHUvaEYA1jZS1vsEcxNksFGc/GZak9N9L
- lcSWqqIczsQDv813HFFFIooG0fo80Ek6SeI7kLYTs7xYIjYGx8kpyGyEJjHX+IXlU6bW4zkrMW2
- IXjWQuMK8eYEG9l0SxS9VI47BpTXV8hc6Q06lsXJ2mSvn0vwthy1VwhAjqkFC/X39rso8MqsJyB
- CHrsyp/AToTtVbr38vfL4JF16jeY4T39LT2VZ+I54xXWg3Z+Hm0W8u0JCXlAqZtgCxn7WW/0iyV
- zXKPrBe5vW0o/JNPjIw6r9LUJO2pwkI1DiuntzyYXsdHsEqP81+MZwrhUpWlpqAcSSruqt7VPhX
- zq2Ci4NxIPUigCR4TKvRGo137SJJxxn2mJY7+hvo7bYkyW9rzyaTi
-X-Google-Smtp-Source: AGHT+IGoKq2fUch9JCYRQKxldLgrSdfznVr87N4f4WgJ/O+vvJSi2POcKlJdQdZ8VuzrnoeIiPeBjg==
-X-Received: by 2002:a05:6000:1885:b0:3a5:271e:c684 with SMTP id
- ffacd0b85a97d-3b49558ac68mr3125902f8f.24.1751635508675; 
- Fri, 04 Jul 2025 06:25:08 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-453a85b3016sm84423525e9.0.2025.07.04.06.25.07
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Jul 2025 06:25:08 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL v2 34/36] accel/system: Convert pre_resume() from AccelOpsClass
- to AccelClass
-Date: Fri,  4 Jul 2025 15:24:39 +0200
-Message-ID: <20250704132439.25743-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250704132439.25743-1-philmd@linaro.org>
-References: <20250704132439.25743-1-philmd@linaro.org>
+ bh=DwaDmSI+c+ULG0pcs+kC8v9tTILpDgFwM3hxFcbfcyI=;
+ b=p5ewrGttgSpAkxbgNkc5D8vEpvOUbRBzVxYYhjy0zuyEH/xnGcVKP1q2edeSqmCu7I
+ p756TSnW7FuWvpH6jqY8G63opBM/t6crzqebfurkISPj6AL0biOMANptYetlDeicWdzH
+ rymj72qwQ8PmKqloxeQY70m2O3OuR/qw6KwjeHtxL9VyAGG0imnAY/WZ8K5+qAgDyrou
+ AValbw5NZDjvKp+iHqNmg/dv9S4m+t1h+0fg/h0PP1ZmxNnZvS8cLMHdX6po1tj+H0YC
+ xTzUqUW3is9H762Yx6fh0jYoRCtwoFAs/GufqaC5VslB2tGVLxTxX/MCKzWIsTWxtuNj
+ Fkjg==
+X-Gm-Message-State: AOJu0YzYGXzDhH4r0MnBjVv6ctDEX93nMtTJzZkDcb39zHxILs9ohK/D
+ 7XtTDXQeZj5A/Y+9ld7EZRLThDiwnAkhACSEEVDmSb5zv3/fcl0pyK+h1zVhZYpovRIo+aFeHh4
+ n8PlbxzcBae/lYJhk+cHI43Ao8eZT6sm10RLS9QpwgQ==
+X-Gm-Gg: ASbGnctbDQ+kYkNoR49TE2rZAdUfdE1q0EQOoFulIVBBSzGggYyZ8yfoXxq916o0Sl2
+ HRx77QWscWHXWDBBvk/fH++kJV/YQYKXaV1N7JA0Z4CxG7wGYCvxdncyJsaOEmPemPO7eIKQKEv
+ oEs2VDOH4BoiWoO5nsuxTss8AqvUnC6qgagnQ/y3kG1w38
+X-Google-Smtp-Source: AGHT+IFCAnEZls9tvJ2p1vJqD4nxu7483ggQioJYTrgA1iflgq8Prd6RdGmdyuEWQ5cYALjCPuoaeUD1L63dzhiU3Gc=
+X-Received: by 2002:a05:6902:2849:b0:e89:9a4a:42cd with SMTP id
+ 3f1490d57ef6-e899d13b7c5mr3492974276.12.1751635984913; Fri, 04 Jul 2025
+ 06:33:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+References: <20250630130937.3487-1-philmd@linaro.org>
+ <20250630130937.3487-3-philmd@linaro.org>
+ <CAFEAcA8KBTfJqUbBeUm9_=JoMf133Tt3tcWhJ=sSSy-Yc6Cdcg@mail.gmail.com>
+ <eab8d30e-011a-4ec0-ab70-827f6a33a5c5@linaro.org>
+In-Reply-To: <eab8d30e-011a-4ec0-ab70-827f6a33a5c5@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 4 Jul 2025 14:32:53 +0100
+X-Gm-Features: Ac12FXx9p9M4oe1SZla9vu98oaZURWdG2Izp3rDg0x0klQ7UiXTxUxNHCnc1V2k
+Message-ID: <CAFEAcA8sH8HyskYEfoNKFi9N3Bq7e0ze15_ouus82nEZSchrJw@mail.gmail.com>
+Subject: Re: [PATCH 2/6] target/arm: Only allow disabling NEON when using TCG
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Alexander Graf <agraf@csgraf.de>, qemu-arm@nongnu.org, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,137 +97,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Accelerators call pre_resume() once. Since it isn't a method to
-call for each vCPU, move it from AccelOpsClass to AccelClass.
-Adapt WHPX.
+On Fri, 4 Jul 2025 at 14:17, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> On 4/7/25 15:03, Peter Maydell wrote:
+> > On Mon, 30 Jun 2025 at 14:09, Philippe Mathieu-Daud=C3=A9 <philmd@linar=
+o.org> wrote:
+> >>
+> >> Only allow disabling NEON when using TCG.
+> >>
+> >> This avoids confusing user experience:
+> >>
+> >>    $ qemu-system-aarch64 -M virt -accel hvf \
+> >>                          -cpu host,neon=3Doff,vfp=3Doff,vfp-d32=3Doff
+> >>    qemu-system-aarch64: AArch64 CPUs must have both VFP and Neon or ne=
+ither
+> >>
+> >>    $ qemu-system-aarch64 -M virt -accel hvf \
+> >>                          -cpu host,neon=3Doff,vfp=3Doff,vfp-d32=3Doff
+> >>    qemu-system-aarch64: ARM CPUs must have both VFP-D32 and Neon or ne=
+ither
+> >>
+> >>    $ qemu-system-aarch64 -M virt -accel hvf \
+> >>                          -cpu host,neon=3Doff,vfp=3Doff,vfp-d32=3Doff
+> >>    qemu-system-aarch64: can't apply global host-arm-cpu.vfp-d32=3Doff:=
+ Property 'host-arm-cpu.vfp-d32' not found
+> >
+> > I don't know about users, but I'm definitely confused.
+> > Aren't these three all the same command line ? What's
+> > the problem it's trying to show ?
+>
+> I should have only shared this confusing example:
+>
+> $ qemu-system-aarch64 -M virt -accel hvf -cpu host,vfp-d32=3Doff
+> qemu-system-aarch64: can't apply global host-arm-cpu.vfp-d32=3Doff:
+> Property 'host-arm-cpu.vfp-d32' not found
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250702185332.43650-21-philmd@linaro.org>
----
- include/qemu/accel.h              | 3 +++
- include/system/accel-ops.h        | 1 -
- target/i386/whpx/whpx-accel-ops.h | 1 -
- accel/accel-system.c              | 9 +++++++++
- system/cpus.c                     | 4 +---
- target/i386/whpx/whpx-accel-ops.c | 1 -
- target/i386/whpx/whpx-all.c       | 3 ++-
- 7 files changed, 15 insertions(+), 7 deletions(-)
+That seems correct, though ? We say
+     * Allow user to turn off VFP and Neon support, but only for TCG --
+     * KVM does not currently allow us to lie to the guest about its
+     * ID/feature registers, so the guest always sees what the host has.
+and hvf is currently the same. The bug the patch is fixing
+looks like it is that -accel hvf lets us say '-cpu host,neon=3Doff'
+but it won't actually do what the user might be intending. So
+we should avoid creating the property, as we already do for KVM.
 
-diff --git a/include/qemu/accel.h b/include/qemu/accel.h
-index 1c097ac4dfb..f2bfc02d61e 100644
---- a/include/qemu/accel.h
-+++ b/include/qemu/accel.h
-@@ -51,6 +51,7 @@ typedef struct AccelClass {
- 
-     /* gdbstub related hooks */
-     int (*gdbstub_supported_sstep_flags)(AccelState *as);
-+    void (*pre_resume_vm)(AccelState *as, bool step_pending);
- 
-     bool *allowed;
-     /*
-@@ -86,6 +87,8 @@ int accel_init_machine(AccelState *accel, MachineState *ms);
- /* Called just before os_setup_post (ie just before drop OS privs) */
- void accel_setup_post(MachineState *ms);
- 
-+void accel_pre_resume(MachineState *ms, bool step_pending);
-+
- /**
-  * accel_cpu_instance_init:
-  * @cpu: The CPU that needs to do accel-specific object initializations.
-diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
-index a786c7d478a..bf7383511d0 100644
---- a/include/system/accel-ops.h
-+++ b/include/system/accel-ops.h
-@@ -61,7 +61,6 @@ struct AccelOpsClass {
-      */
-     void (*synchronize_state)(CPUState *cpu);
-     void (*synchronize_pre_loadvm)(CPUState *cpu);
--    void (*synchronize_pre_resume)(bool step_pending);
- 
-     /* handle_interrupt is mandatory. */
-     void (*handle_interrupt)(CPUState *cpu, int mask);
-diff --git a/target/i386/whpx/whpx-accel-ops.h b/target/i386/whpx/whpx-accel-ops.h
-index e6cf15511d4..54cfc25a147 100644
---- a/target/i386/whpx/whpx-accel-ops.h
-+++ b/target/i386/whpx/whpx-accel-ops.h
-@@ -21,7 +21,6 @@ void whpx_cpu_synchronize_state(CPUState *cpu);
- void whpx_cpu_synchronize_post_reset(CPUState *cpu);
- void whpx_cpu_synchronize_post_init(CPUState *cpu);
- void whpx_cpu_synchronize_pre_loadvm(CPUState *cpu);
--void whpx_cpu_synchronize_pre_resume(bool step_pending);
- 
- /* state subset only touched by the VCPU itself during runtime */
- #define WHPX_SET_RUNTIME_STATE   1
-diff --git a/accel/accel-system.c b/accel/accel-system.c
-index af713cc9024..c54c30f18ba 100644
---- a/accel/accel-system.c
-+++ b/accel/accel-system.c
-@@ -62,6 +62,15 @@ void accel_setup_post(MachineState *ms)
-     }
- }
- 
-+void accel_pre_resume(MachineState *ms, bool step_pending)
-+{
-+    AccelState *accel = ms->accelerator;
-+    AccelClass *acc = ACCEL_GET_CLASS(accel);
-+    if (acc->pre_resume_vm) {
-+        acc->pre_resume_vm(accel, step_pending);
-+    }
-+}
-+
- /* initialize the arch-independent accel operation interfaces */
- void accel_init_ops_interfaces(AccelClass *ac)
- {
-diff --git a/system/cpus.c b/system/cpus.c
-index 0d0eec82a2f..8e6da2e0606 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -768,9 +768,7 @@ int vm_prepare_start(bool step_pending)
-      * WHPX accelerator needs to know whether we are going to step
-      * any CPUs, before starting the first one.
-      */
--    if (cpus_accel->synchronize_pre_resume) {
--        cpus_accel->synchronize_pre_resume(step_pending);
--    }
-+    accel_pre_resume(MACHINE(qdev_get_machine()), step_pending);
- 
-     /* We are sending this now, but the CPUs will be resumed shortly later */
-     qapi_event_send_resume();
-diff --git a/target/i386/whpx/whpx-accel-ops.c b/target/i386/whpx/whpx-accel-ops.c
-index 31cf15f0045..5f4841c9fa4 100644
---- a/target/i386/whpx/whpx-accel-ops.c
-+++ b/target/i386/whpx/whpx-accel-ops.c
-@@ -96,7 +96,6 @@ static void whpx_accel_ops_class_init(ObjectClass *oc, const void *data)
-     ops->synchronize_post_init = whpx_cpu_synchronize_post_init;
-     ops->synchronize_state = whpx_cpu_synchronize_state;
-     ops->synchronize_pre_loadvm = whpx_cpu_synchronize_pre_loadvm;
--    ops->synchronize_pre_resume = whpx_cpu_synchronize_pre_resume;
- }
- 
- static const TypeInfo whpx_accel_ops_type = {
-diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
-index 721c4782b9c..faf56e19722 100644
---- a/target/i386/whpx/whpx-all.c
-+++ b/target/i386/whpx/whpx-all.c
-@@ -2105,7 +2105,7 @@ void whpx_cpu_synchronize_pre_loadvm(CPUState *cpu)
-     run_on_cpu(cpu, do_whpx_cpu_synchronize_pre_loadvm, RUN_ON_CPU_NULL);
- }
- 
--void whpx_cpu_synchronize_pre_resume(bool step_pending)
-+static void whpx_pre_resume_vm(AccelState *as, bool step_pending)
- {
-     whpx_global.step_pending = step_pending;
- }
-@@ -2697,6 +2697,7 @@ static void whpx_accel_class_init(ObjectClass *oc, const void *data)
-     AccelClass *ac = ACCEL_CLASS(oc);
-     ac->name = "WHPX";
-     ac->init_machine = whpx_accel_init;
-+    ac->pre_resume_vm = whpx_pre_resume_vm;
-     ac->allowed = &whpx_allowed;
- 
-     object_class_property_add(oc, "kernel-irqchip", "on|off|split",
--- 
-2.49.0
+(The other odd thing here is that hvf CPUs don't support
+AArch32, but ARM_FEATURE_NEON is about AArch32. But that's
+a separate thing and we'd need to cross-check that nothing
+aarch64 is incorrectly looking at that feature flag before
+we suppressed it for CPUs without any AArch32 support.)
 
+-- PMM
 
