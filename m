@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E9BAF912B
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D88ECAF914A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:17:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXeMk-0003Hk-P2; Fri, 04 Jul 2025 07:14:03 -0400
+	id 1uXeMo-0003bT-AN; Fri, 04 Jul 2025 07:14:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeMB-0002k0-Va
+ id 1uXeMK-0002oc-La
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:38 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeMA-0003dI-9A
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:27 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-23636167b30so8770375ad.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:13:25 -0700 (PDT)
+ id 1uXeMD-0003hX-6J
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:33 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-234c5b57557so8811225ad.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:13:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751627605; x=1752232405; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1751627607; x=1752232407; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p5v7HpHr7Qhk2U0fWT9R+9pp4SWemWrxnWXMn5hfBww=;
- b=JQdj8xbPze9dIijsnabnd9T86CQttDa/gPrH8u3sc0I0J/3D4oVTImMQf8wF8jJznq
- pXkJJ1EbSqOq8APYrN+OoCAgpTcyynYi1aZl0kX7Cefp+BhGIC4ccjZLzwxpYHj/Agbl
- wSvszIqr9FPd+GrQ8eJpqvuDjX5k+ZxIj4mWiKKfmgJI9CKzZNEgWF4X4wOuVpAMdq2C
- Flmlkg8wo2Wav0sILacBUCrU9XnIO/ylCENFM7Ugq5x8Px4QwZ7Nnf+OSB10T1Rx9Xnl
- P/XzJ3W3uVAse5IYw9w0saVyBa8YarH3djnESu7N6qbQ7qncE1LIVndSgf4jhlZIoR1e
- MJVg==
+ bh=mNwvyAn7RyjFpGw6JKkmxkBSLazntAxbNaqKwuNDhZs=;
+ b=exnGgfmh9Jqj10IxRBw5cA6r3cTGbc5zUgHS1kzDWTsCZjbG4GJcbADeldZ7UXv98t
+ xFzn8msDX80w0v6AolOg6mqMF4QTAjt5I5PqkWhdTs/X+vixHwxKlq3cRtbIvNS7gbUU
+ y/3/5mhO21ym3GkBRZVKOhYnnUXOdMc0ac5WzgEUGCdA7iU1lspJ/Ebc0ryQ2XZ0iBw3
+ K28C5AEGxp/0yuregx24do61gaczDrvnXKJDzzXws5EDIm8H3Rjrr8y3a3GaRJYRyCBK
+ h7vSVRJWWNmrsipoQvIy6DmGHwLFv8R18oaQiwMUmC5/DFrIqWKdxctAlME8Rshi65X7
+ +u9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751627605; x=1752232405;
+ d=1e100.net; s=20230601; t=1751627607; x=1752232407;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p5v7HpHr7Qhk2U0fWT9R+9pp4SWemWrxnWXMn5hfBww=;
- b=OzzRSk8T+VJLRSxuk7QpzPWtwUGMPcfgcBgEJ5MXUE+ZnNPuJYx9Pvi7ydlQmxJUHT
- hhGUQ2cGTPR7IoaShE1nXuokXuHUq/xJaEyaSZbOVG3ZLbv+WbBCNkhIHGkP/mnlV0a8
- /GjQuljRS4y0cnbGvMbrtgohCHs+XGXwsvcerrnrV1aadmHQXQxVXwyEyXRaxaNR/Out
- oOn8kCK2foCAqRud6eqcHNYYgD6pfx1CUD4zBRMx2eAUbTDuVzSCAOUuVKDkAEQImHzM
- LtCLbOtTWEC9Oh21RwuDQjmmvn4hgRSKArgd1BpF8ANFBOMpt31/xz0CVoJcJYtvKNlQ
- Nh3w==
-X-Gm-Message-State: AOJu0YxaUwQ0BKXG456udy3ibXLqWgbkMHCrmchoEQHlr0LEXVOINWH+
- OxoxHLihSt/ty6sL/b2FHJwEeDXXrjHSxe3JNB7wCcBxbGoEghx/Ej20CpPXPw==
-X-Gm-Gg: ASbGncuocYSld1Qpz6LnWNMXfLnIvcgPSzVPsZYIK0Zs1jfqhopwkwUDjFjsT4UcuSc
- K9z/hb7agtADu+b39V9vibNW4xusSlj4ZrGMArE8+cIpr18SDWX5M/3RMoGzGcLJtqWcEVFk+ru
- +s/+y16q5tZfjs2/FEDZ8nuGMODS/2QWhqQ08Zd2suMd3cPNRdeo+UzFiNWkwcENTvhnJ8djlUp
- BRS95ZBBCkrGdUlKFqPzd8gI6AC5y0Bg3Jpod2FlTApwyYqZUMOB0abkrAS7OmURPFRbiu2+cN6
- 1Rv6K9BHuuqzS8j5OOcaLniGXXnvtp+eK7mLUDYq4fqs3of6jvB9n4a9pyiJ9hxpufssXsmbCwh
- 20EOx+xbzyl0S2GHINv8LjsoqcF2uSSOO0ZQny/8cERlAUGUMtzNUwFzsAqCPkrrAqX8=
-X-Google-Smtp-Source: AGHT+IF95knaZe5x/9LvJxfMHtXFh6QIoPGDLqXa4nktwphCDnt21foNz24y5sscCc/IU8SyRU+D7g==
-X-Received: by 2002:a17:902:c404:b0:234:a139:1203 with SMTP id
- d9443c01a7336-23c85e7459amr34316635ad.32.1751627604703; 
- Fri, 04 Jul 2025 04:13:24 -0700 (PDT)
+ bh=mNwvyAn7RyjFpGw6JKkmxkBSLazntAxbNaqKwuNDhZs=;
+ b=vD7pUdtUXbelY9DkEEJUpYFU0/4ahvXCFiabcx+nXkibp7AltEsHsLXmgFd8JcbHa1
+ Hr9TYYQ2xBG/lFmYhJr9xyGUV5TdPgndmR/fzGBSNcFX+OQT58Ng8THdxNeyTNjExql0
+ R1ojLz1ceU6LluKW9CUJLZggueZdabk5khZCtVci2u4RCiM12JxId0WoNhSFDoMWHWyr
+ Q4H6VGV6UEVu7NgRqxOC6/TnPzApfqHQIbQBbl+yDsbiPCvAbr/COZus+SKSJFwdmLbN
+ UwN2NKxYpLajMWrOgiNTmF3/1+5tJJlWZEnkoJhO614UAxCttL3uXa9wJ6xjT3gh6nlX
+ 8gEQ==
+X-Gm-Message-State: AOJu0Yz62Ru4eEHisWdbF8BQaW13dc7EQ+3P/Nw4OLa9ehA/dcOtC4KS
+ ykn71vnGdRqBty9zu3lgVDxC8fZTv+V3zz8W6/6i7G763wbHyG2KxTrqNTI3Aw==
+X-Gm-Gg: ASbGncuAZ4x+lb5MDwFPDSa81gJvSDBJRDy8MqUMxtnDsqrlqNiU4+NILgg/rYp1wor
+ DwDWuzrt5NPZhFoDStQXDxSpZkKt6B2tFLR8cc/lqe8ffkSP5t7hXIzuQYl788y0eaW6irdsq/T
+ dcVhUA0F3tFrnK0PWiWRuWnhzg8bnlcOUndiFWjTF4cni4g2A5lKrptqxQlWlNHTJNujDNG2uMI
+ 9ETOsblFj7UDcG2kIJ5rqW5rm1ay+3WICETcP1GygTq/DFBhZyfTA3s85tVqx5zSn2OjD3iT+/F
+ pBFwF6ye8HCJi2ytiIOfHwIZu2NZ20wxrfaSEVsQ3S8MT42D2Jja8xk7ydSDqvWtiosEgh32bjB
+ Md2tU2isncX9KzCUK7/hEEZK/mXao+ALOIOY3of7J44W62M0S6HFeQ04U1wJ5jdegF2I=
+X-Google-Smtp-Source: AGHT+IEW5b2CKsmjAVSjWYEXNqTkbTuLPAY1OLnAOcGTTCo3jn8F9o1AsUf3CcXoGg5FhCZ1ozq8WQ==
+X-Received: by 2002:a17:903:1b68:b0:235:27b6:a897 with SMTP id
+ d9443c01a7336-23c85e9c18fmr38752395ad.34.1751627607371; 
+ Fri, 04 Jul 2025 04:13:27 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.13.22
+ d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.13.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 04:13:24 -0700 (PDT)
+ Fri, 04 Jul 2025 04:13:26 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: alistair23@gmail.com, Anton Blanchard <antonb@tenstorrent.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 18/40] target/riscv: use qemu_chr_fe_write_all() in
- DBCN_CONSOLE_WRITE_BYTE
-Date: Fri,  4 Jul 2025 21:11:45 +1000
-Message-ID: <20250704111207.591994-19-alistair.francis@wdc.com>
+Subject: [PULL 19/40] target/riscv: Fix fcvt.s.bf16 NaN box checking
+Date: Fri,  4 Jul 2025 21:11:46 +1000
+Message-ID: <20250704111207.591994-20-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250704111207.591994-1-alistair.francis@wdc.com>
 References: <20250704111207.591994-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,46 +102,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Anton Blanchard <antonb@tenstorrent.com>
 
-The SBI spec states, for console write byte:
+fcvt.s.bf16 uses the FP16 check_nanbox_h() which returns an FP16
+quiet NaN. Add check_nanbox_bf16() which returns a BF16 quiet NaN.
 
-"This is a blocking SBI call and it will only return after writing the
-specified byte to the debug console. It will also return, with
-SBI_ERR_FAILED, if there are I/O errors."
-
-Being a blocker call will either succeed writing the byte or error out,
-it's feasible to use the blocking qemu_chr_fe_write_all() instead of
-qemu_chr_fe_write().
-
-Last but not the least, we will duck possible changes in
-qemu_chr_fe_write() where ret = 0 will have a 'zero byte written'
-semantic [1] - something that we're not ready to deal in this current
-state.
-
-[1] https://lore.kernel.org/qemu-devel/CAFEAcA_kEndvNtw4EHySXWwQPoGs029yAzZGGBcV=zGHaj7KUQ@mail.gmail.com/
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250605094456.1385105-2-dbarboza@ventanamicro.com>
+Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250501114253.594887-1-antonb@tenstorrent.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/internals.h  | 16 ++++++++++++++++
+ target/riscv/fpu_helper.c |  2 +-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 502d33f404..5c19062c19 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1619,7 +1619,7 @@ static void kvm_riscv_handle_sbi_dbcn(CPUState *cs, struct kvm_run *run)
-         break;
-     case SBI_EXT_DBCN_CONSOLE_WRITE_BYTE:
-         ch = run->riscv_sbi.args[0];
--        ret = qemu_chr_fe_write(serial_hd(0)->be, &ch, sizeof(ch));
-+        ret = qemu_chr_fe_write_all(serial_hd(0)->be, &ch, sizeof(ch));
+diff --git a/target/riscv/internals.h b/target/riscv/internals.h
+index 4570bd50be..9686bb6208 100644
+--- a/target/riscv/internals.h
++++ b/target/riscv/internals.h
+@@ -142,6 +142,22 @@ static inline float16 check_nanbox_h(CPURISCVState *env, uint64_t f)
+     }
+ }
  
-         if (ret < 0) {
-             error_report("SBI_EXT_DBCN_CONSOLE_WRITE_BYTE: error when "
++static inline float16 check_nanbox_bf16(CPURISCVState *env, uint64_t f)
++{
++    /* Disable nanbox check when enable zfinx */
++    if (env_archcpu(env)->cfg.ext_zfinx) {
++        return (uint16_t)f;
++    }
++
++    uint64_t mask = MAKE_64BIT_MASK(16, 48);
++
++    if (likely((f & mask) == mask)) {
++        return (uint16_t)f;
++    } else {
++        return 0x7FC0u; /* default qnan */
++    }
++}
++
+ #ifndef CONFIG_USER_ONLY
+ /* Our implementation of SysemuCPUOps::has_work */
+ bool riscv_cpu_has_work(CPUState *cs);
+diff --git a/target/riscv/fpu_helper.c b/target/riscv/fpu_helper.c
+index 706bdfa61d..af40561b31 100644
+--- a/target/riscv/fpu_helper.c
++++ b/target/riscv/fpu_helper.c
+@@ -755,6 +755,6 @@ uint64_t helper_fcvt_bf16_s(CPURISCVState *env, uint64_t rs1)
+ 
+ uint64_t helper_fcvt_s_bf16(CPURISCVState *env, uint64_t rs1)
+ {
+-    float16 frs1 = check_nanbox_h(env, rs1);
++    float16 frs1 = check_nanbox_bf16(env, rs1);
+     return nanbox_s(env, bfloat16_to_float32(frs1, &env->fp_status));
+ }
 -- 
 2.50.0
 
