@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340D1AF8C7E
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F899AF8C72
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:46:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXc3f-0007ms-VO; Fri, 04 Jul 2025 04:46:11 -0400
+	id 1uXc3h-0007my-2E; Fri, 04 Jul 2025 04:46:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3a-0007jl-Mv
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:06 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3d-0007mG-U1
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3Y-0000I5-VG
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:06 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3b-0000Mp-SP
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751618764;
+ s=mimecast20190719; t=1751618767;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QCmQhzgK8imggIgqcbYivoAqw0X5+C7YbCCtSUdop2w=;
- b=Y4YERoVChFd7Te7jQax4U7/s2we2oYcI7lP9HtJD4hQAoC00Lcv0wGeRMP0Or0LLAxli6G
- 2oSL7qT2FwKcOtPOHbA3AizHmofVF3afFx7sOhOYTXocaH6BCP4ZGz/nyEx0fcZ9loUxMi
- Vjvn+E29J6QmJOe3pip5QvSG59lb7kc=
+ bh=Zx1lHk/zQUeP69xjueEudIIzPShaicyzWk4zw3oQOF8=;
+ b=T3+jk4o8U5xXltUUoWDA12qUCr+3vl+OzsOam2dgqZL0KR8GB+UULrIiaKUHrFWo3KFG6L
+ VeouSgYXGnRYi3dMPiCr0WDW4DHELhWqOXAuK9xQM+VM+hLOIPqvEHRuLhgJ8rllel/ZNa
+ 5IncKq+MkB4jEqUAhrcT+4o7+lHNOgg=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-604-W9q-DJeUP3uIcqk2AnJuXQ-1; Fri,
- 04 Jul 2025 04:46:01 -0400
-X-MC-Unique: W9q-DJeUP3uIcqk2AnJuXQ-1
-X-Mimecast-MFC-AGG-ID: W9q-DJeUP3uIcqk2AnJuXQ_1751618760
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-OpF9TVNEO3CUfUO4Jsj0qA-1; Fri,
+ 04 Jul 2025 04:46:04 -0400
+X-MC-Unique: OpF9TVNEO3CUfUO4Jsj0qA-1
+X-Mimecast-MFC-AGG-ID: OpF9TVNEO3CUfUO4Jsj0qA_1751618763
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0C0C01809C82; Fri,  4 Jul 2025 08:46:00 +0000 (UTC)
+ id 118BC180047F; Fri,  4 Jul 2025 08:46:03 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.43])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E2E5A19560A7; Fri,  4 Jul 2025 08:45:57 +0000 (UTC)
+ id 0E19519560A7; Fri,  4 Jul 2025 08:46:00 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>, Fabiano Rosas <farosas@suse.de>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 10/27] migration: cpr_get_fd_param helper
-Date: Fri,  4 Jul 2025 10:45:11 +0200
-Message-ID: <20250704084528.1412959-11-clg@redhat.com>
+Subject: [PULL 11/27] backends/iommufd: iommufd_backend_map_file_dma
+Date: Fri,  4 Jul 2025 10:45:12 +0200
+Message-ID: <20250704084528.1412959-12-clg@redhat.com>
 In-Reply-To: <20250704084528.1412959-1-clg@redhat.com>
 References: <20250704084528.1412959-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,96 +85,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Add the helper function cpr_get_fd_param, to use when preserving
-a file descriptor that is opened externally and passed to QEMU.
-cpr_get_fd_param returns a descriptor number either from a QEMU
-command-line parameter, from a getfd command, or from CPR state.
-
-When a descriptor is passed to new QEMU via SCM_RIGHTS, its number
-changes.  Hence, during CPR, the command-line parameter is ignored
-in new QEMU, and over-ridden by the value found in CPR state.
-
-Similarly, if the descriptor was originally specified by a getfd
-command in old QEMU, the fd number is not known outside of QEMU,
-and it changes when sent to new QEMU via SCM_RIGHTS.  Hence the
-user cannot send getfd to new QEMU, but when the user sends a
-hotplug command that references the fd, cpr_get_fd_param finds
-its value in CPR state.
+Define iommufd_backend_map_file_dma to implement IOMMU_IOAS_MAP_FILE.
+This will be called as a substitute for iommufd_backend_map_dma, so
+the error conditions for BARs are copied as-is from that function.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/qemu-devel/1751493538-202042-5-git-send-email-steven.sistare@oracle.com
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Link: https://lore.kernel.org/qemu-devel/1751493538-202042-6-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/migration/cpr.h |  2 ++
- migration/cpr.c         | 37 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 39 insertions(+)
+ include/system/iommufd.h |  3 +++
+ backends/iommufd.c       | 34 ++++++++++++++++++++++++++++++++++
+ backends/trace-events    |  1 +
+ 3 files changed, 38 insertions(+)
 
-diff --git a/include/migration/cpr.h b/include/migration/cpr.h
-index 07858e93fa2fbd9ca0c31af218216025c14369a6..eb27a933017a09c480029a50cd6b1457e69cec8a 100644
---- a/include/migration/cpr.h
-+++ b/include/migration/cpr.h
-@@ -32,6 +32,8 @@ void cpr_state_close(void);
- struct QIOChannel *cpr_state_ioc(void);
- 
- bool cpr_incoming_needed(void *opaque);
-+int cpr_get_fd_param(const char *name, const char *fdname, int index,
-+                     Error **errp);
- 
- QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp);
- QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp);
-diff --git a/migration/cpr.c b/migration/cpr.c
-index a50a57edca754b50e68fa9c294b3c89791e62ba8..535d587aee16d2411d20ee549f8e3cf5a4120a88 100644
---- a/migration/cpr.c
-+++ b/migration/cpr.c
-@@ -13,6 +13,7 @@
- #include "migration/qemu-file.h"
- #include "migration/savevm.h"
- #include "migration/vmstate.h"
-+#include "monitor/monitor.h"
- #include "system/runstate.h"
- #include "trace.h"
- 
-@@ -264,3 +265,39 @@ bool cpr_incoming_needed(void *opaque)
-     MigMode mode = migrate_mode();
-     return mode == MIG_MODE_CPR_TRANSFER;
+diff --git a/include/system/iommufd.h b/include/system/iommufd.h
+index 283861b92432a1297e3e7465bdf86c3816393dcc..2d24d93d17e280bce53030a52588bd91425e03ea 100644
+--- a/include/system/iommufd.h
++++ b/include/system/iommufd.h
+@@ -43,6 +43,9 @@ void iommufd_backend_disconnect(IOMMUFDBackend *be);
+ bool iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
+                                 Error **errp);
+ void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id);
++int iommufd_backend_map_file_dma(IOMMUFDBackend *be, uint32_t ioas_id,
++                                 hwaddr iova, ram_addr_t size, int fd,
++                                 unsigned long start, bool readonly);
+ int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
+                             ram_addr_t size, void *vaddr, bool readonly);
+ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index c2c47abf7ed533c0512b89e58605b6b20ac103e8..3a2ecc7f5ba67699249ae1ad632fc8a45e9b53d3 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -172,6 +172,40 @@ int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
+     return ret;
  }
-+
-+/*
-+ * cpr_get_fd_param: find a descriptor and return its value.
-+ *
-+ * @name: CPR name for the descriptor
-+ * @fdname: An integer-valued string, or a name passed to a getfd command
-+ * @index: CPR index of the descriptor
-+ * @errp: returned error message
-+ *
-+ * If CPR is not being performed, then use @fdname to find the fd.
-+ * If CPR is being performed, then ignore @fdname, and look for @name
-+ * and @index in CPR state.
-+ *
-+ * On success returns the fd value, else returns -1.
-+ */
-+int cpr_get_fd_param(const char *name, const char *fdname, int index,
-+                     Error **errp)
+ 
++int iommufd_backend_map_file_dma(IOMMUFDBackend *be, uint32_t ioas_id,
++                                 hwaddr iova, ram_addr_t size,
++                                 int mfd, unsigned long start, bool readonly)
 +{
-+    ERRP_GUARD();
-+    int fd;
++    int ret, fd = be->fd;
++    struct iommu_ioas_map_file map = {
++        .size = sizeof(map),
++        .flags = IOMMU_IOAS_MAP_READABLE |
++                 IOMMU_IOAS_MAP_FIXED_IOVA,
++        .ioas_id = ioas_id,
++        .fd = mfd,
++        .start = start,
++        .iova = iova,
++        .length = size,
++    };
 +
-+    if (cpr_is_incoming()) {
-+        fd = cpr_find_fd(name, index);
-+        if (fd < 0) {
-+            error_setg(errp, "cannot find saved value for fd %s", fdname);
-+        }
-+    } else {
-+        fd = monitor_fd_param(monitor_cur(), fdname, errp);
-+        if (fd >= 0) {
-+            cpr_save_fd(name, index, fd);
-+        } else {
-+            error_prepend(errp, "Could not parse object fd %s:", fdname);
++    if (!readonly) {
++        map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
++    }
++
++    ret = ioctl(fd, IOMMU_IOAS_MAP_FILE, &map);
++    trace_iommufd_backend_map_file_dma(fd, ioas_id, iova, size, mfd, start,
++                                       readonly, ret);
++    if (ret) {
++        ret = -errno;
++
++        /* TODO: Not support mapping hardware PCI BAR region for now. */
++        if (errno == EFAULT) {
++            warn_report("IOMMU_IOAS_MAP_FILE failed: %m, PCI BAR?");
 +        }
 +    }
-+    return fd;
++    return ret;
 +}
++
+ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+                               hwaddr iova, ram_addr_t size)
+ {
+diff --git a/backends/trace-events b/backends/trace-events
+index 7278214ea51144b7d7b36d64908567c9467036e8..e5f3e70cd1ba7eb532c8f763b12460ef8f552245 100644
+--- a/backends/trace-events
++++ b/backends/trace-events
+@@ -11,6 +11,7 @@ iommufd_backend_connect(int fd, bool owned, uint32_t users) "fd=%d owned=%d user
+ iommufd_backend_disconnect(int fd, uint32_t users) "fd=%d users=%d"
+ iommu_backend_set_fd(int fd) "pre-opened /dev/iommu fd=%d"
+ iommufd_backend_map_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, void *vaddr, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" addr=%p readonly=%d (%d)"
++iommufd_backend_map_file_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int fd, unsigned long start, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" fd=%d start=%ld readonly=%d (%d)"
+ iommufd_backend_unmap_dma_non_exist(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " Unmap nonexistent mapping: iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
+ iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
+ iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
 -- 
 2.50.0
 
