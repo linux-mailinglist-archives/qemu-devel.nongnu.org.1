@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E04AF98FE
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B0FAF9887
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:36:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjFW-0004u8-Vd; Fri, 04 Jul 2025 12:26:55 -0400
+	id 1uXjFa-0005S6-B3; Fri, 04 Jul 2025 12:26:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjFE-00037d-EI
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:36 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1uXjFF-0003FJ-Rm
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:37 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjFC-0006sW-6p
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:36 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3a57c8e247cso856837f8f.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:26:33 -0700 (PDT)
+ id 1uXjFD-0006sm-B6
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:37 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-451d54214adso7694285e9.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:26:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751646393; x=1752251193; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751646394; x=1752251194; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=eeZvVSPwrM1m3u4R9Oc0rM/pY0R9OQhJ862Rvp43gmQ=;
- b=DOchkQ/KB97x3XFqfbsR+agJpBFjs/ddMLgpn7Mgs4IWhqj6vYwrZoWWVlTcabOGu4
- gRhAkLca5e1AC+o4xb9OM8zUI72l5mC3Pb39Q+s0+gmCqSrnm1Uoel/nv4UYiy/cFtzy
- bJ1rtWx/ggydKy6AmLDFzVYNXn1807UDV4jt2TJi7BNkuvtpvn+6t5jlY+IliwrlTe33
- kjdNU5+pCsSRp7E41hp3R9ONpCnunUcHeIff9db6sFGUplwIr1DH9aU7VXGF73dWBGn0
- 54J3796J83zyKCZgzGMAF09cMVpqz9m0VPqIv79NvQtFz7UBU7DR+7jA5NzBAOr/gGLm
- fu0g==
+ :reply-to; bh=lIJhiRCR8HjwsIRcjeXNXOpA6NWPSbM7MJPUG4ggQaI=;
+ b=CUxUbBKulEdKPLfEa3UadvmIGYzV5oHoNLr8t4oovOErFBJBqHUKRoYuP7whCC1Azf
+ BLDUWvnRpVGfHfrN+jj+ErjbCp8NavMrnjH7jXOPvkuNzuTO4E2bP1IboRpqe1Py7gN7
+ vQRHXaTh4z2REMzJm+NQ85vOFIdNhl8kXhy8FuPPtexLrAjbnDxt95MYCfWBdR6UNW13
+ 5RY71STMu34vIOc0nCZ09YpHFgt8MSriCe9uqHCPIWjZ8q32RizAEJe93MfaUbwHHyCO
+ aI8Ar2OAKFL98E/YcZzPf3593ca68PNnOvEL4AMSA1G4EF5hAkeDycJJbFaZAOex7U1F
+ F3iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751646393; x=1752251193;
+ d=1e100.net; s=20230601; t=1751646394; x=1752251194;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eeZvVSPwrM1m3u4R9Oc0rM/pY0R9OQhJ862Rvp43gmQ=;
- b=d5wpz351b7xIaL3otHcwElq0E94BXMonNmi1TyhuAtsKU+0oMoLa56q3uXYk6l9pA2
- MFuFUdolvE28eMaStt914X55AaE7/NH/QJpuTtlbuQCh6+aoDk5ldTAI7zSXReFSPEKS
- V1YRw1LalY/Ab1VHdkhgUbIc1C81HeaibJE4hW7Jy/6LWkU7Pg7CFb4ucRYnNj8/zWl6
- hUy7bf+eFjrediDnlMZgKyyfeIEsjiwFC1DioiaG0khD51PUsGsSOk/aUdfvAaw25vRh
- saUyYP5JQ1xOMY3lvcI/lZ9S6FT6F0Dt9U+aJRDpQRBsJEz6bEQwwBTUSXgg3WsLU1IQ
- 0CcQ==
-X-Gm-Message-State: AOJu0Yy0gPtB5wJjPaH3Jn5tR1+qkA6RGgjLveJXPUu9jBToUmZo3xzw
- aQGh3QUhKR3jMhmC7H6sA+nwISGtcngpWSvq7Pd4XANSTlmNo1c8Qa+bEy7dOph5VFiEibYYNYu
- ILUgE
-X-Gm-Gg: ASbGncte7vbbXWpBnwHCESUstXyVkcp2G4VslvgZVejuGNE3k6anhxRsNE8El7xnX/v
- KYQiB4FLbjgrcNMF6kU3BSHdCm8zenp9ct8Vqbg0e65L5O/AgovY8Q/Hps9ktHRKnYb5re7CFOR
- 8g7osMtW4lSbZ+7flcVhjBxIY8gVyaHwihyP5FlnQ398ZjoqF5/crWWnBC2pE1gtkqqmG1x8kMS
- dJu16Esg55tyGnSAQL1hUQr6qi3sqAUSt2/kG3Gzyfl/4AB7E14t1tTu+RaD4iHMNXFxcNNFMcy
- cBVqQObgmhfDt5r+QX6ZjeAqc1QM8TucyMmolbTA+Seu5MY48J6kSHtkTInvIJdBbk9P
-X-Google-Smtp-Source: AGHT+IHZMW/KdMaDqZIHJKx+Y9jXw34YGGSdeimgu8YwxWSptPQKDSa91JcdEsCNyMKCuyy3JS3NpA==
-X-Received: by 2002:a05:6000:22c6:b0:3b3:a6e1:135c with SMTP id
- ffacd0b85a97d-3b497038f3dmr2277114f8f.42.1751646392642; 
- Fri, 04 Jul 2025 09:26:32 -0700 (PDT)
+ bh=lIJhiRCR8HjwsIRcjeXNXOpA6NWPSbM7MJPUG4ggQaI=;
+ b=v028JF0aMPJ9cWpSYWFQWrE1y7K4+G2FK6p6g4vdj2bDs+kPEoZyMW3A2MP7J9eyH+
+ CR/zqhzkVlslygOJQ3yuloNrB77Vxq6ahqaIeX3ZNKL+pDczc5sM2yt9JjSnBuBS9IKh
+ l4jwgROauTFhy5Wmy30RrsdlOS7M9EOBcs1fo9H+kA1WspHmw1DPPp1vHDaeNbkeVmRZ
+ +M/EpA/S4fMtl2H65SMYWl3Z5e1gAyfxz5QXkg6b1A7oh64Xzhs6XB8ep/qzObRJ0VQE
+ i1aNvQJG0gWxmlrZ5hiLoqH5LzGAQXppMRMvww7aeyqfdjmaFU+uX4pONUedEZYryI0P
+ idmQ==
+X-Gm-Message-State: AOJu0YzzBb8TfNTQj5845cdj9iVpP5hfb8L31Q1j0W/xpa7rKxBcuYnG
+ ouXRTSXk4AlL3mL6rulToXwZf/HtmkWVCO7PkyEedd3Qb1M8A5KhB11cJVbMIdr4+5TyUcTMaX6
+ DeLjZ
+X-Gm-Gg: ASbGncuBqgAsdh4D1OvF0CcaWNzFkXIdpi6SQK1or2tnUiJGegVxeNW09lgqAtNfs4N
+ R7W+tcLtlbfx86h323eMHjwd+SgunycuME+eo608k+2RF5uux46Z8ZsQq3RoqUNo1ZF6tX+2SAe
+ Vd1oJpTHcBw9xK4gH8dwIhOb4K1T7g93Ajine3FbED/eJ6O5fP3PzQFcBeEffjtMo0c/bEVnImO
+ AvUSMS2NelS9g5+ZfBLpBYme/5qTMIvKiik00QhB3UzUtOkuhUeLgpGSPr1/9J5RpUo1q7Tt5kH
+ 831gDZNJO9HaBErGTj/ZSLxzuDdTC9APWSsKN9GiH7zGEmQu0dBs3c2KN465+a7pT1X8
+X-Google-Smtp-Source: AGHT+IGHAwWTHRsxjhLkp30nyUnIeTGyO12y5N5KCUVQQKo3mO1jhjPZ5i8ZtRgZJgeVODz4cpZNLw==
+X-Received: by 2002:a05:600c:3b8e:b0:43d:fa58:700e with SMTP id
+ 5b1f17b1804b1-454b9872ebamr4202805e9.33.1751646393553; 
+ Fri, 04 Jul 2025 09:26:33 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.26.31
+ ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.26.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 09:26:32 -0700 (PDT)
+ Fri, 04 Jul 2025 09:26:33 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 094/119] target/arm: Implement SVE2p1 PEXT
-Date: Fri,  4 Jul 2025 17:24:34 +0100
-Message-ID: <20250704162501.249138-95-peter.maydell@linaro.org>
+Subject: [PULL 095/119] target/arm: Implement SME2 SEL
+Date: Fri,  4 Jul 2025 17:24:35 +0100
+Message-ID: <20250704162501.249138-96-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704162501.249138-1-peter.maydell@linaro.org>
 References: <20250704162501.249138-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,216 +100,412 @@ From: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250704142112.1018902-83-richard.henderson@linaro.org
+Message-id: 20250704142112.1018902-84-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/helper-sve.h    |  2 +
- target/arm/tcg/vec_internal.h  | 74 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/sve.decode      |  6 +++
- target/arm/tcg/sve_helper.c    | 28 +++++++++++++
- target/arm/tcg/translate-sve.c | 36 +++++++++++++++++
- 5 files changed, 146 insertions(+)
+ target/arm/tcg/helper-sme.h    |   5 +
+ target/arm/tcg/sme.decode      |   9 +
+ target/arm/tcg/sme_helper.c    | 317 +++++++++++++++++++++++++++++++++
+ target/arm/tcg/translate-sme.c |  31 ++++
+ 4 files changed, 362 insertions(+)
 
-diff --git a/target/arm/tcg/helper-sve.h b/target/arm/tcg/helper-sve.h
-index 5f5ecc2e0de..ec82d0a4e74 100644
---- a/target/arm/tcg/helper-sve.h
-+++ b/target/arm/tcg/helper-sve.h
-@@ -2953,3 +2953,5 @@ DEF_HELPER_FLAGS_4(sve2p1_uminqv_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(sve2p1_uminqv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(sve2p1_uminqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(sve2p1_uminqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+diff --git a/target/arm/tcg/helper-sme.h b/target/arm/tcg/helper-sme.h
+index 78ba3d1f20b..467073ea258 100644
+--- a/target/arm/tcg/helper-sme.h
++++ b/target/arm/tcg/helper-sme.h
+@@ -313,3 +313,8 @@ DEF_HELPER_FLAGS_5(sme2_fclamp_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i3
+ DEF_HELPER_FLAGS_5(sme2_fclamp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(sme2_fclamp_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(sme2_bfclamp, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
 +
-+DEF_HELPER_FLAGS_3(pext, TCG_CALL_NO_RWG, void, ptr, i32, i32)
-diff --git a/target/arm/tcg/vec_internal.h b/target/arm/tcg/vec_internal.h
-index 5efd257c50d..61c67bb35e7 100644
---- a/target/arm/tcg/vec_internal.h
-+++ b/target/arm/tcg/vec_internal.h
-@@ -337,4 +337,78 @@ bfloat16 helper_sme2_ah_fmin_b16(bfloat16 a, bfloat16 b, float_status *fpst);
- float32 sve_f16_to_f32(float16 f, float_status *fpst);
- float16 sve_f32_to_f16(float32 f, float_status *fpst);
++DEF_HELPER_FLAGS_5(sme2_sel_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32, i32)
++DEF_HELPER_FLAGS_5(sme2_sel_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32, i32)
++DEF_HELPER_FLAGS_5(sme2_sel_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32, i32)
++DEF_HELPER_FLAGS_5(sme2_sel_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32, i32)
+diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
+index c4b85a36d0c..0a2ceea8bee 100644
+--- a/target/arm/tcg/sme.decode
++++ b/target/arm/tcg/sme.decode
+@@ -878,6 +878,15 @@ UCLAMP          11000001 esz:2 1 zm:5 110001 zn:5 .... 1    \
+ UCLAMP          11000001 esz:2 1 zm:5 110011 zn:5 ...0 1    \
+                 &zzz_en zd=%zd_ax4 n=4
  
-+/*
-+ * Decode helper functions for predicate as counter.
-+ */
++### SME2 Multi-vector SVE Select
 +
-+typedef struct {
-+    unsigned count;
-+    unsigned lg2_stride;
-+    bool invert;
-+} DecodeCounter;
++%sel_pg         10:3 !function=plus_8
 +
-+static inline DecodeCounter
-+decode_counter(unsigned png, unsigned vl, unsigned v_esz)
++SEL             11000001 esz:2 1 ....0 100 ... ....0 ....0  \
++                n=2 zd=%zd_ax2 zn=%zn_ax2 zm=%zm_ax2 pg=%sel_pg
++SEL             11000001 esz:2 1 ...01 100 ... ...00 ...00  \
++                n=4 zd=%zd_ax4 zn=%zn_ax4 zm=%zm_ax4 pg=%sel_pg
++
+ ### SME Multiple Zero
+ 
+ &zero_za        rv off ngrp nvec
+diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
+index 8a1f9fbf3df..c1166e4ffa9 100644
+--- a/target/arm/tcg/sme_helper.c
++++ b/target/arm/tcg/sme_helper.c
+@@ -2118,3 +2118,320 @@ FCLAMP(sme2_fclamp_d, float64, H8)
+ FCLAMP(sme2_bfclamp, bfloat16, H2)
+ 
+ #undef FCLAMP
++
++void HELPER(sme2_sel_b)(void *vd, void *vn, void *vm,
++                        uint32_t png, uint32_t desc)
 +{
-+    DecodeCounter ret = { };
++    int vl = simd_oprsz(desc);
++    int nreg = simd_data(desc);
++    int elements = vl / sizeof(uint8_t);
++    DecodeCounter p = decode_counter(png, vl, MO_8);
 +
-+    /* C.f. Arm pseudocode CounterToPredicate. */
-+    if (likely(png & 0xf)) {
-+        unsigned p_esz = ctz32(png);
++    if (p.lg2_stride == 0) {
++        if (p.invert) {
++            for (int r = 0; r < nreg; r++) {
++                uint8_t *d = vd + r * sizeof(ARMVectorReg);
++                uint8_t *n = vn + r * sizeof(ARMVectorReg);
++                uint8_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
 +
-+        /*
-+         * maxbit = log2(pl(bits) * 4)
-+         *        = log2(vl(bytes) * 4)
-+         *        = log2(vl) + 2
-+         * maxbit_mask = ones<maxbit:0>
-+         *             = (1 << (maxbit + 1)) - 1
-+         *             = (1 << (log2(vl) + 2 + 1)) - 1
-+         *             = (1 << (log2(vl) + 3)) - 1
-+         *             = (pow2ceil(vl) << 3) - 1
-+         */
-+        ret.count = png & (((unsigned)pow2ceil(vl) << 3) - 1);
-+        ret.count >>= p_esz + 1;
++                if (split <= 0) {
++                    memcpy(d, n, vl);  /* all true */
++                } else if (elements <= split) {
++                    memcpy(d, m, vl);  /* all false */
++                } else {
++                    for (int e = 0; e < split; e++) {
++                        d[H1(e)] = m[H1(e)];
++                    }
++                    for (int e = split; e < elements; e++) {
++                        d[H1(e)] = n[H1(e)];
++                    }
++                }
++            }
++        } else {
++            for (int r = 0; r < nreg; r++) {
++                uint8_t *d = vd + r * sizeof(ARMVectorReg);
++                uint8_t *n = vn + r * sizeof(ARMVectorReg);
++                uint8_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
 +
-+        ret.invert = (png >> 15) & 1;
++                if (split <= 0) {
++                    memcpy(d, m, vl);  /* all false */
++                } else if (elements <= split) {
++                    memcpy(d, n, vl);  /* all true */
++                } else {
++                    for (int e = 0; e < split; e++) {
++                        d[H1(e)] = n[H1(e)];
++                    }
++                    for (int e = split; e < elements; e++) {
++                        d[H1(e)] = m[H1(e)];
++                    }
++                }
++            }
++        }
++    } else {
++        int estride = 1 << p.lg2_stride;
++        if (p.invert) {
++            for (int r = 0; r < nreg; r++) {
++                uint8_t *d = vd + r * sizeof(ARMVectorReg);
++                uint8_t *n = vn + r * sizeof(ARMVectorReg);
++                uint8_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
++                int e = 0;
 +
-+        /*
-+         * The Arm pseudocode for CounterToPredicate expands the count to
-+         * a set of bits, and then the operation proceeds as for the original
-+         * interpretation of predicates as a set of bits.
-+         *
-+         * We can avoid the expansion by adjusting the count and supplying
-+         * an element stride.
-+         */
-+        if (unlikely(p_esz != v_esz)) {
-+            if (p_esz < v_esz) {
-+                /*
-+                 * For predicate esz < vector esz, the expanded predicate
-+                 * will have more bits set than will be consumed.
-+                 * Adjust the count down, rounding up.
-+                 * Consider p_esz = MO_8, v_esz = MO_64, count 14:
-+                 * The expanded predicate would be
-+                 *    0011 1111 1111 1111
-+                 * The significant bits are
-+                 *    ...1 ...1 ...1 ...1
-+                 */
-+                unsigned shift = v_esz - p_esz;
-+                unsigned trunc = ret.count >> shift;
-+                ret.count = trunc + (ret.count != (trunc << shift));
-+            } else {
-+                /*
-+                 * For predicate esz > vector esz, the expanded predicate
-+                 * will have bits set only at power-of-two multiples of
-+                 * the vector esz.  Bits at other multiples will all be
-+                 * false.  Adjust the count up, and supply the caller
-+                 * with a stride of elements to skip.
-+                 */
-+                unsigned shift = p_esz - v_esz;
-+                ret.count <<= shift;
-+                ret.lg2_stride = shift;
++                for (; e < MIN(split, elements); e++) {
++                    d[H1(e)] = m[H1(e)];
++                }
++                for (; e < elements; e += estride) {
++                    d[H1(e)] = n[H1(e)];
++                    for (int i = 1; i < estride; i++) {
++                        d[H1(e + i)] = m[H1(e + i)];
++                    }
++                }
++            }
++        } else {
++            for (int r = 0; r < nreg; r++) {
++                uint8_t *d = vd + r * sizeof(ARMVectorReg);
++                uint8_t *n = vn + r * sizeof(ARMVectorReg);
++                uint8_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
++                int e = 0;
++
++                for (; e < MIN(split, elements); e += estride) {
++                    d[H1(e)] = n[H1(e)];
++                    for (int i = 1; i < estride; i++) {
++                        d[H1(e + i)] = m[H1(e + i)];
++                    }
++                }
++                for (; e < elements; e++) {
++                    d[H1(e)] = m[H1(e)];
++                }
 +            }
 +        }
 +    }
-+    return ret;
 +}
 +
- #endif /* TARGET_ARM_VEC_INTERNAL_H */
-diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
-index a3221308ad4..b7622577594 100644
---- a/target/arm/tcg/sve.decode
-+++ b/target/arm/tcg/sve.decode
-@@ -60,6 +60,7 @@
- %rn_ax2         6:4 !function=times_2
- 
- %pnd            0:3 !function=plus_8
-+%pnn            5:3 !function=plus_8
- 
- ###########################################################################
- # Named attribute sets.  These are used to make nice(er) names
-@@ -823,6 +824,11 @@ WHILE_lt_cnt4   00100101 .. 1 ..... 0110 . 1 ..... 1 . ...  @while_cnt
- WHILE_gt_cnt2   00100101 .. 1 ..... 0100 . 0 ..... 1 . ...  @while_cnt
- WHILE_gt_cnt4   00100101 .. 1 ..... 0110 . 0 ..... 1 . ...  @while_cnt
- 
-+# SVE2.1 extract mask predicate from predicate-as-counter
-+&pext           rd rn esz imm
-+PEXT_1          00100101 esz:2 1 00000 0111 00 imm:2 ... 1 rd:4  &pext rn=%pnn
-+PEXT_2          00100101 esz:2 1 00000 0111 010 imm:1 ... 1 rd:4 &pext rn=%pnn
-+
- ### SVE Integer Wide Immediate - Unpredicated Group
- 
- # SVE broadcast floating-point immediate (unpredicated)
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 625734fff9a..866f85ba306 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -7821,3 +7821,31 @@ DO_FCVTLT(sve2_fcvtlt_sd, uint64_t, uint32_t, H1_8, H1_4, float32_to_float64)
- 
- #undef DO_FCVTLT
- #undef DO_FCVTNT
-+
-+void HELPER(pext)(void *vd, uint32_t png, uint32_t desc)
++void HELPER(sme2_sel_h)(void *vd, void *vn, void *vm,
++                        uint32_t png, uint32_t desc)
 +{
-+    int pl = FIELD_EX32(desc, PREDDESC, OPRSZ);
-+    int vl = pl * 8;
-+    unsigned v_esz = FIELD_EX32(desc, PREDDESC, ESZ);
-+    int part = FIELD_EX32(desc, PREDDESC, DATA);
-+    DecodeCounter p = decode_counter(png, vl, v_esz);
-+    uint64_t mask = pred_esz_masks[v_esz + p.lg2_stride];
-+    ARMPredicateReg *d = vd;
++    int vl = simd_oprsz(desc);
++    int nreg = simd_data(desc);
++    int elements = vl / sizeof(uint16_t);
++    DecodeCounter p = decode_counter(png, vl, MO_16);
 +
-+    /*
-+     * Convert from element count to byte count and adjust
-+     * for the portion of the 4*VL counter to be extracted.
-+     */
-+    int b_count = (p.count << v_esz) - vl * part;
++    if (p.lg2_stride == 0) {
++        if (p.invert) {
++            for (int r = 0; r < nreg; r++) {
++                uint16_t *d = vd + r * sizeof(ARMVectorReg);
++                uint16_t *n = vn + r * sizeof(ARMVectorReg);
++                uint16_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
 +
-+    memset(d, 0, sizeof(*d));
-+    if (p.invert) {
-+        if (b_count <= 0) {
-+            do_whilel(vd, mask, vl, vl);
-+        } else if (b_count < vl) {
-+            do_whileg(vd, mask, vl - b_count, vl);
++                if (split <= 0) {
++                    memcpy(d, n, vl);  /* all true */
++                } else if (elements <= split) {
++                    memcpy(d, m, vl);  /* all false */
++                } else {
++                    for (int e = 0; e < split; e++) {
++                        d[H2(e)] = m[H2(e)];
++                    }
++                    for (int e = split; e < elements; e++) {
++                        d[H2(e)] = n[H2(e)];
++                    }
++                }
++            }
++        } else {
++            for (int r = 0; r < nreg; r++) {
++                uint16_t *d = vd + r * sizeof(ARMVectorReg);
++                uint16_t *n = vn + r * sizeof(ARMVectorReg);
++                uint16_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
++
++                if (split <= 0) {
++                    memcpy(d, m, vl);  /* all false */
++                } else if (elements <= split) {
++                    memcpy(d, n, vl);  /* all true */
++                } else {
++                    for (int e = 0; e < split; e++) {
++                        d[H2(e)] = n[H2(e)];
++                    }
++                    for (int e = split; e < elements; e++) {
++                        d[H2(e)] = m[H2(e)];
++                    }
++                }
++            }
 +        }
-+    } else if (b_count > 0) {
-+        do_whilel(vd, mask, MIN(b_count, vl), vl);
++    } else {
++        int estride = 1 << p.lg2_stride;
++        if (p.invert) {
++            for (int r = 0; r < nreg; r++) {
++                uint16_t *d = vd + r * sizeof(ARMVectorReg);
++                uint16_t *n = vn + r * sizeof(ARMVectorReg);
++                uint16_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
++                int e = 0;
++
++                for (; e < MIN(split, elements); e++) {
++                    d[H2(e)] = m[H2(e)];
++                }
++                for (; e < elements; e += estride) {
++                    d[H2(e)] = n[H2(e)];
++                    for (int i = 1; i < estride; i++) {
++                        d[H2(e + i)] = m[H2(e + i)];
++                    }
++                }
++            }
++        } else {
++            for (int r = 0; r < nreg; r++) {
++                uint16_t *d = vd + r * sizeof(ARMVectorReg);
++                uint16_t *n = vn + r * sizeof(ARMVectorReg);
++                uint16_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
++                int e = 0;
++
++                for (; e < MIN(split, elements); e += estride) {
++                    d[H2(e)] = n[H2(e)];
++                    for (int i = 1; i < estride; i++) {
++                        d[H2(e + i)] = m[H2(e + i)];
++                    }
++                }
++                for (; e < elements; e++) {
++                    d[H2(e)] = m[H2(e)];
++                }
++            }
++        }
 +    }
 +}
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 2e29dff9895..6ad4d1e289c 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -3336,6 +3336,42 @@ static bool trans_WHILE_ptr(DisasContext *s, arg_WHILE_ptr *a)
-     return true;
- }
- 
-+static bool do_pext(DisasContext *s, arg_pext *a, int n)
++
++void HELPER(sme2_sel_s)(void *vd, void *vn, void *vm,
++                        uint32_t png, uint32_t desc)
 +{
-+    TCGv_i32 t_png;
-+    TCGv_ptr t_pd;
-+    int pl;
++    int vl = simd_oprsz(desc);
++    int nreg = simd_data(desc);
++    int elements = vl / sizeof(uint32_t);
++    DecodeCounter p = decode_counter(png, vl, MO_32);
 +
-+    if (!sve_access_check(s)) {
-+        return true;
++    if (p.lg2_stride == 0) {
++        if (p.invert) {
++            for (int r = 0; r < nreg; r++) {
++                uint32_t *d = vd + r * sizeof(ARMVectorReg);
++                uint32_t *n = vn + r * sizeof(ARMVectorReg);
++                uint32_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
++
++                if (split <= 0) {
++                    memcpy(d, n, vl);  /* all true */
++                } else if (elements <= split) {
++                    memcpy(d, m, vl);  /* all false */
++                } else {
++                    for (int e = 0; e < split; e++) {
++                        d[H4(e)] = m[H4(e)];
++                    }
++                    for (int e = split; e < elements; e++) {
++                        d[H4(e)] = n[H4(e)];
++                    }
++                }
++            }
++        } else {
++            for (int r = 0; r < nreg; r++) {
++                uint32_t *d = vd + r * sizeof(ARMVectorReg);
++                uint32_t *n = vn + r * sizeof(ARMVectorReg);
++                uint32_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
++
++                if (split <= 0) {
++                    memcpy(d, m, vl);  /* all false */
++                } else if (elements <= split) {
++                    memcpy(d, n, vl);  /* all true */
++                } else {
++                    for (int e = 0; e < split; e++) {
++                        d[H4(e)] = n[H4(e)];
++                    }
++                    for (int e = split; e < elements; e++) {
++                        d[H4(e)] = m[H4(e)];
++                    }
++                }
++            }
++        }
++    } else {
++        /* p.esz must be MO_64, so stride must be 2. */
++        if (p.invert) {
++            for (int r = 0; r < nreg; r++) {
++                uint32_t *d = vd + r * sizeof(ARMVectorReg);
++                uint32_t *n = vn + r * sizeof(ARMVectorReg);
++                uint32_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
++                int e = 0;
++
++                for (; e < MIN(split, elements); e++) {
++                    d[H4(e)] = m[H4(e)];
++                }
++                for (; e < elements; e += 2) {
++                    d[H4(e)] = n[H4(e)];
++                    d[H4(e + 1)] = m[H4(e + 1)];
++                }
++            }
++        } else {
++            for (int r = 0; r < nreg; r++) {
++                uint32_t *d = vd + r * sizeof(ARMVectorReg);
++                uint32_t *n = vn + r * sizeof(ARMVectorReg);
++                uint32_t *m = vm + r * sizeof(ARMVectorReg);
++                int split = p.count - r * elements;
++                int e = 0;
++
++                for (; e < MIN(split, elements); e += 2) {
++                    d[H4(e)] = n[H4(e)];
++                    d[H4(e + 1)] = m[H4(e + 1)];
++                }
++                for (; e < elements; e++) {
++                    d[H4(e)] = m[H4(e)];
++                }
++            }
++        }
 +    }
++}
 +
-+    t_png = tcg_temp_new_i32();
-+    tcg_gen_ld16u_i32(t_png, tcg_env,
-+                      pred_full_reg_offset(s, a->rn) ^
-+                      (HOST_BIG_ENDIAN ? 6 : 0));
++void HELPER(sme2_sel_d)(void *vd, void *vn, void *vm,
++                        uint32_t png, uint32_t desc)
++{
++    int vl = simd_oprsz(desc);
++    int nreg = simd_data(desc);
++    int elements = vl / sizeof(uint64_t);
++    DecodeCounter p = decode_counter(png, vl, MO_64);
 +
-+    t_pd = tcg_temp_new_ptr();
-+    pl = pred_full_reg_size(s);
++    if (p.invert) {
++        for (int r = 0; r < nreg; r++) {
++            uint64_t *d = vd + r * sizeof(ARMVectorReg);
++            uint64_t *n = vn + r * sizeof(ARMVectorReg);
++            uint64_t *m = vm + r * sizeof(ARMVectorReg);
++            int split = p.count - r * elements;
 +
-+    for (int i = 0; i < n; ++i) {
-+        int rd = (a->rd + i) % 16;
-+        int part = a->imm * n + i;
-+        unsigned desc = 0;
++            if (split <= 0) {
++                memcpy(d, n, vl);  /* all true */
++            } else if (elements <= split) {
++                memcpy(d, m, vl);  /* all false */
++            } else {
++                memcpy(d, m, split * sizeof(uint64_t));
++                memcpy(d + split, n + split,
++                       (elements - split) * sizeof(uint64_t));
++            }
++        }
++    } else {
++        for (int r = 0; r < nreg; r++) {
++            uint64_t *d = vd + r * sizeof(ARMVectorReg);
++            uint64_t *n = vn + r * sizeof(ARMVectorReg);
++            uint64_t *m = vm + r * sizeof(ARMVectorReg);
++            int split = p.count - r * elements;
 +
-+        desc = FIELD_DP32(desc, PREDDESC, OPRSZ, pl);
-+        desc = FIELD_DP32(desc, PREDDESC, ESZ, a->esz);
-+        desc = FIELD_DP32(desc, PREDDESC, DATA, part);
++            if (split <= 0) {
++                memcpy(d, m, vl);  /* all false */
++            } else if (elements <= split) {
++                memcpy(d, n, vl);  /* all true */
++            } else {
++                memcpy(d, n, split * sizeof(uint64_t));
++                memcpy(d + split, m + split,
++                       (elements - split) * sizeof(uint64_t));
++            }
++        }
++    }
++}
+diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
+index b6316ac716c..74075971772 100644
+--- a/target/arm/tcg/translate-sme.c
++++ b/target/arm/tcg/translate-sme.c
+@@ -1642,3 +1642,34 @@ static gen_helper_gvec_3 * const uclamp_fns[] = {
+     gen_helper_sme2_uclamp_d,
+ };
+ TRANS(UCLAMP, do_clamp, a, uclamp_fns)
 +
-+        tcg_gen_addi_ptr(t_pd, tcg_env, pred_full_reg_offset(s, rd));
-+        gen_helper_pext(t_pd, t_png, tcg_constant_i32(desc));
++static bool trans_SEL(DisasContext *s, arg_SEL *a)
++{
++    typedef void sme_sel_fn(TCGv_ptr, TCGv_ptr, TCGv_ptr, TCGv_i32, TCGv_i32);
++    static sme_sel_fn * const fns[4] = {
++        gen_helper_sme2_sel_b, gen_helper_sme2_sel_h,
++        gen_helper_sme2_sel_s, gen_helper_sme2_sel_d
++    };
++
++    if (!dc_isar_feature(aa64_sme2, s)) {
++        return false;
++    }
++    if (sme_sm_enabled_check(s)) {
++        int svl = streaming_vec_reg_size(s);
++        uint32_t desc = simd_desc(svl, svl, a->n);
++        TCGv_ptr t_d = tcg_temp_new_ptr();
++        TCGv_ptr t_n = tcg_temp_new_ptr();
++        TCGv_ptr t_m = tcg_temp_new_ptr();
++        TCGv_i32 png = tcg_temp_new_i32();
++
++        tcg_gen_addi_ptr(t_d, tcg_env, vec_full_reg_offset(s, a->zd));
++        tcg_gen_addi_ptr(t_n, tcg_env, vec_full_reg_offset(s, a->zn));
++        tcg_gen_addi_ptr(t_m, tcg_env, vec_full_reg_offset(s, a->zm));
++
++        tcg_gen_ld16u_i32(png, tcg_env, pred_full_reg_offset(s, a->pg)
++                          ^ (HOST_BIG_ENDIAN ? 6 : 0));
++
++        fns[a->esz](t_d, t_n, t_m, png, tcg_constant_i32(desc));
 +    }
 +    return true;
 +}
-+
-+TRANS_FEAT(PEXT_1, aa64_sme2_or_sve2p1, do_pext, a, 1)
-+TRANS_FEAT(PEXT_2, aa64_sme2_or_sve2p1, do_pext, a, 2)
-+
- /*
-  *** SVE Integer Wide Immediate - Unpredicated Group
-  */
 -- 
 2.43.0
 
