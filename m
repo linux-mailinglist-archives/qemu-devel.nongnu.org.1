@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D0AAFB736
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 17:25:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DFEAFB7B3
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 17:43:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYnfI-0007VA-NH; Mon, 07 Jul 2025 11:21:56 -0400
+	id 1uYnzD-0005b6-Tg; Mon, 07 Jul 2025 11:42:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uYn9n-0002OZ-S6
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 10:49:23 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uYnZR-00056P-RF
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 11:15:54 -0400
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uYn9m-0006fM-0J
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 10:49:23 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4537edf2c3cso35165515e9.3
- for <qemu-devel@nongnu.org>; Mon, 07 Jul 2025 07:49:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uYnZP-00024g-Va
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 11:15:53 -0400
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-72c27166ab3so2069479a34.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Jul 2025 08:15:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751899759; x=1752504559; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Dd9xuKmUOLqFFJSSVk33+N9XqTung+GNu3r67W7FU5k=;
- b=bWwSMs1ckMyuNAMGLa/yocUcDMjpCr8ex0rC+bA/zytcJ8KvbvMAJNRjL1E7C10hOH
- 2N5n8ewjvyADPZUfp2jMLeaW0K1Gbx7A85Nc6pdXW5cEctT5ODhuH/wzE2ukxuhGMPWR
- CmKtnx3MUSF6h379vCPu8VRl+PW4I7N+/B5/qmYeK7Om1IKZ3q1pj36xB+GbVTnYiqEm
- OG4gnX93gHYqbUm+zSY71vn+/0cCQuGk55nttvgg9kGT+fAo3luP/8AcuDooYV9sOfxO
- nyr5WgGfk32Zu8Uc041fW3LFF8HEp44DG5B424lhAYOv6ngeWVQczntN+jKNoWn9Cccr
- 1Ouw==
+ d=linaro.org; s=google; t=1751901350; x=1752506150; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=exK5udp98SfjYm/ZGWW758+vLIc1xsfmMlQkHBhSgwY=;
+ b=hHr8ck4PXxD5GPT8DQjDTThiPL+vwvbruUFyLIOC/axizKvIuXDEBDIK/3y6Nmku5R
+ Ml+nZyBYMBAT2+m96z/eDIdxySeUAVfMli1P/cnLKTWkOy/EU4oyzbf98clb1w2pzqQs
+ b00v7bqv4hIb0TaVVrOiig0oZItIHd8nOY8fFnTRELvuwqQTjeftYDm/sPZmyTaUw5G3
+ iTLjpFFN/Ex1EgP39ZTzidLh2QqbvnU9EUkRE8zycJxYUUEEzK2gy84ILXIKyVoL+9Y8
+ mZiTGw83lvn2WXabR0tO5eN6zUibVVnhks+dNvrWnTk1TyF4BSiH0oVExfOQ3MD2CNev
+ sKUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751899759; x=1752504559;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Dd9xuKmUOLqFFJSSVk33+N9XqTung+GNu3r67W7FU5k=;
- b=uFCrjmwnNR3BWXyASB6hxAUBQlz5Yl+Vm+IGGctmarzQao6zV9zNPMKppPCGg8UE1o
- lt+Dlb4KDS4pCG4H3pxi97ZVF+ktb2JXnBa9WHCLGQYx3SoPfDZeLagDzVyRHV0e7Y2f
- sTpYdkX3kTlIoKwvAzVWwe4eXI+Tz92s3+dKH+IWO9KOdNYm76qII0Z1sboEwmPzqN7A
- AG9zLF0/JHQ8TovjuEZCxUB8rAFXqOLJzTFkP5D7lGJq8Vm5UR249ihF0Zf9CMilCbT4
- lJaW9FeK7HtvwXZr9JcPTh1cCQRY/C/VYv1hr3OarWpacp47DgkZwDygyl7ogWdNHPWR
- XGAA==
-X-Gm-Message-State: AOJu0YyDPThRdAZuHo72gqU7wXDMVCwXjdhf77tw+sdfljpEe/05IT1n
- 035r2x717JW+F2fbv03btQLNL793k62G0aqOC7U9qKnoiVjWu/ZApp7moLn6jCMQkQASwYaqqvA
- B9ZhB
-X-Gm-Gg: ASbGncuFqRfI/BCm+0EVisVEdIKNHrwW2NtBmLYXrW2uO8E4NHJ0H3WRcT1jNL4Dawg
- jKOclttyGBJiNcY8/q7O0lzHiVxpTgyWbcWljEkrQxZZlia/hL4mPM4xHqdxg2SC5At7HUOQRR8
- txbekv6rZX618+GQbe+XAN68mZcl/Yi+MSbl1TgUUZVnKyOVFLWGPUkSCCC1nlF/t2KN+laAdUm
- /y7T9tSxJGFF3Fza00A69GWroyjWVmTSZkrKOGgpOtykxzJn4emw4dhRsK7qlurItfzsdtVkENO
- Zh0r/BHpILo8l9n0CrNaD8sJA+GJoqm3zdQFO1+O+zN0nOQEa4GPCYWz9p8+4v2yNk3B
-X-Google-Smtp-Source: AGHT+IG/Y3IpctD2VxBtSTx2pzODDrXbdbTV8321+8wVesiYUYCHnDNYz0aLRM+pjv5YdloJQSUYWQ==
-X-Received: by 2002:a05:600c:1c85:b0:43c:ec0a:ddfd with SMTP id
- 5b1f17b1804b1-454bb7fa925mr75924085e9.6.1751899759210; 
- Mon, 07 Jul 2025 07:49:19 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454b161e8dbsm115361395e9.5.2025.07.07.07.49.18
+ d=1e100.net; s=20230601; t=1751901350; x=1752506150;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=exK5udp98SfjYm/ZGWW758+vLIc1xsfmMlQkHBhSgwY=;
+ b=VqWhGwFulgf8tU738TPiKP4LxLQsBCPcp29nh3d/lZIej7uxRCe2ubxVYhZgi2bpY6
+ 9cL+Ne0m4lormIPgFFRjb0fmIxXQaaco4DKnPRNmHd/oY4pNU/o3xlbIeQ2mtYMmQoE/
+ F2D1V9MNNy1Ot5uJVSft8+mNXuO7Mo/vJ/eaPDD7FPHJWh+KDqAu/6emANbO9bnIfSr/
+ /s5ymezT49vNdEQii/yHXk0iHlgCEbdqck+pS5pVIWyc9YIcbsL6kzV9su26kvOHfVNV
+ bBgrX1PU5rpVX+2ukIhUvaQ5q2HLFKubaS9jq5h+Id1mKMwDNqDisHWieSoESts6Vqgv
+ MvWw==
+X-Gm-Message-State: AOJu0YywxvRwzjGpfXW4xWT3EOBX8X4gCHgyx48Iikc0Uvaqrt3d9rz+
+ hQi3WRxNW22YzDRon31rVPhByMlyrVga8k62r+RRXt4uLZ2aLHEwF2DrB07qWqVD6jRS9xPBL6J
+ fDE6mq7g=
+X-Gm-Gg: ASbGncstxW3dpOuXvWHHPT7bRNQ65VNSvObMYr5nqqBwwgczIEcjOP69WPAdID6FBG9
+ nxt4sCBnw7VfCfOTLDrvZbCPhdqqd9TrgVrC0rT5eiHXjq64SF3JMa/QcUK4AuLAbxADsBjWop5
+ 2gG4qaJvBnex3D9lW9HuhP9RqXrH3Xir/gOypYuCtM8FVc14iGHv4Bv8gXGs9cDPxNsxWthQGLr
+ oWKvsU8Id8VbO2K7x5c8l0uWqOz8KWwyTvHDa0H1gsx7mbZaaFrODZmp+KzmktC5FWBwLmorhO+
+ 94Qe4bSQt0gOUkL3nrh8AMPhyYnraaUEHVtF8xku0N6ybiIpQr0c0O/l3zN+bDpnSztxL8W5736
+ ADQhvqcoc2tHc41HmiNIzR8qXFjFpK3wUSDKuVESXkFHf5cLp1RIHMs16YKM=
+X-Google-Smtp-Source: AGHT+IGkHY/tinfvhRC2Ic9o5v/E2Y0i2AEJY4rfV0sILm597w611NuudBbFjgFSBXIKfmlPvgmwnw==
+X-Received: by 2002:a05:6830:b90:b0:739:fe21:42ba with SMTP id
+ 46e09a7af769-73ca1311522mr10304825a34.22.1751901349658; 
+ Mon, 07 Jul 2025 08:15:49 -0700 (PDT)
+Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
+ [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
+ 586e51a60fabf-2f7902d65f6sm2236393fac.46.2025.07.07.08.15.49
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Jul 2025 07:49:18 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org,
-	qemu-trivial@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH] docs/devel/tracing: Update trace.h creation rune to include
- SPDX
-Date: Mon,  7 Jul 2025 15:49:17 +0100
-Message-ID: <20250707144917.576573-1-peter.maydell@linaro.org>
+ Mon, 07 Jul 2025 08:15:49 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 0/3] target/arm: Split out AT and PMU cpregs
+Date: Mon,  7 Jul 2025 09:15:44 -0600
+Message-ID: <20250707151547.196393-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x334.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,36 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-checkpatch now checks that new files have an SPDX line. If you use the
-shell rune in tracing.rst to create a trace.h wrapper header, this
-triggers checkpatch to complain.
+Rather than the wholesale movement of cpregs out of helper.c, split
+out two subsets: address translation and performance monitoring.
 
-Although these files are tiny, it's worth having the SPDX line to
-avoid having to add extra exception cases to checkpatch.
 
-Update the rune to include creating an SPDX line.
+r~
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-NB that checkpatch's SPDX test gets confused by this patch:
- ^* matches null string many times in regex; marked by <-- HERE in m/^* <-- HERE /'$/ at ./scripts/checkpatch.pl line 1389
----
- docs/devel/tracing.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/devel/tracing.rst b/docs/devel/tracing.rst
-index 043bed7fd0f..f4557ee20e4 100644
---- a/docs/devel/tracing.rst
-+++ b/docs/devel/tracing.rst
-@@ -76,7 +76,7 @@ The "io/trace.h" file must be created manually with an #include of the
- corresponding "trace/trace-<subdir>.h" file that will be generated in the
- builddir::
- 
--  $ echo '#include "trace/trace-io.h"' >io/trace.h
-+  $ (echo '/* SPDX-License-Identifier: GPL-2.0-or-later */' ; echo '#include "trace/trace-io.h"')  >io/trace.h
- 
- While it is possible to include a trace.h file from outside a source file's own
- sub-directory, this is discouraged in general. It is strongly preferred that
+Richard Henderson (3):
+  target/arm: Drop stub for define_tlb_insn_regs
+  target/arm: Split out AT insns to tcg/cpregs-at.c
+  target/arm: Split out performance monitor regs to cpregs-pmu.c
+
+ target/arm/cpregs.h        |    3 +
+ target/arm/internals.h     |    5 +
+ target/arm/cpregs-pmu.c    | 1309 ++++++++++++++++++++++++++
+ target/arm/helper.c        | 1805 +-----------------------------------
+ target/arm/tcg-stubs.c     |    5 -
+ target/arm/tcg/cpregs-at.c |  519 +++++++++++
+ target/arm/meson.build     |    2 +
+ target/arm/tcg/meson.build |    1 +
+ 8 files changed, 1847 insertions(+), 1802 deletions(-)
+ create mode 100644 target/arm/cpregs-pmu.c
+ create mode 100644 target/arm/tcg/cpregs-at.c
+
 -- 
 2.43.0
 
