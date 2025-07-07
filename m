@@ -2,49 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827D1AFBBB3
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 21:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B97EAFBBBA
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 21:31:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYrWX-0003Rn-DZ; Mon, 07 Jul 2025 15:29:09 -0400
+	id 1uYrYR-0005e0-7z; Mon, 07 Jul 2025 15:31:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1uYrWT-0003Jo-E6
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 15:29:05 -0400
-Received: from mailout12.t-online.de ([194.25.134.22])
+ (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
+ id 1uYrXd-0005Nx-CS
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 15:30:22 -0400
+Received: from mailout07.t-online.de ([194.25.134.83])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1uYrWR-0004zp-1u
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 15:29:05 -0400
-Received: from fwd73.aul.t-online.de (fwd73.aul.t-online.de [10.223.144.99])
- by mailout12.t-online.de (Postfix) with SMTP id 035AFE88D;
- Mon,  7 Jul 2025 21:28:58 +0200 (CEST)
-Received: from [192.168.211.200] ([93.236.150.188]) by fwd73.t-online.de
+ (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
+ id 1uYrXa-0005Nx-Jr
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 15:30:16 -0400
+Received: from fwd75.aul.t-online.de (fwd75.aul.t-online.de [10.223.144.101])
+ by mailout07.t-online.de (Postfix) with SMTP id 4D07FE368;
+ Mon,  7 Jul 2025 21:30:10 +0200 (CEST)
+Received: from linpower.localnet ([93.236.150.188]) by fwd75.t-online.de
  with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1uYrWK-4Fcx3R0; Mon, 7 Jul 2025 21:28:56 +0200
-Message-ID: <48576e83-54ba-4ebd-8a3e-6b8306655483@t-online.de>
-Date: Mon, 7 Jul 2025 21:28:56 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
+ esmtp id 1uYrXV-3wDd2H0; Mon, 7 Jul 2025 21:30:09 +0200
+Received: by linpower.localnet (Postfix, from userid 1000)
+ id 7DDDF200361; Mon,  7 Jul 2025 21:30:09 +0200 (CEST)
+From: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
 To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-devel@nongnu.org
-From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-Subject: [PATCH 0/3] hw/audio/sb16: reduce the CPU load
+Subject: [PATCH 1/3] hw/audio/sb16: introduce DMA helper functions
+Date: Mon,  7 Jul 2025 21:30:07 +0200
+Message-ID: <20250707193009.12901-1-vr_qemu@t-online.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <48576e83-54ba-4ebd-8a3e-6b8306655483@t-online.de>
+References: <48576e83-54ba-4ebd-8a3e-6b8306655483@t-online.de>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1751916536-A57F856B-FE05C0A2/0/0 CLEAN NORMAL
-X-TOI-MSGID: b0fb70bf-4fd5-482d-9abd-e81c7aaedb78
-Received-SPF: pass client-ip=194.25.134.22; envelope-from=vr_qemu@t-online.de;
- helo=mailout12.t-online.de
+X-TOI-EXPURGATEID: 150726::1751916609-5D7F84D5-16BDC014/0/0 CLEAN NORMAL
+X-TOI-MSGID: 0a6436af-4c1c-4d1d-9060-dd868c3af84c
+Received-SPF: pass client-ip=194.25.134.83;
+ envelope-from=volker.ruemelin@t-online.de; helo=mailout07.t-online.de
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -62,23 +65,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Three patches for the Sound Blaster 16 emulation.
+Introduce the hold_DREQ() and release_DREQ() functions to ease
+the review of the next patch.
 
-Patch 2/3 "improve DMA handling" reduces the CPU load and fixes issue
-#469 at https://gitlab.com/qemu-project/qemu/-/issues/469.
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+---
+ hw/audio/sb16.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-Don't forget to add the AdLib device to the QEMU command line if you
-want to test the patches. The OPL2 chip is part of the Sound Blaster 16
-emulation. The real Sound Blaster 16 used an OPL3 chip.
-
-Volker Rümelin (3):
-  hw/audio/sb16: introduce DMA helper functions
-  hw/audio/sb16: improve DMA handling
-  hw/audio/sb16: block structure coding style fixes
-
- hw/audio/sb16.c | 105 ++++++++++++++++++++++++++++--------------------
- 1 file changed, 61 insertions(+), 44 deletions(-)
-
+diff --git a/hw/audio/sb16.c b/hw/audio/sb16.c
+index bac64118fe..5c51940596 100644
+--- a/hw/audio/sb16.c
++++ b/hw/audio/sb16.c
+@@ -154,6 +154,22 @@ static int irq_of_magic (int magic)
+     }
+ }
+ 
++static void hold_DREQ(SB16State *s, int nchan)
++{
++    IsaDma *isa_dma = nchan == s->dma ? s->isa_dma : s->isa_hdma;
++    IsaDmaClass *k = ISADMA_GET_CLASS(isa_dma);
++
++    k->hold_DREQ(isa_dma, nchan);
++}
++
++static void release_DREQ(SB16State *s, int nchan)
++{
++    IsaDma *isa_dma = nchan == s->dma ? s->isa_dma : s->isa_hdma;
++    IsaDmaClass *k = ISADMA_GET_CLASS(isa_dma);
++
++    k->release_DREQ(isa_dma, nchan);
++}
++
+ #if 0
+ static void log_dsp (SB16State *dsp)
+ {
+@@ -177,19 +193,18 @@ static void speaker (SB16State *s, int on)
+ 
+ static void control (SB16State *s, int hold)
+ {
+-    int dma = s->use_hdma ? s->hdma : s->dma;
+-    IsaDma *isa_dma = s->use_hdma ? s->isa_hdma : s->isa_dma;
+-    IsaDmaClass *k = ISADMA_GET_CLASS(isa_dma);
++    int nchan = s->use_hdma ? s->hdma : s->dma;
++
+     s->dma_running = hold;
+ 
+-    ldebug ("hold %d high %d dma %d\n", hold, s->use_hdma, dma);
++    ldebug("hold %d high %d nchan %d\n", hold, s->use_hdma, nchan);
+ 
+     if (hold) {
+-        k->hold_DREQ(isa_dma, dma);
++        hold_DREQ(s, nchan);
+         AUD_set_active_out (s->voice, 1);
+     }
+     else {
+-        k->release_DREQ(isa_dma, dma);
++        release_DREQ(s, nchan);
+         AUD_set_active_out (s->voice, 0);
+     }
+ }
 -- 
 2.43.0
 
