@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51C2AFAE6D
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 10:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6818EAFAE6A
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 10:17:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYh0l-0008UK-6g; Mon, 07 Jul 2025 04:15:39 -0400
+	id 1uYh0m-0008Ut-9S; Mon, 07 Jul 2025 04:15:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1uYh0d-0008RH-Ij
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 04:15:32 -0400
+ id 1uYh0f-0008Rp-To
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 04:15:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1uYh0a-0007La-SS
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 04:15:31 -0400
+ id 1uYh0e-0007Np-AB
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 04:15:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751876125;
+ s=mimecast20190719; t=1751876131;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XMSAIGjZQm7v/llfYTxAtUXEfhFeRyEzAV9SpCA0wyQ=;
- b=OXcey8QsVWnV/O/a1ozL1RDzUNawi0NCm0m6Ampp8WxSoZoENDZIXZyHLNC1j1/se0pO4L
- ZYIz7jYUEhEszhGMcPHlMT7K2Gqk8DI8uE3j8JBCtF1ja8a+P5J+f+jTFrbDmzoqlEpExO
- G3ecqibNqoFu/NHP0p2pcJyKUdJ9P7k=
+ bh=I76yZiKaUMu4077l3joOwVu/AGYxDmVkJAii/GtwsNA=;
+ b=MnXz91esoT/gOMDw8+zC4tJCEp4sbkI3jP4KzaNRhYRkdS46HwGsHXcI9+i1WtjIu2njt0
+ tpvcNNtIeK6+OoxCSsKr9i/MH6ATI0K1bgk5pk5o+P9gFBSc3hJFq103z0WY6kg+C8RJr+
+ 8TQoOgNLQExjqmABLKfkAxrfgsw9GZg=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-37-uJ3lxr35MV-UtoZQS4oKsg-1; Mon,
- 07 Jul 2025 04:15:24 -0400
-X-MC-Unique: uJ3lxr35MV-UtoZQS4oKsg-1
-X-Mimecast-MFC-AGG-ID: uJ3lxr35MV-UtoZQS4oKsg_1751876123
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-301-DUKsWn1UOm2S8Wh-TmNE-g-1; Mon,
+ 07 Jul 2025 04:15:29 -0400
+X-MC-Unique: DUKsWn1UOm2S8Wh-TmNE-g-1
+X-Mimecast-MFC-AGG-ID: DUKsWn1UOm2S8Wh-TmNE-g_1751876128
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 26AF2190FBCC; Mon,  7 Jul 2025 08:15:23 +0000 (UTC)
+ id 4D2F0190FBC4; Mon,  7 Jul 2025 08:15:28 +0000 (UTC)
 Received: from lenovo-t14s.redhat.com (unknown [10.45.225.147])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 40D071803AFF; Mon,  7 Jul 2025 08:15:18 +0000 (UTC)
+ id A37F518046C3; Mon,  7 Jul 2025 08:15:23 +0000 (UTC)
 From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -56,9 +56,10 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v3 02/11] net: Define net_client_set_link()
-Date: Mon,  7 Jul 2025 10:14:56 +0200
-Message-ID: <20250707081505.127519-3-lvivier@redhat.com>
+Subject: [PATCH v3 03/11] vhost_net: Rename vhost_set_vring_enable() for
+ clarity
+Date: Mon,  7 Jul 2025 10:14:57 +0200
+Message-ID: <20250707081505.127519-4-lvivier@redhat.com>
 In-Reply-To: <20250707081505.127519-1-lvivier@redhat.com>
 References: <20250707081505.127519-1-lvivier@redhat.com>
 MIME-Version: 1.0
@@ -89,116 +90,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The code to set the link status is currently located in
-qmp_set_link(). This function identifies the device by name,
-searches for the corresponding NetClientState, and then updates
-the link status.
+This is a cosmetic change with no functional impact.
 
-In some parts of the code, such as vhost-user.c, the
-NetClientState are already available. Calling qmp_set_link()
-from these locations leads to a redundant search for the clients.
-
-This patch refactors the logic by introducing a new function,
-net_client_set_link(), which accepts a NetClientState array
-directly. qmp_set_link() is simplified to be a wrapper that
-performs the client search and then calls the new function.
-The vhost-user implementation is updated to use net_client_set_link()
-directly, thereby eliminating the unnecessary client lookup.
+The function vhost_set_vring_enable() is specific to vhost_net and
+is used outside of vhost_net.c (specifically, in
+hw/net/virtio-net.c). To prevent confusion with other similarly named
+vhost functions, such as the one found in cryptodev-vhost.c, it has
+been renamed to vhost_net_set_vring_enable(). This clarifies that the
+function belongs to the vhost_net module.
 
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 ---
- include/net/net.h |  1 +
- net/net.c         | 32 ++++++++++++++++++++------------
- net/vhost-user.c  |  4 ++--
- 3 files changed, 23 insertions(+), 14 deletions(-)
+ hw/net/vhost_net-stub.c | 2 +-
+ hw/net/vhost_net.c      | 4 ++--
+ hw/net/virtio-net.c     | 4 ++--
+ include/net/vhost_net.h | 2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/net.h b/include/net/net.h
-index cdd5b109b0d2..ac59b593ba48 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -298,6 +298,7 @@ void net_client_parse(QemuOptsList *opts_list, const char *optstr);
- void show_netdevs(void);
- void net_init_clients(void);
- void net_check_clients(void);
-+void net_client_set_link(NetClientState **ncs, int queues, bool up);
- void net_cleanup(void);
- void hmp_host_net_add(Monitor *mon, const QDict *qdict);
- void hmp_host_net_remove(Monitor *mon, const QDict *qdict);
-diff --git a/net/net.c b/net/net.c
-index 39d6f28158a3..cfa2d8e95827 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -1601,21 +1601,11 @@ void colo_notify_filters_event(int event, Error **errp)
-     }
+diff --git a/hw/net/vhost_net-stub.c b/hw/net/vhost_net-stub.c
+index 72df6d757e4d..7bed0bf92b8e 100644
+--- a/hw/net/vhost_net-stub.c
++++ b/hw/net/vhost_net-stub.c
+@@ -101,7 +101,7 @@ VHostNetState *get_vhost_net(NetClientState *nc)
+     return 0;
  }
  
--void qmp_set_link(const char *name, bool up, Error **errp)
-+void net_client_set_link(NetClientState **ncs, int queues, bool up)
+-int vhost_set_vring_enable(NetClientState *nc, int enable)
++int vhost_net_set_vring_enable(NetClientState *nc, int enable)
  {
--    NetClientState *ncs[MAX_QUEUE_NUM];
-     NetClientState *nc;
--    int queues, i;
--
--    queues = qemu_find_net_clients_except(name, ncs,
--                                          NET_CLIENT_DRIVER__MAX,
--                                          MAX_QUEUE_NUM);
-+    int i;
+     return 0;
+ }
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index 891f235a0a6e..cb8705639787 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -551,7 +551,7 @@ int vhost_net_start(VirtIODevice *dev, NetClientState *ncs,
  
--    if (queues == 0) {
--        error_set(errp, ERROR_CLASS_DEVICE_NOT_FOUND,
--                  "Device '%s' not found", name);
--        return;
--    }
-     nc = ncs[0];
+         if (peer->vring_enable) {
+             /* restore vring enable state */
+-            r = vhost_set_vring_enable(peer, peer->vring_enable);
++            r = vhost_net_set_vring_enable(peer, peer->vring_enable);
  
-     for (i = 0; i < queues; i++) {
-@@ -1646,6 +1636,24 @@ void qmp_set_link(const char *name, bool up, Error **errp)
-     }
+             if (r < 0) {
+                 goto err_guest_notifiers;
+@@ -686,7 +686,7 @@ VHostNetState *get_vhost_net(NetClientState *nc)
+     return vhost_net;
  }
  
-+void qmp_set_link(const char *name, bool up, Error **errp)
-+{
-+    NetClientState *ncs[MAX_QUEUE_NUM];
-+    int queues;
-+
-+    queues = qemu_find_net_clients_except(name, ncs,
-+                                          NET_CLIENT_DRIVER__MAX,
-+                                          MAX_QUEUE_NUM);
-+
-+    if (queues == 0) {
-+        error_set(errp, ERROR_CLASS_DEVICE_NOT_FOUND,
-+                  "Device '%s' not found", name);
-+        return;
-+    }
-+
-+    net_client_set_link(ncs, queues, up);
-+}
-+
- static void net_vm_change_state_handler(void *opaque, bool running,
-                                         RunState state)
+-int vhost_set_vring_enable(NetClientState *nc, int enable)
++int vhost_net_set_vring_enable(NetClientState *nc, int enable)
  {
-diff --git a/net/vhost-user.c b/net/vhost-user.c
-index 0b235e50c650..10ac8dc0b3d7 100644
---- a/net/vhost-user.c
-+++ b/net/vhost-user.c
-@@ -264,7 +264,7 @@ static void chr_closed_bh(void *opaque)
-         vhost_user_save_acked_features(ncs[i]);
+     VHostNetState *net = get_vhost_net(nc);
+     const VhostOps *vhost_ops = net->dev.vhost_ops;
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index eb93607b8c76..b52660436273 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -697,7 +697,7 @@ static int peer_attach(VirtIONet *n, int index)
      }
  
--    qmp_set_link(name, false, &err);
-+    net_client_set_link(ncs, queues, false);
+     if (nc->peer->info->type == NET_CLIENT_DRIVER_VHOST_USER) {
+-        vhost_set_vring_enable(nc->peer, 1);
++        vhost_net_set_vring_enable(nc->peer, 1);
+     }
  
-     qemu_chr_fe_set_handlers(&s->chr, NULL, NULL, net_vhost_user_event,
-                              NULL, opaque, NULL, true);
-@@ -300,7 +300,7 @@ static void net_vhost_user_event(void *opaque, QEMUChrEvent event)
-         }
-         s->watch = qemu_chr_fe_add_watch(&s->chr, G_IO_HUP,
-                                          net_vhost_user_watch, s);
--        qmp_set_link(name, true, &err);
-+        net_client_set_link(ncs, queues, true);
-         s->started = true;
-         qapi_event_send_netdev_vhost_user_connected(name, chr->label);
-         break;
+     if (nc->peer->info->type != NET_CLIENT_DRIVER_TAP) {
+@@ -720,7 +720,7 @@ static int peer_detach(VirtIONet *n, int index)
+     }
+ 
+     if (nc->peer->info->type == NET_CLIENT_DRIVER_VHOST_USER) {
+-        vhost_set_vring_enable(nc->peer, 0);
++        vhost_net_set_vring_enable(nc->peer, 0);
+     }
+ 
+     if (nc->peer->info->type !=  NET_CLIENT_DRIVER_TAP) {
+diff --git a/include/net/vhost_net.h b/include/net/vhost_net.h
+index c6a5361a2ae4..0f40049f3419 100644
+--- a/include/net/vhost_net.h
++++ b/include/net/vhost_net.h
+@@ -41,7 +41,7 @@ void vhost_net_config_mask(VHostNetState *net, VirtIODevice *dev, bool mask);
+ int vhost_net_notify_migration_done(VHostNetState *net, char* mac_addr);
+ VHostNetState *get_vhost_net(NetClientState *nc);
+ 
+-int vhost_set_vring_enable(NetClientState * nc, int enable);
++int vhost_net_set_vring_enable(NetClientState *nc, int enable);
+ 
+ uint64_t vhost_net_get_acked_features(VHostNetState *net);
+ 
 -- 
 2.49.0
 
