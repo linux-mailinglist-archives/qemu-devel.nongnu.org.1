@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 403F7AFAA0A
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 05:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A08AFAA61
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 05:51:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYcIH-0006gg-4V; Sun, 06 Jul 2025 23:13:25 -0400
+	id 1uYcrj-0005xi-NT; Sun, 06 Jul 2025 23:50:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <raphael@enfabrica.net>)
- id 1uYcI4-0006fU-Qw
- for qemu-devel@nongnu.org; Sun, 06 Jul 2025 23:13:14 -0400
-Received: from mail-qv1-xf30.google.com ([2607:f8b0:4864:20::f30])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <raphael@enfabrica.net>)
- id 1uYcI0-0006On-V9
- for qemu-devel@nongnu.org; Sun, 06 Jul 2025 23:13:12 -0400
-Received: by mail-qv1-xf30.google.com with SMTP id
- 6a1803df08f44-6fadd3ad18eso29659436d6.2
- for <qemu-devel@nongnu.org>; Sun, 06 Jul 2025 20:13:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=enfabrica.net; s=google; t=1751857987; x=1752462787; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=S+rs1+bAnCzAXWlRHqSV5A8qHxIhBhZKPZaZqvDN0es=;
- b=YOz/1b5TCmLrLMVNa38+LDEhIfoD8Qx5MoZK8mjXcM0MQuoO/XtfhoSJcr3ucIFxZF
- wyWWXgF9HnBzzE/NPFQYzIDUo0pS/MZePDc1Snu0SxHv0SlwWj41OafZ/xIZsSmEaG49
- DncyL/gni96cuzUEjS1oq4NGvA8nacc/iSGNLmlXe8z6c5AwaQkM1r3cvmSUCIebeXJE
- zC25yjOp4LftoiM/DlHU4SIT8LH1qU7WoPNfPWoJRhNiCGJ8Tq4gpAaYYJE7uCmgY46y
- XPdgvoIi1OL7Ha0rGaaVVxm7AXJIeyXJ7tHodQzNg66DlEOsRnT9NCAaeZbgEgiPWpH4
- rTiQ==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1uYcrf-0005wx-QS
+ for qemu-devel@nongnu.org; Sun, 06 Jul 2025 23:49:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1uYcre-0003ey-6O
+ for qemu-devel@nongnu.org; Sun, 06 Jul 2025 23:49:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751860193;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=totgLjqI5c1lZth8Vm5da9UbW4fzqAO66gKPIBJC2d4=;
+ b=InqwO5mAHwaKZCthVrDZt414SS+vSxJGgWuXLy/mslmnOsRE2y2FJ3kqn9+BnNbtOFQF6Z
+ xBOcX38Wg7skHnb2pHHlyI5Cj4TI2orTLem+VNbTShMMsQv470E+DSVrXqlApUZ94x7n3h
+ mz72DzrlaBz9dN3KJKykNeShzh7s2o0=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-131-FzjSSCIRNVOwqbH4fPDkXA-1; Sun, 06 Jul 2025 23:49:51 -0400
+X-MC-Unique: FzjSSCIRNVOwqbH4fPDkXA-1
+X-Mimecast-MFC-AGG-ID: FzjSSCIRNVOwqbH4fPDkXA_1751860190
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-7489ac848f3so4252736b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 06 Jul 2025 20:49:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751857987; x=1752462787;
+ d=1e100.net; s=20230601; t=1751860190; x=1752464990;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S+rs1+bAnCzAXWlRHqSV5A8qHxIhBhZKPZaZqvDN0es=;
- b=Vbu/mZbJ5aHDelW58SkyDoMOUOiWZeX71L78pyVsyFoIYGoPBbhUQSm5Wk5jSUE+1l
- HJ2gSZXjiLjrWi3vwhzShLo9ZjfUd9w3+i4VzKIlqz2FyK9Pfy7hn4XLfDxpZQ6zwQTh
- +tCljrhfbyJ1DVSnUT7LvvUxwOP9DkLHI3lID0LwGq3hEqsNcmFsv7YZkTRnZPYg7nIo
- jYMzBTbAEFwvdiCvnfQXVg5uXn/GZfJDVT/6KTOf7Zrju3zuKuZnLQljrGmT2XhLKVOD
- Lahcbs4iaTcsOsemULV62bQpKTNTN913X1/VjFVfuZAKQte4eBpoG/pwCxS5UMwYUlDF
- Sf7g==
+ bh=totgLjqI5c1lZth8Vm5da9UbW4fzqAO66gKPIBJC2d4=;
+ b=TYmCXQj5CXK1Gn4/JENhscD/GKlm9qs1o1SgLukvEYtMOHo2K4wC0wRqE0k0OH/aFH
+ Uv3uf/7gcw6xAkWZh3bItydMGTh37TswmIHowM2BkVSyZng+A65aeCnocnfJ2MrzN2EM
+ 11G4SgpLRF3fqsBog/uYDcu0RkYcgxWl+b4w0cLtRV+EF14zw1+RUULjByiI6JTc4W3w
+ I4J/lhHTREFTFw9nOz1hU7YxMw/gpKLQr7hKossF9A2pG2AQgn8vRUL+zPmGPUUvopjv
+ Zvz4GHEkPtHg1kUdeZ4cv3RI6L85ZcRiCNeefGlsPacDzXP05J1RdzwpBjRfHfMmjKaP
+ rMnQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUc2OAWB5nTAA9FXJZ0YBlQ6GAjvFKonunUAvC71E366dK3DjKsgdpHNaxyLisgS2aWwahhl6zAu6ja@nongnu.org
-X-Gm-Message-State: AOJu0YzdBq+YedcJf332xpXzUvZk7r42s28N5hnsDD4NOVd4uSSn1rv+
- ueujW17Ej5jLLo1ZFxzlZeQHP8ALhmVm0maGYGZxvmlqFvqIyNKZazPU8S9xJd+vbiobDRqyuQY
- PiLBXNAWGhyZnsXAI/aaBxB4ezNGJu+w5PhRRAmc1jw==
-X-Gm-Gg: ASbGncvJ28R6tnRLLZ9PCDSCPUFRdU0PDUtDBjJcip0N1JXqHpfkJqujW906Fo3UGH0
- t4IU9vBlSLht6iaKZAejN+tMwP6ErjqvcAbsVQJIpj4kpczS6oJkDYVeVOZ0neSg2dsFjVGqI3z
- X1e6XZcMhwgN3B9ndUjT3ySx0N6OmAmXx/n2S/rWKrZPg=
-X-Google-Smtp-Source: AGHT+IHf37tNUrF1ad2JjMmiqhOoivtvwUcI3kGejpIdtiy66XYEQ8/ouSOB+BIyya3NIN+gsBedZ1ofDbIoghhmlq8=
-X-Received: by 2002:a05:6214:469f:b0:6fd:6fc6:3961 with SMTP id
- 6a1803df08f44-702d16a4676mr139694436d6.37.1751857987229; Sun, 06 Jul 2025
- 20:13:07 -0700 (PDT)
+ AJvYcCUICLLj6rpEKDSqpWrtyAWXw9FCt/7FZfvJ0prgO+Ea87ZBnsaKNP1pBe4LBnazks3brZuUKpKKifmT@nongnu.org
+X-Gm-Message-State: AOJu0YyhhXDGc6uO2E/F+eZBjaqyiDxd17l+ejX8/Lux6lgB0lM9GuB5
+ l2evWYBJfs2kG/Nm8F+2ITajXk1qspOK6AvUmPKNZURSSoEA4X+2xk+mD9uMz4p9qLENqCEO+Bu
+ cpU7osfWWPqlcLtPScD5cy43PiVcH05qAuydtgRvEroTjQ81CHasJFU3Ytx4v3IdeYft4gBRJp3
+ bLJ4xLMYUajgLeTizwu3S2ZwIje3XrSFmfBuPZ1liasw==
+X-Gm-Gg: ASbGnct/pYt0TEVviSF1ELLzWipWBXL57ZNGz51+QsJQYKDVxf+teqgTyWHD8LWxX/n
+ /CQdgv8FKQ1LeiJ6+sbDYHxhkP+yY0z1BlHqSUCLGKaFmejjzJfwQgyqNmkkPgV5fDOcIdHcQRW
+ n7KTw6
+X-Received: by 2002:a05:6a00:1307:b0:748:f750:14c6 with SMTP id
+ d2e1a72fcca58-74ce8ab16e8mr13809448b3a.14.1751860189737; 
+ Sun, 06 Jul 2025 20:49:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkEzP3RLkIbVf/EUviKr2LcgNUmSaQBuyYRU8W2vBRv04IcWz+njkHCxQveBj6SLW+12IN8jz6dEp3sKlVB7M=
+X-Received: by 2002:a05:6a00:1307:b0:748:f750:14c6 with SMTP id
+ d2e1a72fcca58-74ce8ab16e8mr13809427b3a.14.1751860189276; Sun, 06 Jul 2025
+ 20:49:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250609212547.2859224-1-d-tatianin@yandex-team.ru>
- <20250609212547.2859224-4-d-tatianin@yandex-team.ru>
-In-Reply-To: <20250609212547.2859224-4-d-tatianin@yandex-team.ru>
-From: Raphael Norwitz <raphael@enfabrica.net>
-Date: Sun, 6 Jul 2025 23:12:56 -0400
-X-Gm-Features: Ac12FXw3TRJkGXChJ3y2vDcVj4rtANhQZ7YDLIOPnUNyeeC2frSpdUHWQuSwEz0
-Message-ID: <CAMDpr=e3S2BB5Kzyzg9v=dMZ1G9vVN5Phm4x0YjpXimeBomaXg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] vhost-user-blk: add an option to skip GET_VRING_BASE
- for force shutdown
+References: <20250703105508.2380494-1-vsementsov@yandex-team.ru>
+ <d7a66374-12d3-4b4b-975f-90202d83cbdf@yandex-team.ru>
+In-Reply-To: <d7a66374-12d3-4b4b-975f-90202d83cbdf@yandex-team.ru>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 7 Jul 2025 11:49:37 +0800
+X-Gm-Features: Ac12FXxXdBaee2PSvvSJCPJI2DOfqBzBQODtPD-hcdTV7ebxpxXWZEmulKk3nrg
+Message-ID: <CACGkMEv8rvoDS3PHKjBQeA4qi35BVZF0__FP04EwEeM3frPUnw@mail.gmail.com>
+Subject: Re: [PATCH] net/tap: drop too small packets
 To: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
- "Michael S. Tsirkin" <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f30;
- envelope-from=raphael@enfabrica.net; helo=mail-qv1-xf30.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,89 +104,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I think others should weigh in on the higher level abstractions you're
-adding for vhost_user_blk_force_stop() - I don't have a strong
-perspective on them. I'm ok with this for vhost-user-blk.
-
-Acked-by: Raphael Norwitz <raphael@enfabrica.net>
-
-On Mon, Jun 9, 2025 at 5:26=E2=80=AFPM Daniil Tatianin
+On Thu, Jul 3, 2025 at 10:59=E2=80=AFPM Daniil Tatianin
 <d-tatianin@yandex-team.ru> wrote:
 >
-> If we have a server running disk requests that is for whatever reason
-> hanging or not able to process any more IO requests but still has some
-> in-flight requests previously issued by the guest OS, QEMU will still
-> try to drain the vring before shutting down even if it was explicitly
-> asked to do a "force shutdown" via SIGTERM or QMP quit. This is not
-> useful since the guest is no longer running at this point since it was
-> killed by QEMU earlier in the process. At this point, we don't care
-> about whatever in-flight IO it might have pending, we just want QEMU
-> to shut down.
+> On 7/3/25 1:55 PM, Vladimir Sementsov-Ogievskiy wrote:
 >
-> Add an option called "skip-get-vring-base-on-force-shutdown" to allow
-> SIGTERM/QMP quit() to actually act like a "force shutdown" at least
-> for vhost-user-blk devices since those require the drain operation
-> to shut down gracefully unlike, for example, network devices.
+> > Theoretically tap_read_packet() may return size less than
+> > s->host_vnet_hdr_len, and next, we'll work with negative size
+> > (in case of !s->using_vnet_hdr). Let's avoid it.
+> >
+> > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> > ---
+> >   net/tap.c | 5 +++++
+> >   1 file changed, 5 insertions(+)
+> >
+> > diff --git a/net/tap.c b/net/tap.c
+> > index ae1c7e39832..20d0dc2eb35 100644
+> > --- a/net/tap.c
+> > +++ b/net/tap.c
+> > @@ -172,6 +172,11 @@ static void tap_send(void *opaque)
+> >               break;
+> >           }
+> >
+> > +        if (s->host_vnet_hdr_len && size < s->host_vnet_hdr_len) {
+> > +            /* Invalid packet */
+> > +            break;
+> > +        }
+> > +
+> >           if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
+> >               buf  +=3D s->host_vnet_hdr_len;
+> >               size -=3D s->host_vnet_hdr_len;
 >
-> Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-> ---
->  hw/block/vhost-user-blk.c          | 9 ++++++++-
->  include/hw/virtio/vhost-user-blk.h | 2 ++
->  2 files changed, 10 insertions(+), 1 deletion(-)
+> Reviewed-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+
+Queued.
+
+Thanks
+
 >
-> diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-> index 0eebbcd80d..c0cc5f6942 100644
-> --- a/hw/block/vhost-user-blk.c
-> +++ b/hw/block/vhost-user-blk.c
-> @@ -210,6 +210,7 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
->      BusState *qbus =3D BUS(qdev_get_parent_bus(DEVICE(vdev)));
->      VirtioBusClass *k =3D VIRTIO_BUS_GET_CLASS(qbus);
->      int ret;
-> +    bool force_stop =3D false;
 >
->      if (!s->started_vu) {
->          return 0;
-> @@ -220,7 +221,11 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
->          return 0;
->      }
->
-> -    ret =3D vhost_dev_stop(&s->dev, vdev, true);
-> +    force_stop =3D s->skip_get_vring_base_on_force_shutdown &&
-> +                 qemu_force_shutdown_requested();
-> +
-> +    ret =3D force_stop ? vhost_dev_force_stop(&s->dev, vdev, true) :
-> +                       vhost_dev_stop(&s->dev, vdev, true);
->
->      if (k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false) < 0) {
->          error_report("vhost guest notifier cleanup failed: %d", ret);
-> @@ -584,6 +589,8 @@ static const Property vhost_user_blk_properties[] =3D=
- {
->                        VIRTIO_BLK_F_DISCARD, true),
->      DEFINE_PROP_BIT64("write-zeroes", VHostUserBlk, parent_obj.host_feat=
-ures,
->                        VIRTIO_BLK_F_WRITE_ZEROES, true),
-> +    DEFINE_PROP_BOOL("skip-get-vring-base-on-force-shutdown", VHostUserB=
-lk,
-> +                     skip_get_vring_base_on_force_shutdown, false),
->  };
->
->  static void vhost_user_blk_class_init(ObjectClass *klass, const void *da=
-ta)
-> diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost=
--user-blk.h
-> index ea085ee1ed..a10f785672 100644
-> --- a/include/hw/virtio/vhost-user-blk.h
-> +++ b/include/hw/virtio/vhost-user-blk.h
-> @@ -50,6 +50,8 @@ struct VHostUserBlk {
->      bool connected;
->      /* vhost_user_blk_start/vhost_user_blk_stop */
->      bool started_vu;
-> +
-> +    bool skip_get_vring_base_on_force_shutdown;
->  };
->
->  #endif
-> --
-> 2.34.1
->
+
 
