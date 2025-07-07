@@ -2,83 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FBCAFB5A0
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 16:14:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C86C0AFB609
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 16:29:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYmZi-00028c-9p; Mon, 07 Jul 2025 10:12:06 -0400
+	id 1uYmpG-0004yg-T0; Mon, 07 Jul 2025 10:28:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uYmWU-0000LB-Ax
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 10:08:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uYmh7-0006yv-Nu
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 10:19:47 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uYmWQ-00010d-7a
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 10:08:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751897321;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qrORKWQytDGSyGg0HdRou4LqiB6YlU0DfuBUs+OAb+w=;
- b=J88PVv8w3QMLeo8ZtU5WR7276Dv0vo5dVCPrwFE4OXT9fYucW9B3foBUa/tu2kMBS2V3Xa
- pglnf1D4GyeQVuzkshjol70DD+Fy4ap/BbJ0K7HrT/pCzvXd1654KFnl8jQZdhJbVDk1w4
- ounZFo7PaDnU1L7jYHtMUZGGESH1RwI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-nvYV-mKiPl-JJhnuLfiVgw-1; Mon,
- 07 Jul 2025 10:08:38 -0400
-X-MC-Unique: nvYV-mKiPl-JJhnuLfiVgw-1
-X-Mimecast-MFC-AGG-ID: nvYV-mKiPl-JJhnuLfiVgw_1751897317
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DCA121800366; Mon,  7 Jul 2025 14:08:36 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.155])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 45B3C19560AD; Mon,  7 Jul 2025 14:08:33 +0000 (UTC)
-Date: Mon, 7 Jul 2025 15:08:29 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexander Graf <agraf@csgraf.de>, qemu-arm@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>
-Subject: Re: [PATCH 5/6] target/arm: Share ARM_PSCI_CALL trace event between
- TCG and HVF
-Message-ID: <aGvU3c8FTBbz6B3T@redhat.com>
-References: <20250630130937.3487-1-philmd@linaro.org>
- <20250630130937.3487-6-philmd@linaro.org>
- <e3e2f53a-33ad-49b0-99fc-c7af4b76a0d8@linaro.org>
- <CAFEAcA82LrhSz47_Q_FwbBmC-Nve-WR2bhfWoWyvYi_60MSBaw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uYmh5-00032E-0A
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 10:19:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751897983; x=1783433983;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=xI4PP1tk09L1yhkF678CvUQDelQfTgTcp8WEY37RQKY=;
+ b=Z+N9NHgaQWy89fseTlZwYdHpJsIz/6MeDb8fGVFBo2XOF0BBuecDs6un
+ z5sxfWSLLlCNsmgjhTSWxAlyBDPrIQLO0bmggmm1Masbj11TTVAY19D6Q
+ 6pz5+ZusbDe9mdyG2xU85+rk5R7mPP+Yx6k94Zxe/0sWXjbXX6RyBgusm
+ MklErHTBMz6vIXCRQm567uAAvQGoZJHAUOSriweityIbpJXbkIiJbekJ3
+ YN/wjN8jd74NDt01FfzWsSBAPZqZcFdWxyy4Hew+gK4IIkpIVmr/CYHYY
+ pIpYf7XhniXk2Q7luElIS6fLWJvT0uEwaI0tfZwYDE2AbAOD8YnxLcqDZ Q==;
+X-CSE-ConnectionGUID: POimwU/GTv2Vbcm0KtDAsg==
+X-CSE-MsgGUID: 5Tw1ecuxQLmc4lj9PTfmiA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="53333853"
+X-IronPort-AV: E=Sophos;i="6.16,294,1744095600"; d="scan'208";a="53333853"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jul 2025 07:19:38 -0700
+X-CSE-ConnectionGUID: B7k0nryBS/KchrKKdoqMmw==
+X-CSE-MsgGUID: TDXMYJ2eRbSqCvVa6ZmX9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,294,1744095600"; d="scan'208";a="186174646"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by fmviesa001.fm.intel.com with ESMTP; 07 Jul 2025 07:19:36 -0700
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>, tao1.su@intel.com,
+ chenyi.qiang@intel.com, xiaoyao.li@intel.com
+Subject: [PATCH v2] i386/cpu: Remove FEAT_24_0_EBX for AVX10
+Date: Mon,  7 Jul 2025 22:11:51 +0800
+Message-ID: <20250707141151.4187798-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEAcA82LrhSz47_Q_FwbBmC-Nve-WR2bhfWoWyvYi_60MSBaw@mail.gmail.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,68 +75,150 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 04, 2025 at 02:14:35PM +0100, Peter Maydell wrote:
-> On Mon, 30 Jun 2025 at 17:53, Pierrick Bouvier
-> <pierrick.bouvier@linaro.org> wrote:
-> >
-> > On 6/30/25 6:09 AM, Philippe Mathieu-Daudé wrote:
-> > > It is useful to compare PSCI calls of the same guest running
-> > > under TCG or HVF.
-> > >
-> > > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > > ---
-> > >   target/arm/hvf/hvf.c    | 3 ++-
-> > >   target/arm/tcg/psci.c   | 3 +++
-> > >   target/arm/trace-events | 3 +++
-> > >   3 files changed, 8 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-> > > index 7a99118c8c2..6309c5b872e 100644
-> > > --- a/target/arm/hvf/hvf.c
-> > > +++ b/target/arm/hvf/hvf.c
-> > > @@ -34,6 +34,7 @@
-> > >   #include "target/arm/multiprocessing.h"
-> > >   #include "target/arm/gtimer.h"
-> > >   #include "trace.h"
-> > > +#include "../trace.h"
-> 
-> 
-> > Just a nit, using 'target/arm/trace.h' might be more readable than
-> > '../trace.h'.
-> 
-> Mmm. docs/devel/tracing.rst rather discourages this:
-> 
-> # While it is possible to include a trace.h file from outside a source
-> file's own
-> # sub-directory, this is discouraged in general. It is strongly preferred that
-> # all events be declared directly in the sub-directory that uses them. The only
-> # exception is where there are some shared trace events defined in the top level
-> # directory trace-events file.
-> 
-> I don't know if we want to loosen that to permit events
-> that are shared between multiple subdirs (cc'ing the
-> trace subsystem maintainers for their view).
-> 
-> git grep 'include.*trace.h' | grep -v '"trace.h"'| grep -v 'trace.h:'|less
-> 
-> suggests that the only current place where we're including
-> a trace.h not in the same directory is linux-user, where
-> we opt to use the full linux-user/trace.h path. So probably
-> for consistency we should use target/arm/trace.h here.
+It turns out that all the Intel processors enumerating the support of
+Intel AVX10 support all vector widths. It's documented in the latest
+SDM, vol 1, Chapter 16 "programming with Intel AVX10".
 
-IMHO using the up-level relative paths is desirable, as it reinforces the
-intent that we shouldn't be pulling in trace events from arbitrary different
-sub-trees of the codebase, only the current dir & its (near) parents.
+(Note that AVX10.1 spec stops update since AVX10 is subsumed into SDM
+ while AVX10.2 spec stays update for the future extension of AVX10)
 
-With regards,
-Daniel
+Now SDM [1] marks the bit 16-18 of CPUID.0x24_0.EBX as reserved and they
+are reserved at 1. The purpose of Intel is to remove the semantic of
+vector length enumeration from these bits since all the 128/256/512 bit
+length are supported and no need for enumeration. But Intel has to keep
+them reserved at 1 to make it compatible with the software written based
+on earlier avx10 spec that checks the bits to query of the support of each
+vector length.
+
+For QEMU, it makes no sense to allow the configurability of the bits
+anymore. Remove the leaf FEAT_24_0_EBX and related stuff. Just hardcore
+the bits to all 1 when AVX10 is exposed to guest, to comply with the SDM
+and stop trying to associate them with the enumeration of vector length.
+
+[1] https://cdrdv2.intel.com/v1/dl/getContent/671200 (rev 088)
+
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+---
+changes in v2:
+ - refine the commit message to reference update from SDM instead of
+   AVX10 spec;
+ - call out explicitly the purpose of disassociating the enumeration of
+   vector length from the CPUID bits.
+---
+ target/i386/cpu.c | 37 ++-----------------------------------
+ target/i386/cpu.h | 12 ------------
+ 2 files changed, 2 insertions(+), 47 deletions(-)
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 0d35e95430fe..1b50fd4e397d 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -912,7 +912,6 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+ #define TCG_SGX_12_0_EAX_FEATURES 0
+ #define TCG_SGX_12_0_EBX_FEATURES 0
+ #define TCG_SGX_12_1_EAX_FEATURES 0
+-#define TCG_24_0_EBX_FEATURES 0
+ 
+ #if defined CONFIG_USER_ONLY
+ #define CPUID_8000_0008_EBX_KERNEL_FEATURES (CPUID_8000_0008_EBX_IBPB | \
+@@ -1208,20 +1207,6 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         },
+         .tcg_features = TCG_7_2_EDX_FEATURES,
+     },
+-    [FEAT_24_0_EBX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            [16] = "avx10-128",
+-            [17] = "avx10-256",
+-            [18] = "avx10-512",
+-        },
+-        .cpuid = {
+-            .eax = 0x24,
+-            .needs_ecx = true, .ecx = 0,
+-            .reg = R_EBX,
+-        },
+-        .tcg_features = TCG_24_0_EBX_FEATURES,
+-    },
+     [FEAT_8000_0007_EDX] = {
+         .type = CPUID_FEATURE_WORD,
+         .feat_names = {
+@@ -1839,22 +1824,6 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
+         .to = { FEAT_SGX_12_1_EAX,          ~0ull },
+     },
+-    {
+-        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_128 },
+-        .to = { FEAT_24_0_EBX,              CPUID_24_0_EBX_AVX10_256 },
+-    },
+-    {
+-        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_256 },
+-        .to = { FEAT_24_0_EBX,              CPUID_24_0_EBX_AVX10_512 },
+-    },
+-    {
+-        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_VL_MASK },
+-        .to = { FEAT_7_1_EDX,               CPUID_7_1_EDX_AVX10 },
+-    },
+-    {
+-        .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
+-        .to = { FEAT_24_0_EBX,              ~0ull },
+-    },
+ };
+ 
+ typedef struct X86RegisterInfo32 {
+@@ -4732,9 +4701,6 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+                     { "movdiri", "on" },
+                     { "movdir64b", "on" },
+                     { "avx10", "on" },
+-                    { "avx10-128", "on" },
+-                    { "avx10-256", "on" },
+-                    { "avx10-512", "on" },
+                     { "avx10-version", "1" },
+                     { "stepping", "1" },
+                     { /* end of list */ }
+@@ -7720,7 +7686,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         *ecx = 0;
+         *edx = 0;
+         if ((env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) && count == 0) {
+-            *ebx = env->features[FEAT_24_0_EBX] | env->avx10_version;
++            /* bit 16-18 are reserved at 1 */
++            *ebx = (0x7U << 16) | env->avx10_version;
+         }
+         break;
+     }
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 51e10139dfdf..7856a882f014 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -671,7 +671,6 @@ typedef enum FeatureWord {
+     FEAT_7_1_ECX,       /* CPUID[EAX=7,ECX=1].ECX */
+     FEAT_7_1_EDX,       /* CPUID[EAX=7,ECX=1].EDX */
+     FEAT_7_2_EDX,       /* CPUID[EAX=7,ECX=2].EDX */
+-    FEAT_24_0_EBX,      /* CPUID[EAX=0x24,ECX=0].EBX */
+     FEATURE_WORDS,
+ } FeatureWord;
+ 
+@@ -1037,17 +1036,6 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ /* Packets which contain IP payload have LIP values */
+ #define CPUID_14_0_ECX_LIP              (1U << 31)
+ 
+-/* AVX10 128-bit vector support is present */
+-#define CPUID_24_0_EBX_AVX10_128        (1U << 16)
+-/* AVX10 256-bit vector support is present */
+-#define CPUID_24_0_EBX_AVX10_256        (1U << 17)
+-/* AVX10 512-bit vector support is present */
+-#define CPUID_24_0_EBX_AVX10_512        (1U << 18)
+-/* AVX10 vector length support mask */
+-#define CPUID_24_0_EBX_AVX10_VL_MASK    (CPUID_24_0_EBX_AVX10_128 | \
+-                                         CPUID_24_0_EBX_AVX10_256 | \
+-                                         CPUID_24_0_EBX_AVX10_512)
+-
+ /* RAS Features */
+ #define CPUID_8000_0007_EBX_OVERFLOW_RECOV    (1U << 0)
+ #define CPUID_8000_0007_EBX_SUCCOR      (1U << 1)
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.43.0
 
 
