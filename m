@@ -2,52 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C18AFBDB4
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 23:38:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23756AFBDDD
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 23:52:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYtVp-0003tm-F1; Mon, 07 Jul 2025 17:36:33 -0400
+	id 1uYtkp-0002vM-EX; Mon, 07 Jul 2025 17:52:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1uYsuz-0003mB-7c; Mon, 07 Jul 2025 16:58:32 -0400
-Received: from relay.virtuozzo.com ([130.117.225.111])
+ (Exim 4.90_1) (envelope-from <SRS0=0qb7=ZU=kaod.org=clg@ozlabs.org>)
+ id 1uYtMX-0007UP-9M; Mon, 07 Jul 2025 17:27:03 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1uYsuw-00016C-MA; Mon, 07 Jul 2025 16:58:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
- Content-Type; bh=vKJfN/5eI2Tx7cOQbP82vfjVOaa6HYkeO85lIn8f0Ow=; b=iPwNuz0HIlBZ
- Hvtj1HhbeAlIyvL4fTqmDlCb7RimfojLPCN/SXl5j4Qs/d4BhVLBpzDIWGFZnhGVPSMQBJ7WPYyhG
- ada5Td0Ls3ZRFv7i5bQynY3b2lBfP3qYyGNlXCurSsLSTQJpaWqK0I9iv2tboq1mgG5QNYNzknpOV
- W7IpnaQB4hpVdYyOSNBIfoh0VV8zpWRThCRqJoH0udep9nG7svIFfi8VD5PuaVt5lLC8NU0xdVYQG
- Nqhm9F1D5P/ojWXBnzg02ouDBIgA171VMYf3AUVFdqP4NK9mwuP7WHhUnRKqK9wt/9Qq7CLNj47nO
- 9TW80vE8cSBMjxl+Kk8CeQ==;
-Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1uYspc-006WQT-1F;
- Mon, 07 Jul 2025 22:58:14 +0200
-To: qemu-block@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: den@openvz.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH 1/1] qemu-img: add sub-command --remove-all to 'qemu-img
- bitmap'
-Date: Mon,  7 Jul 2025 22:58:22 +0200
-Message-ID: <20250707205822.614350-1-den@openvz.org>
-X-Mailer: git-send-email 2.45.2
+ (Exim 4.90_1) (envelope-from <SRS0=0qb7=ZU=kaod.org=clg@ozlabs.org>)
+ id 1uYtMV-0005FB-60; Mon, 07 Jul 2025 17:26:57 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4bbcjX5S2mz4wbW;
+ Tue,  8 Jul 2025 07:25:52 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4bbcjV4H0Cz4w2Q;
+ Tue,  8 Jul 2025 07:25:49 +1000 (AEST)
+Message-ID: <4817f7fe-69bf-4a4a-89d2-dbae735626a1@kaod.org>
+Date: Mon, 7 Jul 2025 23:26:39 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/functional/test_ppc_bamboo: Replace broken link
+ with working assets
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-ppc@nongnu.org
+References: <20250707184736.88660-1-thuth@redhat.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20250707184736.88660-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: softfail client-ip=130.117.225.111; envelope-from=den@openvz.org;
- helo=relay.virtuozzo.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=0qb7=ZU=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.056, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,192 +103,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  "Denis V. Lunev" <den@openvz.org>
-From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From time to time it is needed to remove all bitmaps from the image.
-Before this patch the process is not very convinient. One should
-perform
-    qemu-img info
-and parse the output to obtain all names. After that one should
-sequentially call
-    qemu-img bitmap --remove
-for each present bitmap.
+On 7/7/25 20:47, Thomas Huth wrote:
+> From: Thomas Huth <thuth@redhat.com>
+> 
+> The old image that we used for testing the bamboo machine has disappeared
+> from the internet. Fortunately there is another kernel + initrd provided
+> by Cédric that can be used for testing this machine, too.
+> 
+> Reported-by: Stefan Hajnoczi <stefanha@gmail.com>
+> Suggested-by: Cédric Le Goater <clg@kaod.org>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-The patch adds --remove-all sub-command to 'qemu-img bitmap'.
 
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Kevin Wolf <kwolf@redhat.com>
-CC: Hanna Reitz <hreitz@redhat.com>
----
- docs/tools/qemu-img.rst |  4 +++-
- qemu-img.c              | 43 ++++++++++++++++++++++++++++++++++-------
- 2 files changed, 39 insertions(+), 8 deletions(-)
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-diff --git a/docs/tools/qemu-img.rst b/docs/tools/qemu-img.rst
-index 3653adb963..a08fd6019f 100644
---- a/docs/tools/qemu-img.rst
-+++ b/docs/tools/qemu-img.rst
-@@ -301,7 +301,7 @@ Command description:
-   For write tests, by default a buffer filled with zeros is written. This can be
-   overridden with a pattern byte specified by *PATTERN*.
- 
--.. option:: bitmap (--merge SOURCE | --add | --remove | --clear | --enable | --disable)... [-b SOURCE_FILE [-F SOURCE_FMT]] [-g GRANULARITY] [--object OBJECTDEF] [--image-opts | -f FMT] FILENAME BITMAP
-+.. option:: bitmap (--merge SOURCE | --add | --remove | --remove-all | --clear | --enable | --disable)... [-b SOURCE_FILE [-F SOURCE_FMT]] [-g GRANULARITY] [--object OBJECTDEF] [--image-opts | -f FMT] FILENAME BITMAP
- 
-   Perform one or more modifications of the persistent bitmap *BITMAP*
-   in the disk image *FILENAME*.  The various modifications are:
-@@ -310,6 +310,8 @@ Command description:
- 
-   ``--remove`` to remove *BITMAP*.
- 
-+  ``--remove-all`` to remove all bitmaps.
-+
-   ``--clear`` to clear *BITMAP*.
- 
-   ``--enable`` to change *BITMAP* to start recording future edits.
-diff --git a/qemu-img.c b/qemu-img.c
-index e75707180d..920ede2a6a 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -86,6 +86,7 @@ enum {
-     OPTION_BITMAPS = 275,
-     OPTION_FORCE = 276,
-     OPTION_SKIP_BROKEN = 277,
-+    OPTION_REMOVE_ALL = 278,
- };
- 
- typedef enum OutputFormat {
-@@ -191,7 +192,7 @@ void help(void)
-            "Parameters to bitmap subcommand:\n"
-            "  'bitmap' is the name of the bitmap to manipulate, through one or more\n"
-            "       actions from '--add', '--remove', '--clear', '--enable', '--disable',\n"
--           "       or '--merge source'\n"
-+           "       '--remove-all' or '--merge source'\n"
-            "  '-g granularity' sets the granularity for '--add' actions\n"
-            "  '-b source' and '-F src_fmt' tell '--merge' actions to find the source\n"
-            "       bitmaps from an alternative file\n"
-@@ -4770,6 +4771,7 @@ enum ImgBitmapAct {
-     BITMAP_ENABLE,
-     BITMAP_DISABLE,
-     BITMAP_MERGE,
-+    BITMAP_REMOVE_ALL,
- };
- typedef struct ImgBitmapAction {
-     enum ImgBitmapAct act;
-@@ -4788,7 +4790,7 @@ static int img_bitmap(int argc, char **argv)
-     BlockDriverState *bs = NULL, *src_bs = NULL;
-     bool image_opts = false;
-     int64_t granularity = 0;
--    bool add = false, merge = false;
-+    bool add = false, merge = false, remove_all = false, any = false;
-     QSIMPLEQ_HEAD(, ImgBitmapAction) actions;
-     ImgBitmapAction *act, *act_next;
-     const char *op;
-@@ -4803,6 +4805,7 @@ static int img_bitmap(int argc, char **argv)
-             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-             {"add", no_argument, 0, OPTION_ADD},
-             {"remove", no_argument, 0, OPTION_REMOVE},
-+            {"remove-all", no_argument, 0, OPTION_REMOVE_ALL},
-             {"clear", no_argument, 0, OPTION_CLEAR},
-             {"enable", no_argument, 0, OPTION_ENABLE},
-             {"disable", no_argument, 0, OPTION_DISABLE},
-@@ -4846,34 +4849,44 @@ static int img_bitmap(int argc, char **argv)
-             act = g_new0(ImgBitmapAction, 1);
-             act->act = BITMAP_ADD;
-             QSIMPLEQ_INSERT_TAIL(&actions, act, next);
--            add = true;
-+            add = any = true;
-             break;
-         case OPTION_REMOVE:
-             act = g_new0(ImgBitmapAction, 1);
-             act->act = BITMAP_REMOVE;
-             QSIMPLEQ_INSERT_TAIL(&actions, act, next);
-+            any = true;
-+            break;
-+        case OPTION_REMOVE_ALL:
-+            act = g_new0(ImgBitmapAction, 1);
-+            act->act = BITMAP_REMOVE_ALL;
-+            QSIMPLEQ_INSERT_TAIL(&actions, act, next);
-+            remove_all = true;
-             break;
-         case OPTION_CLEAR:
-             act = g_new0(ImgBitmapAction, 1);
-             act->act = BITMAP_CLEAR;
-             QSIMPLEQ_INSERT_TAIL(&actions, act, next);
-+            any = true;
-             break;
-         case OPTION_ENABLE:
-             act = g_new0(ImgBitmapAction, 1);
-             act->act = BITMAP_ENABLE;
-             QSIMPLEQ_INSERT_TAIL(&actions, act, next);
-+            any = true;
-             break;
-         case OPTION_DISABLE:
-             act = g_new0(ImgBitmapAction, 1);
-             act->act = BITMAP_DISABLE;
-             QSIMPLEQ_INSERT_TAIL(&actions, act, next);
-+            any = true;
-             break;
-         case OPTION_MERGE:
-             act = g_new0(ImgBitmapAction, 1);
-             act->act = BITMAP_MERGE;
-             act->src = optarg;
-             QSIMPLEQ_INSERT_TAIL(&actions, act, next);
--            merge = true;
-+            any = merge = true;
-             break;
-         case OPTION_OBJECT:
-             user_creatable_process_cmdline(optarg);
-@@ -4885,8 +4898,8 @@ static int img_bitmap(int argc, char **argv)
-     }
- 
-     if (QSIMPLEQ_EMPTY(&actions)) {
--        error_report("Need at least one of --add, --remove, --clear, "
--                     "--enable, --disable, or --merge");
-+        error_report("Need at least one of --add, --remove, --remove-all, "
-+                     "--clear, --enable, --disable, or --merge");
-         goto out;
-     }
- 
-@@ -4904,10 +4917,14 @@ static int img_bitmap(int argc, char **argv)
-         goto out;
-     }
- 
--    if (optind != argc - 2) {
-+    if (any && optind != argc - 2) {
-         error_report("Expecting filename and bitmap name");
-         goto out;
-     }
-+    if (!any && remove_all && optind != argc - 1) {
-+        error_report("Expecting filename");
-+        goto out;
-+    }
- 
-     filename = argv[optind];
-     bitmap = argv[optind + 1];
-@@ -4945,6 +4962,18 @@ static int img_bitmap(int argc, char **argv)
-             qmp_block_dirty_bitmap_remove(bs->node_name, bitmap, &err);
-             op = "remove";
-             break;
-+        case BITMAP_REMOVE_ALL: {
-+            while (1) {
-+                BdrvDirtyBitmap *bm = bdrv_dirty_bitmap_first(bs);
-+                if (bm == NULL) {
-+                    break;
-+                }
-+                qmp_block_dirty_bitmap_remove(bs->node_name,
-+                                              bdrv_dirty_bitmap_name(bm), &err);
-+            }
-+            op = "remove-all";
-+            break;
-+        }
-         case BITMAP_CLEAR:
-             qmp_block_dirty_bitmap_clear(bs->node_name, bitmap, &err);
-             op = "clear";
--- 
-2.45.2
+Thanks,
+
+C.
+
+
+> ---
+>   tests/functional/test_ppc_bamboo.py | 34 ++++++++++++++++-------------
+>   1 file changed, 19 insertions(+), 15 deletions(-)
+> 
+> diff --git a/tests/functional/test_ppc_bamboo.py b/tests/functional/test_ppc_bamboo.py
+> index fddcc24d0da..c634ae7b4a7 100755
+> --- a/tests/functional/test_ppc_bamboo.py
+> +++ b/tests/functional/test_ppc_bamboo.py
+> @@ -16,28 +16,32 @@ class BambooMachine(QemuSystemTest):
+>   
+>       timeout = 90
+>   
+> -    ASSET_IMAGE = Asset(
+> -        ('http://landley.net/aboriginal/downloads/binaries/'
+> -         'system-image-powerpc-440fp.tar.gz'),
+> -        'c12b58f841c775a0e6df4832a55afe6b74814d1565d08ddeafc1fb949a075c5e')
+> +    ASSET_KERNEL = Asset(
+> +        ('https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main/'
+> +         'buildroot/qemu_ppc_bamboo-2023.11-8-gdcd9f0f6eb-20240105/vmlinux'),
+> +        'a2e12eb45b73491ac62fc0bbeb68dead0dc5c0f22cf83146558389209b420ad1')
+> +    ASSET_INITRD = Asset(
+> +        ('https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main/'
+> +         'buildroot/qemu_ppc_bamboo-2023.11-8-gdcd9f0f6eb-20240105/rootfs.cpio'),
+> +        'd2a36bdb8763b389765dc8c29d4904cec2bd001c587f92e85ab9eb10d5ddda54')
+>   
+>       def test_ppc_bamboo(self):
+>           self.set_machine('bamboo')
+>           self.require_accelerator("tcg")
+>           self.require_netdev('user')
+> -        self.archive_extract(self.ASSET_IMAGE)
+> +
+> +        kernel = self.ASSET_KERNEL.fetch()
+> +        initrd = self.ASSET_INITRD.fetch()
+> +
+>           self.vm.set_console()
+> -        self.vm.add_args('-kernel',
+> -                         self.scratch_file('system-image-powerpc-440fp',
+> -                                           'linux'),
+> -                         '-initrd',
+> -                         self.scratch_file('system-image-powerpc-440fp',
+> -                                           'rootfs.cpio.gz'),
+> -                         '-nic', 'user,model=rtl8139,restrict=on')
+> +        self.vm.add_args('-kernel', kernel,
+> +                         '-initrd', initrd,
+> +                         '-nic', 'user,model=virtio-net-pci,restrict=on')
+>           self.vm.launch()
+> -        wait_for_console_pattern(self, 'Type exit when done')
+> -        exec_command_and_wait_for_pattern(self, 'ping 10.0.2.2',
+> -                                          '10.0.2.2 is alive!')
+> +        wait_for_console_pattern(self, 'buildroot login:')
+> +        exec_command_and_wait_for_pattern(self, 'root', '#')
+> +        exec_command_and_wait_for_pattern(self, 'ping -c1 10.0.2.2',
+> +                '1 packets transmitted, 1 packets received, 0% packet loss')
+>           exec_command_and_wait_for_pattern(self, 'halt', 'System Halted')
+>   
+>   if __name__ == '__main__':
 
 
