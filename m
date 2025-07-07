@@ -2,87 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79AEFAFB9E0
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 19:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACB0AFB9E1
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 19:27:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYpYv-00077W-Bp; Mon, 07 Jul 2025 13:23:29 -0400
+	id 1uYpZ1-0007kY-Gz; Mon, 07 Jul 2025 13:23:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYpWy-0001Eh-Hb
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 13:21:29 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYpXw-0003Mi-T8
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 13:22:28 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYpWv-0005IZ-UR
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 13:21:28 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3a528243636so1960936f8f.3
- for <qemu-devel@nongnu.org>; Mon, 07 Jul 2025 10:21:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYpXt-0005QK-TW
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 13:22:28 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4530921461aso23905845e9.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Jul 2025 10:22:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751908883; x=1752513683; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7p3/Hmprmc6/fhtaFhxu5792QEnsgrd/nZSQrS03GGU=;
- b=s8p/QYoJj8gkRCIGYM72Ugm9ndpMQpNpwpVzMySTJv/CkUh6uDO84uXC1SzC0JabPd
- d5ipY6pQ0CVtLrzzzw3yqNLU0mwPX/NTcB0g6gUzDfepqfDZrNkcvcYQg6DjGSdX6h+G
- Pzf1bti/KvKjQFtJPG0jGHognm1s++yghSGkB8S28dN8wkPlOYjLjA2bWsGyB5P/HRT0
- mzYjZiUL50uqJYPb0+Rbf2hwO3uh7O0zQG4u6Xj6SnkIQgjvmkKsDRhbNs+26bLYk7jn
- s4vvMH5baATtBFRyNWnUcrh6NPGDOzrXFQDnZHXOPUZVo5CNUN+ah7cdtewLC0AL8M1U
- /SdA==
+ d=linaro.org; s=google; t=1751908944; x=1752513744; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=paYtJ7v2X2U4yptAsJY82VjkgnlJ/HM86V8loisqpec=;
+ b=Y0SzYz7rXG6HuwxInygYA426JzHY5lXAZFSN0gSDyKJsu65kogfLYYNpOqO6Q8IUk0
+ GfGKRRpBs74bjEt5hEkBSgfXOwWIdcsOR6yAIuZKdg30Zad3VXLpHGZL1Dl1NchSX8BQ
+ IYO992eJHBW5ssnNqOAdZRjfwhgKz+vt4J0n2VlfdKJHPltHYnsdv5WimWnQJ90F/KDy
+ vWm6yHTFxNxBBDQmibUvaLe0AqN3ySkh+UUAc67qND8s1Em44r2+LnSqHO1n4GPGjyeq
+ oo/Y6e6d5MMTAegqMowXKnJ99AbUy++hf8ujCX6hs8oTU9NOR7iNzxE0c3B8sXoGtqy6
+ 3rag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751908883; x=1752513683;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7p3/Hmprmc6/fhtaFhxu5792QEnsgrd/nZSQrS03GGU=;
- b=TJnEEMfpRKnQVzlISBIxEkoliqUbUZLbeM5/nJORHPiMmyi5R6dbPLOM01tC+MEnEd
- Qzhs3hC5JYkjq/qm4LpmMKq+aXY5dz+ETy3Mrumem0Qh8VJBkZAyCdKSs5oB2iH3KC/6
- fXTFGQ8YZO9+HnboyRxBnkA6N2n/VF8K5HZUrJgxn2unYWeEo3CvCvRsd2coAOJU/tYP
- cOaIo52bU306LgFGj1CVN6K4gkvg+LTj6Om+EX4VFYjBNlxbFf5Ll732+j3MJzu/wReB
- jLgS6pkEvNBKFsk+Fo9JqKsXYiDXpz016kLwbsbQ5BYisOGly8cZmqYs/EZlzXRAAcom
- HU5Q==
-X-Gm-Message-State: AOJu0YwRQntRQLT1zXJFR5RAgkZzcL0wLtOvC9+ESb3ZhFqDbruWIYN1
- amM9Ccj4yYtQqYnZBPMSzqML92kfpfaHCoDjiK2rLPh3xkEdxjKOQDwgAbYiyWE9XX143HzROo0
- bc8OCO/w=
-X-Gm-Gg: ASbGncvlqwABlouVlL50Jc8Avl6s+bezEkyRE+1Vo4cgVstZ+vRY89iWlJevXztqTHc
- 6/+YxkULXiwJC4M/nsr09DtPazkAy44Ae5xJwRTfsalMZXluVncCB7RBzTd9H9VBcun8Ih2U4iw
- 9Cn4JqrWw1C5UIdfmyrfLFyUggRmGE7fgEfjyPijC9/QOkMbOt3ng6+5v6Yo13YUV1aBxfA3Urg
- FIJYT46M9dU0ziYF91QQLKrxmkPuvl35Xz5yN0wwJxluM8pAkjDUcooaENLYLV4q5dpgryvr3gD
- hblriMm9lrgxaUMdXfHLSE9/Mb4ZZ0BhM6NLZEAIubJZKPNzbI+NXyaK8DBTQQc7qIRwEmAXiyh
- 8Dj9Rlwo+3mDy0M8d3QgAz2rdhKcHxiu58FTv
-X-Google-Smtp-Source: AGHT+IFqHPha3JU0SZDEsSk94xHPuM6ykN63Gj5nxi9VvSTcrrq3iiZaJo12fIbdCfh+Smny4ThY7Q==
-X-Received: by 2002:a5d:5847:0:b0:3a4:eef5:ae26 with SMTP id
- ffacd0b85a97d-3b49aa87429mr7359954f8f.55.1751908883136; 
- Mon, 07 Jul 2025 10:21:23 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1751908944; x=1752513744;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=paYtJ7v2X2U4yptAsJY82VjkgnlJ/HM86V8loisqpec=;
+ b=bGnOIUONSePcJ6mCj+TYWfDoef8A4h9g8Pr1GmlJTpLRmDeasB4vtcgmwg0251gkZs
+ vCQPuKHJHpy9SX+OLQpy7m7XMC4K2sT0oF/b7S2dVgtD5NCrb7UhNWvVBG9CUVgsTt0p
+ aFGFQNHX6sx7gywSe+U/gx1+KMT0OrRFdgjCBKqMPyyt5lczpSRHz/fTz+U8a7CBCY5s
+ GrSSlVuyPe4Yacok2Pj0nlYv1wY8EFmet5uPiob/HhN5ieEGJCtwzMHAXfrRBqrdgp+3
+ GFhZvGkS40ZYhg7hQG2/fmjnZu835xFwa+sVFiaJqkT8YcEtUwuaX/h+rub53IyiJj/x
+ ou3Q==
+X-Gm-Message-State: AOJu0Yw2rPCENeQPu7O4ewOwMRBu0sIct9vhWLIzUtzlIrWFdmcDVLkw
+ vORP/WM65VtLDXZ7VMXqzrg3UBf/3fGQrpGu2WK2x/h8/yOmF0nfEHyFz2JX+DmG5RJF5AWnLoX
+ QTvwQjz8=
+X-Gm-Gg: ASbGncvBJhAbjNFU4E+5dV799yhqb00dX8P+qbH+HG2O2hABrvtLWIOWw58jLtAZvum
+ FxN102IWr1xsDUtpGVz0wm5EdcynnpVDiN2WHNGBWWrIYz6MTrkLeuLn5dr+LGWH2scxQrscXXT
+ DskMP/zk+q6nIQAvJeWbXchiJTkSggo+9fl6DCYyi4cuAZOz4sXAIXDoD2XrEh2jx8ilJn6l3B2
+ UqPcdSzRzPNZbd7S9PV4DjZPzO1ZZIog0nkWn2dFmcVq9ZnFjvdiETE9lXuNal79f7BNiS+ne1h
+ ApR72YV3xL3Bxt7CrBYxRKj9NUYDUey56PHxphY9pH90MyJTT24piA0E7p8UlHLlARw0evhc5o2
+ VfTAzBgXk8IosoKm44C9GBllUwrhT7g==
+X-Google-Smtp-Source: AGHT+IHefGuJAF517+mai6M7mCSdD6JNqKqA01ahRarb/HFaXhq8n/h41cFGAKxBBv7VpLzADCFpiA==
+X-Received: by 2002:a05:6000:41e3:b0:3a4:cf10:28f with SMTP id
+ ffacd0b85a97d-3b49aa741edmr7243779f8f.31.1751908943906; 
+ Mon, 07 Jul 2025 10:22:23 -0700 (PDT)
+Received: from [192.168.69.242] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454adc71a96sm138055735e9.24.2025.07.07.10.21.22
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 07 Jul 2025 10:21:22 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ ffacd0b85a97d-3b47030cdf5sm10629027f8f.1.2025.07.07.10.22.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 07 Jul 2025 10:22:23 -0700 (PDT)
+Message-ID: <028f0166-32ea-4a9e-ae4c-1221aeb4c6d5@linaro.org>
+Date: Mon, 7 Jul 2025 19:22:20 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH-for-10.1 v6 08/14] qemu: Declare all load/store
+ helpert in 'qemu/bswap.h'
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-s390x@nongnu.org,
- qemu-arm@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-block@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-riscv@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [RFC PATCH-for-10.1 v6 14/14] hw/arm: Add
- DEFINE_MACHINE_[ARM_]AARCH64() macros
-Date: Mon,  7 Jul 2025 19:20:08 +0200
-Message-ID: <20250707172009.3884-15-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250707172009.3884-1-philmd@linaro.org>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>,
+ Helge Deller <deller@gmx.de>, Pavel Pisa <pisa@cmp.felk.cvut.cz>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Vikram Garhwal <vikram.garhwal@bytedance.com>,
+ Jason Wang <jasowang@redhat.com>, Dmitry Fleytman
+ <dmitry.fleytman@gmail.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
+ <fbarrat@linux.ibm.com>, Bernhard Beschow <shentey@gmail.com>,
+ Yoshinori Sato <yoshinori.sato@nifty.com>,
+ Magnus Damm <magnus.damm@gmail.com>, Matthew Rosato
+ <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Alex Williamson
+ <alex.williamson@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>, Alexander Graf <agraf@csgraf.de>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Peter Xu <peterx@redhat.com>,
+ Riku Voipio <riku.voipio@iki.fi>, Eduardo Habkost <eduardo@habkost.net>,
+ Zhao Liu <zhao1.liu@intel.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
 References: <20250707172009.3884-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <20250707172009.3884-9-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250707172009.3884-9-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,75 +136,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A machine defined with the DEFINE_MACHINE_ARM_AARCH64() macro
-will be available on qemu-system-arm and qemu-system-aarch64
-binaries.
+On 7/7/25 19:20, Philippe Mathieu-Daudé wrote:
 
-One defined with DEFINE_MACHINE_AARCH64() will only be available
-in the qemu-system-aarch64 binary.
+Oops typo "helper" in subject.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/arm/machines-qom.h | 13 +++++++++++++
- target/arm/machine.c          | 12 ++++++++++++
- 2 files changed, 25 insertions(+)
-
-diff --git a/include/hw/arm/machines-qom.h b/include/hw/arm/machines-qom.h
-index a17225f5f92..b71a24ceb95 100644
---- a/include/hw/arm/machines-qom.h
-+++ b/include/hw/arm/machines-qom.h
-@@ -9,10 +9,23 @@
- #ifndef HW_ARM_MACHINES_QOM_H
- #define HW_ARM_MACHINES_QOM_H
- 
-+#include "hw/boards.h"
-+
- #define TYPE_TARGET_ARM_MACHINE \
-         "target-info-arm-machine"
- 
- #define TYPE_TARGET_AARCH64_MACHINE \
-         "target-info-aarch64-machine"
- 
-+extern const InterfaceInfo arm_aarch64_machine_interfaces[];
-+extern const InterfaceInfo aarch64_machine_interfaces[];
-+
-+#define DEFINE_MACHINE_ARM_AARCH64(namestr, machine_initfn) \
-+        DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, \
-+                                       arm_aarch64_machine_interfaces)
-+
-+#define DEFINE_MACHINE_AARCH64(namestr, machine_initfn) \
-+        DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, \
-+                                       aarch64_machine_interfaces)
-+
- #endif
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index e442d485241..61ad3b681c7 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -9,6 +9,7 @@
- #include "migration/qemu-file-types.h"
- #include "migration/vmstate.h"
- #include "target/arm/gtimer.h"
-+#include "hw/arm/machines-qom.h"
- 
- static bool vfp_needed(void *opaque)
- {
-@@ -1102,3 +1103,14 @@ const VMStateDescription vmstate_arm_cpu = {
-         NULL
-     }
- };
-+
-+const InterfaceInfo arm_aarch64_machine_interfaces[] = {
-+    { TYPE_TARGET_ARM_MACHINE },
-+    { TYPE_TARGET_AARCH64_MACHINE },
-+    { }
-+};
-+
-+const InterfaceInfo aarch64_machine_interfaces[] = {
-+    { TYPE_TARGET_AARCH64_MACHINE },
-+    { }
-+};
--- 
-2.49.0
+> Restrict "exec/tswap.h" to the tswap*() methods,
+> move the load/store helpers with the other ones
+> declared in "qemu/bswap.h".
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/exec/tswap.h                 | 70 --------------------------
+>   include/qemu/bswap.h                 | 73 ++++++++++++++++++++++++++++
+>   include/system/memory.h              |  1 -
+>   include/user/abitypes.h              |  1 -
+>   target/ppc/mmu-hash64.h              |  2 -
+>   hw/acpi/bios-linker-loader.c         |  2 -
+>   hw/arm/allwinner-r40.c               |  1 -
+>   hw/arm/boot.c                        |  2 +
+>   hw/arm/npcm7xx.c                     |  2 +-
+>   hw/block/hd-geometry.c               |  1 -
+>   hw/char/riscv_htif.c                 |  1 -
+>   hw/cxl/cxl-events.c                  |  2 -
+>   hw/display/artist.c                  |  1 +
+>   hw/display/ati.c                     |  1 +
+>   hw/net/can/ctucan_core.c             |  1 -
+>   hw/net/lan9118.c                     |  1 +
+>   hw/net/rtl8139.c                     |  1 +
+>   hw/net/vmxnet3.c                     |  1 -
+>   hw/pci-host/gt64120.c                |  1 +
+>   hw/pci-host/pnv_phb3.c               |  1 +
+>   hw/pci-host/pnv_phb4.c               |  1 +
+>   hw/pci-host/ppce500.c                |  1 -
+>   hw/pci-host/sh_pci.c                 |  1 -
+>   hw/s390x/s390-pci-inst.c             |  1 +
+>   hw/sensor/lsm303dlhc_mag.c           |  1 -
+>   hw/smbios/smbios.c                   |  1 +
+>   hw/vfio/migration-multifd.c          |  1 -
+>   hw/virtio/virtio-pci.c               |  1 +
+>   hw/vmapple/virtio-blk.c              |  1 -
+>   target/arm/cpu.c                     |  1 -
+>   target/i386/tcg/system/excp_helper.c |  1 -
+>   target/i386/xsave_helper.c           |  1 -
+>   target/riscv/vector_helper.c         |  1 -
+>   tests/tcg/plugins/mem.c              |  1 +
+>   34 files changed, 87 insertions(+), 93 deletions(-)
 
 
