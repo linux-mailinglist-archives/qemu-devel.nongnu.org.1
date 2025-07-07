@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0143AFAE6F
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 10:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2510AAFAE6B
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 10:17:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYh1Z-0000Jr-3j; Mon, 07 Jul 2025 04:16:29 -0400
+	id 1uYh1a-0000OU-6A; Mon, 07 Jul 2025 04:16:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1uYh1F-0000Ic-NE
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 04:16:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uYh1M-0000Jw-3P
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 04:16:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1uYh1B-0007UH-Ee
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 04:16:09 -0400
+ id 1uYh1J-0007Vc-MW
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 04:16:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751876164;
+ s=mimecast20190719; t=1751876171;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FnYydR4V0quatpugzQCe28351azNl+MR44OzIdbCWKg=;
- b=fE362Y0AHnWwFBSymU+quuUtDNqr7i+I8zLyG/JPjLH7U/GGDEAzm9KxLnci9kdwvjzlTq
- a+qgwSWNnQOggKAnXmjKhx1II5SnUdLy4CNZbQ66wiewhpv5s3QArUPMkxvQzqwG4/iCJ1
- SyIP2WkhOyoEAdJiezxaJJmS1lg1aUs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Hslm4SlPXjGaPdW9DtLidQZHv+Z168xrBO2wVg0jhes=;
+ b=KOIZqsjBDTlSL+To0WzNA9Y9WpwR1ukX6p8M5gMrs/XbZL/isS77LdcHA/yhJVJwiXThfp
+ r2hDBWevCEE5UsNn4FzikwtcSwIGvOjnA7Miwt/S5zn6vzaN6oxXxl2mlcfYUq69VyJrDi
+ zvOznEs13wnsNV2sBlKtPxmoOVVAtHQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-224-3tXYiOvCM0O_MMp4guyHSw-1; Mon,
- 07 Jul 2025 04:16:03 -0400
-X-MC-Unique: 3tXYiOvCM0O_MMp4guyHSw-1
-X-Mimecast-MFC-AGG-ID: 3tXYiOvCM0O_MMp4guyHSw_1751876162
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-493-lhoO8OmtPryPUydSgZoACg-1; Mon,
+ 07 Jul 2025 04:16:08 -0400
+X-MC-Unique: lhoO8OmtPryPUydSgZoACg-1
+X-Mimecast-MFC-AGG-ID: lhoO8OmtPryPUydSgZoACg_1751876167
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 208C71944AA5; Mon,  7 Jul 2025 08:16:02 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6087A19560BE; Mon,  7 Jul 2025 08:16:07 +0000 (UTC)
 Received: from lenovo-t14s.redhat.com (unknown [10.45.225.147])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 24AA71803AF2; Mon,  7 Jul 2025 08:15:57 +0000 (UTC)
+ id 9B964180045B; Mon,  7 Jul 2025 08:16:02 +0000 (UTC)
 From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -56,25 +56,24 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v3 10/11] net: Add passt network backend
-Date: Mon,  7 Jul 2025 10:15:04 +0200
-Message-ID: <20250707081505.127519-11-lvivier@redhat.com>
+Subject: [PATCH v3 11/11] net/passt: Implement vhost-user backend support
+Date: Mon,  7 Jul 2025 10:15:05 +0200
+Message-ID: <20250707081505.127519-12-lvivier@redhat.com>
 In-Reply-To: <20250707081505.127519-1-lvivier@redhat.com>
 References: <20250707081505.127519-1-lvivier@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- PDS_OTHER_BAD_TLD=1.999, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1,
- RCVD_IN_MSPIKE_WL=-0.01, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,348 +89,377 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit introduces support for passt as a new network backend.
-passt is an unprivileged, user-mode networking solution that provides
-connectivity for virtual machines by launching an external helper process.
+This commit adds support for the vhost-user interface to the passt
+network backend, enabling high-performance, accelerated networking for
+guests using passt.
 
-The implementation reuses the generic stream data handling logic. It
-launches the passt binary using GSubprocess, passing it a file
-descriptor from a socketpair() for communication. QEMU connects to
-the other end of the socket pair to establish the network data stream.
+The passt backend can now operate in a vhost-user mode, where it
+communicates with the guest's virtio-net device over a socket pair
+using the vhost-user protocol. This offloads the datapath from the
+main QEMU loop, significantly improving network performance.
 
-The PID of the passt daemon is tracked via a temporary file to
-ensure it is terminated when QEMU exits.
+When the vhost-user=on option is used with -netdev passt, the new
+vhost initialization path is taken instead of the standard
+stream-based connection.
 
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 ---
- docs/system/devices/net.rst   |  40 +++++-
- hmp-commands.hx               |   3 +
- meson.build                   |   6 +
- meson_options.txt             |   2 +
- net/clients.h                 |   4 +
- net/hub.c                     |   3 +
- net/meson.build               |   3 +
- net/net.c                     |   4 +
- net/passt.c                   | 241 ++++++++++++++++++++++++++++++++++
- qapi/net.json                 |  25 ++++
- qemu-options.hx               |  44 ++++++-
- scripts/meson-buildoptions.sh |   3 +
- 12 files changed, 374 insertions(+), 4 deletions(-)
- create mode 100644 net/passt.c
+ docs/system/devices/net.rst |  12 +-
+ net/passt.c                 | 346 ++++++++++++++++++++++++++++++++++++
+ qapi/net.json               |   3 +
+ qemu-options.hx             |  12 +-
+ 4 files changed, 370 insertions(+), 3 deletions(-)
 
 diff --git a/docs/system/devices/net.rst b/docs/system/devices/net.rst
-index a3efbdcabd1a..255ac9b8d1ed 100644
+index 255ac9b8d1ed..6cc7dbb34beb 100644
 --- a/docs/system/devices/net.rst
 +++ b/docs/system/devices/net.rst
-@@ -85,13 +85,49 @@ passt doesn't require any capability or privilege. passt has
- better performance than ``-net user``, full IPv6 support and better security
- as it's a daemon that is not executed in QEMU context.
+@@ -104,7 +104,7 @@ To use the passt backend interface
  
--passt can be connected to QEMU either by using a socket
--(``-netdev stream``) or using the vhost-user interface (``-netdev vhost-user``).
-+passt_ can be used in the same way as the user backend (using ``-net passt``,
-+``-netdev passt`` or ``-nic passt``) or it can be launched manually and
-+connected to QEMU either by using a socket (``-netdev stream``) or by using
-+the vhost-user interface (``-netdev vhost-user``).
-+
-+Using ``-netdev stream`` or ``-netdev vhost-user`` will allow the user to
-+enable functionalities not available through the passt backend interface
-+(like migration).
-+
- See `passt(1)`_ for more details on passt.
+ There is no need to start the daemon as QEMU will do it for you.
  
- .. _passt: https://passt.top/
- .. _passt(1): https://passt.top/builds/latest/web/passt.1.html
+-passt is started in the socket-based mode.
++By default, passt will be started in the socket-based mode.
  
-+To use the passt backend interface
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+There is no need to start the daemon as QEMU will do it for you.
-+
-+passt is started in the socket-based mode.
+ .. parsed-literal::
+    |qemu_system| [...OPTIONS...] -nic passt
+@@ -128,6 +128,16 @@ passt is started in the socket-based mode.
+    virtio0: index=0,type=nic,model=virtio-net-pci,macaddr=9a:2b:2c:2d:2e:2f
+     \ netdev0: index=0,type=passt,stream,connected to pid 25428
+ 
++To use the vhost-based interface, add the ``vhost-user=on`` parameter and
++select the virtio-net device:
 +
 +.. parsed-literal::
-+   |qemu_system| [...OPTIONS...] -nic passt
++   |qemu_system| [...OPTIONS...] -nic passt,model=virtio,vhost-user=on
 +
 +   (qemu) info network
-+   e1000e.0: index=0,type=nic,model=e1000e,macaddr=52:54:00:12:34:56
-+    \ #net071: index=0,type=passt,stream,connected to pid 24846
-+
-+.. parsed-literal::
-+   |qemu_system| [...OPTIONS...] -net nic -net passt,param=--tcp-ports=10001,param=udp-ports=10001
-+
-+   (qemu) info network
-+   hub 0
-+    \ hub0port1: #net136: index=0,type=passt,stream,connected to pid 25204
-+    \ hub0port0: e1000e.0: index=0,type=nic,model=e1000e,macaddr=52:54:00:12:34:56
-+
-+.. parsed-literal::
-+   |qemu_system| [...OPTIONS...] -netdev passt,id=netdev0 -device virtio-net,mac=9a:2b:2c:2d:2e:2f,id=virtio0,netdev=netdev0
-+
-+   (qemu) info network
-+   virtio0: index=0,type=nic,model=virtio-net-pci,macaddr=9a:2b:2c:2d:2e:2f
-+    \ netdev0: index=0,type=passt,stream,connected to pid 25428
++   virtio-net-pci.0: index=0,type=nic,model=virtio-net-pci,macaddr=52:54:00:12:34:56
++    \ #net006: index=0,type=passt,vhost-user,connected to pid 25731
 +
  To use socket based passt interface:
  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index 06746f0afc37..d0e4f35a30af 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -1287,6 +1287,9 @@ ERST
-         .name       = "netdev_add",
-         .args_type  = "netdev:O",
-         .params     = "[user|tap|socket|stream|dgram|vde|bridge|hubport|netmap|vhost-user"
-+#ifdef CONFIG_PASST
-+                      "|passt"
-+#endif
- #ifdef CONFIG_AF_XDP
-                       "|af-xdp"
- #endif
-diff --git a/meson.build b/meson.build
-index dbc97bfdf7a0..3dd533e57184 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1285,6 +1285,10 @@ if not get_option('slirp').auto() or have_system
-   endif
- endif
- 
-+enable_passt = get_option('passt') \
-+  .require(host_os == 'linux', error_message: 'passt is supported only on Linux') \
-+  .allowed()
-+
- vde = not_found
- if not get_option('vde').auto() or have_system or have_tools
-   vde = cc.find_library('vdeplug', has_headers: ['libvdeplug.h'],
-@@ -2538,6 +2542,7 @@ if seccomp.found()
-   config_host_data.set('CONFIG_SECCOMP_SYSRAWRC', seccomp_has_sysrawrc)
- endif
- config_host_data.set('CONFIG_PIXMAN', pixman.found())
-+config_host_data.set('CONFIG_PASST', enable_passt)
- config_host_data.set('CONFIG_SLIRP', slirp.found())
- config_host_data.set('CONFIG_SNAPPY', snappy.found())
- config_host_data.set('CONFIG_SOLARIS', host_os == 'sunos')
-@@ -4925,6 +4930,7 @@ if host_os == 'darwin'
-   summary_info += {'vmnet.framework support': vmnet}
- endif
- summary_info += {'AF_XDP support':    libxdp}
-+summary_info += {'passt support':     enable_passt}
- summary_info += {'slirp support':     slirp}
- summary_info += {'vde support':       vde}
- summary_info += {'netmap support':    have_netmap}
-diff --git a/meson_options.txt b/meson_options.txt
-index a442be29958f..3146eec19440 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -234,6 +234,8 @@ option('pixman', type : 'feature', value : 'auto',
-        description: 'pixman support')
- option('slirp', type: 'feature', value: 'auto',
-        description: 'libslirp user mode network backend support')
-+option('passt', type: 'feature', value: 'auto',
-+       description: 'passt network backend support')
- option('vde', type : 'feature', value : 'auto',
-        description: 'vde network backend support')
- option('vmnet', type : 'feature', value : 'auto',
-diff --git a/net/clients.h b/net/clients.h
-index be53794582cf..e786ab420352 100644
---- a/net/clients.h
-+++ b/net/clients.h
-@@ -29,6 +29,10 @@
- int net_init_dump(const Netdev *netdev, const char *name,
-                   NetClientState *peer, Error **errp);
- 
-+#ifdef CONFIG_PASST
-+int net_init_passt(const Netdev *netdev, const char *name,
-+                   NetClientState *peer, Error **errp);
-+#endif
- #ifdef CONFIG_SLIRP
- int net_init_slirp(const Netdev *netdev, const char *name,
-                    NetClientState *peer, Error **errp);
-diff --git a/net/hub.c b/net/hub.c
-index cba20ebd874f..e3b58b1c4f8e 100644
---- a/net/hub.c
-+++ b/net/hub.c
-@@ -285,6 +285,9 @@ void net_hub_check_clients(void)
-             case NET_CLIENT_DRIVER_NIC:
-                 has_nic = 1;
-                 break;
-+#ifdef CONFIG_PASST
-+            case NET_CLIENT_DRIVER_PASST:
-+#endif
-             case NET_CLIENT_DRIVER_USER:
-             case NET_CLIENT_DRIVER_TAP:
-             case NET_CLIENT_DRIVER_SOCKET:
-diff --git a/net/meson.build b/net/meson.build
-index bb3c011e5a30..da6ea635e95d 100644
---- a/net/meson.build
-+++ b/net/meson.build
-@@ -34,6 +34,9 @@ system_ss.add(when: 'CONFIG_TCG', if_true: files('filter-replay.c'))
- if have_l2tpv3
-   system_ss.add(files('l2tpv3.c'))
- endif
-+if enable_passt
-+  system_ss.add(files('passt.c'))
-+endif
- system_ss.add(when: slirp, if_true: files('slirp.c'))
- system_ss.add(when: vde, if_true: files('vde.c'))
- if have_netmap
-diff --git a/net/net.c b/net/net.c
-index cfa2d8e95827..90f69fdf39b0 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -1248,6 +1248,9 @@ static int (* const net_client_init_fun[NET_CLIENT_DRIVER__MAX])(
-     const char *name,
-     NetClientState *peer, Error **errp) = {
-         [NET_CLIENT_DRIVER_NIC]       = net_init_nic,
-+#ifdef CONFIG_PASST
-+        [NET_CLIENT_DRIVER_PASST]     = net_init_passt,
-+#endif
- #ifdef CONFIG_SLIRP
-         [NET_CLIENT_DRIVER_USER]      = net_init_slirp,
- #endif
-@@ -1353,6 +1356,7 @@ void show_netdevs(void)
-         "dgram",
-         "hubport",
-         "tap",
-+        "passt",
- #ifdef CONFIG_SLIRP
-         "user",
- #endif
 diff --git a/net/passt.c b/net/passt.c
-new file mode 100644
-index 000000000000..4936825d681c
---- /dev/null
+index 4936825d681c..3f4f28193b87 100644
+--- a/net/passt.c
 +++ b/net/passt.c
-@@ -0,0 +1,241 @@
-+/*
-+ * passt network backend
-+ *
-+ * Copyright Red Hat
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include "qemu/osdep.h"
-+#include <glib/gstdio.h>
-+#include <gio/gio.h>
-+#include "net/net.h"
-+#include "clients.h"
-+#include "qapi/error.h"
-+#include "io/net-listener.h"
-+#include "stream_data.h"
+@@ -7,18 +7,75 @@
+  */
+ #include "qemu/osdep.h"
+ #include <glib/gstdio.h>
++#include "qemu/error-report.h"
+ #include <gio/gio.h>
+ #include "net/net.h"
+ #include "clients.h"
+ #include "qapi/error.h"
+ #include "io/net-listener.h"
++#include "chardev/char-fe.h"
++#include "net/vhost_net.h"
++#include "hw/virtio/vhost.h"
++#include "hw/virtio/vhost-user.h"
++#include "standard-headers/linux/virtio_net.h"
+ #include "stream_data.h"
+ 
++#ifdef CONFIG_VHOST_USER
++static const int user_feature_bits[] = {
++    VIRTIO_F_NOTIFY_ON_EMPTY,
++    VIRTIO_F_NOTIFICATION_DATA,
++    VIRTIO_RING_F_INDIRECT_DESC,
++    VIRTIO_RING_F_EVENT_IDX,
 +
-+typedef struct NetPasstState {
-+    NetStreamData data;
-+    GPtrArray *args;
-+    gchar *pidfile;
-+    pid_t pid;
-+} NetPasstState;
++    VIRTIO_F_ANY_LAYOUT,
++    VIRTIO_F_VERSION_1,
++    VIRTIO_NET_F_CSUM,
++    VIRTIO_NET_F_GUEST_CSUM,
++    VIRTIO_NET_F_GSO,
++    VIRTIO_NET_F_GUEST_TSO4,
++    VIRTIO_NET_F_GUEST_TSO6,
++    VIRTIO_NET_F_GUEST_ECN,
++    VIRTIO_NET_F_GUEST_UFO,
++    VIRTIO_NET_F_HOST_TSO4,
++    VIRTIO_NET_F_HOST_TSO6,
++    VIRTIO_NET_F_HOST_ECN,
++    VIRTIO_NET_F_HOST_UFO,
++    VIRTIO_NET_F_MRG_RXBUF,
++    VIRTIO_NET_F_MTU,
++    VIRTIO_F_IOMMU_PLATFORM,
++    VIRTIO_F_RING_PACKED,
++    VIRTIO_F_RING_RESET,
++    VIRTIO_F_IN_ORDER,
++    VIRTIO_NET_F_RSS,
++    VIRTIO_NET_F_RSC_EXT,
++    VIRTIO_NET_F_HASH_REPORT,
++    VIRTIO_NET_F_GUEST_USO4,
++    VIRTIO_NET_F_GUEST_USO6,
++    VIRTIO_NET_F_HOST_USO,
 +
-+static int net_passt_stream_start(NetPasstState *s, Error **errp);
++    /* This bit implies RARP isn't sent by QEMU out of band */
++    VIRTIO_NET_F_GUEST_ANNOUNCE,
 +
-+static void net_passt_cleanup(NetClientState *nc)
-+{
-+    NetPasstState *s = DO_UPCAST(NetPasstState, data.nc, nc);
++    VIRTIO_NET_F_MQ,
 +
-+    kill(s->pid, SIGTERM);
-+    g_remove(s->pidfile);
-+    g_free(s->pidfile);
-+    g_ptr_array_free(s->args, TRUE);
-+}
-+
-+static ssize_t net_passt_receive(NetClientState *nc, const uint8_t *buf,
-+                                  size_t size)
-+{
-+    NetStreamData *d = DO_UPCAST(NetStreamData, nc, nc);
-+
-+    return net_stream_data_receive(d, buf, size);
-+}
-+
-+static gboolean net_passt_send(QIOChannel *ioc, GIOCondition condition,
-+                                gpointer data)
-+{
-+    if (net_stream_data_send(ioc, condition, data) == G_SOURCE_REMOVE) {
-+        NetPasstState *s = DO_UPCAST(NetPasstState, data, data);
-+        Error *error;
-+
-+        /* we need to restart passt */
-+        kill(s->pid, SIGTERM);
-+        if (net_passt_stream_start(s, &error) == -1) {
-+            error_report_err(error);
-+        }
-+
-+        return G_SOURCE_REMOVE;
-+    }
-+
-+    return G_SOURCE_CONTINUE;
-+}
-+
-+static NetClientInfo net_passt_info = {
-+    .type = NET_CLIENT_DRIVER_PASST,
-+    .size = sizeof(NetPasstState),
-+    .receive = net_passt_receive,
-+    .cleanup = net_passt_cleanup,
++    VHOST_INVALID_FEATURE_BIT
 +};
++#endif
 +
-+static void net_passt_client_connected(QIOTask *task, gpointer opaque)
+ typedef struct NetPasstState {
+     NetStreamData data;
+     GPtrArray *args;
+     gchar *pidfile;
+     pid_t pid;
++#ifdef CONFIG_VHOST_USER
++    /* vhost user */
++    VhostUserState *vhost_user;
++    VHostNetState *vhost_net;
++    CharBackend vhost_chr;
++    guint vhost_watch;
++    uint64_t acked_features;
++    bool started;
++#endif
+ } NetPasstState;
+ 
+ static int net_passt_stream_start(NetPasstState *s, Error **errp);
+@@ -27,6 +84,24 @@ static void net_passt_cleanup(NetClientState *nc)
+ {
+     NetPasstState *s = DO_UPCAST(NetPasstState, data.nc, nc);
+ 
++#ifdef CONFIG_VHOST_USER
++    if (s->vhost_net) {
++        vhost_net_cleanup(s->vhost_net);
++        g_free(s->vhost_net);
++        s->vhost_net = NULL;
++    }
++    if (s->vhost_watch) {
++        g_source_remove(s->vhost_watch);
++        s->vhost_watch = 0;
++    }
++    qemu_chr_fe_deinit(&s->vhost_chr, true);
++    if (s->vhost_user) {
++        vhost_user_cleanup(s->vhost_user);
++        g_free(s->vhost_user);
++        s->vhost_user = NULL;
++    }
++#endif
++
+     kill(s->pid, SIGTERM);
+     g_remove(s->pidfile);
+     g_free(s->pidfile);
+@@ -60,11 +135,98 @@ static gboolean net_passt_send(QIOChannel *ioc, GIOCondition condition,
+     return G_SOURCE_CONTINUE;
+ }
+ 
++#ifdef CONFIG_VHOST_USER
++static int passt_set_vnet_endianness(NetClientState *nc, bool enable)
 +{
-+    NetPasstState *s = opaque;
-+
-+    if (net_stream_data_client_connected(task, &s->data) == 0) {
-+        qemu_set_info_str(&s->data.nc, "stream,connected to pid %d", s->pid);
-+    }
-+}
-+
-+static int net_passt_start_daemon(NetPasstState *s, int sock, Error **errp)
-+{
-+    g_autoptr(GSubprocess) daemon = NULL;
-+    g_autofree gchar *contents = NULL;
-+    g_autoptr(GError) error = NULL;
-+    GSubprocessLauncher *launcher;
-+
-+    qemu_set_info_str(&s->data.nc, "launching passt");
-+
-+    launcher = g_subprocess_launcher_new(G_SUBPROCESS_FLAGS_NONE);
-+    g_subprocess_launcher_take_fd(launcher, sock, 3);
-+
-+    daemon =  g_subprocess_launcher_spawnv(launcher,
-+                                           (const gchar *const *)s->args->pdata,
-+                                           &error);
-+    g_object_unref(launcher);
-+
-+    if (!daemon) {
-+        error_setg(errp, "Error creating daemon: %s", error->message);
-+        return -1;
-+    }
-+
-+    if (!g_subprocess_wait(daemon, NULL, &error)) {
-+        error_setg(errp, "Error waiting for daemon: %s", error->message);
-+        return -1;
-+    }
-+
-+    if (g_subprocess_get_if_exited(daemon) &&
-+        g_subprocess_get_exit_status(daemon)) {
-+        return -1;
-+    }
-+
-+    if (!g_file_get_contents(s->pidfile, &contents, NULL, &error)) {
-+        error_setg(errp, "Cannot read passt pid: %s", error->message);
-+        return -1;
-+    }
-+
-+    s->pid = (pid_t)g_ascii_strtoll(contents, NULL, 10);
-+    if (s->pid <= 0) {
-+        error_setg(errp, "File '%s' did not contain a valid PID.", s->pidfile);
-+        return -1;
-+    }
++    assert(nc->info->type == NET_CLIENT_DRIVER_PASST);
 +
 +    return 0;
 +}
 +
-+static int net_passt_stream_start(NetPasstState *s, Error **errp)
++static bool passt_has_vnet_hdr(NetClientState *nc)
 +{
-+    QIOChannelSocket *sioc;
-+    SocketAddress *addr;
++    NetPasstState *s = DO_UPCAST(NetPasstState, data.nc, nc);
++
++    assert(nc->info->type == NET_CLIENT_DRIVER_PASST);
++
++    return s->vhost_user != NULL;
++}
++
++static bool passt_has_ufo(NetClientState *nc)
++{
++    NetPasstState *s = DO_UPCAST(NetPasstState, data.nc, nc);
++
++    assert(nc->info->type == NET_CLIENT_DRIVER_PASST);
++
++    return s->vhost_user != NULL;
++}
++
++static bool passt_check_peer_type(NetClientState *nc, ObjectClass *oc,
++                                             Error **errp)
++{
++    NetPasstState *s = DO_UPCAST(NetPasstState, data.nc, nc);
++    const char *driver = object_class_get_name(oc);
++
++    assert(nc->info->type == NET_CLIENT_DRIVER_PASST);
++
++    if (s->vhost_user == NULL) {
++        return true;
++    }
++
++    if (!g_str_has_prefix(driver, "virtio-net-")) {
++        error_setg(errp, "vhost-user requires frontend driver virtio-net-*");
++        return false;
++    }
++
++    return true;
++}
++
++static struct vhost_net *passt_get_vhost_net(NetClientState *nc)
++{
++    NetPasstState *s = DO_UPCAST(NetPasstState, data.nc, nc);
++
++    assert(nc->info->type == NET_CLIENT_DRIVER_PASST);
++
++    return s->vhost_net;
++}
++
++static uint64_t passt_get_acked_features(NetClientState *nc)
++{
++    NetPasstState *s = DO_UPCAST(NetPasstState, data.nc, nc);
++
++    assert(nc->info->type == NET_CLIENT_DRIVER_PASST);
++
++    return s->acked_features;
++}
++
++static void passt_save_acked_features(NetClientState *nc)
++{
++    NetPasstState *s = DO_UPCAST(NetPasstState, data.nc, nc);
++
++    assert(nc->info->type == NET_CLIENT_DRIVER_PASST);
++
++    if (s->vhost_net) {
++        uint64_t features = vhost_net_get_acked_features(s->vhost_net);
++        if (features) {
++            s->acked_features = features;
++        }
++    }
++}
++#endif
++
+ static NetClientInfo net_passt_info = {
+     .type = NET_CLIENT_DRIVER_PASST,
+     .size = sizeof(NetPasstState),
+     .receive = net_passt_receive,
+     .cleanup = net_passt_cleanup,
++#ifdef CONFIG_VHOST_USER
++    .has_vnet_hdr = passt_has_vnet_hdr,
++    .has_ufo = passt_has_ufo,
++    .set_vnet_be = passt_set_vnet_endianness,
++    .set_vnet_le = passt_set_vnet_endianness,
++    .check_peer_type = passt_check_peer_type,
++    .get_vhost_net = passt_get_vhost_net,
++#endif
+ };
+ 
+ static void net_passt_client_connected(QIOTask *task, gpointer opaque)
+@@ -163,6 +325,177 @@ static int net_passt_stream_start(NetPasstState *s, Error **errp)
+     return 0;
+ }
+ 
++#ifdef CONFIG_VHOST_USER
++static gboolean passt_vhost_user_watch(void *do_not_use, GIOCondition cond,
++                                       void *opaque)
++{
++    NetPasstState *s = opaque;
++
++    qemu_chr_fe_disconnect(&s->vhost_chr);
++
++    return G_SOURCE_CONTINUE;
++}
++
++static void passt_vhost_user_event(void *opaque, QEMUChrEvent event);
++
++static void chr_closed_bh(void *opaque)
++{
++    NetPasstState *s = opaque;
++
++    passt_save_acked_features(&s->data.nc);
++
++    net_client_set_link(&(NetClientState *){ &s->data.nc }, 1, false);
++
++    qemu_chr_fe_set_handlers(&s->vhost_chr, NULL, NULL, passt_vhost_user_event,
++                             NULL, s, NULL, true);
++}
++
++static void passt_vhost_user_stop(NetPasstState *s)
++{
++    passt_save_acked_features(&s->data.nc);
++    vhost_net_cleanup(s->vhost_net);
++}
++
++static int passt_vhost_user_start(NetPasstState *s, VhostUserState *be)
++{
++    struct vhost_net *net = NULL;
++    VhostNetOptions options;
++
++    options.backend_type = VHOST_BACKEND_TYPE_USER;
++    options.net_backend = &s->data.nc;
++    options.opaque = be;
++    options.busyloop_timeout = 0;
++    options.nvqs = 2;
++    options.feature_bits = user_feature_bits;
++    options.max_tx_queue_size = VIRTQUEUE_MAX_SIZE;
++    options.get_acked_features = passt_get_acked_features;
++    options.save_acked_features = passt_save_acked_features;
++    options.is_vhost_user = true;
++
++    net = vhost_net_init(&options);
++    if (!net) {
++        error_report("failed to init passt vhost_net");
++        goto err;
++    }
++
++    if (s->vhost_net) {
++        vhost_net_cleanup(s->vhost_net);
++        g_free(s->vhost_net);
++    }
++    s->vhost_net = net;
++
++    return 0;
++err:
++    if (net) {
++        vhost_net_cleanup(net);
++        g_free(net);
++    }
++    passt_vhost_user_stop(s);
++    return -1;
++}
++
++static void passt_vhost_user_event(void *opaque, QEMUChrEvent event)
++{
++    NetPasstState *s = opaque;
++    Error *err = NULL;
++
++    switch (event) {
++    case CHR_EVENT_OPENED:
++        if (passt_vhost_user_start(s, s->vhost_user) < 0) {
++            qemu_chr_fe_disconnect(&s->vhost_chr);
++            return;
++        }
++        s->vhost_watch = qemu_chr_fe_add_watch(&s->vhost_chr, G_IO_HUP,
++                                               passt_vhost_user_watch, s);
++        net_client_set_link(&(NetClientState *){ &s->data.nc }, 1, true);
++        s->started = true;
++        break;
++    case CHR_EVENT_CLOSED:
++        if (s->vhost_watch) {
++            AioContext *ctx = qemu_get_current_aio_context();
++
++            g_source_remove(s->vhost_watch);
++            s->vhost_watch = 0;
++            qemu_chr_fe_set_handlers(&s->vhost_chr, NULL, NULL,  NULL, NULL,
++                                     NULL, NULL, false);
++
++            aio_bh_schedule_oneshot(ctx, chr_closed_bh, s);
++        }
++        break;
++    case CHR_EVENT_BREAK:
++    case CHR_EVENT_MUX_IN:
++    case CHR_EVENT_MUX_OUT:
++        /* Ignore */
++        break;
++    }
++
++    if (err) {
++        error_report_err(err);
++    }
++}
++
++static int net_passt_vhost_user_init(NetPasstState *s, Error **errp)
++{
++    Chardev *chr;
 +    int sv[2];
 +
 +    if (socketpair(PF_UNIX, SOCK_STREAM, 0, sv) == -1) {
@@ -442,276 +470,147 @@ index 000000000000..4936825d681c
 +    /* connect to passt */
 +    qemu_set_info_str(&s->data.nc, "connecting to passt");
 +
-+    /* create socket channel */
-+    sioc = qio_channel_socket_new();
-+    s->data.ioc = QIO_CHANNEL(sioc);
-+    s->data.nc.link_down = true;
-+    s->data.send = net_passt_send;
++    /* create chardev */
 +
-+    addr = g_new0(SocketAddress, 1);
-+    addr->type = SOCKET_ADDRESS_TYPE_FD;
-+    addr->u.fd.str = g_strdup_printf("%d", sv[0]);
++    chr = CHARDEV(object_new(TYPE_CHARDEV_SOCKET));
++    if (!chr || qemu_chr_add_client(chr, sv[0]) == -1) {
++        object_unref(OBJECT(chr));
++        error_setg(errp, "Failed to make socket chardev");
++        goto err;
++    }
 +
-+    qio_channel_socket_connect_async(sioc, addr,
-+                                     net_passt_client_connected, s,
-+                                     NULL, NULL);
-+
-+    qapi_free_SocketAddress(addr);
++    s->vhost_user = g_new0(struct VhostUserState, 1);
++    if (!qemu_chr_fe_init(&s->vhost_chr, chr, errp) ||
++        !vhost_user_init(s->vhost_user, &s->vhost_chr, errp)) {
++        goto err;
++    }
 +
 +    /* start passt */
 +    if (net_passt_start_daemon(s, sv[1], errp) == -1) {
-+        close(sv[0]);
-+        close(sv[1]);
-+        return -1;
++        goto err;
 +    }
++
++    do {
++        if (qemu_chr_fe_wait_connected(&s->vhost_chr, errp) < 0) {
++            goto err;
++        }
++
++        qemu_chr_fe_set_handlers(&s->vhost_chr, NULL, NULL,
++                                 passt_vhost_user_event, NULL, s, NULL,
++                                 true);
++    } while (!s->started);
++
++    qemu_set_info_str(&s->data.nc, "vhost-user,connected to pid %d", s->pid);
++
++    close(sv[1]);
++    return 0;
++err:
++    close(sv[0]);
 +    close(sv[1]);
 +
-+    return 0;
++    return -1;
 +}
-+
-+static GPtrArray *net_passt_decode_args(const NetDevPasstOptions *passt,
-+                                        gchar *pidfile, Error **errp)
++#else
++static int net_passt_vhost_user_init(NetPasstState *s, Error **errp)
 +{
-+    GPtrArray *args = g_ptr_array_new_with_free_func(g_free);
++    error_setg(errp, "vhost-user support has not been built");
 +
-+    if (passt->path) {
-+        g_ptr_array_add(args, g_strdup(passt->path));
-+    } else {
-+        g_ptr_array_add(args, g_strdup("passt"));
++    return -1;
++}
++#endif
++
+ static GPtrArray *net_passt_decode_args(const NetDevPasstOptions *passt,
+                                         gchar *pidfile, Error **errp)
+ {
+@@ -174,6 +507,10 @@ static GPtrArray *net_passt_decode_args(const NetDevPasstOptions *passt,
+         g_ptr_array_add(args, g_strdup("passt"));
+     }
+ 
++    if (passt->has_vhost_user && passt->vhost_user) {
++        g_ptr_array_add(args, g_strdup("--vhost-user"));
 +    }
 +
-+    /* by default, be quiet */
-+    if (!passt->has_quiet || passt->quiet) {
-+        g_ptr_array_add(args, g_strdup("--quiet"));
-+    }
-+
-+    if (passt->has_param && passt->param) {
-+        const StringList *list = passt->param;
-+
-+        while (list) {
-+            g_ptr_array_add(args, g_strdup(list->value->str));
-+            list = list->next;
+     /* by default, be quiet */
+     if (!passt->has_quiet || passt->quiet) {
+         g_ptr_array_add(args, g_strdup("--quiet"));
+@@ -232,6 +569,15 @@ int net_init_passt(const Netdev *netdev, const char *name,
+     s->args = args;
+     s->pidfile = pidfile;
+ 
++    if (netdev->u.passt.has_vhost_user && netdev->u.passt.vhost_user) {
++        if (net_passt_vhost_user_init(s, errp) == -1) {
++            qemu_del_net_client(nc);
++            return -1;
 +        }
++
++        return 0;
 +    }
 +
-+    /* provide a pid file to be able to kil passt on exit */
-+    g_ptr_array_add(args, g_strdup("--pid"));
-+    g_ptr_array_add(args, g_strdup(pidfile));
-+
-+    /* g_subprocess_launcher_take_fd() will set the socket on fd 3 */
-+    g_ptr_array_add(args, g_strdup("--fd"));
-+    g_ptr_array_add(args, g_strdup("3"));
-+
-+    g_ptr_array_add(args, NULL);
-+
-+    return args;
-+}
-+
-+int net_init_passt(const Netdev *netdev, const char *name,
-+                   NetClientState *peer, Error **errp)
-+{
-+    g_autoptr(GError) error = NULL;
-+    NetClientState *nc;
-+    NetPasstState *s;
-+    GPtrArray *args;
-+    gchar *pidfile;
-+    int pidfd;
-+
-+    assert(netdev->type == NET_CLIENT_DRIVER_PASST);
-+
-+    pidfd = g_file_open_tmp("passt-XXXXXX.pid", &pidfile, &error);
-+    if (pidfd == -1) {
-+        error_setg(errp, "Failed to create temporary file: %s", error->message);
-+        return -1;
-+    }
-+    close(pidfd);
-+
-+    args = net_passt_decode_args(&netdev->u.passt, pidfile, errp);
-+    if (args == NULL) {
-+        g_free(pidfile);
-+        return -1;
-+    }
-+
-+    nc = qemu_new_net_client(&net_passt_info, peer, "passt", name);
-+    s = DO_UPCAST(NetPasstState, data.nc, nc);
-+
-+    s->args = args;
-+    s->pidfile = pidfile;
-+
-+    if (net_passt_stream_start(s, errp) == -1) {
-+        qemu_del_net_client(nc);
-+        return -1;
-+    }
-+
-+    return 0;
-+}
+     if (net_passt_stream_start(s, errp) == -1) {
+         qemu_del_net_client(nc);
+         return -1;
 diff --git a/qapi/net.json b/qapi/net.json
-index 97ea1839813b..8a8528ba1f47 100644
+index 8a8528ba1f47..8e4fee923fdf 100644
 --- a/qapi/net.json
 +++ b/qapi/net.json
-@@ -112,6 +112,26 @@
+@@ -121,6 +121,8 @@
+ #
+ # @quiet: don't print informational messages (default, passed as '--quiet')
+ #
++# @vhost-user: enable vhost-user
++#
+ # @param: parameter to pass to passt command
+ #
+ # Since: 10.1
+@@ -129,6 +131,7 @@
    'data': {
-     'str': 'str' } }
+     '*path':               'str',
+     '*quiet':              'bool',
++    '*vhost-user':         'bool',
+     '*param':             ['String'] },
+     'if': 'CONFIG_PASST' }
  
-+##
-+# @NetDevPasstOptions:
-+#
-+# Unprivileged user-mode network connectivity using passt
-+#
-+# @path: Filename of the passt program to run (by default 'passt', and use PATH)
-+#
-+# @quiet: don't print informational messages (default, passed as '--quiet')
-+#
-+# @param: parameter to pass to passt command
-+#
-+# Since: 10.1
-+##
-+{ 'struct': 'NetDevPasstOptions',
-+  'data': {
-+    '*path':               'str',
-+    '*quiet':              'bool',
-+    '*param':             ['String'] },
-+    'if': 'CONFIG_PASST' }
-+
- ##
- # @NetdevUserOptions:
- #
-@@ -729,12 +749,15 @@
- #
- # @af-xdp: since 8.2
- #
-+# @passt: since 10.1
-+#
- # Since: 2.7
- ##
- { 'enum': 'NetClientDriver',
-   'data': [ 'none', 'nic', 'user', 'tap', 'l2tpv3', 'socket', 'stream',
-             'dgram', 'vde', 'bridge', 'hubport', 'netmap', 'vhost-user',
-             'vhost-vdpa',
-+            { 'name': 'passt', 'if': 'CONFIG_PASST' },
-             { 'name': 'af-xdp', 'if': 'CONFIG_AF_XDP' },
-             { 'name': 'vmnet-host', 'if': 'CONFIG_VMNET' },
-             { 'name': 'vmnet-shared', 'if': 'CONFIG_VMNET' },
-@@ -756,6 +779,8 @@
-   'discriminator': 'type',
-   'data': {
-     'nic':      'NetLegacyNicOptions',
-+    'passt':    { 'type': 'NetDevPasstOptions',
-+                  'if': 'CONFIG_PASST' },
-     'user':     'NetdevUserOptions',
-     'tap':      'NetdevTapOptions',
-     'l2tpv3':   'NetdevL2TPv3Options',
 diff --git a/qemu-options.hx b/qemu-options.hx
-index 1f862b19a676..9855657aa48b 100644
+index 9855657aa48b..5c468e9cd58e 100644
 --- a/qemu-options.hx
 +++ b/qemu-options.hx
-@@ -2796,6 +2796,13 @@ DEFHEADING()
- DEFHEADING(Network options:)
+@@ -2797,11 +2797,13 @@ DEFHEADING(Network options:)
  
  DEF("netdev", HAS_ARG, QEMU_OPTION_netdev,
-+#ifdef CONFIG_PASST
-+    "-netdev passt,id=str[,path=file][,quiet=on|off][,param=list]\n"
-+    "                configure a passt network backend with ID 'str'\n"
-+    "                if 'path' is not provided 'passt' will be started according to PATH\n"
-+    "                by default, informational message of passt are not displayed (quiet=on)\n"
-+    "                to display this message, use 'quiet=off'\n"
-+#endif
+ #ifdef CONFIG_PASST
+-    "-netdev passt,id=str[,path=file][,quiet=on|off][,param=list]\n"
++    "-netdev passt,id=str[,path=file][,quiet=on|off][,vhost-user=on|off][,param=list]\n"
+     "                configure a passt network backend with ID 'str'\n"
+     "                if 'path' is not provided 'passt' will be started according to PATH\n"
+     "                by default, informational message of passt are not displayed (quiet=on)\n"
+     "                to display this message, use 'quiet=off'\n"
++    "                by default, passt will be started in socket-based mode, to enable vhost-mode,\n"
++    "                use 'vhost-user=on'\n"
+ #endif
  #ifdef CONFIG_SLIRP
      "-netdev user,id=str[,ipv4=on|off][,net=addr[/mask]][,host=addr]\n"
-     "         [,ipv6=on|off][,ipv6-net=addr[/int]][,ipv6-host=addr]\n"
-@@ -2952,6 +2959,9 @@ DEF("netdev", HAS_ARG, QEMU_OPTION_netdev,
-     "                configure a hub port on the hub with ID 'n'\n", QEMU_ARCH_ALL)
- DEF("nic", HAS_ARG, QEMU_OPTION_nic,
-     "-nic [tap|bridge|"
-+#ifdef CONFIG_PASST
-+    "passt|"
-+#endif
- #ifdef CONFIG_SLIRP
-     "user|"
- #endif
-@@ -2984,6 +2994,9 @@ DEF("net", HAS_ARG, QEMU_OPTION_net,
-     "                configure or create an on-board (or machine default) NIC and\n"
-     "                connect it to hub 0 (please use -nic unless you need a hub)\n"
-     "-net ["
-+#ifdef CONFIG_PASST
-+    "passt|"
-+#endif
- #ifdef CONFIG_SLIRP
-     "user|"
- #endif
-@@ -3005,7 +3018,7 @@ DEF("net", HAS_ARG, QEMU_OPTION_net,
-     "                old way to initialize a host network interface\n"
-     "                (use the -netdev option if possible instead)\n", QEMU_ARCH_ALL)
- SRST
--``-nic [tap|bridge|user|l2tpv3|vde|netmap|af-xdp|vhost-user|socket][,...][,mac=macaddr][,model=mn]``
-+``-nic [tap|passt|bridge|user|l2tpv3|vde|netmap|af-xdp|vhost-user|socket][,...][,mac=macaddr][,model=mn]``
-     This option is a shortcut for configuring both the on-board
-     (default) guest NIC hardware and the host network backend in one go.
-     The host backend options are the same as with the corresponding
-@@ -3027,6 +3040,33 @@ SRST
-     network backend) which is activated if no other networking options
-     are provided.
+@@ -3056,6 +3058,12 @@ SRST
+         By default, ``quiet=on`` to disable informational message from
+         passt. ``quiet=on`` is passed as ``--quiet`` to passt.
  
-+``-netdev passt,id=str[,option][,...]``
-+    Configure a passt network backend which requires no administrator
-+    privilege to run. Valid options are:
++    ``vhost-user=on|off``
++        By default, ``vhost-user=off`` and QEMU uses the stream network
++        backend to communicate with passt. If ``vhost-user=on``, passt is
++        started with ``--vhost-user`` and QEMU uses the vhost-user network
++        backend to communicate with passt.
 +
-+    ``id=id``
-+        Assign symbolic name for use in monitor commands.
-+
-+    ``path=file``
-+        Filename of the passt program to run. If it is not provided,
-+        passt command will be started with the help of the PATH environment
-+        variable.
-+
-+    ``quiet=on|off``
-+        By default, ``quiet=on`` to disable informational message from
-+        passt. ``quiet=on`` is passed as ``--quiet`` to passt.
-+
-+    ``param=string``
-+       ``string`` will be passed to passt has a command line parameter,
-+       we can have multiple occurences of the ``param`` parameter to
-+       pass multiple parameters to passt.
-+
-+       For instance, to pass ``--tcp-ports=10001 --tcp-ports=10002 --udp-ports=10001`` to passt:
-+
-+    .. parsed-literal::
-+
-+        |qemu_system| -nic passt,param=--tcp-ports=10001,param=--tcp-ports=10002,param=--udp-ports=10001
-+
+     ``param=string``
+        ``string`` will be passed to passt has a command line parameter,
+        we can have multiple occurences of the ``param`` parameter to
+@@ -3065,7 +3073,7 @@ SRST
+ 
+     .. parsed-literal::
+ 
+-        |qemu_system| -nic passt,param=--tcp-ports=10001,param=--tcp-ports=10002,param=--udp-ports=10001
++        |qemu_system| -nic passt,vhost-user=on,param=--tcp-ports=10001,param=--tcp-ports=10002,param=--udp-ports=10001
+ 
  ``-netdev user,id=id[,option][,option][,...]``
      Configure user mode host network backend which requires no
-     administrator privilege to run. Valid options are:
-@@ -3711,7 +3751,7 @@ SRST
-     Use ``-net nic,model=help`` for a list of available devices for your
-     target.
- 
--``-net user|tap|bridge|socket|l2tpv3|vde[,...][,name=name]``
-+``-net user|passt|tap|bridge|socket|l2tpv3|vde[,...][,name=name]``
-     Configure a host network backend (with the options corresponding to
-     the same ``-netdev`` option) and connect it to the emulated hub 0
-     (the default hub). Use name to specify the name of the hub port.
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 73e0770f42b9..bb3e34d852a4 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -162,6 +162,7 @@ meson_options_help() {
-   printf "%s\n" '  oss             OSS sound support'
-   printf "%s\n" '  pa              PulseAudio sound support'
-   printf "%s\n" '  parallels       parallels image format support'
-+  printf "%s\n" '  passt           passt network backend support'
-   printf "%s\n" '  pipewire        PipeWire sound support'
-   printf "%s\n" '  pixman          pixman support'
-   printf "%s\n" '  plugins         TCG plugins via shared library loading'
-@@ -422,6 +423,8 @@ _meson_option_parse() {
-     --disable-pa) printf "%s" -Dpa=disabled ;;
-     --enable-parallels) printf "%s" -Dparallels=enabled ;;
-     --disable-parallels) printf "%s" -Dparallels=disabled ;;
-+    --enable-passt) printf "%s" -Dpasst=enabled ;;
-+    --disable-passt) printf "%s" -Dpasst=disabled ;;
-     --enable-pipewire) printf "%s" -Dpipewire=enabled ;;
-     --disable-pipewire) printf "%s" -Dpipewire=disabled ;;
-     --enable-pixman) printf "%s" -Dpixman=enabled ;;
 -- 
 2.49.0
 
