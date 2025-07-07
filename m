@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4B5AFB326
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 14:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD93AFB322
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 14:24:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYksO-0002k2-Sf; Mon, 07 Jul 2025 08:23:20 -0400
+	id 1uYksf-0003Dl-9q; Mon, 07 Jul 2025 08:23:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1uYkp4-00021W-Um; Mon, 07 Jul 2025 08:19:50 -0400
+ id 1uYkpl-0002Dr-2v; Mon, 07 Jul 2025 08:20:38 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1uYkp3-0001xL-2S; Mon, 07 Jul 2025 08:19:50 -0400
+ id 1uYkpf-0002DL-L7; Mon, 07 Jul 2025 08:20:32 -0400
 Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bbNZB4JGhz6M55p;
- Mon,  7 Jul 2025 20:18:42 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bbNbD0NxVz6GBQr;
+ Mon,  7 Jul 2025 20:19:36 +0800 (CST)
 Received: from frapeml500003.china.huawei.com (unknown [7.182.85.28])
- by mail.maildlp.com (Postfix) with ESMTPS id 0D72F14020C;
- Mon,  7 Jul 2025 20:19:45 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 27EBA140433;
+ Mon,  7 Jul 2025 20:20:18 +0800 (CST)
 Received: from a2303103017.china.huawei.com (10.45.147.207) by
  frapeml500003.china.huawei.com (7.182.85.28) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 7 Jul 2025 14:19:43 +0200
+ 15.1.2507.39; Mon, 7 Jul 2025 14:20:16 +0200
 To: <qemu-devel@nongnu.org>
 CC: <anisinha@redhat.com>, <armbru@redhat.com>, <berrange@redhat.com>,
  <dapeng1.mi@linux.intel.com>, <eric.auger@redhat.com>,
@@ -36,9 +36,9 @@ CC: <anisinha@redhat.com>, <armbru@redhat.com>, <berrange@redhat.com>,
  <qemu-arm@nongnu.org>, <richard.henderson@linaro.org>,
  <shameerali.kolothum.thodi@huawei.com>, <shannon.zhaosl@gmail.com>,
  <yangyicong@hisilicon.com>, <zhao1.liu@intel.com>
-Subject: [PATCH v14 1/7] target/arm/tcg: increase cache level for cpu=max
-Date: Mon, 7 Jul 2025 13:19:02 +0100
-Message-ID: <20250707121908.155-2-alireza.sanaee@huawei.com>
+Subject: [PATCH v14 2/7] hw/core/machine: topology functions capabilities added
+Date: Mon, 7 Jul 2025 13:19:03 +0100
+Message-ID: <20250707121908.155-3-alireza.sanaee@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250707121908.155-1-alireza.sanaee@huawei.com>
 References: <20250707121908.155-1-alireza.sanaee@huawei.com>
@@ -76,40 +76,101 @@ From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch addresses cache description in the `aarch64_max_tcg_initfn`
-function for cpu=max. It introduces three layers of caches and modifies
-the cache description registers accordingly.
+Add two functions one of which finds the lowest level cache defined in
+the cache description input, and the other checks if caches are defined
+at a particular level.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
 ---
- target/arm/tcg/cpu64.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ hw/core/machine-smp.c | 59 +++++++++++++++++++++++++++++++++++++++++++
+ include/hw/boards.h   |  7 +++++
+ 2 files changed, 66 insertions(+)
 
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 937f29e253..8be36e23a7 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1093,6 +1093,19 @@ void aarch64_max_tcg_initfn(Object *obj)
-     uint64_t t;
-     uint32_t u;
+diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+index 0be0ac044c..4baf4a878e 100644
+--- a/hw/core/machine-smp.c
++++ b/hw/core/machine-smp.c
+@@ -406,3 +406,62 @@ bool machine_check_smp_cache(const MachineState *ms, Error **errp)
  
-+    /*
-+     * Expanded cache set
-+     */
-+    cpu->clidr = 0x8200123; /* 4 4 3 in 3 bit fields */
-+    /* 64KB L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 7);
-+    /* 64KB L1 icache */
-+    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 2);
-+    /* 1MB L2 unified cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 8, 64, 1 * MiB, 7);
-+    /* 2MB L3 unified cache */
-+    cpu->ccsidr[4] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 8, 64, 2 * MiB, 7);
+     return true;
+ }
 +
-     /*
-      * Unset ARM_FEATURE_BACKCOMPAT_CNTFRQ, which we would otherwise default
-      * to because we started with aarch64_a57_initfn(). A 'max' CPU might
++/*
++ * This function assumes l3 and l2 have unified cache and l1 is split l1d
++ * and l1i, and further prepares the lowest cache level for a topology
++ * level.  The info will be fed to build_caches to create caches at the
++ * right level.
++ */
++bool machine_find_lowest_level_cache_at_topo_level(const MachineState *ms,
++                                                   int *level_found,
++                                                   CpuTopologyLevel topo_level)
++{
++
++    CpuTopologyLevel level;
++
++    level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I);
++    if (level == topo_level) {
++        *level_found = 1;
++        return true;
++    }
++
++    level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D);
++    if (level == topo_level) {
++        *level_found = 1;
++        return true;
++    }
++
++    level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2);
++    if (level == topo_level) {
++        *level_found = 2;
++        return true;
++    }
++
++    level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3);
++    if (level == topo_level) {
++        *level_found = 3;
++        return true;
++    }
++
++    return false;
++}
++
++/*
++ * Check if there are caches defined at a particular level.  Currently, we
++ * support only L1, L2 and L3 caches, but this can be extended to more levels
++ * as needed.
++ *
++ * Return True on success, False otherwise.
++ */
++bool machine_defines_cache_at_topo_level(const MachineState *ms,
++                                       CpuTopologyLevel level)
++{
++    if (machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3) == level ||
++        machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2) == level ||
++        machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I) == level ||
++        machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D) == level) {
++        return true;
++    }
++    return false;
++}
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index f424b2b505..1713be992a 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -55,6 +55,13 @@ void machine_set_cache_topo_level(MachineState *ms, CacheLevelAndType cache,
+                                   CpuTopologyLevel level);
+ bool machine_check_smp_cache(const MachineState *ms, Error **errp);
+ void machine_memory_devices_init(MachineState *ms, hwaddr base, uint64_t size);
++bool machine_defines_cache_at_topo_level(const MachineState *ms,
++                                       CpuTopologyLevel level);
++
++bool machine_find_lowest_level_cache_at_topo_level(const MachineState *ms,
++                                                   int *level_found,
++                                                   CpuTopologyLevel topo_level);
++
+ 
+ /**
+  * machine_class_allow_dynamic_sysbus_dev: Add type to list of valid devices
 -- 
 2.43.0
 
