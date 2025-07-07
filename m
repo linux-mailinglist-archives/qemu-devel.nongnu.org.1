@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B74AFB9DD
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 19:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C27BAFB9C3
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 19:23:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYpY3-0003kC-7N; Mon, 07 Jul 2025 13:22:35 -0400
+	id 1uYpY6-0003rx-1q; Mon, 07 Jul 2025 13:22:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYpWq-00011q-Sm
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 13:21:21 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYpWu-0001Be-Iz
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 13:21:28 -0400
 Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYpWn-0005Ev-QC
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 13:21:20 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYpWq-0005Gi-VF
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 13:21:23 -0400
 Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3a536ecbf6fso1801167f8f.2
- for <qemu-devel@nongnu.org>; Mon, 07 Jul 2025 10:21:15 -0700 (PDT)
+ ffacd0b85a97d-3a6e8b1fa37so2761648f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 07 Jul 2025 10:21:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751908873; x=1752513673; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751908878; x=1752513678; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3Cwq/mg6mG+kk7LlFctkSmffhOYT5MXBLjyGm0TM8y0=;
- b=UT9tdmB517MI2DDfz8iVRjG5Cqv2YVG0rnP7pQShEal8heuN1Hguug4kMYD6ftVCev
- C1vDBUP4Sc1avE0/JWFkOTwsGM13Uzq4AhFcJwtY2pCiMFy3qT3gyvpxyhdk9RWgZtf9
- Jlr3DNt5InvCJ1S/XTkpr7G5VjlOYEL8M6oEbskaCl0d9v272yv1/bWRKYbGVomNtPoI
- 3TWNayRzvsj/Nk8tamU/fPr3i6imzTwwdaRdEpzYn4QjPeKDVzuTMYMxsmg/2Opsztcm
- 75YPIQT+O0yeeMVuis6YyRG8oi/8DHYsnrv4qt5qv0i8M7JOygffc7lqMBhldnKy1ht3
- QQTw==
+ bh=pvxMUI2thDzOMTo1pay//3ftJosdxs4d110g7m8EMAY=;
+ b=YcHqdutKAnXeTd0OxYYnFQOiQucuo2mW0crzGtcGtbiqY4aJ6vVEEr3xvPr+0D4n2j
+ X6dztEBHEGGOS78UN1LqSp3HyJDADqXoqU+P95fGH8WAIPIPbqODfyn2Kq+Fof0NqnkQ
+ kqbbnb7ERHv050ibcqcFJO6f58sRlaMAbkwNERUBA5AknKZQnOis5s9gFIDIKHPB4x+K
+ zfmr1/9KuAvP4LKXLuw53hsrcwuXjcyFiJwWoOV5tlp9x7HWvAsdDVeV6eJbMpsqx8Wf
+ wp3aH1qDkt/9l0GiucnVYL2gOMIizRDhuQUchE9FstGeVzMhGFTljkJLEJSVj8AGCpB6
+ etVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751908873; x=1752513673;
+ d=1e100.net; s=20230601; t=1751908878; x=1752513678;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3Cwq/mg6mG+kk7LlFctkSmffhOYT5MXBLjyGm0TM8y0=;
- b=TM9INxsDLBRLABMWoZ9XZprm7O1z1sItZrYZgudFH/AWl6FTyvHdaChzq2QG/9ADxE
- +oYj2heaGL8SrMdSQTYhHwSp/NJo4WHHKKjkPIhyVzdfP78WZAHzYbBicW9chn2Tv7SA
- Qm26ctcyXioguxDR3nmCDmywZUpSFxkeESCtVeS2nY81AqholwZ5GtdXjGQxGokzLlSE
- iYdpCQCIWPkBEa0YeoeA0XXyEuD4G7moVNjjLC0V25J1SjSvJj0SVk6NLtD/qXAWDOAG
- D4z/hqTM9GpVhbyLBs7dHd+EURTwg6OqHxM6Abqf4Q8R/EZvzuGbQwsNWdPiwuRryNTC
- YrCw==
-X-Gm-Message-State: AOJu0YxcEwx2spvGMD238YZ0CGw/c1A+UxkisjD5u+xSDYOAKCNwWNXK
- hMRvInlhmLac85Qw448tH328YwulC5aNxDW89TWLpjnmXIn9LHWPWTr5YNCHnNnZNEnksbKIr4r
- oHMjz6cA=
-X-Gm-Gg: ASbGncuHfR3T+szF8fNdQVgbzZdH5VI9CQG5OmT9RH88s3VHuxoOMRVpM4Jys5WsgfJ
- ySyd01Ip70xlyDilOAEyMVIpfBTsRDZnbvrqJEJSqu9/AN72Gxhpy1a/5ajH8YhrjwvfomoyNvN
- WSWkpkw5odBsEy36IVJPCwSi9H46uBGDfn7brDIyVVfl/CMhK0dWkvkPVP/XhdDbFXQwmurbYNT
- IDLhwNu6kZYOmlqUxpy0lKyjpMkWxROSyEH+0ooAbs09a1WM6qK1YSxGuUiVGpR9NeGE8kjnVki
- RyTVk+aNBDwBmDZcsnAiM+jS2E9YSs+uhuDIt5EvKHr5M+PCp5cnJKVjqyWReZVKt83/NgpqeD3
- x4lql5uq4/snStVfumIIvGgTIgn3W7yjfDLY0
-X-Google-Smtp-Source: AGHT+IHXaaojgFflZHFVgx/9YZwYL4Ew/vAuJGo1fV1TzYAtliJIJA45khGxb2ny/B0r5JZXVjiorg==
-X-Received: by 2002:a05:6000:98e:b0:3a4:e387:c0bb with SMTP id
- ffacd0b85a97d-3b49aabdc06mr7102985f8f.59.1751908873206; 
- Mon, 07 Jul 2025 10:21:13 -0700 (PDT)
+ bh=pvxMUI2thDzOMTo1pay//3ftJosdxs4d110g7m8EMAY=;
+ b=nMW1bGqZ0VZlGRVM3xaMBGhsYQEyb9XVJdTMaIiswsxZXHiAYxnCdnzI4GWnipPIkF
+ SH82hg6B698+vl2dDPKogebCoDB2UlgqAiqYSrbiQdjMqJTRZePEiQpa0SnCAjQetAUu
+ q8pKZccpHwjD6lvd36uef6m4PHLDPXiEcv8blFlFLDXXG6OJIV5Iab/H96o/b0VOHaja
+ J4o+XPW/keblZRKAKbg4YD0rkyYhguUYn1ARLyjpfzfGy9+mTCS9b3mW3Glb9WPMjozX
+ RG0t7Ht7Y3VmRo4AD9qoaLoU8ofNwtmZ/+tcVayItPQtDO/RXvzfxH3+GRrIfXybS8OF
+ u3fg==
+X-Gm-Message-State: AOJu0Ywo3EglzrmCB/6ZO8qNm1V6ttTIkEQPsrd7N6dRk6eg1ktubKpv
+ Rx5OLfUJ2D+0Ah53kPjdZBFiX+t4LsggQavp3TZEVrG5O5K2W14QXgxFwRCQlk4y49I1hvzFnsj
+ kPiTxXsg=
+X-Gm-Gg: ASbGncsavHSP4M2A48oCgiGAiHuQDviZkWABRGd459E+COXCcufwJnfD1QXXypiiECx
+ BHyRbiKiMofOwfWCmayt0p5MnjIPQUjQshF9e0SOxdcFiMcx7OETcgLm6hDRIYww6K6jjNXpHrk
+ uqRcUO8i7e+Keynpehh75vPpjXxFbQzOIcwJGIqtxkl9NLJkNoMUGqCdSt5mqF8LNj5UZQPi6gm
+ bxxczvvrpmcomVEQMVk2xsiVonjZ5fJyh2qNUDOekGwUtVMTFM41kiECytKX6C50+M0iZTgIBQL
+ VFcjvk8xExlvq51f5hqiuTAKUMVDJ/s2dtvcD1ZszS/7rsXLLGf3V9Hl/Z5Rg1Tc6NjcsuCt08G
+ xsJhUqEpPZP0I+74pN/wzo0gMfdacKAYZS5Kk
+X-Google-Smtp-Source: AGHT+IG3R7nzDUbI7ywyegfqyBV4/z9vERQ/HKQhcLB40Q0IMcGvVvbb0hYfAK75Dye22kA1OdRJjw==
+X-Received: by 2002:a05:6000:4703:b0:3a5:2465:c0a4 with SMTP id
+ ffacd0b85a97d-3b4964feceemr9778712f8f.20.1751908878378; 
+ Mon, 07 Jul 2025 10:21:18 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b47030cdf5sm10626615f8f.1.2025.07.07.10.21.12
+ ffacd0b85a97d-3b47225b5cdsm10602448f8f.85.2025.07.07.10.21.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 07 Jul 2025 10:21:12 -0700 (PDT)
+ Mon, 07 Jul 2025 10:21:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-s390x@nongnu.org,
@@ -73,10 +73,10 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-s390x@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH-for-10.1 v6 12/14] hw/core: Allow ARM/Aarch64 binaries to use
- the 'none' machine
-Date: Mon,  7 Jul 2025 19:20:06 +0200
-Message-ID: <20250707172009.3884-13-philmd@linaro.org>
+Subject: [PATCH-for-10.1 v6 13/14] hw/boards: Introduce
+ DEFINE_MACHINE_WITH_INTERFACES() macro
+Date: Mon,  7 Jul 2025 19:20:07 +0200
+Message-ID: <20250707172009.3884-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250707172009.3884-1-philmd@linaro.org>
 References: <20250707172009.3884-1-philmd@linaro.org>
@@ -107,40 +107,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we'll start to use target_machine_typename() to filter
-machines for the ARM/Aarch64 binaries, the 'none' machine
-would be filtered out. Register the proper interfaces to keep
-it available.
+DEFINE_MACHINE_WITH_INTERFACES() is similar to DEFINE_MACHINE()
+but allows to pass a InterfaceInfo[] pointer.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- hw/core/null-machine.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/hw/boards.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/hw/core/null-machine.c b/hw/core/null-machine.c
-index 3e03771d570..bd3ca6c7719 100644
---- a/hw/core/null-machine.c
-+++ b/hw/core/null-machine.c
-@@ -16,6 +16,7 @@
- #include "hw/boards.h"
- #include "system/address-spaces.h"
- #include "hw/core/cpu.h"
-+#include "hw/arm/machines-qom.h"
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index f424b2b5058..91ccb68113c 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -761,7 +761,7 @@ struct MachineState {
+         } \
+     } while (0)
  
- static void machine_none_init(MachineState *mch)
- {
-@@ -62,6 +63,11 @@ static const TypeInfo null_machine_types[] = {
-         .name           = MACHINE_TYPE_NAME("none"),
-         .parent         = TYPE_MACHINE,
-         .class_init     = null_machine_class_init,
-+        .interfaces     = (const InterfaceInfo[]) {
-+            { TYPE_TARGET_AARCH64_MACHINE },
-+            { TYPE_TARGET_ARM_MACHINE },
-+            { },
-+        },
-     },
- };
+-#define DEFINE_MACHINE(namestr, machine_initfn) \
++#define DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, ifaces) \
+     static void machine_initfn##_class_init(ObjectClass *oc, const void *data) \
+     { \
+         MachineClass *mc = MACHINE_CLASS(oc); \
+@@ -771,6 +771,7 @@ struct MachineState {
+         .name       = MACHINE_TYPE_NAME(namestr), \
+         .parent     = TYPE_MACHINE, \
+         .class_init = machine_initfn##_class_init, \
++        .interfaces = ifaces, \
+     }; \
+     static void machine_initfn##_register_types(void) \
+     { \
+@@ -778,6 +779,9 @@ struct MachineState {
+     } \
+     type_init(machine_initfn##_register_types)
+ 
++#define DEFINE_MACHINE(namestr, machine_initfn) \
++    DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, NULL)
++
+ extern GlobalProperty hw_compat_10_0[];
+ extern const size_t hw_compat_10_0_len;
  
 -- 
 2.49.0
