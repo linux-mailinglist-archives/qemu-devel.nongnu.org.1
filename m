@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF75AFB88A
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 18:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 584C6AFB892
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Jul 2025 18:26:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYobZ-0008D0-S1; Mon, 07 Jul 2025 12:22:11 -0400
+	id 1uYofU-0001hE-A8; Mon, 07 Jul 2025 12:26:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYoZ2-0007J1-BD
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 12:19:32 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYobi-0008I4-Dh
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 12:22:19 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYoYz-0002JQ-I9
- for qemu-devel@nongnu.org; Mon, 07 Jul 2025 12:19:31 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3a6d77b43c9so3106086f8f.3
- for <qemu-devel@nongnu.org>; Mon, 07 Jul 2025 09:19:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uYobg-0002yc-9u
+ for qemu-devel@nongnu.org; Mon, 07 Jul 2025 12:22:17 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3a6cd1a6fecso3280082f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 07 Jul 2025 09:22:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751905168; x=1752509968; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751905334; x=1752510134; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=OwO3qgmplAmvTzJWzTqIwY5pWYcV09pZ61GL2KQwuXg=;
- b=JufPbg8C48IfU3Dsi/jE9FPDt2JIpxLhoo/XsoEDjemij3nl8UnIn5/WwrP1V5JH9H
- aTH5D9iOzr2l5lSFdQkE/bYDjQnlbo7xB8Hzo/nqSw7Q4xApMqlLoE/qfsX6y8bsbCsC
- kwnQjotX6Emq3wXNRD7HExoq/8ogoMYDJkQRDvaAOJUCJ9yEsf6lri9IjAYwca/ibUH3
- VQUO1FyLz7e5TuI1hYakRF4xjr1SJbeVMLQUtxtCX6ljWJRM2vrorKvar4ta18rsKM2n
- 1cSes1ZYtbMYV5ahzpKAYBJoplLfHxZwPFGI6F4vYLFmH+jzMnzU9t1cIzr4FiIxlnly
- UYNg==
+ bh=KMzSasTd9fqmqki7I/moZNBuhtq3frEbKrrNQ/giGP4=;
+ b=jcJMFj9hXNzICbZPG+9SSvGYRn+e7NSn6xVYpaBLSsQNdmIqZ3iSpvFSL+peX+XJeP
+ Q0KEFsnpEthUw9CWKW1zmm1H6pJE3AImfW/LD6grhJMb4mffBX/QDBT70V9M+xvvptO1
+ iL4OqtcYF2ZQO9vFf/DJeEPx1DeOqYI6O53hq6LaQJxhTsXANAx8hnInue89nKdULNrv
+ GQKVLA+mtkyiYvKxENF2mR2k7MN57pUhTEAhWMo5eazYjHh08o5uiSCiYZTfJUluJg9V
+ UPvGOfnP0nWng/4GDNoNgAtj/Kxzwb3jgy0ubGo20iwLlRhWUyp5h0DxxbDilOy6vVtT
+ zoTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751905168; x=1752509968;
+ d=1e100.net; s=20230601; t=1751905334; x=1752510134;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OwO3qgmplAmvTzJWzTqIwY5pWYcV09pZ61GL2KQwuXg=;
- b=Ybe5OQv5hFp7iDEN9cBRzNA1wM2xoQWtmHP7K7pYZwRFR/A4cNw9Z3MMurG3ZKQuQe
- JjPTbue+ThBJgYja7PkWhCMCtSvC75w4yrExVbtK58pxcM9dW3aRcigOa92t2XwhOXCB
- vTQsZakO0MquIqu4IpBs8zPmqzPc7V4+5jKF8STJb2P85mPCg0MewSnsN55HASZI2+Xz
- Gf55QkFBeB3NW/wrREBor6XeNSUcTCV1bqU5EAbmBplXmmhy3g5FdmfVUZ6NBCVhH6HA
- UDcD/Kndpxu782z+wdr9ycVhaszgvBPdZFT/Vnt3v7xFoO6HRoGTY8MQxGujnHfKWBmE
- Wz1Q==
+ bh=KMzSasTd9fqmqki7I/moZNBuhtq3frEbKrrNQ/giGP4=;
+ b=ujAOggUPFHgsmu3nvfZ5KZLQ46zlPsvm4jc6V4xdXXrPxJ9r9ZUTZ6dQ1jX+RIS+sI
+ FaLbvyikViu6rFjVRXiZyWFzRmrPK38M42IRrZS1qRVM7Tz5KPfUvJzQuTSs8EyjO/rw
+ 0ceggWIqCtfxSqlxOb+1ssJDMDQRHDTZGOsNIFYaheg6tHY1U9B4tMcMnU5LquA9+MQT
+ SYewR/wsDI6kgU/Rs/qR6iv1VNDS873+qKe028RzvxFda8Q5+cW3fmfFItXUPnh7hCLc
+ HlCCywqJ4bSBgaUQ7978Exc8UQFQ3TN0dA1vI6COQW6Tm/2WOkHGyTc5H48A2h6mQhlN
+ QaZg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX6CXLMI6CyaXbTXmwZD7UwiuVYqpU6Ykm6Jmj4M27KeOLt9Pxc5zA9S7sYFyJoNRyJAOyXjXNDmaXz@nongnu.org
-X-Gm-Message-State: AOJu0Yz22p9BYWzAjtxOjzHEHIvOHjU9AmHNH1pY58cZ6pbSJbFrr0u4
- 9GoOwkAHyw+H2u6pie5U7wTizSjHTb4H9bwJR0H3EDiGBLdkFPR5zro61U6oGmUpKTodFaBNN5U
- dktQ+k8w=
-X-Gm-Gg: ASbGnctn4k5Xex5jcfcT/mqTI6H0oIoNwyfUtYXJQ8RMLSCmcjyd6Y8jyKwDzJe4fNa
- 8qpSVgacvrgBJWmn416M4FHiXgTQMWW9gdr/c0dVAWUHjuU0UgA9J3Xk5mAIBJhzM0+/vZFv1+J
- WwZ+V9mSSwEIUA8zuASrt5+/gR08WOBKL9GfjU5dd7JhOWlBM9yzPTY0gt5ANQ2A+omG79Dv9Te
- cEjVYj58Ie9rVs34xHC21keAhVWlFCW5y6Ym482hCwkfLUQL8tSySMxdkRo+KFVoueOofETKnpE
- BCyZJrHItBdVuIvP2bU3PbbAuRoE12wyfKXPgLUqrYAcHAMdWrFuDkwU5U+BHxRaPcnCbEelR4I
- 8Q06HRc7why2VhvlPoSNfPRUxOOurEA==
-X-Google-Smtp-Source: AGHT+IFHduTiAVqsyStHntDadHacKnmlpeIZF7cZ/BT/tCsLSbM/E/A0U+sZ9qGVicwsPuxNQiYPOw==
-X-Received: by 2002:a05:6000:1886:b0:3a4:f8fa:8a3a with SMTP id
- ffacd0b85a97d-3b4964fdd22mr10398750f8f.18.1751905167582; 
- Mon, 07 Jul 2025 09:19:27 -0700 (PDT)
+ AJvYcCXBO2ZnWV2LSFReVO9+Ln8lOp4VdRd3Lcw8AHjbw9qSCeTanvb1V5LNm3rnx1E4sY8zJ4M9JOUqZm6G@nongnu.org
+X-Gm-Message-State: AOJu0Ywwk50MQY1dETvYAkv3+cJ7opByZdMNVf7SPY122qWmzPxWkoum
+ pG2DDOAIzaUkEQHNHawnUbLV6DRIKKv0v/27fV714ehkge2jh4KJdDEVD4NDwnWV3uRTTpi004V
+ 9yY5U+l4=
+X-Gm-Gg: ASbGncu+rsb9DnFSzjQ+ZVZF2gd2tPTswV1faRNj/Ko4E34Rd537Z6rYsCkERnFd7hL
+ admkUWLNIvVxd23FFdxMRvJp/ImYdjExJQ8SMGjM1HL3o6QFPVJGlqOSzLzUduMELHo3RhM5QKY
+ o/Ndg8RYX3IPFKDeWOrGiiD1SpOmlnvOyyVLiOY9CQxso231icWexZg9H8PT5BClLjnglGAOhGn
+ 6VWqq/PecvbN0DSK2dxwKh6gGuq46tGB0/AD67QZYBCMYqXez5/S47zE7geyad/ADOqiUFOL8sU
+ +1Fn/u0VoYSXh+CNXldHeDTRIvd/Mu1J3HBOAxMDFXVeIDOTBqo4KyGSufZsYMlrIbDexLKDbtB
+ qpFuNUxGJ1fecUyEE7WEhLpxxDuXTwA==
+X-Google-Smtp-Source: AGHT+IGV+rk0Mid5gpcxeEjY1WicyxRVJjSuhsyN3xiuZknvRoDc6rgJJXNG3phbTcKgaAwF5PC2sA==
+X-Received: by 2002:a05:6000:238a:b0:3a4:f513:7f03 with SMTP id
+ ffacd0b85a97d-3b49aa7ae9fmr7884712f8f.44.1751905333680; 
+ Mon, 07 Jul 2025 09:22:13 -0700 (PDT)
 Received: from [192.168.69.242] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b47285c6c9sm10534025f8f.89.2025.07.07.09.19.26
+ ffacd0b85a97d-3b47225a2e8sm10673221f8f.75.2025.07.07.09.22.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Jul 2025 09:19:27 -0700 (PDT)
-Message-ID: <3a8ccbda-8102-461c-b11f-fdfc3af81746@linaro.org>
-Date: Mon, 7 Jul 2025 18:19:26 +0200
+ Mon, 07 Jul 2025 09:22:13 -0700 (PDT)
+Message-ID: <2d0c5898-76f6-43da-8789-96d0345f771e@linaro.org>
+Date: Mon, 7 Jul 2025 18:22:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] target/arm: Drop stub for define_tlb_insn_regs
+Subject: Re: [PATCH 3/3] target/arm: Split out performance monitor regs to
+ cpregs-pmu.c
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20250707151547.196393-1-richard.henderson@linaro.org>
- <20250707151547.196393-2-richard.henderson@linaro.org>
+ <20250707151547.196393-4-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250707151547.196393-2-richard.henderson@linaro.org>
+In-Reply-To: <20250707151547.196393-4-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,14 +102,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/7/25 17:15, Richard Henderson wrote:
-> Allow the call to be compiled out by protecting it
-> with tcg_enabled.
-> 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/arm/helper.c    | 4 +++-
->   target/arm/tcg-stubs.c | 5 -----
->   2 files changed, 3 insertions(+), 6 deletions(-)
+>   target/arm/cpregs.h     |    3 +
+>   target/arm/internals.h  |    2 +
+>   target/arm/cpregs-pmu.c | 1309 +++++++++++++++++++++++++++++++++++++++
+>   target/arm/helper.c     | 1287 +-------------------------------------
+>   target/arm/meson.build  |    2 +
+>   5 files changed, 1319 insertions(+), 1284 deletions(-)
+>   create mode 100644 target/arm/cpregs-pmu.c
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
