@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F56EAFD9DA
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC90AFD928
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:06:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFFI-0002Sk-Dd; Tue, 08 Jul 2025 16:48:56 -0400
+	id 1uZFHx-0003Wa-Pt; Tue, 08 Jul 2025 16:51:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uZE3e-0006xa-5b; Tue, 08 Jul 2025 15:32:57 -0400
+ id 1uZE5J-00026N-D2; Tue, 08 Jul 2025 15:34:43 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uZE3R-0003kM-99; Tue, 08 Jul 2025 15:32:45 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bbvzF4Sywz6DBPV;
- Tue,  8 Jul 2025 16:53:45 +0800 (CST)
-Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
- by mail.maildlp.com (Postfix) with ESMTPS id 5910B1402EA;
- Tue,  8 Jul 2025 16:54:49 +0800 (CST)
+ id 1uZE5D-00046a-DI; Tue, 08 Jul 2025 15:34:32 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bbw042dLjz6GD7k;
+ Tue,  8 Jul 2025 16:54:28 +0800 (CST)
+Received: from frapeml100005.china.huawei.com (unknown [7.182.85.132])
+ by mail.maildlp.com (Postfix) with ESMTPS id 7A1421404C5;
+ Tue,  8 Jul 2025 16:57:37 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (7.182.85.71) by
- frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
+ frapeml100005.china.huawei.com (7.182.85.132) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 8 Jul 2025 10:54:49 +0200
+ 15.1.2507.39; Tue, 8 Jul 2025 10:57:37 +0200
 Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
  frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
- Tue, 8 Jul 2025 10:54:49 +0200
-To: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
- <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "ddutile@redhat.com" <ddutile@redhat.com>, "berrange@redhat.com"
- <berrange@redhat.com>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "nathanc@nvidia.com" <nathanc@nvidia.com>, "mochs@nvidia.com"
- <mochs@nvidia.com>, "smostafa@google.com" <smostafa@google.com>,
- "gustavo.romero@linaro.org" <gustavo.romero@linaro.org>, "mst@redhat.com"
- <mst@redhat.com>, "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>,
- jiangkunkun <jiangkunkun@huawei.com>, Jonathan Cameron
- <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
- <zhangfei.gao@linaro.org>
-Subject: RE: [PATCH v6 08/12] hw/arm/virt: Allow user-creatable SMMUv3 dev
- instantiation
-Thread-Topic: [PATCH v6 08/12] hw/arm/virt: Allow user-creatable SMMUv3 dev
- instantiation
-Thread-Index: AQHb6/xJlPtpAHu5pEuj91bLuyZP37QnvekAgAA0r1A=
-Date: Tue, 8 Jul 2025 08:54:49 +0000
-Message-ID: <e4cd2ccede7b46df9bbcf63dcf492fcf@huawei.com>
+ Tue, 8 Jul 2025 10:57:37 +0200
+To: Nicolin Chen <nicolinc@nvidia.com>
+CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, "imammedo@redhat.com"
+ <imammedo@redhat.com>, "nathanc@nvidia.com" <nathanc@nvidia.com>,
+ "mochs@nvidia.com" <mochs@nvidia.com>, "smostafa@google.com"
+ <smostafa@google.com>, "gustavo.romero@linaro.org"
+ <gustavo.romero@linaro.org>, "mst@redhat.com" <mst@redhat.com>,
+ "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>, Linuxarm
+ <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
+ <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
+Subject: RE: [PATCH v6 00/12] hw/arm/virt: Add support for user creatable
+ SMMUv3 device
+Thread-Topic: [PATCH v6 00/12] hw/arm/virt: Add support for user creatable
+ SMMUv3 device
+Thread-Index: AQHb7AapsJ+9AlqJnEWXbhnJQgP2crQnwm+AgAAxfPA=
+Date: Tue, 8 Jul 2025 08:57:37 +0000
+Message-ID: <8e57288e83b24db5a09ab00e39d42940@huawei.com>
 References: <20250703084643.85740-1-shameerali.kolothum.thodi@huawei.com>
- <20250703084643.85740-9-shameerali.kolothum.thodi@huawei.com>
- <b05cd1f5-db7a-45d3-a582-85c808adcd04@redhat.com>
-In-Reply-To: <b05cd1f5-db7a-45d3-a582-85c808adcd04@redhat.com>
+ <aGzPgZEhORuRyIdl@Asurada-Nvidia>
+In-Reply-To: <aGzPgZEhORuRyIdl@Asurada-Nvidia>
 Accept-Language: en-GB, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [10.203.177.241]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
 Received-SPF: pass client-ip=185.176.79.56;
@@ -91,99 +90,54 @@ From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgRXJpYywNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBFcmljIEF1
-Z2VyIDxlcmljLmF1Z2VyQHJlZGhhdC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIEp1bHkgOCwgMjAy
-NSA4OjQxIEFNDQo+IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpDQo+IDxzaGFtZWVyYWxp
-LmtvbG90aHVtLnRob2RpQGh1YXdlaS5jb20+OyBxZW11LWFybUBub25nbnUub3JnOw0KPiBxZW11
-LWRldmVsQG5vbmdudS5vcmcNCj4gQ2M6IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgamdnQG52
-aWRpYS5jb207IG5pY29saW5jQG52aWRpYS5jb207DQo+IGRkdXRpbGVAcmVkaGF0LmNvbTsgYmVy
-cmFuZ2VAcmVkaGF0LmNvbTsgaW1hbW1lZG9AcmVkaGF0LmNvbTsNCj4gbmF0aGFuY0BudmlkaWEu
-Y29tOyBtb2Noc0BudmlkaWEuY29tOyBzbW9zdGFmYUBnb29nbGUuY29tOw0KPiBndXN0YXZvLnJv
-bWVyb0BsaW5hcm8ub3JnOyBtc3RAcmVkaGF0LmNvbTsNCj4gbWFyY2VsLmFwZmVsYmF1bUBnbWFp
-bC5jb207IExpbnV4YXJtIDxsaW51eGFybUBodWF3ZWkuY29tPjsNCj4gV2FuZ3pob3UgKEIpIDx3
-YW5nemhvdTFAaGlzaWxpY29uLmNvbT47IGppYW5na3Vua3VuDQo+IDxqaWFuZ2t1bmt1bkBodWF3
-ZWkuY29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29t
-PjsgemhhbmdmZWkuZ2FvQGxpbmFyby5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2NiAwOC8x
-Ml0gaHcvYXJtL3ZpcnQ6IEFsbG93IHVzZXItY3JlYXRhYmxlIFNNTVV2Mw0KPiBkZXYgaW5zdGFu
-dGlhdGlvbg0KPiANCj4gSGkgU2hhbWVlciwNCj4gDQo+IE9uIDcvMy8yNSAxMDo0NiBBTSwgU2hh
-bWVlciBLb2xvdGh1bSB3cm90ZToNCj4gPiBBbGxvdyBjb2xkLXBsdWdnaW5nIG9mIGFuIFNNTVV2
-MyBkZXZpY2Ugb24gdGhlIHZpcnQgbWFjaGluZSB3aGVuIG5vDQo+ID4gZ2xvYmFsIChsZWdhY3kp
-IFNNTVV2MyBpcyBwcmVzZW50IG9yIHdoZW4gYSB2aXJ0aW8taW9tbXUgaXMgc3BlY2lmaWVkLg0K
-PiA+DQo+ID4gVGhpcyB1c2VyLWNyZWF0ZWQgU01NVXYzIGRldmljZSBpcyB0aWVkIHRvIGEgc3Bl
-Y2lmaWMgUENJIGJ1cyBwcm92aWRlZA0KPiA+IGJ5IHRoZSB1c2VyLCBzbyBlbnN1cmUgdGhlIElP
-TU1VIG9wcyBhcmUgY29uZmlndXJlZCBhY2NvcmRpbmdseS4NCj4gPg0KPiA+IER1ZSB0byBjdXJy
-ZW50IGxpbWl0YXRpb25zIGluIFFFTVXigJlzIGRldmljZSB0cmVlIHN1cHBvcnQsIHNwZWNpZmlj
-YWxseQ0KPiA+IGl0cyBpbmFiaWxpdHkgdG8gcHJvcGVybHkgcHJlc2VudCBweGItcGNpZSBiYXNl
-ZCByb290IGNvbXBsZXhlcyBhbmQNCj4gPiB0aGVpciBkZXZpY2VzLCB0aGUgZGV2aWNlIHRyZWUg
-c3VwcG9ydCBmb3IgdGhlIG5ldyBTTU1VdjMgZGV2aWNlIGlzDQo+ID4gbGltaXRlZCB0byBjYXNl
-cyB3aGVyZSBpdCBpcyBhdHRhY2hlZCB0byB0aGUgZGVmYXVsdCBwY2llLjAgcm9vdCBjb21wbGV4
-Lg0KPiA+DQo+ID4gUmV2aWV3ZWQtYnk6IEpvbmF0aGFuIENhbWVyb24gPGpvbmF0aGFuLmNhbWVy
-b25AaHVhd2VpLmNvbT4NCj4gPiBSZXZpZXdlZC1ieTogRXJpYyBBdWdlciA8ZXJpYy5hdWdlckBy
-ZWRoYXQuY29tPg0KPiA+IFRlc3RlZC1ieTogTmF0aGFuIENoZW4gPG5hdGhhbmNAbnZpZGlhLmNv
-bT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTaGFtZWVyIEtvbG90aHVtDQo+IDxzaGFtZWVyYWxpLmtv
-bG90aHVtLnRob2RpQGh1YXdlaS5jb20+DQo+ID4gLS0tDQo+ID4gIGh3L2FybS9zbW11LWNvbW1v
-bi5jICAgICAgICAgfCAgOCArKysrKy0NCj4gPiAgaHcvYXJtL3NtbXV2My5jICAgICAgICAgICAg
-ICB8ICAyICsrDQo+ID4gIGh3L2FybS92aXJ0LmMgICAgICAgICAgICAgICAgfCA1MCArKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAgaHcvY29yZS9zeXNidXMtZmR0LmMg
-ICAgICAgICB8ICAzICsrKw0KPiA+ICBpbmNsdWRlL2h3L2FybS9zbW11LWNvbW1vbi5oIHwgIDEg
-Kw0KPiA+ICA1IGZpbGVzIGNoYW5nZWQsIDYzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkN
-Cj4gPg0KPiA+IGRpZmYgLS1naXQgYS9ody9hcm0vc21tdS1jb21tb24uYyBiL2h3L2FybS9zbW11
-LWNvbW1vbi5jDQo+ID4gaW5kZXggYjE1ZTdmZDBlNC4uMmVlNDY5MTI5OSAxMDA2NDQNCj4gPiAt
-LS0gYS9ody9hcm0vc21tdS1jb21tb24uYw0KPiA+ICsrKyBiL2h3L2FybS9zbW11LWNvbW1vbi5j
-DQo+ID4gQEAgLTk1OSw3ICs5NTksMTIgQEAgc3RhdGljIHZvaWQgc21tdV9iYXNlX3JlYWxpemUo
-RGV2aWNlU3RhdGUgKmRldiwNCj4gRXJyb3IgKiplcnJwKQ0KPiA+ICAgICAgICAgICAgICAgICAg
-Z290byBvdXRfZXJyOw0KPiA+ICAgICAgICAgICAgICB9DQo+ID4gICAgICAgICAgfQ0KPiA+IC0g
-ICAgICAgIHBjaV9zZXR1cF9pb21tdShwY2lfYnVzLCAmc21tdV9vcHMsIHMpOw0KPiA+ICsNCj4g
-PiArICAgICAgICBpZiAocy0+c21tdV9wZXJfYnVzKSB7DQo+ID4gKyAgICAgICAgICAgIHBjaV9z
-ZXR1cF9pb21tdV9wZXJfYnVzKHBjaV9idXMsICZzbW11X29wcywgcyk7DQo+ID4gKyAgICAgICAg
-fSBlbHNlIHsNCj4gPiArICAgICAgICAgICAgcGNpX3NldHVwX2lvbW11KHBjaV9idXMsICZzbW11
-X29wcywgcyk7DQo+ID4gKyAgICAgICAgfQ0KPiA+ICAgICAgICAgIHJldHVybjsNCj4gPiAgICAg
-IH0NCj4gPiAgb3V0X2VycjoNCj4gPiBAQCAtOTg0LDYgKzk4OSw3IEBAIHN0YXRpYyB2b2lkIHNt
-bXVfYmFzZV9yZXNldF9leGl0KE9iamVjdCAqb2JqLA0KPiBSZXNldFR5cGUgdHlwZSkNCj4gPg0K
-PiA+ICBzdGF0aWMgY29uc3QgUHJvcGVydHkgc21tdV9kZXZfcHJvcGVydGllc1tdID0gew0KPiA+
-ICAgICAgREVGSU5FX1BST1BfVUlOVDgoImJ1c19udW0iLCBTTU1VU3RhdGUsIGJ1c19udW0sIDAp
-LA0KPiA+ICsgICAgREVGSU5FX1BST1BfQk9PTCgic21tdV9wZXJfYnVzIiwgU01NVVN0YXRlLCBz
-bW11X3Blcl9idXMsDQo+IGZhbHNlKSwNCj4gPiAgICAgIERFRklORV9QUk9QX0xJTksoInByaW1h
-cnktYnVzIiwgU01NVVN0YXRlLCBwcmltYXJ5X2J1cywNCj4gPiAgICAgICAgICAgICAgICAgICAg
-ICAgVFlQRV9QQ0lfQlVTLCBQQ0lCdXMgKiksDQo+ID4gIH07DQo+ID4gZGlmZiAtLWdpdCBhL2h3
-L2FybS9zbW11djMuYyBiL2h3L2FybS9zbW11djMuYw0KPiA+IGluZGV4IGFiNjc5NzIzNTMuLmJj
-ZjhhZjhkYzcgMTAwNjQ0DQo+ID4gLS0tIGEvaHcvYXJtL3NtbXV2My5jDQo+ID4gKysrIGIvaHcv
-YXJtL3NtbXV2My5jDQo+ID4gQEAgLTE5OTYsNiArMTk5Niw4IEBAIHN0YXRpYyB2b2lkIHNtbXV2
-M19jbGFzc19pbml0KE9iamVjdENsYXNzDQo+ICprbGFzcywgY29uc3Qgdm9pZCAqZGF0YSkNCj4g
-PiAgICAgIGRldmljZV9jbGFzc19zZXRfcGFyZW50X3JlYWxpemUoZGMsIHNtbXVfcmVhbGl6ZSwN
-Cj4gPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgJmMtPnBhcmVudF9yZWFs
-aXplKTsNCj4gPiAgICAgIGRldmljZV9jbGFzc19zZXRfcHJvcHMoZGMsIHNtbXV2M19wcm9wZXJ0
-aWVzKTsNCj4gPiArICAgIGRjLT5ob3RwbHVnZ2FibGUgPSBmYWxzZTsNCj4gPiArICAgIGRjLT51
-c2VyX2NyZWF0YWJsZSA9IHRydWU7DQo+ID4gIH0NCj4gPg0KPiA+ICBzdGF0aWMgaW50IHNtbXV2
-M19ub3RpZnlfZmxhZ19jaGFuZ2VkKElPTU1VTWVtb3J5UmVnaW9uICppb21tdSwNCj4gPiBkaWZm
-IC0tZ2l0IGEvaHcvYXJtL3ZpcnQuYyBiL2h3L2FybS92aXJ0LmMNCj4gPiBpbmRleCAwNWExNDg4
-MWNmLi44NjYyMTczYzQzIDEwMDY0NA0KPiA+IC0tLSBhL2h3L2FybS92aXJ0LmMNCj4gPiArKysg
-Yi9ody9hcm0vdmlydC5jDQo+ID4gQEAgLTU2LDYgKzU2LDcgQEANCj4gPiAgI2luY2x1ZGUgInFl
-bXUvY3V0aWxzLmgiDQo+ID4gICNpbmNsdWRlICJxZW11L2Vycm9yLXJlcG9ydC5oIg0KPiA+ICAj
-aW5jbHVkZSAicWVtdS9tb2R1bGUuaCINCj4gPiArI2luY2x1ZGUgImh3L3BjaS9wY2lfYnVzLmgi
-DQo+ID4gICNpbmNsdWRlICJody9wY2ktaG9zdC9ncGV4LmgiDQo+ID4gICNpbmNsdWRlICJody92
-aXJ0aW8vdmlydGlvLXBjaS5oIg0KPiA+ICAjaW5jbHVkZSAiaHcvY29yZS9zeXNidXMtZmR0Lmgi
-DQo+ID4gQEAgLTE0NDAsNiArMTQ0MSwyOCBAQCBzdGF0aWMgdm9pZCBjcmVhdGVfc21tdXYzX2R0
-X2JpbmRpbmdzKGNvbnN0DQo+IFZpcnRNYWNoaW5lU3RhdGUgKnZtcywgaHdhZGRyIGJhc2UsDQo+
-ID4gICAgICBnX2ZyZWUobm9kZSk7DQo+ID4gIH0NCj4gPg0KPiA+ICtzdGF0aWMgdm9pZCBjcmVh
-dGVfc21tdXYzX2Rldl9kdGIoVmlydE1hY2hpbmVTdGF0ZSAqdm1zLA0KPiA+ICsgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgRGV2aWNlU3RhdGUgKmRldiwgUENJQnVzICpidXMpDQo+
-ID4gK3sNCj4gPiArICAgIFBsYXRmb3JtQnVzRGV2aWNlICpwYnVzID0gUExBVEZPUk1fQlVTX0RF
-VklDRSh2bXMtDQo+ID5wbGF0Zm9ybV9idXNfZGV2KTsNCj4gPiArICAgIFN5c0J1c0RldmljZSAq
-c2JkZXYgPSBTWVNfQlVTX0RFVklDRShkZXYpOw0KPiA+ICsgICAgaW50IGlycSA9IHBsYXRmb3Jt
-X2J1c19nZXRfaXJxbihwYnVzLCBzYmRldiwgMCk7DQo+ID4gKyAgICBod2FkZHIgYmFzZSA9IHBs
-YXRmb3JtX2J1c19nZXRfbW1pb19hZGRyKHBidXMsIHNiZGV2LCAwKTsNCj4gPiArICAgIE1hY2hp
-bmVTdGF0ZSAqbXMgPSBNQUNISU5FKHZtcyk7DQo+ID4gKw0KPiA+ICsgICAgaWYgKHN0cmNtcCgi
-cGNpZS4wIiwgYnVzLT5xYnVzLm5hbWUpKSB7DQo+ID4gKyAgICAgICAgd2Fybl9yZXBvcnQoIlNN
-TVV2MyBkZXZpY2Ugb25seSBzdXBwb3J0ZWQgd2l0aCBwY2llLjAgZm9yIERUIik7DQo+IHdoaWxl
-IHRlc3RpbmcgdGhlIHNlcmllcyBJIGhpdCB0aGUgd2FybmluZyB3aXRoIGEgcmhlbCBndWVzdCB3
-aGljaCBib290cw0KPiB3aXRoIEFDUEkuDQo+IEkgdGhpbmsgd2Ugc2hhbGwgbWFrZSB0aGUgY2hl
-Y2sgc21hcnRlciB0byBhdm9pZCB0aGF0Lg0KPiBtYXliZSBhbHNvIGNoZWNrIGZpcm13YXJlX2xv
-YWRlZCBhbmQgdmlydF9pc19hY3BpX2VuYWJsZWQoKT8NCg0KVGhhbmtzIGZvciBnaXZpbmcgaXQg
-YSBzcGluLiBZZXMsIGp1c3QgY29uZmlybWVkIHRoYXQgdGhlIHdhcm5pbmcgYXBwZWFycy4NClRo
-ZSBhYm92ZSBjaGVjayB3aWxsIHdvcmssIGJ1dCBjYW4gd2UgbWFrZSB1c2Ugb2Ygdm1zLT5hY3Bp
-X2RldiBmb3INCnRoaXMgY2hlY2sgaW5zdGVhZD8gSXQgaXMgZXNzZW50aWFsbHkgdGhlIHNhbWUg
-YW5kIEkgdGhpbmsgdGhhdCB3aWxsIHdvcmsuIA0KDQogICAgaWYgKCF2bXMtPmFjcGlfZGV2ICYm
-IHN0cmNtcCgicGNpZS4wIiwgYnVzLT5xYnVzLm5hbWUpKQ0KDQpQbGVhc2UgbGV0IG1lIGtub3cu
-DQoNClRoYW5rcywNClNoYW1lZXINCg==
+Hi Nicolin,
+
+> -----Original Message-----
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> Sent: Tuesday, July 8, 2025 8:58 AM
+> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+> Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org;
+> eric.auger@redhat.com; peter.maydell@linaro.org; jgg@nvidia.com;
+> ddutile@redhat.com; berrange@redhat.com; imammedo@redhat.com;
+> nathanc@nvidia.com; mochs@nvidia.com; smostafa@google.com;
+> gustavo.romero@linaro.org; mst@redhat.com;
+> marcel.apfelbaum@gmail.com; Linuxarm <linuxarm@huawei.com>;
+> Wangzhou (B) <wangzhou1@hisilicon.com>; jiangkunkun
+> <jiangkunkun@huawei.com>; Jonathan Cameron
+> <jonathan.cameron@huawei.com>; zhangfei.gao@linaro.org
+> Subject: Re: [PATCH v6 00/12] hw/arm/virt: Add support for user creatable
+> SMMUv3 device
+>=20
+> On Thu, Jul 03, 2025 at 09:46:31AM +0100, Shameer Kolothum wrote:
+> > 1. Rebased to target-arm.next and resolved conflicts with the series
+> >    [PATCH-for-10.1 v6 0/9] hw/arm: GIC 'its=3Doff'.
+> > 2. While at it, noticed an issue with RC id mappings creation
+> >    and patch #1 is a fix for that.
+> > 3. Patches 3 and 4 have changes because of the conflict resolution with
+> the
+> >    above series. I have retained the R-by tags, but encourage all to ta=
+ke
+> >    another look in case I missed anything.
+> > 4. Collected R-by and T-by tags. Thanks!.
+>=20
+> Hi Shameer,
+>=20
+> Thank you for the effort and the work here.
+>=20
+> A separate topic: do you have any preparation for the vIOMMU uAPI
+> patches (iommufd backends) in QEMU?
+>=20
+> I think it should be the next step after this series, so I wonder
+> if you have done some worked already to test this series.
+>=20
+> And maybe I can start that review process in parallel, or we will
+> have to wait for the vSMMU code.
+
+Yes, I have something on top of this series that enables the accelerated
+support.  I need do a bit more testing and then will send out that as an
+RFC v3. Hopefully later this week.
+
+Thanks,
+Shameer
+
 
