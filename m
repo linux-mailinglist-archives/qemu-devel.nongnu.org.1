@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9AAAFD8E4
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B403AFD9C1
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:25:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFGS-00087R-Hc; Tue, 08 Jul 2025 16:50:08 -0400
+	id 1uZFGj-0000dX-3B; Tue, 08 Jul 2025 16:50:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uZEDH-0006YV-UU
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:42:48 -0400
+ id 1uZEDJ-0007AW-55
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:42:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uZEDD-0006Ba-NO
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:42:47 -0400
+ id 1uZEDE-0006BT-0v
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:42:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1752003762;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DUT+9c6UpUMQpuNKAashHFAcBVUPIUuEJYboTwJdpZM=;
- b=HZF1Z3An9dsgRMr7KYBz/XnsLSFbxVUi9Om4JAj5tFjSE8z1vt+BAtBq2oxehTh/AtoG31
- cetQ62IEStEbxG5zpaI8rQjzkNIpk+nvMuNqiTJi+MugdAIfgLQQSP6aCrzFDdrarP5Xyi
- NTFm2dwG6jJ2k+sDwKNoGjdqgIOiLy4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=U1+5pFH9ZS4T/6rQ4qakmzxG4wH5SKnJlyZa12uuIic=;
+ b=X896/+MzD4m/5FVhOspXxd7V1Xublgm+2mh7eRSkfy/qsFke1qgsDVGpTg3EP2vW90k50c
+ og1i4EOgDX7TyMOQIOQeRwfGyiQTL0h8W0vy32l1YtldDK/OLI6INXgM6NH6pwYvFnjdVl
+ sV39/ZLT2wtHVBObp5B7zTaH7oXetDw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-Poi8-47XPOe2uRPf97YGCw-1; Tue,
- 08 Jul 2025 10:26:43 -0400
-X-MC-Unique: Poi8-47XPOe2uRPf97YGCw-1
-X-Mimecast-MFC-AGG-ID: Poi8-47XPOe2uRPf97YGCw_1751984802
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-548-34x6vSxxNpKmsZ-iGg2LqQ-1; Tue,
+ 08 Jul 2025 10:26:50 -0400
+X-MC-Unique: 34x6vSxxNpKmsZ-iGg2LqQ-1
+X-Mimecast-MFC-AGG-ID: 34x6vSxxNpKmsZ-iGg2LqQ_1751984807
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DB29D180120B; Tue,  8 Jul 2025 14:26:41 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A85E41955ED5; Tue,  8 Jul 2025 14:26:47 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.187])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3448F30001B1; Tue,  8 Jul 2025 14:26:36 +0000 (UTC)
+ id 71EF530001B1; Tue,  8 Jul 2025 14:26:42 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -53,10 +53,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
 Cc: pbonzini@redhat.com,
 	philmd@linaro.org,
 	alex.bennee@linaro.org
-Subject: [PATCH v6 17/36] qtest/bios-tables-test: Prepare for fixing the
- aarch64 viot test
-Date: Tue,  8 Jul 2025 16:22:59 +0200
-Message-ID: <20250708142437.1344644-18-eric.auger@redhat.com>
+Subject: [PATCH v6 18/36] qtest/bios-tables-test: Add a variant to the aarch64
+ viot test
+Date: Tue,  8 Jul 2025 16:23:00 +0200
+Message-ID: <20250708142437.1344644-19-eric.auger@redhat.com>
 In-Reply-To: <20250708142437.1344644-1-eric.auger@redhat.com>
 References: <20250708142437.1344644-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -87,28 +87,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The test misses a variant and this puts the mess on subsequent
-rebuild-expected-aml.sh where a first DSDT reference blob is
-overriden by another one.
-
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 1 +
- tests/data/acpi/aarch64/virt/DSDT.viot      | 0
- 2 files changed, 1 insertion(+)
- create mode 100644 tests/data/acpi/aarch64/virt/DSDT.viot
+ tests/qtest/bios-tables-test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..7a74beab3d 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,2 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/aarch64/virt/DSDT.viot",
-diff --git a/tests/data/acpi/aarch64/virt/DSDT.viot b/tests/data/acpi/aarch64/virt/DSDT.viot
-new file mode 100644
-index 0000000000..e69de29bb2
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 4dbc07ec5e..357bcefd37 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -2237,6 +2237,7 @@ static void test_acpi_aarch64_virt_viot(void)
+     test_data data = {
+         .machine = "virt",
+         .arch = "aarch64",
++        .variant = ".viot",
+         .tcg_only = true,
+         .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
+         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
 -- 
 2.49.0
 
