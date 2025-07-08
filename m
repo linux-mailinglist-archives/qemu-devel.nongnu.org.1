@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE68AFDA6C
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 00:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82021AFDA16
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:42:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZGPS-0002ww-0t; Tue, 08 Jul 2025 18:03:30 -0400
+	id 1uZG4O-00087j-SE; Tue, 08 Jul 2025 17:41:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZFno-0007H1-Cw
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:24:38 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZEun-0003iM-Ue
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:27:51 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZFnl-000800-6k
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:24:36 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-558f7fda97eso243473e87.2
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 14:24:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZEum-0007xF-8J
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:27:45 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-6097b404f58so7037114a12.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 13:27:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752009871; x=1752614671; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752006462; x=1752611262; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=oZ3NfbDweQ6yEUTpMj7i4CrlixtD66ut2JAVvXWwR5o=;
- b=fE2YKpdYxW/whmu/PDFYM+pTqn4d3Eu/Ufg2yqm5b86pF5L2Pka7U1HP5P6BURlBuv
- X0zS4Ar2ttjDX9a1VcxrGavUb2ABfEigPKuiKZMs8XOK2PWYKnWlUZ9JSP512oWipF/H
- BEHdH7+C+Wr1ybViQaBtyRYPuNHso8S5NwjhdombXZkZnLyl7Kvagx+VL1JhEB1xgWaw
- sYw2S+iSG8OcE9X0aI/Q6UHD6+tBRckFgLyDAStNoDKrYemwcB4SQLRHQeNq2QPK8aCa
- 3O/yJ6RYBB/BxdDBggHPRLFQd7gYGUIV3Qsiooeyv/qQa7EF5CLgzF2jel5CjlkCHMY7
- YGeg==
+ bh=7gD989/IHbOEITDmnVpOY1i9RKKNw/TFq+kVhgQcyPs=;
+ b=x6fWNRsTHVXEWd0JDtQAYiUrDvQW6Dvum/oYr/yU1zMWN23JLt4EwSwkYDJX6obHk+
+ wykKqfXDkkWMRrIevYQqomuRMI8toXp5Phnfs99697BDUYixMZBTVC5Af1p/5RlC2QKe
+ l3KiU1AjxQX0iN9fAu5MvuD70cWIEuv+KrYpWaEYi9e4qUaBWSSHXp4z4UazAQoa/Un7
+ oI+idmklsGMRtyphk1eIwPAVVxDAIyOHiQRsm7XQjJK8djDZ2Zbwh0rhixrWAkVZvytU
+ iuR1NtRTd8CPpGBf9uG8eHKopd26NCnV++vqWBQXqyKqoE2nQIMODiA8CNg70JH0i6/U
+ Ry9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752009871; x=1752614671;
+ d=1e100.net; s=20230601; t=1752006462; x=1752611262;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oZ3NfbDweQ6yEUTpMj7i4CrlixtD66ut2JAVvXWwR5o=;
- b=Nu4PL4XK/NEOGykSjCAXFZzXLh1W3u3u7liAahVe176JCB/SYrRO1R28UL8IO1MaZb
- 2A4+Ir3pKoP7RYfH6uO1PsNHs4DGQspqSRrvmLof2jinekkG8U0s+avk5NUMX0aBg8aD
- Dyu8U7SCeDjbOngtXqC1Z/HQ2T+cK0+lZENaNKgC8oj9pR0avaC+voy1DzxDa9Amf0vh
- cOC3xGyaVYgTTr0WlJ6GOghkPaokpVWBtFnf8P9M+4a1dyry5qIwG/ysI2zbV4Cmx4Ee
- tTuN/+3Py7+e4yKKxtlRaTTUlUJuWHuT5hJQPnwEINjt4EAuTipGYt6jAOo2A2N9QbRD
- 3PkA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXAd7FLBL01Hwifi2X0+5knwkZT4VTbt7cvF+lcSUQKCSu+eO1ETuBtYEn8RtqeUv4dsrf/LTm08ai5@nongnu.org
-X-Gm-Message-State: AOJu0YxHVqEcGpcfTfdw4ABlIUPQrgxLw+Ddy88U8EdPatiqyNzdTR5V
- SnfFAxcxEdOw+wrmEoTpE/+UJpg6Vfh7WdXeLwjryCm9hjInjQwB/zcHpbH0ydQ2tTFL7hBG2J8
- /rCKiqUI=
-X-Gm-Gg: ASbGnctqgpgrZzeLrBnhJkW6QjVXAN2vF7rCs4tbCMv1zJFWuppIBH7KaD33bW8EvFO
- QsP6pWtn4SCunXHTrTMeDQ0GBuBXJIxdu4RuvO+ywHTTcvNB6QPULefogmYdyE9/kX8z1ug7Wrv
- hMCAuPvzJnSoLLWJAOScLXNyTwFPXJOlteSPV2HoeyJTdSD3OakeqaiANP5KwGZId9XR27KxJTl
- 6spWNm1yQeX9NDruU8k0XXf6xdLrFojLQlEBeSmC8qQNUzSmk01olI3tTxktKoEDvCDBSURT22F
- PfbkVkK6K26o5VKS36cBQ1/Dx0aUT1MCy3In1pyilB48JbRlpaYUC240AjU6ISGVTEIcfiKaZUy
- JNEzqwdnUBhFJJi9i9BwHt9EtoW0htg==
-X-Google-Smtp-Source: AGHT+IFVN617IjCz5Ko4jntsVdELqgBtdUJKO7CCtiJsZ3niaxeguWDoU8ObyrjiUyXCv+nPesX5gQ==
-X-Received: by 2002:a05:600c:648a:b0:43d:878c:7c40 with SMTP id
- 5b1f17b1804b1-454b4e769e4mr149037895e9.10.1751958910511; 
- Tue, 08 Jul 2025 00:15:10 -0700 (PDT)
+ bh=7gD989/IHbOEITDmnVpOY1i9RKKNw/TFq+kVhgQcyPs=;
+ b=jm0Z0l8WFBEfCjxeAs9/mZZ4eb2LNxP/P5LjZL0tlAE3c+hUMgQyBN7DDyQxhrYUpe
+ 1BXt4Cdvn6JJOzxSGVJOn2OoPsIZqHyd7tX/2i02PZCN+SdH9ijIZmu4wbRFsbwfKeDQ
+ WX2BdQ7e1yW7wJW7VaYBuiKjo6B3LbkSHm+8DP8dQEIkOQ9Cc4FP9S+yH0cQ1QsnsTgb
+ I8uzI/+1lFxxlj1gt6JjCUlGyfKQkJKcUq2H2MWhgzKEjjiZa5uSzGIw+70e6BZdLz9S
+ eialZQhhxthK/G9mF/RDVnrUNyIizZL7nhkE10dEXKBWxeNtjWTk9lprFho1FBqBY1TA
+ uzRw==
+X-Gm-Message-State: AOJu0YxRnT0pOgdX+S17KVKE/oqEllzPiK03kIsEMzC4wpnNO0QLkVxq
+ 6rEgGXWSnpsoNdTGRit1qYKWPNAyzFJhQEOSPMS9pcaj9RIZ4b7Un/1uPajxiqyi/uSC/kyR7jF
+ tltnVkZk=
+X-Gm-Gg: ASbGncvy8+K5Mt8In14ouZed5yliAYhnDCb9RlI3w41rvuJNtDpxkf02+JbXnrm2mjU
+ Wj9SsvrzErfnpvl9HUjcV1eJxU7s+5cwkFACJ98Tzl/36sraVvQPplcV+rFgVS3+R7PNeNNhbp6
+ nuI4ryE9B2M9NDV27rEeqbrL7m45VK03i/ugZb9e7EC9Bw4UdQlssRUFhe+JcYvZrspTcEssmgR
+ MeG4ELQhUSM1/nhFS9YWA07N2Px7/Gg1Lp7KsKle15cJc/vJUZvofaU05l8NMJgDVSC9JmdxJ52
+ qh3urLRrYFNv5sSgrEB6v0vsE+G3FYCLjlsGHRd36M4+fDa5GpnGqBwEDr7illLOI1ro8X2sVyE
+ 2yEtzhwBX3Eg/WjrHpEOv/Ux4TIm1ZA==
+X-Google-Smtp-Source: AGHT+IEWZpnoQKeFLfTnSEfsXdg67Cdt0sZyuOKGWl1tGNjLw36QOObt8l8PjxR+ae0QDRMyjwgpFQ==
+X-Received: by 2002:a05:600c:6384:b0:43d:46de:b0eb with SMTP id
+ 5b1f17b1804b1-454ccc7fff2mr24082935e9.12.1751959237951; 
+ Tue, 08 Jul 2025 00:20:37 -0700 (PDT)
 Received: from [192.168.69.242] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454cd44ffb9sm13087135e9.14.2025.07.08.00.15.09
+ 5b1f17b1804b1-454cd49398csm13095705e9.22.2025.07.08.00.20.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 00:15:10 -0700 (PDT)
-Message-ID: <7669d561-4491-4074-9e56-8095ff91e489@linaro.org>
-Date: Tue, 8 Jul 2025 09:15:09 +0200
+ Tue, 08 Jul 2025 00:20:37 -0700 (PDT)
+Message-ID: <b1d2f82c-7db6-49dd-8c4b-2f811c8616c6@linaro.org>
+Date: Tue, 8 Jul 2025 09:20:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 3/5] tests/qtest/qom-test: unit test for qom-tree-get
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange"
- <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>
-References: <1747057635-124298-1-git-send-email-steven.sistare@oracle.com>
- <1747057635-124298-4-git-send-email-steven.sistare@oracle.com>
+Subject: Re: [PATCH] bulk: Remove unnecessary 'qemu/typedefs.h' include
+To: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, Stefan Berger <stefanb@linux.vnet.ibm.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Stefan Weil <sw@weilnetz.de>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Alex Williamson <alex.williamson@redhat.com>, Bibo Mao <maobibo@loongson.cn>
+References: <20250707170904.2908-1-philmd@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <1747057635-124298-4-git-send-email-steven.sistare@oracle.com>
+In-Reply-To: <20250707170904.2908-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,14 +104,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/5/25 15:47, Steve Sistare wrote:
-> Add a unit test for qom-tree-get
+On 7/7/25 19:09, Philippe Mathieu-Daudé wrote:
+> "qemu/typedefs.h" is already included by "qemu/osdep.h".
 > 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   tests/qtest/qom-test.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 49 insertions(+)
+>   hw/vfio/vfio-migration-internal.h | 1 -
+>   include/system/os-win32.h         | 1 -
+>   hw/intc/loongarch_extioi_kvm.c    | 1 -
+>   3 files changed, 3 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+> diff --git a/include/system/os-win32.h b/include/system/os-win32.h
+> index 3aa6cee4c23..662cfabc5e7 100644
+> --- a/include/system/os-win32.h
+> +++ b/include/system/os-win32.h
+> @@ -29,7 +29,6 @@
+>   #include <winsock2.h>
+>   #include <windows.h>
+>   #include <ws2tcpip.h>
+> -#include "qemu/typedefs.h"
+This one was introduced in commit f5fd677ae7c ("win32/socket: introduce
+qemu_socket_select() helper") for Error type, but files including this
+header should already include "qemu/osdep.h".
 
