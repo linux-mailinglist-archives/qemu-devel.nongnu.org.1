@@ -2,89 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C19AFDA17
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF63AFD8B5
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:48:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZG4c-000077-9G; Tue, 08 Jul 2025 17:41:58 -0400
+	id 1uZFEK-0005u7-Fm; Tue, 08 Jul 2025 16:47:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uZF39-0007nF-HF
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:36:23 -0400
-Received: from mail-qk1-x72c.google.com ([2607:f8b0:4864:20::72c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uZF34-0001R1-QV
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:36:22 -0400
-Received: by mail-qk1-x72c.google.com with SMTP id
- af79cd13be357-7d7f2600c17so421927085a.0
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 13:36:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1752006975; x=1752611775; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1X4IAeA2O2T066BMmgQNMiWh7XnPFYJbke9bUDYN7EM=;
- b=TpRJRH29OV+bgpbF4m3c0UlDt0ydz81OkApjRuRilG/EhuzAGoJOayFtRLzsJuCRJP
- fCloZLpshB5Jtwsg0q2v1tCjMlpw+XXIZMFFpDKLx2BI6c5ZMkMZVYFebjjRX5vBml//
- QtUZ0rphWmw0L8QI1NtFeLA+HSUqD7HoYILcY/WjOcCZcgkxD2Jwl9DOwj5UoNAATlT7
- aOpDGKBGgrjsNIpQDAGz/RwsoB096eAHdQyNe9x8H21vMKFm7cgnhtXyiJdOL7RdKNlv
- tvDCeJhPVkt2uf7jKUXVKLHPBEfAtl2Y3YcGwdNGt66xV6nzvDPPVGBn3JDi+IpgE8Sn
- 22qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752006975; x=1752611775;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1X4IAeA2O2T066BMmgQNMiWh7XnPFYJbke9bUDYN7EM=;
- b=WiDVydxedQctLmJV33K2u6FWjja6IUBiv1U2OBDLva1dg04LK7uxqOcHFnM6A3xSpX
- BW75vHaQ5zuIQg2Qcw64HEio3mWgZTerQ1b7HJ3Pfgfx7wTH5JZSrgxZ3QysTeRWkqh0
- 4bmXSVt9MfBbBYb5x+A0OX4ueiakl0mljGY4RSgQAc9U2LRuFUsO0ArhVsiegEtifIiT
- ZEm7wR/T+ry3ek1bMr4BpFNyzAno1DSjHa1gCGdS5Y6r2J6mbmlbyYTAgO4llbkEyrvL
- Zf0YEd9FTggHoNmN23BskdbCGz9Px2G86x83yPupocaZdUaPbk67WU8MPvLqOhiVYQZr
- s4+A==
-X-Gm-Message-State: AOJu0YwdlImd8lhtO6vEONhJCn1rzHAEt8EWFdsOkqDzpfR9w+mccaAn
- lvu90vUJahVpxQdlnR3BcskpIfyMu6Gnj6usk6TsYiVJj3/gHTNN8E5DXMpn/0nmP9YVQxhzG1Y
- rb1SL
-X-Gm-Gg: ASbGncsT+/o1ip10/t+f7ReP6qtWvPlKuch+M4vpIWL9WPbXT8pdh2zO28cAJWzduK4
- p+P2MgWKhInm6yLKOMdVdg/rGZQGFIp/O7/a+CmW6ySsd2I33VKjPd+cd5HgRehWYVM/Ln+AOZQ
- g93/4Fuf2sNLslhRBnOoZrSvWSeq65/lvBJqtv+jMQx7wydckreqW7q1vuHKIc17LV1p35rrtYj
- /tmXKt4cWSlBx5D3saGDTRvEFOMFsc3Tr7zcjgdlEuV6jONXR3pL+uXwWQuFyFEEr7Fcpxe9W/O
- untzA2RXACTM3rPvAk+CSlcih3z71o/pdrefZeE0uD3E9svOj3q3fynpAuGdmr6YjxYXKIBiEPh
- 5vQ==
-X-Google-Smtp-Source: AGHT+IE1RAIpgU7PfYmnyNhZFs+JOB2uhU0+u5Bzss/zroThLGY4tIyQjh/pcBTd+I7qj4plzcvEUQ==
-X-Received: by 2002:ae9:ec01:0:b0:7d4:3c5d:3256 with SMTP id
- af79cd13be357-7d9ecdfaea0mr403667685a.53.1751971708033; 
- Tue, 08 Jul 2025 03:48:28 -0700 (PDT)
-Received: from [192.168.68.110] ([189.110.107.157])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7d5dbe8f844sm754423885a.82.2025.07.08.03.48.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 03:48:27 -0700 (PDT)
-Message-ID: <b9e539ee-cf63-4a64-a3f2-03dfe7bc82a5@ventanamicro.com>
-Date: Tue, 8 Jul 2025 07:48:23 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] riscv: add all available CSRs to 'info registers'
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uZDqV-0006rU-Mn
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:19:19 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uZDqK-00082f-9r
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:19:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752002345; x=1783538345;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=mILnGXoVRNPs4vKTinolqf/dUhfgLgEFLZGVK6GzyhU=;
+ b=J0EkaB3FKL8jI7uSunr+nHrk3jY2/gFZvCUWN0ql5Jhox0kRXStJKczM
+ L59lDfP42VyNeP0bK01NwAXWfNPgbOGo0i+Y4s1pXPBPpSomDrCDxU14l
+ 1v8Y2a3DWBk35Bc7AiU09G2CkqwRluF/OZTpJfePYczLqXASXnCMu1njY
+ LoJhmrEhjGDhm5fZgjTX714oHy8qhtEG9BEmxF4cgqT/aPqNyTmfZB8gW
+ skS8M/diNLi0s6VlNm2ixV77bLURr9C9kH8Ok4RSOqQ4jd+ug5VHck3/B
+ uq6P1ODdIKDw+Ct5tlSkjYUf4Y9giU/k1TjzkJ4BUqE89DBVx4Ou1U4ga Q==;
+X-CSE-ConnectionGUID: cjzDWcNpTueHEF95F9uSEA==
+X-CSE-MsgGUID: GXoWT3q3QT2rp7Dw+wsGvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="57973893"
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="57973893"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jul 2025 04:06:12 -0700
+X-CSE-ConnectionGUID: 3wxIJNUwRlmdYYPfYwwlNQ==
+X-CSE-MsgGUID: /OKJCO3bS36HmkCyxqoJEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="192647917"
+Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jul 2025 04:06:08 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com
-References: <20250623172119.997166-1-dbarboza@ventanamicro.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20250623172119.997166-1-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-qk1-x72c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ mst@redhat.com, jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com,
+ jgg@nvidia.com, nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
+ joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
+ kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v3 00/20] intel_iommu: Enable stage-1 translation for
+ passthrough device
+Date: Tue,  8 Jul 2025 07:05:41 -0400
+Message-ID: <20250708110601.633308-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.47.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.14;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,41 +84,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping
+Hi,
 
-It would be nice to have all CSRs for 'info registers' for the next release.
-We have one week before the freeze :D
+For passthrough device with intel_iommu.x-flts=on, we don't do shadowing of
+guest page table for passthrough device but pass stage-1 page table to host
+side to construct a nested domain. There was some effort to enable this feature
+in old days, see [1] for details.
+
+The key design is to utilize the dual-stage IOMMU translation (also known as
+IOMMU nested translation) capability in host IOMMU. As the below diagram shows,
+guest I/O page table pointer in GPA (guest physical address) is passed to host
+and be used to perform the stage-1 address translation. Along with it,
+modifications to present mappings in the guest I/O page table should be followed
+with an IOTLB invalidation.
+
+        .-------------.  .---------------------------.
+        |   vIOMMU    |  | Guest I/O page table      |
+        |             |  '---------------------------'
+        .----------------/
+        | PASID Entry |--- PASID cache flush --+
+        '-------------'                        |
+        |             |                        V
+        |             |           I/O page table pointer in GPA
+        '-------------'
+    Guest
+    ------| Shadow |---------------------------|--------
+          v        v                           v
+    Host
+        .-------------.  .------------------------.
+        |   pIOMMU    |  | Stage1 for GIOVA->GPA  |
+        |             |  '------------------------'
+        .----------------/  |
+        | PASID Entry |     V (Nested xlate)
+        '----------------\.--------------------------------------.
+        |             |   | Stage2 for GPA->HPA, unmanaged domain|
+        |             |   '--------------------------------------'
+        '-------------'
+For history reason, there are different namings in different VTD spec rev,
+Where:
+ - Stage1 = First stage = First level = flts
+ - Stage2 = Second stage = Second level = slts
+<Intel VT-d Nested translation>
+
+This series reuse VFIO device's default hwpt as nested parent instead of
+creating new one. This way avoids duplicate code of a new memory listener,
+all existing feature from VFIO listener can be shared, e.g., ram discard,
+dirty tracking, etc. Two limitations are: 1) not supporting VFIO device
+under a PCI bridge with emulated device, because emulated device wants
+IOMMU AS and VFIO device stick to system AS; 2) not supporting kexec or
+reboot from "intel_iommu=on,sm_on" to "intel_iommu=on,sm_off", because
+VFIO device's default hwpt is created with NEST_PARENT flag, kernel
+inhibit RO mappings when switch to shadow mode.
+
+This series is also a prerequisite work for vSVA, i.e. Sharing guest
+application address space with passthrough devices.
+
+There are some interactions between VFIO and vIOMMU
+* vIOMMU registers PCIIOMMUOps [set|unset]_iommu_device to PCI
+  subsystem. VFIO calls them to register/unregister HostIOMMUDevice
+  instance to vIOMMU at vfio device realize stage.
+* vIOMMU registers PCIIOMMUOps get_viommu_cap to PCI subsystem.
+  VFIO calls it to get vIOMMU exposed capabilities.
+* vIOMMU calls HostIOMMUDeviceIOMMUFD interface [at|de]tach_hwpt
+  to bind/unbind device to IOMMUFD backed domains, either nested
+  domain or not.
+
+See below diagram:
+
+        VFIO Device                                 Intel IOMMU
+    .-----------------.                         .-------------------.
+    |                 |                         |                   |
+    |       .---------|PCIIOMMUOps              |.-------------.    |
+    |       | IOMMUFD |(set/unset_iommu_device) || Host IOMMU  |    |
+    |       | Device  |------------------------>|| Device list |    |
+    |       .---------|(get_viommu_cap)         |.-------------.    |
+    |                 |                         |       |           |
+    |                 |                         |       V           |
+    |       .---------|  HostIOMMUDeviceIOMMUFD |  .-------------.  |
+    |       | IOMMUFD |            (attach_hwpt)|  | Host IOMMU  |  |
+    |       | link    |<------------------------|  |   Device    |  |
+    |       .---------|            (detach_hwpt)|  .-------------.  |
+    |                 |                         |       |           |
+    |                 |                         |       ...         |
+    .-----------------.                         .-------------------.
+
+Below is an exmaple to enable stage-1 translation for passthrough device:
+
+    -M q35,...
+    -device intel-iommu,x-scalable-mode=on,x-flts=on...
+    -object iommufd,id=iommufd0 -device vfio-pci,iommufd=iommufd0,...
+
+Test done:
+- VFIO devices hotplug/unplug
+- different VFIO devices linked to different iommufds
+- vhost net device ping test
+
+PATCH1-6:  Some preparing work
+PATCH7-8:  Compatibility check between vIOMMU and Host IOMMU
+PATCH9-17: Implement stage-1 page table for passthrough device
+PATCH18-19:Workaround for ERRATA_772415_SPR17
+PATCH20:   Enable stage-1 translation for passthrough device
+
+Qemu code can be found at [2]
+
+Fault report isn't supported in this series, we presume guest kernel always
+construct correct stage1 page table for passthrough device. For emulated
+devices, the emulation code already provided stage1 fault injection.
+
+TODO:
+- Fault report to guest when HW stage1 faults
+
+[1] https://patchwork.kernel.org/project/kvm/cover/20210302203827.437645-1-yi.l.liu@intel.com/
+[2] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting.v3
+
+Thanks
+Zhenzhong
+
+Changelog:
+v3:
+- define enum type for VIOMMU_CAP_* (Eric)
+- drop inline flag in the patch which uses the helper (Eric)
+- use extract64 in new introduced MACRO (Eric)
+- polish comments and fix typo error (Eric)
+- split workaround patch for ERRATA_772415_SPR17 to two patches (Eric)
+- optimize bind/unbind error path processing
+
+v2:
+- introduce get_viommu_cap() to get STAGE1 flag to create nested parent hwpt (Liuyi)
+- reuse VFIO's default hwpt as parent hwpt of nested translation (Nicolin, Liuyi)
+- abandon support of VFIO device under pcie-to-pci bridge to simplify design (Liuyi)
+- bypass RO mapping in VFIO's default hwpt if ERRATA_772415_SPR17 (Liuyi)
+- drop vtd_dev_to_context_entry optimization (Liuyi)
+
+v1:
+- simplify vendor specific checking in vtd_check_hiod (Cedric, Nicolin)
+- rebase to master
+
+rfcv3:
+- s/hwpt_id/id in iommufd_backend_invalidate_cache()'s parameter (Shameer)
+- hide vtd vendor specific caps in a wrapper union (Eric, Nicolin)
+- simplify return value check of get_cap() (Eric)
+- drop realize_late (Cedric, Eric)
+- split patch13:intel_iommu: Add PASID cache management infrastructure (Eric)
+- s/vtd_pasid_cache_reset/vtd_pasid_cache_reset_locked (Eric)
+- s/vtd_pe_get_domain_id/vtd_pe_get_did (Eric)
+- refine comments (Eric, Donald)
+
+rfcv2:
+- Drop VTDPASIDAddressSpace and use VTDAddressSpace (Eric, Liuyi)
+- Move HWPT uAPI patches ahead(patch1-8) so arm nesting could easily rebase
+- add two cleanup patches(patch9-10)
+- VFIO passes iommufd/devid/hwpt_id to vIOMMU instead of iommufd/devid/ioas_id
+- add vtd_as_[from|to]_iommu_pasid() helper to translate between vtd_as and
+  iommu pasid, this is important for dropping VTDPASIDAddressSpace
 
 
-Thanks,
+Yi Liu (3):
+  intel_iommu: Replay pasid bindings after context cache invalidation
+  intel_iommu: Propagate PASID-based iotlb invalidation to host
+  intel_iommu: Replay all pasid bindings when either SRTP or TE bit is
+    changed
 
-Daniel
+Zhenzhong Duan (17):
+  intel_iommu: Rename vtd_ce_get_rid2pasid_entry to
+    vtd_ce_get_pasid_entry
+  hw/pci: Introduce pci_device_get_viommu_cap()
+  intel_iommu: Implement get_viommu_cap() callback
+  vfio/iommufd: Force creating nested parent domain
+  hw/pci: Export pci_device_get_iommu_bus_devfn() and return bool
+  intel_iommu: Introduce a new structure VTDHostIOMMUDevice
+  intel_iommu: Check for compatibility with IOMMUFD backed device when
+    x-flts=on
+  intel_iommu: Fail passthrough device under PCI bridge if x-flts=on
+  intel_iommu: Introduce two helpers vtd_as_from/to_iommu_pasid_locked
+  intel_iommu: Handle PASID entry removing and updating
+  intel_iommu: Handle PASID entry adding
+  intel_iommu: Introduce a new pasid cache invalidation type FORCE_RESET
+  intel_iommu: Stick to system MR for IOMMUFD backed host device when
+    x-fls=on
+  intel_iommu: Bind/unbind guest page table to host
+  vfio: Add a new element bypass_ro in VFIOContainerBase
+  Workaround for ERRATA_772415_SPR17
+  intel_iommu: Enable host device when x-flts=on in scalable mode
 
-On 6/23/25 2:21 PM, Daniel Henrique Barboza wrote:
-> Hi,
-> 
-> The output of HMP 'info registers', implemented by the cpu_dump_state
-> callback, returns way less CSRs than what we have available in the
-> default rv64 CPU with default options.
-> 
-> This series changes the callback to add all available non-vector CSRs
-> when issuing 'info registers'. The vector CSRs are being handled by
-> another patch [1].
-> 
-> Patches based on alistair/riscv-to-apply.next.
-> 
-> [1] https://lore.kernel.org/qemu-riscv/20250623145306.991562-1-dbarboza@ventanamicro.com/
-> 
-> 
-> Daniel Henrique Barboza (3):
->    target/riscv/cpu: add riscv_dump_csr() helper
->    target/riscv/cpu: print all FPU CSRs in riscv_cpu_dump_state()
->    target/riscv: print all available CSRs in riscv_cpu_dump_state()
-> 
->   target/riscv/cpu.c | 107 +++++++++++++++++----------------------------
->   target/riscv/cpu.h |   2 +
->   target/riscv/csr.c |  18 ++++++++
->   3 files changed, 61 insertions(+), 66 deletions(-)
-> 
+ MAINTAINERS                           |   1 +
+ hw/i386/intel_iommu.c                 | 933 +++++++++++++++++++++++++-
+ hw/i386/intel_iommu_internal.h        |  68 +-
+ hw/i386/trace-events                  |   8 +
+ hw/pci/pci.c                          |  23 +-
+ hw/vfio/iommufd.c                     |  22 +-
+ hw/vfio/listener.c                    |  13 +-
+ include/hw/i386/intel_iommu.h         |   9 +-
+ include/hw/iommu.h                    |  16 +
+ include/hw/pci/pci.h                  |  25 +
+ include/hw/vfio/vfio-container-base.h |   1 +
+ 11 files changed, 1077 insertions(+), 42 deletions(-)
+ create mode 100644 include/hw/iommu.h
+
+-- 
+2.47.1
 
 
