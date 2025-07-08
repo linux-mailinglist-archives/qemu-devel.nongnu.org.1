@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080DCAFD7AA
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 21:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EE5AFD7D8
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:05:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZEOB-0008PE-B0; Tue, 08 Jul 2025 15:54:04 -0400
-Received: from eggs.gnu.org ([209.51.188.92])
+	id 1uZEZ5-0003QR-2T; Tue, 08 Jul 2025 16:05:20 -0400
+Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uZBQ3-00010S-5S
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:44:06 -0400
+ id 1uZCPY-0002Mb-O7
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 13:47:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uZBPp-0005zQ-72
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:43:44 -0400
+ id 1uZCOb-0004aT-SG
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 13:47:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751992887;
+ s=mimecast20190719; t=1751996766;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QxwfYEvRpYO+ysfGn4l7Ic5LE5Wsaju89hTYULgExAg=;
- b=b50xpQ2lF05PCw8pcRxccnwIjHIQl3Kf/9gT0+lJw4XL+LZp3XKX7q+NRV6QPiLWi36+eX
- CiJ3JDtZDbRmisJJg40gWqmOzfrkjhi5amFrtbxOPAvDuarNVYc+pjq3Jn9kdDm5z9Agli
- ssn1bw6Xbca/3RUh+6atUc9DtB9Nz5s=
+ bh=7z4t23L2CEjvRbW4POxEjlHbPc7Y86a0BBQtX1AsNc0=;
+ b=SQHudvk78TgIUqllSYsPgzjyBQh9bqLAvOropzrWAAeUcWK04qeDK/xa9jXZRG7Mxw02ef
+ 9ywmgw2HQLxpMvRU+cdUqyO5n0H5gqIEPJyzrpFIhjHQs10A9tLW8rOzkGfTJihG8IpMIM
+ VxW4vOWMLP3TMdJbwotFQpiI5y0AbzY=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-IrR8yYlJPQ-QlBvGFkhJOg-1; Tue,
- 08 Jul 2025 10:28:11 -0400
-X-MC-Unique: IrR8yYlJPQ-QlBvGFkhJOg-1
-X-Mimecast-MFC-AGG-ID: IrR8yYlJPQ-QlBvGFkhJOg_1751984887
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-0GWrLl4hNM2sABSYqBbU6Q-1; Tue,
+ 08 Jul 2025 10:28:39 -0400
+X-MC-Unique: 0GWrLl4hNM2sABSYqBbU6Q-1
+X-Mimecast-MFC-AGG-ID: 0GWrLl4hNM2sABSYqBbU6Q_1751984917
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5618B180136B; Tue,  8 Jul 2025 14:28:07 +0000 (UTC)
+ id C1A6A191FFAA; Tue,  8 Jul 2025 14:28:26 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.187])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EDF3830001B9; Tue,  8 Jul 2025 14:28:01 +0000 (UTC)
+ id 9617A30001B9; Tue,  8 Jul 2025 14:28:20 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -53,10 +53,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
 Cc: pbonzini@redhat.com,
 	philmd@linaro.org,
 	alex.bennee@linaro.org
-Subject: [PATCH v6 31/36] hw/arm/virt: Minor code reshuffling in
- create_acpi_ged
-Date: Tue,  8 Jul 2025 16:23:13 +0200
-Message-ID: <20250708142437.1344644-32-eric.auger@redhat.com>
+Subject: [PATCH v6 34/36] tests/qtest/bios-tables-test: Add aarch64 ACPI PCI
+ hotplug test
+Date: Tue,  8 Jul 2025 16:23:16 +0200
+Message-ID: <20250708142437.1344644-35-eric.auger@redhat.com>
 In-Reply-To: <20250708142437.1344644-1-eric.auger@redhat.com>
 References: <20250708142437.1344644-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -87,61 +87,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use a local SysBusDevice handle. Also use the newly introduced
-sysbus_mmio_map_name which brings better readability about the region
-being mapped. GED device has regions which exist depending on some
-external properties and it becomes difficult to guess the index of
-a region. Better refer to a region by its name.
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
+Add 2 new tests:
+- test_acpi_aarch64_virt_acpi_pci_hotplug tests the acpi pci hotplug
+  using -global acpi-ged.acpi-pci-hotplug-with-bridge-support=on
+- test_acpi_aarch64_virt_pcie_root_port_hpoff tests static-acpi index
+  on a root port with disabled hotplug
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
----
- include/hw/acpi/generic_event_device.h |  1 +
- hw/arm/virt.c                          | 11 +++++++----
- 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
-index d56adaa626..2c5b055327 100644
---- a/include/hw/acpi/generic_event_device.h
-+++ b/include/hw/acpi/generic_event_device.h
-@@ -111,6 +111,7 @@ typedef struct GEDState {
- } GEDState;
+---
+v3 -> v4:
+- add -device pci-testdev for the first test case
+- fix the chassis
+- add a test for static acpi-index
+---
+ tests/qtest/bios-tables-test.c | 52 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
+
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 357bcefd37..1074b8d67a 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -1643,6 +1643,54 @@ static void test_acpi_aarch64_virt_tcg_memhp(void)
  
- #define ACPI_PCIHP_REGION_NAME "pcihp container"
-+#define ACPI_MEMHP_REGION_NAME "memhp container"
- 
- struct AcpiGedState {
-     SysBusDevice parent_obj;
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 34a3831530..7b247ad30c 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -683,6 +683,7 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
- {
-     DeviceState *dev;
-     MachineState *ms = MACHINE(vms);
-+    SysBusDevice *sbdev;
-     int irq = vms->irqmap[VIRT_ACPI_GED];
-     uint32_t event = ACPI_GED_PWR_DOWN_EVT;
- 
-@@ -697,11 +698,13 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
-     dev = qdev_new(TYPE_ACPI_GED);
-     qdev_prop_set_uint32(dev, "ged-event", event);
-     object_property_set_link(OBJECT(dev), "bus", OBJECT(vms->bus), &error_abort);
--    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+    sbdev = SYS_BUS_DEVICE(dev);
-+    sysbus_realize_and_unref(sbdev, &error_fatal);
- 
--    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, vms->memmap[VIRT_ACPI_GED].base);
--    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, vms->memmap[VIRT_PCDIMM_ACPI].base);
--    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(vms->gic, irq));
-+    sysbus_mmio_map_name(sbdev, TYPE_ACPI_GED, vms->memmap[VIRT_ACPI_GED].base);
-+    sysbus_mmio_map_name(sbdev, ACPI_MEMHP_REGION_NAME,
-+                         vms->memmap[VIRT_PCDIMM_ACPI].base);
-+    sysbus_connect_irq(sbdev, 0, qdev_get_gpio_in(vms->gic, irq));
- 
-     return dev;
  }
+ 
++static void test_acpi_aarch64_virt_acpi_pci_hotplug(void)
++{
++    test_data data = {
++        .machine = "virt",
++        .arch = "aarch64",
++        .tcg_only = true,
++        .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
++        .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
++        .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
++        .ram_start = 0x40000000ULL,
++        .scan_len = 256ULL * MiB,
++        .variant = ".acpipcihp",
++    };
++
++   /* Use ACPI PCI Hotplug */
++   test_acpi_one(" -global acpi-ged.acpi-pci-hotplug-with-bridge-support=on"
++                 " -cpu cortex-a57"
++                 " -device pcie-root-port,id=pcie.1,bus=pcie.0,chassis=0,slot=1,addr=7.0"
++                 " -device pci-testdev,bus=pcie.1",
++                 &data);
++
++    free_test_data(&data);
++}
++
++static void test_acpi_aarch64_virt_pcie_root_port_hpoff(void)
++{
++    test_data data = {
++        .machine = "virt",
++        .arch = "aarch64",
++        .tcg_only = true,
++        .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
++        .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
++        .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
++        .ram_start = 0x40000000ULL,
++        .scan_len = 256ULL * MiB,
++        .variant = ".hpoffacpiindex",
++    };
++
++   /* turn hotplug off on the pcie-root-port and use static acpi-index*/
++   test_acpi_one(" -device pcie-root-port,id=pcie.1,chassis=0,"
++                                          "slot=1,hotplug=off,addr=7.0"
++                 " -device pci-testdev,bus=pcie.1,acpi-index=12"
++                 " -cpu cortex-a57",
++                 &data);
++
++    free_test_data(&data);
++}
++
+ static void test_acpi_microvm_prepare(test_data *data)
+ {
+     data->machine = "microvm";
+@@ -2602,6 +2650,10 @@ int main(int argc, char *argv[])
+             qtest_add_func("acpi/virt/numamem",
+                            test_acpi_aarch64_virt_tcg_numamem);
+             qtest_add_func("acpi/virt/memhp", test_acpi_aarch64_virt_tcg_memhp);
++            qtest_add_func("acpi/virt/acpipcihp",
++                           test_acpi_aarch64_virt_acpi_pci_hotplug);
++            qtest_add_func("acpi/virt/hpoffacpiindex",
++                          test_acpi_aarch64_virt_pcie_root_port_hpoff);
+             qtest_add_func("acpi/virt/pxb", test_acpi_aarch64_virt_tcg_pxb);
+             qtest_add_func("acpi/virt/oem-fields",
+                            test_acpi_aarch64_virt_oem_fields);
 -- 
 2.49.0
 
