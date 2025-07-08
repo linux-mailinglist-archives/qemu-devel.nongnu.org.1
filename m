@@ -2,113 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6568AFD7D4
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:04:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B839AFD7C1
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 21:59:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZEYM-0007Ov-HC; Tue, 08 Jul 2025 16:04:35 -0400
+	id 1uZESm-0001RT-IT; Tue, 08 Jul 2025 15:58:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1uZCPi-0002Q8-Cp; Tue, 08 Jul 2025 13:47:56 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uZCNv-0007Zf-Kg
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 13:45:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1uZCOl-0004mF-30; Tue, 08 Jul 2025 13:47:24 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5684dQOT020492;
- Tue, 8 Jul 2025 13:13:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=TkWf+v
- zxOQn5QWJLz4uv76bqB1vH7U3b7npFUQzwkWw=; b=kAzqNVQdftskyFTMCkDEY7
- ERTeVyJjCwu2F9/V9FT0Y2W0VQHrCtX3EejnM0IpFQzdfIzG5r/9NvB4x2nteAwb
- ZWwDh1gA0R0hP5qO7Gg1+tVltr55ImnBtcYBqVJ2XfG4tdPpwXxa9aajxnkI6vPC
- sqUxHAWQw+VaddkeKaP9Al4aYWUQfMMdk3bmo+nL/x3xFtcl1kGUUb54zBpaoT2a
- owrDim0CB6r5ln+jG1rJgUZPC/Rr/K6tyzFzuitAPfWAO6Gr1y+sR7G8uv6v2xS4
- 3dAWUotJj4mDQepNyi3WB1SzoGKcDaOGOp7XbAHYk8H7HXCf8hPEwmuyxZ10V+rA
- ==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47puss01e5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Jul 2025 13:13:25 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5689mpRu021522;
- Tue, 8 Jul 2025 13:13:24 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 47qectk7sm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Jul 2025 13:13:24 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 568DDNEQ26739008
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 8 Jul 2025 13:13:23 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F401C58055;
- Tue,  8 Jul 2025 13:13:22 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 351FE5804B;
- Tue,  8 Jul 2025 13:13:22 +0000 (GMT)
-Received: from [9.61.75.155] (unknown [9.61.75.155])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Tue,  8 Jul 2025 13:13:22 +0000 (GMT)
-Message-ID: <6d0f221a-f5d7-4f2e-b3e8-1cb302681caf@linux.ibm.com>
-Date: Tue, 8 Jul 2025 09:13:21 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uZBMb-0005DR-AG
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:41:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751992738;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qLaMDFzZjY+u32IAfNjad79BEhlHi5t75wvKla/0++E=;
+ b=chpwy6dNx9NAPsxDueho/aQ3rvyROsfSr5qkHOv1ugIK54gzy0xktg5RvLcqBxJONPu9gA
+ lr2wkPdBibfC4KZqSJ/BbHFzPHSDlBAaX7CM3gRjxmNu2txljf98xgxJAtd3sKYcxTRV3h
+ HfL1XvN9T7n/4OfnqBiYIh8HWvPuiho=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-467-P3GD4M_RMu2DyGOhBgGm0g-1; Tue,
+ 08 Jul 2025 10:25:36 -0400
+X-MC-Unique: P3GD4M_RMu2DyGOhBgGm0g-1
+X-Mimecast-MFC-AGG-ID: P3GD4M_RMu2DyGOhBgGm0g_1751984734
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A97201801216; Tue,  8 Jul 2025 14:25:34 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.44.32.187])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 1FAA730001B1; Tue,  8 Jul 2025 14:25:27 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
+ Jonathan.Cameron@huawei.com, gustavo.romero@linaro.org,
+ anisinha@redhat.com, mst@redhat.com, shannon.zhaosl@gmail.com
+Cc: pbonzini@redhat.com,
+	philmd@linaro.org,
+	alex.bennee@linaro.org
+Subject: [PATCH v6 07/36] hw/pci-host/gpex-acpi: Use GED acpi pcihp property
+Date: Tue,  8 Jul 2025 16:22:49 +0200
+Message-ID: <20250708142437.1344644-8-eric.auger@redhat.com>
+In-Reply-To: <20250708142437.1344644-1-eric.auger@redhat.com>
+References: <20250708142437.1344644-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] pc-bios/s390-ccw: Allow to select a different
- pxelinux.cfg entry via loadparm
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Zhuoying Cai <zycai@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Eric Farman <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20250708125630.58676-1-thuth@redhat.com>
- <20250708125630.58676-2-thuth@redhat.com>
-Content-Language: en-US
-From: Jared Rossi <jrossi@linux.ibm.com>
-In-Reply-To: <20250708125630.58676-2-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Vaj3PEp9 c=1 sm=1 tr=0 ts=686d1975 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=20KFwNOVAAAA:8 a=9Y155P_POryI0N1-XLAA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: oaGaDRHGVkrYv7Oabre26c2fkPH1i1Xq
-X-Proofpoint-ORIG-GUID: oaGaDRHGVkrYv7Oabre26c2fkPH1i1Xq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA4MDEwNiBTYWx0ZWRfX0MMy3v+e7eVP
- a/ISOoWe7/OMxKeXBhoHFGaVizRQ7mxagK79695Rs7u7bwravPWpebKwXCXakB/26EYE9EXajFt
- vLPcvQ90sRHQ1vqhuIszDefA09EpRVHbq9cXhJUUJWphDhBla8D+mkGWCPANVyGHNX7k6qvMZHZ
- 9I9GS6Cyh6Y2MoWQ83BHAfL9NJAo8k3WhbEO+0yrMhC5LF55SiO3xQ7lod/+VLt1mPTZ/PT6nfO
- 9jNEl00L1vvDaRAl71cANjU51yJqNJGtDW08C3YlDjMLQnIEQzrZCA1cDu8xoaAnaBlmmw2VYlT
- 3zNI+wKNnoOc+bzvSOpzVu/mDl3f4elbG4rqY1VepmKG6VjokcncDKJG3/sWtXYJkvyqnfL6Z9O
- Nb03OB294b5sK5JE6fVjXtqrowK1S+IqObwkJXJrwd9PyDouDSnTmTDIG6k3KCMpvPM9MEZB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-08_03,2025-07-07_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- mlxlogscore=999 suspectscore=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 impostorscore=0 malwarescore=0 bulkscore=0 mlxscore=0
- spamscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507080106
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=jrossi@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
-X-Spam_action: no action
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,82 +77,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Retrieve the acpi pcihp property value from the ged. In case this latter
+is not set, PCI native hotplug is used on pci0. For expander bridges we
+keep pci native hotplug, as done on x86 q35.
 
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
-On 7/8/25 8:56 AM, Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
->
-> Since we're linking the network booting code into the main firmware
-> binary nowadays, we can support the "loadparm" parameter now quite
-> easily for pxelinux.cfg config files that contain multiple entries.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   pc-bios/s390-ccw/netmain.c | 33 +++++++++++++++++++++++++--------
->   1 file changed, 25 insertions(+), 8 deletions(-)
->
-> diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
-> index 719a547ada0..024b4419ef6 100644
-> --- a/pc-bios/s390-ccw/netmain.c
-> +++ b/pc-bios/s390-ccw/netmain.c
-> @@ -332,6 +332,28 @@ static int load_kernel_with_initrd(filename_ip_t *fn_ip,
->       return rc;
->   }
->   
-> +static int net_select_and_load_kernel(filename_ip_t *fn_ip,
-> +                                      int num_ent, int selected,
-> +                                      struct pl_cfg_entry *entries)
-> +{
-> +    unsigned int loadparm = get_loadparm_index();
-> +
-> +    if (num_ent <= 0) {
-> +        return -1;
-> +    }
-> +
-> +    if (loadparm > num_ent) {
-> +        printf("Error: loadparm is set to entry #%d, but there are only "
-> +               "%d entries in the pxelinux.cfg file!\n"
-> +               "Using default entry now instead.\n",
-> +               loadparm, num_ent);
-Commit 64fa0de established that the IPL should abort on any loadparm 
-misconfiguration, therefore I think this should result in a fatal error 
-rather than using the default.
+---
+v4 -> v5:
+- check vms->acpi_dev
 
-> +    } else if (loadparm > 0) {
-> +        selected = loadparm - 1;
-> +    }
-> +
-> +    return load_kernel_with_initrd(fn_ip, &entries[selected]);
-> +}
-> +
->   #define MAX_PXELINUX_ENTRIES 16
->   
->   static int net_try_pxelinux_cfg(filename_ip_t *fn_ip)
-> @@ -343,11 +365,8 @@ static int net_try_pxelinux_cfg(filename_ip_t *fn_ip)
->                                         DEFAULT_TFTP_RETRIES,
->                                         cfgbuf, sizeof(cfgbuf),
->                                         entries, MAX_PXELINUX_ENTRIES, &def_ent);
-> -    if (num_ent > 0) {
-> -        return load_kernel_with_initrd(fn_ip, &entries[def_ent]);
-> -    }
->   
-> -    return -1;
-> +    return net_select_and_load_kernel(fn_ip, num_ent, def_ent, entries);
->   }
->   
->   /**
-> @@ -433,10 +452,8 @@ static int net_try_direct_tftp_load(filename_ip_t *fn_ip)
->   
->               num_ent = pxelinux_parse_cfg(cfgbuf, sizeof(cfgbuf), entries,
->                                            MAX_PXELINUX_ENTRIES, &def_ent);
-> -            if (num_ent <= 0) {
-> -                return -1;
-> -            }
-> -            return load_kernel_with_initrd(fn_ip, &entries[def_ent]);
-> +            return net_select_and_load_kernel(fn_ip, num_ent, def_ent,
-> +                                              entries);
->           }
->       }
->   
+v3 -> v4:
+- Use object_property_get_bool (Igor)
+- rework the commit description (Igor)
+
+v2 -> v3:
+- don'use the virt arm machine option anymore.
+---
+ include/hw/pci-host/gpex.h | 1 +
+ hw/arm/virt-acpi-build.c   | 9 +++++++++
+ hw/pci-host/gpex-acpi.c    | 3 ++-
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
+index 84471533af..feaf827474 100644
+--- a/include/hw/pci-host/gpex.h
++++ b/include/hw/pci-host/gpex.h
+@@ -45,6 +45,7 @@ struct GPEXConfig {
+     MemMapEntry pio;
+     int         irq;
+     PCIBus      *bus;
++    bool        pci_native_hotplug;
+ };
+ 
+ typedef struct GPEXIrq GPEXIrq;
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index cd90c47976..a2f31be9ec 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -123,12 +123,21 @@ static void acpi_dsdt_add_pci(Aml *scope, const MemMapEntry *memmap,
+                               uint32_t irq, VirtMachineState *vms)
+ {
+     int ecam_id = VIRT_ECAM_ID(vms->highmem_ecam);
++    bool acpi_pcihp = false;
++
++    if (vms->acpi_dev) {
++        acpi_pcihp = object_property_get_bool(OBJECT(vms->acpi_dev),
++                                              ACPI_PM_PROP_ACPI_PCIHP_BRIDGE,
++                                              NULL);
++    }
++
+     struct GPEXConfig cfg = {
+         .mmio32 = memmap[VIRT_PCIE_MMIO],
+         .pio    = memmap[VIRT_PCIE_PIO],
+         .ecam   = memmap[ecam_id],
+         .irq    = irq,
+         .bus    = vms->bus,
++        .pci_native_hotplug = !acpi_pcihp,
+     };
+ 
+     if (vms->highmem_mmio) {
+diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
+index 80fc2bf032..44737a8d81 100644
+--- a/hw/pci-host/gpex-acpi.c
++++ b/hw/pci-host/gpex-acpi.c
+@@ -203,6 +203,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+             if (is_cxl) {
+                 build_cxl_osc_method(dev);
+             } else {
++                /* pxb bridges do not have ACPI PCI Hot-plug enabled */
+                 acpi_dsdt_add_host_bridge_methods(dev, true);
+             }
+ 
+@@ -278,7 +279,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+     }
+     aml_append(dev, aml_name_decl("_CRS", rbuf));
+ 
+-    acpi_dsdt_add_host_bridge_methods(dev, true);
++    acpi_dsdt_add_host_bridge_methods(dev, cfg->pci_native_hotplug);
+ 
+     Aml *dev_res0 = aml_device("%s", "RES0");
+     aml_append(dev_res0, aml_name_decl("_HID", aml_string("PNP0C02")));
+-- 
+2.49.0
 
 
