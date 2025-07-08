@@ -2,147 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC6DAFD7F7
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D29CAFD964
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:14:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZEfX-0001j6-SL; Tue, 08 Jul 2025 16:12:09 -0400
+	id 1uZFK6-0002TW-7J; Tue, 08 Jul 2025 16:53:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1uZDYE-0006O6-VR; Tue, 08 Jul 2025 15:00:35 -0400
-Received: from mail-dm6nam10on20614.outbound.protection.outlook.com
- ([2a01:111:f403:2413::614]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZEHM-0007yr-SX
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:47:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1uZDXq-0002L2-VA; Tue, 08 Jul 2025 15:00:13 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mv3jABKNBscmzidfu4FEeWcsukGNI44QciQP2tFiN4FM2fvhAbutdyC8zrY8O8rUabTS6u1QlEd/EZZNyutbYxFUWwDeltxG6AMkL80NV7owrsyhu1PgsTJe9f+wE7zeTil9XNrMcQyZ/to/tSJ+zeZO1SdveaR0CoBYtA/aX26AWAQSvnQ5t7djmjNkBY7mhoe50JwsDMbqVBzBSq+ZsNxfeceoaK34pIIZNAdF47LTTlwXibbruDXorgWwpjoEY5qwmJfRTsIoOzimQpDxGANId0aWttq5aIBgPmEvUIb1KQ15Dyjsez6ulJpZ6CVbkvNu77YqNArNUHJuJwX0UQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GVKn1ohe/NAQiif3A2aqvirPGBrtwDFBoVIUSiBuPQE=;
- b=dP5G0Z6oRrCrBPxvoRAR5PThAaJZqcZoOhQD/NirRia7W99P/XxhDmcwxjGWjKyH+xgM2MUNXq1fQBqmcgmYrB9l+rQS3no2bw+mQItbMJCj2ZBp6C7jy5UfkK2zdvIZb7Bq8/eQp9PwKEK3PTpdmeOV8e8klv9eM7uQYcCdiBgMxR1W6e/62FJuNJb1PgH5rIRPndfiEnd+JukekPm9vJsWCGhXVauNQEAnLZqVW3m2h9OU79b1vAGdAWIryT5FPhKjoVV12Rm69z09U/9C+MD5iDXxhikUgotyApvh5RO6H3LnZqWCRxzu8e3HgbmE/YeDnygdiyTN4JAVcDhMUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GVKn1ohe/NAQiif3A2aqvirPGBrtwDFBoVIUSiBuPQE=;
- b=FRAhg69YnqU+1i6P13LKLRenI3wtIXQsZRodHBNcvueJ4uhxRQz3ToDVllm40V99BcT4V3xAvLjG0KAfFeEVAR73javZPuOuk0w2TTGdWcbVSWLNrbm6A3hskaOlESljs30JjMsUHoNpVhozgsLzs1VTOKY/KmdPZWVanFknDgDnU/0xv+qZf857mHFS7yfgQVPclpZtiNHQmAyP9eU+UuCYxOacUbnaQMERpo5BVmQ/rrZGVW9ZWL+wVnryl5ozWjZ3mwli7lkmXL8+wojFZ8p8trXPRHgVxiFr7gxuTSqkcDDokgIvsRAnGnDEnwRZQvP2+UL5K/dgt1B5+rGm9Q==
-Received: from DM6PR12CA0010.namprd12.prod.outlook.com (2603:10b6:5:1c0::23)
- by LV8PR12MB9134.namprd12.prod.outlook.com (2603:10b6:408:180::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Tue, 8 Jul
- 2025 07:58:07 +0000
-Received: from DS1PEPF00017095.namprd03.prod.outlook.com
- (2603:10b6:5:1c0:cafe::26) by DM6PR12CA0010.outlook.office365.com
- (2603:10b6:5:1c0::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8901.27 via Frontend Transport; Tue,
- 8 Jul 2025 07:58:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- DS1PEPF00017095.mail.protection.outlook.com (10.167.17.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8901.15 via Frontend Transport; Tue, 8 Jul 2025 07:58:05 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 8 Jul 2025
- 00:57:55 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 8 Jul 2025 00:57:55 -0700
-Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Tue, 8 Jul 2025 00:57:54 -0700
-Date: Tue, 8 Jul 2025 00:57:53 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <eric.auger@redhat.com>,
- <peter.maydell@linaro.org>, <jgg@nvidia.com>, <ddutile@redhat.com>,
- <berrange@redhat.com>, <imammedo@redhat.com>, <nathanc@nvidia.com>,
- <mochs@nvidia.com>, <smostafa@google.com>, <gustavo.romero@linaro.org>,
- <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <linuxarm@huawei.com>,
- <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
- <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>
-Subject: Re: [PATCH v6 00/12] hw/arm/virt: Add support for user creatable
- SMMUv3 device
-Message-ID: <aGzPgZEhORuRyIdl@Asurada-Nvidia>
-References: <20250703084643.85740-1-shameerali.kolothum.thodi@huawei.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZEHJ-0007Cn-3Y
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:46:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752004014;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2PXEUJaJoLOcFk5/zGLBDJcNh/IQkmnqiwNrVd3lV9k=;
+ b=bDh4gOAnoX7NdPPgSVANPCKT7g3+Dm3j7hfFXokuAl0aNPMDtGItlCBmDx0lIcJKs3l5lV
+ gP/Wr4MZlyEoAOrP+Fla4cbS1gYK0hhM+EqULjRLXZ4VYPTn6juaWwdipeO6usz9qUqeiq
+ YUsViSyxHMUn+DVa8RbNbh0PG44kQvM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-35-1RbpygK8PECPSqVj3kRgoA-1; Tue,
+ 08 Jul 2025 04:17:46 -0400
+X-MC-Unique: 1RbpygK8PECPSqVj3kRgoA-1
+X-Mimecast-MFC-AGG-ID: 1RbpygK8PECPSqVj3kRgoA_1751962665
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 124D1185BD44; Tue,  8 Jul 2025 08:17:37 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9F800195E765; Tue,  8 Jul 2025 08:17:36 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D6F9421E6A27; Tue, 08 Jul 2025 10:17:33 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Jonah Palmer <jonah.palmer@oracle.com>
+Cc: Jason Wang <jasowang@redhat.com>,  qemu-devel@nongnu.org,
+ eperezma@redhat.com,  peterx@redhat.com,  mst@redhat.com,
+ lvivier@redhat.com,  dtatulea@nvidia.com,  leiyang@redhat.com,
+ parav@mellanox.com,  sgarzare@redhat.com,  lingshan.zhu@intel.com,
+ boris.ostrovsky@oracle.com,  Si-Wei Liu <si-wei.liu@oracle.com>
+Subject: Re: [PATCH v4 0/7] Move memory listener register to vhost_vdpa_init
+In-Reply-To: <face37ee-9850-448f-914b-cd90a39d3451@oracle.com> (Jonah Palmer's
+ message of "Mon, 7 Jul 2025 09:21:36 -0400")
+References: <20250507184647.15580-1-jonah.palmer@oracle.com>
+ <CACGkMEuD7n8QVpgBvHSXJv7kN-hn4cpXX9J8UO8GUCzB0Ssqaw@mail.gmail.com>
+ <87plg9ukgq.fsf@pond.sub.org>
+ <50a648fa-76ab-47bf-9f6e-c07da913cb52@oracle.com>
+ <87frgr7mvk.fsf@pond.sub.org>
+ <dcbf9e2e-9442-4439-8593-dff036a4d781@oracle.com>
+ <87o6v6muq4.fsf@pond.sub.org> <8734cimtqa.fsf@pond.sub.org>
+ <1e58dd8c-3418-4843-9620-3819e9ee31f3@oracle.com>
+ <87o6uau2lj.fsf@pond.sub.org>
+ <69bc738c-90fd-4a48-9bee-bb7372388810@oracle.com>
+ <87frfcj904.fsf@pond.sub.org>
+ <face37ee-9850-448f-914b-cd90a39d3451@oracle.com>
+Date: Tue, 08 Jul 2025 10:17:33 +0200
+Message-ID: <874ivnxfj6.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250703084643.85740-1-shameerali.kolothum.thodi@huawei.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017095:EE_|LV8PR12MB9134:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f4ab9f8-de04-48ce-1cf1-08ddbdf52b87
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|7416014|376014|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?iXDRplloZTFD1elPJWyKasBr0bPe+znhkZUo9snveLPYP4xLyi1hzhDS0UIv?=
- =?us-ascii?Q?EXcfov2nMyRi3kFU8gamT4A1NwRfv9rrikuTbyQllseytaVV9NY4PpaKnuFZ?=
- =?us-ascii?Q?ch5Rj89gAvBrKh5YBJWH/nxUp01F2znpuEmI5ECQddkOW8Pf/g7TfItBbQlq?=
- =?us-ascii?Q?N/tVqdTsy7Z18mkEC6ngAkjsZACX1QS/E23n0nNv4oEHoc6LF2k03QjXpBCT?=
- =?us-ascii?Q?WCDqwux4Rpfuvn5V1HwCUbJOlVJwoYAXeDQWoKuEkavcFiezSJZb+QXawLww?=
- =?us-ascii?Q?gOCciUQfdGeb+GxZsqXFXzUDgahe6sdyn+hA4ssloSItkAul3KJxCynu6Dr1?=
- =?us-ascii?Q?vcUUot2VSVeNoq2+JP/yAfpfWZnS1s4IBONnPZJHV2oS/Dq6JEGIvg2ysyel?=
- =?us-ascii?Q?2U7UMN2gYHq8L3pE7Eg/9v1HAgjfx5eHEFSnYqcr8ym6jJnQ3hStR1EHX4Ok?=
- =?us-ascii?Q?oaMXhq8Eso5Gh9NuC/cqVHG9gr9mX6sZ/vladrJaVR3JMVnjux/7YDDPl5LH?=
- =?us-ascii?Q?IvZ+dCYeDKHpxw9vZDYj9QbEGy83+5fm75JnJBq7XPgRD+0FNihh59KUzBfY?=
- =?us-ascii?Q?AdpNVb7JDHRCbkhE7U5KMe+Olmlv8l12xj3nIK50mpCYKHduL7XEl3FoIPDd?=
- =?us-ascii?Q?/U4Ps7+caOOpgAu/9GdrQIrwf1hHKKACm1GiY9x4cxmkhSAXEGvmslDflnXq?=
- =?us-ascii?Q?4SGeybMQRzaocg/6GgTvWn+gKJbDpD3iwvY7q/g/YUe6gMayfnYjTQAUf6Ao?=
- =?us-ascii?Q?gT49wELiQd5KLA7G2+yHLyE9d40+SjXTtXW4EliQDBQJcOJGvhVk8Tw3n4Te?=
- =?us-ascii?Q?ZhKuk7i9psN8kukK6oqfKShrXBt88z1Bl6/NbMnQFUDuCoJeeoRkYrAlfhLk?=
- =?us-ascii?Q?BCEnfIn4S7L2m5dlYYPIGMWy1G1nYuOVK94A5p0bqsn9wZtdlmi/E1N4vKj7?=
- =?us-ascii?Q?Nfb5BGxEiM6+S1kN06oSj9UT8Pi2CsTRogkMDd0n33nk09Ll7mhpFNniJzSd?=
- =?us-ascii?Q?Q4/SO3LuMYzEs2Ug5R+a0414f4BQOUUkf5wguci1sB2aOcjk/r47TfCQkw8u?=
- =?us-ascii?Q?XN2XFvQY77sHZc3Nm6YkcrWUk/JxKCongjTcvy/Me8CqB8fc6oG+CSIGRzwb?=
- =?us-ascii?Q?dKPVPhnu8gzrfDivV5odni/I2zdj/MzOriHtfSQPrMwM8L3SumLh6aYaPE2Q?=
- =?us-ascii?Q?jHADbaEkgYdO4dmEEnm0ThLRkNDm3lCqpGeOk8cVLfsIkjXTX5UiOBdotonr?=
- =?us-ascii?Q?AfnvNza17lbGmqsPpQIgF4eukQncrUtZ3UE7W9GpGT/ZTtOWtJVHulHZhbJb?=
- =?us-ascii?Q?AYUMYaEwhifHJfl+qGJ8IHHxFqIbpKvuyHYvote6U9sU0KO5Y7OM7IzRSith?=
- =?us-ascii?Q?vJJ9BCNKpRyZzcguWBGGEwivxG1qCIICKCxNuL5uhYlG69d+4RHYCFiD7Vsj?=
- =?us-ascii?Q?sdjeSTCIASPv7BPGrAzOsteeEHskJzE06suwLJf3bQQC1uFikd7P5EhEoAAz?=
- =?us-ascii?Q?ypU/Csbwf5KJ8qvnJsW3JVzx4W6cRPKgsKsV?=
-X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(82310400026)(7416014)(376014)(36860700013)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 07:58:05.0046 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f4ab9f8-de04-48ce-1cf1-08ddbdf52b87
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017095.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9134
-Received-SPF: permerror client-ip=2a01:111:f403:2413::614;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,29 +97,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 03, 2025 at 09:46:31AM +0100, Shameer Kolothum wrote:
-> 1. Rebased to target-arm.next and resolved conflicts with the series 
->    [PATCH-for-10.1 v6 0/9] hw/arm: GIC 'its=off'.
-> 2. While at it, noticed an issue with RC id mappings creation
->    and patch #1 is a fix for that.
-> 3. Patches 3 and 4 have changes because of the conflict resolution with the
->    above series. I have retained the R-by tags, but encourage all to take
->    another look in case I missed anything.
-> 4. Collected R-by and T-by tags. Thanks!.
+Jonah Palmer <jonah.palmer@oracle.com> writes:
 
-Hi Shameer,
+> On 7/4/25 11:00 AM, Markus Armbruster wrote:
+>> Jonah Palmer <jonah.palmer@oracle.com> writes:
 
-Thank you for the effort and the work here.
+[...]
 
-A separate topic: do you have any preparation for the vIOMMU uAPI
-patches (iommufd backends) in QEMU?
+>> So, total time increases: early pinning (before main loop) takes more
+>> time than we save pinning (in the main loop).  Correct?
+>
+> Correct. We only save ~0.07s from the pinning that happens in the main loop. But the extra 3s we now need to spend pinning before qemu_main_loop() overshadows it.
 
-I think it should be the next step after this series, so I wonder
-if you have done some worked already to test this series.
+Got it.
 
-And maybe I can start that review process in parallel, or we will
-have to wait for the vSMMU code.
+>> We want this trade, because the time spent in the main loop is a
+>> problem: guest-visible downtime.  Correct?
+>> [...]
+>
+> Correct. Though whether or not we want this trade I suppose is subjective. But the 50-60% reduction in guest-visible downtime is pretty nice if we can stomach the initial startup costs.
 
-Thanks
-Nicolin
+I'll get back to this at the end.
+
+[...]
+
+>> Let me circle back to my question: Under what circumstances is QMP
+>> responsiveness affected?
+>> 
+>> The answer seems to be "only when we're using a vhost-vDPA device".
+>> Correct?
+>
+> Correct, since using one of these guys causes us to do this memory pinning. If we're not using one, it's business as usual for Qemu.
+
+Got it.
+
+>> We're using one exactly when QEMU is running with one of its
+>> vhost-vdpa-device-pci* device models.  Correct?
+>
+> Yea, or something like:
+>
+> -netdev type=vhost-vdpa,vhostdev=/dev/vhost-vdpa-0,id=vhost-vdpa0,... \
+> -device virtio-net-pci,netdev=vhost-vdpa0,id=vdpa0,... \
+
+I'll get back to this at the end.
+
+[...]
+
+>> Let me recap:
+>> 
+>> * No change at all unless we're pinning memory early, and we're doing
+>>    that only when we're using a vhost-vDPA device.  Correct?
+>> 
+>> * If we are using a vhost-vDPA device:
+>>    - Total startup time (until we're done pinning) increases.
+>
+> Correct.
+>
+>>    - QMP becomes available later.
+>
+> Correct.
+>
+>>    - Main loop behavior improves: less guest-visible downtime, QMP more
+>>      responsive (once it's available)
+>
+> Correct. Though the improvement is modest at best if we put aside the guest-visible downtime improvement.
+>
+>>    This is a tradeoff we want always.  There is no need to let users pick
+>>    "faster startup, worse main loop behavior."
+>> 
+>
+> "Always" might be subjective here. For example, if there's no desire to perform live migration, then the user kinda just gets stuck with the cons.
+>
+> Whether or not we want to make this configurable though is another discussion.
+>
+>> Correct?
+>> 
+>> [...]
+
+I think I finally know enough to give you constructive feedback.
+
+Your commit messages should answer the questions I had.  Specifically:
+
+* Why are we doing this?  To shorten guest-visible downtime.
+
+* How are we doing this?  We additionally pin memory before entering the
+  main loop.  This speeds up the pinning we still do in the main loop.
+
+* Drawback: slower startup.  In particular, QMP becomes
+  available later.
+
+* Secondary benefit: main loop responsiveness improves, in particular
+  QMP.
+
+* What uses of QEMU are affected?  Only with vhost-vDPA.  Spell out all
+  the ways to get vhost-vDPA, please.
+
+* There's a tradeoff.  Show your numbers.  Discuss whether this needs to
+  be configurable.
+
+If you can make a case for pinning memory this way always, do so.  If
+you believe making it configurable would be a good idea, do so.  If
+you're not sure, say so in the cover letter, and add a suitable TODO
+comment.
+
+Questions?
+
 
