@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55EB6AFD952
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3715CAFD7E9
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:10:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFDb-0002lk-O7; Tue, 08 Jul 2025 16:47:11 -0400
+	id 1uZEbT-0005gA-LN; Tue, 08 Jul 2025 16:07:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZDnP-0004UE-4B
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:16:06 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDQw-000884-15
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 14:52:59 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZDnI-0006wO-1z
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:57 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-235e1d710d8so62645625ad.1
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:14:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZCSA-0005T8-M4
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 13:51:00 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-607cf70b00aso9104106a12.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 10:47:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752002094; x=1752606894; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=o8s3POq+g29lZCTW4KGaiw6YRZUM/zpjO6CKLcIScNM=;
- b=G9fxjIntewLc0dE+OAid5UBWD0Kbx2lmhYq3P+y/sbZI6fD7P8BdvSruNUlL1Pk/9Y
- mIVRxXVUB0OAlYxqgq7p/V96YwaKBUuBwRb0JquK9QrnQUNQxvpYpJ5ATb0VtLJTt47S
- IJIPZGrWA+jJPpxAE/iSuGReDEL9tm74PpEclXGVPy/DvSOQ1B8mzV7RiOhMznoo6XbB
- 7T5TjgOL/Lz4xykfZE0PyKgMpmr+onoFoIoB+K2w7Pk/jI6gq/rBxyIKgVFcr02Ns7Ap
- PNdhPeom8hMIxDwqkzXT6JS93YroLqfG8nSIz0RUkqnwGzGn/z7qZ7WuITA5zrKS9Pxh
- P0dw==
+ d=linaro.org; s=google; t=1751996860; x=1752601660; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0z6zuLyqS0wcOglQ1OI6Oqu0dEI4wR6AUI75p1DD0Uo=;
+ b=xRcOaA2cwmWqUDbw68S/ThQ5BlvFnJ/j6GepmXHsbqGldoUKvW5tpHSURvWiue9JUm
+ gyuXLP3bihlkhRuqU+2AkhnGfxUIRcZVheUTp7NfXx+3zEhV+RY1CWgwsn+mVhc+G5mt
+ xL3inovnM5yCO9w0CckwP+JBr3/6Dqbu9Zb1bkS3esOB41zJbXMVkeg/cK87jjwh7kYx
+ 64YhQeOZXeGbSczlTWXZGQWHOvjW6FPpjZWREcJQnTmnHKoQku+5zaoVuDZvr/27MccO
+ fx+AwLGkOFm9Kr6WPwH7b0qxM6G00FsNne+yDy5wHlyja3k18CDr0dzA+OUV8SOwc8f0
+ btCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752002094; x=1752606894;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=o8s3POq+g29lZCTW4KGaiw6YRZUM/zpjO6CKLcIScNM=;
- b=WdEL0Vu6co2I7Z3E+U3S0vKkzFien76MTIv3pPCRyE90MkZrxL/NsNmDxoZY/aXWwN
- 7Mg/ebiKYaWZAeKpRP+SubxQYzL99lZYEQst7PQUiF2bMRK3gYaDwP8hRuY5PTKMQ7gi
- mVq2Nx3VsTwJ1HYBqiQphK2jiuRYPbBksDVn1d01wkF6TCDZi1FxrPLE/46uHxaKo7YI
- kwudz5eKNl6UnBsR2/TAU9gvW2Nj0kv6wnVBuRCxADY+5qgSlRXXW754Ut0mztuIL2E1
- K4S35COfF5qXkWDZ4IUw4t7GO0fujla43GvJX42TmuwqpY6OSoWuXqrnwQACL2bjnYM0
- 0gaQ==
-X-Gm-Message-State: AOJu0YzwZibUC0qsQp51FI5DWpN3Lv9qQ4pNK908X7ZriGqF/62oun+1
- 00yojyTRbaHltKuK6wgt+4YTD+5mpr2rQewwMVQ3W4En3Xc6F0DI3mH0tdn4fTrw13DgfWZyll8
- ODpEPYmxw54bA8Fjau8rGoO4p4jxcynC5RKZamXdvgyP98nfpUd+8psc=
-X-Gm-Gg: ASbGncsMxVrE4nWcDNEECCGkIyIsnMoFBxP1iSun+wbdbWjqara56rbSaESCBVYmZF+
- dhZGUpaxMMu64ajglahOl7B9ydngFksWTmuUOQaHj3CSbQmKoRxYE/Ftt+bNQMo5htRI9lIJ7hj
- 6UbKG1OBMSpKRW+1xYg6liotUMxV2ofb63SUUllSS6sMgP
-X-Google-Smtp-Source: AGHT+IFWT3DipFQC9i7Dfs2o7UN9KnD3vr81lmbfCI/c+/IgB/Qv6x30sVjxmdwZn/oeNI3OAJdvi+FZTPDCCHLTOxk=
-X-Received: by 2002:a05:690c:f02:b0:70e:18c0:dab6 with SMTP id
- 00721157ae682-717ae0c61cfmr9914547b3.23.1751994909123; Tue, 08 Jul 2025
- 10:15:09 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1751996860; x=1752601660;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0z6zuLyqS0wcOglQ1OI6Oqu0dEI4wR6AUI75p1DD0Uo=;
+ b=L1trL2NlAKcbFk7THd4Wn9uYuZK4yenbVRxUzxfgAdb54T7UVDHJ4kpeb2ZEC+BzE8
+ K/VoykPa4AlMl85qxGc3J50zYODp/U0XRO9itiJotzLnjFoSJsn1dLiWqq8+48AaqWP7
+ KCAg6OULL4kb8SX4Qb8BldkHUF0E1MulisJWh9xI2mDgqqLvipahUTh9RgjGA1bD/Pvq
+ 6/i7cNtaq89GFRUGdJcYum/C91oa31jv5yL+Fty/7ESDimlENbSnYYPFxlKd215RKjgR
+ mYNfd1+5EcqrbVfmlqoQdurFvowhraQOX585rFAqWizy5tLpStICRE9nVIxzBVfgwa30
+ ociA==
+X-Gm-Message-State: AOJu0YxST+HHrr5G5ydqg0fX/QdGHrW4Jfhtx6SH4LjKOoN5xEE4TA08
+ gpGqpHvc+BRjL4Z2dPODIWILYzJdXIr9VyeOGKR8vG+2j5Mmz4ou36JiWOEFKG8+LUJ3QCMkKhf
+ wP1pl
+X-Gm-Gg: ASbGnctOnSbj1mJ2nyzd68WojN5ByQsmJm5D3NHzNNNTxzla6dABzNTcE1Qbsuhh0IO
+ m4y+XzhwrHn9E4pzCoUi9FwTSXPLFPF0iW47Bm7H/2eBZctNlRhPyD3LPbnzKTu4G93aWY8J507
+ AOAe95qmOn1YPYSxytR8ya+2SGeMDv6kyKDac/HWI7V8yIbtfIVTjxVPBSs7xf4OurTx2ufU8Rm
+ /zPvlOGkJC8njwMOH6NX6kxzVFjJKcncLH1Do7N/fBz0HlBQH5M4ArZBWNp+c4+Qsa3SlaKMO+Z
+ DpFIXJ4ahbZajs5cDxBZJFf/kuiLeYPUYszSHDhuYCLJ0QBtpDKrncSg/0BMBI5Cja+nZhpjTnV
+ fd2BSaKlhUh2C3zI3mODlScRGB6HfeXiXkZhD
+X-Google-Smtp-Source: AGHT+IEkM94DyDOhgiUDQ9k45sEVeJR3CEVz04SErlMrGPWV3l1ZeWIqAHV0z7YC5n5AAcZlrdCrwA==
+X-Received: by 2002:a05:600c:3acf:b0:451:edc8:7806 with SMTP id
+ 5b1f17b1804b1-454d367a0d1mr4240105e9.32.1751995210633; 
+ Tue, 08 Jul 2025 10:20:10 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-454cd49841dsm21584835e9.0.2025.07.08.10.19.55
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 08 Jul 2025 10:20:10 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-riscv@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-block@nongnu.org,
+ qemu-ppc@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-10.1 v7 0/8] target-info: Add more API for VirtIO cleanups
+Date: Tue,  8 Jul 2025 19:19:40 +0200
+Message-ID: <20250708171949.62500-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-References: <20250707170904.2908-1-philmd@linaro.org>
-In-Reply-To: <20250707170904.2908-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 8 Jul 2025 18:14:57 +0100
-X-Gm-Features: Ac12FXyz7_6cIBnFIkoJgjm8GuCCJJOrs9_ndhhpP6rmJVSZoTNuFcbe_CAEhhk
-Message-ID: <CAFEAcA9rcJHBaeAqCM1BszrhzkE4=gxJkx9h62BVhEz9hB7OMA@mail.gmail.com>
-Subject: Re: [PATCH] bulk: Remove unnecessary 'qemu/typedefs.h' include
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Stefan Weil <sw@weilnetz.de>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Song Gao <gaosong@loongson.cn>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Alex Williamson <alex.williamson@redhat.com>, 
- Bibo Mao <maobibo@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=peter.maydell@linaro.org; helo=mail-pl1-x62c.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,48 +102,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 7 Jul 2025 at 18:14, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> "qemu/typedefs.h" is already included by "qemu/osdep.h".
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  hw/vfio/vfio-migration-internal.h | 1 -
->  include/system/os-win32.h         | 1 -
->  hw/intc/loongarch_extioi_kvm.c    | 1 -
->  3 files changed, 3 deletions(-)
+Since v6:
+- Added R-b tags
+- Fixed typos
+- Dropped "Introduce target_base_arch()" because unused so far
+- Dropped unrelated patches
 
-> diff --git a/include/system/os-win32.h b/include/system/os-win32.h
-> index 3aa6cee4c23..662cfabc5e7 100644
-> --- a/include/system/os-win32.h
-> +++ b/include/system/os-win32.h
-> @@ -29,7 +29,6 @@
->  #include <winsock2.h>
->  #include <windows.h>
->  #include <ws2tcpip.h>
-> -#include "qemu/typedefs.h"
->
->  #ifdef HAVE_AFUNIX_H
->  #include <afunix.h>
+Philippe Mathieu-Daudé (8):
+  target/qmp: Use target_cpu_type()
+  qemu/target-info: Factor target_arch() out
+  qemu/target-info: Add %target_arch field to TargetInfo
+  qemu/target-info: Add target_endian_mode()
+  qemu: Convert target_words_bigendian() to TargetInfo API
+  gdbstub/helpers: Replace TARGET_BIG_ENDIAN -> target_big_endian()
+  qemu: Declare all load/store helper in 'qemu/bswap.h'
+  hw/virtio: Build various files once
 
-This one's tricky -- osdep.h includes system/os-win32.h
-*before* it includes typedefs.h. If you want to remove this
-include I think you need to move the include of typedefs.h
-a bit further up in osdep.h (taking care that it's still
-wrapped in an "extern C").
+ include/exec/tswap.h                  | 83 +--------------------------
+ include/gdbstub/helpers.h             | 15 ++---
+ include/qemu/bswap.h                  | 73 +++++++++++++++++++++++
+ include/qemu/target-info-impl.h       |  6 +-
+ include/qemu/target-info-qapi.h       | 29 ++++++++++
+ include/qemu/target-info.h            | 10 +++-
+ include/system/memory.h               |  1 -
+ include/user/abitypes.h               |  1 -
+ target/ppc/mmu-hash64.h               |  2 -
+ cpu-target.c                          |  7 ---
+ hw/acpi/bios-linker-loader.c          |  2 -
+ hw/arm/allwinner-r40.c                |  1 -
+ hw/arm/boot.c                         |  2 +
+ hw/arm/npcm7xx.c                      |  2 +-
+ hw/block/hd-geometry.c                |  1 -
+ hw/char/riscv_htif.c                  |  1 -
+ hw/core/cpu-system.c                  |  2 +-
+ hw/core/machine-qmp-cmds.c            |  8 +--
+ hw/cxl/cxl-events.c                   |  2 -
+ hw/display/artist.c                   |  1 +
+ hw/display/ati.c                      |  1 +
+ hw/display/vga.c                      |  2 +-
+ hw/net/can/ctucan_core.c              |  1 -
+ hw/net/lan9118.c                      |  1 +
+ hw/net/rtl8139.c                      |  1 +
+ hw/net/vmxnet3.c                      |  1 -
+ hw/pci-host/gt64120.c                 |  1 +
+ hw/pci-host/pnv_phb3.c                |  1 +
+ hw/pci-host/pnv_phb4.c                |  1 +
+ hw/pci-host/ppce500.c                 |  1 -
+ hw/pci-host/sh_pci.c                  |  1 -
+ hw/s390x/s390-pci-inst.c              |  1 +
+ hw/sensor/lsm303dlhc_mag.c            |  1 -
+ hw/smbios/smbios.c                    |  1 +
+ hw/vfio/migration-multifd.c           |  1 -
+ hw/virtio/virtio-config-io.c          |  1 -
+ hw/virtio/virtio-pci.c                |  1 +
+ hw/virtio/virtio.c                    |  2 +-
+ hw/vmapple/virtio-blk.c               |  1 -
+ system/memory.c                       |  1 +
+ system/qtest.c                        |  1 +
+ target-info-stub.c                    |  2 +
+ target-info.c                         | 23 ++++++++
+ target/arm/arm-qmp-cmds.c             |  3 +-
+ target/arm/cpu.c                      |  1 -
+ target/i386/tcg/system/excp_helper.c  |  1 -
+ target/i386/xsave_helper.c            |  1 -
+ target/loongarch/loongarch-qmp-cmds.c |  3 +-
+ target/mips/system/mips-qmp-cmds.c    |  3 +-
+ target/riscv/vector_helper.c          |  1 -
+ tests/tcg/plugins/mem.c               |  1 +
+ hw/block/meson.build                  |  6 +-
+ hw/virtio/meson.build                 | 20 ++++---
+ 53 files changed, 191 insertions(+), 146 deletions(-)
+ create mode 100644 include/qemu/target-info-qapi.h
 
-(Or we could declare the functions in os-win32.h which
-use the Error type somewhere else. That header I think is
-intended to be "Windows specifics and compatibility wrappers
-that everywhere needs to have sorted out", not "this
-function happens to only be needed on Windows": a lot
-of the functions declared in it are only used in a
-handful of files and don't need to be declared to every
-source file in the project. But that's a bit more effort.)
+-- 
+2.49.0
 
-The other two changes here are fine.
-
-thanks
--- PMM
 
