@@ -2,80 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A91AFD903
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F2EAFDA21
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:43:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFCt-0000kr-DK; Tue, 08 Jul 2025 16:46:30 -0400
+	id 1uZG56-0001G6-Ru; Tue, 08 Jul 2025 17:42:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZDmf-0003m3-7a
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZDmU-0006uj-Iv
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752002088;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pLStfRJpmfQIOh7bxIrsJAAe+Duhq1gVCiVm8+G88H0=;
- b=dajCX01+m2Stwx0f9M/Mxpu21vTA6+Y1/k8SWBgul48dcFtO9DWnMD0sg6DtS5GJwVYdBd
- cHBcUrQ99+Y5fe1JUJngbsanlTxhhS3nUNIW0sfoYmkU7WXd5KMNperwoAnpMAMq4dpwOI
- aUYAn05AHgarrpvcOSvtU3UbWL3kgow=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-0xo2J7d1OFa-lqVWW6Fupg-1; Tue,
- 08 Jul 2025 02:54:00 -0400
-X-MC-Unique: 0xo2J7d1OFa-lqVWW6Fupg-1
-X-Mimecast-MFC-AGG-ID: 0xo2J7d1OFa-lqVWW6Fupg_1751957639
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A7F0D18001D1; Tue,  8 Jul 2025 06:53:58 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F4097195608F; Tue,  8 Jul 2025 06:53:57 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 362CB21E6A27; Tue, 08 Jul 2025 08:53:55 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  John Snow <jsnow@redhat.com>,  Cleber Rosa
- <crosa@redhat.com>,  Eric Blake <eblake@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,  Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>,  Peter Krempa <pkrempa@redhat.com>,
- devel@lists.libvirt.org
-Subject: Re: [PATCH V2 1/5] qom: qom-tree-get
-In-Reply-To: <87zfdfz2y6.fsf@pond.sub.org> (Markus Armbruster's message of
- "Tue, 08 Jul 2025 07:06:25 +0200")
-References: <1747057635-124298-1-git-send-email-steven.sistare@oracle.com>
- <1747057635-124298-2-git-send-email-steven.sistare@oracle.com>
- <877c0ono29.fsf@pond.sub.org>
- <76271add-d9b3-4b45-a272-3cbe336c2103@oracle.com>
- <87zfdfz2y6.fsf@pond.sub.org>
-Date: Tue, 08 Jul 2025 08:53:55 +0200
-Message-ID: <87cyabyxz0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZEuH-0003ZF-K1
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:27:30 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZEuF-0007uf-Uv
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:27:13 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-6097d144923so599730a12.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 13:27:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752006429; x=1752611229; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fu1WK/w/9D5J6tMkfVhjTZ9B5iy+dfmpVxjwVLiGPDY=;
+ b=ZjPdcJh/hoOnLw/t0LCVxjQOSdY4/OFDrkbQYublwTk0NFM9ueP+PWY4K2qy8cEQzT
+ ZDGyTWBFE/223KE3f8twVqdcyp/+YpC64t0qIUDsxBvDc3ftrJyDOOGFYTU53DQDOONO
+ m/5MPep6mQnPCcxd9Oy2rzshOjDoIz8j7J8+8urfNnYHgXliOY6rZ3LYd3cd7PkqHJPk
+ kGsSut4FwT70JOfrYXMntpTNeJ954jHC+a+Es6BQMsu2zVBZ7DRpfXqh2Cy8SUa7jhEN
+ Pb3i0r6catAiDfmFNqgrERs5idlQZyj4429bIH+Xa0FGTqzS2PwYg3EAz6hrQGLTw3gA
+ 7XeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752006429; x=1752611229;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fu1WK/w/9D5J6tMkfVhjTZ9B5iy+dfmpVxjwVLiGPDY=;
+ b=S6pXqDXlfrVX/2Q4p1avCitRlPx1ejT4IcuE1WnUJrztN+cXfrALqb2StP/DwrhwbG
+ gR1fMNbvNGWMPZHaT6TXXqHxsmM3yBkle6S4velATB3LMJO9BrgBtBZhtWx4VoqKifX/
+ vsXnjJzPqZEJ5ushJIZrMBn7HHqDNi+9Grt9zDbRlmxu7+sRHqbJ4p+C9E5Bq+k82FG5
+ 2MDQknbQKTNwvhVCKvDf4Ftl+PyuGerVHaRU3+JSLQSc2CH4dm1RnZtej4aR1ZQH/qO6
+ lQLo1vJrkE0QBMiIjf6jawvqxANuKP4EMZE0iEB9FgKsQmD7+2MJMXbnLRQfYXzO7nPa
+ URcw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVnfJ67ZfeigtFPEU5alSCVj1EFw6E8T/0rMc9ZDG712/PY08bfpSOnDTD2qNlkXJdc13h496nlgcEh@nongnu.org
+X-Gm-Message-State: AOJu0Yx1sjshURQO99uD370Hqv/pyINHaSyuN9AdjLUIprxcZEllDNKH
+ qlSnBVuQrbPr6CDKTsDa8RwRdE63TpbJDJMzDiy2nAr1L5NR95Eri9VJkR20VOgLEBFgviqZvK0
+ gKVFSvIY=
+X-Gm-Gg: ASbGncsNJoTEkTeSAebCmwVfqZcWz6V0ZOPYw+mPoDfg8Lm0HFYf/NUhPETlsvfvjgY
+ HtgJr+Oh3H/o8dSkrztIPFUk2fbQkJu07d0A3KOR1s7ocnxBzVNnURaRoaUqvG+3KhmkfUj3b7k
+ 2e1DCkHV1qFTnG2NoMptz/Aeg1igIRJLxtRSyw86TVpxXea8jS/PhpnSvuN8PaDjur+Db5eE08l
+ 2XrEa1ffMdSre8fvzM6g4roDi2w8rKKYLiOb8q7CYzsYJwBTpzL5mcZFnI7U/poPpH+ZLD3EnVV
+ zvINaZ4b83eh7RZHTQlgGHhMX8qZCFQTVXVET22jLp+M2eGKX1MkhWcg+z6TBraPScMBakudJEa
+ vp9dDb+u3FaOBPL1HUbHLsksaCQFQoA==
+X-Google-Smtp-Source: AGHT+IHHKrJcuCgu3qsCXiOF3gFkmJrCVSvfc7PDQzDeIQ7hUrfI8nsQQ3NaaVo3H34R35nnFkQ6yA==
+X-Received: by 2002:a05:6000:26cc:b0:3a5:8977:e0f8 with SMTP id
+ ffacd0b85a97d-3b5de11fc9amr1137675f8f.19.1751958275599; 
+ Tue, 08 Jul 2025 00:04:35 -0700 (PDT)
+Received: from [192.168.69.242] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b47030cdf5sm11952429f8f.1.2025.07.08.00.04.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Jul 2025 00:04:34 -0700 (PDT)
+Message-ID: <ca3f5ffe-067e-484f-b5a4-eee0ae029d9e@linaro.org>
+Date: Tue, 8 Jul 2025 09:04:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] hw/audio/sb16: block structure coding style fixes
+To: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org
+References: <48576e83-54ba-4ebd-8a3e-6b8306655483@t-online.de>
+ <20250707193009.12901-3-vr_qemu@t-online.de>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250707193009.12901-3-vr_qemu@t-online.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,58 +103,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+On 7/7/25 21:30, Volker Rümelin wrote:
+> Change the block structure according to the QEMU Coding Style
+> documentation.
+> 
+> Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+> ---
+>   hw/audio/sb16.c | 57 +++++++++++++++++--------------------------------
+>   1 file changed, 20 insertions(+), 37 deletions(-)
 
-> Steven Sistare <steven.sistare@oracle.com> writes:
->
->> On 7/4/2025 8:22 AM, Markus Armbruster wrote:
->>> Steve Sistare <steven.sistare@oracle.com> writes:
->>> 
->>>> Define the qom-tree-get QAPI command, which fetches an entire tree of
->>>> properties and values with a single QAPI call.  This is much faster
->>>> than using qom-list plus qom-get for every node and property of the
->>>> tree.  See qom.json for details.
->>>>
->>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->>>> ---
->>>>   qapi/qom.json      | 56 ++++++++++++++++++++++++++++++++++++++++++
->>>>   qom/qom-qmp-cmds.c | 72 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>>>   2 files changed, 128 insertions(+)
->>>>
->>>> diff --git a/qapi/qom.json b/qapi/qom.json
->>>> index 28ce24c..94662ad 100644
->>>> --- a/qapi/qom.json
->>>> +++ b/qapi/qom.json
-
-[...]
-
->>>> ##
->>>> +# @qom-tree-get:
->>>> +#
->>>> +# This command returns a tree of objects and their properties,
->>>> +# rooted at the specified path.
->>>> +#
->>>> +# @path: The absolute or partial path within the object model, as
->>>> +#     described in @qom-get
->>>> +#
->>>> +# Errors:
->>>> +#     - If path is not valid or is ambiguous, returns an error.
->>> 
->>> By convention, we use "If <condition>, <error>, where <error> is a
->>> member of QapiErrorClass.
->>
->> OK.  I was following the minimal Errors examples from this same file.
->
-> Yup.  I'll clean them up.
-
-I changed my mind.
-
-Omitting ", <error>" is fairly common, actually.  I don't feel like
-chasing down the actual error classes.  Moreover, documenting error
-classes we don't want people to use seems counterproductive.
-
-Feel free to just delete ", returns an error." and call it a day.
-
-[...]
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
