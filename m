@@ -2,94 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C8EAFDAC5
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 00:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E6FAFDB23
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 00:33:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZGcN-0003Le-AO; Tue, 08 Jul 2025 18:16:51 -0400
+	id 1uZGre-0001sS-Vy; Tue, 08 Jul 2025 18:32:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZGYv-0005XY-6m
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 18:13:18 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZGYs-00086v-K1
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 18:13:16 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3a54700a46eso2720259f8f.1
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 15:13:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752012792; x=1752617592; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=+kbUNrPjCxqJMdGOcYTq49UvPqoFqRW4yRvrM7RsdxQ=;
- b=Id624D/IVFn2+JAruffGCnjmD30JkWK029KM3vUUhnLECjp+CRPblkkKpy+vIHiFQW
- DQsxeGCnOGrET90z7VZGkc8DAfCG2/TOQcRZnl9/6kUJo1KXzcoKBDoJgLZDrCkQDck5
- Rk3H5QR65Z9DWzwzpOoWYol506LM5MEDS5VGRPeSyMfp8TIw01QYb/y9QwsduUMhJoIO
- JRXD1WnLTdLzWgeWTgY2LyWoz655fbszrDbUORmQnwFUWURYXzyLuU9LkSZNAOYuGXmY
- 8x2C1ZLIv3HBxNdkLsK8kpYEkbi6oNVzDLi0omq+dL/eeC2HQnAHrg5NB0WvZTwnU2r8
- 1ceA==
+ (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
+ id 1uZGaO-0000ii-H3
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 18:14:48 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
+ id 1uZGaL-0008UZ-SI
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 18:14:48 -0400
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 568IOVUL030305
+ for <qemu-devel@nongnu.org>; Tue, 8 Jul 2025 22:14:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+ cc:content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=qcppdkim1; bh=ok8XiX3IV7A8vcUvVzN7/8/bYYud7Dm6dvm
+ lIMUbwec=; b=Tuz3xH4uHEA4DYKq/hV1b40bnTxJlDUIU5L3M2gnm6A7XUlg3U1
+ m3gTsLSzer81AwIZP5c8mBrZy5368u95ZWvftgsEzuDOsYNuaM+J3pAH/p68uVfV
+ BhwR/6Rz/ktQuPVkNv4/TomglLhDktgqjkLD3G4Pa6A7gnNwgxJwau+yXNctFbLR
+ Ofz8SUZ9zGz2pMt2hYF/rJW10FpXpwLeBbMdvKsd4ieT6YXMU0aL0F2OlNd3PBb8
+ LwYsz/2FMzOSLmVCV4lg4KbDGMLZUhpWtnFH/18ycx8OdoBs4XTnZxU5yYWnXqyX
+ n/kNPRk2irWRhSWT2lXuHSitcn4htj9qasw==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47r9b0ymhr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 22:14:41 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-31218e2d5b0so7898199a91.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 15:14:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752012792; x=1752617592;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+kbUNrPjCxqJMdGOcYTq49UvPqoFqRW4yRvrM7RsdxQ=;
- b=nCoIdebzsnv2ORZGTLFCPspz95T7AjOFW3x+frhSiOPlyOrlh3B8r5M2x0MJYNZNmD
- nqueiGUd53AMv+AOLhjKxZER01lcih0rucfG+6ZotQhDG7rJ0JRGclSheIXNVScYG6ZY
- rFzysbSPOyM9xlLezUU9qpcy67kVZo4bVuMxv0HGQCdZrF4JMEWogR7SedfjTkye/zjh
- 0iraDvTqp7ik9EQoElL/AmgqhAjdeXqCZY8ctYHcTX/9hSfSv1ABssx+4kFBgYoRI6Pr
- Hw0N0TihTGOmTrkYR0vq1rmvpFr40OoXowETOj7RSz2rYzzpdN/kQRqIN/s02u3UEf6g
- nxpA==
-X-Gm-Message-State: AOJu0Yy65/RslPlSL+y/E63yPGVmtE7quSax2kxHc8jyfYkyYQV+MSX5
- v8fVdKi8cf3lDwb9FATRs2wwbgQvSj0CvbkpEXKkTrDMLvGEyy/WdJg7sNKjRxtkLPvgVF2sfhN
- sWibv
-X-Gm-Gg: ASbGnctzYzRpd2bI3eiAcQ3KqDnlEnB4BhYZi39kYniOm4ALPCDR6BjRtGPfo2gMX5T
- YBs9T/Ca6xb0cbS6W5VtnKlu+idfMQR7H2kgfRge3nRMQNKak+fr78zYDCu42HsChSBR919D8Gp
- Sm1o6ixuKK0HKGThJZb7tjurFo+bHAq9Ehv6X+vVd2ffZetIycm0bhGMfOezG/Mok4VoOrN5nRY
- y8e2+yNBHhqUgnCn9clvbtFGQDf7H/X/gI3B0Ob0PanN/ngmiMsvkyRkVj8MNnCzWyGula9tVAh
- 8zieiWcTh2fATJ9uH2tDHycBjCM6VrodRGa9j5TIvA4ywyPkh3jNl8b1MEZOIu73k5DGBxePgKf
- G6v4KwxW6A6pqsqu/qELguWrHZ5osNwp2
-X-Google-Smtp-Source: AGHT+IFGiqwIs56ZAhE27Y5U1Nv0hRYcCpdysNZDEfPzjh6bN8zkva6qm0uF/n6ONNw+W85FM22yqA==
-X-Received: by 2002:a05:6000:210a:b0:3a4:d53d:be20 with SMTP id
- ffacd0b85a97d-3b5e2fec82fmr800201f8f.18.1752012791810; 
- Tue, 08 Jul 2025 15:13:11 -0700 (PDT)
-Received: from [192.168.1.74] (88-187-86-199.subs.proxad.net. [88.187.86.199])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d50ded8csm937445e9.20.2025.07.08.15.13.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 15:13:11 -0700 (PDT)
-Message-ID: <9df05684-af4a-4317-90d3-660494c73fac@linaro.org>
-Date: Wed, 9 Jul 2025 00:13:10 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] system/os-win32: Remove unnecessary
- 'qemu/typedefs.h' include
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1752012881; x=1752617681;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ok8XiX3IV7A8vcUvVzN7/8/bYYud7Dm6dvmlIMUbwec=;
+ b=e7DK+Rhp33/wAqoT6x+gwMSc5p8NqbPjvD+OqfytFxQZRkh+q9HNyVQJAoz2+qPce9
+ f2H68NQEfZRcfjuVGPWDeeYNkrOhA3NF7jy6B2duQF29bqqOWoL+h7Q0GgBKCNEWmGKF
+ fvhlgocBWCiDFTYP21p5E1VM9YFj6aZ0UAxaFz9C9g+nLt5Pjj6YrF8QLBbXDn4tbCTB
+ +0+7sJEgddmj5UqhuSwV7LgpJ+lkx0ZTKhPeKaviMWSGvoeOK7YKmBfjWdSTRD//vJ3z
+ soBjqiPYh9/rEWwnhJUhJNAy5zL7hlJXXt1kBg4WgPsv2+VbkdrVmlzpuXlZwE+LCrOI
+ Q2bQ==
+X-Gm-Message-State: AOJu0Yy98ewn/9QWebD3ZjZg/yM1MXlqsSNujGoJyXBL3KHC3O23AB/J
+ em2If9xTTWC/owmMEAZmt3REtZkgZ6HCKGgzroi4RiT9Vxd7KvGetm0L7K4bPar3QjNGrF43gXz
+ VIQ4K8nWkvJDtGoGRbVmDCXq9S47EO4Z/BVxFOoOi1iiyPLZ4iGoZOFCL6/BKFsuk3PF/vMU=
+X-Gm-Gg: ASbGncvLfpgv1/TK1l2r865D5ACFzeky44MYi1FYAAIiBOBq5M1o7YM7U1Oeynz6Kgt
+ KUd7SNxO41fiC71psN7xTFvDVqONtG4wADiNZ4Hu1JQQJTqTDEvgNq8sz0VTrzECoR+ucwR4zU+
+ dOwRcuc/vOpVMf4yJRr2WhSWUYlnyyYNIPCEMShSlNpHNVtJDigPLRQGDOc8kKDRw65Gg7+d5KV
+ yrDiPbz0EaPJf3H9wle5CUAcqhvccNPASKVoEVlQbr0pDKio37mOHTYTX90DRCG8zBCyrfkZ4dn
+ ObTcpZ6OgByl7QVkGGoGTMDFF/KMWAdeP4UJoxKoOM71rnJlzPWkd8NJNEVTK7cjUQSPpGpnRg=
+ =
+X-Received: by 2002:a17:90b:1c83:b0:312:1d2d:18e2 with SMTP id
+ 98e67ed59e1d1-31c2fda93a0mr307840a91.20.1752012880629; 
+ Tue, 08 Jul 2025 15:14:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEbSHqFCLpp/0YgYmGgGyznE73qL+QWzosscInxfq9rXBPUJh1XbCioyb5CczOmfX9jcOasgg==
+X-Received: by 2002:a17:90b:1c83:b0:312:1d2d:18e2 with SMTP id
+ 98e67ed59e1d1-31c2fda93a0mr307817a91.20.1752012880144; 
+ Tue, 08 Jul 2025 15:14:40 -0700 (PDT)
+Received: from admin15.qualcomm.com (i-global254.qualcomm.com.
+ [199.106.103.254]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-31c30037b57sm97921a91.8.2025.07.08.15.14.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Jul 2025 15:14:39 -0700 (PDT)
+From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Alex Williamson <alex.williamson@redhat.com>
-References: <20250708085859.7885-1-philmd@linaro.org>
- <20250708085859.7885-4-philmd@linaro.org>
- <37e9f347-f7ba-4ea6-93f8-879d8169012a@linaro.org>
-Content-Language: en-US
-In-Reply-To: <37e9f347-f7ba-4ea6-93f8-879d8169012a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+Subject: [PATCH] target/arm: Added support for SME register exposure to GDB
+Date: Tue,  8 Jul 2025 22:14:38 +0000
+Message-Id: <20250708221438.347643-1-vacha.bhavsar@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Authority-Analysis: v=2.4 cv=dYuA3WXe c=1 sm=1 tr=0 ts=686d9851 cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=sqGZG02I1155U8WzEIEA:9
+ a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA4MDE4OCBTYWx0ZWRfXwb3nUizPuXss
+ sfn7DZVsfn3Q7UqwUQERTUh6GyEoDrZIla7p4AReU3NeOD/9/5IUtKkVCHCueeNETpFBzCvRjy9
+ aWuLrAQd29xyZt4a0YQ/9YcO32AA0sf2YkdF//f3IokrB5ykBEaS+KqAxprD9Llb4BGJBDElRR+
+ BRQubvNl/CSh6y7Ldojoj8nvQTgMbT5UMfI651VRxtyoMfffPEr40zKp4KlosLS4lkinZKPO+ff
+ hWl1X8gBMm+fsw0+jfVG+HOMVC/fbUXv3015k5TqWxl7xTjG/5pEkmdEkv/D7J1wEAkY4qbWYfa
+ C88ZbFwbV9Z78NxJVjvMckqRGrQA8S/6zMGITQtSEvzRBzGNha4Mm28u0GMA4bobARcCCKUcTzg
+ mS1VdvxAgm9gq4NA1764+9kYGdXeN1b9H0cbWzIkrUqwgPnnFYws7NKbL2izXUgDDlpLKkbG
+X-Proofpoint-GUID: fvDjFcNiceabnBpC8fSeqhnhIIfy8qGb
+X-Proofpoint-ORIG-GUID: fvDjFcNiceabnBpC8fSeqhnhIIfy8qGb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-08_06,2025-07-08_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 suspectscore=0 clxscore=1011 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507080188
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=vacha.bhavsar@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 08 Jul 2025 18:32:29 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,46 +128,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/7/25 22:53, Philippe Mathieu-Daudé wrote:
-> On 8/7/25 10:58, Philippe Mathieu-Daudé wrote:
->> Commit f5fd677ae7c ("win32/socket: introduce qemu_socket_select()
->> helper") included the "qemu/typedefs.h" header for the Error type,
->> but files including "system/os-win32.h" should already include
->> "qemu/osdep.h", and thus "qemu/typedefs.h".
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   include/system/os-win32.h | 1 -
->>   1 file changed, 1 deletion(-)
->>
->> diff --git a/include/system/os-win32.h b/include/system/os-win32.h
->> index 3aa6cee4c23..662cfabc5e7 100644
->> --- a/include/system/os-win32.h
->> +++ b/include/system/os-win32.h
->> @@ -29,7 +29,6 @@
->>   #include <winsock2.h>
->>   #include <windows.h>
->>   #include <ws2tcpip.h>
->> -#include "qemu/typedefs.h"
-> 
-> FTR, copying Peter's comment on v1:
-> http://lore.kernel.org/qemu-devel/ 
-> CAFEAcA9rcJHBaeAqCM1BszrhzkE4=gxJkx9h62BVhEz9hB7OMA@mail.gmail.com
-> 
->  > This one's tricky -- osdep.h includes system/os-win32.h
->  > *before* it includes typedefs.h. If you want to remove this
->  > include I think you need to move the include of typedefs.h
->  > a bit further up in osdep.h (taking care that it's still
->  > wrapped in an "extern C").
->  >
->  > (Or we could declare the functions in os-win32.h which
->  > use the Error type somewhere else. That header I think is
->  > intended to be "Windows specifics and compatibility wrappers
->  > that everywhere needs to have sorted out", not "this
->  > function happens to only be needed on Windows": a lot
->  > of the functions declared in it are only used in a
->  > handful of files and don't need to be declared to every
->  > source file in the project. But that's a bit more effort.)
+The QEMU GDB stub does not expose the ZA storage SME register to GDB via
+the remote serial protocol, which can be a useful functionality to debug SME
+code. To provide this functionality in Aarch64 target, this patch registers the
+SME register set with the GDB stub. To do so, this patch implements the
+aarch64_gdb_get_sme_reg() and aarch64_gdb_set_sme_reg() functions to
+specify how to get and set the SME registers, and the
+arm_gen_dynamic_smereg_feature() function to generate the target
+description in XML format to indicate the target architecture supports SME.
+Finally, this patch includes a dyn_smereg_feature structure to hold this
+GDB XML description of the SME registers for each CPU.
 
-Amusingly qemu_socket_[un]select() are always called with Error=NULL.
+Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+---
+ target/arm/cpu.h       |   1 +
+ target/arm/gdbstub.c   |   6 +++
+ target/arm/gdbstub64.c | 119 +++++++++++++++++++++++++++++++++++++++++
+ target/arm/internals.h |   3 ++
+ 4 files changed, 129 insertions(+)
+
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index c8cf0ab417..c37ea7dcd2 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -933,6 +933,7 @@ struct ArchCPU {
+ 
+     DynamicGDBFeatureInfo dyn_sysreg_feature;
+     DynamicGDBFeatureInfo dyn_svereg_feature;
++    DynamicGDBFeatureInfo dyn_smereg_feature;
+     DynamicGDBFeatureInfo dyn_m_systemreg_feature;
+     DynamicGDBFeatureInfo dyn_m_secextreg_feature;
+ 
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index ce4497ad7c..9c942c77cc 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -531,6 +531,12 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+             GDBFeature *feature = arm_gen_dynamic_svereg_feature(cs, cs->gdb_num_regs);
+             gdb_register_coprocessor(cs, aarch64_gdb_get_sve_reg,
+                                      aarch64_gdb_set_sve_reg, feature, 0);
++            if (isar_feature_aa64_sme(&cpu->isar)) {
++                GDBFeature *sme_feature = arm_gen_dynamic_smereg_feature(cs,
++                                             cs->gdb_num_regs);
++                gdb_register_coprocessor(cs, aarch64_gdb_get_sme_reg,
++                    aarch64_gdb_set_sme_reg, sme_feature, 0);
++            }
+         } else {
+             gdb_register_coprocessor(cs, aarch64_gdb_get_fpu_reg,
+                                      aarch64_gdb_set_fpu_reg,
+diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+index 64ee9b3b56..e2fc874b38 100644
+--- a/target/arm/gdbstub64.c
++++ b/target/arm/gdbstub64.c
+@@ -228,6 +228,88 @@ int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg)
+     return 0;
+ }
+ 
++int aarch64_gdb_get_sme_reg(CPUState *cs, GByteArray *buf, int reg)
++{
++    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
++    bool streaming_mode = ((env->svcr & 0x01) != 0);
++
++    switch (reg) {
++    /* Svg register */
++    case 0:
++    {
++        int vq;
++        if (streaming_mode) {
++            vq = sve_vqm1_for_el_sm(env, arm_current_el(env),
++                     streaming_mode) + 1;
++        } else {
++            vq = 0;
++        }
++        /* svg = vector granules (2 * vector quardwords) in streaming mode */
++        return gdb_get_reg64(buf, vq * 2);
++    }
++    case 1:
++        return gdb_get_reg64(buf, env->svcr);
++    case 2:
++    {
++        int q;
++        int len = 0;
++        int vq = cpu->sve_max_vq;
++        int svl = vq * 16;
++        for (int i = 0; i < svl; i++) {
++            for (q = 0; q < vq; q++) {
++                len += gdb_get_reg128(buf,
++                           env->za_state.za[i].d[q * 2 + 1],
++                           env->za_state.za[i].d[q * 2]);
++            }
++        }
++        return len;
++    }
++    default:
++        /* gdbstub asked for something out our range */
++        qemu_log_mask(LOG_UNIMP, "%s: out of range register %d", __func__, reg);
++        break;
++    }
++
++    return 0;
++}
++
++int aarch64_gdb_set_sme_reg(CPUState *cs, uint8_t *buf, int reg)
++{
++    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
++
++    /* The first 32 registers are the zregs */
++    switch (reg) {
++    /* The first 32 registers are the zregs */
++    case 0:
++    {
++        /* cannot set svg via gdbstub */
++        return 0;
++    }
++    case 1:
++        env->svcr = *buf & 0x03;
++        return 8;
++    case 2:
++        int vq, len = 0;
++        int svl = cpu->sve_max_vq * 16;
++        uint64_t *p = (uint64_t *) buf;
++        for (int i = 0; i < svl; i++) {
++            for (vq = 0; vq < cpu->sve_max_vq; vq++) {
++                env->za_state.za[i].d[vq * 2 + 1] = *p++;
++                env->za_state.za[i].d[vq * 2] = *p++;
++                len += 16;
++            }
++        }
++        return len;
++    default:
++        /* gdbstub asked for something out our range */
++        break;
++    }
++
++    return 0;
++}
++
+ int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+@@ -392,6 +474,43 @@ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
+     return &cpu->dyn_svereg_feature.desc;
+ }
+ 
++GDBFeature *arm_gen_dynamic_smereg_feature(CPUState *cs, int base_reg)
++{
++    ARMCPU *cpu = ARM_CPU(cs);
++    int vq = cpu->sve_max_vq;
++    int svl = vq * 16;
++    GDBFeatureBuilder builder;
++    int reg = 0;
++
++    gdb_feature_builder_init(&builder, &cpu->dyn_smereg_feature.desc,
++        "org.gnu.gdb.aarch64.sme", "sme-registers.xml", base_reg);
++
++
++    /* Create the sme_bv vector type. */
++    gdb_feature_builder_append_tag(&builder,
++        "<vector id=\"sme_bv\" type=\"uint8\" count=\"%d\"/>",
++        svl);
++
++    /* Create the sme_bvv vector type. */
++    gdb_feature_builder_append_tag(
++        &builder, "<vector id=\"sme_bvv\" type=\"sme_bv\" count=\"%d\"/>",
++        svl);
++
++    /* Define the svg, svcr, and za registers. */
++
++    /* fpscr & status registers */
++    gdb_feature_builder_append_reg(&builder, "svg", 64, reg++,
++        "int", NULL);
++    gdb_feature_builder_append_reg(&builder, "svcr", 64, reg++,
++        "int", NULL);
++    gdb_feature_builder_append_reg(&builder, "za", svl * svl * 8, reg++,
++        "sme_bvv", NULL);
++
++    gdb_feature_builder_end(&builder);
++
++    return &cpu->dyn_smereg_feature.desc;
++}
++
+ #ifdef CONFIG_USER_ONLY
+ int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg)
+ {
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 21a8d67edd..af090b9b8e 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1808,8 +1808,11 @@ static inline uint64_t pmu_counter_mask(CPUARMState *env)
+ }
+ 
+ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cpu, int base_reg);
++GDBFeature *arm_gen_dynamic_smereg_feature(CPUState *cpu, int base_reg);
+ int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg);
+ int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg);
++int aarch64_gdb_get_sme_reg(CPUState *cs, GByteArray *buf, int reg);
++int aarch64_gdb_set_sme_reg(CPUState *cs, uint8_t *buf, int reg);
+ int aarch64_gdb_get_fpu_reg(CPUState *cs, GByteArray *buf, int reg);
+ int aarch64_gdb_set_fpu_reg(CPUState *cs, uint8_t *buf, int reg);
+ int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg);
+-- 
+2.34.1
+
 
