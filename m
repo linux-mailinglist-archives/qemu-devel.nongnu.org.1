@@ -2,95 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F99DAFD9A1
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D1FAFD801
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:14:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFA6-0001qD-Lw; Tue, 08 Jul 2025 16:43:34 -0400
+	id 1uZEfz-0003Jj-F2; Tue, 08 Jul 2025 16:12:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uZDbv-0001UL-DH
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:04:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uZDbk-0003Td-Qo
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:04:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752001401;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=d6pT81K2Z3czDOthATNPF2vBa+urANp/zd3PEU5rEXQgf/c4gfZxM+T6ZLC2rq5O8j6ZYv
- af5E7wd193zA8j9Vfhg4voYE9IOYHfv+gVR5kyd2pBmV8WRzftz7lmTt2UDpL64iCd/hOy
- oqUB0c2Zr9Xmj1Qx7gsrLrWs2EJp/78=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-K_Qj277qO7SCQOifWR28nw-1; Tue, 08 Jul 2025 04:35:06 -0400
-X-MC-Unique: K_Qj277qO7SCQOifWR28nw-1
-X-Mimecast-MFC-AGG-ID: K_Qj277qO7SCQOifWR28nw_1751963705
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-451d3f03b74so22276185e9.3
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 01:35:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <luxu.kernel@bytedance.com>)
+ id 1uZDYV-0006b5-AV
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:00:43 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <luxu.kernel@bytedance.com>)
+ id 1uZDY8-0002HP-QG
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:00:34 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-748d982e97cso4201506b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 11:59:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1752001180; x=1752605980; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kzL69JQNXTzzWE+QcQYF9KB+BS9wTnI7qk0XtFQ0Klc=;
+ b=TmojcT0660JgJUYOwxJvftl5a5+c90Oqc6kcsA64RwT78zV5xidq0CqSuLhm65Frnr
+ s5bAa0xSvnbBk87kIcp+6TTMbW62mi3mRA82XbVKikRP5r/e9BCdcNB9bmn4YLjFvpfH
+ pmtn7Ny8YU+/TyEONbRYd7XA56prDNydtbCCzsKbfLf2LlLbLXNUel1qDQmEuKwFXxRz
+ WsZ4Tjkm/8GyB3hy5vs4ZFEbsixcC0PAICLSKZYsppxHbkx4GgnfxoZhgXpvYU/zH8RU
+ z5p34w+cA9qo43YfsTX3fWTYweYxdQDNUD8rqwmWEqaWYR1lK8UjsVwSR7kHyivTZlw8
+ TabQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751963705; x=1752568505;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1752001180; x=1752605980;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=lEjNgu6WSzqh4p+lpcHT27k55vXxOatppgKXNT9lEspgaFbyp5AWAr8XiVNkftyglA
- PPFlgpoI6hX2b6n79AGlhgFHkpngHNGX8EZkZB94Qm+fsy3X9UDQMh4N79j9zWOXjfdt
- zIAHTUw1XwrsPDDrqr7Y3PfU2Ut4tARQ6BIKO4uR/ZvwMNXOLBPYjdIcqTEP9sSKG84s
- dOTl/XFKL2tUczkhviVlw5W7PLXGYfWjAlIP4a6vZKVciyfb0W4Q4Ctqiq+4SMuxBvAg
- 6xmn7SKpVaBhmdFSMrIEe9FhBN362BWom4nSQoTXSR8Cv/FESLXiJmEUT5VYT4LCmVDh
- u+vg==
-X-Gm-Message-State: AOJu0YwhAHWstchUon+mUBL2aa3RLYwmhn/sfnoQSsJ7e+Q4lZQhD1w9
- Tc90bolSbod03zBtKcosPQMR4OuwwpxU2fH4ym8ZJgocFIq2i9FMPApJbXdZEN92lvyuJLUA8sG
- 1pf3byh6T/1eu0/vmr47/F1T9NG8z0O8O7xyT0hNsgLeroHWUViHGYeS9
-X-Gm-Gg: ASbGncsZvhc4BtRC/Ve5OUxNg7Km9rXIBACkLDsb08ZP9URCR/HxjZBSPZBwCxq2cQ/
- N+bhKIQ7xJzd7R6b/lcm9ggFuB6WDVaoKWUvElsikmt4e3lJbA7HtH2tCVb5h94/MxsGjm+7kDL
- wHaY7Ib171I/DCXy+4qGjiDTwjlOQuqBIfaB+io9tDNtPBNSFJGKrdNh+O7aJ7tejgBv5S8gB4b
- m+J8TWOmlBuW4Hx7iyBAJupO0Y/Y/y4Ow0pDUUjOOCbPj11TlAwyWDqNq4Enjsi21MxERLsrEsL
- AnVAoCrj+D63OeSG53sKhhTwTJU=
-X-Received: by 2002:a05:600c:8411:b0:450:cabd:160 with SMTP id
- 5b1f17b1804b1-454cd4b49c8mr20051785e9.3.1751963705172; 
- Tue, 08 Jul 2025 01:35:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFuq228yys8KKAslTF+KBC8WlfLDQa0iRUsy2Y/shqoZ1rnYNPHPQNK3PwP453nsM6GYXe3lg==
-X-Received: by 2002:a05:600c:8411:b0:450:cabd:160 with SMTP id
- 5b1f17b1804b1-454cd4b49c8mr20051445e9.3.1751963704719; 
- Tue, 08 Jul 2025 01:35:04 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.202.169])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454cd39cdcdsm15265955e9.13.2025.07.08.01.35.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Jul 2025 01:35:04 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH] rust/bindings: allow unnecessary_transmutes (1.88)
-Date: Tue,  8 Jul 2025 10:26:06 +0200
-Message-ID: <20250708082606.49710-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250703-rust._5Fbindings._5Fallow._5Funnecessary._5Ftransmutes-v1-1-692ca210d331@linaro.org>
-References: 
+ bh=kzL69JQNXTzzWE+QcQYF9KB+BS9wTnI7qk0XtFQ0Klc=;
+ b=LdnupZzAgdKd5zdGPNX6HAoucy314rH1S/hphoGeMsxd7DA3pwpu9FmVZ18/gO1IDt
+ vBc4b7GPxkTiPBVKwXYdmaQkWQzYY08PH3vxKO6+r/t/irouCe0fmOIrbDwkcrvgX6Wi
+ n6yLIJynhS8mfR4+BU/0rTJ9uOdmM1X18DGigFFI7Vu43eTpDC6b3RA+RRrGfca9s9kY
+ poTfya8broy3cm1xOQElDCcEwKvEWOHy2zqfc4Lzg7UZNeVYXE9tpeKzGTw8DKOhSJ5r
+ UbT61wOWP2beiEk/JJ/ka+elxMb8SUA7wHbQx7TTsoqYveL4FG9T/jrq2BHeYpN0Kf0c
+ mCzQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWgJIREG2kIKeaJzLQMOz+DRJqOdccXMiMib1Y1dgDrbvNW24sjVSf2TJYOkFpj+KlATS9OLWm6JWVe@nongnu.org
+X-Gm-Message-State: AOJu0YwlWpar4Bk34Q0ww+846Yi8L3vpkLiM0zLnTdKa2v9/MqWEN9d0
+ xvXcbP4sfqbYF3H8u7p7a9qtHgIGvjlh+lShBc+ThyREBIbZhRLHXj1b2+kHQkwdwHAgKOOs9gF
+ KbWCYxIw4vqekmPRgbXD6XjQK1n+vQ4KcQfNCi7cI+OZkKf4h/UUpclyPZYOoPSE=
+X-Gm-Gg: ASbGncvooMEVE7QMFOJvOIx/jaC34UZU5QgDXPkPOYj1H5OhwAvlGohfYTfSsZZfEk4
+ jq+Z/G3axs1yMydqv8MrUN6muTxv9tx3z0jVb9z0ujN3i9YD0TcSZSHUbC7CAh98CFBDZbb/Zal
+ e0dbqvIc6wsotIWEfYFPZdpa/jrEUdpiywWaNRnrk4Mr5PSaHL8NwLLKDB
+X-Google-Smtp-Source: AGHT+IEIj2+OWKEuHs/WuoR1eHIFaMEkUiiAoexdclbWszfNjKlbljISmiozjKqu3DLZwa3dMJvA+vOwNUlre/uap3I=
+X-Received: by 2002:a17:902:f60b:b0:234:bfcb:5c1d with SMTP id
+ d9443c01a7336-23c85eb06ccmr239449995ad.40.1751963564698; Tue, 08 Jul 2025
+ 01:32:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20250708060720.7030-1-luxu.kernel@bytedance.com>
+In-Reply-To: <20250708060720.7030-1-luxu.kernel@bytedance.com>
+From: Xu Lu <luxu.kernel@bytedance.com>
+Date: Tue, 8 Jul 2025 16:32:33 +0800
+X-Gm-Features: Ac12FXzx9nI_d6ljKnI48H3U1qt08GGNwpDcdOt0sS-TtGK4-7kgkxLq6cHAV3s
+Message-ID: <CAPYmKFv9ye2_r5iMme9EXFyP8FKm-bkRb92_0XSK7kwnY-tONg@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv: Fix exception type when VU accesses
+ supervisor CSRs
+To: palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com, 
+ zhiwei_liu@linux.alibaba.com, apatel@ventanamicro.com
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=luxu.kernel@bytedance.com; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- TVD_SPACE_RATIO=0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,8 +95,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued, thanks.
+FYI, the discussion about whether vs insn fault or illegal insn fault
+should be raised can be found from [1].
 
-Paolo
+[1] https://lists.riscv.org/g/tech-privileged/message/2469
 
+On Tue, Jul 8, 2025 at 2:07=E2=80=AFPM Xu Lu <luxu.kernel@bytedance.com> wr=
+ote:
+>
+> When supervisor CSRs are accessed from VU-mode, a virtual instruction
+> exception should be raised instead of an illegal instruction.
+>
+> Fixes: c1fbcecb3a (target/riscv: Fix csr number based privilege checking)
+> Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
+> ---
+>  target/riscv/csr.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index 8631be97c5..9bebfae3f0 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -5577,7 +5577,7 @@ static inline RISCVException riscv_csrrw_check(CPUR=
+ISCVState *env,
+>
+>      csr_priv =3D get_field(csrno, 0x300);
+>      if (!env->debugger && (effective_priv < csr_priv)) {
+> -        if (csr_priv =3D=3D (PRV_S + 1) && env->virt_enabled) {
+> +        if (csr_priv <=3D (PRV_S + 1) && env->virt_enabled) {
+>              return RISCV_EXCP_VIRT_INSTRUCTION_FAULT;
+>          }
+>          return RISCV_EXCP_ILLEGAL_INST;
+> --
+> 2.20.1
+>
 
