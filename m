@@ -2,76 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC87AFD749
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 21:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A92AAFD70A
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 21:22:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZEC2-0001g5-GN; Tue, 08 Jul 2025 15:41:33 -0400
+	id 1uZDsN-0008SG-0a; Tue, 08 Jul 2025 15:21:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uZBMH-0005uQ-5i
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1uZBMH-0005uM-2H
  for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:40:28 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uZBLV-0007wQ-FQ
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:39:24 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-60c79bedc19so7132562a12.3
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 09:34:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751992486; x=1752597286; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rQnPm7OMUxUj9kgIE7V/5Xg89kaFsjsthn3fZVSeLuM=;
- b=bG6WcPR/ReTLZFc2ANM5Mdbahbv1x1KMYbQHGyUL08Uvar6aSwE060AOCKk5aZrkND
- nMaCNo7gcJAo0cAGywR8D6dwlLpsP14aaU/fC/bAD/yW2Vu69qzL1+9oN/qUF0UVww2k
- 6kXgZrgERpvuZvlCOaU8W4Mkrb/uTvwD5EL4IIajpaZRqLeNnqTdkBbXZ1v4Pzs5gVnV
- +Et9rRsFjTziX5zSlGUfCsmK9ttaV25THEhVriVRq5EHxlPDRoKgEAl7D8Vfc6ECHDvP
- p1FfrTodXN2u8eMC7ZGmHUAGTndaEWNmXybsfB+10GD/RAwbQaXUL/I+7wTg9suTBaEV
- P4NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751992486; x=1752597286;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rQnPm7OMUxUj9kgIE7V/5Xg89kaFsjsthn3fZVSeLuM=;
- b=qkytoMxTnCQ87Kqj/KO3Mgepci0DLZ2a9kHYnhH8XEmkMFTyKdjgweOfNyFCrIXGhX
- 5bw1lVnS0yvnIYpOX5imU8fsWMy+HlU55KAxh8nK3hMknFbV1aimYHbHyfVzm0LWE6vo
- WGhoih9wX+tf6/IeqkGtKtiXnQ5yqPaKpeMdYt0WZS1Z+IV8Kn/xDUpJA56fAkeu3EWt
- PUO8SF1JzEooQzgGY88RDv3yARsyVS7xMRiBNTEdVzQ5/F72YrDuSNDZeakicbtRuQlD
- UsIS4zE9g4iphsyYfRcbTsxhLqckNUOXtR2zmzpwOk/S4kaUJ1Vai4WjLQJQCvx8Src4
- GYPA==
-X-Gm-Message-State: AOJu0Yz7BOErznYdYDXJ1jt4rLYtMuq2SrIy56oNM41iEJuON6DnkIkn
- A8c3kpl7qGeZuPVQY6oSmBP3CE8xhmOJLCOtJccQjqW2B129YSNKoD6xq/8JQcuXPrIQ5+Mk2md
- tFfgWENx9av7f10rdXJsIgII/mCh9upiqMMGwMBQL5TLj+hCeGCL0hVfGqw==
-X-Gm-Gg: ASbGncv+wuxYqmQKcBt47q0GCe72zRrTKm1Fe1I2cGoDjzGpSvSu4GjnzbdOIsZNJ0X
- kkR8Vfcr0/hQF+XFCxscZyUME7tUpxwc8EuvNQOdAXPC4AjdGcDY0cUzJbpEQ0K+ihgQibxlfUD
- 1YL080imGGof3US/+98xxd8fbD2IpbeNnQl3zpKfc1GGE=
-X-Google-Smtp-Source: AGHT+IFfpggFdOxj172OW8RoiRnOg8d7/ZBIpPvPeI6W60v/YNcVFVsXg4hutuy34RcOlZ+7dHMKG46fAMK1ZcNruGY=
-X-Received: by 2002:a05:6402:51ce:b0:608:66ce:14d1 with SMTP id
- 4fb4d7f45d1cf-60fd2f85538mr13613177a12.6.1751965911713; Tue, 08 Jul 2025
- 02:11:51 -0700 (PDT)
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1uZBLh-0004UL-EW
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:39:34 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8DxjXIRBm1ohF0kAQ--.12598S3;
+ Tue, 08 Jul 2025 19:50:41 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowJDxQ+QQBm1oiVEOAA--.17600S2;
+ Tue, 08 Jul 2025 19:50:40 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH 0/6] target/loongarch: Enhancement about tcg mmu
+Date: Tue,  8 Jul 2025 19:50:33 +0800
+Message-Id: <20250708115039.2724551-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20250703-rust-mem-api-v1-0-cd5314bdf580@linaro.org>
- <20250703-rust-mem-api-v1-1-cd5314bdf580@linaro.org>
- <591f8a81-2c8e-4e30-abf2-4571afed41b4@redhat.com>
-In-Reply-To: <591f8a81-2c8e-4e30-abf2-4571afed41b4@redhat.com>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Tue, 8 Jul 2025 12:11:25 +0300
-X-Gm-Features: Ac12FXxuB6uXlv8JaSfaIgQfWwvDlv35gmb2UGJcAEboo3yqOfQmRkMT69epVEo
-Message-ID: <CAAjaMXZ3JziZ6gUHF67=nqvxzUF0M46SPqftRKgHOYYLaUxjJg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust/memory: replace size arg with Bits enum
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, 
- Zhao Liu <zhao1.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJDxQ+QQBm1oiVEOAA--.17600S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,59 +54,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 8, 2025 at 11:35=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> > We have the ability to make memory accesses use a typesafe access width
-> > type in Rust, which the C API currently lacks as it does not use a
-> > newtype wrapper for specifying the amount of bytes a memory access has;
-> > it uses a plain 32-bit integer value instead.
->
-> I find this both verbose and (ok, that's subjective) ugly due to the
-> extra import, the underscore.
+There is some enhance about LoongArch mmu tcg emulation, add new
+header file cpu-mmu.h and function loongarch_check_pte(). Function
+loongarch_check_pte() can work on both TLB entry and pte entry.
 
-Yep, I agree on that, but I wasn't sure what name would be better.
-Whatever type-level improvement this patch brings, it's small, though
-nice-to-have. We can drop it, no problem.
+This patchset mainly is code cleanup and enhancement, its main
+purpose is to work for hardware page table walk emluation in future.
 
->
-> There are two parts on the patches:
->
-> 1) the extra checking on impl_sizes and valid_sizes.  That's valuable,
-> what about just adding something like this:
->
->          assert!(min =3D=3D 1 || min =3D=3D 2 || min =3D=3D 4 || min =3D=
-=3D 8);
->          assert!(max =3D=3D 1 || max =3D=3D 2 || max =3D=3D 4 || max =3D=
-=3D 8);
->          assert!(max >=3D min);
->
-> It can be validated at compile time anyway, since the functions are
-> pretty much always used in const context (in fact, for C code there's a
-> scripts/checkpatch.pl check that they are declared as const).
+Bibo Mao (6):
+  target/loongarch: Move some function definition to kvm directory
+  target/loongarch: Define function loongarch_cpu_post_init as static
+  target/loongarch: Set page size in TLB misc with STLB
+  target/loongarch: Add header file cpu-mmu.h
+  target/loongarch: Add common function loongarch_check_pte()
+  target/loongarch: Use loongarch_check_pte() with page table walking
 
-Yes sounds good!
+ hw/loongarch/virt.c                  |   1 +
+ target/loongarch/cpu-mmu.h           |  39 ++++++
+ target/loongarch/cpu.c               | 181 ++++++++++++++-------------
+ target/loongarch/cpu.h               |  11 --
+ target/loongarch/cpu_helper.c        |  99 +++++++++++----
+ target/loongarch/internals.h         |  20 ---
+ target/loongarch/kvm/kvm_loongarch.h |   4 +-
+ target/loongarch/tcg/csr_helper.c    |   1 +
+ target/loongarch/tcg/tlb_helper.c    | 103 +++------------
+ 9 files changed, 227 insertions(+), 232 deletions(-)
+ create mode 100644 target/loongarch/cpu-mmu.h
 
->
->
-> 2) Passing Bits to the read and write callbacks.  The argument is
-> ignored for pl011, and converted with "as u32" for HPET.  I find this to
-> be worse than before, because it's very unobvious that _32 is defined to
-> 4 rather than 32.
 
-Maybe do a `Size` enum instead that has variants: 1 instead of 8, 2
-instead of 16, 4 instead of 32, etc.?
+base-commit: e240f6cc25917f3138d9e95e0343ae23b63a3f8c
+-- 
+2.39.3
 
->
-> The main effect on generated code is to add an assert! to
-> memory_region_ops_read_cb() and memory_region_ops_write_cb() that's
-> similar to the above.  I'm not sure of its value, either: if the size is
-> not 1/2/4/8, memory.c/physmem.c must have screwed up big.  It's not a
-> safety concern, either, since the size is not used in any unsafe code.
-
-Yep it's more of a guard rail since we can't have refined integer types.
-
---=20
-Manos Pitsidianakis
-Emulation and Virtualization Engineer at Linaro Ltd
 
