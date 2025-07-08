@@ -2,135 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6E8AFD9EF
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77455AFDA41
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:57:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFGI-0007XJ-W1; Tue, 08 Jul 2025 16:49:59 -0400
+	id 1uZGJB-0004on-L0; Tue, 08 Jul 2025 17:57:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uZDwl-00050G-Sp
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:25:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uZDwh-0001r5-0F
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:25:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752002737;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=j3y43gfS3ULmLf8QclmoQykkewOEYqM7QnG/7g38g9Q=;
- b=F3TNbDzZVz+yUHeJOd66XNED0z/eb1wWnCN602p38c+KA7JSIhirhKAhSlAIf9V8zWnqK6
- 9d6/AvVzafDkzR5OzD3fMB8SgydkBlt9r11nhKIFoSfsAg4ecaJIGMQ+PZXkynAYYC2bGA
- Mad0NJE6UEC8Q7VYMz0nAXs8bZzFEFc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-4AyPNuFfPy6OWguAcaD93A-1; Tue, 08 Jul 2025 05:59:53 -0400
-X-MC-Unique: 4AyPNuFfPy6OWguAcaD93A-1
-X-Mimecast-MFC-AGG-ID: 4AyPNuFfPy6OWguAcaD93A_1751968792
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a6d1394b07so2639934f8f.3
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 02:59:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uZFUt-0001E9-R6
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:05:04 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uZFUr-0005XJ-EA
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:05:03 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-453608ed113so53289905e9.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 14:05:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752008699; x=1752613499; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=63P8ppJ+kbnHkeSkX/5RwU01yDhFPuboIXCeZwWOVTc=;
+ b=mTIH3hFzDVrWapF2YDel9hjNRPji5/TZnNLGmCyAJDpQnXaxh0v/qpw9l+y7ko+NTH
+ NFdtdDT82oM4UwAZ3pGsFR+F7ru9dLbITKleE2SsL9XLGrHFz0ZJtCUrOZ4O3Ha8UK/k
+ BMbSi5jGrxMPcGP4FhE2XHOLwGoWHrYrpZmNLCuOjBHMrCFoXRVlLkvnZfRoINS7NUBE
+ qeCgrR83EiicgJLjn+LRPMjXkUvBm/4VQrv9eqeq93i/GqbnADDpJpO/myGdJ8GWVtdy
+ /wHjQbtWr9MiN3MEF7RGvZelnrJnfjsyJZxrf3VdKP8mBDZt8gVvbE2dYkqJmG5/3kqQ
+ uRmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751968792; x=1752573592;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=j3y43gfS3ULmLf8QclmoQykkewOEYqM7QnG/7g38g9Q=;
- b=bXDeWectTTX/4Ec2dRERJojAEz/TSM/e8V7B2tDEaYp4KTvItbgkz/aiaTUMfJ77Po
- ohLlSthA4dFkTnaSFSEN3IqMb/Cs3wwJ9FIwin4ToW05ErEfv9fI+EgfpvWC4x6QSPIF
- Dh7NIyPm3CsmK7yHFPXRKhFDC1JWFTjSLiqj7XAYla04Uf1TD3WYCHT2uridVPWy+/tG
- NxtRk9zL7aOBKne/g+65+QeFqh0s3WOSa1FDUOfIR2Lbc7Nm1zQfBEWvgYnrKLlrPNrt
- ZP/SWXHkdoJ64hA0JNOMhBXQd4ml/K3nhFI3cCcbVy2GIMbs8foa3G7xlJzJ6cIBxN+t
- r+Sg==
+ d=1e100.net; s=20230601; t=1752008699; x=1752613499;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=63P8ppJ+kbnHkeSkX/5RwU01yDhFPuboIXCeZwWOVTc=;
+ b=krOrhvBsA29L98LSiazxG//LjljzFjYEBAEMH4Ee6dluAQwCjTPVbMNlB+t+9uzhxM
+ HmWh5URw6AUNgWI0o11q1HjEbksZyd1sRAlE2ehA4P9rGZtAo1YRETRo1+TpnweGKYdW
+ gafjRx73bJ6quj9xO9CuwHBuDudnH6GWqltDoFDGYxbKGOwon6yNCMM4kyg/5oRghVUR
+ R/qUE+WhRTNhSjnXzae/o9k9/15fMJKJX2Eive6X2id+g8clz2dQQxOMwrLBp2WljSen
+ bEt2zKekFqolUzprjk24uuXrqSeibPfKwv0zOP8rRY4L/LL9eu/xw4emvXYv7yOwmzTB
+ N2+g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVBzR08sFO1gAiKA38k1TxyaSVXZdKrIdc4VfoT3fOAiF48V2I86dXSZAKbuiI4OWClVkJmJ7QAQHkZ@nongnu.org
-X-Gm-Message-State: AOJu0Ywmn8mXeG9O/72H1dLvK55crGNW2vcfeFQMcYMai7U3GnrlW/1K
- Y3K6/dgvsfr+VjH9ZkzOEFSsG2clJdvjATIipmhcQylLHP0QKCC3hPPAmTtfKs9pciifsOqNjdP
- 1Xh3dGlCSG6ORLr6DDE1FxAVMGswbfdUC1gWmAw/tW2YOIz6trfzXx6Qb
-X-Gm-Gg: ASbGncvcI+S8svlUlta3R5V/hri9j+o3HNvYoekBL/tjlM9hYLcYDaXRpDu9J39iZMN
- T0ZOdDAgH198aPhVWkxjneN+068w4Dn8XzIz51fEt5MdiXrk5hy90mRq0gR5jxwEs/UpTitkGR1
- DWH2gxL4H9h1/pSWzyUoNZMgiIkPV8iq9RLGTxIbEWtyPA1dh1Qz8HeeZoAkMon1chQ2U12pN9c
- vVZ/ZtT7SRgkKhJRLCsWdmtAEgTuBeEqiSPD5VwVoQnmwDDQhzszUzEIMqc2pB/tLdIZIGcWnxi
- Xnv9LuWL/mAg7uRNVvbSxaJmfWI=
-X-Received: by 2002:a05:6000:41fa:b0:3a5:3062:793a with SMTP id
- ffacd0b85a97d-3b5ddea219fmr2294383f8f.33.1751968792027; 
- Tue, 08 Jul 2025 02:59:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGzumgir7n2PYM032ITEV7KD5acBE+7RKmq/C8GwSLethiWbFgcils7v68Fr7EWBBZx6W38Mg==
-X-Received: by 2002:a05:6000:41fa:b0:3a5:3062:793a with SMTP id
- ffacd0b85a97d-3b5ddea219fmr2294367f8f.33.1751968791634; 
- Tue, 08 Jul 2025 02:59:51 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.202.169])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-3b4709c6b2dsm12297121f8f.40.2025.07.08.02.59.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 02:59:51 -0700 (PDT)
-Message-ID: <65f5b704-624c-4e8f-b778-b6f2075ea1a5@redhat.com>
-Date: Tue, 8 Jul 2025 11:59:50 +0200
+ AJvYcCUfuOKuS13vWkuOfw7s7SLJjYG1+r8d47LrE5xBh6Xpp4KmJNopOqD1UBriK1Y/E8Q569rE95YrN+db@nongnu.org
+X-Gm-Message-State: AOJu0YxED/KT1Xlv7AIQ+FXmLJEG0LjkJW2myAD1PaWrXCQBbpL5aYBb
+ KBdLM52xe6BgPzRr+vjZ1O2epn3DPIIWvixSAcdC0WOUXuI1mWMgshFqrpV41hKxH71MNqBoL85
+ XhimPXCc=
+X-Gm-Gg: ASbGnctUIUkQ+0mTFY5IlNs4Md2k2bytAs+p9RaiqJomenDU5LN3OZcxB5+NDIrVxNd
+ A4F1nUPVoBDXIuoW10RC7Sflf8lFkAbrrW5mBdPHnATvdLbLwKG11WjkU34n/HganBGNEEOIxLc
+ qLjb5m/Y6kw1zSCEtbtuWOv3LbNl0wN0/QKlSoHvr6+fGG5zdngzPc+JQZldYNRNjPTtx966qUa
+ JwAtJVHzMonhsyrl2gnE8HAQwORJVL6rMds5dThvlBggJEmHZ2LpOuFgpBJTxKR5CJSUnbQ9M3x
+ dVCVXeqfDvDi8lVlWHxuiLP7FfjDdMejlGeGc91qiqdv56ZPFI8LFZgAxURuEUjPAmMn/W9a/A=
+ =
+X-Google-Smtp-Source: AGHT+IHwacqghYqg0I7/CIVSaLePxtGwNUsdjSbZU1XKr86Yx/rN1gYt8dxJGSCHKqQ+MWG7QFgmew==
+X-Received: by 2002:a05:6000:144b:b0:3b2:fe84:a10 with SMTP id
+ ffacd0b85a97d-3b4964c5ba2mr12853254f8f.0.1751969713232; 
+ Tue, 08 Jul 2025 03:15:13 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-454cd4938ffsm17223585e9.21.2025.07.08.03.15.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Jul 2025 03:15:11 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id D8C645F88F;
+ Tue, 08 Jul 2025 11:15:02 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org,  qemu-arm@nongnu.org,  Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>,  qemu-block@nongnu.org,  Richard Henderson
+ <richard.henderson@linaro.org>,  qemu-ppc@nongnu.org,  Paolo Bonzini
+ <pbonzini@redhat.com>,  qemu-riscv@nongnu.org
+Subject: Re: [RFC PATCH-for-10.1 v6 00/14] target-info: Add more API for
+ VirtIO cleanups & introduce ARM macros
+In-Reply-To: <20250707135403-mutt-send-email-mst@kernel.org> (Michael S.
+ Tsirkin's message of "Mon, 7 Jul 2025 13:55:20 -0400")
+References: <20250707172009.3884-1-philmd@linaro.org>
+ <20250707135403-mutt-send-email-mst@kernel.org>
+User-Agent: mu4e 1.12.11; emacs 30.1
+Date: Tue, 08 Jul 2025 11:15:02 +0100
+Message-ID: <87frf7ugyh.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] rust: add Derive macro unit tests
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Zhao Liu <zhao1.liu@intel.com>
-References: <20250704-rust_add_derive_macro_unit_tests-v1-0-ebd47fa7f78f@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20250704-rust_add_derive_macro_unit_tests-v1-0-ebd47fa7f78f@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,27 +111,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/4/25 12:26, Manos Pitsidianakis wrote:
-> We don't currently test our proc macros and it'd be nice to do so.
-> 
-> Usually this would be done with something like
-> https://crates.io/crates/trybuild which runs cargo and tries to compile
-> a test input, and checks for success/failure. However we cannot use it
-> with meson directly, plus it would drag in a lot of dependencies anyway.
-> 
-> Instead of compiling, we can easily just expand test input into token
-> streams since we already split macro implementation into separate
-> functions, allowing us to either get a TokenStream back or a compile
-> error message.
-> 
-> You can run the added tests directly with this meson command:
-> 
->    meson test rust-qemu-api-macros-tests
-> 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+"Michael S. Tsirkin" <mst@redhat.com> writes:
 
-Nice.  Adjusted for MacroError removal and applied, thanks.
+> On Mon, Jul 07, 2025 at 07:19:54PM +0200, Philippe Mathieu-Daud=C3=A9 wro=
+te:
+>> Rather than re-spinning the whole "single-binary: Make hw/arm/
+>> common" series, restrict to the API additions, but include
+>> examples of their usefulness (hundreds of virtio objects
+>> removed from default Linux build).
+>> Time passed since I context-switched out of this work so I'm
+>> not sure the DEFINE_MACHINE_WITH_INTERFACES() implementation
+>> is in the form Zoltan asked.
+>
+> I think I'd prefer to defer cleanups to post 10.1 - already
+> too much on my plate as I was out sick. Unless there's a reason
+> I'm missing to rush this in? Is there a feature we want in
+> 10.1 that depends on it?
 
-Paolo
+This is all part of reducing the number of duplicate builds of device
+models which after the stubs VirtIO is the main remaining sub-system due
+for clean-up:
 
+  =E2=9E=9C  ./.gitlab-ci.d/check-units.py ./builds/system/compile_commands=
+.json -n 80
+  Total source files: 3595
+  Total build units: 5658
+  Most rebuilt units:
+    ../../dump/win_dump.c built 29 times
+    ../../cpu-target.c built 29 times
+    ../../system/arch_init.c built 29 times
+    ../../system/globals-target.c built 29 times
+    ../../page-target.c built 29 times
+    ../../page-vary-target.c built 29 times
+    ../../target-info-stub.c built 29 times
+    ../../migration/ram.c built 29 times
+    ../../migration/target.c built 29 times
+    ../../monitor/hmp-cmds-target.c built 29 times
+    ../../monitor/hmp-target.c built 29 times
+    ../../accel/accel-target.c built 29 times
+    ../../accel/stubs/hvf-stub.c built 29 times
+    ../../accel/stubs/nvmm-stub.c built 29 times
+    ../../accel/stubs/whpx-stub.c built 29 times
+    ../../accel/qtest/qtest.c built 29 times
+    ../../system/main.c built 29 times
+    ../../hw/i386/kvm/xen-stubs.c built 27 times
+    ../../accel/stubs/xen-stub.c built 27 times
+    ../../accel/stubs/kvm-stub.c built 27 times
+    ../../hw/9pfs/virtio-9p-device.c built 23 times
+    ../../hw/block/virtio-blk.c built 23 times
+    ../../hw/block/virtio-blk-common.c built 23 times
+    ../../hw/char/virtio-serial-bus.c built 23 times
+    ../../hw/net/virtio-net.c built 23 times
+    ../../hw/scsi/virtio-scsi.c built 23 times
+    ../../hw/scsi/vhost-scsi-common.c built 23 times
+    ../../hw/virtio/virtio.c built 23 times
+    ../../hw/virtio/virtio-config-io.c built 23 times
+    ../../hw/virtio/virtio-qmp.c built 23 times
+    ../../hw/virtio/vhost-backend.c built 23 times
+    ../../hw/virtio/vhost-iova-tree.c built 23 times
+    ../../hw/virtio/vhost-user.c built 23 times
+    ../../hw/virtio/vhost-shadow-virtqueue.c built 23 times
+    ../../hw/virtio/virtio-balloon.c built 23 times
+    ../../hw/virtio/vhost-user-fs.c built 23 times
+    ../../hw/virtio/vhost-vsock.c built 23 times
+    ../../hw/virtio/vhost-user-vsock.c built 23 times
+    ../../hw/virtio/virtio-rng.c built 23 times
+    ../../hw/block/vhost-user-blk.c built 22 times
+    ../../hw/vfio/listener.c built 22 times
+    ../../hw/vfio/container-base.c built 22 times
+    ../../hw/vfio/container.c built 22 times
+    ../../hw/vfio/helpers.c built 22 times
+    ../../hw/vfio/pci-quirks.c built 22 times
+    ../../hw/vfio/pci.c built 22 times
+    ../../hw/virtio/vhost-vsock-pci.c built 22 times
+    ../../hw/virtio/vhost-user-vsock-pci.c built 22 times
+    ../../hw/virtio/vhost-user-blk-pci.c built 22 times
+    ../../hw/virtio/vhost-user-scsi-pci.c built 22 times
+    ../../hw/virtio/vhost-scsi-pci.c built 22 times
+    ../../hw/virtio/vhost-user-fs-pci.c built 22 times
+    ../../hw/virtio/virtio-crypto-pci.c built 22 times
+    ../../hw/virtio/virtio-input-host-pci.c built 22 times
+    ../../hw/virtio/virtio-input-pci.c built 22 times
+    ../../hw/virtio/virtio-rng-pci.c built 22 times
+    ../../hw/virtio/virtio-balloon-pci.c built 22 times
+    ../../hw/virtio/virtio-9p-pci.c built 22 times
+    ../../hw/virtio/virtio-scsi-pci.c built 22 times
+    ../../hw/virtio/virtio-blk-pci.c built 22 times
+    ../../hw/virtio/virtio-net-pci.c built 22 times
+    ../../hw/virtio/virtio-serial-pci.c built 22 times
+    ../../hw/virtio/virtio-iommu-pci.c built 22 times
+    ../../hw/virtio/vdpa-dev-pci.c built 22 times
+    ../../tests/unit/iothread.c built 16 times
+    ../../hw/nvram/fw_cfg-acpi.c built 13 times
+    ../../semihosting/guestfd.c built 11 times
+    ../../semihosting/syscalls.c built 11 times
+    ../../tests/qtest/tpm-emu.c built 8 times
+    ../../hw/vfio/platform.c built 7 times
+    ../../tests/qtest/tpm-util.c built 7 times
+    ../../tests/qtest/tpm-tests.c built 7 times
+    ../../hw/virtio/virtio-mem.c built 5 times
+    ../../hw/virtio/virtio-mem-pci.c built 5 times
+    ../../hw/virtio/virtio-md-pci.c built 5 times
+    ../../tests/unit/socket-helpers.c built 5 times
+    ../../tests/unit/io-channel-helpers.c built 5 times
+    ../../fpu/softfloat.c built 4 times
+    ../../semihosting/arm-compat-semi.c built 4 times
+    ../../target/mips/system/addr.c built 4 times
+
+Aside from reducing build times and overall load on the CI systems its
+required to advance the single-binary QEMU build and get us closer to
+being able to do proper heterogeneous emulation.
+
+I don't think missing 10.1 would be critical for the single binary proof
+of concept but obviously as with all changes that touch the whole code
+base the longer the review takes the more time they spend in re-base
+hell.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
