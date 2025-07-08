@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84B5AFD963
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A70AFD9B5
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:24:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFKQ-0003cj-NN; Tue, 08 Jul 2025 16:54:14 -0400
+	id 1uZFKj-0004GC-BF; Tue, 08 Jul 2025 16:54:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZESt-0007k2-Pk
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:59:00 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1uZETv-00013l-44
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:00:03 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZESr-0002lt-UO
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:58:55 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-60c6fea6742so9941574a12.1
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:58:53 -0700 (PDT)
+ id 1uZETr-00035g-9p
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:59:57 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-553dceb342fso4583115e87.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:59:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752004732; x=1752609532; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=3HsYTLj5EGS3LIX+JzyfOQ8PUo130XOAvWfkSjLItdQ=;
- b=F27+2sn4kDlv1DDXbe5JInZeZjtr5hBt64PE/HyydP5yV7pxpprZZ07pfzMG8jQqyx
- /2sIT89UU88hya8otOALGxsVryRm/63UGvFzukttiUP28o691byyJbTg5MVEitLhBOeB
- /A8Uk2fO9lQ8UHMXaT7i8wq4vtx0lFlSp5B6iCDgPw6/hIgxqmAAS7R+rZAJTCx6CzBX
- lRlCbIDU/Sjp80c/cudc47fZww1aPHvih/58uNTBE602k+4NC9QbbWVe92KTWW9fLg8r
- rWDhWv9sa5qOEH2mqLMTjmZXV95BFoPYMrqYJnjJOrI7X6B+27S37+lwAHiiL3oQYQBA
- B+nQ==
+ d=linaro.org; s=google; t=1752004793; x=1752609593; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GHvIfEToA34AUrJx/MLc8GOT8YL8A2v7KBo+787ye5o=;
+ b=qFiHFrQ1widGsfPhAXm+DLkMs75WW19/ihPMhrXjg/4jHcQkFDaOozUEwGMXdRooCP
+ t5RI05J5A2QUfAMs3cvbECENtMcqNXWTgcEkfPI2MHzsQV3ms4goOc8jWEu5HUV0Qmrd
+ KJhdFAlsdnVpVlL79OXcYRArGd3BaJ4tWis2D5J4C0w1cf7onCpXapRMbY66pj96V73t
+ gSDhDStcDl7aVB1zkfFPbUGtK3ab087bF121Nl2+RXnzdgCfXV715C5m/RH3SD5mMoJU
+ Wcqplo7XFQythZRIUZyCEMLfTa0zdutw+uBCA8CtA8vdfXf8n+3kkT7X+5h5f6eAe9XM
+ 2jSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752004732; x=1752609532;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3HsYTLj5EGS3LIX+JzyfOQ8PUo130XOAvWfkSjLItdQ=;
- b=WcUy5zqf7BCswvRnA8GGcZ6YMk/qaTyV0gkHiufkod5wSCYKn5/KSPylkW3FPHDVJx
- 8bHd70HAurB0FKxbvM6mdEsFX+6YiMZ90APvhvZ93TMwFa1tDwAHy6CAY7EI8Up8Jhr8
- GtmYFFvV6P7vJqJodlOP+6hFgsDQGK6JDPOl0Z8s9KDIjA623yefFf+pmKeM9UoBCmiQ
- LKjeHKURhOT2gLhMfUlexd7OvUDX+fzEVJQ9/yLO1uLJSLMF1I5/JKi9fFeRRJfRO5rx
- 469XhEk3DRmOVY3hCgqwbFH13MAdkq27Z6GQ8uNoXnEr9PVdUC//qSPUTI8q9K79+J7a
- Cp/A==
+ d=1e100.net; s=20230601; t=1752004793; x=1752609593;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GHvIfEToA34AUrJx/MLc8GOT8YL8A2v7KBo+787ye5o=;
+ b=OQvMc5g+EecgWYTP0IpHZgPcaybXMqRFi1FTVUGQP0W2Gz2NFVKToYXP0uIfVhYydP
+ ZQn0OwirTxHB1lzooOCXL7/MebEsKkpuhwRggfbjFqxxp5UZyikfPZCXjOjt0f79+jGr
+ qDzQ7aiV+/lZdQGNH5u9SN4fxRMY6FhcmdNhOpLhtOZvA5YJ6Y9ep9xtDm/LS5dlHek/
+ HyXtv7PvucO7+9f9DaQp/8aEIxIBT4T6tTv6i8mW+6a2+mwnmNsIe6hJ5eS3Zm7/QO14
+ 73BdMNzaBx4NU6tgQBqjM25FGvgvXuDQ5FhBkhqCfqgUAXdXfS3R00gLT75R0I3U8hjV
+ MNfQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXMAoPZXYPPrCcg7vvuYKJrhGxtGi4hB0XzcfzUEeWqmcjHiKm1nl41cSNkDyTXbVW18qDs4i37vmrQ@nongnu.org
-X-Gm-Message-State: AOJu0YyvAtAZv+H6rISPjWS7YHRTc5rOFMqEBBLsaPrgu7boiKlB4kad
- Gb6Ew4JlBcg5YYqn40kSFEMRpNw1VcN1tV5JeiBB2PKPINDEzj0y/Zzr4G3d80zdmExl75x0RpL
- UQqz9
-X-Gm-Gg: ASbGncuDMhZjInI34igbSsl7T9yt6jX7omMELT8iZksr3fejaP6lEnHAzgk0yOhUyxk
- NNKOlI9F18lGLIXtkO9eO+ridvjmeCjYeDlqz3RUccMrM2ned/jk8+TUKU/dfip1VcefqUQiXkQ
- AVXH/q5I15zQdS2dN29cO+iuwCWC3kofv7awGDanq4U9l+MYbEvTeYnvsyBMCKZN8jmGcBrPdd5
- pfW0h3JH44/Xu3v+8QN9ICpsIYdAhs3jWNwfvQpyCMKekbml8jY+diKHTFRVBI4jnryZNr5a6Bi
- REXouLf0wTIo3fzEzoQAv6XKWbdUmzBPCMv1sFehB8+FZsHWsqd93ZhwhNWpxitoBVEB
-X-Google-Smtp-Source: AGHT+IH7zJde7I8fbcPdzlEJEgC+vFaRV9u7yJkZcHsXc+sVNVghZbtval3q9/JwE3wy5rU8Hts/jQ==
-X-Received: by 2002:a05:600c:64ca:b0:453:9317:8aa0 with SMTP id
- 5b1f17b1804b1-454ccce358emr27822845e9.32.1751975561259; 
- Tue, 08 Jul 2025 04:52:41 -0700 (PDT)
+ AJvYcCU1arLvOTr9Vek4VRqMfDlcN6GutTSb9BVMMcbKCw2m1dpni1UKY+djAb1FwuCfUAcbUoSQfhPASA94@nongnu.org
+X-Gm-Message-State: AOJu0Yz0wdiWHzcLd1eEKfoL0R0eyt0VcPdBAsnhnql0onRQshXwxpZR
+ 5hFbxFdXsE8BA5mvW3h1hjWNta51BrbaeW2Bwmc9adOBBUrxStDbTf/zGtr/rRHryCzwROFaVGV
+ WrTEx
+X-Gm-Gg: ASbGncu4C++hgy5mALmy0a6PH5tlMgYlGhmfbhnX328Sc3gcVRTfyKSdrPiTKUKDcCr
+ IYBrM62LFzh1JOW5pk5U3AwL8P8/rWyYB1JPdF56mKUdgN2woazPneK6rphPd3/wWMvK52Akahp
+ OTqeDPs9lsAcxIlXeS8hIxNpp9yC9dF8Yms1dE9zJdhxSjZKQVr8jO8hOILTvYAt9ANE9aj8NZQ
+ drX/HV79EjYYCV3gtcgkVW6I22/V2w2dvlfiyI8wxB+MXbSKF2dj9X7ys2VNen4zLepEn/Avo5I
+ DPZ/yDD3ezkrHWWNvuDpN7yrLsLE0aKDvJOE5N7e1pKeA0kbUS+QpL/4pbA5W1INbV/P
+X-Google-Smtp-Source: AGHT+IG+A4X0nnNLJ5sc21KLUiKDswTMHI3fl5bj3zzRZZnPwB57X4e5Jvn63jQmNfRazRUKGQKb1Q==
+X-Received: by 2002:a05:6000:400b:b0:3a4:e8c4:7a78 with SMTP id
+ ffacd0b85a97d-3b5ddf02cc6mr1893228f8f.52.1751975562263; 
+ Tue, 08 Jul 2025 04:52:42 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454cd4a68ebsm19731255e9.39.2025.07.08.04.52.39
+ 5b1f17b1804b1-454cd4a68ebsm19731255e9.39.2025.07.08.04.52.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Jul 2025 04:52:40 -0700 (PDT)
+ Tue, 08 Jul 2025 04:52:41 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH v2 0/3] hw/intc: handle GICD_TYPER2 for KVM GICv3
-Date: Tue,  8 Jul 2025 12:52:35 +0100
-Message-ID: <20250708115238.667050-1-peter.maydell@linaro.org>
+Subject: [PATCH v2 1/3] hw/intc/arm_gicv3_dist: Implement GICD_TYPER2 as 0
+Date: Tue,  8 Jul 2025 12:52:36 +0100
+Message-ID: <20250708115238.667050-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250708115238.667050-1-peter.maydell@linaro.org>
+References: <20250708115238.667050-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,43 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The GICD_TYPER2 GICv3 distributor register is one that is added
-for GICv4.1; previously this was architected as a RES0 location.
-Our TCG GIC doesn't implement GICv4.1, but for KVM the kernel
-might support it.
+The GIC distributor registers GICD_TYPER2 is present when the
+GICv4.1 is implemented, and RES0 otherwise. QEMU's TCG implementation
+is only GICv4.0, so this register is RES0. However, since it's
+reasonable for GICv4.1-aware software to read the register, expecting
+the zero for GICv3 and GICv4.0, implement the case to avoid it being
+logged as an invalid guest read.
 
-This patchset:
- * makes GICD_TYPER0 reads not trigger a bad-read trace
-   event on the TCG GICv3, for the benefit of GICv4.1-aware
-   guest code
- * migrates the GICD_TYPER2 register value on a KVM GIC,
-   so that a mismatch between source and destination
-   can be caught by the destination kernel
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+---
+ hw/intc/gicv3_internal.h | 1 +
+ hw/intc/arm_gicv3_dist.c | 9 +++++++++
+ 2 files changed, 10 insertions(+)
 
-Note that I have only very lightly tested this, on a
-host which (I believe) doesn't have a GICv4.1.
-
-Changes v1->v2:
- * fix comment missing bracket
- * fix reset handling so this works on GICv4.1 hosts
- * move get/put code to be with the other GICD regs
- * new patch 3 to drop a barely-used debug printf macro
-
-thanks
--- PMM
-
-Peter Maydell (3):
-  hw/intc/arm_gicv3_dist: Implement GICD_TYPER2 as 0
-  hw/intc/arm_gicv3_kvm: Migrate GICD_TYPER2
-  hw/intc/arm_gicv3_kvm: Drop DPRINTF macro
-
- hw/intc/gicv3_internal.h           |  1 +
- include/hw/intc/arm_gicv3_common.h |  6 +++++
- hw/intc/arm_gicv3_common.c         | 24 +++++++++++++++++++
- hw/intc/arm_gicv3_dist.c           |  9 +++++++
- hw/intc/arm_gicv3_kvm.c            | 38 ++++++++++++++++++------------
- 5 files changed, 63 insertions(+), 15 deletions(-)
-
+diff --git a/hw/intc/gicv3_internal.h b/hw/intc/gicv3_internal.h
+index bc9f518fe86..fc586524f56 100644
+--- a/hw/intc/gicv3_internal.h
++++ b/hw/intc/gicv3_internal.h
+@@ -31,6 +31,7 @@
+ #define GICD_CTLR            0x0000
+ #define GICD_TYPER           0x0004
+ #define GICD_IIDR            0x0008
++#define GICD_TYPER2          0x000C
+ #define GICD_STATUSR         0x0010
+ #define GICD_SETSPI_NSR      0x0040
+ #define GICD_CLRSPI_NSR      0x0048
+diff --git a/hw/intc/arm_gicv3_dist.c b/hw/intc/arm_gicv3_dist.c
+index d8207acb22c..a7d10ed9493 100644
+--- a/hw/intc/arm_gicv3_dist.c
++++ b/hw/intc/arm_gicv3_dist.c
+@@ -431,6 +431,15 @@ static bool gicd_readl(GICv3State *s, hwaddr offset,
+             (0xf << 19) | itlinesnumber;
+         return true;
+     }
++    case GICD_TYPER2:
++        /*
++         * This register only exists for GICv4.1, which QEMU doesn't
++         * currently emulate. On GICv3 and GICv4 it's defined to be RES0.
++         * We implement as read-zero here to avoid tracing a bad-register-read
++         * if GICv4.1-aware software reads this ID register.
++         */
++        *data = 0;
++        return true;
+     case GICD_IIDR:
+         /* We claim to be an ARM r0p0 with a zero ProductID.
+          * This is the same as an r0p0 GIC-500.
 -- 
 2.43.0
 
