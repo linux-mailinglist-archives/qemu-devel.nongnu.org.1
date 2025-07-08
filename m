@@ -2,52 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87441AFD7ED
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 168A3AFD8A3
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:45:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZEcr-0002NY-Qn; Tue, 08 Jul 2025 16:09:14 -0400
+	id 1uZFAP-0002dj-Em; Tue, 08 Jul 2025 16:43:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uZDTq-0001oT-6p; Tue, 08 Jul 2025 14:56:13 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uZDTb-0000ci-3g; Tue, 08 Jul 2025 14:55:44 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 8 Jul
- 2025 13:58:11 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Tue, 8 Jul 2025 13:58:11 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
- list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [PATCH v4 5/5] hw/misc/aspeed_sbc: Add machine parameter to alias OTP
- drive property
-Date: Tue, 8 Jul 2025 13:57:57 +0800
-Message-ID: <20250708055810.2868680-6-kane_chen@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250708055810.2868680-1-kane_chen@aspeedtech.com>
-References: <20250708055810.2868680-1-kane_chen@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <luxu.kernel@bytedance.com>)
+ id 1uZDis-0000Wt-I4
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:11:49 -0400
+Received: from mail-qk1-x736.google.com ([2607:f8b0:4864:20::736])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <luxu.kernel@bytedance.com>)
+ id 1uZDii-0005pM-F0
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:11:19 -0400
+Received: by mail-qk1-x736.google.com with SMTP id
+ af79cd13be357-7d9e2f85b2cso162287285a.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:10:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1752001852; x=1752606652; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DlW7iJ+C8rcpKrpFJBlschQsTW0cjQ0FNGJLVtjFCKo=;
+ b=kA7mzyD4SvugwqfP8alf6gRHORCcvhmkkWkSFcUlW7+WxtWKnVxIzjARrlgBweLiPK
+ 4A/ULbdQHr0aZUs1AVfyC+ACv39LWOYGihpdcOTA1yiJpo0eqiJs1SDRSKR7Pa2+D+GY
+ 1ZXj5pf4+VOZsiVfrI7S1rTKUxZFfV/C356Alp13d3UWcJPaUGYsPtY6Kh893xckZnhk
+ h3fn8RTi/gQCmK5tGAhyy2H6jDetG7l5uyYwEgshd1ebhmsUntoLflxMKY1kxYn1jmot
+ nBr05/skVzabPKkxTy/aPbyTElZ5prevrxP28hP4l6SS8nm9nf65VNGkq6ZQjewjIYlS
+ 7psg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752001852; x=1752606652;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DlW7iJ+C8rcpKrpFJBlschQsTW0cjQ0FNGJLVtjFCKo=;
+ b=Fh7FyBvDDtsuCxmngTpYqiYAGV6r0nhqdheQfFHrN0h/0nG4Pwz8flsrkBhehEAXCj
+ p7Kkq19YCzNw4XN6hkbB+l75g/83qj1pSr7qrX50H2LMVk7eVOFcvKONdPlsgDrCcJMe
+ iW4uzYJKC+jbgYDEkwXPU0gT9z8/EmoVkbXKL06DJ5AbxxoJHGiQlTpQuh19vrqSAfj/
+ CZa1UMdkJ1H/VH/sx0lxLuG6DrqIc/uvi6Tg7hPUDCf7sDMnJdUeTiJSH00RrrHyGMWD
+ 2WVcNeEgdFCsjMroXq35meIhm3EQCwCpjbzVzcjNFsUcZ70uSLmDuNflFPK3JTekMeAP
+ 7P/Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWmuGFOKV7wimD54XSmeWaat1pmohhR19uYYexzF7eTr6wMwNA9zw6g5ZXbOK42Q3Q5A4eRrW/weWSb@nongnu.org
+X-Gm-Message-State: AOJu0YzejxG6lOJyMsHPhttauZIrH/i1gavf26SATVoPBBGbvhYYd8mx
+ yCI1KeTFSRtKWZbF/kqbFNNTErI9rsxOlfsAFJqoA9bCYCXpCumCUpTakUsu50tU/i3HalZEr4T
+ pvRQ2GSJx7uIH
+X-Gm-Gg: ASbGncvPLbS8+57iI0UY2pCVzPqGaLRAsRxtbHTA+6lyl8q7+rZQmLseLxa5baVyuiL
+ vHuF8F/WqoypfwLbbLldgauKsKz0sHH4reGI7wazrl4Q50l8JjPpnlndyNHhCB6pYGZXeo8sxZo
+ qAHDnrWx9GiuPpGeQbmRNkm6Bw1OgPzLWKaK3RMauBTxSuYm1fqCV3riJ/HDPYfie1ZA2gTcask
+ w5U3/+xTpcvMEnu7vCwe2NVqsELc0wO++zpTGjTnQWKSXTl0sUX3jsXWKr67tvvd1bI42HsglaB
+ YjqCX0N7c22BzkP2iW/N40thne13cZMNdztn9r90hu1L8GhSI885PL+MQ8KdeGpHiZm0PIgkLrt
+ sdO+kmueZOYD0aKNpCrB7/cuhV/DeaTUxa86IDBIdw5b1/BAUEw==
+X-Google-Smtp-Source: AGHT+IF6AAIvK9eyIkmGLUG4TOKJUDJZ2TnguFMof4aiR9CrOjY+tkFI+unFspBENtcPGZ+AxsiDUg==
+X-Received: by 2002:a05:6a21:a81:b0:220:e7d:8e30 with SMTP id
+ adf61e73a8af0-225b8104ab1mr26951229637.18.1751954849898; 
+ Mon, 07 Jul 2025 23:07:29 -0700 (PDT)
+Received: from J9GPGXL7NT.bytedance.net ([61.213.176.56])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-74ce359d634sm10615776b3a.25.2025.07.07.23.07.26
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 07 Jul 2025 23:07:29 -0700 (PDT)
+From: Xu Lu <luxu.kernel@bytedance.com>
+To: palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, apatel@ventanamicro.com
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
+ Xu Lu <luxu.kernel@bytedance.com>
+Subject: [PATCH] target/riscv: Fix exception type when VU accesses supervisor
+ CSRs
+Date: Tue,  8 Jul 2025 14:07:20 +0800
+Message-Id: <20250708060720.7030-1-luxu.kernel@bytedance.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=kane_chen@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::736;
+ envelope-from=luxu.kernel@bytedance.com; helo=mail-qk1-x736.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,102 +97,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Kane Chen <kane_chen@aspeedtech.com>
-From:  Kane Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+When supervisor CSRs are accessed from VU-mode, a virtual instruction
+exception should be raised instead of an illegal instruction.
 
-This patch adds a new machine parameter `otpmem` which creates a QOM
-property alias on the aspeed_sbc device for the OTP drive.
-
-Example usage:
-
-  ./qemu-system-arm \
-    -machine ast2600-evb,otpmem=otp-drive \
-    -blockdev driver=file,filename=otpmem.img,node-name=otp \
-    -global aspeed-otp.drive=otp \
-    ...
-
-With this change, the specified alias name (e.g. "otp-drive") becomes
-available on the QOM path `/machine/soc/sbc/otp-drive`.
-
-Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
+Fixes: c1fbcecb3a (target/riscv: Fix csr number based privilege checking)
+Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
 ---
- hw/arm/aspeed.c      | 20 ++++++++++++++++++++
- hw/misc/aspeed_sbc.c |  8 ++++++++
- 2 files changed, 28 insertions(+)
+ target/riscv/csr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index c31bbe7701..8ec32369a6 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -48,6 +48,7 @@ struct AspeedMachineState {
-     uint32_t uart_chosen;
-     char *fmc_model;
-     char *spi_model;
-+    char *otpmem;
-     uint32_t hw_strap1;
- };
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 8631be97c5..9bebfae3f0 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -5577,7 +5577,7 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
  
-@@ -1424,6 +1425,21 @@ static void aspeed_set_bmc_console(Object *obj, const char *value, Error **errp)
-     bmc->uart_chosen = val + ASPEED_DEV_UART0;
- }
- 
-+static char *aspeed_get_otpmem(Object *obj, Error **errp)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
-+
-+    return g_strdup(bmc->otpmem);
-+}
-+
-+static void aspeed_set_otpmem(Object *obj, const char *value, Error **errp)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
-+
-+    g_free(bmc->otpmem);
-+    bmc->otpmem = g_strdup(value);
-+}
-+
- static void aspeed_machine_class_props_init(ObjectClass *oc)
- {
-     object_class_property_add_bool(oc, "execute-in-place",
-@@ -1445,6 +1461,10 @@ static void aspeed_machine_class_props_init(ObjectClass *oc)
-                                    aspeed_set_spi_model);
-     object_class_property_set_description(oc, "spi-model",
-                                           "Change the SPI Flash model");
-+    object_class_property_add_str(oc, "otpmem", aspeed_get_otpmem,
-+                                   aspeed_set_otpmem);
-+    object_class_property_set_description(oc, "otpmem",
-+                                          "Set OTP Memory type");
- }
- 
- static void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
-diff --git a/hw/misc/aspeed_sbc.c b/hw/misc/aspeed_sbc.c
-index b56a8b7678..b82c5e37cc 100644
---- a/hw/misc/aspeed_sbc.c
-+++ b/hw/misc/aspeed_sbc.c
-@@ -209,10 +209,18 @@ static void aspeed_sbc_instance_init(Object *obj)
- {
-     AspeedSBCClass *sc = ASPEED_SBC_GET_CLASS(obj);
-     AspeedSBCState *s = ASPEED_SBC(obj);
-+    char *otpname;
- 
-     if (sc->has_otp) {
-         object_initialize_child(OBJECT(s), "otp", &s->otp,
-                                 TYPE_ASPEED_OTP);
-+        otpname = object_property_get_str(qdev_get_machine(),
-+                                          "otpmem",
-+                                          &error_abort);
-+        if (strlen(otpname)) {
-+            object_property_add_alias(obj, otpname,
-+                                      OBJECT(&s->otp), "drive");
-+        }
-     }
- }
- 
+     csr_priv = get_field(csrno, 0x300);
+     if (!env->debugger && (effective_priv < csr_priv)) {
+-        if (csr_priv == (PRV_S + 1) && env->virt_enabled) {
++        if (csr_priv <= (PRV_S + 1) && env->virt_enabled) {
+             return RISCV_EXCP_VIRT_INSTRUCTION_FAULT;
+         }
+         return RISCV_EXCP_ILLEGAL_INST;
 -- 
-2.43.0
+2.20.1
 
 
