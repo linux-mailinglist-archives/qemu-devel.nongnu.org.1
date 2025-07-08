@@ -2,93 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82021AFDA16
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F2FAFD8AF
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:47:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZG4O-00087j-SE; Tue, 08 Jul 2025 17:41:45 -0400
+	id 1uZFBt-0005yO-D5; Tue, 08 Jul 2025 16:45:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZEun-0003iM-Ue
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:27:51 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZEum-0007xF-8J
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:27:45 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-6097b404f58so7037114a12.3
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 13:27:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752006462; x=1752611262; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7gD989/IHbOEITDmnVpOY1i9RKKNw/TFq+kVhgQcyPs=;
- b=x6fWNRsTHVXEWd0JDtQAYiUrDvQW6Dvum/oYr/yU1zMWN23JLt4EwSwkYDJX6obHk+
- wykKqfXDkkWMRrIevYQqomuRMI8toXp5Phnfs99697BDUYixMZBTVC5Af1p/5RlC2QKe
- l3KiU1AjxQX0iN9fAu5MvuD70cWIEuv+KrYpWaEYi9e4qUaBWSSHXp4z4UazAQoa/Un7
- oI+idmklsGMRtyphk1eIwPAVVxDAIyOHiQRsm7XQjJK8djDZ2Zbwh0rhixrWAkVZvytU
- iuR1NtRTd8CPpGBf9uG8eHKopd26NCnV++vqWBQXqyKqoE2nQIMODiA8CNg70JH0i6/U
- Ry9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752006462; x=1752611262;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7gD989/IHbOEITDmnVpOY1i9RKKNw/TFq+kVhgQcyPs=;
- b=jm0Z0l8WFBEfCjxeAs9/mZZ4eb2LNxP/P5LjZL0tlAE3c+hUMgQyBN7DDyQxhrYUpe
- 1BXt4Cdvn6JJOzxSGVJOn2OoPsIZqHyd7tX/2i02PZCN+SdH9ijIZmu4wbRFsbwfKeDQ
- WX2BdQ7e1yW7wJW7VaYBuiKjo6B3LbkSHm+8DP8dQEIkOQ9Cc4FP9S+yH0cQ1QsnsTgb
- I8uzI/+1lFxxlj1gt6JjCUlGyfKQkJKcUq2H2MWhgzKEjjiZa5uSzGIw+70e6BZdLz9S
- eialZQhhxthK/G9mF/RDVnrUNyIizZL7nhkE10dEXKBWxeNtjWTk9lprFho1FBqBY1TA
- uzRw==
-X-Gm-Message-State: AOJu0YxRnT0pOgdX+S17KVKE/oqEllzPiK03kIsEMzC4wpnNO0QLkVxq
- 6rEgGXWSnpsoNdTGRit1qYKWPNAyzFJhQEOSPMS9pcaj9RIZ4b7Un/1uPajxiqyi/uSC/kyR7jF
- tltnVkZk=
-X-Gm-Gg: ASbGncvy8+K5Mt8In14ouZed5yliAYhnDCb9RlI3w41rvuJNtDpxkf02+JbXnrm2mjU
- Wj9SsvrzErfnpvl9HUjcV1eJxU7s+5cwkFACJ98Tzl/36sraVvQPplcV+rFgVS3+R7PNeNNhbp6
- nuI4ryE9B2M9NDV27rEeqbrL7m45VK03i/ugZb9e7EC9Bw4UdQlssRUFhe+JcYvZrspTcEssmgR
- MeG4ELQhUSM1/nhFS9YWA07N2Px7/Gg1Lp7KsKle15cJc/vJUZvofaU05l8NMJgDVSC9JmdxJ52
- qh3urLRrYFNv5sSgrEB6v0vsE+G3FYCLjlsGHRd36M4+fDa5GpnGqBwEDr7illLOI1ro8X2sVyE
- 2yEtzhwBX3Eg/WjrHpEOv/Ux4TIm1ZA==
-X-Google-Smtp-Source: AGHT+IEWZpnoQKeFLfTnSEfsXdg67Cdt0sZyuOKGWl1tGNjLw36QOObt8l8PjxR+ae0QDRMyjwgpFQ==
-X-Received: by 2002:a05:600c:6384:b0:43d:46de:b0eb with SMTP id
- 5b1f17b1804b1-454ccc7fff2mr24082935e9.12.1751959237951; 
- Tue, 08 Jul 2025 00:20:37 -0700 (PDT)
-Received: from [192.168.69.242] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454cd49398csm13095705e9.22.2025.07.08.00.20.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 00:20:37 -0700 (PDT)
-Message-ID: <b1d2f82c-7db6-49dd-8c4b-2f811c8616c6@linaro.org>
-Date: Tue, 8 Jul 2025 09:20:36 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZDk5-00018r-2V
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:12:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZDjz-0006LX-BX
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:12:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752001944;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=O5xiyomijQjdivAWHMWy1QfQcUNj6GeS1s2TULutLtg=;
+ b=f11htkkyalfoLWeofVdEzKics29Hu52dscUOvnoxuYM7sZPBv/6PbblEaBXa0mSozav+jD
+ fiZ+rbYK7v1EZt+GRTAEcY26ce+qSpiyT/ZqI1YhoX/6GbOBGnCihW6oNTbgIj4PtZEpoF
+ viZ5CaMhJUsBt3q6ZKp180CEK/A2Oro=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-mr_scQLvM9qLt_n3sgGMYw-1; Tue,
+ 08 Jul 2025 03:28:36 -0400
+X-MC-Unique: mr_scQLvM9qLt_n3sgGMYw-1
+X-Mimecast-MFC-AGG-ID: mr_scQLvM9qLt_n3sgGMYw_1751959711
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 67AF718DA5C2; Tue,  8 Jul 2025 07:28:31 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EB9D7195608F; Tue,  8 Jul 2025 07:28:30 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3CEB721E6A27; Tue, 08 Jul 2025 09:28:28 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: eblake@redhat.com, pbonzini@redhat.com, berrange@redhat.com,
+ eduardo@habkost.net, steven.sistare@oracle.com
+Subject: [PATCH 0/2] qapi: Minor documentation cleanups
+Date: Tue,  8 Jul 2025 09:28:26 +0200
+Message-ID: <20250708072828.105185-1-armbru@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] bulk: Remove unnecessary 'qemu/typedefs.h' include
-To: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, Stefan Berger <stefanb@linux.vnet.ibm.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Stefan Weil <sw@weilnetz.de>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@redhat.com>, Song Gao <gaosong@loongson.cn>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Alex Williamson <alex.williamson@redhat.com>, Bibo Mao <maobibo@loongson.cn>
-References: <20250707170904.2908-1-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250707170904.2908-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,27 +79,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/7/25 19:09, Philippe Mathieu-Daudé wrote:
-> "qemu/typedefs.h" is already included by "qemu/osdep.h".
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/vfio/vfio-migration-internal.h | 1 -
->   include/system/os-win32.h         | 1 -
->   hw/intc/loongarch_extioi_kvm.c    | 1 -
->   3 files changed, 3 deletions(-)
+Markus Armbruster (2):
+  qapi: Clean up "This command will do ..." command descriptions
+  qapi: Clean up a few Errors: sections
 
+ qapi/control.json   |  9 +++++----
+ qapi/misc-i386.json | 18 ++++++++----------
+ qapi/qom.json       | 14 ++++++--------
+ 3 files changed, 19 insertions(+), 22 deletions(-)
 
-> diff --git a/include/system/os-win32.h b/include/system/os-win32.h
-> index 3aa6cee4c23..662cfabc5e7 100644
-> --- a/include/system/os-win32.h
-> +++ b/include/system/os-win32.h
-> @@ -29,7 +29,6 @@
->   #include <winsock2.h>
->   #include <windows.h>
->   #include <ws2tcpip.h>
-> -#include "qemu/typedefs.h"
-This one was introduced in commit f5fd677ae7c ("win32/socket: introduce
-qemu_socket_select() helper") for Error type, but files including this
-header should already include "qemu/osdep.h".
+-- 
+2.49.0
+
 
