@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FF6AFDA3D
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54456AFDA6D
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 00:04:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZGHW-00038c-4t; Tue, 08 Jul 2025 17:55:18 -0400
+	id 1uZGPg-0003Vb-Ls; Tue, 08 Jul 2025 18:03:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZFTe-0007i8-Bj
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:03:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZFqm-0008Vd-JE
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:27:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZFTa-0005Tn-Fw
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:03:45 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZFqh-00004r-MY
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:27:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752008620;
+ s=mimecast20190719; t=1752010053;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ZGNEdukx/ufZOsXYGrbvDF37eR6Pq/To/jzZNjCDQ6k=;
- b=HyeEGu/v+RC0MVxZ98kr2R05x9vp2PiKFy/2SiexeL3FH/QAzc2++8MhgRVcHN/z99zJh3
- mApOJd8iOJLgLDu0aaZoLUkdTsaXw3PzUo0r90WMMl2j01LkZSSUcZtj3RORHq2Go+6H+H
- Vzn1/5h6/5bERZOrVyoyE4iX2QyfqUQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=bU59mTLhcSNJBH0/PpwDeUTVcqTOhqElXFXdFNvDB9E=;
+ b=DrzXynIpvALGGelBslkPHycZwtOihCbsmCnW6FsW012mh1cfHvS9P3D8grSzwyGAL8y3HF
+ OQFLTHszrXV0MsUgOceE1kfDFvxBK5rHUS0dsG2n7BL/1PFPNPeX8rUp58l5oxcRXdSEG7
+ cuLYfC4ZLZd4eD0mbgshnYUUtvuLlhs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-138-tT2NIpFlMw20657iMmeLbA-1; Tue,
- 08 Jul 2025 00:41:36 -0400
-X-MC-Unique: tT2NIpFlMw20657iMmeLbA-1
-X-Mimecast-MFC-AGG-ID: tT2NIpFlMw20657iMmeLbA_1751949695
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-176-6wuQ_rngPSWrF8DEYVeWXw-1; Tue,
+ 08 Jul 2025 01:06:30 -0400
+X-MC-Unique: 6wuQ_rngPSWrF8DEYVeWXw-1
+X-Mimecast-MFC-AGG-ID: 6wuQ_rngPSWrF8DEYVeWXw_1751951189
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 73E741944AA9; Tue,  8 Jul 2025 04:41:35 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 02AD318DA5C0; Tue,  8 Jul 2025 05:06:29 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D73E51803AF2; Tue,  8 Jul 2025 04:41:34 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 183BB1956087; Tue,  8 Jul 2025 05:06:28 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2CC7821E6A27; Tue, 08 Jul 2025 06:41:32 +0200 (CEST)
+ id 6B93021E6A27; Tue, 08 Jul 2025 07:06:25 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: Steven Sistare <steven.sistare@oracle.com>
 Cc: qemu-devel@nongnu.org,  John Snow <jsnow@redhat.com>,  Cleber Rosa
@@ -52,20 +52,20 @@ Cc: qemu-devel@nongnu.org,  John Snow <jsnow@redhat.com>,  Cleber Rosa
  Eduardo Habkost <eduardo@habkost.net>,  Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>,  Peter Krempa <pkrempa@redhat.com>,
  devel@lists.libvirt.org
-Subject: Re: [PATCH V2 4/5] qom: qom-list-getv
-In-Reply-To: <282efc8a-c37e-4afe-8e1e-f28436e74efe@oracle.com> (Steven
- Sistare's message of "Mon, 7 Jul 2025 10:40:23 -0400")
+Subject: Re: [PATCH V2 1/5] qom: qom-tree-get
+In-Reply-To: <76271add-d9b3-4b45-a272-3cbe336c2103@oracle.com> (Steven
+ Sistare's message of "Mon, 7 Jul 2025 10:44:17 -0400")
 References: <1747057635-124298-1-git-send-email-steven.sistare@oracle.com>
- <1747057635-124298-5-git-send-email-steven.sistare@oracle.com>
- <874ivsno15.fsf@pond.sub.org>
- <282efc8a-c37e-4afe-8e1e-f28436e74efe@oracle.com>
-Date: Tue, 08 Jul 2025 06:41:32 +0200
-Message-ID: <87frf71egz.fsf@pond.sub.org>
+ <1747057635-124298-2-git-send-email-steven.sistare@oracle.com>
+ <877c0ono29.fsf@pond.sub.org>
+ <76271add-d9b3-4b45-a272-3cbe336c2103@oracle.com>
+Date: Tue, 08 Jul 2025 07:06:25 +0200
+Message-ID: <87zfdfz2y6.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -95,51 +95,189 @@ Steven Sistare <steven.sistare@oracle.com> writes:
 > On 7/4/2025 8:22 AM, Markus Armbruster wrote:
 >> Steve Sistare <steven.sistare@oracle.com> writes:
 >> 
->>> Define the qom-list-getv command, which fetches all the properties and
->>> values for a list of paths.  This is faster than qom-tree-get when
->>> fetching a subset of the QOM tree.  See qom.json for details.
+>>> Define the qom-tree-get QAPI command, which fetches an entire tree of
+>>> properties and values with a single QAPI call.  This is much faster
+>>> than using qom-list plus qom-get for every node and property of the
+>>> tree.  See qom.json for details.
 >>>
 >>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 >>> ---
->>>   qapi/qom.json      | 34 ++++++++++++++++++++++++++++++++++
->>>   qom/qom-qmp-cmds.c | 40 ++++++++++++++++++++++++++++++++++++++++
->>>   2 files changed, 74 insertions(+)
+>>>   qapi/qom.json      | 56 ++++++++++++++++++++++++++++++++++++++++++
+>>>   qom/qom-qmp-cmds.c | 72 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>>   2 files changed, 128 insertions(+)
 >>>
 >>> diff --git a/qapi/qom.json b/qapi/qom.json
->>> index 94662ad..dc710d6 100644
+>>> index 28ce24c..94662ad 100644
 >>> --- a/qapi/qom.json
 >>> +++ b/qapi/qom.json
->>> @@ -62,6 +62,16 @@
->>>               '*value': 'any' } }
+>>> @@ -46,6 +46,38 @@
+>>>               '*default-value': 'any' } }
 >>>   
 >>>  ##
->>> +# @ObjectPropertiesValues:
+>>> +# @ObjectPropertyValue:
 >>> +#
->>> +# @properties: a list of properties.
+>>> +# @name: the name of the property
+>>> +#
+>>> +# @type: the type of the property, as described in @ObjectPropertyInfo
+>> 
+>> That description is crap.  In part because what it tries to describe is
+>> crap.  Neither is this patch's problem.
+>> 
+>>> +#
+>>> +# @value: the value of the property.  Omitted if cannot be read.
+>> 
+>> Suggest "Absent when the property cannot be read."
+>
+> OK.
+>
 >>> +#
 >>> +# Since 10.1
 >>> +##
->>> +{ 'struct': 'ObjectPropertiesValues',
->>> +  'data': { 'properties': [ 'ObjectPropertyValue' ] }}
+>>> +{ 'struct': 'ObjectPropertyValue',
+>>> +  'data': { 'name': 'str',
+>>> +            'type': 'str',
+>>> +            '*value': 'any' } }
+>> 
+>> ObjectPropertyValue suggests this describes a property's value.
+>
+> I would agree with you if the name included "info" or "desc", but it
+> does not.  To me, "ObjectPropertyValue" says this is an object's
+> property and value.  But it's subjective.
+
+Naming is hard.
+
+> Perhaps: ObjectPropertyWithValue
+
+I'd be tempted by ObjectProperty if it wasn't already taken by
+qom/object.h.
+
+Let's converge on the code, and maybe revisit naming at the end.
+
+>>  It does
+>> not.  It includes the name, i.e. it describes the *property*.
+>> 
+>> So does ObjectPropertyInfo.
+>> 
+>> The two overlap: both habe name and type.  Only ObjectPropertyValue has
+>> the current value.  Only ObjectPropertyInfo has the default value and
+>> description (I suspect the latter is useless in practice).
+>> 
+>> ObjectPropertyInfo is used with qom-list and qom-list-properties.
+>> 
+>> qom-list takes a QOM path, like your qom-tree-get and qom-list-getv.
+>> I'd expect your commands to supersede qom-list in practice.
+>> 
+>> qom-list-properties is unlike your qom-tree-get and qom-list-getv: it
+>> takes a type name.  It's unreliable for non-abstract types: it can miss
+>> dynamically created properties.
+>> 
+>> Let's ignore all this for now.
+>> 
 >>> +
 >>> +##
->>>  # @ObjectNode:
+>>> +# @ObjectNode:
+>>> +#
+>>> +# @name: the name of the node
+>>> +#
+>>> +# @children: child nodes
+>>> +#
+>>> +# @properties: properties of the node
+>>> +#
+>>> +# Since 10.1
+>>> +##
+>>> +{ 'struct': 'ObjectNode',
+>>> +  'data': { 'name': 'str',
+>>> +            'children': [ 'ObjectNode' ],
+>>> +            'properties': [ 'ObjectPropertyValue' ] }}
+>>> +
+>>> +##
+>>>  # @qom-list:
 >>>  #
->>>  # @name: the name of the node
->>> @@ -158,6 +168,30 @@
+>>>  # This command will list any properties of a object given a path in
+>>> @@ -126,6 +158,30 @@
 >>>     'allow-preconfig': true }
 >>>   
 >>>  ##
->>> +# @qom-list-getv:
+>>> +# @qom-tree-get:
 >>> +#
->>> +# This command returns a list of properties and their values for
->>> +# each object path in the input list.
+>>> +# This command returns a tree of objects and their properties,
+>>> +# rooted at the specified path.
+>>> +#
+>>> +# @path: The absolute or partial path within the object model, as
+>>> +#     described in @qom-get
+>>> +#
+>>> +# Errors:
+>>> +#     - If path is not valid or is ambiguous, returns an error.
 >> 
->> Imperative mood, please: "Return a list of ..."
+>> By convention, we use "If <condition>, <error>, where <error> is a
+>> member of QapiErrorClass.
 >
-> OK.  (I followed the style of qom-get and qom-list).
+> OK.  I was following the minimal Errors examples from this same file.
 
-Yup.  We have a few more elsewhere.  I'll clean them up.
+Yup.  I'll clean them up.
+
+>> What are the possible error classes?  As far as I can tell:
+>> 
+>>           - If path is ambiguous, GenericError
+>>           - If path cannot be resolved, DeviceNotFound
+>> 
+>> However, use of error classes other than GenericError is strongly
+>> discouraged (see error_set() in qapi/error.h).
+>> 
+>> Is the ability to distinguish between these two errors useful?
+>> 
+>> Existing related commands such as qom-get also use DeviceNotFound.
+>> Entirely undocumented, exact error conditions unclear.  Awesome.
+>> 
+>> Libvirt seems to rely on this undocumented behavior: I can see code
+>> checking for DeviceNotFound.  Hyrum's law strikes.
+>> 
+>> qom-get fails with DeviceNotFound in both of the above cases.  It fails
+>> with GenericError when @property doesn't exist or cannot be read.  Your
+>> qom-tree-get fails differently.  Awesome again.
+>> 
+>> Choices:
+>> 
+>> 1. Leave errors undocumented and inconsistent.
+>> 
+>> 2. Document errors for all related commands.  Make the new ones as
+>> consistent as we can.
+>
+> Ignoring qom-tree-get since we are dropping it.
+>
+> Do you prefer that qom-list-getv be consistent with qom-list (GenericError
+> and DeviceNotFound, as created by the common subroutine qom_resolve_path),
+> or only return GenericError with a customized message per best practices?
+
+I like to stick to GenericError, I like consistency, I can't have both.
+Go with simpler code?
+
+> (Regardless, it will still succeed when @property cannot be read).
+
+Yes, that's a documented feature.
+
+>>> +#     - If a property cannot be read, the value field is omitted in
+>>> +#       the corresponding @ObjectPropertyValue.
+>> 
+>> This is not an error, and therefore doesn't belong here.
+>> ObjectPropertyValue's documentation also mentions it.  Good enough?
+>
+> OK.
+>
+>>> +#
+>>> +# Returns: A tree of @ObjectNode.  Each node contains its name, list
+>>> +#     of properties, and list of child nodes.
+>> 
+>> Hmm.
+>> 
+>> A struct Object has no name.  Only properties have a name.
+>> 
+>> An ObjectNode has a name, and an ObjectPropertyValue has a name.
+>> 
+>> I may get back to this in a later message.
+
+I propose you respin without qom-tree first.  The patches will get
+simpler, and review hopefully more focused.
 
 [...]
 
