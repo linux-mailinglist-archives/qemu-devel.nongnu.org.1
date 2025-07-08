@@ -2,76 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CF4AFD76F
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 21:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84179AFD7CF
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:04:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZEGX-0002ju-R2; Tue, 08 Jul 2025 15:46:10 -0400
-Received: from eggs.gnu.org ([209.51.188.92])
+	id 1uZEXS-00039J-O2; Tue, 08 Jul 2025 16:03:46 -0400
+Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZBOc-0008MW-Av
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:42:54 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uZCNu-0007TP-2C
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 13:45:38 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZBN1-0003wD-V3
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:41:46 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-5550dca1241so4455467e87.0
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 09:36:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uZCMK-0002CK-Rt
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 13:45:27 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-31223a4cddeso3506383a91.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 10:43:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751992582; x=1752597382; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ZXKQqfZ2ciokJ1PutVi8XKnjYw3wpn3AxACuTTQC2Dk=;
- b=CqW+GJn0BjLcA4jOuOI3+zg2zbkm3rlmEzV0HK9xxnGXtmHNCCOu+510u9Edhdzean
- j0izVN8S7lzIQDVkGwZzsf43g+4+figOdS9VKtVs2+WiV2NbWnNwcINVfRnkJeb3PU8p
- bstlkerkpy60pdxILPCIwtsBcG/8d5LrtbLwFROldsa6HfyT7VGYlh2Vu67eyY+4tdEs
- /tbFctjRqbhflRvANXYmDmssmwbt96KdJmgt+45f0JbCJYUvtRuOU3hD6hELnuy4RE/Z
- 50uExb8NgN+xTT050gCUF7Ls1+c1SzAq5RYMzPN3ytDiblby3FUgcEkOMPaUKkdqmodQ
- 0RQQ==
+ d=linaro.org; s=google; t=1751996636; x=1752601436; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=S0LH90vcz1GOtJ9aUwnYZjq9sOvu3QPsISmol2AG6ZM=;
+ b=pi7Y4JjM6jFMCVyqiNKJCefwc0x4SMJ6W4+lLvJocO5RaWNV5KY1gbX9bIMGRnuNzN
+ szwdBsCSk1WfJYa8R0jrcpoRdIpVR7JPVR00d+Q0SpLyHBVTPv8EA25vdjsgnSAyOnIV
+ suJsIIVSR1dkgSHjgFDalFdTuU64kNt3Ke8Jpt5Ra5z6zW9syVqBMzMH6pTEFBxHNI8m
+ 08Rt53m8/orGrsrRo4J2P5+cgBxbnhfnB5W5MNk2QlAmZZuHixfVsQNFIsjG08mi4Adw
+ mtSLshBi2oEYUutsZ5KPGlPX/KYa2pngOqwndXENLRhitJGdcL0C/3SraxCjAZF8K+Vj
+ o9tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751992582; x=1752597382;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZXKQqfZ2ciokJ1PutVi8XKnjYw3wpn3AxACuTTQC2Dk=;
- b=ODYLGI7kTSKdc6UQKHdr3gVCozh5weWpOZUpUNNBEYpwmgePl9yf3AX4PwzlueuUir
- SItIucXOZEQN0ErYEhCnZ6ntf5ti2bmJLVVCuiP57WvExq2sJqdyksKGT6LIO1KvuZ3v
- +0Fx7Wplqrd7VVbUcwO+sQMUpuHtxYOsVn+v8AjTYhW4VhEsmCsrPjuMwPlLRpvHK1vo
- E+hIDYf9Whg9jp9PR3gbYzbfcqyW68IJhLp34ebdtgQkpvuczelAgQ8KMoP/LVEQoYk6
- GlG+jRxQAGPpJNeC6UdvScweP/Y30tyvzFTz6xSNXapqnG91t7uIu5tomoEaTEFJs66g
- gX2A==
-X-Gm-Message-State: AOJu0YwhYPeeM1dlc/eITELGp+nwz+MK7WlzNHDlHqjlGkZyTv0D2JxH
- y69zzAY7gE1yyQ3GESrpyOns4ZuQLPFdsNRf2KdpOQY8z9o43o83ZDfo6WOitcxrdKS/wSvxTa7
- EhHXc
-X-Gm-Gg: ASbGncvz1Q6wNQSmw5EvtYX3a/OTEiuMJXSbIA36KaCLqZ89rTX5iLS1KhGlUvkG0WA
- 0BuetXNlpdjK0im9wTl5ELMvScODqt2+J1h/NctvP2BnKhayr23Ls3hpshZDH9VjkMKwSgJXMYZ
- GDcP8Uo9A0RKwEIex+WsN43p66uIVdXyIgVY9qWlDgSFEQf1GnbdGHzUnHzkzJ8tJwpnUPv1Ypz
- ZQyTvFjThAnR8EQzr3hV+Kd4kzU5f1Wgje1KUHtBr0TnzqkPPsN257vnPKuVABIp4Fi6+/JSHkZ
- MTG9jQDPasn352HEKIzEM5LupzebGOHTkQWOqZa4+a6jFhXJHwO2lflSgGZNgCuxS3uM
-X-Google-Smtp-Source: AGHT+IGkMovD7CLqYjmt7UQNNGbSgCsvyR46lNmn+WoUzq1mGVlB8qHUY6Cc9TV/1qN5c015NocnKg==
-X-Received: by 2002:a05:600c:3493:b0:442:cd03:3e2 with SMTP id
- 5b1f17b1804b1-454b306a122mr172746835e9.2.1751991055287; 
- Tue, 08 Jul 2025 09:10:55 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1751996636; x=1752601436;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=S0LH90vcz1GOtJ9aUwnYZjq9sOvu3QPsISmol2AG6ZM=;
+ b=YBeUXB6Tk9Pw8JZFLn/e7vxg9lPycdm/NmRvFL2ncwt5Z2MmvxcswNC3d30vmm+Cog
+ iN+PIXhkldNRNYs5W9rRWu0DpfIz5mNjgaaWKRhQ1mcz9EX1VE2sPYiR+VGmc0TbssaK
+ sIGZ10DjsyFvnBr50f34HeE8n81IxHVzsQRuumgkJ4grtvfrZ1sNsTAMMVaTiI9r96Vu
+ zsJGptMdtgiLTgCaUOvMmNLT6P2DWP+DSK2hqoaSawSjVdeT0BgwHzt/NDcsc+6cbsoH
+ ASkU1qdY6CG2OOm9Y0DBK2jUH2PAhdKmvcmdP692GMraoTgezFcYj/CQLW/3d1/NhQwe
+ sVgQ==
+X-Gm-Message-State: AOJu0Yw7d4Bfnp2oKPGemzIkLmtLusY29c5hhjTIFs206G18X++C77Vm
+ gROWn1jKHStoPts4uYoGr2tl6LkmkvRPQm4k+xrrXRlMc2ZXqpaWuIoXjxs1CxP8uaEvSfLxSGY
+ tN56F
+X-Gm-Gg: ASbGncugsqfe4D0vmVEUlj2m2WlQBQYFfHJnW22N/41iBhl/AXxi5sAq2WJev2KQAL/
+ P4dbFP/3teF7jTIw0FChjF3QFKHzqSA8xLcITldOalcimb4+3jmCnPeW5PAaBHOfz5emcjaYJmJ
+ xACi8KVmlDAl1U3lzPGk3vFVaBG0dBzigZlM9/bHUT2X8qpHnS2zmsCpcvDaK+BUP4/d18b/Y0W
+ PQJIrl6dGkAgFYDg2pb5P7ZLi01zrvKxS6yOMWWnpA/9wcPa0Djd58FzaB1K0qBkkclRPWFhaVQ
+ Y0UKKo/boBro9GhlCJTbQpxPQEIVbMLncB7i/035ITRTN0aVN7APdMKkooO9FMZl27rdpubdMm8
+ =
+X-Google-Smtp-Source: AGHT+IHSHsK05Ur/dR4MTQ3EXznQ5UZj7RknR8eBaHZSnJ2jeWVTuQNIigxaJRsyx8a61d3gUeJLyg==
+X-Received: by 2002:a17:90b:2ed0:b0:311:f30b:c21 with SMTP id
+ 98e67ed59e1d1-31aadd9fd46mr20276988a91.26.1751996636499; 
+ Tue, 08 Jul 2025 10:43:56 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454cd43c638sm26970085e9.8.2025.07.08.09.10.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Jul 2025 09:10:54 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH] linux-user: Implement fchmodat2 syscall
-Date: Tue,  8 Jul 2025 17:10:53 +0100
-Message-ID: <20250708161053.853322-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
+ 98e67ed59e1d1-31c21ede5ddsm2751646a91.46.2025.07.08.10.43.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Jul 2025 10:43:56 -0700 (PDT)
+Message-ID: <11143a5f-dd2e-49c4-b544-0ab9d3c00877@linaro.org>
+Date: Tue, 8 Jul 2025 10:43:55 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] control guest time using a dilation factor
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com, richard.henderson@linaro.org,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ peter.maydell@linaro.org, philmd@linaro.org
+References: <20250628002431.41823-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250628002431.41823-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,65 +103,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The fchmodat2 syscall is new from Linux 6.6; it is like the
-existing fchmodat syscall except that it takes a flags parameter.
+On 6/27/25 5:24 PM, Pierrick Bouvier wrote:
+> Depending on host cpu speed, and QEMU optimization level, it may sometimes be
+> needed to slow or accelerate time guest is perceiving. A common scenario is
+> hitting a timeout during a boot process, because some operations were not
+> finished on time.
+> 
+> An existing solution for that is -icount shift=X, with low values, which will
+> roughly map virtual time to how many instructions were executed.
+> 
+> This series introduces another approach, based on faking host time returned to
+> the guest, by applying a time-dilation factor. Time will go slower/faster for
+> the guest, without impacting QEMU emulation speed.
+> 
+> It may eventually be used to fix some of the timeouts we hit in CI, by slowing
+> down time in VM, to be less sensitive to varying cpu performance.
+> 
+> v2
+> --
+> 
+> In review, Paolo mentioned timers deadline should redilated in the other
+> direction. After going through this part, it seems that arrival is always based
+> on one of the clocks we have (which is dilated already), so I don't think we
+> should redilate that, as this would create a discordance between time set, and
+> real time when this happen. Feel free to correct me if this is wrong.
+> 
+> - keep start time per clock and apply accordingly
+> - apply time dilation for cpu_get_host_ticks as well
+> - use a default factor of 1.0
+> - rename cli option to -rtc speed-factor
+> - forbid to use option with kvm, as time is not provided by QEMU for guest
+> 
+> Pierrick Bouvier (2):
+>    qemu/timer: introduce time dilation factor
+>    system/rtc: introduce -rtc speed-factor option
+> 
+>   include/qemu/timer.h     | 60 ++++++++++++++++++++++++++++------------
+>   system/rtc.c             | 11 ++++++++
+>   system/vl.c              |  9 ++++++
+>   util/qemu-timer-common.c |  7 +++++
+>   qemu-options.hx          |  7 ++++-
+>   5 files changed, 75 insertions(+), 19 deletions(-)
+> 
 
-If we have the host fchmodat2 syscall, we implement it as a
-direct passthrough call; if we do not, then we can fall back
-to using the libc fchmodat() function. The fallback can
-handle the AT_SYMLINK_NOFOLLOW flag but won't be able to
-do anything about AT_EMPTY_PATH.
+Gentle ping on this series.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-Tested very lightly (ran an fchmodat2 test from the
-Linux Test Project test suite).
-
-You could argue that the fallback-to-libc-fchmodat here isn't
-worth bothering with, I guess.
-
- linux-user/syscall.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index fc37028597c..827b432bb31 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -790,6 +790,10 @@ safe_syscall6(ssize_t, copy_file_range, int, infd, loff_t *, pinoff,
-               int, outfd, loff_t *, poutoff, size_t, length,
-               unsigned int, flags)
- #endif
-+#if defined(TARGET_NR_fchmodat2) && defined(__NR_fchmodat2)
-+safe_syscall4(int, fchmodat2, int, dfd, const char *, filename,
-+              unsigned short, mode, unsigned int, flags)
-+#endif
- 
- /* We do ioctl like this rather than via safe_syscall3 to preserve the
-  * "third argument might be integer or pointer or not present" behaviour of
-@@ -10713,6 +10717,22 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         ret = get_errno(fchmodat(arg1, p, arg3, 0));
-         unlock_user(p, arg2, 0);
-         return ret;
-+#endif
-+#if defined(TARGET_NR_fchmodat2)
-+    case TARGET_NR_fchmodat2:
-+        if (!(p = lock_user_string(arg2)))
-+            return -TARGET_EFAULT;
-+#if defined(__NR_fchmodat2)
-+        ret = get_errno(safe_fchmodat2(arg1, p, arg3, arg4));
-+#else
-+        /*
-+         * fall back to using libc function: this will work for
-+         * flag AT_SYMLINK_NOFOLLOW but not AT_EMPTY_PATH.
-+         */
-+        ret = get_errno(fchmodat(arg1, p, arg3, arg4));
-+#endif
-+        unlock_user(p, arg2, 0);
-+        return ret;
- #endif
-     case TARGET_NR_getpriority:
-         /* Note that negative values are valid for getpriority, so we must
--- 
-2.43.0
-
+Regards,
+Pierrick
 
