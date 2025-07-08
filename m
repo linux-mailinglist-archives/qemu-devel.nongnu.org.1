@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7871DAFC01B
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 03:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DD7AFD716
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 21:28:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uYxGo-00032a-9N; Mon, 07 Jul 2025 21:37:18 -0400
+	id 1uZDxp-00059y-SL; Tue, 08 Jul 2025 15:26:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uYxFP-000251-Re; Mon, 07 Jul 2025 21:35:51 -0400
-Received: from mail-vk1-xa2a.google.com ([2607:f8b0:4864:20::a2a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZBMP-000624-E0
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:40:28 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uYxFO-0001aV-5u; Mon, 07 Jul 2025 21:35:51 -0400
-Received: by mail-vk1-xa2a.google.com with SMTP id
- 71dfb90a1353d-531b4da8189so1494291e0c.1; 
- Mon, 07 Jul 2025 18:35:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZBLR-0007aT-1N
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:39:33 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-60789b450ceso8990142a12.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 09:34:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751938548; x=1752543348; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1751992436; x=1752597236; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YHbh9PqjaVzAH+AnNv1cTfbOt1hM9cdJ34jcQCsY4ys=;
- b=FGumW/XvgZuHvxKRMjU329vL9hwcc96hz7rWwuopwSTiqe8jRptjSclAgCV2vHbi2P
- HbycL8eeLPrDMQ0ATx0MvRnZiJzfRZ52TT7vZBDu3+YpMVn4Y+GWD7oLSr+4mvfDza42
- bLDnJXfS0loyBvT2ybHdT8SC/4PA9kTFp/qOwOTRVUvXEbsPGfM88LMGH7Y3r/u7hPHA
- Ej5iIDNOXtM7lltUjbvC+KGSkq69R0gGhkcLFXYL94efNm9ikmpIr305fpyszMP5xjW5
- VrpFWVPYRMGJHHKje+h4z6nkKrjVjOgNIqRz58v/8qvZRvfCEzUfY60ABc4mgEGEf1yt
- QuuA==
+ bh=elOwmp7p2gWDJrCVc8PFCxj0WLgk5aOuRN8kccwBgM4=;
+ b=m8qy4phN1u5kMBPfFq3isIrzIcF2c9WMY5odfevECr2N2kOsHKbkjdbTvNBEQlz1P9
+ rnXgfCrHoR/VOdW8FkGmIc76MTMfzk2CZWteIfzJasik3FoBY6kuzCG/PQi57BE0Kriq
+ S4tJLHY5oIDRx2PmUR3zOJp8EgVYT9LIzxq15BTc8bcn7mfVR9IiURHoeBMGaFliuaVq
+ yEfFqoNqD2G2WbOsxBv9BGFSqEwQtkTtenvp+1e8pCsIjljb9DpiqbwcMw5yZm6wejzy
+ E90j6PVZD5DNUY9OOU7xgI6Nl05U4KdQdivR9D84jGTAj08BHJZItes8koSPb2t1evpW
+ ti8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751938548; x=1752543348;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1751992436; x=1752597236;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YHbh9PqjaVzAH+AnNv1cTfbOt1hM9cdJ34jcQCsY4ys=;
- b=eaHgNhf4qOyrsE9Q24iXNaUQT+ACyRA92z5uJbinr3S84/3N8Zl4X0qT1ieJOUgcWU
- WbMP93DHGafIMyMcdEbZEhQlhl6ykNcCU4oTkjM3IQcHnnV1xpsMzz7PKJx275FyCIWU
- MHDft1vs1L8DsNU0kAFZZeHDAtNYWjHzIbdVCblFPB0zDCNVXDuITbofZKuMOujYvtIv
- cy+bjC/HxQcFkr2R5yptJrIXiQT+9i0w5VvYcrBMg4J3uF9gEHk8UpM4QuKpxOm+R9Z1
- Xt9DsQxxOzRhRm/KXdhgMFk5ScTg/Mjpp6BEjLrC7OpJcz+N1dmqjc6qcSGQ36ZwTh92
- yqgA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCULVNQ70rveFwp4AQZ0cvpKR0NLiHauajbFbTO/a78q1cApbk11u2JHoV59YLcxKlsHC62Owqz8vF49@nongnu.org
-X-Gm-Message-State: AOJu0YwBOZBTlNRXQ3Ml6hK34OhGPwu43SgURnjN2Re8//gtEw8xZCoz
- ADR/Od7zfU/bbi2KHvxxU60qqnaUdOthpqUd+eR0uyHrOkDPbjeVA10/qKol0UTCWfLONbtXwNF
- ayt/kbPnS97USYhHPsk3ot5KMnuQ4DO0=
-X-Gm-Gg: ASbGncvpwPbe9PtcZLZ28RvAly8GesL+DQAf7Hi2lpBgFfTfM2oQNaE/8CL+aEgrNKp
- T7xgGuQ1MGrNL1oP/aeyYdw+p9RYTXfWuomnm3iFJtckKGLm7wKI/tCzktkJA69PIx+Ytea+wjF
- DC6UlnpAHtvzzjSuXHiXgu+i8cqU+0I3Mw2qK/HyxhdWVDGdHY4dyNcsIi8joak1Scp6tey4/yI
- w==
-X-Google-Smtp-Source: AGHT+IFBJNVGzfqQu5H1EtqRPOxLKGCh4nk2PyuJwAG6eMOlcXsvlveGVMvVgqSkHKD2PeKlGAxugr6QjnHvi7UCqLs=
-X-Received: by 2002:a05:6122:a0e:b0:530:7ab8:49ab with SMTP id
- 71dfb90a1353d-5347dee2b2dmr9070424e0c.0.1751938548342; Mon, 07 Jul 2025
- 18:35:48 -0700 (PDT)
+ bh=elOwmp7p2gWDJrCVc8PFCxj0WLgk5aOuRN8kccwBgM4=;
+ b=JkCeY+CAaLrLqWcXh0M2Ztcf6HlzkoKCrAE7S6msD4Jku4aDaMHkcSkYLVypHIM8jL
+ HqH9Ojuc6mxupvg700jnt8fWfDYB2aryPcWJ9Khqk1idU5Bu6QPVzHc/NteZ+LQ3A7Wr
+ xN/TjqIKFZkTbDnVGaG3b/STMzu4BHQo6gScvu+OGs6MZTMduy4O2Iwjklo25n6F86+a
+ 8f1JVcyITgRJy/Idl8adhGp58OA55AII5vLUjuzFuCJquY7JH89c3OI5q8VeWYQdpPUc
+ eOiYnXlyDTBt678HTKS6oR2u781PR5IOo4rdMCEVdNgrJ+qNGQUzu+MdseL/PA1ZX2Fd
+ 7Zeg==
+X-Gm-Message-State: AOJu0YwRlAo+HdmjZocuLbxk664lUQ0RmhJzCyxEU4ZglqPyBqDyQDMG
+ uXm+dS7C8ZtXTCxhG1XBNzHYEi59K/zHI5a6Ni4JW97LOtFF0Y8ZEyVOm0Paew7TYe2WwBaKzbf
+ dflDbpG4=
+X-Gm-Gg: ASbGncu2tLqgEFeTcCoiHI2QISczKwtl3nhuNJz/DRLIZV+SiMLIVPpYbcm7V0ML5i/
+ Onw7Rq38H6YMR4ph+J8gr7zCZ2oMqoc7SvRCle3mV5SpLJ+5bii4VhlCA28DSXABlLGkSRpjKTs
+ R8srwZWz9qaAtxzINW1t48MkqRa4VZ+xDLrxgoLX3N4gmnVy0+XH7K/44YjthP8UXaFHCszCBMU
+ 4BdwPChVbvAzM/MkHXJd0S2UP9ORP6r0btMJ5/p0un24xHBawMVWqbFOP5+q+KO6hEv5SGlkOuF
+ JKht8HJmNFuPAoSNaRVwRtIFwfOtrsvcx+/lLgT3IVacr9RSgHPxCzOkfDs+Ely0bKXM+IHJxR0
+ WOncOyHiW+la35jRx15jwu6Q82O0LT2yfaD8a
+X-Google-Smtp-Source: AGHT+IG1FiabDSkCtdfckU+iXGgc1J8lgc9D+6N43pep+Er7XIfs7hkE7o94x1wdTRWGkegDjI/Pdg==
+X-Received: by 2002:a05:6000:2483:b0:3a4:f902:3872 with SMTP id
+ ffacd0b85a97d-3b4964c09damr10255699f8f.19.1751965146374; 
+ Tue, 08 Jul 2025 01:59:06 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-454cd45957fsm15131915e9.17.2025.07.08.01.59.05
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 08 Jul 2025 01:59:05 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>, Song Gao <gaosong@loongson.cn>,
+ Bibo Mao <maobibo@loongson.cn>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 1/3] hw/intc/loongarch_extioi: Remove unnecessary
+ 'qemu/typedefs.h' include
+Date: Tue,  8 Jul 2025 10:58:57 +0200
+Message-ID: <20250708085859.7885-2-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250708085859.7885-1-philmd@linaro.org>
+References: <20250708085859.7885-1-philmd@linaro.org>
 MIME-Version: 1.0
-References: <20250706065554.42953-1-vacantron@gmail.com>
-In-Reply-To: <20250706065554.42953-1-vacantron@gmail.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 8 Jul 2025 11:35:22 +1000
-X-Gm-Features: Ac12FXwAvX9wUWAVS0sQ4UvQqZYNg4w06KIgKDbdkvUoprFwcVkjs6JQo9u0gWQ
-Message-ID: <CAKmqyKPKm=w1e8TuCWEk0tJedP6eM5GOJHZHOHMTjCwFSjORYQ@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: Fix pmp range wraparound on zero
-To: Vac Chen <vacantron@gmail.com>
-Cc: qemu-devel@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>, 
- Alistair Francis <alistair.francis@wdc.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2a;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
-X-Spam_action: no action
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,58 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jul 6, 2025 at 11:04=E2=80=AFPM Vac Chen <vacantron@gmail.com> wrot=
-e:
->
-> pmp_is_in_range() prefers to match addresses within the interval
-> [start, end]. To archieve this, pmpaddrX is decremented during the end
-> address update.
->
-> In TOR mode, a rule is ignored if its start address is greater than or
-> equal to its end address.
->
-> However, if pmpaddrX is set to 0, this decrement operation causes the
-> calulated end address to wrap around to UINT_MAX. In this scenario, the
-> address guard for this PMP entry would become ineffective.
->
-> This patch addresses the issue by moving the guard check earlier,
-> preventing the problematic wraparound when pmpaddrX is zero.
->
-> Signed-off-by: Vac Chen <vacantron@gmail.com>
+"qemu/typedefs.h" is already included by "qemu/osdep.h".
 
-Thanks!
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/intc/loongarch_extioi_kvm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Applied to riscv-to-apply.next
+diff --git a/hw/intc/loongarch_extioi_kvm.c b/hw/intc/loongarch_extioi_kvm.c
+index 0133540c45d..aa2e8c753fb 100644
+--- a/hw/intc/loongarch_extioi_kvm.c
++++ b/hw/intc/loongarch_extioi_kvm.c
+@@ -6,7 +6,6 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "qemu/typedefs.h"
+ #include "hw/intc/loongarch_extioi.h"
+ #include "linux/kvm.h"
+ #include "qapi/error.h"
+-- 
+2.49.0
 
-Alistair
-
-> ---
->  target/riscv/pmp.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-> index 3540327c9a..72f1372a49 100644
-> --- a/target/riscv/pmp.c
-> +++ b/target/riscv/pmp.c
-> @@ -211,11 +211,12 @@ void pmp_update_rule_addr(CPURISCVState *env, uint3=
-2_t pmp_index)
->          break;
->
->      case PMP_AMATCH_TOR:
-> -        sa =3D prev_addr << 2; /* shift up from [xx:0] to [xx+2:2] */
-> -        ea =3D (this_addr << 2) - 1u;
-> -        if (sa > ea) {
-> +        if (prev_addr >=3D this_addr) {
->              sa =3D ea =3D 0u;
-> +            break;
->          }
-> +        sa =3D prev_addr << 2; /* shift up from [xx:0] to [xx+2:2] */
-> +        ea =3D (this_addr << 2) - 1u;
->          break;
->
->      case PMP_AMATCH_NA4:
-> --
-> 2.50.0
->
->
 
