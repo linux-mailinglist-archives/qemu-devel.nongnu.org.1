@@ -2,92 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C037AFD8D2
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F95EAFD8A9
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:46:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFAk-00040J-1i; Tue, 08 Jul 2025 16:44:14 -0400
+	id 1uZFBY-00052q-23; Tue, 08 Jul 2025 16:45:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDbe-0001Kp-It
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:04:15 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDbN-0003Ke-5u
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:03:45 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-606b58241c9so7637447a12.3
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:02:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752001368; x=1752606168; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OqYTuCNiZiX8zi1SLZHeCYNVHaveo99iC222kPTZLq8=;
- b=J4DHQK5Cc5/6/oitI8zMj36LklvE9itBfgsAYb2LdYHWZKeMD5n9mNZm64byyCsVCg
- ad9W2hH0sW2I08M+uDyS6NsqQtJe7p8+g+N8p3wBgOVp+5GyF3oaerjSkKAffAgJeDZK
- geJuL7yWuf5N6Tp9Tm4MF4tigMxIjvD/7vLcoyu7X9WzqZD96P5w8LH7mbw9iVEB17bs
- hxIUXeBxuWwuA+lK7xHcmgAoeDZVhffLA9fq2qpAfPznDMh2WP+3XaSPpyL8iErVwdL0
- lMvlwv6NbKbRZVOs8++1P8f5zzhOLsPZFiEOJt9PfocM/5GCFrMBusZ8l50A0U+vHvdS
- 4pcQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uZDja-0000mP-2a
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:12:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uZDjU-0006DJ-3Z
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:12:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752001906;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=L9q0gpXdPbg6eBCi/0mNIFkjCL7m/pypYuIcnyHvnFMMF3azwRWMsihLEoJB4NDHCOpBju
+ WucQf6SW1ENUhmL7mUzy52IgsXDuX2/7g+Z2DbNhHRSevoXEpju3BB37I/AE1Nt7cYyE2b
+ CfUICJxTByCT/JP10K0aIOhiQBBoAow=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-164-1SNaaP9bOxCsILdT03J4bQ-1; Tue, 08 Jul 2025 13:11:26 -0400
+X-MC-Unique: 1SNaaP9bOxCsILdT03J4bQ-1
+X-Mimecast-MFC-AGG-ID: 1SNaaP9bOxCsILdT03J4bQ_1751994686
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a50816cc58so1968226f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 10:11:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752001368; x=1752606168;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OqYTuCNiZiX8zi1SLZHeCYNVHaveo99iC222kPTZLq8=;
- b=X6r1IpbS/Z5sjil8SEAlvVCx2sh5Y+uQjE9VatWAACOl23vKIbL6UHciZGVn2rSmxH
- y5ZeTumzoSgi3XFAunJ2qGX5nvU1j/O9klVLs5NWdqSyEhG21dZidY63mgngeNMacvAK
- 1+r365nZOBzsENaYI7wwtQrxdeUHlyF3RhZ2B4f67a3GC/6DXDdmszglo3GCAdGdD2aB
- 5rCTBMqzy+b2zl/9wLvy5SJmnn9nCM/vV5uuE9MS4uOMwhQZiQLndV4OJXe2Of3NB+JM
- bdhVBQStHDi81iJkejnL2V4NN12djl2OxSh9h1f3Mnrb4KgNP6/44YVRincV3ph78K+V
- pbwg==
-X-Gm-Message-State: AOJu0Yz4oe1HNww6n5hFzpLpif9QiE4EM/TY3rqGAJ5zy4WrCjxFzUXT
- RFTWpDZpMEEVn+uATRrNIqHIwexPrw446NeWT5lily+aW+7eP0ndCO9OmB0yApNDSF2YbwxvaMx
- 31xlH
-X-Gm-Gg: ASbGncv63eFveZFMPYb3LggiDRztIjqqER9uq9yvXbTgxp6CCZ/KgnRIvKDCVptS4cV
- xrVhAgvIEv1cAxV3gfTP4pIcsjWKxYSndWSdRX14nocynVPKvxapYbwBOc9IdHUUTNjq4kB85yk
- 3zMQkdVPd/lLkaBJvSFQ8IrNr4kCtHjNAJ27P52dVO69YuM7Sxb4wD40idpMjVRCpeyQUPkjF5C
- 0B0s+jVL4l5C9i/PbihCkJqYSWk1GDVcG1IU4VrjO9yN9uZuZdjZTuc6RxFWvr4EyWWUubIGlcm
- bhNjTPQJxEFFqGauqF1iJyOfGq5eL4fpdj1f4eNIt6wn3unG3yTvBN7AJGGU/uMoeKY8sYppn0m
- Dv/YAqIdu0jJpFvARUluVhUdIeftyf1vnohs4b9jX
-X-Google-Smtp-Source: AGHT+IGwaihnAEepD74IpnE32Ml4CpQq7yS6bPmQPjzCJbQ999fIFyIc9hoif/JyG0smPFOTL0s0cg==
-X-Received: by 2002:a05:6000:2583:b0:3a4:e629:6504 with SMTP id
- ffacd0b85a97d-3b49703925amr13885616f8f.49.1751994670877; 
- Tue, 08 Jul 2025 10:11:10 -0700 (PDT)
-Received: from [192.168.69.242] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454cdb381a6sm19420795e9.1.2025.07.08.10.11.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 10:11:10 -0700 (PDT)
-Message-ID: <b56156da-c323-4eb2-9d0d-739e69769f14@linaro.org>
-Date: Tue, 8 Jul 2025 19:10:58 +0200
+ d=1e100.net; s=20230601; t=1751994685; x=1752599485;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=n7b7LK1L6ianwNx3+QwOQRxaWDQDhJNpLkV+ofJU6duUEuOLGZdRfXPVKNB0UTLAtQ
+ +12ijBbaXjcJimy1vpXWKf/zT0540mcWyNOX3hcwu1DnIZXr5QGQMrHXJuzDYs5RT9kQ
+ DX0+g1sohpJL3lda128x9YSlT5I5Gpwn8Qc7jobKl6orckVNAUfgFxnTdnGQjDHvNyhS
+ FiFnHiyKLkclPHIXhdmUIFf7QjBQLgwn8Na2QrlbxJMBK8msVpHGcC0mlLBmrWOdygtA
+ nx9x+zO9MpF49r3iucVIYqCjhy901YzK3oZzeGW5d7ZiU9nrEipUeclRZ7rTNljPY/x4
+ 8NWg==
+X-Gm-Message-State: AOJu0YxdXGXs8x3L4HAhyXLYgNlSdA83ndf67uf1nhXFjacY0t0nsGTz
+ MTZ3WFpQoYGnz9V34xmYgdJWaxFpMSnl8D1A4evyAL6kSdz+gooNT7PY0o0EFsdt7I8Fuu9r6NS
+ SJEiBcWqLGfcj/ymkylBWOonlwPVyq+4fUbe5J2Kzft1LqC3xZ1dpFg3f
+X-Gm-Gg: ASbGncunXaM9s/t9GSp/DDn09LwRyuPimIzWV09ZReY2ui/pXKCvSJHEoM62xy9uODl
+ SsH/ITfhF5qfBG67YX/FyoJ4jEhTZvig7Y0/7d7nQ7yHznXFfcXMFGBhMLOQNV37V45Wok2nMTs
+ nYsWtVrJq13HiMYBkA8RdpwYlYCdy1gn9Xy/q8evDnVbIGktEZePAAVbFJMawvI9Vyg1ovNjGW3
+ yluFwQRhHYbZQDtqmGBLt2qizSqMWl7j8xIeow2ZaPqkdwrTkpee3w9rtgHhoHT8q56WyTUc8X9
+ jmee/Fm+/AiQnPIaSbqYgUzRV3U=
+X-Received: by 2002:a05:6000:26cb:b0:3a4:dd8e:e16b with SMTP id
+ ffacd0b85a97d-3b5e2fec5f2mr237016f8f.20.1751994685340; 
+ Tue, 08 Jul 2025 10:11:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5BlzEjmfXkCg2INScIyjHDS+TtAEYV0wOXIfXSRTeHRVcFUOvi3Au1j4Puf2zkrnm60cvEA==
+X-Received: by 2002:a05:6000:26cb:b0:3a4:dd8e:e16b with SMTP id
+ ffacd0b85a97d-3b5e2fec5f2mr236980f8f.20.1751994684896; 
+ Tue, 08 Jul 2025 10:11:24 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.202.169])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b471b97353sm13728753f8f.51.2025.07.08.10.11.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Jul 2025 10:11:24 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Cc: qemu-devel@nongnu.org, "Daniel P . Berrange" <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
+ Gerd Hoffman <kraxel@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Joerg Roedel <joro@8bytes.org>
+Subject: Re: [PATCH v9 00/16] Introduce support for IGVM files
+Date: Tue,  8 Jul 2025 19:11:21 +0200
+Message-ID: <20250708171121.145660-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH-for-10.1 v6 00/14] target-info: Add more API for
- VirtIO cleanups & introduce ARM macros
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-s390x@nongnu.org,
- qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-block@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-riscv@nongnu.org
-References: <20250707172009.3884-1-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250707172009.3884-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,33 +116,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/7/25 19:19, Philippe Mathieu-Daudé wrote:
-> Rather than re-spinning the whole "single-binary: Make hw/arm/
-> common" series, restrict to the API additions, but include
-> examples of their usefulness (hundreds of virtio objects
-> removed from default Linux build).
-> Time passed since I context-switched out of this work so I'm
-> not sure the DEFINE_MACHINE_WITH_INTERFACES() implementation
-> is in the form Zoltan asked.
-> 
-> Philippe Mathieu-Daudé (14):
->    target/qmp: Use target_cpu_type()
->    qemu/target-info: Factor target_arch() out
->    qemu/target-info: Add %target_arch field to TargetInfo
->    qemu/target-info: Introduce target_base_arch()
->    qemu/target-info: Add target_endian_mode()
->    qemu: Convert target_words_bigendian() to TargetInfo API
->    gdbstub/helpers: Replace TARGET_BIG_ENDIAN -> target_big_endian()
->    qemu: Declare all load/store helpert in 'qemu/bswap.h'
->    hw/virtio: Build various files once
+Queued, thanks.
 
-Sorry, I cut this branch incorrectly, I should have posted only up
-to here, as the rest isn't required. I'll respin for clarity.
-
->    hw/core/null-machine: Define machine as generic QOM type
->    hw/arm: Register TYPE_TARGET_ARM/AARCH64_MACHINE QOM interfaces
->    hw/core: Allow ARM/Aarch64 binaries to use the 'none' machine
->    hw/boards: Introduce DEFINE_MACHINE_WITH_INTERFACES() macro
->    hw/arm: Add DEFINE_MACHINE_[ARM_]AARCH64() macros
+Paolo
 
 
