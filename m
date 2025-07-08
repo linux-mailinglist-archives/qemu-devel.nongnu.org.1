@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1D9AFD9A9
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4AFAFD7F9
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:13:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFGL-0007h5-Lp; Tue, 08 Jul 2025 16:50:03 -0400
+	id 1uZEei-0000Mt-3i; Tue, 08 Jul 2025 16:11:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uZDu0-0002Yo-Ju
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:23:08 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1uZDXn-0005XY-QF
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 14:59:57 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uZDtu-00018L-8q
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:22:51 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 568Gpw1T027313;
- Tue, 8 Jul 2025 17:24:35 GMT
+ id 1uZDXY-0001yA-B3
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 14:59:51 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 568FCNZF001766;
+ Tue, 8 Jul 2025 17:24:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=ui1r9QrD+76G9OhlBOkb+Qz7bYMNJsbKdDzzLahSA7E=; b=
- JzhsjC5FvqouRfZxo42la2GF8ConywSd9ifD3k/8pLJL+RQOS1YymRPWkVAoXIF8
- rWmp+DQkrChPG7M8joFPqdXBVbjxr07l/7WxPx0VB9gcMeHH6QY60WKQVMIzb6Le
- dYq3pOLWKjknEgf1UMWhHwKwCXCx6weqmzfvjQnhGmmRaI40qtKgqf6vDmXcpC5j
- sO+ralVGf7I1jDuTSnOHbxZSZI6nNs61eiI6VIxyR7yL9qakU3K48rEftzqlNEUI
- MkPLsHQ9AZclulj0haPGZzq7wtXuX1LoNPEWLVDG96Qxmr16sruLxSc4yO8Vcobw
- cCMKg+PCuCJXzUFXlnPQxg==
+ corp-2025-04-25; bh=ODlnkDVqYrwFRf3xs1XGpAmQypuyZzJb+ZfuFfImNBk=; b=
+ CV3BlyNrgbrA2pqJGw82WsdbVZ2E+INSd8BgFz3Woz+TEkJDS7pkwzctLu9/BAIW
+ hrqdWJlBRJb6w5NQUkZS6oJvDjfA7HxCBLhYBKvgvP6s+21+2A+WI2Od00QKmJgl
+ w81luzYkvT9eSJuJYPpBHwEpnVfQQ97Ih/tYKz0FLxreB00P4XsptLrsFFP7nrXb
+ BlFm1I8SlvhxsJWy420Tr+3nli6BBAE5C/ZeT5pMqrNz3lpbTPUY8v7KVtG57wPm
+ gPHQ5JT/gfxqpmt/qGIH1/vnkUn7ve8bDfUIMrPDv/uOmpdyresE1FlOiJnYeFqU
+ POQsFGxQij3FO2Gd7q7Oow==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47s77h8234-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47s5rtg9te-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 08 Jul 2025 17:24:35 +0000 (GMT)
+ Tue, 08 Jul 2025 17:24:36 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 568H9TSp040652; Tue, 8 Jul 2025 17:24:34 GMT
+ with ESMTP id 568H23An040464; Tue, 8 Jul 2025 17:24:35 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 47ptga5ad8-1
+ 47ptga5adt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 08 Jul 2025 17:24:34 +0000
+ Tue, 08 Jul 2025 17:24:35 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 568HOXlh038795;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 568HOXlj038795;
  Tue, 8 Jul 2025 17:24:34 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 47ptga5acj-2; Tue, 08 Jul 2025 17:24:34 +0000
+ ESMTP id 47ptga5acj-3; Tue, 08 Jul 2025 17:24:34 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
@@ -61,9 +61,9 @@ Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>,
  Philippe Mathieu-Daude <philmd@linaro.org>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 1/3] qom: qom-list-getv
-Date: Tue,  8 Jul 2025 10:24:30 -0700
-Message-Id: <1751995472-211897-2-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 2/3] python: use qom-list-getv
+Date: Tue,  8 Jul 2025 10:24:31 -0700
+Message-Id: <1751995472-211897-3-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1751995472-211897-1-git-send-email-steven.sistare@oracle.com>
 References: <1751995472-211897-1-git-send-email-steven.sistare@oracle.com>
@@ -75,20 +75,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
  mlxlogscore=999 spamscore=0 phishscore=0 mlxscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2507080146
-X-Proofpoint-GUID: dZNoqVM_vUJYeEfjXW-HY9jxRbvK7xqO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA4MDE0NyBTYWx0ZWRfX2q6fFlmRQaF3
- H1WYMTDKNpccQ135TjbpxN9t9QZVXXfVB+jYYAdLXlbSnfEIUykl27uwG1txMY0miqZP9otAhEo
- bswVIQYH/C9HgbMmpyAZ57XugVM4UZ0tv6VOvSi+cuvcMIQQy86LaEoZNOh8qT4JtBVpIBexfxW
- stGMYqvCePT2GKmJEXaW3m257mMFCqVWOSz2K0fY2W7mMA1E3olHTWYFyO3/AZ71vQp0Cf+Wvjt
- /RUGLXbuE1eX+S+vW6alWMiwOI0e/hGvWIjAiavjGTho1A4eO8ODgQkA7g1llgWaAy9THHuv5Eb
- 5FfQt2moniVxNIP+1AeTvBqWFLn6xEmuvCc4ISFi3p1wmLiDILCF1vx236uhEhQYTENl1xrHuZY
- +xdAF96WyVAVt9kaeDcxLEJPUTx3BYRG94v9uRy1b4TRl9YFsINpSRrlF8OQyQtyz8PoGJFm
-X-Authority-Analysis: v=2.4 cv=Qepmvtbv c=1 sm=1 tr=0 ts=686d5453 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA4MDE0NiBTYWx0ZWRfX1T8QiXFnw0Rt
+ 3SABzOy295tgKDm4rX8OFx4+AK7G/srvtM83+7LiGzyB22TcxiBJ7dj6bQ8Lv+kCAOQ4+Y8MYN1
+ pggV24khZyMT/VjHluj+q8ZwwYCbROK7zxxcNFQabBpttJrPBI6sOjV174tm9eZEbUSfwt8Ep4T
+ BZ5/bA5P58eATf3+hhrTDVntt0QWXH8Zbrl8eL1+T9M26D5w66QGAqhsDKudwEAwUFpUi8YW0bo
+ vt5S4PcATZTFPULTRp7CtDeMa2duNy77oK7+0tUrfCDwm9K6B4koCh2dKLcDG6KQeFTuudjfn4X
+ BkSpifwNtY3B29wPKVypwLW8Mpw1Ga4GUqxs8gAAE+P7jGLFrzLOWCYuJYASPGp3+VOgAvTwsEi
+ VxpzG8uD98JJSbXPNgdq3htoYAQSUcMBswJ0YphAzF/oSCyR64bmThRHvKdysW9QWzEezk5O
+X-Authority-Analysis: v=2.4 cv=ScT3duRu c=1 sm=1 tr=0 ts=686d5454 cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=t2Pplciw6Ekvz-vbJ3MA:9
-X-Proofpoint-ORIG-GUID: dZNoqVM_vUJYeEfjXW-HY9jxRbvK7xqO
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+ a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=RXQK8gpASe9cUJZfEHoA:9
+X-Proofpoint-GUID: FIPk0zJQQdO1lPZzLucPUBfQgjx1MQ0o
+X-Proofpoint-ORIG-GUID: FIPk0zJQQdO1lPZzLucPUBfQgjx1MQ0o
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -112,148 +112,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define the qom-list-getv command, which fetches all the properties and
-values for a list of paths.  This is faster than qom-tree-get when
-fetching a subset of the QOM tree.  See qom.json for details.
+Use qom-list-getv to speed up the qom-tree command.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- qapi/qom.json      | 50 ++++++++++++++++++++++++++++++++++++++++++++++++++
- qom/qom-qmp-cmds.c | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 103 insertions(+)
+ python/qemu/utils/qom.py        | 43 +++++++++++++++++++--------------
+ python/qemu/utils/qom_common.py | 53 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 78 insertions(+), 18 deletions(-)
 
-diff --git a/qapi/qom.json b/qapi/qom.json
-index b133b06..c16c2dd 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -46,6 +46,34 @@
-             '*default-value': 'any' } }
+diff --git a/python/qemu/utils/qom.py b/python/qemu/utils/qom.py
+index 426a0f2..6b2f1ab 100644
+--- a/python/qemu/utils/qom.py
++++ b/python/qemu/utils/qom.py
+@@ -224,28 +224,35 @@ def __init__(self, args: argparse.Namespace):
+         super().__init__(args)
+         self.path = args.path
  
- ##
-+# @ObjectPropertyValue:
-+#
-+# @name: the name of the property
-+#
-+# @type: the type of the property, as described in @ObjectPropertyInfo
-+#
-+# @value: the value of the property.  Absent when the property cannot
-+#     be read.
-+#
-+# Since 10.1
-+##
-+{ 'struct': 'ObjectPropertyValue',
-+  'data': { 'name': 'str',
-+            'type': 'str',
-+            '*value': 'any' } }
+-    def _list_node(self, path: str) -> None:
+-        print(path)
+-        items = self.qom_list(path)
+-        for item in items:
+-            if item.child:
+-                continue
+-            try:
+-                rsp = self.qmp.cmd('qom-get', path=path,
+-                                   property=item.name)
+-                print(f"  {item.name}: {rsp} ({item.type})")
+-            except ExecuteError as err:
+-                print(f"  {item.name}: <EXCEPTION: {err!s}> ({item.type})")
+-        print('')
+-        for item in items:
+-            if not item.child:
+-                continue
++    def _list_nodes(self, paths: [str]) -> None:
++        all_paths_props = self.qom_list_getv(paths)
++        i = 0
 +
-+##
-+# @ObjectPropertiesValues:
-+#
-+# @properties: a list of properties.
-+#
-+# Since 10.1
-+##
-+{ 'struct': 'ObjectPropertiesValues',
-+  'data': { 'properties': [ 'ObjectPropertyValue' ] }}
++        for props in all_paths_props:
++            path = paths[i]
++            i = i + 1
++            print(path)
+             if path == '/':
+                 path = ''
+-            self._list_node(f"{path}/{item.name}")
++            newpaths = []
 +
++            for item in props.properties:
++                if item.child:
++                    newpaths += [ f"{path}/{item.name}" ]
++                else:
++                    value = item.value
++                    if value == None:
++                        value = f"<EXCEPTION: property could not be read>"
++                    print(f"  {item.name}: {value} ({item.type})")
 +
-+##
- # @qom-list:
- #
- # This command will list any properties of a object given a path in
-@@ -126,6 +154,28 @@
-   'allow-preconfig': true }
++            print('')
++
++            if newpaths:
++                self._list_nodes(newpaths)
++
  
- ##
-+# @qom-list-getv:
-+#
-+# List properties and their values for each object path in the input
-+# list.
-+#
-+# @paths: The absolute or partial path for each object, as described
-+#     in @qom-get
-+#
-+# Errors:
-+#     - If any path is not valid or is ambiguous
-+#
-+# Returns: A list of @ObjectPropertiesValues.  Each element contains
-+#     the properties of the corresponding element in @paths.
-+#
-+# Since 10.1
-+##
-+{ 'command': 'qom-list-getv',
-+  'data': { 'paths': [ 'str' ] },
-+  'returns': [ 'ObjectPropertiesValues' ],
-+  'allow-preconfig': true }
-+
-+##
- # @qom-set:
- #
- # This command will set a property from a object model path.
-diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
-index 293755f..fa44ae7 100644
---- a/qom/qom-qmp-cmds.c
-+++ b/qom/qom-qmp-cmds.c
-@@ -69,6 +69,59 @@ ObjectPropertyInfoList *qmp_qom_list(const char *path, Error **errp)
-     return props;
- }
+     def run(self) -> int:
+-        self._list_node(self.path)
++        self._list_nodes([self.path])
+         return 0
  
-+static void qom_list_add_property_value(Object *obj, ObjectProperty *prop,
-+                                        ObjectPropertyValueList **props)
-+{
-+    ObjectPropertyValue *item = g_new0(ObjectPropertyValue, 1);
+ 
+diff --git a/python/qemu/utils/qom_common.py b/python/qemu/utils/qom_common.py
+index dd2c8b1..4db97ba 100644
+--- a/python/qemu/utils/qom_common.py
++++ b/python/qemu/utils/qom_common.py
+@@ -65,6 +65,50 @@ def link(self) -> bool:
+         return self.type.startswith('link<')
+ 
+ 
++class ObjectPropertyValue:
++    """
++    Represents a property return from e.g. qom-tree-get
++    """
++    def __init__(self, name: str, type_: str, value: object):
++        self.name = name
++        self.type = type_
++        self.value = value
 +
-+    QAPI_LIST_PREPEND(*props, item);
++    @classmethod
++    def make(cls, value: Dict[str, Any]) -> 'ObjectPropertyValue':
++        """
++        Build an ObjectPropertyValue from a Dict with an unknown shape.
++        """
++        assert value.keys() >= {'name', 'type'}
++        assert value.keys() <= {'name', 'type', 'value'}
++        return cls(value['name'], value['type'], value.get('value'))
 +
-+    item->name = g_strdup(prop->name);
-+    item->type = g_strdup(prop->type);
-+    item->value = object_property_get_qobject(obj, prop->name, NULL);
-+}
++    @property
++    def child(self) -> bool:
++        """Is this property a child property?"""
++        return self.type.startswith('child<')
 +
-+static ObjectPropertyValueList *qom_get_property_value_list(const char *path,
-+                                                            Error **errp)
-+{
-+    Object *obj;
-+    ObjectProperty *prop;
-+    ObjectPropertyIterator iter;
-+    ObjectPropertyValueList *props = NULL;
 +
-+    obj = qom_resolve_path(path, errp);
-+    if (obj == NULL) {
-+        return NULL;
-+    }
++class ObjectPropertiesValues:
++    """
++    Represents the return type from e.g. qom-list-getv
++    """
++    def __init__(self, properties):
++        self.properties = properties
 +
-+    object_property_iter_init(&iter, obj);
-+    while ((prop = object_property_iter_next(&iter))) {
-+        qom_list_add_property_value(obj, prop, &props);
-+    }
++    @classmethod
++    def make(cls, value: Dict[str, Any]) -> 'ObjectPropertiesValues':
++        """
++        Build an ObjectPropertiesValues from a Dict with an unknown shape.
++        """
++        assert value.keys() == {'properties'}
++        props = [ObjectPropertyValue(item['name'],
++                                     item['type'],
++                                     item.get('value'))
++                 for item in value['properties']]
++        return cls(props)
 +
-+    return props;
-+}
 +
-+ObjectPropertiesValuesList *qmp_qom_list_getv(strList *paths, Error **errp)
-+{
-+    ObjectPropertiesValuesList *head = NULL, **tail = &head;
-+    strList *path;
+ CommandT = TypeVar('CommandT', bound='QOMCommand')
+ 
+ 
+@@ -145,6 +189,15 @@ def qom_list(self, path: str) -> List[ObjectPropertyInfo]:
+         assert isinstance(rsp, list)
+         return [ObjectPropertyInfo.make(x) for x in rsp]
+ 
++    def qom_list_getv(self, paths) -> List[ObjectPropertiesValues]:
++        """
++        :return: a strongly typed list from the 'qom-list-getv' command.
++        """
++        rsp = self.qmp.cmd('qom-list-getv', paths=paths)
++        # qom-list-getv returns List[ObjectPropertiesValues]
++        assert isinstance(rsp, list)
++        return [ObjectPropertiesValues.make(x) for x in rsp]
 +
-+    for (path = paths; path; path = path->next) {
-+        ObjectPropertiesValues *item = g_new0(ObjectPropertiesValues, 1);
-+
-+        QAPI_LIST_APPEND(tail, item);
-+
-+        item->properties = qom_get_property_value_list(path->value, errp);
-+        if (!item->properties) {
-+            qapi_free_ObjectPropertiesValuesList(head);
-+            return NULL;
-+        }
-+    }
-+
-+    return head;
-+}
-+
- void qmp_qom_set(const char *path, const char *property, QObject *value,
-                  Error **errp)
- {
+     @classmethod
+     def command_runner(
+             cls: Type[CommandT],
 -- 
 1.8.3.1
 
