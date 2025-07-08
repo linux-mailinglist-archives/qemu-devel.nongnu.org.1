@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C76AFD929
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43246AFD947
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:09:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFCn-0000Ar-Cs; Tue, 08 Jul 2025 16:46:21 -0400
+	id 1uZFDe-00035k-ID; Tue, 08 Jul 2025 16:47:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uZDmO-0003hq-RT; Tue, 08 Jul 2025 15:15:07 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ id 1uZDnc-0004gQ-Ln; Tue, 08 Jul 2025 15:16:20 -0400
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uZDmG-0006fB-R2; Tue, 08 Jul 2025 15:14:55 -0400
+ id 1uZDnV-0007GK-Si; Tue, 08 Jul 2025 15:16:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752002093; x=1783538093;
+ t=1752002170; x=1783538170;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=eqW/GZxVmXxa6Rs8JzPHetgNBfIq7ooBhf8uaasmLf0=;
- b=R44LPOUR1PdI2qjzFnnM/3TXTPt0pgI5Vais0OyCRA1N6wo8t2ENZvsW
- 5j9zuulO+Em63EnW4aO9xy6tJ/SjrYhQbdEXAS4gFkUo7oP2TD03CcC9F
- hlqQ/WTin8g+TEneNEOtg4hlzA3wkK+zePYjmpaeT0CF+amyvHKep/Z4T
- JZtt6NUaIz+gE7+hxAMtwa/xWTvYtZorQVeStO84YgapTfbSNs3gDhkka
- 0potVJFztFvWzgTdut4xHDpyyUnBJMC3zn5uQtHTjnb7Hgnbg/Eydwjcz
- v+s/Zign5rmtpEPdrBKDRqOQcGS6TyAqIKspguoMnUX9+j++vd/kuqE9G g==;
-X-CSE-ConnectionGUID: qqq2wr9JS7WMt4hvJIfwpg==
-X-CSE-MsgGUID: J4APQoszTVW8GA5GW8KTCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="76739652"
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; d="scan'208";a="76739652"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2025 00:58:29 -0700
-X-CSE-ConnectionGUID: y/tLSVigRZSgnvc/1wdxyA==
-X-CSE-MsgGUID: hAUsDz+zQJyt1tCW+CnNRA==
+ bh=atwudXLeTa5tSIxfbiQr6IFjLu+NtrdGqLBrqQEydxg=;
+ b=XcgE5s8LAo325e8iHEnqP5lh9jMvDSNsEdOWzBwWQkKaHXSGEI8SO2wV
+ EP0B581/RsJgxF9Ad9ZNurKqHQov1EPgDmYSZbJ3pAztIRoooK7N/oG2x
+ dd6HBdN8VdHruilWGKOso8IeT40S0FcEJjtj40Nz83ffLVgeVzh3rrhUu
+ rkiOGhmTLYa3/7ns7lqJFjsn0XgZ96kx87Nyyij7XTo4cNb3RiKUqAUnb
+ J9egFBG7i8EHpIjOr9U2n7AgNQ7N4F5Q7a3MINZdaVw5qC6Ifc9Rq0J5i
+ ytah/DYV+pM7HWkMyT/k8SVDVo5kAVtx/sXJaWZKc2Y6vfRCdsQI1DR9Z Q==;
+X-CSE-ConnectionGUID: 0cXOeOJbSmGFODS1mqyNaw==
+X-CSE-MsgGUID: i2epkh3eQY+Yhogy+Gm9ag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54119137"
+X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; d="scan'208";a="54119137"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jul 2025 01:00:44 -0700
+X-CSE-ConnectionGUID: hYd+tfmWSJK4hB1vO+ZRoQ==
+X-CSE-MsgGUID: OB4FF75TQH2zSEQrYYXBfg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; d="scan'208";a="154842527"
+X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; d="scan'208";a="155925894"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 08 Jul 2025 00:58:27 -0700
-Date: Tue, 8 Jul 2025 16:19:55 +0800
+ by orviesa008.jf.intel.com with ESMTP; 08 Jul 2025 01:00:42 -0700
+Date: Tue, 8 Jul 2025 16:22:09 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 1/3] rust/memory: replace size arg with Bits enum
-Message-ID: <aGzUq5vZFZvk4uxh@intel.com>
+Subject: Re: [PATCH 2/3] memattrs.h: make MemTxAttrs into enum
+Message-ID: <aGzVMbFDmJcpxHXp@intel.com>
 References: <20250703-rust-mem-api-v1-0-cd5314bdf580@linaro.org>
- <20250703-rust-mem-api-v1-1-cd5314bdf580@linaro.org>
+ <20250703-rust-mem-api-v1-2-cd5314bdf580@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250703-rust-mem-api-v1-1-cd5314bdf580@linaro.org>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250703-rust-mem-api-v1-2-cd5314bdf580@linaro.org>
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -80,29 +80,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 03, 2025 at 04:58:11PM +0300, Manos Pitsidianakis wrote:
-> Date: Thu, 03 Jul 2025 16:58:11 +0300
+On Thu, Jul 03, 2025 at 04:58:12PM +0300, Manos Pitsidianakis wrote:
+> Date: Thu, 03 Jul 2025 16:58:12 +0300
 > From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Subject: [PATCH 1/3] rust/memory: replace size arg with Bits enum
+> Subject: [PATCH 2/3] memattrs.h: make MemTxAttrs into enum
 > X-Mailer: b4 0.14.2
 > 
-> We have the ability to make memory accesses use a typesafe access width
-> type in Rust, which the C API currently lacks as it does not use a
-> newtype wrapper for specifying the amount of bytes a memory access has;
-> it uses a plain 32-bit integer value instead.
-> 
-> Replace use of u32 size arguments with a Bits enum that has only the
-> allowed byte sizes as variants and has a u32 representation so that it
-> can be fed back into C as well.
+> Convert MemTxResult defines into an enum. This will allow bindgen to
+> generate a bitflag using the enum variants as its domain of values.
 > 
 > Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 > ---
->  rust/hw/char/pl011/src/device.rs |  8 ++++----
->  rust/hw/timer/hpet/src/device.rs | 14 +++++++-------
->  rust/qemu-api/src/memory.rs      | 34 ++++++++++++++++++++++++----------
->  3 files changed, 35 insertions(+), 21 deletions(-)
-
-LGTM,
+>  include/exec/memattrs.h | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)>
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
