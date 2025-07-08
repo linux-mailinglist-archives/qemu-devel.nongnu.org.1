@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0F0AFD944
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66769AFD89D
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:44:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFEX-0006Pn-N3; Tue, 08 Jul 2025 16:48:11 -0400
+	id 1uZFBK-0004iW-Fr; Tue, 08 Jul 2025 16:44:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uZDxT-0005YN-2u
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:26:30 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1uZDjS-0000jF-TB
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:12:02 -0400
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uZDxO-0002El-Jh
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:26:25 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-74931666cbcso3907172b3a.0
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:26:17 -0700 (PDT)
+ id 1uZDjL-0006CV-96
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:11:56 -0400
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-73cddf31c47so521952a34.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:11:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752002776; x=1752607576; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752001903; x=1752606703; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NpokmzBZf9Ndynik64SY0VCrm5Id9j2SDPXgY+3AKfI=;
- b=AX42Q45Usi/XmY3xXerTLGVDuBZI5hy0YIpN4aZn74Y2xHWuPgAHJX+dd/4z3WkTE6
- bPvJQmy9RnFqCeUCIokQe96wAhpRM544JyD2Ro31jcue866WbAnpdc5iyBZLvSO4yn7E
- lC/6dgxaJz/FPfZbakbpxeCdKm2OuekgBg5dfPrX73B2Q5E9G655gRJIUpLKzZrkwdmz
- OzuyYtKWf1bAmhPkEf9ishZdMR31rjT3n4ilOBTyLbWf85CY63oLKJPGaBB2wWaCioNo
- veTlXMI9dRWkYQaoIf9LPNrha0S9WRfjjMoIPFc7r++C1ztKyOUQ+7MiGrOnQAErSaaX
- fydQ==
+ bh=Tta5Mdv0u4HyunTJLNPVqLhMBNwh/iE+JErBOo/o8Yc=;
+ b=DRyVxL7zFoozO2ThJgLCVWoBtU8pK2HRQQ/5GR7wUVRWf9aS4SDhKHop+rsSr0caks
+ +8GFhiXnMHIjGOzQ/FpvgC5xoDVd20C9YZp841kkbGHHVfXrLcQ3ecKaYFVonCsIv0V8
+ Dg+Hy8JWPOoEOdpkMr+t8y2swwSLgqZ/fuapTC1gnKSxS2y6RJ3ejqGv7FTHZlkqCflW
+ Z6g1Qg1Qlfz4c3P3wwrIl4Pwye+hjLLpNme3AbWFo0H9076nyOT6oZW28Uwir645wizt
+ P60X+QrzBbPaET8PYqzh5b5S3/MrVTWRwfn2IGzE+Kuc3QLWA7XvY6srfi69OykdwsKh
+ JMcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752002776; x=1752607576;
+ d=1e100.net; s=20230601; t=1752001903; x=1752606703;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NpokmzBZf9Ndynik64SY0VCrm5Id9j2SDPXgY+3AKfI=;
- b=KMHkvNuZJjznYZ8+kIQcPJpdTOxDWS+4Y2vPp5pq8ksEIBzenyZg7vsO3Sk+NWF52G
- 5QpwJBSIB02VhGJ2WkNL95ZeRw4T8IFYsTncSJmfvNu0CRxouXvy6izA+fj/JMQLdaAG
- M+YriTlKlnb74w6pSAmakesN+lPh2SZ7lwaKEpom0ZZahOO+KuQ3jkKTvDAudDnKk4zV
- PaG9yh0AenRm4mwJvtuhIICWVxmNBhUcbE49PRgWVcWFuY5TZGnOkiAOMji1T9835FHE
- RJnXriC5WL4JxijZSEyeN37oN+GMKzyX1RxgVUGvi6oIPbZRTu+pmIBmLzD9uX4PtITW
- OuZQ==
+ bh=Tta5Mdv0u4HyunTJLNPVqLhMBNwh/iE+JErBOo/o8Yc=;
+ b=NSCcLEb5ZWnN0/I38EP4vdj7tuJNrFBAIwoxLXLv2ERvUzQnXYJGEw0tARYlVlUDMf
+ iscs0EaVKdzChegwcChabCxKmOtqyVpjS07o2uU9tkrciyWvBUlVjvEkTRiyQ8zqvJT8
+ T4HE6OW4nb6P4E61ey2qjYxqkSFttTgUtCRIMAXWPMP6xscelAWaMDKSNXjpAv9UhPLN
+ mEdC3ry9GZtHWkJQ2IAcia0EzR1qT89xoBjNw/lOZsKb9jkrGuIyB7eRE55s95ekN3DG
+ B4BLYuITOBhUa8Uaoy54vbXhzAIuU8tEqSitGVtmC08vBg4XV/qTrJw3pODJjDzcYkhF
+ +PuA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWyNeinw1PclavA+PBQRZmi1K9g8JQbQLJysWv149iZLY5CLdwKKJs48t3K3plqacVBYDNsC6uqWKPp@nongnu.org
-X-Gm-Message-State: AOJu0YxxL0gT1qee4HFAksQP+L9bQ+Xd22viUu/5J85GpTw5sRMIa+Kj
- puX8SKShnvnc9zw9f4g1xCBDgw4VmFnJyAWUn8x1rfucppY8nR1zIGr7PGbZN4r/Umw4Jx0u/XK
- tqAVl
-X-Gm-Gg: ASbGnctjaal0eYpzW0F8v0pWew8F6Cr1vzKW7Iq8JVIKB0L2XDTNegalNlkXmEo2O4i
- 8Vawbwe9edgVMSao2DxR9gofw9nV00AMgmnNPWRttdrjVnKIh1FIeR8fS+h2ycX++u6eYNZUaG1
- BrDxShXEBCpRBRcLze7nVB2jM4QJucaTL9jmIy6AtQK707xmFYS5U4W4KlZhkEQvurhhY1uOv1K
- dC4vTL6ORqUZggxblZDRXRf1PIHBQAFXCziChmgiGrYaYCyzRffX77JRszXNt7aiHLqjfV3stmN
- 1d+OUHYAkWMwXfiACTlVwnnDTwr42BumhxOJTxkMJpud7M1LYt3UPJlNVUiCa994jkITKT1N7PM
+ AJvYcCXHc3fwkPe8dg0JXQKQE8nn7K52WpsfS0uHKTUkchd/0tXu8KP5ZfYtmz0MKnDnh5GwZsEHJFCGpZx0@nongnu.org
+X-Gm-Message-State: AOJu0Yza4dzGSYnfNmHEj6h+RCY/J9aEpEApIMam/bigjrpdFQdZoYOE
+ C0h5fZsfFPHsBIOtCz1bPLx+sM7Reinh6if9DO3tzUQNUyHBEU0KgkMTV3VL3zWjCvDDP5EwVEM
+ gy7mz
+X-Gm-Gg: ASbGncuDkl6cGKgXlsZgWVgjB0g5O++eZ0bBoQWGXiw9d9mHuoPy1ChhHwUIxUIjW2Q
+ awBZxSvtzW0UtvD+p6JgIZ8vFCkdfTH8D5g34GKLJriU+XoH8yeUfd0dxtRtcvYmxQETCGRSv5q
+ TMp/FlXc57ew5iCujHUL/5w+QwhFNY0QwthRbLTsL4+pPVXJDK/upzyjemjKUFesXCy60r0GOQt
+ iFqvDXhQDHzq91wJ5UruqZr7f+Dr7fZfhGkv0O+knIdcaonu0QsSZ06vq7O9Dj/aesew2invd7W
+ 5CuftUFXpvHKE4taFdT3wCWb4Stoib2mPtqzPWjzYBBN7B+k/S2LccvVb7jHXzzN61JLUYuFUWg
  =
-X-Google-Smtp-Source: AGHT+IFD/tw8S92eqLq6aXF3gXU+MXGEhzjZU7LiY85OvpsrbqvoO6pCAQlmjdzy+5IRmNr/dwAXUw==
-X-Received: by 2002:a17:902:d2c5:b0:236:6f43:7051 with SMTP id
- d9443c01a7336-23dd98356a4mr4888025ad.23.1751996046753; 
- Tue, 08 Jul 2025 10:34:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzGrv5wUVsy6z+dn1Bx5Y2gV1AqOR0Neyx1aJCMXa8JqNaYvtMeYEI5OcqDHRG/gCYni+m8g==
+X-Received: by 2002:a17:902:f644:b0:234:d399:f948 with SMTP id
+ d9443c01a7336-23c875428a0mr219465405ad.33.1751996129198; 
+ Tue, 08 Jul 2025 10:35:29 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23c8455eb3bsm125752875ad.115.2025.07.08.10.34.05
+ d9443c01a7336-23c8459c6e5sm122901325ad.227.2025.07.08.10.35.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 10:34:06 -0700 (PDT)
-Message-ID: <c51f3075-5511-4a97-9eb9-7605d224c237@linaro.org>
-Date: Tue, 8 Jul 2025 10:34:05 -0700
+ Tue, 08 Jul 2025 10:35:28 -0700 (PDT)
+Message-ID: <c7af688f-6400-464a-b6ee-f5ae99d827a1@linaro.org>
+Date: Tue, 8 Jul 2025 10:35:27 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 v7 6/8] gdbstub/helpers: Replace
- TARGET_BIG_ENDIAN -> target_big_endian()
+Subject: Re: [PATCH-for-10.1 v7 7/8] qemu: Declare all load/store helper in
+ 'qemu/bswap.h'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -80,15 +80,45 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-riscv@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>, qemu-block@nongnu.org,
- qemu-ppc@nongnu.org
+ qemu-ppc@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>,
+ Helge Deller <deller@gmx.de>, Pavel Pisa <pisa@cmp.felk.cvut.cz>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Vikram Garhwal <vikram.garhwal@bytedance.com>,
+ Jason Wang <jasowang@redhat.com>, Dmitry Fleytman
+ <dmitry.fleytman@gmail.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
+ <fbarrat@linux.ibm.com>, Bernhard Beschow <shentey@gmail.com>,
+ Yoshinori Sato <yoshinori.sato@nifty.com>,
+ Magnus Damm <magnus.damm@gmail.com>, Matthew Rosato
+ <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Alexander Graf <agraf@csgraf.de>, Phil Dennis-Jordan <phil@philjordan.eu>,
+ Peter Xu <peterx@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour <ma.mandourr@gmail.com>
 References: <20250708171949.62500-1-philmd@linaro.org>
- <20250708171949.62500-7-philmd@linaro.org>
+ <20250708171949.62500-8-philmd@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250708171949.62500-7-philmd@linaro.org>
+In-Reply-To: <20250708171949.62500-8-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-ot1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,13 +142,47 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/8/25 10:19 AM, Philippe Mathieu-Daudé wrote:
-> Check endianness at runtime to remove the target-specific
-> TARGET_BIG_ENDIAN definition.
+> Restrict "exec/tswap.h" to the tswap*() methods,
+> move the load/store helpers with the other ones
+> declared in "qemu/bswap.h".
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   include/gdbstub/helpers.h | 15 ++++++---------
->   1 file changed, 6 insertions(+), 9 deletions(-)
+>   include/exec/tswap.h                 | 70 --------------------------
+>   include/qemu/bswap.h                 | 73 ++++++++++++++++++++++++++++
+>   include/system/memory.h              |  1 -
+>   include/user/abitypes.h              |  1 -
+>   target/ppc/mmu-hash64.h              |  2 -
+>   hw/acpi/bios-linker-loader.c         |  2 -
+>   hw/arm/allwinner-r40.c               |  1 -
+>   hw/arm/boot.c                        |  2 +
+>   hw/arm/npcm7xx.c                     |  2 +-
+>   hw/block/hd-geometry.c               |  1 -
+>   hw/char/riscv_htif.c                 |  1 -
+>   hw/cxl/cxl-events.c                  |  2 -
+>   hw/display/artist.c                  |  1 +
+>   hw/display/ati.c                     |  1 +
+>   hw/net/can/ctucan_core.c             |  1 -
+>   hw/net/lan9118.c                     |  1 +
+>   hw/net/rtl8139.c                     |  1 +
+>   hw/net/vmxnet3.c                     |  1 -
+>   hw/pci-host/gt64120.c                |  1 +
+>   hw/pci-host/pnv_phb3.c               |  1 +
+>   hw/pci-host/pnv_phb4.c               |  1 +
+>   hw/pci-host/ppce500.c                |  1 -
+>   hw/pci-host/sh_pci.c                 |  1 -
+>   hw/s390x/s390-pci-inst.c             |  1 +
+>   hw/sensor/lsm303dlhc_mag.c           |  1 -
+>   hw/smbios/smbios.c                   |  1 +
+>   hw/vfio/migration-multifd.c          |  1 -
+>   hw/virtio/virtio-pci.c               |  1 +
+>   hw/vmapple/virtio-blk.c              |  1 -
+>   target/arm/cpu.c                     |  1 -
+>   target/i386/tcg/system/excp_helper.c |  1 -
+>   target/i386/xsave_helper.c           |  1 -
+>   target/riscv/vector_helper.c         |  1 -
+>   tests/tcg/plugins/mem.c              |  1 +
+>   34 files changed, 87 insertions(+), 93 deletions(-)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
