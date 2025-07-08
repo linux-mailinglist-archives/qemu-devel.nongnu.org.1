@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F2EAFDA21
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:43:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9EE7AFD8D7
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:50:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZG56-0001G6-Ru; Tue, 08 Jul 2025 17:42:28 -0400
+	id 1uZFGW-0008Oh-23; Tue, 08 Jul 2025 16:50:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZEuH-0003ZF-K1
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:27:30 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDuU-0002ez-0b
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:23:33 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZEuF-0007uf-Uv
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:27:13 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-6097d144923so599730a12.1
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 13:27:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDuO-0001HJ-Kv
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:23:18 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3a4f379662cso4162698f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:23:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752006429; x=1752611229; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752002593; x=1752607393; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=fu1WK/w/9D5J6tMkfVhjTZ9B5iy+dfmpVxjwVLiGPDY=;
- b=ZjPdcJh/hoOnLw/t0LCVxjQOSdY4/OFDrkbQYublwTk0NFM9ueP+PWY4K2qy8cEQzT
- ZDGyTWBFE/223KE3f8twVqdcyp/+YpC64t0qIUDsxBvDc3ftrJyDOOGFYTU53DQDOONO
- m/5MPep6mQnPCcxd9Oy2rzshOjDoIz8j7J8+8urfNnYHgXliOY6rZ3LYd3cd7PkqHJPk
- kGsSut4FwT70JOfrYXMntpTNeJ954jHC+a+Es6BQMsu2zVBZ7DRpfXqh2Cy8SUa7jhEN
- Pb3i0r6catAiDfmFNqgrERs5idlQZyj4429bIH+Xa0FGTqzS2PwYg3EAz6hrQGLTw3gA
- 7XeA==
+ bh=zvjAHKKj67nzrJNGML5W2IgJTI4rRxVlMgp/bugiUss=;
+ b=jSWxQpQoFXIF5+TFgg49/Kok9ze4ihMObuEJtkE8WSEdXtC4bhpAIGTd4PN+/FS0R7
+ b9sOuAJgaIjkKHN9vTBZbes9EyOyxhbz7GPOjmPFXCYjARSYcS9g0cyYUCLug02VYeX3
+ d+zJWwXKQ21YVKFfNDQ1tzLGbm4j0x+UGzlWOHTTa9LtP+EgX0oEF2WL5clhS/4c1yxL
+ 9HuQDZpF9zeiEi+JMwEcHPe++hByWs1sXRHeeaE0W3SSwSydxplKFclRecNlfbcIGoMa
+ AAyM5XA9alPtofJDRGfxYpqpPKpI3NhXTc+2COgYy7N33CKCfN9olWOBa0C7HEIE0scQ
+ ORfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752006429; x=1752611229;
+ d=1e100.net; s=20230601; t=1752002593; x=1752607393;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fu1WK/w/9D5J6tMkfVhjTZ9B5iy+dfmpVxjwVLiGPDY=;
- b=S6pXqDXlfrVX/2Q4p1avCitRlPx1ejT4IcuE1WnUJrztN+cXfrALqb2StP/DwrhwbG
- gR1fMNbvNGWMPZHaT6TXXqHxsmM3yBkle6S4velATB3LMJO9BrgBtBZhtWx4VoqKifX/
- vsXnjJzPqZEJ5ushJIZrMBn7HHqDNi+9Grt9zDbRlmxu7+sRHqbJ4p+C9E5Bq+k82FG5
- 2MDQknbQKTNwvhVCKvDf4Ftl+PyuGerVHaRU3+JSLQSc2CH4dm1RnZtej4aR1ZQH/qO6
- lQLo1vJrkE0QBMiIjf6jawvqxANuKP4EMZE0iEB9FgKsQmD7+2MJMXbnLRQfYXzO7nPa
- URcw==
+ bh=zvjAHKKj67nzrJNGML5W2IgJTI4rRxVlMgp/bugiUss=;
+ b=fYeqVuGsYqZrhCrkQ6MAlh24L/QpdcYCtxsHRoq0nxU4pylIsmSgVjlyKPI3hZaPny
+ g+NDh4bt8t2uKXOfSiFF5Ugrx+TIvilZzMre4+z/+jZf0U8+rOE9qbL4pqYpKjMT803Z
+ mZhovIoBygh/AtueEUMKU1e/5HRFu92aB2pjdMIwl1B0znyus950IABag13m1TSjcVWU
+ DRpicu1URHmP1Zv5HVqeTu5uIYYbECN2LanNowhuMAsma8+wERbgH1XIhSDSzDBmo4OQ
+ EK9fDvWD84HhfAiUvzn4rh08cQ0XMmUjPXReY836PzlnfFMvJfc5IBVX8nwQeo+aV688
+ +nVg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVnfJ67ZfeigtFPEU5alSCVj1EFw6E8T/0rMc9ZDG712/PY08bfpSOnDTD2qNlkXJdc13h496nlgcEh@nongnu.org
-X-Gm-Message-State: AOJu0Yx1sjshURQO99uD370Hqv/pyINHaSyuN9AdjLUIprxcZEllDNKH
- qlSnBVuQrbPr6CDKTsDa8RwRdE63TpbJDJMzDiy2nAr1L5NR95Eri9VJkR20VOgLEBFgviqZvK0
- gKVFSvIY=
-X-Gm-Gg: ASbGncsNJoTEkTeSAebCmwVfqZcWz6V0ZOPYw+mPoDfg8Lm0HFYf/NUhPETlsvfvjgY
- HtgJr+Oh3H/o8dSkrztIPFUk2fbQkJu07d0A3KOR1s7ocnxBzVNnURaRoaUqvG+3KhmkfUj3b7k
- 2e1DCkHV1qFTnG2NoMptz/Aeg1igIRJLxtRSyw86TVpxXea8jS/PhpnSvuN8PaDjur+Db5eE08l
- 2XrEa1ffMdSre8fvzM6g4roDi2w8rKKYLiOb8q7CYzsYJwBTpzL5mcZFnI7U/poPpH+ZLD3EnVV
- zvINaZ4b83eh7RZHTQlgGHhMX8qZCFQTVXVET22jLp+M2eGKX1MkhWcg+z6TBraPScMBakudJEa
- vp9dDb+u3FaOBPL1HUbHLsksaCQFQoA==
-X-Google-Smtp-Source: AGHT+IHHKrJcuCgu3qsCXiOF3gFkmJrCVSvfc7PDQzDeIQ7hUrfI8nsQQ3NaaVo3H34R35nnFkQ6yA==
-X-Received: by 2002:a05:6000:26cc:b0:3a5:8977:e0f8 with SMTP id
- ffacd0b85a97d-3b5de11fc9amr1137675f8f.19.1751958275599; 
- Tue, 08 Jul 2025 00:04:35 -0700 (PDT)
+ AJvYcCXnbaeIkvDj/ckfQiqJFyArqCaRS4mphffI9Wp0Tan1UFfK4uM7+WeBClOm96Cj63D7DCwJatDYXiOQ@nongnu.org
+X-Gm-Message-State: AOJu0YyFoeLcewzW2kg7Kppm2axz/qFHT0PhQlCS0Dsh+35WUvojwfC+
+ n1ZUyGOaNXje5/96l4Qy1kHvDt+ChvHRftQQDgQ0fzwKloyjJCut5gPPoov98VaBgqLXSDty9m5
+ fAP/zQ1I=
+X-Gm-Gg: ASbGncvTNx2tPtXAVdtm95K5aYAD1W2nB1IxQTTll+lgQ2gfm3yfebgJKJcYpd49XbX
+ 95X6AM+S+mTmhSz3WghCd6sZxt2FmRg3Lzn6k123AHdWkGO+7dpo8yaGvMx6hSs9bihQulWXQbC
+ VJdX59eiooS5AOLTYsaS1OZx94gYdU7CTjNq/2QmeWvCPaaitJXfsT+oG1ERamijtw/gDC4CqDB
+ 6OUHCh/g4KAODrHqL+td5W4mc+gDjpSXFjvQ2T7j46z2hrbFz4tbcWhRrdaCf9TEYmfgfTfPfZN
+ F5Y31tVsi9ODyeZfNOcw0sqYAaTIpJBiJtUAm8YFNbhho2NU9mtqPHcxE1c01506uNOwBAXhFoj
+ b/8iDHk4hAJo8pagB/yMoZ6N5adoaHTDZ4QJSr0jU
+X-Google-Smtp-Source: AGHT+IGJFAFt1p/ZayEQasGRAxlaEvvJJScgAlfGNjA70acw6J8m4ptNEH0DoPT2RyI6vpEc3YOezQ==
+X-Received: by 2002:a05:600c:1c21:b0:453:7b2b:ed2e with SMTP id
+ 5b1f17b1804b1-454b4eb7e77mr131013125e9.24.1751958414874; 
+ Tue, 08 Jul 2025 00:06:54 -0700 (PDT)
 Received: from [192.168.69.242] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b47030cdf5sm11952429f8f.1.2025.07.08.00.04.34
+ 5b1f17b1804b1-454cd45b8a2sm12855255e9.18.2025.07.08.00.06.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 00:04:34 -0700 (PDT)
-Message-ID: <ca3f5ffe-067e-484f-b5a4-eee0ae029d9e@linaro.org>
-Date: Tue, 8 Jul 2025 09:04:33 +0200
+ Tue, 08 Jul 2025 00:06:54 -0700 (PDT)
+Message-ID: <1749cfaf-6d89-4f11-b9a8-8de8919c1aa9@linaro.org>
+Date: Tue, 8 Jul 2025 09:06:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] hw/audio/sb16: block structure coding style fixes
+Subject: Re: [PATCH 1/3] hw/audio/sb16: introduce DMA helper functions
 To: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>,
  Gerd Hoffmann <kraxel@redhat.com>
 Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  qemu-devel@nongnu.org
 References: <48576e83-54ba-4ebd-8a3e-6b8306655483@t-online.de>
- <20250707193009.12901-3-vr_qemu@t-online.de>
+ <20250707193009.12901-1-vr_qemu@t-online.de>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250707193009.12901-3-vr_qemu@t-online.de>
+In-Reply-To: <20250707193009.12901-1-vr_qemu@t-online.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,13 +104,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/7/25 21:30, Volker Rümelin wrote:
-> Change the block structure according to the QEMU Coding Style
-> documentation.
+> Introduce the hold_DREQ() and release_DREQ() functions to ease
+> the review of the next patch.
 > 
 > Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
 > ---
->   hw/audio/sb16.c | 57 +++++++++++++++++--------------------------------
->   1 file changed, 20 insertions(+), 37 deletions(-)
+>   hw/audio/sb16.c | 27 +++++++++++++++++++++------
+>   1 file changed, 21 insertions(+), 6 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
