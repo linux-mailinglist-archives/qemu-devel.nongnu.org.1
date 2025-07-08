@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA02AFDA22
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D80DAFDA0C
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:39:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZG4e-0000Gt-MD; Tue, 08 Jul 2025 17:42:00 -0400
+	id 1uZG1K-0006yd-RN; Tue, 08 Jul 2025 17:38:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uZFEh-0006um-9b; Tue, 08 Jul 2025 16:48:19 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1uZFEj-0006w9-F5; Tue, 08 Jul 2025 16:48:23 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uZFEf-00030q-HB; Tue, 08 Jul 2025 16:48:19 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-6099d89a19cso8636434a12.2; 
+ id 1uZFEg-00030s-13; Tue, 08 Jul 2025 16:48:20 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-6088d856c6eso9352436a12.0; 
  Tue, 08 Jul 2025 13:48:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1752007695; x=1752612495; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FvvobzBx99gkG33buzr8HiFgQYziBfA1louF03XtHno=;
- b=FJHcuX/GVf8r5EdDAfYiZsHxShKjL9cz7I2Xm1o01+rWENThHrwP/JVibjzGEvPOlH
- ouw6gvhqfSIVqWxNPJ4XOY4BvXQjov6KJCJavGzeEiUxC3zz9YIuvOtNynZYd2HAg2aV
- qxwZj9n7pn5Nr9wQ4d02Rc/6ac2wqZLrqd5fDmoTcf2QQeLMIuuqsvYNx38+RDGraY+t
- wmPHTALFIOaTIoRVFxzL9nBU+a5f6HcGS0QNWKMpokoUKAA+14oA1Bma92GzNu8t+vio
- SH5LBSOOKWKKcGoJZV5Bq6wdHeh/IdSU4+F5zOnEDJ3WxKWrjcEIAfpsR1LHZk6Je9wQ
- 3A5g==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qxDzbC3+dod/Dyop0Reaz9nyV0vyvHAmdIBbxAEj8z8=;
+ b=OgiT4LWSl0iVdNON3nveGRUS0NsTRUlVTKQN/ETufGphnx7LvXrwIVOGCBp8mKkCyp
+ mZWlKbv4KZsPEMn/Wmv8MQggSpprW9ofRuMyXwVxXE0TJN0m8e5HSdHXCUjhI3bpURVO
+ 7cQ2KwXYvPVa8tz2vzJpERS91Oygp8aJJxVCWWVgjUmByX2Kwa9PhUy7QqCg1jA+PK2H
+ u9+SOi3Pfd63EGgW3wjOxUSa7cxP63w6RweTjQ4FjN6Auu3vapVQngJQ/aQbuEJclcxH
+ puR5jHMzdSzSf+1jG9WQjT7+CHU/kNQvc+9xkPNuk1LfucZnWz1r1+SWJg0dgWjTARXU
+ z96w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1752007695; x=1752612495;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FvvobzBx99gkG33buzr8HiFgQYziBfA1louF03XtHno=;
- b=nQgcNexvK+iCmA0kRxIPi9W8nqMwzbbcw0aqF5S0it7I8ibQfHCC6k8kfNh7HDfw68
- 37AUBzrWxSeD5aQqSNtjzhdwzdisC8J8/be6diQVp5jtF4CAfsyaaU0SsZt73LZQKaRZ
- eFRWfnylqceem0zpevle9C3X0f238Id5qa4VjN4WNL7ubwHncLBNaKxBnQXXrpYC6G29
- I9j10RS6izRf55oClfa41je0jwTHnfsaSqa1336jZvf5O9RTFySUjVLCYPmM8ZsYZ0X9
- TfpyXS3BnQ/Y/MvwEqH0i3jf/P/p2ybf3ciPWjWSPBefU49NKnN2CuAD/jR1XG1Rki/i
- pzjg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qxDzbC3+dod/Dyop0Reaz9nyV0vyvHAmdIBbxAEj8z8=;
+ b=ACKsUAslItcOkGkYvyPLOO+a3ezBhmA4EA3f1pRgUf4z98YR9Grw/Ihp89z7IQYxmf
+ vqRB1T9hzdU9MUrnx3gjqQJNqBdwTiv+BnQKE6cx29WpvOWwg86IvbRLYWcyGi2AEMvU
+ 87KPdat2IykddF89Lwr6hryZCM1j4b3hOlbK0P0xaAwF7oNZB8V7fckU/0rrEZ/EXw3M
+ UBY7jvTYHlyVgWjCiaVShwlcC75j/ED6al2K77UhrahaBC+Xi95pmuARxHoPgG3sUPeC
+ ZQhJnS2gM0ItsBBQeDypgn2FV0ejOxAMmV9/m6Y4FNipQfRxJIxTJtgL7U/ZvncM7Ntq
+ Wnxw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVwKTWiOnRPUCs8bKwSvNrrIXHoO9SDO6lPw5Rwm6b8J4o/grZEBZ2APLirWxzDYUXrSdapc6oKtK0=@nongnu.org,
- AJvYcCX0iwhOYFj1Zb6uK+dATtCN/+HscXdRTYKQ45oxMmqxL1NH5WPuPx/KEoSz7mZtzXhWVXOYc2vaJA==@nongnu.org
-X-Gm-Message-State: AOJu0Yxabt6uv1uLXeBdc4PTRQsTH94fI0UgKybxvxq+2M5JSb2FdYvI
- j00W2QhwJgnnGJyZTWqXYiUOp4sIjpyFHhsIS82KtmHzHlTPh7rSG7OJBmCuTA==
-X-Gm-Gg: ASbGncuDAI3QG19iZfzJR5K+sv1mh39KzxErQPwVUy/lXDAJm/vQjdLC04EAiD0oQCZ
- phHw8gCaCRfgbXhvbXLFPlrNvGAI8w235XTxRaRkQhayaB5BwO1264iBJtadd+uD7sGKXNx8Sc/
- mNthteIiyXMc0UPrfOjAc2V82cIRqGNUx1UEBf4FANTZhvxR2u4+gl1aAMpwQcOe17l0FxnKFg0
- L2MhyIbwht2J4bFQqxtjJRfnIMdvIxYhDBxY1I43Q66w/y9N/lNGK/sewHY+GDElU/wpSYiqTNf
- 8VUSZLEs6RGChnhZ55AUTqYYNAB1gqdbyKUhHCmTZsDQsCfIZnSecuQGlL3a6CHHVxYzTLrS1vL
- D390e8ggsB+EcmxzDcRM0H8gFnNrjsh9ZyaaYzuMSpkSDWude310pXrITM7t5p3ULcjgbd7y9Pl
- GnwBQFlDtRolmlTOt7
-X-Google-Smtp-Source: AGHT+IHhMUqXZD0KhMTOqCpjTzBKBqjDSWYJJPqhzbxCLoBpV+WXAMtwTkBQmCa9fYMIWUVXvaeSwQ==
-X-Received: by 2002:a50:fb8c:0:b0:602:a0:1f3a with SMTP id
- 4fb4d7f45d1cf-60fd65260eemr13728817a12.13.1752007694463; 
- Tue, 08 Jul 2025 13:48:14 -0700 (PDT)
+ AJvYcCUXGbQIZbrSmXGkSIX13IbAWJjk88iAcP6NFB5/VXzqihDSAwI5d/whHMWjAxfiV93bR/jAFxgBaJE=@nongnu.org,
+ AJvYcCVOJQ4TKeZYDHvUwkwjfXRLJCHC1GNTKBK5b0MhRWNQHV8m2GjzIrUciXLdfhPKPplM2GsOJLlLpw==@nongnu.org
+X-Gm-Message-State: AOJu0YxYR+3zRVMX72ixCAvzwkwsu8feUHG699QJ7xncMj0j+8q62rOO
+ +rBLH45asEQOQSmxj34HATDZpU+xUF+ltn/ervibtsWmzBP1WcMv9jLH7R/oSQ==
+X-Gm-Gg: ASbGncvWP7aiVnrPWvhS1OkU641iaaf5poFSwdBmT4Vj+l96f+SwL4ac0sgJad9Ruhn
+ R1Rn7QY6WRWcPnat7h2AeJHxaOYOzJdQ5jf8tnIQxVGHMsVaCg0dYtcmwR6xSi8pcyo7yPag+1T
+ oFOZV6A6AfRtFugOYnAJKG6YV7cA/ZgBdeKYckWqEIUYWMVp3xu1mUJYgOh4YyM+UOyRAUtKn7y
+ x1ehVvofM77XFZggpU/2NkDxurRUvZBWMGvMBjyHV/I4XcKJ2LYTca37i0tWAhGz4MjJGiX6DQy
+ klCcsw9RWXFmQWInRv8XBDEOL5PyObMlGYkLBplHqxKTtr9qWAofs9XI69xkfQd2rCF6mrQFbpV
+ 7O/WhgvPb26EaRqgdfb3bYo/WkiHAHF3cvce3sF84vvjjButW3as9y11N4QLZYzh2v+zAzJF6z+
+ w/hCw2Zw==
+X-Google-Smtp-Source: AGHT+IH1ryzbQ4ssSSuR+5VjPU2L2XtXoXRBzTpN0U4xuAIy/ppTxnyH/LUG3bwC3UsuB4XZDI4tAA==
+X-Received: by 2002:a05:6402:5d0:b0:608:a7a0:48 with SMTP id
+ 4fb4d7f45d1cf-6104ae4310fmr3988741a12.28.1752007695188; 
+ Tue, 08 Jul 2025 13:48:15 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-2a02-3100-18f0-be00-0219-99ff-feb2-2458.310.pool.telefonica.de.
  [2a02:3100:18f0:be00:219:99ff:feb2:2458])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60fca66410bsm7647461a12.1.2025.07.08.13.48.13
+ 4fb4d7f45d1cf-60fca66410bsm7647461a12.1.2025.07.08.13.48.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 08 Jul 2025 13:48:14 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
@@ -74,15 +75,16 @@ Cc: Bernhard Beschow <shentey@gmail.com>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/3] DTB build housekeeping
-Date: Tue,  8 Jul 2025 22:48:03 +0200
-Message-ID: <20250708204806.1898-1-shentey@gmail.com>
+Subject: [PATCH v2 1/3] hw/microblaze: Add missing FDT dependency
+Date: Tue,  8 Jul 2025 22:48:04 +0200
+Message-ID: <20250708204806.1898-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.50.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250708204806.1898-1-shentey@gmail.com>
+References: <20250708204806.1898-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,38 +107,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series removes the bundled device tree blobs from the repository which are
-redundant to the bundled device tree sources. To make this work, the device tree
-compiler 'dtc' is now required whenever libfdt is used. Furthermore, dtc can now
-be built from the bundled libfdt if needed.
+These boards ship with a bundled DTB, and dtc will be required for generating
+these from device tree sources. Prepare for that by adding an FDT dependency.
 
-v2:
-* Allow building dtc from bundled libfdt (Paolo)
-* Find dtc iff libfdt is used (Paolo)
-* Remove dtc configure option (now obsolete)
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ hw/microblaze/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Bernhard Beschow (3):
-  hw/microblaze: Add missing FDT dependency
-  configure: Ensure existance of dtc when libfdt is used
-  pc-bios/dtb: Remove device tree blobs
-
- MAINTAINERS                                   |   2 +-
- meson.build                                   |  16 +++--
- hw/microblaze/Kconfig                         |   4 +-
- pc-bios/dtb/bamboo.dtb                        | Bin 3211 -> 0 bytes
- pc-bios/dtb/canyonlands.dtb                   | Bin 9779 -> 0 bytes
- pc-bios/dtb/meson.build                       |  17 ++---
- pc-bios/dtb/petalogix-ml605.dtb               | Bin 9882 -> 0 bytes
- pc-bios/dtb/petalogix-s3adsp1800.dtb          | Bin 8161 -> 0 bytes
- subprojects/dtc.wrap                          |   1 +
- .../packagefiles/dtc-meson-override.patch     |  62 ++++++++++++++++++
- 10 files changed, 85 insertions(+), 17 deletions(-)
- delete mode 100644 pc-bios/dtb/bamboo.dtb
- delete mode 100644 pc-bios/dtb/canyonlands.dtb
- delete mode 100644 pc-bios/dtb/petalogix-ml605.dtb
- delete mode 100644 pc-bios/dtb/petalogix-s3adsp1800.dtb
- create mode 100644 subprojects/packagefiles/dtc-meson-override.patch
-
+diff --git a/hw/microblaze/Kconfig b/hw/microblaze/Kconfig
+index b0214b2c8b..72d8072f76 100644
+--- a/hw/microblaze/Kconfig
++++ b/hw/microblaze/Kconfig
+@@ -1,7 +1,7 @@
+ config PETALOGIX_S3ADSP1800
+     bool
+     default y
+-    depends on MICROBLAZE
++    depends on MICROBLAZE && FDT
+     select PFLASH_CFI01
+     select XILINX
+     select XILINX_AXI
+@@ -11,7 +11,7 @@ config PETALOGIX_S3ADSP1800
+ config PETALOGIX_ML605
+     bool
+     default y
+-    depends on MICROBLAZE
++    depends on MICROBLAZE && FDT
+     select PFLASH_CFI01
+     select SERIAL_MM
+     select SSI_M25P80
 -- 
 2.50.0
 
