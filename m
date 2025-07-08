@@ -2,93 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD10AFD8A7
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E35AFD7F5
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:12:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFAd-0003gu-JM; Tue, 08 Jul 2025 16:44:07 -0400
+	id 1uZEb2-00058o-Bw; Tue, 08 Jul 2025 16:07:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david.milosevic@9elements.com>)
- id 1uZDm0-0003Kd-WA
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:14:43 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <david.milosevic@9elements.com>)
- id 1uZDlq-0006ag-HR
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:14:32 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-553d52cb80dso228308e87.1
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:13:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=9elements.com; s=google; t=1752001996; x=1752606796; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OxxHFyrXTltEtSu/FSF5krOD2MWtyaLZDuYFwuu/n9A=;
- b=RUYDxrQdM07yz8goVkLwrRzK9dj9p/9V6L3bGd2XMbXgPYkxuxa6PQ3DBmN9dbm2qH
- j0B5Gzq8vJgtk6LEGk93BdKfB2KQxpkJSpgTZuR6WOmVwGVblotssnExGSMfg9ng8jX/
- r0GMBMPVceCOULjFfJd81nP1qkAswB+rnagJgr/jqN5/OeVhzhKoal/LKyjEpJ/ltNQG
- rEJSuB/AfXqNHspaLwsfHxokNeJWsHeqhlqhGOzgJPnmnW/VJw5fHwUlq2XX5Ji9oGR7
- mOBH9MvpHgCcYNyebEdhnbJLFy+O1v9AV8lN4Nss+YiBYYzZ591e+gBGZFnJgv1uoksX
- 0hvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752001996; x=1752606796;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OxxHFyrXTltEtSu/FSF5krOD2MWtyaLZDuYFwuu/n9A=;
- b=NQMph2MdK+eQf6wYMb0P9F4S9z62MIbkysq/OL50+XkGw/tmRlpOcj6NUi4yOjvy1b
- ZUgo0vCbUThndym+M8b6P/g1aJizdsDstnLLrH0itVcA1q7L6g40/q8IVFz7Mzck97wH
- TEwIpqGGMQk209Lap92lfs0xhiQgRNmfK0k6zaMPPB2DMeQgVKvE9Y8mzgyJ0zIghUt5
- Z0qruxwaoDiSMBQ1lwIuHEJzM4lxxcOsiwX5l3WOQUfRqfnBPBFsk3iC86Y71oI9Y/Y2
- MB0yTAlV8t//9S+rUGM67EnKUjaTSgvIFzfVaVnznZpHMryA7nsKgsNfxnPzziGm8CXv
- fzqw==
-X-Gm-Message-State: AOJu0Ywladj2uIcf6YfetGQD3B424c3pUR8Y3XZ6FMjT1kv0sMSktRTS
- TIAqG1CkSPE9YRfxIFM/Tr+KviXQZHPtb/arUNUhHY6IC9p6YdsC+2unWeadCng4nvVCO6BE3fZ
- ueYpFv8OuQnSh
-X-Gm-Gg: ASbGnctwVpYOw0fQ/YuKSIznBMoamk5vRs4+6KF8bkdq+67V70IA8XuuEG7OzEC5Ztr
- FB2oMI2TjN8vU4nt+c+cg4kroV5jYVSsZso1BH5v1ZC4znGgFcnaZiAHTQtIjse0i+tN0ARnrYZ
- /pJDbU/n2ORjDHYvMx/HgND2E0aUuhlPwSMaMbT2a+3YafZeGOZZoxVsUMDuHDyKZVhLp5apqR7
- qLQ/jEAJJLQtmZzQgms7musYrDLNYtSWpEZNx6mVeG+j2DiaB5q12B09nEtiaW4nCK4Tu96wAO5
- QWkQkvMefV2npOAIyogruMnXVg1RvwVsDgonxOBloXaDSNgN+f3ZnzLmi830xHlILUJs2WiOrC0
- fPUqFOlxd+AEwlK1P9MoBSkAQqO2s/4qFeBXDhHfP0rTit90jZhcxD5fK9QTN3+4=
-X-Google-Smtp-Source: AGHT+IFr9Qe5MmXxGgNE/F84d/HE+Mw1+beWaziQOd2Mgqsqr7cld946BJqEc7vE0GPksqTO7+C7DQ==
-X-Received: by 2002:a05:6000:4202:b0:3a4:eee4:cdec with SMTP id
- ffacd0b85a97d-3b5ddfb8a45mr2922637f8f.6.1751986714754; 
- Tue, 08 Jul 2025 07:58:34 -0700 (PDT)
-Received: from cbox.sec.9e.network
- (p200300f75f10f341000000000000002d.dip0.t-ipconnect.de.
- [2003:f7:5f10:f341::2d]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454cd3d2749sm25445735e9.25.2025.07.08.07.58.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Jul 2025 07:58:34 -0700 (PDT)
-From: David Milosevic <david.milosevic@9elements.com>
-X-Google-Original-From: David Milosevic <David.Milosevic@9elements.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- pizhenwei@bytedance.com, marcello.bauer@9elements.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- David Milosevic <David.Milosevic@9elements.com>
-Subject: [PATCH 3/3] video: add libcamera backend extension
-Date: Tue,  8 Jul 2025 16:56:50 +0200
-Message-ID: <20250708145828.63295-4-David.Milosevic@9elements.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250708145828.63295-1-David.Milosevic@9elements.com>
-References: <20250708145828.63295-1-David.Milosevic@9elements.com>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uZDS4-0000hx-A3; Tue, 08 Jul 2025 14:54:15 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uZDRh-00080A-CN; Tue, 08 Jul 2025 14:53:57 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bc47j01xtz6GFHW;
+ Tue,  8 Jul 2025 23:01:37 +0800 (CST)
+Received: from frapeml100005.china.huawei.com (unknown [7.182.85.132])
+ by mail.maildlp.com (Postfix) with ESMTPS id 1B9C3140433;
+ Tue,  8 Jul 2025 23:02:41 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml100005.china.huawei.com (7.182.85.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 8 Jul 2025 17:02:40 +0200
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Tue, 8 Jul 2025 17:02:40 +0200
+To: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "ddutile@redhat.com" <ddutile@redhat.com>, "berrange@redhat.com"
+ <berrange@redhat.com>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "nathanc@nvidia.com" <nathanc@nvidia.com>, "mochs@nvidia.com"
+ <mochs@nvidia.com>, "smostafa@google.com" <smostafa@google.com>,
+ "gustavo.romero@linaro.org" <gustavo.romero@linaro.org>, "mst@redhat.com"
+ <mst@redhat.com>, "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
+ Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>,
+ jiangkunkun <jiangkunkun@huawei.com>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
+ <zhangfei.gao@linaro.org>
+Subject: RE: [PATCH v6 08/12] hw/arm/virt: Allow user-creatable SMMUv3 dev
+ instantiation
+Thread-Topic: [PATCH v6 08/12] hw/arm/virt: Allow user-creatable SMMUv3 dev
+ instantiation
+Thread-Index: AQHb6/xJlPtpAHu5pEuj91bLuyZP37QnvekAgAA0r1D///DkgIAAdq2Q
+Date: Tue, 8 Jul 2025 15:02:40 +0000
+Message-ID: <d2b262d012dd4d65a0bccaa036d4faf0@huawei.com>
+References: <20250703084643.85740-1-shameerali.kolothum.thodi@huawei.com>
+ <20250703084643.85740-9-shameerali.kolothum.thodi@huawei.com>
+ <b05cd1f5-db7a-45d3-a582-85c808adcd04@redhat.com>
+ <e4cd2ccede7b46df9bbcf63dcf492fcf@huawei.com>
+ <45c112f4-bcd3-44a1-a7b9-1ff0fa807f01@redhat.com>
+In-Reply-To: <45c112f4-bcd3-44a1-a7b9-1ff0fa807f01@redhat.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=david.milosevic@9elements.com; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,203 +88,131 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch extends the GStreamer backend by implementing
-the libcamera (pseudo) backend.
-
-The Libcamera backend builds on top of GStreamer and uses
-libcamerasrc as source element.
-
-Example usage:
-  qemu-system-x86_64 \
-    -device qemu-xhci \
-    -videodev libcamera,id=cam0,\
-    camera-name="\\\_SB_.PCI0.XHC_.RHUB.HS07-7:1.0-04f2:b681",\
-    caps="video/x-raw^format=YUY2^width=960^height=540^framerate=15/1" \
-    -device usb-video,videodev=cam0
-
-Known limitations:
-  - libcamersrc does not expose capabilities (supported
-    pixelformat, etc.), which makes it impossible to query
-    them in runtime, hence we have to select format, width, height
-    and framerate via QEMU's cmdline.
-
-Signed-off-by: David Milosevic <David.Milosevic@9elements.com>
----
- video/libcamera.c | 148 ++++++++++++++++++++++++++++++++++++++++++++++
- video/meson.build |   1 +
- 2 files changed, 149 insertions(+)
- create mode 100644 video/libcamera.c
-
-diff --git a/video/libcamera.c b/video/libcamera.c
-new file mode 100644
-index 0000000000..f28914ee20
---- /dev/null
-+++ b/video/libcamera.c
-@@ -0,0 +1,148 @@
-+/*
-+ * Copyright 2025 9elements GmbH
-+ *
-+ * Authors:
-+ *   David Milosevic <david.milosevic@9elements.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qapi/qmp/qerror.h"
-+#include "qemu/option.h"
-+#include "video/video.h"
-+#include "video/gstreamer-common.h"
-+
-+#include <gst/gst.h>
-+#include <gst/app/gstappsink.h>
-+
-+#define TYPE_VIDEODEV_LIBCAMERA TYPE_VIDEODEV"-libcamera"
-+
-+#define VIDEO_LIBCAMERA_PIPELINE_TEMPLATE \
-+    "libcamerasrc name=qemu_src camera-name=\"%s\" ! capsfilter caps=\"%s\" ! videoconvert name=qemu_vc ! capsfilter name=qemu_cf ! appsink name=qemu_sink"
-+
-+struct LibcameraVideodev {
-+
-+    GStreamerVideodev parent;
-+};
-+typedef struct LibcameraVideodev LibcameraVideodev;
-+
-+DECLARE_INSTANCE_CHECKER(LibcameraVideodev, LIBCAMERA_VIDEODEV, TYPE_VIDEODEV_LIBCAMERA)
-+
-+static char *video_libcamera_pipeline_string(const char *cam_name, const char *caps)
-+{
-+    char *pipeline_desc = NULL;
-+    size_t pipeline_template_len, pipeline_len;
-+
-+    pipeline_template_len = strlen(VIDEO_LIBCAMERA_PIPELINE_TEMPLATE) - 4; // minus '%s' (x2)
-+    pipeline_len = strlen(cam_name) + strlen(caps) + pipeline_template_len + 1; // plus '\0'
-+
-+    pipeline_desc = g_malloc(pipeline_len * sizeof(char));
-+    if (!pipeline_desc) {
-+        return NULL;
-+    }
-+
-+    sprintf(pipeline_desc, VIDEO_LIBCAMERA_PIPELINE_TEMPLATE, cam_name, caps);
-+    return pipeline_desc;
-+}
-+
-+static int video_libcamera_open(Videodev *vd, QemuOpts *opts, Error **errp)
-+{
-+    LibcameraVideodev *lv = LIBCAMERA_VIDEODEV(vd);
-+    GStreamerVideodev *gv = &lv->parent;
-+    const char *cam_name = qemu_opt_get(opts, "camera-name");
-+    char *caps = video_gstreamer_qemu_opt_get(opts, "caps");
-+    char *pipeline_desc = NULL;
-+    GError *error = NULL;
-+    GstStateChangeReturn ret;
-+
-+    if (cam_name == NULL) {
-+        vd_error_setg(vd, errp, QERR_MISSING_PARAMETER, "camera-name");
-+        return VIDEODEV_RC_ERROR;
-+    }
-+
-+    if (caps == NULL) {
-+        vd_error_setg(vd, errp, QERR_MISSING_PARAMETER, "caps");
-+        return VIDEODEV_RC_ERROR;
-+    }
-+
-+    pipeline_desc = video_libcamera_pipeline_string(cam_name, caps);
-+    g_free(caps);
-+    if (!pipeline_desc) {
-+        vd_error_setg(vd, errp, "memory allocation failure");
-+        return VIDEODEV_RC_ERROR;
-+    }
-+
-+    if (!gst_is_initialized()) {
-+        gst_init(NULL, NULL);
-+    }
-+
-+    gv->pipeline = gst_parse_bin_from_description(pipeline_desc, false, &error);
-+    g_free(pipeline_desc);
-+    if (error) {
-+        vd_error_setg(vd, errp, "unable to parse pipeline: %s", error->message);
-+        return VIDEODEV_RC_ERROR;
-+    }
-+
-+    gv->head = gst_bin_get_by_name(GST_BIN(gv->pipeline), "qemu_src");
-+    if (unlikely(!gv->head)) {
-+        vd_error_setg(vd, errp, "qemu_src not found");
-+        return VIDEODEV_RC_ERROR;
-+    }
-+
-+    gv->tail = gst_bin_get_by_name(GST_BIN(gv->pipeline), "qemu_vc");
-+    if (unlikely(!gv->tail)) {
-+        vd_error_setg(vd, errp, "qemu_vc not found");
-+        return VIDEODEV_RC_ERROR;
-+    }
-+
-+    gv->filter = gst_bin_get_by_name(GST_BIN(gv->pipeline), "qemu_cf");
-+    if (unlikely(!gv->filter)) {
-+        vd_error_setg(vd, errp, "qemu_cf not found");
-+        return VIDEODEV_RC_ERROR;
-+    }
-+
-+    gv->sink = gst_bin_get_by_name(GST_BIN(gv->pipeline), "qemu_sink");
-+    if (unlikely(!gv->sink)) {
-+        vd_error_setg(vd, errp, "qemu_sink not found");
-+        return VIDEODEV_RC_ERROR;
-+    }
-+
-+    ret = gst_element_set_state(gv->pipeline, GST_STATE_READY);
-+    if (ret == GST_STATE_CHANGE_FAILURE) {
-+
-+        vd_error_setg(vd, errp, "failed to set pipeline to READY");
-+        return VIDEODEV_RC_ERROR;
-+    }
-+
-+    return VIDEODEV_RC_OK;
-+}
-+
-+static void video_libcamera_class_init(ObjectClass *oc, const void *data)
-+{
-+    VideodevClass *vc;
-+    video_gstreamer_class_init(oc, data);
-+
-+    vc = VIDEODEV_CLASS(oc);
-+
-+    /* override GStreamer class methods */
-+    vc->open          = video_libcamera_open;
-+    vc->enum_controls = NULL;
-+    vc->set_control   = NULL;
-+}
-+
-+static const TypeInfo video_libcamera_type_info = {
-+    .name = TYPE_VIDEODEV_LIBCAMERA,
-+    .parent = TYPE_VIDEODEV_GSTREAMER,
-+    .instance_size = sizeof(LibcameraVideodev),
-+    .class_init = video_libcamera_class_init,
-+};
-+
-+static void register_types(void)
-+{
-+    type_register_static(&video_libcamera_type_info);
-+}
-+
-+type_init(register_types);
-diff --git a/video/meson.build b/video/meson.build
-index 33da556ea4..50eaf0c76e 100644
---- a/video/meson.build
-+++ b/video/meson.build
-@@ -11,6 +11,7 @@ video_modules = {}
- foreach m : [
-   ['gstreamer', gstreamer, files('gstreamer.c')],
-   ['gstreamer-app', gstreamer_app, files('gstreamer.c')],
-+  ['libcamera', gstreamer, files('libcamera.c', 'gstreamer.c')],
-   ['v4l2', v4l2, files('v4l2.c')],
- ]
-   if m[dep].found()
--- 
-2.47.0
-
+SGkgRXJpYywNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBFcmljIEF1
+Z2VyIDxlcmljLmF1Z2VyQHJlZGhhdC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIEp1bHkgOCwgMjAy
+NSAxMDo1NiBBTQ0KPiBUbzogU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaQ0KPiA8c2hhbWVlcmFs
+aS5rb2xvdGh1bS50aG9kaUBodWF3ZWkuY29tPjsgcWVtdS1hcm1Abm9uZ251Lm9yZzsNCj4gcWVt
+dS1kZXZlbEBub25nbnUub3JnDQo+IENjOiBwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc7IGpnZ0Bu
+dmlkaWEuY29tOyBuaWNvbGluY0BudmlkaWEuY29tOw0KPiBkZHV0aWxlQHJlZGhhdC5jb207IGJl
+cnJhbmdlQHJlZGhhdC5jb207IGltYW1tZWRvQHJlZGhhdC5jb207DQo+IG5hdGhhbmNAbnZpZGlh
+LmNvbTsgbW9jaHNAbnZpZGlhLmNvbTsgc21vc3RhZmFAZ29vZ2xlLmNvbTsNCj4gZ3VzdGF2by5y
+b21lcm9AbGluYXJvLm9yZzsgbXN0QHJlZGhhdC5jb207DQo+IG1hcmNlbC5hcGZlbGJhdW1AZ21h
+aWwuY29tOyBMaW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNvbT47DQo+IFdhbmd6aG91IChCKSA8
+d2FuZ3pob3UxQGhpc2lsaWNvbi5jb20+OyBqaWFuZ2t1bmt1bg0KPiA8amlhbmdrdW5rdW5AaHVh
+d2VpLmNvbT47IEpvbmF0aGFuIENhbWVyb24NCj4gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNv
+bT47IHpoYW5nZmVpLmdhb0BsaW5hcm8ub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjYgMDgv
+MTJdIGh3L2FybS92aXJ0OiBBbGxvdyB1c2VyLWNyZWF0YWJsZSBTTU1VdjMNCj4gZGV2IGluc3Rh
+bnRpYXRpb24NCj4gDQo+IEhpIFNoYW1lZXIsDQo+IA0KPiBPbiA3LzgvMjUgMTA6NTQgQU0sIFNo
+YW1lZXJhbGkgS29sb3RodW0gVGhvZGkgd3JvdGU6DQo+ID4gSGkgRXJpYywNCj4gPg0KPiA+PiAt
+LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9tOiBFcmljIEF1Z2VyIDxlcmljLmF1
+Z2VyQHJlZGhhdC5jb20+DQo+ID4+IFNlbnQ6IFR1ZXNkYXksIEp1bHkgOCwgMjAyNSA4OjQxIEFN
+DQo+ID4+IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpDQo+ID4+IDxzaGFtZWVyYWxpLmtv
+bG90aHVtLnRob2RpQGh1YXdlaS5jb20+OyBxZW11LWFybUBub25nbnUub3JnOw0KPiA+PiBxZW11
+LWRldmVsQG5vbmdudS5vcmcNCj4gPj4gQ2M6IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgamdn
+QG52aWRpYS5jb207IG5pY29saW5jQG52aWRpYS5jb207DQo+ID4+IGRkdXRpbGVAcmVkaGF0LmNv
+bTsgYmVycmFuZ2VAcmVkaGF0LmNvbTsgaW1hbW1lZG9AcmVkaGF0LmNvbTsNCj4gPj4gbmF0aGFu
+Y0BudmlkaWEuY29tOyBtb2Noc0BudmlkaWEuY29tOyBzbW9zdGFmYUBnb29nbGUuY29tOw0KPiA+
+PiBndXN0YXZvLnJvbWVyb0BsaW5hcm8ub3JnOyBtc3RAcmVkaGF0LmNvbTsNCj4gPj4gbWFyY2Vs
+LmFwZmVsYmF1bUBnbWFpbC5jb207IExpbnV4YXJtIDxsaW51eGFybUBodWF3ZWkuY29tPjsNCj4g
+Pj4gV2FuZ3pob3UgKEIpIDx3YW5nemhvdTFAaGlzaWxpY29uLmNvbT47IGppYW5na3Vua3VuDQo+
+ID4+IDxqaWFuZ2t1bmt1bkBodWF3ZWkuY29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPiA+PiA8am9u
+YXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgemhhbmdmZWkuZ2FvQGxpbmFyby5vcmcNCj4gPj4g
+U3ViamVjdDogUmU6IFtQQVRDSCB2NiAwOC8xMl0gaHcvYXJtL3ZpcnQ6IEFsbG93IHVzZXItY3Jl
+YXRhYmxlDQo+IFNNTVV2Mw0KPiA+PiBkZXYgaW5zdGFudGlhdGlvbg0KPiA+Pg0KPiA+PiBIaSBT
+aGFtZWVyLA0KPiA+Pg0KPiA+PiBPbiA3LzMvMjUgMTA6NDYgQU0sIFNoYW1lZXIgS29sb3RodW0g
+d3JvdGU6DQo+ID4+PiBBbGxvdyBjb2xkLXBsdWdnaW5nIG9mIGFuIFNNTVV2MyBkZXZpY2Ugb24g
+dGhlIHZpcnQgbWFjaGluZSB3aGVuIG5vDQo+ID4+PiBnbG9iYWwgKGxlZ2FjeSkgU01NVXYzIGlz
+IHByZXNlbnQgb3Igd2hlbiBhIHZpcnRpby1pb21tdSBpcyBzcGVjaWZpZWQuDQo+ID4+Pg0KPiA+
+Pj4gVGhpcyB1c2VyLWNyZWF0ZWQgU01NVXYzIGRldmljZSBpcyB0aWVkIHRvIGEgc3BlY2lmaWMg
+UENJIGJ1cyBwcm92aWRlZA0KPiA+Pj4gYnkgdGhlIHVzZXIsIHNvIGVuc3VyZSB0aGUgSU9NTVUg
+b3BzIGFyZSBjb25maWd1cmVkIGFjY29yZGluZ2x5Lg0KPiA+Pj4NCj4gPj4+IER1ZSB0byBjdXJy
+ZW50IGxpbWl0YXRpb25zIGluIFFFTVXigJlzIGRldmljZSB0cmVlIHN1cHBvcnQsIHNwZWNpZmlj
+YWxseQ0KPiA+Pj4gaXRzIGluYWJpbGl0eSB0byBwcm9wZXJseSBwcmVzZW50IHB4Yi1wY2llIGJh
+c2VkIHJvb3QgY29tcGxleGVzIGFuZA0KPiA+Pj4gdGhlaXIgZGV2aWNlcywgdGhlIGRldmljZSB0
+cmVlIHN1cHBvcnQgZm9yIHRoZSBuZXcgU01NVXYzIGRldmljZSBpcw0KPiA+Pj4gbGltaXRlZCB0
+byBjYXNlcyB3aGVyZSBpdCBpcyBhdHRhY2hlZCB0byB0aGUgZGVmYXVsdCBwY2llLjAgcm9vdCBj
+b21wbGV4Lg0KPiA+Pj4NCj4gPj4+IFJldmlld2VkLWJ5OiBKb25hdGhhbiBDYW1lcm9uIDxqb25h
+dGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+DQo+ID4+PiBSZXZpZXdlZC1ieTogRXJpYyBBdWdlciA8
+ZXJpYy5hdWdlckByZWRoYXQuY29tPg0KPiA+Pj4gVGVzdGVkLWJ5OiBOYXRoYW4gQ2hlbiA8bmF0
+aGFuY0BudmlkaWEuY29tPg0KPiA+Pj4gU2lnbmVkLW9mZi1ieTogU2hhbWVlciBLb2xvdGh1bQ0K
+PiA+PiA8c2hhbWVlcmFsaS5rb2xvdGh1bS50aG9kaUBodWF3ZWkuY29tPg0KPiA+Pj4gLS0tDQo+
+ID4+PiAgaHcvYXJtL3NtbXUtY29tbW9uLmMgICAgICAgICB8ICA4ICsrKysrLQ0KPiA+Pj4gIGh3
+L2FybS9zbW11djMuYyAgICAgICAgICAgICAgfCAgMiArKw0KPiA+Pj4gIGh3L2FybS92aXJ0LmMg
+ICAgICAgICAgICAgICAgfCA1MCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysN
+Cj4gPj4+ICBody9jb3JlL3N5c2J1cy1mZHQuYyAgICAgICAgIHwgIDMgKysrDQo+ID4+PiAgaW5j
+bHVkZS9ody9hcm0vc21tdS1jb21tb24uaCB8ICAxICsNCj4gPj4+ICA1IGZpbGVzIGNoYW5nZWQs
+IDYzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gPj4+DQo+ID4+PiBkaWZmIC0tZ2l0
+IGEvaHcvYXJtL3NtbXUtY29tbW9uLmMgYi9ody9hcm0vc21tdS1jb21tb24uYw0KPiA+Pj4gaW5k
+ZXggYjE1ZTdmZDBlNC4uMmVlNDY5MTI5OSAxMDA2NDQNCj4gPj4+IC0tLSBhL2h3L2FybS9zbW11
+LWNvbW1vbi5jDQo+ID4+PiArKysgYi9ody9hcm0vc21tdS1jb21tb24uYw0KPiA+Pj4gQEAgLTk1
+OSw3ICs5NTksMTIgQEAgc3RhdGljIHZvaWQgc21tdV9iYXNlX3JlYWxpemUoRGV2aWNlU3RhdGUN
+Cj4gKmRldiwNCj4gPj4gRXJyb3IgKiplcnJwKQ0KPiA+Pj4gICAgICAgICAgICAgICAgICBnb3Rv
+IG91dF9lcnI7DQo+ID4+PiAgICAgICAgICAgICAgfQ0KPiA+Pj4gICAgICAgICAgfQ0KPiA+Pj4g
+LSAgICAgICAgcGNpX3NldHVwX2lvbW11KHBjaV9idXMsICZzbW11X29wcywgcyk7DQo+ID4+PiAr
+DQo+ID4+PiArICAgICAgICBpZiAocy0+c21tdV9wZXJfYnVzKSB7DQo+ID4+PiArICAgICAgICAg
+ICAgcGNpX3NldHVwX2lvbW11X3Blcl9idXMocGNpX2J1cywgJnNtbXVfb3BzLCBzKTsNCj4gPj4+
+ICsgICAgICAgIH0gZWxzZSB7DQo+ID4+PiArICAgICAgICAgICAgcGNpX3NldHVwX2lvbW11KHBj
+aV9idXMsICZzbW11X29wcywgcyk7DQo+ID4+PiArICAgICAgICB9DQo+ID4+PiAgICAgICAgICBy
+ZXR1cm47DQo+ID4+PiAgICAgIH0NCj4gPj4+ICBvdXRfZXJyOg0KPiA+Pj4gQEAgLTk4NCw2ICs5
+ODksNyBAQCBzdGF0aWMgdm9pZCBzbW11X2Jhc2VfcmVzZXRfZXhpdChPYmplY3QgKm9iaiwNCj4g
+Pj4gUmVzZXRUeXBlIHR5cGUpDQo+ID4+PiAgc3RhdGljIGNvbnN0IFByb3BlcnR5IHNtbXVfZGV2
+X3Byb3BlcnRpZXNbXSA9IHsNCj4gPj4+ICAgICAgREVGSU5FX1BST1BfVUlOVDgoImJ1c19udW0i
+LCBTTU1VU3RhdGUsIGJ1c19udW0sIDApLA0KPiA+Pj4gKyAgICBERUZJTkVfUFJPUF9CT09MKCJz
+bW11X3Blcl9idXMiLCBTTU1VU3RhdGUsIHNtbXVfcGVyX2J1cywNCj4gPj4gZmFsc2UpLA0KPiA+
+Pj4gICAgICBERUZJTkVfUFJPUF9MSU5LKCJwcmltYXJ5LWJ1cyIsIFNNTVVTdGF0ZSwgcHJpbWFy
+eV9idXMsDQo+ID4+PiAgICAgICAgICAgICAgICAgICAgICAgVFlQRV9QQ0lfQlVTLCBQQ0lCdXMg
+KiksDQo+ID4+PiAgfTsNCj4gPj4+IGRpZmYgLS1naXQgYS9ody9hcm0vc21tdXYzLmMgYi9ody9h
+cm0vc21tdXYzLmMNCj4gPj4+IGluZGV4IGFiNjc5NzIzNTMuLmJjZjhhZjhkYzcgMTAwNjQ0DQo+
+ID4+PiAtLS0gYS9ody9hcm0vc21tdXYzLmMNCj4gPj4+ICsrKyBiL2h3L2FybS9zbW11djMuYw0K
+PiA+Pj4gQEAgLTE5OTYsNiArMTk5Niw4IEBAIHN0YXRpYyB2b2lkIHNtbXV2M19jbGFzc19pbml0
+KE9iamVjdENsYXNzDQo+ID4+ICprbGFzcywgY29uc3Qgdm9pZCAqZGF0YSkNCj4gPj4+ICAgICAg
+ZGV2aWNlX2NsYXNzX3NldF9wYXJlbnRfcmVhbGl6ZShkYywgc21tdV9yZWFsaXplLA0KPiA+Pj4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICZjLT5wYXJlbnRfcmVhbGl6ZSk7
+DQo+ID4+PiAgICAgIGRldmljZV9jbGFzc19zZXRfcHJvcHMoZGMsIHNtbXV2M19wcm9wZXJ0aWVz
+KTsNCj4gPj4+ICsgICAgZGMtPmhvdHBsdWdnYWJsZSA9IGZhbHNlOw0KPiA+Pj4gKyAgICBkYy0+
+dXNlcl9jcmVhdGFibGUgPSB0cnVlOw0KPiA+Pj4gIH0NCj4gPj4+DQo+ID4+PiAgc3RhdGljIGlu
+dCBzbW11djNfbm90aWZ5X2ZsYWdfY2hhbmdlZChJT01NVU1lbW9yeVJlZ2lvbg0KPiAqaW9tbXUs
+DQo+ID4+PiBkaWZmIC0tZ2l0IGEvaHcvYXJtL3ZpcnQuYyBiL2h3L2FybS92aXJ0LmMNCj4gPj4+
+IGluZGV4IDA1YTE0ODgxY2YuLjg2NjIxNzNjNDMgMTAwNjQ0DQo+ID4+PiAtLS0gYS9ody9hcm0v
+dmlydC5jDQo+ID4+PiArKysgYi9ody9hcm0vdmlydC5jDQo+ID4+PiBAQCAtNTYsNiArNTYsNyBA
+QA0KPiA+Pj4gICNpbmNsdWRlICJxZW11L2N1dGlscy5oIg0KPiA+Pj4gICNpbmNsdWRlICJxZW11
+L2Vycm9yLXJlcG9ydC5oIg0KPiA+Pj4gICNpbmNsdWRlICJxZW11L21vZHVsZS5oIg0KPiA+Pj4g
+KyNpbmNsdWRlICJody9wY2kvcGNpX2J1cy5oIg0KPiA+Pj4gICNpbmNsdWRlICJody9wY2ktaG9z
+dC9ncGV4LmgiDQo+ID4+PiAgI2luY2x1ZGUgImh3L3ZpcnRpby92aXJ0aW8tcGNpLmgiDQo+ID4+
+PiAgI2luY2x1ZGUgImh3L2NvcmUvc3lzYnVzLWZkdC5oIg0KPiA+Pj4gQEAgLTE0NDAsNiArMTQ0
+MSwyOCBAQCBzdGF0aWMgdm9pZA0KPiBjcmVhdGVfc21tdXYzX2R0X2JpbmRpbmdzKGNvbnN0DQo+
+ID4+IFZpcnRNYWNoaW5lU3RhdGUgKnZtcywgaHdhZGRyIGJhc2UsDQo+ID4+PiAgICAgIGdfZnJl
+ZShub2RlKTsNCj4gPj4+ICB9DQo+ID4+Pg0KPiA+Pj4gK3N0YXRpYyB2b2lkIGNyZWF0ZV9zbW11
+djNfZGV2X2R0YihWaXJ0TWFjaGluZVN0YXRlICp2bXMsDQo+ID4+PiArICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIERldmljZVN0YXRlICpkZXYsIFBDSUJ1cyAqYnVzKQ0KPiA+Pj4g
+K3sNCj4gPj4+ICsgICAgUGxhdGZvcm1CdXNEZXZpY2UgKnBidXMgPSBQTEFURk9STV9CVVNfREVW
+SUNFKHZtcy0NCj4gPj4+IHBsYXRmb3JtX2J1c19kZXYpOw0KPiA+Pj4gKyAgICBTeXNCdXNEZXZp
+Y2UgKnNiZGV2ID0gU1lTX0JVU19ERVZJQ0UoZGV2KTsNCj4gPj4+ICsgICAgaW50IGlycSA9IHBs
+YXRmb3JtX2J1c19nZXRfaXJxbihwYnVzLCBzYmRldiwgMCk7DQo+ID4+PiArICAgIGh3YWRkciBi
+YXNlID0gcGxhdGZvcm1fYnVzX2dldF9tbWlvX2FkZHIocGJ1cywgc2JkZXYsIDApOw0KPiA+Pj4g
+KyAgICBNYWNoaW5lU3RhdGUgKm1zID0gTUFDSElORSh2bXMpOw0KPiA+Pj4gKw0KPiA+Pj4gKyAg
+ICBpZiAoc3RyY21wKCJwY2llLjAiLCBidXMtPnFidXMubmFtZSkpIHsNCj4gPj4+ICsgICAgICAg
+IHdhcm5fcmVwb3J0KCJTTU1VdjMgZGV2aWNlIG9ubHkgc3VwcG9ydGVkIHdpdGggcGNpZS4wIGZv
+cg0KPiBEVCIpOw0KPiA+PiB3aGlsZSB0ZXN0aW5nIHRoZSBzZXJpZXMgSSBoaXQgdGhlIHdhcm5p
+bmcgd2l0aCBhIHJoZWwgZ3Vlc3Qgd2hpY2ggYm9vdHMNCj4gPj4gd2l0aCBBQ1BJLg0KPiA+PiBJ
+IHRoaW5rIHdlIHNoYWxsIG1ha2UgdGhlIGNoZWNrIHNtYXJ0ZXIgdG8gYXZvaWQgdGhhdC4NCj4g
+Pj4gbWF5YmUgYWxzbyBjaGVjayBmaXJtd2FyZV9sb2FkZWQgYW5kIHZpcnRfaXNfYWNwaV9lbmFi
+bGVkKCk/DQo+ID4gVGhhbmtzIGZvciBnaXZpbmcgaXQgYSBzcGluLiBZZXMsIGp1c3QgY29uZmly
+bWVkIHRoYXQgdGhlIHdhcm5pbmcgYXBwZWFycy4NCj4gPiBUaGUgYWJvdmUgY2hlY2sgd2lsbCB3
+b3JrLCBidXQgY2FuIHdlIG1ha2UgdXNlIG9mIHZtcy0+YWNwaV9kZXYgZm9yDQo+ID4gdGhpcyBj
+aGVjayBpbnN0ZWFkPyBJdCBpcyBlc3NlbnRpYWxseSB0aGUgc2FtZSBhbmQgSSB0aGluayB0aGF0
+IHdpbGwgd29yay4NCj4gPg0KPiA+ICAgICBpZiAoIXZtcy0+YWNwaV9kZXYgJiYgc3RyY21wKCJw
+Y2llLjAiLCBidXMtPnFidXMubmFtZSkpDQo+ID4NCj4gPiBQbGVhc2UgbGV0IG1lIGtub3cuDQo+
+IA0KPiB3aXRoIHRoYXQgZml4ZWQsIGZlZWwgZnJlZSB0byBhZGQgbXkNCj4gDQo+ICpUZXN0ZWQt
+Ynk6IEVyaWMgQXVnZXIgPGVyaWMuYXVnZXJAcmVkaGF0LmNvbT4gSSBoYXZlIHRlc3RlZCBub24N
+Cj4gcmVncmVzc2lvbiBvbiBsZWdhY3kgU01NVSwgU01NVSBkZXZpY2UgcHJvdGVjdGluZyBwY2ll
+LjAgYW5kIHB4Yg0KPiB0b3BvbG9naWVzLiBMb29rcyBnb29kIHRvIG1lLiBUaGFua3MgRXJpYyAq
+DQoNCk9rLiBUaGFua3MuDQoNCkFsc28sIGlmIHlvdSBjYW4gdGFrZSBhIGxvb2sgYXQgdGhlIGxh
+c3QgcGF0Y2ggYW5kIGhhcHB5IHdpdGggdGhlIGNoYW5nZXMsDQpjYW4gSSBoYXZlIGEgUi1ieSBm
+b3IgdGhhdCwgcGxlYXNlID8NCg0KU2hhbWVlcg0K
 
