@@ -2,69 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43246AFD947
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:09:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE8AAFD9EC
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:29:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFDe-00035k-ID; Tue, 08 Jul 2025 16:47:14 -0400
+	id 1uZFI8-0004bY-Cw; Tue, 08 Jul 2025 16:51:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uZDnc-0004gQ-Ln; Tue, 08 Jul 2025 15:16:20 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uZEKg-0000AC-Us
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:50:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uZDnV-0007GK-Si; Tue, 08 Jul 2025 15:16:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752002170; x=1783538170;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=atwudXLeTa5tSIxfbiQr6IFjLu+NtrdGqLBrqQEydxg=;
- b=XcgE5s8LAo325e8iHEnqP5lh9jMvDSNsEdOWzBwWQkKaHXSGEI8SO2wV
- EP0B581/RsJgxF9Ad9ZNurKqHQov1EPgDmYSZbJ3pAztIRoooK7N/oG2x
- dd6HBdN8VdHruilWGKOso8IeT40S0FcEJjtj40Nz83ffLVgeVzh3rrhUu
- rkiOGhmTLYa3/7ns7lqJFjsn0XgZ96kx87Nyyij7XTo4cNb3RiKUqAUnb
- J9egFBG7i8EHpIjOr9U2n7AgNQ7N4F5Q7a3MINZdaVw5qC6Ifc9Rq0J5i
- ytah/DYV+pM7HWkMyT/k8SVDVo5kAVtx/sXJaWZKc2Y6vfRCdsQI1DR9Z Q==;
-X-CSE-ConnectionGUID: 0cXOeOJbSmGFODS1mqyNaw==
-X-CSE-MsgGUID: i2epkh3eQY+Yhogy+Gm9ag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54119137"
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; d="scan'208";a="54119137"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2025 01:00:44 -0700
-X-CSE-ConnectionGUID: hYd+tfmWSJK4hB1vO+ZRoQ==
-X-CSE-MsgGUID: OB4FF75TQH2zSEQrYYXBfg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; d="scan'208";a="155925894"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa008.jf.intel.com with ESMTP; 08 Jul 2025 01:00:42 -0700
-Date: Tue, 8 Jul 2025 16:22:09 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uZEKd-0007y3-Rk
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:50:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752004222;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=N/8qBNEqVd/EnHVo2q7ZEeTa42k9eL+tK4HQClmIrpM3LnkC8ZXk4Ap5F81ysWd8GdPRVN
+ F8Q/fc/ZsGe4huYcaOAh8lC8uZzGg/h1kEDcEdM+fBEUsW6RT9Dn031PNIjNd5nkcBDwV1
+ nNdLUGkaZa/iDdQmMEbLd4CsLN1k45o=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-588-70A2BNhAMYKE91NgiTSGcA-1; Tue, 08 Jul 2025 04:23:01 -0400
+X-MC-Unique: 70A2BNhAMYKE91NgiTSGcA-1
+X-Mimecast-MFC-AGG-ID: 70A2BNhAMYKE91NgiTSGcA_1751962981
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-45359bfe631so21253675e9.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 01:23:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751962980; x=1752567780;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=oaJndiUq1mcsxLz7xo27N2nUQ3NADvDXgEjA4Xhc10aBH5X4r9mEJJnAghJaP4LnCl
+ 9qm/JP0+p0p7dh0SfG7n0IvIluCTmtd86QEEqGema+XgrYZEdzEnY/WYMQjcvJynGniH
+ D86OWbUJt/KyiT87S6bpNcSD5ur23rEwcCXfSCShrI62IP8ESOjlncAyRa9H2CEnmUEE
+ CzVM+8xHXH6uHGXR/3QPxI95qLkcxIFpXOpX6NW3e792y1toa3EGPfglIkap9DP7n9Ts
+ df1FfSSOPoiAg0QFlgA1yIkl15g04am6Ui2gsDBxAyPQ3skEszMZb0ifR8yF0EAk0qyh
+ cGqA==
+X-Gm-Message-State: AOJu0YxLeO7zHEK8MYz0O6bohcGw/4YKKbHXU07PZtR/zpNQmyyAuT/y
+ 4ywHIMrXj+FYScWLPO9Bp9hoYoMyFEFgPp2qFtFO9caJILcUP/CZ0m6zk8QnQ8xElqdB35MSw7E
+ 6wke9gEakT/+TKalPHBzFc+vYxyFED05Hd6nleb/w9kVxUc3VYrh987Jn
+X-Gm-Gg: ASbGnct7W+aLWL2NGvI9LPHmXTnBEZOzf7m4GTV3Nag6iVzzechTzLWFvTKns1Ij71S
+ 3C07f71Ct4JPwyPLvnLQg0FIR8PGvQi/RZbKKqXWxtkSXlOjJiCowqyk5vHAEXKLRwUxbdIcaPz
+ rhnRpVpG7YyGSbvWuYVNRnBOFYFMCyAxafIFcViR+0omOQ5BDIIP6T4SDjsDflxe3gJoK4z+p9e
+ FZmsla2yG00tAezQGVWaRoRlnP9XvhTZLTVwtPQjqkeQAdFIwj8ATiRGdDDVaJYbTPuFEtUv4JD
+ 9lNJM5AfK0tu1K8rzQhKTEmmSRE=
+X-Received: by 2002:a5d:6f02:0:b0:3a5:5270:a52c with SMTP id
+ ffacd0b85a97d-3b5dde2c12dmr1503894f8f.0.1751962980527; 
+ Tue, 08 Jul 2025 01:23:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFoO5r5PAEwXY3US8uMGwHfMflXhkQjvmGjfATC/9KOQfbHkmPGy1gCREThPux5hLq6uYu3XQ==
+X-Received: by 2002:a5d:6f02:0:b0:3a5:5270:a52c with SMTP id
+ ffacd0b85a97d-3b5dde2c12dmr1503875f8f.0.1751962980115; 
+ Tue, 08 Jul 2025 01:23:00 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.202.169])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b470e928aesm12105531f8f.44.2025.07.08.01.22.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Jul 2025 01:22:59 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 2/3] memattrs.h: make MemTxAttrs into enum
-Message-ID: <aGzVMbFDmJcpxHXp@intel.com>
-References: <20250703-rust-mem-api-v1-0-cd5314bdf580@linaro.org>
- <20250703-rust-mem-api-v1-2-cd5314bdf580@linaro.org>
+ Dapeng Mi <dapeng1.mi@intel.com>
+Subject: Re: [PATCH] rust/qemu-api: Fix binding path in source directory
+Date: Tue,  8 Jul 2025 10:22:53 +0200
+Message-ID: <20250708082253.49038-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250623073436.1833357-1-zhao1.liu@intel.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250703-rust-mem-api-v1-2-cd5314bdf580@linaro.org>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,20 +106,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 03, 2025 at 04:58:12PM +0300, Manos Pitsidianakis wrote:
-> Date: Thu, 03 Jul 2025 16:58:12 +0300
-> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Subject: [PATCH 2/3] memattrs.h: make MemTxAttrs into enum
-> X-Mailer: b4 0.14.2
-> 
-> Convert MemTxResult defines into an enum. This will allow bindgen to
-> generate a bitflag using the enum variants as its domain of values.
-> 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
->  include/exec/memattrs.h | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)>
+Queued, thanks.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Paolo
 
 
