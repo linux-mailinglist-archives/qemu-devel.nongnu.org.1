@@ -2,136 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC606AFD9BB
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B96CAFD840
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:21:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFGL-0007jz-LK; Tue, 08 Jul 2025 16:50:02 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1uZEnX-0001l5-Rz; Tue, 08 Jul 2025 16:20:15 -0400
+Received: from eggs.gnu.org ([209.51.188.92])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uZEDH-0006Kz-DI
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:42:47 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1uZBTN-0003Tk-MK
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:47:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uZEDD-0006BF-F8
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:42:47 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1uZBTB-0007d0-6D
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:47:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752003762;
+ s=mimecast20190719; t=1751993064;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=oX43MvXP+sfmfYnOo38hCHVIDYgFPwYLL9Ej/g9jkEM=;
- b=MlvVkUK/gfjsXemVZcpQQJPYhhWrJ20CLj9Jm+O6YoSoPss+K82TkVzppT4xmd3U8z5+z6
- uhrvP519JnB5CDUuX2VmbIduB+7LlMVxno08BB0mB0reuFkdFEWB/sqq87pVkMt9zInqIg
- M7kJU+PE9k8xScYVnu5T8Uvb51m2lWs=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=CTs6rOWT79ZGR4KYVvYv4H7kZZHu4zBJKCcStY18YK8=;
+ b=JxX3RupaR9dM4XWJ7u4MhijVyp++RQMPul9x5v+uHfvaOaCDphV7E8GRZ1T/JTE1Zo7+Hj
+ qpaZdW80BIoH5HTYCYkmTeCKR9D1pqV+kN96p35TNGtY0JUpQEcn4k7Ub7fSg/xjO2PeiQ
+ bNmC43ausSI7uBzFJi7/R6bUAwFFsDA=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-139-buN7f7dLNV2xz7Zqu5b0jQ-1; Tue, 08 Jul 2025 09:24:13 -0400
-X-MC-Unique: buN7f7dLNV2xz7Zqu5b0jQ-1
-X-Mimecast-MFC-AGG-ID: buN7f7dLNV2xz7Zqu5b0jQ_1751981053
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a4f65a705dso2563290f8f.2
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 06:24:13 -0700 (PDT)
+ us-mta-655-lwTK8TZ-M4ujfVV1MrWEiQ-1; Tue, 08 Jul 2025 09:28:57 -0400
+X-MC-Unique: lwTK8TZ-M4ujfVV1MrWEiQ-1
+X-Mimecast-MFC-AGG-ID: lwTK8TZ-M4ujfVV1MrWEiQ_1751981337
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7dabc82916cso67583285a.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 06:28:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751981052; x=1752585852;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oX43MvXP+sfmfYnOo38hCHVIDYgFPwYLL9Ej/g9jkEM=;
- b=DuxXYLrgveH0X4tXmHgBghGUvtemrqEVZ2cMvB2moiZxKT6Kmq9++tm9+O5scFBFnb
- wEeX/ycnfVC/lW6Vw8lL06vtNAMnxohfzjDVPgpKlAaPDOMB+1f9u+Duru14HIBQa78j
- +GkhiKJrEnaQdf1XspLiufGR8GCqSKO7YwBP6RpvP1J3UcoT3rgPk06R9pvCP/uKGqrI
- BN8D46MZHJWQRKEHi5GhWSMunzBv6RJH6wtPNXygAzd7vEg9Wcw/gQ1LTBY1bZF0CpU4
- mAALFbGkifqn7ZBzLbVRrtFRMm6cn1QWDKU7g4YhDQYmzKZwZeS9pGHVsH1rwYepTEBk
- 12hw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVLtAt3XX4zVBmeNA/Nj6WOKK+YtU5kd6YHv1wWtavvccReO8Re7Cpj/pkh6LCc4NhqYSVThRevWhDX@nongnu.org
-X-Gm-Message-State: AOJu0Yz3nB0r6t3KaRpZF0K+Ppy7ypxlf3YC7T7Asu/jby2CeWXxvdV3
- zYfGuGEQqDgv+di3vU1R/W1G1X3xVX76Kha0B3jpO2zKn/P07KD8JiiE+46f5aOqMGJ0r3rSm6x
- GQJsGhvpIlX4n8KwUK9WtJJMPQQ5BzcsXahdUWrx0+C4VcdLNwXRFfGXw
-X-Gm-Gg: ASbGncu408xVZ5Da7LZfxksrwYC4ucGCIRUxb3OnCx/HXM77PwFnlIzruTQilNxQL2A
- hR5vwdAeJpryk7/4BRzjERebHZyEYCby+eQJgh3oszof5+4noylaHEIaG31WtVAjyiqSdGGj95W
- GidfAvXYk7BURgzs4XbiHw6567XSfn6BTnziwjfTCdSuokcoh9elTTf+u/ezi2nounRgdeZHseX
- dHU3BRWHeL8ptXF6uR5ccX3ZFIlB5Bl0xh4ANVQf74UZ7tOqRt6+ALHCS9WGtLDu5smPx/zrKsL
- nCb8yj9LprE/qS/L6V0IitQRY10l/Mdnz56bliPwSY08QDM=
-X-Received: by 2002:a05:6000:3c7:b0:3a5:2848:2445 with SMTP id
- ffacd0b85a97d-3b49701293bmr13032008f8f.16.1751981052519; 
- Tue, 08 Jul 2025 06:24:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7rz3dZh/sGE5g+yGrnoRmxhczj/UPVuNDSD9dbEGmQitJ81yGRdPiLlIhW0eUEnTD6u1tpw==
-X-Received: by 2002:a05:6000:3c7:b0:3a5:2848:2445 with SMTP id
- ffacd0b85a97d-3b49701293bmr13031983f8f.16.1751981052040; 
- Tue, 08 Jul 2025 06:24:12 -0700 (PDT)
-Received: from [10.33.192.196] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ d=1e100.net; s=20230601; t=1751981337; x=1752586137;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CTs6rOWT79ZGR4KYVvYv4H7kZZHu4zBJKCcStY18YK8=;
+ b=VdRBrr3Z7CkgnVrP2VqR3yMoKjaBA9ce3ZfsIMKoTm5OgO77/equRjtZghfS9xqa0Q
+ tKf9XdOZfhUV8fFd6b4uOhce/w9ced5HR4FO77ugdbrkq9ucJhsYBKWN8xr/83STGpWj
+ xVIdiGL8NK1mrEHqzV8OYQaeyPBzDLd+XzBQboY/BpyCFSMMBzMAC3PDoU9Wlt7GGstv
+ p2h+HavyMXXKb4KdgV4ZiCR9BdTwZe5fBR/z82Bee8QPUlr3g11rcCfcRBPDrD7atnVh
+ RzRxPpIYqD388bZC9OAdK8fvE55/jxioNsz44OfIn8+hy98YFGWIU8M6oOTdJWWxs6L0
+ QTzw==
+X-Gm-Message-State: AOJu0YyWkkcVzkxjH/Jr5IIeHBMoGrEyrSq2s40/UqBz13Zf7+0bO49u
+ Sklkgf/S4aao1NNYRdJIUTFU+uBv+tC2N0xJNlQ+twxbQ/BVcPwUdtZS1WuWYE+6Ucbygl8N7fy
+ NpFyi59kMpxHl+Shs18feRuf5/Qo+bKiNL7zyl6qiiA/XYkhcaJ8LMnc2
+X-Gm-Gg: ASbGnctHDvZRHCGO7Uk/cuqK5jJbj6jaIZjO6ntcwasse9aB5Osic4MakSzwmRHXZV1
+ gAc5kQh3/qy0f4n4rEA6cLlCvUTYLtvSR353fGdCulZDzI6BYDxOsuOnm9ib60AxOtWrLtQdxES
+ JVXge2t66iPhZN7o/lHFygZx+/XBc0810O1POji/jiqtHg7xRr21SlyxvMaprS9senxeR6QnOOM
+ iKaQ7P2ly9pD/msHLLvzwI48cENzdoRmZYokKGcVndLQQKVvwNM4/sZtW4Do+zqdszLMyK453Cs
+ eMJfEj61k4EdhAsOQCD+L5Dm59wy
+X-Received: by 2002:a05:620a:84c1:b0:7d5:c13d:291e with SMTP id
+ af79cd13be357-7d5df0ccf29mr1868867385a.4.1751981336762; 
+ Tue, 08 Jul 2025 06:28:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHw4ISma3/XzrIlUyCJJ+iDvMudrRZA2h1oMCv913hlqu7dcg/MQEYmCEXhIlioreWPEFm0fw==
+X-Received: by 2002:a05:620a:84c1:b0:7d5:c13d:291e with SMTP id
+ af79cd13be357-7d5df0ccf29mr1868862385a.4.1751981336040; 
+ Tue, 08 Jul 2025 06:28:56 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.163.103])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d2a8c5a2sm795795e9.32.2025.07.08.06.24.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 06:24:11 -0700 (PDT)
-Message-ID: <803fc6a0-1197-4bd0-a084-69f252f35aaf@redhat.com>
-Date: Tue, 8 Jul 2025 15:24:10 +0200
+ af79cd13be357-7d5dbdc536csm776019085a.49.2025.07.08.06.28.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Jul 2025 06:28:55 -0700 (PDT)
+Date: Tue, 8 Jul 2025 15:28:43 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez <slp@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>, 
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+ Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>, 
+ Gerd Hoffman <kraxel@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>, 
+ Joerg Roedel <joro@8bytes.org>
+Subject: Re: [PATCH v9 00/16] Introduce support for IGVM files
+Message-ID: <2acameuzn4y7dgrvluvna42tcgzi2k6ryin6ykofcrq5vg6x6t@mbr2ewcsayyk>
+References: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] pc-bios/s390-ccw: Allow to select a different
- pxelinux.cfg entry via loadparm
-To: Jared Rossi <jrossi@linux.ibm.com>, qemu-devel@nongnu.org,
- Zhuoying Cai <zycai@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Eric Farman <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20250708125630.58676-1-thuth@redhat.com>
- <20250708125630.58676-2-thuth@redhat.com>
- <6d0f221a-f5d7-4f2e-b3e8-1cb302681caf@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <6d0f221a-f5d7-4f2e-b3e8-1cb302681caf@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -140,7 +99,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -156,50 +115,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/07/2025 15.13, Jared Rossi wrote:
-> 
-> 
-> On 7/8/25 8:56 AM, Thomas Huth wrote:
->> From: Thomas Huth <thuth@redhat.com>
->>
->> Since we're linking the network booting code into the main firmware
->> binary nowadays, we can support the "loadparm" parameter now quite
->> easily for pxelinux.cfg config files that contain multiple entries.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   pc-bios/s390-ccw/netmain.c | 33 +++++++++++++++++++++++++--------
->>   1 file changed, 25 insertions(+), 8 deletions(-)
->>
->> diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
->> index 719a547ada0..024b4419ef6 100644
->> --- a/pc-bios/s390-ccw/netmain.c
->> +++ b/pc-bios/s390-ccw/netmain.c
->> @@ -332,6 +332,28 @@ static int load_kernel_with_initrd(filename_ip_t *fn_ip,
->>       return rc;
->>   }
->> +static int net_select_and_load_kernel(filename_ip_t *fn_ip,
->> +                                      int num_ent, int selected,
->> +                                      struct pl_cfg_entry *entries)
->> +{
->> +    unsigned int loadparm = get_loadparm_index();
->> +
->> +    if (num_ent <= 0) {
->> +        return -1;
->> +    }
->> +
->> +    if (loadparm > num_ent) {
->> +        printf("Error: loadparm is set to entry #%d, but there are only "
->> +               "%d entries in the pxelinux.cfg file!\n"
->> +               "Using default entry now instead.\n",
->> +               loadparm, num_ent);
-> Commit 64fa0de established that the IPL should abort on any loadparm 
-> misconfiguration, therefore I think this should result in a fatal error 
-> rather than using the default.
+On Thu, Jul 03, 2025 at 03:59:33PM +0100, Roy Hopkins wrote:
+>Here is v9 of the set of patches to add support for IGVM files to QEMU. This is
+>based on commit c77283dd5d79149f4e7e9edd00f65416c648ee59 of qemu.
 
-Ah, right, I already forgot that, thanks for the reminder! I'll change it in 
-v2 accordingly.
+I successfully tested this series with the IGVM file generated by
+COCONUT SVSM [1] in this way:
 
-  Thomas
+$ cd svsm
+$ FW_FILE=/path/to/edk2/Build/OvmfX64/DEBUG_GCC5/FV/OVMF.fd make
+$ ./scripts/launch_guest.sh \
+     --qemu /path/to/qemu/build/qemu-system-x86_64 \
+     --image /path/to/fedora.qcow2 -- -vga none
+
+Host kernel: https://github.com/coconut-svsm/linux/tree/svsm
+QEMU: master (commit df6fe2abf2e990f767ce755d426bc439c7bba336) + this
+       series
+SVSM: commit 00b24f830a318a40b56b492b917466e28fde12e2
+EDK2: https://github.com/coconut-svsm/edk2/tree/svsm
+Guest kernel: Linux 6.16-rc5
+
+[1] https://github.com/coconut-svsm/svsm
+
+Tested-by: Stefano Garzarella <sgarzare@redhat.com>
+
+Thanks!
+
+>
+>Once again, this is mostly a rebase of the previous patch series. However,
+>thanks to those reviewers who have provided feedback on v8 which has now been
+>addressed in this new version.
+>
+>This v9 patch series is also available on github: [2]
+>
+>For testing IGVM support in QEMU you need to generate an IGVM file that is
+>configured for the platform you want to launch. You can use the `buildigvm`
+>test tool [3] to allow generation of IGVM files for all currently supported
+>platforms. Patch 11/17 contains information on how to generate an IGVM file
+>using this tool.
+>
+>Changes in v9:
+>
+>* Address review comments from v8
+>* Add metadata to relevant commits.
+>
+>Patch summary:
+>
+>1-11: Add support and documentation for processing IGVM files for SEV, SEV-ES,
+>SEV-SNP and native platforms.
+>
+>12-15: Processing of policy and SEV-SNP ID_BLOCK from IGVM file.
+>
+>16: Add pre-processing of IGVM file to support synchronization of 'SEV_FEATURES'
+>from IGVM VMSA to KVM.
+>
+>[1] Link to v8:
+>https://lists.gnu.org/archive/html/qemu-devel/2025-06/msg02324.html
+>
+>[2] v8 patches also available here:
+>https://github.com/roy-hopkins/qemu/tree/igvm_master_v9
+>
+>[3] `buildigvm` tool v0.2.0
+>https://github.com/roy-hopkins/buildigvm/releases/tag/v0.2.0
+>
+>Roy Hopkins (16):
+>  meson: Add optional dependency on IGVM library
+>  backends/confidential-guest-support: Add functions to support IGVM
+>  backends/igvm: Add IGVM loader and configuration
+>  hw/i386: Add igvm-cfg object and processing for IGVM files
+>  i386/pc_sysfw: Ensure sysfw flash configuration does not conflict with
+>    IGVM
+>  sev: Update launch_update_data functions to use Error handling
+>  target/i386: Allow setting of R_LDTR and R_TR with
+>    cpu_x86_load_seg_cache()
+>  i386/sev: Refactor setting of reset vector and initial CPU state
+>  i386/sev: Implement ConfidentialGuestSupport functions for SEV
+>  docs/system: Add documentation on support for IGVM
+>  docs/interop/firmware.json: Add igvm to FirmwareDevice
+>  backends/confidential-guest-support: Add set_guest_policy() function
+>  backends/igvm: Process initialization sections in IGVM file
+>  backends/igvm: Handle policy for SEV guests
+>  i386/sev: Add implementation of CGS set_guest_policy()
+>  sev: Provide sev_features flags from IGVM VMSA to KVM_SEV_INIT2
+>
+> backends/confidential-guest-support.c       |  43 +
+> backends/igvm-cfg.c                         |  51 +
+> backends/igvm.c                             | 988 ++++++++++++++++++++
+> backends/igvm.h                             |  22 +
+> backends/meson.build                        |   5 +
+> docs/interop/firmware.json                  |  30 +-
+> docs/system/i386/amd-memory-encryption.rst  |   2 +
+> docs/system/igvm.rst                        | 173 ++++
+> docs/system/index.rst                       |   1 +
+> hw/i386/pc.c                                |  12 +
+> hw/i386/pc_piix.c                           |  10 +
+> hw/i386/pc_q35.c                            |  10 +
+> hw/i386/pc_sysfw.c                          |  31 +-
+> include/hw/i386/x86.h                       |   3 +
+> include/system/confidential-guest-support.h |  88 ++
+> include/system/igvm-cfg.h                   |  49 +
+> meson.build                                 |   8 +
+> meson_options.txt                           |   2 +
+> qapi/qom.json                               |  17 +
+> qemu-options.hx                             |  28 +
+> scripts/meson-buildoptions.sh               |   3 +
+> target/i386/cpu.h                           |   9 +-
+> target/i386/sev.c                           | 850 +++++++++++++++--
+> target/i386/sev.h                           | 124 +++
+> 24 files changed, 2475 insertions(+), 84 deletions(-)
+> create mode 100644 backends/igvm-cfg.c
+> create mode 100644 backends/igvm.c
+> create mode 100644 backends/igvm.h
+> create mode 100644 docs/system/igvm.rst
+> create mode 100644 include/system/igvm-cfg.h
+>
+>-- 
+>2.43.0
+>
 
 
