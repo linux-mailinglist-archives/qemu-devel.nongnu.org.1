@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BE8AFDAB9
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 00:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0298BAFDAAE
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 00:10:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZGY3-0003Hc-22; Tue, 08 Jul 2025 18:12:23 -0400
+	id 1uZGVE-0002LG-LH; Tue, 08 Jul 2025 18:09:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZGFn-0000UF-RX
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:53:31 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZGFs-0000fE-Jt
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:53:36 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZGFk-0003I3-Q1
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:53:31 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-451d7b50815so41094315e9.2
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 14:53:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZGFp-0003JS-LO
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 17:53:36 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-45363645a8eso34453145e9.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 14:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752011607; x=1752616407; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752011612; x=1752616412; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=91kh8gM7bE1DvG8K9EhiXTHWKL7JzNJQDQuB0S1EOTc=;
- b=IHUFDqXCfKJXgCFnMt7oJMBpvCNJJomYd7DKtkg1/6h9DVjgKHlmbKaoyIrcDi/8O7
- RIbBlK3xbDzhbCMPfKG9Q+EPI+Em/jme5e0UqLd+G9u1t32l92jZ1ar47d+irypcNgX7
- PlcMv78vFoN18+5hif4gBLRq0USuUe8ZXvtdcr4ocqaJLqMmLcBiHbGXEFRbvV6EFocO
- BaOU99A4iNqmvxDTDmCLsZ1CeAmooecPnS0V63H7oCUdKLtY5sY6MG6pdQyzetywYUp8
- iaguY5kllyuX6HB1MnhkNLl85w1YubTGv9NyYWPo3e4Whty03Us7mf37jXAW0gzz87jC
- +Txg==
+ bh=ulkx3Q5KroTiu66enU0LDbqVfAkkR9CFQ9rrQaIZwyo=;
+ b=YXUFZUu4eXxSK9LTaUhjcuu+zooO9X12Z/TUDK4IDR5EmuYL+PPACDDhOSnkxovAsb
+ 7mjcZODQDjlMuX1CJcMS9QPSznB7K9YjlwqsMP0WyJ0nP5yLgzMwVpGr5t8RocfR+kCf
+ nlsNAfmGr/BErm5SmfXcEXmO61zPuj0fOGOZXB29z5g15a9X7Ip7x5ru/W5v4QCLbAHv
+ 85DiF/Ial/gEGs8iQf/GKYhzX+vMxGBUXd6X8y9Xu5s3yA3kTq+gtpTj3tHK4/6fV02w
+ zK3qC/hVVLRzAiquB2uUHWDurDSx9SudGdFE1NWrw5eJSCavd2WFDjOHpRD/taAfkjzq
+ ciTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752011607; x=1752616407;
+ d=1e100.net; s=20230601; t=1752011612; x=1752616412;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=91kh8gM7bE1DvG8K9EhiXTHWKL7JzNJQDQuB0S1EOTc=;
- b=lKeY7PrsDrAy76rTdL8LUedl/aEs8wGAOcQF91v9gFonW32GQBA/QLSSsvL4kh6IgW
- zJH4mV3JKoAFFvIWsBtGnY6m75amOvobeqqR9JQ0YYBOKdmTPAJY06rAwaMeBIm5H2H0
- 5RWD9gI/oCBFE3/jdgBOPVK5JB/eUwzg9oMlsbL/ufO9ZtPunxQeKRYUx2SxenFAuWJm
- VBxMehieGdQNLX3pMVCPiP47tA3uFkpYhBjG1//oZk822eZNCoEBXZH8SP42zaejfuig
- 8OS58MBec+9pSe4h2uLiKvBgsfF8yIcoPrvSxSpiG+kua9QWCHnbfG+3FJnBmzxTKfiz
- L1VQ==
-X-Gm-Message-State: AOJu0YzCNxhf7ySpPkhuBik28bm99cWxigyExHsevRQl7f7UT8u6H6Ib
- 7xSoqFtuQ/PRxeK0QOF2dHOOMAAF8w9tWemi37fLIbwfv5SxFb0t2RcRI1PfedGG7fADG5NkWsa
- 9ssWW
-X-Gm-Gg: ASbGnctM1gYw9GKm199KIglqq9tJbrftvf5UxfoXZYRS4U/KwiPg3Jmt3I0g4sk41Id
- WUj6uQmpy2+EcCW1ioEM4CVswTuBveXBwvB+RdNWhyth+L8M2fdE2x6EiKSI+J7UDjLGoA4vAhe
- HyzQyO1EwGtqRx/ZUnf9AdO9u8+k2PyWwLiPDnA9Qf+ZRMnTpzqK5LiSqCh6zX0dZpu+FLmmiJM
- PSScrf3bK84u3Mpl6ECKHG+7Aln7NmuqYAuvL2wBpmQFDwWGan7SFvEbiceBjVIv0kP2q/AGLXe
- ZSwyE/fgdywK+93xsTf7l5jEa9YtvbSnPslrsNv4L/IrAzmFnBApz1FSiZXg1Dokux6hbBDha7G
- KNiGD18i7eADjOlRllqdGp6Mqc7SjyN/2twqwUbGlhg==
-X-Google-Smtp-Source: AGHT+IEKeaIf8ydwFxaC7CzcMoJiykZ7tpJY4NEy7E6eR7UMiSfrgE10xDZswu4cPQ2P+J+t+Kl90Q==
-X-Received: by 2002:a05:600c:4452:b0:450:d012:df85 with SMTP id
- 5b1f17b1804b1-454b5d08af0mr194483995e9.18.1752011607002; 
- Tue, 08 Jul 2025 14:53:27 -0700 (PDT)
+ bh=ulkx3Q5KroTiu66enU0LDbqVfAkkR9CFQ9rrQaIZwyo=;
+ b=YUQkKesfGAPnUyWe5v/x7ch3klWMQ0s/C8NgLb4N6rA22+hImTnBbMrzxEp1Dy4uDW
+ w3+fSDn7I3ySu5CavhWgvCwQ6bNih3mb3IhJ9M5u0qoOYGgY20twcOUD0oUMZlVx2vHL
+ +MZj136032OWe10mtZEVKr4Mp7vqXOJO77q5AS6KagYPArg95exD1WM8fhI/3KLJ5ARH
+ DUdXAzMcgf5hcPdRhxklzP9cMVWdN1+yNR/HXEdMQbD0Cz7Del4BEZWvVQzb713xULHA
+ WL/P8lecKD0iG6xAQ/0d1paUDjpaAgx23fyKfQk2DAzPW6EqeushksZk7dViiVDqZ5yk
+ v4TA==
+X-Gm-Message-State: AOJu0YwG/lXCHJHXUVqKaSQaWAK5WVkZtoxE5KaTbayNjWRoipdZSNf7
+ BqPmoZ6VkH5F5Ri5OyZYh+oBUsEPAyGb+PTdftZTZqxMGmk9xwfS1Fx+VO9E/RyEhpOOKSoTWZ/
+ uRZNs
+X-Gm-Gg: ASbGncvd4DPc/TIjE1mr05JivQzY4OZPnrukGXbRVexifhQ5I0DcyQXJ63PmJJ0FSkm
+ OgNbmI9Ag4YCrRMz7hemAnEoaOfwFzNBMd5jDYE6uGhO7wmMlIQTFuyfvdCQ1dh4GFnxVrVfKAw
+ DY9JeNAZR65FpeVOtQOevCuVNFvbEl/kcoxUqaUW5iCOSQDS6Skb5Nm9COtErT+5ObWhExHFNSu
+ mH9DGEenjae3VhMA2g3rv2Vt1IYH5re6DreLOIVFvB02YCWMyWp4260Jq8TrdAo+ePTOeLHjKAc
+ 2j2TXUtRpvFRPKa5yhazsWXXySlwdPRlmCLyIIpii1i08kYJ/rqx9otYE5Ye1n74oX7GLJ4hX+r
+ 0bttGD/lGmlFAXumyMBI7c7WE1JFn0ARX/Jscl4wH9w==
+X-Google-Smtp-Source: AGHT+IH8OH7XAiQSqNzM/QS/p5Dh4S9WqsdBq0wqNadTp3JEBu2Z/Zy2qBF4g9jMlLss+j+3c8l1Jg==
+X-Received: by 2002:a05:600c:8b57:b0:450:cfcb:5c9b with SMTP id
+ 5b1f17b1804b1-454d52f4e4fmr26845e9.1.1752011611852; 
+ Tue, 08 Jul 2025 14:53:31 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d5070691sm732755e9.29.2025.07.08.14.53.25
+ ffacd0b85a97d-3b47285c9f9sm14231973f8f.93.2025.07.08.14.53.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 08 Jul 2025 14:53:26 -0700 (PDT)
+ Tue, 08 Jul 2025 14:53:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
@@ -71,21 +71,21 @@ Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Song Gao <gaosong@loongson.cn>,
- Huacai Chen <chenhuacai@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PATCH-for-10.1 RESEND v8 1/8] target/qmp: Use target_cpu_type()
-Date: Tue,  8 Jul 2025 23:53:12 +0200
-Message-ID: <20250708215320.70426-2-philmd@linaro.org>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH-for-10.1 RESEND v8 2/8] qemu/target-info: Factor target_arch()
+ out
+Date: Tue,  8 Jul 2025 23:53:13 +0200
+Message-ID: <20250708215320.70426-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250708215320.70426-1-philmd@linaro.org>
 References: <20250708215320.70426-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,78 +108,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+To keep "qemu/target-info.h" self-contained to native
+types, declare target_arch() -- which returns a QAPI
+type -- in "qemu/target-info-qapi.h".
+
+No logical change.
+
+Keeping native types in "qemu/target-info.h" is necessary
+to keep building tests such tests/tcg/plugins/mem.c, as
+per the comment added in commit ecbcc9ead2f ("tests/tcg:
+add a system test to check memory instrumentation"):
+
+/*
+ * plugins should not include anything from QEMU aside from the
+ * API header. However as this is a test plugin to exercise the
+ * internals of QEMU and we want to avoid needless code duplication we
+ * do so here. bswap.h is pretty self-contained although it needs a
+ * few things provided by compiler.h.
+ */
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/arm-qmp-cmds.c             | 3 ++-
- target/loongarch/loongarch-qmp-cmds.c | 3 ++-
- target/mips/system/mips-qmp-cmds.c    | 3 ++-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ include/qemu/target-info-qapi.h | 21 +++++++++++++++++++++
+ include/qemu/target-info.h      |  2 +-
+ hw/core/machine-qmp-cmds.c      |  8 +++-----
+ target-info.c                   |  8 ++++++++
+ 4 files changed, 33 insertions(+), 6 deletions(-)
+ create mode 100644 include/qemu/target-info-qapi.h
 
-diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
-index cefd2352638..d292c974c44 100644
---- a/target/arm/arm-qmp-cmds.c
-+++ b/target/arm/arm-qmp-cmds.c
-@@ -21,6 +21,7 @@
-  */
+diff --git a/include/qemu/target-info-qapi.h b/include/qemu/target-info-qapi.h
+new file mode 100644
+index 00000000000..a337c867bfb
+--- /dev/null
++++ b/include/qemu/target-info-qapi.h
+@@ -0,0 +1,21 @@
++/*
++ * QEMU target info API (returning QAPI types)
++ *
++ *  Copyright (c) Linaro
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef QEMU_TARGET_INFO_EXTRA_H
++#define QEMU_TARGET_INFO_EXTRA_H
++
++#include "qapi/qapi-types-machine.h"
++
++/**
++ * target_arch:
++ *
++ * Returns: QAPI SysEmuTarget enum (e.g. SYS_EMU_TARGET_X86_64).
++ */
++SysEmuTarget target_arch(void);
++
++#endif
+diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
+index 850a2958b9c..dde0e7d968a 100644
+--- a/include/qemu/target-info.h
++++ b/include/qemu/target-info.h
+@@ -1,5 +1,5 @@
+ /*
+- * QEMU target info API
++ * QEMU target info API (returning native types)
+  *
+  *  Copyright (c) Linaro
+  *
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index d82043e1c68..cd98daedd18 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -19,7 +19,7 @@
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/type-helpers.h"
+ #include "qemu/uuid.h"
+-#include "qemu/target-info.h"
++#include "qemu/target-info-qapi.h"
+ #include "qom/qom-qobject.h"
+ #include "system/hostmem.h"
+ #include "system/hw_accel.h"
+@@ -37,8 +37,7 @@ CpuInfoFastList *qmp_query_cpus_fast(Error **errp)
+     MachineState *ms = MACHINE(qdev_get_machine());
+     MachineClass *mc = MACHINE_GET_CLASS(ms);
+     CpuInfoFastList *head = NULL, **tail = &head;
+-    SysEmuTarget target = qapi_enum_parse(&SysEmuTarget_lookup, target_name(),
+-                                          -1, &error_abort);
++    SysEmuTarget target = target_arch();
+     CPUState *cpu;
+ 
+     CPU_FOREACH(cpu) {
+@@ -139,8 +138,7 @@ QemuTargetInfo *qmp_query_target(Error **errp)
+ {
+     QemuTargetInfo *info = g_malloc0(sizeof(*info));
+ 
+-    info->arch = qapi_enum_parse(&SysEmuTarget_lookup, target_name(), -1,
+-                                 &error_abort);
++    info->arch = target_arch();
+ 
+     return info;
+ }
+diff --git a/target-info.c b/target-info.c
+index 16fdca7aaaf..9ebabec988f 100644
+--- a/target-info.c
++++ b/target-info.c
+@@ -8,7 +8,9 @@
  
  #include "qemu/osdep.h"
-+#include "qemu/target-info.h"
- #include "hw/boards.h"
- #include "kvm_arm.h"
- #include "qapi/error.h"
-@@ -241,7 +242,7 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
-     CpuDefinitionInfoList *cpu_list = NULL;
-     GSList *list;
+ #include "qemu/target-info.h"
++#include "qemu/target-info-qapi.h"
+ #include "qemu/target-info-impl.h"
++#include "qapi/error.h"
  
--    list = object_class_get_list(TYPE_ARM_CPU, false);
-+    list = object_class_get_list(target_cpu_type(), false);
-     g_slist_foreach(list, arm_cpu_add_definition, &cpu_list);
-     g_slist_free(list);
+ const char *target_name(void)
+ {
+@@ -20,6 +22,12 @@ unsigned target_long_bits(void)
+     return target_info()->long_bits;
+ }
  
-diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
-index f5f1cd0009d..1d8cd32f5fc 100644
---- a/target/loongarch/loongarch-qmp-cmds.c
-+++ b/target/loongarch/loongarch-qmp-cmds.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/target-info.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-machine.h"
- #include "cpu.h"
-@@ -32,7 +33,7 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
-     CpuDefinitionInfoList *cpu_list = NULL;
-     GSList *list;
- 
--    list = object_class_get_list(TYPE_LOONGARCH_CPU, false);
-+    list = object_class_get_list(target_cpu_type(), false);
-     g_slist_foreach(list, loongarch_cpu_add_definition, &cpu_list);
-     g_slist_free(list);
- 
-diff --git a/target/mips/system/mips-qmp-cmds.c b/target/mips/system/mips-qmp-cmds.c
-index d98d6623f2f..b6a2874f2dd 100644
---- a/target/mips/system/mips-qmp-cmds.c
-+++ b/target/mips/system/mips-qmp-cmds.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/target-info.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-machine.h"
- #include "cpu.h"
-@@ -40,7 +41,7 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
-     CpuDefinitionInfoList *cpu_list = NULL;
-     GSList *list;
- 
--    list = object_class_get_list(TYPE_MIPS_CPU, false);
-+    list = object_class_get_list(target_cpu_type(), false);
-     g_slist_foreach(list, mips_cpu_add_definition, &cpu_list);
-     g_slist_free(list);
- 
++SysEmuTarget target_arch(void)
++{
++    return qapi_enum_parse(&SysEmuTarget_lookup, target_name(), -1,
++                           &error_abort);
++}
++
+ const char *target_cpu_type(void)
+ {
+     return target_info()->cpu_type;
 -- 
 2.49.0
 
