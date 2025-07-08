@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57B8AFD8AE
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A0EAFD8D6
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:50:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFDD-00017U-6y; Tue, 08 Jul 2025 16:46:47 -0400
+	id 1uZFDV-0002Fh-84; Tue, 08 Jul 2025 16:47:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uZDmT-0003jN-Fs
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uZDn1-00043B-Ec
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uZDmO-0006xW-W0
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:03 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uZDmw-00076L-Cl
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752002097;
+ s=mimecast20190719; t=1752002130;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jw5d25sXHGdf0M9sXiuyl0RF1wEk9KuB131pPHMmIJI=;
- b=RWXX6UG/XNykcOTMp5vtyX73t1pe3bjVONsHDnHOimtjbnegGxhM/ENgSPJVg7JUf6H364
- GyLy0NVkWjkKpkCh5ksqXSCpq6duH6EZL0idwujJv9fELIhYV4ZbKuHKfTcMzpLp2qG3T2
- dEr7PCHgIQeCaRphuErHzb3H5iw8kSE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=mlDhxjajiD0HswlEAArayWqXuDON4+6UkEhTcFzRuSs=;
+ b=K1yAxC52PuyK3ThGziigRbdhC2f65krJ/N7Ah7dCNskYA5aCb18kbcMllIkNs++3wNWy7r
+ Y8xof2zaGON8+/+IU0/Dkrif6cvF5iDdoJYfhBfjZaWZebEjOmUyhpUxHDtjo8noT1Ym0/
+ IWoXigs1dOtFeLK1jjh3BJMXNIuhdrA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-uRV5I-iUM3KcH39b6ZDGjA-1; Tue,
- 08 Jul 2025 08:56:41 -0400
-X-MC-Unique: uRV5I-iUM3KcH39b6ZDGjA-1
-X-Mimecast-MFC-AGG-ID: uRV5I-iUM3KcH39b6ZDGjA_1751979400
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-EjOL4GHfM3en159cJABNAw-1; Tue,
+ 08 Jul 2025 08:56:43 -0400
+X-MC-Unique: EjOL4GHfM3en159cJABNAw-1
+X-Mimecast-MFC-AGG-ID: EjOL4GHfM3en159cJABNAw_1751979402
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EEFD21800287; Tue,  8 Jul 2025 12:56:39 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 89630193F058; Tue,  8 Jul 2025 12:56:42 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-196.str.redhat.com
  [10.33.192.196])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C422219560AB; Tue,  8 Jul 2025 12:56:37 +0000 (UTC)
+ id 5F64C19560AB; Tue,  8 Jul 2025 12:56:40 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org, Jared Rossi <jrossi@linux.ibm.com>,
  Zhuoying Cai <zycai@linux.ibm.com>
 Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>
-Subject: [PATCH 2/5] pc-bios/s390-ccw: Allow up to 31 entries for pxelinux.cfg
-Date: Tue,  8 Jul 2025 14:56:27 +0200
-Message-ID: <20250708125630.58676-3-thuth@redhat.com>
+Subject: [PATCH 3/5] pc-bios/s390-ccw: Make get_boot_index() from menu.c global
+Date: Tue,  8 Jul 2025 14:56:28 +0200
+Message-ID: <20250708125630.58676-4-thuth@redhat.com>
 In-Reply-To: <20250708125630.58676-1-thuth@redhat.com>
 References: <20250708125630.58676-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,7 +67,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,54 +85,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-We're going to support a menu for the pxelinux.cfg code, and to be able
-to reuse some functionality from menu.c, we should align the maximum
-amount of possible entries with the MAX_BOOT_ENTRIES constant that is
-used there. Thus replace MAX_PXELINUX_ENTRIES with MAX_BOOT_ENTRIES.
+We are going to reuse this function for selecting an entry from
+the pxelinux.cfg menu, so rename this function with a "menu_"
+prefix and make it available globally.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- pc-bios/s390-ccw/netmain.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ pc-bios/s390-ccw/s390-ccw.h | 1 +
+ pc-bios/s390-ccw/menu.c     | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
-index 024b4419ef6..4f77635fb86 100644
---- a/pc-bios/s390-ccw/netmain.c
-+++ b/pc-bios/s390-ccw/netmain.c
-@@ -354,17 +354,15 @@ static int net_select_and_load_kernel(filename_ip_t *fn_ip,
-     return load_kernel_with_initrd(fn_ip, &entries[selected]);
+diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
+index 6cdce3e5e5b..b1dc35cdedf 100644
+--- a/pc-bios/s390-ccw/s390-ccw.h
++++ b/pc-bios/s390-ccw/s390-ccw.h
+@@ -87,6 +87,7 @@ int menu_get_zipl_boot_index(const char *menu_data);
+ bool menu_is_enabled_zipl(void);
+ int menu_get_enum_boot_index(bool *valid_entries);
+ bool menu_is_enabled_enum(void);
++int menu_get_boot_index(bool *valid_entries);
+ 
+ #define MAX_BOOT_ENTRIES  31
+ 
+diff --git a/pc-bios/s390-ccw/menu.c b/pc-bios/s390-ccw/menu.c
+index 84062e94af4..eeaff78f870 100644
+--- a/pc-bios/s390-ccw/menu.c
++++ b/pc-bios/s390-ccw/menu.c
+@@ -159,7 +159,7 @@ static void boot_menu_prompt(bool retry)
+     }
  }
  
--#define MAX_PXELINUX_ENTRIES 16
--
- static int net_try_pxelinux_cfg(filename_ip_t *fn_ip)
+-static int get_boot_index(bool *valid_entries)
++int menu_get_boot_index(bool *valid_entries)
  {
--    struct pl_cfg_entry entries[MAX_PXELINUX_ENTRIES];
-+    struct pl_cfg_entry entries[MAX_BOOT_ENTRIES];
-     int num_ent, def_ent = 0;
+     int boot_index;
+     bool retry = false;
+@@ -224,7 +224,7 @@ int menu_get_zipl_boot_index(const char *menu_data)
+     }
  
-     num_ent = pxelinux_load_parse_cfg(fn_ip, mac, get_uuid(),
-                                       DEFAULT_TFTP_RETRIES,
-                                       cfgbuf, sizeof(cfgbuf),
--                                      entries, MAX_PXELINUX_ENTRIES, &def_ent);
-+                                      entries, MAX_BOOT_ENTRIES, &def_ent);
- 
-     return net_select_and_load_kernel(fn_ip, num_ent, def_ent, entries);
+     printf("\n");
+-    return get_boot_index(valid_entries);
++    return menu_get_boot_index(valid_entries);
  }
-@@ -447,11 +445,11 @@ static int net_try_direct_tftp_load(filename_ip_t *fn_ip)
-          * a magic comment string.
-          */
-         if (!strncasecmp("# pxelinux", cfgbuf, 10)) {
--            struct pl_cfg_entry entries[MAX_PXELINUX_ENTRIES];
-+            struct pl_cfg_entry entries[MAX_BOOT_ENTRIES];
-             int num_ent, def_ent = 0;
  
-             num_ent = pxelinux_parse_cfg(cfgbuf, sizeof(cfgbuf), entries,
--                                         MAX_PXELINUX_ENTRIES, &def_ent);
-+                                         MAX_BOOT_ENTRIES, &def_ent);
-             return net_select_and_load_kernel(fn_ip, num_ent, def_ent,
-                                               entries);
-         }
+ int menu_get_enum_boot_index(bool *valid_entries)
+@@ -247,7 +247,7 @@ int menu_get_enum_boot_index(bool *valid_entries)
+     }
+ 
+     printf("\n");
+-    return get_boot_index(valid_entries);
++    return menu_get_boot_index(valid_entries);
+ }
+ 
+ void menu_set_parms(uint8_t boot_menu_flag, uint32_t boot_menu_timeout)
 -- 
 2.50.0
 
