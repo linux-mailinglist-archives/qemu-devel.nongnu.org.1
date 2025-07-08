@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD36AAFD7F0
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F99DAFD9A1
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:21:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZEeV-0007FY-Dx; Tue, 08 Jul 2025 16:10:56 -0400
+	id 1uZFA6-0001qD-Lw; Tue, 08 Jul 2025 16:43:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uZDWq-0004jK-B8
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 14:59:03 -0400
+ id 1uZDbv-0001UL-DH
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:04:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uZDWc-0001PM-OB
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 14:58:54 -0400
+ id 1uZDbk-0003Td-Qo
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:04:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752001006;
+ s=mimecast20190719; t=1752001401;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
  bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=WOYwgB+uAXdUrpXQQMK8CMl8Pxz32sVOvu3brtwyoQ8XNhnP/NDi5N9teXd1tarecG8IYK
- Vt+mi2giSvAhRoiSaKw0smcdaZ00EN3u9rgBX0xgGkRxLXenQ8cYHQNIMjNNqyVqlHSOtb
- veT7Dt0IQjqOHZmTdb7IiiIQ9vNq1qc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ b=d6pT81K2Z3czDOthATNPF2vBa+urANp/zd3PEU5rEXQgf/c4gfZxM+T6ZLC2rq5O8j6ZYv
+ af5E7wd193zA8j9Vfhg4voYE9IOYHfv+gVR5kyd2pBmV8WRzftz7lmTt2UDpL64iCd/hOy
+ oqUB0c2Zr9Xmj1Qx7gsrLrWs2EJp/78=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-dLzzehAdOn6j8qdwmLC2DA-1; Tue, 08 Jul 2025 04:25:34 -0400
-X-MC-Unique: dLzzehAdOn6j8qdwmLC2DA-1
-X-Mimecast-MFC-AGG-ID: dLzzehAdOn6j8qdwmLC2DA_1751963133
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4538a2f4212so21230645e9.2
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 01:25:34 -0700 (PDT)
+ us-mta-623-K_Qj277qO7SCQOifWR28nw-1; Tue, 08 Jul 2025 04:35:06 -0400
+X-MC-Unique: K_Qj277qO7SCQOifWR28nw-1
+X-Mimecast-MFC-AGG-ID: K_Qj277qO7SCQOifWR28nw_1751963705
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-451d3f03b74so22276185e9.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 01:35:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751963133; x=1752567933;
+ d=1e100.net; s=20230601; t=1751963705; x=1752568505;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
  bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=p+Rn+0iIMpS3QZy0fEtooYzJ3aeeE/h3tH1zu9Blokg9P/+Sb/ZUmgDMdCwp14AyWv
- zBdSxxLz0WRlmnKdvHMyK6n8DblAJ2RbIxs2/lSA42KZ3ermR3E5EJtR2+/FCXk/QWEd
- jJXn0x6iXRTLPrmC5zKjq3mo+Gi/S9Nxje/k/shPY2OSl1cT1+964yWLh8obqikbEvlW
- HVj917JX/hO5wAWXpR4+1SyR7QnTpR8tc+N1c5iOmBLa7pIVL/uhDVqxVo9ZZEA6P3Ij
- aXYVZBxOkdyMWk3Uzk1aPeLbBLALfQnQK5AqWmpIGk1uAKuClhoyHoLDX89U5Ytsvtah
- rJug==
-X-Gm-Message-State: AOJu0YxhQ55nr1Lz9PNuOlXI16UrUy7QgBAe6KfQo7asXOzPIGGvIz77
- QYLxc0AoopBRpbOM8KMYD4OzkSxfVm//ELkWHDglxopugjnPKjHDJlsBPplb3g3/0YStC2txMni
- Z4tORDelqgr7zWDe8iKpRygacgBvYv+UA8w9hhgjJX57lUEVBHIdXswh92P2G2rKS
-X-Gm-Gg: ASbGnctgMQThGW8iBrDWE4zBdFhOs01/ej/eMqpVj4xJrFqIn4XmmBq3eeP8xf0F2iq
- odG8o3Mt5o5JlgsgASpIzpSTXeS7QRAJDvgKhyNpFrPiXWHW4xMmsItb4sIfd6iZy7UeDIc8bYB
- jYcHrCc1wevRdPKCkd1xytELXMjDBApxUa/4ZXDpAi2ZI6UqpIdITDagdk0DJefkQqRAjHJXkJK
- AEC3CMCJJ4P08bDoxoFCPrwwVRgAfx0dH8K2rVOv0SO0ibAcgebGeaG1skxBvyCG8BnhCVmYL0M
- xYgXQ2f/7MKi5vqlBS28Cypg01c=
-X-Received: by 2002:a05:600c:1da1:b0:442:e03b:58a9 with SMTP id
- 5b1f17b1804b1-454cd50a87bmr16815485e9.25.1751963132972; 
- Tue, 08 Jul 2025 01:25:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFo/fcJF3fxMw3IP5Uovq/+WlU/pstWxinghusuEV6V/FHEQQ2MTZCnS03phJY5oeJwqma2MQ==
-X-Received: by 2002:a05:600c:1da1:b0:442:e03b:58a9 with SMTP id
- 5b1f17b1804b1-454cd50a87bmr16815195e9.25.1751963132570; 
- Tue, 08 Jul 2025 01:25:32 -0700 (PDT)
+ b=lEjNgu6WSzqh4p+lpcHT27k55vXxOatppgKXNT9lEspgaFbyp5AWAr8XiVNkftyglA
+ PPFlgpoI6hX2b6n79AGlhgFHkpngHNGX8EZkZB94Qm+fsy3X9UDQMh4N79j9zWOXjfdt
+ zIAHTUw1XwrsPDDrqr7Y3PfU2Ut4tARQ6BIKO4uR/ZvwMNXOLBPYjdIcqTEP9sSKG84s
+ dOTl/XFKL2tUczkhviVlw5W7PLXGYfWjAlIP4a6vZKVciyfb0W4Q4Ctqiq+4SMuxBvAg
+ 6xmn7SKpVaBhmdFSMrIEe9FhBN362BWom4nSQoTXSR8Cv/FESLXiJmEUT5VYT4LCmVDh
+ u+vg==
+X-Gm-Message-State: AOJu0YwhAHWstchUon+mUBL2aa3RLYwmhn/sfnoQSsJ7e+Q4lZQhD1w9
+ Tc90bolSbod03zBtKcosPQMR4OuwwpxU2fH4ym8ZJgocFIq2i9FMPApJbXdZEN92lvyuJLUA8sG
+ 1pf3byh6T/1eu0/vmr47/F1T9NG8z0O8O7xyT0hNsgLeroHWUViHGYeS9
+X-Gm-Gg: ASbGncsZvhc4BtRC/Ve5OUxNg7Km9rXIBACkLDsb08ZP9URCR/HxjZBSPZBwCxq2cQ/
+ N+bhKIQ7xJzd7R6b/lcm9ggFuB6WDVaoKWUvElsikmt4e3lJbA7HtH2tCVb5h94/MxsGjm+7kDL
+ wHaY7Ib171I/DCXy+4qGjiDTwjlOQuqBIfaB+io9tDNtPBNSFJGKrdNh+O7aJ7tejgBv5S8gB4b
+ m+J8TWOmlBuW4Hx7iyBAJupO0Y/Y/y4Ow0pDUUjOOCbPj11TlAwyWDqNq4Enjsi21MxERLsrEsL
+ AnVAoCrj+D63OeSG53sKhhTwTJU=
+X-Received: by 2002:a05:600c:8411:b0:450:cabd:160 with SMTP id
+ 5b1f17b1804b1-454cd4b49c8mr20051785e9.3.1751963705172; 
+ Tue, 08 Jul 2025 01:35:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFuq228yys8KKAslTF+KBC8WlfLDQa0iRUsy2Y/shqoZ1rnYNPHPQNK3PwP453nsM6GYXe3lg==
+X-Received: by 2002:a05:600c:8411:b0:450:cabd:160 with SMTP id
+ 5b1f17b1804b1-454cd4b49c8mr20051445e9.3.1751963704719; 
+ Tue, 08 Jul 2025 01:35:04 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.202.169])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454cd4938ffsm14438075e9.21.2025.07.08.01.25.30
+ 5b1f17b1804b1-454cd39cdcdsm15265955e9.13.2025.07.08.01.35.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Jul 2025 01:25:31 -0700 (PDT)
+ Tue, 08 Jul 2025 01:35:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH] rust/qemu-api-macros: use syn::Error directly
-Date: Tue,  8 Jul 2025 10:25:14 +0200
-Message-ID: <20250708082514.49480-1-pbonzini@redhat.com>
+Subject: Re: [PATCH] rust/bindings: allow unnecessary_transmutes (1.88)
+Date: Tue,  8 Jul 2025 10:26:06 +0200
+Message-ID: <20250708082606.49710-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250703-rust._5Fmacros-v1-1-b99f82febbbf@linaro.org>
+In-Reply-To: <20250703-rust._5Fbindings._5Fallow._5Funnecessary._5Ftransmutes-v1-1-692ca210d331@linaro.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
