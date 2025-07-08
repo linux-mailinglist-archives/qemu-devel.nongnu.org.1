@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E3CAFD8C5
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C698AAFD8C7
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:49:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFBk-0005nx-Mi; Tue, 08 Jul 2025 16:45:17 -0400
+	id 1uZFFN-0002yi-OL; Tue, 08 Jul 2025 16:49:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uZDpG-0005ny-VU; Tue, 08 Jul 2025 15:18:02 -0400
+ id 1uZDrh-00007t-BU; Tue, 08 Jul 2025 15:20:36 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uZDp0-0007f7-T9; Tue, 08 Jul 2025 15:17:49 -0400
+ id 1uZDrb-000884-Pz; Tue, 08 Jul 2025 15:20:26 -0400
 Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bc50P5TPdz6GFB7;
- Tue,  8 Jul 2025 23:40:21 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bc4yB6thDz6D8j5;
+ Tue,  8 Jul 2025 23:38:26 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id E44AD1404C5;
- Tue,  8 Jul 2025 23:41:25 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id D81541404D8;
+ Tue,  8 Jul 2025 23:41:36 +0800 (CST)
 Received: from A2303104131.china.huawei.com (10.203.177.241) by
  frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 8 Jul 2025 17:41:16 +0200
+ 15.1.2507.39; Tue, 8 Jul 2025 17:41:27 +0200
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <nicolinc@nvidia.com>, <ddutile@redhat.com>, <berrange@redhat.com>,
@@ -34,10 +34,10 @@ CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <marcel.apfelbaum@gmail.com>, <linuxarm@huawei.com>,
  <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
  <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>
-Subject: [PATCH v7 01/12] hw/arm/virt-acpi-build: Don't create ITS id mappings
- by default
-Date: Tue, 8 Jul 2025 16:40:44 +0100
-Message-ID: <20250708154055.101012-2-shameerali.kolothum.thodi@huawei.com>
+Subject: [PATCH v7 02/12] hw/arm/smmu-common: Check SMMU has PCIe Root Complex
+ association
+Date: Tue, 8 Jul 2025 16:40:45 +0100
+Message-ID: <20250708154055.101012-3-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20250708154055.101012-1-shameerali.kolothum.thodi@huawei.com>
 References: <20250708154055.101012-1-shameerali.kolothum.thodi@huawei.com>
@@ -75,38 +75,109 @@ From:  Shameer Kolothum via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit d6afe18b7242 ("hw/arm/virt-acpi-build: Fix ACPI IORT and MADT tables
-when its=off") moved ITS group node generation under the its=on condition.
-However, it still creates rc_its_idmaps unconditionally, which results in
-duplicate ID mappings in the IORT table.
+We only allow default PCIe Root Complex(pcie.0) or pxb-pcie based extra
+root complexes to be associated with SMMU.
 
-Fixes:d6afe18b7242 ("hw/arm/virt-acpi-build: Fix ACPI IORT and MADT tables when its=off")
+Although this change does not affect functionality at present, it is
+required when we add support for user-creatable SMMUv3 devices in
+future patches.
+
+Note: Added a specific check to identify pxb-pcie to avoid matching
+pxb-cxl host bridges, which are also of type PCI_HOST_BRIDGE. This
+restriction can be relaxed once support for CXL devices on arm/virt
+is added and validated with SMMUv3.
+
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Donald Dutile <ddutile@redhat.com>
-Tested-by: Eric Auger <eric.auger@redhat.com>
+Tested-by: Nathan Chen <nathanc@nvidia.com>
+Tested-by: Eric Auger <eric.auger@redhat.com> 
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- hw/arm/virt-acpi-build.c | 6 ------
- 1 file changed, 6 deletions(-)
+ hw/arm/smmu-common.c                | 29 ++++++++++++++++++++++++++---
+ hw/pci-bridge/pci_expander_bridge.c |  1 -
+ include/hw/pci/pci_bridge.h         |  1 +
+ 3 files changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index cd90c47976..724fad5ffa 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -329,12 +329,6 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         /* Sort the smmu idmap by input_base */
-         g_array_sort(rc_smmu_idmaps, iort_idmap_compare);
+diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+index f39b99e526..b15e7fd0e4 100644
+--- a/hw/arm/smmu-common.c
++++ b/hw/arm/smmu-common.c
+@@ -20,6 +20,7 @@
+ #include "trace.h"
+ #include "exec/target_page.h"
+ #include "hw/core/cpu.h"
++#include "hw/pci/pci_bridge.h"
+ #include "hw/qdev-properties.h"
+ #include "qapi/error.h"
+ #include "qemu/jhash.h"
+@@ -925,6 +926,7 @@ static void smmu_base_realize(DeviceState *dev, Error **errp)
+ {
+     SMMUState *s = ARM_SMMU(dev);
+     SMMUBaseClass *sbc = ARM_SMMU_GET_CLASS(dev);
++    PCIBus *pci_bus = s->primary_bus;
+     Error *local_err = NULL;
  
--        /*
--         * Knowing the ID ranges from the RC to the SMMU, it's possible to
--         * determine the ID ranges from RC that are directed to the ITS.
--         */
--        create_rc_its_idmaps(rc_its_idmaps, rc_smmu_idmaps);
--
-         nb_nodes = 2; /* RC and SMMUv3 */
-         rc_mapping_count = rc_smmu_idmaps->len;
+     sbc->parent_realize(dev, &local_err);
+@@ -937,11 +939,32 @@ static void smmu_base_realize(DeviceState *dev, Error **errp)
+                                      g_free, g_free);
+     s->smmu_pcibus_by_busptr = g_hash_table_new(NULL, NULL);
  
+-    if (s->primary_bus) {
+-        pci_setup_iommu(s->primary_bus, &smmu_ops, s);
+-    } else {
++    if (!pci_bus) {
+         error_setg(errp, "SMMU is not attached to any PCI bus!");
++        return;
++    }
++
++    /*
++     * We only allow default PCIe Root Complex(pcie.0) or pxb-pcie based extra
++     * root complexes to be associated with SMMU.
++     */
++    if (pci_bus_is_express(pci_bus) && pci_bus_is_root(pci_bus) &&
++        object_dynamic_cast(OBJECT(pci_bus)->parent, TYPE_PCI_HOST_BRIDGE)) {
++        /*
++         * For pxb-pcie, parent_dev will be set. Make sure it is
++         * pxb-pcie indeed.
++         */
++        if (pci_bus->parent_dev) {
++            if (!object_dynamic_cast(OBJECT(pci_bus), TYPE_PXB_PCIE_BUS)) {
++                goto out_err;
++            }
++        }
++        pci_setup_iommu(pci_bus, &smmu_ops, s);
++        return;
+     }
++out_err:
++    error_setg(errp, "SMMU should be attached to a default PCIe root complex"
++               "(pcie.0) or a pxb-pcie based root complex");
+ }
+ 
+ /*
+diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
+index 3a29dfefc2..1bcceddbc4 100644
+--- a/hw/pci-bridge/pci_expander_bridge.c
++++ b/hw/pci-bridge/pci_expander_bridge.c
+@@ -34,7 +34,6 @@ typedef struct PXBBus PXBBus;
+ DECLARE_INSTANCE_CHECKER(PXBBus, PXB_BUS,
+                          TYPE_PXB_BUS)
+ 
+-#define TYPE_PXB_PCIE_BUS "pxb-pcie-bus"
+ DECLARE_INSTANCE_CHECKER(PXBBus, PXB_PCIE_BUS,
+                          TYPE_PXB_PCIE_BUS)
+ 
+diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
+index 8cdacbc4e1..a055fd8d32 100644
+--- a/include/hw/pci/pci_bridge.h
++++ b/include/hw/pci/pci_bridge.h
+@@ -104,6 +104,7 @@ typedef struct PXBPCIEDev {
+     PXBDev parent_obj;
+ } PXBPCIEDev;
+ 
++#define TYPE_PXB_PCIE_BUS "pxb-pcie-bus"
+ #define TYPE_PXB_CXL_BUS "pxb-cxl-bus"
+ #define TYPE_PXB_DEV "pxb"
+ OBJECT_DECLARE_SIMPLE_TYPE(PXBDev, PXB_DEV)
 -- 
 2.47.0
 
