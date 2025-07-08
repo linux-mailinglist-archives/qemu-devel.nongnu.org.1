@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A000AFD7C5
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 080DCAFD7AA
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 21:54:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZEU8-0005jJ-TD; Tue, 08 Jul 2025 16:00:13 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1uZEOB-0008PE-B0; Tue, 08 Jul 2025 15:54:04 -0400
+Received: from eggs.gnu.org ([209.51.188.92])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uZCPU-0002Ls-Kx
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 13:47:56 -0400
+ id 1uZBQ3-00010S-5S
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:44:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uZCO6-00041o-SV
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 13:46:44 -0400
+ id 1uZBPp-0005zQ-72
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:43:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751996742;
+ s=mimecast20190719; t=1751992887;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zOreZF7iJ7Xj4M3A4SKQurpH0SYsfcpWvlogIxrsc8o=;
- b=OfROxjRKEOe8jgC18V1tWRSY6+6M3+BMUZRMH5qNusRw1+QlwilBAUh9DfC21qB3RnOSA/
- WBxUM7crjgUrfTAor/6BOAX+lrB+PCF5Ql3AzvIOk9v7FCLCSNlK4ctntDBGAHQMUYrU1g
- yqpiM9w/aCPkdzzhzzYv4eXFXTlW6Vg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=QxwfYEvRpYO+ysfGn4l7Ic5LE5Wsaju89hTYULgExAg=;
+ b=b50xpQ2lF05PCw8pcRxccnwIjHIQl3Kf/9gT0+lJw4XL+LZp3XKX7q+NRV6QPiLWi36+eX
+ CiJ3JDtZDbRmisJJg40gWqmOzfrkjhi5amFrtbxOPAvDuarNVYc+pjq3Jn9kdDm5z9Agli
+ ssn1bw6Xbca/3RUh+6atUc9DtB9Nz5s=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-557-qLb42m7JPo-RQiQx0SxPbg-1; Tue,
- 08 Jul 2025 10:27:57 -0400
-X-MC-Unique: qLb42m7JPo-RQiQx0SxPbg-1
-X-Mimecast-MFC-AGG-ID: qLb42m7JPo-RQiQx0SxPbg_1751984875
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-IrR8yYlJPQ-QlBvGFkhJOg-1; Tue,
+ 08 Jul 2025 10:28:11 -0400
+X-MC-Unique: IrR8yYlJPQ-QlBvGFkhJOg-1
+X-Mimecast-MFC-AGG-ID: IrR8yYlJPQ-QlBvGFkhJOg_1751984887
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ECA6A18011DF; Tue,  8 Jul 2025 14:27:54 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5618B180136B; Tue,  8 Jul 2025 14:28:07 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.187])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4275330001B1; Tue,  8 Jul 2025 14:27:49 +0000 (UTC)
+ id EDF3830001B9; Tue,  8 Jul 2025 14:28:01 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -53,9 +53,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
 Cc: pbonzini@redhat.com,
 	philmd@linaro.org,
 	alex.bennee@linaro.org
-Subject: [PATCH v6 29/36] hw/acpi/ged: Support migration of AcpiPciHpState
-Date: Tue,  8 Jul 2025 16:23:11 +0200
-Message-ID: <20250708142437.1344644-30-eric.auger@redhat.com>
+Subject: [PATCH v6 31/36] hw/arm/virt: Minor code reshuffling in
+ create_acpi_ged
+Date: Tue,  8 Jul 2025 16:23:13 +0200
+Message-ID: <20250708142437.1344644-32-eric.auger@redhat.com>
 In-Reply-To: <20250708142437.1344644-1-eric.auger@redhat.com>
 References: <20250708142437.1344644-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -70,7 +71,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,53 +87,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a subsection to migrate the AcpiPciHpState state.
+Use a local SysBusDevice handle. Also use the newly introduced
+sysbus_mmio_map_name which brings better readability about the region
+being mapped. GED device has regions which exist depending on some
+external properties and it becomes difficult to guess the index of
+a region. Better refer to a region by its name.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 ---
- hw/acpi/generic_event_device.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ include/hw/acpi/generic_event_device.h |  1 +
+ hw/arm/virt.c                          | 11 +++++++----
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 7535d07737..95682b79a2 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -417,6 +417,25 @@ static const VMStateDescription vmstate_ghes_state = {
-     }
- };
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index d56adaa626..2c5b055327 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -111,6 +111,7 @@ typedef struct GEDState {
+ } GEDState;
  
-+static bool pcihp_needed(void *opaque)
-+{
-+    AcpiGedState *s = opaque;
-+    return s->pcihp_state.use_acpi_hotplug_bridge;
-+}
-+
-+static const VMStateDescription vmstate_pcihp_state = {
-+    .name = "acpi-ged/pcihp",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = pcihp_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_PCI_HOTPLUG(pcihp_state,
-+                            AcpiGedState,
-+                            NULL, NULL),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static const VMStateDescription vmstate_acpi_ged = {
-     .name = "acpi-ged",
-     .version_id = 1,
-@@ -429,6 +448,7 @@ static const VMStateDescription vmstate_acpi_ged = {
-         &vmstate_memhp_state,
-         &vmstate_cpuhp_state,
-         &vmstate_ghes_state,
-+        &vmstate_pcihp_state,
-         NULL
-     }
- };
+ #define ACPI_PCIHP_REGION_NAME "pcihp container"
++#define ACPI_MEMHP_REGION_NAME "memhp container"
+ 
+ struct AcpiGedState {
+     SysBusDevice parent_obj;
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 34a3831530..7b247ad30c 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -683,6 +683,7 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
+ {
+     DeviceState *dev;
+     MachineState *ms = MACHINE(vms);
++    SysBusDevice *sbdev;
+     int irq = vms->irqmap[VIRT_ACPI_GED];
+     uint32_t event = ACPI_GED_PWR_DOWN_EVT;
+ 
+@@ -697,11 +698,13 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
+     dev = qdev_new(TYPE_ACPI_GED);
+     qdev_prop_set_uint32(dev, "ged-event", event);
+     object_property_set_link(OBJECT(dev), "bus", OBJECT(vms->bus), &error_abort);
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sbdev = SYS_BUS_DEVICE(dev);
++    sysbus_realize_and_unref(sbdev, &error_fatal);
+ 
+-    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, vms->memmap[VIRT_ACPI_GED].base);
+-    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, vms->memmap[VIRT_PCDIMM_ACPI].base);
+-    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(vms->gic, irq));
++    sysbus_mmio_map_name(sbdev, TYPE_ACPI_GED, vms->memmap[VIRT_ACPI_GED].base);
++    sysbus_mmio_map_name(sbdev, ACPI_MEMHP_REGION_NAME,
++                         vms->memmap[VIRT_PCDIMM_ACPI].base);
++    sysbus_connect_irq(sbdev, 0, qdev_get_gpio_in(vms->gic, irq));
+ 
+     return dev;
+ }
 -- 
 2.49.0
 
