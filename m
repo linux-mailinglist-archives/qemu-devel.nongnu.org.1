@@ -2,90 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6867CAFD8C4
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6E8AFD9EF
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:30:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFAk-00041P-W2; Tue, 08 Jul 2025 16:44:15 -0400
+	id 1uZFGI-0007XJ-W1; Tue, 08 Jul 2025 16:49:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDmy-0003zz-Jq
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:40 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDmq-00075R-Hz
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:35 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-ae361e8ec32so947455666b.3
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:15:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752002126; x=1752606926; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0gtjLUYRZC3tiIyt5N+e81IMf+FihJ1F/GhQqo/oKqE=;
- b=OGOZXvGNEbc1ashzdGKC4Y15AeQTHRERF43o3jrG7Q4fUs/grfoHx59CgwDVovm+Ca
- YI0t8UCHFXtzrOTm8o4S1zISnRErx8VBQbPqdlhI16cZ5VDna2/vK1aSYQJ4j/k4rFFc
- I87a/BN7dx6IKhWq9oFtDieXLjwVp7rshjCC9rjWWhSWvUHqKcxd2wKOPYT27drEumDx
- qEosaWpop/fSBUgcGONEt5MeJx777Uq6hEgk4DpkFMTlW8UFRYbOCZ1JC2bOuJOwx1jT
- pW+EzLNrlM71ipG/vb9E8+KMqGl47U4LU+IyMB9BLxjD0XxzCrrd+G1F8ZWI9kmuDcJo
- lIaw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uZDwl-00050G-Sp
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:25:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uZDwh-0001r5-0F
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:25:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752002737;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=j3y43gfS3ULmLf8QclmoQykkewOEYqM7QnG/7g38g9Q=;
+ b=F3TNbDzZVz+yUHeJOd66XNED0z/eb1wWnCN602p38c+KA7JSIhirhKAhSlAIf9V8zWnqK6
+ 9d6/AvVzafDkzR5OzD3fMB8SgydkBlt9r11nhKIFoSfsAg4ecaJIGMQ+PZXkynAYYC2bGA
+ Mad0NJE6UEC8Q7VYMz0nAXs8bZzFEFc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-608-4AyPNuFfPy6OWguAcaD93A-1; Tue, 08 Jul 2025 05:59:53 -0400
+X-MC-Unique: 4AyPNuFfPy6OWguAcaD93A-1
+X-Mimecast-MFC-AGG-ID: 4AyPNuFfPy6OWguAcaD93A_1751968792
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a6d1394b07so2639934f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 02:59:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752002126; x=1752606926;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0gtjLUYRZC3tiIyt5N+e81IMf+FihJ1F/GhQqo/oKqE=;
- b=sNSIwVd6Tmsmk3zbJmstUVGPrdU7bwLxiw7cXaD/Y6OuY1tkJF5uYy0lIDJyBO5hNa
- 8834x7ARnnY8ZUsYGChJHOmSIoFQ4HBnfw+pDCbD6XNGifiYNEM8MILbWmoqmqe43joT
- SwcXHXHDwMwGBTZh09B6Vz/Pg0EHjH/LxBiof6LPtuddAl6+TaG9H69zM1yaJ0cxGq0I
- c4NINGdoNiYczfSw+HXblf6LvUNM5FV+STUh8iC/9y61rwU9e5xMMVhZUyypWM2lRcuU
- OjBW8kxTiwBzinUbu4dgtQu/mC5+bOQNlddtUVOmG9pD8/26eiNQWzpHJ0eF84CxZ2PY
- TlcA==
-X-Gm-Message-State: AOJu0YwKjuqRZDVSFNX1n5yWMwgl7a1w7Whs0zukXXgTe+cYtkv4/P+g
- i5lWQ9yrFgHPcS2fJetSeY1sN9H4jHlsXWd0iz7mvztsgjLXe/r++TpOl1aP99dTHZ2yp3IM3Tf
- XZUGZfpA=
-X-Gm-Gg: ASbGncu9pu7yZGKc2b79htoZYTTivm0rHdZUcij/BQgmYR7TYOuJ0CNAB6jyiVGkaNR
- i0gq0/9TBiVu0hZkKJx4eTVzhYX8rwlPXwgVxaHKh4GKDfj0Ix94gXkDztnQRCqrpF99xi2HyCJ
- zFnUKdeIREFgFQrkJcF9C5x/lPm51kY5iGpnp1+6x8wDLjlXRYku3HoCFxh5cRz3wYwVUEZLQFk
- ezKIRdNd+sKr0HfvB/gHfjoGkxsaQzInhN44n62XrlKxwEFWSQJ8XK0klGGwQqZKEv5BHKwZrp6
- lgv+Dk/QtCUy8/w/kARkMbOK215R6NFXi6v1IF2/HUlSGgWrL/omXB07kfytSouaV2Ili0rIqAI
- me0ptNDMKqdv4AdN2XElufihkjH7GWMJU1RiZF1OzM4VeG+k=
-X-Google-Smtp-Source: AGHT+IHNet9Gcr6aA+JnHGX1DVui8k6E4JrZ3kOWqRaqFuiKkhvvSKgOm1PU0Mo9hm/eR2iCKKudUg==
-X-Received: by 2002:a05:600c:64ca:b0:43d:fa58:81d3 with SMTP id
- 5b1f17b1804b1-454cd5461a7mr18264785e9.32.1751968687334; 
- Tue, 08 Jul 2025 02:58:07 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454cd49398csm17085535e9.22.2025.07.08.02.58.06
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 08 Jul 2025 02:58:06 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-s390x@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/4] target/s390x: Extract system internal declarations to
- s390x-internal.h
-Date: Tue,  8 Jul 2025 11:57:46 +0200
-Message-ID: <20250708095746.12697-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250708095746.12697-1-philmd@linaro.org>
-References: <20250708095746.12697-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1751968792; x=1752573592;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=j3y43gfS3ULmLf8QclmoQykkewOEYqM7QnG/7g38g9Q=;
+ b=bXDeWectTTX/4Ec2dRERJojAEz/TSM/e8V7B2tDEaYp4KTvItbgkz/aiaTUMfJ77Po
+ ohLlSthA4dFkTnaSFSEN3IqMb/Cs3wwJ9FIwin4ToW05ErEfv9fI+EgfpvWC4x6QSPIF
+ Dh7NIyPm3CsmK7yHFPXRKhFDC1JWFTjSLiqj7XAYla04Uf1TD3WYCHT2uridVPWy+/tG
+ NxtRk9zL7aOBKne/g+65+QeFqh0s3WOSa1FDUOfIR2Lbc7Nm1zQfBEWvgYnrKLlrPNrt
+ ZP/SWXHkdoJ64hA0JNOMhBXQd4ml/K3nhFI3cCcbVy2GIMbs8foa3G7xlJzJ6cIBxN+t
+ r+Sg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVBzR08sFO1gAiKA38k1TxyaSVXZdKrIdc4VfoT3fOAiF48V2I86dXSZAKbuiI4OWClVkJmJ7QAQHkZ@nongnu.org
+X-Gm-Message-State: AOJu0Ywmn8mXeG9O/72H1dLvK55crGNW2vcfeFQMcYMai7U3GnrlW/1K
+ Y3K6/dgvsfr+VjH9ZkzOEFSsG2clJdvjATIipmhcQylLHP0QKCC3hPPAmTtfKs9pciifsOqNjdP
+ 1Xh3dGlCSG6ORLr6DDE1FxAVMGswbfdUC1gWmAw/tW2YOIz6trfzXx6Qb
+X-Gm-Gg: ASbGncvcI+S8svlUlta3R5V/hri9j+o3HNvYoekBL/tjlM9hYLcYDaXRpDu9J39iZMN
+ T0ZOdDAgH198aPhVWkxjneN+068w4Dn8XzIz51fEt5MdiXrk5hy90mRq0gR5jxwEs/UpTitkGR1
+ DWH2gxL4H9h1/pSWzyUoNZMgiIkPV8iq9RLGTxIbEWtyPA1dh1Qz8HeeZoAkMon1chQ2U12pN9c
+ vVZ/ZtT7SRgkKhJRLCsWdmtAEgTuBeEqiSPD5VwVoQnmwDDQhzszUzEIMqc2pB/tLdIZIGcWnxi
+ Xnv9LuWL/mAg7uRNVvbSxaJmfWI=
+X-Received: by 2002:a05:6000:41fa:b0:3a5:3062:793a with SMTP id
+ ffacd0b85a97d-3b5ddea219fmr2294383f8f.33.1751968792027; 
+ Tue, 08 Jul 2025 02:59:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzumgir7n2PYM032ITEV7KD5acBE+7RKmq/C8GwSLethiWbFgcils7v68Fr7EWBBZx6W38Mg==
+X-Received: by 2002:a05:6000:41fa:b0:3a5:3062:793a with SMTP id
+ ffacd0b85a97d-3b5ddea219fmr2294367f8f.33.1751968791634; 
+ Tue, 08 Jul 2025 02:59:51 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.202.169])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-3b4709c6b2dsm12297121f8f.40.2025.07.08.02.59.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Jul 2025 02:59:51 -0700 (PDT)
+Message-ID: <65f5b704-624c-4e8f-b778-b6f2075ea1a5@redhat.com>
+Date: Tue, 8 Jul 2025 11:59:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] rust: add Derive macro unit tests
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Zhao Liu <zhao1.liu@intel.com>
+References: <20250704-rust_add_derive_macro_unit_tests-v1-0-ebd47fa7f78f@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20250704-rust_add_derive_macro_unit_tests-v1-0-ebd47fa7f78f@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,518 +146,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simplify a bit the big "s390x-internal.h" header by extracting
-system-specific declarations to "s390x-system.h".
+On 7/4/25 12:26, Manos Pitsidianakis wrote:
+> We don't currently test our proc macros and it'd be nice to do so.
+> 
+> Usually this would be done with something like
+> https://crates.io/crates/trybuild which runs cargo and tries to compile
+> a test input, and checks for success/failure. However we cannot use it
+> with meson directly, plus it would drag in a lot of dependencies anyway.
+> 
+> Instead of compiling, we can easily just expand test input into token
+> streams since we already split macro implementation into separate
+> functions, allowing us to either get a TokenStream back or a compile
+> error message.
+> 
+> You can run the added tests directly with this meson command:
+> 
+>    meson test rust-qemu-api-macros-tests
+> 
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/s390x/s390x-internal.h | 222 +---------------------------------
- target/s390x/s390x-system.h   | 215 ++++++++++++++++++++++++++++++++
- 2 files changed, 217 insertions(+), 220 deletions(-)
- create mode 100644 target/s390x/s390x-system.h
+Nice.  Adjusted for MacroError removal and applied, thanks.
 
-diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
-index 56cce2e7f50..dddd4460400 100644
---- a/target/s390x/s390x-internal.h
-+++ b/target/s390x/s390x-internal.h
-@@ -14,89 +14,8 @@
- #include "fpu/softfloat.h"
- 
- #ifndef CONFIG_USER_ONLY
--typedef struct LowCore {
--    /* prefix area: defined by architecture */
--    uint32_t        ccw1[2];                  /* 0x000 */
--    uint32_t        ccw2[4];                  /* 0x008 */
--    uint8_t         pad1[0x80 - 0x18];        /* 0x018 */
--    uint32_t        ext_params;               /* 0x080 */
--    uint16_t        cpu_addr;                 /* 0x084 */
--    uint16_t        ext_int_code;             /* 0x086 */
--    uint16_t        svc_ilen;                 /* 0x088 */
--    uint16_t        svc_code;                 /* 0x08a */
--    uint16_t        pgm_ilen;                 /* 0x08c */
--    uint16_t        pgm_code;                 /* 0x08e */
--    uint32_t        data_exc_code;            /* 0x090 */
--    uint16_t        mon_class_num;            /* 0x094 */
--    uint16_t        per_perc_atmid;           /* 0x096 */
--    uint64_t        per_address;              /* 0x098 */
--    uint8_t         exc_access_id;            /* 0x0a0 */
--    uint8_t         per_access_id;            /* 0x0a1 */
--    uint8_t         op_access_id;             /* 0x0a2 */
--    uint8_t         ar_access_id;             /* 0x0a3 */
--    uint8_t         pad2[0xA8 - 0xA4];        /* 0x0a4 */
--    uint64_t        trans_exc_code;           /* 0x0a8 */
--    uint64_t        monitor_code;             /* 0x0b0 */
--    uint16_t        subchannel_id;            /* 0x0b8 */
--    uint16_t        subchannel_nr;            /* 0x0ba */
--    uint32_t        io_int_parm;              /* 0x0bc */
--    uint32_t        io_int_word;              /* 0x0c0 */
--    uint8_t         pad3[0xc8 - 0xc4];        /* 0x0c4 */
--    uint32_t        stfl_fac_list;            /* 0x0c8 */
--    uint8_t         pad4[0xe8 - 0xcc];        /* 0x0cc */
--    uint64_t        mcic;                     /* 0x0e8 */
--    uint8_t         pad5[0xf4 - 0xf0];        /* 0x0f0 */
--    uint32_t        external_damage_code;     /* 0x0f4 */
--    uint64_t        failing_storage_address;  /* 0x0f8 */
--    uint8_t         pad6[0x110 - 0x100];      /* 0x100 */
--    uint64_t        per_breaking_event_addr;  /* 0x110 */
--    uint8_t         pad7[0x120 - 0x118];      /* 0x118 */
--    PSW             restart_old_psw;          /* 0x120 */
--    PSW             external_old_psw;         /* 0x130 */
--    PSW             svc_old_psw;              /* 0x140 */
--    PSW             program_old_psw;          /* 0x150 */
--    PSW             mcck_old_psw;             /* 0x160 */
--    PSW             io_old_psw;               /* 0x170 */
--    uint8_t         pad8[0x1a0 - 0x180];      /* 0x180 */
--    PSW             restart_new_psw;          /* 0x1a0 */
--    PSW             external_new_psw;         /* 0x1b0 */
--    PSW             svc_new_psw;              /* 0x1c0 */
--    PSW             program_new_psw;          /* 0x1d0 */
--    PSW             mcck_new_psw;             /* 0x1e0 */
--    PSW             io_new_psw;               /* 0x1f0 */
--    uint8_t         pad13[0x11b0 - 0x200];    /* 0x200 */
--
--    uint64_t        mcesad;                    /* 0x11B0 */
--
--    /* 64 bit extparam used for pfault, diag 250 etc  */
--    uint64_t        ext_params2;               /* 0x11B8 */
--
--    uint8_t         pad14[0x1200 - 0x11C0];    /* 0x11C0 */
--
--    /* System info area */
--
--    uint64_t        floating_pt_save_area[16]; /* 0x1200 */
--    uint64_t        gpregs_save_area[16];      /* 0x1280 */
--    uint32_t        st_status_fixed_logout[4]; /* 0x1300 */
--    uint8_t         pad15[0x1318 - 0x1310];    /* 0x1310 */
--    uint32_t        prefixreg_save_area;       /* 0x1318 */
--    uint32_t        fpt_creg_save_area;        /* 0x131c */
--    uint8_t         pad16[0x1324 - 0x1320];    /* 0x1320 */
--    uint32_t        tod_progreg_save_area;     /* 0x1324 */
--    uint64_t        cpu_timer_save_area;       /* 0x1328 */
--    uint64_t        clock_comp_save_area;      /* 0x1330 */
--    uint8_t         pad17[0x1340 - 0x1338];    /* 0x1338 */
--    uint32_t        access_regs_save_area[16]; /* 0x1340 */
--    uint64_t        cregs_save_area[16];       /* 0x1380 */
--
--    /* align to the top of the prefix area */
--
--    uint8_t         pad18[0x2000 - 0x1400];    /* 0x1400 */
--} QEMU_PACKED LowCore;
--QEMU_BUILD_BUG_ON(sizeof(LowCore) != 8192);
--#endif /* CONFIG_USER_ONLY */
--
--#define MAX_ILEN 6
-+#include "s390x-system.h"
-+#endif
- 
- /* While the PoO talks about ILC (a number between 1-3) what is actually
-    stored in LowCore is shifted left one bit (an even between 2-6).  As
-@@ -116,18 +35,6 @@ static inline int get_ilen(uint8_t opc)
-     }
- }
- 
--/* Compute the ATMID field that is stored in the per_perc_atmid lowcore
--   entry when a PER exception is triggered.  */
--static inline uint8_t get_per_atmid(CPUS390XState *env)
--{
--    return ((env->psw.mask & PSW_MASK_64) ?       (1 << 7) : 0) |
--                                                  (1 << 6)      |
--           ((env->psw.mask & PSW_MASK_32) ?       (1 << 5) : 0) |
--           ((env->psw.mask & PSW_MASK_DAT) ?      (1 << 4) : 0) |
--           ((env->psw.mask & PSW_ASC_SECONDARY) ? (1 << 3) : 0) |
--           ((env->psw.mask & PSW_ASC_ACCREG) ?    (1 << 2) : 0);
--}
--
- static inline uint64_t wrap_address(CPUS390XState *env, uint64_t a)
- {
-     if (!(env->psw.mask & PSW_MASK_64)) {
-@@ -201,55 +108,11 @@ enum cc_op {
-     CC_OP_MAX
- };
- 
--#ifndef CONFIG_USER_ONLY
--
--static inline hwaddr decode_basedisp_s(CPUS390XState *env, uint32_t ipb,
--                                       uint8_t *ar)
--{
--    hwaddr addr = 0;
--    uint8_t reg;
--
--    reg = ipb >> 28;
--    if (reg > 0) {
--        addr = env->regs[reg];
--    }
--    addr += (ipb >> 16) & 0xfff;
--    if (ar) {
--        *ar = reg;
--    }
--
--    return addr;
--}
--
--/* Base/displacement are at the same locations. */
--#define decode_basedisp_rs decode_basedisp_s
--
--#endif /* CONFIG_USER_ONLY */
--
--/* arch_dump.c */
--int s390_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
--                              int cpuid, DumpState *s);
--
--
- /* cc_helper.c */
- const char *cc_name(enum cc_op cc_op);
- uint32_t calc_cc(CPUS390XState *env, uint32_t cc_op, uint64_t src, uint64_t dst,
-                  uint64_t vr);
- 
--/* cpu.c */
--#ifndef CONFIG_USER_ONLY
--unsigned int s390_count_running_cpus(void);
--void s390_cpu_halt(S390CPU *cpu);
--void s390_cpu_unhalt(S390CPU *cpu);
--void s390_cpu_system_init(Object *obj);
--bool s390_cpu_system_realize(DeviceState *dev, Error **errp);
--void s390_cpu_finalize(Object *obj);
--void s390_cpu_system_class_init(CPUClass *cc);
--void s390_cpu_machine_reset_cb(void *opaque);
--bool s390_cpu_has_work(CPUState *cs);
--#endif /* CONFIG_USER_ONLY */
--
--
- /* cpu_models.c */
- void s390_cpu_model_class_register_props(ObjectClass *oc);
- void s390_realize_cpu_model(CPUState *cs, Error **errp);
-@@ -257,11 +120,7 @@ S390CPUModel *get_max_cpu_model(Error **errp);
- void apply_cpu_model(const S390CPUModel *model, Error **errp);
- ObjectClass *s390_cpu_class_by_name(const char *name);
- 
--
--/* excp_helper.c */
--void s390x_cpu_debug_excp_handler(CPUState *cs);
- void s390_cpu_do_interrupt(CPUState *cpu);
--bool s390_cpu_exec_interrupt(CPUState *cpu, int int_req);
- 
- #ifdef CONFIG_USER_ONLY
- void s390_cpu_record_sigsegv(CPUState *cs, vaddr address,
-@@ -312,87 +171,14 @@ int s390_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
- int s390_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
- void s390_cpu_gdb_init(CPUState *cs);
- 
--
--/* helper.c */
- void s390_cpu_dump_state(CPUState *cpu, FILE *f, int flags);
--void do_restart_interrupt(CPUS390XState *env);
--#ifndef CONFIG_USER_ONLY
--void s390_cpu_recompute_watchpoints(CPUState *cs);
--void s390x_tod_timer(void *opaque);
--void s390x_cpu_timer(void *opaque);
--void s390_handle_wait(S390CPU *cpu);
--hwaddr s390_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
--hwaddr s390_cpu_get_phys_addr_debug(CPUState *cpu, vaddr addr);
--#define S390_STORE_STATUS_DEF_ADDR offsetof(LowCore, floating_pt_save_area)
--int s390_store_status(S390CPU *cpu, hwaddr addr, bool store_arch);
--int s390_store_adtl_status(S390CPU *cpu, hwaddr addr, hwaddr len);
--LowCore *cpu_map_lowcore(CPUS390XState *env);
--void cpu_unmap_lowcore(LowCore *lowcore);
--#endif /* CONFIG_USER_ONLY */
--
- 
- /* interrupt.c */
- void trigger_pgm_exception(CPUS390XState *env, uint32_t code);
--#ifndef CONFIG_USER_ONLY
--void cpu_inject_clock_comparator(S390CPU *cpu);
--void cpu_inject_cpu_timer(S390CPU *cpu);
--void cpu_inject_emergency_signal(S390CPU *cpu, uint16_t src_cpu_addr);
--int cpu_inject_external_call(S390CPU *cpu, uint16_t src_cpu_addr);
--bool s390_cpu_has_io_int(S390CPU *cpu);
--bool s390_cpu_has_ext_int(S390CPU *cpu);
--bool s390_cpu_has_mcck_int(S390CPU *cpu);
--bool s390_cpu_has_int(S390CPU *cpu);
--bool s390_cpu_has_restart_int(S390CPU *cpu);
--bool s390_cpu_has_stop_int(S390CPU *cpu);
--void cpu_inject_restart(S390CPU *cpu);
--void cpu_inject_stop(S390CPU *cpu);
--#endif /* CONFIG_USER_ONLY */
- 
--
--/* ioinst.c */
--#ifndef CONFIG_USER_ONLY
--void ioinst_handle_xsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
--void ioinst_handle_csch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
--void ioinst_handle_hsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
--void ioinst_handle_msch(S390CPU *cpu, uint64_t reg1, uint32_t ipb,
--                        uintptr_t ra);
--void ioinst_handle_ssch(S390CPU *cpu, uint64_t reg1, uint32_t ipb,
--                        uintptr_t ra);
--void ioinst_handle_stcrw(S390CPU *cpu, uint32_t ipb, uintptr_t ra);
--void ioinst_handle_stsch(S390CPU *cpu, uint64_t reg1, uint32_t ipb,
--                         uintptr_t ra);
--int ioinst_handle_tsch(S390CPU *cpu, uint64_t reg1, uint32_t ipb, uintptr_t ra);
--void ioinst_handle_chsc(S390CPU *cpu, uint32_t ipb, uintptr_t ra);
--void ioinst_handle_schm(S390CPU *cpu, uint64_t reg1, uint64_t reg2,
--                        uint32_t ipb, uintptr_t ra);
--void ioinst_handle_rsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
--void ioinst_handle_rchp(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
--void ioinst_handle_sal(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
--#endif /* CONFIG_USER_ONLY */
--
--
--/* mem_helper.c */
--target_ulong mmu_real2abs(CPUS390XState *env, target_ulong raddr);
- void probe_write_access(CPUS390XState *env, uint64_t addr, uint64_t len,
-                         uintptr_t ra);
- 
--
--/* mmu_helper.c */
--bool mmu_absolute_addr_valid(target_ulong addr, bool is_write);
--/* Special access mode only valid for mmu_translate() */
--#define MMU_S390_LRA        -1
--int mmu_translate(CPUS390XState *env, target_ulong vaddr, int rw, uint64_t asc,
--                  target_ulong *raddr, int *flags, uint64_t *tec);
--int mmu_translate_real(CPUS390XState *env, target_ulong raddr, int rw,
--                       target_ulong *addr, int *flags, uint64_t *tec);
--
--
--/* misc_helper.c */
--int handle_diag_288(CPUS390XState *env, uint64_t r1, uint64_t r3);
--void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3,
--                     uintptr_t ra);
--
--
- /* translate.c */
- void s390x_translate_init(void);
- void s390x_translate_code(CPUState *cs, TranslationBlock *tb,
-@@ -401,8 +187,4 @@ void s390x_restore_state_to_opc(CPUState *cs,
-                                 const TranslationBlock *tb,
-                                 const uint64_t *data);
- 
--/* sigp.c */
--int handle_sigp(CPUS390XState *env, uint8_t order, uint64_t r1, uint64_t r3);
--void do_stop_interrupt(CPUS390XState *env);
--
- #endif /* S390X_INTERNAL_H */
-diff --git a/target/s390x/s390x-system.h b/target/s390x/s390x-system.h
-new file mode 100644
-index 00000000000..9c7958742d3
---- /dev/null
-+++ b/target/s390x/s390x-system.h
-@@ -0,0 +1,215 @@
-+/*
-+ * s390x system internal definitions and helpers
-+ *
-+ * Copyright (c) 2009 Ulrich Hecht
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef S390X_SYSTEM_H
-+#define S390X_SYSTEM_H
-+
-+typedef struct LowCore {
-+    /* prefix area: defined by architecture */
-+    uint32_t        ccw1[2];                  /* 0x000 */
-+    uint32_t        ccw2[4];                  /* 0x008 */
-+    uint8_t         pad1[0x80 - 0x18];        /* 0x018 */
-+    uint32_t        ext_params;               /* 0x080 */
-+    uint16_t        cpu_addr;                 /* 0x084 */
-+    uint16_t        ext_int_code;             /* 0x086 */
-+    uint16_t        svc_ilen;                 /* 0x088 */
-+    uint16_t        svc_code;                 /* 0x08a */
-+    uint16_t        pgm_ilen;                 /* 0x08c */
-+    uint16_t        pgm_code;                 /* 0x08e */
-+    uint32_t        data_exc_code;            /* 0x090 */
-+    uint16_t        mon_class_num;            /* 0x094 */
-+    uint16_t        per_perc_atmid;           /* 0x096 */
-+    uint64_t        per_address;              /* 0x098 */
-+    uint8_t         exc_access_id;            /* 0x0a0 */
-+    uint8_t         per_access_id;            /* 0x0a1 */
-+    uint8_t         op_access_id;             /* 0x0a2 */
-+    uint8_t         ar_access_id;             /* 0x0a3 */
-+    uint8_t         pad2[0xA8 - 0xA4];        /* 0x0a4 */
-+    uint64_t        trans_exc_code;           /* 0x0a8 */
-+    uint64_t        monitor_code;             /* 0x0b0 */
-+    uint16_t        subchannel_id;            /* 0x0b8 */
-+    uint16_t        subchannel_nr;            /* 0x0ba */
-+    uint32_t        io_int_parm;              /* 0x0bc */
-+    uint32_t        io_int_word;              /* 0x0c0 */
-+    uint8_t         pad3[0xc8 - 0xc4];        /* 0x0c4 */
-+    uint32_t        stfl_fac_list;            /* 0x0c8 */
-+    uint8_t         pad4[0xe8 - 0xcc];        /* 0x0cc */
-+    uint64_t        mcic;                     /* 0x0e8 */
-+    uint8_t         pad5[0xf4 - 0xf0];        /* 0x0f0 */
-+    uint32_t        external_damage_code;     /* 0x0f4 */
-+    uint64_t        failing_storage_address;  /* 0x0f8 */
-+    uint8_t         pad6[0x110 - 0x100];      /* 0x100 */
-+    uint64_t        per_breaking_event_addr;  /* 0x110 */
-+    uint8_t         pad7[0x120 - 0x118];      /* 0x118 */
-+    PSW             restart_old_psw;          /* 0x120 */
-+    PSW             external_old_psw;         /* 0x130 */
-+    PSW             svc_old_psw;              /* 0x140 */
-+    PSW             program_old_psw;          /* 0x150 */
-+    PSW             mcck_old_psw;             /* 0x160 */
-+    PSW             io_old_psw;               /* 0x170 */
-+    uint8_t         pad8[0x1a0 - 0x180];      /* 0x180 */
-+    PSW             restart_new_psw;          /* 0x1a0 */
-+    PSW             external_new_psw;         /* 0x1b0 */
-+    PSW             svc_new_psw;              /* 0x1c0 */
-+    PSW             program_new_psw;          /* 0x1d0 */
-+    PSW             mcck_new_psw;             /* 0x1e0 */
-+    PSW             io_new_psw;               /* 0x1f0 */
-+    uint8_t         pad13[0x11b0 - 0x200];    /* 0x200 */
-+
-+    uint64_t        mcesad;                    /* 0x11B0 */
-+
-+    /* 64 bit extparam used for pfault, diag 250 etc  */
-+    uint64_t        ext_params2;               /* 0x11B8 */
-+
-+    uint8_t         pad14[0x1200 - 0x11C0];    /* 0x11C0 */
-+
-+    /* System info area */
-+
-+    uint64_t        floating_pt_save_area[16]; /* 0x1200 */
-+    uint64_t        gpregs_save_area[16];      /* 0x1280 */
-+    uint32_t        st_status_fixed_logout[4]; /* 0x1300 */
-+    uint8_t         pad15[0x1318 - 0x1310];    /* 0x1310 */
-+    uint32_t        prefixreg_save_area;       /* 0x1318 */
-+    uint32_t        fpt_creg_save_area;        /* 0x131c */
-+    uint8_t         pad16[0x1324 - 0x1320];    /* 0x1320 */
-+    uint32_t        tod_progreg_save_area;     /* 0x1324 */
-+    uint64_t        cpu_timer_save_area;       /* 0x1328 */
-+    uint64_t        clock_comp_save_area;      /* 0x1330 */
-+    uint8_t         pad17[0x1340 - 0x1338];    /* 0x1338 */
-+    uint32_t        access_regs_save_area[16]; /* 0x1340 */
-+    uint64_t        cregs_save_area[16];       /* 0x1380 */
-+
-+    /* align to the top of the prefix area */
-+
-+    uint8_t         pad18[0x2000 - 0x1400];    /* 0x1400 */
-+} QEMU_PACKED LowCore;
-+QEMU_BUILD_BUG_ON(sizeof(LowCore) != 8192);
-+
-+#define MAX_ILEN 6
-+
-+/* Compute the ATMID field that is stored in the per_perc_atmid lowcore
-+   entry when a PER exception is triggered.  */
-+static inline uint8_t get_per_atmid(CPUS390XState *env)
-+{
-+    return ((env->psw.mask & PSW_MASK_64) ?       (1 << 7) : 0) |
-+                                                  (1 << 6)      |
-+           ((env->psw.mask & PSW_MASK_32) ?       (1 << 5) : 0) |
-+           ((env->psw.mask & PSW_MASK_DAT) ?      (1 << 4) : 0) |
-+           ((env->psw.mask & PSW_ASC_SECONDARY) ? (1 << 3) : 0) |
-+           ((env->psw.mask & PSW_ASC_ACCREG) ?    (1 << 2) : 0);
-+}
-+
-+static inline hwaddr decode_basedisp_s(CPUS390XState *env, uint32_t ipb,
-+                                       uint8_t *ar)
-+{
-+    hwaddr addr = 0;
-+    uint8_t reg;
-+
-+    reg = ipb >> 28;
-+    if (reg > 0) {
-+        addr = env->regs[reg];
-+    }
-+    addr += (ipb >> 16) & 0xfff;
-+    if (ar) {
-+        *ar = reg;
-+    }
-+
-+    return addr;
-+}
-+
-+/* Base/displacement are at the same locations. */
-+#define decode_basedisp_rs decode_basedisp_s
-+
-+/* arch_dump.c */
-+int s390_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
-+                              int cpuid, DumpState *s);
-+
-+/* cpu.c */
-+unsigned int s390_count_running_cpus(void);
-+void s390_cpu_halt(S390CPU *cpu);
-+void s390_cpu_unhalt(S390CPU *cpu);
-+void s390_cpu_system_init(Object *obj);
-+bool s390_cpu_system_realize(DeviceState *dev, Error **errp);
-+void s390_cpu_finalize(Object *obj);
-+void s390_cpu_system_class_init(CPUClass *cc);
-+void s390_cpu_machine_reset_cb(void *opaque);
-+bool s390_cpu_has_work(CPUState *cs);
-+
-+/* excp_helper.c */
-+void s390x_cpu_debug_excp_handler(CPUState *cs);
-+bool s390_cpu_exec_interrupt(CPUState *cpu, int int_req);
-+
-+/* helper.c */
-+void do_restart_interrupt(CPUS390XState *env);
-+void s390_cpu_recompute_watchpoints(CPUState *cs);
-+void s390x_tod_timer(void *opaque);
-+void s390x_cpu_timer(void *opaque);
-+void s390_handle_wait(S390CPU *cpu);
-+hwaddr s390_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
-+hwaddr s390_cpu_get_phys_addr_debug(CPUState *cpu, vaddr addr);
-+#define S390_STORE_STATUS_DEF_ADDR offsetof(LowCore, floating_pt_save_area)
-+int s390_store_status(S390CPU *cpu, hwaddr addr, bool store_arch);
-+int s390_store_adtl_status(S390CPU *cpu, hwaddr addr, hwaddr len);
-+LowCore *cpu_map_lowcore(CPUS390XState *env);
-+void cpu_unmap_lowcore(LowCore *lowcore);
-+
-+void cpu_inject_clock_comparator(S390CPU *cpu);
-+void cpu_inject_cpu_timer(S390CPU *cpu);
-+void cpu_inject_emergency_signal(S390CPU *cpu, uint16_t src_cpu_addr);
-+int cpu_inject_external_call(S390CPU *cpu, uint16_t src_cpu_addr);
-+bool s390_cpu_has_io_int(S390CPU *cpu);
-+bool s390_cpu_has_ext_int(S390CPU *cpu);
-+bool s390_cpu_has_mcck_int(S390CPU *cpu);
-+bool s390_cpu_has_int(S390CPU *cpu);
-+bool s390_cpu_has_restart_int(S390CPU *cpu);
-+bool s390_cpu_has_stop_int(S390CPU *cpu);
-+void cpu_inject_restart(S390CPU *cpu);
-+void cpu_inject_stop(S390CPU *cpu);
-+
-+/* ioinst.c */
-+void ioinst_handle_xsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
-+void ioinst_handle_csch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
-+void ioinst_handle_hsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
-+void ioinst_handle_msch(S390CPU *cpu, uint64_t reg1, uint32_t ipb,
-+                        uintptr_t ra);
-+void ioinst_handle_ssch(S390CPU *cpu, uint64_t reg1, uint32_t ipb,
-+                        uintptr_t ra);
-+void ioinst_handle_stcrw(S390CPU *cpu, uint32_t ipb, uintptr_t ra);
-+void ioinst_handle_stsch(S390CPU *cpu, uint64_t reg1, uint32_t ipb,
-+                         uintptr_t ra);
-+int ioinst_handle_tsch(S390CPU *cpu, uint64_t reg1, uint32_t ipb, uintptr_t ra);
-+void ioinst_handle_chsc(S390CPU *cpu, uint32_t ipb, uintptr_t ra);
-+void ioinst_handle_schm(S390CPU *cpu, uint64_t reg1, uint64_t reg2,
-+                        uint32_t ipb, uintptr_t ra);
-+void ioinst_handle_rsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
-+void ioinst_handle_rchp(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
-+void ioinst_handle_sal(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
-+
-+/* mem_helper.c */
-+target_ulong mmu_real2abs(CPUS390XState *env, target_ulong raddr);
-+
-+/* mmu_helper.c */
-+bool mmu_absolute_addr_valid(target_ulong addr, bool is_write);
-+/* Special access mode only valid for mmu_translate() */
-+#define MMU_S390_LRA        -1
-+int mmu_translate(CPUS390XState *env, target_ulong vaddr, int rw, uint64_t asc,
-+                  target_ulong *raddr, int *flags, uint64_t *tec);
-+int mmu_translate_real(CPUS390XState *env, target_ulong raddr, int rw,
-+                       target_ulong *addr, int *flags, uint64_t *tec);
-+
-+/* misc_helper.c */
-+int handle_diag_288(CPUS390XState *env, uint64_t r1, uint64_t r3);
-+void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3,
-+                     uintptr_t ra);
-+
-+/* sigp.c */
-+int handle_sigp(CPUS390XState *env, uint8_t order, uint64_t r1, uint64_t r3);
-+void do_stop_interrupt(CPUS390XState *env);
-+
-+#endif
--- 
-2.49.0
+Paolo
 
 
