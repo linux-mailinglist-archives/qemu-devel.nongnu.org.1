@@ -2,105 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F95EAFD8A9
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55EB6AFD952
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:10:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFBY-00052q-23; Tue, 08 Jul 2025 16:45:04 -0400
+	id 1uZFDb-0002lk-O7; Tue, 08 Jul 2025 16:47:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uZDja-0000mP-2a
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:12:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uZDjU-0006DJ-3Z
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:12:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752001906;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=L9q0gpXdPbg6eBCi/0mNIFkjCL7m/pypYuIcnyHvnFMMF3azwRWMsihLEoJB4NDHCOpBju
- WucQf6SW1ENUhmL7mUzy52IgsXDuX2/7g+Z2DbNhHRSevoXEpju3BB37I/AE1Nt7cYyE2b
- CfUICJxTByCT/JP10K0aIOhiQBBoAow=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-164-1SNaaP9bOxCsILdT03J4bQ-1; Tue, 08 Jul 2025 13:11:26 -0400
-X-MC-Unique: 1SNaaP9bOxCsILdT03J4bQ-1
-X-Mimecast-MFC-AGG-ID: 1SNaaP9bOxCsILdT03J4bQ_1751994686
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a50816cc58so1968226f8f.3
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 10:11:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uZDnP-0004UE-4B
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:16:06 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uZDnI-0006wO-1z
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:57 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-235e1d710d8so62645625ad.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:14:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752002094; x=1752606894; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=o8s3POq+g29lZCTW4KGaiw6YRZUM/zpjO6CKLcIScNM=;
+ b=G9fxjIntewLc0dE+OAid5UBWD0Kbx2lmhYq3P+y/sbZI6fD7P8BdvSruNUlL1Pk/9Y
+ mIVRxXVUB0OAlYxqgq7p/V96YwaKBUuBwRb0JquK9QrnQUNQxvpYpJ5ATb0VtLJTt47S
+ IJIPZGrWA+jJPpxAE/iSuGReDEL9tm74PpEclXGVPy/DvSOQ1B8mzV7RiOhMznoo6XbB
+ 7T5TjgOL/Lz4xykfZE0PyKgMpmr+onoFoIoB+K2w7Pk/jI6gq/rBxyIKgVFcr02Ns7Ap
+ PNdhPeom8hMIxDwqkzXT6JS93YroLqfG8nSIz0RUkqnwGzGn/z7qZ7WuITA5zrKS9Pxh
+ P0dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751994685; x=1752599485;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1752002094; x=1752606894;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=n7b7LK1L6ianwNx3+QwOQRxaWDQDhJNpLkV+ofJU6duUEuOLGZdRfXPVKNB0UTLAtQ
- +12ijBbaXjcJimy1vpXWKf/zT0540mcWyNOX3hcwu1DnIZXr5QGQMrHXJuzDYs5RT9kQ
- DX0+g1sohpJL3lda128x9YSlT5I5Gpwn8Qc7jobKl6orckVNAUfgFxnTdnGQjDHvNyhS
- FiFnHiyKLkclPHIXhdmUIFf7QjBQLgwn8Na2QrlbxJMBK8msVpHGcC0mlLBmrWOdygtA
- nx9x+zO9MpF49r3iucVIYqCjhy901YzK3oZzeGW5d7ZiU9nrEipUeclRZ7rTNljPY/x4
- 8NWg==
-X-Gm-Message-State: AOJu0YxdXGXs8x3L4HAhyXLYgNlSdA83ndf67uf1nhXFjacY0t0nsGTz
- MTZ3WFpQoYGnz9V34xmYgdJWaxFpMSnl8D1A4evyAL6kSdz+gooNT7PY0o0EFsdt7I8Fuu9r6NS
- SJEiBcWqLGfcj/ymkylBWOonlwPVyq+4fUbe5J2Kzft1LqC3xZ1dpFg3f
-X-Gm-Gg: ASbGncunXaM9s/t9GSp/DDn09LwRyuPimIzWV09ZReY2ui/pXKCvSJHEoM62xy9uODl
- SsH/ITfhF5qfBG67YX/FyoJ4jEhTZvig7Y0/7d7nQ7yHznXFfcXMFGBhMLOQNV37V45Wok2nMTs
- nYsWtVrJq13HiMYBkA8RdpwYlYCdy1gn9Xy/q8evDnVbIGktEZePAAVbFJMawvI9Vyg1ovNjGW3
- yluFwQRhHYbZQDtqmGBLt2qizSqMWl7j8xIeow2ZaPqkdwrTkpee3w9rtgHhoHT8q56WyTUc8X9
- jmee/Fm+/AiQnPIaSbqYgUzRV3U=
-X-Received: by 2002:a05:6000:26cb:b0:3a4:dd8e:e16b with SMTP id
- ffacd0b85a97d-3b5e2fec5f2mr237016f8f.20.1751994685340; 
- Tue, 08 Jul 2025 10:11:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5BlzEjmfXkCg2INScIyjHDS+TtAEYV0wOXIfXSRTeHRVcFUOvi3Au1j4Puf2zkrnm60cvEA==
-X-Received: by 2002:a05:6000:26cb:b0:3a4:dd8e:e16b with SMTP id
- ffacd0b85a97d-3b5e2fec5f2mr236980f8f.20.1751994684896; 
- Tue, 08 Jul 2025 10:11:24 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.202.169])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b97353sm13728753f8f.51.2025.07.08.10.11.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Jul 2025 10:11:24 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: Roy Hopkins <roy.hopkins@randomman.co.uk>
-Cc: qemu-devel@nongnu.org, "Daniel P . Berrange" <berrange@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
- Gerd Hoffman <kraxel@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
- Joerg Roedel <joro@8bytes.org>
-Subject: Re: [PATCH v9 00/16] Introduce support for IGVM files
-Date: Tue,  8 Jul 2025 19:11:21 +0200
-Message-ID: <20250708171121.145660-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
-References: 
+ bh=o8s3POq+g29lZCTW4KGaiw6YRZUM/zpjO6CKLcIScNM=;
+ b=WdEL0Vu6co2I7Z3E+U3S0vKkzFien76MTIv3pPCRyE90MkZrxL/NsNmDxoZY/aXWwN
+ 7Mg/ebiKYaWZAeKpRP+SubxQYzL99lZYEQst7PQUiF2bMRK3gYaDwP8hRuY5PTKMQ7gi
+ mVq2Nx3VsTwJ1HYBqiQphK2jiuRYPbBksDVn1d01wkF6TCDZi1FxrPLE/46uHxaKo7YI
+ kwudz5eKNl6UnBsR2/TAU9gvW2Nj0kv6wnVBuRCxADY+5qgSlRXXW754Ut0mztuIL2E1
+ K4S35COfF5qXkWDZ4IUw4t7GO0fujla43GvJX42TmuwqpY6OSoWuXqrnwQACL2bjnYM0
+ 0gaQ==
+X-Gm-Message-State: AOJu0YzwZibUC0qsQp51FI5DWpN3Lv9qQ4pNK908X7ZriGqF/62oun+1
+ 00yojyTRbaHltKuK6wgt+4YTD+5mpr2rQewwMVQ3W4En3Xc6F0DI3mH0tdn4fTrw13DgfWZyll8
+ ODpEPYmxw54bA8Fjau8rGoO4p4jxcynC5RKZamXdvgyP98nfpUd+8psc=
+X-Gm-Gg: ASbGncsMxVrE4nWcDNEECCGkIyIsnMoFBxP1iSun+wbdbWjqara56rbSaESCBVYmZF+
+ dhZGUpaxMMu64ajglahOl7B9ydngFksWTmuUOQaHj3CSbQmKoRxYE/Ftt+bNQMo5htRI9lIJ7hj
+ 6UbKG1OBMSpKRW+1xYg6liotUMxV2ofb63SUUllSS6sMgP
+X-Google-Smtp-Source: AGHT+IFWT3DipFQC9i7Dfs2o7UN9KnD3vr81lmbfCI/c+/IgB/Qv6x30sVjxmdwZn/oeNI3OAJdvi+FZTPDCCHLTOxk=
+X-Received: by 2002:a05:690c:f02:b0:70e:18c0:dab6 with SMTP id
+ 00721157ae682-717ae0c61cfmr9914547b3.23.1751994909123; Tue, 08 Jul 2025
+ 10:15:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250707170904.2908-1-philmd@linaro.org>
+In-Reply-To: <20250707170904.2908-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 8 Jul 2025 18:14:57 +0100
+X-Gm-Features: Ac12FXyz7_6cIBnFIkoJgjm8GuCCJJOrs9_ndhhpP6rmJVSZoTNuFcbe_CAEhhk
+Message-ID: <CAFEAcA9rcJHBaeAqCM1BszrhzkE4=gxJkx9h62BVhEz9hB7OMA@mail.gmail.com>
+Subject: Re: [PATCH] bulk: Remove unnecessary 'qemu/typedefs.h' include
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Stefan Weil <sw@weilnetz.de>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Song Gao <gaosong@loongson.cn>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Alex Williamson <alex.williamson@redhat.com>, 
+ Bibo Mao <maobibo@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,8 +97,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued, thanks.
+On Mon, 7 Jul 2025 at 18:14, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> "qemu/typedefs.h" is already included by "qemu/osdep.h".
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/vfio/vfio-migration-internal.h | 1 -
+>  include/system/os-win32.h         | 1 -
+>  hw/intc/loongarch_extioi_kvm.c    | 1 -
+>  3 files changed, 3 deletions(-)
 
-Paolo
+> diff --git a/include/system/os-win32.h b/include/system/os-win32.h
+> index 3aa6cee4c23..662cfabc5e7 100644
+> --- a/include/system/os-win32.h
+> +++ b/include/system/os-win32.h
+> @@ -29,7 +29,6 @@
+>  #include <winsock2.h>
+>  #include <windows.h>
+>  #include <ws2tcpip.h>
+> -#include "qemu/typedefs.h"
+>
+>  #ifdef HAVE_AFUNIX_H
+>  #include <afunix.h>
 
+This one's tricky -- osdep.h includes system/os-win32.h
+*before* it includes typedefs.h. If you want to remove this
+include I think you need to move the include of typedefs.h
+a bit further up in osdep.h (taking care that it's still
+wrapped in an "extern C").
+
+(Or we could declare the functions in os-win32.h which
+use the Error type somewhere else. That header I think is
+intended to be "Windows specifics and compatibility wrappers
+that everywhere needs to have sorted out", not "this
+function happens to only be needed on Windows": a lot
+of the functions declared in it are only used in a
+handful of files and don't need to be declared to every
+source file in the project. But that's a bit more effort.)
+
+The other two changes here are fine.
+
+thanks
+-- PMM
 
