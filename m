@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C999AFD8CB
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B68F5AFD8A0
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:45:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFCo-0000NJ-Hc; Tue, 08 Jul 2025 16:46:22 -0400
+	id 1uZF9c-0000Ss-Rb; Tue, 08 Jul 2025 16:43:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDqx-0007Dm-3M
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:19:47 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDSC-0000my-EU
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 14:54:15 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDqp-00086k-WF
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:19:40 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3a6cdc27438so3936448f8f.2
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:19:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZDRu-0008KT-6d
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 14:54:04 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-ae361e8ec32so942903666b.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 11:53:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752002355; x=1752607155; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=uhVIR4sw1LKXp8X4qJMA2ohyVT8eTwoLU5Z/JJ5IQag=;
- b=S+YeUMbAAPPSP2AqYw58ddfHKwHXwSijhiOPns9Cdj/MbOIAWTphJsxCX0GTfpntwX
- MVnOU7uNwHvZ0Eviprz7HmJ959396qgDcjTKYhY/7LXThSISxhHxQFwOJbufjJGjMwUG
- qIA6PTWfeaj9vtht+gW0/xoyF31Xeonbdena4xLXz0muyRmEK9xUFFf37iQ+GyrC2NI9
- fXCTtEJ/yN6xGQw3qwKCj1X0P1MZ7Yva9T0EpaP/eqLxeXPgB6zmuWOEuiAjNBrmMTlR
- BuvYMrreCm0unPsRH9IcRu7tSSxhvuEaxc5yJrEJEBQsx6WpjXYolXLK8LtfHEECewUH
- yFuA==
+ d=linaro.org; s=google; t=1752000792; x=1752605592; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vzMk4UkL9eAVR/vohhIY8W6V8rBUqTGnnCp6qj1rt4I=;
+ b=WVwzVda+0O28zYWGIYe/tlWu3bAW5AWJrlG4JyJ2zpo2+fuIYE82mBy+rsb/isrBKg
+ er0zMiDuS5V8p61LX95GY6N5sn11jvUXql8EqpPWwFBoZwPb5przyE3IkIK7U6RIJCkP
+ DvRURcaw/ap9BiKDf/F8NYlS1i86JSZEjdNWMq66nej24IRr92V4wq+7hYQWeM6Sdp6Z
+ otfuglvf4oC6KYrKDpJUDDjRU0VoGSMQdccXthlCjushMRbB2W5YvksdDDqA7KM+IFxm
+ 2fKUS25XL4NJN4b9I+XIqG+2bIoFjrWWWjO5h410ovCbYMboZZH3pHZm0vGYvgz7U1PJ
+ yOsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752002355; x=1752607155;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uhVIR4sw1LKXp8X4qJMA2ohyVT8eTwoLU5Z/JJ5IQag=;
- b=SG6PRXyGC37eWewbHV1g7zvDTjpD+JjRahpLZxXm3jZW6j/0UKLVQ8e4JKs5FNm57C
- r5/ZN+zaoTMd5Ro5nkJ9aGpamwrWf36FShA3Wu9jyIRdOn8n5cj0MaUUa1ba3mhnTN7s
- o3FEzJksxm29u07RZxLHDfDzt6+X118LEL2NB5WSpngB9UpwYylMzeehs38AiXLRtZkq
- BPZ1Y5EuFLQWbLPSSHq85mOB1ShuSJj3opTtJXPXi0YnSTOJMvi5k57Dz7PwmKzLNzj/
- XfNGbl89NMUniEN7MDYoW0e5sKF4LoOgpE+nu/QR/Ip5vrANhvu/4/WGjZZl9GZIRVpF
- ecQQ==
-X-Gm-Message-State: AOJu0YxvlXS3Nh/MaKmGrIPi09+sZ3nXNUc+lM9RxgjDtktZDopvoHGz
- yj4TVcuB8hjv4ulkPO30tZBUWmKfr7PfP6v5uTnQp68w8kFsMiAGNrweXuDyykfCcfHNcnyQhHV
- tzFm8hYg=
-X-Gm-Gg: ASbGncuLlocXy7rNgxonno63udpHOvk4v1/TZ0B+vexBjbHeVwSCaTZgaakHcrmycU7
- PGB6DGHeAKIc/TLvvpQN+AujzoY+2Kx3Wsjj5KHgRb7UUw3Pj99BsExTna9/CYvQQJsifJ7FJKt
- xnFAW3pL7WGmsEQDvwBPr1ddHZ2httqkAFCIjGJRypawduw7xrI+PiJYXXBr1ynV4Tk62kejdee
- e1jFmo/MR2UHyNqcDmKMR6EPCseWQvWynaXGZfQWvCCgH0cbRghnjY/Ic2EYEnYR1e5E5mgc9ol
- PWqhrQj+MtxwsBjLE/nLuz77MKhykqkbol5Nas77MkJgEXIH3pv7Ihh59CklBDSeVbv28U6Xiz6
- M7VOJ+6J9LZpYjdK/H15DeXxOVtywsGQlJABa
-X-Google-Smtp-Source: AGHT+IHxniCBMjA172cQ3Ofwy0rCeL9kZ6B0Yr9Csb+JqIzztNQO5SBWs1VLd87B1pwbGvGZB8EPgA==
-X-Received: by 2002:a05:6000:4205:b0:3a4:f70d:a65e with SMTP id
- ffacd0b85a97d-3b4970315damr10968490f8f.37.1751968668545; 
- Tue, 08 Jul 2025 02:57:48 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752000792; x=1752605592;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vzMk4UkL9eAVR/vohhIY8W6V8rBUqTGnnCp6qj1rt4I=;
+ b=QRj/Q+5zviEByERjTB1mC2hEHUjYCvKvkqJ1FNQuD0YnzNZeTBbSspnrrMvQbCF8Lc
+ tjLk4tIaNURtnmFlgAFsIAbEqJjksCNvJ7u13zmcWIi0EbgujZoDaLW5/13p2zegFzfD
+ uhnXoAjy20ziJt+KOCVnEAqQpnq43SfgHhdliQmVj/qsbZuiJSO8UE51NXjm4Uu10QxS
+ dUtvkHSp107aY6C2DUAlK6Qn0swJX8tNiafIp7FQCnqfG8UPl6dEtPdIOj+ss819l766
+ Qg+GG7qQDoTpa0DTRgIuSRWDeXZGQKASQf8mUZf9ikdFuGnRwJa2Oh+EJkVt44ewCcJi
+ hLWQ==
+X-Gm-Message-State: AOJu0Yysg0NUsS+BROEDQwm+nIxD6awvbHsmVtCAZUrcN8PDB8OnDOZw
+ kaMYPnIVcFjhiX95roxNWOFvZvlXKjq+0BPC6e9CNdlOibNQIuCR8f4EsUs3iwuoH67wIp+VJL6
+ lBKmDuBA=
+X-Gm-Gg: ASbGncugTkFRNuEXsXyod7SlaltcspagiWyNBCp9ktBNWsMjt6yHN2muSrA8Oe5r80X
+ JQUWxrylC7HhtGUjp6Yi/bD+FBhg5V1qsg9aRx62REU/hWjWKNnnJT9upOXOxKUBGFFuzb9dRcK
+ CdxJaC5HEM2gcqH1feOHmlF4KiJ/sDrXiLIOHy5lLXhMuf6ShFkznRfyKy+oXZZ06D0tAE1l39o
+ SkwdlhuVJIYPcqQ0NS/KNKgSJdLXphSnpYYuBM3+c8TDCT4j5BfX1DhZjwurEbyBvpLPEQb1u6G
+ xAoJI2pTunIl4lWm7JUqJnt47RN3rRIJxSbqyYBKYh8jAljbulsFsZDXR8/c21dbFfDoNQz5cZh
+ tNP0dJUDZ+H+LUtMw6hspRj0rKsbSzzlqIj66
+X-Google-Smtp-Source: AGHT+IH9Eb2xgLOM5u41cB8jhtceXkQMJqP5FOYGPVh9MDn7UCU3+96j99E25Ti0s3sN3hniFvGY6A==
+X-Received: by 2002:a05:6000:2187:b0:3b3:a6c2:1a10 with SMTP id
+ ffacd0b85a97d-3b5dde3f94fmr1899037f8f.12.1751968673235; 
+ Tue, 08 Jul 2025 02:57:53 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b470caa1a2sm12336301f8f.42.2025.07.08.02.57.47
+ 5b1f17b1804b1-454cd7e2f5dsm16264625e9.6.2025.07.08.02.57.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 08 Jul 2025 02:57:47 -0700 (PDT)
+ Tue, 08 Jul 2025 02:57:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/4] target/s390x: Cleanups around s390_cpu_[un]halt()
-Date: Tue,  8 Jul 2025 11:57:42 +0200
-Message-ID: <20250708095746.12697-1-philmd@linaro.org>
+Subject: [PATCH 1/4] target/s390x: Remove unused s390_cpu_[un]halt() user stubs
+Date: Tue,  8 Jul 2025 11:57:43 +0200
+Message-ID: <20250708095746.12697-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250708095746.12697-1-philmd@linaro.org>
+References: <20250708095746.12697-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,23 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Trivial cleanups around s390_cpu_[un]halt(), split of
-a bigger series which consolidates CPUClass::[un]halt()
-for re-use between accelerators.
+Since commit da944885469 ("target/s390x: make helper.c
+sysemu-only") target/s390x/helper.c is only built for
+system mode, so s390_cpu_halt() and s390_cpu_unhalt()
+are never called from user mode.
 
-Philippe Mathieu-Daudé (4):
-  target/s390x: Remove unused s390_cpu_[un]halt() user stubs
-  target/s390x: Expose s390_count_running_cpus() method
-  target/s390x: Have s390_cpu_halt() not return anything
-  target/s390x: Extract system internal declarations to s390x-internal.h
+Fixes: da944885469 ("target/s390x: make helper.c sysemu-only")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/s390x/s390x-internal.h | 10 ----------
+ 1 file changed, 10 deletions(-)
 
- target/s390x/s390x-internal.h | 231 +---------------------------------
- target/s390x/s390x-system.h   | 215 +++++++++++++++++++++++++++++++
- target/s390x/cpu-system.c     |   6 +-
- target/s390x/helper.c         |   4 +-
- 4 files changed, 222 insertions(+), 234 deletions(-)
- create mode 100644 target/s390x/s390x-system.h
-
+diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
+index a4ba6227ab4..6894f0a2569 100644
+--- a/target/s390x/s390x-internal.h
++++ b/target/s390x/s390x-internal.h
+@@ -246,16 +246,6 @@ void s390_cpu_finalize(Object *obj);
+ void s390_cpu_system_class_init(CPUClass *cc);
+ void s390_cpu_machine_reset_cb(void *opaque);
+ bool s390_cpu_has_work(CPUState *cs);
+-
+-#else
+-static inline unsigned int s390_cpu_halt(S390CPU *cpu)
+-{
+-    return 0;
+-}
+-
+-static inline void s390_cpu_unhalt(S390CPU *cpu)
+-{
+-}
+ #endif /* CONFIG_USER_ONLY */
+ 
+ 
 -- 
 2.49.0
 
