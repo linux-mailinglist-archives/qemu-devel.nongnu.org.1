@@ -2,61 +2,196 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6F0AFD953
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E584AFD8A2
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:45:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFDR-0001na-Fz; Tue, 08 Jul 2025 16:47:01 -0400
+	id 1uZFAC-00025A-Mz; Tue, 08 Jul 2025 16:43:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uZDqw-0007Dk-VW; Tue, 08 Jul 2025 15:19:47 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uZDg6-0006HL-Fn
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:08:38 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uZDqo-000885-KO; Tue, 08 Jul 2025 15:19:39 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bc50F2JLPz6D8h4;
- Tue,  8 Jul 2025 23:40:13 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 390E2140433;
- Tue,  8 Jul 2025 23:43:23 +0800 (CST)
-Received: from A2303104131.china.huawei.com (10.203.177.241) by
- frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 8 Jul 2025 17:43:13 +0200
-To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
- <nicolinc@nvidia.com>, <ddutile@redhat.com>, <berrange@redhat.com>,
- <imammedo@redhat.com>, <nathanc@nvidia.com>, <mochs@nvidia.com>,
- <smostafa@google.com>, <gustavo.romero@linaro.org>, <mst@redhat.com>,
- <marcel.apfelbaum@gmail.com>, <linuxarm@huawei.com>,
- <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
- <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>
-Subject: [PATCH v7 12/12] qtest/bios-tables-test: Update tables for smmuv3
- tests
-Date: Tue, 8 Jul 2025 16:40:55 +0100
-Message-ID: <20250708154055.101012-13-shameerali.kolothum.thodi@huawei.com>
-X-Mailer: git-send-email 2.12.0.windows.1
-In-Reply-To: <20250708154055.101012-1-shameerali.kolothum.thodi@huawei.com>
-References: <20250708154055.101012-1-shameerali.kolothum.thodi@huawei.com>
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uZDfu-0004cg-1x
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:08:25 -0400
+Received: from pps.filterd (m0127843.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5688dnjC029255;
+ Tue, 8 Jul 2025 08:49:59 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ cc:content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=proofpoint20171006; bh=zfWO9r8hfWNj5
+ d8XOMayzM3hpqbgjBU/wAnbAEh+/Pk=; b=J4qe/0/zIc32f/soLzQZdvERMm0i2
+ jyIBdqA5wX5AB+5QQakFyUjTbCdsvk8NuKd3sqeSMuG7M1h3iyYilXN4MuEz/Qnw
+ /lFszR8rMkJQRSj424spSI2G9twEna+jTFnh+Slu5dn+3q/uRYQdaWRRCUhf3NeF
+ sSCvqJUnH6XUJFFD7KeY2vZ99KhYhOetqJKo9llL4n1ZfbEoaa08vv9hZ0EtMZIQ
+ jHf6dge6XkslFdu6OQtZPuocIldCOiHm5nflF0QFB2kGcUqaIVA3f1W2ascGzOU2
+ CzaBU1dexoW+6VSOhfqk5T7MEZmdC4tsVd0Tc7mcvs40ipOWlxw9Yx0LA==
+Received: from nam02-bn1-obe.outbound.protection.outlook.com
+ (mail-bn1nam02on2136.outbound.protection.outlook.com [40.107.212.136])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 47q25hg7jh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Jul 2025 08:49:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xIUQUkWlp7pio8YmPBDQjW5SBnOLrk93qBliLKc4ob07l1YV2x8X9NKj1+9VrUsJsduH0/R01M+3GxYb0bPy8DqwaULiKjCjmBjsW2L4987meZy/2DTEuAt5yrehPOg1I74W57o3xOUVAgcJdedmFDYVRKxcNAdujuOqLCiXOERItGnZMcYU/Dp1/0sNhgPGuX/er+xg0wtpNZ5OPhaKVPE7X5BroNYYkaYxlAI8A7OFkIqZSaYwKHx4khzFcG4Kw7zrUUYLRTx3DN8Ug1brxs6nI3Cb/CcAPnCFJkm5C+bbVMMAaFQ9SPkCiGqjBnI+klrR8z+0jZnstrBKT9xvqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zfWO9r8hfWNj5d8XOMayzM3hpqbgjBU/wAnbAEh+/Pk=;
+ b=XpKUNI5Zi5L44FuvTn05cuICTZaRRDM3H1vS5RVixxenbNf4ttGPY+Mok6ZP2xMHKHN3KSCOcrwO2F6BHtDBQ/MueCbQL86+m7wn9WcJsHnJNZ6g6tvAxfi2oWVWvsuLT7XcubbeziX9jXIypRcXhrmyXyt2HRJm9nWTt9lHZSbdfD1vyrcIChfwC3+S7NmWT5RXxOPce6JX37BDIH7rtTv8rOF70l0BMxGnB5BAbU+JbyGH01ioWhyhGV17oqUF5ksZJkh5Fwmsm5XokUCPEPMccnTJM75Vq540/Zt4+uGcAmof23XKkE+bhIC228furvatKwunGqfEKnrYaJOtMA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zfWO9r8hfWNj5d8XOMayzM3hpqbgjBU/wAnbAEh+/Pk=;
+ b=t11amR1Zy84kdXbUHJS2hcav4IVZNmPv3HL/M/QcJgzwYZN6p0Cdy1l3TEEl6qBNPqltmfYZaCZ70gpTfgxxKtzXRFMuyaybSygkhrthQnLWdyhxMWEqf6da5x1CMSvsEVvz64B7SlkooPWzaAXs0RoFZWP0lFf/S363Xa/cFxTL43jrnNeH0bcsM3GXgjzHoIb8ifNnOgR62in3DabPMhS025QafnOiEDV6lVKTgAanQQ24JmUsTDYh/Bc2nAH0ialR8pJ0scaDsyMQNZWFOJpH/zDO2zmgj0z1alQI5iwUbD4e8iQ7Xwi3jpTqXhSJlyV1p3aI4g9KzW2DmL7Niw==
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
+ by BY5PR02MB7011.namprd02.prod.outlook.com (2603:10b6:a03:23c::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Tue, 8 Jul
+ 2025 15:49:56 +0000
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51%7]) with mapi id 15.20.8901.021; Tue, 8 Jul 2025
+ 15:49:56 +0000
+From: John Levon <john.levon@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: John Levon <john.levon@nutanix.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH] hw/vfio-user: fix use of uninitialized variable
+Date: Tue,  8 Jul 2025 16:49:48 +0100
+Message-ID: <20250708154948.483480-1-john.levon@nutanix.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4P251CA0030.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d3::18) To CH2PR02MB6760.namprd02.prod.outlook.com
+ (2603:10b6:610:7f::9)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.203.177.241]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|BY5PR02MB7011:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72320ea5-071b-40a4-c3c9-08ddbe371667
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: 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
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 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
+ =?utf-8?Q?5iOfgCXAAnJj4yn181YHSesFa?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72320ea5-071b-40a4-c3c9-08ddbe371667
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 15:49:56.6284 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jYmJzxkT8N7vLCAUoVZmA38OrU+PIP8x2WKnwMTpdwpObLh7qRAyUwBtlnLCNvApSSmFEZGLnC6sXKzP+VhLuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR02MB7011
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA4MDEzMyBTYWx0ZWRfX9+kEEJdWXe0v
+ AMj5qwqWDYCyPar+VMrKxrpQu+tDL2SfJ384TtO4exLOD5u5ixmx5qRs9S5XhI8a08AM2J/XVkr
+ 1N4zlsdAg9uqpjqEZf7pKNis+Yd7GExg1nl5enuMqJtfodaBl/5OB+erYTj00qgCHgTCu0sbF/D
+ Q06JalZmNQxpytohYc8j8mGOTCbHLPof09XKFyoPAIbr6gdKEYysAStMOnkzW4O4dhE2YPM12j5
+ IT4Qp2pM/cL6DXMzHfWzmjYJ2X8J6elz+2jf5gkiu0bZLgBM5C6XunP637dcacoEq8z0o5Phtgd
+ qkTivQqb7gevKSxTlzMJiVbmDUqySEaGTxX7RnS6/XQZUBDpZiypMBhJP2GzAE6UsmcuxkC33Xn
+ jf3aZ/A5kjM6/sizQi6F8FAFJnXkXD6svDv2/xvUhFgl3TkUnW4YoDoUAvMwgdByAgWfvyTQ
+X-Proofpoint-ORIG-GUID: 5fWyvHvP36qpUI71tWM-zJeHdCShUTia
+X-Authority-Analysis: v=2.4 cv=N/ApF39B c=1 sm=1 tr=0 ts=686d3e27 cx=c_pps
+ a=HmK0iRIFJ2uE5LC4fHCo/Q==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=0kUYKlekyDsA:10
+ a=20KFwNOVAAAA:8 a=64Cc0HZtAAAA:8 a=ElJsUu_2Y0o_wqdk4xsA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 5fWyvHvP36qpUI71tWM-zJeHdCShUTia
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-08_04,2025-07-07_01,2025-03-28_01
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12;
+ envelope-from=john.levon@nutanix.com; helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,410 +205,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-From:  Shameer Kolothum via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For the legacy smmuv3 test case, generated IORT has a single SMMUv3 node,
-a Root Complex(RC) node and 1 ITS node.
-RC node features 4 ID mappings, of which 2 points to SMMU node and the
-remaining ones points to ITS.
+Coverity reported:
 
-       pcie.0 -> {SMMU0} -> {ITS}
-{RC}   pcie.1 -> {SMMU0} -> {ITS}
-       pcie.2            -> {ITS}
-       [all other ids]   -> {ITS}
+CID 1611805:         Uninitialized variables
 
-...
-[030h 0048   1]                         Type : 00
-[031h 0049   2]                       Length : 0018
-[033h 0051   1]                     Revision : 01
-[034h 0052   4]                   Identifier : 00000000
-[038h 0056   4]                Mapping Count : 00000000
-[03Ch 0060   4]               Mapping Offset : 00000000
+in vfio_user_dma_map(). This can occur in the happy path when
+->async_ops was not set; as this doesn't typically happen, it wasn't
+caught during testing.
 
-[040h 0064   4]                     ItsCount : 00000001
-[044h 0068   4]                  Identifiers : 00000000
+Align both map and unmap implementations to initialize ret the same way
+to resolve this.
 
-[048h 0072   1]                         Type : 04
-[049h 0073   2]                       Length : 0058
-[04Bh 0075   1]                     Revision : 04
-[04Ch 0076   4]                   Identifier : 00000001
-[050h 0080   4]                Mapping Count : 00000001
-[054h 0084   4]               Mapping Offset : 00000044
-
-[058h 0088   8]                 Base Address : 0000000009050000
-[060h 0096   4]        Flags (decoded below) : 00000001
-                             COHACC Override : 1
-                               HTTU Override : 0
-                      Proximity Domain Valid : 0
-[064h 0100   4]                     Reserved : 00000000
-[068h 0104   8]                VATOS Address : 0000000000000000
-[070h 0112   4]                        Model : 00000000
-[074h 0116   4]                   Event GSIV : 0000006A
-[078h 0120   4]                     PRI GSIV : 0000006B
-[07Ch 0124   4]                    GERR GSIV : 0000006D
-[080h 0128   4]                    Sync GSIV : 0000006C
-[084h 0132   4]             Proximity Domain : 00000000
-[088h 0136   4]      Device ID Mapping Index : 00000000
-
-[08Ch 0140   4]                   Input base : 00000000
-[090h 0144   4]                     ID Count : 0000FFFF
-[094h 0148   4]                  Output Base : 00000000
-[098h 0152   4]             Output Reference : 00000030
-[09Ch 0156   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-[0A0h 0160   1]                         Type : 02
-[0A1h 0161   2]                       Length : 0074
-[0A3h 0163   1]                     Revision : 03
-[0A4h 0164   4]                   Identifier : 00000002
-[0A8h 0168   4]                Mapping Count : 00000004
-[0ACh 0172   4]               Mapping Offset : 00000024
-
-[0B0h 0176   8]            Memory Properties : [IORT Memory Access Properties]
-[0B0h 0176   4]              Cache Coherency : 00000001
-[0B4h 0180   1]        Hints (decoded below) : 00
-                                   Transient : 0
-                              Write Allocate : 0
-                               Read Allocate : 0
-                                    Override : 0
-[0B5h 0181   2]                     Reserved : 0000
-[0B7h 0183   1] Memory Flags (decoded below) : 03
-                                   Coherency : 1
-                            Device Attribute : 1
-[0B8h 0184   4]                ATS Attribute : 00000000
-[0BCh 0188   4]           PCI Segment Number : 00000000
-[0C0h 0192   1]            Memory Size Limit : 40
-[0C1h 0193   2]           PASID Capabilities : 0000
-[0C3h 0195   1]                     Reserved : 00
-
-[0C4h 0196   4]                   Input base : 00000000
-[0C8h 0200   4]                     ID Count : 000001FF
-[0CCh 0204   4]                  Output Base : 00000000
-[0D0h 0208   4]             Output Reference : 00000048
-[0D4h 0212   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-[0D8h 0216   4]                   Input base : 00001000
-[0DCh 0220   4]                     ID Count : 000000FF
-[0E0h 0224   4]                  Output Base : 00001000
-[0E4h 0228   4]             Output Reference : 00000048
-[0E8h 0232   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-[0ECh 0236   4]                   Input base : 00000200
-[0F0h 0240   4]                     ID Count : 00000DFF
-[0F4h 0244   4]                  Output Base : 00000200
-[0F8h 0248   4]             Output Reference : 00000030
-[0FCh 0252   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-[100h 0256   4]                   Input base : 00001100
-[104h 0260   4]                     ID Count : 0000EEFF
-[108h 0264   4]                  Output Base : 00001100
-[10Ch 0268   4]             Output Reference : 00000030
-[110h 0272   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-For the smmuv3-dev test case, IORT has 2 SMMUV3 nodes,
-1 RC node and 1 ITS node.
-RC node features 4 ID mappings. 2 of them target the 2
-SMMU nodes while the others targets the ITS.
-
-        pcie.0 -> {SMMU0} -> {ITS}
-{RC}    pcie.1 -> {SMMU1} -> {ITS}
-        pcie.2            -> {ITS}
-        [all other ids]   -> {ITS}
-...
-[030h 0048   1]                         Type : 00
-[031h 0049   2]                       Length : 0018
-[033h 0051   1]                     Revision : 01
-[034h 0052   4]                   Identifier : 00000000
-[038h 0056   4]                Mapping Count : 00000000
-[03Ch 0060   4]               Mapping Offset : 00000000
-
-[040h 0064   4]                     ItsCount : 00000001
-[044h 0068   4]                  Identifiers : 00000000
-
-[048h 0072   1]                         Type : 04
-[049h 0073   2]                       Length : 0058
-[04Bh 0075   1]                     Revision : 04
-[04Ch 0076   4]                   Identifier : 00000001
-[050h 0080   4]                Mapping Count : 00000001
-[054h 0084   4]               Mapping Offset : 00000044
-
-[058h 0088   8]                 Base Address : 000000000C000000
-[060h 0096   4]        Flags (decoded below) : 00000001
-                             COHACC Override : 1
-                               HTTU Override : 0
-                      Proximity Domain Valid : 0
-[064h 0100   4]                     Reserved : 00000000
-[068h 0104   8]                VATOS Address : 0000000000000000
-[070h 0112   4]                        Model : 00000000
-[074h 0116   4]                   Event GSIV : 00000090
-[078h 0120   4]                     PRI GSIV : 00000091
-[07Ch 0124   4]                    GERR GSIV : 00000093
-[080h 0128   4]                    Sync GSIV : 00000092
-[084h 0132   4]             Proximity Domain : 00000000
-[088h 0136   4]      Device ID Mapping Index : 00000000
-
-[08Ch 0140   4]                   Input base : 00000000
-[090h 0144   4]                     ID Count : 0000FFFF
-[094h 0148   4]                  Output Base : 00000000
-[098h 0152   4]             Output Reference : 00000030
-[09Ch 0156   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-[0A0h 0160   1]                         Type : 04
-[0A1h 0161   2]                       Length : 0058
-[0A3h 0163   1]                     Revision : 04
-[0A4h 0164   4]                   Identifier : 00000002
-[0A8h 0168   4]                Mapping Count : 00000001
-[0ACh 0172   4]               Mapping Offset : 00000044
-
-[0B0h 0176   8]                 Base Address : 000000000C020000
-[0B8h 0184   4]        Flags (decoded below) : 00000001
-                             COHACC Override : 1
-                               HTTU Override : 0
-                      Proximity Domain Valid : 0
-[0BCh 0188   4]                     Reserved : 00000000
-[0C0h 0192   8]                VATOS Address : 0000000000000000
-[0C8h 0200   4]                        Model : 00000000
-[0CCh 0204   4]                   Event GSIV : 00000094
-[0D0h 0208   4]                     PRI GSIV : 00000095
-[0D4h 0212   4]                    GERR GSIV : 00000097
-[0D8h 0216   4]                    Sync GSIV : 00000096
-[0DCh 0220   4]             Proximity Domain : 00000000
-[0E0h 0224   4]      Device ID Mapping Index : 00000000
-
-[0E4h 0228   4]                   Input base : 00000000
-[0E8h 0232   4]                     ID Count : 0000FFFF
-[0ECh 0236   4]                  Output Base : 00000000
-[0F0h 0240   4]             Output Reference : 00000030
-[0F4h 0244   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-[0F8h 0248   1]                         Type : 02
-[0F9h 0249   2]                       Length : 0074
-[0FBh 0251   1]                     Revision : 03
-[0FCh 0252   4]                   Identifier : 00000003
-[100h 0256   4]                Mapping Count : 00000004
-[104h 0260   4]               Mapping Offset : 00000024
-
-[108h 0264   8]            Memory Properties : [IORT Memory Access Properties]
-[108h 0264   4]              Cache Coherency : 00000001
-[10Ch 0268   1]        Hints (decoded below) : 00
-                                   Transient : 0
-                              Write Allocate : 0
-                               Read Allocate : 0
-                                    Override : 0
-[10Dh 0269   2]                     Reserved : 0000
-[10Fh 0271   1] Memory Flags (decoded below) : 03
-                                   Coherency : 1
-                            Device Attribute : 1
-[110h 0272   4]                ATS Attribute : 00000000
-[114h 0276   4]           PCI Segment Number : 00000000
-[118h 0280   1]            Memory Size Limit : 40
-[119h 0281   2]           PASID Capabilities : 0000
-[11Bh 0283   1]                     Reserved : 00
-
-[11Ch 0284   4]                   Input base : 00000000
-[120h 0288   4]                     ID Count : 000001FF
-[124h 0292   4]                  Output Base : 00000000
-[128h 0296   4]             Output Reference : 00000048
-[12Ch 0300   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-[130h 0304   4]                   Input base : 00001000
-[134h 0308   4]                     ID Count : 000000FF
-[138h 0312   4]                  Output Base : 00001000
-[13Ch 0316   4]             Output Reference : 000000A0
-[140h 0320   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-[144h 0324   4]                   Input base : 00000200
-[148h 0328   4]                     ID Count : 00000DFF
-[14Ch 0332   4]                  Output Base : 00000200
-[150h 0336   4]             Output Reference : 00000030
-[154h 0340   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-[158h 0344   4]                   Input base : 00001100
-[15Ch 0348   4]                     ID Count : 0000EEFF
-[160h 0352   4]                  Output Base : 00001100
-[164h 0356   4]             Output Reference : 00000030
-[168h 0360   4]        Flags (decoded below) : 00000000
-                              Single Mapping : 0
-
-Note: DSDT changes are not described here as it is not impacted by the
-way the SMMUv3 is instantiated.
-
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Tested-by: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Reported-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: John Levon <john.levon@nutanix.com>
 ---
- tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev    | Bin 0 -> 10162 bytes
- tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy | Bin 0 -> 10162 bytes
- tests/data/acpi/aarch64/virt/IORT.smmuv3-dev    | Bin 0 -> 364 bytes
- tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy | Bin 0 -> 276 bytes
- tests/qtest/bios-tables-test-allowed-diff.h     |   4 ----
- 5 files changed, 4 deletions(-)
+ hw/vfio-user/container.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev b/tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev
-index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..4b166b836e75f0c049c245b0c1dc7955f0dbcd04 100644
-GIT binary patch
-literal 10162
-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
-zQ!9~8=80^Y0%Vf|Ae&l=Y%)(|!<6Tct%0A^zQD+K_OoMj4$6*$KLz#q&a&ALlf{oY
-zk<<&FWwW0t6H+gBmaTbS$hQ8+cD~m?H~PPjt-F24j-8!rvupf%TVUH#w$KiF*t4^1
-z%b{uiKHvE^du`6(%?_^M4Zq^{PreQ8TRsPG>^p-uHkPzjEn3SGD?Pli_YB^sTGAR;
-zT5DNirMY1*;7twyZ)zpHv6U+cZ<+#llLNq;S_yA5Pk7T5z?&QZ-qcEXlX=3MrU2gL
-z0Pv<(!kf$!-ZTa9CI^5wwG!TBp75qAfHye+ys4G&Ci8?hO#!^g0pLxogg2QdylD#H
-zO%4EWY9+kMJmF1K0B>>tcvCCkP38%2ngV!}1HhYF32!n_c+(WXn;Zb%)Jk}hdBU5f
-z0N&&P@TOM6o6Hm5GzIV`2Y@%V65eE<@TMt%H#q>jsg>|1^Mp4|0ldip;7zTBH<>5A
-zX$s&?4ghazCA`Tz;Z0KjZ*l;5Q!C+3<_T|_0(g@Hz?)hLZ!%AK(-gp)901<bN_dlb
-z!keZ5-sAxArdGn6%oE-;1@I;ZfH$=g-ejKerYV3oIRLz=mGCC>gf~qAyvYIJO|67C
-znJ2ty3gAr+0B>p~yvaP_O;Z4GasYT!E8$J%32&MLc#{Lbn_3BPGEaEZ6u_Gt0N&I}
-zc$0a;o2CHX<N)xdR>GUi6W%lh@FoX<H?<PpWS;PbDN~JJzPS;e+5ZZmv2Ird&Fv0m
-z@0DlZLa;Z!A>D6nzl>DuE-sDJ)BoU)AMA2^&7P@@*r!@?v7f!{a%#_3!qacMHGKLp
-zp2LNeuJHI5@*Lkmt+U;A2$Y{8^J><7?)dOEu%olIu0w-+AZq?~+UDTf*YNjmceb~B
-z1@9Gq{MNz`mWEHG_C)_hEPn7EsC>Ox`gprzq-7sD^`WeG^qXOn`F3}Ee|c)LxBb@P
-j&?6M@oHUL<cqhZ@rw`i?I-A+!qbGB?<KZ$dW`+L(PyH`>
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy b/tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy
-index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..4b166b836e75f0c049c245b0c1dc7955f0dbcd04 100644
-GIT binary patch
-literal 10162
-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
-zQ!9~8=80^Y0%Vf|Ae&l=Y%)(|!<6Tct%0A^zQD+K_OoMj4$6*$KLz#q&a&ALlf{oY
-zk<<&FWwW0t6H+gBmaTbS$hQ8+cD~m?H~PPjt-F24j-8!rvupf%TVUH#w$KiF*t4^1
-z%b{uiKHvE^du`6(%?_^M4Zq^{PreQ8TRsPG>^p-uHkPzjEn3SGD?Pli_YB^sTGAR;
-zT5DNirMY1*;7twyZ)zpHv6U+cZ<+#llLNq;S_yA5Pk7T5z?&QZ-qcEXlX=3MrU2gL
-z0Pv<(!kf$!-ZTa9CI^5wwG!TBp75qAfHye+ys4G&Ci8?hO#!^g0pLxogg2QdylD#H
-zO%4EWY9+kMJmF1K0B>>tcvCCkP38%2ngV!}1HhYF32!n_c+(WXn;Zb%)Jk}hdBU5f
-z0N&&P@TOM6o6Hm5GzIV`2Y@%V65eE<@TMt%H#q>jsg>|1^Mp4|0ldip;7zTBH<>5A
-zX$s&?4ghazCA`Tz;Z0KjZ*l;5Q!C+3<_T|_0(g@Hz?)hLZ!%AK(-gp)901<bN_dlb
-z!keZ5-sAxArdGn6%oE-;1@I;ZfH$=g-ejKerYV3oIRLz=mGCC>gf~qAyvYIJO|67C
-znJ2ty3gAr+0B>p~yvaP_O;Z4GasYT!E8$J%32&MLc#{Lbn_3BPGEaEZ6u_Gt0N&I}
-zc$0a;o2CHX<N)xdR>GUi6W%lh@FoX<H?<PpWS;PbDN~JJzPS;e+5ZZmv2Ird&Fv0m
-z@0DlZLa;Z!A>D6nzl>DuE-sDJ)BoU)AMA2^&7P@@*r!@?v7f!{a%#_3!qacMHGKLp
-zp2LNeuJHI5@*Lkmt+U;A2$Y{8^J><7?)dOEu%olIu0w-+AZq?~+UDTf*YNjmceb~B
-z1@9Gq{MNz`mWEHG_C)_hEPn7EsC>Ox`gprzq-7sD^`WeG^qXOn`F3}Ee|c)LxBb@P
-j&?6M@oHUL<cqhZ@rw`i?I-A+!qbGB?<KZ$dW`+L(PyH`>
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/data/acpi/aarch64/virt/IORT.smmuv3-dev b/tests/data/acpi/aarch64/virt/IORT.smmuv3-dev
-index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..67be268f62afbf2d9459540984da5e9340afdaaa 100644
-GIT binary patch
-literal 364
-zcmebD4+_a)WME)E<>c?|5v<@85#X!<1VAAM5F13Z0I>lOgMkDCNC*yK9F_<M77!bR
-zT_CbNAPOcA5rU8tfYd}Fo(#m3AVP5R|9=P*W*^90CZG_)Tqd06P64W$3dGZacp4BR
-z19WqlN*I`#feJu=QvqVAJ3&HV-~grnLnS<*d<Fpq2Cx%>^a7X|(1HJXfgB(Wb2oz^
-MQ0yI03`oPo01?F*0RR91
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy b/tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy
-index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..41981a449fc306b80cccd87ddec3c593a8d72c07 100644
-GIT binary patch
-literal 276
-zcmX|*K@NgI3`M`puy8?wi3^u3IDkhWzycE!jI!Vis5{Ti6^7s1@{>QmeVugXHa@5G
-z0SNbY?1op>&X2C5h#<9Ops%#*0ztdHi8G?q;$EluQNrhn>{ys@`b&R|d8G8O{Jrdl
-mkP$_?rfr{mN!3^;8w}Q?1auX1XIzvDUSRruoXA!(rn3!nx)K2Z
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 2e3e3ccdce..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,5 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy",
--"tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev",
--"tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy",
--"tests/data/acpi/aarch64/virt/IORT.smmuv3-dev",
+diff --git a/hw/vfio-user/container.c b/hw/vfio-user/container.c
+index d318e6a339..d589dd90f5 100644
+--- a/hw/vfio-user/container.c
++++ b/hw/vfio-user/container.c
+@@ -64,8 +64,6 @@ static int vfio_user_dma_unmap(const VFIOContainerBase *bcontainer,
+                               0, &local_err)) {
+             error_report_err(local_err);
+             ret = -EFAULT;
+-        } else {
+-            ret = 0;
+         }
+     } else {
+         if (!vfio_user_send_wait(container->proxy, &msgp->hdr, NULL,
+@@ -92,7 +90,7 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                                                 bcontainer);
+     int fd = memory_region_get_fd(mrp);
+     Error *local_err = NULL;
+-    int ret;
++    int ret = 0;
+ 
+     VFIOUserFDs *fds = NULL;
+     VFIOUserDMAMap *msgp = g_malloc0(sizeof(*msgp));
+@@ -135,8 +133,6 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                               0, &local_err)) {
+             error_report_err(local_err);
+             ret = -EFAULT;
+-        } else {
+-            ret = 0;
+         }
+     } else {
+         VFIOUserFDs local_fds = { 1, 0, &fd };
 -- 
-2.47.0
+2.43.0
 
 
