@@ -2,77 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0304BAFD74E
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 21:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2684FAFD7BA
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 21:59:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZEDF-0000Pt-Gz; Tue, 08 Jul 2025 15:42:46 -0400
+	id 1uZERX-0007KH-DW; Tue, 08 Jul 2025 15:57:32 -0400
 Received: from eggs.gnu.org ([209.51.188.92])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uZBOU-0008HM-Ts
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:42:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uZBOa-0008Jt-22
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:43:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uZBLn-0004TU-0J
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:41:31 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uZBME-0004Ql-7C
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 12:41:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751992629;
+ s=mimecast20190719; t=1751992626;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=llfg70zwZvemKREO+Y3xvA/utKhwZhzTm3ME815tZgY=;
- b=A/3dJyt96kKdzO2FnfarhMCO1BuCtwRU+AvNXBaYJrNgsUWE5DEYpKxVYbx8kH9R8Dix1A
- 0plT8Lia6FX3XLiU+/KTrRtw761v974GNJQ6aEttO8Qv0iEkbcMR9ep2XSVqgJ9OnQAZw3
- w9RUDwbO7K2Qaj0+YlcyPEJawVqizSk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-WQXw6uIOPhO_3CffQGuvkQ-1; Tue,
- 08 Jul 2025 11:25:27 -0400
-X-MC-Unique: WQXw6uIOPhO_3CffQGuvkQ-1
-X-Mimecast-MFC-AGG-ID: WQXw6uIOPhO_3CffQGuvkQ_1751988326
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9E4431809C9A; Tue,  8 Jul 2025 15:25:25 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.99])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 885D9180035C; Tue,  8 Jul 2025 15:25:18 +0000 (UTC)
-Date: Tue, 8 Jul 2025 16:25:15 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Roy Hopkins <roy.hopkins@randomman.co.uk>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair@alistair23.me>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Michael Roth <michael.roth@amd.com>,
- Ani Sinha <anisinha@redhat.com>, Gerd Hoffman <kraxel@redhat.com>,
- Pankaj Gupta <pankaj.gupta@amd.com>, Joerg Roedel <joro@8bytes.org>
-Subject: Re: [PATCH v9 08/16] i386/sev: Refactor setting of reset vector and
- initial CPU state
-Message-ID: <aG04W_upzY6p7M1H@redhat.com>
-References: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
- <d3c2debca496c4366a278b135f951908f3b9c341.1751554099.git.roy.hopkins@randomman.co.uk>
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=iCc6X7dKrB7u2+4+jJD84N05Emla9+M/j2i1RXjqv8I=;
+ b=UdVxjzFGhLVadV/kqfXFT+t+ftIROHnCvLdf58HcRFhGQjfFKCIE0ssf/BSc/8KgWXQKzr
+ +1f3Zs5RZ+wF9ppajCnwvlsPIwxFTs1KEqAORPCDkCgcC65+kVS0gzdZwlkhrxqWnM/vwd
+ mmefRqlR9+KFNCudiwu9qsbKPVn8dZ4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-651-OfC5L9VjOcaQv6ISvCK11g-1; Tue, 08 Jul 2025 11:58:09 -0400
+X-MC-Unique: OfC5L9VjOcaQv6ISvCK11g-1
+X-Mimecast-MFC-AGG-ID: OfC5L9VjOcaQv6ISvCK11g_1751990288
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a4f85f31d9so1666122f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 08:58:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751990288; x=1752595088;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iCc6X7dKrB7u2+4+jJD84N05Emla9+M/j2i1RXjqv8I=;
+ b=B83CRbt9M82/g7OmmCIa0aAfektLjT0GvTmLE5Yqga1R/FVj7dKgldkfDDLviimejv
+ ENT16pyp41aQLVFfgvgrYjDqz5Q8mGZ2TaQrVkWD8cnhw4SUQHUe5Hy2rtgVC4QPa9EQ
+ +vK9HIk7RX/BBhpEN1ciGuTHRMOvvvnyPwUO9DGoBL3HNVNMcjT/MpU6QpgY7n5dhmVe
+ Wp/dC34oP95EuTwz7iUH0WlyQaVNa9Mi+ZpLruMOFqgh2qwdveEmUrBW67Kd/DXgxpe9
+ P0RTuU+zWSy2yGEGcNjjuNwMgCUvHwNJFibC+lvG2wKY6ZIxgMhxV10CyWnE6WBzWCnt
+ iEIA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV6QG5CpYfKnOypiRmVpeWKOSK4xd/ViOMWyPoJKPhUOWrV9vXIu1eY+4CsYsSK+y028SjWp/ENyBeM@nongnu.org
+X-Gm-Message-State: AOJu0YzxQUTZ7KOmDEYxilR5t9Q4VSH3q5fp/c7XE5u0jIVw7ShIK2WJ
+ Y0h9Yi+xoG3k6OEor5elbxuxdT1L0tKtwgQ5wItcA5LbRaAAv2KpwW94nTHr5xvKCV271i4MpwZ
+ oNJED4YnMZlyo2srZqNLUYbW/ZUh9NvnOPejG5y4AqeG5TPWtT93uahrS4SwKhWEO
+X-Gm-Gg: ASbGncv/RPPClEPojrdmANtc3ZbrZv52q8DPo3Xbe5P6uox9VKsaqUtyo7htBxrwCVa
+ rRsQGwDhRgCyxuI2F3NrA31tAteObDyZl9AXxaKkoyfzXzQNnFXD4CtAXlIG7qiQnjVpSdNKk56
+ jzC5s94RsANSIwcyV4TWMyGKQw3qzYldE/jJcfNDbOFojLCYf6x8xNgMKycLNDZSUcNdADGLkpX
+ LGZn8X5jDyhAojyfJh70ZppEmuWniQMb5v75aCEzrKDbNiaf7qv6ZXe2SJfkCvP16KYIxM7zdX1
+ WE4Fz3oqcA35ZHc229W6g0QqxrWiFNup0Yr8jpo+ILqzjkmQx92FAQijeQes58yguLssGw==
+X-Received: by 2002:a05:6000:1447:b0:3b4:65d4:8e27 with SMTP id
+ ffacd0b85a97d-3b5ddeccff7mr2910052f8f.29.1751990287794; 
+ Tue, 08 Jul 2025 08:58:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvHa7qpVLByvPoq4yVyth+o0ZOrNB/m1HsZJz8NoB5pw8Y1LeLbrjHx8fm3DY9E0UsevERHA==
+X-Received: by 2002:a05:6000:1447:b0:3b4:65d4:8e27 with SMTP id
+ ffacd0b85a97d-3b5ddeccff7mr2910024f8f.29.1751990287224; 
+ Tue, 08 Jul 2025 08:58:07 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-454cd43cfe3sm26562235e9.2.2025.07.08.08.58.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Jul 2025 08:58:06 -0700 (PDT)
+Message-ID: <647d17ed-1b23-4ec4-9b97-84aa67717ae6@redhat.com>
+Date: Tue, 8 Jul 2025 17:58:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d3c2debca496c4366a278b135f951908f3b9c341.1751554099.git.roy.hopkins@randomman.co.uk>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] hw/intc/arm_gicv3_kvm: Migrate GICD_TYPER2
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20250708115238.667050-1-peter.maydell@linaro.org>
+ <20250708115238.667050-3-peter.maydell@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250708115238.667050-3-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,519 +101,162 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 03, 2025 at 04:31:59PM +0100, Roy Hopkins wrote:
-> When an SEV guest is started, the reset vector and state are
-> extracted from metadata that is contained in the firmware volume.
-> 
-> In preparation for using IGVM to setup the initial CPU state,
-> the code has been refactored to populate vmcb_save_area for each
-> CPU which is then applied during guest startup and CPU reset.
-> 
-> Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-> Acked-by: Gerd Hoffman <kraxel@redhat.com>
-> Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Hi Peter,
+
+On 7/8/25 1:52 PM, Peter Maydell wrote:
+> The GICD_TYPER2 register is new for GICv4.1.  As an ID register, we
+> migrate it so that on the destination the kernel can check that the
+> destination supports the same configuration that the source system
+> had.  This avoids confusing behaviour if the user tries to migrate a
+> VM from a GICv3 system to a GICv4.1 system or vice-versa.  (In
+> practice the inability to migrate between different CPU types
+> probably already prevented this.)
+>
+> Note that older kernels pre-dating GICv4.1 support in the KVM GIC
+> will just ignore whatever userspace writes to GICD_TYPER2, so
+> migration where the destination is one of those kernels won't have
+> this safety-check.
+>
+> (The reporting of a mismatch will be a bit clunky, because this
+> file currently uses error_abort for all failures to write the
+> data to the kernel. Ideally we would fix this by making them
+> propagate the failure information back up to the post_load hook
+> return value, to cause a migration failure.)
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Looks good to me
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Eric
 > ---
->  target/i386/sev.c | 322 +++++++++++++++++++++++++++++++++++++++++-----
->  target/i386/sev.h | 110 ++++++++++++++++
->  2 files changed, 399 insertions(+), 33 deletions(-)
-> 
-> diff --git a/target/i386/sev.c b/target/i386/sev.c
-> index a84f5f5d28..a13f91e615 100644
-> --- a/target/i386/sev.c
-> +++ b/target/i386/sev.c
-
-
-> +static void sev_apply_cpu_context(CPUState *cpu)
-> +{
-> +    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-> +    X86CPU *x86;
-> +    CPUX86State *env;
-> +    struct SevLaunchVmsa *launch_vmsa;
-> +
-> +    /* See if an initial VMSA has been provided for this CPU */
-> +    QTAILQ_FOREACH(launch_vmsa, &sev_common->launch_vmsa, next)
-> +    {
-> +        if (cpu->cpu_index == launch_vmsa->cpu_index) {
-> +            x86 = X86_CPU(cpu);
-> +            env = &x86->env;
-> +
-> +            /*
-> +             * Ideally we would provide the VMSA directly to kvm which would
-> +             * ensure that the resulting initial VMSA measurement which is
-> +             * calculated during KVM_SEV_LAUNCH_UPDATE_VMSA is calculated from
-> +             * exactly what we provide here. Currently this is not possible so
-> +             * we need to copy the parts of the VMSA structure that we currently
-> +             * support into the CPU state.
-> +             */
-
-Are there any parts of the VMSA described in the IGVM that we are
-unable to handle here ?
-
-If so, what happens if those parts are set in the IGVM and their
-value doesn't match KVM's default ? Presumably that would become
-a measurement failure ?
-
-> +            cpu_load_efer(env, launch_vmsa->vmsa.efer);
-> +            cpu_x86_update_cr4(env, launch_vmsa->vmsa.cr4);
-> +            cpu_x86_update_cr0(env, launch_vmsa->vmsa.cr0);
-> +            cpu_x86_update_cr3(env, launch_vmsa->vmsa.cr3);
-> +            env->xcr0 = launch_vmsa->vmsa.xcr0;
-> +            env->pat = launch_vmsa->vmsa.g_pat;
-> +
-> +            cpu_x86_load_seg_cache(
-> +                env, R_CS, launch_vmsa->vmsa.cs.selector,
-> +                launch_vmsa->vmsa.cs.base, launch_vmsa->vmsa.cs.limit,
-> +                FLAGS_VMSA_TO_SEGCACHE(launch_vmsa->vmsa.cs.attrib));
-> +            cpu_x86_load_seg_cache(
-> +                env, R_DS, launch_vmsa->vmsa.ds.selector,
-> +                launch_vmsa->vmsa.ds.base, launch_vmsa->vmsa.ds.limit,
-> +                FLAGS_VMSA_TO_SEGCACHE(launch_vmsa->vmsa.ds.attrib));
-> +            cpu_x86_load_seg_cache(
-> +                env, R_ES, launch_vmsa->vmsa.es.selector,
-> +                launch_vmsa->vmsa.es.base, launch_vmsa->vmsa.es.limit,
-> +                FLAGS_VMSA_TO_SEGCACHE(launch_vmsa->vmsa.es.attrib));
-> +            cpu_x86_load_seg_cache(
-> +                env, R_FS, launch_vmsa->vmsa.fs.selector,
-> +                launch_vmsa->vmsa.fs.base, launch_vmsa->vmsa.fs.limit,
-> +                FLAGS_VMSA_TO_SEGCACHE(launch_vmsa->vmsa.fs.attrib));
-> +            cpu_x86_load_seg_cache(
-> +                env, R_GS, launch_vmsa->vmsa.gs.selector,
-> +                launch_vmsa->vmsa.gs.base, launch_vmsa->vmsa.gs.limit,
-> +                FLAGS_VMSA_TO_SEGCACHE(launch_vmsa->vmsa.gs.attrib));
-> +            cpu_x86_load_seg_cache(
-> +                env, R_SS, launch_vmsa->vmsa.ss.selector,
-> +                launch_vmsa->vmsa.ss.base, launch_vmsa->vmsa.ss.limit,
-> +                FLAGS_VMSA_TO_SEGCACHE(launch_vmsa->vmsa.ss.attrib));
-> +
-> +            env->gdt.base = launch_vmsa->vmsa.gdtr.base;
-> +            env->gdt.limit = launch_vmsa->vmsa.gdtr.limit;
-> +            env->gdt.flags =
-> +                FLAGS_VMSA_TO_SEGCACHE(launch_vmsa->vmsa.gdtr.attrib);
-> +            env->idt.base = launch_vmsa->vmsa.idtr.base;
-> +            env->idt.limit = launch_vmsa->vmsa.idtr.limit;
-> +            env->idt.flags =
-> +                FLAGS_VMSA_TO_SEGCACHE(launch_vmsa->vmsa.idtr.attrib);
-> +
-> +            cpu_x86_load_seg_cache(
-> +                env, R_LDTR, launch_vmsa->vmsa.ldtr.selector,
-> +                launch_vmsa->vmsa.ldtr.base, launch_vmsa->vmsa.ldtr.limit,
-> +                FLAGS_VMSA_TO_SEGCACHE(launch_vmsa->vmsa.ldtr.attrib));
-> +            cpu_x86_load_seg_cache(
-> +                env, R_TR, launch_vmsa->vmsa.tr.selector,
-> +                launch_vmsa->vmsa.ldtr.base, launch_vmsa->vmsa.tr.limit,
-> +                FLAGS_VMSA_TO_SEGCACHE(launch_vmsa->vmsa.tr.attrib));
-> +
-> +            env->dr[6] = launch_vmsa->vmsa.dr6;
-> +            env->dr[7] = launch_vmsa->vmsa.dr7;
-> +
-> +            env->regs[R_EAX] = launch_vmsa->vmsa.rax;
-> +            env->regs[R_ECX] = launch_vmsa->vmsa.rcx;
-> +            env->regs[R_EDX] = launch_vmsa->vmsa.rdx;
-> +            env->regs[R_EBX] = launch_vmsa->vmsa.rbx;
-> +            env->regs[R_ESP] = launch_vmsa->vmsa.rsp;
-> +            env->regs[R_EBP] = launch_vmsa->vmsa.rbp;
-> +            env->regs[R_ESI] = launch_vmsa->vmsa.rsi;
-> +            env->regs[R_EDI] = launch_vmsa->vmsa.rdi;
-> +#ifdef TARGET_X86_64
-> +            env->regs[R_R8] = launch_vmsa->vmsa.r8;
-> +            env->regs[R_R9] = launch_vmsa->vmsa.r9;
-> +            env->regs[R_R10] = launch_vmsa->vmsa.r10;
-> +            env->regs[R_R11] = launch_vmsa->vmsa.r11;
-> +            env->regs[R_R12] = launch_vmsa->vmsa.r12;
-> +            env->regs[R_R13] = launch_vmsa->vmsa.r13;
-> +            env->regs[R_R14] = launch_vmsa->vmsa.r14;
-> +            env->regs[R_R15] = launch_vmsa->vmsa.r15;
-> +#endif
-> +            env->eip = launch_vmsa->vmsa.rip;
-> +            env->eflags = launch_vmsa->vmsa.rflags;
-> +
-> +            cpu_set_fpuc(env, launch_vmsa->vmsa.x87_fcw);
-> +            env->mxcsr = launch_vmsa->vmsa.mxcsr;
-> +
-> +            break;
-> +        }
-> +    }
-> +}
-> +
-> +static int sev_set_cpu_context(uint16_t cpu_index, const void *ctx,
-> +                               uint32_t ctx_len, hwaddr gpa, Error **errp)
-> +{
-> +    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-> +    SevLaunchVmsa *launch_vmsa;
-> +    CPUState *cpu;
-> +    bool exists = false;
-> +
-> +    /*
-> +     * Setting the CPU context is only supported for SEV-ES and SEV-SNP. The
-> +     * context buffer will contain a sev_es_save_area from the Linux kernel
-> +     * which is defined by "Table B-4. VMSA Layout, State Save Area for SEV-ES"
-> +     * in the AMD64 APM, Volume 2.
-> +     */
-> +
-> +    if (!sev_es_enabled()) {
-> +        error_setg(errp, "SEV: unable to set CPU context: Not supported");
-> +        return -1;
-> +    }
-> +
-> +    if (ctx_len < sizeof(struct sev_es_save_area)) {
-> +        error_setg(errp, "SEV: unable to set CPU context: "
-> +                     "Invalid context provided");
-> +        return -1;
-> +    }
-> +
-> +    cpu = qemu_get_cpu(cpu_index);
-> +    if (!cpu) {
-> +        error_setg(errp, "SEV: unable to set CPU context for out of bounds "
-> +                     "CPU index %d", cpu_index);
-> +        return -1;
-> +    }
-> +
-> +    /*
-> +     * If the context of this VP has already been set then replace it with the
-> +     * new context.
-> +     */
-> +    QTAILQ_FOREACH(launch_vmsa, &sev_common->launch_vmsa, next)
-> +    {
-> +        if (cpu_index == launch_vmsa->cpu_index) {
-> +            launch_vmsa->gpa = gpa;
-> +            memcpy(&launch_vmsa->vmsa, ctx, sizeof(launch_vmsa->vmsa));
-> +            exists = true;
-> +            break;
-> +        }
-> +    }
-> +
-> +    if (!exists) {
-> +        /* New VP context */
-> +        launch_vmsa = g_new0(SevLaunchVmsa, 1);
-> +        memcpy(&launch_vmsa->vmsa, ctx, sizeof(launch_vmsa->vmsa));
-> +        launch_vmsa->cpu_index = cpu_index;
-> +        launch_vmsa->gpa = gpa;
-> +        QTAILQ_INSERT_TAIL(&sev_common->launch_vmsa, launch_vmsa, next);
-> +    }
-> +
-> +    /* Synchronise the VMSA with the current CPU state */
-> +    sev_apply_cpu_context(cpu);
-> +
-> +    return 0;
-> +}
-> +
->  bool
->  sev_enabled(void)
->  {
-> @@ -998,6 +1176,16 @@ static int
->  sev_launch_update_vmsa(SevGuestState *sev_guest)
->  {
->      int ret, fw_error;
-> +    CPUState *cpu;
-> +
-> +    /*
-> +     * The initial CPU state is measured as part of KVM_SEV_LAUNCH_UPDATE_VMSA.
-> +     * Synchronise the CPU state to any provided launch VMSA structures.
-> +     */
-> +    CPU_FOREACH(cpu) {
-> +        sev_apply_cpu_context(cpu);
-> +    }
-> +
+> v1->v2:
+>  * fix comment missing bracket
+>  * fix reset handling so this works on GICv4.1 hosts
+>  * move get/put code to be with the other GICD regs
+> ---
+>  include/hw/intc/arm_gicv3_common.h |  6 ++++++
+>  hw/intc/arm_gicv3_common.c         | 24 ++++++++++++++++++++++++
+>  hw/intc/arm_gicv3_kvm.c            | 25 +++++++++++++++++++++++--
+>  3 files changed, 53 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
+> index a3d6a0e5077..bcbcae1fbe7 100644
+> --- a/include/hw/intc/arm_gicv3_common.h
+> +++ b/include/hw/intc/arm_gicv3_common.h
+> @@ -267,6 +267,12 @@ struct GICv3State {
+>      GICv3CPUState *gicd_irouter_target[GICV3_MAXIRQ];
+>      uint32_t gicd_nsacr[DIV_ROUND_UP(GICV3_MAXIRQ, 16)];
 >  
->      ret = sev_ioctl(SEV_COMMON(sev_guest)->sev_fd, KVM_SEV_LAUNCH_UPDATE_VMSA,
->                      NULL, &fw_error);
-> @@ -1780,40 +1968,109 @@ sev_es_find_reset_vector(void *flash_ptr, uint64_t flash_size,
->      return sev_es_parse_reset_block(info, addr);
->  }
->  
-> -void sev_es_set_reset_vector(CPUState *cpu)
-> +
-> +static void seg_to_vmsa(const SegmentCache *cpu_seg, struct vmcb_seg *vmsa_seg)
->  {
-> -    X86CPU *x86;
-> -    CPUX86State *env;
-> -    ConfidentialGuestSupport *cgs = MACHINE(qdev_get_machine())->cgs;
-> -    SevCommonState *sev_common = SEV_COMMON(
-> -        object_dynamic_cast(OBJECT(cgs), TYPE_SEV_COMMON));
-> +    vmsa_seg->selector = cpu_seg->selector;
-> +    vmsa_seg->base = cpu_seg->base;
-> +    vmsa_seg->limit = cpu_seg->limit;
-> +    vmsa_seg->attrib = FLAGS_SEGCACHE_TO_VMSA(cpu_seg->flags);
-> +}
->  
-> -    /* Only update if we have valid reset information */
-> -    if (!sev_common || !sev_common->reset_data_valid) {
-> -        return;
-> -    }
-> +static void initialize_vmsa(const CPUState *cpu, struct sev_es_save_area *vmsa)
-> +{
-> +    const X86CPU *x86 = X86_CPU(cpu);
-> +    const CPUX86State *env = &x86->env;
->  
-> -    /* Do not update the BSP reset state */
-> -    if (cpu->cpu_index == 0) {
-> -        return;
 > +    /*
-> +     * Initialize the SEV-ES save area from the current state of
-> +     * the CPU. The entire state does not need to be copied, only the state
-> +     * that is copied back to the CPUState in sev_apply_cpu_context.
+> +     * GICv4.1 extended ID information. This is currently only needed
+> +     * for migration of a KVM GIC.
 > +     */
-> +    memset(vmsa, 0, sizeof(struct sev_es_save_area));
-> +    vmsa->efer = env->efer;
-> +    vmsa->cr0 = env->cr[0];
-> +    vmsa->cr3 = env->cr[3];
-> +    vmsa->cr4 = env->cr[4];
-> +    vmsa->xcr0 = env->xcr0;
-> +    vmsa->g_pat = env->pat;
+> +    uint32_t gicd_typer2;
 > +
-> +    seg_to_vmsa(&env->segs[R_CS], &vmsa->cs);
-> +    seg_to_vmsa(&env->segs[R_DS], &vmsa->ds);
-> +    seg_to_vmsa(&env->segs[R_ES], &vmsa->es);
-> +    seg_to_vmsa(&env->segs[R_FS], &vmsa->fs);
-> +    seg_to_vmsa(&env->segs[R_GS], &vmsa->gs);
-> +    seg_to_vmsa(&env->segs[R_SS], &vmsa->ss);
-> +
-> +    seg_to_vmsa(&env->gdt, &vmsa->gdtr);
-> +    seg_to_vmsa(&env->idt, &vmsa->idtr);
-> +    seg_to_vmsa(&env->ldt, &vmsa->ldtr);
-> +    seg_to_vmsa(&env->tr, &vmsa->tr);
-> +
-> +    vmsa->dr6 = env->dr[6];
-> +    vmsa->dr7 = env->dr[7];
-> +
-> +    vmsa->rax = env->regs[R_EAX];
-> +    vmsa->rcx = env->regs[R_ECX];
-> +    vmsa->rdx = env->regs[R_EDX];
-> +    vmsa->rbx = env->regs[R_EBX];
-> +    vmsa->rsp = env->regs[R_ESP];
-> +    vmsa->rbp = env->regs[R_EBP];
-> +    vmsa->rsi = env->regs[R_ESI];
-> +    vmsa->rdi = env->regs[R_EDI];
-> +
-> +#ifdef TARGET_X86_64
-> +    vmsa->r8 = env->regs[R_R8];
-> +    vmsa->r9 = env->regs[R_R9];
-> +    vmsa->r10 = env->regs[R_R10];
-> +    vmsa->r11 = env->regs[R_R11];
-> +    vmsa->r12 = env->regs[R_R12];
-> +    vmsa->r13 = env->regs[R_R13];
-> +    vmsa->r14 = env->regs[R_R14];
-> +    vmsa->r15 = env->regs[R_R15];
-> +#endif
-> +
-> +    vmsa->rip = env->eip;
-> +    vmsa->rflags = env->eflags;
-> +}
-> +
-> +static void sev_es_set_ap_context(uint32_t reset_addr)
-> +{
-> +    CPUState *cpu;
-> +    struct sev_es_save_area vmsa;
-> +    SegmentCache cs;
-> +
-> +    cs.selector = 0xf000;
-> +    cs.base = reset_addr & 0xffff0000;
-> +    cs.limit = 0xffff;
-> +    cs.flags = DESC_P_MASK | DESC_S_MASK | DESC_CS_MASK | DESC_R_MASK |
-> +               DESC_A_MASK;
-> +
-> +    CPU_FOREACH(cpu) {
-> +        if (cpu->cpu_index == 0) {
-> +            /* Do not update the BSP reset state */
-> +            continue;
-> +        }
-> +        initialize_vmsa(cpu, &vmsa);
-> +        seg_to_vmsa(&cs, &vmsa.cs);
-> +        vmsa.rip = reset_addr & 0x0000ffff;
-> +        sev_set_cpu_context(cpu->cpu_index, &vmsa,
-> +                            sizeof(struct sev_es_save_area),
-> +                            0, &error_fatal);
+>      GICv3CPUState *cpu;
+>      /* List of all ITSes connected to this GIC */
+>      GPtrArray *itslist;
+> diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
+> index 1cee68193ca..7b09771310e 100644
+> --- a/hw/intc/arm_gicv3_common.c
+> +++ b/hw/intc/arm_gicv3_common.c
+> @@ -275,6 +275,29 @@ const VMStateDescription vmstate_gicv3_gicd_nmi = {
 >      }
-> +}
+>  };
 >  
-> -    x86 = X86_CPU(cpu);
-> -    env = &x86->env;
-> -
-> -    cpu_x86_load_seg_cache(env, R_CS, 0xf000, sev_common->reset_cs, 0xffff,
-> -                           DESC_P_MASK | DESC_S_MASK | DESC_CS_MASK |
-> -                           DESC_R_MASK | DESC_A_MASK);
-> -
-> -    env->eip = sev_common->reset_ip;
-> +void sev_es_set_reset_vector(CPUState *cpu)
+> +static bool gicv3_typer2_needed(void *opaque)
 > +{
-> +    if (sev_enabled()) {
-> +        sev_apply_cpu_context(cpu);
-> +    }
->  }
->  
->  int sev_es_save_reset_vector(void *flash_ptr, uint64_t flash_size)
->  {
-> -    CPUState *cpu;
->      uint32_t addr;
->      int ret;
-> -    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
->  
->      if (!sev_es_enabled()) {
->          return 0;
-> @@ -1826,14 +2083,12 @@ int sev_es_save_reset_vector(void *flash_ptr, uint64_t flash_size)
->          return ret;
->      }
->  
 > +    /*
-> +     * The reset vector is saved into a CPU context for each AP but not for
-> +     * the BSP. This is applied during guest startup or when the CPU is reset.
+> +     * GICD_TYPER2 ID register for GICv4.1. Was RES0 for
+> +     * GICv3 and GICv4.0; don't migrate if zero for backwards
+> +     * compatibility.
 > +     */
->      if (addr) {
-> -        sev_common->reset_cs = addr & 0xffff0000;
-> -        sev_common->reset_ip = addr & 0x0000ffff;
-> -        sev_common->reset_data_valid = true;
-> -
-> -        CPU_FOREACH(cpu) {
-> -            sev_es_set_reset_vector(cpu);
-> -        }
-> +        sev_es_set_ap_context(addr);
->      }
->  
->      return 0;
-> @@ -2068,6 +2323,7 @@ sev_common_instance_init(Object *obj)
->      object_property_add_uint32_ptr(obj, "reduced-phys-bits",
->                                     &sev_common->reduced_phys_bits,
->                                     OBJ_PROP_FLAG_READWRITE);
-> +    QTAILQ_INIT(&sev_common->launch_vmsa);
->  }
->  
->  /* sev guest info common to sev/sev-es/sev-snp */
-> diff --git a/target/i386/sev.h b/target/i386/sev.h
-> index 373669eaac..38caa849f5 100644
-> --- a/target/i386/sev.h
-> +++ b/target/i386/sev.h
-> @@ -55,6 +55,116 @@ typedef struct SevKernelLoaderContext {
->      size_t cmdline_size;
->  } SevKernelLoaderContext;
->  
-> +/* Save area definition for SEV-ES and SEV-SNP guests */
-> +struct QEMU_PACKED sev_es_save_area {
-> +    struct vmcb_seg es;
-> +    struct vmcb_seg cs;
-> +    struct vmcb_seg ss;
-> +    struct vmcb_seg ds;
-> +    struct vmcb_seg fs;
-> +    struct vmcb_seg gs;
-> +    struct vmcb_seg gdtr;
-> +    struct vmcb_seg ldtr;
-> +    struct vmcb_seg idtr;
-> +    struct vmcb_seg tr;
-> +    uint64_t vmpl0_ssp;
-> +    uint64_t vmpl1_ssp;
-> +    uint64_t vmpl2_ssp;
-> +    uint64_t vmpl3_ssp;
-> +    uint64_t u_cet;
-> +    uint8_t reserved_0xc8[2];
-> +    uint8_t vmpl;
-> +    uint8_t cpl;
-> +    uint8_t reserved_0xcc[4];
-> +    uint64_t efer;
-> +    uint8_t reserved_0xd8[104];
-> +    uint64_t xss;
-> +    uint64_t cr4;
-> +    uint64_t cr3;
-> +    uint64_t cr0;
-> +    uint64_t dr7;
-> +    uint64_t dr6;
-> +    uint64_t rflags;
-> +    uint64_t rip;
-> +    uint64_t dr0;
-> +    uint64_t dr1;
-> +    uint64_t dr2;
-> +    uint64_t dr3;
-> +    uint64_t dr0_addr_mask;
-> +    uint64_t dr1_addr_mask;
-> +    uint64_t dr2_addr_mask;
-> +    uint64_t dr3_addr_mask;
-> +    uint8_t reserved_0x1c0[24];
-> +    uint64_t rsp;
-> +    uint64_t s_cet;
-> +    uint64_t ssp;
-> +    uint64_t isst_addr;
-> +    uint64_t rax;
-> +    uint64_t star;
-> +    uint64_t lstar;
-> +    uint64_t cstar;
-> +    uint64_t sfmask;
-> +    uint64_t kernel_gs_base;
-> +    uint64_t sysenter_cs;
-> +    uint64_t sysenter_esp;
-> +    uint64_t sysenter_eip;
-> +    uint64_t cr2;
-> +    uint8_t reserved_0x248[32];
-> +    uint64_t g_pat;
-> +    uint64_t dbgctl;
-> +    uint64_t br_from;
-> +    uint64_t br_to;
-> +    uint64_t last_excp_from;
-> +    uint64_t last_excp_to;
-> +    uint8_t reserved_0x298[80];
-> +    uint32_t pkru;
-> +    uint32_t tsc_aux;
-> +    uint8_t reserved_0x2f0[24];
-> +    uint64_t rcx;
-> +    uint64_t rdx;
-> +    uint64_t rbx;
-> +    uint64_t reserved_0x320; /* rsp already available at 0x01d8 */
-> +    uint64_t rbp;
-> +    uint64_t rsi;
-> +    uint64_t rdi;
-> +    uint64_t r8;
-> +    uint64_t r9;
-> +    uint64_t r10;
-> +    uint64_t r11;
-> +    uint64_t r12;
-> +    uint64_t r13;
-> +    uint64_t r14;
-> +    uint64_t r15;
-> +    uint8_t reserved_0x380[16];
-> +    uint64_t guest_exit_info_1;
-> +    uint64_t guest_exit_info_2;
-> +    uint64_t guest_exit_int_info;
-> +    uint64_t guest_nrip;
-> +    uint64_t sev_features;
-> +    uint64_t vintr_ctrl;
-> +    uint64_t guest_exit_code;
-> +    uint64_t virtual_tom;
-> +    uint64_t tlb_id;
-> +    uint64_t pcpu_id;
-> +    uint64_t event_inj;
-> +    uint64_t xcr0;
-> +    uint8_t reserved_0x3f0[16];
+> +    GICv3State *cs = opaque;
 > +
-> +    /* Floating point area */
-> +    uint64_t x87_dp;
-> +    uint32_t mxcsr;
-> +    uint16_t x87_ftw;
-> +    uint16_t x87_fsw;
-> +    uint16_t x87_fcw;
-> +    uint16_t x87_fop;
-> +    uint16_t x87_ds;
-> +    uint16_t x87_cs;
-> +    uint64_t x87_rip;
-> +    uint8_t fpreg_x87[80];
-> +    uint8_t fpreg_xmm[256];
-> +    uint8_t fpreg_ymm[256];
+> +    return cs->gicd_typer2 != 0;
+> +}
+> +
+> +const VMStateDescription vmstate_gicv3_gicd_typer2 = {
+> +    .name = "arm_gicv3/gicd_typer2",
+> +    .version_id = 1,
+> +    .minimum_version_id = 1,
+> +    .needed = gicv3_typer2_needed,
+> +    .fields = (const VMStateField[]) {
+> +        VMSTATE_UINT32(gicd_typer2, GICv3State),
+> +        VMSTATE_END_OF_LIST()
+> +    }
 > +};
 > +
->  bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp);
+>  static const VMStateDescription vmstate_gicv3 = {
+>      .name = "arm_gicv3",
+>      .version_id = 1,
+> @@ -304,6 +327,7 @@ static const VMStateDescription vmstate_gicv3 = {
+>      .subsections = (const VMStateDescription * const []) {
+>          &vmstate_gicv3_gicd_no_migration_shift_bug,
+>          &vmstate_gicv3_gicd_nmi,
+> +        &vmstate_gicv3_gicd_typer2,
+>          NULL
+>      }
+>  };
+> diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+> index 3be3bf6c28d..8e34d08b415 100644
+> --- a/hw/intc/arm_gicv3_kvm.c
+> +++ b/hw/intc/arm_gicv3_kvm.c
+> @@ -405,7 +405,16 @@ static void kvm_arm_gicv3_put(GICv3State *s)
+>          }
+>      }
 >  
->  int sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp);
-> -- 
-> 2.43.0
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> -    /* Distributor state (shared between all CPUs */
+> +    /* Distributor state (shared between all CPUs) */
+> +
+> +    /*
+> +     * This ID register is restored so that the kernel can fail
+> +     * the write if the migration source is GICv4.1 but the
+> +     * destination is not.
+> +     */
+> +    reg = s->gicd_typer2;
+> +    kvm_gicd_access(s, GICD_TYPER2, &reg, true);
+> +
+>      reg = s->gicd_statusr[GICV3_NS];
+>      kvm_gicd_access(s, GICD_STATUSR, &reg, true);
+>  
+> @@ -572,7 +581,10 @@ static void kvm_arm_gicv3_get(GICv3State *s)
+>          }
+>      }
+>  
+> -    /* Distributor state (shared between all CPUs */
+> +    /* Distributor state (shared between all CPUs) */
+> +
+> +    kvm_gicd_access(s, GICD_TYPER2, &reg, false);
+> +    s->gicd_typer2 = reg;
+>  
+>      kvm_gicd_access(s, GICD_STATUSR, &reg, false);
+>      s->gicd_statusr[GICV3_NS] = reg;
+> @@ -707,6 +719,7 @@ static void kvm_arm_gicv3_reset_hold(Object *obj, ResetType type)
+>  {
+>      GICv3State *s = ARM_GICV3_COMMON(obj);
+>      KVMARMGICv3Class *kgc = KVM_ARM_GICV3_GET_CLASS(s);
+> +    uint32_t reg;
+>  
+>      DPRINTF("Reset\n");
+>  
+> @@ -719,6 +732,14 @@ static void kvm_arm_gicv3_reset_hold(Object *obj, ResetType type)
+>          return;
+>      }
+>  
+> +    /*
+> +     * The reset value of the GICD_TYPER2 ID register should be whatever
+> +     * the kernel says it is; otherwise the attempt to put the value
+> +     * in kvm_arm_gicv3_put() will fail.
+> +     */
+> +    kvm_gicd_access(s, GICD_TYPER2, &reg, false);
+> +    s->gicd_typer2 = reg;
+> +
+>      kvm_arm_gicv3_put(s);
+>  }
+>  
 
 
