@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94874AFD91E
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F7EAFD7E8
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:10:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFIb-0005Ca-9I; Tue, 08 Jul 2025 16:52:21 -0400
+	id 1uZEct-0002t3-02; Tue, 08 Jul 2025 16:09:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZELL-000503-Gt
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:51:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZDYa-0006fp-Ex
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:00:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZELI-00085h-7z
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:51:06 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZDYG-0002Qm-5a
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:00:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752004263;
+ s=mimecast20190719; t=1752001206;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EF/7oRW56kxgQgBmtbilXnq8uXusNqlDQOz1y4eSKVA=;
- b=iNBdkgZ2M2vSsW9+jIT40piwdtFWOlPKKhh+05Y16DLOBK7yl5jabI6UeE1IJB4bLknGCR
- fUHd5khn+FUYLw6ekXMzAWXmmDz+r36Mk5Nhgkg84iLVG3DDzSgxyesPXuzcNVKtk8KUnm
- exhNBG/tkOWUYR+pWJ45SMRIpgcQhKo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=EyJOC7FAIfvTO/d2zOjrgIouVlr/F8Y//NGeETVcOAA=;
+ b=HFyLsl/Ok6+1/yO7+JFfKIgW9muJ8QNp4unrx/EQKKktgEGWJjwgzo+NRSy9HvBaVla81p
+ rUfjyT+hCkkK+R9njO3p2BalrgkyAeB4kkFn0IFWKeDxbciIHB6Pgdc32Ie7A1yfRyimTS
+ h14/PHYeclowbEm+dYfXjUwV/DP506M=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-425-LoGiApbhN3iAjPvEPRfPWg-1; Tue,
- 08 Jul 2025 03:28:32 -0400
-X-MC-Unique: LoGiApbhN3iAjPvEPRfPWg-1
-X-Mimecast-MFC-AGG-ID: LoGiApbhN3iAjPvEPRfPWg_1751959711
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-TYkty6g0MuizJ_d9G7yTXQ-1; Tue,
+ 08 Jul 2025 03:28:36 -0400
+X-MC-Unique: TYkty6g0MuizJ_d9G7yTXQ-1
+X-Mimecast-MFC-AGG-ID: TYkty6g0MuizJ_d9G7yTXQ_1751959711
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8A6E3180028C; Tue,  8 Jul 2025 07:28:31 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4824E1955D4E; Tue,  8 Jul 2025 07:28:31 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1C02A1956087; Tue,  8 Jul 2025 07:28:31 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D02AF180045B; Tue,  8 Jul 2025 07:28:30 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3EFC821E6924; Tue, 08 Jul 2025 09:28:28 +0200 (CEST)
+ id 433D821E6925; Tue, 08 Jul 2025 09:28:28 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: eblake@redhat.com, pbonzini@redhat.com, berrange@redhat.com,
  eduardo@habkost.net, steven.sistare@oracle.com
-Subject: [PATCH 1/2] qapi: Clean up "This command will do ..." command
- descriptions
-Date: Tue,  8 Jul 2025 09:28:27 +0200
-Message-ID: <20250708072828.105185-2-armbru@redhat.com>
+Subject: [PATCH 2/2] qapi: Clean up a few Errors: sections
+Date: Tue,  8 Jul 2025 09:28:28 +0200
+Message-ID: <20250708072828.105185-3-armbru@redhat.com>
 In-Reply-To: <20250708072828.105185-1-armbru@redhat.com>
 References: <20250708072828.105185-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,113 +82,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use imperative mood "Do ..." instead.
+Use the conventional "- If <error-condition>" phrasing, optionally
+with ", <error-class>".
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/control.json   |  9 +++++----
- qapi/misc-i386.json | 11 +++++------
- qapi/qom.json       | 10 ++++------
- 3 files changed, 14 insertions(+), 16 deletions(-)
+ qapi/misc-i386.json | 7 +++----
+ qapi/qom.json       | 4 ++--
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/qapi/control.json b/qapi/control.json
-index 34b733f63b..1bc4ac8734 100644
---- a/qapi/control.json
-+++ b/qapi/control.json
-@@ -158,10 +158,11 @@
- ##
- # @quit:
- #
--# This command will cause the QEMU process to exit gracefully.  While
--# every attempt is made to send the QMP response before terminating,
--# this is not guaranteed.  When using this interface, a premature EOF
--# would not be unexpected.
-+# Request graceful QEMU process termination.
-+#
-+# While every attempt is made to send the QMP response before
-+# terminating, this is not guaranteed.  When using this interface, a
-+# premature EOF would not be unexpected.
- #
- # Since: 0.14
- #
 diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
-index 5fefa0a484..b53ed39288 100644
+index b53ed39288..24a2e143f6 100644
 --- a/qapi/misc-i386.json
 +++ b/qapi/misc-i386.json
-@@ -6,9 +6,9 @@
- ##
- # @rtc-reset-reinjection:
+@@ -283,10 +283,9 @@
+ # Returns: SevAttestationReport objects.
  #
--# This command will reset the RTC interrupt reinjection backlog.  Can
--# be used if another mechanism to synchronize guest time is in effect,
--# for example QEMU guest agent's guest-set-time command.
-+# Reset the RTC interrupt reinjection backlog.  Can be used if another
-+# mechanism to synchronize guest time is in effect, for example QEMU
-+# guest agent's guest-set-time command.
+ # Errors:
+-#     - This will return an error if the attestation report is
+-#       unavailable, either due to an invalid guest configuration
+-#       or if the guest has not reached the required SEV state,
+-#       GenericError
++#     - If the attestation report is unavailable, either due to an
++#       invalid guest configuration or because the guest has not
++#       reached the required SEV state, GenericError
  #
- # Use of this command is only applicable for x86 machines with an RTC,
- # and on other machines will silently return without performing any
-@@ -233,8 +233,7 @@
- ##
- # @sev-inject-launch-secret:
+ # Since: 6.1
  #
--# This command injects a secret blob into memory of a SEV/SEV-ES
--# guest.
-+# Inject a secret blob into a SEV/SEV-ES guest's memory.
- #
- # This is only valid on x86 machines configured with KVM and the
- # 'sev-guest' confidential virtualization object.  SEV-SNP guests do
-@@ -272,7 +271,7 @@
- ##
- # @query-sev-attestation-report:
- #
--# This command is used to get the SEV attestation report.
-+# Get the SEV attestation report.
- #
- # This is only valid on x86 machines configured with KVM and the
- # 'sev-guest' confidential virtualization object.  The attestation
 diff --git a/qapi/qom.json b/qapi/qom.json
-index b133b06447..9670d10246 100644
+index 9670d10246..9020e12650 100644
 --- a/qapi/qom.json
 +++ b/qapi/qom.json
-@@ -48,8 +48,7 @@
- ##
- # @qom-list:
+@@ -1259,7 +1259,7 @@
+ # Create a QOM object.
  #
--# This command will list any properties of a object given a path in
--# the object model.
-+# List properties of a object given a path in the object model.
+ # Errors:
+-#     - Error if @qom-type is not a valid class name
++#     - If @qom-type is not a valid class name
  #
- # @path: the path within the object model.  See @qom-get for a
- #     description of this parameter.
-@@ -76,8 +75,7 @@
- ##
- # @qom-get:
+ # Since: 2.0
  #
--# This command will get a property from a object model path and return
--# the value.
-+# Get a property value.
+@@ -1281,7 +1281,7 @@
+ # @id: the name of the QOM object to remove
  #
- # @path: The path within the object model.  There are two forms of
- #     supported paths--absolute and partial paths.
-@@ -128,7 +126,7 @@
- ##
- # @qom-set:
+ # Errors:
+-#     - Error if @id is not a valid id for a QOM object
++#     - If @id is not a valid id for a QOM object
  #
--# This command will set a property from a object model path.
-+# Set a property value.
+ # Since: 2.0
  #
- # @path: see @qom-get for a description of this parameter
- #
-@@ -171,7 +169,7 @@
- ##
- # @qom-list-types:
- #
--# This command will return a list of types given search parameters
-+# Return a list of types given search parameters.
- #
- # @implements: if specified, only return types that implement this
- #     type name
 -- 
 2.49.0
 
