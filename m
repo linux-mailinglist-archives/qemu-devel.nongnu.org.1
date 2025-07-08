@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 168A3AFD8A3
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A91AFD903
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:57:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFAP-0002dj-Em; Tue, 08 Jul 2025 16:43:53 -0400
+	id 1uZFCt-0000kr-DK; Tue, 08 Jul 2025 16:46:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <luxu.kernel@bytedance.com>)
- id 1uZDis-0000Wt-I4
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:11:49 -0400
-Received: from mail-qk1-x736.google.com ([2607:f8b0:4864:20::736])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <luxu.kernel@bytedance.com>)
- id 1uZDii-0005pM-F0
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:11:19 -0400
-Received: by mail-qk1-x736.google.com with SMTP id
- af79cd13be357-7d9e2f85b2cso162287285a.2
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:10:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1752001852; x=1752606652; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=DlW7iJ+C8rcpKrpFJBlschQsTW0cjQ0FNGJLVtjFCKo=;
- b=kA7mzyD4SvugwqfP8alf6gRHORCcvhmkkWkSFcUlW7+WxtWKnVxIzjARrlgBweLiPK
- 4A/ULbdQHr0aZUs1AVfyC+ACv39LWOYGihpdcOTA1yiJpo0eqiJs1SDRSKR7Pa2+D+GY
- 1ZXj5pf4+VOZsiVfrI7S1rTKUxZFfV/C356Alp13d3UWcJPaUGYsPtY6Kh893xckZnhk
- h3fn8RTi/gQCmK5tGAhyy2H6jDetG7l5uyYwEgshd1ebhmsUntoLflxMKY1kxYn1jmot
- nBr05/skVzabPKkxTy/aPbyTElZ5prevrxP28hP4l6SS8nm9nf65VNGkq6ZQjewjIYlS
- 7psg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752001852; x=1752606652;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DlW7iJ+C8rcpKrpFJBlschQsTW0cjQ0FNGJLVtjFCKo=;
- b=Fh7FyBvDDtsuCxmngTpYqiYAGV6r0nhqdheQfFHrN0h/0nG4Pwz8flsrkBhehEAXCj
- p7Kkq19YCzNw4XN6hkbB+l75g/83qj1pSr7qrX50H2LMVk7eVOFcvKONdPlsgDrCcJMe
- iW4uzYJKC+jbgYDEkwXPU0gT9z8/EmoVkbXKL06DJ5AbxxoJHGiQlTpQuh19vrqSAfj/
- CZa1UMdkJ1H/VH/sx0lxLuG6DrqIc/uvi6Tg7hPUDCf7sDMnJdUeTiJSH00RrrHyGMWD
- 2WVcNeEgdFCsjMroXq35meIhm3EQCwCpjbzVzcjNFsUcZ70uSLmDuNflFPK3JTekMeAP
- 7P/Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWmuGFOKV7wimD54XSmeWaat1pmohhR19uYYexzF7eTr6wMwNA9zw6g5ZXbOK42Q3Q5A4eRrW/weWSb@nongnu.org
-X-Gm-Message-State: AOJu0YzejxG6lOJyMsHPhttauZIrH/i1gavf26SATVoPBBGbvhYYd8mx
- yCI1KeTFSRtKWZbF/kqbFNNTErI9rsxOlfsAFJqoA9bCYCXpCumCUpTakUsu50tU/i3HalZEr4T
- pvRQ2GSJx7uIH
-X-Gm-Gg: ASbGncvPLbS8+57iI0UY2pCVzPqGaLRAsRxtbHTA+6lyl8q7+rZQmLseLxa5baVyuiL
- vHuF8F/WqoypfwLbbLldgauKsKz0sHH4reGI7wazrl4Q50l8JjPpnlndyNHhCB6pYGZXeo8sxZo
- qAHDnrWx9GiuPpGeQbmRNkm6Bw1OgPzLWKaK3RMauBTxSuYm1fqCV3riJ/HDPYfie1ZA2gTcask
- w5U3/+xTpcvMEnu7vCwe2NVqsELc0wO++zpTGjTnQWKSXTl0sUX3jsXWKr67tvvd1bI42HsglaB
- YjqCX0N7c22BzkP2iW/N40thne13cZMNdztn9r90hu1L8GhSI885PL+MQ8KdeGpHiZm0PIgkLrt
- sdO+kmueZOYD0aKNpCrB7/cuhV/DeaTUxa86IDBIdw5b1/BAUEw==
-X-Google-Smtp-Source: AGHT+IF6AAIvK9eyIkmGLUG4TOKJUDJZ2TnguFMof4aiR9CrOjY+tkFI+unFspBENtcPGZ+AxsiDUg==
-X-Received: by 2002:a05:6a21:a81:b0:220:e7d:8e30 with SMTP id
- adf61e73a8af0-225b8104ab1mr26951229637.18.1751954849898; 
- Mon, 07 Jul 2025 23:07:29 -0700 (PDT)
-Received: from J9GPGXL7NT.bytedance.net ([61.213.176.56])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74ce359d634sm10615776b3a.25.2025.07.07.23.07.26
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 07 Jul 2025 23:07:29 -0700 (PDT)
-From: Xu Lu <luxu.kernel@bytedance.com>
-To: palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, apatel@ventanamicro.com
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Xu Lu <luxu.kernel@bytedance.com>
-Subject: [PATCH] target/riscv: Fix exception type when VU accesses supervisor
- CSRs
-Date: Tue,  8 Jul 2025 14:07:20 +0800
-Message-Id: <20250708060720.7030-1-luxu.kernel@bytedance.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZDmf-0003m3-7a
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uZDmU-0006uj-Iv
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:15:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752002088;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pLStfRJpmfQIOh7bxIrsJAAe+Duhq1gVCiVm8+G88H0=;
+ b=dajCX01+m2Stwx0f9M/Mxpu21vTA6+Y1/k8SWBgul48dcFtO9DWnMD0sg6DtS5GJwVYdBd
+ cHBcUrQ99+Y5fe1JUJngbsanlTxhhS3nUNIW0sfoYmkU7WXd5KMNperwoAnpMAMq4dpwOI
+ aUYAn05AHgarrpvcOSvtU3UbWL3kgow=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-0xo2J7d1OFa-lqVWW6Fupg-1; Tue,
+ 08 Jul 2025 02:54:00 -0400
+X-MC-Unique: 0xo2J7d1OFa-lqVWW6Fupg-1
+X-Mimecast-MFC-AGG-ID: 0xo2J7d1OFa-lqVWW6Fupg_1751957639
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A7F0D18001D1; Tue,  8 Jul 2025 06:53:58 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F4097195608F; Tue,  8 Jul 2025 06:53:57 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 362CB21E6A27; Tue, 08 Jul 2025 08:53:55 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org,  John Snow <jsnow@redhat.com>,  Cleber Rosa
+ <crosa@redhat.com>,  Eric Blake <eblake@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  "Daniel P. Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,  Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>,  Peter Krempa <pkrempa@redhat.com>,
+ devel@lists.libvirt.org
+Subject: Re: [PATCH V2 1/5] qom: qom-tree-get
+In-Reply-To: <87zfdfz2y6.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Tue, 08 Jul 2025 07:06:25 +0200")
+References: <1747057635-124298-1-git-send-email-steven.sistare@oracle.com>
+ <1747057635-124298-2-git-send-email-steven.sistare@oracle.com>
+ <877c0ono29.fsf@pond.sub.org>
+ <76271add-d9b3-4b45-a272-3cbe336c2103@oracle.com>
+ <87zfdfz2y6.fsf@pond.sub.org>
+Date: Tue, 08 Jul 2025 08:53:55 +0200
+Message-ID: <87cyabyxz0.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::736;
- envelope-from=luxu.kernel@bytedance.com; helo=mail-qk1-x736.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,29 +91,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When supervisor CSRs are accessed from VU-mode, a virtual instruction
-exception should be raised instead of an illegal instruction.
+Markus Armbruster <armbru@redhat.com> writes:
 
-Fixes: c1fbcecb3a (target/riscv: Fix csr number based privilege checking)
-Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
----
- target/riscv/csr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Steven Sistare <steven.sistare@oracle.com> writes:
+>
+>> On 7/4/2025 8:22 AM, Markus Armbruster wrote:
+>>> Steve Sistare <steven.sistare@oracle.com> writes:
+>>> 
+>>>> Define the qom-tree-get QAPI command, which fetches an entire tree of
+>>>> properties and values with a single QAPI call.  This is much faster
+>>>> than using qom-list plus qom-get for every node and property of the
+>>>> tree.  See qom.json for details.
+>>>>
+>>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+>>>> ---
+>>>>   qapi/qom.json      | 56 ++++++++++++++++++++++++++++++++++++++++++
+>>>>   qom/qom-qmp-cmds.c | 72 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>>>   2 files changed, 128 insertions(+)
+>>>>
+>>>> diff --git a/qapi/qom.json b/qapi/qom.json
+>>>> index 28ce24c..94662ad 100644
+>>>> --- a/qapi/qom.json
+>>>> +++ b/qapi/qom.json
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 8631be97c5..9bebfae3f0 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -5577,7 +5577,7 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
- 
-     csr_priv = get_field(csrno, 0x300);
-     if (!env->debugger && (effective_priv < csr_priv)) {
--        if (csr_priv == (PRV_S + 1) && env->virt_enabled) {
-+        if (csr_priv <= (PRV_S + 1) && env->virt_enabled) {
-             return RISCV_EXCP_VIRT_INSTRUCTION_FAULT;
-         }
-         return RISCV_EXCP_ILLEGAL_INST;
--- 
-2.20.1
+[...]
+
+>>>> ##
+>>>> +# @qom-tree-get:
+>>>> +#
+>>>> +# This command returns a tree of objects and their properties,
+>>>> +# rooted at the specified path.
+>>>> +#
+>>>> +# @path: The absolute or partial path within the object model, as
+>>>> +#     described in @qom-get
+>>>> +#
+>>>> +# Errors:
+>>>> +#     - If path is not valid or is ambiguous, returns an error.
+>>> 
+>>> By convention, we use "If <condition>, <error>, where <error> is a
+>>> member of QapiErrorClass.
+>>
+>> OK.  I was following the minimal Errors examples from this same file.
+>
+> Yup.  I'll clean them up.
+
+I changed my mind.
+
+Omitting ", <error>" is fairly common, actually.  I don't feel like
+chasing down the actual error classes.  Moreover, documenting error
+classes we don't want people to use seems counterproductive.
+
+Feel free to just delete ", returns an error." and call it a day.
+
+[...]
 
 
