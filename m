@@ -2,95 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F59AFDA36
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6575AFD9A4
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:21:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZGE4-0006L5-47; Tue, 08 Jul 2025 17:51:44 -0400
+	id 1uZFL7-0005CH-9E; Tue, 08 Jul 2025 16:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yodel.eldar@gmail.com>)
- id 1uZEnf-0001tj-N0
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:20:24 -0400
-Received: from mail-oa1-x44.google.com ([2001:4860:4864:20::44])
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1uZEVR-0002yU-C6
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:01:38 -0400
+Received: from mail-qt1-x843.google.com ([2607:f8b0:4864:20::843])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yodel.eldar@gmail.com>)
- id 1uZEnd-00071B-8o
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:20:22 -0400
-Received: by mail-oa1-x44.google.com with SMTP id
- 586e51a60fabf-2eaf96c7579so3475864fac.3
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 13:20:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1uZEVJ-0003Zr-0C
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 16:01:28 -0400
+Received: by mail-qt1-x843.google.com with SMTP id
+ d75a77b69052e-4a442a3a2bfso78702751cf.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 13:01:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1752006019; x=1752610819; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:to:subject:cc:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=/srP03LadnBtI40xfonlgq/Oc6u38UMF8cqS7IASvek=;
- b=e6rf4dVPqN7VwCtRdqcJpngia6J1Ql2XdUA619BcqzC1nhG21mrPNRsr2/i8Yv1dPQ
- C2KZJ6TuNAtGT6SGsKiNiegNbZWpq2G9kKS31stct1LPMCvd0cIXnHkobjJwU3PEQ8fe
- 8J8HZzWfC+VGGnX3S030G9cLc76cw2Xbp4VMoeCpKxPJAZ9eRcA46QHnnW8cDNCmwbUA
- hy4n7GXOKlT9Y2HtjL+dHbyR24MQEqd00lg7WcM/MJamksGuuc9Qysj2nd0Yvz0sEolV
- iz0iTuZE8dFsduNyxt5O5UnkN0wyJ2nQUZCt0pD/70E1jFRdTAFmevfvQqNUpyaL9w/q
- 9xMA==
+ d=gmail.com; s=20230601; t=1752004881; x=1752609681; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=MoncLiotR2i8htK3M42jgU29xEXPnqSxiRLcPBGmgMo=;
+ b=QKuvyRgTB1BhEPLJSVqCNGL35LecdiJVYSyXMNSxqqlbuTFWFPlNXpcP+soIRwHGIt
+ W9EfmpjvDS3OeREMyntriGKm1MbMyG9/OJ9ZcsKDwHTEdkjjD0waCc+2+BsLzyjb0Mm9
+ 1ZIvg+E0bbN43ooUmpJZuSj5+LfXBcjJTXUJE37r2yJHBRxN5oWN+cZo6B+U1dwTAA5u
+ 3V4OThx4jzvcNKJMWKQl6q9c/R2mlP3Zb94JEU7Z7xcBuht7l4UG4XU1zleXgkS0TaKT
+ 4NYNMHf6UELTSzM0uurpkkH1RHpet1Pf+mdXxR4ptgEFzweLiWzMQ/7jWeEeSUd4YUM/
+ TjOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752006019; x=1752610819;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:to:subject:cc:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/srP03LadnBtI40xfonlgq/Oc6u38UMF8cqS7IASvek=;
- b=ix6w8yqSFsBJadpGQSlLerzcAaB+3WwttTzRmQra1chu/Z57q52GbzgY5KGxi6OH/V
- utpdcwHPBCMXHvKc5N7FR8JUyICam42/+sOHhd7mg6vkOSMl5tXteGag/FdDuZncn/6S
- nkUdWxu69HwBPtcGNqzRqMwrjfKrrUPAphrXeCbokCnCl0dAVpuCDzVCCYUZrz5I4QZC
- r7eEJvC3heavze0EcWynIQlhNb0Zwpx8BDCqDiVauYZvTH0px3ZBW084jiOpaqKzZ6cT
- /H6X2rGS+g9d9ingbmBNqTq/rfs85zTC+3sbFNxST+cS+6lDg+OOUYjXSgDOBtD8CV0x
- jpOQ==
+ d=1e100.net; s=20230601; t=1752004881; x=1752609681;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MoncLiotR2i8htK3M42jgU29xEXPnqSxiRLcPBGmgMo=;
+ b=bkPhNmAAIvotDbmwX+W1wyk2yYDrl6X26MhSJYEgeTFTWktU5+Agnlt0eOhqWOKr3K
+ /cyuTUk8duJIK5d96g3bdxGWhoN2ENAkmIqSA8IMxdqN07FcLygNobm/0jS/77Si5rdO
+ K1PLJ1hMzZQ1J+NkM8ESgUA/U7cjjuahChkJLXs74Nf8iCsT3FPeWumL0hgfmboIfg/H
+ ou05vdE5kb24uHaPWxPc1UjXvgbkTTW1EAAS2mbTOEJfmpI3TupxBq0VwtEdWbYrbrq7
+ U6reetsy0pKoEyiHt+aUxKVQspcSZNgb7GFI8mrslmBqDs7VlZGirZz2/yaD0ZOEdPo9
+ UBAA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWpFNyC4ufCshoJT0d1YXfouAEQBv3tGFFzuBZ5vL/LLq/nmN4hwIkv/LDd1BVeNienIYw3crtiC5RS@nongnu.org
-X-Gm-Message-State: AOJu0YwUIkDjcJ6pgXDVcB6HkyORHulzcMCVEDroq0IhOgZcxFwmOkeL
- P5ODa0x8TTxKc/dU816Jf+XBQTTCnE37GPLBnow/AyhQ9AZvOXqEr+P3pRWx8Zsf
-X-Gm-Gg: ASbGncviURURYtGjr/IwrNMnOEewJF9JTptjgwFp9CXwlHzEwpkNdSDNVNcy60rTCel
- 4DfaN7Gk4lbIHeKPezDjV1UR1eYJjjFbde3Ojztqy98NIJAY1gluAu/mkJUOQI4oCjaw10VORIW
- EhwdcNbvf6s1OEQwFZ6amS3KHST4526h+e3qRcltdtR/oP1n3xJ6RxEIBXy2SVF26XKm13A6nfo
- YTbr+Kn1Ip2x9FD7gqxDVyAAMSaCEFrixICC3YbDdZid14B7xYhL5yRDUxbwsDP6TaCH9DD95y7
- ddKoSv9rLPuvuHDpTqbm8GGVCIp1nmpC7x0HN/cNGZhANb9YuhR3Q40nq4vGIcw=
-X-Google-Smtp-Source: AGHT+IG/SELCDXZeuQ9nTgkibSV9YUOxZ6Pqs2uIX6UZSBNOD0d0xG5Amafa730Ca9YbsfNrRjeBGA==
-X-Received: by 2002:a17:90b:3903:b0:313:5d2f:5505 with SMTP id
- 98e67ed59e1d1-31aadd9ce71mr27358016a91.16.1751986137936; 
- Tue, 08 Jul 2025 07:48:57 -0700 (PDT)
-Received: from [10.2.0.2] ([89.187.185.165]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23c8434ec91sm112279855ad.64.2025.07.08.07.48.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 07:48:57 -0700 (PDT)
-Message-ID: <82da22d3-110b-4d6c-a6df-3fe589147e7e@gmail.com>
-Date: Tue, 8 Jul 2025 09:48:56 -0500
+ AJvYcCVcKL5/i//xvW7HY/+BrsTFbDJtjtr9HJCAQok5QGOkFhXi4LLUiS8rKxmFhmD9dKLB2/P1iI9MkHqy@nongnu.org
+X-Gm-Message-State: AOJu0YxiCvN9i4SsNRAkwO6WB/J0SHIFMaLNyab8w5FaTjghGb1XYGg2
+ L4HFNK17mfZ96J4urtOHJBsBmlubJ00zSYpR5PgEz73eplpI6aouG6fCzHKac+P47A==
+X-Gm-Gg: ASbGncv6mkaSpSEh4CxEzYW3XO+J1RRKBKkxBOfyVgaSpL82k8rjnwXzQiy88x2bdv+
+ CDIiH11jEi4kbKYQx8nRsiVwlRG/1+xHXaNKVEfaePhmdW9Fpq5rUMqhaEuJnLBIIm2fcUZ3fEU
+ FZLkkZN83WOBOzEx2jtLIp27unqDW4q0od1oIQGMockWtg8RIbM1JtRn/Wm6mEnG+GEiHWMDUSp
+ pN+cggdraP+v3Iet84zzsk5nWddRULcFA43KDfHCb9VU5nlbsm+CShKwEuCgyuRWjRya6TuymIv
+ Ti/pVim9vKztiNUcWYkjr06mUbeE2fcLWFnWBmkFKNAuxRxJZSjWUZvksiGDCFW2xyV/DHLmdyd
+ UY/6a9nxuDA==
+X-Google-Smtp-Source: AGHT+IEA7Q47Km+FlWpn9hwjYSo+hMCLX9DwGMPGw4uzbflOtPa4sKLF8MUnJvJq86mqwFIbwouAGg==
+X-Received: by 2002:a05:6a21:2d8f:b0:21f:4459:c032 with SMTP id
+ adf61e73a8af0-225b85f42edmr26203574637.18.1751986345510; 
+ Tue, 08 Jul 2025 07:52:25 -0700 (PDT)
+Received: from localhost.localdomain ([139.227.17.93])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-74ce43d69d7sm12635484b3a.177.2025.07.08.07.52.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Jul 2025 07:52:25 -0700 (PDT)
+From: Tomita Moeko <tomitamoeko@gmail.com>
+To: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Cc: Tomita Moeko <tomitamoeko@gmail.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH v3] vfio/pci: Introduce x-pci-class-code option
+Date: Tue,  8 Jul 2025 22:52:11 +0800
+Message-ID: <20250708145211.6179-1-tomitamoeko@gmail.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: yodel.eldar@gmail.com, qemu-devel@nongnu.org,
- richard.henderson@linaro.org, laurent@vivier.eu
-Subject: Re: [PATCH v2 0/2] target/alpha: Add TCG plugin register tracking
- support
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20250630164124.26315-1-yodel.eldar@gmail.com>
- <87ldozunj2.fsf@draig.linaro.org>
-Content-Language: en-US
-From: Yodel Eldar <yodel.eldar@gmail.com>
-Autocrypt: addr=yodel.eldar@gmail.com; keydata=
- xjMEZxqXdhYJKwYBBAHaRw8BAQdAkletQdG3CLyANZyuf2t7Z9PK4b6HiT+DdSPUB2mHzmPN
- N1lvZGVsIEVsZGFyIChZb2RlbCBPcGVuUEdQIGtleSkgPHlvZGVsLmVsZGFyQGdtYWlsLmNv
- bT7ClgQTFggAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBNPNGM1AbbuKZqn435Xu
- T7c2ZU2sBQJnI9xJBQkB6nhTAAoJEJXuT7c2ZU2sSQABANuu74MJKexa8V8kVNLhw68loN4x
- 2ZbojcfUOWd8Pf5HAQDn1XxmQFPMIUYahlXMMrwRyQE1m6HjtrolOELICzwxDM44BGcal3YS
- CisGAQQBl1UBBQEBB0Ao8jLdb8MoWybV77fXOiqY5jSmrPy+MgzzjrAzqURjZAMBCAfCfgQY
- FggAJgIbDBYhBNPNGM1AbbuKZqn435XuT7c2ZU2sBQJnI9wMBQkB6ngWAAoJEJXuT7c2ZU2s
- BlUA/0ZfDDmzKdC1khPMaRIv/gWedFd5Z8jWqh0rswF2LyeNAQD6PjBgliBhL1xTto+juM1b
- jctqRusjtyMyzG8/ps2iDQ==
-In-Reply-To: <87ldozunj2.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::44;
- envelope-from=yodel.eldar@gmail.com; helo=mail-oa1-x44.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::843;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-qt1-x843.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,7 +84,6 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 08 Jul 2025 17:35:27 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,22 +98,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Introduce x-pci-class-code option to allow users to override PCI class
+code of a device, similar to the existing x-pci-vendor-id option. Only
+the lower 24 bits of this option are used, though a uint32 is used here
+for determining whether the value is valid and set by user.
 
+Additionally, to ensure VGA ranges are only exposed on VGA devices,
+pci_register_vga() is now called in vfio_pci_config_setup(), after
+the class code override is completed.
 
-On 7/8/25 2:53 AM, Alex Bennée wrote:
-> Yodel Eldar <yodel.eldar@gmail.com> writes:
-> 
->> This patch adds TCG plugin register tracking support for the Alpha
->> target and resolves gitlab issue #2569:
->>
->>    https://gitlab.com/qemu-project/qemu/-/issues/2569
->>
->> As mentioned in the bug report by Alex Bennée, the register list is
->> built using the target's corresponding GDB XML feature file, but the
->> Alpha target does not have one. The second patch introduces the missing
->> feature file and the necessary plumbing for it.
-> 
-> Queued to plugins/next, thanks.
+This is mainly intended for IGD devices that expose themselves either
+as VGA controller (primary display) or Display controller (non-primary
+display). The UEFI GOP driver depends on the device reporting a VGA
+controller class code (0x030000).
 
-Excellent, thanks for the update!
+Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+---
+v3:
+* Save the vdev class code when it is unspecified.
+* Call pci_register_vga() in vfio_pci_config_setup() to ensure VGA
+  regions are only get exposed when vdev is VGA.
+* Check vdev class code in vfio_is_vga().
+Link: https://lore.kernel.org/qemu-devel/20250528155548.29344-1-tomitamoeko@gmail.com/
+
+v2:
+* Add vdev class code check in vfio_populate_vga().
+* Fix type in trace-events.
+Link: https://lore.kernel.org/all/20250524153102.19747-1-tomitamoeko@gmail.com/
+
+ hw/vfio/pci.c        | 29 +++++++++++++++++++++++++----
+ hw/vfio/pci.h        |  6 ++----
+ hw/vfio/trace-events |  1 +
+ 3 files changed, 28 insertions(+), 8 deletions(-)
+
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 1093b28df7..910042c6c2 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2893,10 +2893,6 @@ bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
+                           "vfio-vga-io@0x3c0",
+                           QEMU_PCI_VGA_IO_HI_SIZE);
+ 
+-    pci_register_vga(&vdev->pdev, &vdev->vga->region[QEMU_PCI_VGA_MEM].mem,
+-                     &vdev->vga->region[QEMU_PCI_VGA_IO_LO].mem,
+-                     &vdev->vga->region[QEMU_PCI_VGA_IO_HI].mem);
+-
+     return true;
+ }
+ 
+@@ -3228,6 +3224,23 @@ bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp)
+                                               vdev->sub_device_id);
+     }
+ 
++    /*
++     * Class code is a 24-bit value at config space 0x09. Allow overriding it
++     * with any 24-bit value.
++     */
++    if (vdev->class_code != PCI_ANY_ID) {
++        if (vdev->class_code > 0xffffff) {
++            error_setg(errp, "invalid PCI class code provided");
++            return false;
++        }
++        /* Higher 24 bits of PCI_CLASS_REVISION are class code */
++        vfio_add_emulated_long(vdev, PCI_CLASS_REVISION,
++                               vdev->class_code << 8, ~0xff);
++        trace_vfio_pci_emulated_class_code(vbasedev->name, vdev->class_code);
++    } else {
++        vdev->class_code = pci_get_long(pdev->config + PCI_CLASS_REVISION) >> 8;
++    }
++
+     /* QEMU can change multi-function devices to single function, or reverse */
+     vdev->emulated_config_bits[PCI_HEADER_TYPE] =
+                                               PCI_HEADER_TYPE_MULTI_FUNCTION;
+@@ -3257,6 +3270,12 @@ bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp)
+ 
+     vfio_bars_register(vdev);
+ 
++    if (vdev->vga && vfio_is_vga(vdev)) {
++        pci_register_vga(&vdev->pdev, &vdev->vga->region[QEMU_PCI_VGA_MEM].mem,
++                         &vdev->vga->region[QEMU_PCI_VGA_IO_LO].mem,
++                         &vdev->vga->region[QEMU_PCI_VGA_IO_HI].mem);
++    }
++
+     return true;
+ }
+ 
+@@ -3643,6 +3662,8 @@ static const Property vfio_pci_dev_properties[] = {
+                        sub_vendor_id, PCI_ANY_ID),
+     DEFINE_PROP_UINT32("x-pci-sub-device-id", VFIOPCIDevice,
+                        sub_device_id, PCI_ANY_ID),
++    DEFINE_PROP_UINT32("x-pci-class-code", VFIOPCIDevice,
++                       class_code, PCI_ANY_ID),
+     DEFINE_PROP_UINT32("x-igd-gms", VFIOPCIDevice, igd_gms, 0),
+     DEFINE_PROP_UNSIGNED_NODEFAULT("x-nv-gpudirect-clique", VFIOPCIDevice,
+                                    nv_gpudirect_clique,
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index 495fae737d..4aa6461117 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -157,6 +157,7 @@ struct VFIOPCIDevice {
+     uint32_t device_id;
+     uint32_t sub_vendor_id;
+     uint32_t sub_device_id;
++    uint32_t class_code;
+     uint32_t features;
+ #define VFIO_FEATURE_ENABLE_VGA_BIT 0
+ #define VFIO_FEATURE_ENABLE_VGA (1 << VFIO_FEATURE_ENABLE_VGA_BIT)
+@@ -205,10 +206,7 @@ static inline bool vfio_pci_is(VFIOPCIDevice *vdev, uint32_t vendor, uint32_t de
+ 
+ static inline bool vfio_is_vga(VFIOPCIDevice *vdev)
+ {
+-    PCIDevice *pdev = &vdev->pdev;
+-    uint16_t class = pci_get_word(pdev->config + PCI_CLASS_DEVICE);
+-
+-    return class == PCI_CLASS_DISPLAY_VGA;
++    return (vdev->class_code >> 8) == PCI_CLASS_DISPLAY_VGA;
+ }
+ 
+ /* MSI/MSI-X/INTx */
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index 8ec0ad0cde..fc6ed230d0 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -48,6 +48,7 @@ vfio_pci_emulated_vendor_id(const char *name, uint16_t val) "%s 0x%04x"
+ vfio_pci_emulated_device_id(const char *name, uint16_t val) "%s 0x%04x"
+ vfio_pci_emulated_sub_vendor_id(const char *name, uint16_t val) "%s 0x%04x"
+ vfio_pci_emulated_sub_device_id(const char *name, uint16_t val) "%s 0x%04x"
++vfio_pci_emulated_class_code(const char *name, uint32_t val) "%s 0x%06x"
+ 
+ # pci-quirks.c
+ vfio_quirk_rom_in_denylist(const char *name, uint16_t vid, uint16_t did) "%s %04x:%04x"
+-- 
+2.47.2
+
 
