@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B441CAFD9D3
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 665E1AFD99F
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:21:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFBH-0004Vb-U8; Tue, 08 Jul 2025 16:44:47 -0400
+	id 1uZFGE-00071g-VL; Tue, 08 Jul 2025 16:49:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uZDi0-0008GZ-Gn
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:10:51 -0400
-Received: from mail-qv1-xf32.google.com ([2607:f8b0:4864:20::f32])
+ id 1uZDsj-00016E-17
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:21:35 -0400
+Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uZDhv-0005ce-2x
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:10:28 -0400
-Received: by mail-qv1-xf32.google.com with SMTP id
- 6a1803df08f44-70478ba562aso3353676d6.1
- for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:10:19 -0700 (PDT)
+ id 1uZDsf-0000lS-3b
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:21:32 -0400
+Received: by mail-qt1-x832.google.com with SMTP id
+ d75a77b69052e-4a9bff7fc6dso2420941cf.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Jul 2025 12:21:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752001819; x=1752606619; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752002487; x=1752607287; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hhWCRVHslwq6uQ1RrYD5pYArFASP6BrAWb7d3H68MWU=;
- b=TvZUoC+zTMIPiglERPDsdLtPm2HukKYszfjsm69rATkBs0IWZFeLktqIBIFFS1nY9w
- 7bt5GmEpzLQNx1qNxYu4THBUBUAT0xgPwxVIVL1wZsnZ2RycAwGqPElDX+mXAoUPPvLr
- MhrkPQhY8vl69ccYQvE6LOp05ngEOBZsR7Xgnq855hHEaOFFqn39UZkM3/RrnTnngUbP
- /iEoezstcjyxWOD9hy3MFnHfSQDwdBH09vcMmbC83SRYkrEhAQpbGOMhl1YUlZHMx8LW
- gvHgdCsjOUi+eXOzKRehXjLjTYrgCaxWd6r3maQQn/h+bNH2QXqP5o5bd9w6sbgPPLwi
- FDuA==
+ bh=5gSjuATTx72GOZz467qIDKmTtfJ/K9yb+xo8zZDWtOk=;
+ b=Kirt5ZXrdvRhbKeI9M03MR+uso2zRjZeMKS1X/mQIi8YPvhddf2gWL2a0DsHhZ+h+N
+ la5NiiwNSkV+BnfOMmCUpFJrrXfe928thzd7RU4voAg8DUy7ZLYaqivd2EKzlGoi/wD6
+ hk3xXyaGgaxbXlAVDWkY1+BLd3kDEZ7jrxde2RibkWPTs5GvYcoByObZbSc45SANyLLb
+ gL0vk3ma3Wu/OmE1Vdc8HMEcC6rwCiaDCpw2S1IdFQhYNrkg8E37Ekd81av2QgdhMZ+U
+ 1oMakB0XbyNHohoYJcMUbydDc1jNJga/RLsSf6WdTTlTRfPp4ceMGI7H2eG5lfuKWLPH
+ 8MwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752001819; x=1752606619;
+ d=1e100.net; s=20230601; t=1752002487; x=1752607287;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hhWCRVHslwq6uQ1RrYD5pYArFASP6BrAWb7d3H68MWU=;
- b=GVohq3AmqGpBW4gNpds5m23et6qRTrUc2qzHNQZevWXdM6Ef+29PYtM+bnPMJuoj6y
- ek8YoeI0fLZjeHCr8cHWpswDt5Sr5D/fir6gz7f8ZHRNYJjO3iugWEU0zViXm2jZxg1v
- yQD7YHwcHtKs4rHfa6toftReYeH0bD58S0G0Odhkzb4PpW3LvoJ9Z1X85hAl+fpZD4HN
- 5AacNs1UFzGgffJmZnVKakAJKE+j7zncD0GsCTIw9bcuKtfHF+zhTeBoyotKQ1OMhi7O
- VV7IoLD2RkkgAR/2dorqnIhbvrufzES/2XQ+rBwzCtwJkwoxZI/VlnV/WOi/vOcKuwfT
- zntA==
+ bh=5gSjuATTx72GOZz467qIDKmTtfJ/K9yb+xo8zZDWtOk=;
+ b=oh8D++66d6aIzyIo3o5np9k9kv70zYNarGz6BBKnKdGrVxGkcStDDBXdQdzRNLXmv1
+ VbkUvedq9xrZeoIiMhVbJehlsP0/7IoabuBlQzbPvgJ3MEC2Tob0Tqburf5Zs++zEj6v
+ 2d++y6wHa+bU15OmoD3B8dEgJc6GTSDLt7hox3xW6pI2uY7h8OIIXjRllLx7GK7KYmg/
+ Ah7wbFVrVAAkoACSkQxKzKlTWCOCNMWL1N1/aM5I6kNMdtJuWeYZ2z9P4dxiiqb2EsuA
+ z1d3CuHbclIoPqDNLus5N3bffhWPK5wqAS8o0OQGR+Wqy7S1P1YuuXcHv4EnG8u1K9sB
+ x7SA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW4fZ7QYDZz1LVtk4OeURiz4avP/krI8tjt4Zc7UfgKXLal1iaIQsFWPGvk/7TJHCsDLwY8STOs1Sxp@nongnu.org
-X-Gm-Message-State: AOJu0YxaVb9sGvm+ILAbH4uMIhsBA5R/dF5yYIDRaJMgoKSCO3SMRogS
- F48aylzSOeAh01P3vOjx5/Luhoh66BG7XHKKmFfjBjiTfwzxPY/uVW6l9MalhPfG640wRaqPYvk
- Wy8/z
-X-Gm-Gg: ASbGncunaXoWqBEaXQ1ja98j/LW+cN6T2nAROWkptZRVgbnEQxymsUm5XqZBudUT4Dw
- WTPAowOMwdzFtkCPGCsWQzUd8oSnY+JOR/y8J5eTWoOBXDegd/m6DtUcOepHby5JeR47TzXaPG4
- KNjejtS3UaT27JmoxEb1/pixkO+TqB+4hZ46v6z5NucIDT5YRY3XzGAP/aUHWVw1lBA2g2Xtdpm
- /OKM0pv+1QStSKujRB7heIOziS7nOey2mBID1gW6Bt0IFjI54fJv8+ca3CRk+cHNI0NGToQkquv
- oTu0Ypb1hdD4zXARtRKn+AHs6KKnWM4Zw2+Bo+leFxU019IesRNTMcQHCgvcuNOM7s0EVITyj34
+ AJvYcCU8vOZ6h1zKMz7w/LXuCUlDrK1zM0ego1YxzHpYLg0y4aHJhFf+1g4nEud4HS3Q6aqgrSSdsGMvub13@nongnu.org
+X-Gm-Message-State: AOJu0YwCWL6jj8whph4738OmkkIJWqOwsjzbFfGdTej6qzrY6rfTDCnd
+ 9ZPT+zjfzL+hBADTEka6t567C7hWH3sg82vlXAGPcf7t8xWJPa+QYmM1I+UxQwp7+OwHmvkTlMK
+ mKuzh
+X-Gm-Gg: ASbGnctEOdDgqC+j5WV9sTPBue8zPHYR7b+ibwHYlVycgANcWu+IpNIkhFkI6qANhWe
+ 2c0he4PhYvqBOiVHzqvV1noD91QxcCLHLa2Yur+0g0RYVG1B+dKaVxdeqZBLcPJSN3ZNVhi2TRy
+ hFW/XLrazxuFEIqCloEPVsEV/EwaOHKMTn9ToZHIwaj/S9ZY0iSSTZfAZpeOIYujLkP4/x5QQfu
+ anOiTMP7JVT3V6iA9Iue9B9B0i1bvcGQ143xgFpTJ0b8KTHFgHrzkjF8z7KOlfvqss0DB0LIRyk
+ +Xz4g4Y6QY7x8lfmfmMLG64JNdlYrdWIPxwBX0JbsQb7dslS73ipxV2IxVBT1N7NzEtu+WLvezU
  =
-X-Google-Smtp-Source: AGHT+IHn7j7DwtC37mVnuJxSAyamU1ibclONru48BAOFY7tp15B+Io74D//xDBie9Udp6k0JPh09yw==
-X-Received: by 2002:a05:6a20:ce47:b0:220:1843:3b7b with SMTP id
- adf61e73a8af0-22b6640dcabmr5437329637.4.1751995905836; 
- Tue, 08 Jul 2025 10:31:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkizQaQtMXancy/7xviF7/nV/9CuG4CcqSvXpkj09rbW5kDvKUk7aJ9PLQYz2Q785lGeVQJA==
+X-Received: by 2002:a05:6a20:3d0a:b0:21f:4ecc:119d with SMTP id
+ adf61e73a8af0-22b669e7f6dmr4910385637.7.1751995933879; 
+ Tue, 08 Jul 2025 10:32:13 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b38ee4509d0sm12056925a12.7.2025.07.08.10.31.44
+ 41be03b00d2f7-b3924868c3dsm4334342a12.23.2025.07.08.10.32.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jul 2025 10:31:45 -0700 (PDT)
-Message-ID: <b30ca036-df53-41d3-9234-1f32070915df@linaro.org>
-Date: Tue, 8 Jul 2025 10:31:44 -0700
+ Tue, 08 Jul 2025 10:32:13 -0700 (PDT)
+Message-ID: <4c89172b-1214-459d-9d0b-221347ce59d2@linaro.org>
+Date: Tue, 8 Jul 2025 10:32:12 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 v7 1/8] target/qmp: Use target_cpu_type()
+Subject: Re: [PATCH-for-10.1 v7 2/8] qemu/target-info: Factor target_arch() out
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -79,25 +79,24 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-riscv@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>, qemu-block@nongnu.org,
- qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang
- <jiaxun.yang@flygoat.com>, Aleksandar Rikalo <arikalo@gmail.com>
+ qemu-ppc@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
 References: <20250708171949.62500-1-philmd@linaro.org>
- <20250708171949.62500-2-philmd@linaro.org>
+ <20250708171949.62500-3-philmd@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250708171949.62500-2-philmd@linaro.org>
+In-Reply-To: <20250708171949.62500-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f32;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-qv1-xf32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-qt1-x832.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,13 +113,34 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/8/25 10:19 AM, Philippe Mathieu-Daudé wrote:
+> To keep "qemu/target-info.h" self-contained to native
+> types, declare target_arch() -- which returns a QAPI
+> type -- in "qemu/target-info-qapi.h".
+> 
+> No logical change.
+> 
+> Keeping native types in "qemu/target-info.h" is necessary
+> to keep building tests such tests/tcg/plugins/mem.c, as
+> per the comment added in commit ecbcc9ead2f ("tests/tcg:
+> add a system test to check memory instrumentation"):
+> 
+> /*
+>   * plugins should not include anything from QEMU aside from the
+>   * API header. However as this is a test plugin to exercise the
+>   * internals of QEMU and we want to avoid needless code duplication we
+>   * do so here. bswap.h is pretty self-contained although it needs a
+>   * few things provided by compiler.h.
+>   */
+> 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/arm/arm-qmp-cmds.c             | 3 ++-
->   target/loongarch/loongarch-qmp-cmds.c | 3 ++-
->   target/mips/system/mips-qmp-cmds.c    | 3 ++-
->   3 files changed, 6 insertions(+), 3 deletions(-) 
+>   include/qemu/target-info-qapi.h | 21 +++++++++++++++++++++
+>   include/qemu/target-info.h      |  2 +-
+>   hw/core/machine-qmp-cmds.c      |  8 +++-----
+>   target-info.c                   |  8 ++++++++
+>   4 files changed, 33 insertions(+), 6 deletions(-)
+>   create mode 100644 include/qemu/target-info-qapi.h
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
