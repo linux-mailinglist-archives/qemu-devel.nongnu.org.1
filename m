@@ -2,54 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD31AFD91B
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 23:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8B0AFD899
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Jul 2025 22:43:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZFJF-0006t1-2i; Tue, 08 Jul 2025 16:53:04 -0400
+	id 1uZF9b-0000RS-Ot; Tue, 08 Jul 2025 16:43:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uZEDK-0007KS-7b
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:42:50 -0400
+ id 1uZDR6-0008Kc-Ii
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 14:53:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uZEDE-0006BJ-4C
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 15:42:49 -0400
+ id 1uZDQM-0007xg-LE
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 14:52:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752003762;
+ s=mimecast20190719; t=1752000723;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=44QR6KoW5uu6n00UV1FZxmx1WzQwzkeNmrceOwrELOQ=;
- b=U2kiPL9O2SxP1GXf6hvJlxrbfy0gT879t7tC47xwX3sqxxg0FQI1iN8ZdO/zG3fin4ubGI
- xlzS6lPm/R7XxSxlLTFnfT8myew8GicgkX7jdvP7igHl1IT5ClEf3T5+TUob8MXBX2zUqO
- 3m0Sz+Rrk8EMQOoTTAM+8k9ZM2vS+ac=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=3vC8C8sVRnVeZDTVWM7CQFE9e3gCk7D8qALWmelOzZQ=;
+ b=fJYpJqY1cseZvgo69eDNacFkYycIRk/q/Qm+c6bfNPK6ttWNtwmQ3Yjqi1iXYKhfYcHQvd
+ VPiGqwIDDn9x+H/pNtVlhU0slOTywPVb1FD7uSEq0ej2UVZgFqte6fFdiFXPXF54C6dUVQ
+ HAiepGtuDUEKwrTZbX6Mn0/XWPGKjz8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-n8nm0sg_MLWEYM59jyjrmA-1; Tue,
- 08 Jul 2025 11:28:48 -0400
-X-MC-Unique: n8nm0sg_MLWEYM59jyjrmA-1
-X-Mimecast-MFC-AGG-ID: n8nm0sg_MLWEYM59jyjrmA_1751988527
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-509-wy6iZ3MSPimkOAbCKdXpxQ-1; Tue,
+ 08 Jul 2025 11:32:47 -0400
+X-MC-Unique: wy6iZ3MSPimkOAbCKdXpxQ-1
+X-Mimecast-MFC-AGG-ID: wy6iZ3MSPimkOAbCKdXpxQ_1751988765
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BCEC218002ED; Tue,  8 Jul 2025 15:28:46 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CCD711801217; Tue,  8 Jul 2025 15:32:44 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.99])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D6873195608F; Tue,  8 Jul 2025 15:28:39 +0000 (UTC)
-Date: Tue, 8 Jul 2025 16:28:36 +0100
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3F6AA19560AB; Tue,  8 Jul 2025 15:32:37 +0000 (UTC)
+Date: Tue, 8 Jul 2025 16:32:34 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Roy Hopkins <roy.hopkins@randomman.co.uk>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
+To: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
@@ -62,19 +60,15 @@ To: Roy Hopkins <roy.hopkins@randomman.co.uk>, qemu-devel@nongnu.org,
  Michael Roth <michael.roth@amd.com>,
  Ani Sinha <anisinha@redhat.com>, Gerd Hoffman <kraxel@redhat.com>,
  Pankaj Gupta <pankaj.gupta@amd.com>, Joerg Roedel <joro@8bytes.org>
-Subject: Re: [PATCH v9 08/16] i386/sev: Refactor setting of reset vector and
- initial CPU state
-Message-ID: <aG05JAMHDmfbpg_E@redhat.com>
+Subject: Re: [PATCH v9 00/16] Introduce support for IGVM files
+Message-ID: <aG06EnbOg3a--2jl@redhat.com>
 References: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
- <d3c2debca496c4366a278b135f951908f3b9c341.1751554099.git.roy.hopkins@randomman.co.uk>
- <aG04W_upzY6p7M1H@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aG04W_upzY6p7M1H@redhat.com>
+In-Reply-To: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -101,63 +95,43 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 08, 2025 at 04:25:25PM +0100, Daniel P. Berrangé wrote:
-> On Thu, Jul 03, 2025 at 04:31:59PM +0100, Roy Hopkins wrote:
-> > When an SEV guest is started, the reset vector and state are
-> > extracted from metadata that is contained in the firmware volume.
-> > 
-> > In preparation for using IGVM to setup the initial CPU state,
-> > the code has been refactored to populate vmcb_save_area for each
-> > CPU which is then applied during guest startup and CPU reset.
-> > 
-> > Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
-> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> > Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-> > Acked-by: Gerd Hoffman <kraxel@redhat.com>
-> > Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-> > ---
-> >  target/i386/sev.c | 322 +++++++++++++++++++++++++++++++++++++++++-----
-> >  target/i386/sev.h | 110 ++++++++++++++++
-> >  2 files changed, 399 insertions(+), 33 deletions(-)
-> > 
-> > diff --git a/target/i386/sev.c b/target/i386/sev.c
-> > index a84f5f5d28..a13f91e615 100644
-> > --- a/target/i386/sev.c
-> > +++ b/target/i386/sev.c
+On Thu, Jul 03, 2025 at 03:59:33PM +0100, Roy Hopkins wrote:
+> Here is v9 of the set of patches to add support for IGVM files to QEMU. This is
+> based on commit c77283dd5d79149f4e7e9edd00f65416c648ee59 of qemu.
 > 
+> Once again, this is mostly a rebase of the previous patch series. However,
+> thanks to those reviewers who have provided feedback on v8 which has now been
+> addressed in this new version.
 > 
-> > +static void sev_apply_cpu_context(CPUState *cpu)
-> > +{
-> > +    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-> > +    X86CPU *x86;
-> > +    CPUX86State *env;
-> > +    struct SevLaunchVmsa *launch_vmsa;
-> > +
-> > +    /* See if an initial VMSA has been provided for this CPU */
-> > +    QTAILQ_FOREACH(launch_vmsa, &sev_common->launch_vmsa, next)
-> > +    {
-> > +        if (cpu->cpu_index == launch_vmsa->cpu_index) {
-> > +            x86 = X86_CPU(cpu);
-> > +            env = &x86->env;
-> > +
-> > +            /*
-> > +             * Ideally we would provide the VMSA directly to kvm which would
-> > +             * ensure that the resulting initial VMSA measurement which is
-> > +             * calculated during KVM_SEV_LAUNCH_UPDATE_VMSA is calculated from
-> > +             * exactly what we provide here. Currently this is not possible so
-> > +             * we need to copy the parts of the VMSA structure that we currently
-> > +             * support into the CPU state.
-> > +             */
+> This v9 patch series is also available on github: [2]
 > 
-> Are there any parts of the VMSA described in the IGVM that we are
-> unable to handle here ?
+> For testing IGVM support in QEMU you need to generate an IGVM file that is
+> configured for the platform you want to launch. You can use the `buildigvm`
+> test tool [3] to allow generation of IGVM files for all currently supported
+> platforms. Patch 11/17 contains information on how to generate an IGVM file
+> using this tool.
 > 
-> If so, what happens if those parts are set in the IGVM and their
-> value doesn't match KVM's default ? Presumably that would become
-> a measurement failure ?
+> Changes in v9:
+> 
+> * Address review comments from v8
+> * Add metadata to relevant commits.
+> 
+> Patch summary:
+> 
+> 1-11: Add support and documentation for processing IGVM files for SEV, SEV-ES,
+> SEV-SNP and native platforms. 
+> 
+> 12-15: Processing of policy and SEV-SNP ID_BLOCK from IGVM file. 
+> 
+> 16: Add pre-processing of IGVM file to support synchronization of 'SEV_FEATURES'
+> from IGVM VMSA to KVM.
 
-Never mind, this is answered by the following patch.
+IIRC, way back in the early draft of this you have included some pieces
+related to TDX which we then dropped since TDX wasn't ready in QEMU
+upstream.
 
+Now that TDX merged in QEMU a few weeks back, I'm wondering what gaps there
+are in this series wrt TDX support ?
 
 With regards,
 Daniel
