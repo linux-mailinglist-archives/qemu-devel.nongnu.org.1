@@ -2,114 +2,151 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADCECAFF12A
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 20:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49896AFF1CB
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 21:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZZsa-0006qQ-DW; Wed, 09 Jul 2025 14:50:52 -0400
+	id 1uZaQS-0000Gi-Mf; Wed, 09 Jul 2025 15:25:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1uZZqI-0005Rf-VG; Wed, 09 Jul 2025 14:48:31 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1uZaQP-0000GG-Kr
+ for qemu-devel@nongnu.org; Wed, 09 Jul 2025 15:25:49 -0400
+Received: from mail-dm6nam12on2057.outbound.protection.outlook.com
+ ([40.107.243.57] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1uZZqF-0002El-QN; Wed, 09 Jul 2025 14:48:30 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 569FRWS9028222;
- Wed, 9 Jul 2025 18:48:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=ynpQ9G
- +gOz+5zyEME62jSnyj13Lrr83nUTymQyemZdk=; b=ExOYBMNr5aj7MkCVmrSj7q
- g9a1KbckeZsGUd/l9znm7vDfHkn3+MJ7qENVYLuIy6ccdebOsFW6mT0R4iUsUfVi
- ttf7bj/O9it7nECO5YI9XJuozsT3GtbTACLdBu0LREzDJPAC9cck4Q+4xGK3CFg8
- YVcl385JEqTOApzBrzdvpoxw90eVTTzF7xYC8Q+lapDTeLT5UiQuruPJlxZ9HA2T
- UjOiq/a7WP2s+ar3SMYJMk2K6GwmOA3fhI1IvnsjOq18Q/pxFC6sgYygSR7hyk5R
- 0AUnNxkORseB0GLGJCu7E2yLi9yVUQ73z7AkfgycZXDj9qNkbDgATVrFU5sueN7w
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47puk488fg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Jul 2025 18:48:25 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 569ITYYp025642;
- Wed, 9 Jul 2025 18:48:24 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47qfcp9nws-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Jul 2025 18:48:24 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 569ImNLH525056
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 9 Jul 2025 18:48:23 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0DE3658065;
- Wed,  9 Jul 2025 18:48:23 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 335705804B;
- Wed,  9 Jul 2025 18:48:22 +0000 (GMT)
-Received: from [9.61.75.155] (unknown [9.61.75.155])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Wed,  9 Jul 2025 18:48:22 +0000 (GMT)
-Message-ID: <c160ab5e-57fe-4c63-9cec-b35985c9ed43@linux.ibm.com>
-Date: Wed, 9 Jul 2025 14:48:21 -0400
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1uZaQM-0007by-VQ
+ for qemu-devel@nongnu.org; Wed, 09 Jul 2025 15:25:49 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bpvHb/cHW+L5RZTlZe6HUIw5ctON47TBTyLcPVa4/hvOhI3h7Fu7rwkksb569WTFcx81Bx27tfNhdCX3G6+cgJ6jhXDu5EHN7/JDOMU/FR451hcHsc37Vgh1R6s4d0LoksF3VblgEQyKFxXiRUxwnT24Suxe9Zqq69MNGnbh59Ga+TSIxqVyxokQwxMf6p/I3OjMnTKz9Xh5UBklwLlVb5z0Nq2gcS7ESIwqCoAmfl0Nw0LYvgAz9Ev7WH5FR2r4boZ39ffRHHQPcViIL3giJhFyNNenM+O5F2XpToV6baXhL0st03MQZUdqXM6v8ooc7hglYMQ411epxUoN3MZrRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y/BPLBh8MPWZllXMbp5624ubhVjWH9/apye5MOAfUZs=;
+ b=yzQPtSJNokKCzp6esRC1Kz++5xqRjDjgUzRCysd0ZVAx5dbLkjxrXupqJWCl/r2E0ZkK1JtxUHsdJbsS1UgGxnkrZVsbQVWqnSl0SBHecqHLQ2sg/34kDsjxw4sP/UFLSiUz9WMliedg+C6nWbxtz7RRs3c34gn+9/3R1Bp925e9TovL63ZsI0r48IPH0AvsvBUzahkv0D/g3L4m++3+IfW83T4XXS9FjDuWnCvZg/e0xlND3UYrM1FsGfPj2smAeJA+quic6zTmCIAPES4rJvOaVzfLlUnbWUd3pahswJCgQswRRvDQ0eTZfy7tat64VELiDXK5C3oB6bwu4g7T/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y/BPLBh8MPWZllXMbp5624ubhVjWH9/apye5MOAfUZs=;
+ b=GMzTimrU33mBj7Mjflme+YNlsbxK5sLMg4xsBtu8apGPaWRQMTezqp3QyuMA/mXUs/gkVzwk8QEdaAL+bQpR6QrcLVspcMTRJr4dhGStRd/dsX5OhO/JzJNw/DwJA7hKOkYVyrKSObI3GcWvxfNGwqYx1LRtYX45wMTFDuBct7GWlCevd0qNw9K0YchFZYDFoCmcBmHUo7qu4yE8PVyL9k36uTgOagHeUfn0U0tB8nBwiLhXavT8Pejy5GIPzHtH1+HS6X8yhaHcocpoi8GcJN0DdzDctYaZmWM/1rqXQA/HBnuKQSey7SJjcv808GwGZHU4Nmb2Nz9ijflhHLN15w==
+Received: from SJ0PR05CA0101.namprd05.prod.outlook.com (2603:10b6:a03:334::16)
+ by CYYPR12MB8752.namprd12.prod.outlook.com (2603:10b6:930:b9::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.26; Wed, 9 Jul
+ 2025 19:20:37 +0000
+Received: from SJ5PEPF000001EA.namprd05.prod.outlook.com
+ (2603:10b6:a03:334:cafe::57) by SJ0PR05CA0101.outlook.office365.com
+ (2603:10b6:a03:334::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.21 via Frontend Transport; Wed,
+ 9 Jul 2025 19:20:37 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ5PEPF000001EA.mail.protection.outlook.com (10.167.242.198) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8922.22 via Frontend Transport; Wed, 9 Jul 2025 19:20:37 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 9 Jul 2025
+ 12:20:22 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 9 Jul
+ 2025 12:20:21 -0700
+Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com (10.129.68.6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Wed, 9 Jul 2025 12:20:20 -0700
+Date: Wed, 9 Jul 2025 12:20:18 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Donald Dutile <ddutile@redhat.com>
+CC: Zhenzhong Duan <zhenzhong.duan@intel.com>, <qemu-devel@nongnu.org>,
+ <alex.williamson@redhat.com>, <clg@redhat.com>, <eric.auger@redhat.com>,
+ <mst@redhat.com>, <jasowang@redhat.com>, <peterx@redhat.com>,
+ <jgg@nvidia.com>, <shameerali.kolothum.thodi@huawei.com>,
+ <joao.m.martins@oracle.com>, <clement.mathieu--drif@eviden.com>,
+ <kevin.tian@intel.com>, <yi.l.liu@intel.com>, <chao.p.peng@intel.com>
+Subject: Re: [PATCH v3 02/20] hw/pci: Introduce pci_device_get_viommu_cap()
+Message-ID: <aG7A8hxd1R4iVhGT@Asurada-Nvidia>
+References: <20250708110601.633308-1-zhenzhong.duan@intel.com>
+ <20250708110601.633308-3-zhenzhong.duan@intel.com>
+ <aG26VBqzOnLAWC5z@Asurada-Nvidia>
+ <01584206-e2c0-4881-aaf5-d6c552a30873@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] tests/functional: Add a test for s390x
- pxelinux.cfg network booting
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Zhuoying Cai <zycai@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Eric Farman <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20250709083443.41574-1-thuth@redhat.com>
- <20250709083443.41574-6-thuth@redhat.com>
-Content-Language: en-US
-From: Jared Rossi <jrossi@linux.ibm.com>
-In-Reply-To: <20250709083443.41574-6-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA5MDE2OCBTYWx0ZWRfX+E9nzSRrJHCI
- sILzi0FQTHNobH1/yh91v5ipUdqQJaQu3lhRf9G2VsysAMyvvi/X26vPNYaJotdVpl6bghtz822
- 2CNGslGvJOQMJgDhlsO2Gcdnsp0z7x8/xM5Vn98BGNQGTLFH9j6Tj+nwnmhG0x0XSXBWSzoH82H
- 3L/UK9fs/Btw0oahpKaUAhsIAHRXBaQr76zsJ0ERaNekuvBhBIckTlfRNedMSQH5YhNLmMcTTeG
- M3lc23cxnU1/UEljVetkfNw2Q3Jm6AQ1wLF8iKSNgXsx3gppSWgS5nWnPJux7HKe94lkdHKingK
- jJGiZXORiWFrQYzZII7uqL2jaPc7StEjTVTelVEyS9EkNr0tehaOXnNxFESimw/mHNzeTUUhPjV
- NSMlPPRIuhqUC2+I/oxSrClChB8SUZsIWnqGY8OEChCBa0vCz5x798YNCKLHxC/cyBH7XPeG
-X-Authority-Analysis: v=2.4 cv=XYeJzJ55 c=1 sm=1 tr=0 ts=686eb979 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=NEAV23lmAAAA:8 a=xNf9USuDAAAA:8
- a=vTr9H3xdAAAA:8 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
- a=69wJf7TsAAAA:8 a=kcwvHxqCf9KhxvEk92EA:9 a=QEXdDO2ut3YA:10
- a=Fg1AiH1G6rFz08G2ETeA:22
-X-Proofpoint-ORIG-GUID: iJb9vt9OCK30Djl6MH0KY57IpXEOUAbS
-X-Proofpoint-GUID: iJb9vt9OCK30Djl6MH0KY57IpXEOUAbS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-09_04,2025-07-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 suspectscore=0
- mlxscore=0 impostorscore=0 phishscore=0 bulkscore=0 clxscore=1015
- spamscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507090168
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=jrossi@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <01584206-e2c0-4881-aaf5-d6c552a30873@redhat.com>
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EA:EE_|CYYPR12MB8752:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48558887-9359-4aac-9930-08ddbf1dafad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|82310400026|1800799024|376014|7416014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Q8NOIVLoNPhmLqj8VIz/eCT2U6LhBJm0jPVu21hymYUPuHzGYlFpg5chsFvc?=
+ =?us-ascii?Q?Km0dSdfCbq0GnxUtdEhLXmTofbny+AGBZNIJkq8W3EZI+VwiQmeJKnqs7Od6?=
+ =?us-ascii?Q?bk5hL+tdVEPcbfnD/iglUmie7PEG+XBg8zkIe462PqzbKChwS6nzMVkOojHb?=
+ =?us-ascii?Q?F0zKnPbhbFqTM+e85MIw1YXgY3gk1+svy96hYt4VtKPW3A6daS7IhCzOO/KM?=
+ =?us-ascii?Q?FEDQ7fMXg6N/43w91hsXR3LB1C70aYc/WZZAojBIUn0faOvcW/ENKqYyF2JB?=
+ =?us-ascii?Q?zRic2JITn01psiaard24vE1QDrzWo/nh10T1w7+pOZd1FU5I4Neap9S89lRM?=
+ =?us-ascii?Q?HnComKubRCIWFuxtQmVQXlgUWUyqDyse5swjKX7eOK4NAhidzjkKd5yDnXrw?=
+ =?us-ascii?Q?QAurfPUMmaOEiNOMl5V+d2JHQ6ld07rwbj3L6awvjrAf1IrwldUa/IrGP3Hy?=
+ =?us-ascii?Q?DD16yjR9AsSbT1ighu3k2iBFYRJ5VXLZqcL0kiYou3xo5sSgZPsqXOB+d2hP?=
+ =?us-ascii?Q?0gxXo9Eia+tC09VjGFwlj7Vnxov4vnRS40idNOB1mhwDs80XXD/rwRzWmlbg?=
+ =?us-ascii?Q?xShn0Xufgrh8k4mN4w2+7JmpqjRzmY2nIYBzqF4C55BHfCL8PcjvYFwrtL7q?=
+ =?us-ascii?Q?2xv6E8S4mpTlQ9CU58Z33myIoRHOoPM/MAsH4Td91/MO2njY3gt3KHdc3is6?=
+ =?us-ascii?Q?D0D8k0SRMxvT67td1GqKKWjsjD14aOm13V0QUQ2kMKtLNmnwUpxPl7c4mDUe?=
+ =?us-ascii?Q?6bIXa4Pu1zk8l3gTSZEpjUbUm+I9baWn6QXdfoVpRcXA9F8YsR5Ro/VrDgaq?=
+ =?us-ascii?Q?XHvsd0aT8Qoy2g1cp+0WQgwj6bgmBRHXcGG/oA7CarB9VQcyTtTTJ3XxDyNH?=
+ =?us-ascii?Q?mLk4XUZF3f19HTc8fBG6oxYkAO2cwz0Kebq8WItAWIetQNwq7p0NuIHKv1C5?=
+ =?us-ascii?Q?QAgEZ7C42Sf7kp1i3egRZFJa6AtTP9bEwToBAkyblPFLwY3Lvvog6WaC0Ad8?=
+ =?us-ascii?Q?fjzYx3bcByn2WvGrJ1ZjDc8IgbxnNxLSb5HAGvb/5cBGnITYrll4kslkXlAX?=
+ =?us-ascii?Q?0j87ULk6W2AMJEhlEY8kFir+VKl+fUoNme3Ckt/oAeKapjWznM9FyjbmWVij?=
+ =?us-ascii?Q?FGdzbvJoxva4u6qyKtS0ZFG2RCBOKJF09VU/NUPYQZUb5IfOMF6U0Ng1PL6k?=
+ =?us-ascii?Q?PVuk8Y+KSrzoO5OEafFsGiNRXlrMwygh2c1M3MRLrA9ky5lUhWm9Evcwqsi3?=
+ =?us-ascii?Q?14KOXFSqZALrjgifrNb8vE8Y8wE0H5/suU5AK04EtATOt0CwC+ehHgA9f3bk?=
+ =?us-ascii?Q?yD2W4N7iqeanmc4PAmjqcDQnu1NxIuwV8k0a1IJkHvNG3IQ0xQlWL8Z9izTE?=
+ =?us-ascii?Q?rceXtytr1kN1xN0Nl8ydETKMbuuH0c/uLmFacCWuRleRY0AcTN//e5SlYaln?=
+ =?us-ascii?Q?DhOfc6gla0OYX3YuNoYyW+gDdl3z6a7FCSFJDgil0DwJP2SA+QK7RKuVHCmF?=
+ =?us-ascii?Q?KywNnaWk0cSUf4wixoJTeue7bdu4w4T8wSuw?=
+X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
+ SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(7416014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 19:20:37.7448 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48558887-9359-4aac-9930-08ddbf1dafad
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF000001EA.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8752
+Received-SPF: permerror client-ip=40.107.243.57;
+ envelope-from=nicolinc@nvidia.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,173 +162,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Jared Rossi <jrossi@linux.ibm.com>
+On Wed, Jul 09, 2025 at 01:55:46PM -0400, Donald Dutile wrote:
+> > > +enum {
+> > > +    VIOMMU_CAP_STAGE1 = BIT_ULL(0),  /* stage1 page table supported */
+> > > +};
+> > 
+> > Thanks for this work. I am happy to see that we can share the
+> > common code that allocates a NESTING_PARENT in the core using
+> > this flag.
+> > 
+> > Yet on ARM, a STAGE1 page table isn't always a nested S1, the
+> > hardware accelerated one. More often, it can be just a regular
+> > 1-stage translation table via emulated translation code and an
+> > emulated iotlb.
+> > 
+> Because the user-created smmuv3 started as 'accelerated smmuv3',
+> and had been 'de-accelerated' to simply 'user created smmuv3',
+> I'm looking for some clarification in the above statement/request.
+> 
+> Is the above suppose to reflect that a nested IOMMU has some hw-acceleration
+> in its Stage1 implementation?
+> If so, then call it that: STAGE1_ACCEL.
+> If it's suppose to represent that an IOMMU has nested/2-stage support,
+> then the above is a valid cap;  -but-, having a nested/2-stage support IOMMU
+> doesn't necessarily mean its accelerated.
 
-On 7/9/25 4:34 AM, Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
->
-> Check the various ways of booting a kernel via pxelinux.cfg file,
-> e.g. by specifying the config file name via the MAC address or the
-> UUID of the guest. Also check whether we can successfully load an
-> alternate kernel via the "loadparm" parameter here and whether the
-> boot menu shows up with "-boot menu=on".
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS                             |   1 +
->   tests/functional/meson.build            |   1 +
->   tests/functional/test_s390x_pxelinux.py | 119 ++++++++++++++++++++++++
->   3 files changed, 121 insertions(+)
->   create mode 100755 tests/functional/test_s390x_pxelinux.py
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 1842c3dd83f..e88ed2c0a97 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1805,6 +1805,7 @@ F: hw/s390x/ipl.*
->   F: pc-bios/s390-ccw/
->   F: pc-bios/s390-ccw.img
->   F: docs/devel/s390-dasd-ipl.rst
-> +F: tests/functional/test_s390x_pxelinux.py
->   T: git https://github.com/borntraeger/qemu.git s390-next
->   L: qemu-s390x@nongnu.org
->   
-> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-> index 050c9000b95..1ae5f02fb37 100644
-> --- a/tests/functional/meson.build
-> +++ b/tests/functional/meson.build
-> @@ -281,6 +281,7 @@ tests_rx_system_thorough = [
->   
->   tests_s390x_system_thorough = [
->     's390x_ccw_virtio',
-> +  's390x_pxelinux',
->     's390x_replay',
->     's390x_topology',
->     's390x_tuxrun',
-> diff --git a/tests/functional/test_s390x_pxelinux.py b/tests/functional/test_s390x_pxelinux.py
-> new file mode 100755
-> index 00000000000..4fc33b8c46d
-> --- /dev/null
-> +++ b/tests/functional/test_s390x_pxelinux.py
-> @@ -0,0 +1,119 @@
-> +#!/usr/bin/env python3
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +#
-> +# Functional test that checks the pxelinux.cfg network booting of a s390x VM
-> +# (TFTP booting without config file is already tested by the pxe qtest, so
-> +#  we don't repeat that here).
-> +
-> +import os
-> +import shutil
-> +
-> +from qemu_test import QemuSystemTest, Asset, wait_for_console_pattern
-> +
-> +
-> +pxelinux_cfg_contents='''# pxelinux.cfg style config file
-> +default Debian
-> +label Nonexisting
-> +kernel kernel.notavailable
-> +initrd initrd.notavailable
-> +label Debian
-> +kernel kernel.debian
-> +initrd initrd.debian
-> +append testoption=teststring
-> +label Fedora
-> +kernel kernel.fedora
-> +'''
-> +
-> +class S390PxeLinux(QemuSystemTest):
-> +
-> +    ASSET_DEBIAN_KERNEL = Asset(
-> +        ('https://snapshot.debian.org/archive/debian/'
-> +         '20201126T092837Z/dists/buster/main/installer-s390x/'
-> +         '20190702+deb10u6/images/generic/kernel.debian'),
-> +        'd411d17c39ae7ad38d27534376cbe88b68b403c325739364122c2e6f1537e818')
-> +
-> +    ASSET_DEBIAN_INITRD = Asset(
-> +        ('https://snapshot.debian.org/archive/debian/'
-> +         '20201126T092837Z/dists/buster/main/installer-s390x/'
-> +         '20190702+deb10u6/images/generic/initrd.debian'),
-> +        '836bbd0fe6a5ca81274c28c2b063ea315ce1868660866e9b60180c575fef9fd5')
-> +
-> +    ASSET_FEDORA_KERNEL = Asset(
-> +        ('https://archives.fedoraproject.org/pub/archive'
-> +         '/fedora-secondary/releases/31/Server/s390x/os'
-> +         '/images/kernel.img'),
-> +        '480859574f3f44caa6cd35c62d70e1ac0609134e22ce2a954bbed9b110c06e0b')
-> +
-> +    def pxelinux_launch(self, pl_name='default', extra_opts=None):
-> +        self.require_netdev('user')
-> +        self.set_machine('s390-ccw-virtio')
-> +
-> +        debian_kernel = self.ASSET_DEBIAN_KERNEL.fetch()
-> +        debian_initrd = self.ASSET_DEBIAN_INITRD.fetch()
-> +        fedora_kernel = self.ASSET_FEDORA_KERNEL.fetch()
-> +
-> +        # Prepare a folder for the TFTP "server":
-> +        tftpdir = self.scratch_file('tftp')
-> +        shutil.rmtree(tftpdir, ignore_errors=True)   # Remove stale stuff
-> +        os.mkdir(tftpdir)
-> +        shutil.copy(debian_kernel, os.path.join(tftpdir, 'kernel.debian'))
-> +        shutil.copy(debian_initrd, os.path.join(tftpdir, 'initrd.debian'))
-> +        shutil.copy(fedora_kernel, os.path.join(tftpdir, 'kernel.fedora'))
-> +
-> +        pxelinuxdir = self.scratch_file('tftp', 'pxelinux.cfg')
-> +        os.mkdir(pxelinuxdir)
-> +
-> +        cfg_fname = self.scratch_file('tftp', 'pxelinux.cfg', pl_name)
-> +        with open(cfg_fname, 'w', encoding='utf-8') as f:
-> +            f.write(pxelinux_cfg_contents)
-> +
-> +        virtio_net_dev = 'virtio-net-ccw,netdev=n1,bootindex=1'
-> +        if extra_opts:
-> +                virtio_net_dev += ',' + extra_opts
-> +
-> +        self.vm.add_args('-m', '384',
-> +                         '-netdev', f'user,id=n1,tftp={tftpdir}',
-> +                         '-device', virtio_net_dev)
-> +        self.vm.set_console()
-> +        self.vm.launch()
-> +
-> +
-> +    def test_default(self):
-> +        self.pxelinux_launch()
-> +        # The kernel prints its arguments to the console, so we can use
-> +        # this to check whether the kernel parameters are correctly handled:
-> +        wait_for_console_pattern(self, 'testoption=teststring')
-> +        # Now also check that we've successfully loaded the initrd:
-> +        wait_for_console_pattern(self, 'Unpacking initramfs...')
-> +        wait_for_console_pattern(self, 'Run /init as init process')
-> +
-> +    def test_mac(self):
-> +        self.pxelinux_launch(pl_name='01-02-ca-fe-ba-be-42',
-> +                             extra_opts='mac=02:ca:fe:ba:be:42,loadparm=3')
-> +        wait_for_console_pattern(self, 'Linux version 5.3.7-301.fc31.s390x')
-> +
-> +    def test_uuid(self):
-> +        # Also add a non-bootable disk to check the fallback to network boot:
-> +        self.vm.add_args('-blockdev', 'null-co,size=65536,node-name=d1',
-> +                         '-device', 'virtio-blk,drive=d1,bootindex=0,loadparm=1',
-> +                         '-uuid', '550e8400-e29b-11d4-a716-446655441234')
-> +        self.pxelinux_launch(pl_name='550e8400-e29b-11d4-a716-446655441234')
-> +        wait_for_console_pattern(self, 'Debian 4.19.146-1 (2020-09-17)')
-> +
-> +    def test_ip(self):
-> +        self.vm.add_args('-M', 'loadparm=3')
-> +        self.pxelinux_launch(pl_name='0A00020F')
-> +        wait_for_console_pattern(self, 'Linux version 5.3.7-301.fc31.s390x')
-> +
-> +    def test_menu(self):
-> +        self.vm.add_args('-boot', 'menu=on,splash-time=10')
-> +        self.pxelinux_launch(pl_name='0A00')
-> +        wait_for_console_pattern(self, '[1] Nonexisting')
-> +        wait_for_console_pattern(self, '[2] Debian')
-> +        wait_for_console_pattern(self, '[3] Fedora')
-> +        wait_for_console_pattern(self, 'Debian 4.19.146-1 (2020-09-17)')
-> +
-> +
-> +if __name__ == '__main__':
-> +    QemuSystemTest.main()
+Well, there are an emulated "nested" mode and an hw-accelerated
+"nested" mode in the smmuv3 code, so we had to choose something
+like "accel" over "nested".
 
+Here, on the other hand, I think the core using this CAP would
+unlikely care about an emulated "nested" mode in the individual
+vIOMMU..
+
+So I suggested:
+     /* hardware-accelerated nested stage-1 page table support */
+    VIOMMU_CAP_NESTED_S1 = BIT_ULL(0),
+
+which it should be clear IMHO.
+
+If not, maybe go a bit further like "VIOMMU_CAP_HW_NESTED_S1"?
+
+Thanks
+Nicolin
 
