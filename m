@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6618CAFF2F7
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 22:28:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B7DAFF30B
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 22:31:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZbNZ-0005KE-1L; Wed, 09 Jul 2025 16:26:57 -0400
+	id 1uZbRf-0000Lu-CD; Wed, 09 Jul 2025 16:31:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uZbNR-0005Jg-1P
- for qemu-devel@nongnu.org; Wed, 09 Jul 2025 16:26:49 -0400
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+ id 1uZbQr-0008G5-EV
+ for qemu-devel@nongnu.org; Wed, 09 Jul 2025 16:30:22 -0400
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uZbNO-0007pH-O1
- for qemu-devel@nongnu.org; Wed, 09 Jul 2025 16:26:48 -0400
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-73a4c557d47so119283a34.3
- for <qemu-devel@nongnu.org>; Wed, 09 Jul 2025 13:26:45 -0700 (PDT)
+ id 1uZbQp-0008Kv-Ij
+ for qemu-devel@nongnu.org; Wed, 09 Jul 2025 16:30:21 -0400
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-61396c3f681so106981eaf.3
+ for <qemu-devel@nongnu.org>; Wed, 09 Jul 2025 13:30:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752092804; x=1752697604; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752093018; x=1752697818; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=bXT2dHDB7AvyhAC7jq6WSGFWH56BrQpqzseQhdvvmsw=;
- b=URro7wi4UPa3HCxJnCS2ScvYY+kp98O+ubAhJea4xSxe6NJr0GBHi0RsgBBHsmaN41
- HrfmZlksdjhX/RT7ZrtQgeUtVp/VI+fpu57R+GyRNlv4gOJL0ZRHZV8fB/6G2pQ7gNbk
- AbpQ3475chPhoHpWyDmjqgL2wVN2AHNxghNutVQ0a/b97fzQT35HrbDJ2ul5OEF1pUGA
- kYq6T2v2SdyNCSrndgQ/XUf4q2YKb8AzenkxJvfs6FnCz0zSUG/+yQcGjqaBuoFo8ZGz
- RjcDNd0GAACQLkHRgbUAzxj/SxD2v7MZQku/n2m5SBAw7SnZBh+CDM3lvYSygtWgeBWR
- WpUA==
+ bh=sFq1M2Yb8Dy9vxNT3yHIB7iF41fhCoqri1n1e59YlL0=;
+ b=NmXkhoj+Nd3YmXLlQD5mZTNVgtozMzcEAYHmYxJiiOBYyFB/NqBMUAYzsPQ0OcFbWI
+ 8UI73xeNc+kXhpLC6GYC3KfvrKVteftQOUCByiuDBBmLu7avGFZZmURO0mrxTAymazyi
+ /786emVc1QwlcHJTADU7nX11QhQARgdZIArbT4McDk4R6JInQJN0Yt5bxxWsyw5MYnD1
+ gPvNlYonBv2lRqKRnYESqFafORQJ74Wsl/MxuIBwPuj3hJT6ebffzNU96cxh0Zz2ggEq
+ g1IAZywAfgpMhs2VdqNcO82y0uYRm0DnZ0Tyaa+xJnZdzWHpwH3Lb2rnCiJT/mtyauuf
+ oG8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752092804; x=1752697604;
+ d=1e100.net; s=20230601; t=1752093018; x=1752697818;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bXT2dHDB7AvyhAC7jq6WSGFWH56BrQpqzseQhdvvmsw=;
- b=n7khvytmee4Gs83sxgIYGkfFEh+bzGaUooCKlIgtLq02WjORHyns4msudQ3yba3cyV
- xp8tvwKsEkeE6LJV2iR1i8dSer6dFRIsKemKSxQsIWJnpCVNkGQNCapSzYuvjLtmfFq2
- Sdj28K4+UIxtQwRIzDvah/0HtBgQa3Ef4m96hBY5Wd+VS++mZWpIIacSm3Vn7sN3GtGT
- CudrtKnuXGlRNWJ4ZySOT7SPFwS77piFNLnc5cFAgkXwIdwrGgchA3HuOo7naK30eLhe
- 1bbImVEHpdtFCVWnr2Raqv5r3uW5xPSbI7yupdZIgWLryOMpgRNE6xVoFydaqrDz+G/T
- wHSA==
-X-Gm-Message-State: AOJu0YwPNKaQN6+Q+ERB4hyPaim6i4CQJUy+/BMIDRk6fmHZrUGppDv6
- PouS9q97V6BP9RUsDGz1vrSuiYrEeDuSgWeh9fi8Umy4yAvhVhx67Oh4gEIZBvcZCr4=
-X-Gm-Gg: ASbGncu6nhGYVsMaR0Uyl31U4p0woZWg/U58CNUnlgXg0iay7B56aqMzqT+372KVOFS
- +KXigbt/731Md6vsbnC24/lOlCThw5oNSgdUkOnMZJ/GOMwwzI9fgxdqDBj8v/LucI4DT2Lr1Io
- PsD3ueJHUW6qJljpRgUXiJY/wGn7JmThUnehCxigCugiRnIlr8N0T+RlDgdU1flQhJ+mb3qzzZq
- Umf3WKNe3xxKxAlBDOyXsRJ6b5s8lzBTkXA5ZVWVIgBwrxHNzdjkSy+X8qTn0t/ILlQQ8x5XCn6
- zw07dB5Yx/83jrGdLkiKPemubYLkCejdYyT/5FRK8WoWpnE/3Wu6okE8nqvvqDQGjNZ3Mch1efb
- Hx2g=
-X-Google-Smtp-Source: AGHT+IH/nEutk46BwO7z/kbglbjFlEcwPcp+Ut/53JFT0kFqV951LnJksf2C2VfmxIZoB/Rdkj6zxg==
-X-Received: by 2002:a05:6808:5144:b0:409:f8e:7284 with SMTP id
- 5614622812f47-412b9f54025mr2986140b6e.6.1752092804535; 
- Wed, 09 Jul 2025 13:26:44 -0700 (PDT)
+ bh=sFq1M2Yb8Dy9vxNT3yHIB7iF41fhCoqri1n1e59YlL0=;
+ b=K1401hosNpIPs3vikf5IebWBihYSvB32O6KFk0ril34jOV/SYZ+7bqGzL9eE5yvV6O
+ HJnvF9OGY+1GmnYMX4zqE93EIi21gWshNoKlv5AvVME5F0uM0wdzx62mumKeqtdy6lQt
+ xWX4Xe7VvnQmXWT+X8BlSnD2eGD3bq6nsgkrqpeST7qEdWxtaFPOpLlZ9DEkqTpR7pI7
+ qcro0vQrWCfo1UlIg4E/TrcHU9r8ML1n/uQ7PVUdpQaGngkgul4Q/rMb8feBUOjIPMli
+ 9OPTqjbSiRQeL3Tmv7h/4DTOES4XzgTy1d1lvgRdt8hCl2isPKUytcSpLhAXLRbQXgSe
+ iTdA==
+X-Gm-Message-State: AOJu0YyhxHPGSOxPgx6r2Tkfl2chx8ko/AHRLIBbF3KN0woBtGLOjIcc
+ 1Z6eNaBx1G36HYy3egoWmGBUBzFW28r1FAHJK5duww9dSjIX3FJh8WpR2Yy5eeeKvYw=
+X-Gm-Gg: ASbGncuQH2na7MT75X4bnXv5rsLZRmMPpjdMVrg2AZAyv+zl4TI+fqwxMdXgxv5LrYA
+ nQDyjZFUM5JgyRBz9gFVHWHZBtP5M0bmBnttjzz1YVM0jZOH3cpnN7ZK2fukVm5pej3kljkD16U
+ UI9xYtdkWqPz5mfamV1MccY+vpIczs5NbdYOFYwUlq+23lyU+rY1GjzK9Cto62LVvBcOozc9wUx
+ Iz8kwBpZXV6jPmcyBhJap1h38G4JOPlkA0jPx7Tn54QMnt6rZspY44lezlAboJ82BhzL4R7A9Lu
+ O2ps+3TzkmV8OwIa/Y8API05y2cGHcSSO7dFUFv6KkbSPM0c60jNOaI/iaa1gweq2WzpPQ268Az
+ Jhps2yENi8U+agQ==
+X-Google-Smtp-Source: AGHT+IE6Nk5oZlVPktKzUwkwxDPNnAMmvgBOt355lPF4pVWUXI1kypJ0Cv7bo3Qb24D3Fupl7HVaUg==
+X-Received: by 2002:a05:6820:6aea:b0:613:c7cd:3b2b with SMTP id
+ 006d021491bc7-613d6f4b94emr1027740eaf.2.1752093017701; 
+ Wed, 09 Jul 2025 13:30:17 -0700 (PDT)
 Received: from [172.20.0.130] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- 5614622812f47-40d02a32a89sm2051509b6e.8.2025.07.09.13.26.43
+ 006d021491bc7-6138e5c1db3sm2065273eaf.35.2025.07.09.13.30.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Jul 2025 13:26:44 -0700 (PDT)
-Message-ID: <82431249-aa2f-4d54-a50b-dce0f69161ae@linaro.org>
-Date: Wed, 9 Jul 2025 14:26:42 -0600
+ Wed, 09 Jul 2025 13:30:17 -0700 (PDT)
+Message-ID: <d05d66b3-5750-49e7-8d24-c72cb7e8aece@linaro.org>
+Date: Wed, 9 Jul 2025 14:30:14 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/6] target/arm: Add FEAT_MEC registers
+Subject: Re: [PATCH v4 3/6] target/arm: Add FEAT_SCTLR2
 To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org,
  alex.bennee@linaro.org
 Cc: qemu-devel@nongnu.org
 References: <20250709180326.1079826-1-gustavo.romero@linaro.org>
- <20250709180326.1079826-3-gustavo.romero@linaro.org>
+ <20250709180326.1079826-4-gustavo.romero@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250709180326.1079826-3-gustavo.romero@linaro.org>
+In-Reply-To: <20250709180326.1079826-4-gustavo.romero@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x330.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,66 +102,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/9/25 12:03, Gustavo Romero wrote:
-> Add all FEAT_MEC registers.
-> 
-> To work properly, FEAT_MEC also depends on FEAT_SCTLR2 and FEAT_TCR2,
-> which are not implemented in this commit. The bits in SCTLR2 and TCR2
-> control which translation regimes use MECIDs, and determine which MECID
-> is selected.
-> 
-> FEAT_MEC also requires two new cache management instructions, not
-> included in this commit, that will be implemented in subsequent commits.
-> 
-> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-> ---
->   target/arm/cpu-features.h |  5 +++
->   target/arm/cpu.h          | 11 ++++++
->   target/arm/helper.c       | 70 +++++++++++++++++++++++++++++++++++++++
->   3 files changed, 86 insertions(+)
-> 
-> diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-> index 5876162428..552d8757b7 100644
-> --- a/target/arm/cpu-features.h
-> +++ b/target/arm/cpu-features.h
-> @@ -594,6 +594,11 @@ static inline bool isar_feature_aa64_hbc(const ARMISARegisters *id)
->       return FIELD_EX64_IDREG(id, ID_AA64ISAR2, BC) != 0;
->   }
+> @@ -7816,6 +7818,78 @@ static const ARMCPRegInfo actlr2_hactlr2_reginfo[] = {
+>         .resetvalue = 0 },
+>   };
 >   
-> +static inline bool isar_feature_aa64_mec(const ARMISARegisters *id)
+> +static CPAccessResult sctlr2_el2_access(CPUARMState *env,
+> +                                        const ARMCPRegInfo *ri,
+> +                                        bool isread)
 > +{
-> +    return FIELD_EX64_IDREG(id, ID_AA64MMFR3, MEC) != 0;
-> +}
-> +
->   static inline bool isar_feature_aa64_mops(const ARMISARegisters *id)
->   {
->       return FIELD_EX64_IDREG(id, ID_AA64ISAR2, MOPS);
-> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-> index 0f64c7b163..a93eebe077 100644
-> --- a/target/arm/cpu.h
-> +++ b/target/arm/cpu.h
-> @@ -576,6 +576,15 @@ typedef struct CPUArchState {
->   
->           /* NV2 register */
->           uint64_t vncr_el2;
-> +
-> +        /* MEC registers */
-> +        uint64_t mecid_p0_el2;
-> +        uint64_t mecid_a0_el2;
-> +        uint64_t mecid_p1_el2;
-> +        uint64_t mecid_a1_el2;
-> +        uint64_t mecid_rl_a_el3;
-> +        uint64_t vmecid_p_el2;
-> +        uint64_t vmecid_a_el2;
->       } cp15;
->   
->       struct {
-> @@ -2424,6 +2433,8 @@ FIELD(MFAR, FPA, 12, 40)
->   FIELD(MFAR, NSE, 62, 1)
->   FIELD(MFAR, NS, 63, 1)
->   
-> +#define MECID_WIDTH 16
+> +    if (arm_current_el(env) < 3 && !(env->cp15.scr_el3 & SCR_SCTLR2EN)) {
+> +        return CP_ACCESS_TRAP_EL3;
+> +    }
+> +    return CP_ACCESS_OK;
+> +};
 
-This could go in internals.h.
+Stray ;
+And on every other function until sctlr2_reginfo.
 
 Otherwise,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
