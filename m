@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F88DAFE27C
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 10:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0CEAAFE282
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 10:25:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZQ6z-0001A3-Kg; Wed, 09 Jul 2025 04:25:06 -0400
+	id 1uZQ73-0001G2-3L; Wed, 09 Jul 2025 04:25:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1uZQ6x-00018u-Kc
- for qemu-devel@nongnu.org; Wed, 09 Jul 2025 04:25:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uZQ70-0001BL-7X
+ for qemu-devel@nongnu.org; Wed, 09 Jul 2025 04:25:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1uZQ6v-0006Bp-AO
- for qemu-devel@nongnu.org; Wed, 09 Jul 2025 04:25:03 -0400
+ id 1uZQ6y-0006KE-AD
+ for qemu-devel@nongnu.org; Wed, 09 Jul 2025 04:25:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752049500;
+ s=mimecast20190719; t=1752049503;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tfZjc6j5sXAM2bS0yOshLl4QKC/OUj5fmMiiuI37S1o=;
- b=WJRiEdx9uurljt6C+GHAfLHbmacSJMrD11OtcdZwfSq1Z7+v4yzqwGxfJ/dAw+ucHCj/5t
- L7u8LJ1Wox2qwhRlwj30kn5iDs48ULEtt3d7RDOnbg8/1n8UU68NaLJscwC+pjHLBPdVZz
- +9l6Fz7aXWf1+a02vMWqNoo40cGKQ/I=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=QAO7Ut8y2fzNcNSTmMKmzgfJ9mZ8UAi2ecrs8pm9WC4=;
+ b=A1gh0pabl3clCRzmZe132WAuI2KImXaF00Se1CHIcslha5IypVjEYS//Smgcf9W3TDQTEk
+ w6o/VpXRmju7vVtfNaCC8HeI4in6DUPogGUEtSIdYhjzk2DyN42jEWB9R/lyetQGW+nh9I
+ 6Qg2gYQXI/B8guajm5s6RW7dmtWDiMw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-BfpOFSMiP22yFSin00wQ7w-1; Wed,
- 09 Jul 2025 04:24:57 -0400
-X-MC-Unique: BfpOFSMiP22yFSin00wQ7w-1
-X-Mimecast-MFC-AGG-ID: BfpOFSMiP22yFSin00wQ7w_1752049496
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-1uYAN4plNSK0bvc3jbYoRg-1; Wed,
+ 09 Jul 2025 04:25:02 -0400
+X-MC-Unique: 1uYAN4plNSK0bvc3jbYoRg-1
+X-Mimecast-MFC-AGG-ID: 1uYAN4plNSK0bvc3jbYoRg_1752049501
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 10D1A1956096; Wed,  9 Jul 2025 08:24:56 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C2DDB1954236; Wed,  9 Jul 2025 08:25:00 +0000 (UTC)
 Received: from lenovo-t14s.redhat.com (unknown [10.45.225.147])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D6389195608F; Wed,  9 Jul 2025 08:24:51 +0000 (UTC)
+ id 8E315195608F; Wed,  9 Jul 2025 08:24:56 +0000 (UTC)
 From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Weil <sw@weilnetz.de>,
@@ -57,16 +57,16 @@ Cc: Stefan Weil <sw@weilnetz.de>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Jason Wang <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v4 05/11] net: Consolidate vhost feature bits into vhost_net
- structure
-Date: Wed,  9 Jul 2025 10:24:19 +0200
-Message-ID: <20250709082425.601990-6-lvivier@redhat.com>
+Subject: [PATCH v4 06/11] net: Add get_acked_features callback to
+ VhostNetOptions
+Date: Wed,  9 Jul 2025 10:24:20 +0200
+Message-ID: <20250709082425.601990-7-lvivier@redhat.com>
 In-Reply-To: <20250709082425.601990-1-lvivier@redhat.com>
 References: <20250709082425.601990-1-lvivier@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -91,309 +91,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previously, the vhost_net_get_feature_bits() function in
-hw/net/vhost_net.c used a large switch statement to determine
-the appropriate feature bits based on the NetClientDriver type.
+This patch continues the effort to decouple the generic vhost layer
+from specific network backend implementations.
 
-This created unnecessary coupling between the generic vhost layer
-and specific network backends (like TAP, vhost-user, and
-vhost-vdpa).
+Previously, the vhost_net initialization code contained a hardcoded
+check for the vhost-user client type to retrieve its acked features
+by calling vhost_user_get_acked_features(). This exposed an
+internal vhost-user function in a public header and coupled the two
+modules.
 
-This patch moves the definition of vhost feature bits directly into the
-vhost_net structure for each relevant network client.
+The vhost-user backend is updated to provide a callback, and its
+getter function is now static. The call site in vhost_net.c is
+simplified to use the new generic helper, removing the type check and
+the direct dependency.
 
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 ---
- hw/net/vhost_net.c        | 90 ++-------------------------------------
- include/hw/virtio/vhost.h |  1 +
- include/net/vhost-vdpa.h  |  2 -
- include/net/vhost_net.h   |  1 +
- net/tap.c                 | 19 +++++++++
- net/vhost-user.c          | 43 +++++++++++++++++++
- net/vhost-vdpa.c          |  3 +-
- 7 files changed, 69 insertions(+), 90 deletions(-)
+ hw/net/vhost_net.c       | 6 ++----
+ include/net/vhost-user.h | 2 --
+ include/net/vhost_net.h  | 3 +++
+ net/tap.c                | 1 +
+ net/vhost-user.c         | 4 +++-
+ net/vhost-vdpa.c         | 1 +
+ 6 files changed, 10 insertions(+), 7 deletions(-)
 
 diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index db8b97b753d8..787c769ccc37 100644
+index 787c769ccc37..fb169af0e81b 100644
 --- a/hw/net/vhost_net.c
 +++ b/hw/net/vhost_net.c
-@@ -36,94 +36,9 @@
- #include "hw/virtio/virtio-bus.h"
- #include "linux-headers/linux/vhost.h"
- 
--
--/* Features supported by host kernel. */
--static const int kernel_feature_bits[] = {
--    VIRTIO_F_NOTIFY_ON_EMPTY,
--    VIRTIO_RING_F_INDIRECT_DESC,
--    VIRTIO_RING_F_EVENT_IDX,
--    VIRTIO_NET_F_MRG_RXBUF,
--    VIRTIO_F_VERSION_1,
--    VIRTIO_NET_F_MTU,
--    VIRTIO_F_IOMMU_PLATFORM,
--    VIRTIO_F_RING_PACKED,
--    VIRTIO_F_RING_RESET,
--    VIRTIO_F_IN_ORDER,
--    VIRTIO_F_NOTIFICATION_DATA,
--    VIRTIO_NET_F_RSC_EXT,
--    VIRTIO_NET_F_HASH_REPORT,
--    VHOST_INVALID_FEATURE_BIT
--};
--
--/* Features supported by others. */
--static const int user_feature_bits[] = {
--    VIRTIO_F_NOTIFY_ON_EMPTY,
--    VIRTIO_F_NOTIFICATION_DATA,
--    VIRTIO_RING_F_INDIRECT_DESC,
--    VIRTIO_RING_F_EVENT_IDX,
--
--    VIRTIO_F_ANY_LAYOUT,
--    VIRTIO_F_VERSION_1,
--    VIRTIO_NET_F_CSUM,
--    VIRTIO_NET_F_GUEST_CSUM,
--    VIRTIO_NET_F_GSO,
--    VIRTIO_NET_F_GUEST_TSO4,
--    VIRTIO_NET_F_GUEST_TSO6,
--    VIRTIO_NET_F_GUEST_ECN,
--    VIRTIO_NET_F_GUEST_UFO,
--    VIRTIO_NET_F_HOST_TSO4,
--    VIRTIO_NET_F_HOST_TSO6,
--    VIRTIO_NET_F_HOST_ECN,
--    VIRTIO_NET_F_HOST_UFO,
--    VIRTIO_NET_F_MRG_RXBUF,
--    VIRTIO_NET_F_MTU,
--    VIRTIO_F_IOMMU_PLATFORM,
--    VIRTIO_F_RING_PACKED,
--    VIRTIO_F_RING_RESET,
--    VIRTIO_F_IN_ORDER,
--    VIRTIO_NET_F_RSS,
--    VIRTIO_NET_F_RSC_EXT,
--    VIRTIO_NET_F_HASH_REPORT,
--    VIRTIO_NET_F_GUEST_USO4,
--    VIRTIO_NET_F_GUEST_USO6,
--    VIRTIO_NET_F_HOST_USO,
--
--    /* This bit implies RARP isn't sent by QEMU out of band */
--    VIRTIO_NET_F_GUEST_ANNOUNCE,
--
--    VIRTIO_NET_F_MQ,
--
--    VHOST_INVALID_FEATURE_BIT
--};
--
--static const int *vhost_net_get_feature_bits(struct vhost_net *net)
--{
--    const int *feature_bits = 0;
--
--    switch (net->nc->info->type) {
--    case NET_CLIENT_DRIVER_TAP:
--        feature_bits = kernel_feature_bits;
--        break;
--    case NET_CLIENT_DRIVER_VHOST_USER:
--        feature_bits = user_feature_bits;
--        break;
--#ifdef CONFIG_VHOST_NET_VDPA
--    case NET_CLIENT_DRIVER_VHOST_VDPA:
--        feature_bits = vdpa_feature_bits;
--        break;
--#endif
--    default:
--        error_report("Feature bits not defined for this type: %d",
--                net->nc->info->type);
--        break;
--    }
--
--    return feature_bits;
--}
--
- uint64_t vhost_net_get_features(struct vhost_net *net, uint64_t features)
- {
--    return vhost_get_features(&net->dev, vhost_net_get_feature_bits(net),
-+    return vhost_get_features(&net->dev, net->feature_bits,
-             features);
- }
- int vhost_net_get_config(struct vhost_net *net,  uint8_t *config,
-@@ -140,7 +55,7 @@ int vhost_net_set_config(struct vhost_net *net, const uint8_t *data,
- void vhost_net_ack_features(struct vhost_net *net, uint64_t features)
- {
-     net->dev.acked_features = net->dev.backend_features;
--    vhost_ack_features(&net->dev, vhost_net_get_feature_bits(net), features);
-+    vhost_ack_features(&net->dev, net->feature_bits, features);
- }
- 
- uint64_t vhost_net_get_max_queues(VHostNetState *net)
-@@ -329,6 +244,7 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
+@@ -288,9 +288,8 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
      }
-     net->nc = options->net_backend;
-     net->dev.nvqs = options->nvqs;
-+    net->feature_bits = options->feature_bits;
  
-     net->dev.max_queues = 1;
-     net->dev.vqs = net->vqs;
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 38800a7156b0..6a75fdc0213c 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -143,6 +143,7 @@ struct vhost_net {
-     struct vhost_dev dev;
-     struct vhost_virtqueue vqs[2];
-     int backend;
-+    const int *feature_bits;
-     NetClientState *nc;
- };
+     /* Set sane init value. Override when guest acks. */
+-#ifdef CONFIG_VHOST_NET_USER
+-    if (net->nc->info->type == NET_CLIENT_DRIVER_VHOST_USER) {
+-        features = vhost_user_get_acked_features(net->nc);
++    if (options->get_acked_features) {
++        features = options->get_acked_features(net->nc);
+         if (~net->dev.features & features) {
+             fprintf(stderr, "vhost lacks feature mask 0x%" PRIx64
+                     " for backend\n",
+@@ -298,7 +297,6 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
+             goto fail;
+         }
+     }
+-#endif
  
-diff --git a/include/net/vhost-vdpa.h b/include/net/vhost-vdpa.h
-index 916ead3793d9..f8d7d6c9045b 100644
---- a/include/net/vhost-vdpa.h
-+++ b/include/net/vhost-vdpa.h
-@@ -14,6 +14,4 @@
+     vhost_net_ack_features(net, features);
  
- #define TYPE_VHOST_VDPA "vhost-vdpa"
+diff --git a/include/net/vhost-user.h b/include/net/vhost-user.h
+index 0b233a267345..a4d0ce4b8dd1 100644
+--- a/include/net/vhost-user.h
++++ b/include/net/vhost-user.h
+@@ -11,8 +11,6 @@
+ #ifndef VHOST_USER_H
+ #define VHOST_USER_H
  
--extern const int vdpa_feature_bits[];
--
- #endif /* VHOST_VDPA_H */
+-struct vhost_net;
+-uint64_t vhost_user_get_acked_features(NetClientState *nc);
+ void vhost_user_save_acked_features(NetClientState *nc);
+ 
+ #endif /* VHOST_USER_H */
 diff --git a/include/net/vhost_net.h b/include/net/vhost_net.h
-index 0f40049f3419..fbed37385a3c 100644
+index fbed37385a3c..a8d281c8f7c2 100644
 --- a/include/net/vhost_net.h
 +++ b/include/net/vhost_net.h
-@@ -12,6 +12,7 @@ typedef struct VhostNetOptions {
+@@ -7,12 +7,15 @@
+ struct vhost_net;
+ typedef struct vhost_net VHostNetState;
+ 
++typedef uint64_t (GetAckedFeatures)(NetClientState *nc);
++
+ typedef struct VhostNetOptions {
+     VhostBackendType backend_type;
      NetClientState *net_backend;
      uint32_t busyloop_timeout;
      unsigned int nvqs;
-+    const int *feature_bits;
+     const int *feature_bits;
++    GetAckedFeatures *get_acked_features;
      void *opaque;
  } VhostNetOptions;
  
 diff --git a/net/tap.c b/net/tap.c
-index 4beba6d7a784..a33eb2321242 100644
+index a33eb2321242..acd77f816fec 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -42,11 +42,29 @@
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
- #include "qemu/sockets.h"
-+#include "hw/virtio/vhost.h"
- 
- #include "net/tap.h"
- 
- #include "net/vhost_net.h"
- 
-+static const int kernel_feature_bits[] = {
-+    VIRTIO_F_NOTIFY_ON_EMPTY,
-+    VIRTIO_RING_F_INDIRECT_DESC,
-+    VIRTIO_RING_F_EVENT_IDX,
-+    VIRTIO_NET_F_MRG_RXBUF,
-+    VIRTIO_F_VERSION_1,
-+    VIRTIO_NET_F_MTU,
-+    VIRTIO_F_IOMMU_PLATFORM,
-+    VIRTIO_F_RING_PACKED,
-+    VIRTIO_F_RING_RESET,
-+    VIRTIO_F_IN_ORDER,
-+    VIRTIO_F_NOTIFICATION_DATA,
-+    VIRTIO_NET_F_RSC_EXT,
-+    VIRTIO_NET_F_HASH_REPORT,
-+    VHOST_INVALID_FEATURE_BIT
-+};
-+
- typedef struct TAPState {
-     NetClientState nc;
-     int fd;
-@@ -725,6 +743,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-         }
+@@ -744,6 +744,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
          options.opaque = (void *)(uintptr_t)vhostfd;
          options.nvqs = 2;
-+        options.feature_bits = kernel_feature_bits;
+         options.feature_bits = kernel_feature_bits;
++        options.get_acked_features = NULL;
  
          s->vhost_net = vhost_net_init(&options);
          if (!s->vhost_net) {
 diff --git a/net/vhost-user.c b/net/vhost-user.c
-index b7bf0d2042e8..bc8e82a09263 100644
+index bc8e82a09263..93b413b49f34 100644
 --- a/net/vhost-user.c
 +++ b/net/vhost-user.c
-@@ -12,7 +12,9 @@
- #include "clients.h"
- #include "net/vhost_net.h"
- #include "net/vhost-user.h"
-+#include "hw/virtio/vhost.h"
- #include "hw/virtio/vhost-user.h"
-+#include "standard-headers/linux/virtio_net.h"
- #include "chardev/char-fe.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-net.h"
-@@ -22,6 +24,46 @@
- #include "qemu/option.h"
- #include "trace.h"
+@@ -81,7 +81,7 @@ static struct vhost_net *vhost_user_get_vhost_net(NetClientState *nc)
+     return s->vhost_net;
+ }
  
-+static const int user_feature_bits[] = {
-+    VIRTIO_F_NOTIFY_ON_EMPTY,
-+    VIRTIO_F_NOTIFICATION_DATA,
-+    VIRTIO_RING_F_INDIRECT_DESC,
-+    VIRTIO_RING_F_EVENT_IDX,
-+
-+    VIRTIO_F_ANY_LAYOUT,
-+    VIRTIO_F_VERSION_1,
-+    VIRTIO_NET_F_CSUM,
-+    VIRTIO_NET_F_GUEST_CSUM,
-+    VIRTIO_NET_F_GSO,
-+    VIRTIO_NET_F_GUEST_TSO4,
-+    VIRTIO_NET_F_GUEST_TSO6,
-+    VIRTIO_NET_F_GUEST_ECN,
-+    VIRTIO_NET_F_GUEST_UFO,
-+    VIRTIO_NET_F_HOST_TSO4,
-+    VIRTIO_NET_F_HOST_TSO6,
-+    VIRTIO_NET_F_HOST_ECN,
-+    VIRTIO_NET_F_HOST_UFO,
-+    VIRTIO_NET_F_MRG_RXBUF,
-+    VIRTIO_NET_F_MTU,
-+    VIRTIO_F_IOMMU_PLATFORM,
-+    VIRTIO_F_RING_PACKED,
-+    VIRTIO_F_RING_RESET,
-+    VIRTIO_F_IN_ORDER,
-+    VIRTIO_NET_F_RSS,
-+    VIRTIO_NET_F_RSC_EXT,
-+    VIRTIO_NET_F_HASH_REPORT,
-+    VIRTIO_NET_F_GUEST_USO4,
-+    VIRTIO_NET_F_GUEST_USO6,
-+    VIRTIO_NET_F_HOST_USO,
-+
-+    /* This bit implies RARP isn't sent by QEMU out of band */
-+    VIRTIO_NET_F_GUEST_ANNOUNCE,
-+
-+    VIRTIO_NET_F_MQ,
-+
-+    VHOST_INVALID_FEATURE_BIT
-+};
-+
- typedef struct NetVhostUserState {
-     NetClientState nc;
-     CharBackend chr; /* only queue index 0 */
-@@ -96,6 +138,7 @@ static int vhost_user_start(int queues, NetClientState *ncs[],
-         options.opaque      = be;
+-uint64_t vhost_user_get_acked_features(NetClientState *nc)
++static uint64_t vhost_user_get_acked_features(NetClientState *nc)
+ {
+     NetVhostUserState *s = DO_UPCAST(NetVhostUserState, nc, nc);
+     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_USER);
+@@ -139,6 +139,8 @@ static int vhost_user_start(int queues, NetClientState *ncs[],
          options.busyloop_timeout = 0;
          options.nvqs = 2;
-+        options.feature_bits = user_feature_bits;
+         options.feature_bits = user_feature_bits;
++        options.get_acked_features = vhost_user_get_acked_features;
++
          net = vhost_net_init(&options);
          if (!net) {
              error_report("failed to init vhost_net for queue %d", i);
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 0b86c917ed68..cbbea0eb7198 100644
+index cbbea0eb7198..a3980d1fb5ed 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -55,7 +55,7 @@ typedef struct VhostVDPAState {
-  * with the exception of VHOST_INVALID_FEATURE_BIT,
-  * which should always be the last entry.
-  */
--const int vdpa_feature_bits[] = {
-+static const int vdpa_feature_bits[] = {
-     VIRTIO_F_ANY_LAYOUT,
-     VIRTIO_F_IOMMU_PLATFORM,
-     VIRTIO_F_NOTIFY_ON_EMPTY,
-@@ -201,6 +201,7 @@ static int vhost_vdpa_add(NetClientState *ncs, void *be,
-     options.opaque      = be;
+@@ -202,6 +202,7 @@ static int vhost_vdpa_add(NetClientState *ncs, void *be,
      options.busyloop_timeout = 0;
      options.nvqs = nvqs;
-+    options.feature_bits = vdpa_feature_bits;
+     options.feature_bits = vdpa_feature_bits;
++    options.get_acked_features = NULL;
  
      net = vhost_net_init(&options);
      if (!net) {
