@@ -2,148 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7D5AFDC7A
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 02:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 962FDAFDC84
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Jul 2025 02:47:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZIrw-0001wj-07; Tue, 08 Jul 2025 20:41:04 -0400
+	id 1uZIwv-0003q3-8h; Tue, 08 Jul 2025 20:46:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1uZIrT-0001vg-7A
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 20:40:35 -0400
-Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2412::601]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1uZIrQ-0003zJ-8Q
- for qemu-devel@nongnu.org; Tue, 08 Jul 2025 20:40:34 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FuRf8zMWz2JbTCAY9TWz47kpoxmMc7XWQJDPPo2xFGltKJyVppPCexqKe0DeQxvaLqjsreT7mI7MQFz3YUL+7oD8B3cHjnK0efk6HYkS01EwgrgpZaI0ptRPwcbOJqS63e6PjgHHKuRsjagDtgIVPQj+cDtL3sjm8xru9hoZMuOn8i/L6mPYOCWmjpTApxigLSxIVrJhnoEdxoRiPhS+xLtvCWofN7aUOuIP38stOkxuyO6RXROqv8YGSoyJ60CxkSXoAdUCyefAC2nEXhaN/q5y71xi2e44B6EqBuDY0pusKnbELRKr2UYrd/7sJ7GHEwK8Z6bkpE/COsyISwKj5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1XYVJKWXawt+ktqM09NV31i6azefyLYp5rmptfPpQmM=;
- b=EszdzouqWj6H7+0nGP9MEqzn0yPfdqJh4J+KefeubfHRcqmwdpv5eYpfML/BHai1jiXev9HPI0Wtan627YJ30415eigW6Ue/UtnGjy/OfROIAkafer0cuO76RlZKgxgag0KsffIV61rlL0bAN/at7vcVt+omMsS0WtlEvkl6Nyfbt8IiBhK2YanvLs4dOkFu8j5JTP8abweOCYJ8W+BJLjHEBshPv94IEaM7EVQaQm/SGhu9YAy1ymUwdPEpxWcDSh/sZUVnc3kGNPV7vqWPk4KTNt4Rhjwn9FsHX7gzi159RFExmthI/knq4wJX9HYbyzRzDjKr7bbVKxlmKM7JLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1XYVJKWXawt+ktqM09NV31i6azefyLYp5rmptfPpQmM=;
- b=e0plX9n/L3IyUgsMtn5u+g+GcrrcC23fFSzxIz/LVHro1k9HomdWamZ7HMBuLjZf9ef1ddXboyJGfA8udlG3iSHxPuQjeqik6l4ZvoJoXCzbuRLJW2i/d8BAD5ts+QOCDubzRhun7VP1ISQWONSNgLtV499l5+UH4OPXkB2sfURAH3BBTurPL3RF5h1w+llC9H/G5qKBgN8mUm7dgKoaIM4FGtldAVh6fH3XqfjxJ0g03hMZtx1Ys7jKjXM/3/M39AydvyZr54Jgd9y1TVaqrOmQ2q6wXmfjBr8EjPPUIjh+9vY7PZDYp80FrxQa4Ko41TE3StjJU31KFR/WzsQl9A==
-Received: from MW2PR16CA0012.namprd16.prod.outlook.com (2603:10b6:907::25) by
- IA1PR12MB8261.namprd12.prod.outlook.com (2603:10b6:208:3f7::7) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8901.23; Wed, 9 Jul 2025 00:40:23 +0000
-Received: from CO1PEPF000042A7.namprd03.prod.outlook.com
- (2603:10b6:907:0:cafe::4c) by MW2PR16CA0012.outlook.office365.com
- (2603:10b6:907::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.21 via Frontend Transport; Wed,
- 9 Jul 2025 00:40:22 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- CO1PEPF000042A7.mail.protection.outlook.com (10.167.243.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8901.15 via Frontend Transport; Wed, 9 Jul 2025 00:40:22 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 8 Jul 2025
- 17:39:50 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 8 Jul 2025 17:39:50 -0700
-Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Tue, 8 Jul 2025 17:39:49 -0700
-Date: Tue, 8 Jul 2025 17:39:48 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-CC: <qemu-devel@nongnu.org>, <alex.williamson@redhat.com>, <clg@redhat.com>,
- <eric.auger@redhat.com>, <mst@redhat.com>, <jasowang@redhat.com>,
- <peterx@redhat.com>, <ddutile@redhat.com>, <jgg@nvidia.com>,
- <shameerali.kolothum.thodi@huawei.com>, <joao.m.martins@oracle.com>,
- <clement.mathieu--drif@eviden.com>, <kevin.tian@intel.com>,
- <yi.l.liu@intel.com>, <chao.p.peng@intel.com>
-Subject: Re: [PATCH v3 02/20] hw/pci: Introduce pci_device_get_viommu_cap()
-Message-ID: <aG26VBqzOnLAWC5z@Asurada-Nvidia>
-References: <20250708110601.633308-1-zhenzhong.duan@intel.com>
- <20250708110601.633308-3-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1uZIwg-0003j8-0z
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 20:45:58 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1uZIwb-0004Lq-Dn
+ for qemu-devel@nongnu.org; Tue, 08 Jul 2025 20:45:57 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8Ax3eK7u21oFegkAQ--.40987S3;
+ Wed, 09 Jul 2025 08:45:47 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowJCxM+S6u21o0TEPAA--.22142S2;
+ Wed, 09 Jul 2025 08:45:46 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH 0/6] target/loongarch: Enhancement about tcg mmu
+Date: Wed,  9 Jul 2025 08:45:40 +0800
+Message-Id: <20250709004546.3005275-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250708110601.633308-3-zhenzhong.duan@intel.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042A7:EE_|IA1PR12MB8261:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0bac8a49-a55f-4885-beb8-08ddbe813018
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|7416014|82310400026|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?1DbS+BzTMWKx/WYoAOn/FOvdiem4iuAa8Ac+CLrWFjAiFohKmws0PySkjsNZ?=
- =?us-ascii?Q?e45q5Jeix1qS+WR3hQVtK9tjolEoLkGaXxi3FTKSuuahdqFTuKYm0igjWcyB?=
- =?us-ascii?Q?CCrdKIj3cXH0iiPN7NwDIt1ulAEtT+uccmczDOqgI1VXRDc+slyXGRdAI3lB?=
- =?us-ascii?Q?5jTVcHT1rRGIbURwyToS8HpKikDENAWNTOtjpfIpnYvQwdFULZFnDVPB11k1?=
- =?us-ascii?Q?cTfKhWxSWAO4idyICYl2/6CKZpAnWI+jiJ2npQE8odsZucpJZEFKv284A9Im?=
- =?us-ascii?Q?n0W6uww/B0dbDOV1ErkMkBLGXJ9jFcYVH/AjJabOlo/rcxd2LnRUmHy73AYs?=
- =?us-ascii?Q?qQNCkOBzBe/ZkvA8MVaSTsIx8vqTOg7KR0l9pYXdYnLw0hVuJgi3tR+/qTBb?=
- =?us-ascii?Q?fZtEGyvHPZxZTPeEn3tJp2sQdzfFY1qXZMtRDFwc+GedJCb8vh1h3ikOrffp?=
- =?us-ascii?Q?tpJqa5tJKxJzGrYoHBJas8515i4VOJoGFaFHVjkv/6ESR3TakE6gFJ7xMJAQ?=
- =?us-ascii?Q?TqBjXNHiMz89F1N3D5SAoQPRvh9VFQOKvSFDkkbioFFfteQ8oz8L3BBrN9VY?=
- =?us-ascii?Q?J6eqYfbheuNT+gsKZKy1CGFpLi5sNGYsaU50MyDXHPukAr/y0yw23tVuFnVz?=
- =?us-ascii?Q?FOOStFBe3DxxBbnyfVebR+nPhIolIbwoukGK2nQ/Yvpkp0ooJoyJzd2szdNO?=
- =?us-ascii?Q?jowrWW/hX3+O5+U2Sk2mnKxIsCmOZsQQ+P3ppxih8fj5o2j0CttxP0BxSa5O?=
- =?us-ascii?Q?Il5KepUfhmYkgqQ+0DRnGZs87OpbvRySnRDkhH5zMPAdTsgf2h5c9+crfjzk?=
- =?us-ascii?Q?aHS8NRnXOmbwr4jhvXCLvQJLOnxrL6ZpOLvJiKRK+UVBexsLQqfwdVs/dLBW?=
- =?us-ascii?Q?PI8PdBZUfKxagUJVU2wl89rbKcHk6syKTJUZv5XR0kzwN7RcwoksQMo6/TDy?=
- =?us-ascii?Q?ez9tOD2udUaCOzt32Wrkc56niNSx5yrUqOrN8lWBSlYd3OCa+KcX7nFM65Ut?=
- =?us-ascii?Q?00fCXlFUrryMcTcc54zWg4tm3e6UqphyY0RxhfWyPkC9HegGphTizvq6r/Gp?=
- =?us-ascii?Q?60tdbAuZTxwV5Ud6FMQEoYJ5d3FKFnq2Nh508+qrEm9JXBR6JcqLCeykcNxp?=
- =?us-ascii?Q?jWGoB87tivJd5hxq+YOQVMCEw/zI65yG/29tRFBMXc6Ucbx2RjqZFk62ILtT?=
- =?us-ascii?Q?sIffZixgX0VYUhJNv6HdxftKtzDyNNl9y2vzOgxlgmQ5fy5+YKRJ3vgj5lNT?=
- =?us-ascii?Q?gqNvquxlWlAatP2MSXTv62K6fG6uvtk0N7okY8ojk1kvVyf698zbaZZH6rjr?=
- =?us-ascii?Q?vWGFCEbkCeH/y0edztA3LtLQvza4GVCTtABFg5UQGt/VroAc9D2/aburcHoc?=
- =?us-ascii?Q?AbE0J06WaaIbNRMfJGlv9d/ujvSB2bXNDlUTKcywjKuBY5Ea1UiLh0JlCtEZ?=
- =?us-ascii?Q?7QPmzba9cXv9HIN3B0ek5mQuxWlrDI9YeSe0L7vgk2TAsqmPjcGjHKgN3g2M?=
- =?us-ascii?Q?KQAy9GxmuJeDrIgD2wIGua1EFK8/mAdOFakU?=
-X-Forefront-Antispam-Report: CIP:216.228.118.232; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(376014)(7416014)(82310400026)(36860700013)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 00:40:22.2977 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bac8a49-a55f-4885-beb8-08ddbe813018
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.232];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000042A7.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8261
-Received-SPF: permerror client-ip=2a01:111:f403:2412::601;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJCxM+S6u21o0TEPAA--.22142S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -159,44 +61,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 08, 2025 at 07:05:43AM -0400, Zhenzhong Duan wrote:
-> diff --git a/include/hw/iommu.h b/include/hw/iommu.h
-> new file mode 100644
-> index 0000000000..e80aaf4431
-> --- /dev/null
-> +++ b/include/hw/iommu.h
-> @@ -0,0 +1,16 @@
-> +/*
-> + * General vIOMMU capabilities, flags, etc
-> + *
-> + * Copyright (C) 2025 Intel Corporation.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#ifndef HW_IOMMU_H
-> +#define HW_IOMMU_H
-> +
-> +enum {
-> +    VIOMMU_CAP_STAGE1 = BIT_ULL(0),  /* stage1 page table supported */
-> +};
+There is some enhance about LoongArch mmu tcg emulation, add new
+header file cpu-mmu.h and function loongarch_check_pte(). Function
+loongarch_check_pte() can work on both TLB entry and pte entry.
 
-Thanks for this work. I am happy to see that we can share the
-common code that allocates a NESTING_PARENT in the core using
-this flag.
+This patchset mainly is code cleanup and enhancement, its main
+purpose is to work for hardware page table walk emluation in future.
 
-Yet on ARM, a STAGE1 page table isn't always a nested S1, the
-hardware accelerated one. More often, it can be just a regular
-1-stage translation table via emulated translation code and an
-emulated iotlb.
+Bibo Mao (6):
+  target/loongarch: Move some function definition to kvm directory
+  target/loongarch: Define function loongarch_cpu_post_init as static
+  target/loongarch: Set page size in TLB misc with STLB
+  target/loongarch: Add header file cpu-mmu.h
+  target/loongarch: Add common function loongarch_check_pte()
+  target/loongarch: Use loongarch_check_pte() with page table walking
 
-I think this flag should indicate that the vIOMMU supports a
-HW-accelerated nested S1 HWPT allocation/invalidation.
+ hw/loongarch/virt.c                  |   1 +
+ target/loongarch/cpu-mmu.h           |  39 ++++++
+ target/loongarch/cpu.c               | 181 ++++++++++++++-------------
+ target/loongarch/cpu.h               |  11 --
+ target/loongarch/cpu_helper.c        |  99 +++++++++++----
+ target/loongarch/internals.h         |  20 ---
+ target/loongarch/kvm/kvm_loongarch.h |   4 +-
+ target/loongarch/tcg/csr_helper.c    |   1 +
+ target/loongarch/tcg/tlb_helper.c    | 103 +++------------
+ 9 files changed, 227 insertions(+), 232 deletions(-)
+ create mode 100644 target/loongarch/cpu-mmu.h
 
-So, perhaps:
-    /* hardware-accelerated nested stage-1 page table support */
-    VIOMMU_CAP_NESTED_S1 = BIT_ULL(0),
-?
 
-Nicolin
+base-commit: e240f6cc25917f3138d9e95e0343ae23b63a3f8c
+-- 
+2.39.3
+
 
