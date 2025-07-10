@@ -2,110 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5B5B009DE
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D07EB00A10
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:41:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZv2G-0003a1-AF; Thu, 10 Jul 2025 13:26:18 -0400
+	id 1uZvGW-0005Lx-FP; Thu, 10 Jul 2025 13:41:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
- id 1uZubD-0007jA-QW
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:58:19 -0400
+ id 1uZuej-0003lk-2f
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:01:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
- id 1uZubA-0005HK-Kk
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:58:19 -0400
+ id 1uZueg-000695-C8
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:01:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752166695;
+ s=mimecast20190719; t=1752166912;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Mf3tRyb/gxqp1XWZxPq/SC8QmCBgX86UbSXUQ/uuB5k=;
- b=V3crk+bebJqP9bjfNGrjXTI/BKWI6v2HMbTx6bjGI2kgME92/1Ki6degAKHr5jigv0Sg5Q
- qNHkYGjC298gI7IuOI1p00DUrWxObXTnf6iWzdzTq3V/lL2dh/NQpHgryFu0eHAuS+FGv1
- HTfUIs9epyaXrkv6XD4gmNt72Zanfv4=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=d986X0zt2tb5c9IGcVptDd3DACcaChrt6goFr/oFoUs=;
+ b=En4gmx6FxmGwfxQsUf0a7BQ7y/20WSPQuV0eQLQErpewfTm8B48k8OMJCih0aiTtyaKsHo
+ fo4WlDX+eL37anC5lUwSUjj6QRV+CPyyspBVt/Sh7uK2/AUvFYLoiPhTTW8eS9G8x4SI6k
+ XsXBRFLzsQIFA/y7FOO5I9qtP/4B0Ac=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-404-F-IrqDDUP_q7qIFXWAEvMA-1; Thu, 10 Jul 2025 12:58:14 -0400
-X-MC-Unique: F-IrqDDUP_q7qIFXWAEvMA-1
-X-Mimecast-MFC-AGG-ID: F-IrqDDUP_q7qIFXWAEvMA_1752166693
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-74b537e8d05so1108934b3a.3
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:58:14 -0700 (PDT)
+ us-mta-136-2nL1IJLHMjimhedFruDEZA-1; Thu, 10 Jul 2025 13:01:51 -0400
+X-MC-Unique: 2nL1IJLHMjimhedFruDEZA-1
+X-Mimecast-MFC-AGG-ID: 2nL1IJLHMjimhedFruDEZA_1752166910
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-3132c1942a1so1912639a91.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 10:01:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752166693; x=1752771493;
+ d=1e100.net; s=20230601; t=1752166910; x=1752771710;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Mf3tRyb/gxqp1XWZxPq/SC8QmCBgX86UbSXUQ/uuB5k=;
- b=wAQNmeWEOsEJlw9HqctcPrOqcr28m/XLevV5zS2YFouWY/33wScNdqFSiwybrK1Mdm
- /GfifBsbXbEZXmbeplyWheemXnhMe5ypvkRzlu7G7+yBmW85hqdVeEHQIe55e2njt82/
- 155DB7BlDruMnQHhfKXNy3ZDV9WBh2zr+HwRZWDD5PprZPaj/W52jZoj68un4jdGLM1E
- jxEnH2GHPRVDT2YiB7j72z2mRHjRx0xnRdI/oKNMEQHEDDlMh8m9m8J7Ym23jFjKByBT
- SzajLDgJk5oOVakqFvoi8uQ/Fzx+KFVmYiHhKIXualP/Boqyu3G8mprg/DewmoH/LMFD
- rcvg==
+ bh=d986X0zt2tb5c9IGcVptDd3DACcaChrt6goFr/oFoUs=;
+ b=sGfxgz3LIa8ToQlKGAFRhlhw8zHn5rfrk/y6Z8IVnZ6cy6rFXt3ADzGybBTAtg/2ie
+ wGwBFj/vPU+MZh00ZdMe+XvzGLpXpWPwpoggQZItY0a3PRl0nOMcMCuVJNreKCWxVt2p
+ 300BPrgg5M16GdKUZzWMnsrrmivYbiRvIjQ1Q+y9vNqS2m318tNr+v8c6fq2QJ6oKXwY
+ lbhllYKuehuEwAa/59Py2Kh13GX0hUyKvLvx76vA/FGexqIrxcGdFXf/b8ZeoTDw2aRn
+ qhpT6fvODY2Wt8HMskvhEKB7sKqmlA7OCkNniI3e5/MUkdNx/jGEUmrAhwK/ILZ28de4
+ e+qg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWHrxsH4nKsm10DcIpHrTpesO6hjOkhHRXLbz3WJ1R+127OmFXZqp6GxGNWBFoo6SHQI//ZdoNKa3vq@nongnu.org
-X-Gm-Message-State: AOJu0YwPHsaSn0yT3IhvtjyEnmnHWfhYBIMmQjQkRCQjDu0DFtRav3BC
- gK+lrdHR2+LNEgyX8VKSDXEKXyHUsEHPgBnycJPBR2yCQjusaGpVnj5QWbLQLlTE2mKrC2QD14b
- r439jM+ZTswyWU5QLRnQxXE81pL+Ak0L/RTLOovtkJLjm0st+4yjkixbI
-X-Gm-Gg: ASbGncufW0QbVh/QueArKGL+A4EYIFhTiTrXJwbdJVAu90Mwyvn2KgrG0VeLGqvNEbc
- iHDR9zcgJyr/f8AcP9cb4cWYOhkBL1Pg9TplStKrw4cMAwdRFidNhgpq5vhScQlf4racEAvVCG8
- sqaH/94t+Nf6Ggx9Dkjrq1pzffl+286ffK9b69iPaWkt2KRErimkYbs5VZ6QrfcRczYj3cECTs8
- DDzUTMOq5ppWKh+w+LqaHX/sn/iHxyQ6QcOj/KcgxZq10uFsdGIhwK+SIoW2TyuNsq9487hN17x
- Gy2QTKbCKj8yVI9nz78B/5Y=
-X-Received: by 2002:a05:6a00:9290:b0:748:2fa4:14c0 with SMTP id
- d2e1a72fcca58-74ea60abdf8mr12769222b3a.0.1752166693034; 
- Thu, 10 Jul 2025 09:58:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQxJM7bIVnzgwUIdlf0wTo2MndN344idinCEiRDscyzdK8FwwwRkmJvDeHgOmowX9yci491Q==
-X-Received: by 2002:a05:6a00:9290:b0:748:2fa4:14c0 with SMTP id
- d2e1a72fcca58-74ea60abdf8mr12769190b3a.0.1752166692540; 
- Thu, 10 Jul 2025 09:58:12 -0700 (PDT)
+ AJvYcCWBlrO7lyGk7dqB86lEfoXNTZolnFbM7KEG6aAjEAPPNOoyvL6NnBOjYpw2N8G1whVo2TzPFDitw22+@nongnu.org
+X-Gm-Message-State: AOJu0YyXvh5OWQG7hxmp+JaiIykRClpOrenbMqo0+5JPPVhObB9YaD8X
+ UTRMTOIt2GOuOjzi+JDX9wl6hXs5rzw5W4nVE/23t+71mdLYVlz6bcVG2MwOw6eXHGFCiTwnB77
+ h3aw6kSKCnGQZGU6xj/dXVc93pWy8zulCjF6ERfzKlyLU0NLBu4ZVnveP
+X-Gm-Gg: ASbGncvcU8lFnCVTXrKnmfTEyQRsxdgQDa2+YoMHfFoJvx3Rd0V1Tx9O8jnOV5vGqis
+ BDnR9hzsuj0yv2GAr4qQUmf7a/dFJXFrHd3qh/Uc7kI1QZ4Bp4SvogPSfxEuIOu/2puhhMxU8Lr
+ g0kSfDFy6gPUMOJWnWW6Ah3R1FozxseYL6Kw1mTICJRLpDcH28cZK9jgwXmxwjWVHui3kmegfHp
+ Ny/9ThOCH8kZcDcT9MwNYvuam7dnJ4S0bNUnvCcSCqZNp3HJ7sO0QNUvr68nfrMb6d5ISZHPVEE
+ VMeyRTMRwrUWNEVZf2MPUNY=
+X-Received: by 2002:a17:90b:4b49:b0:315:cbe0:13b3 with SMTP id
+ 98e67ed59e1d1-31c4cce94d3mr362131a91.7.1752166909940; 
+ Thu, 10 Jul 2025 10:01:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJyi3QOlY4NpK9V/pcw/i9QRMuECt12m6lK6KctxVNU6hFVwpRzj3hbORVLVUjll/4SpMRyA==
+X-Received: by 2002:a17:90b:4b49:b0:315:cbe0:13b3 with SMTP id
+ 98e67ed59e1d1-31c4cce94d3mr362056a91.7.1752166909368; 
+ Thu, 10 Jul 2025 10:01:49 -0700 (PDT)
 Received: from [192.168.40.164] ([70.105.235.240])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74eb9f8f76asm2593984b3a.163.2025.07.10.09.58.09
+ 98e67ed59e1d1-31c3e972298sm2778486a91.11.2025.07.10.10.01.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Jul 2025 09:58:12 -0700 (PDT)
-Message-ID: <b633f79c-3d2d-4bb4-ad66-3cc5e766701a@redhat.com>
-Date: Thu, 10 Jul 2025 12:58:07 -0400
+ Thu, 10 Jul 2025 10:01:48 -0700 (PDT)
+Message-ID: <5542e55f-5cd9-40f8-bb45-fe6d851140b1@redhat.com>
+Date: Thu, 10 Jul 2025 13:01:44 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 07/12] hw/pci: Introduce pci_setup_iommu_per_bus() for
- per-bus IOMMU ops retrieval
+Subject: Re: [PATCH v3 02/20] hw/pci: Introduce pci_device_get_viommu_cap()
 Content-Language: en-US
 To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
  Nicolin Chen <nicolinc@nvidia.com>
-Cc: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>,
  "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "berrange@redhat.com"
- <berrange@redhat.com>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "nathanc@nvidia.com" <nathanc@nvidia.com>,
- "mochs@nvidia.com" <mochs@nvidia.com>,
- "smostafa@google.com" <smostafa@google.com>,
- "gustavo.romero@linaro.org" <gustavo.romero@linaro.org>,
- "mst@redhat.com" <mst@redhat.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>,
- jiangkunkun <jiangkunkun@huawei.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-References: <20250708154055.101012-1-shameerali.kolothum.thodi@huawei.com>
- <20250708154055.101012-8-shameerali.kolothum.thodi@huawei.com>
- <aG2M/BI3UAYxKCD3@Asurada-Nvidia>
- <741503f8f96148b389b875e6b6812c1a@huawei.com>
- <aG8ECVeOYXPzBEVB@Asurada-Nvidia>
- <3a51c0e0f3ce4c2580ff596008615439@huawei.com>
- <aef834e0-d6dc-40d0-a6aa-24ed44b77325@redhat.com>
- <f3bfc4cdb0ca47da8f3e4bc38b58d3b6@huawei.com>
+ "mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
+ <jasowang@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>,
+ "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
+ "clement.mathieu--drif@eviden.com" <clement.mathieu--drif@eviden.com>,
+ "kevin.tian@intel.com" <kevin.tian@intel.com>,
+ "yi.l.liu@intel.com" <yi.l.liu@intel.com>,
+ "chao.p.peng@intel.com" <chao.p.peng@intel.com>
+References: <20250708110601.633308-1-zhenzhong.duan@intel.com>
+ <20250708110601.633308-3-zhenzhong.duan@intel.com>
+ <aG26VBqzOnLAWC5z@Asurada-Nvidia>
+ <01584206-e2c0-4881-aaf5-d6c552a30873@redhat.com>
+ <aG7A8hxd1R4iVhGT@Asurada-Nvidia>
+ <b3787ed4219743e2a65edd13ff44d9b9@huawei.com>
 From: Donald Dutile <ddutile@redhat.com>
-In-Reply-To: <f3bfc4cdb0ca47da8f3e4bc38b58d3b6@huawei.com>
+In-Reply-To: <b3787ed4219743e2a65edd13ff44d9b9@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=ddutile@redhat.com;
@@ -135,163 +129,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 7/10/25 12:21 PM, Shameerali Kolothum Thodi wrote:
+On 7/10/25 4:11 AM, Shameerali Kolothum Thodi wrote:
 > 
 > 
 >> -----Original Message-----
->> From: Donald Dutile <ddutile@redhat.com>
->> Sent: Thursday, July 10, 2025 5:00 PM
->> To: Shameerali Kolothum Thodi
->> <shameerali.kolothum.thodi@huawei.com>; Nicolin Chen
->> <nicolinc@nvidia.com>
->> Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org;
->> eric.auger@redhat.com; peter.maydell@linaro.org; jgg@nvidia.com;
->> berrange@redhat.com; imammedo@redhat.com; nathanc@nvidia.com;
->> mochs@nvidia.com; smostafa@google.com; gustavo.romero@linaro.org;
->> mst@redhat.com; marcel.apfelbaum@gmail.com; Linuxarm
->> <linuxarm@huawei.com>; Wangzhou (B) <wangzhou1@hisilicon.com>;
->> jiangkunkun <jiangkunkun@huawei.com>; Jonathan Cameron
->> <jonathan.cameron@huawei.com>; zhangfei.gao@linaro.org
->> Subject: Re: [PATCH v7 07/12] hw/pci: Introduce
->> pci_setup_iommu_per_bus() for per-bus IOMMU ops retrieval
+>> From: Nicolin Chen <nicolinc@nvidia.com>
+>> Sent: Wednesday, July 9, 2025 8:20 PM
+>> To: Donald Dutile <ddutile@redhat.com>
+>> Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>; qemu-
+>> devel@nongnu.org; alex.williamson@redhat.com; clg@redhat.com;
+>> eric.auger@redhat.com; mst@redhat.com; jasowang@redhat.com;
+>> peterx@redhat.com; jgg@nvidia.com; Shameerali Kolothum Thodi
+>> <shameerali.kolothum.thodi@huawei.com>; joao.m.martins@oracle.com;
+>> clement.mathieu--drif@eviden.com; kevin.tian@intel.com;
+>> yi.l.liu@intel.com; chao.p.peng@intel.com
+>> Subject: Re: [PATCH v3 02/20] hw/pci: Introduce
+>> pci_device_get_viommu_cap()
 >>
+>> On Wed, Jul 09, 2025 at 01:55:46PM -0400, Donald Dutile wrote:
+>>>>> +enum {
+>>>>> +    VIOMMU_CAP_STAGE1 = BIT_ULL(0),  /* stage1 page table
+>> supported */
+>>>>> +};
+>>>>
+>>>> Thanks for this work. I am happy to see that we can share the
+>>>> common code that allocates a NESTING_PARENT in the core using
+>>>> this flag.
+>>>>
+>>>> Yet on ARM, a STAGE1 page table isn't always a nested S1, the
+>>>> hardware accelerated one. More often, it can be just a regular
+>>>> 1-stage translation table via emulated translation code and an
+>>>> emulated iotlb.
+>>>>
+>>> Because the user-created smmuv3 started as 'accelerated smmuv3',
+>>> and had been 'de-accelerated' to simply 'user created smmuv3',
+>>> I'm looking for some clarification in the above statement/request.
+>>>
+>>> Is the above suppose to reflect that a nested IOMMU has some hw-
+>> acceleration
+>>> in its Stage1 implementation?
+>>> If so, then call it that: STAGE1_ACCEL.
+>>> If it's suppose to represent that an IOMMU has nested/2-stage support,
+>>> then the above is a valid cap;  -but-, having a nested/2-stage support
+>> IOMMU
+>>> doesn't necessarily mean its accelerated.
 >>
+>> Well, there are an emulated "nested" mode and an hw-accelerated
+>> "nested" mode in the smmuv3 code, so we had to choose something
+>> like "accel" over "nested".
 >>
->> On 7/10/25 3:37 AM, Shameerali Kolothum Thodi wrote:
->>>
->>>
->>>> -----Original Message-----
->>>> From: Nicolin Chen <nicolinc@nvidia.com>
->>>> Sent: Thursday, July 10, 2025 1:07 AM
->>>> To: Shameerali Kolothum Thodi
->> <shameerali.kolothum.thodi@huawei.com>
->>>> Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org;
->>>> eric.auger@redhat.com; peter.maydell@linaro.org; jgg@nvidia.com;
->>>> ddutile@redhat.com; berrange@redhat.com; imammedo@redhat.com;
->>>> nathanc@nvidia.com; mochs@nvidia.com; smostafa@google.com;
->>>> gustavo.romero@linaro.org; mst@redhat.com;
->>>> marcel.apfelbaum@gmail.com; Linuxarm <linuxarm@huawei.com>;
->> Wangzhou
->>>> (B) <wangzhou1@hisilicon.com>; jiangkunkun
->> <jiangkunkun@huawei.com>;
->>>> Jonathan Cameron <jonathan.cameron@huawei.com>;
->>>> zhangfei.gao@linaro.org
->>>> Subject: Re: [PATCH v7 07/12] hw/pci: Introduce
->>>> pci_setup_iommu_per_bus() for per-bus IOMMU ops retrieval
->>>>
->>>> On Wed, Jul 09, 2025 at 08:20:35AM +0000, Shameerali Kolothum Thodi
->>>> wrote:
->>>>>> On Tue, Jul 08, 2025 at 04:40:50PM +0100, Shameer Kolothum wrote:
->>>>>>> @@ -2909,6 +2909,19 @@ static void
->>>>>> pci_device_get_iommu_bus_devfn(PCIDevice *dev,
->>>>>>>                }
->>>>>>>            }
->>>>>>>
->>>>>>> +        /*
->>>>>>> +         * When multiple PCI Express Root Buses are defined using
->>>>>>> + pxb-
->>>>>> pcie,
->>>>>>> +         * the IOMMU configuration may be specific to each root bus.
->>>>>> However,
->>>>>>> +         * pxb-pcie acts as a special root complex whose parent
->>>>>>> + is
->>>>>> effectively
->>>>>>> +         * the default root complex(pcie.0). Ensure that we retrieve the
->>>>>>> +         * correct IOMMU ops(if any) in such cases.
->>>>>>> +         */
->>>>>>> +        if (pci_bus_is_express(iommu_bus) &&
->>>>>> pci_bus_is_root(iommu_bus)) {
->>>>>>> +            if (!iommu_bus->iommu_per_bus && parent_bus-
->>>>>>> iommu_per_bus) {
->>>>>>> +                break;
->>>>>>
->>>>>> Mind elaborating why the current bus must unset iommu_per_bus
->>>> while
->>>>>> its parent sets iommu_per_bus?
->>>>>>
->>>>>> My understanding is that for a pxb-pcie we should set
->> iommu_per_bus
->>>>>> but for its parent (the default root complex) we should unset its
->>>>>> iommu_per_bus?
->>>>>
->>>>> Well, for new arm-smmuv3 dev you need an associated pcie root
->>>>> complex. Either the default pcie.0 or a pxb-pcie one. And as I
->>>>> mentioned in my reply to the other thread(patch #2) and commit log
->>>> here,
->>>>> the pxb-pcie is special extra root complex in Qemu which has pcie.0
->>>>> has parent bus.
->>>>>
->>>>> The above pci_device_get_iommu_bus_devfn() at present, iterate over
->>>> the
->>>>> parent_dev if it is set and returns the parent_bus IOMMU ops even if
->>>>> the associated pxb-pcie bus doesn't have any IOMMU. This creates
->>>>> problem for a case that is described here in the cover letter here,
->>>>> https://lore.kernel.org/qemu-devel/20250708154055.101012-1-
->>>> shameerali.kolothum.thodi@huawei.com/
->>>>>
->>>>> (Please see "Major changes from v4:" section)
->>>>>
->>>>> To address that issue, this patch introduces an new helper function
->>>>> to
->>>> specify that
->>>>> the IOMMU ops are specific to the associated root
->>>> complex(iommu_per_bus) and
->>>>> use that to return the correct IOMMU ops.
->>>>>
->>>>> Hope with that context it is clear now.
->>>>
->>>> Hmm, I was not questioning the context, I get what the patch is
->>>> supposed to do.
->>>>
->>>> I was asking the logic that is unclear to me why it breaks when:
->>>>       !pxb-pcie->iommu_per_bus && pcie.0->iommu_per_bus
->>>>
->>>> Or in which case pcie.0 would be set to iommu_per_bus=true?
->>>
->>> Yes. Consider the example I gave in cover  letter,
->>>
->>> -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.1 \ -device
->>> virtio-net-pci,bus=pcie.0,netdev=net0,id=virtionet.0 \ -device
->>> pxb-pcie,id=pcie.1,bus_nr=8,bus=pcie.0 \ -device
->>> arm-smmuv3,primary-bus=pcie.1,id=smmuv3.2 \ -device
->>> pcie-root-port,id=pcie.port1,chassis=2,bus=pcie.1 \ -device
->>> virtio-net-pci,bus=pcie.port1,netdev=net1,id=virtionet.1
->>>
->>> pcie.0 is behind new SMMUv3 dev(smmuv3.1) and has iommu_per_bus
->> set.
->>> pcie.1 has no SMMv3U and iommu_per_bus is not set for it.
->> pcie.1 doesn't?   then what is this line saying/meaning?:
->>    -device arm-smmuv3,primary-bus=pcie.1,id=smmuv3.2 \
+>> Here, on the other hand, I think the core using this CAP would
+>> unlikely care about an emulated "nested" mode in the individual
+>> vIOMMU..
 >>
->> I read that as an smmuv3 attached to pcie.1, with an id of smmuv3.2; just
->> as I read this config:
->>    -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.1 \ as an smmuv3
->> attached to pcie.0 iwth id smmuv3.1
+>> So I suggested:
+>>       /* hardware-accelerated nested stage-1 page table support */
+>>      VIOMMU_CAP_NESTED_S1 = BIT_ULL(0),
+>>
+>> which it should be clear IMHO.
+>>
+>> If not, maybe go a bit further like "VIOMMU_CAP_HW_NESTED_S1"?
 > 
-> Oops..I forgot to delete that from the config:
-> This is what I meant,
+> I am not sure the _S1 part makes much sense in ARM case. It doesn't matter
+> whether the Guest SMMUv3 is configured in s1/s2 or nested for this CAP.
+> With the new SMMUv3 dev support, the user can pretty much specify,
 > 
-> -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.1 \
-> -device virtio-net-pci,bus=pcie.0,netdev=net0,id=virtionet.0 \
-> -device pxb-pcie,id=pcie.1,bus_nr=8,bus=pcie.0 \
-> -device pcie-root-port,id=pcie.port1,chassis=2,bus=pcie.1 \
-> -device virtio-net-pci,bus=pcie.port1,netdev=net1,id=virtionet.1 \
+> -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.1,accel=on,stage={stage1|stage2|nested}
+> 
+> And I think it will work with a host SMMUv3 nested configuration in all the
+> above cases. Unless I am missing something and we need to restrict its
+> use with stage=stage1 only.
 > 
 > Thanks,
 > Shameer
-> 
-the dirt is in the details... thanks for the clarification.
-- Don
-
->>
->>>
->>> And we don't want pci_device_get_iommu_bus_devfn() to return pcie.0's
->>> IOMMU ops for virtionet.1. Hence the break.
->>>
->>> Thanks,
->>> Shameer
->>>
->>
 > 
 
 
