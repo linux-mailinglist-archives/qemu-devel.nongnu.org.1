@@ -2,105 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DBAEB0091D
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 18:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A62B00945
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 18:53:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZuMb-0006g2-PY; Thu, 10 Jul 2025 12:43:22 -0400
+	id 1uZuW8-0002qN-2t; Thu, 10 Jul 2025 12:53:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uZu55-0008IS-6n
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:25:17 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uZu9Y-0002uc-IS
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:29:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uZu52-0002ZE-M0
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:25:06 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56AF7R9P008448;
- Thu, 10 Jul 2025 16:25:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=ptNyRoIZi1mQgphh1JiVqR0tx9DwhkwTD/GDLBr2CBo=; b=
- OVaEOd++y0ku7Vac3fKtKsuu/IeQcZVsWWBBqq5jaAdGa79XKPnRveuCMYmqANW6
- ogj47oX1qmxMtpsc04ThBmJEFLHrlmgahxQvKFOf6Htshgq2Irz9FSBsyL1Wfb3f
- whQqBJMEFmaIImmCPBhIi96ne3UH1BbGCSUHR2eTXlyIs7hUM3zq0QflXksJyc5x
- n2kvUORAJCegq+b7LsDQemJuw+hkRXHtSJ41RpFSL4cpC3fKz0H87h+I5UFzjH2k
- DTHE7D1QzUQ9Lj3StMstLlZG8yqnOxSp4rgkkAtVAsG8yRb4MUEPe0zg1EjE/aiw
- YAJvUTBzKHeTTIt9wjCzig==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47tfvd05bk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 10 Jul 2025 16:25:01 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 56AG6ceb014282; Thu, 10 Jul 2025 16:25:01 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 47ptgd9btc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 10 Jul 2025 16:25:01 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56AGOtos005343;
- Thu, 10 Jul 2025 16:25:00 GMT
-Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 47ptgd9bq1-4; Thu, 10 Jul 2025 16:25:00 +0000
-From: Steve Sistare <steven.sistare@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V4 3/3] tests/qtest/qom-test: unit test for qom-list-getv
-Date: Thu, 10 Jul 2025 09:24:54 -0700
-Message-Id: <1752164694-215567-4-git-send-email-steven.sistare@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1752164694-215567-1-git-send-email-steven.sistare@oracle.com>
-References: <1752164694-215567-1-git-send-email-steven.sistare@oracle.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uZu9S-0003ol-0J
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:29:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752164976;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZC7zdxlSsFyQWVgmh3dGZUfDCyjhxzt7G1eaJyMKXXA=;
+ b=g3IUp+RONv8uawsg3SOwQbnx9x9BxfDxvJKRtFgrslTiwRbccdSOKkMEEpRws4ESHCwbuV
+ VSNEnGjS3DoCVMU/3pyIsSRM9M8rM84/TZQgti5Y0D3mybAf6DBx99ZOGF6wsiojEnLSSl
+ gUWaCPoxUi130OYXzdhPfyY0ak1mHQM=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-385-F2gyaPsJMz-ddr9UKSnc2g-1; Thu, 10 Jul 2025 12:29:34 -0400
+X-MC-Unique: F2gyaPsJMz-ddr9UKSnc2g-1
+X-Mimecast-MFC-AGG-ID: F2gyaPsJMz-ddr9UKSnc2g_1752164973
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-311ef4fb5fdso1489264a91.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:29:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752164973; x=1752769773;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZC7zdxlSsFyQWVgmh3dGZUfDCyjhxzt7G1eaJyMKXXA=;
+ b=diEeXt+AeSAXTvO6Q0twdOP1FQZEEEocbIvUJhWGJa0+Y+XI8MAJjTqNE+Sh68jlb0
+ tq/XJTujKXcrdBO+rWNbXccobpATYP/CPT3v7qB6wZu8O1C5aVZ4si3yw2DBzgAbLh4c
+ qIbJ7fRflPzc+aU+MrnkVLu5d7dGLxop1NhS793suakOgULCZ82s8C8pxHfX0PGRzHhF
+ pKUGTLBLiNCOG/OReRq8M/jK4WXbJicEMIX+5dkGRMevZR8fZjexLoyKNE50dvq4JOf5
+ YgpVu9E1nulrs/xmHDPjhV9xXCqF+VJEepVXPnHs+fPA+dgSfZDf4izLS9g1YH61YJzV
+ LwoQ==
+X-Gm-Message-State: AOJu0YwJg/gXvC1nEtREOkw6v28r4vwrxZS6oXK939TAVOsp/NbTVc7k
+ 7BecBcaQyn2/T7WgfM4RUNSgicb52yyXIyJxFiWPelQdbKw70EwcN3axyYdgT+KQ5vmpLblm5XM
+ HVNaAQQcLpCdCuB+M20wdDlQ2TUTs2JZt7+vOrPublHzQxMlAyLhdBHnsC7nOxYMGhYWoQ+GaUt
+ K65v49HbuVKkr5mPubFDh9rkh5RE9Jme4=
+X-Gm-Gg: ASbGncsnM7ddurqoLeeqID/LnGGsHNTmVWge55vQHRB4fDYoAqWmfZr8fBBnKfjNewl
+ euG8GMUktOOlb48de793J+VjtCKBytoAGAu9H2VLQ+9AXYoVBFfcfGr3q4YG2iG2fTCAZsSsrDn
+ jR35g3
+X-Received: by 2002:a17:90b:4cc5:b0:312:39c1:c9cf with SMTP id
+ 98e67ed59e1d1-31c4cca45a1mr241993a91.7.1752164972185; 
+ Thu, 10 Jul 2025 09:29:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVmPtsEW5+DofQTShJiHBp0Lg0MUabQ7Mdvq7qOKFdsC6qicHzW/f8lRi/ctXN/0RGV7IIbZlcqw0ObX52VXk=
+X-Received: by 2002:a17:90b:4cc5:b0:312:39c1:c9cf with SMTP id
+ 98e67ed59e1d1-31c4cca45a1mr241946a91.7.1752164971757; Thu, 10 Jul 2025
+ 09:29:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-10_04,2025-07-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- malwarescore=0 mlxscore=0
- phishscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507100139
-X-Authority-Analysis: v=2.4 cv=Ydi95xRf c=1 sm=1 tr=0 ts=686fe95d b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=KKAkSRfTAAAA:8
- a=WINDFw4_gsHOHzS5P5AA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22 cc=ntf awl=host:13600
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDEzOSBTYWx0ZWRfX2EOxZCzyCsOV
- wYuaye5/h7b1yFcs+JNfAmlH78aqO6LbRCOCbFO4aY+QeBLKHKJLFMrPK65CsdgZyBXSzBI5Jx7
- UG2MDHhn+ivi+pPWDyjc6WEFm8Go2KEjkqu4/3ywuX+MjwKjv/UuC3I7qQHKjxXotF2mkMi4CqF
- MF+vmvWslj7FKAPd8DhsJaFvNqWayx+vqECvTGXaxYnI8mPgPJXSV8576MbnNm332phW/kGHkiL
- aKeQ0pbPMhoRJPg95vqCBOIawkHbvFIHs8ptbjSHULNBzKHjOWTp7oIUITG4PUlHCi5c/Jnb+3P
- 6b5KiDd70Mr45+sn+sdmBgixn86u8wsCV3QIuiaKdWcaC0nHdVz47wVYx0seOB0PHzfwFoe8fdj
- l3tT2NDmSA4pbeBy+pf2i0tOh3IjZYYa1uiYYahwFcnAMkSD8I3xKIxdXnGxUnKdYCssfXjg
-X-Proofpoint-ORIG-GUID: 7dCoNMdgALdoO10wPPEZIbX3e63pA-pj
-X-Proofpoint-GUID: 7dCoNMdgALdoO10wPPEZIbX3e63pA-pj
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20250703-rust-qdev-properties-v2-1-d4afac766e94@linaro.org>
+ <63edd7ca-02b3-416c-ae28-38bd5386aa89@redhat.com>
+ <CAAjaMXbdA51QOR0tx4OnbSnWdx9=cjR_GsaMFdAvrVHy9a-XQQ@mail.gmail.com>
+ <CABgObfaiM6-n_O-jD5NkT8iD05a-+jfs33hVkb-UsuG8D_TAvQ@mail.gmail.com>
+ <CAAjaMXaHVSg7cmV8q5Jazfiw_o=pu6KmHj7SnSeoJzzStNd+4g@mail.gmail.com>
+In-Reply-To: <CAAjaMXaHVSg7cmV8q5Jazfiw_o=pu6KmHj7SnSeoJzzStNd+4g@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 10 Jul 2025 18:29:19 +0200
+X-Gm-Features: Ac12FXx6Lmfq38n4o5mMTKl1elWXxv6VVq1nJgTuuX20q3KGmCfIqGMJVmBmIv0
+Message-ID: <CABgObfYoqFkzgurUvt0aG4RFp=-h_pirYiaaWU9ybtU8GrD-bQ@mail.gmail.com>
+Subject: Re: [PATCH RFC v2] rust: add qdev DeviceProperties derive macro
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Zhao Liu <zhao1.liu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -118,162 +106,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a unit test for qom-list-getv.
+On Thu, Jul 10, 2025 at 4:48=E2=80=AFPM Manos Pitsidianakis
+<manos.pitsidianakis@linaro.org> wrote:
+>
+> On Thu, Jul 10, 2025 at 5:26=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.co=
+m> wrote:
+> >
+> > On Thu, Jul 10, 2025 at 11:41=E2=80=AFAM Manos Pitsidianakis
+> > <manos.pitsidianakis@linaro.org> wrote:
+> > > > Aside from that, I actually liked using Device for the macro name i=
+n
+> > > > your earlier versions.  Yes, it's just for properties in practice, =
+but
+> > > > it's nice and small to just say Device; and it mimics Object.  It's=
+ your
+> > > > choice anyway.
+> > >
+> > > I was thinking of making a `Device` derive macro that lets you also
+> > > define `DeviceImpl::REALIZE` and `DeviceImpl::vmsd` as macro
+> > > attributes on the struct definition, then merge DeviceProperties into
+> > > that. WDYT?
+> >
+> > Like #[derive(Device(realize =3D PL011State::realize))]? I kind of like
+> > having traits for classes (the "const" does look a bit ugly/foreign,
+> > but Linux has some other ideas using a #[vtable] procedural macro).
+>
+> I was thinking:
+>
+> #[repr(C)]
+> #[derive(Device)]
+> #[device(realize =3D PL011State::realize, vmsd =3D VMSTATE_PL011)]
+> pub struct PL011State {
+>   ..
+> }
+>
+> I agree about traits for class methods, it's definitely cleaner. The
+> lines blur here because we have REALIZE as a constant in order to make
+> it nullable from the C side =F0=9F=A4=94
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/qtest/qom-test.c | 116 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 115 insertions(+), 1 deletion(-)
+Yes, I agree. Another factor to consider is the quality of error messages.
 
-diff --git a/tests/qtest/qom-test.c b/tests/qtest/qom-test.c
-index 27d70bc..4ade1c7 100644
---- a/tests/qtest/qom-test.c
-+++ b/tests/qtest/qom-test.c
-@@ -11,11 +11,119 @@
- 
- #include "qobject/qdict.h"
- #include "qobject/qlist.h"
-+#include "qobject/qstring.h"
- #include "qemu/cutils.h"
- #include "libqtest.h"
- 
-+#define RAM_NAME "node0"
-+#define RAM_SIZE 65536
-+
- static int verbosity_level;
- 
-+/*
-+ * Verify that the /object/RAM_NAME 'size' property is RAM_SIZE.
-+ */
-+static void test_list_get_value(QTestState *qts)
-+{
-+    QDict *args = qdict_new();
-+    g_autoptr(QDict) response = NULL;
-+    g_autoptr(QList) paths = qlist_new();
-+    QListEntry *entry, *prop_entry;
-+    const char *prop_name;
-+    QList *properties, *return_list;
-+    QDict *obj;
-+
-+    qlist_append_str(paths, "/objects/" RAM_NAME);
-+    qdict_put_obj(args, "paths", QOBJECT(qlist_copy(paths)));
-+    response = qtest_qmp(qts, "{ 'execute': 'qom-list-get',"
-+                              "  'arguments': %p }", args);
-+    g_assert(response);
-+    g_assert(qdict_haskey(response, "return"));
-+    return_list = qobject_to(QList, qdict_get(response, "return"));
-+
-+    entry = QTAILQ_FIRST(&return_list->head);
-+    obj = qobject_to(QDict, qlist_entry_obj(entry));
-+    g_assert(qdict_haskey(obj, "properties"));
-+    properties = qobject_to(QList, qdict_get(obj, "properties"));
-+
-+    QLIST_FOREACH_ENTRY(properties, prop_entry) {
-+        QDict *prop = qobject_to(QDict, qlist_entry_obj(prop_entry));
-+
-+        g_assert(qdict_haskey(prop, "name"));
-+        g_assert(qdict_haskey(prop, "value"));
-+
-+        prop_name = qdict_get_str(prop, "name");
-+        if (!strcmp(prop_name, "type")) {
-+            g_assert_cmpstr(qdict_get_str(prop, "value"), ==,
-+                            "memory-backend-ram");
-+
-+        } else if (!strcmp(prop_name, "size")) {
-+            g_assert_cmpint(qdict_get_int(prop, "value"), ==, RAM_SIZE);
-+        }
-+    }
-+}
-+
-+static void test_list_get(QTestState *qts, QList *paths)
-+{
-+    QListEntry *entry, *prop_entry, *path_entry;
-+    g_autoptr(QDict) response = NULL;
-+    QDict *args = qdict_new();
-+    QDict *prop;
-+    QList *return_list;
-+
-+    if (verbosity_level >= 2) {
-+        g_test_message("Obtaining properties for paths:");
-+        QLIST_FOREACH_ENTRY(paths, path_entry) {
-+            QString *qstr = qobject_to(QString, qlist_entry_obj(path_entry));
-+            g_test_message("  %s", qstring_get_str(qstr));
-+        }
-+    }
-+
-+    qdict_put_obj(args, "paths", QOBJECT(qlist_copy(paths)));
-+    response = qtest_qmp(qts, "{ 'execute': 'qom-list-get',"
-+                              "  'arguments': %p }", args);
-+    g_assert(response);
-+    g_assert(qdict_haskey(response, "return"));
-+    return_list = qobject_to(QList, qdict_get(response, "return"));
-+    g_assert(!qlist_empty(return_list));
-+
-+    path_entry = QTAILQ_FIRST(&paths->head);
-+    QLIST_FOREACH_ENTRY(return_list, entry) {
-+        QDict *obj = qobject_to(QDict, qlist_entry_obj(entry));
-+        g_assert(qdict_haskey(obj, "properties"));
-+        QList *properties = qobject_to(QList, qdict_get(obj, "properties"));
-+        bool has_child = false;
-+
-+        QLIST_FOREACH_ENTRY(properties, prop_entry) {
-+            prop = qobject_to(QDict, qlist_entry_obj(prop_entry));
-+            g_assert(qdict_haskey(prop, "name"));
-+            g_assert(qdict_haskey(prop, "type"));
-+            has_child |= strstart(qdict_get_str(prop, "type"), "child<", NULL);
-+        }
-+
-+        if (has_child) {
-+            /* build a list of child paths */
-+            QString *qstr = qobject_to(QString, qlist_entry_obj(path_entry));
-+            const char *path = qstring_get_str(qstr);
-+            g_autoptr(QList) child_paths = qlist_new();
-+
-+            QLIST_FOREACH_ENTRY(properties, prop_entry) {
-+                prop = qobject_to(QDict, qlist_entry_obj(prop_entry));
-+                if (strstart(qdict_get_str(prop, "type"), "child<", NULL)) {
-+                    g_autofree char *child_path = g_strdup_printf(
-+                        "%s/%s", path, qdict_get_str(prop, "name"));
-+                    qlist_append_str(child_paths, child_path);
-+                }
-+            }
-+
-+            /* fetch props for all children with one qom-list-get call */
-+            test_list_get(qts, child_paths);
-+        }
-+
-+        path_entry = QTAILQ_NEXT(path_entry, next);
-+    }
-+}
-+
- static void test_properties(QTestState *qts, const char *path, bool recurse)
- {
-     char *child_path;
-@@ -85,8 +193,10 @@ static void test_machine(gconstpointer data)
-     const char *machine = data;
-     QDict *response;
-     QTestState *qts;
-+    g_autoptr(QList) paths = qlist_new();
- 
--    qts = qtest_initf("-machine %s", machine);
-+    qts = qtest_initf("-machine %s -object memory-backend-ram,id=%s,size=%d",
-+                      machine, RAM_NAME, RAM_SIZE);
- 
-     if (g_test_slow()) {
-         /* Make sure we can get the machine class properties: */
-@@ -101,6 +211,10 @@ static void test_machine(gconstpointer data)
- 
-     test_properties(qts, "/machine", true);
- 
-+    qlist_append_str(paths, "/machine");
-+    test_list_get(qts, paths);
-+    test_list_get_value(qts);
-+
-     response = qtest_qmp(qts, "{ 'execute': 'quit' }");
-     g_assert(qdict_haskey(response, "return"));
-     qobject_unref(response);
--- 
-1.8.3.1
+For what it's worth, this is the solution they use in Linux:
+https://rust-for-linux.github.io/docs/macros/attr.vtable.html. In
+short, they generate a HAS_REALIZE boolean const, and compute the
+function pointer with something like
+  if Self::HAS_REALIZE { Some(Self::realize) } else { None }
+
+Forgetting the #[vtable] attribute on the "impl" produces a decent
+error message, too.
+
+And here is the source:
+https://rust-for-linux.github.io/docs/src/macros/vtable.rs.html. Linux
+doesn't use proc_macro2 or quote so probably it would have to be
+rewritten for QEMU, but it's small and easy to understand.
+
+Even if it's *also* not the nicest, it may be worth adopting this
+convention just for consistency among mixed C/Rust programs.
+
+Paolo
+
+
+Paolo
 
 
