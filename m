@@ -2,91 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB2FAFFF83
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:44:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB0CAFFF99
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:48:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZokn-00006z-Fo; Thu, 10 Jul 2025 06:43:49 -0400
+	id 1uZon6-00023r-5y; Thu, 10 Jul 2025 06:46:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZokb-0008Vd-4B
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:43:37 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uZomh-0001rB-DO
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:51 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZokX-0006k3-7C
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:43:36 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-453066fad06so4747095e9.2
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:43:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uZomZ-00077g-Qc
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:46 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3a57ae5cb17so516559f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752144211; x=1752749011; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=YsH2CsC3SbUWzt01eKgxXS2RO/6o0D1c2Re/SGbbvtk=;
- b=OAAyIYPkZSuN6ug3NvXnFGfHi48aZmxMQG7VaVDB8F93Jn9Eos9pA7h3JK/YrfFKyp
- lW7wwoat31tkXSsCcWh6JQuQveq8tIdEi6E9xdkXGaHI058OTdEiZLtUrM5bE9MIo5HD
- 9tvdEvkH5z/fDtJlvu/F7YdNx8ncHrddTWN5fB+cI/q9Jh8XmXFOXyYsPJ2f0IED9tXE
- GdJCWUNCdZJxJmSU8mAzA6mTVqS4zWYauuxrWl6Ke2c1mWvha7DTfOWNve5Ov7rCAMBF
- BtyuI5N/qTuhCTQSOETuvA+OM51HCUN3KG0A/65jw5acVmntc/be2xhdr32AGtY1auNu
- VZVg==
+ d=linaro.org; s=google; t=1752144334; x=1752749134; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Vko3wg0dgxa4EDIqWLrzBh8ANpBppL8w4+YtdHLVV04=;
+ b=Xr8D/CiAmkld4seW9kE5O3BQi71xxLK5Gdw7fZ4+CXSTEqa70Mguc+c5BHYDOdMbHc
+ 77xEEzUuRhmp0T6buBXxUdJJqXxkdzvZaszvZJ6eZI/wAlojw6pKYAP/kmpvEYUHawqe
+ 6egc14SKW7cc2dxcmv7B53Hzz8TzhrdZpT7Fdcd9W7dkDQ0fSWepFMaxpfujzAnfXUUg
+ ylNzg96Km8ZQx9FH19AOqR4Wa2GxafpndnYNQBW4jzyJJzw4o68o8/hKDwnoo6UcBJmM
+ 1ovnhqth1UH5ztr6EycpX5X3ZNQSGWX7iWPPJCpm2tZZyHkNsTmoOXPAjlhsMKtlgG0W
+ XWkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752144211; x=1752749011;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YsH2CsC3SbUWzt01eKgxXS2RO/6o0D1c2Re/SGbbvtk=;
- b=PiGBfUobf55VHWEQp496aA6EEaqIZhhoPzTmbNDaGzaz328OH6Uf8JCElm+L29zAVb
- qeCQyRO55wWpe7Ifs6428HtzbjshYf8svrBUbiAlj5EH813nRb+kPsId/M+vr2W5mgtl
- EoO3Rd2khoWG4NQAC1+/TG8Vrssp5ewnvCUPD/swYi/AP0Hvmn0moSwAkGtoQp6cBRMe
- L9cgsIUJZo5k7OpV7W2I7ezQ1iTXvwzBgrNZ1vHsnaaTfZzX/ozb+XQtorzNYCEcOyp2
- vtjEpzjCtMSLdhwUhbkCC/nbn8vGNRCcYsZxJOxr6dk6UaHO6WVmrwPThYbBz0RPDnb4
- eGPg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWke7npMDkry+O2/CW6IxpmEpIyZBB47sQycsQIQjIWrQ9tND7GsDpoxEWjODdvT357OHDj1Lb/pFet@nongnu.org
-X-Gm-Message-State: AOJu0YyBlJ/pjzyhH3svE3V4M7MWeE4wmKmi73oa3vM/BrxoY5/03DYR
- MADXSTNuccpMlPC8TTPtdmCp5ksG9XTLcd+zjvIhhozOHr5x4Ra7rvrnvB7RYFECYP8=
-X-Gm-Gg: ASbGncvvXmuhgSqvXAnLblcR088W7KxK1Cv8+y309UIiROOcuTuPYd9HrqEN2NfR6RR
- FOL86eyAA7rrqdDrUMsfuFlmu2w8y/6DQPb9TGeR9+gWL2S2HWQBwbJ1XmQb1urvPvGxgUZ0sAw
- eEEGO3945FmhnE8Ij71Wx7SFBrFmryo668figUoU2LfFoYOTLDBkQX72ogfLn92FyiSp2ESe4ox
- CQQQN8I/u1hTruZSQ/BOOXv6GTu6IOdaAeVNVDkCH2X7iFu+2Nmu6IAzJBid3CsEo1GT+F55Obe
- KXHpSuf5ynJvoRapEr23B/9aVYMqgZ4f3xkA9Bdc5XTm51tEGpSlh+kUxaJkxEGHYCo+0UabqO4
- Y/hFGkcSGZq//CcLa2MuD/8GH6tXV83XoCTKEcsAi0Gk=
-X-Google-Smtp-Source: AGHT+IHMXle9Ikkf2slwgJCpQVlfG6z+3m9EkHsW8srqy7rfuwVtBNWhDojrImol1Lsa5xSjBRDDcA==
-X-Received: by 2002:a5d:5d12:0:b0:3b2:ef53:5818 with SMTP id
- ffacd0b85a97d-3b5e44e2010mr4815890f8f.5.1752144211469; 
- Thu, 10 Jul 2025 03:43:31 -0700 (PDT)
-Received: from [192.168.1.117] (lfbn-mon-1-970-120.w86-227.abo.wanadoo.fr.
- [86.227.5.120]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e1e2cfsm1488847f8f.75.2025.07.10.03.43.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Jul 2025 03:43:30 -0700 (PDT)
-Message-ID: <624dc105-25f5-404d-82e9-ee8184d430fa@linaro.org>
-Date: Thu, 10 Jul 2025 12:43:29 +0200
+ d=1e100.net; s=20230601; t=1752144334; x=1752749134;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Vko3wg0dgxa4EDIqWLrzBh8ANpBppL8w4+YtdHLVV04=;
+ b=k+ryVyAqVTDBXoG8q/GnR5rlhUmX+Bno8zmm6vWpfdEDI/Eo+mhNW5SmMyXNud6AOd
+ IfXTDcLAwc+N1zk+c97aIcg3NiGUxSy0KUNoanq6mqVV4j35vSwuqgSr7n/XyBDDa6Gx
+ rOayyk/zzK8gdZss9kJcPcZ+JnrqsiMebyn40/4xpdGb+N0Br/GDzPQnvB32lFRXBtjf
+ xkqe/hc6np0gTYvNnYjNUE7636s97OmC5HeOVBEhfywETL88JnkPU1fVk7wE5QvygYbA
+ /8ghP6zbJStg6EQk5b6RfrZ+GXSt7GQRxPPb/uVhJa096E3f073yQoVl1oPfGnLmQWt8
+ FJPA==
+X-Gm-Message-State: AOJu0YwJaM+Wz26auXxE8LN804bT/2owPUGvFYAu5cKV03vliX4NUQSQ
+ 61Jovsfzk2ddixJlaOP1tZyccr56lopOwP6mbBKw+GdtnfO1ns3uqtKjpQ4DMAbihzM=
+X-Gm-Gg: ASbGnctpvB8zZKTsWqDbNxzBDRCIsptFOzZEn9a9EXf0fdC6beBzB+TH3ErmZqNVMEh
+ 1m97/IuvdoDmvU5/KmsqrOHgdLhjTIFiub1xpuEYcVtaqcB0BUjl+DA7KpMD88n9iEXMBMhQ9Vt
+ 4ZlP35WOXde49yToRZHKU0kFAg7n7U3yHzmZWbmshz+gozuGYe1odtuRL4Kox+exvOQCtOgsPB4
+ bP6UzKj37QnOJiOjraHQpttxZRK0mWf7B4aGodenskj2iTutSCFhyPwVxSx5POoARyDa/wI8UQZ
+ RidORg1RXI9vccdH33d90CLjSZVmEX9Ml7/Df0CrfMM9LSYMOwykLmWHB2OMMUI=
+X-Google-Smtp-Source: AGHT+IFDr5rMnoDAZwoH8J4FS5zvABLEzQ51b4ZLB7/1GbMRjOUsYcbaeSHpj6cP909fGrZD8zeycg==
+X-Received: by 2002:a05:6000:4107:b0:3a4:f936:7882 with SMTP id
+ ffacd0b85a97d-3b5e86d65ecmr1700657f8f.55.1752144333702; 
+ Thu, 10 Jul 2025 03:45:33 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8e0d867sm1547708f8f.61.2025.07.10.03.45.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Jul 2025 03:45:32 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 3CCCB5F812;
+ Thu, 10 Jul 2025 11:45:31 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jason Wang <jasowang@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 0/7] maintainer updates for 10.1 softfreeeze (gitlab, plugins,
+ docs) pre-PR
+Date: Thu, 10 Jul 2025 11:45:23 +0100
+Message-ID: <20250710104531.3099313-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/14] hw/i386/pc_piix.c: assume pcmc->pci_enabled is
- always true in pc_init1()
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, pbonzini@redhat.com,
- mst@redhat.com, marcel.apfelbaum@gmail.com, eduardo@habkost.net,
- imammedo@redhat.com, qemu-devel@nongnu.org
-References: <20250704141018.674268-1-mark.caveayland@nutanix.com>
- <20250704141018.674268-14-mark.caveayland@nutanix.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250704141018.674268-14-mark.caveayland@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,17 +105,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/7/25 16:09, Mark Cave-Ayland wrote:
-> PCI is always enabled on the pc-i440fx machine so hardcode the relevant logic
-> in pc_init1().
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> ---
->   hw/i386/pc_piix.c | 194 ++++++++++++++++++----------------------------
->   1 file changed, 76 insertions(+), 118 deletions(-)
+I've collected up the last few bits that are ready for my last PR
+before the 10.1 softfreeze. The most consequential is enabling
+registers for the Alpha target in plugins. The rest is little
+clean-ups here and there.
 
-We are not far from removing PCMachineClass::pci_enabled.
+I intend to send the PR on Monday.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The following patches are un-reviewed:
+
+  docs/system: clean-up formatting of virtio-net-failover
+  plugins: fix inclusion of user-mode APIs
+  gitlab: add -n option to check_units
+  gitlab: use argparse in check-units script
+
+Alex
+
+Alex Bennée (4):
+  gitlab: use argparse in check-units script
+  gitlab: add -n option to check_units
+  plugins: fix inclusion of user-mode APIs
+  docs/system: clean-up formatting of virtio-net-failover
+
+Manos Pitsidianakis (1):
+  docs: use :kbd: role in sphinx docs
+
+Yodel Eldar (2):
+  contrib/plugins/execlog: Add tab to the separator search of insn_disas
+  target/alpha: Add GDB XML feature file
+
+ docs/devel/testing/main.rst          |   4 +-
+ docs/system/images.rst               |   2 +-
+ docs/system/keys.rst.inc             |  49 +++++-----
+ docs/system/linuxboot.rst            |   2 +-
+ docs/system/mux-chardev.rst.inc      |  38 ++++----
+ docs/system/virtio-net-failover.rst  |  51 +++++-----
+ configs/targets/alpha-linux-user.mak |   1 +
+ configs/targets/alpha-softmmu.mak    |   1 +
+ contrib/plugins/execlog.c            |  15 +--
+ linux-user/plugin-api.c              |   1 +
+ target/alpha/cpu.c                   |   1 +
+ common-user/plugin-api.c.inc         |   1 +
+ .gitlab-ci.d/check-units.py          |  29 +++---
+ gdb-xml/alpha-core.xml               | 136 +++++++++++++++++++++++++++
+ linux-user/meson.build               |   5 +-
+ 15 files changed, 250 insertions(+), 86 deletions(-)
+ create mode 100644 gdb-xml/alpha-core.xml
+
+-- 
+2.47.2
 
 
