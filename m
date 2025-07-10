@@ -2,87 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790EEB00D8B
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 23:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 747CBB00DB3
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 23:23:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZyY1-0000Z7-Tz; Thu, 10 Jul 2025 17:11:17 -0400
+	id 1uZyhu-0002RN-Af; Thu, 10 Jul 2025 17:21:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uZyXs-0000XL-Vq
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 17:11:10 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uZyXr-0006eR-Co
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 17:11:08 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-23aeac7d77aso14047725ad.3
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 14:11:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752181866; x=1752786666; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XxglZr9FSbfBVmHLZ+FvVDfQKN3fWf8b03y6OHhLFac=;
- b=S2ubFhecNrlcE0wHvzSd++yXvrycuf426RKI3nyvqXRxAJO+rp10BunaJO3R6CbvLJ
- 5iRLSMhsHbhAUhJ5ErlhM2AL7OwNa0eoxwgTdO0c3lW0ypnK0ubyAQirEeK1H79rpGbd
- iXcQDAxy0LYW87ouBC5Fy7GHhO1ygSHHjWqk9Mc3C2l2nOpSN7yTgjHYZCpuoBNmTfEr
- ZyhTyqVCs2a8C643FZKoSAn1IBFkxpHXAqw0q7s2mZ3lNbK201jOOVV8wxPhW/OkVLuz
- eR3NkZhvqhfcF4uf5e+bUPVC6UKWqzoFBpXBn0mMRQHkmiAFh7E4KinellZyMhFC2MWM
- AbbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752181866; x=1752786666;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XxglZr9FSbfBVmHLZ+FvVDfQKN3fWf8b03y6OHhLFac=;
- b=LSA1FATAu08MbSiubhLpdom9PjFLQoDexQhsVPjbyFtNeeJvBLyt2FJ8iNdjwP5PlR
- 3JlAnB1c/a/axCHoRNK6yR0wd/BFIWl3XqpuI29WS8/wQrdOQeL6xPcSmfsXxny9lska
- SpE8CNzxNJ2k437jdZ3nsJM3Sl4RbXVJQPWD/yAwuBkb9M6uqUJnW4qrNFe7cR9q7YQ9
- LSNbywN0p9ZLqqp/rc8E55t962mQYJf+lvNKouIOeEjfDvK+renIFooEws899DIF3AI9
- qoJFP9EI2Ba4WXWKheKRBzyniCC/T4C2uYhmUE4oDERCbUucTu/lDXQNbXAASRuXmXaU
- v4qA==
-X-Gm-Message-State: AOJu0YwVgL9mvgiBsFYyBNnkoXRHrsqMgcGTqJtkZvT2saFUa5hjc3nO
- UTGA3c7Fjcc3dsw23q8TCQWjP5fRrcDH38E5TLUD2W+qGSvq0xraTTQaYR5Vqu4CpYE=
-X-Gm-Gg: ASbGncv8wfh8go9uC8IGVPpZweg3xGHefI5I+cPIiMrZlGB0Gx9M7DUXJ/Ifjps3H09
- Tn0b8O2tpLd/DOBAELF6TWGt2SSFFI7FSPzYjzFYqfLx8XpWjFSxzZ3Yz6vrxugbwNub55wdh6L
- 7sCFZV/4LCHUOFYVcKiIYCaa+OP46+UCnf3ub1NGvmbn8XN0tCL6Y9Ul750vIuKM46e/s4djTX7
- 5XRCoGKmbagj9fOxZ8v+FK2K3FV4X0C/HBcrvjYYYf764zRJ4k4AwR6RVoOaypg2DT4bb3Ya+lG
- AvifutYAV1ByyTbCn41U7IOL9DbHjS5mTlxu8869ChKzoHw0ayCN7VWZ4FKAQAnLuimoNiYTXhH
- I0f6/KYNRPzxtjaI4QgQ4CAReAVCA84lEqY2b79GfTkrxYiF1+1ymmjMm0g==
-X-Google-Smtp-Source: AGHT+IGRi/54l7dYMIvw7MZjU0TCT2MYW3MaMAMb7gvme9jACt4mMt+PGVFnwDgSGyEgz79DhyRmOg==
-X-Received: by 2002:a17:903:2f85:b0:235:f45f:ed53 with SMTP id
- d9443c01a7336-23dede8914fmr9118495ad.33.1752181865996; 
- Thu, 10 Jul 2025 14:11:05 -0700 (PDT)
-Received: from gromero0.. (189-47-46-41.dsl.telesp.net.br. [189.47.46.41])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23de434d6b0sm30447775ad.203.2025.07.10.14.11.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jul 2025 14:11:05 -0700 (PDT)
-From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-arm@nongnu.org, richard.henderson@linaro.org, alex.bennee@linaro.org
-Cc: qemu-devel@nongnu.org,
-	gustavo.romero@linaro.org
-Subject: [PATCH v6 6/6] target/arm: Advertise FEAT_MEC in cpu max
-Date: Thu, 10 Jul 2025 21:09:41 +0000
-Message-Id: <20250710210941.1098088-7-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250710210941.1098088-1-gustavo.romero@linaro.org>
-References: <20250710210941.1098088-1-gustavo.romero@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1uZyhr-0002Qm-St; Thu, 10 Jul 2025 17:21:28 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1uZyhp-0001YF-3A; Thu, 10 Jul 2025 17:21:27 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56AKn6Vl026281;
+ Thu, 10 Jul 2025 21:20:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=DlQBU8
+ iN1Zn42nIC5RU3DARvLI+9tnYdgOiIOxyQ6yc=; b=XvGuM3zA3jo4J29iwU0RSJ
+ sfDTbiE4l6K9qLs4deO4oFAcM+bH2HxTC9/5dp6UbQri6DEYeDivwwtg8LgrGfVJ
+ uZs9MfoHbTAwRBrXxNw3dR83umGHYazv/g6Yk8b93B5BnhbmOlSBwt8DYfYYKJ/Z
+ QkG324Jt5Q5ImCpwuISu43EvfGQh/FtjbaRWQiSKlb+oq4Z0fEWyxbLGt8y63rgb
+ uVEJFuRZ50X4imiNt4QdvOzz/cG0pUAOR9hKyil99CBIsK8/RgHusrX23sPw/aWM
+ hq9Q6MCfNYeFv4TI2iReJ4Xa+Wu45HGyptNV8FFGhf//OYZd92rS2OiFfJTQ0LAA
+ ==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47puqnp5qj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Jul 2025 21:20:56 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56AINjfl002847;
+ Thu, 10 Jul 2025 21:20:55 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47qfvmqg8j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Jul 2025 21:20:55 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 56ALKsFj32178888
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 10 Jul 2025 21:20:54 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 450FA58059;
+ Thu, 10 Jul 2025 21:20:54 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 937F65805B;
+ Thu, 10 Jul 2025 21:20:53 +0000 (GMT)
+Received: from [9.61.107.132] (unknown [9.61.107.132])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 10 Jul 2025 21:20:53 +0000 (GMT)
+Message-ID: <36819228-b4c2-44a7-bc85-f5630c8412b5@linux.ibm.com>
+Date: Thu, 10 Jul 2025 17:20:53 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/s390x/s390-pci-bus.c: Use g_assert_not_reached() in
+ functions taking an ett
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Eric Farman <farman@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>
+References: <20250710161552.1287399-1-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20250710161552.1287399-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=FZ43xI+6 c=1 sm=1 tr=0 ts=68702eb8 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=KKAkSRfTAAAA:8 a=VnNF1IyMAAAA:8
+ a=tF9ib_puwyeb5LtTvjEA:9 a=QEXdDO2ut3YA:10
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: j1oZxdu8S-oXX4Z0SdZjxVPziMmjKsFG
+X-Proofpoint-ORIG-GUID: j1oZxdu8S-oXX4Z0SdZjxVPziMmjKsFG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDE3OSBTYWx0ZWRfX1bt+hBOTHbEs
+ 5D6jY+QG20ai3jLHnH/tZ+UjVWnjOG0lWREgtAdxNS9MexUgba5mIYay5tKwN1Uu7ZCWCs9XEIo
+ wdHnjqTDLJMGuX0aPblSOuMldNjNnAKVOTUrUTIFfIMP0wdJuv4qP2PrHVEOWau/NaSVyl0XqmI
+ 8kTqZtSm3lQCv2JsTUlMlYuZhzpqY4yXc4xB0y/L51qaLVlS8JPNZbI3UuXV1Kyp64UGBzcOzvB
+ 2i8TISOieN4biPFfBEF1Uk7DUn+xIDTava93jSxrxEaQjqRXtgYakgzVIWdaoR2TSQkxMvagsk3
+ kp3ZwAyK91p5CsBEMDpfZHzjWvSMBAJCPZ7wP4mYIen1WMEAIqRkOXOuJtuPCaMhddc/YRZhI5c
+ JbuqvhEjnz/zMqGFvsN0cJ/mioqLjaPZUNyW4xB/rZGdGdS+A8Vn7U6VrSId+UaSQfHqZNmO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-10_05,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 mlxscore=0
+ priorityscore=1501 malwarescore=0 mlxlogscore=450 clxscore=1015
+ spamscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
+ adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507100179
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=mjrosato@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,52 +121,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Advertise FEAT_MEC in AA64MMFR3 ID register for the Arm64 cpu max as a
-first step to fully support FEAT_MEC.
+On 7/10/25 12:15 PM, Peter Maydell wrote:
+> The s390-pci-bus.c code, Coverity complains about a possible overflow
+> because get_table_index() can return -1 if the ett value passed in is
+> not one of the three permitted ZPCI_ETT_PT, ZPCI_ETT_ST, ZPCI_ETT_RT,
+> but the caller in table_translate() doesn't check this and instead
+> uses the return value directly in a calculation of the guest address
+> to read from.
+> 
+> In fact this case cannot happen, because:
+>  * get_table_index() is called only from table_translate()
+>  * the only caller of table_translate() loops through the ett values
+>    in the order RT, ST, PT until table_translate() returns 0
+>  * table_translate() will return 0 for the error cases and when
+>    translate_iscomplete() returns true
+>  * translate_iscomplete() is always true for ZPCI_ETT_PT
+> 
+> So table_translate() is always called with a valid ett value.
+> 
+> Instead of having the various functions called from table_translate()
+> return a default or dummy value when the ett argument is out of range,
+> use g_assert_not_reached() to indicate that this is impossible.
+> 
+> Coverity: CID 1547609
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+> Disclaimer: only tested with 'make check/make check-functional'
 
-The FEAT_MEC is an extension to FEAT_RME that implements multiple
-Memory Encryption Contexts (MEC) so the memory in a realm can be
-encrypted and accessing it from the wrong encryption context is not
-possible. An encryption context allow the selection of a memory
-encryption engine.
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 
-At this point, no real memory encryption is supported, but software
-stacks that rely on FEAT_MEC to run should work properly.
+Also to sanity check I ran various tests with s390x guests and a few different PCI passthrough devices using a guest IOMMU to drive table_translate frequently.
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- docs/system/arm/emulation.rst | 3 +++
- target/arm/tcg/cpu64.c        | 1 +
- 2 files changed, 4 insertions(+)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 1c597d8673..d207a9f266 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -89,6 +89,9 @@ the following architecture extensions:
- - FEAT_LSE (Large System Extensions)
- - FEAT_LSE2 (Large System Extensions v2)
- - FEAT_LVA (Large Virtual Address space)
-+- FEAT_MEC (Memory Encryption Contexts)
-+
-+  * This is a register-only implementation without encryption.
- - FEAT_MixedEnd (Mixed-endian support)
- - FEAT_MixedEndEL0 (Mixed-endian support at EL0)
- - FEAT_MOPS (Standardization of memory operations)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index ae2046a7f6..1b9b6475b6 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1250,6 +1250,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = GET_IDREG(isar, ID_AA64MMFR3);
-     t = FIELD_DP64(t, ID_AA64MMFR3, TCRX, 1);       /* FEAT_TCR2 */
-     t = FIELD_DP64(t, ID_AA64MMFR3, SCTLRX, 1);     /* FEAT_SCTLR2 */
-+    t = FIELD_DP64(t, ID_AA64MMFR3, MEC, 1);        /* FEAT_MEC */
-     t = FIELD_DP64(t, ID_AA64MMFR3, SPEC_FPACC, 1); /* FEAT_FPACC_SPEC */
-     SET_IDREG(isar, ID_AA64MMFR3, t);
- 
--- 
-2.34.1
+
+
 
 
