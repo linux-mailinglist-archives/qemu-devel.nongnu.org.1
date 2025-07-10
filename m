@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A082B00B7E
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 20:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EEDFB00B89
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 20:40:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZw6t-0008Ib-VD; Thu, 10 Jul 2025 14:35:08 -0400
+	id 1uZwBk-0006cI-P0; Thu, 10 Jul 2025 14:40:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uZvVK-0000qi-Dm
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:56:22 -0400
-Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
+ id 1uZvXN-0003hc-Ax
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:58:39 -0400
+Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uZvVH-0005gc-Pa
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:56:17 -0400
-Received: by mail-ot1-x336.google.com with SMTP id
- 46e09a7af769-72c14138668so482712a34.2
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 10:56:13 -0700 (PDT)
+ id 1uZvXK-0005pT-6s
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:58:25 -0400
+Received: by mail-oa1-x2f.google.com with SMTP id
+ 586e51a60fabf-2ea65f5a0easo894119fac.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 10:58:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752170172; x=1752774972; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752170292; x=1752775092; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ac7NR0gN8eVK5JIn7wji7UD4+0giUiNtlrhy6lYn/CI=;
- b=fAx2c41lzsms/N4gYcgK/YwvoqiJAazHIGM+zTOsqfDaboSIEIm017JU3NAhsLjAWm
- CBqPas7fOPc0Y65/1ek13eB0kpSBIKGLCgP5zJROhPUOU4+9KSpYIKunI0F994redSB4
- Epo8UizltJf0AxWpqS6WuopfUo9JWmpnZwBerX/MthGiZZt+qiz9yKwKm7Xpnr/Aif7o
- a9o7sgYma5RsX8bPpXZaVrJzqUDlNzk83yNP4ysmnI5zmH8SMb4SL1AGR89ZvDcDcSVN
- sISHxJ1xJjqSJpCsVEvIlDVaW4MGOmnzR1aFEahm1N5lPLu1r3SVIQATSTVZywMoZYv7
- VOIw==
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/Ukm5CD6xYz/03rckvlKVObmuaG1Y9I4P+4Q6jNXL38=;
+ b=i+z3QuvaWVI9e//Gqh48+hWTLK9j9Ta88AqbC2xF+ZD/pZGx/IBbyCGCTuL0L3cIvy
+ HLXfU9QiWwvJpPaAEw2qaVflYWtc0B5uLheBkg38Sw9UWs1SoC9AAJRe89nsh5tpYpAI
+ dfr6noNMJAXGcB2TepJrZe4OmO6PTFASi155BZ/bUOz2gqcx++RFsKe06Ugj5ZMCaEd2
+ 3ZF7J6UIyUqxTaSHlRSmUfio/0m0KHFGjCDqc8trPSd8iLyxaMNkLW0Bb6BRfoMUh5wP
+ BSlKGuxLfV1W97/x8tKmdQ/qUrO3UKIU8008YpOPyzt4tYe2rhmLjNOMV9QJNHd55A9K
+ KQIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752170172; x=1752774972;
+ d=1e100.net; s=20230601; t=1752170292; x=1752775092;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ac7NR0gN8eVK5JIn7wji7UD4+0giUiNtlrhy6lYn/CI=;
- b=Lxwin8ONvUhmSJ8Uv6bWODPQp0uHPbNKrzi8DxFMulJ0okhQSgOFH9TBwA3UG+PtzZ
- hmPeaDsZoww8advKqsbxB6rEP/Pg0MuF8zFWSjiv7sVoMoi2QyttsJPDPEiyKGWQGUQf
- acVv6KD8yOMkK+wXgBHOFBA4S12l8ByH7yYzPY2V0CnuXYnoqmmKrVbRoQn/q+c8n7YL
- bwqPKyayYLenQCqE+zAuPVJUcfa5O/6SYbKe4ykiDqhu2MhClgqlo9Y40+bCHdaP+Ak4
- qOUEFPI0tI+a2AR5gED1KcVahjVPQjy8Nc86uPU2PgvgDXXCpPWi3U5qVLHffBZZ/N9s
- Nm+g==
-X-Gm-Message-State: AOJu0YwbPoy18xxhLaBmkuZhf0f3SiLSpuLB3jL+4eGrxZPYXNtnHEf/
- IzGLNnHxjLFQARG8h8uwHuaXSs0W13/EpMq6MQFhoLrCkaP4zG+PjW5O8IDpbaLpMHKCbhW/hXD
- E8cvt+0c=
-X-Gm-Gg: ASbGnctnYuQKbZSfaCwbLwfT9iC2izE201Jjf/Hvq3b+mWR8fL19DMsL6dcGsz+k549
- VXg4/tc0dNWMb/168jSjS/amvwmwTSlc0hu8Q8zxUadeZzUisezJGw3F4WRi/mCTizMWxljUvCD
- X10A46JfbNKx9FfR4KZcDu5GA4Sl9gSivCy5yKn4FgfcAfImo5GfaGx7Mn476rNG2/wkkBTXTF6
- AzS8SUXIDxLCOMTxGpP8+KArlIddao6AY8EValUU4UZd8OtSXKzKQZ5J+TAJUeXJr0c1dkWb/Wm
- ErHdp0PSRapnw/1WkEabXP1kjAGMcKouX+VUF4mXQkg+lZeLu8UhL2AKO+ccLGScg6/lPRgEWJS
- Flqs=
-X-Google-Smtp-Source: AGHT+IGFOxPuPb3691fxVABbXV7t7/7zcvHG+2cKbN5jpipvZLNTgGYBQhovV8Gez9lDB6MKjY4jaQ==
-X-Received: by 2002:a05:6830:2d86:b0:72b:9196:c15c with SMTP id
- 46e09a7af769-73cf9dd76e9mr304274a34.6.1752170172422; 
- Thu, 10 Jul 2025 10:56:12 -0700 (PDT)
+ bh=/Ukm5CD6xYz/03rckvlKVObmuaG1Y9I4P+4Q6jNXL38=;
+ b=ZX+kcksWZD+4oto+IvoNHpARsW0g7EBDFnGMk9P9aWPUjQKCwy0eNgyxDTrul/Fje1
+ 4apcdgou+kmSP70w36+uRCEXNIMG+LYoL6cXGGBv65ETmM9auFGJg+0jmh8Ps5O0ZQI6
+ hXD9764GM/PeyM05wwsaHKT+PkYOBheJcIvksQ6nW3CqdRiuR9TY7ujmxyUU7lEdBUgF
+ LCIaP+pC+MocKY7yybjJX7X6nznG4Qb0IvE+oHQ8Z+gj7vrMQd77UiZpTEn1BpaxlEIs
+ wdlOorc5TpUIFAfSmbVccj774jskWeGDphhjuTMj0MiLui3l9oVWUJ9gcJ1QrQXjW+Bs
+ pjKg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXbBUduEBhcjrPfkGHRnAPZQIkCroD+/gQldVmcCvqMokNRq5+y6lpVbyeXWaW6GaLVtHvEjIYyeXrK@nongnu.org
+X-Gm-Message-State: AOJu0YzKJ5Z961rySITETx0slpmwAG/hYl7yPk6h4bppIE5M0zPNwQfM
+ P0kaL+RedlTDILxgZoRiijbnGlle3fxFOZUxSd8lxYodbTDx3O5Mn0+aQCwdnDBIioPSJ0AU4xA
+ 10pnxdGI=
+X-Gm-Gg: ASbGncv9IIXm3z932hGf2Xq+BkCAASBrPrMRjUaC7q414zmc4qv+Ojem8KfPtUrS6V8
+ JApTWj7e9bGXJjDA67eN7xuJhjusBRBtFAf9ku1i4UoXi9YmjW6n04DjJ5HJsBNPgmheVtf7y3t
+ apGz7vA+AH9lH4jnpVWAKEUG+4X4MIvvKd/SVApcTc4kyjYX8Bwmtq0IXiM2kZgqQYmrkKi7M3I
+ UTLpz2lCA2RVrZiWmhuFClUwHQblIXXehSNvN7T7LrTtepnN5+2pTxWWENcpRzkl4ldOHgoNUkj
+ /dmB/qUWoJ8XIfmG11M4eHd0BqrudIWvziuiKdlCqYA+Gq5cg4mZ4sAlvclR7/eE+XQfxl4rHtg
+ Uv2wZUNK74gWwEA==
+X-Google-Smtp-Source: AGHT+IFY2TjElw0i9YULUHDuCjv1UE8NKI8zW8p/WkhiFHldvEt6xHrFI48IB20zy1Xf1S2O8OWywg==
+X-Received: by 2002:a05:6870:2151:b0:2eb:a2ef:901b with SMTP id
+ 586e51a60fabf-2ff2671375amr174960fac.14.1752170292512; 
+ Thu, 10 Jul 2025 10:58:12 -0700 (PDT)
 Received: from [172.20.0.130] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-73cf1272561sm280508a34.33.2025.07.10.10.56.11
- for <qemu-devel@nongnu.org>
+ 586e51a60fabf-2ff1174bdf9sm392961fac.50.2025.07.10.10.58.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Jul 2025 10:56:11 -0700 (PDT)
-Message-ID: <f6973332-2329-47d2-88dd-79a6956f7201@linaro.org>
-Date: Thu, 10 Jul 2025 11:56:09 -0600
+ Thu, 10 Jul 2025 10:58:12 -0700 (PDT)
+Message-ID: <98ea92b7-d078-4976-8511-d68818270cf6@linaro.org>
+Date: Thu, 10 Jul 2025 11:58:10 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] linux-user: Check for EFAULT failure in nanosleep
-To: qemu-devel@nongnu.org
-References: <20250710164355.1296648-1-peter.maydell@linaro.org>
+Subject: Re: [PATCH 0/2] linux-user/gen-vdso: minor error handling improvements
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>
+References: <20250710170707.1299926-1-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250710164355.1296648-1-peter.maydell@linaro.org>
+In-Reply-To: <20250710170707.1299926-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x336.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,23 +102,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/10/25 10:43, Peter Maydell wrote:
-> target_to_host_timespec() returns an error if the memory the guest
-> passed us isn't actually readable.  We check for this everywhere
-> except the callsite in the TARGET_NR_nanosleep case, so this mistake
-> was caught by a Coverity heuristic.
+On 7/10/25 11:07, Peter Maydell wrote:
+> These two small patches improve the error handling in the gen-vdso
+> program. Error handling isn't particularly critical here because
+> the tool only gets run during the QEMU build process on input
+> that we trust (because we generated it by calling a compiler
+> for the guest architecture), but these were easy to do.
 > 
-> Add the missing error checks to the calls that convert between the
-> host and target timespec structs.
+> The main motivation here is that Coverity complained about not
+> checking fseek()'s return value.
 > 
-> Coverity: CID 1507104
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> Tested via the LTP nanosleep tests, but they don't actually exercise
-> the EFAULT codepaths...
+> thanks
+> -- PMM
 > 
->   linux-user/syscall.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
+> Peter Maydell (2):
+>    linux-user/gen-vdso: Handle fseek() failure
+>    linux-user/gen-vdso: Don't write off the end of buf[]
+> 
+>   linux-user/gen-vdso.c | 16 ++++++++++++++--
+>   1 file changed, 14 insertions(+), 2 deletions(-)
+> 
 
 Queued, thanks.
 
