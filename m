@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9FAAFFFAD
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:50:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4FEAFFFA8
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:50:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZopR-00056g-U3; Thu, 10 Jul 2025 06:48:39 -0400
+	id 1uZoqz-0006rX-43; Thu, 10 Jul 2025 06:50:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZopD-0004sW-NJ
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:48:25 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uZoqJ-0006cE-Qy
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:49:34 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZopB-0007LH-9Q
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:48:23 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-451d41e1ad1so5145545e9.1
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:48:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uZoqD-0007zs-Tv
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:49:30 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-60700a745e5so1548362a12.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:49:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752144498; x=1752749298; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ML/GjR5SS75XmZVQW7fJ3shFXowBFaw2E76A3D/mPHM=;
- b=KQzu4/IsMuWrrOodD0QcXalF7CYdEBgVzoYIfh8h+cFJ6SHgqX27jJgaBAkNo6k3GY
- sPdKYkOgtPPVNBnrL3t+qC5S3hZjXa+pRdHisj+xGwKPMRrY2WbZGNCBDnjv4Sc0RqzK
- H0Pqp6ehLmId3ca4CkwklzNuFClfKyMb4hW39ZuKwU5wpqwO07bEsXK91zMer5cKZlp7
- fkSQe8ZskChbbaWjQvqBxse9avaGejeSmJNR2POqIiU5r2hWVLoPzTdPOnPX+pnfa1xW
- huYVXg4xf+R3limMQRuAwCpJNK6ZGaVGHLr3ouQfsNHqGE0PphFstgCTSY7jPMw/bhqw
- qSKQ==
+ d=linaro.org; s=google; t=1752144564; x=1752749364; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5bJ3kf7dwHAEdzkxX+CWjkNy/EKVyNN7GPrpQsuLSIg=;
+ b=ffFbgv6KnCylFyCvLVfUUdZctAUT3n/5NK1maGMGNMp9ffIE6WXRH30AAoydtKDPVB
+ nbellmgXaJYaCxpQZFoWCZ419emSpERiCIIjS7QJOeVsGsHYh3lzswdcFIbbRHOwExo5
+ qLqZkdxH7TkOfcuP0OzDGHN6gtaBGNYA6L+PkudeTzywN9lQ7P+qAKADPPsA8IB1uhLD
+ 9jfZo+a4s2+ty/3vOOlB1fMhUlK2xT1eKk4QZBiJ+OruXI4qFTIxiIrNRQX9yWzgy65a
+ pJZANa84H3Qc8CBLNe99rCpDufL9ruw6EvrObEqOKckSmTWY60Ypla8HFGJVVO3fw9nU
+ XT/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752144498; x=1752749298;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ML/GjR5SS75XmZVQW7fJ3shFXowBFaw2E76A3D/mPHM=;
- b=bT0uvfky+lZk5w/2+EfBGbyXvaKL/6MWa5jUyN8E6JV94VCYHXJEAOCGRbUgXluEBj
- LojQYDAteWof9gmCoJU+12Vf6SFRjwyONjqhhW0ypE9KUQQygZZcervZJ8oVO8ase2j8
- iPL6q4wLBpEgU2SvwnnMCfaDUc4qVsbz/YuSwhnpjzIDHnaQcm2iygniOpXZ+katoO01
- 5jTNv7ltekscFslFClvgUBBaG3UM2t90ZhMHTqGswFYLwjjhX8WME+/0d0D6noKL0KuF
- bX6GRj4Ir8NQa04bc9oWuJ8O6mpuVKk+L0yzOj/InaP8mK1voAI1ZrFlpwQj0Bcx7+xN
- fOXA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV7E9qgJWsz/7SWXz6FAN8vxs+gxv6yvs8diHovQhoUEtYlvgKyfvWSfP2UeNcMU0fvfSYHyXwF9pIY@nongnu.org
-X-Gm-Message-State: AOJu0YzhqEsNZ/MiOh9FO5pW/IDE0uFcAYDcMu/gmRUEG7lMDkv4BTq4
- h6y5aM94zZvwiftO+6Q939Saipi9eH9vpryDyqBpWr3Ai0ZrPp0bW4EXzjH3MKxiYfI=
-X-Gm-Gg: ASbGncuZ+U1Iscci0hQSE8VMFsfVOdgkUBUOiAQtwgsQKmfuYMxHBmdMLPDZQlP3WPF
- tPeHGg2VHvsdMQmu4Vb8/1LwtI3Jvqkm79e92mtV9uvbAj2jVrIn7WsmVQc9d4JBeuPAUiLVHJ2
- s6RtrVQuhiVi2Qdk/lnze+9dZM3gJ1OcYIW76DYJ7gemPhTfjtIe1pqYvu5cuNqXFP3hP3DTTZ5
- ELrneZHEta0WRQR5RzXJsPQhxEn3Vi8AysPGM/wO0cfuMWrh914ciR+TMBw1Wqk7XoggMXFsGpb
- i8tism9kFOEHz5QOSrvtlpk++1opQdCG7QuHgxPwb9g0xlnVS8caeEDpmkGl5fm4D2YTH0Thxr+
- 4Zycx5whHn7V4v0+ehePMYfkWACHgosttYK0dM2tBo68=
-X-Google-Smtp-Source: AGHT+IEqiCDJZxlklavchQfIXLAgFf+cf1Sn9jKcUvhiL2VqXswE23uVGIRi036m/jwomFlkw38U6Q==
-X-Received: by 2002:a05:6000:2906:b0:3a6:cfca:efee with SMTP id
- ffacd0b85a97d-3b5e44e9d0dmr5298600f8f.17.1752144498225; 
- Thu, 10 Jul 2025 03:48:18 -0700 (PDT)
-Received: from [192.168.1.117] (lfbn-mon-1-970-120.w86-227.abo.wanadoo.fr.
- [86.227.5.120]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc217esm1499850f8f.28.2025.07.10.03.48.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Jul 2025 03:48:17 -0700 (PDT)
-Message-ID: <9f9278ae-9207-4deb-b048-a39c2ee25002@linaro.org>
-Date: Thu, 10 Jul 2025 12:48:16 +0200
+ d=1e100.net; s=20230601; t=1752144564; x=1752749364;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5bJ3kf7dwHAEdzkxX+CWjkNy/EKVyNN7GPrpQsuLSIg=;
+ b=PhrG+WBx8oOJOdhtvaRWO4wBl8+hK/xmZCUG+xCyimBMmes3MhZoItERfMetMBQzo8
+ C9UROTL8wgyIKTmm7u2CbVKuMZf1dOug2RiXFTu7vBxxzAdLpNW35Vmc+W7SMhl+8QlS
+ hIBcdIGPTfpKV2JXN0NBvz2X069O1IPAkHTwQTRA+Fkx71kyvvx8FjWmMPINXAqqe/fr
+ UMG3tl8PG4HFMh0G890gM87tQaDloOln2fjCwP24MUVVobQerRUeN+uXje8uHK79Yz26
+ tuV1xORqmAduC1EtWMhEvc+EFnBmRjr+Rr3BVoDFoqoBLd2rW7uA7BE08K0I95vTPrjz
+ fmYQ==
+X-Gm-Message-State: AOJu0YxmlWMtV1D65YIYiv8gpm9SDDQjoUKtciTFEvJ0UIeAEM4xYRtm
+ sYR4peLK+gwDZgg0gTKfFbN6Nogfqplz/CJJiNctRbkR0JvZ0nySY15Iqu4k6ic3U7CrJPsL6uI
+ RZXSkDINdipFFxzhB4tvkoFGbPg1y5q1dxo6u8RWVAg==
+X-Gm-Gg: ASbGncsfGyfQCeGbJnTaIP2WvlPMMVNTNWNQqnyqJ2Lf/CXWuv7Q/7AFqxGO3wBLfNn
+ CS9ULvoA45oKnUkaGf75KVP0dtKlZXcFPkkaz4iMmuza+fW4XR5GWV7+YxbHvQfejPQEZ0lL2lR
+ HshpGd7FOC0Div/RaOedmcg4bQW7s50G2iAYYF3oMOD9Q=
+X-Google-Smtp-Source: AGHT+IFTWdJoDKh0/zOXQNmHAE6v+bvT8xarH7OVHAlqu35zo8EEytso8MWzWi5Nq7qp8ryfib7foXaxj5BGRsylZU4=
+X-Received: by 2002:a05:6402:2553:b0:5e6:17e6:9510 with SMTP id
+ 4fb4d7f45d1cf-611c83fb712mr1623434a12.6.1752144564100; Thu, 10 Jul 2025
+ 03:49:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 14/18] hw/i386/pc_piix.c: assume pcmc->pci_enabled is
- always true in pc_init1()
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, pbonzini@redhat.com,
- mst@redhat.com, marcel.apfelbaum@gmail.com, eduardo@habkost.net,
- imammedo@redhat.com, qemu-devel@nongnu.org
-References: <20250710085308.420774-1-mark.caveayland@nutanix.com>
- <20250710085308.420774-15-mark.caveayland@nutanix.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250710085308.420774-15-mark.caveayland@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+References: <20250710104531.3099313-1-alex.bennee@linaro.org>
+ <20250710104531.3099313-2-alex.bennee@linaro.org>
+In-Reply-To: <20250710104531.3099313-2-alex.bennee@linaro.org>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Thu, 10 Jul 2025 13:48:58 +0300
+X-Gm-Features: Ac12FXzb5EKs7UDVsHwFsu_Wbt7NRAnnyTfvho4TSczVicVcJUuR4PH3uW97QhM
+Message-ID: <CAAjaMXbhWW-TX8zW8nNu77Oy0_v5W6+xT=cGeonvxPmdFwRCzA@mail.gmail.com>
+Subject: Re: [PATCH 1/7] gitlab: use argparse in check-units script
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Mahmoud Mandour <ma.mandourr@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Alexandre Iooss <erdnaxe@crans.org>, Thomas Huth <thuth@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jason Wang <jasowang@redhat.com>, 
+ Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,15 +98,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/7/25 10:52, Mark Cave-Ayland wrote:
-> PCI is always enabled on the pc-i440fx machine so hardcode the relevant logic
-> in pc_init1().
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+On Thu, Jul 10, 2025 at 1:46=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
+o.org> wrote:
+>
+> Modernise the argument parsing so we can easily add to the script.
+>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 > ---
->   hw/i386/pc_piix.c | 194 ++++++++++++++++++----------------------------
->   1 file changed, 76 insertions(+), 118 deletions(-)
+>  .gitlab-ci.d/check-units.py | 21 ++++++++++++---------
+>  1 file changed, 12 insertions(+), 9 deletions(-)
+>
+> diff --git a/.gitlab-ci.d/check-units.py b/.gitlab-ci.d/check-units.py
+> index 268a4118d5..cdc62ae5ee 100755
+> --- a/.gitlab-ci.d/check-units.py
+> +++ b/.gitlab-ci.d/check-units.py
+> @@ -8,8 +8,10 @@
+>  # SPDX-License-Identifier: GPL-2.0-or-later
+>
+>  from os import access, R_OK, path
+> -from sys import argv, exit
+> +from sys import exit
+>  import json
+> +import argparse
+> +from pathlib import Path
+>  from collections import Counter
+>
+>
+> @@ -51,16 +53,17 @@ def analyse_units(build_units):
+>
+>
+>  if __name__ =3D=3D "__main__":
+> -    if len(argv) !=3D 2:
+> -        script_name =3D path.basename(argv[0])
+> -        print(f"Usage: {script_name} <path_to_compile_commands.json>")
+> -        exit(1)
+> +    parser =3D argparse.ArgumentParser(
+> +        description=3D"analyse number of build units in compile_commands=
+.json")
+> +    parser.add_argument("cc_path", type=3DPath, default=3DNone,
+> +                        help=3D"Path to compile_commands.json")
+> +
+> +    args =3D parser.parse_args()
+>
+> -    cc_path =3D argv[1]
+> -    if path.isfile(cc_path) and access(cc_path, R_OK):
+> -        units =3D extract_build_units(cc_path)
+> +    if path.isfile(args.cc_path) and access(args.cc_path, R_OK):
+> +        units =3D extract_build_units(args.cc_path)
+>          analyse_units(units)
+>          exit(0)
+>      else:
+> -        print(f"{cc_path} doesn't exist or isn't readable")
+> +        print(f"{args.cc_path} doesn't exist or isn't readable")
+>          exit(1)
+> --
+> 2.47.2
+>
+>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
