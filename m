@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AA5AFFF92
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76378AFFF91
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:47:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZon4-00021V-G6; Thu, 10 Jul 2025 06:46:10 -0400
+	id 1uZon2-0001zJ-RR; Thu, 10 Jul 2025 06:46:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomh-0001rC-DN
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:51 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1uZomm-0001rr-Gq
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:56 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomZ-00078C-Ud
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:45 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-45348bff79fso8982555e9.2
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:39 -0700 (PDT)
+ id 1uZomd-00078P-IZ
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:52 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-453634d8609so4776625e9.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752144338; x=1752749138; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752144339; x=1752749139; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/kn+Nlme/iAkqffgZvptFY3jhjfV+Qi2QuRGeFFxrUg=;
- b=LJThjoHtyAsPT9vWMffJu8fRNU/Pq7r5LQnl25T451xatxofd13/CD3eE1pEhV6Jxw
- hVhsvfZZfrEYH3FgZWJpRBQGskfES20nzdZtWZztk4l0q7DXB/YQ8c9WVVQA/R0PjDa6
- ErMRlc/wYCz3x98UWfHCffD1bIFxcmK/1z6Fv4aGLmVnfZAQGG2G/QG3rqrQOgxnCuWK
- UcDUZPHAwDfqZLsFvhBDAv7LqewsOM48KKfQdry9lRHP5gvUgvEXoqJmMjkDYWpgL4CF
- uWexl2vO3CbM4OEQP16DDk6PL+snG52kjVNryU8k37kplRLacvFgiDHxleAawGWerEsM
- 9RJQ==
+ bh=j1lONaDCGcDF8Vf2dQSf345RzEHUxlyX4PcTEZfK8bc=;
+ b=eIiaPVXZ+TImU06oLM5pJYqSCgTF7Ta6a7H/ojRZQ+LZVCI+v1abe3wj5H7xaDpmwi
+ K/2SbcnafMWSsp+jnJ7se9siFCizWVRBoR61r5XyVyYS92v5GDUIWd1yH8lQWhmmXDkz
+ t/mQ7YnKHws8DMLJHTGkOs0f47kacV8G7Ena32xObT+hG2hxq/R+ewvavqZSM04AEOox
+ h22y6fdYOz9/XMbn7i7SB2Dyd60WCaPwQTIndtDJJ3wnw8cOIf5p3HyMM84hwpAOgtmc
+ Abge8F8nAAg5gb/ae75jHG5RUancu9YrXhXbdncC1NJXYRfWJD47O4lCDvkN7u6ZPzbV
+ C4zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752144338; x=1752749138;
+ d=1e100.net; s=20230601; t=1752144339; x=1752749139;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/kn+Nlme/iAkqffgZvptFY3jhjfV+Qi2QuRGeFFxrUg=;
- b=l2Y2fT4Sth5xIDiwPm/1mfgFz40AYB6zgOSqSn+wb7m6HWIrdWJ384D/rRU5PN+f5u
- GdI7FD8pAaKSCAK1UGHd9d/7DuJVoKiL53ofiqz5vZYJ3BdrUAkEXvdUnsgrvg9yhmar
- zIS7EtlSnghkW+u01JXxEglkiiI/lAF2ErFhjg+dDWeXdhHhPV36ElXbubijYXM3PwPt
- 2Sk0+NEvsD07Zd71jHsrxiyEmIfBWysUSIlY1obP3Pu90iya3/cuN3ITIAsQr3wbKxdi
- TlSyalZ8r2NiFpZXctzQXvrgrguGnoKBIa4H+YgCEogEo3YU2dn1dR5GMyH4Iom1Euyi
- LoJA==
-X-Gm-Message-State: AOJu0YxJkT8jurUO9lvl5PaZcCtsjTmeGM5mWU/GhC4vgOICy8dpUmBF
- j/+K1rkQB58tX9sHTFdckTH0wcWvwmVHwQ+uHB6vk1eQPdKNskE2maLqfEijLeJRaZE=
-X-Gm-Gg: ASbGncuBIUHC/PG2hig00lDUU9IG8cKK6+J3cM4Ol8r/9b5ISNkK8NskWyU+6RXiU9Z
- 2jVT3bXW0sNNWq8h/4uM9lFFLG10VvqXjiiSmpzUXLaHHWJdUtsetQkYPvHmi6PzZJySnHJzhkA
- U3+vcM9Fd9npnCZjZWcIxzuAhMPtroL1fv9wEotfYzFe2qdhzl8fVMBT04ZLnt3y38oKS9aDapj
- 3bUEl9mTbuSkLbPU8DYi+yEEgvH4z6MuhJuDeC5WylZ6eApylwKnhuh/ZgmCSOC7MNvNkfvd5Uf
- naargNiJScfuoUDpIYnrm1dnG4qBah3lVQqj0Jw67L1uQgk6D5OknM61NSfu+jw=
-X-Google-Smtp-Source: AGHT+IHTgRA7pgf1Mh+2rw9zldooRzB6GIP2uUxDs22K2ZKN36igrTMdd6T74rRfvOJj+DKWSzGFZA==
-X-Received: by 2002:a05:600c:a00c:b0:43c:f44c:72a6 with SMTP id
- 5b1f17b1804b1-454dd1f3edbmr19383905e9.2.1752144337535; 
- Thu, 10 Jul 2025 03:45:37 -0700 (PDT)
+ bh=j1lONaDCGcDF8Vf2dQSf345RzEHUxlyX4PcTEZfK8bc=;
+ b=gdWUSv4UrXpRE3ygH6Upg8PEm1jWu3fqL6WV2Yy4CN37XsFzbBHsJ8W0ubMGNv7amt
+ /+P9H0/b7RO7eYF/8hAFQwylJSiawpCIJ/TkOED0kULJ67ARYK4r9gUg7QEBmZ9R4ub+
+ W5c5GzztDve4AteHUxkUPNX16x34wBPRdY/0G3RsFWqnO9PtiYDxWwE5Mlo5JqWjqDxx
+ xFq7h5BI4E9JCPdIr8JQOUi6wlA6JpyXazJ083POe1HSAr02hkRdncGzrbJz7FZ5cmcV
+ cy7uPK555lsVJNsqRcAlWaTUqPYWUQPHBCYLC5hZvGBfChJpBBq7Ch1tMLcbRD10h4aa
+ +rYQ==
+X-Gm-Message-State: AOJu0YyMoM7J4/9SpJCIGfRtLjfPKnvndEq1YyuuyjJOuuEM5wo3wF56
+ 1McHPKyb94ywVquc10ss1vJgpRNM+VYnLAniRptgvEjuc2xQGy+/UtlkrRClti5KogI=
+X-Gm-Gg: ASbGnct7Iox+RnF6Nc7EzjS8yUsn73v/vZ+Meg2FPyY9cMw9mq3Q+JUbiPxpBAYORjr
+ NEGVKh2yUi8/Ow0irYeNkhNfc5tqWZWnUWV55+uhBR3tLMt6FqZH1+MevDsXMfzdMTk4Lj5t6De
+ h1HAIlwWNnXt8Ofb6LMfbTrCX4Uk3ProRlgUPIbKx4VYIgNnHLehtJgHdkb/jNPJF7OFHVrnPZr
+ gK8rkpcDs3DKR1LatRUFfaXZ+ip36LygQYFfsjZndG61yxGvBCP+0p+vxQNeEq6DGfNQGE6ncR/
+ suuto9eWIakXqnueI+3G3eOYztalC65O/oRMi3t2+TJfFNw7kjTexloaOgCElPw=
+X-Google-Smtp-Source: AGHT+IHO7PxjfZO7RtVnQlPFZRSaZVs6hRhnMDeQzkKHslS/UfaLWsb7RSXMFKgtd0e2NW4Sgbc8HQ==
+X-Received: by 2002:a05:600c:4454:b0:450:cac5:45e7 with SMTP id
+ 5b1f17b1804b1-454d52db8efmr54057855e9.1.1752144339127; 
+ Thu, 10 Jul 2025 03:45:39 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d511bd6dsm55989185e9.38.2025.07.10.03.45.33
+ 5b1f17b1804b1-454d50df5a1sm54634875e9.22.2025.07.10.03.45.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 10 Jul 2025 03:45:36 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C71665F8CC;
+ by draig.lan (Postfix) with ESMTP id DC9645F8CE;
  Thu, 10 Jul 2025 11:45:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,19 +73,18 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Jason Wang <jasowang@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <laurent@vivier.eu>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH 6/7] docs: use :kbd: role in sphinx docs
-Date: Thu, 10 Jul 2025 11:45:29 +0100
-Message-ID: <20250710104531.3099313-7-alex.bennee@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 7/7] docs/system: clean-up formatting of virtio-net-failover
+Date: Thu, 10 Jul 2025 11:45:30 +0100
+Message-ID: <20250710104531.3099313-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250710104531.3099313-1-alex.bennee@linaro.org>
 References: <20250710104531.3099313-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -108,187 +107,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+We didn't clean-up the rst formatting when we moved this into the
+docs so lets do that now:
 
-Sphinx supports the :kbd: role for notating keyboard input. They get
-formatted as <kbd> HTML elements in the readthedocs theme we currently
-use for Sphinx.
+ - un-indent the usage/hotplug/migration paragraphs
+ - properly wrap the command line fragments in code-block
+ - highlight parameters in text with ``double quotes``
 
-Besides the better visual formatting, it also helps with accessibility
-as screen readers can announce the semantics of the <kbd> element to the
-user.
+No changes to the actual text.
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-ID: <20250709-docs_rst_improvements-v2-1-cb5096ad0022@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/devel/testing/main.rst     |  4 +--
- docs/system/images.rst          |  2 +-
- docs/system/keys.rst.inc        | 49 +++++++++++++++++----------------
- docs/system/linuxboot.rst       |  2 +-
- docs/system/mux-chardev.rst.inc | 38 ++++++++++++++-----------
- 5 files changed, 51 insertions(+), 44 deletions(-)
+ docs/system/virtio-net-failover.rst | 51 ++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 23 deletions(-)
 
-diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
-index 6b18ed875c..2b5cb0c148 100644
---- a/docs/devel/testing/main.rst
-+++ b/docs/devel/testing/main.rst
-@@ -604,9 +604,9 @@ below steps to debug it:
- 2. Add "V=1" to the command line, try again, to see the verbose output.
- 3. Further add "DEBUG=1" to the command line. This will pause in a shell prompt
-    in the container right before testing starts. You could either manually
--   build QEMU and run tests from there, or press Ctrl-D to let the Docker
-+   build QEMU and run tests from there, or press :kbd:`Ctrl+d` to let the Docker
-    testing continue.
--4. If you press Ctrl-D, the same building and testing procedure will begin, and
-+4. If you press :kbd:`Ctrl+d`, the same building and testing procedure will begin, and
-    will hopefully run into the error again. After that, you will be dropped to
-    the prompt for debug.
+diff --git a/docs/system/virtio-net-failover.rst b/docs/system/virtio-net-failover.rst
+index 6002dc5d96..0cc465454c 100644
+--- a/docs/system/virtio-net-failover.rst
++++ b/docs/system/virtio-net-failover.rst
+@@ -26,43 +26,48 @@ and standby devices are not plugged into the same PCIe slot.
+ Usecase
+ -------
  
-diff --git a/docs/system/images.rst b/docs/system/images.rst
-index a5551173c9..43706969fd 100644
---- a/docs/system/images.rst
-+++ b/docs/system/images.rst
-@@ -30,7 +30,7 @@ Snapshot mode
- If you use the option ``-snapshot``, all disk images are considered as
- read only. When sectors in written, they are written in a temporary file
- created in ``/tmp``. You can however force the write back to the raw
--disk images by using the ``commit`` monitor command (or C-a s in the
-+disk images by using the ``commit`` monitor command (or :kbd:`Ctrl+a s` in the
- serial console).
+-  Virtio-net standby allows easy migration while using a passed-through fast
+-  networking device by falling back to a virtio-net device for the duration of
+-  the migration. It is like a simple version of a bond, the difference is that it
+-  requires no configuration in the guest. When a guest is live-migrated to
+-  another host QEMU will unplug the primary device via the PCIe based hotplug
+-  handler and traffic will go through the virtio-net device.  On the target
+-  system the primary device will be automatically plugged back and the
+-  net_failover module registers it again as the primary device.
++Virtio-net standby allows easy migration while using a passed-through
++fast networking device by falling back to a virtio-net device for the
++duration of the migration. It is like a simple version of a bond, the
++difference is that it requires no configuration in the guest. When a
++guest is live-migrated to another host QEMU will unplug the primary
++device via the PCIe based hotplug handler and traffic will go through
++the virtio-net device. On the target system the primary device will be
++automatically plugged back and the net_failover module registers it
++again as the primary device.
  
- .. _vm_005fsnapshots:
-diff --git a/docs/system/keys.rst.inc b/docs/system/keys.rst.inc
-index 59966a3fe7..c28ae1a227 100644
---- a/docs/system/keys.rst.inc
-+++ b/docs/system/keys.rst.inc
-@@ -1,36 +1,37 @@
- During the graphical emulation, you can use special key combinations from
--the following table to change modes. By default the modifier is Ctrl-Alt
-+the following table to change modes. By default the modifier is :kbd:`Ctrl+Alt`
- (used in the table below) which can be changed with ``-display`` suboption
- ``mod=`` where appropriate. For example, ``-display sdl,
--grab-mod=lshift-lctrl-lalt`` changes the modifier key to Ctrl-Alt-Shift,
--while ``-display sdl,grab-mod=rctrl`` changes it to the right Ctrl key.
-+grab-mod=lshift-lctrl-lalt`` changes the modifier key to :kbd:`Ctrl+Alt+Shift`,
-+while ``-display sdl,grab-mod=rctrl`` changes it to the right :kbd:`Ctrl` key.
+ Usage
+ -----
  
--Ctrl-Alt-f
--   Toggle full screen
-+.. list-table:: Multiplexer Keys
-+  :widths: 10 90
-+  :header-rows: 1
+-  The primary device can be hotplugged or be part of the startup configuration
++The primary device can be hotplugged or be part of the startup configuration
  
--Ctrl-Alt-+
--   Enlarge the screen
-+  * - Key Sequence
-+    - Action
+-  -device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:6f:55:cc, \
+-    bus=root2,failover=on
++.. code-block:: shell
  
--Ctrl-Alt\--
--   Shrink the screen
-+  * - :kbd:`Ctrl+Alt+f`
-+    - Toggle full screen
- 
--Ctrl-Alt-u
--   Restore the screen's un-scaled dimensions
-+  * - :kbd:`Ctrl+Alt++`
-+    - Enlarge the screen
- 
--Ctrl-Alt-n
--   Switch to virtual console 'n'. Standard console mappings are:
-+  * - :kbd:`Ctrl+Alt+-`
-+    - Shrink the screen
- 
--   *1*
--      Target system display
-+  * - :kbd:`Ctrl+Alt+u`
-+    - Restore the screen's un-scaled dimensions
- 
--   *2*
--      Monitor
-+  * - :kbd:`Ctrl+Alt+n`
-+    - Switch to virtual console 'n'. Standard console mappings are:
- 
--   *3*
--      Serial port
-+      - *1*: Target system display
-+      - *2*: Monitor
-+      - *3*: Serial port
-+  * - :kbd:`Ctrl+Alt+g`
-+    - Toggle mouse and keyboard grab.
- 
--Ctrl-Alt-g
--   Toggle mouse and keyboard grab.
--
--In the virtual consoles, you can use Ctrl-Up, Ctrl-Down, Ctrl-PageUp and
--Ctrl-PageDown to move in the back log.
-+In the virtual consoles, you can use :kbd:`Ctrl+Up`, :kbd:`Ctrl+Down`, :kbd:`Ctrl+PageUp` and
-+:kbd:`Ctrl+PageDown` to move in the back log.
-diff --git a/docs/system/linuxboot.rst b/docs/system/linuxboot.rst
-index 2328b4a73d..f7573ab80a 100644
---- a/docs/system/linuxboot.rst
-+++ b/docs/system/linuxboot.rst
-@@ -26,5 +26,5 @@ virtual serial port and the QEMU monitor to the console with the
-    |qemu_system| -kernel bzImage -drive file=rootdisk.img,format=raw \
-                     -append "root=/dev/sda console=ttyS0" -nographic
- 
--Use Ctrl-a c to switch between the serial console and the monitor (see
-+Use :kbd:`Ctrl+a c` to switch between the serial console and the monitor (see
- :ref:`GUI_keys`).
-diff --git a/docs/system/mux-chardev.rst.inc b/docs/system/mux-chardev.rst.inc
-index 84ea12cbf5..c87ba31362 100644
---- a/docs/system/mux-chardev.rst.inc
-+++ b/docs/system/mux-chardev.rst.inc
-@@ -1,27 +1,33 @@
- During emulation, if you are using a character backend multiplexer
- (which is the default if you are using ``-nographic``) then several
- commands are available via an escape sequence. These key sequences all
--start with an escape character, which is Ctrl-a by default, but can be
-+start with an escape character, which is :kbd:`Ctrl+a` by default, but can be
- changed with ``-echr``. The list below assumes you're using the default.
- 
--Ctrl-a h
--   Print this help
-+.. list-table:: Multiplexer Keys
-+  :widths: 20 80
-+  :header-rows: 1
- 
--Ctrl-a x
--   Exit emulator
-+  * - Key Sequence
-+    - Action
- 
--Ctrl-a s
--   Save disk data back to file (if -snapshot)
-+  * - :kbd:`Ctrl+a h`
-+    - Print this help
- 
--Ctrl-a t
--   Toggle console timestamps
-+  * - :kbd:`Ctrl+a x`
-+    - Exit emulator
- 
--Ctrl-a b
--   Send break (magic sysrq in Linux)
-+  * - :kbd:`Ctrl+a s`
-+    - Save disk data back to file (if -snapshot)
- 
--Ctrl-a c
--   Rotate between the frontends connected to the multiplexer (usually
--   this switches between the monitor and the console)
-+  * - :kbd:`Ctrl+a t`
-+    - Toggle console timestamps
- 
--Ctrl-a Ctrl-a
--   Send the escape character to the frontend
-+  * - :kbd:`Ctrl+a b`
-+    - Send break (magic sysrq in Linux)
+-  With the parameter failover=on the VIRTIO_NET_F_STANDBY feature will be enabled.
++  -device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:6f:55:cc,bus=root2,failover=on
 +
-+  * - :kbd:`Ctrl+a c`
-+    - Rotate between the frontends connected to the multiplexer (usually this switches between the monitor and the console)
++With the parameter ``failover=on`` the VIRTIO_NET_F_STANDBY feature will be enabled.
 +
-+  * - :kbd:`Ctrl+a Ctrl+a`
-+    - Send the escape character to the frontend
++.. code-block:: shell
+ 
+   -device vfio-pci,host=5e:00.2,id=hostdev0,bus=root1,failover_pair_id=net1
+ 
+-  failover_pair_id references the id of the virtio-net standby device. This
+-  is only for pairing the devices within QEMU. The guest kernel module
+-  net_failover will match devices with identical MAC addresses.
++``failover_pair_id`` references the id of the virtio-net standby device.
++This is only for pairing the devices within QEMU. The guest kernel
++module net_failover will match devices with identical MAC addresses.
+ 
+ Hotplug
+ -------
+ 
+-  Both primary and standby device can be hotplugged via the QEMU monitor.  Note
+-  that if the virtio-net device is plugged first a warning will be issued that it
+-  couldn't find the primary device.
++Both primary and standby device can be hotplugged via the QEMU
++monitor. Note that if the virtio-net device is plugged first a warning
++will be issued that it couldn't find the primary device.
+ 
+ Migration
+ ---------
+ 
+-  A new migration state wait-unplug was added for this feature. If failover primary
+-  devices are present in the configuration, migration will go into this state.
+-  It will wait until the device unplug is completed in the guest and then move into
+-  active state. On the target system the primary devices will be automatically hotplugged
+-  when the feature bit was negotiated for the virtio-net standby device.
++A new migration state wait-unplug was added for this feature. If
++failover primary devices are present in the configuration, migration
++will go into this state. It will wait until the device unplug is
++completed in the guest and then move into active state. On the target
++system the primary devices will be automatically hotplugged when the
++feature bit was negotiated for the virtio-net standby device.
 -- 
 2.47.2
 
