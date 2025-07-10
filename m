@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73052B005DD
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 16:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE88B005DE
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 16:58:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZsgT-0006M6-SU; Thu, 10 Jul 2025 10:55:39 -0400
+	id 1uZsih-0000Lb-S4; Thu, 10 Jul 2025 10:57:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uZsZO-00084x-Pj
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 10:48:22 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uZsZw-0008SO-IF
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 10:49:05 -0400
+Received: from mail-yb1-xb31.google.com ([2607:f8b0:4864:20::b31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uZsZK-0008FP-4F
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 10:48:15 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-60c4f796446so1626420a12.1
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 07:48:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uZsZu-0008Hr-RF
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 10:48:52 -0400
+Received: by mail-yb1-xb31.google.com with SMTP id
+ 3f1490d57ef6-e73e9e18556so1159453276.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 07:48:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752158892; x=1752763692; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752158929; x=1752763729; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Syd2hLex+/9IYla7n/kVYhD0VKPS4nIq7p0b0wmaMBA=;
- b=MbWoYe9OeuU8/cN4YHg1hMfTffYNlMElCahHXf1v9WZJV+RehjGtr/eMUW2OnUsIVB
- 4kmH90M5B0xlud9/Qkl0wkNad+BhUx42N68Ui5rFxScc9tAV9wVw3ZoZZPujF8inpHiE
- bJgpteyErhTvecEhDKKcCfZUEHW6TKLtsHQAZRp8KM+Sg769uYDiwecCScJksfJGM8ah
- oZdUJDywqjz+Vo1S7db2YP8LYQemVPK1jrTnoGQL7YqEo02e8AJU+O+6khFgWAqYIYNS
- 8mSv6YG3eIvWgdUGWCYboUD/r/VnOYdl50hVBMqgXHoxzTHJIMBbjRbmesCAviHIiM3H
- 4A7Q==
+ bh=fbqj4BTrvpp2MG1rzYDSPi3IU6swA8w0WXXKs5LW8ec=;
+ b=Oh/k7QrIIBAqBCdnR6lYrcg15D8ytGBUMJnlV8SsCbTyrqg95QCJ7CVS3WZlegHr0g
+ M2RVQg0TpHxo1Vy0wm5fBTDtuCoCZIu8ppHfP+og6xStyF4xeICqubCUWkmbxfevRF9j
+ 2Ib6x8rzcjuslpG5HZf2H0ocVt3wnXRuCp8MpJwAy0T/oOpUA+9M9+Eku/BYutPK82D4
+ UiBGBU1u1g+QwZ9eNMVFwIIA8eLd3mmYd0eat2wyce51eVjl1MmLSzwfjDX5tMe1fe3/
+ VtOV/NQeE/QpxfCpCrxCA75JJl49yNKzzHH7On5aQOrIGhQFuyLcBe2uYg5qCy6/mRlA
+ /oQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752158892; x=1752763692;
+ d=1e100.net; s=20230601; t=1752158929; x=1752763729;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Syd2hLex+/9IYla7n/kVYhD0VKPS4nIq7p0b0wmaMBA=;
- b=bo6cANurg4cNDpP7oEUZD0csfO7mP6TkRjlyRlIF4PO4IKBz5H6JP+U8VZjDh18Bo0
- 4Lg+c1lQVWX+YrzEBGdumpj3iAUphs53x4BFGFGeC588yqe0sEa9mJkNOBuGUjQiIbDF
- dNvGJy0NdUp88ztpFQfU2YkGRy6jA+XTZAahHFjRKN/vAIvBWA4rSOhOXRTmNaFHfLFC
- 2SLZqWpinBTgD36s5uqrh43VjzTJJl6KTZJWoXf+6S+p+MuXC0dayXl+6JrbMpmlgLYS
- FacPuwwOw8U3S1bT1OsWNcIU0JjV3kmRwMnrW3XvAjK02J8mZB6RaIUjL8n3srVY/R35
- CZeQ==
-X-Gm-Message-State: AOJu0YzIS5i3FZ4B5nVfSvtYoSRBQXgyfr3LnKzNsc3d/E8DlqvmGrWZ
- YgrqMguZqk0bv2++XBKrDmmTL0wBUkZ200UosrZDWEeaCp3S0hQGV3vNv0t+MUjaSvzAuureY+4
- FresVsxGikxkwAkPTmXGs/+oNcYL7JpMHBq3eb/xwCQ==
-X-Gm-Gg: ASbGncvHh5Q1/V5g9bsbQUY3TYy3LbKt6frrVDciJOqec0jkEZoUVWQ0DqEXFqF4Kq+
- 8llYHgGAqUdPo5mqeJt/FYEeOBPwkBJ5nT7s5zsJ+UPXL7bgY0oFuQeUW14Y7eU2aIEsuMz1sty
- ZqTd4z2mghc917BiN15kMIxTIx2ogJiYMZLiyOllsIdwQ=
-X-Google-Smtp-Source: AGHT+IE31XVbzGgBMG36VPp6oKguQl7msjhAZu6FTzzhd2b/38TOeJZm0X1BWOIHNsLLeTS9LF/RFlMcZSl/8KTbJ6Q=
-X-Received: by 2002:a05:6402:1ece:b0:607:2a09:38dd with SMTP id
- 4fb4d7f45d1cf-611a6e20b74mr7083143a12.18.1752158892076; Thu, 10 Jul 2025
- 07:48:12 -0700 (PDT)
+ bh=fbqj4BTrvpp2MG1rzYDSPi3IU6swA8w0WXXKs5LW8ec=;
+ b=a3HblTSj1drLtvk3Oyjdd53Rr7LkzIjWbPHyzrdcY8mLnoJM8tMbyMp6FkinIy7ZHr
+ bRqmOmmZg7iYbtyDV1KwD5OUyonJFcyQ3/V14vUUU5Y/exgCB0aSSYfK2yyIFgIpxOcI
+ Ts2SZIVr7O6bSvxsZa4bv00HZ9PIESVeq92AIoki8kJeVXAGRhQTwi8cee99FNWyPBtL
+ rqRUH2lhqSFKLK2bZceaObkSeYoT7Y56NWDyHEjFd894RjlSoC6tVlOm77stkw021DJx
+ ysluomy0KoFXuKIV9eWDzWqf84qud0XEB3VqQCIlbb4AcDiAjDDjdrNRt2Ih5ir0Zw6n
+ 3sqA==
+X-Gm-Message-State: AOJu0YytJbOhplDfyk17AHG8suJMqOswv2bzQ5AqZZWmqI8VzcuUPelC
+ 0TWHDOoyZ0Mr9DelzRC1yWkBSSWm4GWPCr47eAG/LQHsDJg0USSs5p0uuykgFso5EAIOO/zN1AY
+ MkP58nsuVaABkwzd/JiTC5cJcq8mOnZtwvzeUqRUyqw==
+X-Gm-Gg: ASbGncsuk0bIes/9FhppejgJe/YQF9wKjmyyGciB0dZQzM4il81ESrL7Efp4sKq6MkA
+ Nu/DKNbGNaUgDm7CwFyvgfxLy/Cw5dDEk+CwvVPP9UYWZ28Lw1xISNdzpSdyOmiQ6xuu9OflLKS
+ 9/vYEZS+frrhwVSG6oWdZ+h0Um540E6p4DBTg8uC6SsOBIXNOSFSq95ks=
+X-Google-Smtp-Source: AGHT+IFWaN1V+iv2aDOZlYDUm6cUx3WFL6Ki3d45VET4zCOHTenrwXxRdgqf+ht63bVKIWEXfUMIilru+x36szPQHHQ=
+X-Received: by 2002:a05:690c:3403:b0:70d:fd6f:b151 with SMTP id
+ 00721157ae682-717c151b52bmr58575347b3.11.1752158929602; Thu, 10 Jul 2025
+ 07:48:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250703-rust-qdev-properties-v2-1-d4afac766e94@linaro.org>
- <63edd7ca-02b3-416c-ae28-38bd5386aa89@redhat.com>
- <CAAjaMXbdA51QOR0tx4OnbSnWdx9=cjR_GsaMFdAvrVHy9a-XQQ@mail.gmail.com>
- <CABgObfaiM6-n_O-jD5NkT8iD05a-+jfs33hVkb-UsuG8D_TAvQ@mail.gmail.com>
-In-Reply-To: <CABgObfaiM6-n_O-jD5NkT8iD05a-+jfs33hVkb-UsuG8D_TAvQ@mail.gmail.com>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 10 Jul 2025 17:47:46 +0300
-X-Gm-Features: Ac12FXyGqTNYDTrv38AZIItvTRk_ANtil9tzJ47HLUBFNU9tNr7fuf6MWnNHViI
-Message-ID: <CAAjaMXaHVSg7cmV8q5Jazfiw_o=pu6KmHj7SnSeoJzzStNd+4g@mail.gmail.com>
-Subject: Re: [PATCH RFC v2] rust: add qdev DeviceProperties derive macro
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Zhao Liu <zhao1.liu@intel.com>
+References: <20250210121045.38908-1-philmd@linaro.org>
+In-Reply-To: <20250210121045.38908-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 10 Jul 2025 15:48:37 +0100
+X-Gm-Features: Ac12FXxIAOblgHyMQwWhlpitj3OuBTjHDYjdYeQepjsTbhSurdE6W4_FuZSiVCQ
+Message-ID: <CAFEAcA9NWRDNEEJpAY8gm+yrHdY-UeaE0i43wu0CJBq+SKKrmQ@mail.gmail.com>
+Subject: Re: [PATCH] system/qdev: Remove pointless NULL check in
+ qdev_device_add_from_qdict
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Jens Freimann <jfreimann@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b31;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,78 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 10, 2025 at 5:26=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
+On Mon, 10 Feb 2025 at 12:10, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
 >
-> On Thu, Jul 10, 2025 at 11:41=E2=80=AFAM Manos Pitsidianakis
-> <manos.pitsidianakis@linaro.org> wrote:
-> > > Aside from that, I actually liked using Device for the macro name in
-> > > your earlier versions.  Yes, it's just for properties in practice, bu=
-t
-> > > it's nice and small to just say Device; and it mimics Object.  It's y=
-our
-> > > choice anyway.
-> >
-> > I was thinking of making a `Device` derive macro that lets you also
-> > define `DeviceImpl::REALIZE` and `DeviceImpl::vmsd` as macro
-> > attributes on the struct definition, then merge DeviceProperties into
-> > that. WDYT?
+> Coverity reported a unnecessary NULL check:
 >
-> Like #[derive(Device(realize =3D PL011State::realize))]? I kind of like
-> having traits for classes (the "const" does look a bit ugly/foreign,
-> but Linux has some other ideas using a #[vtable] procedural macro).
+>   qemu/system/qdev-monitor.c: 720 in qdev_device_add_from_qdict()
+>   683     /* create device */
+>   684     dev =3D qdev_new(driver);
+>   ...
+>   719     err_del_dev:
+>   >>>     CID 1590192:  Null pointer dereferences  (REVERSE_INULL)
+>   >>>     Null-checking "dev" suggests that it may be null, but it has al=
+ready been dereferenced on all paths leading to the check.
+>   720         if (dev) {
+>   721             object_unparent(OBJECT(dev));
+>   722             object_unref(OBJECT(dev));
+>   723         }
+>   724         return NULL;
+>   725     }
+>
+> Indeed, unlike qdev_try_new() which can return NULL,
+> qdev_new() always returns a heap pointer (or aborts).
+>
+> Remove the unnecessary assignment and check.
+>
+> Fixes: f3a85056569 ("qdev/qbus: add hidden device support")
+> Resolves: Coverity CID 1590192 (Null pointer dereferences)
+> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-I was thinking:
+Looks like this got reviewed but never picked up by anybody.
+I'll add it to my target-arm.next tree.
 
-#[repr(C)]
-#[derive(Device)]
-#[device(realize =3D PL011State::realize, vmsd =3D VMSTATE_PL011)]
-pub struct PL011State {
-  ..
-}
-
-I agree about traits for class methods, it's definitely cleaner. The
-lines blur here because we have REALIZE as a constant in order to make
-it nullable from the C side =F0=9F=A4=94
-
-> For vmsd yes, you could pass it as a VMStateDescription const's name
-> in the same style, like #[derive(Device(vmsd =3D
-> device_class::VMSTATE_PL011))].
->
-> WRT naming, I was thinking the other way round: call it Device
-> already, and then add functionality without having to change the name.
-> Your choice; naming suggestions are risky :) but I wasn't afraid of
-> making this suggestion because you had that name before.
->
-> > Hm, isn't it redundant if the trait is marked as `unsafe`? Or maybe I
-> > misunderstood your point.
->
-> Yes, you're right - just wanted something not too tied to properties
-> in case the derive macro is extended later. Maybe DeviceDerive, or
-> DeviceImplDerive? But any name is fine, just keep it consistent
-> between macro and trait.
->
-> > > > +/// It is the implementer's responsibility to provide a valid [`bi=
-ndings::PropertyInfo`] pointer
-> > > > +/// for the trait implementation to be safe.
-> > > > +pub unsafe trait QDevProp {
-> > > > +    const VALUE: *const bindings::PropertyInfo;
-> > >
-> > > "*const" or "&"?
-> >
-> > This is the thing I mentioned to you over IRC: Unfortunately even with
-> > const refs for statics we get this because the static is extern:
->
-> Ah okay - I just wasn't sure, which is why I wrote it as a question.
-> It worked in vmstate because there the const is a VMStateField which
-> has a *const inside. So yes, definitely a *const.
->
-> Paolo
->
-
-Thanks!
-
---=20
-Manos Pitsidianakis
-Emulation and Virtualization Engineer at Linaro Ltd
+thanks
+-- PMM
 
