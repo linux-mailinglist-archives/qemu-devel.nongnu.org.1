@@ -2,82 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51BAFB002A9
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 14:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A636B00179
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 14:19:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZqpi-0005Mt-1S; Thu, 10 Jul 2025 08:57:02 -0400
+	id 1uZqE9-0005yp-UZ; Thu, 10 Jul 2025 08:18:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <safinaskar@zohomail.com>)
- id 1uZinD-0006GI-Dq
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 00:21:55 -0400
-Received: from sender4-pp-o95.zoho.com ([136.143.188.95])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <safinaskar@zohomail.com>)
- id 1uZinA-0002et-Jb
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 00:21:54 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1752121274; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=jGi44jQwA7tguYk5YZjML2i+Nulyuo9Ynfuhu1ecDj5pcnzZ2W72tZXT6aTn0TLFWhGI+r9LdE7yIStE7CKwyGJnixDvsd5QaecrxTTMFfrQKvWt/By93jWfMpiK9IL2/ByRdu4YhNlkhJAYOlJq7VZFzQTapSMRMX56GEjZ8jQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1752121274;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=na0G9oSIayf8FlikNV7gtwZPYaQOEoLGKYXdYzgdS9k=; 
- b=a+V65wFS5esFJUWEc13f9P+NNakTyfo7t82YJPu/is0v64yVcN6PGls9ClCrdUa+oAnan7wcsxQsqsN4dsrDmIudiwOAe+R02gQd15ddOH+BoaIbFMf339RCgdaAoHXK6XKLJfyrxW0tFSXeikRUpBs9Km6jTpFAsF4wO5wj5sk=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=zohomail.com;
- spf=pass  smtp.mailfrom=safinaskar@zohomail.com;
- dmarc=pass header.from=<safinaskar@zohomail.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752121274; 
- s=zm2022; d=zohomail.com; i=safinaskar@zohomail.com;
- h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
- bh=na0G9oSIayf8FlikNV7gtwZPYaQOEoLGKYXdYzgdS9k=;
- b=ZuvkDFZwQeBjmWLmCjVbIgizfhlqTLDV+tQhbMRxfgBVsD+wKYwvJoUny/SsQEIS
- Nxl5gw2CetJSJdrH0U74VEvSSy8Kd/dGrqkuu/0uISWuSsjaFN0VILY6TOnlq1fThk7
- l9P8PaB+MqnaS5+BlzYj2w7D8/V1V8DiAW7jYvW4=
-Received: from mail.zoho.com by mx.zohomail.com
- with SMTP id 1752121271070711.9049000586574;
- Wed, 9 Jul 2025 21:21:11 -0700 (PDT)
-Received: from  [212.73.77.104] by mail.zoho.com
- with HTTP;Wed, 9 Jul 2025 21:21:11 -0700 (PDT)
-Date: Thu, 10 Jul 2025 08:21:11 +0400
-From: Askar Safin <safinaskar@zohomail.com>
-To: "Thomas Zimmermann" <tzimmermann@suse.de>
-Cc: "Gerd Hoffmann" <kraxel@redhat.com>,
- =?UTF-8?Q?=22Noralf_Tr=C3=B8nnes=22?= <noralf@tronnes.org>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
- "Maxime Ripard" <mripard@kernel.org>,
- "virtualization" <virtualization@lists.linux.dev>,
- "ryasuoka" <ryasuoka@redhat.com>,
- "dri-devel" <dri-devel@lists.freedesktop.org>,
- "qemu-devel" <qemu-devel@nongnu.org>,
- "regressions" <regressions@lists.linux.dev>,
- "Ben Hutchings" <benh@debian.org>
-Message-ID: <197f290e30b.eaadc7bc7913.7315623184036672946@zohomail.com>
-In-Reply-To: 
-Subject: [REGRESSION][BISECTED] kernel panic is not displayed correctly in
- qemu (CONFIG_DRM_BOCHS)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uZqDw-0005sG-7I
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 08:18:02 -0400
+Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uZqDr-0003is-NR
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 08:17:58 -0400
+Received: by mail-yw1-x1135.google.com with SMTP id
+ 00721157ae682-70a57a8ffc3so9508717b3.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 05:17:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752149873; x=1752754673; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HFArDah2ssTeH+v280YDihlQ7P+RuuQADEL1JggCiFo=;
+ b=xSNwBBH2A4xIwyUiULEcZ8hASci8XHDEY9cDPVEPrXwSkZ/kOGjDwDOy2+Tu2y5EJr
+ SVzGpCCyfwTBZWuNd8we+MHMJPl0X8Xbls5soYHhNkVKdzWzEmnidPmDMfos7hjIZrRp
+ qHq26yMSvgXh7jgk5gmiI484B4+KVOikH8va1slJkSV1Q5/tEmPe9Lwhb1W95HwymnGE
+ naj+7t6wykvb1/aWaJOm4IqGu6IOhpQbYVKqOa5VVKl38CxwnkQ5swtNC+yFfWWHnUVK
+ 7hB81nTple2b+7JnDClIUAu42XniuQORnWVpdH+e52ipOgkTMvNfeJ5w/UUAzSLzv36R
+ jx6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752149873; x=1752754673;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=HFArDah2ssTeH+v280YDihlQ7P+RuuQADEL1JggCiFo=;
+ b=d9OMSZtCjDV/fdCNAaffkbDUH8B/9pBLyHU21vVjHcGVuM0ACd+Y8qUvqZ50moMGra
+ fpGY5QTH81MHR47kOuWqw13NdlAD5sdoCHSNUYfGHdqRG0KIDAzmngSsP5QjMu/MLDil
+ Zq1pYBxGSMvBHN5Ud7AS0pZOkki8pyRV/zGBxfqokNkU/jqqFQvIcE3N5oNGx53Hw28g
+ eTIzNEVttLQCoFUIano4uGTnbAtECd0wLwE0714Lobejq3dv/cMyUaiY0KcbC1I2NZ4H
+ wYwDL4aBeiJfu3rJUFHsZ/Sbpvy37zDYf1FDbMENVyc/1P26sptCTFdugnZZnDzb/XEy
+ vDXg==
+X-Gm-Message-State: AOJu0Yw0KiF76ge1+LtwGHyFmZdW/2v+EtZqTGbZP6SFsNWER8bjwNJ/
+ /8t8No0zDR3wZZ+/p77mMduHGsjFSgPRm77Uzo2Ew5FbywhlS6Lue21O3BoBxDV16nt6YE7NCrD
+ qO87UxwFY8w3QEP8yYe4EIhfc64SkUoJDRyVuRWl9lw==
+X-Gm-Gg: ASbGncvA8AwJBWLnH4DSktg2Fj1RxuCRjNimAwSRyvzjzyF5iYm7RpfonP+LAyxwDj/
+ +wh8jo2sLm3/swfbw50XmgL4xd++a6BnD5KHrhw9I9IDctIx4bgZU8q4Vl24pdrL6mb6ENqd4p3
+ wtrCnRQlBkWhOB3KirrMUzUFTI6fvvU5T3tj/LwALRwIqwEu/LJE3ihN8=
+X-Google-Smtp-Source: AGHT+IGP4JQZeup6/doDZNz1GaDN13PpljYSGwOFljkBeej2Absml6SsiCmE9Fel8kW/i+gH0sni2BQ5oDZ/44EeoEM=
+X-Received: by 2002:a05:690c:14:b0:711:9770:161f with SMTP id
+ 00721157ae682-717c15e3018mr50689987b3.2.1752149872790; Thu, 10 Jul 2025
+ 05:17:52 -0700 (PDT)
 MIME-Version: 1.0
+References: <20250522102923.309452-1-berrange@redhat.com>
+ <20250522102923.309452-20-berrange@redhat.com>
+In-Reply-To: <20250522102923.309452-20-berrange@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 10 Jul 2025 13:17:40 +0100
+X-Gm-Features: Ac12FXzO4DBHWLYxhLABJgKWVx68G8Eozip7pNRbGpSQ-404RZX9fykzK5gdUGY
+Message-ID: <CAFEAcA9jxiazMKEyoPQQdqRBKydgkbKQobtLPyszSHT1M-LHGA@mail.gmail.com>
+Subject: Re: [PULL 19/23] util/qemu-sockets: Refactor success and failure
+ paths in inet_listen_saddr()
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Eric Blake <eblake@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Juraj Marcin <jmarcin@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
-Feedback-ID: rr0801122790668314d3e7598558fab2f00000b21b3131e1cba2be67469372c133335d571ffc8e519baac7e9:zu08011227d7920ca060ce8fe32fd401540000013924a5d43a3055ccb51e43fa56fe3fe68126103551561102:rf0801122c2ab99bbc73d925393f3821570000c3b2a3c5e818d6fc6d6488d74d56ca5edd8f3ed2b5cf3f3cc4cb6569b782:ZohoMail
-Received-SPF: pass client-ip=136.143.188.95;
- envelope-from=safinaskar@zohomail.com; helo=sender4-pp-o95.zoho.com
-X-Spam_score_int: 2
-X-Spam_score: 0.2
-X-Spam_bar: /
-X-Spam_report: (0.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HEXHASH_WORD=2.297, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1135.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 10 Jul 2025 08:56:50 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,139 +98,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steps to reproduce:
+On Thu, 22 May 2025 at 11:33, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
+ wrote:
+>
+> From: Juraj Marcin <jmarcin@redhat.com>
+>
+> To get a listening socket, we need to first create a socket, try binding
+> it to a certain port, and lastly starting listening to it. Each of these
+> operations can fail due to various reasons, one of them being that the
+> requested address/port is already in use. In such case, the function
+> tries the same process with a new port number.
+>
+> This patch refactors the port number loop, so the success path is no
+> longer buried inside the 'if' statements in the middle of the loop. Now,
+> the success path is not nested and ends at the end of the iteration
+> after successful socket creation, binding, and listening. In case any of
+> the operations fails, it either continues to the next iteration (and the
+> next port) or jumps out of the loop to handle the error and exits the
+> function.
+>
+> Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  util/qemu-sockets.c | 51 ++++++++++++++++++++++++---------------------
+>  1 file changed, 27 insertions(+), 24 deletions(-)
+>
+> diff --git a/util/qemu-sockets.c b/util/qemu-sockets.c
+> index 4a878e0527..329fdbfd97 100644
+> --- a/util/qemu-sockets.c
+> +++ b/util/qemu-sockets.c
 
-- Build Linux v6.16-rc5 so:
 
-$ cat mini
-CONFIG_64BIT=3Dy
+Hi; Coverity complains about this code (CID 1610306):
 
-CONFIG_EXPERT=3Dy
-CONFIG_EMBEDDED=3Dy
+> @@ -303,11 +303,20 @@ static int inet_listen_saddr(InetSocketAddress *sad=
+dr,
+>          port_min =3D inet_getport(e);
+>          port_max =3D saddr->has_to ? saddr->to + port_offset : port_min;
+>          for (p =3D port_min; p <=3D port_max; p++) {
+> +            if (slisten >=3D 0) {
+> +                /*
+> +                 * We have a socket we tried with the previous port. It =
+cannot
+> +                 * be rebound, we need to close it and create a new one.
+> +                 */
+> +                close(slisten);
+> +                slisten =3D -1;
 
-CONFIG_PRINTK=3Dy
-CONFIG_PRINTK_TIME=3Dy
+Here we set slisten to -1 ...
 
-CONFIG_PCI=3Dy
+> +            }
+>              inet_setport(e, p);
 
-CONFIG_TTY=3Dy
-CONFIG_VT=3Dy
-CONFIG_VT_CONSOLE=3Dy
-CONFIG_DRM=3Dy
-CONFIG_DRM_FBDEV_EMULATION=3Dy
-CONFIG_DRM_BOCHS=3Dy
-CONFIG_FRAMEBUFFER_CONSOLE=3Dy
-CONFIG_PROC_FS=3Dy
-$ make KCONFIG_ALLCONFIG=3Dmini allnoconfig
-$ make
+...but then two lines later we unconditionally set slisten to
+something else, so the -1 assignment is overwritten without being
+used.
 
-- Then boot this Linux image in Qemu so:
+>              slisten =3D create_fast_reuse_socket(e);
 
-$ qemu-system-x86_64 -enable-kvm -m 1024 -daemonize -kernel arch/x86_64/boo=
-t/bzImage
+What was the intention here ?
 
-Kernel will (predictably) panic (because it has no initramfs, nor real disk=
-), but actual panic message will not be shown!
-
-Last shown line is "Run /bin/sh as init process"
-
-My host OS is Debian Trixie. "uname -a":
-
-Linux receipt 6.12.33+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.33-1 (=
-2025-06-19) x86_64 GNU/Linux
-
-Qemu version is:
-
-QEMU emulator version 10.0.2 (Debian 1:10.0.2+ds-1)
-
-Guest kernel is v6.16-rc5 x86_64.
-
-The problem doesn't reproduce on old guest kernels. I. e. old guest kernels=
- actually show panic message.
-
-I did bisect, and bisect showed the following two commits:
-
-=3D=3D=3D
-
-commit a6c3464f69cf5a8a31eb31cc436e7dbd325b8ff9
-Author: Thomas Zimmermann <tzimmermann@suse.de>
-Date:   Thu Jun 13 09:30:33 2019 +0200
-
-    drm/gem-vram: Support pinning buffers to current location
-   =20
-    Pinning a buffer prevents it from being moved to a different memory
-    location. For some operations, such as buffer updates, it is not
-    important where the buffer is located. Setting the pin function's
-    pl_flag argument to 0 will pin the buffer to whereever it is stored.
-   =20
-    v2:
-            * document pin flags in PRIME pin helper
-   =20
-    Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-    Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-    Link: https://patchwork.freedesktop.org/patch/msgid/20190613073041.2935=
-0-2-tzimmermann@suse.de
-
-commit 58540594570778fd149cd8c9b2bff61f2cefa8c9
-Author: Thomas Zimmermann <tzimmermann@suse.de>
-Date:   Wed Jul 3 09:58:34 2019 +0200
-
-    drm/bochs: Use shadow buffer for bochs framebuffer console
-   =20
-    The bochs driver (and virtual hardware) requires buffer objects to
-    reside in video ram to display them to the screen. So it can not
-    display the framebuffer console because the respective buffer object
-    is permanently pinned in system memory.
-   =20
-    Using a shadow buffer for the console solves this problem. The console
-    emulation will pin the buffer object only during updates from the shado=
-w
-    buffer. Otherwise, the bochs driver can freely relocated the buffer
-    between system memory and video ram.
-   =20
-    v2:
-            * select shadow FB via struct drm_mode_config.prefer_shadow_fbd=
-ev
-   =20
-    Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-    Acked-by: Noralf Tr=C3=B8nnes <noralf@tronnes.org>
-    Link: https://patchwork.freedesktop.org/patch/315833/
-    Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-
-=3D=3D=3D
-
-Commit a6c3464f69cf5a8a31e changed good behavior to absolutely wrong: after=
- a6c3464f69cf5a8a31e I see just black screen.
-Then (after many commits) 58540594570778fd149 made screen working again, bu=
-t now panics are not shown.
-
-So, result: all commits in range a6c3464f69cf5a8a31e .. 58540594570778fd149=
- are not testable (black screen), all commits before a6c3464f69cf5a8a31e
-are "good" (panic is shown) and all commits after 58540594570778fd149 (incl=
-usive) (including v6.16-rc5) are "bad" (panic is not shown).
-
-The next commit after 58540594570778fd149 is 5fd5d2b7c53de5a1290d82, thus c=
-orrect regzbot instruction is:
-
-#regzbot introduced: a6c3464f69cf5a8a31e..5fd5d2b7c53de5a1290d82
-
-Config above is not special. It is result of minimizing standard Debian con=
-fig.
-
-The bug is reproducible with standard Debian kernels (if we use them as gue=
-sts).
-
-Reproduction steps are so:
-- Install Debian Trixie to Qemu VM
-- Boot it with "init=3D/bin/true" added (to cause kernel panic)
-
-You will not see panic message.
-
-I minimized this Debian bug to small config shown in the beginning of this =
-letter.
-
---
-Askar Safin
-https://types.pl/@safinaskar
-
+thanks
+-- PMM
 
