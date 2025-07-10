@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3C4B009AF
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EEB5B009D3
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:21:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZur9-0000Qt-UT; Thu, 10 Jul 2025 13:14:47 -0400
+	id 1uZuwb-0006Bf-56; Thu, 10 Jul 2025 13:20:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uZuVq-00023l-53
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:52:46 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ id 1uZuXM-0003zN-HR
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:54:23 -0400
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uZuVo-0004gd-JY
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:52:45 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-735ac221670so728258a34.0
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:52:44 -0700 (PDT)
+ id 1uZuXK-0004mB-Tj
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:54:20 -0400
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-4067ac8f6cdso750260b6e.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:54:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752166363; x=1752771163; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752166457; x=1752771257; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=AOCKLzvgwyRaVbXc8OUNg3LrwEOBU5DsNKJaUBhRM1E=;
- b=cWX2BCwf6SQdF9VFTPqs754zgjHmeK/Awfmi0WVRjbMXtW8F5kcIuPxq8GwwxP43/Z
- JhnFBmRoc/ATO17lt/vGSqiWvRf+tLcvXI/OQJ87XJO7j8unnEdlenLRSu0GbRH3bsNa
- A2TuZ589LHbTv3mpvE+BT9ERp/HhLpGQcBHMb/Vv4QgxIEesehMMXfb6ptHSkC8qpBXU
- zSRPbQ/4qkHJROd+WhjWuULse1mFXqIPAWSnXWHu9NiWLVbYhe1xryJ+2uNlPw/wSqUs
- 3TR+nYOECIrdTO5IDek12Rdi9PoP+/ITREVt8hOTgvQ6OSYwp9aoSIQJgdLhBCAIJSTr
- TORg==
+ bh=hJa+dfx0FhCZ0oSO3ILPk/P2Hx7kikYQEZnDI/5C/6w=;
+ b=Z6XQVsz29z7+QttO6vj7Xez3mCKtKSPvQvyR1weGsgGFwyLFDHUiq7UsZEcBz2tiBI
+ EzioCfvlB9p5nDIRfL5txsk28QHtDw6tbIHVdm3m9jC2Yhc7eAMJ5FMl+8FdXcm2rZEu
+ c8D6fhvnAGXCtTfLudOpRFKeX5tzy+rfHKzYa0h0AT25RPxPMQWMbKq+WFdTB03GH6bp
+ D3M+XAtbVomjxjeUZnuf4NiqUolpGLJ4jdlsjJerIF3acPps8kdPYdgwVKqX6UCR8akx
+ iUQoCH4sN3uLOLykMPpKi3HynCJAkfLEI2ph9WUDmHKK1Q2Ctlj4uc7uPztuoamtmyUJ
+ zQvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752166363; x=1752771163;
+ d=1e100.net; s=20230601; t=1752166457; x=1752771257;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AOCKLzvgwyRaVbXc8OUNg3LrwEOBU5DsNKJaUBhRM1E=;
- b=ML75r9FMSdjTcTiOoA6neDxsdu5RNOlWMRj2MXWICYNjXKCgDpDab9iOnPu7vUHf7R
- /yMNCgyjyx8VhVOYcyUjVMumO3PhHmL54g84rrtf9fl8tUuNQ7BZgnsliSL1knzMZqi5
- SM/A3T1gpoVvJ4v9e//orXFN1Z+Z+rZeOrChO5G6oVGJcm+WsOdDWG890qEA3LmaPaBN
- 1F1y6xFvdvWrXf/AiC9jnq8gQQtPzgrwqsZob3I1UvH+tFp8Os+MIDrBt02XoZbcbLDM
- b78jNd3Q/NHfXN8E+8L0P2F41WNOEo9L6iFyOrpO9v0940SJwIvWOEAd83RzJgBWsDfE
- +AAg==
-X-Gm-Message-State: AOJu0YyKZM23pGrQPWnaE2QSejT0vFXbzlpX3LSFtzjnpOylKD2n+aVp
- 75bgPpwoYh8tiOMthn+WuYM+GsgcKnpaQQjAF4eq08KclHxMT06MJcwaAMwmCD8qzj0=
-X-Gm-Gg: ASbGncugqib1wJu5Fv39bh7MyLq4hFZCeYMlejkECL8Jx9YqDxBIuvSaUtJ4fDTdjgL
- 6NqBnRs43e+u7tU+SMiHcGCmfsWijNE6jWbVpS0Wp6WTLGTLRSOiYBpytvWPfqtH6T3fMxvbnBF
- cPkw4Lg/cjYYhIUspklUDMqwzal5LyfFTTfVq1GWFA9TI3Vz7M9T5ZaeBoOK3VnbNdzt3jxla7E
- GuQma/hx7MAJK3eltc9sph0ERB/u1TcQJlntRG0UZ+QKOW4P68FpfdPrL8Q1B5XpwilEzfSbP4l
- ETyq1o4c3U0O2CR4Ejvg4UGgkwH9+A068Y/e5lylA5F7IxWEPv+97cri9GkSpCNoSoDuDXw/nJQ
- doSg=
-X-Google-Smtp-Source: AGHT+IEn00vcDeUbeBiunbkstGsyHzcrN40DrCEH+0KmljO8SmPVYTFG6/wg9urg61X2H9hXwBPjTA==
-X-Received: by 2002:a05:6830:3101:b0:73a:8a05:cd3d with SMTP id
- 46e09a7af769-73cee93825cmr2958245a34.0.1752166363158; 
- Thu, 10 Jul 2025 09:52:43 -0700 (PDT)
+ bh=hJa+dfx0FhCZ0oSO3ILPk/P2Hx7kikYQEZnDI/5C/6w=;
+ b=wcLnxgZS6dLhAK9tWF1LECfmlPrThgClxVos+48zgoSdW8//iEEZavC5HKRxcyOGKK
+ 1wpILHS51SijpSEEumQuE/VMTMK2t4tfOBshmF2JmGKuaAV8fD/9UKbDaonl3g75wJ7d
+ ZyebHc3i2pUTNVrWgqH7ULAwheUh6AbC5bGFJrY0K/lQSUeiYezsFTg8i2iE0Leut7cJ
+ v4EZdO2ao7Zjs3K2+0iplrd4p500tVPTE6v6aW/u/qbtf48dnV6q6cq195n+RmIrQlx8
+ YWo/f3TDer+3aNLiM+xDMloGsHtPzLs/uV1L4/2vBzavrvps+qwjEOO3bTX+yzv+8UCY
+ IdCQ==
+X-Gm-Message-State: AOJu0YyLjs6xoxWczVh5hUd9W/arIo5fWbtEp+9Fn97Tdj9XGXuHcZ6+
+ AL1uJo2uxvbZ51ThItafv1kARsvXokisFIV4Y1TP3F738mMRuBkj7WCE2Ny0HoHtTlU=
+X-Gm-Gg: ASbGnctB/MKAeYly/Y2NkeeoDZ8UbW5Hdl5WHujkl0m6yagvmBcjnKnU1cE1WdTqKvM
+ I4RcnDRsgEJnhutKVi/NRriQzSqfhbybV4F53xS2ZokJlWd9Z92TRpAIShKQ6fOPyk7yA8ABO3v
+ ANkPOcuUHlwh9j3qKZRJVLnw6ugMgBVKUWg9lm9gIok1kRNjC4dO3gZUX8yQ7zp/ogl71fyEbon
+ hZGBnB2zkZkwTO8MZQDwt8UJ3I8nVQCqtPaZTVAxtutYT12g+Z0M1UJ9dm7QMXd/ZFvTFCQuvUl
+ I3UhY0180WRL/68Cz0/BZpGDSZ165hwCzIjWSt/dv0zp0RNsx98OP5drfX6vHRlKUzchzix1uUA
+ 8T4g=
+X-Google-Smtp-Source: AGHT+IG/rDNo150/OnH8Lgrpk1OGHt9kqb9g390KBeXMR75v4V2KtEntlBQB95XYWmIRx8UzbzVOzg==
+X-Received: by 2002:a05:6808:300f:b0:40a:52f5:f2ad with SMTP id
+ 5614622812f47-4150d749172mr241663b6e.8.1752166456799; 
+ Thu, 10 Jul 2025 09:54:16 -0700 (PDT)
 Received: from [172.20.0.130] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-73cf108a6ebsm265504a34.15.2025.07.10.09.52.42
+ 5614622812f47-414197c52a6sm256407b6e.19.2025.07.10.09.54.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Jul 2025 09:52:42 -0700 (PDT)
-Message-ID: <47434f4c-a47f-4995-a434-01c043a023df@linaro.org>
-Date: Thu, 10 Jul 2025 10:52:41 -0600
+ Thu, 10 Jul 2025 09:54:16 -0700 (PDT)
+Message-ID: <f256b198-6150-48a3-a97b-5f0c2cc072ce@linaro.org>
+Date: Thu, 10 Jul 2025 10:54:14 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/6] target/arm: Add FEAT_TCR2
+Subject: Re: [PATCH v5 5/6] target/arm: Implement FEAT_MEC cache instructions
 To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org,
  alex.bennee@linaro.org
 Cc: qemu-devel@nongnu.org
 References: <20250710163858.1094780-1-gustavo.romero@linaro.org>
- <20250710163858.1094780-5-gustavo.romero@linaro.org>
+ <20250710163858.1094780-6-gustavo.romero@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250710163858.1094780-5-gustavo.romero@linaro.org>
+In-Reply-To: <20250710163858.1094780-6-gustavo.romero@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,15 +102,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/10/25 10:38, Gustavo Romero wrote:
-> +static CPAccessResult tcr2_el2_access(CPUARMState *env, const ARMCPRegInfo *ri,
-> +                                      bool isread)
-> +{
-> +    if (arm_current_el(env) < 3 && !(env->cp15.scr_el3 & SCR_TCR2EN)) {
-> +        return CP_ACCESS_TRAP_EL3;
-> +    }
+> This commit implements the two cache maintenance instructions introduced
+> by FEAT_MEC, DC CIPAE and DC CIGDPAE.
+> 
+> Because QEMU does not model the cache topology, all cache maintenance
+> instructions are implemented as NOPs, hence these new instructions are
+> implemented as NOPs too.
+> 
+> Signed-off-by: Gustavo Romero<gustavo.romero@linaro.org>
+> ---
+>   target/arm/helper.c | 24 ++++++++++++++++++++++++
+>   1 file changed, 24 insertions(+)
 
-Still missing the arm_feature(env, ARM_FEATURE_EL3) I mentioned.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
