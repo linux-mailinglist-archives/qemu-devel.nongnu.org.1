@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260BDAFFF8A
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4426AFFFA9
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:50:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZonO-0002Az-69; Thu, 10 Jul 2025 06:46:30 -0400
+	id 1uZon7-00025c-2S; Thu, 10 Jul 2025 06:46:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomf-0001r6-Ua
+ id 1uZomg-0001r5-4r
  for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:50 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomZ-00077k-T5
+ id 1uZomZ-00077v-SC
  for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:43 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3a57ae5cb17so516570f8f.0
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:36 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4530921461aso5253605e9.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1752144335; x=1752749135; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dY0xSCtlYykrPT/bsa3C5YwiSVl8pnKIhGQiapGCENk=;
- b=Y/LCwqRG5jDmqlKP0SQPqgQ2eW9dQ5r404TYtCbAfP1GW12KEbP3EBDafMIflRPCHQ
- xLtvPkfggWNq2g5S95B93c4SZ2u7Gyj04+1RCn6enZs3HykylNg1Fkljlvt78nhSldFF
- S7aPzEsMjlWB61QIzJx6nNl0yl/UrctrcGq9QE85ojwk55KJug3+HiHmuCOIx3cRkCRO
- GMAnKheRds1/6ArOAotjvTWYp8I2sa4ZTbCuVmUBY7TDXVJtfjA7EnTXhE+d6tNqLvrp
- t+U+PMuwIdFZDcfVbwvdOoiXepw4roPnsgFs3IziRLIJCg0neLX7MT/Lem0KxHyeoRxD
- km1g==
+ bh=nY9RxYXq4hHZTz7eLFjHXNzOsjF0/KQbibaEjOzCsCE=;
+ b=W7dyQx2EfsAPLbQ//IH5Pr5/iO7R5DW4SN/NXFvSCMaIIHNpLltAIkcSO5czucb0C7
+ QkfgETjer6HsKZxgXC7M66JUEPs83VyRLzWuvohIsjxMn2yWYGlZ7wvVIqHwolD+q+l3
+ kz2HetxPnSvONZZDS252creNNTGehDP/mlyuo6UBG46HC2Ks0gNflRZrluTXEcExjdWh
+ i5ZRykit1X8eFgkF5tsSSp2l7/hBQVmhF3ifCvlr5HfK60ZlfWhLUKkCVFh0K0WwGpDG
+ T2s+CT1zhsZrzYEjK9YwuEQQJ8DlMDhHtI/laOj1h9FHf/UCA4T9OzLwSl9C2/Vpn4+3
+ BWpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1752144335; x=1752749135;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dY0xSCtlYykrPT/bsa3C5YwiSVl8pnKIhGQiapGCENk=;
- b=R8ZnCorXKQTO3RLADFqfvDIsuXbGHnwffzUfPpsgc4Xl5OCVrHYzZ5Ff6Q4hMkQGpf
- UWf2C/gsZTE6a3Oax/jFeDC3Ix2vl9dgQHrWKuhEf+GBTNoQnl67ZXSVm/fUUw7YEfjF
- pnqK2LaWZopG1DmVCQsJqXAmkTIZzfRThgEXdqvFyp8yE3jz+6hmHRV8S9HrUIL3sv0W
- 1GPy7pNZM1SRSG1INZ0U7wVwngwDPhwnwYQxXs5zB94v4D/Bj87xrq2ZrawW7lt2vjB8
- 6iL5ka8eTgPfn6IxNTbJqIrkOJmASsGg7SkemSTwTSmZaNAD+a5bzL6vQ+zfMmF/zjGY
- R+tg==
-X-Gm-Message-State: AOJu0YyJshW8y5SOlkUVstx1q0xfGCFYFgay7pjBEb8XS75NEn4+pGiR
- a+WlZsMEUePz2PQre3z5zjVwmffHWid7ASNauLAaHARnilByVId7jWraI0UT7mDj/Ho=
-X-Gm-Gg: ASbGncsUIXkiTv3ZD1vDlxBz6GuOHqzF9/lkBJa7avR7CDFKUs5WGG2KgkH1+manlPc
- iijc4Ko+Db20HPGNUxtk7mOU1Htf00ijK2dzMWZUoMOZMWats3rRONJ1YQLjI2mXVZ7tQQiucOL
- uFQMgwPpKt7ODrjnptmZ25S4OHBGxH0+wqYKMRX59+NT0bDPNvboK1a5BbGvzuZ1u/bg2EDxm+D
- /c6fpfcF0Imu74lKc3beCT9p+vb3qYo8ee2pktj/2+F2fmv/ohr54e9Qufe5lRMkm+WcJUurK/x
- +R8f3CZALLL7kT+DlQa4zDWZuoS8+g/SRrTRxZ9LtnNFYdc/x13yQ7BJO67+xHY=
-X-Google-Smtp-Source: AGHT+IHkqr6+7PyYad91sLUrKzIYWh13JyYkVR7p0TIc8S4wO+wniM9MOH6i/s7312Kn5fncGTuHLQ==
-X-Received: by 2002:adf:b60b:0:b0:3a4:dfc2:bb60 with SMTP id
- ffacd0b85a97d-3b5e8680f1amr1474851f8f.26.1752144334634; 
- Thu, 10 Jul 2025 03:45:34 -0700 (PDT)
+ bh=nY9RxYXq4hHZTz7eLFjHXNzOsjF0/KQbibaEjOzCsCE=;
+ b=Rvlm0k8ec33G/QmiGLL189JMde2TrGHUkw5v9FDGjeFBpj07Huw9+FgSTVCm8Tk5xu
+ LIUrUMg0UuhAkrPt8WV810g7EJo2XmLGPe9Pwd/f+s3z8Eyi7pyQ6msZ/cDPOiGhiIkM
+ cquvlZJv1tN/OGW9F4Crq7kzLS5zmWdTDqGeKylnB3tzKwkMLDRWg+iMK1LU/6n5viRw
+ zHbgqmZzCXNKlZy/67ij6tXPBBdQ0ZP301byDqzL5UHiDIrtIBzmMm9W2IxGRJSTMlGu
+ SLbbP+z0dxSJ3keeeg/ElwREtZq9GyubBR2yO11iCZ6qpNrAb86pQxNddFaDzbhDrag8
+ cCIA==
+X-Gm-Message-State: AOJu0YyKGD5W/0wntagNC7kGnlCZObiMkcBEJOt3W1F4OBP0vMwlDvH2
+ MKc6lGCrmh1z6zn4hZMr9x3wrSA/ISF75Hv6GpKk7n0OB9nzkxbNxd0B4FpkMSo5ZKE=
+X-Gm-Gg: ASbGnct0CRL1eBNnkQ5T7lPilLVNSawKFEDnf14mBBsCHsdFbqYjVYP9e2iTGcURmbM
+ KYB+uZ0oNTuVJLzBwNAfvgzA1Ww1XA9bUKEHb7JECTzZG2BJ1RYOxDX9oEK5TLZuHYywNsKxowo
+ mKFPvu4LQcdFq+qlL7XCDWKjhCcZ+BpkS+3VUF0CWyJTLCFYXqBZKUTLunumXbbNiBR3b5nlwin
+ cS+POY00NvMiElxj3FFxeLEjfTCJIw4cDoD+io8Ui2MEJ5YQz5BFaLkz3X4iM4HltvTikVgjXAd
+ 9aL9gnwLuNfcx7UJXPzWYhKafaw1vfw3FSt3QmzdrACmquYaAAjFsrrhuKiJokKDUBa+oQi27A=
+ =
+X-Google-Smtp-Source: AGHT+IFRgHg30ZwslKl1MTZnBnL4N3W1btuIHawrWJnd4x6DKfqZ111NWjsg2s7ZVnd+ZnlNIxukzw==
+X-Received: by 2002:a05:600c:1e0d:b0:442:d5dd:5b4b with SMTP id
+ 5b1f17b1804b1-454d53bc8c5mr65998125e9.31.1752144335407; 
+ Thu, 10 Jul 2025 03:45:35 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8bd18a2sm1529540f8f.20.2025.07.10.03.45.32
+ ffacd0b85a97d-3b5e8dc22a8sm1574575f8f.34.2025.07.10.03.45.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 10 Jul 2025 03:45:32 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 679695F834;
+ by draig.lan (Postfix) with ESMTP id 7AE8A5F87D;
  Thu, 10 Jul 2025 11:45:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,18 +74,20 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Jason Wang <jasowang@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <laurent@vivier.eu>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 2/7] gitlab: add -n option to check_units
-Date: Thu, 10 Jul 2025 11:45:25 +0100
-Message-ID: <20250710104531.3099313-3-alex.bennee@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Yodel Eldar <yodel.eldar@gmail.com>
+Subject: [PATCH 3/7] contrib/plugins/execlog: Add tab to the separator search
+ of insn_disas
+Date: Thu, 10 Jul 2025 11:45:26 +0100
+Message-ID: <20250710104531.3099313-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250710104531.3099313-1-alex.bennee@linaro.org>
 References: <20250710104531.3099313-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -107,52 +110,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mostly a developer aid for those who want to look at the full backlog
-of multiple build units.
+From: Yodel Eldar <yodel.eldar@gmail.com>
 
+Currently, execlog searches for a space separator between the
+instruction mnemonic and operands, but some disassemblers, e.g. Alpha's,
+use a tab separator instead; this results in a null pointer being passed
+as the haystack in g_strstr during a subsequent register search, i.e.
+undefined behavior, because of a missing null check.
+
+This patch adds tab to the separator search and a null check on the
+result.
+
+Also, an affected pointer is changed to const.
+
+Lastly, a break statement was added to immediately terminate the
+register search when a user-requested register is found in the current
+instruction as a trivial optimization, because searching for the
+remaining requested registers is unnecessary once one is found.
+
+Suggested-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Yodel Eldar <yodel.eldar@gmail.com>
+Message-ID: <20250630164124.26315-2-yodel.eldar@gmail.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .gitlab-ci.d/check-units.py | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ contrib/plugins/execlog.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/.gitlab-ci.d/check-units.py b/.gitlab-ci.d/check-units.py
-index cdc62ae5ee..cebef0e8be 100755
---- a/.gitlab-ci.d/check-units.py
-+++ b/.gitlab-ci.d/check-units.py
-@@ -30,7 +30,7 @@ def extract_build_units(cc_path):
-     return build_units
- 
- 
--def analyse_units(build_units):
-+def analyse_units(build_units, top_n):
-     """
-     Analyse the build units and report stats and the top 10 rebuilds
-     """
-@@ -44,7 +44,7 @@ def analyse_units(build_units):
-                                 reverse=True)
- 
-     print("Most rebuilt units:")
--    for unit, count in sorted_build_units[:20]:
-+    for unit, count in sorted_build_units[:top_n]:
-         print(f"  {unit} built {count} times")
- 
-     print("Least rebuilt units:")
-@@ -57,12 +57,14 @@ def analyse_units(build_units):
-         description="analyse number of build units in compile_commands.json")
-     parser.add_argument("cc_path", type=Path, default=None,
-                         help="Path to compile_commands.json")
-+    parser.add_argument("-n", type=int, default=20,
-+                        help="Dump the top <n> entries")
- 
-     args = parser.parse_args()
- 
-     if path.isfile(args.cc_path) and access(args.cc_path, R_OK):
-         units = extract_build_units(args.cc_path)
--        analyse_units(units)
-+        analyse_units(units, args.n)
-         exit(0)
-     else:
-         print(f"{args.cc_path} doesn't exist or isn't readable")
+diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+index d67d010761..06ec76d6e9 100644
+--- a/contrib/plugins/execlog.c
++++ b/contrib/plugins/execlog.c
+@@ -232,12 +232,15 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+          */
+         if (disas_assist && rmatches) {
+             check_regs_next = false;
+-            gchar *args = g_strstr_len(insn_disas, -1, " ");
+-            for (int n = 0; n < all_reg_names->len; n++) {
+-                gchar *reg = g_ptr_array_index(all_reg_names, n);
+-                if (g_strrstr(args, reg)) {
+-                    check_regs_next = true;
+-                    skip = false;
++            g_auto(GStrv) args = g_strsplit_set(insn_disas, " \t", 2);
++            if (args && args[1]) {
++                for (int n = 0; n < all_reg_names->len; n++) {
++                    const gchar *reg = g_ptr_array_index(all_reg_names, n);
++                    if (g_strrstr(args[1], reg)) {
++                        check_regs_next = true;
++                        skip = false;
++                        break;
++                    }
+                 }
+             }
+         }
 -- 
 2.47.2
 
