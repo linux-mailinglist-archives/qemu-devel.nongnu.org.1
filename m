@@ -2,85 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9959AB00C50
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 21:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CC2B00D8A
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 23:12:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZxG1-0007Bi-JN; Thu, 10 Jul 2025 15:48:39 -0400
+	id 1uZyXx-0000X0-2L; Thu, 10 Jul 2025 17:11:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uZxFq-0007AR-2f
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 15:48:26 -0400
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uZyXi-0000TY-4X
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 17:11:01 -0400
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uZxFo-0007GS-0k
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 15:48:25 -0400
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-407a6c6a6d4so415160b6e.1
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 12:48:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uZyXe-0006bu-VJ
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 17:10:56 -0400
+Received: by mail-pl1-x642.google.com with SMTP id
+ d9443c01a7336-234d3261631so12738755ad.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 14:10:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752176901; x=1752781701; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZUZQQXS43w3BzT7GN7yR+jIN/pDlvzyk3Qt7t2nDHHI=;
- b=xRvcLPeirSYIX3fGrdVl2a9dthHqnLgZs8khS336xPBJ21w9YNdCI0YRhbnKun1l3J
- x2p2478sHY/WjEB+Ge1/r49p5S3Eab67pcShnNaU7EpL47utqNl1RC1HwVEkJ5/CCvSJ
- 4fQ00D7aDvKm5aObYkzLtn25x7vT+JwwN8qo2p/O3E6qDST+ypj2foxFcT3J9aB9L8cX
- pUud/TlhrphmqtGQovDEpTKHVZpYkVyRqtxzm1aHnaClNfQOktXEAfRSWX5/hSMFhLA1
- iL4i+OGRiUESKpx543KTOhEZOZ5bQe9465SqH2otpqveMy9q3hnzTuvsgZ//X24NT/Ts
- /+Ig==
+ d=linaro.org; s=google; t=1752181853; x=1752786653; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZHcxjosZWahGjCunSAtbcvQ0wld6Cf/5jVHz9hCwO74=;
+ b=r9EkwcHLeoYxlr2iadepHI7SZKMatRuhF9ZqdpvGYVLN0jyVq/Gb+usbWIaAnFj1yh
+ Qpo7gmHkfzu+A5wXocE3TqUvtRioqOB3tM5+cXplBDCqlckm/KRWfY2AhRVP8QfqM+8V
+ 44YD56lyxBKDTMFRxpd/sFEhm933u2MGtcynmd4OCf/+Nd+yz5CY3cRtw4uGC57Rc1bm
+ 8sUfEjOTKbWLOhPBR0cJ+Fnjn7S99CUhsf1o/zH11I4xbkVFI8CEILl4aUZU6x0JMhYs
+ tFCfPfv6XBpWXiXIQppS3MLJW7CFu3v3stQJJu4+CTcafubwk0JPIC5gJKGztlok5r5G
+ 8NHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752176901; x=1752781701;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZUZQQXS43w3BzT7GN7yR+jIN/pDlvzyk3Qt7t2nDHHI=;
- b=rAxSMCVOz3AdgjFqYUc7hUEUjxvW+V8+xiDzYOVMQ8rnHWKWBOHkhRkGAjRiyoK1Gh
- 0GwqB70pt+Bmmj1aB6mGTYR/TkVbWoi3/XZXSumNwRGpQv7SNjpixeG+3bN8gd1nBRGD
- UI5Y0L8NVgtbDhjd8Shn9tGC+Rne57zszceuKmKMsWef5SDHTzX6mF8VhMgQWoKLahy8
- BdqdcXcn+QW2e0p3/kE10XgRFu4pM7Rk9Bqec7riwPIFCuG81U7HLFDemO8XjCYtstL/
- srSzPAVPK4gtV5dLwVCugvXi3mvprCVKgxXf7DpdAgzEDf9j6tbfTSt8tcgNVZfgrbtS
- Qr+Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX4lSi+OEUujhVKfix4tAswPrXU9z7Fv0l1nw9KNmZfrTj02EAr639c0I8w9H3epcHa3KwV8upZrnxw@nongnu.org
-X-Gm-Message-State: AOJu0YyqyP4nn8YRJqFDrKt8B8WLJSdwvR21e0JeW6NQE5ibvvmOD6QW
- DgPbwGWtZnzgrED1c9JtDWRz1xQneKa5wGfn6GdWoK+Y3HY3fQ9HFdWQWGGEicC1vjM=
-X-Gm-Gg: ASbGncuy27iqX4DC1vyHqTn2HclBsMT8aLu7CDGhdFA5rIuai8UlWMru9VNPPiJrmyI
- 7VvGkUBsCqot+i+53hB8sTuhPfKiyeOlSwPbPbjAq7/IPG56JbyGEWyGCA57eBlEr8RU+QvbXki
- DSxEEEAoaWLyqZ6T8iQD+Ee+kx5JalO4gFWH98aB9N0DGgPBYxxfqdo05xy+CLqDxsgADoN2VKO
- HUGdqBqmKxRlEhIeHE8EBWGz/cmWTQVvlcPbML74p2qtbeNsXlNraYNhgb4HvcyaEuCdxAeWMrm
- PcxM74zjlkXaU6c3gRa645CwbF8PVbpZbNMDR2Sk0KIa9T8Ei6h7FIg6vdRl+iA9kyNdmFGNiV9
- oAtJCgBsUcRDrO7z1sPdSnHiWAVCXXRVcqROhgCQ=
-X-Google-Smtp-Source: AGHT+IG8NumYP0SPtd5AjQ4iFjL9K4v3gslW1UOmpqIImcTQV3/hkTC48EqzS3CGVrvnOpypl4LSnw==
-X-Received: by 2002:a05:6808:1202:b0:408:fbed:c3ab with SMTP id
- 5614622812f47-41510184766mr638146b6e.38.1752176901081; 
- Thu, 10 Jul 2025 12:48:21 -0700 (PDT)
-Received: from [172.20.0.130] ([187.217.227.247])
+ d=1e100.net; s=20230601; t=1752181853; x=1752786653;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZHcxjosZWahGjCunSAtbcvQ0wld6Cf/5jVHz9hCwO74=;
+ b=QTioyyZsnfe3TLsMv6hnkJ6RbffMGbLFLY9h7BZoNAwdlQSAm/sEBH+nrwdw4fLUGA
+ mryxsOwBp48HUxP6956VmTdbcUbvNDqHugx3u2Nb23Ib/JuXVdKU4TlnMFRTz8keb0H+
+ ErmWLNdijyYsRz5hEj1ZITctC7syQwhAfCxlqUKhpbjUU6JZ/ScBR2gg+pSFb4qBhDJW
+ jq8jUIOb+t3ZVH3ldV2PbNyjU6tabxA5X2jkwvmov27uQluoQJvGoVmgHGve0LZAH9Pw
+ r0ID8LpacNl+SuZolGi+YxXwU9Pgz+UMka7aYN0nunbIz8lhVZwLAmvHOypIJ8LYWuF1
+ +KXw==
+X-Gm-Message-State: AOJu0YyMixKUir67DjkWjMlBAzqNv2Dng9VpRSQhff+KyuurMar3MRvP
+ 9prHQvTXiWm4SOJW3mP52vEbsDpDENvt0qxupeIMB3tqWQ+40OFRbU2P0bA4JtxRWWc=
+X-Gm-Gg: ASbGncvNv9uDr5rxd3SdemV7LTbXXklB1SehKVytjDeuitMSpZglRAcWU8YF7ziSU4K
+ biY3E5gJL3LbjgveF1GZRUU62RsMO339Gu4clqYZw/JGOZg8zjGCMchBq9LRG1JXgDGwUREmTMu
+ 7uHjfKSUlMOwmgJTLvZsN5YYC4JbHse7Iikcr3WYIrV2PULW2iMwcrbbWiNtUtbpILxNk6hk6RH
+ w/cYCxI9jI4sgYIfSDQPv83mZz4UkkX46IAkAbDzvGpevR0ESwezxj4sI8B3qoqsCnYDAHcogxq
+ 8Dadg005BmxPwvlGRWMBzyIzFwEOj/Wpkv607t4R15H/ObN7/ll0IPQmMnk6CQ6S2moVgKPEFQe
+ b3xAwvY+fMWS2grqFUM4KavyXWxiPLahiSR3T0kFVn2RhaVFTDHiED/rd+9ITmxc4WMY6
+X-Google-Smtp-Source: AGHT+IEb8z+cGX1JBAFYaZtvTH8O0bFuNe/GuqIo7CDMeRFfoWfsgveHQBUBvHBnqTgjjUhCmW5RRQ==
+X-Received: by 2002:a17:903:2ecd:b0:224:1eab:97b2 with SMTP id
+ d9443c01a7336-23dedfaa6b8mr10164685ad.53.1752181853182; 
+ Thu, 10 Jul 2025 14:10:53 -0700 (PDT)
+Received: from gromero0.. (189-47-46-41.dsl.telesp.net.br. [189.47.46.41])
  by smtp.gmail.com with ESMTPSA id
- 5614622812f47-41419baa665sm308243b6e.21.2025.07.10.12.48.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Jul 2025 12:48:20 -0700 (PDT)
-Message-ID: <eaeb838a-6211-44f1-afca-4d94eb24c170@linaro.org>
-Date: Thu, 10 Jul 2025 13:48:18 -0600
+ d9443c01a7336-23de434d6b0sm30447775ad.203.2025.07.10.14.10.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Jul 2025 14:10:52 -0700 (PDT)
+From: Gustavo Romero <gustavo.romero@linaro.org>
+To: qemu-arm@nongnu.org, richard.henderson@linaro.org, alex.bennee@linaro.org
+Cc: qemu-devel@nongnu.org,
+	gustavo.romero@linaro.org
+Subject: [PATCH-for-10.1 v6 0/6] target/arm: Add FEAT_MEC to max cpu
+Date: Thu, 10 Jul 2025 21:09:35 +0000
+Message-Id: <20250710210941.1098088-1-gustavo.romero@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] Support madvise(MADV_DONTDUMP) when creating core
- dumps for qemu-user
-To: Jon Wilson <jonwilson030981@googlemail.com>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Jon Wilson <jonwilson030981@gmail.com>
-References: <20250506173423.1312788-1-jonwilson030981@gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250506173423.1312788-1-jonwilson030981@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::642;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x642.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,31 +95,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/6/25 11:34, Jon Wilson wrote:
-> +    case MADV_DONTDUMP:
-> +        if (len > 0) {
-> +            /*
-> +             * To set the page permissons, we must OR our new flags with the
-> +             * existing flags. Only mark the pages as PAGE_DONTDUMP if the
-> +             * entire range has the same flags. If any part of the range
-> +             * differs, we would need to process it one page at a time which
-> +             * might not be very performant. Since we are not obliged to respect
-> +             * this flag, we will support it for the most likely usage scenario.
-> +             * Note that we don't set PAGE_ANON, since this can only be set with
-> +             * new mappings.
-> +             */
-> +            int flg = page_get_flags(start);
-> +            if (page_check_range(start, len, flg)) {
-> +                page_set_flags(start, start + len - 1, PAGE_DONTDUMP | (flg & ~PAGE_ANON) );
-> +            }
+Since v4:
 
-There is an existing helper function, pageflags_set_clear, which could be promoted and 
-exported to perform this OR.  Indeed, the bits-to-set and bits-to-clear interface would 
-probably be clearer for all existing uses of page_set_flags, eliminating the need for the 
-PAGE_RESET hack.
+- Moved MECID_WIDTH from cpu.h to internal.h
+- Fixed stray ';'s in access and write functions
+- Use of GET_IDREG/FIELD_DP64/SET_IDREG for setting feature in ID regs
+- Sorted correctly isar_feature_aa64_* AA64MMFR3 tests
+- Simplified/unified accessfn for cache instructions
+- Fixed how cache instruction-related registers are registered in the cpu
 
-You don't want to clear PAGE_ANON.
+Since v5:
+- Fixed missing checks for ARM_FEATURE_EL3 in sctlr2_el2_access and
+  tcr2_el2_access functions
+
+v1: https://mail.gnu.org/archive/html/qemu-devel/2025-06/msg04598.html 
+v2: https://mail.gnu.org/archive/html/qemu-devel/2025-07/msg01799.html
+v3: https://mail.gnu.org/archive/html/qemu-devel/2025-07/msg02338.html
+v4: https://mail.gnu.org/archive/html/qemu-devel/2025-07/msg02488.html
+v5: https://mail.gnu.org/archive/html/qemu-devel/2025-07/msg02689.html
+
+This series adds support for all FEAT_MEC registers and cache instructions to
+the Arm64 max CPU.
+
+It includes the FEAT_MEC registers and cache maintenance instructions, but does
+not modify the translation regimes to support the MECIDs, so no encryption is
+supported yet. However, software stacks that rely on FEAT_MEC should work
+properly at this point.
+
+I'm currently exploring possibilities to support FEAT_MEC encryption (or
+obfuscation, for testing purposes) in QEMU for the various translation regimes
+on arm64, hence the encryption part of FEAT_MEC will be contributed later and is
+not targeted for QEMU 10.1.
 
 
-r~
+Cheers,
+Gustavo
+
+Gustavo Romero (6):
+  target/arm: Add the MECEn SCR_EL3 bit
+  target/arm: Add FEAT_MEC registers
+  target/arm: Add FEAT_SCTLR2
+  target/arm: Add FEAT_TCR2
+  target/arm: Implement FEAT_MEC cache instructions
+  target/arm: Advertise FEAT_MEC in cpu max
+
+ docs/system/arm/emulation.rst |   5 +
+ target/arm/cpu-features.h     |  15 +++
+ target/arm/cpu.h              |  27 ++++
+ target/arm/helper.c           | 236 ++++++++++++++++++++++++++++++++++
+ target/arm/internals.h        |  23 ++++
+ target/arm/tcg/cpu64.c        |   7 +-
+ 6 files changed, 312 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
+
 
