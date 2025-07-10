@@ -2,191 +2,184 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE87AFFC93
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 10:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83050AFFCDF
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 10:54:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZmpS-0004NP-20; Thu, 10 Jul 2025 04:40:30 -0400
+	id 1uZn2F-0007e4-2B; Thu, 10 Jul 2025 04:53:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
- id 1uZmpP-0004Jj-A0
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 04:40:27 -0400
+ id 1uZn20-0007W0-2f
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 04:53:28 -0400
 Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
- id 1uZmpL-0000NF-4X
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 04:40:27 -0400
-Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56A7PLgI010291;
- Thu, 10 Jul 2025 01:40:17 -0700
+ id 1uZn1s-0003VC-ME
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 04:53:25 -0400
+Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56A2vb2T006138;
+ Thu, 10 Jul 2025 01:53:13 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- proofpoint20171006; bh=tLlF56CmqDDajx/q/N2TCNQxeIHuxKNERNmbcuTsx
- m4=; b=v8UbhtYrAVHq7YjbNzjrcRpUctzcwOqLPza3wr8id9Uh99t3AsF0Z/IY+
- xl+zxXwZNjsoytdinVRXiLo0vCRUBAJxADiGFziKROY7zzhqVPm4MTDPUpeIJDEM
- qZLSEzaLScafggwwubEuNUn1Ae4rfyuH0eZGIE7vSOAX1/isU8PgdgQbiQ0aWkLd
- cDh/iBOYSvx0r11j6cit3tVnluD1PeYsp4gnyqzGykZVh0kX6IibzqC3FjD8C0fa
- 1Zd5JfqNF7QAA9A+hG/sCCU/2zJPf78GKqMgbh6KnAF30/O4G9/XnxU0o2pKckAy
- Yyy0k3UYtFOYYIhreF6nKhOjP04pQ==
-Received: from nam04-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam04on2138.outbound.protection.outlook.com [40.107.100.138])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 47rkc5s2qm-1
+ content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=proofpoint20171006; bh=8SiU0eDlUrnuh
+ ACPgkGG8FChMUMFsekOT4T3oyDufHI=; b=ao0XfwqAcxMy1ElS/Zvsvj39qpk0b
+ Md2hGd+OrqfSJGyLJ4BRVNWZeRLpkUf7kOWg8GLNwP8TamxEjL7eFEfs6mfg/zqb
+ yskLNRt4iqA5ti2A8IfWbFLfA6pynGptu3Lxl9O/wz0NY3WIk/bFrGP79g7rIrPM
+ tUFPhQfIgEknVUpY8Ddg70pj2CQDSDY5AzSigZptY4hHTpIzYO7bg0X3pophlT3J
+ yRL/1h+g37pR1OcwcD3Muvk4FKyNEbvp9HHVF96J+AjyHF8RtZm7y1Tz6d6e7uoi
+ tCSxaU463tkLMkvwG1FVY/jhqSOPWWpVseBKqKW2QBF3nFOuCYQAbL4zA==
+Received: from nam11-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2133.outbound.protection.outlook.com [40.107.223.133])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 47q3m150jj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Jul 2025 01:40:16 -0700 (PDT)
+ Thu, 10 Jul 2025 01:53:13 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bc8GSiJ0PM0Zf1INUOMfNqdqsKZGjPJ8shX1h/6pIsA58XjC3Om0JfjuHuHy4ATIkhF6LLKkIqeFZOIUfpdXZhPmjPWrxjClgG4zAa2oMXCokWgtspHRhdGLCZ74os5/Jt7xBhmmbnNSZoyNs/6ZvL77AFUQVB/EsbxDtzoSZt6VT4KGCMMSAx6V54St+NkzRC+4kWbR7552R05mV9UEqUtYrdiWWL3Z2GmNiokU+6F+zjVYzNrVWT+U3Ln4lUPWwW8GLG+BuL0By26ktAb2/B2zPUgi0SU7u7RTIEdyHjPB9NxWLLFSGPmyf0XaGEyyX83X6dA/SoLwXccBSP1RaQ==
+ b=j3ITVFjkdeDufQviTzvn9np32oRV25g8RgTzP9R9ynEQy/7LD7Uno5FyeoiLOtW3CCeDrvPL8IkTTTiwihf4f8t8ixn+Uy1GapzO27MtE05mhQYilR0dHT1/k6HyYZZndYyFxC/Q27yaSiF6BSLpA3mWM3TCMarUAV99sbyB7ukBauqQEpc7Ukw6B2ornTd8WNUAfiM2nAhj9Z07Z9JP22CCxrmyKZKSYarEPxw5UEH2QEHHxEADL2QxjS07a9VONVga0uWnPuINEbuVaso9z4iLU4DaJLqmLX7aOQbLzZ5eHLuZtT4/Y9JVPn6r5JRsMRxmjD5+69zIFJkUv3I5MQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tLlF56CmqDDajx/q/N2TCNQxeIHuxKNERNmbcuTsxm4=;
- b=MCMwdngSFlCBylCeowCF9qj5hOHhEYAVWbeK995cnldtOmCueFZFrS6Y4TQ6XD7rauPsHfSB+MNdNZAEquQfK12eAzhK6jFLKKH4msa18peXWUa+wxXMdRWNZAu0ymRfKRwxPS6jeEMgMtV5KavLmbVz32i8XKxRNWFBfIDm3wkIH81wdgEwPfbCgmNXOj6eff1aKtsBezL+W6ldy758KrMv4j6dPKoL/m8VYJ3l8UtteR9Wot7welF4B4ARAbvJoClV8o65mpbYmlWNlrymUS14Jkh9MneJ8f2c/BCv6MkVK8F9ate12UKXCCZtF7OPAGS18d9fJ1bODtanEnlTEQ==
+ bh=8SiU0eDlUrnuhACPgkGG8FChMUMFsekOT4T3oyDufHI=;
+ b=iJ7/qj2k9ZhCvdrNiKM7Cr2215X0RH93HlGvxY1McbYlYoyCavGlvc81YDJYSNIHJIcHW95tvl610IDdHBKyHwzgPkuXorz8E0H0pEtnVR1JBMd1/s+SzbCz+Facl8gmQIJk63cVrPIWh8kGMD7A5r+iYeRUqVTJwxO1IPeOhe0yhrXScckdpOgOUidSbcq3Cdd6ZOAkpxElN69bof34O99hLIr5NI5BWTXr6X3DR+byGn7WTJHihBbihL1FzBnKdXzj84YhAj0wTYF0uSDN8Oi8w49Ws+PKjf/N2s/6oxRw3Y/P+gFe6wo98fYm4axXwwqvtDPbIznw2MIwS5iwig==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tLlF56CmqDDajx/q/N2TCNQxeIHuxKNERNmbcuTsxm4=;
- b=H+i3dAWPF+8enme6D7IsyXRI95ekHzcoL7z9WL+ab+MJiL7rL4RNPI8yfzNJg7yI8OAUS/lqKrXoiNAZR+zsidsevXzfTlOwz3NfSSZOiKz3flxnKYnaSkhtRBWIH3060wgpWcMzyW2gQy2jMAGiTi14L5sE1fiyjAwkj11pBBUambyRcIwmPBjk6BGa3Dq+KAavHc4lb/Hr8G+WlX4BL+z3vYLd7Fd9T/CVaEaRQ+JGwzQV/8KlvyUgpA0fyHa8DaqMTzhd1QsJRio6+UxeIhKKfabLVdoXTbCPe6c9ovA9Vll7GRuWydsMog8qALCGqGkvzqj+DOA4oadt0pnOlQ==
+ bh=8SiU0eDlUrnuhACPgkGG8FChMUMFsekOT4T3oyDufHI=;
+ b=XGbGkH0FQk+s8WBypw3WFV5fc6DnwP2jpNbcwboazeBMSVVxADeTMasrAmZFK8a8WaqV+5gfhG6PbZwj1ZLPzco11rhEcgtjpspo/iUCszGpK9Wx0esHUVQuwJOjMIgOq+MFK2/aux73W3R6xB5n/1hE/5qNNA33tjZQ+3tkruTU3obrZkRNMvudmILIpRIU3bfe93+/+pxiBBLf6MH/enlzU48i+TnGr+hiCsnMnUJ0Y57bCmcgFNwkDls+1xq77WjokkLlFqcV+Iy+2Hzf3QFNreG1GuLepONdmkZo6PmBFZAdvOWfIdPKQkPMBHLXUWvFUlEmsb5mns6BouJdSQ==
 Received: from PH0PR02MB7159.namprd02.prod.outlook.com (2603:10b6:510:16::8)
- by SA1PR02MB8366.namprd02.prod.outlook.com (2603:10b6:806:1f1::8) with
+ by CYXPR02MB10266.namprd02.prod.outlook.com (2603:10b6:930:e8::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.21; Thu, 10 Jul
- 2025 08:40:14 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.28; Thu, 10 Jul
+ 2025 08:53:11 +0000
 Received: from PH0PR02MB7159.namprd02.prod.outlook.com
  ([fe80::6cf9:b35c:b143:bb88]) by PH0PR02MB7159.namprd02.prod.outlook.com
  ([fe80::6cf9:b35c:b143:bb88%5]) with mapi id 15.20.8901.028; Thu, 10 Jul 2025
- 08:40:13 +0000
-Message-ID: <f049b210-9f14-4fcb-bbdf-98408941545f@nutanix.com>
-Date: Thu, 10 Jul 2025 09:40:09 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/14] hw/i386: move isapc machine to separate isapc.c
- file
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, mst@redhat.com, marcel.apfelbaum@gmail.com,
- eduardo@habkost.net, imammedo@redhat.com
-References: <20250704141018.674268-1-mark.caveayland@nutanix.com>
- <20250704141018.674268-15-mark.caveayland@nutanix.com>
- <7C9CE1C1-4B5A-4EF0-90DC-EF4FF9BECFAB@gmail.com>
-Content-Language: en-US
+ 08:53:11 +0000
 From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-In-Reply-To: <7C9CE1C1-4B5A-4EF0-90DC-EF4FF9BECFAB@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0PR01CA0134.eurprd01.prod.exchangelabs.com
- (2603:10a6:208:168::39) To PH0PR02MB7159.namprd02.prod.outlook.com
+To: pbonzini@redhat.com, mst@redhat.com, marcel.apfelbaum@gmail.com,
+ eduardo@habkost.net, imammedo@redhat.com, qemu-devel@nongnu.org
+Subject: [PATCH v4 00/18] hw/i386: separate isapc out from pc_piix
+Date: Thu, 10 Jul 2025 09:52:15 +0100
+Message-ID: <20250710085308.420774-1-mark.caveayland@nutanix.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM8P251CA0020.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21b::25) To PH0PR02MB7159.namprd02.prod.outlook.com
  (2603:10b6:510:16::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR02MB7159:EE_|SA1PR02MB8366:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d09e48d-f0af-4fca-ac55-08ddbf8d635f
+X-MS-TrafficTypeDiagnostic: PH0PR02MB7159:EE_|CYXPR02MB10266:EE_
+X-MS-Office365-Filtering-Correlation-Id: 453d2801-0163-4566-788c-08ddbf8f32bf
 x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0; ARA:13230040|376014|10070799003|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZmVzOEwzaURhWkdoWlpEWnRBWG1hOXVpSVJ2N29WQU9sTnRyOHJBWDB2K25M?=
- =?utf-8?B?VzhiSkI4SUNjMVdNaTNqT1h3ZHlHVVpiU3hUQ3RMZEl5d1p4bUJqK01RN1RI?=
- =?utf-8?B?TFdJVlkrM1FSNWRIY0hoOXNsVXhPUnZodXp0di9FbjFlaEVqRG81SERIVi82?=
- =?utf-8?B?ZzN2QTlaamVKdGZjcnVUeTZ6aDd4dHo5KzFpM2RUcnBWWHQrQXlOcDV3WHg2?=
- =?utf-8?B?clhMYkZMQkVIaFJwOTdVRmVhTHFTTUtBRkI1dTFhSDRyd2FOcXhQUGtZeDdp?=
- =?utf-8?B?VE5zRHM3SWhRNTEzNkgwZHZxeG90WjJscUc4VU1aTCtNRU1LS3ZGVFloWmhK?=
- =?utf-8?B?TVl0R0swY1N0a0JodlhlR0Vpajl6WmpqUWlOSFNndHJtazJ6emZOQTJFTDRQ?=
- =?utf-8?B?bnc0NGJoeDBxTFZWZUNBclBBa3l0STdWMkxzakJGY0d4dy9lSXlYOEgrMUpk?=
- =?utf-8?B?VUh5Y05Jd3VLSzB6elgrdWx2TFlVQ2hjM21zMmZHQ0ZDU1VlWkZUUTR5VmRj?=
- =?utf-8?B?WGVvMkx2WE1qUDJYUEZQSS9sMEEzZzB5YVJtWVNpRUxFYlB3Ny9RS2I4Yksw?=
- =?utf-8?B?WHY0L2lhcGNETEp3a2ZWTW53eWdvTlFOUDRlSGUyUGgvTUpMd252eHo4NUNY?=
- =?utf-8?B?RlNIMCtDSmx3ZWxndTQzdDhkVCs3Zk44REtnMitBYzE5eEpwdi90K2tIU0h3?=
- =?utf-8?B?eFZOQlRwZ3lkUHE3OEZHSm9vbTZUNWVLcitHb3AyVklEYXJiUDBCOHFydm8r?=
- =?utf-8?B?a3c4WWhncnhlMm96RXBWZVBoUmlaWW5KZHZGbWNKS0JVQWZOMWNQUHIrNElV?=
- =?utf-8?B?czNiRXRYZGsyYWdkV2JCb1J0OG5sTUJlSVFueXNMZS95WVlRaGF6MC8yMnJ3?=
- =?utf-8?B?Q3hhRC9mL0RUZzRqVlNSRG4wOGYySjZGNDl1akZuUTBlbS94RzY0VHVPU1Nh?=
- =?utf-8?B?MUJkL1lDbDViOG9NTm9GWDdvVDV4UnAvSDBFWUhLR1dXQ1NqWEE5dUhMNzhp?=
- =?utf-8?B?SjQvcXlFSXBRcGswR3MwRmpxUDgrVmUyVEx4NWhENmlmeWpPRWUrYnZONmRv?=
- =?utf-8?B?RCtDWHBTTzdXUFV2YUUvSHFRQTVGNmtGVlY2VFF6S2hRaW8vdDVvYStWVEFG?=
- =?utf-8?B?MVovWnB0VWVXUEY3OENpK1p6QlJOU01uVndXMCtuNTMzeXNJMFFILzNJMWFi?=
- =?utf-8?B?azRqZkRaU3FNbml1VmdyakxudHdvMzlhcmc3Z2RIY1pXSmYzS0ZvSUliV0xB?=
- =?utf-8?B?dURkSjJpT3BPQVhuT2RKSTltem9PbFNTNWJPYTNxQWY5Z3g2S3RWdHVLdXE1?=
- =?utf-8?B?bzJ3WVRmTUk5RVB6WkNxSmUyVHNqemttdlhGb04wcm9vSkRGOHFMbXo1eXJN?=
- =?utf-8?B?amhMaWV6R0NzaCtZUkRhV1B6QWNQelJYcGJiZWtXdy8yR2hVWmFncmh2Z3JC?=
- =?utf-8?B?TGE2RU1iajJWZXczUUo4bjRrOVFvUGJkcVJ4MmNTZTFrMU0xUCtvWHVWN2ZX?=
- =?utf-8?B?aGVuY0t4bVZpNDNEZEtkcE9TdFY3bWlBelFiTU5DUEkwOFVSdFIvV3lFUTRY?=
- =?utf-8?B?YTUrN1JZYkZ2eTN2Q0tGcEJSZ254cXlNb1kxdXQ3K2pmSTB4ZE9NeUhJV0hu?=
- =?utf-8?B?UEJtcDAvSUpQQVQvclpHREJqTURJMUZBd3ltNTArWWdDU0MvRzZwOWpjN1ZV?=
- =?utf-8?B?QVhrOXhOTklyb1NaQzhnbWdMYk16TWp5Skp2cUgxQkIvZHJVRVNnZDU3Zkww?=
- =?utf-8?B?aldUekVFY0ROakNZN2Rsd1hEQ0RkNk5BaEY0c2JPQUJhdUZqOUFkbjVqOUd2?=
- =?utf-8?B?QXVydlR4THEzTUMvR0dOSTdiUll6TzFMTk1aUDZIUFJvMWlIQ0tGRnprN2Jn?=
- =?utf-8?B?MDdJckdsMFpNYjFaSzZMSFFBT05Jck02RjQ5aTl2amlQbDJoNkl6NEpTSVFC?=
- =?utf-8?Q?zZkrNPwnu/Q=3D?=
+X-Microsoft-Antispam: BCL:0; ARA:13230040|366016|376014|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZkJBVERTWWpld0FXQjVDbFdCNjN2YisxS0V5RkNmTHRrUVVCUXBsZmRZY0VL?=
+ =?utf-8?B?OXU0Q20wT1gySytpaURVdUl5MDZwN25ZRm8xaFgzL2NNN2diaFVWYy8zZWVy?=
+ =?utf-8?B?bm5DbThkSmpqdFJuS1ZPSHh1UHptMU5CRVduaFR6K1dqNFdmUGlPYjRJS3NG?=
+ =?utf-8?B?OHVuRlFUTmNxUVBacVQ5RjR6N2dvdU1WbW1Oa0lmZld3V0wybWxhWmNtdWc5?=
+ =?utf-8?B?N29lT25Yb2k0OExlMGxQbHlXd2RJYmtrbjJ2MVcyWHBDTGRKMWFHQWxNY284?=
+ =?utf-8?B?N2JTQXVOSFdmL0RZeGpKeStsRWZna0x6RGhVN3J0eWFOeStzTmsrYUFnbGNY?=
+ =?utf-8?B?bU9CVWZyaXFJZ0FtZ0Z1dDhxalNDcXBJMGs2L0M3eHg3c1VOWHVxdjR6MTFL?=
+ =?utf-8?B?cGtOOVRoL3dWcDA2clF0SGw0dE9USnU4MnJwNThqb3FFajRtR2diMzFsdjBG?=
+ =?utf-8?B?cFdodEdGZmQzYVR5VnJOK3o2SFJuMkFSYzJNMFZEMDF6cVJucFZ6Y0RLS0JT?=
+ =?utf-8?B?elZqcFdyOVRCTEt5czVoMWZrc2xWeGx1RXY4MFVrNVl6S1RONGx5ZkxqK1h0?=
+ =?utf-8?B?MHUydzNDU0F0UkZvZGwvakgyUFBhWXJPSmFRQmtkRnM0Tnl0YTBVeVBPL0w3?=
+ =?utf-8?B?TTA4K29pVTFSM0M5MW5oRnBKYm5BSG13c2RkKzdtV255dU9XUTc3MkFRRUVX?=
+ =?utf-8?B?ajYralVtZnFIbktvcVlQMzY4YUZEdk1OWEgyTnJjaGYwTHB3N0xkcVVmc1Vh?=
+ =?utf-8?B?aXliYWJLSHB2VlpHL1ZickxNaVJ6N0NOeldibHQ5VUpubjJWcmgxYTBVa2xZ?=
+ =?utf-8?B?SUd4dzU0Mi8yNDVzUXdqejZLbU5kY2RjZE9OMXJGRVRsNE5sQmhaM2FMTTdj?=
+ =?utf-8?B?Q2dxbTBQdlhoOFVWNklpVmtXWGVyZjBlaXExQ3NOYnUyckluWlV3SzRLai91?=
+ =?utf-8?B?U2Y0MWFNR3IwdlZDSEkxTjhwTVRFUHZTZFhXVzE0YW85UENLdnJ4cjYwaUpP?=
+ =?utf-8?B?dmJYb3VLY0xTekMreXRVcHlqTXVucFRRcDRoc3NZTE1BckVIOVlSa3dGK2J0?=
+ =?utf-8?B?UVJWY2FPS0o0RlRqc2pqekhvdXVLWCtseExHTnRtL0tKblhMNjRKWTNiYTFS?=
+ =?utf-8?B?aGI1a3hHaWdzZnhHZXh1czc1MFFXemtHYmtDeWJaOENvUFBHZ0NEQW50ZXlL?=
+ =?utf-8?B?ZGw3KzdIN1ViTzNkYnNnQnBEb1gzZ2FUVEhkZ1licWpuallBS1NBc28vTXcz?=
+ =?utf-8?B?ZVZnZnJmZHVWcGpIbkxRMFhVVkQxYUJpSVhYbVo3aEducUZwL25kY3pDUGY2?=
+ =?utf-8?B?MWNIalUzdUwvUGxMSnpNVG1XdjJMb1F5STFEY3NJNENhZUdxY3hiUndXZDls?=
+ =?utf-8?B?RDc5Z2F6TGNsYnQvZ2c1VmNUbVd4eGE4MEJuSDN6K1NUV2tpR1llNXE0enM3?=
+ =?utf-8?B?cjVUb2dRZkhvU1BtTUl1QUJCRjlJNWZvcHQ3clM2ZDRjblhCRWZXTWdMZ2dz?=
+ =?utf-8?B?M0k1dmwwbytheHBaRC9hQU9JZEdDYmQxayticmExYkxHWWVxTDJOVWtYN0Q2?=
+ =?utf-8?B?cWN4Zlo3d3UvcXlBeWRkSHF3WlRtaVc3UEIzMmFseE50WHhkNkp5SlRZNFZ1?=
+ =?utf-8?B?MWNua2VkU0xJNTZZYkh6dWFPOHBob0dRZnRqMG9RNXJjcVRxeG9qOFh0UFFi?=
+ =?utf-8?B?dzJzUW5lR1NoWVViMzIwTURKOE9ablZURWd4bVFnS1kwMGRib1JZaUswNTYx?=
+ =?utf-8?B?RldJWkJPbGxscW5mbEloa1BqREthZDVDaklOczh5Y202VGM2bm91dnBRTkJE?=
+ =?utf-8?B?Y0N4OWtoOHkxYklJQ1hhaU9uWTRlZWw3UWZTSzAyeXlrUkZjMGhlNSt5L2xH?=
+ =?utf-8?B?V1NVZkNQejNHdDlUQ09kM0JhQlFLUUdUaTlKbnIwUWVXVHQxaG5kaTM5Vnhu?=
+ =?utf-8?Q?wGXCf6ba1EU=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH0PR02MB7159.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(10070799003)(1800799024)(366016); DIR:OUT; SFP:1102; 
+ SFS:(13230040)(366016)(376014)(1800799024)(10070799003); DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OTJrWm9rSGQwMkljV2ZEeTNoaHJ4K1hWOVE2YkVlRXRhMUNjQVUzRUxjSFZq?=
- =?utf-8?B?UWlXeEg1cnVyNkF6R1d1b09UcExYWWRwL1ltSzZOM01oTHF6Smd4bW00OWRN?=
- =?utf-8?B?ZFh2SlZnN2hYTlF6dVdGVU96SXIzU0RDSEVOMUxPYVd6MkJ5SktrcmhOSEdt?=
- =?utf-8?B?RVRWQUw0ME5hSmxVNzEzd2hvZkZmZlcrYTRPL0FxbjlRSENDTnlXSEtQUjFp?=
- =?utf-8?B?L2gzRk9Xd0R3akQ0L2FKT1U0MTJmU0xpNjZySTVDdUpaL3NsN2RRWHFCc01W?=
- =?utf-8?B?dWdIMGtWdHk4ZjJmWWczZ3dVeXBpTTE0a0tScXUzaE9tVWVCaThPWjkwUEpS?=
- =?utf-8?B?SHJBQVVVbkU5SHorWENjMXdyVitzeGh0NXBVc2hmM3RQNjFmZ1Y3bjRaVTcv?=
- =?utf-8?B?UTQwTVljNVdUdGl2aG8rMzBSd0N6TzZldm9QT3pSVGpkZTh6UmtpLzBMeTlx?=
- =?utf-8?B?MFJLOGpPM1ZmTEpxNDkrMmxibzAxWDNlVkdaaUNRcDVtOGpwRWt3TktoV0pt?=
- =?utf-8?B?N0I4SjBrSzU3T2N1NjZGeTNRYnJXVjhtQXNaU21rcnpmRDZPSHpmbUlqT2lK?=
- =?utf-8?B?RWI3dlFtYjRUSVZ3dWhPZmo3V0ZzOVZtOTAwZ09KYTUwVkVVQm9ENmlpb0lG?=
- =?utf-8?B?UWk0ODd1clgwaCsyRVBHc0tiZU1vV0pXVnM5bEdTWU14RE04NzYvbVF1STFw?=
- =?utf-8?B?SzdxTHVERXMyVHlXdTZKWS9TdkFRTk9ZbklmdmFFYkpQallqeFl6WmVaUmpp?=
- =?utf-8?B?ekE1MnpnK1dSbU1pYi84TGxWdVlwWTNPOTZWUWY2VkpWeWlBMU9Cditoazkr?=
- =?utf-8?B?WllOYWowODFaSDFjdlAybmFaRVBOd09lY3Myb0hSQmpVZkJCNzVONk82RmhX?=
- =?utf-8?B?MkFpZzhBNGE2dW54RWhaOC9iVDN1V2h6V2I0VURkdEIzSFBHdTBqeEZScmJm?=
- =?utf-8?B?SFE1L1NpRmJLM2VLcmdhUEl3aFA2cjhwZjY3c2FEOEdFNm5jcFBZY0p4cTJ5?=
- =?utf-8?B?SlgvUVhQL210M0pObkhzcXVUejlpTXpzeUpVQkZ2Rk9ybWUyYTNkekdlVXVj?=
- =?utf-8?B?TlVORTZTSHpLbm1Ha2phUjdBaTdjNndjczFBMnZpanBXQ1RTVHJMaHBBNCto?=
- =?utf-8?B?QWNUdldZd1ozOGN2cXBqZ0s1YjJNcTk1eVdLWjh6Yy9UV2hETDNtZlJ0eWpx?=
- =?utf-8?B?OVZMMEl6M1pwMnk1aE5HSEdYNTNFRFMxNktCZytaMHAvUXNiZlpVL2tTMjRT?=
- =?utf-8?B?NjRXcmptSGJtVmlqSk9HN1JxS09haEFRRi9pMWpEbHBCSDZ6SzkraDF4aHJO?=
- =?utf-8?B?NnJJWFNIWWUwRGhhbTk2YlBNVmZIU1FvUnNrNUJZOURRdXBBSXkyM281Q0Rn?=
- =?utf-8?B?RUxJV0RDdjZPd0J5MjZKa3V3d3lodTNJYlBOTDhzK3RlUGFoQnZsU01QNUt4?=
- =?utf-8?B?b0hUcXBEVWVLZVZDVzdqM0s5SlZYQS9EeVZPRWZQczFFMWRDN21rT2xLZmRC?=
- =?utf-8?B?dHlqN2trWUJ4T3RzYjk3UTNseFlMazJNVEIvOXViTFJLMU1ycHhlbStEOWRS?=
- =?utf-8?B?L1d4ZWJPdTZQb2FGb21Wbm5QVlFiWldJWk1zeTU0NkVpZzJmbHF1cmRiMzJL?=
- =?utf-8?B?UGNub3l4b0dRMU5BMXk3bFdmZGFTYXlZS05kTHYyU3dsVVBuc1dIdnpVM3Bl?=
- =?utf-8?B?dVpqemkwYm5WTXNRVnNzNkprR0J5U0Q1OEhrU1RGMityNHIwMXFaZHVPQk81?=
- =?utf-8?B?NFpZSzZqYzRSdFNVL3VpTERVdnpRZ2dnZ2pNWFhhVzNmQnNna3JZSitFdm9n?=
- =?utf-8?B?L3pTQzVSUVc1VjRoZHNSNGxWL2QvTkFxbG9iTit4NWZQeG01WXNjZXpFZHhU?=
- =?utf-8?B?eTlUNktHY25xWC8rTjZYY2pMVkZyYzQxLzBnbk9RS0tXQ042cFZHdURUQWl3?=
- =?utf-8?B?M0Zpa1BTS1FyY3d0NzkxOU4xcmxranV0ZjZvNkhvT0JLSGx6VTVKeTVyV202?=
- =?utf-8?B?a3RUNEQzQmljajRWU3lCQS9pdTlua3QwOU84dTNZTkUrZjhjZVRBUnVYaDM5?=
- =?utf-8?B?NlY2cSttT0YxRU1ZcDFXUnIzODJ4QjIrQ0lUVkx4eHdzUUxlTklVRXdDRXBQ?=
- =?utf-8?B?Y1BIbFFBek5YSXpJNVJtMzN0TTk2Q3orYjNyV0EwL3JhMUNRSS9oYndPUEVC?=
- =?utf-8?B?SmtrTnpOa0VmZG5ZS1lLT1B2RTJoZUpRdHVMNHhzdTR3ZUVNK1A5a1N0M2Jn?=
- =?utf-8?B?aFRidFUxWk01OUxGNmVrb05udGdRPT0=?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZXZVdEN6R0t2V2FZOVZDNGFhMXhqMkcxVzJ3a0JzNXo2SUpYUituYm5sL0FB?=
+ =?utf-8?B?OEV4TFBzREJ5cEZCdTNUMWxGdGEvdmVaUlNnQnF2Q2NSamxrSis1czYyRXgr?=
+ =?utf-8?B?aG9qTE9yMk5UNUZjZlRuVjQxQkQwRXU5THFXZi8vSkpsSmlMVWFwL3VUcHlr?=
+ =?utf-8?B?YndWYzFhSG1jSXBjTjAxK09nRnN3TTVKaTRINm4yM3NodzhDTzYzbHZEUE02?=
+ =?utf-8?B?c1NNZTBZY3ZTMDVYR1NmMk5KZThDTnpYSk5mb05mRDVUaStSdXZmTTdQcUUx?=
+ =?utf-8?B?Qy8zdUxQekJxTzlxKzMyMlg5OUlZZjFrU0h0VjJiSWt2MW9xeDNyRTlMTUR4?=
+ =?utf-8?B?SWo5b0tidFRtdVFObTBXQWFIT2Q4Y2d3TmtzY3g2MTdTeEhWTnQrRnUwTHoz?=
+ =?utf-8?B?WldmYWh1bDd0dHUwK1lBN09FM1ZWb0FSZXNEb0tkYUsreUJ0YnRBS0RpK2l2?=
+ =?utf-8?B?Q1Z3ZGFNZG0xdlBLYkJ6dStEblJ3RXFtZE9MVDNZdzQ4dk51eVd6Q3Jsdk1U?=
+ =?utf-8?B?RXZRUE8rbEhMSXZKYnB1ZjROcGdZTlE1QVpDMDJmb1lWbTI3TkxlTDRFME5M?=
+ =?utf-8?B?eVFSTmNEdEt1MUE0RTRNSHBuVGZVOEF6ZzR6QThpV0JZNUxTdWw2ZlQ5bDVT?=
+ =?utf-8?B?UnRZRm1YTTFJWk1RODlJQTB1K1V4TEh5L3V3N0I1aWk5VG5zWjVRTVpFNCt0?=
+ =?utf-8?B?TnNsMjB4aVRoYlJVeDc1MFk4MlpNWWREaDg1aWVGa3U3cUdsM2NaOVNQOEhk?=
+ =?utf-8?B?ZUlUdzB0QkxwSVBNU2VPOWRzL2FjRU9rdENOTWVmdmZoSlZlbXo1SUdMamhD?=
+ =?utf-8?B?dnk4Zm1zTERBejBDem5BdUJoSzVBQUt4a2ZQZmVVcjBnc0tiNUwzK0FGT2dU?=
+ =?utf-8?B?ZFdSeHRpMHozOUpRL3gvcjVSVkhyR0kzOXZ1UENwaXUvbnNlbTBSQzNiUFJw?=
+ =?utf-8?B?bTA1MEhHMngyS1RqRENjbThTUWI2ZjB6czZpeTQvSmZkaTh0VUVzSTJmNVN3?=
+ =?utf-8?B?QTVRT3ZWYlF3TDIxZTg3MWZPVnpUOWo3R3BHWlpVWUJVK3lPL2R0ZUdJSkc5?=
+ =?utf-8?B?cHNHeUtuWDJkek1XS21yRVhlNUdtYmJ5N0hLL1phU240eDhHSmVsSGM1c0l0?=
+ =?utf-8?B?TjVac2U2VTB1KzU0bzhscGJtUDUraGxxN0FuaitEbGFBeHp1eXh6a0IwQ0ZT?=
+ =?utf-8?B?dmhvaTYweStkUzlpbjQzYTBiN2tHZVF3Kzl2Q3VQeWpDUi8vakZYbUhmTFQw?=
+ =?utf-8?B?SVBhWjRDSS9hcXA5cER2WmpVZHFKQjd1SVQwVzZIVGEwWVV1RUJxY2pTd0Za?=
+ =?utf-8?B?a0FXSFlQRG1RZUVYYVhWTlNwV3d3aWV1Z2t4SENQM2tjL1J2Mm1Cd2ZiUHdO?=
+ =?utf-8?B?cE1iY2orZXZGanZBanF0aUhZeGxZMUtlckVDQUZESjBieWZPaDJVNjlYeGp0?=
+ =?utf-8?B?cjhWdXVVNGQvbU5WeUVzZWVIWWVVLyt3dHdjbUlkZFg0QVIydWowQXU1M0Fy?=
+ =?utf-8?B?eGJ6SU5WNzVsb2xrUUYzd29BSm5wenpqYjYrS2RVUVpjc2FaQndLM2pqVUdk?=
+ =?utf-8?B?OWwzZnNRK1A1MDlZdEVqU0p6NUxVdWl6TkNLd0VBM1RzZC9idS9ycVlNQWlv?=
+ =?utf-8?B?bzBFSDBSdUhtdlZCMmI1RzZyR1d0TVk1WTdoOEZNS2hXMjJkTUc5M0pVYXQ5?=
+ =?utf-8?B?QUtqZlI1SEl3ZjYxb05sQ0xZQVhPTWVoN3JpTksvYzRSU05vdmdxTXZYd3ZT?=
+ =?utf-8?B?TWhOc01KWGlqKzhzc1dPc2RhYzk0UjdQVFZWYUNIemhmeTdtSlI2aW5SeFc3?=
+ =?utf-8?B?aVhRMmtZREcxdEZrTFF5ejBKdjZPRHZkQUgyUTUzc3NZODl6NXNRWTRFWUg2?=
+ =?utf-8?B?bVQ0SmN6Z0NlMHUwQi91LzdLYy9WRSsrVFRNTWwwUTNZWWlxSUdhQnpJSFY2?=
+ =?utf-8?B?Ny81RXdTYkVtWEVhQ0xXL2lCZmp3T2hIa2dlUThsN0swRzlWR0tzbi9JNlVO?=
+ =?utf-8?B?Uzd2c21xWXZYMDlvd0hwalJkR2lEY0g5RWtHZlY2Tlp3UzFKU0tqUUxQK1B6?=
+ =?utf-8?B?YU5UR01LMElSNDErU2lJUXgyK2tpVXN4WkJ4MHBMelBKd3ZkWkpkZ0pHMWM4?=
+ =?utf-8?B?MXl6U2NSelhMK2E4MGliQkpiekJVQ1dJZjlnNSs4Mk1RNzI1Q0h6TGJoK0pM?=
+ =?utf-8?B?UEYrWWJDaGt1YTFBamVIQmRzMU8rZlMwWUJmWElTUG01aTE2SmJaS3dxbW8y?=
+ =?utf-8?B?d1FhU2hkRWoyckFYVFF1aVhaU0l3PT0=?=
 X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d09e48d-f0af-4fca-ac55-08ddbf8d635f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 453d2801-0163-4566-788c-08ddbf8f32bf
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR02MB7159.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 08:40:13.9156 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 08:53:10.9822 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /DhWlbzHFukXAeSxUqKq6eB1Anzi2pTcUed1CueNQ/rY0NklgkuLwaFIaX/0sPGSz7EK2xAsDsxkiegBrUIASNnWHGpXKl358cJ2b+oTjp4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR02MB8366
-X-Proofpoint-GUID: _JwpB3nNaQjX6TNVUrrtQwXJ5It7HVlF
-X-Authority-Analysis: v=2.4 cv=EdbIQOmC c=1 sm=1 tr=0 ts=686f7c70 cx=c_pps
- a=QqCAsN/TGWvFZZtLSKJFCw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+X-MS-Exchange-CrossTenant-UserPrincipalName: O/aA+euqiMEfS6K6tTj8QkW8WPp0m3blhx8dS3zt7CHf1LjauC0YTqCmaijcl93Wywwm3sMcT9FolTJQL7Jqi4aZLVIFAXSyUAOJMr1Di2A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR02MB10266
+X-Authority-Analysis: v=2.4 cv=Nffm13D4 c=1 sm=1 tr=0 ts=686f7f79 cx=c_pps
+ a=80ol81Y8LmzNtep4GdLCmg==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
  a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
  a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=0kUYKlekyDsA:10
- a=64Cc0HZtAAAA:8 a=pGLkceISAAAA:8 a=a11wUHQtswmm9JBoJ78A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDA3MyBTYWx0ZWRfX5NY6xjawhUVC
- qSnNXNwDfMKwi+MRTpkSFxVPt3+8mJVbFRMgapROyMPNdENg4zMuMe0Ga2Zt7z87RT9H3ZQ8MPj
- lU9jXoMNQjQp9bMupe/aE5aNKlohGuLb1wiaSd8lG00pq6uNrXDUhhANs1B4RaytBy0/E0OJxXx
- V3Fg9ZQKyjoTHagYDKgMj4vA6dZGBP1KsOePmzgRRnSTNaBAAKw6kqNTFnQ6CROQd9bVzB+IEwx
- gq02WKSEr0jw61pSS3Uq5oBZSRSUOwNsHzTCxCRrWdUgmKM8yRXTgDUOOZV7pu2ipRXltiBySKJ
- F/nu+K5944Mcq0bO4BkwIGSqO9juxmyt5NQgoNSeBZZD3V4B7V/gboxgzIkuLGhhxiFx7uhOcPN
- PUhwlTwNeQ/BgWIIBRYvxsUiD/60pCHej7zOYY2i8UT+T1Zm5sMs5sc2nPTlr9Q0gn9wohbC
-X-Proofpoint-ORIG-GUID: _JwpB3nNaQjX6TNVUrrtQwXJ5It7HVlF
+ a=mDV3o1hIAAAA:8 a=64Cc0HZtAAAA:8 a=HUHtNuVqNzIun27e13kA:9 a=QEXdDO2ut3YA:10
+ a=Y4I1g1QRc_YA:10
+X-Proofpoint-GUID: AQqR7qPD1H2b0nV1DhsZChrO1wxk0ufF
+X-Proofpoint-ORIG-GUID: AQqR7qPD1H2b0nV1DhsZChrO1wxk0ufF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDA3NSBTYWx0ZWRfX3qY6NxaGMC+6
+ iSjzQkxKjQMtUxjuxBi0JWd249RqXrotDfgdfiGX87TN9/jXBwY/AecgLLxKK6mBUF7UWm+WIQh
+ dJl4AUNAldLEv9wp7aZT8hWnF6+k9dh+morI1l0DZgQodTblYJltK501ENlowW9TLAvLPIr6Mwk
+ aUDoncP61WS2FdIYL64LLQgsjZMqHURKRZisfiFNDrpse+2EpxjwoQmb9nS2xtyUY9vZDTrQ2IW
+ wn9V0hATmbj8WMJniRopVmC9qS6y+EVsq5NXMzn3I7Z20d+a05q2r6jMmmR5Q9hr988mr6Sc/H/
+ QpdfnH1igC2vOiiPrLwzBxFFAj68ExbCyMVZgsY6mN7IRGVNOPSL6DQ1VEUnb/nL/YzFcvPwptI
+ ZtvjY43+IQKdrZ6cQ4Z8E8BlRiKwsQI43c6g1rV/CdAH6TeKoQ9v7QbiD1dxW6G/iylACb+p
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-10_01,2025-07-09_01,2025-03-28_01
@@ -216,425 +209,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/07/2025 18:36, Bernhard Beschow wrote:
+For various historical reasons the initialisation of the isapc machine is closely
+intertwined with the initialisation of the pc machine, which is preventing some
+future improvements to the pc machine initialisation logic.
 
-> Am 4. Juli 2025 14:09:41 UTC schrieb Mark Cave-Ayland <mark.caveayland@nutanix.com>:
->> Now that pc_init_isa() is independent of any PCI initialisation, move it into a
->> separate isapc.c file. This enables us to finally fix the dependency of ISAPC on
->> I440FX in hw/i386/Kconfig.
->>
->> Note that as part of the move to a separate file we can see that the licence text
->> is a verbatim copy of the MIT licence. The text originates from commit 1df912cf9e
->> ("VL license of the day is MIT/BSD") so we can be sure that this was the original
->> intent. As a consequence we can update the file header to use a SPDX tag as per
->> the current project contribution guidelines.
->>
->> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
->> ---
->> hw/i386/Kconfig     |   3 -
->> hw/i386/isapc.c     | 169 ++++++++++++++++++++++++++++++++++++++++++++
->> hw/i386/meson.build |   1 +
->> hw/i386/pc_piix.c   | 148 --------------------------------------
->> 4 files changed, 170 insertions(+), 151 deletions(-)
->> create mode 100644 hw/i386/isapc.c
->>
->> diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
->> index eb65bda6e0..a7c746fe9e 100644
->> --- a/hw/i386/Kconfig
->> +++ b/hw/i386/Kconfig
->> @@ -96,9 +96,6 @@ config ISAPC
->>      select ISA_BUS
->>      select PC
->>      select IDE_ISA
->> -    # FIXME: it is in the same file as i440fx, and does not compile
->> -    # if separated
->> -    depends on I440FX
-> 
-> Yay!
-> 
->>
->> config Q35
->>      bool
->> diff --git a/hw/i386/isapc.c b/hw/i386/isapc.c
->> new file mode 100644
->> index 0000000000..5ac077a860
->> --- /dev/null
->> +++ b/hw/i386/isapc.c
->> @@ -0,0 +1,169 @@
->> +/*
->> + * QEMU PC System Emulator
->> + *
->> + * Copyright (c) 2003-2004 Fabrice Bellard
->> + *
->> + * SPDX-License-Identifier: MIT
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +
->> +#include "hw/char/parallel-isa.h"
->> +#include "hw/dma/i8257.h"
->> +#include "hw/loader.h"
-> 
-> Is loader.h used here? It seems to be unneeded in pc_piix already, so no need for copying it here.
-> 
->> +#include "hw/i386/pc.h"
->> +#include "hw/ide/isa.h"
->> +#include "hw/ide/ide-bus.h"
->> +#include "system/kvm.h"
->> +#include "hw/i386/kvm/clock.h"
->> +#include "hw/xen/xen-x86.h"
->> +#include "system/xen.h"
->> +#include "hw/rtc/mc146818rtc.h"
->> +#include "target/i386/cpu.h"
-> 
-> i8257.h, mc146818rtc.h, and probably ide/isa.h can now be removed from pc_piix since these are either instantiated in the southbridge or not used there.
-> 
->> +
->> +static const int ide_iobase[MAX_IDE_BUS] = { 0x1f0, 0x170 };
->> +static const int ide_iobase2[MAX_IDE_BUS] = { 0x3f6, 0x376 };
->> +static const int ide_irq[MAX_IDE_BUS] = { 14, 15 };
->> +
->> +
->> +static void pc_init_isa(MachineState *machine)
->> +{
->> +    PCMachineState *pcms = PC_MACHINE(machine);
->> +    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
->> +    X86MachineState *x86ms = X86_MACHINE(machine);
->> +    MemoryRegion *system_memory = get_system_memory();
->> +    MemoryRegion *system_io = get_system_io();
->> +    ISABus *isa_bus;
->> +    GSIState *gsi_state;
->> +    MemoryRegion *ram_memory;
->> +    MemoryRegion *rom_memory = system_memory;
-> 
-> rom_memory isn't needed any more since system_memory can be used directly. Same for pc_piix where pci_memory can be used directly (see pc_q35).
-> 
->> +    DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
->> +    uint32_t irq;
->> +    int i;
->> +
->> +    /*
->> +     * There is no RAM split for the isapc machine
->> +     */
->> +    if (xen_enabled()) {
->> +        xen_hvm_init_pc(pcms, &ram_memory);
->> +    } else {
->> +        ram_memory = machine->ram;
->> +
->> +        pcms->max_ram_below_4g = 0xe0000000; /* default: 3.5G */
->> +        x86ms->above_4g_mem_size = 0;
->> +        x86ms->below_4g_mem_size = machine->ram_size;
->> +    }
->> +
->> +    /*
->> +     * There is a small chance that someone unintentionally passes "-cpu max"
->> +     * for the isapc machine, which will provide a much more modern 32-bit
->> +     * CPU than would be expected for an ISA-era PC. If the "max" cpu type has
->> +     * been specified, choose the "best" 32-bit cpu possible which we consider
->> +     * be the pentium3 (deliberately choosing an Intel CPU given that the
->> +     * default 486 CPU for the isapc machine is also an Intel CPU).
->> +     */
->> +    if (!strcmp(machine->cpu_type, X86_CPU_TYPE_NAME("max"))) {
->> +        machine->cpu_type = X86_CPU_TYPE_NAME("pentium3");
->> +    }
->> +
->> +    x86_cpus_init(x86ms, pcmc->default_cpu_version);
->> +
->> +    if (kvm_enabled()) {
->> +        kvmclock_create(pcmc->kvmclock_create_always);
->> +    }
->> +
->> +    /* allocate ram and load rom/bios */
->> +    if (!xen_enabled()) {
->> +        pc_memory_init(pcms, system_memory, rom_memory, 0);
->> +    } else {
->> +        assert(machine->ram_size == x86ms->below_4g_mem_size +
->> +                                    x86ms->above_4g_mem_size);
->> +
->> +        if (machine->kernel_filename != NULL) {
->> +            /* For xen HVM direct kernel boot, load linux here */
->> +            xen_load_linux(pcms);
->> +        }
->> +    }
->> +
->> +    gsi_state = pc_gsi_create(&x86ms->gsi, false);
->> +
->> +    isa_bus = isa_bus_new(NULL, system_memory, system_io,
->> +                            &error_abort);
->> +    isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
->> +
->> +    x86ms->rtc = isa_new(TYPE_MC146818_RTC);
->> +    qdev_prop_set_int32(DEVICE(x86ms->rtc), "base_year", 2000);
->> +    isa_realize_and_unref(x86ms->rtc, isa_bus, &error_fatal);
->> +    irq = object_property_get_uint(OBJECT(x86ms->rtc), "irq",
->> +                                   &error_fatal);
->> +    isa_connect_gpio_out(ISA_DEVICE(x86ms->rtc), 0, irq);
->> +
->> +    i8257_dma_init(OBJECT(machine), isa_bus, 0);
->> +    pcms->hpet_enabled = false;
->> +
->> +    if (x86ms->pic == ON_OFF_AUTO_ON || x86ms->pic == ON_OFF_AUTO_AUTO) {
->> +        pc_i8259_create(isa_bus, gsi_state->i8259_irq);
->> +    }
->> +
->> +    if (tcg_enabled()) {
->> +        x86_register_ferr_irq(x86ms->gsi[13]);
->> +    }
->> +
->> +    pc_vga_init(isa_bus, NULL);
->> +
->> +    /* init basic PC hardware */
->> +    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
->> +                         !MACHINE_CLASS(pcmc)->no_floppy, 0x4);
->> +
->> +    pc_nic_init(pcmc, isa_bus, NULL);
->> +
->> +    ide_drive_get(hd, ARRAY_SIZE(hd));
->> +    for (i = 0; i < MAX_IDE_BUS; i++) {
->> +        ISADevice *dev;
->> +        char busname[] = "ide.0";
->> +        dev = isa_ide_init(isa_bus, ide_iobase[i], ide_iobase2[i],
->> +                           ide_irq[i],
->> +                           hd[MAX_IDE_DEVS * i], hd[MAX_IDE_DEVS * i + 1]);
->> +        /*
->> +         * The ide bus name is ide.0 for the first bus and ide.1 for the
->> +         * second one.
->> +         */
->> +        busname[4] = '0' + i;
->> +        pcms->idebus[i] = qdev_get_child_bus(DEVICE(dev), busname);
->> +    }
->> +}
->> +
->> +static void isapc_machine_options(MachineClass *m)
->> +{
->> +    static const char * const valid_cpu_types[] = {
->> +        X86_CPU_TYPE_NAME("486"),
->> +        X86_CPU_TYPE_NAME("athlon"),
->> +        X86_CPU_TYPE_NAME("kvm32"),
->> +        X86_CPU_TYPE_NAME("pentium"),
->> +        X86_CPU_TYPE_NAME("pentium2"),
->> +        X86_CPU_TYPE_NAME("pentium3"),
->> +        X86_CPU_TYPE_NAME("qemu32"),
->> +        X86_CPU_TYPE_NAME("max"),
->> +        NULL
->> +    };
->> +    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
->> +
->> +    m->desc = "ISA-only PC";
->> +    m->max_cpus = 1;
->> +    m->option_rom_has_mr = true;
->> +    m->rom_file_has_mr = false;
->> +    pcmc->pci_enabled = false;
->> +    pcmc->has_acpi_build = false;
->> +    pcmc->smbios_defaults = false;
->> +    pcmc->gigabyte_align = false;
->> +    pcmc->smbios_legacy_mode = true;
->> +    pcmc->has_reserved_memory = false;
->> +    m->default_nic = "ne2k_isa";
->> +    m->default_cpu_type = X86_CPU_TYPE_NAME("486");
->> +    m->valid_cpu_types = valid_cpu_types;
->> +    m->no_floppy = !module_object_class_by_name(TYPE_ISA_FDC);
->> +    m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
->> +}
->> +
->> +DEFINE_PC_MACHINE(isapc, "isapc", pc_init_isa,
->> +                  isapc_machine_options);
->> diff --git a/hw/i386/meson.build b/hw/i386/meson.build
->> index 7896f348cf..436b3ce52d 100644
->> --- a/hw/i386/meson.build
->> +++ b/hw/i386/meson.build
->> @@ -14,6 +14,7 @@ i386_ss.add(when: 'CONFIG_X86_IOMMU', if_true: files('x86-iommu.c'),
->> i386_ss.add(when: 'CONFIG_AMD_IOMMU', if_true: files('amd_iommu.c'),
->>                                        if_false: files('amd_iommu-stub.c'))
->> i386_ss.add(when: 'CONFIG_I440FX', if_true: files('pc_piix.c'))
->> +i386_ss.add(when: 'CONFIG_ISAPC', if_true: files('isapc.c'))
->> i386_ss.add(when: 'CONFIG_MICROVM', if_true: files('x86-common.c', 'microvm.c', 'acpi-microvm.c', 'microvm-dt.c'))
->> i386_ss.add(when: 'CONFIG_NITRO_ENCLAVE', if_true: files('nitro_enclave.c'))
->> i386_ss.add(when: 'CONFIG_Q35', if_true: files('pc_q35.c'))
->> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
->> index c9d8a1cdf7..8d0dfd881d 100644
->> --- a/hw/i386/pc_piix.c
->> +++ b/hw/i386/pc_piix.c
->> @@ -71,12 +71,6 @@
->>
->> #define XEN_IOAPIC_NUM_PIRQS 128ULL
->>
->> -#ifdef CONFIG_ISAPC
->> -static const int ide_iobase[MAX_IDE_BUS] = { 0x1f0, 0x170 };
->> -static const int ide_iobase2[MAX_IDE_BUS] = { 0x3f6, 0x376 };
->> -static const int ide_irq[MAX_IDE_BUS] = { 14, 15 };
->> -#endif
->> -
->> /*
->>   * Return the global irq number corresponding to a given device irq
->>   * pin. We could also use the bus number to have a more precise mapping.
->> @@ -373,111 +367,6 @@ static void pc_set_south_bridge(Object *obj, int value, Error **errp)
->>      pcms->south_bridge = PCSouthBridgeOption_lookup.array[value];
->> }
->>
->> -#ifdef CONFIG_ISAPC
->> -static void pc_init_isa(MachineState *machine)
->> -{
->> -    PCMachineState *pcms = PC_MACHINE(machine);
->> -    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
->> -    X86MachineState *x86ms = X86_MACHINE(machine);
->> -    MemoryRegion *system_memory = get_system_memory();
->> -    MemoryRegion *system_io = get_system_io();
->> -    ISABus *isa_bus;
->> -    GSIState *gsi_state;
->> -    MemoryRegion *ram_memory;
->> -    MemoryRegion *rom_memory = system_memory;
->> -    DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
->> -    int i;
->> -
->> -    /*
->> -     * There is no RAM split for the isapc machine
->> -     */
->> -    if (xen_enabled()) {
->> -        xen_hvm_init_pc(pcms, &ram_memory);
->> -    } else {
->> -        ram_memory = machine->ram;
->> -
->> -        pcms->max_ram_below_4g = 0xe0000000; /* default: 3.5G */
->> -        x86ms->above_4g_mem_size = 0;
->> -        x86ms->below_4g_mem_size = machine->ram_size;
->> -    }
->> -
->> -    /*
->> -     * There is a small chance that someone unintentionally passes "-cpu max"
->> -     * for the isapc machine, which will provide a much more modern 32-bit
->> -     * CPU than would be expected for an ISA-era PC. If the "max" cpu type has
->> -     * been specified, choose the "best" 32-bit cpu possible which we consider
->> -     * be the pentium3 (deliberately choosing an Intel CPU given that the
->> -     * default 486 CPU for the isapc machine is also an Intel CPU).
->> -     */
->> -    if (!strcmp(machine->cpu_type, X86_CPU_TYPE_NAME("max"))) {
->> -        machine->cpu_type = X86_CPU_TYPE_NAME("pentium3");
->> -    }
->> -
->> -    x86_cpus_init(x86ms, pcmc->default_cpu_version);
->> -
->> -    if (kvm_enabled()) {
->> -        kvmclock_create(pcmc->kvmclock_create_always);
->> -    }
->> -
->> -    /* allocate ram and load rom/bios */
->> -    if (!xen_enabled()) {
->> -        pc_memory_init(pcms, system_memory, rom_memory, 0);
->> -    } else {
->> -        assert(machine->ram_size == x86ms->below_4g_mem_size +
->> -                                    x86ms->above_4g_mem_size);
->> -
->> -        if (machine->kernel_filename != NULL) {
->> -            /* For xen HVM direct kernel boot, load linux here */
->> -            xen_load_linux(pcms);
->> -        }
->> -    }
->> -
->> -    gsi_state = pc_gsi_create(&x86ms->gsi, false);
->> -
->> -    isa_bus = isa_bus_new(NULL, system_memory, system_io,
->> -                            &error_abort);
->> -    isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
->> -
->> -    x86ms->rtc = isa_new(TYPE_MC146818_RTC);
->> -    qdev_prop_set_int32(DEVICE(x86ms->rtc), "base_year", 2000);
->> -    isa_realize_and_unref(x86ms->rtc, isa_bus, &error_fatal);
->> -
->> -    i8257_dma_init(OBJECT(machine), isa_bus, 0);
->> -    pcms->hpet_enabled = false;
->> -
->> -    if (x86ms->pic == ON_OFF_AUTO_ON || x86ms->pic == ON_OFF_AUTO_AUTO) {
->> -        pc_i8259_create(isa_bus, gsi_state->i8259_irq);
->> -    }
->> -
->> -    if (tcg_enabled()) {
->> -        x86_register_ferr_irq(x86ms->gsi[13]);
->> -    }
->> -
->> -    pc_vga_init(isa_bus, NULL);
->> -
->> -    /* init basic PC hardware */
->> -    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
->> -                         !MACHINE_CLASS(pcmc)->no_floppy, 0x4);
->> -
->> -    pc_nic_init(pcmc, isa_bus, NULL);
->> -
->> -    ide_drive_get(hd, ARRAY_SIZE(hd));
->> -    for (i = 0; i < MAX_IDE_BUS; i++) {
->> -        ISADevice *dev;
->> -        char busname[] = "ide.0";
->> -        dev = isa_ide_init(isa_bus, ide_iobase[i], ide_iobase2[i],
->> -                            ide_irq[i],
->> -                            hd[MAX_IDE_DEVS * i], hd[MAX_IDE_DEVS * i + 1]);
->> -        /*
->> -         * The ide bus name is ide.0 for the first bus and ide.1 for the
->> -         * second one.
->> -         */
->> -        busname[4] = '0' + i;
->> -        pcms->idebus[i] = qdev_get_child_bus(DEVICE(dev), busname);
->> -    }
->> -}
->> -#endif
->> -
->> #ifdef CONFIG_XEN
->> static void pc_xen_hvm_init_pci(MachineState *machine)
->> {
->> @@ -839,43 +728,6 @@ static void pc_i440fx_machine_2_6_options(MachineClass *m)
->>
->> DEFINE_I440FX_MACHINE(2, 6);
->>
->> -#ifdef CONFIG_ISAPC
->> -static void isapc_machine_options(MachineClass *m)
->> -{
->> -    static const char * const valid_cpu_types[] = {
->> -        X86_CPU_TYPE_NAME("486"),
->> -        X86_CPU_TYPE_NAME("athlon"),
->> -        X86_CPU_TYPE_NAME("kvm32"),
->> -        X86_CPU_TYPE_NAME("pentium"),
->> -        X86_CPU_TYPE_NAME("pentium2"),
->> -        X86_CPU_TYPE_NAME("pentium3"),
->> -        X86_CPU_TYPE_NAME("qemu32"),
->> -        X86_CPU_TYPE_NAME("max"),
->> -        NULL
->> -    };
->> -    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
->> -
->> -    m->desc = "ISA-only PC";
->> -    m->max_cpus = 1;
->> -    m->option_rom_has_mr = true;
->> -    m->rom_file_has_mr = false;
->> -    pcmc->pci_enabled = false;
->> -    pcmc->has_acpi_build = false;
->> -    pcmc->smbios_defaults = false;
->> -    pcmc->gigabyte_align = false;
->> -    pcmc->smbios_legacy_mode = true;
->> -    pcmc->has_reserved_memory = false;
->> -    m->default_nic = "ne2k_isa";
->> -    m->default_cpu_type = X86_CPU_TYPE_NAME("486");
->> -    m->valid_cpu_types = valid_cpu_types;
->> -    m->no_floppy = !module_object_class_by_name(TYPE_ISA_FDC);
->> -    m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
->> -}
->> -
->> -DEFINE_PC_MACHINE(isapc, "isapc", pc_init_isa,
->> -                  isapc_machine_options);
->> -#endif
->> -
->> #ifdef CONFIG_XEN
->> static void xenfv_machine_4_2_options(MachineClass *m)
->> {
-> 
-> With above comments addressed:
-> 
-> Reviewed-by: Bernhard Beschow shentey@gmail.com>
+Since the consensus [1] was that the isapc is still useful for testing and running
+older OSs, this series splits the isapc machine and its main initialisation
+routine pc_init_isa() into a separate isapc.c file to reduce the maintenance
+burden on pc machine developers.
 
-Thanks for the review! All the suggestions look good, so I've included 
-them in the next version of the series.
+Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2024-03/msg06137.html
+
+(Patches still needing review: 1-2, 6, 8, 10, 14, 16-18)
+
+v4:
+- Rebase onto master
+- Add patch 2 to remove unused loader.h header as suggested by Bernhard
+- Add patches 16-18 to tidy up the pc_piix headers and the pc_piix/isapc
+  rom_memory variable after the isapc split also suggested by Bernhard
+
+v3:
+- Rebase onto master
+- Add patch 1 to restrict isapc machine to 32-bit x86 CPUs as suggested by
+  Philippe
+- Include logic in patch 1 to handle the case if an isapc machine is
+  launched with -cpu max as suggested by Daniel
+- Add patch 13 to tidy-up pc_init1() for the i440fx-pc machine in the same
+  way as patch 11 does for the isapc machine as suggested by Bernhard
+
+v2:
+- Rebase onto master to account for the fix in commit 0b006153b7
+  ("hw/i386/pc_piix: Fix RTC ISA IRQ wiring of isapc machine")
+- Replace verbatim MIT licence text with SPDX identifier as discussed
+  with Daniel
 
 
-ATB,
+Mark Cave-Ayland (18):
+  hw/i386/pc_piix.c: restrict isapc machine to 32-bit CPUs
+  hw/i386/pc_piix.c: remove include for loader.h
+  hw/i386/pc_piix.c: duplicate pc_init1() into pc_isa_init()
+  hw/i386/pc_piix.c: remove pcmc->pci_enabled dependent initialisation
+    from pc_init_isa()
+  hw/i386/pc_piix.c: remove SMI and piix4_pm initialisation from
+    pc_init_isa()
+  hw/i386/pc_piix.c: remove SGX initialisation from pc_init_isa()
+  hw/i386/pc_piix.c: remove nvdimm initialisation from pc_init_isa()
+  hw/i386/pc_piix.c: simplify RAM size logic in pc_init_isa()
+  hw/i386/pc_piix.c: hardcode hole64_size to 0 in pc_init_isa()
+  hw/i386/pc_piix.c: remove pc_system_flash_cleanup_unused() from
+    pc_init_isa()
+  hw/i386/pc_piix.c: always initialise ISA IDE drives in pc_init_isa()
+  hw/i386/pc_piix.c: assume pcmc->pci_enabled is always false in
+    pc_init_isa()
+  hw/i386/pc_piix.c: hardcode pcms->pci_bus to NULL in pc_init_isa()
+  hw/i386/pc_piix.c: assume pcmc->pci_enabled is always true in
+    pc_init1()
+  hw/i386: move isapc machine to separate isapc.c file
+  hw/i386/pc_piix.c: remove unused headers after isapc machine split
+  hw/i386/pc_piix.c: replace rom_memory with pci_memory
+  hw/i386/isapc.c: replace rom_memory with system_memory
 
-Mark.
+ hw/i386/Kconfig     |   3 -
+ hw/i386/isapc.c     | 167 +++++++++++++++++++++++++++++++
+ hw/i386/meson.build |   1 +
+ hw/i386/pc_piix.c   | 237 ++++++++++++++------------------------------
+ 4 files changed, 244 insertions(+), 164 deletions(-)
+ create mode 100644 hw/i386/isapc.c
+
+-- 
+2.43.0
 
 
