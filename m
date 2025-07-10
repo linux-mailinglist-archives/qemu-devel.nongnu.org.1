@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AF4B0098C
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C8FB00971
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:01:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZuir-0006xX-Ke; Thu, 10 Jul 2025 13:06:17 -0400
+	id 1uZuau-0007IN-Hn; Thu, 10 Jul 2025 12:58:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uZuLE-0004Pn-Kz
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:41:48 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uZuLC-0001As-Tq
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:41:48 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-748d982e92cso843032b3a.1
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:41:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752165705; x=1752770505; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XxglZr9FSbfBVmHLZ+FvVDfQKN3fWf8b03y6OHhLFac=;
- b=XbGyl32HuXid/Xp6ibSD/wCDSnax1aJiUgR6GzJhvj5Y27ctxt+u6k7TbGZbcNP1EL
- CE/jWd2U9f4T5+jB3kIXNHWqmTJKYENq0NouxUdVwwJl+UnIl7gygkHv7AptAlmyE7ud
- 2DhT1IM32dNG/syDsuWzXX1Jh7Q1R/gqY4xJ9PPmXYSqvBtLQ42pAhgfYSh7LxeMLeYI
- WDwHxXGXl3NjhURgHrM+hBO5ZTNTQOoGBGmHMsA4wZJY5Tyuc/vgmjCP7a8Bss7/faUc
- hmdrPPJpnwwMrIi+UgKD5+DwvtcwKbfH5r9faBPLN8FnWJBRXqGoiSvVBbWSxFIxtp1V
- DuWw==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uZuKN-0002Ls-Jx
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:40:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uZuKK-00012s-5d
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:40:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752165649;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QJiFa3InfTk6WTOrJuQKKPNrT30F7JG6dTyP1o1ErIA=;
+ b=O0zYGNRzwHXatiZbBHY9KzAYT+844SGRKXvxzDx+NWw7LKrZlnKMeEcxNjsDJt2HFIRAIo
+ DghDabMaifKOwqbssx9GCAwzI4U+RHr2j8h+EgIxd2vx3gj2Y/g2mNK2ZxHEhKNC3Li6x5
+ ph4uaQPqMoSva50IAh2cSa4e+9PAqEQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-373-zcp5QlMhNs6kzS75z_fhPg-1; Thu, 10 Jul 2025 12:40:48 -0400
+X-MC-Unique: zcp5QlMhNs6kzS75z_fhPg-1
+X-Mimecast-MFC-AGG-ID: zcp5QlMhNs6kzS75z_fhPg_1752165647
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a5281ba3a4so459771f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:40:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752165705; x=1752770505;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XxglZr9FSbfBVmHLZ+FvVDfQKN3fWf8b03y6OHhLFac=;
- b=ClsXJT0X8cXj85nb+8sV+b7EKikT+p3F9o7vRL3QTLKQYi8u3D1yNioqJy4cgKntdP
- hxlMlEw8Lm6l362mVomK3AcPZNbe834KNl3AfcX0cHQqcZmxcJ78q3avik1/qO/zaGZb
- DRz2A17zy99TSMYMO8tSShAMAzsGQfgjgUofW5lpev4y20jB754KiEj6WZ5JuVRpcxfD
- fnx7+kHjVd65I2uMpc+jl0uBqOJxSqEEKq471/gUJn8aSs0Bsdn1UwawRclXN1akFlLo
- 39SernJR3DETJ+XMSWIGL9PZ2c2m8iY1Fu9IFv6pWwKwAcowhbemNTxrPV7Sad+wsEku
- fUGQ==
-X-Gm-Message-State: AOJu0YznNsXi8NDGn8bpH6KP7tnqkj1reTHASdpeMjaM7kiIbPM4kgB6
- XiD84+tkqbbZBuA8Ar/nWRt8wjyO4jOeP0phxt8D6tynS8hl1VN18WjFBtVk/fSXPd4=
-X-Gm-Gg: ASbGncuHIR1wkGARx7r5vuZBlmW9ZKrU2q+BDLMX0eHQf0z1ALBnMAM1fNC6PzUq5D2
- lwJjzFN5dFpc7l85swO7PIQ3Rr+bzPt4xYq0dp9Yc/FZZdRgiKDyz1hHeMbi4I/vsPEcc2bA7Tn
- 8LOQFAAxMUa+7qg58MTv9+k5pKVa4HvmyQ49jfmyPjrF1ALkqkkfVkLiXuAtH5Ee5DkXfP0f0IO
- R512VXvEH+pIhxrfAabkInYlJoB9YkI7h4H9xyJYa/ikzxHP7gH+8VwK7bgexnRchM8wixClDUW
- OORr25JQ4HDJKG4bNCe0baJzXpwIaXNyOOaowDtaBbF4MOavOqqzRYIrA7oLBkom+mkHoHytay/
- 3d0G9gr70muqjLggAlWlJLQ==
-X-Google-Smtp-Source: AGHT+IHs6X6TJoZFV3hxG75A/LOqYKYH0DdE6kJoOtPODuPsbqQiF/CnEFD7ROf7LLpj5AehxDrz1g==
-X-Received: by 2002:a05:6a00:bd93:b0:73e:2d7a:8fc0 with SMTP id
- d2e1a72fcca58-74ea641180fmr10537784b3a.1.1752165705377; 
- Thu, 10 Jul 2025 09:41:45 -0700 (PDT)
-Received: from gromero0.. (189-47-46-41.dsl.telesp.net.br. [189.47.46.41])
+ d=1e100.net; s=20230601; t=1752165647; x=1752770447;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QJiFa3InfTk6WTOrJuQKKPNrT30F7JG6dTyP1o1ErIA=;
+ b=SvjAZY3lj7jpk00iDmQ9bOeLXlBxZam01svcxYd7xTc9m30a8OX4lGKOv7XM+S7vTT
+ LM9AJDuyvFqGf8f0vhrqi9Ds1Atxt8e34qSMQzLtlaKMWYai1QiKA2e3tlu9uW0lEllQ
+ 6OlwBVkzoB4o+OYKLv9npHQQUKSH7iPVPmP8VYadqJsCs4Ba0sUrxc2iN7RNJFJpXScN
+ kZi34MGxJ37D6ADjrxdKXgcGTeDOFwjXCCROsypZYgWcHIicm/ju1ALBe/OCqNvShPoI
+ LR7cEf77FblD7fGn7x9yQmOqEMGSY1WfEkTuYCyXXCTYB0lOWyyt6k662Uef7cpe2ilR
+ NlTQ==
+X-Gm-Message-State: AOJu0YwInB4INJkMbo0rZN4l/ZI2eZc8GEKT4LoYjhlsbOmH8rXrCdNb
+ s6+iPY5QbmMNWWpnMKr9cYwb+JLSJhoQIvWNYeVaAubbhB6+z/nzaq77DBM7860NUU64NHKJZ0k
+ NZrbaaxxjAl4k4JVoqQyYGsMgtYLC1xeUTS4Kgdb4J/ZzK0r7O1GgUXKD
+X-Gm-Gg: ASbGnctgeDjlVM1n6D8V0B6AGAobWgI6fRgcTb7FkUPEmhGVVQUvSmaEotxTU/vAn+i
+ k9XLp8zBZWRHBPBvryEiYLWQQNLK6V52h2B5jSgwuvxk71NQ0xUUugFeVpsT+GzeooAeTUK4fCU
+ ieB9liV/KSOU0IXA6qDxqx0wFxOcacYntu/1DFtpeDDXQzUcWMjCB3pHnmUVptAD7zKyCjYgUXZ
+ xkPK6zX0rkPrx8kkz0N/5X8M+f4OQvB7fgk3iNWFlYog5T1negDFvY690CI9Rmh8/+Wfk6UnZf6
+ yozD49bT0okes4Y=
+X-Received: by 2002:adf:cc0c:0:b0:3b5:f168:5e60 with SMTP id
+ ffacd0b85a97d-3b5f1880e73mr184597f8f.19.1752165646828; 
+ Thu, 10 Jul 2025 09:40:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCUCpSI0ot8fToiunr+30H7c27I21MG8IndFdyGi/s0KZJTdpJU69DGxw82KsDDgMenuzfCA==
+X-Received: by 2002:adf:cc0c:0:b0:3b5:f168:5e60 with SMTP id
+ ffacd0b85a97d-3b5f1880e73mr184580f8f.19.1752165646336; 
+ Thu, 10 Jul 2025 09:40:46 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74eb9f5c7f7sm2919119b3a.142.2025.07.10.09.41.43
+ ffacd0b85a97d-3b5e8e0d5f5sm2306376f8f.56.2025.07.10.09.40.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jul 2025 09:41:44 -0700 (PDT)
-From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-arm@nongnu.org, richard.henderson@linaro.org, alex.bennee@linaro.org
-Cc: qemu-devel@nongnu.org,
-	gustavo.romero@linaro.org
-Subject: [PATCH v5 6/6] target/arm: Advertise FEAT_MEC in cpu max
-Date: Thu, 10 Jul 2025 16:38:59 +0000
-Message-Id: <20250710163858.1094780-7-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250710163858.1094780-1-gustavo.romero@linaro.org>
-References: <20250710163858.1094780-1-gustavo.romero@linaro.org>
+ Thu, 10 Jul 2025 09:40:45 -0700 (PDT)
+Date: Thu, 10 Jul 2025 12:40:43 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Jason Wang <jasowang@redhat.com>,
+ Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: Re: vhost-vdpa potential fd leak (coverity issue)
+Message-ID: <20250710123945-mutt-send-email-mst@kernel.org>
+References: <CAFEAcA816sEoqZOzSwX9q1zzJEQ_mMpenLW7fBu5MEbM=aFymQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x430.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA816sEoqZOzSwX9q1zzJEQ_mMpenLW7fBu5MEbM=aFymQ@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,52 +104,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Advertise FEAT_MEC in AA64MMFR3 ID register for the Arm64 cpu max as a
-first step to fully support FEAT_MEC.
+On Thu, Jul 10, 2025 at 04:46:34PM +0100, Peter Maydell wrote:
+> Hi; Coverity complains about a potential filedescriptor leak in
+> net/vhost-vdpa.c:net_init_vhost_vdpa(). This is CID 1490785.
+> 
+> Specifically, in this function we do:
+>     queue_pairs = vhost_vdpa_get_max_queue_pairs(vdpa_device_fd, features,
+>                                                  &has_cvq, errp);
+>     if (queue_pairs < 0) {
+>         [exit with failure]
+>     }
+>     ...
+>     ncs = g_malloc0(sizeof(*ncs) * queue_pairs);
+>     for (i = 0; i < queue_pairs; i++) {
+>        ...
+>        ncs[i] = net_vhost_vdpa_init(..., vdpa_device_fd, ...)
+>        ...
+>     }
+>     if (has_cvq) {
+>        ...
+>        nc = net_host_vdpa_init(..., vdpa_device_fd, ...)
+>        ...
+>     }
+> 
+> So if queue_pairs is zero we will malloc(0) which seems dubious;
+> and if queue_pairs is zero and has_cvq is false then the init
+> function will exit success without ever calling net_vhost_vdpa_init()
+> and it will leak the vdpa_device_fd.
+> 
+> My guess is that queue_pairs == 0 should be an error, or possibly
+> that (queue_pairs == 0 && !has_cvq) should be an error.
+> 
+> Could somebody who knows more about this code tell me which, and
+> perhaps produce a patch to make it handle that case?
 
-The FEAT_MEC is an extension to FEAT_RME that implements multiple
-Memory Encryption Contexts (MEC) so the memory in a realm can be
-encrypted and accessing it from the wrong encryption context is not
-possible. An encryption context allow the selection of a memory
-encryption engine.
+Historically queue_pairs == 0 was always same as 1, IIRC.
 
-At this point, no real memory encryption is supported, but software
-stacks that rely on FEAT_MEC to run should work properly.
+> Q: should this file be listed in the "vhost" subcategory of MAINTAINERS?
+> At the moment it only gets caught by "Network device backends".
+> 
+> thanks
+> -- PMM
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- docs/system/arm/emulation.rst | 3 +++
- target/arm/tcg/cpu64.c        | 1 +
- 2 files changed, 4 insertions(+)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 1c597d8673..d207a9f266 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -89,6 +89,9 @@ the following architecture extensions:
- - FEAT_LSE (Large System Extensions)
- - FEAT_LSE2 (Large System Extensions v2)
- - FEAT_LVA (Large Virtual Address space)
-+- FEAT_MEC (Memory Encryption Contexts)
-+
-+  * This is a register-only implementation without encryption.
- - FEAT_MixedEnd (Mixed-endian support)
- - FEAT_MixedEndEL0 (Mixed-endian support at EL0)
- - FEAT_MOPS (Standardization of memory operations)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index ae2046a7f6..1b9b6475b6 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1250,6 +1250,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = GET_IDREG(isar, ID_AA64MMFR3);
-     t = FIELD_DP64(t, ID_AA64MMFR3, TCRX, 1);       /* FEAT_TCR2 */
-     t = FIELD_DP64(t, ID_AA64MMFR3, SCTLRX, 1);     /* FEAT_SCTLR2 */
-+    t = FIELD_DP64(t, ID_AA64MMFR3, MEC, 1);        /* FEAT_MEC */
-     t = FIELD_DP64(t, ID_AA64MMFR3, SPEC_FPACC, 1); /* FEAT_FPACC_SPEC */
-     SET_IDREG(isar, ID_AA64MMFR3, t);
- 
--- 
-2.34.1
+This so.
 
 
