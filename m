@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2A1B00969
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB29B00984
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:04:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZuaw-0007Ko-0m; Thu, 10 Jul 2025 12:58:02 -0400
+	id 1uZugO-0005BQ-DH; Thu, 10 Jul 2025 13:03:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uZuL3-0003PL-Ol
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:41:37 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1uZuL6-0003fs-Al
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:41:40 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uZuL2-00018E-65
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:41:37 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-b34c068faf8so1368543a12.2
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:41:35 -0700 (PDT)
+ id 1uZuL4-00018f-Ch
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:41:40 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-748feca4a61so847760b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:41:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752165695; x=1752770495; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752165697; x=1752770497; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vSHu2C6AHkdi6I2MI+MN+9VTwDs09gk+qY11owIPdS8=;
- b=NxrXbiQN9yu93AEExV/fCjmH6OgZB1JuTjSsrV7nUW3jopBDcojbK+/zETaCuXFO5u
- +bEPKPmggEIOQeqSZgoZPzxcmS3iXFde8Yjihq3K8WdfMxCYP6T2xQy2s0G2XShi43eA
- xjK26EEcNq/gB4UVei2HCA+e7Brd5DbeMT/FRyV5M5usM3OTXNtGp4naZsHqZ5fHzrRw
- Yo7WCUF8Gh6W3xg0wFB4hJj6oHvyTsRpcSl/GvWes/Pt18E1vHUgx3Tc+TcC6efCJeqw
- Tk/8SkhY2DpA8URs9z4RnKEaFMgULIPIf2v4oVSiiu3KKmYpgEM+0WuutT3g2ecyOPud
- ptzA==
+ bh=ZeG1zg84q+9XSbqQeM5w+nO7GmXG52C215che07ehKE=;
+ b=UHDq2+mhxMGmVDLplaPSgAy/kzKC8PQ0ZdozZ9zONOQ6xfTD8BCL0Y519GxVPd0YLL
+ sBByxFFg66b3IG7l+wMIj+DW5wFbgtPRC2CMGH5oIBFhppLxSXSrufZNTHysqfd6luXN
+ iHnqhORdVryID2Q3DPITv+ahphCyY5fvcFU2WvtGE9yYERZb4fx3uuC9KoTemM9UCQrh
+ GX4mRQ+LqaxbUgb4lhA2PsFfPbluJ+rF0FxVIvdbswr2A6KfwXZy0PCbVDV//xqte+mA
+ 8zO+zxivm8lytb2Bbirr4qmK5xuKCwLbU+Ep08+rWxSrbA6kImvMIW88ZxCMg0B/vlqu
+ cWcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752165695; x=1752770495;
+ d=1e100.net; s=20230601; t=1752165697; x=1752770497;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vSHu2C6AHkdi6I2MI+MN+9VTwDs09gk+qY11owIPdS8=;
- b=UIPDtADF9xYwvaz5MjFNX0mFbZJabZYs56Wb6QS5QoENi7WEtrVevyKgTGaajUD0hu
- ll08WTQTJaOoV+DeWzJ0s/lASS9ia93LsujxA8EvtHSVY5HZAd9cAqGJM+BuvrZhkZ86
- 12yYnTSbDFfhBY42iPcNdi2wNa89b/N7RNScq0BhYMT71vwcNsZZ8g8RmI08hM1RKOh1
- F9Mje7v+bkd+xnuoPy6dbXcbHrOwBpAaYeJJGrPxNYpEwFSqPVjFTIDJ/Fi2QVogWw/1
- k5aOf0S55yRpUqR9lWA4pJQtZQu2X/INKtpSRIxM21HlRuXbyDxh6JT80txmoPVilKmi
- E/Fg==
-X-Gm-Message-State: AOJu0YzVroSQm1/FFUwTkuYBMjZB2Z+CjEn7AMeiEwtOzBOaHMiUKXK+
- PtRizyVqIjOU4f+Lwwc4DoDBcuc2cZ4I1rlQHsZMkj7NKzmIgCv/RT1QR1uNxH+WIzQ=
-X-Gm-Gg: ASbGncudna5USpZ1KsnYsuIAeqPeqr6z8D5w0m0bCvZ5g3VPPY00dJjFw1x83wlrmaO
- ipBfpvLjsih998ryzD25V5XkDB8dfB5NPQx/s2tTgYthjMyBV05vSYLeVJnjD3GxpnFA2dv79dh
- bHaj/C+KT0DtLxAP1ZDoUgPmnu+sCDUUsxyVz+D593h24l+Vit/BemYMzkBLEO93bbLaBTgEKns
- NkGZK/XXPqqd5VWM64885dFqi/EvO+wvzG1kitmniK4ewDnKdLQ9HXYcjiYOE3yGeBwiAE7Wgh+
- WwA5Yd6G4R08uVISHSitrEdz5uYyKheECfFQh5OM/mrGVT1G4oGt+6Ddc7C93KBxVELrl2ug5qk
- BX7BSx+XOJLiV/emq9Reoig==
-X-Google-Smtp-Source: AGHT+IHB9V2Vzu7afu7FqCHdjS/MfXtdEF5v+MV/DVnXUBFRlomNYDMZrcS7AKccHT6yeSWFB275eg==
-X-Received: by 2002:a05:6a20:ce43:b0:1f5:889c:3cbd with SMTP id
- adf61e73a8af0-2312050277emr89472637.35.1752165694709; 
- Thu, 10 Jul 2025 09:41:34 -0700 (PDT)
+ bh=ZeG1zg84q+9XSbqQeM5w+nO7GmXG52C215che07ehKE=;
+ b=Zz18QwQuobAId6K4qqhCw1AhEANHkfil/MwEDA0cgs2YvndBCBCpeqWolZt/m7PN+R
+ 34ad3UWnOaZt5A1JrOraEvHXU5HMcVo2CwmZ+rqZv2mhlR+8LO0L04RtB4EnQ9TiWIwS
+ SV3A8OX6HdMV8+wmR5DavagTUJsi8IkMzlRYm+U4rRuFmqTMVVMSg24hofBSGxGQgz8h
+ /mTkA5PqN8kSvtOR9WCGX42jKPgygYId+YzqvsqdpKscS4fGzvazhX9snkz11YyWajWE
+ qirYsfCkHW+zSHUIxMAfLcv0FpTyJFmjHT4XCpNyHI2NHKZ1enXWW/mH097EihCd9LtY
+ DPQA==
+X-Gm-Message-State: AOJu0Yyp20VclHzAdiH0UEt3Cjko1EXvNiixnd/d79gS5oSf92kBfXcs
+ 7MQ70uzkCGZV1OP11b6fcPmWOBaxhBAyFAWnDDywX/eJNYtlEbdCGzG2FPagZeT3ghb6QLh/oQ0
+ QuK+tLJM=
+X-Gm-Gg: ASbGnctXRZkuvXGLOM139EWQEB5NNiqyqLM1SsXQtbvRKx22uKjnTCGIpfo3lFU6n5O
+ oy7RQulZxJVk3DFa32LNy0qWmeyW9m9dqXGcsODbFijdF9p7LqMsIvLWwyIROkQVjpfJfzxT0He
+ ZY7g2pa4fzAo5E3qp3lxYPmVsghNbxda25vqDA+MmGebdpJMi6iwm3lKpwDNznGZgP4+R0GpMA2
+ ycImEve+maXZwGrnbqTivU2+8ql68yGmW0L5yDFVBQI/cdQmJEwxzNKvePx9MhF2yFGe3Qt0awI
+ CEwvFFqdKaU7wQn8OAyVqHNatndAFUASFhoPDVgbo0cgBAqpyNNGXjQZ2I+cTMb9RgQf+NKTyGQ
+ To69oPd0pE51/vbQrBycWrQ==
+X-Google-Smtp-Source: AGHT+IH1oNED/ExH4aYYmqdEJ81dnY/8WeM810V+dPwsrLgD19oGNQPY1eW8IYzNULScAEVGwCmkKw==
+X-Received: by 2002:aa7:8888:0:b0:74c:efae:ffae with SMTP id
+ d2e1a72fcca58-74eb8e8adc5mr4570316b3a.5.1752165696861; 
+ Thu, 10 Jul 2025 09:41:36 -0700 (PDT)
 Received: from gromero0.. (189-47-46-41.dsl.telesp.net.br. [189.47.46.41])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74eb9f5c7f7sm2919119b3a.142.2025.07.10.09.41.32
+ d2e1a72fcca58-74eb9f5c7f7sm2919119b3a.142.2025.07.10.09.41.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jul 2025 09:41:34 -0700 (PDT)
+ Thu, 10 Jul 2025 09:41:36 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-arm@nongnu.org, richard.henderson@linaro.org, alex.bennee@linaro.org
 Cc: qemu-devel@nongnu.org,
 	gustavo.romero@linaro.org
-Subject: [PATCH v5 1/6] target/arm: Add the MECEn SCR_EL3 bit
-Date: Thu, 10 Jul 2025 16:38:54 +0000
-Message-Id: <20250710163858.1094780-2-gustavo.romero@linaro.org>
+Subject: [PATCH v5 2/6] target/arm: Add FEAT_MEC registers
+Date: Thu, 10 Jul 2025 16:38:55 +0000
+Message-Id: <20250710163858.1094780-3-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250710163858.1094780-1-gustavo.romero@linaro.org>
 References: <20250710163858.1094780-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,27 +99,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MECEn bit in SCR_EL3 enables access to the EL2 MECID registers from
-EL2, so add it to the SCR mask list to use it later on.
+Add all FEAT_MEC registers.
+
+To work properly, FEAT_MEC also depends on FEAT_SCTLR2 and FEAT_TCR2,
+which are not implemented in this commit. The bits in SCTLR2 and TCR2
+control which translation regimes use MECIDs, and determine which MECID
+is selected and will be implemented in subsequent commits.
+
+FEAT_MEC also requires two new cache management instructions, not
+included in this commit, that will be implemented in a subsequent commit.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h | 1 +
- 1 file changed, 1 insertion(+)
+ target/arm/cpu-features.h |  5 +++
+ target/arm/cpu.h          |  9 +++++
+ target/arm/helper.c       | 70 +++++++++++++++++++++++++++++++++++++++
+ target/arm/internals.h    |  3 ++
+ 4 files changed, 87 insertions(+)
 
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 5876162428..72b6fd9b27 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -904,6 +904,11 @@ static inline bool isar_feature_aa64_nv2(const ARMISARegisters *id)
+     return FIELD_EX64_IDREG(id, ID_AA64MMFR2, NV) >= 2;
+ }
+ 
++static inline bool isar_feature_aa64_mec(const ARMISARegisters *id)
++{
++    return FIELD_EX64_IDREG(id, ID_AA64MMFR3, MEC) != 0;
++}
++
+ static inline bool isar_feature_aa64_pmuv3p1(const ARMISARegisters *id)
+ {
+     return FIELD_EX64_IDREG(id, ID_AA64DFR0, PMUVER) >= 4 &&
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index c8cf0ab417..0f64c7b163 100644
+index 0f64c7b163..40ca093331 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -1717,6 +1717,7 @@ static inline void xpsr_write(CPUARMState *env, uint32_t val, uint32_t mask)
- #define SCR_TRNDR             (1ULL << 40)
- #define SCR_ENTP2             (1ULL << 41)
- #define SCR_GPF               (1ULL << 48)
-+#define SCR_MECEN             (1ULL << 49)
- #define SCR_NSE               (1ULL << 62)
+@@ -576,6 +576,15 @@ typedef struct CPUArchState {
  
- /* Return the current FPSCR value.  */
+         /* NV2 register */
+         uint64_t vncr_el2;
++
++        /* MEC registers */
++        uint64_t mecid_p0_el2;
++        uint64_t mecid_a0_el2;
++        uint64_t mecid_p1_el2;
++        uint64_t mecid_a1_el2;
++        uint64_t mecid_rl_a_el3;
++        uint64_t vmecid_p_el2;
++        uint64_t vmecid_a_el2;
+     } cp15;
+ 
+     struct {
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index b3f0d6f17a..984406c945 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -6827,6 +6827,72 @@ static const ARMCPRegInfo nmi_reginfo[] = {
+       .resetfn = arm_cp_reset_ignore },
+ };
+ 
++static CPAccessResult mecid_access(CPUARMState *env,
++                                   const ARMCPRegInfo *ri, bool isread)
++{
++    int el = arm_current_el(env);
++
++    if (el == 2) {
++        if (arm_security_space(env) != ARMSS_Realm) {
++	    return CP_ACCESS_UNDEFINED;
++	}
++
++        if (!(env->cp15.scr_el3 & SCR_MECEN)) {
++            return CP_ACCESS_TRAP_EL3;
++        }
++    }
++
++    return CP_ACCESS_OK;
++}
++
++static void mecid_write(CPUARMState *env, const ARMCPRegInfo *ri,
++                        uint64_t value)
++{
++    value = extract64(value, 0, MECID_WIDTH);
++    raw_write(env, ri, value);
++}
++
++static const ARMCPRegInfo mec_reginfo[] = {
++    { .name = "MECIDR_EL2", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 4, .opc2 = 7, .crn = 10, .crm = 8,
++      .access = PL2_R, .type = ARM_CP_CONST, .resetvalue = MECID_WIDTH - 1 },
++    { .name = "MECID_P0_EL2", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 4, .opc2 = 0, .crn = 10, .crm = 8,
++      .access = PL2_RW, .accessfn = mecid_access,
++      .writefn = mecid_write,
++      .fieldoffset = offsetof(CPUARMState, cp15.mecid_p0_el2) },
++    { .name = "MECID_A0_EL2", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 4, .opc2 = 1, .crn = 10, .crm = 8,
++      .access = PL2_RW, .accessfn = mecid_access,
++      .writefn = mecid_write,
++      .fieldoffset = offsetof(CPUARMState, cp15.mecid_a0_el2) },
++    { .name = "MECID_P1_EL2", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 4, .opc2 = 2, .crn = 10, .crm = 8,
++      .access = PL2_RW, .accessfn = mecid_access,
++      .writefn = mecid_write,
++      .fieldoffset = offsetof(CPUARMState, cp15.mecid_p1_el2) },
++    { .name = "MECID_A1_EL2", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 4, .opc2 = 3, .crn = 10, .crm = 8,
++      .access = PL2_RW, .accessfn = mecid_access,
++      .writefn = mecid_write,
++      .fieldoffset = offsetof(CPUARMState, cp15.mecid_a1_el2) },
++    { .name = "MECID_RL_A_EL3", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 6, .opc2 = 1, .crn = 10, .crm = 10,
++      .access = PL3_RW, .accessfn = mecid_access,
++      .writefn = mecid_write,
++      .fieldoffset = offsetof(CPUARMState, cp15.mecid_rl_a_el3) },
++    { .name = "VMECID_P_EL2", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 4, .opc2 = 0, .crn = 10, .crm = 9,
++      .access = PL2_RW, .accessfn = mecid_access,
++      .writefn = mecid_write,
++      .fieldoffset = offsetof(CPUARMState, cp15.vmecid_p_el2) },
++    { .name = "VMECID_A_EL2", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 4, .opc2 = 1, .crn = 10, .crm = 9,
++      .access = PL2_RW, .accessfn = mecid_access,
++      .writefn = mecid_write,
++      .fieldoffset = offsetof(CPUARMState, cp15.vmecid_a_el2) },
++};
++
+ static void define_pmu_regs(ARMCPU *cpu)
+ {
+     /*
+@@ -9014,6 +9080,10 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+         define_arm_cp_regs(cpu, nmi_reginfo);
+     }
+ 
++    if (cpu_isar_feature(aa64_mec, cpu)) {
++        define_arm_cp_regs(cpu, mec_reginfo);
++    }
++
+     if (cpu_isar_feature(any_predinv, cpu)) {
+         define_arm_cp_regs(cpu, predinv_reginfo);
+     }
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 21a8d67edd..77ba2a2273 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1982,4 +1982,7 @@ void vfp_clear_float_status_exc_flags(CPUARMState *env);
+  */
+ void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val, uint32_t mask);
+ 
++/* Used in FEAT_MEC to set the MECIDWidthm1 field in the MECIDR_EL2 register. */
++#define MECID_WIDTH 16
++
+ #endif
 -- 
 2.34.1
 
