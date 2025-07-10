@@ -2,92 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEEB3B0093C
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 18:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFEFBB00AE5
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:56:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZuTp-0007Gv-KM; Thu, 10 Jul 2025 12:50:42 -0400
+	id 1uZvTc-0005WO-Ss; Thu, 10 Jul 2025 13:54:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uZu9b-0002vn-Bx
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:29:54 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <hannesbredberg@gmail.com>)
+ id 1uZuIO-0000wF-9R
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:38:58 -0400
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uZu9Y-0003pQ-9v
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:29:47 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-234b9dfb842so11827765ad.1
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:29:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <hannesbredberg@gmail.com>)
+ id 1uZuIM-0008Ud-JL
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:38:51 -0400
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-70e5e6ab7b8so12376977b3.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:38:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752164977; x=1752769777; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wtGwUc5A7pk1NnKmmvyZgHPr3BcQayREo9qXinaIQMo=;
- b=zW61qQTeRJE2WeM0+RPHQnGvoIC4BGiUdLrU7FRfkW2etauP6FKidBpbeHHJZjDd/8
- 4toqhdOMTz86JDLqFyCuRJy3PC2LllCv7R6YEvGniLIo3oS5nsTdbq6s+4QqVBjI2aBD
- Vx4RFnsf0NTdZGzcoL9tomQcZc+SXPzpkpIP2kbugCXsU9tuAWTElS8SdRinpA5LJkTw
- rrmqALr44puM/wmFMgCq8OYLhhZoOO0gqlWixYgeXIERkFOEFnzNigHT2sQbIGd4KoED
- 2cVbFxNx0G1V2dTT7g+p1fcrMujzZ+mHGcpkUWA4F2Iwh8VHFdihU2sGm27vc3Vde82F
- MnQQ==
+ d=gmail.com; s=20230601; t=1752165529; x=1752770329; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=RBo5Y57XeyEcRFI9qswP0Qed6TlA7wiEKzlycKNK0Nc=;
+ b=OPc5Knxi7ko95B/B1MT2e8CCRWbUkgCAgTelqbvlbtBBs0AgYp1WSe4tx0y1PWLjzd
+ o44cxm/Swc7Y+beZWyQvQT3xJGSgzzeHF7hQU+0MGmSJr5SFe94K6UOucuUNhVrCEH/W
+ nn8o5IDFCLbIIxBwa3GkfcG7I9akXQQiB7jDGTWVswCr5jo80opWTer4ZUP722H+EGDZ
+ R0Alx50RVuoRAsJdU4rHFCw3sTHatmBsRP8+F3jMqg3qxlZ71lMnC+GcJ/m+pPRocAgP
+ vkFlY5M+I69/f8ZUKZqdVWQjxzCqOii+iebdFnDh+ZjYNTR1qWZdVUcZngLOYe4q5V2a
+ uIhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752164977; x=1752769777;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wtGwUc5A7pk1NnKmmvyZgHPr3BcQayREo9qXinaIQMo=;
- b=m2b9Blm3zVhY30fwGbSq58WdU9LiYcTcn84AYtwJveG1LulESJh8A1+Cdf1pGQB8j9
- Y+THdhdYsuMpmeBuk/snFbrbXKO4l+ut14nT+eDvILVrFoe03wwUerR4meuryYEApbo6
- YgAo/yI1vHppS/zxn1XyoQg+cgmwtUJZ84jXyGn4WwmyAq2xrug6yYV6zvKehlv5a+H+
- x+FiL1CwqRx+PFiya0F7NXvTQN56h31mU/NON4mc2ef4PgebKPSEqh/TrjrItYfwCfjw
- Yso3zon0ADip0NdAbSFizgrF0nd+ZIZJ+mmMa+lcyiCivPOAwxoe3gVU6GDyvRKyMb5j
- m38A==
-X-Gm-Message-State: AOJu0YzzfGD0lpIYBNtwVjy2P+UFLLplxZRjKHyF7G0RxfaJiy4x/Ige
- oGegSnFcSg92sE2cVQ/6r6kifRCmhaLdk8r/yzFWkx0E/cMlXv3oxY3ZatvcuND5q7Y=
-X-Gm-Gg: ASbGnct3jPmHIAYoCoY0s8suC00vuDNTw5bMpOr81I+5N4jPHcVyvd2P5yzC1xvvcGa
- T94SJ+0nqs4EQBos0vQUGVbaA71Q8vrxmz1ljjlD7k0tpZuH88kxjTzL5wQUhZyPJ/WNxVm/r/B
- mdqdpQs1h9elxLnNxklVcdKHtExf+ipkP0eNYU/kBs4WzEkiNCn4S/qO6Z/1XDplhXG5rrk6bbL
- 2jrTAe6Nkhd9gQiRHOl9iWDpOO96BRmy7DD2wSjD7u6V8YG+KXcIpYvRJlYX+y1gdNthuY8Atl/
- UxqBsIUfeJmTM5WxYLfNTPUWDpusR21jPsEQOaCqxe5BljvDDGq2UdY8GoSvdhPTGvItGMM0RNx
- MP/C9PsRdhrD/46nalfQADu9AaRs5
-X-Google-Smtp-Source: AGHT+IGlyK+49LiXR5cY+/eOLthxkDzQg4eugL8ehFpC1Kp5OySSuyYEP2uHLHY9lrandpH+b0x67A==
-X-Received: by 2002:a17:902:da85:b0:23c:8f4c:6658 with SMTP id
- d9443c01a7336-23de48725b3mr47074415ad.25.1752164977544; 
- Thu, 10 Jul 2025 09:29:37 -0700 (PDT)
-Received: from [192.168.0.102] (189-47-46-41.dsl.telesp.net.br. [189.47.46.41])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23de4367be3sm23559935ad.251.2025.07.10.09.29.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Jul 2025 09:29:36 -0700 (PDT)
-Message-ID: <2ded21e5-8c4c-4ab9-930d-906b31e944a0@linaro.org>
-Date: Thu, 10 Jul 2025 13:29:53 -0300
+ d=1e100.net; s=20230601; t=1752165529; x=1752770329;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RBo5Y57XeyEcRFI9qswP0Qed6TlA7wiEKzlycKNK0Nc=;
+ b=ZkbYdoBsUZQC5oCeicF1N/ZPdqQ5xjXEEzSX00EeyhA0wTczHZY9EYOxtilHNWIFYw
+ a5uW9VFq/axLmMHx5HSbqAhBlKOOrCHYme/o4slOCZjxvP7VianLIS0XLb4Acinpz77c
+ CxrTsSAEjpcZbxWH30ya28kr2vWZVDcUVb1Rp1om0ExY1AG2SJRCb3eiTnLlTdZiHdBZ
+ k+CEmPXmc4PuIG8aOT+H8bB6rrEbW1z8lBVIrUrjnrKJtQMz9O8X9aJWShrksNd06yNs
+ fxYNmwRMfk7zkNZaVYrEgP3DM1aW0rWOeho27SHjgc7W771LBYQJ8j2LiVbHA7d028dd
+ rgMg==
+X-Gm-Message-State: AOJu0YwLoXbHwhvHXcsgcJ/LZjawV/t31nEqj3xPK/KzGsA1P8DTJdwS
+ JYG8xXDmrOI8fDIAx4UWUo/vVthWt1ebYUVFJTyvwSidWCOV06h7FvQ4KoUsVArrhPRFlF7l0lg
+ eudR464hmkBkiVApUmyOxF5f6cO3k5MiVPcJ6
+X-Gm-Gg: ASbGncsFHIV4o2Xjw2rACtDf4EXgdgza80yOTRVp3gLYpI744VSbrYDp/aTKRSekce1
+ xjuCekwf1BLoXnnqSZSnq6osxw9hkAXWQAcF5X3y2XNunFk4FlHiCwQu77G0fSlOQSK9caayOY6
+ J9OZ9rK7GEE+GOenj4ak0juiAFW196uVUfuqfNM7TBsoU=
+X-Google-Smtp-Source: AGHT+IEArleUuVJe8acDHuxwh4oS7QNycj2s0RYdsZiRmpgkLNknPqG348lkf+B9BDxjJlSj7j4z3Op5Xwc2UjjJDeY=
+X-Received: by 2002:a05:690c:7202:b0:715:969:ce31 with SMTP id
+ 00721157ae682-717d5e1f1f7mr3192457b3.35.1752165528835; Thu, 10 Jul 2025
+ 09:38:48 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/6] target/arm: Advertise FEAT_MEC in cpu max
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
- alex.bennee@linaro.org
-Cc: qemu-devel@nongnu.org
-References: <20250709180326.1079826-1-gustavo.romero@linaro.org>
- <20250709180326.1079826-7-gustavo.romero@linaro.org>
- <a15724b9-a0f4-4323-b8c1-3cdf8581ee43@linaro.org>
-Content-Language: en-US
-From: Gustavo Romero <gustavo.romero@linaro.org>
-In-Reply-To: <a15724b9-a0f4-4323-b8c1-3cdf8581ee43@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62e.google.com
+From: Hannes Bredberg <hannesbredberg@gmail.com>
+Date: Thu, 10 Jul 2025 16:38:35 +0000
+X-Gm-Features: Ac12FXzxIGfPxChoaoyKm_kaYuGCz7U_7BC7QresURQIQnJVy7Mhk82xyMZInhk
+Message-ID: <CA+z0mrds11nuuiANc6UHsTSSctYfN-AFqj61Q38kXA+iKFB0qw@mail.gmail.com>
+Subject: [PATCH] USB MSD: Set s->req to NULL after handling a packet
+To: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=hannesbredberg@gmail.com; helo=mail-yw1-x112f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 10 Jul 2025 13:38:17 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,23 +86,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard!
+This fixes compatibility for OSes which enqueue multiple data transfers
+on the same endpoint without waiting for the previous one to be ACKed by
+the mass storage device.
 
-On 7/9/25 17:54, Richard Henderson wrote:
-> On 7/9/25 12:03, Gustavo Romero wrote:
->> At this point, no real memory encryption is supported, but most software
->> stacks that rely on FEAT_MEC to run should work properly.
-> 
-> s/most //?
-> 
-> Anyway,
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Hannes Bredberg <hannesbredberg@gmail.com>
+---
+ hw/usb/dev-storage.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Thanks a lot for the reviews :)
+diff --git a/hw/usb/dev-storage.c b/hw/usb/dev-storage.c
+index b13fe345c4..43d57afd00 100644
+--- a/hw/usb/dev-storage.c
++++ b/hw/usb/dev-storage.c
+@@ -182,13 +182,14 @@ static void usb_msd_packet_complete(MSDState *s,
+int status)
+     USBPacket *p = s->packet;
 
-I'm sending v5 addressing your comments.
+     /*
+-     * Set s->packet to NULL before calling usb_packet_complete
++     * Set s->packet and s->req to NULL before calling usb_packet_complete
+      * because another request may be issued before
+      * usb_packet_complete returns.
+      */
+     trace_usb_msd_packet_complete();
+     p->status = status;
+     s->packet = NULL;
++    s->req = NULL;
+     usb_packet_complete(&s->dev, p);
+ }
 
-
-Cheers
-Gustavo
+--
+2.47.0
 
