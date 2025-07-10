@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC8FAFFFA2
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AA5AFFF92
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:47:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZon3-00020K-GZ; Thu, 10 Jul 2025 06:46:09 -0400
+	id 1uZon4-00021V-G6; Thu, 10 Jul 2025 06:46:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomh-0001rA-DU
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:50 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1uZomh-0001rC-DN
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:51 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomb-00078F-On
+ id 1uZomZ-00078C-Ud
  for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:45 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3a54690d369so845244f8f.3
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-45348bff79fso8982555e9.2
  for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1752144338; x=1752749138; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=03riluX1eJMP4tE7cuvXHWS+nhsiBt5c4p7l9wITSeg=;
- b=Jowrm6VxFUvDcJVugFCepGpaIrpd+2h6nhV6uA1nu3AfO1WZUSdKxH+W+sQsmFjV0l
- /0JpKSU6nv56CgroJaEU7jqQA6wWM36+1l5z+Q+sCuXoHdLwsR1YB2UbYP15pT227qsQ
- c3d21HYoCBIIRV88ZAUoOqgyHDnvsiU1Khzk5bDPsH/tJIERRLjIxpIyYD85NEfV4UgZ
- HFuMgsv3+NmtzNcfslznrQFd52jg2tYvhKImKBZHCIMOrvNXv1W+X0r2L9zhRZ2SCPq6
- /0aAE7BoalRSjg/k4iBvIZOZvymgmMjdZh0grFsKhq5qk4yOsYbz4PjU4bcmnmHZ7ovj
- x81Q==
+ bh=/kn+Nlme/iAkqffgZvptFY3jhjfV+Qi2QuRGeFFxrUg=;
+ b=LJThjoHtyAsPT9vWMffJu8fRNU/Pq7r5LQnl25T451xatxofd13/CD3eE1pEhV6Jxw
+ hVhsvfZZfrEYH3FgZWJpRBQGskfES20nzdZtWZztk4l0q7DXB/YQ8c9WVVQA/R0PjDa6
+ ErMRlc/wYCz3x98UWfHCffD1bIFxcmK/1z6Fv4aGLmVnfZAQGG2G/QG3rqrQOgxnCuWK
+ UcDUZPHAwDfqZLsFvhBDAv7LqewsOM48KKfQdry9lRHP5gvUgvEXoqJmMjkDYWpgL4CF
+ uWexl2vO3CbM4OEQP16DDk6PL+snG52kjVNryU8k37kplRLacvFgiDHxleAawGWerEsM
+ 9RJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1752144338; x=1752749138;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=03riluX1eJMP4tE7cuvXHWS+nhsiBt5c4p7l9wITSeg=;
- b=xJBtzvXFqYnmxkdjrQ79hoR7Pd3+YKEVnSXWR1L2auYn6l4yvej75FUfhV/CNcuyV1
- rBR7aXzaMhWfrDWzkJPHzrSm4kYRFUZ1QW1E+NgUsIy/tYYKaqh05HZRZMeucTWr/QIz
- AlS+gp4hiGM/soff9trzJ3U8yuUHDRPmReFhExhEz4AbLlCMaNG7h1UnWnIG3O1dE3zU
- vHRV6n9UOQO6RWPERfX4OhX1VZRTWAfHShf3TeBlzMoRlHgemz4avxOVitQ8VDrPOy93
- z1Fapq8LPAJ3NTc8V4yZ6cSvqlLIGjd/maAP8pQp6/nguGKEQNwri8rLnLhjcF+t8OH+
- FXTw==
-X-Gm-Message-State: AOJu0Yz7IlhUPuoM9AqjBrnTU47IH9bx6iuBf+LCRLHjkq5pAh5sWy0w
- qn8DNLFxFY4FeNQc1OE0CD9ov0eflKvbumgdFWYgd8zPToVvlLkqCrr9nVlCDXQYsqRvivU4QAw
- ArDiCCFI=
-X-Gm-Gg: ASbGnctXik4w+HHAtfk1N4qjZffj95oCX0cEbvpTo3ROnsrgwwbRVadsmTyQnHZPA7h
- 18YR22yjdr3Tp8AnMvrM5IA0QEXu87UbvYbyUzSdZDrOe1vFMKKOe0HThYrz6a7PxeokQbIqmxS
- X1rRNJNLwk9F8/5+QiY31cBKfP44cOHgTlyckChP7bqKjgLHbNKSdblhxyA/lWT6ccKRRPntmeA
- PoRkDdwwpFJ96zmI0327YH979LssdgZxONWeSNWaQSA5nXNO+7Qv1/L6UGG44na6IOS5XYkze2H
- AeYMkGMXY7g2Fj9g03sqJhAoA7wOVpXfQstujunmJGtIsid/MZexKKkWumOCx8A=
-X-Google-Smtp-Source: AGHT+IEkEpkDYS8h/LJ2ZSr33jWevjNrhMbuaEHbfGs/a7uc/uvM735BxMXl8DxT4/jFQVEIpL2HQA==
-X-Received: by 2002:a05:6000:41ce:b0:3a9:dc5:df15 with SMTP id
- ffacd0b85a97d-3b5e866f829mr2057765f8f.13.1752144338218; 
- Thu, 10 Jul 2025 03:45:38 -0700 (PDT)
+ bh=/kn+Nlme/iAkqffgZvptFY3jhjfV+Qi2QuRGeFFxrUg=;
+ b=l2Y2fT4Sth5xIDiwPm/1mfgFz40AYB6zgOSqSn+wb7m6HWIrdWJ384D/rRU5PN+f5u
+ GdI7FD8pAaKSCAK1UGHd9d/7DuJVoKiL53ofiqz5vZYJ3BdrUAkEXvdUnsgrvg9yhmar
+ zIS7EtlSnghkW+u01JXxEglkiiI/lAF2ErFhjg+dDWeXdhHhPV36ElXbubijYXM3PwPt
+ 2Sk0+NEvsD07Zd71jHsrxiyEmIfBWysUSIlY1obP3Pu90iya3/cuN3ITIAsQr3wbKxdi
+ TlSyalZ8r2NiFpZXctzQXvrgrguGnoKBIa4H+YgCEogEo3YU2dn1dR5GMyH4Iom1Euyi
+ LoJA==
+X-Gm-Message-State: AOJu0YxJkT8jurUO9lvl5PaZcCtsjTmeGM5mWU/GhC4vgOICy8dpUmBF
+ j/+K1rkQB58tX9sHTFdckTH0wcWvwmVHwQ+uHB6vk1eQPdKNskE2maLqfEijLeJRaZE=
+X-Gm-Gg: ASbGncuBIUHC/PG2hig00lDUU9IG8cKK6+J3cM4Ol8r/9b5ISNkK8NskWyU+6RXiU9Z
+ 2jVT3bXW0sNNWq8h/4uM9lFFLG10VvqXjiiSmpzUXLaHHWJdUtsetQkYPvHmi6PzZJySnHJzhkA
+ U3+vcM9Fd9npnCZjZWcIxzuAhMPtroL1fv9wEotfYzFe2qdhzl8fVMBT04ZLnt3y38oKS9aDapj
+ 3bUEl9mTbuSkLbPU8DYi+yEEgvH4z6MuhJuDeC5WylZ6eApylwKnhuh/ZgmCSOC7MNvNkfvd5Uf
+ naargNiJScfuoUDpIYnrm1dnG4qBah3lVQqj0Jw67L1uQgk6D5OknM61NSfu+jw=
+X-Google-Smtp-Source: AGHT+IHTgRA7pgf1Mh+2rw9zldooRzB6GIP2uUxDs22K2ZKN36igrTMdd6T74rRfvOJj+DKWSzGFZA==
+X-Received: by 2002:a05:600c:a00c:b0:43c:f44c:72a6 with SMTP id
+ 5b1f17b1804b1-454dd1f3edbmr19383905e9.2.1752144337535; 
+ Thu, 10 Jul 2025 03:45:37 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454dd474a9csm16086125e9.16.2025.07.10.03.45.33
+ 5b1f17b1804b1-454d511bd6dsm55989185e9.38.2025.07.10.03.45.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 10 Jul 2025 03:45:36 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id ABC495F8AD;
+ by draig.lan (Postfix) with ESMTP id C71665F8CC;
  Thu, 10 Jul 2025 11:45:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -74,18 +73,19 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Jason Wang <jasowang@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <laurent@vivier.eu>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 5/7] plugins: fix inclusion of user-mode APIs
-Date: Thu, 10 Jul 2025 11:45:28 +0100
-Message-ID: <20250710104531.3099313-6-alex.bennee@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PATCH 6/7] docs: use :kbd: role in sphinx docs
+Date: Thu, 10 Jul 2025 11:45:29 +0100
+Message-ID: <20250710104531.3099313-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250710104531.3099313-1-alex.bennee@linaro.org>
 References: <20250710104531.3099313-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -108,61 +108,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In 903e870f24 (plugins/api: split out binary path/start/end/entry
-code) we didn't actually enable the building of the new plugin helper.
-However this was missed because only contrib plugins like drcov
-actually used the helpers.
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-With that fixed we discover we also need some more includes to be able
-to extract the relevant data from TaskState.
+Sphinx supports the :kbd: role for notating keyboard input. They get
+formatted as <kbd> HTML elements in the readthedocs theme we currently
+use for Sphinx.
 
-Fixes: 903e870f24 (plugins/api: split out binary path/start/end/entry code)
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3014
+Besides the better visual formatting, it also helps with accessibility
+as screen readers can announce the semantics of the <kbd> element to the
+user.
+
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-ID: <20250709-docs_rst_improvements-v2-1-cb5096ad0022@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- linux-user/plugin-api.c      | 1 +
- common-user/plugin-api.c.inc | 1 +
- linux-user/meson.build       | 5 ++++-
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ docs/devel/testing/main.rst     |  4 +--
+ docs/system/images.rst          |  2 +-
+ docs/system/keys.rst.inc        | 49 +++++++++++++++++----------------
+ docs/system/linuxboot.rst       |  2 +-
+ docs/system/mux-chardev.rst.inc | 38 ++++++++++++++-----------
+ 5 files changed, 51 insertions(+), 44 deletions(-)
 
-diff --git a/linux-user/plugin-api.c b/linux-user/plugin-api.c
-index 66755df526..8d6fbb60e0 100644
---- a/linux-user/plugin-api.c
-+++ b/linux-user/plugin-api.c
-@@ -12,4 +12,5 @@
+diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
+index 6b18ed875c..2b5cb0c148 100644
+--- a/docs/devel/testing/main.rst
++++ b/docs/devel/testing/main.rst
+@@ -604,9 +604,9 @@ below steps to debug it:
+ 2. Add "V=1" to the command line, try again, to see the verbose output.
+ 3. Further add "DEBUG=1" to the command line. This will pause in a shell prompt
+    in the container right before testing starts. You could either manually
+-   build QEMU and run tests from there, or press Ctrl-D to let the Docker
++   build QEMU and run tests from there, or press :kbd:`Ctrl+d` to let the Docker
+    testing continue.
+-4. If you press Ctrl-D, the same building and testing procedure will begin, and
++4. If you press :kbd:`Ctrl+d`, the same building and testing procedure will begin, and
+    will hopefully run into the error again. After that, you will be dropped to
+    the prompt for debug.
  
- #include "qemu/osdep.h"
- #include "qemu.h"
-+#include "loader.h"
- #include "common-user/plugin-api.c.inc"
-diff --git a/common-user/plugin-api.c.inc b/common-user/plugin-api.c.inc
-index 5b8a1396b6..63f3983271 100644
---- a/common-user/plugin-api.c.inc
-+++ b/common-user/plugin-api.c.inc
-@@ -13,6 +13,7 @@
- #include "qemu/osdep.h"
- #include "qemu/main-loop.h"
- #include "qemu/plugin.h"
-+#include "accel/tcg/vcpu-state.h"
- #include "qemu.h"
+diff --git a/docs/system/images.rst b/docs/system/images.rst
+index a5551173c9..43706969fd 100644
+--- a/docs/system/images.rst
++++ b/docs/system/images.rst
+@@ -30,7 +30,7 @@ Snapshot mode
+ If you use the option ``-snapshot``, all disk images are considered as
+ read only. When sectors in written, they are written in a temporary file
+ created in ``/tmp``. You can however force the write back to the raw
+-disk images by using the ``commit`` monitor command (or C-a s in the
++disk images by using the ``commit`` monitor command (or :kbd:`Ctrl+a s` in the
+ serial console).
  
- /*
-diff --git a/linux-user/meson.build b/linux-user/meson.build
-index f47a213ca3..efca843369 100644
---- a/linux-user/meson.build
-+++ b/linux-user/meson.build
-@@ -27,7 +27,10 @@ linux_user_ss.add(libdw)
- linux_user_ss.add(when: 'TARGET_HAS_BFLT', if_true: files('flatload.c'))
- linux_user_ss.add(when: 'TARGET_I386', if_true: files('vm86.c'))
- linux_user_ss.add(when: 'CONFIG_ARM_COMPATIBLE_SEMIHOSTING', if_true: files('semihost.c'))
--linux_user_ss.add(when: 'CONFIG_TCG_PLUGINS', if_true: files('plugin-api.c'))
+ .. _vm_005fsnapshots:
+diff --git a/docs/system/keys.rst.inc b/docs/system/keys.rst.inc
+index 59966a3fe7..c28ae1a227 100644
+--- a/docs/system/keys.rst.inc
++++ b/docs/system/keys.rst.inc
+@@ -1,36 +1,37 @@
+ During the graphical emulation, you can use special key combinations from
+-the following table to change modes. By default the modifier is Ctrl-Alt
++the following table to change modes. By default the modifier is :kbd:`Ctrl+Alt`
+ (used in the table below) which can be changed with ``-display`` suboption
+ ``mod=`` where appropriate. For example, ``-display sdl,
+-grab-mod=lshift-lctrl-lalt`` changes the modifier key to Ctrl-Alt-Shift,
+-while ``-display sdl,grab-mod=rctrl`` changes it to the right Ctrl key.
++grab-mod=lshift-lctrl-lalt`` changes the modifier key to :kbd:`Ctrl+Alt+Shift`,
++while ``-display sdl,grab-mod=rctrl`` changes it to the right :kbd:`Ctrl` key.
+ 
+-Ctrl-Alt-f
+-   Toggle full screen
++.. list-table:: Multiplexer Keys
++  :widths: 10 90
++  :header-rows: 1
+ 
+-Ctrl-Alt-+
+-   Enlarge the screen
++  * - Key Sequence
++    - Action
+ 
+-Ctrl-Alt\--
+-   Shrink the screen
++  * - :kbd:`Ctrl+Alt+f`
++    - Toggle full screen
+ 
+-Ctrl-Alt-u
+-   Restore the screen's un-scaled dimensions
++  * - :kbd:`Ctrl+Alt++`
++    - Enlarge the screen
+ 
+-Ctrl-Alt-n
+-   Switch to virtual console 'n'. Standard console mappings are:
++  * - :kbd:`Ctrl+Alt+-`
++    - Shrink the screen
+ 
+-   *1*
+-      Target system display
++  * - :kbd:`Ctrl+Alt+u`
++    - Restore the screen's un-scaled dimensions
+ 
+-   *2*
+-      Monitor
++  * - :kbd:`Ctrl+Alt+n`
++    - Switch to virtual console 'n'. Standard console mappings are:
+ 
+-   *3*
+-      Serial port
++      - *1*: Target system display
++      - *2*: Monitor
++      - *3*: Serial port
++  * - :kbd:`Ctrl+Alt+g`
++    - Toggle mouse and keyboard grab.
+ 
+-Ctrl-Alt-g
+-   Toggle mouse and keyboard grab.
+-
+-In the virtual consoles, you can use Ctrl-Up, Ctrl-Down, Ctrl-PageUp and
+-Ctrl-PageDown to move in the back log.
++In the virtual consoles, you can use :kbd:`Ctrl+Up`, :kbd:`Ctrl+Down`, :kbd:`Ctrl+PageUp` and
++:kbd:`Ctrl+PageDown` to move in the back log.
+diff --git a/docs/system/linuxboot.rst b/docs/system/linuxboot.rst
+index 2328b4a73d..f7573ab80a 100644
+--- a/docs/system/linuxboot.rst
++++ b/docs/system/linuxboot.rst
+@@ -26,5 +26,5 @@ virtual serial port and the QEMU monitor to the console with the
+    |qemu_system| -kernel bzImage -drive file=rootdisk.img,format=raw \
+                     -append "root=/dev/sda console=ttyS0" -nographic
+ 
+-Use Ctrl-a c to switch between the serial console and the monitor (see
++Use :kbd:`Ctrl+a c` to switch between the serial console and the monitor (see
+ :ref:`GUI_keys`).
+diff --git a/docs/system/mux-chardev.rst.inc b/docs/system/mux-chardev.rst.inc
+index 84ea12cbf5..c87ba31362 100644
+--- a/docs/system/mux-chardev.rst.inc
++++ b/docs/system/mux-chardev.rst.inc
+@@ -1,27 +1,33 @@
+ During emulation, if you are using a character backend multiplexer
+ (which is the default if you are using ``-nographic``) then several
+ commands are available via an escape sequence. These key sequences all
+-start with an escape character, which is Ctrl-a by default, but can be
++start with an escape character, which is :kbd:`Ctrl+a` by default, but can be
+ changed with ``-echr``. The list below assumes you're using the default.
+ 
+-Ctrl-a h
+-   Print this help
++.. list-table:: Multiplexer Keys
++  :widths: 20 80
++  :header-rows: 1
+ 
+-Ctrl-a x
+-   Exit emulator
++  * - Key Sequence
++    - Action
+ 
+-Ctrl-a s
+-   Save disk data back to file (if -snapshot)
++  * - :kbd:`Ctrl+a h`
++    - Print this help
+ 
+-Ctrl-a t
+-   Toggle console timestamps
++  * - :kbd:`Ctrl+a x`
++    - Exit emulator
+ 
+-Ctrl-a b
+-   Send break (magic sysrq in Linux)
++  * - :kbd:`Ctrl+a s`
++    - Save disk data back to file (if -snapshot)
+ 
+-Ctrl-a c
+-   Rotate between the frontends connected to the multiplexer (usually
+-   this switches between the monitor and the console)
++  * - :kbd:`Ctrl+a t`
++    - Toggle console timestamps
+ 
+-Ctrl-a Ctrl-a
+-   Send the escape character to the frontend
++  * - :kbd:`Ctrl+a b`
++    - Send break (magic sysrq in Linux)
 +
-+if get_option('plugins')
-+  linux_user_ss.add(files('plugin-api.c'))
-+endif
- 
- syscall_nr_generators = {}
- 
++  * - :kbd:`Ctrl+a c`
++    - Rotate between the frontends connected to the multiplexer (usually this switches between the monitor and the console)
++
++  * - :kbd:`Ctrl+a Ctrl+a`
++    - Send the escape character to the frontend
 -- 
 2.47.2
 
