@@ -2,96 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76378AFFF91
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA51AFFF9A
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:48:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZon2-0001zJ-RR; Thu, 10 Jul 2025 06:46:08 -0400
+	id 1uZonT-0002bv-6n; Thu, 10 Jul 2025 06:46:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomm-0001rr-Gq
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:56 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZonP-0002X0-SU
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:46:31 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomd-00078P-IZ
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:52 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-453634d8609so4776625e9.3
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uZonM-0007CE-Q0
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:46:31 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3a54700a463so488806f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:46:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752144339; x=1752749139; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=j1lONaDCGcDF8Vf2dQSf345RzEHUxlyX4PcTEZfK8bc=;
- b=eIiaPVXZ+TImU06oLM5pJYqSCgTF7Ta6a7H/ojRZQ+LZVCI+v1abe3wj5H7xaDpmwi
- K/2SbcnafMWSsp+jnJ7se9siFCizWVRBoR61r5XyVyYS92v5GDUIWd1yH8lQWhmmXDkz
- t/mQ7YnKHws8DMLJHTGkOs0f47kacV8G7Ena32xObT+hG2hxq/R+ewvavqZSM04AEOox
- h22y6fdYOz9/XMbn7i7SB2Dyd60WCaPwQTIndtDJJ3wnw8cOIf5p3HyMM84hwpAOgtmc
- Abge8F8nAAg5gb/ae75jHG5RUancu9YrXhXbdncC1NJXYRfWJD47O4lCDvkN7u6ZPzbV
- C4zw==
+ d=linaro.org; s=google; t=1752144387; x=1752749187; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=D03FnMWOzpAFkdAuAaIpWdB+dvO3rfLnQg3ngzegba4=;
+ b=vyZklB8MaIXku5jNgQOEmwIw0FlaECYd667NtQQ6NLHf1oN/cC3y6ROFr2KqK4m71m
+ 86YymbiaR1hs4sVEzM+vY25s/oYBV3tzT7Lt4eIBcGGtV8Hteu52AEFA/Yhjf1l2GmZR
+ fqr8OLXSPINPCD0nDNK+somND6KHpe/heQV+ECVpl9sGlYq3CN6Y9IzukdcTKga5i+w+
+ 8kQlwzdOG9H2V5vu9Y2P0unOqE/Ex/u46hDefW6xxqTMA5CUSwM5Ru0eHlgcxGpp4aF+
+ DxpfmT3CDTo0c6f0wm9SA0rCZqid/18d7BhC7TyTvLMiSu2MGUY3fxnot9SDdxolA0PR
+ 2fKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752144339; x=1752749139;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=j1lONaDCGcDF8Vf2dQSf345RzEHUxlyX4PcTEZfK8bc=;
- b=gdWUSv4UrXpRE3ygH6Upg8PEm1jWu3fqL6WV2Yy4CN37XsFzbBHsJ8W0ubMGNv7amt
- /+P9H0/b7RO7eYF/8hAFQwylJSiawpCIJ/TkOED0kULJ67ARYK4r9gUg7QEBmZ9R4ub+
- W5c5GzztDve4AteHUxkUPNX16x34wBPRdY/0G3RsFWqnO9PtiYDxWwE5Mlo5JqWjqDxx
- xFq7h5BI4E9JCPdIr8JQOUi6wlA6JpyXazJ083POe1HSAr02hkRdncGzrbJz7FZ5cmcV
- cy7uPK555lsVJNsqRcAlWaTUqPYWUQPHBCYLC5hZvGBfChJpBBq7Ch1tMLcbRD10h4aa
- +rYQ==
-X-Gm-Message-State: AOJu0YyMoM7J4/9SpJCIGfRtLjfPKnvndEq1YyuuyjJOuuEM5wo3wF56
- 1McHPKyb94ywVquc10ss1vJgpRNM+VYnLAniRptgvEjuc2xQGy+/UtlkrRClti5KogI=
-X-Gm-Gg: ASbGnct7Iox+RnF6Nc7EzjS8yUsn73v/vZ+Meg2FPyY9cMw9mq3Q+JUbiPxpBAYORjr
- NEGVKh2yUi8/Ow0irYeNkhNfc5tqWZWnUWV55+uhBR3tLMt6FqZH1+MevDsXMfzdMTk4Lj5t6De
- h1HAIlwWNnXt8Ofb6LMfbTrCX4Uk3ProRlgUPIbKx4VYIgNnHLehtJgHdkb/jNPJF7OFHVrnPZr
- gK8rkpcDs3DKR1LatRUFfaXZ+ip36LygQYFfsjZndG61yxGvBCP+0p+vxQNeEq6DGfNQGE6ncR/
- suuto9eWIakXqnueI+3G3eOYztalC65O/oRMi3t2+TJfFNw7kjTexloaOgCElPw=
-X-Google-Smtp-Source: AGHT+IHO7PxjfZO7RtVnQlPFZRSaZVs6hRhnMDeQzkKHslS/UfaLWsb7RSXMFKgtd0e2NW4Sgbc8HQ==
-X-Received: by 2002:a05:600c:4454:b0:450:cac5:45e7 with SMTP id
- 5b1f17b1804b1-454d52db8efmr54057855e9.1.1752144339127; 
- Thu, 10 Jul 2025 03:45:39 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d50df5a1sm54634875e9.22.2025.07.10.03.45.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jul 2025 03:45:36 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DC9645F8CE;
- Thu, 10 Jul 2025 11:45:31 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Jason Wang <jasowang@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
- Laurent Vivier <laurent@vivier.eu>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 7/7] docs/system: clean-up formatting of virtio-net-failover
-Date: Thu, 10 Jul 2025 11:45:30 +0100
-Message-ID: <20250710104531.3099313-8-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250710104531.3099313-1-alex.bennee@linaro.org>
-References: <20250710104531.3099313-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1752144387; x=1752749187;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=D03FnMWOzpAFkdAuAaIpWdB+dvO3rfLnQg3ngzegba4=;
+ b=u7wU6CXYOLrnxiVm5VtOXlgm1SQyFXQpId0Ho/zU2436BSHNcsmkV/dQvTsPKmTB3I
+ acsZFbKKg/cOUBz5t4wkvRxH5tIC3G/XnV00Xyrj86LB1tFHTvS8P2GSq0uVNFj+MPOq
+ eF4EWGIYGMyWVVD9tNQvSwvPJIZBDguWPiAD717+cKkQI19EwifmJ2WpIzaPQre3mL+E
+ gEj46yM3EgFKo8tRF3NaVVvIu8ysmxzvqfYWuREiHPRlPpm3DnrNNgLz/xSe8X3bT3MT
+ IeFw3jbprh8q5EeosmzgAasjrwQJsrEu806dKAxlcGKIWrjHF24hPC4hWKn4IuHKcij1
+ FZBw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWwT6LDBA9OEXllb9kFtDy6qbUmitk0buTt3F4QZ/OV4SNia03fD++XBWGZUvqZ86yTmLDLH3O91jCN@nongnu.org
+X-Gm-Message-State: AOJu0YySl6nmUNv6pmyH35xw48Gtf+gPECWLUg3bKznkOWBcYovyEfmU
+ 5jmwMkJDqBmwabQC9197QZAAeUTT5OMh7m0HZQQghVtYgAqrfbbtfKEzoCX/jdxFkJM=
+X-Gm-Gg: ASbGncsw3FeknOgeosNQ122mwADuO6gvkrGXlqdj4xAsoDAlrn+IiF3IB4QXdNqRNen
+ hY4FN5Sm6Zy5g0eKMu96xQ811rUbiCql6CrI7/FyKLUdyYGD/2aeJvBDegQ+I7m6PxvxXrfexgh
+ KCoqzFGzNp1S2B2rkN8sKOGsFk6y4TiKdsfe77L5OTw95t7E6ISjIG0TCtP06GzGrSaIv9D4pWv
+ 4sgVY4/cuDL0DvAp7cfJ/Ekq41Zbjji17IDoRIa0sjeWQbWUBMOWm/EunoWORnLed5/fHRMLmVT
+ iEpQjFo9Zozr+5v6mZz1kR7EtwImea40gKigv73TTiDosVgidQwYB5mS4/VpMJGtXo7us5AJa2w
+ 0nDqhReEAorHkiZVt8UlgeDZ8bduv2un3B6azj20b6ps=
+X-Google-Smtp-Source: AGHT+IGCApOwEBLyHULh6jot36PYlbIaXAbIdR1l3REQEkiKDG7A58dF3xodPZdaO5xx3VYX3DR4Yg==
+X-Received: by 2002:a05:6000:2283:b0:3a4:d685:3de7 with SMTP id
+ ffacd0b85a97d-3b5e7f0efe6mr2384182f8f.8.1752144387060; 
+ Thu, 10 Jul 2025 03:46:27 -0700 (PDT)
+Received: from [192.168.1.117] (lfbn-mon-1-970-120.w86-227.abo.wanadoo.fr.
+ [86.227.5.120]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8dc1fd7sm1514622f8f.26.2025.07.10.03.46.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Jul 2025 03:46:23 -0700 (PDT)
+Message-ID: <a1bc9aea-4539-400c-ad82-916cf8ff22a7@linaro.org>
+Date: Thu, 10 Jul 2025 12:46:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/18] hw/i386/pc_piix.c: restrict isapc machine to
+ 32-bit CPUs
+To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, pbonzini@redhat.com,
+ mst@redhat.com, marcel.apfelbaum@gmail.com, eduardo@habkost.net,
+ imammedo@redhat.com, qemu-devel@nongnu.org
+References: <20250710085308.420774-1-mark.caveayland@nutanix.com>
+ <20250710085308.420774-2-mark.caveayland@nutanix.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250710085308.420774-2-mark.caveayland@nutanix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,97 +102,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We didn't clean-up the rst formatting when we moved this into the
-docs so lets do that now:
+On 10/7/25 10:52, Mark Cave-Ayland wrote:
+> The isapc machine represents a legacy ISA PC with a 486 CPU. Whilst it is
+> possible to specify any CPU via -cpu on the command line, it makes no
+> sense to allow modern 64-bit CPUs to be used.
+> 
+> Restrict the isapc machine to the available 32-bit CPUs, taking care to
+> handle the case where if a user inadvertently uses -cpu max then the "best"
+> 32-bit CPU is used (in this case the pentium3).
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+> ---
+>   hw/i386/pc_piix.c | 25 +++++++++++++++++++++++++
+>   1 file changed, 25 insertions(+)
+> 
+> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> index ea7572e783..67c52d79b2 100644
+> --- a/hw/i386/pc_piix.c
+> +++ b/hw/i386/pc_piix.c
+> @@ -418,6 +418,18 @@ static void pc_set_south_bridge(Object *obj, int value, Error **errp)
+>   #ifdef CONFIG_ISAPC
+>   static void pc_init_isa(MachineState *machine)
+>   {
+> +    /*
+> +     * There is a small chance that someone unintentionally passes "-cpu max"
+> +     * for the isapc machine, which will provide a much more modern 32-bit
+> +     * CPU than would be expected for an ISA-era PC. If the "max" cpu type has
+> +     * been specified, choose the "best" 32-bit cpu possible which we consider
+> +     * be the pentium3 (deliberately choosing an Intel CPU given that the
+> +     * default 486 CPU for the isapc machine is also an Intel CPU).
+> +     */
+> +    if (!strcmp(machine->cpu_type, X86_CPU_TYPE_NAME("max"))) {
+> +        machine->cpu_type = X86_CPU_TYPE_NAME("pentium3");
 
- - un-indent the usage/hotplug/migration paragraphs
- - properly wrap the command line fragments in code-block
- - highlight parameters in text with ``double quotes``
+Please warn() the user, otherwise:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-No changes to the actual text.
-
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- docs/system/virtio-net-failover.rst | 51 ++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 23 deletions(-)
-
-diff --git a/docs/system/virtio-net-failover.rst b/docs/system/virtio-net-failover.rst
-index 6002dc5d96..0cc465454c 100644
---- a/docs/system/virtio-net-failover.rst
-+++ b/docs/system/virtio-net-failover.rst
-@@ -26,43 +26,48 @@ and standby devices are not plugged into the same PCIe slot.
- Usecase
- -------
- 
--  Virtio-net standby allows easy migration while using a passed-through fast
--  networking device by falling back to a virtio-net device for the duration of
--  the migration. It is like a simple version of a bond, the difference is that it
--  requires no configuration in the guest. When a guest is live-migrated to
--  another host QEMU will unplug the primary device via the PCIe based hotplug
--  handler and traffic will go through the virtio-net device.  On the target
--  system the primary device will be automatically plugged back and the
--  net_failover module registers it again as the primary device.
-+Virtio-net standby allows easy migration while using a passed-through
-+fast networking device by falling back to a virtio-net device for the
-+duration of the migration. It is like a simple version of a bond, the
-+difference is that it requires no configuration in the guest. When a
-+guest is live-migrated to another host QEMU will unplug the primary
-+device via the PCIe based hotplug handler and traffic will go through
-+the virtio-net device. On the target system the primary device will be
-+automatically plugged back and the net_failover module registers it
-+again as the primary device.
- 
- Usage
- -----
- 
--  The primary device can be hotplugged or be part of the startup configuration
-+The primary device can be hotplugged or be part of the startup configuration
- 
--  -device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:6f:55:cc, \
--    bus=root2,failover=on
-+.. code-block:: shell
- 
--  With the parameter failover=on the VIRTIO_NET_F_STANDBY feature will be enabled.
-+  -device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:6f:55:cc,bus=root2,failover=on
-+
-+With the parameter ``failover=on`` the VIRTIO_NET_F_STANDBY feature will be enabled.
-+
-+.. code-block:: shell
- 
-   -device vfio-pci,host=5e:00.2,id=hostdev0,bus=root1,failover_pair_id=net1
- 
--  failover_pair_id references the id of the virtio-net standby device. This
--  is only for pairing the devices within QEMU. The guest kernel module
--  net_failover will match devices with identical MAC addresses.
-+``failover_pair_id`` references the id of the virtio-net standby device.
-+This is only for pairing the devices within QEMU. The guest kernel
-+module net_failover will match devices with identical MAC addresses.
- 
- Hotplug
- -------
- 
--  Both primary and standby device can be hotplugged via the QEMU monitor.  Note
--  that if the virtio-net device is plugged first a warning will be issued that it
--  couldn't find the primary device.
-+Both primary and standby device can be hotplugged via the QEMU
-+monitor. Note that if the virtio-net device is plugged first a warning
-+will be issued that it couldn't find the primary device.
- 
- Migration
- ---------
- 
--  A new migration state wait-unplug was added for this feature. If failover primary
--  devices are present in the configuration, migration will go into this state.
--  It will wait until the device unplug is completed in the guest and then move into
--  active state. On the target system the primary devices will be automatically hotplugged
--  when the feature bit was negotiated for the virtio-net standby device.
-+A new migration state wait-unplug was added for this feature. If
-+failover primary devices are present in the configuration, migration
-+will go into this state. It will wait until the device unplug is
-+completed in the guest and then move into active state. On the target
-+system the primary devices will be automatically hotplugged when the
-+feature bit was negotiated for the virtio-net standby device.
--- 
-2.47.2
+> +    }
+> +
+>       pc_init1(machine, NULL);
+>   }
 
 
