@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3ECAFFBE6
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 10:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E12AFFBF1
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 10:15:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZmO4-00056L-OI; Thu, 10 Jul 2025 04:12:12 -0400
+	id 1uZmQG-0006sf-LM; Thu, 10 Jul 2025 04:14:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZmO2-00054g-2F
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 04:12:10 -0400
-Received: from mail-yb1-xb33.google.com ([2607:f8b0:4864:20::b33])
+ id 1uZmQ9-0006oz-Kc
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 04:14:21 -0400
+Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZmNr-0006L5-Jq
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 04:12:07 -0400
-Received: by mail-yb1-xb33.google.com with SMTP id
- 3f1490d57ef6-e82314f9a51so594641276.0
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 01:11:57 -0700 (PDT)
+ id 1uZmQ2-00071E-On
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 04:14:20 -0400
+Received: by mail-yb1-xb32.google.com with SMTP id
+ 3f1490d57ef6-e8275f110c6so476729276.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 01:14:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752135116; x=1752739916; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752135253; x=1752740053; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2s/Zqafw8AcoBzgRuZ54ScgDx0pAEPd4KULnehzKxBg=;
- b=E7M7mvRq+Dw0H+3zISFaE0lH2DDj9wIL/E4gyxU/cmzllF0SA4RcvQaYwF8N4/muyB
- BDr1xVSOyIsHieqfm2q1smheqJDyHwYao/xvFE3oBP64YihhSN41abKi5X7cr8SJq0t/
- DpmUVD76T3TjLq8yAkGarlNIswiYazZAoI9GVlt6UbUxnNh/JWGKREDC/eDZMdAjg+1K
- WL02+8ttMyN45hwjsoVoKurkAL1X8mn084g1aXp0QHPtqPQGvZ3Msg7rjvIqTl/E3Pwr
- 0BZwVr+ip46Z0/WlOuc1jV/P19bjLaC/a1Sk+63F/E+JE5MevL7yQy/AGItu51PtWEbr
- yswQ==
+ bh=1IHzzc6C/yZZS/WhRHD3wUKG06scagrHJZ+IrHZ2gYY=;
+ b=vaiYy7bcri50ysGZzNosMhzMf4W285h38cQPMTl99xJHv6FZFNspVgjlsDLAFZsi+W
+ RlqohDA/CVNUXv0uHygNPodYRaPwNLOi+osraVFrt21TYch+m3OuEMUjFbQFfa3xS7cu
+ DEVX2ExNzAmLHicE4N9cg8rfjp8/y0i1ZKr631gC6VeXAJknK5l5GkXrv8VqhitYUEGw
+ yZAZ6aFlMuLioQ3IwTwmB94OshGvIR27GERvPMKKKOo66znrJzvT8ZNhlTZIUfIgEYwO
+ 2+XrndLNGENEpMmbZsCVie//fqD2JrGvlPQfCMqRmxqnWWVKtTdf81XyyQ/9h3Tgz7Up
+ sVOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752135116; x=1752739916;
+ d=1e100.net; s=20230601; t=1752135253; x=1752740053;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=2s/Zqafw8AcoBzgRuZ54ScgDx0pAEPd4KULnehzKxBg=;
- b=Ab0OhABpOJ/49AhvoR6U/LZIuiFIrRzTDB2y5e5Qj4BP0/0XJ9d7xI3RBRMtAVEYV2
- FZWWLfj0W9WGKiQecWXCunFx9yUwqkq1CmndvjLx+x7W2FUjFzkmH/43LwKGCmxwU4KM
- vfS/gayUprvSrM4qp/c7dgzyawO2DqVBZrnYi0iUSElheYTgjy+tFjZRqlpcGxLbvetK
- kWJFR0qZdq9d18xg7JiLOZbMdQpk/zrBu2p+RQv1LxXaVxwFstsJaV2o9lUpvtAJSIgV
- ykaOY04p197OxIC1AejdP12jFCX3UZgexckMLBhvPrKayM0E0wmepU+OltdIyyybPTzw
- v0Sg==
-X-Gm-Message-State: AOJu0Yxe7jWHB7NV/xLz2YdveYJsxHIT9cP4wPaMtOQo3YT+86dO56Cp
- 8jBi6C8TA9xlYly5AbwvdBh0xxptJkkvleQnALju50BRZYI4eZ3ZsYbm0vYSSOQ68VQqCGbRF3l
- GzvZNUfdRppMU/t5FayqWrhW5dqkhqhtxTwAjohsCSQ==
-X-Gm-Gg: ASbGncvcHa4nexSeVleqO+56J4umNUFD5qCcr7f++NLYH3baaV8fA7UDMaQG8ypyPkx
- B2RzGunQN+Ipx0K11Kt/I/vJzIocrpNtcr1vebvX0MWgiGggZ+dY5Sq7vkbNUYDrvC2fHPQYVVK
- 2fgAHN/V3b++WMt1R8fnfPxsVLt9Zl6hTiPrq+SrgEJlF7
-X-Google-Smtp-Source: AGHT+IFP+d3kfFlfXU34Hul8KsHFBVCuvpuCpVKWMgez/2tubk87UqxG1pqPRadEPQ4pauRTaUj/kTpukXVQAtDyNlU=
-X-Received: by 2002:a05:690c:87:b0:70d:ecdd:9bd1 with SMTP id
- 00721157ae682-717b198ef8emr84285357b3.24.1752135116592; Thu, 10 Jul 2025
- 01:11:56 -0700 (PDT)
+ bh=1IHzzc6C/yZZS/WhRHD3wUKG06scagrHJZ+IrHZ2gYY=;
+ b=BjfbiKyiwFWUvRU+IkxVDjNdqlhoPGEuTof/T98ml16UBfVkGaSo5E/qy+T0qrYlkx
+ ztq9bIThTa2s1HY/BKlhxdAVMdfT1fGdmEUbmEPXNlqZ/es+wJbb4P3bPj+24Hmcenc4
+ KD+Qti5uZKFyx4ZAsSyXXkZHUEfVgcJNtTapZC+62I5evnagvol1elAvsUROym6P+/u9
+ qyvJC8E6lon9BUlHYG9f3LA9ozuLmb0E1J4/58ZbPtMnCfZvJDz9yFsoSbT9AmAvZAZw
+ W8tuz0q4Tr6U/53p6pyc5eM7q4vnPhy7F7PTlL00B8ObXyvwdrV/QlLm/JMnIWO7UGM+
+ ouqw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWHdqxsi337rud0S35l/BDXzt5lh8w/L8WIaJtTNcZdZmNlSD2d/dISxoDfC1XrdYV9pfNBDd+iQVr+@nongnu.org
+X-Gm-Message-State: AOJu0Yys9ki+Tmsa+6N+jU0srWTv4z6cyB8dtt+6IgszICmxSpXqmCaL
+ 2SwDo1Hic60NYm+EuosqWiI0zhcRCOSLH8bozdoXQz1IoLfDM32AFgw6kgQfue4OPv0CJQyocQy
+ wHM6WDfN0XSc0fb6sk/CkKQBkZ52JJjVR5n5dgWd/gQ==
+X-Gm-Gg: ASbGncuVCrAgSCbkgOT3HCl6jW5y4eIYloBmiMQ7LRleCzZZnJWzhxuRVqVOARG/+XK
+ cjjWfyqKVtitE+ncyA1OHAqVMST6ZVKjLWuOlk5ssXHpCppds4dBTeq6tyMd4j83p7tEJ5lLzSM
+ bAExdJU1sh7lfCztcYWrC0Dw/0V7CHdl1RFWy3ren+4VXI
+X-Google-Smtp-Source: AGHT+IEgRGMavqkmnEAh3ihnMRKU1o8ECFl81+banPmU9m89fL6tfb6875f+5JJ1n/NG+v7t34OLobrmFJyyH6NFw5Q=
+X-Received: by 2002:a05:690c:6908:b0:70c:a0c9:c648 with SMTP id
+ 00721157ae682-717c1774a36mr42990637b3.19.1752135253020; Thu, 10 Jul 2025
+ 01:14:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250703104110.992379-1-Jonathan.Cameron@huawei.com>
-In-Reply-To: <20250703104110.992379-1-Jonathan.Cameron@huawei.com>
+References: <20250704141927.38963-1-cohuck@redhat.com>
+In-Reply-To: <20250704141927.38963-1-cohuck@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 10 Jul 2025 09:11:44 +0100
-X-Gm-Features: Ac12FXwPnQQnWUTVs71FmnCoarOVLcrYujDLpcY0gASudkRZRuyeu7_DF9hc4Qg
-Message-ID: <CAFEAcA9gDM87t0RXWPdu5bi1WxcMcpRiYEcnqjzhdUiys=E0gA@mail.gmail.com>
-Subject: Re: [PATCH qemu v17 0/5] arm/virt: CXL support via pxb_cxl
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: qemu-devel@nongnu.org, Fan Ni <fan.ni@samsung.com>, 
- Eric Auger <eric.auger@redhat.com>, mst@redhat.com,
- Zhijian Li <lizhijian@fujitsu.com>, 
- Itaru Kitayama <itaru.kitayama@linux.dev>, linuxarm@huawei.com,
- linux-cxl@vger.kernel.org, 
- qemu-arm@nongnu.org, Yuquan Wang <wangyuquan1236@phytium.com.cn>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Date: Thu, 10 Jul 2025 09:14:01 +0100
+X-Gm-Features: Ac12FXzWdUoz8j8Zll5t6-ezJ1-6gAtg-cJJQOot_KDGA2xDn0vcyWA5YAWecfM
+Message-ID: <CAFEAcA9yv-BQQ+3JpiaXpYf+gc0FVKsOy9Np-3BkR+UvB7Enhg@mail.gmail.com>
+Subject: Re: [PATCH 0/5] arm: followup on the ID register storage series
+To: Cornelia Huck <cohuck@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Eric Auger <eric.auger@redhat.com>, Sebastian Ott <sebott@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b33;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb33.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,17 +92,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 3 Jul 2025 at 11:41, Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+On Fri, 4 Jul 2025 at 15:19, Cornelia Huck <cohuck@redhat.com> wrote:
 >
-> v17: Thanks to Eric for review
-> - Add a comment to the high memory map to reduce the chance of nasty
->   surprises in the future as similar to device_memory, the CXL
->   Fixed Memory Windows are of variable size as so can't be represented
->   by explicit entries in the map.
-> - Updated a couple of patch descriptions to provide answers to questions
->   Eric raised.
+> This series tries to address some low-hanging fruit on top of target-arm.next
+> (move some more registers, some cosmetics; see discussion following
+> <20250617153931.1330449-14-cohuck@redhat.com>)
 >
+> Also available at https://gitlab.com/cohuck/qemu id-reg-fixup-v1
+>
+> Cornelia Huck (5):
+>   arm/cpu: store id_afr0 into the idregs array
+>   arm/cpu: store id_aa64afr{0,1} into the idregs array
+>   arm/cpu: fix trailing ',' for SET_IDREG
+>   arm/cpu: store clidr into the idregs array
+>   arm/kvm: shorten one overly long line
 
 
 
