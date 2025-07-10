@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB0CAFFF99
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC416AFFFA4
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:49:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZon6-00023r-5y; Thu, 10 Jul 2025 06:46:12 -0400
+	id 1uZomy-0001rt-SS; Thu, 10 Jul 2025 06:46:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomh-0001rB-DO
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:51 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1uZoma-0001pY-2n
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:41 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomZ-00077g-Qc
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:46 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3a57ae5cb17so516559f8f.0
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:35 -0700 (PDT)
+ id 1uZomV-00077P-QI
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:39 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-451d7b50815so6012075e9.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752144334; x=1752749134; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Vko3wg0dgxa4EDIqWLrzBh8ANpBppL8w4+YtdHLVV04=;
- b=Xr8D/CiAmkld4seW9kE5O3BQi71xxLK5Gdw7fZ4+CXSTEqa70Mguc+c5BHYDOdMbHc
- 77xEEzUuRhmp0T6buBXxUdJJqXxkdzvZaszvZJ6eZI/wAlojw6pKYAP/kmpvEYUHawqe
- 6egc14SKW7cc2dxcmv7B53Hzz8TzhrdZpT7Fdcd9W7dkDQ0fSWepFMaxpfujzAnfXUUg
- ylNzg96Km8ZQx9FH19AOqR4Wa2GxafpndnYNQBW4jzyJJzw4o68o8/hKDwnoo6UcBJmM
- 1ovnhqth1UH5ztr6EycpX5X3ZNQSGWX7iWPPJCpm2tZZyHkNsTmoOXPAjlhsMKtlgG0W
- XWkw==
+ d=linaro.org; s=google; t=1752144333; x=1752749133; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=sPAaWZS9pbyaeBj3LeenkXr30JcrTD9NQ22BxqPsMYU=;
+ b=uNPem30md9MuvYgDlsM40iCXG0H+Q7wxhgV+mnvtDqtl6+A0OGq9P6mMEIRBpM+OZh
+ 7AlN293rWsuA9ylbx039e56A0fb3y7290iCr9fCCkLLzVzVIcoPsm7OcYln/Dg3q57Y5
+ sy5lUQvSepfDJ1GJY1WPYrvWwIqWkFeWa8iO3uvhLxNRKQ7Mwkak74iqbQhwsHQtBz+Y
+ /ljz7toMp0TzMYN+ilG4pnN2Dx9ziVjRA9lMIzMKjLu0KLrFacA8heah2nIoc37u6UnM
+ fzFt8VyrO6sS9uAa1+LjA9HcG0iWIOqQQ6F5goa1O26Fz99ruE+iOm7QFFLOvnjqV7sj
+ 7SCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752144334; x=1752749134;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Vko3wg0dgxa4EDIqWLrzBh8ANpBppL8w4+YtdHLVV04=;
- b=k+ryVyAqVTDBXoG8q/GnR5rlhUmX+Bno8zmm6vWpfdEDI/Eo+mhNW5SmMyXNud6AOd
- IfXTDcLAwc+N1zk+c97aIcg3NiGUxSy0KUNoanq6mqVV4j35vSwuqgSr7n/XyBDDa6Gx
- rOayyk/zzK8gdZss9kJcPcZ+JnrqsiMebyn40/4xpdGb+N0Br/GDzPQnvB32lFRXBtjf
- xkqe/hc6np0gTYvNnYjNUE7636s97OmC5HeOVBEhfywETL88JnkPU1fVk7wE5QvygYbA
- /8ghP6zbJStg6EQk5b6RfrZ+GXSt7GQRxPPb/uVhJa096E3f073yQoVl1oPfGnLmQWt8
- FJPA==
-X-Gm-Message-State: AOJu0YwJaM+Wz26auXxE8LN804bT/2owPUGvFYAu5cKV03vliX4NUQSQ
- 61Jovsfzk2ddixJlaOP1tZyccr56lopOwP6mbBKw+GdtnfO1ns3uqtKjpQ4DMAbihzM=
-X-Gm-Gg: ASbGnctpvB8zZKTsWqDbNxzBDRCIsptFOzZEn9a9EXf0fdC6beBzB+TH3ErmZqNVMEh
- 1m97/IuvdoDmvU5/KmsqrOHgdLhjTIFiub1xpuEYcVtaqcB0BUjl+DA7KpMD88n9iEXMBMhQ9Vt
- 4ZlP35WOXde49yToRZHKU0kFAg7n7U3yHzmZWbmshz+gozuGYe1odtuRL4Kox+exvOQCtOgsPB4
- bP6UzKj37QnOJiOjraHQpttxZRK0mWf7B4aGodenskj2iTutSCFhyPwVxSx5POoARyDa/wI8UQZ
- RidORg1RXI9vccdH33d90CLjSZVmEX9Ml7/Df0CrfMM9LSYMOwykLmWHB2OMMUI=
-X-Google-Smtp-Source: AGHT+IFDr5rMnoDAZwoH8J4FS5zvABLEzQ51b4ZLB7/1GbMRjOUsYcbaeSHpj6cP909fGrZD8zeycg==
-X-Received: by 2002:a05:6000:4107:b0:3a4:f936:7882 with SMTP id
- ffacd0b85a97d-3b5e86d65ecmr1700657f8f.55.1752144333702; 
- Thu, 10 Jul 2025 03:45:33 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752144333; x=1752749133;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=sPAaWZS9pbyaeBj3LeenkXr30JcrTD9NQ22BxqPsMYU=;
+ b=m+y+7cq1WsPB9q/Fau980IlxL4Sop+O/UqCfK5VRohZgzfFNSldc6uhl3pO9noC0jA
+ a9WwkSNrnv9IOUOn+6gVNAmkC8TdEHRTXLed/fNG3OH2SxfBNWVkybhkp9aqcB0rz7V0
+ 804a0P5aKRW48evGwQmdQP7SyXUWdvRyhnV9KL24R4V5ajpVaJ1I3VE7prtLFxRlHCbP
+ UpvFwtAfyLA8rHtCmFsCyq4583Qnn5YO/o86am5TfAHnAHrGfHXJ3ddNxOptLQarUvWi
+ AFEMZKEPqZ0ekzxEQ//kZt32b/kCCO4tJyqPeAwBSgKDNa7eiHmqeEt7wA0H/M61V58F
+ ldbQ==
+X-Gm-Message-State: AOJu0YyG+lzK7VE0KZ64xEqNAIA8He/t83QObhT2g4A42TXjtpaT4CKm
+ plDAZt5y+vVPLA1zLMzMmWg5S0A+X1n7TB+7g316YC+c8tyk6C2niSohT7uwrOWgP5E=
+X-Gm-Gg: ASbGnctXFISzTMSLlsHR2UpqnPchqISPvKv2EfH7o4JS08hjhzJVWo6kZJzffK4xD+D
+ PaarBiB+t/fbuNbmQxYFkWdbEAfd1beuM1jXsHEZUktxuIkSIj/R/59WVXq9aJnXIZuOHAH9/By
+ PbnyRz5Ulg4dQPBLq8/Bn2eXJb/HolapriEVlew8SFkhHR0QHASCxfpLlDTYgMSfeW7IG9tyIIM
+ sQj33AgFh29RpvevYfjVl1eDTheIoIYt+r+ClRalXpKSYmJEDneTGToUdnWyv18PnTTUAzF4Kaq
+ awVGxhqq4/SrwzSl2KoeUYSTEl4lNemeUH0Aow/W6Nlv6PhTjGPytnCC8RNfCsU=
+X-Google-Smtp-Source: AGHT+IEcMtc/oDsJJa1KmaF6zHqG68AR4pPzawvBP8mWG8hK/mavUzJNAhurd0r3IQDtq/Z8MshOGQ==
+X-Received: by 2002:a05:600c:1385:b0:43d:563:6fef with SMTP id
+ 5b1f17b1804b1-454dd2e1fd3mr18454345e9.21.1752144332951; 
+ Thu, 10 Jul 2025 03:45:32 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d867sm1547708f8f.61.2025.07.10.03.45.32
+ 5b1f17b1804b1-454d5032e17sm60568795e9.5.2025.07.10.03.45.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 10 Jul 2025 03:45:32 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3CCCB5F812;
+ by draig.lan (Postfix) with ESMTP id 521775F813;
  Thu, 10 Jul 2025 11:45:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,23 +74,24 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Jason Wang <jasowang@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <laurent@vivier.eu>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 0/7] maintainer updates for 10.1 softfreeeze (gitlab, plugins,
- docs) pre-PR
-Date: Thu, 10 Jul 2025 11:45:23 +0100
-Message-ID: <20250710104531.3099313-1-alex.bennee@linaro.org>
+Subject: [PATCH 1/7] gitlab: use argparse in check-units script
+Date: Thu, 10 Jul 2025 11:45:24 +0100
+Message-ID: <20250710104531.3099313-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250710104531.3099313-1-alex.bennee@linaro.org>
+References: <20250710104531.3099313-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
 X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
  DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
  RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,53 +107,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I've collected up the last few bits that are ready for my last PR
-before the 10.1 softfreeze. The most consequential is enabling
-registers for the Alpha target in plugins. The rest is little
-clean-ups here and there.
+Modernise the argument parsing so we can easily add to the script.
 
-I intend to send the PR on Monday.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ .gitlab-ci.d/check-units.py | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-The following patches are un-reviewed:
-
-  docs/system: clean-up formatting of virtio-net-failover
-  plugins: fix inclusion of user-mode APIs
-  gitlab: add -n option to check_units
-  gitlab: use argparse in check-units script
-
-Alex
-
-Alex Bennée (4):
-  gitlab: use argparse in check-units script
-  gitlab: add -n option to check_units
-  plugins: fix inclusion of user-mode APIs
-  docs/system: clean-up formatting of virtio-net-failover
-
-Manos Pitsidianakis (1):
-  docs: use :kbd: role in sphinx docs
-
-Yodel Eldar (2):
-  contrib/plugins/execlog: Add tab to the separator search of insn_disas
-  target/alpha: Add GDB XML feature file
-
- docs/devel/testing/main.rst          |   4 +-
- docs/system/images.rst               |   2 +-
- docs/system/keys.rst.inc             |  49 +++++-----
- docs/system/linuxboot.rst            |   2 +-
- docs/system/mux-chardev.rst.inc      |  38 ++++----
- docs/system/virtio-net-failover.rst  |  51 +++++-----
- configs/targets/alpha-linux-user.mak |   1 +
- configs/targets/alpha-softmmu.mak    |   1 +
- contrib/plugins/execlog.c            |  15 +--
- linux-user/plugin-api.c              |   1 +
- target/alpha/cpu.c                   |   1 +
- common-user/plugin-api.c.inc         |   1 +
- .gitlab-ci.d/check-units.py          |  29 +++---
- gdb-xml/alpha-core.xml               | 136 +++++++++++++++++++++++++++
- linux-user/meson.build               |   5 +-
- 15 files changed, 250 insertions(+), 86 deletions(-)
- create mode 100644 gdb-xml/alpha-core.xml
-
+diff --git a/.gitlab-ci.d/check-units.py b/.gitlab-ci.d/check-units.py
+index 268a4118d5..cdc62ae5ee 100755
+--- a/.gitlab-ci.d/check-units.py
++++ b/.gitlab-ci.d/check-units.py
+@@ -8,8 +8,10 @@
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ from os import access, R_OK, path
+-from sys import argv, exit
++from sys import exit
+ import json
++import argparse
++from pathlib import Path
+ from collections import Counter
+ 
+ 
+@@ -51,16 +53,17 @@ def analyse_units(build_units):
+ 
+ 
+ if __name__ == "__main__":
+-    if len(argv) != 2:
+-        script_name = path.basename(argv[0])
+-        print(f"Usage: {script_name} <path_to_compile_commands.json>")
+-        exit(1)
++    parser = argparse.ArgumentParser(
++        description="analyse number of build units in compile_commands.json")
++    parser.add_argument("cc_path", type=Path, default=None,
++                        help="Path to compile_commands.json")
++
++    args = parser.parse_args()
+ 
+-    cc_path = argv[1]
+-    if path.isfile(cc_path) and access(cc_path, R_OK):
+-        units = extract_build_units(cc_path)
++    if path.isfile(args.cc_path) and access(args.cc_path, R_OK):
++        units = extract_build_units(args.cc_path)
+         analyse_units(units)
+         exit(0)
+     else:
+-        print(f"{cc_path} doesn't exist or isn't readable")
++        print(f"{args.cc_path} doesn't exist or isn't readable")
+         exit(1)
 -- 
 2.47.2
 
