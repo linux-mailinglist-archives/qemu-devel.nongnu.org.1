@@ -2,81 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB370B0090C
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 18:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D6CB0091A
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 18:43:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZuKv-0002jA-Vi; Thu, 10 Jul 2025 12:41:30 -0400
+	id 1uZuM1-00060C-IL; Thu, 10 Jul 2025 12:42:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uZu24-0004x7-AS; Thu, 10 Jul 2025 12:22:04 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uZu52-0008I4-5Z
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:25:07 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uZu1x-0002A5-MG; Thu, 10 Jul 2025 12:21:59 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bdKnt4WHrz6M4nZ;
- Fri, 11 Jul 2025 00:20:34 +0800 (CST)
-Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
- by mail.maildlp.com (Postfix) with ESMTPS id C4D4814025A;
- Fri, 11 Jul 2025 00:21:41 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (7.182.85.71) by
- frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 10 Jul 2025 18:21:41 +0200
-Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
- frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
- Thu, 10 Jul 2025 18:21:41 +0200
-To: Donald Dutile <ddutile@redhat.com>, Nicolin Chen <nicolinc@nvidia.com>
-CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
- <jgg@nvidia.com>, "berrange@redhat.com" <berrange@redhat.com>,
- "imammedo@redhat.com" <imammedo@redhat.com>, "nathanc@nvidia.com"
- <nathanc@nvidia.com>, "mochs@nvidia.com" <mochs@nvidia.com>,
- "smostafa@google.com" <smostafa@google.com>, "gustavo.romero@linaro.org"
- <gustavo.romero@linaro.org>, "mst@redhat.com" <mst@redhat.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>, Linuxarm
- <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
- <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-Subject: RE: [PATCH v7 07/12] hw/pci: Introduce pci_setup_iommu_per_bus() for
- per-bus IOMMU ops retrieval
-Thread-Topic: [PATCH v7 07/12] hw/pci: Introduce pci_setup_iommu_per_bus() for
- per-bus IOMMU ops retrieval
-Thread-Index: AQHb8B7pgOmyuAHGhEyK6x0wrBLpebQonB8AgADVIJCAAOn5gIAAnLIwgABtrwCAACdXkA==
-Date: Thu, 10 Jul 2025 16:21:41 +0000
-Message-ID: <f3bfc4cdb0ca47da8f3e4bc38b58d3b6@huawei.com>
-References: <20250708154055.101012-1-shameerali.kolothum.thodi@huawei.com>
- <20250708154055.101012-8-shameerali.kolothum.thodi@huawei.com>
- <aG2M/BI3UAYxKCD3@Asurada-Nvidia>
- <741503f8f96148b389b875e6b6812c1a@huawei.com>
- <aG8ECVeOYXPzBEVB@Asurada-Nvidia>
- <3a51c0e0f3ce4c2580ff596008615439@huawei.com>
- <aef834e0-d6dc-40d0-a6aa-24ed44b77325@redhat.com>
-In-Reply-To: <aef834e0-d6dc-40d0-a6aa-24ed44b77325@redhat.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.153.84]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uZu4z-0002XE-7U
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:25:03 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56AFqEBK023674;
+ Thu, 10 Jul 2025 16:24:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2025-04-25; bh=zToMb8GAUe62wM+X
+ g48W3JtcjnIzHCTds6t+OiN1Vec=; b=bjAOaTPYunSTshenpkuwksquXz7+iqCc
+ fm/B+HCbEEx7oqV27GN5qRPqJzeBJpPlvrP60gJpXicYJW2fnwQygNlnWQ9E0mi0
+ qiCIt/1vOwWjiHVfCL2nHy76SfhegZgkgkAYj+Q4auMDtS0UfU0YLndzTfcmvx1K
+ U3iY1ymLPbhACoT121c5sG3ZS8Q0gNhFNI7H/CjGHxhai/HYRtxNVRCmj5e+FNS/
+ imrJwgmmT+FqiXcwiDGreSpmtFElAa5UOqZoH6OSH7y8iyyK5k1p4Fwk8nenP961
+ kTTeYKdWkw1SYRu1hY84bbV3UPEW4rECcHA/dyEAISQkhsDEWdBDtQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47tghe01vj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 10 Jul 2025 16:24:57 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 56AFWrju014147; Thu, 10 Jul 2025 16:24:56 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 47ptgd9bqv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 10 Jul 2025 16:24:56 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56AGOtom005343;
+ Thu, 10 Jul 2025 16:24:55 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 47ptgd9bq1-1; Thu, 10 Jul 2025 16:24:55 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V4 0/3] fast qom tree get
+Date: Thu, 10 Jul 2025 09:24:51 -0700
+Message-Id: <1752164694-215567-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-10_04,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ malwarescore=0 mlxscore=0
+ phishscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2507100139
+X-Proofpoint-GUID: TI9YEJS3yN_EYMShhl_G5GZVedZiPty1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDEzOSBTYWx0ZWRfX0n7nUCr/t4oC
+ //m2exGxFsbls3GRZ0PAA157BTE/7zckdZq8i/4f25OpNL/hqtu9w7csSN+fS5zMGWYAMHtY538
+ RlNa1PLFGH4lIb64YV2e34+iGMn4eg+bYdxgf9SCorupkmVHfYijmpYPp0xBM/cSDOQQ3rHNEMU
+ gUm81GEueSeAYXcCzh+vCkde2xKY1KfwPO7WuN7LuLO7vvXlCABU9DTYDAYqItoYmTmcFf47fKC
+ hx0FT841s1rtcg/7xkrBcwwvBZljIoIklz93Bj6YTwR3cLhTpD5V9Z1YW0ZKkf3BhFWZ5C6YanT
+ UBV5fQ3cG3h/S4oHpQ0woFY4rHLvS17poEImdoHKZxUwu5cwgC9kyGj+I8yO/iA0uLb4ELltWoa
+ ajlZYEnP0BDB1rzrKWRIiG3qd78oLB6VsU1jmySTd3sDrd1i0PVr/b9TI2W6qom5VPd4iXHa
+X-Authority-Analysis: v=2.4 cv=X4NSKHTe c=1 sm=1 tr=0 ts=686fe959 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=pGMINUbP5fDhvze3-5cA:9
+ a=QEXdDO2ut3YA:10 cc=ntf awl=host:13600
+X-Proofpoint-ORIG-GUID: TI9YEJS3yN_EYMShhl_G5GZVedZiPty1
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,116 +111,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRG9uYWxkIER1dGlsZSA8
-ZGR1dGlsZUByZWRoYXQuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgSnVseSAxMCwgMjAyNSA1OjAw
-IFBNDQo+IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpDQo+IDxzaGFtZWVyYWxpLmtvbG90
-aHVtLnRob2RpQGh1YXdlaS5jb20+OyBOaWNvbGluIENoZW4NCj4gPG5pY29saW5jQG52aWRpYS5j
-b20+DQo+IENjOiBxZW11LWFybUBub25nbnUub3JnOyBxZW11LWRldmVsQG5vbmdudS5vcmc7DQo+
-IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgcGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnOyBqZ2dAbnZp
-ZGlhLmNvbTsNCj4gYmVycmFuZ2VAcmVkaGF0LmNvbTsgaW1hbW1lZG9AcmVkaGF0LmNvbTsgbmF0
-aGFuY0BudmlkaWEuY29tOw0KPiBtb2Noc0BudmlkaWEuY29tOyBzbW9zdGFmYUBnb29nbGUuY29t
-OyBndXN0YXZvLnJvbWVyb0BsaW5hcm8ub3JnOw0KPiBtc3RAcmVkaGF0LmNvbTsgbWFyY2VsLmFw
-ZmVsYmF1bUBnbWFpbC5jb207IExpbnV4YXJtDQo+IDxsaW51eGFybUBodWF3ZWkuY29tPjsgV2Fu
-Z3pob3UgKEIpIDx3YW5nemhvdTFAaGlzaWxpY29uLmNvbT47DQo+IGppYW5na3Vua3VuIDxqaWFu
-Z2t1bmt1bkBodWF3ZWkuY29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9uYXRoYW4uY2FtZXJv
-bkBodWF3ZWkuY29tPjsgemhhbmdmZWkuZ2FvQGxpbmFyby5vcmcNCj4gU3ViamVjdDogUmU6IFtQ
-QVRDSCB2NyAwNy8xMl0gaHcvcGNpOiBJbnRyb2R1Y2UNCj4gcGNpX3NldHVwX2lvbW11X3Blcl9i
-dXMoKSBmb3IgcGVyLWJ1cyBJT01NVSBvcHMgcmV0cmlldmFsDQo+IA0KPiANCj4gDQo+IE9uIDcv
-MTAvMjUgMzozNyBBTSwgU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaSB3cm90ZToNCj4gPg0KPiA+
-DQo+ID4+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4+IEZyb206IE5pY29saW4gQ2hl
-biA8bmljb2xpbmNAbnZpZGlhLmNvbT4NCj4gPj4gU2VudDogVGh1cnNkYXksIEp1bHkgMTAsIDIw
-MjUgMTowNyBBTQ0KPiA+PiBUbzogU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaQ0KPiA8c2hhbWVl
-cmFsaS5rb2xvdGh1bS50aG9kaUBodWF3ZWkuY29tPg0KPiA+PiBDYzogcWVtdS1hcm1Abm9uZ251
-Lm9yZzsgcWVtdS1kZXZlbEBub25nbnUub3JnOw0KPiA+PiBlcmljLmF1Z2VyQHJlZGhhdC5jb207
-IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgamdnQG52aWRpYS5jb207DQo+ID4+IGRkdXRpbGVA
-cmVkaGF0LmNvbTsgYmVycmFuZ2VAcmVkaGF0LmNvbTsgaW1hbW1lZG9AcmVkaGF0LmNvbTsNCj4g
-Pj4gbmF0aGFuY0BudmlkaWEuY29tOyBtb2Noc0BudmlkaWEuY29tOyBzbW9zdGFmYUBnb29nbGUu
-Y29tOw0KPiA+PiBndXN0YXZvLnJvbWVyb0BsaW5hcm8ub3JnOyBtc3RAcmVkaGF0LmNvbTsNCj4g
-Pj4gbWFyY2VsLmFwZmVsYmF1bUBnbWFpbC5jb207IExpbnV4YXJtIDxsaW51eGFybUBodWF3ZWku
-Y29tPjsNCj4gV2FuZ3pob3UNCj4gPj4gKEIpIDx3YW5nemhvdTFAaGlzaWxpY29uLmNvbT47IGpp
-YW5na3Vua3VuDQo+IDxqaWFuZ2t1bmt1bkBodWF3ZWkuY29tPjsNCj4gPj4gSm9uYXRoYW4gQ2Ft
-ZXJvbiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsNCj4gPj4gemhhbmdmZWkuZ2FvQGxp
-bmFyby5vcmcNCj4gPj4gU3ViamVjdDogUmU6IFtQQVRDSCB2NyAwNy8xMl0gaHcvcGNpOiBJbnRy
-b2R1Y2UNCj4gPj4gcGNpX3NldHVwX2lvbW11X3Blcl9idXMoKSBmb3IgcGVyLWJ1cyBJT01NVSBv
-cHMgcmV0cmlldmFsDQo+ID4+DQo+ID4+IE9uIFdlZCwgSnVsIDA5LCAyMDI1IGF0IDA4OjIwOjM1
-QU0gKzAwMDAsIFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkNCj4gPj4gd3JvdGU6DQo+ID4+Pj4g
-T24gVHVlLCBKdWwgMDgsIDIwMjUgYXQgMDQ6NDA6NTBQTSArMDEwMCwgU2hhbWVlciBLb2xvdGh1
-bSB3cm90ZToNCj4gPj4+Pj4gQEAgLTI5MDksNiArMjkwOSwxOSBAQCBzdGF0aWMgdm9pZA0KPiA+
-Pj4+IHBjaV9kZXZpY2VfZ2V0X2lvbW11X2J1c19kZXZmbihQQ0lEZXZpY2UgKmRldiwNCj4gPj4+
-Pj4gICAgICAgICAgICAgICB9DQo+ID4+Pj4+ICAgICAgICAgICB9DQo+ID4+Pj4+DQo+ID4+Pj4+
-ICsgICAgICAgIC8qDQo+ID4+Pj4+ICsgICAgICAgICAqIFdoZW4gbXVsdGlwbGUgUENJIEV4cHJl
-c3MgUm9vdCBCdXNlcyBhcmUgZGVmaW5lZCB1c2luZw0KPiA+Pj4+PiArIHB4Yi0NCj4gPj4+PiBw
-Y2llLA0KPiA+Pj4+PiArICAgICAgICAgKiB0aGUgSU9NTVUgY29uZmlndXJhdGlvbiBtYXkgYmUg
-c3BlY2lmaWMgdG8gZWFjaCByb290IGJ1cy4NCj4gPj4+PiBIb3dldmVyLA0KPiA+Pj4+PiArICAg
-ICAgICAgKiBweGItcGNpZSBhY3RzIGFzIGEgc3BlY2lhbCByb290IGNvbXBsZXggd2hvc2UgcGFy
-ZW50DQo+ID4+Pj4+ICsgaXMNCj4gPj4+PiBlZmZlY3RpdmVseQ0KPiA+Pj4+PiArICAgICAgICAg
-KiB0aGUgZGVmYXVsdCByb290IGNvbXBsZXgocGNpZS4wKS4gRW5zdXJlIHRoYXQgd2UgcmV0cmll
-dmUgdGhlDQo+ID4+Pj4+ICsgICAgICAgICAqIGNvcnJlY3QgSU9NTVUgb3BzKGlmIGFueSkgaW4g
-c3VjaCBjYXNlcy4NCj4gPj4+Pj4gKyAgICAgICAgICovDQo+ID4+Pj4+ICsgICAgICAgIGlmIChw
-Y2lfYnVzX2lzX2V4cHJlc3MoaW9tbXVfYnVzKSAmJg0KPiA+Pj4+IHBjaV9idXNfaXNfcm9vdChp
-b21tdV9idXMpKSB7DQo+ID4+Pj4+ICsgICAgICAgICAgICBpZiAoIWlvbW11X2J1cy0+aW9tbXVf
-cGVyX2J1cyAmJiBwYXJlbnRfYnVzLQ0KPiA+Pj4+PiBpb21tdV9wZXJfYnVzKSB7DQo+ID4+Pj4+
-ICsgICAgICAgICAgICAgICAgYnJlYWs7DQo+ID4+Pj4NCj4gPj4+PiBNaW5kIGVsYWJvcmF0aW5n
-IHdoeSB0aGUgY3VycmVudCBidXMgbXVzdCB1bnNldCBpb21tdV9wZXJfYnVzDQo+ID4+IHdoaWxl
-DQo+ID4+Pj4gaXRzIHBhcmVudCBzZXRzIGlvbW11X3Blcl9idXM/DQo+ID4+Pj4NCj4gPj4+PiBN
-eSB1bmRlcnN0YW5kaW5nIGlzIHRoYXQgZm9yIGEgcHhiLXBjaWUgd2Ugc2hvdWxkIHNldA0KPiBp
-b21tdV9wZXJfYnVzDQo+ID4+Pj4gYnV0IGZvciBpdHMgcGFyZW50ICh0aGUgZGVmYXVsdCByb290
-IGNvbXBsZXgpIHdlIHNob3VsZCB1bnNldCBpdHMNCj4gPj4+PiBpb21tdV9wZXJfYnVzPw0KPiA+
-Pj4NCj4gPj4+IFdlbGwsIGZvciBuZXcgYXJtLXNtbXV2MyBkZXYgeW91IG5lZWQgYW4gYXNzb2Np
-YXRlZCBwY2llIHJvb3QNCj4gPj4+IGNvbXBsZXguIEVpdGhlciB0aGUgZGVmYXVsdCBwY2llLjAg
-b3IgYSBweGItcGNpZSBvbmUuIEFuZCBhcyBJDQo+ID4+PiBtZW50aW9uZWQgaW4gbXkgcmVwbHkg
-dG8gdGhlIG90aGVyIHRocmVhZChwYXRjaCAjMikgYW5kIGNvbW1pdCBsb2cNCj4gPj4gaGVyZSwN
-Cj4gPj4+IHRoZSBweGItcGNpZSBpcyBzcGVjaWFsIGV4dHJhIHJvb3QgY29tcGxleCBpbiBRZW11
-IHdoaWNoIGhhcyBwY2llLjANCj4gPj4+IGhhcyBwYXJlbnQgYnVzLg0KPiA+Pj4NCj4gPj4+IFRo
-ZSBhYm92ZSBwY2lfZGV2aWNlX2dldF9pb21tdV9idXNfZGV2Zm4oKSBhdCBwcmVzZW50LCBpdGVy
-YXRlIG92ZXINCj4gPj4gdGhlDQo+ID4+PiBwYXJlbnRfZGV2IGlmIGl0IGlzIHNldCBhbmQgcmV0
-dXJucyB0aGUgcGFyZW50X2J1cyBJT01NVSBvcHMgZXZlbiBpZg0KPiA+Pj4gdGhlIGFzc29jaWF0
-ZWQgcHhiLXBjaWUgYnVzIGRvZXNuJ3QgaGF2ZSBhbnkgSU9NTVUuIFRoaXMgY3JlYXRlcw0KPiA+
-Pj4gcHJvYmxlbSBmb3IgYSBjYXNlIHRoYXQgaXMgZGVzY3JpYmVkIGhlcmUgaW4gdGhlIGNvdmVy
-IGxldHRlciBoZXJlLA0KPiA+Pj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcWVtdS1kZXZlbC8y
-MDI1MDcwODE1NDA1NS4xMDEwMTItMS0NCj4gPj4gc2hhbWVlcmFsaS5rb2xvdGh1bS50aG9kaUBo
-dWF3ZWkuY29tLw0KPiA+Pj4NCj4gPj4+IChQbGVhc2Ugc2VlICJNYWpvciBjaGFuZ2VzIGZyb20g
-djQ6IiBzZWN0aW9uKQ0KPiA+Pj4NCj4gPj4+IFRvIGFkZHJlc3MgdGhhdCBpc3N1ZSwgdGhpcyBw
-YXRjaCBpbnRyb2R1Y2VzIGFuIG5ldyBoZWxwZXIgZnVuY3Rpb24NCj4gPj4+IHRvDQo+ID4+IHNw
-ZWNpZnkgdGhhdA0KPiA+Pj4gdGhlIElPTU1VIG9wcyBhcmUgc3BlY2lmaWMgdG8gdGhlIGFzc29j
-aWF0ZWQgcm9vdA0KPiA+PiBjb21wbGV4KGlvbW11X3Blcl9idXMpIGFuZA0KPiA+Pj4gdXNlIHRo
-YXQgdG8gcmV0dXJuIHRoZSBjb3JyZWN0IElPTU1VIG9wcy4NCj4gPj4+DQo+ID4+PiBIb3BlIHdp
-dGggdGhhdCBjb250ZXh0IGl0IGlzIGNsZWFyIG5vdy4NCj4gPj4NCj4gPj4gSG1tLCBJIHdhcyBu
-b3QgcXVlc3Rpb25pbmcgdGhlIGNvbnRleHQsIEkgZ2V0IHdoYXQgdGhlIHBhdGNoIGlzDQo+ID4+
-IHN1cHBvc2VkIHRvIGRvLg0KPiA+Pg0KPiA+PiBJIHdhcyBhc2tpbmcgdGhlIGxvZ2ljIHRoYXQg
-aXMgdW5jbGVhciB0byBtZSB3aHkgaXQgYnJlYWtzIHdoZW46DQo+ID4+ICAgICAgIXB4Yi1wY2ll
-LT5pb21tdV9wZXJfYnVzICYmIHBjaWUuMC0+aW9tbXVfcGVyX2J1cw0KPiA+Pg0KPiA+PiBPciBp
-biB3aGljaCBjYXNlIHBjaWUuMCB3b3VsZCBiZSBzZXQgdG8gaW9tbXVfcGVyX2J1cz10cnVlPw0K
-PiA+DQo+ID4gWWVzLiBDb25zaWRlciB0aGUgZXhhbXBsZSBJIGdhdmUgaW4gY292ZXIgIGxldHRl
-ciwNCj4gPg0KPiA+IC1kZXZpY2UgYXJtLXNtbXV2MyxwcmltYXJ5LWJ1cz1wY2llLjAsaWQ9c21t
-dXYzLjEgXCAtZGV2aWNlDQo+ID4gdmlydGlvLW5ldC1wY2ksYnVzPXBjaWUuMCxuZXRkZXY9bmV0
-MCxpZD12aXJ0aW9uZXQuMCBcIC1kZXZpY2UNCj4gPiBweGItcGNpZSxpZD1wY2llLjEsYnVzX25y
-PTgsYnVzPXBjaWUuMCBcIC1kZXZpY2UNCj4gPiBhcm0tc21tdXYzLHByaW1hcnktYnVzPXBjaWUu
-MSxpZD1zbW11djMuMiBcIC1kZXZpY2UNCj4gPiBwY2llLXJvb3QtcG9ydCxpZD1wY2llLnBvcnQx
-LGNoYXNzaXM9MixidXM9cGNpZS4xIFwgLWRldmljZQ0KPiA+IHZpcnRpby1uZXQtcGNpLGJ1cz1w
-Y2llLnBvcnQxLG5ldGRldj1uZXQxLGlkPXZpcnRpb25ldC4xDQo+ID4NCj4gPiBwY2llLjAgaXMg
-YmVoaW5kIG5ldyBTTU1VdjMgZGV2KHNtbXV2My4xKSBhbmQgaGFzIGlvbW11X3Blcl9idXMNCj4g
-c2V0Lg0KPiA+IHBjaWUuMSBoYXMgbm8gU01NdjNVIGFuZCBpb21tdV9wZXJfYnVzIGlzIG5vdCBz
-ZXQgZm9yIGl0Lg0KPiBwY2llLjEgZG9lc24ndD8gICB0aGVuIHdoYXQgaXMgdGhpcyBsaW5lIHNh
-eWluZy9tZWFuaW5nPzoNCj4gICAtZGV2aWNlIGFybS1zbW11djMscHJpbWFyeS1idXM9cGNpZS4x
-LGlkPXNtbXV2My4yIFwNCj4gDQo+IEkgcmVhZCB0aGF0IGFzIGFuIHNtbXV2MyBhdHRhY2hlZCB0
-byBwY2llLjEsIHdpdGggYW4gaWQgb2Ygc21tdXYzLjI7IGp1c3QNCj4gYXMgSSByZWFkIHRoaXMg
-Y29uZmlnOg0KPiAgIC1kZXZpY2UgYXJtLXNtbXV2MyxwcmltYXJ5LWJ1cz1wY2llLjAsaWQ9c21t
-dXYzLjEgXCBhcyBhbiBzbW11djMNCj4gYXR0YWNoZWQgdG8gcGNpZS4wIGl3dGggaWQgc21tdXYz
-LjENCg0KT29wcy4uSSBmb3Jnb3QgdG8gZGVsZXRlIHRoYXQgZnJvbSB0aGUgY29uZmlnOg0KVGhp
-cyBpcyB3aGF0IEkgbWVhbnQsDQoNCi1kZXZpY2UgYXJtLXNtbXV2MyxwcmltYXJ5LWJ1cz1wY2ll
-LjAsaWQ9c21tdXYzLjEgXA0KLWRldmljZSB2aXJ0aW8tbmV0LXBjaSxidXM9cGNpZS4wLG5ldGRl
-dj1uZXQwLGlkPXZpcnRpb25ldC4wIFwNCi1kZXZpY2UgcHhiLXBjaWUsaWQ9cGNpZS4xLGJ1c19u
-cj04LGJ1cz1wY2llLjAgXA0KLWRldmljZSBwY2llLXJvb3QtcG9ydCxpZD1wY2llLnBvcnQxLGNo
-YXNzaXM9MixidXM9cGNpZS4xIFwNCi1kZXZpY2UgdmlydGlvLW5ldC1wY2ksYnVzPXBjaWUucG9y
-dDEsbmV0ZGV2PW5ldDEsaWQ9dmlydGlvbmV0LjEgXA0KDQpUaGFua3MsDQpTaGFtZWVyDQoNCj4g
-DQo+ID4NCj4gPiBBbmQgd2UgZG9uJ3Qgd2FudCBwY2lfZGV2aWNlX2dldF9pb21tdV9idXNfZGV2
-Zm4oKSB0byByZXR1cm4gcGNpZS4wJ3MNCj4gPiBJT01NVSBvcHMgZm9yIHZpcnRpb25ldC4xLiBI
-ZW5jZSB0aGUgYnJlYWsuDQo+ID4NCj4gPiBUaGFua3MsDQo+ID4gU2hhbWVlcg0KPiA+DQo+IA0K
-DQo=
+Using qom-list and qom-get to get all the nodes and property values in a
+QOM tree can take multiple seconds because it requires 1000's of individual
+QOM requests.  Some managers fetch the entire tree or a large subset
+of it when starting a new VM, and this cost is a substantial fraction of
+start up time.
+
+To reduce this cost, consider QAPI calls that fetch more information in
+each call:
+  * qom-list-get-one: given a path, return a list of properties and values.
+  * qom-list-get: given a list of paths, return a list of properties and
+    values for each path.
+  * qom-tree-get: given a path, return all descendant nodes rooted at that
+    path, with properties and values for each.
+
+In all cases, a returned property is represented by ObjectPropertyValue,
+with fields name, type, and value.  If an error occurs when reading a value
+the value field is omitted.  Thus an error for one property will not cause a
+bulk fetch operation to fail.
+
+To evaluate each method, I modified scripts/qmp/qom-tree to use the method,
+verified all methods produce the same output, and timed each using:
+
+  qemu-system-x86_64 -display none \
+    -chardev socket,id=monitor0,path=/tmp/vm1.sock,server=on,wait=off \
+    -mon monitor0,mode=control &
+
+  time qom-tree -s /tmp/vm1.sock > /dev/null
+
+I only measured once per method, but the variation is low after a warm up run.
+The 'real - user - sys' column is a proxy for QEMU CPU time.
+
+method               real(s)   user(s)   sys(s)  (real - user - sys)(s)
+qom-list / qom-get   2.048     0.932     0.057   1.059
+qom-list-get-one     0.402     0.230     0.029   0.143
+qom-list-get         0.200     0.132     0.015   0.053
+qom-tree-get         0.143     0.123     0.012   0.008
+
+qom-tree-get is the fastest, reducing elapsed time by a factor of 14X,
+and reducing QEMU CPU time by 132X.
+
+qom-list-get is slower when fetching the entire tree, but can beat
+qom-tree-get when only a subset of the tree needs to be fetched (not shown).
+To keep things simple, provide only qom-list-get.
+
+Changes in V4:
+  * renamed qom-list-getv -> qom-list-get
+  * expanded the qtest to verify a value
+  * cosmetic changes in the docs
+  * expanded the qom-list-get commit message
+
+Changes in V3:
+  * dropped qom-tree-get
+  * modified the qom-tree script to use qom-list-getv
+  * cosmetic changes in the docs and code.
+
+Changes in V2:
+  * removed "qom: qom_resolve_path", which was pulled separately
+  * dropped the error member
+  * fixed missing _list_tree in qom.py
+  * updated 10.0 to 10.1
+
+Steve Sistare (3):
+  qom: qom-list-get
+  python: use qom-list-get
+  tests/qtest/qom-test: unit test for qom-list-getv
+
+ python/qemu/utils/qom.py        |  43 ++++++++-------
+ python/qemu/utils/qom_common.py |  53 ++++++++++++++++++
+ qapi/qom.json                   |  50 +++++++++++++++++
+ qom/qom-qmp-cmds.c              |  53 ++++++++++++++++++
+ tests/qtest/qom-test.c          | 116 +++++++++++++++++++++++++++++++++++++++-
+ 5 files changed, 296 insertions(+), 19 deletions(-)
+
+-- 
+1.8.3.1
+
 
