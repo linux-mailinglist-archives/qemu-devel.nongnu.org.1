@@ -2,75 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9978CB00B47
+	by mail.lfdr.de (Postfix) with ESMTPS id 95289B00B46
 	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 20:25:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZvvt-0001P1-8v; Thu, 10 Jul 2025 14:23:45 -0400
+	id 1uZvvt-0001Qa-V8; Thu, 10 Jul 2025 14:23:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZvIj-0000oM-Kj
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:43:25 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uZvJ4-0000x4-4K
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:43:38 -0400
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZvIh-0000CF-Uw
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:43:17 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3a4fb9c2436so898113f8f.1
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 10:43:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uZvJ2-0000ES-FU
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:43:37 -0400
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-2da3c572a0bso1075070fac.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 10:43:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752169394; x=1752774194; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=6q4CPzNSFHkl+W3MMlVl+w4aksqgE/U7SNmb7FH1q2I=;
- b=BCpraWfojXPBS0AW+Jilqx8KBYTHh9JUvXoUCsvRZvT00SmPSSPyQnZ64xuHeBnViz
- gA55nrWNXpL1PZgCN8246ATG3EdbvSY6AzgPtfd4F6jBty9NIOkveF5nEXY2J2nIv1LB
- DDMyPJjbAoP9FKSKKbgE6phGLHC9c2UlB8k61fnV0gH7Myd0AHjRVyL94cH9ZdNui6PW
- A6sqsfhj7l/T6n3qDYVmR4FAIfPYSVaLqvGzXBCl7HYUY/y+QweOV1AD4wrow2u6U9yD
- Uc0JJAW0GhN7a/OSJ2j65PnpG0+3g6xH/1Zw7BQ+lVoZGEVKFBQm+uxYpna0t7DvEesE
- +GZQ==
+ d=linaro.org; s=google; t=1752169415; x=1752774215; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3CedxPDRQ2FrYfR+32jAcmSwgcLoV3ZJQqOhAvL9lG4=;
+ b=l3CJnts81F3iZRv0IPuBudC3CLjB0TaeikAW46OFXfqS1jlUfcEzefLpjbucyZFGMK
+ S9g6dGGvpNLse33wOUTwnnWWBpE77SSV9R4GszCJPjfOdzZUfRo0I2K0bPiABmxqnQZW
+ OM9AMdmBLQSxCz4ICtjFSfsHmGXRHu1a1f48TxZA2q6o8RUr7VdVNHrjrtqbMNE30Tjo
+ V7e8m1GpuOYnvBVGlL3Co3/3TATrX2g6CQ29mXTgiqad4zQYk6SbSKwj9XLcBXQ5nMAt
+ ZPS8oMYRycuJZcPkZKys0hEzg3lmzKUtO0xgZkvRmjwOpyBwWqFRSMWyB7lPrufIrRjV
+ pUIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752169394; x=1752774194;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6q4CPzNSFHkl+W3MMlVl+w4aksqgE/U7SNmb7FH1q2I=;
- b=oBKM+lpI+lk9wtW+Upbi6Vnz81y2cTdvYI6NAmlz5ttFgSO6ujD7oiviur5gz+HMcB
- /VhfULuVSyRSlUmtfuXwNx1pVbJBLkbhw9c+QDohq6nFvqz8JsxUu8CuW0/U/OiwIIS+
- YzOB5psSb1rQEY2WB1udBk7THpsqjj4lqOBOGY2F2TTjilZ3goKaY8souT3rITb7lIgR
- q27lZYER7GGtaRyve+XDIca8OOBxY/JwVZi+qjE9HCFws0llIQFZGH2ihvTDIGnIwSd0
- PaCwNt83GXA4Bh8P1Arlf3Fvz6R5cYUipIo+fDn3JI0+0K1Pll4ix/ejYsR7YXdvpcuZ
- uSUw==
-X-Gm-Message-State: AOJu0YzVozjaiFujNnTI11udKGjSDD3NwsM0UzVqrU+0BTI6SCeUUCVo
- 9D82FaRaeYKHK2PJeYKcYulf43sZW7J3b7Q3r57cRdrxBiTDzfmYgClr/IJq04lTD0V3EPLfe71
- f9gf5
-X-Gm-Gg: ASbGnct/1oUj5bI/3o9cvSetCxT6cfdUKMeAYgVUS8sLGeykGT5Nar/Liu6P0s0bQ+b
- 4KEhh/DQsEKVYR87Mi/YSh2hX0L3E9REUUzhYLPFQrkNh0yLh4Bs/9mZ7rbwb7rdMF7H8iToEXK
- uTyvXfF9SItPtI2F1WPeprr8lUhmSFVOe3UnGiAstTvIb5IauG0HUzxpWHXAJGflk6FsNcnlf9f
- ASAUxDisxm5deauoTFspUErZx5Nw8EpE/Cemor6UyhJJ1ZgH72ihApryJ6PMYuafe7LSqaDfu8p
- T7yI7PfAUtgQ6rd3XJ5BkUy0nXs0GPhNuOqE9rUckwoyFxaXp6BrDdx4vhHf+D/hS1kU
-X-Google-Smtp-Source: AGHT+IFtl4IKDY7MuYQYNSgDBslWzZxGPAvfiXiQP784ocNiNftXe0k4ZbTTg2zWG/pp+86ChW7sbQ==
-X-Received: by 2002:adf:f089:0:b0:3a5:39be:c926 with SMTP id
- ffacd0b85a97d-3b5f18cec74mr348870f8f.32.1752169394198; 
- Thu, 10 Jul 2025 10:43:14 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1752169415; x=1752774215;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3CedxPDRQ2FrYfR+32jAcmSwgcLoV3ZJQqOhAvL9lG4=;
+ b=arU5JRVcJUk+LI12yQK1HhKGUfC7r6guu3Xkh7Ftm7RulayR0SL/LdoNDVcVN7QseS
+ KNNlSlfP5Q9ZysprQfl9Qf0A3pg4/4QF/PhCHKOZG/rSYxeOqDwZ7UeZsJbFh+Mj1uXJ
+ Je1DIbeZCh7KplQOkPnOtPol6Wui8f1Fp3xX1wuE9fVYPH8Gc87O+A/lgHz8+yspSCPd
+ Afkg21xhv/FZodgeyNR5pZTsyH1kO79xLVkd2BOwRHN0DV9oiG+ZzFzdLGD4Nf/Qb0Y2
+ dFIDik5cO3W2aUN2Z04LW1WXqErL+S2p+9TV03LINOwSMsc0B8VwingpYqpeJ/eLknWq
+ lc/A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUwF/dGW+FSf9sSEpsqOwemKL6a1Mk94YVLoCVveOYCjvVfdCP8XByXkaCqQM+4DL2QWX0gDMRtB7II@nongnu.org
+X-Gm-Message-State: AOJu0YxWoNu46Eb3btkR8xHdzlVt7DUh8qxMInTpFHynqQMMendJ7mB1
+ nP7d9sgjJhNyfjKv4uHVQxkb26S3/wc1yaMU/AKxhqpEi/lZ53XlWEh6B4pNFZvZ5w6XilCKeLb
+ x5vp1Qrg=
+X-Gm-Gg: ASbGncuDN6ba7rKLnoP6XfUjXkUjVXpCL5PtBnlSbWm3Yi11bvpAOVRlGj0UtUIGvmn
+ LR4lTFpcSwwob5L0J63TNGlzjU9vS2w0o8/7mbRuFAN9plVRa0dpNPtonoi4Yp/Esz0DuT69yW1
+ cmhbBOKmiukxquJroOPG1CRqvryKd5L4hrLXS8Yc2SKPcRrZYJM1n8z4lDPVYc6Iw90p1/QoDTq
+ v4J3pyI/4DV3Tm8yE1E+gN7RF0nzUJZGe0PCpKU6l9HRYyLwJOQ9LZolVQ2csY5PLr1cet6ohAS
+ 1LD+vQkkqVDUQ6pxUhDIZ+WCQd+owtvNWQ7QoS47YFPQyhrOtORT6TW4pSQ7G37ztDEtRGUiEzX
+ 3QdM=
+X-Google-Smtp-Source: AGHT+IFd7M210SMtlZsUOBpas8AFN8SC45Xy3GhIFCNkC1YinvzTaxhP7VGy+KE5wALDwIaN4I76vQ==
+X-Received: by 2002:a05:6870:200b:b0:29e:4340:b1b with SMTP id
+ 586e51a60fabf-2ff267625c5mr153711fac.9.1752169414786; 
+ Thu, 10 Jul 2025 10:43:34 -0700 (PDT)
+Received: from [172.20.0.130] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8bd1924sm2462541f8f.16.2025.07.10.10.43.13
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jul 2025 10:43:13 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH] hw/display/framebuffer: Add cast to force 64x64 multiply
-Date: Thu, 10 Jul 2025 18:43:12 +0100
-Message-ID: <20250710174312.1313177-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
+ 586e51a60fabf-2ff111c4f8asm383833fac.6.2025.07.10.10.43.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Jul 2025 10:43:34 -0700 (PDT)
+Message-ID: <d7e76007-10f4-4507-a2cd-1707ca6a8918@linaro.org>
+Date: Thu, 10 Jul 2025 11:43:31 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] linux-user/gen-vdso: Handle fseek() failure
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>
+References: <20250710170707.1299926-1-peter.maydell@linaro.org>
+ <20250710170707.1299926-2-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250710170707.1299926-2-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,41 +103,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In framebuffer_update_display(), Coverity complains because we
-multiply two values of type 'int' (which will be done as a 32x32
-multiply and so in theory might overflow) and then add the result to
-a ram_addr_t, which can be 64 bits.
+On 7/10/25 11:07, Peter Maydell wrote:
+> Coverity points out that we don't check for fseek() failure in gen-vdso.c,
+> and so we might pass -1 to malloc(). Add the error checking.
+> 
+> (This is a standalone executable that doesn't link against glib, so
+> we can't do the easy thing and use g_file_get_contents().)
+> 
+> Coverity: CID 1523742
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   linux-user/gen-vdso.c | 11 +++++++++--
+>   1 file changed, 9 insertions(+), 2 deletions(-)
 
-4GB framebuffers are not plausible anyway, but keep Coverity happy
-by adding casts which force these multiplies to be done as 64x64.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Coverity: CID 1487248
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-This is one of those ones where I'm on the fence about sticking
-in the cast vs just marking it a false-positive.
----
- hw/display/framebuffer.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/hw/display/framebuffer.c b/hw/display/framebuffer.c
-index 4485aa335bb..b4296e8a33e 100644
---- a/hw/display/framebuffer.c
-+++ b/hw/display/framebuffer.c
-@@ -95,9 +95,9 @@ void framebuffer_update_display(
-     }
-     first = -1;
- 
--    addr += i * src_width;
--    src += i * src_width;
--    dest += i * dest_row_pitch;
-+    addr += (uint64_t)i * src_width;
-+    src += (uint64_t)i * src_width;
-+    dest += (uint64_t)i * dest_row_pitch;
- 
-     snap = memory_region_snapshot_and_clear_dirty(mem, addr, src_width * rows,
-                                                   DIRTY_MEMORY_VGA);
--- 
-2.43.0
-
+r~
 
