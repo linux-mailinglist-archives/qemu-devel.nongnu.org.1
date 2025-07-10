@@ -2,120 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98171B00833
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 18:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7DEB008D2
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 18:34:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZtoA-0007Ys-S9; Thu, 10 Jul 2025 12:07:47 -0400
+	id 1uZuCY-000558-9Q; Thu, 10 Jul 2025 12:32:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
- id 1uZtgz-0000B7-TW
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:00:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
- id 1uZtgx-0004aJ-Cu
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:00:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752163209;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2788gbQaVQRApXodVht/wRl5mLS9bLsRgJ/dXJC548M=;
- b=Yps8xskkvR2UTbZrbMbU+a8larVu8JWg+HTvTn5Dw2WEjGzXDzt805cMRcGweBocMuLvM+
- jYoQPnAsroM8/VA3l1G/sZKaUC40MUZxbauAMzIYl+95MXzGhy44OdflPwsi/qWZy6+2Qi
- 0eYG+Bt9+Ri2opnxVM42aBHwP3uwqp4=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-332-lQ_S8kOfMkeipj6NLKYQCg-1; Thu, 10 Jul 2025 12:00:08 -0400
-X-MC-Unique: lQ_S8kOfMkeipj6NLKYQCg-1
-X-Mimecast-MFC-AGG-ID: lQ_S8kOfMkeipj6NLKYQCg_1752163206
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-74ae13e99d6so1966970b3a.0
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:00:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uZtwG-0008Q4-6o
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:16:01 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uZtwD-0000ax-LR
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 12:15:59 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-454b1d0a115so4475565e9.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 09:15:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752164155; x=1752768955; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q7QvCTXDiPU+t2Q+zwwTwj1QNbnhI7JBdN1hjNvSyLg=;
+ b=UZDKtZv8tnfmaj5uQg3m/TnkwG7TOX9Y6wD1VXmzmQshJcpOM4KO8h4jbdIHCKbc0U
+ PPuqNYtDqWJ2ZR6Q5YUoyEc04vldsvHIjYS1cN7ulCGnM4Gsp6KQMVrDigcj/jfTOtJ+
+ Ud/OGFt2aOEehchTjrQgudLRjiuf+1+ltjHVFzdZ6YpJnF3QEdASxZ0h1N1pC69CdvLF
+ wx1uPNbcMZKd+fYGbTgWd/2Xdu/s9Dny5tXP5URMSjVJNRRSw6Gu9WnHFNhNwCiKMVdV
+ 9VXn8WKaDq43snLuXOEVS5Ti6x4z6BUqhFJcIfmkWLkifrwuC6A2VupPkiELDXNI83FQ
+ GZRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752163206; x=1752768006;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2788gbQaVQRApXodVht/wRl5mLS9bLsRgJ/dXJC548M=;
- b=iDSb5oazVqmU0kA0T9NmErX9s9QBin9FiF2B32iOBYSGDB/wjKQCDzfCp70TRqrmi/
- FIavra+7KihUKgaY9PzuX/+dqubI/QADg76y3ryKfY/9B93Hl+3ifmfBtYziROOrH21m
- vN4igg/kw6nV2E+WnuFfY/b/JxiBOGYcJPNypj2KaL7g5ogWhylOpenO1QIk2NxVDu5p
- 75luCQ6vl2tQrWbK4VRzkU5OAi2IFzX32Wv4Ra6ncPHoywQ6lQIWfPJtXOuOsPDMnGHr
- OPF2gUS7XY1ddevecS53dvKaLSi8WYd+uHO4L4rxh0cG4NeBXqdZd26yJIgtMYI5QJAT
- IaDQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUEy0f2g2widD3kTuA5cwkkMd4GebXa05YaBEql4CeZnqPGNip4folh8UVz6e0SiuH84raPUGtuoEhX@nongnu.org
-X-Gm-Message-State: AOJu0YzNzWf+MJ25kYeTD/1d+F6tcrHJTNLl3H0iRryg9gWnuWzMMPwj
- 9VXOkqW3U2oE7WZF7y4Lj9VcHzGRRpUQntdGkJhdbCRIQB3HvLnliy0Kyns1KBDoif8JjFWZbvO
- 2qR8aaiQidWWA5wowp66EzUEGjQfavYK3mH7bWFAVGl3DfpqBep/58I4W
-X-Gm-Gg: ASbGncsizef1ZJC3YNSw3ne6C/hYkcrPINNdHrzXqz2qG/62SHhU7znv+WlMnGfKEJx
- 37NXq/dzGwiZ0YN0ifRid4iprzgciPQC8cUkV/T1l6j1C/27cA28OnVjyWUl1oRSZf3Cy8iGCyM
- /qz3A4hEmEf+stscA9rw3FvKj5YWDuLmrQrDPC8Go0iSmmRDUO03GaXRT7RuXMPqqQ3Sv8TjVjg
- IZhlZidCkGQA4T4zoOC+w/nuiLfjuTtXI65WmeP9ZQzHDOO00qMHZai5sceaLvqUborz1emJsSz
- VOZn7yWNl0YySd+stSaTqaU=
-X-Received: by 2002:a05:6a20:549d:b0:227:d017:cca9 with SMTP id
- adf61e73a8af0-22fc2ef8aefmr7873497637.9.1752163205788; 
- Thu, 10 Jul 2025 09:00:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKZvSwY3CmIV5v+lZVUqGgU17MjzBptq+XfzqgO2mlClCcIFhGyGBPRJ1ObzBLpEg2WB5zGQ==
-X-Received: by 2002:a05:6a20:549d:b0:227:d017:cca9 with SMTP id
- adf61e73a8af0-22fc2ef8aefmr7873428637.9.1752163205177; 
- Thu, 10 Jul 2025 09:00:05 -0700 (PDT)
-Received: from [192.168.40.164] ([70.105.235.240])
+ d=1e100.net; s=20230601; t=1752164155; x=1752768955;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Q7QvCTXDiPU+t2Q+zwwTwj1QNbnhI7JBdN1hjNvSyLg=;
+ b=gR5jUuMfCXbxuuVp4Gj3wDOwibDUF3bgknJrXEUprqzbU2HtT4/eroxz/GOKSBr2aH
+ zmYX9OzTIxgCm32F466cV9XndzoZA5qWBY7B4/eVb1fTuL6TyqsoqxF0XWzHfDIL27Ev
+ OAetUFV/bNqSitRx9VTPyQ1zg2SuVTp+CpodmyR3KULlegm9c16Gom1s6JLwr8xO1q4S
+ AP6EPRfxG31K2EwtSdeYec7PkbOX+Z43jCk+qRw7vyNnYdyl4JjQpnIY8+MNG6WX0V21
+ r9v/5qT2TLwNZfczA1w/4sveR1oYm6xbajZWmrO5ikld0djC7du96cuVrNcCi2T44K2e
+ fBtg==
+X-Gm-Message-State: AOJu0YyNclGlweF/fvFHSf3KW2XAyFxjpro8sxSGzUBZCLxxxA5yc8Rf
+ 81RX56StwOMmxX+o8X7mCWBET0b6bgWd3A0Gsfxaxx5DmxAZDT1bMTyI7Y+y6TuDZ5NZc+yY39g
+ ZhJcd
+X-Gm-Gg: ASbGncvLiDZ8w5XnDwUePnKghKEGHFGO+ho6zWV2q6yMi/7Sn4PNcmQpMrzzbeMGrrG
+ TVkNObFW8Ra6QD9AKFVyeD0WXdmg/c1xjoqqs30/1UQ2O+SQPtVH1L/mBEKJnmK5t5OshNU1muN
+ kAFeBCP72Qhz7rYidd2Eyn44lcIW3QPJmhml9Tjpa/7Ano3d9LwqhXk/9WA7fJIQ6A0dDy4jqPG
+ U4m2HlpeeAovkh0AeOjcpnLdORzTrjHilndCWgdr2EsCY14alXIbqu6Epnglc4n4p4dOpmuGJNt
+ H9uAxTgkP3SW17cRq2qT3Hmp6CbW3TyvH9QvWyzJUDH/rifTjd5zdFiCzQHmyeUpV2M5
+X-Google-Smtp-Source: AGHT+IEGlYQZCpXUSzH4wV1McXURVUTumKrl+Xb5jQGwATHmAOqNi/OOs3FvF6le2qLiUDbB3qva4g==
+X-Received: by 2002:a05:600c:1c8f:b0:453:62e9:125a with SMTP id
+ 5b1f17b1804b1-454dd292bcfmr36776355e9.18.1752164154502; 
+ Thu, 10 Jul 2025 09:15:54 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b3bc0fa6609sm2072920a12.60.2025.07.10.09.00.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Jul 2025 09:00:04 -0700 (PDT)
-Message-ID: <aef834e0-d6dc-40d0-a6aa-24ed44b77325@redhat.com>
-Date: Thu, 10 Jul 2025 11:59:58 -0400
+ 5b1f17b1804b1-454dd54115bsm24417145e9.31.2025.07.10.09.15.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Jul 2025 09:15:53 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Matthew Rosato <mjrosato@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>
+Subject: [PATCH] hw/s390x/s390-pci-bus.c: Use g_assert_not_reached() in
+ functions taking an ett
+Date: Thu, 10 Jul 2025 17:15:52 +0100
+Message-ID: <20250710161552.1287399-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 07/12] hw/pci: Introduce pci_setup_iommu_per_bus() for
- per-bus IOMMU ops retrieval
-Content-Language: en-US
-To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- Nicolin Chen <nicolinc@nvidia.com>
-Cc: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "berrange@redhat.com"
- <berrange@redhat.com>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "nathanc@nvidia.com" <nathanc@nvidia.com>,
- "mochs@nvidia.com" <mochs@nvidia.com>,
- "smostafa@google.com" <smostafa@google.com>,
- "gustavo.romero@linaro.org" <gustavo.romero@linaro.org>,
- "mst@redhat.com" <mst@redhat.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>,
- jiangkunkun <jiangkunkun@huawei.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-References: <20250708154055.101012-1-shameerali.kolothum.thodi@huawei.com>
- <20250708154055.101012-8-shameerali.kolothum.thodi@huawei.com>
- <aG2M/BI3UAYxKCD3@Asurada-Nvidia>
- <741503f8f96148b389b875e6b6812c1a@huawei.com>
- <aG8ECVeOYXPzBEVB@Asurada-Nvidia>
- <3a51c0e0f3ce4c2580ff596008615439@huawei.com>
-From: Donald Dutile <ddutile@redhat.com>
-In-Reply-To: <3a51c0e0f3ce4c2580ff596008615439@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ddutile@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,117 +96,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The s390-pci-bus.c code, Coverity complains about a possible overflow
+because get_table_index() can return -1 if the ett value passed in is
+not one of the three permitted ZPCI_ETT_PT, ZPCI_ETT_ST, ZPCI_ETT_RT,
+but the caller in table_translate() doesn't check this and instead
+uses the return value directly in a calculation of the guest address
+to read from.
 
+In fact this case cannot happen, because:
+ * get_table_index() is called only from table_translate()
+ * the only caller of table_translate() loops through the ett values
+   in the order RT, ST, PT until table_translate() returns 0
+ * table_translate() will return 0 for the error cases and when
+   translate_iscomplete() returns true
+ * translate_iscomplete() is always true for ZPCI_ETT_PT
 
-On 7/10/25 3:37 AM, Shameerali Kolothum Thodi wrote:
-> 
-> 
->> -----Original Message-----
->> From: Nicolin Chen <nicolinc@nvidia.com>
->> Sent: Thursday, July 10, 2025 1:07 AM
->> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
->> Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org;
->> eric.auger@redhat.com; peter.maydell@linaro.org; jgg@nvidia.com;
->> ddutile@redhat.com; berrange@redhat.com; imammedo@redhat.com;
->> nathanc@nvidia.com; mochs@nvidia.com; smostafa@google.com;
->> gustavo.romero@linaro.org; mst@redhat.com;
->> marcel.apfelbaum@gmail.com; Linuxarm <linuxarm@huawei.com>;
->> Wangzhou (B) <wangzhou1@hisilicon.com>; jiangkunkun
->> <jiangkunkun@huawei.com>; Jonathan Cameron
->> <jonathan.cameron@huawei.com>; zhangfei.gao@linaro.org
->> Subject: Re: [PATCH v7 07/12] hw/pci: Introduce
->> pci_setup_iommu_per_bus() for per-bus IOMMU ops retrieval
->>
->> On Wed, Jul 09, 2025 at 08:20:35AM +0000, Shameerali Kolothum Thodi
->> wrote:
->>>> On Tue, Jul 08, 2025 at 04:40:50PM +0100, Shameer Kolothum wrote:
->>>>> @@ -2909,6 +2909,19 @@ static void
->>>> pci_device_get_iommu_bus_devfn(PCIDevice *dev,
->>>>>               }
->>>>>           }
->>>>>
->>>>> +        /*
->>>>> +         * When multiple PCI Express Root Buses are defined using pxb-
->>>> pcie,
->>>>> +         * the IOMMU configuration may be specific to each root bus.
->>>> However,
->>>>> +         * pxb-pcie acts as a special root complex whose parent is
->>>> effectively
->>>>> +         * the default root complex(pcie.0). Ensure that we retrieve the
->>>>> +         * correct IOMMU ops(if any) in such cases.
->>>>> +         */
->>>>> +        if (pci_bus_is_express(iommu_bus) &&
->>>> pci_bus_is_root(iommu_bus)) {
->>>>> +            if (!iommu_bus->iommu_per_bus && parent_bus-
->>>>> iommu_per_bus) {
->>>>> +                break;
->>>>
->>>> Mind elaborating why the current bus must unset iommu_per_bus
->> while
->>>> its parent sets iommu_per_bus?
->>>>
->>>> My understanding is that for a pxb-pcie we should set iommu_per_bus
->>>> but for its parent (the default root complex) we should unset its
->>>> iommu_per_bus?
->>>
->>> Well, for new arm-smmuv3 dev you need an associated pcie root
->>> complex. Either the default pcie.0 or a pxb-pcie one. And as I
->>> mentioned in my reply to the other thread(patch #2) and commit log
->> here,
->>> the pxb-pcie is special extra root complex in Qemu which has pcie.0 has
->>> parent bus.
->>>
->>> The above pci_device_get_iommu_bus_devfn() at present, iterate over
->> the
->>> parent_dev if it is set and returns the parent_bus IOMMU ops even if the
->>> associated pxb-pcie bus doesn't have any IOMMU. This creates problem
->>> for a case that is described here in the cover letter here,
->>> https://lore.kernel.org/qemu-devel/20250708154055.101012-1-
->> shameerali.kolothum.thodi@huawei.com/
->>>
->>> (Please see "Major changes from v4:" section)
->>>
->>> To address that issue, this patch introduces an new helper function to
->> specify that
->>> the IOMMU ops are specific to the associated root
->> complex(iommu_per_bus) and
->>> use that to return the correct IOMMU ops.
->>>
->>> Hope with that context it is clear now.
->>
->> Hmm, I was not questioning the context, I get what the patch is
->> supposed to do.
->>
->> I was asking the logic that is unclear to me why it breaks when:
->>      !pxb-pcie->iommu_per_bus && pcie.0->iommu_per_bus
->>
->> Or in which case pcie.0 would be set to iommu_per_bus=true?
-> 
-> Yes. Consider the example I gave in cover  letter,
-> 
-> -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.1 \
-> -device virtio-net-pci,bus=pcie.0,netdev=net0,id=virtionet.0 \
-> -device pxb-pcie,id=pcie.1,bus_nr=8,bus=pcie.0 \
-> -device arm-smmuv3,primary-bus=pcie.1,id=smmuv3.2 \
-> -device pcie-root-port,id=pcie.port1,chassis=2,bus=pcie.1 \
-> -device virtio-net-pci,bus=pcie.port1,netdev=net1,id=virtionet.1
-> 
-> pcie.0 is behind new SMMUv3 dev(smmuv3.1) and has iommu_per_bus set.
-> pcie.1 has no SMMv3U and iommu_per_bus is not set for it.
-pcie.1 doesn't?   then what is this line saying/meaning?:
-  -device arm-smmuv3,primary-bus=pcie.1,id=smmuv3.2 \
+So table_translate() is always called with a valid ett value.
 
-I read that as an smmuv3 attached to pcie.1, with an id of smmuv3.2;
-just as I read this config:
-  -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.1 \
-as an smmuv3 attached to pcie.0 iwth id smmuv3.1
+Instead of having the various functions called from table_translate()
+return a default or dummy value when the ett argument is out of range,
+use g_assert_not_reached() to indicate that this is impossible.
 
-> 
-> And we don't want pci_device_get_iommu_bus_devfn() to return pcie.0's
-> IOMMU ops for virtionet.1. Hence the break.
-> 
-> Thanks,
-> Shameer
-> 
+Coverity: CID 1547609
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+Disclaimer: only tested with 'make check/make check-functional'
+
+ hw/s390x/s390-pci-bus.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
+
+diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+index e6aa44531f6..f87d2748b63 100644
+--- a/hw/s390x/s390-pci-bus.c
++++ b/hw/s390x/s390-pci-bus.c
+@@ -384,9 +384,9 @@ static uint64_t get_table_index(uint64_t iova, int8_t ett)
+         return calc_sx(iova);
+     case ZPCI_ETT_RT:
+         return calc_rtx(iova);
++    default:
++        g_assert_not_reached();
+     }
+-
+-    return -1;
+ }
+ 
+ static bool entry_isvalid(uint64_t entry, int8_t ett)
+@@ -397,22 +397,24 @@ static bool entry_isvalid(uint64_t entry, int8_t ett)
+     case ZPCI_ETT_ST:
+     case ZPCI_ETT_RT:
+         return rt_entry_isvalid(entry);
++    default:
++        g_assert_not_reached();
+     }
+-
+-    return false;
+ }
+ 
+ /* Return true if address translation is done */
+ static bool translate_iscomplete(uint64_t entry, int8_t ett)
+ {
+     switch (ett) {
+-    case 0:
++    case ZPCI_ETT_ST:
+         return (entry & ZPCI_TABLE_FC) ? true : false;
+-    case 1:
++    case ZPCI_ETT_RT:
+         return false;
++    case ZPCI_ETT_PT:
++        return true;
++    default:
++        g_assert_not_reached();
+     }
+-
+-    return true;
+ }
+ 
+ static uint64_t get_frame_size(int8_t ett)
+@@ -424,9 +426,9 @@ static uint64_t get_frame_size(int8_t ett)
+         return 1ULL << 20;
+     case ZPCI_ETT_RT:
+         return 1ULL << 31;
++    default:
++        g_assert_not_reached();
+     }
+-
+-    return 0;
+ }
+ 
+ static uint64_t get_next_table_origin(uint64_t entry, int8_t ett)
+@@ -438,9 +440,9 @@ static uint64_t get_next_table_origin(uint64_t entry, int8_t ett)
+         return get_st_pto(entry);
+     case ZPCI_ETT_RT:
+         return get_rt_sto(entry);
++    default:
++        g_assert_not_reached();
+     }
+-
+-    return 0;
+ }
+ 
+ /**
+-- 
+2.43.0
 
 
