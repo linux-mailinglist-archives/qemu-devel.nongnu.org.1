@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04C3B00B84
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 20:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A082B00B7E
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 20:35:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZw91-0001QJ-In; Thu, 10 Jul 2025 14:37:19 -0400
+	id 1uZw6t-0008Ib-VD; Thu, 10 Jul 2025 14:35:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uZvUL-0007ab-Ns
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:55:22 -0400
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ id 1uZvVK-0000qi-Dm
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:56:22 -0400
+Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uZvUK-0005PQ-4l
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:55:17 -0400
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-73cdff9a27aso299744a34.0
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 10:55:15 -0700 (PDT)
+ id 1uZvVH-0005gc-Pa
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:56:17 -0400
+Received: by mail-ot1-x336.google.com with SMTP id
+ 46e09a7af769-72c14138668so482712a34.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 10:56:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752170115; x=1752774915; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752170172; x=1752774972; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=ixUYbPFhJgJDHiiXUXa7CcYTS+QNrsgIDhV2HktqNTA=;
- b=w5Ts0Qjm18ErASwj1/ThiAv2dhKui2R3aK0BBkxL5HZrCVRR2mq7YMRS8M/z6/yz0C
- UvSCDb+NsEbys55EQyokyK3sE5E+oAUaRAEgVKElWEB7UXRT56ewHOVg/X65ExzOyIW+
- OS8B7EWIr9ILCwbh6K0oW0G7TBFEDMbR7zTsuFVsiIELqLhx7cV/taVPm1Ii+ATe7hY+
- BOBAHiiSL+nDtu46WfndernaoYnnFzodC5nbn066luizhAi93iY/LpjE3M5MIAov/jJP
- OvyvHva5x38IQRIXEDPjb1F2PuxOGtDixecFSkQCLlQnH1AKFsOV+xuMvvVWtAAWcQau
- Eizg==
+ bh=ac7NR0gN8eVK5JIn7wji7UD4+0giUiNtlrhy6lYn/CI=;
+ b=fAx2c41lzsms/N4gYcgK/YwvoqiJAazHIGM+zTOsqfDaboSIEIm017JU3NAhsLjAWm
+ CBqPas7fOPc0Y65/1ek13eB0kpSBIKGLCgP5zJROhPUOU4+9KSpYIKunI0F994redSB4
+ Epo8UizltJf0AxWpqS6WuopfUo9JWmpnZwBerX/MthGiZZt+qiz9yKwKm7Xpnr/Aif7o
+ a9o7sgYma5RsX8bPpXZaVrJzqUDlNzk83yNP4ysmnI5zmH8SMb4SL1AGR89ZvDcDcSVN
+ sISHxJ1xJjqSJpCsVEvIlDVaW4MGOmnzR1aFEahm1N5lPLu1r3SVIQATSTVZywMoZYv7
+ VOIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752170115; x=1752774915;
+ d=1e100.net; s=20230601; t=1752170172; x=1752774972;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ixUYbPFhJgJDHiiXUXa7CcYTS+QNrsgIDhV2HktqNTA=;
- b=qd27+zCo5AvLzZrXkIQxZ4VB6eMMsOt91jRrAGHf+ZVM87U47xfa2eTvYpROoRzEQC
- BhX6Lorhv1JXY5lKBYvOI0R8xI6vkQwHNNL1rT+rqdOXYdemm6pEOv9wsu4ir6+FHSYE
- 26jhgBIZpx8jqTKzxfoOBXMQTV++HT3tDFu29tPZWacQce5SBMvg2gDGYVc19i5ZzePp
- rlt4xSh5buWpwT9x0Bob56oGPg7NbvQQPoBPrBL/zWEuIAH04Nh3lCmjmsxTkkipDDgl
- LVkyd27SWj5mL8UlexBinHsN/ihsBceF8MJO6EsubzT6J8N2oPrJpOWHVPj6aJssRuSw
- hrRQ==
-X-Gm-Message-State: AOJu0YzxHgThKrvozCMFZqDXYok7/6oKr7B4Ejf+TrPqq39goCXoEuzi
- ZKibfZJ9gbUczmO0mOCLRvh2duj7NRFuDSU2xxqqk9OqXvP3qX3Nl+qHFOM3L/zS9N+Y8F0gPhA
- Smqu1YK4=
-X-Gm-Gg: ASbGncuYsAocockinUZKC1D78+ou62fEXBXLIiRD7CK2RLSY79/AdhrrMLSYJtJGJqC
- dOEDRSix/ck/NWsz/ZjVBbCL/hXTi2NE6Wzg1EjSab6s6awk8zZsWh3EFaPixAz3GhonSwick71
- Bhvjup8vU9NNSA0V5g+OHJAvohvwiYptkexvtKPq5ik1Op22qq6TaX+7lZAyGWWrBAqnPXpcztY
- JHNJ/qEzzbLjgbBqkpFdWyivkdqAIdt6At54ZjMk0ifecuVsLffvZj4euYZoXdjLko1uMCJ605+
- E5y9Q0RMxnPnVj2eQXd13yVoCNcQigcONdsRvjGwY+MNaxAp4lfdtFsM2pGY8C7jE0ppZOll+h+
- G81s=
-X-Google-Smtp-Source: AGHT+IF+ZnZcOBSbKDc2UqLeTHhrWvYEAsrMuN7/KqvMJjsEnws9EOoEZfxiKCSNy996VF4CyKstEA==
-X-Received: by 2002:a05:6830:8209:b0:73b:bd5:b9d9 with SMTP id
- 46e09a7af769-73cf9de52dfmr327309a34.10.1752170114732; 
- Thu, 10 Jul 2025 10:55:14 -0700 (PDT)
+ bh=ac7NR0gN8eVK5JIn7wji7UD4+0giUiNtlrhy6lYn/CI=;
+ b=Lxwin8ONvUhmSJ8Uv6bWODPQp0uHPbNKrzi8DxFMulJ0okhQSgOFH9TBwA3UG+PtzZ
+ hmPeaDsZoww8advKqsbxB6rEP/Pg0MuF8zFWSjiv7sVoMoi2QyttsJPDPEiyKGWQGUQf
+ acVv6KD8yOMkK+wXgBHOFBA4S12l8ByH7yYzPY2V0CnuXYnoqmmKrVbRoQn/q+c8n7YL
+ bwqPKyayYLenQCqE+zAuPVJUcfa5O/6SYbKe4ykiDqhu2MhClgqlo9Y40+bCHdaP+Ak4
+ qOUEFPI0tI+a2AR5gED1KcVahjVPQjy8Nc86uPU2PgvgDXXCpPWi3U5qVLHffBZZ/N9s
+ Nm+g==
+X-Gm-Message-State: AOJu0YwbPoy18xxhLaBmkuZhf0f3SiLSpuLB3jL+4eGrxZPYXNtnHEf/
+ IzGLNnHxjLFQARG8h8uwHuaXSs0W13/EpMq6MQFhoLrCkaP4zG+PjW5O8IDpbaLpMHKCbhW/hXD
+ E8cvt+0c=
+X-Gm-Gg: ASbGnctnYuQKbZSfaCwbLwfT9iC2izE201Jjf/Hvq3b+mWR8fL19DMsL6dcGsz+k549
+ VXg4/tc0dNWMb/168jSjS/amvwmwTSlc0hu8Q8zxUadeZzUisezJGw3F4WRi/mCTizMWxljUvCD
+ X10A46JfbNKx9FfR4KZcDu5GA4Sl9gSivCy5yKn4FgfcAfImo5GfaGx7Mn476rNG2/wkkBTXTF6
+ AzS8SUXIDxLCOMTxGpP8+KArlIddao6AY8EValUU4UZd8OtSXKzKQZ5J+TAJUeXJr0c1dkWb/Wm
+ ErHdp0PSRapnw/1WkEabXP1kjAGMcKouX+VUF4mXQkg+lZeLu8UhL2AKO+ccLGScg6/lPRgEWJS
+ Flqs=
+X-Google-Smtp-Source: AGHT+IGFOxPuPb3691fxVABbXV7t7/7zcvHG+2cKbN5jpipvZLNTgGYBQhovV8Gez9lDB6MKjY4jaQ==
+X-Received: by 2002:a05:6830:2d86:b0:72b:9196:c15c with SMTP id
+ 46e09a7af769-73cf9dd76e9mr304274a34.6.1752170172422; 
+ Thu, 10 Jul 2025 10:56:12 -0700 (PDT)
 Received: from [172.20.0.130] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-73cf10a5ba3sm281474a34.24.2025.07.10.10.55.13
+ 46e09a7af769-73cf1272561sm280508a34.33.2025.07.10.10.56.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Jul 2025 10:55:14 -0700 (PDT)
-Message-ID: <a78641f8-72ba-498f-a231-bb8adea9e072@linaro.org>
-Date: Thu, 10 Jul 2025 11:55:12 -0600
+ Thu, 10 Jul 2025 10:56:11 -0700 (PDT)
+Message-ID: <f6973332-2329-47d2-88dd-79a6956f7201@linaro.org>
+Date: Thu, 10 Jul 2025 11:56:09 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] linux-user: Check for EFAULT failure in nanosleep
@@ -76,8 +76,8 @@ From: Richard Henderson <richard.henderson@linaro.org>
 In-Reply-To: <20250710164355.1296648-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x334.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,31 +118,7 @@ On 7/10/25 10:43, Peter Maydell wrote:
 >   linux-user/syscall.c | 8 ++++++--
 >   1 file changed, 6 insertions(+), 2 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Queued, thanks.
 
 r~
-
-> 
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index fc37028597c..c600d5ccc0e 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -11630,10 +11630,14 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
->       case TARGET_NR_nanosleep:
->           {
->               struct timespec req, rem;
-> -            target_to_host_timespec(&req, arg1);
-> +            if (target_to_host_timespec(&req, arg1)) {
-> +                return -TARGET_EFAULT;
-> +            }
->               ret = get_errno(safe_nanosleep(&req, &rem));
->               if (is_error(ret) && arg2) {
-> -                host_to_target_timespec(arg2, &rem);
-> +                if (host_to_target_timespec(arg2, &rem)) {
-> +                    return -TARGET_EFAULT;
-> +                }
->               }
->           }
->           return ret;
-
 
