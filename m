@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FDAB00A7E
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13899B00AB1
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 19:52:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZvNw-0005CN-Ko; Thu, 10 Jul 2025 13:48:42 -0400
+	id 1uZvRX-0001R3-3h; Thu, 10 Jul 2025 13:52:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZujq-0008Ni-DT
+ id 1uZujq-0008Nj-Do
  for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:07:19 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uZujn-0008OM-E3
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:07:12 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-451e2f0d9c2so11331545e9.1
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 10:07:10 -0700 (PDT)
+ id 1uZujo-0008OP-1l
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 13:07:13 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3a6e2d85705so853491f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 10:07:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752167229; x=1752772029; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=wvUeOOY6cyFpb0TnaJDdUvgeGCVLx+UP5LGwmkhxXmQ=;
- b=SEL5q/BM20nb8GfHpYAn4PbhazFHfG/Z6FhCnosgtOWVFkhij/3b7o8OAoux+aHIpO
- DRk6XpO6okk0OH2l8zL0ch8rHrfiYPE5TSY0DvW4XyhHFwqeRoc9IhVr+vEmr8pI5I6N
- 2OeSdeRkiorkKEwzK6DnAy5KtDEzCTq0upGmWQ5lpuh9jBgC/5E4v/19OueokE93pXi2
- pKWwkRsHeGIFmPvA6r1MivZ6v2nkOmqAsopr0qX3a20jrNLEkGzf+pf7iObhiGSPPP1M
- 0gW/X5QRkomDnjD/EOfsmjg4P/6Q4xSCMY0Y658D2Wvu5wllReBND1fKWepXApIWPcWO
- Xiwg==
+ d=linaro.org; s=google; t=1752167230; x=1752772030; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7gTuvH1dt5vpBYw5uT/toR3K2zUXQ7OTXLoFMjuOST4=;
+ b=QUT1QRIMp061Eso2qa+m0djUGnIWfKPob7Z6iosA7k83fN7pAsTnA5zMEynJvkjgxB
+ 3tnndHpaoGE5wRtz3DBWInlCe57hfqHSFCelqFgbMrLa2Agi9V6CFxljntAcx/NUfKI/
+ JPDZ3HFKmwW9sdBkpYs5yPVlSKlTu2NCvrtYhYIHXNqPjqX4AD+z1nU66ZN6c/ixtEBm
+ PPGhpHCBW3plPBlmzz6i4HZ1GFxszaiHYd6FxemOjFW58PxL5iT/zkYVumJQdrsUglhy
+ WdDvP1DMvd9ZLCKJO/e+lkhRxXWVcUUl5cfNeCUViNfV6rOuEetY1wXJB5CsU61bZikf
+ 9oRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752167229; x=1752772029;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wvUeOOY6cyFpb0TnaJDdUvgeGCVLx+UP5LGwmkhxXmQ=;
- b=mAWmi8bJ0jbnnbEKYHJMh62KVL5iWayNecQ6IIUcjVp8M5U5dDeYmafzha8f5ERi2B
- 5e9dD9rEW7ROWgQH8OCc/tpbeiidBxNKhsybcxsB19MuIVfriYLy5+KD8NxaubanP0IC
- LzC9sInv51QPGtOaWkYIws18SN1wIFP3Zv8ULFPc8S774T0Ie8J6MeVhRfKnyepywFG+
- RlomgjUGsH0AVwRNgnluvyS6azwy05zAAuav/NZJ7ZuI3zmrdZJuVfSfVkQnTJkW3/rl
- 4Zs4vzMUVcyqfBQF1LzNTm6H6X3Ag3zf44LyOiT1odCCTQw1HCPse0I/Zyw/jNWGXfjV
- innA==
-X-Gm-Message-State: AOJu0YwWX4CrstHLYQIvY4p5OITiEOJGr3s/aI2JLtS3HaYc4gXuppfp
- yDZVCofeg+Nsg7WF8ecv062Za7A7vbAk9g3zloj0hKCcn+q5UbiDdcY/aku8mQzUPccXF/Cxe70
- fM7YC
-X-Gm-Gg: ASbGncvZSD3gInrGOx9TEfygYTj/mijCWG7LFglTy5+lUInE425hGGwBdRamWeUCDP9
- B2UfPYWpDvd/40leM1OvxfcA2roNxbAX9M2JC3ccrzoKKugl3ZKIzIwuzdqhMST7haACfL/9Bht
- 5mkZKeea72/jYdeBkbTpSuCobu9BBUGFho/bkRalq89qLy3EbjXIlZPxavIjG/oRXOuwa5tajY9
- WZHRz2p+sLEUMRVCOfHExB9Ps6gYR4SiiuPplLIbq0kB7Az4UZeMls5KIgpdt4QLdPDXPqlnwCb
- s6y92rBfwUBupamzFyKiBGcihKHsNm+2+qyICR6tbxYroY+ktQB9S8qQxyEcFCggJQ3z
-X-Google-Smtp-Source: AGHT+IF/cW/azJlXubPWo0lbRo8bphSages4kaodDvSu/U1Iy2QdslMKHU+mu3h7alwSLtdHmxwLZQ==
-X-Received: by 2002:a05:600c:3e16:b0:451:df07:d8e0 with SMTP id
- 5b1f17b1804b1-454e2b32652mr696285e9.11.1752167229414; 
- Thu, 10 Jul 2025 10:07:09 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752167230; x=1752772030;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7gTuvH1dt5vpBYw5uT/toR3K2zUXQ7OTXLoFMjuOST4=;
+ b=AqsejmcXTfYC5ko+izlCbEqLzL75k8kqpEgNwlfiwPZgF4PG9OCb2TLJeeFA4iTVXr
+ poZxhGMrnCdexrkCQ/LTYAGx5AKOpsyOmwbofwYoiMOffaYPMR13npwM+BfH5BZ5/wV9
+ 3icCdnIoZmALzE/HyHFW/RaAjPleXp3Jd769rxI4qoJgguaGAH0ceNKU3O3NdHHidzjF
+ ixVOA0olzFhd/5kZSSxOv1yiVZpHATIfZ6ELNpB+sshSDIKmrzAT8n6SEEO6LSVQxDXZ
+ x4siFhYrLqbvs2S20Ea80rplq7scbepDB3oqcdw319beyVobAqRM6vfx7o9wlZR0jooU
+ Qaxw==
+X-Gm-Message-State: AOJu0YxvipPtgbMyhEqRKty7CMI9dVojwCglhQmLw2h0PznOEHzpvAQf
+ plVfdS1Z38sGGKi64QFPWx4lwPc3yzPl6GOEG/tvPg+Ae9p+0NgAbdmO4RQgcWHOIPlS/Ph8RZK
+ zD7TE
+X-Gm-Gg: ASbGncuZeebGf6XxwUo3sCvxnGsLa1h6GTYk5yCOlDOzMpjRvlpba8Rmaz6z6BqFlfX
+ 9QsG4RD7c77eg5y9ApyeESYlyCs9wAZAiS8AuoaI4uRG4IkDzK2aAAJEN0tFpk0xHdt6F7h97VW
+ DvbN8eEs9CzzWZuDN3sPgAWe5OvDBf+43lTLQdUO3djvK7fuJVtQ0xGMrGhHvRMYEvV1YHWmNUI
+ S/inG6Qm4YrNshKE61I9/WEEODOzpnEJppc7UBDgowEcTE6/J6a4Ia3gvTNH6ensODjaNiohirz
+ kx8y75gfNY/TDsHcymtsKpSY+Y0cSX/evsH0K7soLM2kQM8v9N6Dix0SCR/sME2I1QKH
+X-Google-Smtp-Source: AGHT+IH6UQ5qQtIJGBJZPC8SnI3AhfDJVChHtKFMUtTt2+KON0SsmZ+Xlnbcchh+SuiF2fk9ze+EjQ==
+X-Received: by 2002:a05:6000:4b1d:b0:3b4:9b82:d432 with SMTP id
+ ffacd0b85a97d-3b5f17f8329mr410354f8f.0.1752167230420; 
+ Thu, 10 Jul 2025 10:07:10 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8bd1924sm2392681f8f.16.2025.07.10.10.07.08
+ ffacd0b85a97d-3b5e8bd1924sm2392681f8f.16.2025.07.10.10.07.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jul 2025 10:07:08 -0700 (PDT)
+ Thu, 10 Jul 2025 10:07:09 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 0/2] linux-user/gen-vdso: minor error handling improvements
-Date: Thu, 10 Jul 2025 18:07:05 +0100
-Message-ID: <20250710170707.1299926-1-peter.maydell@linaro.org>
+Subject: [PATCH 1/2] linux-user/gen-vdso: Handle fseek() failure
+Date: Thu, 10 Jul 2025 18:07:06 +0100
+Message-ID: <20250710170707.1299926-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250710170707.1299926-1-peter.maydell@linaro.org>
+References: <20250710170707.1299926-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,25 +98,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These two small patches improve the error handling in the gen-vdso
-program. Error handling isn't particularly critical here because
-the tool only gets run during the QEMU build process on input
-that we trust (because we generated it by calling a compiler
-for the guest architecture), but these were easy to do.
+Coverity points out that we don't check for fseek() failure in gen-vdso.c,
+and so we might pass -1 to malloc(). Add the error checking.
 
-The main motivation here is that Coverity complained about not
-checking fseek()'s return value.
+(This is a standalone executable that doesn't link against glib, so
+we can't do the easy thing and use g_file_get_contents().)
 
-thanks
--- PMM
+Coverity: CID 1523742
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ linux-user/gen-vdso.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-Peter Maydell (2):
-  linux-user/gen-vdso: Handle fseek() failure
-  linux-user/gen-vdso: Don't write off the end of buf[]
-
- linux-user/gen-vdso.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
-
+diff --git a/linux-user/gen-vdso.c b/linux-user/gen-vdso.c
+index fce9d5cbc3c..1c406d1b10f 100644
+--- a/linux-user/gen-vdso.c
++++ b/linux-user/gen-vdso.c
+@@ -113,9 +113,16 @@ int main(int argc, char **argv)
+      * We expect the vdso to be small, on the order of one page,
+      * therefore we do not expect a partial read.
+      */
+-    fseek(inf, 0, SEEK_END);
++    if (fseek(inf, 0, SEEK_END) < 0) {
++        goto perror_inf;
++    }
+     total_len = ftell(inf);
+-    fseek(inf, 0, SEEK_SET);
++    if (total_len < 0) {
++        goto perror_inf;
++    }
++    if (fseek(inf, 0, SEEK_SET) < 0) {
++        goto perror_inf;
++    }
+ 
+     buf = malloc(total_len);
+     if (buf == NULL) {
 -- 
 2.43.0
 
