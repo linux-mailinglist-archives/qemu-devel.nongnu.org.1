@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4F5AFFF9C
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC8FAFFFA2
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Jul 2025 12:49:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uZonL-00028G-6f; Thu, 10 Jul 2025 06:46:27 -0400
+	id 1uZon3-00020K-GZ; Thu, 10 Jul 2025 06:46:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomf-0001r7-V0
+ id 1uZomh-0001rA-DU
  for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:50 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uZomZ-000784-Sn
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:44 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3a52874d593so705487f8f.0
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:37 -0700 (PDT)
+ id 1uZomb-00078F-On
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 06:45:45 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3a54690d369so845244f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 03:45:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752144336; x=1752749136; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752144338; x=1752749138; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iz/LY4KOmNjK8aVdmnn+2X+hPVBWX9P2bT1YuqmMXP8=;
- b=xGnF/o9vL62rNQM0guLm7ewll9b/nPbuSue+LQW8uQDmEI6l28psxIyvJjgXG6t6FT
- eogFgWoqfSJcMHaYog8vUPdI4oA5icfWgsXni7VJzjDRFn9RtAafurHuThwzw4sD7PIR
- /Pqa6Y7XkRvnZ1H4udD8Phhux+afIYQ16LriOUifXpCY8nameIRUt393h0YsOHl8gDk0
- +AylzaZegYgPOf8VqtZTpOfE4XELCixdr0IfVT/LBKHEu0LSNPQhaunFWN8AfVG1I/zJ
- 97I/paJu3ILGT42GgSFH3dwuQ/hRMDDSOa+KngCljoFyTyOSN+SzG1dgNLjNX37HDZoN
- uZJw==
+ bh=03riluX1eJMP4tE7cuvXHWS+nhsiBt5c4p7l9wITSeg=;
+ b=Jowrm6VxFUvDcJVugFCepGpaIrpd+2h6nhV6uA1nu3AfO1WZUSdKxH+W+sQsmFjV0l
+ /0JpKSU6nv56CgroJaEU7jqQA6wWM36+1l5z+Q+sCuXoHdLwsR1YB2UbYP15pT227qsQ
+ c3d21HYoCBIIRV88ZAUoOqgyHDnvsiU1Khzk5bDPsH/tJIERRLjIxpIyYD85NEfV4UgZ
+ HFuMgsv3+NmtzNcfslznrQFd52jg2tYvhKImKBZHCIMOrvNXv1W+X0r2L9zhRZ2SCPq6
+ /0aAE7BoalRSjg/k4iBvIZOZvymgmMjdZh0grFsKhq5qk4yOsYbz4PjU4bcmnmHZ7ovj
+ x81Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752144336; x=1752749136;
+ d=1e100.net; s=20230601; t=1752144338; x=1752749138;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iz/LY4KOmNjK8aVdmnn+2X+hPVBWX9P2bT1YuqmMXP8=;
- b=EkquMrjQKp3mKjiLzC34F/PC8NA2yytQsRhooq8JZG7kIG9H4gBaUHEVSVfFKjP/uE
- Ql6rEPR6IoUGfi/rsjqQGIBQMzlcjTeoIncSVf1MLgB/AiKF1cYt1qZhAmsQ5zXmwu0W
- +vRQtX2aK5doXbzBd95J2XvXuO+8ljk0f1CJo2OrQKgiglL08O6RSfVZGsdI2uMVyfa3
- bj3iG+xEJqaK022Dr25K8pfRL6QWaUxrK3Nbc45UCTsRBIZ8EHwi9VvPf9rNJlPcJSLz
- rDl7Cs2E1zImRTUE6fu//sQb5kcsdVOEKLOHfa7cztIBGDmRx8ULeJdlrHM9hh2MXMf5
- 6Vnw==
-X-Gm-Message-State: AOJu0YwWOWOKniW1CoavsBPas40J/8+Kkx4jvZT/8+A3daHGiHr711mh
- 9NG6lqkojrfN2ZvoZofYVJylslS+6XDXi39lY6aweshFZcTSNoS3z+T9hnFQ/422UT0=
-X-Gm-Gg: ASbGncsuneqewFzOUjK4T7q7TaIe6SNyVaaV+Jox5y+4lYzRlQ7s3Tib8xsG9Q29C4w
- g0sME2EDJU3riPWOrTkVtinEeNNKqnb1SOfDmcSCXWRN4hNY+w4OLuyu7O96j03NS0DhyXb/uf/
- qgK7eNABHUFr3MPCKBZGIw2V8WHrrNONPnmZ6+gSvQg0BUSEvfUKJ4eJKvH0t3zMutIaaoa9Lq+
- 8vrTfq6irv0AujDYEmvEhVEJBjDjxgldWMl0PQxa00T2HFTSFYHyILhCEvpeWm3Z+dpNxfY3/kI
- +f6BmNpIW6EDHoxrhMnYgvyf8uR0+TnDwBVk5ZGcn0dPeNjb3n/X6JarCU+FLDE=
-X-Google-Smtp-Source: AGHT+IGhQz+1/FpaU9qTEzmSHmCxSUrkMjowKvaC+7X52KGoS+0rQn3z3TvQLs/OgkEQqc/RPevKHQ==
-X-Received: by 2002:adf:e38d:0:b0:3a3:6e85:a529 with SMTP id
- ffacd0b85a97d-3b5e78f891cmr2680481f8f.51.1752144335992; 
- Thu, 10 Jul 2025 03:45:35 -0700 (PDT)
+ bh=03riluX1eJMP4tE7cuvXHWS+nhsiBt5c4p7l9wITSeg=;
+ b=xJBtzvXFqYnmxkdjrQ79hoR7Pd3+YKEVnSXWR1L2auYn6l4yvej75FUfhV/CNcuyV1
+ rBR7aXzaMhWfrDWzkJPHzrSm4kYRFUZ1QW1E+NgUsIy/tYYKaqh05HZRZMeucTWr/QIz
+ AlS+gp4hiGM/soff9trzJ3U8yuUHDRPmReFhExhEz4AbLlCMaNG7h1UnWnIG3O1dE3zU
+ vHRV6n9UOQO6RWPERfX4OhX1VZRTWAfHShf3TeBlzMoRlHgemz4avxOVitQ8VDrPOy93
+ z1Fapq8LPAJ3NTc8V4yZ6cSvqlLIGjd/maAP8pQp6/nguGKEQNwri8rLnLhjcF+t8OH+
+ FXTw==
+X-Gm-Message-State: AOJu0Yz7IlhUPuoM9AqjBrnTU47IH9bx6iuBf+LCRLHjkq5pAh5sWy0w
+ qn8DNLFxFY4FeNQc1OE0CD9ov0eflKvbumgdFWYgd8zPToVvlLkqCrr9nVlCDXQYsqRvivU4QAw
+ ArDiCCFI=
+X-Gm-Gg: ASbGnctXik4w+HHAtfk1N4qjZffj95oCX0cEbvpTo3ROnsrgwwbRVadsmTyQnHZPA7h
+ 18YR22yjdr3Tp8AnMvrM5IA0QEXu87UbvYbyUzSdZDrOe1vFMKKOe0HThYrz6a7PxeokQbIqmxS
+ X1rRNJNLwk9F8/5+QiY31cBKfP44cOHgTlyckChP7bqKjgLHbNKSdblhxyA/lWT6ccKRRPntmeA
+ PoRkDdwwpFJ96zmI0327YH979LssdgZxONWeSNWaQSA5nXNO+7Qv1/L6UGG44na6IOS5XYkze2H
+ AeYMkGMXY7g2Fj9g03sqJhAoA7wOVpXfQstujunmJGtIsid/MZexKKkWumOCx8A=
+X-Google-Smtp-Source: AGHT+IEkEpkDYS8h/LJ2ZSr33jWevjNrhMbuaEHbfGs/a7uc/uvM735BxMXl8DxT4/jFQVEIpL2HQA==
+X-Received: by 2002:a05:6000:41ce:b0:3a9:dc5:df15 with SMTP id
+ ffacd0b85a97d-3b5e866f829mr2057765f8f.13.1752144338218; 
+ Thu, 10 Jul 2025 03:45:38 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e1e2fasm1499722f8f.77.2025.07.10.03.45.32
+ 5b1f17b1804b1-454dd474a9csm16086125e9.16.2025.07.10.03.45.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jul 2025 03:45:32 -0700 (PDT)
+ Thu, 10 Jul 2025 03:45:36 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 945175F893;
+ by draig.lan (Postfix) with ESMTP id ABC495F8AD;
  Thu, 10 Jul 2025 11:45:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,19 +74,18 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Jason Wang <jasowang@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <laurent@vivier.eu>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Yodel Eldar <yodel.eldar@gmail.com>
-Subject: [PATCH 4/7] target/alpha: Add GDB XML feature file
-Date: Thu, 10 Jul 2025 11:45:27 +0100
-Message-ID: <20250710104531.3099313-5-alex.bennee@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 5/7] plugins: fix inclusion of user-mode APIs
+Date: Thu, 10 Jul 2025 11:45:28 +0100
+Message-ID: <20250710104531.3099313-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250710104531.3099313-1-alex.bennee@linaro.org>
 References: <20250710104531.3099313-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -108,196 +108,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yodel Eldar <yodel.eldar@gmail.com>
+In 903e870f24 (plugins/api: split out binary path/start/end/entry
+code) we didn't actually enable the building of the new plugin helper.
+However this was missed because only contrib plugins like drcov
+actually used the helpers.
 
-This patch adds the GDB XML feature file that describes Alpha's core
-registers.
+With that fixed we discover we also need some more includes to be able
+to extract the relevant data from TaskState.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2569
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Yodel Eldar <yodel.eldar@gmail.com>
-Message-ID: <20250630164124.26315-3-yodel.eldar@gmail.com>
+Fixes: 903e870f24 (plugins/api: split out binary path/start/end/entry code)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3014
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configs/targets/alpha-linux-user.mak |   1 +
- configs/targets/alpha-softmmu.mak    |   1 +
- target/alpha/cpu.c                   |   1 +
- gdb-xml/alpha-core.xml               | 136 +++++++++++++++++++++++++++
- 4 files changed, 139 insertions(+)
- create mode 100644 gdb-xml/alpha-core.xml
+ linux-user/plugin-api.c      | 1 +
+ common-user/plugin-api.c.inc | 1 +
+ linux-user/meson.build       | 5 ++++-
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/configs/targets/alpha-linux-user.mak b/configs/targets/alpha-linux-user.mak
-index ef8e365b09..aa25766236 100644
---- a/configs/targets/alpha-linux-user.mak
-+++ b/configs/targets/alpha-linux-user.mak
-@@ -2,3 +2,4 @@ TARGET_ARCH=alpha
- TARGET_SYSTBL_ABI=common
- TARGET_SYSTBL=syscall.tbl
- TARGET_LONG_BITS=64
-+TARGET_XML_FILES= gdb-xml/alpha-core.xml
-diff --git a/configs/targets/alpha-softmmu.mak b/configs/targets/alpha-softmmu.mak
-index 5275076e50..e31f059a52 100644
---- a/configs/targets/alpha-softmmu.mak
-+++ b/configs/targets/alpha-softmmu.mak
-@@ -1,2 +1,3 @@
- TARGET_ARCH=alpha
- TARGET_LONG_BITS=64
-+TARGET_XML_FILES= gdb-xml/alpha-core.xml
-diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index 2082db45ea..bf1787a69d 100644
---- a/target/alpha/cpu.c
-+++ b/target/alpha/cpu.c
-@@ -286,6 +286,7 @@ static void alpha_cpu_class_init(ObjectClass *oc, const void *data)
-     cc->get_pc = alpha_cpu_get_pc;
-     cc->gdb_read_register = alpha_cpu_gdb_read_register;
-     cc->gdb_write_register = alpha_cpu_gdb_write_register;
-+    cc->gdb_core_xml_file = "alpha-core.xml";
- #ifndef CONFIG_USER_ONLY
-     dc->vmsd = &vmstate_alpha_cpu;
-     cc->sysemu_ops = &alpha_sysemu_ops;
-diff --git a/gdb-xml/alpha-core.xml b/gdb-xml/alpha-core.xml
-new file mode 100644
-index 0000000000..c9e12f4ffd
---- /dev/null
-+++ b/gdb-xml/alpha-core.xml
-@@ -0,0 +1,136 @@
-+<?xml version="1.0"?>
-+<!-- Copyright (C) 2025 Free Software Foundation, Inc.
+diff --git a/linux-user/plugin-api.c b/linux-user/plugin-api.c
+index 66755df526..8d6fbb60e0 100644
+--- a/linux-user/plugin-api.c
++++ b/linux-user/plugin-api.c
+@@ -12,4 +12,5 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu.h"
++#include "loader.h"
+ #include "common-user/plugin-api.c.inc"
+diff --git a/common-user/plugin-api.c.inc b/common-user/plugin-api.c.inc
+index 5b8a1396b6..63f3983271 100644
+--- a/common-user/plugin-api.c.inc
++++ b/common-user/plugin-api.c.inc
+@@ -13,6 +13,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/plugin.h"
++#include "accel/tcg/vcpu-state.h"
+ #include "qemu.h"
+ 
+ /*
+diff --git a/linux-user/meson.build b/linux-user/meson.build
+index f47a213ca3..efca843369 100644
+--- a/linux-user/meson.build
++++ b/linux-user/meson.build
+@@ -27,7 +27,10 @@ linux_user_ss.add(libdw)
+ linux_user_ss.add(when: 'TARGET_HAS_BFLT', if_true: files('flatload.c'))
+ linux_user_ss.add(when: 'TARGET_I386', if_true: files('vm86.c'))
+ linux_user_ss.add(when: 'CONFIG_ARM_COMPATIBLE_SEMIHOSTING', if_true: files('semihost.c'))
+-linux_user_ss.add(when: 'CONFIG_TCG_PLUGINS', if_true: files('plugin-api.c'))
 +
-+     Copying and distribution of this file, with or without modification,
-+     are permitted in any medium without royalty provided the copyright
-+     notice and this notice are preserved.  -->
-+
-+<!DOCTYPE feature SYSTEM "gdb-target.dtd">
-+<feature name="org.gnu.gdb.alpha.core">
-+  <!-- IEEE rounding mode values -->
-+  <enum id="dyn_rm_enum" size="8">
-+    <!-- Chopped rounding mode -->
-+    <evalue name="chop" value="0"/>
-+    <!-- Minus infinity -->
-+    <evalue name="-inf" value="1"/>
-+    <!-- Normal rounding -->
-+    <evalue name="norm" value="2"/>
-+    <!-- Plus infinity -->
-+    <evalue name="+inf" value="3"/>
-+  </enum>
-+
-+  <!-- Floating-Point Control Register Flags -->
-+  <flags id="fpcr_flags" size="8">
-+    <!-- Denormal Operand Exception Disable -->
-+    <field name="DNOD"   start="47" end="47"/>
-+    <!-- Denormal Operands to Zero -->
-+    <field name="DNZ"    start="48" end="48"/>
-+    <!-- Invalid Operation Disable -->
-+    <field name="INVD"   start="49" end="49"/>
-+    <!-- Division by Zero Disable -->
-+    <field name="DZED"   start="50" end="50"/>
-+    <!-- Overflow Disable -->
-+    <field name="OVFD"   start="51" end="51"/>
-+    <!-- Invalid Operation -->
-+    <field name="INV"    start="52" end="52"/>
-+    <!-- Division by Zero -->
-+    <field name="DZE"    start="53" end="53"/>
-+    <!-- Overflow -->
-+    <field name="OVF"    start="54" end="54"/>
-+    <!-- Underflow -->
-+    <field name="UNF"    start="55" end="55"/>
-+    <!-- Inexact Result -->
-+    <field name="INE"    start="56" end="56"/>
-+    <!-- Integer Overflow -->
-+    <field name="IOV"    start="57" end="57"/>
-+    <!-- Dynamic Rounding Mode -->
-+    <field name="DYN_RM" start="58" end="59" type="dyn_rm_enum"/>
-+    <!-- Underflow to Zero -->
-+    <field name="UNDZ"   start="60" end="60"/>
-+    <!-- Underflow Disable -->
-+    <field name="UNFD"   start="61" end="61"/>
-+    <!-- Inexact Disable -->
-+    <field name="INED"   start="62" end="62"/>
-+    <!-- Summary Bit -->
-+    <field name="SUM"    start="63" end="63"/>
-+  </flags>
-+
-+  <!-- Integer Registers -->
-+  <reg name="v0"   bitsize="64" type="int64"/>
-+  <reg name="t0"   bitsize="64" type="int64"/>
-+  <reg name="t1"   bitsize="64" type="int64"/>
-+  <reg name="t2"   bitsize="64" type="int64"/>
-+  <reg name="t3"   bitsize="64" type="int64"/>
-+  <reg name="t4"   bitsize="64" type="int64"/>
-+  <reg name="t5"   bitsize="64" type="int64"/>
-+  <reg name="t6"   bitsize="64" type="int64"/>
-+  <reg name="t7"   bitsize="64" type="int64"/>
-+  <reg name="s0"   bitsize="64" type="int64"/>
-+  <reg name="s1"   bitsize="64" type="int64"/>
-+  <reg name="s2"   bitsize="64" type="int64"/>
-+  <reg name="s3"   bitsize="64" type="int64"/>
-+  <reg name="s4"   bitsize="64" type="int64"/>
-+  <reg name="s5"   bitsize="64" type="int64"/>
-+  <reg name="fp"   bitsize="64" type="int64"/>
-+  <reg name="a0"   bitsize="64" type="int64"/>
-+  <reg name="a1"   bitsize="64" type="int64"/>
-+  <reg name="a2"   bitsize="64" type="int64"/>
-+  <reg name="a3"   bitsize="64" type="int64"/>
-+  <reg name="a4"   bitsize="64" type="int64"/>
-+  <reg name="a5"   bitsize="64" type="int64"/>
-+  <reg name="t8"   bitsize="64" type="int64"/>
-+  <reg name="t9"   bitsize="64" type="int64"/>
-+  <reg name="t10"  bitsize="64" type="int64"/>
-+  <reg name="t11"  bitsize="64" type="int64"/>
-+  <reg name="ra"   bitsize="64" type="int64"/>
-+  <reg name="t12"  bitsize="64" type="int64"/>
-+  <reg name="at"   bitsize="64" type="int64"/>
-+  <reg name="gp"   bitsize="64" type="data_ptr"/>
-+  <reg name="sp"   bitsize="64" type="data_ptr"/>
-+  <reg name="zero" bitsize="64" type="int64" save-restore="no"/>
-+
-+  <!-- Floating-Point Registers -->
-+  <reg name="f0"  bitsize="64" type="float" group="float"/>
-+  <reg name="f1"  bitsize="64" type="float" group="float"/>
-+  <reg name="f2"  bitsize="64" type="float" group="float"/>
-+  <reg name="f3"  bitsize="64" type="float" group="float"/>
-+  <reg name="f4"  bitsize="64" type="float" group="float"/>
-+  <reg name="f5"  bitsize="64" type="float" group="float"/>
-+  <reg name="f6"  bitsize="64" type="float" group="float"/>
-+  <reg name="f7"  bitsize="64" type="float" group="float"/>
-+  <reg name="f8"  bitsize="64" type="float" group="float"/>
-+  <reg name="f9"  bitsize="64" type="float" group="float"/>
-+  <reg name="f10" bitsize="64" type="float" group="float"/>
-+  <reg name="f11" bitsize="64" type="float" group="float"/>
-+  <reg name="f12" bitsize="64" type="float" group="float"/>
-+  <reg name="f13" bitsize="64" type="float" group="float"/>
-+  <reg name="f14" bitsize="64" type="float" group="float"/>
-+  <reg name="f15" bitsize="64" type="float" group="float"/>
-+  <reg name="f16" bitsize="64" type="float" group="float"/>
-+  <reg name="f17" bitsize="64" type="float" group="float"/>
-+  <reg name="f18" bitsize="64" type="float" group="float"/>
-+  <reg name="f19" bitsize="64" type="float" group="float"/>
-+  <reg name="f20" bitsize="64" type="float" group="float"/>
-+  <reg name="f21" bitsize="64" type="float" group="float"/>
-+  <reg name="f22" bitsize="64" type="float" group="float"/>
-+  <reg name="f23" bitsize="64" type="float" group="float"/>
-+  <reg name="f24" bitsize="64" type="float" group="float"/>
-+  <reg name="f25" bitsize="64" type="float" group="float"/>
-+  <reg name="f26" bitsize="64" type="float" group="float"/>
-+  <reg name="f27" bitsize="64" type="float" group="float"/>
-+  <reg name="f28" bitsize="64" type="float" group="float"/>
-+  <reg name="f29" bitsize="64" type="float" group="float"/>
-+  <reg name="f30" bitsize="64" type="float" group="float"/>
-+
-+  <!-- Floating-Point Control Register -->
-+  <reg name="fpcr" bitsize="64" type="fpcr_flags" group="float"/>
-+
-+  <!-- Program Counter -->
-+  <reg name="pc" bitsize="64" type="code_ptr"/>
-+
-+  <!-- Reserved Index for Former Virtual Register -->
-+  <reg name="" bitsize="64" type="int64" save-restore="no"/>
-+
-+  <!-- PALcode Memory Slot -->
-+  <reg name="unique" bitsize="64" type="int64" group="system"/>
-+</feature>
++if get_option('plugins')
++  linux_user_ss.add(files('plugin-api.c'))
++endif
+ 
+ syscall_nr_generators = {}
+ 
 -- 
 2.47.2
 
