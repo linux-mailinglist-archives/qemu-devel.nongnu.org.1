@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E03B0180A
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7171DB01811
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:36:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaA9X-00013L-Ac; Fri, 11 Jul 2025 05:34:47 -0400
+	id 1uaA9d-0001AQ-Ek; Fri, 11 Jul 2025 05:34:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaA9H-0000wT-KM
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:34:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaA9J-0000zT-Br
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:34:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaA9E-0007AS-Us
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:34:30 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaA9H-0007As-Ed
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:34:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752226466;
+ s=mimecast20190719; t=1752226470;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JWtEievjG9A7ikyV0ztzfsTqBUu4QLZA7wK7q31oSXY=;
- b=QMCoS/9YG4i7o4A4U5qMaRDAlSMwxbN2nq1F+Akra/gNMKbewImsbmOBGkPIFHQ/4esP8J
- Q3gTPzWYyy1zJCeohMJ0nVoosxTyp/SL0omaCU55+4xsSkUKo2sRQ3pwCROJN8vjrNTbIp
- ZRfCmPIJzdoV0WkYI7K5mhovcPV6I7o=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=fNxk96Ugqfn83itWttqsRHrcsZRRr/vZLQS2KZV1YB0=;
+ b=VNJ3VSnX5XTGjnoXpdil4iTRP4RufJfG9Iy/QgmLtBGGuVyOWGLwREibatK55zQePu7qWB
+ h3pmbpCpc9vKa2uoIVeEBazKkn4tQMOdsQKrJ9vhre/RkVFqX2LaTsNFDNdo4xoaLazAeB
+ KBgOaQZOA7detSZoglC8UJ9GGAD9vs4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-339-yAGZslTFMKe8CMwwxIDpNA-1; Fri,
- 11 Jul 2025 05:34:24 -0400
-X-MC-Unique: yAGZslTFMKe8CMwwxIDpNA-1
-X-Mimecast-MFC-AGG-ID: yAGZslTFMKe8CMwwxIDpNA_1752226463
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-266-Hc7QCq_JOuOlg7rfHkXgyg-1; Fri,
+ 11 Jul 2025 05:34:28 -0400
+X-MC-Unique: Hc7QCq_JOuOlg7rfHkXgyg-1
+X-Mimecast-MFC-AGG-ID: Hc7QCq_JOuOlg7rfHkXgyg_1752226467
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8CB6E19560AD; Fri, 11 Jul 2025 09:34:22 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DEA5D18001D1; Fri, 11 Jul 2025 09:34:24 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.54])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A298E19560A3; Fri, 11 Jul 2025 09:34:19 +0000 (UTC)
+ id 642BC19560A3; Fri, 11 Jul 2025 09:34:22 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/15] target/s390x: Expose s390_count_running_cpus() method
-Date: Fri, 11 Jul 2025 11:33:39 +0200
-Message-ID: <20250711093340.608485-15-thuth@redhat.com>
+Subject: [PULL 15/15] target/s390x: Have s390_cpu_halt() not return anything
+Date: Fri, 11 Jul 2025 11:33:40 +0200
+Message-ID: <20250711093340.608485-16-thuth@redhat.com>
 In-Reply-To: <20250711093340.608485-1-thuth@redhat.com>
 References: <20250711093340.608485-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,43 +83,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-In order to simplify the next commit where s390_count_running_cpus()
-is split out of s390_cpu_halt(), make its prototype public as a
-preliminary step.
+Since halting a vCPU and how many left running do not need
+to be tied together, split the s390_count_running_cpus()
+call out of s390_cpu_halt() to the single caller using it:
+s390_handle_wait().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250708095746.12697-3-philmd@linaro.org>
+Message-ID: <20250708095746.12697-4-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/s390x-internal.h | 1 +
- target/s390x/cpu-system.c     | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ target/s390x/s390x-internal.h | 2 +-
+ target/s390x/cpu-system.c     | 4 +---
+ target/s390x/helper.c         | 4 +++-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
-index 6894f0a2569..145e472edf0 100644
+index 145e472edf0..56cce2e7f50 100644
 --- a/target/s390x/s390x-internal.h
 +++ b/target/s390x/s390x-internal.h
-@@ -238,6 +238,7 @@ uint32_t calc_cc(CPUS390XState *env, uint32_t cc_op, uint64_t src, uint64_t dst,
- 
+@@ -239,7 +239,7 @@ uint32_t calc_cc(CPUS390XState *env, uint32_t cc_op, uint64_t src, uint64_t dst,
  /* cpu.c */
  #ifndef CONFIG_USER_ONLY
-+unsigned int s390_count_running_cpus(void);
- unsigned int s390_cpu_halt(S390CPU *cpu);
+ unsigned int s390_count_running_cpus(void);
+-unsigned int s390_cpu_halt(S390CPU *cpu);
++void s390_cpu_halt(S390CPU *cpu);
  void s390_cpu_unhalt(S390CPU *cpu);
  void s390_cpu_system_init(Object *obj);
+ bool s390_cpu_system_realize(DeviceState *dev, Error **errp);
 diff --git a/target/s390x/cpu-system.c b/target/s390x/cpu-system.c
-index 9b380e343c2..2fa8c4d75db 100644
+index 2fa8c4d75db..709ccd52992 100644
 --- a/target/s390x/cpu-system.c
 +++ b/target/s390x/cpu-system.c
-@@ -196,7 +196,7 @@ static bool disabled_wait(CPUState *cpu)
-                             (PSW_MASK_IO | PSW_MASK_EXT | PSW_MASK_MCHECK));
+@@ -214,7 +214,7 @@ unsigned s390_count_running_cpus(void)
+     return nr_running;
  }
  
--static unsigned s390_count_running_cpus(void)
-+unsigned s390_count_running_cpus(void)
+-unsigned int s390_cpu_halt(S390CPU *cpu)
++void s390_cpu_halt(S390CPU *cpu)
  {
-     CPUState *cpu;
-     int nr_running = 0;
+     CPUState *cs = CPU(cpu);
+     trace_cpu_halt(cs->cpu_index);
+@@ -223,8 +223,6 @@ unsigned int s390_cpu_halt(S390CPU *cpu)
+         cs->halted = 1;
+         cs->exception_index = EXCP_HLT;
+     }
+-
+-    return s390_count_running_cpus();
+ }
+ 
+ void s390_cpu_unhalt(S390CPU *cpu)
+diff --git a/target/s390x/helper.c b/target/s390x/helper.c
+index 3c57c32e479..5c127da1a6a 100644
+--- a/target/s390x/helper.c
++++ b/target/s390x/helper.c
+@@ -91,7 +91,9 @@ void s390_handle_wait(S390CPU *cpu)
+ {
+     CPUState *cs = CPU(cpu);
+ 
+-    if (s390_cpu_halt(cpu) == 0) {
++    s390_cpu_halt(cpu);
++
++    if (s390_count_running_cpus() == 0) {
+         if (is_special_wait_psw(cpu->env.psw.addr)) {
+             qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+         } else {
 -- 
 2.50.0
 
