@@ -2,67 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C40B02292
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 19:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7A9B022AA
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 19:37:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaHUs-0008JU-RV; Fri, 11 Jul 2025 13:25:19 -0400
+	id 1uaHfF-0005n5-8F; Fri, 11 Jul 2025 13:36:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uaHUj-0007bL-PW
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:25:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uaHf9-0005fc-2s
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:35:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uaHUh-0003jQ-Ni
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:25:09 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uaHf6-00076m-N5
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:35:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752254706;
+ s=mimecast20190719; t=1752255351;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Y1+tt+iNLxYKp09cDMTZB/FUW5kcXQX1dslNS/q6PJs=;
- b=gO3BNJAmodvFjrKzwUDuEVAFoUiV6vWwgL5Qq+pmN4hHroipNv4+RQPnSI+Xz2ETHN8d1Q
- wQeFLXSExmV5SaeIEl0IHY6/7iPXpDdVozMnnJcIqrf2HmsTV7v/94sZVjP53mEY8I2eZz
- Zf6axfVNd3V/qRcBhyTIlIsdnunG+ZU=
+ bh=xjPNLgHMgeBCklnDCEZjxuZosvWruknn0zkmwsR1alA=;
+ b=D0f0pYw3lAE15cGxJMap0fJ+Ck5qyfPm1DC0vya8+zKPyi1BuRaqMQ1Z0ezvpYG+zFCp6N
+ 7jGym3sFXyVSxBZO+UWbkyqvtSzyM+eY3bdEzvdk3Pcg89UPZuzKoHxXyPzDuHNnTCabK3
+ QL+J9ggYEPjXZLlo/H9Z6jA1hz9wB6g=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-235-N7Jjg14EOsSiBy0eMmX1Ag-1; Fri,
- 11 Jul 2025 13:25:02 -0400
-X-MC-Unique: N7Jjg14EOsSiBy0eMmX1Ag-1
-X-Mimecast-MFC-AGG-ID: N7Jjg14EOsSiBy0eMmX1Ag_1752254701
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-sKAHc_0jOsyq9bh7x-X_dg-1; Fri,
+ 11 Jul 2025 13:35:44 -0400
+X-MC-Unique: sKAHc_0jOsyq9bh7x-X_dg-1
+X-Mimecast-MFC-AGG-ID: sKAHc_0jOsyq9bh7x-X_dg_1752255343
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BD35A1801212; Fri, 11 Jul 2025 17:25:01 +0000 (UTC)
+ id 8C04B18011EE; Fri, 11 Jul 2025 17:35:43 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4D646197702C; Fri, 11 Jul 2025 17:25:01 +0000 (UTC)
+ id 13BD61977000; Fri, 11 Jul 2025 17:35:42 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8B35621E6A27; Fri, 11 Jul 2025 19:24:58 +0200 (CEST)
+ id 59E2E21E6A27; Fri, 11 Jul 2025 19:35:40 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  John Snow <jsnow@redhat.com>,  Cleber Rosa
- <crosa@redhat.com>,  Eric Blake <eblake@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,  Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>,  Philippe Mathieu-Daude
- <philmd@linaro.org>
-Subject: Re: [PATCH V5 0/3] fast qom tree get
-In-Reply-To: <1752248703-217318-1-git-send-email-steven.sistare@oracle.com>
- (Steve Sistare's message of "Fri, 11 Jul 2025 08:45:00 -0700")
-References: <1752248703-217318-1-git-send-email-steven.sistare@oracle.com>
-Date: Fri, 11 Jul 2025 19:24:58 +0200
-Message-ID: <87a55askr9.fsf@pond.sub.org>
+To: qemu-devel@nongnu.org
+Cc: eblake@redhat.com,  pbonzini@redhat.com,  berrange@redhat.com,
+ eduardo@habkost.net,  steven.sistare@oracle.com
+Subject: Re: [PATCH 0/2] qapi: Minor documentation cleanups
+In-Reply-To: <20250708072828.105185-1-armbru@redhat.com> (Markus Armbruster's
+ message of "Tue, 8 Jul 2025 09:28:26 +0200")
+References: <20250708072828.105185-1-armbru@redhat.com>
+Date: Fri, 11 Jul 2025 19:35:40 +0200
+Message-ID: <87y0sur5oz.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,16 +83,6 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steve Sistare <steven.sistare@oracle.com> writes:
-
-> Using qom-list and qom-get to get all the nodes and property values in a
-> QOM tree can take multiple seconds because it requires 1000's of individual
-> QOM requests.  Some managers fetch the entire tree or a large subset
-> of it when starting a new VM, and this cost is a substantial fraction of
-> start up time.
-
-[...]
-
-Queued for 10.1.  Thanks!
+Queued for 10.1.  Thanks for the review!
 
 
