@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0025B01659
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B53B01601
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:28:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua97a-0004vi-RM; Fri, 11 Jul 2025 04:28:43 -0400
+	id 1ua973-0003Vy-8X; Fri, 11 Jul 2025 04:28:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8y8-0005aU-N5; Fri, 11 Jul 2025 04:18:57 -0400
+ id 1ua8y6-0005YS-B2; Fri, 11 Jul 2025 04:18:55 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8y2-00045H-46; Fri, 11 Jul 2025 04:18:56 -0400
+ id 1ua8y4-00045U-3w; Fri, 11 Jul 2025 04:18:53 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0C6FC1356D9;
+ by isrv.corpit.ru (Postfix) with ESMTP id 200FB1356DA;
  Fri, 11 Jul 2025 11:17:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 03BF023FA4E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 11DE123FA4F;
  Fri, 11 Jul 2025 11:17:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Sairaj Kodilkar <sarunkod@amd.com>,
- Vasant Hegde <vasant.hegde@amd.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 14/39] hw/i386/amd_iommu: Fix device setup failure
- when PT is on.
-Date: Fri, 11 Jul 2025 11:16:10 +0300
-Message-ID: <20250711081745.1785806-14-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Vasant Hegde <vasant.hegde@amd.com>,
+ Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Joao Martins <joao.m.martins@oracle.com>,
+ Sairaj Kodilkar <sarunkod@amd.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 15/39] hw/i386/amd_iommu: Fix xtsup when vcpus < 255
+Date: Fri, 11 Jul 2025 11:16:11 +0300
+Message-ID: <20250711081745.1785806-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,61 +61,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sairaj Kodilkar <sarunkod@amd.com>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-Commit c1f46999ef506 ("amd_iommu: Add support for pass though mode")
-introduces the support for "pt" flag by enabling nodma memory when
-"pt=off". This allowed VFIO devices to successfully register notifiers
-by using nodma region.
+If vCPUs > 255 then x86 common code (x86_cpus_init()) call kvm_enable_x2apic().
+But if vCPUs <= 255 then the common code won't calls kvm_enable_x2apic().
 
-But, This also broke things when guest is booted with the iommu=nopt
-because, devices bypass the IOMMU and use untranslated addresses (IOVA) to
-perform DMA reads/writes to the nodma memory region, ultimately resulting in
-a failure to setup the devices in the guest.
+This is because commit 8c6619f3e692 ("hw/i386/amd_iommu: Simplify non-KVM
+checks on XTSup feature") removed the call to kvm_enable_x2apic when xtsup
+is "on", which break things when guest is booted with x2apic mode and
+there are <= 255 vCPUs.
 
-Fix the above issue by always enabling the amdvi_dev_as->iommu memory region.
-But this will once again cause VFIO devices to fail while registering the
-notifiers with AMD IOMMU memory region.
+Fix this by adding back kvm_enable_x2apic() call when xtsup=on.
 
-Fixes: c1f46999ef506 ("amd_iommu: Add support for pass though mode")
+Fixes: 8c6619f3e692 ("hw/i386/amd_iommu: Simplify non-KVM checks on XTSup feature")
+Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Tested-by: Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250516100535.4980-2-sarunkod@amd.com>
-Fixes: c1f46999ef506 ("amd_iommu: Add support for pass though mode")
+Message-Id: <20250516100535.4980-3-sarunkod@amd.com>
+Fixes: 8c6619f3e692 ("hw/i386/amd_iommu: Simplify non-KVM checks on XTSup feature")
+Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Tested-by: Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-(cherry picked from commit 31753d5a336fbb4e9246397f4b90b6f611f27f22)
+(cherry picked from commit 0f178860df3489a9d3c19a5f7f024e6aa6c26515)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 5f9b952799..df8ba5d39a 100644
+index df8ba5d39a..af85706b8a 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -1426,7 +1426,6 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
-     AMDVIState *s = opaque;
-     AMDVIAddressSpace **iommu_as, *amdvi_dev_as;
-     int bus_num = pci_bus_num(bus);
--    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
- 
-     iommu_as = s->address_spaces[bus_num];
- 
-@@ -1486,15 +1485,8 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
-                                             AMDVI_INT_ADDR_FIRST,
-                                             &amdvi_dev_as->iommu_ir, 1);
- 
--        if (!x86_iommu->pt_supported) {
--            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
--            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
--                                      true);
--        } else {
--            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
--                                      false);
--            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, true);
--        }
-+        memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
-+        memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu), true);
+@@ -1649,6 +1649,14 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+         exit(EXIT_FAILURE);
      }
-     return &iommu_as[devfn]->as;
+ 
++    if (s->xtsup) {
++        if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
++            error_report("AMD IOMMU xtsup=on requires x2APIC support on "
++                          "the KVM side");
++            exit(EXIT_FAILURE);
++        }
++    }
++
+     pci_setup_iommu(bus, &amdvi_iommu_ops, s);
+     amdvi_init(s);
  }
 -- 
 2.47.2
