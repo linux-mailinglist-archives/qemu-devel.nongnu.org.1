@@ -2,70 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7171DB01811
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:36:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4B4B0189F
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:46:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaA9d-0001AQ-Ek; Fri, 11 Jul 2025 05:34:53 -0400
+	id 1uaAJ0-0005RA-1F; Fri, 11 Jul 2025 05:44:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaA9J-0000zT-Br
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:34:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
+ id 1uaAIv-0005Lk-Rc
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:44:30 -0400
+Received: from www62.your-server.de ([213.133.104.62])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaA9H-0007As-Ed
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:34:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752226470;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fNxk96Ugqfn83itWttqsRHrcsZRRr/vZLQS2KZV1YB0=;
- b=VNJ3VSnX5XTGjnoXpdil4iTRP4RufJfG9Iy/QgmLtBGGuVyOWGLwREibatK55zQePu7qWB
- h3pmbpCpc9vKa2uoIVeEBazKkn4tQMOdsQKrJ9vhre/RkVFqX2LaTsNFDNdo4xoaLazAeB
- KBgOaQZOA7detSZoglC8UJ9GGAD9vs4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-266-Hc7QCq_JOuOlg7rfHkXgyg-1; Fri,
- 11 Jul 2025 05:34:28 -0400
-X-MC-Unique: Hc7QCq_JOuOlg7rfHkXgyg-1
-X-Mimecast-MFC-AGG-ID: Hc7QCq_JOuOlg7rfHkXgyg_1752226467
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DEA5D18001D1; Fri, 11 Jul 2025 09:34:24 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.45.224.54])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 642BC19560A3; Fri, 11 Jul 2025 09:34:22 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
+ id 1uaAIs-0001Hh-Ux
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:44:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+ Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References;
+ bh=sVvTLZG3L4cK+m724KizckhOtMr0iVae+h/z8LxV+Vk=; b=NVQz54vXgAIYvlOxwGnw0W1UJ7
+ UGZgX4fkiYYmn1wg5nsVRYT2Aip1xFGQbdL/u0C7JEY6a3EadCbAXY+ITXGYp7smQBEJsx3m/vQ2i
+ 2ZKWb8iYKkkFRwIK5jVO60B1LxyS/Ak4keWtQTKV0aCWBbDcDtcmStATJupFnN96i+dAVCnO8d3WY
+ W+SO3GpcKLtlN28TEB6yx+WaSyOtj7+kDkOh0RB8z2PJoOf3AJXJGHh481c56qmmsjqIxYYodJVHZ
+ wABreQx12zEMIWEVSFg+6j9juAdb+sYklF/PoKWmlP2DNYy19zTU6v6dm3wxNMnOuGckQlhY68Ieu
+ sT5EU1lQ==;
+Received: from localhost ([127.0.0.1])
+ by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.96.2) (envelope-from <daniel@iogearbox.net>)
+ id 1uaAIj-0002mz-0b; Fri, 11 Jul 2025 11:44:17 +0200
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 15/15] target/s390x: Have s390_cpu_halt() not return anything
-Date: Fri, 11 Jul 2025 11:33:40 +0200
-Message-ID: <20250711093340.608485-16-thuth@redhat.com>
-In-Reply-To: <20250711093340.608485-1-thuth@redhat.com>
-References: <20250711093340.608485-1-thuth@redhat.com>
+Cc: daniel@iogearbox.net, Ilya Maximets <i.maximets@ovn.org>,
+ Jason Wang <jasowang@redhat.com>, Anton Protopopov <aspsk@isovalent.com>
+Subject: [PATCH v5 1/3] net/af-xdp: Remove XDP program cleanup logic
+Date: Fri, 11 Jul 2025 11:44:14 +0200
+Message-ID: <20250711094416.247125-1-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27695/Thu Jul 10 11:08:41 2025)
+Received-SPF: pass client-ip=213.133.104.62; envelope-from=daniel@iogearbox.net;
+ helo=www62.your-server.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,76 +65,77 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Daniel Borkmann <daniel@iogearbox.net>
+From:  Daniel Borkmann via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+There are two issues with the XDP program removal in af_xdp_cleanup():
 
-Since halting a vCPU and how many left running do not need
-to be tied together, split the s390_count_running_cpus()
-call out of s390_cpu_halt() to the single caller using it:
-s390_handle_wait().
+1) Starting from libxdp 1.3.0 [0] the XDP program gets automatically
+   detached when we call xsk_socket__delete() for the last successfully
+   configured queue. libxdp internally keeps track of that. For QEMU
+   we require libxdp >= 1.4.0. Given QEMU is not loading the program,
+   lets also not attempt to remove it and delegate this instead.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250708095746.12697-4-philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+2) The removal logic is incorrect anyway because we are setting n_queues
+   into the last queue that never has xdp_flags on failure, so the logic
+   is always skipped since the non-zero test for s->xdp_flags in
+   af_xdp_cleanup() fails.
+
+Fixes: cb039ef3d9e3 ("net: add initial support for AF_XDP network backend")
+Suggested-by: Ilya Maximets <i.maximets@ovn.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Cc: Ilya Maximets <i.maximets@ovn.org>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Anton Protopopov <aspsk@isovalent.com>
+Link: https://github.com/xdp-project/xdp-tools/commit/38c2914988fd5c1ef65f2381fc8af9f3e8404e2b [0]
 ---
- target/s390x/s390x-internal.h | 2 +-
- target/s390x/cpu-system.c     | 4 +---
- target/s390x/helper.c         | 4 +++-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ net/af-xdp.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
-index 145e472edf0..56cce2e7f50 100644
---- a/target/s390x/s390x-internal.h
-+++ b/target/s390x/s390x-internal.h
-@@ -239,7 +239,7 @@ uint32_t calc_cc(CPUS390XState *env, uint32_t cc_op, uint64_t src, uint64_t dst,
- /* cpu.c */
- #ifndef CONFIG_USER_ONLY
- unsigned int s390_count_running_cpus(void);
--unsigned int s390_cpu_halt(S390CPU *cpu);
-+void s390_cpu_halt(S390CPU *cpu);
- void s390_cpu_unhalt(S390CPU *cpu);
- void s390_cpu_system_init(Object *obj);
- bool s390_cpu_system_realize(DeviceState *dev, Error **errp);
-diff --git a/target/s390x/cpu-system.c b/target/s390x/cpu-system.c
-index 2fa8c4d75db..709ccd52992 100644
---- a/target/s390x/cpu-system.c
-+++ b/target/s390x/cpu-system.c
-@@ -214,7 +214,7 @@ unsigned s390_count_running_cpus(void)
-     return nr_running;
- }
+diff --git a/net/af-xdp.c b/net/af-xdp.c
+index 01c5fb914e..c5d3b6a953 100644
+--- a/net/af-xdp.c
++++ b/net/af-xdp.c
+@@ -49,7 +49,6 @@ typedef struct AFXDPState {
+     char                 *buffer;
+     struct xsk_umem      *umem;
  
--unsigned int s390_cpu_halt(S390CPU *cpu)
-+void s390_cpu_halt(S390CPU *cpu)
- {
-     CPUState *cs = CPU(cpu);
-     trace_cpu_halt(cs->cpu_index);
-@@ -223,8 +223,6 @@ unsigned int s390_cpu_halt(S390CPU *cpu)
-         cs->halted = 1;
-         cs->exception_index = EXCP_HLT;
-     }
+-    uint32_t             n_queues;
+     uint32_t             xdp_flags;
+     bool                 inhibit;
+ } AFXDPState;
+@@ -274,14 +273,6 @@ static void af_xdp_cleanup(NetClientState *nc)
+     s->umem = NULL;
+     qemu_vfree(s->buffer);
+     s->buffer = NULL;
 -
--    return s390_count_running_cpus();
+-    /* Remove the program if it's the last open queue. */
+-    if (!s->inhibit && nc->queue_index == s->n_queues - 1 && s->xdp_flags
+-        && bpf_xdp_detach(s->ifindex, s->xdp_flags, NULL) != 0) {
+-        fprintf(stderr,
+-                "af-xdp: unable to remove XDP program from '%s', ifindex: %d\n",
+-                s->ifname, s->ifindex);
+-    }
  }
  
- void s390_cpu_unhalt(S390CPU *cpu)
-diff --git a/target/s390x/helper.c b/target/s390x/helper.c
-index 3c57c32e479..5c127da1a6a 100644
---- a/target/s390x/helper.c
-+++ b/target/s390x/helper.c
-@@ -91,7 +91,9 @@ void s390_handle_wait(S390CPU *cpu)
- {
-     CPUState *cs = CPU(cpu);
+ static int af_xdp_umem_create(AFXDPState *s, int sock_fd, Error **errp)
+@@ -490,12 +481,9 @@ int net_init_af_xdp(const Netdev *netdev,
  
--    if (s390_cpu_halt(cpu) == 0) {
-+    s390_cpu_halt(cpu);
-+
-+    if (s390_count_running_cpus() == 0) {
-         if (is_special_wait_psw(cpu->env.psw.addr)) {
-             qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-         } else {
+         pstrcpy(s->ifname, sizeof(s->ifname), opts->ifname);
+         s->ifindex = ifindex;
+-        s->n_queues = queues;
+ 
+         if (af_xdp_umem_create(s, sock_fds ? sock_fds[i] : -1, errp)
+             || af_xdp_socket_create(s, opts, errp)) {
+-            /* Make sure the XDP program will be removed. */
+-            s->n_queues = i;
+             error_propagate(errp, err);
+             goto err;
+         }
 -- 
-2.50.0
+2.43.0
 
 
