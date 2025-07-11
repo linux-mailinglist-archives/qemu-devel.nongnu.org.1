@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815ACB01114
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3E7B01113
 	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 04:05:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua37R-0004R0-Nw; Thu, 10 Jul 2025 22:04:09 -0400
+	id 1ua37R-0004Ru-Os; Thu, 10 Jul 2025 22:04:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
- id 1ua373-0004OO-9e
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 22:03:45 -0400
-Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+ id 1ua379-0004PM-Aj
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 22:03:57 -0400
+Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
- id 1ua370-0001yE-JK
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 22:03:44 -0400
-Received: by mail-qt1-x82b.google.com with SMTP id
- d75a77b69052e-4a77ea7ed49so32301421cf.0
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 19:03:41 -0700 (PDT)
+ id 1ua370-0001yS-Up
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 22:03:50 -0400
+Received: by mail-qt1-x831.google.com with SMTP id
+ d75a77b69052e-4a77ea7ed49so32301571cf.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 19:03:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1752199420; x=1752804220; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1752199421; x=1752804221; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mYMArfT2TZNV6/lCHlfgq979YuvRsldWu/WXj8vzR5Q=;
- b=Z7ZmP4Evzb6tyS8O45wpvr46EY+6f3tF2peTCjGDMPXsnifvrA9r7AsI9GipD0V9ev
- gOvBB7C/X2dH8GrIUqemWVLPEmuM1J0mnqy3UNo/hAtBPaee/s0GJw8Rc83ytwnETR2d
- D73TvDl4MDO3vLjtKvjiuRkUut0nauWN1GPh21Oq/xP1F8VgyVcmHOl/5YGdxZ8IKUE9
- Qmg6mXQExMZ06CcvZcctPovhYhpQYP5X0NwYO8HtSeVVmlQ0X1CWZEP8yrx+mvLT0+aA
- ag3+NkFivllmD/6zE2e63CutCCnwIl5LkLKbouukN8h6Yt5IiTxjo7Y1hHd9c1Rdo66N
- f28A==
+ bh=MiPWa9uaGLjoes/vVDyCJJ6uwyxHojbLGx3x8hpB+zg=;
+ b=Bi5gQQuadYw6kXoX9saJmrOl0ikl4Op4Dg7Dm7/Da3q60GMjeaTwszhNYH83vLQHAF
+ 6Qpy77KAaqGe9i6GS8c9lIt73htPcOCGUxNsXrmWyaOK4f+g1cTi1G1Xa1mNvUkhc8Me
+ xWjn6c8HZjFtc9p/2SxSzdy/SQxSwlMLkACOtpXGCCMnHzyPACEq4/oQILZSMWgK49bU
+ +FxYFvuopQyYaxgmcnPicWwHVSrttdHxe5fd4oksyJqSv4NqbkxOs3e49KyYocNkZ2Vm
+ CvI9ERHvNPm7Q4BbRWXIVssVFkbOK92FMQpybnn+iklXUEuFF5T31IIkdkMww3ZDqtDa
+ ueIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752199420; x=1752804220;
+ d=1e100.net; s=20230601; t=1752199421; x=1752804221;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mYMArfT2TZNV6/lCHlfgq979YuvRsldWu/WXj8vzR5Q=;
- b=dSBAxDt2O7MDfhEchcrCnvd9GhTKnPZwiqDJ//NdkCOW/7jTkR6BdVmcGic3ml2Z5z
- RAQniTu57OGka5HgCGxREJVyd1jt6OJEvR6ebHJAf3wcId5K6PyVh+mMC//u6qMz5HZI
- Fw1RILoGJdVa3L5h6MmT8ME97GssHekg8CEgV699he/D36IummZODQlBeBtFTNKEhnAQ
- Zo8RulL04HwgTrvFYed9kmXoOeHp7DW4aZvrnfUoA/8geigDjTUQAdzPiJ1YMsXoNaWj
- O4ThGvRdWGBwUsDFc8Rj+TqdA3gecQjd0bNo1HEQuFuptNCyHhKZBEh0NDKDtG8zY52k
- Uykw==
-X-Gm-Message-State: AOJu0YwC/oseqKIrM/vksyJf2vm1USsPBMZulH+kyOCZBjXGObi5ujoA
- mofdwdnfSZ66JnZU8cwQCYGeiS+DU6tz+36lOh/eTZdpEEe6Ug//v5F4IVphzw==
-X-Gm-Gg: ASbGncsGURGWKpcwdODtCHL9T32d7QVdwgMW5Lo6W0sb0F+0qGZKx6q2ABLlV+YoqKL
- sdJjsq2wzBuDdKcgYCYYRyPOtfWIBl+ICc3VFivszZjjA9O2A5Wnu54Cf1DcRoun75lIuAgrvuq
- vGAZN9luhDhpjrIfhydJYIW5fn8hAmmKQr7RBmSxmRvoupJjLIV8m7LbW7dgxwLHUYmHMJFCaRJ
- KaofId3vs3SOAyTIt5PJca8CEDLk0yWsViure0k5TxG6kLdJTR50F1P8GoYmeFRJPm550vz71Ov
- 2U/sjTc8TfoGhlCfpDE5P9WTPEYrmG6yDWq9BRVjbO5+HKuGd/2fW1/rWAGONYCgVSr6oKKfn57
- opa5T2i/GAGmee1uKirItngdvJxjAxCVHrzHpqoTvsRVuhYU=
-X-Google-Smtp-Source: AGHT+IHAvehnIn2mPObDhgl9DErdfZOWStmdDQdL6/gv6CJ4LNTTt5zp51LiJYZNAwRoO5ZWWMaeWQ==
-X-Received: by 2002:a05:622a:230b:b0:4a4:2fd6:90b7 with SMTP id
- d75a77b69052e-4a9e9cd8589mr94085811cf.17.1752199420287; 
- Thu, 10 Jul 2025 19:03:40 -0700 (PDT)
+ bh=MiPWa9uaGLjoes/vVDyCJJ6uwyxHojbLGx3x8hpB+zg=;
+ b=Nj68LcIzamzb8vosBlGIeDuqXws2u5MQZ+YwPYWncwoD3N7toahL5x8slu1ByIiB2f
+ aQE4LGD/5Q81xb/TRcseyamgEZ4YWl8dfpJMIFe7OrFLKqbS/rFtkIwPTMRvmIGgOmh8
+ UmLAwhJLVcx452Nyd2h0ILwkSfb0n+CglXUAHrB0BuCxx4j896kHARzQL85EMZDmIu4l
+ AGp3R8FchCopzdWnVOf6HpjoJ52vHPN2qZ09L0ypqwBZNAvLx4UyTidFcxoXGaPWccgG
+ TxjXt1JLNaVqg7ezuuSb4SCokjOYJn8UPN4lgJoI0G+iW6ekp0g6Z/J/l5rvuX0DfC+4
+ Rf5Q==
+X-Gm-Message-State: AOJu0Yz2dedrJmmcn240wHKlb+KrteTqtNumX6ht7yvvcRyXmnSuwtXf
+ GO6h23an+PknAG0RN301T3j7BvRAdm31xDZ1NS+YkcXBfPFU7IlKQV91zit0rg==
+X-Gm-Gg: ASbGnctAU1EB2ww1uYuuVCPDQk8Z6I2xFHCqq8Xl/IuisFqo+npqGGyKO5Dc10yv8+s
+ VqZ8Dnkr5DiHtFDOPQu1pW7Vn0gN8KTYfynVN140jw9gqKEuur8NbHGGngDCOeb3T+qg5hgk5sM
+ kMtJ9qI/EZ0pZtdjLduXyW1gziZXfKsmryx5k6GW48dJf3qjy2pxidp4nvO9jvLYc5yjqbujdYf
+ TLOrKzOystHiGTNqkgqPXOtWGaT1nOl55A5ii2TyzFFV1Dm23ay+Bmo2YVFNQg0YrINgI+8c4gb
+ ttFOF54c8TuqBVlI/VSuTV2TA1Yy8q9LWEiyKALioKHuWzt7re2Kj6+Fu+HepMILfdlxeRqmJs/
+ hqA0jsWS6JBobZrAlX87f9SbO/FZpw0xnsHTwUMD4SB0MKv0=
+X-Google-Smtp-Source: AGHT+IH3leWE0/lrL+9u66JjmJykJIcwoKXHj7RZGNjmbyESkkwclTAxlr8XtMm26unRExhe27xT6A==
+X-Received: by 2002:a05:622a:8c08:b0:4aa:cba2:2e5a with SMTP id
+ d75a77b69052e-4aacba232d0mr7234841cf.26.1752199421150; 
+ Thu, 10 Jul 2025 19:03:41 -0700 (PDT)
 Received: from user-jcksn.mynetworksettings.com
  ([2600:4040:b51f:a700:7eb2:b315:2597:18f1])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4a9ede76d41sm16125761cf.48.2025.07.10.19.03.39
+ d75a77b69052e-4a9ede76d41sm16125761cf.48.2025.07.10.19.03.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jul 2025 19:03:39 -0700 (PDT)
+ Thu, 10 Jul 2025 19:03:40 -0700 (PDT)
 From: Jackson Donaldson <jackson88044@gmail.com>
 X-Google-Original-From: Jackson Donaldson <jcksn@duck.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH 1/2] docs/system: arm: Add max78000 board description
-Date: Thu, 10 Jul 2025 22:03:37 -0400
-Message-Id: <20250711020338.586222-2-jcksn@duck.com>
+Subject: [PATCH 2/2] tests/functional: Add a test for the MAX78000 arm machine
+Date: Thu, 10 Jul 2025 22:03:38 -0400
+Message-Id: <20250711020338.586222-3-jcksn@duck.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250711020338.586222-1-jcksn@duck.com>
 References: <20250711020338.586222-1-jcksn@duck.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
- envelope-from=jackson88044@gmail.com; helo=mail-qt1-x82b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
+ envelope-from=jackson88044@gmail.com; helo=mail-qt1-x831.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,56 +100,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds the target guide for the max78000FTHR
+Runs a binary from the max78000test repo used in
+developing the qemu implementation of the max78000
+to verify that the machine and implemented devices
+generally still work.
 
 Signed-off-by: Jackson Donaldson <jcksn@duck.com>
 ---
- docs/system/arm/max78000.rst | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
- create mode 100644 docs/system/arm/max78000.rst
+ tests/functional/meson.build              |  1 +
+ tests/functional/test_arm_max78000fthr.py | 48 +++++++++++++++++++++++
+ 2 files changed, 49 insertions(+)
+ create mode 100755 tests/functional/test_arm_max78000fthr.py
 
-diff --git a/docs/system/arm/max78000.rst b/docs/system/arm/max78000.rst
-new file mode 100644
-index 0000000000..d07d8b8a36
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index e9f19d54a2..f837c6ddb1 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -131,6 +131,7 @@ tests_arm_system_thorough = [
+   'arm_cubieboard',
+   'arm_emcraft_sf2',
+   'arm_integratorcp',
++  'arm_max78000fthr',
+   'arm_microbit',
+   'arm_orangepi',
+   'arm_quanta_gsj',
+diff --git a/tests/functional/test_arm_max78000fthr.py b/tests/functional/test_arm_max78000fthr.py
+new file mode 100755
+index 0000000000..a82980b0f7
 --- /dev/null
-+++ b/docs/system/arm/max78000.rst
-@@ -0,0 +1,35 @@
-+Analog Devices max78000 board (``max78000fthr``)
-+===============================================================================================================
++++ b/tests/functional/test_arm_max78000fthr.py
+@@ -0,0 +1,48 @@
++#!/usr/bin/env python3
++#
++# Functional test that checks the max78000fthr machine.
++# Tests ICC, GCR, TRNG, AES, and UART
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+The max78000 is a Cortex-M4 based SOC with a RISC-V coprocessor. The RISC-V coprocessor is not supported.
++from qemu_test import QemuSystemTest, Asset, exec_command_and_wait_for_pattern
++from qemu_test import wait_for_console_pattern
 +
-+Supported devices
-+-----------------
 +
-+ * Instruction Cache Controller
-+ * UART
-+ * Global Control Register
-+ * True Random Number Generator
-+ * AES
++class Max78000Machine(QemuSystemTest):
 +
-+Notable unsupported devices
-+-----------------
++    ASSET_FW = Asset(
++        'https://github.com/JacksonDonaldson/max78000Test/raw/main/build/max78000.bin',
++        '86940b4bf60931bc6a8aa5db4b9f7f3cf8f64dbbd7ac534647980e536cf3adf7')
 +
-+ * I2C
-+ * CNN
-+ * CRC
-+ * SPI
++    def test_fthr(self):
++        self.set_machine('max78000fthr')
++        fw_path = self.ASSET_FW.fetch()
++        self.vm.set_console()
++        self.vm.add_args('-kernel', fw_path)
++        self.vm.add_args('-device', "loader,file=" + fw_path + ",addr=0x10000000")
++        self.vm.launch()
 +
-+Boot options
-+------------
++        wait_for_console_pattern(self, 'started')
 +
-+The max78000 can be started using the ``-kernel`` option to load a
-+firmware at address 0 as the ROM. As the ROM normally jumps to software loaded
-+from the internal flash at address 0x10000000, loading your program there is
-+generally advisable. If you don't have a copy of the ROM, the interrupt
-+vector table from user firmware will do.
-+Example:
++        # i -> prints instruction cache values
++        exec_command_and_wait_for_pattern(self, 'i', 'CTRL: 00010001')
 +
-+.. code-block:: bash
++        # r -> gcr resets the machine
++        exec_command_and_wait_for_pattern(self, 'r', 'started')
 +
-+  $ qemu-system-arm -machine max78000fthr -kernel max78000.bin -device loader,file=max78000.bin,addr=0x10000000
-\ No newline at end of file
++        # z -> sets some memory, then has gcr zero it
++        exec_command_and_wait_for_pattern(self, 'z', 'initial value: 12345678')
++        wait_for_console_pattern(self, "after memz: 00000000")
++
++        # t -> runs trng
++        exec_command_and_wait_for_pattern(self, 't', 'random data:')
++
++        # a -> runs aes
++        exec_command_and_wait_for_pattern(self, 'a',
++                'encrypted to : a47ca9dd e0df4c86 a070af6e 91710dec')
++        wait_for_console_pattern(self,
++                'encrypted to : cab7a28e bf456751 9049fcea 8960494b')
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
 -- 
 2.34.1
 
