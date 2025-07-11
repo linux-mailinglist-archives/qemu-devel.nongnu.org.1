@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57774B015FF
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3B9B015EF
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:27:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua96t-0002mb-U6; Fri, 11 Jul 2025 04:28:01 -0400
+	id 1ua95Q-0000jE-IW; Fri, 11 Jul 2025 04:26:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xY-0004bl-EO; Fri, 11 Jul 2025 04:18:20 -0400
+ id 1ua8xY-0004c3-Ik; Fri, 11 Jul 2025 04:18:20 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xW-00041C-7X; Fri, 11 Jul 2025 04:18:20 -0400
+ id 1ua8xW-00041F-CJ; Fri, 11 Jul 2025 04:18:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9BB271356D3;
+ by isrv.corpit.ru (Postfix) with ESMTP id AA9211356D4;
  Fri, 11 Jul 2025 11:17:18 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 91C9523FA48;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A1B1623FA49;
  Fri, 11 Jul 2025 11:17:45 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 08/39] ui/vnc.c: replace big endian flag with byte
- order value
-Date: Fri, 11 Jul 2025 11:16:04 +0300
-Message-ID: <20250711081745.1785806-8-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 09/39] ui/vnc: take account of client byte order in
+ pixman format
+Date: Fri, 11 Jul 2025 11:16:05 +0300
+Message-ID: <20250711081745.1785806-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
@@ -64,99 +63,164 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-It will make it easier to do certain comparisons in future if we
-store G_BIG_ENDIAN/G_LITTLE_ENDIAN directly, instead of a boolean
-flag, as we can then compare directly to the G_BYTE_ORDER constant.
+The set_pixel_conversion() method is responsible for determining whether
+the VNC client pixel format matches the server format, and thus whether
+we can use the fast path "copy" impl for sending pixels, or must use
+the generic impl with bit swizzling.
 
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+The VNC server format is set at build time to VNC_SERVER_FB_FORMAT,
+which corresponds to PIXMAN_x8r8g8b8.
+
+The qemu_pixman_get_format() method is then responsible for converting
+the VNC pixel format into a pixman format.
+
+The VNC client pixel shifts are relative to the associated endianness.
+
+The pixman formats are always relative to the host native endianness.
+
+The qemu_pixman_get_format() method does not take into account the
+VNC client endianness, and is thus returning a pixman format that is
+only valid with the host endianness matches that of the VNC client.
+
+This has been broken since pixman was introduced to the VNC server:
+
+  commit 9f64916da20eea67121d544698676295bbb105a7
+  Author: Gerd Hoffmann <kraxel@redhat.com>
+  Date:   Wed Oct 10 13:29:43 2012 +0200
+
+    pixman/vnc: use pixman images in vnc.
+
+The flaw can be demonstrated using the Tigervnc client by using
+
+   vncviewer -AutoSelect=0 -PreferredEncoding=raw server:display
+
+connecting from a LE client to a QEMU on a BE server, or the
+reverse.
+
+The bug was masked, however, because almost all VNC clients will
+advertize support for the "tight" encoding and the QEMU VNC server
+will prefer "tight" if advertized.
+
+The tight_pack24 method is responsible for taking a set of pixels
+which have already been converted into client endianness and then
+repacking them into the TPIXEL format which the RFB spec defines
+as
+
+  "TPIXEL is only 3 bytes long, where the first byte is the
+   red component, the second byte is the green component,
+   and the third byte is the blue component of the pixel
+   color value"
+
+IOW, the TPIXEL format is fixed on the wire, regardless of what
+the VNC client declare as its endianness.
+
+Since the VNC pixel encoding code was failing to honour the endian
+flag of the client, the tight_pack24 method was always operating
+on data in native endianness. Its impl cancelled out the VNC pixel
+encoding bug.
+
+With the VNC pixel encoding code now fixed, the tight_pack24 method
+needs to take into account that it is operating on data in client
+endianness, not native endianness. It thus may need to invert the
+pixel shifts.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-(cherry picked from commit 7ed96710e82c385c6cfc3d064eec7dde20f0f3fd)
+(cherry picked from commit 70097442853c389a765c9f6502d861d182b092ae)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
+diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
+index 193bc046d1..2ca0ed7029 100644
+--- a/include/ui/qemu-pixman.h
++++ b/include/ui/qemu-pixman.h
+@@ -75,12 +75,12 @@ PixelFormat qemu_pixelformat_from_pixman(pixman_format_code_t format);
+ pixman_format_code_t qemu_default_pixman_format(int bpp, bool native_endian);
+ pixman_format_code_t qemu_drm_format_to_pixman(uint32_t drm_format);
+ uint32_t qemu_pixman_to_drm_format(pixman_format_code_t pixman);
+-int qemu_pixman_get_type(int rshift, int gshift, int bshift);
++int qemu_pixman_get_type(int rshift, int gshift, int bshift, int endian);
+ bool qemu_pixman_check_format(DisplayChangeListener *dcl,
+                               pixman_format_code_t format);
+ 
+ #ifdef CONFIG_PIXMAN
+-pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf);
++pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf, int endian);
+ pixman_image_t *qemu_pixman_linebuf_create(pixman_format_code_t format,
+                                            int width);
+ void qemu_pixman_linebuf_fill(pixman_image_t *linebuf, pixman_image_t *fb,
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index 6ef4376f4e..ef4e71da11 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -126,33 +126,34 @@ uint32_t qemu_pixman_to_drm_format(pixman_format_code_t pixman_format)
+     return 0;
+ }
+ 
+-int qemu_pixman_get_type(int rshift, int gshift, int bshift)
++int qemu_pixman_get_type(int rshift, int gshift, int bshift, int endian)
+ {
+     int type = PIXMAN_TYPE_OTHER;
++    bool native_endian = (endian == G_BYTE_ORDER);
+ 
+     if (rshift > gshift && gshift > bshift) {
+         if (bshift == 0) {
+-            type = PIXMAN_TYPE_ARGB;
++            type = native_endian ? PIXMAN_TYPE_ARGB : PIXMAN_TYPE_BGRA;
+         } else {
+-            type = PIXMAN_TYPE_RGBA;
++            type = native_endian ? PIXMAN_TYPE_RGBA : PIXMAN_TYPE_ABGR;
+         }
+     } else if (rshift < gshift && gshift < bshift) {
+         if (rshift == 0) {
+-            type = PIXMAN_TYPE_ABGR;
++            type = native_endian ? PIXMAN_TYPE_ABGR : PIXMAN_TYPE_RGBA;
+         } else {
+-            type = PIXMAN_TYPE_BGRA;
++            type = native_endian ? PIXMAN_TYPE_BGRA : PIXMAN_TYPE_ARGB;
+         }
+     }
+     return type;
+ }
+ 
+ #ifdef CONFIG_PIXMAN
+-pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf)
++pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf, int endian)
+ {
+     pixman_format_code_t format;
+     int type;
+ 
+-    type = qemu_pixman_get_type(pf->rshift, pf->gshift, pf->bshift);
++    type = qemu_pixman_get_type(pf->rshift, pf->gshift, pf->bshift, endian);
+     format = PIXMAN_FORMAT(pf->bits_per_pixel, type,
+                            pf->abits, pf->rbits, pf->gbits, pf->bbits);
+     if (!pixman_format_supported_source(format)) {
 diff --git a/ui/vnc-enc-tight.c b/ui/vnc-enc-tight.c
-index 41f559eb83..f8aaa8f346 100644
+index f8aaa8f346..a5bdc19ebb 100644
 --- a/ui/vnc-enc-tight.c
 +++ b/ui/vnc-enc-tight.c
-@@ -150,7 +150,7 @@ tight_detect_smooth_image24(VncState *vs, int w, int h)
-      * If client is big-endian, color samples begin from the second
-      * byte (offset 1) of a 32-bit pixel value.
-      */
--    off = vs->client_be;
-+    off = vs->client_endian == G_BIG_ENDIAN ? 1 : 0;
+@@ -891,7 +891,7 @@ static void tight_pack24(VncState *vs, uint8_t *buf, size_t count, size_t *ret)
  
-     memset(stats, 0, sizeof (stats));
+     buf8 = buf;
  
-diff --git a/ui/vnc-enc-zrle.c b/ui/vnc-enc-zrle.c
-index bd33b89063..97ec6c7119 100644
---- a/ui/vnc-enc-zrle.c
-+++ b/ui/vnc-enc-zrle.c
-@@ -255,7 +255,7 @@ static void zrle_write_u8(VncState *vs, uint8_t value)
- static int zrle_send_framebuffer_update(VncState *vs, int x, int y,
-                                         int w, int h)
- {
--    bool be = vs->client_be;
-+    bool be = vs->client_endian == G_BIG_ENDIAN;
-     size_t bytes;
-     int zywrle_level;
- 
-diff --git a/ui/vnc-jobs.c b/ui/vnc-jobs.c
-index fcca7ec632..d3486af9e2 100644
---- a/ui/vnc-jobs.c
-+++ b/ui/vnc-jobs.c
-@@ -188,7 +188,7 @@ static void vnc_async_encoding_start(VncState *orig, VncState *local)
-     local->lossy_rect = orig->lossy_rect;
-     local->write_pixels = orig->write_pixels;
-     local->client_pf = orig->client_pf;
--    local->client_be = orig->client_be;
-+    local->client_endian = orig->client_endian;
-     local->tight = orig->tight;
-     local->zlib = orig->zlib;
-     local->hextile = orig->hextile;
+-    if (1 /* FIXME */) {
++    if (vs->client_endian == G_BYTE_ORDER) {
+         rshift = vs->client_pf.rshift;
+         gshift = vs->client_pf.gshift;
+         bshift = vs->client_pf.bshift;
 diff --git a/ui/vnc.c b/ui/vnc.c
-index 9241caaad9..d47879f579 100644
+index d47879f579..c96bd8ceea 100644
 --- a/ui/vnc.c
 +++ b/ui/vnc.c
-@@ -893,7 +893,7 @@ void vnc_convert_pixel(VncState *vs, uint8_t *buf, uint32_t v)
-         buf[0] = v;
-         break;
-     case 2:
--        if (vs->client_be) {
-+        if (vs->client_endian == G_BIG_ENDIAN) {
-             buf[0] = v >> 8;
-             buf[1] = v;
-         } else {
-@@ -903,7 +903,7 @@ void vnc_convert_pixel(VncState *vs, uint8_t *buf, uint32_t v)
-         break;
-     default:
-     case 4:
--        if (vs->client_be) {
-+        if (vs->client_endian == G_BIG_ENDIAN) {
-             buf[0] = v >> 24;
-             buf[1] = v >> 16;
-             buf[2] = v >> 8;
-@@ -2314,7 +2314,7 @@ static void set_pixel_format(VncState *vs, int bits_per_pixel,
-     vs->client_pf.bits_per_pixel = bits_per_pixel;
-     vs->client_pf.bytes_per_pixel = bits_per_pixel / 8;
-     vs->client_pf.depth = bits_per_pixel == 32 ? 24 : bits_per_pixel;
--    vs->client_be = big_endian_flag;
-+    vs->client_endian = big_endian_flag ? G_BIG_ENDIAN : G_LITTLE_ENDIAN;
+@@ -2242,7 +2242,8 @@ static void set_encodings(VncState *vs, int32_t *encodings, size_t n_encodings)
  
-     if (!true_color_flag) {
-         send_color_map(vs);
-diff --git a/ui/vnc.h b/ui/vnc.h
-index acc53a2cc1..02613aa63a 100644
---- a/ui/vnc.h
-+++ b/ui/vnc.h
-@@ -323,7 +323,7 @@ struct VncState
-     VncWritePixels *write_pixels;
-     PixelFormat client_pf;
-     pixman_format_code_t client_format;
--    bool client_be;
-+    int client_endian; /* G_LITTLE_ENDIAN or G_BIG_ENDIAN */
+ static void set_pixel_conversion(VncState *vs)
+ {
+-    pixman_format_code_t fmt = qemu_pixman_get_format(&vs->client_pf);
++    pixman_format_code_t fmt = qemu_pixman_get_format(&vs->client_pf,
++                                                      vs->client_endian);
  
-     CaptureVoiceOut *audio_cap;
-     struct audsettings as;
+     if (fmt == VNC_SERVER_FB_FORMAT) {
+         vs->write_pixels = vnc_write_pixels_copy;
 -- 
 2.47.2
 
