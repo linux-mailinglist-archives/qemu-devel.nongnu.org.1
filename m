@@ -2,92 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E017EB01EC1
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 16:13:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB450B01EC9
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 16:14:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaEUs-0005C2-12; Fri, 11 Jul 2025 10:13:06 -0400
+	id 1uaEVo-0006JY-L5; Fri, 11 Jul 2025 10:14:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaESh-0000pO-7A
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:10:56 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaET6-0000tQ-Df
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:11:18 -0400
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaESc-0006V7-Dv
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:10:48 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaESm-0006Zr-3L
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:10:58 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 925181F385;
- Fri, 11 Jul 2025 14:10:35 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 3E6181F38C;
+ Fri, 11 Jul 2025 14:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1752243036; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=V6+VR7NuErSwcbEFsdPfhzyVTiPuGHiJ6p8MNAHG3jo=;
- b=h6BwoZ8rJB9VsN2uA5yV1E6Ed312F+8maJCdglcdn1UKnwQo7uTrvj9vHxkAnqZiNgp/6b
- 1zdYkN1ZFQUKiEMxV360Wy+UVTzWEUuJZzFiHdfv2amyxYSnnLHJ0E+yCqP7cvK431KLBi
- VV1ZnqUfYHz8i9+JbaUKxCdiSO8LU5Y=
+ t=1752243039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ExL2dc8zYuNhaMMvBjDBzq3S3sLX8sfaz1Y6DiMkFWc=;
+ b=sFpRtZARql7guZ6k4VgIvWaJ5AULttD9Y1soLGM91w9n88I6WInexpp15hFbo/Cm/8mcPo
+ uGYxFh3i1IfrECBICv4QWJGa9FRjB/xiwu3srdMD/QXI6kEc8dqYC5lW+mUBHhwiDhoM2A
+ cJjIKtR4JYW0T4uVZjKfTqCNeZD8YB4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1752243036;
+ s=susede2_ed25519; t=1752243039;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=V6+VR7NuErSwcbEFsdPfhzyVTiPuGHiJ6p8MNAHG3jo=;
- b=tvrRKCXlcDjggZskO1NMc1TSLDuy5rcoDRH+hg9WSZwXyR0Q6tp3dZKGrCfvPWlT9izw0q
- FwZutP/hGy75hRCg==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ExL2dc8zYuNhaMMvBjDBzq3S3sLX8sfaz1Y6DiMkFWc=;
+ b=FYuT+4cvF8CypQgco7KbxA0vcDCwD2CiepMvJRI9LTjiVLp1IIvfuu7mrWeMhI9T0lIp73
+ nSZsc8adqvN7rqCw==
 Authentication-Results: smtp-out2.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ejs8cmDi;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ji1kMhJJ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1752243035; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=V6+VR7NuErSwcbEFsdPfhzyVTiPuGHiJ6p8MNAHG3jo=;
- b=RwjNy4Vf480SXWfu0lQtyCcnLkbRsDoFG6gOWPO+T/KJ3TWnDmWXS+fE7YNqEodNtA+t6N
- XVP9g/SbknyqhTKrcCplLVnbFC1Hu78JjYLRbr3LSuQ8bHCJrhBHCFkH1ghiU0RwUMvVWC
- my6dRVx5t0h6f5+6bz8PozzwWH+pp1c=
+ t=1752243038; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ExL2dc8zYuNhaMMvBjDBzq3S3sLX8sfaz1Y6DiMkFWc=;
+ b=Ejs8cmDipsYbq4sORTTTJRxd8snhBzVpcYXRbJD9Plye8Hu51O3UBVcFsBmx1J59aSKSye
+ lsCOHCs736c8BFMv09q6Xc5h2hQCrtcWorb3FjhOPUqbbG38KjM6yC75js5vpa6EWrdxAk
+ UBMMo5CWm7zwAZ4bH/JI3E7rx2gGwjU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1752243035;
+ s=susede2_ed25519; t=1752243038;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=V6+VR7NuErSwcbEFsdPfhzyVTiPuGHiJ6p8MNAHG3jo=;
- b=rBnsii1i41fmgY69w2KJUDzAEfwDs5wyhF1gAG+5s4de9yAszx7B6d4qN8qKZubj2fs6OJ
- IvoKPUaH8ua5fSAQ==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ExL2dc8zYuNhaMMvBjDBzq3S3sLX8sfaz1Y6DiMkFWc=;
+ b=ji1kMhJJ6VO6U1mH/TUz4cgsgKxaYgNj0ZdGxZB1XGlz+8VmSrmuivk7CCJ7Klx42k08sp
+ VGusom/zNN56cpAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 770861388B;
- Fri, 11 Jul 2025 14:10:34 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1B0C813918;
+ Fri, 11 Jul 2025 14:10:35 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 39xxDVobcWg7TgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 11 Jul 2025 14:10:34 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id aM2cMlsbcWg7TgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 11 Jul 2025 14:10:35 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>
-Subject: [PULL 00/26] Migration patches for 2025-07-11
-Date: Fri, 11 Jul 2025 11:10:05 -0300
-Message-Id: <20250711141031.423-1-farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>, "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Li Zhijian <lizhijian@fujitsu.com>, Juraj Marcin <jmarcin@redhat.com>,
+ Mario Casquero <mcasquer@redhat.com>
+Subject: [PULL 01/26] migration/hmp: Reorg "info migrate" once more
+Date: Fri, 11 Jul 2025 11:10:06 -0300
+Message-Id: <20250711141031.423-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20250711141031.423-1-farosas@suse.de>
+References: <20250711141031.423-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-0.998]; MIME_GOOD(-0.10)[text/plain];
- FUZZY_RATELIMITED(0.00)[rspamd.com];
- RCVD_VIA_SMTP_AUTH(0.00)[]; RCVD_TLS_ALL(0.00)[];
- MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; RCPT_COUNT_TWO(0.00)[2];
+X-Spamd-Result: default: False [-5.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,fujitsu.com:email,treblig.org:email,suse.de:mid,suse.de:dkim,suse.de:email];
+ MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCVD_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url, imap1.dmz-prg2.suse.org:helo,
- suse.de:mid]
-X-Spam-Score: -3.30
+ FROM_EQ_ENVFROM(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Queue-Id: 3E6181F38C
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -5.01
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -112,85 +129,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit df6fe2abf2e990f767ce755d426bc439c7bba336:
+From: Peter Xu <peterx@redhat.com>
 
-  Merge tag 'pull-target-arm-20250704' of https://gitlab.com/pm215/qemu into staging (2025-07-07 09:22:41 -0400)
+Dave suggested the HMP output for "info migrate" can not only leverage the
+lines but also better grouping:
 
-are available in the Git repository at:
+  https://lore.kernel.org/r/aC4_-nMc7FwsMf9p@gallifrey
 
-  https://gitlab.com/farosas/qemu.git tags/migration-20250711-pull-request
+I followed Dave's suggestion, and some more modifications on top:
 
-for you to fetch changes up to beeac2df5ff0850299e58f4ad27f83dae64c54df:
+  - Added all elements into the picture
 
-  migration: Rename save_live_complete_precopy_thread to save_complete_precopy_thread (2025-07-11 10:37:39 -0300)
+  - Use size_to_str() and drop most of the units: benefit is more friendly
+  to most human eyes, bad side effect is lose of details, but that should
+  be corner case per my uses, and one can still leverage the QMP interface
+  when necessary.
 
-----------------------------------------------------------------
-Migration pull request
+  - Sub-grouping for "Transfers" ("Channels" and "Page Types").
 
-- General cleanups around: postcopy, bg-snapshot, migration hooks,
-  migration completion and formatting of 'info migrate'.
+  - Better indentations
 
-- Overhaul of postcopy blocktime tracking.
+Sample output:
 
-----------------------------------------------------------------
+(qemu) info migrate
+Status:                 postcopy-active
+Time (ms):              total=47317, setup=5, down=8
+RAM info:
+  Throughput (Mbps):    1342.83
+  Sizes:                pagesize=4 KiB, total=4.02 GiB
+  Transfers:            transferred=1.41 GiB, remain=2.46 GiB
+    Channels:           precopy=15.2 MiB, multifd=0 B, postcopy=1.39 GiB
+    Page Types:         normal=367713, zero=41195
+  Page Rates (pps):     transfer=40900, dirty=4
+  Others:               dirty_syncs=2, postcopy_req=57503
 
-Juraj Marcin (1):
-  migration: Rename save_live_complete_precopy_thread to
-    save_complete_precopy_thread
+Suggested-by: Dr. David Alan Gilbert <dave@treblig.org>
+Tested-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
+Acked-by: Dr. David Alan Gilbert <dave@treblig.org>
+Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+Link: https://lore.kernel.org/r/20250613140801.474264-2-peterx@redhat.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/migration-hmp-cmds.c | 59 ++++++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 28 deletions(-)
 
-Peter Xu (25):
-  migration/hmp: Reorg "info migrate" once more
-  migration/hmp: Fix postcopy-blocktime per-vCPU results
-  migration/docs: Move docs for postcopy blocktime feature
-  migration/bg-snapshot: Do not check for SKIP in iterator
-  migration: Drop save_live_complete_postcopy hook
-  migration: Rename save_live_complete_precopy to save_complete
-  migration: qemu_savevm_complete*() helpers
-  migration/ram: One less indent for ram_find_and_save_block()
-  migration/ram: Add tracepoints for ram_save_complete()
-  migration: Rewrite the migration complete detect logic
-  migration/postcopy: Avoid clearing dirty bitmap for postcopy too
-  migration: Add option to set postcopy-blocktime
-  migration/postcopy: Push blocktime start/end into page req mutex
-  migration/postcopy: Drop all atomic ops in blocktime feature
-  migration/postcopy: Make all blocktime vars 64bits
-  migration/postcopy: Drop PostcopyBlocktimeContext.start_time
-  migration/postcopy: Bring blocktime layer to ns level
-  migration/postcopy: Add blocktime fault counts per-vcpu
-  migration/postcopy: Report fault latencies in blocktime
-  migration/postcopy: Initialize blocktime context only until listen
-  migration/postcopy: Cache the tid->vcpu mapping for blocktime
-  migration/postcopy: Cleanup the total blocktime accounting
-  migration/postcopy: Optimize blocktime fault tracking with hashtable
-  migration/postcopy: blocktime allows track / report non-vCPU faults
-  migration/postcopy: Add latency distribution report for blocktime
-
- docs/devel/migration/main.rst         |   4 +-
- docs/devel/migration/postcopy.rst     |  36 +-
- docs/devel/migration/vfio.rst         |  16 +-
- hw/ppc/spapr.c                        |   2 +-
- hw/s390x/s390-stattrib.c              |   2 +-
- hw/vfio/migration-multifd.c           |   4 +-
- hw/vfio/migration-multifd.h           |   2 +-
- hw/vfio/migration.c                   |   4 +-
- include/migration/misc.h              |   8 +-
- include/migration/register.h          |  36 +-
- include/qemu/typedefs.h               |   6 +-
- migration/block-dirty-bitmap.c        |   3 +-
- migration/migration-hmp-cmds.c        | 159 ++++++--
- migration/migration.c                 |  87 ++--
- migration/migration.h                 |   2 +-
- migration/multifd-device-state.c      |  10 +-
- migration/options.c                   |   2 +
- migration/postcopy-ram.c              | 563 ++++++++++++++++++++------
- migration/postcopy-ram.h              |   2 +
- migration/ram.c                       |  32 +-
- migration/savevm.c                    |  89 ++--
- migration/trace-events                |   9 +-
- qapi/migration.json                   |  38 ++
- tests/qtest/migration/migration-qmp.c |   5 +
- 24 files changed, 799 insertions(+), 322 deletions(-)
-
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index e8a563c7d8..367ff6037f 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -69,7 +69,7 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+     }
+ 
+     if (info->has_status) {
+-        monitor_printf(mon, "Status: %s",
++        monitor_printf(mon, "Status: \t\t%s",
+                        MigrationStatus_str(info->status));
+         if (info->status == MIGRATION_STATUS_FAILED && info->error_desc) {
+             monitor_printf(mon, " (%s)\n", info->error_desc);
+@@ -78,7 +78,7 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+         }
+ 
+         if (info->total_time) {
+-            monitor_printf(mon, "Time (ms): total=%" PRIu64,
++            monitor_printf(mon, "Time (ms): \t\ttotal=%" PRIu64,
+                            info->total_time);
+             if (info->has_setup_time) {
+                 monitor_printf(mon, ", setup=%" PRIu64,
+@@ -110,48 +110,51 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+     }
+ 
+     if (info->ram) {
++        g_autofree char *str_psize = size_to_str(info->ram->page_size);
++        g_autofree char *str_total = size_to_str(info->ram->total);
++        g_autofree char *str_transferred = size_to_str(info->ram->transferred);
++        g_autofree char *str_remaining = size_to_str(info->ram->remaining);
++        g_autofree char *str_precopy = size_to_str(info->ram->precopy_bytes);
++        g_autofree char *str_multifd = size_to_str(info->ram->multifd_bytes);
++        g_autofree char *str_postcopy = size_to_str(info->ram->postcopy_bytes);
++
+         monitor_printf(mon, "RAM info:\n");
+-        monitor_printf(mon, "  Throughput (Mbps): %0.2f\n",
++        monitor_printf(mon, "  Throughput (Mbps): \t%0.2f\n",
+                        info->ram->mbps);
+-        monitor_printf(mon, "  Sizes (KiB): pagesize=%" PRIu64
+-                       ", total=%" PRIu64 ",\n",
+-                       info->ram->page_size >> 10,
+-                       info->ram->total >> 10);
+-        monitor_printf(mon, "    transferred=%" PRIu64
+-                       ", remain=%" PRIu64 ",\n",
+-                       info->ram->transferred >> 10,
+-                       info->ram->remaining >> 10);
+-        monitor_printf(mon, "    precopy=%" PRIu64
+-                       ", multifd=%" PRIu64
+-                       ", postcopy=%" PRIu64,
+-                       info->ram->precopy_bytes >> 10,
+-                       info->ram->multifd_bytes >> 10,
+-                       info->ram->postcopy_bytes >> 10);
++        monitor_printf(mon, "  Sizes: \t\tpagesize=%s, total=%s\n",
++                       str_psize, str_total);
++        monitor_printf(mon, "  Transfers: \t\ttransferred=%s, remain=%s\n",
++                       str_transferred, str_remaining);
++        monitor_printf(mon, "    Channels: \t\tprecopy=%s, "
++                       "multifd=%s, postcopy=%s",
++                       str_precopy, str_multifd, str_postcopy);
+ 
+         if (info->vfio) {
+-            monitor_printf(mon, ", vfio=%" PRIu64,
+-                           info->vfio->transferred >> 10);
++            g_autofree char *str_vfio = size_to_str(info->vfio->transferred);
++
++            monitor_printf(mon, ", vfio=%s", str_vfio);
+         }
+         monitor_printf(mon, "\n");
+ 
+-        monitor_printf(mon, "  Pages: normal=%" PRIu64 ", zero=%" PRIu64
+-                       ", rate_per_sec=%" PRIu64 "\n",
+-                       info->ram->normal,
+-                       info->ram->duplicate,
++        monitor_printf(mon, "    Page Types: \tnormal=%" PRIu64
++                       ", zero=%" PRIu64 "\n",
++                       info->ram->normal, info->ram->duplicate);
++        monitor_printf(mon, "  Page Rates (pps): \ttransfer=%" PRIu64,
+                        info->ram->pages_per_second);
+-        monitor_printf(mon, "  Others: dirty_syncs=%" PRIu64,
+-                       info->ram->dirty_sync_count);
+-
+         if (info->ram->dirty_pages_rate) {
+-            monitor_printf(mon, ", dirty_pages_rate=%" PRIu64,
++            monitor_printf(mon, ", dirty=%" PRIu64,
+                            info->ram->dirty_pages_rate);
+         }
++        monitor_printf(mon, "\n");
++
++        monitor_printf(mon, "  Others: \t\tdirty_syncs=%" PRIu64,
++                       info->ram->dirty_sync_count);
+         if (info->ram->postcopy_requests) {
+             monitor_printf(mon, ", postcopy_req=%" PRIu64,
+                            info->ram->postcopy_requests);
+         }
+         if (info->ram->downtime_bytes) {
+-            monitor_printf(mon, ", downtime_ram=%" PRIu64,
++            monitor_printf(mon, ", downtime_bytes=%" PRIu64,
+                            info->ram->downtime_bytes);
+         }
+         if (info->ram->dirty_sync_missed_zero_copy) {
 -- 
 2.35.3
 
