@@ -2,44 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D956EB01668
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B356B015FA
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:28:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua99l-0003iG-OK; Fri, 11 Jul 2025 04:31:00 -0400
+	id 1ua957-0008GX-W1; Fri, 11 Jul 2025 04:26:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua90e-0001y0-NP; Fri, 11 Jul 2025 04:21:34 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ua8xE-00044f-Db
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:18:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua90c-0004lo-Lg; Fri, 11 Jul 2025 04:21:32 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DDEC61356F2;
- Fri, 11 Jul 2025 11:17:20 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D63B823FA67;
- Fri, 11 Jul 2025 11:17:47 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 39/39] target/arm: Fix bfdotadd_ebf vs nan selection
-Date: Fri, 11 Jul 2025 11:16:35 +0300
-Message-ID: <20250711081745.1785806-39-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
-References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ua8x9-0003wO-8k
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:17:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752221872;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Jm5m6GDb+HYYG4LISBHMBPB6mESq5agz1IyxXbjbKx8=;
+ b=BemaTDETuro1Dl7w2oOiCiR8ZHBfRtmf9TpKeVqQ9Ij5ZVEyK625wdiOnfSHDwEcmPOE02
+ pCdRuGrra6H3ob8xbFG1zlRJTzPsLq93jBlGl1ZCGim9S1/Fs5rxUVs+6cOileSdb6QleM
+ 6OW1HRaWMWUAd9SsNmjttdsNNtPBCks=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-685-veNVg7t7OSONj4uVYLDSAg-1; Fri, 11 Jul 2025 04:17:49 -0400
+X-MC-Unique: veNVg7t7OSONj4uVYLDSAg-1
+X-Mimecast-MFC-AGG-ID: veNVg7t7OSONj4uVYLDSAg_1752221869
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a4ff581df3so873391f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 01:17:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752221869; x=1752826669;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Jm5m6GDb+HYYG4LISBHMBPB6mESq5agz1IyxXbjbKx8=;
+ b=WQkHq0gRatcRp8X6HQrDbCJiea4JNV0VjD1A0TVzRXeyvHmHGaebczngbjTEUKlXAb
+ XmWyeP7flavzdJfZnF3QXoXwArOw+9VEag32wleCT1UJDkWnUWg+q77gAvdnWpFS5mS/
+ XqKx0TtyGHBAFLAx5dEL9btzz8LwipVfiw7cnKQDz/CBeLpq7JyTxitAGL5vXqwOZRZp
+ 0bcBD/OUeAG/ixd5P8GIRKX8AaxXNbtyu2vcdPIzSsBaRzT7mZtsgUBCOERmxZGua5aJ
+ S4VaRulBuJib+DHEcLEaMe04wpnyYsplj8Y+Zq9ehCohZG1yU6oX95UcdELJ3BBDfUYx
+ azyw==
+X-Gm-Message-State: AOJu0YwzwShh7ryuXyblVBdonfbaL98eKwzxyHziEz9OPdeMmCAHbQqU
+ +/sEH/1pG2nIlok6ob13XSdvregK6hSFTNI4y7D43d/hOXxaBeur9RzVtH4MedpoC0ZANKX8had
+ uPj/IuaTNH5BUQkUV2BHXP4DTG9Eny2lWdMaZcO6R9kggjY5QLBCQk2M8Ezb3FFtlMGE/D4BX37
+ qBdgQ7GUfARCRH6MCKOMQ77en2QFFVsHA=
+X-Gm-Gg: ASbGnctqrj/laEon+ZFXGnSxxJR3oTIa0XMQvu2xoqVRIsW0TI+BdmWqGYfTnLgd14x
+ 1QD9pql/QXjUSB8z5T8Tj3AyPzMywz5KzVOz27ULIvPpCmrg8hXqBZEN5y25HZPuMflq2V2LqOm
+ Z8WZfmEzrSTW3VyRvUhy4=
+X-Received: by 2002:a5d:6f1d:0:b0:3a3:64b9:773 with SMTP id
+ ffacd0b85a97d-3b5f1c726admr1938932f8f.10.1752221868694; 
+ Fri, 11 Jul 2025 01:17:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRb2b1i0l7IKPLskoEVLQkqnPBz+EKucXOKOz4dumK4o5idEgZo+zROlCN6qsi0QggAaN0ZSuIjfOsuZwt18U=
+X-Received: by 2002:a5d:6f1d:0:b0:3a3:64b9:773 with SMTP id
+ ffacd0b85a97d-3b5f1c726admr1938909f8f.10.1752221868196; Fri, 11 Jul 2025
+ 01:17:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+References: <20250711075507.451540-1-pbonzini@redhat.com>
+ <c5d96f80-31c0-44dc-8f7a-557367a1abc9@intel.com>
+In-Reply-To: <c5d96f80-31c0-44dc-8f7a-557367a1abc9@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 11 Jul 2025 10:17:35 +0200
+X-Gm-Features: Ac12FXzV5zDdCdsEg34-rlNATJ2PTfmxr5CbFevCTFnn4-dd9AIfIO1DVW4cfRY
+Message-ID: <CABgObfZ95PAHOZ-2RSj=nPi5J5KGVPmjuB4tzY0oKX07mddg=g@mail.gmail.com>
+Subject: Re: [PATCH] target/i386: merge host_cpu_instance_init() and
+ host_cpu_max_instance_init()
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -57,110 +102,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+On Fri, Jul 11, 2025 at 10:16=E2=80=AFAM Xiaoyao Li <xiaoyao.li@intel.com> =
+wrote:
+> On 7/11/2025 3:55 PM, Paolo Bonzini wrote:
+> > Simplify the accelerators' cpu_instance_init callbacks by doing all
+> > host-cpu setup in a single function.
+>
+> btw, it changes the behavior for "-cpu base" with accelerator.
+>
+> I think it should be OK considering "-cpu base" seems only for
+> experiment case.
 
-Implement FPProcessNaNs4 within bfdotadd_ebf, rather than
-simply letting NaNs propagate through the function.
+Yeah, I wonder if it should even be user creatable.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 0e1850182a1 ("target/arm: Implement FPCR.EBF=1 semantics for bfdotadd()")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20250704142112.1018902-10-richard.henderson@linaro.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit bf020eaa6741711902a425016e2c7585f222562d)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index 986eaf8ffa..3b7f308803 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -2989,31 +2989,62 @@ float32 bfdotadd(float32 sum, uint32_t e1, uint32_t e2, float_status *fpst)
- float32 bfdotadd_ebf(float32 sum, uint32_t e1, uint32_t e2,
-                      float_status *fpst, float_status *fpst_odd)
- {
--    /*
--     * Compare f16_dotadd() in sme_helper.c, but here we have
--     * bfloat16 inputs. In particular that means that we do not
--     * want the FPCR.FZ16 flush semantics, so we use the normal
--     * float_status for the input handling here.
--     */
--    float64 e1r = float32_to_float64(e1 << 16, fpst);
--    float64 e1c = float32_to_float64(e1 & 0xffff0000u, fpst);
--    float64 e2r = float32_to_float64(e2 << 16, fpst);
--    float64 e2c = float32_to_float64(e2 & 0xffff0000u, fpst);
--    float64 t64;
-+    float32 s1r = e1 << 16;
-+    float32 s1c = e1 & 0xffff0000u;
-+    float32 s2r = e2 << 16;
-+    float32 s2c = e2 & 0xffff0000u;
-     float32 t32;
- 
--    /*
--     * The ARM pseudocode function FPDot performs both multiplies
--     * and the add with a single rounding operation.  Emulate this
--     * by performing the first multiply in round-to-odd, then doing
--     * the second multiply as fused multiply-add, and rounding to
--     * float32 all in one step.
--     */
--    t64 = float64_mul(e1r, e2r, fpst_odd);
--    t64 = float64r32_muladd(e1c, e2c, t64, 0, fpst);
-+    /* C.f. FPProcessNaNs4 */
-+    if (float32_is_any_nan(s1r) || float32_is_any_nan(s1c) ||
-+        float32_is_any_nan(s2r) || float32_is_any_nan(s2c)) {
-+        if (float32_is_signaling_nan(s1r, fpst)) {
-+            t32 = s1r;
-+        } else if (float32_is_signaling_nan(s1c, fpst)) {
-+            t32 = s1c;
-+        } else if (float32_is_signaling_nan(s2r, fpst)) {
-+            t32 = s2r;
-+        } else if (float32_is_signaling_nan(s2c, fpst)) {
-+            t32 = s2c;
-+        } else if (float32_is_any_nan(s1r)) {
-+            t32 = s1r;
-+        } else if (float32_is_any_nan(s1c)) {
-+            t32 = s1c;
-+        } else if (float32_is_any_nan(s2r)) {
-+            t32 = s2r;
-+        } else {
-+            t32 = s2c;
-+        }
-+        /*
-+         * FPConvertNaN(FPProcessNaN(t32)) will be done as part
-+         * of the final addition below.
-+         */
-+    } else {
-+        /*
-+         * Compare f16_dotadd() in sme_helper.c, but here we have
-+         * bfloat16 inputs. In particular that means that we do not
-+         * want the FPCR.FZ16 flush semantics, so we use the normal
-+         * float_status for the input handling here.
-+         */
-+        float64 e1r = float32_to_float64(s1r, fpst);
-+        float64 e1c = float32_to_float64(s1c, fpst);
-+        float64 e2r = float32_to_float64(s2r, fpst);
-+        float64 e2c = float32_to_float64(s2c, fpst);
-+        float64 t64;
- 
--    /* This conversion is exact, because we've already rounded. */
--    t32 = float64_to_float32(t64, fpst);
-+        /*
-+         * The ARM pseudocode function FPDot performs both multiplies
-+         * and the add with a single rounding operation.  Emulate this
-+         * by performing the first multiply in round-to-odd, then doing
-+         * the second multiply as fused multiply-add, and rounding to
-+         * float32 all in one step.
-+         */
-+        t64 = float64_mul(e1r, e2r, fpst_odd);
-+        t64 = float64r32_muladd(e1c, e2c, t64, 0, fpst);
-+
-+        /* This conversion is exact, because we've already rounded. */
-+        t32 = float64_to_float32(t64, fpst);
-+    }
- 
-     /* The final accumulation step is not fused. */
-     return float32_add(sum, t32, fpst);
--- 
-2.47.2
+Paolo
 
 
