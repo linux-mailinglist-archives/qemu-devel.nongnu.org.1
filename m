@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63D4AB01810
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF4CB017F7
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:34:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaA9V-0000vw-DH; Fri, 11 Jul 2025 05:34:45 -0400
+	id 1uaA9H-0000pJ-8n; Fri, 11 Jul 2025 05:34:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaA8k-0000il-6V
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:33:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaA8m-0000k3-A5
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:34:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaA8h-00072q-5J
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:33:57 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaA8k-00073x-Cu
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:34:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752226434;
+ s=mimecast20190719; t=1752226437;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iuHxyNeV4qtD24IT0BCs6RPwKnUSyqymzBlSd5wXCIU=;
- b=WHIuHXZVhfHWl2Lnz52hI0ObYK0tfCKtOD0Kcri5AJ3uemUaNBZUUVGaRinwWM5QUN1hMa
- dA8eLki6wff8K+FFfDE97FWNoyfwKtmHR4ENQursW63ZSkEG1vzKlIrLWO52RCbKfhwfWF
- EQZUhyp59gLxjyMsClSlGLYaoHIng2Q=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=1pSu3CoNT0iMxPLfLo8zoxuE/uI04rY3P4g6LTMpEQM=;
+ b=YHVgrh89qo8dWG8N3MIh5xg+gWwPnvSMJNf2oAdwJYUA4upMiXNcg+7OEV+UlEh//x9K+d
+ WXgFE0TOakfFIOHhKYQ9NQIWjowesNK3NzyGJt2xcGHaaWtXPKFuQl8bNVglOrqQoQgiYj
+ 68hTwOFzvrTQCyuQQGlo7HPoAPSe4Ak=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-cFPyNKE_OVmYNtaXfgAyjQ-1; Fri,
- 11 Jul 2025 05:33:50 -0400
-X-MC-Unique: cFPyNKE_OVmYNtaXfgAyjQ-1
-X-Mimecast-MFC-AGG-ID: cFPyNKE_OVmYNtaXfgAyjQ_1752226429
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-x73Ktt7yOJGSDA6gllk-cA-1; Fri,
+ 11 Jul 2025 05:33:53 -0400
+X-MC-Unique: x73Ktt7yOJGSDA6gllk-cA-1
+X-Mimecast-MFC-AGG-ID: x73Ktt7yOJGSDA6gllk-cA_1752226432
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4DEE418089B7; Fri, 11 Jul 2025 09:33:49 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 981FF1800268; Fri, 11 Jul 2025 09:33:52 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.54])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 394B419560A3; Fri, 11 Jul 2025 09:33:46 +0000 (UTC)
+ id CBEBF19560A3; Fri, 11 Jul 2025 09:33:49 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 02/15] target/s390x/tcg: Use vaddr in s390_probe_access()
-Date: Fri, 11 Jul 2025 11:33:27 +0200
-Message-ID: <20250711093340.608485-3-thuth@redhat.com>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>
+Subject: [PULL 03/15] hw/s390x/s390-pci-bus.c: Use g_assert_not_reached() in
+ functions taking an ett
+Date: Fri, 11 Jul 2025 11:33:28 +0200
+Message-ID: <20250711093340.608485-4-thuth@redhat.com>
 In-Reply-To: <20250711093340.608485-1-thuth@redhat.com>
 References: <20250711093340.608485-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,65 +82,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Commit 70ebd9ce1cb ("s390x/tcg: Fault-safe memset") passed
-vaddr type to access_prepare(), and commit b6c636f2cd6
-("s390x/tcg: Fault-safe memmove") to do_access_get_byte(),
-but declared S390Access::vaddr[1,2] as target_ulong.
-Directly declare these as vaddr type, and have
-s390_probe_access() use that type as argument.
+The s390-pci-bus.c code, Coverity complains about a possible overflow
+because get_table_index() can return -1 if the ett value passed in is
+not one of the three permitted ZPCI_ETT_PT, ZPCI_ETT_ST, ZPCI_ETT_RT,
+but the caller in table_translate() doesn't check this and instead
+uses the return value directly in a calculation of the guest address
+to read from.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250707171059.3064-3-philmd@linaro.org>
+In fact this case cannot happen, because:
+ * get_table_index() is called only from table_translate()
+ * the only caller of table_translate() loops through the ett values
+   in the order RT, ST, PT until table_translate() returns 0
+ * table_translate() will return 0 for the error cases and when
+   translate_iscomplete() returns true
+ * translate_iscomplete() is always true for ZPCI_ETT_PT
+
+So table_translate() is always called with a valid ett value.
+
+Instead of having the various functions called from table_translate()
+return a default or dummy value when the ett argument is out of range,
+use g_assert_not_reached() to indicate that this is impossible.
+
+Coverity: CID 1547609
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Message-ID: <20250710161552.1287399-1-peter.maydell@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/tcg/mem_helper.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/s390x/s390-pci-bus.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index a03609a1406..f1acb1618f7 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -126,8 +126,8 @@ static inline void cpu_stsize_data_ra(CPUS390XState *env, uint64_t addr,
+diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+index e6aa44531f6..f87d2748b63 100644
+--- a/hw/s390x/s390-pci-bus.c
++++ b/hw/s390x/s390-pci-bus.c
+@@ -384,9 +384,9 @@ static uint64_t get_table_index(uint64_t iova, int8_t ett)
+         return calc_sx(iova);
+     case ZPCI_ETT_RT:
+         return calc_rtx(iova);
++    default:
++        g_assert_not_reached();
+     }
+-
+-    return -1;
+ }
  
- /* An access covers at most 4096 bytes and therefore at most two pages. */
- typedef struct S390Access {
--    target_ulong vaddr1;
--    target_ulong vaddr2;
-+    vaddr vaddr1;
-+    vaddr vaddr2;
-     void *haddr1;
-     void *haddr2;
-     uint16_t size1;
-@@ -148,7 +148,7 @@ typedef struct S390Access {
-  * For !CONFIG_USER_ONLY, the TEC is stored stored to env->tlb_fill_tec.
-  * For CONFIG_USER_ONLY, the faulting address is stored to env->__excp_addr.
-  */
--static inline int s390_probe_access(CPUArchState *env, target_ulong addr,
-+static inline int s390_probe_access(CPUArchState *env, vaddr addr,
-                                     int size, MMUAccessType access_type,
-                                     int mmu_idx, bool nonfault,
-                                     void **phost, uintptr_t ra)
-@@ -258,7 +258,7 @@ static void access_memset(CPUS390XState *env, S390Access *desta,
- static uint8_t access_get_byte(CPUS390XState *env, S390Access *access,
-                                int offset, uintptr_t ra)
+ static bool entry_isvalid(uint64_t entry, int8_t ett)
+@@ -397,22 +397,24 @@ static bool entry_isvalid(uint64_t entry, int8_t ett)
+     case ZPCI_ETT_ST:
+     case ZPCI_ETT_RT:
+         return rt_entry_isvalid(entry);
++    default:
++        g_assert_not_reached();
+     }
+-
+-    return false;
+ }
+ 
+ /* Return true if address translation is done */
+ static bool translate_iscomplete(uint64_t entry, int8_t ett)
  {
--    target_ulong vaddr = access->vaddr1;
-+    vaddr vaddr = access->vaddr1;
-     void *haddr = access->haddr1;
+     switch (ett) {
+-    case 0:
++    case ZPCI_ETT_ST:
+         return (entry & ZPCI_TABLE_FC) ? true : false;
+-    case 1:
++    case ZPCI_ETT_RT:
+         return false;
++    case ZPCI_ETT_PT:
++        return true;
++    default:
++        g_assert_not_reached();
+     }
+-
+-    return true;
+ }
  
-     if (unlikely(offset >= access->size1)) {
-@@ -278,7 +278,7 @@ static uint8_t access_get_byte(CPUS390XState *env, S390Access *access,
- static void access_set_byte(CPUS390XState *env, S390Access *access,
-                             int offset, uint8_t byte, uintptr_t ra)
- {
--    target_ulong vaddr = access->vaddr1;
-+    vaddr vaddr = access->vaddr1;
-     void *haddr = access->haddr1;
+ static uint64_t get_frame_size(int8_t ett)
+@@ -424,9 +426,9 @@ static uint64_t get_frame_size(int8_t ett)
+         return 1ULL << 20;
+     case ZPCI_ETT_RT:
+         return 1ULL << 31;
++    default:
++        g_assert_not_reached();
+     }
+-
+-    return 0;
+ }
  
-     if (unlikely(offset >= access->size1)) {
+ static uint64_t get_next_table_origin(uint64_t entry, int8_t ett)
+@@ -438,9 +440,9 @@ static uint64_t get_next_table_origin(uint64_t entry, int8_t ett)
+         return get_st_pto(entry);
+     case ZPCI_ETT_RT:
+         return get_rt_sto(entry);
++    default:
++        g_assert_not_reached();
+     }
+-
+-    return 0;
+ }
+ 
+ /**
 -- 
 2.50.0
 
