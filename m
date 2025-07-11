@@ -2,59 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626DAB0189D
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86606B018AD
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:48:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaAJ1-0005T2-An; Fri, 11 Jul 2025 05:44:35 -0400
+	id 1uaAMq-0000UH-Js; Fri, 11 Jul 2025 05:48:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uaAIw-0005Mu-DS
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:44:30 -0400
-Received: from www62.your-server.de ([213.133.104.62])
+ (Exim 4.90_1) (envelope-from
+ <BATV+8c4faaad3222ad9695a9+7992+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1uaAMZ-0000Qk-Mm
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:48:17 -0400
+Received: from casper.infradead.org ([90.155.50.34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uaAIs-0001Hk-VB
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:44:30 -0400
+ (Exim 4.90_1) (envelope-from
+ <BATV+8c4faaad3222ad9695a9+7992+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1uaAMV-00027W-TG
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:48:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=+FXXGCu+8Zv0lrHnKAikMxZytmitnVKUXew1wyyq5Yc=; b=Bn/eTHx5CW3mf6fLfGpE49IbrW
- 1osYKXDFlAe25cVxXUWraWOgtapEm6D9mzx/zlMiYr8iWjqO65/mOCtlGT2vgvjTpUDEtZ1ZtGEFE
- rxAmlLxMZj7IcqPLklyFjj8yrhwJQI+OHfhRlaskQZWEAYwVf5N4GOZU5PWB76zRGLFPa4asAYvu/
- iViGNXjNCsZ+JsqdbQjMHComQHHxzbrdPnceIcTYVsnFmps22TxZsuNE6wal14wD3yOGO2ao/Sbvj
- drXkLeZVv8OicfyNJHXMeYG7IBgBK1Gl9leFYqMQ1k40or+CbI3Df9BZ+725bAx9ALuY6bbH2W8Vr
- 98ZKS7XA==;
-Received: from localhost ([127.0.0.1])
- by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96.2) (envelope-from <daniel@iogearbox.net>)
- id 1uaAIk-0002nE-0v; Fri, 11 Jul 2025 11:44:18 +0200
-To: qemu-devel@nongnu.org
-Cc: daniel@iogearbox.net, Ilya Maximets <i.maximets@ovn.org>,
- Jason Wang <jasowang@redhat.com>, Anton Protopopov <aspsk@isovalent.com>
-Subject: [PATCH v5 3/3] net/af-xdp: Support pinned map path for AF_XDP sockets
-Date: Fri, 11 Jul 2025 11:44:16 +0200
-Message-ID: <20250711094416.247125-3-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250711094416.247125-1-daniel@iogearbox.net>
-References: <20250711094416.247125-1-daniel@iogearbox.net>
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
+ From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=6YUuFMQAoh2d+AWASPMpnPJYFM/d7o/r60eGphjXee0=; b=A2z7IJiJIUDg2dytgmn1oo9/0M
+ /wbhAyh+w8kLTPGOPs75/oD9JRZz6m2e7nZ31RJflrYK4Lifv+uFnkDLe5E1pm2oTk3lrQ8sO3SPm
+ KN7yHjQV5mNoVrmFYPPUezHxYMdkkab81/FAyeJRiFfBFZ1MdiwrPRkWncZwrK3L0FTs6cZYJcfHv
+ mpvIIdBOLvGVovFAhevtMmlzgq2PbkpEGgInAvZIlT+dPVqAfmU12mTQtmJPNzZy+seIBqSmvYhEE
+ Km/8rYY7rBbtNpJWkx7YQI/61NfliQQ4Wou+ULed/kiyaQRnS/MWpfksVyX6SRRHsW1S4JXpkEid7
+ O7XVUwHA==;
+Received: from [2001:8b0:10b:5:c748:88ae:86c8:2ed0]
+ (helo=u09cd745991455d.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+ id 1uaAM7-0000000CUFE-3FkM; Fri, 11 Jul 2025 09:47:47 +0000
+Message-ID: <e15012b9776a25cbfdbcc9797595669d3ae4ef36.camel@infradead.org>
+Subject: [PATCH] intel_iommu: Allow both Status Write and Interrupt Flag in
+ QI wait
+From: David Woodhouse <dwmw2@infradead.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Le Tan <tamlokveer@gmail.com>, kib@freebsd.org
+Cc: Yi Liu <yi.l.liu@intel.com>, =?ISO-8859-1?Q?Cl=E9ment?= Mathieu--Drif
+ <clement.mathieu--drif@eviden.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>,  qemu-devel@nongnu.org
+Date: Fri, 11 Jul 2025 10:47:47 +0100
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-Ho+WyQcwU8zXalfWPmy0"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27695/Thu Jul 10 11:08:41 2025)
-Received-SPF: pass client-ip=213.133.104.62; envelope-from=daniel@iogearbox.net;
- helo=www62.your-server.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=90.155.50.34;
+ envelope-from=BATV+8c4faaad3222ad9695a9+7992+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,322 +76,191 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Daniel Borkmann <daniel@iogearbox.net>
-From:  Daniel Borkmann via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extend 'inhibit=on' setting with the option to specify a pinned XSK map
-path along with a starting index (default 0) to push the created XSK
-sockets into. Example usage:
 
-  # ./build/qemu-system-x86_64 [...] \
-   -netdev af-xdp,ifname=enp2s0f0np0,id=net0,mode=native,queues=2,start-queue=14,inhibit=on,map-path=/sys/fs/bpf/xsks_map,map-start-index=14 \
-   -device virtio-net-pci,netdev=net0 [...]
+--=-Ho+WyQcwU8zXalfWPmy0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is useful for the case where an existing XDP program with XSK map
-is present on the AF_XDP supported phys device and the XSK map is not
-yet populated. For example, the former could have been pre-loaded onto
-the netdevice by a control plane, which later launches QEMU to populate
-it with XSK sockets.
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Normally, the main idea behind 'inhibit=on' is that the QEMU instance
-doesn't need to have a lot of privileges to use the pre-loaded program
-and the pre-created sockets, but this mentioned use-case here is different
-where QEMU still needs privileges to create the sockets.
+FreeBSD does both, and this appears to be perfectly valid. The VT-d
+spec even talks about the ordering (the status write should be done
+first, unsurprisingly).
 
-The 'map-start-index' parameter is optional and defaults to 0. It allows
-flexible placement of the XSK sockets, and is up to the user to specify
-when the XDP program with XSK map was already preloaded. In the simplest
-case the queue-to-map-slot mapping is just 1:1 based on ctx->rx_queue_index
-but the user might as well have a different scheme (or smaller map size,
-e.g. ctx->rx_queue_index % max_size) to push the inbound traffic to one
-of the XSK sockets.
+We certainly shouldn't assert() and abort QEMU if the guest asks for
+both.
 
-Note that the bpf_xdp_query_id() is now only tested for 'inhibit=off'
-since only in the latter case the libxdp takes care of installing the
-XDP program which was installed based on the s->xdp_flags pointing to
-either driver or skb mode. For 'inhibit=on' we don't make any assumptions
-and neither go down the path of probing all possible options in which
-way the user installed the XDP program.
-
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Ilya Maximets <i.maximets@ovn.org>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Anton Protopopov <aspsk@isovalent.com>
+Fixes: ed7b8fbcfb88 ("intel-iommu: add supports for queued invalidation int=
+erface")
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/3028
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- net/af-xdp.c    | 83 ++++++++++++++++++++++++++++++++++++++++++++++---
- qapi/net.json   | 29 +++++++++++------
- qemu-options.hx | 23 ++++++++++++--
- 3 files changed, 118 insertions(+), 17 deletions(-)
+Still can't get FreeBSD to boot and use CPUs with APIC ID > 255 using
+*either* Intel or AMD IOMMU with interrupt remapping, or the native
+15-bit APIC ID enlightenment.
+cf. https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=3D288122
 
-diff --git a/net/af-xdp.c b/net/af-xdp.c
-index 1692efe9f2..f8017a5b67 100644
---- a/net/af-xdp.c
-+++ b/net/af-xdp.c
-@@ -51,6 +51,10 @@ typedef struct AFXDPState {
- 
-     uint32_t             xdp_flags;
-     bool                 inhibit;
-+
-+    char                 *map_path;
-+    int                  map_fd;
-+    uint32_t             map_start_index;
- } AFXDPState;
- 
- #define AF_XDP_BATCH_SIZE 64
-@@ -260,6 +264,7 @@ static void af_xdp_send(void *opaque)
- static void af_xdp_cleanup(NetClientState *nc)
+ hw/i386/intel_iommu.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 69d72ad35c..3bfaf9bd07 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -2822,6 +2822,7 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s,=
+ VTDInvDesc *inv_desc)
  {
-     AFXDPState *s = DO_UPCAST(AFXDPState, nc, nc);
-+    int idx;
- 
-     qemu_purge_queued_packets(nc);
- 
-@@ -273,6 +278,18 @@ static void af_xdp_cleanup(NetClientState *nc)
-     s->umem = NULL;
-     qemu_vfree(s->buffer);
-     s->buffer = NULL;
-+
-+    if (s->map_fd >= 0) {
-+        idx = nc->queue_index + s->map_start_index;
-+        if (bpf_map_delete_elem(s->map_fd, &idx)) {
-+            fprintf(stderr, "af-xdp: unable to remove AF_XDP socket from map"
-+                    " %s\n", s->map_path);
-+        }
-+        close(s->map_fd);
-+        s->map_fd = -1;
-+    }
-+    g_free(s->map_path);
-+    s->map_path = NULL;
- }
- 
- static int af_xdp_umem_create(AFXDPState *s, int sock_fd, Error **errp)
-@@ -336,7 +353,6 @@ static int af_xdp_socket_create(AFXDPState *s,
-     };
-     int queue_id, error = 0;
- 
--    s->inhibit = opts->has_inhibit && opts->inhibit;
-     if (s->inhibit) {
-         cfg.libxdp_flags |= XSK_LIBXDP_FLAGS__INHIBIT_PROG_LOAD;
-     }
-@@ -387,6 +403,35 @@ static int af_xdp_socket_create(AFXDPState *s,
-     return 0;
- }
- 
-+static int af_xdp_update_xsk_map(AFXDPState *s, Error **errp)
-+{
-+    int xsk_fd, idx, error = 0;
-+
-+    if (!s->map_path) {
-+        return 0;
-+    }
-+
-+    s->map_fd = bpf_obj_get(s->map_path);
-+    if (s->map_fd < 0) {
-+        error = errno;
-+    } else {
-+        xsk_fd = xsk_socket__fd(s->xsk);
-+        idx = s->nc.queue_index + s->map_start_index;
-+        if (bpf_map_update_elem(s->map_fd, &idx, &xsk_fd, 0)) {
-+            error = errno;
-+        }
-+    }
-+
-+    if (error) {
-+        error_setg_errno(errp, error,
-+                         "failed to insert AF_XDP socket into map %s",
-+                         s->map_path);
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
- /* NetClientInfo methods. */
- static NetClientInfo net_af_xdp_info = {
-     .type = NET_CLIENT_DRIVER_AF_XDP,
-@@ -435,12 +480,14 @@ int net_init_af_xdp(const Netdev *netdev,
- {
-     const NetdevAFXDPOptions *opts = &netdev->u.af_xdp;
-     NetClientState *nc, *nc0 = NULL;
-+    int32_t map_start_index;
-     unsigned int ifindex;
-     uint32_t prog_id = 0;
-     g_autofree int *sock_fds = NULL;
-     int64_t i, queues;
-     Error *err = NULL;
-     AFXDPState *s;
-+    bool inhibit;
- 
-     ifindex = if_nametoindex(opts->ifname);
-     if (!ifindex) {
-@@ -456,8 +503,28 @@ int net_init_af_xdp(const Netdev *netdev,
-         return -1;
-     }
- 
--    if ((opts->has_inhibit && opts->inhibit) != !!opts->sock_fds) {
--        error_setg(errp, "'inhibit=on' requires 'sock-fds' and vice versa");
-+    inhibit = opts->has_inhibit && opts->inhibit;
-+    if (inhibit && !opts->sock_fds && !opts->map_path) {
-+        error_setg(errp, "'inhibit=on' requires 'sock-fds' or 'map-path'");
-+        return -1;
-+    }
-+    if (!inhibit && (opts->sock_fds || opts->map_path)) {
-+        error_setg(errp, "'sock-fds' and 'map-path' require 'inhibit=on'");
-+        return -1;
-+    }
-+    if (opts->sock_fds && opts->map_path) {
-+        error_setg(errp, "'sock-fds' and 'map-path' are mutually exclusive");
-+        return -1;
-+    }
-+    if (!opts->map_path && opts->has_map_start_index) {
-+        error_setg(errp, "'map-start-index' requires 'map-path'");
-+        return -1;
-+    }
-+
-+    map_start_index = opts->has_map_start_index ? opts->map_start_index : 0;
-+    if (map_start_index < 0) {
-+        error_setg(errp, "'map-start-index' cannot be negative (%d)",
-+                   map_start_index);
-         return -1;
-     }
- 
-@@ -481,14 +548,20 @@ int net_init_af_xdp(const Netdev *netdev,
- 
-         pstrcpy(s->ifname, sizeof(s->ifname), opts->ifname);
-         s->ifindex = ifindex;
-+        s->inhibit = inhibit;
-+
-+        s->map_path = g_strdup(opts->map_path);
-+        s->map_start_index = map_start_index;
-+        s->map_fd = -1;
- 
-         if (af_xdp_umem_create(s, sock_fds ? sock_fds[i] : -1, &err) ||
--            af_xdp_socket_create(s, opts, &err)) {
-+            af_xdp_socket_create(s, opts, &err) ||
-+            af_xdp_update_xsk_map(s, &err)) {
-             goto err;
+     uint64_t mask[4] =3D {VTD_INV_DESC_WAIT_RSVD_LO, VTD_INV_DESC_WAIT_RSV=
+D_HI,
+                         VTD_INV_DESC_ALL_ONE, VTD_INV_DESC_ALL_ONE};
++    bool ret =3D true;
+=20
+     if (!vtd_inv_desc_reserved_check(s, inv_desc, mask, false,
+                                      __func__, "wait")) {
+@@ -2833,7 +2834,8 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s,=
+ VTDInvDesc *inv_desc)
+         uint32_t status_data =3D (uint32_t)(inv_desc->lo >>
+                                VTD_INV_DESC_WAIT_DATA_SHIFT);
+=20
+-        assert(!(inv_desc->lo & VTD_INV_DESC_WAIT_IF));
++        if (inv_desc->lo & VTD_INV_DESC_WAIT_IF)
++            vtd_generate_completion_event(s);
+=20
+         /* FIXME: need to be masked with HAW? */
+         dma_addr_t status_addr =3D inv_desc->hi;
+@@ -2843,18 +2845,22 @@ static bool vtd_process_wait_desc(IntelIOMMUState *=
+s, VTDInvDesc *inv_desc)
+                              &status_data, sizeof(status_data),
+                              MEMTXATTRS_UNSPECIFIED)) {
+             trace_vtd_inv_desc_wait_write_fail(inv_desc->hi, inv_desc->lo)=
+;
+-            return false;
++            ret =3D false;
          }
+-    } else if (inv_desc->lo & VTD_INV_DESC_WAIT_IF) {
++    }
++
++    if (inv_desc->lo & VTD_INV_DESC_WAIT_IF) {
+         /* Interrupt flag */
+         vtd_generate_completion_event(s);
+-    } else {
++    }
++
++    if (!(inv_desc->lo & (VTD_INV_DESC_WAIT_IF|VTD_INV_DESC_WAIT_SW))) {
+         error_report_once("%s: invalid wait desc: hi=3D%"PRIx64", lo=3D%"P=
+RIx64
+                           " (unknown type)", __func__, inv_desc->hi,
+                           inv_desc->lo);
+         return false;
      }
- 
--    if (nc0) {
-+    if (nc0 && !inhibit) {
-         s = DO_UPCAST(AFXDPState, nc, nc0);
-         if (bpf_xdp_query_id(s->ifindex, s->xdp_flags, &prog_id) || !prog_id) {
-             error_setg_errno(&err, errno,
-diff --git a/qapi/net.json b/qapi/net.json
-index 97ea183981..740a088a96 100644
---- a/qapi/net.json
-+++ b/qapi/net.json
-@@ -454,25 +454,34 @@
- #     (default: 0).
- #
- # @inhibit: Don't load a default XDP program, use one already loaded
--#     to the interface (default: false).  Requires @sock-fds.
-+#     to the interface (default: false).  Requires @sock-fds or @map-path.
- #
- # @sock-fds: A colon (:) separated list of file descriptors for
- #     already open but not bound AF_XDP sockets in the queue order.
- #     One fd per queue.  These descriptors should already be added
--#     into XDP socket map for corresponding queues.  Requires
--#     @inhibit.
-+#     into XDP socket map for corresponding queues.  @sock-fds and
-+#     @map-path are mutually exclusive.  Requires @inhibit.
-+#
-+# @map-path: The path to a pinned xsk map to push file descriptors
-+#     for bound AF_XDP sockets into.  @map-path and @sock-fds are
-+#     mutually exclusive.  Requires @inhibit.  (Since 10.1)
-+#
-+# @map-start-index: Use @map-path to insert xsk sockets starting from
-+#     this index number (default: 0).  Requires @map-path.  (Since 10.1)
- #
- # Since: 8.2
- ##
- { 'struct': 'NetdevAFXDPOptions',
-   'data': {
--    'ifname':       'str',
--    '*mode':        'AFXDPMode',
--    '*force-copy':  'bool',
--    '*queues':      'int',
--    '*start-queue': 'int',
--    '*inhibit':     'bool',
--    '*sock-fds':    'str' },
-+    'ifname':           'str',
-+    '*mode':            'AFXDPMode',
-+    '*force-copy':      'bool',
-+    '*queues':          'int',
-+    '*start-queue':     'int',
-+    '*inhibit':         'bool',
-+    '*sock-fds':        'str',
-+    '*map-path':        'str',
-+    '*map-start-index': 'int32' },
-   'if': 'CONFIG_AF_XDP' }
- 
- ##
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 1f862b19a6..1351617ee2 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -2909,6 +2909,7 @@ DEF("netdev", HAS_ARG, QEMU_OPTION_netdev,
- #ifdef CONFIG_AF_XDP
-     "-netdev af-xdp,id=str,ifname=name[,mode=native|skb][,force-copy=on|off]\n"
-     "         [,queues=n][,start-queue=m][,inhibit=on|off][,sock-fds=x:y:...:z]\n"
-+    "         [,map-path=/path/to/socket/map][,map-start-index=i]\n"
-     "                attach to the existing network interface 'name' with AF_XDP socket\n"
-     "                use 'mode=MODE' to specify an XDP program attach mode\n"
-     "                use 'force-copy=on|off' to force XDP copy mode even if device supports zero-copy (default: off)\n"
-@@ -2916,6 +2917,8 @@ DEF("netdev", HAS_ARG, QEMU_OPTION_netdev,
-     "                with inhibit=on,\n"
-     "                  use 'sock-fds' to provide file descriptors for already open AF_XDP sockets\n"
-     "                  added to a socket map in XDP program.  One socket per queue.\n"
-+    "                  use 'map-path' to provide the socket map location to populate AF_XDP sockets with,\n"
-+    "                  and use 'map-start-index' to specify the starting index for the map (default: 0) (Since 10.1)\n"
-     "                use 'queues=n' to specify how many queues of a multiqueue interface should be used\n"
-     "                use 'start-queue=m' to specify the first queue that should be used\n"
- #endif
-@@ -3610,7 +3613,7 @@ SRST
-         # launch QEMU instance
-         |qemu_system| linux.img -nic vde,sock=/tmp/myswitch
- 
--``-netdev af-xdp,id=str,ifname=name[,mode=native|skb][,force-copy=on|off][,queues=n][,start-queue=m][,inhibit=on|off][,sock-fds=x:y:...:z]``
-+``-netdev af-xdp,id=str,ifname=name[,mode=native|skb][,force-copy=on|off][,queues=n][,start-queue=m][,inhibit=on|off][,sock-fds=x:y:...:z][,map-path=/path/to/socket/map][,map-start-index=i]``
-     Configure AF_XDP backend to connect to a network interface 'name'
-     using AF_XDP socket.  A specific program attach mode for a default
-     XDP program can be forced with 'mode', defaults to best-effort,
-@@ -3650,7 +3653,8 @@ SRST
-             -netdev af-xdp,id=n1,ifname=eth0,queues=1,start-queue=1
- 
-     XDP program can also be loaded externally.  In this case 'inhibit' option
--    should be set to 'on' and 'sock-fds' provided with file descriptors for
-+    should be set to 'on'.  Either 'sock-fds' or 'map-path' can be used with
-+    'inhibit' enabled.  'sock-fds' can be provided with file descriptors for
-     already open but not bound XDP sockets already added to a socket map for
-     corresponding queues.  One socket per queue.
- 
-@@ -3659,6 +3663,21 @@ SRST
-         |qemu_system| linux.img -device virtio-net-pci,netdev=n1 \\
-             -netdev af-xdp,id=n1,ifname=eth0,queues=3,inhibit=on,sock-fds=15:16:17
- 
-+    For the 'inhibit' option set to 'on' used together with 'map-path' it is
-+    expected that the XDP program with the socket map is already loaded on
-+    the networking device and the map pinned into BPF file system.  The path
-+    to the pinned map is then passed to QEMU which then creates the file
-+    descriptors and inserts them into the existing socket map.
-+
-+    .. parsed-literal::
-+
-+        |qemu_system| linux.img -device virtio-net-pci,netdev=n1 \\
-+            -netdev af-xdp,id=n1,ifname=eth0,queues=2,inhibit=on,map-path=/sys/fs/bpf/xsks_map
-+
-+    Additionally, 'map-start-index' can be used to specify the start offset
-+    for insertion into the socket map.  The combination of 'map-path' and
-+    'sock-fds' together is not supported.
-+
- ``-netdev vhost-user,chardev=id[,vhostforce=on|off][,queues=n]``
-     Establish a vhost-user netdev, backed by a chardev id. The chardev
-     should be a unix domain socket backed one. The vhost-user uses a
--- 
+-    return true;
++    return ret;
+ }
+=20
+ static bool vtd_process_context_cache_desc(IntelIOMMUState *s,
+--=20
 2.43.0
 
+
+
+--=-Ho+WyQcwU8zXalfWPmy0
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDcxMTA5NDc0
+N1owLwYJKoZIhvcNAQkEMSIEILaNz+9nI52n1eISxMHFpX9jijLDX45+FBl94AdcSX4YMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAsfNpozSmXmIP
+28yGsyMkmyVzMUGtA9SX18ACmJq0m7rLQF/kfyvhbGNFo7Mlu06J/eXHsWEZsHEdMQ3DXFeeY+T5
+EbXuyFNHtKq2bpoZoj3GJhCv0dAjTRlEA4LWK9GPDhMp8ni1DL4VuYsB5ma07kPntXqy4oYLFnr9
+L/EyvIWTa4+J71RaiDAJdbWjfCXQlqJxc8ikQpvZKT0TiQ/zAFb0ONRndqothn0WO3eOgxzImc7r
+jF2Ni/HUZs/8FDRSBuE0Q6pLi/1CIN/4RDQ1pnVkE4Zr7+4OY8Um2NuvMyrXA8JeWfjIBXGFHn/3
+fOGiFdrmqhryIqJYoWulZWpjuqxbWaggKt3MMor1sl6b61Kvw1610t+xjn2Az9H6nrNOmTzuSy52
+t+mZ3e4oywalbBhCxAwKULUYHG8GS6CBTFtAbn92r5KEgrhMsmAy2Qu9sBScjI3BWiKUtkP31pAL
+R/xzXKoeAjgj3DoMmTRerVI6K0qceOVNLjjUQp8tZxUBGyh+DEWze9vu9Rjkcv0GmCyNOdIYPHx0
+t4x5o3rUACE5w1olHFE0fLaouaQiEaAKlZVTvkMfrTWEQOrpnNg4lMNK+DbipyCcZz+x6sSFANkg
+sP6xgO/QLTMYEwiegNf0BeSdYk0LMTA03L60RWq3Oy+T/EVGLV+Xudl6wDphfTcAAAAAAAA=
+
+
+--=-Ho+WyQcwU8zXalfWPmy0--
 
