@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0335B025E9
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24AB5B025EC
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:50:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKef-0003ai-UZ; Fri, 11 Jul 2025 16:47:38 -0400
+	id 1uaKfg-0004Rq-Dw; Fri, 11 Jul 2025 16:48:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uaKdv-0003Jx-7J
+ id 1uaKdt-0003Ji-Ux
  for qemu-devel@nongnu.org; Fri, 11 Jul 2025 16:46:55 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uaKdr-0003iy-Co
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 16:46:50 -0400
+ id 1uaKdr-0003jI-AL
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 16:46:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID;
- bh=DaL2mqf1oOve9B6MZryX4sutK73zfpe2Dc7xtYjrFJs=; b=ZYrybVF1RBK1cuFdvY7qR20nyt
- to/TQsd0mZRwQehxRvsJ+8So2bgVm8quY8kuspVrgDpod3A7v0C0LKXn0TnZpQe77GGpi1xWEZONm
- ZMdI4/Vz9bQBi7Gr1BOKU/0B81rtZH0rI2oN0nwUtV+Hxb27QssJb6PSz4tu7RcG+l6BQxJQu6mO+
- lwDE5S6EDPra5TDzvAPHvirKjUIBd/wqYmy4wo7ihBDCLQwHsnfNvI28Cmnz6a+RYimFpEZc0CBiY
- /J4b21ng8kcb4kUVyf1I/C2WokFWgUCM5wmdWKxZzcFF/Vai4+qY8KZDYLTHAKbBsefAwUe0HXDAg
- CJPrf9HYO7QQIPIVXtQLGxXwcxkmFoP+kK8sGjJqe3ZfmBmO5CurwU3j2oCxNplW9xzEQwahKFNcT
- uf8lIYP6HNDnTmXb+QnnlQ4wou8858LhQJlqzUFNCgIoyVRcKSvveZq8hchljsSVSUQNXpU4n53/U
- PhlvUdp3sQ2Z9esY89yl5zE15KDtjgA8dl/jRCU4PAR9uKn8g1Rps+e4npv8Xqy1vieUkkl/7Rv9d
- 08nzkKovZMrf2zXObk8a2fW0rsqO1XaHyY635nZPjcDbzDQzcgWca4LR+nD3Go3PYSu0eLv199mJ2
- WRkS5/5rZ4PPcuY3JWBuOj1N48u5b17I+Lx/fyUqc=;
+ bh=+pg3U2MlgD5Mm9wqpVaAXbSZ7dQrwSODtzqh3LXUiqc=; b=gqum/FqlYUyLYXezRAi8VdbkVG
+ XEbF/fyrjVSVZCAo8e/kV7I32Di9glLoROef3ppa/Ql7Na1MzvWDz2VlHvbTgR/i7jO0QCu5QPdey
+ 83mHh7oltPZC3MBa8sOcuHgy8+aMnnmzqXKqIcswvqLl+xfRUUvic/YdzQuJBUyG7yq+fuVJ+BVXI
+ 9U1QAHmcNaLlQfLBJ+6iaKoZoMNhWWZKhWXhSctzTicOSSpTYBCPJHX8RjXBhi00lmgJ3r6wde8Iw
+ Mwe/Ic22foeuD7w8MxMxGc/Ty/R32tudj2CWjfl1SjfiEce8RTApjHPEO1ATFUoUCtMUoBcpHQnto
+ WckpWKdaC+Q/jdJwd692jAZD8cecbwVlXs1FEWWAdFtZjn2K5GFAjkNeJsuHICK2quNfoEYsxGgOY
+ ggKnGilCYSHNJ87XBu1wGNQJqehzgATipfMKhfpjyyjTE72e/nORzsV9nC/clC7OViIiwXxyoOTYS
+ cDL98xPALQ3la/JRwshz5F3JTAQQhtyys3GmVFize1jXaAw9o6vGZkaCMeRz4vwdZfZ6Si3oxA7eQ
+ v5l5KHrJu4ziIqjmGgNnmNfFjlL7Vp5U7OKgbSPWDmaIJfh/QXNo1q24UtVXow8AFEEYwmJV29JRF
+ 5j2C+09y0CvARHHhvq/GMiaMRxi5ndxsCM8CO07Lg=;
 Received: from [2a02:8012:2f01:0:d1ff:478a:c096:2d0c]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uaKcC-000Bmy-IV; Fri, 11 Jul 2025 21:45:04 +0100
+ id 1uaKcC-000Bmy-ST; Fri, 11 Jul 2025 21:45:05 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com,
 	fam@euphon.net,
 	qemu-devel@nongnu.org
-Date: Fri, 11 Jul 2025 21:46:31 +0100
-Message-Id: <20250711204636.542964-3-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 11 Jul 2025 21:46:32 +0100
+Message-Id: <20250711204636.542964-4-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250711204636.542964-1-mark.cave-ayland@ilande.co.uk>
 References: <20250711204636.542964-1-mark.cave-ayland@ilande.co.uk>
@@ -52,7 +52,7 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:d1ff:478a:c096:2d0c
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 2/7] esp.c: improve comment in esp_transfer_data()
+Subject: [PATCH v3 3/7] esp.h: remove separate ESPState typedef
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,32 +78,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Whilst working on the previous patch, the existing comment was not enough to
-document when the TI command codepath was being used. Update and improve the
-comment accordingly.
+This is not needed as it is now handled by the OBJECT_DECLARE_SIMPLE_TYPE() macro.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/scsi/esp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/hw/scsi/esp.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 9181c8810f..62ba406149 100644
---- a/hw/scsi/esp.c
-+++ b/hw/scsi/esp.c
-@@ -1029,8 +1029,9 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
-         case CMD_TI | CMD_DMA:
-         case CMD_TI:
-             /*
--             * Bus service interrupt raised because of initial change to
--             * DATA phase
-+             * If the final COMMAND phase data was transferred using a TI
-+             * command, clear ESP_CMD to terminate the TI command and raise
-+             * the completion interrupt
-              */
-             s->rregs[ESP_CMD] = 0;
-             s->rregs[ESP_RINTR] |= INTR_BS;
+diff --git a/include/hw/scsi/esp.h b/include/hw/scsi/esp.h
+index 533d856aa3..c9afcb7cac 100644
+--- a/include/hw/scsi/esp.h
++++ b/include/hw/scsi/esp.h
+@@ -14,8 +14,6 @@ typedef void (*ESPDMAMemoryReadWriteFunc)(void *opaque, uint8_t *buf, int len);
+ #define ESP_FIFO_SZ 16
+ #define ESP_CMDFIFO_SZ 32
+ 
+-typedef struct ESPState ESPState;
+-
+ #define TYPE_ESP "esp"
+ OBJECT_DECLARE_SIMPLE_TYPE(ESPState, ESP)
+ 
 -- 
 2.39.5
 
