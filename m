@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEEFDB02737
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Jul 2025 00:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46330B0272F
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Jul 2025 00:52:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaMbn-0002zg-1B; Fri, 11 Jul 2025 18:52:47 -0400
+	id 1uaMbA-0001Lk-VR; Fri, 11 Jul 2025 18:52:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uaMYu-0007cq-H9
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 18:49:53 -0400
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ id 1uaMYs-0007YL-6W
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 18:49:47 -0400
+Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uaMYa-0008UI-A7
+ id 1uaMYb-0008Vl-Mb
  for qemu-devel@nongnu.org; Fri, 11 Jul 2025 18:49:31 -0400
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-73d0152369fso352497a34.2
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 15:49:26 -0700 (PDT)
+Received: by mail-oo1-xc34.google.com with SMTP id
+ 006d021491bc7-61208b548e8so709333eaf.3
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 15:49:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752274166; x=1752878966; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752274167; x=1752878967; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=STWIYU9G50oq6+fT8dxvuAWf3Y81wJSGWcY0ZHxvSjQ=;
- b=aKV+u656HDtopq5iVFZtkl3lAlJ7YMiVjeE22rS25H/qbF9qfmYX29cbUx9P6fAlJp
- SrNB+BUM8L5ijRBD/9+Y/VKtx3+gsxjz+uEfRC26ed03JuZctyXMtC8y1g9evG6rNXUY
- 9oSOYFQxvx0pJceIZWlqwJ7KB29rMy4t+OFor6M5hl7G5gU6m/R0FFecsAX9Qsl8BtFM
- UMpTH5UiSj8WIyhjKxrh2Nll4Or+gFUiFxhbjUoiUyECmRX5RvHMScs8GlKla3W6geSw
- txoIiAswUI0e+iAdMFAT1BJcqvJTDPAcPJ+IUuZbAo/wLIMqH3gjSPLJVrB2HhvaDE8C
- 2tYA==
+ bh=8MiZSYeSsFc7E9O+r65QuNCOOnlvBtRW+4SiNaYQadU=;
+ b=a47NU0h2PcXOH4zNCoD7V3dG71GE7UpCKUz9PEPlQop4rZzSneue5IeOoLcVQSY+Sz
+ LiRhp0FOJ4DTkRtKKkglfMnBjBYNV7nXyWDqGIsJ+4f3lq6lEgQP/iKw915ssBzreQ5o
+ qmU5cw/KWseapxmOXLkMHyO8hB+Swc7MYmJwZUmGPG1f0o/t+hFLnrsbCWET8QIgK0u7
+ CtEYRXJmP2Ai85mWjrpZhdbRAcHm4tSbsK6R+xwjlArieCQcUUUxq43m5Yud43Y3EyxZ
+ cdgIHspiNnqp/Jqrrm55KGSgtxoaX+XAhJFQ9wZ88rx29tZbyNddyb/aq6UqOHsO0CmT
+ eV0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752274166; x=1752878966;
+ d=1e100.net; s=20230601; t=1752274167; x=1752878967;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=STWIYU9G50oq6+fT8dxvuAWf3Y81wJSGWcY0ZHxvSjQ=;
- b=JrPYcbWRfny1UfH2rC6uRGSRWUnBv4oX1m1/Hfi8Ec5WYo49TTwOan7rmBdjcdnrAV
- 2RNaqJuFcE1+EldINEpGlxTPEm4R6DFiTcZVr6e6HDGCnMUgzAMsAkQTUcSdFjHWzKfg
- /WxbUPX0iN8HlXnk+R/WIJEJTrpOouFJoKDwSe9xar11d2muP2R14DHL1Ai4jlRhJ9B9
- gzbE4+J9TmYAar4OmS/Z3OGkeEGFHCxYjuhQJ72kfsokWOmoIcMWJdAExtV1r9ZlgojX
- bJhsyPlHkLDSjU4CQflqDgorNwXnpSNSwsZxHYUsamE2h9Fda29RuTcfXfIAm3yG3IZD
- P42w==
-X-Gm-Message-State: AOJu0YxZJMCTvUnQKt1+g8xGpfgqrr/pR2eSphuZvAPrvkk0tOyK+9BD
- dgrzIDmRIriKZW5523VihDoXOz1F5GcZmbqmg4+0Ns+wk38gDQ3iiJhQ1Oo09+fcz4cSXECyOi3
- cm81+kVE=
-X-Gm-Gg: ASbGncvGIrf52X8KxGgJZOGm+eO0NHJQ12iZF8+8CcOmLPnEe0ozi1c3NCY57kHIA91
- IAG7M357TgPjnIK3Pc6JWflebPNRiiApvqUmQhb1aruUjKkJ3eNnkF+2SXdzWBX3pjf37X1zWnv
- tR0DqnyMs0Oh9yEkwA5Da0+bs9U/YW/roR8a2d8WXoM4UdkNFTzrJdG15bmkG3XTS/u+HvVi3xA
- qQzSLnm2R8UaLZ4loTf+qzu+3THhp2DIoSOqoC6auMAFgh0leXKgclHZ3NFD3HLJBNZKQI3LngC
- yzSmA0NA8SU5j9Oap1kj5+MANhSgyLAueYA4u+A0QJrC4jBwGP23R7QFBCnzsGaWfa/3dpZLJFy
- pOx1lEdv2K1vpr6ywXuGSMhcW1gF5Zyp6s/fWflU755PM/aCakYyOAEg+JihYbS9LSXIZa/COYR
- NEwsVILose
-X-Google-Smtp-Source: AGHT+IFA/EbfPu3L3gqXnUBGS8nca6pNF7wXeEcL84IIr+gAZ/L4j4NBXNGlSg61p6S5lP6+eBWYSg==
-X-Received: by 2002:a05:6808:6c8e:b0:40a:526e:5e7a with SMTP id
- 5614622812f47-415396c4933mr3617316b6e.23.1752274165635; 
- Fri, 11 Jul 2025 15:49:25 -0700 (PDT)
+ bh=8MiZSYeSsFc7E9O+r65QuNCOOnlvBtRW+4SiNaYQadU=;
+ b=SiYsoBQWvjjPeh/6qnUFURCyEq+S975Yu+7IxxR5Pgag/6ozrOEGTE23rFDRb4RMFs
+ T4mLakzie5bd4o5NVpXo1S6dx37wczJsv8DyMRk6+qeoyDmSo22YR8o+sF7evIUP1qo7
+ AyRs9xAE9Tj99RcEb9l+udFJe+mYUHF+d+Fi1AINqazSwEX0BZlv9nttt8tmlQrdrylX
+ c/LF+iSIYr+Gyo2O5omKyn8EbND6b4gns8Mg8wubZI+J6FDeL1c+hThpH9lzntTfVqW0
+ hR7Awe3/ZlfLuL2NZOOfC3DBB2pXi5/mKhEzGW3WyXWu+8K7yYjwGdgWn0ymbx01qVsT
+ Y9Ng==
+X-Gm-Message-State: AOJu0Ywa//p+RZkCqOMz5SQP/zp4FEVlG8RIMWC5FxUJvjncjtWqBNMs
+ rpQ5jiCEfDDhfu7M78Aw86ImVoLdyZ4j4Y+wh3NAiSS+wpV59N6uZ/w2OoidQRk8BOgxC8uYiSJ
+ kQOMKqcI=
+X-Gm-Gg: ASbGnct2BT8Grq0s0/Du5mdQC4jdicj4pgTz1GydpayijEcDVnAKwvAlLN/Kv8RnvmO
+ DKYm5Ze/U2MmDlGoFoTTTjwSQZ9GVjNS8A/lzIAz6TQmRbaK5ow+77QaIG7OnARCVfPARvVzJdh
+ z8SCQQD3ZsG5MvxUUaBlPdUY46k76mdoIzB7G0slZuVpe0ew12N4FBwemgT/8zPW81TBUbKv944
+ j464e3RvE7QzWhZUN/uGWj0QXnZQ25vuXyzyy5f8OKVpN/Xna6WSa1R21TMTUKTntFwyll539qu
+ E/DEyqRKO8zzbk7KU9Junz1bKSI08IfhVCSGbfYPhkuA5Vs7FAWdAKfKA7nMWFMAxOZI4TVivkQ
+ xz1+v3bkg90s9ZaDIBgMvb7XHYt99LFISZlkmQGkxMXDdJLkfh9zi1FBDsuJNzosTwIYA/1XLpm
+ UgX+qCSfLs
+X-Google-Smtp-Source: AGHT+IHVbX6gvoj89AkIBy0BO24YTgUwsopb7/bS+LGdYPdlTAQF2c2acGbVaqq/xNclqrP3z0DbtA==
+X-Received: by 2002:a05:6808:2e4a:b0:409:52f:b361 with SMTP id
+ 5614622812f47-4150cd84e8cmr3798418b6e.0.1752274166877; 
+ Fri, 11 Jul 2025 15:49:26 -0700 (PDT)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-414197c6064sm696638b6e.20.2025.07.11.15.49.24
+ 5614622812f47-414197c6064sm696638b6e.20.2025.07.11.15.49.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Jul 2025 15:49:24 -0700 (PDT)
+ Fri, 11 Jul 2025 15:49:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 6/9] target/arm: Convert do_ats_write to access_perm
-Date: Fri, 11 Jul 2025 16:49:12 -0600
-Message-ID: <20250711224915.62369-7-richard.henderson@linaro.org>
+Subject: [PATCH v2 7/9] target/arm: Fill in HFG[RWI]TR_EL2 bits for Arm v9.5
+Date: Fri, 11 Jul 2025 16:49:13 -0600
+Message-ID: <20250711224915.62369-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250711224915.62369-1-richard.henderson@linaro.org>
 References: <20250711224915.62369-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,80 +101,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/cpregs-at.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ target/arm/cpregs.h | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/tcg/cpregs-at.c b/target/arm/tcg/cpregs-at.c
-index 2ff0b3e76f..bebf168997 100644
---- a/target/arm/tcg/cpregs-at.c
-+++ b/target/arm/tcg/cpregs-at.c
-@@ -24,14 +24,14 @@ static int par_el1_shareability(GetPhysAddrResult *res)
- }
+diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
+index c9506aa6d5..1d103b577f 100644
+--- a/target/arm/cpregs.h
++++ b/target/arm/cpregs.h
+@@ -408,10 +408,19 @@ FIELD(HFGRTR_EL2, ERXPFGCTL_EL1, 47, 1)
+ FIELD(HFGRTR_EL2, ERXPFGCDN_EL1, 48, 1)
+ FIELD(HFGRTR_EL2, ERXADDR_EL1, 49, 1)
+ FIELD(HFGRTR_EL2, NACCDATA_EL1, 50, 1)
+-/* 51-53: RES0 */
++/* 51: RES0 */
++FIELD(HFGRTR_EL2, NGCS_EL0, 52, 1)
++FIELD(HFGRTR_EL2, NGCS_EL1, 53, 1)
+ FIELD(HFGRTR_EL2, NSMPRI_EL1, 54, 1)
+ FIELD(HFGRTR_EL2, NTPIDR2_EL0, 55, 1)
+-/* 56-63: RES0 */
++FIELD(HFGRTR_EL2, NRCWMASK_EL1, 56, 1)
++FIELD(HFGRTR_EL2, NPIRE0_EL1, 57, 1)
++FIELD(HFGRTR_EL2, NPIR_EL1, 58, 1)
++FIELD(HFGRTR_EL2, NPOR_EL0, 59, 1)
++FIELD(HFGRTR_EL2, NPOR_EL1, 60, 1)
++FIELD(HFGRTR_EL2, NS2POR_EL1, 61, 1)
++FIELD(HFGRTR_EL2, NMAIR2_EL1, 62, 1)
++FIELD(HFGRTR_EL2, NAMAIR2_EL1, 63, 1)
  
- static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
--                             MMUAccessType access_type, ARMMMUIdx mmu_idx,
-+                             unsigned prot_check, ARMMMUIdx mmu_idx,
-                              ARMSecuritySpace ss)
- {
-     uint64_t par64;
-     bool format64 = false;
-     ARMMMUFaultInfo fi = {};
-     GetPhysAddrResult res = {};
--    bool ret = get_phys_addr_for_at(env, value, 1 << access_type,
-+    bool ret = get_phys_addr_for_at(env, value, prot_check,
-                                     mmu_idx, ss, &res, &fi);
+ /* These match HFGRTR but bits for RO registers are RES0 */
+ FIELD(HFGWTR_EL2, AFSR0_EL1, 0, 1)
+@@ -452,8 +461,18 @@ FIELD(HFGWTR_EL2, ERXPFGCTL_EL1, 47, 1)
+ FIELD(HFGWTR_EL2, ERXPFGCDN_EL1, 48, 1)
+ FIELD(HFGWTR_EL2, ERXADDR_EL1, 49, 1)
+ FIELD(HFGWTR_EL2, NACCDATA_EL1, 50, 1)
++FIELD(HFGWTR_EL2, NGCS_EL0, 52, 1)
++FIELD(HFGWTR_EL2, NGCS_EL1, 53, 1)
+ FIELD(HFGWTR_EL2, NSMPRI_EL1, 54, 1)
+ FIELD(HFGWTR_EL2, NTPIDR2_EL0, 55, 1)
++FIELD(HFGWTR_EL2, NRCWMASK_EL1, 56, 1)
++FIELD(HFGWTR_EL2, NPIRE0_EL1, 57, 1)
++FIELD(HFGWTR_EL2, NPIR_EL1, 58, 1)
++FIELD(HFGWTR_EL2, NPOR_EL0, 59, 1)
++FIELD(HFGWTR_EL2, NPOR_EL1, 60, 1)
++FIELD(HFGWTR_EL2, NS2POR_EL1, 61, 1)
++FIELD(HFGWTR_EL2, NMAIR2_EL1, 62, 1)
++FIELD(HFGWTR_EL2, NAMAIR2_EL1, 63, 1)
  
-     /*
-@@ -191,7 +191,7 @@ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
+ FIELD(HFGITR_EL2, ICIALLUIS, 0, 1)
+ FIELD(HFGITR_EL2, ICIALLU, 1, 1)
+@@ -512,6 +531,11 @@ FIELD(HFGITR_EL2, SVC_EL1, 53, 1)
+ FIELD(HFGITR_EL2, DCCVAC, 54, 1)
+ FIELD(HFGITR_EL2, NBRBINJ, 55, 1)
+ FIELD(HFGITR_EL2, NBRBIALL, 56, 1)
++FIELD(HFGITR_EL2, NGCSPUSHM_EL1, 57, 1)
++FIELD(HFGITR_EL2, NGCSSTR_EL1, 58, 1)
++FIELD(HFGITR_EL2, NGCSEPP, 59, 1)
++FIELD(HFGITR_EL2, COSPRCTX, 60, 1)
++FIELD(HFGITR_EL2, ATS1E1A, 62, 1)
  
- static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
- {
--    MMUAccessType access_type = ri->opc2 & 1 ? MMU_DATA_STORE : MMU_DATA_LOAD;
-+    unsigned access_perm = ri->opc2 & 1 ? PAGE_WRITE : PAGE_READ;
-     uint64_t par64;
-     ARMMMUIdx mmu_idx;
-     int el = arm_current_el(env);
-@@ -253,7 +253,7 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-         g_assert_not_reached();
-     }
- 
--    par64 = do_ats_write(env, value, access_type, mmu_idx, ss);
-+    par64 = do_ats_write(env, value, access_perm, mmu_idx, ss);
- 
-     A32_BANKED_CURRENT_REG_SET(env, par, par64);
- }
-@@ -261,11 +261,11 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
- static void ats1h_write(CPUARMState *env, const ARMCPRegInfo *ri,
-                         uint64_t value)
- {
--    MMUAccessType access_type = ri->opc2 & 1 ? MMU_DATA_STORE : MMU_DATA_LOAD;
-+    unsigned access_perm = ri->opc2 & 1 ? PAGE_WRITE : PAGE_READ;
-     uint64_t par64;
- 
-     /* There is no SecureEL2 for AArch32. */
--    par64 = do_ats_write(env, value, access_type, ARMMMUIdx_E2,
-+    par64 = do_ats_write(env, value, access_perm, ARMMMUIdx_E2,
-                          ARMSS_NonSecure);
- 
-     A32_BANKED_CURRENT_REG_SET(env, par, par64);
-@@ -309,7 +309,7 @@ static CPAccessResult at_s1e01_access(CPUARMState *env, const ARMCPRegInfo *ri,
- static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-                         uint64_t value)
- {
--    MMUAccessType access_type = ri->opc2 & 1 ? MMU_DATA_STORE : MMU_DATA_LOAD;
-+    unsigned access_perm = ri->opc2 & 1 ? PAGE_WRITE : PAGE_READ;
-     ARMMMUIdx mmu_idx;
-     uint64_t hcr_el2 = arm_hcr_el2_eff(env);
-     bool regime_e20 = (hcr_el2 & (HCR_E2H | HCR_TGE)) == (HCR_E2H | HCR_TGE);
-@@ -352,7 +352,7 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-     }
- 
-     ss = for_el3 ? arm_security_space(env) : arm_security_space_below_el3(env);
--    env->cp15.par_el[1] = do_ats_write(env, value, access_type, mmu_idx, ss);
-+    env->cp15.par_el[1] = do_ats_write(env, value, access_perm, mmu_idx, ss);
- }
- 
- static CPAccessResult ats_access(CPUARMState *env, const ARMCPRegInfo *ri,
+ FIELD(HDFGRTR_EL2, DBGBCRN_EL1, 0, 1)
+ FIELD(HDFGRTR_EL2, DBGBVRN_EL1, 1, 1)
 -- 
 2.43.0
 
