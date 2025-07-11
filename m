@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D408B01637
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21546B01657
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:36:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua95s-0001HE-K8; Fri, 11 Jul 2025 04:26:56 -0400
+	id 1ua961-00020i-1C; Fri, 11 Jul 2025 04:27:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xR-0004Mn-38; Fri, 11 Jul 2025 04:18:13 -0400
+ id 1ua8xU-0004V1-Go; Fri, 11 Jul 2025 04:18:17 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xP-0003zV-2Q; Fri, 11 Jul 2025 04:18:12 -0400
+ id 1ua8xS-00040V-KK; Fri, 11 Jul 2025 04:18:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6D9831356D0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7D2011356D1;
  Fri, 11 Jul 2025 11:17:18 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 63B6823FA45;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 733ED23FA46;
  Fri, 11 Jul 2025 11:17:45 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -28,9 +28,10 @@ Cc: qemu-stable@nongnu.org, Weifeng Liu <weifeng.liu.z@gmail.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 05/39] gtk/ui: Introduce helper gd_update_scale
-Date: Fri, 11 Jul 2025 11:16:01 +0300
-Message-ID: <20250711081745.1785806-5-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 06/39] ui/gtk: Update scales in fixed-scale mode when
+ rendering GL area
+Date: Fri, 11 Jul 2025 11:16:02 +0300
+Message-ID: <20250711081745.1785806-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
@@ -62,75 +63,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Weifeng Liu <weifeng.liu.z@gmail.com>
 
-The code snippet updating scale_x/scale_y is general and will be used in
-next patch. Make it a function.
+When gl=on, scale_x and scale_y were set to 1 on startup that didn't
+reflect the real situation of the scan-out in free scale mode, resulting
+in incorrect cursor coordinates to be sent when moving the mouse
+pointer. Simply updating the scales before rendering the image fixes
+this issue.
 
 Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
-Message-ID: <20250511073337.876650-4-weifeng.liu.z@gmail.com>
+Message-ID: <20250511073337.876650-5-weifeng.liu.z@gmail.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-(cherry picked from commit a19665448156f17b52b7f33e7960d57efcfca067)
+(cherry picked from commit 8fb072472c38cb1778c5b0bebf535a8b13533857)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/include/ui/gtk.h b/include/ui/gtk.h
-index aa3d637029..d3944046db 100644
---- a/include/ui/gtk.h
-+++ b/include/ui/gtk.h
-@@ -224,4 +224,6 @@ int gd_gl_area_make_current(DisplayGLCtx *dgc,
- /* gtk-clipboard.c */
- void gd_clipboard_init(GtkDisplayState *gd);
- 
-+void gd_update_scale(VirtualConsole *vc, int ww, int wh, int fbw, int fbh);
-+
- #endif /* UI_GTK_H */
-diff --git a/ui/gtk.c b/ui/gtk.c
-index 956d4ab9d1..ea3f403b02 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -801,6 +801,24 @@ void gd_update_monitor_refresh_rate(VirtualConsole *vc, GtkWidget *widget)
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index ba9fbec432..db93cd6204 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -43,6 +43,8 @@ void gd_gl_area_draw(VirtualConsole *vc)
+     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
  #endif
- }
+     int pw, ph, gs, y1, y2;
++    int ww, wh;
++    int fbw, fbh;
  
-+void gd_update_scale(VirtualConsole *vc, int ww, int wh, int fbw, int fbh)
-+{
-+    if (!vc) {
-+        return;
-+    }
-+
-+    if (vc->s->full_screen) {
-+        vc->gfx.scale_x = (double)ww / fbw;
-+        vc->gfx.scale_y = (double)wh / fbh;
-+    } else if (vc->s->free_scale) {
-+        double sx, sy;
-+
-+        sx = (double)ww / fbw;
-+        sy = (double)wh / fbh;
-+
-+        vc->gfx.scale_x = vc->gfx.scale_y = MIN(sx, sy);
-+    }
-+}
- /**
-  * DOC: Coordinate handling.
-  *
-@@ -908,17 +926,7 @@ static gboolean gd_draw_event(GtkWidget *widget, cairo_t *cr, void *opaque)
-     ww_widget = gdk_window_get_width(gtk_widget_get_window(widget));
-     wh_widget = gdk_window_get_height(gtk_widget_get_window(widget));
+     if (!vc->gfx.gls) {
+         return;
+@@ -50,8 +52,14 @@ void gd_gl_area_draw(VirtualConsole *vc)
  
--    if (s->full_screen) {
--        vc->gfx.scale_x = (double)ww_widget / fbw;
--        vc->gfx.scale_y = (double)wh_widget / fbh;
--    } else if (s->free_scale) {
--        double sx, sy;
--
--        sx = (double)ww_widget / fbw;
--        sy = (double)wh_widget / fbh;
--
--        vc->gfx.scale_x = vc->gfx.scale_y = MIN(sx, sy);
--    }
-+    gd_update_scale(vc, ww_widget, wh_widget, fbw, fbh);
+     gtk_gl_area_make_current(GTK_GL_AREA(vc->gfx.drawing_area));
+     gs = gdk_window_get_scale_factor(gtk_widget_get_window(vc->gfx.drawing_area));
+-    pw = gtk_widget_get_allocated_width(vc->gfx.drawing_area) * gs;
+-    ph = gtk_widget_get_allocated_height(vc->gfx.drawing_area) * gs;
++    fbw = surface_width(vc->gfx.ds);
++    fbh = surface_height(vc->gfx.ds);
++    ww = gtk_widget_get_allocated_width(vc->gfx.drawing_area);
++    wh = gtk_widget_get_allocated_height(vc->gfx.drawing_area);
++    pw = ww * gs;
++    ph = wh * gs;
++
++    gd_update_scale(vc, ww, wh, fbw, fbh);
  
-     ww_surface = fbw * vc->gfx.scale_x;
-     wh_surface = fbh * vc->gfx.scale_y;
+     if (vc->gfx.scanout_mode) {
+         if (!vc->gfx.guest_fb.framebuffer) {
 -- 
 2.47.2
 
