@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2269DB0228C
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 19:24:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 326D5B0228A
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 19:24:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaHSj-0001jR-Ir; Fri, 11 Jul 2025 13:23:05 -0400
+	id 1uaHSk-0001ky-5E; Fri, 11 Jul 2025 13:23:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uaHSh-0001h4-Dq
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:03 -0400
-Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ id 1uaHSi-0001hk-91
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:04 -0400
+Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uaHSf-0002zp-L2
+ id 1uaHSg-00030H-DU
  for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:03 -0400
-Received: by mail-oi1-x229.google.com with SMTP id
- 5614622812f47-40a6692b75cso1515176b6e.1
+Received: by mail-oi1-x234.google.com with SMTP id
+ 5614622812f47-40ad1f7c23bso1349109b6e.2
  for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 10:23:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752254580; x=1752859380; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752254581; x=1752859381; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6qpBCj8B3P31E5+6mdM0X+L5puDyaY4r0XRv24VE9kQ=;
- b=gFdtRsZcfqEYuUu9CvxGcWca5w5aVKN/Kk7uVDGiHgxmN09C+iT4YMLkr+n9PkRTbM
- SDVqpIOvFo/AcNRSViETzZ5dX6rwOjWujXYWB0msi7fab6CZr+MfK0XECDME8JlaJJdX
- sI1RkccnzxHx+fDQOqA3xu7/cVDt46mz5+jGFh2gU2k1kgpqs03ykHv5MtHJEq50ML41
- vSoIhZEX5Kso1BLpEudV/1dtAWWiiL8EVA1iHMSU5h7n+NJwylvhq+ilv9MRivxPi3ma
- t71asZcxHw5LKVvHQFO+9mXgY5ANBx/ppHIa08/lHg5+kW86tUmoX+DG+vntYiTKkzvv
- OsJQ==
+ bh=S6Y1zvZ+TyIUNt8VCXescuyiWq5vvXL67wwRHefGUWY=;
+ b=xMmj3gPs3nz1+HV28woHf+2JVOOFrpFuA5BaBy3uYzU+zcs48F4oVnD8k0dH450JgO
+ zBppeikr7EEt+JQc8Bve++o1nGeRuBZyuZ9rfd0gUzg5GSL/T1boVsNjN2b2qtNMnTrZ
+ 3d7ENnATRS8TOgrmxVPzE6fhjrUc7fmCbRBvrey1yD91y+B0b5hRkmcsMdBSO4oe4T1q
+ rQCti75kBNKMJXlqFJ1XBnQo1EaT0W51WOh/ddJZ/pQ8PTSZ4cLUdHIVKXPdIBE32OgF
+ gS2DMOnA7p7YwQfOWeL1qDrqzyyM190NMbEupVo8LW7v+wPPfUYB7ayDYWcCsveoWxlY
+ kxCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752254580; x=1752859380;
+ d=1e100.net; s=20230601; t=1752254581; x=1752859381;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6qpBCj8B3P31E5+6mdM0X+L5puDyaY4r0XRv24VE9kQ=;
- b=kUnwWOJh6khNe7Qu9HE5l5e4ARDPaQ4v1VT4iSI7iBH+Lc4s73dJA6ujeYW9M/fxRF
- jDMr78RBWkp2jxR+7OY/Hf1FWKtJfaqyM0HskCmlbZdKHqhHbr1htShd9PyguLNfVZ6Z
- Fy7YAAnWu4vD4czVF7CiuJzLu1fH+UtgrxcmFSM3tjzDE0Wzc8y/gm8lWMWyAGubA9nA
- A1OtKiqQwzo2wlcoYv9pXsoNUBHwtYYa4XUrIQbwvPR5sSScLALPxzJyOb4VyIYbZcZq
- oXW0FPhATyDsEhoxuTC7dsGaeX6CTxc254vx24N98RHIJbpjIxPFMqzS2ljv006bvJC0
- PwOQ==
-X-Gm-Message-State: AOJu0YxxJ/OwTrrqFoBADBQ8LftIyy4H17ACWUTSEKC2zptFTEiHz2eL
- QsuW+rSz0RAm2IYE/u4gxzR7mOosBicL7gGVk/sBlb3ukYGlj1y0alqgU9pq8Eq8XGtH+nsZfve
- KgvVJ4V4=
-X-Gm-Gg: ASbGnctZhxfL861is7B2fspVMHzHyqf9dhNI93G6WVjM+ByB/2eFwh92SPj7ePVc10b
- xhofBETtiu5aUJZOo869L+yDFZgKa50ju/MrXEQN0Uv7xQ5Qe1TYL/wMKyW0CEls4IS9jjwZBea
- sRWIbJ8ILWPh6DQSnUvytajuk8+w+abBzHSyDWSlG/4hCd0hFmHXy8W54lUuIvhgk5qTWjAL8jT
- gJAOW/58A9sr+sF0hWEJMhnzvnHVwfxAKkQmxQs1hidGef0K3gb0bSyI6Et40CeUJAi91b4ySA3
- qqAVOFbkCRhFOvOUp4XXHk7E05rhYFqy/FEbIuM/DwurCTgpyz0Dk4o+5MQduzeEzPn2FOjCaFZ
- hNcstmbK97KcT1lVbARaIlYGvsu/S3axm0IFxWOtclmSjtxIF8FQGoZ2mmrKB6afR0e3lJYfRR+
- Z6GEu7C/SJbyN/xPglEL0=
-X-Google-Smtp-Source: AGHT+IFjzrbmncPLFSof2n6hqBlix3Hxng8UxTF+98oEWqkCL+svbgzX3lMO4hwMKO3iSZbe+Y6KtQ==
-X-Received: by 2002:a05:6808:ec3:b0:40b:555b:9a9a with SMTP id
- 5614622812f47-4153a27afe3mr2435391b6e.36.1752254580120; 
+ bh=S6Y1zvZ+TyIUNt8VCXescuyiWq5vvXL67wwRHefGUWY=;
+ b=ATAJWDbyT+VzIznQ9JhJxTkdJOD0Fqi7WDt5H9ye4lVs9D8NzpIlpq58AnEF9q6xMS
+ S5TjbSZe5zzPholsX+CKtgMwkWAwPGOrM93UXUHtyDn6Y559MllM4jFCEPich39l+iOD
+ 8yKU9U7DTrXqrnJJo/E5XGJKqeeL2KdBagMVtfQ66O0tvaDEutYtBq7wavz8inGQeZ+k
+ hdqykhlM+W2A/A7B5ojLdqjvhsOsVwel+3lZJJmEWb4a17Pmb5qqhGwXReb1XuUlgL9O
+ mwjB3W0hczBQpxO8rM3vC6+AOSiNgchSNyz1M03IWc1vkCz7ziOKcZktG0TRVNrfcAOC
+ THBA==
+X-Gm-Message-State: AOJu0YzoCsvcQr7YfI/C2ZA693epw+vtRNIWC7SEmMKpiNHh7Qo/Psu0
+ I8PTKBuFV4jVfrkwHu1f9nkPCc0B981johWqIEElChAMMH4QvV6mCAHoWK/7SLXsDvHlSoyPihR
+ jwatBLOk=
+X-Gm-Gg: ASbGncvBfWivTgrS5YsbhmUx3KxqoyKwtrogAm/B9wWcDv6q+3UHtDK5SMUl1sOpxHL
+ CJ43XbqiQ9AIki1QOI4zuEfTeTWTiZQWwU5OhItE0otQN2iTWLcKJ/YdrWwV2bi83biigQYZFrs
+ m3nWhAqrAfpHCob8JVbntHdcrjG4YPiZWD0lcMDwKN+x554TC4xXG1I/pNzir0q6qx2zkjXEW7I
+ YvakmrkMoBiODsPzqODPuXGQ65dUjMdtGXUrJ2ky3K+iw9GUHYngHbZfQtryanhDIz1dv/fA8v8
+ ho7T3PyLsmLBA0nKs5W2Hqm7f8bKVnhLMw5mLWxBN0NCxxSaKD4+lpDD0CzJLaELK2AztAc+Dzl
+ AbFTGRZFAtoIY8vdp3s96g3cVHFXvY7jYIQWps50kw+5pIa8BKqAp0Dv46di2AVwRCQnKzOH4cQ
+ tVZlt5sg1iq+vP0+m+hMU=
+X-Google-Smtp-Source: AGHT+IHZ+emkZ4nA0Pbm/C8To5NjaC7MULEW7wooV1IUml5bWgeQRAn7w6pUlMKyvKK2z+Nf/IRM5Q==
+X-Received: by 2002:a05:6808:6ec6:b0:40a:533c:c9cb with SMTP id
+ 5614622812f47-41539f929cfmr2618040b6e.38.1752254580946; 
  Fri, 11 Jul 2025 10:23:00 -0700 (PDT)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-4141c77ada0sm602041b6e.44.2025.07.11.10.22.58
+ 5614622812f47-4141c77ada0sm602041b6e.44.2025.07.11.10.23.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Jul 2025 10:22:59 -0700 (PDT)
+ Fri, 11 Jul 2025 10:23:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/9] linux-user: Implement fchmodat2 syscall
-Date: Fri, 11 Jul 2025 11:22:47 -0600
-Message-ID: <20250711172254.229201-3-richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 3/9] linux-user: Check for EFAULT failure in nanosleep
+Date: Fri, 11 Jul 2025 11:22:48 -0600
+Message-ID: <20250711172254.229201-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250711172254.229201-1-richard.henderson@linaro.org>
 References: <20250711172254.229201-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x229.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,50 +101,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-The fchmodat2 syscall is new from Linux 6.6; it is like the
-existing fchmodat syscall except that it takes a flags parameter.
+target_to_host_timespec() returns an error if the memory the guest
+passed us isn't actually readable.  We check for this everywhere
+except the callsite in the TARGET_NR_nanosleep case, so this mistake
+was caught by a Coverity heuristic.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3019
+Add the missing error checks to the calls that convert between the
+host and target timespec structs.
+
+Coverity: CID 1507104
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250710113123.1109461-1-peter.maydell@linaro.org>
+Message-ID: <20250710164355.1296648-1-peter.maydell@linaro.org>
 ---
- linux-user/syscall.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ linux-user/syscall.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index fc37028597..e1b1476936 100644
+index e1b1476936..38dd563166 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -790,6 +790,10 @@ safe_syscall6(ssize_t, copy_file_range, int, infd, loff_t *, pinoff,
-               int, outfd, loff_t *, poutoff, size_t, length,
-               unsigned int, flags)
- #endif
-+#if defined(TARGET_NR_fchmodat2) && defined(__NR_fchmodat2)
-+safe_syscall4(int, fchmodat2, int, dfd, const char *, filename,
-+              unsigned short, mode, unsigned int, flags)
-+#endif
- 
- /* We do ioctl like this rather than via safe_syscall3 to preserve the
-  * "third argument might be integer or pointer or not present" behaviour of
-@@ -10713,6 +10717,15 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         ret = get_errno(fchmodat(arg1, p, arg3, 0));
-         unlock_user(p, arg2, 0);
+@@ -11643,10 +11643,14 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     case TARGET_NR_nanosleep:
+         {
+             struct timespec req, rem;
+-            target_to_host_timespec(&req, arg1);
++            if (target_to_host_timespec(&req, arg1)) {
++                return -TARGET_EFAULT;
++            }
+             ret = get_errno(safe_nanosleep(&req, &rem));
+             if (is_error(ret) && arg2) {
+-                host_to_target_timespec(arg2, &rem);
++                if (host_to_target_timespec(arg2, &rem)) {
++                    return -TARGET_EFAULT;
++                }
+             }
+         }
          return ret;
-+#endif
-+#if defined(TARGET_NR_fchmodat2) && defined(__NR_fchmodat2)
-+    case TARGET_NR_fchmodat2:
-+        if (!(p = lock_user_string(arg2))) {
-+            return -TARGET_EFAULT;
-+        }
-+        ret = get_errno(safe_fchmodat2(arg1, p, arg3, arg4));
-+        unlock_user(p, arg2, 0);
-+        return ret;
- #endif
-     case TARGET_NR_getpriority:
-         /* Note that negative values are valid for getpriority, so we must
 -- 
 2.43.0
 
