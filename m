@@ -2,41 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBEAB015FC
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2F7B01645
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:34:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua95y-0001pW-5D; Fri, 11 Jul 2025 04:27:02 -0400
+	id 1ua965-00028u-Cr; Fri, 11 Jul 2025 04:27:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xc-0004ii-2Y; Fri, 11 Jul 2025 04:18:24 -0400
+ id 1ua8xc-0004jM-An; Fri, 11 Jul 2025 04:18:24 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xa-00042A-5p; Fri, 11 Jul 2025 04:18:23 -0400
+ id 1ua8xa-000428-BJ; Fri, 11 Jul 2025 04:18:24 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B84D31356D5;
+ by isrv.corpit.ru (Postfix) with ESMTP id D1F3B1356D6;
  Fri, 11 Jul 2025 11:17:18 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id AFC6E23FA4A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id BD7B623FA4B;
  Fri, 11 Jul 2025 11:17:45 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Guenter Roeck <linux@roeck-us.net>,
+ Hao Wu <wuhaotsh@google.com>, Peter Maydell <peter.maydell@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 10/39] ui/vnc: fix tight palette pixel encoding for
- 8/16-bpp formats
-Date: Fri, 11 Jul 2025 11:16:06 +0300
-Message-ID: <20250711081745.1785806-10-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 11/39] hw/arm: Add missing psci_conduit to NPCM8XX SoC
+ boot info
+Date: Fri, 11 Jul 2025 11:16:07 +0300
+Message-ID: <20250711081745.1785806-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,51 +59,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-When sending a tight rectangle with the palette filter, if the client
-format was 8/16bpp, the colours on big endian hosts are not set as
-we're sending the wrong bytes. We must first cast the 32-bit colour
-to a 16/8-bit value, and then send the result.
+Without psci_conduit, the Linux kernel crashes almost immediately.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-(cherry picked from commit 63d320909220a90647c484263ae5e2f26eb54587)
+    psci: probing for conduit method from DT.
+    Internal error: Oops - Undefined instruction: 0000000002000000 [#1] PREEMPT SMP
+
+Fixes: ae0c4d1a1290 ("hw/arm: Add NPCM8XX SoC")
+Cc: qemu-stable@nongnu.org
+Cc: Hao Wu <wuhaotsh@google.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Message-id: 20250315142050.3642741-1-linux@roeck-us.net
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit e6bc01777e5a4b6ecf3414b21a2d7b4846bf4817)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/vnc-enc-tight.c b/ui/vnc-enc-tight.c
-index a5bdc19ebb..25c7b2c788 100644
---- a/ui/vnc-enc-tight.c
-+++ b/ui/vnc-enc-tight.c
-@@ -1001,16 +1001,24 @@ static int send_mono_rect(VncState *vs, int x, int y,
-         break;
-     }
-     case 2:
--        vnc_write(vs, &bg, 2);
--        vnc_write(vs, &fg, 2);
-+    {
-+        uint16_t bg16 = bg;
-+        uint16_t fg16 = fg;
-+        vnc_write(vs, &bg16, 2);
-+        vnc_write(vs, &fg16, 2);
-         tight_encode_mono_rect16(vs->tight->tight.buffer, w, h, bg, fg);
-         break;
-+    }
-     default:
--        vnc_write_u8(vs, bg);
--        vnc_write_u8(vs, fg);
-+    {
-+        uint8_t bg8 = bg;
-+        uint8_t fg8 = fg;
-+        vnc_write_u8(vs, bg8);
-+        vnc_write_u8(vs, fg8);
-         tight_encode_mono_rect8(vs->tight->tight.buffer, w, h, bg, fg);
-         break;
-     }
-+    }
-     vs->tight->tight.offset = bytes;
+diff --git a/hw/arm/npcm8xx.c b/hw/arm/npcm8xx.c
+index f182accc47..e5a1929ed7 100644
+--- a/hw/arm/npcm8xx.c
++++ b/hw/arm/npcm8xx.c
+@@ -346,6 +346,7 @@ static struct arm_boot_info npcm8xx_binfo = {
+     .secure_boot            = false,
+     .board_id               = -1,
+     .board_setup_addr       = NPCM8XX_BOARD_SETUP_ADDR,
++    .psci_conduit           = QEMU_PSCI_CONDUIT_SMC,
+ };
  
-     bytes = tight_compress_data(vs, stream, bytes, level, Z_DEFAULT_STRATEGY);
+ void npcm8xx_load_kernel(MachineState *machine, NPCM8xxState *soc)
 -- 
 2.47.2
 
