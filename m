@@ -2,44 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4B4B0189F
+	by mail.lfdr.de (Postfix) with ESMTPS id 6854EB0189E
 	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:46:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaAJ0-0005RA-1F; Fri, 11 Jul 2025 05:44:34 -0400
+	id 1uaAJ1-0005Sn-HW; Fri, 11 Jul 2025 05:44:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uaAIv-0005Lk-Rc
+ id 1uaAIw-0005Lj-Qm
  for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:44:30 -0400
 Received: from www62.your-server.de ([213.133.104.62])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uaAIs-0001Hh-Ux
+ id 1uaAIs-0001HT-VF
  for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:44:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References;
- bh=sVvTLZG3L4cK+m724KizckhOtMr0iVae+h/z8LxV+Vk=; b=NVQz54vXgAIYvlOxwGnw0W1UJ7
- UGZgX4fkiYYmn1wg5nsVRYT2Aip1xFGQbdL/u0C7JEY6a3EadCbAXY+ITXGYp7smQBEJsx3m/vQ2i
- 2ZKWb8iYKkkFRwIK5jVO60B1LxyS/Ak4keWtQTKV0aCWBbDcDtcmStATJupFnN96i+dAVCnO8d3WY
- W+SO3GpcKLtlN28TEB6yx+WaSyOtj7+kDkOh0RB8z2PJoOf3AJXJGHh481c56qmmsjqIxYYodJVHZ
- wABreQx12zEMIWEVSFg+6j9juAdb+sYklF/PoKWmlP2DNYy19zTU6v6dm3wxNMnOuGckQlhY68Ieu
- sT5EU1lQ==;
+ References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=+bM6KO5lxBHz9WehrdiB7lnSkdK2h0w2rTSXUNi1Fd0=; b=M4B9ZgfAi4nIfGJOP+4NSq/zm6
+ NcA9b8SpvsEEb7fn3kExpjPggt8JiYL7VawANowpFLRw364YEa4f+XHqV7DGSkUzt1TYymyN+0ILJ
+ KiZGH10+LF8ISqcpWc3RoYjcg6OIfxEStyI4mz+r7SZyRKUfcxgmK897VPLXybHBc0rrp7gAc1hLx
+ WAmSYUEQn8Z1/G9IfIDIyDH6NCJOuHPvCBZ4S5yDx/enQZ0RfQyFqGL7quSgD1VNyUstNQSt3bkJD
+ hpgFONsqszglkGHdwCOIY+Z63320oBntkDR7P+qOBTdNWyUJULLndMqD7nhyeEH0PWH5QPaCcpUEE
+ 0xmibmkA==;
 Received: from localhost ([127.0.0.1])
  by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.96.2) (envelope-from <daniel@iogearbox.net>)
- id 1uaAIj-0002mz-0b; Fri, 11 Jul 2025 11:44:17 +0200
+ id 1uaAIj-0002n5-2T; Fri, 11 Jul 2025 11:44:17 +0200
 To: qemu-devel@nongnu.org
 Cc: daniel@iogearbox.net, Ilya Maximets <i.maximets@ovn.org>,
  Jason Wang <jasowang@redhat.com>, Anton Protopopov <aspsk@isovalent.com>
-Subject: [PATCH v5 1/3] net/af-xdp: Remove XDP program cleanup logic
-Date: Fri, 11 Jul 2025 11:44:14 +0200
-Message-ID: <20250711094416.247125-1-daniel@iogearbox.net>
+Subject: [PATCH v5 2/3] net/af-xdp: Fix up cleanup path upon failure in queue
+ creation
+Date: Fri, 11 Jul 2025 11:44:15 +0200
+Message-ID: <20250711094416.247125-2-daniel@iogearbox.net>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250711094416.247125-1-daniel@iogearbox.net>
+References: <20250711094416.247125-1-daniel@iogearbox.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.0.7/27695/Thu Jul 10 11:08:41 2025)
@@ -70,71 +73,70 @@ From:  Daniel Borkmann via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are two issues with the XDP program removal in af_xdp_cleanup():
+While testing, it turned out that upon error in the queue creation loop,
+we never trigger the af_xdp_cleanup() handler. This is because we pass
+errp instead of a local err pointer into the various AF_XDP setup functions
+instead of a scheme like:
 
-1) Starting from libxdp 1.3.0 [0] the XDP program gets automatically
-   detached when we call xsk_socket__delete() for the last successfully
-   configured queue. libxdp internally keeps track of that. For QEMU
-   we require libxdp >= 1.4.0. Given QEMU is not loading the program,
-   lets also not attempt to remove it and delegate this instead.
+    bool fn(..., Error **errp)
+    {
+        Error *err = NULL;
 
-2) The removal logic is incorrect anyway because we are setting n_queues
-   into the last queue that never has xdp_flags on failure, so the logic
-   is always skipped since the non-zero test for s->xdp_flags in
-   af_xdp_cleanup() fails.
+        foo(arg, &err);
+        if (err) {
+            handle the error...
+            error_propagate(errp, err);
+            return false;
+        }
+        ...
+    }
+
+The same is true for the attachment probing with bpf_xdp_query_id(). With a
+conversion into the above format, the af_xdp_cleanup() handler is called as
+expected. Note the error_propagate() handles a NULL err internally.
 
 Fixes: cb039ef3d9e3 ("net: add initial support for AF_XDP network backend")
-Suggested-by: Ilya Maximets <i.maximets@ovn.org>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
 Cc: Ilya Maximets <i.maximets@ovn.org>
 Cc: Jason Wang <jasowang@redhat.com>
 Cc: Anton Protopopov <aspsk@isovalent.com>
-Link: https://github.com/xdp-project/xdp-tools/commit/38c2914988fd5c1ef65f2381fc8af9f3e8404e2b [0]
 ---
- net/af-xdp.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ net/af-xdp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/net/af-xdp.c b/net/af-xdp.c
-index 01c5fb914e..c5d3b6a953 100644
+index c5d3b6a953..1692efe9f2 100644
 --- a/net/af-xdp.c
 +++ b/net/af-xdp.c
-@@ -49,7 +49,6 @@ typedef struct AFXDPState {
-     char                 *buffer;
-     struct xsk_umem      *umem;
- 
--    uint32_t             n_queues;
-     uint32_t             xdp_flags;
-     bool                 inhibit;
- } AFXDPState;
-@@ -274,14 +273,6 @@ static void af_xdp_cleanup(NetClientState *nc)
-     s->umem = NULL;
-     qemu_vfree(s->buffer);
-     s->buffer = NULL;
--
--    /* Remove the program if it's the last open queue. */
--    if (!s->inhibit && nc->queue_index == s->n_queues - 1 && s->xdp_flags
--        && bpf_xdp_detach(s->ifindex, s->xdp_flags, NULL) != 0) {
--        fprintf(stderr,
--                "af-xdp: unable to remove XDP program from '%s', ifindex: %d\n",
--                s->ifname, s->ifindex);
--    }
- }
- 
- static int af_xdp_umem_create(AFXDPState *s, int sock_fd, Error **errp)
-@@ -490,12 +481,9 @@ int net_init_af_xdp(const Netdev *netdev,
- 
+@@ -482,9 +482,8 @@ int net_init_af_xdp(const Netdev *netdev,
          pstrcpy(s->ifname, sizeof(s->ifname), opts->ifname);
          s->ifindex = ifindex;
--        s->n_queues = queues;
  
-         if (af_xdp_umem_create(s, sock_fds ? sock_fds[i] : -1, errp)
-             || af_xdp_socket_create(s, opts, errp)) {
--            /* Make sure the XDP program will be removed. */
--            s->n_queues = i;
-             error_propagate(errp, err);
+-        if (af_xdp_umem_create(s, sock_fds ? sock_fds[i] : -1, errp)
+-            || af_xdp_socket_create(s, opts, errp)) {
+-            error_propagate(errp, err);
++        if (af_xdp_umem_create(s, sock_fds ? sock_fds[i] : -1, &err) ||
++            af_xdp_socket_create(s, opts, &err)) {
              goto err;
          }
+     }
+@@ -492,7 +491,7 @@ int net_init_af_xdp(const Netdev *netdev,
+     if (nc0) {
+         s = DO_UPCAST(AFXDPState, nc, nc0);
+         if (bpf_xdp_query_id(s->ifindex, s->xdp_flags, &prog_id) || !prog_id) {
+-            error_setg_errno(errp, errno,
++            error_setg_errno(&err, errno,
+                              "no XDP program loaded on '%s', ifindex: %d",
+                              s->ifname, s->ifindex);
+             goto err;
+@@ -506,6 +505,7 @@ int net_init_af_xdp(const Netdev *netdev,
+ err:
+     if (nc0) {
+         qemu_del_net_client(nc0);
++        error_propagate(errp, err);
+     }
+ 
+     return -1;
 -- 
 2.43.0
 
