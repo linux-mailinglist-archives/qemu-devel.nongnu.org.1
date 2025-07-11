@@ -2,35 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83966B025E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF90B025EA
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:49:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKe7-0003Mn-TR; Fri, 11 Jul 2025 16:47:04 -0400
+	id 1uaKe7-0003It-BH; Fri, 11 Jul 2025 16:47:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKdj-0003Hf-Mm; Fri, 11 Jul 2025 16:46:40 -0400
+ id 1uaKdj-0003He-N1; Fri, 11 Jul 2025 16:46:40 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKdh-0003g8-BT; Fri, 11 Jul 2025 16:46:39 -0400
+ id 1uaKdh-0003g6-BS; Fri, 11 Jul 2025 16:46:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 25098135CFE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 2E4E8135CFF;
  Fri, 11 Jul 2025 23:46:04 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 020F823FF39;
- Fri, 11 Jul 2025 23:46:31 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0E01823FF3A;
+ Fri, 11 Jul 2025 23:46:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 00/15] Patch Round-up for stable 7.2.19,
- freeze on 2025-07-21
-Date: Fri, 11 Jul 2025 23:46:15 +0300
-Message-ID: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 01/15] hw/misc/aspeed_hace: Ensure HASH_IRQ is always
+ set to prevent firmware hang
+Date: Fri, 11 Jul 2025 23:46:16 +0300
+Message-ID: <20250711204632.1804872-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
+References: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,54 +60,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.19:
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+Currently, if the program encounters an unsupported algorithm, it does not set
+the HASH_IRQ bit in the status register and send an interrupt to indicate
+command completion. As a result, the FW gets stuck waiting for a completion
+signal from the HACE module.
 
-Patch freeze is 2025-07-21, and the release is planned for 2025-07-23:
+Additionally, in do_hash_operation, if an error occurs within the conditional
+statement, the HASH_IRQ bit is not set in the status register. This causes the
+firmware to continuously send HASH commands, as it is unaware that the HACE
+model has completed processing the command.
 
-  https://wiki.qemu.org/Planning/7.2
+To fix this, the HASH_IRQ bit in the status register must always be set to
+ensure that the firmware receives an interrupt from the HACE module, preventing
+it from getting stuck or repeatedly sending HASH commands.
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Fixes: c5475b3 ("hw: Model ASPEED's Hash and Crypto Engine")
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250515081008.583578-4-jamin_lin@aspeedtech.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+(cherry picked from commit fb8e59abbe46957cd599bb9aa9221fad1e4e989e)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
+index 11bd25708e..20f645f49b 100644
+--- a/hw/misc/aspeed_hace.c
++++ b/hw/misc/aspeed_hace.c
+@@ -278,12 +278,6 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+                             iov[i - 1].iov_len, false,
+                             iov[i - 1].iov_len);
+     }
+-
+-    /*
+-     * Set status bits to indicate completion. Testing shows hardware sets
+-     * these irrespective of HASH_IRQ_EN.
+-     */
+-    s->regs[R_STATUS] |= HASH_IRQ;
+ }
+ 
+ static uint64_t aspeed_hace_read(void *opaque, hwaddr addr, unsigned int size)
+@@ -358,10 +352,16 @@ static void aspeed_hace_write(void *opaque, hwaddr addr, uint64_t data,
+                 qemu_log_mask(LOG_GUEST_ERROR,
+                         "%s: Invalid hash algorithm selection 0x%"PRIx64"\n",
+                         __func__, data & ahc->hash_mask);
+-                break;
++        } else {
++            do_hash_operation(s, algo, data & HASH_SG_EN,
++                    ((data & HASH_HMAC_MASK) == HASH_DIGEST_ACCUM));
+         }
+-        do_hash_operation(s, algo, data & HASH_SG_EN,
+-                ((data & HASH_HMAC_MASK) == HASH_DIGEST_ACCUM));
++
++        /*
++         * Set status bits to indicate completion. Testing shows hardware sets
++         * these irrespective of HASH_IRQ_EN.
++         */
++        s->regs[R_STATUS] |= HASH_IRQ;
+ 
+         if (data & HASH_IRQ_EN) {
+             qemu_irq_raise(s->irq);
+-- 
+2.47.2
 
-Thanks!
-
-/mjt
-
---------------------------------------
-01 fb8e59abbe46 Jamin Lin:
-   hw/misc/aspeed_hace: Ensure HASH_IRQ is always set to prevent firmware 
-   hang
-02 a9403bfcd930 Huaitong Han:
-   vhost: Don't set vring call if guest notifier is unused
-03 5ddd6c8dc849 Volker Rümelin:
-   audio: fix SIGSEGV in AUD_get_buffer_size_out()
-04 eef2dd03f948 Fiona Ebner:
-   hw/core/qdev-properties-system: Add missing return in set_drive_helper()
-05 9c55c03c05c1 Bibo Mao:
-   hw/loongarch/virt: Fix big endian support with MCFG table
-06 f5ec751ee70d Shameer Kolothum:
-   hw/arm/virt: Check bypass iommu is not set for iommu-map DT property
-07 e372214e663a Ethan Chen:
-   qemu-options.hx: Fix reversed description of icount sleep behavior
-08 5ad2b1f443a9 J. Neuschäfer:
-   linux-user/arm: Fix return value of SYS_cacheflush
-09 0d0fc3f46589 Richard Henderson:
-   tcg: Fix constant propagation in tcg_reg_alloc_dup
-10 a412575837b6 Philippe Mathieu-Daudé:
-   target/arm: Correct KVM & HVF dtb_compatible value
-11 f9b0f6930407 Richard Henderson:
-   target/arm: Fix SME vs AdvSIMD exception priority
-12 b4b2e070f41d Richard Henderson:
-   target/arm: Fix sve_access_check for SME
-13 e6ffd009c771 Richard Henderson:
-   target/arm: Fix 128-bit element ZIP, UZP, TRN
-14 3801c5b75ffc Richard Henderson:
-   target/arm: Fix PSEL size operands to tcg_gen_gvec_ands
-15 cfc688c00ade Richard Henderson:
-   target/arm: Fix f16_dotadd vs nan selection
 
