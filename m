@@ -2,109 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE84B01F09
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 16:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FBDB01EF7
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 16:21:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaEdr-0003mu-8D; Fri, 11 Jul 2025 10:22:23 -0400
+	id 1uaEYp-0002bj-JC; Fri, 11 Jul 2025 10:17:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaEU3-0002u0-Dc
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:12:16 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaEUA-00037c-F9
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:12:23 -0400
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaETz-0006r4-JV
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:12:14 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaEU8-0006ru-2p
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:12:22 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 669901F461;
- Fri, 11 Jul 2025 14:11:13 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 048E21F453;
+ Fri, 11 Jul 2025 14:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1752243073; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1752243075; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZLVxbUl1QbCpvaOs+8U0flUWK625i092YCFo0WiecoQ=;
- b=LzQwW1q1pscp5Ja61+ZMgIzV8aoSTo+oVnjkYi+MEx0xH236M9EaCBnfYQTgHk3BBg11wK
- bZ6RR+6TVrHAUrgDVw3nBoinZWzyMC+4UvNafjRElqBsX6YX5VX+3vxoaTjGzXfqMUoTx8
- wdLZLiiWI9ErtG5UYxNm0dGQT+yV+6o=
+ bh=4mzwXqQN6NKzga9iDDezb4zzzkxloBxPp8r53t2TXtM=;
+ b=ISVNiFwvvXJNMBnx8upjhmqRwjqaKA2hTah3BpZ67aoH916WyB1Lqi3NGvFY1eG94y71v5
+ kirK1bi+2ljaQz5t0flE4O8dtB3GNqLZzX/jVVtkGcppm5A19bXZmtblRXk7br/nhIKFEA
+ pVOekjKL7H7HdifXflhWCk4olWcw9+I=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1752243073;
+ s=susede2_ed25519; t=1752243075;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZLVxbUl1QbCpvaOs+8U0flUWK625i092YCFo0WiecoQ=;
- b=FASXHoFAE2p9UyIYcaBQuEEOc90erJ+G8G2ZV5cqewLNcyMjkVxLhLBVwj71nz5VXWVWyU
- HO35yFm4/mNAYCCQ==
+ bh=4mzwXqQN6NKzga9iDDezb4zzzkxloBxPp8r53t2TXtM=;
+ b=aRPYjIcSlYzjesWsNchpnJ2kxnFmMF/oZLEZ4wSX0u2AldTYy/sHTew2fgyTZX6jNeYN3T
+ N89YFOs6Fce/HsDQ==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LzQwW1q1;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FASXHoFA
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1752243073; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1752243075; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZLVxbUl1QbCpvaOs+8U0flUWK625i092YCFo0WiecoQ=;
- b=LzQwW1q1pscp5Ja61+ZMgIzV8aoSTo+oVnjkYi+MEx0xH236M9EaCBnfYQTgHk3BBg11wK
- bZ6RR+6TVrHAUrgDVw3nBoinZWzyMC+4UvNafjRElqBsX6YX5VX+3vxoaTjGzXfqMUoTx8
- wdLZLiiWI9ErtG5UYxNm0dGQT+yV+6o=
+ bh=4mzwXqQN6NKzga9iDDezb4zzzkxloBxPp8r53t2TXtM=;
+ b=ISVNiFwvvXJNMBnx8upjhmqRwjqaKA2hTah3BpZ67aoH916WyB1Lqi3NGvFY1eG94y71v5
+ kirK1bi+2ljaQz5t0flE4O8dtB3GNqLZzX/jVVtkGcppm5A19bXZmtblRXk7br/nhIKFEA
+ pVOekjKL7H7HdifXflhWCk4olWcw9+I=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1752243073;
+ s=susede2_ed25519; t=1752243075;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZLVxbUl1QbCpvaOs+8U0flUWK625i092YCFo0WiecoQ=;
- b=FASXHoFAE2p9UyIYcaBQuEEOc90erJ+G8G2ZV5cqewLNcyMjkVxLhLBVwj71nz5VXWVWyU
- HO35yFm4/mNAYCCQ==
+ bh=4mzwXqQN6NKzga9iDDezb4zzzkxloBxPp8r53t2TXtM=;
+ b=aRPYjIcSlYzjesWsNchpnJ2kxnFmMF/oZLEZ4wSX0u2AldTYy/sHTew2fgyTZX6jNeYN3T
+ N89YFOs6Fce/HsDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5155113918;
- Fri, 11 Jul 2025 14:11:12 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E554A1388B;
+ Fri, 11 Jul 2025 14:11:13 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 4DtOBIAbcWg7TgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 11 Jul 2025 14:11:12 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id qCHxJoEbcWg7TgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 11 Jul 2025 14:11:13 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>
-Subject: [PULL 20/26] migration/postcopy: Initialize blocktime context only
- until listen
-Date: Fri, 11 Jul 2025 11:10:25 -0300
-Message-Id: <20250711141031.423-21-farosas@suse.de>
+Subject: [PULL 21/26] migration/postcopy: Cache the tid->vcpu mapping for
+ blocktime
+Date: Fri, 11 Jul 2025 11:10:26 -0300
+Message-Id: <20250711141031.423-22-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250711141031.423-1-farosas@suse.de>
 References: <20250711141031.423-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
- FUZZY_RATELIMITED(0.00)[rspamd.com];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCPT_COUNT_TWO(0.00)[2];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.999];
+ MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FROM_HAS_DN(0.00)[]; MIME_TRACE(0.00)[0:+];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
+ FUZZY_RATELIMITED(0.00)[rspamd.com]; RCPT_COUNT_TWO(0.00)[2];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_TLS_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Queue-Id: 669901F461
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
+ TO_DN_SOME(0.00)[]; RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -131,64 +119,155 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Before this patch, the blocktime context can be created very early, because
-postcopy_ram_supported_by_host() <- migrate_caps_check() can happen during
-migration object init.
+Looking up the vCPU index for each fault can be expensive when there're
+hundreds of vCPUs.  Provide a cache for tid->vcpu instead with a hash
+table, then lookup from there.
 
-The trick here is the blocktime context needs system vCPU information,
-which seems to be possible to change after that point.  I didn't verify it,
-but it doesn't sound right.
-
-Now move it out and initialize the context only when postcopy listen
-starts.  That is already during a migration so it should be guaranteed the
-vCPU topology can never change on both sides.
-
-While at it, assert that the ctx isn't created instead this time; the old
-"if" trick isn't needed when we're sure it will only happen once now.
+When at it, add another counter to record how many non-vCPU faults it gets.
+For example, the main thread can also access a guest page that was missing.
+These kind of faults are not accounted by blocktime so far.
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20250613141217.474825-10-peterx@redhat.com
+Link: https://lore.kernel.org/r/20250613141217.474825-11-peterx@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/postcopy-ram.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ migration/postcopy-ram.c | 68 ++++++++++++++++++++++++++++++++++------
+ migration/trace-events   |  3 +-
+ 2 files changed, 59 insertions(+), 12 deletions(-)
 
 diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index fe940f89b9..dd3615663f 100644
+index dd3615663f..bf65d6035c 100644
 --- a/migration/postcopy-ram.c
 +++ b/migration/postcopy-ram.c
-@@ -325,13 +325,13 @@ static bool ufd_check_and_apply(int ufd, MigrationIncomingState *mis,
-     }
+@@ -127,6 +127,17 @@ typedef struct PostcopyBlocktimeContext {
+     /* number of vCPU are suspended */
+     int smp_cpus_down;
  
- #ifdef UFFD_FEATURE_THREAD_ID
 +    /*
-+     * Postcopy blocktime conditionally needs THREAD_ID feature (introduced
-+     * to Linux in 2017). Always try to enable it when QEMU is compiled
-+     * with such environment.
++     * Fast path for looking up vcpu_index from tid.  NOTE: this result
++     * only reflects the vcpu setup when postcopy is running.  It may not
++     * always match with the current vcpu setup because vcpus can be hot
++     * attached/detached after migration completes.  However this should be
++     * stable when blocktime is using the structure.
 +     */
-     if (UFFD_FEATURE_THREAD_ID & supported_features) {
-         asked_features |= UFFD_FEATURE_THREAD_ID;
--        if (migrate_postcopy_blocktime()) {
--            if (!mis->blocktime_ctx) {
--                mis->blocktime_ctx = blocktime_context_new();
--            }
--        }
-     }
- #endif
++    GHashTable *tid_to_vcpu_hash;
++    /* Count of non-vCPU faults.  This is only for debugging purpose. */
++    uint64_t non_vcpu_faults;
++
+     /*
+      * Handler for exit event, necessary for
+      * releasing whole blocktime_ctx
+@@ -136,6 +147,7 @@ typedef struct PostcopyBlocktimeContext {
  
-@@ -1239,6 +1239,11 @@ int postcopy_ram_incoming_setup(MigrationIncomingState *mis)
-         return -1;
-     }
+ static void destroy_blocktime_context(struct PostcopyBlocktimeContext *ctx)
+ {
++    g_hash_table_destroy(ctx->tid_to_vcpu_hash);
+     g_free(ctx->vcpu_blocktime_start);
+     g_free(ctx->vcpu_blocktime_total);
+     g_free(ctx->vcpu_faults_count);
+@@ -150,6 +162,36 @@ static void migration_exit_cb(Notifier *n, void *data)
+     destroy_blocktime_context(ctx);
+ }
  
-+    if (migrate_postcopy_blocktime()) {
-+        assert(mis->blocktime_ctx == NULL);
-+        mis->blocktime_ctx = blocktime_context_new();
++static GHashTable *blocktime_init_tid_to_vcpu_hash(void)
++{
++    /*
++     * TID as an unsigned int can be directly used as the key.  However,
++     * CPU index can NOT be directly used as value, because CPU index can
++     * be 0, which means NULL.  Then when lookup we can never know whether
++     * it's 0 or "not found".  Hence use an indirection for CPU index.
++     */
++    GHashTable *table = g_hash_table_new_full(g_direct_hash, g_direct_equal,
++                                              NULL, g_free);
++    CPUState *cpu;
++
++    /*
++     * Initialize the tid->cpu_id mapping for lookups.  The caller needs to
++     * make sure when reaching here the CPU topology is frozen and will be
++     * stable for the whole blocktime trapping period.
++     */
++    CPU_FOREACH(cpu) {
++        int *value = g_new(int, 1);
++
++        *value = cpu->cpu_index;
++        g_hash_table_insert(table,
++                            GUINT_TO_POINTER((uint32_t)cpu->thread_id),
++                            value);
++        trace_postcopy_blocktime_tid_cpu_map(cpu->cpu_index, cpu->thread_id);
 +    }
 +
-     /* Now an eventfd we use to tell the fault-thread to quit */
-     mis->userfault_event_fd = eventfd(0, EFD_CLOEXEC);
-     if (mis->userfault_event_fd == -1) {
++    return table;
++}
++
+ static struct PostcopyBlocktimeContext *blocktime_context_new(void)
+ {
+     MachineState *ms = MACHINE(qdev_get_machine());
+@@ -160,6 +202,8 @@ static struct PostcopyBlocktimeContext *blocktime_context_new(void)
+     ctx->vcpu_blocktime_total = g_new0(uint64_t, smp_cpus);
+     ctx->vcpu_faults_count = g_new0(uint64_t, smp_cpus);
+     ctx->vcpu_addr = g_new0(uintptr_t, smp_cpus);
++    ctx->tid_to_vcpu_hash = blocktime_init_tid_to_vcpu_hash();
++
+     ctx->exit_notifier.notify = migration_exit_cb;
+     qemu_add_exit_notifier(&ctx->exit_notifier);
+ 
+@@ -827,18 +871,21 @@ int postcopy_request_shared_page(struct PostCopyFD *pcfd, RAMBlock *rb,
+     return 0;
+ }
+ 
+-static int get_mem_fault_cpu_index(uint32_t pid)
++static int blocktime_get_vcpu(PostcopyBlocktimeContext *ctx, uint32_t tid)
+ {
+-    CPUState *cpu_iter;
++    int *found;
+ 
+-    CPU_FOREACH(cpu_iter) {
+-        if (cpu_iter->thread_id == pid) {
+-            trace_get_mem_fault_cpu_index(cpu_iter->cpu_index, pid);
+-            return cpu_iter->cpu_index;
+-        }
++    found = g_hash_table_lookup(ctx->tid_to_vcpu_hash, GUINT_TO_POINTER(tid));
++    if (!found) {
++        /*
++         * NOTE: this is possible, because QEMU's non-vCPU threads can
++         * also access a missing page.  Or, when KVM async pf is enabled, a
++         * fault can even happen from a kworker..
++         */
++        return -1;
+     }
+-    trace_get_mem_fault_cpu_index(-1, pid);
+-    return -1;
++
++    return *found;
+ }
+ 
+ static uint64_t get_current_ns(void)
+@@ -865,8 +912,9 @@ void mark_postcopy_blocktime_begin(uintptr_t addr, uint32_t ptid,
+     if (!dc || ptid == 0) {
+         return;
+     }
+-    cpu = get_mem_fault_cpu_index(ptid);
++    cpu = blocktime_get_vcpu(dc, ptid);
+     if (cpu < 0) {
++        dc->non_vcpu_faults++;
+         return;
+     }
+ 
+diff --git a/migration/trace-events b/migration/trace-events
+index 02cdb6e7cc..9c1f3b7044 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -310,8 +310,7 @@ postcopy_preempt_tls_handshake(void) ""
+ postcopy_preempt_new_channel(void) ""
+ postcopy_preempt_thread_entry(void) ""
+ postcopy_preempt_thread_exit(void) ""
+-
+-get_mem_fault_cpu_index(int cpu, uint32_t pid) "cpu: %d, pid: %u"
++postcopy_blocktime_tid_cpu_map(int cpu, uint32_t tid) "cpu: %d, tid: %u"
+ 
+ # exec.c
+ migration_exec_outgoing(const char *cmd) "cmd=%s"
 -- 
 2.35.3
 
