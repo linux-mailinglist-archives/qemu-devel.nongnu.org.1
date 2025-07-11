@@ -2,109 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DEFB01EF9
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 16:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90989B01EE2
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 16:19:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaEcG-0000Ps-2O; Fri, 11 Jul 2025 10:20:44 -0400
+	id 1uaEXE-0000nq-3H; Fri, 11 Jul 2025 10:15:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaETv-0002sa-PH
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:12:16 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaETk-0002Al-Is
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:11:58 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaETt-0006pb-TN
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:12:07 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaETe-0006mz-R7
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:11:54 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 6A70B1F451;
- Fri, 11 Jul 2025 14:11:09 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C91F92119D;
+ Fri, 11 Jul 2025 14:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1752243069; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1752243073; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=J9U1h2MCqxrlE/miqEs5+j53V0GiCpV0gcF61UPWvMQ=;
- b=S17TAfmYuZKHQJpewH9OoQ4YCMLD6X3hIwGyxOTlM8OZ6hqgEp72NBsAA1F0cI3z+Ipjz6
- XLRKtgpEfZ3JZC6chE7ngkbSg/Q1QIvScM08GjoSNMT/lYSsy/KpQFkjA/iOKtACU8Cy40
- Dr3HGxNpzHe4GxOEgYL+mdwcFyO1vtI=
+ bh=SnDpAQQCKqVOlmyJkam85CqaMlx30YtetQyR2F9+3Q8=;
+ b=m74LQLAi6P0acLw2n9JFnWkO7QYBwCr/NQ2KwGZ5awe86xMT2pGyUeup6WoMRETzS3xdk6
+ k+jW0QzgabbXMlkqDMg/4jb1/5SInwmf9LNNHl1hcz8djJ22ODOPPn79dmcnrsObmzC2zd
+ 9UpRe/1CPvHgVaz6s100njGAto3o/vY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1752243069;
+ s=susede2_ed25519; t=1752243073;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=J9U1h2MCqxrlE/miqEs5+j53V0GiCpV0gcF61UPWvMQ=;
- b=ipu0Q3tCwYY3RrFV8lW7I5cyGVpgRQ9GvkH6iyef+Zt4tzFbPW3iLqxSEBF6BWzatyORUK
- FF2Sdv/UdkoqKeDg==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=S17TAfmY;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ipu0Q3tC
+ bh=SnDpAQQCKqVOlmyJkam85CqaMlx30YtetQyR2F9+3Q8=;
+ b=Dr3W1dFTo12HvVeiTNQbzM7pmswm2NxpXbWxA+fd5oCiraQ+KX5heUGWwh6bYNE34kJtRI
+ OU2RaO28N8RzL5DQ==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GKnyWkZR;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=y1Ug5Qxf
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1752243069; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1752243071; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=J9U1h2MCqxrlE/miqEs5+j53V0GiCpV0gcF61UPWvMQ=;
- b=S17TAfmYuZKHQJpewH9OoQ4YCMLD6X3hIwGyxOTlM8OZ6hqgEp72NBsAA1F0cI3z+Ipjz6
- XLRKtgpEfZ3JZC6chE7ngkbSg/Q1QIvScM08GjoSNMT/lYSsy/KpQFkjA/iOKtACU8Cy40
- Dr3HGxNpzHe4GxOEgYL+mdwcFyO1vtI=
+ bh=SnDpAQQCKqVOlmyJkam85CqaMlx30YtetQyR2F9+3Q8=;
+ b=GKnyWkZR3cgQhOnp9QI9UmjEXJ/zrVMS3nc6y+kk0orp+wT9SxE0zV9feGA/4dxs/7G7HX
+ 9UUVaxKP5AqnbQSnrIrtt0WP6DmKSVB2J7rXs0fg09mND4G0QJePvAoy2fydmtdzdRPafN
+ oKro+25sgWxUluaSJT82RGZfdWDESjw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1752243069;
+ s=susede2_ed25519; t=1752243071;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=J9U1h2MCqxrlE/miqEs5+j53V0GiCpV0gcF61UPWvMQ=;
- b=ipu0Q3tCwYY3RrFV8lW7I5cyGVpgRQ9GvkH6iyef+Zt4tzFbPW3iLqxSEBF6BWzatyORUK
- FF2Sdv/UdkoqKeDg==
+ bh=SnDpAQQCKqVOlmyJkam85CqaMlx30YtetQyR2F9+3Q8=;
+ b=y1Ug5QxfECAIETntFKDTxVxhAyN0lE35kjA6ieBLaEtLi3WCILipGU+sN8NgEkjASgUDOP
+ ALU02TDdAXvcmlAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4FAF61388B;
- Fri, 11 Jul 2025 14:11:08 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E93D01388B;
+ Fri, 11 Jul 2025 14:11:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id yH4LA3wbcWg7TgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 11 Jul 2025 14:11:08 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id GF7KKH0bcWg7TgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 11 Jul 2025 14:11:09 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>
-Subject: [PULL 18/26] migration/postcopy: Add blocktime fault counts per-vcpu
-Date: Fri, 11 Jul 2025 11:10:23 -0300
-Message-Id: <20250711141031.423-19-farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Mario Casquero <mcasquer@redhat.com>
+Subject: [PULL 19/26] migration/postcopy: Report fault latencies in blocktime
+Date: Fri, 11 Jul 2025 11:10:24 -0300
+Message-Id: <20250711141031.423-20-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250711141031.423-1-farosas@suse.de>
 References: <20250711141031.423-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6A70B1F451
+X-Rspamd-Queue-Id: C91F92119D
 X-Rspamd-Action: no action
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  R_MISSING_CHARSET(0.50)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; TO_DN_SOME(0.00)[]; RCPT_COUNT_TWO(0.00)[2];
- MIME_TRACE(0.00)[0:+]; FUZZY_RATELIMITED(0.00)[rspamd.com];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MX_GOOD(-0.01)[]; ARC_NA(0.00)[];
  RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- ARC_NA(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- FROM_EQ_ENVFROM(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; MIME_TRACE(0.00)[0:+];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
  SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,
- imap1.dmz-prg2.suse.org:helo, suse.de:dkim, suse.de:mid, suse.de:email]
+ TO_DN_SOME(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,treblig.org:email,suse.de:dkim,suse.de:mid,suse.de:email];
+ RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
 X-Spam-Score: -3.01
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -130,54 +133,260 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Add a field to count how many remote faults one vCPU has taken.  So far
-it's still not used, but will be soon.
+Blocktime so far only cares about the time one vcpu (or the whole system)
+got blocked.  It would be also be helpful if it can also report the latency
+of page requests, which could be very sensitive during postcopy.
 
+Blocktime itself is sometimes not very important, especially when one
+thinks about KVM async PF support, which means vCPUs are literally almost
+not blocked at all because the guest OS is smart enough to switch to
+another task when a remote fault is needed.
+
+However, latency is still sensitive and important because even if the guest
+vCPU is running on threads that do not need a remote fault, the workload
+that accesses some missing page is still affected.
+
+Add two entries to the report, showing how long it takes to resolve a
+remote fault.  Mention in the QAPI doc that this is not the real average
+fault latency, but only the ones that was requested for a remote fault.
+
+Unwrap get_vcpu_blocktime_list() so we don't need to walk the list twice,
+meanwhile add the entry checks in qtests for all postcopy tests.
+
+Cc: Markus Armbruster <armbru@redhat.com>
+Cc: Dr. David Alan Gilbert <dave@treblig.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20250613141217.474825-8-peterx@redhat.com
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+Link: https://lore.kernel.org/r/20250613141217.474825-9-peterx@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/postcopy-ram.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ migration/migration-hmp-cmds.c        | 67 ++++++++++++++++++---------
+ migration/postcopy-ram.c              | 49 +++++++++++++-------
+ qapi/migration.json                   | 20 ++++++++
+ tests/qtest/migration/migration-qmp.c |  3 ++
+ 4 files changed, 102 insertions(+), 37 deletions(-)
 
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 867e017b32..8b3846dab5 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -52,6 +52,51 @@ static void migration_global_dump(Monitor *mon)
+                    ms->clear_bitmap_shift);
+ }
+ 
++static void migration_dump_blocktime(Monitor *mon, MigrationInfo *info)
++{
++    if (info->has_postcopy_blocktime) {
++        monitor_printf(mon, "Postcopy Blocktime (ms): %" PRIu32 "\n",
++                       info->postcopy_blocktime);
++    }
++
++    if (info->has_postcopy_vcpu_blocktime) {
++        uint32List *item = info->postcopy_vcpu_blocktime;
++        const char *sep = "";
++        int count = 0;
++
++        monitor_printf(mon, "Postcopy vCPU Blocktime (ms):\n [");
++
++        while (item) {
++            monitor_printf(mon, "%s%"PRIu32, sep, item->value);
++            item = item->next;
++            /* Each line 10 vcpu results, newline if there's more */
++            sep = ((++count % 10 == 0) && item) ? ",\n  " : ", ";
++        }
++        monitor_printf(mon, "]\n");
++    }
++
++    if (info->has_postcopy_latency) {
++        monitor_printf(mon, "Postcopy Latency (ns): %" PRIu64 "\n",
++                       info->postcopy_latency);
++    }
++
++    if (info->has_postcopy_vcpu_latency) {
++        uint64List *item = info->postcopy_vcpu_latency;
++        const char *sep = "";
++        int count = 0;
++
++        monitor_printf(mon, "Postcopy vCPU Latencies (ns):\n [");
++
++        while (item) {
++            monitor_printf(mon, "%s%"PRIu64, sep, item->value);
++            item = item->next;
++            /* Each line 10 vcpu results, newline if there's more */
++            sep = ((++count % 10 == 0) && item) ? ",\n  " : ", ";
++        }
++        monitor_printf(mon, "]\n");
++    }
++}
++
+ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+ {
+     bool show_all = qdict_get_try_bool(qdict, "all", false);
+@@ -202,27 +247,7 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+                        info->dirty_limit_ring_full_time);
+     }
+ 
+-    if (info->has_postcopy_blocktime) {
+-        monitor_printf(mon, "Postcopy Blocktime (ms): %" PRIu32 "\n",
+-                       info->postcopy_blocktime);
+-    }
+-
+-    if (info->has_postcopy_vcpu_blocktime) {
+-        uint32List *item = info->postcopy_vcpu_blocktime;
+-        const char *sep = "";
+-        int count = 0;
+-
+-        monitor_printf(mon, "Postcopy vCPU Blocktime (ms):\n [");
+-
+-        while (item) {
+-            monitor_printf(mon, "%s%"PRIu32, sep, item->value);
+-            item = item->next;
+-            /* Each line 10 vcpu results, newline if there's more */
+-            sep = ((++count % 10 == 0) && item) ? ",\n  " : ", ";
+-        }
+-        monitor_printf(mon, "]\n");
+-    }
+-
++    migration_dump_blocktime(mon, info);
+ out:
+     qapi_free_MigrationInfo(info);
+ }
 diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 9dfa92a62d..15ea106910 100644
+index 15ea106910..fe940f89b9 100644
 --- a/migration/postcopy-ram.c
 +++ b/migration/postcopy-ram.c
-@@ -116,6 +116,8 @@ typedef struct PostcopyBlocktimeContext {
-     uint64_t *vcpu_blocktime_start;
-     /* blocktime per vCPU */
-     uint64_t *vcpu_blocktime_total;
-+    /* count of faults per vCPU */
-+    uint64_t *vcpu_faults_count;
-     /* page address per vCPU */
-     uintptr_t *vcpu_addr;
-     /* total blocktime when all vCPUs are stopped */
-@@ -136,6 +138,7 @@ static void destroy_blocktime_context(struct PostcopyBlocktimeContext *ctx)
- {
-     g_free(ctx->vcpu_blocktime_start);
-     g_free(ctx->vcpu_blocktime_total);
-+    g_free(ctx->vcpu_faults_count);
-     g_free(ctx->vcpu_addr);
-     g_free(ctx);
+@@ -166,21 +166,6 @@ static struct PostcopyBlocktimeContext *blocktime_context_new(void)
+     return ctx;
  }
-@@ -155,6 +158,7 @@ static struct PostcopyBlocktimeContext *blocktime_context_new(void)
  
-     ctx->vcpu_blocktime_start = g_new0(uint64_t, smp_cpus);
-     ctx->vcpu_blocktime_total = g_new0(uint64_t, smp_cpus);
-+    ctx->vcpu_faults_count = g_new0(uint64_t, smp_cpus);
-     ctx->vcpu_addr = g_new0(uintptr_t, smp_cpus);
-     ctx->exit_notifier.notify = migration_exit_cb;
-     qemu_add_exit_notifier(&ctx->exit_notifier);
-@@ -857,6 +861,7 @@ void mark_postcopy_blocktime_begin(uintptr_t addr, uint32_t ptid,
-     dc->last_begin = current;
-     dc->vcpu_blocktime_start[cpu] = current;
-     dc->vcpu_addr[cpu] = addr;
-+    dc->vcpu_faults_count[cpu]++;
+-static uint32List *get_vcpu_blocktime_list(PostcopyBlocktimeContext *ctx)
+-{
+-    MachineState *ms = MACHINE(qdev_get_machine());
+-    uint32List *list = NULL;
+-    int i;
+-
+-    for (i = ms->smp.cpus - 1; i >= 0; i--) {
+-        /* Convert ns -> ms */
+-        QAPI_LIST_PREPEND(
+-            list, (uint32_t)(ctx->vcpu_blocktime_total[i] / SCALE_MS));
+-    }
+-
+-    return list;
+-}
+-
+ /*
+  * This function just populates MigrationInfo from postcopy's
+  * blocktime context. It will not populate MigrationInfo,
+@@ -192,16 +177,48 @@ void fill_destination_postcopy_migration_info(MigrationInfo *info)
+ {
+     MigrationIncomingState *mis = migration_incoming_get_current();
+     PostcopyBlocktimeContext *bc = mis->blocktime_ctx;
++    MachineState *ms = MACHINE(qdev_get_machine());
++    uint64_t latency_total = 0, faults = 0;
++    uint32List *list_blocktime = NULL;
++    uint64List *list_latency = NULL;
++    int i;
  
-     /*
-      * The caller should only inject a blocktime entry when the page is
+     if (!bc) {
+         return;
+     }
+ 
++    for (i = ms->smp.cpus - 1; i >= 0; i--) {
++        uint64_t latency, total, count;
++
++        /* Convert ns -> ms */
++        QAPI_LIST_PREPEND(list_blocktime,
++                          (uint32_t)(bc->vcpu_blocktime_total[i] / SCALE_MS));
++
++        /* The rest in nanoseconds */
++        total = bc->vcpu_blocktime_total[i];
++        latency_total += total;
++        count = bc->vcpu_faults_count[i];
++        faults += count;
++
++        if (count) {
++            latency = total / count;
++        } else {
++            /* No fault detected */
++            latency = 0;
++        }
++
++        QAPI_LIST_PREPEND(list_latency, latency);
++    }
++
+     info->has_postcopy_blocktime = true;
+     /* Convert ns -> ms */
+     info->postcopy_blocktime = (uint32_t)(bc->total_blocktime / SCALE_MS);
+     info->has_postcopy_vcpu_blocktime = true;
+-    info->postcopy_vcpu_blocktime = get_vcpu_blocktime_list(bc);
++    info->postcopy_vcpu_blocktime = list_blocktime;
++    info->has_postcopy_latency = true;
++    info->postcopy_latency = faults ? (latency_total / faults) : 0;
++    info->has_postcopy_vcpu_latency = true;
++    info->postcopy_vcpu_latency = list_latency;
+ }
+ 
+ static uint64_t get_postcopy_total_blocktime(void)
+diff --git a/qapi/migration.json b/qapi/migration.json
+index e8a7d3b2a9..bb41dc0795 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -236,6 +236,17 @@
+ #     This is only present when the postcopy-blocktime migration
+ #     capability is enabled.  (Since 3.0)
+ #
++# @postcopy-latency: average remote page fault latency (in ns).  Note that
++#     this doesn't include all faults, but only the ones that require a
++#     remote page request.  So it should be always bigger than the real
++#     average page fault latency. This is only present when the
++#     postcopy-blocktime migration capability is enabled.  (Since 10.1)
++#
++# @postcopy-vcpu-latency: average remote page fault latency per vCPU (in
++#     ns).  It has the same definition of @postcopy-latency, but instead
++#     this is the per-vCPU statistics.  This is only present when the
++#     postcopy-blocktime migration capability is enabled.  (Since 10.1)
++#
+ # @socket-address: Only used for tcp, to know what the real port is
+ #     (Since 4.0)
+ #
+@@ -260,6 +271,11 @@
+ #     average memory load of the virtual CPU indirectly.  Note that
+ #     zero means guest doesn't dirty memory.  (Since 8.1)
+ #
++# Features:
++#
++# @unstable: Members @postcopy-latency, @postcopy-vcpu-latency are
++#     experimental.
++#
+ # Since: 0.14
+ ##
+ { 'struct': 'MigrationInfo',
+@@ -275,6 +291,10 @@
+            '*blocked-reasons': ['str'],
+            '*postcopy-blocktime': 'uint32',
+            '*postcopy-vcpu-blocktime': ['uint32'],
++           '*postcopy-latency': {
++               'type': 'uint64', 'features': [ 'unstable' ] },
++           '*postcopy-vcpu-latency': {
++               'type': ['uint64'], 'features': [ 'unstable' ] },
+            '*socket-address': ['SocketAddress'],
+            '*dirty-limit-throttle-time-per-round': 'uint64',
+            '*dirty-limit-ring-full-time': 'uint64'} }
+diff --git a/tests/qtest/migration/migration-qmp.c b/tests/qtest/migration/migration-qmp.c
+index fb59741b2c..1a5ab2d229 100644
+--- a/tests/qtest/migration/migration-qmp.c
++++ b/tests/qtest/migration/migration-qmp.c
+@@ -358,6 +358,9 @@ void read_blocktime(QTestState *who)
+ 
+     rsp_return = migrate_query_not_failed(who);
+     g_assert(qdict_haskey(rsp_return, "postcopy-blocktime"));
++    g_assert(qdict_haskey(rsp_return, "postcopy-vcpu-blocktime"));
++    g_assert(qdict_haskey(rsp_return, "postcopy-latency"));
++    g_assert(qdict_haskey(rsp_return, "postcopy-vcpu-latency"));
+     qobject_unref(rsp_return);
+ }
+ 
 -- 
 2.35.3
 
