@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF85B01631
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5996B015E5
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:26:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua97L-0004Sm-6E; Fri, 11 Jul 2025 04:28:27 -0400
+	id 1ua94v-0007Ir-FA; Fri, 11 Jul 2025 04:25:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8yd-0006TE-OQ; Fri, 11 Jul 2025 04:19:28 -0400
+ id 1ua8yd-0006TF-OX; Fri, 11 Jul 2025 04:19:28 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8yb-0004IW-AC; Fri, 11 Jul 2025 04:19:26 -0400
+ id 1ua8yb-0004IY-AL; Fri, 11 Jul 2025 04:19:26 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 780C01356DE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 899F51356DF;
  Fri, 11 Jul 2025 11:17:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6456623FA53;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7DFBB23FA54;
  Fri, 11 Jul 2025 11:17:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "Xin Li (Intel)" <xin@zytor.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 19/39] target/i386: Remove FRED dependency on WRMSRNS
-Date: Fri, 11 Jul 2025 11:16:15 +0300
-Message-ID: <20250711081745.1785806-19-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 20/39] iotests: fix 240
+Date: Fri, 11 Jul 2025 11:16:16 +0300
+Message-ID: <20250711081745.1785806-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
@@ -58,34 +58,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Xin Li (Intel)" <xin@zytor.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-WRMSRNS doesn't become a required feature for FERD, and Linux has
-removed the dependency, as such remove it from Qemu.
+Commit 2e8e18c2e463 ("virtio-scsi: add iothread-vq-mapping parameter")
+removed the limitation that virtio-scsi devices must successfully set
+the AioContext on their BlockBackends. This was made possible thanks to
+the QEMU multi-queue block layer.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250103084827.1820007-2-xin@zytor.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 0b901459a87a7fdbed36e574aae33e0635a3e9af)
+This change broke qemu-iotests 240, which checks that adding a
+virtio-scsi device with a drive that is already in another AioContext
+will fail.
+
+Update the test to take the relaxed behavior into account. I considered
+removing this test case entirely, but the code coverage still seems
+valuable.
+
+Fixes: 2e8e18c2e463 ("virtio-scsi: add iothread-vq-mapping parameter")
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Tested-by: Eric Blake <eblake@redhat.com>
+Message-ID: <20250529203147.180338-1-stefanha@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit 2e887187454e57d04522099d4f04d17137d6e05c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 5e12cba1b8..2c9517f56d 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1774,10 +1774,6 @@ static FeatureDep feature_dependencies[] = {
-         .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_LKGS },
-         .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
-     },
--    {
--        .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_WRMSRNS },
--        .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
--    },
-     {
-         .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
-         .to = { FEAT_7_0_ECX,               CPUID_7_0_ECX_SGX_LC },
+diff --git a/tests/qemu-iotests/240 b/tests/qemu-iotests/240
+index 9b281e1dc0..f8af9ff648 100755
+--- a/tests/qemu-iotests/240
++++ b/tests/qemu-iotests/240
+@@ -81,8 +81,6 @@ class TestCase(iotests.QMPTestCase):
+ 
+         self.vm.qmp_log('device_del', id='scsi-hd0')
+         self.vm.event_wait('DEVICE_DELETED')
+-        self.vm.qmp_log('device_add', id='scsi-hd1', driver='scsi-hd', drive='hd0', bus="scsi1.0")
+-
+         self.vm.qmp_log('device_del', id='scsi-hd1')
+         self.vm.event_wait('DEVICE_DELETED')
+         self.vm.qmp_log('blockdev-del', node_name='hd0')
+diff --git a/tests/qemu-iotests/240.out b/tests/qemu-iotests/240.out
+index 89ed25e506..10dcc42e06 100644
+--- a/tests/qemu-iotests/240.out
++++ b/tests/qemu-iotests/240.out
+@@ -46,10 +46,8 @@
+ {"execute": "device_add", "arguments": {"bus": "scsi0.0", "drive": "hd0", "driver": "scsi-hd", "id": "scsi-hd0"}}
+ {"return": {}}
+ {"execute": "device_add", "arguments": {"bus": "scsi1.0", "drive": "hd0", "driver": "scsi-hd", "id": "scsi-hd1"}}
+-{"error": {"class": "GenericError", "desc": "Cannot change iothread of active block backend"}}
+-{"execute": "device_del", "arguments": {"id": "scsi-hd0"}}
+ {"return": {}}
+-{"execute": "device_add", "arguments": {"bus": "scsi1.0", "drive": "hd0", "driver": "scsi-hd", "id": "scsi-hd1"}}
++{"execute": "device_del", "arguments": {"id": "scsi-hd0"}}
+ {"return": {}}
+ {"execute": "device_del", "arguments": {"id": "scsi-hd1"}}
+ {"return": {}}
 -- 
 2.47.2
 
