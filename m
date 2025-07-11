@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F421CB0228E
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 19:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9080B0228F
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 19:25:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaHSq-0001qo-7M; Fri, 11 Jul 2025 13:23:12 -0400
+	id 1uaHSq-0001qx-MX; Fri, 11 Jul 2025 13:23:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uaHSn-0001ok-7I
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:09 -0400
-Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
+ id 1uaHSo-0001qa-Kb
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:10 -0400
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uaHSl-00032i-8R
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:08 -0400
-Received: by mail-oi1-x234.google.com with SMTP id
- 5614622812f47-40af40aef06so1221813b6e.3
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 10:23:06 -0700 (PDT)
+ id 1uaHSn-00033E-0f
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:10 -0400
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-40a4de175a3so1253767b6e.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 10:23:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752254586; x=1752859386; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752254587; x=1752859387; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=j9c7MLf28ZTbIKD23Oq32+PYqLQBAflgfhnsqzK3gkY=;
- b=oM2kXR7886O8HgUWOwnHd0sKxjKNTw4NNVl1g9spxybWIMwxxgOOHu31UDFfkNqN6a
- WjtImwiGZlSwTloGC8kYwB2H0e0PBJtp7qarA4lflVCpOqYohJfT2huGZpCTTntXhAlp
- NshE4JPi7I67E+voOEVcHBkR7Q6cd9Fa2QimYTR83qUEeemvdfzmwOm9bS0bZC3iTe47
- rezX3QS33dma7pROyK1orkLbM63osAE9wjauFC5fOCVd/o/pNwq6koemtNJEExVeVQN5
- JSnTnTJSxlp4WKW884SOZTGC+HyDXUmGG7KcZZyoV7MLIFVa9EN9kxKViftneaweV9xD
- IopA==
+ bh=n7yoiT0H1cbWcezhhOOQ6JGPwf+lfIZ37AHWPBQOdyo=;
+ b=YJf2Itm8WCT5tX02ZGpisVtQjRAJCwFIX6EoRyE7jZkgPGeaSlmJQ1IUA/q311/7CF
+ LUnso58m8NC2xCAzDFyBffnjyJf71Ar/D3/in6NBKvDVCI1Z+5Qn/j4LJA4r8Cs5NohO
+ 0hdpuJocUUDxqnvBjHUs23esazN36yZUCNT3RS7P00zprGGYUoPSlpVc8sh82Z1HJMfV
+ VRUFlTkhIFk2VqOovuYoJTzFYhyT2MGqTJkRNRfb44iNCE77sAVvyKSjbG+RNy+jyZ/u
+ n/0hMLqUcjstRfEhGnZ0gtby6oR8R/pcn0dh1atsonrWCMvqGO4/xOv7u53qY62Vujdq
+ +hkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752254586; x=1752859386;
+ d=1e100.net; s=20230601; t=1752254587; x=1752859387;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=j9c7MLf28ZTbIKD23Oq32+PYqLQBAflgfhnsqzK3gkY=;
- b=iqzimvofFjMWfuosjdLdLss9/okxXbCgIDGdVKr72kESHlx9GE2smF99oIwuN6gEVl
- bVNE8ngKFo2PndQo/L+jOcQH0d4oCxvGGOmlZAOCDDBhdZVb8ZS+GOyX95n8atuYCabv
- UQFHpaiAsSgO71/2UyfdWuwuYwvurGHGW7jXmwm5ghUtbf0OmCRrOpX46zLOzAqksN3i
- rKtAcvfqnvFCRoiZWJVXrMVMDGW57yN3h7RetzmWFffzqfJr9RUOV7QFmBdWcl1yQv7x
- BUChGMmBTUNZNPAi00tUFaMfvYycI/ZH+YUzImUishUjeEmrge9xAUNKOGSAh9idshVq
- aSeQ==
-X-Gm-Message-State: AOJu0YyUa0M5eDTZuesuFUh2Fcta+iFWkI+96zLEywpfzCdo0mfjSh+G
- sKwx0aNdHZMl3nbYKXWJUVhQ3ljp8mJrZFNqGY1Ok+sGvgvP+806BOeyjXKNtvfdwgheTIYziic
- 1yrbOUvw=
-X-Gm-Gg: ASbGncvBinx6BGdImJdkKs+xdzNhFCOTrOIMBSTwxFL2MmuiBFjT/PjcaYFEDQvrtul
- aZNEOeyGRxf3IiBaatV46FwRcbrg2AXzNEO0O7Lcy7JGBQYQu6D1gv8z37aTCIDvVdn4jA1sLjU
- +ehxr8+X0vCdo8fYueVco+z1m9MSCaVkjKPBFbqnZFxMmniGNaBcv5WimpAevdqykTNIqqJy3PX
- C4Ir5d2pMBX3XnoIbPWZf+VCZ6z9Kkysn7/XtMbGk97G96cLauTQXK9doVRtIlPbAotbokbxbNI
- AJUz4fdCVOOUfys2SLhp96rlamxvrygZl/84widjwU0jmM8zRN9R61mXJkrbGiqb/SHXvQwIh65
- H7+s47hBe/KUGK9pYtN19LmzXUp8AY1ZUrINvrKHYSZ5ZzcMdXRX30MrD57TyvP9vl0rXdZiwvE
- HFYYI4vjvkA+lBGYi0eck=
-X-Google-Smtp-Source: AGHT+IHw3/nyT7cZtyEpyd8w5NxmZGvRfePs4WqPwcA4C1pXWxVaZiuhULOGMvaDsmQcz5tnAp7MSQ==
-X-Received: by 2002:a05:6808:f91:b0:40c:f680:7775 with SMTP id
- 5614622812f47-41511814a77mr3485333b6e.31.1752254586012; 
- Fri, 11 Jul 2025 10:23:06 -0700 (PDT)
+ bh=n7yoiT0H1cbWcezhhOOQ6JGPwf+lfIZ37AHWPBQOdyo=;
+ b=VZ0AfZ1BKP5e5SOo2KwXMcHwqzabuEKngvy/ZkT2zWT6RmxGDjnovjnFabsysWHP75
+ H3NDxr0T1EDpa6CJ8HCYTt0JKxIP38l3DACoNrwWhlEOzUvLz8nnzVEW5GhEVXbtBXCP
+ kARpd7oL/NNW3zh4jXlp2svZOQ4GTtfkwMM7zlTyhOEV0y+2fLK4RYjDyEk6ZpEradTw
+ rKmdRJkrRjk2RSJWXoQ18BaAsXK1FkcKT/dlegjkgidLo8anf8mpwYLoiZPinjucFIn0
+ vRqLt1KNMD9Idz1gjMCBpaiDRVQ2x5wtXtxhCxlfkskIFYw2D/nR+FHWZxtbM04E0Hps
+ HRlA==
+X-Gm-Message-State: AOJu0Yz52sFLI/F5EtUNRNt3HDBiWsNGqj5YKVixqJpGhOmwiEdqyvKZ
+ Tfg5CbEoasEoD74JHT+LCflASc4B+vkgbYSA9LUNP5i1r9kfRlgw4EYe1E4GBYog3EUdslPLjif
+ Iuhyuzfk=
+X-Gm-Gg: ASbGnctiZmBEsBj3Uf1bxUfRQPBdf2B8+//6Qmcl8Op05cYZGyAFS5B97aqFmayf3zN
+ HaHvLqEK6gkqFu5LPVuE9fcP9BSB9ZW5LuFdkl2UtmBdRq0gedeaQFzF1UQYi6okOqy0d9OIier
+ v8ox+MWuGLPJWg/PeiSolMvKtGx7ozECwnlbinBSkfh6iS5jd/Anti8Syh6pf6I1uydxZYlTCWc
+ nVlB2iGdtIFQQ6EdrhV5yfYJYONcUsn+2+6BfK7CC03ZxLWHz0eGDjRWb3u1xMsTVLQoujslfNe
+ eXDUJxQEkjyTzTWYHTodRAZWIO+Vt1H17UUh1P7qoWo01szmWYCHRVXFYbhnMarQ744s+6zzjiM
+ hDa1ELTXwtzurM0I1YGceUPGBmtROpzullVRG+essQzx58A1VqaHpNxoddhIngJzvsii4SNrs1T
+ wjlIzqPwZL
+X-Google-Smtp-Source: AGHT+IE8ATu6rvRtAq+VDKQptqyzFJFW9y8FvFg/GlYZ37hN/CgoUWYzo8rK2ZA8B2mFYanyq3XTtA==
+X-Received: by 2002:a05:6808:1587:b0:40b:555b:9024 with SMTP id
+ 5614622812f47-4150e31d37amr3350526b6e.17.1752254587398; 
+ Fri, 11 Jul 2025 10:23:07 -0700 (PDT)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-4141c77ada0sm602041b6e.44.2025.07.11.10.23.05
+ 5614622812f47-4141c77ada0sm602041b6e.44.2025.07.11.10.23.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Jul 2025 10:23:05 -0700 (PDT)
+ Fri, 11 Jul 2025 10:23:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 8/9] tcg: Use uintptr_t in tcg_malloc implementation
-Date: Fri, 11 Jul 2025 11:22:53 -0600
-Message-ID: <20250711172254.229201-9-richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 9/9] linux-user: Use qemu_set_cloexec() to mark pidfd as
+ FD_CLOEXEC
+Date: Fri, 11 Jul 2025 11:22:54 -0600
+Message-ID: <20250711172254.229201-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250711172254.229201-1-richard.henderson@linaro.org>
 References: <20250711172254.229201-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x234.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,84 +102,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid ubsan failure with clang-20,
-  tcg.h:715:19: runtime error: applying non-zero offset 64 to null pointer
-by not using pointers.
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+In the linux-user do_fork() function we try to set the FD_CLOEXEC
+flag on a pidfd like this:
+
+    fcntl(pid_fd, F_SETFD, fcntl(pid_fd, F_GETFL) | FD_CLOEXEC);
+
+This has two problems:
+ (1) it doesn't check errors, which Coverity complains about
+ (2) we use F_GETFL when we mean F_GETFD
+
+Deal with both of these problems by using qemu_set_cloexec() instead.
+That function will assert() if the fcntls fail, which is fine (we are
+inside fork_start()/fork_end() so we know nothing can mess around
+with our file descriptors here, and we just got this one from
+pidfd_open()).
+
+(As we are touching the if() statement here, we correct the
+indentation.)
+
+Coverity: CID 1508111
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250711141217.1429412-1-peter.maydell@linaro.org>
 ---
- include/tcg/tcg.h | 6 +++---
- tcg/tcg.c         | 9 +++++----
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ linux-user/syscall.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 125323f153..0c2a319c11 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -357,7 +357,7 @@ static inline TCGRegSet output_pref(const TCGOp *op, unsigned i)
- }
- 
- struct TCGContext {
--    uint8_t *pool_cur, *pool_end;
-+    uintptr_t pool_cur, pool_end;
-     TCGPool *pool_first, *pool_current, *pool_first_large;
-     int nb_labels;
-     int nb_globals;
-@@ -706,7 +706,7 @@ size_t tcg_nb_tbs(void);
- static inline void *tcg_malloc(int size)
- {
-     TCGContext *s = tcg_ctx;
--    uint8_t *ptr, *ptr_end;
-+    uintptr_t ptr, ptr_end;
- 
-     /* ??? This is a weak placeholder for minimum malloc alignment.  */
-     size = QEMU_ALIGN_UP(size, 8);
-@@ -717,7 +717,7 @@ static inline void *tcg_malloc(int size)
-         return tcg_malloc_internal(tcg_ctx, size);
-     } else {
-         s->pool_cur = ptr_end;
--        return ptr;
-+        return (void *)ptr;
-     }
- }
- 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 50d40b9cbe..afac55a203 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -1331,8 +1331,9 @@ void *tcg_malloc_internal(TCGContext *s, int size)
-         p = s->pool_current;
-         if (!p) {
-             p = s->pool_first;
--            if (!p)
-+            if (!p) {
-                 goto new_pool;
-+            }
-         } else {
-             if (!p->next) {
-             new_pool:
-@@ -1351,8 +1352,8 @@ void *tcg_malloc_internal(TCGContext *s, int size)
-         }
-     }
-     s->pool_current = p;
--    s->pool_cur = p->data + size;
--    s->pool_end = p->data + p->size;
-+    s->pool_cur = (uintptr_t)p->data + size;
-+    s->pool_end = (uintptr_t)p->data + p->size;
-     return p->data;
- }
- 
-@@ -1364,7 +1365,7 @@ void tcg_pool_reset(TCGContext *s)
-         g_free(p);
-     }
-     s->pool_first_large = NULL;
--    s->pool_cur = s->pool_end = NULL;
-+    s->pool_cur = s->pool_end = 0;
-     s->pool_current = NULL;
- }
- 
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 38dd563166..91360a072c 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -6747,10 +6747,9 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
+                 int pid_child = ret;
+                 pid_fd = pidfd_open(pid_child, 0);
+                 if (pid_fd >= 0) {
+-                        fcntl(pid_fd, F_SETFD, fcntl(pid_fd, F_GETFL)
+-                                               | FD_CLOEXEC);
++                    qemu_set_cloexec(pid_fd);
+                 } else {
+-                        pid_fd = 0;
++                    pid_fd = 0;
+                 }
+ #endif
+                 put_user_u32(pid_fd, parent_tidptr);
 -- 
 2.43.0
 
