@@ -2,87 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A99B0176B
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4F8B0178E
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:23:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua9qx-0001fD-IN; Fri, 11 Jul 2025 05:15:35 -0400
+	id 1ua9xH-0008ES-9F; Fri, 11 Jul 2025 05:22:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ua9qk-0001PN-GJ
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:15:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ua9qi-0002CL-AA
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:15:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752225316;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vLjnHJvTmQ4EKRKT6U7PTKIaciVRprcKA+8qhLbeTZk=;
- b=W67GWQpSxtgkKW8T49eGhN3FFgd3FLxo7fx757jjXvKDauxvgQU2S0lKccqT0T1k28FyGA
- qeTdTB5z5UuXvPZD3ibSzeONH02ieyxAZQrKXYXZ/sn0jGvy9F4lXtWyIHfgV95TKx2Y0S
- 6HNzFG9/d5B1YfTr0GUeQXRA7tOV9iU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-351-RVIp_FywOmWf1PcR0Hd5Gg-1; Fri,
- 11 Jul 2025 05:15:11 -0400
-X-MC-Unique: RVIp_FywOmWf1PcR0Hd5Gg-1
-X-Mimecast-MFC-AGG-ID: RVIp_FywOmWf1PcR0Hd5Gg_1752225310
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B9DAD18089B5; Fri, 11 Jul 2025 09:15:09 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D28C5180035C; Fri, 11 Jul 2025 09:15:08 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2E8D221E6A27; Fri, 11 Jul 2025 11:15:06 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>,  Eric Blake <eblake@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Ani Sinha <anisinha@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Lukas Straub <lukasstraub2@web.de>,  Vladimir
- Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  Zhao Liu
- <zhao1.liu@intel.com>,  Eduardo Habkost <eduardo@habkost.net>,  Peter Xu
- <peterx@redhat.com>,  Yanan Wang <wangyanan55@huawei.com>,  Alex
- =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,  Jason Wang <jasowang@redhat.com>,  Igor
- Mammedov <imammedo@redhat.com>,  Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH v2 04/18] qapi: add cross-references to crypto.json
-In-Reply-To: <20250711054005.60969-5-jsnow@redhat.com> (John Snow's message of
- "Fri, 11 Jul 2025 01:39:51 -0400")
-References: <20250711054005.60969-1-jsnow@redhat.com>
- <20250711054005.60969-5-jsnow@redhat.com>
-Date: Fri, 11 Jul 2025 11:15:06 +0200
-Message-ID: <87ldov6qcl.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ua9wp-00088S-9P
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:21:45 -0400
+Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ua9wh-0003kh-Md
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:21:37 -0400
+Received: by mail-yb1-xb35.google.com with SMTP id
+ 3f1490d57ef6-e8600a33792so1298066276.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 02:21:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752225686; x=1752830486; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=JBK3ePEWjvVjPev4cHFtsdsiP/pjj5vJWvBnCJvZz/o=;
+ b=eJVN/jSi+gLSeWncmv89nfQ3pwUtfj+na0ZhiMbMqDyonh0rcR2w7IuwVhrke/iioi
+ mFZFT7s9FE4SziS5PuN+YTPhCYXLdgRAEX0GWYMmMOb7+eJZgK/DpkV0QjQPnCUfY+Tb
+ 2W/YGkuEa9P/CIRKZX3IJGC4q6YXm4cPpT58tGkTg0Paz4DLqjrgYUcXW8b8RLDC/yvB
+ hTtew7ZQtgbkd881invLnUmYhsfMTacuMWxbSKYuqS13LkCbGNQIML54pWpnHpyabAYA
+ WOpQHUmJQOExUhwoSX+pSp7WoR40THYsD0evbC5MTIG1V5+zCvTI7+iO7eVUJbdCDkkQ
+ kFdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752225686; x=1752830486;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JBK3ePEWjvVjPev4cHFtsdsiP/pjj5vJWvBnCJvZz/o=;
+ b=llG5hV9Uyh6lFkdfDJQ8lH1X225iGt96uamuC/9AJRSaXegNPF/SuRYGz8MD0d68kW
+ JcLjttY0iSu4T3NX5LUvFMxPZY/i7AvWqRa6lFGzia56OUWlVSCCy7wtrRIsQRMsFb+L
+ oYixbHyyEe4/+Q38MBR1GJwHjrnpg1yHTyPf5uikUai+p3bVmgkqVbRt2yJXeRk1zF7y
+ i7+XPwlkQNQ9Y+Lv1W3baKIDm3ejV2rQVWUh6G8MedFesHzQ2Qubtdtos4kl6ql6Pwem
+ T8q6Ov/riGR5KrdxGNIGan44+/b8oZaJSFgsgp5Dzh4nU9k/H5K1PWaCfXqu/Zyzv8iC
+ Rv5Q==
+X-Gm-Message-State: AOJu0YzdG+i78IsX7nVynQjSqog8bLbHZWfaK6rArtgT+9SA/U1IdZNh
+ UQ/ZP6JdfEOqLt2D7QZft0gkA8KZlz/JnO/HoN96R3ti79kO2DY2lwFYIzhZrTlemUMuSBHRp8a
+ hIOsyeT8J5SElDZnchzN+6ubRKYHGll29cH6r8Pxbmw==
+X-Gm-Gg: ASbGnctWb6vneFkMBSWbdoVUV5YAV9f1+s/OKBDdMvJcD5fMaGBPDFkkSVRjMGQamXw
+ AtQYVcKPotx9vH0l0D8EgXvbKl19XhaUS8qD0ErBf4CV2aDGM3SIWmQJql3ap1tjr2Pniyl72/A
+ O+V9j4IIk8xDzKKgZMCYG9e5GTvgSjJ+JuE8KdYEOfb5fjzoI9DrN58+NOhAloB/AMcc49SU5HA
+ y97+LcX
+X-Google-Smtp-Source: AGHT+IGhScNy1QoZ9V7SEoU1ko5x8tugAFMtojRlU87mWt+pS3iCOkgsRmnR0gYtRg+QbdkVDe1qyJl7cMXPQCHWfdE=
+X-Received: by 2002:a05:690c:4c01:b0:70e:a1e:d9f8 with SMTP id
+ 00721157ae682-717d5dade00mr42174647b3.22.1752225686442; Fri, 11 Jul 2025
+ 02:21:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250710173945.115428-1-richard.henderson@linaro.org>
+In-Reply-To: <20250710173945.115428-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 11 Jul 2025 10:21:14 +0100
+X-Gm-Features: Ac12FXw7FjjTpKMhpqKvQDQMei6e4MRrjqENgG4HjSGfcA1xYsESkSozoAt7Ibs
+Message-ID: <CAFEAcA_w5jTEjNWmk-RSCvS1H5HJGKsB5_KDmsikqAjXq25_Cw@mail.gmail.com>
+Subject: Re: [PATCH] target/arm: Remove helper_sme2_luti4_4b
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,39 +90,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
-
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  qapi/crypto.json | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On Thu, 10 Jul 2025 at 18:39, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> diff --git a/qapi/crypto.json b/qapi/crypto.json
-> index 9ec6301e188..57620d95da6 100644
-> --- a/qapi/crypto.json
-> +++ b/qapi/crypto.json
-> @@ -589,9 +589,9 @@
->  #
->  # Specific parameters for RSA algorithm.
->  #
-> -# @hash-alg: QCryptoHashAlgo
-> +# @hash-alg: `QCryptoHashAlgo`
->  #
-> -# @padding-alg: QCryptoRSAPaddingAlgo
-> +# @padding-alg: `QCryptoRSAPaddingAlgo`
->  #
->  # Since: 7.1
->  ##
+> This function isn't used.
+>
+> Resolves: Coverity CID 1612139
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/arm/tcg/helper.h     | 1 -
+>  target/arm/tcg/vec_helper.c | 1 -
+>  2 files changed, 2 deletions(-)
+>
 
-Not this patch's problem: these come out like
 
-    Members:
 
-            hash-alg (QCryptoHashAlgo) =E2=80=93 QCryptoHashAlgo
+Applied to target-arm.next, thanks.
 
-            padding-alg (QCryptoRSAPaddingAlgo) =E2=80=93 QCryptoRSAPadding=
-Algo
-
-which is crap.
-
+-- PMM
 
