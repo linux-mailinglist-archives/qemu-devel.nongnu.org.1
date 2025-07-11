@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DAC5B025F5
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF17FB025F7
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:52:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKg0-0004ck-J5; Fri, 11 Jul 2025 16:49:03 -0400
+	id 1uaKhC-0006qs-7Q; Fri, 11 Jul 2025 16:50:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uaKdv-0003Jv-7Y
+ id 1uaKdv-0003Jw-7x
  for qemu-devel@nongnu.org; Fri, 11 Jul 2025 16:46:55 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uaKdr-0003jU-Bo
+ id 1uaKdr-0003jZ-C3
  for qemu-devel@nongnu.org; Fri, 11 Jul 2025 16:46:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID;
- bh=qc/LoTY52HXjHlsY1qwQ5usYvq5PbqVKt8sXaXF6GIU=; b=xCPaDlxyIoEba5gZ+kmexWnX+V
- CJjuf6f8LMx9gzmGs16r5ISDCdE+qfrgfRgIQwW1/LZVOlL3fW3Ht/gF+c2NwThRzFWZ4E8alLKNx
- CSjquKRNZS+sbgHi3pdoa6J1XHUaGMnUZOdAXJZ7jz+g7beINUDFLebkwhUvYckVSf6YMYrRldZMp
- BVbUUviKB9lUH4+a5mFkxd0lnYf/EtszCDSAfCrlXxx+NxKQqurWgqCu+JNxFphrNT3BYC96w+ecY
- xfvRlRigyvLcqrD8DgSGadtCFBA9YG/7UX9iljXYuqna2NaWZwG6aO9CBO33t9HsKuRMiTPZo4kUv
- Awv4VbpuTP937iEUkx4wAakZKAXbbaH9YBDIy+3KCndyZqBhKpEEGoARaSgb7XjVRLZ4ItUqyRVKI
- p6cLCArkR0iqWlTx08hZKgtT8kBfrHG+/DxrafLTnU6+BZi2oFx/9F8wON2PsjE1hCxiMHknfCwKG
- OqLtdQrXjpwFGFTO4PpnKGBQyG/5ZXGAymBGanj/EYKrzost8aVdPOsuGTxNa3iJVdlwYPMzzxfGF
- 9xsPKiRyLMlvsNXJJlfAEPmyTSeUokUMr6+beN1zkR0tPqSDwMrNdtX+9fn6YJliaPNmACTAETGUX
- QCnJy05g2vxnDOnvqAvADkq6caNxa8YmD6pQVsnGY=;
+ bh=+iLnFnSkF1ih5/T5mQynKA+eHeYjoDfaR/4447dv4kI=; b=SoiMInGzyWXsfXSgSkJzpSLJyW
+ egF2VgrFd/CZPcrqmfnRbWnf7dV5hF5LXzho8rbvockRbjg13ggO+2OERSqULK/VYCJXNoO2q7pSV
+ oRvOtpjWzZ7UL99P638movMvKWfNE7NWVkRRUe/TFjnaIrAiP4ya9mEwFKp5exCFbldeYpCIQSjvy
+ Ue4OeZXJsD9sDv93MCASAoaI8T3WdexPgkZ1lXuqQxreo19iLAlz79x54MjGekLyp90f9x9AZ9bP+
+ N7/uYX2osZxA2wo087Q31kdrZP/VFeR5ekWEGcxIqW5KjpNqwMe7QvuqsfIzMx61adVvDPasixHzk
+ QaWcZG52RXEbP8IXdjRCK0/uxxJgCcfaGiWpoNmPAjFT1xySX9J1L1KalJRxuXp12N5Y4XvXIjQ19
+ uyoW2qL8783EI59AGs2oZHRu/MuNAlpnoYHn9Wlpmlmn33s1rHcREXJBNfcdaWS/YSWhNu5ooJS09
+ tig1omYUGAwVQLQHJP9a/z1ta7LSpaMmldXjQE0c1/QL2d28f3fG9SoxkHMs09O5LcXkZiYNKUxOT
+ 90yGQZDzE27drSaUuQR0ZAjs34YsywYjb7QLQo+2X/TW7IPMfxio1mPCITH2j7/sMtNYEg/Ed7rwk
+ gvNMMN55pOmKNWaIIwUpljT/50wZ0LuB7SdRiM3SQ=;
 Received: from [2a02:8012:2f01:0:d1ff:478a:c096:2d0c]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uaKcD-000Bmy-G4; Fri, 11 Jul 2025 21:45:05 +0100
+ id 1uaKcD-000Bmy-TH; Fri, 11 Jul 2025 21:45:06 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com,
 	fam@euphon.net,
 	qemu-devel@nongnu.org
-Date: Fri, 11 Jul 2025 21:46:33 +0100
-Message-Id: <20250711204636.542964-5-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 11 Jul 2025 21:46:34 +0100
+Message-Id: <20250711204636.542964-6-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250711204636.542964-1-mark.cave-ayland@ilande.co.uk>
 References: <20250711204636.542964-1-mark.cave-ayland@ilande.co.uk>
@@ -52,7 +52,7 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:d1ff:478a:c096:2d0c
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 4/7] esp.c: only call dma_memory_read function if transfer
+Subject: [PATCH v3 5/7] esp.c: only call dma_memory_write function if transfer
  length is non-zero
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
@@ -81,7 +81,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 In the cases where mixed DMA/non-DMA transfers are used or no data is
 available, it is possible for the calculated transfer length to be zero.
-Only call the dma_memory_read function where the transfer length is
+Only call the dma_memory_write function where the transfer length is
 non-zero to avoid invoking the DMA engine for a zero length transfer
 which can have side-effects (along with generating additional tracing
 noise).
@@ -89,54 +89,40 @@ noise).
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/scsi/esp.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ hw/scsi/esp.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 62ba406149..ec9fcbeddf 100644
+index ec9fcbeddf..1c7bad8fc0 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -487,8 +487,10 @@ static void esp_do_dma(ESPState *s)
-     case STAT_MO:
-         if (s->dma_memory_read) {
-             len = MIN(len, fifo8_num_free(&s->cmdfifo));
--            s->dma_memory_read(s->dma_opaque, buf, len);
--            esp_set_tc(s, esp_get_tc(s) - len);
-+            if (len) {
-+                s->dma_memory_read(s->dma_opaque, buf, len);
-+                esp_set_tc(s, esp_get_tc(s) - len);
-+            }
-         } else {
-             len = esp_fifo_pop_buf(s, buf, fifo8_num_used(&s->fifo));
-             len = MIN(fifo8_num_free(&s->cmdfifo), len);
-@@ -541,9 +543,11 @@ static void esp_do_dma(ESPState *s)
-         trace_esp_do_dma(cmdlen, len);
-         if (s->dma_memory_read) {
-             len = MIN(len, fifo8_num_free(&s->cmdfifo));
--            s->dma_memory_read(s->dma_opaque, buf, len);
--            fifo8_push_all(&s->cmdfifo, buf, len);
--            esp_set_tc(s, esp_get_tc(s) - len);
-+            if (len) {
-+                s->dma_memory_read(s->dma_opaque, buf, len);
-+                fifo8_push_all(&s->cmdfifo, buf, len);
-+                esp_set_tc(s, esp_get_tc(s) - len);
-+            }
-         } else {
-             len = esp_fifo_pop_buf(s, buf, fifo8_num_used(&s->fifo));
-             len = MIN(fifo8_num_free(&s->cmdfifo), len);
-@@ -572,8 +576,10 @@ static void esp_do_dma(ESPState *s)
+@@ -631,7 +631,9 @@ static void esp_do_dma(ESPState *s)
          switch (s->rregs[ESP_CMD]) {
          case CMD_TI | CMD_DMA:
-             if (s->dma_memory_read) {
--                s->dma_memory_read(s->dma_opaque, s->async_buf, len);
--                esp_set_tc(s, esp_get_tc(s) - len);
+             if (s->dma_memory_write) {
+-                s->dma_memory_write(s->dma_opaque, s->async_buf, len);
 +                if (len) {
-+                    s->dma_memory_read(s->dma_opaque, s->async_buf, len);
-+                    esp_set_tc(s, esp_get_tc(s) - len);
++                    s->dma_memory_write(s->dma_opaque, s->async_buf, len);
 +                }
              } else {
-                 /* Copy FIFO data to device */
-                 len = MIN(s->async_len, ESP_FIFO_SZ);
+                 /* Copy device data to FIFO */
+                 len = MIN(len, fifo8_num_free(&s->fifo));
+@@ -681,6 +683,7 @@ static void esp_do_dma(ESPState *s)
+                 buf[0] = s->status;
+ 
+                 if (s->dma_memory_write) {
++                    /* Length already non-zero */
+                     s->dma_memory_write(s->dma_opaque, buf, len);
+                 } else {
+                     esp_fifo_push_buf(s, buf, len);
+@@ -715,6 +718,7 @@ static void esp_do_dma(ESPState *s)
+                 buf[0] = 0;
+ 
+                 if (s->dma_memory_write) {
++                    /* Length already non-zero */
+                     s->dma_memory_write(s->dma_opaque, buf, len);
+                 } else {
+                     esp_fifo_push_buf(s, buf, len);
 -- 
 2.39.5
 
