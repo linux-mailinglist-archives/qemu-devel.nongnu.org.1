@@ -2,93 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DABE2B025CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83966B025E6
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:49:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKPu-0005EF-FY; Fri, 11 Jul 2025 16:32:23 -0400
+	id 1uaKe7-0003Mn-TR; Fri, 11 Jul 2025 16:47:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uaKFx-0000A3-5w
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 16:22:05 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uaKdj-0003Hf-Mm; Fri, 11 Jul 2025 16:46:40 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uaKFv-0006N2-Dq
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 16:22:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID;
- bh=VCofH/j+GYRl4YFlbd5iGZi4kBubhZv0QsPoqVNXCdQ=; b=RW1PHjpqZUX+kexcZTY9IwJjdo
- i2mDQpXtsSrGAJc3zr/eIB52lvfVtgDVvmO0IItMOdrDWJxj/ppn0C3l0W5Zfb3fglbE8mnrPuv/e
- 2MJgBnCwvgMlXXq4CR1i/8vmdTIJfJtAQ7udtS38139KojY4XhViM3FaW9J97uq4nNZsYaYP1Isav
- u0zb5lNwFog/M1sbOE2BLDggmufMh0QT92oYBINrBYpYdwsw3Zbd9xxCX0twLDNvLs7rH+I+Lk5R3
- gmxZSPeW0ccQdrOxMv80ymjPbvJ/ztIwvzRLHlpz+D/CrcWZFZkQq8+24LgW4pjUmTZH9hxdiRq0s
- 8Fdn1KZDlwPHJxYZ2DJ6WFRQGnG9kTgmZf+Z945eLKRT+7Xas6+J6g50e+ogGeRaIxASD8PNSKzJm
- amgNxUIXIldeltWdg4wy0JgDbdUaypUZ7oRcl1MuSZkEejUHi9zNvbmiK+JXTojOVESgKRNI41TuY
- v2WneNBeEAP+zcUJSSFe6yQjgfANDrTDXRQTTusmaMWd/WMZv8p91QgXo/EtYfzQrX4iMXos1Q3SM
- 4gkirw2P0oQaad0Ijea7kmx0cMgsElhSfml0nLez2QOHvPSe1eFQRVYVaF0scUq0rGu07Q2uEssDc
- jUjDIlAJ8jvl4CGiK4rnTHkKCs0LOyDJCfbCBIpXc=;
-Received: from [2a02:8012:2f01:0:d1ff:478a:c096:2d0c]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uaKEH-000Bao-UA; Fri, 11 Jul 2025 21:20:22 +0100
-Message-ID: <fe2518b0-6d2c-44c2-bc32-a166fa85133b@ilande.co.uk>
-Date: Fri, 11 Jul 2025 21:21:58 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uaKdh-0003g8-BT; Fri, 11 Jul 2025 16:46:39 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 25098135CFE;
+ Fri, 11 Jul 2025 23:46:04 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 020F823FF39;
+ Fri, 11 Jul 2025 23:46:31 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 00/15] Patch Round-up for stable 7.2.19,
+ freeze on 2025-07-21
+Date: Fri, 11 Jul 2025 23:46:15 +0300
+Message-ID: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- pbonzini@redhat.com, fam@euphon.net, qemu-devel@nongnu.org
-References: <20250618061249.743897-1-mark.cave-ayland@ilande.co.uk>
- <30d03eef-c0d8-4864-87d9-a3674d8f64a1@ilande.co.uk>
- <a515b6ad-b10d-4a78-9960-f75f3189adaf@linaro.org>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <a515b6ad-b10d-4a78-9960-f75f3189adaf@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:d1ff:478a:c096:2d0c
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 0/7] esp.c: only allow ESP commands permitted in the
- current mode
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,47 +57,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09/07/2025 12:16, Philippe Mathieu-Daudé wrote:
+The following patches are queued for QEMU stable v7.2.19:
 
-> Hi Mark,
-> 
-> On 9/7/25 09:50, Mark Cave-Ayland wrote:
->> On 18/06/2025 07:12, Mark Cave-Ayland wrote:
->>
->>> This series contains a few minor tidy-ups along with an implementation of the
->>> logic to only allow ESP commands permitted in the current mode. The motivation
->>> is to fix GitLab issue #2464 which causes Windows NT MIPS to bluescreen on
->>> boot.
->>>
->>> Patches 1 to 5 are simple tidy-ups from investigating the issue. Patch 6 adds
->>> a new asc_mode variable to indicate the current ESP mode, whilst patch 7 implements
->>> the feature which fixes GitLab issue #2464.
->>>
->>> Note: this series is being reposted as both the SeaBIOS and SeaBIOS hppa binaries
->>> currently distributed with QEMU have now been fixed so that they do not use an
->>> illegal ESP command sequence.
-> 
-> 
->>> Mark Cave-Ayland (7):
-> 
->>>    esp.c: add asc_mode property to indicate the current ESP mode
->>>    esp.c: only allow ESP commands permitted in the current asc_mode
->>>
->>>   hw/scsi/esp.c         | 94 +++++++++++++++++++++++++++++++++++++------
->>>   hw/scsi/trace-events  |  1 +
->>>   include/hw/scsi/esp.h | 15 ++++++-
->>>   3 files changed, 96 insertions(+), 14 deletions(-)
->>
->> Ping?
-> 
-> I reviewed 1-5 but don't have sufficient knowledge for 6-7 so
-> will defer these to Paolo.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-Thanks Phil, I really appreciate your effort to help out here.
+Patch freeze is 2025-07-21, and the release is planned for 2025-07-23:
 
+  https://wiki.qemu.org/Planning/7.2
 
-ATB,
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-Mark.
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 fb8e59abbe46 Jamin Lin:
+   hw/misc/aspeed_hace: Ensure HASH_IRQ is always set to prevent firmware 
+   hang
+02 a9403bfcd930 Huaitong Han:
+   vhost: Don't set vring call if guest notifier is unused
+03 5ddd6c8dc849 Volker Rümelin:
+   audio: fix SIGSEGV in AUD_get_buffer_size_out()
+04 eef2dd03f948 Fiona Ebner:
+   hw/core/qdev-properties-system: Add missing return in set_drive_helper()
+05 9c55c03c05c1 Bibo Mao:
+   hw/loongarch/virt: Fix big endian support with MCFG table
+06 f5ec751ee70d Shameer Kolothum:
+   hw/arm/virt: Check bypass iommu is not set for iommu-map DT property
+07 e372214e663a Ethan Chen:
+   qemu-options.hx: Fix reversed description of icount sleep behavior
+08 5ad2b1f443a9 J. Neuschäfer:
+   linux-user/arm: Fix return value of SYS_cacheflush
+09 0d0fc3f46589 Richard Henderson:
+   tcg: Fix constant propagation in tcg_reg_alloc_dup
+10 a412575837b6 Philippe Mathieu-Daudé:
+   target/arm: Correct KVM & HVF dtb_compatible value
+11 f9b0f6930407 Richard Henderson:
+   target/arm: Fix SME vs AdvSIMD exception priority
+12 b4b2e070f41d Richard Henderson:
+   target/arm: Fix sve_access_check for SME
+13 e6ffd009c771 Richard Henderson:
+   target/arm: Fix 128-bit element ZIP, UZP, TRN
+14 3801c5b75ffc Richard Henderson:
+   target/arm: Fix PSEL size operands to tcg_gen_gvec_ands
+15 cfc688c00ade Richard Henderson:
+   target/arm: Fix f16_dotadd vs nan selection
 
