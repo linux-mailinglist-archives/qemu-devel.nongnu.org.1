@@ -2,41 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95953B025FD
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:53:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7CBB02600
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:54:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKh3-0006WW-57; Fri, 11 Jul 2025 16:50:05 -0400
+	id 1uaKgn-0005mW-3y; Fri, 11 Jul 2025 16:49:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKe8-0003ST-JG; Fri, 11 Jul 2025 16:47:08 -0400
+ id 1uaKe9-0003SV-1k; Fri, 11 Jul 2025 16:47:08 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKe6-0003oT-Oz; Fri, 11 Jul 2025 16:47:04 -0400
+ id 1uaKe7-0003oy-BR; Fri, 11 Jul 2025 16:47:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C9B4B135D09;
+ by isrv.corpit.ru (Postfix) with ESMTP id D6C0F135D0A;
  Fri, 11 Jul 2025 23:46:04 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A7BDD23FF43;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B676723FF44;
  Fri, 11 Jul 2025 23:46:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 10/15] target/arm: Correct KVM & HVF dtb_compatible
- value
-Date: Fri, 11 Jul 2025 23:46:25 +0300
-Message-ID: <20250711204632.1804872-10-mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 11/15] target/arm: Fix SME vs AdvSIMD exception
+ priority
+Date: Fri, 11 Jul 2025 23:46:26 +0300
+Message-ID: <20250711204632.1804872-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 References: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,51 +58,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Linux kernel knows how to parse "arm,armv8", not "arm,arm-v8".
-
-See arch/arm64/boot/dts/foundation-v8.dts:
-
-  https://github.com/torvalds/linux/commit/90556ca1ebdd
+We failed to raise an exception when
+sme_excp_el == 0 and fp_excp_el == 1.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 26861c7ce06 ("target-arm: Add minimal KVM AArch64 support")
-Fixes: 585df85efea ("hvf: arm: Implement -cpu host")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250623121845.7214-10-philmd@linaro.org
+Fixes: 3d74825f4d6 ("target/arm: Add SME enablement checks")
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250704142112.1018902-2-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit a412575837b6a46584fba891e3706e87bd09a3e6)
-(Mjt: the change is in target/arm/kvm64.c, not ../kvm.c)
+(cherry picked from commit f9b0f69304071384b12912bf9dd78e9ffd261cec)
+(Mjt: compensate for target/arm/translate-a64.c => target/arm/tcg/
+ files move by v7.2.0-1632-gf0984d4040c3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 047cb8fc50..dfce8181f9 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -489,7 +489,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     hv_vcpu_exit_t *exit;
-     int i;
- 
--    ahcf->dtb_compatible = "arm,arm-v8";
-+    ahcf->dtb_compatible = "arm,armv8";
-     ahcf->features = (1ULL << ARM_FEATURE_V8) |
-                      (1ULL << ARM_FEATURE_NEON) |
-                      (1ULL << ARM_FEATURE_AARCH64) |
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index ed85bcfb5c..de69d8ade9 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -546,7 +546,7 @@ bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     }
- 
-     ahcf->target = init.target;
--    ahcf->dtb_compatible = "arm,arm-v8";
-+    ahcf->dtb_compatible = "arm,armv8";
- 
-     err = read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64pfr0,
-                          ARM64_SYS_REG(3, 0, 0, 4, 0));
+diff --git a/target/arm/translate-a64.c b/target/arm/translate-a64.c
+index 190574cb29..74237ef6f9 100644
+--- a/target/arm/translate-a64.c
++++ b/target/arm/translate-a64.c
+@@ -1251,7 +1251,8 @@ bool sme_enabled_check(DisasContext *s)
+      * to be zero when fp_excp_el has priority.  This is because we need
+      * sme_excp_el by itself for cpregs access checks.
+      */
+-    if (!s->fp_excp_el || s->sme_excp_el < s->fp_excp_el) {
++    if (s->sme_excp_el
++        && (!s->fp_excp_el || s->sme_excp_el <= s->fp_excp_el)) {
+         bool ret = sme_access_check(s);
+         s->fp_access_checked = (ret ? 1 : -1);
+         return ret;
 -- 
 2.47.2
 
