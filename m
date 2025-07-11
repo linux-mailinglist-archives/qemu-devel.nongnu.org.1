@@ -2,82 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89090B01B55
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 14:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E07C9B01B5C
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 14:01:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaCOt-0003Pa-Ks; Fri, 11 Jul 2025 07:58:47 -0400
+	id 1uaCQh-0004hQ-3j; Fri, 11 Jul 2025 08:00:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uaCI6-0000u4-Uk
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 07:51:49 -0400
-Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uaCI1-0005wI-6b
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 07:51:46 -0400
-Received: by mail-yb1-xb32.google.com with SMTP id
- 3f1490d57ef6-e81f311a86fso1762239276.3
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 04:51:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752234695; x=1752839495; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=PkPXSjTK0rVjwGCTVZSTkbB1nNouLjZ8dAkLqd3fm+w=;
- b=tAnWTLhQdRDWeF53r7YhAR+V7YvZBiLeCR5+Xu+PmOSFLKiZNtPgVTRrHe15Faxm1n
- 5xXdmr0A0vVQ57FLU/FTn07Iwhw1zJvV4SRrjMWMrSX4pnnuKKmHaXGn9B8nP4abhGzx
- UNJHuOSgGnFQjnqyj56b3v4q25w3Bp9WBjWPZcO7br8rYQd5Hui6seQ5pSNfqPHxSz8v
- yE5TKJ4jIh/egEs3gCLLcJg8swA4LWRtkHg9Z14s9hC/oAba2RA/PW5zZF1+fV017gkz
- zcbIUHO08TnMocx6HmXet8mfFyCssq4g2ZaOXXh//Pel3QN6FLDXQeneshejd+dGBWUc
- yGmw==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaCLj-0002BB-Sc
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 07:55:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uaCLf-0006aM-3C
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 07:55:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752234925;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=rYOoieg3xfj1xk0rOQOiEMyS5aHEKtSzPoIVmGyJ5cQ=;
+ b=i3eeTPlUdgNBqBoqJwgLg9fOroiGRkJKQP499mLjJmSl3XGAZ54fG+Qa760LFB8LlZlSYz
+ GwWUn2m2DJd0At6K5xXJJJ4KKOPAExuJOinFyYIkKx2hvBZWHcycozsI/e/mEuk7LKzrfl
+ CHFucxLcEocYF1YltGvL/N0q9V3gzsU=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-326-DggTFKNsMbKR48N7Hdskrw-1; Fri, 11 Jul 2025 07:55:24 -0400
+X-MC-Unique: DggTFKNsMbKR48N7Hdskrw-1
+X-Mimecast-MFC-AGG-ID: DggTFKNsMbKR48N7Hdskrw_1752234923
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-450d64026baso11157305e9.1
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 04:55:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752234695; x=1752839495;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1752234923; x=1752839723;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=PkPXSjTK0rVjwGCTVZSTkbB1nNouLjZ8dAkLqd3fm+w=;
- b=FRN4XEVuXfDkpNZaPqMFfpJxVexJb4S64MGp4oe31ArrAFebjjitfHs8CgTGmwfVAM
- MfIe+3LyNBEuNfO2nniAQ89zJh+7VLI/jJKwEIJvU5F5NFVSIb3jA3lUA8z917RALAji
- WOevlNCs9TNDhyG3iHHbc18kGCHsAd9uZE2AuKq2cjOd96yX0wY1NbU/M+f0PiDnohol
- 3lf4N81mBCIhIvTdHyo3m8Job83uzqAkLac4np3k59zxaFiACLLkWiMWzB8V2xyBAPoK
- I+A3g/9y/UDxcU/nEiB84aLgXGO3X6z85/5vPdR1SU6J6eNmsB8bsMMHW23b3Fj6SiZ3
- 8A8w==
+ bh=rYOoieg3xfj1xk0rOQOiEMyS5aHEKtSzPoIVmGyJ5cQ=;
+ b=a9BJeUmyaT5qDO3Pk7yl5qFtQ+AfyZnn12bIGH9rAFFt7r0ypKhmTcJ87W6Sdpu7b3
+ XrTRtMUm5rQQMWQDuTiGJ/lOpHJ4XZOeDpscmCfQ+2KPrNFO78qX6xS9uaHsIBgrACuT
+ B2zShSqxhJAubkT+m2FZDyLBpvqBwb9Syw2UwuutuEk8BrmuGOC2sPw1ddLBOO17UZiG
+ gFQEVPuqP85dBAYhKRVG71n+9hJ1ffNSnqMCrAndCEMT3m/6gVbxt/TFT3aY/N9WhwnN
+ bKfk4BLCrW4OqqAFKWQbMpGDXyE2ZgVerweMsf28QsrR9KOlMgOEi80xvqgF6vqgYsxX
+ 9kJg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXHggux+cudAqA82B1QWOn/6nLZrgLqSyo4LqKgQhauQTadhmRQh7ZyC/Gdo5COMH3HF0Ss97y99Whf@nongnu.org
-X-Gm-Message-State: AOJu0Ywv1SRPPeuOW0S4p5PjCa2eS/U/NoXfG/dUk1JeznYIqzS8Eq1B
- d2K/FXZ1rsOKXAjixMZGw9nuDuMCR5pu9+CpM8qUI6KMZWJYK7BqvYAa5jFXGwm2lzy3hLvMLnF
- IeQmiQgVA2pfGSu+R6dmSBQWO90QXxfcFvDOeUJWpwg==
-X-Gm-Gg: ASbGncs5lmIPkjFIO+xMloZlh/rCMBosOYaOFU/MyyrZ6X14qtiU+xnq7v9eRjoaBoF
- DgH0EgVJeJXCJ2EmhqmzGwluMm6IpXUA3YhxpJScgWj6SusdzUwIhlbVZfD/wqrh9hs3tu15+pR
- 3cZfbfslu5kscwSVNDY0a4C6LEM2FkwPQxe7EH+GKoNvESW5MUZhlxo6aJoqD8r2LHE/mjg8utT
- CjuqagR
-X-Google-Smtp-Source: AGHT+IFoiwOnUpLyR+KN+iyEROq/oXo7XB4Y00qbcU1sD3OMVYrcLEXsQcYofxIiO1h8pBqKO7hvps/4m9x1tzw+ZDE=
-X-Received: by 2002:a05:690c:9c08:b0:70e:404:85e5 with SMTP id
- 00721157ae682-717d5d7e0b7mr57539127b3.11.1752234694718; Fri, 11 Jul 2025
- 04:51:34 -0700 (PDT)
+ AJvYcCVnsfejoaADkAVcKuZ5VlHoIXC0MRcqDzLTSGNfNOXCbC5OimiJ0i4ROc1CBpkQXQIyxMjzXG44gr37@nongnu.org
+X-Gm-Message-State: AOJu0YxmbNQ5BbqycvTU6EDcoFA2HpJrV9cAQThuol02PUJN3KhxWpum
+ SAAdta34O1XuueKxQN6UvsXtux0sS0IT647p4rhdwDuxQ760egSqfA+PAUZ51i33kpAuwRrNMfY
+ Urw4LaEFiMDSKrmCjBe44Jtx7hU64u4jCaGpgB2ogtNNeRcV+yyQofIjt
+X-Gm-Gg: ASbGncsOH0D+pOzUB5wpsdyldHbS1vI4K0ncnGSZ9VC1yBQ6rXYSBDtjS8lweDXNCy7
+ tY6UwvofDGyb3XqSLd5nveN/QymIrls4UvFibQ/0hpKKo5PdPINmW3KwnN1sf6bBvuoQkMtzMYy
+ jau3xmGI+B3k938OT3dwHhuirAKWvStyw+1YU796IR2dHs88J4WpnZpxxVcDW8z2g1BjJd0iMZ5
+ CnwKDQUKP4+adsd52BoREWSeKhzNW70fqlgf29vxkqfBVwzYkgLv3kMDO67uAx63kOdHHIe572m
+ gApEx250uOg+d0bRtA2B91/kUNoo6jXqnEbq/Jkd1Am56EIFCXpJ2lwHcOIEl1tMbHAA2o/QoLm
+ YHVGE
+X-Received: by 2002:a05:600c:1c25:b0:442:c993:6f94 with SMTP id
+ 5b1f17b1804b1-455f7d131dfmr1167665e9.12.1752234922690; 
+ Fri, 11 Jul 2025 04:55:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE9q9MAa2Bvy/PgZjUdchi6hrPIJZKIPVaRW+2UgKH8mNPNbKXAHPp4i+CTWUOcqPuXvXUUCw==
+X-Received: by 2002:a05:600c:1c25:b0:442:c993:6f94 with SMTP id
+ 5b1f17b1804b1-455f7d131dfmr1167335e9.12.1752234922258; 
+ Fri, 11 Jul 2025 04:55:22 -0700 (PDT)
+Received: from [192.168.0.6] (ltea-047-064-115-149.pools.arcor-ip.net.
+ [47.64.115.149]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8e211dcsm4165373f8f.84.2025.07.11.04.55.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 11 Jul 2025 04:55:21 -0700 (PDT)
+Message-ID: <8f90fbd7-1edd-45cc-9540-06fd9d0ee978@redhat.com>
+Date: Fri, 11 Jul 2025 13:55:20 +0200
 MIME-Version: 1.0
-References: <20250710210941.1098088-1-gustavo.romero@linaro.org>
-In-Reply-To: <20250710210941.1098088-1-gustavo.romero@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 11 Jul 2025 12:51:23 +0100
-X-Gm-Features: Ac12FXzA-cj63yHBZqlwutH3ipC8Ek2IE6TweFaRQ0DJASyVHRhZ3vO65k0MruU
-Message-ID: <CAFEAcA-W4wHLxPw7QDauQitBPV+JryBb3A2uvKS6UrDgwL8ssQ@mail.gmail.com>
-Subject: Re: [PATCH-for-10.1 v6 0/6] target/arm: Add FEAT_MEC to max cpu
-To: Gustavo Romero <gustavo.romero@linaro.org>
-Cc: qemu-arm@nongnu.org, richard.henderson@linaro.org, alex.bennee@linaro.org, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb32.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] tests/functional: Move tests into architecture
+ specific folders
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
+ qemu-riscv@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20250710094251.139514-1-thuth@redhat.com>
+ <643f1db1-4a7a-4bc0-a187-9ff1561f8a3d@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <643f1db1-4a7a-4bc0-a187-9ff1561f8a3d@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,65 +157,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Jul 2025 at 22:11, Gustavo Romero <gustavo.romero@linaro.org> wrote:
->
-> Since v4:
->
-> - Moved MECID_WIDTH from cpu.h to internal.h
-> - Fixed stray ';'s in access and write functions
-> - Use of GET_IDREG/FIELD_DP64/SET_IDREG for setting feature in ID regs
-> - Sorted correctly isar_feature_aa64_* AA64MMFR3 tests
-> - Simplified/unified accessfn for cache instructions
-> - Fixed how cache instruction-related registers are registered in the cpu
->
-> Since v5:
-> - Fixed missing checks for ARM_FEATURE_EL3 in sctlr2_el2_access and
->   tcr2_el2_access functions
->
-> v1: https://mail.gnu.org/archive/html/qemu-devel/2025-06/msg04598.html
-> v2: https://mail.gnu.org/archive/html/qemu-devel/2025-07/msg01799.html
-> v3: https://mail.gnu.org/archive/html/qemu-devel/2025-07/msg02338.html
-> v4: https://mail.gnu.org/archive/html/qemu-devel/2025-07/msg02488.html
-> v5: https://mail.gnu.org/archive/html/qemu-devel/2025-07/msg02689.html
->
-> This series adds support for all FEAT_MEC registers and cache instructions to
-> the Arm64 max CPU.
+On 10/07/2025 17.51, Pierrick Bouvier wrote:
+> On 7/10/25 2:42 AM, Thomas Huth wrote:
+>> This patch tackles two issues. First, the tests/functional folder has
+>> become quite crowded already, some restructuring would be helpful here.
+>> Second, we currently encode the target architecture twice in the test
+>> names since a lot of the test file names contain the target, too.
+>> This contributes to the very long output lines when running "make
+>> check-functional".
+>>
+> 
+> I agree with the "crowded" aspect of functional tests, and subfolders are 
+> definitely welcome.
+> 
+> Concerning the long line, it seems that setup ("thorough" in this example) 
+> is repeated 3 times on it, which is a bigger issue than having arch name 
+> being repeated.
+> 
+> A simpler solution for the "long line" issue would be to change 
+> mtest2make.py to generate shorter test target names. This would not benefit 
+> for using meson test directly, but from what I understood, this is not 
+> recommended nor supported anyway.
 
-This fails "make check":
+I agree that this is a bigger annoyance here, but as far as I understood 
+that that repeated "thorough" term is just a listing of all the test suites 
+that the test is part of. I think this would rather need to be fixed on the 
+meson test runner side - why does meson list all test suites here? The one 
+that applies to the current should be enough, shouldn't it?
 
- 16/247 qemu:qtest+qtest-aarch64 / qtest-aarch64/test-hmp
-     ERROR           40.82s   killed by signal 6 SIGABRT
- 18/247 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test
-     ERROR          181.28s   killed by signal 6 SIGABRT
+  Thomas
 
-This is because running sbsa-ref hits an assert:
-
-$ ./build/x86/qemu-system-aarch64 -M sbsa-ref
-**
-ERROR:../../target/arm/helper.c:4588:define_arm_vh_e2h_redirects_aliases:
-assertion failed: (src_reg != NULL)
-Bail out! ERROR:../../target/arm/helper.c:4588:define_arm_vh_e2h_redirects_aliases:
-assertion failed: (src_reg != NULL)
-Aborted (core dumped)
-
-which is because your entry in the E2HAlias list in
-define_arm_vh_e2h_redirects_aliases() is missing an
-isar_feature_* gate. Without that, the function will
-try to define the alias register even when the CPU
-doesn't have FEAT_SCTLR2, and asserts because it can't
-find the register it's supposed to be aliasing.
-
-I think also that arm_emulate_firmware_reset() should
-be setting the new SCR_EL3 bits when the relevant
-features are present. Otherwise when we direct boot
-a Linux guest at EL1 or EL2 on a config where the CPU
-has EL3 it will take an exception when it tries to access
-the registers.
-
-You'll also find the series needs rebasing as I've got
-RTH's "move code out to cpregs-at.c and cpregs-pmu.c"
-patches in target-arm.next.
-
-thanks
--- PMM
 
