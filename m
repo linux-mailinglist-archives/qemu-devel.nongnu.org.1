@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7CBB02600
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E202B025FE
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:53:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKgn-0005mW-3y; Fri, 11 Jul 2025 16:49:53 -0400
+	id 1uaKgE-0005Gk-9y; Fri, 11 Jul 2025 16:49:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKe9-0003SV-1k; Fri, 11 Jul 2025 16:47:08 -0400
+ id 1uaKeW-0003Yh-6p; Fri, 11 Jul 2025 16:47:34 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKe7-0003oy-BR; Fri, 11 Jul 2025 16:47:04 -0400
+ id 1uaKeU-0003pW-0I; Fri, 11 Jul 2025 16:47:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D6C0F135D0A;
+ by isrv.corpit.ru (Postfix) with ESMTP id E3BC0135D0B;
  Fri, 11 Jul 2025 23:46:04 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B676723FF44;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C363A23FF45;
  Fri, 11 Jul 2025 23:46:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 11/15] target/arm: Fix SME vs AdvSIMD exception
- priority
-Date: Fri, 11 Jul 2025 23:46:26 +0300
-Message-ID: <20250711204632.1804872-11-mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 12/15] target/arm: Fix sve_access_check for SME
+Date: Fri, 11 Jul 2025 23:46:27 +0300
+Message-ID: <20250711204632.1804872-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 References: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
@@ -60,34 +59,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-We failed to raise an exception when
-sme_excp_el == 0 and fp_excp_el == 1.
+Do not assume SME implies SVE.  Ensure that the non-streaming
+check is present along the SME path, since it is not implied
+by sme_*_enabled_check.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 3d74825f4d6 ("target/arm: Add SME enablement checks")
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250704142112.1018902-2-richard.henderson@linaro.org
+Message-id: 20250704142112.1018902-3-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit f9b0f69304071384b12912bf9dd78e9ffd261cec)
+(cherry picked from commit b4b2e070f41dd8774a70c6186141678558d79a38)
 (Mjt: compensate for target/arm/translate-a64.c => target/arm/tcg/
  files move by v7.2.0-1632-gf0984d4040c3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/arm/translate-a64.c b/target/arm/translate-a64.c
-index 190574cb29..74237ef6f9 100644
+index 74237ef6f9..7210a9cc4d 100644
 --- a/target/arm/translate-a64.c
 +++ b/target/arm/translate-a64.c
-@@ -1251,7 +1251,8 @@ bool sme_enabled_check(DisasContext *s)
-      * to be zero when fp_excp_el has priority.  This is because we need
-      * sme_excp_el by itself for cpregs access checks.
-      */
--    if (!s->fp_excp_el || s->sme_excp_el < s->fp_excp_el) {
-+    if (s->sme_excp_el
-+        && (!s->fp_excp_el || s->sme_excp_el <= s->fp_excp_el)) {
-         bool ret = sme_access_check(s);
-         s->fp_access_checked = (ret ? 1 : -1);
+@@ -1187,11 +1187,8 @@ static bool fp_access_check_only(DisasContext *s)
+     return true;
+ }
+ 
+-static bool fp_access_check(DisasContext *s)
++static bool nonstreaming_check(DisasContext *s)
+ {
+-    if (!fp_access_check_only(s)) {
+-        return false;
+-    }
+     if (s->sme_trap_nonstreaming && s->is_nonstreaming) {
+         gen_exception_insn(s, 0, EXCP_UDEF,
+                            syn_smetrap(SME_ET_Streaming, false));
+@@ -1200,6 +1197,11 @@ static bool fp_access_check(DisasContext *s)
+     return true;
+ }
+ 
++static bool fp_access_check(DisasContext *s)
++{
++    return fp_access_check_only(s) && nonstreaming_check(s);
++}
++
+ /*
+  * Check that SVE access is enabled.  If it is, return true.
+  * If not, emit code to generate an appropriate exception and return false.
+@@ -1207,14 +1209,24 @@ static bool fp_access_check(DisasContext *s)
+  */
+ bool sve_access_check(DisasContext *s)
+ {
+-    if (s->pstate_sm || !dc_isar_feature(aa64_sve, s)) {
++    if (dc_isar_feature(aa64_sme, s)) {
+         bool ret;
+ 
+-        assert(dc_isar_feature(aa64_sme, s));
+-        ret = sme_sm_enabled_check(s);
++        if (s->pstate_sm) {
++            ret = sme_enabled_check(s);
++        } else if (dc_isar_feature(aa64_sve, s)) {
++            goto continue_sve;
++        } else {
++            ret = sme_sm_enabled_check(s);
++        }
++        if (ret) {
++            ret = nonstreaming_check(s);
++        }
+         s->sve_access_checked = (ret ? 1 : -1);
          return ret;
+     }
++
++ continue_sve:
+     if (s->sve_excp_el) {
+         /* Assert that we only raise one exception per instruction. */
+         assert(!s->sve_access_checked);
 -- 
 2.47.2
 
