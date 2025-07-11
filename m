@@ -2,69 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2170BB01359
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 08:12:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CD0B013A8
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 08:36:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua6ye-0007tC-44; Fri, 11 Jul 2025 02:11:20 -0400
+	id 1ua7MD-0007AN-Uv; Fri, 11 Jul 2025 02:35:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ua6yY-0007pq-4C
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 02:11:14 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ua7MB-00079Z-AD
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 02:35:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ua6yT-0006hi-0Y
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 02:11:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752214269; x=1783750269;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=qxXkCtpl/y24sU1FPu+473TDguqLVckNPEcZqd/MSDI=;
- b=YexHs1EffSYxz9IFnSC45YB29gMGPh2oNY8Fpu9qtvp3Lng2dwEZy/Wy
- XmwsK8HrstfsxDXzVRLkbP9OvXlGrj+EfU88azdWvkqSPpIGb0aSDeSMf
- 1T6KAyetmoUnviTYN3XVIyBPlBmAmcckK3fiadeBXKR1xlYocbdVYNLJn
- R05SBMnOjlR9s96Zthdzv/KaRl9smzNLBcD7n521rDBii2SJwmFkvvoD6
- /hTFSygC3xzGwO8ROVDHz5yUi6I+TpC/eZZNx1YEoMFx7KS26WWOqVKM4
- VKbYaLhhuzo75UuTKgqeNJHSsjprE2mO0Pwbn2KHUEbxn/0/nc89VHXvO g==;
-X-CSE-ConnectionGUID: ib+TABjwRfeUSHu/G121Pw==
-X-CSE-MsgGUID: ZfUqfepcR86058wZxttflA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="58315063"
-X-IronPort-AV: E=Sophos;i="6.16,302,1744095600"; d="scan'208";a="58315063"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2025 23:11:06 -0700
-X-CSE-ConnectionGUID: THfvMRuxTRiXT0lKFU+2hQ==
-X-CSE-MsgGUID: WRoqIScbSBySvtLGXtwVnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,302,1744095600"; d="scan'208";a="156377693"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 10 Jul 2025 23:11:04 -0700
-Date: Fri, 11 Jul 2025 14:32:33 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: Re: [PATCH 4/4] target/i386: move accel_cpu_instance_init to
- .instance_init
-Message-ID: <aHCwAXmW0De8ptqK@intel.com>
-References: <20250711000603.438312-1-pbonzini@redhat.com>
- <20250711000603.438312-5-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ua7M8-0004iQ-HD
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 02:35:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752215734;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=luclihnm42xg3dXz5nOTFOCtqSVaSFHbPTtBJWm+Rns=;
+ b=RUrzduUJLmz8IXuFyHB8j+WEKOuWV62rg5liNT8qtIRhb/TLdQDT6YApi9PZUFouYb55JT
+ hx+957fWWnLnvgOU+ro8fvfKlPpxX2gknq3Av48P6R0k9qzWU6Icn9rcZ9MR1HnOCZP0FF
+ J1V6FKe1Yw1Ann7Nyz9ua/zRrRYrVjk=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-364-s8bVZA73MS6qBlqm7NUySQ-1; Fri, 11 Jul 2025 02:35:33 -0400
+X-MC-Unique: s8bVZA73MS6qBlqm7NUySQ-1
+X-Mimecast-MFC-AGG-ID: s8bVZA73MS6qBlqm7NUySQ_1752215732
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-31218e2d5b0so3277806a91.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 23:35:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752215731; x=1752820531;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=luclihnm42xg3dXz5nOTFOCtqSVaSFHbPTtBJWm+Rns=;
+ b=ObcNIIa7igCK+EHC3DtuPWEg35A6/KPaa5anQKs+KkpKwmhSLPYWcf1CULYdWPgOEs
+ YKfwWlmS26U/sD6Vq79YqhT5tke+DltSBKboWOqb9srrOQBruBbuBiN0OxyaosYeAggQ
+ enJ26Rw8ZNg4j9i0HyFCSnaKlZzwHqNrhO1A0XmfCkPwIzMdzz5Wc2NeFLkomI3ZBUYw
+ sFLWE3J51nTv29br6axHuMqpjWngM2a19fzw5qrgOnuN+VW0GYv2odjaUXIZLGWUnWKM
+ 24BbgjEuCKiolOX2d9qt/Jf92LqitFkg6KyLqDOTT8Ypdi3NZuPdiN9dUhtyJOyp0rSK
+ bqbA==
+X-Gm-Message-State: AOJu0YzJnH9HtahiXVch8h6Dc0KH76576ctcHGGuA6SHtvdKU67i1php
+ hlRUffsCnyM6AvMZJMDYFLhuUlmEqLR7B/EsQCBYpx7ftXHPKraWRzQJ8tiNkwL4RLEJYbawOB2
+ 0+yuOgThVQ+WdrKtC3ddPJXejuW5s2eDsH0UMcveYRCVMecpeoJUOQlktS5hx6j9spahoNNKkp7
+ D1BlQsbaaiUGQl8HqmcnCl33EPwpBWaOvjvk7BJZQ=
+X-Gm-Gg: ASbGncuwvuQRLeB1f99BLmXduC6ugzYRAZaXCK8lnbk/aLBFRE+3uIQA9MRvgo8sf9V
+ 3I/eQ0U9EJI+01FjAB2y3xuXYyiTeJk2KCop5IbygDhKB9mIUyLNnKSYLWkl8tR9pclsIXSOUzu
+ vbtvrJB3bSMvqvDHtrk4vXAA==
+X-Received: by 2002:a17:90b:58f0:b0:311:df4b:4b94 with SMTP id
+ 98e67ed59e1d1-31c4ca64d62mr3236437a91.4.1752215730647; 
+ Thu, 10 Jul 2025 23:35:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFdOruhuqzLEswbR2q/aHeON5cLQSF6tkQ9DCmXOYK5asi8w+YvOH/7ebZk38VaTMzSYo7hgeEPfdvHBzvXau0=
+X-Received: by 2002:a17:90b:58f0:b0:311:df4b:4b94 with SMTP id
+ 98e67ed59e1d1-31c4ca64d62mr3236406a91.4.1752215730279; Thu, 10 Jul 2025
+ 23:35:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250711000603.438312-5-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20250711000603.438312-1-pbonzini@redhat.com>
+ <20250711000603.438312-3-pbonzini@redhat.com>
+ <92d23086-7866-44a0-b54e-7690c0306248@intel.com>
+In-Reply-To: <92d23086-7866-44a0-b54e-7690c0306248@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 11 Jul 2025 08:35:13 +0200
+X-Gm-Features: Ac12FXxgID-OCbApCCmL4-wj6m0l9os0s1yT_Jq1CLtHhcIqCUCOHFBXiwdR7v4
+Message-ID: <CABgObfbPXmBLrScC3nQMT5A7mf1xz0hSnkLdrvcFS=hGr3dxSg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] target/i386: nvmm, whpx: add accel/CPU class that
+ sets host vendor
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Zhao Liu <zhao1.liu@intel.com>
+Content-Type: multipart/alternative; boundary="0000000000002c76f30639a18422"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,37 +102,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 11, 2025 at 02:06:03AM +0200, Paolo Bonzini wrote:
-> Date: Fri, 11 Jul 2025 02:06:03 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 4/4] target/i386: move accel_cpu_instance_init to
->  .instance_init
-> X-Mailer: git-send-email 2.50.0
-> 
-> With the reordering of instance_post_init callbacks that is new in 10.1
-> accel_cpu_instance_init must execute in .instance_init as is already
-> the case for RISC-V.  Otherwise, for example, setting the vendor
-> property is broken when using KVM or Hypervisor.framework, because
-> KVM sets it *after* the user's value is set by DeviceState's
-> intance_post_init callback.
-> 
-> Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
+--0000000000002c76f30639a18422
+Content-Type: text/plain; charset="UTF-8"
 
-no, Intel doesn't deserve this credit. Instead, this bug is reported
-from these 2 people:
+Il ven 11 lug 2025, 04:18 Xiaoyao Li <xiaoyao.li@intel.com> ha scritto:
 
-"Like Xu" <like.xu.linux@gmail.com> - KUT Test
-"Dongli Zhang" <dongli.zhang@oracle.com> - PMU Fix
+> Besides, do we need to call host_cpu_max_instance_init() for the case of
+> xcc->max_features, like what has been done for kvm and hvf?
+>
 
-For reference: https://lore.kernel.org/qemu-devel/aFpocfTpBLB34N3l@intel.com/
+I am intentionally skipping that because it would not have any effect and
+there is no equivalent to KVM_GET_SUPPORTED_CPUID2 implemented for those
+accelerators.
 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  target/i386/cpu.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+Paolo
 
-LGTM,
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+>
+
+--0000000000002c76f30639a18422
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il ven 11 lug 2025, 04:18 Xiaoya=
+o Li &lt;<a href=3D"mailto:xiaoyao.li@intel.com">xiaoyao.li@intel.com</a>&g=
+t; ha scritto:</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
+px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+Besides, do we need to call host_cpu_max_instance_init() for the case of <b=
+r>
+xcc-&gt;max_features, like what has been done for kvm and hvf?<br></blockqu=
+ote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">I am intentio=
+nally skipping that because it would not have any effect and there is no eq=
+uivalent to KVM_GET_SUPPORTED_CPUID2 implemented for those accelerators.</d=
+iv><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"aut=
+o"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote_contai=
+ner"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
+rder-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+</blockquote></div></div></div>
+
+--0000000000002c76f30639a18422--
 
 
