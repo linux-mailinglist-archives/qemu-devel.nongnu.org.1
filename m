@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99ECB01011
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 02:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF37B01017
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 02:12:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua1I7-0006Oh-5b; Thu, 10 Jul 2025 20:07:03 -0400
+	id 1ua1NI-0001JZ-QZ; Thu, 10 Jul 2025 20:12:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ua1Hq-0006N0-1N
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 20:06:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1ua1LO-0000Pd-1B
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 20:10:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ua1Hk-0007Ys-Vv
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 20:06:45 -0400
+ id 1ua1LK-0008Nl-RM
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 20:10:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752192397;
+ s=mimecast20190719; t=1752192621;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fGW0HRmDK6hg15Zwtq0nBpsTyFBRjks26Xbj01uEwQU=;
- b=CjcYHMkgBNXsUNOm0vFmGMiiR2D3tlLv8cOZ88s4xASp16VvdoNuDO5DOEtL9fUPjDcbPC
- LJoeBDqjCv+pWifkErxerOqpGT42aTwNqvp3XZzkt26oErC2y1kGv6AEsEsYp6bmMqUKBd
- 3TCigxOOI6kbiXzVbRJ4Hm4K7IZe5MA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QhFZBsq2mcH705rIdIS5JbUfLJNtJ82JTmEQMfOv02Y=;
+ b=ZDHcEuWEPlXXbPaFsY5KUqudQpiEnLZV8wem34HSTNFtGDAWLy9n12TH5GtH5k9TyNANCo
+ X/tzxhMF5ez0dELGDTk4dvvk8eaK4tiJag5D1RyvJzYEG2AMCSUS7dtKuVPMd4i+/b3pmG
+ m7WJad6id5V2AZN72GIHoiG4CwbKAao=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-Yey_nKBSPFK06zSQuCGKUA-1; Thu, 10 Jul 2025 20:06:29 -0400
-X-MC-Unique: Yey_nKBSPFK06zSQuCGKUA-1
-X-Mimecast-MFC-AGG-ID: Yey_nKBSPFK06zSQuCGKUA_1752192388
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a4f65a705dso1090541f8f.2
- for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 17:06:29 -0700 (PDT)
+ us-mta-618-icg-pWw4NGKNTz8RPaoFgQ-1; Thu, 10 Jul 2025 20:06:35 -0400
+X-MC-Unique: icg-pWw4NGKNTz8RPaoFgQ-1
+X-Mimecast-MFC-AGG-ID: icg-pWw4NGKNTz8RPaoFgQ_1752192395
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-450de98b28eso12200195e9.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 17:06:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752192387; x=1752797187;
+ d=1e100.net; s=20230601; t=1752192393; x=1752797193;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fGW0HRmDK6hg15Zwtq0nBpsTyFBRjks26Xbj01uEwQU=;
- b=U2RZvhRbaHv0fM8S+Knkh6H3LIniZSpnD1M1iM0RyIQjn/ym9GElFW9yj5Vm+oyb8v
- jRb+QJHu5W5jbEMaMFg94cYJK7UeDswZRjtf6eHUaswZeLFGKdVtOCUQspW0Eh7ib/Zm
- OtkAR4K7/LXAM94CZGWZqA8wiYI8JavrUpMk8ZLmJI8AdiA44rY75rn/5III1ObvnaYR
- v0PRFZQODJFALdTcTcd+BOApXcF3nneHveMdjhLEvwDLUmfeT1pc4HPGn+p0GrTPmLtM
- EHDYdfgJfsU1pWgWFe8MzUbOWbvqkVsgRptSAfce40Uaoghser88medox2vWHXQHC5qS
- FOXg==
-X-Gm-Message-State: AOJu0YzGIhmVnckioZUcjD6RhQJ9GjfwDRA1dWdZ0IUDZCgjwJC+bDi8
- mDo/wt65RwjEhhLLAr/u3IlgANSV22OMlVekYArNULW9nZpNC3XUX+yfiJtR0mLLyQExAXUCHUh
- QBuVrZbFjtd9ziX0GJhltlpVIn6sarNg4YDGX1G9xpYdO4KUJhU5CWkIXeqp0zuQsiPXq3i05c1
- tewbhld3RF1g6SF50aaZdyzuBufyDSjznZLg8P1WX7
-X-Gm-Gg: ASbGncsHktak3WVdjGkAtQ7h3ZsGHqE6hT5mD5XRywH2Xw1y8awEuz+swR4SLk6jv2V
- xZcd0qdv4l3eD2zpo8R0knvOYmuIQHahmIris9C3yUPwz7nL9zUI/ioCAMVf8ZwMVhsKNlpXaTn
- a/ssiPXAfl5KpqRftwjNWeUcCZVZjXrZiAsGJPBUmrVYCqjmR1+G7lyWcp6d8Ra7cF4Z1/R9VNg
- 3mvLQSaWHkd7HFDDMhTdzTchHtBpsuIfKnN2aeXzb79BRnsM9yQWsNotJGelPfqOeaJNLRNczwu
- N9MYnRKsx+7C33mKdythOFWugg4Tggrpo8y3XctLb/aX
-X-Received: by 2002:a05:6000:26ca:b0:3aa:caea:aa7f with SMTP id
- ffacd0b85a97d-3b5f2e4901amr447822f8f.56.1752192387226; 
- Thu, 10 Jul 2025 17:06:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGCeBCjWW7gscQYOiEalbWaDB7ZdEriztzByvyPw7w09XAUBAbNyb3kuQ4/BOueiLDu8DRl+w==
-X-Received: by 2002:a05:6000:26ca:b0:3aa:caea:aa7f with SMTP id
- ffacd0b85a97d-3b5f2e4901amr447805f8f.56.1752192386738; 
- Thu, 10 Jul 2025 17:06:26 -0700 (PDT)
+ bh=QhFZBsq2mcH705rIdIS5JbUfLJNtJ82JTmEQMfOv02Y=;
+ b=iVLR+GrWYMBoQwKBumWtYmLpmdJIVzmT8fF65YOWufjrPRps4KSLsyMq3kY6mGyWg6
+ isp3m+XaOnPMgXCFhbAUwVFXoecOCLrarctGb+nItzuN8+0B1X8bsOKIvlU+WNeE7VQa
+ pf+FhCgQ7aV4DBqNC5xgScM0/g7rQbP60p801Cura1axnCJRK2/B65fVkrcDs0WveYlU
+ UxzPGpI8SSE9hJwp/o802v1LcjHrtHn0jUlUx3iSkKjgwQdjpQEIget7igphmPKfVO9x
+ mVUzc5t6hxsHSQM1BUp9LYJTrWmqA6w+Fq8kuFHAYMaMRZjfmyY2FVemGjIoEXrzoWj4
+ FzGA==
+X-Gm-Message-State: AOJu0YxpWV0l9904NADRYUIn1AOPaE1i2p46D9T9F/MDznE/d6w5oNh0
+ aHCQfCBvWN6hYWRRYddaTMP6bK+5bclXJcegXWkehZkPzHdGaLKYKb43XuFwo7vlbxiVc2WjjG8
+ BFtaKRfNbMasIesLGJEl7d9ZBh9YFKJSH43sPAaXt8AXbl6LLDjNguu99ut7ZH0ZkGyCs+5fbF7
+ 3/2/sNLWQ8oVCpF812hNVLf5Qxii7n+LUsZimjV3sv
+X-Gm-Gg: ASbGncvPVusS2SWD5UB6wU0DiwpxKCGw1YYkBJklTecmqstMaSe2F1EMJWyHm0pvFR9
+ wDsHI/3XrZiQQkb/NVcoYIJwgzCFI5/3R92yS4ZfjtIRXerhhudT1Obz//q3AXus3Q/1P7r/X0a
+ a6doOiH69QiqDAB9FA4zavhIWFjzJ/KXuGBlyS2YI4HT7BRYPxh85QyTaqzB8iXkL3cZhUVFzFI
+ AaejYPRQEPQWQXA0l3uzMcr5fZxCzkkmprMJNBFf3rT81iXJ891sKmTCH/TmuKYeuIktHR9uqza
+ rhK5a48rCm+pmoOUP4/6rLnFZfyzySlqaYICDbquILkk
+X-Received: by 2002:a05:600c:4ab0:b0:453:79e8:e92d with SMTP id
+ 5b1f17b1804b1-454db88fe12mr37626315e9.5.1752192392859; 
+ Thu, 10 Jul 2025 17:06:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGiq+8PT+39k8woi1szLsWTlwjyxZzgWbWPZ2b4aKH1GJ2nz38LYvfle0ZMuKv/W5NgZ+/FiQ==
+X-Received: by 2002:a05:600c:4ab0:b0:453:79e8:e92d with SMTP id
+ 5b1f17b1804b1-454db88fe12mr37626145e9.5.1752192392211; 
+ Thu, 10 Jul 2025 17:06:32 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.202.169])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc91d8sm2996066f8f.42.2025.07.10.17.06.22
+ 5b1f17b1804b1-454dd43915dsm32117665e9.7.2025.07.10.17.06.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jul 2025 17:06:22 -0700 (PDT)
+ Thu, 10 Jul 2025 17:06:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: xiaoyao.li@intel.com,
 	zhao1.liu@intel.com
-Subject: [PATCH 3/4] target/i386: allow reordering max_x86_cpu_initfn vs accel
- CPU init
-Date: Fri, 11 Jul 2025 02:06:02 +0200
-Message-ID: <20250711000603.438312-4-pbonzini@redhat.com>
+Subject: [PATCH 4/4] target/i386: move accel_cpu_instance_init to
+ .instance_init
+Date: Fri, 11 Jul 2025 02:06:03 +0200
+Message-ID: <20250711000603.438312-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250711000603.438312-1-pbonzini@redhat.com>
 References: <20250711000603.438312-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -91,8 +91,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,69 +108,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The PMU feature is only supported by KVM, so move it there.  And since
-all accelerators other than TCG overwrite the vendor, set it in
-max_x86_cpu_initfn only if it has not been initialized by the
-superclass.  This makes it possible to run max_x86_cpu_initfn
-after accelerator init.
+With the reordering of instance_post_init callbacks that is new in 10.1
+accel_cpu_instance_init must execute in .instance_init as is already
+the case for RISC-V.  Otherwise, for example, setting the vendor
+property is broken when using KVM or Hypervisor.framework, because
+KVM sets it *after* the user's value is set by DeviceState's
+intance_post_init callback.
 
+Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c         | 24 ++++++++++++------------
- target/i386/kvm/kvm-cpu.c |  2 ++
- 2 files changed, 14 insertions(+), 12 deletions(-)
+ target/i386/cpu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 69bdffbfe46..46d59229200 100644
+index 46d59229200..5f95bb97b82 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -6204,21 +6204,21 @@ static void max_x86_cpu_class_init(ObjectClass *oc, const void *data)
- static void max_x86_cpu_initfn(Object *obj)
- {
-     X86CPU *cpu = X86_CPU(obj);
--
--    /* We can't fill the features array here because we don't know yet if
--     * "migratable" is true or false.
--     */
--    object_property_set_bool(OBJECT(cpu), "pmu", true, &error_abort);
-+    CPUX86State *env = &cpu->env;
+@@ -6207,8 +6207,8 @@ static void max_x86_cpu_initfn(Object *obj)
+     CPUX86State *env = &cpu->env;
  
      /*
--     * these defaults are used for TCG and all other accelerators
--     * besides KVM and HVF, which overwrite these values
-+     * these defaults are used for TCG, other accelerators overwrite these
-+     * values
+-     * these defaults are used for TCG, other accelerators overwrite these
+-     * values
++     * these defaults are used for TCG, other accelerators have overwritten
++     * these values
       */
--    object_property_set_str(OBJECT(cpu), "vendor", CPUID_VENDOR_AMD,
--                            &error_abort);
--    object_property_set_str(OBJECT(cpu), "model-id",
--                            "QEMU TCG CPU version " QEMU_HW_VERSION,
--                            &error_abort);
-+    if (!env->cpuid_vendor1) {
-+        object_property_set_str(OBJECT(cpu), "vendor", CPUID_VENDOR_AMD,
-+                                &error_abort);
-+    }
-+    if (!env->cpuid_model[0]) {
-+        object_property_set_str(OBJECT(cpu), "model-id",
-+                                "QEMU TCG CPU version " QEMU_HW_VERSION,
-+                                &error_abort);
-+    }
+     if (!env->cpuid_vendor1) {
+         object_property_set_str(OBJECT(cpu), "vendor", CPUID_VENDOR_AMD,
+@@ -9043,8 +9043,6 @@ static void x86_cpu_post_initfn(Object *obj)
+         }
+     }
+ 
+-    accel_cpu_instance_init(CPU(obj));
+-
+ #ifndef CONFIG_USER_ONLY
+     if (current_machine && current_machine->cgs) {
+         x86_confidential_guest_cpu_instance_init(
+@@ -9119,6 +9117,8 @@ static void x86_cpu_initfn(Object *obj)
+     if (xcc->model) {
+         x86_cpu_load_model(cpu, xcc->model);
+     }
++
++    accel_cpu_instance_init(CPU(obj));
  }
  
- static const TypeInfo max_x86_cpu_type_info = {
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index 0fb88a239d4..6fed353548e 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -111,6 +111,8 @@ static void kvm_cpu_max_instance_init(X86CPU *cpu)
- 
-     host_cpu_max_instance_init(cpu);
- 
-+    object_property_set_bool(OBJECT(cpu), "pmu", true, &error_abort);
-+
-     if (lmce_supported()) {
-         object_property_set_bool(OBJECT(cpu), "lmce", true, &error_abort);
-     }
+ static int64_t x86_cpu_get_arch_id(CPUState *cs)
 -- 
 2.50.0
 
