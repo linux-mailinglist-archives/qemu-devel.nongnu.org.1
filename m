@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49186B0228B
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 19:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B61A0B02290
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 19:25:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaHSo-0001qF-Kv; Fri, 11 Jul 2025 13:23:10 -0400
+	id 1uaHSo-0001pd-7H; Fri, 11 Jul 2025 13:23:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uaHSl-0001nX-0Y
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:07 -0400
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+ id 1uaHSl-0001nk-Vs
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:08 -0400
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uaHSj-00031e-Dx
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:06 -0400
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-40b31468da3so742601b6e.0
+ id 1uaHSk-00032F-A9
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:07 -0400
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-407a6c6a6d4so704253b6e.1
  for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 10:23:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752254584; x=1752859384; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752254585; x=1752859385; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CVx2jKX8CzeoLD3wyy6xeP6kf7orExLEfbHtWwveu1s=;
- b=PfWUrxuMVRVRSNfdpT6g4m+evupNlOzm8bDVsKlPeUg7V5SkeqsMsEBfHJJnnKXWvd
- TXC+n11NNZESiW2/+itufdsEhexH7EYV2b5nLlYpn8AJW1fm6CclAjluojN6tVazStRJ
- mX/1AJ5+usJFg693i9oqYK6et/Req4Rs/Spw9Hpbywo+8M1GR7VdGN4OErJZvjOHtcdw
- vDNv+HRjH7YTqNH3myU9mLntRrNT34AnCiLNf9u7oYC9S3o+1iaQatENKpqf+IRnEblL
- WhJj1btrFO9K/3eIu/COkH9P5P/WB6+djeSC/6Vy4e7MdYVqXhF/ALntnBw/AGBAGH4P
- ng6Q==
+ bh=xI3qXJJNrbG+1eXwshqtVlZ2UKNtJqDGVC4tuDSKaLE=;
+ b=f8jL89sDYu/WspPQJwifkawB3FDMqdGtMEcIkfTb0un3BiAlhNhyIvHybMy3cvqnFa
+ 9dKqH5T7yQDApkD7MTNMCaI1k+MJJVEddI7mthpXEdMvXa4SJP6Al6R9WOirIsV/ICt0
+ ebeQo5nhvegQdvUsenBfRouDP9zqTpRKh8oyR/LHx6rqLYlGXO4+JJN6SxPccPgwY1YR
+ vtt8yFReNmvRsaAZvzy0pVWXrheswJz/YB0B5E0fKj4mIc4GSV3bhrCwxecZtC8dMB/2
+ FakBzCj6ZUz0NAEq+4kmPKIx8SLuQcPiBOSVstFqopmk/acOdEfhEBCqDBLUk+hwNHOC
+ GRQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752254584; x=1752859384;
+ d=1e100.net; s=20230601; t=1752254585; x=1752859385;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CVx2jKX8CzeoLD3wyy6xeP6kf7orExLEfbHtWwveu1s=;
- b=gEL68ENj/K4TCFdMYUCo6RYKQdGKVstOkNPOApbKtCGc3A1Y6dpbIUvZSwTENxw1Tv
- I+yGJJdLS5VfwP9QxknTxtDXtSVIyOjTgsQ6BnY7knm4IbKJfRh14RqC4RyaoAbIJZL/
- PTHwD9yhWpP0TpF9EVMEe/4nl8hLz256hiaBoCaVisAySsoOnH55lcb4Tzs8fPN/dgdF
- QkH+otSnC4JOQt9QTVBECnjUr6uIYBCzhVrXb3d8e7oUaVDbXnlMZnFTycXoq01zzJi/
- QlUR/r/w5APwfH4BdCfCSSQxt6aGRiyNZtOrkIN3pHp277lFCD0p5Y3t8jydE/G/uJd9
- PUOA==
-X-Gm-Message-State: AOJu0Yz3sa1CcnXHe7QbcZSMKrAHYT9u1tNqxd5GIIAtdtLiIAJY4bIJ
- oxTEtOBALpfcvK8i2TW1XyRVwnUAThUO3EaTc1vq2Ksk8P093LpAjXprcU/FCBi3JqFldH+93Jy
- CyyX9sC8=
-X-Gm-Gg: ASbGnctDxqQ7oTfe5Kx/bJ0VvfZWAaHv2vhK12S2DiD0xaG15mV/eAFlwxvI3qSMaPf
- TOaYC2rWBW2lXW1MUHTSRiI4R4aguMOg+CknHpP9sfY4Qg6fkH7ze5ETsnaptpCy3HgEMk8Ydz5
- OxrDSiWkdm9fZGuRubKsAC2dnLzmmnt+LyVP+rh2VY8ngxKkedfuLDMFyC8VXff5XUi8G6zbia+
- PUcxYmec/kFn6n8bCnx3ZjhX4oPru3IMysO5IYZ0TI8uprVn3W70mY5tGk4svYd+LWeyK8pSghZ
- Qt2PoBlZn+FT3r5YJlXOyM4PuI+bgo3H48IwCiuNXUEezP5WKtgTuXYyYesfvgYDcyWbOQuXwA/
- IjWYoMDn0zS2wyfuj39Z5kjgHLOMnbPQb6COBJ3swreuN2/knigvauH6LvjTTbZJg54Vua4UKYq
- jeGYsb4dF5
-X-Google-Smtp-Source: AGHT+IHx6iQNIDyK/HnjodRuXDdYKAXcrjhKyPGcm8Lia4QklcQUe9kuTwYI/JaOJmNjfvMcAVBhuA==
-X-Received: by 2002:a05:6808:508d:b0:402:18a1:843f with SMTP id
- 5614622812f47-4150f9a7c9amr3236179b6e.32.1752254584061; 
- Fri, 11 Jul 2025 10:23:04 -0700 (PDT)
+ bh=xI3qXJJNrbG+1eXwshqtVlZ2UKNtJqDGVC4tuDSKaLE=;
+ b=n9nrnH+0nPWRfc3A/tdjgC19VGX10qC8MlSdv1IRDwwj1Q7T/2F73r+WziunJfUsAe
+ anzhR1WJNJlOY1GwwqgH8xBYWF7UXPGLmRHzhpMpKNxQUH0vsK8OVNeNYF4N8cn1yuQW
+ Q/VLMwkYvHI15RjwOIlE/g1K/TC758a/ZRuQhW/qubsX3qTcjUzJWR42QT4f06Sfnn5T
+ ZZ69AU15wHM5c+OvYL23wVT3rCTY8fNXivbd4w1Wp5y5Woil8HA2uDBzzrzUDL+52xyj
+ j9FMy69pSo7jTjQ7DC7e3ALEHpz/HNjYL1aFO+lWLo0XFoB+zI8E5b3V4f2XiW2Isxsi
+ p48A==
+X-Gm-Message-State: AOJu0YxPDMLg2Sb4Hozz2DPC15lB+xuDpZwJCCAHZwgstfKa977i8DiT
+ vcCLDVNv3he3E2kNcApTI0YTSjW84o5HnlK7DAj9VtzpMhNcaNcw7MsGfsutsKmfjC/KWjv1Fro
+ j6h9pLrM=
+X-Gm-Gg: ASbGnctXJ8P5AQ1hCbCrx3PBd6rtH1rzhl80AXcLoa3/wtO4z4rI6en3WsKvilgx+8z
+ NrdL6mN+BAvg5RjsrHkdL+S6Gxq0wMiQJQ33RQcQRSlHi+VNTHm8YFe9jaHC2PMFyTdN+8qbWIb
+ 4Ah+QhjEi8DQDsmhluhkwIl4+CF+FSjx4Lgba/9bZTvS+RbM+3EjdKw+es2rbj+OirTVjg9dXQT
+ 4SUHkWYkzJdKsJkueOslAVCNQ7QlDV00L+KpRpCDbb18Yb8LC73D9SHigL7ExDWDGwI9GbgEM3H
+ L9pZdy2xX+POFtja29EaPCztrOJ6uLn9U39C5grV0sRkFlN9yDNcQbX75CL7BHQqhwk8a2MWYNX
+ 05iD1Z4V/etRWtzRmGmmCQBEdJBsYPe2XPsrd+OFUKTXZD8VxpvvvAaAY+6QnMxgZR+w4qF3e0U
+ om1poXyHIL
+X-Google-Smtp-Source: AGHT+IGOTasE1tX7VK2+32/MarPTidOjsEui7ZD0DIFTEZtrd+12wp2Qovx5MKFfRTgbUcN1pp+Wjg==
+X-Received: by 2002:a05:6808:3307:b0:408:548:8050 with SMTP id
+ 5614622812f47-4150f5bb2ccmr3030102b6e.18.1752254585113; 
+ Fri, 11 Jul 2025 10:23:05 -0700 (PDT)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-4141c77ada0sm602041b6e.44.2025.07.11.10.23.03
+ 5614622812f47-4141c77ada0sm602041b6e.44.2025.07.11.10.23.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Jul 2025 10:23:03 -0700 (PDT)
+ Fri, 11 Jul 2025 10:23:04 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 6/9] linux-user/mips/o32: Drop sa_restorer functionality
-Date: Fri, 11 Jul 2025 11:22:51 -0600
-Message-ID: <20250711172254.229201-7-richard.henderson@linaro.org>
+Cc: Geoffrey Thomas <geofft@ldpreload.com>,
+	qemu-stable@nongnu.org
+Subject: [PULL 7/9] linux-user: Hold the fd-trans lock across fork
+Date: Fri, 11 Jul 2025 11:22:52 -0600
+Message-ID: <20250711172254.229201-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250711172254.229201-1-richard.henderson@linaro.org>
 References: <20250711172254.229201-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x236.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,54 +100,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Weißschuh <thomas@t-8ch.de>
+From: Geoffrey Thomas <geofft@ldpreload.com>
 
-The Linux kernel dropped support for sa_restorer on O32 MIPS in the
-release 2.5.48 because it was unused. See the comment in
-arch/mips/include/uapi/asm/signal.h.
+If another thread is holding target_fd_trans_lock during a fork,
+then the lock becomes permanently locked in the child and the
+emulator deadlocks at the next interaction with the fd-trans table.
+As with other locks, acquire the lock in fork_start() and release
+it in fork_end().
 
-Applications using the kernels UAPI headers will not reserve enough
-space for qemu-user to copy the sigaction.sa_restorer field to.
-Unrelated data may be overwritten.
-
-Align qemu-user with the kernel by also dropping sa_restorer support.
-
-Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Geoffrey Thomas <geofft@ldpreload.com>
+Fixes: c093364f4d91 "fd-trans: Fix race condition on reallocation of the translation table."
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2846
+Buglink: https://github.com/astral-sh/uv/issues/6105
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250709-mips-sa-restorer-v1-1-fc17120e4afe@t-8ch.de>
+Message-ID: <20250314124742.4965-1-geofft@ldpreload.com>
 ---
- linux-user/mips/target_signal.h | 1 -
- linux-user/syscall_defs.h       | 4 ----
- 2 files changed, 5 deletions(-)
+ linux-user/fd-trans.h | 10 ++++++++++
+ linux-user/main.c     |  2 ++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/linux-user/mips/target_signal.h b/linux-user/mips/target_signal.h
-index fa542c1f4e..4481426b99 100644
---- a/linux-user/mips/target_signal.h
-+++ b/linux-user/mips/target_signal.h
-@@ -64,7 +64,6 @@ typedef struct target_sigaltstack {
- #define TARGET_SA_NODEFER       0x40000000
- #define TARGET_SA_RESTART       0x10000000
- #define TARGET_SA_RESETHAND     0x80000000
--#define TARGET_SA_RESTORER      0x04000000      /* Only for O32 */
+diff --git a/linux-user/fd-trans.h b/linux-user/fd-trans.h
+index 910faaf237..e14f96059c 100644
+--- a/linux-user/fd-trans.h
++++ b/linux-user/fd-trans.h
+@@ -36,6 +36,16 @@ static inline void fd_trans_init(void)
+     qemu_mutex_init(&target_fd_trans_lock);
+ }
  
- #define TARGET_MINSIGSTKSZ    2048
++static inline void fd_trans_prefork(void)
++{
++    qemu_mutex_lock(&target_fd_trans_lock);
++}
++
++static inline void fd_trans_postfork(void)
++{
++    qemu_mutex_unlock(&target_fd_trans_lock);
++}
++
+ static inline TargetFdDataFunc fd_trans_target_to_host_data(int fd)
+ {
+     if (fd < 0) {
+diff --git a/linux-user/main.c b/linux-user/main.c
+index a9142ee726..f4f2007439 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -149,12 +149,14 @@ void fork_start(void)
+     cpu_list_lock();
+     qemu_plugin_user_prefork_lock();
+     gdbserver_fork_start();
++    fd_trans_prefork();
+ }
  
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 5d22759992..df26a2d28f 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -515,10 +515,6 @@ struct target_sigaction {
-     abi_ulong       _sa_handler;
- #endif
-     target_sigset_t sa_mask;
--#ifdef TARGET_ARCH_HAS_SA_RESTORER
--    /* ??? This is always present, but ignored unless O32.  */
--    abi_ulong sa_restorer;
--#endif
- };
- #else
- struct target_old_sigaction {
+ void fork_end(pid_t pid)
+ {
+     bool child = pid == 0;
+ 
++    fd_trans_postfork();
+     qemu_plugin_user_postfork(child);
+     mmap_fork_end(child);
+     if (child) {
 -- 
 2.43.0
 
