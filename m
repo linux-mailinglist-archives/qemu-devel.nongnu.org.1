@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56DDB025F0
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D05BB025F4
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:52:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKik-0000TR-Sp; Fri, 11 Jul 2025 16:51:51 -0400
+	id 1uaKis-0001On-9n; Fri, 11 Jul 2025 16:51:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKe5-0003Nv-Cr; Fri, 11 Jul 2025 16:47:01 -0400
+ id 1uaKe5-0003QA-UA; Fri, 11 Jul 2025 16:47:01 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKe3-0003mz-48; Fri, 11 Jul 2025 16:47:00 -0400
+ id 1uaKe3-0003n2-9Y; Fri, 11 Jul 2025 16:47:01 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A49F9135D07;
+ by isrv.corpit.ru (Postfix) with ESMTP id BB885135D08;
  Fri, 11 Jul 2025 23:46:04 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7A44823FF41;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9147E23FF42;
  Fri, 11 Jul 2025 23:46:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?J=2E=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 08/15] linux-user/arm: Fix return value of
- SYS_cacheflush
-Date: Fri, 11 Jul 2025 23:46:23 +0300
-Message-ID: <20250711204632.1804872-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 09/15] tcg: Fix constant propagation in
+ tcg_reg_alloc_dup
+Date: Fri, 11 Jul 2025 23:46:24 +0300
+Message-ID: <20250711204632.1804872-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 References: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,31 +58,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: J. Neuschäfer <j.neuschaefer@gmx.net>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Although the emulated cacheflush syscall does nothing, it still needs to
-return zero to indicate success.
+The scalar constant must be replicated for dup.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: J. Neuschäfer <j.neuschaefer@gmx.net>
-Message-id: 20250613-cache-v1-1-ee9f4a9ba81b@gmx.net
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 5ad2b1f443a96444cf3e7a2fbe17aae696201012)
+Fixes: bab1671f0fa ("tcg: Manually expand INDEX_op_dup_vec")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3002
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 0d0fc3f4658937fb81fcc16a89738e83bd8d4795)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
-index 85804c367a..f87e85c9e6 100644
---- a/linux-user/arm/cpu_loop.c
-+++ b/linux-user/arm/cpu_loop.c
-@@ -395,6 +395,7 @@ void cpu_loop(CPUARMState *env)
-                     switch (n) {
-                     case ARM_NR_cacheflush:
-                         /* nop */
-+                        env->regs[0] = 0;
-                         break;
-                     case ARM_NR_set_tls:
-                         cpu_set_tls(env, env->regs[0]);
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index e7aa02c447..6c8f86ecb7 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -3491,7 +3491,7 @@ static void tcg_reg_alloc_dup(TCGContext *s, const TCGOp *op)
+ 
+     if (its->val_type == TEMP_VAL_CONST) {
+         /* Propagate constant via movi -> dupi.  */
+-        tcg_target_ulong val = its->val;
++        tcg_target_ulong val = dup_const(vece, its->val);
+         if (IS_DEAD_ARG(1)) {
+             temp_dead(s, its);
+         }
 -- 
 2.47.2
 
