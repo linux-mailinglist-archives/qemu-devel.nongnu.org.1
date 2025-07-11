@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B252AB025FB
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DC7B025EE
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:51:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKec-0003SN-Bg; Fri, 11 Jul 2025 16:47:35 -0400
+	id 1uaKep-0003cF-3m; Fri, 11 Jul 2025 16:47:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKdq-0003JA-2Q; Fri, 11 Jul 2025 16:46:55 -0400
+ id 1uaKdo-0003Iy-O3; Fri, 11 Jul 2025 16:46:58 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKdm-0003hZ-Bk; Fri, 11 Jul 2025 16:46:44 -0400
+ id 1uaKdm-0003hc-Bw; Fri, 11 Jul 2025 16:46:44 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3E62F135D00;
+ by isrv.corpit.ru (Postfix) with ESMTP id 559CE135D01;
  Fri, 11 Jul 2025 23:46:04 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1B7C923FF3B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2AF6923FF3C;
  Fri, 11 Jul 2025 23:46:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Huaitong Han <hanht2@chinatelecom.cn>,
- Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>,
- Jidong Xia <xiajd@chinatelecom.cn>, "Michael S. Tsirkin" <mst@redhat.com>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 02/15] vhost: Don't set vring call if guest notifier
- is unused
-Date: Fri, 11 Jul 2025 23:46:17 +0300
-Message-ID: <20250711204632.1804872-2-mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 03/15] audio: fix SIGSEGV in AUD_get_buffer_size_out()
+Date: Fri, 11 Jul 2025 23:46:18 +0300
+Message-ID: <20250711204632.1804872-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 References: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,74 +60,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Huaitong Han <hanht2@chinatelecom.cn>
+From: Volker Rümelin <vr_qemu@t-online.de>
 
-The vring call fd is set even when the guest does not use MSI-X (e.g., in the
-case of virtio PMD), leading to unnecessary CPU overhead for processing
-interrupts.
+As far as the emulated audio devices are concerned the pointer
+returned by AUD_open_out() is an opaque handle. This includes
+the NULL pointer. In this case, AUD_get_buffer_size_out() should
+return a sensible buffer size instead of triggering a segmentation
+fault. All other public AUD_*_out() and audio_*_out() functions
+handle this case.
 
-The commit 96a3d98d2c("vhost: don't set vring call if no vector") optimized the
-case where MSI-X is enabled but the queue vector is unset. However, there's an
-additional case where the guest uses INTx and the INTx_DISABLED bit in the PCI
-config is set, meaning that no interrupt notifier will actually be used.
-
-In such cases, the vring call fd should also be cleared to avoid redundant
-interrupt handling.
-
-Fixes: 96a3d98d2c("vhost: don't set vring call if no vector")
-
-Reported-by: Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>
-Signed-off-by: Jidong Xia <xiajd@chinatelecom.cn>
-Signed-off-by: Huaitong Han <hanht2@chinatelecom.cn>
-Message-Id: <20250522100548.212740-1-hanht2@chinatelecom.cn>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit a9403bfcd93025df7b1924d0cf34fbc408955b33)
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+Message-Id: <20250515054429.7385-2-vr_qemu@t-online.de>
+(cherry picked from commit 5ddd6c8dc849b4af44bd06840c9133d64e62c27c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 2f450f6a72..c389172f27 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1484,7 +1484,7 @@ static void pci_update_mappings(PCIDevice *d)
-     pci_update_vga(d);
- }
+diff --git a/audio/audio.c b/audio/audio.c
+index 065602ce1b..0caf41fff6 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -894,6 +894,10 @@ size_t AUD_read(SWVoiceIn *sw, void *buf, size_t size)
  
--static inline int pci_irq_disabled(PCIDevice *d)
-+int pci_irq_disabled(PCIDevice *d)
+ int AUD_get_buffer_size_out(SWVoiceOut *sw)
  {
-     return pci_get_word(d->config + PCI_COMMAND) & PCI_COMMAND_INTX_DISABLE;
- }
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index e5e74a7160..a447a2bd0f 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -1040,7 +1040,12 @@ static int virtio_pci_set_guest_notifier(DeviceState *d, int n, bool assign,
- static bool virtio_pci_query_guest_notifiers(DeviceState *d)
- {
-     VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
--    return msix_enabled(&proxy->pci_dev);
-+
-+    if (msix_enabled(&proxy->pci_dev)) {
-+        return true;
-+    } else {
-+        return pci_irq_disabled(&proxy->pci_dev);
++    if (!sw) {
++        return 0;
 +    }
++
+     return sw->hw->samples * sw->hw->info.bytes_per_frame;
  }
  
- static int virtio_pci_set_guest_notifiers(DeviceState *d, int nvqs, bool assign)
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index 6ccaaf5154..9c3fe56323 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -749,6 +749,7 @@ void lsi53c8xx_handle_legacy_cmdline(DeviceState *lsi_dev);
- 
- qemu_irq pci_allocate_irq(PCIDevice *pci_dev);
- void pci_set_irq(PCIDevice *pci_dev, int level);
-+int pci_irq_disabled(PCIDevice *d);
- 
- static inline int pci_intx(PCIDevice *pci_dev)
- {
 -- 
 2.47.2
 
