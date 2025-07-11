@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3AF5B0162A
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0025B01659
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:36:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua97G-0003wY-0d; Fri, 11 Jul 2025 04:28:22 -0400
+	id 1ua97a-0004vi-RM; Fri, 11 Jul 2025 04:28:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8y0-0005Ul-BM; Fri, 11 Jul 2025 04:18:52 -0400
+ id 1ua8y8-0005aU-N5; Fri, 11 Jul 2025 04:18:57 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xx-00042p-UE; Fri, 11 Jul 2025 04:18:47 -0400
+ id 1ua8y2-00045H-46; Fri, 11 Jul 2025 04:18:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F2AC41356D8;
- Fri, 11 Jul 2025 11:17:18 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0C6FC1356D9;
+ Fri, 11 Jul 2025 11:17:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E878123FA4D;
- Fri, 11 Jul 2025 11:17:45 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 03BF023FA4E;
+ Fri, 11 Jul 2025 11:17:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 13/39] hw/i386/pc_piix: Fix RTC ISA IRQ wiring of
- isapc machine
-Date: Fri, 11 Jul 2025 11:16:09 +0300
-Message-ID: <20250711081745.1785806-13-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Sairaj Kodilkar <sarunkod@amd.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 14/39] hw/i386/amd_iommu: Fix device setup failure
+ when PT is on.
+Date: Fri, 11 Jul 2025 11:16:10 +0300
+Message-ID: <20250711081745.1785806-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
@@ -59,47 +58,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Sairaj Kodilkar <sarunkod@amd.com>
 
-Commit 56b1f50e3c10 ("hw/i386/pc: Wire RTC ISA IRQs in south bridges")
-attempted to refactor RTC IRQ wiring which was previously done in
-pc_basic_device_init() but forgot about the isapc machine. Fix this by
-wiring in the code section dedicated exclusively to the isapc machine.
+Commit c1f46999ef506 ("amd_iommu: Add support for pass though mode")
+introduces the support for "pt" flag by enabling nodma memory when
+"pt=off". This allowed VFIO devices to successfully register notifiers
+by using nodma region.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2961
-Fixes: 56b1f50e3c10 ("hw/i386/pc: Wire RTC ISA IRQs in south bridges")
-cc: qemu-stable
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Message-Id: <20250526203820.1853-1-shentey@gmail.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 0b006153b7ec66505cb2d231235aa19ca5d2ce37)
+But, This also broke things when guest is booted with the iommu=nopt
+because, devices bypass the IOMMU and use untranslated addresses (IOVA) to
+perform DMA reads/writes to the nodma memory region, ultimately resulting in
+a failure to setup the devices in the guest.
+
+Fix the above issue by always enabling the amdvi_dev_as->iommu memory region.
+But this will once again cause VFIO devices to fail while registering the
+notifiers with AMD IOMMU memory region.
+
+Fixes: c1f46999ef506 ("amd_iommu: Add support for pass though mode")
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Message-Id: <20250516100535.4980-2-sarunkod@amd.com>
+Fixes: c1f46999ef506 ("amd_iommu: Add support for pass though mode")
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+(cherry picked from commit 31753d5a336fbb4e9246397f4b90b6f611f27f22)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 6c91e2d292..7cfa142b11 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -285,6 +285,8 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-         pcms->idebus[0] = qdev_get_child_bus(dev, "ide.0");
-         pcms->idebus[1] = qdev_get_child_bus(dev, "ide.1");
-     } else {
-+        uint32_t irq;
-+
-         isa_bus = isa_bus_new(NULL, system_memory, system_io,
-                               &error_abort);
-         isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
-@@ -292,6 +294,9 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-         x86ms->rtc = isa_new(TYPE_MC146818_RTC);
-         qdev_prop_set_int32(DEVICE(x86ms->rtc), "base_year", 2000);
-         isa_realize_and_unref(x86ms->rtc, isa_bus, &error_fatal);
-+        irq = object_property_get_uint(OBJECT(x86ms->rtc), "irq",
-+                                       &error_fatal);
-+        isa_connect_gpio_out(ISA_DEVICE(x86ms->rtc), 0, irq);
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 5f9b952799..df8ba5d39a 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1426,7 +1426,6 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+     AMDVIState *s = opaque;
+     AMDVIAddressSpace **iommu_as, *amdvi_dev_as;
+     int bus_num = pci_bus_num(bus);
+-    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
  
-         i8257_dma_init(OBJECT(machine), isa_bus, 0);
-         pcms->hpet_enabled = false;
+     iommu_as = s->address_spaces[bus_num];
+ 
+@@ -1486,15 +1485,8 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+                                             AMDVI_INT_ADDR_FIRST,
+                                             &amdvi_dev_as->iommu_ir, 1);
+ 
+-        if (!x86_iommu->pt_supported) {
+-            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
+-            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
+-                                      true);
+-        } else {
+-            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
+-                                      false);
+-            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, true);
+-        }
++        memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
++        memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu), true);
+     }
+     return &iommu_as[devfn]->as;
+ }
 -- 
 2.47.2
 
