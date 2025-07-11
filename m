@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2570B01629
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 687DCB01608
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:29:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua97m-0006Gr-Ir; Fri, 11 Jul 2025 04:28:55 -0400
+	id 1ua97b-0004vs-63; Fri, 11 Jul 2025 04:28:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8yZ-0006R5-C4; Fri, 11 Jul 2025 04:19:28 -0400
+ id 1ua8yZ-0006R4-By; Fri, 11 Jul 2025 04:19:28 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8yU-00046o-8f; Fri, 11 Jul 2025 04:19:21 -0400
+ id 1ua8yV-00047E-FY; Fri, 11 Jul 2025 04:19:21 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4FE7C1356DC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5F2871356DD;
  Fri, 11 Jul 2025 11:17:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3C30423FA51;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 55CFE23FA52;
  Fri, 11 Jul 2025 11:17:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 17/39] audio: fix size calculation in
- AUD_get_buffer_size_out()
-Date: Fri, 11 Jul 2025 11:16:13 +0300
-Message-ID: <20250711081745.1785806-17-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 18/39] hw/audio/asc: fix SIGSEGV in asc_realize()
+Date: Fri, 11 Jul 2025 11:16:14 +0300
+Message-ID: <20250711081745.1785806-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
@@ -63,36 +63,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Volker Rümelin <vr_qemu@t-online.de>
 
-The buffer size calculated by AUD_get_buffer_size_out() is often
-incorrect. sw->hw->samples * sw->hw->info.bytes_per_frame is the
-size of the mixing engine buffer in audio frames multiplied by
-the size of one frame of the audio backend. Due to resampling or
-format conversion, the size of the frontend buffer can differ
-significantly.
+AUD_open_out() may fail and return NULL. This may then lead to
+a segmentation fault in memset() below. The memset() behaviour
+is undefined if the pointer to the destination object is a null
+pointer.
 
-Return the correct buffer size when the mixing engine is used.
+Add the missing error handling code.
 
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20250515054429.7385-3-vr_qemu@t-online.de>
-(cherry picked from commit ccb4fec0e5f233cb61a83b3af59ae11716ea06c0)
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Message-Id: <20250515054429.7385-4-vr_qemu@t-online.de>
+(cherry picked from commit d009f26a54f573468be721590a19350c224bc730)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/audio/audio.c b/audio/audio.c
-index 70ef22b1a4..3f5baf0cc6 100644
---- a/audio/audio.c
-+++ b/audio/audio.c
-@@ -909,6 +909,10 @@ int AUD_get_buffer_size_out(SWVoiceOut *sw)
-         return 0;
-     }
+diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+index cc205bf063..b7d0fd8acd 100644
+--- a/hw/audio/asc.c
++++ b/hw/audio/asc.c
+@@ -12,6 +12,7 @@
  
-+    if (audio_get_pdo_out(sw->s->dev)->mixing_engine) {
-+        return sw->resample_buf.size * sw->info.bytes_per_frame;
+ #include "qemu/osdep.h"
+ #include "qemu/timer.h"
++#include "qapi/error.h"
+ #include "hw/sysbus.h"
+ #include "hw/irq.h"
+ #include "audio/audio.h"
+@@ -654,6 +655,12 @@ static void asc_realize(DeviceState *dev, Error **errp)
+ 
+     s->voice = AUD_open_out(&s->card, s->voice, "asc.out", s, asc_out_cb,
+                             &as);
++    if (!s->voice) {
++        AUD_remove_card(&s->card);
++        error_setg(errp, "Initializing audio stream failed");
++        return;
 +    }
 +
-     return sw->hw->samples * sw->hw->info.bytes_per_frame;
- }
- 
+     s->shift = 1;
+     s->samples = AUD_get_buffer_size_out(s->voice) >> s->shift;
+     s->mixbuf = g_malloc0(s->samples << s->shift);
 -- 
 2.47.2
 
