@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70BD1B01644
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D956EB01668
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:37:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua99e-00034V-Uw; Fri, 11 Jul 2025 04:30:51 -0400
+	id 1ua99l-0003iG-OK; Fri, 11 Jul 2025 04:31:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua90a-0001sU-Oo; Fri, 11 Jul 2025 04:21:30 -0400
+ id 1ua90e-0001y0-NP; Fri, 11 Jul 2025 04:21:34 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua90Y-0004ir-Jy; Fri, 11 Jul 2025 04:21:28 -0400
+ id 1ua90c-0004lo-Lg; Fri, 11 Jul 2025 04:21:32 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D0B9B1356F1;
+ by isrv.corpit.ru (Postfix) with ESMTP id DDEC61356F2;
  Fri, 11 Jul 2025 11:17:20 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C85A423FA66;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D63B823FA67;
  Fri, 11 Jul 2025 11:17:47 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 38/39] target/arm: Fix f16_dotadd vs nan selection
-Date: Fri, 11 Jul 2025 11:16:34 +0300
-Message-ID: <20250711081745.1785806-38-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 39/39] target/arm: Fix bfdotadd_ebf vs nan selection
+Date: Fri, 11 Jul 2025 11:16:35 +0300
+Message-ID: <20250711081745.1785806-39-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
@@ -59,35 +59,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Implement FPProcessNaNs4 within f16_dotadd, rather than
+Implement FPProcessNaNs4 within bfdotadd_ebf, rather than
 simply letting NaNs propagate through the function.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 3916841ac75 ("target/arm: Implement FMOPA, FMOPS (widening)")
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 0e1850182a1 ("target/arm: Implement FPCR.EBF=1 semantics for bfdotadd()")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250704142112.1018902-9-richard.henderson@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20250704142112.1018902-10-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit cfc688c00ade84f6b32c7814b52c217f1d3b5eb1)
+(cherry picked from commit bf020eaa6741711902a425016e2c7585f222562d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index dcc48e43db..a4992301b1 100644
---- a/target/arm/tcg/sme_helper.c
-+++ b/target/arm/tcg/sme_helper.c
-@@ -1005,25 +1005,55 @@ static float32 f16_dotadd(float32 sum, uint32_t e1, uint32_t e2,
-      *  - we have pre-set-up copy of s_std which is set to round-to-odd,
-      *    for the multiply (see below)
-      */
--    float64 e1r = float16_to_float64(e1 & 0xffff, true, s_f16);
--    float64 e1c = float16_to_float64(e1 >> 16, true, s_f16);
--    float64 e2r = float16_to_float64(e2 & 0xffff, true, s_f16);
--    float64 e2c = float16_to_float64(e2 >> 16, true, s_f16);
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index 986eaf8ffa..3b7f308803 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -2989,31 +2989,62 @@ float32 bfdotadd(float32 sum, uint32_t e1, uint32_t e2, float_status *fpst)
+ float32 bfdotadd_ebf(float32 sum, uint32_t e1, uint32_t e2,
+                      float_status *fpst, float_status *fpst_odd)
+ {
+-    /*
+-     * Compare f16_dotadd() in sme_helper.c, but here we have
+-     * bfloat16 inputs. In particular that means that we do not
+-     * want the FPCR.FZ16 flush semantics, so we use the normal
+-     * float_status for the input handling here.
+-     */
+-    float64 e1r = float32_to_float64(e1 << 16, fpst);
+-    float64 e1c = float32_to_float64(e1 & 0xffff0000u, fpst);
+-    float64 e2r = float32_to_float64(e2 << 16, fpst);
+-    float64 e2c = float32_to_float64(e2 & 0xffff0000u, fpst);
 -    float64 t64;
-+    float16 h1r = e1 & 0xffff;
-+    float16 h1c = e1 >> 16;
-+    float16 h2r = e2 & 0xffff;
-+    float16 h2c = e2 >> 16;
++    float32 s1r = e1 << 16;
++    float32 s1c = e1 & 0xffff0000u;
++    float32 s2r = e2 << 16;
++    float32 s2c = e2 & 0xffff0000u;
      float32 t32;
  
 -    /*
@@ -97,40 +103,47 @@ index dcc48e43db..a4992301b1 100644
 -     * the second multiply as fused multiply-add, and rounding to
 -     * float32 all in one step.
 -     */
--    t64 = float64_mul(e1r, e2r, s_odd);
--    t64 = float64r32_muladd(e1c, e2c, t64, 0, s_std);
+-    t64 = float64_mul(e1r, e2r, fpst_odd);
+-    t64 = float64r32_muladd(e1c, e2c, t64, 0, fpst);
 +    /* C.f. FPProcessNaNs4 */
-+    if (float16_is_any_nan(h1r) || float16_is_any_nan(h1c) ||
-+        float16_is_any_nan(h2r) || float16_is_any_nan(h2c)) {
-+        float16 t16;
-+
-+        if (float16_is_signaling_nan(h1r, s_f16)) {
-+            t16 = h1r;
-+        } else if (float16_is_signaling_nan(h1c, s_f16)) {
-+            t16 = h1c;
-+        } else if (float16_is_signaling_nan(h2r, s_f16)) {
-+            t16 = h2r;
-+        } else if (float16_is_signaling_nan(h2c, s_f16)) {
-+            t16 = h2c;
-+        } else if (float16_is_any_nan(h1r)) {
-+            t16 = h1r;
-+        } else if (float16_is_any_nan(h1c)) {
-+            t16 = h1c;
-+        } else if (float16_is_any_nan(h2r)) {
-+            t16 = h2r;
++    if (float32_is_any_nan(s1r) || float32_is_any_nan(s1c) ||
++        float32_is_any_nan(s2r) || float32_is_any_nan(s2c)) {
++        if (float32_is_signaling_nan(s1r, fpst)) {
++            t32 = s1r;
++        } else if (float32_is_signaling_nan(s1c, fpst)) {
++            t32 = s1c;
++        } else if (float32_is_signaling_nan(s2r, fpst)) {
++            t32 = s2r;
++        } else if (float32_is_signaling_nan(s2c, fpst)) {
++            t32 = s2c;
++        } else if (float32_is_any_nan(s1r)) {
++            t32 = s1r;
++        } else if (float32_is_any_nan(s1c)) {
++            t32 = s1c;
++        } else if (float32_is_any_nan(s2r)) {
++            t32 = s2r;
 +        } else {
-+            t16 = h2c;
++            t32 = s2c;
 +        }
-+        t32 = float16_to_float32(t16, true, s_f16);
++        /*
++         * FPConvertNaN(FPProcessNaN(t32)) will be done as part
++         * of the final addition below.
++         */
 +    } else {
-+        float64 e1r = float16_to_float64(h1r, true, s_f16);
-+        float64 e1c = float16_to_float64(h1c, true, s_f16);
-+        float64 e2r = float16_to_float64(h2r, true, s_f16);
-+        float64 e2c = float16_to_float64(h2c, true, s_f16);
++        /*
++         * Compare f16_dotadd() in sme_helper.c, but here we have
++         * bfloat16 inputs. In particular that means that we do not
++         * want the FPCR.FZ16 flush semantics, so we use the normal
++         * float_status for the input handling here.
++         */
++        float64 e1r = float32_to_float64(s1r, fpst);
++        float64 e1c = float32_to_float64(s1c, fpst);
++        float64 e2r = float32_to_float64(s2r, fpst);
++        float64 e2c = float32_to_float64(s2c, fpst);
 +        float64 t64;
  
 -    /* This conversion is exact, because we've already rounded. */
--    t32 = float64_to_float32(t64, s_std);
+-    t32 = float64_to_float32(t64, fpst);
 +        /*
 +         * The ARM pseudocode function FPDot performs both multiplies
 +         * and the add with a single rounding operation.  Emulate this
@@ -138,15 +151,15 @@ index dcc48e43db..a4992301b1 100644
 +         * the second multiply as fused multiply-add, and rounding to
 +         * float32 all in one step.
 +         */
-+        t64 = float64_mul(e1r, e2r, s_odd);
-+        t64 = float64r32_muladd(e1c, e2c, t64, 0, s_std);
++        t64 = float64_mul(e1r, e2r, fpst_odd);
++        t64 = float64r32_muladd(e1c, e2c, t64, 0, fpst);
 +
 +        /* This conversion is exact, because we've already rounded. */
-+        t32 = float64_to_float32(t64, s_std);
++        t32 = float64_to_float32(t64, fpst);
 +    }
  
      /* The final accumulation step is not fused. */
-     return float32_add(sum, t32, s_std);
+     return float32_add(sum, t32, fpst);
 -- 
 2.47.2
 
