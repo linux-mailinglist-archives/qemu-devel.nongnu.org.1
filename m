@@ -2,91 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8193CB02285
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 19:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 738D5B02286
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 19:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaHSW-0001RR-NC; Fri, 11 Jul 2025 13:22:52 -0400
+	id 1uaHSh-0001gM-JY; Fri, 11 Jul 2025 13:23:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uaHST-0001PL-U4
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:22:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uaHSR-0002vy-NI
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:22:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752254567;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hKq7s+o9FSe0v9gxOi1oL2fSecjASgBXq6NTvNcZRBQ=;
- b=M2a46hvAeLbjv944Gj1HmLxZihxpIcPxTXwUbqH67Dq77jAahwVG9UDjsn1fC0WF7Q/IFu
- nKQ6MoLTcqMMMJ1eE6CN3p0K69tFg/Hc1i+Gi+PwASAMF3ViVgfo9VKS1/qpyWQtFaya7U
- YF1oSCq9qID/ebh7ulh7iY2SkehIBkA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-180-kPy_lqiyNpWXlKYAfF2bKg-1; Fri,
- 11 Jul 2025 13:22:44 -0400
-X-MC-Unique: kPy_lqiyNpWXlKYAfF2bKg-1
-X-Mimecast-MFC-AGG-ID: kPy_lqiyNpWXlKYAfF2bKg_1752254561
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 996BA1956095; Fri, 11 Jul 2025 17:22:38 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D31C319560A3; Fri, 11 Jul 2025 17:22:36 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 45AA121E6A27; Fri, 11 Jul 2025 19:22:34 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,  Eduardo Habkost
- <eduardo@habkost.net>,  Jiri Pirko <jiri@resnulli.us>,  Peter Maydell
- <peter.maydell@linaro.org>,  Ani Sinha <anisinha@redhat.com>,  Zhao Liu
- <zhao1.liu@intel.com>,  Peter Xu <peterx@redhat.com>,  Gerd Hoffmann
- <kraxel@redhat.com>,  Fabiano Rosas <farosas@suse.de>,
- qemu-block@nongnu.org,  "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Laurent Vivier <laurent@vivier.eu>,  Jason Wang <jasowang@redhat.com>,
- Yanan Wang <wangyanan55@huawei.com>,  qemu-trivial@nongnu.org,  Stefan
- Hajnoczi <stefanha@redhat.com>,  Mads Ynddal <mads@ynddal.dk>,  Lukas
- Straub <lukasstraub2@web.de>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Kevin Wolf <kwolf@redhat.com>,  Vladimir
- Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  Michael Tokarev
- <mjt@tls.msk.ru>,  Paolo Bonzini <pbonzini@redhat.com>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Hanna
- Reitz <hreitz@redhat.com>,  Zhenwei Pi <pizhenwei@bytedance.com>,  Stefan
- Berger <stefanb@linux.vnet.ibm.com>,  Michael Roth <michael.roth@amd.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v6 1/4] docs/qapi-domain: add return-nodesc
-In-Reply-To: <20250711051045.51110-2-jsnow@redhat.com> (John Snow's message of
- "Fri, 11 Jul 2025 01:10:42 -0400")
-References: <20250711051045.51110-1-jsnow@redhat.com>
- <20250711051045.51110-2-jsnow@redhat.com>
-Date: Fri, 11 Jul 2025 19:22:34 +0200
-Message-ID: <87jz4eskv9.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uaHSf-0001fe-B3
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:01 -0400
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uaHSd-0002z7-IY
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 13:23:01 -0400
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-40a7322f081so744149b6e.3
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 10:22:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752254578; x=1752859378; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BVfb7RJhAElHAt1oZrn7ugInJPo/ORZN1lJrI4atpxQ=;
+ b=XCLD0V1VGqX/Envkkxxq8njud51ZP+HNNrUIxHxJyDMtcMPYwPxR+P/x+fTj5xR7Zf
+ DuXwvsXPS+JO2k3QB3pgvvGnRHP4Fkg+4vFqCpErZf9It7E3YOFWaHDf0O1fQgRXglTs
+ GLk1+RAjVyObu8HDka0QGZB+WV/p1dTFSP3wWyEeYm/NXFpjsErhWSO+dzrb0fzFm+Gv
+ XT7553VUMA0SzB2Nr7jkw1NWPMKSlDQDNnrr3VelD/3heu06TwL45skr1R597rYS36OR
+ Ux2gdWXmMKYiBVJEpUuna8E25MyvBgNuygKE/qCZxuQqRf0xxV5iFTWxDG1Qj7/+jROq
+ sWgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752254578; x=1752859378;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BVfb7RJhAElHAt1oZrn7ugInJPo/ORZN1lJrI4atpxQ=;
+ b=b/AOEbpPw6hIXRsAluvBfJXXxCOl+dxQ6+KZ5q5LFBmuS/0Nt4FuST8XpFW/WkGPwb
+ JrCK9yxdftubbJ6EwXKTmk6SxVYtiVQqyQEq6eKZTJuYv9VMiWINFMhx2D3+uymZJ3Me
+ t5tDWww2N08ZKIEHG+auBc+/YuECs/re/ixO72tZPuSJCm8wf4M30K9fDqAZsyKRRy/c
+ 0HN+jLRVfhOxZe9nWnptltCY50GT7VBWoKPHCTPjrMMsAlz2TRaxF0OpKW2U5qZ3VOm4
+ UvamtFFPa5sEchn05eyfj+pDm/hTwkCysTHUioXQvCPEFa0DuUXPn38sBARkgOUZ7XuN
+ Qmpg==
+X-Gm-Message-State: AOJu0YxFUwknT0errTK0Pn3mywgXXKGpVEvMLS6tqkZbGVXQHiRcgmsJ
+ XvpdlXO4UPWkt+DTtPQXBRS3lrrgY/eV0ENkPiSPH5TiJUrhnKX9rFMIRKxQOBqvFVDQxBMhTA8
+ 0NF9IYMc=
+X-Gm-Gg: ASbGnctvttejt6PF5uoIWCl7nGuDW90DK22VClMOD6WtXfYoXu16QsvKk/8jR5wd1VD
+ oLOoeMqoEqOei/QxDFROVGc6l+TWQjDzC6bElmzPSmVd58XRBCeKskfgZrPOwacWXdz2RX9ZXOm
+ 8se2WNJeEaRGPlP0lyFzeJNiFM64L/Ugpufm2XGCfiJPfSdi1Fzo3f1zZ2eMC9jSXU3gWT3TWmT
+ akrv6JIdIpTynjr3TM+k9dddAvMRs0ZXtNBVGYOwZIAIIEOGqjvPSqxvJ7REEH9Q201sAzD88Yo
+ Tr5KEuIGk7sJlwItdbEojb7xlOYZlH+CXEYaQCfQfL4Poj/stZ/qbmZwWKtWLswn7UWo1BG0PAI
+ BHRnldO4i91/gFSH3hnE1copy3KVnCY2WTcwEna1Lrt/dpIBe3gTRT1erMK318FFGdvax5X3dHJ
+ nkE1/4iZtQ
+X-Google-Smtp-Source: AGHT+IEERVQoD4FfQHIb01/46WgHti01tbT17t/wcFt64/AjJ++W1YPRkDGkk0eRpXew946MylB+0A==
+X-Received: by 2002:a05:6808:3505:b0:401:16e:918e with SMTP id
+ 5614622812f47-4150d645624mr3521097b6e.8.1752254577449; 
+ Fri, 11 Jul 2025 10:22:57 -0700 (PDT)
+Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
+ [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
+ 5614622812f47-4141c77ada0sm602041b6e.44.2025.07.11.10.22.56
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Jul 2025 10:22:56 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/9] tcg/linux-user/fpu patch queue
+Date: Fri, 11 Jul 2025 11:22:45 -0600
+Message-ID: <20250711172254.229201-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,94 +96,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+The following changes since commit df6fe2abf2e990f767ce755d426bc439c7bba336:
 
-> This form is used to annotate a return type without an accompanying
-> description, for when there is no "Returns:" information in the source
-> doc, but we have a return type we want to generate a cross-reference to.
->
-> The syntax is:
->
-> :return-nodesc: TypeName
->
-> It's primarily necessary because Sphinx always expects both a type and a
-> description for the prior form and will format it accordingly. To have a
-> reasonable rendering when the body is missing, we need to use a
-> different info field list entirely.
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  docs/devel/qapi-domain.rst | 30 ++++++++++++++++++++++++++++++
->  docs/sphinx/qapi_domain.py |  8 ++++++++
->  2 files changed, 38 insertions(+)
->
-> diff --git a/docs/devel/qapi-domain.rst b/docs/devel/qapi-domain.rst
-> index 11238723c2d..204abb72ff4 100644
-> --- a/docs/devel/qapi-domain.rst
-> +++ b/docs/devel/qapi-domain.rst
-> @@ -242,6 +242,36 @@ Example::
->               }
->  
->  
-> +``:return-nodesc:``
-> +-------------------
-> +
-> +Document the return type of a QAPI command, without an accompanying description.
+  Merge tag 'pull-target-arm-20250704' of https://gitlab.com/pm215/qemu into staging (2025-07-07 09:22:41 -0400)
 
-Recommend to break the long line.
+are available in the Git repository at:
 
-> +
-> +:availability: This field list is only available in the body of the
-> +               Command directive.
-> +:syntax: ``:return-nodesc: type``
-> +:type: `sphinx.util.docfields.Field
-> +       <https://pydoc.dev/sphinx/latest/sphinx.util.docfields.Field.html?private=1>`_
-> +
-> +
-> +Example::
-> +
-> +   .. qapi:command:: query-replay
-> +      :since: 5.2
-> +
-> +      Retrieve the record/replay information.  It includes current
-> +      instruction count which may be used for ``replay-break`` and
-> +      ``replay-seek`` commands.
-> +
-> +      :return-nodesc: ReplayInfo
-> +
-> +      .. qmp-example::
-> +
-> +          -> { "execute": "query-replay" }
-> +          <- { "return": {
-> +                 "mode": "play", "filename": "log.rr", "icount": 220414 }
-> +             }
-> +
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20250711
 
-Same example as in :return:, except for the :return-nodesc: line.  Fine
-with me.
+for you to fetch changes up to d6390204c61e148488f034d1f79be35cd3318d93:
 
->  ``:value:``
->  -----------
->  
-> diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-> index ebc46a72c61..f561dc465f8 100644
-> --- a/docs/sphinx/qapi_domain.py
-> +++ b/docs/sphinx/qapi_domain.py
-> @@ -532,6 +532,14 @@ class QAPICommand(QAPIObject):
->                  names=("return",),
->                  can_collapse=True,
->              ),
-> +            # :return-nodesc: TypeName
-> +            CompatField(
-> +                "returnvalue",
-> +                label=_("Return"),
-> +                names=("return-nodesc",),
-> +                bodyrolename="type",
-> +                has_arg=False,
-> +            ),
->          ]
->      )
+  linux-user: Use qemu_set_cloexec() to mark pidfd as FD_CLOEXEC (2025-07-11 10:45:14 -0600)
 
-Acked-by: Markus Armbruster <armbru@redhat.com>
+----------------------------------------------------------------
+fpu: Process float_muladd_negate_result after rounding
+tcg: Use uintptr_t in tcg_malloc implementation
+linux-user: Hold the fd-trans lock across fork
+linux-user: Implement fchmodat2 syscall
+linux-user: Check for EFAULT failure in nanosleep
+linux-user: Use qemu_set_cloexec() to mark pidfd as FD_CLOEXEC
+linux-user/gen-vdso: Handle fseek() failure
+linux-user/gen-vdso: Don't read off the end of buf[]
 
+----------------------------------------------------------------
+Geoffrey Thomas (1):
+      linux-user: Hold the fd-trans lock across fork
+
+Peter Maydell (5):
+      linux-user: Implement fchmodat2 syscall
+      linux-user: Check for EFAULT failure in nanosleep
+      linux-user/gen-vdso: Handle fseek() failure
+      linux-user/gen-vdso: Don't read off the end of buf[]
+      linux-user: Use qemu_set_cloexec() to mark pidfd as FD_CLOEXEC
+
+Richard Henderson (2):
+      fpu: Process float_muladd_negate_result after rounding
+      tcg: Use uintptr_t in tcg_malloc implementation
+
+Thomas Weißschuh (1):
+      linux-user/mips/o32: Drop sa_restorer functionality
+
+ include/tcg/tcg.h                   |  6 ++---
+ linux-user/fd-trans.h               | 10 +++++++
+ linux-user/mips/target_signal.h     |  1 -
+ linux-user/syscall_defs.h           |  4 ---
+ fpu/softfloat.c                     | 54 ++++++++++++++++++++++++++++++-------
+ linux-user/gen-vdso.c               | 16 +++++++++--
+ linux-user/main.c                   |  2 ++
+ linux-user/syscall.c                | 26 ++++++++++++++----
+ tcg/tcg.c                           |  9 ++++---
+ tests/tcg/multiarch/fnmsub.c        | 37 +++++++++++++++++++++++++
+ fpu/softfloat-parts.c.inc           |  4 ---
+ tests/tcg/multiarch/Makefile.target |  1 +
+ 12 files changed, 137 insertions(+), 33 deletions(-)
+ create mode 100644 tests/tcg/multiarch/fnmsub.c
 
