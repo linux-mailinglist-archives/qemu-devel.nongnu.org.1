@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66417B012EC
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 07:45:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F232B012E6
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 07:43:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua6XN-0008Vu-KU; Fri, 11 Jul 2025 01:43:09 -0400
+	id 1ua6XT-0000tn-5v; Fri, 11 Jul 2025 01:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1ua6Wf-0007oT-8M
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 01:42:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1ua6Wg-0007tb-MQ
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 01:42:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1ua6WW-0000go-Gq
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 01:42:18 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1ua6Wf-0000iR-0v
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 01:42:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752212535;
+ s=mimecast20190719; t=1752212543;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C2UJX1seXQXHC4p5Q0gjXCAW3wOPn0ipsh4usuRaeEU=;
- b=Ky4ljvSGJh2imREvx7azJ9+CfRtjhsvc0TfFsPtQlR/bNYfP0as1pn3mZwacOQ5BUi+rox
- OIHo0H6VVsDwhXZNdnpDWuvNHQdChsE2ZLOnJrVzoSBGwIG729t1NP+Ux0fJpGWv1fRwrl
- RHJ83fUqf41QDb5/2GN9/3Dl5PpeUEA=
+ bh=S5NW2aODi9MJjHyOB3hIIYu6fljdMbRijbdjwAvpO1c=;
+ b=fz9YNilPMUiCLJ2UQM17upUvIRAbcnpx08of8av5SjEbzKn2syS+0626p9CXo8pzEiJ8MP
+ rm7uUfoVm99tbKlCYrsyzWBKlMQWgdVhbBZRfeDG5Z2ruERE1kSuule+eNXVnlTtq1vSJ+
+ kBOS67Le0p/lAMbE867SArY0gDcLjVU=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-VDCicuTnMPutOkvkCM0oaQ-1; Fri,
- 11 Jul 2025 01:42:12 -0400
-X-MC-Unique: VDCicuTnMPutOkvkCM0oaQ-1
-X-Mimecast-MFC-AGG-ID: VDCicuTnMPutOkvkCM0oaQ_1752212531
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-ABcWwVpUNiCMB0zLUVRanQ-1; Fri,
+ 11 Jul 2025 01:42:20 -0400
+X-MC-Unique: ABcWwVpUNiCMB0zLUVRanQ-1
+X-Mimecast-MFC-AGG-ID: ABcWwVpUNiCMB0zLUVRanQ_1752212538
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0020D180028B; Fri, 11 Jul 2025 05:42:11 +0000 (UTC)
+ id 7F91F1800268; Fri, 11 Jul 2025 05:42:18 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.46])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6BF881800285; Fri, 11 Jul 2025 05:42:05 +0000 (UTC)
+ id 6B26F180035C; Fri, 11 Jul 2025 05:42:11 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -61,15 +61,15 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Jason Wang <jasowang@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2 15/18] qapi: add cross-references to ui.json
-Date: Fri, 11 Jul 2025 01:40:02 -0400
-Message-ID: <20250711054005.60969-16-jsnow@redhat.com>
+Subject: [PATCH v2 16/18] qapi: add cross-references to virtio.json
+Date: Fri, 11 Jul 2025 01:40:03 -0400
+Message-ID: <20250711054005.60969-17-jsnow@redhat.com>
 In-Reply-To: <20250711054005.60969-1-jsnow@redhat.com>
 References: <20250711054005.60969-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,142 +96,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- qapi/ui.json | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ qapi/virtio.json | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/qapi/ui.json b/qapi/ui.json
-index 7136c985c38..5bc54403cc2 100644
---- a/qapi/ui.json
-+++ b/qapi/ui.json
-@@ -39,7 +39,7 @@
- ##
- # @SetPasswordOptions:
+diff --git a/qapi/virtio.json b/qapi/virtio.json
+index d1556dbf24a..3bc8700e943 100644
+--- a/qapi/virtio.json
++++ b/qapi/virtio.json
+@@ -135,7 +135,7 @@
+ # @num-vqs: VirtIODevice virtqueue count.  This is the number of
+ #     active virtqueues being used by the VirtIODevice.
  #
--# Options for set_password.
-+# Options for `set_password`.
+-# @status: VirtIODevice configuration status (VirtioDeviceStatus)
++# @status: VirtIODevice configuration status (`VirtioDeviceStatus`)
  #
- # @protocol:
- #     - 'vnc' to modify the VNC server password
-@@ -63,7 +63,7 @@
- ##
- # @SetPasswordOptionsVnc:
+ # @isr: VirtIODevice ISR
  #
--# Options for set_password specific to the VNC protocol.
-+# Options for `set_password` specific to the VNC protocol.
+@@ -577,7 +577,7 @@
+ # .. qmp-example::
+ #    :annotated:
  #
- # @display: The id of the display where the password should be
- #     changed.  Defaults to the first.
-@@ -94,7 +94,7 @@
- ##
- # @ExpirePasswordOptions:
+-#    Get VirtQueueStatus for virtio-vsock (vhost-vsock running)
++#    Get `VirtQueueStatus` for virtio-vsock (vhost-vsock running)
+ #    ::
  #
--# General options for expire_password.
-+# General options for `expire_password`.
+ #     -> { "execute": "x-query-virtio-queue-status",
+@@ -604,7 +604,7 @@
+ # .. qmp-example::
+ #    :annotated:
  #
- # @protocol:
- #     - 'vnc' to modify the VNC server expiration
-@@ -124,7 +124,7 @@
- ##
- # @ExpirePasswordOptionsVnc:
+-#    Get VirtQueueStatus for virtio-serial (no vhost)
++#    Get `VirtQueueStatus` for virtio-serial (no vhost)
+ #    ::
  #
--# Options for expire_password specific to the VNC protocol.
-+# Options for `expire_password` specific to the VNC protocol.
+ #     -> { "execute": "x-query-virtio-queue-status",
+@@ -816,7 +816,7 @@
  #
- # @display: The id of the display where the expiration should be
- #     changed.  Defaults to the first.
-@@ -183,7 +183,7 @@
- #     the head can only be specified in conjunction with the device
- #     ID.  (Since 2.12)
+ # @index: Index of the element in the queue
  #
--# @format: image format for screendump.  (default: ppm) (Since 7.1)
-+# @format: image format for `screendump`.  (default: ppm) (Since 7.1)
+-# @descs: List of descriptors (VirtioRingDesc)
++# @descs: List of descriptors (`VirtioRingDesc`)
  #
- # Since: 0.14
+ # @avail: VRingAvail info
  #
-@@ -310,7 +310,7 @@
- #     unknown if spice server doesn't provide this information.
- #     (since: 1.1)
- #
--# @channels: a list of @SpiceChannel for each active spice channel
-+# @channels: a list of `SpiceChannel` for each active spice channel
- #
- # Since: 0.14
- ##
-@@ -559,7 +559,7 @@
- #     - 'vencrypt+x509+sasl' if VEncrypt is used with x509 and SASL
- #       auth
- #
--# @clients: a list of @VncClientInfo of all currently connected
-+# @clients: a list of `VncClientInfo` of all currently connected
- #     clients
- #
- # Since: 0.14
-@@ -622,12 +622,12 @@
- #
- # @id: vnc server name.
- #
--# @server: A list of @VncBasincInfo describing all listening sockets.
-+# @server: A list of `VncBasicInfo` describing all listening sockets.
- #     The list can be empty (in case the vnc server is disabled).  It
- #     also may have multiple entries: normal + websocket, possibly
- #     also ipv4 + ipv6 in the future.
- #
--# @clients: A list of @VncClientInfo of all currently connected
-+# @clients: A list of `VncClientInfo` of all currently connected
- #     clients.  The list can be empty, for obvious reasons.
- #
- # @auth: The current authentication type used by the non-websockets
-@@ -846,7 +846,7 @@
- #
- # An enumeration of key name.
- #
--# This is used by the @send-key command.
-+# This is used by the `send-key` command.
- #
- # @unmapped: since 2.0
- #
-@@ -1017,10 +1017,10 @@
- #
- # Send keys to guest.
- #
--# @keys: An array of @KeyValue elements.  All @KeyValues in this array
--#     are simultaneously sent to the guest.  A @KeyValue.number value
--#     is sent directly to the guest, while @KeyValue.qcode must be a
--#     valid @QKeyCode value
-+# @keys: An array of `KeyValue` elements.  All @KeyValues in this array
-+#     are simultaneously sent to the guest.  A `KeyValue`.number value
-+#     is sent directly to the guest, while `KeyValue`.qcode must be a
-+#     valid `QKeyCode` value
- #
- # @hold-time: time to delay key up events, milliseconds.  Defaults to
- #     100
-@@ -1257,7 +1257,7 @@
- # @head: head to send event(s) to, in case the display device supports
- #     multiple scanouts.
- #
--# @events: List of InputEvent union.
-+# @events: List of `InputEvent` union.
- #
- # Since: 2.6
- #
-@@ -1361,7 +1361,7 @@
- #     first available node on the host.
- #
- # @p2p: Whether to use peer-to-peer connections (accepted through
--#     @add_client).
-+#     `add_client`).
- #
- # @audiodev: Use the specified DBus audiodev to export audio.
- #
-@@ -1520,7 +1520,7 @@
- #
- # Display (user interface) options.
- #
--# @type: Which DisplayType QEMU should use.
-+# @type: Which `DisplayType` QEMU should use.
- #
- # @full-screen: Start user interface in fullscreen mode
- #     (default: off).
 -- 
 2.50.0
 
