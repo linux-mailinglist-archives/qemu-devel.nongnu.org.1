@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95C4B025FC
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:52:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E338BB025F8
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:52:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKgc-0005mZ-JP; Fri, 11 Jul 2025 16:49:39 -0400
+	id 1uaKgC-00058T-Cq; Fri, 11 Jul 2025 16:49:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKdw-0003Kb-Eg; Fri, 11 Jul 2025 16:46:58 -0400
+ id 1uaKdw-0003Ki-NI; Fri, 11 Jul 2025 16:46:58 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKds-0003jE-40; Fri, 11 Jul 2025 16:46:52 -0400
+ id 1uaKds-0003k0-IN; Fri, 11 Jul 2025 16:46:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 64908135D02;
+ by isrv.corpit.ru (Postfix) with ESMTP id 70D9B135D03;
  Fri, 11 Jul 2025 23:46:04 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 431D623FF3D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 507F223FF3E;
  Fri, 11 Jul 2025 23:46:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 04/15] hw/core/qdev-properties-system: Add missing
- return in set_drive_helper()
-Date: Fri, 11 Jul 2025 23:46:19 +0300
-Message-ID: <20250711204632.1804872-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
+ Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 05/15] hw/loongarch/virt: Fix big endian support with
+ MCFG table
+Date: Fri, 11 Jul 2025 23:46:20 +0300
+Message-ID: <20250711204632.1804872-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 References: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,40 +58,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-Currently, changing the 'drive' property of e.g. a scsi-hd object will
-result in an assertion failure if the aio context of the block node
-it's replaced with doesn't match the current aio context:
+With API build_mcfg(), it is not necessary with parameter structure
+AcpiMcfgInfo to convert to little endian since it is directly used
+with host native endian.
 
-> bdrv_replace_child_noperm: Assertion `bdrv_get_aio_context(old_bs) ==
-> bdrv_get_aio_context(new_bs)' failed.
+Here remove endian conversion before calling function build_mcfg().
+With this patch, bios-tables-test passes to run on big endian host
+machine S390.
 
-The problematic scenario is already detected, but a 'return' statement
-was missing.
-
+Fixes: 735143f10d3e ("hw/loongarch: Add acpi ged support")
 Cc: qemu-stable@nongnu.org
-Fixes: d1a58c176a ("qdev: allow setting drive property for realized device")
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20250523070211.280498-1-f.ebner@proxmox.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit eef2dd03f948a512499775043bdc0c5c88d8a2dd)
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20250604065502.1114098-2-maobibo@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+(cherry picked from commit 9c55c03c05c1899521ff0c991b9296633d759890)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index d350789e76..15dacbee6d 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -116,6 +116,7 @@ static void set_drive_helper(Object *obj, Visitor *v, const char *name,
-         if (ctx != bdrv_get_aio_context(bs)) {
-             error_setg(errp, "Different aio context is not supported for new "
-                        "node");
-+            return;
-         }
- 
-         aio_context_acquire(ctx);
+diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+index 7d5f5a757d..5959d3b88e 100644
+--- a/hw/loongarch/acpi-build.c
++++ b/hw/loongarch/acpi-build.c
+@@ -393,8 +393,8 @@ static void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+     acpi_add_table(table_offsets, tables_blob);
+     {
+         AcpiMcfgInfo mcfg = {
+-           .base = cpu_to_le64(VIRT_PCI_CFG_BASE),
+-           .size = cpu_to_le64(VIRT_PCI_CFG_SIZE),
++           .base = VIRT_PCI_CFG_BASE,
++           .size = VIRT_PCI_CFG_SIZE,
+         };
+         build_mcfg(tables_blob, tables->linker, &mcfg, lams->oem_id,
+                    lams->oem_table_id);
 -- 
 2.47.2
 
