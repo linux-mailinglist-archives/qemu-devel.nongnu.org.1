@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41EF2B01648
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFD6FB0160D
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:29:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua95D-0000KE-77; Fri, 11 Jul 2025 04:26:15 -0400
+	id 1ua95F-0000XB-3c; Fri, 11 Jul 2025 04:26:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xM-0004EU-Mo; Fri, 11 Jul 2025 04:18:08 -0400
+ id 1ua8xN-0004Fq-FS; Fri, 11 Jul 2025 04:18:09 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xJ-0003y8-Lw; Fri, 11 Jul 2025 04:18:08 -0400
+ id 1ua8xL-0003yA-2O; Fri, 11 Jul 2025 04:18:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3AD161356CD;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4B8CD1356CE;
  Fri, 11 Jul 2025 11:17:18 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3286F23FA42;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3FC8723FA43;
  Fri, 11 Jul 2025 11:17:45 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+Cc: qemu-stable@nongnu.org, Weifeng Liu <weifeng.liu.z@gmail.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 02/39] hw/arm/aspeed_ast27x0: Fix RAM size detection
- failure on BE hosts
-Date: Fri, 11 Jul 2025 11:15:58 +0300
-Message-ID: <20250711081745.1785806-2-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 03/39] ui/gtk: Document scale and coordinate handling
+Date: Fri, 11 Jul 2025 11:15:59 +0300
+Message-ID: <20250711081745.1785806-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
@@ -60,60 +60,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jamin Lin <jamin_lin@aspeedtech.com>
+From: Weifeng Liu <weifeng.liu.z@gmail.com>
 
-On big-endian hosts, the aspeed_ram_capacity_write() function previously passed
-the address of a 64-bit "data" variable directly to address_space_write(),
-assuming host and guest endianness matched.
+The existence of multiple scaling factors forces us to deal with various
+coordinate systems and this would be confusing. It would be beneficial
+to define the concepts clearly and use consistent representation for
+variables in different coordinates.
 
-However, the data is expected to be written in little-endian format to DRAM.
-On big-endian hosts, this led to incorrect data being written into DRAM,
-which caused the guest firmware to misdetect the DRAM size.
-
-As a result, U-Boot fails to boot and hangs.
-
-- Replaces the "address_space_write()" call with "address_space_stl_le()",
-  which performs an explicit 32-bit little-endian write.
-- Updating the MemoryRegionOps to restrict access to exactly 4 bytes
-  using .valid.{min,max}_access_size = 4 and .impl.min_access_size = 4.
-
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Fixes: 7436db1 ("aspeed/soc: fix incorrect dram size for AST2700")
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250522023305.2486536-4-jamin_lin@aspeedtech.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit e6941ac106190490d8b455eedc5b368e6d94d4cc)
+Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
+Message-ID: <20250511073337.876650-2-weifeng.liu.z@gmail.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+(cherry picked from commit 9498e2f7e1a247557cfa0f830a86c398a23c6809)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index dce7255a2c..b810891b16 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -325,8 +325,9 @@ static void aspeed_ram_capacity_write(void *opaque, hwaddr addr, uint64_t data,
-      * If writes the data to the address which is beyond the ram size,
-      * it would write the data to the "address % ram_size".
-      */
--    result = address_space_write(&s->dram_as, addr % ram_size,
--                                 MEMTXATTRS_UNSPECIFIED, &data, 4);
-+    address_space_stl_le(&s->dram_as, addr % ram_size, data,
-+                         MEMTXATTRS_UNSPECIFIED, &result);
-+
-     if (result != MEMTX_OK) {
-         qemu_log_mask(LOG_GUEST_ERROR,
-                       "%s: DRAM write failed, addr:0x%" HWADDR_PRIx
-@@ -339,9 +340,10 @@ static const MemoryRegionOps aspeed_ram_capacity_ops = {
-     .read = aspeed_ram_capacity_read,
-     .write = aspeed_ram_capacity_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-+    .impl.min_access_size = 4,
-     .valid = {
--        .min_access_size = 1,
--        .max_access_size = 8,
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-     },
- };
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 59bda83da6..582841e031 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -800,6 +800,71 @@ void gd_update_monitor_refresh_rate(VirtualConsole *vc, GtkWidget *widget)
+ #endif
+ }
  
++/**
++ * DOC: Coordinate handling.
++ *
++ * We are coping with sizes and positions in various coordinates and the
++ * handling of these coordinates is somewhat confusing. It would benefit us
++ * all if we define these coordinates explicitly and clearly. Besides, it's
++ * also helpful to follow the same naming convention for variables
++ * representing values in different coordinates.
++ *
++ * I. Definitions
++ *
++ * - (guest) buffer coordinate: this is the coordinates that the guest will
++ *   see. The x/y offsets and width/height specified in commands sent by
++ *   guest is basically in buffer coordinate.
++ *
++ * - (host) pixel coordinate: this is the coordinate in pixel level on the
++ *   host destop. A window/widget of width 300 in pixel coordinate means it
++ *   occupies 300 pixels horizontally.
++ *
++ * - (host) logical window coordinate: the existence of global scaling
++ *   factor in desktop level makes this kind of coordinate play a role. It
++ *   always holds that (logical window size) * (global scale factor) =
++ *   (pixel size).
++ *
++ * - global scale factor: this is specified in desktop level and is
++ *   typically invariant during the life cycle of the process. Users with
++ *   high-DPI monitors might set this scale, for example, to 2, in order to
++ *   make the UI look larger.
++ *
++ * - zooming scale: this can be freely controlled by the QEMU user to zoom
++ *   in/out the guest content.
++ *
++ * II. Representation
++ *
++ * We'd like to use consistent representation for variables in different
++ * coordinates:
++ * - buffer coordinate: prefix fb
++ * - pixel coordinate: prefix p
++ * - logical window coordinate: prefix w
++ *
++ * For scales:
++ * - global scale factor: prefix gs
++ * - zooming scale: prefix scale/s
++ *
++ * Example: fbw, pw, ww for width in different coordinates
++ *
++ * III. Equation
++ *
++ * - fbw * gs * scale_x = pw
++ * - pw = gs * ww
++ *
++ * Consequently we have
++ *
++ * - fbw * scale_x = ww
++ *
++ * Example: assuming we are running QEMU on a 3840x2160 screen and have set
++ * global scaling factor to 2, if the guest buffer size is 1920x1080 and the
++ * zooming scale is 0.5, then we have:
++ * - fbw = 1920, fbh = 1080
++ * - pw  = 1920, ph  = 1080
++ * - ww  = 960,  wh  = 540
++ * A bonus of this configuration is that we can achieve pixel to pixel
++ * presentation of the guest content.
++ */
++
+ static gboolean gd_draw_event(GtkWidget *widget, cairo_t *cr, void *opaque)
+ {
+     VirtualConsole *vc = opaque;
 -- 
 2.47.2
 
