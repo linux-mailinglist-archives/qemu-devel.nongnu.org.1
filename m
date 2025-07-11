@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62C3B01E1D
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 15:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17111B01DBD
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 15:36:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaDur-00061d-1n; Fri, 11 Jul 2025 09:35:53 -0400
+	id 1uaDv9-0007En-Pa; Fri, 11 Jul 2025 09:36:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uaDtw-0004TT-PM
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:56 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1uaDty-0004Ui-3C
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:59 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uaDtv-00036v-0h
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:56 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-455e6fb8057so6306635e9.3
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 06:34:54 -0700 (PDT)
+ id 1uaDtw-00037U-8M
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:57 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-454df871875so6293355e9.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 06:34:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752240893; x=1752845693; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752240894; x=1752845694; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4D1P721eTGF05yoXPAl8RR3ddO38S69UMpsn5Oq3Ffc=;
- b=TAACE78ByWO7m02I6UVpGHdeEcvFbCJLtjYOjw0yuHOq7vCAasGFUzCCmdGvFGr34L
- 7SA5/DeV2ThRyCQHjWy1cK8Bmdu0DV1of/OfkX2wMovYFqCiovl4NUohlMwJcrf7HpC6
- anR69RA57IG3RBzwb/ot3Oo5d/VIpG7kvjAwksQBoi5PM+N8h1bw90bcMmGswyFoGzKP
- hyQ1PoHD5gTQA5vRJeI1M5HiBXZnyovgqo0Bm+9bEdMEZf6qilfiGWtFo6ZEovDkC9O4
- zbXKwfUT9+23v4QNlRPiqW0jSJnZxJAZIwYAhdpfBnWFSpOEkAzuCw7J1Zq6Zf9YWRvc
- FJXQ==
+ :reply-to; bh=3RKupyWJCQDDIhOP+u0cTCBpDLfFp7iJSn/Hu9Aqtmc=;
+ b=oPy6mtOTPKk+gc8s2ThS2fJyFF1q5QR700o+nrc/0yiV0hfGX98Z1x37dDOw2VhQDx
+ RRew3mRjR35gGfgbvSGaeuwhQ79NidrcSPwsuXlBpTk8NgTRAyn6Np719Xi894BFroLY
+ hEzBoKEB4wiViEItcqFyT8kqdXcOYcWDWWuondOcvcCD7q4fYhUW0rdrl5VCnMD0V/TB
+ /1GRjyVh3EFJYtM2u3R8MP+iTeN1pRYv/7izIRgtdAnYqSqu69A3LXfB1kT3lIjpT3PH
+ HLba82rSrBbtpIpPMVs9fYF0gqRRQO1LAV6FXW7LVSJh3AVIl6pZjvFmM5JEsAFm4noZ
+ aPUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752240893; x=1752845693;
+ d=1e100.net; s=20230601; t=1752240894; x=1752845694;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4D1P721eTGF05yoXPAl8RR3ddO38S69UMpsn5Oq3Ffc=;
- b=QtkRvXsFzsdtUJwjAt4/wNfOGjdIZZqqUDvKHlkmyEdLO18SFjDXENhI6rxu6qvJIR
- Bqj/KngGawz4Rek6k5J0rBwHfamrmhxHlVwVs6zDj/rqJeqCulpb7/Kjxdsc6U7cK9Js
- ap+SGhGZTDvKdyjXdKC5ommlhEGCHv893/u1wzaSQutYlVtZej3A+zxGa+1umw7tw3fC
- UZH939RQupQkDfdT+lD52eEQP3T1HKVETwzjmWUPQxeEv9A42WwQf8IcIliod3IU1Kuv
- rpoggo42tk9DKnNnZSCy707FUn8Gje1D16Rh98NMMg8E6G5q9nRghIY2BjgSBZX4LgFY
- jLmA==
-X-Gm-Message-State: AOJu0YwqIKp5MUnsdIIET0T2nqMfShIzicQh5KueAVr2qFgXdBgFFzK9
- siUE9FGcpAKOqtbJOZ+/8GtWUlgdTXFoKMuV5lTXjzIARNktnScj59zBYE2WOFKPLulkH8MbPVx
- KfyfV
-X-Gm-Gg: ASbGncuEqoMyzs60uQUh0d12jx/RL/rMsDzmy/ckTyhM1tMBwyfjhVsiSqr14TO0mUO
- HsEwj0gqrpurlkuoxby7YIUTA3AV0L5NQkFQPxIh5tTL3PnNK7xxjEwo8cedS02QBgZygdeJZzH
- cqFsE3oFYyD8K6XmpsoAOoy59dQvD18MnDpSbNdWoE+6NbMZswqZZOMY8aqZqgi5YPSQsypekPm
- AGCEx23ovkaO4pt7IIf7qA73dm6TD9zEW8ciiDz2mxcB8N1jnHXk4oqvdQxI5Y0ItVi4HfYgXkT
- I4NdoU9O90T+pcNKreFLWrfGKtu+arCxwwCaRvF/q0HHq8lcdrJFp2ALSSmRkGFRNypqqzudV9H
- KmOTRarNigRB1HZ1dq1Vl7teKLVFO
-X-Google-Smtp-Source: AGHT+IFoGT7AtPo6/0JtV5y3fUeCo/3/9cENyDQkJE4KusBCMXFJhtyA3D6mBCqpHHsLHpTppfOv3w==
-X-Received: by 2002:a05:600c:3e0b:b0:450:d04e:22d6 with SMTP id
- 5b1f17b1804b1-454e7b603b9mr28157485e9.7.1752240893458; 
- Fri, 11 Jul 2025 06:34:53 -0700 (PDT)
+ bh=3RKupyWJCQDDIhOP+u0cTCBpDLfFp7iJSn/Hu9Aqtmc=;
+ b=Kguri3ZOpYlRyzOopzQrSwWASEAvmJsZbClJ9EpjQ6iowgAaiLO01+eCrMy9fCWOob
+ 0xkY0mlqWEhjkBjdEI03Mmg/ytp3smrbj+PAoB+s1YnGrBzkj8sFm1GwxSoqtlIaCXFG
+ 8c01FvxuyaECx8f3nd2UVqlia8zX9Pr2ddTu4dGfOscYkyZOTLNJQq6GuKvC1ai0M92e
+ CUL+8ZU5GaX7IYDU6ReVPBUk8ATW58m0Y1UHJlGsL6YPohAK2pNGPqK92otYHwYXgrtw
+ WJeqyUeP0yfdP6v1bJjYbq68FXfDlLvPdUGpSnamkSrpORw8FE9CM99WZc7hu8VXLqSa
+ xXCw==
+X-Gm-Message-State: AOJu0YxKSZjsr4RDL5G5jR/dkTS1ZJtVy0mDK3WsHS14UxzWhcVHvwc0
+ mNoD5m/AOqYfyu348/BjRiaS+1Y2vRy9WeM+1pj+rpMV+3CQ7x6j7UCS31gcNrpNVUycovuRrva
+ DR9tL
+X-Gm-Gg: ASbGncvFeMDJizwabr1GOd9Y/yZyIkiTc/6BsAfHkAsnQO7P3pylnY86kq752htvvAU
+ pJGoDQnmbEaRjc63Bf16Ohgdu1cLa5OQCdAeSP+BVQnBNgIWeOvnBgT/xQ26BJFzfSjzfni73Jo
+ Ftrcf6rsVtHVHdziGq1Ng2N5qhDW2FJt98oDfBLMUxyXairVntVuyzRejcDSBtUVWPOkXrwERQK
+ 3mEzu7TrnhkJVuNcpNpn8i2uJ2HFcQUqZ86XpUozflTt1CxQtdbqaPB1+5+bfrNvk74PqveTbZk
+ eir0ztc16PcrqGG/yn9NfdIWFhQ5jkvLFc+X4cvVcY4HKnCG1Zjw8Ym27zxduvmM4gPD938No2R
+ AGaorvOtLXaUL1droiuMpCokxeKxt3+oGCng8cwA=
+X-Google-Smtp-Source: AGHT+IHrZBBK9jSnP0CSqbt2lXJjpcFhAxVYfC6d4YNAC/Fo8ODbs6TsXAao6jIJjRdY6YHZM6YOAw==
+X-Received: by 2002:a05:600c:1d8b:b0:455:ed48:144f with SMTP id
+ 5b1f17b1804b1-455ed4815f8mr20753175e9.14.1752240894434; 
+ Fri, 11 Jul 2025 06:34:54 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d50df0cdsm89734145e9.25.2025.07.11.06.34.52
+ 5b1f17b1804b1-454d50df0cdsm89734145e9.25.2025.07.11.06.34.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Jul 2025 06:34:52 -0700 (PDT)
+ Fri, 11 Jul 2025 06:34:53 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/36] arm/kvm: shorten one overly long line
-Date: Fri, 11 Jul 2025 14:34:14 +0100
-Message-ID: <20250711133429.1423030-22-peter.maydell@linaro.org>
+Subject: [PULL 22/36] target/arm: Drop stub for define_tlb_insn_regs
+Date: Fri, 11 Jul 2025 14:34:15 +0100
+Message-ID: <20250711133429.1423030-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250711133429.1423030-1-peter.maydell@linaro.org>
 References: <20250711133429.1423030-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,34 +98,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cornelia Huck <cohuck@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Fixes: 804cfc7eedb7 ("arm/cpu: Store aa64isar0/aa64zfr0 into the idregs arrays")
-Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Allow the call to be compiled out by protecting it
+with tcg_enabled.
+
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250704141927.38963-6-cohuck@redhat.com
+Message-id: 20250707151547.196393-2-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/arm/helper.c    | 4 +++-
+ target/arm/tcg-stubs.c | 5 -----
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 426f8b159e8..8ab0d692d36 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -230,7 +230,8 @@ static uint64_t idregs_sysreg_to_kvm_reg(ARMSysRegs sysreg)
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 3ea9958ea7a..c1b684e3d1c 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -7771,7 +7771,9 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+     }
+ 
+ #ifndef CONFIG_USER_ONLY
+-    define_tlb_insn_regs(cpu);
++    if (tcg_enabled()) {
++        define_tlb_insn_regs(cpu);
++    }
+ #endif
+ 
+     if (arm_feature(env, ARM_FEATURE_V6)) {
+diff --git a/target/arm/tcg-stubs.c b/target/arm/tcg-stubs.c
+index 5e5166c0490..aac99b2672a 100644
+--- a/target/arm/tcg-stubs.c
++++ b/target/arm/tcg-stubs.c
+@@ -22,11 +22,6 @@ void raise_exception_ra(CPUARMState *env, uint32_t excp, uint32_t syndrome,
+     g_assert_not_reached();
  }
  
- /* read a sysreg value and store it in the idregs */
--static int get_host_cpu_reg(int fd, ARMHostCPUFeatures *ahcf, ARMIDRegisterIdx index)
-+static int get_host_cpu_reg(int fd, ARMHostCPUFeatures *ahcf,
-+                            ARMIDRegisterIdx index)
+-/* TLBI insns are only used by TCG, so we don't need to do anything for KVM */
+-void define_tlb_insn_regs(ARMCPU *cpu)
+-{
+-}
+-
+ /* With KVM, we never use float_status, so these can be no-ops */
+ void arm_set_default_fp_behaviours(float_status *s)
  {
-     uint64_t *reg;
-     int ret;
 -- 
 2.43.0
 
