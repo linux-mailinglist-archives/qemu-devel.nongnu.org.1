@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491DFB017A1
+	by mail.lfdr.de (Postfix) with ESMTPS id D7942B017A2
 	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:27:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua9ze-0002Ll-Iq; Fri, 11 Jul 2025 05:24:34 -0400
+	id 1ua9zc-0002Dm-HC; Fri, 11 Jul 2025 05:24:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1ua9zM-0002DA-RT
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:24:18 -0400
+ id 1ua9xi-0000D7-6i
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:22:38 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1ua9zJ-0004Cv-O5
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:24:16 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1ua9xb-0003s5-IW
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:22:33 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxOGrE13BosR8nAQ--.21128S3;
- Fri, 11 Jul 2025 17:22:12 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxLOLF13BotB8nAQ--.41723S3;
+ Fri, 11 Jul 2025 17:22:13 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowJCxdOS813Bo5owSAA--.39837S12;
+ by front1 (Coremail) with SMTP id qMiowJCxdOS813Bo5owSAA--.39837S13;
  Fri, 11 Jul 2025 17:22:12 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: maobibo@loongson.cn
 Cc: qemu-devel@nongnu.org,
 	philmd@linaro.org,
 	jiaxun.yang@flygoat.com
-Subject: [PATCH v5 10/11] target/loongarch:Implement csrrd CSR_MSGIR register
-Date: Fri, 11 Jul 2025 16:59:14 +0800
-Message-Id: <20250711085915.3042395-11-gaosong@loongson.cn>
+Subject: [PATCH v5 11/11] hw/loongarch: Implement AVEC plug/unplug interfaces
+Date: Fri, 11 Jul 2025 16:59:15 +0800
+Message-Id: <20250711085915.3042395-12-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250711085915.3042395-1-gaosong@loongson.cn>
 References: <20250711085915.3042395-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxdOS813Bo5owSAA--.39837S12
+X-CM-TRANSID: qMiowJCxdOS813Bo5owSAA--.39837S13
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,88 +64,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-implement the read-clear feature for CSR_MSGIR register.
+when cpu added, connect avec irq to cpu INT_AVEC irq pin.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/csr.c                        |  5 +++++
- target/loongarch/tcg/csr_helper.c             | 21 +++++++++++++++++++
- target/loongarch/tcg/helper.h                 |  1 +
- .../tcg/insn_trans/trans_privileged.c.inc     |  1 +
- 4 files changed, 28 insertions(+)
+ hw/intc/loongarch_avec.c | 71 ++++++++++++++++++++++++++++++++++++++++
+ hw/loongarch/virt.c      | 11 +++++++
+ 2 files changed, 82 insertions(+)
 
-diff --git a/target/loongarch/csr.c b/target/loongarch/csr.c
-index 7ea0a30450..f973780bba 100644
---- a/target/loongarch/csr.c
-+++ b/target/loongarch/csr.c
-@@ -97,6 +97,11 @@ static CSRInfo csr_info[] = {
-     CSR_OFF(DBG),
-     CSR_OFF(DERA),
-     CSR_OFF(DSAVE),
-+    CSR_OFF_ARRAY(MSGIS, 0),
-+    CSR_OFF_ARRAY(MSGIS, 1),
-+    CSR_OFF_ARRAY(MSGIS, 2),
-+    CSR_OFF_ARRAY(MSGIS, 3),
-+    CSR_OFF(MSGIR),
- };
- 
- CSRInfo *get_csr(unsigned int csr_num)
-diff --git a/target/loongarch/tcg/csr_helper.c b/target/loongarch/tcg/csr_helper.c
-index 2942d7feb8..48996b62f7 100644
---- a/target/loongarch/tcg/csr_helper.c
-+++ b/target/loongarch/tcg/csr_helper.c
-@@ -68,6 +68,27 @@ target_ulong helper_csrrd_tval(CPULoongArchState *env)
-     return cpu_loongarch_get_constant_timer_ticks(cpu);
+diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
+index af6c75c4a9..820d6655ef 100644
+--- a/hw/intc/loongarch_avec.c
++++ b/hw/intc/loongarch_avec.c
+@@ -116,14 +116,81 @@ static void loongarch_avec_init(Object *obj)
+     return;
  }
  
-+target_ulong helper_csrrd_msgir(CPULoongArchState *env)
++static AVECCore *loongarch_avec_get_cpu(LoongArchAVECState *s,
++                                        DeviceState *dev)
 +{
-+    int irq, new;
++    CPUClass *k = CPU_GET_CLASS(dev);
++    uint64_t arch_id = k->get_arch_id(CPU(dev));
++    int i;
 +
-+    irq = find_first_bit(env->CSR_MSGIS, 256);
-+    if (irq < 256) {
-+        clear_bit(irq, env->CSR_MSGIS);
-+        new = find_first_bit(env->CSR_MSGIS, 256);
-+        if (new < 256) {
-+            return irq;
++    for (i = 0; i < s->num_cpu; i++) {
++        if (s->cpu[i].arch_id == arch_id) {
++            return &s->cpu[i];
 +        }
-+
-+        env->CSR_ESTAT = FIELD_DP64(env->CSR_ESTAT, CSR_ESTAT, MSGINT, 0);
-+    } else {
-+        /* bit 31 set 1 for no invalid irq */
-+        irq = BIT(31);
 +    }
 +
-+    return irq;
++    return NULL;
 +}
 +
- target_ulong helper_csrwr_estat(CPULoongArchState *env, target_ulong val)
++static void loongarch_avec_cpu_plug(HotplugHandler *hotplug_dev,
++                                   DeviceState *dev, Error **errp)
++{
++    LoongArchAVECState *s = LOONGARCH_AVEC(hotplug_dev);
++    Object *obj = OBJECT(dev);
++    AVECCore *core;
++    int index;
++
++    if (!object_dynamic_cast(obj, TYPE_LOONGARCH_CPU)) {
++        warn_report("LoongArch AVEC: Invalid %s device type",
++                                       object_get_typename(obj));
++        return;
++    }
++    core = loongarch_avec_get_cpu(s, dev);
++    if (!core) {
++        return;
++    }
++
++    core->cpu = CPU(dev);
++    index = core - s->cpu;
++
++    /* connect avec msg irq to cpu irq */
++    qdev_connect_gpio_out(DEVICE(s), index, qdev_get_gpio_in(dev, INT_AVEC));
++    return;
++}
++
++static void loongarch_avec_cpu_unplug(HotplugHandler *hotplug_dev,
++                                     DeviceState *dev, Error **errp)
++{
++    LoongArchAVECState *s = LOONGARCH_AVEC(hotplug_dev);
++    Object *obj = OBJECT(dev);
++    AVECCore *core;
++
++    if (!object_dynamic_cast(obj, TYPE_LOONGARCH_CPU)) {
++        warn_report("LoongArch AVEC: Invalid %s device type",
++                                       object_get_typename(obj));
++        return;
++    }
++
++    core = loongarch_avec_get_cpu(s, dev);
++
++    if (!core) {
++        return;
++    }
++
++    core->cpu = NULL;
++}
++
+ static void loongarch_avec_class_init(ObjectClass *klass, const void *data)
  {
-     int64_t old_v = env->CSR_ESTAT;
-diff --git a/target/loongarch/tcg/helper.h b/target/loongarch/tcg/helper.h
-index 1d5cb0198c..db57dbfc16 100644
---- a/target/loongarch/tcg/helper.h
-+++ b/target/loongarch/tcg/helper.h
-@@ -100,6 +100,7 @@ DEF_HELPER_1(rdtime_d, i64, env)
- DEF_HELPER_1(csrrd_pgd, i64, env)
- DEF_HELPER_1(csrrd_cpuid, i64, env)
- DEF_HELPER_1(csrrd_tval, i64, env)
-+DEF_HELPER_1(csrrd_msgir, i64, env)
- DEF_HELPER_2(csrwr_stlbps, i64, env, tl)
- DEF_HELPER_2(csrwr_estat, i64, env, tl)
- DEF_HELPER_2(csrwr_asid, i64, env, tl)
-diff --git a/target/loongarch/tcg/insn_trans/trans_privileged.c.inc b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-index ecbfe23b63..2619b5342b 100644
---- a/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-+++ b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
-@@ -83,6 +83,7 @@ void loongarch_csr_translate_init(void)
-     SET_CSR_FUNC(TCFG,  NULL, gen_helper_csrwr_tcfg);
-     SET_CSR_FUNC(TVAL,  gen_helper_csrrd_tval, NULL);
-     SET_CSR_FUNC(TICLR, NULL, gen_helper_csrwr_ticlr);
-+    SET_CSR_FUNC(MSGIR, gen_helper_csrrd_msgir, NULL);
- }
- #undef SET_CSR_FUNC
+     DeviceClass *dc = DEVICE_CLASS(klass);
++    HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(klass);
+     LoongArchAVECClass *lac = LOONGARCH_AVEC_CLASS(klass);
  
+     dc->unrealize = loongarch_avec_unrealize;
+     device_class_set_parent_realize(dc, loongarch_avec_realize,
+                                     &lac->parent_realize);
++    hc->plug = loongarch_avec_cpu_plug;
++    hc->unplug = loongarch_avec_cpu_unplug;
+ }
+ 
+ static const TypeInfo loongarch_avec_info = {
+@@ -132,6 +199,10 @@ static const TypeInfo loongarch_avec_info = {
+     .instance_size = sizeof(LoongArchAVECState),
+     .instance_init = loongarch_avec_init,
+     .class_init    = loongarch_avec_class_init,
++    .interfaces    = (const InterfaceInfo[]) {
++        { TYPE_HOTPLUG_HANDLER },
++        { }
++    },
+ };
+ 
+ static void loongarch_avec_register_types(void)
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index e3ab165cc5..7ea9b58f15 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -377,6 +377,10 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
+                              &error_abort);
+         hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), DEVICE(cs),
+                              &error_abort);
++        if (lvms->avec) {
++            hotplug_handler_plug(HOTPLUG_HANDLER(lvms->avec), DEVICE(cs),
++                                 &error_abort);
++        }
+     }
+ }
+ 
+@@ -1088,6 +1092,9 @@ static void virt_cpu_unplug(HotplugHandler *hotplug_dev,
+     /* Notify ipi and extioi irqchip to remove interrupt routing to CPU */
+     hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->ipi), dev, &error_abort);
+     hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->extioi), dev, &error_abort);
++    if (lvms->avec) {
++        hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->avec), dev, &error_abort);
++    }
+ 
+     /* Notify acpi ged CPU removed */
+     hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &error_abort);
+@@ -1111,6 +1118,10 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
+         hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), dev, &error_abort);
+     }
+ 
++    if (lvms->avec) {
++        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->avec), dev, &error_abort);
++    }
++
+     if (lvms->acpi_ged) {
+         hotplug_handler_plug(HOTPLUG_HANDLER(lvms->acpi_ged), dev,
+                              &error_abort);
 -- 
 2.34.1
 
