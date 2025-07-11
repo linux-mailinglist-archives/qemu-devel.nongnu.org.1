@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB97B0273E
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Jul 2025 00:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEEFDB02737
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Jul 2025 00:53:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaMbN-0001ZZ-AK; Fri, 11 Jul 2025 18:52:22 -0400
+	id 1uaMbn-0002zg-1B; Fri, 11 Jul 2025 18:52:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uaMYc-0007RW-AT
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 18:49:42 -0400
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ id 1uaMYu-0007cq-H9
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 18:49:53 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uaMYY-0008Re-B7
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 18:49:28 -0400
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-40af40aee93so1620847b6e.0
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 15:49:24 -0700 (PDT)
+ id 1uaMYa-0008UI-A7
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 18:49:31 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-73d0152369fso352497a34.2
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 15:49:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752274164; x=1752878964; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752274166; x=1752878966; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pCFS6cqTwlg3fFOqku117fnhPK1D7OaRJaQ+ElcEeuA=;
- b=OK/3CtOtNlG1YwdCbDsLgaV0C0IR94svBNywGbUrkb8ap+wQS0I6mLjb2dt+WZ2uCB
- l0t2fZtDITQ1WhuA7eLSG7K125G+svmNy7Kd7KXlvguSJKWrQCXzdlRdOYtHVQc680fO
- e6CxxHxf/wE48x4F++sIwZHMvhpFEr6v58E0c2xBd4hlcY5y523Ail56qtJ43bGCNLmG
- xnm24wJSLa7r2wPXgK8OhCAesDFQ29tNo3yCP0PqjVcn+p9xwZioNlfKCWLI8885X18q
- ucWwwF7MCz3R4FpTTw3kpXAGxzqAQzeW8HF3wE/0bCJkOvecFxnMprXZ9JZTUF+qIMtz
- bkcg==
+ bh=STWIYU9G50oq6+fT8dxvuAWf3Y81wJSGWcY0ZHxvSjQ=;
+ b=aKV+u656HDtopq5iVFZtkl3lAlJ7YMiVjeE22rS25H/qbF9qfmYX29cbUx9P6fAlJp
+ SrNB+BUM8L5ijRBD/9+Y/VKtx3+gsxjz+uEfRC26ed03JuZctyXMtC8y1g9evG6rNXUY
+ 9oSOYFQxvx0pJceIZWlqwJ7KB29rMy4t+OFor6M5hl7G5gU6m/R0FFecsAX9Qsl8BtFM
+ UMpTH5UiSj8WIyhjKxrh2Nll4Or+gFUiFxhbjUoiUyECmRX5RvHMScs8GlKla3W6geSw
+ txoIiAswUI0e+iAdMFAT1BJcqvJTDPAcPJ+IUuZbAo/wLIMqH3gjSPLJVrB2HhvaDE8C
+ 2tYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752274164; x=1752878964;
+ d=1e100.net; s=20230601; t=1752274166; x=1752878966;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pCFS6cqTwlg3fFOqku117fnhPK1D7OaRJaQ+ElcEeuA=;
- b=BJsPTPlrApXO59LrOKGVcWU0+64Ggf2uEa2hyNT15A4FU+sBGuA2kl+N+tLJmyO7QC
- yxqVcNZlm5MCRNdvoJg2je0QwHUbfB2ewoycD973wwLB72sMxpyQBmsfpH/Vf91MFPiM
- +RcCO0JGeCI7ZPlwW1tLadH4MMV1hz5OhuAwK3DqxSGTwnd28pw2P9cLB2IFySLvKzZW
- WnZsxB4dsq6QGaHbbojmd7WVEf8AXWGyNTGKChfy0CI1FiQZ1q9MqxhIXDgBkOAoC41z
- odaVmDfOHystinrqkS+39+r18hd+oLDC97dsBbAlh0H1z+PZAvXEJrcE77fVP6TsMSj4
- aFdw==
-X-Gm-Message-State: AOJu0YzuW8yiR0sBjiXFhecVlK7oU67PfTdLd5rrunYJe0eJZHjrefXM
- Sp6NXMY8lp5tLHIc+pQwSe0Zx8rrCmVMreFXS5gceyJAJwTFL2EouL9AOrNOwPcT3QRGKghpIeP
- X/PeYdO0=
-X-Gm-Gg: ASbGnctCmGw3YWlvyaRxl+KwFeA0izf46lCg/4ndvhkffu+5LMXB7ST18B2NrZmuLHH
- DidiT3dhLxGdtaU1DbmkJRobOK0AuxhXIqOhXweSRsGMZyXGUQPEOlNm7AXizGvfh0x+OwszotG
- LujWUKGgzwQhXdP94QE8Zrz89UC/4L8wsRUm2wCF+4M1BLZbs3I9hFyKvEwGLXejPzP28moTYFb
- +ANNZ9d6i052j2oPIZLfKfQKPdPTVcRv2MaRQ/jNyBGa74MnoLxS4EJrHq+aHXLtFeP7qi+nCHw
- 9NwmWf7MOxM+14FqhFgh9bL2dWtgm8jUmCmQKOFdqyGOCLtv+O0MYWDSKOequRga9bXPIIHF/P5
- qhRcxlO8YLw/1MrDkW7ljvGlX2WAMag2jGYdHG7+n+i6H5tfMBk2WzRrbn9p/Js0EU3XWU19Z/e
- JopnRnY8SX
-X-Google-Smtp-Source: AGHT+IE0kbKNmv08MvHE23M3QnsEtA91s/oN4v56/+kvsVhJ/ISBjSMp6NA19DZO4UgR2OdUB31cVg==
-X-Received: by 2002:a05:6808:3025:b0:410:f243:a502 with SMTP id
- 5614622812f47-415659ac4ecmr3328808b6e.8.1752274164100; 
- Fri, 11 Jul 2025 15:49:24 -0700 (PDT)
+ bh=STWIYU9G50oq6+fT8dxvuAWf3Y81wJSGWcY0ZHxvSjQ=;
+ b=JrPYcbWRfny1UfH2rC6uRGSRWUnBv4oX1m1/Hfi8Ec5WYo49TTwOan7rmBdjcdnrAV
+ 2RNaqJuFcE1+EldINEpGlxTPEm4R6DFiTcZVr6e6HDGCnMUgzAMsAkQTUcSdFjHWzKfg
+ /WxbUPX0iN8HlXnk+R/WIJEJTrpOouFJoKDwSe9xar11d2muP2R14DHL1Ai4jlRhJ9B9
+ gzbE4+J9TmYAar4OmS/Z3OGkeEGFHCxYjuhQJ72kfsokWOmoIcMWJdAExtV1r9ZlgojX
+ bJhsyPlHkLDSjU4CQflqDgorNwXnpSNSwsZxHYUsamE2h9Fda29RuTcfXfIAm3yG3IZD
+ P42w==
+X-Gm-Message-State: AOJu0YxZJMCTvUnQKt1+g8xGpfgqrr/pR2eSphuZvAPrvkk0tOyK+9BD
+ dgrzIDmRIriKZW5523VihDoXOz1F5GcZmbqmg4+0Ns+wk38gDQ3iiJhQ1Oo09+fcz4cSXECyOi3
+ cm81+kVE=
+X-Gm-Gg: ASbGncvGIrf52X8KxGgJZOGm+eO0NHJQ12iZF8+8CcOmLPnEe0ozi1c3NCY57kHIA91
+ IAG7M357TgPjnIK3Pc6JWflebPNRiiApvqUmQhb1aruUjKkJ3eNnkF+2SXdzWBX3pjf37X1zWnv
+ tR0DqnyMs0Oh9yEkwA5Da0+bs9U/YW/roR8a2d8WXoM4UdkNFTzrJdG15bmkG3XTS/u+HvVi3xA
+ qQzSLnm2R8UaLZ4loTf+qzu+3THhp2DIoSOqoC6auMAFgh0leXKgclHZ3NFD3HLJBNZKQI3LngC
+ yzSmA0NA8SU5j9Oap1kj5+MANhSgyLAueYA4u+A0QJrC4jBwGP23R7QFBCnzsGaWfa/3dpZLJFy
+ pOx1lEdv2K1vpr6ywXuGSMhcW1gF5Zyp6s/fWflU755PM/aCakYyOAEg+JihYbS9LSXIZa/COYR
+ NEwsVILose
+X-Google-Smtp-Source: AGHT+IFA/EbfPu3L3gqXnUBGS8nca6pNF7wXeEcL84IIr+gAZ/L4j4NBXNGlSg61p6S5lP6+eBWYSg==
+X-Received: by 2002:a05:6808:6c8e:b0:40a:526e:5e7a with SMTP id
+ 5614622812f47-415396c4933mr3617316b6e.23.1752274165635; 
+ Fri, 11 Jul 2025 15:49:25 -0700 (PDT)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-414197c6064sm696638b6e.20.2025.07.11.15.49.23
+ 5614622812f47-414197c6064sm696638b6e.20.2025.07.11.15.49.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Jul 2025 15:49:23 -0700 (PDT)
+ Fri, 11 Jul 2025 15:49:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 5/9] target/arm: Skip AF and DB updates for AccessType_AT
-Date: Fri, 11 Jul 2025 16:49:11 -0600
-Message-ID: <20250711224915.62369-6-richard.henderson@linaro.org>
+Subject: [PATCH v2 6/9] target/arm: Convert do_ats_write to access_perm
+Date: Fri, 11 Jul 2025 16:49:12 -0600
+Message-ID: <20250711224915.62369-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250711224915.62369-1-richard.henderson@linaro.org>
 References: <20250711224915.62369-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,61 +99,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are required to skip DB update for AT instructions, and
-we are allowed to skip AF updates.  Choose to skip both.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ target/arm/tcg/cpregs-at.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 1866c494ef..efbad7af1f 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -58,6 +58,12 @@ typedef struct S1Translate {
-      * and will not change the state of the softmmu TLBs.
-      */
-     bool in_debug;
-+    /*
-+     * in_at: is this AccessType_AT?
-+     * This is also set for debug, because at heart that is also
-+     * an address translation, and simplifies a test.
-+     */
-+    bool in_at;
-     /*
-      * If this is stage 2 of a stage 1+2 page table walk, then this must
-      * be true if stage 1 is an EL0 access; otherwise this is ignored.
-@@ -1929,7 +1935,12 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     descaddr &= ~(hwaddr)(page_size - 1);
-     descaddr |= (address & (page_size - 1));
+diff --git a/target/arm/tcg/cpregs-at.c b/target/arm/tcg/cpregs-at.c
+index 2ff0b3e76f..bebf168997 100644
+--- a/target/arm/tcg/cpregs-at.c
++++ b/target/arm/tcg/cpregs-at.c
+@@ -24,14 +24,14 @@ static int par_el1_shareability(GetPhysAddrResult *res)
+ }
  
--    if (likely(!ptw->in_debug)) {
-+    /*
-+     * For AccessType_AT, DB is not updated (AArch64.SetDirtyFlag),
-+     * and it is IMPLEMENTATION DEFINED whether AF is updated
-+     * (AArch64.SetAccessFlag; qemu chooses to not update).
-+     */
-+    if (likely(!ptw->in_at)) {
-         /*
-          * Access flag.
-          * If HA is enabled, prepare to update the descriptor below.
-@@ -3553,6 +3564,7 @@ bool get_phys_addr_for_at(CPUARMState *env, vaddr address,
-     S1Translate ptw = {
-         .in_mmu_idx = mmu_idx,
-         .in_space = space,
-+        .in_at = true,
-         .in_prot_check = prot_check,
-     };
-     /*
-@@ -3653,6 +3665,7 @@ static hwaddr arm_cpu_get_phys_page(CPUARMState *env, vaddr addr,
-         .in_mmu_idx = mmu_idx,
-         .in_space = arm_mmu_idx_to_security_space(env, mmu_idx),
-         .in_debug = true,
-+        .in_at = true,
-         .in_prot_check = 0,
-     };
+ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
+-                             MMUAccessType access_type, ARMMMUIdx mmu_idx,
++                             unsigned prot_check, ARMMMUIdx mmu_idx,
+                              ARMSecuritySpace ss)
+ {
+     uint64_t par64;
+     bool format64 = false;
+     ARMMMUFaultInfo fi = {};
      GetPhysAddrResult res = {};
+-    bool ret = get_phys_addr_for_at(env, value, 1 << access_type,
++    bool ret = get_phys_addr_for_at(env, value, prot_check,
+                                     mmu_idx, ss, &res, &fi);
+ 
+     /*
+@@ -191,7 +191,7 @@ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
+ 
+ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
+ {
+-    MMUAccessType access_type = ri->opc2 & 1 ? MMU_DATA_STORE : MMU_DATA_LOAD;
++    unsigned access_perm = ri->opc2 & 1 ? PAGE_WRITE : PAGE_READ;
+     uint64_t par64;
+     ARMMMUIdx mmu_idx;
+     int el = arm_current_el(env);
+@@ -253,7 +253,7 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
+         g_assert_not_reached();
+     }
+ 
+-    par64 = do_ats_write(env, value, access_type, mmu_idx, ss);
++    par64 = do_ats_write(env, value, access_perm, mmu_idx, ss);
+ 
+     A32_BANKED_CURRENT_REG_SET(env, par, par64);
+ }
+@@ -261,11 +261,11 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
+ static void ats1h_write(CPUARMState *env, const ARMCPRegInfo *ri,
+                         uint64_t value)
+ {
+-    MMUAccessType access_type = ri->opc2 & 1 ? MMU_DATA_STORE : MMU_DATA_LOAD;
++    unsigned access_perm = ri->opc2 & 1 ? PAGE_WRITE : PAGE_READ;
+     uint64_t par64;
+ 
+     /* There is no SecureEL2 for AArch32. */
+-    par64 = do_ats_write(env, value, access_type, ARMMMUIdx_E2,
++    par64 = do_ats_write(env, value, access_perm, ARMMMUIdx_E2,
+                          ARMSS_NonSecure);
+ 
+     A32_BANKED_CURRENT_REG_SET(env, par, par64);
+@@ -309,7 +309,7 @@ static CPAccessResult at_s1e01_access(CPUARMState *env, const ARMCPRegInfo *ri,
+ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
+                         uint64_t value)
+ {
+-    MMUAccessType access_type = ri->opc2 & 1 ? MMU_DATA_STORE : MMU_DATA_LOAD;
++    unsigned access_perm = ri->opc2 & 1 ? PAGE_WRITE : PAGE_READ;
+     ARMMMUIdx mmu_idx;
+     uint64_t hcr_el2 = arm_hcr_el2_eff(env);
+     bool regime_e20 = (hcr_el2 & (HCR_E2H | HCR_TGE)) == (HCR_E2H | HCR_TGE);
+@@ -352,7 +352,7 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
+     }
+ 
+     ss = for_el3 ? arm_security_space(env) : arm_security_space_below_el3(env);
+-    env->cp15.par_el[1] = do_ats_write(env, value, access_type, mmu_idx, ss);
++    env->cp15.par_el[1] = do_ats_write(env, value, access_perm, mmu_idx, ss);
+ }
+ 
+ static CPAccessResult ats_access(CPUARMState *env, const ARMCPRegInfo *ri,
 -- 
 2.43.0
 
