@@ -2,108 +2,197 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B20B018AF
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 127D4B01906
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 12:00:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaANX-0001Cn-IO; Fri, 11 Jul 2025 05:49:15 -0400
+	id 1uaAWW-0005Gi-6E; Fri, 11 Jul 2025 05:58:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uaANO-000108-Be
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:49:07 -0400
-Received: from www62.your-server.de ([213.133.104.62])
+ (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
+ id 1uaAWS-00058e-No
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:58:29 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uaANL-0002EO-LM
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:49:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
- :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=ijPAPIM2gIFHFk5bLotXLqQHogL/Kae92CWqiaQtpm0=; b=hB4aXyEJI3zRq8NcvnzZ2OqLyb
- 4r9aYsuR62O51rhQyPYaV7VPg5DROGExLRC6LP8kG3h7OHdxGO9c5s4eNnWyz5IoTtD0qRrbQGct2
- rUNwa/+xxudNG2WFlWEP97S3njJITcejSjdVZg0/sYBut09VowegOp3BHyHxplvwdknFiQEqOASAJ
- ZPTLZuwqKVe/nu3xlsSi3sIgP8jvIXzTiNULZzneh9AQcktT4eDDlQnlk6tB1A8NgYPUq65Ywt5xN
- xCIm5/F4JSc0EAAShHW1vk/xv0OEeGky8vCasgeDhSEvdiIsZlD5kQLwA225jb4iUikvBKajweSa5
- 6xkVvEVg==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
- by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96.2) (envelope-from <daniel@iogearbox.net>)
- id 1uaANJ-0003NT-0O; Fri, 11 Jul 2025 11:49:01 +0200
-Received: from localhost ([127.0.0.1])
- by sslproxy03.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96) (envelope-from <daniel@iogearbox.net>)
- id 1uaANI-000Og1-1s; Fri, 11 Jul 2025 11:49:00 +0200
-Message-ID: <773e70cc-a55d-4878-9fe3-3078f7185b0d@iogearbox.net>
-Date: Fri, 11 Jul 2025 11:49:00 +0200
+ (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
+ id 1uaAWM-0004je-Hi
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:58:28 -0400
+Received: from pps.filterd (m0127841.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56B70gmU032396;
+ Fri, 11 Jul 2025 02:58:19 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=proofpoint20171006; bh=jcatWRTL485JS
+ nntGaX3rizKbZH6ndw4H2wn9qPhyOc=; b=UasW0Qj3Ni/s3VtCVOK0zJepiVvR6
+ ikMUVMi9dio90qKfeygKO3SH/xAqT6aLZu0dNcTf/P+Jn9GqHZQCAcDOHQgtkqQ4
+ sea8a6wM6xt+p4NRHpKbVu9VVg7uhzEKuY/dt+Hg9cFbDa8JrOjB0T6fqIB1nv+2
+ O/Oi/ss3HlYvhBXONlNDpPVAB4TywZz3lgJqMaloIyuadI8Sg41XnTgvowjZL08M
+ uVRnT03Xay5kNbmKfeAfa+MhGspWOM50SugiHOnAe2Qicmxp8BRKBTicjgYVtppq
+ ah8tLyWSg4LzwT6zHf+tFp5jstdWVHkEAIVSv7+n55LreGYSTsvtI8MdQ==
+Received: from sn4pr2101cu001.outbound.protection.outlook.com
+ (mail-southcentralusazon11022093.outbound.protection.outlook.com
+ [40.93.195.93])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 47q1karqjg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Jul 2025 02:58:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HiQEdOPeKLAtDFr/UXPesYdDfDktLoaYlpCHD7Uh3VVEkYTahkTX8bjxr+VVyBKt8GIfwrwLS0mYoKttnqJn8iRz0J9qBS9Kq6o/QMitdmpDKwEVnDfV00om/MAqQrQQzDlF0vevnrryivWJkID7A0aBbfYL9j8l19wYnUr+pW1xPEZuyNfqeHzuvc4b2iz5RzeGFbQZLG/gyl6Eol8QUZQj4QS0v6j88+EFUniTNqpVR9XhvfNDhhE79UAG7xtsf971ZxzTDnb8KFTNmNGOoYbtO+kbkFH/e8E2w/cjULtjLiIPug5IeJMlnCW/YBGwcfBK/LRCtMn0TBeMUW2P2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jcatWRTL485JSnntGaX3rizKbZH6ndw4H2wn9qPhyOc=;
+ b=ruuV8dxaI6oRxkjXvn87cEx5IF10Qm8ViVDr4jEzx7m5Sd+CT3pWuPqVdE6d6UxYbIn+egM7h3kFUo6GDWOF6+9S29xmwy8GYN7VmksQYJy4lj3SMd1XUhewAdNfp1Ic5+eq8m+NKzzvAwigxCzjakQgt/K5VWcG5jESvM7VwFu44GwNxAXC7MY6BneaxTOJYgXlbTtyUeNTalc5ZNRwyZOT94NIo5TEJRWiTlTBw83AAZ9UqFhmBlkYil40c/GElhczVm85zPXqKehqcy9x/nq5eUjmXE7BloXNhHhGPgtx0wBQshtZeaQb6gT+N/pvXY7ZnCX16i224xqWq5KGAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jcatWRTL485JSnntGaX3rizKbZH6ndw4H2wn9qPhyOc=;
+ b=iiUVjtjxUnHPzSJocWyBcrW7gN0f5krFAMdiiTGJYwnIza/GEewmxvrzWLqPGQwMCsCrMaPhw7G5VAk5Pcd8+w6odjRdHRf4l2xDVKatFoureYt71HyoPyxx0yAISkRBtEAyWsUDIzswegOcfPG74/9FNuNYrzDdA1pFeHrLhcZTJh/JV+54jKTKKGL15khDyvdIcaPqR2U/dOIshMZ0PQUuB8Xn1XDCFrXPaVNnje4LO+dCNqyxYzJbSpQZLHZJvF/SdP5bKbD3M/ztXGyyGeKMNQpDUxm0YQ6YF5TbU3gecEchC7f6ZVWqLG4kKgItDoSTnQ48jaAgJOSt3dYtjA==
+Received: from PH0PR02MB7159.namprd02.prod.outlook.com (2603:10b6:510:16::8)
+ by CH4PR02MB10681.namprd02.prod.outlook.com (2603:10b6:610:246::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.23; Fri, 11 Jul
+ 2025 09:58:16 +0000
+Received: from PH0PR02MB7159.namprd02.prod.outlook.com
+ ([fe80::6cf9:b35c:b143:bb88]) by PH0PR02MB7159.namprd02.prod.outlook.com
+ ([fe80::6cf9:b35c:b143:bb88%5]) with mapi id 15.20.8901.028; Fri, 11 Jul 2025
+ 09:58:15 +0000
+From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+To: pbonzini@redhat.com, mst@redhat.com, marcel.apfelbaum@gmail.com,
+ eduardo@habkost.net, imammedo@redhat.com, qemu-devel@nongnu.org
+Subject: [PATCH v5 00/19] hw/i386: separate isapc out from pc_piix
+Date: Fri, 11 Jul 2025 10:57:02 +0100
+Message-ID: <20250711095812.543857-1-mark.caveayland@nutanix.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO2P265CA0113.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:c::29) To PH0PR02MB7159.namprd02.prod.outlook.com
+ (2603:10b6:510:16::8)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] net/af-xdp: Support pinned map path for AF_XDP
- sockets
-To: Ilya Maximets <i.maximets@ovn.org>, qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, Anton Protopopov <aspsk@isovalent.com>
-References: <20250704130531.144325-1-daniel@iogearbox.net>
- <20250704130531.144325-3-daniel@iogearbox.net>
- <bd4b60f5-8bf1-4f03-9b9f-9e034bc60574@ovn.org>
-Content-Language: en-US
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <bd4b60f5-8bf1-4f03-9b9f-9e034bc60574@ovn.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27695/Thu Jul 10 11:08:41 2025)
-Received-SPF: pass client-ip=213.133.104.62; envelope-from=daniel@iogearbox.net;
- helo=www62.your-server.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR02MB7159:EE_|CH4PR02MB10681:EE_
+X-MS-Office365-Filtering-Correlation-Id: 343e1d9c-e5b0-4506-6cb4-08ddc0617490
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0; ARA:13230040|376014|10070799003|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MTJrdXMxZmcrQ0tvVVowc2hsRE1DNElPbFo5eThGazREOVlOYWlkV2E1dWNv?=
+ =?utf-8?B?d3JVUitPQnRMbSt0NWxVVEVMTjRwdVgvcVpKanRiNTd2M2ZoMDVIVlBjQm1k?=
+ =?utf-8?B?U1Z4MkZuWmJMZk04bFRkc2owMVhYbE1PN2pEalpoWWxQcWRjeXlnaTBkSmM5?=
+ =?utf-8?B?M0ZRMW9LNG1CeXdya1N3bisyVmtPY2pIQllJeStrdHZPZkJYNUlpbXhDZEdK?=
+ =?utf-8?B?L0E2a0NBY21zRHc5b20vZ0l0SUk1emJ1R1VJUlRnRHFlbnZ6dE11RCtJSXdw?=
+ =?utf-8?B?NkNrci9CV3N2SDNOWXdmZ0V3V3l2dzgyakdnWFJldlRxQk9OYWtXbklQaEth?=
+ =?utf-8?B?dzNxRS9FejN1WFF6cVJBSmVFV1EwZ2h2Qm05VCtGbmtpVXJ4OW92SGx4Q1Za?=
+ =?utf-8?B?eS9DU0JkN2s4VHF4dTA0WDc1WGtXcTFuVVdsUjd1ekh0T29PYnZjcTVFQ0Iz?=
+ =?utf-8?B?Q1dJV1M0RFpVdTFnQ2NFUnFBbTMvNk8wTVFZeFlxS0pMeWtkZy96R0ptSW9N?=
+ =?utf-8?B?bWxDT21hY0xWV24xeVNuYkIyNWVZb2lvaGhDMmNVTzU3TlltM0MvNVJQZlM4?=
+ =?utf-8?B?NWltNDVleVA5MG9HYmhXRmx5SFI5THg0QW1NTU5TbFhNR1JlRWFJMzc0b2N4?=
+ =?utf-8?B?d1h6eG53blRlenIxL0VOVjFhSGxaUHgrOEZxaTAxUXg4VS80RngrbWtxejNU?=
+ =?utf-8?B?YVZ3MDJHNExWNEp1UDAvY2MzTFIyK25zQXpsQ3Nleld2UTNaOEdUR3BrbzZl?=
+ =?utf-8?B?SGZoV3pTbk1kRW5xKytpdVBKaUg5Q0ZpVHRtU29yQUZkKzNabmZSbzB4TnZH?=
+ =?utf-8?B?Sld2OTYvM1FVZ3FzS1hMNTUxU1BBUDNTbDgxYnZsaW50dFdub1dPYTN6SXZ3?=
+ =?utf-8?B?OHVwb240VXpYUUFCN0RCeWxSdGd6K2hZN2Y2ZjVXaTIyU1JPL05CWGo3MERR?=
+ =?utf-8?B?bGduNnpVSDhJQ2lKOGtmNjFaeDVkdnRORHp5M2VPaUREcEhLa3kvejdnM2cr?=
+ =?utf-8?B?a2JrZ0srSVNkc3VBWkZTYnFSQnFBNktTMmFZRCs0VHJHYlNBZmRvWEVocGJY?=
+ =?utf-8?B?RHBMWHZKbDF0dWJIWmQ0SzBXWThlMmhzR0JTYTd0M1c1dEYyZzFBV1dCa1FV?=
+ =?utf-8?B?aHFQUGkyVXhCWFlqRXBFMVZTK3RiK3ZwU3VrZSs2V0tEdVNZT05VRFhROVBw?=
+ =?utf-8?B?M0w1QTFtdUZRZW5IQXVhSmEvemU4RDZlUktsWSs2OWtDOVVQSmVrRHNvTGNt?=
+ =?utf-8?B?bVdXWXo4TGo2ZTE5ejdobm5tWnZjM0pjalhYalRsK01BcFBORG9SUmU1dUE0?=
+ =?utf-8?B?MXJiT0pLNk9jc1V2dlBTanhubGR2cGhjZWo5NmpGeEozRGtMakhtc1loOHA4?=
+ =?utf-8?B?U2swOVpQN25JWnVSaVRYUzhsc2QxaXgyU09BcmQzWmNTVVhPN0RCbG5mc0ZY?=
+ =?utf-8?B?dGhtWXlBb2JnTE94MExRbWxneEozc1puWWcwVlJSMTV2bWdNMnNPcllMT2VO?=
+ =?utf-8?B?cGtnazFqVDc3MmxiMmUvVzJiRTFWTnk1K1NrSFJSbXhDVEVvc2UwbVlHTXVU?=
+ =?utf-8?B?VldYTkR5aGNnS1k3cDhzZUVDaEtQY3ZpbXJXNEtTbGNqUzRYZ2RISEtnM2hq?=
+ =?utf-8?B?Z2c4TjljTy9qdGdaT0NrUFJLanJyMzQ0Z05MVjBLUC9DeVZUbGFSYkdkdlBB?=
+ =?utf-8?B?ZXp4eWs2WWFjcVhQVEVQUUxzSlpESEZLQ3dVcStTbnZRbnJpZjhYVm0vWk9J?=
+ =?utf-8?B?dVMremFsVUFtYk1TK3JQa1l4Y0VwYktEVCthWWtxSTJuSXpDRFA4Z3ZlZHdt?=
+ =?utf-8?B?UVNPTUZ6M0tRN2tiOW9Jd0w4T2cxLytidWhmRDI2M1UzekhsMHp5Wll5SWNj?=
+ =?utf-8?B?eTRvOERtYkJkWFpFYkt2Z3FtZnJ1TzBWdWpqWXNneWVkSUFlVDJTeHlrOE9E?=
+ =?utf-8?Q?t/scprHT2OI=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR02MB7159.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(10070799003)(366016)(1800799024); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bUJwSjRSYS94TEhJNThqcXFBeU9PUWo5TEJrZmN1L2hZb2VuZXdoRnpCdFpB?=
+ =?utf-8?B?UVpHQzNEK2dwZWlUSlhEVXducU1Yb3RONnN5NlhnOHQvbmduN0tmUW42Z2ZN?=
+ =?utf-8?B?dzVId05ockRzSElLQkJVeC9YcFVORWtOWml5WDBqUGhYd041M0xLcERLVWpx?=
+ =?utf-8?B?UjQ1elRObjdVMmVsOFpZL2hSZXpVUTVpbWxiNVN0M3VYSGFueHhpZWVjUUtD?=
+ =?utf-8?B?eTVEY1pBMWJ4bXBQTGl5STNjUU9JcE1xbkpsMTBHbkkrQXg4REc4alo4a2dE?=
+ =?utf-8?B?dm45d1RDeHBhK3dYNHZmd01aK2ZlUDJsNkdZbndzcFp2ekxGeURjWmxtSWMx?=
+ =?utf-8?B?SDZkc21lUEFtc2diS2NjaFc4bWVYVDB4ZmlTV05WcWJadlc4WEQraUV3ZHVv?=
+ =?utf-8?B?MU9KVHo2RDA5UW44TEJ2UU5SUk1DWDMrUVNreVNaVUpMeFg5ejBWMTVlRWNJ?=
+ =?utf-8?B?WkVPdHByaGZ0VVJaOWd6SmY0VnI3dGdtNFFvUzlzOExvckI4WFBhRVk4cFE2?=
+ =?utf-8?B?YUp4UjIrSDNkZmJQcmxyRzB2Mk1pK2JXR0kyNWltREI5NVptUzltV1hjV1h2?=
+ =?utf-8?B?ODQ1Z2FtVURSTk1iRmhGOU1HSUhZejFxY2V6VUlrTE9iRUZFRmtoRHVoRFdK?=
+ =?utf-8?B?YjZGNkpNeTVTN2NFKzZRTlUyamJkcVFSYkM0Mm4yek10ZEkrYkJhVWtEQ3BZ?=
+ =?utf-8?B?ajZHRzc2R3RNYTdUTWVlcGxNUytNYkVwUHQyaDJpRTVEUTcrUXBsMDJobytN?=
+ =?utf-8?B?Q0dEZkhPMEltekNXcCtqUVJRd1ZvSUtMYTdzbEhHdGw4dUgvdkl2K1ZoaUJz?=
+ =?utf-8?B?d1dLTEhQaEF2M3VEREFUQ1hFbXZBVzAwNnN1czU0MVRaUmsrdW00UUlNMWhv?=
+ =?utf-8?B?YUoyRGIrUnRPZXVSTTZTN0ZwdVhqeDgzU3hYUHVCOXBNVmU4WkhjUUdxcm1k?=
+ =?utf-8?B?c3JBUUJCNHpVSmx2bnBzcHIrZkxnZVBJZlV2VWRHelVPZVVyT1dEeHYzbDh3?=
+ =?utf-8?B?clNvbG9GdGx4aE5adGlBNzRIbXVVQ25SKytpRFBkckhZcFB5djVBdUZsRzdL?=
+ =?utf-8?B?L0p6RFNVWFpSMjZUZ0o2OVJTNFRnOWc5MDhwVDUrR1lFM2NOS1dDbGJpUmFo?=
+ =?utf-8?B?RHJLTEZvVE9WMnVRVW5Bc00zeVZ1aEs3anVid3JjeDRNTFdSa1N3dHBjazF1?=
+ =?utf-8?B?WklvUm41MDV3WElCbHl6U01IUUpESnd3dGp2ZDVubjR4WUFaUnBYT2JhVmMz?=
+ =?utf-8?B?RXRCNlYxVCtqMlhKWHptSXIwYWVjTHBQR3NnMEp4T2RRdzRReTV2S3ZrU2NG?=
+ =?utf-8?B?WThPUVZyTDBNc1BuZGpOQUZjemx5VmtxdUxFU2UzNG92UGIvZzRaY0N5Z3pn?=
+ =?utf-8?B?RmRrcFh4RUYwSEFqZVF0THdRbllWaEVnM3p6bnRtK2FBcFdlZjQ2dDdUR2Qy?=
+ =?utf-8?B?N0l0dStlTERLQVV5N0FaTWxobjJ4alF2dFMvaFF5b3lmQ2czWFJVc0EwYkVy?=
+ =?utf-8?B?djlkY0xsWmNiRnczT0lFNXZFdzM5L01JdlFaRHJ0UnMveUxKV0JqYkJHUWlt?=
+ =?utf-8?B?bTEzQ0NYZ0l4RFFxWUVuamxnU3JkQ2ZwS3VNRTVSUnh4eVJVS1Bob0hzWGcv?=
+ =?utf-8?B?V2FueXlOMDA2T2k4TXIwSjcrOTh3emp2QVY4U3pkMTQ0NFVIMkVxQVpadFE0?=
+ =?utf-8?B?WXkwNyt1MU9FMGFnUnc3Y1l4bllHM1A4L0d0ZTRUcDRxanVoc2RDVUo3aUNY?=
+ =?utf-8?B?M001L3ZHeXhPZnBuNTBhSW1aelZ3UVZyS2h0bTJzbmZGK2twUnhydldIMU9m?=
+ =?utf-8?B?ZGhJR0RpNHpzWWZ1MUNPejlPVlVrbVRUN2c3amQvbFFEUklwSXpEQTVkaDE5?=
+ =?utf-8?B?eVlvRis0VjYvUE1VaitQWEN0MHA2K2kreGJ5T2gzRUY4QjZwTlpRK2FPMGNS?=
+ =?utf-8?B?eGtLZGpVdUpLeFlHcjFWUWhHdkd2WXBWcW1LSWhQb1Z3WkRJa0lVcFJDckZx?=
+ =?utf-8?B?Yk9RNmtVV1d1VVRCZlVNenNwOEYxTVp1Y0lqemo4NmNJelEyb1NuOFRtSlFt?=
+ =?utf-8?B?cFVNeWRxMkEwVFNCcnFkTnhQaXlBVG5hVjYzYUthVWkraEdvWE5kZU53VlI5?=
+ =?utf-8?B?Q082bElRc2NORnp6OUI4aGo0OGJvUXp5RnNLOEx2V3M1NXRCYVdIWU9GT3d3?=
+ =?utf-8?B?ZHcyOTBjTGd0NUVHZ003NTVLeHcwWmFhdG96dEV2RnByR3dnelYxRVpxTjlL?=
+ =?utf-8?B?dWM4NUZ4VWYweFltSmp5ZHl5a2tnPT0=?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 343e1d9c-e5b0-4506-6cb4-08ddc0617490
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR02MB7159.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2025 09:58:15.8605 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +M9XRvyuOivDFMQDXdBTDTV2SqkdgvTE3YveQrerEZ2lx/zt6ROffUA6R5OFNnoU8ABm2KZ446KUuJFOnMc6kX+1lfK64Py2Zw9K1XqT3uc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH4PR02MB10681
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzExMDA3MCBTYWx0ZWRfX7aMJkDXVCKFR
+ Nu6C5wu0ZldgCFHkdcAn+yWvmpe4qI7RwAyjRcq7MvYmIkWvVypsTe32Q7p6hDo07Zz3+yGFy7N
+ Y7LkKuedcKUZ1uOSjU6OcUiceURMtHhySnYZ+C6+8W2ujLbJZTH4bK2AvYqfdpNhmw1KikjQLzA
+ YeB3IjVyWWJ2eClWCN0N1n36eR2e6F620guO70w8C0kFARGMHgSinZ9WS4zbbt8AdPhIqdCCnys
+ RoByFladVCBi241gJ7M6a0kwq8W7vbdzEbhtNskTmtkPal4XgaJxfuwb9JDGwwyMaG8qE72qr+H
+ BG5j9YGXdom7FkCs+dTbOkKS0PXxk+KLeAeJ/OsiPTM6vPF4Q72Gy0wFyBEqOkNQqXlPsI052+i
+ iTFMlTBk94no8x3hTDB4PDTuJJcR3A9FfcagNdItBbK9GCmQxn2fgm083T7yNxnoJHPotSmo
+X-Proofpoint-ORIG-GUID: Xz4-jwfE9hcrB2yHfqNI00mzpGRubzBX
+X-Authority-Analysis: v=2.4 cv=Do9W+H/+ c=1 sm=1 tr=0 ts=6870e03b cx=c_pps
+ a=0DdwKqzxgU9dCJ3Pc4DlvA==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=0kUYKlekyDsA:10
+ a=mDV3o1hIAAAA:8 a=64Cc0HZtAAAA:8 a=HUHtNuVqNzIun27e13kA:9 a=QEXdDO2ut3YA:10
+ a=Y4I1g1QRc_YA:10
+X-Proofpoint-GUID: Xz4-jwfE9hcrB2yHfqNI00mzpGRubzBX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-11_03,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12;
+ envelope-from=mark.caveayland@nutanix.com; helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -118,256 +207,85 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Daniel Borkmann <daniel@iogearbox.net>
-From:  Daniel Borkmann via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hey Ilya,
+For various historical reasons the initialisation of the isapc machine is closely
+intertwined with the initialisation of the pc machine, which is preventing some
+future improvements to the pc machine initialisation logic.
 
-On 7/9/25 2:29 PM, Ilya Maximets wrote:
-[...]
-> Thnaks, Daniel!  I have just a couple of small nits below that I missed in v3,
-> the rest looks good and is working fine.
-> 
->>
->> diff --git a/net/af-xdp.c b/net/af-xdp.c
->> index 29c5ad16cd..005117c336 100644
->> --- a/net/af-xdp.c
->> +++ b/net/af-xdp.c
->> @@ -51,6 +51,10 @@ typedef struct AFXDPState {
->>   
->>       uint32_t             xdp_flags;
->>       bool                 inhibit;
->> +
->> +    char                 *map_path;
->> +    int                  map_fd;
->> +    uint32_t             map_start_index;
->>   } AFXDPState;
->>   
->>   #define AF_XDP_BATCH_SIZE 64
->> @@ -260,6 +264,7 @@ static void af_xdp_send(void *opaque)
->>   static void af_xdp_cleanup(NetClientState *nc)
->>   {
->>       AFXDPState *s = DO_UPCAST(AFXDPState, nc, nc);
->> +    int idx;
->>   
->>       qemu_purge_queued_packets(nc);
->>   
->> @@ -273,6 +278,18 @@ static void af_xdp_cleanup(NetClientState *nc)
->>       s->umem = NULL;
->>       qemu_vfree(s->buffer);
->>       s->buffer = NULL;
->> +
->> +    if (s->map_fd >= 0) {
->> +        idx = nc->queue_index + s->map_start_index;
->> +        if (bpf_map_delete_elem(s->map_fd, &idx)) {
->> +            fprintf(stderr, "af-xdp: unable to remove AF_XDP socket from "
->> +                    "map %s\n", s->map_path);
-> 
-> nit :I'd suggest to keep the "map" on a previous line.  We have some space for it.
+Since the consensus [1] was that the isapc is still useful for testing and running
+older OSs, this series splits the isapc machine and its main initialisation
+routine pc_init_isa() into a separate isapc.c file to reduce the maintenance
+burden on pc machine developers.
 
-fixed.
+Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
->> +        }
->> +        close(s->map_fd);
->> +        s->map_fd = -1;
->> +    }
->> +    g_free(s->map_path);
->> +    s->map_path = NULL;
->>   }
->>   
->>   static int af_xdp_umem_create(AFXDPState *s, int sock_fd, Error **errp)
->> @@ -336,7 +353,6 @@ static int af_xdp_socket_create(AFXDPState *s,
->>       };
->>       int queue_id, error = 0;
->>   
->> -    s->inhibit = opts->has_inhibit && opts->inhibit;
->>       if (s->inhibit) {
->>           cfg.libxdp_flags |= XSK_LIBXDP_FLAGS__INHIBIT_PROG_LOAD;
->>       }
->> @@ -387,6 +403,35 @@ static int af_xdp_socket_create(AFXDPState *s,
->>       return 0;
->>   }
->>   
->> +static int af_xdp_update_xsk_map(AFXDPState *s, Error **errp)
->> +{
->> +    int xsk_fd, idx, error = 0;
->> +
->> +    if (!s->map_path) {
->> +        return 0;
->> +    }
->> +
->> +    s->map_fd = bpf_obj_get(s->map_path);
->> +    if (s->map_fd < 0) {
->> +        error = errno;
->> +    } else {
->> +        xsk_fd = xsk_socket__fd(s->xsk);
->> +        idx = s->nc.queue_index + s->map_start_index;
->> +        if (bpf_map_update_elem(s->map_fd, &idx, &xsk_fd, 0)) {
->> +            error = errno;
->> +        }
->> +    }
->> +
->> +    if (error) {
->> +        error_setg_errno(errp, error,
->> +                         "failed to insert AF_XDP socket into map %s",
->> +                         s->map_path);
->> +        return -1;
-> 
-> nit: Maybe remove this line and return 'error' below?
+[1] https://lists.gnu.org/archive/html/qemu-devel/2024-03/msg06137.html
 
-I left this as-is given the rest of the code has similar style as here
-and always returns -1 on errors. error would be positive here and we'd
-have to return -error, but still it seems somewhat out of place imho.
+(Patches still needing review: 2-3, 7, 9)
 
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->>   /* NetClientInfo methods. */
->>   static NetClientInfo net_af_xdp_info = {
->>       .type = NET_CLIENT_DRIVER_AF_XDP,
->> @@ -441,6 +486,7 @@ int net_init_af_xdp(const Netdev *netdev,
->>       int64_t i, queues;
->>       Error *err = NULL;
->>       AFXDPState *s;
->> +    bool inhibit;
->>   
->>       ifindex = if_nametoindex(opts->ifname);
->>       if (!ifindex) {
->> @@ -456,8 +502,21 @@ int net_init_af_xdp(const Netdev *netdev,
->>           return -1;
->>       }
->>   
->> -    if ((opts->has_inhibit && opts->inhibit) != !!opts->sock_fds) {
->> -        error_setg(errp, "'inhibit=on' requires 'sock-fds' and vice versa");
->> +    inhibit = opts->has_inhibit && opts->inhibit;
->> +    if (inhibit && !opts->sock_fds && !opts->map_path) {
->> +        error_setg(errp, "'inhibit=on' requires 'sock-fds' or 'map-path'");
->> +        return -1;
->> +    }
->> +    if (!inhibit && (opts->sock_fds || opts->map_path)) {
->> +        error_setg(errp, "'sock-fds' and 'map-path' require 'inhibit=on'");
->> +        return -1;
->> +    }
->> +    if (opts->sock_fds && opts->map_path) {
->> +        error_setg(errp, "'sock-fds' and 'map-path' are mutually exclusive");
->> +        return -1;
->> +    }
->> +    if (!opts->map_path && opts->has_map_start_index) {
->> +        error_setg(errp, "'map-start-index' requires 'map-path'");
->>           return -1;
->>       }
->>   
->> @@ -481,14 +540,23 @@ int net_init_af_xdp(const Netdev *netdev,
->>   
->>           pstrcpy(s->ifname, sizeof(s->ifname), opts->ifname);
->>           s->ifindex = ifindex;
->> +        s->inhibit = inhibit;
->> +
->> +        s->map_path = g_strdup(opts->map_path);
->> +        s->map_fd = -1;
->> +        s->map_start_index = 0;
->> +        if (opts->has_map_start_index && opts->map_start_index > 0) {
-> 
-> We should error out if the user specified a negative value.  I'd suggest
-> to add the check to the list of user-input validation above instead of
-> silently ignoring the incorrect value.  And then we could skip the value
-> check here.
+v5:
+- Add warn_report() to patch 1 as requested by Phil
+- Add patch 3 to inline pc_xen_hvm_init_pci() as suggested by Phil
+- Add R-B tags from Phil
 
-fixed.
+v4:
+- Rebase onto master
+- Add patch 2 to remove unused loader.h header as suggested by Bernhard
+- Add patches 16-18 to tidy up the pc_piix headers and the pc_piix/isapc
+  rom_memory variable after the isapc split also suggested by Bernhard
 
->> +            s->map_start_index = opts->map_start_index;
->> +        }
->>   
->>           if (af_xdp_umem_create(s, sock_fds ? sock_fds[i] : -1, &err) ||
->> -            af_xdp_socket_create(s, opts, &err)) {
->> +            af_xdp_socket_create(s, opts, &err) ||
->> +            af_xdp_update_xsk_map(s, &err)) {
->>               goto err;
->>           }
->>       }
->>   
->> -    if (nc0) {
->> +    if (nc0 && !inhibit) {
->>           s = DO_UPCAST(AFXDPState, nc, nc0);
->>           if (bpf_xdp_query_id(s->ifindex, s->xdp_flags, &prog_id) || !prog_id) {
->>               error_setg_errno(errp, errno,
->> diff --git a/qapi/net.json b/qapi/net.json
->> index 97ea183981..3d80a9cacd 100644
->> --- a/qapi/net.json
->> +++ b/qapi/net.json
->> @@ -454,25 +454,34 @@
->>   #     (default: 0).
->>   #
->>   # @inhibit: Don't load a default XDP program, use one already loaded
->> -#     to the interface (default: false).  Requires @sock-fds.
->> +#     to the interface (default: false).  Requires @sock-fds or @map-path.
->>   #
->>   # @sock-fds: A colon (:) separated list of file descriptors for
->>   #     already open but not bound AF_XDP sockets in the queue order.
->>   #     One fd per queue.  These descriptors should already be added
->> -#     into XDP socket map for corresponding queues.  Requires
->> -#     @inhibit.
->> +#     into XDP socket map for corresponding queues.  @sock-fds and
->> +#     @map-path are mutually exclusive.  Requires @inhibit.
->> +#
->> +# @map-path: The path to a pinned xsk map to push file descriptors
->> +#     for bound AF_XDP sockets into.  @map-path and @sock-fds are
->> +#     mutually exclusive.  Requires @inhibit.  (Since 10.1)
->> +#
->> +# @map-start-index: Use @map-path to insert xsk sockets starting from
->> +#     this index number (default: 0).  Requires @map-path.  (Since 10.1)
->>   #
->>   # Since: 8.2
->>   ##
->>   { 'struct': 'NetdevAFXDPOptions',
->>     'data': {
->> -    'ifname':       'str',
->> -    '*mode':        'AFXDPMode',
->> -    '*force-copy':  'bool',
->> -    '*queues':      'int',
->> -    '*start-queue': 'int',
->> -    '*inhibit':     'bool',
->> -    '*sock-fds':    'str' },
->> +    'ifname':           'str',
->> +    '*mode':            'AFXDPMode',
->> +    '*force-copy':      'bool',
->> +    '*queues':          'int',
->> +    '*start-queue':     'int',
->> +    '*inhibit':         'bool',
->> +    '*sock-fds':        'str',
->> +    '*map-path':        'str',
->> +    '*map-start-index': 'int' },
->>     'if': 'CONFIG_AF_XDP' }
->>   
->>   ##
->> diff --git a/qemu-options.hx b/qemu-options.hx
->> index 1f862b19a6..0fd4fd8d46 100644
->> --- a/qemu-options.hx
->> +++ b/qemu-options.hx
->> @@ -2909,6 +2909,7 @@ DEF("netdev", HAS_ARG, QEMU_OPTION_netdev,
->>   #ifdef CONFIG_AF_XDP
->>       "-netdev af-xdp,id=str,ifname=name[,mode=native|skb][,force-copy=on|off]\n"
->>       "         [,queues=n][,start-queue=m][,inhibit=on|off][,sock-fds=x:y:...:z]\n"
->> +    "         [,map-path=/path/to/socket/map][,map-start-index=i]\n"
->>       "                attach to the existing network interface 'name' with AF_XDP socket\n"
->>       "                use 'mode=MODE' to specify an XDP program attach mode\n"
->>       "                use 'force-copy=on|off' to force XDP copy mode even if device supports zero-copy (default: off)\n"
->> @@ -2916,6 +2917,8 @@ DEF("netdev", HAS_ARG, QEMU_OPTION_netdev,
->>       "                with inhibit=on,\n"
->>       "                  use 'sock-fds' to provide file descriptors for already open AF_XDP sockets\n"
->>       "                  added to a socket map in XDP program.  One socket per queue.\n"
->> +    "                  use 'map-path' to provide the socket map location to populate AF_XDP sockets with\n"
-> 
-> nit: it feels like we need some punctuation sign after the 'with', otherwise
-> it reads as "populate AF_XDP sockets with beginning from the", which makes no
-> sense.
+v3:
+- Rebase onto master
+- Add patch 1 to restrict isapc machine to 32-bit x86 CPUs as suggested by
+  Philippe
+- Include logic in patch 1 to handle the case if an isapc machine is
+  launched with -cpu max as suggested by Daniel
+- Add patch 13 to tidy-up pc_init1() for the i440fx-pc machine in the same
+  way as patch 11 does for the isapc machine as suggested by Bernhard
 
-ok, reworded slightly.
+v2:
+- Rebase onto master to account for the fix in commit 0b006153b7
+  ("hw/i386/pc_piix: Fix RTC ISA IRQ wiring of isapc machine")
+- Replace verbatim MIT licence text with SPDX identifier as discussed
+  with Daniel
 
-Thanks,
-Daniel
+
+Mark Cave-Ayland (19):
+  hw/i386/pc_piix.c: restrict isapc machine to 32-bit CPUs
+  hw/i386/pc_piix.c: remove include for loader.h
+  hw/i386/pc_piix.c: inline pc_xen_hvm_init_pci() into pc_xen_hvm_init()
+  hw/i386/pc_piix.c: duplicate pc_init1() into pc_isa_init()
+  hw/i386/pc_piix.c: remove pcmc->pci_enabled dependent initialisation
+    from pc_init_isa()
+  hw/i386/pc_piix.c: remove SMI and piix4_pm initialisation from
+    pc_init_isa()
+  hw/i386/pc_piix.c: remove SGX initialisation from pc_init_isa()
+  hw/i386/pc_piix.c: remove nvdimm initialisation from pc_init_isa()
+  hw/i386/pc_piix.c: simplify RAM size logic in pc_init_isa()
+  hw/i386/pc_piix.c: hardcode hole64_size to 0 in pc_init_isa()
+  hw/i386/pc_piix.c: remove pc_system_flash_cleanup_unused() from
+    pc_init_isa()
+  hw/i386/pc_piix.c: always initialise ISA IDE drives in pc_init_isa()
+  hw/i386/pc_piix.c: assume pcmc->pci_enabled is always false in
+    pc_init_isa()
+  hw/i386/pc_piix.c: hardcode pcms->pci_bus to NULL in pc_init_isa()
+  hw/i386/pc_piix.c: assume pcmc->pci_enabled is always true in
+    pc_init1()
+  hw/i386: move isapc machine to separate isapc.c file
+  hw/i386/pc_piix.c: remove unused headers after isapc machine split
+  hw/i386/pc_piix.c: replace rom_memory with pci_memory
+  hw/i386/isapc.c: replace rom_memory with system_memory
+
+ hw/i386/Kconfig     |   3 -
+ hw/i386/isapc.c     | 169 ++++++++++++++++++++++++++++++
+ hw/i386/meson.build |   1 +
+ hw/i386/pc_piix.c   | 250 ++++++++++++++------------------------------
+ 4 files changed, 250 insertions(+), 173 deletions(-)
+ create mode 100644 hw/i386/isapc.c
+
+-- 
+2.43.0
+
 
