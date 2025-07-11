@@ -2,51 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7942B017A2
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35889B0175B
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:13:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua9zc-0002Dm-HC; Fri, 11 Jul 2025 05:24:32 -0400
+	id 1ua9no-0006k5-GK; Fri, 11 Jul 2025 05:12:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1ua9xi-0000D7-6i
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:22:38 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1ua9xb-0003s5-IW
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:22:33 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxLOLF13BotB8nAQ--.41723S3;
- Fri, 11 Jul 2025 17:22:13 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowJCxdOS813Bo5owSAA--.39837S13;
- Fri, 11 Jul 2025 17:22:12 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: maobibo@loongson.cn
-Cc: qemu-devel@nongnu.org,
-	philmd@linaro.org,
-	jiaxun.yang@flygoat.com
-Subject: [PATCH v5 11/11] hw/loongarch: Implement AVEC plug/unplug interfaces
-Date: Fri, 11 Jul 2025 16:59:15 +0800
-Message-Id: <20250711085915.3042395-12-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20250711085915.3042395-1-gaosong@loongson.cn>
-References: <20250711085915.3042395-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ua9g9-0005Im-U6
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:04:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ua9g7-0007rp-Og
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 05:04:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752224663;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=AW1mVjXrPoy7/m3DV+ATyYsBKCZIvP45gJK00cNIoeQ=;
+ b=ZOpaMEIG2KcGhF/zCGqHTIM82fObmATRt2NnmKqVYFvL5LI4AclncTj+RxPZWQS1r1+D+D
+ RlVTGXYubFmYNld0jZbw6d1EwvFDeh2yZCqJhdbOYUgAIxvStQFfntGMQNFlKm/ugLc9h1
+ 3+wbBCVnMwFxK7CngZ6+M4hiNVqq9Gg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-9M5z6aeWMD6elZ7j5oMBjg-1; Fri,
+ 11 Jul 2025 05:04:19 -0400
+X-MC-Unique: 9M5z6aeWMD6elZ7j5oMBjg-1
+X-Mimecast-MFC-AGG-ID: 9M5z6aeWMD6elZ7j5oMBjg_1752224658
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 92C66180AC7B; Fri, 11 Jul 2025 09:04:08 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A306A18002B6; Fri, 11 Jul 2025 09:04:07 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 255D521E6A27; Fri, 11 Jul 2025 11:04:05 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>,  Eric Blake <eblake@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Ani Sinha <anisinha@redhat.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Lukas Straub <lukasstraub2@web.de>,  Vladimir
+ Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  Zhao Liu
+ <zhao1.liu@intel.com>,  Eduardo Habkost <eduardo@habkost.net>,  Peter Xu
+ <peterx@redhat.com>,  Yanan Wang <wangyanan55@huawei.com>,  Alex
+ =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,  Jason Wang <jasowang@redhat.com>,  Igor
+ Mammedov <imammedo@redhat.com>,  Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v2 00/18] QAPI: add cross-references to qapi docs
+In-Reply-To: <20250711054005.60969-1-jsnow@redhat.com> (John Snow's message of
+ "Fri, 11 Jul 2025 01:39:47 -0400")
+References: <20250711054005.60969-1-jsnow@redhat.com>
+Date: Fri, 11 Jul 2025 11:04:04 +0200
+Message-ID: <87ple76quz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxdOS813Bo5owSAA--.39837S13
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -64,148 +95,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-when cpu added, connect avec irq to cpu INT_AVEC irq pin.
+John Snow <jsnow@redhat.com> writes:
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- hw/intc/loongarch_avec.c | 71 ++++++++++++++++++++++++++++++++++++++++
- hw/loongarch/virt.c      | 11 +++++++
- 2 files changed, 82 insertions(+)
+> Based-on: 20250711051045.51110-1-jsnow@redhat.com
+>     [PATCH v6 0/4] qapi: add auto-generated return docs
+>
+> v2:
+>  - Applied a few new transformations I had missed.
+>  - Manually excluded those Markus pointed out as being unhelpful.
 
-diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
-index af6c75c4a9..820d6655ef 100644
---- a/hw/intc/loongarch_avec.c
-+++ b/hw/intc/loongarch_avec.c
-@@ -116,14 +116,81 @@ static void loongarch_avec_init(Object *obj)
-     return;
- }
- 
-+static AVECCore *loongarch_avec_get_cpu(LoongArchAVECState *s,
-+                                        DeviceState *dev)
-+{
-+    CPUClass *k = CPU_GET_CLASS(dev);
-+    uint64_t arch_id = k->get_arch_id(CPU(dev));
-+    int i;
-+
-+    for (i = 0; i < s->num_cpu; i++) {
-+        if (s->cpu[i].arch_id == arch_id) {
-+            return &s->cpu[i];
-+        }
-+    }
-+
-+    return NULL;
-+}
-+
-+static void loongarch_avec_cpu_plug(HotplugHandler *hotplug_dev,
-+                                   DeviceState *dev, Error **errp)
-+{
-+    LoongArchAVECState *s = LOONGARCH_AVEC(hotplug_dev);
-+    Object *obj = OBJECT(dev);
-+    AVECCore *core;
-+    int index;
-+
-+    if (!object_dynamic_cast(obj, TYPE_LOONGARCH_CPU)) {
-+        warn_report("LoongArch AVEC: Invalid %s device type",
-+                                       object_get_typename(obj));
-+        return;
-+    }
-+    core = loongarch_avec_get_cpu(s, dev);
-+    if (!core) {
-+        return;
-+    }
-+
-+    core->cpu = CPU(dev);
-+    index = core - s->cpu;
-+
-+    /* connect avec msg irq to cpu irq */
-+    qdev_connect_gpio_out(DEVICE(s), index, qdev_get_gpio_in(dev, INT_AVEC));
-+    return;
-+}
-+
-+static void loongarch_avec_cpu_unplug(HotplugHandler *hotplug_dev,
-+                                     DeviceState *dev, Error **errp)
-+{
-+    LoongArchAVECState *s = LOONGARCH_AVEC(hotplug_dev);
-+    Object *obj = OBJECT(dev);
-+    AVECCore *core;
-+
-+    if (!object_dynamic_cast(obj, TYPE_LOONGARCH_CPU)) {
-+        warn_report("LoongArch AVEC: Invalid %s device type",
-+                                       object_get_typename(obj));
-+        return;
-+    }
-+
-+    core = loongarch_avec_get_cpu(s, dev);
-+
-+    if (!core) {
-+        return;
-+    }
-+
-+    core->cpu = NULL;
-+}
-+
- static void loongarch_avec_class_init(ObjectClass *klass, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(klass);
-     LoongArchAVECClass *lac = LOONGARCH_AVEC_CLASS(klass);
- 
-     dc->unrealize = loongarch_avec_unrealize;
-     device_class_set_parent_realize(dc, loongarch_avec_realize,
-                                     &lac->parent_realize);
-+    hc->plug = loongarch_avec_cpu_plug;
-+    hc->unplug = loongarch_avec_cpu_unplug;
- }
- 
- static const TypeInfo loongarch_avec_info = {
-@@ -132,6 +199,10 @@ static const TypeInfo loongarch_avec_info = {
-     .instance_size = sizeof(LoongArchAVECState),
-     .instance_init = loongarch_avec_init,
-     .class_init    = loongarch_avec_class_init,
-+    .interfaces    = (const InterfaceInfo[]) {
-+        { TYPE_HOTPLUG_HANDLER },
-+        { }
-+    },
- };
- 
- static void loongarch_avec_register_types(void)
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index e3ab165cc5..7ea9b58f15 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -377,6 +377,10 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
-                              &error_abort);
-         hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), DEVICE(cs),
-                              &error_abort);
-+        if (lvms->avec) {
-+            hotplug_handler_plug(HOTPLUG_HANDLER(lvms->avec), DEVICE(cs),
-+                                 &error_abort);
-+        }
-     }
- }
- 
-@@ -1088,6 +1092,9 @@ static void virt_cpu_unplug(HotplugHandler *hotplug_dev,
-     /* Notify ipi and extioi irqchip to remove interrupt routing to CPU */
-     hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->ipi), dev, &error_abort);
-     hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->extioi), dev, &error_abort);
-+    if (lvms->avec) {
-+        hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->avec), dev, &error_abort);
-+    }
- 
-     /* Notify acpi ged CPU removed */
-     hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &error_abort);
-@@ -1111,6 +1118,10 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
-         hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), dev, &error_abort);
-     }
- 
-+    if (lvms->avec) {
-+        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->avec), dev, &error_abort);
-+    }
-+
-     if (lvms->acpi_ged) {
-         hotplug_handler_plug(HOTPLUG_HANDLER(lvms->acpi_ged), dev,
-                              &error_abort);
--- 
-2.34.1
+You missed a few.  Can drop them in my tree.  I also suggested a commit
+message amendment.  Can do that in my tree, too.  With that, series
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+
+> Hi, this patch series is a *mostly* mechanical application of QAPI
+> cross-references to the QAPI/QMP documentation. I exported all
+> cross-referenceable symbols from the QMP QAPI schema and ran them
+> through a script that converted any matching words to a cross-reference.
+>
+> I then used `git add -p` and only added changes that looked reasonable,
+> omitting many cases of converting common words like "stop",
+> "transaction", "eject", "String" etc when it wasn't immediately clear
+> that it was appropriate. I probably missed a few ... in either
+> direction.
+>
+> I'd like to ask maintainers for each subsystem to review the changes and
+> confirm that they make sense. To make it easy for you, here's a link to
+> each module that was changed, in order:
+
+[...]
+
+> A few benefits of doing this:
+>
+> (1) It makes the docs easier to navigate for users, being able to just
+>     click to the referred data type / enum / event / command / etc.
+
+A *huge* usability win!
+
+> (2) It helps prevent bitrot: if the name of a command / event / data
+>     type / etc changes, the cross-reference will cause the build to
+>     fail, giving a needed hint that documentation elsewhere needs to be
+>     updated.
+
+Can also catch typos.
+
+> (3) Prompting the maintainers to review the generated HTML documentation
+>     O:-)
+
+WAT?!?  We're supposed to actually look at the doc we expect our users
+to read?
+
+[...]
 
 
