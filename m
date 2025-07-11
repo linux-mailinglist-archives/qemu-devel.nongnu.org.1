@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0F1B01DC0
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 15:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B96CB01DB8
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 15:36:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaDug-0005XY-By; Fri, 11 Jul 2025 09:35:42 -0400
+	id 1uaDuG-0004W9-KA; Fri, 11 Jul 2025 09:35:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uaDtq-0004Q9-WD
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:51 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1uaDts-0004Qw-Ix
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:55 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uaDtp-00033P-7j
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:50 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-455b002833bso2469315e9.0
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 06:34:48 -0700 (PDT)
+ id 1uaDtq-000348-56
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:52 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-45555e3317aso4183795e9.3
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 06:34:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752240887; x=1752845687; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752240888; x=1752845688; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=x2nVtAA8fp2H3YDMXCDIIgapnlhWHhnckzqsHWXu494=;
- b=pWLbwfRQ/y01dFJe79oyuMaoLAfy5X6aWeE7fxVOScbrTEDSgzCOSYlaSd1hmmQ/N3
- 1/PnDCj+So71U6Y999vFPafiUtTdVuCGCIkG3mJ76aG/24oik+nxYGGieTzYSg9ZbqfK
- KF4cD1Dz4VpFXoclFTmp06GtYQl5ohrzuUwg4VzO6/+GqpJW/KxucaxFRFSSfLVCTkL2
- 9zwJpBXcLk60B9bM0iLNQtaDU44w6kV/KlUBHZwb+WW8bKSwtigblStvjlSz/VOATanO
- CSsuGrXxLkIu+UEiBaNxrKTE3UMbytLrf92mMvzpL40YSD9AD15k8+rae8Dv1yNDyoJw
- 7Gjw==
+ :reply-to; bh=Z/tqj/ko8WEeVpxtCck+nDGeWxY6ZT+VKsk2/PDMd8Q=;
+ b=gMJl0g4Qa7wFlp20dwQzq6+oE37XbmPyuhMQJWBQ4T7T4o1KPg/guh8my4iSAEj4x3
+ 3c1U9Tw2n/p2FBGu/VYsw3gHuGhR5WfNdyF8ougwriyOpLOKeRZwbJhIrm9BuR/qgh3L
+ oADPqnH92aeL3v+hcmcFa219bmGbggu/7FiFtPUGbbVjl2H2W+qP5GvM9vb3fPbHh5xR
+ ud+gosHISKxq5i/26TmlI1HSr8Veu+ojlBEL30FZgyVGwAgyyKW6aHNEJSlMQ0hHc0Ri
+ tPWfIXR6qSYPzdTScrN0amYG6amppWcwcDM4JynhAqAh0hVT0ryO8XrxhNBIynEEwmVH
+ pkPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752240887; x=1752845687;
+ d=1e100.net; s=20230601; t=1752240888; x=1752845688;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x2nVtAA8fp2H3YDMXCDIIgapnlhWHhnckzqsHWXu494=;
- b=W10M1vu8gnHIG+zsM72XyQgE55OBnREBqp7uLASEsIaYxKy+n+Qy/91j7+3q08QzU4
- d/U6rb/c/HxCucxv5iLiXQMumDLHojTPjNlFeUQScqKodfXxyPHLo9G9XI4DKZVVlNR4
- Hhl8uMyDFrJ+aRVCqzognKfGZ1XNjIeno1tPNhq3JCc9+Ejo+zH6uv8reKIPcHM7l5x7
- +Cvsm7LB2SUle+SFlFl9LXC2x88TMbY+Fcue1u4VDaz7NSP4VoS1pmIEtMU/Eh93xHqA
- EvsknTwjQpMZ8VlWkKhU/ay39reC+GfNyvd0+7rXBNaY9wt8PaU7ORJpIc+Bfozj8XLV
- 5IbA==
-X-Gm-Message-State: AOJu0YxU/pOe/3mS0/V2lHHvPVjGG+WTJd3lxl8VDkSTA8/VpPW5CW1+
- PFz561yJBoyJUgFig4lBoxMwKDpvWyb1/C//bkAkjkHIRqH09OlPZp/4isQgUE8ieAE/srcI3+V
- oPPFR
-X-Gm-Gg: ASbGncsQIBjs8JG88d+awFsCo7btN0bohkEy+y0VB3F+2zkWvR/aUx4L7OsJyJ7x4Dg
- 2SIfOU/b1CnGjKM/1nbTbOFxmxlf4/Ul71GZcdIfvxQaZvLirMVnJNm+VZrt+Nf84P372Yc0p6N
- nPC5XLNOeHubXhBxsp1B7Tj8lE5+EhCh/9dk/SPSg6QwWVC9qm35J0lrFZQm4Id0H4vZgoY7G1W
- Fl5vvdmunDfScpSjP/rngwboDrgjjSV/K0t8NUL+XC96gdw4w5ZBOKfRxjGa7/+TVw+gnCIfSiF
- K30dWJCQWr1O7VM+zOgK0gChfqp7YI2w/W+DFNGmwLclnkDkaX7bZct7YfkJtCU/HdiwzWovWhm
- Gfgr+LHdjIroJVBIlZU6j/n6JIU/IRrZ/8C+nG4Y=
-X-Google-Smtp-Source: AGHT+IGuX1eqhcqjGz7erYss60WbhYzGWHm1RjdLt+okYvnQaX4ePvQ8lngC296bBmwAZAAhrUMcHA==
-X-Received: by 2002:a05:600c:1c95:b0:451:833f:483c with SMTP id
- 5b1f17b1804b1-454ec133982mr33708365e9.7.1752240887513; 
- Fri, 11 Jul 2025 06:34:47 -0700 (PDT)
+ bh=Z/tqj/ko8WEeVpxtCck+nDGeWxY6ZT+VKsk2/PDMd8Q=;
+ b=ZK2qNzGcaFNNr28cdT+xiOOwdis1qoizje2Wb36i0E/tyqYSU0ASRTgIaQhzbrWj7+
+ 2kPgjdcFmpHNdnkrV461+I2mFIZz9/+axeykBhSdu/7wA4vyvhzXOoLktOwrASNryJwq
+ /HdouDQbPBwu5MZ8HkUSmWz47gRsvHKHEKkKjDWZN3u0D+AlvbXXe33tAng+tKztIeWt
+ 2bR7vgeF3xO75fiYT4vrBoHHdlA+/j033BN7MqCP2JpMCZ1UhjUwylUbeUS1Nk4wcmUj
+ YQz9MdJzo71+WJN+n2Tvi8eP4WZSNp1QtWXGXKMIzTfv1IVOMINpr662tiUjMAUT2C1Q
+ xHEg==
+X-Gm-Message-State: AOJu0Ywp4X+OVyz2qeyk+TTJaud04ssJNkvIGPxB2rLmf3jr6qMvzyrs
+ 3OiP9Xjq8Hz4gGuMZ534YWuIrQFA7om3i5tdVS/XmpzU01HsvwZf7nKrk3q16qI7kNFx5T3lnj4
+ huwuW
+X-Gm-Gg: ASbGncsiGQZQsCU4Fnd6v+5HGjVin2R0pJEmK5q6qSvLVHrnDGP6gzn1ikSmxwv493r
+ 2i+sk/IJeITEOltqHHKoiuFDdNFnKP7qc7SNrOBjb6QrIIBZvVHtB9yKP+7yNuOztJX3AEPye3B
+ fWs0JYqiLGCvF5BAUcxMCuEhzggr53dwPJYDjbJBWLEhfl5KCqyRVDfLVXq71MN5U2AhaIKbm2m
+ MI1aHD3DYe7ljASjOpI4W8qYo9B7g1ruF5KeKt/TUseObg6deWEq7N3G52DjKpvlKpaS98Xp+Oy
+ av+4kQwzz2KjBEYkYlCgZH5DIRAMEwQbYqk5fjZPtyZkC2Ea52RF4JOfqubXMwIU3BKFHayyRoe
+ NATjyZbQGTnmWBVijpOYkASss7iGW
+X-Google-Smtp-Source: AGHT+IH1VaYSUQnz3XrsTenMXkbJsXMHztbZz2iPD5JrG4OHiJBcycGhoVBo5LoYYWNg0aIop/4Wow==
+X-Received: by 2002:a05:600c:c11c:b0:453:66f:b96e with SMTP id
+ 5b1f17b1804b1-454ec146a71mr22329455e9.11.1752240888576; 
+ Fri, 11 Jul 2025 06:34:48 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d50df0cdsm89734145e9.25.2025.07.11.06.34.46
+ 5b1f17b1804b1-454d50df0cdsm89734145e9.25.2025.07.11.06.34.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Jul 2025 06:34:46 -0700 (PDT)
+ Fri, 11 Jul 2025 06:34:47 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/36] docs/cxl: Add an arm/virt example.
-Date: Fri, 11 Jul 2025 14:34:08 +0100
-Message-ID: <20250711133429.1423030-16-peter.maydell@linaro.org>
+Subject: [PULL 16/36] qtest/cxl: Add aarch64 virt test for CXL
+Date: Fri, 11 Jul 2025 14:34:09 +0100
+Message-ID: <20250711133429.1423030-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250711133429.1423030-1-peter.maydell@linaro.org>
 References: <20250711133429.1423030-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,44 +99,117 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Only add one very simple example as all the i386/pc examples will work
-for arm/virt with a change to appropriate executable and appropriate
-standard launch line for arm/virt. Note that max cpu is used to
-ensure we have plenty of physical address space.
+Add a single complex case for aarch64 virt machine.
 
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Given existing much more comprehensive tests for x86 cover the common
+functionality, a single test should be enough to verify that the aarch64
+part continues to work.
+
+Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
 Tested-by: Li Zhijian <lizhijian@fujitsu.com>
-Message-id: 20250703104110.992379-5-Jonathan.Cameron@huawei.com
+Message-id: 20250703104110.992379-6-Jonathan.Cameron@huawei.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/devices/cxl.rst | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/qtest/cxl-test.c  | 58 ++++++++++++++++++++++++++++++++---------
+ tests/qtest/meson.build |  1 +
+ 2 files changed, 46 insertions(+), 13 deletions(-)
 
-diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
-index e307caf3f88..ca15a0da1c1 100644
---- a/docs/system/devices/cxl.rst
-+++ b/docs/system/devices/cxl.rst
-@@ -384,6 +384,17 @@ An example of 4 devices below a switch suitable for 1, 2 or 4 way interleave::
-   -device cxl-type3,bus=swport3,persistent-memdev=cxl-mem3,lsa=cxl-lsa3,id=cxl-pmem3,sn=0x4 \
-   -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=4k
+diff --git a/tests/qtest/cxl-test.c b/tests/qtest/cxl-test.c
+index a6003318439..8fb7e58d4f1 100644
+--- a/tests/qtest/cxl-test.c
++++ b/tests/qtest/cxl-test.c
+@@ -19,6 +19,12 @@
+     "-device pxb-cxl,id=cxl.1,bus=pcie.0,bus_nr=53 " \
+     "-M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=4G "
  
-+A simple arm/virt example featuring a single direct connected CXL Type 3
-+Volatile Memory device::
++#define QEMU_VIRT_2PXB_CMD \
++    "-machine virt,cxl=on -cpu max " \
++    "-device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 " \
++    "-device pxb-cxl,id=cxl.1,bus=pcie.0,bus_nr=53 " \
++    "-M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=4G "
 +
-+  qemu-system-aarch64 -M virt,gic-version=3,cxl=on -m 4g,maxmem=8g,slots=4 -cpu max -smp 4 \
-+  ...
-+  -object memory-backend-ram,id=vmem0,share=on,size=256M \
-+  -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
-+  -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
-+  -device cxl-type3,bus=root_port13,volatile-memdev=vmem0,id=cxl-vmem0 \
-+  -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G
-+
- Deprecations
- ------------
+ #define QEMU_RP \
+     "-device cxl-rp,id=rp0,bus=cxl.0,chassis=0,slot=0 "
  
+@@ -197,25 +203,51 @@ static void cxl_2pxb_4rp_4t3d(void)
+     qtest_end();
+     rmdir(tmpfs);
+ }
++
++static void cxl_virt_2pxb_4rp_4t3d(void)
++{
++    g_autoptr(GString) cmdline = g_string_new(NULL);
++    g_autofree const char *tmpfs = NULL;
++
++    tmpfs = g_dir_make_tmp("cxl-test-XXXXXX", NULL);
++
++    g_string_printf(cmdline, QEMU_VIRT_2PXB_CMD QEMU_4RP QEMU_4T3D,
++                    tmpfs, tmpfs, tmpfs, tmpfs, tmpfs, tmpfs,
++                    tmpfs, tmpfs);
++
++    qtest_start(cmdline->str);
++    qtest_end();
++    rmdir(tmpfs);
++}
+ #endif /* CONFIG_POSIX */
+ 
+ int main(int argc, char **argv)
+ {
+-    g_test_init(&argc, &argv, NULL);
++    const char *arch = qtest_get_arch();
+ 
+-    qtest_add_func("/pci/cxl/basic_hostbridge", cxl_basic_hb);
+-    qtest_add_func("/pci/cxl/basic_pxb", cxl_basic_pxb);
+-    qtest_add_func("/pci/cxl/pxb_with_window", cxl_pxb_with_window);
+-    qtest_add_func("/pci/cxl/pxb_x2_with_window", cxl_2pxb_with_window);
+-    qtest_add_func("/pci/cxl/rp", cxl_root_port);
+-    qtest_add_func("/pci/cxl/rp_x2", cxl_2root_port);
++    g_test_init(&argc, &argv, NULL);
++    if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
++        qtest_add_func("/pci/cxl/basic_hostbridge", cxl_basic_hb);
++        qtest_add_func("/pci/cxl/basic_pxb", cxl_basic_pxb);
++        qtest_add_func("/pci/cxl/pxb_with_window", cxl_pxb_with_window);
++        qtest_add_func("/pci/cxl/pxb_x2_with_window", cxl_2pxb_with_window);
++        qtest_add_func("/pci/cxl/rp", cxl_root_port);
++        qtest_add_func("/pci/cxl/rp_x2", cxl_2root_port);
+ #ifdef CONFIG_POSIX
+-    qtest_add_func("/pci/cxl/type3_device", cxl_t3d_deprecated);
+-    qtest_add_func("/pci/cxl/type3_device_pmem", cxl_t3d_persistent);
+-    qtest_add_func("/pci/cxl/type3_device_vmem", cxl_t3d_volatile);
+-    qtest_add_func("/pci/cxl/type3_device_vmem_lsa", cxl_t3d_volatile_lsa);
+-    qtest_add_func("/pci/cxl/rp_x2_type3_x2", cxl_1pxb_2rp_2t3d);
+-    qtest_add_func("/pci/cxl/pxb_x2_root_port_x4_type3_x4", cxl_2pxb_4rp_4t3d);
++        qtest_add_func("/pci/cxl/type3_device", cxl_t3d_deprecated);
++        qtest_add_func("/pci/cxl/type3_device_pmem", cxl_t3d_persistent);
++        qtest_add_func("/pci/cxl/type3_device_vmem", cxl_t3d_volatile);
++        qtest_add_func("/pci/cxl/type3_device_vmem_lsa", cxl_t3d_volatile_lsa);
++        qtest_add_func("/pci/cxl/rp_x2_type3_x2", cxl_1pxb_2rp_2t3d);
++        qtest_add_func("/pci/cxl/pxb_x2_root_port_x4_type3_x4",
++                       cxl_2pxb_4rp_4t3d);
+ #endif
++    } else if (strcmp(arch, "aarch64") == 0) {
++#ifdef CONFIG_POSIX
++        qtest_add_func("/pci/cxl/virt/pxb_x2_root_port_x4_type3_x4",
++                       cxl_virt_2pxb_4rp_4t3d);
++#endif
++    }
++
+     return g_test_run();
+ }
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 91b4a71a186..5ad969f6165 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -262,6 +262,7 @@ qtests_aarch64 = \
+    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
+   (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed64 : []) + \
+   (config_all_devices.has_key('CONFIG_NPCM8XX') ? qtests_npcm8xx : []) + \
++  qtests_cxl +                                                                                  \
+   ['arm-cpu-features',
+    'numa-test',
+    'boot-serial-test',
 -- 
 2.43.0
 
