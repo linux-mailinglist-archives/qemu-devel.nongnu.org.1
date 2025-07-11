@@ -2,70 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8845B015AD
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41EF2B01648
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:34:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua8zw-000123-67; Fri, 11 Jul 2025 04:20:48 -0400
+	id 1ua95D-0000KE-77; Fri, 11 Jul 2025 04:26:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ua8vN-0001x1-78
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:16:08 -0400
-Received: from mgamail.intel.com ([192.198.163.18])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1ua8xM-0004EU-Mo; Fri, 11 Jul 2025 04:18:08 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ua8vL-0003Cl-J0
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:16:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752221763; x=1783757763;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=cFvtLmQoWdQaH4+C34V10oThfsMInecgZrRSwd6iRoo=;
- b=KAk9Mpl+uGD2CKovXhtyyEFpqIKzgJTb9G/Rv85/I++BkKws93LxFrFT
- njcXGYUxa2jWv9qLyle5YOZlO9hYjPj21lJMQ1ixbc6+2xTOIPcxFdW3d
- nVp4LJqbfmV+HhE2RhuGoykkxRkxVYQEtStuUs/62jK1MvAdgrWEValV3
- D/pL+yyhroXAzz2jsdTPqpI6wHrvUeKIo337d3li5NjmbYA9NxaNaFkz2
- jDY3k3hHSGV5rsQNKQ8hd/LeMSN+IwiK4kT06KyOtri5Qf/BlPHPmiiRU
- QKd8LnhWlfPlku2IYiEMK68B/jPWT3KvKWRRJlIoYCvI0bDOPcKqILxUg Q==;
-X-CSE-ConnectionGUID: nPPeWO3rTXyW8TVIYuD+Jw==
-X-CSE-MsgGUID: j52SWmioTCaYti6NSHBBLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="53734971"
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="53734971"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jul 2025 01:16:01 -0700
-X-CSE-ConnectionGUID: rfL7etUrRyaERt2RdF9Q0A==
-X-CSE-MsgGUID: 1YS5FWZxRcaVDM1U96UoXw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="180014156"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jul 2025 01:16:00 -0700
-Message-ID: <c5d96f80-31c0-44dc-8f7a-557367a1abc9@intel.com>
-Date: Fri, 11 Jul 2025 16:15:57 +0800
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1ua8xJ-0003y8-Lw; Fri, 11 Jul 2025 04:18:08 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 3AD161356CD;
+ Fri, 11 Jul 2025 11:17:18 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3286F23FA42;
+ Fri, 11 Jul 2025 11:17:45 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 02/39] hw/arm/aspeed_ast27x0: Fix RAM size detection
+ failure on BE hosts
+Date: Fri, 11 Jul 2025 11:15:58 +0300
+Message-ID: <20250711081745.1785806-2-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
+References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/i386: merge host_cpu_instance_init() and
- host_cpu_max_instance_init()
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20250711075507.451540-1-pbonzini@redhat.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250711075507.451540-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.198.163.18; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,12 +60,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/2025 3:55 PM, Paolo Bonzini wrote:
-> Simplify the accelerators' cpu_instance_init callbacks by doing all
-> host-cpu setup in a single function.
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-btw, it changes the behavior for "-cpu base" with accelerator.
+On big-endian hosts, the aspeed_ram_capacity_write() function previously passed
+the address of a 64-bit "data" variable directly to address_space_write(),
+assuming host and guest endianness matched.
 
-I think it should be OK considering "-cpu base" seems only for 
-experiment case.
+However, the data is expected to be written in little-endian format to DRAM.
+On big-endian hosts, this led to incorrect data being written into DRAM,
+which caused the guest firmware to misdetect the DRAM size.
+
+As a result, U-Boot fails to boot and hangs.
+
+- Replaces the "address_space_write()" call with "address_space_stl_le()",
+  which performs an explicit 32-bit little-endian write.
+- Updating the MemoryRegionOps to restrict access to exactly 4 bytes
+  using .valid.{min,max}_access_size = 4 and .impl.min_access_size = 4.
+
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Fixes: 7436db1 ("aspeed/soc: fix incorrect dram size for AST2700")
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250522023305.2486536-4-jamin_lin@aspeedtech.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+(cherry picked from commit e6941ac106190490d8b455eedc5b368e6d94d4cc)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index dce7255a2c..b810891b16 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -325,8 +325,9 @@ static void aspeed_ram_capacity_write(void *opaque, hwaddr addr, uint64_t data,
+      * If writes the data to the address which is beyond the ram size,
+      * it would write the data to the "address % ram_size".
+      */
+-    result = address_space_write(&s->dram_as, addr % ram_size,
+-                                 MEMTXATTRS_UNSPECIFIED, &data, 4);
++    address_space_stl_le(&s->dram_as, addr % ram_size, data,
++                         MEMTXATTRS_UNSPECIFIED, &result);
++
+     if (result != MEMTX_OK) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "%s: DRAM write failed, addr:0x%" HWADDR_PRIx
+@@ -339,9 +340,10 @@ static const MemoryRegionOps aspeed_ram_capacity_ops = {
+     .read = aspeed_ram_capacity_read,
+     .write = aspeed_ram_capacity_write,
+     .endianness = DEVICE_LITTLE_ENDIAN,
++    .impl.min_access_size = 4,
+     .valid = {
+-        .min_access_size = 1,
+-        .max_access_size = 8,
++        .min_access_size = 4,
++        .max_access_size = 4,
+     },
+ };
+ 
+-- 
+2.47.2
+
 
