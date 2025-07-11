@@ -2,73 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE67B010F2
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 03:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B394B01112
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 04:05:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua2vu-0006mL-Tq; Thu, 10 Jul 2025 21:52:14 -0400
+	id 1ua37U-0004U9-Fl; Thu, 10 Jul 2025 22:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ua2vr-0006jL-Su
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 21:52:12 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ua2vo-0007kw-B0
- for qemu-devel@nongnu.org; Thu, 10 Jul 2025 21:52:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752198728; x=1783734728;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=JKaMQAipjm07ZHenYmiSXJD0s+0zUQA3XWSgJ6fZu+Y=;
- b=cignk90kQeL0lC8IiXJS+CYoWvSG54d4uuC0aC7Gn91OitLTcycBtng9
- 3bpKtMVjZrs6aACKznohNnSA668+Xf4JA4OsG8HgvFuM2j0FaAA6baaal
- movv97hgHJy3dC5Ivj58hxKGKwQUHJkJ7hunSK4oozkmPE6fOPwdq6o5H
- /m/J4A51YqgkFbJSfOOr9hs+Ohx1AAL1kVgjuD3T9SBibi/fkv5Mmy6WU
- 37gcby/ih4vG2RbLfGG16Tptzx2gXK83PNuv53JoNTAG8eNGly747NL+u
- HroiZI1YLtzn41OqSVFx+Yj437pdCxNOqnUrzoTNLPaETXRIbq5bOAvdc Q==;
-X-CSE-ConnectionGUID: f2NBgC4lSymdTi5SvF8o0Q==
-X-CSE-MsgGUID: +F9BVhj2S/iJGPhSjEy5mw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="58255150"
-X-IronPort-AV: E=Sophos;i="6.16,302,1744095600"; d="scan'208";a="58255150"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2025 18:52:05 -0700
-X-CSE-ConnectionGUID: K9dwr8cJQE6tpml6q878MA==
-X-CSE-MsgGUID: gR/0+tJQR2+qksMDdG2SNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,302,1744095600"; d="scan'208";a="161936265"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2025 18:52:04 -0700
-Message-ID: <6c381d13-db0e-4b61-b72b-bda9e7727143@intel.com>
-Date: Fri, 11 Jul 2025 09:52:01 +0800
+ (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
+ id 1ua373-0004OM-3g
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 22:03:45 -0400
+Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
+ id 1ua370-0001yC-JO
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 22:03:44 -0400
+Received: by mail-qt1-x831.google.com with SMTP id
+ d75a77b69052e-4a9e7c12decso18739861cf.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 19:03:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1752199420; x=1752804220; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FbgRniIUsawu1x7CAjWQ5r9GqoSPD/4xyyFuPkEZ57o=;
+ b=Vv5BlawsD95yR8k4qlKz0DMdyJrJUdJoY0C6nZrI6d/PgUnMz/T2nK/uOKKcR5PUT0
+ TTccPOVqcuX7C+OQ1al6lfaocrQ+Cttd6NzJvI6hnS9KdCVTv0IWctnvJ5QmupNfilL0
+ MFN5IBnbheW7R/Z5r4XldT4VuncpGmYV5L+W9Soq8P9cfCDcvThezACjnpjUjVFuGHCs
+ pq+lbyaZ0ZTptCJuCflhdTOuTMbQfGRP5m+ovbdJ8sgS7QIjI+Pxd299T9VmJh6XE+0+
+ PuuMyX+74lvOC2vPkIcoX2DSaahwpgk9x6gmxkiTZTMSJWSyuA8KgBO9kn+0KY0yY1Hh
+ BBVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752199420; x=1752804220;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FbgRniIUsawu1x7CAjWQ5r9GqoSPD/4xyyFuPkEZ57o=;
+ b=d7FAAWSqgKAZ121AidnWW1WmEdyN9wTJ2IKz56u1GTlyb6Q6tF+AIC6MY5ODRJKByz
+ 7W6nUvSpUpyMlHU/Qvgao4YO+VwpXzt9GcYnZ+ExCd7Zqkx9aG7R+57B7j/qLWrv3JFT
+ U43rodTy1qfVTw4cpPlAkd7CUrOcoVB1MiVUnmnDvFXrJijVaO78fpGXytttKzme5xNb
+ 2AV/p9n8UgdQzdonfs65/IfllVlo2wxQIyemYZEg60jqS7i9Z9ju/DtjBg3kdfcTT5nB
+ KGt5clzt/4bpmFCZ1gW0Ne2wbENMm/Pqep+uXUYzfktIF0mn4XMR1j2KyhtXZYzm+oB2
+ EDeg==
+X-Gm-Message-State: AOJu0YwGBXj9N0fFAGZ6m00Ri2c0MyHkEL6pfic+jjBqN8W6TMLuxVBw
+ Q29DwGW38HuA+q6HuwXichIy5GRe6vVbhydDK+Fu0Da4aMZ4QofakHACWZsi0Q==
+X-Gm-Gg: ASbGncsaTBjkhY6Pi/UX6HsFYLikmUNHG2hGLFBfUSXidTq/zYtGx2TSthMUPhgns/a
+ wW7f45HSRBCl6cSWKRALPZMPi8a9wNwBoM24v+WsnQg1SajC0O+c7vGg/XsavcwQTI752FfWh8/
+ rMWY7h2ZkGRS+OcmIrS5UgqXA7qITisCEDw+ay2JlhRjSiEVrxyJtHWi8ruY+zJ0s87Th/nD4El
+ 8XGHCQZeYGgNhpIt5pCuaF3l9dFPi3AO41+2PTGgWzHu8n2ASI1sJ27qFH0+aTCN+ApPor0f3kD
+ Zt2JHuMtB2D8cf+yaTMukzY/H29XUqXv/eC6jjTIas2jcMnQzOUVuQ4s9MROjzBKMmZUr7VeQBS
+ /GNO7y/DXHNNPeThDC1pZxNvho7XoVPd0Sbwhm9zWociANYJj0fxWcIInRA==
+X-Google-Smtp-Source: AGHT+IFr5nce2iJvdrlkr3DD/R1nUKxoo/AJkWRVwxMQSi2iDHrOVG1PDwltuNdQ7PmwGenFZSD10A==
+X-Received: by 2002:ac8:7f15:0:b0:4a3:96b7:2a73 with SMTP id
+ d75a77b69052e-4a9fb887046mr30183341cf.16.1752199419664; 
+ Thu, 10 Jul 2025 19:03:39 -0700 (PDT)
+Received: from user-jcksn.mynetworksettings.com
+ ([2600:4040:b51f:a700:7eb2:b315:2597:18f1])
+ by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4a9ede76d41sm16125761cf.48.2025.07.10.19.03.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Jul 2025 19:03:39 -0700 (PDT)
+From: Jackson Donaldson <jackson88044@gmail.com>
+X-Google-Original-From: Jackson Donaldson <jcksn@duck.com>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PATCH 0/2] MAX78000: documentation and test
+Date: Thu, 10 Jul 2025 22:03:36 -0400
+Message-Id: <20250711020338.586222-1-jcksn@duck.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] target/i386: move max_features to class
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: zhao1.liu@intel.com
-References: <20250711000603.438312-1-pbonzini@redhat.com>
- <20250711000603.438312-2-pbonzini@redhat.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250711000603.438312-2-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
+ envelope-from=jackson88044@gmail.com; helo=mail-qt1-x831.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,34 +97,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/2025 8:06 AM, Paolo Bonzini wrote:
-> max_features is always set to true for instances created by -cpu max or
-> -cpu host; it's always false for other classes.  Therefore it can be
-> turned into a field in the X86CPUClass.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Adds .rST documentation and a functional test for the MAX78000FTHR machine
+as requested by Peter Maydell.
 
-missed one place:
+Jackson Donaldson (2):
+  docs/system: arm: Add max78000 board description
+  tests/functional: Add a test for the MAX78000 arm machine
 
+ docs/system/arm/max78000.rst              | 35 +++++++++++++++++
+ tests/functional/meson.build              |  1 +
+ tests/functional/test_arm_max78000fthr.py | 48 +++++++++++++++++++++++
+ 3 files changed, 84 insertions(+)
+ create mode 100644 docs/system/arm/max78000.rst
+ create mode 100755 tests/functional/test_arm_max78000fthr.py
 
-----------------8<---------------
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -8302,7 +8302,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error 
-**errp)
-          }
-      }
-
--    /*TODO: Now cpu->max_features doesn't overwrite features
-+    /*TODO: Now xcc->max_features doesn't overwrite features
-       * set using QOM properties, and we can convert
-       * plus_features & minus_features to global properties
-       * inside x86_cpu_parse_featurestr() too.
-
-
-
-with above added,
-
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+-- 
+2.34.1
 
 
