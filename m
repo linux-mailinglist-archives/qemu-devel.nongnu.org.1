@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21546B01657
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B839EB015E9
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:26:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua961-00020i-1C; Fri, 11 Jul 2025 04:27:05 -0400
+	id 1ua94P-0006sY-Fi; Fri, 11 Jul 2025 04:25:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xU-0004V1-Go; Fri, 11 Jul 2025 04:18:17 -0400
+ id 1ua8xU-0004V2-L1; Fri, 11 Jul 2025 04:18:17 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xS-00040V-KK; Fri, 11 Jul 2025 04:18:16 -0400
+ id 1ua8xS-00040Y-M4; Fri, 11 Jul 2025 04:18:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7D2011356D1;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8C6AF1356D2;
  Fri, 11 Jul 2025 11:17:18 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 733ED23FA46;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 824E323FA47;
  Fri, 11 Jul 2025 11:17:45 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Weifeng Liu <weifeng.liu.z@gmail.com>,
+Cc: qemu-stable@nongnu.org, Weifeng Liu <weifeng.liu@intel.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 06/39] ui/gtk: Update scales in fixed-scale mode when
- rendering GL area
-Date: Fri, 11 Jul 2025 11:16:02 +0300
-Message-ID: <20250711081745.1785806-6-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 07/39] ui/sdl: Consider scaling in mouse event handling
+Date: Fri, 11 Jul 2025 11:16:03 +0300
+Message-ID: <20250711081745.1785806-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
@@ -61,51 +60,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Weifeng Liu <weifeng.liu.z@gmail.com>
+From: Weifeng Liu <weifeng.liu@intel.com>
 
-When gl=on, scale_x and scale_y were set to 1 on startup that didn't
-reflect the real situation of the scan-out in free scale mode, resulting
-in incorrect cursor coordinates to be sent when moving the mouse
-pointer. Simply updating the scales before rendering the image fixes
-this issue.
+When using sdl display backend, if the window is scaled, incorrect mouse
+positions will be reported since scaling is not properly handled. Fix it
+by transforming the positions from window coordinate to guest buffer
+coordinate.
 
-Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
-Message-ID: <20250511073337.876650-5-weifeng.liu.z@gmail.com>
+Signed-off-by: Weifeng Liu <weifeng.liu@intel.com>
+Message-ID: <20250511073337.876650-6-weifeng.liu.z@gmail.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-(cherry picked from commit 8fb072472c38cb1778c5b0bebf535a8b13533857)
+(cherry picked from commit 30aa105640b0a2a541744b6584d57c9a4b86debd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index ba9fbec432..db93cd6204 100644
---- a/ui/gtk-gl-area.c
-+++ b/ui/gtk-gl-area.c
-@@ -43,6 +43,8 @@ void gd_gl_area_draw(VirtualConsole *vc)
-     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
- #endif
-     int pw, ph, gs, y1, y2;
-+    int ww, wh;
-+    int fbw, fbh;
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index cda4293a53..b00e421f7f 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -488,14 +488,14 @@ static void handle_mousemotion(SDL_Event *ev)
+ {
+     int max_x, max_y;
+     struct sdl2_console *scon = get_scon_from_window(ev->motion.windowID);
++    int scr_w, scr_h, surf_w, surf_h, x, y, dx, dy;
  
-     if (!vc->gfx.gls) {
+     if (!scon || !qemu_console_is_graphic(scon->dcl.con)) {
          return;
-@@ -50,8 +52,14 @@ void gd_gl_area_draw(VirtualConsole *vc)
+     }
  
-     gtk_gl_area_make_current(GTK_GL_AREA(vc->gfx.drawing_area));
-     gs = gdk_window_get_scale_factor(gtk_widget_get_window(vc->gfx.drawing_area));
--    pw = gtk_widget_get_allocated_width(vc->gfx.drawing_area) * gs;
--    ph = gtk_widget_get_allocated_height(vc->gfx.drawing_area) * gs;
-+    fbw = surface_width(vc->gfx.ds);
-+    fbh = surface_height(vc->gfx.ds);
-+    ww = gtk_widget_get_allocated_width(vc->gfx.drawing_area);
-+    wh = gtk_widget_get_allocated_height(vc->gfx.drawing_area);
-+    pw = ww * gs;
-+    ph = wh * gs;
++    SDL_GetWindowSize(scon->real_window, &scr_w, &scr_h);
+     if (qemu_input_is_absolute(scon->dcl.con) || absolute_enabled) {
+-        int scr_w, scr_h;
+-        SDL_GetWindowSize(scon->real_window, &scr_w, &scr_h);
+         max_x = scr_w - 1;
+         max_y = scr_h - 1;
+         if (gui_grab && !gui_fullscreen
+@@ -509,9 +509,14 @@ static void handle_mousemotion(SDL_Event *ev)
+             sdl_grab_start(scon);
+         }
+     }
++    surf_w = surface_width(scon->surface);
++    surf_h = surface_height(scon->surface);
++    x = (int64_t)ev->motion.x * surf_w / scr_w;
++    y = (int64_t)ev->motion.y * surf_h / scr_h;
++    dx = (int64_t)ev->motion.xrel * surf_w / scr_w;
++    dy = (int64_t)ev->motion.yrel * surf_h / scr_h;
+     if (gui_grab || qemu_input_is_absolute(scon->dcl.con) || absolute_enabled) {
+-        sdl_send_mouse_event(scon, ev->motion.xrel, ev->motion.yrel,
+-                             ev->motion.x, ev->motion.y, ev->motion.state);
++        sdl_send_mouse_event(scon, dx, dy, x, y, ev->motion.state);
+     }
+ }
+ 
+@@ -520,12 +525,17 @@ static void handle_mousebutton(SDL_Event *ev)
+     int buttonstate = SDL_GetMouseState(NULL, NULL);
+     SDL_MouseButtonEvent *bev;
+     struct sdl2_console *scon = get_scon_from_window(ev->button.windowID);
++    int scr_w, scr_h, x, y;
+ 
+     if (!scon || !qemu_console_is_graphic(scon->dcl.con)) {
+         return;
+     }
+ 
+     bev = &ev->button;
++    SDL_GetWindowSize(scon->real_window, &scr_w, &scr_h);
++    x = (int64_t)bev->x * surface_width(scon->surface) / scr_w;
++    y = (int64_t)bev->y * surface_height(scon->surface) / scr_h;
 +
-+    gd_update_scale(vc, ww, wh, fbw, fbh);
+     if (!gui_grab && !qemu_input_is_absolute(scon->dcl.con)) {
+         if (ev->type == SDL_MOUSEBUTTONUP && bev->button == SDL_BUTTON_LEFT) {
+             /* start grabbing all events */
+@@ -537,7 +547,7 @@ static void handle_mousebutton(SDL_Event *ev)
+         } else {
+             buttonstate &= ~SDL_BUTTON(bev->button);
+         }
+-        sdl_send_mouse_event(scon, 0, 0, bev->x, bev->y, buttonstate);
++        sdl_send_mouse_event(scon, 0, 0, x, y, buttonstate);
+     }
+ }
  
-     if (vc->gfx.scanout_mode) {
-         if (!vc->gfx.guest_fb.framebuffer) {
 -- 
 2.47.2
 
