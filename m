@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D05BB025F4
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95953B025FD
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:53:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKis-0001On-9n; Fri, 11 Jul 2025 16:51:58 -0400
+	id 1uaKh3-0006WW-57; Fri, 11 Jul 2025 16:50:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKe5-0003QA-UA; Fri, 11 Jul 2025 16:47:01 -0400
+ id 1uaKe8-0003ST-JG; Fri, 11 Jul 2025 16:47:08 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKe3-0003n2-9Y; Fri, 11 Jul 2025 16:47:01 -0400
+ id 1uaKe6-0003oT-Oz; Fri, 11 Jul 2025 16:47:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BB885135D08;
+ by isrv.corpit.ru (Postfix) with ESMTP id C9B4B135D09;
  Fri, 11 Jul 2025 23:46:04 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9147E23FF42;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A7BDD23FF43;
  Fri, 11 Jul 2025 23:46:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 09/15] tcg: Fix constant propagation in
- tcg_reg_alloc_dup
-Date: Fri, 11 Jul 2025 23:46:24 +0300
-Message-ID: <20250711204632.1804872-9-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 10/15] target/arm: Correct KVM & HVF dtb_compatible
+ value
+Date: Fri, 11 Jul 2025 23:46:25 +0300
+Message-ID: <20250711204632.1804872-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 References: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,30 +61,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The scalar constant must be replicated for dup.
+Linux kernel knows how to parse "arm,armv8", not "arm,arm-v8".
+
+See arch/arm64/boot/dts/foundation-v8.dts:
+
+  https://github.com/torvalds/linux/commit/90556ca1ebdd
 
 Cc: qemu-stable@nongnu.org
-Fixes: bab1671f0fa ("tcg: Manually expand INDEX_op_dup_vec")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3002
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 0d0fc3f4658937fb81fcc16a89738e83bd8d4795)
+Fixes: 26861c7ce06 ("target-arm: Add minimal KVM AArch64 support")
+Fixes: 585df85efea ("hvf: arm: Implement -cpu host")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250623121845.7214-10-philmd@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit a412575837b6a46584fba891e3706e87bd09a3e6)
+(Mjt: the change is in target/arm/kvm64.c, not ../kvm.c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index e7aa02c447..6c8f86ecb7 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -3491,7 +3491,7 @@ static void tcg_reg_alloc_dup(TCGContext *s, const TCGOp *op)
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 047cb8fc50..dfce8181f9 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -489,7 +489,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     hv_vcpu_exit_t *exit;
+     int i;
  
-     if (its->val_type == TEMP_VAL_CONST) {
-         /* Propagate constant via movi -> dupi.  */
--        tcg_target_ulong val = its->val;
-+        tcg_target_ulong val = dup_const(vece, its->val);
-         if (IS_DEAD_ARG(1)) {
-             temp_dead(s, its);
-         }
+-    ahcf->dtb_compatible = "arm,arm-v8";
++    ahcf->dtb_compatible = "arm,armv8";
+     ahcf->features = (1ULL << ARM_FEATURE_V8) |
+                      (1ULL << ARM_FEATURE_NEON) |
+                      (1ULL << ARM_FEATURE_AARCH64) |
+diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+index ed85bcfb5c..de69d8ade9 100644
+--- a/target/arm/kvm64.c
++++ b/target/arm/kvm64.c
+@@ -546,7 +546,7 @@ bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     }
+ 
+     ahcf->target = init.target;
+-    ahcf->dtb_compatible = "arm,arm-v8";
++    ahcf->dtb_compatible = "arm,armv8";
+ 
+     err = read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64pfr0,
+                          ARM64_SYS_REG(3, 0, 0, 4, 0));
 -- 
 2.47.2
 
