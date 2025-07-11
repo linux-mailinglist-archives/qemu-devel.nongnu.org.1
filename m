@@ -2,117 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1958B01ECF
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 16:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69727B01EE8
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 16:19:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaEWd-0000FE-0k; Fri, 11 Jul 2025 10:14:55 -0400
+	id 1uaEYp-0002hG-MM; Fri, 11 Jul 2025 10:17:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaETR-0001sg-Hy
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:11:44 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaETH-0001iI-Po
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:11:31 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaETL-0006iO-R1
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:11:35 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uaETF-0006hV-5Y
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 10:11:26 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 565DD1F454;
- Fri, 11 Jul 2025 14:10:56 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 3C9F71F455;
+ Fri, 11 Jul 2025 14:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
  t=1752243058; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Bnz20s69+Inf6MGIXR/Cgjh2pMWofI8C1iUr1UrS8nM=;
- b=P93/VpFeWZSJ9qojnmvWKA0tf3OSr7EDls9PHtK3P50tLF/4RQgCsb8yKduBjfHEShk21U
- 9vYqy4bp9Ofnx/y2wzSIwwtQY35et4kCHhB7vgMDqnAMhGwwQOhGfuVOACXbXwEs4UnN0W
- miExWSsBdcnHePaaTDWpcjHJ5sHcaDU=
+ bh=MtcLz3HoOuMb7dWaVW/7n137qzfJKsmUGSn1VyrRD58=;
+ b=SjfxJleEp1JDj4xy2dkfdIf7LPhgK3JA22+/142axIunnsYt+xImBNteYUeQfLo7dv2hRg
+ y/sRVzi1Y1/brnQGamRpkup8CPPjwPpLIeqgwwFFF55+TslEBBJkceAoPQFnQNXrdgkpPO
+ qd2OenIAz4GVsqULZYRrUBzlGJVaHHM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
  s=susede2_ed25519; t=1752243058;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Bnz20s69+Inf6MGIXR/Cgjh2pMWofI8C1iUr1UrS8nM=;
- b=Muq2n5DUnYc286j4WvUDVgi9nJYV7ACmNvYU5iKNZ3pq7P9fYAOt7ZS64EMmxdh3e2FF36
- kmJVFCCyuvb3DEDg==
+ bh=MtcLz3HoOuMb7dWaVW/7n137qzfJKsmUGSn1VyrRD58=;
+ b=fg/AZulPxsJ4R8duTEe1wKZT3ByQIu4/u2JvKLxuieeFCMbH5bXE2cqeYe1FhRs2OtjJ4h
+ O8FtIRhqwwUYKTDA==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=m83txFfz;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=073tuCCW
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1752243056; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1752243058; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Bnz20s69+Inf6MGIXR/Cgjh2pMWofI8C1iUr1UrS8nM=;
- b=m83txFfzEosbzKm3tbKJJCym+hyjf1gqZeIcH2FTBu353mYfU0qQ+CrEM6hbIExUg0trwj
- NlwVf5WW2kIWM2mdrPoP/GOaFCDBCuvsXoemX2jqmhX8UJDBh7XGuFIE8qA6hmDuQQcZkr
- HWx2dfZEF99glNmi1MSTNNn/mBtw9rQ=
+ bh=MtcLz3HoOuMb7dWaVW/7n137qzfJKsmUGSn1VyrRD58=;
+ b=SjfxJleEp1JDj4xy2dkfdIf7LPhgK3JA22+/142axIunnsYt+xImBNteYUeQfLo7dv2hRg
+ y/sRVzi1Y1/brnQGamRpkup8CPPjwPpLIeqgwwFFF55+TslEBBJkceAoPQFnQNXrdgkpPO
+ qd2OenIAz4GVsqULZYRrUBzlGJVaHHM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1752243056;
+ s=susede2_ed25519; t=1752243058;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Bnz20s69+Inf6MGIXR/Cgjh2pMWofI8C1iUr1UrS8nM=;
- b=073tuCCW5N4TnHnnhvyvTL0vzGkHkv4V11Tl/ruom1ysUdg2CGkvJxAtBZMfLhC1keHLy6
- pfY0KEATADC4BaCw==
+ bh=MtcLz3HoOuMb7dWaVW/7n137qzfJKsmUGSn1VyrRD58=;
+ b=fg/AZulPxsJ4R8duTEe1wKZT3ByQIu4/u2JvKLxuieeFCMbH5bXE2cqeYe1FhRs2OtjJ4h
+ O8FtIRhqwwUYKTDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0220D1388B;
- Fri, 11 Jul 2025 14:10:54 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D2A7D13918;
+ Fri, 11 Jul 2025 14:10:56 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id +HWhLG4bcWg7TgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 11 Jul 2025 14:10:54 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id CA1yI3AbcWg7TgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 11 Jul 2025 14:10:56 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
-	Juraj Marcin <jmarcin@redhat.com>
-Subject: [PULL 10/26] migration: Rewrite the migration complete detect logic
-Date: Fri, 11 Jul 2025 11:10:15 -0300
-Message-Id: <20250711141031.423-11-farosas@suse.de>
+	Yanfei Xu <yanfei.xu@bytedance.com>
+Subject: [PULL 11/26] migration/postcopy: Avoid clearing dirty bitmap for
+ postcopy too
+Date: Fri, 11 Jul 2025 11:10:16 -0300
+Message-Id: <20250711141031.423-12-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250711141031.423-1-farosas@suse.de>
 References: <20250711141031.423-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 565DD1F454
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; ARC_NA(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCVD_COUNT_TWO(0.00)[2]; MIME_TRACE(0.00)[0:+];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid,suse.de:email];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCPT_COUNT_THREE(0.00)[3];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.999];
+ MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; FUZZY_RATELIMITED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Score: -3.01
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+ RCPT_COUNT_THREE(0.00)[3]; RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -131,169 +121,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-There're a few things off here in that logic, rewrite it.  When at it, add
-rich comment to explain each of the decisions.
+This is a follow up on the other commit "migration/ram: avoid to do log
+clear in the last round" but for postcopy.
 
-Since this is very sensitive path for migration, below are the list of
-things changed with their reasonings.
+https://lore.kernel.org/r/20250514115827.3216082-1-yanfei.xu@bytedance.com
 
-  (1) Exact pending size is only needed for precopy not postcopy
+I can observe more than 10% reduction of average page fault latency during
+postcopy phase with this optimization:
 
-      Fundamentally it's because "exact" version only does one more deep
-      sync to fetch the pending results, while in postcopy's case it's
-      never going to sync anything more than estimate as the VM on source
-      is stopped.
+  Before: 268.00us (+-1.87%)
+  After:  232.67us (+-2.01%)
 
-  (2) Do _not_ rely on threshold_size anymore to decide whether postcopy
-      should complete
+The test was done with a 16GB VM with 80 vCPUs, running a workload that
+busy random writes to 13GB memory.
 
-      threshold_size was calculated from the expected downtime and
-      bandwidth only during precopy as an efficient way to decide when to
-      switchover.  It's not sensible to rely on threshold_size in postcopy.
-
-      For precopy, if switchover is decided, the migration will complete
-      soon.  It's not true for postcopy.  Logically speaking, postcopy
-      should only complete the migration if all pending data is flushed.
-
-      Here it used to work because save_complete() used to implicitly
-      contain save_live_iterate() when there's pending size.
-
-      Even if that looks benign, having RAMs to be migrated in postcopy's
-      save_complete() has other bad side effects:
-
-      (a) Since save_complete() needs to be run once at a time, it means
-      when moving RAM there's no way moving other things (rather than
-      round-robin iterating the vmstate handlers like what we do with
-      ITERABLE phase).  Not an immediate concern, but it may stop working
-      in the future when there're more than one iterables (e.g. vfio
-      postcopy).
-
-      (b) postcopy recovery, unfortunately, only works during ITERABLE
-      phase. IOW, if src QEMU moves RAM during postcopy's save_complete()
-      and network failed, then it'll crash both QEMUs... OTOH if it failed
-      during iteration it'll still be recoverable.  IOW, this change should
-      further reduce the window QEMU split brain and crash in extreme cases.
-
-      If we enable the ram_save_complete() tracepoints, we'll see this
-      before this patch:
-
-      1267959@1748381938.294066:ram_save_complete dirty=9627, done=0
-      1267959@1748381938.308884:ram_save_complete dirty=0, done=1
-
-      It means in this migration there're 9627 pages migrated at complete()
-      of postcopy phase.
-
-      After this change, all the postcopy RAM should be migrated in iterable
-      phase, rather than save_complete():
-
-      1267959@1748381938.294066:ram_save_complete dirty=0, done=0
-      1267959@1748381938.308884:ram_save_complete dirty=0, done=1
-
-  (3) Adjust when to decide to switch to postcopy
-
-      This shouldn't be super important, the movement makes sure there's
-      only one in_postcopy check, then we are clear on what we do with the
-      two completely differnt use cases (precopy v.s. postcopy).
-
-  (4) Trivial touch up on threshold_size comparision
-
-      Which changes:
-
-      "(!pending_size || pending_size < s->threshold_size)"
-
-      into:
-
-      "(pending_size <= s->threshold_size)"
-
-Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+Cc: Yanfei Xu <yanfei.xu@bytedance.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20250613140801.474264-11-peterx@redhat.com
+Link: https://lore.kernel.org/r/20250613140801.474264-12-peterx@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 57 +++++++++++++++++++++++++++++++------------
- 1 file changed, 42 insertions(+), 15 deletions(-)
+ migration/ram.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index e33e39ac74..923400f801 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -3436,33 +3436,60 @@ static MigIterateState migration_iteration_run(MigrationState *s)
-     Error *local_err = NULL;
-     bool in_postcopy = s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE;
-     bool can_switchover = migration_can_switchover(s);
-+    bool complete_ready;
- 
-+    /* Fast path - get the estimated amount of pending data */
-     qemu_savevm_state_pending_estimate(&must_precopy, &can_postcopy);
-     pending_size = must_precopy + can_postcopy;
-     trace_migrate_pending_estimate(pending_size, must_precopy, can_postcopy);
- 
--    if (pending_size < s->threshold_size) {
--        qemu_savevm_state_pending_exact(&must_precopy, &can_postcopy);
--        pending_size = must_precopy + can_postcopy;
--        trace_migrate_pending_exact(pending_size, must_precopy, can_postcopy);
-+    if (in_postcopy) {
-+        /*
-+         * Iterate in postcopy until all pending data flushed.  Note that
-+         * postcopy completion doesn't rely on can_switchover, because when
-+         * POSTCOPY_ACTIVE it means switchover already happened.
-+         */
-+        complete_ready = !pending_size;
-+    } else {
-+        /*
-+         * Exact pending reporting is only needed for precopy.  Taking RAM
-+         * as example, there'll be no extra dirty information after
-+         * postcopy started, so ESTIMATE should always match with EXACT
-+         * during postcopy phase.
-+         */
-+        if (pending_size < s->threshold_size) {
-+            qemu_savevm_state_pending_exact(&must_precopy, &can_postcopy);
-+            pending_size = must_precopy + can_postcopy;
-+            trace_migrate_pending_exact(pending_size, must_precopy,
-+                                        can_postcopy);
-+        }
-+
-+        /* Should we switch to postcopy now? */
-+        if (must_precopy <= s->threshold_size &&
-+            can_switchover && qatomic_read(&s->start_postcopy)) {
-+            if (postcopy_start(s, &local_err)) {
-+                migrate_set_error(s, local_err);
-+                error_report_err(local_err);
-+            }
-+            return MIG_ITERATE_SKIP;
-+        }
-+
-+        /*
-+         * For precopy, migration can complete only if:
-+         *
-+         * (1) Switchover is acknowledged by destination
-+         * (2) Pending size is no more than the threshold specified
-+         *     (which was calculated from expected downtime)
-+         */
-+        complete_ready = can_switchover && (pending_size <= s->threshold_size);
-     }
- 
--    if ((!pending_size || pending_size < s->threshold_size) && can_switchover) {
-+    if (complete_ready) {
-         trace_migration_thread_low_pending(pending_size);
-         migration_completion(s);
-         return MIG_ITERATE_BREAK;
-     }
- 
--    /* Still a significant amount to transfer */
--    if (!in_postcopy && must_precopy <= s->threshold_size && can_switchover &&
--        qatomic_read(&s->start_postcopy)) {
--        if (postcopy_start(s, &local_err)) {
--            migrate_set_error(s, local_err);
--            error_report_err(local_err);
--        }
--        return MIG_ITERATE_SKIP;
--    }
--
-     /* Just another iteration step */
-     qemu_savevm_state_iterate(s->to_dst_file, in_postcopy);
-     return MIG_ITERATE_RESUME;
+diff --git a/migration/ram.c b/migration/ram.c
+index e4871b4c17..7208bc114f 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -835,8 +835,10 @@ static inline bool migration_bitmap_clear_dirty(RAMState *rs,
+      * protections isn't needed as we know there will be either (1) no
+      * further writes if migration will complete, or (2) migration fails
+      * at last then tracking isn't needed either.
++     *
++     * Do the same for postcopy due to the same reason.
+      */
+-    if (!rs->last_stage) {
++    if (!rs->last_stage && !migration_in_postcopy()) {
+         /*
+          * Clear dirty bitmap if needed.  This _must_ be called before we
+          * send any of the page in the chunk because we need to make sure
 -- 
 2.35.3
 
