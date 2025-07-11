@@ -2,157 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95CCB00F3A
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 01:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC99EB01012
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 02:07:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua0K0-0005mf-0F; Thu, 10 Jul 2025 19:04:56 -0400
+	id 1ua1IH-0006Uu-JJ; Thu, 10 Jul 2025 20:07:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1ua0Jt-0005jH-Q0; Thu, 10 Jul 2025 19:04:51 -0400
-Received: from mail-co1nam11on20618.outbound.protection.outlook.com
- ([2a01:111:f403:2416::618]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ua1ID-0006T4-ET
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 20:07:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1ua0Jr-0007kP-AV; Thu, 10 Jul 2025 19:04:49 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WkCbKtzfMQvYJzqTiVZU1tcGL3Feu+UcevOVbI/YLCh53bqMRNi5jqlmEQB7COIPS5Ip+4hHBxHYJHYM8HK+htIlZQAkKmAJBqTF+aRaBL/oYX2cv201Lugdi/FQC7HWIERbQ7Ya8XfmlcKYxlfcgbXeQcIdPCc8QhuVGaF1aErLktRKurhxHZcDDRJlMHXoq/ey1M5B7HW9ogPZusoOs9/WPtD32BTqWWiOujZRFTteYtI3wCsJk34dJcVpg0RTqOJExZtNYTtG4NTjYTEmTCX7LbqqAfmlntxz5P49aeuKPqvNCsi6rHExypogE6qZD88PqnDp50McRpM69xVa3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oYksPqydO0d6pfZBmypTKn96zS+EXwyH7CXQ395pgmk=;
- b=eIL+gvgS0GkU8VLgr6tvWwnTWI7mYG2iABP3i1U/r81WyvHP8Agr01Qv1NyoZwIQEqrYADsnxGKpjG1POWRsGzgf6sbODd3/BjJxVjCbzuOwygfzJPToGpBRa2bvwY4O6KnAaSQdMBoL8MJIwo/e/nbbEc5wsgLpSISIBi/bDDp+HrD76fRr8ZeEHnfMojV8V0//YWouyvYnTTBKUGkqV4sg55Mj82m7+o4P14PNvUM9hIrBQCb+FYBzSeLffiK57kI9NZH2HVvdE0iXuIeni5bmJLdh1kZwipEqPJjWyMigftmp42xe8KJuX8489wBpwR2Wjdnlv3LE6SONWEmfwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=linaro.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oYksPqydO0d6pfZBmypTKn96zS+EXwyH7CXQ395pgmk=;
- b=EsD4M6h0goiIH9+81FgK1U5mOerkJk2GMj1/im66uY2d2Hue3UI7wcn3UEhCcCbrqT/Ad6QPL+fGe0RcDinE82p2eLXAv4xvPiQRUPu2L6+mY4h420bd6MvNPeI2d9sEhsOETMba9vcgZyCNlo4072E644ziouKZ3BPe4DG/DIyfU4+T3gMiEnVnrrH8LtLzJP5+OLLjI3BydK6s5obTncFNfuiTSLSekvwD6e3QDlMJINgErPg6okVzBml87JDACJVQ/vp7pkB75yYjkmbTCYQkV73cbFh6wywC6wYXl7W2R72RoIu5pYnmywJqGIFXaDqFKmTJgZvJ2iSzsjHolA==
-Received: from BLAPR03CA0108.namprd03.prod.outlook.com (2603:10b6:208:32a::23)
- by SA1PR12MB5657.namprd12.prod.outlook.com (2603:10b6:806:234::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Thu, 10 Jul
- 2025 23:04:39 +0000
-Received: from BN2PEPF000044AA.namprd04.prod.outlook.com
- (2603:10b6:208:32a:cafe::ca) by BLAPR03CA0108.outlook.office365.com
- (2603:10b6:208:32a::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.23 via Frontend Transport; Thu,
- 10 Jul 2025 23:04:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BN2PEPF000044AA.mail.protection.outlook.com (10.167.243.105) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8922.22 via Frontend Transport; Thu, 10 Jul 2025 23:04:38 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 10 Jul
- 2025 16:04:24 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Thu, 10 Jul 2025 16:04:24 -0700
-Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Thu, 10 Jul 2025 16:04:23 -0700
-Date: Thu, 10 Jul 2025 16:04:21 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>, 
- "berrange@redhat.com" <berrange@redhat.com>, "imammedo@redhat.com"
- <imammedo@redhat.com>, "nathanc@nvidia.com" <nathanc@nvidia.com>,
- "mochs@nvidia.com" <mochs@nvidia.com>, "smostafa@google.com"
- <smostafa@google.com>, "gustavo.romero@linaro.org"
- <gustavo.romero@linaro.org>, "mst@redhat.com" <mst@redhat.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>, "Wangzhou (B)"
- <wangzhou1@hisilicon.com>, jiangkunkun <jiangkunkun@huawei.com>, "Jonathan
- Cameron" <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
- <zhangfei.gao@linaro.org>
-Subject: Re: [PATCH v7 00/12] hw/arm/virt: Add support for user creatable
- SMMUv3 device
-Message-ID: <aHBG9U8mIm2LFsdG@Asurada-Nvidia>
-References: <20250708154055.101012-1-shameerali.kolothum.thodi@huawei.com>
- <1291e658f6284fc3b041b599ad375ea1@huawei.com>
- <CAFEAcA_eX0uwYcVjSN=V97xh3uHs5SgHZOx_wYkLC6TNCX7+9g@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ua1IA-0007bZ-PM
+ for qemu-devel@nongnu.org; Thu, 10 Jul 2025 20:07:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752192425;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Y6Qyvu3FrjUZ8xrx2m3kEz++Ce4vpi3v1pyEwDcNrq4=;
+ b=dBfS5ba84OJXPhpRA6wu2GU++kV4kZI6vBRn2VILgvIbWb0aOa+0LGIZ5ezWJNtl2jz2wv
+ sRDpVh4+PxoXSUOIJ7acNkr6APZXUoVlWGmCUS1gK3llb1wPJh4MoRkRMr6fYmP9Pts6R8
+ uKP8BZ/a7gJUKMhJPTQOcTd2ZeLkRM0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-473-DkRaJXblMRWzu7MJiV8lCw-1; Thu, 10 Jul 2025 20:06:13 -0400
+X-MC-Unique: DkRaJXblMRWzu7MJiV8lCw-1
+X-Mimecast-MFC-AGG-ID: DkRaJXblMRWzu7MJiV8lCw_1752192372
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-450eaae2934so11062735e9.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Jul 2025 17:06:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752192370; x=1752797170;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Y6Qyvu3FrjUZ8xrx2m3kEz++Ce4vpi3v1pyEwDcNrq4=;
+ b=PmrBvpK12DUhVKKp4K59FowhtUBIdjiOKFs4Ihw9OXPVYc4iwNVCWu4DWvmSjvbREI
+ stTeeDMLoPSYOB5UVgOYPvKhk/I/4zJeR6D9fW16zwFh1fOGH6MAjYaJByvaXLSTKypJ
+ YYldz35BNvQEnsItUFBv2s2TE5LZ+/xxES8f2fh4JZO3TAHJRYGRdNf2hSCw4dWojpCz
+ 3Syf9hg/b6p0Fk5QhDZtYJMqHlbwLft5zrtjGGSRNV97OGCIEVzIZG1FGa7CBEb81hkU
+ vKTyLq6Oaea8Y+DP3buQZRg/RYdEJWfFwBdBTh+kAjG2yDuidUBYT6KlG6/H7nXDRDWQ
+ 9pPw==
+X-Gm-Message-State: AOJu0YzuBpE2KqX5mdy6c4OKjSHZjZuk3HKgKQPfr2sqQnd7YBzUgUaU
+ rBEQxd0yjKIFa4VurVqjMJ7nO264kl/bfvkebAPcVGbpK3kucCvvxWObGL9jdMYtAL2chpj7aMJ
+ 4e1POAfo853KvV8ThN+A78XWd8VzxQF1zBqp2Sc6D6RqAJQxwX14yiYByA85oLzkQlldl94ebga
+ Y0/8LRdb/4pPrtanOBjgY4O1yu99fHKwtfzHn+KDuR
+X-Gm-Gg: ASbGnctkYx1bIdxudM+yhYfhcsCruoRvLDq1drL7BEQ87RIjATtkiMVzQEpqo4/KEyD
+ GVpPwyupqXgzce4BgnCFiZze9J0iN16r1Y+XHjPXRXzEjQMtT1fgWd5h8EIjscgFizObNdr4TQq
+ X3dStUwoAz2wpfiS1Rcf5m+YU89HWqyQmRasTUDzmPllwPaHsCEB/LeC3S7Bg2SSY/tMzMUip1U
+ 5cIw+H9L1MTrVSnDUymnvn3w2P54S1ZzFc4fT13sHAcz3tNJHpp7NRX8pWgtlDtbXFsx1MoM87/
+ I/mZ/mkPXAL+R/V4XZBtZilbLjhDDXR5gZuv1eyEGvID
+X-Received: by 2002:a05:600c:474c:b0:453:6146:1182 with SMTP id
+ 5b1f17b1804b1-454f426be92mr5118065e9.32.1752192369879; 
+ Thu, 10 Jul 2025 17:06:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENqeqI/+plbL/q+mEjEFmK2oBWf+H12M6kiaNUSCsdK61RwTgURs5ilHSZHilc2iqKgRrikg==
+X-Received: by 2002:a05:600c:474c:b0:453:6146:1182 with SMTP id
+ 5b1f17b1804b1-454f426be92mr5117885e9.32.1752192369461; 
+ Thu, 10 Jul 2025 17:06:09 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.202.169])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-454dd537cd9sm32333195e9.26.2025.07.10.17.06.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Jul 2025 17:06:05 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: xiaoyao.li@intel.com,
+	zhao1.liu@intel.com
+Subject: [PATCH 0/4] target/i386: fix position of accel_cpu_instance_init
+Date: Fri, 11 Jul 2025 02:05:59 +0200
+Message-ID: <20250711000603.438312-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.50.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA_eX0uwYcVjSN=V97xh3uHs5SgHZOx_wYkLC6TNCX7+9g@mail.gmail.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044AA:EE_|SA1PR12MB5657:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a92d64c-d3b9-4448-970b-08ddc00625ae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|36860700013|376014|7416014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?PRKwCjKymsXsfItE835oIMkYHiIUJ0DL8hgT7YzQ4L8uCjKJ3yHXX96KItcy?=
- =?us-ascii?Q?t5VcYJ3TVXRhQc5kJrVoh4zzUdHUCIwFmbKyj9i1Mi9p1D+k7dDEvv7DjD+G?=
- =?us-ascii?Q?mRM5EiJz2H3aAOlM3uX9CEIuCmmWMDE6FZgQSSdMAluQg89jSzDqP+UYODyM?=
- =?us-ascii?Q?Z17gQa8u48i/zfckGFK2WhVSpVt+loKtlU0cExF9q4oKlqmuzrESpQAUtEm1?=
- =?us-ascii?Q?+AC2HozufB0pxBeUKEx6Qe0uJxdTZfzG4FCw8z9F8tPcUOmryGvosQBzoIqp?=
- =?us-ascii?Q?QfeJZyqdOxLMX9Am8JlSMBIvqmvI3nrr3dolkqV9aof3ML6/rEy6fKN355Jw?=
- =?us-ascii?Q?qJXQX/NiwqGR7n9H1VCUORdtOpky/KcFhK30Tn8XPg/euZRmxM2e8K7y1SPU?=
- =?us-ascii?Q?G6Ef0iX2a9JmQmcp/pu9uR0WuEFimY+BfMjWx5JXniaAyWk+GoM6SjJGqRrN?=
- =?us-ascii?Q?Boy4QtTe1NNo23BmoRw2B9gzstotim6coCzuzllFc0hvjzFdMxmbhapWPJsS?=
- =?us-ascii?Q?v9LLZVt/Jwn5fLshje0pT/woDG2kYXRPYG1gmc3Xm1hDd6HIiP0C7hGvDL4x?=
- =?us-ascii?Q?XVQfZjxLZ2i5Z8Je42uW9axBt0tveocFswwtQkjGZPhpYpulcf5TNS+FFkfy?=
- =?us-ascii?Q?FYjOOgXXYGQWUdBpZbYU84uVIJEcJwNkwxuAXq/Xv0iv8XhMCAOYoU0meqwj?=
- =?us-ascii?Q?6J8lqVUYTQcbv0gZmY0dA/w2M3T4ZTrpbW8q4d98HF9DCJcfdd94c8nOM6dW?=
- =?us-ascii?Q?DBg/hphiapzV/pAnXN3jCDvFovejgrEUJXMlb7s6LK8AAqkRmfyrvw184Wrs?=
- =?us-ascii?Q?NZ7W6fEiYSwFJyT8SjEBb836wZXDiJtJNf7Q6PANcX5erpo5hA6x998TZBxU?=
- =?us-ascii?Q?Ej8JQzw2vsBjxj4URayNYUEb7bW97GQ4xi27jNU0RaQ/lmtGS8285J8I53V/?=
- =?us-ascii?Q?QqSUw2i+O8pNRNk3G5aW6x/ldt51uilOr3BAEmhx2tVNzI+GU8wJE8m6+IgD?=
- =?us-ascii?Q?Jq/CG63maqTIW7wZQZpOXckJ1HPLBA7ScIzEN/gO/jlw3dorR/+nWVaPfMxH?=
- =?us-ascii?Q?sCkgJOcwBKNfwiuCL+XwQtVGgAArMlYfZfyKncal9rDGiCb0XzQgT0/CuA3q?=
- =?us-ascii?Q?emd2roZQPLJ74H/5mqwnLn9KJvpHoie7M7QjAXYzbh1YUq7l8ky1QcdjmkMo?=
- =?us-ascii?Q?/nVpn0/AIWrN3u2Z2vg8J6+PWMtl0AZxpn2xZGTXKTgte2u1C024aJUwtWmV?=
- =?us-ascii?Q?L3thLYA7M4fTo/oPT/2HxWmXjSllyDA5P2nU07ZAiCNB6SxgndTsPLSqlH3a?=
- =?us-ascii?Q?pHXLb1QJ5UY1QkgWIYESWPkRhB0JA7DHvQ8R0vidokmQ/c8EkyAUArTfQuDY?=
- =?us-ascii?Q?NKlK3GL2s0seFnIMQB9bG98vTFUKLhuk1bOyj1XGTQTxDNuCjrzCELO5WsDT?=
- =?us-ascii?Q?mOF165FWd1Nc19xehhXeLvp9eKRsmlbpE1+e5Qwf54hrnCW2ggYQmGkmILHb?=
- =?us-ascii?Q?py1Mp+Uw3jzbe3lde/yM43/TOkdZcALWxyDvyHP6E0cWJuag4iwfoLRnPg?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014)(7416014); DIR:OUT;
- SFP:1101; 
-Content-Transfer-Encoding: 7bit
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 23:04:38.9166 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a92d64c-d3b9-4448-970b-08ddc00625ae
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044AA.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5657
-Received-SPF: permerror client-ip=2a01:111:f403:2416::618;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -168,35 +104,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+With the reordering of instance_post_init callbacks that is new in 10.1
+accel_cpu_instance_init must execute in .instance_init as is already
+the case for RISC-V.  Otherwise, for example, setting the vendor
+property is broken when using KVM or Hypervisor.framework.
 
-On Thu, Jul 10, 2025 at 12:48:20PM +0100, Peter Maydell wrote:
-> On Thu, 10 Jul 2025 at 11:10, Shameerali Kolothum Thodi
-> > > Changes from v6:
-> > > https://lore.kernel.org/qemu-devel/20250703084643.85740-1-
-> > > shameerali.kolothum.thodi@huawei.com/
-> > >
-> > > 1. Fixed the warning case for DT support, reported by Eric(patch #8).
-> > > 2. Picked up R-by's and T-by's. Thanks!
-> > >
-> > > Please take a look and let me know. I think this is in a good shape now
-> > > for 10.1.
-> >
-> > I understand the soft-freeze for 10.1 is next week. Any chance this series
-> > can be picked for 10.1? Please let me know.
-> 
-> I'm afraid it's already pretty late, and you seem to still have
-> at least one person with comments/questions about this v7
-> series which has only just hit the list in the last few days.
-> So I think we should leave this until 10.2.
+Adjust x86 code to allow this movement, and perform it in patch 4.
 
-Sorry for hitting this series late.
+Paolo
 
-All my questions were addressed. And I have given my "Reviewed-by".
-Once Shameer confirms (maybe with a v8), everything would be fine.
+Paolo Bonzini (4):
+  target/i386: move max_features to class
+  target/i386: nvmm, whpx: add accel/CPU class that sets host vendor
+  target/i386: allow reordering max_x86_cpu_initfn vs accel CPU init
+  target/i386: move accel_cpu_instance_init to .instance_init
 
-That being said, it's still up to you to take it or not :)
+ target/i386/cpu.h           |  2 +-
+ target/i386/cpu.c           | 41 ++++++++++++++++++++++---------------
+ target/i386/hvf/hvf-cpu.c   |  3 ++-
+ target/i386/kvm/kvm-cpu.c   |  7 +++++--
+ target/i386/nvmm/nvmm-all.c | 23 +++++++++++++++++++++
+ target/i386/whpx/whpx-all.c | 23 +++++++++++++++++++++
+ 6 files changed, 78 insertions(+), 21 deletions(-)
 
-Thanks
-Nicolin
+-- 
+2.50.0
+
 
