@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D8E3B01DBF
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 15:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B92AB01DF5
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 15:40:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaDua-0005JV-8D; Fri, 11 Jul 2025 09:35:36 -0400
+	id 1uaDub-0005N0-4C; Fri, 11 Jul 2025 09:35:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uaDtu-0004RB-Ft
+ id 1uaDtv-0004RI-9E
  for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:55 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uaDts-00035N-7V
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:54 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-453647147c6so19098085e9.2
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 06:34:51 -0700 (PDT)
+ id 1uaDtt-00035t-G0
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:34:55 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-455b00283a5so3370235e9.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 06:34:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1752240891; x=1752845691; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=pbjg9RvDfbdG6d500Oq0/a5SPdDZ16+NUzBBz9QOEEg=;
- b=X/7C/NmglnHTpnRS3y8SEBmJ5NTGnB36kRa7o40NFO7TFXeR3qj3UuHhQ1LqU55tcs
- Q612o+rbIIPBgkx/BU4ZU7yOntMKvWRPDhfKcMt3nYNVGzPbNN+8MT+WHkWBFgUMKTsE
- uwx3eBvZnGyaFcyEZUOTlLB87UYscASgsqrG3bKDR6bxxJLYtoIIQ8Tntgk8LFqefJBO
- 4U/1kMpHN6aW9iXl/unLZDCAXzJKGpO1UZgxZYTUUDIWkaWeAUZsN3VnDib4OJNOKVgP
- VKR12oHA7YJKvpN9hEtJGl/OTKdmRW2LzoW/SlWDkZPaWo3/zysL9+Al7UrIQDT7gWpc
- YGkQ==
+ :reply-to; bh=fnzvogd1uSvEdf0/LpDdDirPBucDnCNCJdSSizExPTI=;
+ b=Is9Tp8DejD5H30qLQgftsm0Z/DzMoUQntnz6S0gIJcVTn3HXHf5po8YKfvubdo3t8n
+ QhdiXrnyZU0vtxsKnKCZ2DzrIeNmfpiK609ah0KygBWHTykbtolt1Hb/xMNwP5QIjGxy
+ oUzx4cRU5vy6Jqs7y3PF9hRbyBmusnrVRsfWmySFcvCXJxJuPUM6u4p515dfdv6qI4AF
+ oUfwTwIa/kXIi+QzvWOrh9NU+bZTcb/5D0+oQePd1p1Bt4tO0AtRZ+qNSv2PeLOXJq7u
+ pvFOU6OTeblHKbieM8a+bm3SLOA1LZ2tuQqaLy4cB2TyBNCxkxBrwcKSm0VRgxtlkEfq
+ lJhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1752240891; x=1752845691;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pbjg9RvDfbdG6d500Oq0/a5SPdDZ16+NUzBBz9QOEEg=;
- b=VMwbUdYtthmsRGXNnz8q8e3rXqbdlndky3xyCV7323lYOngIqN/Gm2yPGwaZ70CgJJ
- 8TbJ4AIRUbwvwSN2azsVwBn0Z/9IggQtpSNHkGHLm/rh8T30R4LB3VIXHe9e4zo/DOBU
- hqYFHopkdysl338sgGWBa1xJUyHoAXNq9PaeB1NjtKgNQygE+FcYpI0xG5aUZY4mSbgJ
- KCm3FC0NHig6Li4OhEC4WAMs72olem3STrYbo1rvSmRxOK3R81FevijJbIohLqbJ4gRn
- tT9x4DsRhNlESdTTx7V2v4U5APZMooN2tG05mdPztpHVdfqF74SoDXF2htapWIHAEcn1
- iMqQ==
-X-Gm-Message-State: AOJu0Yw0xokg6QfEB8BxinAfXoCTwvfVpc5V3lhFa0mT/kRoDEl6wklO
- ec0gAcP3Kfy+HwoAQL9y/fkNKDaQTZDn99t90zxqEC8JIRwtxFs69Kw7hXTjWniWgEyvJGuRk2S
- R2BZ0
-X-Gm-Gg: ASbGncv0mfPTrYKci0q6eqDI2X8/79W7hVVq9UiMFS4nur9c6NHhOziYh0HndYjPuLs
- gGJWV7U/Q0UDxcyN45aqe/vYNBFfwLyA7n11gQ4dM1wI1Ggc+y/NFEcjeDHNITtUD9Zk6lQUiAS
- 0R0wHKHVRoXeE9PHHREk2zadyjZsD29HV+njaCVtQXzqnpfPRaahpJ7euejWZLqgtHouko1uGn2
- XE1P/RENDDWh2ajtNXgyDJKFxgqSUa4TwLaG8tMyEfdrIo29R1I1NE3eKTCSBTx+zt2xxBLAgmu
- xOcQpQzFqVSwZfSVp9xv9ulGoECint9mFl/3nLF1G1dkFTvh9vBhpYM//PW+zVTSvifybKx84P9
- kCPdcQrt1ipZbBSlNDrNGXZEwxduJ
-X-Google-Smtp-Source: AGHT+IHv3x8qLBs9lv511hYGEUMvfHkuVCjiV3SxFDca1cQAxy0u8wFIX9Vf0BO9bLN3QrULRQbu2A==
-X-Received: by 2002:a05:600c:1c95:b0:451:833f:483c with SMTP id
- 5b1f17b1804b1-454ec133982mr33710275e9.7.1752240890546; 
- Fri, 11 Jul 2025 06:34:50 -0700 (PDT)
+ bh=fnzvogd1uSvEdf0/LpDdDirPBucDnCNCJdSSizExPTI=;
+ b=nvhhTh8RdfseMs+7u3bLblKusaYKkG2ev58u8D3R7CwDvUfEQ6UE7juwuzAwMIFYZf
+ u3NwSMC11CVbXugLxL//OnAPeevydn80lXNSZlHWkfbBsdWaZardarScJbN11zqZtHhg
+ WMX+YFccAomQiOkZZqI62ZvhrynK2dy+2BUz7TGiwpj98ez8nDMTg5R4vRDS4uBBkcky
+ CK1a4WsHPAUIox3Xvd1IsoyfnhSzd7TXN/aBwQaZYSw7rVcEnTdTYhzd44g90b74lh6E
+ IyKYMsI0tmMRha8FJzRaDPnr7Kc1g0LL85d+crghQiZX6Ff9E+yj/j85wes8PmeQ6OK7
+ szMw==
+X-Gm-Message-State: AOJu0YzGQ8YqIpI/ynAk2jgfuoRCa0Yo8ZBj6xvXq6As7rU/oszVBTqp
+ JyM6fxHnCgj2rsa1B6pPibi8f59mxEmpyGClzn+2rC2YPJPugYtMWYCn5f9E82gaPqe9lDZaRB1
+ rrw8q
+X-Gm-Gg: ASbGnct3f/mRFUul6Wbvjw91mSjHGqbAyxxksPjf1eTIaRldI17fXxU6yxNvVcorSkh
+ A7whBOZZADktPl8LEXb7A6dUtTqFWRTyv+9pFCXjGfb10vDJVcaXMymvPMIjLela5J/IMrCrLis
+ cRiVzAZ1YOuf0l+JRr/vqZKEB2iT/E6X7LK/GNv/OkJGpUyIUoPrptUYbJ9yBiMGbUUDmWMoTI/
+ ts0wUSIbDUtdFX1mCyUzW48Rz1mN3GNWUX4ZCs+QldyzlCaiYusg/2qlp1n/yYzkG2OorqJXViD
+ x5fV8nS/g0g6eeMSi/XjPeBHbNk0DzOOT+PhLTJGwk9jCPHeSIYMk8GTrFXlxY+q0iqkxxOnzVw
+ rgnUhT1WKQqfQKaijOdtlR4TxrjVQ
+X-Google-Smtp-Source: AGHT+IGzcXA3lMsM+9ouXeJu3D1hElHuhjfDIdEei8Vuh0fHpID423iCzgnUXJHlSJXIgSz9ukNgxw==
+X-Received: by 2002:a05:600c:37c9:b0:43d:b3:fb1 with SMTP id
+ 5b1f17b1804b1-455e7b63b8emr22499435e9.27.1752240891532; 
+ Fri, 11 Jul 2025 06:34:51 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d50df0cdsm89734145e9.25.2025.07.11.06.34.49
+ 5b1f17b1804b1-454d50df0cdsm89734145e9.25.2025.07.11.06.34.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Jul 2025 06:34:49 -0700 (PDT)
+ Fri, 11 Jul 2025 06:34:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 18/36] arm/cpu: store id_aa64afr{0,1} into the idregs array
-Date: Fri, 11 Jul 2025 14:34:11 +0100
-Message-ID: <20250711133429.1423030-19-peter.maydell@linaro.org>
+Subject: [PULL 19/36] arm/cpu: fix trailing ',' for SET_IDREG
+Date: Fri, 11 Jul 2025 14:34:12 +0100
+Message-ID: <20250711133429.1423030-20-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250711133429.1423030-1-peter.maydell@linaro.org>
 References: <20250711133429.1423030-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,112 +100,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Cornelia Huck <cohuck@redhat.com>
 
+While a trailing comma is not broken for SET_IDREG invocations, it
+does look odd; use a semicolon instead.
+
+Fixes: f1fd81291c91 ("arm/cpu: Store aa64mmfr0-3 into the idregs array")
+Fixes: def3f1c1026a ("arm/cpu: Store aa64dfr0/1 into the idregs array")
 Signed-off-by: Cornelia Huck <cohuck@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-id: 20250704141927.38963-3-cohuck@redhat.com
+Message-id: 20250704141927.38963-4-cohuck@redhat.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.h             |  2 --
- target/arm/cpu-sysregs.h.inc |  2 ++
- target/arm/helper.c          |  4 ++--
- target/arm/tcg/cpu64.c       | 16 ++++++++--------
- 4 files changed, 12 insertions(+), 12 deletions(-)
+ target/arm/tcg/cpu64.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 835700cfab8..008e5305782 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1082,8 +1082,6 @@ struct ArchCPU {
-     uint32_t reset_sctlr;
-     uint64_t pmceid0;
-     uint64_t pmceid1;
--    uint64_t id_aa64afr0;
--    uint64_t id_aa64afr1;
-     uint64_t clidr;
-     uint64_t mp_affinity; /* MP ID without feature bits */
-     /* The elements of this array are the CCSIDR values for each cache,
-diff --git a/target/arm/cpu-sysregs.h.inc b/target/arm/cpu-sysregs.h.inc
-index b96a3588043..44c877245ee 100644
---- a/target/arm/cpu-sysregs.h.inc
-+++ b/target/arm/cpu-sysregs.h.inc
-@@ -4,6 +4,8 @@ DEF(ID_AA64PFR1_EL1, 3, 0, 0, 4, 1)
- DEF(ID_AA64SMFR0_EL1, 3, 0, 0, 4, 5)
- DEF(ID_AA64DFR0_EL1, 3, 0, 0, 5, 0)
- DEF(ID_AA64DFR1_EL1, 3, 0, 0, 5, 1)
-+DEF(ID_AA64AFR0_EL1, 3, 0, 0, 5, 4)
-+DEF(ID_AA64AFR1_EL1, 3, 0, 0, 5, 5)
- DEF(ID_AA64ISAR0_EL1, 3, 0, 0, 6, 0)
- DEF(ID_AA64ISAR1_EL1, 3, 0, 0, 6, 1)
- DEF(ID_AA64ISAR2_EL1, 3, 0, 0, 6, 2)
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index ae6231803e1..93da8f170ea 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -7987,12 +7987,12 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 5, .opc2 = 4,
-               .access = PL1_R, .type = ARM_CP_CONST,
-               .accessfn = access_aa64_tid3,
--              .resetvalue = cpu->id_aa64afr0 },
-+              .resetvalue = GET_IDREG(isar, ID_AA64AFR0) },
-             { .name = "ID_AA64AFR1_EL1", .state = ARM_CP_STATE_AA64,
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 5, .opc2 = 5,
-               .access = PL1_R, .type = ARM_CP_CONST,
-               .accessfn = access_aa64_tid3,
--              .resetvalue = cpu->id_aa64afr1 },
-+              .resetvalue = GET_IDREG(isar, ID_AA64AFR1) },
-             { .name = "ID_AA64AFR2_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 5, .opc2 = 6,
-               .access = PL1_R, .type = ARM_CP_CONST,
 diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index e3183c53bb1..3a65d3903bf 100644
+index 3a65d3903bf..bcc8e2dfafa 100644
 --- a/target/arm/tcg/cpu64.c
 +++ b/target/arm/tcg/cpu64.c
-@@ -428,8 +428,8 @@ static void aarch64_a64fx_initfn(Object *obj)
-     SET_IDREG(isar, ID_AA64PFR1, 0x0000000000000000);
-     SET_IDREG(isar, ID_AA64DFR0, 0x0000000010305408),
-     SET_IDREG(isar, ID_AA64DFR1, 0x0000000000000000),
--    cpu->id_aa64afr0 = 0x0000000000000000;
--    cpu->id_aa64afr1 = 0x0000000000000000;
-+    SET_IDREG(isar, ID_AA64AFR0, 0x0000000000000000);
-+    SET_IDREG(isar, ID_AA64AFR1, 0x0000000000000000);
-     SET_IDREG(isar, ID_AA64MMFR0, 0x0000000000001122);
-     SET_IDREG(isar, ID_AA64MMFR1, 0x0000000011212100);
-     SET_IDREG(isar, ID_AA64MMFR2, 0x0000000000001011);
-@@ -676,8 +676,8 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
+@@ -352,7 +352,7 @@ static void aarch64_a76_initfn(Object *obj)
      cpu->clidr = 0x82000023;
-     cpu->ctr = 0xb444c004; /* With DIC and IDC set */
+     cpu->ctr = 0x8444C004;
      cpu->dcz_blocksize = 4;
--    cpu->id_aa64afr0 = 0x00000000;
--    cpu->id_aa64afr1 = 0x00000000;
-+    SET_IDREG(isar, ID_AA64AFR0, 0x00000000);
-+    SET_IDREG(isar, ID_AA64AFR1, 0x00000000);
-     SET_IDREG(isar, ID_AA64DFR0, 0x000001f210305519ull),
-     SET_IDREG(isar, ID_AA64DFR1, 0x00000000),
+-    SET_IDREG(isar, ID_AA64DFR0, 0x0000000010305408ull),
++    SET_IDREG(isar, ID_AA64DFR0, 0x0000000010305408ull);
+     SET_IDREG(isar, ID_AA64ISAR0, 0x0000100010211120ull);
+     SET_IDREG(isar, ID_AA64ISAR1, 0x0000000000100001ull);
+     SET_IDREG(isar, ID_AA64MMFR0, 0x0000000000101122ull);
+@@ -426,8 +426,8 @@ static void aarch64_a64fx_initfn(Object *obj)
+     cpu->reset_sctlr = 0x30000180;
+     SET_IDREG(isar, ID_AA64PFR0, 0x0000000101111111); /* No RAS Extensions */
+     SET_IDREG(isar, ID_AA64PFR1, 0x0000000000000000);
+-    SET_IDREG(isar, ID_AA64DFR0, 0x0000000010305408),
+-    SET_IDREG(isar, ID_AA64DFR1, 0x0000000000000000),
++    SET_IDREG(isar, ID_AA64DFR0, 0x0000000010305408);
++    SET_IDREG(isar, ID_AA64DFR1, 0x0000000000000000);
+     SET_IDREG(isar, ID_AA64AFR0, 0x0000000000000000);
+     SET_IDREG(isar, ID_AA64AFR1, 0x0000000000000000);
+     SET_IDREG(isar, ID_AA64MMFR0, 0x0000000000001122);
+@@ -678,13 +678,13 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
+     cpu->dcz_blocksize = 4;
+     SET_IDREG(isar, ID_AA64AFR0, 0x00000000);
+     SET_IDREG(isar, ID_AA64AFR1, 0x00000000);
+-    SET_IDREG(isar, ID_AA64DFR0, 0x000001f210305519ull),
+-    SET_IDREG(isar, ID_AA64DFR1, 0x00000000),
++    SET_IDREG(isar, ID_AA64DFR0, 0x000001f210305519ull);
++    SET_IDREG(isar, ID_AA64DFR1, 0x00000000);
      SET_IDREG(isar, ID_AA64ISAR0, 0x1011111110212120ull); /* with FEAT_RNG */
-@@ -927,8 +927,8 @@ static void aarch64_a710_initfn(Object *obj)
-     SET_IDREG(isar, ID_AA64ZFR0, 0x0000110100110021ull); /* with Crypto */
-     SET_IDREG(isar, ID_AA64DFR0, 0x000011f010305619ull);
-     SET_IDREG(isar, ID_AA64DFR1, 0);
--    cpu->id_aa64afr0       = 0;
--    cpu->id_aa64afr1       = 0;
-+    SET_IDREG(isar, ID_AA64AFR0, 0);
-+    SET_IDREG(isar, ID_AA64AFR1, 0);
-     SET_IDREG(isar, ID_AA64ISAR0, 0x0221111110212120ull); /* with Crypto */
-     SET_IDREG(isar, ID_AA64ISAR1, 0x0010111101211052ull);
-     SET_IDREG(isar, ID_AA64MMFR0, 0x0000022200101122ull);
-@@ -1029,8 +1029,8 @@ static void aarch64_neoverse_n2_initfn(Object *obj)
-     SET_IDREG(isar, ID_AA64ZFR0, 0x0000110100110021ull); /* with Crypto */
-     SET_IDREG(isar, ID_AA64DFR0, 0x000011f210305619ull);
-     SET_IDREG(isar, ID_AA64DFR1, 0);
--    cpu->id_aa64afr0       = 0;
--    cpu->id_aa64afr1       = 0;
-+    SET_IDREG(isar, ID_AA64AFR0, 0);
-+    SET_IDREG(isar, ID_AA64AFR1, 0);
-     SET_IDREG(isar, ID_AA64ISAR0, 0x1221111110212120ull); /* with Crypto and FEAT_RNG */
-     SET_IDREG(isar, ID_AA64ISAR1, 0x0011111101211052ull);
-     SET_IDREG(isar, ID_AA64MMFR0, 0x0000022200101125ull);
+     SET_IDREG(isar, ID_AA64ISAR1, 0x0011000001211032ull);
+     SET_IDREG(isar, ID_AA64MMFR0, 0x0000000000101125ull);
+-    SET_IDREG(isar, ID_AA64MMFR1, 0x0000000010212122ull),
+-    SET_IDREG(isar, ID_AA64MMFR2, 0x0220011102101011ull),
++    SET_IDREG(isar, ID_AA64MMFR1, 0x0000000010212122ull);
++    SET_IDREG(isar, ID_AA64MMFR2, 0x0220011102101011ull);
+     SET_IDREG(isar, ID_AA64PFR0, 0x1101110120111112ull); /* GIC filled in later */
+     SET_IDREG(isar, ID_AA64PFR1, 0x0000000000000020ull);
+     SET_IDREG(isar, ID_AFR0, 0x00000000);
 -- 
 2.43.0
 
