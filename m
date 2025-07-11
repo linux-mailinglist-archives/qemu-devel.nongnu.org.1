@@ -2,72 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F34B01E17
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 15:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A822B01E50
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 15:51:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaDzo-0006Mb-BY; Fri, 11 Jul 2025 09:41:00 -0400
+	id 1uaE9A-0005Xf-3J; Fri, 11 Jul 2025 09:50:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1uaDy6-0001dM-Jy
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:39:23 -0400
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1uaDy4-0005Cx-CJ
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:39:14 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1752241124; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=ZHxmBdV4OrVTUanJbbrWZzgn77ZpQYV2luL2vtMxaJR+DKpwwX3ggRivCaPbWr9CeXvfHH7FsGC6KqKmGoFt4AK/t2MvhT1RVfK9S5imY1miHTucaw1vfLSCIbUa/rEvIIKjwg68zSG+6nH1KD1ElDi8qyz7ljT5l08FuKgQxGg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1752241124;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=OaMBKn7bwbEDgZXeHuvC/fjkyo6uHl7rCjfnAyq4b+g=; 
- b=UNat9mWHSGfRz0davO2W69JgE+UJZG7ks0ghOI65RwEnBAnv3udhU3uKE2SrZoMtSFaezm9rZ9HThhZhVzCr31e9jTTHXQBqvCKZ/2CTE8WroE+tV6VcS26C/iVbFrn1TNdaSPdmqXLKObWgcvS5XJZ4CVGHtFIM/itiCfW4lG8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752241124; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=OaMBKn7bwbEDgZXeHuvC/fjkyo6uHl7rCjfnAyq4b+g=;
- b=dR/RQKfLG/9DaXvGMmgl9W3bulLHFG3277B+NyW5mvFp0pI1RR74/RPUev1wrWhb
- LLsWTz29lpGXYEmUCIEIL78G0EVO2t9AorNRvkIYMXgtXx/ri7sCh0e+cLKD21QciKV
- uOeHQzlauqArMyGPeaWw9wzaHKtG3DW+wkR7zfqY=
-Received: by mx.zohomail.com with SMTPS id 1752241121332688.5794301027861;
- Fri, 11 Jul 2025 06:38:41 -0700 (PDT)
-Message-ID: <9ec61f6e-4ad9-4693-867a-0b0780b039dc@collabora.com>
-Date: Fri, 11 Jul 2025 16:38:37 +0300
+ (Exim 4.90_1) (envelope-from <unisono@quyllur.org>)
+ id 1uaE3m-000314-7o
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:45:08 -0400
+Received: from quyllur.org ([185.247.226.42])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
+ (Exim 4.90_1) (envelope-from <unisono@quyllur.org>)
+ id 1uaE3i-0000Fe-AF
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 09:45:05 -0400
+Received: from quyllur.org (localhost [127.0.0.1])
+ by quyllur.org (OpenSMTPD) with ESMTP id 24a6eb66;
+ Fri, 11 Jul 2025 16:44:25 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=quyllur.org; h=from:to:cc
+ :subject:date:message-id:in-reply-to:references:mime-version
+ :content-transfer-encoding; s=dkimselector; bh=KTXVkzzIDiRwPLtOZ
+ gWY4jQ7ajY=; b=trzivxd+LYazl0lLzin0xJGnjC57ygCQvpunVOuc11KWKlAUZ
+ /2hsz/9VVSIfhVj0C84PYI0B4dHcLYRY6y1RHdg+g2JtBXoZTRpS86PTctBOacj8
+ Y0v28dt4iAFm7/Ib4dqGaV/lAkYSvmU+cvTgtiB1BJNaOyFeab87bnRRbA=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=quyllur.org; h=from:to:cc
+ :subject:date:message-id:in-reply-to:references:mime-version
+ :content-transfer-encoding; q=dns; s=dkimselector; b=E8cTCRDIebc
+ iM+lhYfS3Q1gNIQ1A/eaCDyI6/zKQjHiAtybxJKBElXBKXYoXdmy/yI8Gf04mlnt
+ TTJhpcEcGn2BK8wYcn5QzF9qy1y+gun/wWt0zekKaGRzXxJ8mAwjeoyauKHqtJ8o
+ ZggfE3A9ZbTZ/SppNoLzMJjA+75CS+5k=
+Received: from Rizin (<unknown> [194.127.199.111])
+ by quyllur.org (OpenSMTPD) with ESMTPSA id db8dc1ad
+ (TLSv1.3:TLS_CHACHA20_POLY1305_SHA256:256:NO); 
+ Fri, 11 Jul 2025 16:44:14 +0300 (EEST)
+From: unisono@quyllur.org
+To: alex.bennee@linaro.org
+Cc: atar4qemu@gmail.com, laurent@vivier.eu, mark.cave-ayland@ilande.co.uk,
+ philmd@linaro.org, qemu-devel@nongnu.org, Rot127 <unisono@quyllur.org>
+Subject: [PATCH 0/3] Reformatted Sparc GDB XML patches.
+Date: Fri, 11 Jul 2025 08:43:30 -0500
+Message-ID: <20250711134333.56978-1-unisono@quyllur.org>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <87h5zltojx.fsf@draig.linaro.org>
+References: <87h5zltojx.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 5/7] ui/console-gl: Add a helper to create a texture
- with linear memory layout
-To: Vivek Kasireddy <vivek.kasireddy@intel.com>, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>,
- Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-References: <20250617043546.1022779-1-vivek.kasireddy@intel.com>
- <20250617043546.1022779-6-vivek.kasireddy@intel.com>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <20250617043546.1022779-6-vivek.kasireddy@intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=185.247.226.42; envelope-from=unisono@quyllur.org;
+ helo=quyllur.org
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SORTED_RECIPS=2.499, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,110 +74,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/17/25 07:32, Vivek Kasireddy wrote:
-> There are cases where we do not want the memory layout of a texture to
-> be tiled as the component processing the texture would not know how to
-> de-tile either via software or hardware. Therefore, ensuring that the
-> memory backing the texture has a linear layout is absolutely necessary
-> in these situations.
-> 
-> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Cc: Frediano Ziglio <freddy77@gmail.com>
-> Cc: Dongwon Kim <dongwon.kim@intel.com>
-> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Co-developed-by: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> ---
->  include/ui/console.h |  3 +++
->  ui/console-gl.c      | 48 ++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 51 insertions(+)
-> 
-> diff --git a/include/ui/console.h b/include/ui/console.h
-> index 46b3128185..98feaa58bd 100644
-> --- a/include/ui/console.h
-> +++ b/include/ui/console.h
-> @@ -422,6 +422,9 @@ bool console_gl_check_format(DisplayChangeListener *dcl,
->                               pixman_format_code_t format);
->  void surface_gl_create_texture(QemuGLShader *gls,
->                                 DisplaySurface *surface);
-> +bool surface_gl_create_texture_from_fd(DisplaySurface *surface,
-> +                                       int fd, GLuint *texture,
-> +                                       GLuint *mem_obj);
->  void surface_gl_update_texture(QemuGLShader *gls,
->                                 DisplaySurface *surface,
->                                 int x, int y, int w, int h);
-> diff --git a/ui/console-gl.c b/ui/console-gl.c
-> index 103b954017..afb36dba64 100644
-> --- a/ui/console-gl.c
-> +++ b/ui/console-gl.c
-> @@ -25,6 +25,7 @@
->   * THE SOFTWARE.
->   */
->  #include "qemu/osdep.h"
-> +#include "qemu/error-report.h"
->  #include "ui/console.h"
->  #include "ui/shader.h"
->  
-> @@ -96,6 +97,53 @@ void surface_gl_create_texture(QemuGLShader *gls,
->      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
->  }
->  
-> +bool surface_gl_create_texture_from_fd(DisplaySurface *surface,
-> +                                       int fd, GLuint *texture,
-> +                                       GLuint *mem_obj)
-> +{
-> +    unsigned long size = surface_stride(surface) * surface_height(surface);
-> +    GLenum err = glGetError();
-> +    *texture = 0;
-> +    *mem_obj = 0;
-> +
-> +    if (!epoxy_has_gl_extension("GL_EXT_memory_object") ||
-> +        !epoxy_has_gl_extension("GL_EXT_memory_object_fd")) {
-> +        error_report("spice: required OpenGL extensions not supported: "
-> +                     "GL_EXT_memory_object and GL_EXT_memory_object_fd");
-> +        return false;
-> +    }
-> +
-> +#ifdef GL_EXT_memory_object_fd
-> +    glCreateMemoryObjectsEXT(1, mem_obj);
-> +    glImportMemoryFdEXT(*mem_obj, size, GL_HANDLE_TYPE_OPAQUE_FD_EXT, fd);
-> +
-> +    err = glGetError();
-> +    if (err != GL_NO_ERROR) {
-> +        error_report("spice: cannot import memory object from fd");
-> +        goto cleanup_mem;
-> +    }
-> +
-> +    glGenTextures(1, texture);
-> +    glBindTexture(GL_TEXTURE_2D, *texture);
-> +    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_TILING_EXT, GL_LINEAR_TILING_EXT);
-> +    glTexStorageMem2DEXT(GL_TEXTURE_2D, 1, GL_RGBA8, surface_width(surface),
-> +                         surface_height(surface), *mem_obj, 0);
-> +    err = glGetError();
-> +    if (err != GL_NO_ERROR) {
-> +        error_report("spice: cannot create texture from memory object");
-> +        goto cleanup_tex_and_mem;
-> +    }
-> +    return true;
-> +
-> +cleanup_tex_and_mem:
-> +    glDeleteTextures(1, texture);
-> +cleanup_mem:
-> +    glDeleteMemoryObjectsEXT(1, mem_obj);
-> +
-> +#endif
-> +    return false;
-> +}
-> +
->  void surface_gl_update_texture(QemuGLShader *gls,
->                                 DisplaySurface *surface,
->                                 int x, int y, int w, int h)
+From: Rot127 <unisono@quyllur.org>
 
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Adds Sparc XML register files from GDB.
+
+The xml files are copied from binutils-gdb.
+The `*-core.xml` files are assembled from the sparc32-fpu.xml, sparc32-cp0.xml etc.
+to match the registers defined by QEMU.
+
+The addition is necessary if one wants to use the TCG plugins
+with Sparc, because reading registers via the plugin API
+just queries GDB.
+The GDB stub initializes its register file with the `*-core.xml` files.
+If they don't exist it returns no data.
+Also relevant for debugging I assume.
+
+Rot127 (3):
+  Adds the GDB register XML files for Sparc64.
+  Adds the GDB register XML files for Sparc32.
+  Assign the GDB register XML files of Sparc64 to Sparc32plus.
+
+ configs/targets/sparc-linux-user.mak       |  1 +
+ configs/targets/sparc-softmmu.mak          |  1 +
+ configs/targets/sparc32plus-linux-user.mak |  1 +
+ configs/targets/sparc64-linux-user.mak     |  1 +
+ configs/targets/sparc64-softmmu.mak        |  1 +
+ gdb-xml/sparc32-core.xml                   | 84 ++++++++++++++++++
+ gdb-xml/sparc64-core.xml                   | 99 ++++++++++++++++++++++
+ target/sparc/cpu.c                         |  2 +
+ 8 files changed, 190 insertions(+)
+ create mode 100644 gdb-xml/sparc32-core.xml
+ create mode 100644 gdb-xml/sparc64-core.xml
 
 -- 
-Best regards,
-Dmitry
+2.50.0
+
 
