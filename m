@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DC7B025EE
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C95C4B025FC
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 22:52:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaKep-0003cF-3m; Fri, 11 Jul 2025 16:47:48 -0400
+	id 1uaKgc-0005mZ-JP; Fri, 11 Jul 2025 16:49:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKdo-0003Iy-O3; Fri, 11 Jul 2025 16:46:58 -0400
+ id 1uaKdw-0003Kb-Eg; Fri, 11 Jul 2025 16:46:58 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uaKdm-0003hc-Bw; Fri, 11 Jul 2025 16:46:44 -0400
+ id 1uaKds-0003jE-40; Fri, 11 Jul 2025 16:46:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 559CE135D01;
+ by isrv.corpit.ru (Postfix) with ESMTP id 64908135D02;
  Fri, 11 Jul 2025 23:46:04 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2AF6923FF3C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 431D623FF3D;
  Fri, 11 Jul 2025 23:46:32 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 03/15] audio: fix SIGSEGV in AUD_get_buffer_size_out()
-Date: Fri, 11 Jul 2025 23:46:18 +0300
-Message-ID: <20250711204632.1804872-3-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 04/15] hw/core/qdev-properties-system: Add missing
+ return in set_drive_helper()
+Date: Fri, 11 Jul 2025 23:46:19 +0300
+Message-ID: <20250711204632.1804872-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
 References: <qemu-stable-7.2.19-20250711111933@cover.tls.msk.ru>
@@ -60,36 +60,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-As far as the emulated audio devices are concerned the pointer
-returned by AUD_open_out() is an opaque handle. This includes
-the NULL pointer. In this case, AUD_get_buffer_size_out() should
-return a sensible buffer size instead of triggering a segmentation
-fault. All other public AUD_*_out() and audio_*_out() functions
-handle this case.
+Currently, changing the 'drive' property of e.g. a scsi-hd object will
+result in an assertion failure if the aio context of the block node
+it's replaced with doesn't match the current aio context:
 
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20250515054429.7385-2-vr_qemu@t-online.de>
-(cherry picked from commit 5ddd6c8dc849b4af44bd06840c9133d64e62c27c)
+> bdrv_replace_child_noperm: Assertion `bdrv_get_aio_context(old_bs) ==
+> bdrv_get_aio_context(new_bs)' failed.
+
+The problematic scenario is already detected, but a 'return' statement
+was missing.
+
+Cc: qemu-stable@nongnu.org
+Fixes: d1a58c176a ("qdev: allow setting drive property for realized device")
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Message-ID: <20250523070211.280498-1-f.ebner@proxmox.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit eef2dd03f948a512499775043bdc0c5c88d8a2dd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/audio/audio.c b/audio/audio.c
-index 065602ce1b..0caf41fff6 100644
---- a/audio/audio.c
-+++ b/audio/audio.c
-@@ -894,6 +894,10 @@ size_t AUD_read(SWVoiceIn *sw, void *buf, size_t size)
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index d350789e76..15dacbee6d 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -116,6 +116,7 @@ static void set_drive_helper(Object *obj, Visitor *v, const char *name,
+         if (ctx != bdrv_get_aio_context(bs)) {
+             error_setg(errp, "Different aio context is not supported for new "
+                        "node");
++            return;
+         }
  
- int AUD_get_buffer_size_out(SWVoiceOut *sw)
- {
-+    if (!sw) {
-+        return 0;
-+    }
-+
-     return sw->hw->samples * sw->hw->info.bytes_per_frame;
- }
- 
+         aio_context_acquire(ctx);
 -- 
 2.47.2
 
