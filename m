@@ -2,87 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A0BB0199B
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 12:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6865CB01953
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 12:06:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaAsG-0000cD-EP; Fri, 11 Jul 2025 06:21:00 -0400
+	id 1uaAZ3-00026W-6x; Fri, 11 Jul 2025 06:01:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uaAsE-0000XM-FP
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:20:58 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uaAsC-0002XF-Gh
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:20:58 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3a52874d593so1687217f8f.0
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 03:20:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752229253; x=1752834053; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xSVUXWCMuhFRONHseCY0/oaDPq6vBhrOMPsJnjzGER8=;
- b=agKF9E1cXWQNA9KsXFg2piJ2SQwzIQ1Nmgb+aFHdVgekaZCgiSkpqQXTZlJPBWb7tH
- 75onzSrPURqrqS5wcifJbcsV6jIaX7OKdipdErlao0Oo8zRfF/pPhIgwQCJWlNoxLxaT
- 2y4lk1bdwH8eYL38T+JWqNLaz85KuibyIoWNQ39de3QUYcAfx+Bzz5h4IahythDpjz+B
- s81XJTYaZOrSOuQxdJnmFzeAe5pREuvxvYmdyOf28qvvqISnjzjn2eLFtY4tIi7HcV5Q
- NluIonCKQ3l3D5WR7jxJM/VLVzDGlLXLDTTgXIm9eamF2UAs0l95WZBENF3d1Kyu4YeK
- dbZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752229253; x=1752834053;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xSVUXWCMuhFRONHseCY0/oaDPq6vBhrOMPsJnjzGER8=;
- b=NKIBZlDMI9hgMPG0tFqe8zwxJefYRDuiatUC/m+yrWQG8GHQF0E9O1IZ9E5nZEN9Yz
- 0KAUbxX6BeYpwlizxzNfoCrt7jnUxyxBavrFMtKwQyLL2Fz+ePz4lOycFBiWbxNWnFOn
- i5aseIa8cUTLxXUTY8z+6oSVi16ybxuUGPPZtsUM3Gies5s5LvqBcAulkP6laP+PFNMc
- hg3nwpCcajzznW3rVgmcnGZ8vI6g6PhvwsfrNhYoZJbo1zWUe9jI7VOd6ej/vglOfqtW
- WWnL0JFNeFqkO7nrIcENg9vcxh7cvWdPrvX3f35l0x1siH4BDCgGqt+zkwUgOtr+5Ez8
- wsiw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXf1tETU9D0fbds9+OhTmoHEVDmaFoiVqT9XZYaubrbReCQmKLEPn9fFGnMgPSH16xwprTqLKfbp7Bn@nongnu.org
-X-Gm-Message-State: AOJu0YzYbOf5tHEkupVpySK4Uc/t7QOABe+55eNY477CB7gyq/EGA5PB
- XJy2J4SCSf+FDHJGMZJTKBtDQlUmY4PIhqxtj2HGhvT1Iy90xnjJ1F4XcpRElkyIjrM=
-X-Gm-Gg: ASbGncss0Y5HVLwRewt108ubRqRkCx2nnKHAaYCSwgR2LM9Djmm0FBYtHTEwPfNZoFb
- jz6IcNSa9rtXJGlFvWa6AkMg0iNftRkSRs69w6mAs0N1BxBCZDg6tdDqgsOZARvMmlA9NLhitUR
- CfAFsHTLO3FPT41PRWHkOSSPFZ20HgCMKwMfsSclAxw41qxLB9u8XxE3EcZS5TX74cOM/WPzQBI
- 4kENIFPxmATIKiCWiBzM/pV0yNSPQvI6re6EAsd8wiocSedHoVxVS2X+wPYW9PbxEbdQcUD+3Fp
- e8Hr0cKhDWnu02CdeBK5SA3UeTYGY/thNP2nygARimCTQDo3cDJlSA4wW0crQcdTzGNpK6bbc6g
- eddWTmENwU2pyeWHWru2CL4xTfaosqLIbIKje6sjY5Sot+NjiwTzHDVqFO+69CrH3vghm7w==
-X-Google-Smtp-Source: AGHT+IF3T6EV+dqXBNMiEfb970Kd0s86j/WV2DYWLNMw09wsGy2cBKH8ijB0LTBYlS39luf9PtvwaQ==
-X-Received: by 2002:a05:6000:65b:b0:3b5:e6c0:5cb2 with SMTP id
- ffacd0b85a97d-3b5f1893c01mr2545730f8f.25.1752229253240; 
- Fri, 11 Jul 2025 03:20:53 -0700 (PDT)
-Received: from [192.168.1.47] (lfbn-mon-1-587-20.w2-4.abo.wanadoo.fr.
- [2.4.165.20]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d5062119sm84323975e9.18.2025.07.11.03.20.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Jul 2025 03:20:52 -0700 (PDT)
-Message-ID: <305a41f5-6955-495e-a0ac-988f19f98067@linaro.org>
-Date: Fri, 11 Jul 2025 12:20:52 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uaAYZ-0001tg-PH
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:00:46 -0400
+Received: from mgamail.intel.com ([198.175.65.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uaAYX-0005FJ-F4
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:00:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752228037; x=1783764037;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=N4j+RvAXnffezaGqQKQKZV+fiLAWxKiP/f4514lxOVU=;
+ b=iovA9tkEkU/vkD1Y4s5cYpfIJ8AKWUVonE685IbQbXU3hCxVqj6XeauM
+ t+bHG38CM5lImu7X6x7MeVAw1PtGp6iWMvVotb0cBMtGXNHoXItrId0kz
+ tb1D1FgjwGMW8thkjgB+d79iGY8ITfNJGSjijXFduQ6r380vHkX/ATMTd
+ 3JlNok8+YVz4P6/GfhMf4snPsAKzoWWABXOwn7EFcoTGbyQPgQ4r03Qcq
+ RCvJ/u/I6IqTQy3pxCd+Gq8vEg/VSC9sG7IWZddQurJ1xlCsQeawuxgze
+ UlTyo+SEWJqMdFaagfDTzjF1Hch5kQy/q0NlKoHN1DBh0XRw+um4CQzVh w==;
+X-CSE-ConnectionGUID: /+GIGuhPTpyDtGpKLXf0iA==
+X-CSE-MsgGUID: SrMvFuphSwmu9ltrFt7lNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54496225"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="54496225"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jul 2025 03:00:35 -0700
+X-CSE-ConnectionGUID: CbqxAaMDQuaahZezcZBMig==
+X-CSE-MsgGUID: F+mi/dcpRk2W+ezusK1MfA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="160662038"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 11 Jul 2025 03:00:31 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
+ Pu Wen <puwen@hygon.cn>, Tao Su <tao1.su@intel.com>,
+ Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v2 03/18] i386/cpu: Add default cache model for Intel CPUs
+ with level < 4
+Date: Fri, 11 Jul 2025 18:21:28 +0800
+Message-Id: <20250711102143.1622339-4-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250711102143.1622339-1-zhao1.liu@intel.com>
+References: <20250711102143.1622339-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tcg: Use uintptr_t in tcg_malloc implementation
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20250710225053.168169-1-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250710225053.168169-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,29 +90,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/7/25 00:50, Richard Henderson wrote:
-> Avoid ubsan failure with clang-20,
->    tcg.h:715:19: runtime error: applying non-zero offset 64 to null pointer
-> by not using pointers.
-> 
-> Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
-> 
-> Supercedes: 20250618183759.9197-1-iii@linux.ibm.com
-> ("[PATCH v2] tcg: Remove NULL arithmetic in tcg_malloc()")
-> 
-> Ilya, I think I prefer this solution to &dummy_pool.
-> What do you think?
-> 
-> 
-> r~
-> 
-> ---
->   include/tcg/tcg.h | 6 +++---
->   tcg/tcg.c         | 9 +++++----
->   2 files changed, 8 insertions(+), 7 deletions(-)
+Old Intel CPUs with CPUID level < 4, use CPUID 0x2 leaf (if available)
+to encode cache information.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Introduce a cache model "legacy_intel_cpuid2_cache_info" for the CPUs
+with CPUID level < 4, based on legacy_l1d_cache, legacy_l1i_cache,
+legacy_l2_cache_cpuid2 and legacy_l3_cache. But for L2 cache, this
+cache model completes self_init, sets, partitions, no_invd_sharing and
+share_level fields, referring legacy_l2_cache, to avoid someone
+increases CPUID level manually and meets assert() error. But the cache
+information present in CPUID 0x2 leaf doesn't change.
+
+This new cache model makes it possible to remove legacy_l2_cache_cpuid2
+in X86CPUState and help to clarify historical cache inconsistency issue.
+
+Furthermore, apply this legacy cache model to all Intel CPUs with CPUID
+level < 4. This includes not only "pentium2" and "pentium3" (which have
+0x2 leaf), but also "486" and "pentium" (which only have 0x1 leaf, and
+cache model won't be presented, just for simplicity).
+
+A legacy_intel_cpuid2_cache_info cache model doesn't change the cache
+information of the above CPUs, because they just depend on 0x2 leaf.
+
+Only when someone adjusts the min-level to >=4 will the cache
+information in CPUID leaf 4 differ from before: previously, the L2
+cache information in CPUID leaf 0x2 and 0x4 was different, but now with
+legacy_intel_cpuid2_cache_info, the information they present will be
+consistent. This case almost never happens, emulating a CPUID that is
+not supported by the "ancient" hardware is itself meaningless behavior.
+
+Therefore, even though there's the above difference (for really rare
+case) and considering these old CPUs ("486", "pentium", "pentium2" and
+"pentium3") won't be used for migration, there's no need to add new
+versioned CPU models
+
+Tested-by: Yi Lai <yi1.lai@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+ target/i386/cpu.c | 65 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 75932579542a..f85e087bf7df 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -710,6 +710,67 @@ static CPUCacheInfo legacy_l3_cache = {
+     .share_level = CPU_TOPOLOGY_LEVEL_DIE,
+ };
+ 
++/*
++ * Only used for the CPU models with CPUID level < 4.
++ * These CPUs (CPUID level < 4) only use CPUID leaf 2 to present
++ * cache information.
++ *
++ * Note: This cache model is just a default one, and is not
++ *       guaranteed to match real hardwares.
++ */
++static const CPUCaches legacy_intel_cpuid2_cache_info = {
++    .l1d_cache = &(CPUCacheInfo) {
++        .type = DATA_CACHE,
++        .level = 1,
++        .size = 32 * KiB,
++        .self_init = 1,
++        .line_size = 64,
++        .associativity = 8,
++        .sets = 64,
++        .partitions = 1,
++        .no_invd_sharing = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l1i_cache = &(CPUCacheInfo) {
++        .type = INSTRUCTION_CACHE,
++        .level = 1,
++        .size = 32 * KiB,
++        .self_init = 1,
++        .line_size = 64,
++        .associativity = 8,
++        .sets = 64,
++        .partitions = 1,
++        .no_invd_sharing = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l2_cache = &(CPUCacheInfo) {
++        .type = UNIFIED_CACHE,
++        .level = 2,
++        .size = 2 * MiB,
++        .self_init = 1,
++        .line_size = 64,
++        .associativity = 8,
++        .sets = 4096,
++        .partitions = 1,
++        .no_invd_sharing = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l3_cache = &(CPUCacheInfo) {
++        .type = UNIFIED_CACHE,
++        .level = 3,
++        .size = 16 * MiB,
++        .line_size = 64,
++        .associativity = 16,
++        .sets = 16384,
++        .partitions = 1,
++        .lines_per_tag = 1,
++        .self_init = true,
++        .inclusive = true,
++        .complex_indexing = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_DIE,
++    },
++};
++
+ /* TLB definitions: */
+ 
+ #define L1_DTLB_2M_ASSOC       1
+@@ -3043,6 +3104,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             I486_FEATURES,
+         .xlevel = 0,
+         .model_id = "",
++        .cache_info = &legacy_intel_cpuid2_cache_info,
+     },
+     {
+         .name = "pentium",
+@@ -3055,6 +3117,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             PENTIUM_FEATURES,
+         .xlevel = 0,
+         .model_id = "",
++        .cache_info = &legacy_intel_cpuid2_cache_info,
+     },
+     {
+         .name = "pentium2",
+@@ -3067,6 +3130,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             PENTIUM2_FEATURES,
+         .xlevel = 0,
+         .model_id = "",
++        .cache_info = &legacy_intel_cpuid2_cache_info,
+     },
+     {
+         .name = "pentium3",
+@@ -3079,6 +3143,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             PENTIUM3_FEATURES,
+         .xlevel = 0,
+         .model_id = "",
++        .cache_info = &legacy_intel_cpuid2_cache_info,
+     },
+     {
+         .name = "athlon",
+-- 
+2.34.1
 
 
