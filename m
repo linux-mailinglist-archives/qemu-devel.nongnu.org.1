@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D142DB01643
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9027B0164C
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:35:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua97r-0006qP-Dk; Fri, 11 Jul 2025 04:28:59 -0400
+	id 1ua97r-0006nC-Gg; Fri, 11 Jul 2025 04:28:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8z5-0007dE-BT; Fri, 11 Jul 2025 04:19:55 -0400
+ id 1ua8z4-0007bI-Uk; Fri, 11 Jul 2025 04:19:54 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8z3-0004Jd-Fo; Fri, 11 Jul 2025 04:19:55 -0400
+ id 1ua8z2-0004Lq-Sq; Fri, 11 Jul 2025 04:19:54 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B57A01356E2;
+ by isrv.corpit.ru (Postfix) with ESMTP id C31CA1356E3;
  Fri, 11 Jul 2025 11:17:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id AAE8F23FA57;
+ by tsrv.corpit.ru (Postfix) with ESMTP id BA82523FA58;
  Fri, 11 Jul 2025 11:17:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Eric Auger <eric.auger@redhat.com>, Donald Dutile <ddutile@redhat.com>,
+Cc: qemu-stable@nongnu.org, Ethan Chen <ethan84@andestech.com>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 23/39] hw/arm/virt: Check bypass iommu is not set for
- iommu-map DT property
-Date: Fri, 11 Jul 2025 11:16:19 +0300
-Message-ID: <20250711081745.1785806-23-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 24/39] qemu-options.hx: Fix reversed description of
+ icount sleep behavior
+Date: Fri, 11 Jul 2025 11:16:20 +0300
+Message-ID: <20250711081745.1785806-24-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
@@ -60,56 +58,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+From: Ethan Chen <ethan84@andestech.com>
 
-default_bus_bypass_iommu tells us whether the bypass_iommu is set
-for the default PCIe root bus. Make sure we check that before adding
-the "iommu-map" DT property.
+The documentation for the -icount option incorrectly describes the behavior
+of the sleep suboption. Based on the actual implementation and system
+behavior, the effects of sleep=on and sleep=off were inadvertently reversed.
+This commit updates the description to reflect their intended functionality.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 6d7a85483a06 ("hw/arm/virt: Add default_bus_bypass_iommu machine option")
-Suggested-by: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Reviewed-by: Donald Dutile <ddutile@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-id: 20250602114655.42920-1-shameerali.kolothum.thodi@huawei.com
+Fixes: fa647905e6ba ("qemu-options.hx: Fix minor issues in icount documentation")
+Signed-off-by: Ethan Chen <ethan84@andestech.com>
+Message-id: 20250606095728.3672832-1-ethan84@andestech.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit f5ec751ee70d7960a97c6c675f69e924d82dc60d)
+(cherry picked from commit e372214e663a4370fe064f7867f402eade37357e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index a96452f17a..0e78616aac 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1492,9 +1492,12 @@ static void create_virtio_iommu_dt_bindings(VirtMachineState *vms)
-     qemu_fdt_setprop_cell(ms->fdt, node, "phandle", vms->iommu_phandle);
-     g_free(node);
+diff --git a/qemu-options.hx b/qemu-options.hx
+index dc694a99a3..396eea7ef2 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -4936,13 +4936,13 @@ SRST
+     with actual performance.
  
--    qemu_fdt_setprop_cells(ms->fdt, vms->pciehb_nodename, "iommu-map",
--                           0x0, vms->iommu_phandle, 0x0, bdf,
--                           bdf + 1, vms->iommu_phandle, bdf + 1, 0xffff - bdf);
-+    if (!vms->default_bus_bypass_iommu) {
-+        qemu_fdt_setprop_cells(ms->fdt, vms->pciehb_nodename, "iommu-map",
-+                               0x0, vms->iommu_phandle, 0x0, bdf,
-+                               bdf + 1, vms->iommu_phandle, bdf + 1,
-+                               0xffff - bdf);
-+    }
- }
+     When the virtual cpu is sleeping, the virtual time will advance at
+-    default speed unless ``sleep=on`` is specified. With
+-    ``sleep=on``, the virtual time will jump to the next timer
++    default speed unless ``sleep=off`` is specified. With
++    ``sleep=off``, the virtual time will jump to the next timer
+     deadline instantly whenever the virtual cpu goes to sleep mode and
+     will not advance if no timer is enabled. This behavior gives
+     deterministic execution times from the guest point of view.
+-    The default if icount is enabled is ``sleep=off``.
+-    ``sleep=on`` cannot be used together with either ``shift=auto``
++    The default if icount is enabled is ``sleep=on``.
++    ``sleep=off`` cannot be used together with either ``shift=auto``
+     or ``align=on``.
  
- static void create_pcie(VirtMachineState *vms)
-@@ -1617,8 +1620,10 @@ static void create_pcie(VirtMachineState *vms)
-         switch (vms->iommu) {
-         case VIRT_IOMMU_SMMUV3:
-             create_smmu(vms, vms->bus);
--            qemu_fdt_setprop_cells(ms->fdt, nodename, "iommu-map",
--                                   0x0, vms->iommu_phandle, 0x0, 0x10000);
-+            if (!vms->default_bus_bypass_iommu) {
-+                qemu_fdt_setprop_cells(ms->fdt, nodename, "iommu-map",
-+                                       0x0, vms->iommu_phandle, 0x0, 0x10000);
-+            }
-             break;
-         default:
-             g_assert_not_reached();
+     ``align=on`` will activate the delay algorithm which will try to
 -- 
 2.47.2
 
