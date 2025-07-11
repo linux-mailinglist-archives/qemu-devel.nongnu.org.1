@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D2FB0171A
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 088BBB01727
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:04:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua9Yc-0002dy-AP; Fri, 11 Jul 2025 04:56:40 -0400
+	id 1ua9fy-0004Qt-Lt; Fri, 11 Jul 2025 05:04:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ua9Rz-0001GN-Ki
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:49:49 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ua9TA-0002Hx-1q
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:51:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ua9Rl-0003GU-Lt
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:49:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ua9T7-0003ye-RY
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:50:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752223772;
+ s=mimecast20190719; t=1752223856;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=f6BRCnf6mn+tkU+QW5UVDKA7KXoonGizNF03QOyneTM=;
- b=cchW66xItAscNNJxtfzpKkUUVg6usJwsySh8m6tZFM9ccpVO1/NMgVtFfNzZ1+yycCxJAA
- nN/o0bdQLTx3tlj4Xe0ebYg94saTr3GtDEXmw2vViogP7CgpxwxsoUPjOJilYCsyMt9c1k
- xC46xpSiMVNf1pDFikkhB2t0m9keMt8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=v2CTcd/fVTzCEOJHFnKMcxXmxWLuvQQHMFQroJLSQAI=;
+ b=LYHynn1jF1281jwXhew4h3Tjarv0ZH2Ic9rPG8O9HSs6ugJVVBRzTobJi5tnYT6ULfjmMt
+ x5obEhWdHcLidxBTs2KDKmeKMW45TDKQPttB0sweuEyQIpv5YH3u7BGHln0wKGmRxjapAA
+ fj2VoFRho0y5DFh5UWk34fsOVbDXH7c=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15-XJhcgSWtNUO4KeVrpiQySQ-1; Fri, 11 Jul 2025 04:49:31 -0400
-X-MC-Unique: XJhcgSWtNUO4KeVrpiQySQ-1
-X-Mimecast-MFC-AGG-ID: XJhcgSWtNUO4KeVrpiQySQ_1752223770
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-453018b4ddeso9556685e9.3
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 01:49:31 -0700 (PDT)
+ us-mta-685-ny-jwGtMPACEHKOfH9tDEA-1; Fri, 11 Jul 2025 04:50:55 -0400
+X-MC-Unique: ny-jwGtMPACEHKOfH9tDEA-1
+X-Mimecast-MFC-AGG-ID: ny-jwGtMPACEHKOfH9tDEA_1752223854
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4f65a705dso1315254f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 01:50:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752223770; x=1752828570;
+ d=1e100.net; s=20230601; t=1752223854; x=1752828654;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=f6BRCnf6mn+tkU+QW5UVDKA7KXoonGizNF03QOyneTM=;
- b=is8o2C0GCZJ22yfHjM/RCvAzzQmslVbFaxVz3jGXKZUCOWcJ9LY26Uq7ZoH214z9gx
- Vdvp9F7k9fSyquXK7HfZ9nopcxPsVGGjnyrY6Bw2KS+FAfBUN2/PIxNbHv85+VgEHJRF
- iwf1htLnNfBeUOlmI6fZrRtEiuBRD02S7ZhZmzg5BxDpVW+ogFOpD5XC9denLr4kplZ7
- h1PWRNznT5tLXLH6iHGOdHP+6lpeEEzniGINq9mMjXwZ8u7wueZ+YfRbcrfefjqKsqU2
- tDQuv4g8QMjOwk64fIYFb+59ET6p4O1DV+QScpVM26soNMPyg6DZTxW9H8NJ+82rsctY
- PTeQ==
+ bh=v2CTcd/fVTzCEOJHFnKMcxXmxWLuvQQHMFQroJLSQAI=;
+ b=m0X3TkxVH5Ug3F45sCW5R4GHIidTleFPiKNgVLOGiR5Wm5LvlAVdlXYgvY2R4sMxVZ
+ adNwIGpP+vABQnhOE7eR0gcBynERtcbwHjKTbRKoRKyf3+enxfByJeiIckDcKMlu2MSS
+ KnO6/TqeLFOwvvz4ccf/8ZmkcMlHcVtnJfUw9zv9sEvq2EQVq1bklyuO0Y6EmtveE73C
+ GanYrR6hUZyVH4AykxjyQlQNB/9zfQUN6ryPeJogqa1QcdiE/bHhsAOCCpHvPljW04y6
+ yF9urEmzSMqPyM8m4+3hgoMEldmMSaYMwyaXXf+FypjM/6QaFJzaGY2EOfMhy5wMHUp0
+ khcw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX3ZnHiuOGWyeNO8JrTEvQTgug/nF9k4D8OdQYDVI0tR75xUtySENy4Dr1MGHImArc19T+x5tfzc1MA@nongnu.org
-X-Gm-Message-State: AOJu0Yz86rzIdTUR+1NYBe7Ozuu1l3774RipNAOFkcxiTDLt9GiR7Ztt
- UjZmO/cABZUsPABJ31gYsOPDsA7D7tanT945PoIk9mrjWOKf2IXKU+bNUlLbe+MQNtxw4DJjXmX
- wkiprHE3qQcVryWk833pII8XiHQRI1fA/CwoscYMkYFMggsy3HyMtW86v
-X-Gm-Gg: ASbGncvGPIHvouINVx0IckXMp9BFn2GnA4KPePFW3mO86RNjMT4+W9HoZb6jIn659Je
- pNlnbk2c+4uo/oBiNpLi4/p49+27CQLbLax/LCykwkfez/EC2Dpcix9ytgcxKHDALJD7MCv7a/K
- tKvFxjMzQitq38rOXvjxgLaf6iJrhftgLwP1B1TUI+dbwdyVIHvKFP4RFtD1EU5m3QXYGuVJzYE
- kr5mSliH9/jCu98+mTvcfIFWYkpQnMELqPooUAZ+Dk6+SbzznYeYm7mdrAfRa1ssw44QhfY3Mt/
- +HBXQyAQw7l5kmUlGI5uLlUPGfdQr3LOOFRIUl9L59gIRXMAf8St4shmQgvbNuEDuXc9k5doeRK
- iYskL
-X-Received: by 2002:a05:6000:230f:b0:3a4:f70e:abda with SMTP id
- ffacd0b85a97d-3b5f351dea6mr1290079f8f.10.1752223769967; 
- Fri, 11 Jul 2025 01:49:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFz/2gff4Ok+yuIsqtgiYhWyQE08H36eE028JImxIxWWMC8MA1qaP61v4WuAgAIFbLu9tgCPg==
-X-Received: by 2002:a05:6000:230f:b0:3a4:f70e:abda with SMTP id
- ffacd0b85a97d-3b5f351dea6mr1290052f8f.10.1752223769417; 
- Fri, 11 Jul 2025 01:49:29 -0700 (PDT)
+ AJvYcCWMz9+7iA7DYbw9woK5rQ0kGkRp39zlA6GFR8sRJdc5p9/aXpZRl0oKMpJUg59h/nolmg84OVyayURT@nongnu.org
+X-Gm-Message-State: AOJu0YxtDPH/cBd6f4ljRN9k9a4mXskfjGFgW/XSsmhJcNV9zb6ayO/0
+ Op/hqaeKq/4nHZ2lyY9CIcdnlrxf7mjivA2zBX/4ociUihPurwRuzsdo4a8CAUJ3Vk6OHxZyloR
+ zSZPGdTcQ7BuwexwyedOXCN7WGtvmHVUE/rWF7jxx9oOkE6Jr8914UIzpWHW3Dk+a
+X-Gm-Gg: ASbGncspc7otuH9A0/YjhjrV11vQYhYK6Gx/cZ88goTNOOvqpgPt4ipVfvcOLb0p9wD
+ wTflwuyhBz8i5KkuWUhlGAob8lIOR4oF8G/0hCgUplMcVayQD7WZ3+TTpHmIyKkYvWH2UumxuNo
+ HZ/foT81L4XJE7xac6ZRXXr4m8aXw8nPAjCGjt60Nrxcd3MXjvZ7BZKzJRDxXfUMF5zICsOxoTu
+ ve+WIgQn4PjBDLTXJ/iyQPc0K+STz4ZawEXmJAyePYnhYkSAoVUymxrPo/zEZA2A+yGF1mW7tuB
+ VWX1a1E0jX4wMU0fcErkGmDb6sLqg2izeU0mI+sCvlMrtTdqcA9QK7DY+tVnTam76H26PpuYRT7
+ Rw/2g
+X-Received: by 2002:a05:6000:1a8b:b0:3a5:25e4:264f with SMTP id
+ ffacd0b85a97d-3b5f2e1bb21mr1459856f8f.31.1752223853545; 
+ Fri, 11 Jul 2025 01:50:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlGKCu0g1trtqXPPun31fz71AkE1gtjJprhlmMtbJGNpgKq0oUHH9Lm0jTQe8rKFGw9x3Zsw==
+X-Received: by 2002:a05:6000:1a8b:b0:3a5:25e4:264f with SMTP id
+ ffacd0b85a97d-3b5f2e1bb21mr1459791f8f.31.1752223852854; 
+ Fri, 11 Jul 2025 01:50:52 -0700 (PDT)
 Received: from [192.168.0.6] (ltea-047-064-115-149.pools.arcor-ip.net.
  [47.64.115.149]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc3a54sm3967219f8f.39.2025.07.11.01.49.28
+ ffacd0b85a97d-3b5e8dc3a54sm3970300f8f.39.2025.07.11.01.50.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Jul 2025 01:49:29 -0700 (PDT)
-Message-ID: <540f9942-d936-42c8-92ab-0f9a1281ddf1@redhat.com>
-Date: Fri, 11 Jul 2025 10:49:26 +0200
+ Fri, 11 Jul 2025 01:50:52 -0700 (PDT)
+Message-ID: <7834f3e5-6eb2-46ce-8061-f17d9fdf51f2@redhat.com>
+Date: Fri, 11 Jul 2025 10:50:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] target/s390x: Extract system internal declarations to
- s390x-internal.h
+Subject: Re: [PATCH 0/4] target/s390x: Cleanups around s390_cpu_[un]halt()
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Ilya Leoshkevich
  <iii@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>,
  qemu-s390x@nongnu.org
 References: <20250708095746.12697-1-philmd@linaro.org>
- <20250708095746.12697-5-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -128,7 +126,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250708095746.12697-5-philmd@linaro.org>
+In-Reply-To: <20250708095746.12697-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -140,7 +138,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,82 +155,26 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 08/07/2025 11.57, Philippe Mathieu-Daudé wrote:
-> Simplify a bit the big "s390x-internal.h" header by extracting
-> system-specific declarations to "s390x-system.h".
+> Trivial cleanups around s390_cpu_[un]halt(), split of
+> a bigger series which consolidates CPUClass::[un]halt()
+> for re-use between accelerators.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/s390x/s390x-internal.h | 222 +---------------------------------
->   target/s390x/s390x-system.h   | 215 ++++++++++++++++++++++++++++++++
->   2 files changed, 217 insertions(+), 220 deletions(-)
+> Philippe Mathieu-Daudé (4):
+>    target/s390x: Remove unused s390_cpu_[un]halt() user stubs
+>    target/s390x: Expose s390_count_running_cpus() method
+>    target/s390x: Have s390_cpu_halt() not return anything
+>    target/s390x: Extract system internal declarations to s390x-internal.h
+> 
+>   target/s390x/s390x-internal.h | 231 +---------------------------------
+>   target/s390x/s390x-system.h   | 215 +++++++++++++++++++++++++++++++
+>   target/s390x/cpu-system.c     |   6 +-
+>   target/s390x/helper.c         |   4 +-
+>   4 files changed, 222 insertions(+), 234 deletions(-)
 >   create mode 100644 target/s390x/s390x-system.h
-> 
-> diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
-> index 56cce2e7f50..dddd4460400 100644
-> --- a/target/s390x/s390x-internal.h
-> +++ b/target/s390x/s390x-internal.h
-...
-> @@ -257,11 +120,7 @@ S390CPUModel *get_max_cpu_model(Error **errp);
->   void apply_cpu_model(const S390CPUModel *model, Error **errp);
->   ObjectClass *s390_cpu_class_by_name(const char *name);
->   
-> -
-> -/* excp_helper.c */
 
-Please don't remove the excp_helper.c comment here, otherwise the 
-s390_cpu_do_interrupt() below belongs to the wrong section here.
+Thanks, I'll queue 1-3 for my next pull request. Patch 4 needs some 
+modifications.
 
-> -void s390x_cpu_debug_excp_handler(CPUState *cs);
->   void s390_cpu_do_interrupt(CPUState *cpu);
-> -bool s390_cpu_exec_interrupt(CPUState *cpu, int int_req);
->   
->   #ifdef CONFIG_USER_ONLY
->   void s390_cpu_record_sigsegv(CPUState *cs, vaddr address,
-> @@ -312,87 +171,14 @@ int s390_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
->   int s390_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
->   void s390_cpu_gdb_init(CPUState *cs);
->   
-> -
-> -/* helper.c */
->   void s390_cpu_dump_state(CPUState *cpu, FILE *f, int flags);
-
-s390_cpu_dump_state() should get a new comment in front of it:
-
-/* cpu-dump.c */
-
-> -void do_restart_interrupt(CPUS390XState *env);
-> -#ifndef CONFIG_USER_ONLY
-> -void s390_cpu_recompute_watchpoints(CPUState *cs);
-> -void s390x_tod_timer(void *opaque);
-> -void s390x_cpu_timer(void *opaque);
-> -void s390_handle_wait(S390CPU *cpu);
-> -hwaddr s390_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
-> -hwaddr s390_cpu_get_phys_addr_debug(CPUState *cpu, vaddr addr);
-> -#define S390_STORE_STATUS_DEF_ADDR offsetof(LowCore, floating_pt_save_area)
-> -int s390_store_status(S390CPU *cpu, hwaddr addr, bool store_arch);
-> -int s390_store_adtl_status(S390CPU *cpu, hwaddr addr, hwaddr len);
-> -LowCore *cpu_map_lowcore(CPUS390XState *env);
-> -void cpu_unmap_lowcore(LowCore *lowcore);
-> -#endif /* CONFIG_USER_ONLY */
-...
-> diff --git a/target/s390x/s390x-system.h b/target/s390x/s390x-system.h
-> new file mode 100644
-> index 00000000000..9c7958742d3
-> --- /dev/null
-> +++ b/target/s390x/s390x-system.h
-> @@ -0,0 +1,215 @@
-> +/*
-> + * s390x system internal definitions and helpers
-> + *
-> + * Copyright (c) 2009 Ulrich Hecht
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + */
-
-Can you please add a proper SPDX license identifier to new files?
-
-  Thanks,
-   Thomas
+  Thomas
 
 
