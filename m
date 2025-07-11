@@ -2,47 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF7AB01602
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:28:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8845B015AD
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:21:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua95C-0000Fl-D8; Fri, 11 Jul 2025 04:26:14 -0400
+	id 1ua8zw-000123-67; Fri, 11 Jul 2025 04:20:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xH-00047S-R8; Fri, 11 Jul 2025 04:18:04 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ua8vN-0001x1-78
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:16:08 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8xE-0003vk-HM; Fri, 11 Jul 2025 04:18:03 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2D30E1356CC;
- Fri, 11 Jul 2025 11:17:18 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2406723FA41;
- Fri, 11 Jul 2025 11:17:45 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 01/39] hw/misc/aspeed_hace: Ensure HASH_IRQ is always
- set to prevent firmware hang
-Date: Fri, 11 Jul 2025 11:15:57 +0300
-Message-ID: <20250711081745.1785806-1-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
-References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ua8vL-0003Cl-J0
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:16:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752221763; x=1783757763;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=cFvtLmQoWdQaH4+C34V10oThfsMInecgZrRSwd6iRoo=;
+ b=KAk9Mpl+uGD2CKovXhtyyEFpqIKzgJTb9G/Rv85/I++BkKws93LxFrFT
+ njcXGYUxa2jWv9qLyle5YOZlO9hYjPj21lJMQ1ixbc6+2xTOIPcxFdW3d
+ nVp4LJqbfmV+HhE2RhuGoykkxRkxVYQEtStuUs/62jK1MvAdgrWEValV3
+ D/pL+yyhroXAzz2jsdTPqpI6wHrvUeKIo337d3li5NjmbYA9NxaNaFkz2
+ jDY3k3hHSGV5rsQNKQ8hd/LeMSN+IwiK4kT06KyOtri5Qf/BlPHPmiiRU
+ QKd8LnhWlfPlku2IYiEMK68B/jPWT3KvKWRRJlIoYCvI0bDOPcKqILxUg Q==;
+X-CSE-ConnectionGUID: nPPeWO3rTXyW8TVIYuD+Jw==
+X-CSE-MsgGUID: j52SWmioTCaYti6NSHBBLg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="53734971"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="53734971"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jul 2025 01:16:01 -0700
+X-CSE-ConnectionGUID: rfL7etUrRyaERt2RdF9Q0A==
+X-CSE-MsgGUID: 1YS5FWZxRcaVDM1U96UoXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="180014156"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jul 2025 01:16:00 -0700
+Message-ID: <c5d96f80-31c0-44dc-8f7a-557367a1abc9@intel.com>
+Date: Fri, 11 Jul 2025 16:15:57 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/i386: merge host_cpu_instance_init() and
+ host_cpu_max_instance_init()
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20250711075507.451540-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250711075507.451540-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -60,68 +83,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jamin Lin <jamin_lin@aspeedtech.com>
+On 7/11/2025 3:55 PM, Paolo Bonzini wrote:
+> Simplify the accelerators' cpu_instance_init callbacks by doing all
+> host-cpu setup in a single function.
 
-Currently, if the program encounters an unsupported algorithm, it does not set
-the HASH_IRQ bit in the status register and send an interrupt to indicate
-command completion. As a result, the FW gets stuck waiting for a completion
-signal from the HACE module.
+btw, it changes the behavior for "-cpu base" with accelerator.
 
-Additionally, in do_hash_operation, if an error occurs within the conditional
-statement, the HASH_IRQ bit is not set in the status register. This causes the
-firmware to continuously send HASH commands, as it is unaware that the HACE
-model has completed processing the command.
-
-To fix this, the HASH_IRQ bit in the status register must always be set to
-ensure that the firmware receives an interrupt from the HACE module, preventing
-it from getting stuck or repeatedly sending HASH commands.
-
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Fixes: c5475b3 ("hw: Model ASPEED's Hash and Crypto Engine")
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250515081008.583578-4-jamin_lin@aspeedtech.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit fb8e59abbe46957cd599bb9aa9221fad1e4e989e)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index d75da33353..96997a03fc 100644
---- a/hw/misc/aspeed_hace.c
-+++ b/hw/misc/aspeed_hace.c
-@@ -301,12 +301,6 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-                             iov[i - 1].iov_len, false,
-                             iov[i - 1].iov_len);
-     }
--
--    /*
--     * Set status bits to indicate completion. Testing shows hardware sets
--     * these irrespective of HASH_IRQ_EN.
--     */
--    s->regs[R_STATUS] |= HASH_IRQ;
- }
- 
- static uint64_t aspeed_hace_read(void *opaque, hwaddr addr, unsigned int size)
-@@ -390,10 +384,16 @@ static void aspeed_hace_write(void *opaque, hwaddr addr, uint64_t data,
-                 qemu_log_mask(LOG_GUEST_ERROR,
-                         "%s: Invalid hash algorithm selection 0x%"PRIx64"\n",
-                         __func__, data & ahc->hash_mask);
--                break;
-+        } else {
-+            do_hash_operation(s, algo, data & HASH_SG_EN,
-+                    ((data & HASH_HMAC_MASK) == HASH_DIGEST_ACCUM));
-         }
--        do_hash_operation(s, algo, data & HASH_SG_EN,
--                ((data & HASH_HMAC_MASK) == HASH_DIGEST_ACCUM));
-+
-+        /*
-+         * Set status bits to indicate completion. Testing shows hardware sets
-+         * these irrespective of HASH_IRQ_EN.
-+         */
-+        s->regs[R_STATUS] |= HASH_IRQ;
- 
-         if (data & HASH_IRQ_EN) {
-             qemu_irq_raise(s->irq);
--- 
-2.47.2
-
+I think it should be OK considering "-cpu base" seems only for 
+experiment case.
 
