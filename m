@@ -2,89 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE2AB019EF
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 12:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 936CBB019A9
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 12:25:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaBGB-00079N-Qw; Fri, 11 Jul 2025 06:45:44 -0400
+	id 1uaAvw-0007gj-QN; Fri, 11 Jul 2025 06:24:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uaBFl-000740-9b
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:45:19 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uaBFh-00088J-M8
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:45:17 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-451d3f72391so19498685e9.3
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 03:45:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752230712; x=1752835512; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jF06BaIoqQ4o5qrjHCHKDptQ8Bx8plMl4UyhaNJzVwU=;
- b=Q8tDCLlW3++fyJlig2HeYmlEQohwHNHMwCMT69uP+I88o1A38bwUQSoVTW872HIKqS
- bA1Bwiks/I7/qSb+EkGpLajYl/Tz9UGt3DE2rLy+3kdNtgcLEG18zrLhaHtNdu7lDW95
- BYXtwkJgNIWOGDtn1Jm5kGm5l2NdK0IYlgMVQri9+6QqQwVkgqOfvRwrttusy8PuyDlB
- ni4Pepa+AtHC1hzH4hcwuuOvxLSeNRJTACNyqlZm2HTVPyHk7Rw0RqMY3d0ez6LGK7pP
- o08b+dqgGc/7O+yeyGEzSNhJJkZDkx/X+C/jErk2nYwdQITtpwFFqKuJ/4MjSJTzMbcz
- EgWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752230712; x=1752835512;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jF06BaIoqQ4o5qrjHCHKDptQ8Bx8plMl4UyhaNJzVwU=;
- b=fpQGTan/C3E2m0Ig7AdCKCJ9N3R/WeLwBekhsEQZ5qOmSvkPeOHljell3OjKuipcY0
- 9+TDJhXPa9Wu4uVoP5NHzrDrntIsDpF6j10OeGc9/88obKroPve0TR/nuKew8rO9jFOG
- knsifS2nC4a/p+dEofmySRMcY5So/bQRkApEByLZRRfYL3TaNS7JW5/j5TG68HOx42BH
- MpMGfbACVFLnz/Gafbfq2W45UROH/E2TN7HVPXuy2PhWyj0dSfgNv4LpBU+/QyxUBFrh
- ophYNiDkS0nmnqW+XCJpwxWlNjFesxooWHJ0RxUASpKHnA3nniq1seCYyvTEsjRgVr8H
- CskA==
-X-Gm-Message-State: AOJu0Yxdf6X2NhOxrsvvpRMVROfpThJpLzTE8KjItTbnpVANfC4PimZY
- PTcRhO/GiI30K4rCutuowyhmE0T0ElWKhlCyOM5HCV314nsSnxT0VwjW7LoTKbLKevo=
-X-Gm-Gg: ASbGnct4y94DwMVA4dpTWPfuoyHZmH8tSFVwiVlapZya414u4J8Llu5kfofod2bi9b2
- Tok2foq6MuDUd0MQbgqoz5d/p+k8zLlnC13dYcBqYA/xvAor9IdqfWafd+dGuWUxhWPybXtUspA
- 9Crul5f3sOhs2s2ookr+c26H06eBHh7juGl0QUeD3a41w9qQXG7RtY2Y8wPwZOl1/s//W4XaQU5
- g/Cn493OG52Hyem3IBiqYKgwdVtDnttX5AHiEEMaXeA2o+lHD+3IO21MX/YRrAu8jBt3EhjWycQ
- l9Zdx8yNfF1oau7tU4vvmhX3BwbZZGWbak/pTrNqCHOmGP544LOT24/Adw3ROV/l1t6AC9+FWH1
- Jpeso0dEaDAb9BoW3hjJOmUl2g6SqUFDkt4BE9VTMgrg54DrqUlm1PEWy8aqWvi1g3jrTxZseqC
- Pc8fZj
-X-Google-Smtp-Source: AGHT+IEAlBc/SiofnuLerJTNNIMWGHIeBqYEYsVL7S8eYentnkT4kTA1eiz1utBHFePEp2OYvmk5Jg==
-X-Received: by 2002:a05:600c:1c95:b0:453:86cc:739c with SMTP id
- 5b1f17b1804b1-454ec14a50bmr22232225e9.1.1752230711651; 
- Fri, 11 Jul 2025 03:45:11 -0700 (PDT)
-Received: from [192.168.1.47] (lfbn-mon-1-587-20.w2-4.abo.wanadoo.fr.
- [2.4.165.20]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d5f5sm4155257f8f.56.2025.07.11.03.45.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Jul 2025 03:45:11 -0700 (PDT)
-Message-ID: <9a4e5e05-f96c-4e8f-8b8a-a5480267e789@linaro.org>
-Date: Fri, 11 Jul 2025 12:45:10 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uaAvt-0007bJ-Pa
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:24:46 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uaAvq-0003Bv-3i
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:24:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752229482; x=1783765482;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=zl43e+CyaFSKAJntbnBbjx0GgHa30iQdOvMsXVgK9W4=;
+ b=J1P5dRVzJzhRyPKpgYDUxftkxBZZ0JWn7ST4Cayc6slEd9JvuFBbfF8h
+ Q+27NTRBisrZtkIzYvXaLZhw7+8f/2JxB/zCky4FGvWUbUVxjIEoOs8AS
+ C91uKqrdzR6/43mvafogncGt0rnuBQqvK1BddJsRcIhSmh7ZAtolJHxPR
+ Kh1/8r+BKJqBBrADdlIK0CWli45XQ2XL+mIQuxxzUaZfVXf0oVIvCZygd
+ Jl/Xbglw0EJ1iOiywpbkOsNXT0IqIVhXb4LNU9t/HLjyKtAp7CDbMsbJz
+ sSzJeaQQIsZ3wDKsIcAbWXEJtfvTGNBWuAxRxIibuaKCh+Yrbag304UvG g==;
+X-CSE-ConnectionGUID: S55TRlAoSYqFYvQs2qGN1Q==
+X-CSE-MsgGUID: yukygoULSNKOE6tZZ7TEvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="65875691"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="65875691"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jul 2025 03:24:39 -0700
+X-CSE-ConnectionGUID: Y5e4Fe+HTLqBaMgt9NDwbQ==
+X-CSE-MsgGUID: h6KCOQvNRvy0aa40FqoxyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="156894318"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by fmviesa008.fm.intel.com with ESMTP; 11 Jul 2025 03:24:36 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>, Jason Zeng <jason.zeng@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Tao Su <tao1.su@intel.com>,
+ Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
+ Tejus GK <tejus.gk@nutanix.com>, Manish Mishra <manish.mishra@nutanix.com>,
+ qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v2 0/9] i386/cpu: Intel cache model & topo CPUID enhencement
+Date: Fri, 11 Jul 2025 18:45:54 +0800
+Message-Id: <20250711104603.1634832-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL v2 09/36] accel/tcg: Unregister the RCU before exiting RR
- thread
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20250704132439.25743-1-philmd@linaro.org>
- <20250704132439.25743-3-philmd@linaro.org>
- <CAFEAcA8e4jcoBup890sjNFmOkSJqCdC4JpDJT1H_OZS6n6=xhg@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA8e4jcoBup890sjNFmOkSJqCdC4JpDJT1H_OZS6n6=xhg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,53 +84,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/7/25 16:33, Peter Maydell wrote:
-> On Fri, 4 Jul 2025 at 14:25, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Although unreachable, still unregister the RCU before exiting
->> the thread, as documented in "qemu/rcu.h":
->>
->>   /*
->>    * Important !
->>    *
->>    * Each thread containing read-side critical sections must be registered
->>    * with rcu_register_thread() before calling rcu_read_lock().
->>    * rcu_unregister_thread() should be called before the thread exits.
->>    */
->>
->> Unregister the RCU to be on par with what is done for other
->> accelerators.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Acked-by: Richard Henderson <richard.henderson@linaro.org>
->> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
->> Message-Id: <20250702185332.43650-66-philmd@linaro.org>
->> ---
->>   accel/tcg/tcg-accel-ops-rr.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
->> index 6eec5c9eee9..a578698d071 100644
->> --- a/accel/tcg/tcg-accel-ops-rr.c
->> +++ b/accel/tcg/tcg-accel-ops-rr.c
->> @@ -302,6 +302,8 @@ static void *rr_cpu_thread_fn(void *arg)
->>           rr_deal_with_unplugged_cpus();
->>       }
->>
->> +    rcu_unregister_thread();
->> +
->>       g_assert_not_reached();
->>   }
-> 
-> This has reintroduced CID 1547782 (unreachable code).
-> 
-> We can't get to this point, so why are we trying to call a
-> function here ? This is not a place where the thread can exit.
+Hi,
 
-The goal is to unify accelerators vcpu thread logic and
-eventually remove AccelOpsClass::create_vcpu_thread(), superseded
-by AccelOpsClass::cpu_thread_routine(). I couldn't finish RR for
-10.1 but squeezed this patch in. Let's revert it, and I'll
-re-commit it later.
+This series is based on another series dedicated to cleaning up the
+legacy cache models:
+
+https://lore.kernel.org/qemu-devel/20250711102143.1622339-1-zhao1.liu@intel.com/
+
+And this series focuses only on improvements to the named CPU models:
+ * Add cache model for Intel CPUs (and YongFeng).
+ * Enable 0x1f CPUID leaf for specific Intel CPUs, which already have
+   this leaf on host by default.
+
+You can also find the patches at here (branch: cache-model-v3.0-rebase-
+07-10-2025):
+
+https://gitlab.com/zhao.liu/qemu/-/tree/cache-model-v3.0-rebase-07-10-2025?ref_type=heads
+
+
+Change Log
+==========
+
+Changes since RFC (20250423114702.1529340-1-zhao1.liu@intel.com):
+ * Split CPUID fixes into another series.
+ * Since TDX was merged, rebase and rename 0x1f property to
+   "x-force-cpuid-0x1f". (Igor)
+ * Include cache model for YongFeng from Ewai.
+
+
+Intel Cache Model
+=================
+
+AMD has supports cache model for a long time. And this feature strats
+from the Eduardo's idea [1].
+
+Unfortunately, Intel does not support this, and I have received some
+feedback (from Tejus on mail list [2] and kvm forum, and from Jason).
+
+Additionally, after clearly defining the cache topology for QEMU's
+cache model, outdated cache models can easily raise more questions. For
+example, the default legacy cache model's L3 is per die, but SPR's
+real L3 is per socket. Users may question how the L3 topology changes
+when multiple dies are created (discussed with Daniel on [3]).
+
+So, in this series, I have added cache models for SRF, GNR, and SPR
+(because these are the only machines I can find at the moment :-) ).
+
+Note that the cache models are based on the Scalable Performance (SP)
+version, and the Xeon Advanced Performance (AP) version may have
+different cache sizes. However, SP is sufficient as the default cache
+model baseline. In the future, I will consider adding additional
+parameters in "smp-cache" to adjust cache sizes to meet different needs.
+
+[1]: https://lore.kernel.org/qemu-devel/20180320175427.GU3417@localhost.localdomain/
+[2]: https://lore.kernel.org/qemu-devel/6766AC1F-96D1-41F0-AAEB-CE4158662A51@nutanix.com/
+[3]: https://lore.kernel.org/qemu-devel/ZkTrsDdyGRFzVULG@redhat.com/
+
+0x1f CPUID by default (for some CPUs)
+=====================================
+
+Once the cache model can be clearly defined, another issue is the
+topology.
+
+Currently, the cache topology is actually tied to the CPU topology.
+However, in recent Intel CPUs (from cascadelake-AP - 2nd xeon [4]),
+CPU topology information is primarily expressed using the 0x1f leaf.
+
+Due to compatibility issues and historical reasons, the Guest's 0x1f
+is not unconditionally exposed.
+
+The discrepancy between having 0x1f on the Host but not on the Guest
+does indeed cause problems (Manish mentioned in [5]).
+
+Manish and Xiaoyao (for TDX) both attempted to enable 0x1f by default
+for Intel CPUs [6] [7], but following Igor's suggestion, it is more
+appropriate to enable it by default only for certain CPU models [8].
+
+So, as I update the CPU model at this time, I think it's time to revisit
+the community's idea.
+
+I enable the 0x1f leaf for SRF, GNR and SPR by default for better
+emulation of real silicons.
+
+Change Log
+==========
+
+Changes Since v1:
+ * Polish the note and enable 0x1f leaf for YongFeng.
+ * Add R-b/T-b tags.
+
+
+Reference
+=========
+
+[4]: https://lore.kernel.org/qemu-devel/ZpoWskY4XE%2F98jss@intel.com/
+[5]: https://lore.kernel.org/qemu-devel/PH0PR02MB738410511BF51B12DB09BE6CF6AC2@PH0PR02MB7384.namprd02.prod.outlook.com/
+[6]: https://lore.kernel.org/qemu-devel/20240722101859.47408-1-manish.mishra@nutanix.com/
+[7]: https://lore.kernel.org/qemu-devel/20240813033145.279307-1-xiaoyao.li@intel.com/
+[8]: https://lore.kernel.org/qemu-devel/20240723170321.0ef780c5@imammedo.users.ipa.redhat.com/
+[9]: https://lore.kernel.org/qemu-devel/20250401130205.2198253-34-xiaoyao.li@intel.com/
+
+Thanks and Best Regards,
+Zhao
+
+---
+Ewan Hai (1):
+  i386/cpu: Introduce cache model for YongFeng
+
+Manish Mishra (1):
+  i386/cpu: Add a "x-force-cpuid-0x1f" property
+
+Zhao Liu (7):
+  i386/cpu: Introduce cache model for SierraForest
+  i386/cpu: Introduce cache model for GraniteRapids
+  i386/cpu: Introduce cache model for SapphireRapids
+  i386/cpu: Enable 0x1f leaf for SierraForest by default
+  i386/cpu: Enable 0x1f leaf for GraniteRapids by default
+  i386/cpu: Enable 0x1f leaf for SapphireRapids by default
+  i386/cpu: Enable 0x1f leaf for YongFeng by default
+
+ target/i386/cpu.c | 405 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 405 insertions(+)
+
+-- 
+2.34.1
+
 
