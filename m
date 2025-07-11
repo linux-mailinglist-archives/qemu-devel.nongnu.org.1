@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940DCB01930
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 12:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 949E7B01942
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 12:04:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaAYz-0001v6-LH; Fri, 11 Jul 2025 06:01:06 -0400
+	id 1uaAZ6-00028l-8h; Fri, 11 Jul 2025 06:01:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uaAYR-0001SK-AB
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:00:31 -0400
+ id 1uaAYW-0001mK-WD
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:00:39 -0400
 Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uaAYO-0005FJ-5v
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:00:30 -0400
+ id 1uaAYR-0005FJ-O7
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 06:00:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752228028; x=1783764028;
+ t=1752228032; x=1783764032;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Q8vxlSp8vNdf+rAvGc2M8Yga/kO4BDydluyykj+THNg=;
- b=Lb6Qx6YJvKLE08qqKHhJCwV8+TrzxiPbRXP97Itcjph7B9dLF15tio/0
- PLNCGFmqzn6vp0GG7YB87LNRVk9sfUTl9afWcZ4bUDIPLzw00F6Zit6IN
- lrg8FqfQm0jvKwAcOJrh9mbgKRjq01uWcBC7CxuAgDM7jFWVHw4oRTs4M
- WEKWfHBap5K8ZhyOVfq5vlpfUmdsq3PKcANwjDJ2J+FaW4/1RsO9OOSca
- r04tXaPTOOtwS3ap0mpbJ0DAJ/YxCJoJcgTRu6zzKAxlJi+q1PZe/O86k
- +0JHRUCV2x27bAgU0LP/VXQdhldUHWL7kdQPI7qR9Dk1yNDsxe4vgeyzJ Q==;
-X-CSE-ConnectionGUID: h0YKNzBtREiIeFkzGKUqsg==
-X-CSE-MsgGUID: eD6qA7BVTlGIr/bDjc4XTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54496191"
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="54496191"
+ bh=ROoVRKY7dce0T2TAcHTZK8KJkdKbNMAzZALpbA8p8yk=;
+ b=WcaDsf1ZupC8g10+QzQhtiqa+2PmrcTaYz3cUQfj7wEah5xQiyPEEDf6
+ AnumZtWgQbLEmkYr7DaFhk/xShQadgQ2ayokNPwxqS+tMNCKSHtmeDdX2
+ cLpN9/TpsTdbdZrQJGSfN8HCSw6qWWrJ4a692AbHLtc2NtdAISneRlaTu
+ bhZP0Mt37tml3gWYfAFT9IlJRlylbXCLgSbRiHI6YtqPpFpVBX5mslAd8
+ tsHgUG0sX9Le7PUqBvQMi2WrhShm28qwqO8nHdh7/QpHO5gXix/Zi/9xl
+ tdBFPz8znyAI1+oEoHmUV8wCpZYUMLOizVNIdQwsjvAQikF7yxA2Ujc2A g==;
+X-CSE-ConnectionGUID: vVcQQSMoSRSpC1HqLnULSg==
+X-CSE-MsgGUID: iFzQxaf2QmiA5Wmu7Bp6Ig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54496216"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="54496216"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jul 2025 03:00:26 -0700
-X-CSE-ConnectionGUID: onw+2bYBQkuhQgZOe42X2w==
-X-CSE-MsgGUID: KuWsCJSDR7WF/8+CEpZN8Q==
+ 11 Jul 2025 03:00:31 -0700
+X-CSE-ConnectionGUID: kEwFLIVOTGajOgISGLQ+zg==
+X-CSE-MsgGUID: I/V0E3r4RNuATUyrQCZTfw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="160662006"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="160662034"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 11 Jul 2025 03:00:21 -0700
+ by orviesa003.jf.intel.com with ESMTP; 11 Jul 2025 03:00:26 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -57,9 +57,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
  qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>
-Subject: [PATCH v2 01/18] i386/cpu: Refine comment of CPUID2CacheDescriptorInfo
-Date: Fri, 11 Jul 2025 18:21:26 +0800
-Message-Id: <20250711102143.1622339-2-zhao1.liu@intel.com>
+Subject: [PATCH v2 02/18] i386/cpu: Add descriptor 0x49 for CPUID 0x2 encoding
+Date: Fri, 11 Jul 2025 18:21:27 +0800
+Message-Id: <20250711102143.1622339-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250711102143.1622339-1-zhao1.liu@intel.com>
 References: <20250711102143.1622339-1-zhao1.liu@intel.com>
@@ -74,7 +74,7 @@ X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,81 +90,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refer to SDM vol.3 table 1-21, add the notes about the missing
-descriptor, and fix the typo and comment format.
+The legacy_l2_cache (2nd-level cache: 4 MByte, 16-way set associative,
+64 byte line size) corresponds to descriptor 0x49, but at present
+cpuid2_cache_descriptors doesn't support descriptor 0x49 because it has
+multiple meanings.
+
+The 0x49 is necessary when CPUID 0x2 and 0x4 leaves have the consistent
+cache model, and use legacy_l2_cache as the default L2 cache.
+
+Therefore, add descriptor 0x49 to represent general L2 cache.
 
 Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Tested-by: Yi Lai <yi1.lai@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Changes Since v1:
+Changes Since v2:
  * Fix the typo in comment. (Dapeng)
 ---
- target/i386/cpu.c | 31 ++++++++++++++++++++++---------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ target/i386/cpu.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 0d35e95430fe..6983b5f70457 100644
+index 6983b5f70457..75932579542a 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -66,6 +66,7 @@ struct CPUID2CacheDescriptorInfo {
- 
- /*
-  * Known CPUID 2 cache descriptors.
-+ * TLB, prefetch and sectored cache related descriptors are not included.
-  * From Intel SDM Volume 2A, CPUID instruction
-  */
- struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
-@@ -87,18 +88,29 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
-                .associativity = 2,  .line_size = 64, },
-     [0x21] = { .level = 2, .type = UNIFIED_CACHE,     .size = 256 * KiB,
+@@ -127,7 +127,18 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
                 .associativity = 8,  .line_size = 64, },
--    /* lines per sector is not supported cpuid2_cache_descriptor(),
--    * so descriptors 0x22, 0x23 are not included
--    */
+     [0x48] = { .level = 2, .type = UNIFIED_CACHE,     .size =   3 * MiB,
+                .associativity = 12, .line_size = 64, },
+-    /* Descriptor 0x49 depends on CPU family/model, so it is not included */
 +    /*
-+     * lines per sector is not supported cpuid2_cache_descriptor(),
-+     * so descriptors 0x22, 0x23 are not included
-+     */
-     [0x24] = { .level = 2, .type = UNIFIED_CACHE,     .size =   1 * MiB,
-                .associativity = 16, .line_size = 64, },
--    /* lines per sector is not supported cpuid2_cache_descriptor(),
--    * so descriptors 0x25, 0x20 are not included
--    */
-+    /*
-+     * lines per sector is not supported cpuid2_cache_descriptor(),
-+     * so descriptors 0x25, 0x29 are not included
-+     */
-     [0x2C] = { .level = 1, .type = DATA_CACHE,        .size =  32 * KiB,
-                .associativity = 8,  .line_size = 64, },
-     [0x30] = { .level = 1, .type = INSTRUCTION_CACHE, .size =  32 * KiB,
-                .associativity = 8,  .line_size = 64, },
-+    /*
-+     * Newer Intel CPUs (having the cores without L3, e.g., Intel MTL, ARL)
-+     * use CPUID 0x4 leaf to describe cache topology, by encoding CPUID 0x2
-+     * leaf with 0xFF. For older CPUs (without 0x4 leaf), it's also valid
-+     * to just ignore L3's code if there's no L3.
++     * Descriptor 0x49 has 2 cases:
++     *  - 2nd-level cache: 4 MByte, 16-way set associative, 64 byte line size.
++     *  - 3rd-level cache: 4MB, 16-way set associative, 64-byte line size
++     *    (Intel Xeon processor MP, Family 0FH, Model 06H).
 +     *
-+     * This already covers all the cases in QEMU, so code 0x40 is not
-+     * included.
++     * When it represents L3, then it depends on CPU family/model. Fortunately,
++     * the legacy cache/CPU models don't have such special L3. So, just add it
++     * to represent the general L2 case.
 +     */
-     [0x41] = { .level = 2, .type = UNIFIED_CACHE,     .size = 128 * KiB,
-                .associativity = 4,  .line_size = 32, },
-     [0x42] = { .level = 2, .type = UNIFIED_CACHE,     .size = 256 * KiB,
-@@ -136,9 +148,10 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
-                .associativity = 4,  .line_size = 64, },
-     [0x78] = { .level = 2, .type = UNIFIED_CACHE,     .size =   1 * MiB,
-                .associativity = 4,  .line_size = 64, },
--    /* lines per sector is not supported cpuid2_cache_descriptor(),
--    * so descriptors 0x79, 0x7A, 0x7B, 0x7C are not included.
--    */
-+    /*
-+     * lines per sector is not supported cpuid2_cache_descriptor(),
-+     * so descriptors 0x79, 0x7A, 0x7B, 0x7C are not included.
-+     */
-     [0x7D] = { .level = 2, .type = UNIFIED_CACHE,     .size =   2 * MiB,
-                .associativity = 8,  .line_size = 64, },
-     [0x7F] = { .level = 2, .type = UNIFIED_CACHE,     .size = 512 * KiB,
++    [0x49] = { .level = 2, .type = UNIFIED_CACHE,     .size =   4 * MiB,
++               .associativity = 16, .line_size = 64, },
+     [0x4A] = { .level = 3, .type = UNIFIED_CACHE,     .size =   6 * MiB,
+                .associativity = 12, .line_size = 64, },
+     [0x4B] = { .level = 3, .type = UNIFIED_CACHE,     .size =   8 * MiB,
 -- 
 2.34.1
 
