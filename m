@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F95B0262D
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 23:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E64D5B02651
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 23:20:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaL1o-0000XA-Ho; Fri, 11 Jul 2025 17:11:32 -0400
+	id 1uaL21-0000dJ-7W; Fri, 11 Jul 2025 17:11:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uaL1j-0000TH-VT; Fri, 11 Jul 2025 17:11:28 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1uaL1m-0000Wd-S6; Fri, 11 Jul 2025 17:11:31 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uaL1i-0002pq-4e; Fri, 11 Jul 2025 17:11:27 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56BDZqQ3010735;
- Fri, 11 Jul 2025 21:11:24 GMT
+ id 1uaL1k-0002qe-Da; Fri, 11 Jul 2025 17:11:30 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56BGJtVk012960;
+ Fri, 11 Jul 2025 21:11:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=uE38BmxaOBFngUZnx
- g99HVV1TWXtN8r3dofuEhxFp7E=; b=PlqxWl0uYgesMjjKHKaykOhE+RUe95aXX
- fGBmqsAtjauyHxphq9lSKMOIROUoveBvbc1pBbzJlC5PmM5loisd62ZPmkF0QiFP
- R7hrrpq5qIhw4riiZ9V7Uv8kWBy4chRJ2ytATGeE7fnlswkAOGxGcUuYLDUfVyMM
- 5FutT4sET3HlXPuouXhuTTZr7HEtxZI3TifTfaFAfaXsJCJmBgJ95nzfskhZiIMt
- jsoV5dvaoUuXQ/q5l1vVhfytqmGIBwAOQoSAr0XNmBQwl1dM95QGPtm7iSkSChGo
- 4pjA/vgwWKlTk955E1+ZkDS4gz8RXC+WqTcW1rUVLHR8cIdbUVqFA==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47puqnuytr-1
+ :mime-version:references:subject:to; s=pp1; bh=15Qp48VAJSbYqXrc0
+ iLqAqTXkPZaGC/vs4R7iqs1+hQ=; b=Po4nWFNtGhIRbYSTqK/dZ4MJSaNA8412d
+ uVBQK46cZKaMQ89OA225oAkqPz12cLYF5dDQM10ND5rRdbiDbkcMJ6O1gefsqsB0
+ 6TmwaB2hHXZZNjkdIKkhpA49aGJHZO0r7NVqG7jx1obxrvCGulJ+Van0Vk1+teig
+ mfCC2adfKZqFep+ZOStRNUyRVgruhz5Im6z7a4WWvBEZcsUkR92S07AY6LFVTNtM
+ 6fei0gKwyfwAuJTzlEWH0lY20m6JRErGH9/c5LSieEOSugkAUp5mNO5n5Mx1JcdN
+ CiN159E4F59DhvhBwkzXOYU6tNP0yjWADHDUTo5ZE8EM0miDJBCyw==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47t3xdk8wg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Jul 2025 21:11:24 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56BL1UMi013583;
- Fri, 11 Jul 2025 21:11:23 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 47qgkmcbca-1
+ Fri, 11 Jul 2025 21:11:25 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56BJaQon025528;
+ Fri, 11 Jul 2025 21:11:24 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47qfcpmk4x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Jul 2025 21:11:23 +0000
+ Fri, 11 Jul 2025 21:11:24 +0000
 Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
  [10.39.53.229])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 56BLBLjt2687650
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 56BLBNhn33489610
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 11 Jul 2025 21:11:21 GMT
+ Fri, 11 Jul 2025 21:11:23 GMT
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B0B2858059;
+ by IMSVA (Postfix) with ESMTP id 56DF258059;
+ Fri, 11 Jul 2025 21:11:23 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D8AA95805B;
  Fri, 11 Jul 2025 21:11:21 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2CDCE5805C;
- Fri, 11 Jul 2025 21:11:20 +0000 (GMT)
 Received: from fedora-workstation.ibmuc.com (unknown [9.61.25.251])
  by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 11 Jul 2025 21:11:20 +0000 (GMT)
+ Fri, 11 Jul 2025 21:11:21 +0000 (GMT)
 From: Zhuoying Cai <zycai@linux.ibm.com>
 To: thuth@redhat.com, berrange@redhat.com, richard.henderson@linaro.org,
  david@redhat.com, pbonzini@redhat.com, jrossi@linux.ibm.com,
@@ -62,39 +62,40 @@ To: thuth@redhat.com, berrange@redhat.com, richard.henderson@linaro.org,
 Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
  borntraeger@linux.ibm.com, farman@linux.ibm.com,
  mjrosato@linux.ibm.com, iii@linux.ibm.com, zycai@linux.ibm.com
-Subject: [PATCH v4 07/28] s390x/diag: Implement DIAG 320 subcode 1
-Date: Fri, 11 Jul 2025 17:10:43 -0400
-Message-ID: <20250711211105.439554-8-zycai@linux.ibm.com>
+Subject: [PATCH v4 08/28] crypto/x509-utils: Add helper functions for DIAG 320
+ subcode 2
+Date: Fri, 11 Jul 2025 17:10:44 -0400
+Message-ID: <20250711211105.439554-9-zycai@linux.ibm.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250711211105.439554-1-zycai@linux.ibm.com>
 References: <20250711211105.439554-1-zycai@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FZ43xI+6 c=1 sm=1 tr=0 ts=68717dfc cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=e_kuu1gU4TaIW1Qv6wwA:9
-X-Proofpoint-GUID: aDuiGHIyRYMbhCyiF2jyA1myhSIjx_BQ
-X-Proofpoint-ORIG-GUID: aDuiGHIyRYMbhCyiF2jyA1myhSIjx_BQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzExMDE1NiBTYWx0ZWRfX5flbCSgmYxxl
- D7agBoJTnIIjTiQCZ4/OOf7Z6beUCqvBzRZOxgeYRXz0blBfGCjU0r95HmBveLKCxMV+qrH2A1T
- ONIGe3YKKKeFeolLp8MXHTt2HZY8NtArOq4XyDIsBTaz0CSX492ym91yqkiGmxGLM/891xukepC
- fGzzyPoiCSJbXcsWRb0/1ctNP+irRt/S6cx5B+fqHB17frfB98eBQylGWQFZtDN7vbDkF82WjLf
- Ri3E6nsPDBAsDADM2PMD+FXD5zy8Az6wWY7yBqnuRmY1C91Z+4EiJFYzS7GKlIWiRKQAhFRPH/3
- vJjfDAoYryFykQuLc/AR0HSj4pU+irpXug9PBNxo109fEmRSCFRwT60H8xmQNwV19b0Zo82rgnr
- 98EZhTJJ5r2EcYfvkQllwd4AyocM9nvyp7FXnqRdJX+Uuz+HmmRde4rA7R26LJ0bfte/tum0
+X-Proofpoint-ORIG-GUID: Di2ZtziODWQYTBMjDavJdxTioqBVmyH1
+X-Authority-Analysis: v=2.4 cv=MLRgmNZl c=1 sm=1 tr=0 ts=68717dfd cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=94PFMrfvruhaK23DsHYA:9
+X-Proofpoint-GUID: Di2ZtziODWQYTBMjDavJdxTioqBVmyH1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzExMDE1NiBTYWx0ZWRfX6q5X/dcgox6E
+ JhNyewTH/L6DSIwafyQRIhSyQlIkRuJx8I8JlCuXO1g1DLKvw5Gn8i6rydsLD8PluFAwyg1t6wS
+ PvmlJiyk/FqdFdF4CKvossu2zx2LFrheiEFgMFuY1dlFImO3krHq0fB/kxQpgABA2e1PIuYtH0z
+ /9IukpxvvsUxqICeeeqkdQo5lepk6DpTMe0LIbw6gWtEDieLA0WOMdVQuAZlsAG+iArOxaMNlC4
+ fzhmUDb6JHlTnhOLpn4Rjd5GIOaMgBNhTMWy4UBaC2A+5QRr2PAL1kgX6sosvWLfV/PQYud77IN
+ cjgnMx6+9uUqCS0ILEBNmVD+Brio/g1NifbC9mQYi2qbOI6swGscAbVn1FUXhNq3rx2oOR0JWsD
+ nxWaUEvP2nQRiAH6mxd3oQ7Do6DFhYy+sInEAjq8D3w/tIvonnhjgSkUDnBspFBWLFfqpM6X
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-11_06,2025-07-09_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 mlxscore=0
- priorityscore=1501 malwarescore=0 mlxlogscore=969 clxscore=1015
- spamscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ bulkscore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 mlxscore=0 clxscore=1015 impostorscore=0
+ malwarescore=0 mlxlogscore=999 lowpriorityscore=0 phishscore=0 spamscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2507110156
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=zycai@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=zycai@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -118,119 +119,353 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DIAG 320 subcode 1 provides information needed to determine
-the amount of storage to store one or more certificates.
+Introduce new helper functions to extract certificate metadata needed for
+DIAG 320 subcode 2:
 
-The subcode value is denoted by setting the left-most bit
-of an 8-byte field.
+qcrypto_x509_get_cert_version() - retrieves version of a certificate
+qcrypto_x509_check_cert_times() - validates the certificate's validity period against the current time
+qcrypto_x509_get_pk_algorithm() - returns the public key algorithm used in the certificate
+qcrypto_x509_get_cert_key_id() - extracts the key ID from the certificate
 
-The verification-certificate-storage-size block (VCSSB) contains
-the output data when the operation completes successfully.
+These functions provide support for metadata extraction and validity checking
+for X.509 certificates.
 
 Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
 ---
- include/hw/s390x/ipl/diag320.h | 23 ++++++++++++++++++++++
- target/s390x/diag.c            | 36 +++++++++++++++++++++++++++++++++-
- 2 files changed, 58 insertions(+), 1 deletion(-)
+ crypto/x509-utils.c         | 199 ++++++++++++++++++++++++++++++++++++
+ include/crypto/x509-utils.h |  76 +++++++++++++-
+ 2 files changed, 272 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/s390x/ipl/diag320.h b/include/hw/s390x/ipl/diag320.h
-index 713570545d..3916a2915e 100644
---- a/include/hw/s390x/ipl/diag320.h
-+++ b/include/hw/s390x/ipl/diag320.h
-@@ -11,7 +11,30 @@
- #define S390X_DIAG320_H
+diff --git a/crypto/x509-utils.c b/crypto/x509-utils.c
+index d2cf790d5b..135f83f55e 100644
+--- a/crypto/x509-utils.c
++++ b/crypto/x509-utils.c
+@@ -55,6 +55,14 @@ static const int gnutls_to_qcrypto_sig_alg_map[] = {
+     [GNUTLS_SIGN_ECDSA_SHA512] = QCRYPTO_SIG_ALGO_ECDSA_SHA512,
+ };
  
- #define DIAG_320_SUBC_QUERY_ISM     0
-+#define DIAG_320_SUBC_QUERY_VCSI    1
- 
- #define DIAG_320_RC_OK              0x0001
- 
-+#define VCSSB_MAX_LEN   128
-+#define VCE_HEADER_LEN  128
-+#define VCB_HEADER_LEN  64
-+
-+#define DIAG_320_ISM_QUERY_VCSI     0x4000000000000000
-+
-+struct VCStorageSizeBlock {
-+    uint32_t length;
-+    uint8_t reserved0[3];
-+    uint8_t version;
-+    uint32_t reserved1[6];
-+    uint16_t total_vc_ct;
-+    uint16_t max_vc_ct;
-+    uint32_t reserved3[7];
-+    uint32_t max_vce_len;
-+    uint32_t reserved4[3];
-+    uint32_t max_single_vcb_len;
-+    uint32_t total_vcb_len;
-+    uint32_t reserved5[10];
++static const int gnutls_to_qcrypto_pk_alg_map[] = {
++    [GNUTLS_PK_UNKNOWN] = QCRYPTO_PK_ALGO_UNKNOWN,
++    [GNUTLS_PK_RSA] = QCRYPTO_PK_ALGO_RSA,
++    [GNUTLS_PK_DSA] = QCRYPTO_PK_ALGO_DSA,
++    [GNUTLS_PK_DH] = QCRYPTO_PK_ALGO_DH,
++    [GNUTLS_PK_ECDSA] = QCRYPTO_PK_ALGO_ECDSA,
 +};
-+typedef struct VCStorageSizeBlock VCStorageSizeBlock;
 +
- #endif
-diff --git a/target/s390x/diag.c b/target/s390x/diag.c
-index 7b9b47a171..1f7d0cb2f6 100644
---- a/target/s390x/diag.c
-+++ b/target/s390x/diag.c
-@@ -191,9 +191,13 @@ out:
-     }
+ int qcrypto_x509_convert_cert_der(uint8_t *cert, size_t size,
+                                   uint8_t **result, size_t *resultlen,
+                                   Error **errp)
+@@ -195,6 +203,169 @@ cleanup:
+     return ret;
  }
  
-+QEMU_BUILD_BUG_MSG(sizeof(VCStorageSizeBlock) != 128,
-+                   "size of VCStorageSizeBlock is wrong");
++int qcrypto_x509_get_cert_version(uint8_t *cert, size_t size, Error **errp)
++{
++    int rc;
++    int ret = -1;
++    gnutls_x509_crt_t crt;
++    gnutls_datum_t datum = {.data = cert, .size = size};
 +
- void handle_diag_320(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
- {
-     S390CPU *cpu = env_archcpu(env);
-+    S390IPLCertificateStore *qcs = s390_ipl_get_certificate_store();
-     uint64_t subcode = env->regs[r3];
-     uint64_t addr = env->regs[r1];
-     int rc;
-@@ -215,13 +219,43 @@ void handle_diag_320(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
++    rc = gnutls_x509_crt_init(&crt);
++    if (rc < 0) {
++        error_setg(errp, "Failed to initialize certificate: %s", gnutls_strerror(rc));
++        return ret;
++    }
++
++    rc = gnutls_x509_crt_import(crt, &datum, GNUTLS_X509_FMT_PEM);
++    if (rc != 0) {
++        error_setg(errp, "Failed to import certificate: %s", gnutls_strerror(rc));
++        goto cleanup;
++    }
++
++    rc = gnutls_x509_crt_get_version(crt);
++    if (rc < 0) {
++        error_setg(errp, "Failed to get certificate version: %s", gnutls_strerror(rc));
++        goto cleanup;
++    }
++
++    ret = rc;
++
++cleanup:
++    gnutls_x509_crt_deinit(crt);
++    return ret;
++}
++
++int qcrypto_x509_check_cert_times(uint8_t *cert, size_t size, Error **errp)
++{
++    int rc;
++    int ret = -1;
++    gnutls_x509_crt_t crt;
++    gnutls_datum_t datum = {.data = cert, .size = size};
++    time_t now = time(0);
++    time_t exp_time;
++    time_t act_time;
++
++    if (now == ((time_t)-1)) {
++        error_setg_errno(errp, errno, "Cannot get current time");
++        return ret;
++    }
++
++    rc = gnutls_x509_crt_init(&crt);
++    if (rc < 0) {
++        error_setg(errp, "Failed to initialize certificate: %s", gnutls_strerror(rc));
++        return ret;
++    }
++
++    rc = gnutls_x509_crt_import(crt, &datum, GNUTLS_X509_FMT_PEM);
++    if (rc != 0) {
++        error_setg(errp, "Failed to import certificate: %s", gnutls_strerror(rc));
++        goto cleanup;
++    }
++
++    exp_time = gnutls_x509_crt_get_expiration_time(crt);
++    if (exp_time == ((time_t)-1)) {
++        error_setg(errp, "Failed to get certificate expiration time");
++        goto cleanup;
++    }
++    if (exp_time < now) {
++        error_setg(errp, "The certificate has expired");
++        goto cleanup;
++    }
++
++    act_time = gnutls_x509_crt_get_activation_time(crt);
++    if (act_time == ((time_t)-1)) {
++        error_setg(errp, "Failed to get certificate activation time");
++        goto cleanup;
++    }
++    if (act_time > now) {
++        error_setg(errp, "The certificate is not yet active");
++        goto cleanup;
++    }
++
++    ret = 0;
++
++cleanup:
++    gnutls_x509_crt_deinit(crt);
++    return ret;
++}
++
++int qcrypto_x509_get_pk_algorithm(uint8_t *cert, size_t size, Error **errp)
++{
++    int rc;
++    int ret = -1;
++    unsigned int bits;
++    gnutls_x509_crt_t crt;
++    gnutls_datum_t datum = {.data = cert, .size = size};
++
++    rc = gnutls_x509_crt_init(&crt);
++    if (rc < 0) {
++        error_setg(errp, "Failed to initialize certificate: %s", gnutls_strerror(rc));
++        return ret;
++    }
++
++    rc = gnutls_x509_crt_import(crt, &datum, GNUTLS_X509_FMT_PEM);
++    if (rc != 0) {
++        error_setg(errp, "Failed to import certificate: %s", gnutls_strerror(rc));
++        goto cleanup;
++    }
++
++    rc = gnutls_x509_crt_get_pk_algorithm(crt, &bits);
++    if (rc >= G_N_ELEMENTS(gnutls_to_qcrypto_pk_alg_map)) {
++        error_setg(errp, "Unknown public key algorithm %d", rc);
++        goto cleanup;
++    }
++
++    ret = gnutls_to_qcrypto_pk_alg_map[rc];
++
++cleanup:
++    gnutls_x509_crt_deinit(crt);
++    return ret;
++}
++
++int qcrypto_x509_get_cert_key_id(uint8_t *cert, size_t size,
++                                 QCryptoKeyidFlags flag,
++                                 uint8_t **result,
++                                 size_t *resultlen,
++                                 Error **errp)
++{
++    int rc;
++    int ret = -1;
++    gnutls_x509_crt_t crt;
++    gnutls_datum_t datum = {.data = cert, .size = size};
++
++    *resultlen = qcrypto_x509_get_keyid_len(qcrypto_to_gnutls_keyid_flags_map[flag],
++                                            errp);
++    if (*resultlen == -1) {
++        return ret;
++    }
++
++    rc = gnutls_x509_crt_init(&crt);
++    if (rc < 0) {
++        error_setg(errp, "Failed to initialize certificate: %s", gnutls_strerror(rc));
++        return ret;
++    }
++
++    rc = gnutls_x509_crt_import(crt, &datum, GNUTLS_X509_FMT_PEM);
++    if (rc != 0) {
++        error_setg(errp, "Failed to import certificate: %s", gnutls_strerror(rc));
++        goto cleanup;
++    }
++
++    *result = g_malloc0(*resultlen);
++    if (gnutls_x509_crt_get_key_id(crt,
++                                   qcrypto_to_gnutls_keyid_flags_map[flag],
++                                   *result, resultlen) != 0) {
++        error_setg(errp, "Failed to get key ID from certificate");
++        goto cleanup;
++    }
++
++    ret = 0;
++
++cleanup:
++    gnutls_x509_crt_deinit(crt);
++    return ret;
++}
++
+ #else /* ! CONFIG_GNUTLS */
  
-     switch (subcode) {
-     case DIAG_320_SUBC_QUERY_ISM:
--        uint64_t ism =  0;
-+        uint64_t ism = cpu_to_be64(DIAG_320_ISM_QUERY_VCSI);
+ int qcrypto_x509_convert_cert_der(uint8_t *cert, size_t size,
+@@ -228,4 +399,32 @@ int qcrypto_x509_get_signature_algorithm(uint8_t *cert, size_t size, Error **err
+     return -1;
+ }
  
-         if (s390_cpu_virt_mem_write(cpu, addr, r1, &ism, sizeof(ism))) {
-             s390_cpu_virt_mem_handle_exc(cpu, ra);
-             return;
-         }
++int qcrypto_x509_get_cert_version(uint8_t *cert, size_t size, Error **errp)
++{
++    error_setg(errp, "GNUTLS is required to get certificate version");
++    return -1;
++}
++
++int qcrypto_x509_check_cert_times(uint8_t *cert, size_t size, Error **errp)
++{
++    error_setg(errp, "GNUTLS is required to get certificate times");
++    return -1;
++}
++
++int qcrypto_x509_get_pk_algorithm(uint8_t *cert, size_t size, Error **errp)
++{
++    error_setg(errp, "GNUTLS is required to get public key algorithm");
++    return -1;
++}
++
++int qcrypto_x509_get_cert_key_id(uint8_t *cert, size_t size,
++                                 QCryptoKeyidFlags flag,
++                                 uint8_t **result,
++                                 size_t *resultlen,
++                                 Error **errp)
++{
++    error_setg(errp, "GNUTLS is required to get key ID");
++    return -1;
++}
++
+ #endif /* ! CONFIG_GNUTLS */
+diff --git a/include/crypto/x509-utils.h b/include/crypto/x509-utils.h
+index d916d248bb..c122df0a98 100644
+--- a/include/crypto/x509-utils.h
++++ b/include/crypto/x509-utils.h
+@@ -40,6 +40,14 @@ typedef enum {
+     QCRYPTO_SIG_ALGO_ECDSA_SHA512,
+ } QCryptoSigAlgo;
  
-+        rc = DIAG_320_RC_OK;
-+        break;
-+    case DIAG_320_SUBC_QUERY_VCSI:
-+        VCStorageSizeBlock vcssb;
++typedef enum {
++    QCRYPTO_PK_ALGO_UNKNOWN,
++    QCRYPTO_PK_ALGO_RSA,
++    QCRYPTO_PK_ALGO_DSA,
++    QCRYPTO_PK_ALGO_DH,
++    QCRYPTO_PK_ALGO_ECDSA,
++} QCryptoPkAlgo;
 +
-+        if (!diag_parm_addr_valid(addr, sizeof(VCStorageSizeBlock),
-+                                  true)) {
-+            s390_program_interrupt(env, PGM_ADDRESSING, ra);
-+            return;
-+        }
+ int qcrypto_get_x509_cert_fingerprint(uint8_t *cert, size_t size,
+                                       QCryptoHashAlgo hash,
+                                       uint8_t *result,
+@@ -53,10 +61,10 @@ int qcrypto_get_x509_cert_fingerprint(uint8_t *cert, size_t size,
+  * @result: output location for the allocated buffer for the certificate in DER format
+             (the function allocates memory which must be freed by the caller)
+  * @resultlen: pointer to the size of the buffer
+-               (will be replaced by the actual size of the DER-encoded certificate)
++               (will be updated with the actual size of the DER-encoded certificate)
+  * @errp: error pointer
+  *
+- * Convert given @cert from PEM to DER format.
++ * Convert the given @cert from PEM to DER format.
+  *
+  * Returns: 0 on success,
+  *         -1 on error.
+@@ -70,7 +78,7 @@ int qcrypto_x509_convert_cert_der(uint8_t *cert, size_t size,
+  * qcrypto_x509_get_keyid_len
+  * @flag: the key ID flag
+  *
+- * Determine the length of the key ID of the given @flag.
++ * Determine the length of the key ID corresponding to the given @flag.
+  *
+  * Returns: the length on success,
+  *          -1 on error.
+@@ -90,4 +98,66 @@ int qcrypto_x509_get_keyid_len(QCryptoKeyidFlags flag, Error **errp);
+  */
+ int qcrypto_x509_get_signature_algorithm(uint8_t *cert, size_t size, Error **errp);
+ 
++/**
++ * qcrypto_x509_get_cert_version
++ * @cert: pointer to the raw certificate data
++ * @size: size of the certificate
++ * @errp: error pointer
++ *
++ * Determine the version of the @cert.
++ *
++ * Returns: the version on success,
++ *          -1 on error.
++ */
++int qcrypto_x509_get_cert_version(uint8_t *cert, size_t size, Error **errp);
 +
-+        if (!qcs || !qcs->count) {
-+            vcssb.length = cpu_to_be32(4);
-+        } else {
-+            vcssb.length = cpu_to_be32(VCSSB_MAX_LEN);
-+            vcssb.version = 0;
-+            vcssb.total_vc_ct = cpu_to_be16(qcs->count);
-+            vcssb.max_vc_ct = cpu_to_be16(MAX_CERTIFICATES);
-+            vcssb.max_vce_len = cpu_to_be32(VCE_HEADER_LEN + qcs->max_cert_size);
-+            vcssb.max_single_vcb_len = cpu_to_be32(VCB_HEADER_LEN + VCE_HEADER_LEN +
-+                                                   qcs->max_cert_size);
-+            vcssb.total_vcb_len = cpu_to_be32(VCB_HEADER_LEN +
-+                                              qcs->count * VCE_HEADER_LEN +
-+                                              qcs->total_bytes);
-+        }
++/**
++ * qcrypto_x509_check_cert_times
++ * @cert: pointer to the raw certificate data
++ * @size: size of the certificate
++ * @errp: error pointer
++ *
++ * Check whether the activation and expiration times of @cert
++ * are valid at the current time.
++ *
++ * Returns: 0 if the certificate times are valid,
++ *         -1 on error.
++ */
++int qcrypto_x509_check_cert_times(uint8_t *cert, size_t size, Error **errp);
 +
-+        if (s390_cpu_virt_mem_write(cpu, addr, r1, &vcssb, sizeof(VCStorageSizeBlock))) {
-+            s390_cpu_virt_mem_handle_exc(cpu, ra);
-+            return;
-+        }
-         rc = DIAG_320_RC_OK;
-         break;
-     default:
++/**
++ * qcrypto_x509_get_pk_algorithm
++ * @cert: pointer to the raw certificate data
++ * @size: size of the certificate
++ * @errp: error pointer
++ *
++ * Determine the public key algorithm of the @cert.
++ *
++ * Returns: a value from the QCryptoPkAlgo enum on success,
++ *          -1 on error.
++ */
++int qcrypto_x509_get_pk_algorithm(uint8_t *cert, size_t size, Error **errp);
++
++/**
++ * qcrypto_x509_get_cert_key_id
++ * @cert: pointer to the raw certificate data
++ * @size: size of the certificate
++ * @flag: the key ID flag
++ * @result: output location for the allocated buffer for key ID
++            (the function allocates memory which must be freed by the caller)
++ * @resultlen: pointer to the size of the buffer
++               (will be updated with the actual size of key id)
++ * @errp: error pointer
++ *
++ * Retrieve the key ID from the @cert based on the specified @flag.
++ *
++ * Returns: 0 if key ID was successfully stored in @result,
++ *         -1 on error.
++ */
++int qcrypto_x509_get_cert_key_id(uint8_t *cert, size_t size,
++                                 QCryptoKeyidFlags flag,
++                                 uint8_t **result,
++                                 size_t *resultlen,
++                                 Error **errp);
++
+ #endif
 -- 
 2.49.0
 
