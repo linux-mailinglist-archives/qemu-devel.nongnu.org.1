@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20A6B01718
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CBADB01751
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:11:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua9cH-00063M-Lt; Fri, 11 Jul 2025 05:00:26 -0400
+	id 1ua9g7-0004yP-UB; Fri, 11 Jul 2025 05:04:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1ua9T7-0002GB-Co; Fri, 11 Jul 2025 04:50:58 -0400
+ id 1ua9TK-0002Ol-9u; Fri, 11 Jul 2025 04:51:10 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1ua9T5-0003xt-No; Fri, 11 Jul 2025 04:50:57 -0400
+ id 1ua9TI-00040f-1p; Fri, 11 Jul 2025 04:51:09 -0400
 Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bdlhk4QQxz6L51b;
- Fri, 11 Jul 2025 16:47:34 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bdlhx6ZvKz6L4yW;
+ Fri, 11 Jul 2025 16:47:45 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 3D1361402EF;
- Fri, 11 Jul 2025 16:50:52 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 879C11402ED;
+ Fri, 11 Jul 2025 16:51:03 +0800 (CST)
 Received: from A2303104131.china.huawei.com (10.203.177.241) by
  frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 11 Jul 2025 10:50:42 +0200
+ 15.1.2507.39; Fri, 11 Jul 2025 10:50:54 +0200
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <nicolinc@nvidia.com>, <ddutile@redhat.com>, <berrange@redhat.com>,
@@ -34,14 +34,16 @@ CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <marcel.apfelbaum@gmail.com>, <linuxarm@huawei.com>,
  <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
  <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>
-Subject: [PATCH v8 10/12] bios-tables-test: Allow for smmuv3 test data.
-Date: Fri, 11 Jul 2025 09:47:47 +0100
-Message-ID: <20250711084749.18300-11-shameerali.kolothum.thodi@huawei.com>
+Subject: [PATCH v8 11/12] qtest/bios-tables-test: Add tests for legacy smmuv3
+ and smmuv3 device
+Date: Fri, 11 Jul 2025 09:47:48 +0100
+Message-ID: <20250711084749.18300-12-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20250711084749.18300-1-shameerali.kolothum.thodi@huawei.com>
 References: <20250711084749.18300-1-shameerali.kolothum.thodi@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.203.177.241]
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  frapeml500008.china.huawei.com (7.182.85.71)
@@ -74,47 +76,140 @@ From:  Shameer Kolothum via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tests to be added exercise both legacy(iommu=smmuv3) and new
--device arm-smmuv3,.. cases.
+For the legacy SMMUv3 test, the setup includes three PCIe Root Complexes,
+one of which has bypass_iommu enabled. The generated IORT table contains
+a single SMMUv3 node, a Root Complex(RC) node and 1 ITS node.
+RC node features 4 ID mappings, of which 2 points to SMMU node and the
+remaining ones points to ITS.
+
+       pcie.0 -> {SMMU0} -> {ITS}
+{RC}   pcie.1 -> {SMMU0} -> {ITS}
+       pcie.2            -> {ITS}
+       [all other ids]   -> {ITS}
+
+For the -device arm-smmuv3,... test, the configuration also includes three
+Root Complexes, with two connected to separate SMMUv3 devices.
+The resulting IORT table contains 1 RC node, 2 SMMU nodes and 1 ITS node.
+RC node features 4 ID mappings. 2 of them target the 2 SMMU nodes while
+the others targets the ITS.
+
+        pcie.0 -> {SMMU0} -> {ITS}
+{RC}    pcie.1 -> {SMMU1} -> {ITS}
+        pcie.2            -> {ITS}
+        [all other ids]   -> {ITS}
 
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev    | 0
- tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy | 0
- tests/data/acpi/aarch64/virt/IORT.smmuv3-dev    | 0
- tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy | 0
- tests/qtest/bios-tables-test-allowed-diff.h     | 4 ++++
- 5 files changed, 4 insertions(+)
- create mode 100644 tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev
- create mode 100644 tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy
- create mode 100644 tests/data/acpi/aarch64/virt/IORT.smmuv3-dev
- create mode 100644 tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy
+ tests/qtest/bios-tables-test.c | 86 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 86 insertions(+)
 
-diff --git a/tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev b/tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy b/tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/data/acpi/aarch64/virt/IORT.smmuv3-dev b/tests/data/acpi/aarch64/virt/IORT.smmuv3-dev
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy b/tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..2e3e3ccdce 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,5 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy",
-+"tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev",
-+"tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy",
-+"tests/data/acpi/aarch64/virt/IORT.smmuv3-dev",
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 4dbc07ec5e..79f8ca6559 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -2250,6 +2250,86 @@ static void test_acpi_aarch64_virt_viot(void)
+     free_test_data(&data);
+ }
+ 
++static void test_acpi_aarch64_virt_smmuv3_legacy(void)
++{
++    test_data data = {
++        .machine = "virt",
++        .arch = "aarch64",
++        .tcg_only = true,
++        .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
++        .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
++        .ram_start = 0x40000000ULL,
++        .scan_len = 128ULL * MiB,
++    };
++
++    /*
++     * cdrom is plugged into scsi controller to avoid conflict
++     * with pxb-pcie. See comments in test_acpi_aarch64_virt_tcg_pxb() for
++     * details.
++     *
++     * The setup includes three PCIe root complexes, one of which has
++     * bypass_iommu enabled. The generated IORT table contains a single
++     * SMMUv3 node and a Root Complex node with three ID mappings. Two
++     * of the ID mappings have output references pointing to the SMMUv3
++     * node and the remaining one points to ITS.
++     */
++    data.variant = ".smmuv3-legacy";
++    test_acpi_one(" -device pcie-root-port,chassis=1,id=pci.1"
++                  " -device virtio-scsi-pci,id=scsi0,bus=pci.1"
++                  " -drive file="
++                  "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2,"
++                  "if=none,media=cdrom,id=drive-scsi0-0-0-1,readonly=on"
++                  " -device scsi-cd,bus=scsi0.0,scsi-id=0,"
++                  "drive=drive-scsi0-0-0-1,id=scsi0-0-0-1,bootindex=1"
++                  " -cpu cortex-a57"
++                  " -M iommu=smmuv3"
++                  " -device pxb-pcie,id=pcie.1,bus=pcie.0,bus_nr=0x10"
++                  " -device pxb-pcie,id=pcie.2,bus=pcie.0,bus_nr=0x20,bypass_iommu=on",
++                  &data);
++    free_test_data(&data);
++}
++
++static void test_acpi_aarch64_virt_smmuv3_dev(void)
++{
++    test_data data = {
++        .machine = "virt",
++        .arch = "aarch64",
++        .tcg_only = true,
++        .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
++        .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
++        .ram_start = 0x40000000ULL,
++        .scan_len = 128ULL * MiB,
++    };
++
++    /*
++     * cdrom is plugged into scsi controller to avoid conflict
++     * with pxb-pcie. See comments in test_acpi_aarch64_virt_tcg_pxb()
++     * for details.
++     *
++     * The setup includes three PCie root complexes, two of which are
++     * connected to separate SMMUv3 devices. The resulting IORT table
++     * contains two SMMUv3 nodes and a Root Complex node with ID mappings
++     * of which two of the ID mappings have output references pointing
++     * to two different SMMUv3 nodes and the remaining ones pointing to
++     * ITS.
++     */
++    data.variant = ".smmuv3-dev";
++    test_acpi_one(" -device pcie-root-port,chassis=1,id=pci.1"
++                  " -device virtio-scsi-pci,id=scsi0,bus=pci.1"
++                  " -drive file="
++                  "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2,"
++                  "if=none,media=cdrom,id=drive-scsi0-0-0-1,readonly=on"
++                  " -device scsi-cd,bus=scsi0.0,scsi-id=0,"
++                  "drive=drive-scsi0-0-0-1,id=scsi0-0-0-1,bootindex=1"
++                  " -cpu cortex-a57"
++                  " -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.0"
++                  " -device pxb-pcie,id=pcie.1,bus=pcie.0,bus_nr=0x10"
++                  " -device arm-smmuv3,primary-bus=pcie.1,id=smmuv3.1"
++                  " -device pxb-pcie,id=pcie.2,bus=pcie.0,bus_nr=0x20",
++                  &data);
++    free_test_data(&data);
++}
++
+ #ifndef _WIN32
+ # define DEV_NULL "/dev/null"
+ #else
+@@ -2607,6 +2687,12 @@ int main(int argc, char *argv[])
+             if (qtest_has_device("virtio-iommu-pci")) {
+                 qtest_add_func("acpi/virt/viot", test_acpi_aarch64_virt_viot);
+             }
++            qtest_add_func("acpi/virt/smmuv3-legacy",
++                           test_acpi_aarch64_virt_smmuv3_legacy);
++            if (qtest_has_device("arm-smmuv3")) {
++                qtest_add_func("acpi/virt/smmuv3-dev",
++                               test_acpi_aarch64_virt_smmuv3_dev);
++            }
+         }
+     } else if (strcmp(arch, "riscv64") == 0) {
+         if (has_tcg && qtest_has_device("virtio-blk-pci")) {
 -- 
 2.47.0
 
