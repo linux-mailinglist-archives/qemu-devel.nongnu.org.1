@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6A7B01723
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B307B0170D
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 11:00:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua9eM-0000Lm-78; Fri, 11 Jul 2025 05:02:35 -0400
+	id 1ua9Xr-00022o-RK; Fri, 11 Jul 2025 04:55:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ua9Qv-0007a5-Dw
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:48:41 -0400
-Received: from mail-yb1-xb33.google.com ([2607:f8b0:4864:20::b33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ua9Qt-0002k7-KN
- for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:48:41 -0400
-Received: by mail-yb1-xb33.google.com with SMTP id
- 3f1490d57ef6-e8275f110c6so1331510276.2
- for <qemu-devel@nongnu.org>; Fri, 11 Jul 2025 01:48:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752223717; x=1752828517; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=TimCur25OrpeO8vdC5V/7CHTgVJ4y7hGx+XAsDTQQDI=;
- b=c5XzWdfsfFryJvCHn4wuDlVg/SBAGGaijhbqIxYmtt4CBfaAOwgb5NA/7L4W073b29
- aAld+Y6Mb5Jz8J36V3wSVxhwbryhwsKhMp2FU251Gns7xs6Dci5vR7sw8HGGKjCvV/NO
- 1NTMY8Cj1eh1ZI5V4fPnfdZIw9at+VZQlOaMHelgKNQ7JsL0KK25Fet/6y9eck+sP0v8
- 35wZMm1SyP6EmNre+oA9NZQq3jNM0ehLAAVTRJI5H3aUHQT4m7Sk9ctvaknJnNZNkbVa
- 5+A0MakSOWq7V+afP7/k2El09cJ4EU3eJ/e5MrotaRbRTJ/bvzScb1MY7RMipEpyJdpU
- R1gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752223717; x=1752828517;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TimCur25OrpeO8vdC5V/7CHTgVJ4y7hGx+XAsDTQQDI=;
- b=SyTX6BA6yWmWAt2Kc7TZTFpiEDzANGgMT0hx8ZKTVsZo0xaIsmAigQzQp4l7/EmNtf
- Zjf/mpdvkII0dHSPAaIskrakYFAEwTQkhXup3cq0akLUZ9cpg1L3ZeqsgDlbMWMxbknc
- KHW7Ps71dvHXBzyofvl2xjZ/49HKPIMsDqcgZ3lMjDwIE4BNlAUQ0o6oupqOr1Z9368B
- E2X5zqyGBH/vfPl4qvq3QTgmhFo8gSnz1FGrCjYZhg5py6i0DN+Pbzkr/rGsQ1/0G22f
- xGIwaNO1qL189BDIGlSqSZphqKDEw/Kvugwjby+8zxPlcc4CKawTuUWxMkxhUCPCyCB4
- 9z+w==
-X-Gm-Message-State: AOJu0Yy0I0Ox1Dkofc8lt9LQooRWFlv4rU9NaarTwJuRNqV8kuoOmOaD
- QeWLUuXeP9TQzhE5rQfWHzdkQvxbj7uMobPmC3EFW4BUBx988++4MnkIUgMnJK0GnUqsVrcdt9m
- MIRw1QHwGH7j4FJKVg7jFx9xpauBAcokGdyd/FXCL4Q==
-X-Gm-Gg: ASbGncvZbBQ3P28/btrxsNNJKyIjXgXZIh4ExzulY2qc8OdfRPfgPFYN3rr0fOkzZ16
- LabfT5wcAiBfnmiXg4nkVigKyYzxKaafQMm/KcB1Q3pCCE22NYP/Uh6avUaj0zsz0sFCYjY+YXY
- DePoLa+RTXb9sYa4U3wFdx6EDYPe4shYFuilRBKpY/WyDB7vwjZXHunDKVHNE7M8uE3EtnfdgZ4
- 4kiQLDw
-X-Google-Smtp-Source: AGHT+IHd0HRhPxNIFWK4e//bqgvWKvo2w9zubb/JofASB53HZf6VxvGDQ0J+R1YwjsMb3lQjvGcepuseCe7OEzR/omM=
-X-Received: by 2002:a05:690c:fd0:b0:70e:731f:d4c7 with SMTP id
- 00721157ae682-717d5b81533mr41602707b3.8.1752223717091; Fri, 11 Jul 2025
- 01:48:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ua9Qt-0007V1-96
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:48:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ua9Qr-0002jq-Lp
+ for qemu-devel@nongnu.org; Fri, 11 Jul 2025 04:48:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752223716;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=at/nbeFYJMH5RLpDUXZNo8nUj1vyjG+skzjPpYRV5bE=;
+ b=eGMqo732Hp0X0S9w71BEoF6drvDV7c9MexKTkXix9iDK7gUaSzpGUZX7zPY9OcO+51usb+
+ ycjm4zd6CUNFuhrWCUvzdNzDA5VGkdSIwQidd0lUEptbZc4tpHNlsb5Ocackvqp6ljnG0B
+ M0FYoMaCU18pezZgn8FJNrZ06jpeheY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-Hd4TBjivP3mxOFzeYV-ojw-1; Fri,
+ 11 Jul 2025 04:48:33 -0400
+X-MC-Unique: Hd4TBjivP3mxOFzeYV-ojw-1
+X-Mimecast-MFC-AGG-ID: Hd4TBjivP3mxOFzeYV-ojw_1752223711
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EB5821800368; Fri, 11 Jul 2025 08:48:30 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0A1A319560A3; Fri, 11 Jul 2025 08:48:30 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 6255C21E6A27; Fri, 11 Jul 2025 10:48:27 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>,  Eric Blake <eblake@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Ani Sinha <anisinha@redhat.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Lukas Straub <lukasstraub2@web.de>,  Vladimir
+ Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  Zhao Liu
+ <zhao1.liu@intel.com>,  Eduardo Habkost <eduardo@habkost.net>,  Peter Xu
+ <peterx@redhat.com>,  Yanan Wang <wangyanan55@huawei.com>,  Alex
+ =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,  Jason Wang <jasowang@redhat.com>,  Igor
+ Mammedov <imammedo@redhat.com>,  Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v2 03/18] qapi: add cross-references to block layer
+In-Reply-To: <20250711054005.60969-4-jsnow@redhat.com> (John Snow's message of
+ "Fri, 11 Jul 2025 01:39:50 -0400")
+References: <20250711054005.60969-1-jsnow@redhat.com>
+ <20250711054005.60969-4-jsnow@redhat.com>
+Date: Fri, 11 Jul 2025 10:48:27 +0200
+Message-ID: <87jz4f865g.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20250711020338.586222-1-jcksn@duck.com>
- <20250711020338.586222-2-jcksn@duck.com>
-In-Reply-To: <20250711020338.586222-2-jcksn@duck.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 11 Jul 2025 09:48:24 +0100
-X-Gm-Features: Ac12FXySzGl6ycT9uD1DxGv9UM5PnYUfilStF5VGzacFXO2cvhOudMiWjDX355M
-Message-ID: <CAFEAcA_9D+jMPGg961K+ZFQkzu_Bsp2BStKqM7Wgn-Q4D0c04g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] docs/system: arm: Add max78000 board description
-To: Jackson Donaldson <jackson88044@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b33;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb33.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,24 +96,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 11 Jul 2025 at 03:03, Jackson Donaldson <jackson88044@gmail.com> wrote:
->
-> This adds the target guide for the max78000FTHR
->
-> Signed-off-by: Jackson Donaldson <jcksn@duck.com>
+John Snow <jsnow@redhat.com> writes:
+
+> Signed-off-by: John Snow <jsnow@redhat.com>
 > ---
->  docs/system/arm/max78000.rst | 35 +++++++++++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
->  create mode 100644 docs/system/arm/max78000.rst
+>  qapi/block-core.json   | 188 ++++++++++++++++++++---------------------
+>  qapi/block-export.json |  36 ++++----
+>  qapi/block.json        |  14 +--
+>  qapi/transaction.json  |  12 +--
+>  4 files changed, 125 insertions(+), 125 deletions(-)
+>
+> diff --git a/qapi/block-core.json b/qapi/block-core.json
+> index f18db3149a3..ec4ea4ddd19 100644
+> --- a/qapi/block-core.json
+> +++ b/qapi/block-core.json
 
-Did your local system build the docs? This should have
-given an error because the new file isn't listed in
-the toctree in docs/system/target-arm.rst.
+[...]
 
-Passing configure --enable-docs will force it to
-complain if you're missing a prerequisite to build
-the docs (otherwise it only builds them if it can).
+> @@ -3089,7 +3089,7 @@
+>  # necessary cleanup.  This command requires that all involved jobs are
+>  # in the PENDING state.
+>  #
+> -# For jobs in a transaction, instructing one job to finalize will
+> +# For jobs in a :qapi:cmd:`transaction`, instructing one job to finalize will
+>  # force ALL jobs in the transaction to finalize, so it is only
+>  # necessary to instruct a single member job to finalize.
+>  #
 
-thanks
--- PMM
+You dropped the `transaction` references I asked you to drop except for
+this one and ...
+
+[...]
+
+> @@ -5855,8 +5855,8 @@
+>  # @BLOCK_JOB_PENDING:
+>  #
+>  # Emitted when a block job is awaiting explicit authorization to
+> -# finalize graph changes via @job-finalize.  If this job is part
+> -# of a transaction, it will not emit this event until the transaction
+> +# finalize graph changes via `job-finalize`.  If this job is part
+> +# of a :qapi:cmd:`transaction`, it will not emit this event until the transaction
+>  # has converged first.
+>  #
+>  # @type: job type
+
+... this one.  Looks like an accident.  Let's drop these hunks.
+
+[...]
+
 
