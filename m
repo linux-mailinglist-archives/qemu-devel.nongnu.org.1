@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8870B01634
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D142DB01643
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Jul 2025 10:34:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ua97m-0006DJ-Ic; Fri, 11 Jul 2025 04:28:54 -0400
+	id 1ua97r-0006qP-Dk; Fri, 11 Jul 2025 04:28:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8z1-0007Ny-66; Fri, 11 Jul 2025 04:19:51 -0400
+ id 1ua8z5-0007dE-BT; Fri, 11 Jul 2025 04:19:55 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ua8yz-0004JB-BL; Fri, 11 Jul 2025 04:19:50 -0400
+ id 1ua8z3-0004Jd-Fo; Fri, 11 Jul 2025 04:19:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A52D11356E1;
+ by isrv.corpit.ru (Postfix) with ESMTP id B57A01356E2;
  Fri, 11 Jul 2025 11:17:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9C9CA23FA56;
+ by tsrv.corpit.ru (Postfix) with ESMTP id AAE8F23FA57;
  Fri, 11 Jul 2025 11:17:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 22/39] hw/loongarch/virt: Fix big endian support with
- MCFG table
-Date: Fri, 11 Jul 2025 11:16:18 +0300
-Message-ID: <20250711081745.1785806-22-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Eric Auger <eric.auger@redhat.com>, Donald Dutile <ddutile@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 23/39] hw/arm/virt: Check bypass iommu is not set for
+ iommu-map DT property
+Date: Fri, 11 Jul 2025 11:16:19 +0300
+Message-ID: <20250711081745.1785806-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250711105634@cover.tls.msk.ru>
@@ -58,40 +60,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 
-With API build_mcfg(), it is not necessary with parameter structure
-AcpiMcfgInfo to convert to little endian since it is directly used
-with host native endian.
+default_bus_bypass_iommu tells us whether the bypass_iommu is set
+for the default PCIe root bus. Make sure we check that before adding
+the "iommu-map" DT property.
 
-Here remove endian conversion before calling function build_mcfg().
-With this patch, bios-tables-test passes to run on big endian host
-machine S390.
-
-Fixes: 735143f10d3e ("hw/loongarch: Add acpi ged support")
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20250604065502.1114098-2-maobibo@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-(cherry picked from commit 9c55c03c05c1899521ff0c991b9296633d759890)
+Fixes: 6d7a85483a06 ("hw/arm/virt: Add default_bus_bypass_iommu machine option")
+Suggested-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Reviewed-by: Donald Dutile <ddutile@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Message-id: 20250602114655.42920-1-shameerali.kolothum.thodi@huawei.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit f5ec751ee70d7960a97c6c675f69e924d82dc60d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/loongarch/virt-acpi-build.c b/hw/loongarch/virt-acpi-build.c
-index fced6c445a..24ccb580bd 100644
---- a/hw/loongarch/virt-acpi-build.c
-+++ b/hw/loongarch/virt-acpi-build.c
-@@ -575,8 +575,8 @@ static void acpi_build(AcpiBuildTables *tables, MachineState *machine)
-     acpi_add_table(table_offsets, tables_blob);
-     {
-         AcpiMcfgInfo mcfg = {
--           .base = cpu_to_le64(VIRT_PCI_CFG_BASE),
--           .size = cpu_to_le64(VIRT_PCI_CFG_SIZE),
-+           .base = VIRT_PCI_CFG_BASE,
-+           .size = VIRT_PCI_CFG_SIZE,
-         };
-         build_mcfg(tables_blob, tables->linker, &mcfg, lvms->oem_id,
-                    lvms->oem_table_id);
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index a96452f17a..0e78616aac 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1492,9 +1492,12 @@ static void create_virtio_iommu_dt_bindings(VirtMachineState *vms)
+     qemu_fdt_setprop_cell(ms->fdt, node, "phandle", vms->iommu_phandle);
+     g_free(node);
+ 
+-    qemu_fdt_setprop_cells(ms->fdt, vms->pciehb_nodename, "iommu-map",
+-                           0x0, vms->iommu_phandle, 0x0, bdf,
+-                           bdf + 1, vms->iommu_phandle, bdf + 1, 0xffff - bdf);
++    if (!vms->default_bus_bypass_iommu) {
++        qemu_fdt_setprop_cells(ms->fdt, vms->pciehb_nodename, "iommu-map",
++                               0x0, vms->iommu_phandle, 0x0, bdf,
++                               bdf + 1, vms->iommu_phandle, bdf + 1,
++                               0xffff - bdf);
++    }
+ }
+ 
+ static void create_pcie(VirtMachineState *vms)
+@@ -1617,8 +1620,10 @@ static void create_pcie(VirtMachineState *vms)
+         switch (vms->iommu) {
+         case VIRT_IOMMU_SMMUV3:
+             create_smmu(vms, vms->bus);
+-            qemu_fdt_setprop_cells(ms->fdt, nodename, "iommu-map",
+-                                   0x0, vms->iommu_phandle, 0x0, 0x10000);
++            if (!vms->default_bus_bypass_iommu) {
++                qemu_fdt_setprop_cells(ms->fdt, nodename, "iommu-map",
++                                       0x0, vms->iommu_phandle, 0x0, 0x10000);
++            }
+             break;
+         default:
+             g_assert_not_reached();
 -- 
 2.47.2
 
