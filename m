@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DBAB0305D
-	for <lists+qemu-devel@lfdr.de>; Sun, 13 Jul 2025 11:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A7FB03060
+	for <lists+qemu-devel@lfdr.de>; Sun, 13 Jul 2025 11:12:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaskD-0003nQ-2W; Sun, 13 Jul 2025 05:11:37 -0400
+	id 1uaskE-0003tM-2H; Sun, 13 Jul 2025 05:11:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uask0-0003ZK-QP; Sun, 13 Jul 2025 05:11:25 -0400
+ id 1uask1-0003ZM-3P; Sun, 13 Jul 2025 05:11:25 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uasjz-000735-4g; Sun, 13 Jul 2025 05:11:24 -0400
+ id 1uasjz-000739-9q; Sun, 13 Jul 2025 05:11:24 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F0BC71362E5;
- Sun, 13 Jul 2025 12:10:58 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 092C01362E6;
+ Sun, 13 Jul 2025 12:10:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id ACA06245F50;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C455A245F51;
  Sun, 13 Jul 2025 12:10:59 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 4/6] docs/system/target-i386: Remove the sentence about RHEL 7
- being supported
-Date: Sun, 13 Jul 2025 12:10:46 +0300
-Message-ID: <20250713091059.35165-5-mjt@tls.msk.ru>
+Subject: [PULL 5/6] hw/uefi: Create and use trace.h wrapper header
+Date: Sun, 13 Jul 2025 12:10:47 +0300
+Message-ID: <20250713091059.35165-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250713091059.35165-1-mjt@tls.msk.ru>
 References: <20250713091059.35165-1-mjt@tls.msk.ru>
@@ -59,34 +58,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-According to our "Supported build platforms" policy, RHEL 7 is not
-supported anymore, so let's remove the related sentence from the x86
-documentation.
+The documentation of the trace subsystem (docs/devel/tracing.rst)
+says that each subdirectory which uses trace events should create a
+wrapper trace.h file which includes the trace/trace-foo.h generated
+header, and that .c files then #include "trace.h".
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+We didn't follow this pattern in hw/uefi/.  Correct this by creating
+and using the trace.h wrapper header.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- docs/system/target-i386.rst | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/uefi/trace.h              | 2 ++
+ hw/uefi/var-service-core.c   | 2 +-
+ hw/uefi/var-service-policy.c | 2 +-
+ hw/uefi/var-service-utils.c  | 2 +-
+ hw/uefi/var-service-vars.c   | 2 +-
+ 5 files changed, 6 insertions(+), 4 deletions(-)
+ create mode 100644 hw/uefi/trace.h
 
-diff --git a/docs/system/target-i386.rst b/docs/system/target-i386.rst
-index 43b09c79d6..2374391397 100644
---- a/docs/system/target-i386.rst
-+++ b/docs/system/target-i386.rst
-@@ -37,6 +37,4 @@ OS requirements
- ~~~~~~~~~~~~~~~
+diff --git a/hw/uefi/trace.h b/hw/uefi/trace.h
+new file mode 100644
+index 0000000000..6aa1c93896
+--- /dev/null
++++ b/hw/uefi/trace.h
+@@ -0,0 +1,2 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#include "trace/trace-hw_uefi.h"
+diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
+index 4836a0cb81..feec5a5958 100644
+--- a/hw/uefi/var-service-core.c
++++ b/hw/uefi/var-service-core.c
+@@ -12,7 +12,7 @@
+ #include "hw/uefi/var-service-api.h"
+ #include "hw/uefi/var-service-edk2.h"
  
- On x86_64 hosts, the default set of CPU features enabled by the KVM
--accelerator require the host to be running Linux v4.5 or newer. Red Hat
--Enterprise Linux 7 is also supported, since the required
--functionality was backported.
-+accelerator require the host to be running Linux v4.5 or newer.
+-#include "trace/trace-hw_uefi.h"
++#include "trace.h"
+ 
+ static int uefi_vars_pre_load(void *opaque)
+ {
+diff --git a/hw/uefi/var-service-policy.c b/hw/uefi/var-service-policy.c
+index 3b1155fe4e..58da4adbeb 100644
+--- a/hw/uefi/var-service-policy.c
++++ b/hw/uefi/var-service-policy.c
+@@ -14,7 +14,7 @@
+ #include "hw/uefi/var-service-api.h"
+ #include "hw/uefi/var-service-edk2.h"
+ 
+-#include "trace/trace-hw_uefi.h"
++#include "trace.h"
+ 
+ static void calc_policy(uefi_var_policy *pol);
+ 
+diff --git a/hw/uefi/var-service-utils.c b/hw/uefi/var-service-utils.c
+index c9ef46570f..258013f436 100644
+--- a/hw/uefi/var-service-utils.c
++++ b/hw/uefi/var-service-utils.c
+@@ -8,7 +8,7 @@
+ 
+ #include "hw/uefi/var-service.h"
+ 
+-#include "trace/trace-hw_uefi.h"
++#include "trace.h"
+ 
+ /* ------------------------------------------------------------------ */
+ 
+diff --git a/hw/uefi/var-service-vars.c b/hw/uefi/var-service-vars.c
+index 7f98d77a38..37d05b71cf 100644
+--- a/hw/uefi/var-service-vars.c
++++ b/hw/uefi/var-service-vars.c
+@@ -12,7 +12,7 @@
+ #include "hw/uefi/var-service-api.h"
+ #include "hw/uefi/var-service-edk2.h"
+ 
+-#include "trace/trace-hw_uefi.h"
++#include "trace.h"
+ 
+ #define EFI_VARIABLE_ATTRIBUTE_SUPPORTED                                \
+     (EFI_VARIABLE_NON_VOLATILE |                                        \
 -- 
 2.47.2
 
