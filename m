@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C57B02F06
-	for <lists+qemu-devel@lfdr.de>; Sun, 13 Jul 2025 09:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0BE9B02F09
+	for <lists+qemu-devel@lfdr.de>; Sun, 13 Jul 2025 09:11:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uaqqO-00058N-FD; Sun, 13 Jul 2025 03:09:54 -0400
+	id 1uaqpV-0004YF-Do; Sun, 13 Jul 2025 03:08:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uaqnQ-0001ns-SJ
- for qemu-devel@nongnu.org; Sun, 13 Jul 2025 03:06:56 -0400
+ id 1uaqnb-0001pE-FW
+ for qemu-devel@nongnu.org; Sun, 13 Jul 2025 03:07:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uaqnP-00078O-3L
- for qemu-devel@nongnu.org; Sun, 13 Jul 2025 03:06:48 -0400
+ id 1uaqnZ-0007Ej-VK
+ for qemu-devel@nongnu.org; Sun, 13 Jul 2025 03:06:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752390405;
+ s=mimecast20190719; t=1752390417;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=j16BD+2Q7WR3XkCFCJ/I4hKgjODFQOrTAGyOnI71SQI=;
- b=GnTLFR/UCEhKgTyYTujt1rMKugQ1JnKf7m4FNOjeTawcfYNydHNfehsTG4k4UnVx8hlXjv
- +yosAUB2N5SsBTEEn6RxXQirfGqFakewq2+4h0Hg2b4Rn4Sl3i6WtnO0DsKdQ9K4rg1ynM
- Q2sbd2yrkPDql0OSAlDVjzpwVVgbfrA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=IXnJPVI8JTlohJeUz97PRuVjbR/byS/CW9CiZKRo3zE=;
+ b=dAITQcTP5V3iWzh5zoLFj9dtbbn2Nqeb4ln7TMmZ8gaarRYMdZM8k0v+hVX1EtnF+725V0
+ 1htCPLLD6HFwsTa6JFCUSo/LXT0ffzrSJ95TyUWElvFQrgNdbs1KoC4M/cjIEfwL9hvqzU
+ mgOG+diGjpG5GtX/EXGvgw4NThyn8eI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-175-YRIPJmgJMdqUtm7e_rsyYg-1; Sun,
- 13 Jul 2025 03:06:43 -0400
-X-MC-Unique: YRIPJmgJMdqUtm7e_rsyYg-1
-X-Mimecast-MFC-AGG-ID: YRIPJmgJMdqUtm7e_rsyYg_1752390402
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-301-jCoMnnWOOyqUTDn6tXxYgQ-1; Sun,
+ 13 Jul 2025 03:06:55 -0400
+X-MC-Unique: jCoMnnWOOyqUTDn6tXxYgQ-1
+X-Mimecast-MFC-AGG-ID: jCoMnnWOOyqUTDn6tXxYgQ_1752390414
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2CB0319560AA; Sun, 13 Jul 2025 07:06:42 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 72CB51801BD8; Sun, 13 Jul 2025 07:06:54 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.7])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6CD3619560A3; Sun, 13 Jul 2025 07:06:40 +0000 (UTC)
-Date: Sun, 13 Jul 2025 03:06:35 -0400
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 60B251956094; Sun, 13 Jul 2025 07:06:52 +0000 (UTC)
+Date: Sun, 13 Jul 2025 03:06:50 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/36] target-arm queue
-Message-ID: <20250713070635.GA204657@fedora>
-References: <20250711133429.1423030-1-peter.maydell@linaro.org>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>
+Subject: Re: [PULL 00/26] Migration patches for 2025-07-11
+Message-ID: <20250713070650.GA204759@fedora>
+References: <20250711141031.423-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="DII1S7/sWofPFsN1"
+ protocol="application/pgp-signature"; boundary="LJVPrUEj+hDrbYk/"
 Content-Disposition: inline
-In-Reply-To: <20250711133429.1423030-1-peter.maydell@linaro.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+In-Reply-To: <20250711141031.423-1-farosas@suse.de>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,7 +83,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---DII1S7/sWofPFsN1
+--LJVPrUEj+hDrbYk/
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -91,21 +91,21 @@ Applied, thanks.
 
 Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
 
---DII1S7/sWofPFsN1
+--LJVPrUEj+hDrbYk/
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmhzWvoACgkQnKSrs4Gr
-c8g2MQgApXguttugxVGHWqhK28XLC/XABQaiwzFKGXwwWW62XfuHz9GUR7DOENrG
-NdOKYTGhKJ1BZgOW+tmKKrIRhtJzFw2i9KxZH34Rv0vbiKH5q1s602rOFc+BM2S5
-Lufl0wIPbsZjfMhv6VBkdNxcZQAvm2gaNUg83byWsxxz0+KumzatYq16O6FzRaT6
-g6OfqCntDYCsCOHuQx6JpnHNaDJgr/Q1aGVtKIVqOPoKZfWroAB3zwhYHWyC6ucK
-UIcgzpHvbB5DcKdiL32OCPVDVW/AHpdJGs0DPtq9GisDqgYqobEtprtC7dDA2pfS
-NtD51RDrdmBHNHuXG0Jaarzb4Tzlmw==
-=u0Tn
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmhzWwoACgkQnKSrs4Gr
+c8grNQgAmB3q654H3+jXIhPoBly2ewD9uFGC2FlnZARj3RT2MNDMmOqvUxDJbht9
+znQIWaX7vYyRvur/c952j+PBKbHN6+OQ5zYosraGDxaVNlA1r6IxqayKYjKgJXd9
+GjRl/nZ4vzkswUcqTdxu58qSCQYc7Ru41Wb3eeSZpSBWTuhtlxMW++so6YYHGLJh
+EcMo/Q0kGfm5MPM2xQMhXfcZ1UnmrMhyTw2iSNKfr9AXnQb/nDQ+/ouGcPCdO3ga
+UBlrwZJNAjbAd4sL0bxuf+VeSXP8iOuUMQkfTBorAtGRZUryTM0HPXQ8tQ6Yus2m
+xGNyfpcB0Mimt/oTLJBLzFZpt/+sZg==
+=ak/I
 -----END PGP SIGNATURE-----
 
---DII1S7/sWofPFsN1--
+--LJVPrUEj+hDrbYk/--
 
 
