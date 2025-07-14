@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752D6B035DC
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A95B035DB
 	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 07:36:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubBpr-0000yX-DV; Mon, 14 Jul 2025 01:34:43 -0400
+	id 1ubBq9-0001Wb-E7; Mon, 14 Jul 2025 01:35:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1ubBpl-0000sH-KD
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 01:34:37 -0400
+ id 1ubBpp-000102-JS
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 01:34:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1ubBpi-00035Y-Ve
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 01:34:36 -0400
+ id 1ubBpo-000362-3a
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 01:34:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752471272;
+ s=mimecast20190719; t=1752471279;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=oDFNxz0G8u9zSJ7bzYR4x99zE7Z26BqUHaPXQJuctv0=;
- b=T/6/BuYGpc5PfSBg0j+JkrcNKSFmndUKHBTHOb7fIvSC7l7RX5Pg9HHf1JjhAA+Rthn4A3
- Gg70UmvhA50aynltPSS40IZEM33cR16iIo7ND40VZXUQmuFE5RMGFYEyUc+18KXC7MhekT
- T85PIcL9p2Ugmw3y7AiG7C8AXRk2k7Y=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=aE/wKQGzoh4jWmtAUGCBzWi5yGD7I8dxBOHfLcHtRck=;
+ b=FspeL2YScgg3swIP/Dyd7oxUXj1PmR7FPKZmxxcoex2CKBV64G9qNmw3A3rZrrZnGRzn/M
+ 4G7FPFYgx+Klq08d+/UP1Xmi+fcX5vfjdtwWI3iyi73yYF063YWYpdyObeHWx1K5WmSnGs
+ fYK48CN7fR7mYYZdC5rakkzPlb6Qe4g=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-416-A2m2B040PgKwzjIgHx4OEw-1; Mon,
- 14 Jul 2025 01:34:30 -0400
-X-MC-Unique: A2m2B040PgKwzjIgHx4OEw-1
-X-Mimecast-MFC-AGG-ID: A2m2B040PgKwzjIgHx4OEw_1752471270
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-364-_RWvesbGOkO2Cy90mU4sFQ-1; Mon,
+ 14 Jul 2025 01:34:35 -0400
+X-MC-Unique: _RWvesbGOkO2Cy90mU4sFQ-1
+X-Mimecast-MFC-AGG-ID: _RWvesbGOkO2Cy90mU4sFQ_1752471274
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ED9CE1808993
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 05:34:29 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C0D9F1800290; Mon, 14 Jul 2025 05:34:33 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.55])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6302C19560A3; Mon, 14 Jul 2025 05:34:27 +0000 (UTC)
+ id AC31F19560A3; Mon, 14 Jul 2025 05:34:30 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>
-Subject: [PULL 00/13] Net patches
-Date: Mon, 14 Jul 2025 13:34:10 +0800
-Message-ID: <20250714053423.10415-1-jasowang@redhat.com>
+Cc: Anastasia Belova <nabelova31@gmail.com>, qemu-stable@nongnu.org,
+ Ilya Maximets <i.maximets@ovn.org>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 01/13] net: fix buffer overflow in af_xdp_umem_create()
+Date: Mon, 14 Jul 2025 13:34:11 +0800
+Message-ID: <20250714053423.10415-2-jasowang@redhat.com>
+In-Reply-To: <20250714053423.10415-1-jasowang@redhat.com>
+References: <20250714053423.10415-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
@@ -80,87 +83,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 9a4e273ddec3927920c5958d2226c6b38b543336:
+From: Anastasia Belova <nabelova31@gmail.com>
 
-  Merge tag 'pull-tcg-20250711' of https://gitlab.com/rth7680/qemu into staging (2025-07-13 01:46:04 -0400)
+s->pool has n_descs elements so maximum i should be
+n_descs - 1. Fix the upper bound.
 
-are available in the Git repository at:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-  https://github.com/jasowang/qemu.git tags/net-pull-request
+Fixes: cb039ef3d9 ("net: add initial support for AF_XDP network backend")
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Signed-off-by: Anastasia Belova <nabelova31@gmail.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+---
+ net/af-xdp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-for you to fetch changes up to da703b06a52bfb5fe1a77b0eddbb8d68d3f70762:
-
-  net/passt: Implement vhost-user backend support (2025-07-14 13:27:09 +0800)
-
-----------------------------------------------------------------
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEIV1G9IJGaJ7HfzVi7wSWWzmNYhEFAmh0lXsACgkQ7wSWWzmN
-YhGvVwf+OxTtnr84VdsEckqNVuzVkMHk3PAuSlxpvfjHXnwwo5Efto9lA4h4BUSX
-As9sYpF3qXZdh95QYB/49CvVdizsI/KW1wPEx4ryVqCi7kcdOrzNB/MMMXBrrJE+
-86xtc2a53CHHcctUIvkBr/GVzhay/gm6VHjnPEB/B0Tv+rTKpIBr/nJzVlG+8uX9
-O/XRI0aqnCPlsWDQFR2TbyE4TSSmTw5oXru0I12tPfxt2ed6b+izKubHmqgeLCyH
-ne+qEy2ds40eBZ4YMDDIsxYKY8RlWIdUY0Dnz6wSjC00BNo5yLu7cirL0Ozd6AsI
-pK5eqQGZGGQIGV/KD+M7WwKWVltBJg==
-=rS9w
------END PGP SIGNATURE-----
-
-----------------------------------------------------------------
-Akihiko Odaki (1):
-      virtio-net: Add queues for RSS during migration
-
-Anastasia Belova (1):
-      net: fix buffer overflow in af_xdp_umem_create()
-
-Laurent Vivier (11):
-      net: Refactor stream logic for reuse in '-net passt'
-      net: Define net_client_set_link()
-      vhost_net: Rename vhost_set_vring_enable() for clarity
-      net: Add get_vhost_net callback to NetClientInfo
-      net: Consolidate vhost feature bits into vhost_net structure
-      net: Add get_acked_features callback to VhostNetOptions
-      net: Add save_acked_features callback to vhost_net
-      net: Allow network backends to advertise max TX queue size
-      net: Add is_vhost_user flag to vhost_net struct
-      net: Add passt network backend
-      net/passt: Implement vhost-user backend support
-
- docs/system/devices/net.rst   |  50 ++-
- hmp-commands.hx               |   3 +
- hw/net/vhost_net-stub.c       |   3 +-
- hw/net/vhost_net.c            | 145 ++------
- hw/net/virtio-net.c           |  47 +--
- hw/virtio/virtio.c            |  14 +-
- include/hw/virtio/vhost.h     |   5 +
- include/hw/virtio/virtio.h    |  10 +-
- include/net/net.h             |   3 +
- include/net/tap.h             |   3 -
- include/net/vhost-user.h      |  19 --
- include/net/vhost-vdpa.h      |   4 -
- include/net/vhost_net.h       |  10 +-
- meson.build                   |   6 +
- meson_options.txt             |   2 +
- net/af-xdp.c                  |   2 +-
- net/clients.h                 |   4 +
- net/hub.c                     |   3 +
- net/meson.build               |   6 +-
- net/net.c                     |  36 +-
- net/passt.c                   | 753 ++++++++++++++++++++++++++++++++++++++++++
- net/stream.c                  | 282 ++++------------
- net/stream_data.c             | 193 +++++++++++
- net/stream_data.h             |  31 ++
- net/tap-win32.c               |   5 -
- net/tap.c                     |  43 ++-
- net/vhost-user-stub.c         |   1 -
- net/vhost-user.c              |  60 +++-
- net/vhost-vdpa.c              |  11 +-
- qapi/net.json                 | 118 +++++++
- qemu-options.hx               | 153 ++++++++-
- scripts/meson-buildoptions.sh |   3 +
- 32 files changed, 1584 insertions(+), 444 deletions(-)
- delete mode 100644 include/net/vhost-user.h
- create mode 100644 net/passt.c
- create mode 100644 net/stream_data.c
- create mode 100644 net/stream_data.h
+diff --git a/net/af-xdp.c b/net/af-xdp.c
+index 01c5fb914e..d022534d76 100644
+--- a/net/af-xdp.c
++++ b/net/af-xdp.c
+@@ -323,7 +323,7 @@ static int af_xdp_umem_create(AFXDPState *s, int sock_fd, Error **errp)
+ 
+     s->pool = g_new(uint64_t, n_descs);
+     /* Fill the pool in the opposite order, because it's a LIFO queue. */
+-    for (i = n_descs; i >= 0; i--) {
++    for (i = n_descs - 1; i >= 0; i--) {
+         s->pool[i] = i * XSK_UMEM__DEFAULT_FRAME_SIZE;
+     }
+     s->n_pool = n_descs;
+-- 
+2.42.0
 
 
