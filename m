@@ -2,92 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D24EB038C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C388B038C5
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:10:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubEFo-0001iv-G5; Mon, 14 Jul 2025 04:09:40 -0400
+	id 1ubEF4-0007qN-7P; Mon, 14 Jul 2025 04:08:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ubE87-0001vE-9k; Mon, 14 Jul 2025 04:01:43 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1ubDua-0004eO-W7
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:47:50 -0400
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ubE85-0001lO-3p; Mon, 14 Jul 2025 04:01:42 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 67D86136606;
- Mon, 14 Jul 2025 11:01:34 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C719E246A48;
- Mon, 14 Jul 2025 11:01:36 +0300 (MSK)
-Message-ID: <7dafb6f1-690f-4adb-8fb7-99db7cc625c7@tls.msk.ru>
-Date: Mon, 14 Jul 2025 11:01:36 +0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1ubDuV-0007Nf-Vn
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:47:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752479260; x=1784015260;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=A2xl69pTZ7gXL6pO/Q3cKP2tsM3Uvcc04TeHhF5oK5Q=;
+ b=laLGO81J5L9A6eJ28N6CeyD0OFdvbvyfJ1iTTnkYMiIKjlNqWBi1IZkJ
+ NKdSaAIFen4V48EpX8IzXupGnA/hI+FYPXbB1xAXtkbYQ3M8MDxLmP4s/
+ CerB1bKem9rj+0Tq5ywnreO8IsHn53UuI44hSzFmyPX5Z+GB9rTfQeUiP
+ 24yj7OaFSmRfD4Kdkfrw/bp51xZQXTXQ+RTvVFMWvsqCKdLQRZOMg79C2
+ O7cvrsYT2O96bNhUMMISlkn0OT4B37fq1fPrErE3y660XxOqZp/AfmELf
+ B99XR7QqP9RW8empGJdowgrJjs1YU/oDS+8iy0YG6WH+6rJsXY7/DKRQn w==;
+X-CSE-ConnectionGUID: DrQHdkMeS9uNDHQPbgPjhA==
+X-CSE-MsgGUID: G5IsqVAGQHSEPytxX551bg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58324638"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="58324638"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 00:47:33 -0700
+X-CSE-ConnectionGUID: Q2zZ8nctTmSgg1axozJ7Cg==
+X-CSE-MsgGUID: hgsGgzb+TfuMl03iZQd+zA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="156952186"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa007.jf.intel.com with ESMTP; 14 Jul 2025 00:47:31 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>
+Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Tao Su <tao1.su@intel.com>, Yi Lai <yi1.lai@intel.com>,
+ Dapeng Mi <dapeng1.mi@intel.com>, qemu-devel@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v2 0/7] i386/cpu: Clean Up Reserved CPUID Leaves & Topology
+ Overflow Fix
+Date: Mon, 14 Jul 2025 16:08:52 +0800
+Message-Id: <20250714080859.1960104-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] qemu-img: add sub-command --remove-all to 'qemu-img
- bitmap'
-To: "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-References: <20250707205822.614350-1-den@openvz.org>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20250707205822.614350-1-den@openvz.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,25 +83,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07.07.2025 23:58, Denis V. Lunev via wrote:
->  From time to time it is needed to remove all bitmaps from the image.
-> Before this patch the process is not very convinient. One should
-> perform
->      qemu-img info
-> and parse the output to obtain all names. After that one should
-> sequentially call
->      qemu-img bitmap --remove
-> for each present bitmap.
+Hi,
 
-I'd very much love to add more commands/options to qemu-img *after*
-my big patchset to it is either accepted or rejected.  It's been in
-the queue for over the years, and I have to rebase it painfully after
-each change (thankfully there weren't many).
+To avoid the series being too trivial, I've merged the two previous
+series together again.
 
-https://lore.kernel.org/qemu-devel/20250531171609.197078-1-mjt@tls.msk.ru/
+This series is based on:
 
-Thanks,
+https://lore.kernel.org/qemu-devel/20250711102143.1622339-1-zhao1.liu@intel.com/
 
-/mjt
+And you can find the codes at:
+
+https://gitlab.com/zhao.liu/qemu/-/tree/cache-model-v3.0-rebase-07-10-2025?ref_type=heads
+
+
+Part 1 (Patch 1-3)
+==================
+
+Since the previsor unified cache model series has already introduced a
+new compat property "x-vendor-cpuid-only-v2", it's a chance to once
+again consolidate more vendor-specific CPUIDs.
+
+I also checked the CPUID leaves currently supported by Intel & AMD and
+found that since the previous "x-vendor-cpuid-only," AMD has already
+cleaned up the Intel-specific CPUIDs quite well.
+
+As for Intel, the only cleanup needed is for the "extended function
+CPUID" leaves (0x80000000~0x80000008). That's what these patches does.
+
+Considerring the disscussion around AMD's arch capabilities MSR,
+explicitly changing feature bits in QEMU that require host support is
+inappropriate. CPUID adjustments based on the vendor should be limited
+to parts that are fully emulated within QEMU (such as topology, vendor,
+etc.).
+
+Therefore, in v2, I dropped the modifications to 0x80000007 and narrowed
+the changes to 0x80000008 to only the fields related to CPU topology.
+
+Previous v1:
+
+https://lore.kernel.org/qemu-devel/20250627035129.2755537-1-zhao1.liu@intel.com/
+
+
+Part 2 (Patch 4-7)
+==================
+
+These patches collect and organize several topology-related cleanups and
+fixes.
+
+Comparing with v1, I provides the oveflow example for patch 6 & 7.
+
+Note, In addition to the 0x1, 0x4, and 0x8000001d leaves involved in the
+patch series, there is also the 0x1f leaf related to topology. However,
+the upper limit for CPUID.1FH.EBX[bits 15:0] is 65,535 threads, which
+provides enough room. Therefore, this field does not currently require
+overflow checks.
+
+PS: The previous patch 4 tried to fix overflow directly. But now we have
+the "x-vendor-cpuid-only-v2", it's a chance to fix addressable ID for
+new machines.
+
+Previous v1:
+
+https://lore.kernel.org/qemu-devel/20250227062523.124601-1-zhao1.liu@intel.com/
+
+Thanks and Best Regards,
+Zhao
+
+---
+Chuang Xu (1):
+  i386/cpu: Fix number of addressable IDs field for CPUID.01H.EBX[23:16]
+
+Qian Wen (2):
+  i386/cpu: Fix cpu number overflow in CPUID.01H.EBX[23:16]
+  i386/cpu: Fix overflow of cache topology fields in CPUID.04H
+
+Zhao Liu (4):
+  i386/cpu: Mark EBX/ECX/EDX in CPUID 0x80000000 leaf as reserved for
+    Intel
+  i386/cpu: Mark CPUID 0x80000008 ECX bits[0:7] & [12:15] as reserved
+    for Intel/Zhaoxin
+  i386/cpu: Reorder CPUID leaves in cpu_x86_cpuid()
+  i386/cpu: Honor maximum value for CPUID.8000001DH.EAX[25:14]
+
+ target/i386/cpu.c | 130 ++++++++++++++++++++++++++++++----------------
+ 1 file changed, 84 insertions(+), 46 deletions(-)
+
+-- 
+2.34.1
 
 
