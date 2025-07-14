@@ -2,72 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5F6B0431C
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B132B04383
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:22:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubKqD-0005TP-L4; Mon, 14 Jul 2025 11:11:41 -0400
+	id 1ubKzX-0004ku-Sm; Mon, 14 Jul 2025 11:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUu-0000TC-Pc
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUd-0003eb-DK
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752500716;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=I7HHDjdxFdMzPaAdUoWmAmkFEVUaW8PBBDWsg7Z3n6M=;
- b=PzwFVzCPTH3HcQJ39aYWGZqft9qfT0Imjcf3MDCQCEcsbtVgAI0KwpsH2XUnnJcCDCzqBA
- ztgoZIBcKwn70KEtudFjkdXnNgqpAnY8ui3lxQGX91YbcIplXQwdcDly8v2VpD4W1ePKWg
- yquTKSaT1LulnEs0NGXHxZs2egGEtSw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-jFQ9ZYBqMO-t96nP7_6YIA-1; Mon,
- 14 Jul 2025 09:45:11 -0400
-X-MC-Unique: jFQ9ZYBqMO-t96nP7_6YIA-1
-X-Mimecast-MFC-AGG-ID: jFQ9ZYBqMO-t96nP7_6YIA_1752500709
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 95D4E1955F08; Mon, 14 Jul 2025 13:45:09 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 053D01956094; Mon, 14 Jul 2025 13:45:09 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4045221E60FF; Mon, 14 Jul 2025 15:44:59 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Steve Sistare <steven.sistare@oracle.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 32/32] tests/qtest/qom-test: unit test for qom-list-get
-Date: Mon, 14 Jul 2025 15:44:58 +0200
-Message-ID: <20250714134458.2991097-33-armbru@redhat.com>
-In-Reply-To: <20250714134458.2991097-1-armbru@redhat.com>
-References: <20250714134458.2991097-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ubJbC-0003LD-3x
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:52:06 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ubJb4-0004dS-V0
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:52:05 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-455e6fb8057so30281615e9.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 06:51:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752501114; x=1753105914; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=b65ck84coYQ3QVG+RekMC+HihY4/9ws56nByYyrZvco=;
+ b=a6PxOUe4MBsAojRB4NzDWOysBc7zPi9KrVvsD84Qr+AbvF3SjgmuVxDOZIiKJ+qvnm
+ 36HmoDwnOCWFEs6vZCF479873ZadAFv9N8MO3h74evFdjQQsnellYapyKnPKoKEpYhoO
+ +DGK95UHrRmI3nPnF3UBzxHCjFOcE/+66kBdXxobgAeyqaiO7UxL/wSaDPPR5yqJDPCM
+ Aa52OFiJQ2MZLS9s5WkxCDyH71ulj+KuMfqwipNyBUMmMwhwL+5s62kuzfCkd067Mxa4
+ UkTjjK1UhyG0QethXqIlgW8Eo5ti3wFNxmnwCsYXEcs8AbGUkSCBGfqpwhkAebADEdR0
+ Ol4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752501114; x=1753105914;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=b65ck84coYQ3QVG+RekMC+HihY4/9ws56nByYyrZvco=;
+ b=fOTECSHr7qNXf9bLFQnMmjVe08OQmKQ08CK++CchLELkNjL8WJ8Qgr0DGkKihgYtlG
+ 0LGXJNhHL8I5SwjhGpdOW+DejagaqWMBdjdfAQtha4pw3+elq2CkZtjKhaG3AV6xKIxM
+ t7Cph/fkmKtRc6BCam5yEQ/DUwTArpdEdYXzRsUctwCLOGuSYwps5cbN4z+FqMvrb3+O
+ DymCOAvCODPODqB54oeCKRhR3Uwr5KA3WPJf6QYxvAwPcbvg5w1Vvl46NiPcwoLIO8yG
+ j+YyDH8LbR01O483ac60I9QzLjQcJGfLw3zqaQ3/K8tdFmB0XRR6dCMa0kDPB/sVo0mR
+ swbQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUhPBREaCn2QJc5MfR/+QqLRmmxt4jg/CU1lQmouJY7CNGoI76H1Zjl8bGd2LkzjjAb94SNuR4avGZF@nongnu.org
+X-Gm-Message-State: AOJu0YziR97/rQm70E3P/7PqzXK5KWjLBN1TZWviS9NQJnVUt975qEaK
+ 0htllh32pqsYJqYtXYpEQQGWrTxcL19U9SqzNSGaDnStX03KMItxo6kH0TkOXHNHidk=
+X-Gm-Gg: ASbGncu3zpUNq/40afr8WXc9L3CxzIvFlVImKQaz+d+OhUGN7kanT7DMINGVpXZknGd
+ pTEJQdgu56GcQX3kWSH+Bjyj/I/Sxqh8rW3pnE9KKm1LnQ6znXlG14FL8MtFOe41j+tzb6vl/+f
+ zsYNVp4aLYsZx2DiOmIRRE0I20buSQhYoUXMFbR3PnONkeeSDMkYZO1e2lZe46WwUoqoKQcY+jX
+ gOtjIG+dsPVge03cv54lRuzQzwe0mCZKKnExqY+CrvRuuToErJHjihPFMdIo4Kz/+8Klq7CgPab
+ kLmbwy6Woub/tzvlbThQwvUAI4geSzy4Wz2XYLFKfso/ouOIZJR/6hNPK+brp1n8jQT63kQiT6x
+ kZyIl88Gkh5l9ZAF/DrDOIbGqfubR
+X-Google-Smtp-Source: AGHT+IG7iG1QXdEZwJdk/HjuWlgUWeDp+HeaB1P3r29bzysD4RutNf6hE2ET8sMqk42vCQi1oMdhhg==
+X-Received: by 2002:a05:600c:8209:b0:456:1dd2:4e3a with SMTP id
+ 5b1f17b1804b1-4561dd252femr24989915e9.3.1752501114276; 
+ Mon, 14 Jul 2025 06:51:54 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8e1e1d5sm12547760f8f.78.2025.07.14.06.51.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Jul 2025 06:51:53 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH] target/arm: Provide always-false kvm_arm_*_supported() stubs
+ for usermode
+Date: Mon, 14 Jul 2025 14:51:52 +0100
+Message-ID: <20250714135152.1896214-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,167 +99,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Steve Sistare <steven.sistare@oracle.com>
+If you try to build aarch64-linux-user with clang and --enable-debug then it
+fails to compile:
 
-Add a unit test for qom-list-get.
+ ld: libqemu-aarch64-linux-user.a.p/target_arm_cpu64.c.o: in function `cpu_arm_set_sve':
+ ../../target/arm/cpu64.c:321:(.text+0x1254): undefined reference to `kvm_arm_sve_supported'
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <1752248703-217318-4-git-send-email-steven.sistare@oracle.com>
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
+This is a regression introduced in commit f86d4220, which switched
+the kvm-stub.c file away from being built for all arm targets to only
+being built for system emulation binaries.  It doesn't affect gcc,
+presumably because even at -O0 gcc folds away the always-false
+kvm_enabled() condition but clang does not.
+
+We would prefer not to build kvm-stub.c once for usermode and once
+for system-emulation binaries, and we can't build it just once for
+both because it includes cpu.h.  So instead provide always-false
+versions of the five functions that are valid to call without KVM
+support in kvm_arm.h.
+
+Fixes: f86d42205c2eba ("target/arm/meson: accelerator files are not needed in user mode")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3033
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/qom-test.c | 116 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 115 insertions(+), 1 deletion(-)
+I'm never sure when we prefer to use stub-functions in separate C files
+vs when we prefer to have ifdeffed stubs in headers. There are several
+ways we could fix this compile error, so I just picked one...
+---
+ target/arm/kvm_arm.h | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/tests/qtest/qom-test.c b/tests/qtest/qom-test.c
-index 27d70bc11c..4ade1c728c 100644
---- a/tests/qtest/qom-test.c
-+++ b/tests/qtest/qom-test.c
-@@ -11,11 +11,119 @@
- 
- #include "qobject/qdict.h"
- #include "qobject/qlist.h"
-+#include "qobject/qstring.h"
- #include "qemu/cutils.h"
- #include "libqtest.h"
- 
-+#define RAM_NAME "node0"
-+#define RAM_SIZE 65536
-+
- static int verbosity_level;
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index b4cad051551..6a9b6374a6d 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -161,6 +161,14 @@ void kvm_arm_add_vcpu_properties(ARMCPU *cpu);
+  */
+ void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp);
  
 +/*
-+ * Verify that the /object/RAM_NAME 'size' property is RAM_SIZE.
++ * These "is some KVM subfeature enabled?" functions may be called
++ * when KVM support is not present, including in the user-mode
++ * emulators. The kvm-stub.c file is only built into the system
++ * emulators, so for user-mode emulation we provide "always false"
++ * stubs here.
 + */
-+static void test_list_get_value(QTestState *qts)
++#ifndef CONFIG_USER_ONLY
+ /**
+  * kvm_arm_aarch32_supported:
+  *
+@@ -197,6 +205,33 @@ bool kvm_arm_mte_supported(void);
+  * Returns true if KVM can enable EL2 and false otherwise.
+  */
+ bool kvm_arm_el2_supported(void);
++#else
++
++static inline bool kvm_arm_aarch32_supported(void)
 +{
-+    QDict *args = qdict_new();
-+    g_autoptr(QDict) response = NULL;
-+    g_autoptr(QList) paths = qlist_new();
-+    QListEntry *entry, *prop_entry;
-+    const char *prop_name;
-+    QList *properties, *return_list;
-+    QDict *obj;
-+
-+    qlist_append_str(paths, "/objects/" RAM_NAME);
-+    qdict_put_obj(args, "paths", QOBJECT(qlist_copy(paths)));
-+    response = qtest_qmp(qts, "{ 'execute': 'qom-list-get',"
-+                              "  'arguments': %p }", args);
-+    g_assert(response);
-+    g_assert(qdict_haskey(response, "return"));
-+    return_list = qobject_to(QList, qdict_get(response, "return"));
-+
-+    entry = QTAILQ_FIRST(&return_list->head);
-+    obj = qobject_to(QDict, qlist_entry_obj(entry));
-+    g_assert(qdict_haskey(obj, "properties"));
-+    properties = qobject_to(QList, qdict_get(obj, "properties"));
-+
-+    QLIST_FOREACH_ENTRY(properties, prop_entry) {
-+        QDict *prop = qobject_to(QDict, qlist_entry_obj(prop_entry));
-+
-+        g_assert(qdict_haskey(prop, "name"));
-+        g_assert(qdict_haskey(prop, "value"));
-+
-+        prop_name = qdict_get_str(prop, "name");
-+        if (!strcmp(prop_name, "type")) {
-+            g_assert_cmpstr(qdict_get_str(prop, "value"), ==,
-+                            "memory-backend-ram");
-+
-+        } else if (!strcmp(prop_name, "size")) {
-+            g_assert_cmpint(qdict_get_int(prop, "value"), ==, RAM_SIZE);
-+        }
-+    }
++    return false;
 +}
 +
-+static void test_list_get(QTestState *qts, QList *paths)
++static inline bool kvm_arm_pmu_supported(void)
 +{
-+    QListEntry *entry, *prop_entry, *path_entry;
-+    g_autoptr(QDict) response = NULL;
-+    QDict *args = qdict_new();
-+    QDict *prop;
-+    QList *return_list;
-+
-+    if (verbosity_level >= 2) {
-+        g_test_message("Obtaining properties for paths:");
-+        QLIST_FOREACH_ENTRY(paths, path_entry) {
-+            QString *qstr = qobject_to(QString, qlist_entry_obj(path_entry));
-+            g_test_message("  %s", qstring_get_str(qstr));
-+        }
-+    }
-+
-+    qdict_put_obj(args, "paths", QOBJECT(qlist_copy(paths)));
-+    response = qtest_qmp(qts, "{ 'execute': 'qom-list-get',"
-+                              "  'arguments': %p }", args);
-+    g_assert(response);
-+    g_assert(qdict_haskey(response, "return"));
-+    return_list = qobject_to(QList, qdict_get(response, "return"));
-+    g_assert(!qlist_empty(return_list));
-+
-+    path_entry = QTAILQ_FIRST(&paths->head);
-+    QLIST_FOREACH_ENTRY(return_list, entry) {
-+        QDict *obj = qobject_to(QDict, qlist_entry_obj(entry));
-+        g_assert(qdict_haskey(obj, "properties"));
-+        QList *properties = qobject_to(QList, qdict_get(obj, "properties"));
-+        bool has_child = false;
-+
-+        QLIST_FOREACH_ENTRY(properties, prop_entry) {
-+            prop = qobject_to(QDict, qlist_entry_obj(prop_entry));
-+            g_assert(qdict_haskey(prop, "name"));
-+            g_assert(qdict_haskey(prop, "type"));
-+            has_child |= strstart(qdict_get_str(prop, "type"), "child<", NULL);
-+        }
-+
-+        if (has_child) {
-+            /* build a list of child paths */
-+            QString *qstr = qobject_to(QString, qlist_entry_obj(path_entry));
-+            const char *path = qstring_get_str(qstr);
-+            g_autoptr(QList) child_paths = qlist_new();
-+
-+            QLIST_FOREACH_ENTRY(properties, prop_entry) {
-+                prop = qobject_to(QDict, qlist_entry_obj(prop_entry));
-+                if (strstart(qdict_get_str(prop, "type"), "child<", NULL)) {
-+                    g_autofree char *child_path = g_strdup_printf(
-+                        "%s/%s", path, qdict_get_str(prop, "name"));
-+                    qlist_append_str(child_paths, child_path);
-+                }
-+            }
-+
-+            /* fetch props for all children with one qom-list-get call */
-+            test_list_get(qts, child_paths);
-+        }
-+
-+        path_entry = QTAILQ_NEXT(path_entry, next);
-+    }
++    return false;
 +}
 +
- static void test_properties(QTestState *qts, const char *path, bool recurse)
- {
-     char *child_path;
-@@ -85,8 +193,10 @@ static void test_machine(gconstpointer data)
-     const char *machine = data;
-     QDict *response;
-     QTestState *qts;
-+    g_autoptr(QList) paths = qlist_new();
- 
--    qts = qtest_initf("-machine %s", machine);
-+    qts = qtest_initf("-machine %s -object memory-backend-ram,id=%s,size=%d",
-+                      machine, RAM_NAME, RAM_SIZE);
- 
-     if (g_test_slow()) {
-         /* Make sure we can get the machine class properties: */
-@@ -101,6 +211,10 @@ static void test_machine(gconstpointer data)
- 
-     test_properties(qts, "/machine", true);
- 
-+    qlist_append_str(paths, "/machine");
-+    test_list_get(qts, paths);
-+    test_list_get_value(qts);
++static inline bool kvm_arm_sve_supported(void)
++{
++    return false;
++}
 +
-     response = qtest_qmp(qts, "{ 'execute': 'quit' }");
-     g_assert(qdict_haskey(response, "return"));
-     qobject_unref(response);
++static inline bool kvm_arm_mte_supported(void)
++{
++    return false;
++}
++
++static inline bool kvm_arm_el2_supported(void)
++{
++    return false;
++}
++#endif
+ 
+ /**
+  * kvm_arm_get_max_vm_ipa_size:
 -- 
-2.49.0
+2.43.0
 
 
