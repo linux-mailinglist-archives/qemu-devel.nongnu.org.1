@@ -2,115 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8468EB04455
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FACCB04446
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:41:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubLJi-00030o-HT; Mon, 14 Jul 2025 11:42:10 -0400
+	id 1ubLIC-0000kr-Rz; Mon, 14 Jul 2025 11:40:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kshk@linux.ibm.com>)
- id 1ubJzK-0007oM-C5; Mon, 14 Jul 2025 10:17:04 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1ubJzB-0007lJ-9C
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 10:16:57 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kshk@linux.ibm.com>)
- id 1ubJzH-0000D8-Dz; Mon, 14 Jul 2025 10:17:01 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56E8KRlB014677;
- Mon, 14 Jul 2025 14:16:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=/fnawL
- bQb+PXjZBgC2TuPEOK6bDpsfugctixtUEIsVE=; b=NvNGKG6udbIccXswUHJ/c5
- us8YH2t0e3iF//eY+xOsoVOhGExntMBaSFPD1hUZDiARZwNWOBaZ4lzq8H3iRnzm
- 9u8NE4bgBki6z+SnIf09UMi4zx4Bs7hLHwcuJgJjA+vZmrDxM4yQKZHW1rcaGBfO
- kZY0dA7VAkfobtkAVPxKqSaSXBfdwDQ4exRYQRgixV4D05zVtgYuclSvv1nWuzSM
- JZcDyBr7wuTZehpB9vc2uNNIcyoG2H1DF29t1m7rlK47xTDaBNJXeELwmvN/f9Uy
- G+wmDvZj8z1ouqOCVzBP77bADpQOeqgdX1zmV77+3hSuE+jEwW68XwNB/Np5oGNQ
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47ue4tsypq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jul 2025 14:16:51 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56EEGp21013484;
- Mon, 14 Jul 2025 14:16:51 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47ue4tsynt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jul 2025 14:16:51 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56EAO9mc000890;
- Mon, 14 Jul 2025 14:16:39 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 47v48kwxyd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jul 2025 14:16:39 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 56EEGces10420910
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Jul 2025 14:16:38 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E2135805B;
- Mon, 14 Jul 2025 14:16:38 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 038D558059;
- Mon, 14 Jul 2025 14:16:38 +0000 (GMT)
-Received: from [9.61.243.238] (unknown [9.61.243.238])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 14 Jul 2025 14:16:37 +0000 (GMT)
-Message-ID: <e0d7a518-7736-4de1-814c-578f14e591f2@linux.ibm.com>
-Date: Mon, 14 Jul 2025 09:16:37 -0500
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1ubJz8-00008O-4o
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 10:16:53 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bgkn474p3z6L5MX;
+ Mon, 14 Jul 2025 22:13:12 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 111951402F2;
+ Mon, 14 Jul 2025 22:16:40 +0800 (CST)
+Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 14 Jul
+ 2025 16:16:39 +0200
+Date: Mon, 14 Jul 2025 15:16:38 +0100
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>,
+ <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Anisa Su
+ <anisa.su@samsung.com>
+Subject: Re: [PATCH qemu 07/11] hw/cxl: mailbox-utils: 0x5602 - FMAPI Set DC
+ Region Config
+Message-ID: <20250714151638.000038ac@huawei.com>
+In-Reply-To: <20250714151512.00000a2a@huawei.com>
+References: <20250702160219.989731-1-Jonathan.Cameron@huawei.com>
+ <20250702160219.989731-8-Jonathan.Cameron@huawei.com>
+ <20250714052757-mutt-send-email-mst@kernel.org>
+ <20250714150218.00006c95@huawei.com>
+ <20250714151512.00000a2a@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2] virtio-net: Fix VLAN filter table reset timing
-Content-Language: en-US
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
-Cc: yin31149@gmail.com, eperezma@redhat.com, mst@redhat.com,
- jasowang@redhat.com, virtualization@lists.linux.dev, qemu-stable@nongnu.org
-References: <20250714-vlan-v2-1-2d589ba4dcd3@rsg.ci.i.u-tokyo.ac.jp>
-From: Konstantin Shkolnyy <kshk@linux.ibm.com>
-In-Reply-To: <20250714-vlan-v2-1-2d589ba4dcd3@rsg.ci.i.u-tokyo.ac.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=baBrUPPB c=1 sm=1 tr=0 ts=68751153 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=zTvvzZXkgg2YcvmaeiIA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: IcQvpBd0K6heh5JHYXw0CLJmsRLAFejt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDA4NCBTYWx0ZWRfX6us/9Ep8psvq
- XmNb8LlKntk+i/WPSmaEnf0uHFPwofz4QUV19KsY5ppgTHiBfGYTkQbnQzHjJ9EEIOANhXOtwQh
- A4mJcxLQ8p0KPI2qgbWy4XTYI0USCTQSfO02im+hHNF3TRNXsNpsyWc1dOJXzAAlCNWu2QLeIzo
- BC9fhrHlvpiuCKHMTA+YMN3wssmDpYtFUXXD/uSD6bbh9tIS9upL8/1NSEa0fdXIUa4mxdoZXSq
- 5vecXKRdJPrr4ZYw5R/0ZwEKASWYYgeVo4+UPIjrh4B0yymdcmslSBIs/sUcgDs/XaStiZGwEl/
- GMAbE6J/h8bqaWL9EuWUvhYLL0LrcUSP+ra+qV3aLGYGmfFUOE0lrHQZVfQUTTr6rP+SYu+6Pin
- qoR19TjgyH2F8dP5h4V74j6DSQu/gsO16mmnPx/AFDe7zpSIkatmWZEB1///M/BXyz3JvEt6
-X-Proofpoint-ORIG-GUID: 2JsllPUEY_zbtj7GU-rpwZg30iJKfoYP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-14_01,2025-07-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=857
- suspectscore=0 adultscore=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1011 mlxscore=0
- malwarescore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507140084
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=kshk@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,21 +72,139 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14-Jul-25 04:31, Akihiko Odaki wrote:
-> Konstantin, I would also want you to test this new version. Please also
-> give it Tested-by, and, if possible, Reviewed-by.
+On Mon, 14 Jul 2025 15:15:12 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-It works as expected during the boot. All bits in vlans[] remain set 
-until virtio_pci_common_write(VIRTIO_PCI_GUEST_FEATURES) comes with 
-VIRTIO_NET_F_CTRL_VLAN set, and clears vlans[]. Then I see 
-virtio_net_set_status(0xb) and virtio_net_set_status(0xf).
+> On Mon, 14 Jul 2025 15:02:18 +0100
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+>=20
+> > On Mon, 14 Jul 2025 05:32:19 -0400
+> > "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> >  =20
+> > > On Wed, Jul 02, 2025 at 05:02:13PM +0100, Jonathan Cameron wrote:   =
+=20
+> > > > From: Anisa Su <anisa.su@samsung.com>
+> > > >=20
+> > > > FM DCD Management command 0x5602 implemented per CXL r3.2 Spec Sect=
+ion 7.6.7.6.3
+> > > >=20
+> > > > Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> > > > Signed-off-by: Anisa Su <anisa.su@samsung.com>
+> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>   =20
+> >=20
+> >  =20
+> > > > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> > > > index bf1710b251..1fc453f70d 100644
+> > > > --- a/hw/cxl/cxl-mailbox-utils.c
+> > > > +++ b/hw/cxl/cxl-mailbox-utils.c   =20
+> >  =20
+> > > > +/* CXL r3.2 section 7.6.7.6.3: Set Host DC Region Configuration (O=
+pcode 5602) */
+> > > > +static CXLRetCode cmd_fm_set_dc_region_config(const struct cxl_cmd=
+ *cmd,
+> > > > +                                              uint8_t *payload_in,
+> > > > +                                              size_t len_in,
+> > > > +                                              uint8_t *payload_out,
+> > > > +                                              size_t *len_out,
+> > > > +                                              CXLCCI *cci)
+> > > > +{
+> > > > +    struct {
+> > > > +        uint8_t reg_id;
+> > > > +        uint8_t rsvd[3];
+> > > > +        uint64_t block_sz;
+> > > > +        uint8_t flags;
+> > > > +        uint8_t rsvd2[3];
+> > > > +    } QEMU_PACKED *in =3D (void *)payload_in;
+> > > > +    CXLType3Dev *ct3d =3D CXL_TYPE3(cci->d);
+> > > > +    CXLEventDynamicCapacity dcEvent =3D {};
+> > > > +    CXLDCRegion *region =3D &ct3d->dc.regions[in->reg_id];
+> > > > +
+> > > > +    /*
+> > > > +     * CXL r3.2 7.6.7.6.3: Set DC Region Configuration
+> > > > +     * This command shall fail with Unsupported when the Sanitize =
+on Release
+> > > > +     * field does not match the region=E2=80=99s configuration... =
+and the device
+> > > > +     * does not support reconfiguration of the Sanitize on Release=
+ setting.
+> > > > +     *
+> > > > +     * Currently not reconfigurable, so always fail if sanitize bi=
+t (bit 0)
+> > > > +     * doesn't match.
+> > > > +     */
+> > > > +    if ((in->flags & 0x1) !=3D (region->flags & 0x1)) {
+> > > > +        return CXL_MBOX_UNSUPPORTED;
+> > > > +    }
+> > > > +
+> > > > +    if (in->reg_id >=3D DCD_MAX_NUM_REGION) {
+> > > > +        return CXL_MBOX_UNSUPPORTED;
+> > > > +    }
+> > > > +
+> > > > +    /* Check that no extents are in the region being reconfigured =
+*/
+> > > > +    if (!bitmap_empty(region->blk_bitmap, region->len / region->bl=
+ock_size)) {
+> > > > +        return CXL_MBOX_UNSUPPORTED;
+> > > > +    }
+> > > > +
+> > > > +    /* Check that new block size is supported */
+> > > > +    if (!test_bit(BIT((int) log2(in->block_sz)),
+> > > > +                  &region->supported_blk_size_bitmask)) {
+> > > > +        return CXL_MBOX_INVALID_INPUT;
+> > > > +    }     =20
+> > >=20
+> > > This does not work: test_bit works on unsigned long, while
+> > > supported_blk_size_bitmask is uint64_t.
+> > >=20
+> > > Why so funky? what is wrong with:
+> > >=20
+> > > if (!(BIT_ULL(log2(in->block_sz)) & region->supported_blk_size_bitmas=
+k))
+> > >=20
+> > > And BTW why cast to int here?   =20
+> This became obvious when your suggestion didn't build :(
+>=20
+> ./../hw/cxl/cxl-mailbox-utils.c: In function =E2=80=98cmd_fm_set_dc_regio=
+n_config=E2=80=99:
+> /home/jic23/src/qemu/include/qemu/bitops.h:25:39: error: invalid operands=
+ to binary << (have =E2=80=98long long unsigned int=E2=80=99 and =E2=80=98d=
+ouble=E2=80=99)
+>    25 | #define BIT_ULL(nr)             (1ULL << (nr))
+>       |                                       ^~ ~~~~
+> ../../hw/cxl/cxl-mailbox-utils.c:3436:11: note: in expansion of macro =E2=
+=80=98BIT_ULL=E2=80=99
+>  3436 |     if (!(BIT_ULL(log2(in->block_sz)) & region->supported_blk_siz=
+e_bitmask)) {
+>       |           ^~~~~~~
+>=20
+> Now I look again, this is effectively 2**(log_2(x)) or x. So
+> if (in->block_sz & region->supporte_blk_size_bitmask)
 
-I can't test migration because currently it's not supported on s390 for 
-PCI devices.
+it (!(in->block_sz & region->supports_blk_size_bitmask))
 
-Tested-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+I mean.
+
+
+> Should work as long as we know block_size is a power of 2 (which the spec=
+ification
+> says it must be).
+>=20
+> Anisa?
+>=20
+> >=20
+> > Change looks fine to me, so I'll prepare an updated set with this
+> > and the missing semi colon.  Anisa if you can have a look at this
+> > that would be great.=20
+> >=20
+> > Sorry I seem to have missed Anisa off the cc for this!
+> >=20
+> > Jonathan
+> >  =20
+>=20
 
 
