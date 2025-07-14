@@ -2,77 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FFEB03EED
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 14:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C89B03F38
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 15:06:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubITU-0002Tl-IT; Mon, 14 Jul 2025 08:40:04 -0400
+	id 1ubIqR-0008Ko-Vn; Mon, 14 Jul 2025 09:03:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akshayasankarr@gmail.com>)
- id 1ubHOu-000129-PQ
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:31:20 -0400
-Received: from mail-vk1-xa36.google.com ([2607:f8b0:4864:20::a36])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1ubHtV-0007CR-BP
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:53 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akshayasankarr@gmail.com>)
- id 1ubHOn-0007qT-NH
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:31:16 -0400
-Received: by mail-vk1-xa36.google.com with SMTP id
- 71dfb90a1353d-5313a2566f9so3762018e0c.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:31:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1ubHtK-0003ri-6h
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:51 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-ae0dffaa8b2so838974866b.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 05:02:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1752492665; x=1753097465; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Xci01p+bdv9GczRaA1Szy6g2SQG7ExcQewr9MaOHAdM=;
- b=WA6Risp8hNBgehKsTaHMXcWROBoohWUaO8bACCQs2GFiNwhnJZZ6JWz4M1oYLaXO4t
- 1rvqPVh4mnZK1EkOvzLz9fn0xGoPMx7snloNaaBp9Fsv/Ogm5wsf/Lnt+VJMaefDrgxs
- 4dXf7Ef/M9WIV8Kgt7nMTiOj0cNdsvqlvtoyII+U/fNZGcUvQqjVdxy3NWvnCI3WJg0a
- 2s+I7V+M4UcFV3uj8Zd8FpRWbEBKiIBKqBQBzm2Y8qGlU+u+aOVBqXYsmSfvOHh/cuXu
- x/asodAua/ng7sgLpQeBVCCWeW4P0aO/CgUGKBFKBhMGCtCE+Z98vy6Zb8CgyBoWMCXB
- vrNg==
+ d=linaro.org; s=google; t=1752494558; x=1753099358; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=m/O59ZeqFnOFRxSa/swbrG3OPWL18EdennTcxn0riCw=;
+ b=cKKbhfFce6+ssAHQH8Ve9drjs1zIr20Yybew3zOm19i8ZQMDR2wMfivqDh3neDxRMt
+ dwyVCrm3kzn818YbqsdfS6RvoQpBB+Em8ZIxUpGrN6WnPO9fafKInnVsMzO6inA6UcFp
+ TMSUbwLdWhnelcKqif1HLUbGuRsvgZkZp8nfko0CrGQHPI1TAs34cG75gxaF5dgAgH9G
+ PHTcRFTanANzT/b4eQn2KAIglKJuNJAFbev+UVOKpzVHI7Be1sZKQaAP9i5NHNUnMK3Y
+ gJ+Ugs/xw2Wy0C1C+zownd33ruK2q7HjSowCXcpDJQEdVXYpI8e/pc8UDnEup6zFR7bi
+ OX1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752492665; x=1753097465;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Xci01p+bdv9GczRaA1Szy6g2SQG7ExcQewr9MaOHAdM=;
- b=Yw4idYsB6DgjkC/nGeyvBFh4dQdCVTo4daeDHSXRpjzJgyT1ia/+Dx5808vCOQW3pa
- /9TsJjgWmHkx/UwYNgUKmRdbK2ER4UE0LJFgI5KQN8KEFh+BJPm3SUqDzdBYxB50TXwG
- ON8ZaWAD9iC06+WB221j1MW2Vd7neVG+qmlyJlb63MAm6mHWnQafOzdzdwv+KTVFdvvv
- 3q0TOuwgNV/rZCKroq1E4KAZ3NcoWFCinsaq1yF5hFbp/4S0FETggc5yhJKkBrjVOoMZ
- g0GP/PgGW3xh251XtoknqkAZom1IomyDWO4vyV+ir7eIexSJqunK0vcHuuIPIqZD5wQi
- ZPfw==
-X-Gm-Message-State: AOJu0Yx+93nFxVI2y6pZYmyjdCiJL3YD5h5qChOqPkbN1G0p+Oagiaga
- WXjl6fmwwZVHKb+9Mv9f2h10LH+evy/tfZqs24xkoxNKk+5/WyHAbHoIBhZtTSrEN4Z53TygS/m
- 4yZGHMpBwwOswL9io3PPbXaGFKopYAYmiGGs5
-X-Gm-Gg: ASbGncvLtqaMzJWaBnzRIMjun9gG4IEsFBclZd8yZIlHK9C/elZ689QaqEuz7P6b/25
- glRc59YGZg+pu30tX6AaLQ9+9P8xclkwNW12uauFkmUZw5zBFxU0zGHcvl8FLWS3mmnJ6/jCngv
- hJh9Sr35jlJKFiqk5LoNuwt7V05r/iKukOVJTFHXgsKCFty1Dy0m8FupSa4TKwFOYDGBaZZ8FIy
- nVv9B6aqxvb7DmMhaMdFFRxqT3ugHVEl4LF5GyRsw==
-X-Google-Smtp-Source: AGHT+IE6ILSLZOiCb0ATFdyYVBKYrhXkayDSVvoxBDAuTk0omuGak/gqiwGSLpVuPsHv0Cm2cyh4ihW/nrkVtjLu5Mc=
-X-Received: by 2002:a05:6122:6609:b0:523:dd87:fe95 with SMTP id
- 71dfb90a1353d-535f4a02e12mr7061571e0c.9.1752492665284; Mon, 14 Jul 2025
- 04:31:05 -0700 (PDT)
-MIME-Version: 1.0
-From: Akshaya Sankar <akshayasankarr@gmail.com>
-Date: Mon, 14 Jul 2025 17:00:51 +0530
-X-Gm-Features: Ac12FXxfszG2c1BQ3fIV0hdMGaqJ75touRdoq3GrgfIva_2zb2s620tSbmv6_VQ
-Message-ID: <CA+A3OQ3jcS=r0n_gEMAxrtTDHkCjibL9SPWY37WDBq2tqC-1SQ@mail.gmail.com>
-Subject: Regarding the TODO list for contribution
+ d=1e100.net; s=20230601; t=1752494558; x=1753099358;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=m/O59ZeqFnOFRxSa/swbrG3OPWL18EdennTcxn0riCw=;
+ b=XBDP8VV8AfNAzgT1UHz9Kfj1onsXq/at5zljwabhiFHUpIwF2icyGJ81QF9sikO+vi
+ ABSkde0YB/6aWJ/987QuEqcQGbQ1WPKuckntVHWxShYGMeNUyWWGlmRnaIoeIXAav+ro
+ aRcLEzkvRn1RiCS+821en+7YYGjbGtzLZ619pgmvbQm3Mi1xo3KOsBGhijznn7dXwQiq
+ OuBUs9GT46N4Ase9Qyf7hst0ZUGQU6PiT+ZXR1XKsmP3SfAbzJOIk+tcDFRuZeoxQK5p
+ 9Ql2EEvNp526+cBQnkIL2M6VJlx98qJJjagevFXUqOZLvUb5Tf68zjygdnXTA1VJCmK7
+ 9pdQ==
+X-Gm-Message-State: AOJu0Yw9xZkiOBCz6zEyCM5IIEVWdBtZ/R1Qz+64xItsAQpPNKa5vvSu
+ qSpKYczd2voW7jtY+V8/xtkVg+DdpWpMl8IJ3Gva1mu5OQt6ecQAEODZ/8Vmw23udRLHB3XfKVN
+ ktktd36s=
+X-Gm-Gg: ASbGncvwtM3MOOIut5z7rooeY+UBAxzhM2xgJjSlwhRa2y0XpYCILbgP/W0rqZEiiOy
+ 7+NiB6bpQeKG9IWszJomIxi7BbwKSMOicFpK1LDlor107kM0Gzbmtw6U2kyGiC5KmloErKnh6L/
+ oArFKJVuQWNAztXDCwjM8YgSvV5kjLbK2ijx4xU/hameBsHhPgCFUzt/mI93W8CYz6AYOFlEZvY
+ 8D3M2uScayU6x+mC1rL91f+LJG53AR8FUoaD4Orz4sQJTloygyz1OF5NGrmKd+iZY+FVIz0niBw
+ lX9kQVBR5hCDYJwvpY7CxLhMvRDpyNFDyg10GJ3zb2BgUVeBGrFzds2yKKawp//WBxQ22E53snT
+ iqbHQ51DnQxqmNGmrH4dFxcE=
+X-Google-Smtp-Source: AGHT+IFoxKdsQ0VxnqPYeLMSssrte55NMPo00eauatnHtPaGmHz2v4r0u4cHSrRX7WBi/nxWXvtpBA==
+X-Received: by 2002:a17:906:f599:b0:ae1:c79f:2b2e with SMTP id
+ a640c23a62f3a-ae6fbf968ccmr1431487366b.40.1752494556471; 
+ Mon, 14 Jul 2025 05:02:36 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ae6e8264608sm818259266b.109.2025.07.14.05.02.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Jul 2025 05:02:35 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id B4E955F81E;
+ Mon, 14 Jul 2025 13:02:34 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000c92df10639e1fe91"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a36;
- envelope-from=akshayasankarr@gmail.com; helo=mail-vk1-xa36.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 0/8] maintainer updates for rc0 (gitlab, gdbstub, plugins, docs)
+Date: Mon, 14 Jul 2025 13:02:26 +0100
+Message-ID: <20250714120234.1524401-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 14 Jul 2025 08:15:11 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,33 +98,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000c92df10639e1fe91
-Content-Type: text/plain; charset="UTF-8"
+The following changes since commit 9a4e273ddec3927920c5958d2226c6b38b543336:
 
-Hi all,
+  Merge tag 'pull-tcg-20250711' of https://gitlab.com/rth7680/qemu into staging (2025-07-13 01:46:04 -0400)
 
-we would like to contribute to this open source community as a fresher /
-less experience, and would like to know about the small contributions to be
-done as initially. We have hands on experience on embedded, c, python and
-c++.
+are available in the Git repository at:
 
-Kindly guide us if there is any TODO list.
+  https://gitlab.com/stsquad/qemu.git tags/pull-10.1-rc0-maintainer-140725-1
 
-Thanks and regards
-Akshaya S
+for you to fetch changes up to 9152540f4ef3528ff003493cbe6a27b6c0f322e8:
 
---000000000000c92df10639e1fe91
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  gdbstub: add the GDB register XML files for sparc64. (2025-07-14 11:42:49 +0100)
 
-<div dir=3D"auto"><div dir=3D"auto">Hi all,</div><div dir=3D"auto"><br></di=
-v><div dir=3D"auto">we would like to contribute to this open source communi=
-ty as a fresher / less experience, and would like to know about the small c=
-ontributions to be done as initially. We have hands on experience on embedd=
-ed, c, python and c++.=C2=A0</div><div dir=3D"auto"><br></div><div dir=3D"a=
-uto">Kindly guide us if there is any TODO list.</div><div dir=3D"auto"><br>=
-</div><div dir=3D"auto">Thanks=C2=A0and regards</div><div dir=3D"auto">Aksh=
-aya S</div></div>
+----------------------------------------------------------------
+maintainer updates (gitlab, plugins, gdbstub, docs)
 
---000000000000c92df10639e1fe91--
+  - update check-units script to take -n <top> argument
+  - fix execlog plugin to handle tab separators
+  - add gdb XML file for alpha
+  - add gdb XML file for sparc64
+  - use :kbd: in docs to highlight key sequences
+  - clean up rst formatting in virtio-net-failover docs
+
+----------------------------------------------------------------
+Alex Bennée (4):
+      gitlab: use argparse in check-units script
+      gitlab: add -n option to check-units script
+      plugins: fix inclusion of user-mode APIs
+      docs/system: clean-up formatting of virtio-net-failover
+
+Manos Pitsidianakis (1):
+      docs: use :kbd: role in sphinx docs
+
+Rot127 (1):
+      gdbstub: add the GDB register XML files for sparc64.
+
+Yodel Eldar (2):
+      contrib/plugins/execlog: Add tab to the separator search of insn_disas
+      target/alpha: Add GDB XML feature file
+
+ docs/devel/testing/main.rst            |   4 +-
+ docs/system/images.rst                 |   2 +-
+ docs/system/keys.rst.inc               |  49 ++++++------
+ docs/system/linuxboot.rst              |   2 +-
+ docs/system/mux-chardev.rst.inc        |  38 +++++----
+ docs/system/virtio-net-failover.rst    |  51 +++++++------
+ configs/targets/alpha-linux-user.mak   |   1 +
+ configs/targets/alpha-softmmu.mak      |   1 +
+ configs/targets/sparc64-linux-user.mak |   1 +
+ configs/targets/sparc64-softmmu.mak    |   1 +
+ contrib/plugins/execlog.c              |  15 ++--
+ linux-user/plugin-api.c                |   1 +
+ target/alpha/cpu.c                     |   1 +
+ target/sparc/cpu.c                     |   1 +
+ common-user/plugin-api.c.inc           |   1 +
+ .gitlab-ci.d/check-units.py            |  29 ++++---
+ gdb-xml/alpha-core.xml                 | 136 +++++++++++++++++++++++++++++++++
+ gdb-xml/sparc64-core.xml               |  99 ++++++++++++++++++++++++
+ linux-user/meson.build                 |   5 +-
+ 19 files changed, 352 insertions(+), 86 deletions(-)
+ create mode 100644 gdb-xml/alpha-core.xml
+ create mode 100644 gdb-xml/sparc64-core.xml
+
+-- 
+2.47.2
+
 
