@@ -2,93 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 868CFB045AB
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 18:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B156FB0454F
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 18:22:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubMET-00012K-7L; Mon, 14 Jul 2025 12:40:49 -0400
+	id 1ubLuX-0005dO-Ua; Mon, 14 Jul 2025 12:20:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ubLIm-0001QV-3k
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 11:41:12 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ubLIj-0005QL-4W
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 11:41:11 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7490acf57b9so3158825b3a.2
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 08:41:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752507667; x=1753112467; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=WaMSdvDqUwH+ccr+EoYDri+v+MWm3qoOo8/ZPe03Y4A=;
- b=LAJ3CN0KmIUlIWwOGUw8ADXsYe2NovEi5PZPG9Dwwq3BuixUCx/SAxF7T8Lda2NPO/
- UeH7rSdMerMZw9+zmpnIYr1S2JNnDUB9tbkIz3vp8Y19G5qlxewV9GjyNpJgBAS35eha
- ce4uIEQkhD5qGY39pDetSXRe7r954ElV8kJIIrn4yI2Ij53xgYK2CEK+mmC5CT/RJUkh
- wPYZO3yjEqvHJjKgP6YOhxAYiniw+Azln3Es6noNuzbJ4nc5474ZNU1UZgoDLzQkGvxM
- vIa2Bk0MFpW2tWb3+0fxdiHAOQHA6hH+WikBcqdB3nHDZKggunxGWYaqUSz4v/jUJLES
- EtxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752507667; x=1753112467;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WaMSdvDqUwH+ccr+EoYDri+v+MWm3qoOo8/ZPe03Y4A=;
- b=MMHQ/kZD570g/Mom0p2t2IbV750oYfLwwqbGOhfmVGPmhNRAZs8RzCJsbG0Te3Xnpb
- xaaUqOHGakGfLquiTsfXi/iCssKs6qWU/fF6B0McIorFNFjP0+u1qNPCDAJiZ11XARjF
- 17KOM1YbfC9VytuqzlaSFiQlkYHWNMyziS3E/N5gjmC6eFI1R/CEWa2jj+TelBdK58HW
- fCa59EUNhrEJUfH5ZPF7o3QuKtNUVVPtcC4v2loMVLPhOm51Hp6JgB3p37Fv8TOVieYx
- Yruc3D8tw8c9lW6HOQd2X2DzgQrS4xopD2+jxuA27pomn08IKGmvPO3e4SbtlH7Wcgrd
- DnKw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX+tn4KEegVQ5EiKogcQ1einjtOdWhS0o/R4MS4lxN2ZX3FZxtw79OOJgE09GaV/WBTwR49Nb3O0Btj@nongnu.org
-X-Gm-Message-State: AOJu0YzloQhARv2Ww/NHTd7YA+DEMhmaOlcR/krzk2O/6eB6AZpmFKUB
- c4C82ilNXCfwW2BXQeecKAKwH2Kiu91E+2Q4MYqg3PePqQ0KAWl1gfWjjx/LLy3RwWY=
-X-Gm-Gg: ASbGncsk68Nf5tcYI7cpAJdzDZSUGI38VgQWSvfQwV+BYG+wo7vYFTXfRwl81bcuk+u
- Z59k2ogt4ichX4cxsRV1AmyIy2LI3Qrm+UnaoSQeR9GITMvPbi/3JWLt9fKJBCeC9FmPLiRYjO7
- zPUECkDHM3lPbtT/PYqTaONQiGj18c2E8pbVm4QihV7YxA+7Nt9iKppdo4DFmcjUCTUqJqpfQk4
- WOSKBj+vtFjbY13EKKDMhJVUEzTji+s071CFTu37ziMDi1JEq6NvDS0erZ7wrUTY8fK2IsU0cd4
- izQNYn3wiGnyTmu32FWBy68RDaE/JNDq1nhC4jPd519CMwLVuEOuL5Twr5y9FtgdOdV3F5Vx1Lz
- WSGiVIVEo4UgUj4oTd+wYvPIPudly8QbidAM=
-X-Google-Smtp-Source: AGHT+IGQC4jAxZPo6q0j+cKIoSGM+SwMsKnoEpi//37hllrFLHqtMnfPmkQ0u8+GT7D5t5qEABhZAw==
-X-Received: by 2002:a05:6a00:39a0:b0:749:456:4082 with SMTP id
- d2e1a72fcca58-74ee0aa6980mr18948929b3a.1.1752507667341; 
- Mon, 14 Jul 2025 08:41:07 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74eb9f8b990sm10865681b3a.153.2025.07.14.08.41.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jul 2025 08:41:06 -0700 (PDT)
-Message-ID: <95b00393-bdd2-4db3-ac39-02a09f83b4d7@linaro.org>
-Date: Mon, 14 Jul 2025 08:41:05 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/arm: Provide always-false kvm_arm_*_supported()
- stubs for usermode
-Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1ubKyF-0003dJ-IM
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 11:20:00 -0400
+Received: from mgamail.intel.com ([198.175.65.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1ubKyB-0002Lp-Fm
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 11:19:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752506396; x=1784042396;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=3TFMp5LO/2slN6dVm1vpSPE+9igU+5m9IduE/JKJ7DM=;
+ b=UUdCHzrfpI75A96my0KAIPqlC56/f0SkljCPLEC1yKtBsnJE7+OATXcJ
+ AqmhJBbmD+zgyzX/mOIDpmxTALCWhCTbTIkZSfXjedCTORyYlB1vm6OAp
+ 6HNYQhJTSthwtJ+enxdZiZDhWa/Y/aI+kWOyOZdn+k5VI16u90Ma4zCEs
+ wVkrikkJXv6+yu0T2yiVq9cOeKNyXF/ujqnQsnEV13IcEjmRf9K0GxGsS
+ x0SMu5qO4HgVcWadSUVT0qSgWHq1zGx0cKztO/6MC2GtXjxL3XLmYAQMy
+ NVcBz/SD1zpFiS7GBp9m8E24Ajx4gu5eQKAbdkkLVIfkf9YBVkfXCXr5b g==;
+X-CSE-ConnectionGUID: v86rkqBBR6awI/tQK0zFug==
+X-CSE-MsgGUID: 6kio4n4VT1q+Pq1bqvMLtA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="77236660"
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="77236660"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 08:19:51 -0700
+X-CSE-ConnectionGUID: tuYErg4NTY2OE+ckX3L4+Q==
+X-CSE-MsgGUID: uijobc+2SxiQG5YX7VGrmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="162625585"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa005.jf.intel.com with ESMTP; 14 Jul 2025 08:19:48 -0700
+Date: Mon, 14 Jul 2025 23:41:18 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: "Moger, Babu" <babu.moger@amd.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Tao Su <tao1.su@intel.com>,
+ Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
  qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-References: <20250714135152.1896214-1-peter.maydell@linaro.org>
- <0b438773-01b9-42e1-8edf-2330e50387f8@linaro.org>
-In-Reply-To: <0b438773-01b9-42e1-8edf-2330e50387f8@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Subject: Re: [PATCH v2 7/7] i386/cpu: Honor maximum value for
+ CPUID.8000001DH.EAX[25:14]
+Message-ID: <aHUlHjzYWUM/ryQy@intel.com>
+References: <20250714080859.1960104-1-zhao1.liu@intel.com>
+ <20250714080859.1960104-8-zhao1.liu@intel.com>
+ <d19082cc-6662-4299-89c6-94657ce672f7@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d19082cc-6662-4299-89c6-94657ce672f7@amd.com>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,94 +88,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/14/25 8:31 AM, Pierrick Bouvier wrote:
-> On 7/14/25 6:51 AM, Peter Maydell wrote:
->> If you try to build aarch64-linux-user with clang and --enable-debug then it
->> fails to compile:
->>
->>    ld: libqemu-aarch64-linux-user.a.p/target_arm_cpu64.c.o: in function `cpu_arm_set_sve':
->>    ../../target/arm/cpu64.c:321:(.text+0x1254): undefined reference to `kvm_arm_sve_supported'
->>
->> This is a regression introduced in commit f86d4220, which switched
->> the kvm-stub.c file away from being built for all arm targets to only
->> being built for system emulation binaries.  It doesn't affect gcc,
->> presumably because even at -O0 gcc folds away the always-false
->> kvm_enabled() condition but clang does not.
->>
->> We would prefer not to build kvm-stub.c once for usermode and once
->> for system-emulation binaries, and we can't build it just once for
->> both because it includes cpu.h.  So instead provide always-false
->> versions of the five functions that are valid to call without KVM
->> support in kvm_arm.h.
->>
->> Fixes: f86d42205c2eba ("target/arm/meson: accelerator files are not needed in user mode")
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3033
->> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->> ---
->> I'm never sure when we prefer to use stub-functions in separate C files
->> vs when we prefer to have ifdeffed stubs in headers. There are several
->> ways we could fix this compile error, so I just picked one...
->> ---
->>    target/arm/kvm_arm.h | 35 +++++++++++++++++++++++++++++++++++
->>    1 file changed, 35 insertions(+)
->>
+On Mon, Jul 14, 2025 at 09:51:25AM -0500, Moger, Babu wrote:
+> Date: Mon, 14 Jul 2025 09:51:25 -0500
+> From: "Moger, Babu" <babu.moger@amd.com>
+> Subject: Re: [PATCH v2 7/7] i386/cpu: Honor maximum value for
+>  CPUID.8000001DH.EAX[25:14]
 > 
-> Thanks Peter, clang with --enable-debug is indeed a combination I didn't
-> try. I'll test this too now. Going through this topic, yes I noticed
-> that gcc always folds the any if (0) condition, and, based on a Richard
-> comment (I can't find now) it seems that we used to rely on that for
-> other parts of the code.
+> Hi Zhao,
 > 
-> The fix you propose works well (initial goal was just to remove
-> CONFIG_KVM, so having CONFIG_USER_ONLY is ok), but I wonder if there is
-> something specific affecting clang in this case and preventing the folding.
+> On 7/14/25 03:08, Zhao Liu wrote:
+> > CPUID.8000001DH:EAX[25:14] is "NumSharingCache", and the number of
+> > logical processors sharing this cache is the value of this field
+> > incremented by 1. Because of its width limitation, the maximum value
+> > currently supported is 4095.
+> > 
+> > Though at present Q35 supports up to 4096 CPUs, by constructing a
+> > specific topology, the width of the APIC ID can be extended beyond 12
+> > bits. For example, using `-smp threads=33,cores=9,modules=9` results in
+> > a die level offset of 6 + 4 + 4 = 14 bits, which can also cause
+> > overflow. Check and honor the maximum value as CPUID.04H did.
+> > 
+> > Cc: Babu Moger <babu.moger@amd.com>
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > ---
+> > Changes Since RFC v1 [*]:
+> >  * Correct the RFC's description, now there's the overflow case. Provide
+> >    an overflow example.
+> > 
+> > RFC:
+> >  * Although there are currently no overflow cases, to avoid any
+> >    potential issue, add the overflow check, just as I did for Intel.
+> > 
+> > [*]: https://lore.kernel.org/qemu-devel/20250227062523.124601-5-zhao1.liu@intel.com/
+> > ---
+> >  target/i386/cpu.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index fedeeea151ee..eceda9865b8f 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -558,7 +558,8 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
+> >  
+> >      *eax = CACHE_TYPE(cache->type) | CACHE_LEVEL(cache->level) |
+> >                 (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0);
+> > -    *eax |= max_thread_ids_for_cache(topo_info, cache->share_level) << 14;
+> > +    /* Bits 25:14 - NumSharingCache: maximum 4095. */
+> > +    *eax |= MIN(max_thread_ids_for_cache(topo_info, cache->share_level), 4095) << 14;
 > 
-
-Indeed, clang does not fold the condition "value && kvm_enabled() && 
-!kvm_arm_sve_supported()". Looks like a missing case.
-This code compiles with gcc -O0, but not clang -O0.
-
-extern int f(void);
-int main(int argc) {
-     if (argc && 0)
-         f();
-}
-
-As folding is not guaranteed by C standard, I'm not sure it's really 
-possible to file a bug. However, since we rely on this behaviour in 
-other parts, maybe it would be better to rewrite the condition on our side.
-
-By changing the code to this, the folding happens as expected.
-
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 26cf7e6dfa2..af5788dafab 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -318,9 +318,11 @@ static void cpu_arm_set_sve(Object *obj, bool 
-value, Error **errp)
-  {
-      ARMCPU *cpu = ARM_CPU(obj);
-
--    if (value && kvm_enabled() && !kvm_arm_sve_supported()) {
--        error_setg(errp, "'sve' feature not supported by KVM on this 
-host");
--        return;
-+    if (value) {
-+        if (kvm_enabled() && !kvm_arm_sve_supported()) {
-+            error_setg(errp, "'sve' feature not supported by KVM on 
-this host");
-+            return;
-+        }
-      }
-
-      FIELD_DP64_IDREG(&cpu->isar, ID_AA64PFR0, SVE, value);
-
-If you prefer keeping your patch, I'm ok, but fixing the condition looks 
-better to me (as we already rely on constant folding in other places).
-
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Will this be more meaningful?
 > 
-> Thanks,
-> Pierrick
+> *eax |=
+>  max_thread_ids_for_cache(topo_info, cache->share_level) & 0xFFF << 14
+
+Hi Babu, thank you for your feedback! This approach depends on truncation,
+which might lead to more erroneous conclusions. Currently, such cases
+shouldn't exist on actual hardware; it's only QEMU that supports so many
+CPUs and custom topologies.
+
+Previously, when Intel handled similar cases (where the topology space
+wasn't large enough), it would encode the maximum value rather than
+truncate, as I'm doing now (you can refer to the description of 0x1 in
+patch 5, and similar fixes in Intel's 0x4 leaf in patch 6). In the
+future, if actual hardware CPUs reach such numbers and has special
+behavior, we can update accordingly. I think at least for now, this
+avoids overflow caused by special topology in QEMU emulation.
+
+Thanks,
+Zhao
 
 
