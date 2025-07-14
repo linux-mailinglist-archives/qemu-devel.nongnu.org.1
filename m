@@ -2,149 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B8DB046F5
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 19:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9C5B046E5
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 19:51:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubNNV-0006Ls-HL; Mon, 14 Jul 2025 13:54:16 -0400
+	id 1ubNJZ-0002bq-PK; Mon, 14 Jul 2025 13:50:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1ubMDD-0007qW-Un; Mon, 14 Jul 2025 12:39:32 -0400
-Received: from mail-co1nam11on20625.outbound.protection.outlook.com
- ([2a01:111:f403:2416::625]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from
+ <BATV+a886bafff4ae5a00747a+7995+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1ubMFS-0002Ir-TK
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 12:41:51 -0400
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1ubMD7-0005pv-8N; Mon, 14 Jul 2025 12:39:31 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hO2i/+kJAp4DL47c7m4BEUJjq6vPsU+lBGLmjfIkGrYACaBwkXMHgCLPYeNY4OeIDsfKSnMXKYFJcyWchJd5YttJW8fQVx82EWzJp2oB7R7Ksedb83oPKZVCWtoLCobBs7oHP7MaXnMNxtIU0ez4f8hmoh8KCzDgXhbDvfnkeEX0RL6Kfz2VKjwQ4eMa3KpWc74spJruL8TUm+YFtrZBCaAf5mpR7zv2WTrjOFCmg2gG6hn5gW7SiZ9vqeD8ksWLuAV95RcKYvKQYfmbrB8iXg2iyb3o0MQRvoqVu/8dSGarJcuRtk6ZqVvjyXxrvWgwcPYUyyj2f95xxM6YZ8pXJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8elB4FViWxDRPKvX8oafm96KP9OxuE9oMVssvsAvjBE=;
- b=so9Y0y+nGmWysfBqRlp8T4Ry+8X7fvduwpHCvxPrpndutGnzsE//px8Be3Ox2wC7sXuTIJn0SWF0rrtUJZwYDoj25qyLrSXKjyycRoGKxT05Z9UGqFt4OE3NuU4Y0VUqAjBfWRNmg5jrDB4xW6t68rPK3+Vx+5QaSMDt12Ntt4MB5aSodrYaDv57rphIZtflw+BFIJtTDQmaclVWkNBm0v87UESq+pKAc1kr2ESVHhI+pB8vh3tDy7oZYuxPrjVpVLgd+WmHkUORzxyEHukpMsNH6LRdn5HVo6OhELM09Zr3+A7cx5RvKwcp8KfyH4CcyH2A93LvEiWPlmFTzkYw1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8elB4FViWxDRPKvX8oafm96KP9OxuE9oMVssvsAvjBE=;
- b=axzn1pHpDvqTq/aQFVr4HtDz1/yxV+Dlkn/weiuVtiw/+ZbruEkW6FYJ+tnlfZF2waxTXt+vUrLkkWhGNGvsoXqhCaZTp09pVm/1YsgriuBjL2fXIXxdyD0VLH2SScPCIyHjkkxgs2weKI62U6dRe536wPmZURGsjVr5wMqzb37h4GCdCyqGurlQXnQ4Xo2wFC48MyvonUWjx669vH7o2mswBcCof4zff5OybRHInXZeRqgfdlAWDOY4HiHsfu3rosPhSwTNNjQj/59Et0QsOB7cbwxpmtmYc5YJgj9IjaCijrSK6E4ycdSOHizHSELXeVG7J3nrT/wO4Sa9CVRsDQ==
-Received: from MN2PR22CA0023.namprd22.prod.outlook.com (2603:10b6:208:238::28)
- by CH3PR12MB9252.namprd12.prod.outlook.com (2603:10b6:610:1ba::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.19; Mon, 14 Jul
- 2025 16:39:12 +0000
-Received: from BN1PEPF00004684.namprd03.prod.outlook.com
- (2603:10b6:208:238:cafe::d5) by MN2PR22CA0023.outlook.office365.com
- (2603:10b6:208:238::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.32 via Frontend Transport; Mon,
- 14 Jul 2025 16:39:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN1PEPF00004684.mail.protection.outlook.com (10.167.243.90) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8922.22 via Frontend Transport; Mon, 14 Jul 2025 16:39:10 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 14 Jul
- 2025 09:38:50 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 14 Jul
- 2025 09:38:49 -0700
-Received: from Asurada-Nvidia (10.127.8.10) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Mon, 14 Jul 2025 09:38:48 -0700
-Date: Mon, 14 Jul 2025 09:38:47 -0700
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <eric.auger@redhat.com>,
- <peter.maydell@linaro.org>, <jgg@nvidia.com>, <ddutile@redhat.com>,
- <berrange@redhat.com>, <nathanc@nvidia.com>, <mochs@nvidia.com>,
- <smostafa@google.com>, <linuxarm@huawei.com>, <wangzhou1@hisilicon.com>,
- <jiangkunkun@huawei.com>, <jonathan.cameron@huawei.com>,
- <zhangfei.gao@linaro.org>, <zhenzhong.duan@intel.com>,
- <shameerkolothum@gmail.com>
-Subject: Re: [RFC PATCH v3 04/15] hw/arm/smmu-common: Introduce
- smmu_iommu_ops_by_type() helper
-Message-ID: <aHUyl5hZKOeX7E+m@Asurada-Nvidia>
-References: <20250714155941.22176-1-shameerali.kolothum.thodi@huawei.com>
- <20250714155941.22176-5-shameerali.kolothum.thodi@huawei.com>
+ (Exim 4.90_1) (envelope-from
+ <BATV+a886bafff4ae5a00747a+7995+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1ubMFK-0006pL-0y
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 12:41:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+ :MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
+ Sender:Reply-To:Content-ID:Content-Description;
+ bh=lLEp+/J9pyCnuWXEMcBv4njSSDRIuiy1dbMgL/lhgrw=; b=heGrVJ3fNBfhGsasi7ZEkYK8L1
+ sWK6kafnN3TFu/rqZlKk9kvSYot0lq+ShBFLoG4RJ82NNT3uG1SN26D2zgzGjlrYneTDlR3ATIp9l
+ fULm04ekAwIA17Yspfvl/t5rWTXdec5ESxOTgm6T3HbgZ5+JXJpEY8gmGwA8tWqyNtX2WG78tIqdr
+ gKni665E3nSf+h+TiU1s157OZms6PjQbkdLuiGOcebltSH8tnRsEpvNaJ3hnR5MakUaFihrciNvQI
+ ehZW850RSYpYHa2N6NlG0WFiZxhlJERNdi0srDzPllKBs6soSENGN+MtQHlTWAKwCwM23hzfS7geR
+ dGEMjtFA==;
+Received: from [31.94.34.59] (helo=[127.0.0.1])
+ by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+ id 1ubMF2-00000009mjE-2EaF; Mon, 14 Jul 2025 16:41:26 +0000
+Date: Mon, 14 Jul 2025 17:41:22 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Le Tan <tamlokveer@gmail.com>,
+ kib <kib@freebsd.org>, jhb@freebsd.org
+CC: =?ISO-8859-1?Q?Cl=E9ment_Mathieu--Drif?=
+ <clement.mathieu--drif@eviden.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_intel=5Fiommu=3A_Allow_both_S?=
+ =?US-ASCII?Q?tatus_Write_and_Interrupt_Flag_in_QI_wait?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <9ce8b7e6-ad15-4d2e-a430-3896eccc7519@intel.com>
+References: <0122cbabc0adcc3cf878f5fd7834d8f258c7a2f2.camel@infradead.org>
+ <9ce8b7e6-ad15-4d2e-a430-3896eccc7519@intel.com>
+Message-ID: <4FE9A8E3-5BA5-46D3-A1FA-EA1B7C85C058@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250714155941.22176-5-shameerali.kolothum.thodi@huawei.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004684:EE_|CH3PR12MB9252:EE_
-X-MS-Office365-Filtering-Correlation-Id: 69044cd6-c193-43c4-e4c5-08ddc2f4f602
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|376014|7416014|82310400026|7053199007; 
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?WW0s6i6stMfH4IAV4FkB9St9gNO+Fy6dOgr7LIaacUH0wNRhOb6ZSJuzls?=
- =?iso-8859-1?Q?E6leOfoK44JnCtWhSxseELv8ohAPaLxUUr/s7tkpfVIAwJOIeCNjxhL35s?=
- =?iso-8859-1?Q?PGKh/WkoNU3jmxnK5X8IOSUwsQ9s0lUPtvfxSPMAWJ9dypqo21IPmg4M2k?=
- =?iso-8859-1?Q?dQBfkOe52u8cZBa4MYhjTE6SmBXyjavHZ0xT1u+8haCs4G2dkvsRlrjPed?=
- =?iso-8859-1?Q?o9oXKYYhcyGCBHGajrFQSIHtru9OzamFyijqtYVM4+8iHMt/AGiAUWEDUV?=
- =?iso-8859-1?Q?YDBf/l38qGMq7ySswPNbSea1S+gtPSyoWSVjJ+YK2ccOjkbuSfh1Omf0zB?=
- =?iso-8859-1?Q?yPUyUmz7W16tbaQxz3ROZiYwnO6buXsDnr/PB2ELq4K4AQIO2LcgSVX67x?=
- =?iso-8859-1?Q?ebxK9WxnxFuAt527htuaDUES/ajCXmqH/xPdYuOSyUVX1kqxAVQMXpKwux?=
- =?iso-8859-1?Q?vfmm5T0EjYjnX9YbN5njjaZGXDwvN8eTdjeoTg9lLihT46g/8JVLIf9o0m?=
- =?iso-8859-1?Q?Xq3PmAHOAZORcAG8eZYMtcfe3IE8k/LIntzxUrwypZMwZdKb0lFJYgisxh?=
- =?iso-8859-1?Q?3zdhS4fMvJ+ei4XQ8n5KIdSzSmYWeYFlAgFFaTiNRUXFAnwV8xllMvvFYb?=
- =?iso-8859-1?Q?It0Ig2Hah6Hi+S6giyIFEjbeBReskW9dv+X54atrOLnjoMh4M6+Sa1oX+x?=
- =?iso-8859-1?Q?T4xs89MJv4ZqHgIexNL5PFQ7cL7C8OvVh61rOVfYLC0Ed+qRCYYOfIKpbg?=
- =?iso-8859-1?Q?iZ0niP/XgaUDmUzzpfpms7aDKw/wiHc1aJVciDb5YOCtzXhsmOrTwGWejX?=
- =?iso-8859-1?Q?hFn7nzVZthKxbLWOtLaOYeAkdftQe2VQt2+/+RRk+uMNh0L8nv+80P419Z?=
- =?iso-8859-1?Q?KVKfEtwzFcZcBX8AafsQhb7pDoe8yf+gIm8sQ30QoOWPXUZJhU9eDdtr6v?=
- =?iso-8859-1?Q?HZmXOM9xb4klaCwwIIULN2VA71mpt4f8L0cXMt/YzqhJzQaK8g6uBCTBss?=
- =?iso-8859-1?Q?M9EoDE21fzhAdeaM3+M7mfcfYUv00MYqpnAfAWBBUuEV2qDCpF9z402YYo?=
- =?iso-8859-1?Q?1cM0zUl0IhyMYJv0GwJAXmd37rk8Np+PSc12Pnsx8gdF7k+0h5X1b0dODL?=
- =?iso-8859-1?Q?lu5ebOo4GtUzUCWyM5NX4+lal8qkhEeudOdbQqgWZx2ifRU8YWigIgofBH?=
- =?iso-8859-1?Q?gQyrRJetc6mHMdZP1JH2LOPT79Z4pgRWJwtIs/E8krDEcr1fMVsKWB7FBB?=
- =?iso-8859-1?Q?yyw9DMdYp3S3JfbxP7cvpV6mOktotcCOnTzEg5GpBB4MNx3IxJ1T/DRswJ?=
- =?iso-8859-1?Q?QWRfK4NE8LIgAQDgqyzqQDd4gKHLBP2xdJsgIKHomcEsiYEZRZO/NDww9l?=
- =?iso-8859-1?Q?/AM80j/G+s9hVgkIpj4AFsiSjEvZPKgTr+g6MMUgENRO0oYsoVAuPK9oBx?=
- =?iso-8859-1?Q?pjvAh/qRht/wcdmNvruKeQlAwrdFgDan5mQYsVnj4uqyi+sqgR5SxbMOYr?=
- =?iso-8859-1?Q?XxzoYwmsUO5VDK5YzJwLrFvgPzdkoFH/GJ4fOaw/q7ihO7Yip7Ir52AbVk?=
- =?iso-8859-1?Q?DzRa2Cxg1tRwHXjoo/J7TAnP4u46?=
-X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(376014)(7416014)(82310400026)(7053199007);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2025 16:39:10.9910 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69044cd6-c193-43c4-e4c5-08ddc2f4f602
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF00004684.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9252
-Received-SPF: permerror client-ip=2a01:111:f403:2416::625;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+a886bafff4ae5a00747a+7995+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,33 +79,52 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Nicolin Chen <nicolinc@nvidia.com>
-From:  Nicolin Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 14, 2025 at 04:59:30PM +0100, Shameer Kolothum wrote:
-> Allows to retrieve the PCIIOMMUOps based on the SMMU type. This will be
-> useful when we add support for accelerated SMMUV3 in subsequent patches
-> as that requires a different set of callbacks for iommu ops.
-> 
-> No special handling is required for now and returns the default ops
-> in base SMMU Class.
-> 
-> No functional changes intended.
-> 
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+On 14 July 2025 15:28:09 GMT+01:00, Yi Liu <yi=2El=2Eliu@intel=2Ecom> wrote=
+:
+>Hi David,
+>
+>On 2025/7/14 16:00, David Woodhouse wrote:
+>> From: David Woodhouse <dwmw@amazon=2Eco=2Euk>
+>>=20
+>> FreeBSD does both, and this appears to be perfectly valid=2E The VT-d
+>> spec even talks about the ordering (the status write should be done
+>> first, unsurprisingly)=2E
+>
+>interesting=2E Have you tried setting both flags on baremetal and the hw
+>gives you both the status code and an interrupt?
 
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+I see no reason why it shouldn't=2E The spec (=C2=A76=2E5=2E2=2E8) gives n=
+o that the IF and SW bits should be mutually exclusive and even talks about=
+ ordering:
 
-> +static const PCIIOMMUOps *smmu_iommu_ops_by_type(SMMUState *s)
-> +{
-> +    SMMUBaseClass *sbc;
-> +
-> +    sbc = ARM_SMMU_CLASS(object_class_by_name(TYPE_ARM_SMMU));
-> +    assert(sbc->iommu_ops);
+Section 6=2E5=2E2=2E11 describes queued invalidation ordering consideratio=
+ns=2E Hardware completes an=20
+invalidation wait command as follows:
+=E2=80=A2 If a status write is specified in the wait descriptor (SW=3D1), =
+hardware performs a coherent write of=20
+the status data to the status address=2E
+=E2=80=A2 If an interrupt is requested in the wait descriptor (IF=3D1), ha=
+rdware sets the IWC field in the=20
+Invalidation Completion Status Register=2E An invalidation completion inte=
+rrupt may be generated as=20
+described in the following section
 
-I have an impression that QEMU uses the glib version more, so it
-could be g_assert(). But I do see a lots of assert() also in the
-existing code. So, just a note here, not a strong suggestion.
+
+
+>I think this "if branch" can be moved just after the inv_desc non-zero
+>reserved bit checking=2E Hence you don't need a ret at all=2E :)
+
+We want to return false if the memory write fails, and the interrupt has t=
+o happen afterwards=2E
+
+> btw=2E I'm
+>also asking if VT-d spec allows it or not=2E So let's wait for a while=2E=
+=2E
+
+Ok=2E
+
+
 
