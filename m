@@ -2,87 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C89B03F38
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 15:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19149B03F0C
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 14:55:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubIqR-0008Ko-Vn; Mon, 14 Jul 2025 09:03:48 -0400
+	id 1ubIgR-0000rO-7A; Mon, 14 Jul 2025 08:53:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ubHtV-0007CR-BP
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:53 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ id 1ubHtP-000772-QU
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:48 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ubHtK-0003ri-6h
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:51 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-ae0dffaa8b2so838974866b.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 05:02:40 -0700 (PDT)
+ id 1ubHtL-0003rf-Hw
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:47 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-ae0dd7ac1f5so877734966b.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 05:02:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1752494558; x=1753099358; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=m/O59ZeqFnOFRxSa/swbrG3OPWL18EdennTcxn0riCw=;
- b=cKKbhfFce6+ssAHQH8Ve9drjs1zIr20Yybew3zOm19i8ZQMDR2wMfivqDh3neDxRMt
- dwyVCrm3kzn818YbqsdfS6RvoQpBB+Em8ZIxUpGrN6WnPO9fafKInnVsMzO6inA6UcFp
- TMSUbwLdWhnelcKqif1HLUbGuRsvgZkZp8nfko0CrGQHPI1TAs34cG75gxaF5dgAgH9G
- PHTcRFTanANzT/b4eQn2KAIglKJuNJAFbev+UVOKpzVHI7Be1sZKQaAP9i5NHNUnMK3Y
- gJ+Ugs/xw2Wy0C1C+zownd33ruK2q7HjSowCXcpDJQEdVXYpI8e/pc8UDnEup6zFR7bi
- OX1A==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8sj9iVmDpEf+chfg1RrFtaVPsqCvpCBDEdTqoin79mM=;
+ b=xDp2P9MpUe6bevc0CQqbAs9mFOQFHNZxkmsiIfzN9PaWqRma7Qx0YPIR7TEqIV9VAS
+ YrwZyM/EEfb/OxXkqRhWZ7dPkghieuBB532Q7sDBRYcJBLKuqOJrtqRoz+oQfBx71Upr
+ v1dqACQtzsrolyHADkQOvsiOaJUJSXI5yfLr38X82/D4fnrrratU62NQAIZEIsx+7T6+
+ Z3tDxkvaaZAUbZjJkwptcm/z4tYR6G5PF09fXD/e6PPT9mCyT1WDjwa7BvRlYf0tgav2
+ 7BIeHFtdWMC9ja/0Urn9AGCyxV6ABqfW07yU1KESZ0w2lW6OV2M5pGcut9WNdMU42wui
+ 4vCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1752494558; x=1753099358;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=m/O59ZeqFnOFRxSa/swbrG3OPWL18EdennTcxn0riCw=;
- b=XBDP8VV8AfNAzgT1UHz9Kfj1onsXq/at5zljwabhiFHUpIwF2icyGJ81QF9sikO+vi
- ABSkde0YB/6aWJ/987QuEqcQGbQ1WPKuckntVHWxShYGMeNUyWWGlmRnaIoeIXAav+ro
- aRcLEzkvRn1RiCS+821en+7YYGjbGtzLZ619pgmvbQm3Mi1xo3KOsBGhijznn7dXwQiq
- OuBUs9GT46N4Ase9Qyf7hst0ZUGQU6PiT+ZXR1XKsmP3SfAbzJOIk+tcDFRuZeoxQK5p
- 9Ql2EEvNp526+cBQnkIL2M6VJlx98qJJjagevFXUqOZLvUb5Tf68zjygdnXTA1VJCmK7
- 9pdQ==
-X-Gm-Message-State: AOJu0Yw9xZkiOBCz6zEyCM5IIEVWdBtZ/R1Qz+64xItsAQpPNKa5vvSu
- qSpKYczd2voW7jtY+V8/xtkVg+DdpWpMl8IJ3Gva1mu5OQt6ecQAEODZ/8Vmw23udRLHB3XfKVN
- ktktd36s=
-X-Gm-Gg: ASbGncvwtM3MOOIut5z7rooeY+UBAxzhM2xgJjSlwhRa2y0XpYCILbgP/W0rqZEiiOy
- 7+NiB6bpQeKG9IWszJomIxi7BbwKSMOicFpK1LDlor107kM0Gzbmtw6U2kyGiC5KmloErKnh6L/
- oArFKJVuQWNAztXDCwjM8YgSvV5kjLbK2ijx4xU/hameBsHhPgCFUzt/mI93W8CYz6AYOFlEZvY
- 8D3M2uScayU6x+mC1rL91f+LJG53AR8FUoaD4Orz4sQJTloygyz1OF5NGrmKd+iZY+FVIz0niBw
- lX9kQVBR5hCDYJwvpY7CxLhMvRDpyNFDyg10GJ3zb2BgUVeBGrFzds2yKKawp//WBxQ22E53snT
- iqbHQ51DnQxqmNGmrH4dFxcE=
-X-Google-Smtp-Source: AGHT+IFoxKdsQ0VxnqPYeLMSssrte55NMPo00eauatnHtPaGmHz2v4r0u4cHSrRX7WBi/nxWXvtpBA==
-X-Received: by 2002:a17:906:f599:b0:ae1:c79f:2b2e with SMTP id
- a640c23a62f3a-ae6fbf968ccmr1431487366b.40.1752494556471; 
- Mon, 14 Jul 2025 05:02:36 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8sj9iVmDpEf+chfg1RrFtaVPsqCvpCBDEdTqoin79mM=;
+ b=PaY2MNtVX7tTZGMQseCFED9HtP3mqRX9UnHYHvHiK2H2SsT89I/1Y0sXjHN7nZMTNQ
+ +L3iUoz20+3an/XRypA6K1oLYxaJR7T3cSiMhLIBY3Z7NwyBItrsuaOJiYpSv8hCYfZQ
+ JgUJcXH8vW+SgAZDsYkGfZJl0LTzVjHP42dQMsuz/AWohTM0tQJzqZr1r9qwDakkqd+N
+ 0HGJtoBI3Q5AW8rGJ23nM4tAqqsmMOWpPbbal+gZngZr+3N7nM/qkBrhdRFpOvoNhfPs
+ SOlygpkz9YoYrduetl0mLuzu4Vf2ij/WQFeguQE1Xhdt2JJnxo0iVzsHGt+lpiQQNs3x
+ MlCA==
+X-Gm-Message-State: AOJu0YzNP7kKDiETFa0HLvA2z52veSZsOc0oLb81ZWkUkBmx5OCAHOs+
+ hp6B47CaV5isTI7SmxcbtjJZfcsg8JDPbS47o4vD+w+FfcsaHItRxdZ+fKphjFiDoi0=
+X-Gm-Gg: ASbGnctl7V6l3GtIpYlCbWXMFdiJdWeyWOTmt1KmuaW9TdNjQ9g5CWlyL2BxH+46l0v
+ cxvcP5naMwj/dB+Q/INxSYDQYEXPSVkBzGMHQL7yMea6E2MFEI93DtJVvrVP4F+4ZpS9F+1KHua
+ IcmNWk68GrfUWaehsqHRFZIHY9DUdvfPMa2Qjo9nZ7tr+vCeEYyYnr+7AOwff7cQduuAtvTrHXq
+ zptFe4q5I1rGXvc+UwgE+4C45OVRdkLMeYtwLAnaiSr+bFqVMw5KVX2rdFcJfd+h/MG9uIWI73I
+ Ky6NfT2n5CBjLVEDiUxELEdlVI7pWGutOAapk7dlOX4gI/uZh+wjo3HQymTjkXe/BYuFemtc1qA
+ vAFlkNQ4LEaLU9n6GpQ7hqR0=
+X-Google-Smtp-Source: AGHT+IEVaGKdoJJic6qKtm9BhXBkLMSjcg4IVYuFlNOwRIJn+wLGGuc8I9PxmKQa1fJFCuwBau26WA==
+X-Received: by 2002:a17:907:bd94:b0:ae3:b2b7:7f2f with SMTP id
+ a640c23a62f3a-ae6fc0f31demr1421381466b.40.1752494558362; 
+ Mon, 14 Jul 2025 05:02:38 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae6e8264608sm818259266b.109.2025.07.14.05.02.35
+ a640c23a62f3a-ae6e829629dsm815882266b.138.2025.07.14.05.02.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 14 Jul 2025 05:02:35 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B4E955F81E;
+ by draig.lan (Postfix) with ESMTP id C97CA5F89A;
  Mon, 14 Jul 2025 13:02:34 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 0/8] maintainer updates for rc0 (gitlab, gdbstub, plugins, docs)
-Date: Mon, 14 Jul 2025 13:02:26 +0100
-Message-ID: <20250714120234.1524401-1-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 1/8] gitlab: use argparse in check-units script
+Date: Mon, 14 Jul 2025 13:02:27 +0100
+Message-ID: <20250714120234.1524401-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250714120234.1524401-1-alex.bennee@linaro.org>
+References: <20250714120234.1524401-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
 X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
  DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
  RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,68 +103,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 9a4e273ddec3927920c5958d2226c6b38b543336:
+Modernise the argument parsing so we can easily add to the script.
 
-  Merge tag 'pull-tcg-20250711' of https://gitlab.com/rth7680/qemu into staging (2025-07-13 01:46:04 -0400)
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-ID: <20250710104531.3099313-2-alex.bennee@linaro.org>
 
-are available in the Git repository at:
-
-  https://gitlab.com/stsquad/qemu.git tags/pull-10.1-rc0-maintainer-140725-1
-
-for you to fetch changes up to 9152540f4ef3528ff003493cbe6a27b6c0f322e8:
-
-  gdbstub: add the GDB register XML files for sparc64. (2025-07-14 11:42:49 +0100)
-
-----------------------------------------------------------------
-maintainer updates (gitlab, plugins, gdbstub, docs)
-
-  - update check-units script to take -n <top> argument
-  - fix execlog plugin to handle tab separators
-  - add gdb XML file for alpha
-  - add gdb XML file for sparc64
-  - use :kbd: in docs to highlight key sequences
-  - clean up rst formatting in virtio-net-failover docs
-
-----------------------------------------------------------------
-Alex Bennée (4):
-      gitlab: use argparse in check-units script
-      gitlab: add -n option to check-units script
-      plugins: fix inclusion of user-mode APIs
-      docs/system: clean-up formatting of virtio-net-failover
-
-Manos Pitsidianakis (1):
-      docs: use :kbd: role in sphinx docs
-
-Rot127 (1):
-      gdbstub: add the GDB register XML files for sparc64.
-
-Yodel Eldar (2):
-      contrib/plugins/execlog: Add tab to the separator search of insn_disas
-      target/alpha: Add GDB XML feature file
-
- docs/devel/testing/main.rst            |   4 +-
- docs/system/images.rst                 |   2 +-
- docs/system/keys.rst.inc               |  49 ++++++------
- docs/system/linuxboot.rst              |   2 +-
- docs/system/mux-chardev.rst.inc        |  38 +++++----
- docs/system/virtio-net-failover.rst    |  51 +++++++------
- configs/targets/alpha-linux-user.mak   |   1 +
- configs/targets/alpha-softmmu.mak      |   1 +
- configs/targets/sparc64-linux-user.mak |   1 +
- configs/targets/sparc64-softmmu.mak    |   1 +
- contrib/plugins/execlog.c              |  15 ++--
- linux-user/plugin-api.c                |   1 +
- target/alpha/cpu.c                     |   1 +
- target/sparc/cpu.c                     |   1 +
- common-user/plugin-api.c.inc           |   1 +
- .gitlab-ci.d/check-units.py            |  29 ++++---
- gdb-xml/alpha-core.xml                 | 136 +++++++++++++++++++++++++++++++++
- gdb-xml/sparc64-core.xml               |  99 ++++++++++++++++++++++++
- linux-user/meson.build                 |   5 +-
- 19 files changed, 352 insertions(+), 86 deletions(-)
- create mode 100644 gdb-xml/alpha-core.xml
- create mode 100644 gdb-xml/sparc64-core.xml
-
+diff --git a/.gitlab-ci.d/check-units.py b/.gitlab-ci.d/check-units.py
+index 268a4118d5..cdc62ae5ee 100755
+--- a/.gitlab-ci.d/check-units.py
++++ b/.gitlab-ci.d/check-units.py
+@@ -8,8 +8,10 @@
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ from os import access, R_OK, path
+-from sys import argv, exit
++from sys import exit
+ import json
++import argparse
++from pathlib import Path
+ from collections import Counter
+ 
+ 
+@@ -51,16 +53,17 @@ def analyse_units(build_units):
+ 
+ 
+ if __name__ == "__main__":
+-    if len(argv) != 2:
+-        script_name = path.basename(argv[0])
+-        print(f"Usage: {script_name} <path_to_compile_commands.json>")
+-        exit(1)
++    parser = argparse.ArgumentParser(
++        description="analyse number of build units in compile_commands.json")
++    parser.add_argument("cc_path", type=Path, default=None,
++                        help="Path to compile_commands.json")
++
++    args = parser.parse_args()
+ 
+-    cc_path = argv[1]
+-    if path.isfile(cc_path) and access(cc_path, R_OK):
+-        units = extract_build_units(cc_path)
++    if path.isfile(args.cc_path) and access(args.cc_path, R_OK):
++        units = extract_build_units(args.cc_path)
+         analyse_units(units)
+         exit(0)
+     else:
+-        print(f"{cc_path} doesn't exist or isn't readable")
++        print(f"{args.cc_path} doesn't exist or isn't readable")
+         exit(1)
 -- 
 2.47.2
 
