@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30522B03D3B
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 523A9B03D09
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:13:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHEY-0007qc-4E; Mon, 14 Jul 2025 07:20:34 -0400
+	id 1ubH7C-0007SL-Pf; Mon, 14 Jul 2025 07:13:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGzD-0000da-Dx
+ id 1ubGzE-0000eJ-RM
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGz6-0001YN-Jn
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:39 -0400
+ id 1ubGzD-0001Z7-5H
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491075;
+ s=mimecast20190719; t=1752491078;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+3x4MUcqLXlcLNlNqAnlK7RqHXSqmeDVXTbJiZ/Tc8c=;
- b=bozquUh0W5wquILfB/+jhwqn+DMe72skEgRpEIPUpimLN4uMPqCtahedCgpxIrqiaRUiTx
- XoNZwHClWS98LG1r5b+Q/zif3uoQGzeUppf+WDyWKMrp45bk96ZSJoU95Bly02LcqED2qY
- K0p77Tf8oD6VDgvXKTCv4/iQaZAmuSY=
+ bh=CB+X0oKL0G0GBjxhvtx6dLGm/O/6KlgxKe/ThDuMvsk=;
+ b=cCikgGNKMxBv4LBwHTaax7glzPL3tlQsPOgxVOZkam4Bm4IYuRfKFhV+G3n4fieV7Zak3r
+ iTvo/4cS2dgaWFPibee5+IGRpL+wYyXi40gG/6uF+wnso7UFK+Gu1U8guQQJW4FOlZ6XlM
+ 6gxsUXlliLt/fZhpqyQBcBJTl7ge+Uo=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-dc4gQr8QO66R0gGQvkbs4Q-1; Mon, 14 Jul 2025 07:04:34 -0400
-X-MC-Unique: dc4gQr8QO66R0gGQvkbs4Q-1
-X-Mimecast-MFC-AGG-ID: dc4gQr8QO66R0gGQvkbs4Q_1752491073
+ us-mta-686-slW5GY8XOFykztV9WLAHKQ-1; Mon, 14 Jul 2025 07:04:37 -0400
+X-MC-Unique: slW5GY8XOFykztV9WLAHKQ-1
+X-Mimecast-MFC-AGG-ID: slW5GY8XOFykztV9WLAHKQ_1752491076
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3b5fe97af5fso421125f8f.2
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:04:34 -0700 (PDT)
+ ffacd0b85a97d-3a4f7ebfd00so1623400f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:04:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491073; x=1753095873;
+ d=1e100.net; s=20230601; t=1752491075; x=1753095875;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+3x4MUcqLXlcLNlNqAnlK7RqHXSqmeDVXTbJiZ/Tc8c=;
- b=dhPefBYqdG45GsuOCkEs8tglUTLPcTfrF0DXPkW4jxsZu5dbFlKLeloudnqgOg6/sC
- yaeZG+B6Zj3Z79EarNdbdHhAOza1zNmqCSa6WN7/HoXVB3AUsQiVsYKp1odyNR4mAvi4
- e2hLT4QPdu2RnhLFW7V29r/+t1o/R62+MO/vFcOpO+8mldZlzh1/YwoI+HWeT8SZZXk1
- h07/h7YQPwktFIFv0VoHThwSTCBMqHQJR5kImKgZ6d8obOCLtiaqS+15vSvtjZd8iM6D
- LWONRXtelL/muSBVeTidHMCZGfYMy7xJ2/bgG0GrbM3Aq6sHudLW3AL3Q3mxWq2UkQqL
- gC1A==
-X-Gm-Message-State: AOJu0YwgE1O4ko3fz7yh7Rn2aNqv89DaJU0TyDSD57+/ubSXUSBkeyzN
- VJFUIftRQs2dc13DB8dZEwlhjwAkLzUeGlveGDHhgIGVV1fHUxhjeA6hqbKM9f1LuX7ZV2J+XT9
- Oyh3bIlj9XmPcGgABsXWlbvLQgDY1+KS2PoENsMQfPxoba2TJUdT9eZQYHnSsVnCRq4JOwGOcU8
- uGMBvIN+y73ak+APALfAK3Zoi1NldfjxhnN3hRQ20u
-X-Gm-Gg: ASbGnctL+dQNydsqTMdC7IqDkkutT0/5LHHfK1znYmH3D41yKY7vM7RjQIS5XTjGN/J
- 8zJI28ENn8vMC24ldjGAhP+aNEQpqgeOqNwVP9uAURIPU1MyaKhrHdFdwdDlhQ+wgQQNtqwpZ/e
- 5myL5BDW3xTk91ddQkkcY8w5swomOF+vSt646WEUx8BAmkjDMG3afmNZ8hz9EPYLPzajAhbHpiM
- naLHqBTdQLmKsYHWcMfOa3OJyD0qL3VtTX9cV8YGlxe9JhZd/4tx7IqH5yBYoZSugM6/Ud+CefK
- Foj778JjLr5q1QlRVe9b3BDpPxtXKDFx5OntCIYFGBY=
-X-Received: by 2002:adf:e18c:0:b0:3a5:2cb5:642f with SMTP id
- ffacd0b85a97d-3b5f18dc494mr11353834f8f.34.1752491072616; 
- Mon, 14 Jul 2025 04:04:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmxXO4/G4BUjMNpGvCBwoYe32V7chip4duu+HFBVzVwgbIm8LyAaG3gSLmRm6maIg0ch2rnw==
-X-Received: by 2002:adf:e18c:0:b0:3a5:2cb5:642f with SMTP id
- ffacd0b85a97d-3b5f18dc494mr11353809f8f.34.1752491072103; 
- Mon, 14 Jul 2025 04:04:32 -0700 (PDT)
+ bh=CB+X0oKL0G0GBjxhvtx6dLGm/O/6KlgxKe/ThDuMvsk=;
+ b=isPT4Gkrx6twqmKMDTCHN+FuZ2AFA9PdLXpd8con89Fr7C10iSm8kMDpeD7xQBIASq
+ ES4LDJ8+W6IhWbXz+/v6mSRIjRvtMCW4Dyo38szbJ3oeeWA9ibS4KzposzMNdUKy4YsM
+ Fd/rIcQw69+viV29NiF7m8Qgmhpn/yd0nwWQqOpuU88pMdRIRtIV6E+sjMTGkWlh1U1t
+ YGIeCI2j5B92faFTstTxnZZK98zMMa4vthR60mTVKncZQ37mr1oMZt14A/OCyrbqqUP1
+ +2BE27lH2X+hqFPNWEaBGcbYw4ccbzaVlFbBMLvaxRU1mLPGzyeBJYkN9vo0vL3V+7R9
+ rPpQ==
+X-Gm-Message-State: AOJu0YxR8aHUpjR+ce4T1xHIVYzxO0ZohkrywDw8XlYKem9Bxy7nWdgW
+ qJvS4i6g41qQ37/DfA0kYWFf2z5104YtBqByxDbcP7a4FJJXleCGIIyc5gIarIqJCAbs91lMMMs
+ nJPRiQWRjul50/ng+ReLDmBMEtPqGg7TR9lI1Oc6UiMp1PK4toT12sE6hhrScVovaBq+FtL7OrZ
+ SmNIYN/gwypExm3sandwY74XQS4fxousnCjVqpazCC
+X-Gm-Gg: ASbGncvM/gkBo4Oek/mBfl8+bBATV7QFSxA1618lTxRiA4ASVLdZbr8bpOOv+0KsZUE
+ DTdHSQGVMDgI6QhBCVQULzX6yZp7qx4qod0palutQ9AOzr7+oDWdgFAYrYzYrlU/X5rfyJs1vpg
+ 0PN74eylTU5zxYthTYmn/YwO3i68OmQUNcyd8DX6PGpzI4Fb7EPV2Zd5fn1ivW6pf0uA7Eq/Kl0
+ O6dGYFCQdtNHJIwcKohlSuQjGXijK/aMcBCo/q/DQECrZKGwrZeDl3wlGab+/p/Ht8Csjwqckak
+ f1QOHTS0xpipN11+pbvIGaX1urh835tijeNdv2td1wk=
+X-Received: by 2002:a05:6000:2a85:b0:3a6:d296:feaf with SMTP id
+ ffacd0b85a97d-3b5f188e9d1mr8205530f8f.24.1752491075007; 
+ Mon, 14 Jul 2025 04:04:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEdaJrAFm4W8M9Gw8cMwztJzLdVyMelXQNq96ku/clV/0jOkisD1qlKuu23mjtU02uzeo590Q==
+X-Received: by 2002:a05:6000:2a85:b0:3a6:d296:feaf with SMTP id
+ ffacd0b85a97d-3b5f188e9d1mr8205508f8f.24.1752491074489; 
+ Mon, 14 Jul 2025 04:04:34 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc91d8sm11906809f8f.42.2025.07.14.04.04.28
- for <qemu-devel@nongnu.org>
+ ffacd0b85a97d-3b5e8e1e285sm11942604f8f.76.2025.07.14.04.04.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:04:28 -0700 (PDT)
+ Mon, 14 Jul 2025 04:04:33 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/77] target/i386: nvmm,
- whpx: add accel/CPU class that sets host vendor
-Date: Mon, 14 Jul 2025 13:02:57 +0200
-Message-ID: <20250714110406.117772-9-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 09/77] target/i386: allow reordering max_x86_cpu_initfn vs
+ accel CPU init
+Date: Mon, 14 Jul 2025 13:02:58 +0200
+Message-ID: <20250714110406.117772-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
@@ -107,149 +108,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-NVMM and WHPX are virtualizers, and therefore they need to use
-(at least by default) the host vendor for the guest CPUID.
-Add a cpu_instance_init implementation to these accelerators.
+The PMU feature is only supported by KVM, so move it there.  And since
+all accelerators other than TCG overwrite the vendor, set it in
+max_x86_cpu_initfn only if it has not been initialized by the
+superclass.  This makes it possible to run max_x86_cpu_initfn
+after accelerator init.
 
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c           |  3 ++-
- target/i386/nvmm/nvmm-all.c | 25 +++++++++++++++++++++++++
- target/i386/whpx/whpx-all.c | 25 +++++++++++++++++++++++++
- target/i386/meson.build     |  2 ++
- 4 files changed, 54 insertions(+), 1 deletion(-)
+ target/i386/cpu.c         | 24 ++++++++++++------------
+ target/i386/kvm/kvm-cpu.c |  2 ++
+ 2 files changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 4d4e5234246..8fb74b56ddd 100644
+index 8fb74b56ddd..9c5cef2c7cc 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -44,6 +44,7 @@
- #include "hw/boards.h"
- #include "hw/i386/sgx-epc.h"
- #endif
-+#include "system/qtest.h"
- #include "tcg/tcg-cpu.h"
- 
- #include "disas/capstone.h"
-@@ -1943,7 +1944,7 @@ uint32_t xsave_area_size(uint64_t mask, bool compacted)
- 
- static inline bool accel_uses_host_cpuid(void)
+@@ -6199,21 +6199,21 @@ static void max_x86_cpu_class_init(ObjectClass *oc, const void *data)
+ static void max_x86_cpu_initfn(Object *obj)
  {
--    return kvm_enabled() || hvf_enabled();
-+    return !tcg_enabled() && !qtest_enabled();
+     X86CPU *cpu = X86_CPU(obj);
+-
+-    /* We can't fill the features array here because we don't know yet if
+-     * "migratable" is true or false.
+-     */
+-    object_property_set_bool(OBJECT(cpu), "pmu", true, &error_abort);
++    CPUX86State *env = &cpu->env;
+ 
+     /*
+-     * these defaults are used for TCG and all other accelerators
+-     * besides KVM and HVF, which overwrite these values
++     * these defaults are used for TCG, other accelerators overwrite these
++     * values
+      */
+-    object_property_set_str(OBJECT(cpu), "vendor", CPUID_VENDOR_AMD,
+-                            &error_abort);
+-    object_property_set_str(OBJECT(cpu), "model-id",
+-                            "QEMU TCG CPU version " QEMU_HW_VERSION,
+-                            &error_abort);
++    if (!env->cpuid_vendor1) {
++        object_property_set_str(OBJECT(cpu), "vendor", CPUID_VENDOR_AMD,
++                                &error_abort);
++    }
++    if (!env->cpuid_model[0]) {
++        object_property_set_str(OBJECT(cpu), "model-id",
++                                "QEMU TCG CPU version " QEMU_HW_VERSION,
++                                &error_abort);
++    }
  }
  
- static inline uint64_t x86_cpu_xsave_xcr0_components(X86CPU *cpu)
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index b4a4d50e860..11c263004d5 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -19,6 +19,8 @@
- #include "qemu/error-report.h"
- #include "qapi/error.h"
- #include "qemu/queue.h"
-+#include "accel/accel-cpu-target.h"
-+#include "host-cpu.h"
- #include "migration/blocker.h"
- #include "strings.h"
+ static const TypeInfo max_x86_cpu_type_info = {
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 0fb88a239d4..6fed353548e 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -111,6 +111,8 @@ static void kvm_cpu_max_instance_init(X86CPU *cpu)
  
-@@ -1207,10 +1209,33 @@ static const TypeInfo nvmm_accel_type = {
-     .class_init = nvmm_accel_class_init,
- };
+     host_cpu_max_instance_init(cpu);
  
-+static void nvmm_cpu_instance_init(CPUState *cs)
-+{
-+    X86CPU *cpu = X86_CPU(cs);
++    object_property_set_bool(OBJECT(cpu), "pmu", true, &error_abort);
 +
-+    host_cpu_instance_init(cpu);
-+}
-+
-+static void nvmm_cpu_accel_class_init(ObjectClass *oc, const void *data)
-+{
-+    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
-+
-+    acc->cpu_instance_init = nvmm_cpu_instance_init;
-+}
-+
-+static const TypeInfo nvmm_cpu_accel_type = {
-+    .name = ACCEL_CPU_NAME("nvmm"),
-+
-+    .parent = TYPE_ACCEL_CPU,
-+    .class_init = nvmm_cpu_accel_class_init,
-+    .abstract = true,
-+};
-+
- static void
- nvmm_type_init(void)
- {
-     type_register_static(&nvmm_accel_type);
-+    type_register_static(&nvmm_cpu_accel_type);
- }
- 
- type_init(nvmm_type_init);
-diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
-index faf56e19722..22ac609070d 100644
---- a/target/i386/whpx/whpx-all.c
-+++ b/target/i386/whpx/whpx-all.c
-@@ -26,6 +26,8 @@
- #include "qapi/qapi-types-common.h"
- #include "qapi/qapi-visit-common.h"
- #include "migration/blocker.h"
-+#include "host-cpu.h"
-+#include "accel/accel-cpu-target.h"
- #include <winerror.h>
- 
- #include "whpx-internal.h"
-@@ -2500,6 +2502,28 @@ static void whpx_set_kernel_irqchip(Object *obj, Visitor *v,
+     if (lmce_supported()) {
+         object_property_set_bool(OBJECT(cpu), "lmce", true, &error_abort);
      }
- }
- 
-+static void whpx_cpu_instance_init(CPUState *cs)
-+{
-+    X86CPU *cpu = X86_CPU(cs);
-+
-+    host_cpu_instance_init(cpu);
-+}
-+
-+static void whpx_cpu_accel_class_init(ObjectClass *oc, const void *data)
-+{
-+    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
-+
-+    acc->cpu_instance_init = whpx_cpu_instance_init;
-+}
-+
-+static const TypeInfo whpx_cpu_accel_type = {
-+    .name = ACCEL_CPU_NAME("whpx"),
-+
-+    .parent = TYPE_ACCEL_CPU,
-+    .class_init = whpx_cpu_accel_class_init,
-+    .abstract = true,
-+};
-+
- /*
-  * Partition support
-  */
-@@ -2726,6 +2750,7 @@ static const TypeInfo whpx_accel_type = {
- static void whpx_type_init(void)
- {
-     type_register_static(&whpx_accel_type);
-+    type_register_static(&whpx_cpu_accel_type);
- }
- 
- bool init_whp_dispatch(void)
-diff --git a/target/i386/meson.build b/target/i386/meson.build
-index c1aacea6135..092af34e2d8 100644
---- a/target/i386/meson.build
-+++ b/target/i386/meson.build
-@@ -11,6 +11,8 @@ i386_ss.add(when: 'CONFIG_SEV', if_true: files('host-cpu.c', 'confidential-guest
- # x86 cpu type
- i386_ss.add(when: 'CONFIG_KVM', if_true: files('host-cpu.c'))
- i386_ss.add(when: 'CONFIG_HVF', if_true: files('host-cpu.c'))
-+i386_ss.add(when: 'CONFIG_WHPX', if_true: files('host-cpu.c'))
-+i386_ss.add(when: 'CONFIG_NVMM', if_true: files('host-cpu.c'))
- 
- i386_system_ss = ss.source_set()
- i386_system_ss.add(files(
 -- 
 2.50.0
 
