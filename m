@@ -2,64 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C90EB042E5
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69837B04323
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:14:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubKmH-0005TB-C4; Mon, 14 Jul 2025 11:07:37 -0400
+	id 1ubKql-0007Kb-K1; Mon, 14 Jul 2025 11:12:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubJT2-0007ji-QH
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:43:48 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUT-0000FK-8Z
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubJSz-0003I0-6u
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:43:40 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUQ-0003az-AR
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752500614;
+ s=mimecast20190719; t=1752500705;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8Qh7aX65TdWgdST81sW3mSzKPPiSSrvSPimAdlEThDg=;
- b=KJAtqBprTQxl3DCvbHYEkPPXv9aIxrf5c44xSRAiTddeJNrpoQSFq4EnQT8QAbYmAlx87B
- 0yw1pDjZuZyAkMfI+YiIao5pGzm5H5UOIeAT/2eeco49EeVOP2raLF7Uv1oNYixx0/F+tR
- DxFOpKcUMBDzNBGYTvpT8HbMDClj3M0=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding;
+ bh=bVgpdgF+JzRvjgtFTp2O/WnI3R1Vzaf2Ry49puKHDS8=;
+ b=TL91Wwgtqp0E12EK08b9rWD8AslQuvE7POMrk/PzzcmOUQBQMTn4v8m6NU1hlgJFhpL9a6
+ uf9LRjKv6oBnNAZOu+yYCBvzWdiYFLXPQ+IubPwO8XGspunbhve79syZCZZ8KIMTMvuhsm
+ u4YRLQPdcEwcZmXD/1popXEdnZaYTiA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-348-2IW4npD5M9WfwBn6CiHk4w-1; Mon,
- 14 Jul 2025 09:43:31 -0400
-X-MC-Unique: 2IW4npD5M9WfwBn6CiHk4w-1
-X-Mimecast-MFC-AGG-ID: 2IW4npD5M9WfwBn6CiHk4w_1752500609
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-ezRATIzgNFa-Ip7EKeme8Q-1; Mon,
+ 14 Jul 2025 09:45:03 -0400
+X-MC-Unique: ezRATIzgNFa-Ip7EKeme8Q-1
+X-Mimecast-MFC-AGG-ID: ezRATIzgNFa-Ip7EKeme8Q_1752500702
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BE6A5195608F; Mon, 14 Jul 2025 13:43:28 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.34.9])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6B48D30001A1; Mon, 14 Jul 2025 13:43:21 +0000 (UTC)
-Date: Mon, 14 Jul 2025 15:43:19 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, den@virtuozzo.com,
- andrey.drobyshev@virtuozzo.com, hreitz@redhat.com,
- stefanha@redhat.com, eblake@redhat.com, jsnow@redhat.com,
- vsementsov@yandex-team.ru, xiechanglong.d@gmail.com,
- wencongyang2@huawei.com, berto@igalia.com, fam@euphon.net, ari@tuxera.com
-Subject: Re: [PATCH v4 00/48] block: do not drain while holding the graph lock
-Message-ID: <aHUJd73iuk5b3zRC@redhat.com>
-References: <20250530151125.955508-1-f.ebner@proxmox.com>
- <aGQX6sjaLq9-UjHc@redhat.com>
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 80B781809C80
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 13:45:02 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D231218002B2
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 13:45:01 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id B7B9A21E6A27; Mon, 14 Jul 2025 15:44:58 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: stefanha@redhat.com
+Subject: [PULL 00/32] QAPI patches patches for 2025-07-14
+Date: Mon, 14 Jul 2025 15:44:26 +0200
+Message-ID: <20250714134458.2991097-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aGQX6sjaLq9-UjHc@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,40 +81,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 01.07.2025 um 19:16 hat Kevin Wolf geschrieben:
-> Am 30.05.2025 um 17:10 hat Fiona Ebner geschrieben:
-> > This series is an attempt to fix a deadlock issue reported by Andrey
-> > here [3].
-> > 
-> > bdrv_drained_begin() polls and is not allowed to be called with the
-> > block graph lock held. Mark the function as GRAPH_UNLOCKED.
-> > 
-> > This alone does not catch the issue reported by Andrey, because there
-> > is a bdrv_graph_rdunlock_main_loop() before bdrv_drained_begin() in
-> > the function bdrv_change_aio_context(). That unlock is of course
-> > ineffective if the exclusive lock is held, but it prevents TSA from
-> > finding the issue.
-> > 
-> > Thus the bdrv_drained_begin() call from inside
-> > bdrv_change_aio_context() needs to be moved up the call stack before
-> > acquiring the locks. This is the bulk of the series.
-> > 
-> > Granular draining is not trivially possible, because many of the
-> > affected functions can recursively call themselves.
-> > 
-> > In place where bdrv_drained_begin() calls were removed, assertions
-> > are added, checking the quiesced_counter to ensure that the nodes
-> > already got drained further up in the call stack.
-> 
-> I finished review for this series. I had some minor comments on patches
-> 24, 27 and 41. Once we agree what to do there, I can probably just make
-> any changes myself while applying.
+The following changes since commit 9a4e273ddec3927920c5958d2226c6b38b543336:
 
-I don't see any objections, so I just applied this and made all the
-changes I had suggested.
+  Merge tag 'pull-tcg-20250711' of https://gitlab.com/rth7680/qemu into staging (2025-07-13 01:46:04 -0400)
 
-Thanks, applied to the block branch.
+are available in the Git repository at:
 
-Kevin
+  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2025-07-14
+
+for you to fetch changes up to 07273ca0ce3af397071f7a6c11abdab649ff25e1:
+
+  tests/qtest/qom-test: unit test for qom-list-get (2025-07-14 15:25:12 +0200)
+
+----------------------------------------------------------------
+QAPI patches patches for 2025-07-14
+
+----------------------------------------------------------------
+John Snow (27):
+      docs/sphinx: adjust qapidoc to cope with same-line error sections
+      docs/sphinx: parse @references in freeform text
+      docs/sphinx: remove legacy QAPI manual generator
+      docs/sphinx: remove special parsing for freeform sections
+      qapi: lift restriction on using '=' in doc blocks
+      docs/qapi-domain: add return-nodesc
+      qapi: Fix undocumented return values by generating something
+      qapi: remove trivial "Returns:" sections
+      qapi: rephrase return docs to avoid type name
+      qapi: add cross-references to acpi.json
+      qapi: add cross-references to authz.json
+      qapi: add cross-references to block layer
+      qapi: add cross-references to crypto.json
+      qapi: add cross-references to dump.json
+      qapi: add cross-references to job.json
+      qapi: add cross-references to Machine core
+      qapi: add cross-references to migration.json
+      qapi: add cross-references to net.json
+      qapi: add cross-references to pci.json
+      qapi: add cross-references to QOM
+      qapi: add cross-references to replay.json
+      qapi: add cross-references to run-state.json
+      qapi: add cross-references to sockets.json
+      qapi: add cross-references to ui.json
+      qapi: add cross-references to virtio.json
+      qapi: add cross-references to yank.json
+      qapi: add cross-references to misc modules
+
+Markus Armbruster (2):
+      qapi: Clean up "This command will do ..." command descriptions
+      qapi: Clean up a few Errors: sections
+
+Steve Sistare (3):
+      qom: qom-list-get
+      python: use qom-list-get
+      tests/qtest/qom-test: unit test for qom-list-get
+
+ docs/devel/qapi-code-gen.rst                 |  28 +-
+ docs/devel/qapi-domain.rst                   |  31 ++
+ docs/interop/firmware.json                   |   4 +-
+ docs/interop/qemu-ga-ref.rst                 |   1 -
+ docs/interop/qemu-qmp-ref.rst                |   1 -
+ docs/interop/qemu-storage-daemon-qmp-ref.rst |   1 -
+ docs/interop/vhost-user.json                 |   4 +-
+ docs/sphinx/qapi_domain.py                   |   8 +
+ docs/sphinx/qapidoc.py                       |  96 ++----
+ docs/sphinx/qapidoc_legacy.py                | 440 ---------------------------
+ qapi/acpi.json                               |   6 +-
+ qapi/audio.json                              |   6 +-
+ qapi/authz.json                              |   6 +-
+ qapi/block-core.json                         | 201 ++++++------
+ qapi/block-export.json                       |  41 +--
+ qapi/block.json                              |  23 +-
+ qapi/char.json                               |  12 +-
+ qapi/common.json                             |   4 +-
+ qapi/compat.json                             |   4 +-
+ qapi/control.json                            |  20 +-
+ qapi/crypto.json                             |   8 +-
+ qapi/cryptodev.json                          |   6 +-
+ qapi/cxl.json                                |   4 +-
+ qapi/dump.json                               |  19 +-
+ qapi/ebpf.json                               |   6 +-
+ qapi/error.json                              |   4 +-
+ qapi/introspect.json                         |  34 ++-
+ qapi/job.json                                |  62 ++--
+ qapi/machine-common.json                     |  24 +-
+ qapi/machine.json                            | 110 +++----
+ qapi/migration.json                          |  84 +++--
+ qapi/misc-arm.json                           |   4 +-
+ qapi/misc-i386.json                          |  32 +-
+ qapi/misc.json                               |  28 +-
+ qapi/net.json                                |  12 +-
+ qapi/pci.json                                |   8 +-
+ qapi/qapi-schema.json                        |   4 +-
+ qapi/qdev.json                               |  11 +-
+ qapi/qom.json                                |  89 ++++--
+ qapi/replay.json                             |  14 +-
+ qapi/rocker.json                             |   8 +-
+ qapi/run-state.json                          |  52 ++--
+ qapi/sockets.json                            |  10 +-
+ qapi/stats.json                              |  14 +-
+ qapi/tpm.json                                |   8 +-
+ qapi/trace.json                              |   6 +-
+ qapi/transaction.json                        |  16 +-
+ qapi/uefi.json                               |   4 +-
+ qapi/ui.json                                 |  58 ++--
+ qapi/vfio.json                               |   4 +-
+ qapi/virtio.json                             |  20 +-
+ qapi/yank.json                               |  22 +-
+ qom/qom-qmp-cmds.c                           |  53 ++++
+ tests/qtest/qom-test.c                       | 116 ++++++-
+ python/qemu/utils/qom.py                     |  43 +--
+ python/qemu/utils/qom_common.py              |  53 ++++
+ python/tests/qapi-isort.sh                   |   2 +-
+ scripts/qapi/parser.py                       |  48 ++-
+ scripts/qapi/schema.py                       |   3 +
+ storage-daemon/qapi/qapi-schema.json         |   8 +-
+ tests/qapi-schema/doc-bad-section.err        |   1 -
+ tests/qapi-schema/doc-bad-section.json       |  10 -
+ tests/qapi-schema/doc-bad-section.out        |   0
+ tests/qapi-schema/doc-good.json              |  10 +-
+ tests/qapi-schema/doc-good.out               |  10 +-
+ tests/qapi-schema/doc-good.txt               | 274 ++++++-----------
+ tests/qapi-schema/meson.build                |   1 -
+ 67 files changed, 1053 insertions(+), 1301 deletions(-)
+ delete mode 100644 docs/sphinx/qapidoc_legacy.py
+ delete mode 100644 tests/qapi-schema/doc-bad-section.err
+ delete mode 100644 tests/qapi-schema/doc-bad-section.json
+ delete mode 100644 tests/qapi-schema/doc-bad-section.out
+
+-- 
+2.49.0
 
 
