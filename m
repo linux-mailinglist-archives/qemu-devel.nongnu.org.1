@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3148DB04C3F
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25152B04C21
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:20:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSHl-0007qj-UX; Mon, 14 Jul 2025 19:08:38 -0400
+	id 1ubSHi-0007Ow-DU; Mon, 14 Jul 2025 19:08:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGl-0004Kk-1o
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGh-00040r-UW
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGi-0005Y8-VA
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGg-0005XE-5W
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534452;
+ s=mimecast20190719; t=1752534449;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=43SwpP7LqsZkv1SwArkQUMqFNNuviE/llERHShW6waE=;
- b=b265TZqB1ACVlp7nOT2LJ9sFZqx/ip+8Tvn/znt0SFILNBYLAdA+QEASeFttpi2AmIuCRV
- 8SDltoGlwDBTfyhMc/TX+EvOA3yUMjlNTwKyYajWb8wBHdJ16aS9pbiVoNq6mGf10euyDr
- 3n6sfn+p1phY3Vy4aGSbDNzKZNOv9/4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=m9bYQ5u6pgRJHAntarcEw+lqU/yhh0ZBAg0JEBQxhXo=;
+ b=ax55UOrvu0gao6V0kztua9lA3AgE2zQ5IxTK2ICr3Zgn8OsbVj/XVjY2VWXDMy0oJQH/yH
+ 9XjfECJ2YfjorgH3kkU51YB1v/HNuQjlJXyqUyp5FRVlDZ9XVdKpMzs9ApfaDre5XSwnd6
+ Y5k+UI2LNpx8VLvgXvajpsCIYgYuozA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-90-Z384lALhMI-k8kxxxXuMAg-1; Mon, 14 Jul 2025 19:07:26 -0400
-X-MC-Unique: Z384lALhMI-k8kxxxXuMAg-1
-X-Mimecast-MFC-AGG-ID: Z384lALhMI-k8kxxxXuMAg_1752534445
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a4f3796779so2163206f8f.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:26 -0700 (PDT)
+ us-mta-621-V5Gz25wzPH-GDepb5GsNpg-1; Mon, 14 Jul 2025 19:07:28 -0400
+X-MC-Unique: V5Gz25wzPH-GDepb5GsNpg-1
+X-Mimecast-MFC-AGG-ID: V5Gz25wzPH-GDepb5GsNpg_1752534447
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-45626532e27so1766495e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534445; x=1753139245;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=43SwpP7LqsZkv1SwArkQUMqFNNuviE/llERHShW6waE=;
- b=bgGIqTc6iXB3ZZPym7lOP4JcrwtoyRu9gBP3RgKs0iTL25O/1FXb0JjNcMW7HvmiLz
- m4jejz0rEis9CJ2YY6U7Daq+0DR4a/W+MDEgu+vvX28wgi+qE+fSve6GfXFlYBarm7dc
- xqkp0xLKL43/JpwpsHYqU8a0n64YIuKaDg/EIFxt9faTa8d1sbFqz3NWgeytblddUuvX
- AQHeXvnPhOVpJOOJDxgYyVe4DHjxlIH89Sy95BRqfLWegqROh6gmxAtKR/5NLBG0znVi
- wAJJ6eEznDzFA/TeWlfwY/aoQxK3O3skHtJ+BRRZ73ghP0tqRNUAltolqioHb0Nh/hlZ
- 4XjQ==
-X-Gm-Message-State: AOJu0YxKHYNsIfq8lL6LXEsDywRnW94pPYZKqeSk/iyrNaZ1SbrUa/SS
- aoAae3ie1FWVUd0fUbBq8Exl5eHSB7Ln0sFA4SCnNrGqwNCxn6Tq1l9Q2YDrYAECsLaR26G3VEc
- xiaEXZ2J0I9nsV5YBmtcv6DbT9y/DAzGCIDV9S+Teb04+NWaKU834GvUqhSPWoOX+JuDF3FJ26b
- fmBDqjR893+mb7hGpr108ZRquUvFm8DhJbtQ==
-X-Gm-Gg: ASbGnct7aN01vpgLmDox2ivZ34Ce315vRwXKxRrFNFfl+mfCRDq/Anwd5cqanKUj23B
- hdV2lCx2cWK2L2PNn5fEim9zZm9giXdCW3Pw8Fqj/4u9NzsujsPA6hoq52RXlW/UcqCcNJ8qyID
- kkFtTFvUBVOopvqaf8Y/MOxE7Ou0VhTcn4K57WaUYHcsspbAxAv2l3rRQoHgLtKZBPXkqlR0jJF
- HYBsizSZoMJE7doRWptINAkXx6d5/R4KYR7gXm3vWkT+YfHrNDuk3GiaqtEme8HL+KlaaF8PjIm
- ecDQLnJL/bNrz/ICttBfoXLH1J7tWDCg
-X-Received: by 2002:a05:6000:1e4a:b0:3a4:f50a:bd5f with SMTP id
- ffacd0b85a97d-3b60a1939d6mr209003f8f.31.1752534444775; 
- Mon, 14 Jul 2025 16:07:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHte4/xKkHSzr4bDOZy+jXaQY01TTvojzmgDFgYCUcR/L17XN84XuxQjauI9NUrp17Fcx0H9w==
-X-Received: by 2002:a05:6000:1e4a:b0:3a4:f50a:bd5f with SMTP id
- ffacd0b85a97d-3b60a1939d6mr208989f8f.31.1752534444363; 
- Mon, 14 Jul 2025 16:07:24 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752534447; x=1753139247;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=m9bYQ5u6pgRJHAntarcEw+lqU/yhh0ZBAg0JEBQxhXo=;
+ b=NJd3CHrqDztZTSkc05UFzNVDvCCTU+ses3yXijGVrhnIEZxhIeAsgGr1GMOVoujujQ
+ DjyqVj063kzrbKDMetjj3SkhDzB9ZzxZppeEJ6n0bellcK5FuilXvt04gXlDEPcIvAC0
+ 3KpKquA22T2N8cU3Y2XFRUczEmnERrBL3THWPG0E6TFuh9MkdI+7FhYo6g4hiPkmRsAV
+ LvvnYBUosPyZ60kjmqmXbW7eRGGls//CtL62ha3FaiBOtoBFZtPx5mXYgvNlnqvCuGRB
+ rk1eccY0mZ5/5xqDsIw/Ta9u05krpeaTnqSeF1fHBO3CFTHYdZcqjhHD5qypj52LGKCh
+ 8LrA==
+X-Gm-Message-State: AOJu0Yxmob2clV2JLD7y07LRbet8bG+5pG8WZzUBkMxhBXSCcVa0W7Ov
+ dhaUIyRBQzdD2y7PpQX1hF9o3ItAEWTumcWDmcl5tnJx25ypeqyEsYpCTsyqG20qoTz/nIQAdM5
+ q/EQnxqOSMiSNFyTqCmm+++zX+ak7y+zDhSeDppAEY/bAf5VMtF1Zq7K0pL+CgbfNoxvqyegKWZ
+ mJZNwUcXmqy8tyf6oq0kgeYUC1i+ZZMtT+6A==
+X-Gm-Gg: ASbGncvHr1xg/7pJGr8o4XGco+Xk3YGKTl2QZjptON7e56bbokz0Ptp1YXwjgJ9JM6L
+ cgwLirQLWbdo8QcPm7PHvXpqvUMf3luiZr0eOkgqiqy0+W1iR3e9li6ntss+gtLOR+kju3NHwQ7
+ WNXGEOfXJKKf9HI42fDsMCjZid83Hl3Wluj5g7xOSykR82YeKd8dHyO5yw8HR4YyQzmp9bjVFCR
+ 7pMOURPgX6GPklOMuPKaKmpY3dqAYqcMa/qKd6Wal1aGyoKzE9NbnPJu6sT+tgCbiQk52yGHdue
+ dlp0SxEwtyRHYbFM6dNZsgdtrR+qsol6
+X-Received: by 2002:a05:600c:46c5:b0:442:f4a3:b5f2 with SMTP id
+ 5b1f17b1804b1-4555f895bb0mr129278545e9.6.1752534446650; 
+ Mon, 14 Jul 2025 16:07:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEl/PhahyPwKcaZ9Lf3VUbFnCA7UevHuv+u45o4ZgPQ45GdGCRRRpU0cp498vZ+Au0xGwD20A==
+X-Received: by 2002:a05:600c:46c5:b0:442:f4a3:b5f2 with SMTP id
+ 5b1f17b1804b1-4555f895bb0mr129278355e9.6.1752534446185; 
+ Mon, 14 Jul 2025 16:07:26 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e1f4edsm13340584f8f.83.2025.07.14.16.07.22
+ 5b1f17b1804b1-455f222e4f4sm104491225e9.10.2025.07.14.16.07.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:07:23 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:07:22 -0400
+ Mon, 14 Jul 2025 16:07:25 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:07:24 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Li Chen <chenl311@chinatelecom.cn>, Sunil V L <sunilvl@ventanamicro.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 27/97] tests/qtest/bios-tables-test: Add test for disabling
- SPCR on RISC-V
-Message-ID: <da77fc6c2e28a17249a6f459213247720e22e170.1752534227.git.mst@redhat.com>
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-rust@nongnu.org
+Subject: [PULL 28/97] rust: bindings: allow any number of params
+Message-ID: <04130b3dc5af620213a90d300933517b39f43bba.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1752534227.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,59 +108,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Li Chen <chenl311@chinatelecom.cn>
+We are going to be adding more parameters, and this makes
+rust unhappy:
+    Functions with lots of parameters are considered bad style and reduce
+    readability (“what does the 5th parameter mean?”). Consider grouping
+    some parameters into a new type.
 
-Add ACPI SPCR table test case for RISC-V when SPCR was off.
+Specifically:
 
-Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
-Message-Id: <20250528105404.457729-4-me@linux.beauty>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+error: this function has too many arguments (8/7)
+    --> /builds/mstredhat/qemu/build/rust/qemu-api/rust-qemu-api-tests.p/structured/bindings.inc.rs:3840:5
+     |
+3840 | /     pub fn new_bitfield_1(
+3841 | |         secure: std::os::raw::c_uint,
+3842 | |         space: std::os::raw::c_uint,
+3843 | |         user: std::os::raw::c_uint,
+...    |
+3848 | |         address_type: std::os::raw::c_uint,
+3849 | |     ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+     | |____________________________________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#too_many_arguments
+     = note: `-D clippy::too-many-arguments` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::too_many_arguments)]`
+
+I didn't want to disable this globally, so I just shut it off for this
+file.
+
+Message-Id: <a4c65fb2b735740bda2874c86de31d29a5ae24d2.1752530758.git.mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ rust/qemu-api/src/bindings.rs | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index c84cf1070d..e988deac02 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -1807,6 +1807,26 @@ static void test_acpi_aarch64_virt_tcg_acpi_spcr(void)
-                   " -machine spcr=off", &data);
-     free_test_data(&data);
- }
-+
-+static void test_acpi_riscv64_virt_tcg_acpi_spcr(void)
-+{
-+    test_data data = {
-+        .machine = "virt",
-+        .arch = "riscv64",
-+        .tcg_only = true,
-+        .uefi_fl1 = "pc-bios/edk2-riscv-code.fd",
-+        .uefi_fl2 = "pc-bios/edk2-riscv-vars.fd",
-+        .cd = "tests/data/uefi-boot-images/bios-tables-test.riscv64.iso.qcow2",
-+        .ram_start = 0x80000000ULL,
-+        .scan_len = 128ULL * 1024 * 1024,
-+        .variant = ".acpispcr",
-+    };
-+
-+    test_acpi_one("-cpu rva22s64 "
-+                  "-machine spcr=off", &data);
-+    free_test_data(&data);
+diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
+index 057de4b646..b4692f9b4b 100644
+--- a/rust/qemu-api/src/bindings.rs
++++ b/rust/qemu-api/src/bindings.rs
+@@ -18,11 +18,15 @@
+ 
+ //! `bindgen`-generated declarations.
+ 
+-#[cfg(MESON)]
+-include!("bindings.inc.rs");
++#[allow(clippy::too_many_arguments)]
++mod gen {
++    #[cfg(MESON)]
++    include!("bindings.inc.rs");
+ 
+-#[cfg(not(MESON))]
+-include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
++    #[cfg(not(MESON))]
++    include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
 +}
-+
- static void test_acpi_tcg_acpi_hmat(const char *machine, const char *arch)
- {
-     test_data data = {};
-@@ -2701,6 +2721,8 @@ int main(int argc, char *argv[])
-             qtest_add_func("acpi/virt", test_acpi_riscv64_virt_tcg);
-             qtest_add_func("acpi/virt/numamem",
-                            test_acpi_riscv64_virt_tcg_numamem);
-+            qtest_add_func("acpi/virt/acpispcr",
-+                           test_acpi_riscv64_virt_tcg_acpi_spcr);
-         }
-     } else if (strcmp(arch, "loongarch64") == 0) {
-         if (has_tcg) {
++pub use gen::*;
+ 
+ // SAFETY: these are implemented in C; the bindings need to assert that the
+ // BQL is taken, either directly or via `BqlCell` and `BqlRefCell`.
 -- 
 MST
 
