@@ -2,92 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E33AB03F37
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 15:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5951DB03F34
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 15:05:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubIqU-0008NS-Uc; Mon, 14 Jul 2025 09:03:50 -0400
+	id 1ubIqT-0008Mk-Bm; Mon, 14 Jul 2025 09:03:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ubHtZ-0007OG-Et
+ id 1ubHtY-0007NA-Fu
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:57 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ubHtN-0003sJ-6y
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:55 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-60c6fea6742so8252251a12.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 05:02:43 -0700 (PDT)
+ id 1ubHtN-0003sU-36
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:56 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-ae04d3d63e6so834903366b.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 05:02:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752494562; x=1753099362; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752494563; x=1753099363; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=06ZP4ZDu9vIhxk8EIV8KfupaXCncTXZydCAzmathYzw=;
- b=PWMZGXdF+yO/fBZaZjoY9ZkqX000Xa6W3MDUlhJhUylldI1DrO8N+9Oec7wQmwUqzQ
- I8GnkS6hxBkzdNi/5omFbhtIqLcpS76Tm/7WqlVMsmNRM1zG1VmB3HcXSErgey5n6oOB
- D5ibs75yiggPhQVcA/Gipf+GBvCX5SrjcXMo8XVPwoFQgmS/h6KWNwwXqYdohglSQBx2
- eYFgsZ04w/0qgql7vsKrGn9H5ZMuOQ4EU7vGecUOrqxZ/i5EBDnJDWoOH2r0PBF2nFYg
- zRYinDeLFBZLrsh6TllzESx8jdSfI8DUPiQFdc3UhI5ONijFnTEaNEbfwgA/BRiR2HNU
- vzAg==
+ bh=T5v8OdxmzrjgwOi1V8ZOJSO/d9q/kYU1/NXLZZAou+A=;
+ b=kZLFTi+3akDoEeINK2wSxeMPqMkv8SFQb3kjm+RBh8TxNQyCMc7whTUE1wM7PZkXSI
+ cA4mniRue1gO/BPIclHENQ2auoEcXTOgRQOrNL9amEPiWRZjySg+GYEtFjqiGyLbSsHI
+ GNvZWmvMASiltbTa7vhsnFZA/JE87AV0s1zLI92UxtP8ddh0MXOSeZWKIQmN9f6ggGVL
+ niAMPLAC4Mk01pmfjYjm5T/1QpANmCXjPLWuNoiY1hv4XM3ZuwMdGoTvVTqLShYjLaCY
+ 6bzLHUpgIo6MpF3/D655DpJyu9Cb/z49zLmmyQU2T4iAy019GGfUjZ3BygxnTI5Z5UKn
+ C6kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752494562; x=1753099362;
+ d=1e100.net; s=20230601; t=1752494563; x=1753099363;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=06ZP4ZDu9vIhxk8EIV8KfupaXCncTXZydCAzmathYzw=;
- b=bPrIn4LNUHZPVHIuEr+BlP5aOqsej0gqwr11souuXRuFt9EUFd70/ct0xQAdPqYEpn
- G2w2QCCwyb3ZIrNQgwhZfzzOhujTt9lnodZXrbUi332fArVLBsdnk0cjojRS64jqeN6P
- PIyRTqACOBzD3oo+ekdigVkDnw6LoipQfOo80mK8us2+uXJcC8CilAx4RX1VyEqCGL8q
- s1abf2776WAScGIfaeGkeDxpl6V6yAcUrvhj8vEiDQZ/qt64f8iucBX2RJA7cE6+bGD5
- LbA3e40oerPWZdqzd1P57NtR21To/1wdJQNvMzjrV2Hd48N7qBNDco2xRSmkTALD1EOC
- XRrw==
-X-Gm-Message-State: AOJu0Ywz6PURq1HXqf81bEcYK8VyvnGfikJNLyLUjkgpzLIWfzl3Jy/s
- 14saV9PuHjw/9rwjG/lCV7s1SEhAirk8F7SsAF18csULUwG/swG5FV4SDjDR66OxARlyguOLnMv
- +VVyry8g=
-X-Gm-Gg: ASbGnctDKcF3G/Z/MMxGhiXK6r5HorDofdZjojiWBWlXFOmAuO6CzdclmkpkVJrecod
- +LhRXRBoTTt0DLAop9cfxwn+q86cSSsvnt0hxkk6fTSjq/l41JtbACBSb4KY2F50JEHn43605D/
- 12QWfWxvZMCzK38/luScylZyBeKrmapo/VyaqjrbmVd4w0571IhHborGpO+GiXageV6iJjEwLvX
- mR5U19nM7xcp/uBlZpa4+T9dFkSPsbAZShORAxdE0bpyF56KYdmDCWQkOFbaRTzx5sowbrxru0p
- VqIhmti1bvspLM3NpmzgcEyDQ5yb+5Xpe0qCcEbePRWpTVjb7E/Lq61FhM8XOXHUjY108AUMjcN
- U2oIwVXWbpNQaTaApDxPO12o=
-X-Google-Smtp-Source: AGHT+IHsRsfe1hRpWYACwhaOKi9b6p/FD13o6YtytvZjhpET5hpEaJNMVnb4XMAYeFnpI9UEpEuDWg==
-X-Received: by 2002:a17:907:3c84:b0:ae3:5887:4219 with SMTP id
- a640c23a62f3a-ae6fc136150mr1291403566b.45.1752494561600; 
- Mon, 14 Jul 2025 05:02:41 -0700 (PDT)
+ bh=T5v8OdxmzrjgwOi1V8ZOJSO/d9q/kYU1/NXLZZAou+A=;
+ b=ZjEjTppsNcoRYU5rtSlzfUO36Yx6ftVt7i8CFlzjfFeNPg5h1ZxeVBjysfyeAwu85+
+ 8dPFk8LpZ5eNxCMTzB1p0qRmH2vXOU2JLcEVbVpHwPY0VH3pr8khzSaLtjBx2VY+c1XE
+ ZUJx2Xub+bloCqexO6Jql6mIrLxpxHycUfwYLZC2v9hVIxYStn0JEwPqPABNYFpN8lHs
+ WqmcbZ93K4fEK0KJ5ut6RAk2W/O1FZTK7cT3RXhuozNxI+AAMIE53lZ3CO0xbfTBnllw
+ ic/IjzK/BDwb5nn87QLzU8S8S9NL7Of3gOD7g8y0otWUpf68nWRZLHAyT7iu8Ngngp7H
+ 8o7A==
+X-Gm-Message-State: AOJu0YzhY1dJv9f0Qeerzzd11YDqkzzcPwzfU0ytZ97wSbzabWbB1Uy9
+ yARemL8b3+2Hto+QQ66IkVsW2bL8cv+/f1DuOjZA6noRONizhZmLnie8R+aRde4Kpmw=
+X-Gm-Gg: ASbGnctD6JqTfRaabniSvU4y7jVF18jYYlKw4A/HTZ8w1rnO2eMOZUePaQ2vv1n1PsM
+ F+xv6EetJGTSMLa5EV3qPZXNyVu4IiB4iHf2oixZKy0/BVLXHE9rWzTa2n3ppjAg2AfwhxdaR3U
+ TKaIGjD5E6VU9zR+MxckD6VdNDGsM9UB42vhrWbgb4hri6KWjLrh4MPux3YZffSwoT05Efy3UKM
+ aOMaBeONRnl5uom4bdPbXjq3sZBxdvo6VQ10r98/Ho2e9/HFHh8ETD0ja8Yuo/54giHS/zmMomt
+ goHJ2fdNRePCosNEj72eJqNWHhdb0gBNlQdF6Gws7OypYABUBpZlICvnpLNT7mYzqJfFY7PdubR
+ Ylo7PHBAXNjDZx9yA4z2yAcUzIlReqNVzsQ==
+X-Google-Smtp-Source: AGHT+IF2pHp10QssnRsFCaTjz94XN9989zxU4tILODRi+Ref9jRPb5xYP3ekZ6fMMxqiNyDs1lQo5Q==
+X-Received: by 2002:a17:907:9627:b0:ae3:6028:e4d0 with SMTP id
+ a640c23a62f3a-ae6fbc13b26mr1329290066b.7.1752494562484; 
+ Mon, 14 Jul 2025 05:02:42 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae6e7ee4547sm819767366b.61.2025.07.14.05.02.37
+ a640c23a62f3a-ae6e7e90a07sm811640066b.6.2025.07.14.05.02.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 14 Jul 2025 05:02:39 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 628765F8D5;
+ by draig.lan (Postfix) with ESMTP id 7D25B5F8E1;
  Mon, 14 Jul 2025 13:02:35 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 7/8] docs/system: clean-up formatting of virtio-net-failover
-Date: Mon, 14 Jul 2025 13:02:33 +0100
-Message-ID: <20250714120234.1524401-8-alex.bennee@linaro.org>
+Cc: Rot127 <unisono@quyllur.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [PULL 8/8] gdbstub: add the GDB register XML files for sparc64.
+Date: Mon, 14 Jul 2025 13:02:34 +0100
+Message-ID: <20250714120234.1524401-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250714120234.1524401-1-alex.bennee@linaro.org>
 References: <20250714120234.1524401-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: 16
+X-Spam_score: 1.6
 X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_report: (1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,95 +104,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We didn't clean-up the rst formatting when we moved this into the
-docs so lets do that now:
+From: Rot127 <unisono@quyllur.org>
 
- - un-indent the usage/hotplug/migration paragraphs
- - properly wrap the command line fragments in code-block
- - highlight parameters in text with ``double quotes``
-
-No changes to the actual text.
-
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Signed-off-by: Rot127 <unisono@quyllur.org>
+Message-ID: <20250711155141.62916-2-unisono@quyllur.org>
+[AJB: clean up commit msg]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250710104531.3099313-8-alex.bennee@linaro.org>
 
-diff --git a/docs/system/virtio-net-failover.rst b/docs/system/virtio-net-failover.rst
-index 6002dc5d96..0cc465454c 100644
---- a/docs/system/virtio-net-failover.rst
-+++ b/docs/system/virtio-net-failover.rst
-@@ -26,43 +26,48 @@ and standby devices are not plugged into the same PCIe slot.
- Usecase
- -------
+diff --git a/configs/targets/sparc64-linux-user.mak b/configs/targets/sparc64-linux-user.mak
+index 64ea04e3e2..7c2ecb7be0 100644
+--- a/configs/targets/sparc64-linux-user.mak
++++ b/configs/targets/sparc64-linux-user.mak
+@@ -4,4 +4,5 @@ TARGET_ABI_DIR=sparc
+ TARGET_SYSTBL_ABI=common,64
+ TARGET_SYSTBL=syscall.tbl
+ TARGET_BIG_ENDIAN=y
++TARGET_XML_FILES=gdb-xml/sparc64-core.xml
+ TARGET_LONG_BITS=64
+diff --git a/configs/targets/sparc64-softmmu.mak b/configs/targets/sparc64-softmmu.mak
+index 2504e31ae3..d9d51d21e5 100644
+--- a/configs/targets/sparc64-softmmu.mak
++++ b/configs/targets/sparc64-softmmu.mak
+@@ -1,4 +1,5 @@
+ TARGET_ARCH=sparc64
+ TARGET_BASE_ARCH=sparc
+ TARGET_BIG_ENDIAN=y
++TARGET_XML_FILES=gdb-xml/sparc64-core.xml
+ TARGET_LONG_BITS=64
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index ed7701b02f..245caf2de0 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -1090,6 +1090,7 @@ static void sparc_cpu_class_init(ObjectClass *oc, const void *data)
+     cc->disas_set_info = cpu_sparc_disas_set_info;
  
--  Virtio-net standby allows easy migration while using a passed-through fast
--  networking device by falling back to a virtio-net device for the duration of
--  the migration. It is like a simple version of a bond, the difference is that it
--  requires no configuration in the guest. When a guest is live-migrated to
--  another host QEMU will unplug the primary device via the PCIe based hotplug
--  handler and traffic will go through the virtio-net device.  On the target
--  system the primary device will be automatically plugged back and the
--  net_failover module registers it again as the primary device.
-+Virtio-net standby allows easy migration while using a passed-through
-+fast networking device by falling back to a virtio-net device for the
-+duration of the migration. It is like a simple version of a bond, the
-+difference is that it requires no configuration in the guest. When a
-+guest is live-migrated to another host QEMU will unplug the primary
-+device via the PCIe based hotplug handler and traffic will go through
-+the virtio-net device. On the target system the primary device will be
-+automatically plugged back and the net_failover module registers it
-+again as the primary device.
- 
- Usage
- -----
- 
--  The primary device can be hotplugged or be part of the startup configuration
-+The primary device can be hotplugged or be part of the startup configuration
- 
--  -device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:6f:55:cc, \
--    bus=root2,failover=on
-+.. code-block:: shell
- 
--  With the parameter failover=on the VIRTIO_NET_F_STANDBY feature will be enabled.
-+  -device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:6f:55:cc,bus=root2,failover=on
+ #if defined(TARGET_SPARC64) && !defined(TARGET_ABI32)
++    cc->gdb_core_xml_file = "sparc64-core.xml";
+     cc->gdb_num_core_regs = 86;
+ #else
+     cc->gdb_num_core_regs = 72;
+diff --git a/gdb-xml/sparc64-core.xml b/gdb-xml/sparc64-core.xml
+new file mode 100644
+index 0000000000..375b9bb0cc
+--- /dev/null
++++ b/gdb-xml/sparc64-core.xml
+@@ -0,0 +1,99 @@
++<?xml version="1.0"?>
++<!-- Copyright (C) 2013-2025 Free Software Foundation, Inc.
 +
-+With the parameter ``failover=on`` the VIRTIO_NET_F_STANDBY feature will be enabled.
++     Copying and distribution of this file, with or without modification,
++     are permitted in any medium without royalty provided the copyright
++     notice and this notice are preserved.  -->
 +
-+.. code-block:: shell
- 
-   -device vfio-pci,host=5e:00.2,id=hostdev0,bus=root1,failover_pair_id=net1
- 
--  failover_pair_id references the id of the virtio-net standby device. This
--  is only for pairing the devices within QEMU. The guest kernel module
--  net_failover will match devices with identical MAC addresses.
-+``failover_pair_id`` references the id of the virtio-net standby device.
-+This is only for pairing the devices within QEMU. The guest kernel
-+module net_failover will match devices with identical MAC addresses.
- 
- Hotplug
- -------
- 
--  Both primary and standby device can be hotplugged via the QEMU monitor.  Note
--  that if the virtio-net device is plugged first a warning will be issued that it
--  couldn't find the primary device.
-+Both primary and standby device can be hotplugged via the QEMU
-+monitor. Note that if the virtio-net device is plugged first a warning
-+will be issued that it couldn't find the primary device.
- 
- Migration
- ---------
- 
--  A new migration state wait-unplug was added for this feature. If failover primary
--  devices are present in the configuration, migration will go into this state.
--  It will wait until the device unplug is completed in the guest and then move into
--  active state. On the target system the primary devices will be automatically hotplugged
--  when the feature bit was negotiated for the virtio-net standby device.
-+A new migration state wait-unplug was added for this feature. If
-+failover primary devices are present in the configuration, migration
-+will go into this state. It will wait until the device unplug is
-+completed in the guest and then move into active state. On the target
-+system the primary devices will be automatically hotplugged when the
-+feature bit was negotiated for the virtio-net standby device.
++<!DOCTYPE feature SYSTEM "gdb-target.dtd">
++<feature name="org.gnu.gdb.sparc.core">
++  <reg name="g0" bitsize="64" type="uint64" regnum="0"/>
++  <reg name="g1" bitsize="64" type="uint64" regnum="1"/>
++  <reg name="g2" bitsize="64" type="uint64" regnum="2"/>
++  <reg name="g3" bitsize="64" type="uint64" regnum="3"/>
++  <reg name="g4" bitsize="64" type="uint64" regnum="4"/>
++  <reg name="g5" bitsize="64" type="uint64" regnum="5"/>
++  <reg name="g6" bitsize="64" type="uint64" regnum="6"/>
++  <reg name="g7" bitsize="64" type="uint64" regnum="7"/>
++  <reg name="o0" bitsize="64" type="uint64" regnum="8"/>
++  <reg name="o1" bitsize="64" type="uint64" regnum="9"/>
++  <reg name="o2" bitsize="64" type="uint64" regnum="10"/>
++  <reg name="o3" bitsize="64" type="uint64" regnum="11"/>
++  <reg name="o4" bitsize="64" type="uint64" regnum="12"/>
++  <reg name="o5" bitsize="64" type="uint64" regnum="13"/>
++  <reg name="sp" bitsize="64" type="uint64" regnum="14"/>
++  <reg name="o7" bitsize="64" type="uint64" regnum="15"/>
++  <reg name="l0" bitsize="64" type="uint64" regnum="16"/>
++  <reg name="l1" bitsize="64" type="uint64" regnum="17"/>
++  <reg name="l2" bitsize="64" type="uint64" regnum="18"/>
++  <reg name="l3" bitsize="64" type="uint64" regnum="19"/>
++  <reg name="l4" bitsize="64" type="uint64" regnum="20"/>
++  <reg name="l5" bitsize="64" type="uint64" regnum="21"/>
++  <reg name="l6" bitsize="64" type="uint64" regnum="22"/>
++  <reg name="l7" bitsize="64" type="uint64" regnum="23"/>
++  <reg name="i0" bitsize="64" type="uint64" regnum="24"/>
++  <reg name="i1" bitsize="64" type="uint64" regnum="25"/>
++  <reg name="i2" bitsize="64" type="uint64" regnum="26"/>
++  <reg name="i3" bitsize="64" type="uint64" regnum="27"/>
++  <reg name="i4" bitsize="64" type="uint64" regnum="28"/>
++  <reg name="i5" bitsize="64" type="uint64" regnum="29"/>
++  <reg name="fp" bitsize="64" type="uint64" regnum="30"/>
++  <reg name="i7" bitsize="64" type="uint64" regnum="31"/>
++
++  <reg name="f0" bitsize="32" type="ieee_single" regnum="32"/>
++  <reg name="f1" bitsize="32" type="ieee_single" regnum="33"/>
++  <reg name="f2" bitsize="32" type="ieee_single" regnum="34"/>
++  <reg name="f3" bitsize="32" type="ieee_single" regnum="35"/>
++  <reg name="f4" bitsize="32" type="ieee_single" regnum="36"/>
++  <reg name="f5" bitsize="32" type="ieee_single" regnum="37"/>
++  <reg name="f6" bitsize="32" type="ieee_single" regnum="38"/>
++  <reg name="f7" bitsize="32" type="ieee_single" regnum="39"/>
++  <reg name="f8" bitsize="32" type="ieee_single" regnum="40"/>
++  <reg name="f9" bitsize="32" type="ieee_single" regnum="41"/>
++  <reg name="f10" bitsize="32" type="ieee_single" regnum="42"/>
++  <reg name="f11" bitsize="32" type="ieee_single" regnum="43"/>
++  <reg name="f12" bitsize="32" type="ieee_single" regnum="44"/>
++  <reg name="f13" bitsize="32" type="ieee_single" regnum="45"/>
++  <reg name="f14" bitsize="32" type="ieee_single" regnum="46"/>
++  <reg name="f15" bitsize="32" type="ieee_single" regnum="47"/>
++  <reg name="f16" bitsize="32" type="ieee_single" regnum="48"/>
++  <reg name="f17" bitsize="32" type="ieee_single" regnum="49"/>
++  <reg name="f18" bitsize="32" type="ieee_single" regnum="50"/>
++  <reg name="f19" bitsize="32" type="ieee_single" regnum="51"/>
++  <reg name="f20" bitsize="32" type="ieee_single" regnum="52"/>
++  <reg name="f21" bitsize="32" type="ieee_single" regnum="53"/>
++  <reg name="f22" bitsize="32" type="ieee_single" regnum="54"/>
++  <reg name="f23" bitsize="32" type="ieee_single" regnum="55"/>
++  <reg name="f24" bitsize="32" type="ieee_single" regnum="56"/>
++  <reg name="f25" bitsize="32" type="ieee_single" regnum="57"/>
++  <reg name="f26" bitsize="32" type="ieee_single" regnum="58"/>
++  <reg name="f27" bitsize="32" type="ieee_single" regnum="59"/>
++  <reg name="f28" bitsize="32" type="ieee_single" regnum="60"/>
++  <reg name="f29" bitsize="32" type="ieee_single" regnum="61"/>
++  <reg name="f30" bitsize="32" type="ieee_single" regnum="62"/>
++  <reg name="f31" bitsize="32" type="ieee_single" regnum="63"/>
++
++  <reg name="f32" bitsize="64" type="ieee_double" regnum="64"/>
++  <reg name="f34" bitsize="64" type="ieee_double" regnum="65"/>
++  <reg name="f36" bitsize="64" type="ieee_double" regnum="66"/>
++  <reg name="f38" bitsize="64" type="ieee_double" regnum="67"/>
++  <reg name="f40" bitsize="64" type="ieee_double" regnum="68"/>
++  <reg name="f42" bitsize="64" type="ieee_double" regnum="69"/>
++  <reg name="f44" bitsize="64" type="ieee_double" regnum="70"/>
++  <reg name="f46" bitsize="64" type="ieee_double" regnum="71"/>
++  <reg name="f48" bitsize="64" type="ieee_double" regnum="72"/>
++  <reg name="f50" bitsize="64" type="ieee_double" regnum="73"/>
++  <reg name="f52" bitsize="64" type="ieee_double" regnum="74"/>
++  <reg name="f54" bitsize="64" type="ieee_double" regnum="75"/>
++  <reg name="f56" bitsize="64" type="ieee_double" regnum="76"/>
++  <reg name="f58" bitsize="64" type="ieee_double" regnum="77"/>
++  <reg name="f60" bitsize="64" type="ieee_double" regnum="78"/>
++  <reg name="f62" bitsize="64" type="ieee_double" regnum="79"/>
++
++  <reg name="pc" bitsize="64" type="code_ptr" regnum="80"/>
++  <reg name="npc" bitsize="64" type="code_ptr" regnum="81"/>
++  <reg name="state" bitsize="64" type="uint64" regnum="82"/>
++  <reg name="fsr" bitsize="64" type="uint64" regnum="83"/>
++  <reg name="fprs" bitsize="64" type="uint64" regnum="84"/>
++  <reg name="y" bitsize="64" type="uint64" regnum="85"/>
++</feature>
 -- 
 2.47.2
 
