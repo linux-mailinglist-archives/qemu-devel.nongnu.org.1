@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25152B04C21
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5942FB04C11
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:16:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSHi-0007Ow-DU; Mon, 14 Jul 2025 19:08:34 -0400
+	id 1ubSHr-0008FL-QX; Mon, 14 Jul 2025 19:08:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGh-00040r-UW
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGj-0004CM-O7
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGg-0005XE-5W
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGh-0005XW-OI
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534449;
+ s=mimecast20190719; t=1752534451;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m9bYQ5u6pgRJHAntarcEw+lqU/yhh0ZBAg0JEBQxhXo=;
- b=ax55UOrvu0gao6V0kztua9lA3AgE2zQ5IxTK2ICr3Zgn8OsbVj/XVjY2VWXDMy0oJQH/yH
- 9XjfECJ2YfjorgH3kkU51YB1v/HNuQjlJXyqUyp5FRVlDZ9XVdKpMzs9ApfaDre5XSwnd6
- Y5k+UI2LNpx8VLvgXvajpsCIYgYuozA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uhGqUwTLjS2ARoAcmn4Djkgcyrtq4txVik2vc56G05k=;
+ b=cJTwncFh601yLWTZGET6bb3k0LJX47g8g33XAAZ6Z+ilvkIC+h53wFJb1q5U7oYj7aQCbq
+ j5uW/KHsCCAK/qhkyxRinBW36gMoO7peniSuOqR37nx32+gbk0R3MgkBL5F+PQ85YugFlA
+ cEc0J00I/SpgR6xNH5W8PSoXPIPhQD0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-V5Gz25wzPH-GDepb5GsNpg-1; Mon, 14 Jul 2025 19:07:28 -0400
-X-MC-Unique: V5Gz25wzPH-GDepb5GsNpg-1
-X-Mimecast-MFC-AGG-ID: V5Gz25wzPH-GDepb5GsNpg_1752534447
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45626532e27so1766495e9.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:27 -0700 (PDT)
+ us-mta-634-KVjk3MX0Ntqf1OhhiI6OHA-1; Mon, 14 Jul 2025 19:07:30 -0400
+X-MC-Unique: KVjk3MX0Ntqf1OhhiI6OHA-1
+X-Mimecast-MFC-AGG-ID: KVjk3MX0Ntqf1OhhiI6OHA_1752534449
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45626e0d3e1so1101335e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534447; x=1753139247;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=m9bYQ5u6pgRJHAntarcEw+lqU/yhh0ZBAg0JEBQxhXo=;
- b=NJd3CHrqDztZTSkc05UFzNVDvCCTU+ses3yXijGVrhnIEZxhIeAsgGr1GMOVoujujQ
- DjyqVj063kzrbKDMetjj3SkhDzB9ZzxZppeEJ6n0bellcK5FuilXvt04gXlDEPcIvAC0
- 3KpKquA22T2N8cU3Y2XFRUczEmnERrBL3THWPG0E6TFuh9MkdI+7FhYo6g4hiPkmRsAV
- LvvnYBUosPyZ60kjmqmXbW7eRGGls//CtL62ha3FaiBOtoBFZtPx5mXYgvNlnqvCuGRB
- rk1eccY0mZ5/5xqDsIw/Ta9u05krpeaTnqSeF1fHBO3CFTHYdZcqjhHD5qypj52LGKCh
- 8LrA==
-X-Gm-Message-State: AOJu0Yxmob2clV2JLD7y07LRbet8bG+5pG8WZzUBkMxhBXSCcVa0W7Ov
- dhaUIyRBQzdD2y7PpQX1hF9o3ItAEWTumcWDmcl5tnJx25ypeqyEsYpCTsyqG20qoTz/nIQAdM5
- q/EQnxqOSMiSNFyTqCmm+++zX+ak7y+zDhSeDppAEY/bAf5VMtF1Zq7K0pL+CgbfNoxvqyegKWZ
- mJZNwUcXmqy8tyf6oq0kgeYUC1i+ZZMtT+6A==
-X-Gm-Gg: ASbGncvHr1xg/7pJGr8o4XGco+Xk3YGKTl2QZjptON7e56bbokz0Ptp1YXwjgJ9JM6L
- cgwLirQLWbdo8QcPm7PHvXpqvUMf3luiZr0eOkgqiqy0+W1iR3e9li6ntss+gtLOR+kju3NHwQ7
- WNXGEOfXJKKf9HI42fDsMCjZid83Hl3Wluj5g7xOSykR82YeKd8dHyO5yw8HR4YyQzmp9bjVFCR
- 7pMOURPgX6GPklOMuPKaKmpY3dqAYqcMa/qKd6Wal1aGyoKzE9NbnPJu6sT+tgCbiQk52yGHdue
- dlp0SxEwtyRHYbFM6dNZsgdtrR+qsol6
-X-Received: by 2002:a05:600c:46c5:b0:442:f4a3:b5f2 with SMTP id
- 5b1f17b1804b1-4555f895bb0mr129278545e9.6.1752534446650; 
- Mon, 14 Jul 2025 16:07:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEl/PhahyPwKcaZ9Lf3VUbFnCA7UevHuv+u45o4ZgPQ45GdGCRRRpU0cp498vZ+Au0xGwD20A==
-X-Received: by 2002:a05:600c:46c5:b0:442:f4a3:b5f2 with SMTP id
- 5b1f17b1804b1-4555f895bb0mr129278355e9.6.1752534446185; 
- Mon, 14 Jul 2025 16:07:26 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752534448; x=1753139248;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uhGqUwTLjS2ARoAcmn4Djkgcyrtq4txVik2vc56G05k=;
+ b=TWbddBdMMh+6KEv0BQxKWrQLMvOAYg5IW0oR0hVtWjCWfCL8BGeeuLBFk0k9NjFrHD
+ KjzgVED+tsk8V1fcHdumPWjF6Anwa6s7T+t+z5ORE3foQRWYGexdiYBV5ExH/DNAV/qa
+ dqQ8S0pppuiWhNPql4qqV2O8CoOGYu7JRQl3qjOah4k6fcf9j8jP8e/OKjhIoQr61+VJ
+ EzPpgTMkIXKCNnqb4yPu6SunkTQtmSRKVUrzwT2/gVqMG2U6Zf0ebtMTvoQpKPpL1I/Q
+ jfJA+6+MiF/mZ2xXs3URwMoodgJ9te1fKmArtpFFvD6x44TTm1hKldtlJ61L/s/gcZ+U
+ dMwQ==
+X-Gm-Message-State: AOJu0Yw8N9mo8u60Q82xbMMqhFDlK3dQJfQ18hqLNjyFVu3oPwytk/G8
+ NkfRd4mAJB5iJFJ90/F6+QHwO/l1t8UZtzF8xQxLOlvRFRPyrnU0T7HFz9p/ggSTF4if3hS4zjU
+ Tlhyelwn84idTkpyy58BQPFQZ97Xhc/zPdPnTBdjrkUq6595TX22QzJiaDgMa7RVWYi84Vq6HEI
+ uUyMA8RAFbwfgpTBlLaxCeXiX+38mZuY0OIA==
+X-Gm-Gg: ASbGncsWTUEqRoF0F2l3CuNYN7YaV3UYIV0gZIS2KhpoQa7gJp/D+21xc5hBjS+21Bx
+ 8mscbvK0i4TvRKojuWbTMIIVdATHBKVMoE8GuB55gyom4zwegQkhGAOLHexIT6h78vzgKKxmsnO
+ Xv9WZlgSnGqsw45loyGSTB/p+7nalNdoELf0TLa5zA4JEfYheLQZ0ocscmiuw4haJJ83bdg5/sp
+ oupNaNzcogWlnT1YeB/XwDnxzb0hRoxFIioiV1nmu90Q2gx+Wr35hEWRgENUGsWs5vJnjbqXYmo
+ ue/bJLOLt5Ya9ju4hkT18vas475QqZ82
+X-Received: by 2002:a05:6000:41fa:b0:3b2:fe84:a10 with SMTP id
+ ffacd0b85a97d-3b5f181c283mr13773558f8f.0.1752534448436; 
+ Mon, 14 Jul 2025 16:07:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQ/M/8T5iJmS75P7VdxU06uufMVT8mkEnTxNK8jVZlna9ATE0cbVNsGVnyjGz94oN5NDa69g==
+X-Received: by 2002:a05:6000:41fa:b0:3b2:fe84:a10 with SMTP id
+ ffacd0b85a97d-3b5f181c283mr13773535f8f.0.1752534447991; 
+ Mon, 14 Jul 2025 16:07:27 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-455f222e4f4sm104491225e9.10.2025.07.14.16.07.25
+ 5b1f17b1804b1-45626c9ac1dsm3528435e9.0.2025.07.14.16.07.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:07:25 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:07:24 -0400
+ Mon, 14 Jul 2025 16:07:27 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:07:26 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-rust@nongnu.org
-Subject: [PULL 28/97] rust: bindings: allow any number of params
-Message-ID: <04130b3dc5af620213a90d300933517b39f43bba.1752534227.git.mst@redhat.com>
+ CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 29/97] pci: Add a memory attribute for pre-translated DMA
+ operations
+Message-ID: <2dd51fc52a8b85e6f39d1297f338344ed03dc5b1.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1752534227.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,63 +108,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are going to be adding more parameters, and this makes
-rust unhappy:
-    Functions with lots of parameters are considered bad style and reduce
-    readability (“what does the 5th parameter mean?”). Consider grouping
-    some parameters into a new type.
+From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 
-Specifically:
+The address_type bit will be set to PCI_AT_TRANSLATED by devices that
+use cached addresses obtained via ATS.
 
-error: this function has too many arguments (8/7)
-    --> /builds/mstredhat/qemu/build/rust/qemu-api/rust-qemu-api-tests.p/structured/bindings.inc.rs:3840:5
-     |
-3840 | /     pub fn new_bitfield_1(
-3841 | |         secure: std::os::raw::c_uint,
-3842 | |         space: std::os::raw::c_uint,
-3843 | |         user: std::os::raw::c_uint,
-...    |
-3848 | |         address_type: std::os::raw::c_uint,
-3849 | |     ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
-     | |____________________________________________^
-     |
-     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#too_many_arguments
-     = note: `-D clippy::too-many-arguments` implied by `-D warnings`
-     = help: to override `-D warnings` add `#[allow(clippy::too_many_arguments)]`
-
-I didn't want to disable this globally, so I just shut it off for this
-file.
-
-Message-Id: <a4c65fb2b735740bda2874c86de31d29a5ae24d2.1752530758.git.mst@redhat.com>
+Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
+Message-Id: <20250628180226.133285-2-clement.mathieu--drif@eviden.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- rust/qemu-api/src/bindings.rs | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ include/exec/memattrs.h | 3 +++
+ include/hw/pci/pci.h    | 9 +++++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
-index 057de4b646..b4692f9b4b 100644
---- a/rust/qemu-api/src/bindings.rs
-+++ b/rust/qemu-api/src/bindings.rs
-@@ -18,11 +18,15 @@
+diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
+index 8db1d30464..52ee955249 100644
+--- a/include/exec/memattrs.h
++++ b/include/exec/memattrs.h
+@@ -54,6 +54,9 @@ typedef struct MemTxAttrs {
+      */
+     unsigned int pid:8;
  
- //! `bindgen`-generated declarations.
++    /* PCI - IOMMU operations, see PCIAddressType */
++    unsigned int address_type:1;
++
+     /*
+      * Bus masters which don't specify any attributes will get this
+      * (via the MEMTXATTRS_UNSPECIFIED constant), so that we can
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index df3cc7b875..6b7d3ac8a3 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -134,6 +134,15 @@ struct PCIHostDeviceAddress {
+     unsigned int function;
+ };
  
--#[cfg(MESON)]
--include!("bindings.inc.rs");
-+#[allow(clippy::too_many_arguments)]
-+mod gen {
-+    #[cfg(MESON)]
-+    include!("bindings.inc.rs");
- 
--#[cfg(not(MESON))]
--include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
-+    #[cfg(not(MESON))]
-+    include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
-+}
-+pub use gen::*;
- 
- // SAFETY: these are implemented in C; the bindings need to assert that the
- // BQL is taken, either directly or via `BqlCell` and `BqlRefCell`.
++/*
++ * Represents the Address Type (AT) field in a PCI request,
++ * see MemTxAttrs.address_type
++ */
++typedef enum PCIAddressType {
++    PCI_AT_UNTRANSLATED = 0, /* Default when no attribute is set */
++    PCI_AT_TRANSLATED = 1,
++} PCIAddressType;
++
+ typedef void PCIConfigWriteFunc(PCIDevice *pci_dev,
+                                 uint32_t address, uint32_t data, int len);
+ typedef uint32_t PCIConfigReadFunc(PCIDevice *pci_dev,
 -- 
 MST
 
