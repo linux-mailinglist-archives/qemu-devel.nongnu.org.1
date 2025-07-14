@@ -2,89 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA32B03D0C
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 978EAB03D18
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:16:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubH7e-0000NA-SQ; Mon, 14 Jul 2025 07:13:27 -0400
+	id 1ubH8o-0001yz-Kh; Mon, 14 Jul 2025 07:14:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGze-0000sg-Dm
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1ubGzp-00014J-1M
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGzb-0001qc-NA
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:10 -0400
+ id 1ubGzl-0001s0-Un
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491107;
+ s=mimecast20190719; t=1752491115;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dW2i+oCo9ZpgCYlYnI1btj+lqBMLXuFlBbfwc0ZiH08=;
- b=eQzyexnHnabrTngUu/kV8FGC4BZJKgqysCrutHaqmdyItcraFFhgpGgdD/3ME9feMuxASp
- 5KDtBFktfuk7hfV3zdz350jFrW3V1hEtEyqCP3i1Wu50IXXuihoYfWBRwsRCvDuFpMNKwA
- Gq7PSHLiuob+ur414KhjMBb3IHcO+yo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lldL9pDenZld4b2liWHX3EviL3nng8YFuNx50nxDsEk=;
+ b=Dhovk0974ADcmEVOz7R29v8Z7g3geYkuqvO8PrpqJkY/ych43R4R5yze1GG8dZtMUQMnzE
+ yYcjinZ9ylvqwt7KxejTHXQZyuGyejNt8v2b54s35wWTYH+CcrLCrMzluG3zU90a1Sp5U+
+ NJoQdxNh3CzPslwYeyItdmZJjaoG9qk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-536-MmCOkSc_Pti22z63JITDBQ-1; Mon, 14 Jul 2025 07:05:05 -0400
-X-MC-Unique: MmCOkSc_Pti22z63JITDBQ-1
-X-Mimecast-MFC-AGG-ID: MmCOkSc_Pti22z63JITDBQ_1752491105
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-456106b7c4aso4887315e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:05 -0700 (PDT)
+ us-mta-655-maeJKQx4MG-PNJjx1GTY0g-1; Mon, 14 Jul 2025 07:05:08 -0400
+X-MC-Unique: maeJKQx4MG-PNJjx1GTY0g-1
+X-Mimecast-MFC-AGG-ID: maeJKQx4MG-PNJjx1GTY0g_1752491108
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45597cc95d5so15265525e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491103; x=1753095903;
+ d=1e100.net; s=20230601; t=1752491107; x=1753095907;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dW2i+oCo9ZpgCYlYnI1btj+lqBMLXuFlBbfwc0ZiH08=;
- b=xU2FuNVmdJHzk1TLWtmTlfaz1cjTSyIwLT3s/8DOIASn+5Qf8r9t/McRNE7rVjqXFX
- k1njGqFczqHyyr8zCGcuunvyKwRYS6ILeON5s/k/iHdZnnzMcFhXJ32ZFJp0hGUjeYm8
- OHCWel9sm0wvNczoHJVGtRsC8068aFdWnoC9XAbAUekXMhgHGrRDJEf9gZAg9LDu1tfO
- TQ8+s8nqYLUUftEsD3J9SwWZoP/wQnJvRmWoxlmP9Idlf+Ogq+iI8eYsFztn4CkJDck8
- 6DArbw+0xq2lTiMZ/iVgLSCGl7of7AaAg99AggZ3DWdUezGugqq6t+AoVgcF4eRX7FU7
- 5eCQ==
-X-Gm-Message-State: AOJu0Yxi+BEhdFmWOG0j6uhXaW4+qGz+rmYxLC3Y85Wq4amUw68LwIO5
- AkAA/SFjQ2qs0y7rtMmRWg1whQGNoTBZodcBzhLyKYOrk5ZHAry3Gn4uPaZJ9osd0KI/FLcGW29
- 4K3AttG2EsTED1aRkYoB32rg3epaRnbiMSJomvq3H5i83CdCneMd/UcuaLxwZhkZVJTarDJ0rE7
- RCVxGHRQrzk9+V+lLyCShk2v8tPz71mKy3h/gXOwGA
-X-Gm-Gg: ASbGnctWRBeDOtFuiQJDtCo4RKSCRaInODsEjr2mvnV6VjjPeoUUuOzIe3OMjHesNdo
- bi7z1u+0+FJulu54JCiFGTt40JFBMrUNGmmKo5MG6pSUTghpaLdogPfqk9hC22d74KJrSVs4k0a
- qUIh0AEMTqiF7ZXBC4IEM+phpWkYrV6zMT7EHeHjDiLCasucE2KGxZB6RsZ7VCfPgb2MiVPqk4V
- FmD9NRlTrMIjx4EPbIRX6Hb0+TcqE3D809pg54fKEnkvMwMRMFrFcbYc7CC78WWX4DT6uPJAeG5
- HvOddTRlOSfXz1dFJBQXai87CRtpLmHM4EmRGrRu7w4=
-X-Received: by 2002:a05:600c:4746:b0:453:7713:476c with SMTP id
- 5b1f17b1804b1-455bd8e63aemr95401805e9.2.1752491102764; 
- Mon, 14 Jul 2025 04:05:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF63REqR+7VypwkWaTIETl4dxA0iNTNvqaX+oeW7jJvqR3o0LBX2hgxJRtc3C5Jq0MuJbOIA==
-X-Received: by 2002:a05:600c:4746:b0:453:7713:476c with SMTP id
- 5b1f17b1804b1-455bd8e63aemr95401475e9.2.1752491102236; 
- Mon, 14 Jul 2025 04:05:02 -0700 (PDT)
+ bh=lldL9pDenZld4b2liWHX3EviL3nng8YFuNx50nxDsEk=;
+ b=JRZoc/COWDEALQAJdmWr4NBmes/4Is5HA7RsWS5fDUEK57SYekJ9bK/PZRypxllbBB
+ ngcia2euLMyQL6gXkygBKfcYHNiSaKUqDXQMExWNAm8cJyQsAUMMudf585gtZlRRLcub
+ HCEcuAZaC2kmKPAa0FtFRoilAtOliAjyCXScs/7dS4WPLNWWyEVj8IwOTT8pMRhUT5Fy
+ 2Yf9Nmt8Ld1ioIiz6OdImP4Ff4PpPUtgmhUDtBVxLRHRRoQ/sj15HfkRGU/kU27BDSuZ
+ tO8niXV8NeZ6b+a7arLI0UI/VYepd404bJ8EQbSLBaygBrnmS99JJK+NbGqs8hk2hBC4
+ zZYw==
+X-Gm-Message-State: AOJu0Yz5aQFKyxapfgv/SezeHaJar2xuC9UfV9en9jtx6pzCzvQyxxZg
+ 74LS7fgIM8rr+UD8PoCFqz1a7+giCVQu8QXXQ483P3ONGIUOWEcsQE3vWhjZ5qlREBX+8PiG2ZE
+ ZrwX/SzzZSEV0CA2Z8tAAatTGb+e/jJZKC/R3dw6feKHAKEqLrQYkTpI6Hm/wTkhVEDdaN+bs5z
+ TnZr2gEM997HmZAXOOSch6gNJ5AGicb/HGLrlAfOCx
+X-Gm-Gg: ASbGncvy2+W5om9Qo28wpRtIuolN3fJ62Yt6zhGvrx4TlUjbDVpSd3Q7rEyQj9cbl5q
+ AwzoKudosJIvVXHy4C1dX0gFY4XTcSaLG7Pekp0bChREOq4j9c/Y+JaALK78P+HujluFnpbJt3C
+ mlIDNt1vqYFEndqOCXhYINPlQ5Edug3TB6ZlQuymn9/53Vlo5e6Yvk1fyp07k+HdNc+RLCz66Y1
+ 2TEnordb/zv/m97yzdYLFMPsmthAkJLUdhp8laG1N9BARIu86hcggvOLjC4OAxkZvS52l9vtHfj
+ JuUD13zw9w3tsN4FnbuQCt8ut9ngc/wxYmsXvZX7xXU=
+X-Received: by 2002:adf:9dd2:0:b0:3a4:ec23:dba7 with SMTP id
+ ffacd0b85a97d-3b5f2dfd169mr7852329f8f.31.1752491106680; 
+ Mon, 14 Jul 2025 04:05:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFXp1U0ZHGtSGaDOLmjQpht7GMjwD1UnEwuNAmrVUl86S1NREsLe4sv2qjnpUFJdwEtjjOw9Q==
+X-Received: by 2002:adf:9dd2:0:b0:3a4:ec23:dba7 with SMTP id
+ ffacd0b85a97d-3b5f2dfd169mr7852284f8f.31.1752491106073; 
+ Mon, 14 Jul 2025 04:05:06 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e26ee3sm12333742f8f.96.2025.07.14.04.05.01
+ ffacd0b85a97d-3b5e8e262c6sm11919476f8f.85.2025.07.14.04.05.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:05:01 -0700 (PDT)
+ Mon, 14 Jul 2025 04:05:03 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>,
- Gerd Hoffman <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 20/77] hw/i386: Add igvm-cfg object and processing for IGVM
- files
-Date: Mon, 14 Jul 2025 13:03:09 +0200
-Message-ID: <20250714110406.117772-21-pbonzini@redhat.com>
+ Gerd Hoffman <kraxel@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Pankaj Gupta <pankaj.gupta@amd.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 21/77] i386/pc_sysfw: Ensure sysfw flash configuration does not
+ conflict with IGVM
+Date: Mon, 14 Jul 2025 13:03:10 +0200
+Message-ID: <20250714110406.117772-22-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -111,157 +115,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Roy Hopkins <roy.hopkins@randomman.co.uk>
 
-An IGVM file contains configuration of guest state that should be
-applied during configuration of the guest, before the guest is started.
+When using an IGVM file the configuration of the system firmware is
+defined by IGVM directives contained in the file. In this case the user
+should not configure any pflash devices.
 
-This patch allows the user to add an igvm-cfg object to an X86 machine
-configuration that allows an IGVM file to be configured that will be
-applied to the guest before it is started.
-
-If an IGVM configuration is provided then the IGVM file is processed at
-the end of the board initialization, before the state transition to
-PHASE_MACHINE_INITIALIZED.
+This commit skips initialization of the ROM mode when pflash0 is not set
+then checks to ensure no pflash devices have been configured when using
+IGVM, exiting with an error message if this is not the case.
 
 Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
 Acked-by: Gerd Hoffman <kraxel@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
 Reviewed-by: Ani Sinha <anisinha@redhat.com>
-Link: https://lore.kernel.org/r/23bc66ae4504ba5cf2134826e055b25df3fc9cd9.1751554099.git.roy.hopkins@randomman.co.uk
+Link: https://lore.kernel.org/r/c6166cfe128933b04003a9288566b7affe170dfe.1751554099.git.roy.hopkins@randomman.co.uk
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/i386/x86.h |  3 +++
- hw/i386/pc.c          | 12 ++++++++++++
- hw/i386/pc_piix.c     | 10 ++++++++++
- hw/i386/pc_q35.c      | 10 ++++++++++
- qemu-options.hx       | 28 ++++++++++++++++++++++++++++
- 5 files changed, 63 insertions(+)
+ hw/i386/pc_sysfw.c | 31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-index fc460b82f82..8755cad50a3 100644
---- a/include/hw/i386/x86.h
-+++ b/include/hw/i386/x86.h
-@@ -25,6 +25,7 @@
- #include "hw/intc/ioapic.h"
- #include "hw/isa/isa.h"
- #include "qom/object.h"
-+#include "system/igvm-cfg.h"
+diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+index 821396c16e9..1a12b635ad9 100644
+--- a/hw/i386/pc_sysfw.c
++++ b/hw/i386/pc_sysfw.c
+@@ -220,7 +220,13 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     BlockBackend *pflash_blk[ARRAY_SIZE(pcms->flash)];
  
- struct X86MachineClass {
-     MachineClass parent;
-@@ -92,6 +93,8 @@ struct X86MachineState {
-      * which means no limitation on the guest's bus locks.
-      */
-     uint64_t bus_lock_ratelimit;
-+
-+    IgvmCfg *igvm;
- };
- 
- #define X86_MACHINE_SMM              "smm"
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index b2116335752..432ab288a87 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1833,6 +1833,18 @@ static void pc_machine_class_init(ObjectClass *oc, const void *data)
-     object_class_property_add_bool(oc, "fd-bootchk",
-         pc_machine_get_fd_bootchk,
-         pc_machine_set_fd_bootchk);
-+
-+#if defined(CONFIG_IGVM)
-+    object_class_property_add_link(oc, "igvm-cfg",
-+                                   TYPE_IGVM_CFG,
-+                                   offsetof(X86MachineState, igvm),
-+                                   object_property_allow_set_link,
-+                                   OBJ_PROP_LINK_STRONG);
-+    object_class_property_set_description(oc, "igvm-cfg",
-+                                          "Set IGVM configuration");
-+#endif
-+
-+
- }
- 
- static const TypeInfo pc_machine_info = {
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index ea7572e7831..3184ea1b378 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -366,6 +366,16 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-                                x86_nvdimm_acpi_dsmio,
-                                x86ms->fw_cfg, OBJECT(pcms));
+     if (!pcmc->pci_enabled) {
+-        x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, true);
++        /*
++         * If an IGVM file is specified then the firmware must be provided
++         * in the IGVM file.
++         */
++        if (!X86_MACHINE(pcms)->igvm) {
++            x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, true);
++        }
+         return;
      }
+ 
+@@ -240,8 +246,13 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     }
+ 
+     if (!pflash_blk[0]) {
+-        /* Machine property pflash0 not set, use ROM mode */
+-        x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, false);
++        /*
++         * Machine property pflash0 not set, use ROM mode unless using IGVM,
++         * in which case the firmware must be provided by the IGVM file.
++         */
++        if (!X86_MACHINE(pcms)->igvm) {
++            x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, false);
++        }
+     } else {
+         if (kvm_enabled() && !kvm_readonly_mem_enabled()) {
+             /*
+@@ -257,6 +268,20 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     }
+ 
+     pc_system_flash_cleanup_unused(pcms);
 +
-+#if defined(CONFIG_IGVM)
-+    /* Apply guest state from IGVM if supplied */
-+    if (x86ms->igvm) {
-+        if (IGVM_CFG_GET_CLASS(x86ms->igvm)
-+                ->process(x86ms->igvm, machine->cgs, &error_fatal) < 0) {
-+            g_assert_not_reached();
++    /*
++     * The user should not have specified any pflash devices when using IGVM
++     * to configure the guest.
++     */
++    if (X86_MACHINE(pcms)->igvm) {
++        for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
++            if (pcms->flash[i]) {
++                error_report("pflash devices cannot be configured when "
++                             "using IGVM");
++                exit(1);
++            }
 +        }
 +    }
-+#endif
  }
  
- typedef enum PCSouthBridgeOption {
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 33211b1876f..6990e1c6695 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -325,6 +325,16 @@ static void pc_q35_init(MachineState *machine)
-                                x86_nvdimm_acpi_dsmio,
-                                x86ms->fw_cfg, OBJECT(pcms));
-     }
-+
-+#if defined(CONFIG_IGVM)
-+    /* Apply guest state from IGVM if supplied */
-+    if (x86ms->igvm) {
-+        if (IGVM_CFG_GET_CLASS(x86ms->igvm)
-+                ->process(x86ms->igvm, machine->cgs, &error_fatal) < 0) {
-+            g_assert_not_reached();
-+        }
-+    }
-+#endif
- }
- 
- #define DEFINE_Q35_MACHINE(major, minor) \
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 1f862b19a67..f4c05b388b5 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -5992,6 +5992,34 @@ SRST
-                  -machine ...,memory-encryption=sev0 \\
-                  .....
- 
-+    ``-object igvm-cfg,file=file``
-+        Create an IGVM configuration object that defines the initial state
-+        of the guest using a file in that conforms to the Independent Guest
-+        Virtual Machine (IGVM) file format.
-+
-+        This is currently only supported by ``-machine q35`` and
-+        ``-machine pc``.
-+
-+        The ``file`` parameter is used to specify the IGVM file to load.
-+        When provided, the IGVM file is used to populate the initial
-+        memory of the virtual machine and, depending on the platform, can
-+        define the initial processor state, memory map and parameters.
-+
-+        The IGVM file is expected to contain the firmware for the virtual
-+        machine, therefore an ``igvm-cfg`` object cannot be provided along
-+        with other ways of specifying firmware, such as the ``-bios``
-+        parameter on x86 machines.
-+
-+        e.g to launch a machine providing the firmware in an IGVM file
-+
-+        .. parsed-literal::
-+
-+             # |qemu_system_x86| \\
-+                 ...... \\
-+                 -object igvm-cfg,id=igvm0,file=bios.igvm \\
-+                 -machine ...,igvm-cfg=igvm0 \\
-+                 .....
-+
-     ``-object authz-simple,id=id,identity=string``
-         Create an authorization object that will control access to
-         network services.
+ void x86_firmware_configure(hwaddr gpa, void *ptr, int size)
 -- 
 2.50.0
 
