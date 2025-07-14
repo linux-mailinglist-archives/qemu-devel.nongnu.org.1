@@ -2,88 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03482B03D95
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B26B9B03DED
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 14:00:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHYB-0000ZG-Bm; Mon, 14 Jul 2025 07:40:57 -0400
+	id 1ubHak-0001ia-RV; Mon, 14 Jul 2025 07:43:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH1x-0002Oq-Fv
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1ubH5D-0005sa-8i
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:11:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH1u-0002JI-Jz
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:32 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1ubH59-000353-7R
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:10:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491249;
+ s=mimecast20190719; t=1752491448;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kAj8gNQPx0+zlFmRZi9dDjnOFhk6i3lq0mODeXaaGSw=;
- b=Ar8+9Z5XVeObfiQucNT7L9M7z+mjQSWOKjgHe1qRoGBGc5lONal268vY2aruHOwI0Ii1em
- cFye/7i+gmckUxNrlkQBj9IGGOwAymLqs9QS27AXT42rmKkJw85QnsuHNWhw/WJtD6Uvea
- 9mFzmpSQk6KqNa3eu3wIBLXHSuuCtwQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-76-Jh6ffjNJOj-NDO7UTE9mlA-1; Mon, 14 Jul 2025 07:07:28 -0400
-X-MC-Unique: Jh6ffjNJOj-NDO7UTE9mlA-1
-X-Mimecast-MFC-AGG-ID: Jh6ffjNJOj-NDO7UTE9mlA_1752491247
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45597cc95d5so15277355e9.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:07:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491246; x=1753096046;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kAj8gNQPx0+zlFmRZi9dDjnOFhk6i3lq0mODeXaaGSw=;
- b=uRpaRYfqSQWK/KMbaAasFmwj9PUF4KXOfeFLtagy8DpSDzT3MVjdbqo59LwK7mu0Ql
- Lw9Vz1h2Oa6El3/I4ZLiKpGX2Gid7drBaFJuUugphJ2a1voEB4uaLuoV3w88XJeIz/sl
- tYqCL6VE1qVvb74DKRhlxT+8QJoXYpngq7ipxJ8KlLfTozDldbDiNhXsNWZXV3yzRpfc
- PC3Nz6A746vJCIAL2JHMlBU+xSzIVvYqG2xArufmT4GL9xpGvItjNgEnKUhn9kC9/Xwf
- YPXL0Rtzi3HJfbko6Yf0+VsnX5GYw0UeSrP3Amw8IL5j9YsUIzlJFuUp9jTKiahG4Eon
- nQVQ==
-X-Gm-Message-State: AOJu0Yz+gF4PPMXrMh1kOMcC5hqjmA9sHyMJL+cumAcDkSekbmHk6pZT
- pGb3GHVQgqPk7tUz6z8ceTyTi2G4OUaReDTGiPINPnyFLs5iQKCLtvCpQ7+3EDY5wvjb9p7h5TR
- gdz+pvDikYe7xEXw475S8oTeDY6UuV///I6HB3GpYJR4iwpqSl2efqZpZqE8hIhGpJ4cmldOFl/
- VIPypQYZN+7Eh/aLycBanpYK/8yCkmdocchcrqBzFh
-X-Gm-Gg: ASbGncv5gjPz8wpZldlUcu4g0OUIgT1O7o4KSyeHEpL1icyA0hwl5G3k5TJQwK759QM
- JzRb4Up4qpLKviKQJVcKfaZ3AcFuItVR1K5h6TkvJiJHsxUJpYjwbD5Y0EGKC/y2YIu4sr/sRh5
- RHC6fjgBhiRj/zPy8/Bvp1nLrC6eTcfxOoskZ9CWu7EPSPMw6OZaV8RKMfN6ThMtiMAwVmDBBO6
- YbFEcckR/jomIOpIu14x1wCSmbaTvk83uIDul4v9997tGrhhEmRRZUHbBHisDFQPduyNzk4/UQ2
- WmapiTuc4QjylrZ0CUVp3Sz6mJdSIFxZcJYGrYbb2w4=
-X-Received: by 2002:a05:600c:4f91:b0:453:62e9:125a with SMTP id
- 5b1f17b1804b1-454ec27dc91mr124181775e9.18.1752491245828; 
- Mon, 14 Jul 2025 04:07:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHTfQx0TSbr4qUaRQlVn5DvSM6Dn1S6BaJpd4uCbAN1z4RKQZguC7Sry47iia+2Z3aIvO6DLQ==
-X-Received: by 2002:a05:600c:4f91:b0:453:62e9:125a with SMTP id
- 5b1f17b1804b1-454ec27dc91mr124181485e9.18.1752491245371; 
- Mon, 14 Jul 2025 04:07:25 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.73.155])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4561d19a21dsm19914315e9.24.2025.07.14.04.07.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:07:23 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1/yB//fEMd3x9i/nIaNCrmI8ELBKw+cDelwMVR9cfko=;
+ b=TLUwKKDEr4pspDew6+SJbzMCUBYPVKg/v4bc1h5i6O/04taV7agm6qOXSWsXcNGCYkxQbd
+ j7EJ+2IxCHLKxn3STHHdJDI1wgNe3Urx3WmdgYWVYDy+XneKiuwDYE60S2OsiYmnLVofvv
+ /GN8FU2+KIBANu5k9HB6qWI1za9ChP0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-297-XoZPOV7kNxGszR3cyRemhQ-1; Mon,
+ 14 Jul 2025 07:10:44 -0400
+X-MC-Unique: XoZPOV7kNxGszR3cyRemhQ-1
+X-Mimecast-MFC-AGG-ID: XoZPOV7kNxGszR3cyRemhQ_1752491444
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0620919560AA
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 11:10:44 +0000 (UTC)
+Received: from localhost (unknown [10.45.242.9])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id BCA8C19560A3; Mon, 14 Jul 2025 11:10:42 +0000 (UTC)
+From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>,
-	Babu Moger <babu.moger@amd.com>
-Subject: [PULL 77/77] i386/cpu: Honor maximum value for
- CPUID.8000001DH.EAX[25:14]
-Date: Mon, 14 Jul 2025 13:04:06 +0200
-Message-ID: <20250714110406.117772-78-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
-References: <20250714110406.117772-1-pbonzini@redhat.com>
+Cc: stefanha@redhat.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 00/13] Ui patches
+Date: Mon, 14 Jul 2025 15:10:23 +0400
+Message-ID: <20250714111039.4150419-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,41 +82,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-CPUID.8000001DH:EAX[25:14] is "NumSharingCache", and the number of
-logical processors sharing this cache is the value of this field
-incremented by 1. Because of its width limitation, the maximum value
-currently supported is 4095.
+The following changes since commit 9a4e273ddec3927920c5958d2226c6b38b543336:
 
-Though at present Q35 supports up to 4096 CPUs, by constructing a
-specific topology, the width of the APIC ID can be extended beyond 12
-bits. For example, using `-smp threads=33,cores=9,modules=9` results in
-a die level offset of 6 + 4 + 4 = 14 bits, which can also cause
-overflow. Check and honor the maximum value as CPUID.04H did.
+  Merge tag 'pull-tcg-20250711' of https://gitlab.com/rth7680/qemu into staging (2025-07-13 01:46:04 -0400)
 
-Cc: Babu Moger <babu.moger@amd.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250714080859.1960104-8-zhao1.liu@intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+are available in the Git repository at:
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index fdc677614d8..da7d8dca633 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -560,7 +560,8 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
- 
-     *eax = CACHE_TYPE(cache->type) | CACHE_LEVEL(cache->level) |
-                (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0);
--    *eax |= max_thread_ids_for_cache(topo_info, cache->share_level) << 14;
-+    /* Bits 25:14 - NumSharingCache: maximum 4095. */
-+    *eax |= MIN(max_thread_ids_for_cache(topo_info, cache->share_level), 4095) << 14;
- 
-     assert(cache->line_size > 0);
-     assert(cache->partitions > 0);
+  https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
+
+for you to fetch changes up to c99b7e6d4aa8bcc12d47483ebe81072168de56fb:
+
+  tpm: "qemu -tpmdev help" should return success (2025-07-14 15:02:00 +0400)
+
+----------------------------------------------------------------
+UI-related for 10.1
+
+- [PATCH v3 0/2] ui/vnc: Do not copy z_stream
+- [PATCH v6 0/7] ui/spice: Enable gl=on option for non-local or remote clients
+- [PATCH v6 0/1] Allow injection of virtio-gpu EDID name
+- [PATCH 0/2] ui/gtk: Add keep-aspect-ratio and scale option
+
+----------------------------------------------------------------
+
+Akihiko Odaki (2):
+  ui/vnc: Do not copy z_stream
+  ui/vnc: Introduce the VncWorker type
+
+Andrew Keesler (1):
+  hw/display: Allow injection of virtio-gpu EDID name
+
+Marc-André Lureau (1):
+  tpm: "qemu -tpmdev help" should return success
+
+Vivek Kasireddy (7):
+  ui/egl-helpers: Error check the fds in egl_dmabuf_export_texture()
+  ui/spice: Enable gl=on option for non-local or remote clients
+  ui/spice: Add an option for users to provide a preferred video codec
+  ui/spice: Add an option to submit gl_draw requests at fixed rate
+  ui/console-gl: Add a helper to create a texture with linear memory
+    layout
+  ui/spice: Create a new texture with linear layout when gl=on is
+    specified
+  ui/spice: Blit the scanout texture if its memory layout is not linear
+
+Weifeng Liu (2):
+  ui/gtk: Add keep-aspect-ratio option
+  ui/gtk: Add scale option
+
+ qapi/ui.json                        |  15 +-
+ qapi/virtio.json                    |  18 +-
+ include/hw/display/edid.h           |   2 +
+ include/hw/qdev-properties-system.h |   5 +
+ include/hw/virtio/virtio-gpu.h      |   3 +
+ include/ui/console.h                |   3 +
+ include/ui/gtk.h                    |   2 +
+ include/ui/spice-display.h          |   5 +
+ include/ui/surface.h                |   1 +
+ ui/vnc.h                            |  49 +--
+ hw/core/qdev-properties-system.c    |  44 +++
+ hw/display/virtio-gpu-base.c        |  27 ++
+ system/tpm.c                        |   5 +-
+ ui/console-gl.c                     |  54 ++++
+ ui/egl-helpers.c                    |   6 +
+ ui/gtk.c                            |  58 ++--
+ ui/spice-core.c                     |  31 ++
+ ui/spice-display.c                  | 226 +++++++++++++-
+ ui/vnc-enc-tight.c                  | 456 +++++++++++++++-------------
+ ui/vnc-enc-zlib.c                   |  47 +--
+ ui/vnc-enc-zrle.c                   | 122 ++++----
+ ui/vnc-jobs.c                       |  13 +-
+ ui/vnc.c                            |  83 +++--
+ ui/vnc-enc-zrle.c.inc               |  20 +-
+ qemu-options.hx                     |  13 +
+ 25 files changed, 882 insertions(+), 426 deletions(-)
+
 -- 
 2.50.0
 
