@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02BCB03B30
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 472ADB03AF3
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:37:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubFj6-0002sG-Ln; Mon, 14 Jul 2025 05:44:00 -0400
+	id 1ubFcJ-0005QY-KN; Mon, 14 Jul 2025 05:37:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubFTj-00012M-Ox
+ id 1ubFTk-00012T-Bw
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:16 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubFTh-0003EU-23
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:07 -0400
+ id 1ubFTi-0003Dn-GN
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752485285; x=1784021285;
+ t=1752485286; x=1784021286;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qn9gJigVS/thIyBLmze218xHraAxu/hvkldIETa3c+M=;
- b=AqUCWs4P1Xuc++0sDIXA6NPctdNaObQp22Vli2cSFAfRzqRj12ppmuPJ
- 9bYXqLAgL1Ljk+AZLxlhY7IAg1LN3Hu0QTDlMgMmEkvwGu+4s+GbjvUQl
- fVskjN3LG7lNQDMgFZhFAVDkvl6rcvcnh0q61PydkkkNM1CG7ThJofhHA
- FJKTO+qdO2sBb6FbSPrRQbEdKVtxBONLXgt4L4MN4Y9Rpm8WwuwNILzNa
- sycQ/TlOUkYvKbUlqoM5JxmRQ2/AWFpHw9W1VmdfW3wQlpulIOMOT1Cyd
- AfJ41/VznLj5xcC4gNQ1OKd4HjBE2XEAgJ/lCO517XfMuL2GZzjHZLVuu A==;
-X-CSE-ConnectionGUID: gkUi0Z6NSpKxRJ8a579ZEQ==
-X-CSE-MsgGUID: lY5Cj03MT4SBO4hlgQZzDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66029264"
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="66029264"
+ bh=ZMxbMTL6bAWxmAOXFXy6V/3TWlJVejOwkxqLEDzE1sI=;
+ b=IEbjppsWpt+e3dqSBIAXjgQ+Rx6Q/t3CuOopXNKzwW3+WIlvvgH+TvKk
+ KQUIjzzQtZnamI9WzOJE85KXgUwof/IHyC4VfKrKIUQx/5QsgKu04+b9J
+ b8b8DwYggnU0JcoFDnKBa8XeOmBpTZglTLehbYACwu78av3ntTtGYmDqJ
+ fn1GXMSbj2HtFbVx/0fWPlK6l5Q4+iPyIoDRVECTV0UPIdwB1/iiluMhc
+ Z8CnaCbt3070bF38UdN7LyszdSzLcjebLB8QxsVhm+zINQF4DnxPm6GRi
+ hkBKVMGRxHtPu6BRo2OxcE4lpGbhCGfkrIhTYR7eY9F0Z2KWxGUKWH3fB g==;
+X-CSE-ConnectionGUID: Ke0/pcISTci9XuxU5a/GPA==
+X-CSE-MsgGUID: l223o21qTueC1tSyHsjmuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66029273"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="66029273"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 02:28:01 -0700
-X-CSE-ConnectionGUID: CFL/ZywTTUyfOMt46S66MA==
-X-CSE-MsgGUID: T+1Ues2TQW6OIOl5MUMI2w==
+ 14 Jul 2025 02:28:03 -0700
+X-CSE-ConnectionGUID: kO1cpXzjQ0WNebkH7jYOGA==
+X-CSE-MsgGUID: 9pOi4A94S/+1CJGBMvpreA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="187882728"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="187882736"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa002.jf.intel.com with ESMTP; 14 Jul 2025 02:28:01 -0700
+ by orviesa002.jf.intel.com with ESMTP; 14 Jul 2025 02:28:02 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH 1/5] qemu-options: Move sgx-epc options from "M" to "machine"
-Date: Mon, 14 Jul 2025 17:19:49 +0800
-Message-ID: <20250714091953.448226-2-xiaoyao.li@intel.com>
+Subject: [PATCH 2/5] i386/sev: Remove the example that references
+ memory-encryption
+Date: Mon, 14 Jul 2025 17:19:50 +0800
+Message-ID: <20250714091953.448226-3-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250714091953.448226-1-xiaoyao.li@intel.com>
 References: <20250714091953.448226-1-xiaoyao.li@intel.com>
@@ -82,53 +83,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's weird to only put sgx-epc option in "M" while leaving others to
-"machine". Besides currently in qemu-manpage.html, the "sgx-epc" option
-is listed at the same level of "-machine", which looks incorrect.
+"confidential-guest-support" is the recommended property to configure
+sev for the machine, and amd-memory-encryption.rst has already switched
+to use "confidential-guest-support" in the example.
 
-Move "sgx-epc" ontion to "-machine" to address all above.
+Instead of changing "memory-encryption" to "confidential-guest-support"
+in the comment of struct SevGuestState, just drop the example for
+simplicity.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- qemu-options.hx | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ target/i386/sev.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 1f862b19a676..740323f22bc2 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -43,7 +43,8 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
- #endif
-     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
-     "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
--    "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n",
-+    "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n"
-+    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n",
-     QEMU_ARCH_ALL)
- SRST
- ``-machine [type=]name[,prop=value[,...]]``
-@@ -200,17 +201,13 @@ SRST
-         ::
- 
-             -machine smp-cache.0.cache=l1d,smp-cache.0.topology=core,smp-cache.1.cache=l1i,smp-cache.1.topology=core
--ERST
--
--DEF("M", HAS_ARG, QEMU_OPTION_M,
--    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n",
--    QEMU_ARCH_ALL)
- 
--SRST
--``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
--    Define an SGX EPC section.
-+    ``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
-+        Define an SGX EPC section.
- ERST
- 
-+DEF("M", HAS_ARG, QEMU_OPTION_M, "", QEMU_ARCH_ALL)
-+
- DEF("cpu", HAS_ARG, QEMU_OPTION_cpu,
-     "-cpu cpu        select CPU ('-cpu help' for list)\n", QEMU_ARCH_ALL)
- SRST
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 1a12f0671cc6..b1831e9ab14e 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -131,10 +131,6 @@ struct SevCommonStateClass {
+  *
+  * The SevGuestState object is used for creating and managing a SEV
+  * guest.
+- *
+- * # $QEMU \
+- *         -object sev-guest,id=sev0 \
+- *         -machine ...,memory-encryption=sev0
+  */
+ struct SevGuestState {
+     SevCommonState parent_obj;
 -- 
 2.43.0
 
