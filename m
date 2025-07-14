@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0231B03D3C
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B62EB03E17
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 14:03:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHDo-0006Bx-Hj; Mon, 14 Jul 2025 07:19:49 -0400
+	id 1ubHSy-0003TG-Vf; Mon, 14 Jul 2025 07:35:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH0i-0001bL-Mv
+ id 1ubH0k-0001bw-G3
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH0f-000253-Iz
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:15 -0400
+ id 1ubH0i-00025T-Ft
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491172;
+ s=mimecast20190719; t=1752491175;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AjgJDMASZjcGOJV/vJO6lV99FBfJmaAIl4fEb4Kczgs=;
- b=IydOuFEQ2a0EriszpFzOE6lMKCK/6RkyNhcSn4aHqoRBeoUx3CiyDHqdi9o+/dlD80CZ5k
- KI/aCIRTNlQII2IaVw+XBtjnM2bxNvLGIDzVU2QjWwRz9D93RxUCELlEvydoKtE4KZf2Kq
- VzgwqVPZEgeYj0YFqqEkjezeLCA9LWE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9rIviJJiNhAaxQAmva2XsGdE6gnXLnG6PRcuZmt/cGY=;
+ b=VBt/Mw2JzB1nsfkRRWlIfCGlqEc6IvW+36Vw+MY3PyAhHUIJ+GgUTrT1AJ+Xa4aNdQo0IS
+ p89jM/6YbKEBLdrTO1TpFzDPZFnkIYANg9nmfI7gNvAbSVYgTXXvr4Y13dhu16NOo5nLj5
+ gD26EQmx5TVodw50rSk3lmEQF5lRZvE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-544-IVI1lenZMVi3dLRHIu8TdQ-1; Mon, 14 Jul 2025 07:06:11 -0400
-X-MC-Unique: IVI1lenZMVi3dLRHIu8TdQ-1
-X-Mimecast-MFC-AGG-ID: IVI1lenZMVi3dLRHIu8TdQ_1752491170
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a4eec544c6so1838672f8f.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:06:11 -0700 (PDT)
+ us-mta-467-XC-OBO9ZNIS5O8aFJhmC5Q-1; Mon, 14 Jul 2025 07:06:14 -0400
+X-MC-Unique: XC-OBO9ZNIS5O8aFJhmC5Q-1
+X-Mimecast-MFC-AGG-ID: XC-OBO9ZNIS5O8aFJhmC5Q_1752491173
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-455ea9cb0beso21445455e9.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:06:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491170; x=1753095970;
+ d=1e100.net; s=20230601; t=1752491172; x=1753095972;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AjgJDMASZjcGOJV/vJO6lV99FBfJmaAIl4fEb4Kczgs=;
- b=ucGkBbU+b9yTW9p8+ydWWrWWfG3IlNw9ZmWiGplmdGCEc8Zn6eZUI6YRJ52lw8D6W8
- FYSV9cRAZwiD4u9r8C+68GJ9izMivxc7a9XWksfs/VVO1IhojsMc3veOekdcIttwVxlm
- 3B1BgSFunWM+Wtg7vSH8H/L5QfAx0IlnThhQgubHuFiLB2TTC4T7TIdZN8q3mCKULwLs
- iot/yk1v8sw/n5baB6kWB0pQ6g6ZakvwiYXzvUtQVs8WrGTMPl2u/+rbeqJBqmZdF/HS
- d5y9nd16RHepdqu0bhd6IPrRwEzNtXGfPphked/ZF4teOcYshE9zy2y6kELpNpYdXw4a
- /pGA==
-X-Gm-Message-State: AOJu0YycxFqBroBHL7NeBXzjLkJhdhMl3M7d8kSaxt+Q3TycUgra0QYM
- QkVRt+LwF89vAvncwXVI2HjnB9NtRgibGwF58tI2jFGtSDd5OMKHfWZWqDuQxArUH4TU3gzQAe6
- y3o1l58IyzWBZACydttkfxTsSXg1bO8YzlAdC1FKQC9Qt90u3ebc87iZHh5EXZR+wk5ewTlNwtc
- vI7kYp70LnA6bvyGptQQGQ7FSOkx1qlVqa4WoPGPx8
-X-Gm-Gg: ASbGncu+thPv870XslM9nBza0H0DPyk479py2Q6g76n37zo2eoJqtpdpYfjXcAcpWuL
- Gv3Mf8QC9PxkC+Yxbc8/xhMg+QOVcDOGXoKJioi6Gzx30Mc7Q7f0QquBLEnUOlpNQAVBAfKdjMZ
- 0IXB0Pq57g/lXnohHzQhBLEyKW8f9wqjnG1Gov6CgYhdBftk3KVhvTETjvSeb1AwQmDaUf4uSCf
- xL2FPxhg8v1IxM+H97E6mv1mTflse9KYg+7EjaJ12h2S1KeiIFFwZ+5bV3f1Qcp/0OGDuTfq8We
- JFfUxmrv0EngCHif/0BrRB9eBzdD7zhQ4t9x+OvY4Jg=
-X-Received: by 2002:a05:6000:2004:b0:3a5:1cc5:aa6f with SMTP id
- ffacd0b85a97d-3b5f18b3ecbmr11074738f8f.34.1752491169560; 
- Mon, 14 Jul 2025 04:06:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHI3avFznPtpSpEwF0WHFReGm7r1UBfMpshWt9tcKw+6HMy39a/n0KxsP61s9DC6iNSWxv4Tg==
-X-Received: by 2002:a05:6000:2004:b0:3a5:1cc5:aa6f with SMTP id
- ffacd0b85a97d-3b5f18b3ecbmr11074705f8f.34.1752491168878; 
- Mon, 14 Jul 2025 04:06:08 -0700 (PDT)
+ bh=9rIviJJiNhAaxQAmva2XsGdE6gnXLnG6PRcuZmt/cGY=;
+ b=H9M72ZRSI/zSUhZSssM68xO6aZ2mntXACsJ0b2rBJDuWqQQEo9fhKzs5ahwBr7MwEa
+ /JSTV3XcDlHLLnUhZllwTZKcVBMqRaWKPefFF7XhCxn0ZQx3uPOjz0XZnp4ZX/OGumLf
+ M/MISrbUpsmWkZ9sPaEixw2Ny47VodhnF49ylEkEkAsDZXsOgYuw/Fie7mefG5QNipZ/
+ 1Tlabd5a9YGsx9QBicXBfkOvWGiTT2lPKFaetag7kUnK4tAlWgKhlcuIyG5Ga5S+4XMM
+ zF2C1cxK2M6tQMnsk2+qxmsobmSa2/uiFfWTAEdOddg8tlW13btDMZqmjcRk2qFdhf6i
+ 7VzQ==
+X-Gm-Message-State: AOJu0YxevKTfIEjQ+Q8wSycdu8rCcaoblv/15iZfZUltBqESoYxuRChr
+ sOZPgYG6S3Qq9vC8Nw4pJJ2CgVwkTi2OvMhMwpNY7mY7RQT6XnPfK/s/0Oyxav27ElC1M0pEB6/
+ MHbiWRyCH0RPyxNvLhfre0dCoV6onaQFHiRZybGST9TBwqxg478J9fTV1/TGtlfmnLB92Nqeobh
+ RuMTV8ntSWmkF+7ZxpTTSlhejMNCY6kgo56TNgn+7N
+X-Gm-Gg: ASbGncvr1v4h9EHztbB/7Ff97cJ2xDTJejSIT+i/+vIi2fvj7G2QB3zROamCWZmHSJU
+ QUdJwUSncPcE5PfnxQvldvwe1e6FBM5+CUEX/nsDR2ZzQgfesIu9nXEBkNpLVRqSsek0AB+vUaD
+ LA7+9sNUvqI6ng0Hk8frvRm6uAftTlMgNo2pgC3VovdwmGBAHgTLuQxN2RIsfVKECpgb648GByA
+ QSJydo4zdnQ55dT16iA8MA2u8dSpUR+ZeiusEpTQeCryUPrbFEc073NQMBRKQgu1REaS/WZwBcf
+ XfZiY8dKF1lLU1GPk3z+psFjE6/DXtdsFHlbyPl+SGg=
+X-Received: by 2002:a05:600c:1da7:b0:456:1b8b:b8c6 with SMTP id
+ 5b1f17b1804b1-4561b8bbbf3mr27417235e9.14.1752491171926; 
+ Mon, 14 Jul 2025 04:06:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEzZwsANSptTigDo6JPnjSG8BVa/qdPOxY9LPt6ZVFYEMHq48AF5379W2T4eUTYtBB3gPqnkQ==
+X-Received: by 2002:a05:600c:1da7:b0:456:1b8b:b8c6 with SMTP id
+ 5b1f17b1804b1-4561b8bbbf3mr27416765e9.14.1752491171311; 
+ Mon, 14 Jul 2025 04:06:11 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0dc3esm11976967f8f.47.2025.07.14.04.06.06
+ ffacd0b85a97d-3b5e8dc2131sm11864434f8f.29.2025.07.14.04.06.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:06:07 -0700 (PDT)
+ Mon, 14 Jul 2025 04:06:09 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>,
 	Yi Lai <yi1.lai@intel.com>
-Subject: [PULL 46/77] i386/cpu: Add x-vendor-cpuid-only-v2 option for
- compatibility
-Date: Mon, 14 Jul 2025 13:03:35 +0200
-Message-ID: <20250714110406.117772-47-pbonzini@redhat.com>
+Subject: [PULL 47/77] i386/cpu: Mark CPUID[0x80000005] as reserved for Intel
+Date: Mon, 14 Jul 2025 13:03:36 +0200
+Message-ID: <20250714110406.117772-48-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -110,82 +109,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Add a compat property "x-vendor-cpuid-only-v2" (for PC machine v10.0
-and older) to keep the original behavior. This property will be used
-to adjust vendor specific CPUID fields.
+Per SDM, 0x80000005 leaf is reserved for Intel CPU, and its current
+"assert" check blocks adding new cache model for non-AMD CPUs.
 
-Make x-vendor-cpuid-only-v2 depend on x-vendor-cpuid-only. Although
-x-vendor-cpuid-only and v2 should be initernal only, QEMU doesn't
-support "internal" property. To avoid any other unexpected issues, check
-the dependency.
+And please note, although Zhaoxin mostly follows Intel behavior,
+this leaf is an exception [1].
+
+So, with the compat property "x-vendor-cpuid-only-v2", for the machine
+since v10.1, check the vendor and encode this leaf as all-0 only for
+Intel CPU. In addition, drop lines_per_tag assertion in
+encode_cache_cpuid80000005(), since Zhaoxin will use legacy Intel cache
+model in this leaf - which doesn't have this field.
+
+This fix also resolves 2 FIXMEs of legacy_l1d_cache_amd and
+legacy_l1i_cache_amd:
+
+/*FIXME: CPUID leaf 0x80000005 is inconsistent with leaves 2 & 4 */
+
+In addition, per AMD's APM, update the comment of CPUID[0x80000005].
+
+[1]: https://lore.kernel.org/qemu-devel/fa16f7a8-4917-4731-9d9f-7d4c10977168@zhaoxin.com/
 
 Tested-by: Yi Lai <yi1.lai@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250711102143.1622339-8-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250711102143.1622339-9-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h | 11 ++++++++++-
- hw/i386/pc.c      |  1 +
- target/i386/cpu.c | 10 ++++++++++
- 3 files changed, 21 insertions(+), 1 deletion(-)
+ target/i386/cpu.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index d3f7c53e301..d88481ba8ec 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2282,9 +2282,18 @@ struct ArchCPU {
-     /* Enable auto level-increase for all CPUID leaves */
-     bool full_cpuid_auto_level;
- 
--    /* Only advertise CPUID leaves defined by the vendor */
-+    /*
-+     * Compatibility bits for old machine types (PC machine v6.0 and older).
-+     * Only advertise CPUID leaves defined by the vendor.
-+     */
-     bool vendor_cpuid_only;
- 
-+    /*
-+     * Compatibility bits for old machine types (PC machine v10.0 and older).
-+     * Only advertise CPUID leaves defined by the vendor.
-+     */
-+    bool vendor_cpuid_only_v2;
-+
-     /* Only advertise TOPOEXT features that AMD defines */
-     bool amd_topoext_features_only;
- 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index a6fa7923688..7cfa61c9ee6 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -83,6 +83,7 @@
- 
- GlobalProperty pc_compat_10_0[] = {
-     { TYPE_X86_CPU, "x-consistent-cache", "false" },
-+    { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
- };
- const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
- 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index ac22548f47d..630a40d72be 100644
+index 630a40d72be..2abcb5acffc 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -8749,6 +8749,16 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-     tcg_cflags_set(cs, CF_PCREL);
- #endif
+@@ -499,7 +499,6 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
+ static uint32_t encode_cache_cpuid80000005(CPUCacheInfo *cache)
+ {
+     assert(cache->size % 1024 == 0);
+-    assert(cache->lines_per_tag > 0);
+     assert(cache->associativity > 0);
+     assert(cache->line_size > 0);
+     return ((cache->size / 1024) << 24) | (cache->associativity << 16) |
+@@ -657,7 +656,6 @@ static CPUCacheInfo legacy_l1d_cache = {
+     .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+ };
  
-+    /*
-+     * x-vendor-cpuid-only and v2 should be initernal only. But
-+     * QEMU doesn't support "internal" property.
-+     */
-+    if (!cpu->vendor_cpuid_only && cpu->vendor_cpuid_only_v2) {
-+        error_setg(errp, "x-vendor-cpuid-only-v2 property "
-+                   "depends on x-vendor-cpuid-only");
-+        return;
-+    }
+-/*FIXME: CPUID leaf 0x80000005 is inconsistent with leaves 2 & 4 */
+ static CPUCacheInfo legacy_l1d_cache_amd = {
+     .type = DATA_CACHE,
+     .level = 1,
+@@ -686,7 +684,6 @@ static CPUCacheInfo legacy_l1i_cache = {
+     .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+ };
+ 
+-/*FIXME: CPUID leaf 0x80000005 is inconsistent with leaves 2 & 4 */
+ static CPUCacheInfo legacy_l1i_cache_amd = {
+     .type = INSTRUCTION_CACHE,
+     .level = 1,
+@@ -7884,11 +7881,17 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         *edx = env->cpuid_model[(index - 0x80000002) * 4 + 3];
+         break;
+     case 0x80000005:
+-        /* cache info (L1 cache) */
++        /* cache info (L1 cache/TLB Associativity Field) */
+         if (cpu->cache_info_passthrough) {
+             x86_cpu_get_cache_cpuid(index, 0, eax, ebx, ecx, edx);
+             break;
+         }
 +
-     if (cpu->apic_id == UNASSIGNED_APIC_ID) {
-         error_setg(errp, "apic-id property was not initialized properly");
-         return;
++        if (cpu->vendor_cpuid_only_v2 && IS_INTEL_CPU(env)) {
++            *eax = *ebx = *ecx = *edx = 0;
++            break;
++        }
++
+         *eax = (L1_DTLB_2M_ASSOC << 24) | (L1_DTLB_2M_ENTRIES << 16) |
+                (L1_ITLB_2M_ASSOC <<  8) | (L1_ITLB_2M_ENTRIES);
+         *ebx = (L1_DTLB_4K_ASSOC << 24) | (L1_DTLB_4K_ENTRIES << 16) |
+@@ -9478,6 +9481,7 @@ static const Property x86_cpu_properties[] = {
+     DEFINE_PROP_STRING("hv-vendor-id", X86CPU, hyperv_vendor),
+     DEFINE_PROP_BOOL("cpuid-0xb", X86CPU, enable_cpuid_0xb, true),
+     DEFINE_PROP_BOOL("x-vendor-cpuid-only", X86CPU, vendor_cpuid_only, true),
++    DEFINE_PROP_BOOL("x-vendor-cpuid-only-v2", X86CPU, vendor_cpuid_only_v2, true),
+     DEFINE_PROP_BOOL("x-amd-topoext-features-only", X86CPU, amd_topoext_features_only, true),
+     DEFINE_PROP_BOOL("lmce", X86CPU, enable_lmce, false),
+     DEFINE_PROP_BOOL("l3-cache", X86CPU, enable_l3_cache, true),
 -- 
 2.50.0
 
