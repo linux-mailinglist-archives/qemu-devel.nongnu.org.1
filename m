@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63E2B04C4D
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85FC0B04BEF
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:13:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSL7-0008BF-M9; Mon, 14 Jul 2025 19:12:05 -0400
+	id 1ubSKi-0008AN-TS; Mon, 14 Jul 2025 19:11:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSIa-0004R8-Ky
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSIb-0004VY-O4
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:09:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSIY-0005sG-U6
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:09:28 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSIZ-0005tH-SV
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:09:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534564;
+ s=mimecast20190719; t=1752534567;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=nWTgx9OOmQrzNpl+Eee6xG0XRq2aOUUPbQTx1jMMcO4=;
- b=i/8aXuZiK3K6Aa9WURxKo56QYQG/hmAH1r6AeSgkMkGV+pZmuQdES7hW9loXvXoUOnZUAm
- e75aTVgXO7Twn5tfU4xpkxwrhoc577BGuwNeHXEFi6jc9Vh7ESnOXF2zAlbjEyo8tRAepv
- rVJOTSeHxljQeGsNtKo+fa1irbflulQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SvnomgrO0EIpFHMECBjp7SXzcEMSUEgRi45f0SJbgzI=;
+ b=SgKL4RRm79sUPpNfUNiPLVRYnwVj0Elako76z8wYrQcomW5tHJZmvS1J8DESvduMKaCX4h
+ KSnyMMoNRz8lEyEkOM0VUoVDKC0KwM4DbFhx16dyd4EmeCLQgnkD8hnNQ4l+BjXvdGUC6r
+ INnF0Vikz17495Zv7vRZ7c47tNPJovE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-BKABEcG_MJqv_qQ0C6ikaA-1; Mon, 14 Jul 2025 19:09:23 -0400
-X-MC-Unique: BKABEcG_MJqv_qQ0C6ikaA-1
-X-Mimecast-MFC-AGG-ID: BKABEcG_MJqv_qQ0C6ikaA_1752534561
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-451ecc3be97so25170285e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:09:22 -0700 (PDT)
+ us-mta-54-5NyrKIRWM_Sy79ejyyJ_XQ-1; Mon, 14 Jul 2025 19:09:26 -0400
+X-MC-Unique: 5NyrKIRWM_Sy79ejyyJ_XQ-1
+X-Mimecast-MFC-AGG-ID: 5NyrKIRWM_Sy79ejyyJ_XQ_1752534565
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3af3c860ed7so2107731f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:09:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534561; x=1753139361;
+ d=1e100.net; s=20230601; t=1752534564; x=1753139364;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nWTgx9OOmQrzNpl+Eee6xG0XRq2aOUUPbQTx1jMMcO4=;
- b=AP5zeV3aD7Xn+DqewXI0LqlamcmtcGpbJiZ81LGQm5fwM8jKNqCSIHuH9FOI2KdvUP
- nns3wGuBs9mUvZce2d/rdApBtEaumYM+AB2w7pjR1PVns2ABrwjfGqmXjb4/+Eq9geWw
- x664HSOXL5lKOgTffuFZ6gCjpCWWeguitc8skUsst/d746zY6Mq/qcGX2AIdbTgvj0JT
- L8rflCQLh7iLpRkaCXuzM7tSvbemiT1wQ7Mvgac2r2UKioYBc1nt0FExWEcMaR/cM1bk
- wzz4iIHuAvXWEwYB1kMRN6E8Gy9h1w94UeLYUOr7t4vTUr/qgfo5+DMmAau+VDUAIArT
- xnPA==
-X-Gm-Message-State: AOJu0Yy2ifw/+VJil+15LV+WglG4SnpK6CKdvUu+m8gn81Ml7SfpvkLA
- iD82h3EXfTIAoGRR+OLFsdFC73xQzCWogc3FYt2WNg435XzPYpCxw+q09m7adDUtRl9h3f9pRks
- YeURr/ZGiJlHAq24AAQ8JT93GioLx/cRnyIbtZfn4uaXzBYFOZfeHi+JlfthF2PJcQtzjaVGSIf
- bkubqAE87gcVrKKUjwt7+GQqVfng67FLzYhA==
-X-Gm-Gg: ASbGncufSh4bkowfq+Cw0J8NE2Iog+OcV4X1Iy5unA8J4T+dqEV1KXnaMGktU49gVAX
- PU98UNgOToLkTauTmrv54lg2lJip7nmlatzXaq1SV2WoTIBXU3YAE86L3UglFfpw+tjb12ZyWcU
- tQk9xNI9z4CfO8bfI7SAlQvw9jVy7L3v4qo/VfBtvsL4K7ga07BCxV1N3ksOwmcaxwgiJGEZTif
- 24B9t4dmvHaksrPbBrpviJG61LZdD3cK5kKl2S0AqxFEFwhMTx4J6SbYncOfnIYcY1uM2IrVJjs
- n/HdHYliGug7YV6WDJSiGCyh+gSS7oHu
-X-Received: by 2002:a05:600c:4ecf:b0:456:24aa:958e with SMTP id
- 5b1f17b1804b1-45624aa9786mr19627175e9.0.1752534561343; 
- Mon, 14 Jul 2025 16:09:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGa/OVUbHxTW5QCZ8VAm3s4vhGBi/pvLBF02n0N6fAUc1zCjvIlOrw1NmHrzTAiGoovUfsBBw==
-X-Received: by 2002:a05:600c:4ecf:b0:456:24aa:958e with SMTP id
- 5b1f17b1804b1-45624aa9786mr19626955e9.0.1752534560887; 
- Mon, 14 Jul 2025 16:09:20 -0700 (PDT)
+ bh=SvnomgrO0EIpFHMECBjp7SXzcEMSUEgRi45f0SJbgzI=;
+ b=Zzl8ZZytQioiHkpqIIxugaVFYFzC+LtPtimbEBLQweJPj6JAhuhmBcOkNMC1kj9B2y
+ ace7Mm3fog/gx73C/EMJHrXS3Cinv4wthccG72LIC0kD89XhGH1m+Yprz7uIxblYaRCf
+ qeuzq16hudpC9e4w7u777ZWHaSlDYXawto2CZYrS3fPpg0jXZZND068dnPBckQR7wdM4
+ /aXP0YArlAkWJaJoC27WvTEhLQSYjKgUh0w/lebhuy3lPAIsXHBAsWvSVv3Lkh+jFKnC
+ SldNfjg5u1m2pXDVxrfQfQNj/1T56VmFpdWV09fXp8nyKDMu7hqofc2rSjr/nN7IUT9w
+ XXNQ==
+X-Gm-Message-State: AOJu0YwDtUBRAWIkigyFLrGV1ZCtXPNBDnAh40pi+EpDXYQ+1OzXHqVA
+ KJtuhfUdfTD2qFyX22EeWNWqKeiOVlaIWI9MWrUSyoYhF9o++o+hjXVVd6itmsZ0PZlUYGv0+KT
+ iMl9R8q/0ULMxp/CZUFVxN1Rq+oxOebYDDxr96BKG4eOfYgnqKZBXCTZ08AINWK5ZFHlWeH6izC
+ pp5rcN9upsE1fdpDS+2p33vcvHoqdRiY0kwg==
+X-Gm-Gg: ASbGncu33p3NgB4mKPJK9n3EORBWOuXTZX3P+OzfbB7aO65T9/WaXyRrjVDHnLnPtxo
+ 7vL+a6srh4b4vZnGV4XzO+qc7yKDFzIHhkpD0fYJt7TCiM/wq11RtqQ0xhXHNLcf3BEe0rs4jeI
+ HjdhYYsJC7NRmzFpBsMqcA9AZTeokedyCNfmib0VCdgbqxrYq0wU4OJ4DV38r7xS8iqU2WtRYUS
+ 7MZe0wsblbDmCcbku5qdkBQmaFc+Q+8VDx3kPuYJSg4IzsZdt4t1OBEUljWiD9KUIZsGHY5S1GH
+ eQ9Pt0byKPtm3rMJjXu29p25gP/RR7T3
+X-Received: by 2002:a05:6000:1ac8:b0:3b4:990a:a0d6 with SMTP id
+ ffacd0b85a97d-3b5f2dc2958mr10298821f8f.19.1752534564589; 
+ Mon, 14 Jul 2025 16:09:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEYEDxg9iIqOjS+1bPGVLpVKZX3A1xlg1cF1bUvJm6qAlPkE/TrFqmbaY0T0A0T4bE5443UaQ==
+X-Received: by 2002:a05:6000:1ac8:b0:3b4:990a:a0d6 with SMTP id
+ ffacd0b85a97d-3b5f2dc2958mr10298802f8f.19.1752534564164; 
+ Mon, 14 Jul 2025 16:09:24 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4560ceb1337sm81503405e9.13.2025.07.14.16.09.19
+ ffacd0b85a97d-3b5e8dc9298sm13500295f8f.44.2025.07.14.16.09.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:09:20 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:09:19 -0400
+ Mon, 14 Jul 2025 16:09:23 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:09:21 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Jonathan Cameron <jonathan.cameron@huawei.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org
-Subject: [PULL 71/97] hw/arm/virt: Pass the bus on the ged creation
-Message-ID: <c919cff502f6c149d7cf38576ccbf8a7e044ad44.1752534227.git.mst@redhat.com>
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 72/97] hw/acpi/ged: Call pcihp plug callbacks in hotplug
+ handler implementation
+Message-ID: <d66c3b5fd72d2badaba767f2beca5846ed7eaa39.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -92,7 +93,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,30 +111,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-The bus will be needed on ged realize for acpi pci hp setup.
+Add PCI device related code in the TYPE_HOTPLUG_HANDLER
+implementation.
+
+For a PCI device hotplug/hotunplug event, the code routes to
+acpi_pcihp_device callbacks (pre_plug_cb, plug_cb, unplug_request_cb,
+unplug_cb).
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20250714080639.2525563-26-eric.auger@redhat.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Message-Id: <20250714080639.2525563-27-eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/arm/virt.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/acpi/generic_event_device.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 817adedb31..41b5086b55 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -701,6 +701,7 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index ef1c1ec51f..92b931758f 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -17,6 +17,7 @@
+ #include "hw/irq.h"
+ #include "hw/mem/pc-dimm.h"
+ #include "hw/mem/nvdimm.h"
++#include "hw/pci/pci_device.h"
+ #include "hw/qdev-properties.h"
+ #include "migration/vmstate.h"
+ #include "qemu/error-report.h"
+@@ -228,6 +229,14 @@ static const MemoryRegionOps ged_regs_ops = {
+     },
+ };
  
-     dev = qdev_new(TYPE_ACPI_GED);
-     qdev_prop_set_uint32(dev, "ged-event", event);
-+    object_property_set_link(OBJECT(dev), "bus", OBJECT(vms->bus), &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++static void acpi_ged_device_pre_plug_cb(HotplugHandler *hotplug_dev,
++                                        DeviceState *dev, Error **errp)
++{
++    if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
++        acpi_pcihp_device_pre_plug_cb(hotplug_dev, dev, errp);
++    }
++}
++
+ static void acpi_ged_device_plug_cb(HotplugHandler *hotplug_dev,
+                                     DeviceState *dev, Error **errp)
+ {
+@@ -241,6 +250,8 @@ static void acpi_ged_device_plug_cb(HotplugHandler *hotplug_dev,
+         }
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         acpi_cpu_plug_cb(hotplug_dev, &s->cpuhp_state, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
++        acpi_pcihp_device_plug_cb(hotplug_dev, &s->pcihp_state, dev, errp);
+     } else {
+         error_setg(errp, "virt: device plug request for unsupported device"
+                    " type: %s", object_get_typename(OBJECT(dev)));
+@@ -257,6 +268,9 @@ static void acpi_ged_unplug_request_cb(HotplugHandler *hotplug_dev,
+         acpi_memory_unplug_request_cb(hotplug_dev, &s->memhp_state, dev, errp);
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         acpi_cpu_unplug_request_cb(hotplug_dev, &s->cpuhp_state, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
++        acpi_pcihp_device_unplug_request_cb(hotplug_dev, &s->pcihp_state,
++                                            dev, errp);
+     } else {
+         error_setg(errp, "acpi: device unplug request for unsupported device"
+                    " type: %s", object_get_typename(OBJECT(dev)));
+@@ -272,6 +286,8 @@ static void acpi_ged_unplug_cb(HotplugHandler *hotplug_dev,
+         acpi_memory_unplug_cb(&s->memhp_state, dev, errp);
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         acpi_cpu_unplug_cb(&s->cpuhp_state, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
++        acpi_pcihp_device_unplug_cb(hotplug_dev, &s->pcihp_state, dev, errp);
+     } else {
+         error_setg(errp, "acpi: device unplug for unsupported device"
+                    " type: %s", object_get_typename(OBJECT(dev)));
+@@ -485,6 +501,7 @@ static void acpi_ged_class_init(ObjectClass *class, const void *data)
+     dc->vmsd = &vmstate_acpi_ged;
+     dc->realize = acpi_ged_realize;
  
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, vms->memmap[VIRT_ACPI_GED].base);
++    hc->pre_plug = acpi_ged_device_pre_plug_cb;
+     hc->plug = acpi_ged_device_plug_cb;
+     hc->unplug_request = acpi_ged_unplug_request_cb;
+     hc->unplug = acpi_ged_unplug_cb;
 -- 
 MST
 
