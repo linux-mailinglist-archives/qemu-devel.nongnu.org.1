@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A00B04C49
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C74B04B9E
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:09:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSIT-00036P-Kb; Mon, 14 Jul 2025 19:09:21 -0400
+	id 1ubSIE-0002Bc-0e; Mon, 14 Jul 2025 19:09:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHC-00068q-Cx
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHB-00068V-4g
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHA-0005ct-Mo
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:02 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSH9-0005cv-8Q
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1752534478;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZnCiPK9qjMPW1GxC0I9MN0RmWn7FrkbvPqd5JVEOfwc=;
- b=KRJRy+kAbNevPqbjUSbhZakhfWXQjNopxkhjpTl8Sn++Umfl0J1U/MBylgiiHa4x9HMIlA
- 98J39OLG8eFAP0J9Ju21E1IFNXZ8wjlRcqZppMGoc2QS5apHqhZiA6w+IA/GP2uZhp4D5k
- Eb49a3lomYetDQWLB09BbzQy5m/4KFY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/DCXoXH19gfUig4lVOGC7ZRvMR0X5CUGZ6lLZHnPrrw=;
+ b=Kez5/JRhgMTXpKhpGsgFpMvcdX87by7IuEgQArkwg/9JKFYo+R2l6OpfO95nB0TMbxJQuv
+ 5AFuoGa4fnmE4Wm+J39+mq+Q0AioSYW1FWvreiOCsU43Rj8IM3ukS2U4eWJ3r5xY8Aw007
+ Kf7JB15CN75uHdvqVgn19TzIOXMlEJc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-Oqz4j4abOIeaxu6RviGqiA-1; Mon, 14 Jul 2025 19:07:56 -0400
-X-MC-Unique: Oqz4j4abOIeaxu6RviGqiA-1
-X-Mimecast-MFC-AGG-ID: Oqz4j4abOIeaxu6RviGqiA_1752534474
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a4eeed54c2so2649442f8f.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:55 -0700 (PDT)
+ us-mta-606-4y-s-VuqOX6pVcnr_HCytQ-1; Mon, 14 Jul 2025 19:07:57 -0400
+X-MC-Unique: 4y-s-VuqOX6pVcnr_HCytQ-1
+X-Mimecast-MFC-AGG-ID: 4y-s-VuqOX6pVcnr_HCytQ_1752534476
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-453817323afso30140345e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534474; x=1753139274;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZnCiPK9qjMPW1GxC0I9MN0RmWn7FrkbvPqd5JVEOfwc=;
- b=YgFaFku5IVgJg4ajM9YUYFdjcNSp8nhlVzHWJ0+Tes836zMwSNQRmjOBrSeS0M2ALt
- ZLEWXv4//tL9u3c276UU4JkrvPd/AmtOnvDyxH4FvVUe+iXn999wJKXOwG52nr1Y7EdU
- xS7nVi8IHNJ55ENfSBgv1DofR9RDVDNkBTsiHMsyjhhd/B8/FyKH6Kc2evEf0bv7/ZHa
- PS08P9JlDM74aZoqbsu3M5aDpTNpw/S46J+zltayXM3+eRbWCk6BtZiPfeeXFVhCOKL6
- JgzB6w85B7A9Rj0cnGtSTI3lhZgOyMYU+ZvrVibtxdaAlWtw0Ck4vORdOjYMXSOavvpk
- hNPg==
-X-Gm-Message-State: AOJu0YxiXVY7KaEwcNC7hbYJ8QjLH67ggQXR4sN14ihy+LTeUhRYVkqu
- fMsTIjoa/Pzg9qpZB0wEg6+RD/J02KcuZtStNmKV0TNn6psMCsBdfNYQXF3b0uBJi7dJqMJxaLy
- TBA1U3OA8DK9lkVHN0Kq/aSOmozlkbs+ZKV0XbVnUgOEsEZSlUTDnR2G1ikUiJWpzWQWsC0QWbq
- nMjbBtEurn3i3L4Qb7OHYtw0b8lqXz9shrcw==
-X-Gm-Gg: ASbGncuc3qOrsIeGdBzw1XCBccjAMYuDTlEQNHEJM+SDxO5wAFO0OsTA4OAKSaX/ySF
- KHj9iXwWPLzkzaTbAmODgy0TDRRnM0O1sDF6VdelDfCAkNOf17yLCDRNG0w78J3saV/oQt5RWzU
- KB7TYu5CEnEM8mvQVt+u/H5u5OBfzt3GVv2Pxj5bKCefZUavj+7ayXo4EHwFSl9UkRPVlXonEes
- uHei5bU3AdfJA4Rh9flA1r1enP2FD3mJ4e1eCVqbc7eJDx1SGzg1nZz402xHc9iOFZllmqOOLoN
- 2UBTa/XXf8ku4pFSK7JDVHnX2xTAUz+m
-X-Received: by 2002:a05:6000:2c0f:b0:3a4:d4cd:b06 with SMTP id
- ffacd0b85a97d-3b5f18d98c1mr14125309f8f.34.1752534473771; 
- Mon, 14 Jul 2025 16:07:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6pEKK3EPDqVZib5+SFZk7ZHqkDLC3XsS5JHU/WFt9XPKUX9gOExa/rRNntoFfMnO/iCOwCA==
-X-Received: by 2002:a05:6000:2c0f:b0:3a4:d4cd:b06 with SMTP id
- ffacd0b85a97d-3b5f18d98c1mr14125284f8f.34.1752534473285; 
- Mon, 14 Jul 2025 16:07:53 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752534476; x=1753139276;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/DCXoXH19gfUig4lVOGC7ZRvMR0X5CUGZ6lLZHnPrrw=;
+ b=lT3dAk3gkWaBZS5DQfw3jw+LjVRklv24tRZbbMNwbuNcGqFLRxn1P6IFv/sVQrtu9a
+ M5grx0aBE4rFhuEyLp4t3oZphFq/FHfnERxB8xnoF9V+vyI4trkjA6xjJMutr0RJpCKJ
+ AmDMajQ5S6A8RvGF9ucIWZGAg1N5jKvPHtGBvjdYceRqLfYOenJxQHAYIcOFDrQfIe7h
+ s2xF5OLP0+W5gyXMA0GhWR2JWjp2bwAYk/O0zbj69WO7fMW6thFvmIWOwoOp2EbwfTRV
+ I2UMN6mGAPNe2S16UarMSnlxZzsp/VHyaB/H2ZT7rem3Y5kqBlz30KUuhwPe8QkzvnZC
+ 42QQ==
+X-Gm-Message-State: AOJu0YyxJoayScmee/pEVv1YDkPD7gGMet2ms8b/0NqiZxNgmnrAL8Vv
+ ywY65lvXLmXU/IUgRrXwVlFSMZYcsxkO1jbeZIYZGs0S/XFHCeMLFWodYmJoiLA+tDhbkKdLyub
+ RXSeYfSwCL9sJJeR3BOeEYL7l9z+tlFzaqFI0faqt/QiQn5GUI4Ay6tvRRTjSqPqUvp6gXPovcn
+ o4Yiiju8A8yYA9OqEOoUgxY9M9poyoKmEF6Q==
+X-Gm-Gg: ASbGnct5opp1AJpwIw12L5RG4CrkR9qbKWRRUXR/+LixUwmO3vw+ByW9+i4u7TrY6yk
+ JrPuWyWpJpIxi33RRP7bKq/pt71/MqP/fRTfaP2dzu9GPZihdJHWTbdtq1LeH37WKKrdkfpcmvW
+ 0Z/TvAhVaOnfhaCbL5yxqCAGlGR4HCt2AUsTsyr/m8s0mGRSXKa8ay40/UqG2a+ZgGEl7xaOgBT
+ sBCvaM876J3anHeqWRRmbw7uUSdYgBbjpQEa8IoNBZ48VDIvHcrVqk+A6wg9oRGxkkLD5LPVKEt
+ r7aJ4WyXdkuvi2eoTC2iGXum4FN5v0Tf
+X-Received: by 2002:a05:600c:3513:b0:456:f85:469b with SMTP id
+ 5b1f17b1804b1-4560f854858mr69338845e9.25.1752534475979; 
+ Mon, 14 Jul 2025 16:07:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH/hvhp3+Lc4SCDYGY1djJZvTqk84QAxmDoG0bJVlXqiTSEhPm93Mwt5v091pG+91JnXtqwIQ==
+X-Received: by 2002:a05:600c:3513:b0:456:f85:469b with SMTP id
+ 5b1f17b1804b1-4560f854858mr69338605e9.25.1752534475541; 
+ Mon, 14 Jul 2025 16:07:55 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8bd180fsm13366964f8f.2.2025.07.14.16.07.51
+ ffacd0b85a97d-3b5e8e0d719sm13688185f8f.54.2025.07.14.16.07.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:07:52 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:07:50 -0400
+ Mon, 14 Jul 2025 16:07:55 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:07:53 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
- Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 38/97] intel_iommu: Add support for ATS
-Message-ID: <47c3dcd3ffc6d187b97fe494a14fb61dd3911ccd.1752534227.git.mst@redhat.com>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>, qemu-arm@nongnu.org
+Subject: [PULL 39/97] target/qmp: Use target_cpu_type()
+Message-ID: <877f7c5a419ed48b0bff3833156e23921764280d.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1752534227.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -111,97 +114,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Message-Id: <20250628180226.133285-11-clement.mathieu--drif@eviden.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20250708215320.70426-2-philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu.c | 63 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 63 insertions(+)
+ target/arm/arm-qmp-cmds.c             | 3 ++-
+ target/loongarch/loongarch-qmp-cmds.c | 3 ++-
+ target/mips/system/mips-qmp-cmds.c    | 3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 1b1b0b5632..fe9a5f2872 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -4738,6 +4738,68 @@ static AddressSpace *vtd_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
-     return &vtd_as->as;
- }
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index cefd235263..d292c974c4 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -21,6 +21,7 @@
+  */
  
-+static IOMMUTLBEntry vtd_iommu_ats_do_translate(IOMMUMemoryRegion *iommu,
-+                                                hwaddr addr,
-+                                                IOMMUAccessFlags flags)
-+{
-+    IOMMUTLBEntry entry;
-+    VTDAddressSpace *vtd_as = container_of(iommu, VTDAddressSpace, iommu);
-+
-+    if (vtd_is_interrupt_addr(addr)) {
-+        vtd_report_ir_illegal_access(vtd_as, addr, flags & IOMMU_WO);
-+        entry.target_as = &address_space_memory;
-+        entry.iova = 0;
-+        entry.translated_addr = 0;
-+        entry.addr_mask = ~VTD_PAGE_MASK_4K;
-+        entry.perm = IOMMU_NONE;
-+        entry.pasid = PCI_NO_PASID;
-+    } else {
-+        entry = vtd_iommu_translate(iommu, addr, flags, 0);
-+    }
-+
-+    return entry;
-+}
-+
-+static ssize_t vtd_ats_request_translation(PCIBus *bus, void *opaque,
-+                                           int devfn, uint32_t pasid,
-+                                           bool priv_req, bool exec_req,
-+                                           hwaddr addr, size_t length,
-+                                           bool no_write, IOMMUTLBEntry *result,
-+                                           size_t result_length,
-+                                           uint32_t *err_count)
-+{
-+    IntelIOMMUState *s = opaque;
-+    VTDAddressSpace *vtd_as;
-+    IOMMUAccessFlags flags = IOMMU_ACCESS_FLAG_FULL(true, !no_write, exec_req,
-+                                                    priv_req, false, false);
-+    ssize_t res_index = 0;
-+    hwaddr target_address = addr + length;
-+    IOMMUTLBEntry entry;
-+
-+    vtd_as = vtd_find_add_as(s, bus, devfn, pasid);
-+    *err_count = 0;
-+
-+    while ((addr < target_address) && (res_index < result_length)) {
-+        entry = vtd_iommu_ats_do_translate(&vtd_as->iommu, addr, flags);
-+        entry.perm &= ~IOMMU_GLOBAL; /* Spec 4.1.2: Global Mapping never set */
-+
-+        if ((entry.perm & flags) != flags) {
-+            *err_count += 1; /* Less than expected */
-+        }
-+
-+        result[res_index] = entry;
-+        res_index += 1;
-+        addr = (addr & (~entry.addr_mask)) + (entry.addr_mask + 1);
-+    }
-+
-+    /* Buffer too small */
-+    if (addr < target_address) {
-+        return -ENOMEM;
-+    }
-+
-+    return res_index;
-+}
-+
- static void vtd_init_iotlb_notifier(PCIBus *bus, void *opaque, int devfn,
-                                     IOMMUNotifier *n, IOMMUNotify fn,
-                                     void *user_opaque)
-@@ -4787,6 +4849,7 @@ static PCIIOMMUOps vtd_iommu_ops = {
-     .init_iotlb_notifier = vtd_init_iotlb_notifier,
-     .register_iotlb_notifier = vtd_register_iotlb_notifier,
-     .unregister_iotlb_notifier = vtd_unregister_iotlb_notifier,
-+    .ats_request_translation = vtd_ats_request_translation,
- };
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "hw/boards.h"
+ #include "kvm_arm.h"
+ #include "qapi/error.h"
+@@ -241,7 +242,7 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
+     CpuDefinitionInfoList *cpu_list = NULL;
+     GSList *list;
  
- static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
+-    list = object_class_get_list(TYPE_ARM_CPU, false);
++    list = object_class_get_list(target_cpu_type(), false);
+     g_slist_foreach(list, arm_cpu_add_definition, &cpu_list);
+     g_slist_free(list);
+ 
+diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
+index f5f1cd0009..1d8cd32f5f 100644
+--- a/target/loongarch/loongarch-qmp-cmds.c
++++ b/target/loongarch/loongarch-qmp-cmds.c
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-machine.h"
+ #include "cpu.h"
+@@ -32,7 +33,7 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
+     CpuDefinitionInfoList *cpu_list = NULL;
+     GSList *list;
+ 
+-    list = object_class_get_list(TYPE_LOONGARCH_CPU, false);
++    list = object_class_get_list(target_cpu_type(), false);
+     g_slist_foreach(list, loongarch_cpu_add_definition, &cpu_list);
+     g_slist_free(list);
+ 
+diff --git a/target/mips/system/mips-qmp-cmds.c b/target/mips/system/mips-qmp-cmds.c
+index d98d6623f2..b6a2874f2d 100644
+--- a/target/mips/system/mips-qmp-cmds.c
++++ b/target/mips/system/mips-qmp-cmds.c
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-machine.h"
+ #include "cpu.h"
+@@ -40,7 +41,7 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
+     CpuDefinitionInfoList *cpu_list = NULL;
+     GSList *list;
+ 
+-    list = object_class_get_list(TYPE_MIPS_CPU, false);
++    list = object_class_get_list(target_cpu_type(), false);
+     g_slist_foreach(list, mips_cpu_add_definition, &cpu_list);
+     g_slist_free(list);
+ 
 -- 
 MST
 
