@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52207B04641
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 19:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45073B04610
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 19:03:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubMla-0001t4-ML; Mon, 14 Jul 2025 13:15:03 -0400
+	id 1ubMa4-00053q-P0; Mon, 14 Jul 2025 13:03:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1ubLcv-0005Yt-5X; Mon, 14 Jul 2025 12:02:05 -0400
+ id 1ubLd2-0005bF-Ur; Mon, 14 Jul 2025 12:02:19 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1ubLct-0008PQ-0Q; Mon, 14 Jul 2025 12:02:00 -0400
+ id 1ubLd0-0008QQ-J9; Mon, 14 Jul 2025 12:02:08 -0400
 Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bgn9G1MDrz6L5d4;
- Tue, 15 Jul 2025 00:00:50 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bgn9R1kCCz6L5jt;
+ Tue, 15 Jul 2025 00:00:59 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 1C1BB1402FB;
- Tue, 15 Jul 2025 00:01:55 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 277751402FB;
+ Tue, 15 Jul 2025 00:02:04 +0800 (CST)
 Received: from A2303104131.china.huawei.com (10.203.177.241) by
  frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 14 Jul 2025 18:01:46 +0200
+ 15.1.2507.39; Mon, 14 Jul 2025 18:01:55 +0200
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <nicolinc@nvidia.com>, <ddutile@redhat.com>, <berrange@redhat.com>,
@@ -33,10 +33,10 @@ CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <linuxarm@huawei.com>, <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
  <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>,
  <zhenzhong.duan@intel.com>, <shameerkolothum@gmail.com>
-Subject: [RFC PATCH v3 11/15] hw/pci/pci: Introduce optional
- get_msi_address_space() callback.
-Date: Mon, 14 Jul 2025 16:59:37 +0100
-Message-ID: <20250714155941.22176-12-shameerali.kolothum.thodi@huawei.com>
+Subject: [RFC PATCH v3 12/15] hw/arm/smmuv3-accel: Introduce helpers to batch
+ and issue cache invalidations
+Date: Mon, 14 Jul 2025 16:59:38 +0100
+Message-ID: <20250714155941.22176-13-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20250714155941.22176-1-shameerali.kolothum.thodi@huawei.com>
 References: <20250714155941.22176-1-shameerali.kolothum.thodi@huawei.com>
@@ -74,158 +74,158 @@ From:  Shameer Kolothum via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On ARM, when a device is behind an IOMMU, its MSI doorbell address is
-subject to translation by the IOMMU. This behavior affects vfio-pci
-passthrough devices assigned to guests using an accelerated SMMUv3.
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-In this setup, we configure the host SMMUv3 in nested mode, where
-VFIO sets up the Stage-2 (S2) mappings for guest RAM, while the guest
-controls Stage-1 (S1). To allow VFIO to correctly configure S2 mappings,
-we currently return the system address space via the get_address_space()
-callback for vfio-pci devices.
+Helpers will batch the commands and issue at once to host SMMUv3.
 
-However, QEMU/KVM also uses this same callback path when resolving the
-address space for MSI doorbells:
-
-kvm_irqchip_add_msi_route()
-  kvm_arch_fixup_msi_route()
-    pci_device_iommu_address_space()
-
-This leads to problems when MSI doorbells need to be translated.
-
-To fix this, introduce an optional get_msi_address_space() callback.
-In the SMMUv3 accelerated case, this callback returns the IOMMU address
-space if the guest has set up S1 translations for the vfio-pci device.
-Otherwise, it returns the system address space.
-
-Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- hw/arm/smmuv3-accel.c | 25 +++++++++++++++++++++++++
- hw/pci/pci.c          | 19 +++++++++++++++++++
- include/hw/pci/pci.h  | 16 ++++++++++++++++
- target/arm/kvm.c      |  2 +-
- 4 files changed, 61 insertions(+), 1 deletion(-)
+ hw/arm/smmuv3-accel.c    | 65 ++++++++++++++++++++++++++++++++++++++++
+ hw/arm/smmuv3-accel.h    | 16 ++++++++++
+ hw/arm/smmuv3-internal.h | 12 ++++++++
+ 3 files changed, 93 insertions(+)
 
 diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
-index f1584dd775..04c665ccf5 100644
+index 04c665ccf5..1298b4f6d0 100644
 --- a/hw/arm/smmuv3-accel.c
 +++ b/hw/arm/smmuv3-accel.c
-@@ -346,6 +346,30 @@ static void smmuv3_accel_unset_iommu_device(PCIBus *bus, void *opaque,
-     }
+@@ -168,6 +168,71 @@ smmuv3_accel_install_nested_ste_range(SMMUState *bs, SMMUSIDRange *range)
+     g_hash_table_foreach(bs->configs, smmuv3_accel_ste_range, range);
  }
  
-+static AddressSpace *smmuv3_accel_find_msi_as(PCIBus *bus, void *opaque,
-+                                                  int devfn)
++/* Update batch->ncmds to the number of execute cmds */
++bool smmuv3_accel_issue_cmd_batch(SMMUState *bs, SMMUCommandBatch *batch)
 +{
-+    SMMUState *bs = opaque;
-+    SMMUPciBus *sbus;
-+    SMMUv3AccelDevice *accel_dev;
-+    SMMUDevice *sdev;
++    SMMUv3State *s = ARM_SMMUV3(bs);
++    SMMUv3AccelState *s_accel = s->s_accel;
++    uint32_t total = batch->ncmds;
++    IOMMUFDViommu *viommu_core;
++    int ret;
 +
-+    sbus = smmu_get_sbus(bs, bus);
-+    accel_dev = smmuv3_accel_get_dev(bs, sbus, bus, devfn);
-+    sdev = &accel_dev->sdev;
-+
-+    /*
-+     * If the assigned vfio-pci dev has S1 translation enabled by
-+     * Guest, return IOMMU address space for MSI translation.
-+     * Otherwise, return system address space.
-+     */
-+    if (accel_dev->s1_hwpt) {
-+        return &sdev->as;
-+    } else {
-+        return &accel_dev->as_sysmem;
++    if (!bs->accel) {
++        return true;
 +    }
++
++    if (!s_accel->viommu) {
++        return true;
++    }
++
++    viommu_core = &s_accel->viommu->core;
++    ret = iommufd_backend_invalidate_cache(viommu_core->iommufd,
++                                           viommu_core->viommu_id,
++                                           IOMMU_VIOMMU_INVALIDATE_DATA_ARM_SMMUV3,
++                                           sizeof(Cmd), &batch->ncmds,
++                                           batch->cmds, NULL);
++    if (!ret || total != batch->ncmds) {
++        error_report("%s failed: ret=%d, total=%d, done=%d",
++                      __func__, ret, total, batch->ncmds);
++        return ret;
++    }
++
++    batch->ncmds = 0;
++    return ret;
 +}
 +
- static bool smmuv3_accel_pdev_allowed(PCIDevice *pdev, bool *vfio_pci)
- {
- 
-@@ -407,6 +431,7 @@ static const PCIIOMMUOps smmuv3_accel_ops = {
-     .get_viommu_cap = smmuv3_accel_get_viommu_cap,
-     .set_iommu_device = smmuv3_accel_set_iommu_device,
-     .unset_iommu_device = smmuv3_accel_unset_iommu_device,
-+    .get_msi_address_space = smmuv3_accel_find_msi_as,
- };
- 
- void smmuv3_accel_init(SMMUv3State *s)
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 13de0e2809..404aeb643d 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2957,6 +2957,25 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-     return &address_space_memory;
- }
- 
-+AddressSpace *pci_device_iommu_msi_address_space(PCIDevice *dev)
++/*
++ * Note: sdev can be NULL for certain invalidation commands
++ * e.g., SMMU_CMD_TLBI_NH_ASID, SMMU_CMD_TLBI_NH_VA etc.
++ */
++void smmuv3_accel_batch_cmd(SMMUState *bs, SMMUDevice *sdev,
++                           SMMUCommandBatch *batch, Cmd *cmd,
++                           uint32_t *cons)
 +{
-+    PCIBus *bus;
-+    PCIBus *iommu_bus;
-+    int devfn;
++    if (!bs->accel) {
++        return;
++    }
 +
-+    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, &bus, &devfn);
-+    if (iommu_bus) {
-+        if (iommu_bus->iommu_ops->get_msi_address_space) {
-+            return iommu_bus->iommu_ops->get_msi_address_space(bus,
-+                                 iommu_bus->iommu_opaque, devfn);
-+        } else {
-+            return iommu_bus->iommu_ops->get_address_space(bus,
-+                                 iommu_bus->iommu_opaque, devfn);
++   /*
++    * We may end up here for any emulated PCI bridge or root port type
++    * devices. The batching of commands only matters for vfio-pci endpoint
++    * devices with Guest S1 translation enabled. Hence check that, if
++    * sdev is available.
++    */
++    if (sdev) {
++        SMMUv3AccelDevice *accel_dev;
++        accel_dev = container_of(sdev, SMMUv3AccelDevice, sdev);
++
++        if (!accel_dev->s1_hwpt) {
++            return;
 +        }
 +    }
-+    return &address_space_memory;
++
++    batch->cmds[batch->ncmds] = *cmd;
++    batch->cons[batch->ncmds++] = *cons;
++    return;
 +}
 +
- int pci_iommu_init_iotlb_notifier(PCIDevice *dev, IOMMUNotifier *n,
-                                   IOMMUNotify fn, void *opaque)
+ static SMMUv3AccelDevice *smmuv3_accel_get_dev(SMMUState *bs, SMMUPciBus *sbus,
+                                                 PCIBus *bus, int devfn)
  {
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index d1d43e9fb9..55138c406e 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -639,12 +639,28 @@ typedef struct PCIIOMMUOps {
-                             uint32_t pasid, bool priv_req, bool exec_req,
-                             hwaddr addr, bool lpig, uint16_t prgi, bool is_read,
-                             bool is_write);
-+    /**
-+     * @get_msi_address_space: get the address space for MSI doorbell address
-+     * for devices
-+     *
-+     * Optional callback which returns a pointer to an #AddressSpace. This
-+     * is required if MSI doorbell also gets translated through IOMMU(eg: ARM)
-+     *
-+     * @bus: the #PCIBus being accessed.
-+     *
-+     * @opaque: the data passed to pci_setup_iommu().
-+     *
-+     * @devfn: device and function number
-+     */
-+    AddressSpace * (*get_msi_address_space)(PCIBus *bus, void *opaque,
-+                                            int devfn);
- } PCIIOMMUOps;
+diff --git a/hw/arm/smmuv3-accel.h b/hw/arm/smmuv3-accel.h
+index 21028e60c8..d06c9664ba 100644
+--- a/hw/arm/smmuv3-accel.h
++++ b/hw/arm/smmuv3-accel.h
+@@ -13,6 +13,7 @@
+ #include "hw/arm/smmu-common.h"
+ #include "system/iommufd.h"
+ #include <linux/iommufd.h>
++#include "smmuv3-internal.h"
+ #include CONFIG_DEVICES
  
- AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
- bool pci_device_set_iommu_device(PCIDevice *dev, HostIOMMUDevice *hiod,
-                                  Error **errp);
- void pci_device_unset_iommu_device(PCIDevice *dev);
-+AddressSpace *pci_device_iommu_msi_address_space(PCIDevice *dev);
- 
- /**
-  * pci_device_get_viommu_cap: get vIOMMU capabilities.
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 6672344855..c78d0d59bb 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -1535,7 +1535,7 @@ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level)
- int kvm_arch_fixup_msi_route(struct kvm_irq_routing_entry *route,
-                              uint64_t address, uint32_t data, PCIDevice *dev)
+ typedef struct SMMUS2Hwpt {
+@@ -55,6 +56,10 @@ void smmuv3_accel_init(SMMUv3State *s);
+ void smmuv3_accel_install_nested_ste(SMMUState *bs, SMMUDevice *sdev, int sid);
+ void smmuv3_accel_install_nested_ste_range(SMMUState *bs,
+                                            SMMUSIDRange *range);
++bool smmuv3_accel_issue_cmd_batch(SMMUState *bs, SMMUCommandBatch *batch);
++void smmuv3_accel_batch_cmd(SMMUState *bs, SMMUDevice *sdev,
++                           SMMUCommandBatch *batch, struct Cmd *cmd,
++                           uint32_t *cons);
+ #else
+ static inline void smmuv3_accel_init(SMMUv3State *d)
  {
--    AddressSpace *as = pci_device_iommu_address_space(dev);
-+    AddressSpace *as = pci_device_iommu_msi_address_space(dev);
-     hwaddr xlat, len, doorbell_gpa;
-     MemoryRegionSection mrs;
-     MemoryRegion *mr;
+@@ -67,6 +72,17 @@ static inline void
+ smmuv3_accel_install_nested_ste_range(SMMUState *bs, SMMUSIDRange *range)
+ {
+ }
++static inline bool smmuv3_accel_issue_cmd_batch(SMMUState *bs,
++                                               SMMUCommandBatch *batch)
++{
++    return true;
++}
++static inline void smmuv3_accel_batch_cmd(SMMUState *bs, SMMUDevice *sdev,
++                                          SMMUCommandBatch *batch,
++                                          struct Cmd *cmd, uint32_t *cons)
++{
++    return;
++}
+ #endif
+ 
+ #endif /* HW_ARM_SMMUV3_ACCEL_H */
+diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+index 738061c6ad..8cb6a9238a 100644
+--- a/hw/arm/smmuv3-internal.h
++++ b/hw/arm/smmuv3-internal.h
+@@ -547,6 +547,18 @@ typedef struct CD {
+     uint32_t word[16];
+ } CD;
+ 
++/*
++ * SMMUCommandBatch - batch of invalidation commands for accel smmuv3
++ * @cmds: Pointer to list of commands
++ * @cons: Pointer to list of CONS corresponding to the commands
++ * @ncmds: Number of cmds in the batch
++ */
++typedef struct SMMUCommandBatch {
++    struct Cmd *cmds;
++    uint32_t *cons;
++    uint32_t ncmds;
++} SMMUCommandBatch;
++
+ int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
+                   SMMUEventInfo *event);
+ void smmuv3_flush_config(SMMUDevice *sdev);
 -- 
 2.34.1
 
