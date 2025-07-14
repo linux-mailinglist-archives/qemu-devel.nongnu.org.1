@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83824B03993
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A06B03965
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:25:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubEYn-0006xJ-EV; Mon, 14 Jul 2025 04:29:18 -0400
+	id 1ubEUe-00080P-9i; Mon, 14 Jul 2025 04:25:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1ubEFR-0000dX-W8
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:09:18 -0400
+ id 1ubEFW-0000vl-VB
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:09:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1ubEFO-0003ai-IM
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:09:17 -0400
+ id 1ubEFS-0003dD-LM
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:09:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752480553;
+ s=mimecast20190719; t=1752480557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YU5NrEjI10Mr1hePgas6STX5De0oGORh6fd6MCtkO0k=;
- b=N7oNpEI8cB4FGh+ALNCM4zaxK8nFlODz+ahbdGE0rZvfFz3VuUNXltV0cm+KrUCH2U6bVw
- 7QoEW838dpZBd3CtkXGfy7F4RZvObxBlx1t16kBZOx5EL+gs1KukYq6Ug7WO1h7XQlmkIO
- vu/JQplwdTAlYoGxgqBLMARau9Q2Ub4=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=ECRuZi6zlVKsVsNHM15A15+d/mE3T0YrtgJTsz8GGCI=;
+ b=BuowDM0Xe34zZm3w2v7puXQtj9ouPIG4f7Izqv72uta+Rf5tYRKfdD0dxtEELoTNXc+666
+ Pmmsy9uM6W5Q2KS6bNsl9kseAubyQ6CYA+mrqbenAiWzIB+UF7JChjC/wmPmpidu1TdVNR
+ sw+Vy44B5wTtEHvV3jgOS9gawf/IqRY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-220-ZS-FzlG9N56aJaOzz9OmSw-1; Mon,
- 14 Jul 2025 04:09:10 -0400
-X-MC-Unique: ZS-FzlG9N56aJaOzz9OmSw-1
-X-Mimecast-MFC-AGG-ID: ZS-FzlG9N56aJaOzz9OmSw_1752480549
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-RGzbp7LmNDqbyTtEBHK2gw-1; Mon,
+ 14 Jul 2025 04:09:15 -0400
+X-MC-Unique: RGzbp7LmNDqbyTtEBHK2gw-1
+X-Mimecast-MFC-AGG-ID: RGzbp7LmNDqbyTtEBHK2gw_1752480554
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3F91719560A2; Mon, 14 Jul 2025 08:09:09 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 29AC2180028F; Mon, 14 Jul 2025 08:09:14 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.221])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E25421977000; Mon, 14 Jul 2025 08:09:04 +0000 (UTC)
+ id BE3D01977000; Mon, 14 Jul 2025 08:09:09 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -53,10 +53,9 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
 Cc: pbonzini@redhat.com,
 	philmd@linaro.org,
 	alex.bennee@linaro.org
-Subject: [PATCH v7 28/36] hw/acpi/ged: Prepare the device to react to PCI
- hotplug events
-Date: Mon, 14 Jul 2025 10:05:12 +0200
-Message-ID: <20250714080639.2525563-29-eric.auger@redhat.com>
+Subject: [PATCH v7 29/36] hw/acpi/ged: Support migration of AcpiPciHpState
+Date: Mon, 14 Jul 2025 10:05:13 +0200
+Message-ID: <20250714080639.2525563-30-eric.auger@redhat.com>
 In-Reply-To: <20250714080639.2525563-1-eric.auger@redhat.com>
 References: <20250714080639.2525563-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -87,205 +86,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU will notify the OS about PCI hotplug/hotunplug events through
-GED interrupts. Let the GED device handle a new PCI hotplug event.
-On its occurrence it calls the \\_SB.PCI0.PCNT method with the BLCK
-mutex held.
-
-The GED device uses a dedicated MMIO region that will be mapped
-by the machine code.
-
-At this point the GED still does not support PCI device hotplug in
-its TYPE_HOTPLUG_HANDLER implementation. This will come in a
-subsequent patch.
+Add a subsection to migrate the AcpiPciHpState state.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 ---
-v4 -> v5:
-- Get rid of legacy reset API
+ hw/acpi/generic_event_device.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-v3 -> v4:
-- add qbus_set_hotplug_handler
-- root bus is not passed in acpi_pcihp_init arg
-
-v2 -> v3:
-- pcihp_init and reset are put in ged code instead of machine code
-  (Igor)
-- Add ACPI_GED_PCI_HOTPLUG_EVT event depending on use_acpi_hotplug_bridge
-  (Igor)
-
-v1 -> v2:
-- Introduce ACPI_PCIHP_REGION_NAME
----
- include/hw/acpi/generic_event_device.h | 14 ++++++++++-
- hw/acpi/generic_event_device.c         | 35 ++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+), 1 deletion(-)
-
-diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
-index f5ffa67a39..d56adaa626 100644
---- a/include/hw/acpi/generic_event_device.h
-+++ b/include/hw/acpi/generic_event_device.h
-@@ -69,7 +69,7 @@
- #define ACPI_POWER_BUTTON_DEVICE "PWRB"
- 
- #define TYPE_ACPI_GED "acpi-ged"
--OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
-+OBJECT_DECLARE_TYPE(AcpiGedState, AcpiGedClass, ACPI_GED)
- 
- #define ACPI_GED_EVT_SEL_OFFSET    0x0
- #define ACPI_GED_EVT_SEL_LEN       0x4
-@@ -102,6 +102,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
- #define ACPI_GED_PWR_DOWN_EVT      0x2
- #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
- #define ACPI_GED_CPU_HOTPLUG_EVT    0x8
-+#define ACPI_GED_PCI_HOTPLUG_EVT    0x10
- 
- typedef struct GEDState {
-     MemoryRegion evt;
-@@ -109,6 +110,8 @@ typedef struct GEDState {
-     uint32_t     sel;
- } GEDState;
- 
-+#define ACPI_PCIHP_REGION_NAME "pcihp container"
-+
- struct AcpiGedState {
-     SysBusDevice parent_obj;
-     MemHotplugState memhp_state;
-@@ -116,12 +119,21 @@ struct AcpiGedState {
-     CPUHotplugState cpuhp_state;
-     MemoryRegion container_cpuhp;
-     AcpiPciHpState pcihp_state;
-+    MemoryRegion container_pcihp;
-     GEDState ged_state;
-     uint32_t ged_event_bitmap;
-     qemu_irq irq;
-     AcpiGhesState ghes_state;
- };
- 
-+typedef struct AcpiGedClass {
-+    /* <private> */
-+    SysBusDeviceClass parent_class;
-+
-+    /*< public >*/
-+    ResettablePhases parent_phases;
-+} AcpiGedClass;
-+
- void build_ged_aml(Aml *table, const char* name, HotplugHandler *hotplug_dev,
-                    uint32_t ged_irq, AmlRegionSpace rs, hwaddr ged_base);
- void acpi_dsdt_add_power_button(Aml *scope);
 diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 92b931758f..7535d07737 100644
+index 7535d07737..95682b79a2 100644
 --- a/hw/acpi/generic_event_device.c
 +++ b/hw/acpi/generic_event_device.c
-@@ -12,6 +12,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/acpi/acpi.h"
-+#include "hw/acpi/pcihp.h"
- #include "hw/acpi/generic_event_device.h"
- #include "hw/pci/pci.h"
- #include "hw/irq.h"
-@@ -28,6 +29,7 @@ static const uint32_t ged_supported_events[] = {
-     ACPI_GED_PWR_DOWN_EVT,
-     ACPI_GED_NVDIMM_HOTPLUG_EVT,
-     ACPI_GED_CPU_HOTPLUG_EVT,
-+    ACPI_GED_PCI_HOTPLUG_EVT,
+@@ -417,6 +417,25 @@ static const VMStateDescription vmstate_ghes_state = {
+     }
  };
  
- /*
-@@ -123,6 +125,12 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
-                            aml_notify(aml_name("\\_SB.NVDR"),
-                                       aml_int(0x80)));
-                 break;
-+            case ACPI_GED_PCI_HOTPLUG_EVT:
-+                aml_append(if_ctx,
-+                           aml_acquire(aml_name("\\_SB.PCI0.BLCK"), 0xFFFF));
-+                aml_append(if_ctx, aml_call0("\\_SB.PCI0.PCNT"));
-+                aml_append(if_ctx, aml_release(aml_name("\\_SB.PCI0.BLCK")));
-+                break;
-             default:
-                 /*
-                  * Please make sure all the events in ged_supported_events[]
-@@ -316,6 +324,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
-         sel = ACPI_GED_NVDIMM_HOTPLUG_EVT;
-     } else if (ev & ACPI_CPU_HOTPLUG_STATUS) {
-         sel = ACPI_GED_CPU_HOTPLUG_EVT;
-+    } else if (ev & ACPI_PCI_HOTPLUG_STATUS) {
-+        sel = ACPI_GED_PCI_HOTPLUG_EVT;
-     } else {
-         /* Unknown event. Return without generating interrupt. */
-         warn_report("GED: Unsupported event %d. No irq injected", ev);
-@@ -427,9 +437,13 @@ static void acpi_ged_realize(DeviceState *dev, Error **errp)
- {
-     SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-     AcpiGedState *s = ACPI_GED(dev);
-+    AcpiPciHpState *pcihp_state = &s->pcihp_state;
-     uint32_t ged_events;
-     int i;
- 
-+    if (pcihp_state->use_acpi_hotplug_bridge) {
-+        s->ged_event_bitmap |= ACPI_GED_PCI_HOTPLUG_EVT;
-+    }
-     ged_events = ctpop32(s->ged_event_bitmap);
- 
-     for (i = 0; i < ARRAY_SIZE(ged_supported_events) && ged_events; i++) {
-@@ -449,6 +463,13 @@ static void acpi_ged_realize(DeviceState *dev, Error **errp)
-             cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
-                                 &s->cpuhp_state, 0);
-             break;
-+        case ACPI_GED_PCI_HOTPLUG_EVT:
-+            memory_region_init(&s->container_pcihp, OBJECT(dev),
-+                               ACPI_PCIHP_REGION_NAME, ACPI_PCIHP_SIZE);
-+            sysbus_init_mmio(sbd, &s->container_pcihp);
-+            acpi_pcihp_init(OBJECT(s), &s->pcihp_state,
-+                            &s->container_pcihp, 0);
-+            qbus_set_hotplug_handler(BUS(s->pcihp_state.root), OBJECT(dev));
-         }
-         ged_events--;
-     }
-@@ -490,11 +511,22 @@ static void acpi_ged_initfn(Object *obj)
-     sysbus_init_mmio(sbd, &ged_st->regs);
- }
- 
-+static void ged_reset_hold(Object *obj, ResetType type)
++static bool pcihp_needed(void *opaque)
 +{
-+    AcpiGedState *s = ACPI_GED(obj);
-+
-+    if (s->pcihp_state.use_acpi_hotplug_bridge) {
-+        acpi_pcihp_reset(&s->pcihp_state);
-+    }
++    AcpiGedState *s = opaque;
++    return s->pcihp_state.use_acpi_hotplug_bridge;
 +}
 +
- static void acpi_ged_class_init(ObjectClass *class, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(class);
-     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(class);
-     AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_CLASS(class);
-+    ResettableClass *rc = RESETTABLE_CLASS(class);
-+    AcpiGedClass *gedc = ACPI_GED_CLASS(class);
- 
-     dc->desc = "ACPI Generic Event Device";
-     device_class_set_props(dc, acpi_ged_properties);
-@@ -505,6 +537,8 @@ static void acpi_ged_class_init(ObjectClass *class, const void *data)
-     hc->plug = acpi_ged_device_plug_cb;
-     hc->unplug_request = acpi_ged_unplug_request_cb;
-     hc->unplug = acpi_ged_unplug_cb;
-+    resettable_class_set_parent_phases(rc, NULL, ged_reset_hold, NULL,
-+                                       &gedc->parent_phases);
- 
-     adevc->ospm_status = acpi_ged_ospm_status;
-     adevc->send_event = acpi_ged_send_event;
-@@ -516,6 +550,7 @@ static const TypeInfo acpi_ged_info = {
-     .instance_size = sizeof(AcpiGedState),
-     .instance_init  = acpi_ged_initfn,
-     .class_init    = acpi_ged_class_init,
-+    .class_size    = sizeof(AcpiGedClass),
-     .interfaces = (const InterfaceInfo[]) {
-         { TYPE_HOTPLUG_HANDLER },
-         { TYPE_ACPI_DEVICE_IF },
++static const VMStateDescription vmstate_pcihp_state = {
++    .name = "acpi-ged/pcihp",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = pcihp_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_PCI_HOTPLUG(pcihp_state,
++                            AcpiGedState,
++                            NULL, NULL),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_acpi_ged = {
+     .name = "acpi-ged",
+     .version_id = 1,
+@@ -429,6 +448,7 @@ static const VMStateDescription vmstate_acpi_ged = {
+         &vmstate_memhp_state,
+         &vmstate_cpuhp_state,
+         &vmstate_ghes_state,
++        &vmstate_pcihp_state,
+         NULL
+     }
+ };
 -- 
 2.49.0
 
