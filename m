@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D3DB03D9E
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9398AB03D29
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:18:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHLX-0005YU-Qa; Mon, 14 Jul 2025 07:27:49 -0400
+	id 1ubHAN-00037m-9R; Mon, 14 Jul 2025 07:16:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH0R-0001Nt-3r
+ id 1ubH0S-0001Om-Fp
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH0O-0001zO-Ia
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:58 -0400
+ id 1ubH0Q-00020g-JY
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491155;
+ s=mimecast20190719; t=1752491157;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=H++7bFZZz0BdH8FF5Yhc/WS1RX64LTDufArp4gDgK4o=;
- b=dJCmbhBi932eyQ87b/IQ8hx1UhTgA8byC+A94PFArFhBpwVbUDoawfmCQXK+lDU2DZY8fd
- MYvqnSJZrSI5nwQL4v+4NckVyIalPEZfav7N0/5ZDdt+oNZJ5Awjp3XtC92UBvWxZhLwBC
- xhQhDDl8oCSfZyAavqAxq6VnZvGGGv8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BTubnZ3o2Xiym1BO+0Jx8Ne4oet/OLGfGzFGRCfDWJM=;
+ b=c1ucV1cYhYTUD19SJe8H9d1KSwu3yhp0Cwg+ERoqdARQ+XOFm7u8Z1VeMXlEpo4LaKeUmD
+ Sy61lZ1LXW7LTewvBv07uiXVYjvNyvWvvFW4s3Q2pXXp/09ZtcCSQKKDr6j5kpw2RnS/5z
+ sTL6P1FcZuznFnRtmMdxn1Y7FknGjw0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-310-QCEMveEvOlWWZL5H0ZwIVw-1; Mon, 14 Jul 2025 07:05:54 -0400
-X-MC-Unique: QCEMveEvOlWWZL5H0ZwIVw-1
-X-Mimecast-MFC-AGG-ID: QCEMveEvOlWWZL5H0ZwIVw_1752491153
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-451ecc3be97so22101655e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:54 -0700 (PDT)
+ us-mta-161-61AHHMq-P_qnRyEdl-Yo4Q-1; Mon, 14 Jul 2025 07:05:56 -0400
+X-MC-Unique: 61AHHMq-P_qnRyEdl-Yo4Q-1
+X-Mimecast-MFC-AGG-ID: 61AHHMq-P_qnRyEdl-Yo4Q_1752491155
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3af3c860ed7so1840195f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491153; x=1753095953;
+ d=1e100.net; s=20230601; t=1752491155; x=1753095955;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H++7bFZZz0BdH8FF5Yhc/WS1RX64LTDufArp4gDgK4o=;
- b=vRo1my5gf/Vt1nV5+8GiWsrIxS5MU2TRAXo72hd+0SWuXMQLKDlcxXFJ+LlkqTy0sn
- hTDytZLTuReGiqWAPlxTVYMLYLAMtgz9T2XxMVNgi65w3PreKDDbJ8qEF9KwBgADXQ7j
- uABxUzGafFz1ryttoBb701Sjd7D9y/ok4dK0TZGbY56joEv558J7CbRMWt+mufR+jV2P
- wIYT2WQLNY4afWkJajQsFdFaIgHEQmwzfpUAyRXWCgnut529PKxlS9qIm1+vD7++x748
- adkTavQoSQSUCZu68ecD4uPjgQptO5J6KSSng24933XOhvegq5faSy7NVDCqm+9LyMcU
- 8jTQ==
-X-Gm-Message-State: AOJu0YxU53iv48niSVtPcyIyZ7U9NIRzDSz6KbdGjp6DaRwUOVteH+5v
- 2NTvebA6TZgdvUil9eWLfp05eUUxl08OmKuMQ5zKbwvLM6rze5hNadttVnGcB5LAQnLaX0hvy23
- zEwHuMXUPzBRHkdZ8sYgizqSyfJJ+7Kqu+CbV4RCYLlk/YytuJhKfipYPyAlQuNPMah80hCqufT
- HUrbfe3ydWQggJ5G5/Z9K5WYSSCPuF2w2MHFjkLWdl
-X-Gm-Gg: ASbGnctsP1E8iiSaXRs062j9kYkSNaGNRvxNYRDGYyqn+qmTzS76Lhu9t8W1WJmoL6a
- OSWcEj4w3UhxnjPy3QtDBgdfXkZWONnuHtIauKPkfW+kjwZpNwIIogvs8HWp3iDsImc+xvSYX4d
- BmQuZGElf/hd2gwUDWmbIy53C6sZhNvM2rDtri0RJQOIzIO/jzi/TsjN8BE3g1U8OonHUdbw8OF
- /dG6RrvNp3jm4iNn1cQzOVP6gDd7p/kFXv1NK1V07rX8tkSw8ytkXgr1e4nUEu4aphgAmbndAaI
- zrOmvyFqXdO4b1b6UDEN+4uQtRTAqVZ6hpFq8lB+JpA=
-X-Received: by 2002:a05:600c:34c5:b0:43c:fe5e:f040 with SMTP id
- 5b1f17b1804b1-45565edc8f4mr99187415e9.23.1752491152433; 
- Mon, 14 Jul 2025 04:05:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEVLM3vTpeynBS77usHfWMNhE2tboZqaO3bZMr/ImTuMBrQQ7nqF9KAqtYPV/W60Pzy1FexQ==
-X-Received: by 2002:a05:600c:34c5:b0:43c:fe5e:f040 with SMTP id
- 5b1f17b1804b1-45565edc8f4mr99187165e9.23.1752491151874; 
- Mon, 14 Jul 2025 04:05:51 -0700 (PDT)
+ bh=BTubnZ3o2Xiym1BO+0Jx8Ne4oet/OLGfGzFGRCfDWJM=;
+ b=fM1IxynCU0yGxdBl6O+J66fsrYytdwu3hg1MDKytiZNeBmval3Y8mlhNFzAIq7EXp2
+ RT/qRkk1yROQzMK+Bu+WEP16/6NYEtC49AGKlIPQtwpC83EQDo8HodXlgTwDltZIG24I
+ r0I1uMVZgAXX7LS534MU5UTLpUerLcN1QZuUkWChZNlvWVZe8lrJ5WGML+QEMoqjiNxB
+ F/VjwcLt8vDZbFLQj5E4m1BBS5lBjvL8kejPc9POKrzjjw8FXytnV/MXZ2bay4tbt0Cs
+ KSxgkBJhuXsaL+e/X3vtZ8kSiKn2Mmvb+xZl7jqZ94jFQTJk4iPbeasdZbgfci4iS2Km
+ xKNQ==
+X-Gm-Message-State: AOJu0YxNketSVmXwwf1RXwkUqwrbYi39FVKFqyWqxibi5a5quY1eDaLv
+ EEyqdvLnuwGPdnctXIDy9EW/GaJP1KF24ILlHqSrpiDbNiNmn2D5SD9BmUhXl1LAeJTJM2raX9D
+ UCPXS3RhLm2Atiwabmj0n2ypeNgI2j5IqARN6c0fnUnC+PSo3Aq/wlBo77G6Db0W9X8nxa8MDob
+ DHGz6jSN0169YVkOaZ7pmSOtKTI3QYQ+TYmXep+ETa
+X-Gm-Gg: ASbGncvItZ1lLZuZCD6Sd93gbq5cOK+SXUv78KOt9BENDx2qoSV9rLyQkveQfE25WmW
+ CawnGdEaH+raOA0Xw3K7XqgPNGXGMe+jG65CdjEixVUX0vcsBwJK4DxQua2vODYGDzonjUH+5Ud
+ tXzJBSGAG5DJiEOV70/eyyROV744eaf2DnUBn5WZKZSylXjBp0MyL/h260aRavW1WQyKauYGJBs
+ Xc/hfTTxh3MktCBIDVcVhr+t3+5z1E8eo7jXur4J0PYGOq8kgT/r899iuokrnxJvPWljLOlhsXY
+ s/EPTtsDuFu8sHcuvFd6nPnVUtnpovs3uEIfbXcPWl4=
+X-Received: by 2002:a05:6000:4012:b0:3a4:c8c1:aed8 with SMTP id
+ ffacd0b85a97d-3b5f2e229a9mr8767497f8f.39.1752491154860; 
+ Mon, 14 Jul 2025 04:05:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGxZCI6whCGuhwZJQbFjNVK4kWfAqulRs1wLCzTC1CnQkSpF9Konh5oajRVqAwnAib+rOso6g==
+X-Received: by 2002:a05:6000:4012:b0:3a4:c8c1:aed8 with SMTP id
+ ffacd0b85a97d-3b5f2e229a9mr8767475f8f.39.1752491154358; 
+ Mon, 14 Jul 2025 04:05:54 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d50ded8csm166809555e9.20.2025.07.14.04.05.48
+ 5b1f17b1804b1-454dd43906dsm130735525e9.3.2025.07.14.04.05.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:05:48 -0700 (PDT)
+ Mon, 14 Jul 2025 04:05:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 39/77] i386/tdx: Don't mask off CPUID_EXT_PDCM
-Date: Mon, 14 Jul 2025 13:03:28 +0200
-Message-ID: <20250714110406.117772-40-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Yi Lai <yi1.lai@intel.com>
+Subject: [PULL 40/77] i386/cpu: Refine comment of CPUID2CacheDescriptorInfo
+Date: Mon, 14 Jul 2025 13:03:29 +0200
+Message-ID: <20250714110406.117772-41-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,47 +107,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-It gets below warning when booting TDX VMs:
+Refer to SDM vol.3 table 1-21, add the notes about the missing
+descriptor, and fix the typo and comment format.
 
-  warning: TDX forcibly sets the feature: CPUID[eax=01h].ECX.pdcm [bit 15]
-
-Because CPUID_EXT_PDCM is fixed1 for TDX, and MSR_IA32_PERF_CAPABILITIES is
-supported for TDX guest unconditioanlly.
-
-Don't mask off CPUID_EXT_PDCM for TDX.
-
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250625035710.2770679-1-xiaoyao.li@intel.com
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Tested-by: Yi Lai <yi1.lai@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20250711102143.1622339-2-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/i386/cpu.c | 31 ++++++++++++++++++++++---------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index b768838b100..f9e6bc8d0e6 100644
+index f9e6bc8d0e6..f107e586734 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -28,6 +28,7 @@
- #include "system/hvf.h"
- #include "hvf/hvf-i386.h"
- #include "kvm/kvm_i386.h"
-+#include "kvm/tdx.h"
- #include "sev.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-@@ -8336,7 +8337,8 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         }
-     }
+@@ -68,6 +68,7 @@ struct CPUID2CacheDescriptorInfo {
  
--    if (!cpu->enable_pmu) {
-+    /* PDCM is fixed1 bit for TDX */
-+    if (!cpu->enable_pmu && !is_tdx_vm()) {
-         mark_unavailable_features(cpu, FEAT_1_ECX,
-                                   env->user_features[FEAT_1_ECX] & CPUID_EXT_PDCM,
-                                   "This feature is not available due to PMU being disabled");
+ /*
+  * Known CPUID 2 cache descriptors.
++ * TLB, prefetch and sectored cache related descriptors are not included.
+  * From Intel SDM Volume 2A, CPUID instruction
+  */
+ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
+@@ -89,18 +90,29 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
+                .associativity = 2,  .line_size = 64, },
+     [0x21] = { .level = 2, .type = UNIFIED_CACHE,     .size = 256 * KiB,
+                .associativity = 8,  .line_size = 64, },
+-    /* lines per sector is not supported cpuid2_cache_descriptor(),
+-    * so descriptors 0x22, 0x23 are not included
+-    */
++    /*
++     * lines per sector is not supported cpuid2_cache_descriptor(),
++     * so descriptors 0x22, 0x23 are not included
++     */
+     [0x24] = { .level = 2, .type = UNIFIED_CACHE,     .size =   1 * MiB,
+                .associativity = 16, .line_size = 64, },
+-    /* lines per sector is not supported cpuid2_cache_descriptor(),
+-    * so descriptors 0x25, 0x20 are not included
+-    */
++    /*
++     * lines per sector is not supported cpuid2_cache_descriptor(),
++     * so descriptors 0x25, 0x29 are not included
++     */
+     [0x2C] = { .level = 1, .type = DATA_CACHE,        .size =  32 * KiB,
+                .associativity = 8,  .line_size = 64, },
+     [0x30] = { .level = 1, .type = INSTRUCTION_CACHE, .size =  32 * KiB,
+                .associativity = 8,  .line_size = 64, },
++    /*
++     * Newer Intel CPUs (having the cores without L3, e.g., Intel MTL, ARL)
++     * use CPUID 0x4 leaf to describe cache topology, by encoding CPUID 0x2
++     * leaf with 0xFF. For older CPUs (without 0x4 leaf), it's also valid
++     * to just ignore L3's code if there's no L3.
++     *
++     * This already covers all the cases in QEMU, so code 0x40 is not
++     * included.
++     */
+     [0x41] = { .level = 2, .type = UNIFIED_CACHE,     .size = 128 * KiB,
+                .associativity = 4,  .line_size = 32, },
+     [0x42] = { .level = 2, .type = UNIFIED_CACHE,     .size = 256 * KiB,
+@@ -138,9 +150,10 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
+                .associativity = 4,  .line_size = 64, },
+     [0x78] = { .level = 2, .type = UNIFIED_CACHE,     .size =   1 * MiB,
+                .associativity = 4,  .line_size = 64, },
+-    /* lines per sector is not supported cpuid2_cache_descriptor(),
+-    * so descriptors 0x79, 0x7A, 0x7B, 0x7C are not included.
+-    */
++    /*
++     * lines per sector is not supported cpuid2_cache_descriptor(),
++     * so descriptors 0x79, 0x7A, 0x7B, 0x7C are not included.
++     */
+     [0x7D] = { .level = 2, .type = UNIFIED_CACHE,     .size =   2 * MiB,
+                .associativity = 8,  .line_size = 64, },
+     [0x7F] = { .level = 2, .type = UNIFIED_CACHE,     .size = 512 * KiB,
 -- 
 2.50.0
 
