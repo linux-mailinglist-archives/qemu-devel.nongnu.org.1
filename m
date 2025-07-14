@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5951DB03F34
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 15:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0370EB03F10
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 14:56:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubIqT-0008Mk-Bm; Mon, 14 Jul 2025 09:03:49 -0400
+	id 1ubIgn-00015J-MI; Mon, 14 Jul 2025 08:53:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ubHtY-0007NA-Fu
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:57 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1ubHzH-00042a-3L
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:08:56 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ubHtN-0003sU-36
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:02:56 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-ae04d3d63e6so834903366b.2
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 05:02:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1ubHz5-0004f3-VF
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:08:48 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-234f17910d8so42573945ad.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 05:08:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752494563; x=1753099363; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=T5v8OdxmzrjgwOi1V8ZOJSO/d9q/kYU1/NXLZZAou+A=;
- b=kZLFTi+3akDoEeINK2wSxeMPqMkv8SFQb3kjm+RBh8TxNQyCMc7whTUE1wM7PZkXSI
- cA4mniRue1gO/BPIclHENQ2auoEcXTOgRQOrNL9amEPiWRZjySg+GYEtFjqiGyLbSsHI
- GNvZWmvMASiltbTa7vhsnFZA/JE87AV0s1zLI92UxtP8ddh0MXOSeZWKIQmN9f6ggGVL
- niAMPLAC4Mk01pmfjYjm5T/1QpANmCXjPLWuNoiY1hv4XM3ZuwMdGoTvVTqLShYjLaCY
- 6bzLHUpgIo6MpF3/D655DpJyu9Cb/z49zLmmyQU2T4iAy019GGfUjZ3BygxnTI5Z5UKn
- C6kw==
+ d=ventanamicro.com; s=google; t=1752494913; x=1753099713; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3Wl8gfbM6N7ds9hzF8aCIKvoOCjkpEJPMwCp3ZCChH0=;
+ b=PlZ8hMa6mmpRVL7M63PuOCbK1hPrrBU7+Zd7P9YQJviIvx4f+ZLfjvY0UCAvLACEPA
+ flvCi9sOMtyuhpHuDHG0P+WblZjxnrMmkHcnzp+332AKw78FRm96ZwdtzAvK5gc+x4L+
+ GZsWBMU0bDTbsVSOrkrUy8ZFUEvLv8T8d/y+iOYoEBIob2ZvdSgHwNroiIiMzTYCypwZ
+ 6SG91fD61Gk9Ii9iYgY96153TDNUhphu2dMW1ITLTQ+nJN/Vq7KInLusX6F6FgCzRDfd
+ G0nzQrh1UDY/SE9yhdOLnloAn8OHnwl4WO13BgZiGhOmkBqlzmMbh4OQgKptqQ0RE0Lg
+ Q6mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752494563; x=1753099363;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=T5v8OdxmzrjgwOi1V8ZOJSO/d9q/kYU1/NXLZZAou+A=;
- b=ZjEjTppsNcoRYU5rtSlzfUO36Yx6ftVt7i8CFlzjfFeNPg5h1ZxeVBjysfyeAwu85+
- 8dPFk8LpZ5eNxCMTzB1p0qRmH2vXOU2JLcEVbVpHwPY0VH3pr8khzSaLtjBx2VY+c1XE
- ZUJx2Xub+bloCqexO6Jql6mIrLxpxHycUfwYLZC2v9hVIxYStn0JEwPqPABNYFpN8lHs
- WqmcbZ93K4fEK0KJ5ut6RAk2W/O1FZTK7cT3RXhuozNxI+AAMIE53lZ3CO0xbfTBnllw
- ic/IjzK/BDwb5nn87QLzU8S8S9NL7Of3gOD7g8y0otWUpf68nWRZLHAyT7iu8Ngngp7H
- 8o7A==
-X-Gm-Message-State: AOJu0YzhY1dJv9f0Qeerzzd11YDqkzzcPwzfU0ytZ97wSbzabWbB1Uy9
- yARemL8b3+2Hto+QQ66IkVsW2bL8cv+/f1DuOjZA6noRONizhZmLnie8R+aRde4Kpmw=
-X-Gm-Gg: ASbGnctD6JqTfRaabniSvU4y7jVF18jYYlKw4A/HTZ8w1rnO2eMOZUePaQ2vv1n1PsM
- F+xv6EetJGTSMLa5EV3qPZXNyVu4IiB4iHf2oixZKy0/BVLXHE9rWzTa2n3ppjAg2AfwhxdaR3U
- TKaIGjD5E6VU9zR+MxckD6VdNDGsM9UB42vhrWbgb4hri6KWjLrh4MPux3YZffSwoT05Efy3UKM
- aOMaBeONRnl5uom4bdPbXjq3sZBxdvo6VQ10r98/Ho2e9/HFHh8ETD0ja8Yuo/54giHS/zmMomt
- goHJ2fdNRePCosNEj72eJqNWHhdb0gBNlQdF6Gws7OypYABUBpZlICvnpLNT7mYzqJfFY7PdubR
- Ylo7PHBAXNjDZx9yA4z2yAcUzIlReqNVzsQ==
-X-Google-Smtp-Source: AGHT+IF2pHp10QssnRsFCaTjz94XN9989zxU4tILODRi+Ref9jRPb5xYP3ekZ6fMMxqiNyDs1lQo5Q==
-X-Received: by 2002:a17:907:9627:b0:ae3:6028:e4d0 with SMTP id
- a640c23a62f3a-ae6fbc13b26mr1329290066b.7.1752494562484; 
- Mon, 14 Jul 2025 05:02:42 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae6e7e90a07sm811640066b.6.2025.07.14.05.02.37
+ d=1e100.net; s=20230601; t=1752494913; x=1753099713;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3Wl8gfbM6N7ds9hzF8aCIKvoOCjkpEJPMwCp3ZCChH0=;
+ b=dfshsmbIIUORjteVe2zNn/E8cK8CGSXD4KPbZ0QdcVPItyA6M9oO3BldwjIq6zZ8g0
+ +nZnmTAV4RhSzolrKcdHb9Q8M1Msqo0C9f0P+lIhZlZz+IOM7kQmJQyDAVHE/f4byLyx
+ k+7HUvs8o1eZE0cEmrzMR7M2whQM6sQ1s4crXVvY2OdY1cXUFhGWn/nXyntKZEP3ALA9
+ 6jPrkJpFJ1aJOwHB3zkc4ZMkOZP2dMmEglGxt89+T5wMIp9hWNlAEGyZrljViaLPGRpP
+ fcUhlReIvWM9fErb64roqW1AN93Q+KPefxoaCVsBq/I0S9YBA4d+/sfxvaJLtN4t+AZi
+ LFzg==
+X-Gm-Message-State: AOJu0YxbNv+yi64OKQnDXZn03bHpyQmRDFXciWyJgqdPHsLwllJEvBM4
+ cQB9LN7f0EiEKQKyAjyeHv0UQv2zJ44TcB5f74cfVYjvkV6bBJe/SqBKJ1rJ4JB5gE/ikZfFvte
+ t/veS
+X-Gm-Gg: ASbGnctu+n+g4LF8eJUCzforWLcrHXX7JaynfHT8rLZ5DxsMOx22XUltUY7mmvCvVGf
+ xUtWvhVhAfWuN7h78HrF7twl0jBXXlBIlKBC1PXn9THaJ/wFjQUHt7QPgJZrBUbFuh06HZr1g7/
+ 2AcGpDecfq0d2k76+pwinBTBiyx5RW4vhNVPe8dqqRya7657W482mXBnH8tSv5cN7eXUeR7sCX+
+ OVNXa0WY7bNQyTx/BgsMNiYKO3comnYDQvsf0tn5JI7AS55xu2aaxrw7Okewn0QfLSf8uzlMAYl
+ cyO9PDlXZxdMNxKHfYZDI2a47bhFdhxq9vSrCTpFGzHt4SKoVAO6A5XuqMUOXgMIdrUU44c4+LD
+ M7RoBhl2Qpqt2m77lP/BX1YwHVxEgI+eXFA==
+X-Google-Smtp-Source: AGHT+IG/TxzQUdv6+hH7SEM7Ia/rglKxTAoNk1dGmkOBWhEgVwTamASoXIAGAn2GYgNhYIIy8N8RJw==
+X-Received: by 2002:a17:903:11c9:b0:235:2e0:aa9 with SMTP id
+ d9443c01a7336-23dede456d7mr195630975ad.14.1752494912721; 
+ Mon, 14 Jul 2025 05:08:32 -0700 (PDT)
+Received: from grind ([177.170.118.252]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23de4286b4asm97720765ad.46.2025.07.14.05.08.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 05:02:39 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7D25B5F8E1;
- Mon, 14 Jul 2025 13:02:35 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ Mon, 14 Jul 2025 05:08:32 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
-Cc: Rot127 <unisono@quyllur.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PULL 8/8] gdbstub: add the GDB register XML files for sparc64.
-Date: Mon, 14 Jul 2025 13:02:34 +0100
-Message-ID: <20250714120234.1524401-9-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250714120234.1524401-1-alex.bennee@linaro.org>
-References: <20250714120234.1524401-1-alex.bennee@linaro.org>
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
+ richard.henderson@linaro.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH] target/riscv: set mtval = 0 for illegal_inst if no opcode
+ avail
+Date: Mon, 14 Jul 2025 09:08:22 -0300
+Message-ID: <20250714120822.1243870-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x629.google.com
-X-Spam_score_int: 16
-X-Spam_score: 1.6
-X-Spam_bar: +
-X-Spam_report: (1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,151 +98,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rot127 <unisono@quyllur.org>
+There is no guarantee that we'll able to get a proper opcode to put into
+mtval for illegal inst exceptions, as demonstrated in [1].
 
-Signed-off-by: Rot127 <unisono@quyllur.org>
-Message-ID: <20250711155141.62916-2-unisono@quyllur.org>
-[AJB: clean up commit msg]
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+The 'proper opcode' would be retrieved via unwinding the CPU state (via
+cpu_restore_state(), down to riscv_restore_state_to_opc()) after
+riscv_raise_exception(). There are cases where that doesn't happen:
+we'll see a failure in cpu_restore_state(), where in_code_gen_buffer()
+will return 'false' even for a 'host_pc' that is retrieved via GETPC()
+and not in an instruction fetch context.
 
-diff --git a/configs/targets/sparc64-linux-user.mak b/configs/targets/sparc64-linux-user.mak
-index 64ea04e3e2..7c2ecb7be0 100644
---- a/configs/targets/sparc64-linux-user.mak
-+++ b/configs/targets/sparc64-linux-user.mak
-@@ -4,4 +4,5 @@ TARGET_ABI_DIR=sparc
- TARGET_SYSTBL_ABI=common,64
- TARGET_SYSTBL=syscall.tbl
- TARGET_BIG_ENDIAN=y
-+TARGET_XML_FILES=gdb-xml/sparc64-core.xml
- TARGET_LONG_BITS=64
-diff --git a/configs/targets/sparc64-softmmu.mak b/configs/targets/sparc64-softmmu.mak
-index 2504e31ae3..d9d51d21e5 100644
---- a/configs/targets/sparc64-softmmu.mak
-+++ b/configs/targets/sparc64-softmmu.mak
-@@ -1,4 +1,5 @@
- TARGET_ARCH=sparc64
- TARGET_BASE_ARCH=sparc
- TARGET_BIG_ENDIAN=y
-+TARGET_XML_FILES=gdb-xml/sparc64-core.xml
- TARGET_LONG_BITS=64
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index ed7701b02f..245caf2de0 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -1090,6 +1090,7 @@ static void sparc_cpu_class_init(ObjectClass *oc, const void *data)
-     cc->disas_set_info = cpu_sparc_disas_set_info;
+Hopefully we don't have to always provide mtval in these cases. The
+RISC-V priv ISA says that mtval for illegal_inst exceptions are
+optional, and the faulting instruction address will be reported in
+env->mepc.
+
+The ISA also says that we can set mtval to ILEN/MXLEN bits of the
+faulting insn address, and we could do that when we're not able to fetch
+the opcode. But that would add inconsistency in how we behave since
+mtval would have either the opcode or the insn addr, and no easy way of
+knowing which one we have, and software would need to check it with mepc
+regardless. Zeroing mtval when we don't have the opcode is clearer.
+
+And yes, zeroing mtval due to an unwind failure isn't ideal either, but
+it's less worse than reporting a wrong mtval. Until we figure out a way
+to fix the unwinding in this case, let's clear mtval and let software
+know that it must find the faulting opcode via other means.
+
+[1] https://gitlab.com/qemu-project/qemu/-/issues/3020
+
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/3020
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/cpu_helper.c |  5 +++++
+ target/riscv/op_helper.c  | 21 +++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
+
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 3479a62cc7..1cd1849a1d 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -2243,6 +2243,11 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+             break;
+         case RISCV_EXCP_ILLEGAL_INST:
+         case RISCV_EXCP_VIRT_INSTRUCTION_FAULT:
++            /*
++             * Note: we'll set tval = 0 for illegal_inst cases
++             * where we failed to unwind and to get the proper
++             * opcode. See riscv_raise_exception() for more info.
++             */
+             tval = env->bins;
+             break;
+         case RISCV_EXCP_BREAKPOINT:
+diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+index 15460bf84b..930981a076 100644
+--- a/target/riscv/op_helper.c
++++ b/target/riscv/op_helper.c
+@@ -40,6 +40,27 @@ G_NORETURN void riscv_raise_exception(CPURISCVState *env,
+                           env->pc);
  
- #if defined(TARGET_SPARC64) && !defined(TARGET_ABI32)
-+    cc->gdb_core_xml_file = "sparc64-core.xml";
-     cc->gdb_num_core_regs = 86;
- #else
-     cc->gdb_num_core_regs = 72;
-diff --git a/gdb-xml/sparc64-core.xml b/gdb-xml/sparc64-core.xml
-new file mode 100644
-index 0000000000..375b9bb0cc
---- /dev/null
-+++ b/gdb-xml/sparc64-core.xml
-@@ -0,0 +1,99 @@
-+<?xml version="1.0"?>
-+<!-- Copyright (C) 2013-2025 Free Software Foundation, Inc.
+     cs->exception_index = exception;
 +
-+     Copying and distribution of this file, with or without modification,
-+     are permitted in any medium without royalty provided the copyright
-+     notice and this notice are preserved.  -->
++    /*
++     * There is no guarantee that we'll be able to unwind
++     * and set env->bins (the opcode for the current PC)
++     * properly via the cpu_restore_state() path. The RISC-V
++     * priv ISA says that:
++     *
++     * "The mtval register can optionally also be used to return
++     * the faulting instruction bits on an illegal-instruction
++     * exception (mepc points to the faulting instruction in
++     * memory)."
++     *
++     * It's not ideal to set mtval != 0 in some cases and zero
++     * in others due to unwind failures, but it's way better
++     * than to set mtval to a bogus env->bins opcode from
++     * the last successful unwinding.
++     */
++    if (cs->exception_index == RISCV_EXCP_ILLEGAL_INST) {
++        env->bins = 0;
++    }
 +
-+<!DOCTYPE feature SYSTEM "gdb-target.dtd">
-+<feature name="org.gnu.gdb.sparc.core">
-+  <reg name="g0" bitsize="64" type="uint64" regnum="0"/>
-+  <reg name="g1" bitsize="64" type="uint64" regnum="1"/>
-+  <reg name="g2" bitsize="64" type="uint64" regnum="2"/>
-+  <reg name="g3" bitsize="64" type="uint64" regnum="3"/>
-+  <reg name="g4" bitsize="64" type="uint64" regnum="4"/>
-+  <reg name="g5" bitsize="64" type="uint64" regnum="5"/>
-+  <reg name="g6" bitsize="64" type="uint64" regnum="6"/>
-+  <reg name="g7" bitsize="64" type="uint64" regnum="7"/>
-+  <reg name="o0" bitsize="64" type="uint64" regnum="8"/>
-+  <reg name="o1" bitsize="64" type="uint64" regnum="9"/>
-+  <reg name="o2" bitsize="64" type="uint64" regnum="10"/>
-+  <reg name="o3" bitsize="64" type="uint64" regnum="11"/>
-+  <reg name="o4" bitsize="64" type="uint64" regnum="12"/>
-+  <reg name="o5" bitsize="64" type="uint64" regnum="13"/>
-+  <reg name="sp" bitsize="64" type="uint64" regnum="14"/>
-+  <reg name="o7" bitsize="64" type="uint64" regnum="15"/>
-+  <reg name="l0" bitsize="64" type="uint64" regnum="16"/>
-+  <reg name="l1" bitsize="64" type="uint64" regnum="17"/>
-+  <reg name="l2" bitsize="64" type="uint64" regnum="18"/>
-+  <reg name="l3" bitsize="64" type="uint64" regnum="19"/>
-+  <reg name="l4" bitsize="64" type="uint64" regnum="20"/>
-+  <reg name="l5" bitsize="64" type="uint64" regnum="21"/>
-+  <reg name="l6" bitsize="64" type="uint64" regnum="22"/>
-+  <reg name="l7" bitsize="64" type="uint64" regnum="23"/>
-+  <reg name="i0" bitsize="64" type="uint64" regnum="24"/>
-+  <reg name="i1" bitsize="64" type="uint64" regnum="25"/>
-+  <reg name="i2" bitsize="64" type="uint64" regnum="26"/>
-+  <reg name="i3" bitsize="64" type="uint64" regnum="27"/>
-+  <reg name="i4" bitsize="64" type="uint64" regnum="28"/>
-+  <reg name="i5" bitsize="64" type="uint64" regnum="29"/>
-+  <reg name="fp" bitsize="64" type="uint64" regnum="30"/>
-+  <reg name="i7" bitsize="64" type="uint64" regnum="31"/>
-+
-+  <reg name="f0" bitsize="32" type="ieee_single" regnum="32"/>
-+  <reg name="f1" bitsize="32" type="ieee_single" regnum="33"/>
-+  <reg name="f2" bitsize="32" type="ieee_single" regnum="34"/>
-+  <reg name="f3" bitsize="32" type="ieee_single" regnum="35"/>
-+  <reg name="f4" bitsize="32" type="ieee_single" regnum="36"/>
-+  <reg name="f5" bitsize="32" type="ieee_single" regnum="37"/>
-+  <reg name="f6" bitsize="32" type="ieee_single" regnum="38"/>
-+  <reg name="f7" bitsize="32" type="ieee_single" regnum="39"/>
-+  <reg name="f8" bitsize="32" type="ieee_single" regnum="40"/>
-+  <reg name="f9" bitsize="32" type="ieee_single" regnum="41"/>
-+  <reg name="f10" bitsize="32" type="ieee_single" regnum="42"/>
-+  <reg name="f11" bitsize="32" type="ieee_single" regnum="43"/>
-+  <reg name="f12" bitsize="32" type="ieee_single" regnum="44"/>
-+  <reg name="f13" bitsize="32" type="ieee_single" regnum="45"/>
-+  <reg name="f14" bitsize="32" type="ieee_single" regnum="46"/>
-+  <reg name="f15" bitsize="32" type="ieee_single" regnum="47"/>
-+  <reg name="f16" bitsize="32" type="ieee_single" regnum="48"/>
-+  <reg name="f17" bitsize="32" type="ieee_single" regnum="49"/>
-+  <reg name="f18" bitsize="32" type="ieee_single" regnum="50"/>
-+  <reg name="f19" bitsize="32" type="ieee_single" regnum="51"/>
-+  <reg name="f20" bitsize="32" type="ieee_single" regnum="52"/>
-+  <reg name="f21" bitsize="32" type="ieee_single" regnum="53"/>
-+  <reg name="f22" bitsize="32" type="ieee_single" regnum="54"/>
-+  <reg name="f23" bitsize="32" type="ieee_single" regnum="55"/>
-+  <reg name="f24" bitsize="32" type="ieee_single" regnum="56"/>
-+  <reg name="f25" bitsize="32" type="ieee_single" regnum="57"/>
-+  <reg name="f26" bitsize="32" type="ieee_single" regnum="58"/>
-+  <reg name="f27" bitsize="32" type="ieee_single" regnum="59"/>
-+  <reg name="f28" bitsize="32" type="ieee_single" regnum="60"/>
-+  <reg name="f29" bitsize="32" type="ieee_single" regnum="61"/>
-+  <reg name="f30" bitsize="32" type="ieee_single" regnum="62"/>
-+  <reg name="f31" bitsize="32" type="ieee_single" regnum="63"/>
-+
-+  <reg name="f32" bitsize="64" type="ieee_double" regnum="64"/>
-+  <reg name="f34" bitsize="64" type="ieee_double" regnum="65"/>
-+  <reg name="f36" bitsize="64" type="ieee_double" regnum="66"/>
-+  <reg name="f38" bitsize="64" type="ieee_double" regnum="67"/>
-+  <reg name="f40" bitsize="64" type="ieee_double" regnum="68"/>
-+  <reg name="f42" bitsize="64" type="ieee_double" regnum="69"/>
-+  <reg name="f44" bitsize="64" type="ieee_double" regnum="70"/>
-+  <reg name="f46" bitsize="64" type="ieee_double" regnum="71"/>
-+  <reg name="f48" bitsize="64" type="ieee_double" regnum="72"/>
-+  <reg name="f50" bitsize="64" type="ieee_double" regnum="73"/>
-+  <reg name="f52" bitsize="64" type="ieee_double" regnum="74"/>
-+  <reg name="f54" bitsize="64" type="ieee_double" regnum="75"/>
-+  <reg name="f56" bitsize="64" type="ieee_double" regnum="76"/>
-+  <reg name="f58" bitsize="64" type="ieee_double" regnum="77"/>
-+  <reg name="f60" bitsize="64" type="ieee_double" regnum="78"/>
-+  <reg name="f62" bitsize="64" type="ieee_double" regnum="79"/>
-+
-+  <reg name="pc" bitsize="64" type="code_ptr" regnum="80"/>
-+  <reg name="npc" bitsize="64" type="code_ptr" regnum="81"/>
-+  <reg name="state" bitsize="64" type="uint64" regnum="82"/>
-+  <reg name="fsr" bitsize="64" type="uint64" regnum="83"/>
-+  <reg name="fprs" bitsize="64" type="uint64" regnum="84"/>
-+  <reg name="y" bitsize="64" type="uint64" regnum="85"/>
-+</feature>
+     cpu_loop_exit_restore(cs, pc);
+ }
+ 
 -- 
-2.47.2
+2.50.1
 
 
