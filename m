@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D93B03D15
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D95C9B03D44
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubH7Z-0008UK-OO; Mon, 14 Jul 2025 07:13:22 -0400
+	id 1ubHEg-000860-PJ; Mon, 14 Jul 2025 07:20:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGzY-0000pO-RG
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:06 -0400
+ id 1ubGza-0000ql-Oo
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGzT-0001dd-LZ
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:04 -0400
+ id 1ubGzW-0001ez-FG
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491098;
+ s=mimecast20190719; t=1752491101;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TvaPDebJQqrXFfnLyyiynRkEMunN2jwXGo43DBM4hqM=;
- b=RGToYhc2dZ68NY69GPTP1EHogzzDDkOoIn4T39Zx0JTuggoL7t0LSCBTLXqshRs8NDScEx
- NqJLsu7s40E87Ll5zGykqEJld6zZla9QmHxfzukD3AIyaHLChUHfDrtDakYL98VgrQrAW0
- xjVc4RyAa2XTe5ATp7ORauKpt9k0ur0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vaxjfdU0vDkaLBJ9OuBIEHWzWgK9r6h25+trEjoxvo4=;
+ b=hZ9ajpD41Rt/odmehK18IcSU1ICpfVrwjWLLdxczPOoZ9AtlPuRVkeLXkFRKDJ6KPamLke
+ DCF2PcTCQdPLcOuHxGtCrHw4aTz1K7Xk2wcbD/DKcQvN6wdcTJRMSaUZQbkRsM+WBH980L
+ DcIf7UR4f22HJHxsOIxZhQ+9+wMgHp0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-260-TI1Zl6mEMgS7hx2Au5kZ6w-1; Mon, 14 Jul 2025 07:04:57 -0400
-X-MC-Unique: TI1Zl6mEMgS7hx2Au5kZ6w-1
-X-Mimecast-MFC-AGG-ID: TI1Zl6mEMgS7hx2Au5kZ6w_1752491096
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-455f7b86aeeso12296545e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:04:57 -0700 (PDT)
+ us-mta-490-cqzZkWjXNO6mK7yVp0XmlA-1; Mon, 14 Jul 2025 07:05:00 -0400
+X-MC-Unique: cqzZkWjXNO6mK7yVp0XmlA-1
+X-Mimecast-MFC-AGG-ID: cqzZkWjXNO6mK7yVp0XmlA_1752491099
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-450df53d461so32605905e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491095; x=1753095895;
+ d=1e100.net; s=20230601; t=1752491098; x=1753095898;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TvaPDebJQqrXFfnLyyiynRkEMunN2jwXGo43DBM4hqM=;
- b=uddZGCCCbpA1vnGCBo24YafrvAcEJFvP0nARSAEv7deEYb40UiS5M5Zkf6IRVCEA9e
- xAKaw43+lq9ZDNT2vRKnsN97Ake2OzvXaVYCCJ11y5b3Tz761q1p6jb1NGFN2M5EK1kL
- SQihV7E6OOHKeVY+mdGhUa50A3/cpU6ng1nbZLhjVPP8FJuWdkHgpZ3YZuYNPg2KW7nv
- wJJVcEUfs/Dvw74+AGVNvZlrgu/JBTHWLhKEFynDgy4xUyd80rS0/dmari50aSP3vkZl
- kAub2HiZAD7SfbvrS8P/Wztzm4SGHsFlOkhgDGzpGJqgaDqAlqP/zLCV+mXJ/XU3v5Vv
- YoSg==
-X-Gm-Message-State: AOJu0YzSOhysREXF9P6yIxfEY12+gKjIpQeK+k0xDDG/8MzYVtG6eNRx
- 4xXASgI156XdTc0pTJ52kMUZFHDSlInPKRki+qs6loSPuJZxqHl9Lnmn8df+jjNdpebqBBNHq46
- pQvWjxWc6eZ56NAoebFJTOqBhpOwnmsKMvHGYu+J7Mi+tkTQwAoY3eXi+UIVPq/5lVLDi871xF3
- xPAwrCr6Lk09hum+et8y2W/SVMlT6gDhnlgZrSnxHK
-X-Gm-Gg: ASbGnct+MZtgvCrbmdIR9nklDyDZK7MotxKgVQLglaAijVIvBtDZv6zVbel3jNpX+vV
- ZihvuiqfPhtlVRUvwE4QEKi+w9Oenm6hbsMHyD2LjD66mR1vCwk12+FMA2hVbkJq2TQ/H75NX3T
- mLGY/hXmXQga9OJGXK8qjpJNRTCfHCmzJRaCMCrPE/EkOGkAWZ6eeOhXFNctLDTJ7RWUzuTBrFF
- 6TUF000V0Sso7S9v0o7HV8ZCwhd5JQQ9zKK5O+DcZKgGN705QkB5pF/TuK/CwUXsMcC0Ov+Qctd
- FwnucAmLqFyULb50iO3vX+p/PT7R+LFfQPPRXE4ZuIE=
-X-Received: by 2002:a05:6000:2088:b0:3b3:a6e1:135c with SMTP id
- ffacd0b85a97d-3b5f2e32f4fmr8643404f8f.42.1752491094902; 
- Mon, 14 Jul 2025 04:04:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH9XRIDEC+alv0gL1xVW/RCLAQXcrsdsbZhO0y1skcuB05+k8bqSJfKl5Abficiw+qZ/rYbpg==
-X-Received: by 2002:a05:6000:2088:b0:3b3:a6e1:135c with SMTP id
- ffacd0b85a97d-3b5f2e32f4fmr8643376f8f.42.1752491094316; 
- Mon, 14 Jul 2025 04:04:54 -0700 (PDT)
+ bh=vaxjfdU0vDkaLBJ9OuBIEHWzWgK9r6h25+trEjoxvo4=;
+ b=hS37TD/kYKyrj5hsBLdJqyfmoJ8Vnjx80JborogUGgrzB4QLV+LEq9qDsG3Wqz4bU9
+ m0tVuCF74ioHefswPALNWyfixXzno0AsKoXgEjLGcmAXrhREhxq/eorjGYUMVTIWwqEu
+ ltrta+qXaGJo5/fTvzK3UD1I+P/En5p0iWIWyYl30upnaoWuRMMvnEEV/oH05U8fP1l9
+ YWOWcUXb+EmvoP1QbC76/1EZz0kLmywQGDkZ8e3e+/frduaKgGyNcWFtOsGyauDgyvnc
+ C/efx+AU3SNd84g9DPJ/gV5olwf29i7KzoDHtNsZMBbhYjS+GHrAxmpNOyh4YH7WQNaw
+ dSZw==
+X-Gm-Message-State: AOJu0YzTSjVsAXTlm3S6b4+bhkOhjOSLpNUgR3okQPzPwKZrEWEakcG6
+ 1lXtAUwZswivWyk45WvqSGXKL94l+wEetwcwBW4FC38pqm5Aascs75ZfPDosCQSkVcrr2JO0r98
+ AgRSgghTsUbeqj4niNqyg7Ww907zZ7pq5FXqYBe8qaWZphQ5a+2SIeci0rE0cm47MQV/skNZlk9
+ Gr4i5PzupvFzr52kTvTxfakTSxcGYpVIUOe1LMWxPR
+X-Gm-Gg: ASbGnctWSp4vcQrP5JfiSmlKtAT8XbAJ0G2AOl5q9CzrJHgoalKzo5oXdllvS2khZCn
+ Jp9Ji52oHaoFa4R4Hf8dLLhsc+F6XiAC8zSZ2kAQHQcmwblNOUrSOojaXHEfw3gpytAEAI6lF8g
+ I/Ap5e4wtkKJi1G3LnWlgUgr85+1oZLbOS4zvc5p9vBK6NSIGTfmYfg+95MiEbBx7VBVuKV4mQd
+ MiBQnVsjSpO7t4wTfeh4Dgp3rvqcCXjGXesypY0GRgLZBr4BIHlbqL4EOydXFfPbiSd7hOV1fpM
+ Uyd44ZU4C9e9qP57bJH95n75RKIuCJPAeWMBgYmGFR8=
+X-Received: by 2002:a05:600c:1d87:b0:456:2a9:f815 with SMTP id
+ 5b1f17b1804b1-45602a9fbfcmr69093865e9.4.1752491097963; 
+ Mon, 14 Jul 2025 04:04:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHsdtCFXik9rtPHoSWaaPmdB8Evf8QfR5Gw6/TJBxfzBk3sMbt3M9UBxP6v6fadb4B5RCpEoA==
+X-Received: by 2002:a05:600c:1d87:b0:456:2a9:f815 with SMTP id
+ 5b1f17b1804b1-45602a9fbfcmr69093575e9.4.1752491097369; 
+ Mon, 14 Jul 2025 04:04:57 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45614aeba29sm43525615e9.11.2025.07.14.04.04.52
+ ffacd0b85a97d-3b5e8e14e82sm12162020f8f.71.2025.07.14.04.04.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:04:52 -0700 (PDT)
+ Mon, 14 Jul 2025 04:04:55 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>,
  "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffman <kraxel@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 17/77] meson: Add optional dependency on IGVM library
-Date: Mon, 14 Jul 2025 13:03:06 +0200
-Message-ID: <20250714110406.117772-18-pbonzini@redhat.com>
+Subject: [PULL 18/77] backends/confidential-guest-support: Add functions to
+ support IGVM
+Date: Mon, 14 Jul 2025 13:03:07 +0200
+Message-ID: <20250714110406.117772-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -112,115 +111,173 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Roy Hopkins <roy.hopkins@randomman.co.uk>
 
-The IGVM library allows Independent Guest Virtual Machine files to be
-parsed and processed. IGVM files are used to configure guest memory
-layout, initial processor state and other configuration pertaining to
-secure virtual machines.
+In preparation for supporting the processing of IGVM files to configure
+guests, this adds a set of functions to ConfidentialGuestSupport
+allowing configuration of secure virtual machines that can be
+implemented for each supported isolation platform type such as Intel TDX
+or AMD SEV-SNP. These functions will be called by IGVM processing code
+in subsequent patches.
 
-This adds the --enable-igvm configure option, enabled by default, which
-attempts to locate and link against the IGVM library via pkgconfig and
-sets CONFIG_IGVM if found.
-
-The library is added to the system_ss target in backends/meson.build
-where the IGVM parsing will be performed by the ConfidentialGuestSupport
-object.
+This commit provides a default implementation of the functions that
+either perform no action or generate an error when they are called.
+Targets that support ConfidentalGuestSupport should override these
+implementations.
 
 Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Acked-by: Gerd Hoffman <kraxel@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Reviewed-by: Ani Sinha <anisinha@redhat.com>
-Link: https://lore.kernel.org/r/45945a83a638c3f08e68c025f378e7b7f4f6d593.1751554099.git.roy.hopkins@randomman.co.uk
+Link: https://lore.kernel.org/r/23e34a106da87427899f93178102e4a6ef50c966.1751554099.git.roy.hopkins@randomman.co.uk
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                   | 8 ++++++++
- backends/meson.build          | 3 +++
- meson_options.txt             | 2 ++
- scripts/meson-buildoptions.sh | 3 +++
- 4 files changed, 16 insertions(+)
+ include/system/confidential-guest-support.h | 67 +++++++++++++++++++++
+ backends/confidential-guest-support.c       | 31 ++++++++++
+ 2 files changed, 98 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index b5f74aa37a7..200352c2448 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1424,6 +1424,12 @@ if host_os == 'linux' and (have_system or have_tools)
-                        method: 'pkg-config',
-                        required: get_option('libudev'))
- endif
-+igvm = not_found
-+if not get_option('igvm').auto() or have_system
-+  igvm = dependency('igvm', version: '>= 0.3.0',
-+                    method: 'pkg-config',
-+                    required: get_option('igvm'))
-+endif
+diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
+index ea46b50c56c..79ecd21f42f 100644
+--- a/include/system/confidential-guest-support.h
++++ b/include/system/confidential-guest-support.h
+@@ -19,6 +19,7 @@
+ #define QEMU_CONFIDENTIAL_GUEST_SUPPORT_H
  
- mpathlibs = [libudev]
- mpathpersist = not_found
-@@ -2601,6 +2607,7 @@ config_host_data.set('CONFIG_CFI', get_option('cfi'))
- config_host_data.set('CONFIG_SELINUX', selinux.found())
- config_host_data.set('CONFIG_XEN_BACKEND', xen.found())
- config_host_data.set('CONFIG_LIBDW', libdw.found())
-+config_host_data.set('CONFIG_IGVM', igvm.found())
- if xen.found()
-   # protect from xen.version() having less than three components
-   xen_version = xen.version().split('.') + ['0', '0']
-@@ -4965,6 +4972,7 @@ summary_info += {'seccomp support':   seccomp}
- summary_info += {'GlusterFS support': glusterfs}
- summary_info += {'hv-balloon support': hv_balloon}
- summary_info += {'TPM support':       have_tpm}
-+summary_info += {'IGVM support':      igvm}
- summary_info += {'libssh support':    libssh}
- summary_info += {'lzo support':       lzo}
- summary_info += {'snappy support':    snappy}
-diff --git a/backends/meson.build b/backends/meson.build
-index 9b88d226851..ac0fac78458 100644
---- a/backends/meson.build
-+++ b/backends/meson.build
-@@ -34,6 +34,9 @@ if have_vhost_user_crypto
- endif
- system_ss.add(when: gio, if_true: files('dbus-vmstate.c'))
- system_ss.add(when: 'CONFIG_SGX', if_true: files('hostmem-epc.c'))
-+if igvm.found()
-+  system_ss.add(igvm)
-+endif
+ #include "qom/object.h"
++#include "exec/hwaddr.h"
  
- system_ss.add(when: 'CONFIG_SPDM_SOCKET', if_true: files('spdm-socket.c'))
+ #define TYPE_CONFIDENTIAL_GUEST_SUPPORT "confidential-guest-support"
+ OBJECT_DECLARE_TYPE(ConfidentialGuestSupport,
+@@ -26,6 +27,36 @@ OBJECT_DECLARE_TYPE(ConfidentialGuestSupport,
+                     CONFIDENTIAL_GUEST_SUPPORT)
  
-diff --git a/meson_options.txt b/meson_options.txt
-index a442be29958..1e429311a2d 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -117,6 +117,8 @@ option('tpm', type : 'feature', value : 'auto',
-        description: 'TPM support')
- option('valgrind', type : 'feature', value: 'auto',
-        description: 'valgrind debug support for coroutine stacks')
-+option('igvm', type: 'feature', value: 'auto',
-+       description: 'Independent Guest Virtual Machine (IGVM) file support')
  
- # Do not enable it by default even for Mingw32, because it doesn't
- # work on Wine.
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 73e0770f42b..78515404450 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -130,6 +130,7 @@ meson_options_help() {
-   printf "%s\n" '  hv-balloon      hv-balloon driver (requires Glib 2.68+ GTree API)'
-   printf "%s\n" '  hvf             HVF acceleration support'
-   printf "%s\n" '  iconv           Font glyph conversion support'
-+  printf "%s\n" '  igvm            IGVM file support'
-   printf "%s\n" '  jack            JACK sound support'
-   printf "%s\n" '  keyring         Linux keyring support'
-   printf "%s\n" '  kvm             KVM acceleration support'
-@@ -346,6 +347,8 @@ _meson_option_parse() {
-     --iasl=*) quote_sh "-Diasl=$2" ;;
-     --enable-iconv) printf "%s" -Diconv=enabled ;;
-     --disable-iconv) printf "%s" -Diconv=disabled ;;
-+    --enable-igvm) printf "%s" -Digvm=enabled ;;
-+    --disable-igvm) printf "%s" -Digvm=disabled ;;
-     --includedir=*) quote_sh "-Dincludedir=$2" ;;
-     --enable-install-blobs) printf "%s" -Dinstall_blobs=true ;;
-     --disable-install-blobs) printf "%s" -Dinstall_blobs=false ;;
++typedef enum ConfidentialGuestPlatformType {
++    CGS_PLATFORM_SEV,
++    CGS_PLATFORM_SEV_ES,
++    CGS_PLATFORM_SEV_SNP,
++} ConfidentialGuestPlatformType;
++
++typedef enum ConfidentialGuestMemoryType {
++    CGS_MEM_RAM,
++    CGS_MEM_RESERVED,
++    CGS_MEM_ACPI,
++    CGS_MEM_NVS,
++    CGS_MEM_UNUSABLE,
++} ConfidentialGuestMemoryType;
++
++typedef struct ConfidentialGuestMemoryMapEntry {
++    uint64_t gpa;
++    uint64_t size;
++    ConfidentialGuestMemoryType type;
++} ConfidentialGuestMemoryMapEntry;
++
++typedef enum ConfidentialGuestPageType {
++    CGS_PAGE_TYPE_NORMAL,
++    CGS_PAGE_TYPE_VMSA,
++    CGS_PAGE_TYPE_ZERO,
++    CGS_PAGE_TYPE_UNMEASURED,
++    CGS_PAGE_TYPE_SECRETS,
++    CGS_PAGE_TYPE_CPUID,
++    CGS_PAGE_TYPE_REQUIRED_MEMORY,
++} ConfidentialGuestPageType;
++
+ struct ConfidentialGuestSupport {
+     Object parent;
+ 
+@@ -64,6 +95,42 @@ typedef struct ConfidentialGuestSupportClass {
+ 
+     int (*kvm_init)(ConfidentialGuestSupport *cgs, Error **errp);
+     int (*kvm_reset)(ConfidentialGuestSupport *cgs, Error **errp);
++
++    /*
++     * Check to see if this confidential guest supports a particular
++     * platform or configuration.
++     *
++     * Return true if supported or false if not supported.
++     */
++    bool (*check_support)(ConfidentialGuestPlatformType platform,
++                         uint16_t platform_version, uint8_t highest_vtl,
++                         uint64_t shared_gpa_boundary);
++
++    /*
++     * Configure part of the state of a guest for a particular set of data, page
++     * type and gpa. This can be used for example to pre-populate and measure
++     * guest memory contents, define private ranges or set the initial CPU state
++     * for one or more CPUs.
++     *
++     * If memory_type is CGS_PAGE_TYPE_VMSA then ptr points to the initial CPU
++     * context for a virtual CPU. The format of the data depends on the type of
++     * confidential virtual machine. For example, for SEV-ES ptr will point to a
++     * vmcb_save_area structure that should be copied into guest memory at the
++     * address specified in gpa. The cpu_index parameter contains the index of
++     * the CPU the VMSA applies to.
++     */
++    int (*set_guest_state)(hwaddr gpa, uint8_t *ptr, uint64_t len,
++                           ConfidentialGuestPageType memory_type,
++                           uint16_t cpu_index, Error **errp);
++
++    /*
++     * Iterate the system memory map, getting the entry with the given index
++     * that can be populated into guest memory.
++     *
++     * Returns 0 for ok, 1 if the index is out of range and -1 on error.
++     */
++    int (*get_mem_map_entry)(int index, ConfidentialGuestMemoryMapEntry *entry,
++                             Error **errp);
+ } ConfidentialGuestSupportClass;
+ 
+ static inline int confidential_guest_kvm_init(ConfidentialGuestSupport *cgs,
+diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
+index 8ff7bfa8570..c5bef1fbfa8 100644
+--- a/backends/confidential-guest-support.c
++++ b/backends/confidential-guest-support.c
+@@ -14,15 +14,46 @@
+ #include "qemu/osdep.h"
+ 
+ #include "system/confidential-guest-support.h"
++#include "qapi/error.h"
+ 
+ OBJECT_DEFINE_ABSTRACT_TYPE(ConfidentialGuestSupport,
+                             confidential_guest_support,
+                             CONFIDENTIAL_GUEST_SUPPORT,
+                             OBJECT)
+ 
++static bool check_support(ConfidentialGuestPlatformType platform,
++                         uint16_t platform_version, uint8_t highest_vtl,
++                         uint64_t shared_gpa_boundary)
++{
++    /* Default: no support. */
++    return false;
++}
++
++static int set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
++                           ConfidentialGuestPageType memory_type,
++                           uint16_t cpu_index, Error **errp)
++{
++    error_setg(errp,
++               "Setting confidential guest state is not supported for this platform");
++    return -1;
++}
++
++static int get_mem_map_entry(int index, ConfidentialGuestMemoryMapEntry *entry,
++                             Error **errp)
++{
++    error_setg(
++        errp,
++        "Obtaining the confidential guest memory map is not supported for this platform");
++    return -1;
++}
++
+ static void confidential_guest_support_class_init(ObjectClass *oc,
+                                                   const void *data)
+ {
++    ConfidentialGuestSupportClass *cgsc = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
++    cgsc->check_support = check_support;
++    cgsc->set_guest_state = set_guest_state;
++    cgsc->get_mem_map_entry = get_mem_map_entry;
+ }
+ 
+ static void confidential_guest_support_init(Object *obj)
 -- 
 2.50.0
 
