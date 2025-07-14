@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65900B04382
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0819AB042A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:08:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubKpq-000409-TQ; Mon, 14 Jul 2025 11:11:19 -0400
+	id 1ubKmO-0005cO-LC; Mon, 14 Jul 2025 11:07:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUW-0000GO-8K
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:24 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUX-0000Gq-3O
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUS-0003bN-Qo
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:11 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUS-0003bP-VI
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752500707;
+ s=mimecast20190719; t=1752500708;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SyZcrwnCLaLvW4YdnG8ypJUNcE3idD2PpbQHZael9Bc=;
- b=USwX3p5pNUeDP8CH4Pob/lZt77/XXntDu7JqZ+a0ZV9icf3KaJImNDM+113rxP0auTI7+D
- +cddbxZk3wXaExqXyf73686vHyw3pZTn2VsqKMBB05lQPaEcTOHwqU4TnsAVuBT9om4Z3O
- n6WVifJFPY7afUPWjr480OWudPPvBgs=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=3+E0cFOxvXZpbG9HJF2f/kSeEq+Ga1881v3oZuFP1DI=;
+ b=hL9hWA1JAEsID2K18mdIeIWwhRhxtLnedFSTPqArIzehjqfkj6aTcRh5ENCsUuZhxHIHJ1
+ mzNKcRNRTSydPFe3zshME7uGilPC705rfCPRjTkqIDT1ff7I6dTnrI45+HfxaRq/C8Avvx
+ 7jw+iugDxI5rS7gFBU+W+3wC5K07a5A=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-467-Lymspn52NVSjdBWiBwC6RQ-1; Mon,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-GqAkEp67PNydZgcMsH9sxw-1; Mon,
  14 Jul 2025 09:45:06 -0400
-X-MC-Unique: Lymspn52NVSjdBWiBwC6RQ-1
-X-Mimecast-MFC-AGG-ID: Lymspn52NVSjdBWiBwC6RQ_1752500705
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+X-MC-Unique: GqAkEp67PNydZgcMsH9sxw-1
+X-Mimecast-MFC-AGG-ID: GqAkEp67PNydZgcMsH9sxw_1752500705
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 714E5180029F
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6129D1800366
  for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 13:45:05 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 26A7718002B2
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1539519560A3
  for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 13:45:05 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D260221E6774; Mon, 14 Jul 2025 15:44:58 +0200 (CEST)
+ id D74CE21E6775; Mon, 14 Jul 2025 15:44:58 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 07/32] qapi: Clean up a few Errors: sections
-Date: Mon, 14 Jul 2025 15:44:33 +0200
-Message-ID: <20250714134458.2991097-8-armbru@redhat.com>
+	John Snow <jsnow@redhat.com>
+Subject: [PULL 08/32] docs/qapi-domain: add return-nodesc
+Date: Mon, 14 Jul 2025 15:44:34 +0200
+Message-ID: <20250714134458.2991097-9-armbru@redhat.com>
 In-Reply-To: <20250714134458.2991097-1-armbru@redhat.com>
 References: <20250714134458.2991097-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -85,57 +84,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the conventional "- If <error-condition>" phrasing, optionally
-with ", <error-class>".
+From: John Snow <jsnow@redhat.com>
 
+This form is used to annotate a return type without an accompanying
+description, for when there is no "Returns:" information in the source
+doc, but we have a return type we want to generate a cross-reference to.
+
+The syntax is:
+
+:return-nodesc: TypeName
+
+It's primarily necessary because Sphinx always expects both a type and a
+description for the prior form and will format it accordingly. To have a
+reasonable rendering when the body is missing, we need to use a
+different info field list entirely.
+
+Signed-off-by: John Snow <jsnow@redhat.com>
+Message-ID: <20250711051045.51110-2-jsnow@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+[Long line wrapped]
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250708072828.105185-3-armbru@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qapi/misc-i386.json | 7 +++----
- qapi/qom.json       | 4 ++--
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ docs/devel/qapi-domain.rst | 31 +++++++++++++++++++++++++++++++
+ docs/sphinx/qapi_domain.py |  8 ++++++++
+ 2 files changed, 39 insertions(+)
 
-diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
-index b53ed39288..24a2e143f6 100644
---- a/qapi/misc-i386.json
-+++ b/qapi/misc-i386.json
-@@ -283,10 +283,9 @@
- # Returns: SevAttestationReport objects.
- #
- # Errors:
--#     - This will return an error if the attestation report is
--#       unavailable, either due to an invalid guest configuration
--#       or if the guest has not reached the required SEV state,
--#       GenericError
-+#     - If the attestation report is unavailable, either due to an
-+#       invalid guest configuration or because the guest has not
-+#       reached the required SEV state, GenericError
- #
- # Since: 6.1
- #
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 6c38e865a6..fbf94b9e09 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -1261,7 +1261,7 @@
- # Create a QOM object.
- #
- # Errors:
--#     - Error if @qom-type is not a valid class name
-+#     - If @qom-type is not a valid class name
- #
- # Since: 2.0
- #
-@@ -1283,7 +1283,7 @@
- # @id: the name of the QOM object to remove
- #
- # Errors:
--#     - Error if @id is not a valid id for a QOM object
-+#     - If @id is not a valid id for a QOM object
- #
- # Since: 2.0
- #
+diff --git a/docs/devel/qapi-domain.rst b/docs/devel/qapi-domain.rst
+index 11238723c2..b71890f660 100644
+--- a/docs/devel/qapi-domain.rst
++++ b/docs/devel/qapi-domain.rst
+@@ -242,6 +242,37 @@ Example::
+              }
+ 
+ 
++``:return-nodesc:``
++-------------------
++
++Document the return type of a QAPI command, without an accompanying
++description.
++
++:availability: This field list is only available in the body of the
++               Command directive.
++:syntax: ``:return-nodesc: type``
++:type: `sphinx.util.docfields.Field
++       <https://pydoc.dev/sphinx/latest/sphinx.util.docfields.Field.html?private=1>`_
++
++
++Example::
++
++   .. qapi:command:: query-replay
++      :since: 5.2
++
++      Retrieve the record/replay information.  It includes current
++      instruction count which may be used for ``replay-break`` and
++      ``replay-seek`` commands.
++
++      :return-nodesc: ReplayInfo
++
++      .. qmp-example::
++
++          -> { "execute": "query-replay" }
++          <- { "return": {
++                 "mode": "play", "filename": "log.rr", "icount": 220414 }
++             }
++
+ ``:value:``
+ -----------
+ 
+diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
+index ebc46a72c6..f561dc465f 100644
+--- a/docs/sphinx/qapi_domain.py
++++ b/docs/sphinx/qapi_domain.py
+@@ -532,6 +532,14 @@ class QAPICommand(QAPIObject):
+                 names=("return",),
+                 can_collapse=True,
+             ),
++            # :return-nodesc: TypeName
++            CompatField(
++                "returnvalue",
++                label=_("Return"),
++                names=("return-nodesc",),
++                bodyrolename="type",
++                has_arg=False,
++            ),
+         ]
+     )
+ 
 -- 
 2.49.0
 
