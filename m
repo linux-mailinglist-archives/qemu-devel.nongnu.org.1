@@ -2,77 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7ABB039C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E91B039E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:51:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubEow-0001Vf-A0; Mon, 14 Jul 2025 04:45:58 -0400
+	id 1ubEsZ-00046g-K9; Mon, 14 Jul 2025 04:49:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubESJ-0003ND-LL
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:22:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ubEU5-0007Gp-7h
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:24:26 -0400
+Received: from p-east1-cluster6-host10-snip4-3.eps.apple.com ([57.103.90.224]
+ helo=outbound.ci.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubESH-0006Yu-Ki
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:22:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752481351;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=n0S6SIp8CfOLSA9YxHzrvsHzcxCr1KclbvOloeN0Wp0=;
- b=FrwOx9eRmoiMqiAJgzqbgg8EJ8rA4eC8d6jo6HO2gyP60Yh3iTdmwTdIaM7uecUoA4XifX
- WRu65bMiY02/B5/+QUStOc4l43gqKIGIi+LaIZL8tDdDQDFkzy+u9Bse8EY8vFEUc9IEXc
- FW2sC3a02OHtTVzpPLY4EH23BJlkAbQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-LbSLjHM-M3e1z7SYbPwfpw-1; Mon,
- 14 Jul 2025 04:22:30 -0400
-X-MC-Unique: LbSLjHM-M3e1z7SYbPwfpw-1
-X-Mimecast-MFC-AGG-ID: LbSLjHM-M3e1z7SYbPwfpw_1752481349
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CA3A6180029E; Mon, 14 Jul 2025 08:22:28 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.132])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 12F9919560A3; Mon, 14 Jul 2025 08:22:25 +0000 (UTC)
-Date: Mon, 14 Jul 2025 09:22:22 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 0/2] ui: fix VNC endian regression & improve tracing
-Message-ID: <aHS-Pm54ZIZTDpbd@redhat.com>
-References: <20250604162243.452791-1-berrange@redhat.com>
- <887fbbd8-9e92-45b1-bdac-77d18a9b82bb@tls.msk.ru>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <887fbbd8-9e92-45b1-bdac-77d18a9b82bb@tls.msk.ru>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ubEU3-0006jb-67
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:24:24 -0400
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+ by outbound.ci.icloud.com (Postfix) with ESMTPS id 4CA0B18001E1;
+ Mon, 14 Jul 2025 08:24:18 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ bh=3HNl1XRwXoKAkX0cmOsH9ur/HirNWHt2xH48gEitwfk=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=OeBhwY8lp32/NPJT5uD5N3PW51c3p0a/DKCMr+Q8OmAZ0nzE9ggpmLZbPv2qDbY8CCm4i1W61SFEF5oclZCtuYKrdSxzbNj3qC9JEKO/SfaSFouGRlh6VDeeTGzNV24DwgLmc1au4fn/eIDFROHVnbSF1R5QLxqD0Cd5WIqRN/O2XvWv2zwHiRT6KRxHOr7Vbqie/pZxd83EUGAW5RBNX5ZkJTY30iaQ9oQZyVqW5hMQXfK7gplNHodnkO+uPFfqZ8TfSrFbgD5aAt7RTjfXnDf2rK8/oKsWL0yS1ullLg2fcg+z10U1MZoK0e0v6WtPpoUsggWaWyymePKED4gekw==
+Received: from smtpclient.apple (ci-asmtp-me-k8s.p00.prod.me.com
+ [17.57.156.36])
+ by outbound.ci.icloud.com (Postfix) with ESMTPSA id 28F2D18001AB;
+ Mon, 14 Jul 2025 08:24:17 +0000 (UTC)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH] hvf: arm: Remove $pc from trace_hvf_data_abort()
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20250713154719.4248-1-zenghui.yu@linux.dev>
+Date: Mon, 14 Jul 2025 10:24:04 +0200
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, agraf@csgraf.de,
+ peter.maydell@linaro.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <29299A8B-CF64-4D61-97E6-23EE6BA00E15@ynddal.dk>
+References: <20250713154719.4248-1-zenghui.yu@linux.dev>
+To: Zenghui Yu <zenghui.yu@linux.dev>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-Proofpoint-ORIG-GUID: Qwt-Be2CQ6vCJ5_Xa2GnD7zowCgZcubc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDA0OSBTYWx0ZWRfXyIgusRhrjhCb
+ io/ERNEYQogNbnJo5O6ltdVfHOMME0VxJ2zX4+HE7g+dB+BqAxuKTn8Ze9YUVQQ8Lt+OR1FElrH
+ VtwoG8cmM12sVe5AS+ttP5Z+zEu3nEM+Q3/QrthhMnxIF35daBJoPvuXhc4jqvDP9k//I66P19F
+ gjwbcWZU7rbl+KQ1dM3pV9xZd7Sb1KMQdwztmrENccCzTd6E9tDCbzmX/4XO9ic9W3r+7e31fI6
+ OubGU8q4tKSG6np6AZOfbWhgyuBpa9XSW9w/1iKafXBQ9lx16p7zxqVXqXS0jTyYNnE97gq2c=
+X-Proofpoint-GUID: Qwt-Be2CQ6vCJ5_Xa2GnD7zowCgZcubc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-14_01,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ malwarescore=0 mlxscore=0 clxscore=1030 phishscore=0 mlxlogscore=691
+ suspectscore=0 spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506060001 definitions=main-2507140049
+Received-SPF: pass client-ip=57.103.90.224; envelope-from=mads@ynddal.dk;
+ helo=outbound.ci.icloud.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,33 +78,23 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jul 12, 2025 at 11:26:29AM +0300, Michael Tokarev wrote:
-> On 04.06.2025 19:22, Daniel P. Berrangé wrote:
-> > 
-> > Daniel P. Berrangé (2):
-> >    ui: fix setting client_endian field defaults
-> >    ui: add trace events for all client messages
-> > 
-> >   ui/trace-events | 14 +++++++++++++
-> >   ui/vnc.c        | 53 +++++++++++++++++++++++++++++++++++++++++++++++++
-> >   2 files changed, 67 insertions(+)
+
+> On 13 Jul 2025, at 17.47, Zenghui Yu <zenghui.yu@linux.dev> wrote:
 > 
-> Hi!
+> We don't synchronize vcpu registers from the hardware accelerator (e.g., by
+> cpu_synchronize_state()) in the Dabort handler, so env->pc points to the
+> instruction which has nothing to do with the Dabort at all.
 > 
-> Has this series been forgotten?  It seems it should be in 10.1
-> and in 10.0.3.   It has 2 R-Bs.  Is it time to send a PullReq?
+> And it doesn't seem to make much sense to log PC in every Dabort handler,
+> let's just remove it from this trace event.
+> 
+> Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
 
-I have it pending a PR
+I agree. Unless cpu_synchronize_state(cpu) is called, the value in env->pc is
+stale.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Reviewed-by: Mads Ynddal <mads@ynddal.dk>
 
