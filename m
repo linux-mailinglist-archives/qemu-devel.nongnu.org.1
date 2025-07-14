@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6993B04C48
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 614F1B04BAE
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:10:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSHj-0007Yd-C3; Mon, 14 Jul 2025 19:08:35 -0400
+	id 1ubSHv-0000Te-Rg; Mon, 14 Jul 2025 19:08:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGm-0004Ph-1X
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:37 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGo-0004gj-P5
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGk-0005Yb-BW
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:35 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGn-0005ZC-7O
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534453;
+ s=mimecast20190719; t=1752534456;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=L7vnOqE9vYNzXZo7bToAkIslT5GpERjhTAHR0WEOusY=;
- b=Zd8eogKraZla5l/0zG8hi5Prn60+PDd5Lxyxa+QfHJ2dGE292DjCWeW3+om8a+HAs0tcr6
- CIj12Fqvc/2SxsE+ChfKoc4cjCf8K8vXUfRsoLJvGdTSghq9fBgGp8pB++lEFEovldB01w
- LSsLeUJwJ3/EjyQ9/SvDQX21Ith4ijw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wPt6vb4NOguzLj5ZSl/5mm8TsvLvcr6KKJ0kJGd7+D8=;
+ b=TjIoCOE1jdhTWQ6GbzROhiUKIcBt91fS+KhPdJeRddOImm33Ht8c4En3TMiSPM8NTcLIgW
+ zN1RsD3R174vYjnLIn4rwEYn/ZHJg5d9oFwMSqRh1P59UVFD35InWJuoRS2YeVJhn6/xNJ
+ T4RAVo9yFgM2/XHeLwXIYJh2yqEearI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-6tKhiRKWOYK-UbkGmFMcXA-1; Mon, 14 Jul 2025 19:07:32 -0400
-X-MC-Unique: 6tKhiRKWOYK-UbkGmFMcXA-1
-X-Mimecast-MFC-AGG-ID: 6tKhiRKWOYK-UbkGmFMcXA_1752534452
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4538f375e86so39562005e9.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:32 -0700 (PDT)
+ us-mta-635-jh4mwPQRN-Wq6FGr6Ow5qQ-1; Mon, 14 Jul 2025 19:07:35 -0400
+X-MC-Unique: jh4mwPQRN-Wq6FGr6Ow5qQ-1
+X-Mimecast-MFC-AGG-ID: jh4mwPQRN-Wq6FGr6Ow5qQ_1752534454
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-455ea9cb0beso26553885e9.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534451; x=1753139251;
+ d=1e100.net; s=20230601; t=1752534454; x=1753139254;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L7vnOqE9vYNzXZo7bToAkIslT5GpERjhTAHR0WEOusY=;
- b=Cit84Lxw2q4p1LC0juOTVNCgq+aZS4svLTf26YCnEr1ipOp2mOc0fjpi9fqBndhErQ
- FsQAy4eCr7XWFm2w8SL+B3bLQmVLCM87PX2AWXQmLO9vRXffBZCDD9ERyoZpH95wlLT3
- Bu3Sfh57jCRDSxG22AVhi4SCH+SmXnB/F7tkl8aAxUunZvJQldotWIE7yu2pluyzEZjE
- jTt6JEdRwW5DTNfuVgq6Us4g/QR4cnrWNCBas+UU0If1wxF2fw6VzoNW6hRh/zbmtkFw
- Vg9jgB98+yvIx5K61j8R5WQwcJBzAjIyJ4N24UxrtOYQkTRCSPyYGCTejbzwwSeU3dek
- nP/A==
-X-Gm-Message-State: AOJu0YxHqD9oIyd/8pBsT2ZS/GTkey3gQLad337aIgDfBFDLtQVG1oNe
- V4JEOAEcA9fSkV0zpnY2hbNGsgWsZAchwa3uRq0NLP8khPkbkB71el8TVUDd7Hj7PJH4N1vb2d2
- COW4LiDuNJ+urQu+WWjbQVbQousSgXGrkz9lWyaZpEwujrLf+njD5SHdJp3kBU6nns8Q6ClTPYL
- KU7URxPzT1kHHnS4LPSDzSYwCYQZ3JqmJh6w==
-X-Gm-Gg: ASbGncuFJtPzEeOl4MXqdcbdnwpRhnUEJOH0Zl1Hf9fmGvDhQUdpLm5QHhH+R6kVIpd
- tJmtzyBo6Z9FEauY17cacL6PwI6CM/hXXko+zr1AxEukcCPelATyJlWFg/YrR6IqUpc4l8U3Yv0
- mR9bQJEunjr/Acd9WDT/sMeQea5WErybTW6Eda9BU9jzZ3q1nvaVsVpJKOYsE5roeaU5gaAkiA/
- OpfbFCy7+8xTUDQFQ2p4RYcoP5cVSt2iT0c1gxT59/PLNP6FeNq8bE6FBgwqmt9A1VedQc7D6Yd
- H68RK3HRCQbMScYziE6FIHgbVfk7fXQJ
-X-Received: by 2002:a05:600c:4ecf:b0:456:1dd2:4e47 with SMTP id
- 5b1f17b1804b1-456273e2869mr4110885e9.15.1752534451280; 
- Mon, 14 Jul 2025 16:07:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMOWjx9YuSIHblq9C7KVh/Aeqjo2JAvJlZGv5t2sJVY748iPKsynCobQ31Mm0vyfik5lavfQ==
-X-Received: by 2002:a05:600c:4ecf:b0:456:1dd2:4e47 with SMTP id
- 5b1f17b1804b1-456273e2869mr4110685e9.15.1752534450739; 
- Mon, 14 Jul 2025 16:07:30 -0700 (PDT)
+ bh=wPt6vb4NOguzLj5ZSl/5mm8TsvLvcr6KKJ0kJGd7+D8=;
+ b=Q1Teqr1V5xcX8yaQNR9c0P9RKY3M/KrtKpL699bqJG4PdlnYq9WG0Ry9B9qhuMuY40
+ hSPY48MvWGk+dKcEyObVE4YsMNvpMM1aPV5HFdZDCmGp2lV7J5wfj+eRofuwPfo8Vhdk
+ 2jaR023u7sLd/iTNauuGbJfBwCYV+8TOUOEkROAOsrnDdfRqiboWzHDoQkbObUkLnmjc
+ hEuyM+j5YXngSRvvB2UKYb6rLgXUBRzO7B59VLcMqU40nBa6wqctJeXfMqHT3Ff0YlLJ
+ JB3z/UUbtdvpobNrPr4aVXadA7qr6sJf8vTYc2A79CK9iVpAKbWJw+5q08XmVPcvfaAC
+ DC1w==
+X-Gm-Message-State: AOJu0Yxxwu6pDjRiBHoX8NNnZNBSwrlpppJ4us5VnKw9UoRSni3rHkZr
+ 8If59bV0jgHwyDkHIkKkwfVYOAmJg/BlVqF21Vy9alx67WUTy3SIa9MIUT84h6QtvIrj/fP+VXe
+ hwDVOJ4xCbodNC5eUCbbmltsZ262ghoD7vZFax0KKZaJ7o3XPvr9xMuk/Lqf6WPyZd58jV+Ie1b
+ z2M1FdMsJu+wWt6H4tAH+ydLUNm3oSxcUNtw==
+X-Gm-Gg: ASbGncucIydQWwPjan7k0gxNLT5wI50o0MbbPth7pWWAlEbydpbFED/aalqLj+EadNe
+ P2+Ja+6akTgz9z5davjFDAGbzDfL1GsjK2labAm+WiYjeGRWi/jPRjtTeIqh4mUbzMOUMu+x+zX
+ trViWPOUQS6m2N77k9628bL9TpqDcvekUz8GE/lN9QFPZbvx4js9Ux+X3+u9xtzRANIDAZAc3lZ
+ F+qo2h6152h8cDI/C+QQk8hab0V6LlToZge0tUpWO58+0msfh/zhp0uywmMZFb6Y4Ziy/ONqgTW
+ Xp2s+b39eXhWANZsvlXLb+YfR+eIU1PI
+X-Received: by 2002:a05:600c:350f:b0:456:11a6:a511 with SMTP id
+ 5b1f17b1804b1-45611a6a7e3mr58872465e9.20.1752534453792; 
+ Mon, 14 Jul 2025 16:07:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEeOnn0D2d5TgSXbI8ldCKzoxgB9X5VfRRbvOro2/Ha8vVbqDigC/JTCBEBmqNWxzXhDYNiPQ==
+X-Received: by 2002:a05:600c:350f:b0:456:11a6:a511 with SMTP id
+ 5b1f17b1804b1-45611a6a7e3mr58872295e9.20.1752534453379; 
+ Mon, 14 Jul 2025 16:07:33 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d5050d34sm186355975e9.9.2025.07.14.16.07.28
+ 5b1f17b1804b1-4560f22cd14sm74606775e9.30.2025.07.14.16.07.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:07:30 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:07:28 -0400
+ Mon, 14 Jul 2025 16:07:32 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:07:30 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -75,8 +75,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 30/97] memory: Add permissions in IOMMUAccessFlags
-Message-ID: <945a6b11323b353f7f404eef748b708f1cb335dc.1752534227.git.mst@redhat.com>
+Subject: [PULL 31/97] memory: Allow to store the PASID in IOMMUTLBEntry
+Message-ID: <d900327d4b094e23b445498dd432762f27ae7b2a.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -111,68 +111,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 
-This will be necessary for devices implementing ATS.
-We also define a new macro IOMMU_ACCESS_FLAG_FULL in addition to
-IOMMU_ACCESS_FLAG to support more access flags.
-IOMMU_ACCESS_FLAG is kept for convenience and backward compatibility.
-
-Here are the flags added (defined by the PCIe 5 specification) :
-    - Execute Requested
-    - Privileged Mode Requested
-    - Global
-    - Untranslated Only
-
-IOMMU_ACCESS_FLAG sets the additional flags to 0
+This will be useful for devices that support ATS
+and need to store entries in an ATC (device IOTLB).
 
 Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Message-Id: <20250628180226.133285-3-clement.mathieu--drif@eviden.com>
+Message-Id: <20250628180226.133285-4-clement.mathieu--drif@eviden.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/system/memory.h | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ include/system/memory.h | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/include/system/memory.h b/include/system/memory.h
-index 46248d4a52..1672622d70 100644
+index 1672622d70..d6d069fd50 100644
 --- a/include/system/memory.h
 +++ b/include/system/memory.h
-@@ -109,15 +109,34 @@ struct MemoryRegionSection {
+@@ -144,6 +144,7 @@ struct IOMMUTLBEntry {
+     hwaddr           translated_addr;
+     hwaddr           addr_mask;  /* 0xfff = 4k translation */
+     IOMMUAccessFlags perm;
++    uint32_t         pasid;
+ };
  
- typedef struct IOMMUTLBEntry IOMMUTLBEntry;
- 
--/* See address_space_translate: bit 0 is read, bit 1 is write.  */
-+/*
-+ * See address_space_translate:
-+ *      - bit 0 : read
-+ *      - bit 1 : write
-+ *      - bit 2 : exec
-+ *      - bit 3 : priv
-+ *      - bit 4 : global
-+ *      - bit 5 : untranslated only
-+ */
- typedef enum {
-     IOMMU_NONE = 0,
-     IOMMU_RO   = 1,
-     IOMMU_WO   = 2,
-     IOMMU_RW   = 3,
-+    IOMMU_EXEC = 4,
-+    IOMMU_PRIV = 8,
-+    IOMMU_GLOBAL = 16,
-+    IOMMU_UNTRANSLATED_ONLY = 32,
- } IOMMUAccessFlags;
- 
--#define IOMMU_ACCESS_FLAG(r, w) (((r) ? IOMMU_RO : 0) | ((w) ? IOMMU_WO : 0))
-+#define IOMMU_ACCESS_FLAG(r, w)     (((r) ? IOMMU_RO : 0) | \
-+                                    ((w) ? IOMMU_WO : 0))
-+#define IOMMU_ACCESS_FLAG_FULL(r, w, x, p, g, uo) \
-+                                    (IOMMU_ACCESS_FLAG(r, w) | \
-+                                    ((x) ? IOMMU_EXEC : 0) | \
-+                                    ((p) ? IOMMU_PRIV : 0) | \
-+                                    ((g) ? IOMMU_GLOBAL : 0) | \
-+                                    ((uo) ? IOMMU_UNTRANSLATED_ONLY : 0))
- 
- struct IOMMUTLBEntry {
-     AddressSpace    *target_as;
+ /*
 -- 
 MST
 
