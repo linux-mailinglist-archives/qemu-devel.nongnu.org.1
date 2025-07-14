@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E930EB03D2C
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94EB0B03DA0
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:46:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHDL-0005bj-TW; Mon, 14 Jul 2025 07:19:26 -0400
+	id 1ubHUx-00077m-Lu; Mon, 14 Jul 2025 07:37:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH1g-00025I-TK
+ id 1ubH1h-00025k-AS
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH1b-0002ER-Oe
+ id 1ubH1e-0002FD-SK
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491230;
+ s=mimecast20190719; t=1752491233;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=X4vIGW+jVgxph6j7hy7m8DEr7QyusibOiGAbD/TBzyM=;
- b=cMHFlFwpCs3h6mmeV5Lgc1sewy6ihZG7GvL5OVn3aDFKuUKnHMoKmOR/AyqXbz8o8cfBAr
- KjrMClAQxRY81cNHyb8SGi/3OqxpKQefo0Cc21TbEUwRVshQV+mqyf6MlUVnhtGrTWBwiQ
- In1VV+4JFJoJWyRAMH0In6zSU1mmKBQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pn1f+8iSLRhTUyqVf1Bje+hqAFutT6rdOPYDnkNfnJg=;
+ b=AGs5WPvheWiGMm4fQdgzinrGJCmBjtQvrdGiXjDIomj32FosJfl9tV/hmpOEieaW842r/n
+ Wtn+/NA5qv8rVRYYhfID/1ByPBoN2dGC0BiViD9tXxL7jqAKH5cblYCFlee+IpXotCEYne
+ Y+JxIGhPDq0+O75QaWkcAHqIDAIIYNY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-120-Gr4DJyvUN8iUPdqDr2s_FQ-1; Mon, 14 Jul 2025 07:07:09 -0400
-X-MC-Unique: Gr4DJyvUN8iUPdqDr2s_FQ-1
-X-Mimecast-MFC-AGG-ID: Gr4DJyvUN8iUPdqDr2s_FQ_1752491228
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-455f79a2a16so19545975e9.2
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:07:09 -0700 (PDT)
+ us-mta-423-7LN-6krQN7-GXNe_-iQ21w-1; Mon, 14 Jul 2025 07:07:11 -0400
+X-MC-Unique: 7LN-6krQN7-GXNe_-iQ21w-1
+X-Mimecast-MFC-AGG-ID: 7LN-6krQN7-GXNe_-iQ21w_1752491230
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a4eeed54c2so2276309f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:07:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491227; x=1753096027;
+ d=1e100.net; s=20230601; t=1752491230; x=1753096030;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X4vIGW+jVgxph6j7hy7m8DEr7QyusibOiGAbD/TBzyM=;
- b=CL1LJ9ZnRQw9hgYrDKF5T2kd6z1PgK82bi2cUQ9Gd0s0uV/fmmJ6vCSruq2Xu7oiEg
- cc0wDeM53/WVpOfJ4s0H7h2b0PI1Sb1xnPI/SKX6oKZaaSzM7yCRrjNWNcwYZ+LlhdDJ
- Kq8uMMvYQSam4rE9DyREBwKGJmFyFvpzXrlYVcDNc2eLHsUvaAlxo/5BgVc7rlItGNDt
- VF/ncq4tEHuylbPkSoOWbwED3U8TED+XQEBoMJ2qYlQd+82zdF4MoXjDojXbYTVf72EP
- ojNgM4VaCOZ16uQwUacb3GhTPvG3DDY9CpJ/yBUFdGij/DrWr7dWqiwl0/miyVXXFTdt
- SWwQ==
-X-Gm-Message-State: AOJu0Ywu6UH2lcoGSR2lRzzU0PxeFx1LBNooXLq78f5l6RdfQXVVPY/s
- +0flqsgWYgv7uLyCNcvYr3WDsdouHk8xAdY6stFY2iInCcI7YSvhbvBxXAEhma/Q65qhHSWB5lF
- Zk6f8alVfjWKCKdPYxBPm+UmtjwR63JnXINGxvsL85i+e0xWwOHm3yctY2f1RKBqtwLe6G8G7+Z
- E2txvdsT5pQ6sMyrVWYMn++NxB4dPfJlLYT48PLs7M
-X-Gm-Gg: ASbGncusdbtFFep3KEt2q610NVlMGon001t3gK4sSGAAYYb4a49Fl6myqGbAd6FNswr
- s7eupJUlIP1OGiDkMm0mUmlsf8197VvpXZfBCIOWW6m7AhQf+U65w5MjyTTReZi7uA4zrLViG6G
- CqF16QSqmW/zW/4yvtEQ8Fh3VaswnqnCUexU0EBpAZ6wBlnMuChSYa/QO/ilCdeUpxGVKyvvfWr
- VIuyORGEjgzrEIEWuCtstjYeZacoSagko19bl3CYAem3r0QBi09In9XanISmG/k9oXlFqshi9gV
- LHygaVzORlN7OPyekJIhMX+6s0FO4TTRr00ZMxceZ94=
-X-Received: by 2002:a05:600c:3481:b0:456:1442:854 with SMTP id
- 5b1f17b1804b1-45614420b17mr46988295e9.24.1752491227184; 
- Mon, 14 Jul 2025 04:07:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE22Ji03Q7JG/6cd2n1WL9crEzQBnaoCanKn4DZ2t4b+u4X0RJjQ1zQsbt6auTjB2n39uRTxw==
-X-Received: by 2002:a05:600c:3481:b0:456:1442:854 with SMTP id
- 5b1f17b1804b1-45614420b17mr46987945e9.24.1752491226714; 
- Mon, 14 Jul 2025 04:07:06 -0700 (PDT)
+ bh=pn1f+8iSLRhTUyqVf1Bje+hqAFutT6rdOPYDnkNfnJg=;
+ b=s1tja+9AgqFeADgpfH5dTvBQc4sQ8Ru9LRfhz1sVrZrzXRO4m8s/JG+6bqgiil4xUC
+ 6VZGsitTmxA4ssQXBvSHz+cm5TVDB2IwvTeibNf2EMGSVOFtsU2hB/frTEpBTgYk+wFT
+ VTrenMHLNVRoU/vWTiDdgZ90aPUaMe6FcxoipQK7K4SsAM1kfMCgwF0saogjNYdM5eUw
+ mJv2C3kSF55u6watO4kpatcvk5i4+dbk5HbGcXgz5mRBysc3s19y9YUZ9Y6HOrDY7Kqa
+ Xjz1U0OdBYlV3O1TJRKFXo6lwKR4YdVQPcEE76m1cJ+OP9BOuaAYbYIbMQKyLfGtaajM
+ NEXg==
+X-Gm-Message-State: AOJu0YyMKroPimnb9m2MfFIFaa0OHeSU3BNhMFNg05cII4BHtUn1sW8q
+ HxATncz+KQh7LlFWhogsLhXHkm+ZVTZzqxr3EttCemsifClG6ew3WReffz8C5z6gxzYI7x7kQVd
+ suzNxEJtNoRxxVWNZKmK1C0bEfM4CID2nOU/q/U4pkiZSNCw7JEsSopsCc0/M8GnqHTuG+fTpqn
+ io8vLLIHPKjyHYGOji6nblLfWNBznPlM85JuNK5XLZ
+X-Gm-Gg: ASbGncv0oeZ1pg7tjp6Lx5D4+zGBUbRjc3v17VhlKtjL/cniNw28477Ye2KJPCm/1oc
+ aZNxseufPqEiYwfSYHJpEzCBtHazJXBR3t1VMzrymaXAfa6opt3ZcV2/5wTG+RHmWEoqK7KA/0J
+ ODfzYpQpmVup69vNRJGK2E/gTy5wyzTE4RlpA7mUgDuon5K8lWYuFS3J2bbupKUwzwdsAJq/1SJ
+ GVYEswvztsrf8Doc30izAaab90BsMvTN1fBEDcZPyu+DU5C3cp+OeQdlZD6xGy09w5MiyYtHlu/
+ VpW2FHLIMBWm3hZ5l7jA4VehzQ6/ossmgwjf2+1o4MY=
+X-Received: by 2002:a05:6000:40dd:b0:3a0:b940:d479 with SMTP id
+ ffacd0b85a97d-3b5f18f8066mr11785466f8f.53.1752491229717; 
+ Mon, 14 Jul 2025 04:07:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF9mBfPYxyWyRPaNNjLGf1KGTal4rWuWE4mZVIi1Y3vkGj8rznA6wAb0jCIUF1DzBY+BSYMew==
+X-Received: by 2002:a05:6000:40dd:b0:3a0:b940:d479 with SMTP id
+ ffacd0b85a97d-3b5f18f8066mr11785430f8f.53.1752491229251; 
+ Mon, 14 Jul 2025 04:07:09 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8bd1833sm11796439f8f.8.2025.07.14.04.07.04
+ ffacd0b85a97d-3b5e8e262c6sm11924008f8f.85.2025.07.14.04.07.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:07:04 -0700 (PDT)
+ Mon, 14 Jul 2025 04:07:07 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>,
-	Tao Su <tao1.su@linux.intel.com>
-Subject: [PULL 69/77] i386/cpu: Mark CPUID 0x80000007[EBX] as reserved for
- Intel
-Date: Mon, 14 Jul 2025 13:03:58 +0200
-Message-ID: <20250714110406.117772-70-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Tao Su <tao1.su@linux.intel.com>,
+ Yi Lai <yi1.lai@intel.com>
+Subject: [PULL 70/77] i386/cpu: Mark CPUID 0x80000008 ECX bits[0:7] & [12:15]
+ as reserved for Intel/Zhaoxin
+Date: Mon, 14 Jul 2025 13:03:59 +0200
+Message-ID: <20250714110406.117772-71-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -112,45 +112,59 @@ From: Zhao Liu <zhao1.liu@intel.com>
 
 Per SDM,
 
-80000007H EAX Reserved = 0.
-          EBX Reserved = 0.
+80000008H EAX Linear/Physical Address size.
+              Bits 07-00: #Physical Address Bits*.
+              Bits 15-08: #Linear Address Bits.
+              Bits 31-16: Reserved = 0.
+          EBX Bits 08-00: Reserved = 0.
+              Bit 09: WBNOINVD is available if 1.
+              Bits 31-10: Reserved = 0.
           ECX Reserved = 0.
-          EDX Bits 07-00: Reserved = 0.
-              Bit 08: Invariant TSC available if 1.
-              Bits 31-09: Reserved = 0.
+          EDX Reserved = 0.
 
-EAX/EBX/ECX in CPUID 0x80000007 leaf are reserved for Intel.
+ECX/EDX in CPUID 0x80000008 leaf are reserved.
 
-At present, EAX is reserved for AMD, too. And AMD hasn't used ECX in
-QEMU. So these 2 registers are both left as 0.
+Currently, in QEMU, only ECX bits[0:7] and ECX bits[12:15] are encoded,
+and both are emulated in QEMU.
 
-Therefore, only fix the EBX and excode it as 0 for Intel.
+Considering that Intel and Zhaoxin are already using the 0x1f leaf to
+describe CPU topology, which includes similar information, Intel and
+Zhaoxin will not implement ECX bits[0:7] and bits[12:15] of 0x80000008.
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Therefore, mark these two fields as reserved and clear them for Intel
+and Zhaoxin guests.
+
 Reviewed-by: Tao Su <tao1.su@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627035129.2755537-3-zhao1.liu@intel.com
+Tested-by: Yi Lai <yi1.lai@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20250714080859.1960104-3-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ target/i386/cpu.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index ae508fa962d..533c9d9abc7 100644
+index 533c9d9abc7..1a2cae6ea1f 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -8376,7 +8376,11 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-     }
-     case 0x80000007:
-         *eax = 0;
--        *ebx = env->features[FEAT_8000_0007_EBX];
-+        if (cpu->vendor_cpuid_only_v2 && IS_INTEL_CPU(env)) {
-+            *ebx = 0;
-+        } else {
-+            *ebx = env->features[FEAT_8000_0007_EBX];
+@@ -8393,6 +8393,17 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+              *eax |= (cpu->guest_phys_bits << 16);
+         }
+         *ebx = env->features[FEAT_8000_0008_EBX];
++
++        /*
++         * Don't emulate Bits [7:0] & Bits [15:12] for Intel/Zhaoxin, since
++         * they're using 0x1f leaf.
++         */
++        if (cpu->vendor_cpuid_only_v2 &&
++            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
++            *ecx = *edx = 0;
++            break;
 +        }
-         *ecx = 0;
-         *edx = env->features[FEAT_8000_0007_EDX];
-         break;
++
+         if (threads_per_pkg > 1) {
+             /*
+              * Bits 15:12 is "The number of bits in the initial
 -- 
 2.50.0
 
