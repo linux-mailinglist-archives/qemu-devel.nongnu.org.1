@@ -2,75 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52657B03AE3
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CA0B03B40
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:46:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubFaD-0004TZ-32; Mon, 14 Jul 2025 05:34:49 -0400
+	id 1ubFlE-0004Af-NU; Mon, 14 Jul 2025 05:46:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubFWp-0002OV-95
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:31:25 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1ubFXs-00031M-FQ; Mon, 14 Jul 2025 05:32:30 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubFWm-0003sN-SY
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:31:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752485477; x=1784021477;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=L3mfYb+8uULrCsZfg+p6WhqdOevhuFXnqsXkvJkvCnk=;
- b=VY0elqh0dFw9OGl5iMEHNICd0hunP8cerbwWIiKeVl1W5mQClOSvrn7E
- PK950MQS7vXGVWpVaHi7sLaSeqcGdfPkWqcBpwQ6MUWv5uI3n99OhnBYs
- x6s5TCQaM068scES3NFBHjvuOQypdc6GNEACU4lVd0gHlPNxFsq7MVoST
- ++g2pswZm5LjyzRDBEQ8WL1Isexj1TEGQPFyyIQAc6ibeDHD48G7MByZn
- nfhAWp3wcUGapvqk4QPYfiyqT/RbPym1WW1pGVIPSsYsnzwlocuIdjZFe
- MxEw6eGMmy5P4+2+NM6wNfRSTXG2V36o8lg1hMtKi2pOY7dZCFtnYmHET w==;
-X-CSE-ConnectionGUID: M747mz9WTq6FrRf0lQH6MQ==
-X-CSE-MsgGUID: 147RyGTnRyqyHp8eUCOd3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54826461"
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="54826461"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 02:31:14 -0700
-X-CSE-ConnectionGUID: t/39GAc2QgOy3y9GYhWEcQ==
-X-CSE-MsgGUID: IGVdnOQ4S1CvKcvXAel42w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="157377436"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 02:31:13 -0700
-Message-ID: <8e7414d9-c53d-4f10-9053-3ab3afc39d03@intel.com>
-Date: Mon, 14 Jul 2025 17:31:10 +0800
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1ubFXl-00040m-B3; Mon, 14 Jul 2025 05:32:23 -0400
+Received: from [157.82.206.39] ([157.82.206.39]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 56E9Viad087593
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Mon, 14 Jul 2025 18:31:57 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=+8HGDbhAn09FdTQ9BmyGXXC74ug6db6ifTOWovIuvN8=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=From:Date:Subject:Message-Id:To;
+ s=rs20250326; t=1752485517; v=1;
+ b=qpJEdJQ48ygDI4blgZL1+UNUvswKQ3BMii/HDNjNOZsk8W4idsl6Pd6Yw01J3Ahm
+ Y4CtDP3THnS10zQqYPYCjqvmmf6xiSJzTuTAMgSGrMMaxbOEK6GDw9cUDKGHwJfJ
+ gBUEn7BObvQMJ/wtSNDF6PclILy1Bz+SkwdwG9rqhZm8sTP3ad7YcloRRBvna+PY
+ p4B11ad06DZ1SJKIMhFo/3lZarYCwJ4+1sU6JP3yxFuPYihwe1MxtfLKJLVhvWrQ
+ a2YzpfsNbudM6cQbzXDm6YGa5cBhTj1k/3/ANwft7pgxiVsyh9aHBY4z/HsEg2az
+ kKGimGjvFxvESvipG/sfEA==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Date: Mon, 14 Jul 2025 18:31:41 +0900
+Subject: [PATCH RFC v2] virtio-net: Fix VLAN filter table reset timing
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] qemu-optios: Fix, cleanup and add description of
- tdx-guest
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <20250714091953.448226-1-xiaoyao.li@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250714091953.448226-1-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Message-Id: <20250714-vlan-v2-1-2d589ba4dcd3@rsg.ci.i.u-tokyo.ac.jp>
+X-B4-Tracking: v=1; b=H4sIAHzOdGgC/1WMywrCMBBFf6XM2oSkT3UlCH6AW+liTNN2qiQlq
+ cFS8u+G7lyeew9nA68daQ/nbAOnA3myJkF+yECNaAbNqEsMucgr0ciChTcadlRSNFhX2J0kJHV
+ 2uqfvnnnA/XaFNo0j+cW6dU8HuV//lSCZZFioXjxVj3VZXpwfuCJO/MMW+1otR8WnGdoY4w9iO
+ 4RMqgAAAA==
+X-Change-ID: 20250713-vlan-8c107a65ad91
+To: Konstantin Shkolnyy <kshk@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: yin31149@gmail.com, eperezma@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, virtualization@lists.linux.dev,
+ qemu-stable@nongnu.org, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.14.2
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,29 +72,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/14/2025 5:19 PM, Xiaoyao Li wrote:
-> Patch 1 is the fix to generated doc html.
-> 
-> Patch 2-4 are the cleanup of memory-encryption
-> 
-> Patch 5 add description of tdx-guest.
+Problem
+-------
 
-get_maintainer.pl doesn't provide me the maintainer of qemu-options.hx.
+The expected initial state of the table depends on feature negotiation:
 
-I have to send the series to the folks I'm familiar with in the QEMU 
-community. Hope you can help cc the correct people.
+With VIRTIO_NET_F_CTRL_VLAN:
+  The table must be empty in accordance with the specification.
+Without VIRTIO_NET_F_CTRL_VLAN:
+  The table must be filled to permit all VLAN traffic.
 
-> Xiaoyao Li (5):
->    qemu-options: Move sgx-epc options from "M" to "machine"
->    i386/sev: Remove the example that references memory-encryption
->    qemu-options: Change memory-encryption to confidential-guest-support
->      in the example
->    qemu-options: Add confidential-guest-support to machine options
->    qemu-options: Add description of tdx-guest object
-> 
->   qemu-options.hx   | 66 ++++++++++++++++++++++++++++++++++++++---------
->   target/i386/sev.c |  4 ---
->   2 files changed, 54 insertions(+), 16 deletions(-)
-> 
+Prior to commit 06b636a1e2ad ("virtio-net: do not reset vlan filtering
+at set_features"), virtio_net_set_features() always reset the VLAN
+table. That commit changed the behavior to skip table reset when
+VIRTIO_NET_F_CTRL_VLAN was negotiated, assuming the table would be
+properly cleared during device reset and remain stable.
+
+However, this assumption breaks when a driver renegotiates features:
+1. Initial negotiation without VIRTIO_NET_F_CTRL_VLAN (table filled)
+2. Renegotiation with VIRTIO_NET_F_CTRL_VLAN (table will not be cleared)
+
+The problem was exacerbated by commit 0caed25cd171 ("virtio: Call
+set_features during reset"), which triggered virtio_net_set_features()
+during device reset, exposing the bug whenever VIRTIO_NET_F_CTRL_VLAN
+was negotiated after a device reset.
+
+Solution
+--------
+
+Fix the issue by initializing the table when virtio_net_set_features()
+is called to change the VIRTIO_NET_F_CTRL_VLAN bit of
+vdev->guest_features.
+
+This approach ensures the correct table state regardless of feature
+negotiation sequence by performing initialization in
+virtio_net_set_features() as QEMU did prior to commit 06b636a1e2ad
+("virtio-net: do not reset vlan filtering at set_features").
+
+This change still preserves the goal of the commit, which was to avoid
+resetting the table during migration, by checking whether the
+VIRTIO_NET_F_CTRL_VLAN bit of vdev->guest_features is being changed;
+vdev->guest_features is set before virtio_net_set_features() gets called
+during migration.
+
+It also avoids resetting the table when the driver sets a feature
+bitmask with no change for the VIRTIO_NET_F_CTRL_VLAN bit, which makes
+the operation idempotent and its semantics cleaner.
+
+Additionally, this change ensures the table is initialized after
+feature negotiation and before the DRIVER_OK status bit being set for
+compatibility with the Linux driver before commit 50c0ada627f5
+("virtio-net: fix race between ndo_open() and virtio_device_ready()"),
+which did not ensure to set the DRIVER_OK status bit before modifying
+the table.
+
+Fixes: 06b636a1e2ad ("virtio-net: do not reset vlan filtering at set_features")
+Cc: qemu-stable@nongnu.org
+Reported-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+Not tested.
+
+Konstantin, I would also want you to test this new version. Please also
+give it Tested-by, and, if possible, Reviewed-by.
+---
+Changes in v2:
+- Addressed a concern with old drivers that do not properly set
+  DRIVER_OK (pointed out by Michael S. Tsirkin).
+- Noted that this change does not simply revert commit 06b636a1e2ad
+  ("virtio-net: do not reset vlan filtering at set_features") but
+  preserves its goal.
+- Added Cc: qemu-stable@nongnu.org.
+- Link to v1: https://lore.kernel.org/qemu-devel/20250713-vlan-v1-1-a3cf0bcfa644@rsg.ci.i.u-tokyo.ac.jp
+---
+ hw/net/virtio-net.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 221252e00a50a46033d7ec8d18936e7c8196a6ca..623c11b82e0a7fe1ae0095bf23a285f66322b948 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -998,8 +998,9 @@ static void virtio_net_set_features(VirtIODevice *vdev, uint64_t features)
+         vhost_net_save_acked_features(nc->peer);
+     }
+ 
+-    if (!virtio_has_feature(features, VIRTIO_NET_F_CTRL_VLAN)) {
+-        memset(n->vlans, 0xff, MAX_VLAN >> 3);
++    if (virtio_has_feature(vdev->guest_features ^ features, VIRTIO_NET_F_CTRL_VLAN)) {
++        bool vlan = virtio_has_feature(features, VIRTIO_NET_F_CTRL_VLAN);
++        memset(n->vlans, vlan ? 0 : 0xff, MAX_VLAN >> 3);
+     }
+ 
+     if (virtio_has_feature(features, VIRTIO_NET_F_STANDBY)) {
+@@ -3900,6 +3901,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+     n->mac_table.macs = g_malloc0(MAC_TABLE_ENTRIES * ETH_ALEN);
+ 
+     n->vlans = g_malloc0(MAX_VLAN >> 3);
++    memset(n->vlans, 0xff, MAX_VLAN >> 3);
+ 
+     nc = qemu_get_queue(n->nic);
+     nc->rxfilter_notify_enabled = 1;
+@@ -3990,7 +3992,6 @@ static void virtio_net_reset(VirtIODevice *vdev)
+     memset(n->mac_table.macs, 0, MAC_TABLE_ENTRIES * ETH_ALEN);
+     memcpy(&n->mac[0], &n->nic->conf->macaddr, sizeof(n->mac));
+     qemu_format_nic_info_str(qemu_get_queue(n->nic), n->mac);
+-    memset(n->vlans, 0, MAX_VLAN >> 3);
+ 
+     /* Flush any async TX */
+     for (i = 0;  i < n->max_queue_pairs; i++) {
+
+---
+base-commit: f0737158b483e7ec2b2512145aeab888b85cc1f7
+change-id: 20250713-vlan-8c107a65ad91
+
+Best regards,
+-- 
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
 
