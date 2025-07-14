@@ -2,116 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAECAB047A4
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 20:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F00A6B04828
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 21:58:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubOOi-0000vW-8p; Mon, 14 Jul 2025 14:59:32 -0400
+	id 1ubPHq-0005CH-UJ; Mon, 14 Jul 2025 15:56:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1ubNGx-0001P5-Uw; Mon, 14 Jul 2025 13:47:37 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1ubNGq-0007on-TY; Mon, 14 Jul 2025 13:47:23 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56EGIZuw028372;
- Mon, 14 Jul 2025 17:47:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=UtNbU8
- 9/mn+icfZ0kcH6kLcLLmnAi9GFwbMpzXezI7c=; b=R/4zo1vu0hS4SVZLcU96zd
- hREdnfHmGFQKxpRpjeBcX5nER0HFUv6Rd13/QAw7zrsVdTmdyeOmZF4b4Z3J34fO
- V7IPZughRjThsof4Pn85aMg2A48bM40TPNoHWMmun1YTdl1hUj3OQF7skSqifgwL
- sX0l3fRtuA/2T8mdG1Dp/TZO1phg36Sd8JQmj4Fdd0Q6iaVCrKm31SsAk/89YWu/
- 5l+Zxb1IHtNtlyYSFkjWqVaXACf6hctneoNCx5zPpZL7PoalGAT8fCbfoIqtouTR
- ubjpp/B7DAnniEGcpUZpua+vOEZaHoOHYCcJrhZ52uZKMOFRmdT/6quWkfUJTTAg
- ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47vdfmdw48-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jul 2025 17:47:14 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56EHK5UQ008150;
- Mon, 14 Jul 2025 17:46:37 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47v2e0f2e3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jul 2025 17:46:37 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 56EHkaT06357724
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Jul 2025 17:46:36 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4D55D58050;
- Mon, 14 Jul 2025 17:46:36 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EE05E58045;
- Mon, 14 Jul 2025 17:46:34 +0000 (GMT)
-Received: from [9.12.68.85] (unknown [9.12.68.85])
- by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 14 Jul 2025 17:46:34 +0000 (GMT)
-Message-ID: <cdfb6342-dcbb-4b01-b88a-38c75d924ac7@linux.ibm.com>
-Date: Mon, 14 Jul 2025 13:46:34 -0400
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1ubO6Q-0002Ua-2s; Mon, 14 Jul 2025 14:40:38 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1ubNx7-0004nz-AE; Mon, 14 Jul 2025 14:31:02 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-ae0dffaa8b2so921571766b.0; 
+ Mon, 14 Jul 2025 11:31:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1752517858; x=1753122658; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6UDaLxDt7pCkG06zk8nYJQiI9Ye1w8YFGf5TfnP/8Es=;
+ b=nWjdrfWqm6MWczlYJ26yypPkZR0BuWxgsStqoAKKvXnEXVkWl2AXmIODyRSO0B4rEt
+ Zd5zCfSJ+TG4YXm/fAyIq+xmWXkRsicmBaFAHkiOFcWfW7S55+Mvmxp8zJG1/8yStT+N
+ zW7a9s2pIVTRRAoNQWX+4PpAcceXZvqUZdd19dBtZzSHhlJgJaj1XUaVaooGBaRLKjos
+ J3mjETeul1zxsqZ1wWq51jNtps694HqPm7Rcr//SVsb/N62QSli1AcmpjjgwuYv0+d3A
+ 6ZLMj1gSmgwWjnGWRiunjFXzCFxnYepG3RcOSpIeASKceJSXww64Y4D7OTFwoSfBIhGU
+ RJkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752517858; x=1753122658;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6UDaLxDt7pCkG06zk8nYJQiI9Ye1w8YFGf5TfnP/8Es=;
+ b=Ezeyf8bE5oHHclDoQoy0Wg8tRAmjmE4645TMf17J6cJtSNZpVpshR9p5NXca0+pczj
+ NH3jqZaW7B0Q/nl8dw3zTjzk1D30mbQbp9YhYVQ7DGWojyYpFu4Q1FmyjW/x9iEA8IOE
+ LizUa306pbK5UGptEvUixP+E9QOcbmaHhv9rGLU+RVae1lFnoAtvKpT15SH8KvudigTF
+ 9fZ/6IT+ZuEfzIMoB8Mla4D32ACz3IdqP6Go3MKJ3mokA874yWQMNZ8TTfqVTiA8bEgT
+ M6mUU+/fjp6IlLPSudrigl7l42oOz8b+0OsoSaKmIdiuZ/liqlENB5zAY3AoxnlVKX1n
+ iksA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWB7eQUpd0nq37n4mFcfz5U4+SLCxo1y+/XQPKRW1iA8kLjmsU4XxNF/qIL1UzjPADHvsFBt7vLcQ==@nongnu.org
+X-Gm-Message-State: AOJu0Yzf9vAIHsdgEChpKmHfaRXjeidgkeaKKxQNY7afo9Du0KhqFIoe
+ hiFtvzKVNvRPk1grhyXS2i1NgNhY0niuYZm7e048BnfKeJd4hmSxrBawQM+b5Q==
+X-Gm-Gg: ASbGnctbFLBhCWin4TBQuQC58nPoBfklIQkC9WGjADPHWVJkSf56OUDm6Az0sKkssrc
+ mdXZuGlLORv+Ebv/PNKwksYtDxXYW6BGcOJBm6IUxeGW0QZt5I2Gk+pJEHGaEgarJLcIganXWrH
+ 2J4FbC5aqg/cEmy9ZwJXbFXmoKUNxBktTfghdk/WucqHC8z+162bvcIipSlX21R0nX+jwE98UP0
+ x8wusMHM4sbTJqgvSsu78bJZ8viy9Vph7SatHPqTWKBWH93gPVFR//HxP7nFzUKx0MOVzcvPzvn
+ YH/Lfdjx9t1HtkaWQ1mv+82qh7oUGyAGGjol0rb6YmBVKKoXZ3U6Awt8Uv0S0S+0zelolZA9lLg
+ 4RokcPHotHqnw1ZuPOh5GvEAXMpxupRZfuCNqW9fFKFI0yIp2KhHZ3XJsdRjMudetjQF2yJ0bbA
+ /j/pmqcN8AruRTp8D8H7sqI7Ck3DbDmQ==
+X-Google-Smtp-Source: AGHT+IFcvPIcxAgKqHOJI8azPpAI7Qm1M+LhAZVJRYEkQvx73YZukApeDj7wQhS/jLGeuPeOggdmjg==
+X-Received: by 2002:a17:907:6ea9:b0:ae3:bd96:78cd with SMTP id
+ a640c23a62f3a-ae6fbc10ae7mr1476215966b.7.1752517858010; 
+ Mon, 14 Jul 2025 11:30:58 -0700 (PDT)
+Received: from ?IPv6:::1?
+ (dynamic-2a02-3100-2f9c-9100-bd73-623e-7632-a2ac.310.pool.telefonica.de.
+ [2a02:3100:2f9c:9100:bd73:623e:7632:a2ac])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ae71c875129sm589056666b.17.2025.07.14.11.30.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 14 Jul 2025 11:30:57 -0700 (PDT)
+Date: Mon, 14 Jul 2025 17:48:41 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+CC: qemu-arm@nongnu.org,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v2 0/3] DTB build housekeeping
+In-Reply-To: <20250708204806.1898-1-shentey@gmail.com>
+References: <20250708204806.1898-1-shentey@gmail.com>
+Message-ID: <550AFBF3-E264-4223-987D-D153FEF8957C@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 20/28] pc-bios/s390-ccw: Add signature verification for
- secure IPL in audit mode
-To: Thomas Huth <thuth@redhat.com>, Jared Rossi <jrossi@linux.ibm.com>,
- Zhuoying Cai <zycai@linux.ibm.com>, berrange@redhat.com,
- richard.henderson@linaro.org, david@redhat.com, pbonzini@redhat.com,
- qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-Cc: jjherne@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- farman@linux.ibm.com, mjrosato@linux.ibm.com, iii@linux.ibm.com
-References: <20250711211105.439554-1-zycai@linux.ibm.com>
- <20250711211105.439554-21-zycai@linux.ibm.com>
- <eccbac31-7c1d-4b75-a284-a46ad98675db@linux.ibm.com>
- <80ebd632-5b56-4391-b60d-f6a64f311e7f@linux.ibm.com>
- <2c1bd3f0-731c-4ca7-9f43-50c3c572aaa6@redhat.com>
-Content-Language: en-US
-From: Collin Walling <walling@linux.ibm.com>
-In-Reply-To: <2c1bd3f0-731c-4ca7-9f43-50c3c572aaa6@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: q5ZQL4ezKx_hX6FDNf3z6WA28IfzdSqi
-X-Authority-Analysis: v=2.4 cv=JOI7s9Kb c=1 sm=1 tr=0 ts=687542a3 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=uV63gYRwOBysfW4DI5UA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: q5ZQL4ezKx_hX6FDNf3z6WA28IfzdSqi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDExMiBTYWx0ZWRfX3OxEfzrmPVkW
- 3VmSIoERJOmy4F5UZplRN5xugc/oNBibLnZVZoGeh8uqlwmoBnO3jTFHKWKlkEt/icy3J/ifiDK
- WvD/5JkUTOB9nqhJEhuJggcBuKJLVH5rK9cD4QCY6IjfydI9GQQ1vcDp8nevqeilYBdMqgpMOS/
- 3LOb6tjOsli56saHdFPK6PZ74niQTg+MXEA5hrEhhm1b/1ca4IfKMMPCalbNqJLbTnCZsrAIEUS
- icKj3Llpk6kd8mIpD1yscygm4+SZZfVffvYozquBUkGJsJs0iBB3HD5DDxpTg9EllDlLqGuGY6C
- tUR40ThOSec21eTvUUJ/La2F+A2aofncAuTFHM100PoKdh8IZrdjPef8IOfuVJLLEghyBYE28d7
- /yH6HmokVanTnGg0m8/RZw6OZ0Pex5THEwR9NZrI+Qu83hQf+Y1Q2FwVMo027oiKkWxDY9Ty
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-14_02,2025-07-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015 bulkscore=0
- priorityscore=1501 mlxscore=0 spamscore=0 adultscore=0 impostorscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507140112
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=walling@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,53 +107,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/14/25 11:34 AM, Thomas Huth wrote:
-> On 14/07/2025 16.54, Jared Rossi wrote:
->>
->> [snip...]
->>>> +
->>>> +        entry++;
->>>> +
->>>> +        if ((uint8_t *)(&entry[1]) > tmp_sec + MAX_SECTOR_SIZE) {
->>>> +            puts("Wrong entry value");
->>>> +            return -EINVAL;
->>>> +        }
->>> Can someone who is more informed than I am of the IPL process please
->>> explain to me what is the purpose of the above check?  Why does it check
->>> if the next entry, the one which isn't going to be inspected/loaded, is
->>> within the bounds of tmp_sec?  This has been here since this file's
->>> inception and I can't find any documentation or mention that supports it.
->>>
->>> This code precludes any of the secure IPL changes.
->>>
->>> Was this actually meant to be entry[0] to ensure the actual entry we
->>> want to work on is not outside the bounds of tmp_sec?  Or perhaps it was
->>> meant to be done before the increment to entry?
->>>
->>
->> I noticed that as well and came to the same conclusions as you, which is to 
->> say,
->> it has always been that way and it is not clear what the purpose is, but it 
->> does
->> not appear to have any impact on the proposed secure IPL functionality.
 
-Fair enough.  Let's keep the current code in and address it later.
-Thanks, Jared.
 
-> 
-> I think it's meant as a check for the *end* of entry[0], so it's likely just 
-> a quirky way of saying:
-> 
->     if (((uint8_t *)entry) + sizeof(*entry) > tmp_sec + MAX_SECTOR_SIZE)
-> 
-> ?
-> 
->   Thomas
-> 
+Am 8=2E Juli 2025 20:48:03 UTC schrieb Bernhard Beschow <shentey@gmail=2Ec=
+om>:
+>This series removes the bundled device tree blobs from the repository whi=
+ch are
+>redundant to the bundled device tree sources=2E To make this work, the de=
+vice tree
+>compiler 'dtc' is now required whenever libfdt is used=2E Furthermore, dt=
+c can now
+>be built from the bundled libfdt if needed=2E
+>
+>v2:
+>* Allow building dtc from bundled libfdt (Paolo)
+>* Find dtc iff libfdt is used (Paolo)
+>* Remove dtc configure option (now obsolete)
 
-This makes a lot more sense to me.  Thanks, Thomas.
+Ping
 
--- 
-Regards,
-  Collin
+>
+>Bernhard Beschow (3):
+>  hw/microblaze: Add missing FDT dependency
+>  configure: Ensure existance of dtc when libfdt is used
+>  pc-bios/dtb: Remove device tree blobs
+>
+> MAINTAINERS                                   |   2 +-
+> meson=2Ebuild                                   |  16 +++--
+> hw/microblaze/Kconfig                         |   4 +-
+> pc-bios/dtb/bamboo=2Edtb                        | Bin 3211 -> 0 bytes
+> pc-bios/dtb/canyonlands=2Edtb                   | Bin 9779 -> 0 bytes
+> pc-bios/dtb/meson=2Ebuild                       |  17 ++---
+> pc-bios/dtb/petalogix-ml605=2Edtb               | Bin 9882 -> 0 bytes
+> pc-bios/dtb/petalogix-s3adsp1800=2Edtb          | Bin 8161 -> 0 bytes
+> subprojects/dtc=2Ewrap                          |   1 +
+> =2E=2E=2E/packagefiles/dtc-meson-override=2Epatch     |  62 ++++++++++++=
+++++++
+> 10 files changed, 85 insertions(+), 17 deletions(-)
+> delete mode 100644 pc-bios/dtb/bamboo=2Edtb
+> delete mode 100644 pc-bios/dtb/canyonlands=2Edtb
+> delete mode 100644 pc-bios/dtb/petalogix-ml605=2Edtb
+> delete mode 100644 pc-bios/dtb/petalogix-s3adsp1800=2Edtb
+> create mode 100644 subprojects/packagefiles/dtc-meson-override=2Epatch
+>
 
