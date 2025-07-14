@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58936B03B3C
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E66DEB03B2F
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:44:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubFjD-0002uJ-RA; Mon, 14 Jul 2025 05:44:09 -0400
+	id 1ubFjK-0002xk-Vm; Mon, 14 Jul 2025 05:44:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubFTq-00013h-EQ
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:22 -0400
+ id 1ubFTm-000137-Lx
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:19 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubFTl-0003Eh-0R
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:13 -0400
+ id 1ubFTk-0003EU-6H
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752485289; x=1784021289;
+ t=1752485288; x=1784021288;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FB0fZNdTYpwcn9/HGH9AHlXJ8al41jgEAb5jOqIWwek=;
- b=SDHntWmMfsoojmLcr9hO8jd4e3DFFz/kBsUCDRsX41IRW2az4+y2mUVF
- /pVIxX8N4JROko3wFWY6pHldBb144Sx+WIpAuQLrhjJlWWUl3YOuvnujC
- 8k8X5MUfeU1LxZjUudpXmHplqT38afhBXmb4TYcnDAtJ7pWcgEmLbZBtt
- lA2Vu/kDimxWBZsW9Z7IYx716Pc/CAQgyJ18J22wkWXBo4/itw7MMY+38
- Dn63wqLuGJuSXn/aL9N2xzv0xL/gc6genj6tQhYS7f1rY4kYd4kz3txIz
- E/m6hQSSXJ0Lm3gIcb45jwvCnlMUyWTA33/YNMLhCPUhgPkynCTK/cUAb g==;
-X-CSE-ConnectionGUID: tYYVb4HOQSC3xrfW9VnRAw==
-X-CSE-MsgGUID: aE3IaogYTXmNvzlHX4b2Cw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66029286"
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="66029286"
+ bh=BpfZqeedCcgSEGxeIlGdqTtbkaF5iKh1zX1XRjAMOIo=;
+ b=QnUXVF3drP72gYkxRtBzEtEwVXT8hmICFOpB8jhg9DIDGCEYGO50Ycs0
+ LGBmMvhnNIM8V89upWV/5DMIiOr0K0/cGxgMLQAsO4mWFJ9OoPX6ZvL5R
+ 1yohTKgA+n9xdL3y0N9EHC3dG5HRRSycA9hEaPQGHIZ1/xz3qwcf/0zv7
+ T8YyGMqcOPp7qdmREBHhh1DNo/w63PRmN0Jofkj0/VAb6gSdysvDLgGp3
+ zB/QTeknAvSm7m4GOaieHvItOAOjhezVYS4EBiKAXYNK0AsRxkHvx+asK
+ /tm8c0Q/ux5xIgv1V3hVr7FQcGg3Hqv0SNIk3mjjeGbDKysqLVcvHyqUj w==;
+X-CSE-ConnectionGUID: 75RA3QtPQD+ti5o5ERnn4g==
+X-CSE-MsgGUID: JnbN6WOQRCe2QZbzbHLSog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66029296"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="66029296"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 02:28:05 -0700
-X-CSE-ConnectionGUID: Nux5FFbGQUK2xF+uUmY9cw==
-X-CSE-MsgGUID: uvtkfgdiT9m8qKVNzuyl6A==
+ 14 Jul 2025 02:28:06 -0700
+X-CSE-ConnectionGUID: AFiNJOUJQ12h6p+tKzXmAw==
+X-CSE-MsgGUID: LeXLREfPQJyVnUYjPleTsg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="187882743"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="187882747"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa002.jf.intel.com with ESMTP; 14 Jul 2025 02:28:04 -0700
+ by orviesa002.jf.intel.com with ESMTP; 14 Jul 2025 02:28:06 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH 3/5] qemu-options: Change memory-encryption to
- confidential-guest-support in the example
-Date: Mon, 14 Jul 2025 17:19:51 +0800
-Message-ID: <20250714091953.448226-4-xiaoyao.li@intel.com>
+Subject: [PATCH 4/5] qemu-options: Add confidential-guest-support to machine
+ options
+Date: Mon, 14 Jul 2025 17:19:52 +0800
+Message-ID: <20250714091953.448226-5-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250714091953.448226-1-xiaoyao.li@intel.com>
 References: <20250714091953.448226-1-xiaoyao.li@intel.com>
@@ -83,28 +83,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"confidential-guest-support" is the recommended property instead of
-"memory-encryption". Switch to "confidential-guest-support" in the
-example of sev-guest.
+"confidential-guest-support" is the recommended property to configure
+machine with confidential computing technology instead of
+"memory-encryption".
+
+Add "confidential-guest-support" to machine options and call out
+explicitly "memory-encryption" is the alias of it and not recommended.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- qemu-options.hx | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qemu-options.hx | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/qemu-options.hx b/qemu-options.hx
-index 740323f22bc2..27b7b79c6cad 100644
+index 27b7b79c6cad..5c400114c2e5 100644
 --- a/qemu-options.hx
 +++ b/qemu-options.hx
-@@ -5986,7 +5986,7 @@ SRST
-              # |qemu_system_x86| \\
-                  ...... \\
-                  -object sev-guest,id=sev0,cbitpos=47,reduced-phys-bits=1 \\
--                 -machine ...,memory-encryption=sev0 \\
-+                 -machine ...,confidential-guest-support=sev0 \\
-                  .....
+@@ -36,7 +36,8 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+     "                dea-key-wrap=on|off controls support for DEA key wrapping (default=on)\n"
+     "                suppress-vmdesc=on|off disables self-describing migration (default=off)\n"
+     "                nvdimm=on|off controls NVDIMM support (default=off)\n"
+-    "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
++    "                confidential-guest-support='object-id' specifies confidential guest support object (default=none)\n"
++    "                memory-encryption='object-id' (memory-encryption is the alias of confidential-guest-support, recommend to use confidential-guest-support)\n"
+     "                hmat=on|off controls ACPI HMAT support (default=off)\n"
+ #ifdef CONFIG_POSIX
+     "                aux-ram-share=on|off allocate auxiliary guest RAM as shared (default: off)\n"
+@@ -99,8 +100,12 @@ SRST
+     ``nvdimm=on|off``
+         Enables or disables NVDIMM support. The default is off.
  
-     ``-object authz-simple,id=id,identity=string``
++    ``confidential-guest-support=``
++        confidential guest support object to use. The default is none.
++
+     ``memory-encryption=``
+-        Memory encryption object to use. The default is none.
++        The alias of ``confidential-guest-support``. Recommend to use
++        confidential-guest-support.
+ 
+     ``hmat=on|off``
+         Enables or disables ACPI Heterogeneous Memory Attribute Table
 -- 
 2.43.0
 
