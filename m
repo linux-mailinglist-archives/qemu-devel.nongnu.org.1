@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4D7B04C23
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A17B04C41
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:27:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSIa-0003wF-I7; Mon, 14 Jul 2025 19:09:30 -0400
+	id 1ubSIQ-0002ek-FA; Mon, 14 Jul 2025 19:09:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHb-0006jk-9U
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHe-0007D8-50
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHZ-0005hh-7P
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHc-0005iX-Fr
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534504;
+ s=mimecast20190719; t=1752534507;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=6/OhfZLKBwpQCNEpQVAmadE4Z6ccjSU0gbMdCkgwst8=;
- b=FK7ee7MrGKBgzNKzC3nLWetl7p53pH72zWeqiAwdVxKvHaEovJwxSoCiELSqEGAsml+txX
- o0tH2DiJ9dPk7I9J7dkFychWmwOVLqPPgVavhld4f2Ai9v47c4gb2I9d4Z4N+5cuiDW+re
- a/Z+WLJN6rr7X4NPbweTBvFysxB4IDQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mJT1WNX9x5yUAyAqjvE4oJoegL0vp/Icnnrd7gTuHFs=;
+ b=SErng7NPq5sdZb31tqD5Pb1RhXeEaU1ybOC8m0sYmLOxMwvD628Rh34xh696IiEduAUjia
+ XK2jIstOHwWqgzOPpKLOQmiQ5N8t8eKFCvdiSHHVrVKgiOcSeDSjtwDR7DIafMr2n/00M5
+ BLl6P1NQ/nEVgY6iOCF82OYHpDzxgeU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-zvgi3xthNjmVKtvpWNX9ew-1; Mon, 14 Jul 2025 19:08:23 -0400
-X-MC-Unique: zvgi3xthNjmVKtvpWNX9ew-1
-X-Mimecast-MFC-AGG-ID: zvgi3xthNjmVKtvpWNX9ew_1752534502
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-455e9e09afeso16525125e9.2
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:23 -0700 (PDT)
+ us-mta-338-unK_XWmbORS8YD4hmxhFpQ-1; Mon, 14 Jul 2025 19:08:26 -0400
+X-MC-Unique: unK_XWmbORS8YD4hmxhFpQ-1
+X-Mimecast-MFC-AGG-ID: unK_XWmbORS8YD4hmxhFpQ_1752534504
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a50816cc58so1639107f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534502; x=1753139302;
+ d=1e100.net; s=20230601; t=1752534504; x=1753139304;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6/OhfZLKBwpQCNEpQVAmadE4Z6ccjSU0gbMdCkgwst8=;
- b=o8e4dqkfUJVo31Kn2kr0jG59KidBRV/winhFFHtbTE/2llAHqpzURd1lwy89dbPMgN
- 3zWgK0iWKidj+rxHfPSCrAUZ/dnTLQt9y98Zsi73IS57cUwpxqGjiaHDaRJxnXbEIqNu
- FQFIv1dYg7XdxTraKNtpX2LgrWvGBxmMXhZSv1/+IPrVDJg5YhXLOBCVkxTE8mlVlRb0
- uS3HA22n86nCDUTamFvG81y8VcRhjcK8BGISZaTPwoANi6WghxDgsqrtQON4df5nBibj
- ZUDaHTek2xTrlbABBY1p06k+XqUT7BicOTkpk00Yo9c60n3HF2LnFSweHYPufTYENH3b
- eQug==
-X-Gm-Message-State: AOJu0YzoenyE59qgCwvoDfsX//oxLykinIAi0XVXlfE/8WO0pI4cZ97I
- A5VAUJRyJJN30NcBuSrrY4BNneQJOJTqBOsSY8POBrq3dGBu8oY2bZ3D8I+thVBknTjwqsfvSc9
- 3rb1bPEfxDFo17iXbCYKV2z205OQe7krI9UAQwkyGYyMCS9Oz31Uny580iUWIZJg6vxPM/dBSoz
- EtjcnSJ3ZDdYawpEwkIDF0PFd/5/9b3JdfkQ==
-X-Gm-Gg: ASbGnctHUf1Y4j1TRk0Z6qkF8ah7fpxU5lXErAVokeXZZ9Dto0f+vmFP9wNl11MSF+c
- i/4PJMFyiPSR6uEHCJTDdZvfkkUmECR+3LXOa3mJI8uiVEVYaz6nqCJRQfTe2iDqmPEpiXC1/xP
- DqCwmDRT7OVVZP2zYDz5QLDVFTY+/8zXSnUI9W1u25sp7Z/dynSAaKWQQeOjvBln3oHd8AGN5Gc
- OiYXK7gmuSigAPuPqWnvlUR1PUMaBInwBHjWBt/woQuf+YRTM+iJDKvlZ++w6QBYJG4FkbX96ej
- aaj0aib5QB4FMGvpvL4tRS2uVe96BijM
-X-Received: by 2002:a05:600c:4713:b0:450:ceb2:67dd with SMTP id
- 5b1f17b1804b1-454f427985emr130106075e9.33.1752534501814; 
- Mon, 14 Jul 2025 16:08:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5lSilpg5VmNcVVXqHek7z6XkJ4Ehxy457Be+BA/lzQFLEG4FIUj+uFoHoy/aCSLW31eHtmw==
-X-Received: by 2002:a05:600c:4713:b0:450:ceb2:67dd with SMTP id
- 5b1f17b1804b1-454f427985emr130105875e9.33.1752534501337; 
- Mon, 14 Jul 2025 16:08:21 -0700 (PDT)
+ bh=mJT1WNX9x5yUAyAqjvE4oJoegL0vp/Icnnrd7gTuHFs=;
+ b=BnR/Hq6A2EtQKO5VV+8rrmB5c9xUn+qeGg8W+XPO72ZdQBGM4uRmwQj3uMiA4ejxNE
+ 2vwxlJJBc1OTEFGY2wDTtOh3z7ejndWLmuQqyQKUr0PigMHvIoiBwJ/CQUOUJGTtgR11
+ mJVuZwTHKI3WoevoDHeWgu9vh37US5tAPErYsWmtJlTmlBEMUWResaCt5EBf6pJWHod5
+ Cn9RPOlMS8WoS8D7UqsyCAyFKw8iaRH16t74TCEmrIrAf4Mm9Dyw1mc4+YsHGBSBDP9T
+ V2/yxduw5IWPoBL+LW3NOvOtbZhtDAzzMZb/NdikCvJQa/I6Y09TXE9Ibr5aA8oOgmP/
+ yhfg==
+X-Gm-Message-State: AOJu0Yw3bfDwZ8vlk6vvQxsGJ2+gUSG1yIghnROiXqhdfDRvnzomPYdV
+ W77MpqwobfofGP9GLKviWYNlK3xdYAAacs+ErU0GlDkLe6DeGPU9ldS0L2uqGf798iWAhmefL0+
+ /jpggbWtFKTBj8jLmQRkWuobw4UhwMGoZM+eF6Q2J5D4ofzDULZNB+yE/sPecDAgkVjJdTQwQhb
+ GfXqRKgMW27IbEcDd4D6MRfJdAwFDpUBrmzQ==
+X-Gm-Gg: ASbGnctzKsLjN3ox64qOScjh6hRp5dlbqIIb227xYlUXhFJLmu3261Euif87FesLzsn
+ L42AD+0e26ApKiADyI2R0jvTFbmEiYL35VtKLrWtW8WkZzO6J/S9aJWd2ZOYh06qNiLR2JWxmbo
+ NClhRqPg3npkbNTsea22f5Wvw8DVMLZPNlp97ClWPiDYfeyLYt8rPQ9tD5Yf3vEsfSM/ne1b6+q
+ 3y2sg6RIidx6lhKZ8GzAT5QAS8Iw9iWN4AEQX7p3jQ3JzfhtM+mhZFUe0WhDl9R+JlLnVro/BFE
+ ZnJ67/IL90iHmnwEuGJW2+utC570P61Q
+X-Received: by 2002:a05:6000:3ca:b0:3a1:f5c4:b81b with SMTP id
+ ffacd0b85a97d-3b5f188e6demr11854241f8f.23.1752534503777; 
+ Mon, 14 Jul 2025 16:08:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGVrW9fQiE3mgxHGGRHnXBLCFJE7Egt7JpJyOVIAfcQFr0jF/PqWr0Iy7VF0tsoK+mzHkpXPw==
+X-Received: by 2002:a05:6000:3ca:b0:3a1:f5c4:b81b with SMTP id
+ ffacd0b85a97d-3b5f188e6demr11854213f8f.23.1752534503244; 
+ Mon, 14 Jul 2025 16:08:23 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45610a39cacsm69264855e9.38.2025.07.14.16.08.20
+ ffacd0b85a97d-3b5e8bd1784sm13431907f8f.5.2025.07.14.16.08.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:08:21 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:08:19 -0400
+ Mon, 14 Jul 2025 16:08:22 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:08:21 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>,
  Gustavo Romero <gustavo.romero@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>,
  Jonathan Cameron <jonathan.cameron@huawei.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 49/97] hw/pci-host/gpex-acpi: Add native_pci_hotplug arg to
- acpi_dsdt_add_pci_osc
-Message-ID: <7e0f0871641a0a1b77180da67505c81f8e825900.1752534227.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 50/97] tests/qtest/bios-tables-test: Prepare for changes in
+ the DSDT table
+Message-ID: <0c6b596140b82ac6b3204bf0c491a6f05f24c658.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -111,70 +110,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Add a new argument to acpi_dsdt_add_pci_osc to be able to disable
-native pci hotplug.
+This commit adds DSDT blobs to the whilelist in the prospect to
+allow changes in the GPEX _OSC method.
 
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Message-Id: <20250714080639.2525563-4-eric.auger@redhat.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20250714080639.2525563-5-eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/pci-host/gpex-acpi.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-index 0aba47c71c..f34b7cf25e 100644
---- a/hw/pci-host/gpex-acpi.c
-+++ b/hw/pci-host/gpex-acpi.c
-@@ -50,7 +50,7 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq,
-     }
- }
- 
--static void acpi_dsdt_add_pci_osc(Aml *dev)
-+static void acpi_dsdt_add_pci_osc(Aml *dev, bool enable_native_pcie_hotplug)
- {
-     Aml *method, *UUID, *ifctx, *ifctx1, *elsectx, *buf;
- 
-@@ -77,11 +77,12 @@ static void acpi_dsdt_add_pci_osc(Aml *dev)
-     aml_append(ifctx, aml_store(aml_name("CDW3"), aml_name("CTRL")));
- 
-     /*
--     * Allow OS control for all 5 features:
--     * PCIeHotplug SHPCHotplug PME AER PCIeCapability.
-+     * Allow OS control for SHPCHotplug, PME, AER, PCIeCapability,
-+     * and PCIeHotplug depending on enable_native_pcie_hotplug
-      */
--    aml_append(ifctx, aml_and(aml_name("CTRL"), aml_int(0x1F),
--                              aml_name("CTRL")));
-+    aml_append(ifctx, aml_and(aml_name("CTRL"),
-+               aml_int(0x1E | (enable_native_pcie_hotplug ? 0x1 : 0x0)),
-+               aml_name("CTRL")));
- 
-     ifctx1 = aml_if(aml_lnot(aml_equal(aml_arg(1), aml_int(0x1))));
-     aml_append(ifctx1, aml_or(aml_name("CDW1"), aml_int(0x08),
-@@ -192,7 +193,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-             if (is_cxl) {
-                 build_cxl_osc_method(dev);
-             } else {
--                acpi_dsdt_add_pci_osc(dev);
-+                acpi_dsdt_add_pci_osc(dev, true);
-             }
- 
-             aml_append(scope, dev);
-@@ -267,7 +268,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-     }
-     aml_append(dev, aml_name_decl("_CRS", rbuf));
- 
--    acpi_dsdt_add_pci_osc(dev);
-+    acpi_dsdt_add_pci_osc(dev, true);
- 
-     Aml *dev_res0 = aml_device("%s", "RES0");
-     aml_append(dev_res0, aml_name_decl("_HID", aml_string("PNP0C02")));
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..8d9673cb5d 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,12 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/DSDT",
++"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
++"tests/data/acpi/aarch64/virt/DSDT.memhp",
++"tests/data/acpi/aarch64/virt/DSDT.pxb",
++"tests/data/acpi/aarch64/virt/DSDT.topology",
++"tests/data/acpi/loongarch64/virt/DSDT.memhp",
++"tests/data/acpi/loongarch64/virt/DSDT.topology",
++"tests/data/acpi/loongarch64/virt/DSDT.numamem",
++"tests/data/acpi/loongarch64/virt/DSDT",
++"tests/data/acpi/x86/microvm/DSDT.pcie",
++"tests/data/acpi/riscv64/virt/DSDT",
 -- 
 MST
 
