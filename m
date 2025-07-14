@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24398B04C45
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B419DB04C38
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:27:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSMf-0004A9-Bj; Mon, 14 Jul 2025 19:13:42 -0400
+	id 1ubSMV-00035Y-SP; Mon, 14 Jul 2025 19:13:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSJS-000600-L6
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:10:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSJW-00061g-Mo
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:10:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSJR-00063E-0U
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:10:22 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSJU-00063l-Pu
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:10:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534619;
+ s=mimecast20190719; t=1752534622;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=h9YR5w450ZjJ0pBgGMl41SlLEhDoh07LQFY/a0XBD2c=;
- b=W5Jl/npBER6KTJayFrIXR0Y3Y0gv4IAiUoqR6ZBfmErOpLPDMFARfoCGQ/hIvjONLn1jp2
- JCaGvnXgpzO0LmunFuUoOiKXN3Yvan04vTxoBpJ4JwQpc35mp2hTdKqPbyIqkoV5bxTyP4
- /AWpUi3Qzb/Cv/UBrth13ndlYvO5Dwo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xH0Hadx8VDWbsC99yPU6FzlCEOXY/KFNLOZusRRYw4I=;
+ b=OdjMCkK6QKGuu7HKWzyTk0TIrAIhM9eJ+gnvEbb/LdVt9y2jMuv6sS9h1jEM+PPNCCuwJR
+ yoRhN+J+IbEjWeJyBd5/zKdqW+SsFnjKBkeRQIvnAn5ZAyoowKTkpGIUYLXA7Y/uVLzqrX
+ U8B/8I0DjlGiZ33nFCNB8sw5wp8/Nw0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-365-4eJClQlBPXu-qbMjEXMKlg-1; Mon, 14 Jul 2025 19:10:18 -0400
-X-MC-Unique: 4eJClQlBPXu-qbMjEXMKlg-1
-X-Mimecast-MFC-AGG-ID: 4eJClQlBPXu-qbMjEXMKlg_1752534617
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a50049f8eeso2120717f8f.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:10:17 -0700 (PDT)
+ us-mta-319-qmfRLH4rO0atdoYcovNDBQ-1; Mon, 14 Jul 2025 19:10:21 -0400
+X-MC-Unique: qmfRLH4rO0atdoYcovNDBQ-1
+X-Mimecast-MFC-AGG-ID: qmfRLH4rO0atdoYcovNDBQ_1752534620
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a4ff581df3so1964291f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:10:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534616; x=1753139416;
+ d=1e100.net; s=20230601; t=1752534620; x=1753139420;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=h9YR5w450ZjJ0pBgGMl41SlLEhDoh07LQFY/a0XBD2c=;
- b=m/FMkCY5l/YXWSxtIAd+dmV3UZYd7BwEilzYcEE/+2VYD+ahbCunRQqjaPQYbpvLyP
- EmG7t26xjIUByvajmA015A3KHp1yV162vl0Ht/D50KGZNx/U5k27Pt9da8ZflE9LcC2C
- GepFgtzPMlC4IAPGbDHBnFItPZJIBjfEp9NCKJlwNWySfVZQtkjECxSs7kwOt6Mxiv2h
- OxJt4zMBUERdPfGYCxmqhIUwIYjLkrzXeQC6JNI2iHji+3MY1D91bGKIjtPejlzcuk7i
- 4XT4gsAsW0ZpWQPxvcDElyw/FbEaEoAoilLvApJHdGh7Jq5eQKeTudfwkPyYc79UnpHV
- K+1A==
-X-Gm-Message-State: AOJu0YxNGXKFqVRp5qpbD4gcjKhixlaDcMgY/Ml+vX0g6gzo9zxwBICS
- x9hwGO10Ff52EdPtR3+upp+hH2uWthYWCqKdLeKtpw8mANh0VOQbK9CqhDQ121kdVQmf9TctXUn
- Y1suWQB5MdvoeyOzttDYtxMzoicWNMfeaFuThmDJmTGlttI3OnLcl7nw13+BCbEJBmn25+f1yJK
- COMSuPSSUdcy22RXUcVTUJT5GqYaFbN/9+Ug==
-X-Gm-Gg: ASbGncvZ4N1nk5JUVb65EjC5mQDbXuCcfJYQmIoFmFIrb/mcESx6Kz285ZUt2TuAAWF
- e0tWoRJP3hhRFV1IBzBklvb4mvwgxAsAh1rpLNtTZJZBB5TltgIsN/UzxjcQP5TpUjKE9QK1juz
- mkp+aR9mwl272FJR3NrbpGWRJzsEi5gl9I2W2Phb9+pjQ0yLCip/YUgx9GWxPlj8xAVq37ZQBc1
- OYqnRyq6RDnIskgUyDE+lE++iFLzeqRN4uE+Fg3KSb1HgvEi8AQEU6QUuIApJvxbhk3Ob6zyfKh
- FtO2cPRlFWWiJHV3NPinD935xRyIrbMV
-X-Received: by 2002:a05:6000:d12:b0:3a5:8d0b:d0b8 with SMTP id
- ffacd0b85a97d-3b5f18e7af8mr10881984f8f.54.1752534616622; 
- Mon, 14 Jul 2025 16:10:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEyaJCJ6DeYwyDTrWsLhB1aMaEjo9ElFl2Uj0Z0y5ylSRUUqZJ1jGH7FkjN8RhDftwYEXuDaQ==
-X-Received: by 2002:a05:6000:d12:b0:3a5:8d0b:d0b8 with SMTP id
- ffacd0b85a97d-3b5f18e7af8mr10881967f8f.54.1752534616188; 
- Mon, 14 Jul 2025 16:10:16 -0700 (PDT)
+ bh=xH0Hadx8VDWbsC99yPU6FzlCEOXY/KFNLOZusRRYw4I=;
+ b=O7V/EK0tZ+hDfn5WmoKXmJVw8H4gqOLtBRY7bLfAPBnIFJFCkY5WdheYhjBBccxVpP
+ USAi79wnedMpp/XnjTdVfvVD3ZLBb8p/7G3FNz7wfIxEutY/Q8TtZRRa5AhiCy9uBaWN
+ Ld5QgM//jCo8pF3NeSoVG8rr44DsVSVUp4EmC6Av9YVi3Cvbl8ZCSlwqtAE7LwJFHTxJ
+ cv2WiQahYQbWqjGgQdUFPEt01RwaVI61DthU3U5ueZsKAbHy1AQL2ecpClxiaF1yhGN0
+ ksFZPKI4TceH5fgSXVX4X2lWImv3/kYxbsh2921/w9dssd8DmIbnri8X9+vPjl/6Saw5
+ +rew==
+X-Gm-Message-State: AOJu0YxyW7JlNZAjY1/l4NdNEtXCwTeRYhuMB0tPQ1JaodEKndYvEwTX
+ NskjuVFGttz1yCMo3IYhlpqXlD3t84FwDeSfG5zORhRH0fhbjNQnIrHrt4FVrOVzLKMhhyjb7uC
+ T2LdgBxpPzPknRk226K4sAP5Txv/SE4cymjTk8OECOhsCotmQFijR0Cl2YW/j+chQTHzwvX38WF
+ +zmG+jHzPqsQX+R/clKXuShuZItf/yRSrHOg==
+X-Gm-Gg: ASbGncsxgnX1ZzAE0KOy10yU3NIUpB2ZvRXWEIh/d3z2hJ7VrA+2LMHHkIGOA/VGE/y
+ 2OLU3ZSXh/tYQ5q2XG6kmVCO5a6udbdxfY8pephGohTz71ztQG8nhqPf7NnCDnr+mWOJnizxw81
+ ePZcQIkyjcVQZ/NivAvDyws+uiJ+h3UdxdTxLDqiEcO+cCd6hWzyTW51m7DvrrEKPop5H/fyep1
+ S2/EeQ1+8AUkjlk36fSyNsAhKOa9tcHGUc4a3PK6BEeL2POuVfpTSm4JhIcQcyRsSh6DlidmXHs
+ n64CvvWOXwWxGlGWr0/Z7tCexWACC8pH
+X-Received: by 2002:a5d:5f86:0:b0:3b5:e6bf:97b3 with SMTP id
+ ffacd0b85a97d-3b6095203bemr1064112f8f.4.1752534619817; 
+ Mon, 14 Jul 2025 16:10:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFntv/Un948yZlYBcCDPEYqwwzA2OgWsygeZ21LVv18doLG0rJLdzwU3vMCX0O8EAxaGd0Y6A==
+X-Received: by 2002:a5d:5f86:0:b0:3b5:e6bf:97b3 with SMTP id
+ ffacd0b85a97d-3b6095203bemr1064093f8f.4.1752534619322; 
+ Mon, 14 Jul 2025 16:10:19 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc3a54sm13747494f8f.39.2025.07.14.16.10.14
+ 5b1f17b1804b1-456178ace19sm54583895e9.19.2025.07.14.16.10.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:10:15 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:10:13 -0400
+ Mon, 14 Jul 2025 16:10:18 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:10:16 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Anisa Su <anisa.su@samsung.com>, Fan Ni <fan.ni@samsung.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL 91/97] hw/cxl: Move definition for dynamic_capacity_uuid and
- enum for DC event types to header
-Message-ID: <cea6073998e96235893b65894d9896494773fda6.1752534227.git.mst@redhat.com>
+Subject: [PULL 92/97] hw/mem: cxl_type3: Add DC Region bitmap lock
+Message-ID: <69fd70566d15188681b9b2c51fb799e030e287e6.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -110,69 +109,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Anisa Su <anisa.su@samsung.com>
 
-Move definition/enum to cxl_events.h for shared use in next patch
+Add a lock on the bitmap of each CXLDCRegion in preparation for the next
+patch which implements FMAPI Set DC Region Configuration. This command
+can modify the block size, which means the region's bitmap must be updated
+accordingly.
+
+The lock becomes necessary when commands that add/release extents
+(meaning they update the bitmap too) are enabled on a different CCI than
+the CCI on which the FMAPI commands are enabled.
 
 Reviewed-by: Fan Ni <fan.ni@samsung.com>
 Signed-off-by: Anisa Su <anisa.su@samsung.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20250714174509.1984430-6-Jonathan.Cameron@huawei.com>
+Message-Id: <20250714174509.1984430-7-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/cxl/cxl_events.h | 15 +++++++++++++++
- hw/mem/cxl_type3.c          | 15 ---------------
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ include/hw/cxl/cxl_device.h | 1 +
+ hw/mem/cxl_type3.c          | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-index 38cadaa0f3..758b075a64 100644
---- a/include/hw/cxl/cxl_events.h
-+++ b/include/hw/cxl/cxl_events.h
-@@ -184,4 +184,19 @@ typedef struct CXLEventDynamicCapacity {
-     uint32_t tags_avail;
- } QEMU_PACKED CXLEventDynamicCapacity;
- 
-+/* CXL r3.1 Table 8-50: Dynamic Capacity Event Record */
-+static const QemuUUID dynamic_capacity_uuid = {
-+    .data = UUID(0xca95afa7, 0xf183, 0x4018, 0x8c, 0x2f,
-+                 0x95, 0x26, 0x8e, 0x10, 0x1a, 0x2a),
-+};
-+
-+typedef enum CXLDCEventType {
-+    DC_EVENT_ADD_CAPACITY = 0x0,
-+    DC_EVENT_RELEASE_CAPACITY = 0x1,
-+    DC_EVENT_FORCED_RELEASE_CAPACITY = 0x2,
-+    DC_EVENT_REGION_CONFIG_UPDATED = 0x3,
-+    DC_EVENT_ADD_CAPACITY_RSP = 0x4,
-+    DC_EVENT_CAPACITY_RELEASED = 0x5,
-+} CXLDCEventType;
-+
- #endif /* CXL_EVENTS_H */
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index 7e0a66906f..42ae5b7479 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -540,6 +540,7 @@ typedef struct CXLDCRegion {
+     uint8_t flags;
+     unsigned long *blk_bitmap;
+     uint64_t supported_blk_size_bitmask;
++    QemuMutex bitmap_lock;
+     /* Following bools make up dsmas flags, as defined in the CDAT */
+     bool nonvolatile;
+     bool sharable;
 diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 6b0889c9ae..52d3910ed9 100644
+index 52d3910ed9..a7a1857a0c 100644
 --- a/hw/mem/cxl_type3.c
 +++ b/hw/mem/cxl_type3.c
-@@ -1876,21 +1876,6 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
+@@ -692,6 +692,7 @@ static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
+         };
+         ct3d->dc.total_capacity += region->len;
+         region->blk_bitmap = bitmap_new(region->len / region->block_size);
++        qemu_mutex_init(&region->bitmap_lock);
      }
+     QTAILQ_INIT(&ct3d->dc.extents);
+     QTAILQ_INIT(&ct3d->dc.extents_pending);
+@@ -1020,6 +1021,7 @@ void ct3_set_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
+         return;
+     }
+ 
++    QEMU_LOCK_GUARD(&region->bitmap_lock);
+     bitmap_set(region->blk_bitmap, (dpa - region->base) / region->block_size,
+                len / region->block_size);
+ }
+@@ -1046,6 +1048,7 @@ bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
+      * if bits between [dpa, dpa + len) are all 1s, meaning the DPA range is
+      * backed with DC extents, return true; else return false.
+      */
++    QEMU_LOCK_GUARD(&region->bitmap_lock);
+     return find_next_zero_bit(region->blk_bitmap, nr + nbits, nr) == nr + nbits;
  }
  
--/* CXL r3.1 Table 8-50: Dynamic Capacity Event Record */
--static const QemuUUID dynamic_capacity_uuid = {
--    .data = UUID(0xca95afa7, 0xf183, 0x4018, 0x8c, 0x2f,
--                 0x95, 0x26, 0x8e, 0x10, 0x1a, 0x2a),
--};
--
--typedef enum CXLDCEventType {
--    DC_EVENT_ADD_CAPACITY = 0x0,
--    DC_EVENT_RELEASE_CAPACITY = 0x1,
--    DC_EVENT_FORCED_RELEASE_CAPACITY = 0x2,
--    DC_EVENT_REGION_CONFIG_UPDATED = 0x3,
--    DC_EVENT_ADD_CAPACITY_RSP = 0x4,
--    DC_EVENT_CAPACITY_RELEASED = 0x5,
--} CXLDCEventType;
--
- /*
-  * Check whether the range [dpa, dpa + len - 1] has overlaps with extents in
-  * the list.
+@@ -1067,6 +1070,7 @@ void ct3_clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
+ 
+     nr = (dpa - region->base) / region->block_size;
+     nbits = len / region->block_size;
++    QEMU_LOCK_GUARD(&region->bitmap_lock);
+     bitmap_clear(region->blk_bitmap, nr, nbits);
+ }
+ 
 -- 
 MST
 
