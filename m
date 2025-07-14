@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670FBB03E67
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 14:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 321C7B03E63
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 14:12:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHET-00079S-4s; Mon, 14 Jul 2025 07:20:29 -0400
+	id 1ubHET-0007Cm-LH; Mon, 14 Jul 2025 07:20:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGz6-0000bo-Bz
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:43 -0400
+ id 1ubH11-0001in-5P
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGyz-0001XI-Rh
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:33 -0400
+ id 1ubH0s-00026P-Rh
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491068;
+ s=mimecast20190719; t=1752491184;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MhCvQkGWRngHOw7qyfN17pVt/8jmU8Gd43OpCo3NXd4=;
- b=Bc+BnJ5qRVlQ0D2LQFGWzR962XlWpk4H54Ks+dPojWBk3xK1O71rGjtBDoPa3oXO+MQFjw
- YMVwNvVOpxSL+i5pL5RTMUnQQzt3CgT+7UFilRKACOUFoDk/LlTF3mwVfRpLcjaH0F64Hr
- IRrk21/zoQT+cq8ZjpyDUuWqk1NvF2M=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GSC6MhPny2SkCa7TrS1WIVTnb/rmAA/k5Ngtv+6fNHE=;
+ b=eK1po8i6QpcX18ckJLdPz4w4hSKQH6c20ghbFrUwOfGPAWAfupMu80IodAtOPXg0PXZXOS
+ bRPKHRkKgBLR8ZxoIPTAAKwrxxrCAwbndv0N6hKn8ez7gbGEvg3FAfmaWwQrRhuV+2uN3X
+ 8P37UD7g/PNeaIeV76XKtY6019rB5bk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-JEdMMTU0PUmIXesd-uyh8g-1; Mon, 14 Jul 2025 07:04:27 -0400
-X-MC-Unique: JEdMMTU0PUmIXesd-uyh8g-1
-X-Mimecast-MFC-AGG-ID: JEdMMTU0PUmIXesd-uyh8g_1752491066
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a4f6ba526eso2170451f8f.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:04:27 -0700 (PDT)
+ us-mta-76-ysrjcmqvO3e1xg46t3hN3Q-1; Mon, 14 Jul 2025 07:06:20 -0400
+X-MC-Unique: ysrjcmqvO3e1xg46t3hN3Q-1
+X-Mimecast-MFC-AGG-ID: ysrjcmqvO3e1xg46t3hN3Q_1752491178
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4561a196f70so4839705e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:06:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491066; x=1753095866;
+ d=1e100.net; s=20230601; t=1752491177; x=1753095977;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MhCvQkGWRngHOw7qyfN17pVt/8jmU8Gd43OpCo3NXd4=;
- b=BQ3+mxrJodWbCQ6LJDjttKikVXK7JVlSO8xTKU6YxmzPqRUuAmfGR951SCOYOGWr+u
- J5KO341NJWE7LQOieR2a6Bk84L1iS/c9q7Co0Fk/j8GrHy6rDMM0qYcldTe3QgZDKl0P
- ILNrr3tB8Fy0woWyec3oMS93RKO6qpzNuT6rZzJuevHJWSEI1ryiUH5smEkAZXaC3BU6
- krwiPEOJFiDFmmauDp1UMCuIQuT/n9A80kvgWjGYrhFD7XQNXUyx3yS0Zzy6QK+cgoW3
- ISucHk7r/4ynfSVJlvDDlzBPKY2u6JGaFg3UyWHOc1qRz4JgktuNavbl50N3aCMGan6F
- y9kQ==
-X-Gm-Message-State: AOJu0YxudkPaMgC/1L2HdHABlIYIu+HxL7hGzdHUpnN3MQZCYF14ZS+3
- rXNWVhi+/plHATJaV41UmDlpLI+0eSLDMUNRD108unqIldz5sCNUyACniWVZNXm2frXV08UmTut
- kafkO1Vi0P6PUEcaYdxj8v8dg4mJbb7jS1IfAXE6pil32gcKeZ60B7ZHEKxgTToLqOXNedysOGD
- W23vhPK00wx5+FXH2WnGg4SdbHksrh4o6TAM24vWuS
-X-Gm-Gg: ASbGncu0ZvpN9Dh8jw25UFiEd57ZxyyMCl53nh/KzDdGPmYk4MlfsKEqfON4SmBsBfy
- GM9HfD+k9JnzLDQdMDi2frtJ3qu9/3soEat5f4DTpigsHmxt4sEG+LyYll/w6nIl/gRUiQwLpJz
- g9lzFgLJUc8mQfk+FHULr8N406+PQDN+efavIyv/Jpr5PyrUXjOgVhk8x7SYMmz39EnTfGcJKaJ
- 7EskocEKUXkVJCas3w9D94XIxchSyvDgu9zj/IzMCp2VhI01CvxokwjtdDayPUC0sN1iHUeIE0H
- iLCPowBzjKwQt6K0oh43/KojKfqGYNLWYC1tHim7xx0=
-X-Received: by 2002:a05:6000:26cc:b0:3a4:efbb:6df3 with SMTP id
- ffacd0b85a97d-3b5f187d0b9mr10639573f8f.10.1752491065360; 
- Mon, 14 Jul 2025 04:04:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEwASem7VyqV+rh7WcIhESOBDMZh37ODncYUmljd8Qc0UQf307ScSVoht8kt9qXGtOTPx/+YA==
-X-Received: by 2002:a05:6000:26cc:b0:3a4:efbb:6df3 with SMTP id
- ffacd0b85a97d-3b5f187d0b9mr10639536f8f.10.1752491064751; 
- Mon, 14 Jul 2025 04:04:24 -0700 (PDT)
+ bh=GSC6MhPny2SkCa7TrS1WIVTnb/rmAA/k5Ngtv+6fNHE=;
+ b=FXNP6p7SEPuguEBYTgROouZh9BTyj4hYEQMmooNi2emRWCN8q+kUbR/6h+vFEPyOqI
+ pwZvLlVhBI/SIBizr2ElzqK7TCL8ZPpBW207+leXOfuu4q6t8TCFD91g7nhdBwcNmjrV
+ j0wd7VVNR8MDFi5aLvZaqjT41b3SXkhsB6ocJeU84HXShBOi1A38W0VqWnG8mJod4mfS
+ irPPuKaMYNVmkPSJ2e3iW7ypaRp0cnKFMpp1Avu78J26GftyyKR8san5LuG6TGMGRZvN
+ TuShi1InzS+LSTBYxaD0BCseD54BN+KSQGK/5s/xOWzuML9LWArh6LuppHlum2rDRar7
+ nhYw==
+X-Gm-Message-State: AOJu0Yx7yFkoQ4XZ9d1xJX9Wgo9bF2u7II0uajXojOG8n+9GyDc4QjaN
+ R/yg6V9HdJ0zCL3QQbJf9Pz1jFxK85r1OgGE6m/eWNmrqkSwjU4oc4aXG0jUAezj6Az+m/LN/gp
+ 7luhmrNK3rIaUuk4FdwV2IMEID197dQuC+1lBn+Qf7KiiRjBhNJt2pSBkEV0XmGzYLYwxXZ1LVe
+ 1CU6jdn7L/hlFX5wGCGdOHhpyVdXxSHDtXtpFfRPgU
+X-Gm-Gg: ASbGncuIIeDUFaAEA7l0PFBxh29gAoV9cnLORBZMGy/CFX4kC2qxsPOK7Jnr3HyxfBT
+ UeIGQk3eF8tfiScbOIZw3TmGzI9GJBS4Tv2OVuJhdvT+6KPrJBRKyYn2V5pgSLCYgYAOu4d5Kr9
+ cYy0lgn/DkW+aI4hZDB6mqXXOxdOUjLkIoIlKNpPvcATd0AkqI/ySdcxfJgvCrJ7yYiu8J03uGB
+ qdcLGJvjGSGAem+iedqdIibdB3CIxgSkcWMcaS62pLS0ImDYpQ3FN99Gwb1kTHjs0pO8rySTv7k
+ JbMc3awe1Zn2M9PySztXA1t8OFjx4/O21M9m3A9FDtI=
+X-Received: by 2002:a05:600c:c0c1:b0:453:84a:8cf1 with SMTP id
+ 5b1f17b1804b1-45576aab8a3mr76235725e9.33.1752491177130; 
+ Mon, 14 Jul 2025 04:06:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHZhdZw6QvFPipKgiclRUgJCtpW3ES2Ctlo2UUOorliEWEfdM/2KvJu6PhJjAEec3UBxHNY7Q==
+X-Received: by 2002:a05:600c:c0c1:b0:453:84a:8cf1 with SMTP id
+ 5b1f17b1804b1-45576aab8a3mr76235485e9.33.1752491176571; 
+ Mon, 14 Jul 2025 04:06:16 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc217esm11772335f8f.28.2025.07.14.04.04.22
+ 5b1f17b1804b1-45613c2d84dsm45545515e9.5.2025.07.14.04.06.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:04:22 -0700 (PDT)
+ Mon, 14 Jul 2025 04:06:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 06/77] rust/qemu-api: log: implement io::Write
-Date: Mon, 14 Jul 2025 13:02:55 +0200
-Message-ID: <20250714110406.117772-7-pbonzini@redhat.com>
+	Yi Lai <yi1.lai@intel.com>
+Subject: [PULL 49/77] i386/cpu: Fix CPUID[0x80000006] for Intel CPU
+Date: Mon, 14 Jul 2025 13:03:38 +0200
+Message-ID: <20250714110406.117772-50-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
@@ -107,178 +107,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This makes it possible to lock the log file; it also makes log_mask_ln!
-not allocate memory when logging a constant string.
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Per SDM, Intel supports CPUID[0x80000006]. But only L2 information is
+encoded in ECX (note that L2 associativity field encodings rules
+consistent with AMD are used), all other fields are reserved.
+
+Therefore, make the following changes to CPUID[0x80000006]:
+ * Check the vendor in CPUID[0x80000006] and just encode L2 to ECX for
+   Intel.
+ * Drop the lines_per_tag assertion, since AMD supports this field but
+   Intel doesn't. And this field can be easily checked via cpuid tool
+   in Guest.
+ * Apply the encoding change of Intel for Zhaoxin as well [1].
+
+This fix also resolves the FIXME of legacy_l2_cache_amd:
+
+/*FIXME: CPUID leaf 0x80000006 is inconsistent with leaves 2 & 4 */
+
+In addition, per AMD's APM, update the comment of CPUID[0x80000006].
+
+[1]: https://lore.kernel.org/qemu-devel/c522ebb5-04d5-49c6-9ad8-d755b8998988@zhaoxin.com/
+
+Tested-by: Yi Lai <yi1.lai@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20250711102143.1622339-11-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qemu/log.h       |  2 +
- util/log.c               | 12 ++++++
- rust/qemu-api/src/log.rs | 92 ++++++++++++++++++++++++++++++++++++----
- 3 files changed, 98 insertions(+), 8 deletions(-)
+ target/i386/cpu.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/include/qemu/log.h b/include/qemu/log.h
-index 60da703e670..aae72985f0d 100644
---- a/include/qemu/log.h
-+++ b/include/qemu/log.h
-@@ -84,6 +84,8 @@ typedef struct QEMULogItem {
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 8a97272b4a4..6a0e8592bbe 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -531,16 +531,15 @@ static void encode_cache_cpuid80000006(CPUCacheInfo *l2,
+ {
+     assert(l2->size % 1024 == 0);
+     assert(l2->associativity > 0);
+-    assert(l2->lines_per_tag > 0);
+     assert(l2->line_size > 0);
+     *ecx = ((l2->size / 1024) << 16) |
+            (X86_ENC_ASSOC(l2->associativity) << 12) |
+            (l2->lines_per_tag << 8) | (l2->line_size);
  
- extern const QEMULogItem qemu_log_items[];
++    /* For Intel, EDX is reserved. */
+     if (l3) {
+         assert(l3->size % (512 * 1024) == 0);
+         assert(l3->associativity > 0);
+-        assert(l3->lines_per_tag > 0);
+         assert(l3->line_size > 0);
+         *edx = ((l3->size / (512 * 1024)) << 18) |
+                (X86_ENC_ASSOC(l3->associativity) << 12) |
+@@ -712,7 +711,6 @@ static CPUCacheInfo legacy_l2_cache = {
+     .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+ };
  
-+ssize_t rust_fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
-+
- bool qemu_set_log(int log_flags, Error **errp);
- bool qemu_set_log_filename(const char *filename, Error **errp);
- bool qemu_set_log_filename_flags(const char *name, int flags, Error **errp);
-diff --git a/util/log.c b/util/log.c
-index b87d399e4cb..58d24de48a0 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -558,3 +558,15 @@ void qemu_print_log_usage(FILE *f)
-     fprintf(f, "\nUse \"-d trace:help\" to get a list of trace events.\n\n");
- #endif
- }
-+
-+#ifdef CONFIG_HAVE_RUST
-+ssize_t rust_fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream)
-+{
-+    /*
-+     * Same as fwrite, but return -errno because Rust libc does not provide
-+     * portable access to errno. :(
-+     */
-+    int ret = fwrite(ptr, size, nmemb, stream);
-+    return ret < 0 ? -errno : 0;
-+}
-+#endif
-diff --git a/rust/qemu-api/src/log.rs b/rust/qemu-api/src/log.rs
-index d6c3d6c1b63..a441b8c1f2e 100644
---- a/rust/qemu-api/src/log.rs
-+++ b/rust/qemu-api/src/log.rs
-@@ -3,6 +3,13 @@
- 
- //! Bindings for QEMU's logging infrastructure
- 
-+use std::{
-+    io::{self, Write},
-+    ptr::NonNull,
-+};
-+
-+use crate::{bindings, errno};
-+
- #[repr(u32)]
- /// Represents specific error categories within QEMU's logging system.
- ///
-@@ -11,11 +18,82 @@
- pub enum Log {
-     /// Log invalid access caused by the guest.
-     /// Corresponds to `LOG_GUEST_ERROR` in the C implementation.
--    GuestError = crate::bindings::LOG_GUEST_ERROR,
-+    GuestError = bindings::LOG_GUEST_ERROR,
- 
-     /// Log guest access of unimplemented functionality.
-     /// Corresponds to `LOG_UNIMP` in the C implementation.
--    Unimp = crate::bindings::LOG_UNIMP,
-+    Unimp = bindings::LOG_UNIMP,
-+}
-+
-+/// A RAII guard for QEMU's logging infrastructure.  Creating the guard
-+/// locks the log file, and dropping it (letting it go out of scope) unlocks
-+/// the file.
-+///
-+/// As long as the guard lives, it can be written to using [`std::io::Write`].
-+///
-+/// The locking is recursive, therefore owning a guard does not prevent
-+/// using [`log_mask_ln!()`](crate::log_mask_ln).
-+pub struct LogGuard(NonNull<bindings::FILE>);
-+
-+impl LogGuard {
-+    /// Return a RAII guard that writes to QEMU's logging infrastructure.
-+    /// The log file is locked while the guard exists, ensuring that there
-+    /// is no tearing of the messages.
-+    ///
-+    /// Return `None` if the log file is closed and could not be opened.
-+    /// Do *not* use `unwrap()` on the result; failure can be handled simply
-+    /// by not logging anything.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use qemu_api::log::LogGuard;
-+    /// # use std::io::Write;
-+    /// if let Some(mut log) = LogGuard::new() {
-+    ///     writeln!(log, "test");
-+    /// }
-+    /// ```
-+    pub fn new() -> Option<Self> {
-+        let f = unsafe { bindings::qemu_log_trylock() }.cast();
-+        NonNull::new(f).map(Self)
-+    }
-+
-+    /// Writes a formatted string into the log, returning any error encountered.
-+    ///
-+    /// This method is primarily used by the
-+    /// [`log_mask_ln!()`](crate::log_mask_ln) macro, and it is rare for it
-+    /// to be called explicitly.  It is public because it is the only way to
-+    /// examine the error, which `log_mask_ln!()` ignores
-+    ///
-+    /// Unlike `log_mask_ln!()`, it does *not* append a newline at the end.
-+    pub fn log_fmt(args: std::fmt::Arguments) -> io::Result<()> {
-+        if let Some(mut log) = Self::new() {
-+            log.write_fmt(args)?;
-+        }
-+        Ok(())
-+    }
-+}
-+
-+impl Write for LogGuard {
-+    fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
-+        let ret = unsafe {
-+            bindings::rust_fwrite(bytes.as_ptr().cast(), 1, bytes.len(), self.0.as_ptr())
-+        };
-+        errno::into_io_result(ret)
-+    }
-+
-+    fn flush(&mut self) -> io::Result<()> {
-+        // Do nothing, dropping the guard takes care of flushing
-+        Ok(())
-+    }
-+}
-+
-+impl Drop for LogGuard {
-+    fn drop(&mut self) {
-+        unsafe {
-+            bindings::qemu_log_unlock(self.0.as_ptr());
-+        }
-+    }
- }
- 
- /// A macro to log messages conditionally based on a provided mask.
-@@ -24,6 +102,8 @@ pub enum Log {
- /// log level and, if so, formats and logs the message. It is the Rust
- /// counterpart of the `qemu_log_mask()` macro in the C implementation.
- ///
-+/// Errors from writing to the log are ignored.
-+///
- /// # Parameters
- ///
- /// - `$mask`: A log level mask. This should be a variant of the `Log` enum.
-@@ -62,12 +142,8 @@ macro_rules! log_mask_ln {
-         if unsafe {
-             (::qemu_api::bindings::qemu_loglevel & ($mask as std::os::raw::c_int)) != 0
-         } {
--            let formatted_string = format!("{}\n", format_args!($fmt $($args)*));
--            let c_string = std::ffi::CString::new(formatted_string).unwrap();
--
--            unsafe {
--                ::qemu_api::bindings::qemu_log(c_string.as_ptr());
--            }
-+            _ = ::qemu_api::log::LogGuard::log_fmt(
-+                format_args!("{}\n", format_args!($fmt $($args)*)));
+-/*FIXME: CPUID leaf 0x80000006 is inconsistent with leaves 2 & 4 */
+ static CPUCacheInfo legacy_l2_cache_amd = {
+     .type = UNIFIED_CACHE,
+     .level = 2,
+@@ -7900,11 +7898,20 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         *edx = encode_cache_cpuid80000005(env->cache_info_amd.l1i_cache);
+         break;
+     case 0x80000006:
+-        /* cache info (L2 cache) */
++        /* cache info (L2 cache/TLB/L3 cache) */
+         if (cpu->cache_info_passthrough) {
+             x86_cpu_get_cache_cpuid(index, 0, eax, ebx, ecx, edx);
+             break;
          }
-     }};
- }
++
++        if (cpu->vendor_cpuid_only_v2 &&
++            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
++            *eax = *ebx = 0;
++            encode_cache_cpuid80000006(env->cache_info_cpuid4.l2_cache,
++                                       NULL, ecx, edx);
++            break;
++        }
++
+         *eax = (X86_ENC_ASSOC(L2_DTLB_2M_ASSOC) << 28) |
+                (L2_DTLB_2M_ENTRIES << 16) |
+                (X86_ENC_ASSOC(L2_ITLB_2M_ASSOC) << 12) |
+@@ -7913,6 +7920,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+                (L2_DTLB_4K_ENTRIES << 16) |
+                (X86_ENC_ASSOC(L2_ITLB_4K_ASSOC) << 12) |
+                (L2_ITLB_4K_ENTRIES);
++
+         encode_cache_cpuid80000006(env->cache_info_amd.l2_cache,
+                                    cpu->enable_l3_cache ?
+                                    env->cache_info_amd.l3_cache : NULL,
 -- 
 2.50.0
 
