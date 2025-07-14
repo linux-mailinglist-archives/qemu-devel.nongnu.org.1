@@ -2,98 +2,201 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBFF7B044A5
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B91FB04462
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:43:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubLQ5-0004kS-AF; Mon, 14 Jul 2025 11:48:45 -0400
+	id 1ubLL0-0006FF-6L; Mon, 14 Jul 2025 11:43:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1ubKB7-00080U-RI; Mon, 14 Jul 2025 10:29:13 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1ubK4J-0002ci-KQ
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 10:22:12 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1ubKB5-0002fb-MS; Mon, 14 Jul 2025 10:29:13 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56E9Z5rg018811;
- Mon, 14 Jul 2025 14:27:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=y6Nmd3tVgLtNyhYPxy1OmFOi5aAoV//jGNLOQhVL6/k=; b=
- Zp+yAdm2v3lN3bIfLF5Xw59cdui5aO7M/nqzi3Zk2A4cLOedAQVxPgRkYByokA7c
- d0fAjapBt6W1kJajjkQ/FuriKU4fXocftwjwn++xdAnbjrcwnHgKya77xfc7Qril
- KiaoUXjm8U6jCkSgl0PEd2L9e5RIo4WwyS9OpJtSqq4CF2aOad7SkOPqU7OX2lM5
- phinMY7WjtOq09dPM/MWn85PbtmCkpJ3L4iTliI41iP37LgzVjQGlCcOwSkpBUaG
- gcgtEB/UTYKoK6Jl3n61E8fZ3/ReLDgqhowD/CGk+TLI2NlHCP1y+oeagyS71Vjk
- 8XDF1VPvzDk8N4sI9g9ctQ==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47ufnqn14a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Jul 2025 14:27:24 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 56EDdFP1011597; Mon, 14 Jul 2025 14:27:23 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 47ue58kgqp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Jul 2025 14:27:23 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56EERLK6040396;
- Mon, 14 Jul 2025 14:27:22 GMT
-Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 47ue58kgnu-3; Mon, 14 Jul 2025 14:27:22 +0000
-From: Steve Sistare <steven.sistare@oracle.com>
-To: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Cedric Le Goater <clg@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 2/2] hw/intc/arm_gicv3_kvm: preserve pending interrupts
- during cpr
-Date: Mon, 14 Jul 2025 07:27:19 -0700
-Message-Id: <1752503239-222714-3-git-send-email-steven.sistare@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1752503239-222714-1-git-send-email-steven.sistare@oracle.com>
-References: <1752503239-222714-1-git-send-email-steven.sistare@oracle.com>
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-14_01,2025-07-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- malwarescore=0 mlxscore=0
- mlxlogscore=999 adultscore=0 phishscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507140085
-X-Proofpoint-GUID: 0i1nAnriJwqYc6tACAu7tqMuV5JCDIVu
-X-Proofpoint-ORIG-GUID: 0i1nAnriJwqYc6tACAu7tqMuV5JCDIVu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDA4NSBTYWx0ZWRfX5Zlkg0zbi4K8
- Irk6rBMUEBkLtIgaRlVuwz28VEyKAdDXgWbUghJYdYt9vipstKbBx4I9TJWppu6flN/ZQ1t8Uc1
- WYef2VvFC6F6vyNfxwB3z3KBAx9HJtKonnQTcQM0nzKQZXaqfEmauVbybSd3HHi103of8QGASz3
- xVPCTI1mMAEOqQ2VC7okUZylrcu00QH4ad6pTlFOXycp4dlS7q3qrAM1dU8wmsZN7qjZKhI2xLl
- LsN4SRyTSPpQGPur81CiVZJB2jT7nIU43Rd8VomCE1S669q10n31H1MKvo7z+yCmiEN9I6rv7aL
- cAcPU8Ib5beBOYDL2XtEGNCFX0URiucPn/gpqlQ5BLmA8GvSdCpbpru5Sr0zVoK6PIdY1FmZEW8
- u+fEO8t+9sMLtlvhzcIEAWL6YR+dCQYuOOfrPo1LaH+zkH0fLlSoPxFNHebb+kkdTTRMjQH+
-X-Authority-Analysis: v=2.4 cv=U9ySDfru c=1 sm=1 tr=0 ts=687513cc b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=-1ppJrQcysB06QCxmjEA:9 cc=ntf
- awl=host:12062
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1ubK4G-0001Ep-BC
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 10:22:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752502928; x=1784038928;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=Jl0Ul4eikNdbFM4Sb6sgEC7mjLf7FXkLtHCdyO7qDh0=;
+ b=Bu/aO5ciEaV0vRhlmRuAfHt/ckLAaD0jkOg/e1iI2CnBDaPBFO7uwb3d
+ EscTGAaPz745cMMxe6oXjb2rK5Vr2pjKnP72QZ7PWto+e69+FEi+V7pAk
+ 31PSjidG7pmy4TRSlYT7Y2NbkP/9/5X7e1b34gUDzcTbm9vVBuMJ4OVop
+ TfjB6D5lSClQaD6hYmvdjt7UYSRhvkOHRynSYbClc7OLtzbiW7zjjYIWl
+ c5s7zPk1ACRn38Ja07JvMjyz65lD6K2MGksYR1JRW7eoqoE387qu/2TOs
+ RCSyaBQJDmgigrX1w8lDjBYkorMrVGWIizmIU8c18bJBxpgfeThAHOTU0 g==;
+X-CSE-ConnectionGUID: vpQX5d2iRF6Z7mwNBZTFzw==
+X-CSE-MsgGUID: 896clAYPTpun5UNo+O9aXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="72272927"
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="72272927"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 07:22:01 -0700
+X-CSE-ConnectionGUID: eSFxVugRS4iiE27DHh0azw==
+X-CSE-MsgGUID: WvXNYMLdSayTOpSwxOpt5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="157498746"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 07:22:01 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 14 Jul 2025 07:21:54 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Mon, 14 Jul 2025 07:21:54 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (40.107.102.56)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 14 Jul 2025 07:21:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=arCrRDiwfhUeBbF7lrQjj6pAf7tKQ9phLttk9rGRz+uZWwgfSjn3BmXw83LDTfjSN3zqlii93XSCXYxH5fznNUJdNiKi1Z3PCZazxId6vhvz2iL0UmXKQ8yygIT8/hod+QLQPy3OLZXkPBkqpTYGW2EXd66r2jWIbXWYJ41vuBNXu3y5oQaY/Xa/cL0iI2cGL7uRAKiV63VKwMGLp6pCBQN5DPnNMQJVrMPc17gSnBfinsN/1Y6d1mwYrDuY+VE+4BIsw6+ma3rcOUeRXigAAIJBWvifbiG6PujNb+YhLqXm7qhHj1aT/EPJltXUtS2gfax+sXqEdtzZX2UeuNCL6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rP531M4dKJM0fvK0RL72yO8C1uBACa5ovTUtCvREpjk=;
+ b=yjhSocO5ECibmjU/D+1WeEo049iy9gDrUpaen59/hxbb4ios4f57Z0+bnked129wXdHLakra7AqfV2M0biHZxnuyuzIlWnecevc0AnIbOQe/t6PJxskZgl0QqpK9s6/EtMX3Zm8ejo1EoDrdvcXzoH6Z1pkeERg11Dsgv7lHhwjaQETfhTSE4qRJbmmqZFynwGq9evlKjGXAFvOsmGlPzoR1mTOnfzGaU1OkjFMV04LPvChyvD57qwtkc9jDV0HZz5dGPyzbjLNbXRB7GtyxZ9XS5SE9tKO7jk9yfoe/JuRDZSEIxlNBg4c6RBUcqO6MqBk7xo1jxK7+U+TPf3vVBw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BY5PR11MB3974.namprd11.prod.outlook.com (2603:10b6:a03:183::29)
+ by DM6PR11MB4562.namprd11.prod.outlook.com (2603:10b6:5:2a8::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.28; Mon, 14 Jul
+ 2025 14:21:47 +0000
+Received: from BY5PR11MB3974.namprd11.prod.outlook.com
+ ([fe80::fe0b:26f7:75b4:396]) by BY5PR11MB3974.namprd11.prod.outlook.com
+ ([fe80::fe0b:26f7:75b4:396%5]) with mapi id 15.20.8901.024; Mon, 14 Jul 2025
+ 14:21:47 +0000
+Message-ID: <9ce8b7e6-ad15-4d2e-a430-3896eccc7519@intel.com>
+Date: Mon, 14 Jul 2025 22:28:09 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] intel_iommu: Allow both Status Write and Interrupt
+ Flag in QI wait
+To: David Woodhouse <dwmw2@infradead.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Le Tan
+ <tamlokveer@gmail.com>, kib <kib@freebsd.org>, <jhb@freebsd.org>
+CC: =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, <qemu-devel@nongnu.org>
+References: <0122cbabc0adcc3cf878f5fd7834d8f258c7a2f2.camel@infradead.org>
+Content-Language: en-US
+From: Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <0122cbabc0adcc3cf878f5fd7834d8f258c7a2f2.camel@infradead.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG2P153CA0017.APCP153.PROD.OUTLOOK.COM (2603:1096::27) To
+ BY5PR11MB3974.namprd11.prod.outlook.com (2603:10b6:a03:183::29)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR11MB3974:EE_|DM6PR11MB4562:EE_
+X-MS-Office365-Filtering-Correlation-Id: 00b1e837-2ce9-4d13-17fb-08ddc2e1c467
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|366016|7416014|376014|1800799024|42112799006; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Z2w2eHFVT24wcnNoME1hUjVEdi9sRjRTZkwxMGdnWjJuM2txNTZ1NE5qcVdH?=
+ =?utf-8?B?WSsvS2lPSEdNYU1vUWFiR2VBY1o1U1hZNzdmWDNLQ0tod3Q2OEVCeU9TcnRW?=
+ =?utf-8?B?T2oyMjJRd0RsMjN0Zk5Vclp3c0VmekJxajdpd1pnRTdUS01qM3ZGVFRUVmdF?=
+ =?utf-8?B?dC9DQ2VyMGR3OWswU3dpMHQ2RFJIa3YzdVV2K0k3MmNmaFBiVFJOQllEUlRO?=
+ =?utf-8?B?QWZOMmxtWGc1a2poOVBlZ1ZjWThWaEZ5RUhtS1MvMHYyd1ovaXRmRWZFLzQx?=
+ =?utf-8?B?NTl1RzlleHlJNjZva0RNb1VWWFoyd0kwZ2RpS1VLN0EwanBCUHNGNGNlUmNh?=
+ =?utf-8?B?VU0xaUpoZnVLWmpWNE9VajU1cnJOWVc2aGRZbXhVNE9xeFlMenRLVndmWU1Q?=
+ =?utf-8?B?T0V2V1BYUFJIVjEyQlhtUkVjN3BTN1RRM0ovakJJYnRnbHU2T0tlV0wwWEZB?=
+ =?utf-8?B?b3FaNHgxZjBWdWZlTmtzYjRVZWR6NkpDajdXd1VhUkpoRk93ZWcwRWZRbVlV?=
+ =?utf-8?B?TWlCYzNMZ2o0Y3V3NkpNR0xWWm5ERTFkZ01mL3M2cW0vTmJyVElXUkllSHNq?=
+ =?utf-8?B?aUthNEllTHQzZ1ZJdFA4d25hbTdVa2dSbXN4c3hTbXBzWUJJSU1HRkZxTTh3?=
+ =?utf-8?B?bzFYVU5qODZNWitpeFBlcUEyeVJXdHJYemYyZkVuNVh5YWNYZ3Y0Uk1OOHYz?=
+ =?utf-8?B?WU50SmVQaGVKcml3TmlERXllelF2dC9BWVRDOWdPVTJaVWM4WVhydlMyaW9z?=
+ =?utf-8?B?OVFzUGU0QWt3c3pjL0VJSU5JOTg4cjlqMGxkRzI1d2ZidXVkSHR2S2cwVjJy?=
+ =?utf-8?B?Zkg4VEZqd1loQUluL0I3eWtiamZZdHlReWZxQ3AvK0R3ZnhhYkZNZkNXbVo5?=
+ =?utf-8?B?SUN6Si9uRkRickVhUXlmQjI4azQrWXhpV0wvRlVkTVFUNm1jVXZhczhDLzZv?=
+ =?utf-8?B?ZVh6Z3NlSmxObnI3ZXloV0s0NktabjdlZWRYSmdlK3lGMGFFNHB3SGc2bnpH?=
+ =?utf-8?B?NHpGZS9lOXRzTythOThybW5aWHBidjJDZWRMUEJHa3dheUlrN09YajNjdUxE?=
+ =?utf-8?B?aWNjRSttQlFsYzdtd1U2SWk2Kzd1V3hxdUZia0Z0Mmdad0g3MEd0MWxsaG9I?=
+ =?utf-8?B?ZXVIdDJjaVdDZmU0dlRWbXpnUUJHMDhPN25KUEVjc1YvYXpYUnQyM1laMktj?=
+ =?utf-8?B?S2p5U1pOT016by9FQkkvL3paeU1ZZlFOSFcrS0RkaTlFQUVHYXhrRWxZMnVW?=
+ =?utf-8?B?R0lvbTFRaG9UKzRWeHZXdHBtbWFaRVhWNkZSVTllRlRVQ01BdnJWKzU5NE1a?=
+ =?utf-8?B?M01ldHc1cDZjbm9tY0ZOTmdSYWdQVlpzdUlUY1lXelZOR0s2TWEzSXFnVjFK?=
+ =?utf-8?B?RnhIS2kzUis3ZnpJbHJmRHZZb0w3VGozdzQ5NHhzS1puWVJBSHhhM3RSNHAz?=
+ =?utf-8?B?WTlxdDFyTys2cXdhNHFwckFtWW02cGFEUm9LOW9jbjh2S3RkaTloQWV3NytT?=
+ =?utf-8?B?bFllN2hBNlBOOE03ZWxhRXJyY29QMUdSNlU4YTM1amtoTlR4dmhBdS9rZjgy?=
+ =?utf-8?B?SXdSeUxSVEordHNNaTdEREtlRDdjL3NvOVVsdUxxZnVSUFkrdTBWa0tLVGw1?=
+ =?utf-8?B?VHMwRGVBeFpoQVFJam5QV2pKZDV6VW9OeW1IWjBhMjZoeVJDZlUwQnBiVEJU?=
+ =?utf-8?B?T28wMWQzNWllVHJ2cjIzQ2pzNkVZYnVUaU9UbElnNkFEZFNDdURjRUt4SlNI?=
+ =?utf-8?B?WSszVE14ZWxyVnRZU1dKS2FucG14dHJhaGsvRzJ4M3liK05IdWFpQWNOWjAy?=
+ =?utf-8?Q?+D60TntbGjTT8QDdOf37xa1VzLRfSnb4W+s84=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BY5PR11MB3974.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(7416014)(376014)(1800799024)(42112799006); DIR:OUT;
+ SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aHBqcm5tVXBCUWpwQlZBQjR6YytJdGJMR1RpZEwyeTVoZHExNjUrRWVwZ1o1?=
+ =?utf-8?B?dW83TE9WMGxKVmpYa0hrWU5VZllwdHUrVFV4d1RBY2dtZFFnTjNacXBmV3hk?=
+ =?utf-8?B?aXFvZ1JhRG8yV2pqNE1DUEVxM240YTJaUXBBOEROSVJJN0NFQ240aHV3VlJ1?=
+ =?utf-8?B?eWRvQWdTSmNxRmo2c0x6NXMwODl3RnlnTmtYc0JaR1NyQmg4eG5IZUxjUXFw?=
+ =?utf-8?B?cmR3V0h3WjdxSnBoRVFCT2Y3djRZSnV3dnQvV3MxYml3Q2ovcjFPSW1TOEpT?=
+ =?utf-8?B?ZnROaVplYXBYU3pWYjFDV2orcit3NFo0L0JqVlpVTEEwVjhpZGdSU2V2d1Ja?=
+ =?utf-8?B?MWxuRzVEK1k5SUVvSFFRMHR6UnhuTlJ5SmZYRzJrR05aT2ZpY2lJYi9QWTZ5?=
+ =?utf-8?B?ZVVZY01SQ1RlSkNhVWNRRng1UGY3bzdqRHErMWQwbGgxbkVzUjNVamR5bEk4?=
+ =?utf-8?B?WmdKOTh0eklvaTdqejR2dmhzOWs4bFhSaWZwM3hIUmJzaUVkV294OFdUWjNi?=
+ =?utf-8?B?cU13eE5aaGMrRUtPa2t2K3pnM2NDMHBFL09mcG9MbjNXRmFabHQ2TWZjOUdp?=
+ =?utf-8?B?OXVBNzlLUy9FZ3ZmdmpYb29Qb0VmQ0ZrWmx4bTdMQzdaWm9lcDduVXQ3OTlT?=
+ =?utf-8?B?UWNFUCtGVWh6S2NZWFpGM1BRMmcxakFqRWo3UlNhSjFwSG1XbVdNVHZxMUd3?=
+ =?utf-8?B?Nk4yUUNPTnRNOEtYM3MyZUVZR29uamJEZEYwZlBiZHVGTCtsOGsxNkw2RHpv?=
+ =?utf-8?B?OEMyMEs2K3Arek85UVR2cHAvT0oyTkc0RXJaR0NjMDNneVd5S080QWdjLzYz?=
+ =?utf-8?B?b0lZeXVHaUkrR2NWVnpzeDMxczI5bDZNUjVJcHUyU0thbVRleElQdXdCS2NF?=
+ =?utf-8?B?bkp1ZnR5QjJVL21meFZSR0pSRHNVaWJndWZ1RC85VTRPcHV2RWtyUEQ4S3E4?=
+ =?utf-8?B?T3J0Z3U1QzI1QmJJYTM3MmoxTFlRM1JIMHIwVTJERElhallWZTNwU2drV0o0?=
+ =?utf-8?B?WmZiZHBWNytGWndNYVdaa0FnQjhVa1U5dHdZYmI2K0NoYS96anVMV0w1bmFF?=
+ =?utf-8?B?bFZTSk5wUFYwL281aEdWWVY4ZWFOUlVreVRrRG8yMFlKUGVGY0JweXhmbGQ1?=
+ =?utf-8?B?WjNvNGRCbGVqd3FNanBlVGxEWTRlTWVLSlZRVG5aMmtGZkRsUUlsZTNhZDd3?=
+ =?utf-8?B?V1NpQlJ0WGtzTzg4Q0lKU2hRVURrYmFRTGl5dmRRRjVvS0I3cy81TFU2d1gv?=
+ =?utf-8?B?SkpBaUx0bStUNzcvRk5mRXZUbkhOaW5jckkxVk5hcWdid1dXeTU0RWtBSXI0?=
+ =?utf-8?B?WGgzTkJJZEJGNHY2QVNwVW92SmRLMzlOei9uMnhOZ3JMY2lsWlkyd2ZFUXQz?=
+ =?utf-8?B?QnhOWklWUTE1RkJzUlp6V2NPc3Z1OWZYdEE3MEJ1K3F0cU5SSDVYUjJjbGRR?=
+ =?utf-8?B?OHhjN2xxMXVUcjJGV0Rad0lpaGxOZHg0YThOU0xxMjh3TjZvYVkvemJML3pW?=
+ =?utf-8?B?SVVvMS8wVnlncDZrSDJESi83N1RBd05OTnZ2Z3NuQ0NhaFNFTEhFM2xKSk1E?=
+ =?utf-8?B?eWRoNEFmUGp2Rjd1Q056dGx5N1c2R2dmb25yNjBBZWZUQmx5azNZS0hHdHpB?=
+ =?utf-8?B?RnJaTGhheU1FZit1dHBWUGlObnhpbitXdEc0OExiYU5kRTBUQVNGRU52TXVC?=
+ =?utf-8?B?MC9iaFpFWVA4N2JFRGNWQWZqSnZpN2RyZm45dWM1WEZZNXFCVDlqd2I5MTdo?=
+ =?utf-8?B?MndOcDRIZ08zODBESGhtSkFUa3puZG1mL0tvOXhPdlpCcmRjWm43YXpKVnFq?=
+ =?utf-8?B?RzVQN3QvQkZLTUNDZGhWT3p0VFV5MVdFMlhRNG5TaXdPeDRyNnlXQkpYNWlr?=
+ =?utf-8?B?TXoreFpSNGIyaG0zYWVqbHNuK0ZSV1A1anRVa2tBOUhsZWYrQlpYQ3pBOVVo?=
+ =?utf-8?B?M2tiZFdTYnVVZ1dYbm9uZW5FdjNiUFZ5OUxheG4wNXI3N2dNVVB4UDZ6SU9X?=
+ =?utf-8?B?YUNjUXFzZFhMVlkyQUtJalN0TFFXTXIwVjc2R1dlUHlodytQYzkzbEdySEF0?=
+ =?utf-8?B?QXFhZEtxMXFIVlh4SkszRTBVOGNsODVHWFVNRHYzM2ZzbWVFWU1TdDdkVmFN?=
+ =?utf-8?Q?cW+3XxQaFl+I356k1tm2b8m8J?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00b1e837-2ce9-4d13-17fb-08ddc2e1c467
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB3974.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2025 14:21:47.7796 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TDC1G6yju54xmHBFg737vq6uc6Bl5cKCwdnXpPgTs2v1ZLM25qI8GRP5dBPRwnb7H5eJMguqAtK4cdglTJ1lXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4562
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=yi.l.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,94 +212,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Close a race condition that causes cpr-transfer to lose VFIO
-interrupts on ARM.
+Hi David,
 
-CPR stops VCPUs but does not disable VFIO interrupts, which may continue
-to arrive throughout the transition to new QEMU.
+On 2025/7/14 16:00, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> FreeBSD does both, and this appears to be perfectly valid. The VT-d
+> spec even talks about the ordering (the status write should be done
+> first, unsurprisingly).
 
-CPR calls kvm_irqchip_remove_irqfd_notifier_gsi in old QEMU to force
-future interrupts to the producer eventfd, where they are preserved.
-Old QEMU then destroys the old KVM instance.  However, interrupts may
-already be pended in KVM state.  To preserve them, call ioctl
-KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES to flush them to guest RAM, where
-they will be picked up when the new KVM+VCPU instance is created.
+interesting. Have you tried setting both flags on baremetal and the hw
+gives you both the status code and an interrupt?
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
----
- hw/intc/arm_gicv3_kvm.c            | 16 +++++++++++++++-
- include/hw/intc/arm_gicv3_common.h |  3 +++
- 2 files changed, 18 insertions(+), 1 deletion(-)
+> We certainly shouldn't assert() and abort QEMU if the guest asks for
+> both.
+> 
+> Fixes: ed7b8fbcfb88 ("intel-iommu: add supports for queued invalidation interface")
+> Closes: https://gitlab.com/qemu-project/qemu/-/issues/3028
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+> v2:
+>   • Only generate the interrupt once.
+>   • Spaces around bitwise OR.
+> 
+> This stops QEMU crashing, but I still can't get FreeBSD to boot and use
+> CPUs with APIC ID > 255 using *either* Intel or AMD IOMMU with
+> interrupt remapping, or the native 15-bit APIC ID enlightenment.
+> cf. https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=288122
+> 
+> 
+>   hw/i386/intel_iommu.c | 15 +++++++++------
+>   1 file changed, 9 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 69d72ad35c..851c4656c5 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -2822,6 +2822,7 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+>   {
+>       uint64_t mask[4] = {VTD_INV_DESC_WAIT_RSVD_LO, VTD_INV_DESC_WAIT_RSVD_HI,
+>                           VTD_INV_DESC_ALL_ONE, VTD_INV_DESC_ALL_ONE};
+> +    bool ret = true;
+>   
+>       if (!vtd_inv_desc_reserved_check(s, inv_desc, mask, false,
+>                                        __func__, "wait")) {
+> @@ -2833,8 +2834,6 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+>           uint32_t status_data = (uint32_t)(inv_desc->lo >>
+>                                  VTD_INV_DESC_WAIT_DATA_SHIFT);
+>   
+> -        assert(!(inv_desc->lo & VTD_INV_DESC_WAIT_IF));
+> -
+>           /* FIXME: need to be masked with HAW? */
+>           dma_addr_t status_addr = inv_desc->hi;
+>           trace_vtd_inv_desc_wait_sw(status_addr, status_data);
+> @@ -2843,18 +2842,22 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+>                                &status_data, sizeof(status_data),
+>                                MEMTXATTRS_UNSPECIFIED)) {
+>               trace_vtd_inv_desc_wait_write_fail(inv_desc->hi, inv_desc->lo);
+> -            return false;
+> +            ret = false;
+>           }
+> -    } else if (inv_desc->lo & VTD_INV_DESC_WAIT_IF) {
+> +    }
+> +
+> +    if (inv_desc->lo & VTD_INV_DESC_WAIT_IF) {
+>           /* Interrupt flag */
+>           vtd_generate_completion_event(s);
+> -    } else {
+> +    }
+> +
+> +    if (!(inv_desc->lo & (VTD_INV_DESC_WAIT_IF | VTD_INV_DESC_WAIT_SW))) {
+>           error_report_once("%s: invalid wait desc: hi=%"PRIx64", lo=%"PRIx64
+>                             " (unknown type)", __func__, inv_desc->hi,
+>                             inv_desc->lo);
+>           return false;
+>       }
 
-diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
-index 43cba6e3f1..15245af2fd 100644
---- a/hw/intc/arm_gicv3_kvm.c
-+++ b/hw/intc/arm_gicv3_kvm.c
-@@ -30,6 +30,7 @@
- #include "gicv3_internal.h"
- #include "vgic_common.h"
- #include "migration/blocker.h"
-+#include "migration/misc.h"
- #include "qom/object.h"
- #include "target/arm/cpregs.h"
- 
-@@ -783,6 +784,15 @@ static void vm_change_state_handler(void *opaque, bool running,
-     }
- }
- 
-+static int kvm_arm_gicv3_notifier(NotifierWithReturn *notifier,
-+                                  MigrationEvent *e, Error **errp)
-+{
-+    if (e->type == MIG_EVENT_PRECOPY_DONE) {
-+        GICv3State *s = container_of(notifier, GICv3State, cpr_notifier);
-+        kvm_arm_save_pending_tables(s);
-+    }
-+    return 0;
-+}
- 
- static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
- {
-@@ -889,13 +899,17 @@ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
-                                GICD_CTLR)) {
-         error_setg(&s->migration_blocker, "This operating system kernel does "
-                                           "not support vGICv3 migration");
--        if (migrate_add_blocker(&s->migration_blocker, errp) < 0) {
-+        if (migrate_add_blocker_modes(&s->migration_blocker, MIG_MODE_NORMAL,
-+                                      MIG_MODE_CPR_TRANSFER, errp) < 0) {
-             return;
-         }
-     }
-     if (kvm_device_check_attr(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
-                               KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES)) {
-         qemu_add_vm_change_state_handler(vm_change_state_handler, s);
-+        migration_add_notifier_mode(&s->cpr_notifier,
-+                                    kvm_arm_gicv3_notifier,
-+                                    MIG_MODE_CPR_TRANSFER);
-     }
- }
- 
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index a3d6a0e507..75bbc403c7 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -27,6 +27,7 @@
- #include "hw/sysbus.h"
- #include "hw/intc/arm_gic_common.h"
- #include "qom/object.h"
-+#include "qemu/notify.h"
- 
- /*
-  * Maximum number of possible interrupts, determined by the GIC architecture.
-@@ -270,6 +271,8 @@ struct GICv3State {
-     GICv3CPUState *cpu;
-     /* List of all ITSes connected to this GIC */
-     GPtrArray *itslist;
-+
-+    NotifierWithReturn cpr_notifier;
- };
- 
- #define GICV3_BITMAP_ACCESSORS(BMP)                                     \
+I think this "if branch" can be moved just after the inv_desc non-zero
+reserved bit checking. Hence you don't need a ret at all. :) btw. I'm
+also asking if VT-d spec allows it or not. So let's wait for a while..
+
+> -    return true;
+> +    return ret;
+>   }
+>   
+>   static bool vtd_process_context_cache_desc(IntelIOMMUState *s,
+
 -- 
-2.39.3
-
+Regards,
+Yi Liu
 
