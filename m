@@ -2,77 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B156FB0454F
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 18:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87502B045D1
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 18:48:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubLuX-0005dO-Ua; Mon, 14 Jul 2025 12:20:14 -0400
+	id 1ubMKy-0007pb-2T; Mon, 14 Jul 2025 12:47:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ubKyF-0003dJ-IM
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 11:20:00 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ubKyB-0002Lp-Fm
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 11:19:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752506396; x=1784042396;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=3TFMp5LO/2slN6dVm1vpSPE+9igU+5m9IduE/JKJ7DM=;
- b=UUdCHzrfpI75A96my0KAIPqlC56/f0SkljCPLEC1yKtBsnJE7+OATXcJ
- AqmhJBbmD+zgyzX/mOIDpmxTALCWhCTbTIkZSfXjedCTORyYlB1vm6OAp
- 6HNYQhJTSthwtJ+enxdZiZDhWa/Y/aI+kWOyOZdn+k5VI16u90Ma4zCEs
- wVkrikkJXv6+yu0T2yiVq9cOeKNyXF/ujqnQsnEV13IcEjmRf9K0GxGsS
- x0SMu5qO4HgVcWadSUVT0qSgWHq1zGx0cKztO/6MC2GtXjxL3XLmYAQMy
- NVcBz/SD1zpFiS7GBp9m8E24Ajx4gu5eQKAbdkkLVIfkf9YBVkfXCXr5b g==;
-X-CSE-ConnectionGUID: v86rkqBBR6awI/tQK0zFug==
-X-CSE-MsgGUID: 6kio4n4VT1q+Pq1bqvMLtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="77236660"
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="77236660"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 08:19:51 -0700
-X-CSE-ConnectionGUID: tuYErg4NTY2OE+ckX3L4+Q==
-X-CSE-MsgGUID: uijobc+2SxiQG5YX7VGrmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="162625585"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 14 Jul 2025 08:19:48 -0700
-Date: Mon, 14 Jul 2025 23:41:18 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: "Moger, Babu" <babu.moger@amd.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Tao Su <tao1.su@intel.com>,
- Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 7/7] i386/cpu: Honor maximum value for
- CPUID.8000001DH.EAX[25:14]
-Message-ID: <aHUlHjzYWUM/ryQy@intel.com>
-References: <20250714080859.1960104-1-zhao1.liu@intel.com>
- <20250714080859.1960104-8-zhao1.liu@intel.com>
- <d19082cc-6662-4299-89c6-94657ce672f7@amd.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1ubLO4-0001lS-Ld
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 11:46:40 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1ubLO2-00068n-2y
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 11:46:40 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-7481600130eso5104323b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 08:46:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752507996; x=1753112796; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+IDvBEmV+Lzihs6gqqtoeHh/iFwCnyYUNSldXE8MxgI=;
+ b=bw/8tKaUFlBPW9jRhBLMlZPsqmXkFdonfKdHfg6QFSosFVRxqu3KZ5C6jlpk6TyYor
+ tn6bZc9q0wVU9NRahJwxzb5GBDj53gYwxJ0vvI4jv4wXGuEN8aw3yqgaWOsBKkBCU9jD
+ ZoVY8Y06IN9V2gpzArIvy7+EcjFLEd4IdoIQlvdSamtj4ttYGiihQ6/jSvUEo7YGsX2w
+ GEX+yqAQec+UBOTs7rQh1WC4oENRImgnAMpUqqsaEyRmsTQ6mYe8kd4frzAknLks4S/i
+ fr58rqgIiV7AkCS9HbVzD6drrTAjGXy3uBNIDoqf+SngG9MdJ+bfV2w8WXSuGt91Pir6
+ Mslg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752507996; x=1753112796;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+IDvBEmV+Lzihs6gqqtoeHh/iFwCnyYUNSldXE8MxgI=;
+ b=mTFIEpWh8iCQtkHz8GNqA6dp/gEd0DqYSNnASb6ZujAPmuuYcfaYToHyg7PcooX0RI
+ KC9sHD87ogfcY7ycYI5HCnCH2p1GCJYr9yiSWcbdgTRrQmizC9PSzPWey65zeMyA31il
+ J8lUNA0g9OV0Xf8H6SDQhjlFCDjyuluiAJpwrv2si4M3jPeokdEBnoFSSee7pPxhJGKH
+ E3FJQ47YlH/fy1qKQLxEUjUmvCu4yh3VW+A0wDioCBTgGxjZOpavDwhKUBqwQbs6bYhl
+ jH0GoAYXKnM2nnf8KzN7romAmjnNFPRo/U3Et1ANnbcZolTNEmVE/EScKbDYsY5xoVtj
+ sY0w==
+X-Gm-Message-State: AOJu0Ywr95jOKfwXGTGlZ6Gci4YftxtDk5ZPR62lwAJrfk0bJrmA/dTR
+ gEu8iZxblhrMUDhIlfXASFu11PSNAnH/uXKs80dCHCDHgUFBC1NyE38YEA1bjTq9Mlk=
+X-Gm-Gg: ASbGnctxWHuYfbJhMUYc0swba/PU8t9YmaHOmYp294l0toB4S/IMM6F7+axwczD9FY/
+ unJENBeCxpSi9+8fPA8pHfIe0dIJGE9PmCH3Gw+00kNrPJZlBHR84mkWYg2CKsLY7WOHUfmOH0e
+ Uxl21a6ihm7EJ/bSv9R36Q9/xzyLeR2ldYc2TJZhsig4Wrz2UAY87jgFQfOLXR/bKyMdTEEY+qS
+ paDntfYO4j4JpHIs4FK/BxXQ17DJxlqEtLUV/MRmbWKasMtLtGGell9QZUiSGJBDBixH4b7RKOG
+ /7TD3wvie6NWibTjbv1lOGSfL1ewDx7aIZ0h3ghFuKxg4VosHS4MHRf6PrDrMH/9XRRNmazh5Xo
+ G/F18Cm2vNkP17XlODqhh2FmCfU+Y72qkDMR9KhqDVbzwGw==
+X-Google-Smtp-Source: AGHT+IGg8P/it84LX/wj/a8NB7leTLCQbehdmwijsf3a1Vwrhji4eSM4vSncTNX7gSMgk22Cy3IPCg==
+X-Received: by 2002:a05:6a00:2352:b0:740:9e87:9625 with SMTP id
+ d2e1a72fcca58-74ee04ade9cmr21578864b3a.4.1752507995641; 
+ Mon, 14 Jul 2025 08:46:35 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-74eb9f4cb57sm10995934b3a.136.2025.07.14.08.46.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 14 Jul 2025 08:46:35 -0700 (PDT)
+Message-ID: <eabfd320-5efd-4a0a-807e-10aca82ca27b@linaro.org>
+Date: Mon, 14 Jul 2025 08:46:34 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d19082cc-6662-4299-89c6-94657ce672f7@amd.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 4/6] target/arm: Add FEAT_TCR2
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org
+References: <20250711140828.1714666-1-gustavo.romero@linaro.org>
+ <20250711140828.1714666-5-gustavo.romero@linaro.org>
+ <21bfbfaa-f0df-413d-bad6-b69688ac381a@linaro.org>
+ <65e20340-e164-4424-bc60-52d78b9a17b8@linaro.org>
+ <f18a652e-b64c-4a33-bd60-63dfa93ffdbd@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <f18a652e-b64c-4a33-bd60-63dfa93ffdbd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,73 +104,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 14, 2025 at 09:51:25AM -0500, Moger, Babu wrote:
-> Date: Mon, 14 Jul 2025 09:51:25 -0500
-> From: "Moger, Babu" <babu.moger@amd.com>
-> Subject: Re: [PATCH v2 7/7] i386/cpu: Honor maximum value for
->  CPUID.8000001DH.EAX[25:14]
+On 7/14/25 5:58 AM, Richard Henderson wrote:
+> On 7/14/25 00:21, Pierrick Bouvier wrote:
+>> On 7/13/25 2:59 PM, Richard Henderson wrote:
+>>> On 7/11/25 08:08, Gustavo Romero wrote:
+>>>> Add FEAT_TCR2, which introduces the TCR2_EL1 and TCR2_EL2 registers.
+>>>> These registers are extensions of the TCR_ELx registers and provide
+>>>> top-level control of the EL10 and EL20 translation regimes.
+>>>>
+>>>> Since the bits in these registers depend on other CPU features, and only
+>>>> FEAT_MEC is supported at the moment, the FEAT_TCR2 only implements the
+>>>> AMEC bits for now.
+>>>>
+>>>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+>>> This causes a regression in tests/functional/test_aarch64_device_passthrough.py, by
+>>> continually trapping on an access to TCR2_EL1 while the HCRX_EL2 enable bit is not set.
+>>>
+>>> Unlike the similar SCTRL2 failure, it's not 100% clear to me how the guest and nested
+>>> guest kernels are related.  But it is clear that the outer kernel does not does not
+>>> support TCR2_EL1 (and also doesn't manipulate ID_AA64MMFR3_EL1 to hide FEAT_TCR2), but the
+>>> nested guest kernel does support TCR2_EL1.
+>>>
+>>
+>> The same kernel is used for host and guest.
+>> Maybe it's related to kvm support?
 > 
-> Hi Zhao,
+> Oops, no, the patch fails to enable HCRX_TCR2EN in hcrx_write or SCR_TCR2EN in scr_write.
+> The same is true for the previous patch with HCRX_SCTLR2EN and SCR_SCTLR2EN.
 > 
-> On 7/14/25 03:08, Zhao Liu wrote:
-> > CPUID.8000001DH:EAX[25:14] is "NumSharingCache", and the number of
-> > logical processors sharing this cache is the value of this field
-> > incremented by 1. Because of its width limitation, the maximum value
-> > currently supported is 4095.
-> > 
-> > Though at present Q35 supports up to 4096 CPUs, by constructing a
-> > specific topology, the width of the APIC ID can be extended beyond 12
-> > bits. For example, using `-smp threads=33,cores=9,modules=9` results in
-> > a die level offset of 6 + 4 + 4 = 14 bits, which can also cause
-> > overflow. Check and honor the maximum value as CPUID.04H did.
-> > 
-> > Cc: Babu Moger <babu.moger@amd.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> > Changes Since RFC v1 [*]:
-> >  * Correct the RFC's description, now there's the overflow case. Provide
-> >    an overflow example.
-> > 
-> > RFC:
-> >  * Although there are currently no overflow cases, to avoid any
-> >    potential issue, add the overflow check, just as I did for Intel.
-> > 
-> > [*]: https://lore.kernel.org/qemu-devel/20250227062523.124601-5-zhao1.liu@intel.com/
-> > ---
-> >  target/i386/cpu.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index fedeeea151ee..eceda9865b8f 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -558,7 +558,8 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
-> >  
-> >      *eax = CACHE_TYPE(cache->type) | CACHE_LEVEL(cache->level) |
-> >                 (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0);
-> > -    *eax |= max_thread_ids_for_cache(topo_info, cache->share_level) << 14;
-> > +    /* Bits 25:14 - NumSharingCache: maximum 4095. */
-> > +    *eax |= MIN(max_thread_ids_for_cache(topo_info, cache->share_level), 4095) << 14;
-> 
-> Will this be more meaningful?
-> 
-> *eax |=
->  max_thread_ids_for_cache(topo_info, cache->share_level) & 0xFFF << 14
 
-Hi Babu, thank you for your feedback! This approach depends on truncation,
-which might lead to more erroneous conclusions. Currently, such cases
-shouldn't exist on actual hardware; it's only QEMU that supports so many
-CPUs and custom topologies.
+Thanks for the investigation. Indeed, building TF-A with 
+ENABLE_FEAT_TCR2 and ENABLE_FEAT_SCTRL2 didn't change anything.
 
-Previously, when Intel handled similar cases (where the topology space
-wasn't large enough), it would encode the maximum value rather than
-truncate, as I'm doing now (you can refer to the description of 0x1 in
-patch 5, and similar fixes in Intel's 0x4 leaf in patch 6). In the
-future, if actual hardware CPUs reach such numbers and has special
-behavior, we can update accordingly. I think at least for now, this
-avoids overflow caused by special topology in QEMU emulation.
+It's possible that it's still needed to update test images though, so 
+I'll try when Gustavo will post v8.
 
 Thanks,
-Zhao
+Pierrick
+
+> 
+> r~
 
 
