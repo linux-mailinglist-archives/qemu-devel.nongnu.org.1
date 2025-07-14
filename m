@@ -2,91 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54920B0493C
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 23:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 734E4B04957
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 23:23:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubQaU-0002pV-Vk; Mon, 14 Jul 2025 17:19:51 -0400
+	id 1ubQd9-0005sh-CO; Mon, 14 Jul 2025 17:22:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ubP36-00021I-7Y
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 15:41:20 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ubP33-0002E8-Qk
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 15:41:15 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-74b50c71b0aso2680542b3a.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 12:41:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752522071; x=1753126871; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=p8kbhLWeO1agnqH+2iodbCvt5U+Jl8WSYS0tBFEtKL0=;
- b=smN1wiH+Ljfi2Mm6Cw6P9dtkG1dbDaO0hCVKfTyoJPPbgkAcxi9uy020v84J0bzmGq
- nzt0dvk228YkLiDy4cKgNW6pSUh2GSmVl/zOuRKI/yBHlrkenILPn3Wo7cUp21sowF0i
- 8qtrD0a6D6/DnH23C897JxWWjdMn43i1BpeFACMztJWul0L8lCgpsRgP8BoGnnKOWeEQ
- CPs4DUika/z04RJybBOa4zjn6z65juGYF2+kqSd/po8x/MQVD1mL2U1K7SWxyjFvMxvA
- IdNWwKNyGlyQF7htXK6ojb72BgJzfoTvHLdVu8VoG40hwv+YMdf/ng8IYNibAGZR1b3U
- 8E0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752522071; x=1753126871;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=p8kbhLWeO1agnqH+2iodbCvt5U+Jl8WSYS0tBFEtKL0=;
- b=MSUDS+qlwhOYskRdYBalAmv9BNHs1uDtgj057hWYu81laR0XcafziRRYUzw9ae59bq
- I2Td3FL6LKttxGxjmvqkfpHibsEEGZWWHKXrQ23/c8lOORGXNKRjQlSoAptN++G7PzZg
- kuqQ3SHHlA0tLCzVLbgRsTc1lB8QOFaHMr9xkQ+mHt+0ofqeRC9waqZzsHgTSADw8swE
- BirOOTcLNWbZX+sHXJa8L8GTBRSHO3ZDfSzvud+afAQaiikjuhtfqFvBVTmEt5bqk6PQ
- sJZ6Wws9x6CvG0LcKEIVh/fNOJ486SSbxv04aRob/qBqiT4EuvG5sA6XG/RKxcI5UuOF
- p7fA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV5VBCEb4LEWtxYvPCn/9Suvg9PId/PBR47jNFc++UON/Q42OigERj1JrOdov/RqIFTzwwOvRoOyqpf@nongnu.org
-X-Gm-Message-State: AOJu0YyplLjtsOj4t/mef6nruDbG/80GVpsx5gtQz41UC4mx2pXs2XSB
- qAXxiI8Pi2nDRHL5sacvbzpeHybDRejH7cJ1Mw3NnWaC9CqMzoJGFsPTgCDgiKAk/LQ=
-X-Gm-Gg: ASbGnctricSGpanZXq/K50wuWk+QEaPBBhwyOszQZIb7itpCiuy2TmdxqZDLUhE2+H9
- J+FlEu0Wwrcw/zJcsULnVIDnKKurg6QKfv5MdvQ4Km5Q3m5GN1PQrnbfFUUid0x9hfWk5E4iw9J
- 4wiN02S1QjerFKEDOg/W2H8v8WH/cM4ay9QdQTUVKOO1mxyW/6utqNrj9SLcEJ8pQlQdLz93WaJ
- LxAXD9eYTN+n3ZJ2b5n2Qs2iTfVHyAw5FackPXQLFjgt21nCvevudpT0fFGadrwJRULniogNgwe
- F1Wx+gz8ZlfxeyOy2DTYg3LyfQespB+uZstqFkAy3aEiwOj0f3p8Aq+T7l/adhsMEB4ecEeqCwM
- VqT2rbwhi05wF0Ub1UFSybFD92hl29rqoVQ/6Pi8E3EWu/98ZoTVu/xikcAZ7u5o=
-X-Google-Smtp-Source: AGHT+IHDnfI9gEGXqI/RhqRvQrDpgbt7IegLqn/IGAaUlx2SRfRNCKuf95p7kEAJl5t3P0/V+j77vw==
-X-Received: by 2002:a05:6a00:18a0:b0:748:f74f:6d27 with SMTP id
- d2e1a72fcca58-74ee3239763mr23496789b3a.24.1752522071458; 
- Mon, 14 Jul 2025 12:41:11 -0700 (PDT)
-Received: from [10.113.99.227] ([172.56.179.167])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74eb9e068b1sm11341991b3a.58.2025.07.14.12.41.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jul 2025 12:41:10 -0700 (PDT)
-Message-ID: <a38e4185-71e6-4edf-99c6-c4c1f85066d0@linaro.org>
-Date: Mon, 14 Jul 2025 13:41:05 -0600
+ (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
+ id 1ubP3Z-0002es-TC
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 15:41:52 -0400
+Received: from www62.your-server.de ([213.133.104.62])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
+ id 1ubP3X-0002GW-3Q
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 15:41:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+ :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=unP8NaYcfGWst2Rck95LtACnkFlPr2QzLR31vkz89uk=; b=VuiE9+oLStvl7h1Qg5f+d9efbE
+ M7K5zRU3vAwIcuQba29O54t0NpyfGeSRCr4L40OySGJSbtcR2MW/77ZhQWuG/382J/5LD902wd4ys
+ KT9OgOkumOTMxILPUr7ZepB0+y6oxvzU8EbdR+4T5qeMn/r93NCzDaXGKtgR16u8ku6KtDAGLaPnT
+ piLt/DrIdCIKOv7erJPWlet8MuYqjWFJHosSYHXh/KQ/5uyfzsNQMQcpCcaz9G8SLB6RDaQpnT+3s
+ CKp5tVYD1vvSE1hALZpxGE1Jk1SGrFmHaTuwca2+YcklSXk3SHz1wFyXDL5eJxjgr5oHCWiqnY8sw
+ VQCscXDg==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+ by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.96.2) (envelope-from <daniel@iogearbox.net>)
+ id 1ubP3O-000IBA-0d; Mon, 14 Jul 2025 21:41:34 +0200
+Received: from localhost ([127.0.0.1])
+ by sslproxy07.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.96) (envelope-from <daniel@iogearbox.net>)
+ id 1ubP3N-0008kd-1t; Mon, 14 Jul 2025 21:41:33 +0200
+Message-ID: <72157bbf-5501-472c-ad3c-2d560bf91d8d@iogearbox.net>
+Date: Mon, 14 Jul 2025 21:41:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] target/arm: Added support for SME register exposure to
- GDB
-To: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20250714174330.913636-1-vacha.bhavsar@oss.qualcomm.com>
+Subject: Re: [PATCH v5 3/3] net/af-xdp: Support pinned map path for AF_XDP
+ sockets
+To: Ilya Maximets <i.maximets@ovn.org>, qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>, Anton Protopopov <aspsk@isovalent.com>
+References: <20250711094416.247125-1-daniel@iogearbox.net>
+ <20250711094416.247125-3-daniel@iogearbox.net>
+ <b067d5e5-0113-4b22-8bc5-484c8e83ca1f@ovn.org>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250714174330.913636-1-vacha.bhavsar@oss.qualcomm.com>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <b067d5e5-0113-4b22-8bc5-484c8e83ca1f@ovn.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27699/Mon Jul 14 10:54:31 2025)
+Received-SPF: pass client-ip=213.133.104.62; envelope-from=daniel@iogearbox.net;
+ helo=www62.your-server.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,143 +118,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Daniel Borkmann <daniel@iogearbox.net>
+From:  Daniel Borkmann via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/14/25 11:43, Vacha Bhavsar wrote:
-> diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-> index 64ee9b3b56..c39d636caa 100644
-> --- a/target/arm/gdbstub64.c
-> +++ b/target/arm/gdbstub64.c
-> @@ -228,6 +228,87 @@ int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg)
->       return 0;
->   }
->   
-> +int aarch64_gdb_get_sme_reg(CPUState *cs, GByteArray *buf, int reg)
-> +{
-> +    ARMCPU *cpu = ARM_CPU(cs);
-> +    CPUARMState *env = &cpu->env;
-> +    bool streaming_mode = ((env->svcr & 0x01) != 0);
+On 7/14/25 5:12 PM, Ilya Maximets wrote:
+> On 7/11/25 11:44 AM, Daniel Borkmann wrote:
+>> Extend 'inhibit=on' setting with the option to specify a pinned XSK map
+>> path along with a starting index (default 0) to push the created XSK
+>> sockets into. Example usage:
+>>
+>>    # ./build/qemu-system-x86_64 [...] \
+>>     -netdev af-xdp,ifname=enp2s0f0np0,id=net0,mode=native,queues=2,start-queue=14,inhibit=on,map-path=/sys/fs/bpf/xsks_map,map-start-index=14 \
+>>     -device virtio-net-pci,netdev=net0 [...]
+>>
+>> This is useful for the case where an existing XDP program with XSK map
+>> is present on the AF_XDP supported phys device and the XSK map is not
+>> yet populated. For example, the former could have been pre-loaded onto
+>> the netdevice by a control plane, which later launches QEMU to populate
+>> it with XSK sockets.
+>>
+>> Normally, the main idea behind 'inhibit=on' is that the QEMU instance
+>> doesn't need to have a lot of privileges to use the pre-loaded program
+>> and the pre-created sockets, but this mentioned use-case here is different
+>> where QEMU still needs privileges to create the sockets.
+>>
+>> The 'map-start-index' parameter is optional and defaults to 0. It allows
+>> flexible placement of the XSK sockets, and is up to the user to specify
+>> when the XDP program with XSK map was already preloaded. In the simplest
+>> case the queue-to-map-slot mapping is just 1:1 based on ctx->rx_queue_index
+>> but the user might as well have a different scheme (or smaller map size,
+>> e.g. ctx->rx_queue_index % max_size) to push the inbound traffic to one
+>> of the XSK sockets.
+>>
+>> Note that the bpf_xdp_query_id() is now only tested for 'inhibit=off'
+>> since only in the latter case the libxdp takes care of installing the
+>> XDP program which was installed based on the s->xdp_flags pointing to
+>> either driver or skb mode. For 'inhibit=on' we don't make any assumptions
+>> and neither go down the path of probing all possible options in which
+>> way the user installed the XDP program.
+>>
+>> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+>> Cc: Ilya Maximets <i.maximets@ovn.org>
+>> Cc: Jason Wang <jasowang@redhat.com>
+>> Cc: Anton Protopopov <aspsk@isovalent.com>
+>> ---
+>>   net/af-xdp.c    | 83 ++++++++++++++++++++++++++++++++++++++++++++++---
+>>   qapi/net.json   | 29 +++++++++++------
+>>   qemu-options.hx | 23 ++++++++++++--
+>>   3 files changed, 118 insertions(+), 17 deletions(-)
+> 
+> Still works.  Thanks!
+> 
+> Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
 
-env->svcr & R_SVCR_SM_MASK, although perhaps
-
-> +
-> +    switch (reg) {
-> +    /* Svg register */
-> +    case 0:
-> +    {
-> +        int vq;
-> +        if (streaming_mode) {
-> +            vq = sve_vqm1_for_el_sm(env, arm_current_el(env),
-> +                     streaming_mode) + 1;
-> +        } else {
-> +            vq = 0;
-> +        }
-> +        /* svg = vector granules (2 * vector quardwords) in streaming mode */
-> +        return gdb_get_reg64(buf, vq * 2);
-
-     int vq = 0;
-     if (FIELD_EX64(env->svcr, SVCR, SM)) {
-         vq = ...
-     }
-
-is clearer.
-
-
-> +    }
-> +    case 1:
-> +        return gdb_get_reg64(buf, env->svcr);
-> +    case 2:
-> +    {
-> +        int q;
-> +        int len = 0;
-> +        int vq = cpu->sve_max_vq;
-
-sme_max_vq.
-
-> +        int svl = vq * 16;
-> +        for (int i = 0; i < svl; i++) {
-> +            for (q = 0; q < vq; q++) {
-
-for (int q = 0
-
-> +                len += gdb_get_reg128(buf,
-> +                           env->za_state.za[i].d[q * 2 + 1],
-> +                           env->za_state.za[i].d[q * 2]);
-> +            }
-> +        }
-> +        return len;
-> +    }
-> +    default:
-> +        /* gdbstub asked for something out of range */
-> +        qemu_log_mask(LOG_UNIMP, "%s: out of range register %d", __func__, reg);
-> +        break;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +int aarch64_gdb_set_sme_reg(CPUState *cs, uint8_t *buf, int reg)
-> +{
-> +    ARMCPU *cpu = ARM_CPU(cs);
-> +    CPUARMState *env = &cpu->env;
-> +
-> +    switch (reg) {
-> +    case 0:
-> +    {
-> +        /* cannot set svg via gdbstub */
-> +        return 0;
-> +    }
-
-I think you return 8 anyway to ignore.
-
-> +    case 1:
-> +        aarch64_set_svcr(env, *(uint64_t *)buf,
-
-ldq_le_p(buf)
-
-> +            R_SVCR_SM_MASK | R_SVCR_ZA_MASK);
-> +        return 8;
-> +    case 2:
-> +        int vq, len = 0;
-> +        int svl = cpu->sve_max_vq * 16;
-
-sme_max_vq.
-
-> +        uint64_t *p = (uint64_t *) buf;
-> +        for (int i = 0; i < svl; i++) {
-> +            for (vq = 0; vq < cpu->sve_max_vq; vq++) {
-
-Mirror the q/vq loop from above.
-
-> +                env->za_state.za[i].d[vq * 2 + 1] = *p++;
-> +                env->za_state.za[i].d[vq * 2] = *p++;
-> +                len += 16;
-> +            }
-> +        }
-> +        return len;
-> +    default:
-> +        /* gdbstub asked for something out of range */
-> +        break;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
->   int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg)
->   {
->       ARMCPU *cpu = ARM_CPU(cs);
-> @@ -392,6 +473,43 @@ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
->       return &cpu->dyn_svereg_feature.desc;
->   }
->   
-> +GDBFeature *arm_gen_dynamic_smereg_feature(CPUState *cs, int base_reg)
-> +{
-> +    ARMCPU *cpu = ARM_CPU(cs);
-> +    int vq = cpu->sve_max_vq;
-
-sme_max_vq.
-
-
-r~
+Awesome, thanks Ilya!
 
