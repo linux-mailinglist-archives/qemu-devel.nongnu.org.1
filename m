@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903EAB04B86
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A19B04B87
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:07:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSG5-0002hV-Ra; Mon, 14 Jul 2025 19:06:53 -0400
+	id 1ubSG8-0002us-9J; Mon, 14 Jul 2025 19:06:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSFu-0002Fp-WB
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:43 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSFy-0002d8-Mg
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSFt-0005NZ-9H
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:42 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSFw-0005O9-TE
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534400;
+ s=mimecast20190719; t=1752534404;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=jIH1CkCCFSXcgs6SwD/lkBtxMtFMYESPhTMyWu2YSEw=;
- b=TWkaqVjNg3KtfMFt0WrzOqt0U6S1heptWdBQGrqqSESAQt0oV2cDzZxGpMegW4vNeZztpM
- NEBy5jzC1mMZCeUanHnW1RRNVoKEegO6AlKs8aA6VYfDKZA1F7I6LrSrJYwANYVFzCC+4V
- dra8q67ZLpsf7t+7en4LvLUfahcz+AI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+UAUxfm7ZZjTGEuMkx1MXZIZiceR06VrUrTJFA1Ndo0=;
+ b=gG3gdj8Lk6SwUFBb4qptt5bqOU2IvrQ9EhpSH1cPzlhKH47c61O20otuabb/tB83Jd7+Aj
+ YBoyhHkRKtg1g/0jDUpoICrzpNmV3SCzBh3UfvRucP2mFoKNoKhdEX92+wSLLcoIl5EqjE
+ J6rrfLvf3ENQoVw94koSpFTsGGwM8Rc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-DFyKStcbNAC0RLdd1Z8HKw-1; Mon, 14 Jul 2025 19:06:39 -0400
-X-MC-Unique: DFyKStcbNAC0RLdd1Z8HKw-1
-X-Mimecast-MFC-AGG-ID: DFyKStcbNAC0RLdd1Z8HKw_1752534398
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45359bfe631so29214725e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:06:39 -0700 (PDT)
+ us-mta-638-cE9b8KFWOyWsRU2HegzBpg-1; Mon, 14 Jul 2025 19:06:43 -0400
+X-MC-Unique: cE9b8KFWOyWsRU2HegzBpg-1
+X-Mimecast-MFC-AGG-ID: cE9b8KFWOyWsRU2HegzBpg_1752534402
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-451d2037f1eso30875725e9.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:06:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534398; x=1753139198;
+ d=1e100.net; s=20230601; t=1752534401; x=1753139201;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jIH1CkCCFSXcgs6SwD/lkBtxMtFMYESPhTMyWu2YSEw=;
- b=LSWAVKqly2yh3coiumfXVJPhtZxoX8h36GJxGr3++zP7/kAJVP7Ap5dcbqr6T1npP6
- QcMshRV4Jdc1zKPnobVVIWtYOZnTAQGySLhz4CVb/M4Gd9BUKkxXYx95U1BvbSdeu1wK
- 9PCmY6sgaNPS2rTqLj4JQ4mdp+XVcJH5Qq2qUzOKK7c/JrTYlMUJlzgFApJ5OwrtG1vW
- bnE4cLLKDWRreUy+kKF919hjJevS0q7MvNt0ceoEqK6PHbOg1lQQt1jimsA4Asaz3lPV
- L2SWMBAV5qA6MomB2GZYQ5wBPwfrwGSeknyy3Iizs78E79ZWedPT9etv85Cr6gsjcgsD
- YISQ==
-X-Gm-Message-State: AOJu0YwtzxPTIe+6eXd8Dt6/ABHflV48OQyEyTf1PZm+cwk9EdysE1kk
- XULD/t0+5QY4Z6TcrEbDEKOvaOyHsaE1p6Q2qtxWcXnVdvzJI1KpvSafA/zPvRY9ZHdvUzZJnyZ
- 8OMAHHEYeQ9AKwY/BbAcR9aHEw8kusK3TK7O5bwoJvd+u0+w7Mv76iNtSTGLf5QZZ4ggeLkcOEJ
- 80AXOinWavURgQe4uXvF3hof2mLJ6vpiuGhg==
-X-Gm-Gg: ASbGncuWbNPe8CozvJwN65G2I2loRTBfdlHnvaTb0HHpHiXlHVpFLtcbK5huldNfT31
- hQbFZGPR575Ve1A3EtKrbfR6yTrTlkHms+BZgMUd6g1J/6deUXdpUODqzfw9ab1r6G1vht8H3z2
- 37vFBYkkXeWh4ppdq9Z9kcLjL3sm80NgUXwdDFLFR/363TK3smUJdtmXSj2EuBWm8rafTakLmwi
- uP/bx4m7Vyaw0Pc6b2eLdyPqfZyumJrR7i/kirnbYt40VRrSkGy5jZd+MinAyJv3yWn9bY/GOQ5
- 75/jc/5BZoCYB5INBONuH7ChGhSidND8
-X-Received: by 2002:a05:600c:8b21:b0:43d:42b:e186 with SMTP id
- 5b1f17b1804b1-454f427c7a3mr147535745e9.8.1752534397872; 
- Mon, 14 Jul 2025 16:06:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEN8SfCBdNXDgKWYDMwQdzn82ZtYJ6VggooxMWqvitHxa9yFK5df/3iCQaRkYLeVks4Wlxggg==
-X-Received: by 2002:a05:600c:8b21:b0:43d:42b:e186 with SMTP id
- 5b1f17b1804b1-454f427c7a3mr147535485e9.8.1752534397398; 
- Mon, 14 Jul 2025 16:06:37 -0700 (PDT)
+ bh=+UAUxfm7ZZjTGEuMkx1MXZIZiceR06VrUrTJFA1Ndo0=;
+ b=JzzX75GiVBqkGM6k2V2ciSOXNUybv0I/vJptvHqt1q2xCxvu6gZ7GFuXDU+niGcKfx
+ CXEvb2bsR5NOMm6YkuU+IH2ZkaN3gUCAbH3Hkkr7ww0AwoVuN74oAsCcRy6MLt/WpHhS
+ Zl4rNSFLLEU69JvHvd13QBxQaLObe0fRVXDXgIsyWryLYF1v3bCvAczYwCLOfPf3pbx4
+ 1ReFV3P0J6GeNujWTaoDWjQAEpJu4aPHtYJJkf9SIuVioPToD/tlf+j6jTkslZ+3V+yx
+ E0vEjHnAUYcyP2cPq7TulZcZgQ7u3DUdrlwwEHHHJQcnpa+MQo7SzuywByZYiPPE/0Wc
+ vx+w==
+X-Gm-Message-State: AOJu0YxgsIXvi7AUZVVGoFvd6jldNzXduldMsDSmKfqiDzOZ4x3aK+HS
+ YwJKBSLf93Xngo3TwekcWMkc6dJq/qUA0n7Ld34eiYiRf7H7CUq1mPaltVcGk3l1gGSz11Zpz1/
+ HdOdiv96MAHNSMmIEYx22tLv/VtrYNEMkC+k9Fc2WBr3Iw55ZcEANfMV5ZJ6QS7NywMmyZI8ajN
+ Yt1mLimP9XtPHCfkrl+W4dmvbQpXshd6MMLA==
+X-Gm-Gg: ASbGncs3ffvpF7vLsEfRFYGrtSa/aCvs1Jboli/wnz94lvwqd2rreBcz31k6vsKWiGZ
+ F2mAVnD6uVXx14kBWgCG4gZU4NHwXhMPMyIzmHnjQTzoVK4cQAFX2AEvZ4IlQWFYGuH0RUfUy+5
+ Z6BUgI4uF7PZC9FYUkjQMiTsGaA/wREUda0rn3lLP5p0G99x5gr5A9xO9+FIuevcTJ9EJLQ+8eG
+ 2yY6jBDjIUUH2OVLOKffEyWSdj4ZWaEumnWjmcpxbjumV1WOV5coP8spoCHtoxIGNN3em6NM1wR
+ jyBxVTZMCEH3IL8/uk33VUzu4AgyROd7
+X-Received: by 2002:a05:600c:4e54:b0:456:43d:118d with SMTP id
+ 5b1f17b1804b1-456043d13bbmr112229085e9.17.1752534401406; 
+ Mon, 14 Jul 2025 16:06:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGe28pTxY70ufHHhSwpNiT9fKZKxgxvkHsnFoY3BXvolLfI93WchNoM6NVdMVKc8neh9COEJA==
+X-Received: by 2002:a05:600c:4e54:b0:456:43d:118d with SMTP id
+ 5b1f17b1804b1-456043d13bbmr112228795e9.17.1752534400893; 
+ Mon, 14 Jul 2025 16:06:40 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d785sm13819909f8f.59.2025.07.14.16.06.36
+ ffacd0b85a97d-3b5e8e1e1a5sm13316857f8f.74.2025.07.14.16.06.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:06:37 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:06:35 -0400
+ Mon, 14 Jul 2025 16:06:39 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:06:37 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Daniil Tatianin <d-tatianin@yandex-team.ru>,
+ Raphael Norwitz <raphael@enfabrica.net>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PULL 09/97] vhost: add a helper for force stopping a device
-Message-ID: <2f527fff460a2c67fd37298dbd7fe42fffdb738b.1752534227.git.mst@redhat.com>
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org
+Subject: [PULL 10/97] vhost-user-blk: add an option to skip GET_VRING_BASE
+ for force shutdown
+Message-ID: <07fde5901b5254d3b9706df22dbb16cfacf966d5.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -92,7 +96,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,150 +114,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 
-This adds an ability to skip GET_VRING_BASE during device stop entirely,
-and thus the expensive drain operation that this call entails as well,
-which may be useful during a non-graceful shutdown in case the guest
-operating system hangs or refuses to react to a previously requested
-ACPI shutdown for whatever reason.
+If we have a server running disk requests that is for whatever reason
+hanging or not able to process any more IO requests but still has some
+in-flight requests previously issued by the guest OS, QEMU will still
+try to drain the vring before shutting down even if it was explicitly
+asked to do a "force shutdown" via SIGTERM or QMP quit. This is not
+useful since the guest is no longer running at this point since it was
+killed by QEMU earlier in the process. At this point, we don't care
+about whatever in-flight IO it might have pending, we just want QEMU
+to shut down.
+
+Add an option called "skip-get-vring-base-on-force-shutdown" to allow
+SIGTERM/QMP quit() to actually act like a "force shutdown" at least
+for vhost-user-blk devices since those require the drain operation
+to shut down gracefully unlike, for example, network devices.
 
 Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Message-Id: <20250609212547.2859224-3-d-tatianin@yandex-team.ru>
+Message-Id: <20250609212547.2859224-4-d-tatianin@yandex-team.ru>
+Acked-by: Raphael Norwitz <raphael@enfabrica.net>
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/vhost.h | 15 +++++++++++
- hw/virtio/vhost.c         | 52 +++++++++++++++++++++++++++++----------
- 2 files changed, 54 insertions(+), 13 deletions(-)
+ include/hw/virtio/vhost-user-blk.h | 2 ++
+ hw/block/vhost-user-blk.c          | 9 ++++++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 38800a7156..eb3dd7616b 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -237,6 +237,21 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings);
-  */
- int vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings);
- 
-+/**
-+ * vhost_dev_force_stop() - force stop the vhost device
-+ * @hdev: common vhost_dev structure
-+ * @vdev: the VirtIODevice structure
-+ * @vrings: true to have vrings disabled in this call
-+ *
-+ * Force stop the vhost device. After the device is stopped the notifiers
-+ * can be disabled (@vhost_dev_disable_notifiers) and the device can
-+ * be torn down (@vhost_dev_cleanup). Unlike @vhost_dev_stop, this doesn't
-+ * attempt to flush in-flight backend requests by skipping GET_VRING_BASE
-+ * entirely.
-+ */
-+int vhost_dev_force_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
-+                         bool vrings);
+diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost-user-blk.h
+index ea085ee1ed..a10f785672 100644
+--- a/include/hw/virtio/vhost-user-blk.h
++++ b/include/hw/virtio/vhost-user-blk.h
+@@ -50,6 +50,8 @@ struct VHostUserBlk {
+     bool connected;
+     /* vhost_user_blk_start/vhost_user_blk_stop */
+     bool started_vu;
 +
- /**
-  * DOC: vhost device configuration handling
-  *
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index c87861b31f..c30ea1156e 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1354,25 +1354,30 @@ fail_alloc_desc:
-     return r;
- }
++    bool skip_get_vring_base_on_force_shutdown;
+ };
  
--int vhost_virtqueue_stop(struct vhost_dev *dev,
--                         struct VirtIODevice *vdev,
--                         struct vhost_virtqueue *vq,
--                         unsigned idx)
-+static int do_vhost_virtqueue_stop(struct vhost_dev *dev,
-+                                   struct VirtIODevice *vdev,
-+                                   struct vhost_virtqueue *vq,
-+                                   unsigned idx, bool force)
- {
-     int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, idx);
-     struct vhost_vring_state state = {
-         .index = vhost_vq_index,
-     };
--    int r;
-+    int r = 0;
+ #endif
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index 0eebbcd80d..c0cc5f6942 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -210,6 +210,7 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
+     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
+     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
+     int ret;
++    bool force_stop = false;
  
-     if (virtio_queue_get_desc_addr(vdev, idx) == 0) {
-         /* Don't stop the virtqueue which might have not been started */
+     if (!s->started_vu) {
+         return 0;
+@@ -220,7 +221,11 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
          return 0;
      }
  
--    r = dev->vhost_ops->vhost_get_vring_base(dev, &state);
--    if (r < 0) {
--        VHOST_OPS_DEBUG(r, "vhost VQ %u ring restore failed: %d", idx, r);
-+    if (!force) {
-+        r = dev->vhost_ops->vhost_get_vring_base(dev, &state);
-+        if (r < 0) {
-+            VHOST_OPS_DEBUG(r, "vhost VQ %u ring restore failed: %d", idx, r);
-+        }
-+    }
+-    ret = vhost_dev_stop(&s->dev, vdev, true);
++    force_stop = s->skip_get_vring_base_on_force_shutdown &&
++                 qemu_force_shutdown_requested();
 +
-+    if (r < 0 || force) {
-         /* Connection to the backend is broken, so let's sync internal
-          * last avail idx to the device used idx.
-          */
-@@ -1401,6 +1406,14 @@ int vhost_virtqueue_stop(struct vhost_dev *dev,
-     return r;
- }
++    ret = force_stop ? vhost_dev_force_stop(&s->dev, vdev, true) :
++                       vhost_dev_stop(&s->dev, vdev, true);
  
-+int vhost_virtqueue_stop(struct vhost_dev *dev,
-+                         struct VirtIODevice *vdev,
-+                         struct vhost_virtqueue *vq,
-+                         unsigned idx)
-+{
-+    return do_vhost_virtqueue_stop(dev, vdev, vq, idx, false);
-+}
-+
- static int vhost_virtqueue_set_busyloop_timeout(struct vhost_dev *dev,
-                                                 int n, uint32_t timeout)
- {
-@@ -2119,7 +2132,8 @@ fail_features:
- }
+     if (k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false) < 0) {
+         error_report("vhost guest notifier cleanup failed: %d", ret);
+@@ -584,6 +589,8 @@ static const Property vhost_user_blk_properties[] = {
+                       VIRTIO_BLK_F_DISCARD, true),
+     DEFINE_PROP_BIT64("write-zeroes", VHostUserBlk, parent_obj.host_features,
+                       VIRTIO_BLK_F_WRITE_ZEROES, true),
++    DEFINE_PROP_BOOL("skip-get-vring-base-on-force-shutdown", VHostUserBlk,
++                     skip_get_vring_base_on_force_shutdown, false),
+ };
  
- /* Host notifiers must be enabled at this point. */
--int vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-+static int do_vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
-+                             bool vrings, bool force)
- {
-     int i;
-     int rc = 0;
-@@ -2141,10 +2155,11 @@ int vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-         vhost_dev_set_vring_enable(hdev, false);
-     }
-     for (i = 0; i < hdev->nvqs; ++i) {
--        rc |= vhost_virtqueue_stop(hdev,
--                                   vdev,
--                                   hdev->vqs + i,
--                                   hdev->vq_index + i);
-+        rc |= do_vhost_virtqueue_stop(hdev,
-+                                      vdev,
-+                                      hdev->vqs + i,
-+                                      hdev->vq_index + i,
-+                                      force);
-     }
-     if (hdev->vhost_ops->vhost_reset_status) {
-         hdev->vhost_ops->vhost_reset_status(hdev);
-@@ -2164,6 +2179,17 @@ int vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-     return rc;
- }
- 
-+int vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-+{
-+    return do_vhost_dev_stop(hdev, vdev, vrings, false);
-+}
-+
-+int vhost_dev_force_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
-+                         bool vrings)
-+{
-+    return do_vhost_dev_stop(hdev, vdev, vrings, true);
-+}
-+
- int vhost_net_set_backend(struct vhost_dev *hdev,
-                           struct vhost_vring_file *file)
- {
+ static void vhost_user_blk_class_init(ObjectClass *klass, const void *data)
 -- 
 MST
 
