@@ -2,89 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE413B04AC4
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 00:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0ED3B04B24
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 00:58:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubRm9-0005eP-Fd; Mon, 14 Jul 2025 18:35:57 -0400
+	id 1ubS6x-0007av-4h; Mon, 14 Jul 2025 18:57:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubRi1-0006Qv-DG
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 18:31:43 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubRhx-0006M2-MW
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 18:31:40 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3a57ae5cb17so2752994f8f.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 15:31:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752532294; x=1753137094; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=KYl1wwLlzSxiPeejDCnvNrvbQlhxiAL4jpQ84EECmf4=;
- b=wFLZrsc7v75eVGEpt1mCj+oY9vnw9TOa2bpM6rrxwkKKy7TNuqP7yYiWFWJNR242pw
- IJeDYOPwmB8P1qllR6Kr6VN0AQEY+nuu7kiUOy+zmB1FbuPa8pZoF0jP6xt+3FkS3vlm
- B9JTmGtniwFekAwI0o9N+VLMQCMmJ5u1rLDAj8V0XkVBYNlXqreVrW2CphGVA7DZEYNi
- 7/Vc0dh4tl21sVPgzPVFIL3O/7M2wyguuCK+s8OrCCQrWWeq91maSR24p5pm1Rf9lpZb
- x84JGuXhZ3AorcbxRVKRSEPzRyAJUTP4wtkfz2lOuydEZ75eISQGGjWe4w8AYU6RrpbH
- UfvA==
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1ubS6v-0007ZH-LI
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 18:57:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1ubS6t-0003FB-1u
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 18:57:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752533839;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nKyZAq4pdwBfJ6Q1QwFC71krqpHYodFPSDVsG9yLQXA=;
+ b=epyCBrrkdLH1sy2XY4aXFaDuRLuCZKc6G9z11p4LFVFe8hrr0UkXJVyAIe3EdsR+MDD1td
+ z7t0WJ5BMhFyYFPFYimnDaeLydGkMkMD5fvEQhixgBzwE+hSVzI6R5+h8XL2/35gRNE6Hr
+ XqCrLE3BJyM1RWZfr+Pv4EWS6F82h0U=
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
+ [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-235-FZbEkkc_O1KGmPPI8sj05w-1; Mon, 14 Jul 2025 18:57:17 -0400
+X-MC-Unique: FZbEkkc_O1KGmPPI8sj05w-1
+X-Mimecast-MFC-AGG-ID: FZbEkkc_O1KGmPPI8sj05w_1752533836
+Received: by mail-io1-f69.google.com with SMTP id
+ ca18e2360f4ac-86cff09d29dso87350139f.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 15:57:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752532294; x=1753137094;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KYl1wwLlzSxiPeejDCnvNrvbQlhxiAL4jpQ84EECmf4=;
- b=n05bJVKNtmzjPlh5eqszfSsKT3I+glE2KwAa6SznPuVpSIV3/vsh9btgWwwLpWOZY3
- m+rpjwDwKzSRAfBulOr/cYuHRSoKKzXuSeCujg9QUijeISNM78tF6aivE8gw5e1HZi7o
- iptbgzx8T80fpJ0rCsW86adDCCzSmNC7oJRLgPhT7Z5HtyTrSFEMS2L2uq45VfAHVdqn
- HTBp4ODzyynKCscHcBuGEgOy67FT8lA5OKM5adbEOebvpK+9G733IacvQdW6Opy0g2yl
- ZIWvHxLrHsi+1fs3oSDJ97m/7eODbiiEUDwsQmVdepbPw9quu7lkvkdyIppY5/x/jByc
- CEWQ==
+ d=1e100.net; s=20230601; t=1752533836; x=1753138636;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nKyZAq4pdwBfJ6Q1QwFC71krqpHYodFPSDVsG9yLQXA=;
+ b=dF3uwBpBEEZ+UmcnTwYFldP0aXL5fHq6MVd6FWyip9UJyGgBf1JtJnb2wH0Sk9ZfLX
+ Q3ph/ALlEhDrlEGXG5DX3lKdFFdascVo23i2aIfP4Ci2UuVgcqdK8ImYJ5BOQl15J3ul
+ m5SKthmuEmQXMheHr77Q7845wSbXjZfqFpxXCqV8SXdetrVQrI6GfF3WkOAJRdaNMSbW
+ yPZ+iGWJ0toA6pvG74dVAbN6jLjqu0aYmar0PqMZTAJTEzFDFTc5/xt0BZdgtmia6uD5
+ YEmUt/zOvDb5QHSKYtiLFKZNN4CjkO8BMdaSRRoiLRommLpCGMIcLRsMFhxxiBgz6XSg
+ zgeQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUHhbomxukzoi4s3Eruq3VZl2gpTaeWgIRCPx3aB6veZLojiRFI9t78TGfd1uRW1Whe5tXRtu461hNB@nongnu.org
-X-Gm-Message-State: AOJu0YzMpXH0tA57nGg0jgNrwMd/faB+4f2UpOKy5TqwhZXFnuKSmCFG
- HL8MFQDLtaIUTcogAccsZdYiB8pJWjZpkAFHZ8Qin7E7Iv+WcDTzUwDIlVvweIlFUBk=
-X-Gm-Gg: ASbGncv9xABJvlbxaMQsDiOfXgzThBYq1YGusXIvNHdJigvb2OtUa9OPJAdfjn80S4N
- geiZfZf9n9WoGfCWiCe1nUiUfpdqoy33bseTE+QymQJqFMC+4zfSQQ8q5aqj3GVb2ZEes80YwV/
- aoCF9jX/04O2zDJ69ql8XwcddCuIc6WB3MJ9IGSrlkmjTfRIXkS9firwsTrqd982nO1kDWDOiXC
- 59VORS6DLqZf10NLiGphr72rpJCZVXHlQ/fXql2zP6ibRbK86rqGv/P9+mKa0Ya4r3s2rp3Xqs2
- AFcJy8ddLuzyPhnY6wiL8HE0CX8+HrGv4qcVG6m18lVPlBchbCA7MvWC/N0SrwDB0oI1GZuvsO/
- 7Cho9bycCzaKFGwYBmBziyDQ/Aookgdbb/TCRgJ5Pha2sE6FwwtaMl3N1BbWLpO7MTzrbata7ry
- Y+YCGOcA==
-X-Google-Smtp-Source: AGHT+IFN2s6hioHP4otrdk4oW/YwJJhwpesex/XruQRcGKhDnXjrhrjAPa+v+z1lRVVX1F6zxkNu2A==
-X-Received: by 2002:a05:6000:4b1a:b0:3b6:1e6:c9fb with SMTP id
- ffacd0b85a97d-3b601e6d607mr5186774f8f.11.1752532293755; 
- Mon, 14 Jul 2025 15:31:33 -0700 (PDT)
-Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e211dcsm13175769f8f.84.2025.07.14.15.31.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jul 2025 15:31:33 -0700 (PDT)
-Message-ID: <735bcaf7-d32a-4081-9888-66d21cb03310@linaro.org>
-Date: Tue, 15 Jul 2025 00:31:32 +0200
+ AJvYcCVsbfdxcfUXLiLzysiz8UKBdLRue3hNL8j9nBgLgfQDt/x98DUSGPpko0HPiBjcJ/wqBpgy/hoAAq7o@nongnu.org
+X-Gm-Message-State: AOJu0YxmtJjhm2xpoHNl/nsTTcfP6g2Gch761ei+fbZllBh3WheSUvoG
+ XdkGo2Usn0eiXjNM/d57WpJ7b9nYX9/1mwe8SN6JwYu95COCqWBIcHUuLVr2it7wNB5SRD7At2q
+ 1+hDxQ9Cfcw+72ij3twIG91nQJ6L6vGRVEy329ZkIp8569+rh6HKD7Qwz
+X-Gm-Gg: ASbGncsa5bSYsC+5WAM5OmVxCSCq+KWvkJsdPGDOiQ9/k5M0pnbwvVrY2pdWxw/bHOp
+ NM2CkI3TtSpQY6K1HeEroF8CVPtBvrRsSNHdIiwGGUV5eTEjHRc4PIi10GAh7QuJeUvpZzebqno
+ hErpQjxmvE7yLpZnhMnHBsI7eObuxZlWsEgp7H/gYjYVWXhv0+XP08TBKkZypMLKiggQXPito69
+ gGy6EdofKsb7JfXi/N/VyhLk8Y4St+UO1EmdXhfQa48SYp9Kf8DqoM7yj+YlC3w59SALAAvFJlu
+ bufoLzzt1w8kp4cEbYxr5vpcawt8UwpCir1NkRmYuM0=
+X-Received: by 2002:a05:6e02:1c28:b0:3df:3208:9698 with SMTP id
+ e9e14a558f8ab-3e2531642bamr47883355ab.0.1752533835881; 
+ Mon, 14 Jul 2025 15:57:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG72/d3IyCtQpB/8xQ5x+qjHVkqzE5Kk8JsgXWPyj8aE1RrEY3wDEDJDYyeRz7uMEDD53adzA==
+X-Received: by 2002:a05:6e02:1c28:b0:3df:3208:9698 with SMTP id
+ e9e14a558f8ab-3e2531642bamr47883295ab.0.1752533835461; 
+ Mon, 14 Jul 2025 15:57:15 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
+ e9e14a558f8ab-3e24611b128sm32930845ab.11.2025.07.14.15.57.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Jul 2025 15:57:14 -0700 (PDT)
+Date: Mon, 14 Jul 2025 16:57:12 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Tomita Moeko <tomitamoeko@gmail.com>
+Cc: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v3] vfio/pci: Introduce x-pci-class-code option
+Message-ID: <20250714165712.3ea616ce.alex.williamson@redhat.com>
+In-Reply-To: <20250708145211.6179-1-tomitamoeko@gmail.com>
+References: <20250708145211.6179-1-tomitamoeko@gmail.com>
+Organization: Red Hat
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tap: fix net_init_tap() return code
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>
-References: <1752525414-223746-1-git-send-email-steven.sistare@oracle.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <1752525414-223746-1-git-send-email-steven.sistare@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,34 +108,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/7/25 22:36, Steve Sistare wrote:
-> net_init_tap intends to return 0 for success and -1 on error.  However,
-> when net_init_tap() succeeds for a multi-queue device, it returns 1,
-> because of this code where ret becomes 1 when g_unix_set_fd_nonblocking
-> succeeds:
-> 
->          ret = g_unix_set_fd_nonblocking(fd, true, NULL);
->          if (!ret) {
->              ... error ...
->      free_fail:
->          ...
->          return ret;
-> 
-> Luckily, the only current call site checks for negative, rather than non-zero:
-> 
->    net_client_init1()
->        if (net_client_init_fun[](...) < 0)
-> 
-> Also, in the unlikely case that g_unix_set_fd_nonblocking fails and returns
-> false, ret=0 is returned, and net_client_init1 will use a broken interface.
-> 
-> Fix it to be future proof.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->   net/tap.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+On Tue,  8 Jul 2025 22:52:11 +0800
+Tomita Moeko <tomitamoeko@gmail.com> wrote:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Introduce x-pci-class-code option to allow users to override PCI class
+> code of a device, similar to the existing x-pci-vendor-id option. Only
+> the lower 24 bits of this option are used, though a uint32 is used here
+> for determining whether the value is valid and set by user.
+> 
+> Additionally, to ensure VGA ranges are only exposed on VGA devices,
+> pci_register_vga() is now called in vfio_pci_config_setup(), after
+> the class code override is completed.
+> 
+> This is mainly intended for IGD devices that expose themselves either
+> as VGA controller (primary display) or Display controller (non-primary
+> display). The UEFI GOP driver depends on the device reporting a VGA
+> controller class code (0x030000).
+> 
+> Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+> ---
+> v3:
+> * Save the vdev class code when it is unspecified.
+> * Call pci_register_vga() in vfio_pci_config_setup() to ensure VGA
+>   regions are only get exposed when vdev is VGA.
+> * Check vdev class code in vfio_is_vga().
+> Link: https://lore.kernel.org/qemu-devel/20250528155548.29344-1-tomitamoeko@gmail.com/
+> 
+> v2:
+> * Add vdev class code check in vfio_populate_vga().
+> * Fix type in trace-events.
+> Link: https://lore.kernel.org/all/20250524153102.19747-1-tomitamoeko@gmail.com/
+> 
+>  hw/vfio/pci.c        | 29 +++++++++++++++++++++++++----
+>  hw/vfio/pci.h        |  6 ++----
+>  hw/vfio/trace-events |  1 +
+>  3 files changed, 28 insertions(+), 8 deletions(-)
+
+
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
 
 
