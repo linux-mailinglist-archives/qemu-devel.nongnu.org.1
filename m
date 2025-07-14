@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D13B03CED
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 681C5B03D0B
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:13:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubH1w-0002Hb-II; Mon, 14 Jul 2025 07:07:33 -0400
+	id 1ubH7M-0007pL-W0; Mon, 14 Jul 2025 07:13:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGz0-0000aK-2v
+ id 1ubGyx-0000Yu-CE
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGys-0001Uo-NH
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:28 -0400
+ id 1ubGys-0001Uv-M3
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491056;
+ s=mimecast20190719; t=1752491058;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NDRZLxJKWA6sImNVSmtEek9dip1W5KzkCgPQbaRO+uY=;
- b=OJW54LZNomVu+1IPH3lOn1ydEBtIR6aAlyr3tt9gfT903zry3CmhspLbNkyNTGODnbfOpD
- /Nq264XQB3EOaHlHys8v5tBdT3Tm0onwjJxg8kg2oiVs9Cq2/X9g8nW3odEwG3wVTmsn6j
- giA/z6XgEoi/+FLF2GGHgYPONRDklzw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Iz1uX/fPHm96LL/GLvQKBENI0zWW46MxM6ylmWl1pqE=;
+ b=dyveLpKV2gpd7NYI3TNbeFsLXL/yo6Cgr+xum2U0t26MUc4gYMNCZfLXOs4hsIcReVbvhv
+ oszy7dwj/VYXcy1ltmhWoaKGYcwhWN60IZRiG8JXBZuUINlS1vrin7H9IWY0JDyonGRKIz
+ QVfF8fqtkqLWMh4gIXR0WRQyN1P0HiA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-369-cfLsmY0QOpueJ8lP3r0I2A-1; Mon, 14 Jul 2025 07:04:12 -0400
-X-MC-Unique: cfLsmY0QOpueJ8lP3r0I2A-1
-X-Mimecast-MFC-AGG-ID: cfLsmY0QOpueJ8lP3r0I2A_1752491051
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4561dbbcc7eso2087955e9.2
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:04:11 -0700 (PDT)
+ us-mta-34-XEY-bza7P0y8Gl5vZlOwig-1; Mon, 14 Jul 2025 07:04:17 -0400
+X-MC-Unique: XEY-bza7P0y8Gl5vZlOwig-1
+X-Mimecast-MFC-AGG-ID: XEY-bza7P0y8Gl5vZlOwig_1752491056
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-45526e19f43so10418305e9.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:04:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491050; x=1753095850;
+ d=1e100.net; s=20230601; t=1752491055; x=1753095855;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NDRZLxJKWA6sImNVSmtEek9dip1W5KzkCgPQbaRO+uY=;
- b=k5uZUJW3NrgaV39Fp/di/nO0VIEzXdkOTbHuZv2G2zZsBaCejNMdLTxfev7xhiohVq
- L5jK/nCc2if2rahybWkNkwFTMV+C6mMQQg0wAaytIAc9YP3EIhrOUi9ex44lUGP/8yak
- ygc5Ik9N+8Fma9a6pnBybKKCDRWiYBVnGuBSkyF/gp8ZeYUQbwMjSIolzKZ+IZA2Qv8U
- mLs28n64IvsUOAhH87Em60loloL5hHzvX62BY+x8FbPwNafaXWeMg2NScYvavTmJFRii
- rrQjBewE9TcFzi7DVFnAztAUMW0lr8MVsgwifcbPsuQXy747Vf5VA1E4Crlx8ccYef65
- TiWA==
-X-Gm-Message-State: AOJu0YzhWyLWSU16UNW1cx9QdYbFnWV5BBa6FA5tRfRAuWSBWU/4y4By
- rX0U4Kwuml04EQXNwVGvnkxrvuBvrDL/6lE3NigNJnBRiNtMET2ygeXl0WdrXi8UUjt7HLBdzC2
- vkIq73TZ2NHTEcl3m2cwh2uf2YqRnvhHzAJfeYotHA3ziYk2SiRnsL8SfeFW1/SQ/asYdw6Lmsr
- uo3hACqgsDSlB1MsSPwTEtshW79d8EQ2pjSEJln+XX
-X-Gm-Gg: ASbGncv8xdTUvZsOYI+hN/soOMnE3AXvbvZCljsTGf2mWqe9FFjXIWWW7W9ucuQpLQG
- p/PP2ZWs72uGGf3DZMJtD17Se8uxKxR7TuckUfzoE8OCSXQADwosjnDS/FXuEuBqeXNJsgBZoA2
- 2AyEyplhn1hCH0+U3JPZtz15HQkpkpKnmTX4pp4cVCKitWe707UnUXkb4Io9yyuP6isDIajvYQo
- tWZSrv4l/Z7Io3yb7jBDoUub672QlbE0+gNjfA22PACVnRakp/hTDOjDvF9oXKFQ2ePVhVjTd1h
- ovr5+tndfp+QSaCBgtuyK4f2L9ybqhuPcnFi8i0xOh4=
-X-Received: by 2002:a05:600d:15a:20b0:456:214f:f78d with SMTP id
- 5b1f17b1804b1-456214ffcbbmr6523185e9.22.1752491050210; 
- Mon, 14 Jul 2025 04:04:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWchi52AiVGkBDaZkhBzcfZp5vhRB5DdlQA6+9FdupEHkHxjP9CPKav7n8s/76Y2W1UB3MKQ==
-X-Received: by 2002:a05:600d:15a:20b0:456:214f:f78d with SMTP id
- 5b1f17b1804b1-456214ffcbbmr6523005e9.22.1752491049726; 
- Mon, 14 Jul 2025 04:04:09 -0700 (PDT)
+ bh=Iz1uX/fPHm96LL/GLvQKBENI0zWW46MxM6ylmWl1pqE=;
+ b=pa1N4DWv0SU6nzyCOyyDdhWKdbDzoKE5kwUigFmu705O7s88gUTcVke67aVhhpGXcL
+ r0xKmZ8unQLrqIWiXjbi0tJ6MpzIzALdUnRGWiB1AZHFUgGKVfk/0P1P7iD3o6I9t1jW
+ WEG2zmIE3lbkP3DihsQGZNmlt4w1hJLEvaL2/McEag/ekMJTVXRupr9QU45c0Np+TGM2
+ QUeZP96Bq0fOsq5FIb1AjXZahqXBZjLEo6MxdooARQzYxVIHf9g4Ktpfo+H4KZcid79G
+ rJVHB+smj7SCeyHyTuwZRSvlZThVhgAZ9tUu/tcbwHTp7V1RyuWqh/veN1m9c/aEFHKE
+ /T9g==
+X-Gm-Message-State: AOJu0Yzl9+Cej7TTycaA0bpfNkLU/19SbpwgUNVSn1Fi/To/8ctz1HzX
+ RSp7aS2THwqy5pu69j9zAoODn/8rTfGq/YpZpYZIIbuvRe9Ne/O/L/M+QOxnNx6Ina6w6p+0WoW
+ 6S6rY4jcYddvUtXtWk9GaWGs2NyRZlXoCEk4C35JtAZUVfARv6W7ODWHGeLVwLV58VpS8HuwDLS
+ YwhZPUcT17NUMy73/YAJk6KPS2TLsDiCO3S3r8Ewd3
+X-Gm-Gg: ASbGncv+VWSJlukC0pXVmiPqSIyjgny5JdMfGLo/UFO5PlQzpnutXbUv8BuleZ41fEv
+ VnQJX13LpkYms8su8bFFKlA5aSbI6pEaPr4NeLYJz8PBofMpk86w2plwEQt1JIwsSOtDYJbBu2d
+ e6559J190Fao9F/so6VIZPC0X81GXrtGnoNb4PvX4TyIr3jJKyxYGhGYHWo0KGOsmEDms6/mYin
+ o1dR1z9FISZGniWx/73oRpTQvPk+X3n7SPUHfdbQl4t0SgnFq5lhgRqw75z0zuZu9WSnfmhFwR5
+ GOaq/dohdH7FjsOLso5/Hxtxz+iYGX+52MeNP0+gnwE=
+X-Received: by 2002:a05:600c:821a:b0:456:207e:fd86 with SMTP id
+ 5b1f17b1804b1-456207f008bmr15525845e9.2.1752491054391; 
+ Mon, 14 Jul 2025 04:04:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGwA7B+PRARDDHe8M7qvyewZTH9ldlNqFXdXmb+qMMgOtnjvXHfGCnl7TC795fk/9tBHt0qiw==
+X-Received: by 2002:a05:600c:821a:b0:456:207e:fd86 with SMTP id
+ 5b1f17b1804b1-456207f008bmr15525125e9.2.1752491053534; 
+ Mon, 14 Jul 2025 04:04:13 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4561a052729sm32466735e9.33.2025.07.14.04.04.09
+ ffacd0b85a97d-3b5e8e0d785sm12355227f8f.59.2025.07.14.04.04.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:04:09 -0700 (PDT)
+ Mon, 14 Jul 2025 04:04:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 01/77] rust/qemu-api: Fix binding path in source directory
-Date: Mon, 14 Jul 2025 13:02:50 +0200
-Message-ID: <20250714110406.117772-2-pbonzini@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 02/77] rust/qemu-api-macros: use syn::Error directly
+Date: Mon, 14 Jul 2025 13:02:51 +0200
+Message-ID: <20250714110406.117772-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,47 +106,483 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-The build.rs had supported placing bindings.inc.rs in rust/qemu-api/src,
-but this "not encouraged" feature is broken.
+Our MacroError type wraps syn::Error as a variant, and uses another
+variant for custom errors. Fortunately syn::Error can be used directly,
+avoiding extra code on our side, so change the proc macro crate to use
+it.
 
-Considering that manually copying bindings.inc.rs to the development
-directory is also useful, fix the bindings.inc.rs path generation to
-give this feature another chance.
-
-Fixes: commit 1ae4ca0463d7 ("rust: move rust.bindgen to qemu-api crate")
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250623073436.1833357-1-zhao1.liu@intel.com
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Link: https://lore.kernel.org/r/20250703-rust_macros-v1-1-b99f82febbbf@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/build.rs | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ docs/devel/rust.rst               | 11 ++--
+ rust/qemu-api-macros/src/bits.rs  | 58 ++++++++-------------
+ rust/qemu-api-macros/src/lib.rs   | 86 +++++++++++++++----------------
+ rust/qemu-api-macros/src/utils.rs | 26 ----------
+ 4 files changed, 70 insertions(+), 111 deletions(-)
+ delete mode 100644 rust/qemu-api-macros/src/utils.rs
 
-diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
-index 7849486c1ba..29d09456257 100644
---- a/rust/qemu-api/build.rs
-+++ b/rust/qemu-api/build.rs
-@@ -9,12 +9,14 @@
- use std::{env, fs::remove_file, io::Result, path::Path};
+diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
+index dc8c44109e1..b6737536c69 100644
+--- a/docs/devel/rust.rst
++++ b/docs/devel/rust.rst
+@@ -351,7 +351,7 @@ Writing procedural macros
+ '''''''''''''''''''''''''
  
- fn main() -> Result<()> {
--    // Placing bindings.inc.rs in the source directory is supported
--    // but not documented or encouraged.
--    let path = env::var("MESON_BUILD_ROOT")
--        .unwrap_or_else(|_| format!("{}/src", env!("CARGO_MANIFEST_DIR")));
-+    let file = if let Ok(root) = env::var("MESON_BUILD_ROOT") {
-+        format!("{root}/rust/qemu-api/bindings.inc.rs")
-+    } else {
-+        // Placing bindings.inc.rs in the source directory is supported
-+        // but not documented or encouraged.
-+        format!("{}/src/bindings.inc.rs", env!("CARGO_MANIFEST_DIR"))
-+    };
+ By conventions, procedural macros are split in two functions, one
+-returning ``Result<proc_macro2::TokenStream, MacroError>`` with the body of
++returning ``Result<proc_macro2::TokenStream, syn::Error>`` with the body of
+ the procedural macro, and the second returning ``proc_macro::TokenStream``
+ which is the actual procedural macro.  The former's name is the same as
+ the latter with the ``_or_error`` suffix.  The code for the latter is more
+@@ -361,18 +361,19 @@ from the type after ``as`` in the invocation of ``parse_macro_input!``::
+     #[proc_macro_derive(Object)]
+     pub fn derive_object(input: TokenStream) -> TokenStream {
+         let input = parse_macro_input!(input as DeriveInput);
+-        let expanded = derive_object_or_error(input).unwrap_or_else(Into::into);
  
--    let file = format!("{path}/rust/qemu-api/bindings.inc.rs");
-     let file = Path::new(&file);
-     if !Path::new(&file).exists() {
-         panic!(concat!(
+-        TokenStream::from(expanded)
++        derive_object_or_error(input)
++            .unwrap_or_else(syn::Error::into_compile_error)
++            .into()
+     }
+ 
+ The ``qemu_api_macros`` crate has utility functions to examine a
+ ``DeriveInput`` and perform common checks (e.g. looking for a struct
+-with named fields).  These functions return ``Result<..., MacroError>``
++with named fields).  These functions return ``Result<..., syn::Error>``
+ and can be used easily in the procedural macro function::
+ 
+     fn derive_object_or_error(input: DeriveInput) ->
+-        Result<proc_macro2::TokenStream, MacroError>
++        Result<proc_macro2::TokenStream, Error>
+     {
+         is_c_repr(&input, "#[derive(Object)]")?;
+ 
+diff --git a/rust/qemu-api-macros/src/bits.rs b/rust/qemu-api-macros/src/bits.rs
+index 5ba84757ee0..a80a3b9fee1 100644
+--- a/rust/qemu-api-macros/src/bits.rs
++++ b/rust/qemu-api-macros/src/bits.rs
+@@ -6,8 +6,7 @@
+ use proc_macro2::{
+     Delimiter, Group, Ident, Punct, Spacing, Span, TokenStream, TokenTree, TokenTree as TT,
+ };
+-
+-use crate::utils::MacroError;
++use syn::Error;
+ 
+ pub struct BitsConstInternal {
+     typ: TokenTree,
+@@ -36,27 +35,21 @@ fn parse_primary(
+         tok: TokenTree,
+         it: &mut dyn Iterator<Item = TokenTree>,
+         out: &mut TokenStream,
+-    ) -> Result<Option<TokenTree>, MacroError> {
++    ) -> Result<Option<TokenTree>, Error> {
+         let next = match tok {
+             TT::Group(ref g) => {
+                 if g.delimiter() != Delimiter::Parenthesis && g.delimiter() != Delimiter::None {
+-                    return Err(MacroError::Message("expected parenthesis".into(), g.span()));
++                    return Err(Error::new(g.span(), "expected parenthesis"));
+                 }
+                 let mut stream = g.stream().into_iter();
+                 let Some(first_tok) = stream.next() else {
+-                    return Err(MacroError::Message(
+-                        "expected operand, found ')'".into(),
+-                        g.span(),
+-                    ));
++                    return Err(Error::new(g.span(), "expected operand, found ')'"));
+                 };
+                 let mut output = TokenStream::new();
+                 // start from the lowest precedence
+                 let next = self.parse_or(first_tok, &mut stream, &mut output)?;
+                 if let Some(tok) = next {
+-                    return Err(MacroError::Message(
+-                        format!("unexpected token {tok}"),
+-                        tok.span(),
+-                    ));
++                    return Err(Error::new(tok.span(), format!("unexpected token {tok}")));
+                 }
+                 out.extend(Some(paren(output)));
+                 it.next()
+@@ -74,20 +67,17 @@ fn parse_primary(
+             }
+             TT::Punct(ref p) => {
+                 if p.as_char() != '!' {
+-                    return Err(MacroError::Message("expected operand".into(), p.span()));
++                    return Err(Error::new(p.span(), "expected operand"));
+                 }
+                 let Some(rhs_tok) = it.next() else {
+-                    return Err(MacroError::Message(
+-                        "expected operand at end of input".into(),
+-                        p.span(),
+-                    ));
++                    return Err(Error::new(p.span(), "expected operand at end of input"));
+                 };
+                 let next = self.parse_primary(rhs_tok, it, out)?;
+                 out.extend([punct('.'), ident("invert"), paren(TokenStream::new())]);
+                 next
+             }
+             _ => {
+-                return Err(MacroError::Message("unexpected literal".into(), tok.span()));
++                return Err(Error::new(tok.span(), "unexpected literal"));
+             }
+         };
+         Ok(next)
+@@ -99,7 +89,7 @@ fn parse_binop<
+             TokenTree,
+             &mut dyn Iterator<Item = TokenTree>,
+             &mut TokenStream,
+-        ) -> Result<Option<TokenTree>, MacroError>,
++        ) -> Result<Option<TokenTree>, Error>,
+     >(
+         &self,
+         tok: TokenTree,
+@@ -108,7 +98,7 @@ fn parse_binop<
+         ch: char,
+         f: F,
+         method: &'static str,
+-    ) -> Result<Option<TokenTree>, MacroError> {
++    ) -> Result<Option<TokenTree>, Error> {
+         let mut next = f(self, tok, it, out)?;
+         while next.is_some() {
+             let op = next.as_ref().unwrap();
+@@ -118,10 +108,7 @@ fn parse_binop<
+             }
+ 
+             let Some(rhs_tok) = it.next() else {
+-                return Err(MacroError::Message(
+-                    "expected operand at end of input".into(),
+-                    p.span(),
+-                ));
++                return Err(Error::new(p.span(), "expected operand at end of input"));
+             };
+             let mut rhs = TokenStream::new();
+             next = f(self, rhs_tok, it, &mut rhs)?;
+@@ -136,7 +123,7 @@ pub fn parse_sub(
+         tok: TokenTree,
+         it: &mut dyn Iterator<Item = TokenTree>,
+         out: &mut TokenStream,
+-    ) -> Result<Option<TokenTree>, MacroError> {
++    ) -> Result<Option<TokenTree>, Error> {
+         self.parse_binop(tok, it, out, '-', Self::parse_primary, "difference")
+     }
+ 
+@@ -146,7 +133,7 @@ fn parse_and(
+         tok: TokenTree,
+         it: &mut dyn Iterator<Item = TokenTree>,
+         out: &mut TokenStream,
+-    ) -> Result<Option<TokenTree>, MacroError> {
++    ) -> Result<Option<TokenTree>, Error> {
+         self.parse_binop(tok, it, out, '&', Self::parse_sub, "intersection")
+     }
+ 
+@@ -156,7 +143,7 @@ fn parse_xor(
+         tok: TokenTree,
+         it: &mut dyn Iterator<Item = TokenTree>,
+         out: &mut TokenStream,
+-    ) -> Result<Option<TokenTree>, MacroError> {
++    ) -> Result<Option<TokenTree>, Error> {
+         self.parse_binop(tok, it, out, '^', Self::parse_and, "symmetric_difference")
+     }
+ 
+@@ -166,13 +153,13 @@ pub fn parse_or(
+         tok: TokenTree,
+         it: &mut dyn Iterator<Item = TokenTree>,
+         out: &mut TokenStream,
+-    ) -> Result<Option<TokenTree>, MacroError> {
++    ) -> Result<Option<TokenTree>, Error> {
+         self.parse_binop(tok, it, out, '|', Self::parse_xor, "union")
+     }
+ 
+     pub fn parse(
+         it: &mut dyn Iterator<Item = TokenTree>,
+-    ) -> Result<proc_macro2::TokenStream, MacroError> {
++    ) -> Result<proc_macro2::TokenStream, Error> {
+         let mut pos = Span::call_site();
+         let mut typ = proc_macro2::TokenStream::new();
+ 
+@@ -198,15 +185,15 @@ pub fn parse(
+         };
+ 
+         let Some(tok) = next else {
+-            return Err(MacroError::Message(
+-                "expected expression, do not call this macro directly".into(),
++            return Err(Error::new(
+                 pos,
++                "expected expression, do not call this macro directly",
+             ));
+         };
+         let TT::Group(ref _group) = tok else {
+-            return Err(MacroError::Message(
+-                "expected parenthesis, do not call this macro directly".into(),
++            return Err(Error::new(
+                 tok.span(),
++                "expected parenthesis, do not call this macro directly",
+             ));
+         };
+         let mut out = TokenStream::new();
+@@ -219,10 +206,7 @@ pub fn parse(
+         // A parenthesized expression is a single production of the grammar,
+         // so the input must have reached the last token.
+         if let Some(tok) = next {
+-            return Err(MacroError::Message(
+-                format!("unexpected token {tok}"),
+-                tok.span(),
+-            ));
++            return Err(Error::new(tok.span(), format!("unexpected token {tok}")));
+         }
+         Ok(out)
+     }
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+index c18bb4e036f..2cb79c799a2 100644
+--- a/rust/qemu-api-macros/src/lib.rs
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -6,83 +6,79 @@
+ use quote::quote;
+ use syn::{
+     parse_macro_input, parse_quote, punctuated::Punctuated, spanned::Spanned, token::Comma, Data,
+-    DeriveInput, Field, Fields, FieldsUnnamed, Ident, Meta, Path, Token, Variant,
++    DeriveInput, Error, Field, Fields, FieldsUnnamed, Ident, Meta, Path, Token, Variant,
+ };
+-
+-mod utils;
+-use utils::MacroError;
+-
+ mod bits;
+ use bits::BitsConstInternal;
+ 
+ fn get_fields<'a>(
+     input: &'a DeriveInput,
+     msg: &str,
+-) -> Result<&'a Punctuated<Field, Comma>, MacroError> {
++) -> Result<&'a Punctuated<Field, Comma>, Error> {
+     let Data::Struct(ref s) = &input.data else {
+-        return Err(MacroError::Message(
+-            format!("Struct required for {msg}"),
++        return Err(Error::new(
+             input.ident.span(),
++            format!("Struct required for {msg}"),
+         ));
+     };
+     let Fields::Named(ref fs) = &s.fields else {
+-        return Err(MacroError::Message(
+-            format!("Named fields required for {msg}"),
++        return Err(Error::new(
+             input.ident.span(),
++            format!("Named fields required for {msg}"),
+         ));
+     };
+     Ok(&fs.named)
+ }
+ 
+-fn get_unnamed_field<'a>(input: &'a DeriveInput, msg: &str) -> Result<&'a Field, MacroError> {
++fn get_unnamed_field<'a>(input: &'a DeriveInput, msg: &str) -> Result<&'a Field, Error> {
+     let Data::Struct(ref s) = &input.data else {
+-        return Err(MacroError::Message(
+-            format!("Struct required for {msg}"),
++        return Err(Error::new(
+             input.ident.span(),
++            format!("Struct required for {msg}"),
+         ));
+     };
+     let Fields::Unnamed(FieldsUnnamed { ref unnamed, .. }) = &s.fields else {
+-        return Err(MacroError::Message(
+-            format!("Tuple struct required for {msg}"),
++        return Err(Error::new(
+             s.fields.span(),
++            format!("Tuple struct required for {msg}"),
+         ));
+     };
+     if unnamed.len() != 1 {
+-        return Err(MacroError::Message(
+-            format!("A single field is required for {msg}"),
++        return Err(Error::new(
+             s.fields.span(),
++            format!("A single field is required for {msg}"),
+         ));
+     }
+     Ok(&unnamed[0])
+ }
+ 
+-fn is_c_repr(input: &DeriveInput, msg: &str) -> Result<(), MacroError> {
++fn is_c_repr(input: &DeriveInput, msg: &str) -> Result<(), Error> {
+     let expected = parse_quote! { #[repr(C)] };
+ 
+     if input.attrs.iter().any(|attr| attr == &expected) {
+         Ok(())
+     } else {
+-        Err(MacroError::Message(
+-            format!("#[repr(C)] required for {msg}"),
++        Err(Error::new(
+             input.ident.span(),
++            format!("#[repr(C)] required for {msg}"),
+         ))
+     }
+ }
+ 
+-fn is_transparent_repr(input: &DeriveInput, msg: &str) -> Result<(), MacroError> {
++fn is_transparent_repr(input: &DeriveInput, msg: &str) -> Result<(), Error> {
+     let expected = parse_quote! { #[repr(transparent)] };
+ 
+     if input.attrs.iter().any(|attr| attr == &expected) {
+         Ok(())
+     } else {
+-        Err(MacroError::Message(
+-            format!("#[repr(transparent)] required for {msg}"),
++        Err(Error::new(
+             input.ident.span(),
++            format!("#[repr(transparent)] required for {msg}"),
+         ))
+     }
+ }
+ 
+-fn derive_object_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, MacroError> {
++fn derive_object_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, Error> {
+     is_c_repr(&input, "#[derive(Object)]")?;
+ 
+     let name = &input.ident;
+@@ -103,12 +99,13 @@ fn derive_object_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream
+ #[proc_macro_derive(Object)]
+ pub fn derive_object(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input as DeriveInput);
+-    let expanded = derive_object_or_error(input).unwrap_or_else(Into::into);
+ 
+-    TokenStream::from(expanded)
++    derive_object_or_error(input)
++        .unwrap_or_else(syn::Error::into_compile_error)
++        .into()
+ }
+ 
+-fn derive_opaque_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, MacroError> {
++fn derive_opaque_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, Error> {
+     is_transparent_repr(&input, "#[derive(Wrapper)]")?;
+ 
+     let name = &input.ident;
+@@ -149,13 +146,14 @@ pub const fn raw_get(slot: *mut Self) -> *mut <Self as crate::cell::Wrapper>::Wr
+ #[proc_macro_derive(Wrapper)]
+ pub fn derive_opaque(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input as DeriveInput);
+-    let expanded = derive_opaque_or_error(input).unwrap_or_else(Into::into);
+ 
+-    TokenStream::from(expanded)
++    derive_opaque_or_error(input)
++        .unwrap_or_else(syn::Error::into_compile_error)
++        .into()
+ }
+ 
+ #[allow(non_snake_case)]
+-fn get_repr_uN(input: &DeriveInput, msg: &str) -> Result<Path, MacroError> {
++fn get_repr_uN(input: &DeriveInput, msg: &str) -> Result<Path, Error> {
+     let repr = input.attrs.iter().find(|attr| attr.path().is_ident("repr"));
+     if let Some(repr) = repr {
+         let nested = repr.parse_args_with(Punctuated::<Meta, Token![,]>::parse_terminated)?;
+@@ -170,23 +168,23 @@ fn get_repr_uN(input: &DeriveInput, msg: &str) -> Result<Path, MacroError> {
+         }
+     }
+ 
+-    Err(MacroError::Message(
+-        format!("#[repr(u8/u16/u32/u64) required for {msg}"),
++    Err(Error::new(
+         input.ident.span(),
++        format!("#[repr(u8/u16/u32/u64) required for {msg}"),
+     ))
+ }
+ 
+-fn get_variants(input: &DeriveInput) -> Result<&Punctuated<Variant, Comma>, MacroError> {
++fn get_variants(input: &DeriveInput) -> Result<&Punctuated<Variant, Comma>, Error> {
+     let Data::Enum(ref e) = &input.data else {
+-        return Err(MacroError::Message(
+-            "Cannot derive TryInto for union or struct.".to_string(),
++        return Err(Error::new(
+             input.ident.span(),
++            "Cannot derive TryInto for union or struct.",
+         ));
+     };
+     if let Some(v) = e.variants.iter().find(|v| v.fields != Fields::Unit) {
+-        return Err(MacroError::Message(
+-            "Cannot derive TryInto for enum with non-unit variants.".to_string(),
++        return Err(Error::new(
+             v.fields.span(),
++            "Cannot derive TryInto for enum with non-unit variants.",
+         ));
+     }
+     Ok(&e.variants)
+@@ -197,7 +195,7 @@ fn derive_tryinto_body(
+     name: &Ident,
+     variants: &Punctuated<Variant, Comma>,
+     repr: &Path,
+-) -> Result<proc_macro2::TokenStream, MacroError> {
++) -> Result<proc_macro2::TokenStream, Error> {
+     let discriminants: Vec<&Ident> = variants.iter().map(|f| &f.ident).collect();
+ 
+     Ok(quote! {
+@@ -210,7 +208,7 @@ fn derive_tryinto_body(
+ }
+ 
+ #[rustfmt::skip::macros(quote)]
+-fn derive_tryinto_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, MacroError> {
++fn derive_tryinto_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, Error> {
+     let repr = get_repr_uN(&input, "#[derive(TryInto)]")?;
+     let name = &input.ident;
+     let body = derive_tryinto_body(name, get_variants(&input)?, &repr)?;
+@@ -247,9 +245,10 @@ fn try_from(value: #repr) -> Result<Self, #repr> {
+ #[proc_macro_derive(TryInto)]
+ pub fn derive_tryinto(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input as DeriveInput);
+-    let expanded = derive_tryinto_or_error(input).unwrap_or_else(Into::into);
+ 
+-    TokenStream::from(expanded)
++    derive_tryinto_or_error(input)
++        .unwrap_or_else(syn::Error::into_compile_error)
++        .into()
+ }
+ 
+ #[proc_macro]
+@@ -257,6 +256,7 @@ pub fn bits_const_internal(ts: TokenStream) -> TokenStream {
+     let ts = proc_macro2::TokenStream::from(ts);
+     let mut it = ts.into_iter();
+ 
+-    let expanded = BitsConstInternal::parse(&mut it).unwrap_or_else(Into::into);
+-    TokenStream::from(expanded)
++    BitsConstInternal::parse(&mut it)
++        .unwrap_or_else(syn::Error::into_compile_error)
++        .into()
+ }
+diff --git a/rust/qemu-api-macros/src/utils.rs b/rust/qemu-api-macros/src/utils.rs
+deleted file mode 100644
+index 02c91aed7f6..00000000000
+--- a/rust/qemu-api-macros/src/utils.rs
++++ /dev/null
+@@ -1,26 +0,0 @@
+-// Procedural macro utilities.
+-// Author(s): Paolo Bonzini <pbonzini@redhat.com>
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-
+-use proc_macro2::Span;
+-use quote::quote_spanned;
+-
+-pub enum MacroError {
+-    Message(String, Span),
+-    ParseError(syn::Error),
+-}
+-
+-impl From<syn::Error> for MacroError {
+-    fn from(err: syn::Error) -> Self {
+-        MacroError::ParseError(err)
+-    }
+-}
+-
+-impl From<MacroError> for proc_macro2::TokenStream {
+-    fn from(err: MacroError) -> Self {
+-        match err {
+-            MacroError::Message(msg, span) => quote_spanned! { span => compile_error!(#msg); },
+-            MacroError::ParseError(err) => err.into_compile_error(),
+-        }
+-    }
+-}
 -- 
 2.50.0
 
