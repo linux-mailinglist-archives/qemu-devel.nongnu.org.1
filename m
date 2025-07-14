@@ -2,139 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC419B041F9
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 16:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB17B0420B
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 16:43:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubKLF-0005f2-Nj; Mon, 14 Jul 2025 10:39:42 -0400
+	id 1ubKOM-00014n-Rw; Mon, 14 Jul 2025 10:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ubImj-0006lS-JH
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:59:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ubImg-00046x-JK
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 08:59:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752497992;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=n25nSnVkU5GWJyRngy+6SHPj7oMPrluHwavtIra3af8=;
- b=gA7t4Y3K25GebvNemQvKfvuZXfcad2kRyj8lqcNvP+p57WRh4zEavl9Y5xgvKT/rj9J45D
- GLgbhcNF350JolXm/B0CKyhXCoXssMYy7X9mZbe/f85NBkYHYgS5ziUpxGcDdLD/3hynfY
- ULYnHB4eXj86G001d68niMB2LoJ0XW8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-10-BXiKh7FwNbuw6Ji5osB5Vg-1; Mon, 14 Jul 2025 08:59:47 -0400
-X-MC-Unique: BXiKh7FwNbuw6Ji5osB5Vg-1
-X-Mimecast-MFC-AGG-ID: BXiKh7FwNbuw6Ji5osB5Vg_1752497986
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3b5f97cb8fbso628843f8f.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 05:59:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ubIqd-0008Ue-8f
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:03:59 -0400
+Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ubIqY-0004qU-D6
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:03:59 -0400
+Received: by mail-oi1-x232.google.com with SMTP id
+ 5614622812f47-41b1ca1f28cso127782b6e.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 06:03:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752498233; x=1753103033; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EiqAn49S8CY/KaPMB72o/KuCRfolChglBttyObH9PGQ=;
+ b=gJxbR0rk9vTBOq8O7K9+GA8lpe3q16QoHuHgtK0eFl5eBkQM2eTIj2lwo/Pkpek5ZX
+ 2NF7evgIAuYGbsClwFPj4usvoER4NdHk0xh8vM6dFg2quzlIClWvuEgWar/KKS5/CgSg
+ figMfkEqYHRPXmz407O/pdJ2RZAs/Ahy2ZPEwUYOp3GuZY4LgTGnsLp/HTHbiFvTAJpx
+ DhPuDmowkvumkp8YOYyb0ZH06eJfhl1iJUZ4u/CVlnQNBhrlYGrL4uq5diuAJJRxosCM
+ stWKmkL4/Rrry4H7nX4+ZQc5O7gBzhoGfpg5aIekOjfzyN3RAbmEMvqBUaoaYa6lYXp3
+ 7yYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752497986; x=1753102786;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=n25nSnVkU5GWJyRngy+6SHPj7oMPrluHwavtIra3af8=;
- b=k4YkNM+FwX5k3lGgmKu1u+K0uP7o84nt38YN3SWBrInXnrdgagqcgoVBKnDZOztrbq
- uC6KZULZ6gBkWOk52o+wf3Wxus8RxAtly7lsN7EUxeX/W3KTfK66yvV108dbMFNma4Ob
- Y6MODGo/cPeZH3QbY0qsZXDNMCAK3l9iVSVZxYnhnUkSn18n2kIziZ47tJG6OfU9DLq0
- 7776Rc+rWS2npxfQCK6V9R+jy2ytTjMYQBy5EO3ARj7wonVFstsHmKS+nn0RZBMdmblJ
- SXb0XYEwklbbowhsuja1jj2kZix8Ns6E0YLEtCQRRIUmNAQEA8ZmcSEm917vxTmiTr8E
- DYgQ==
+ d=1e100.net; s=20230601; t=1752498233; x=1753103033;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EiqAn49S8CY/KaPMB72o/KuCRfolChglBttyObH9PGQ=;
+ b=jFNwDYiZjPiQlk5coJvOXIGk43hTW5zIyjEv3L5K+8aFlSRiZNFslPM9yK1hZD+9xf
+ JKO4cpuiXE7A58rb7vyLLWH3NO+jNshe3qOWm79eWD/5a+QLDZGiDUaOOsm+Dv3BGhJF
+ uwIFM7l5erYzjnI3CNVQRoffEG/VCDeVJ1+VnASjJ5N+fiD9LQYN6tDPiy+jQv8FzUmV
+ Fu2191wdUP0e7Lit0XKwDsPX3zArmcvw2S5KRlBv9qko7kmR4deop5nTGqC31jZvmbSm
+ MP7n9kKr8ni11RgXuWtTu7uHNyU+NK6N4uvGOcYfJJTxMGQTuimSbTZR0kARJQlueg30
+ hkMg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUmq0SymVBsDaMr/t8rE4tBNaySt/CXiUJxv+rQaeDgCqWZzOJ6/+9xJhpzm2EnmGM09+0M1jFw+CuL@nongnu.org
-X-Gm-Message-State: AOJu0YxzhFuNgNjdbDIhfS7TZq096foRGpV/P30LA4peUprxfJSK0gXr
- rt8L3m5CgNq0CsLVGH1evzPKhXS063KyIFCj6oA3djWQjmeswhdgH1VT0nF0/0zf10j6RskXef3
- W2CULwpYZb1JlW9ibCEG0uxKW2n59s7dMx1wBaO5qKaA3kIrjYxifh7t8
-X-Gm-Gg: ASbGnctEiijVoiG67t8fc9jSiI/A0zfLIgmyHUC8EMlpmx7ubntuxdb8K3YdeKHZux3
- xU9GKstZ8kC9z8AVs7Ug6oDtF0QfnRdgGRiuSj/UVEZweFRXOOQ1KomJQnd07IVpRUxSQvFH2pd
- JXzejabQ6RcL7qJmQzLp/IWzFAqNzHj4oEeha0fdgo6hezwrLQDZwd5cbpxpPn4lCqxyMJcRl9v
- gLx/A0EcgOejYegqKUbYNIj3XC5Y8MJ/OZ6woOo1xMpwrqjBgPf66lEUpOUK3OqDNLowQDvppLT
- Coq4efeWsGEB+NIsW+IYF6qVGd3dTNDBCc/7XFL+IqgOcxk0vW0YNRuGFNckkxOqHzR2XF/fRLC
- LUrQW
-X-Received: by 2002:a5d:5f52:0:b0:3b4:990b:9ee7 with SMTP id
- ffacd0b85a97d-3b5f18959b5mr10515401f8f.22.1752497986249; 
- Mon, 14 Jul 2025 05:59:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7OAXP65ilRKBLq6w/UglKMd/lVLu2OfwVGlOURR6YpWBx6VA1+63a7+T12qt3x8Jjat8l0A==
-X-Received: by 2002:a5d:5f52:0:b0:3b4:990b:9ee7 with SMTP id
- ffacd0b85a97d-3b5f18959b5mr10515378f8f.22.1752497985815; 
- Mon, 14 Jul 2025 05:59:45 -0700 (PDT)
-Received: from [192.168.0.6] (ltea-047-064-114-106.pools.arcor-ip.net.
- [47.64.114.106]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4560bdcce9dsm70491145e9.20.2025.07.14.05.59.44
+ AJvYcCVZgg8eU6Xn5YtIEIsl6NOvTNHrzHJkM9QQfml86aJBsUvc33evSPeKzvZAzzwB5R/+Jy3T0BhHKa+j@nongnu.org
+X-Gm-Message-State: AOJu0Yza5lJ1gSug60hVOuXgNRhJUTBNK7/8KDtVa022kDg4YUGP2DTz
+ w9JYsg9COhRdMrBMoWD3YT9i/u0qvQS2ebWV4xeBvVe5nE2nyXSBEe9hyRpi8fHgqx8=
+X-Gm-Gg: ASbGncsAENxOwI/mqgb5Kv/Fc0PFuMgZJCaozdwHNifqyol/rYIU/cNrijOIWaJ/22p
+ xAcf2Rc2vtBiBqYqIiDO8iuT1GDGljaW09axh7CLbVuPBtcAYhuHIXBy9JC5KJQMwCdeY1Q3xxm
+ ktZ0q8S57f8WwUE9tw4avCVmKx6+XcWPylFxWh646NOhHHJSda1WEX1mXg3oeZnjIyark+wzzMv
+ gyUweF36QDbzkF9NZvBFa+tjJ3jYp/NN00Z6JnEzJtZSFW+DXZRZgI03N0RRnrEfsBJAij2rHCW
+ TNknAoa7NxK84Nn1ALzU5H0N+Ps96+/nj1kABRf4FirTkeH+Wi2gdQtyUuvwMuHQjISXAGd5D9L
+ NDutCMYwHJIf7Rvxw2SGN8Jp8PPBLyJIubWb0JAS6mLHnXMl+18xitXl1CHPg2sKjC6+CALnkWa
+ cU
+X-Google-Smtp-Source: AGHT+IHYAmPOK16UUreRJp4bqWWVOjer7+yvaIi1YAYAsn8Ew7u04Fnm6nNi8gsW8jr3u1YM1Ux8hw==
+X-Received: by 2002:a05:6808:2016:b0:40a:52f5:f2ad with SMTP id
+ 5614622812f47-4153737a03cmr9313531b6e.8.1752498232656; 
+ Mon, 14 Jul 2025 06:03:52 -0700 (PDT)
+Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
+ [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
+ 5614622812f47-41419baa665sm1525064b6e.21.2025.07.14.06.03.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jul 2025 05:59:45 -0700 (PDT)
-Message-ID: <b356a6b0-28dc-4ca3-8531-b47b7f60d7d4@redhat.com>
-Date: Mon, 14 Jul 2025 14:59:43 +0200
+ Mon, 14 Jul 2025 06:03:52 -0700 (PDT)
+Message-ID: <19cf4296-7abd-4405-a49d-06eb868e3886@linaro.org>
+Date: Mon, 14 Jul 2025 07:03:49 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Regarding the TODO list for contribution
-To: Akshaya Sankar <akshayasankarr@gmail.com>, qemu-devel@nongnu.org
-References: <CA+A3OQ3jcS=r0n_gEMAxrtTDHkCjibL9SPWY37WDBq2tqC-1SQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] Assign the GDB register XML files of Sparc64 to
+ Sparc32plus.
+To: unisono@quyllur.org, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org, atar4qemu@gmail.com, laurent@vivier.eu,
+ mark.cave-ayland@ilande.co.uk, philmd@linaro.org
+References: <20250711155141.62916-1-unisono@quyllur.org>
+ <20250711155141.62916-4-unisono@quyllur.org>
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <CA+A3OQ3jcS=r0n_gEMAxrtTDHkCjibL9SPWY37WDBq2tqC-1SQ@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250711155141.62916-4-unisono@quyllur.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,23 +105,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/07/2025 13.30, Akshaya Sankar wrote:
-> Hi all,
+On 7/11/25 09:51, unisono@quyllur.org wrote:
+> From: Rot127 <unisono@quyllur.org>
 > 
-> we would like to contribute to this open source community as a fresher / 
-> less experience, and would like to know about the small contributions to be 
-> done as initially. We have hands on experience on embedded, c, python and c++.
+> Commit 3/3
 > 
-> Kindly guide us if there is any TODO list.
+> Signed-off-by: Rot127 <unisono@quyllur.org>
+> ---
+>   configs/targets/sparc32plus-linux-user.mak | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/configs/targets/sparc32plus-linux-user.mak b/configs/targets/sparc32plus-linux-user.mak
+> index 7a16934fd1..0d9cf44652 100644
+> --- a/configs/targets/sparc32plus-linux-user.mak
+> +++ b/configs/targets/sparc32plus-linux-user.mak
+> @@ -5,4 +5,5 @@ TARGET_ABI_DIR=sparc
+>   TARGET_SYSTBL_ABI=common,32
+>   TARGET_SYSTBL=syscall.tbl
+>   TARGET_BIG_ENDIAN=y
+> +TARGET_XML_FILES=gdb-xml/sparc64-core.xml
+>   TARGET_LONG_BITS=64
 
-  Hi,
+This isn't used, because the ifdefs in sparc_cpu_class_init are wrong.
 
-thanks for your interest in QEMU! There are some "bite sized" tasks in our 
-issue tracker, some of those likely can be done by new contributors, too:
-
-  https://gitlab.com/qemu-project/qemu/-/issues/?state=opened&label_name%5B%5D=Bite%20Sized
-
-  HTH,
-   Thomas
-
+r~
 
