@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53934B03D97
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F1EEB03D2A
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:18:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHK6-00042c-JO; Mon, 14 Jul 2025 07:26:18 -0400
+	id 1ubHBS-0004Br-Tf; Mon, 14 Jul 2025 07:17:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH0I-0001Ls-MD
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:03 -0400
+ id 1ubH0Q-0001Na-JY
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH0G-0001xZ-MJ
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:50 -0400
+ id 1ubH0N-0001y3-JG
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491147;
+ s=mimecast20190719; t=1752491153;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gEj7OUeiZaj5KbOO4n1tkdCJTwkHNuAAciWyaP56m5Q=;
- b=RXIFfQyQ+856lJZc26Fr3LxO6SgG+xTiR22T6cmtOBFuMO5VHG9yD884M9qKY+l/ttQmwe
- aW/MLMnU463GpY6M4JXVyupG3yMxt316TIuMSxn/a05P8vDW78Bihko/KmvhEptOY1aX7Y
- NNQDEnNZAlbIWqkxZSQY9xjrDP1E4ec=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YgTX+tIVcOOQ2a4srBk8j3hWHo73bhiEyasy0Vw94Pc=;
+ b=J9PSiIkS3+kJmtzjaCEWBEJaUdRBg5o504aGIMLrrMny2Wp+WekgmmZ7DhTe9DPRimLX36
+ ZI8J3eb8N23I73OQWsqNHPp+0/G5091JXZPA462H+R1s6hpcvYoEqnxyDhsKGki9J97ksb
+ aPTjykTcjSn5zUdqRhxBqodH0lZoK1c=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-_gx5G_ljMKudNl1REvnSSA-1; Mon, 14 Jul 2025 07:05:46 -0400
-X-MC-Unique: _gx5G_ljMKudNl1REvnSSA-1
-X-Mimecast-MFC-AGG-ID: _gx5G_ljMKudNl1REvnSSA_1752491145
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-455ea9cb0beso21441865e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:46 -0700 (PDT)
+ us-mta-563-sGPERiTyOmqhDieHR96ZIg-1; Mon, 14 Jul 2025 07:05:49 -0400
+X-MC-Unique: sGPERiTyOmqhDieHR96ZIg-1
+X-Mimecast-MFC-AGG-ID: sGPERiTyOmqhDieHR96ZIg_1752491148
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-453a5d50b81so30307925e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491145; x=1753095945;
+ d=1e100.net; s=20230601; t=1752491148; x=1753095948;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gEj7OUeiZaj5KbOO4n1tkdCJTwkHNuAAciWyaP56m5Q=;
- b=LMGm2Lg0v2uYVJlyjePKYYOOiSbvx1Q+c3yAfswLU+hoj5PaiC+Cr+OvQNXIr03LZv
- NuPpAsUl+g/XBqZ0ajh2DeiRcKnYdig8N/Y0F7e6cKYXmtLCzY477kIiI61m+4ZDYwML
- fbWIsPSiQ4E4to3rRQQSmfoP0adJqwgk33esCSSfLipJ4uuRwY7aAcIWq0HDg6WlwFKz
- DmoTRTp/dWZpLnQ9kNlMXKAeF43DKfjgUAWFPpUn0ukxeAxPJW3yUFkRhcOKEKJwWuWS
- 9uuZ2FhouW+b0/FikHDaU1YofJX3iWt0bM1eL+Lvrf9YUg+0YZ8Q/djAPfNqKbQhqBEr
- LLDg==
-X-Gm-Message-State: AOJu0YzOuEvvBmGTp0GjN41mpmz8Bc7L20b86M5PBBUJUeUvZMHBL93F
- YFmNQ1DUW6DEFhBo4VCnjn/K2DxHaGp0lyxwng8S0qty/vO/lKW4wwNUfRFFp3ZS7aPcIi+vYkp
- DEaPlW4ZzwbKOW84VJja2RrQn6dPo+iTtWTKi+d+WOja6KeWRzohRbWkKifK5VgIQxA+selKVTU
- kiqFUcRQ3KjbFbMeXIDDN6SyAQPB46tNtcgOJQ3Qm5
-X-Gm-Gg: ASbGncut6nhzlttB00cQ+xvvLqKn+GQLVAqO8bccGEFFoBVwUHCBtff4xhlpEZsYMEb
- O56/vNLqZh/sHX0Gewh1aCaXOQsA3jG7ogxdz9W5yvInaYF5ioNBJ+JuUE2GR+JXwoK1acDLjrq
- f85Grnhsx6fJjegsGnxgVc8rZbl4jmnTtZpu1wvcxLnix1TmwWBY5trjAK7zQpGCcAbYXa5M3Cx
- LATfedTmZNWPyfNQqZ3JPC30mJ33dzzFYGjwS5Npg+n2p14XjgfW90JyJ+iF7KzDYW1f8k1fzhK
- gBhC6ecrCDirwkcnTFq62TwO97vHblRMIEJM8mYavI8=
-X-Received: by 2002:a05:6000:2388:b0:3a0:a0d1:1131 with SMTP id
- ffacd0b85a97d-3b5f187d0e3mr10951920f8f.7.1752491144988; 
- Mon, 14 Jul 2025 04:05:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGnsRLedO6U/Niq8M+7MzRou9iceh2Me5J+o26pxc1ZFLlkyyQkF13iZrKDTp67gbIUBCwTmQ==
-X-Received: by 2002:a05:6000:2388:b0:3a0:a0d1:1131 with SMTP id
- ffacd0b85a97d-3b5f187d0e3mr10951897f8f.7.1752491144529; 
- Mon, 14 Jul 2025 04:05:44 -0700 (PDT)
+ bh=YgTX+tIVcOOQ2a4srBk8j3hWHo73bhiEyasy0Vw94Pc=;
+ b=TrGE969CpUV2//3wUnr2EMUqTlNbNE7xjVWeo0HiGYVogSk+fI3iBhGWJAsBUZcXlx
+ alc62K7a0kxLnyT90H1DGM8eu3vqWbakqkMr0kIltBoU+Vv7avA8XpceDUXfXwhSKpVF
+ P7Bsu7i7F/iBg6INLGAwm2f0Ht1Jv2a9w7a1utIqjeXM1IeymglXxP2shpNqNsi3j20u
+ lNhA98mpkWCx3XBL5a++aKHABhi0CQNrZ2aKIXHM/HFrl3gnPKYnnWExOlK2gtxpDbZ5
+ PaHXynVJvpeSTmZgkvh4qaO3hgFETYcBatmui63xXJONia5rg9BbTNT+XHpziAZWGST/
+ LVKA==
+X-Gm-Message-State: AOJu0YwnooPcQdxT5eeh4O1N6cotnt09YYFsBlVrN1gCNPOdb2q02hRX
+ Vw0q70HhqpCzyFWu367paLghNBdADChcGeIGKnSMJwWzcxSQiNxWDNDdpquBCIv2+L+ULAKpW0s
+ yJl261EIWg/2HNaDpIhmxBvkQV08XNa5FT5t5VE1btqjVBy/+GNBDEPBKAceJaHh04opn972FzC
+ HQlEVqAacPUAllvjgAyfZw266srMQxZ7tCGXilr4Dg
+X-Gm-Gg: ASbGncvDXkAYOGzpPHNx+AoCB9jUFCDP1EuMiG7K+FIZ2eBNBmsEqkENOIKd5/nj8OA
+ vJyC/+OwJkp2BBtWElDaJtf87DuqY83HkB2J8cZMHW8O8OsGmIrYbmH+nSyf4zJJBP8+nqnvOTY
+ XUBHi1ZMA8MyRCRFH6rKhqZ8N0g5pLowHiq8/hxV1C1KRcclFpQ16rtduJ7T3QZSNyWt6NRhVqi
+ Kk64dYbUpsbzheOu9x0hnmprFTpws9gQV1MgzKBd6vdfwWnB7GDQuOCRJkNckgBLXqjvO9cYtoQ
+ 6ZwBViIGQTTzK8XQ2TmwXduHuAMcOsqWskY+iiXse/U=
+X-Received: by 2002:a05:600c:37c4:b0:456:302:6dc3 with SMTP id
+ 5b1f17b1804b1-456030271bemr65063365e9.26.1752491147413; 
+ Mon, 14 Jul 2025 04:05:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHy4dLgqm1Dk8YPznbMSHiqIweOBKgO0JdPQG+paLDIK3/W0uLMBr4L67oA3QjedLZaMCMKMg==
+X-Received: by 2002:a05:600c:37c4:b0:456:302:6dc3 with SMTP id
+ 5b1f17b1804b1-456030271bemr65063125e9.26.1752491146908; 
+ Mon, 14 Jul 2025 04:05:46 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e2703csm12095979f8f.97.2025.07.14.04.05.42
+ 5b1f17b1804b1-456030270f8sm73345715e9.22.2025.07.14.04.05.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:05:43 -0700 (PDT)
+ Mon, 14 Jul 2025 04:05:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 36/77] i386/kvm-cpu: Fix the indentation inside
- kvm_cpu_realizefn()
-Date: Mon, 14 Jul 2025 13:03:25 +0200
-Message-ID: <20250714110406.117772-37-pbonzini@redhat.com>
+Subject: [PULL 37/77] i386/cpu: Unify family,
+ model and stepping calculation for x86 CPU
+Date: Mon, 14 Jul 2025 13:03:26 +0200
+Message-ID: <20250714110406.117772-38-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
@@ -109,29 +109,149 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-The indentation of one of the } inside kvm_cpu_realizefn() isn'f
-correct. fix it.
+There are multiple places where CPUID family/model/stepping info
+are retrieved from env->cpuid_version.
+
+Besides, the calculation of family and model inside host_cpu_vendor_fms()
+doesn't comply to what Intel and AMD define. For family, both Intel
+and AMD define that Extended Family ID needs to be counted only when
+(base) Family is 0xF. For model, Intel counts Extended Model when
+(base) Family is 0x6 or 0xF, while AMD counts EXtended MOdel when
+(base) Family is 0xF.
+
+Introduce generic helper functions to get family, model and stepping
+from the EAX value of CPUID leaf 1, with the correct calculation
+formula.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250630080610.3151956-4-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250630080610.3151956-5-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm-cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/cpu.h      | 30 ++++++++++++++++++++++++++++++
+ target/i386/cpu.c      | 12 ++++--------
+ target/i386/host-cpu.c |  6 +++---
+ target/i386/kvm/kvm.c  |  2 +-
+ 4 files changed, 38 insertions(+), 12 deletions(-)
 
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index a99b8764644..89a79536594 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -73,7 +73,7 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-             if (env->features[FEAT_1_ECX] & CPUID_EXT_MONITOR) {
-                 host_cpuid(5, 0, &cpu->mwait.eax, &cpu->mwait.ebx,
-                            &cpu->mwait.ecx, &cpu->mwait.edx);
--	    }
-+            }
-         }
-         if (cpu->ucode_rev == 0) {
-             cpu->ucode_rev =
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index b3bb9888579..a580562b3dc 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2678,6 +2678,36 @@ static inline int32_t x86_get_a20_mask(CPUX86State *env)
+     }
+ }
+ 
++static inline uint32_t x86_cpu_family(uint32_t eax)
++{
++    uint32_t family = (eax >> 8) & 0xf;
++
++    if (family == 0xf) {
++        family += (eax >> 20) & 0xff;
++    }
++
++    return family;
++}
++
++static inline uint32_t x86_cpu_model(uint32_t eax)
++{
++    uint32_t family, model;
++
++    family = x86_cpu_family(eax);
++    model = (eax >> 4) & 0xf;
++
++    if (family >= 0x6) {
++        model += ((eax >> 16) & 0xf) << 4;
++    }
++
++    return model;
++}
++
++static inline uint32_t x86_cpu_stepping(uint32_t eax)
++{
++    return eax & 0xf;
++}
++
+ static inline bool cpu_has_vmx(CPUX86State *env)
+ {
+     return env->features[FEAT_1_ECX] & CPUID_EXT_VMX;
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index d3d13b14726..b768838b100 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6325,10 +6325,7 @@ static void x86_cpuid_version_get_family(Object *obj, Visitor *v,
+     CPUX86State *env = &cpu->env;
+     uint64_t value;
+ 
+-    value = (env->cpuid_version >> 8) & 0xf;
+-    if (value == 0xf) {
+-        value += (env->cpuid_version >> 20) & 0xff;
+-    }
++    value = x86_cpu_family(env->cpuid_version);
+     visit_type_uint64(v, name, &value, errp);
+ }
+ 
+@@ -6366,8 +6363,7 @@ static void x86_cpuid_version_get_model(Object *obj, Visitor *v,
+     CPUX86State *env = &cpu->env;
+     uint64_t value;
+ 
+-    value = (env->cpuid_version >> 4) & 0xf;
+-    value |= ((env->cpuid_version >> 16) & 0xf) << 4;
++    value = x86_cpu_model(env->cpuid_version);
+     visit_type_uint64(v, name, &value, errp);
+ }
+ 
+@@ -6401,7 +6397,7 @@ static void x86_cpuid_version_get_stepping(Object *obj, Visitor *v,
+     CPUX86State *env = &cpu->env;
+     uint64_t value;
+ 
+-    value = env->cpuid_version & 0xf;
++    value = x86_cpu_stepping(env->cpuid_version);
+     visit_type_uint64(v, name, &value, errp);
+ }
+ 
+@@ -8155,7 +8151,7 @@ static void mce_init(X86CPU *cpu)
+     CPUX86State *cenv = &cpu->env;
+     unsigned int bank;
+ 
+-    if (((cenv->cpuid_version >> 8) & 0xf) >= 6
++    if (x86_cpu_family(cenv->cpuid_version) >= 6
+         && (cenv->features[FEAT_1_EDX] & (CPUID_MCE | CPUID_MCA)) ==
+             (CPUID_MCE | CPUID_MCA)) {
+         cenv->mcg_cap = MCE_CAP_DEF | MCE_BANKS_DEF |
+diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
+index b1fb6d68161..d5e2bb5e187 100644
+--- a/target/i386/host-cpu.c
++++ b/target/i386/host-cpu.c
+@@ -117,13 +117,13 @@ void host_cpu_vendor_fms(char *vendor, int *family, int *model, int *stepping)
+ 
+     host_cpuid(0x1, 0, &eax, &ebx, &ecx, &edx);
+     if (family) {
+-        *family = ((eax >> 8) & 0x0F) + ((eax >> 20) & 0xFF);
++        *family = x86_cpu_family(eax);
+     }
+     if (model) {
+-        *model = ((eax >> 4) & 0x0F) | ((eax & 0xF0000) >> 12);
++        *model = x86_cpu_model(eax);
+     }
+     if (stepping) {
+-        *stepping = eax & 0x0F;
++        *stepping = x86_cpu_stepping(eax);
+     }
+ }
+ 
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index fc58a23b30d..e8c8be09bae 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2259,7 +2259,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     cpuid_i = kvm_x86_build_cpuid(env, cpuid_data.entries, cpuid_i);
+     cpuid_data.cpuid.nent = cpuid_i;
+ 
+-    if (((env->cpuid_version >> 8)&0xF) >= 6
++    if (x86_cpu_family(env->cpuid_version) >= 6
+         && (env->features[FEAT_1_EDX] & (CPUID_MCE | CPUID_MCA)) ==
+            (CPUID_MCE | CPUID_MCA)) {
+         uint64_t mcg_cap, unsupported_caps;
 -- 
 2.50.0
 
