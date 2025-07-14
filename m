@@ -2,68 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBB7B04AFA
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 00:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A218B04ABA
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 00:33:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubRwM-00024Q-Bd; Mon, 14 Jul 2025 18:46:30 -0400
+	id 1ubRj0-0007Wt-0Y; Mon, 14 Jul 2025 18:32:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kib@kib.kiev.ua>) id 1ubQdq-0008E5-NH
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 17:23:19 -0400
-Received: from kib.kiev.ua ([2001:470:d5e7:1::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kib@kib.kiev.ua>) id 1ubQdn-0007ln-U2
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 17:23:18 -0400
-Received: from tom.home (kib@localhost [127.0.0.1] (may be forged))
- by kib.kiev.ua (8.18.1/8.18.1) with ESMTP id 56ELM5fG018818;
- Tue, 15 Jul 2025 00:22:08 +0300 (EEST)
- (envelope-from kib@kib.kiev.ua)
-DKIM-Filter: OpenDKIM Filter v2.10.3 kib.kiev.ua 56ELM5fG018818
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=kib.kiev.ua; s=tom;
- t=1752528130; bh=Nulc9H/OLYQ96IdLYjHYoHT8pJqSbBT6ySlGUA4uNZw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To;
- b=DmT0Qe5W3jmTwwaCVEpUi28ImY9B8vDbAPnqFEMvDWQpl41HD48Q8Jtqh8GqRWPA6
- cWAYESEZKku0cE3sImPEuKUL6guVf9Y4afN0k5kAsR+Mfx8VLe2bIXTcZAAnsLH3Ua
- NiTn60n1DFF/L2kgYgGgnmkumVk+Z6JsrV9bD0Zs=
-Received: (from kostik@localhost)
- by tom.home (8.18.1/8.18.1/Submit) id 56ELM3Kj018816;
- Tue, 15 Jul 2025 00:22:03 +0300 (EEST)
- (envelope-from kib@kib.kiev.ua)
-X-Authentication-Warning: tom.home: kostik set sender to kib@kib.kiev.ua using
- -f
-Date: Tue, 15 Jul 2025 00:22:03 +0300
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Le Tan <tamlokveer@gmail.com>,
- jhb@freebsd.org,
- =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] intel_iommu: Allow both Status Write and Interrupt
- Flag in QI wait
-Message-ID: <aHV0-wDJImAjRPPp@kib.kiev.ua>
-References: <0122cbabc0adcc3cf878f5fd7834d8f258c7a2f2.camel@infradead.org>
- <9ce8b7e6-ad15-4d2e-a430-3896eccc7519@intel.com>
- <4FE9A8E3-5BA5-46D3-A1FA-EA1B7C85C058@infradead.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubQoQ-00033m-Fd
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 17:34:15 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubQoO-0001l4-Ex
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 17:34:14 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3a4fb9c2436so2887847f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 14:34:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752528851; x=1753133651; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=od9WYTsloOatPqWwjiS3jmqklVQjCvEdJgRfr+o+36A=;
+ b=uhsgEGKE4aX2xfGPMuMWezeob7otK8ohhnVoxCA2s5IR/JvuzUXZSB6x13n+Oh9WlU
+ nX492H57JShrhFePC5LJ9ZCP+FtWhtfi1DpKQY/82tBJx7jyItjQyzeE0glHVzgYlZDY
+ XuID2ZEiR+12lOG/W8utfU9bEF1G1j8pf99/Byg9yYV2gtFHZ0XMeSiV77voS7TMn+Qc
+ DTWQhzpneCqOBCIWh5RLbdwGf/LNnoj/ZHoa2gzpJa2fSCwX1YwSL+OO6eeVSjwmMG13
+ cOJ2qk0mxwNVXrFLL9N51+MK/kRPhSf1c3YTjqxGwX/i2IdnXmXNYCiBwAGeqBQab0pH
+ ZChQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752528851; x=1753133651;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=od9WYTsloOatPqWwjiS3jmqklVQjCvEdJgRfr+o+36A=;
+ b=tGLGocXzVEsBQl5UKPoCLTD0cjPhyf2ZwDmxFWOv7dBqMiia+Kz8bclGt8hZfhPIIH
+ moJVijtq7TUcpLmWFXKIlaJv8gOCr0c+8wjGEjbf0kbiacCEhkvQE5H44sX2APpiNBYw
+ 8TxgHANnReaAx72KZ2ubn8lRzMMvwSPFaKwOH+gIRVqtNJ8s6ncWYVJadgGFmjKG8fKx
+ R69BI1dydxzWppGEq9G2bhy8ngej28pMmnF3vNRCseht+M63pdn4seULGGB/LuWfixNk
+ u83H6F913bNwfp/nTZl2//iC3GsIMCwPY47aS67m/bXxYypHbSRPdqqidUHy00Lfp64i
+ xLrA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUq/07apFQ8J0m391omNVUaB7YkDLVqcbOzQ8LsLaoR1wiPS4YgZLEdGkuWQpyHBaidqTbMt8z4uhkv@nongnu.org
+X-Gm-Message-State: AOJu0Yxp8WlVpj2OG3n5RzKH+n6rxZFG4Ea7QaJ1K0sWaX0uBnzZ1rK6
+ a5sKHCDI1HlSzR5T4AHMQj7a9wImQYqxin06GD4MPevHGzyJ5dB+16/mRgpVvnH29Vw=
+X-Gm-Gg: ASbGncsYcEgcYLkgMrqU6P7pmeZWe1yZy3Jy+0n/O+/VWk2F2KrLyYXYYHCF7dVjk2y
+ Ytx+KYJ+qdJv1ls+/TWYVuY7/RDkM+Sk6Rj0Mf/Fs50tNSnk5JwSFoacIxmqYZIIS4R+7AWh9Jy
+ xHiG3u/s8zkRYVfvGCOG85tO5vXJdzUfo6LssGuH5YO8rcWvqG+ZETUzuYSsZJyHU58siwxm3d6
+ klpwWesOWXswcvsDGmf7ee7q2xAg//B3WuAv8dq8tWKcZ9S9lEk7727H6VjroYOxKiF8h4hrgyL
+ YqAJgIcJUCLGc63rX/uOTPggF3i5QWlH9W6IP5XE/rPYdc1kV5uH43Zwa20KjcB3bkzTBRrknOJ
+ dU1CCCKUQ2MzzUtIbYlxgL92cUxc2ewGtH+PQsdlcNRvvHnU/naVWPmBPZygVS9bbJDf+ns0=
+X-Google-Smtp-Source: AGHT+IHNDbrd0j3raV/rZCWS3Vy22wPpDmdb5x/iYv3fDO53ymA5/ibW5yqlcpBUclHuw1uWCAdbjQ==
+X-Received: by 2002:a05:6000:471d:b0:3a4:dc42:a0c3 with SMTP id
+ ffacd0b85a97d-3b5f18e813amr13800774f8f.56.1752528850660; 
+ Mon, 14 Jul 2025 14:34:10 -0700 (PDT)
+Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8dc1e4fsm13254124f8f.21.2025.07.14.14.34.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 14 Jul 2025 14:34:09 -0700 (PDT)
+Message-ID: <1ef61fdf-c151-4d6d-bd90-240b3462c2e6@linaro.org>
+Date: Mon, 14 Jul 2025 23:34:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] hw/microblaze: Add missing FDT dependency
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20250708204806.1898-1-shentey@gmail.com>
+ <20250708204806.1898-2-shentey@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250708204806.1898-2-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4FE9A8E3-5BA5-46D3-A1FA-EA1B7C85C058@infradead.org>
-Received-SPF: pass client-ip=2001:470:d5e7:1::1; envelope-from=kib@kib.kiev.ua;
- helo=kib.kiev.ua
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 14 Jul 2025 18:46:27 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,50 +101,18 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Konstantin Belousov <kib@kib.kiev.ua>
-From:  Konstantin Belousov via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 14, 2025 at 05:41:22PM +0100, David Woodhouse wrote:
-> On 14 July 2025 15:28:09 GMT+01:00, Yi Liu <yi.l.liu@intel.com> wrote:
-> >Hi David,
-> >
-> >On 2025/7/14 16:00, David Woodhouse wrote:
-> >> From: David Woodhouse <dwmw@amazon.co.uk>
-> >> 
-> >> FreeBSD does both, and this appears to be perfectly valid. The VT-d
-> >> spec even talks about the ordering (the status write should be done
-> >> first, unsurprisingly).
-> >
-> >interesting. Have you tried setting both flags on baremetal and the hw
-> >gives you both the status code and an interrupt?
+On 8/7/25 22:48, Bernhard Beschow wrote:
+> These boards ship with a bundled DTB, and dtc will be required for generating
+> these from device tree sources. Prepare for that by adding an FDT dependency.
 > 
-> I see no reason why it shouldn't. The spec (§6.5.2.8) gives no that the IF and SW bits should be mutually exclusive and even talks about ordering:
-> 
-> Section 6.5.2.11 describes queued invalidation ordering considerations. Hardware completes an 
-> invalidation wait command as follows:
-> • If a status write is specified in the wait descriptor (SW=1), hardware performs a coherent write of 
-> the status data to the status address.
-> • If an interrupt is requested in the wait descriptor (IF=1), hardware sets the IWC field in the 
-> Invalidation Completion Status Register. An invalidation completion interrupt may be generated as 
-> described in the following section
-> 
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   hw/microblaze/Kconfig | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-Yes, and the FreeBSD DMAR code uses that, and relies on that, as was
-mentioned earlier in the mail thread.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> 
-> 
-> >I think this "if branch" can be moved just after the inv_desc non-zero
-> >reserved bit checking. Hence you don't need a ret at all. :)
-> 
-> We want to return false if the memory write fails, and the interrupt has to happen afterwards.
-> 
-> > btw. I'm
-> >also asking if VT-d spec allows it or not. So let's wait for a while..
-> 
-> Ok.
-> 
-> 
 
