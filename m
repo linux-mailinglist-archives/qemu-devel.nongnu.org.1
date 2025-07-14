@@ -2,64 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBE7B04320
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACE0B042F6
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:11:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubKpu-0004Cq-Mq; Mon, 14 Jul 2025 11:11:23 -0400
+	id 1ubKq4-0004iN-2P; Mon, 14 Jul 2025 11:11:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUj-0000N5-2G
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUo-0000Pp-E7
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUW-0003cl-KS
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:23 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUa-0003dg-KL
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752500711;
+ s=mimecast20190719; t=1752500713;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gd3C9KzXT1totXFmIEDcGz62Z1g1UAZ9zIVxyuiaV+E=;
- b=LQekRJMx8dgI2SDR8+yruX2bZNtq4NjtAQzSxLBQ6kLiN/zZzoSs5uevAhpokZuC6x2VkA
- 731XqOPK8VgRQeq81JO20tpb1hpar+hxIhdJJNbGAwAVuNoS9JeILIqxEER12fKvtyr6g0
- aOB2FmBDPDezlM1qkr78Mn3UJdA/nIY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=+zGpGrJTmtA+mx5uAEeZZATBJAWFYIT7QHHlExSm1UA=;
+ b=KRp8otAC5doDHeRuZ9WX0m2IDeJDhW53tWoZi+bJDkMzHeDHpA0wlTjZpMXawmMk5jRmix
+ Xwcfx60dxt2/XS+XR+UPM2Bv+CeOI/XLUnny8ya1aqDLAs9O9gNPEbBj4r6WNIuhs9IHLK
+ iodpBGRYRcpmsXMOaYMGAwtjOa5WeZk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-472-8VPNdd6UN3qwUPPsjsyL2A-1; Mon,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-509-kMgZ6lk7Mx-mR0lC5Xwerg-1; Mon,
  14 Jul 2025 09:45:09 -0400
-X-MC-Unique: 8VPNdd6UN3qwUPPsjsyL2A-1
-X-Mimecast-MFC-AGG-ID: 8VPNdd6UN3qwUPPsjsyL2A_1752500709
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+X-MC-Unique: kMgZ6lk7Mx-mR0lC5Xwerg-1
+X-Mimecast-MFC-AGG-ID: kMgZ6lk7Mx-mR0lC5Xwerg_1752500709
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E749B1808993
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 13:45:08 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E0A8219560B8; Mon, 14 Jul 2025 13:45:08 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9CC7A1956094
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 13:45:08 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8F25430001B5; Mon, 14 Jul 2025 13:45:08 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2D01321E65DF; Mon, 14 Jul 2025 15:44:59 +0200 (CEST)
+ id 30CC221E61A2; Mon, 14 Jul 2025 15:44:59 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com,
-	John Snow <jsnow@redhat.com>
-Subject: [PULL 27/32] qapi: add cross-references to virtio.json
-Date: Mon, 14 Jul 2025 15:44:53 +0200
-Message-ID: <20250714134458.2991097-28-armbru@redhat.com>
+Cc: stefanha@redhat.com, John Snow <jsnow@redhat.com>,
+ Lukas Straub <lukasstraub2@web.de>
+Subject: [PULL 28/32] qapi: add cross-references to yank.json
+Date: Mon, 14 Jul 2025 15:44:54 +0200
+Message-ID: <20250714134458.2991097-29-armbru@redhat.com>
 In-Reply-To: <20250714134458.2991097-1-armbru@redhat.com>
 References: <20250714134458.2991097-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,52 +85,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: John Snow <jsnow@redhat.com>
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250711054005.60969-17-jsnow@redhat.com>
+Acked-by: Lukas Straub <lukasstraub2@web.de>
+Message-ID: <20250711054005.60969-18-jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/virtio.json | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ qapi/yank.json | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/qapi/virtio.json b/qapi/virtio.json
-index 2e23512085..b29c850eaf 100644
---- a/qapi/virtio.json
-+++ b/qapi/virtio.json
-@@ -137,7 +137,7 @@
- # @num-vqs: VirtIODevice virtqueue count.  This is the number of
- #     active virtqueues being used by the VirtIODevice.
+diff --git a/qapi/yank.json b/qapi/yank.json
+index c14de5229e..f3cd5c15d6 100644
+--- a/qapi/yank.json
++++ b/qapi/yank.json
+@@ -11,7 +11,7 @@
+ ##
+ # @YankInstanceType:
  #
--# @status: VirtIODevice configuration status (VirtioDeviceStatus)
-+# @status: VirtIODevice configuration status (`VirtioDeviceStatus`)
+-# An enumeration of yank instance types.  See @YankInstance for more
++# An enumeration of yank instance types.  See `YankInstance` for more
+ # information.
  #
- # @isr: VirtIODevice ISR
+ # Since: 6.0
+@@ -22,7 +22,7 @@
+ ##
+ # @YankInstanceBlockNode:
  #
-@@ -579,7 +579,7 @@
- # .. qmp-example::
- #    :annotated:
+-# Specifies which block graph node to yank.  See @YankInstance for
++# Specifies which block graph node to yank.  See `YankInstance` for
+ # more information.
  #
--#    Get VirtQueueStatus for virtio-vsock (vhost-vsock running)
-+#    Get `VirtQueueStatus` for virtio-vsock (vhost-vsock running)
- #    ::
+ # @node-name: the name of the block graph node
+@@ -35,7 +35,7 @@
+ ##
+ # @YankInstanceChardev:
  #
- #     -> { "execute": "x-query-virtio-queue-status",
-@@ -606,7 +606,7 @@
- # .. qmp-example::
- #    :annotated:
+-# Specifies which character device to yank.  See @YankInstance for
++# Specifies which character device to yank.  See `YankInstance` for
+ # more information.
  #
--#    Get VirtQueueStatus for virtio-serial (no vhost)
-+#    Get `VirtQueueStatus` for virtio-serial (no vhost)
- #    ::
+ # @id: the chardev's ID
+@@ -48,7 +48,7 @@
+ ##
+ # @YankInstance:
  #
- #     -> { "execute": "x-query-virtio-queue-status",
-@@ -818,7 +818,7 @@
+-# A yank instance can be yanked with the @yank qmp command to recover
++# A yank instance can be yanked with the `yank` qmp command to recover
+ # from a hanging QEMU.
  #
- # @index: Index of the element in the queue
+ # @type: yank instance type
+@@ -59,9 +59,9 @@
+ #   nbd server without attempting to reconnect.
+ # - socket chardev: Yanking it will shut down the connected socket.
+ # - migration: Yanking it will shut down all migration connections.
+-#   Unlike @migrate_cancel, it will not notify the migration process,
++#   Unlike `migrate_cancel`, it will not notify the migration process,
+ #   so migration will go into @failed state, instead of @cancelled
+-#   state.  @yank should be used to recover from hangs.
++#   state.  `yank` should be used to recover from hangs.
  #
--# @descs: List of descriptors (VirtioRingDesc)
-+# @descs: List of descriptors (`VirtioRingDesc`)
+ # Since: 6.0
+ ##
+@@ -76,7 +76,7 @@
+ # @yank:
  #
- # @avail: VRingAvail info
+ # Try to recover from hanging QEMU by yanking the specified instances.
+-# See @YankInstance for more information.
++# See `YankInstance` for more information.
+ #
+ # @instances: the instances to be yanked
+ #
+@@ -102,7 +102,7 @@
+ ##
+ # @query-yank:
+ #
+-# Query yank instances.  See @YankInstance for more information.
++# Query yank instances.  See `YankInstance` for more information.
+ #
+ # TODO: This line is a hack to separate the example from the body
  #
 -- 
 2.49.0
