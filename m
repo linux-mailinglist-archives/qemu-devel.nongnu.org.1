@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0593AB04C1B
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD842B04C2D
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:24:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSGi-0003k4-Rh; Mon, 14 Jul 2025 19:07:33 -0400
+	id 1ubSGI-0003AO-Uk; Mon, 14 Jul 2025 19:07:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSG9-00038w-CL
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:01 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSG7-00034O-Lu
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSG6-0005Pc-H1
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:56 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSG5-0005PT-Q4
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534413;
+ s=mimecast20190719; t=1752534412;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=J0gwwssvFtLIpcn/0bSSmR4Ew9FktX7NduuxGFwTfeA=;
- b=XFB+87dlQiNV3Jp6cqFOk70YcvcjYq2pwAhNlqs/sAweKERX+KJAH360k6cz3CaHudb+NQ
- y49TGxqI1P35wVvwuaMDW1nO7ARNpnO4O/1nGd7bhoNedYVyH6/x1BcW7PVJxXrtLGklj3
- i1e1LAOO9kXDqrM8E8tk5V7B0pKkEzw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Ni0t6xRkFvmRtTZbGD/fX48AdcEArrKXK6PgLqlkH/c=;
+ b=EeS4/dbAopDy2RB5lvk3FgOO+9l6h0GrGyvsjANUzobBt1sArVJqxi/R/8IRFoDEX5p50X
+ IRWpGT3WhdAl4sm8aKOmwz9AF+MHcZkeoYADdbjrl2XC9P6CBqvQetZ49RE+qV0kp/GAiC
+ mE9sb+q6NojQ6eKFZ/INTL6yALicNEQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-FOKJF5yQNhOT1gr33OwcOA-1; Mon, 14 Jul 2025 19:06:48 -0400
-X-MC-Unique: FOKJF5yQNhOT1gr33OwcOA-1
-X-Mimecast-MFC-AGG-ID: FOKJF5yQNhOT1gr33OwcOA_1752534407
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-451ecc3be97so25166095e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:06:48 -0700 (PDT)
+ us-mta-591-FNHJeT56PqqKCJM0tW4wrw-1; Mon, 14 Jul 2025 19:06:50 -0400
+X-MC-Unique: FNHJeT56PqqKCJM0tW4wrw-1
+X-Mimecast-MFC-AGG-ID: FNHJeT56PqqKCJM0tW4wrw_1752534410
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a4f8fd1847so1774735f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:06:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534407; x=1753139207;
+ d=1e100.net; s=20230601; t=1752534409; x=1753139209;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J0gwwssvFtLIpcn/0bSSmR4Ew9FktX7NduuxGFwTfeA=;
- b=UIHgvkNJZzQ/eI8zlVcdAY9ECsA1X+FbaQMxoEnDyTYedaxsWTbmPAQXm4aj6EOxI/
- j+z2cRq+5XlKrcOccfWJm+xW/CCifrFk12ADjCn+w9MREaFxZmAMRGcsVnuhGCwfSTmI
- bGq1JJNKKsS+xLiwad4xHOaXccZIwWZe09Tstxe5mAhBus/RHBUwNbJen956SvZf4d9B
- 8wcAiglC0LgO66afj4wpcyt6l2W0iXe0A2PmHbX0V9sBL5fKvGR5buC1RfI361XbSQcN
- gqSBBb77HJdSSKDN+CFpj6R4WyIiZOQCXxhYCivaRqOgiKoqd/ToIhe0tkag2ur/MI8i
- 7rsA==
-X-Gm-Message-State: AOJu0Yxafj6HLly/lzdy76YoerjYleaoHFXnnb0+0Ton8wWvfTgyga4d
- 4Y+s5v6pMZWyJu5OV0Lc5sr0D880dvsf0NGwfx8oJoE00Cd1aQgk3zUZTJKDAupBPL6Adiz2nfH
- OWSsdYFMXXuA5Ps3rXFWlJA+xdfcnNZrAAYEGj059RPEl11aetvVs089P2Ne7VByjQg6qv1Az6U
- ASpN59lKUtI0rJAoZvT93NPHy0lfTL7Nzdwg==
-X-Gm-Gg: ASbGncvEEUmq8MdsnzVtrUxYS0cxouR9mZDQLWpcZGIuOOuwC8cbIwQ1IOb2HyAcc+p
- 0O5niMsw9Kbj5mWQ6gAMCftdQ2xS4NiVuh+23v06zI0xsU60/aX1ESR+vB0oueq8sVF3XQxUCFM
- SJxTdeXxlSbBpXx/zQjshORXYNjUbYJreBftUxWGG9DEbGedjJzEOXGA1Y491aWmRES9TasUCg2
- 2LKIdTEGCCQELQKLdTjq0NVVEB9kQCLmO+4bc2t0jwACSZJXjnn1zK7GIDuoX5sw+xo/nA9I7SJ
- ACMUNFkd0PzRkoIz6ByTxehMpKTVJfG4
-X-Received: by 2002:a05:600c:a308:b0:455:fab4:4b80 with SMTP id
- 5b1f17b1804b1-455fab44c03mr80226375e9.19.1752534406792; 
- Mon, 14 Jul 2025 16:06:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEUaG+DA4FSjO97dsvyc6n+5OVKY3hgCy/hn91DWQayqUi3eK8+2ai/AeAiiGYyjM3bcAfL9Q==
-X-Received: by 2002:a05:600c:a308:b0:455:fab4:4b80 with SMTP id
- 5b1f17b1804b1-455fab44c03mr80226135e9.19.1752534406203; 
- Mon, 14 Jul 2025 16:06:46 -0700 (PDT)
+ bh=Ni0t6xRkFvmRtTZbGD/fX48AdcEArrKXK6PgLqlkH/c=;
+ b=vDYKNTyAUWmKOYSrQwWvC+6I+t1PRhMGPztyyTc23uLbbs9zoo0XG/2Q/3BCwP2GcL
+ ShMSbfKg/80viH3lca2rR9BxP1LdLcSHry/PT0qqs2gQa7SOwbTPS5ReHnztdepwZ7GV
+ N4mraMMpVDBeDYbnwBSMlAvVBgVePa7xN3sjycjgOaHxgqWSqr6lWGimSvFLt2KGNmQN
+ CG58xS++qHb0H8wPNGKyRxGMy1AEO+MyDHGWdrj6TlCFHyW56PGFRm7cU0YUhjITyog2
+ qMlInRKouxORBDf4j+UBxUtZqbQTzFNFpx60UsfKFGErOZrnoNjqj3FcekEVWGr5Zued
+ d6Jg==
+X-Gm-Message-State: AOJu0YxXGngkPcU1iRlNbF5Uk+1HYutIQPyKPP0zbKk/0FvNXPg0IiE3
+ 2K99LP1sGca7AyShUZG9BoAhQSIompbRs2AZzbHZ0Z5ufpKIU4DrUqCLX5O+dsLlkk+Hc7KGKg6
+ PEDaDeuiXHSIx1G9XfaC3ncm9fWmq+1HcEuYOOgEFZGPAe4SLfbN0Q6sMVP9Br4FqVOuWn3DvnN
+ GJbNHtsScNat925t9rppMd/gNQo7Svh+N7yw==
+X-Gm-Gg: ASbGncsTFWR0iIH2AIU3koG/+qbA7iC380j/AWf4Z/5ZTpX5DMXgE//nib11Vb37GtC
+ m2Ed1TCAugNYTldxHQ0yg0VmHtm4WhHigPqWr0AzO4N6Go8rtrUh2JINW1mg4PIt3F0PeQeyJFE
+ KNtxslZGkJ0Z/SNEvyR2GweyCfAWUO6aam0XSzjNzWFmL50NvEPvpw1XFYURuEQNZTDCyGDuFw/
+ oTIUyaGMIz2ntuGHuy3U1sqQZu2pBzEyZ8Da2N+9zpTTxfbls/i4lhjXk7hbz0XYVplMGPjwu3v
+ LZZugyWn9om1S8C73n5nu8eyYtZb4DZw
+X-Received: by 2002:a05:6000:2d09:b0:3a5:85cb:e9f3 with SMTP id
+ ffacd0b85a97d-3b5f1875b23mr8235348f8f.12.1752534409409; 
+ Mon, 14 Jul 2025 16:06:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEzaQ67XfS4mi2osXpvctPBG782DUaJ5TY83uicGImNZrwNIWogWzFuinaEB5Ymt7uJ5JM7sg==
+X-Received: by 2002:a05:6000:2d09:b0:3a5:85cb:e9f3 with SMTP id
+ ffacd0b85a97d-3b5f1875b23mr8235333f8f.12.1752534408805; 
+ Mon, 14 Jul 2025 16:06:48 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc1de0sm13395802f8f.24.2025.07.14.16.06.43
+ ffacd0b85a97d-3b5f32ed100sm10614815f8f.0.2025.07.14.16.06.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:06:45 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:06:42 -0400
+ Mon, 14 Jul 2025 16:06:48 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:06:46 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Bibo Mao <maobibo@loongson.cn>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 12/97] tests/qtest/bios-tables-test: Add basic testing for
- LoongArch
-Message-ID: <73e2cba058c74c9a0d5b640711a1ff2428551952.1752534227.git.mst@redhat.com>
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 13/97] rebuild-expected-aml.sh: Add support for LoongArch
+Message-ID: <c43ca0de62749286ee099baaf628b7f7b6e9844f.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -111,126 +109,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-Add basic ACPI table test case for LoongArch, including cpu topology,
-numa memory, memory hotplug and oem-id test cases.
+Update the list of supported architectures to include LoongArch.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Message-Id: <20250612090321.3416594-3-maobibo@loongson.cn>
+Message-Id: <20250612090321.3416594-4-maobibo@loongson.cn>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test.c | 79 ++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build        |  1 +
- 2 files changed, 80 insertions(+)
+ tests/data/acpi/rebuild-expected-aml.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index 4dbc07ec5e..f41e638014 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -2439,6 +2439,74 @@ static void test_acpi_aarch64_virt_oem_fields(void)
-     g_free(args);
- }
+diff --git a/tests/data/acpi/rebuild-expected-aml.sh b/tests/data/acpi/rebuild-expected-aml.sh
+index c1092fb8ba..cbf9ffe0dd 100755
+--- a/tests/data/acpi/rebuild-expected-aml.sh
++++ b/tests/data/acpi/rebuild-expected-aml.sh
+@@ -12,7 +12,7 @@
+ # This work is licensed under the terms of the GNU GPLv2.
+ # See the COPYING.LIB file in the top-level directory.
  
-+#define LOONGARCH64_INIT_TEST_DATA(data)                          \
-+    test_data data = {                                            \
-+        .machine = "virt",                                        \
-+        .arch    = "loongarch64",                                 \
-+        .tcg_only = true,                                         \
-+        .uefi_fl1 = "pc-bios/edk2-loongarch64-code.fd",           \
-+        .uefi_fl2 = "pc-bios/edk2-loongarch64-vars.fd",           \
-+        .cd = "tests/data/uefi-boot-images/"                      \
-+              "bios-tables-test.loongarch64.iso.qcow2",           \
-+        .ram_start = 0,                                           \
-+        .scan_len = 128ULL * MiB,                                 \
-+    }
-+
-+static void test_acpi_loongarch64_virt(void)
-+{
-+    LOONGARCH64_INIT_TEST_DATA(data);
-+
-+    test_acpi_one("-cpu la464 ", &data);
-+    free_test_data(&data);
-+}
-+
-+static void test_acpi_loongarch64_virt_topology(void)
-+{
-+    LOONGARCH64_INIT_TEST_DATA(data);
-+
-+    data.variant = ".topology";
-+    test_acpi_one("-cpu la464 -smp sockets=1,cores=2,threads=2", &data);
-+    free_test_data(&data);
-+}
-+
-+static void test_acpi_loongarch64_virt_numamem(void)
-+{
-+    LOONGARCH64_INIT_TEST_DATA(data);
-+
-+    data.variant = ".numamem";
-+    test_acpi_one(" -cpu la464 -m 128"
-+                  " -object memory-backend-ram,id=ram0,size=64M"
-+                  " -object memory-backend-ram,id=ram1,size=64M"
-+                  " -numa node,memdev=ram0 -numa node,memdev=ram1"
-+                  " -numa dist,src=0,dst=1,val=21",
-+                  &data);
-+    free_test_data(&data);
-+}
-+
-+static void test_acpi_loongarch64_virt_memhp(void)
-+{
-+    LOONGARCH64_INIT_TEST_DATA(data);
-+
-+    data.variant = ".memhp";
-+    test_acpi_one(" -cpu la464 -m 128,slots=2,maxmem=256M"
-+                  " -object memory-backend-ram,id=ram0,size=128M",
-+                  &data);
-+    free_test_data(&data);
-+}
-+
-+static void test_acpi_loongarch64_virt_oem_fields(void)
-+{
-+    LOONGARCH64_INIT_TEST_DATA(data);
-+    char *args;
-+
-+    args = test_acpi_create_args(&data, "-cpu la464 "OEM_TEST_ARGS);
-+    data.qts = qtest_init(args);
-+    test_acpi_load_tables(&data);
-+    test_oem_fields(&data);
-+    qtest_quit(data.qts);
-+    free_test_data(&data);
-+    g_free(args);
-+}
+-qemu_arches="x86_64 aarch64 riscv64"
++qemu_arches="x86_64 aarch64 riscv64 loongarch64"
  
- int main(int argc, char *argv[])
- {
-@@ -2614,6 +2682,17 @@ int main(int argc, char *argv[])
-             qtest_add_func("acpi/virt/numamem",
-                            test_acpi_riscv64_virt_tcg_numamem);
-         }
-+    } else if (strcmp(arch, "loongarch64") == 0) {
-+        if (has_tcg) {
-+            qtest_add_func("acpi/virt", test_acpi_loongarch64_virt);
-+            qtest_add_func("acpi/virt/topology",
-+                           test_acpi_loongarch64_virt_topology);
-+            qtest_add_func("acpi/virt/numamem",
-+                           test_acpi_loongarch64_virt_numamem);
-+            qtest_add_func("acpi/virt/memhp", test_acpi_loongarch64_virt_memhp);
-+            qtest_add_func("acpi/virt/oem-fields",
-+                           test_acpi_loongarch64_virt_oem_fields);
-+        }
-     }
-     ret = g_test_run();
-     boot_sector_cleanup(disk);
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 5ad969f616..669d07c06b 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -148,6 +148,7 @@ qtests_hppa = \
- 
- qtests_loongarch64 = qtests_filter + \
-   (config_all_devices.has_key('CONFIG_LOONGARCH_VIRT') ? ['numa-test'] : []) + \
-+  (unpack_edk2_blobs ? ['bios-tables-test'] : []) + \
-   ['boot-serial-test',
-    'cpu-plug-test']
+ if [ ! -e "tests/qtest/bios-tables-test" ]; then
+     echo "Test: bios-tables-test is required! Run make check before this script."
+@@ -37,7 +37,7 @@ if [ -z "$qemu_bins" ]; then
+     echo "Only the following architectures are currently supported: $qemu_arches"
+     echo "None of these configured!"
+     echo "To fix, run configure \
+-         --target-list=x86_64-softmmu,aarch64-softmmu,riscv64-softmmu"
++         --target-list=x86_64-softmmu,aarch64-softmmu,riscv64-softmmu,loongarch64-softmmu"
+     exit 1;
+ fi
  
 -- 
 MST
