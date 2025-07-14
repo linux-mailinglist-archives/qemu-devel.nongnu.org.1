@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68809B038D0
+	by mail.lfdr.de (Postfix) with ESMTPS id AD430B038D1
 	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:12:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubEEs-0007Vt-MA; Mon, 14 Jul 2025 04:08:43 -0400
+	id 1ubEF7-0007zR-PD; Mon, 14 Jul 2025 04:08:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ubDub-0004eR-Ex
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:47:49 -0400
+ id 1ubDum-0004hS-1U
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:47:57 -0400
 Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ubDuX-0007OP-Q5
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:47:43 -0400
+ id 1ubDuj-0007Nf-9t
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:47:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752479262; x=1784015262;
+ t=1752479273; x=1784015273;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qwRBWKP16OIxog568S/3DANL77UH91HATrNvZ4+PvjI=;
- b=KRCdrexdaJf+2AaVX9C/9L3Tnl71zrrOjk10rE7QGvvLdePMVHEsbuVB
- DuEyG1IfPTzZm3J6kzUt2x8z5iF/Z61to1UT1JbecEVI614YBofWYDa3l
- MOcXKuJUQcK+a0zxS2t8UtUQZ9ls9mFiXjh6NcKYnWsY0Jddogd7CmWKw
- nWGi9UpJ2nRhB8XIZlFsfqwtN+pWUQux/HxscSjpUKkHQmDPPqyugWfeZ
- f5Lehd57gRLjG5ivYGrdLzyiEXUo2406BEAJCcFn8PqeBMCvcXxlDV+Rm
- AGZYb4fmQ+96ivWTaSk6x97BU7QbTwdhZOoNr9a4q033dXQxzGMEvkSnT Q==;
-X-CSE-ConnectionGUID: K3r3Kd9XQgqi1gDnBW7SsA==
-X-CSE-MsgGUID: HqPkzkuITBWuEn/r+kN9xg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58324654"
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="58324654"
+ bh=UbCihhGNTf3oDGMfXmVjGFL0hmBQppSwgqh5BrCmBO4=;
+ b=MaOsJKtJ3h7KMJjluIa7yDUHTIY7ieiz+UIlyL2KSCknFUkNWdQ3fOUj
+ 0upk8KgFGoACo+5/YU6JWZcOAA2h2WlIMJfB4VqfRE9jvhn7UaSu3dDNY
+ P8AOgJPWJmViknOdEMMV7c1i2Ib1QAuiJfC3c4GeuRsgGPpLFTWJW9w4t
+ Dx1mCaBPyXS36y/IPkzVSAIERTq0SLIy3dnG8RQETzz72qqP96Hq+vuN5
+ do2XdGY1KSPOfOfvXUoRZceTO8YzYkA2wKTLszpRMxGq11Vu5WjTg0yu/
+ UxPETh6+08ok+7ZAnIH8ns260rg4I1OgokGNAXaiAngKaDC/wwm4GTkpx Q==;
+X-CSE-ConnectionGUID: HfHqeAq5RKijs7IpMqGNHQ==
+X-CSE-MsgGUID: 6qfClBuLRTalEN2ABCQLmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58324682"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="58324682"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 00:47:39 -0700
-X-CSE-ConnectionGUID: 6zsATw8ST5SG9llBlm/CjQ==
-X-CSE-MsgGUID: 3Rd/7s9HSr+xqjfjf9kGFA==
+ 14 Jul 2025 00:47:52 -0700
+X-CSE-ConnectionGUID: KK0kA3mBTRmvxSXc9gwxSw==
+X-CSE-MsgGUID: OM6wARDFQTi/hWtqCiNzpA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="156952193"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="156952225"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 14 Jul 2025 00:47:36 -0700
+ by orviesa007.jf.intel.com with ESMTP; 14 Jul 2025 00:47:49 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -50,11 +50,11 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
  Tao Su <tao1.su@intel.com>, Yi Lai <yi1.lai@intel.com>,
  Dapeng Mi <dapeng1.mi@intel.com>, qemu-devel@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, Tao Su <tao1.su@linux.intel.com>
-Subject: [PATCH v2 2/7] i386/cpu: Mark CPUID 0x80000008 ECX bits[0:7] &
- [12:15] as reserved for Intel/Zhaoxin
-Date: Mon, 14 Jul 2025 16:08:54 +0800
-Message-Id: <20250714080859.1960104-3-zhao1.liu@intel.com>
+ Zhao Liu <zhao1.liu@intel.com>, Qian Wen <qian.wen@intel.com>
+Subject: [PATCH v2 6/7] i386/cpu: Fix overflow of cache topology fields in
+ CPUID.04H
+Date: Mon, 14 Jul 2025 16:08:58 +0800
+Message-Id: <20250714080859.1960104-7-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250714080859.1960104-1-zhao1.liu@intel.com>
 References: <20250714080859.1960104-1-zhao1.liu@intel.com>
@@ -85,78 +85,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per SDM,
+From: Qian Wen <qian.wen@intel.com>
 
-80000008H EAX Linear/Physical Address size.
-              Bits 07-00: #Physical Address Bits*.
-              Bits 15-08: #Linear Address Bits.
-              Bits 31-16: Reserved = 0.
-          EBX Bits 08-00: Reserved = 0.
-              Bit 09: WBNOINVD is available if 1.
-              Bits 31-10: Reserved = 0.
-          ECX Reserved = 0.
-          EDX Reserved = 0.
+According to SDM, CPUID.0x4:EAX[31:26] indicates the Maximum number of
+addressable IDs for processor cores in the physical package. If we
+launch over 64 cores VM, the 6-bit field will overflow, and the wrong
+core_id number will be reported.
 
-ECX/EDX in CPUID 0x80000008 leaf are reserved.
+Since the HW reports 0x3f when the intel processor has over 64 cores,
+limit the max value written to EAX[31:26] to 63, so max num_cores should
+be 64.
 
-Currently, in QEMU, only ECX bits[0:7] and ECX bits[12:15] are encoded,
-and both are emulated in QEMU.
+For EAX[14:25], though at present Q35 supports up to 4096 CPUs, by
+constructing a specific topology, the width of the APIC ID can be
+extended beyond 12 bits. For example, using `-smp threads=33,cores=9,
+modules=9` results in a die level offset of 6 + 4 + 4 = 14 bits, which
+can also cause overflow.  check and honor the maximum value for
+EAX[14:25] as well.
 
-Considering that Intel and Zhaoxin are already using the 0x1f leaf to
-describe CPU topology, which includes similar information, Intel and
-Zhaoxin will not implement ECX bits[0:7] and bits[12:15] of 0x80000008.
+In addition, for host-cache-info case, also apply the same checks and
+fixes.
 
-Therefore, mark these two fields as reserved and clear them for Intel
-and Zhaoxin guests.
-
-Reviewed-by: Tao Su <tao1.su@linux.intel.com>
-Tested-by: Yi Lai <yi1.lai@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Qian Wen <qian.wen@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Changes Since v1:
- * Consider Zhaoxin (Ewan).
- * Only clear ECX bits[0:7] and bits[12:15] for Intel/Zhaoxin, and do
-   not cover other bits.
+Changes Since New v1 [**]:
+ * Provide an overflow example of EAX[14:25].
+
+Changes Since Original v4 [*]:
+ * Rebase on addressable ID fixup.
+ * Drop R/b tags since the code base changes.
+ * Teak bits 25-14 as well and add the comment.
+ * Fix overflow for host-cache-info case.
+
+[*]: original v4: https://lore.kernel.org/qemu-devel/20230829042405.932523-3-qian.wen@intel.com/
+[**]: new v1: https://lore.kernel.org/qemu-devel/20250227062523.124601-4-zhao1.liu@intel.com/
 ---
- target/i386/cpu.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ target/i386/cpu.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 37e4bf51d890..abd529d587ba 100644
+index 67a371e23b22..fedeeea151ee 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -8387,15 +8387,25 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-              *eax |= (cpu->guest_phys_bits << 16);
-         }
-         *ebx = env->features[FEAT_8000_0008_EBX];
-+
-         if (threads_per_pkg > 1) {
-             /*
--             * Bits 15:12 is "The number of bits in the initial
--             * Core::X86::Apic::ApicId[ApicId] value that indicate
--             * thread ID within a package".
--             * Bits 7:0 is "The number of threads in the package is NC+1"
-+             * Don't emulate Bits [7:0] & Bits [15:12] for Intel/Zhaoxin, since
-+             * they're using 0x1f leaf.
-              */
--            *ecx = (apicid_pkg_offset(topo_info) << 12) |
--                   (threads_per_pkg - 1);
-+            if (cpu->vendor_cpuid_only_v2 &&
-+                (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-+                    *ecx = 0;
-+            } else {
-+                /*
-+                 * Bits 15:12 is "The number of bits in the initial
-+                 * Core::X86::Apic::ApicId[ApicId] value that indicate
-+                 * thread ID within a package".
-+                 * Bits 7:0 is "The number of threads in the package is NC+1"
-+                 */
-+                *ecx = (apicid_pkg_offset(topo_info) << 12) |
-+                       (threads_per_pkg - 1);
-+            }
-         } else {
-             *ecx = 0;
-         }
+@@ -347,11 +347,17 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
+     assert(cache->size == cache->line_size * cache->associativity *
+                           cache->partitions * cache->sets);
+ 
++    /*
++     * The following fields have bit-width limitations, so consider the
++     * maximum values to avoid overflow:
++     * Bits 25-14: maximum 4095.
++     * Bits 31-26: maximum 63.
++     */
+     *eax = CACHE_TYPE(cache->type) |
+            CACHE_LEVEL(cache->level) |
+            (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0) |
+-           (max_core_ids_in_package(topo_info) << 26) |
+-           (max_thread_ids_for_cache(topo_info, cache->share_level) << 14);
++           (MIN(max_core_ids_in_package(topo_info), 63) << 26) |
++           (MIN(max_thread_ids_for_cache(topo_info, cache->share_level), 4095) << 14);
+ 
+     assert(cache->line_size > 0);
+     assert(cache->partitions > 0);
+@@ -7928,13 +7934,13 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+                 int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
+ 
+                 *eax &= ~0xFC000000;
+-                *eax |= max_core_ids_in_package(topo_info) << 26;
++                *eax |= MIN(max_core_ids_in_package(topo_info), 63) << 26;
+                 if (host_vcpus_per_cache > threads_per_pkg) {
+                     *eax &= ~0x3FFC000;
+ 
+                     /* Share the cache at package level. */
+-                    *eax |= max_thread_ids_for_cache(topo_info,
+-                                CPU_TOPOLOGY_LEVEL_SOCKET) << 14;
++                    *eax |= MIN(max_thread_ids_for_cache(topo_info,
++                                CPU_TOPOLOGY_LEVEL_SOCKET), 4095) << 14;
+                 }
+             }
+         } else if (cpu->vendor_cpuid_only && IS_AMD_CPU(env)) {
 -- 
 2.34.1
 
