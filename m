@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27DDB03E46
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 14:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C07BB03E57
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 14:10:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHWT-000811-PX; Mon, 14 Jul 2025 07:39:10 -0400
+	id 1ubHbD-0003fw-FU; Mon, 14 Jul 2025 07:44:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH19-0001no-3s
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:04 -0400
+ id 1ubH1r-0002Gs-Gi
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH16-00028W-JP
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:42 -0400
+ id 1ubH1o-0002I8-SL
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491199;
+ s=mimecast20190719; t=1752491243;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XR6j7BhZab0elBL4igl7ltcFzqCGAaAHJVZIJY5nUn4=;
- b=hzxkKC9AXkyAK7brF4kAtEwI/gNM5GHkteBVX5QoTWayBmrBzBFzPevK074oVH0e/Q81Pu
- EBQxu833IEFbcM7lcIsv986aD6eS/u8a/6Q++w0ZEIymUjMzc+NsPQXmlxOntrVzSytM0b
- 13oG720zaJOurfKjliihMId2YOOZnu0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Lx/3OjKQQiRwtu1QUxLqhLmOvdf3soAfb9Z3azPYw/Q=;
+ b=H7mwPrpJYIq3UYx4OisjagINGW1EKLm3l9rpDMp/nDB9/n7BYYRgTTEN95uAL5axwCq2r/
+ ZiGLev/QqRV3I0uom4ZGMvLU63AB3EzCl0R8n0VINwEB2kf8QfRPjYe0cUe+yZ1b3YH/sn
+ SpCBXhj4/rywuqz+Ngkab6lja2wlMQ4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-21-bNlMaX6oPiWs3TUWaZ-S1A-1; Mon, 14 Jul 2025 07:06:33 -0400
-X-MC-Unique: bNlMaX6oPiWs3TUWaZ-S1A-1
-X-Mimecast-MFC-AGG-ID: bNlMaX6oPiWs3TUWaZ-S1A_1752491192
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a4f6ba526eso2171832f8f.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:06:32 -0700 (PDT)
+ us-mta-63-GbReMxxdN62UnJ_54_n1SQ-1; Mon, 14 Jul 2025 07:07:22 -0400
+X-MC-Unique: GbReMxxdN62UnJ_54_n1SQ-1
+X-Mimecast-MFC-AGG-ID: GbReMxxdN62UnJ_54_n1SQ_1752491241
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4561a196f70so4845325e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:07:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491191; x=1753095991;
+ d=1e100.net; s=20230601; t=1752491241; x=1753096041;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XR6j7BhZab0elBL4igl7ltcFzqCGAaAHJVZIJY5nUn4=;
- b=QJLWltDnnBkHTllBjHlLfnrh1K8EuXpIKVfrQ0z6U2gyVzuWJrkUyhstBwaJfTHztl
- agGWQty37g383lqkA7CV6f/TED3c2z1gcFuqZEDdJQI61+80zTu/RLXyPl/GKcrOKvaG
- oTx14odjuCLg+5Mlkn5Nw/lYZ46ZFXecK3DXdFIY6NX7269NWb48Qv0n+coV9AxBp9xm
- HykL5c0MKSnIqlF5DPRuRI/BbjZ8trA/gijxZfjwmNzFd+yYT07SLrpFcrasnwx+6HXK
- LhuAgWqIdHSFSj2rgWIs3LG5+xwsVVHpscS37Il/eqYKVpxKqW28gVfU87G4t+Ph73U3
- /90Q==
-X-Gm-Message-State: AOJu0Ywo0i6TRtGSEyNaByJaIgWhz/xz97QEanLcJLL6GcOIfKCMtqiZ
- DzJWwf6nVvirDCM2V5Nat4S9aj8v5g4TTXoFCfUgevL8/aeiYe92szcOsx+RWIlCKMeTIXdhOji
- wkh+flZH/WGlDBA9PvrAHDUE2ml4I6ZXmn2k6PFJSCJ1szCX6AmArJJZQVwrBXJq7oPK0lZdms3
- RtixMNszLijo262uRiXRotRxDbQU5sjiYAyEKetm5D
-X-Gm-Gg: ASbGncvtCMWV4qhKJDXo6NzlInsbbbVvrOMxBCQvDw+ah5ORAH72qIj5A+ALbVYU15k
- pAi2PplKg76NsXJbsIu0tnKppYquR1mI44PnfGDnbf/kYXy/CoGaRTBM/5wQg/payyzyliwBL0U
- Nw8WW4LEMjwzc49NvEyDRgnPX+cvY5HDwjTKSvQbygup6sKWVRjEPsnH8YG9pujxJiZFGuqAed+
- WwxEZVElvKakByy3ZHQJH1byH/chY2JxcxNNmojwEeb8Mle4nEScslkHMgN/BzBp+27JsYS9bdm
- yM+ivGoX5G/yqsuq2csFzBZSYH0qWOwAXGFXsxakBFM=
-X-Received: by 2002:a05:6000:2388:b0:3a0:a0d1:1131 with SMTP id
- ffacd0b85a97d-3b5f187d0e3mr10954260f8f.7.1752491191216; 
- Mon, 14 Jul 2025 04:06:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHiuSfF84UqKQ4W78xs7PMKnFx3QFxXTNNdbpY01qa5fDTuTTtk7FQlzWP7RWBvot1k5ZUSpg==
-X-Received: by 2002:a05:6000:2388:b0:3a0:a0d1:1131 with SMTP id
- ffacd0b85a97d-3b5f187d0e3mr10954216f8f.7.1752491190566; 
- Mon, 14 Jul 2025 04:06:30 -0700 (PDT)
+ bh=Lx/3OjKQQiRwtu1QUxLqhLmOvdf3soAfb9Z3azPYw/Q=;
+ b=lAatpUyt91DrKtwrhDA7QtymlowfpKPn/syDJjOVYwkGoYab1FulcsrzXB1EHwPp2P
+ KtiQYhtNlzssEx+wecD7WYZSqjQcusY1e7TYEPz0byMFuBnqOzM7k15ujTQIH4P62Or1
+ GwyZgTyA9Ft0WswaWr/FdsPN9N2cAfufxFPkxD5FCQbYN4JIao8RQCo3b88zjwZKPpmJ
+ Z97x8+Jcy2YeZp1VqPqBmwD7LJo/IsttsuKtkDn1CUOzZyPwDScbaFnOzaPEYaVlsFDn
+ MndgfEqABCR7AB7BaWgQD5nIM1yp5my+FCchxYfOXg5UazNhfB42cxMHxxVW6KUYzc1g
+ qrWA==
+X-Gm-Message-State: AOJu0YxwwCWijPv6xMC6iMOFP1jI0UVkOeB5nS7YR3pPjKYbXXKbMj8u
+ 1iq+A7+uBAp6kM+LBmH9PROP1o7aqLBHeTWyF1Herzlg2XMkNNGHOt1iCdNzTsDI4BEfsIdm9r3
+ 4QiKwEq+3Fh/5OcsY+nfkoDObKycS9375vIfKNa6xZQ77fq51qIcIr04eY2zKZYv5eQLJwU+55E
+ xWJbyMwFuOOt1eXiPPI1nFNchQU/wsPcY3YsDR3KTb
+X-Gm-Gg: ASbGncsZokWtBiB0qaw9yTfMNHuKbUJzyH0H0iV5TIqtGDjGOeZLBSIZ7TBuEv+KxQt
+ eZsKPCmd0lHO95Hlm3Sz12DB8r9MSSYMsgSdv+KCoqQoUQrUVI+dkFsNPPXUV12u3XFszgsCsye
+ Nu02P4L9KJaehkXOZGhWDk/9XfxStWuQLez9Go4jb6rcFd3wdFf/Ixy0+vxa9/x5qNdIToXhNh2
+ 1yad2nYYrRFuhUJNLVh+Mh56HdLzwN0M/zZWhtG0pLwm7LXc+X71kJobSDi8g62a9De+sDOcvRe
+ kDjmDsKm0rn2YD8SRzC5X9Ya9yeLjAdpuJkQ98kCx1c=
+X-Received: by 2002:a05:600c:1c23:b0:456:2347:3f01 with SMTP id
+ 5b1f17b1804b1-45623474399mr4341475e9.20.1752491240714; 
+ Mon, 14 Jul 2025 04:07:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHecDM8iuOfxAcVoT02BLVouFzGYITNitOhWCHtmLENnuMQ7tX9cWWYCHnvgUBPgiaIlFfK2w==
+X-Received: by 2002:a05:600c:1c23:b0:456:2347:3f01 with SMTP id
+ 5b1f17b1804b1-45623474399mr4340995e9.20.1752491239785; 
+ Mon, 14 Jul 2025 04:07:19 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8bd1890sm12034273f8f.3.2025.07.14.04.06.28
+ ffacd0b85a97d-3b5e8e0d587sm11907762f8f.46.2025.07.14.04.07.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:06:28 -0700 (PDT)
+ Mon, 14 Jul 2025 04:07:18 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>,
-	Yi Lai <yi1.lai@intel.com>
-Subject: [PULL 55/77] i386/cpu: Select legacy cache model based on vendor in
- CPUID 0x80000006
-Date: Mon, 14 Jul 2025 13:03:44 +0200
-Message-ID: <20250714110406.117772-56-pbonzini@redhat.com>
+Cc: Qian Wen <qian.wen@intel.com>, qemu-stable@nongnu.org,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 75/77] i386/cpu: Fix cpu number overflow in CPUID.01H.EBX[23:16]
+Date: Mon, 14 Jul 2025 13:04:04 +0200
+Message-ID: <20250714110406.117772-76-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
@@ -92,7 +91,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,143 +107,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Qian Wen <qian.wen@intel.com>
 
-As preparation for merging cache_info_cpuid4 and cache_info_amd in
-X86CPUState, set legacy cache model based on vendor in the CPUID
-0x80000006 leaf. For AMD CPU, select legacy AMD cache model (in
-cache_info_amd) as the default cache model like before, otherwise,
-select legacy Intel cache model (in cache_info_cpuid4).
+The legacy topology enumerated by CPUID.1.EBX[23:16] is defined in SDM
+Vol2:
 
-To ensure compatibility is not broken, add an enable_legacy_vendor_cache
-flag based on x-vendor-only-v2 to indicate cases where the legacy cache
-model should be used regardless of the vendor. For CPUID 0x80000006 leaf,
-enable_legacy_vendor_cache flag indicates to pick legacy Intel cache
-model, which is for compatibility with the behavior of PC machine v10.0
-and older.
+Bits 23-16: Maximum number of addressable IDs for logical processors in
+this physical package.
 
-The following explains how current vendor-based default legacy cache
-model ensures correctness without breaking compatibility.
+When threads_per_socket > 255, it will 1) overwrite bits[31:24] which is
+apic_id, 2) bits [23:16] get truncated.
 
-* For the PC machine v6.0 and older, vendor_cpuid_only=false, and
-  vendor_cpuid_only_v2=false.
+Specifically, if launching the VM with -smp 256, the value written to
+EBX[23:16] is 0 because of data overflow. If the guest only supports
+legacy topology, without V2 Extended Topology enumerated by CPUID.0x1f
+or Extended Topology enumerated by CPUID.0x0b to support over 255 CPUs,
+the return of the kernel invoking cpu_smt_allowed() is false and APs
+(application processors) will fail to bring up. Then only CPU 0 is online,
+and others are offline.
 
-  - If the named CPU model has its own cache model, and doesn't use
-    legacy cache model (legacy_cache=false), then cache_info_cpuid4 and
-    cache_info_amd are same, so 0x80000006 leaf uses its own cache model
-    regardless of the vendor.
+For example, launch VM via:
+qemu-system-x86_64 -M q35,accel=kvm,kernel-irqchip=split \
+    -cpu qemu64,cpuid-0xb=off -smp 256 -m 32G \
+    -drive file=guest.img,if=none,id=virtio-disk0,format=raw \
+    -device virtio-blk-pci,drive=virtio-disk0,bootindex=1 --nographic
 
-  - For max/host/named CPU (without its own cache model), then the flag
-    enable_legacy_vendor_cache is true, they will use legacy AMD cache
-    model just like their previous behavior.
+The guest shows:
+    CPU(s):               256
+    On-line CPU(s) list:  0
+    Off-line CPU(s) list: 1-255
 
-* For the PC machine v10.0 and older (to v6.1), vendor_cpuid_only=true,
-  and vendor_cpuid_only_v2=false.
+To avoid this issue caused by overflow, limit the max value written to
+EBX[23:16] to 255 as the HW does.
 
-  - No change, since this leaf doesn't aware vendor_cpuid_only.
-
-* For the PC machine v10.1 and newer, vendor_cpuid_only=true, and
-  vendor_cpuid_only_v2=true.
-
-  - If the named CPU model has its own cache model (legacy_cache=false),
-    then cache_info_cpuid4 & cache_info_amd both equal to its own cache
-    model, so it uses its own cache model in 0x80000006 leaf regardless
-    of the vendor. Intel and Zhaoxin CPUs have their special encoding
-    based on SDM, which is the expected behavior and no different from
-    before.
-
-  - For max/host/named CPU (without its own cache model), then the flag
-    enable_legacy_vendor_cache is false, the legacy cache model is
-    selected based on vendor.
-
-    For AMD CPU, it will use legacy AMD cache as before.
-
-    For non-AMD (Intel/Zhaoxin) CPU, it will use legacy Intel cache and
-    be encoded based on SDM as expected.
-
-    Here, selecting the legacy cache model based on the vendor does not
-    change the previous (before the change) behavior.
-
-Therefore, the above analysis proves that, with the help of the flag
-enable_legacy_vendor_cache, it is acceptable to select the default
-legacy cache model based on the vendor.
-
-For the CPUID 0x80000006 leaf, in X86CPUState, a unified cache_info is
-enough. It only needs to be initialized and configured with the
-corresponding legacy cache model based on the vendor.
-
-Tested-by: Yi Lai <yi1.lai@intel.com>
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Qian Wen <qian.wen@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250711102143.1622339-17-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250714080859.1960104-6-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 36 +++++++++++++++++++++++++++++++-----
- 1 file changed, 31 insertions(+), 5 deletions(-)
+ target/i386/cpu.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index e98ffb11c31..b557fd01c02 100644
+index 12e719e9957..608fdcf7578 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -7983,8 +7983,33 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         *edx = encode_cache_cpuid80000005(caches->l1i_cache);
-         break;
-     }
--    case 0x80000006:
--        /* cache info (L2 cache/TLB/L3 cache) */
-+    case 0x80000006: { /* cache info (L2 cache/TLB/L3 cache) */
-+        const CPUCaches *caches;
-+
-+        if (env->enable_legacy_vendor_cache) {
-+            caches = &legacy_amd_cache_info;
-+        } else {
-+            /*
-+             * FIXME: Temporarily select cache info model here based on
-+             * vendor, and merge these 2 cache info models later.
-+             *
-+             * This condition covers the following cases (with
-+             * enable_legacy_vendor_cache=false):
-+             *  - When CPU model has its own cache model and doesn't uses legacy
-+             *    cache model (legacy_model=off). Then cache_info_amd and
-+             *    cache_info_cpuid4 are the same.
-+             *
-+             *  - For v10.1 and newer machines, when CPU model uses legacy cache
-+             *    model. AMD CPUs use cache_info_amd like before and non-AMD
-+             *    CPU (Intel & Zhaoxin) will use cache_info_cpuid4 as expected.
-+             */
-+            if (IS_AMD_CPU(env)) {
-+                caches = &env->cache_info_amd;
-+            } else {
-+                caches = &env->cache_info_cpuid4;
-+            }
-+        }
-+
-         if (cpu->cache_info_passthrough) {
-             x86_cpu_get_cache_cpuid(index, 0, eax, ebx, ecx, edx);
-             break;
-@@ -7993,7 +8018,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         if (cpu->vendor_cpuid_only_v2 &&
-             (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-             *eax = *ebx = 0;
--            encode_cache_cpuid80000006(env->cache_info_cpuid4.l2_cache,
-+            encode_cache_cpuid80000006(caches->l2_cache,
-                                        NULL, ecx, edx);
-             break;
+@@ -7871,6 +7871,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
          }
-@@ -8007,11 +8032,12 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-                (X86_ENC_ASSOC(L2_ITLB_4K_ASSOC) << 12) |
-                (L2_ITLB_4K_ENTRIES);
- 
--        encode_cache_cpuid80000006(env->cache_info_amd.l2_cache,
-+        encode_cache_cpuid80000006(caches->l2_cache,
-                                    cpu->enable_l3_cache ?
--                                   env->cache_info_amd.l3_cache : NULL,
-+                                   caches->l3_cache : NULL,
-                                    ecx, edx);
+         *edx = env->features[FEAT_1_EDX];
+         if (threads_per_pkg > 1) {
++            uint32_t num;
++
+             /*
+              * For CPUID.01H.EBX[Bits 23-16], AMD requires logical processor
+              * count, but Intel needs maximum number of addressable IDs for
+@@ -7878,10 +7880,13 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+              */
+             if (cpu->vendor_cpuid_only_v2 &&
+                 (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
+-                *ebx |= 1 << apicid_pkg_offset(topo_info) << 16;
++                num = 1 << apicid_pkg_offset(topo_info);
+             } else {
+-                *ebx |= threads_per_pkg << 16;
++                num = threads_per_pkg;
+             }
++
++            /* Fixup overflow: max value for bits 23-16 is 255. */
++            *ebx |= MIN(num, 255) << 16;
+         }
          break;
-+    }
-     case 0x80000007:
-         *eax = 0;
-         *ebx = env->features[FEAT_8000_0007_EBX];
+     case 2: { /* cache info: needed for Pentium Pro compatibility */
 -- 
 2.50.0
 
