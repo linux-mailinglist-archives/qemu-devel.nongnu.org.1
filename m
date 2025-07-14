@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499EFB03D78
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53934B03D97
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:44:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHNO-0007pP-9n; Mon, 14 Jul 2025 07:29:44 -0400
+	id 1ubHK6-00042c-JO; Mon, 14 Jul 2025 07:26:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH0G-0001LB-UO
+ id 1ubH0I-0001Ls-MD
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH0F-0001xH-0e
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:48 -0400
+ id 1ubH0G-0001xZ-MJ
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491145;
+ s=mimecast20190719; t=1752491147;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CQzDH1V4w6eVY3mbdjPDXzkRBHvX/RGaS5hAPHtGK8A=;
- b=dTrOgc5dZqijAE9M4wv1F2+5JoKaoweqk9cejiMuD4gLPT1ZinzvYbduLQhu48pnLFFunH
- SQnSSc+V7XqDjAXOnfWdqQA2rUXudYw5avbFVh8bm8LWEXdYyxx1xpKFy/XkGeV3GvNlrW
- HZgVEyLuzZ9mwjGG2Z29NSQ7D1CXFJE=
+ bh=gEj7OUeiZaj5KbOO4n1tkdCJTwkHNuAAciWyaP56m5Q=;
+ b=RXIFfQyQ+856lJZc26Fr3LxO6SgG+xTiR22T6cmtOBFuMO5VHG9yD884M9qKY+l/ttQmwe
+ aW/MLMnU463GpY6M4JXVyupG3yMxt316TIuMSxn/a05P8vDW78Bihko/KmvhEptOY1aX7Y
+ NNQDEnNZAlbIWqkxZSQY9xjrDP1E4ec=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-TncvK3AeNsqFMSrVHtOYGg-1; Mon, 14 Jul 2025 07:05:44 -0400
-X-MC-Unique: TncvK3AeNsqFMSrVHtOYGg-1
-X-Mimecast-MFC-AGG-ID: TncvK3AeNsqFMSrVHtOYGg_1752491143
+ us-mta-549-_gx5G_ljMKudNl1REvnSSA-1; Mon, 14 Jul 2025 07:05:46 -0400
+X-MC-Unique: _gx5G_ljMKudNl1REvnSSA-1
+X-Mimecast-MFC-AGG-ID: _gx5G_ljMKudNl1REvnSSA_1752491145
 Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4561c67daebso2042295e9.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:44 -0700 (PDT)
+ 5b1f17b1804b1-455ea9cb0beso21441865e9.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491143; x=1753095943;
+ d=1e100.net; s=20230601; t=1752491145; x=1753095945;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CQzDH1V4w6eVY3mbdjPDXzkRBHvX/RGaS5hAPHtGK8A=;
- b=MCLCYdY/Bbh0fmLuB76YYceOgIch4C+/ExO3csjbvoykfkgAz+xvPI0hVPVzbznVGT
- 9+HoslWncZmN0TwIOGYiOfpY9+Jhxm+fM7SCxE/7UOV1+k6Fo+H+K8+4SjpAHXN5Uh8w
- I4yGuOHtBMBQpqsz6TVSROJE1pTlz3WdGejCyFRcmlT3t7/qJt7e5hB6xpKs/J2qJbaO
- Ec/12wym+rHZ+GXXtC0bIuHaDpkMvpZ+YfYNra9kC7+UDm2Q2f7WBvPXkIhe2NwwlJW2
- MViOfVO0ZE/eiRejrqgmeY/qyKoxD3eK9647hcRTU4bXwNFUrD7Zou8IBEmw0lYIK8eF
- k2fw==
-X-Gm-Message-State: AOJu0Yyc2VWcoYVW+KeYlZcsARwcu5KYpx2HZjZjpFCyKsvOhTcM5G4k
- C6LOuZYM3CDBcA2PAWMdU8r2PfcHaTdAoQPS8rpE+sXj0oLM0lN0f/wNmwDHQ7Nzg/4FhhRIPiL
- YgYMnzOFvgmGan43XZNFldtBOQSR3luud3AC6UqnGiyWaPa5rJI/UCTSczWxEV+uZb+hAR/E2iy
- nNiHrF12NSBY6zjQ+spkeu8zUsFRfT7U8oYxyt2rk3
-X-Gm-Gg: ASbGnctpxysYMyIlpqVc2eRpoNpI6R0HyH5GoR7Ep2XksiwrFAQeWTsHJZtGLfwk4Pe
- ExAMj2SjZ5p/8+XRapcCSLV+06xdciTIR0Z8w9CTpOrkiVHYrVzb4/+HUJVs03gq5FLo0zkKZMU
- grPsUvnqmLRnDHKdcyC7/g8zt3TtNtNV5YcdXtZQP4OgYjVi1Ui8b4AW4kZk48t0GCLgNSy+94C
- 3tNq+MJvvFCic+oabm9PVuAGeb6O6QrSugVPj+Dx8s9xPOH6MQNSQXd7Shk236CsvIgcJurg5L2
- jS9pQs47wnZtdUSNbQrHNOmIR1Wic4s1C6ruGvCr2y8=
-X-Received: by 2002:a05:600c:5022:b0:456:1281:f8dd with SMTP id
- 5b1f17b1804b1-4561281fc0dmr46043795e9.12.1752491142634; 
- Mon, 14 Jul 2025 04:05:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/i1joJjKHQdVeA51bGJrmR0fd4lmxgJshWvIulSYTWabOLmt+EDoNoFh6zLwZt4g99z0Chg==
-X-Received: by 2002:a05:600c:5022:b0:456:1281:f8dd with SMTP id
- 5b1f17b1804b1-4561281fc0dmr46043405e9.12.1752491142069; 
- Mon, 14 Jul 2025 04:05:42 -0700 (PDT)
+ bh=gEj7OUeiZaj5KbOO4n1tkdCJTwkHNuAAciWyaP56m5Q=;
+ b=LMGm2Lg0v2uYVJlyjePKYYOOiSbvx1Q+c3yAfswLU+hoj5PaiC+Cr+OvQNXIr03LZv
+ NuPpAsUl+g/XBqZ0ajh2DeiRcKnYdig8N/Y0F7e6cKYXmtLCzY477kIiI61m+4ZDYwML
+ fbWIsPSiQ4E4to3rRQQSmfoP0adJqwgk33esCSSfLipJ4uuRwY7aAcIWq0HDg6WlwFKz
+ DmoTRTp/dWZpLnQ9kNlMXKAeF43DKfjgUAWFPpUn0ukxeAxPJW3yUFkRhcOKEKJwWuWS
+ 9uuZ2FhouW+b0/FikHDaU1YofJX3iWt0bM1eL+Lvrf9YUg+0YZ8Q/djAPfNqKbQhqBEr
+ LLDg==
+X-Gm-Message-State: AOJu0YzOuEvvBmGTp0GjN41mpmz8Bc7L20b86M5PBBUJUeUvZMHBL93F
+ YFmNQ1DUW6DEFhBo4VCnjn/K2DxHaGp0lyxwng8S0qty/vO/lKW4wwNUfRFFp3ZS7aPcIi+vYkp
+ DEaPlW4ZzwbKOW84VJja2RrQn6dPo+iTtWTKi+d+WOja6KeWRzohRbWkKifK5VgIQxA+selKVTU
+ kiqFUcRQ3KjbFbMeXIDDN6SyAQPB46tNtcgOJQ3Qm5
+X-Gm-Gg: ASbGncut6nhzlttB00cQ+xvvLqKn+GQLVAqO8bccGEFFoBVwUHCBtff4xhlpEZsYMEb
+ O56/vNLqZh/sHX0Gewh1aCaXOQsA3jG7ogxdz9W5yvInaYF5ioNBJ+JuUE2GR+JXwoK1acDLjrq
+ f85Grnhsx6fJjegsGnxgVc8rZbl4jmnTtZpu1wvcxLnix1TmwWBY5trjAK7zQpGCcAbYXa5M3Cx
+ LATfedTmZNWPyfNQqZ3JPC30mJ33dzzFYGjwS5Npg+n2p14XjgfW90JyJ+iF7KzDYW1f8k1fzhK
+ gBhC6ecrCDirwkcnTFq62TwO97vHblRMIEJM8mYavI8=
+X-Received: by 2002:a05:6000:2388:b0:3a0:a0d1:1131 with SMTP id
+ ffacd0b85a97d-3b5f187d0e3mr10951920f8f.7.1752491144988; 
+ Mon, 14 Jul 2025 04:05:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnsRLedO6U/Niq8M+7MzRou9iceh2Me5J+o26pxc1ZFLlkyyQkF13iZrKDTp67gbIUBCwTmQ==
+X-Received: by 2002:a05:6000:2388:b0:3a0:a0d1:1131 with SMTP id
+ ffacd0b85a97d-3b5f187d0e3mr10951897f8f.7.1752491144529; 
+ Mon, 14 Jul 2025 04:05:44 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e1e285sm11945093f8f.76.2025.07.14.04.05.39
+ ffacd0b85a97d-3b5e8e2703csm12095979f8f.97.2025.07.14.04.05.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:05:39 -0700 (PDT)
+ Mon, 14 Jul 2025 04:05:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 35/77] i386: Cleanup the usage of CPUID_VENDOR_INTEL_1
-Date: Mon, 14 Jul 2025 13:03:24 +0200
-Message-ID: <20250714110406.117772-36-pbonzini@redhat.com>
+Subject: [PULL 36/77] i386/kvm-cpu: Fix the indentation inside
+ kvm_cpu_realizefn()
+Date: Mon, 14 Jul 2025 13:03:25 +0200
+Message-ID: <20250714110406.117772-37-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
@@ -108,51 +109,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-There are code using "env->cpuid_vendor1 == CPUID_VENDOR_INTEL_1" to
-check if it is Intel vcpu. Cleanup them to just use IS_INTEL_CPU()
+The indentation of one of the } inside kvm_cpu_realizefn() isn'f
+correct. fix it.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250630080610.3151956-3-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250630080610.3151956-4-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c                | 2 +-
- target/i386/tcg/decode-new.c.inc | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ target/i386/kvm/kvm-cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 70b742fcdeb..d3d13b14726 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7761,7 +7761,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         *ecx = env->features[FEAT_8000_0001_ECX];
-         *edx = env->features[FEAT_8000_0001_EDX];
- 
--        if (tcg_enabled() && env->cpuid_vendor1 == CPUID_VENDOR_INTEL_1 &&
-+        if (tcg_enabled() && IS_INTEL_CPU(env) &&
-             !(env->hflags & HF_LMA_MASK)) {
-             *edx &= ~CPUID_EXT2_SYSCALL;
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index a99b8764644..89a79536594 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -73,7 +73,7 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+             if (env->features[FEAT_1_ECX] & CPUID_EXT_MONITOR) {
+                 host_cpuid(5, 0, &cpu->mwait.eax, &cpu->mwait.ebx,
+                            &cpu->mwait.ecx, &cpu->mwait.edx);
+-	    }
++            }
          }
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 55216e0d249..853b1c8bf95 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -2722,14 +2722,14 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
-             if (decode.e.check & X86_CHECK_i64) {
-                 goto illegal_op;
-             }
--            if ((decode.e.check & X86_CHECK_i64_amd) && env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1) {
-+            if ((decode.e.check & X86_CHECK_i64_amd) && !IS_INTEL_CPU(env)) {
-                 goto illegal_op;
-             }
-         } else {
-             if (decode.e.check & X86_CHECK_o64) {
-                 goto illegal_op;
-             }
--            if ((decode.e.check & X86_CHECK_o64_intel) && env->cpuid_vendor1 == CPUID_VENDOR_INTEL_1) {
-+            if ((decode.e.check & X86_CHECK_o64_intel) && IS_INTEL_CPU(env)) {
-                 goto illegal_op;
-             }
-         }
+         if (cpu->ucode_rev == 0) {
+             cpu->ucode_rev =
 -- 
 2.50.0
 
