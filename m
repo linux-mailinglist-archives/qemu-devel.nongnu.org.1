@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EC8B03B4A
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80669B03B65
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:53:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubFmT-0005om-He; Mon, 14 Jul 2025 05:47:30 -0400
+	id 1ubFs6-0001lf-4d; Mon, 14 Jul 2025 05:53:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1ubFlk-0005Of-IY; Mon, 14 Jul 2025 05:46:53 -0400
-Received: from vps-ovh.mhejs.net ([145.239.82.108])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1ubFli-0006GK-CR; Mon, 14 Jul 2025 05:46:44 -0400
-Received: from MUA
- by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
- (Exim 4.98.2) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1ubFlW-00000000gfq-1UiZ; Mon, 14 Jul 2025 11:46:30 +0200
-Message-ID: <59a87a67-9283-4dd0-a29b-dae58fffe9ea@maciej.szmigiero.name>
-Date: Mon, 14 Jul 2025 11:46:25 +0200
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ubFnl-0006mA-By
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:49:00 -0400
+Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ubFng-0006XJ-8I
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:48:47 -0400
+Received: by mail-yw1-x1136.google.com with SMTP id
+ 00721157ae682-70e3c6b88dbso28025647b3.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 02:48:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752486522; x=1753091322; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=J62FOrGwQiYWoHbjwT12ZlIj36Ip+EeX6b8O8GgYZUw=;
+ b=Ajd69L8VQ1ycH6ZSgIMWODo3WlU3uNe/sXi3tZFxDFBbIjW/gvA9aV9B+XUJpPLAYL
+ /DXx/qlxYzRtyKKn+mQYCDtR3Ky3SYVpHwMFsWPrb5qzDKbO/qqiP97V53B8N1JLWdEo
+ 3+0+WYLRofwwvTyHN7i8IEdwDx6XWER7aaNHlbfq4iJpQXJi93aH9BGfb36tIDtMUfna
+ 2SkgoKRycu0AGdhAWbgTvKLKf2kqKJu8uNQ08OCSlfctDScaKFrexCFyrMUNholWJHgf
+ kDeuLcLuA3sqR0qEM7x85XdXM+WJipWmnPJot83JuleMytlS5rRxz3rn86mzqFnX4b/m
+ ob+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752486522; x=1753091322;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=J62FOrGwQiYWoHbjwT12ZlIj36Ip+EeX6b8O8GgYZUw=;
+ b=qHOnnBupdtJtKK5Kk5iSXyslNHr127t9bcT0zf3rSfnl383h9HabDMDOaau72itQlq
+ jcQJjAYFEK3gkts0TQQCoitbPtnPP38bjuZcg09rIciAKkwzk94fVBZVFBxp1oWnlvVt
+ JhXdqCftFcLJ2HmXRjkcGPX5BcdfRe2lH99ympvscvJ3V1xvyxospDhZJqYdFUAYzjrU
+ Uq47E9ksOg6sK2jnrtfC5u7x+XdbpXDWv1QZNGthB8ewBc/+aOp+4NvUjFIp/ApJtJgz
+ EJHOz80ihPe9y7TRXQT+FVH6iIJyzhCQrji9Es1WXkY9f4XfSgF6UkBFeYnkpp0l6gmA
+ H+IA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWSy+JRDlLx87PpiVLa3Nknh/nn/EtJWeB/JHPC9ZRk3LLNGhnJ9FbqQpoLhvDA+m9Px/dCsDBktMgC@nongnu.org
+X-Gm-Message-State: AOJu0YwTmbQV2EnB/ZtDogAQEv00cXOEwchT0tPEiszfo6ASUX8sv2yn
+ B08YNoxKOtiQY1uWZYDFuOEI8q2VLDb3yIqa0ys7vzXl+BRFgmChoDTWtj8dDKupg2Ep/RNS3dL
+ tsED/879ZGXWIVmfrBj0hdo0ObtxOQtjF5N2b4Bugig==
+X-Gm-Gg: ASbGnctbMfnvcg20uSG1B4WOtosD4nA4agyqGhBj1KgW2Bik0QdSZKsOvJ9cOgGhGR5
+ djTNVM+LlTQP8IvlvUBTsr6SGTd8HFaRr2DOFroWsn1QwFffdHxUc6EZb41/llJKVSdp8L2vuJa
+ 8vW2IPV1vykFXkA5Yt5bQnvDFlooaHibz4ercq2H1tOdi6abAYWEWgD6HXVxvVKeocq+dYLmA92
+ dTWSHgwj18wzqpObQc=
+X-Google-Smtp-Source: AGHT+IEVnm8ogGI2KGwMnLR6JMgzRhsdOoYDbfrELBpguA7dwbIhePUZcjPveZP2B7tCNmGa40lja+b2W5CZBZ1L/xo=
+X-Received: by 2002:a05:690c:f05:b0:710:e7ad:9d41 with SMTP id
+ 00721157ae682-717d5d7aa0fmr184697497b3.12.1752486522407; Mon, 14 Jul 2025
+ 02:48:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: [PATCH 0/3] VFIO multifd device state transfer patches for QEMU
- 10.1
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Avihai Horon <avihaih@nvidia.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-References: <cover.1750787338.git.maciej.szmigiero@oracle.com>
-Content-Language: en-US
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <cover.1750787338.git.maciej.szmigiero@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.239.82.108;
- envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+References: <CAFEAcA816sEoqZOzSwX9q1zzJEQ_mMpenLW7fBu5MEbM=aFymQ@mail.gmail.com>
+ <20250710123945-mutt-send-email-mst@kernel.org>
+ <rwmbufb2zk6grtmrksfthav6ntm7ddsodqfrpjwjt6njbacx62@7hikurlwh3kl>
+In-Reply-To: <rwmbufb2zk6grtmrksfthav6ntm7ddsodqfrpjwjt6njbacx62@7hikurlwh3kl>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 14 Jul 2025 10:48:31 +0100
+X-Gm-Features: Ac12FXy5-YqO_N79aWTq0qBgwopg-1mjP13k2f7GOi_OAjiUq2tZBsRKLaI1S_0
+Message-ID: <CAFEAcA-jqjuC+a7AH1wgde8=y_yTc_iE-MriwzT+RZMP7U070Q@mail.gmail.com>
+Subject: Re: vhost-vdpa potential fd leak (coverity issue)
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ QEMU Developers <qemu-devel@nongnu.org>, Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,24 +96,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24.06.2025 19:51, Maciej S. Szmigiero wrote:
-> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-> 
-> When VFIO multifd device state transfer support was merged in QEMU 10.0
-> some of patches were separated for the future QEMU release after the
-> spring cleanup.
-> 
-> Since QEMU 10.1 code freeze is getting closer let's have them reviewed
-> now.
-> 
+On Mon, 14 Jul 2025 at 10:19, Stefano Garzarella <sgarzare@redhat.com> wrote:
+> On Thu, Jul 10, 2025 at 12:40:43PM -0400, Michael S. Tsirkin wrote:
+> >> Q: should this file be listed in the "vhost" subcategory of
+> >> MAINTAINERS?
+> >> At the moment it only gets caught by "Network device backends".
+>
+> Maybe yes, but it's really virtio-net specific.
+> @Michael WDYT?
 
-Hey Cédric,
+You could create a new virtio-net subsection if that works
+better (and we could move the two virtio-net* files
+currently listed under "Network devices" into it).
+The aim here should really be to ensure that the people
+interested in reviewing/queueing patches get cc'd.
 
-I see these patches in your "vfio-10.1" GitHub tree but I don't see them
-as a pull request on the qemu-devel mailing list.
-
-Are you going to post them? - the soft code freeze is tomorrow.
-
-Thanks,
-Maciej
+-- PMM
 
