@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85721B04C55
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0889B04C58
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:31:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSJh-0005R9-Jh; Mon, 14 Jul 2025 19:10:37 -0400
+	id 1ubSJh-0005JM-CG; Mon, 14 Jul 2025 19:10:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHs-0000QL-69
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:44 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHu-0000fX-5k
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHp-0005ks-HU
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:43 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHr-0005kz-N4
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534520;
+ s=mimecast20190719; t=1752534522;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=e0VIeJ6HIXfBrS3uzEABVTHWPD5pN/hDcySao/2aIR4=;
- b=A6okobHJY3p1ybo+9tMjqCy0HufJtMT5PGy61ti93mAMVrle2ouMGpwa7UzF48A7qH9d6L
- UKDRZkmSapkOFfVj0aR8ixhBqYlB8PtwdyMdm9NiUnwChrf5ZG38Wc3SRUy+ENS+O0kdBV
- vZxmN0xLXlFYZGTREzQPGkNSnalN6b8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=V/R+KY4VQRRbizT88wU7WUhx0oUQIp3fO24ZLvNWgZU=;
+ b=hgx9SCa+4L3GaxXoAXhLzFq/myyRC96hslz2YIqvlFkHTCI81GfR3CTfArm+7FAzCHztYd
+ Apk/aHhfvuHUXTJhvuzZZUjgGQai9sxMUCvlS8EzQAzqn9TjtmSJ0Av7MEea/NVnEEvhyF
+ 2MAg4vsJjmA9L5l+L8/tHJatepRlgTQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-7AIRNtFbPo2IHOYU0KK4kw-1; Mon, 14 Jul 2025 19:08:39 -0400
-X-MC-Unique: 7AIRNtFbPo2IHOYU0KK4kw-1
-X-Mimecast-MFC-AGG-ID: 7AIRNtFbPo2IHOYU0KK4kw_1752534518
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45597cc95d5so18207715e9.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:39 -0700 (PDT)
+ us-mta-686-ChGyyuyCMKem6qBr6vsd1g-1; Mon, 14 Jul 2025 19:08:41 -0400
+X-MC-Unique: ChGyyuyCMKem6qBr6vsd1g-1
+X-Mimecast-MFC-AGG-ID: ChGyyuyCMKem6qBr6vsd1g_1752534521
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-453817323afso30143765e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534518; x=1753139318;
+ d=1e100.net; s=20230601; t=1752534520; x=1753139320;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e0VIeJ6HIXfBrS3uzEABVTHWPD5pN/hDcySao/2aIR4=;
- b=M3G+tTHJ5+j4PibR6EmAftzZpNj4QqIh6uqZefVi5gdDosqTYTtKlPXyGNSfHPSFP2
- wnubIOPstiVgDg/RdvFUjrgAkGqIFebwtNrKDpM7bIOEBLlUUnewp416f7Ce1XIBc3uf
- Wq5Uiw1CJ3dfbIICH+mYkRzG6yp2JaGE+hEq5hIq32NCl5EYW6SWGY7+5Z0aMco6+Th+
- 50MJXkUBshx0UGRGUkx7OdSCDLvy/Lq+Y4i8xmYBDDwugy/cy73qnqd2bIrKg0j2y2rb
- S/CMwTg+U7G21UDDo8+EluSxOCsZRgJvJuRXCe02iXpF/E+Qg0T35BWIUqQM4QI0wL8F
- x2hA==
-X-Gm-Message-State: AOJu0YxYhUtnhuR7RpLHmu/CZv4rNLdK8KotK0J10hTuYlInlf+o0KIm
- 3TcsI9S+Ti8iiFiiFNtv7Wdnu2oiNmh79iAf225JrejEokPKj0xzI11VMf3NNCooF0iEopHJCwb
- azZC9sROWldk0udR9rwfhUgp+tdedAdYj67Ruz3m7V9oiwe8MSybhcmFXk6NiHaEw9x/H8P4pm2
- N+GykiR068s9FEJm6JKdf6T73YoqKq20I/ag==
-X-Gm-Gg: ASbGncv17qd3FXlpfC4dKFuAsY8aEqBdnpKkxx+PdNy6H+QbQv9YaHadgHFsuIbdwcK
- 6u///en3hIYh5175dqV+C4xUAaTVF2e6YaqlVoqeHcyNaM2tA6TqKcBYbDNUEV5AyfoX70KnO6R
- C5AjEvpNbt/CnERtZkrZVUwZdoibTkZGnG+zlc6+uwhVcceHsVGAiOuibT49+nNca4fe+6PWQzX
- PJ4TEe/Jxfy8PMnQPQSg9B1GNWPWfHEizBrhtX6fsNgRsA5tXeUMOdXU/6l04Bb+q1Ei62M7rIe
- 1oPBk3FaoJju/kp1h7ZT6PInQNhbfqxD
-X-Received: by 2002:a05:6000:2485:b0:3a4:d4e5:498a with SMTP id
- ffacd0b85a97d-3b5f2e248cdmr11445620f8f.42.1752534517667; 
- Mon, 14 Jul 2025 16:08:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFgpvDiAX63suerVtX7QeUAmmcB8J5wQiKRDcQPO0wWuiIcsvLILFbSzEyC5bHUVKWl4OZyFA==
-X-Received: by 2002:a05:6000:2485:b0:3a4:d4e5:498a with SMTP id
- ffacd0b85a97d-3b5f2e248cdmr11445605f8f.42.1752534517231; 
- Mon, 14 Jul 2025 16:08:37 -0700 (PDT)
+ bh=V/R+KY4VQRRbizT88wU7WUhx0oUQIp3fO24ZLvNWgZU=;
+ b=p8zyP/e/9zglQ2wO9S5JZHI5R36v6OCIHkKMwgoXMpdQ+1qAxDY1ip+NOvZVpKu2qT
+ xPOGR4uYEjdv7GVuKuiaq3BbqHwwf5myXOHbXh54Mkpl0iJpwopmaJLHKjEtWry4cqny
+ DNdBO325o+fWcjFCNp9Eig276oxenHBmmeuuY/Elfxlus1Qudf8VlW46Ym0gR+SADDJ7
+ f/iHePePF/pQ0I/QVeDXuVWH8XMr/OS0DmcKHnFIPiqZLcKFNF0O26iUQqqJpezkaCKU
+ dxUoEnDQJY9dejVUNQO3/w2g9ps5gnY0YK1vgnzaCtC2vwWxORSJZBywXaxXOVfFlikm
+ oSPQ==
+X-Gm-Message-State: AOJu0Yw0k1nfaDzkPzXT2lol7IkhemdbtQJbCUEW5pzRZMp2lfgbM0Zn
+ Jb5DA4bKI3bnmI814lRqq+Sx3NosjQsGvsnrVGXBZTtHVbhnL09IX3IwKuBrg93CssYk7Y/WXDT
+ 0dcdesK1/pdrIB0rIlD7CoCWYpNPNOvF0WMx38of/MUjIyR2LRkiViNK426BUkxvEyIqdYkMj1h
+ k3MxSqxY/GXHJPF7UOTb8oUpIor2wRf9+Uxg==
+X-Gm-Gg: ASbGncv1qp7hjYZTSva1gGq92S53rYZi0PvMw+HxJracYypMgPzp/a5GTYualf4/KLv
+ eSLSIARYRL3Q1rsnZHY+YnKzE25vjAjce1AnodoDRZpUf6wySiLexjM9AvP5F9mz7OTvn+JtwFF
+ LKA6qH33bar/CenBMDQi/EnuzOnyEylRsHyy+8L6Loo08k/OVOcxq+qBnmm2FiKnNwWuaFAGSp+
+ njdXYhwADkz/wj+j8uD767Niy/8+HCOyaSkpGLqrR/oab5aG884mUqkjwt1qOU5siAsR48PYmE1
+ 3JJ2cUIiE7ukXZqYBirT97yezAzNAi39
+X-Received: by 2002:a05:600c:1911:b0:456:1121:3ad8 with SMTP id
+ 5b1f17b1804b1-45611213e56mr89942055e9.10.1752534519687; 
+ Mon, 14 Jul 2025 16:08:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2Aj/fEqrfbWaXIgnIhxGjFU9/8STpcIqEYgLQZS9QpAiasXhxney2CLGzcaOQOS3zb9wpZA==
+X-Received: by 2002:a05:600c:1911:b0:456:1121:3ad8 with SMTP id
+ 5b1f17b1804b1-45611213e56mr89941815e9.10.1752534519151; 
+ Mon, 14 Jul 2025 16:08:39 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4560538da14sm87688685e9.23.2025.07.14.16.08.35
+ 5b1f17b1804b1-454dd4669c3sm143763815e9.14.2025.07.14.16.08.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:08:36 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:08:34 -0400
+ Mon, 14 Jul 2025 16:08:38 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:08:37 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
  Jonathan Cameron <jonathan.cameron@huawei.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 55/97] hw/pci-host/gpex-acpi: Use
- build_pci_host_bridge_osc_method
-Message-ID: <1ac89b617dfd42bff96f6e6d0282951c39c285d5.1752534227.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 56/97] tests/qtest/bios-tables-test: Update DSDT blobs after
+ GPEX _OSC change
+Message-ID: <e3f9a69b374b7924711738493ebc378833ba3625.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -109,23 +110,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+Update the reference DSDT blobs after GPEX _OSC change. The _OSC change
+affects the aarch64 'virt' and the x86 'microvm' machines.
 
-gpex build_host_bridge_osc() and x86 originated
-build_pci_host_bridge_osc_method() are mostly identical.
-
-In GPEX, SUPP is set to CDW2 but is not further used. CTRL
-is same as Local0.
-
-So let gpex code reuse build_pci_host_bridge_osc_method()
-and remove build_host_bridge_osc().
-
-Also add an imply ACPI_PCI clause along with
-PCI_EXPRESS_GENERIC_BRIDGE to compile hw/acpi/pci.c
-when its dependency is resolved (ie. CONFIG_ACPI_PCI).
-This is requested to link qemu-system-mips64el.
-
-The disassembled DSDT difference is given below:
+DSDT diff is the same for all the machines/tests:
 
   * Original Table Header:
   *     Signature        "DSDT"
@@ -173,114 +161,183 @@ The disassembled DSDT difference is given below:
              Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Message-Id: <20250714080639.2525563-10-eric.auger@redhat.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20250714080639.2525563-11-eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/pci-host/gpex-acpi.c | 62 ++++-------------------------------------
- hw/pci-host/Kconfig     |  1 +
- 2 files changed, 6 insertions(+), 57 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h   |  11 -----------
+ tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5158 bytes
+ .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5244 bytes
+ tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6519 bytes
+ tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7603 bytes
+ tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5360 bytes
+ tests/data/acpi/loongarch64/virt/DSDT         | Bin 4641 -> 4603 bytes
+ tests/data/acpi/loongarch64/virt/DSDT.memhp   | Bin 5862 -> 5824 bytes
+ tests/data/acpi/loongarch64/virt/DSDT.numamem | Bin 4647 -> 4609 bytes
+ .../data/acpi/loongarch64/virt/DSDT.topology  | Bin 4943 -> 4905 bytes
+ tests/data/acpi/riscv64/virt/DSDT             | Bin 3576 -> 3538 bytes
+ tests/data/acpi/x86/microvm/DSDT.pcie         | Bin 3023 -> 2985 bytes
+ 12 files changed, 11 deletions(-)
 
-diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-index 44737a8d81..952a0ace19 100644
---- a/hw/pci-host/gpex-acpi.c
-+++ b/hw/pci-host/gpex-acpi.c
-@@ -1,5 +1,6 @@
- #include "qemu/osdep.h"
- #include "hw/acpi/aml-build.h"
-+#include "hw/acpi/pci.h"
- #include "hw/pci-host/gpex.h"
- #include "hw/arm/virt.h"
- #include "hw/pci/pci_bus.h"
-@@ -50,61 +51,7 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq,
-     }
- }
- 
--static Aml *build_host_bridge_osc(bool enable_native_pcie_hotplug)
--{
--    Aml *method, *UUID, *ifctx, *ifctx1, *elsectx;
--    method = aml_method("_OSC", 4, AML_NOTSERIALIZED);
--    aml_append(method, aml_name_decl("SUPP", aml_int(0)));
--    aml_append(method, aml_name_decl("CTRL", aml_int(0)));
--    aml_append(method,
--        aml_create_dword_field(aml_arg(3), aml_int(0), "CDW1"));
--
--    /* PCI Firmware Specification 3.0
--     * 4.5.1. _OSC Interface for PCI Host Bridge Devices
--     * The _OSC interface for a PCI/PCI-X/PCI Express hierarchy is
--     * identified by the Universal Unique IDentifier (UUID)
--     * 33DB4D5B-1FF7-401C-9657-7441C03DD766
--     */
--    UUID = aml_touuid("33DB4D5B-1FF7-401C-9657-7441C03DD766");
--    ifctx = aml_if(aml_equal(aml_arg(0), UUID));
--    aml_append(ifctx,
--        aml_create_dword_field(aml_arg(3), aml_int(4), "CDW2"));
--    aml_append(ifctx,
--        aml_create_dword_field(aml_arg(3), aml_int(8), "CDW3"));
--    aml_append(ifctx, aml_store(aml_name("CDW2"), aml_name("SUPP")));
--    aml_append(ifctx, aml_store(aml_name("CDW3"), aml_name("CTRL")));
--
--    /*
--     * Allow OS control for SHPCHotplug, PME, AER, PCIeCapability,
--     * and PCIeHotplug depending on enable_native_pcie_hotplug
--     */
--    aml_append(ifctx, aml_and(aml_name("CTRL"),
--               aml_int(0x1E | (enable_native_pcie_hotplug ? 0x1 : 0x0)),
--               aml_name("CTRL")));
--
--    ifctx1 = aml_if(aml_lnot(aml_equal(aml_arg(1), aml_int(0x1))));
--    aml_append(ifctx1, aml_or(aml_name("CDW1"), aml_int(0x08),
--                              aml_name("CDW1")));
--    aml_append(ifctx, ifctx1);
--
--    ifctx1 = aml_if(aml_lnot(aml_equal(aml_name("CDW3"), aml_name("CTRL"))));
--    aml_append(ifctx1, aml_or(aml_name("CDW1"), aml_int(0x10),
--                              aml_name("CDW1")));
--    aml_append(ifctx, ifctx1);
--
--    aml_append(ifctx, aml_store(aml_name("CTRL"), aml_name("CDW3")));
--    aml_append(ifctx, aml_return(aml_arg(3)));
--    aml_append(method, ifctx);
--
--    elsectx = aml_else();
--    aml_append(elsectx, aml_or(aml_name("CDW1"), aml_int(4),
--                               aml_name("CDW1")));
--    aml_append(elsectx, aml_return(aml_arg(3)));
--    aml_append(method, elsectx);
--    return method;
--}
--
--static Aml *build_host_bridge_dsm(void)
-+static Aml *build_pci_host_bridge_dsm_method(void)
- {
-     Aml *method = aml_method("_DSM", 4, AML_NOTSERIALIZED);
-     Aml *UUID, *ifctx, *ifctx1, *buf;
-@@ -133,8 +80,9 @@ static void acpi_dsdt_add_host_bridge_methods(Aml *dev,
-                                               bool enable_native_pcie_hotplug)
- {
-     /* Declare an _OSC (OS Control Handoff) method */
--    aml_append(dev, build_host_bridge_osc(enable_native_pcie_hotplug));
--    aml_append(dev, build_host_bridge_dsm());
-+    aml_append(dev,
-+               build_pci_host_bridge_osc_method(enable_native_pcie_hotplug));
-+    aml_append(dev, build_pci_host_bridge_dsm_method());
- }
- 
- void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-diff --git a/hw/pci-host/Kconfig b/hw/pci-host/Kconfig
-index 35c0415242..9824fa188d 100644
---- a/hw/pci-host/Kconfig
-+++ b/hw/pci-host/Kconfig
-@@ -54,6 +54,7 @@ config PCI_EXPRESS_Q35
- config PCI_EXPRESS_GENERIC_BRIDGE
-     bool
-     select PCI_EXPRESS
-+    imply ACPI_PCI
- 
- config PCI_EXPRESS_XILINX
-     bool
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 8d9673cb5d..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,12 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/aarch64/virt/DSDT",
+-"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
+-"tests/data/acpi/aarch64/virt/DSDT.memhp",
+-"tests/data/acpi/aarch64/virt/DSDT.pxb",
+-"tests/data/acpi/aarch64/virt/DSDT.topology",
+-"tests/data/acpi/loongarch64/virt/DSDT.memhp",
+-"tests/data/acpi/loongarch64/virt/DSDT.topology",
+-"tests/data/acpi/loongarch64/virt/DSDT.numamem",
+-"tests/data/acpi/loongarch64/virt/DSDT",
+-"tests/data/acpi/x86/microvm/DSDT.pcie",
+-"tests/data/acpi/riscv64/virt/DSDT",
+diff --git a/tests/data/acpi/aarch64/virt/DSDT b/tests/data/acpi/aarch64/virt/DSDT
+index 36d3e5d5a5e47359b6dcb3706f98b4f225677591..acab6e65febbc210158d4c39be0680bbb90250f5 100644
+GIT binary patch
+delta 114
+zcmX@3u}p)@CD<iIO@x7g>C8kfX{JVpjp}Y(OkR^V=X2?C2#NTx$NL96vvg%MIJ<-!
+zF7RWWyjw`i#5kckflEGNfxx86nT)j{87>a6yzr#S&Mx7`2@o*>kXS(iNMs?;W@BMV
+FMgSUfAKd@|
+
+delta 152
+zcmZ3caYlp7CD<jzM}&caNqQoeG*i3NMs+tXCWon;^SSgm<T!#u0|FR0oI`?q7)0DS
+z<Nbr3S-P?roL#~V7kIEwUN5BOX9QAG;Or7^3{q7MBDmy1<N|?7lQS7>L29`;z&gYx
+bO@^t12n&FO3qXoN;!Cm@@@?i7mSh9~5Tq&5
+
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt b/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt
+index e6154d0355f84fdcc51387b4db8f9ee63acae4e9..54c27e7d95b4956ed1b5dee0d299ccb08dc2a73e 100644
+GIT binary patch
+delta 114
+zcmZ3a`A37xCD<jTMudTZsdFNiG*i3lM)f&dOkR^VALY{H5EAiWkM|FDX6ediaCQkd
+zT;Rt#Sx{KZ#5kckflEGNfxx86nT)j{87>a6yzr#S&Mx7`2@o*>kXS(iNMs?;=1yTr
+FMgUJNAb|h?
+
+delta 152
+zcmeyPu}G84CD<iokq83=(~XH-(oDVX8`bA<F*!`#e3VO%LyjXjG$4S1!#O0#he5=R
+zGu}VgnWZb6!PzC;aDfN=WL9A<KO>Nm0%w<SW00z95Wyu6A{Piunw-g43sTF)0oEZl
+bX);V5L|6bMTmVuG5?_+NkZ*Icup}b@<J&8B
+
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.memhp b/tests/data/acpi/aarch64/virt/DSDT.memhp
+index 33f011d6b635035a04c0b39ce9b4e219f7ae74b7..4330bc97cba0950191c45ac833533db7a190db81 100644
+GIT binary patch
+delta 114
+zcmbPh{N0GlCD<jTT#|u->Fq==X{M&B8`a&on7k%!&gatO5EAiWkM|FDX6ediaCQkd
+zT;Rt#dAE?3iE%=80+)Qk0)a`BGZ||^GF%*BdErTuon69>6Ch#&AhCi3kjO%w&Bnr6
+FYyg6XAvXX3
+
+delta 152
+zcmexvG}oBRCD<iot|S8klg&gfX{L_p8`a&om>i~V&gatOkmCpr4G3W1a1IIbVGwcS
+zjQ0<AX6ediaCQkdT;RbzdA*R9pAkq&fwN1vF-TQ4h~Sb3kqZPSP0nPj1*zrY0P7H&
+bG#RE2A}jzBE&wS8i7&}s$hVnSIExJcpiV0*
+
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.pxb b/tests/data/acpi/aarch64/virt/DSDT.pxb
+index c0fdc6e9c1396cc2259dc4bc665ba023adcf4c9b..7fdbc03e2bf9fb7d35704779253de36e362f0bf9 100644
+GIT binary patch
+delta 207
+zcmexwz1f<}CD<iovn&Gx)9r~|(oB6fHmbXEG5NM`&ga^|E+pc^9`7IQ%+i(3;Or7^
+zxWJEfa-NKqiE%=80+)Qk0)a`BGZ||^GF%*BdErTuon69>6Ch#&AhCi3kjO%w$<JhL
+aH-8e+V`TE0v{^|+kAs?qZ+<2t$p`>t?mg51
+
+delta 282
+zcmdmN{ok6)CD<k8zbpd-Q^!OuX{N5b8`a&on4CK{=W}gfm*WTy4G3W1a1IIbVGwcS
+zjQ0<AX6ediaCQkdT;Rbz*-%K!&j_TXz}Y3-7^JEiL~zN2$OQtECTB9%g4A+xfOUvX
+unhaA15f%Um7l0Il#Fu0*<lEdYl+DQGFm>}EVLcA|TR*v9$aeB|nL7Yd7E^Zs
+
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.topology b/tests/data/acpi/aarch64/virt/DSDT.topology
+index 029d03eecc4efddc001e5377e85ac8e831294362..969b4f6560d3ae39f5b7e0064b7122905476fce8 100644
+GIT binary patch
+delta 114
+zcmbQH^+A)%CD<k8g9rly)24}B(oEex8`TB4nY<=#w&d315EAiWkM|FDX6ediaCQkd
+zT;Rt#xm8%p#5kckflEGNfxx86nT)j{87>a6yzr#S&Mx7`2@o*>kXS(iNMs?;=D)&{
+Fi~vUbAmso6
+
+delta 152
+zcmeyMIZcbpCD<iIOq79viGL!OG*hGhMs)#hCWon;ExGkL<T!#u0|FR0oI`?q7)0DS
+z<Nbr3S-P?roL#~V7kIEwt`yetGXg0oaCQkd2C1qB5nS>ha)H34$(f9`Ahlc^U>#zU
+bCd1T0gatst1t7&B@g>;{`8Hn{mSh9~yBaCk
+
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT b/tests/data/acpi/loongarch64/virt/DSDT
+index f32e732b11a557ae01c7f383625d3b6f459ac9f7..b31841aec6ed296f10ea1695a67ead38f45424d5 100644
+GIT binary patch
+delta 108
+zcmZ3e@>`k9CD<k8w;%%pW9&w*JIqWz6E?qK7T^#P@nMhm4|Znh%4TqO2{&Be$2wVz
+zN6W-Gp*n#}E@6Sdq{*3#wICTT4zRrNq{+@M;l>FNF#(WRK>|o*A<yPMp2@5L$8#Uk
+
+delta 146
+zcmeyZyikS9CD<iIQHX(oannYwJIqW@lQ+L$7T}QM2o4PhVBl~L3G!hOapR2l4|Znh
+z%4TqO2{&Be!9JObN6XI$q@=*vCEOUKsv1Oa$%DuR0+S|ZGS-6Ba&drlh)tRdQwI?i
+V00|d>6obT<WH02~oWV1h6#%3ZDaQZ+
+
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT.memhp b/tests/data/acpi/loongarch64/virt/DSDT.memhp
+index f19eae7d00f9c0eefc9e92de2c8a24863bf309d6..e291200fc91caa3d93dcd6ec4736f7340f5e3f65 100644
+GIT binary patch
+delta 108
+zcmaE+dq9`VCD<k8fEWV<W70;hJIqWz6E?qK7T^#P@nMhm4|Znh%4TqO2{&Be$2wVz
+zN6W-Gp*n#}E@6Sdq{*3#wICTT4zRrNq{+@M;l>FNF#(WRK>|o*A<yPMo(L`gz<eKx
+
+delta 146
+zcmX@0`%IV1CD<k8nHU2D<BpA7cbJ)+CU1VhEWjbh5gZy2z`)@g66C`m;>H>8AMDK1
+zmCfMn5^lJ_gMBg=kCvYiNJ)XSOSmyeRW*p<k_V9s1SU<+WUK|L<>CPA5Sug^rVb)3
+V01_?$DF%rz$zI5}IfEyH3jiWADt!O|
+
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT.numamem b/tests/data/acpi/loongarch64/virt/DSDT.numamem
+index 9b462869cd4911714e7c2a22025c465afa2a7d52..07923ac39584c5a5e73c9556d251814ce10de6cc 100644
+GIT binary patch
+delta 108
+zcmZ3k(x}4a66_MfD8#_P_+lg19cCt<37cOq3vdXD_^`+O2RpNLWivRtgc~mKW1TF<
+zqh(^8P@TXfm#{!!(&S9WT96DE2UuQs(qw0saN`7sm;gwuAOR$@kY{rr&rDVTYN{Ui
+
+delta 146
+zcmZovS+2t666_M9F2umVXt$B;4l|R}<jpUb1vun5f<prW7&x3mf_xZ6+&JU?gPmEr
+zvKgFR!VMRAuutaV(eg6_DJgJv2{#6*ss<5U@*r}7z@*8UjI|)OTpVB>Vv{Dr)Io#=
+VK*9we#USw|*$eqLXYkBq1pq1IDC__L
+
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT.topology b/tests/data/acpi/loongarch64/virt/DSDT.topology
+index 65111aa822663a907b83487cb496be38a4bdff05..6dfbb495f88b74b87849b58473e46717bc588a56 100644
+GIT binary patch
+delta 108
+zcmX@Fwo;ADCD<iIQ<#B)@xn%~JIqWz6E?qK7T^#P@nMhm4|Znh%4TqO2{&Be$2wVz
+zN6W-Gp*n#}E@6Sdq{*3#wICTT4zRrNq{+@M;l>FNF#(WRK>|o*A<yPMo`Y-vl^q|3
+
+delta 146
+zcmZ3fc3zFkCD<jzUzmY`QEemF9cCt{$(vs=3vkGB1cwF$FmO1B1o<$CxN*k&2RpNL
+zWivRtgc~mKV4uvzqvdA=Qc~dT5^fAqRShDz<U!;Dfk~4y8EZjmxj4W&#3oIKse=d$
+VfP@P`ib3K_vKR7g&fq!71^{DJDS7|^
+
+diff --git a/tests/data/acpi/riscv64/virt/DSDT b/tests/data/acpi/riscv64/virt/DSDT
+index 6a33f5647ddd6de3a0f000f718b58f6fff44f0fd..527f239dab13a00ad42e5a70b8dc2b89f12aa84a 100644
+GIT binary patch
+delta 113
+zcmew%eMy?jCD<k85-$S-lgdOcX(r!W8`WD`nA|39UdN)vAtd6%9`7IQ%+i(3;Or7^
+zxWJEf@;4qW6XS&H1TMLR1p<>MXEN4;WVkrM^1_oQJG+D%CqTpmKw<?6Ad!VUlk<4H
+E0ByV>p#T5?
+
+delta 151
+zcmca4{X?3|CD<k82QLEyQ_(~&X(s2p8`WD`n0%&eUdN)vA;%FM8W6z1;T#g=!yw|u
+z8SfwL%+i(3;Or7^xWI#b@+%%KKO>Nm0%w<SW00z95Wyu6A{Piunw-g43sTF)0oEZl
+aX);V5L|6bMTmVuG5?_+NkZ-aFZx;X$O)QlF
+
+diff --git a/tests/data/acpi/x86/microvm/DSDT.pcie b/tests/data/acpi/x86/microvm/DSDT.pcie
+index 8eacd21d6ecdf9a3cd3e4f03cf1b40748dcbf53e..ba258f454dc0e59ef2fd67e0ce37e270e7c122e8 100644
+GIT binary patch
+delta 113
+zcmX>vzEYgaCD<ioB{u^D)Axy7(oD|VH>#&HG5Ji`+{YxqAtd6%9`7IQ%+i(3;Or7^
+zxWJEf@*XZN6XS&H1TMLR1p<>MXEN4;WVkrM^1_oQJG+D%CqTpmKw<?6Ad!VUlTEm1
+F0{}^9AprmY
+
+delta 151
+zcmZ1}eqNl*CD<k8JU0Ualj}q-X(rE|8`V>pn4BhW?qd?*kmCpr4G3W1a1IIbVGwcS
+zjQ0<AX6ediaCQkdT;Rbzc>|Z0pAkq&fwN1vF-TQ4h~Sb3kqZPSP0nPj1*zrY0P7H&
+aG#RE2A}jzBE&wS8i7&}s$Tyjfdo}=5#47aw
+
 -- 
 MST
 
