@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BA1B04C53
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A416EB04C0B
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:15:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSIT-0003T8-Ua; Mon, 14 Jul 2025 19:09:22 -0400
+	id 1ubSHr-0008AC-Fm; Mon, 14 Jul 2025 19:08:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHG-0006B1-9M
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHJ-0006BZ-2e
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHE-0005e4-OE
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:06 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHH-0005eV-Jr
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534484;
+ s=mimecast20190719; t=1752534486;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZUQMsD0OTjK6NSdPR5fnk3SR/AQMl7B+vWC0iuHgWB4=;
- b=cogMnvdcaWVyHeMNoCgFJi4DHsi7UzfQjDr3G1zg7HEz+dOriLJ2td+VJPjEsEwXHzQ7HF
- enRciG1DvZdtSx/XVmJXTZHKtkOhJqH71nwz1VQlltD2cxl+u6+lu7DGKQfWLprm/9MR9Y
- Y8vjpSKMlaw3U9j7/AfG5M0FaXlUtUw=
+ bh=zwfIzYrv4MBv7GUQsUabPZ6KXkMEaOc7eKieOXGGWEg=;
+ b=i9TyUPhuwDuTHYuTcOY2u16AbtV5NXJlhX+DKVqSTkux5/lNNbHRm2sEboUxCvka/nu9ML
+ iOCnjkhIJzcIf12yvDlJ2wZtCplzmDsrT/QfNbfH8SwJ6XT+kNC1xBnw8ktMgyxz18vSgk
+ MwoEU+ie4VQ7FPjzgzUGtaTzfpu37hg=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-iTchXHfUOym9GeJQJTYONQ-1; Mon, 14 Jul 2025 19:08:02 -0400
-X-MC-Unique: iTchXHfUOym9GeJQJTYONQ-1
-X-Mimecast-MFC-AGG-ID: iTchXHfUOym9GeJQJTYONQ_1752534481
+ us-mta-180-QHQhHS9LPZ2hGJGn-BKyFg-1; Mon, 14 Jul 2025 19:08:05 -0400
+X-MC-Unique: QHQhHS9LPZ2hGJGn-BKyFg-1
+X-Mimecast-MFC-AGG-ID: QHQhHS9LPZ2hGJGn-BKyFg_1752534484
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a503f28b09so3030293f8f.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:02 -0700 (PDT)
+ ffacd0b85a97d-3a4edf5bb4dso3441229f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534481; x=1753139281;
+ d=1e100.net; s=20230601; t=1752534484; x=1753139284;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZUQMsD0OTjK6NSdPR5fnk3SR/AQMl7B+vWC0iuHgWB4=;
- b=H3H/eLWzmKZENkXvesWRWwx+9rPQdFVrJ18OOx69Y5t+JJUWr6qNM1Szx06R2pynvh
- Po4szUsk9wulNzS4ce8VZGzDbHmsOJ0p778xbBPo8vFsjbr+yz7anBAqtZNn5kRFj+xq
- 9a2NzL7ZzqALW1lScpWOtzwhbFu2xFzY9xhoO/5IyKwoNEiaOpDKa0Ld3ssclIi/2kVx
- mCgjhLlm58OGyBOlEkrEgrX/rVi7aGNevrhX5/4Fwc+Rpv9Y8XVPxZk8RSUmOJN9vC14
- 4kqsZ6rfBMWApOtufrCfbT6xZDAGof6YMtDzFCPo+kS7jMzVsezkGCUiKXjoQvOdxy4w
- 47Kg==
-X-Gm-Message-State: AOJu0YxcKYdSRBAaDewdX6OSck9VuIN9Q65v0tcHwztqk3xZxGEAExfR
- FLv4yeXdaNt5MXf017rKSrBrnRi8qWJnuRqEVctInI3oDaWkAfUUNHJsfx3/KArVxZn8VCiZQaJ
- XfE+A1IHtaZ9bCLQx5pqEF88AsRlMdysmgz07AhO3+Am4QD1/Auf4OONzEyJLzbOhx05VAf7Xmv
- YQblYWrCgP1WEIkMY3L50cFcc0/JwC9XM43A==
-X-Gm-Gg: ASbGnctrNw4HO1X6iwKiRADOGlj+p+FzPHC2BtJ8jxHcYd0gcPDN4B6uTemCS+6j9I9
- 0xVPdiu8xPONai8sA14PUdmeZ2l3XNw9iEQNpR3aOmlsFx6nY/d4vzw2fBJfpiqZAtGL1z3Ez9a
- eWhh0dTtQ8J/xcC0MnbBPJj1MdHT+LGAQbZvZKhNe+TWUShXoe2DA8jVS3BZtAfQgvx509bkclX
- iPRAfQPg9kME5FlhnQbmXXjRoSV4UVUaOwtqLuKxDtFZ3PwYiU7cE+wGf4+FlHtRtCDVFmuIA2q
- TB1mRkSWg4AMEDytnfUia6Ekcl3iJDkb
-X-Received: by 2002:a05:6000:4813:b0:3a5:6860:f47f with SMTP id
- ffacd0b85a97d-3b609522266mr1202418f8f.6.1752534481298; 
- Mon, 14 Jul 2025 16:08:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEicwywIXnry2MwhM5a+JDwbJ7HFqb3x8zLJNA30KZVGdw5vXOlaDU+Fp4g2weqKjwAsKKD8A==
-X-Received: by 2002:a05:6000:4813:b0:3a5:6860:f47f with SMTP id
- ffacd0b85a97d-3b609522266mr1202397f8f.6.1752534480906; 
- Mon, 14 Jul 2025 16:08:00 -0700 (PDT)
+ bh=zwfIzYrv4MBv7GUQsUabPZ6KXkMEaOc7eKieOXGGWEg=;
+ b=Bmj/7+pTArLlF9YYq72w+noJoIQGaE0bJ4CGVFgAcQxYjbSQNwTU6h0bg9brtdOX8J
+ Xg91cL9Il4eLV59rkKbCug/5pJ1GxV+U19svoGAo+oIrmkBNPZVvxBIHoA2Ss2D+wgH3
+ D776GHzounHcN3WfoP83MzKZziU8kjWI9+450Q43gYr2NkGiwVOJFdb2zb4+BMH15VZz
+ Z5eRuBAElVnsHJeJQxSHYP9f87fQk+vysZMQMS54ZcC8Z7FoHG9ssiQmEaFZm/6rF6mF
+ OPDSGQo9HFQiktYStWIHa3tKJmjljgtVwne4NcYBqSXOTzGE+xizROeuHbj5oLF7Vrhx
+ X3iw==
+X-Gm-Message-State: AOJu0Yw5i7mlVxV4iX9ln6QcLyuCOcmAjy2/fZggXZ+N7izGcTSr1QpU
+ jP+o2LlqvH3Nhuw3+xAXwTGvakM+r1JNRPv6j3iFG7KBdUTQEHoaaJw+5fR6TNRfVSGKvjki0py
+ gWyOYgxLne70ax9Gm/2t8hbDLyGQ7UCDVW2I/BSJcDN+kGhBUkLrsZ+J0m6hItQa429iephzrKi
+ bQgtMs6TjoV0QZIMk158FUbE2VXdJoBK02Fw==
+X-Gm-Gg: ASbGncvYU3KMhPW+m0u0s4fINDYPuAut93wnSOLxlDM9e1jtOFE1oqoK7F9HmyDlbZm
+ /zFgjOc2eXwJB0m0KvEVaLgF5qd/uiWJTFwJpGG0rjGSGQJcwtWrgpsq3qGtmzQ5pMIOfrTjqoV
+ ShLOXUni1unwTPXUm701pAVXNuRz6Fg+Y5X2bWowLXvs3knxQ2g9qv00Bmf05bHHHPqcTS1kPaX
+ 4GHr1/crwmkfB8Arv2uC0ppR2HYlfldv0HHk7XI/aBDA/nY2kZELItaSSKyDG4bRVshaJxNp9RF
+ 4fd3SRWKuNiY1TU+lcSQ1I4PjToQhG9s
+X-Received: by 2002:a05:6000:1378:b0:3a4:ee51:8144 with SMTP id
+ ffacd0b85a97d-3b60a14f3c1mr205854f8f.13.1752534483845; 
+ Mon, 14 Jul 2025 16:08:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEmsZYuT6huZe2wvMM0CjkEFlyytrdcV9WE68nRN16ICd0Zs/XjIANdMDIp5e7cjdCGmSO0DQ==
+X-Received: by 2002:a05:6000:1378:b0:3a4:ee51:8144 with SMTP id
+ ffacd0b85a97d-3b60a14f3c1mr205833f8f.13.1752534483365; 
+ Mon, 14 Jul 2025 16:08:03 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e1e1a5sm13318956f8f.74.2025.07.14.16.07.59
+ ffacd0b85a97d-3b5e8bd1741sm13735871f8f.18.2025.07.14.16.08.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:07:59 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:07:58 -0400
+ Mon, 14 Jul 2025 16:08:03 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:08:01 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 41/97] qemu/target-info: Add %target_arch field to TargetInfo
-Message-ID: <6d60578759b0fb09a3435c16837b7ecf48c56fed.1752534227.git.mst@redhat.com>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 42/97] qemu/target-info: Add target_endian_mode()
+Message-ID: <68661aa12085726b71ad43fbf2d3a813bbfdf85e.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -85,7 +85,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1752534227.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -112,69 +112,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+target_endian_mode() returns the default endianness (QAPI type)
+of a target.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20250708215320.70426-4-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20250708215320.70426-5-philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/qemu/target-info-impl.h | 4 +++-
+ include/qemu/target-info-impl.h | 2 ++
+ include/qemu/target-info-qapi.h | 8 ++++++++
  target-info-stub.c              | 1 +
- target-info.c                   | 9 +++++++--
- 3 files changed, 11 insertions(+), 3 deletions(-)
+ target-info.c                   | 5 +++++
+ 4 files changed, 16 insertions(+)
 
 diff --git a/include/qemu/target-info-impl.h b/include/qemu/target-info-impl.h
-index 1b51cbcfe1..a8b34d150a 100644
+index a8b34d150a..17887f64e2 100644
 --- a/include/qemu/target-info-impl.h
 +++ b/include/qemu/target-info-impl.h
-@@ -9,11 +9,13 @@
- #ifndef QEMU_TARGET_INFO_IMPL_H
- #define QEMU_TARGET_INFO_IMPL_H
+@@ -22,6 +22,8 @@ typedef struct TargetInfo {
+     const char *cpu_type;
+     /* QOM typename machines for this binary must implement */
+     const char *machine_typename;
++    /* related to TARGET_BIG_ENDIAN definition */
++    EndianMode endianness;
+ } TargetInfo;
  
--#include "qemu/target-info.h"
-+#include "qapi/qapi-types-machine.h"
+ /**
+diff --git a/include/qemu/target-info-qapi.h b/include/qemu/target-info-qapi.h
+index a337c867bf..d5ce052323 100644
+--- a/include/qemu/target-info-qapi.h
++++ b/include/qemu/target-info-qapi.h
+@@ -9,6 +9,7 @@
+ #ifndef QEMU_TARGET_INFO_EXTRA_H
+ #define QEMU_TARGET_INFO_EXTRA_H
  
- typedef struct TargetInfo {
-     /* runtime equivalent of TARGET_NAME definition */
-     const char *target_name;
-+    /* related to TARGET_ARCH definition */
-+    SysEmuTarget target_arch;
-     /* runtime equivalent of TARGET_LONG_BITS definition */
-     unsigned long_bits;
-     /* runtime equivalent of CPU_RESOLVING_TYPE definition */
++#include "qapi/qapi-types-common.h"
+ #include "qapi/qapi-types-machine.h"
+ 
+ /**
+@@ -18,4 +19,11 @@
+  */
+ SysEmuTarget target_arch(void);
+ 
++/**
++ * target_endian_mode:
++ *
++ * Returns: QAPI EndianMode enum (e.g. ENDIAN_MODE_LITTLE).
++ */
++EndianMode target_endian_mode(void);
++
+ #endif
 diff --git a/target-info-stub.c b/target-info-stub.c
-index fecc0e7128..2e4407ff04 100644
+index 2e4407ff04..ca0caa3686 100644
 --- a/target-info-stub.c
 +++ b/target-info-stub.c
-@@ -14,6 +14,7 @@
- 
- static const TargetInfo target_info_stub = {
-     .target_name = TARGET_NAME,
-+    .target_arch = SYS_EMU_TARGET__MAX,
+@@ -18,6 +18,7 @@ static const TargetInfo target_info_stub = {
      .long_bits = TARGET_LONG_BITS,
      .cpu_type = CPU_RESOLVING_TYPE,
      .machine_typename = TYPE_MACHINE,
++    .endianness = TARGET_BIG_ENDIAN ? ENDIAN_MODE_BIG : ENDIAN_MODE_LITTLE,
+ };
+ 
+ const TargetInfo *target_info(void)
 diff --git a/target-info.c b/target-info.c
-index 9ebabec988..8e29553b4e 100644
+index 8e29553b4e..a756c0714c 100644
 --- a/target-info.c
 +++ b/target-info.c
-@@ -24,8 +24,13 @@ unsigned target_long_bits(void)
- 
- SysEmuTarget target_arch(void)
+@@ -42,3 +42,8 @@ const char *target_machine_typename(void)
  {
--    return qapi_enum_parse(&SysEmuTarget_lookup, target_name(), -1,
--                           &error_abort);
-+    SysEmuTarget arch = target_info()->target_arch;
-+
-+    if (arch == SYS_EMU_TARGET__MAX) {
-+        arch = qapi_enum_parse(&SysEmuTarget_lookup, target_name(), -1,
-+                               &error_abort);
-+    }
-+    return arch;
+     return target_info()->machine_typename;
  }
- 
- const char *target_cpu_type(void)
++
++EndianMode target_endian_mode(void)
++{
++    return target_info()->endianness;
++}
 -- 
 MST
 
