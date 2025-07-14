@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47EE4B03D55
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D101BB03D74
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:35:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubH7U-0008Ei-2J; Mon, 14 Jul 2025 07:13:16 -0400
+	id 1ubHHJ-0002eT-JN; Mon, 14 Jul 2025 07:23:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGzQ-0000js-RN
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:57 -0400
+ id 1ubGzT-0000me-9X
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGzO-0001bY-6u
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:56 -0400
+ id 1ubGzR-0001c0-9q
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491093;
+ s=mimecast20190719; t=1752491096;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eGWtRvpv874ViWc5Pm3mZOHws7lFktTmKEM+SKQfshM=;
- b=AvN4T1sZozpFYhcyVZiWixAM14HVKTasKfC2A2EHBTu0hohn6/Jlx9EPlQcFlBdtXYxZKZ
- I9ruibtjIYRMFZAAuGvbb0x5W6uO3Plz/5OAW8BmK3VK7lRur0BEJCAGZERymJKPsfsIDr
- hl0WW+jwt0pAUzEGoy6Qf60RqlYF2JY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CHd6YlxT7SR0dUhCUOeeHWrJJQghHVPSqPxhxBe2H6I=;
+ b=ST80E8NOwoiQ68VrMR4nYa7nQlYikDWTs/40BTs9gy+pHRogdgq+T8EnLpu6LSPd3UH1Cn
+ If0Gy837kPuPtIvfMVoa6oa4KOwdQXyW6CWPdxi3CMarO5EmrqB8vvDAQB2oz3zz/7z41Y
+ TH/JYKn+/U60oBkQHaA0kuMUYv5t2uM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-488-UhQfqynSMwqQf5kMZJQ5_w-1; Mon, 14 Jul 2025 07:04:52 -0400
-X-MC-Unique: UhQfqynSMwqQf5kMZJQ5_w-1
-X-Mimecast-MFC-AGG-ID: UhQfqynSMwqQf5kMZJQ5_w_1752491091
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4538f375e86so32944975e9.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:04:51 -0700 (PDT)
+ us-mta-314-jYku1juNPOy5jk3J9Rh4Jg-1; Mon, 14 Jul 2025 07:04:54 -0400
+X-MC-Unique: jYku1juNPOy5jk3J9Rh4Jg-1
+X-Mimecast-MFC-AGG-ID: jYku1juNPOy5jk3J9Rh4Jg_1752491093
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-455e9daab1cso4838865e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:04:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491090; x=1753095890;
+ d=1e100.net; s=20230601; t=1752491092; x=1753095892;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eGWtRvpv874ViWc5Pm3mZOHws7lFktTmKEM+SKQfshM=;
- b=xId8j8HostJl/1uxeQhTsPkFUmMxJqlv4jZGcZ1tmvn0cD5firLZGwi+aELpvLcGkL
- PYizwmoycvdSXkiGwHPRZkpzhT5p/OUHPHGdRgoibskHllcR+4Aa/MRlcq5xMqrdUw5r
- qIchwT41xW3Ah0NZzEvAPkAyXHLAvZp7ZZvVuRLEbQmz5WEV/xD3RBn4cHl5x+q9EfdB
- McQ9rAi3+TNmX17TzexJNhJRt1Rj50xAwud7PCdi2lEZteQvkDIm/0IlJfNlVm/nXLvP
- FzIWl3OwmjuxJ192VJ+h+HVNzMu7142jvnA9gHK+MgfA8tdKFiFPqAkl7N5eOqOy0iAP
- d0+g==
-X-Gm-Message-State: AOJu0Yw+4hRKtpG90uXkUJ3y7tdJsLdhFFWGBfVUYKyi/5NZnMtA2V6t
- 2hZvRDSAKhKCl3fWBl0hN++QMxXRtNilRbkIObUb7wjEQtpdCu0QBaJnTr6x5yYOo/CIVLiIigc
- ksiXzKr9BuvNZ6KOMP6vNmQyVBQnlVzqNBa9vmYhMX7i9HCYkcgasgA+V1dQUi3czn1IuKWMZaH
- rdfNC0BHppPQq6DJ1UHxfALPoMvH43yNfCbk9LgptV
-X-Gm-Gg: ASbGncviV0UGNiMHigtHT2NKNM/I5+YaRllVF+HpPnNBTM8Ur9lKD1ryCpqQGjzeWsJ
- 3bAB9cOnWQHtz7rWxpKLK3BHWpVejUsc9fcwB9zvow/2Yq9LARc09MlGkTtMfIIxtYx/Ql8Ivog
- xjbiQPrjF8ioYsbFwJ/KNZgCAI+u622bnzG5/6xnWVwTrJkJiIXVXsrKALxWwu3A2mI58Sj29zQ
- 4kY6R696vDoPfBnY8eWB22726eECB1QNlbJuzuReRh6LZEveo8ohSgySonOevmrnWUy2IKFcAH2
- cJxVmMaHwvT/LZBmnH8pY1jwqSXCxg2SuX0sPHp5I0o=
-X-Received: by 2002:a05:600c:6287:b0:43c:ec0a:ddfd with SMTP id
- 5b1f17b1804b1-454ec13399cmr126953895e9.6.1752491090021; 
- Mon, 14 Jul 2025 04:04:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJstCtnalZW33ajjrVUMQ8Oh8lPSDXJXXyqx652Mvv4s0WW9gOiZI2VRAM4rbxay8xwi+iqQ==
-X-Received: by 2002:a05:600c:6287:b0:43c:ec0a:ddfd with SMTP id
- 5b1f17b1804b1-454ec13399cmr126953535e9.6.1752491089444; 
- Mon, 14 Jul 2025 04:04:49 -0700 (PDT)
+ bh=CHd6YlxT7SR0dUhCUOeeHWrJJQghHVPSqPxhxBe2H6I=;
+ b=HrCFjRyO4hnEt48MAnrgoxQ8di0BMac9pIfiYmWPSceLbFH3Eot3+c30Sk3vHZkt9n
+ HuSWft3cbt6kg8Tekey20dW1YE/qw7EtG0/+RkHdEFW15C08FKN1NH0yajS1qsWW5ZpW
+ /wD5Z4KRjqGUOltIS5rOaWrjU2Z2WqxG9QFNxC+Tm5CRAywvaBQ+XNYO8nMhd2deJVBN
+ VWoKTfUbapnkY2kvXLnCTbup0OdiLP3lCi5RXCx8oT+Sg+tBa1w3aFmgf2R5oDwSQSxS
+ IJHKEc01vvzxigqmuoNEueP8IP+2PJ4UsgAzpqMfMY6i+Us6DVfxcdB46FxUad2jevL7
+ m7oA==
+X-Gm-Message-State: AOJu0Yxiaw8AM2clBw4zCFRv/CTQpMCcE/0u+sq/z/gjRoO33nod0mZC
+ Ypaq1Y3yAQlii3DNyDn6v+CG/Cb9NtxcBsixxTW3l7XjJLneNTFjSfJsl3agDitebd490rduuWB
+ 4DDGep0VrSTmETttjhLphjdBRIczEhIFHkBmp2pL2XKSD0ijc610P7/48YqdzZ4Zh4UmFL2GYfo
+ p4orxDK8G5TZG/zthYKmrwU9RNs9OReO/jR4j0cj4J
+X-Gm-Gg: ASbGncuR9WFUR5HJMQ62Kr1ZZZbYYo9HctEdq8EB2hxrPLK2Ks8f/blkhZqZJyb48Wy
+ X9z6qy/kXBW3yKtZNRCR7pDsnXgud8GB0I8qG/hxt3bNkM6h4Dx9v/6rns/LnY/HfAshGsGYOs7
+ ORVzIn0GZzSeMa2F4gQrcM3vd+qQaxBvH2BQ3EhE+HYW8Uo+20mjyUM6TWFmBZ8mvOMakAna3Cd
+ wEiYUtpSkYSiYYHcoKRGP0D7Ld8dzkCFGOwj4+Otil73tDN5V9qlt2TCEBGDBL3Ru/rYE1LJDe5
+ w0dWAK///Ocu4KmkpYe+C1sA8x16WlLMx0cUsMkhMWg=
+X-Received: by 2002:a05:600c:c4a6:b0:455:ed0f:e8d4 with SMTP id
+ 5b1f17b1804b1-455ed0fedc6mr144023675e9.10.1752491092324; 
+ Mon, 14 Jul 2025 04:04:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH35YT0aMEGjdBP8pzHneR6Xz9SIAbgFNNpcby+WFWSLWTUc1AM8KqQrTvm7mtM62Q/y2iodg==
+X-Received: by 2002:a05:600c:c4a6:b0:455:ed0f:e8d4 with SMTP id
+ 5b1f17b1804b1-455ed0fedc6mr144023215e9.10.1752491091779; 
+ Mon, 14 Jul 2025 04:04:51 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d5037fa0sm168013585e9.7.2025.07.14.04.04.47
+ ffacd0b85a97d-3b5e8e0d5easm11981807f8f.48.2025.07.14.04.04.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:04:47 -0700 (PDT)
+ Mon, 14 Jul 2025 04:04:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 15/77] i386/tdx: handle TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT
-Date: Mon, 14 Jul 2025 13:03:04 +0200
-Message-ID: <20250714110406.117772-16-pbonzini@redhat.com>
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 16/77] i386/tdx: Fix the report of gpa in QAPI
+Date: Mon, 14 Jul 2025 13:03:05 +0200
+Message-ID: <20250714110406.117772-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -106,186 +108,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Record the interrupt vector and the apic id of the vcpu that calls
-TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT.
+Gpa is defined in QAPI but never reported to monitor because has_gpa is
+never set to ture.
 
-Inject the interrupt to TD guest to notify the completion of <GetQuote>
-when notify interrupt vector is valid.
+Fix it by setting has_gpa to ture when TDX_REPORT_FATAL_ERROR_GPA_VALID
+is set in error_code.
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250703024021.3559286-5-xiaoyao.li@intel.com
+Fixes: 6e250463b08b ("i386/tdx: Wire TDX_REPORT_FATAL_ERROR with GuestPanic facility")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Link: https://lore.kernel.org/r/20250710035538.303136-1-zhenzhong.duan@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/tdx.h      |  7 ++++++
- target/i386/kvm/kvm.c      |  3 +++
- target/i386/kvm/tdx-stub.c |  4 ++++
- target/i386/kvm/tdx.c      | 48 +++++++++++++++++++++++++++++++++++++-
- 4 files changed, 61 insertions(+), 1 deletion(-)
+ target/i386/kvm/tdx.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index d439078a876..1c38faf9834 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -25,6 +25,7 @@ typedef struct TdxGuestClass {
- 
- #define TDVMCALL_GET_TD_VM_CALL_INFO    0x10000
- #define TDVMCALL_GET_QUOTE		 0x10002
-+#define TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT   0x10004
- 
- #define TDG_VP_VMCALL_SUCCESS           0x0000000000000000ULL
- #define TDG_VP_VMCALL_RETRY             0x0000000000000001ULL
-@@ -32,6 +33,8 @@ typedef struct TdxGuestClass {
- #define TDG_VP_VMCALL_GPA_INUSE         0x8000000000000001ULL
- #define TDG_VP_VMCALL_ALIGN_ERROR       0x8000000000000002ULL
- 
-+#define TDG_VP_VMCALL_SUBFUNC_SET_EVENT_NOTIFY_INTERRUPT BIT_ULL(1)
-+
- enum TdxRamType {
-     TDX_RAM_UNACCEPTED,
-     TDX_RAM_ADDED,
-@@ -64,6 +67,9 @@ typedef struct TdxGuest {
-     /* GetQuote */
-     SocketAddress *qg_sock_addr;
-     int num;
-+
-+    uint32_t event_notify_vector;
-+    uint32_t event_notify_apicid;
- } TdxGuest;
- 
- #ifdef CONFIG_TDX
-@@ -78,5 +84,6 @@ int tdx_parse_tdvf(void *flash_ptr, int size);
- int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run);
- void tdx_handle_get_quote(X86CPU *cpu, struct kvm_run *run);
- void tdx_handle_get_tdvmcall_info(X86CPU *cpu, struct kvm_run *run);
-+void tdx_handle_setup_event_notify_interrupt(X86CPU *cpu, struct kvm_run *run);
- 
- #endif /* QEMU_I386_TDX_H */
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 234878c613f..fc58a23b30d 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -6182,6 +6182,9 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
-         case TDVMCALL_GET_TD_VM_CALL_INFO:
-             tdx_handle_get_tdvmcall_info(cpu, run);
-             break;
-+        case TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT:
-+            tdx_handle_setup_event_notify_interrupt(cpu, run);
-+            break;
-         }
-         ret = 0;
-         break;
-diff --git a/target/i386/kvm/tdx-stub.c b/target/i386/kvm/tdx-stub.c
-index 76fee49eff0..1f0e108a69e 100644
---- a/target/i386/kvm/tdx-stub.c
-+++ b/target/i386/kvm/tdx-stub.c
-@@ -26,3 +26,7 @@ void tdx_handle_get_quote(X86CPU *cpu, struct kvm_run *run)
- void tdx_handle_get_tdvmcall_info(X86CPU *cpu, struct kvm_run *run)
- {
- }
-+
-+void tdx_handle_setup_event_notify_interrupt(X86CPU *cpu, struct kvm_run *run)
-+{
-+}
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 10dfb80d22e..fb31071dd81 100644
+index fb31071dd81..7d69d6d7b06 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -28,10 +28,13 @@
- #include "cpu.h"
- #include "cpu-internal.h"
- #include "host-cpu.h"
-+#include "hw/i386/apic_internal.h"
-+#include "hw/i386/apic-msidef.h"
- #include "hw/i386/e820_memory_layout.h"
- #include "hw/i386/tdvf.h"
- #include "hw/i386/x86.h"
- #include "hw/i386/tdvf-hob.h"
-+#include "hw/pci/msi.h"
- #include "kvm_i386.h"
- #include "tdx.h"
- #include "tdx-quote-generator.h"
-@@ -1123,6 +1126,28 @@ int tdx_parse_tdvf(void *flash_ptr, int size)
-     return tdvf_parse_metadata(&tdx_guest->tdvf, flash_ptr, size);
+@@ -1321,7 +1321,8 @@ void tdx_handle_setup_event_notify_interrupt(X86CPU *cpu, struct kvm_run *run)
  }
  
-+static void tdx_inject_interrupt(uint32_t apicid, uint32_t vector)
-+{
-+    int ret;
-+
-+    if (vector < 32 || vector > 255) {
-+        return;
-+    }
-+
-+    MSIMessage msg = {
-+        .address = ((apicid & 0xff) << MSI_ADDR_DEST_ID_SHIFT) |
-+                   (((uint64_t)apicid & 0xffffff00) << 32),
-+        .data = vector | (APIC_DM_FIXED << MSI_DATA_DELIVERY_MODE_SHIFT),
-+    };
-+
-+    ret = kvm_irqchip_send_msi(kvm_state, msg);
-+    if (ret < 0) {
-+        /* In this case, no better way to tell it to guest. Log it. */
-+        error_report("TDX: injection interrupt %d failed, interrupt lost (%s).",
-+                     vector, strerror(-ret));
-+    }
-+}
-+
- static void tdx_get_quote_completion(TdxGenerateQuoteTask *task)
+ static void tdx_panicked_on_fatal_error(X86CPU *cpu, uint64_t error_code,
+-                                        char *message, uint64_t gpa)
++                                        char *message, bool has_gpa,
++                                        uint64_t gpa)
  {
-     TdxGuest *tdx = task->opaque;
-@@ -1154,6 +1179,9 @@ static void tdx_get_quote_completion(TdxGenerateQuoteTask *task)
-         error_report("TDX: get-quote: failed to update GetQuote header.");
+     GuestPanicInformation *panic_info;
+ 
+@@ -1330,6 +1331,7 @@ static void tdx_panicked_on_fatal_error(X86CPU *cpu, uint64_t error_code,
+     panic_info->u.tdx.error_code = (uint32_t) error_code;
+     panic_info->u.tdx.message = message;
+     panic_info->u.tdx.gpa = gpa;
++    panic_info->u.tdx.has_gpa = has_gpa;
+ 
+     qemu_system_guest_panicked(panic_info);
+ }
+@@ -1349,6 +1351,7 @@ int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run)
+     char *message = NULL;
+     uint64_t *tmp;
+     uint64_t gpa = -1ull;
++    bool has_gpa = false;
+ 
+     if (error_code & 0xffff) {
+         error_report("TDX: REPORT_FATAL_ERROR: invalid error code: 0x%"PRIx64,
+@@ -1381,9 +1384,10 @@ int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run)
+ 
+     if (error_code & TDX_REPORT_FATAL_ERROR_GPA_VALID) {
+         gpa = run->system_event.data[R_R13];
++        has_gpa = true;
      }
  
-+    tdx_inject_interrupt(tdx_guest->event_notify_apicid,
-+                         tdx_guest->event_notify_vector);
-+
-     g_free(task->send_data);
-     g_free(task->receive_buf);
-     g_free(task);
-@@ -1256,7 +1284,7 @@ out_free:
-     g_free(task);
+-    tdx_panicked_on_fatal_error(cpu, error_code, message, gpa);
++    tdx_panicked_on_fatal_error(cpu, error_code, message, has_gpa, gpa);
+ 
+     return -1;
  }
- 
--#define SUPPORTED_TDVMCALLINFO_1_R11    (0)
-+#define SUPPORTED_TDVMCALLINFO_1_R11    (TDG_VP_VMCALL_SUBFUNC_SET_EVENT_NOTIFY_INTERRUPT)
- #define SUPPORTED_TDVMCALLINFO_1_R12    (0)
- 
- void tdx_handle_get_tdvmcall_info(X86CPU *cpu, struct kvm_run *run)
-@@ -1277,6 +1305,21 @@ void tdx_handle_get_tdvmcall_info(X86CPU *cpu, struct kvm_run *run)
-     run->tdx.get_tdvmcall_info.ret = TDG_VP_VMCALL_SUCCESS;
- }
- 
-+void tdx_handle_setup_event_notify_interrupt(X86CPU *cpu, struct kvm_run *run)
-+{
-+    uint64_t vector = run->tdx.setup_event_notify.vector;
-+
-+    if (vector >= 32 && vector < 256) {
-+        qemu_mutex_lock(&tdx_guest->lock);
-+        tdx_guest->event_notify_vector = vector;
-+        tdx_guest->event_notify_apicid = cpu->apic_id;
-+        qemu_mutex_unlock(&tdx_guest->lock);
-+        run->tdx.setup_event_notify.ret = TDG_VP_VMCALL_SUCCESS;
-+    } else {
-+        run->tdx.setup_event_notify.ret = TDG_VP_VMCALL_INVALID_OPERAND;
-+    }
-+}
-+
- static void tdx_panicked_on_fatal_error(X86CPU *cpu, uint64_t error_code,
-                                         char *message, uint64_t gpa)
- {
-@@ -1477,6 +1520,9 @@ static void tdx_guest_init(Object *obj)
-                             NULL, NULL);
- 
-     qemu_mutex_init(&tdx->lock);
-+
-+    tdx->event_notify_vector = -1;
-+    tdx->event_notify_apicid = -1;
- }
- 
- static void tdx_guest_finalize(Object *obj)
 -- 
 2.50.0
 
