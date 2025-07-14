@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9398AB03D29
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7F8B03D3D
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:21:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHAN-00037m-9R; Mon, 14 Jul 2025 07:16:15 -0400
+	id 1ubHB5-0003ax-QY; Mon, 14 Jul 2025 07:17:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH0S-0001Om-Fp
+ id 1ubH0V-0001QK-I9
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH0Q-00020g-JY
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:00 -0400
+ id 1ubH0T-00021q-O9
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491157;
+ s=mimecast20190719; t=1752491160;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BTubnZ3o2Xiym1BO+0Jx8Ne4oet/OLGfGzFGRCfDWJM=;
- b=c1ucV1cYhYTUD19SJe8H9d1KSwu3yhp0Cwg+ERoqdARQ+XOFm7u8Z1VeMXlEpo4LaKeUmD
- Sy61lZ1LXW7LTewvBv07uiXVYjvNyvWvvFW4s3Q2pXXp/09ZtcCSQKKDr6j5kpw2RnS/5z
- sTL6P1FcZuznFnRtmMdxn1Y7FknGjw0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1Oo3Mq8d89aj4RwZyYW7r9/QmVUY360NGuFe7tGChvw=;
+ b=I7QPBGSk6q5GYrKt3unufrhPFhtJH5SPXzVAWchg6IieytcHEKczgML12r6rZvavRS9iOs
+ gC/KC3E53Iq2G0y3zc2ll+E1/FvyYTBdZ6WTFqJijw1V7kfse65oHnNuY62dMYvjllKubs
+ g3aIBLzvcKtlbQUvUvYQHYT5iq/mIzo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-161-61AHHMq-P_qnRyEdl-Yo4Q-1; Mon, 14 Jul 2025 07:05:56 -0400
-X-MC-Unique: 61AHHMq-P_qnRyEdl-Yo4Q-1
-X-Mimecast-MFC-AGG-ID: 61AHHMq-P_qnRyEdl-Yo4Q_1752491155
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3af3c860ed7so1840195f8f.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:56 -0700 (PDT)
+ us-mta-672--VcftfWtPM-OC40ooK0sag-1; Mon, 14 Jul 2025 07:05:58 -0400
+X-MC-Unique: -VcftfWtPM-OC40ooK0sag-1
+X-Mimecast-MFC-AGG-ID: -VcftfWtPM-OC40ooK0sag_1752491157
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-456013b59c1so11251865e9.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491155; x=1753095955;
+ d=1e100.net; s=20230601; t=1752491157; x=1753095957;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BTubnZ3o2Xiym1BO+0Jx8Ne4oet/OLGfGzFGRCfDWJM=;
- b=fM1IxynCU0yGxdBl6O+J66fsrYytdwu3hg1MDKytiZNeBmval3Y8mlhNFzAIq7EXp2
- RT/qRkk1yROQzMK+Bu+WEP16/6NYEtC49AGKlIPQtwpC83EQDo8HodXlgTwDltZIG24I
- r0I1uMVZgAXX7LS534MU5UTLpUerLcN1QZuUkWChZNlvWVZe8lrJ5WGML+QEMoqjiNxB
- F/VjwcLt8vDZbFLQj5E4m1BBS5lBjvL8kejPc9POKrzjjw8FXytnV/MXZ2bay4tbt0Cs
- KSxgkBJhuXsaL+e/X3vtZ8kSiKn2Mmvb+xZl7jqZ94jFQTJk4iPbeasdZbgfci4iS2Km
- xKNQ==
-X-Gm-Message-State: AOJu0YxNketSVmXwwf1RXwkUqwrbYi39FVKFqyWqxibi5a5quY1eDaLv
- EEyqdvLnuwGPdnctXIDy9EW/GaJP1KF24ILlHqSrpiDbNiNmn2D5SD9BmUhXl1LAeJTJM2raX9D
- UCPXS3RhLm2Atiwabmj0n2ypeNgI2j5IqARN6c0fnUnC+PSo3Aq/wlBo77G6Db0W9X8nxa8MDob
- DHGz6jSN0169YVkOaZ7pmSOtKTI3QYQ+TYmXep+ETa
-X-Gm-Gg: ASbGncvItZ1lLZuZCD6Sd93gbq5cOK+SXUv78KOt9BENDx2qoSV9rLyQkveQfE25WmW
- CawnGdEaH+raOA0Xw3K7XqgPNGXGMe+jG65CdjEixVUX0vcsBwJK4DxQua2vODYGDzonjUH+5Ud
- tXzJBSGAG5DJiEOV70/eyyROV744eaf2DnUBn5WZKZSylXjBp0MyL/h260aRavW1WQyKauYGJBs
- Xc/hfTTxh3MktCBIDVcVhr+t3+5z1E8eo7jXur4J0PYGOq8kgT/r899iuokrnxJvPWljLOlhsXY
- s/EPTtsDuFu8sHcuvFd6nPnVUtnpovs3uEIfbXcPWl4=
-X-Received: by 2002:a05:6000:4012:b0:3a4:c8c1:aed8 with SMTP id
- ffacd0b85a97d-3b5f2e229a9mr8767497f8f.39.1752491154860; 
- Mon, 14 Jul 2025 04:05:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxZCI6whCGuhwZJQbFjNVK4kWfAqulRs1wLCzTC1CnQkSpF9Konh5oajRVqAwnAib+rOso6g==
-X-Received: by 2002:a05:6000:4012:b0:3a4:c8c1:aed8 with SMTP id
- ffacd0b85a97d-3b5f2e229a9mr8767475f8f.39.1752491154358; 
- Mon, 14 Jul 2025 04:05:54 -0700 (PDT)
+ bh=1Oo3Mq8d89aj4RwZyYW7r9/QmVUY360NGuFe7tGChvw=;
+ b=i5/Hv1BSAeR9QsBCuUYRGo7onl/UZNJ1yb4NhAB6+Ju2vIGjCGgSjsWhuc/g8PPSzR
+ oM7JJfT6m7p00Bzo3MRhWc47qLyFX7dR5bf5aT0T2NtPhdzNw/ZCmr20qdf6D844Yx3X
+ VPRTrf/JhTgqzEmOLDYB0ulw5xiBhbzXdmi1qzYy1asStqr3LKJBpgAJZd5DDsiOGVfS
+ tt4pSXfk0OEWZS+hfvvpxkKsPFReIbXQYkbhjez5wg0XvO2qjUhJl06fW45mowbH0zLm
+ xc4EnA39C6xgmuMt7FNPszWgMmj0KhQYAlCJtODsjSkX4FB3Q1tuk5AABNAEKgAkEdrV
+ zEFA==
+X-Gm-Message-State: AOJu0YwLdKAfNJzLpaImIc7+AIfMDJUUmP4ZIZwLu9WyrKXi8p83ch9Y
+ ehUp3NdqUSgjlJaffVkcZ1WXNHXoSDbGnbhE2uUUpxzCmmxQWTZNOQQB/hILZN/fpmWXkUCvIBh
+ izgoPtZdJ97bEfTBY8lMzJUVdfnkCZqwKQVCQmdYP/WLgRaqzSj7Xzxh/+TQ60JWRsEMOKmrU3W
+ bf5EHQXdP53uvsUWCFA06Mb63aCE5KBoFmYGqrODxR
+X-Gm-Gg: ASbGncuDyMwz6jQZA+0rCEopdVQLBZ2rbbM+U1jRuKF/uIvgJPkQMgKTiJBSWjUsj6A
+ 5ZOyorPD2vCpkRrO17tFtG0jLM8tILaIh9NbJ7XeiCdUbslhKq4K/5B10dT5Dhn7ugnFJN6YBc/
+ 0m2hofCuGUNUq/5gD8dSpb5OxZBi5G2EACna8qLMXZ845lQbCbR1sqXca4Q2hIrmdagOiGNw1Eb
+ 8kJZjDPq9JAxwhYod8EUUsSX7/s2M8a7SYo97Xp0A2db+0VdAt6XxOSnWeA8RolZd7+DPzhU+mF
+ NzNf5/LWGBEG2KzOlFNUya0ePi9NhRQKfNCyWBhujAU=
+X-Received: by 2002:a05:600c:3481:b0:456:1442:86e with SMTP id
+ 5b1f17b1804b1-45614420b46mr36808255e9.21.1752491156797; 
+ Mon, 14 Jul 2025 04:05:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEng2ALQiQcclffqdjxyYchlIAMr7NEzhnsIKAkQtPbbwVT/TCRO0GPJXkTYXNigqqSY1yA+Q==
+X-Received: by 2002:a05:600c:3481:b0:456:1442:86e with SMTP id
+ 5b1f17b1804b1-45614420b46mr36807935e9.21.1752491156284; 
+ Mon, 14 Jul 2025 04:05:56 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454dd43906dsm130735525e9.3.2025.07.14.04.05.52
+ 5b1f17b1804b1-4561752340esm39317585e9.38.2025.07.14.04.05.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:05:52 -0700 (PDT)
+ Mon, 14 Jul 2025 04:05:55 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>,
  Yi Lai <yi1.lai@intel.com>
-Subject: [PULL 40/77] i386/cpu: Refine comment of CPUID2CacheDescriptorInfo
-Date: Mon, 14 Jul 2025 13:03:29 +0200
-Message-ID: <20250714110406.117772-41-pbonzini@redhat.com>
+Subject: [PULL 41/77] i386/cpu: Add descriptor 0x49 for CPUID 0x2 encoding
+Date: Mon, 14 Jul 2025 13:03:30 +0200
+Message-ID: <20250714110406.117772-42-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,80 +109,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Refer to SDM vol.3 table 1-21, add the notes about the missing
-descriptor, and fix the typo and comment format.
+The legacy_l2_cache (2nd-level cache: 4 MByte, 16-way set associative,
+64 byte line size) corresponds to descriptor 0x49, but at present
+cpuid2_cache_descriptors doesn't support descriptor 0x49 because it has
+multiple meanings.
+
+The 0x49 is necessary when CPUID 0x2 and 0x4 leaves have the consistent
+cache model, and use legacy_l2_cache as the default L2 cache.
+
+Therefore, add descriptor 0x49 to represent general L2 cache.
 
 Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Tested-by: Yi Lai <yi1.lai@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250711102143.1622339-2-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250711102143.1622339-3-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 31 ++++++++++++++++++++++---------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ target/i386/cpu.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index f9e6bc8d0e6..f107e586734 100644
+index f107e586734..4386b60ff6c 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -68,6 +68,7 @@ struct CPUID2CacheDescriptorInfo {
- 
- /*
-  * Known CPUID 2 cache descriptors.
-+ * TLB, prefetch and sectored cache related descriptors are not included.
-  * From Intel SDM Volume 2A, CPUID instruction
-  */
- struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
-@@ -89,18 +90,29 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
-                .associativity = 2,  .line_size = 64, },
-     [0x21] = { .level = 2, .type = UNIFIED_CACHE,     .size = 256 * KiB,
+@@ -129,7 +129,18 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
                 .associativity = 8,  .line_size = 64, },
--    /* lines per sector is not supported cpuid2_cache_descriptor(),
--    * so descriptors 0x22, 0x23 are not included
--    */
+     [0x48] = { .level = 2, .type = UNIFIED_CACHE,     .size =   3 * MiB,
+                .associativity = 12, .line_size = 64, },
+-    /* Descriptor 0x49 depends on CPU family/model, so it is not included */
 +    /*
-+     * lines per sector is not supported cpuid2_cache_descriptor(),
-+     * so descriptors 0x22, 0x23 are not included
-+     */
-     [0x24] = { .level = 2, .type = UNIFIED_CACHE,     .size =   1 * MiB,
-                .associativity = 16, .line_size = 64, },
--    /* lines per sector is not supported cpuid2_cache_descriptor(),
--    * so descriptors 0x25, 0x20 are not included
--    */
-+    /*
-+     * lines per sector is not supported cpuid2_cache_descriptor(),
-+     * so descriptors 0x25, 0x29 are not included
-+     */
-     [0x2C] = { .level = 1, .type = DATA_CACHE,        .size =  32 * KiB,
-                .associativity = 8,  .line_size = 64, },
-     [0x30] = { .level = 1, .type = INSTRUCTION_CACHE, .size =  32 * KiB,
-                .associativity = 8,  .line_size = 64, },
-+    /*
-+     * Newer Intel CPUs (having the cores without L3, e.g., Intel MTL, ARL)
-+     * use CPUID 0x4 leaf to describe cache topology, by encoding CPUID 0x2
-+     * leaf with 0xFF. For older CPUs (without 0x4 leaf), it's also valid
-+     * to just ignore L3's code if there's no L3.
++     * Descriptor 0x49 has 2 cases:
++     *  - 2nd-level cache: 4 MByte, 16-way set associative, 64 byte line size.
++     *  - 3rd-level cache: 4MB, 16-way set associative, 64-byte line size
++     *    (Intel Xeon processor MP, Family 0FH, Model 06H).
 +     *
-+     * This already covers all the cases in QEMU, so code 0x40 is not
-+     * included.
++     * When it represents L3, then it depends on CPU family/model. Fortunately,
++     * the legacy cache/CPU models don't have such special L3. So, just add it
++     * to represent the general L2 case.
 +     */
-     [0x41] = { .level = 2, .type = UNIFIED_CACHE,     .size = 128 * KiB,
-                .associativity = 4,  .line_size = 32, },
-     [0x42] = { .level = 2, .type = UNIFIED_CACHE,     .size = 256 * KiB,
-@@ -138,9 +150,10 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
-                .associativity = 4,  .line_size = 64, },
-     [0x78] = { .level = 2, .type = UNIFIED_CACHE,     .size =   1 * MiB,
-                .associativity = 4,  .line_size = 64, },
--    /* lines per sector is not supported cpuid2_cache_descriptor(),
--    * so descriptors 0x79, 0x7A, 0x7B, 0x7C are not included.
--    */
-+    /*
-+     * lines per sector is not supported cpuid2_cache_descriptor(),
-+     * so descriptors 0x79, 0x7A, 0x7B, 0x7C are not included.
-+     */
-     [0x7D] = { .level = 2, .type = UNIFIED_CACHE,     .size =   2 * MiB,
-                .associativity = 8,  .line_size = 64, },
-     [0x7F] = { .level = 2, .type = UNIFIED_CACHE,     .size = 512 * KiB,
++    [0x49] = { .level = 2, .type = UNIFIED_CACHE,     .size =   4 * MiB,
++               .associativity = 16, .line_size = 64, },
+     [0x4A] = { .level = 3, .type = UNIFIED_CACHE,     .size =   6 * MiB,
+                .associativity = 12, .line_size = 64, },
+     [0x4B] = { .level = 3, .type = UNIFIED_CACHE,     .size =   8 * MiB,
 -- 
 2.50.0
 
