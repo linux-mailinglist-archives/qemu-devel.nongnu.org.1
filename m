@@ -2,148 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9591B04937
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 23:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB59AB0495A
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 23:23:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubQW0-0007oH-LQ; Mon, 14 Jul 2025 17:15:13 -0400
+	id 1ubQdc-00070r-BN; Mon, 14 Jul 2025 17:23:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1ubOzy-00070Q-Ow; Mon, 14 Jul 2025 15:38:03 -0400
-Received: from mail-bn7nam10on2062a.outbound.protection.outlook.com
- ([2a01:111:f403:2009::62a]
- helo=NAM10-BN7-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1ubOzu-0001e4-HQ; Mon, 14 Jul 2025 15:38:00 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UJyg0BeGFGk+aXRZ+nwz1AkTAypTtmivfYnO9K2g2CszU7q858CbhoowBdzd8XnFEH+Cua1L067rqOIYXMx50zN2yvSOeuoW0JL8+WUJqrrPW5ldQn/QVnE/z0zGdzl2JVLckixM+Li4E6lJKLwEXqgLki91e9Z1gYIOMfyaaSX+dVgWvLs1C3xXn5Im6ciSNGDcUrZwgUcXS19eG3dr+YHiZXfUI46H2rnmSSSyvljeycht/xT318qtM6rd8Rr49V7jm2YoQgLePi+tWMcq6C7n+bZW6oB5gi+xZAvtbBE3gPTWgoD7PwOtd/WyY4mnoUL6JsymuYxvujQjiPTJdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z2f8+jdKDg9LRrJHe5F2knbU4HkCX4W03WlMDoJpZLQ=;
- b=YUtTy+NWOfyFMn+RsS3RLny2YJHVZU9NE11FBNzeXzpIa+Yoa7bEyOZdKg6jcGJEnICFC+EF9TuaQMcBwGw31PuhOu8iejfmZVnWI++/BF2/KZ/ykPVGPA63Z/BG53R2XGW+aJzaVE8U/63R93noq6IPxZavl1p9qBknjtKZDe7ihTzFuzNLQlrIR4s7x5e53GpZKoUIeQTOJEhbeKhfBSw1qo0y3r2+6kAnAJgLZf8X1QlUsrmOKpj0hn22szfE+WnwpoPpBa+8EBmKeZZzPBoYbjDand8tFTOwO8WZJ0sb1sOMNJ4gsRYewb6D9vSIx+1ibZde+BeElKlJ1BMYig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z2f8+jdKDg9LRrJHe5F2knbU4HkCX4W03WlMDoJpZLQ=;
- b=LtN67tFFO5pQVD0F6ygeOswrktlxZ6MTcJi9UXQhrz/Qiv4rnPpuYW618YLoWm6Oc/JqLFUt0siACq9pD7N13ai4v6N1YcF3PLp4PwZwZ0+G8wZ1GYYRcT8Qgj2Nhq3Qcb9cvm43KcsuOgEhpy0LhTHlwyk5MxF73r+gFcH6VE49kd+/2RERijzwikFsKVWFZuYS7N18MrpoYfcLUAxIGQl6f6GEUWs6Xe94LiCO2eRgAs7le6H80cCVApYQWuJ1ru/4A8b9kpp0r7hf2IjKTfvCiwR5VPlUBk1L63SlkGxrZhgh3zxnt5e07GPW+hVQx2E1y0LQc6oQI/wl7HCZSA==
-Received: from BN9PR03CA0983.namprd03.prod.outlook.com (2603:10b6:408:109::28)
- by CH2PR12MB4086.namprd12.prod.outlook.com (2603:10b6:610:7c::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.33; Mon, 14 Jul
- 2025 19:37:49 +0000
-Received: from BN3PEPF0000B078.namprd04.prod.outlook.com
- (2603:10b6:408:109:cafe::a4) by BN9PR03CA0983.outlook.office365.com
- (2603:10b6:408:109::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.32 via Frontend Transport; Mon,
- 14 Jul 2025 19:37:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN3PEPF0000B078.mail.protection.outlook.com (10.167.243.123) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8922.22 via Frontend Transport; Mon, 14 Jul 2025 19:37:48 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 14 Jul
- 2025 12:37:32 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 14 Jul
- 2025 12:37:32 -0700
-Received: from Asurada-Nvidia (10.127.8.10) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Mon, 14 Jul 2025 12:37:31 -0700
-Date: Mon, 14 Jul 2025 12:37:30 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <eric.auger@redhat.com>,
- <peter.maydell@linaro.org>, <jgg@nvidia.com>, <ddutile@redhat.com>,
- <berrange@redhat.com>, <nathanc@nvidia.com>, <mochs@nvidia.com>,
- <smostafa@google.com>, <linuxarm@huawei.com>, <wangzhou1@hisilicon.com>,
- <jiangkunkun@huawei.com>, <jonathan.cameron@huawei.com>,
- <zhangfei.gao@linaro.org>, <zhenzhong.duan@intel.com>,
- <shameerkolothum@gmail.com>
-Subject: Re: [RFC PATCH v3 09/15] hw/arm/smmuv3-accel: Support nested STE
- install/uninstall support
-Message-ID: <aHVcespdg9+nq1/H@Asurada-Nvidia>
-References: <20250714155941.22176-1-shameerali.kolothum.thodi@huawei.com>
- <20250714155941.22176-10-shameerali.kolothum.thodi@huawei.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubP1r-0000KX-8e
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 15:40:05 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubP1o-0001ol-8p
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 15:39:59 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4561a4a8bf2so14441765e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 12:39:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752521994; x=1753126794; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AYDsqCZbbKRVXIcGD0Th75rw6R7pwd0G284BdPZrU50=;
+ b=DPG8rbwgEecZXr+usZxENV877vZiSdxYvRN602lL9EmHnjB/xwVbTOlZiB7nyjYrla
+ x8ci+bReD5vAS9aGbFlGwBIiFtE9S8UJg/sCwLorv45hh7aXY9aMXuGxe5rHEW4EgkqI
+ G0eKpX6oR+koLQuIwVFm7LPmv+tft3qg2QjDrnqzgZuCuBtLBwlxe22mHFQYgOby6QXM
+ L9lyfVBJIHEmJwu2otV4538fwbQ8023O9Uod6fM0YzMT6YE1E8cjQkXLITsOD0VNmtYy
+ 8zzVclXs7kpxtV5HITF27B17HRgL3EwBfoa3BJhQD0WFz/a12NHUNE14gz9ID7NGGRMo
+ hQvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752521994; x=1753126794;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AYDsqCZbbKRVXIcGD0Th75rw6R7pwd0G284BdPZrU50=;
+ b=Rp0SG2VpVMIgRmwvg7OkAWBAjv6sKsMkC97b3ztFtkcdh6O6984uo2DzdKdCzeBGtY
+ upmzv1La+AiJzElN9AwVioy6eHLD5y6RFbBExx+wh6R0ATgT+LxxxKqpTjV/FWvwcDwm
+ 60LdLOioFTJVoLWgMdcpZubKLkjcpRz1VzCqXMT0NSDRmWhBa2yKQSNOJjmh0xZbAjuK
+ wY3pCy/ECGAxvnuxCnVVYRJsrG4Er2+Kw+Jnk/jwGzVpCoAi1IMJss4Y9q3kEhKmapYi
+ sHuZUdEQYqLwoZri466Nfu/NdU69ZmzODm+I+25AAH9gC4nPOn91dR9oix0Nwed98obB
+ 8jpw==
+X-Gm-Message-State: AOJu0Yz9UgRTEq/ePehU6Q18ekb16pSgAtWPz33Td7v0OKJn/th84egd
+ IcAA01YkBdj/QoqFKXDesAWbrauR4Tra1XybgfIpxNua9Bf45HY6vP937GqvkWeH3zU=
+X-Gm-Gg: ASbGncsaNk1mM7K6YeJ7uWstDabs7Sg+CdSdTL7W7ZRh+cj34vbXy2yVzegQGbnsW9s
+ M9rZOuJqB9IkPtoOqPF/Q/2VEsVhnGcFvmAaOq5kxbIHvoKB9rcrS19RmgvRrkHaOqRuqkHTKsz
+ KDZqBjShyYFQhOYtlBV+X3gjU7ajmezGC9cZ119rYgWimZdl+iUxVZccN20KqU24X60TtENfu40
+ +/5Waf1BjRn5nzKDyO7eQfPMcwvP1T3pKeVIjTf+LGzk0aNRLsVwzjiD6p1Yejy5jnK22U/IkRH
+ o5J2Guh6o7Dpnw8935KRxveo5u6x6qcJH1Jm7en1gkoGqNFXnvCHAIQEXWcHWFpxAcE1GwbkhOW
+ hiIHWb8JWZbKyLmJ5tn0HggBl5kuVCU0vYYWXk7uujsndeXutWqhTUYMCpaXbSNg57w==
+X-Google-Smtp-Source: AGHT+IF8A4P7ufgns2DRXYYrVgvrp3BY2Zac9qPAIbYYB5fdRLWJ37QhofYWOJjeAUeMkeryksI9MA==
+X-Received: by 2002:a05:600c:548b:b0:456:11cc:360d with SMTP id
+ 5b1f17b1804b1-45611cc3924mr68490555e9.9.1752521993886; 
+ Mon, 14 Jul 2025 12:39:53 -0700 (PDT)
+Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4561dd90af8sm28898255e9.15.2025.07.14.12.39.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 14 Jul 2025 12:39:52 -0700 (PDT)
+Message-ID: <06db4d26-f12e-4589-977b-750311c92bea@linaro.org>
+Date: Mon, 14 Jul 2025 21:39:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250714155941.22176-10-shameerali.kolothum.thodi@huawei.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B078:EE_|CH2PR12MB4086:EE_
-X-MS-Office365-Filtering-Correlation-Id: 620ad2f3-3f07-478d-70be-08ddc30dea1f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|7416014|36860700013|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?sc6uBPB3xM8e9yhskaqz0KIp32DVW3/KiDeI3teMsU82gc3xW4U4LbW76gID?=
- =?us-ascii?Q?Of5La4TnXQXb+Tj+TEnvFqRgozyYBw1Cxh78RgmW6WsYeJ3AnCIHmeyHPqfX?=
- =?us-ascii?Q?qQHp8xbi1D+ZT0LBDRrgg73S4yWigx/hghU9/8Z5jcxHTnQvcDacKB+FwPBx?=
- =?us-ascii?Q?IOwIryzP61bWfLVnOuoIFOG8bZcZavQkL0EdHSqboACGc8YtWCOxDaxEJhSz?=
- =?us-ascii?Q?P5xZBKKb5ygOdtEI0thjpCHJg0srvRn9yqwtSxTKcnznMrO9Fhaik7+WVPQV?=
- =?us-ascii?Q?dCEfbJbYY1snKzr2M7MmUdYvmgSIs1mIFUqowSj5WwIXEGzflOXrcozfjNq6?=
- =?us-ascii?Q?ioBH9y5MWBTb5H6ykdn2FWV0oY0pauiY2K7NWDkLjgFv49nZgWMjBaTmknfH?=
- =?us-ascii?Q?pWtbdrxr1vKaeI1lvydFLTs+MkjhFSjuXpd471wdxSc7W9GgOvuB6Ok+aUwE?=
- =?us-ascii?Q?vg/pje+rg7xqXmxMahyiKTpBL/3Z2DkhFWYZFOsWIqVcEDap7R0w1Jfffa69?=
- =?us-ascii?Q?v2VZhQltRoOT2/8NwJxMrhz24T01r9moC9bM6F2fTfPeH1ywCFMWvFAt/ZDR?=
- =?us-ascii?Q?rQ3Lre2fbtE4HwXM2USiHZEb8Rl+6PZ2kNGfsX9voZt/LYCVjjhwEUPzE9HY?=
- =?us-ascii?Q?kIGTo1fhASjQggqyyag42szCDrZnrKvBQ5asQE1qgpkTUQ6q+xc3wsxNTf+1?=
- =?us-ascii?Q?lMIjLkwVoYbFypuPYHxNSOs6n4Larfgg7MekWk3gxujMI+UMcfNXHS4AA5fE?=
- =?us-ascii?Q?7+vkmWYkIybCxem4clEhqoLaJpmD3rqf8ftrQ/kWwWke+0V5gUzXMsWlmNev?=
- =?us-ascii?Q?aoYt2mRXey+Za8jR16GSjLAvqMZzzm1HztV4ZAFqy/lpcTdgZNGeAB5gdJks?=
- =?us-ascii?Q?k1hEUYgBPU9376Ee1G/6ozqI5z8eEZNGPS3HnoDSMS1m9vnDVwRY3bipQVNL?=
- =?us-ascii?Q?Y5b9QDIwoqL6WJtobb3e98gaE7hEu+fk5mwlg9RAC8LL022RNhHpAIKCCHVW?=
- =?us-ascii?Q?mZqvgErsuQbMRlQoXrT5qaNVfZfYUGX3fxsXSbZIP+HOxYblynja7aKvgJJ1?=
- =?us-ascii?Q?fX0pNQJz+ASizYvIrZpLcldx3k3Z0qDZUk9vmzZIYJ/QYw5vUh1OtkgaKk2e?=
- =?us-ascii?Q?fe01xgA011OVD41UFyych4J/82aVkcpWStaJoWwwx7kDxCYx2blwRMUwOOdl?=
- =?us-ascii?Q?VvTKVm1z7AaCpKetkOOwecXssEuBgXwsheE5KB9kuiACb2HKTHS6icWVvaFA?=
- =?us-ascii?Q?hMdYKtt72xznXszLmAOlZMe68ukanUJSG1V2TT4ghZ7es0bzlCGLMo1JqPnK?=
- =?us-ascii?Q?GLqtaUHcT1+KLw1AZYVROg3e8njBTbcC8xOb07S8zgFzgUmKk4QAfOZUyh8V?=
- =?us-ascii?Q?0UkBxqBTVhr2Cw9PI5+oASQoTnNy6cWhu1duVQ5n3j4vTRtEYtHFBu8w9fJj?=
- =?us-ascii?Q?RXsSlqWbwqjR9Y0WmehZ6eK45YQTWKj2xh0a6L2lld4AN/Kz06tzHBbOOB4l?=
- =?us-ascii?Q?AJm26iukRqwuQrCkAmVvWm1EufiwJT8qPPnG?=
-X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(7416014)(36860700013)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2025 19:37:48.4582 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 620ad2f3-3f07-478d-70be-08ddc30dea1f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B078.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4086
-Received-SPF: permerror client-ip=2a01:111:f403:2009::62a;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM10-BN7-obe.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 25/26] migration/postcopy: Add latency distribution report
+ for blocktime
+To: Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>
+References: <20250711141031.423-1-farosas@suse.de>
+ <20250711141031.423-26-farosas@suse.de>
+ <CAFEAcA-_2a5CUspXhy8UErA86EnZ3_s=P2DQ9DPdrMDwNWF4FQ@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA-_2a5CUspXhy8UErA86EnZ3_s=P2DQ9DPdrMDwNWF4FQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -159,166 +102,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 14, 2025 at 04:59:35PM +0100, Shameer Kolothum wrote:
-> +static int
-> +smmuv3_accel_dev_install_nested_ste(SMMUv3AccelDevice *accel_dev,
-> +                                    uint32_t data_type, uint32_t data_len,
-> +                                    void *data)
-> +{
-> +    SMMUViommu *viommu = accel_dev->viommu;
-> +    SMMUS1Hwpt *s1_hwpt = accel_dev->s1_hwpt;
-> +    HostIOMMUDeviceIOMMUFD *idev = accel_dev->idev;
-> +    uint32_t flags = 0;
-> +
-> +    if (!idev || !viommu) {
-> +        return -ENOENT;
-> +    }
-> +
-> +    if (s1_hwpt) {
-> +        smmuv3_accel_dev_uninstall_nested_ste(accel_dev, true);
-> +    }
-> +
-> +    s1_hwpt = g_new0(SMMUS1Hwpt, 1);
-> +    s1_hwpt->iommufd = idev->iommufd;
-> +    iommufd_backend_alloc_hwpt(idev->iommufd, idev->devid,
-> +                               viommu->core.viommu_id, flags, data_type,
-> +                               data_len, data, &s1_hwpt->hwpt_id, &error_abort);
+On 14/7/25 12:47, Peter Maydell wrote:
+> On Fri, 11 Jul 2025 at 15:20, Fabiano Rosas <farosas@suse.de> wrote:
+>>
+>> From: Peter Xu <peterx@redhat.com>
+>>
+>> Add the latency distribution too for blocktime, using order-of-two buckets.
+>> It accounts for all the faults, from either vCPU or non-vCPU threads.  With
+>> prior rework, it's very easy to achieve by adding an array to account for
+>> faults in each buckets.
+>>
+>> Sample output for HMP (while for QMP it's simply an array):
+>>
+>> Postcopy Latency Distribution:
+> 
+> Hi; Coverity points out that there is a bug here (CID 1612248):
+> 
+>> +static const gchar *format_time_str(uint64_t us)
+>> +{
+>> +    const char *units[] = {"us", "ms", "sec"};
+>> +    int index = 0;
+>> +
+>> +    while (us > 1000) {
+>> +        us /= 1000;
+>> +        if (++index >= (sizeof(units) - 1)) {
+> 
+> sizeof(units) is the size in bytes, which in this case is
+> 24, as it is an array of three 8-byte pointers. So it's
+> not the right thing to use in bounds checking the array index.
+> 
+> You probably wanted ARRAY_SIZE(units). Also, the ++index
+> inside the comparison here seems unnecessarily confusing.
+> I would suggest something like
+> 
+>      while (us > 1000 && index + 1 < ARRAY_SIZE(units)) {
+>          us /= 1000;
+>          index++;
+>      }
+> 
+> which puts into the while condition the two conditions under
+> which we are OK to shift down a unit, and keeps it
+> clear that we maintain the invariant of "when we shift
+> down a unit we also divide the value by 1000".
+> 
+>> +            break;
+>> +        }
+>> +    }
+>> +
+>> +    return g_strdup_printf("%"PRIu64" %s", us, units[index]);
+> 
+> Otherwise this units[index] access could be off the end of
+> the array.
+> 
+>> +}
 
-Let's check the return value.
+As a follow-up, this method could be declared in "qemu/cutils.h"
+along with size_to_str() and freq_to_str(), maybe timeus_to_str()?
 
-> +    host_iommu_device_iommufd_attach_hwpt(idev, s1_hwpt->hwpt_id, &error_abort);
-> +    accel_dev->s1_hwpt = s1_hwpt;
-> +    return 0;
-> +}
-> +
-> +void smmuv3_accel_install_nested_ste(SMMUState *bs, SMMUDevice *sdev, int sid)
-> +{
-> +    SMMUv3AccelDevice *accel_dev;
-> +    SMMUEventInfo event = {.type = SMMU_EVT_NONE, .sid = sid,
-> +                           .inval_ste_allowed = true};
-> +    struct iommu_hwpt_arm_smmuv3 nested_data = {};
-> +    uint32_t config;
-> +    STE ste;
-> +    int ret;
-> +
-> +    if (!bs->accel) {
-> +        return;
-> +    }
-> +
-> +    accel_dev = container_of(sdev, SMMUv3AccelDevice, sdev);
-> +    if (!accel_dev->viommu) {
-> +        return;
-> +    }
-> +
-> +    ret = smmu_find_ste(sdev->smmu, sid, &ste, &event);
-> +    if (ret) {
-> +        error_report("failed to find STE for sid 0x%x", sid);
-> +        return;
-> +    }
-> +
-> +    config = STE_CONFIG(&ste);
-> +    if (!STE_VALID(&ste) || !STE_CFG_S1_ENABLED(config)) {
-> +        smmuv3_accel_dev_uninstall_nested_ste(accel_dev, STE_CFG_ABORT(config));
-> +        smmuv3_flush_config(sdev);
-> +        return;
-> +    }
-> +
-> +    nested_data.ste[0] = (uint64_t)ste.word[0] | (uint64_t)ste.word[1] << 32;
-> +    nested_data.ste[1] = (uint64_t)ste.word[2] | (uint64_t)ste.word[3] << 32;
-> +    /* V | CONFIG | S1FMT | S1CTXPTR | S1CDMAX */
-> +    nested_data.ste[0] &= 0xf80fffffffffffffULL;
-> +    /* S1DSS | S1CIR | S1COR | S1CSH | S1STALLD | EATS */
-> +    nested_data.ste[1] &= 0x380000ffULL;
+Regards,
 
-Likely we need to make sure that values here are little endians, in
-alignment with the kernel uABI.
-
-> +    ret = smmuv3_accel_dev_install_nested_ste(accel_dev,
-> +                                              IOMMU_HWPT_DATA_ARM_SMMUV3,
-> +                                              sizeof(nested_data),
-> +                                              &nested_data);
-> +    if (ret) {
-> +        error_report("Unable to install nested STE=%16LX:%16LX, sid=0x%x,"
-> +                      "ret=%d", nested_data.ste[1], nested_data.ste[0],
-> +                      sid, ret);
-> +    }
-> +
-> +    trace_smmuv3_accel_install_nested_ste(sid, nested_data.ste[1],
-> +                                          nested_data.ste[0]);
-> +}
-> +
-> +static void
-> +smmuv3_accel_ste_range(gpointer key, gpointer value, gpointer user_data)
-> +{
-> +    SMMUDevice *sdev = (SMMUDevice *)key;
-> +    uint32_t sid = smmu_get_sid(sdev);
-> +    SMMUSIDRange *sid_range = (SMMUSIDRange *)user_data;
-> +
-> +    if (sid >= sid_range->start && sid <= sid_range->end) {
-> +        SMMUv3State *s = sdev->smmu;
-> +        SMMUState *bs = &s->smmu_state;
-
-Can we use ARM_SMMU and ARM_SMMUV3 macros?
-
-> +
-> +        smmuv3_accel_install_nested_ste(bs, sdev, sid);
-> +    }
-> +}
-> +
-> +void
-> +smmuv3_accel_install_nested_ste_range(SMMUState *bs, SMMUSIDRange *range)
-
-Fits in one line.
-
->  typedef struct SMMUv3AccelDevice {
->      SMMUDevice  sdev;
->      AddressSpace as_sysmem;
->      HostIOMMUDeviceIOMMUFD *idev;
-> +    SMMUS1Hwpt  *s1_hwpt;
-
-No need of an extra space.
-
->      SMMUViommu *viommu;
->      QLIST_ENTRY(SMMUv3AccelDevice) next;
->  } SMMUv3AccelDevice;
-> @@ -45,10 +51,21 @@ typedef struct SMMUv3AccelState {
->  
->  #if defined(CONFIG_ARM_SMMUV3) && defined(CONFIG_IOMMUFD)
->  void smmuv3_accel_init(SMMUv3State *s);
-> +void smmuv3_accel_install_nested_ste(SMMUState *bs, SMMUDevice *sdev, int sid);
-> +void smmuv3_accel_install_nested_ste_range(SMMUState *bs,
-> +                                           SMMUSIDRange *range);
-
-Fits in one line.
-
-> diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
-> index b6b7399347..738061c6ad 100644
-> --- a/hw/arm/smmuv3-internal.h
-> +++ b/hw/arm/smmuv3-internal.h
-> @@ -547,6 +547,10 @@ typedef struct CD {
->      uint32_t word[16];
->  } CD;
->  
-> +int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
-> +                  SMMUEventInfo *event);
-
-Ditto
-
-> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-> index 2f5a8157dd..c94bfe6564 100644
-> --- a/hw/arm/smmuv3.c
-> +++ b/hw/arm/smmuv3.c
-> @@ -630,8 +630,8 @@ bad_ste:
->   * Supports linear and 2-level stream table
->   * Return 0 on success, -EINVAL otherwise
->   */
-> -static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
-> -                         SMMUEventInfo *event)
-> +int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
-> +                  SMMUEventInfo *event)
-
-Ditto
-
-Thanks
-Nicolin
+Phil.
 
