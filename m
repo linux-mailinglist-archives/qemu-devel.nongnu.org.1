@@ -2,94 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB17B0420B
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 16:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6818FB04214
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 16:45:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubKOM-00014n-Rw; Mon, 14 Jul 2025 10:42:55 -0400
+	id 1ubKQm-0003v7-5o; Mon, 14 Jul 2025 10:45:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ubIqd-0008Ue-8f
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:03:59 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ubIqY-0004qU-D6
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:03:59 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-41b1ca1f28cso127782b6e.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 06:03:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752498233; x=1753103033; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=EiqAn49S8CY/KaPMB72o/KuCRfolChglBttyObH9PGQ=;
- b=gJxbR0rk9vTBOq8O7K9+GA8lpe3q16QoHuHgtK0eFl5eBkQM2eTIj2lwo/Pkpek5ZX
- 2NF7evgIAuYGbsClwFPj4usvoER4NdHk0xh8vM6dFg2quzlIClWvuEgWar/KKS5/CgSg
- figMfkEqYHRPXmz407O/pdJ2RZAs/Ahy2ZPEwUYOp3GuZY4LgTGnsLp/HTHbiFvTAJpx
- DhPuDmowkvumkp8YOYyb0ZH06eJfhl1iJUZ4u/CVlnQNBhrlYGrL4uq5diuAJJRxosCM
- stWKmkL4/Rrry4H7nX4+ZQc5O7gBzhoGfpg5aIekOjfzyN3RAbmEMvqBUaoaYa6lYXp3
- 7yYA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubIvt-0004ex-Ej
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:09:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubIvq-0005WH-E7
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:09:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752498557;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=d9N0wITcK5nFg/kSgon6hwyI1m1FIJrWlz9I+YSu+kE=;
+ b=PXIiL3xHw4kAfdhNhXB/CbXkoPypLlU78sarMsyTNDdTpc0QCTD+/6bQ41i9fdENnjTSRm
+ QVg9noOcsqhUtVKem1XhDe7MyT2L9Xa6XhAhu8lNCQIN/jje8Jro6iUZZmyY4UNdYHEPDK
+ 6iHEN4MmbgD26uODK+EiMgJ2GnHvnkQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-267-uxumEz_iPyO7L4SfG_E39w-1; Mon, 14 Jul 2025 09:09:15 -0400
+X-MC-Unique: uxumEz_iPyO7L4SfG_E39w-1
+X-Mimecast-MFC-AGG-ID: uxumEz_iPyO7L4SfG_E39w_1752498555
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a52bfda108so2163966f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 06:09:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752498233; x=1753103033;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EiqAn49S8CY/KaPMB72o/KuCRfolChglBttyObH9PGQ=;
- b=jFNwDYiZjPiQlk5coJvOXIGk43hTW5zIyjEv3L5K+8aFlSRiZNFslPM9yK1hZD+9xf
- JKO4cpuiXE7A58rb7vyLLWH3NO+jNshe3qOWm79eWD/5a+QLDZGiDUaOOsm+Dv3BGhJF
- uwIFM7l5erYzjnI3CNVQRoffEG/VCDeVJ1+VnASjJ5N+fiD9LQYN6tDPiy+jQv8FzUmV
- Fu2191wdUP0e7Lit0XKwDsPX3zArmcvw2S5KRlBv9qko7kmR4deop5nTGqC31jZvmbSm
- MP7n9kKr8ni11RgXuWtTu7uHNyU+NK6N4uvGOcYfJJTxMGQTuimSbTZR0kARJQlueg30
- hkMg==
+ d=1e100.net; s=20230601; t=1752498554; x=1753103354;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=d9N0wITcK5nFg/kSgon6hwyI1m1FIJrWlz9I+YSu+kE=;
+ b=syEtA0JEoMPd8LcPN52dQdz3XVKrQWc3uTvqZDlt+FwH264JeEuh6tqm4zO6fVP8Kr
+ z2jRfOaKWVnFtmx+AZquQq4j85a2zhtpUg+7YvLWV3Ll0qRMWwUzva4+v/WCkbe+Ccsl
+ RRMznyAVZ/lj5v99q68t++GBYXNeiicyTd3pWePdAjdu940bKmrov9jC2TndJWA2QVJS
+ WcUSjwxaPADQPI5P3iOn2W4YOwSku12Ut/suifRXTj8N2dwjmc+46BeQa+bbmWzbu1G4
+ KWs3gFTMcD1rvTnwjUgJXjir5nZRY5wJog/ABj5XyG62lTZbkrzK6zUFHF1kbfAWsjJW
+ 9nvQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVZgg8eU6Xn5YtIEIsl6NOvTNHrzHJkM9QQfml86aJBsUvc33evSPeKzvZAzzwB5R/+Jy3T0BhHKa+j@nongnu.org
-X-Gm-Message-State: AOJu0Yza5lJ1gSug60hVOuXgNRhJUTBNK7/8KDtVa022kDg4YUGP2DTz
- w9JYsg9COhRdMrBMoWD3YT9i/u0qvQS2ebWV4xeBvVe5nE2nyXSBEe9hyRpi8fHgqx8=
-X-Gm-Gg: ASbGncsAENxOwI/mqgb5Kv/Fc0PFuMgZJCaozdwHNifqyol/rYIU/cNrijOIWaJ/22p
- xAcf2Rc2vtBiBqYqIiDO8iuT1GDGljaW09axh7CLbVuPBtcAYhuHIXBy9JC5KJQMwCdeY1Q3xxm
- ktZ0q8S57f8WwUE9tw4avCVmKx6+XcWPylFxWh646NOhHHJSda1WEX1mXg3oeZnjIyark+wzzMv
- gyUweF36QDbzkF9NZvBFa+tjJ3jYp/NN00Z6JnEzJtZSFW+DXZRZgI03N0RRnrEfsBJAij2rHCW
- TNknAoa7NxK84Nn1ALzU5H0N+Ps96+/nj1kABRf4FirTkeH+Wi2gdQtyUuvwMuHQjISXAGd5D9L
- NDutCMYwHJIf7Rvxw2SGN8Jp8PPBLyJIubWb0JAS6mLHnXMl+18xitXl1CHPg2sKjC6+CALnkWa
- cU
-X-Google-Smtp-Source: AGHT+IHYAmPOK16UUreRJp4bqWWVOjer7+yvaIi1YAYAsn8Ew7u04Fnm6nNi8gsW8jr3u1YM1Ux8hw==
-X-Received: by 2002:a05:6808:2016:b0:40a:52f5:f2ad with SMTP id
- 5614622812f47-4153737a03cmr9313531b6e.8.1752498232656; 
- Mon, 14 Jul 2025 06:03:52 -0700 (PDT)
-Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-41419baa665sm1525064b6e.21.2025.07.14.06.03.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jul 2025 06:03:52 -0700 (PDT)
-Message-ID: <19cf4296-7abd-4405-a49d-06eb868e3886@linaro.org>
-Date: Mon, 14 Jul 2025 07:03:49 -0600
+ AJvYcCXq25ZWHwNJ+2Uct3BdQXAwuPWKoOnw3r7+020JFjWxRKPFU02XlVOs5oQPf2jF35omVPuq1JBCaA0j@nongnu.org
+X-Gm-Message-State: AOJu0Yy2SwPMfXBBoANdrSQuoA0kkJ9gsPny9AAiQimvaaWsgLdAsIxG
+ Qe5SsQ32d5ko8WFBZXDPgsGQhGcT8ucgQVQPy5lL6HjbdABUNlxis0nXJNhG0g0K2yq4soFxcVC
+ F4KuUmKFgB7YyiRfqcJAHGB4jrfGYAQCSc0M3+9O4BLQtvo7E1xk3dh7N
+X-Gm-Gg: ASbGncv7cR+RHKdBCi32z9SfTuBS9ICLAdIuphFwfsb/FH5Ebpxxra2sXajQfHgSySV
+ ZWpLKHv9tH7tLB4byUj4zMc6utReoqhj1db5YoYcaqSo0hBTTz5IaUQIp4jQWzFXsdS663Gvwoh
+ 5WR/CpMOXLUjhxqRrptWGwQqEvYCskeehJzOzC+bLozeC4dq0lDzSD2YvkoVQ9ohNh0WWUlqc8F
+ iUnfbwC16lS7twXftxp7SqbWcDsjyySz39zgRfuOubdTLiCmyMzpNhjtOSGJ9CdLrGvio2/BUIN
+ 1DbM2xWwC1uGYUO0uHEbnZqLrCGuK1+1
+X-Received: by 2002:a05:6000:144b:b0:3b2:ef53:5818 with SMTP id
+ ffacd0b85a97d-3b5f351e561mr10086504f8f.5.1752498554359; 
+ Mon, 14 Jul 2025 06:09:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHoQD9Ho3k1I73zw5t5mB19KW2sR6IMwILqGPakeR1nAQlcLLjYOj1XSNqX+jCnF2w/W+FRLQ==
+X-Received: by 2002:a05:6000:144b:b0:3b2:ef53:5818 with SMTP id
+ ffacd0b85a97d-3b5f351e561mr10086480f8f.5.1752498553876; 
+ Mon, 14 Jul 2025 06:09:13 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45624651a09sm1472665e9.12.2025.07.14.06.09.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Jul 2025 06:09:13 -0700 (PDT)
+Date: Mon, 14 Jul 2025 09:09:10 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Alireza Sanaee <alireza.sanaee@huawei.com>
+Cc: anisinha@redhat.com, imammedo@redhat.com, jonathan.cameron@huawei.com,
+ linuxarm@huawei.com, peter.maydell@linaro.org,
+ prime.zeng@hisilicon.com, qemu-devel@nongnu.org,
+ shameerali.kolothum.thodi@huawei.com, wangyanan55@huawei.com,
+ yangyicong@hisilicon.com, maobibo@loongson.cn, gaosong@loongson.cn,
+ jiaxun.yang@flygoat.com
+Subject: Re: [PATCH v6 3/4] hw/acpi/aml-build: Build a root node in the PPTT
+ table
+Message-ID: <20250714090807-mutt-send-email-mst@kernel.org>
+References: <20250604115233.1234-1-alireza.sanaee@huawei.com>
+ <20250604115233.1234-4-alireza.sanaee@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] Assign the GDB register XML files of Sparc64 to
- Sparc32plus.
-To: unisono@quyllur.org, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, atar4qemu@gmail.com, laurent@vivier.eu,
- mark.cave-ayland@ilande.co.uk, philmd@linaro.org
-References: <20250711155141.62916-1-unisono@quyllur.org>
- <20250711155141.62916-4-unisono@quyllur.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250711155141.62916-4-unisono@quyllur.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250604115233.1234-4-alireza.sanaee@huawei.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,28 +111,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/25 09:51, unisono@quyllur.org wrote:
-> From: Rot127 <unisono@quyllur.org>
+On Wed, Jun 04, 2025 at 12:52:32PM +0100, Alireza Sanaee wrote:
+> From: Yicong Yang <yangyicong@hisilicon.com>
 > 
-> Commit 3/3
+> Currently we build the PPTT starting from the socket node and each
+> socket will be a separate tree. For a multi-socket system it'll
+> be hard for the OS to know the whole system is homogeneous or not
+> (actually we're in the current implementation) since no parent node
+> to telling the identical implementation informentation. Add a
+> root node for indicating this.
 > 
-> Signed-off-by: Rot127 <unisono@quyllur.org>
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
 > ---
->   configs/targets/sparc32plus-linux-user.mak | 1 +
->   1 file changed, 1 insertion(+)
+>  hw/acpi/aml-build.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
 > 
-> diff --git a/configs/targets/sparc32plus-linux-user.mak b/configs/targets/sparc32plus-linux-user.mak
-> index 7a16934fd1..0d9cf44652 100644
-> --- a/configs/targets/sparc32plus-linux-user.mak
-> +++ b/configs/targets/sparc32plus-linux-user.mak
-> @@ -5,4 +5,5 @@ TARGET_ABI_DIR=sparc
->   TARGET_SYSTBL_ABI=common,32
->   TARGET_SYSTBL=syscall.tbl
->   TARGET_BIG_ENDIAN=y
-> +TARGET_XML_FILES=gdb-xml/sparc64-core.xml
->   TARGET_LONG_BITS=64
+> diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
+> index 560cee12a2..76a4157a18 100644
+> --- a/hw/acpi/aml-build.c
+> +++ b/hw/acpi/aml-build.c
+> @@ -2153,12 +2153,25 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
+>      int64_t socket_id = -1, cluster_id = -1, core_id = -1;
+>      uint32_t socket_offset = 0, cluster_offset = 0, core_offset = 0;
+>      uint32_t pptt_start = table_data->len;
+> +    uint32_t root_offset;
+>      int n;
+>      AcpiTable table = { .sig = "PPTT", .rev = 2,
+>                          .oem_id = oem_id, .oem_table_id = oem_table_id };
+>  
+>      acpi_table_begin(&table, table_data);
+>  
+> +    /*
+> +     * Build a root node for all the processor nodes. Otherwise when
+> +     * building a multi-socket system each socket tree is separated
+> +     * and will be hard for the OS like Linux to know whether the
+> +     * system is homogeneous.
+> +     */
+> +    root_offset = table_data->len - pptt_start;
+> +    build_processor_hierarchy_node(table_data,
+> +        (1 << 0) | /* Physical package */
+> +        (1 << 4), /* Identical Implementation */
+> +        0, 0, NULL, 0);
+> +
+>      /*
+>       * This works with the assumption that cpus[n].props.*_id has been
+>       * sorted from top to down levels in mc->possible_cpu_arch_ids().
+> @@ -2175,7 +2188,7 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
+>              build_processor_hierarchy_node(table_data,
+>                  (1 << 0) | /* Physical package */
+>                  (1 << 4), /* Identical Implementation */
+> -                0, socket_id, NULL, 0);
+> +                root_offset, socket_id, NULL, 0);
+>          }
+>  
+>          if (mc->smp_props.clusters_supported && mc->smp_props.has_clusters) {
 
-This isn't used, because the ifdefs in sparc_cpu_class_init are wrong.
 
-r~
+This function is also used by loongarch64, but you do not update the
+loongarch64 expected files:
+https://gitlab.com/mstredhat/qemu/-/jobs/10672661860
+
+> -- 
+> 2.43.0
+
 
