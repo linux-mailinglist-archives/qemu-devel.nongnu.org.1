@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A931B04C36
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE35B04C27
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:22:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSIW-0003VP-MG; Mon, 14 Jul 2025 19:09:24 -0400
+	id 1ubSHy-0000qt-4u; Mon, 14 Jul 2025 19:08:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHN-0006GX-BC
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHN-0006Gg-Bm
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHL-0005eo-D3
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHL-0005et-I8
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534489;
+ s=mimecast20190719; t=1752534490;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L8cdFXXzqDzXY75EaUcrZ9O1kHGmzGq5u5QSMVPaWec=;
- b=Mag7cJDMAEbUvEF+CFvXdkMjlUXIWd0sStuQRRjYq0Cu9QpUphWa6iSFpq/Lx02bo32nIy
- 290pJZi+NvBcxewvBjGKthcxOXMWawmCHbCse0NbEG4uiyCziWWVW4roxBGKP1NRf8v9jM
- 0p0HRvExdAyy5kGImguqv71JFT7COp4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dbxQM6MkMC8CfUCcdkREoYX34HGmxCh+T/dmT65bbE8=;
+ b=A5sdu4TRDzVAH89L44veXBaHEUMzq8pPtSn7HKBChQb8ptng1nKoyfHM5WiiwnY1V7xZN3
+ kCN18ZgJfma0evNs5Vy+Uz6Isi8paaJVgSKSz+M3d+k5Q0ElPec9I4T9vb3sshX2hgpkQi
+ KFu+jk+0KjnvQu6b/5dIrhsCbHnubt8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-313-F9nkDLxbMyCQGPDZAlEcFg-1; Mon, 14 Jul 2025 19:08:08 -0400
-X-MC-Unique: F9nkDLxbMyCQGPDZAlEcFg-1
-X-Mimecast-MFC-AGG-ID: F9nkDLxbMyCQGPDZAlEcFg_1752534487
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-451ecc3be97so25168635e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:07 -0700 (PDT)
+ us-mta-649-jEAMHkKVOICWUa3jJS8B7w-1; Mon, 14 Jul 2025 19:08:09 -0400
+X-MC-Unique: jEAMHkKVOICWUa3jJS8B7w-1
+X-Mimecast-MFC-AGG-ID: jEAMHkKVOICWUa3jJS8B7w_1752534488
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-451d30992bcso37909345e9.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534486; x=1753139286;
+ d=1e100.net; s=20230601; t=1752534488; x=1753139288;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=L8cdFXXzqDzXY75EaUcrZ9O1kHGmzGq5u5QSMVPaWec=;
- b=opFdr/pJHZh7lbkZ/qCMZBmT35SQkAayYPeHiiOC8cjRYxscGtHU0frdy7wWbplmLs
- C9mxZmRlMVo7UwAsw7Znvd0XobI2ZT6RiE4Xnff+oB7jGa4mzHdlHp8RSCeXoEpEqW2H
- ZajhDIo82eGDlMuepwFho6GknUUhw8UGb0KQs6JRo+ohQ5iV4/84wkOv9WbAZTVDz+u6
- Dy7aFNsE37ZzF5XBPYnQ0c1kZdtn1YpVbHICivXZMkl0/69ClXG5BuCKKCpSQmMAQ5ON
- mSwHNZkpuBaOc5D9vSIgKP9f8lFFtna9zzsrj6vt6ep1hJkfk1/ELGItztaUQSL9CjXz
- aoGg==
-X-Gm-Message-State: AOJu0YzP57HkM1RDq4Yjg8OR8Kqoe6V/7EOjleYuDHmNMmQVjTCAiCuW
- QiDXyPloiET7OR1DMkT4HFgLqUw6XpCsqtwwOs36BZcyk1cAkFjdChZEUYQ8UYTvl5A9HSKbE0N
- kIxDoQMbH7o4u3MDs8sflJ0fcSd+/d7b60hcoPgbI3ady12cprD0UgCONd0P5uPiqvT2208vky8
- 8lybJt1FrVPuFnZhuXH1eM3ef73a5WrCAR6Q==
-X-Gm-Gg: ASbGncvieMqe7U6Anc0gazYghPXqPvvfd2K7dDRSCRIrRPimdJzNf9DslkqFqQXPJIr
- 7+XvPm1FGdagMq7W59LhtLHN2C6YjtQtSmA4P+5fT5gYYP5fNAgXTvjxidjo+pNgBgmcluwRWtx
- Yo9Ij1M7dRUBUvahirvhsXrYw2LkZukExs68Y0r7aZjn1i8RaoXQw13J78fN4ScymwTBODOsTTA
- EeAuZEvlrhHd726SwOt/F5rL4dtZquoBOmVrXQ0+iEmWFZLpUYdRAqPux6Cpbn6s+pSJmP25HQD
- f9SopsSS6SgQKF17R/ndZqV8YYFn0KPw
-X-Received: by 2002:a05:600c:5253:b0:456:2832:f98d with SMTP id
- 5b1f17b1804b1-4562832fb91mr297795e9.27.1752534486239; 
- Mon, 14 Jul 2025 16:08:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE3OpparMvz2Pa5t/Qp00j7WItFeMgA8/YeoeIXl+CQ0++ZSAtVKcrdnXcRGuDAXUYRpri18A==
-X-Received: by 2002:a05:600c:5253:b0:456:2832:f98d with SMTP id
- 5b1f17b1804b1-4562832fb91mr297495e9.27.1752534485742; 
- Mon, 14 Jul 2025 16:08:05 -0700 (PDT)
+ bh=dbxQM6MkMC8CfUCcdkREoYX34HGmxCh+T/dmT65bbE8=;
+ b=fmnUz/vi8+XKayw/GHw1cHTw35UjPH9mcyHvad7lkbi2GPXGTRAw0zMbA0RyPRzu6o
+ Ygo3XxUuj+5MBuzWWZadDKUf4cRxlVaG8MPnVU71ygZ2z045VW6e/19FZI+HwQBvB3HP
+ oMwwUmLg4FkcYemLQRGzgicwX44mRRLtHcBLiMl7WS06UyCl+X7aP5Mp0iOjg4HECh3W
+ zjitrzrcNMgRVYMkqoziWvmW0DZRXEpFkQANSIiLwcrxS8th9SICGxl3sF/58N9Ma9e+
+ EegvjWuY4YxbdN5mx6i2+xURG5ekYhEgcALnyPuWf2gjU2EDMDeFyDnkVPzkAyD5N9vZ
+ LbCA==
+X-Gm-Message-State: AOJu0YxJ7O1Bdu7Som8pzvdGRuT0itA/weG+VOFgjl2KEN84GFKkWKFO
+ +TkqmhROtRNZIIoN+3Xx/T3F62ueuDpEBruHgoc/PzVvUx4nq50jMoylvEfmardunZdfY8L789F
+ bp8xjwRtgCG05ytIQzXgaFY4FRMUTAyIikDthRjpTrkzXMSy9oV6kft7C52eG9TxR4N2vE2cHF1
+ aU0+DQX4ieSBHt0WaQ8EzqMxtD1nytg7nx6Q==
+X-Gm-Gg: ASbGncuqy18poJgHZh0uiWCT0Ide546IUJv4YeIlcd6P0Kws/jGUS6Er0U4gZuRKrTE
+ b9Qk8Xh3yrePVk1fbkjMTgqRkUHyMhwHu2FjpPKz6JC8E6gZ+WoVgCaO099A4dBA9kkDH32Geyg
+ PV7gD+DVznyzl9QEAsefveEisHVyRu+HVktK0R9lJWMF9Ws8NoipFubbVU3yArmZKlsFWNk8e2p
+ tT7adDlMV1Wg8/ldFgVKDtpVghCyHy9GgbBkK5SNpiCTBVXM/Rv3c8z6OaHAeB71d9RVgaDRpjg
+ 8TVBMSJEK0ytS3C1mjRfM3cAmKV2FRT/
+X-Received: by 2002:a05:600c:a03:b0:43c:fdbe:4398 with SMTP id
+ 5b1f17b1804b1-454ec14d7a9mr133129945e9.6.1752534488144; 
+ Mon, 14 Jul 2025 16:08:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHcK+6c/Zuwu4v8gbquTOu2jYiwSmqqsPM6OBxRXI6TfGcuA4e3RJBMMsOKw4r+EcX7BYHMHA==
+X-Received: by 2002:a05:600c:a03:b0:43c:fdbe:4398 with SMTP id
+ 5b1f17b1804b1-454ec14d7a9mr133129755e9.6.1752534487651; 
+ Mon, 14 Jul 2025 16:08:07 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-455f13ec67asm105439435e9.4.2025.07.14.16.08.04
+ ffacd0b85a97d-3b5e8bd180fsm13367383f8f.2.2025.07.14.16.08.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:08:05 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:08:03 -0400
+ Mon, 14 Jul 2025 16:08:07 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:08:05 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 43/97] qemu: Convert target_words_bigendian() to TargetInfo API
-Message-ID: <bc6be29253932daa506d2211f45d28f096936bc4.1752534227.git.mst@redhat.com>
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 44/97] gdbstub/helpers: Replace TARGET_BIG_ENDIAN ->
+ target_big_endian()
+Message-ID: <617017448439fff450932b19c9eab17c8904e4e5.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -118,167 +114,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Check endianness at runtime to remove the target-specific
+TARGET_BIG_ENDIAN definition. Use cpu_to_[be,le]XX() from
+"qemu/bswap.h" instead of tswapXX() from "exec/tswap.h".
+
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250708215320.70426-6-philmd@linaro.org>
+Message-Id: <20250708215320.70426-7-philmd@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/exec/tswap.h       | 13 +------------
- include/qemu/target-info.h | 12 ++++++++++++
- cpu-target.c               |  7 -------
- hw/core/cpu-system.c       |  2 +-
- hw/display/vga.c           |  2 +-
- hw/virtio/virtio.c         |  2 +-
- system/memory.c            |  1 +
- system/qtest.c             |  1 +
- target-info.c              |  5 +++++
- 9 files changed, 23 insertions(+), 22 deletions(-)
+ include/gdbstub/helpers.h | 48 +++++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 19 deletions(-)
 
-diff --git a/include/exec/tswap.h b/include/exec/tswap.h
-index 49511f2611..55ffa63359 100644
---- a/include/exec/tswap.h
-+++ b/include/exec/tswap.h
-@@ -9,18 +9,7 @@
- #define TSWAP_H
+diff --git a/include/gdbstub/helpers.h b/include/gdbstub/helpers.h
+index 6f7cc48adc..b685afac43 100644
+--- a/include/gdbstub/helpers.h
++++ b/include/gdbstub/helpers.h
+@@ -16,7 +16,8 @@
+ #error "gdbstub helpers should only be included by target specific code"
+ #endif
  
- #include "qemu/bswap.h"
--
--/**
-- * target_big_endian:
-- * Returns true if the (default) endianness of the target is big endian,
-- * false otherwise. Common code should normally never need to know about the
-- * endianness of the target, so please do *not* use this function unless you
-- * know very well what you are doing!
-- */
--bool target_big_endian(void);
--#ifdef COMPILING_PER_TARGET
--#define target_big_endian()   TARGET_BIG_ENDIAN
--#endif
+-#include "exec/tswap.h"
++#include "qemu/bswap.h"
 +#include "qemu/target-info.h"
+ #include "cpu-param.h"
  
  /*
-  * If we're in target-specific code, we can hard-code the swapping
-diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
-index dde0e7d968..abcf25db6f 100644
---- a/include/qemu/target-info.h
-+++ b/include/qemu/target-info.h
-@@ -38,4 +38,16 @@ const char *target_machine_typename(void);
-  */
- const char *target_cpu_type(void);
+@@ -33,40 +34,49 @@ static inline int gdb_get_reg8(GByteArray *buf, uint8_t val)
  
-+/**
-+ * target_big_endian:
-+ *
-+ * Returns: %true if the (default) endianness of the target is big endian,
-+ *          %false otherwise.
-+ *
-+ * Common code should normally never need to know about the endianness of
-+ * the target, so please do *not* use this function unless you  know very
-+ * well what you are doing!
-+ */
-+bool target_big_endian(void);
-+
- #endif
-diff --git a/cpu-target.c b/cpu-target.c
-index 1c90a30759..20db5ff310 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -22,7 +22,6 @@
- #include "system/accel-ops.h"
- #include "system/cpus.h"
- #include "exec/cpu-common.h"
--#include "exec/tswap.h"
- #include "exec/replay-core.h"
- #include "exec/log.h"
- #include "hw/core/cpu.h"
-@@ -85,9 +84,3 @@ void cpu_abort(CPUState *cpu, const char *fmt, ...)
- #endif
-     abort();
- }
--
--#undef target_big_endian
--bool target_big_endian(void)
--{
--    return TARGET_BIG_ENDIAN;
--}
-diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
-index 3c84176a0c..a975405d3a 100644
---- a/hw/core/cpu-system.c
-+++ b/hw/core/cpu-system.c
-@@ -24,7 +24,7 @@
- #include "exec/cputlb.h"
- #include "system/memory.h"
- #include "exec/tb-flush.h"
--#include "exec/tswap.h"
-+#include "qemu/target-info.h"
- #include "hw/qdev-core.h"
- #include "hw/qdev-properties.h"
- #include "hw/core/sysemu-cpu-ops.h"
-diff --git a/hw/display/vga.c b/hw/display/vga.c
-index 20475ebbd3..90b89cf404 100644
---- a/hw/display/vga.c
-+++ b/hw/display/vga.c
-@@ -26,7 +26,7 @@
- #include "qemu/units.h"
- #include "system/reset.h"
- #include "qapi/error.h"
--#include "exec/tswap.h"
-+#include "qemu/target-info.h"
- #include "hw/display/vga.h"
- #include "hw/i386/x86.h"
- #include "hw/pci/pci.h"
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 82a285a31d..0f4d28033d 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -20,7 +20,7 @@
- #include "qemu/log.h"
- #include "qemu/main-loop.h"
- #include "qemu/module.h"
--#include "exec/tswap.h"
-+#include "qemu/target-info.h"
- #include "qom/object_interfaces.h"
- #include "hw/core/cpu.h"
- #include "hw/virtio/virtio.h"
-diff --git a/system/memory.c b/system/memory.c
-index e8d9b15b28..38da62f505 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -22,6 +22,7 @@
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
- #include "qemu/qemu-print.h"
-+#include "qemu/target-info.h"
- #include "qom/object.h"
- #include "trace.h"
- #include "system/ram_addr.h"
-diff --git a/system/qtest.c b/system/qtest.c
-index 301b03be2d..fa42c9f921 100644
---- a/system/qtest.c
-+++ b/system/qtest.c
-@@ -29,6 +29,7 @@
- #include "qemu/error-report.h"
- #include "qemu/module.h"
- #include "qemu/cutils.h"
-+#include "qemu/target-info.h"
- #include "qom/object_interfaces.h"
- 
- #define MAX_IRQ 256
-diff --git a/target-info.c b/target-info.c
-index a756c0714c..3110ab32f7 100644
---- a/target-info.c
-+++ b/target-info.c
-@@ -47,3 +47,8 @@ EndianMode target_endian_mode(void)
+ static inline int gdb_get_reg16(GByteArray *buf, uint16_t val)
  {
-     return target_info()->endianness;
+-    uint16_t to_word = tswap16(val);
+-    g_byte_array_append(buf, (uint8_t *) &to_word, 2);
++    if (target_big_endian()) {
++        cpu_to_be16s(&val);
++    } else {
++        cpu_to_le16s(&val);
++    }
++    g_byte_array_append(buf, (uint8_t *) &val, 2);
+     return 2;
  }
-+
-+bool target_big_endian(void)
-+{
-+    return target_endian_mode() == ENDIAN_MODE_BIG;
-+}
+ 
+ static inline int gdb_get_reg32(GByteArray *buf, uint32_t val)
+ {
+-    uint32_t to_long = tswap32(val);
+-    g_byte_array_append(buf, (uint8_t *) &to_long, 4);
++    if (target_big_endian()) {
++        cpu_to_be32s(&val);
++    } else {
++        cpu_to_le32s(&val);
++    }
++    g_byte_array_append(buf, (uint8_t *) &val, 4);
+     return 4;
+ }
+ 
+ static inline int gdb_get_reg64(GByteArray *buf, uint64_t val)
+ {
+-    uint64_t to_quad = tswap64(val);
+-    g_byte_array_append(buf, (uint8_t *) &to_quad, 8);
++    if (target_big_endian()) {
++        cpu_to_be64s(&val);
++    } else {
++        cpu_to_le64s(&val);
++    }
++    g_byte_array_append(buf, (uint8_t *) &val, 8);
+     return 8;
+ }
+ 
+ static inline int gdb_get_reg128(GByteArray *buf, uint64_t val_hi,
+                                  uint64_t val_lo)
+ {
+-    uint64_t to_quad;
+-#if TARGET_BIG_ENDIAN
+-    to_quad = tswap64(val_hi);
+-    g_byte_array_append(buf, (uint8_t *) &to_quad, 8);
+-    to_quad = tswap64(val_lo);
+-    g_byte_array_append(buf, (uint8_t *) &to_quad, 8);
+-#else
+-    to_quad = tswap64(val_lo);
+-    g_byte_array_append(buf, (uint8_t *) &to_quad, 8);
+-    to_quad = tswap64(val_hi);
+-    g_byte_array_append(buf, (uint8_t *) &to_quad, 8);
+-#endif
++    uint64_t tmp[2];
++    if (target_big_endian()) {
++        tmp[0] = cpu_to_be64(val_hi);
++        tmp[1] = cpu_to_be64(val_lo);
++    } else {
++        tmp[0] = cpu_to_le64(val_lo);
++        tmp[1] = cpu_to_le64(val_hi);
++    }
++    g_byte_array_append(buf, (uint8_t *)&tmp, 16);
+     return 16;
+ }
+ 
 -- 
 MST
 
