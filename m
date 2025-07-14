@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C0EB04B98
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E54B04B8B
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:08:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSHW-0005p2-TP; Mon, 14 Jul 2025 19:08:24 -0400
+	id 1ubSGo-0004U0-Nr; Mon, 14 Jul 2025 19:07:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGR-0003bM-Ia
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:20 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGU-0003cO-JC
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGP-0005Sg-Qa
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGQ-0005Sr-5y
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534428;
+ s=mimecast20190719; t=1752534429;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Z8hIx0RDGxkniPPBkXaUbDNCr7JWC8oeDsf7Ie3RFps=;
- b=bzAPWp9WeDqMXbJ7gc5uIIj3t5IKtJUh+l05G5jpAvWIvdDIvrLBwVwVY8WSUFQMERo3QT
- ZjMY079J0XHHw0DJr32ntbE+/FOBP5tXosvCRx8mVuHy48Fn6U41Lu+LD7OYfMeapJSntv
- R2mJP8MKpihSVdvnFgBuT8GOaizLrog=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ac5kQC28Wz5sTKphFJUv5ORfXNQ3SuWxyn60B2NigdE=;
+ b=RuymoIwPz9vqwBhuDEWmjr3DUE4oqtS5eT+Hj7M3dLE0LsU2y4J2wzmOcgSvABp1ENP6ZS
+ EaTmDF0oYWSwS6pXg+hWVn9Rr5fZMoQgLAxf8N7J/2IBcE0z4LisMUhnONmn7HgiiAv9MZ
+ oAZiiwm7hurfJX5TF0XNiSlGqsNMXtk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-370-Hmjf3DcRMYuGahDib6pDFg-1; Mon, 14 Jul 2025 19:07:06 -0400
-X-MC-Unique: Hmjf3DcRMYuGahDib6pDFg-1
-X-Mimecast-MFC-AGG-ID: Hmjf3DcRMYuGahDib6pDFg_1752534424
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a503f28b09so3029832f8f.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:05 -0700 (PDT)
+ us-mta-472-eCo8oCsqOJCDagnVij05SQ-1; Mon, 14 Jul 2025 19:07:08 -0400
+X-MC-Unique: eCo8oCsqOJCDagnVij05SQ-1
+X-Mimecast-MFC-AGG-ID: eCo8oCsqOJCDagnVij05SQ_1752534427
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-45626e0d3e1so1099985e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534424; x=1753139224;
+ d=1e100.net; s=20230601; t=1752534427; x=1753139227;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z8hIx0RDGxkniPPBkXaUbDNCr7JWC8oeDsf7Ie3RFps=;
- b=pyrcmPXFRJrd4tmj5HX5BgxADwFTBqsqf67wmy6bzRwOxJc0scLCBXeiX8SQvasCKZ
- O/Pvjdrtp8ZV8nzYxxh9eGJfxwBl48fJMuBrTstj8fxL2QJ5/UweVlBPwXXz6qA20AQi
- SUQT5GLIuKoOCQbKCcSoBml0rAdy2JFeYkJQDz2D1e0V2WaUVaviiAEwNplotSLOrdh2
- akZ2c8ZepKRx73TPlV9gq9tjK4z2gs7rp9FLg3tytP0k8SY/8P1M6d0VjgFaJp/u8fXg
- /7/v0F9TANwZeCXYVxnuNbpwqaat0njPJQQr5RA/1RfFj71PA/DghBzZyWiFGOn74zMP
- dPnA==
-X-Gm-Message-State: AOJu0YyP4sjw96kWA0lDb+VpRyjX35lJT/F95dZrtpOAmS8phcVrhm33
- cYIIyF1khHJsnZgx2XwQHVyLpx9+J5UekijWJoRGsMovE5q+tOCm/H65SL+3nj1TljPnYMsDlrq
- 75Nk8GrG99NM9BSJzIx5Lya2FcqSagXwY2TJCV1a+e7hYkfrcJADCdhmVwiooemL8gvX96sWlGS
- NEwIBG57Js3zuPGLH4WDyl31RjWRVdEzs+wQ==
-X-Gm-Gg: ASbGncsem006YrXV9ogQWCGuSQIhP5YRT3LJPPfA9I2npf0hCC1CjSVQLKrpaywYVPK
- jX8YXd+NSkday8etPw9lJU2i0pEH7nAoXi5VbDHdQbhjbaAGtONqVXytQwSkh1DbmHmJPxuuRP2
- ccubt6CouRb8RZC+gXt/5knPIjzuwOve3nweOKh2DASY2T83vRNFzbeYrK0u7VaZntKW2l+7E6y
- JChxulmIES+bWjxilLmbXeiHee2ywXY48boV8zJ9zkqgp2XXTdHHAuCrpWHf1Wx1KICPsAJw9GZ
- LK7JTYeURAQbzR9NZCJdNKzUZDn6We5R
-X-Received: by 2002:a05:6000:24c5:b0:3a5:8977:e0fd with SMTP id
- ffacd0b85a97d-3b6094fff45mr735174f8f.0.1752534423877; 
- Mon, 14 Jul 2025 16:07:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEbTTtbW8VxZav53wFHIZg1jOGypDHXMySbBVZy3wdA1KCom30tsCnwgsuhczC7Eq6ImgDxAQ==
-X-Received: by 2002:a05:6000:24c5:b0:3a5:8977:e0fd with SMTP id
- ffacd0b85a97d-3b6094fff45mr735147f8f.0.1752534423307; 
- Mon, 14 Jul 2025 16:07:03 -0700 (PDT)
+ bh=ac5kQC28Wz5sTKphFJUv5ORfXNQ3SuWxyn60B2NigdE=;
+ b=O8BnFpF04VcGvCEiEQhgIKq06BxSx1oyPOAfbIKAMnTQrp5rVrvCOxRuKR/Hnw+YEI
+ GjFqWXOkrQUrywnPR4pdURYq8jj0+81PVI0UrQ0ig2qINo0qY9l+zElZo4Uo3bqylm//
+ qwWFZkjhYCnkbav9bKvG0caKQaRAU3SIFn7q75wAHhVqa6zZ/+26mOmdl2zygBtf2xBN
+ tQVZ3Dkp8hMu2x2LJ4V19oPtCfonqYzCUl0Ok2fGZkaZ+J9KK3Eu6HA0JQ3m6J3by3OA
+ vBKiNzdw7plWmVNNcbZJCj14uMrbwQJ4ieeHIk0ap93zWzlX3Ua3+zAHATtSq5WY6ZOk
+ aDjw==
+X-Gm-Message-State: AOJu0YzJIPJZUGSzcGBQfhRc57cFpnkmMPZzWugviIbU++kWmOFXgVBq
+ 70VmKj5UoS/OnLAFqnl62qMbgVQF0BCCPirobLKc2txTYS+zQ30nbkl0tX+Hdht3EHu6Yue740j
+ pT0hd9pOuxGXi6KOW0fYyyF0RTsQ2IBHDf19Vow6G1uyODTjbL5vvyZCGw9m7bNQByE4m97YEA7
+ 5vho2Mols6ztG3x2ymbxmy/asVVq+0pdj9yg==
+X-Gm-Gg: ASbGncs5X44nauBknJHsLLyrLI64OZ+DYJX7LovnE3WdacaAOIQFqQuYajt12xPwWRv
+ ZaQSqCp/MFXDdOPBOS6FWrRau1G8eGWUYHzyXI6ncWaCNutP38kAuMDFXjym2EGVP/zKUmhjXsI
+ 8dfC3Mc10IIl3cMhuVjmapZo/L8lUiL+0Tlin61Ul7ZZofIFLyiYBHXHRupflCXgryvT7jh5ct7
+ 7dPow4ls4r1puZuMYmKxCVDfrqiEqJwJl0ctoFjeWsCOfRVUWz/JLPMq9Uq5H7zEzGL4L3BTEIE
+ xEtTREb3L6YVSMws45cDDMlwOQV5khZG
+X-Received: by 2002:a05:6000:25ec:b0:3b4:b4d:6861 with SMTP id
+ ffacd0b85a97d-3b5f18d98b6mr12383639f8f.27.1752534426591; 
+ Mon, 14 Jul 2025 16:07:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhYjAS7nT/tYn58BN90w7GQ3aYvFmL+bStO/Kug1Q39DEg+brolPNLe35tZEZvDfYfh8UoYg==
+X-Received: by 2002:a05:6000:25ec:b0:3b4:b4d:6861 with SMTP id
+ ffacd0b85a97d-3b5f18d98b6mr12383618f8f.27.1752534426126; 
+ Mon, 14 Jul 2025 16:07:06 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45627898725sm1691545e9.1.2025.07.14.16.07.02
+ ffacd0b85a97d-3b5e8e0d785sm13820674f8f.59.2025.07.14.16.07.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:07:03 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:07:01 -0400
+ Mon, 14 Jul 2025 16:07:05 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:07:03 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -77,9 +77,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 19/97] amd_iommu: Update bitmasks representing DTE reserved
- fields
-Message-ID: <ff3dcb3bf652912466dcc1cd10d3267f185c212e.1752534227.git.mst@redhat.com>
+Subject: [PULL 20/97] amd_iommu: Fix masks for various IOMMU MMIO Registers
+Message-ID: <108e10ff69099c3ebe147f505246be7c2ad2a499.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -96,7 +95,8 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,73 +114,105 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-The DTE validation method verifies that all bits in reserved DTE fields are
-unset. Update them according to the latest definition available in AMD I/O
-Virtualization Technology (IOMMU) Specification - Section 2.2.2.1 Device
-Table Entry Format. Remove the magic numbers and use a macro helper to
-generate bitmasks covering the specified ranges for better legibility.
+Address various issues with definitions of the MMIO registers e.g. for the
+Device Table Address Register, the size mask currently encompasses reserved
+bits [11:9], so change it to only extract the bits [8:0] encoding size.
 
-Note that some reserved fields specify that events are generated when they
-contain non-zero bits, or checks are skipped under certain configurations.
-This change only updates the reserved masks, checks for special conditions
-are not yet implemented.
+Convert masks to use GENMASK64 for consistency, and make unrelated
+definitions independent.
 
 Cc: qemu-stable@nongnu.org
+Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250617150427.20585-4-alejandro.j.jimenez@oracle.com>
+Message-Id: <20250617150427.20585-5-alejandro.j.jimenez@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.h | 9 ++++++---
- hw/i386/amd_iommu.c | 7 ++++---
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ hw/i386/amd_iommu.h | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
 diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 3b1d2e9da5..aacb29b617 100644
+index aacb29b617..988a485f80 100644
 --- a/hw/i386/amd_iommu.h
 +++ b/hw/i386/amd_iommu.h
-@@ -25,6 +25,8 @@
- #include "hw/i386/x86-iommu.h"
- #include "qom/object.h"
+@@ -68,34 +68,34 @@
  
-+#define GENMASK64(h, l)  (((~0ULL) >> (63 - (h) + (l))) << (l))
+ #define AMDVI_MMIO_SIZE               0x4000
+ 
+-#define AMDVI_MMIO_DEVTAB_SIZE_MASK   ((1ULL << 12) - 1)
+-#define AMDVI_MMIO_DEVTAB_BASE_MASK   (((1ULL << 52) - 1) & ~ \
+-                                       AMDVI_MMIO_DEVTAB_SIZE_MASK)
++#define AMDVI_MMIO_DEVTAB_SIZE_MASK     GENMASK64(8, 0)
++#define AMDVI_MMIO_DEVTAB_BASE_MASK     GENMASK64(51, 12)
 +
- /* Capability registers */
- #define AMDVI_CAPAB_BAR_LOW           0x04
- #define AMDVI_CAPAB_BAR_HIGH          0x08
-@@ -162,9 +164,10 @@
- #define AMDVI_FEATURE_PC                  (1ULL << 9) /* Perf counters       */
+ #define AMDVI_MMIO_DEVTAB_ENTRY_SIZE  32
+ #define AMDVI_MMIO_DEVTAB_SIZE_UNIT   4096
  
- /* reserved DTE bits */
--#define AMDVI_DTE_LOWER_QUAD_RESERVED  0x80300000000000fc
--#define AMDVI_DTE_MIDDLE_QUAD_RESERVED 0x0000000000000100
--#define AMDVI_DTE_UPPER_QUAD_RESERVED  0x08f0000000000000
-+#define AMDVI_DTE_QUAD0_RESERVED        (GENMASK64(6, 2) | GENMASK64(63, 63))
-+#define AMDVI_DTE_QUAD1_RESERVED        0
-+#define AMDVI_DTE_QUAD2_RESERVED        GENMASK64(53, 52)
-+#define AMDVI_DTE_QUAD3_RESERVED        (GENMASK64(14, 0) | GENMASK64(53, 48))
+ /* some of this are similar but just for readability */
+ #define AMDVI_MMIO_CMDBUF_SIZE_BYTE       (AMDVI_MMIO_COMMAND_BASE + 7)
+ #define AMDVI_MMIO_CMDBUF_SIZE_MASK       0x0f
+-#define AMDVI_MMIO_CMDBUF_BASE_MASK       AMDVI_MMIO_DEVTAB_BASE_MASK
+-#define AMDVI_MMIO_CMDBUF_HEAD_MASK       (((1ULL << 19) - 1) & ~0x0f)
+-#define AMDVI_MMIO_CMDBUF_TAIL_MASK       AMDVI_MMIO_EVTLOG_HEAD_MASK
++#define AMDVI_MMIO_CMDBUF_BASE_MASK       GENMASK64(51, 12)
++#define AMDVI_MMIO_CMDBUF_HEAD_MASK       GENMASK64(18, 4)
++#define AMDVI_MMIO_CMDBUF_TAIL_MASK       GENMASK64(18, 4)
  
- /* AMDVI paging mode */
- #define AMDVI_GATS_MODE                 (2ULL <<  12)
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index c27efa504d..6e78047919 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -848,9 +848,10 @@ static inline uint64_t amdvi_get_perms(uint64_t entry)
- static bool amdvi_validate_dte(AMDVIState *s, uint16_t devid,
-                                uint64_t *dte)
- {
--    if ((dte[0] & AMDVI_DTE_LOWER_QUAD_RESERVED)
--        || (dte[1] & AMDVI_DTE_MIDDLE_QUAD_RESERVED)
--        || (dte[2] & AMDVI_DTE_UPPER_QUAD_RESERVED) || dte[3]) {
-+    if ((dte[0] & AMDVI_DTE_QUAD0_RESERVED) ||
-+        (dte[1] & AMDVI_DTE_QUAD1_RESERVED) ||
-+        (dte[2] & AMDVI_DTE_QUAD2_RESERVED) ||
-+        (dte[3] & AMDVI_DTE_QUAD3_RESERVED)) {
-         amdvi_log_illegaldevtab_error(s, devid,
-                                       s->devtab +
-                                       devid * AMDVI_DEVTAB_ENTRY_SIZE, 0);
+ #define AMDVI_MMIO_EVTLOG_SIZE_BYTE       (AMDVI_MMIO_EVENT_BASE + 7)
+-#define AMDVI_MMIO_EVTLOG_SIZE_MASK       AMDVI_MMIO_CMDBUF_SIZE_MASK
+-#define AMDVI_MMIO_EVTLOG_BASE_MASK       AMDVI_MMIO_CMDBUF_BASE_MASK
+-#define AMDVI_MMIO_EVTLOG_HEAD_MASK       (((1ULL << 19) - 1) & ~0x0f)
+-#define AMDVI_MMIO_EVTLOG_TAIL_MASK       AMDVI_MMIO_EVTLOG_HEAD_MASK
++#define AMDVI_MMIO_EVTLOG_SIZE_MASK       0x0f
++#define AMDVI_MMIO_EVTLOG_BASE_MASK       GENMASK64(51, 12)
++#define AMDVI_MMIO_EVTLOG_HEAD_MASK       GENMASK64(18, 4)
++#define AMDVI_MMIO_EVTLOG_TAIL_MASK       GENMASK64(18, 4)
+ 
+-#define AMDVI_MMIO_PPRLOG_SIZE_BYTE       (AMDVI_MMIO_EVENT_BASE + 7)
+-#define AMDVI_MMIO_PPRLOG_HEAD_MASK       AMDVI_MMIO_EVTLOG_HEAD_MASK
+-#define AMDVI_MMIO_PPRLOG_TAIL_MASK       AMDVI_MMIO_EVTLOG_HEAD_MASK
+-#define AMDVI_MMIO_PPRLOG_BASE_MASK       AMDVI_MMIO_EVTLOG_BASE_MASK
+-#define AMDVI_MMIO_PPRLOG_SIZE_MASK       AMDVI_MMIO_EVTLOG_SIZE_MASK
++#define AMDVI_MMIO_PPRLOG_SIZE_BYTE       (AMDVI_MMIO_PPR_BASE + 7)
++#define AMDVI_MMIO_PPRLOG_SIZE_MASK       0x0f
++#define AMDVI_MMIO_PPRLOG_BASE_MASK       GENMASK64(51, 12)
++#define AMDVI_MMIO_PPRLOG_HEAD_MASK       GENMASK64(18, 4)
++#define AMDVI_MMIO_PPRLOG_TAIL_MASK       GENMASK64(18, 4)
+ 
+ #define AMDVI_MMIO_EXCL_ENABLED_MASK      (1ULL << 0)
+ #define AMDVI_MMIO_EXCL_ALLOW_MASK        (1ULL << 1)
+-#define AMDVI_MMIO_EXCL_LIMIT_MASK        AMDVI_MMIO_DEVTAB_BASE_MASK
++#define AMDVI_MMIO_EXCL_LIMIT_MASK        GENMASK64(51, 12)
+ #define AMDVI_MMIO_EXCL_LIMIT_LOW         0xfff
+ 
+ /* mmio control register flags */
+@@ -132,14 +132,14 @@
+ #define AMDVI_DEV_TRANSLATION_VALID       (1ULL << 1)
+ #define AMDVI_DEV_MODE_MASK               0x7
+ #define AMDVI_DEV_MODE_RSHIFT             9
+-#define AMDVI_DEV_PT_ROOT_MASK            0xffffffffff000
++#define AMDVI_DEV_PT_ROOT_MASK            GENMASK64(51, 12)
+ #define AMDVI_DEV_PT_ROOT_RSHIFT          12
+ #define AMDVI_DEV_PERM_SHIFT              61
+ #define AMDVI_DEV_PERM_READ               (1ULL << 61)
+ #define AMDVI_DEV_PERM_WRITE              (1ULL << 62)
+ 
+ /* Device table entry bits 64:127 */
+-#define AMDVI_DEV_DOMID_ID_MASK          ((1ULL << 16) - 1)
++#define AMDVI_DEV_DOMID_ID_MASK             GENMASK64(15, 0)
+ 
+ /* Event codes and flags, as stored in the info field */
+ #define AMDVI_EVENT_ILLEGAL_DEVTAB_ENTRY  (0x1U << 12)
+@@ -197,7 +197,7 @@
+ #define AMDVI_PAGE_SIZE  (1ULL << AMDVI_PAGE_SHIFT)
+ 
+ #define AMDVI_PAGE_SHIFT_4K 12
+-#define AMDVI_PAGE_MASK_4K  (~((1ULL << AMDVI_PAGE_SHIFT_4K) - 1))
++#define AMDVI_PAGE_MASK_4K      GENMASK64(63, 12)
+ 
+ #define AMDVI_MAX_GVA_ADDR      (2UL << 5)
+ #define AMDVI_MAX_PH_ADDR       (40UL << 8)
 -- 
 MST
 
