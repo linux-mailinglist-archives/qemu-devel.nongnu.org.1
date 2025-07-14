@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5942FB04C11
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6993B04C48
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:29:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSHr-0008FL-QX; Mon, 14 Jul 2025 19:08:44 -0400
+	id 1ubSHj-0007Yd-C3; Mon, 14 Jul 2025 19:08:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGj-0004CM-O7
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGm-0004Ph-1X
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGh-0005XW-OI
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:33 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGk-0005Yb-BW
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534451;
+ s=mimecast20190719; t=1752534453;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=uhGqUwTLjS2ARoAcmn4Djkgcyrtq4txVik2vc56G05k=;
- b=cJTwncFh601yLWTZGET6bb3k0LJX47g8g33XAAZ6Z+ilvkIC+h53wFJb1q5U7oYj7aQCbq
- j5uW/KHsCCAK/qhkyxRinBW36gMoO7peniSuOqR37nx32+gbk0R3MgkBL5F+PQ85YugFlA
- cEc0J00I/SpgR6xNH5W8PSoXPIPhQD0=
+ bh=L7vnOqE9vYNzXZo7bToAkIslT5GpERjhTAHR0WEOusY=;
+ b=Zd8eogKraZla5l/0zG8hi5Prn60+PDd5Lxyxa+QfHJ2dGE292DjCWeW3+om8a+HAs0tcr6
+ CIj12Fqvc/2SxsE+ChfKoc4cjCf8K8vXUfRsoLJvGdTSghq9fBgGp8pB++lEFEovldB01w
+ LSsLeUJwJ3/EjyQ9/SvDQX21Ith4ijw=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-KVjk3MX0Ntqf1OhhiI6OHA-1; Mon, 14 Jul 2025 19:07:30 -0400
-X-MC-Unique: KVjk3MX0Ntqf1OhhiI6OHA-1
-X-Mimecast-MFC-AGG-ID: KVjk3MX0Ntqf1OhhiI6OHA_1752534449
+ us-mta-681-6tKhiRKWOYK-UbkGmFMcXA-1; Mon, 14 Jul 2025 19:07:32 -0400
+X-MC-Unique: 6tKhiRKWOYK-UbkGmFMcXA-1
+X-Mimecast-MFC-AGG-ID: 6tKhiRKWOYK-UbkGmFMcXA_1752534452
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45626e0d3e1so1101335e9.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:29 -0700 (PDT)
+ 5b1f17b1804b1-4538f375e86so39562005e9.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534448; x=1753139248;
+ d=1e100.net; s=20230601; t=1752534451; x=1753139251;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uhGqUwTLjS2ARoAcmn4Djkgcyrtq4txVik2vc56G05k=;
- b=TWbddBdMMh+6KEv0BQxKWrQLMvOAYg5IW0oR0hVtWjCWfCL8BGeeuLBFk0k9NjFrHD
- KjzgVED+tsk8V1fcHdumPWjF6Anwa6s7T+t+z5ORE3foQRWYGexdiYBV5ExH/DNAV/qa
- dqQ8S0pppuiWhNPql4qqV2O8CoOGYu7JRQl3qjOah4k6fcf9j8jP8e/OKjhIoQr61+VJ
- EzPpgTMkIXKCNnqb4yPu6SunkTQtmSRKVUrzwT2/gVqMG2U6Zf0ebtMTvoQpKPpL1I/Q
- jfJA+6+MiF/mZ2xXs3URwMoodgJ9te1fKmArtpFFvD6x44TTm1hKldtlJ61L/s/gcZ+U
- dMwQ==
-X-Gm-Message-State: AOJu0Yw8N9mo8u60Q82xbMMqhFDlK3dQJfQ18hqLNjyFVu3oPwytk/G8
- NkfRd4mAJB5iJFJ90/F6+QHwO/l1t8UZtzF8xQxLOlvRFRPyrnU0T7HFz9p/ggSTF4if3hS4zjU
- Tlhyelwn84idTkpyy58BQPFQZ97Xhc/zPdPnTBdjrkUq6595TX22QzJiaDgMa7RVWYi84Vq6HEI
- uUyMA8RAFbwfgpTBlLaxCeXiX+38mZuY0OIA==
-X-Gm-Gg: ASbGncsWTUEqRoF0F2l3CuNYN7YaV3UYIV0gZIS2KhpoQa7gJp/D+21xc5hBjS+21Bx
- 8mscbvK0i4TvRKojuWbTMIIVdATHBKVMoE8GuB55gyom4zwegQkhGAOLHexIT6h78vzgKKxmsnO
- Xv9WZlgSnGqsw45loyGSTB/p+7nalNdoELf0TLa5zA4JEfYheLQZ0ocscmiuw4haJJ83bdg5/sp
- oupNaNzcogWlnT1YeB/XwDnxzb0hRoxFIioiV1nmu90Q2gx+Wr35hEWRgENUGsWs5vJnjbqXYmo
- ue/bJLOLt5Ya9ju4hkT18vas475QqZ82
-X-Received: by 2002:a05:6000:41fa:b0:3b2:fe84:a10 with SMTP id
- ffacd0b85a97d-3b5f181c283mr13773558f8f.0.1752534448436; 
- Mon, 14 Jul 2025 16:07:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQ/M/8T5iJmS75P7VdxU06uufMVT8mkEnTxNK8jVZlna9ATE0cbVNsGVnyjGz94oN5NDa69g==
-X-Received: by 2002:a05:6000:41fa:b0:3b2:fe84:a10 with SMTP id
- ffacd0b85a97d-3b5f181c283mr13773535f8f.0.1752534447991; 
- Mon, 14 Jul 2025 16:07:27 -0700 (PDT)
+ bh=L7vnOqE9vYNzXZo7bToAkIslT5GpERjhTAHR0WEOusY=;
+ b=Cit84Lxw2q4p1LC0juOTVNCgq+aZS4svLTf26YCnEr1ipOp2mOc0fjpi9fqBndhErQ
+ FsQAy4eCr7XWFm2w8SL+B3bLQmVLCM87PX2AWXQmLO9vRXffBZCDD9ERyoZpH95wlLT3
+ Bu3Sfh57jCRDSxG22AVhi4SCH+SmXnB/F7tkl8aAxUunZvJQldotWIE7yu2pluyzEZjE
+ jTt6JEdRwW5DTNfuVgq6Us4g/QR4cnrWNCBas+UU0If1wxF2fw6VzoNW6hRh/zbmtkFw
+ Vg9jgB98+yvIx5K61j8R5WQwcJBzAjIyJ4N24UxrtOYQkTRCSPyYGCTejbzwwSeU3dek
+ nP/A==
+X-Gm-Message-State: AOJu0YxHqD9oIyd/8pBsT2ZS/GTkey3gQLad337aIgDfBFDLtQVG1oNe
+ V4JEOAEcA9fSkV0zpnY2hbNGsgWsZAchwa3uRq0NLP8khPkbkB71el8TVUDd7Hj7PJH4N1vb2d2
+ COW4LiDuNJ+urQu+WWjbQVbQousSgXGrkz9lWyaZpEwujrLf+njD5SHdJp3kBU6nns8Q6ClTPYL
+ KU7URxPzT1kHHnS4LPSDzSYwCYQZ3JqmJh6w==
+X-Gm-Gg: ASbGncuFJtPzEeOl4MXqdcbdnwpRhnUEJOH0Zl1Hf9fmGvDhQUdpLm5QHhH+R6kVIpd
+ tJmtzyBo6Z9FEauY17cacL6PwI6CM/hXXko+zr1AxEukcCPelATyJlWFg/YrR6IqUpc4l8U3Yv0
+ mR9bQJEunjr/Acd9WDT/sMeQea5WErybTW6Eda9BU9jzZ3q1nvaVsVpJKOYsE5roeaU5gaAkiA/
+ OpfbFCy7+8xTUDQFQ2p4RYcoP5cVSt2iT0c1gxT59/PLNP6FeNq8bE6FBgwqmt9A1VedQc7D6Yd
+ H68RK3HRCQbMScYziE6FIHgbVfk7fXQJ
+X-Received: by 2002:a05:600c:4ecf:b0:456:1dd2:4e47 with SMTP id
+ 5b1f17b1804b1-456273e2869mr4110885e9.15.1752534451280; 
+ Mon, 14 Jul 2025 16:07:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMOWjx9YuSIHblq9C7KVh/Aeqjo2JAvJlZGv5t2sJVY748iPKsynCobQ31Mm0vyfik5lavfQ==
+X-Received: by 2002:a05:600c:4ecf:b0:456:1dd2:4e47 with SMTP id
+ 5b1f17b1804b1-456273e2869mr4110685e9.15.1752534450739; 
+ Mon, 14 Jul 2025 16:07:30 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45626c9ac1dsm3528435e9.0.2025.07.14.16.07.27
+ 5b1f17b1804b1-454d5050d34sm186355975e9.9.2025.07.14.16.07.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:07:27 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:07:26 -0400
+ Mon, 14 Jul 2025 16:07:30 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:07:28 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 29/97] pci: Add a memory attribute for pre-translated DMA
- operations
-Message-ID: <2dd51fc52a8b85e6f39d1297f338344ed03dc5b1.1752534227.git.mst@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 30/97] memory: Add permissions in IOMMUAccessFlags
+Message-ID: <945a6b11323b353f7f404eef748b708f1cb335dc.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -83,7 +84,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1752534227.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -110,52 +111,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 
-The address_type bit will be set to PCI_AT_TRANSLATED by devices that
-use cached addresses obtained via ATS.
+This will be necessary for devices implementing ATS.
+We also define a new macro IOMMU_ACCESS_FLAG_FULL in addition to
+IOMMU_ACCESS_FLAG to support more access flags.
+IOMMU_ACCESS_FLAG is kept for convenience and backward compatibility.
+
+Here are the flags added (defined by the PCIe 5 specification) :
+    - Execute Requested
+    - Privileged Mode Requested
+    - Global
+    - Untranslated Only
+
+IOMMU_ACCESS_FLAG sets the additional flags to 0
 
 Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Message-Id: <20250628180226.133285-2-clement.mathieu--drif@eviden.com>
+Message-Id: <20250628180226.133285-3-clement.mathieu--drif@eviden.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/exec/memattrs.h | 3 +++
- include/hw/pci/pci.h    | 9 +++++++++
- 2 files changed, 12 insertions(+)
+ include/system/memory.h | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-index 8db1d30464..52ee955249 100644
---- a/include/exec/memattrs.h
-+++ b/include/exec/memattrs.h
-@@ -54,6 +54,9 @@ typedef struct MemTxAttrs {
-      */
-     unsigned int pid:8;
+diff --git a/include/system/memory.h b/include/system/memory.h
+index 46248d4a52..1672622d70 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -109,15 +109,34 @@ struct MemoryRegionSection {
  
-+    /* PCI - IOMMU operations, see PCIAddressType */
-+    unsigned int address_type:1;
-+
-     /*
-      * Bus masters which don't specify any attributes will get this
-      * (via the MEMTXATTRS_UNSPECIFIED constant), so that we can
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index df3cc7b875..6b7d3ac8a3 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -134,6 +134,15 @@ struct PCIHostDeviceAddress {
-     unsigned int function;
- };
+ typedef struct IOMMUTLBEntry IOMMUTLBEntry;
  
+-/* See address_space_translate: bit 0 is read, bit 1 is write.  */
 +/*
-+ * Represents the Address Type (AT) field in a PCI request,
-+ * see MemTxAttrs.address_type
++ * See address_space_translate:
++ *      - bit 0 : read
++ *      - bit 1 : write
++ *      - bit 2 : exec
++ *      - bit 3 : priv
++ *      - bit 4 : global
++ *      - bit 5 : untranslated only
 + */
-+typedef enum PCIAddressType {
-+    PCI_AT_UNTRANSLATED = 0, /* Default when no attribute is set */
-+    PCI_AT_TRANSLATED = 1,
-+} PCIAddressType;
-+
- typedef void PCIConfigWriteFunc(PCIDevice *pci_dev,
-                                 uint32_t address, uint32_t data, int len);
- typedef uint32_t PCIConfigReadFunc(PCIDevice *pci_dev,
+ typedef enum {
+     IOMMU_NONE = 0,
+     IOMMU_RO   = 1,
+     IOMMU_WO   = 2,
+     IOMMU_RW   = 3,
++    IOMMU_EXEC = 4,
++    IOMMU_PRIV = 8,
++    IOMMU_GLOBAL = 16,
++    IOMMU_UNTRANSLATED_ONLY = 32,
+ } IOMMUAccessFlags;
+ 
+-#define IOMMU_ACCESS_FLAG(r, w) (((r) ? IOMMU_RO : 0) | ((w) ? IOMMU_WO : 0))
++#define IOMMU_ACCESS_FLAG(r, w)     (((r) ? IOMMU_RO : 0) | \
++                                    ((w) ? IOMMU_WO : 0))
++#define IOMMU_ACCESS_FLAG_FULL(r, w, x, p, g, uo) \
++                                    (IOMMU_ACCESS_FLAG(r, w) | \
++                                    ((x) ? IOMMU_EXEC : 0) | \
++                                    ((p) ? IOMMU_PRIV : 0) | \
++                                    ((g) ? IOMMU_GLOBAL : 0) | \
++                                    ((uo) ? IOMMU_UNTRANSLATED_ONLY : 0))
+ 
+ struct IOMMUTLBEntry {
+     AddressSpace    *target_as;
 -- 
 MST
 
