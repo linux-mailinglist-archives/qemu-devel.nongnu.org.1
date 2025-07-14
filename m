@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263B8B03961
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:24:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE717B03964
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:25:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubESq-0003kb-Ir; Mon, 14 Jul 2025 04:23:08 -0400
+	id 1ubERy-0002Lc-TS; Mon, 14 Jul 2025 04:22:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1ubEDy-0006Dg-VC
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:07:47 -0400
+ id 1ubEE4-0006Hh-03
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:07:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1ubEDx-0003BP-1c
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:07:46 -0400
+ id 1ubEE2-0003C5-Ao
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:07:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752480464;
+ s=mimecast20190719; t=1752480469;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MWNHzW/pd6HVTyab4Vh7H4ZoFA9QKdkJWu4/veDcfKQ=;
- b=R35c+NWY0fNmU1K8AkM+woVl7nCGt2SfJWPLEi4RqszaM1cCw04pG8Sno5N19zfpoIKP9I
- Bon3SpKr6KfoOBwrwQ3AXNzu48P7pMWZoTF5Q/AbDiuz0RjbDxicCJQ7ZmvDcsgKsaSrKD
- 3W4J/ZFkKnTLO+w6nvfeI/TMacBjspI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=dPBzy9CsJVFt5NIIFLm3SKgobSoPadimXomCtIYommM=;
+ b=MAA4EDMNXpi/oGxieLiLkUXWWMz8I9H0RjfeuiqnWdHwaGdEe0BPQ/go9pXvnyXmdv3h8d
+ kckkVZiKYfgDR/VSTe69OH4Z4vHT2BVV8oeAwAJxeEFAls4S7dFTOtQk1CMMDtmpoVp8gf
+ 57Ti56gpK76sVXb8jYwn3AzTwApuZ2c=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-43-o65EPkHCOuexneUCuxKNOw-1; Mon,
- 14 Jul 2025 04:07:40 -0400
-X-MC-Unique: o65EPkHCOuexneUCuxKNOw-1
-X-Mimecast-MFC-AGG-ID: o65EPkHCOuexneUCuxKNOw_1752480459
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-29-tti2fyO3M-ujoTkOTjEYFA-1; Mon,
+ 14 Jul 2025 04:07:45 -0400
+X-MC-Unique: tti2fyO3M-ujoTkOTjEYFA-1
+X-Mimecast-MFC-AGG-ID: tti2fyO3M-ujoTkOTjEYFA_1752480464
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8BC42195608E; Mon, 14 Jul 2025 08:07:38 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1BDC01801208; Mon, 14 Jul 2025 08:07:44 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.221])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 205731977000; Mon, 14 Jul 2025 08:07:33 +0000 (UTC)
+ id 1BB471977029; Mon, 14 Jul 2025 08:07:38 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -53,10 +53,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
 Cc: pbonzini@redhat.com,
 	philmd@linaro.org,
 	alex.bennee@linaro.org
-Subject: [PATCH v7 10/36] tests/qtest/bios-tables-test: Update DSDT blobs
- after GPEX _OSC change
-Date: Mon, 14 Jul 2025 10:04:54 +0200
-Message-ID: <20250714080639.2525563-11-eric.auger@redhat.com>
+Subject: [PATCH v7 11/36] hw/i386/acpi-build: Introduce
+ build_append_pcihp_resources() helper
+Date: Mon, 14 Jul 2025 10:04:55 +0200
+Message-ID: <20250714080639.2525563-12-eric.auger@redhat.com>
 In-Reply-To: <20250714080639.2525563-1-eric.auger@redhat.com>
 References: <20250714080639.2525563-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -87,179 +87,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the reference DSDT blobs after GPEX _OSC change. The _OSC change
-affects the aarch64 'virt' and the x86 'microvm' machines.
-
-DSDT diff is the same for all the machines/tests:
-
-  * Original Table Header:
-  *     Signature        "DSDT"
-- *     Length           0x00001A4F (6735)
-+ *     Length           0x00001A35 (6709)
-  *     Revision         0x02
-- *     Checksum         0xBF
-+ *     Checksum         0xDD
-  *     OEM ID           "BOCHS "
-  *     OEM Table ID     "BXPC    "
-  *     OEM Revision     0x00000001 (1)
-@@ -1849,27 +1849,26 @@ DefinitionBlock ("", "DSDT", 2, "BOCHS ", "BXPC    ", 0x00000001)
-                 {
-                     CreateDWordField (Arg3, 0x04, CDW2)
-                     CreateDWordField (Arg3, 0x08, CDW3)
--                    SUPP = CDW2 /* \_SB_.PCI0._OSC.CDW2 */
--                    CTRL = CDW3 /* \_SB_.PCI0._OSC.CDW3 */
--                    CTRL &= 0x1F
-+                    Local0 = CDW3 /* \_SB_.PCI0._OSC.CDW3 */
-+                    Local0 &= 0x1F
-                     If ((Arg1 != One))
-                     {
-                         CDW1 |= 0x08
-                     }
-
--                    If ((CDW3 != CTRL))
-+                    If ((CDW3 != Local0))
-                     {
-                         CDW1 |= 0x10
-                     }
-
--                    CDW3 = CTRL /* \_SB_.PCI0.CTRL */
--                    Return (Arg3)
-+                    CDW3 = Local0
-                 }
-                 Else
-                 {
-                     CDW1 |= 0x04
--                    Return (Arg3)
-                 }
-+
-+                Return (Arg3)
-             }
-
-             Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
+Extract the code that reserves resources for ACPI PCI hotplug
+into a new helper named build_append_pcihp_resources() and
+move it to pcihp.c. We will reuse it on ARM.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
 ---
-v3 -> v4
-- fix the commit msg: dsl reverse diff (Jonathan)
+
+v2 -> v3:
+- fixed indent (Jonathan)
 ---
- tests/qtest/bios-tables-test-allowed-diff.h   |   7 -------
- tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5158 bytes
- .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5244 bytes
- tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6519 bytes
- tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7603 bytes
- tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5360 bytes
- tests/data/acpi/riscv64/virt/DSDT             | Bin 3576 -> 3538 bytes
- tests/data/acpi/x86/microvm/DSDT.pcie         | Bin 3023 -> 2985 bytes
- 8 files changed, 7 deletions(-)
+ include/hw/acpi/pcihp.h |  2 ++
+ hw/acpi/pcihp.c         | 18 ++++++++++++++++++
+ hw/i386/acpi-build.c    | 15 ++-------------
+ 3 files changed, 22 insertions(+), 13 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 333e5acf63..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,8 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/aarch64/virt/DSDT",
--"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
--"tests/data/acpi/aarch64/virt/DSDT.memhp",
--"tests/data/acpi/aarch64/virt/DSDT.pxb",
--"tests/data/acpi/aarch64/virt/DSDT.topology",
--"tests/data/acpi/x86/microvm/DSDT.pcie",
--"tests/data/acpi/riscv64/virt/DSDT",
-diff --git a/tests/data/acpi/aarch64/virt/DSDT b/tests/data/acpi/aarch64/virt/DSDT
-index 36d3e5d5a5e47359b6dcb3706f98b4f225677591..acab6e65febbc210158d4c39be0680bbb90250f5 100644
-GIT binary patch
-delta 114
-zcmX@3u}p)@CD<iIO@x7g>C8kfX{JVpjp}Y(OkR^V=X2?C2#NTx$NL96vvg%MIJ<-!
-zF7RWWyjw`i#5kckflEGNfxx86nT)j{87>a6yzr#S&Mx7`2@o*>kXS(iNMs?;W@BMV
-FMgSUfAKd@|
-
-delta 152
-zcmZ3caYlp7CD<jzM}&caNqQoeG*i3NMs+tXCWon;^SSgm<T!#u0|FR0oI`?q7)0DS
-z<Nbr3S-P?roL#~V7kIEwUN5BOX9QAG;Or7^3{q7MBDmy1<N|?7lQS7>L29`;z&gYx
-bO@^t12n&FO3qXoN;!Cm@@@?i7mSh9~5Tq&5
-
-diff --git a/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt b/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt
-index e6154d0355f84fdcc51387b4db8f9ee63acae4e9..54c27e7d95b4956ed1b5dee0d299ccb08dc2a73e 100644
-GIT binary patch
-delta 114
-zcmZ3a`A37xCD<jTMudTZsdFNiG*i3lM)f&dOkR^VALY{H5EAiWkM|FDX6ediaCQkd
-zT;Rt#Sx{KZ#5kckflEGNfxx86nT)j{87>a6yzr#S&Mx7`2@o*>kXS(iNMs?;=1yTr
-FMgUJNAb|h?
-
-delta 152
-zcmeyPu}G84CD<iokq83=(~XH-(oDVX8`bA<F*!`#e3VO%LyjXjG$4S1!#O0#he5=R
-zGu}VgnWZb6!PzC;aDfN=WL9A<KO>Nm0%w<SW00z95Wyu6A{Piunw-g43sTF)0oEZl
-bX);V5L|6bMTmVuG5?_+NkZ*Icup}b@<J&8B
-
-diff --git a/tests/data/acpi/aarch64/virt/DSDT.memhp b/tests/data/acpi/aarch64/virt/DSDT.memhp
-index 33f011d6b635035a04c0b39ce9b4e219f7ae74b7..4330bc97cba0950191c45ac833533db7a190db81 100644
-GIT binary patch
-delta 114
-zcmbPh{N0GlCD<jTT#|u->Fq==X{M&B8`a&on7k%!&gatO5EAiWkM|FDX6ediaCQkd
-zT;Rt#dAE?3iE%=80+)Qk0)a`BGZ||^GF%*BdErTuon69>6Ch#&AhCi3kjO%w&Bnr6
-FYyg6XAvXX3
-
-delta 152
-zcmexvG}oBRCD<iot|S8klg&gfX{L_p8`a&om>i~V&gatOkmCpr4G3W1a1IIbVGwcS
-zjQ0<AX6ediaCQkdT;RbzdA*R9pAkq&fwN1vF-TQ4h~Sb3kqZPSP0nPj1*zrY0P7H&
-bG#RE2A}jzBE&wS8i7&}s$hVnSIExJcpiV0*
-
-diff --git a/tests/data/acpi/aarch64/virt/DSDT.pxb b/tests/data/acpi/aarch64/virt/DSDT.pxb
-index c0fdc6e9c1396cc2259dc4bc665ba023adcf4c9b..7fdbc03e2bf9fb7d35704779253de36e362f0bf9 100644
-GIT binary patch
-delta 207
-zcmexwz1f<}CD<iovn&Gx)9r~|(oB6fHmbXEG5NM`&ga^|E+pc^9`7IQ%+i(3;Or7^
-zxWJEfa-NKqiE%=80+)Qk0)a`BGZ||^GF%*BdErTuon69>6Ch#&AhCi3kjO%w$<JhL
-aH-8e+V`TE0v{^|+kAs?qZ+<2t$p`>t?mg51
-
-delta 282
-zcmdmN{ok6)CD<k8zbpd-Q^!OuX{N5b8`a&on4CK{=W}gfm*WTy4G3W1a1IIbVGwcS
-zjQ0<AX6ediaCQkdT;Rbz*-%K!&j_TXz}Y3-7^JEiL~zN2$OQtECTB9%g4A+xfOUvX
-unhaA15f%Um7l0Il#Fu0*<lEdYl+DQGFm>}EVLcA|TR*v9$aeB|nL7Yd7E^Zs
-
-diff --git a/tests/data/acpi/aarch64/virt/DSDT.topology b/tests/data/acpi/aarch64/virt/DSDT.topology
-index 029d03eecc4efddc001e5377e85ac8e831294362..969b4f6560d3ae39f5b7e0064b7122905476fce8 100644
-GIT binary patch
-delta 114
-zcmbQH^+A)%CD<k8g9rly)24}B(oEex8`TB4nY<=#w&d315EAiWkM|FDX6ediaCQkd
-zT;Rt#xm8%p#5kckflEGNfxx86nT)j{87>a6yzr#S&Mx7`2@o*>kXS(iNMs?;=D)&{
-Fi~vUbAmso6
-
-delta 152
-zcmeyMIZcbpCD<iIOq79viGL!OG*hGhMs)#hCWon;ExGkL<T!#u0|FR0oI`?q7)0DS
-z<Nbr3S-P?roL#~V7kIEwt`yetGXg0oaCQkd2C1qB5nS>ha)H34$(f9`Ahlc^U>#zU
-bCd1T0gatst1t7&B@g>;{`8Hn{mSh9~yBaCk
-
-diff --git a/tests/data/acpi/riscv64/virt/DSDT b/tests/data/acpi/riscv64/virt/DSDT
-index 6a33f5647ddd6de3a0f000f718b58f6fff44f0fd..527f239dab13a00ad42e5a70b8dc2b89f12aa84a 100644
-GIT binary patch
-delta 113
-zcmew%eMy?jCD<k85-$S-lgdOcX(r!W8`WD`nA|39UdN)vAtd6%9`7IQ%+i(3;Or7^
-zxWJEf@;4qW6XS&H1TMLR1p<>MXEN4;WVkrM^1_oQJG+D%CqTpmKw<?6Ad!VUlk<4H
-E0ByV>p#T5?
-
-delta 151
-zcmca4{X?3|CD<k82QLEyQ_(~&X(s2p8`WD`n0%&eUdN)vA;%FM8W6z1;T#g=!yw|u
-z8SfwL%+i(3;Or7^xWI#b@+%%KKO>Nm0%w<SW00z95Wyu6A{Piunw-g43sTF)0oEZl
-aX);V5L|6bMTmVuG5?_+NkZ-aFZx;X$O)QlF
-
-diff --git a/tests/data/acpi/x86/microvm/DSDT.pcie b/tests/data/acpi/x86/microvm/DSDT.pcie
-index 8eacd21d6ecdf9a3cd3e4f03cf1b40748dcbf53e..ba258f454dc0e59ef2fd67e0ce37e270e7c122e8 100644
-GIT binary patch
-delta 113
-zcmX>vzEYgaCD<ioB{u^D)Axy7(oD|VH>#&HG5Ji`+{YxqAtd6%9`7IQ%+i(3;Or7^
-zxWJEf@*XZN6XS&H1TMLR1p<>MXEN4;WVkrM^1_oQJG+D%CqTpmKw<?6Ad!VUlTEm1
-F0{}^9AprmY
-
-delta 151
-zcmZ1}eqNl*CD<k8JU0Ualj}q-X(rE|8`V>pn4BhW?qd?*kmCpr4G3W1a1IIbVGwcS
-zjQ0<AX6ediaCQkdT;Rbzc>|Z0pAkq&fwN1vF-TQ4h~Sb3kqZPSP0nPj1*zrY0P7H&
-aG#RE2A}jzBE&wS8i7&}s$Tyjfdo}=5#47aw
-
+diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
+index 971451e8ea..8a46a414cc 100644
+--- a/include/hw/acpi/pcihp.h
++++ b/include/hw/acpi/pcihp.h
+@@ -75,6 +75,8 @@ void acpi_pcihp_device_unplug_request_cb(HotplugHandler *hotplug_dev,
+ 
+ void build_acpi_pci_hotplug(Aml *table, uint64_t pcihp_addr);
+ void build_append_pci_dsm_func0_common(Aml *ctx, Aml *retvar);
++void build_append_pcihp_resources(Aml *table,
++                                  uint64_t io_addr, uint64_t io_len);
+ 
+ /* Called on reset */
+ void acpi_pcihp_reset(AcpiPciHpState *s);
+diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
+index cbe7e01385..5ca36c8619 100644
+--- a/hw/acpi/pcihp.c
++++ b/hw/acpi/pcihp.c
+@@ -685,6 +685,24 @@ void build_acpi_pci_hotplug(Aml *table, uint64_t pcihp_addr)
+     aml_append(table, scope);
+ }
+ 
++/* Reserve PCIHP resources */
++void build_append_pcihp_resources(Aml *scope /* \\_SB.PCI0 */,
++                                  uint64_t io_addr, uint64_t io_len)
++{
++    Aml *dev, *crs;
++
++    dev = aml_device("PHPR");
++    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0A06")));
++    aml_append(dev,
++               aml_name_decl("_UID", aml_string("PCI Hotplug resources")));
++    /* device present, functioning, decoding, not shown in UI */
++    aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
++    crs = aml_resource_template();
++    aml_append(crs, aml_io(AML_DECODE16, io_addr, io_addr, 1, io_len));
++    aml_append(dev, aml_name_decl("_CRS", crs));
++    aml_append(scope, dev);
++}
++
+ const VMStateDescription vmstate_acpi_pcihp_pci_status = {
+     .name = "acpi_pcihp_pci_status",
+     .version_id = 1,
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 91945f716c..52cef834ed 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1432,19 +1432,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+ 
+     /* reserve PCIHP resources */
+     if (pm->pcihp_io_len && (pm->pcihp_bridge_en || pm->pcihp_root_en)) {
+-        dev = aml_device("PHPR");
+-        aml_append(dev, aml_name_decl("_HID", aml_string("PNP0A06")));
+-        aml_append(dev,
+-            aml_name_decl("_UID", aml_string("PCI Hotplug resources")));
+-        /* device present, functioning, decoding, not shown in UI */
+-        aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+-        crs = aml_resource_template();
+-        aml_append(crs,
+-            aml_io(AML_DECODE16, pm->pcihp_io_base, pm->pcihp_io_base, 1,
+-                   pm->pcihp_io_len)
+-        );
+-        aml_append(dev, aml_name_decl("_CRS", crs));
+-        aml_append(scope, dev);
++        build_append_pcihp_resources(scope,
++                                      pm->pcihp_io_base, pm->pcihp_io_len);
+     }
+     aml_append(dsdt, scope);
+ 
 -- 
 2.49.0
 
