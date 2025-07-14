@@ -2,91 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2E4B03A8F
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4D1B03AB4
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:22:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubFEP-0006oQ-FV; Mon, 14 Jul 2025 05:12:19 -0400
+	id 1ubFO4-0005vX-Gr; Mon, 14 Jul 2025 05:22:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ubEd5-00064Q-Ol; Mon, 14 Jul 2025 04:33:46 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1ubEmx-0000Gh-74
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:43:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ubEd3-0000cl-Iu; Mon, 14 Jul 2025 04:33:43 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3C84313665F;
- Mon, 14 Jul 2025 11:33:34 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id AF4A7246A7A;
- Mon, 14 Jul 2025 11:33:36 +0300 (MSK)
-Message-ID: <56c648bb-f091-4e78-ad8c-83c6412a81dd@tls.msk.ru>
-Date: Mon, 14 Jul 2025 11:33:36 +0300
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1ubEmu-0003HJ-9t
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:43:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752482629;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GRhLUFEqvojdLmOsG0Ejy1GkfyZq+eqUAsj94u+Dgrw=;
+ b=BcqrduxPNTi1lC/axohIc01lTs6Gx/kBuEkcX3jfQHl8mOdQdoMJOetJ4H3Sg9LylG+agP
+ iawp2xMm7qhlXFRVUO7fFsCRMUKhhnDQoLID/DNsd05dSneBi9A52Renj/Sczaa5qI7zbC
+ tT9NTwHUCA4AgDGb1EO3mu3gYE+VW0w=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-296-LvmQt8zTPC6h-9QIH0IVYA-1; Mon, 14 Jul 2025 04:43:48 -0400
+X-MC-Unique: LvmQt8zTPC6h-9QIH0IVYA-1
+X-Mimecast-MFC-AGG-ID: LvmQt8zTPC6h-9QIH0IVYA_1752482627
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ae6d6b8eacbso296742266b.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 01:43:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752482627; x=1753087427;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GRhLUFEqvojdLmOsG0Ejy1GkfyZq+eqUAsj94u+Dgrw=;
+ b=TXc/h7ZwSZe/h6l4zVaXNC2E/x91LP0D0BBy/zGj+4s59YdkWmX6JlcAqQFaJbb4er
+ pkmRQropIZPRFonp2heFI5Fta4djuiLX6JJCblk5rVtGF2ZoFfzthr9BV9UEnrZ3Sjg1
+ f735J1G2fCmVdg8B4pmP7ps9lzOIoW7zKEO23aA9yL2V1aYPC3ys56L/NG/GshC30Ifc
+ JnTSSYtoIbk132y1coHHaBs46fyk1NBfNsKbrkdybKRF1oSi+vhWCbvJlUeUaw93s09x
+ dbOzifxw1qvNxm3cNZeimZEm5a0vHpGfJm3LdkkhKaaXOTKa0xUzYTyG3f2AVwMCa7vX
+ 1T+A==
+X-Gm-Message-State: AOJu0Yy7KdWOSlVBLXCKwNTcwy2OLUGIOKAlIcLU5Aemb0r3QpjVQ2TR
+ 2RysCKbvp7hZXD7sJFJAyZRysyxAdFIdbEsZoWeUxbkHdAstirDR96W3ZHBikfe+zVglyA8np5J
+ YUbGnz9ZssXDQE1vEGDvvClgDNzKJHgxHOJN2E+tR2ztA5dp4Csaof6nAYm3UAHSw89dBRnUFT+
+ 2c82iBBG/upaQu1SlIPKi/7ka9IPr7JAQ=
+X-Gm-Gg: ASbGnctSxmV4nAV5/tshTTO4hdaqddjUd20PDR/TOXuDvynxPZnTSR5KWz3+lP0I4Xq
+ Xb9owF0RTCFelN+BDSxFWukzEAJeSVjnkjgMOvQ7Zza5k2VrR8dfI1Y/9T1dAVjtfZzEfCnAlw6
+ p8d5x018PgHOFE/RJlnbZaDw==
+X-Received: by 2002:a17:906:478d:b0:ae6:d94f:4326 with SMTP id
+ a640c23a62f3a-ae6fcb520ccmr1362644066b.57.1752482627112; 
+ Mon, 14 Jul 2025 01:43:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGyp6tHCDEPwymTJwFNP12fJma5TYDhuC8m6nlnf+pWF04et2UyRfdJXz40rUF9nb6cenSI9JuCqjX2X2ZgfJU=
+X-Received: by 2002:a17:906:478d:b0:ae6:d94f:4326 with SMTP id
+ a640c23a62f3a-ae6fcb520ccmr1362640466b.57.1752482626639; Mon, 14 Jul 2025
+ 01:43:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] qemu-img: add sub-command --remove-all to 'qemu-img
- bitmap'
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-References: <20250707205822.614350-1-den@openvz.org>
- <7dafb6f1-690f-4adb-8fb7-99db7cc625c7@tls.msk.ru>
-Content-Language: en-US, ru-RU
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <7dafb6f1-690f-4adb-8fb7-99db7cc625c7@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+References: <cover.1752229731.git.pabeni@redhat.com>
+In-Reply-To: <cover.1752229731.git.pabeni@redhat.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Mon, 14 Jul 2025 16:43:09 +0800
+X-Gm-Features: Ac12FXxatr64OrUhmel8luErrVbEIm_iqCQ2G7Fi9UrLidUG2qqfbpb6ijcKDPw
+Message-ID: <CAPpAL=y4e=+H2rxHwwgbGvU+x10aTDVZ7ix+2YqVC3e6hd6L7g@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 00/13] virtio: introduce support for GSO over UDP
+ tunnel
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
+ Jason Wang <jasowang@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, 
+ Luigi Rizzo <lrizzo@google.com>, Giuseppe Lettieri <g.lettieri@iet.unipi.it>, 
+ Vincenzo Maffione <v.maffione@gmail.com>, Eric Blake <eblake@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,18 +110,219 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14.07.2025 11:01, Michael Tokarev wrote:
+Hi Paolo
 
-> I'd very much love to add more commands/options to qemu-img *after*
-> my big patchset to it is either accepted or rejected.  It's been in
-> the queue for over the years, and I have to rebase it painfully after
-> each change (thankfully there weren't many).
+Does the compile of this series of patches require support for a
+special kernel environment? I hit a compile issue after applied you
+patches:
+[1440/2928] Compiling C object libsystem.a.p/hw_virtio_vhost.c.o
+FAILED: libsystem.a.p/hw_virtio_vhost.c.o
+cc -m64 -Ilibsystem.a.p -I. -I.. -Isubprojects/dtc/libfdt
+-I../subprojects/dtc/libfdt -Isubprojects/libvduse
+-I../subprojects/libvduse -Iui -Iqapi -Itrace -Iui/shader
+-I/usr/include/pixman-1 -I/usr/include/glib-2.0
+-I/usr/lib64/glib-2.0/include -I/usr/include/libmount
+-I/usr/include/blkid -I/usr/include/sysprof-6
+-I/usr/include/gio-unix-2.0 -I/usr/include/slirp
+-fdiagnostics-color=3Dauto -Wall -Winvalid-pch -Werror -std=3Dgnu11 -O0 -g
+-fstack-protector-strong -Wempty-body -Wendif-labels
+-Wexpansion-to-defined -Wformat-security -Wformat-y2k
+-Wignored-qualifiers -Wimplicit-fallthrough=3D2 -Winit-self
+-Wmissing-format-attribute -Wmissing-prototypes -Wnested-externs
+-Wold-style-declaration -Wold-style-definition -Wredundant-decls
+-Wshadow=3Dlocal -Wstrict-prototypes -Wtype-limits -Wundef -Wvla
+-Wwrite-strings -Wno-missing-include-dirs -Wno-psabi
+-Wno-shift-negative-value -isystem
+/mnt/tests/distribution/command/qemu/linux-headers -isystem
+linux-headers -iquote . -iquote /mnt/tests/distribution/command/qemu
+-iquote /mnt/tests/distribution/command/qemu/include -iquote
+/mnt/tests/distribution/command/qemu/host/include/x86_64 -iquote
+/mnt/tests/distribution/command/qemu/host/include/generic -iquote
+/mnt/tests/distribution/command/qemu/tcg/i386 -pthread -mcx16 -msse2
+-D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE
+-fno-strict-aliasing -fno-common -fwrapv -ftrivial-auto-var-init=3Dzero
+-fzero-call-used-regs=3Dused-gpr -fPIE -DWITH_GZFILEOP -DCONFIG_SOFTMMU
+-DCOMPILING_SYSTEM_VS_USER -MD -MQ libsystem.a.p/hw_virtio_vhost.c.o
+-MF libsystem.a.p/hw_virtio_vhost.c.o.d -o
+libsystem.a.p/hw_virtio_vhost.c.o -c ../hw/virtio/vhost.c
+../hw/virtio/vhost.c: In function =E2=80=98vhost_dev_set_features=E2=80=99:
+../hw/virtio/vhost.c:38:9: error: =E2=80=98r=E2=80=99 may be used uninitial=
+ized
+[-Werror=3Dmaybe-uninitialized]
+   38 |         error_report(fmt ": %s (%d)", ## __VA_ARGS__, \
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   39 |                      strerror(-retval), -retval); \
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../hw/virtio/vhost.c:1006:9: note: in expansion of macro =E2=80=98VHOST_OPS=
+_DEBUG=E2=80=99
+ 1006 |         VHOST_OPS_DEBUG(r, "extended features without device suppor=
+t");
+      |         ^~~~~~~~~~~~~~~
+../hw/virtio/vhost.c:989:9: note: =E2=80=98r=E2=80=99 was declared here
+  989 |     int r;
+      |         ^
+cc1: all warnings being treated as errors
+ninja: build stopped: subcommand failed.
+make[1]: *** [Makefile:168: run-ninja] Error 1
+make[1]: Leaving directory '/mnt/tests/distribution/command/qemu/build'
+make[1]: Entering directory '/mnt/tests/distribution/command/qemu/build'
+[1/1493] Generating subprojects/dtc/version_gen.h with a custom command
+[2/1493] Generating qemu-version.h with a custom command (wrapped by
+meson to capture output)
+[3/1492] Compiling C object libsystem.a.p/hw_virtio_vhost.c.o
+FAILED: libsystem.a.p/hw_virtio_vhost.c.o
+cc -m64 -Ilibsystem.a.p -I. -I.. -Isubprojects/dtc/libfdt
+-I../subprojects/dtc/libfdt -Isubprojects/libvduse
+-I../subprojects/libvduse -Iui -Iqapi -Itrace -Iui/shader
+-I/usr/include/pixman-1 -I/usr/include/glib-2.0
+-I/usr/lib64/glib-2.0/include -I/usr/include/libmount
+-I/usr/include/blkid -I/usr/include/sysprof-6
+-I/usr/include/gio-unix-2.0 -I/usr/include/slirp
+-fdiagnostics-color=3Dauto -Wall -Winvalid-pch -Werror -std=3Dgnu11 -O0 -g
+-fstack-protector-strong -Wempty-body -Wendif-labels
+-Wexpansion-to-defined -Wformat-security -Wformat-y2k
+-Wignored-qualifiers -Wimplicit-fallthrough=3D2 -Winit-self
+-Wmissing-format-attribute -Wmissing-prototypes -Wnested-externs
+-Wold-style-declaration -Wold-style-definition -Wredundant-decls
+-Wshadow=3Dlocal -Wstrict-prototypes -Wtype-limits -Wundef -Wvla
+-Wwrite-strings -Wno-missing-include-dirs -Wno-psabi
+-Wno-shift-negative-value -isystem
+/mnt/tests/distribution/command/qemu/linux-headers -isystem
+linux-headers -iquote . -iquote /mnt/tests/distribution/command/qemu
+-iquote /mnt/tests/distribution/command/qemu/include -iquote
+/mnt/tests/distribution/command/qemu/host/include/x86_64 -iquote
+/mnt/tests/distribution/command/qemu/host/include/generic -iquote
+/mnt/tests/distribution/command/qemu/tcg/i386 -pthread -mcx16 -msse2
+-D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE
+-fno-strict-aliasing -fno-common -fwrapv -ftrivial-auto-var-init=3Dzero
+-fzero-call-used-regs=3Dused-gpr -fPIE -DWITH_GZFILEOP -DCONFIG_SOFTMMU
+-DCOMPILING_SYSTEM_VS_USER -MD -MQ libsystem.a.p/hw_virtio_vhost.c.o
+-MF libsystem.a.p/hw_virtio_vhost.c.o.d -o
+libsystem.a.p/hw_virtio_vhost.c.o -c ../hw/virtio/vhost.c
+../hw/virtio/vhost.c: In function =E2=80=98vhost_dev_set_features=E2=80=99:
+../hw/virtio/vhost.c:38:9: error: =E2=80=98r=E2=80=99 may be used uninitial=
+ized
+[-Werror=3Dmaybe-uninitialized]
+   38 |         error_report(fmt ": %s (%d)", ## __VA_ARGS__, \
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   39 |                      strerror(-retval), -retval); \
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../hw/virtio/vhost.c:1006:9: note: in expansion of macro =E2=80=98VHOST_OPS=
+_DEBUG=E2=80=99
+ 1006 |         VHOST_OPS_DEBUG(r, "extended features without device suppor=
+t");
+      |         ^~~~~~~~~~~~~~~
+../hw/virtio/vhost.c:989:9: note: =E2=80=98r=E2=80=99 was declared here
+  989 |     int r;
+      |         ^
+cc1: all warnings being treated as errors
+ninja: build stopped: subcommand failed.
+make[1]: *** [Makefile:168: run-ninja] Error 1
+make[1]: Leaving directory '/mnt/tests/distribution/command/qemu/build'
 
-"Over TWO years"
+Thanks
+Lei
 
-> https://lore.kernel.org/qemu-devel/20250531171609.197078-1-mjt@tls.msk.ru/
+On Fri, Jul 11, 2025 at 9:08=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> Some virtualized deployments use UDP tunnel pervasively and are impacted
+> negatively by the lack of GSO support for such kind of traffic in the
+> virtual NIC driver.
+>
+> The virtio_net specification recently introduced support for GSO over
+> UDP tunnel, and the kernel side of the implementation has been merged
+> into the net-next tree; this series updates the virtio implementation to
+> support such a feature.
+>
+> Currently the qemu virtio support limits the feature space to 64 bits,
+> while the virtio specification allows for a larger number of features.
+> Specifically the GSO-over-UDP-tunnel-related virtio features use bits
+> 65-69; the larger part of this series (patches 3-11) actually deals with
+> extending the features space.
+>
+> The extended features are carried by fixed size uint64_t arrays,
+> bringing the current maximum features number to 128.
+>
+> The patches use some syntactic sugar to try to minimize the otherwise
+> very large code churn. Specifically the extended features are boundled
+> in an union with 'legacy' features definition, allowing no changes in
+> the virtio devices not needing the extended features set.
+>
+> The actual offload implementation is in patches 12 and 13 and boils down
+> to propagating the new offload to the tun devices and the vhost backend.
+>
+> Finally patch 1 is a small pre-req refactor that ideally could enter the
+> tree separately; it's presented here in the same series to help
+> reviewers more easily getting the full picture and patch 2 is a needed
+> linux headers update.
+>
+> Tested with basic stream transfer with all the possible permutations of
+> host kernel/qemu/guest kernel with/without GSO over UDP tunnel support,
+> vs snapshots creation and restore and vs migration.
+>
+> Sharing again as RFC as the kernel bits have not entered the Linus tree
+> yet - but they should on next merge window.
+>
+> Paolo Abeni (13):
+>   net: bundle all offloads in a single struct
+>   linux-headers: Update to Linux ~v6.16-rc5 net-next
+>   virtio: introduce extended features type
+>   virtio: serialize extended features state
+>   virtio: add support for negotiating extended features
+>   virtio-pci: implement support for extended features
+>   vhost: add support for negotiating extended features
+>   qmp: update virtio features map to support extended features
+>   vhost-backend: implement extended features support
+>   vhost-net: implement extended features support
+>   virtio-net: implement extended features support
+>   net: implement tunnel probing
+>   net: implement UDP tunnel features offloading
+>
+>  hw/net/e1000e_core.c                         |   5 +-
+>  hw/net/igb_core.c                            |   5 +-
+>  hw/net/vhost_net-stub.c                      |   8 +-
+>  hw/net/vhost_net.c                           |  50 +++--
+>  hw/net/virtio-net.c                          | 215 +++++++++++++------
+>  hw/net/vmxnet3.c                             |  13 +-
+>  hw/virtio/vhost-backend.c                    |  62 +++++-
+>  hw/virtio/vhost.c                            |  73 ++++++-
+>  hw/virtio/virtio-bus.c                       |  11 +-
+>  hw/virtio/virtio-hmp-cmds.c                  |   3 +-
+>  hw/virtio/virtio-pci.c                       | 101 ++++++++-
+>  hw/virtio/virtio-qmp.c                       |  89 +++++---
+>  hw/virtio/virtio-qmp.h                       |   3 +-
+>  hw/virtio/virtio.c                           | 111 ++++++++--
+>  include/hw/virtio/vhost-backend.h            |   6 +
+>  include/hw/virtio/vhost.h                    |  36 +++-
+>  include/hw/virtio/virtio-features.h          | 124 +++++++++++
+>  include/hw/virtio/virtio-net.h               |   2 +-
+>  include/hw/virtio/virtio-pci.h               |   6 +-
+>  include/hw/virtio/virtio.h                   |  11 +-
+>  include/net/net.h                            |  20 +-
+>  include/net/vhost_net.h                      |  33 ++-
+>  include/standard-headers/linux/ethtool.h     |   4 +-
+>  include/standard-headers/linux/vhost_types.h |   5 +
+>  include/standard-headers/linux/virtio_net.h  |  33 +++
+>  linux-headers/asm-x86/kvm.h                  |   8 +-
+>  linux-headers/linux/kvm.h                    |   4 +
+>  linux-headers/linux/vhost.h                  |   7 +
+>  net/net.c                                    |  17 +-
+>  net/netmap.c                                 |   3 +-
+>  net/tap-bsd.c                                |   8 +-
+>  net/tap-linux.c                              |  38 +++-
+>  net/tap-linux.h                              |   9 +
+>  net/tap-solaris.c                            |   9 +-
+>  net/tap-stub.c                               |   8 +-
+>  net/tap.c                                    |  19 +-
+>  net/tap_int.h                                |   5 +-
+>  qapi/virtio.json                             |   8 +-
+>  38 files changed, 945 insertions(+), 227 deletions(-)
+>  create mode 100644 include/hw/virtio/virtio-features.h
+>
+> --
+> 2.50.0
+>
+>
 
-https://gitlab.com/mjt0k/qemu/-/tree/qemu-img-options
-
-/mjt
 
