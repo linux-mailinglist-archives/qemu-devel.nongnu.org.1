@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FAAB038D4
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35554B0392E
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:21:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubEEs-0007SJ-Qo; Mon, 14 Jul 2025 04:08:43 -0400
+	id 1ubEPE-0008KO-PW; Mon, 14 Jul 2025 04:19:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+a0f003c192dcfc477734+7995+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1ubDxq-0008Kw-7q
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:51:06 -0400
-Received: from [2001:8b0:10b:1236:d4b0:a112:9c86:6a4b]
- (helo=casper.infradead.org)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1ubEDI-0005xU-8r
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:07:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+a0f003c192dcfc477734+7995+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1ubDxn-000800-J9
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:51:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=+3V/bCJyjXLOPCigk2q5BH/X3UCzy6LVg4h0vl54G2Q=; b=kX3goq/0qHLVezK3y6Zc5bcXxf
- cnMKzK/k6RkBgFN3/0qnTNpjp/uwokyOu0zASGIIzpxiASU+H5mNCUOym7r5HKSEUumM8pi/UtKRs
- yNBqyzDZJ0wjF6aW+fvjF4lomjIkWdhsM/7jFu1RMyt99gOVXhIhvMDOAl2NaqHCQIFl4zqm9ysSU
- c+aFneUP8pq35tiWtyuSyCppcuOCJ7UlXEURBiD28x3En0M/e+h1WhCnIWXBRmiNoRW+Ii2NdF0Oj
- M9fnFAObM7tW09XbvqfM0mhEslDD4UwCjYDJaDe5jhw/1RAm+SJ6STfM3vx1tESdmjvD7K7cq5hi9
- EVyo+AGQ==;
-Received: from [2001:bb6:9553:3800:d40b:2334:19cb:4c95]
- (helo=pool-ipv6-pd.agg7.cky.chf-qkr.eir.ie)
- by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
- id 1ubDxS-00000006M8R-1mGR; Mon, 14 Jul 2025 07:50:42 +0000
-Message-ID: <72a78aaf419e984f7d2d868b019558f7de6813f0.camel@infradead.org>
-Subject: Re: [PATCH] intel_iommu: Allow both Status Write and Interrupt Flag
- in QI wait
-From: David Woodhouse <dwmw2@infradead.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>, Le Tan <tamlokveer@gmail.com>, 
- kib@freebsd.org, Yi Liu <yi.l.liu@intel.com>, =?ISO-8859-1?Q?Cl=E9ment?=
- Mathieu--Drif <clement.mathieu--drif@eviden.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Eduardo Habkost
- <eduardo@habkost.net>, qemu-devel@nongnu.org
-Date: Mon, 14 Jul 2025 08:50:41 +0100
-In-Reply-To: <20250713172820-mutt-send-email-mst@kernel.org>
-References: <e15012b9776a25cbfdbcc9797595669d3ae4ef36.camel@infradead.org>
- <20250713172820-mutt-send-email-mst@kernel.org>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-+1gH23u7ZVS8wOokHVOj"
-User-Agent: Evolution 3.52.3-0ubuntu1 
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1ubEDE-00035K-IJ
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 04:07:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752480412;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=hlx9+CpSB/6T1kuI2TFe5j1QXEpeIwzCx+e+vMDBV3I=;
+ b=akQ4bCSq7lTX4R47EW/HS2ABTRok5pn+TbRTPavmlwlHFpmnEmHErAxt3l6vfPR/ibXK3Y
+ Z0YuxWn81Zd5c9MhrQ3K8jolfl24DyQFefHHPKjAEE2+oMkTHH2d9hmq/fWOWsPjzGKr4/
+ va7UUuzW/0DibRb1odqPFr5uypP56Tc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-513-zWrnSNCDMAmMGcBaoJ6X9w-1; Mon,
+ 14 Jul 2025 04:06:48 -0400
+X-MC-Unique: zWrnSNCDMAmMGcBaoJ6X9w-1
+X-Mimecast-MFC-AGG-ID: zWrnSNCDMAmMGcBaoJ6X9w_1752480407
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E2A7C1808985; Mon, 14 Jul 2025 08:06:46 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.44.32.221])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D846F1977000; Mon, 14 Jul 2025 08:06:41 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
+ Jonathan.Cameron@huawei.com, gustavo.romero@linaro.org,
+ anisinha@redhat.com, mst@redhat.com, shannon.zhaosl@gmail.com
+Cc: pbonzini@redhat.com,
+	philmd@linaro.org,
+	alex.bennee@linaro.org
+Subject: [PATCH v7 00/36] ACPI PCI Hotplug support on ARM
+Date: Mon, 14 Jul 2025 10:04:44 +0200
+Message-ID: <20250714080639.2525563-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-X-Host-Lookup-Failed: Reverse DNS lookup failed for
- 2001:8b0:10b:1236:d4b0:a112:9c86:6a4b (failed)
-Received-SPF: none client-ip=2001:8b0:10b:1236:d4b0:a112:9c86:6a4b;
- envelope-from=BATV+a0f003c192dcfc477734+7995+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RDNS_NONE=0.793,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,124 +84,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This series enables ACPI PCI hotplug/hotunplug on ARM.
+It is not enabled by default and ACPI PCI hotplug can
+be selected by setting: 
 
---=-+1gH23u7ZVS8wOokHVOj
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+-global acpi-ged.acpi-pci-hotplug-with-bridge-support=on
 
-On Sun, 2025-07-13 at 17:29 -0400, Michael S. Tsirkin wrote:
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (inv_desc->lo & VTD_INV_=
-DESC_WAIT_IF)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vtd=
-_generate_completion_event(s);
-> > =C2=A0=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* FIXME: need t=
-o be masked with HAW? */
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma_addr_t statu=
-s_addr =3D inv_desc->hi;
->=20
-> Follow QEMU coding style, please.
+Expected benefits should be similar to those listed in [1],
+ie. removal of some racy behaviors, improved latencies.
 
-Hm, actually that one doesn't need to be there at all, since it's done
-a few lines later (*after* the status write). I'll send v2; thanks.=20
+The infrastructure used in x86 is heavily reused and a
+huge part of the series consists in moving code from
+hw/i386/acpi-build.c to a generic place and slightly
+adapting it to make it usable on ARM. The DSDT table is
+augmented to support ACPI PCI hotplug elements.
 
+On ARM we use use a GED event to notify the OS about
+hotplug events.
 
---=-+1gH23u7ZVS8wOokHVOj
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Best Regards 
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDcxNDA3NTA0
-MVowLwYJKoZIhvcNAQkEMSIEIJyC6yWg8dT58d4vC+PRm2BJPBW8LAypRGrrhH/mFrM+MGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAMfrpRJa/eK8p
-Z/22CPFEGrsfjXLe/1xWtS+/V3hguz3/CCj/XmfCGp0Ud/pw3IZIcZrl7/7vBLC05Th5CRbnLYyV
-FNMssPJvSgJC8UUcFEHKP6HaqHjkTtAI62NP7Q4volSw44Kjgt7S+5uHl/HWObl0htypTw7uNW3L
-iC1KyycNZj/0RKFP7lGnqEwQJAspMMwEG09hNV0pMveM8rxmdhlVRUf5F270dUMTYgFXebewwE7x
-N88dBrksApYsnBeTtNLTgjYth/638b1hEJOIL5UXOC3T8ijfVL25Ou76S/hU/iM5cVJ5ijaxoe6F
-744wiQOq9VvhHYtqQUN4tRpaJRINZCCD928/sjqiHTmxz8di9qQcQTjmGi4qcpAnQkG2Q9sIX4ng
-LXyQ/w3ae1n1uHwC7GsmAFvoCIu6q5CzWVrLiZVT2Cd/BUDcf+c9CceiF+yTIl5lnAI4ij4z0v83
-CK7U6QZT4C/NcR3PBfcI9+WikAWrdoErDkVJ0f8nMs8YYQnEcEUiF5NyhgwxBNoJlD3AjuI/asLr
-0JLT+FfffMHUApOn4aT0wYgTTSlRpmYJKXxBntog73RLtcWMSJPlzRNpiG+wUiPkqLux87pWG6zH
-HMI7toVif506KyArRwGZutj/NXiFXd494f3gfvHF7e2UsdB+7Q+PhjXj8uJpTB8AAAAAAAA=
+Eric
 
+This series can be found at:
+https://github.com/eauger/qemu/tree/arm-acpi-pcihp-v7
 
---=-+1gH23u7ZVS8wOokHVOj--
+previous series:
+https://github.com/eauger/qemu/tree/arm-acpi-pcihp-v6
+
+History:
+v6 -> v7:
+- rebased after minor contextual conflict introduced
+  by "hw/arm/virt: Basic CXL enablement on pci_expander_bridge
+  instances pxb-cxl" in hw/arm/virt-acpi-build.c
+  (hw/pci-host/gpex-acpi: Use GED acpi pcihp property)
+- collected last Igor's and Prasad's R-bs
+
+v5 -> v6:
+- collected Jonathan's R-bs
+- cropped last 2 patch commit messages (Jonathan)
+
+v4 -> v5:
+- Collected Jonathan's R-bs (many thanks!)
+- fixed the tests/qtest/bios-tables-test issue by
+  creating a variant for the viot test
+- use the 3 phase reset API
+- fixed qom-test failures that were due to unconditionnal
+  fetches of the GED property
+
+v3 -> v4:
+- toook into account all comments on v3
+- static acpi-index is now supported unconditionally
+  from acpi pcihp option. See indiviual patches.
+- I hit a problem with ref block generation at
+  [19/32] tests/qtest/bios-tables-test: Update ARM DSDT reference
+  blobs: despite I regenerate the blobs, I get some errors.
+
+v2 -> v3:
+- lot of changes taking into account various feedbacks
+  (many thanks to all reviewers). Please refer to
+  individual patches for details. Main changes:
+  - no more machine option, acpi pci hp is not set by
+    default.
+  - removal of 2 unused variables in the osc method
+  - introduction of GED property to set the bus
+  - rework of the init/reset sequence
+  - fix virtio-mem-pci hotplug regression
+
+v1 -> v2:
+- collected a bunch of R-bs from Gustavo (many thanks!)
+- Fixed the breakage of bios-tables-test in TCG mode by
+  incorporating Gustavo's patches (part of
+  [PATCH 0/5] ACPI tests for PCI Hotplug on ARM
+  https://lore.kernel.org/all/20250526053123.1434204-1-gustavo.romero@linaro.org/)
+- Tweeked the dsdt aml changes to avoid any dsdt blob difference when
+  acpi-pcihp is off.
+
+RFC -> v1:
+- First 3 trivial patches were pulled separately
+- Fix of the register region size (0x18), ie. ACPI_PCIHP_SIZE
+- addition of aml_pci_edsm which was not called in RFC
+- acpi-index feature is now fixed. vms->bus was not set on
+  acpi_pcihp_init. The init sequence is still hacky though. Suggestions
+  are welcome.
+
+[1] [PATCH v6 0/6] Use ACPI PCI hot-plug for Q35
+https://lore.kernel.org/all/20210713004205.775386-1-jusual@redhat.com/
+
+Eric Auger (32):
+  hw/i386/acpi-build: Make aml_pci_device_dsm() static
+  hw/acpi: Rename and move build_x86_acpi_pci_hotplug to pcihp
+  hw/pci-host/gpex-acpi: Add native_pci_hotplug arg to
+    acpi_dsdt_add_pci_osc
+  hw/pci-host/gpex-acpi: Split host bridge OSC and DSM generation
+  hw/acpi/ged: Add a acpi-pci-hotplug-with-bridge-support property
+  hw/pci-host/gpex-acpi: Use GED acpi pcihp property
+  hw/i386/acpi-build: Turn build_q35_osc_method into a generic method
+  hw/pci-host/gpex-acpi: Use build_pci_host_bridge_osc_method
+  tests/qtest/bios-tables-test: Update DSDT blobs after GPEX _OSC change
+  hw/i386/acpi-build: Introduce build_append_pcihp_resources() helper
+  hw/acpi/pcihp: Add an AmlRegionSpace arg to build_acpi_pci_hotplug
+  hw/i386/acpi-build: Move build_append_notification_callback to pcihp
+  hw/i386/acpi-build: Move build_append_pci_bus_devices/pcihp_slots to
+    pcihp
+  hw/i386/acpi-build: Use AcpiPciHpState::root in acpi_set_pci_info
+  hw/i386/acpi-build: Move aml_pci_edsm to a generic place
+  qtest/bios-tables-test: Prepare for fixing the aarch64 viot test
+  qtest/bios-tables-test: Add a variant to the aarch64 viot test
+  qtest/bios-tables-test: Generate DSDT.viot
+  hw/arm/virt-acpi-build: Let non hotplug ports support static
+    acpi-index
+  tests/qtest/bios-tables-test: Update ARM DSDT reference blobs
+  hw/arm/virt-acpi-build: Modify the DSDT ACPI table to enable ACPI PCI
+    hotplug
+  hw/acpi/ged: Add a bus link property
+  hw/arm/virt: Pass the bus on the ged creation
+  hw/acpi/ged: Call pcihp plug callbacks in hotplug handler
+    implementation
+  hw/acpi/pcihp: Remove root arg in acpi_pcihp_init
+  hw/acpi/ged: Prepare the device to react to PCI hotplug events
+  hw/acpi/ged: Support migration of AcpiPciHpState
+  hw/core/sysbus: Introduce sysbus_mmio_map_name() helper
+  hw/arm/virt: Minor code reshuffling in create_acpi_ged
+  hw/arm/virt: Let virt support pci hotplug/unplug GED event
+  qtest/bios-tables-test: Generate reference blob for
+    DSDT.hpoffacpiindex
+  qtest/bios-tables-test: Generate reference blob for DSDT.acpipcihp
+
+Gustavo Romero (4):
+  tests/qtest/bios-tables-test: Prepare for changes in the DSDT table
+  tests/qtest/bios-tables-test: Prepare for changes in the arm virt DSDT
+    table
+  tests/qtest/bios-tables-test: Prepare for addition of acpi pci hp
+    tests
+  tests/qtest/bios-tables-test: Add aarch64 ACPI PCI hotplug test
+
+ hw/i386/acpi-build.h                          |   4 -
+ include/hw/acpi/generic_event_device.h        |  17 +-
+ include/hw/acpi/pci.h                         |   5 +-
+ include/hw/acpi/pcihp.h                       |  17 +-
+ include/hw/arm/virt.h                         |   1 +
+ include/hw/pci-host/gpex.h                    |   1 +
+ include/hw/sysbus.h                           |   1 +
+ hw/acpi/acpi-pci-hotplug-stub.c               |   2 +-
+ hw/acpi/generic_event_device.c                |  77 +++
+ hw/acpi/ich9.c                                |   7 +-
+ hw/acpi/pci-bridge.c                          |  54 ++
+ hw/acpi/pci.c                                 |  50 ++
+ hw/acpi/pcihp.c                               | 439 ++++++++++++++-
+ hw/acpi/piix4.c                               |   5 +-
+ hw/arm/virt-acpi-build.c                      |  38 ++
+ hw/arm/virt.c                                 |  27 +-
+ hw/core/sysbus.c                              |  11 +
+ hw/i386/acpi-build.c                          | 532 +-----------------
+ hw/pci-host/gpex-acpi.c                       |  74 +--
+ tests/qtest/bios-tables-test.c                |  53 ++
+ hw/arm/Kconfig                                |   2 +
+ hw/pci-host/Kconfig                           |   1 +
+ tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5293 bytes
+ .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5379 bytes
+ tests/data/acpi/aarch64/virt/DSDT.acpipcihp   | Bin 0 -> 6202 bytes
+ .../acpi/aarch64/virt/DSDT.hpoffacpiindex     | Bin 0 -> 5347 bytes
+ tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6654 bytes
+ tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7768 bytes
+ tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5495 bytes
+ tests/data/acpi/aarch64/virt/DSDT.viot        | Bin 0 -> 5310 bytes
+ tests/data/acpi/riscv64/virt/DSDT             | Bin 3576 -> 3538 bytes
+ tests/data/acpi/x86/microvm/DSDT.pcie         | Bin 3023 -> 2985 bytes
+ 32 files changed, 811 insertions(+), 607 deletions(-)
+ create mode 100644 tests/data/acpi/aarch64/virt/DSDT.acpipcihp
+ create mode 100644 tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex
+ create mode 100644 tests/data/acpi/aarch64/virt/DSDT.viot
+
+-- 
+2.49.0
+
 
