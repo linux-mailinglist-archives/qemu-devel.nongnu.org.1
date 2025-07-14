@@ -2,63 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856D3B04381
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA180B04384
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:22:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubKpo-0003hM-3i; Mon, 14 Jul 2025 11:11:16 -0400
+	id 1ubKmo-0005tI-T4; Mon, 14 Jul 2025 11:08:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUa-0000IV-Qm
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUg-0000Lz-6Y
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUT-0003bT-Nb
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:15 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUT-0003bR-VT
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1752500708;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LHlsciI5BUKZnXRO6gudn8/LPPIWdEJXg6XMzCPsXz8=;
- b=GgHlOUSwP5s7RoBsZPdZYuTyPPeetB6mh9VY6hiSGUJArmlHGSS4J4WLXC4UrzTtHsReVK
- WCvY6x9FMsSQh6W5cXSHF+42IVxyawtZEDh2qKmJD4HTEaRUQsbdNuC1qN8nhr0YWkzFYG
- SMaSytypW5Tw61H4jrSpn3rL3d0D4Xc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=3q/bW+GcuB7r8oOsorennTkn1NwHdWIIWWCKtwf0KS4=;
+ b=KMgLm4/9mFmsIuaQOjeM7qJ3bFp5d+a4UUitp9PX91SBoJBJqJCVGbEDLLKFphiJDXBZhr
+ SH7YvrGttMVH/Dm5604eUhywOuiRZ94nx98jGfmz1lOBM3Dg4x8bj40BjxkiHQEkH7YYSR
+ V4ztiUxkmbpTUv9yBhamR44OWMT80iA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-TB51Ze7-Mi69HTHKK5H7rg-1; Mon,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-jvXizUH7MbG6lTYKPIL-Kw-1; Mon,
  14 Jul 2025 09:45:06 -0400
-X-MC-Unique: TB51Ze7-Mi69HTHKK5H7rg-1
-X-Mimecast-MFC-AGG-ID: TB51Ze7-Mi69HTHKK5H7rg_1752500705
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+X-MC-Unique: jvXizUH7MbG6lTYKPIL-Kw-1
+X-Mimecast-MFC-AGG-ID: jvXizUH7MbG6lTYKPIL-Kw_1752500705
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 840691956046
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A67A419560B9
  for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 13:45:05 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2062B19560A3
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 538271977000
  for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 13:45:05 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id CAD8C21E676A; Mon, 14 Jul 2025 15:44:58 +0200 (CEST)
+ id CE9B121E6773; Mon, 14 Jul 2025 15:44:58 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
-	John Snow <jsnow@redhat.com>
-Subject: [PULL 05/32] qapi: lift restriction on using '=' in doc blocks
-Date: Mon, 14 Jul 2025 15:44:31 +0200
-Message-ID: <20250714134458.2991097-6-armbru@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 06/32] qapi: Clean up "This command will do ..." command
+ descriptions
+Date: Mon, 14 Jul 2025 15:44:32 +0200
+Message-ID: <20250714134458.2991097-7-armbru@redhat.com>
 In-Reply-To: <20250714134458.2991097-1-armbru@redhat.com>
 References: <20250714134458.2991097-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -67,8 +69,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,90 +86,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Snow <jsnow@redhat.com>
+Use imperative mood "Do ..." instead.
 
-We reject lines starting with '=' in definition documentation.  This
-made sense when such lines were headings in free-form documentation,
-but not in definition documentation.
-
-Before the previous commit, lines starting with '=' were headings in
-free-form documentation, and rejected in definition documentation,
-where such headings could not work.
-
-The previous commit dropped the headings feature from free-form
-documentation, because we can simply use plain rST headings.
-Rejecting them in definition documentation no longer makes sense, so
-drop that, too.
-
-Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250618165353.1980365-6-jsnow@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-[Amend commit message to explain why]
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20250708072828.105185-2-armbru@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- scripts/qapi/parser.py                 |  4 ----
- tests/qapi-schema/doc-bad-section.err  |  1 -
- tests/qapi-schema/doc-bad-section.json | 10 ----------
- tests/qapi-schema/doc-bad-section.out  |  0
- tests/qapi-schema/meson.build          |  1 -
- 5 files changed, 16 deletions(-)
- delete mode 100644 tests/qapi-schema/doc-bad-section.err
- delete mode 100644 tests/qapi-schema/doc-bad-section.json
- delete mode 100644 tests/qapi-schema/doc-bad-section.out
+ qapi/control.json   |  9 +++++----
+ qapi/misc-i386.json | 11 +++++------
+ qapi/qom.json       | 10 ++++------
+ 3 files changed, 14 insertions(+), 16 deletions(-)
 
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index aad7e249f8..d43a123cd7 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -584,10 +584,6 @@ def get_doc(self) -> 'QAPIDoc':
-                         doc.append_line(text)
-                     line = self.get_doc_indented(doc)
-                     no_more_args = True
--                elif line.startswith('='):
--                    raise QAPIParseError(
--                        self,
--                        "unexpected '=' markup in definition documentation")
-                 else:
-                     # plain paragraph
-                     doc.ensure_untagged_section(self.info)
-diff --git a/tests/qapi-schema/doc-bad-section.err b/tests/qapi-schema/doc-bad-section.err
-deleted file mode 100644
-index 785cacc08c..0000000000
---- a/tests/qapi-schema/doc-bad-section.err
-+++ /dev/null
-@@ -1 +0,0 @@
--doc-bad-section.json:5:1: unexpected '=' markup in definition documentation
-diff --git a/tests/qapi-schema/doc-bad-section.json b/tests/qapi-schema/doc-bad-section.json
-deleted file mode 100644
-index 8175d95867..0000000000
---- a/tests/qapi-schema/doc-bad-section.json
-+++ /dev/null
-@@ -1,10 +0,0 @@
--# = section within an expression comment
--
--##
--# @Enum:
--# == No good here
--# @one: The _one_ {and only}
--#
--# @two is undocumented
--##
--{ 'enum': 'Enum', 'data': [ 'one', 'two' ] }
-diff --git a/tests/qapi-schema/doc-bad-section.out b/tests/qapi-schema/doc-bad-section.out
-deleted file mode 100644
-index e69de29bb2..0000000000
-diff --git a/tests/qapi-schema/meson.build b/tests/qapi-schema/meson.build
-index 9577178b6f..c47025d16d 100644
---- a/tests/qapi-schema/meson.build
-+++ b/tests/qapi-schema/meson.build
-@@ -61,7 +61,6 @@ schemas = [
-   'doc-bad-event-arg.json',
-   'doc-bad-feature.json',
-   'doc-bad-indent.json',
--  'doc-bad-section.json',
-   'doc-bad-symbol.json',
-   'doc-bad-union-member.json',
-   'doc-before-include.json',
+diff --git a/qapi/control.json b/qapi/control.json
+index ab0b3a3bbe..5fed0701f8 100644
+--- a/qapi/control.json
++++ b/qapi/control.json
+@@ -160,10 +160,11 @@
+ ##
+ # @quit:
+ #
+-# This command will cause the QEMU process to exit gracefully.  While
+-# every attempt is made to send the QMP response before terminating,
+-# this is not guaranteed.  When using this interface, a premature EOF
+-# would not be unexpected.
++# Request graceful QEMU process termination.
++#
++# While every attempt is made to send the QMP response before
++# terminating, this is not guaranteed.  When using this interface, a
++# premature EOF would not be unexpected.
+ #
+ # Since: 0.14
+ #
+diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
+index 5fefa0a484..b53ed39288 100644
+--- a/qapi/misc-i386.json
++++ b/qapi/misc-i386.json
+@@ -6,9 +6,9 @@
+ ##
+ # @rtc-reset-reinjection:
+ #
+-# This command will reset the RTC interrupt reinjection backlog.  Can
+-# be used if another mechanism to synchronize guest time is in effect,
+-# for example QEMU guest agent's guest-set-time command.
++# Reset the RTC interrupt reinjection backlog.  Can be used if another
++# mechanism to synchronize guest time is in effect, for example QEMU
++# guest agent's guest-set-time command.
+ #
+ # Use of this command is only applicable for x86 machines with an RTC,
+ # and on other machines will silently return without performing any
+@@ -233,8 +233,7 @@
+ ##
+ # @sev-inject-launch-secret:
+ #
+-# This command injects a secret blob into memory of a SEV/SEV-ES
+-# guest.
++# Inject a secret blob into a SEV/SEV-ES guest's memory.
+ #
+ # This is only valid on x86 machines configured with KVM and the
+ # 'sev-guest' confidential virtualization object.  SEV-SNP guests do
+@@ -272,7 +271,7 @@
+ ##
+ # @query-sev-attestation-report:
+ #
+-# This command is used to get the SEV attestation report.
++# Get the SEV attestation report.
+ #
+ # This is only valid on x86 machines configured with KVM and the
+ # 'sev-guest' confidential virtualization object.  The attestation
+diff --git a/qapi/qom.json b/qapi/qom.json
+index f68f72fbbc..6c38e865a6 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -50,8 +50,7 @@
+ ##
+ # @qom-list:
+ #
+-# This command will list any properties of a object given a path in
+-# the object model.
++# List properties of a object given a path in the object model.
+ #
+ # @path: the path within the object model.  See @qom-get for a
+ #     description of this parameter.
+@@ -78,8 +77,7 @@
+ ##
+ # @qom-get:
+ #
+-# This command will get a property from a object model path and return
+-# the value.
++# Get a property value.
+ #
+ # @path: The path within the object model.  There are two forms of
+ #     supported paths--absolute and partial paths.
+@@ -130,7 +128,7 @@
+ ##
+ # @qom-set:
+ #
+-# This command will set a property from a object model path.
++# Set a property value.
+ #
+ # @path: see @qom-get for a description of this parameter
+ #
+@@ -173,7 +171,7 @@
+ ##
+ # @qom-list-types:
+ #
+-# This command will return a list of types given search parameters
++# Return a list of types given search parameters.
+ #
+ # @implements: if specified, only return types that implement this
+ #     type name
 -- 
 2.49.0
 
