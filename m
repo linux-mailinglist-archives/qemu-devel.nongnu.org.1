@@ -2,107 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A99BB0482D
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 21:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7777BB048C9
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 22:45:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubPKF-00085s-B7; Mon, 14 Jul 2025 15:58:59 -0400
+	id 1ubQ1O-0000CN-KW; Mon, 14 Jul 2025 16:43:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubOBL-0007xE-UN
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 14:45:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1ubOX0-0001Mv-KE
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 15:08:14 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubOBJ-0006qw-3B
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 14:45:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752518739;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IC+y8Ts8tvKgDcEp7zaqafgWzmW1YusiFlMT1mEZamc=;
- b=PWHv0ycg967Y+wgWFRf69eM0c48N64AFSNjzq7o5xQpY1EJ6vdK3yPEAZ1iYgPsp449IgU
- KL6mM93AEjXKF40AN1lPOlJpljrA9w0YiX2b0h1lSda0DLQefVGUo0lOpkE+SC6CFpv8wr
- 9Gqx//TBls6XWOvVcKXCqycw725vUlM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-Hpuk7DNJO0y1D-II2MUteA-1; Mon, 14 Jul 2025 14:45:37 -0400
-X-MC-Unique: Hpuk7DNJO0y1D-II2MUteA-1
-X-Mimecast-MFC-AGG-ID: Hpuk7DNJO0y1D-II2MUteA_1752518736
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a4eeed54c2so2546283f8f.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 11:45:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752518736; x=1753123536;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IC+y8Ts8tvKgDcEp7zaqafgWzmW1YusiFlMT1mEZamc=;
- b=f6hGpvQdN/+kXqCJDparxordpWxXyXjpt2LuBXdW3fzUpaEq/3Cjv3cgaB9ks/IRuW
- mbBS55VOiuGcWYyl7Qhcx4tfE+UjAPGoaxTPyvGeTLFLUyCtiOds3Dm3f21OIlCoxDTW
- cNvdLxCKcwIn+zfuwcg7mK5hRTeCdG76W/myi+Cu3BBnJonfGjzb4QVrVBBmJaJqY488
- DkkZkEik9kt99YNpjj2lpOPyDeAgYD0g2O7AQ5RIUQMKDDiPDf5P1TMOl9tDrYRAXSN2
- ayZOZN4AcqzJJBQ6npy+VAyPRMXna51/gi7woyV0CVfHZe1aL9UxLOZGtkWJLMxBqtr1
- oq7A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUAtV5o29REQebh84TcCXj2lf/mzg89eVayJdSBEX/ziXpE8uuFV2P3hug6T+5ok4ruMeO8k8ylq4px@nongnu.org
-X-Gm-Message-State: AOJu0YwlzhkkAhRSRAQi7lU8HDugyjF134FIhqVrfQU/8exfra5/Fbn+
- tDK5gFJ/rglUZfuQQmK3eZcsodRwZOkzNL42JhHe/AjMFI/oPH85ZjxadSHVW7xRwXhUxZHjeEf
- xk7U0bGph8RtpLZs2S3vF7oKb+ItNJTOirqfINXG0c4lS+Qyq8Z6IXM+I
-X-Gm-Gg: ASbGnctMhnlpCV5I0uCpTDX2bZRmRwvyt4hyK0SipbsAe6GDSkVs1iuug08Kq1/GALQ
- SFRwDnPRKwBJzf1G7zCj9eTgebxT7YWn369hcDuBB/F4L3SOPElfFU7qsZ+xEYno8is4nPP+9hV
- E3P9AYXEuKoO/jQWdxi8cl1bktsAq9mO8c0Juq8K++f/7p+rxY0WlkDWLRmJ1Ihv03h3sykpGKi
- n1oUS5bW12uWBUOV/UZPyAfv6wlJYb1eQQwEXAJSxUJ3qOtR2QxsmuaMC8sdKj8ZiFrXTlQ7dsr
- rGCZbVK/GZ1rhgR4ecEFb0gQEm4AjJhOmw==
-X-Received: by 2002:a05:6000:4405:b0:3a5:8d08:6239 with SMTP id
- ffacd0b85a97d-3b5f188e6a2mr8404276f8f.21.1752518735782; 
- Mon, 14 Jul 2025 11:45:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEXK7Sx2g4Y03ZTrtj7qHrRREIe7XEb8ZQLOG2mObH5V1YWfr0zAN0O9S3VhIYNWkhCPMUVeg==
-X-Received: by 2002:a05:6000:4405:b0:3a5:8d08:6239 with SMTP id
- ffacd0b85a97d-3b5f188e6a2mr8404253f8f.21.1752518735278; 
- Mon, 14 Jul 2025 11:45:35 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e2710bsm13070306f8f.99.2025.07.14.11.45.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 11:45:34 -0700 (PDT)
-Date: Mon, 14 Jul 2025 14:45:31 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Li Chen <me@linux.beauty>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Sunil V L <sunilvl@ventanamicro.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>, qemu-arm <qemu-arm@nongnu.org>,
- qemu-devel <qemu-devel@nongnu.org>, qemu-riscv <qemu-riscv@nongnu.org>,
- Li Chen <chenl311@chinatelecom.cn>
-Subject: Re: [PATCH REPOST v4 4/4] acpi/virt: suppress UART device & SPCR
- when guest has no serial hardware
-Message-ID: <20250714144303-mutt-send-email-mst@kernel.org>
-References: <20250528105404.457729-1-me@linux.beauty>
- <20250528105404.457729-5-me@linux.beauty>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250528105404.457729-5-me@linux.beauty>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1ubOWw-00061I-Kc
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 15:08:05 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56EGv9Dv019054;
+ Mon, 14 Jul 2025 19:07:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :date:from:message-id:subject:to; s=corp-2025-04-25; bh=mhrRcNGI
+ 0gDZ/gk/VphnZlX1PzSw52CrVs8CCFG2lrs=; b=N8fiNVMU/kWYqa4ZPId4QMWV
+ WeJmpz/xthTClXkMP/JHGWka0TrzdRzOY4ZPSNV07lKPxaKUSY8QQovYc0RBqGJl
+ 2EgiQD+6d05qqmyYVMCOjfW5eZNlPdZDI5M9dBwXYqrGAQxXtKtx6y+q938vHnDE
+ gs3riOGPM7YM0oYVR+WFtra+1SoYIFaj0dZf4R271W8yaUps+Gh/3G+S+ue2dk21
+ CVYvkyPC4J1m8aa8D/b0mVESWSyaKfyE409nZkefe5VANX1aj8TKsvnOhr8WB2M1
+ Mnu52WipjeuO0PtsTpy9LbKeyLsm4NZCN/1REdNXGD1xExFSWC8Uk5ZiWHFCPw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47uk1avygp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 14 Jul 2025 19:07:59 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 56EIUC4k013741; Mon, 14 Jul 2025 19:07:58 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 47ue58fb7y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 14 Jul 2025 19:07:58 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56EJ7wBE032364;
+ Mon, 14 Jul 2025 19:07:58 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 47ue58fb7g-1; Mon, 14 Jul 2025 19:07:58 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH 59/59] vfio: fix sub-page bar after cpr
+Date: Mon, 14 Jul 2025 12:07:57 -0700
+Message-Id: <1752520077-223287-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-14_02,2025-07-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxscore=0 malwarescore=0
+ phishscore=0 spamscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2507140124
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDEyNCBTYWx0ZWRfX36Ax6vKd25EU
+ OWANjBCpkBlid2Ctn1aBeVZ6/3vm8JQtn5rZPih8PkCp/iD8UQ4RKiQ6REb0T6aL5/3yiIZ0Rgs
+ 4QcFF1IqCmbjH9Vau40KRn6iObeenM4itr/c8/KXpH7+X9YcJ15vJdHugboeuV2WtG5W3dQhvmK
+ qwhBIDGeAKf7QjlmMhUtXofDkDWdZS5kGpCed4VTmpbcQK09MBiVe+ExYGIgsMHO30oR48w5PUM
+ 2bVj+k6jKWjj9pUo/k6lPxRlE6PZiC3JS3e8kjAi6JJg7qhl1LcG375a37v2ifMMdybM13mkMKt
+ 22hd5+e3bJ+zrVRrAoJ2MBeXKX8yfvfuiWlSZR8JnidNy+UVhCsBLtHX2ZiXuPAMU9DeEAHUIVw
+ VKpTUQeOb0c+xrSnlPXsIlSP5xilox46V2JVoEm08WRVJvHmpY8j09cOtVMpYjghNBfDAZoX
+X-Proofpoint-GUID: 0rCqLWBwR71PCQFHbBxk8bqHOEkJCtW7
+X-Proofpoint-ORIG-GUID: 0rCqLWBwR71PCQFHbBxk8bqHOEkJCtW7
+X-Authority-Analysis: v=2.4 cv=J8mq7BnS c=1 sm=1 tr=0 ts=6875558f b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=Dgv3TXsNM4mSNUuXrVQA:9 cc=ntf
+ awl=host:12061
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -120,187 +107,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 28, 2025 at 06:53:38PM +0800, Li Chen wrote:
-> From: Li Chen <chenl311@chinatelecom.cn>
-> 
-> The virt machines always instantiate a PL011/16550 at UART0 and
-> describe it in ACPI (DSDT device node plus optional SPCR table).  When
-> the command line contains “-serial none” there is no backend attached to
-> that UART, yet the guest still discovers it via ACPI and may try to use
-> it as a console, causing unexpected results.
-> 
-> And also explicitly add "-serial stdio" in bios-tables-test.c to allow
-> serial device creation, otherwise DSDT assert would get failure because
-> "-nodefaults" will not create uart device by default:
-> 
-> ```
-> stderr:
-> acpi-test: Warning! DSDT binary file mismatch. Actual [aml:/tmp/aml-BMOL72], Expected [aml:tests/data/acpi/aarch64/virt/DSDT].
-> See source file tests/qtest/bios-tables-test.c for instructions on how to update expected files.
-> acpi-test: Warning! DSDT mismatch. Actual [asl:/tmp/asl-RNOL72.dsl, aml:/tmp/aml-BMOL72], Expected [asl:/tmp/asl-ZVQL72.dsl, aml:tests/data/acpi/aarch64/virt/DS
-> DT].
-> ```
-> 
-> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
-> Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+Regions for sub-page BARs are normally mapped here, in response to the
+guest writing to PCI config space:
 
+  vfio_pci_write_config()
+    pci_default_write_config()
+      pci_update_mappings()
+        memory_region_add_subregion()
+    vfio_sub_page_bar_update_mapping()
+      ... vfio_dma_map()
 
-will need to be rebased updating loongarch too, now.
+However, after CPR, the guest does not reconfigure the device and the
+code path above is not taken.  To fix, in vfio_cpr_pci_post_load, call
+vfio_sub_page_bar_update_mapping for each sub-page BAR with a valid
+address.
 
+Fixes: 7e9f21411302 ("vfio/container: restore DMA vaddr")
 
-> ---
-> 
-> Notes:
->     Changes since v3: 1. Add Reviewed-by from Sunil V L <sunilvl@ventanamicro.com>
->                       2. Explicitly add "-serial stdio" to pass DSDT assert
-> 
->  hw/arm/virt-acpi-build.c       | 15 +++++++++------
->  hw/riscv/virt-acpi-build.c     |  7 +++++--
->  include/system/system.h        |  2 ++
->  system/vl.c                    |  5 +++++
->  tests/qtest/bios-tables-test.c |  5 +++--
->  5 files changed, 24 insertions(+), 10 deletions(-)
-> 
-> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-> index d77d16cbd3..c26aedb1b1 100644
-> --- a/hw/arm/virt-acpi-build.c
-> +++ b/hw/arm/virt-acpi-build.c
-> @@ -59,6 +59,7 @@
->  #include "hw/acpi/viot.h"
->  #include "hw/virtio/virtio-acpi.h"
->  #include "target/arm/multiprocessing.h"
-> +#include "system/system.h"
->  
->  #define ARM_SPI_BASE 32
->  
-> @@ -821,11 +822,13 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
->       */
->      scope = aml_scope("\\_SB");
->      acpi_dsdt_add_cpus(scope, vms);
-> -    acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0],
-> -                       (irqmap[VIRT_UART0] + ARM_SPI_BASE), 0);
-> -    if (vms->second_ns_uart_present) {
-> -        acpi_dsdt_add_uart(scope, &memmap[VIRT_UART1],
-> -                           (irqmap[VIRT_UART1] + ARM_SPI_BASE), 1);
-> +    if (serial_exist()) {
-> +        acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0],
-> +                           (irqmap[VIRT_UART0] + ARM_SPI_BASE), 0);
-> +        if (vms->second_ns_uart_present) {
-> +            acpi_dsdt_add_uart(scope, &memmap[VIRT_UART1],
-> +                               (irqmap[VIRT_UART1] + ARM_SPI_BASE), 1);
-> +        }
->      }
->      if (vmc->acpi_expose_flash) {
->          acpi_dsdt_add_flash(scope, &memmap[VIRT_FLASH]);
-> @@ -937,7 +940,7 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
->  
->      acpi_add_table(table_offsets, tables_blob);
->  
-> -    if (ms->acpi_spcr_enabled) {
-> +    if (ms->acpi_spcr_enabled && serial_exist()) {
->          spcr_setup(tables_blob, tables->linker, vms);
->      }
->  
-> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-> index ee1416d264..80bf3c3cec 100644
-> --- a/hw/riscv/virt-acpi-build.c
-> +++ b/hw/riscv/virt-acpi-build.c
-> @@ -39,6 +39,7 @@
->  #include "qapi/error.h"
->  #include "qemu/error-report.h"
->  #include "system/reset.h"
-> +#include "system/system.h"
->  
->  #define ACPI_BUILD_TABLE_SIZE             0x20000
->  #define ACPI_BUILD_INTC_ID(socket, index) ((socket << 24) | (index))
-> @@ -474,7 +475,9 @@ static void build_dsdt(GArray *table_data,
->                                   memmap[VIRT_APLIC_S].size, "RSCV0002");
->      }
->  
-> -    acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], UART0_IRQ);
-> +    if (serial_exist())
-> +        acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], UART0_IRQ);
-> +
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+---
+ hw/vfio/pci.h |  1 +
+ hw/vfio/cpr.c |  2 ++
+ hw/vfio/pci.c | 14 ++++++++++++++
+ 3 files changed, 17 insertions(+)
 
-coding style violation
-
->      if (virt_is_iommu_sys_enabled(s)) {
->          acpi_dsdt_add_iommu_sys(scope, &memmap[VIRT_IOMMU_SYS], IOMMU_SYS_IRQ);
->      }
-> @@ -895,7 +898,7 @@ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
->  
->      acpi_add_table(table_offsets, tables_blob);
->  
-> -    if (ms->acpi_spcr_enabled) {
-> +    if (ms->acpi_spcr_enabled && serial_exist()) {
->          spcr_setup(tables_blob, tables->linker, s);
->      }
->  
-> diff --git a/include/system/system.h b/include/system/system.h
-> index a7effe7dfd..ca1af38432 100644
-> --- a/include/system/system.h
-> +++ b/include/system/system.h
-> @@ -75,6 +75,8 @@ extern unsigned int nb_prom_envs;
->  /* Return the Chardev for serial port i, or NULL if none */
->  Chardev *serial_hd(int i);
->  
-> +bool serial_exist(void);
-> +
->  /* parallel ports */
->  
->  #define MAX_PARALLEL_PORTS 3
-> diff --git a/system/vl.c b/system/vl.c
-> index fd402b8ff8..e340ee3a95 100644
-> --- a/system/vl.c
-> +++ b/system/vl.c
-> @@ -1485,6 +1485,11 @@ Chardev *serial_hd(int i)
->      return NULL;
->  }
->  
-> +bool serial_exist(void)
-> +{
-> +    return serial_hd(0) ? true : false;
-> +}
-> +
-
-serial_exists
-
-
->  static bool parallel_parse(const char *devname, Error **errp)
->  {
->      static int index = 0;
-> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> index 44de152a36..452566fa86 100644
-> --- a/tests/qtest/bios-tables-test.c
-> +++ b/tests/qtest/bios-tables-test.c
-> @@ -824,10 +824,11 @@ static char *test_acpi_create_args(test_data *data, const char *params)
->          /*
->           * TODO: convert '-drive if=pflash' to new syntax (see e33763be7cd3)
->           * when arm/virt boad starts to support it.
-> +         * NOTE: Explicitly add "-serial stdio" to enable uart in DSDT.
->           */
->          if (data->cd) {
->              args = g_strdup_printf("-machine %s%s %s -accel tcg "
-> -                "-nodefaults -nographic "
-> +                "-nodefaults -serial stdio -nographic "
->                  "-drive if=pflash,format=raw,file=%s,readonly=on "
->                  "-drive if=pflash,format=raw,file=%s,snapshot=on -cdrom %s %s",
->                  data->machine, data->machine_param ?: "",
-> @@ -835,7 +836,7 @@ static char *test_acpi_create_args(test_data *data, const char *params)
->                  data->uefi_fl1, data->uefi_fl2, data->cd, params ? params : "");
->          } else {
->              args = g_strdup_printf("-machine %s%s %s -accel tcg "
-> -                "-nodefaults -nographic "
-> +                "-nodefaults -serial stdio -nographic "
->                  "-drive if=pflash,format=raw,file=%s,readonly=on "
->                  "-drive if=pflash,format=raw,file=%s,snapshot=on %s",
->                  data->machine, data->machine_param ?: "",
-
-
-
-
-> -- 
-> 2.49.0
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index 495fae7..cb1310d 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -228,6 +228,7 @@ void vfio_pci_write_config(PCIDevice *pdev,
+ uint64_t vfio_vga_read(void *opaque, hwaddr addr, unsigned size);
+ void vfio_vga_write(void *opaque, hwaddr addr, uint64_t data, unsigned size);
+ 
++void vfio_sub_page_bar_update_mappings(VFIOPCIDevice *vdev);
+ bool vfio_opt_rom_in_denylist(VFIOPCIDevice *vdev);
+ bool vfio_config_quirk_setup(VFIOPCIDevice *vdev, Error **errp);
+ void vfio_vga_quirk_setup(VFIOPCIDevice *vdev);
+diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
+index af0f12a..384b56c 100644
+--- a/hw/vfio/cpr.c
++++ b/hw/vfio/cpr.c
+@@ -116,6 +116,8 @@ static int vfio_cpr_pci_post_load(void *opaque, int version_id)
+     PCIDevice *pdev = &vdev->pdev;
+     int nr_vectors;
+ 
++    vfio_sub_page_bar_update_mappings(vdev);
++
+     if (msix_enabled(pdev)) {
+         vfio_pci_msix_set_notifiers(vdev);
+         nr_vectors = vdev->msix->entries;
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 1093b28..9c616bd 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2826,6 +2826,20 @@ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
+     return ret;
+ }
+ 
++void vfio_sub_page_bar_update_mappings(VFIOPCIDevice *vdev)
++{
++    PCIDevice *pdev = &vdev->pdev;
++    int page_size = qemu_real_host_page_size();
++    int bar;
++
++    for (bar = 0; bar < PCI_ROM_SLOT; bar++) {
++        PCIIORegion *r = &pdev->io_regions[bar];
++        if (r->addr != PCI_BAR_UNMAPPED && r->size > 0 && r->size < page_size) {
++            vfio_sub_page_bar_update_mapping(pdev, bar);
++        }
++    }
++}
++
+ static VFIODeviceOps vfio_pci_ops = {
+     .vfio_compute_needs_reset = vfio_pci_compute_needs_reset,
+     .vfio_hot_reset_multi = vfio_pci_hot_reset_multi,
+-- 
+1.8.3.1
 
 
