@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66DEB03B2F
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7F4B03ADF
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:33:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubFjK-0002xk-Vm; Mon, 14 Jul 2025 05:44:15 -0400
+	id 1ubFYp-00035e-Mv; Mon, 14 Jul 2025 05:33:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubFTm-000137-Lx
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:19 -0400
+ id 1ubFTo-00013U-HD
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:21 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubFTk-0003EU-6H
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:09 -0400
+ id 1ubFTl-0003Dn-0X
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:28:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752485288; x=1784021288;
+ t=1752485289; x=1784021289;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BpfZqeedCcgSEGxeIlGdqTtbkaF5iKh1zX1XRjAMOIo=;
- b=QnUXVF3drP72gYkxRtBzEtEwVXT8hmICFOpB8jhg9DIDGCEYGO50Ycs0
- LGBmMvhnNIM8V89upWV/5DMIiOr0K0/cGxgMLQAsO4mWFJ9OoPX6ZvL5R
- 1yohTKgA+n9xdL3y0N9EHC3dG5HRRSycA9hEaPQGHIZ1/xz3qwcf/0zv7
- T8YyGMqcOPp7qdmREBHhh1DNo/w63PRmN0Jofkj0/VAb6gSdysvDLgGp3
- zB/QTeknAvSm7m4GOaieHvItOAOjhezVYS4EBiKAXYNK0AsRxkHvx+asK
- /tm8c0Q/ux5xIgv1V3hVr7FQcGg3Hqv0SNIk3mjjeGbDKysqLVcvHyqUj w==;
-X-CSE-ConnectionGUID: 75RA3QtPQD+ti5o5ERnn4g==
-X-CSE-MsgGUID: JnbN6WOQRCe2QZbzbHLSog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66029296"
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="66029296"
+ bh=y5wgNskGOoh9tLjNUX982TkoIpnwHs22FL3BDBnj5yQ=;
+ b=CtrVyG4CxWaer4/3JguQaJ+NVgzJDVOIoBqiURE31FTYQaIffa8obP8i
+ CWA+zB4hijW4+OoW1lVsJdODO9Pvgg6IR0jvYyoTqKCaDOj7Px2mk2L7G
+ Si93LBjLy2kmhilos6U4OmqGX0neezIOE6VOf9Id4I+HGf5PMUlUi48VG
+ e7UW2SmHo3fKDwhgYcac7obk4E+bzRCLElTGmyXq4RACXmCvja7UA+S1/
+ xi5XOWHdMsxi2qtAeeRP0WwNd7UIp368xz2WEmueRlFvTmF1paymyHu3c
+ m+nk3hrPHa2TAb9DRxToUo5aEd3AgLedmgPowKNI/bq8YLAoH5vnV6LQj w==;
+X-CSE-ConnectionGUID: H9jhb7aESqezeglaVFAbTQ==
+X-CSE-MsgGUID: MxJhBUf3St+KEHGkxavFsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66029304"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="66029304"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 02:28:06 -0700
-X-CSE-ConnectionGUID: AFiNJOUJQ12h6p+tKzXmAw==
-X-CSE-MsgGUID: LeXLREfPQJyVnUYjPleTsg==
+ 14 Jul 2025 02:28:08 -0700
+X-CSE-ConnectionGUID: gHTvAJr6TF6P+PilZuLMiw==
+X-CSE-MsgGUID: Celz1Q8ARmmuzhsWgoHPvg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="187882747"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="187882753"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa002.jf.intel.com with ESMTP; 14 Jul 2025 02:28:06 -0700
+ by orviesa002.jf.intel.com with ESMTP; 14 Jul 2025 02:28:07 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH 4/5] qemu-options: Add confidential-guest-support to machine
- options
-Date: Mon, 14 Jul 2025 17:19:52 +0800
-Message-ID: <20250714091953.448226-5-xiaoyao.li@intel.com>
+Subject: [PATCH 5/5] qemu-options: Add description of tdx-guest object
+Date: Mon, 14 Jul 2025 17:19:53 +0800
+Message-ID: <20250714091953.448226-6-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250714091953.448226-1-xiaoyao.li@intel.com>
 References: <20250714091953.448226-1-xiaoyao.li@intel.com>
@@ -83,46 +82,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"confidential-guest-support" is the recommended property to configure
-machine with confidential computing technology instead of
-"memory-encryption".
-
-Add "confidential-guest-support" to machine options and call out
-explicitly "memory-encryption" is the alias of it and not recommended.
+Add description of tdx-guest object so that QEMU doc page can have the
+description.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- qemu-options.hx | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ qemu-options.hx | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
 diff --git a/qemu-options.hx b/qemu-options.hx
-index 27b7b79c6cad..5c400114c2e5 100644
+index 5c400114c2e5..50c7874bbce9 100644
 --- a/qemu-options.hx
 +++ b/qemu-options.hx
-@@ -36,7 +36,8 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
-     "                dea-key-wrap=on|off controls support for DEA key wrapping (default=on)\n"
-     "                suppress-vmdesc=on|off disables self-describing migration (default=off)\n"
-     "                nvdimm=on|off controls NVDIMM support (default=off)\n"
--    "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
-+    "                confidential-guest-support='object-id' specifies confidential guest support object (default=none)\n"
-+    "                memory-encryption='object-id' (memory-encryption is the alias of confidential-guest-support, recommend to use confidential-guest-support)\n"
-     "                hmat=on|off controls ACPI HMAT support (default=off)\n"
- #ifdef CONFIG_POSIX
-     "                aux-ram-share=on|off allocate auxiliary guest RAM as shared (default: off)\n"
-@@ -99,8 +100,12 @@ SRST
-     ``nvdimm=on|off``
-         Enables or disables NVDIMM support. The default is off.
+@@ -5994,6 +5994,46 @@ SRST
+                  -machine ...,confidential-guest-support=sev0 \\
+                  .....
  
-+    ``confidential-guest-support=``
-+        confidential guest support object to use. The default is none.
++    ``-object tdx-guest,id=id,[attributes=attrs,sept-ve-disable=on|off,mrconfigid=sha384_digest,mrowner=sha384_digest,mrownerconfig=sha384_digest,quote-generation-socket=socketaddr]``
++        Create an Intel Trusted Domain eXtensions (TDX) guest object, which is
++        the type of ``confidentiala-guest-support`` object. When pass the object
++        ID to machine's ``confidentiala-guest-support`` property, it can create
++        a TDX guest.
 +
-     ``memory-encryption=``
--        Memory encryption object to use. The default is none.
-+        The alias of ``confidential-guest-support``. Recommend to use
-+        confidential-guest-support.
- 
-     ``hmat=on|off``
-         Enables or disables ACPI Heterogeneous Memory Attribute Table
++        The ``attributes`` is a 64-bit integer, which specifies the TD
++        attributes of the TD.
++
++        The ``sept-ve-disable`` controls the bit 28 of TD attributes
++        specifically. When it's on, the EPT violation conversion to #VE on
++        guest access of PENDING pages is disabled. Some guest OS (e.g., Linux
++        TD guest) may require this to be set, otherwise they refuse to boot.
++        The default value is on.
++
++        The ``mrconfigid`` is base64 encoded SHA384 digest, which provides the
++        ID for non-owner-defined configuration of the guest TD, e.g., run-time
++        or OS configuration. The default value is all zeros.
++
++        The ``mrowner`` is base64 encoded SHA384 digest, which provides the ID
++        for guest TD's owner. The default value is all zeros.
++
++        The ``mrownerconfig`` is base64 encoded SHA384 digest, which provides
++        the ID for owner-defined configuration of the guest TD, e.g., the
++        configuration specific to the workload rather than the run-time of OS.
++        The default value is all zeros.
++
++        The ``quote-generation-socket`` specifies the socket address of the
++        Quote Generation Service (QGS). QGS is a daemon running on the host.
++        QEMU forwards the <GetQuote> request from TD guest to QGS and sents the
++        reply (which contains generated QUOTE on success) from QGS to guest TD.
++
++        .. parsed-literal::
++
++             # |qemu_system_x86| \\
++                 ... \\
++                 -object tdx-guest,id=tdx0, \\
++                 -machine ...,confidential-guest-support=tdx0 \\
++                 ...
++
+     ``-object authz-simple,id=id,identity=string``
+         Create an authorization object that will control access to
+         network services.
 -- 
 2.43.0
 
