@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D101BB03D74
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D93B03D15
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:15:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHHJ-0002eT-JN; Mon, 14 Jul 2025 07:23:31 -0400
+	id 1ubH7Z-0008UK-OO; Mon, 14 Jul 2025 07:13:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGzT-0000me-9X
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:00 -0400
+ id 1ubGzY-0000pO-RG
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubGzR-0001c0-9q
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:04:58 -0400
+ id 1ubGzT-0001dd-LZ
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491096;
+ s=mimecast20190719; t=1752491098;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CHd6YlxT7SR0dUhCUOeeHWrJJQghHVPSqPxhxBe2H6I=;
- b=ST80E8NOwoiQ68VrMR4nYa7nQlYikDWTs/40BTs9gy+pHRogdgq+T8EnLpu6LSPd3UH1Cn
- If0Gy837kPuPtIvfMVoa6oa4KOwdQXyW6CWPdxi3CMarO5EmrqB8vvDAQB2oz3zz/7z41Y
- TH/JYKn+/U60oBkQHaA0kuMUYv5t2uM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TvaPDebJQqrXFfnLyyiynRkEMunN2jwXGo43DBM4hqM=;
+ b=RGToYhc2dZ68NY69GPTP1EHogzzDDkOoIn4T39Zx0JTuggoL7t0LSCBTLXqshRs8NDScEx
+ NqJLsu7s40E87Ll5zGykqEJld6zZla9QmHxfzukD3AIyaHLChUHfDrtDakYL98VgrQrAW0
+ xjVc4RyAa2XTe5ATp7ORauKpt9k0ur0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-314-jYku1juNPOy5jk3J9Rh4Jg-1; Mon, 14 Jul 2025 07:04:54 -0400
-X-MC-Unique: jYku1juNPOy5jk3J9Rh4Jg-1
-X-Mimecast-MFC-AGG-ID: jYku1juNPOy5jk3J9Rh4Jg_1752491093
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-455e9daab1cso4838865e9.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:04:54 -0700 (PDT)
+ us-mta-260-TI1Zl6mEMgS7hx2Au5kZ6w-1; Mon, 14 Jul 2025 07:04:57 -0400
+X-MC-Unique: TI1Zl6mEMgS7hx2Au5kZ6w-1
+X-Mimecast-MFC-AGG-ID: TI1Zl6mEMgS7hx2Au5kZ6w_1752491096
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-455f7b86aeeso12296545e9.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:04:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491092; x=1753095892;
+ d=1e100.net; s=20230601; t=1752491095; x=1753095895;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CHd6YlxT7SR0dUhCUOeeHWrJJQghHVPSqPxhxBe2H6I=;
- b=HrCFjRyO4hnEt48MAnrgoxQ8di0BMac9pIfiYmWPSceLbFH3Eot3+c30Sk3vHZkt9n
- HuSWft3cbt6kg8Tekey20dW1YE/qw7EtG0/+RkHdEFW15C08FKN1NH0yajS1qsWW5ZpW
- /wD5Z4KRjqGUOltIS5rOaWrjU2Z2WqxG9QFNxC+Tm5CRAywvaBQ+XNYO8nMhd2deJVBN
- VWoKTfUbapnkY2kvXLnCTbup0OdiLP3lCi5RXCx8oT+Sg+tBa1w3aFmgf2R5oDwSQSxS
- IJHKEc01vvzxigqmuoNEueP8IP+2PJ4UsgAzpqMfMY6i+Us6DVfxcdB46FxUad2jevL7
- m7oA==
-X-Gm-Message-State: AOJu0Yxiaw8AM2clBw4zCFRv/CTQpMCcE/0u+sq/z/gjRoO33nod0mZC
- Ypaq1Y3yAQlii3DNyDn6v+CG/Cb9NtxcBsixxTW3l7XjJLneNTFjSfJsl3agDitebd490rduuWB
- 4DDGep0VrSTmETttjhLphjdBRIczEhIFHkBmp2pL2XKSD0ijc610P7/48YqdzZ4Zh4UmFL2GYfo
- p4orxDK8G5TZG/zthYKmrwU9RNs9OReO/jR4j0cj4J
-X-Gm-Gg: ASbGncuR9WFUR5HJMQ62Kr1ZZZbYYo9HctEdq8EB2hxrPLK2Ks8f/blkhZqZJyb48Wy
- X9z6qy/kXBW3yKtZNRCR7pDsnXgud8GB0I8qG/hxt3bNkM6h4Dx9v/6rns/LnY/HfAshGsGYOs7
- ORVzIn0GZzSeMa2F4gQrcM3vd+qQaxBvH2BQ3EhE+HYW8Uo+20mjyUM6TWFmBZ8mvOMakAna3Cd
- wEiYUtpSkYSiYYHcoKRGP0D7Ld8dzkCFGOwj4+Otil73tDN5V9qlt2TCEBGDBL3Ru/rYE1LJDe5
- w0dWAK///Ocu4KmkpYe+C1sA8x16WlLMx0cUsMkhMWg=
-X-Received: by 2002:a05:600c:c4a6:b0:455:ed0f:e8d4 with SMTP id
- 5b1f17b1804b1-455ed0fedc6mr144023675e9.10.1752491092324; 
- Mon, 14 Jul 2025 04:04:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH35YT0aMEGjdBP8pzHneR6Xz9SIAbgFNNpcby+WFWSLWTUc1AM8KqQrTvm7mtM62Q/y2iodg==
-X-Received: by 2002:a05:600c:c4a6:b0:455:ed0f:e8d4 with SMTP id
- 5b1f17b1804b1-455ed0fedc6mr144023215e9.10.1752491091779; 
- Mon, 14 Jul 2025 04:04:51 -0700 (PDT)
+ bh=TvaPDebJQqrXFfnLyyiynRkEMunN2jwXGo43DBM4hqM=;
+ b=uddZGCCCbpA1vnGCBo24YafrvAcEJFvP0nARSAEv7deEYb40UiS5M5Zkf6IRVCEA9e
+ xAKaw43+lq9ZDNT2vRKnsN97Ake2OzvXaVYCCJ11y5b3Tz761q1p6jb1NGFN2M5EK1kL
+ SQihV7E6OOHKeVY+mdGhUa50A3/cpU6ng1nbZLhjVPP8FJuWdkHgpZ3YZuYNPg2KW7nv
+ wJJVcEUfs/Dvw74+AGVNvZlrgu/JBTHWLhKEFynDgy4xUyd80rS0/dmari50aSP3vkZl
+ kAub2HiZAD7SfbvrS8P/Wztzm4SGHsFlOkhgDGzpGJqgaDqAlqP/zLCV+mXJ/XU3v5Vv
+ YoSg==
+X-Gm-Message-State: AOJu0YzSOhysREXF9P6yIxfEY12+gKjIpQeK+k0xDDG/8MzYVtG6eNRx
+ 4xXASgI156XdTc0pTJ52kMUZFHDSlInPKRki+qs6loSPuJZxqHl9Lnmn8df+jjNdpebqBBNHq46
+ pQvWjxWc6eZ56NAoebFJTOqBhpOwnmsKMvHGYu+J7Mi+tkTQwAoY3eXi+UIVPq/5lVLDi871xF3
+ xPAwrCr6Lk09hum+et8y2W/SVMlT6gDhnlgZrSnxHK
+X-Gm-Gg: ASbGnct+MZtgvCrbmdIR9nklDyDZK7MotxKgVQLglaAijVIvBtDZv6zVbel3jNpX+vV
+ ZihvuiqfPhtlVRUvwE4QEKi+w9Oenm6hbsMHyD2LjD66mR1vCwk12+FMA2hVbkJq2TQ/H75NX3T
+ mLGY/hXmXQga9OJGXK8qjpJNRTCfHCmzJRaCMCrPE/EkOGkAWZ6eeOhXFNctLDTJ7RWUzuTBrFF
+ 6TUF000V0Sso7S9v0o7HV8ZCwhd5JQQ9zKK5O+DcZKgGN705QkB5pF/TuK/CwUXsMcC0Ov+Qctd
+ FwnucAmLqFyULb50iO3vX+p/PT7R+LFfQPPRXE4ZuIE=
+X-Received: by 2002:a05:6000:2088:b0:3b3:a6e1:135c with SMTP id
+ ffacd0b85a97d-3b5f2e32f4fmr8643404f8f.42.1752491094902; 
+ Mon, 14 Jul 2025 04:04:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH9XRIDEC+alv0gL1xVW/RCLAQXcrsdsbZhO0y1skcuB05+k8bqSJfKl5Abficiw+qZ/rYbpg==
+X-Received: by 2002:a05:6000:2088:b0:3b3:a6e1:135c with SMTP id
+ ffacd0b85a97d-3b5f2e32f4fmr8643376f8f.42.1752491094316; 
+ Mon, 14 Jul 2025 04:04:54 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d5easm11981807f8f.48.2025.07.14.04.04.49
+ 5b1f17b1804b1-45614aeba29sm43525615e9.11.2025.07.14.04.04.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:04:50 -0700 (PDT)
+ Mon, 14 Jul 2025 04:04:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 16/77] i386/tdx: Fix the report of gpa in QAPI
-Date: Mon, 14 Jul 2025 13:03:05 +0200
-Message-ID: <20250714110406.117772-17-pbonzini@redhat.com>
+Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffman <kraxel@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 17/77] meson: Add optional dependency on IGVM library
+Date: Mon, 14 Jul 2025 13:03:06 +0200
+Message-ID: <20250714110406.117772-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
@@ -108,65 +110,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: Roy Hopkins <roy.hopkins@randomman.co.uk>
 
-Gpa is defined in QAPI but never reported to monitor because has_gpa is
-never set to ture.
+The IGVM library allows Independent Guest Virtual Machine files to be
+parsed and processed. IGVM files are used to configure guest memory
+layout, initial processor state and other configuration pertaining to
+secure virtual machines.
 
-Fix it by setting has_gpa to ture when TDX_REPORT_FATAL_ERROR_GPA_VALID
-is set in error_code.
+This adds the --enable-igvm configure option, enabled by default, which
+attempts to locate and link against the IGVM library via pkgconfig and
+sets CONFIG_IGVM if found.
 
-Fixes: 6e250463b08b ("i386/tdx: Wire TDX_REPORT_FATAL_ERROR with GuestPanic facility")
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+The library is added to the system_ss target in backends/meson.build
+where the IGVM parsing will be performed by the ConfidentialGuestSupport
+object.
+
+Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Gerd Hoffman <kraxel@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Link: https://lore.kernel.org/r/20250710035538.303136-1-zhenzhong.duan@intel.com
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Link: https://lore.kernel.org/r/45945a83a638c3f08e68c025f378e7b7f4f6d593.1751554099.git.roy.hopkins@randomman.co.uk
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/tdx.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ meson.build                   | 8 ++++++++
+ backends/meson.build          | 3 +++
+ meson_options.txt             | 2 ++
+ scripts/meson-buildoptions.sh | 3 +++
+ 4 files changed, 16 insertions(+)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index fb31071dd81..7d69d6d7b06 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -1321,7 +1321,8 @@ void tdx_handle_setup_event_notify_interrupt(X86CPU *cpu, struct kvm_run *run)
- }
+diff --git a/meson.build b/meson.build
+index b5f74aa37a7..200352c2448 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1424,6 +1424,12 @@ if host_os == 'linux' and (have_system or have_tools)
+                        method: 'pkg-config',
+                        required: get_option('libudev'))
+ endif
++igvm = not_found
++if not get_option('igvm').auto() or have_system
++  igvm = dependency('igvm', version: '>= 0.3.0',
++                    method: 'pkg-config',
++                    required: get_option('igvm'))
++endif
  
- static void tdx_panicked_on_fatal_error(X86CPU *cpu, uint64_t error_code,
--                                        char *message, uint64_t gpa)
-+                                        char *message, bool has_gpa,
-+                                        uint64_t gpa)
- {
-     GuestPanicInformation *panic_info;
+ mpathlibs = [libudev]
+ mpathpersist = not_found
+@@ -2601,6 +2607,7 @@ config_host_data.set('CONFIG_CFI', get_option('cfi'))
+ config_host_data.set('CONFIG_SELINUX', selinux.found())
+ config_host_data.set('CONFIG_XEN_BACKEND', xen.found())
+ config_host_data.set('CONFIG_LIBDW', libdw.found())
++config_host_data.set('CONFIG_IGVM', igvm.found())
+ if xen.found()
+   # protect from xen.version() having less than three components
+   xen_version = xen.version().split('.') + ['0', '0']
+@@ -4965,6 +4972,7 @@ summary_info += {'seccomp support':   seccomp}
+ summary_info += {'GlusterFS support': glusterfs}
+ summary_info += {'hv-balloon support': hv_balloon}
+ summary_info += {'TPM support':       have_tpm}
++summary_info += {'IGVM support':      igvm}
+ summary_info += {'libssh support':    libssh}
+ summary_info += {'lzo support':       lzo}
+ summary_info += {'snappy support':    snappy}
+diff --git a/backends/meson.build b/backends/meson.build
+index 9b88d226851..ac0fac78458 100644
+--- a/backends/meson.build
++++ b/backends/meson.build
+@@ -34,6 +34,9 @@ if have_vhost_user_crypto
+ endif
+ system_ss.add(when: gio, if_true: files('dbus-vmstate.c'))
+ system_ss.add(when: 'CONFIG_SGX', if_true: files('hostmem-epc.c'))
++if igvm.found()
++  system_ss.add(igvm)
++endif
  
-@@ -1330,6 +1331,7 @@ static void tdx_panicked_on_fatal_error(X86CPU *cpu, uint64_t error_code,
-     panic_info->u.tdx.error_code = (uint32_t) error_code;
-     panic_info->u.tdx.message = message;
-     panic_info->u.tdx.gpa = gpa;
-+    panic_info->u.tdx.has_gpa = has_gpa;
+ system_ss.add(when: 'CONFIG_SPDM_SOCKET', if_true: files('spdm-socket.c'))
  
-     qemu_system_guest_panicked(panic_info);
- }
-@@ -1349,6 +1351,7 @@ int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run)
-     char *message = NULL;
-     uint64_t *tmp;
-     uint64_t gpa = -1ull;
-+    bool has_gpa = false;
+diff --git a/meson_options.txt b/meson_options.txt
+index a442be29958..1e429311a2d 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -117,6 +117,8 @@ option('tpm', type : 'feature', value : 'auto',
+        description: 'TPM support')
+ option('valgrind', type : 'feature', value: 'auto',
+        description: 'valgrind debug support for coroutine stacks')
++option('igvm', type: 'feature', value: 'auto',
++       description: 'Independent Guest Virtual Machine (IGVM) file support')
  
-     if (error_code & 0xffff) {
-         error_report("TDX: REPORT_FATAL_ERROR: invalid error code: 0x%"PRIx64,
-@@ -1381,9 +1384,10 @@ int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run)
- 
-     if (error_code & TDX_REPORT_FATAL_ERROR_GPA_VALID) {
-         gpa = run->system_event.data[R_R13];
-+        has_gpa = true;
-     }
- 
--    tdx_panicked_on_fatal_error(cpu, error_code, message, gpa);
-+    tdx_panicked_on_fatal_error(cpu, error_code, message, has_gpa, gpa);
- 
-     return -1;
- }
+ # Do not enable it by default even for Mingw32, because it doesn't
+ # work on Wine.
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 73e0770f42b..78515404450 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -130,6 +130,7 @@ meson_options_help() {
+   printf "%s\n" '  hv-balloon      hv-balloon driver (requires Glib 2.68+ GTree API)'
+   printf "%s\n" '  hvf             HVF acceleration support'
+   printf "%s\n" '  iconv           Font glyph conversion support'
++  printf "%s\n" '  igvm            IGVM file support'
+   printf "%s\n" '  jack            JACK sound support'
+   printf "%s\n" '  keyring         Linux keyring support'
+   printf "%s\n" '  kvm             KVM acceleration support'
+@@ -346,6 +347,8 @@ _meson_option_parse() {
+     --iasl=*) quote_sh "-Diasl=$2" ;;
+     --enable-iconv) printf "%s" -Diconv=enabled ;;
+     --disable-iconv) printf "%s" -Diconv=disabled ;;
++    --enable-igvm) printf "%s" -Digvm=enabled ;;
++    --disable-igvm) printf "%s" -Digvm=disabled ;;
+     --includedir=*) quote_sh "-Dincludedir=$2" ;;
+     --enable-install-blobs) printf "%s" -Dinstall_blobs=true ;;
+     --disable-install-blobs) printf "%s" -Dinstall_blobs=false ;;
 -- 
 2.50.0
 
