@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9536AB04ABE
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 00:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B649AB04AC2
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 00:36:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubRkO-0002q6-Kc; Mon, 14 Jul 2025 18:34:08 -0400
+	id 1ubRlx-0005Hb-G6; Mon, 14 Jul 2025 18:35:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubQqD-0004ai-0w
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 17:36:05 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubQqA-0002E8-VR
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 17:36:04 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-45618ddd62fso16555545e9.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 14:36:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752528961; x=1753133761; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IFteLS0V4c4i6gGYb4295S8Sf5+R90q2vU9r62EaS8g=;
- b=wxldCuW8YQJLtdYIqsp7k+ufj+IsVMVkH8XkfLPhPSkyWCgFRRQaRsRgIA4OuQQwQV
- W5mgwvXEIsrhnjt/FJOeA8iJcmNdcG3mCB6kpIl1ZzYWXvyiPTjurKD6t1Riy9rdis+s
- 4tW/1Xi4/nvs2Vi8rhirfXw9pByPqM9p57+j4YiVMKtAkISUoZVkNoy7TY8xhuDhrA/F
- E6fYq3D6Ve6mwo2xF4aQNY3+kXiMMmfK4/ATzxa6dwZ1P/K9mrYhNCQX5XIBFYwVONOd
- FhK9mSzM18/mRuTh0OJvmwQ0ow/EwGr5nZGuB6Q2oy0rYNICGPU92d4d6PdqjwisY2TE
- I6BA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubRMb-0000y2-OW
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 18:09:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubRMY-0000JS-Gr
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 18:09:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752530968;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6uSxElZbJWChayxu0fEwTPCqzfIl4gnOrF+O5vbwmp8=;
+ b=culgOi/Vtjx1xcsSBKPHHqePDsx5fPAgjdUoSSWvSbJWyz6ViKIPm+QV+j8RHlY97Hn0R/
+ i6ITlTnIgydWgCIuMQOLjK2jSFztN/IHvBNxxib8snVlAuyWDbZdCmL8Id5UbYhbslt9zX
+ U9UgcjYUztC/G2ClHulkMdA8el4P9DA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-451-FptxuxldMGSg5swGH0NJaA-1; Mon, 14 Jul 2025 18:09:27 -0400
+X-MC-Unique: FptxuxldMGSg5swGH0NJaA-1
+X-Mimecast-MFC-AGG-ID: FptxuxldMGSg5swGH0NJaA_1752530966
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-455f79a2a16so25420485e9.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 15:09:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752528961; x=1753133761;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IFteLS0V4c4i6gGYb4295S8Sf5+R90q2vU9r62EaS8g=;
- b=EtBdFyV0AfYa7m9HlUCRxuWqdyfVkFwByoF3OfnFUm7HCVRS/J3QHI4B/GIYPaJlMF
- uu13wE2f+ONHWcXavY/QguF0SzXHIyl4N0zYsh1WMAG0OpmWioBb9OSB81gYxSp6m+Fk
- rpJ9O4Wo2GA2UN4bHdMLQDSixi5h+9dZmd8B3vol1apcr/StdzhynUjQ+I5Tapi9QFhQ
- L0UsVTKUTV1ORlxAXfMOqAqxnFKUIwKLDWrmJmETWVESzjVV4DKENJUfLNVvTY2SWPu7
- KplxVqKWsLSabXdhdxZfL1IyrxmuRRUS6z/33FkvJLDgmjjLfaMFw0c4St2KUy9H0r9S
- 8m2w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUmTGUsLt7KBtoG3MbpJB1R6cuQSlG3mh7PhLCsD/jhcga2R3sX9RhobMXCPoiavOJCsCL/0sGRHBfw@nongnu.org
-X-Gm-Message-State: AOJu0YzKYMnf/KDgSPbUDHK/JnfzqqoQL8ipDKuI9vngGtezkNOOzHik
- 1DhC2UbjcT3OTZ3qf40SWfK4Oaszqgxewyy5MsaxIBwvd4ZShvjdsPFQmsL7UqFXq8c=
-X-Gm-Gg: ASbGnctUGsx8nAGGNCgq8ABAch35ACB2M56EtMB6HDW8vPd7nT6d5jqB/13fhFMFm4I
- YlYPDPDhx9Ue2Ot9157mZb0f9WQx469t4f0TZdE2XGyVEotVNna7zDe04DKLnyI0AGQBSjmlyZk
- 276H5bKTGKOs4w3X4Zudh1YBXUiDiqBjjDJYl+31vL5L8FPYfSuavh/xced2hGBHDdmc4l8YqVr
- +Rt6Y81jXSdq1z1pq1eQxVu5Al0Fk4Y0VDZWb5NcvSAnyG0347L6D8uZte0ppWhh0z5q/3J8/WO
- QSf048kJsfUChpDVj69ouJXeajfnbfRKa0NW28BJD0GJKWUoZqA4hBijxncJ1roi0gFEmV4FCBu
- cDEFE9iTQ/z8N+WeDx8w0i9oToMNvTt2zk9YGjpCs49UYKUnG6wgXOv+/lJ1rJgqT80s+0FA=
-X-Google-Smtp-Source: AGHT+IEyA+ESg/pEAYMU+/ldk+7dylKHvBXVZntzUd/lgGEH+fjYAD/PwEEcVQfHHR60K4GVZrhw3g==
-X-Received: by 2002:a05:6000:1a8b:b0:3a5:25e4:264f with SMTP id
- ffacd0b85a97d-3b5f2e1bb21mr11256222f8f.31.1752528961062; 
- Mon, 14 Jul 2025 14:36:01 -0700 (PDT)
-Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d77asm13688251f8f.58.2025.07.14.14.36.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jul 2025 14:36:00 -0700 (PDT)
-Message-ID: <c9c3ac80-e88e-4779-902b-707fb5c9f959@linaro.org>
-Date: Mon, 14 Jul 2025 23:35:59 +0200
+ d=1e100.net; s=20230601; t=1752530965; x=1753135765;
+ h=content-transfer-encoding:content-disposition:mime-version
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6uSxElZbJWChayxu0fEwTPCqzfIl4gnOrF+O5vbwmp8=;
+ b=BK+cTwXv9sNP8SnGKvzYA2jlDTrK0XaHeEKeuQUCwl6iJP8VO+/rU6UyIXq1LmQtWZ
+ Jlrx3uBJVZtFL+zPxtK+s6EvJ08o6Wtx/AF8jP7jeFnlPYZ3cEHgbzv3Butaxzsc22NS
+ eWOqzqcY00RsgAaxK3kiLw4ke7pau2wcp1bRWijjt97lP9TH362gdQR8ziOjaFzFkyr0
+ S+gsEP3Ilkl4bwXnYHIG7ewQ9PkPQOR2AsPrz7rWEsOwkM5BglESHfRPmbjlDJycGYNr
+ HeqUkmkbhdYorAVyunly25WR8+oY6GMVwNjCqnwIKrsMJiSdligxUUwwU1eT6jc2RuOq
+ 9RiQ==
+X-Gm-Message-State: AOJu0YxN07Nr4puw5U5FFfIGOZlMpYCf1mm46Ye70pV0vNBfKti9/Bpp
+ FKcDJwP28dW1dB/KAIZIIhE9m3d+NZxxe+e9/IZt6Ky72+4D1P4RMCqBF4/yaguWehfJAluOLJR
+ L6OEhGkfOh+LdQOHOcXvYkQ9TPFT2BocJ5+KrTBFjrZKbg1lL38Z2pZnSpQMZPTQ5C/8+E0FFLP
+ PkWd93tZ9z1seJBE8WsoFYFGYnRQp/2PZgZw==
+X-Gm-Gg: ASbGnctkVEY2P0NqQdSFmeZ8tYJN6HTyvDXqLkoCfrP6S7wTWiW2m/MNFvBzwvNf+pJ
+ WFDpbc9Io4kwUzTBbPtc9dogkAIbwpc8nxYnnYOEvbizwV5Pj6v5VPKsL4T8WuECf3bXAwsIoQt
+ B/WBHPMkdmbAAc8/WnPIoEslOOYBCNQhpiWZPTvzbWWihGUv4SLr8dE2mZsm8MeHrTjqNucXqO9
+ oGT24ZtMzy987svgYhOsAUAeZuDnLLtZfHzr3tgF14m5aiB0pNf3/oCdfOKAjGMG1r1As/sxxHj
+ FutnrmNPGZPVjqKlOeyarN3P2xBkqrd0
+X-Received: by 2002:a05:600c:1c21:b0:456:eab:633e with SMTP id
+ 5b1f17b1804b1-45627416ddfmr3029155e9.17.1752530965547; 
+ Mon, 14 Jul 2025 15:09:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHf4fUbqEuq7yOUTIGbCjHVThQbgZ5s7mi9Y2FZrPByntykGQVt8LYIvN9oBmCSjrdleYkXrw==
+X-Received: by 2002:a05:600c:1c21:b0:456:eab:633e with SMTP id
+ 5b1f17b1804b1-45627416ddfmr3029025e9.17.1752530965065; 
+ Mon, 14 Jul 2025 15:09:25 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-456111574adsm65899375e9.11.2025.07.14.15.09.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Jul 2025 15:09:24 -0700 (PDT)
+Date: Mon, 14 Jul 2025 18:09:23 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-rust@nongnu.org
+Subject: [PATCH] rust: bindings: allow any number of params
+Message-ID: <a4c65fb2b735740bda2874c86de31d29a5ae24d2.1752530758.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] pc-bios/dtb: Remove device tree blobs
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-References: <20250708204806.1898-1-shentey@gmail.com>
- <20250708204806.1898-4-shentey@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250708204806.1898-4-shentey@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,28 +104,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/7/25 22:48, Bernhard Beschow wrote:
-> Now that the existance of a device tree compiler is enusred, it is possible to
+We are going to be adding more parameters, and this makes
+rust unhappy:
+    Functions with lots of parameters are considered bad style and reduce
+    readability (“what does the 5th parameter mean?”). Consider grouping
+    some parameters into a new type.
 
-"ensured"
+Specifically:
 
-> always generate the DTBs from sources. This avoids checked in DTBs to become
-> inconsistent with their sources.
-> 
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> ---
->   MAINTAINERS                          |   2 +-
->   pc-bios/dtb/bamboo.dtb               | Bin 3211 -> 0 bytes
->   pc-bios/dtb/canyonlands.dtb          | Bin 9779 -> 0 bytes
->   pc-bios/dtb/meson.build              |  16 +++++++---------
->   pc-bios/dtb/petalogix-ml605.dtb      | Bin 9882 -> 0 bytes
->   pc-bios/dtb/petalogix-s3adsp1800.dtb | Bin 8161 -> 0 bytes
->   6 files changed, 8 insertions(+), 10 deletions(-)
->   delete mode 100644 pc-bios/dtb/bamboo.dtb
->   delete mode 100644 pc-bios/dtb/canyonlands.dtb
->   delete mode 100644 pc-bios/dtb/petalogix-ml605.dtb
->   delete mode 100644 pc-bios/dtb/petalogix-s3adsp1800.dtb
+error: this function has too many arguments (8/7)
+    --> /builds/mstredhat/qemu/build/rust/qemu-api/rust-qemu-api-tests.p/structured/bindings.inc.rs:3840:5
+     |
+3840 | /     pub fn new_bitfield_1(
+3841 | |         secure: std::os::raw::c_uint,
+3842 | |         space: std::os::raw::c_uint,
+3843 | |         user: std::os::raw::c_uint,
+...    |
+3848 | |         address_type: std::os::raw::c_uint,
+3849 | |     ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+     | |____________________________________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#too_many_arguments
+     = note: `-D clippy::too-many-arguments` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::too_many_arguments)]`
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I didn't want to disable this globally, so I just shut it off for this
+file.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ rust/qemu-api/src/bindings.rs | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
+index 057de4b646..b4692f9b4b 100644
+--- a/rust/qemu-api/src/bindings.rs
++++ b/rust/qemu-api/src/bindings.rs
+@@ -18,11 +18,15 @@
+ 
+ //! `bindgen`-generated declarations.
+ 
+-#[cfg(MESON)]
+-include!("bindings.inc.rs");
++#[allow(clippy::too_many_arguments)]
++mod gen {
++    #[cfg(MESON)]
++    include!("bindings.inc.rs");
+ 
+-#[cfg(not(MESON))]
+-include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
++    #[cfg(not(MESON))]
++    include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
++}
++pub use gen::*;
+ 
+ // SAFETY: these are implemented in C; the bindings need to assert that the
+ // BQL is taken, either directly or via `BqlCell` and `BqlRefCell`.
+-- 
+MST
 
 
