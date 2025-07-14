@@ -2,67 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F9CB03DE1
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6773CB03DEF
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 14:00:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHip-0004aw-US; Mon, 14 Jul 2025 07:51:54 -0400
+	id 1ubHjv-0004wh-QW; Mon, 14 Jul 2025 07:53:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1ubH5s-0006Jc-7E
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:11:40 -0400
+ id 1ubH6D-0006a6-DD
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:11:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1ubH5l-0003Eu-OZ
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:11:32 -0400
+ id 1ubH6A-0003JY-Cb
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:11:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491489;
+ s=mimecast20190719; t=1752491513;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9vemcN2IltHES9sWVXSbrdPiFkkw6mhPtXJ2qDHWzdY=;
- b=DjUwYkXmMdd+jYKWcyReyIi6PIECUUjFmZePrGgvBqyl/q9kfAFZ6hm4LxZxKFy6wwpULJ
- g9E/Wzu9+++bDHIhhThBdkwyrNVsoALQk/nnnQfezRTivrTtoVzyH2u0gNjhaKc94299aL
- 7ubCrP5k5iE/ofJaOQpf2ph91YUTQoo=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=s0DW657PuEuVKjB0hxciKKT0eQfi++HEcWHyzhRvOag=;
+ b=Uzh0tEZNfHEOZm/ySI5GbjBUCxnKOu2oR8UeTayiKnXrWvyn1gVu56FWt4LAxY0lrCmqiE
+ w6U/XDbn5gkNd/QJCGaqL+54nlfyDyl7XKUq/O84pEyUZSGCmZ6T/JprN9gK/pxSlO3gxh
+ fAwvBhngyOhdIandpw6HEEm0K9sU8lI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-97-ZYMHX0psMQibY5KGmGRtCg-1; Mon,
- 14 Jul 2025 07:11:25 -0400
-X-MC-Unique: ZYMHX0psMQibY5KGmGRtCg-1
-X-Mimecast-MFC-AGG-ID: ZYMHX0psMQibY5KGmGRtCg_1752491484
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-269-6YZXFW-1Pmm3AA4UjAhicA-1; Mon,
+ 14 Jul 2025 07:11:49 -0400
+X-MC-Unique: 6YZXFW-1Pmm3AA4UjAhicA-1
+X-Mimecast-MFC-AGG-ID: 6YZXFW-1Pmm3AA4UjAhicA_1752491508
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E35E71956094; Mon, 14 Jul 2025 11:11:23 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2F3D118002ED; Mon, 14 Jul 2025 11:11:48 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.9])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9DFE71977000; Mon, 14 Jul 2025 11:11:21 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 427A219560A3; Mon, 14 Jul 2025 11:11:45 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: stefanha@redhat.com, Andrew Keesler <ankeesler@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>,
- Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-Subject: [PULL 06/13] ui/spice: Add an option to submit gl_draw requests at
- fixed rate
-Date: Mon, 14 Jul 2025 15:10:29 +0400
-Message-ID: <20250714111039.4150419-7-marcandre.lureau@redhat.com>
+ "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 10/13] hw/display: Allow injection of virtio-gpu EDID name
+Date: Mon, 14 Jul 2025 15:10:33 +0400
+Message-ID: <20250714111039.4150419-11-marcandre.lureau@redhat.com>
 In-Reply-To: <20250714111039.4150419-1-marcandre.lureau@redhat.com>
 References: <20250714111039.4150419-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -89,216 +91,276 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+From: Andrew Keesler <ankeesler@google.com>
 
-In the specific case where the display layer (virtio-gpu) is using
-dmabuf, and if remote clients are enabled (-spice gl=on,port=xxxx),
-it makes sense to limit the maximum (streaming) rate (refresh rate)
-to a fixed value using the GUI refresh timer. Otherwise, the updates
-or gl_draw requests would be sent as soon as the Guest submits a new
-frame which is not optimal as it would lead to increased network
-traffic and wastage of GPU cycles if the frames get dropped.
+Thanks to 72d277a7, 1ed2cb32, and others, EDID (Extended Display
+Identification Data) is propagated by QEMU such that a virtual display
+presents legitimate metadata (e.g., name, serial number, preferred
+resolutions, etc.) to its connected guest.
 
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Frediano Ziglio <freddy77@gmail.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
-Cc: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
+This change adds the ability to specify the EDID name for a particular
+virtio-vga display. Previously, every virtual display would have the same
+name: "QEMU Monitor". Now, we can inject names of displays in order to test
+guest behavior that is specific to display names. We provide the ability to
+inject the display name from the frontend since this is guest visible
+data. Furthermore, this makes it clear where N potential display outputs
+would get their name from (which will be added in a future change).
+
+Note that we have elected to use a struct here for output data for
+extensibility - we intend to add per-output fields like resolution in a
+future change.
+
+It should be noted that EDID names longer than 12 bytes will be truncated
+per spec (I think?).
+
+Testing: verified that when I specified 2 outputs for a virtio-gpu with
+edid_name set, the names matched those that I configured with my vnc
+display.
+
+  -display vnc=localhost:0,id=aaa,display=vga,head=0 \
+  -display vnc=localhost:1,id=bbb,display=vga,head=1 \
+  -device '{"driver":"virtio-vga",
+            "max_outputs":2,
+            "id":"vga",
+            "outputs":[
+              {
+                 "name":"AAA"
+              },
+              {
+                 "name":"BBB"
+              }
+            ]}'
+
+Signed-off-by: Andrew Keesler <ankeesler@google.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Message-Id: <20250617043546.1022779-5-vivek.kasireddy@intel.com>
+Message-Id: <20250709121126.2946088-2-ankeesler@google.com>
 ---
- include/ui/spice-display.h |  1 +
- ui/spice-core.c            | 12 ++++++++
- ui/spice-display.c         | 62 ++++++++++++++++++++++++++++++++------
- qemu-options.hx            |  5 +++
- 4 files changed, 70 insertions(+), 10 deletions(-)
+ qapi/virtio.json                    | 18 ++++++++++--
+ include/hw/display/edid.h           |  2 ++
+ include/hw/qdev-properties-system.h |  5 ++++
+ include/hw/virtio/virtio-gpu.h      |  3 ++
+ hw/core/qdev-properties-system.c    | 44 +++++++++++++++++++++++++++++
+ hw/display/virtio-gpu-base.c        | 27 ++++++++++++++++++
+ 6 files changed, 97 insertions(+), 2 deletions(-)
 
-diff --git a/include/ui/spice-display.h b/include/ui/spice-display.h
-index 6c55f38c8b..9bdde78266 100644
---- a/include/ui/spice-display.h
-+++ b/include/ui/spice-display.h
-@@ -152,6 +152,7 @@ struct SimpleSpiceCursor {
+diff --git a/qapi/virtio.json b/qapi/virtio.json
+index 73df718a26..5e658a7033 100644
+--- a/qapi/virtio.json
++++ b/qapi/virtio.json
+@@ -963,17 +963,31 @@
+ { 'struct': 'IOThreadVirtQueueMapping',
+   'data': { 'iothread': 'str', '*vqs': ['uint16'] } }
  
- extern bool spice_opengl;
- extern bool spice_remote_client;
-+extern int spice_max_refresh_rate;
++##
++# @VirtIOGPUOutput:
++#
++# Describes configuration of a VirtIO GPU output.
++#
++# @name: the name of the output
++#
++# Since: 10.1
++##
++
++{ 'struct': 'VirtIOGPUOutput',
++  'data': { 'name': 'str' } }
++
+ ##
+ # @DummyVirtioForceArrays:
+ #
+ # Not used by QMP; hack to let us use IOThreadVirtQueueMappingList
+-# internally
++# and VirtIOGPUOutputList internally
+ #
+ # Since: 9.0
+ ##
  
- int qemu_spice_rect_is_empty(const QXLRect* r);
- void qemu_spice_rect_union(QXLRect *dest, const QXLRect *r);
-diff --git a/ui/spice-core.c b/ui/spice-core.c
-index 5e585ed958..5477950a5e 100644
---- a/ui/spice-core.c
-+++ b/ui/spice-core.c
-@@ -56,6 +56,8 @@ struct SpiceTimer {
-     QEMUTimer *timer;
+ { 'struct': 'DummyVirtioForceArrays',
+-  'data': { 'unused-iothread-vq-mapping': ['IOThreadVirtQueueMapping'] } }
++  'data': { 'unused-iothread-vq-mapping': ['IOThreadVirtQueueMapping'],
++            'unused-virtio-gpu-output': ['VirtIOGPUOutput'] } }
+ 
+ ##
+ # @GranuleMode:
+diff --git a/include/hw/display/edid.h b/include/hw/display/edid.h
+index 520f8ec202..91c0a428af 100644
+--- a/include/hw/display/edid.h
++++ b/include/hw/display/edid.h
+@@ -1,6 +1,8 @@
+ #ifndef EDID_H
+ #define EDID_H
+ 
++#define EDID_NAME_MAX_LENGTH 12
++
+ typedef struct qemu_edid_info {
+     const char *vendor; /* http://www.uefi.org/pnp_id_list */
+     const char *name;
+diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+index b921392c52..9601a11a09 100644
+--- a/include/hw/qdev-properties-system.h
++++ b/include/hw/qdev-properties-system.h
+@@ -32,6 +32,7 @@ extern const PropertyInfo qdev_prop_cpus390entitlement;
+ extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
+ extern const PropertyInfo qdev_prop_endian_mode;
+ extern const PropertyInfo qdev_prop_vmapple_virtio_blk_variant;
++extern const PropertyInfo qdev_prop_virtio_gpu_output_list;
+ 
+ #define DEFINE_PROP_PCI_DEVFN(_n, _s, _f, _d)                   \
+     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_pci_devfn, int32_t)
+@@ -110,4 +111,8 @@ extern const PropertyInfo qdev_prop_vmapple_virtio_blk_variant;
+                          qdev_prop_vmapple_virtio_blk_variant, \
+                          VMAppleVirtioBlkVariant)
+ 
++#define DEFINE_PROP_VIRTIO_GPU_OUTPUT_LIST(_name, _state, _field) \
++    DEFINE_PROP(_name, _state, _field, qdev_prop_virtio_gpu_output_list, \
++                VirtIOGPUOutputList *)
++
+ #endif
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index a42957c4e2..9f16f89a36 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -20,6 +20,7 @@
+ #include "hw/virtio/virtio.h"
+ #include "qemu/log.h"
+ #include "system/vhost-user-backend.h"
++#include "qapi/qapi-types-virtio.h"
+ 
+ #include "standard-headers/linux/virtio_gpu.h"
+ #include "standard-headers/linux/virtio_ids.h"
+@@ -128,6 +129,7 @@ struct virtio_gpu_base_conf {
+     uint32_t xres;
+     uint32_t yres;
+     uint64_t hostmem;
++    VirtIOGPUOutputList *outputs;
  };
  
-+#define DEFAULT_MAX_REFRESH_RATE 30
+ struct virtio_gpu_ctrl_command {
+@@ -167,6 +169,7 @@ struct VirtIOGPUBaseClass {
+ 
+ #define VIRTIO_GPU_BASE_PROPERTIES(_state, _conf)                       \
+     DEFINE_PROP_UINT32("max_outputs", _state, _conf.max_outputs, 1),    \
++    DEFINE_PROP_VIRTIO_GPU_OUTPUT_LIST("outputs", _state, _conf.outputs), \
+     DEFINE_PROP_BIT("edid", _state, _conf.flags, \
+                     VIRTIO_GPU_FLAG_EDID_ENABLED, true), \
+     DEFINE_PROP_UINT32("xres", _state, _conf.xres, 1280), \
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 24e145d870..1f810b7ddf 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -1299,3 +1299,47 @@ const PropertyInfo qdev_prop_vmapple_virtio_blk_variant = {
+     .set   = qdev_propinfo_set_enum,
+     .set_default_value = qdev_propinfo_set_default_value_enum,
+ };
 +
- static SpiceTimer *timer_add(SpiceTimerFunc func, void *opaque)
- {
-     SpiceTimer *timer;
-@@ -491,6 +493,9 @@ static QemuOptsList qemu_spice_opts = {
-         },{
-             .name = "video-codec",
-             .type = QEMU_OPT_STRING,
-+        },{
-+            .name = "max-refresh-rate",
-+            .type = QEMU_OPT_NUMBER,
-         },{
-             .name = "agent-mouse",
-             .type = QEMU_OPT_BOOL,
-@@ -806,6 +811,13 @@ static void qemu_spice_init(void)
-         spice_server_set_streaming_video(spice_server, SPICE_STREAM_VIDEO_OFF);
-     }
- 
-+    spice_max_refresh_rate = qemu_opt_get_number(opts, "max-refresh-rate",
-+                                                 DEFAULT_MAX_REFRESH_RATE);
-+    if (spice_max_refresh_rate <= 0) {
-+        error_report("max refresh rate/fps is invalid");
-+        exit(1);
-+    }
++/* --- VirtIOGPUOutputList --- */
 +
-     spice_server_set_agent_mouse
-         (spice_server, qemu_opt_get_bool(opts, "agent-mouse", 1));
-     spice_server_set_playback_compression
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index 0fb72f6d6f..e409b6bdb2 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -32,6 +32,7 @@
- 
- bool spice_opengl;
- bool spice_remote_client;
-+int spice_max_refresh_rate;
- 
- int qemu_spice_rect_is_empty(const QXLRect* r)
- {
-@@ -844,12 +845,32 @@ static void qemu_spice_gl_block_timer(void *opaque)
-     warn_report("spice: no gl-draw-done within one second");
- }
- 
-+static void spice_gl_draw(SimpleSpiceDisplay *ssd,
-+                           uint32_t x, uint32_t y, uint32_t w, uint32_t h)
++static void get_virtio_gpu_output_list(Object *obj, Visitor *v,
++    const char *name, void *opaque, Error **errp)
 +{
-+    uint64_t cookie;
++    VirtIOGPUOutputList **prop_ptr =
++        object_field_prop_ptr(obj, opaque);
 +
-+    cookie = (uintptr_t)qxl_cookie_new(QXL_COOKIE_TYPE_GL_DRAW_DONE, 0);
-+    spice_qxl_gl_draw_async(&ssd->qxl, x, y, w, h, cookie);
++    visit_type_VirtIOGPUOutputList(v, name, prop_ptr, errp);
 +}
 +
- static void spice_gl_refresh(DisplayChangeListener *dcl)
- {
-     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
--    uint64_t cookie;
- 
--    if (!ssd->ds || qemu_console_is_gl_blocked(ssd->dcl.con)) {
-+    if (!ssd->ds) {
++static void set_virtio_gpu_output_list(Object *obj, Visitor *v,
++    const char *name, void *opaque, Error **errp)
++{
++    VirtIOGPUOutputList **prop_ptr =
++        object_field_prop_ptr(obj, opaque);
++    VirtIOGPUOutputList *list;
++
++    if (!visit_type_VirtIOGPUOutputList(v, name, &list, errp)) {
 +        return;
 +    }
 +
-+    if (qemu_console_is_gl_blocked(ssd->dcl.con)) {
-+        if (spice_remote_client && ssd->gl_updates && ssd->have_scanout) {
-+            glFlush();
-+            spice_gl_draw(ssd, 0, 0,
-+                          surface_width(ssd->ds), surface_height(ssd->ds));
-+            ssd->gl_updates = 0;
-+            /* E.g, to achieve 60 FPS, update_interval needs to be ~16.66 ms */
-+            dcl->update_interval = 1000 / spice_max_refresh_rate;
-+        }
-         return;
-     }
- 
-@@ -857,11 +878,8 @@ static void spice_gl_refresh(DisplayChangeListener *dcl)
-     if (ssd->gl_updates && ssd->have_surface) {
-         qemu_spice_gl_block(ssd, true);
-         glFlush();
--        cookie = (uintptr_t)qxl_cookie_new(QXL_COOKIE_TYPE_GL_DRAW_DONE, 0);
--        spice_qxl_gl_draw_async(&ssd->qxl, 0, 0,
--                                surface_width(ssd->ds),
--                                surface_height(ssd->ds),
--                                cookie);
-+        spice_gl_draw(ssd, 0, 0,
-+                      surface_width(ssd->ds), surface_height(ssd->ds));
-         ssd->gl_updates = 0;
-     }
- }
-@@ -954,6 +972,20 @@ static void qemu_spice_gl_scanout_disable(DisplayChangeListener *dcl)
-     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
- 
-     trace_qemu_spice_gl_scanout_disable(ssd->qxl.id);
++    qapi_free_VirtIOGPUOutputList(*prop_ptr);
++    *prop_ptr = list;
++}
 +
-+    /*
-+     * We need to check for the case of "lost" updates, where a gl_draw
-+     * was not submitted because the timer did not get a chance to run.
-+     * One case where this happens is when the Guest VM is getting
-+     * rebooted. If the console is blocked in this situation, we need
-+     * to unblock it. Otherwise, newer updates would not take effect.
-+     */
-+    if (qemu_console_is_gl_blocked(ssd->dcl.con)) {
-+        if (spice_remote_client && ssd->gl_updates && ssd->have_scanout) {
-+            ssd->gl_updates = 0;
-+            qemu_spice_gl_block(ssd, false);
++static void release_virtio_gpu_output_list(Object *obj,
++    const char *name, void *opaque)
++{
++    VirtIOGPUOutputList **prop_ptr =
++        object_field_prop_ptr(obj, opaque);
++
++    qapi_free_VirtIOGPUOutputList(*prop_ptr);
++    *prop_ptr = NULL;
++}
++
++const PropertyInfo qdev_prop_virtio_gpu_output_list = {
++    .type = "VirtIOGPUOutputList",
++    .description = "VirtIO GPU output list [{\"name\":\"<name>\"},...]",
++    .get = get_virtio_gpu_output_list,
++    .set = set_virtio_gpu_output_list,
++    .release = release_virtio_gpu_output_list,
++};
+diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+index 9eb806b71f..7269477a1c 100644
+--- a/hw/display/virtio-gpu-base.c
++++ b/hw/display/virtio-gpu-base.c
+@@ -19,6 +19,7 @@
+ #include "qemu/error-report.h"
+ #include "hw/display/edid.h"
+ #include "trace.h"
++#include "qapi/qapi-types-virtio.h"
+ 
+ void
+ virtio_gpu_base_reset(VirtIOGPUBase *g)
+@@ -56,6 +57,8 @@ void
+ virtio_gpu_base_generate_edid(VirtIOGPUBase *g, int scanout,
+                               struct virtio_gpu_resp_edid *edid)
+ {
++    size_t output_idx;
++    VirtIOGPUOutputList *node;
+     qemu_edid_info info = {
+         .width_mm = g->req_state[scanout].width_mm,
+         .height_mm = g->req_state[scanout].height_mm,
+@@ -64,6 +67,14 @@ virtio_gpu_base_generate_edid(VirtIOGPUBase *g, int scanout,
+         .refresh_rate = g->req_state[scanout].refresh_rate,
+     };
+ 
++    for (output_idx = 0, node = g->conf.outputs;
++         output_idx <= scanout && node; output_idx++, node = node->next) {
++        if (output_idx == scanout && node->value && node->value->name) {
++            info.name = node->value->name;
++            break;
 +        }
 +    }
-     spice_server_gl_scanout(&ssd->qxl, NULL, 0, 0, NULL, NULL, 0, DRM_FORMAT_INVALID,
-                             DRM_FORMAT_MOD_INVALID, false);
-     qemu_spice_gl_monitor_config(ssd, 0, 0, 0, 0);
-@@ -1061,7 +1093,6 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-     EGLint fourcc = 0;
-     bool render_cursor = false;
-     bool y_0_top = false; /* FIXME */
--    uint64_t cookie;
-     uint32_t width, height, texture;
- 
-     if (!ssd->have_scanout) {
-@@ -1159,8 +1190,19 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-     trace_qemu_spice_gl_update(ssd->qxl.id, w, h, x, y);
-     qemu_spice_gl_block(ssd, true);
-     glFlush();
--    cookie = (uintptr_t)qxl_cookie_new(QXL_COOKIE_TYPE_GL_DRAW_DONE, 0);
--    spice_qxl_gl_draw_async(&ssd->qxl, x, y, w, h, cookie);
 +
-+    /*
-+     * In the case of remote clients, the submission of gl_draw request is
-+     * deferred here, so that it can be submitted later (to spice server)
-+     * from spice_gl_refresh() timer callback. This is done to ensure that
-+     * Guest updates are submitted at a steady rate (e.g. 60 FPS) instead
-+     * of submitting them arbitrarily.
-+     */
-+    if (spice_remote_client) {
-+        ssd->gl_updates++;
-+    } else {
-+        spice_gl_draw(ssd, x, y, w, h);
-+    }
+     edid->size = cpu_to_le32(sizeof(edid->edid));
+     qemu_edid_generate(edid->edid, sizeof(edid->edid), &info);
  }
+@@ -172,6 +183,8 @@ virtio_gpu_base_device_realize(DeviceState *qdev,
+                                VirtIOHandleOutput cursor_cb,
+                                Error **errp)
+ {
++    size_t output_idx;
++    VirtIOGPUOutputList *node;
+     VirtIODevice *vdev = VIRTIO_DEVICE(qdev);
+     VirtIOGPUBase *g = VIRTIO_GPU_BASE(qdev);
+     int i;
+@@ -181,6 +194,20 @@ virtio_gpu_base_device_realize(DeviceState *qdev,
+         return false;
+     }
  
- static const DisplayChangeListenerOps display_listener_gl_ops = {
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 8f6a228a89..ac09abfd71 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -2282,6 +2282,7 @@ DEF("spice", HAS_ARG, QEMU_OPTION_spice,
-     "       [,disable-agent-file-xfer=on|off][,agent-mouse=[on|off]]\n"
-     "       [,playback-compression=[on|off]][,seamless-migration=[on|off]]\n"
-     "       [,video-codec=<codec>\n"
-+    "       [,max-refresh-rate=rate\n"
-     "       [,gl=[on|off]][,rendernode=<file>]\n"
-     "                enable spice\n"
-     "                at least one of {port, tls-port} is mandatory\n",
-@@ -2377,6 +2378,10 @@ SRST
-         would be used as default. And, for the case where gl=off, the
-         default codec to be used is determined by the Spice server.
- 
-+    ``max-refresh-rate=rate``
-+        Provide the maximum refresh rate (or FPS) at which the encoding
-+        requests should be sent to the Spice server. Default would be 30.
++    for (output_idx = 0, node = g->conf.outputs;
++         node; output_idx++, node = node->next) {
++        if (output_idx == g->conf.max_outputs) {
++            error_setg(errp, "invalid outputs > %d", g->conf.max_outputs);
++            return false;
++        }
++        if (node->value && node->value->name &&
++            strlen(node->value->name) > EDID_NAME_MAX_LENGTH) {
++            error_setg(errp, "invalid output name '%s' > %d",
++                       node->value->name, EDID_NAME_MAX_LENGTH);
++            return false;
++        }
++    }
 +
-     ``gl=[on|off]``
-         Enable/disable OpenGL context. Default is off.
- 
+     if (virtio_gpu_virgl_enabled(g->conf)) {
+         error_setg(&g->migration_blocker, "virgl is not yet migratable");
+         if (migrate_add_blocker(&g->migration_blocker, errp) < 0) {
 -- 
 2.50.0
 
