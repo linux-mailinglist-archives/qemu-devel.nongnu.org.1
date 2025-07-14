@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13140B04C22
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97331B04C42
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:27:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSK3-00067N-TX; Mon, 14 Jul 2025 19:11:00 -0400
+	id 1ubSIa-0003ty-IW; Mon, 14 Jul 2025 19:09:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHv-0000st-UO
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHz-0001Tl-Dz
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHu-0005lK-42
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:47 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHx-0005ly-Dm
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534525;
+ s=mimecast20190719; t=1752534528;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=E82N8uMrxYhqX3KZPSCakRCqzr2EespoSFv7KAFnOcU=;
- b=IWO0CsqPnq2EnDbIXfA1KzCq75csJHgaLiGng/F11fuCmSQS8L7X4RBKJENjJBUDHWRJVN
- +CSKfnYTnI+Fxfp9l/tX8qtM3mXMlCvQGPG5wIuUYWxUKlWlCBzEZzYTVphiu56UDZjOcs
- NwjnhS1kJr0jFdB/VbKZGUDWQoLnF/Q=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=oaEFUE2mka6LHI4AQxwW+l8PzMzmqDvUtE2e2aSDVcM=;
+ b=EVHyjmzpGQy1wTQLwJ3rE0QP+vVvCi3N58C4yftn9DAwWkUQlXRVsiEY7jTlXARLuvXbo/
+ ZHSO4Ac6n4MYua79Vc5q61q/xfjihcfk4lyGZDRj+9/PKGeZHttHvtWr6IIS/cjYnnkBrZ
+ tm5cPhM/hefqvE6kCermksc3jXcS8nk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-509-12NsChnYPnmABp9uQvTiKg-1; Mon, 14 Jul 2025 19:08:44 -0400
-X-MC-Unique: 12NsChnYPnmABp9uQvTiKg-1
-X-Mimecast-MFC-AGG-ID: 12NsChnYPnmABp9uQvTiKg_1752534523
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4538f375e86so39566155e9.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:43 -0700 (PDT)
+ us-mta-42-AdN5v0zUOW2xdNtuOcFXBg-1; Mon, 14 Jul 2025 19:08:47 -0400
+X-MC-Unique: AdN5v0zUOW2xdNtuOcFXBg-1
+X-Mimecast-MFC-AGG-ID: AdN5v0zUOW2xdNtuOcFXBg_1752534526
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4f65a705dso3143509f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534522; x=1753139322;
+ d=1e100.net; s=20230601; t=1752534526; x=1753139326;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E82N8uMrxYhqX3KZPSCakRCqzr2EespoSFv7KAFnOcU=;
- b=Ii7qyxn8xuM5TFnLj2UYy2lTCH1HUezUTFb6gxYp4qZ9nPUalvTd4Dkr8Lr2DmwV9V
- L7mn8mxkCg6EOOtMGhmP3b+xWGaxDIYlEqgZLBul9kt78802gcn3PjCVSKhNvx6zp14Q
- Qyvpycwi2FN/3XxoW2uG7ipRmgetSFtnIGtXuZqM6z1pl4HbmIv4r1JB51Y9/0tFoTe6
- ElPHXwzy5MQoCGkXkZZn0kNRsPpJy6fRytl18UNiI6tmrSdL+bwqpUOuzsGSxBEj+4Nu
- GrErAA5EZx75qdjE3rRIopFvUo5fXugV6eyqoxtMrGDdjn3DqmLM3VvcJOfbUKRG84Tj
- YEMQ==
-X-Gm-Message-State: AOJu0YxnLGA7ybgfL4UaP3O1i+MuaVE54mBSlT/nFVuoMFAs9fTE2v8U
- phaVnlWf/siAYlgibS1nREIDkU7LEiakW9Bo1wPAOsszZpiQZZXvn/Wbh4Fy4syIPuclasr/V22
- UftV8glMBf5ZnBVyy+aGJcRb7hL5JxUFNsiVAi7rqcMrGvECTIGdmGffySkFeSYM+R1plBseFX+
- MbhspJ4H1vLc1D1XXFhGn7beM10JoHYhNLGg==
-X-Gm-Gg: ASbGncthWskyJyADBk+LRkWyeasVwUiTwAuyQAi9ZwsPOsIWk1D/ekqaCFFKvIzsnkU
- jgzv07hJJ9dqGLmXVq4cat9Xo03xfbf3ZXorid7mnZeB7VuJjkqgYwDu6rkYYB8FScpFxh+vXDS
- vdNclXgXwutyN+GKtTg3UWE1JT2sMvwJKnXNh9p8so5LTKtJPhvRBsMuQ5f3KHpefS3hPUNY444
- g/iAptDZYM564uP3mquPn92SELVLlMbN5GS6dKko4V2R/ImpykHbu1XOSB4EOJZp4YLKN73O2xJ
- azseHQKsE+BFl4sxSGaKDRYa3hJvy+AZ
-X-Received: by 2002:a05:600c:34c3:b0:43c:fc04:6d35 with SMTP id
- 5b1f17b1804b1-456272d2519mr3743915e9.4.1752534522568; 
- Mon, 14 Jul 2025 16:08:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFqrrhGRaR7onCaVgzSmXjg7LgwAN4MIfbe/hR5vxBDf5UyHeB6/rvD+udUh25lmotQUFWI8g==
-X-Received: by 2002:a05:600c:34c3:b0:43c:fc04:6d35 with SMTP id
- 5b1f17b1804b1-456272d2519mr3743645e9.4.1752534522082; 
- Mon, 14 Jul 2025 16:08:42 -0700 (PDT)
+ bh=oaEFUE2mka6LHI4AQxwW+l8PzMzmqDvUtE2e2aSDVcM=;
+ b=fDtGjAK+JmbDBtK5yCUvPIPLntWakIOhPSfDXWP0cuj+sTXSCWnYYg2ENAtRG2dn9c
+ 8JESn4/6E5gF7HYtk1MRazTgsRj5FVCtx92kDA87Ga7moDyvlmstEANRtuqIq4Q5BIT6
+ JhJQyXQRSBPK3ej1IgrfPEN7Pujpvu+xUrrWI+Li/Xoq+jmTHxaSxDdn0j+7UjduOICK
+ me3M/8W60Wa1jXvJRe1TxjyFOoVn7CppMahyMQwHxQeZQ0MtRxdjdlfkI/+b3dI+hvB/
+ eEejqA6ihpfCqrQt2wF8VBp5431AXrajrM/Ki461XNc6Ymqqret+3XtX+hCzQKSTGvsX
+ bfRw==
+X-Gm-Message-State: AOJu0YxHfU6g99lveuANZFYsZKlx3kc2FRs0E99bcZrtDMld7xdZQO2A
+ RCQg5Ew2JlUpPi0NgJJjVvpFUGCjkFihCs9WCzpdAdWVpINnHI1WXsKd6U6RPRM/KQje5j04Odg
+ JkgXLi5p5zFL8LDHqvKkK5lXx5HBPNAL7DuDit+NOWIlYISNMhfRHTdTsQg+IN1DaXVglsns2nU
+ 3aYcyTbeVYaBlM4gnzN267eOdtr2+3GGRaZA==
+X-Gm-Gg: ASbGncthl/ECkQKELdEHU+Peeg/n8B3xqtPHMcB08LtqJL15RaAyEtia+EFIyMtunTa
+ CFypoD4XKI75757EbSba9FF+4DCPVf0Iby7RvMKm/rdO29XgCoKdnZFyBRGBhbxYYxEF5Oo1mRq
+ c3FLs/94klyXl3d2hgp08kbjGZtHJm3rsu8scdzOI5fiZWcNQAgB5xV9WJSAln1zWtzD3BIgkYO
+ B6jdWzT4peOoC67s81B3HCdHs9POcqdtZThOjUjP5YvUHqrNEF3C4ikHPjPE2Wnbghs8Gynkbl+
+ tkgivRppDoWFuIeJJjPHggz4HkZriPGo
+X-Received: by 2002:a05:6000:2888:b0:3b4:9721:2b1c with SMTP id
+ ffacd0b85a97d-3b5f2dac589mr11611223f8f.6.1752534526097; 
+ Mon, 14 Jul 2025 16:08:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEr6tVbwbokSAEJ1/PsF1/MwVQvm5kePqBKDME2NEcwobtAYdk+c4PfYm4ImyHrjfp7ZRvf8Q==
+X-Received: by 2002:a05:6000:2888:b0:3b4:9721:2b1c with SMTP id
+ ffacd0b85a97d-3b5f2dac589mr11611195f8f.6.1752534525652; 
+ Mon, 14 Jul 2025 16:08:45 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e1e2cfsm13369771f8f.75.2025.07.14.16.08.40
+ ffacd0b85a97d-3b5e8dc23cfsm13793432f8f.37.2025.07.14.16.08.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:08:41 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:08:39 -0400
+ Mon, 14 Jul 2025 16:08:44 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:08:42 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -80,9 +80,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 57/97] hw/i386/acpi-build: Introduce
- build_append_pcihp_resources() helper
-Message-ID: <f5ffd909a6cce8a1804922d7d99a4b6b8a3d294e.1752534227.git.mst@redhat.com>
+Subject: [PULL 58/97] hw/acpi/pcihp: Add an AmlRegionSpace arg to
+ build_acpi_pci_hotplug
+Message-ID: <96a6a9f5e00f2d44a8d51fe5b95f538058171122.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -90,7 +90,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1752534227.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -117,91 +117,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-Extract the code that reserves resources for ACPI PCI hotplug
-into a new helper named build_append_pcihp_resources() and
-move it to pcihp.c. We will reuse it on ARM.
+On ARM we will put the operation regions in AML_SYSTEM_MEMORY.
+So let's allow this configuration.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Message-Id: <20250714080639.2525563-12-eric.auger@redhat.com>
+Message-Id: <20250714080639.2525563-13-eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/acpi/pcihp.h |  2 ++
- hw/acpi/pcihp.c         | 18 ++++++++++++++++++
- hw/i386/acpi-build.c    | 15 ++-------------
- 3 files changed, 22 insertions(+), 13 deletions(-)
+ include/hw/acpi/pcihp.h | 3 ++-
+ hw/acpi/pcihp.c         | 8 ++++----
+ hw/i386/acpi-build.c    | 4 ++--
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
-index 971451e8ea..8a46a414cc 100644
+index 8a46a414cc..253ac6e483 100644
 --- a/include/hw/acpi/pcihp.h
 +++ b/include/hw/acpi/pcihp.h
-@@ -75,6 +75,8 @@ void acpi_pcihp_device_unplug_request_cb(HotplugHandler *hotplug_dev,
+@@ -28,6 +28,7 @@
+ #define HW_ACPI_PCIHP_H
  
- void build_acpi_pci_hotplug(Aml *table, uint64_t pcihp_addr);
+ #include "hw/acpi/acpi.h"
++#include "hw/acpi/aml-build.h"
+ #include "hw/hotplug.h"
+ 
+ #define ACPI_PCIHP_IO_BASE_PROP "acpi-pcihp-io-base"
+@@ -73,7 +74,7 @@ void acpi_pcihp_device_unplug_request_cb(HotplugHandler *hotplug_dev,
+                                          AcpiPciHpState *s, DeviceState *dev,
+                                          Error **errp);
+ 
+-void build_acpi_pci_hotplug(Aml *table, uint64_t pcihp_addr);
++void build_acpi_pci_hotplug(Aml *table, AmlRegionSpace rs, uint64_t pcihp_addr);
  void build_append_pci_dsm_func0_common(Aml *ctx, Aml *retvar);
-+void build_append_pcihp_resources(Aml *table,
-+                                  uint64_t io_addr, uint64_t io_len);
- 
- /* Called on reset */
- void acpi_pcihp_reset(AcpiPciHpState *s);
+ void build_append_pcihp_resources(Aml *table,
+                                   uint64_t io_addr, uint64_t io_len);
 diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-index cbe7e01385..5ca36c8619 100644
+index 5ca36c8619..afa3ec5f4d 100644
 --- a/hw/acpi/pcihp.c
 +++ b/hw/acpi/pcihp.c
-@@ -685,6 +685,24 @@ void build_acpi_pci_hotplug(Aml *table, uint64_t pcihp_addr)
-     aml_append(table, scope);
+@@ -629,7 +629,7 @@ static Aml *aml_pci_pdsm(void)
+     return method;
  }
  
-+/* Reserve PCIHP resources */
-+void build_append_pcihp_resources(Aml *scope /* \\_SB.PCI0 */,
-+                                  uint64_t io_addr, uint64_t io_len)
-+{
-+    Aml *dev, *crs;
-+
-+    dev = aml_device("PHPR");
-+    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0A06")));
-+    aml_append(dev,
-+               aml_name_decl("_UID", aml_string("PCI Hotplug resources")));
-+    /* device present, functioning, decoding, not shown in UI */
-+    aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
-+    crs = aml_resource_template();
-+    aml_append(crs, aml_io(AML_DECODE16, io_addr, io_addr, 1, io_len));
-+    aml_append(dev, aml_name_decl("_CRS", crs));
-+    aml_append(scope, dev);
-+}
-+
- const VMStateDescription vmstate_acpi_pcihp_pci_status = {
-     .name = "acpi_pcihp_pci_status",
-     .version_id = 1,
+-void build_acpi_pci_hotplug(Aml *table, uint64_t pcihp_addr)
++void build_acpi_pci_hotplug(Aml *table, AmlRegionSpace rs, uint64_t pcihp_addr)
+ {
+     Aml *scope;
+     Aml *field;
+@@ -638,21 +638,21 @@ void build_acpi_pci_hotplug(Aml *table, uint64_t pcihp_addr)
+     scope =  aml_scope("_SB.PCI0");
+ 
+     aml_append(scope,
+-        aml_operation_region("PCST", AML_SYSTEM_IO, aml_int(pcihp_addr), 0x08));
++        aml_operation_region("PCST", rs, aml_int(pcihp_addr), 0x08));
+     field = aml_field("PCST", AML_DWORD_ACC, AML_NOLOCK, AML_WRITE_AS_ZEROS);
+     aml_append(field, aml_named_field("PCIU", 32));
+     aml_append(field, aml_named_field("PCID", 32));
+     aml_append(scope, field);
+ 
+     aml_append(scope,
+-        aml_operation_region("SEJ", AML_SYSTEM_IO,
++        aml_operation_region("SEJ", rs,
+                              aml_int(pcihp_addr + ACPI_PCIHP_SEJ_BASE), 0x04));
+     field = aml_field("SEJ", AML_DWORD_ACC, AML_NOLOCK, AML_WRITE_AS_ZEROS);
+     aml_append(field, aml_named_field("B0EJ", 32));
+     aml_append(scope, field);
+ 
+     aml_append(scope,
+-        aml_operation_region("BNMR", AML_SYSTEM_IO,
++        aml_operation_region("BNMR", rs,
+                              aml_int(pcihp_addr + ACPI_PCIHP_BNMR_BASE), 0x08));
+     field = aml_field("BNMR", AML_DWORD_ACC, AML_NOLOCK, AML_WRITE_AS_ZEROS);
+     aml_append(field, aml_named_field("BNUM", 32));
 diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 91945f716c..52cef834ed 100644
+index 52cef834ed..6ca2b34ef8 100644
 --- a/hw/i386/acpi-build.c
 +++ b/hw/i386/acpi-build.c
-@@ -1432,19 +1432,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+@@ -1172,7 +1172,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         aml_append(dsdt, sb_scope);
  
-     /* reserve PCIHP resources */
-     if (pm->pcihp_io_len && (pm->pcihp_bridge_en || pm->pcihp_root_en)) {
--        dev = aml_device("PHPR");
--        aml_append(dev, aml_name_decl("_HID", aml_string("PNP0A06")));
--        aml_append(dev,
--            aml_name_decl("_UID", aml_string("PCI Hotplug resources")));
--        /* device present, functioning, decoding, not shown in UI */
--        aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
--        crs = aml_resource_template();
--        aml_append(crs,
--            aml_io(AML_DECODE16, pm->pcihp_io_base, pm->pcihp_io_base, 1,
--                   pm->pcihp_io_len)
--        );
--        aml_append(dev, aml_name_decl("_CRS", crs));
--        aml_append(scope, dev);
-+        build_append_pcihp_resources(scope,
-+                                      pm->pcihp_io_base, pm->pcihp_io_len);
+         if (pm->pcihp_bridge_en || pm->pcihp_root_en) {
+-            build_acpi_pci_hotplug(dsdt, pm->pcihp_io_base);
++            build_acpi_pci_hotplug(dsdt, AML_SYSTEM_IO, pm->pcihp_io_base);
+         }
+         build_piix4_pci0_int(dsdt);
+     } else if (q35) {
+@@ -1216,7 +1216,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         aml_append(dsdt, sb_scope);
+ 
+         if (pm->pcihp_bridge_en) {
+-            build_acpi_pci_hotplug(dsdt, pm->pcihp_io_base);
++            build_acpi_pci_hotplug(dsdt, AML_SYSTEM_IO, pm->pcihp_io_base);
+         }
+         build_q35_pci0_int(dsdt);
      }
-     aml_append(dsdt, scope);
- 
 -- 
 MST
 
