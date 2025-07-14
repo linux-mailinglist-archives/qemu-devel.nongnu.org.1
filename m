@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1286B038C2
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B14AB038C1
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 10:09:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubEEn-0007M6-C8; Mon, 14 Jul 2025 04:08:37 -0400
+	id 1ubEF5-0007wL-Op; Mon, 14 Jul 2025 04:08:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ubDug-0004fB-Jf
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:47:53 -0400
+ id 1ubDuj-0004gQ-Tt
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:47:54 -0400
 Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ubDub-0007Nf-Rs
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:47:48 -0400
+ id 1ubDue-0007P2-B7
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 03:47:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752479266; x=1784015266;
+ t=1752479268; x=1784015268;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Hvh/A+yOwx0QCfyh4UllySxlS3/GqY27LJpwlrbxYuw=;
- b=TsgHl5lJP3Op/srSj3Ijrebk6BKLq6JKxI2Zk8hYSvnmV36eqoMLAtdd
- ayNcRXJFei0KgpPOAHHQlaEqawIYGbceqVVhwbgCHH7y19TiJZJGwnwgc
- Rm4ADNF4E6+RxlvmJy0O/vMKkwovNCfB58WD9ZkXRjMWL7nDeUNPau+WY
- oQJLPcqWz9qloym2ilgHgEaFNQnd7Jl4eG/JhXxdEvMGzHMo0hj61+6nz
- DSSZ2fk93a21slYyNLQq9u8Iw1XxDaUUIw1ggPpsgNb9fxRZjcL+eF1Ds
- XfxWOGT5bSAlqPLocRHTNxiJgELaSjkzmhGf6QgYexUbxOoHUKLiyVS2r A==;
-X-CSE-ConnectionGUID: 2jYWYuaURre5U0OkQO8maQ==
-X-CSE-MsgGUID: e3QJKrZvRM6NTDiXYmknjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58324661"
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="58324661"
+ bh=46Zv6ouztE1Lvhxo7s0FPuq1ew+8otHrJ05oqC+ySy8=;
+ b=fAGVCLVj3DN47MHnHw2m0WauYS2z+Gq38UMzNC9Qi9okuf1S1InVr/BZ
+ GSKa3040djYpq63NV/vnyId90wklkkI0s8jyU5xIRf0YLQt/EwdF7T90U
+ P/5PTXch8iEdMRjuTXt2KPQQQ39hbyjNM7EX55Wn1fq9htobrChcDDIOD
+ zl3/Banw2hYRzNRQUJXfOOBDJWSIGZYKbA8fy9k0qTcQupIiR1kWhw14F
+ BWvHTlOdfafpvQMjzMuWPlpT1CITfxs+2OP0WA0xNL1RuUSl7FMtv0dRP
+ EIhaSrNz4RyW0VgDhZZBiosK4gfXTV9v6agQwTCAMPcxAO/XpSMCbefCV A==;
+X-CSE-ConnectionGUID: 8cy2KsvVTWiLXcI4Law19A==
+X-CSE-MsgGUID: 1nsimMk0SuqNOL35fzjSGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58324672"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="58324672"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 00:47:42 -0700
-X-CSE-ConnectionGUID: R6L+n91VQ0KH47xfzwEVlQ==
-X-CSE-MsgGUID: sKB9RHYfQx2EJpRwCDcT8Q==
+ 14 Jul 2025 00:47:46 -0700
+X-CSE-ConnectionGUID: yvuy8wuYSgWQ6CpMM8BvPg==
+X-CSE-MsgGUID: n1oU+dSgSNqq5Rxgi0GvtA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="156952198"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="156952213"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 14 Jul 2025 00:47:40 -0700
+ by orviesa007.jf.intel.com with ESMTP; 14 Jul 2025 00:47:42 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -50,10 +50,13 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
  Tao Su <tao1.su@intel.com>, Yi Lai <yi1.lai@intel.com>,
  Dapeng Mi <dapeng1.mi@intel.com>, qemu-devel@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 3/7] i386/cpu: Reorder CPUID leaves in cpu_x86_cpuid()
-Date: Mon, 14 Jul 2025 16:08:55 +0800
-Message-Id: <20250714080859.1960104-4-zhao1.liu@intel.com>
+ Zhao Liu <zhao1.liu@intel.com>, Chuang Xu <xuchuangxclwt@bytedance.com>,
+ Guixiong Wei <weiguixiong@bytedance.com>,
+ Yipeng Yin <yinyipeng@bytedance.com>
+Subject: [PATCH v2 4/7] i386/cpu: Fix number of addressable IDs field for
+ CPUID.01H.EBX[23:16]
+Date: Mon, 14 Jul 2025 16:08:56 +0800
+Message-Id: <20250714080859.1960104-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250714080859.1960104-1-zhao1.liu@intel.com>
 References: <20250714080859.1960104-1-zhao1.liu@intel.com>
@@ -84,113 +87,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sort the CPUID leaves strictly by index to facilitate checking and
-changing.
+From: Chuang Xu <xuchuangxclwt@bytedance.com>
 
+When QEMU is started with:
+-cpu host,migratable=on,host-cache-info=on,l3-cache=off
+-smp 180,sockets=2,dies=1,cores=45,threads=2
+
+On Intel platform:
+CPUID.01H.EBX[23:16] is defined as "max number of addressable IDs for
+logical processors in the physical package".
+
+When executing "cpuid -1 -l 1 -r" in the guest, we obtain a value of 90 for
+CPUID.01H.EBX[23:16], whereas the expected value is 128. Additionally,
+executing "cpuid -1 -l 4 -r" in the guest yields a value of 63 for
+CPUID.04H.EAX[31:26], which matches the expected result.
+
+As (1+CPUID.04H.EAX[31:26]) rounds up to the nearest power-of-2 integer,
+it's necessary to round up CPUID.01H.EBX[23:16] to the nearest power-of-2
+integer too. Otherwise there would be unexpected results in guest with
+older kernel.
+
+For example, when QEMU is started with CLI above and xtopology is disabled,
+guest kernel 5.15.120 uses CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26]) to
+calculate threads-per-core in detect_ht(). Then guest will get "90/(1+63)=1"
+as the result, even though threads-per-core should actually be 2.
+
+And on AMD platform:
+CPUID.01H.EBX[23:16] is defined as "Logical processor count". Current
+result meets our expectation.
+
+So round up CPUID.01H.EBX[23:16] to the nearest power-of-2 integer only
+for Intel platform to solve the unexpected result.
+
+Use the "x-vendor-cpuid-only-v2" compat option to fix this issue.
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
+Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 60 +++++++++++++++++++++++------------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+Changes Since New v1 [**]:
+ * Drop Igor's Acked-by since this version uses the newly added
+   x-vendor-cpuid-only-v2.
+ * Add Zhaoxin since this is the behavior defined in SDM.
+
+Changes Since original v6 [*] :
+ * Rebase on the b69801dd6b1e ("Merge tag 'for_upstream' of
+   https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging").
+ * Polish the comment in code.
+ * Explain the change doesn't need extra compat property.
+
+[*] original v6: https://lore.kernel.org/qemu-devel/20241009035638.59330-1-xuchuangxclwt@bytedance.com/
+[**] new v1: https://lore.kernel.org/qemu-devel/20250227062523.124601-2-zhao1.liu@intel.com/
+---
+ target/i386/cpu.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index abd529d587ba..9e110e49ab8a 100644
+index 9e110e49ab8a..7fcb6c144d94 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -8050,21 +8050,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         assert(!(*eax & ~0x1f));
-         *ebx &= 0xffff; /* The count doesn't need to be reliable. */
-         break;
--    case 0x1C:
--        if (cpu->enable_pmu && (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
--            x86_cpu_get_supported_cpuid(0x1C, 0, eax, ebx, ecx, edx);
--            *edx = 0;
--        }
--        break;
--    case 0x1F:
--        /* V2 Extended Topology Enumeration Leaf */
--        if (!x86_has_cpuid_0x1f(cpu)) {
--            *eax = *ebx = *ecx = *edx = 0;
--            break;
--        }
--
--        encode_topo_cpuid1f(env, count, topo_info, eax, ebx, ecx, edx);
--        break;
-     case 0xD: {
-         /* Processor Extended State */
-         *eax = 0;
-@@ -8205,6 +8190,12 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+@@ -7869,7 +7869,17 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         }
+         *edx = env->features[FEAT_1_EDX];
+         if (threads_per_pkg > 1) {
+-            *ebx |= threads_per_pkg << 16;
++            /*
++             * For CPUID.01H.EBX[Bits 23-16], AMD requires logical processor
++             * count, but Intel needs maximum number of addressable IDs for
++             * logical processors per package.
++             */
++            if (cpu->vendor_cpuid_only_v2 &&
++                (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
++                *ebx |= 1 << apicid_pkg_offset(topo_info) << 16;
++            } else {
++                *ebx |= threads_per_pkg << 16;
++            }
          }
          break;
-     }
-+    case 0x1C:
-+        if (cpu->enable_pmu && (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
-+            x86_cpu_get_supported_cpuid(0x1C, 0, eax, ebx, ecx, edx);
-+            *edx = 0;
-+        }
-+        break;
-     case 0x1D: {
-         /* AMX TILE, for now hardcoded for Sapphire Rapids*/
-         *eax = 0;
-@@ -8242,6 +8233,15 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         }
-         break;
-     }
-+    case 0x1F:
-+        /* V2 Extended Topology Enumeration Leaf */
-+        if (!x86_has_cpuid_0x1f(cpu)) {
-+            *eax = *ebx = *ecx = *edx = 0;
-+            break;
-+        }
-+
-+        encode_topo_cpuid1f(env, count, topo_info, eax, ebx, ecx, edx);
-+        break;
-     case 0x24: {
-         *eax = 0;
-         *ebx = 0;
-@@ -8465,6 +8465,21 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *edx = 0;
-         }
-         break;
-+    case 0x8000001F:
-+        *eax = *ebx = *ecx = *edx = 0;
-+        if (sev_enabled()) {
-+            *eax = 0x2;
-+            *eax |= sev_es_enabled() ? 0x8 : 0;
-+            *eax |= sev_snp_enabled() ? 0x10 : 0;
-+            *ebx = sev_get_cbit_position() & 0x3f; /* EBX[5:0] */
-+            *ebx |= (sev_get_reduced_phys_bits() & 0x3f) << 6; /* EBX[11:6] */
-+        }
-+        break;
-+    case 0x80000021:
-+        *eax = *ebx = *ecx = *edx = 0;
-+        *eax = env->features[FEAT_8000_0021_EAX];
-+        *ebx = env->features[FEAT_8000_0021_EBX];
-+        break;
-     case 0x80000022:
-         *eax = *ebx = *ecx = *edx = 0;
-         /* AMD Extended Performance Monitoring and Debug */
-@@ -8497,21 +8512,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         *ecx = 0;
-         *edx = 0;
-         break;
--    case 0x8000001F:
--        *eax = *ebx = *ecx = *edx = 0;
--        if (sev_enabled()) {
--            *eax = 0x2;
--            *eax |= sev_es_enabled() ? 0x8 : 0;
--            *eax |= sev_snp_enabled() ? 0x10 : 0;
--            *ebx = sev_get_cbit_position() & 0x3f; /* EBX[5:0] */
--            *ebx |= (sev_get_reduced_phys_bits() & 0x3f) << 6; /* EBX[11:6] */
--        }
--        break;
--    case 0x80000021:
--        *eax = *ebx = *ecx = *edx = 0;
--        *eax = env->features[FEAT_8000_0021_EAX];
--        *ebx = env->features[FEAT_8000_0021_EBX];
--        break;
-     default:
-         /* reserved values: zero */
-         *eax = 0;
+     case 2: { /* cache info: needed for Pentium Pro compatibility */
 -- 
 2.34.1
 
