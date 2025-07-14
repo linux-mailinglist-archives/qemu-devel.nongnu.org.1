@@ -2,84 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A19B04B87
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5C6FB04B88
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:08:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSG8-0002us-9J; Mon, 14 Jul 2025 19:06:56 -0400
+	id 1ubSGF-00037R-GM; Mon, 14 Jul 2025 19:07:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSFy-0002d8-Mg
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:46 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSG0-0002hc-Ee
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSFw-0005O9-TE
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:46 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSFy-0005OL-N6
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:06:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534404;
+ s=mimecast20190719; t=1752534406;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+UAUxfm7ZZjTGEuMkx1MXZIZiceR06VrUrTJFA1Ndo0=;
- b=gG3gdj8Lk6SwUFBb4qptt5bqOU2IvrQ9EhpSH1cPzlhKH47c61O20otuabb/tB83Jd7+Aj
- YBoyhHkRKtg1g/0jDUpoICrzpNmV3SCzBh3UfvRucP2mFoKNoKhdEX92+wSLLcoIl5EqjE
- J6rrfLvf3ENQoVw94koSpFTsGGwM8Rc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ByXh3NCy3hfu/AZyGeZDrs8lL0yTfXk7SeuVflPlt2k=;
+ b=MTr5a3MJZIMnpkGs0hVrXpT2F+wnj3EmKqaTGAaRKAGNUUjuuo8I436ZmaAE+eIc2x5zZO
+ axXmp+sbHI6vHkVEpQVlXryQuvS0WWC5VjfCq5eNKYcNb/dgZR53TOxYfsu3LOdChn+GKs
+ ZeY8YPUyfsoFiKzUNdhwHDHo9ZWh2fA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-cE9b8KFWOyWsRU2HegzBpg-1; Mon, 14 Jul 2025 19:06:43 -0400
-X-MC-Unique: cE9b8KFWOyWsRU2HegzBpg-1
-X-Mimecast-MFC-AGG-ID: cE9b8KFWOyWsRU2HegzBpg_1752534402
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-451d2037f1eso30875725e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:06:42 -0700 (PDT)
+ us-mta-642-m0GwcmVwNYixzpmnIARp4w-1; Mon, 14 Jul 2025 19:06:44 -0400
+X-MC-Unique: m0GwcmVwNYixzpmnIARp4w-1
+X-Mimecast-MFC-AGG-ID: m0GwcmVwNYixzpmnIARp4w_1752534403
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43e9b0fd00cso27926455e9.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:06:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534401; x=1753139201;
+ d=1e100.net; s=20230601; t=1752534403; x=1753139203;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+UAUxfm7ZZjTGEuMkx1MXZIZiceR06VrUrTJFA1Ndo0=;
- b=JzzX75GiVBqkGM6k2V2ciSOXNUybv0I/vJptvHqt1q2xCxvu6gZ7GFuXDU+niGcKfx
- CXEvb2bsR5NOMm6YkuU+IH2ZkaN3gUCAbH3Hkkr7ww0AwoVuN74oAsCcRy6MLt/WpHhS
- Zl4rNSFLLEU69JvHvd13QBxQaLObe0fRVXDXgIsyWryLYF1v3bCvAczYwCLOfPf3pbx4
- 1ReFV3P0J6GeNujWTaoDWjQAEpJu4aPHtYJJkf9SIuVioPToD/tlf+j6jTkslZ+3V+yx
- E0vEjHnAUYcyP2cPq7TulZcZgQ7u3DUdrlwwEHHHJQcnpa+MQo7SzuywByZYiPPE/0Wc
- vx+w==
-X-Gm-Message-State: AOJu0YxgsIXvi7AUZVVGoFvd6jldNzXduldMsDSmKfqiDzOZ4x3aK+HS
- YwJKBSLf93Xngo3TwekcWMkc6dJq/qUA0n7Ld34eiYiRf7H7CUq1mPaltVcGk3l1gGSz11Zpz1/
- HdOdiv96MAHNSMmIEYx22tLv/VtrYNEMkC+k9Fc2WBr3Iw55ZcEANfMV5ZJ6QS7NywMmyZI8ajN
- Yt1mLimP9XtPHCfkrl+W4dmvbQpXshd6MMLA==
-X-Gm-Gg: ASbGncs3ffvpF7vLsEfRFYGrtSa/aCvs1Jboli/wnz94lvwqd2rreBcz31k6vsKWiGZ
- F2mAVnD6uVXx14kBWgCG4gZU4NHwXhMPMyIzmHnjQTzoVK4cQAFX2AEvZ4IlQWFYGuH0RUfUy+5
- Z6BUgI4uF7PZC9FYUkjQMiTsGaA/wREUda0rn3lLP5p0G99x5gr5A9xO9+FIuevcTJ9EJLQ+8eG
- 2yY6jBDjIUUH2OVLOKffEyWSdj4ZWaEumnWjmcpxbjumV1WOV5coP8spoCHtoxIGNN3em6NM1wR
- jyBxVTZMCEH3IL8/uk33VUzu4AgyROd7
-X-Received: by 2002:a05:600c:4e54:b0:456:43d:118d with SMTP id
- 5b1f17b1804b1-456043d13bbmr112229085e9.17.1752534401406; 
- Mon, 14 Jul 2025 16:06:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGe28pTxY70ufHHhSwpNiT9fKZKxgxvkHsnFoY3BXvolLfI93WchNoM6NVdMVKc8neh9COEJA==
-X-Received: by 2002:a05:600c:4e54:b0:456:43d:118d with SMTP id
- 5b1f17b1804b1-456043d13bbmr112228795e9.17.1752534400893; 
- Mon, 14 Jul 2025 16:06:40 -0700 (PDT)
+ bh=ByXh3NCy3hfu/AZyGeZDrs8lL0yTfXk7SeuVflPlt2k=;
+ b=wwVOIGMunwNvdvGu4LZdi1+zab/sJe0rn9UM0Gfxh2dj9I9fukrKRS+1iXfLmcNDep
+ dKDoEIZXjTS2ANqlBrLowKzTS6zaJELjRSNINvge5UpYIKS6hmK103YduKqD7K6apn0o
+ INlvr+DzGCzDegcIPccUyV8pW+wTqZYp2mCBnYGEORqqlvshC8HgxWHNpDguNaqQrWcY
+ Nfl1N9AGF8k8HpRyAl7SL3WV6Yi8WRl9eSfePv9tghz2jRXzYBX4HHsyYoJjFHNuFbiL
+ zLWXLLBkaaPz4RGFen7QUT7t8R4rojpeLnZGDP5C4MHUIzEG99Xz9xwVTG2JLmwZCJpy
+ gJVQ==
+X-Gm-Message-State: AOJu0YyjkqVvghLFqqaHnB88m2Zn8R8A09MCXdDeezeagODhArimKOdk
+ DURrijTSBaT84ll5MWrB7Y+R0BOAD/DKbnCbSdq7N4IyyEOKiAFFXvX1gvIbqWjZb4r/QAW5icm
+ cYWChjYCXliGt3JGFJy6MEw+KBbMM5jBMV661cZ9g3oFiTW0IZESfXi/V82sYkvR2ADY7MeXcmI
+ HnWM5c+K5s+TA1WyfegM5NpWsxH15qoATOTA==
+X-Gm-Gg: ASbGncvmvvTcLJltKCEHJaD+mG9uwdH8/zcoXDKt2LsBeyklen/v0K6z4vnWDpJqFjJ
+ P1PqDH4iIk6jDTRR1IlnX+DNwqugJUNTc0hTaFNV28lrJNo/2mSQ9WSb7uIFDFitZJkwzUJ73RN
+ fzm3r6Er9vS1SqujY9ikPP0fsxTmFvq8K1kD2vkgpzOqPf53iaTnLiowqZR6bdRUbZqeozEYEiO
+ AMjdRpR7VT7ijJ0Qf0EjZ3//ix+GU78un4j+qCp/M8gZ+FIzINIR5EtNxTn0czhefD/6l0cQgMY
+ kIn8N7kIQILJmS3mdk7VoizhvNG7Ftro
+X-Received: by 2002:a05:600c:6d1:b0:455:efd7:17dc with SMTP id
+ 5b1f17b1804b1-45625e663dbmr7614055e9.11.1752534403164; 
+ Mon, 14 Jul 2025 16:06:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFK5E9vRMNGmVy0x30xqTSrFP4Fc2xO1YmZHrZVTJ4tjQP8Gou7fmaZmHW6rOBrNhMoB7QWBg==
+X-Received: by 2002:a05:600c:6d1:b0:455:efd7:17dc with SMTP id
+ 5b1f17b1804b1-45625e663dbmr7613945e9.11.1752534402748; 
+ Mon, 14 Jul 2025 16:06:42 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e1e1a5sm13316857f8f.74.2025.07.14.16.06.38
+ 5b1f17b1804b1-45626c7cbe8sm3910705e9.0.2025.07.14.16.06.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:06:39 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:06:37 -0400
+ Mon, 14 Jul 2025 16:06:42 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:06:41 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Daniil Tatianin <d-tatianin@yandex-team.ru>,
- Raphael Norwitz <raphael@enfabrica.net>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PULL 10/97] vhost-user-blk: add an option to skip GET_VRING_BASE
- for force shutdown
-Message-ID: <07fde5901b5254d3b9706df22dbb16cfacf966d5.1752534227.git.mst@redhat.com>
+ Bibo Mao <maobibo@loongson.cn>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 11/97] tests/acpi: Add empty ACPI data files for LoongArch
+Message-ID: <f3bc2c3f33cc875a3b7e5349aa4141ea6789a01d.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -96,7 +91,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,81 +107,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+From: Bibo Mao <maobibo@loongson.cn>
 
-If we have a server running disk requests that is for whatever reason
-hanging or not able to process any more IO requests but still has some
-in-flight requests previously issued by the guest OS, QEMU will still
-try to drain the vring before shutting down even if it was explicitly
-asked to do a "force shutdown" via SIGTERM or QMP quit. This is not
-useful since the guest is no longer running at this point since it was
-killed by QEMU earlier in the process. At this point, we don't care
-about whatever in-flight IO it might have pending, we just want QEMU
-to shut down.
+Add empty acpi table for LoongArch virt machine, it is only empty
+file and there is no data in these files.
 
-Add an option called "skip-get-vring-base-on-force-shutdown" to allow
-SIGTERM/QMP quit() to actually act like a "force shutdown" at least
-for vhost-user-blk devices since those require the drain operation
-to shut down gracefully unlike, for example, network devices.
-
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Message-Id: <20250609212547.2859224-4-d-tatianin@yandex-team.ru>
-Acked-by: Raphael Norwitz <raphael@enfabrica.net>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Message-Id: <20250612090321.3416594-2-maobibo@loongson.cn>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/vhost-user-blk.h | 2 ++
- hw/block/vhost-user-blk.c          | 9 ++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 8 ++++++++
+ tests/data/acpi/loongarch64/virt/APIC       | 0
+ tests/data/acpi/loongarch64/virt/DSDT       | 0
+ tests/data/acpi/loongarch64/virt/FACP       | 0
+ tests/data/acpi/loongarch64/virt/MCFG       | 0
+ tests/data/acpi/loongarch64/virt/PPTT       | 0
+ tests/data/acpi/loongarch64/virt/SLIT       | 0
+ tests/data/acpi/loongarch64/virt/SPCR       | 0
+ tests/data/acpi/loongarch64/virt/SRAT       | 0
+ 9 files changed, 8 insertions(+)
+ create mode 100644 tests/data/acpi/loongarch64/virt/APIC
+ create mode 100644 tests/data/acpi/loongarch64/virt/DSDT
+ create mode 100644 tests/data/acpi/loongarch64/virt/FACP
+ create mode 100644 tests/data/acpi/loongarch64/virt/MCFG
+ create mode 100644 tests/data/acpi/loongarch64/virt/PPTT
+ create mode 100644 tests/data/acpi/loongarch64/virt/SLIT
+ create mode 100644 tests/data/acpi/loongarch64/virt/SPCR
+ create mode 100644 tests/data/acpi/loongarch64/virt/SRAT
 
-diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost-user-blk.h
-index ea085ee1ed..a10f785672 100644
---- a/include/hw/virtio/vhost-user-blk.h
-+++ b/include/hw/virtio/vhost-user-blk.h
-@@ -50,6 +50,8 @@ struct VHostUserBlk {
-     bool connected;
-     /* vhost_user_blk_start/vhost_user_blk_stop */
-     bool started_vu;
-+
-+    bool skip_get_vring_base_on_force_shutdown;
- };
- 
- #endif
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 0eebbcd80d..c0cc5f6942 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -210,6 +210,7 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
-     int ret;
-+    bool force_stop = false;
- 
-     if (!s->started_vu) {
-         return 0;
-@@ -220,7 +221,11 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
-         return 0;
-     }
- 
--    ret = vhost_dev_stop(&s->dev, vdev, true);
-+    force_stop = s->skip_get_vring_base_on_force_shutdown &&
-+                 qemu_force_shutdown_requested();
-+
-+    ret = force_stop ? vhost_dev_force_stop(&s->dev, vdev, true) :
-+                       vhost_dev_stop(&s->dev, vdev, true);
- 
-     if (k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false) < 0) {
-         error_report("vhost guest notifier cleanup failed: %d", ret);
-@@ -584,6 +589,8 @@ static const Property vhost_user_blk_properties[] = {
-                       VIRTIO_BLK_F_DISCARD, true),
-     DEFINE_PROP_BIT64("write-zeroes", VHostUserBlk, parent_obj.host_features,
-                       VIRTIO_BLK_F_WRITE_ZEROES, true),
-+    DEFINE_PROP_BOOL("skip-get-vring-base-on-force-shutdown", VHostUserBlk,
-+                     skip_get_vring_base_on_force_shutdown, false),
- };
- 
- static void vhost_user_blk_class_init(ObjectClass *klass, const void *data)
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..bad1380eec 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,9 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/loongarch64/virt/APIC",
++"tests/data/acpi/loongarch64/virt/DSDT",
++"tests/data/acpi/loongarch64/virt/FACP",
++"tests/data/acpi/loongarch64/virt/MCFG",
++"tests/data/acpi/loongarch64/virt/PPTT",
++"tests/data/acpi/loongarch64/virt/SLIT",
++"tests/data/acpi/loongarch64/virt/SPCR",
++"tests/data/acpi/loongarch64/virt/SRAT",
+diff --git a/tests/data/acpi/loongarch64/virt/APIC b/tests/data/acpi/loongarch64/virt/APIC
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT b/tests/data/acpi/loongarch64/virt/DSDT
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/FACP b/tests/data/acpi/loongarch64/virt/FACP
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/MCFG b/tests/data/acpi/loongarch64/virt/MCFG
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/PPTT b/tests/data/acpi/loongarch64/virt/PPTT
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/SLIT b/tests/data/acpi/loongarch64/virt/SLIT
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/SPCR b/tests/data/acpi/loongarch64/virt/SPCR
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/SRAT b/tests/data/acpi/loongarch64/virt/SRAT
+new file mode 100644
+index 0000000000..e69de29bb2
 -- 
 MST
 
