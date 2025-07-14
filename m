@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE75B03DA1
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71441B03D4B
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:24:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHEZ-0007sP-K0; Mon, 14 Jul 2025 07:20:36 -0400
+	id 1ubHEv-000067-FU; Mon, 14 Jul 2025 07:20:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH1B-0001oe-Jd
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:04 -0400
+ id 1ubH1E-0001pb-7O
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH17-00028r-EB
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:44 -0400
+ id 1ubH19-000290-Rf
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:06:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491200;
+ s=mimecast20190719; t=1752491202;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NWO6IlOasxNuKX/Bs+0ihYURBpNqqPnwPBbIYO1DTE0=;
- b=AJaXgrigPD6wbZbgmKkFzzOqPkTNsgdG3FlCab+kyqda9+V/sUMXtHXdf691pvSL4+y8KN
- ryBawPJ8jyQjImcougEyfCrO0VOueucG/JZ4eqkAyDxOjds+d9WPVLAwJEZo8KgUUtGBOW
- nvtbga07bnFlDKYFsHVIxOAkwxDs3Kg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=U3MRbm7BiwFLJpNktHCZXz82/ZMpqoQ6Olp5sQUIC0g=;
+ b=eXsOzVVIoCxm4TJ8YVOURFjC3xSI96PSX6Olxsz0F/1vEHjkUwzIstCYKZQxeowRFd7vhm
+ kr79r/aRIYqPk+KHGpAO9mySPn1weg/uL/59EtW9ND6KU2sN2sN8dlrO9QBLSYhjsC2xQJ
+ vdB4ZMxm0Bax1FDEIX6tjGfJYfRArj8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-360-I2QByDFZMdinu3N8NeCj_A-1; Mon, 14 Jul 2025 07:06:39 -0400
-X-MC-Unique: I2QByDFZMdinu3N8NeCj_A-1
-X-Mimecast-MFC-AGG-ID: I2QByDFZMdinu3N8NeCj_A_1752491198
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-451d3f03b74so24022505e9.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:06:39 -0700 (PDT)
+ us-mta-500-nUheGkeNN2i-GOpudfc_kA-1; Mon, 14 Jul 2025 07:06:41 -0400
+X-MC-Unique: nUheGkeNN2i-GOpudfc_kA-1
+X-Mimecast-MFC-AGG-ID: nUheGkeNN2i-GOpudfc_kA_1752491200
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a58939191eso1556654f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:06:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491197; x=1753095997;
+ d=1e100.net; s=20230601; t=1752491199; x=1753095999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NWO6IlOasxNuKX/Bs+0ihYURBpNqqPnwPBbIYO1DTE0=;
- b=c1qaBlUX2Iw9WPtPVFSIx7cy27LkAtpdAn2NzbXcr4Ypa+GH5OclEi3k3SI1TbE+gu
- rYQJb6mvlgjQnxSAfXjYNV8hi1Gu9fLL6ydRZeDsdfrJd5Mhm9GzXKArZiwvsq1zbl+X
- Du6dSOA2ayW4Y48xkWK3VCU21JmwcVUyYmDok99Mgyszt0HEBegGTfVqACZwztkB0Kii
- tYbuPRTQ+l0B48S/PEx6kvjuUTo3zZaB4V3adi10jphCxyTqeP0fOPNCdJtdia9b2UB3
- 9a8ZhLQN7fDnMOsA6eA/Dwz2C7dHmFxbiTHgM7tpGocBK7n6+DG2ozwD/+45at6FYy3n
- GJsQ==
-X-Gm-Message-State: AOJu0YxZK5Y7y6sPxrm0PCQFkW05ARcjkxDYhPz6Aj/KaVhoL3/jsdBZ
- AdWuyPXyykpEPlJ4w0h9Unf3J9+MdHgLLVL4NzXPwdoOMjXji2M36/a22yyC8w2y2u+g4AJpu0R
- 3ZdR8BXaYXX6a73aaPjjpJFjfdndwZM10b7UdD8FFrlQ9fXcLHZG90bV1akVWJpnCF+rr1o7ePG
- Y6UQy55FZOWPDNW6ufdicbpRipDpf05VJXJuELnPto
-X-Gm-Gg: ASbGncsWNdSNhkQVHebqI6P4wWwxNXVMkIPR/Lhi03d/YOdeWNtSC/g8nXy4tPcZ0xu
- aoHCPR5dj95DoXyc2bkTdOJQxUVLqErbBBKlC67cV/dIJ36+vfj3vErHcpeyz7nlJE2HcAvrAcI
- SbO5ZEAV+CzCuW9hZtyu06i/+hCigVQpwOecYasCmFEJnw8mfMi751ZBlST6b0F0bFS2HWiKL46
- j9+paF/22sHrA7KVVLUuOHyLM3g1+dDZjhSK5i62q8apoOM0hB5mBYJb8bTTzpryG4nQXQIwG/F
- gj+pm7rzQ0FOXMCObQgUIDGA+vd+pRC9HO/7+dQYnlk=
-X-Received: by 2002:a05:600d:10d:b0:455:e858:cd04 with SMTP id
- 5b1f17b1804b1-455e858cfe6mr65717135e9.25.1752491196714; 
- Mon, 14 Jul 2025 04:06:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEUL5iBKMwz5Ldx/+SI5UaM5919hrMt2sgLb6dGbqbf4hvgJTbdoadLn6fxMqlMLK/4G4cF+g==
-X-Received: by 2002:a05:600d:10d:b0:455:e858:cd04 with SMTP id
- 5b1f17b1804b1-455e858cfe6mr65716805e9.25.1752491196056; 
- Mon, 14 Jul 2025 04:06:36 -0700 (PDT)
+ bh=U3MRbm7BiwFLJpNktHCZXz82/ZMpqoQ6Olp5sQUIC0g=;
+ b=oqczGzOLGyc5E0s3ZblkJcvtK7MjfV0hN6/7zFGWEUb4SLfhTbhx+ODKxrAu6hMWlP
+ CkXdyOvg9DKQlcywbrSNLd/E5YXrte8kCMGdDWijqJy3rwKKUGiGDSONLhuCs6moaaw2
+ MbD5JVq771atxFt+JxZKNY0aC4uZxTxBG3BVAa8LQC3cc983PhQ2MororMbZbtZ7PEX7
+ tuCxDcQvfrLZdPpBltz3AkhXgP2ty2Sydwis6WHZ2VZ4k3qvey1M1h5YA4T5TNQ9KApu
+ 61Ej7wzGMXOCTVeazzVNUw7QGTuFa2h9e+gnD//YuLYHFUI67f1noVUU8fgsBOdIb0Kt
+ wRkQ==
+X-Gm-Message-State: AOJu0YzWtNwmpqf1v53K3BuI4IM1lR09mE9loUG6pE6ffVXyyynz+lNC
+ taa6q/t1gndOvYC1htdKcE5SRM+T2FGUCG7NnfVecVgw7mRHD7BTD6U5IhkfMweGL9GrZ34+YmV
+ UWBNmo6KyIfKu7tkwOhF0XoXtsNd+eTqZ7ZfBGhkCve1UXEAXYhBljQBoJgDs/VKA/PWA6lCLEy
+ be+tGjYzwpcoGK9XpDlyEJr5Hw8pl8MsFf6ld7wIU1
+X-Gm-Gg: ASbGncsrTkMABDdcZw8oXRv5rtTMeDKzFQfWhs8omfSnF/uN6D4YeHnEybhgLQAUqdT
+ ljtJX+orB7ZkcLl24tc67Y6YSLENPucebLi4vpSNM9IFpw9XcpkgiX2FXvQc80QDMJ0rM27mqJo
+ IjASG6To+n75gEeCXCvmuWYXkd8JAzugFEtSZN/+vzfzyo0ahXdK2P8MdIze6MYJBg0qC6pqiB3
+ tnvc+/ZyN33/4C4jebqj58YFtBjKWH4LXp/2EVlNrL5X+9huonfyaTo6yVjug3/KrLOm6CACekI
+ sSoWSwpwriSBps1NmSv8TG7KYZAe+YXiHzbXQmg+FkU=
+X-Received: by 2002:a05:6000:2d09:b0:3a6:d967:380e with SMTP id
+ ffacd0b85a97d-3b5f187eb90mr7210640f8f.3.1752491199411; 
+ Mon, 14 Jul 2025 04:06:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF67G9i7Tyo+jccD5Nb39QANLKCSVYm1N7GVZq5PQoZW8t9MZAVfcxI0ik7QQpsPQBtQmebCQ==
+X-Received: by 2002:a05:6000:2d09:b0:3a6:d967:380e with SMTP id
+ ffacd0b85a97d-3b5f187eb90mr7210601f8f.3.1752491198724; 
+ Mon, 14 Jul 2025 04:06:38 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-456101b616csm56717045e9.4.2025.07.14.04.06.33
+ ffacd0b85a97d-3b5e8e1e8b1sm12007521f8f.82.2025.07.14.04.06.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:06:33 -0700 (PDT)
+ Mon, 14 Jul 2025 04:06:37 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>,
+Cc: Zhao Liu <zhao1.liu@intel.com>, Tejus GK <tejus.gk@nutanix.com>,
+ Jason Zeng <jason.zeng@intel.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Tao Su <tao1.su@linux.intel.com>,
  Yi Lai <yi1.lai@intel.com>
-Subject: [PULL 57/77] i386/cpu: Use a unified cache_info in X86CPUState
-Date: Mon, 14 Jul 2025 13:03:46 +0200
-Message-ID: <20250714110406.117772-58-pbonzini@redhat.com>
+Subject: [PULL 58/77] i386/cpu: Introduce cache model for SierraForest
+Date: Mon, 14 Jul 2025 13:03:47 +0200
+Message-ID: <20250714110406.117772-59-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -109,296 +113,205 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-At present, all cases using the cache model (CPUID 0x2, 0x4, 0x80000005,
-0x80000006 and 0x8000001D leaves) have been verified to be able to
-select either cache_info_intel or cache_info_amd based on the vendor.
+Add the cache model to SierraForest (v3) to better emulate its
+environment.
 
-Therefore, further merge cache_info_intel and cache_info_amd into a
-unified cache_info in X86CPUState, and during its initialization, set
-different legacy cache models based on the vendor.
+The cache model is based on SierraForest-SP (Scalable Performance):
 
+      --- cache 0 ---
+      cache type                         = data cache (1)
+      cache level                        = 0x1 (1)
+      self-initializing cache level      = true
+      fully associative cache            = false
+      maximum IDs for CPUs sharing cache = 0x0 (0)
+      maximum IDs for cores in pkg       = 0x3f (63)
+      system coherency line size         = 0x40 (64)
+      physical line partitions           = 0x1 (1)
+      ways of associativity              = 0x8 (8)
+      number of sets                     = 0x40 (64)
+      WBINVD/INVD acts on lower caches   = false
+      inclusive to lower caches          = false
+      complex cache indexing             = false
+      number of sets (s)                 = 64
+      (size synth)                       = 32768 (32 KB)
+      --- cache 1 ---
+      cache type                         = instruction cache (2)
+      cache level                        = 0x1 (1)
+      self-initializing cache level      = true
+      fully associative cache            = false
+      maximum IDs for CPUs sharing cache = 0x0 (0)
+      maximum IDs for cores in pkg       = 0x3f (63)
+      system coherency line size         = 0x40 (64)
+      physical line partitions           = 0x1 (1)
+      ways of associativity              = 0x8 (8)
+      number of sets                     = 0x80 (128)
+      WBINVD/INVD acts on lower caches   = false
+      inclusive to lower caches          = false
+      complex cache indexing             = false
+      number of sets (s)                 = 128
+      (size synth)                       = 65536 (64 KB)
+      --- cache 2 ---
+      cache type                         = unified cache (3)
+      cache level                        = 0x2 (2)
+      self-initializing cache level      = true
+      fully associative cache            = false
+      maximum IDs for CPUs sharing cache = 0x7 (7)
+      maximum IDs for cores in pkg       = 0x3f (63)
+      system coherency line size         = 0x40 (64)
+      physical line partitions           = 0x1 (1)
+      ways of associativity              = 0x10 (16)
+      number of sets                     = 0x1000 (4096)
+      WBINVD/INVD acts on lower caches   = false
+      inclusive to lower caches          = false
+      complex cache indexing             = false
+      number of sets (s)                 = 4096
+      (size synth)                       = 4194304 (4 MB)
+      --- cache 3 ---
+      cache type                         = unified cache (3)
+      cache level                        = 0x3 (3)
+      self-initializing cache level      = true
+      fully associative cache            = false
+      maximum IDs for CPUs sharing cache = 0x1ff (511)
+      maximum IDs for cores in pkg       = 0x3f (63)
+      system coherency line size         = 0x40 (64)
+      physical line partitions           = 0x1 (1)
+      ways of associativity              = 0xc (12)
+      number of sets                     = 0x24000 (147456)
+      WBINVD/INVD acts on lower caches   = false
+      inclusive to lower caches          = false
+      complex cache indexing             = true
+      number of sets (s)                 = 147456
+      (size synth)                       = 113246208 (108 MB)
+      --- cache 4 ---
+      cache type                         = no more caches (0)
+
+Suggested-by: Tejus GK <tejus.gk@nutanix.com>
+Suggested-by: Jason Zeng <jason.zeng@intel.com>
+Suggested-by: "Daniel P . Berrangé" <berrange@redhat.com>
 Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reviewed-by: Tao Su <tao1.su@linux.intel.com>
 Tested-by: Yi Lai <yi1.lai@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250711102143.1622339-19-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250711104603.1634832-2-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h |   5 +-
- target/i386/cpu.c | 150 ++++++++--------------------------------------
- 2 files changed, 27 insertions(+), 128 deletions(-)
+ target/i386/cpu.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 96 insertions(+)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 20499a82a54..f977fc49a77 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2073,11 +2073,12 @@ typedef struct CPUArchState {
-     /* Features that were explicitly enabled/disabled */
-     FeatureWordArray user_features;
-     uint32_t cpuid_model[12];
--    /* Cache information for CPUID.  When legacy-cache=on, the cache data
-+    /*
-+     * Cache information for CPUID.  When legacy-cache=on, the cache data
-      * on each CPUID leaf will be different, because we keep compatibility
-      * with old QEMU versions.
-      */
--    CPUCaches cache_info_cpuid4, cache_info_amd;
-+    CPUCaches cache_info;
-     bool enable_legacy_cpuid2_cache;
-     bool enable_legacy_vendor_cache;
- 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 5b969743bcc..ca6e4120242 100644
+index ca6e4120242..3c28e9588af 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -7474,27 +7474,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         } else if (env->enable_legacy_vendor_cache) {
-             caches = &legacy_intel_cache_info;
-         } else {
--            /*
--             * FIXME: Temporarily select cache info model here based on
--             * vendor, and merge these 2 cache info models later.
--             *
--             * This condition covers the following cases (with
--             * enable_legacy_vendor_cache=false):
--             *  - When CPU model has its own cache model and doesn't use legacy
--             *    cache model (legacy_model=off). Then cache_info_amd and
--             *    cache_info_cpuid4 are the same.
--             *
--             *  - For v10.1 and newer machines, when CPU model uses legacy cache
--             *    model. Non-AMD CPUs use cache_info_cpuid4 like before and AMD
--             *    CPU will use cache_info_amd. But this doesn't matter for AMD
--             *    CPU, because this leaf encodes all-0 for AMD whatever its cache
--             *    model is.
--             */
--            if (IS_AMD_CPU(env)) {
--                caches = &env->cache_info_amd;
--            } else {
--                caches = &env->cache_info_cpuid4;
--            }
-+            caches = &env->cache_info;
-         }
- 
-         if (cpu->cache_info_passthrough) {
-@@ -7513,27 +7493,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         if (env->enable_legacy_vendor_cache) {
-             caches = &legacy_intel_cache_info;
-         } else {
--            /*
--             * FIXME: Temporarily select cache info model here based on
--             * vendor, and merge these 2 cache info models later.
--             *
--             * This condition covers the following cases (with
--             * enable_legacy_vendor_cache=false):
--             *  - When CPU model has its own cache model and doesn't use legacy
--             *    cache model (legacy_model=off). Then cache_info_amd and
--             *    cache_info_cpuid4 are the same.
--             *
--             *  - For v10.1 and newer machines, when CPU model uses legacy cache
--             *    model. Non-AMD CPUs use cache_info_cpuid4 like before and AMD
--             *    CPU will use cache_info_amd. But this doesn't matter for AMD
--             *    CPU, because this leaf encodes all-0 for AMD whatever its cache
--             *    model is.
--             */
--            if (IS_AMD_CPU(env)) {
--                caches = &env->cache_info_amd;
--            } else {
--                caches = &env->cache_info_cpuid4;
--            }
-+            caches = &env->cache_info;
-         }
- 
-         /* cache info: needed for Core compatibility */
-@@ -7942,27 +7902,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         if (env->enable_legacy_vendor_cache) {
-             caches = &legacy_amd_cache_info;
-         } else {
--            /*
--             * FIXME: Temporarily select cache info model here based on
--             * vendor, and merge these 2 cache info models later.
--             *
--             * This condition covers the following cases (with
--             * enable_legacy_vendor_cache=false):
--             *  - When CPU model has its own cache model and doesn't uses legacy
--             *    cache model (legacy_model=off). Then cache_info_amd and
--             *    cache_info_cpuid4 are the same.
--             *
--             *  - For v10.1 and newer machines, when CPU model uses legacy cache
--             *    model. AMD CPUs use cache_info_amd like before and non-AMD
--             *    CPU will use cache_info_cpuid4. But this doesn't matter,
--             *    because for Intel CPU, it will get all-0 leaf, and Zhaoxin CPU
--             *    will get correct cache info. Both are expected.
--             */
--            if (IS_AMD_CPU(env)) {
--                caches = &env->cache_info_amd;
--            } else {
--                caches = &env->cache_info_cpuid4;
--            }
-+            caches = &env->cache_info;
-         }
- 
-         if (cpu->cache_info_passthrough) {
-@@ -7989,25 +7929,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         if (env->enable_legacy_vendor_cache) {
-             caches = &legacy_amd_cache_info;
-         } else {
--            /*
--             * FIXME: Temporarily select cache info model here based on
--             * vendor, and merge these 2 cache info models later.
--             *
--             * This condition covers the following cases (with
--             * enable_legacy_vendor_cache=false):
--             *  - When CPU model has its own cache model and doesn't uses legacy
--             *    cache model (legacy_model=off). Then cache_info_amd and
--             *    cache_info_cpuid4 are the same.
--             *
--             *  - For v10.1 and newer machines, when CPU model uses legacy cache
--             *    model. AMD CPUs use cache_info_amd like before and non-AMD
--             *    CPU (Intel & Zhaoxin) will use cache_info_cpuid4 as expected.
--             */
--            if (IS_AMD_CPU(env)) {
--                caches = &env->cache_info_amd;
--            } else {
--                caches = &env->cache_info_cpuid4;
--            }
-+            caches = &env->cache_info;
-         }
- 
-         if (cpu->cache_info_passthrough) {
-@@ -8080,22 +8002,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *edx = 0;
-         }
-         break;
--    case 0x8000001D: {
--        const CPUCaches *caches;
--
--        /*
--         * FIXME: Temporarily select cache info model here based on
--         * vendor, and merge these 2 cache info models later.
--         *
--         * Intel doesn't support this leaf so that Intel Guests don't
--         * have this leaf. This change is harmless to Intel CPUs.
--         */
--        if (IS_AMD_CPU(env)) {
--            caches = &env->cache_info_amd;
--        } else {
--            caches = &env->cache_info_cpuid4;
--        }
--
-+    case 0x8000001D:
-         *eax = 0;
-         if (cpu->cache_info_passthrough) {
-             x86_cpu_get_cache_cpuid(index, count, eax, ebx, ecx, edx);
-@@ -8103,19 +8010,19 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         }
-         switch (count) {
-         case 0: /* L1 dcache info */
--            encode_cache_cpuid8000001d(caches->l1d_cache,
-+            encode_cache_cpuid8000001d(env->cache_info.l1d_cache,
-                                        topo_info, eax, ebx, ecx, edx);
-             break;
-         case 1: /* L1 icache info */
--            encode_cache_cpuid8000001d(caches->l1i_cache,
-+            encode_cache_cpuid8000001d(env->cache_info.l1i_cache,
-                                        topo_info, eax, ebx, ecx, edx);
-             break;
-         case 2: /* L2 cache info */
--            encode_cache_cpuid8000001d(caches->l2_cache,
-+            encode_cache_cpuid8000001d(env->cache_info.l2_cache,
-                                        topo_info, eax, ebx, ecx, edx);
-             break;
-         case 3: /* L3 cache info */
--            encode_cache_cpuid8000001d(caches->l3_cache,
-+            encode_cache_cpuid8000001d(env->cache_info.l3_cache,
-                                        topo_info, eax, ebx, ecx, edx);
-             break;
-         default: /* end of info */
-@@ -8126,7 +8033,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *edx &= CACHE_NO_INVD_SHARING | CACHE_INCLUSIVE;
-         }
-         break;
--    }
-     case 0x8000001E:
-         if (cpu->core_id <= 255) {
-             encode_topo_cpuid8000001e(cpu, topo_info, eax, ebx, ecx, edx);
-@@ -8825,46 +8731,34 @@ static bool x86_cpu_update_smp_cache_topo(MachineState *ms, X86CPU *cpu,
- 
-     level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D);
-     if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
--        env->cache_info_cpuid4.l1d_cache->share_level = level;
--        env->cache_info_amd.l1d_cache->share_level = level;
-+        env->cache_info.l1d_cache->share_level = level;
-     } else {
-         machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D,
--            env->cache_info_cpuid4.l1d_cache->share_level);
--        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D,
--            env->cache_info_amd.l1d_cache->share_level);
-+            env->cache_info.l1d_cache->share_level);
-     }
- 
-     level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I);
-     if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
--        env->cache_info_cpuid4.l1i_cache->share_level = level;
--        env->cache_info_amd.l1i_cache->share_level = level;
-+        env->cache_info.l1i_cache->share_level = level;
-     } else {
-         machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I,
--            env->cache_info_cpuid4.l1i_cache->share_level);
--        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I,
--            env->cache_info_amd.l1i_cache->share_level);
-+            env->cache_info.l1i_cache->share_level);
-     }
- 
-     level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2);
-     if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
--        env->cache_info_cpuid4.l2_cache->share_level = level;
--        env->cache_info_amd.l2_cache->share_level = level;
-+        env->cache_info.l2_cache->share_level = level;
-     } else {
-         machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2,
--            env->cache_info_cpuid4.l2_cache->share_level);
--        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2,
--            env->cache_info_amd.l2_cache->share_level);
-+            env->cache_info.l2_cache->share_level);
-     }
- 
-     level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3);
-     if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
--        env->cache_info_cpuid4.l3_cache->share_level = level;
--        env->cache_info_amd.l3_cache->share_level = level;
-+        env->cache_info.l3_cache->share_level = level;
-     } else {
-         machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3,
--            env->cache_info_cpuid4.l3_cache->share_level);
--        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3,
--            env->cache_info_amd.l3_cache->share_level);
-+            env->cache_info.l3_cache->share_level);
-     }
- 
-     if (!machine_check_smp_cache(ms, errp)) {
-@@ -9101,7 +8995,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-                        "CPU model '%s' doesn't support legacy-cache=off", name);
-             return;
-         }
--        env->cache_info_cpuid4 = env->cache_info_amd = *cache_info;
-+        env->cache_info = *cache_info;
-     } else {
-         /* Build legacy cache information */
-         if (!cpu->consistent_cache) {
-@@ -9111,8 +9005,12 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-         if (!cpu->vendor_cpuid_only_v2) {
-             env->enable_legacy_vendor_cache = true;
-         }
--        env->cache_info_cpuid4 = legacy_intel_cache_info;
--        env->cache_info_amd = legacy_amd_cache_info;
+@@ -2880,6 +2880,97 @@ static const CPUCaches epyc_turin_cache_info = {
+         .no_invd_sharing = true,
+         .complex_indexing = false,
+         .share_level = CPU_TOPOLOGY_LEVEL_DIE,
++    }
++};
 +
-+        if (IS_AMD_CPU(env)) {
-+            env->cache_info = legacy_amd_cache_info;
-+        } else {
-+            env->cache_info = legacy_intel_cache_info;
-+        }
-     }
++static const CPUCaches xeon_srf_cache_info = {
++    .l1d_cache = &(CPUCacheInfo) {
++        /* CPUID 0x4.0x0.EAX */
++        .type = DATA_CACHE,
++        .level = 1,
++        .self_init = true,
++
++        /* CPUID 0x4.0x0.EBX */
++        .line_size = 64,
++        .partitions = 1,
++        .associativity = 8,
++
++        /* CPUID 0x4.0x0.ECX */
++        .sets = 64,
++
++        /* CPUID 0x4.0x0.EDX */
++        .no_invd_sharing = false,
++        .inclusive = false,
++        .complex_indexing = false,
++
++        .size = 32 * KiB,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l1i_cache = &(CPUCacheInfo) {
++        /* CPUID 0x4.0x1.EAX */
++        .type = INSTRUCTION_CACHE,
++        .level = 1,
++        .self_init = true,
++
++        /* CPUID 0x4.0x1.EBX */
++        .line_size = 64,
++        .partitions = 1,
++        .associativity = 8,
++
++        /* CPUID 0x4.0x1.ECX */
++        .sets = 128,
++
++        /* CPUID 0x4.0x1.EDX */
++        .no_invd_sharing = false,
++        .inclusive = false,
++        .complex_indexing = false,
++
++        .size = 64 * KiB,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l2_cache = &(CPUCacheInfo) {
++        /* CPUID 0x4.0x2.EAX */
++        .type = UNIFIED_CACHE,
++        .level = 2,
++        .self_init = true,
++
++        /* CPUID 0x4.0x2.EBX */
++        .line_size = 64,
++        .partitions = 1,
++        .associativity = 16,
++
++        /* CPUID 0x4.0x2.ECX */
++        .sets = 4096,
++
++        /* CPUID 0x4.0x2.EDX */
++        .no_invd_sharing = false,
++        .inclusive = false,
++        .complex_indexing = false,
++
++        .size = 4 * MiB,
++        .share_level = CPU_TOPOLOGY_LEVEL_MODULE,
++    },
++    .l3_cache = &(CPUCacheInfo) {
++        /* CPUID 0x4.0x3.EAX */
++        .type = UNIFIED_CACHE,
++        .level = 3,
++        .self_init = true,
++
++        /* CPUID 0x4.0x3.EBX */
++        .line_size = 64,
++        .partitions = 1,
++        .associativity = 12,
++
++        /* CPUID 0x4.0x3.ECX */
++        .sets = 147456,
++
++        /* CPUID 0x4.0x3.EDX */
++        .no_invd_sharing = false,
++        .inclusive = false,
++        .complex_indexing = true,
++
++        .size = 108 * MiB,
++        .share_level = CPU_TOPOLOGY_LEVEL_SOCKET,
+     },
+ };
  
- #ifndef CONFIG_USER_ONLY
+@@ -5005,6 +5096,11 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+                     { /* end of list */ }
+                 }
+             },
++            {
++                .version = 3,
++                .note = "with srf-sp cache model",
++                .cache_info = &xeon_srf_cache_info,
++            },
+             { /* end of list */ },
+         },
+     },
 -- 
 2.50.0
 
