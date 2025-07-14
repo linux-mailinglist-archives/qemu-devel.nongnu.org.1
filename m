@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7261EB03D73
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D763B03D90
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:43:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHEf-00088Y-4Z; Mon, 14 Jul 2025 07:20:41 -0400
+	id 1ubHY0-0000YJ-EP; Mon, 14 Jul 2025 07:40:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH1R-0001vC-JH
+ id 1ubH1V-0001xn-Ab
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH1N-0002Ba-AS
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:00 -0400
+ id 1ubH1P-0002Bt-7A
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:07:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491214;
+ s=mimecast20190719; t=1752491217;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pMfqWPvcVidmxEBK4/G1WoAxmiQybmAc7UCJEFyhd7U=;
- b=Eotwra1YZoIIbkOmkRxE0dDlEsnYCVok4/LtuAynh0rQcRrmcpSf0Uj9uUgQJneDwhRoeB
- 4wsoC3nnTPK/yOsu0xeCM7N2cWlW3Wd9uI3ohqKI/PpK6bxMhpq45s123Yhu76/+gsWmPC
- P6WFF7uOoJ9v+FYvH4ZdmOtEew9aiyo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=84v5GMox428L8Z2lGKdNxuVp+eJI5ucAEsNT/SLxcFs=;
+ b=iIV9RLtj+/pV8bc6gOAPvtyj7Cf4y58SJpmye27CCVP3R+gaTGyoJ/Kh4Gs9kYFoyazCzo
+ S0OVH+n6GpN0/CsqxMBB/76jeq6+UVPEQf/VYxjN5LJujXbfYIKp3AgOfonOo71tlh8hMx
+ Uc5L2sfioGzXSSFWNhRB0z3QoFH2AyY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-6pzZzK-xN92DCJHXbGK4HQ-1; Mon, 14 Jul 2025 07:06:53 -0400
-X-MC-Unique: 6pzZzK-xN92DCJHXbGK4HQ-1
-X-Mimecast-MFC-AGG-ID: 6pzZzK-xN92DCJHXbGK4HQ_1752491212
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-451ecc3be97so22106885e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:06:53 -0700 (PDT)
+ us-mta-203-jiyigXauNS2BNyFo1oe9dQ-1; Mon, 14 Jul 2025 07:06:56 -0400
+X-MC-Unique: jiyigXauNS2BNyFo1oe9dQ-1
+X-Mimecast-MFC-AGG-ID: jiyigXauNS2BNyFo1oe9dQ_1752491215
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a4e713e05bso1834083f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:06:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491212; x=1753096012;
+ d=1e100.net; s=20230601; t=1752491214; x=1753096014;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pMfqWPvcVidmxEBK4/G1WoAxmiQybmAc7UCJEFyhd7U=;
- b=RkYJOZUcSnJ9uJcLsZztZfkmkXsfanE/XLfGJZH3ct1QGDRKoVhON9I27w54oizDzO
- +mYLnG7Zlo4qt6cmThQ6EA+Ivpc3cQDP1ob7KFJPvCfOoDwHneQVojMv6K7jMtu51Qbc
- OWhvuHS55mNGCAfuG+793CGyzIEOeLwyG7eTcOvtabEN0IHuhs+/N7ZRRQPTniONMMux
- EFpC/4hsBPdvtJ185rZQC+keRiSqdLlhYI6FMOMz9MDswR3ZUfTdJoZzYDAMJpop5zDl
- pqnou33o6zsXSK+zSP2LtTWLvaQRXuqQBF1hOFvRTSa+2/N62acTOmsF24mxCPT7Bh1L
- df4A==
-X-Gm-Message-State: AOJu0YwEjnTSqRDSYojruLfmpH+PvsRZINONCrO9sqDX8oGEs2MvvFjr
- qZRdy14CkaKtrhO6BagrerJ3QXZjoQoQJrWxAy83ko97ZZ6s2X8Zd6PEAibw51YGj91vU30Gjxw
- 7uOSxbnuu34b1I2YhUi6AikooVCktjlkKnIyQCUUgyt9/RDHuHaA3nm2YkLcPTvhdMbeSKdAyPT
- rmbMMhi2rDGllZt3m8kJ9dOecNGoEbJ95l8Mwsxaiu
-X-Gm-Gg: ASbGncvQVV6udI0vHNYa/WmTbU5ZMrEePEbXHMJ8Bme0u+c+pItqXAtFoIVJ+zChSsQ
- qrfSpHTkgIt15rW4wjqgRO1Xu4LisuGFZXtIFTHlzHrXE8q7d+yovEOsIX+CRVjnclIzQ/2T/II
- WPxkGt+yWOSTyatHsMZuitzT4XK17lF6COhsDX60mGDj7v3qQyPI72LtqE83XUcnng/fgh4jAyc
- BEwb8cz7qygAnFqsHL6iVwUmiFyG50OeujErxyy09q6ujE3n1aoORVkIN883Ef0NcxRG3YKDmLL
- 4WahpekAEumsAesPgVCEAnLWiuS50sg9KTBgWtlY1A4=
-X-Received: by 2002:a05:600c:858a:b0:453:5c30:a1fd with SMTP id
- 5b1f17b1804b1-4556f8a7931mr59412105e9.8.1752491211632; 
- Mon, 14 Jul 2025 04:06:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFv5bCRunCofTJumNggl6l+ykKbwR+Rw5um5Et3CuTryT2Tg1cTsH4xsquumTaKKuEAqfXJbg==
-X-Received: by 2002:a05:600c:858a:b0:453:5c30:a1fd with SMTP id
- 5b1f17b1804b1-4556f8a7931mr59411855e9.8.1752491211040; 
- Mon, 14 Jul 2025 04:06:51 -0700 (PDT)
+ bh=84v5GMox428L8Z2lGKdNxuVp+eJI5ucAEsNT/SLxcFs=;
+ b=FdswvxFC5fLrR0HgbIGbpkTnO7Z6KBFFajYLsFJZYqi0L+Jq6HC+uxnPJ8bzcvu2jM
+ Q0XFXI31kkwg1tZqjNp+e5rlHcMVowJobGrkOF2x23oJ09bWca7WPFz+8FAaVlMmYeaz
+ kWfwlvZ1uq1Fd9GNBb3HZzfslfIGt8QFfYWQ16u4kXddbpYQJQug3QjlnezhWt03Qwws
+ sm+WeGYUdDG31pVkrRGqXEiDaLz7BQlpMm3ZSGyTo5qpruI20XfyB1WH7+fVfPGxNXoM
+ S/rwehA5j8PrTSCQDqedExHtYPMkQbxbEeES+KC0xUs71x0KQfbTAOK5Ptv/LFQ72nfR
+ wWWQ==
+X-Gm-Message-State: AOJu0Yxi2Ke46AcGjCADM6BrH54CNath/xODC4c6W3FLS4gufsY1Nkgr
+ PsH9USSPu4CJr08dw303NPIeLtHmGZkQV9hztuFbnQSEaFycr59ZzPsS3cnAwYoY9rxJ7h6ubpn
+ u68CtHwgmz7WMyy8jKFwoIshsqQGvv2BAslqqpDiJc4Xu65bTBQ+cWs6QzThwthXFspbz5O2dyg
+ r3OxDCIjU4Dq42PJ9LYarESQGaV4xCjnUMCgMaefDi
+X-Gm-Gg: ASbGncvnKScsnc0YHMdLbRbjScxi8jCjIlf/JmfI5KXZ3XywHX8L1MMuDNSAs80Meax
+ u/XTvLM240SX5mOvFcwuDJi4oHVCHvlNSOicPtkTZellXUtS9N9J/CQ0kpgCkn8yvfnGWTg1Txy
+ qOWQ9rRA0GIGh3WxrddHEBjqCty4vou5DV7rx8bePQYMjlPBqiKB1mMtdW7fEhjX8jO6Fr593X/
+ g8GUAmQDCbrV4DhO6rA0JjMReEj1rwT9UdtlsgfIu77AmyDIwuvzcgyIwApk5OSnLiK7t95Ii85
+ zqEnLUFLSnpwEmN1CHIXz0SzS23zLgJQ7ykVMPx54OE=
+X-Received: by 2002:a05:6000:2c09:b0:3a4:f66a:9d31 with SMTP id
+ ffacd0b85a97d-3b5f2dc2becmr9584386f8f.16.1752491214001; 
+ Mon, 14 Jul 2025 04:06:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVcspJNQHPtRlUemC6njmJYF/Eg9SFzEzJ81zURpNKGu0W/N+/GmmXytL3LxUS7ZVMkb7FjQ==
+X-Received: by 2002:a05:6000:2c09:b0:3a4:f66a:9d31 with SMTP id
+ ffacd0b85a97d-3b5f2dc2becmr9584355f8f.16.1752491213563; 
+ Mon, 14 Jul 2025 04:06:53 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d867sm12298615f8f.61.2025.07.14.04.06.49
+ ffacd0b85a97d-3b5e8e26f45sm12230405f8f.92.2025.07.14.04.06.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:06:49 -0700 (PDT)
+ Mon, 14 Jul 2025 04:06:51 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: [PULL 63/77] i386/cpu: Enable 0x1f leaf for SierraForest by default
-Date: Mon, 14 Jul 2025 13:03:52 +0200
-Message-ID: <20250714110406.117772-64-pbonzini@redhat.com>
+Subject: [PULL 64/77] i386/cpu: Enable 0x1f leaf for SierraForest by default
+Date: Mon, 14 Jul 2025 13:03:53 +0200
+Message-ID: <20250714110406.117772-65-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -119,26 +119,21 @@ Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Link: https://lore.kernel.org/r/20250711104603.1634832-7-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ target/i386/cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 482979a4437..668f3e63b7b 100644
+index 668f3e63b7b..c15082e8afa 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -5389,8 +5389,11 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-             },
-             {
-                 .version = 3,
--                .note = "with srf-sp cache model",
-+                .note = "with srf-sp cache model and 0x1f leaf",
+@@ -5393,6 +5393,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
                  .cache_info = &xeon_srf_cache_info,
-+                .props = (PropValue[]) {
-+                    { "x-force-cpuid-0x1f", "on" },
-+                }
+                 .props = (PropValue[]) {
+                     { "x-force-cpuid-0x1f", "on" },
++                    { /* end of list */ },
+                 }
              },
              { /* end of list */ },
-         },
 -- 
 2.50.0
 
