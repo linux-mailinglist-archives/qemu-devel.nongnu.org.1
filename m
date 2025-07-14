@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C817AB0436A
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D615DB042C6
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:10:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubKqA-0005Iw-R9; Mon, 14 Jul 2025 11:11:39 -0400
+	id 1ubKoT-00079C-Or; Mon, 14 Jul 2025 11:09:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUr-0000RX-3B
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:35 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUj-0000N6-3H
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUa-0003ds-Ko
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:32 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubJUW-0003ca-Bn
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:45:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752500714;
+ s=mimecast20190719; t=1752500711;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Gu0Nw++4SHJ8XHnnfrFj2RqSLlAToFmeOtmbH8TIShk=;
- b=f1iSGj0D8ylXEdK/K7Bt1tGifFofVaivD3c7KIMityimFUv/mIGbUC1ddP4i+oW2IysMkr
- Uu3sEwDy9Xmk2r4lOR9H7dGMsTjnK8Xfrp/gojVy0bSOKjHaJqHeGitcxg9Pw+zlACjIPP
- 7PsRj3vLJbASvRg51MD3e0BqnHooNdQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=HgtbjjmlzVg6G94Oz9B2Do2ukUSe0Idv0/WhBLUN2uk=;
+ b=hyc2UQ7IWNnwkFphSgYCPhxD2oxGHicXjI3ms4Ir2NC+bGLqJdual7QnsxFd1DqvZYqlEC
+ cVYfRdRftaq74oDOr4R4KIa8bG/xUjTNtdCFfVJX9WNre4TzMP4FifPqYeiCIt3bJ+OGKN
+ 0xruK924etRbvqemRJqZsb4GN4FNUQY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-631--JazQtFrPjO2jY91WI6GnQ-1; Mon,
- 14 Jul 2025 09:45:10 -0400
-X-MC-Unique: -JazQtFrPjO2jY91WI6GnQ-1
-X-Mimecast-MFC-AGG-ID: -JazQtFrPjO2jY91WI6GnQ_1752500708
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-X6EIKQ8fMs-0juE0sQc2rw-1; Mon,
+ 14 Jul 2025 09:45:09 -0400
+X-MC-Unique: X6EIKQ8fMs-0juE0sQc2rw-1
+X-Mimecast-MFC-AGG-ID: X6EIKQ8fMs-0juE0sQc2rw_1752500708
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D38DF19560AA
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BDEB0180034E
  for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 13:45:08 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4DD17195609D
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2FA9B18002B2
  for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 13:45:08 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0ACE521E6617; Mon, 14 Jul 2025 15:44:59 +0200 (CEST)
+ id 0EC6021E661A; Mon, 14 Jul 2025 15:44:59 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 18/32] qapi: add cross-references to Machine core
-Date: Mon, 14 Jul 2025 15:44:44 +0200
-Message-ID: <20250714134458.2991097-19-armbru@redhat.com>
+Subject: [PULL 19/32] qapi: add cross-references to migration.json
+Date: Mon, 14 Jul 2025 15:44:45 +0200
+Message-ID: <20250714134458.2991097-20-armbru@redhat.com>
 In-Reply-To: <20250714134458.2991097-1-armbru@redhat.com>
 References: <20250714134458.2991097-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,345 +86,276 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
+Note that a reference to MIGRATION needs to be disambiguated with a
+:qapi:event: prefix.  Without this, Sphinx complains
+
+    more than one target found for 'any' cross-reference 'MIGRATION': could be :std:ref:`Migration framework` or :qapi:event:`QMP:migration.MIGRATION`
+
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250711054005.60969-8-jsnow@redhat.com>
+Message-ID: <20250711054005.60969-9-jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
+[Commit message amended to explain need for :qapi:event:]
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/machine-common.json | 20 +++++-----
- qapi/machine.json        | 80 ++++++++++++++++++++--------------------
- 2 files changed, 50 insertions(+), 50 deletions(-)
+ qapi/migration.json | 68 ++++++++++++++++++++++-----------------------
+ 1 file changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/qapi/machine-common.json b/qapi/machine-common.json
-index 0f01599130..ed3d20a2fb 100644
---- a/qapi/machine-common.json
-+++ b/qapi/machine-common.json
-@@ -28,29 +28,29 @@
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 57653160eb..e08a99bb82 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -195,14 +195,14 @@
  #
- # @thread: thread level, which would also be called SMT level or
- #     logical processor level.  The @threads option in
--#     SMPConfiguration is used to configure the topology of this
-+#     `SMPConfiguration` is used to configure the topology of this
- #     level.
+ # Information about current migration process.
  #
--# @core: core level.  The @cores option in SMPConfiguration is used
-+# @core: core level.  The @cores option in `SMPConfiguration` is used
- #     to configure the topology of this level.
+-# @status: @MigrationStatus describing the current migration status.
++# @status: `MigrationStatus` describing the current migration status.
+ #     If this field is not returned, no migration process has been
+ #     initiated
  #
--# @module: module level.  The @modules option in SMPConfiguration is
-+# @module: module level.  The @modules option in `SMPConfiguration` is
- #     used to configure the topology of this level.
+-# @ram: @MigrationStats containing detailed migration status, only
++# @ram: `MigrationStats` containing detailed migration status, only
+ #     returned if status is 'active' or 'completed'(since 1.2)
  #
--# @cluster: cluster level.  The @clusters option in SMPConfiguration
-+# @cluster: cluster level.  The @clusters option in `SMPConfiguration`
- #     is used to configure the topology of this level.
+-# @xbzrle-cache: @XBZRLECacheStats containing detailed XBZRLE
++# @xbzrle-cache: `XBZRLECacheStats` containing detailed XBZRLE
+ #     migration statistics, only returned if XBZRLE feature is on and
+ #     status is 'active' or 'completed' (since 1.2)
  #
--# @die: die level.  The @dies option in SMPConfiguration is used to
-+# @die: die level.  The @dies option in `SMPConfiguration` is used to
- #     configure the topology of this level.
+@@ -266,7 +266,7 @@
+ # @socket-address: Only used for tcp, to know what the real port is
+ #     (Since 4.0)
  #
- # @socket: socket level, which would also be called package level.
--#     The @sockets option in SMPConfiguration is used to configure
-+#     The @sockets option in `SMPConfiguration` is used to configure
- #     the topology of this level.
+-# @vfio: @VfioStats containing detailed VFIO devices migration
++# @vfio: `VfioStats` containing detailed VFIO devices migration
+ #     statistics, only returned if VFIO device is present, migration
+ #     is supported by all VFIO devices and status is 'active' or
+ #     'completed' (since 5.2)
+@@ -277,7 +277,7 @@
  #
--# @book: book level.  The @books option in SMPConfiguration is used
-+# @book: book level.  The @books option in `SMPConfiguration` is used
- #     to configure the topology of this level.
+ # @dirty-limit-throttle-time-per-round: Maximum throttle time (in
+ #     microseconds) of virtual CPUs each dirty ring full round, which
+-#     shows how MigrationCapability dirty-limit affects the guest
++#     shows how `MigrationCapability` dirty-limit affects the guest
+ #     during live migration.  (Since 8.1)
  #
--# @drawer: drawer level.  The @drawers option in SMPConfiguration is
-+# @drawer: drawer level.  The @drawers option in `SMPConfiguration` is
- #     used to configure the topology of this level.
+ # @dirty-limit-ring-full-time: Estimated average dirty ring full time
+@@ -627,7 +627,7 @@
  #
- # @default: default level.  Some architectures will have default
-@@ -104,9 +104,9 @@
+ # @normal: the original form of migration.  (since 8.2)
+ #
+-# @cpr-reboot: The migrate command stops the VM and saves state to the
++# @cpr-reboot: The `migrate` command stops the VM and saves state to the
+ #     URI.  After quitting QEMU, the user resumes by running QEMU
+ #     -incoming.
+ #
+@@ -677,7 +677,7 @@
+ #
+ #     New QEMU reads the CPR channel before opening a monitor, hence
+ #     the CPR channel cannot be specified in the list of channels for
+-#     a migrate-incoming command.  It may only be specified on the
++#     a `migrate-incoming` command.  It may only be specified on the
+ #     command line.
+ #
+ #     The main channel address cannot be a file type, and for an
+@@ -688,10 +688,10 @@
+ #     memory-backend-epc is not supported.  The VM must be started
+ #     with the '-machine aux-ram-share=on' option.
+ #
+-#     When using -incoming defer, you must issue the migrate command
++#     When using -incoming defer, you must issue the `migrate` command
+ #     to old QEMU before issuing any monitor commands to new QEMU.
+ #     However, new QEMU does not open and read the migration stream
+-#     until you issue the migrate incoming command.
++#     until you issue the `migrate-incoming` command.
+ #
+ #     (since 10.0)
  ##
- # @SmpCachePropertiesWrapper:
+@@ -913,11 +913,11 @@
+ # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+ #     Defaults to 1.  (Since 8.1)
  #
--# List wrapper of SmpCacheProperties.
-+# List wrapper of `SmpCacheProperties`.
+-# @mode: Migration mode.  See description in @MigMode.  Default is
++# @mode: Migration mode.  See description in `MigMode`.  Default is
+ #     'normal'.  (Since 8.2)
  #
--# @caches: the list of SmpCacheProperties.
-+# @caches: the list of `SmpCacheProperties`.
+ # @zero-page-detection: Whether and how to detect zero pages.
+-#     See description in @ZeroPageDetection.  Default is 'multifd'.
++#     See description in `ZeroPageDetection`.  Default is 'multifd'.
+ #     (since 9.0)
  #
- # Since 9.2
+ # @direct-io: Open migration files with O_DIRECT when possible.  This
+@@ -1094,11 +1094,11 @@
+ # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+ #     Defaults to 1.  (Since 8.1)
+ #
+-# @mode: Migration mode.  See description in @MigMode.  Default is
++# @mode: Migration mode.  See description in `MigMode`.  Default is
+ #     'normal'.  (Since 8.2)
+ #
+ # @zero-page-detection: Whether and how to detect zero pages.
+-#     See description in @ZeroPageDetection.  Default is 'multifd'.
++#     See description in `ZeroPageDetection`.  Default is 'multifd'.
+ #     (since 9.0)
+ #
+ # @direct-io: Open migration files with O_DIRECT when possible.  This
+@@ -1110,8 +1110,8 @@
+ # @unstable: Members @x-checkpoint-delay and
+ #     @x-vcpu-dirty-limit-period are experimental.
+ #
+-# TODO: either fuse back into MigrationParameters, or make
+-#     MigrationParameters members mandatory
++# TODO: either fuse back into `MigrationParameters`, or make
++#     `MigrationParameters` members mandatory
+ #
+ # Since: 2.4
  ##
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 2364893cba..f9bfda2151 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -188,7 +188,7 @@
- # @acpi: machine type supports ACPI (since 8.0)
+@@ -1304,11 +1304,11 @@
+ # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+ #     Defaults to 1.  (Since 8.1)
  #
- # @compat-props: The machine type's compatibility properties.  Only
--#     present when query-machines argument @compat-props is true.
-+#     present when `query-machines` argument @compat-props is true.
+-# @mode: Migration mode.  See description in @MigMode.  Default is
++# @mode: Migration mode.  See description in `MigMode`.  Default is
+ #     'normal'.  (Since 8.2)
+ #
+ # @zero-page-detection: Whether and how to detect zero pages.
+-#     See description in @ZeroPageDetection.  Default is 'multifd'.
++#     See description in `ZeroPageDetection`.  Default is 'multifd'.
+ #     (since 9.0)
+ #
+ # @direct-io: Open migration files with O_DIRECT when possible.  This
+@@ -1398,7 +1398,7 @@
+ #
+ # Emitted when a migration event happens
+ #
+-# @status: @MigrationStatus describing the current migration status.
++# @status: `MigrationStatus` describing the current migration status.
+ #
+ # Since: 2.4
+ #
+@@ -1519,8 +1519,8 @@
+ # The reason for a COLO exit.
+ #
+ # @none: failover has never happened.  This state does not occur in
+-#     the COLO_EXIT event, and is only visible in the result of
+-#     query-colo-status.
++#     the `COLO_EXIT` event, and is only visible in the result of
++#     `query-colo-status`.
+ #
+ # @request: COLO exit is due to an external request.
+ #
+@@ -1775,8 +1775,8 @@
+ #     list connected to a destination interface endpoint.
+ #
+ # @exit-on-error: Exit on incoming migration failure.  Default true.
+-#     When set to false, the failure triggers a MIGRATION event, and
+-#     error details could be retrieved with query-migrate.
++#     When set to false, the failure triggers a :qapi:event:`MIGRATION`
++#     event, and error details could be retrieved with `query-migrate`.
  #     (since 9.1)
  #
- # Features:
-@@ -377,7 +377,7 @@
+ # Since: 2.3
+@@ -1788,7 +1788,7 @@
+ #        already exposed above libvirt.
  #
- # Wake up guest from suspend.  If the guest has wake-up from suspend
- # support enabled (wakeup-suspend-support flag from
--# query-current-machine), wake-up guest from suspend if the guest is
-+# `query-current-machine`), wake-up guest from suspend if the guest is
- # in SUSPENDED state.  Return an error otherwise.
+ #     2. QEMU must be started with -incoming defer to allow
+-#        migrate-incoming to be used.
++#        `migrate-incoming` to be used.
  #
- # Since: 1.1
-@@ -589,7 +589,7 @@
+ #     3. The uri format is the same as for -incoming
  #
- # List of CXL Fixed Memory Windows.
+@@ -1841,7 +1841,7 @@
+ # devices of the VM are not saved by this command.
  #
--# @cxl-fmw: List of CXLFixedMemoryWindowOptions
-+# @cxl-fmw: List of `CXLFixedMemoryWindowOptions`
+ # @filename: the file to save the state of the devices to as binary
+-#     data.  See xen-save-devices-state.txt for a description of the
++#     data.  See `xen-save-devices-state`.txt for a description of the
+ #     binary format.
  #
- # Since: 7.1
- ##
-@@ -644,10 +644,10 @@
- ##
- # @NumaCpuOptions:
+ # @live: Optional argument to ask QEMU to treat this command as part
+@@ -1882,7 +1882,7 @@
+ # devices of the VM are not loaded by this command.
  #
--# Option "-numa cpu" overrides default cpu to node mapping.  It
--# accepts the same set of cpu properties as returned by
--# query-hotpluggable-cpus[].props, where node-id could be used to
--# override default node mapping.
-+# Option "-numa cpu" overrides default cpu to node mapping.  It accepts
-+# the same set of cpu properties as returned by
-+# `query-hotpluggable-cpus[].props <query-hotpluggable-cpus>`, where
-+# node-id could be used to override default node mapping.
- #
- # Since: 2.10
- ##
-@@ -661,7 +661,7 @@
- # The memory hierarchy in the System Locality Latency and Bandwidth
- # Information Structure of HMAT (Heterogeneous Memory Attribute Table)
- #
--# For more information about @HmatLBMemoryHierarchy, see chapter
-+# For more information about `HmatLBMemoryHierarchy`, see chapter
- # 5.2.27.4: Table 5-146: Field "Flags" of ACPI 6.3 spec.
- #
- # @memory: the structure represents the memory performance
-@@ -683,7 +683,7 @@
- # Data type in the System Locality Latency and Bandwidth Information
- # Structure of HMAT (Heterogeneous Memory Attribute Table)
- #
--# For more information about @HmatLBDataType, see chapter 5.2.27.4:
-+# For more information about `HmatLBDataType`, see chapter 5.2.27.4:
- # Table 5-146: Field "Data Type" of ACPI 6.3 spec.
- #
- # @access-latency: access latency (nanoseconds)
-@@ -710,7 +710,7 @@
- # Set the system locality latency and bandwidth information between
- # Initiator and Target proximity Domains.
- #
--# For more information about @NumaHmatLBOptions, see chapter 5.2.27.4:
-+# For more information about `NumaHmatLBOptions`, see chapter 5.2.27.4:
- # Table 5-146 of ACPI 6.3 spec.
- #
- # @initiator: the Initiator Proximity Domain.
-@@ -746,7 +746,7 @@
- # Cache associativity in the Memory Side Cache Information Structure
- # of HMAT
- #
--# For more information of @HmatCacheAssociativity, see chapter
-+# For more information of `HmatCacheAssociativity`, see chapter
- # 5.2.27.5: Table 5-147 of ACPI 6.3 spec.
- #
- # @none: None (no memory side cache in this proximity domain, or cache
-@@ -767,7 +767,7 @@
- # Cache write policy in the Memory Side Cache Information Structure of
- # HMAT
- #
--# For more information of @HmatCacheWritePolicy, see chapter 5.2.27.5:
-+# For more information of `HmatCacheWritePolicy`, see chapter 5.2.27.5:
- # Table 5-147: Field "Cache Attributes" of ACPI 6.3 spec.
- #
- # @none: None (no memory side cache in this proximity domain, or cache
-@@ -787,7 +787,7 @@
- #
- # Set the memory side cache information for a given memory domain.
- #
--# For more information of @NumaHmatCacheOptions, see chapter 5.2.27.5:
-+# For more information of `NumaHmatCacheOptions`, see chapter 5.2.27.5:
- # Table 5-147: Field "Cache Attributes" of ACPI 6.3 spec.
- #
- # @node-id: the memory proximity domain to which the memory belongs.
-@@ -964,7 +964,7 @@
- #
- # The ids other than the node-id specify the position of the CPU
- # within the CPU topology (as defined by the machine property "smp",
--# thus see also type @SMPConfiguration)
-+# thus see also type `SMPConfiguration`)
- #
- # @node-id: NUMA node ID the CPU belongs to
- #
-@@ -992,7 +992,7 @@
- # Since: 2.7
- ##
- { 'struct': 'CpuInstanceProperties',
--  # Keep these in sync with the properties device_add accepts
-+  # Keep these in sync with the properties `device_add` accepts
-   'data': { '*node-id': 'int',
-             '*drawer-id': 'int',
-             '*book-id': 'int',
-@@ -1008,19 +1008,19 @@
- ##
- # @HotpluggableCPU:
- #
--# @type: CPU object type for usage with device_add command
-+# @type: CPU object type for usage with `device_add` command
- #
- # @props: list of properties to pass for hotplugging a CPU with
--#     device_add
-+#     `device_add`
- #
--# @vcpus-count: number of logical VCPU threads @HotpluggableCPU
-+# @vcpus-count: number of logical VCPU threads `HotpluggableCPU`
- #     provides
- #
- # @qom-path: link to existing CPU object if CPU is present or omitted
- #     if CPU is not present.
- #
- # .. note:: Management should be prepared to pass through additional
--#    properties with device_add.
-+#    properties with `device_add`.
+ # @filename: the file to load the state of the devices from as binary
+-#     data.  See xen-save-devices-state.txt for a description of the
++#     data.  See `xen-save-devices-state`.txt for a description of the
+ #     binary format.
  #
  # Since: 2.7
+@@ -1922,7 +1922,7 @@
  ##
-@@ -1179,7 +1179,7 @@
- # @BALLOON_CHANGE:
+ # @ReplicationStatus:
  #
- # Emitted when the guest changes the actual BALLOON level.  This value
--# is equivalent to the @actual field return by the 'query-balloon'
-+# is equivalent to the @actual field return by the `query-balloon`
- # command
+-# The result format for 'query-xen-replication-status'.
++# The result format for `query-xen-replication-status`.
  #
- # @actual: the logical size of the VM in bytes.  Formula used:
-@@ -1965,7 +1965,7 @@
+ # @error: true if an error happened, false if replication is normal.
  #
- # The result of a CPU model baseline.
- #
--# @model: the baselined CpuModelInfo.
-+# @model: the baselined `CpuModelInfo`.
- #
- # Since: 2.8
+@@ -1971,7 +1971,7 @@
  ##
-@@ -2014,28 +2014,28 @@
+ # @COLOStatus:
  #
- # * QEMU version: CPU models may look different depending on the QEMU
- #   version.  (Except for CPU models reported as "static" in
--#   query-cpu-definitions.)
-+#   `query-cpu-definitions`.)
- # * machine-type: CPU model may look different depending on the
- #   machine-type.  (Except for CPU models reported as "static" in
--#   query-cpu-definitions.)
-+#   `query-cpu-definitions`.)
- # * machine options (including accelerator): in some architectures,
- #   CPU models may look different depending on machine and accelerator
- #   options.  (Except for CPU models reported as "static" in
--#   query-cpu-definitions.)
-+#   `query-cpu-definitions`.)
- # * "-cpu" arguments and global properties: arguments to the -cpu
- #   option and global properties may affect expansion of CPU models.
--#   Using query-cpu-model-expansion while using these is not advised.
-+#   Using `query-cpu-model-expansion` while using these is not advised.
+-# The result format for 'query-colo-status'.
++# The result format for `query-colo-status`.
  #
- # Some architectures may not support comparing CPU models.  s390x
- # supports comparing CPU models.
+ # @mode: COLO running mode.  If COLO is running, this field will
+ #     return 'primary' or 'secondary'.
+@@ -2095,7 +2095,7 @@
+ # @DirtyRateMeasureMode:
  #
- # @modela: description of the first CPU model to compare, referred to
--#     as "model A" in CpuModelCompareResult
-+#     as "model A" in `CpuModelCompareResult`
+ # Method used to measure dirty page rate.  Differences between
+-# available methods are explained in @calc-dirty-rate.
++# available methods are explained in `calc-dirty-rate`.
  #
- # @modelb: description of the second CPU model to compare, referred to
--#     as "model B" in CpuModelCompareResult
-+#     as "model B" in `CpuModelCompareResult`
+ # @page-sampling: use page sampling
  #
--# Returns: a CpuModelCompareInfo describing how both CPU models
-+# Returns: a `CpuModelCompareInfo` describing how both CPU models
- #     compare
+@@ -2163,7 +2163,7 @@
+ # @calc-dirty-rate:
  #
- # Errors:
-@@ -2068,17 +2068,17 @@
+ # Start measuring dirty page rate of the VM.  Results can be retrieved
+-# with @query-dirty-rate after measurements are completed.
++# with `query-dirty-rate` after measurements are completed.
  #
- # * QEMU version: CPU models may look different depending on the QEMU
- #   version.  (Except for CPU models reported as "static" in
--#   query-cpu-definitions.)
-+#   `query-cpu-definitions`.)
- # * machine-type: CPU model may look different depending on the
- #   machine-type.  (Except for CPU models reported as "static" in
--#   query-cpu-definitions.)
-+#   `query-cpu-definitions`.)
- # * machine options (including accelerator): in some architectures,
- #   CPU models may look different depending on machine and accelerator
- #   options.  (Except for CPU models reported as "static" in
--#   query-cpu-definitions.)
-+#   `query-cpu-definitions`.)
- # * "-cpu" arguments and global properties: arguments to the -cpu
- #   option and global properties may affect expansion of CPU models.
--#   Using query-cpu-model-expansion while using these is not advised.
-+#   Using `query-cpu-model-expansion` while using these is not advised.
+ # Dirty page rate is the number of pages changed in a given time
+ # period expressed in MiB/s.  The following methods of calculation are
+@@ -2236,7 +2236,7 @@
+ ##
+ # @query-dirty-rate:
  #
- # Some architectures may not support baselining CPU models.  s390x
- # supports baselining CPU models.
-@@ -2087,7 +2087,7 @@
+-# Query results of the most recent invocation of @calc-dirty-rate.
++# Query results of the most recent invocation of `calc-dirty-rate`.
  #
- # @modelb: description of the second CPU model to baseline
+ # @calc-time-unit: time unit in which to report calculation time.
+ #     By default it is reported in seconds.  (Since 8.2)
+@@ -2286,7 +2286,7 @@
  #
--# Returns: a CpuModelBaselineInfo describing the baselined CPU model
-+# Returns: a `CpuModelBaselineInfo` describing the baselined CPU model
+ # Requires KVM with accelerator property "dirty-ring-size" set.  A
+ # virtual CPU's dirty page rate is a measure of its memory load.  To
+-# observe dirty page rates, use @calc-dirty-rate.
++# observe dirty page rates, use `calc-dirty-rate`.
  #
- # Errors:
- #     - if baselining CPU models is not supported by the target
-@@ -2107,7 +2107,7 @@
+ # @cpu-index: index of a virtual CPU, default is all.
  #
- # The result of a cpu model expansion.
+@@ -2311,8 +2311,8 @@
+ # Cancel the upper limit of dirty page rate for virtual CPUs.
  #
--# @model: the expanded CpuModelInfo.
-+# @model: the expanded `CpuModelInfo`.
+ # Cancel the dirty page limit for the vCPU which has been set with
+-# set-vcpu-dirty-limit command.  Note that this command requires
+-# support from dirty ring, same as the "set-vcpu-dirty-limit".
++# `set-vcpu-dirty-limit` command.  Note that this command requires
++# support from dirty ring, same as the `set-vcpu-dirty-limit`.
  #
- # @deprecated-props: an optional list of properties that are flagged as
- #     deprecated by the CPU vendor.  The list depends on the
-@@ -2136,17 +2136,17 @@
+ # @cpu-index: index of a virtual CPU, default is all.
  #
- # * QEMU version: CPU models may look different depending on the QEMU
- #   version.  (Except for CPU models reported as "static" in
--#   query-cpu-definitions.)
-+#   `query-cpu-definitions`.)
- # * machine-type: CPU model may look different depending on the
- #   machine-type.  (Except for CPU models reported as "static" in
--#   query-cpu-definitions.)
-+#   `query-cpu-definitions`.)
- # * machine options (including accelerator): in some architectures,
- #   CPU models may look different depending on machine and accelerator
- #   options.  (Except for CPU models reported as "static" in
--#   query-cpu-definitions.)
-+#   `query-cpu-definitions`.)
- # * "-cpu" arguments and global properties: arguments to the -cpu
- #   option and global properties may affect expansion of CPU models.
--#   Using query-cpu-model-expansion while using these is not advised.
-+#   Using `query-cpu-model-expansion` while using these is not advised.
+@@ -2469,7 +2469,7 @@
+ # time it takes to load the snapshot.
  #
- # Some architectures may not support all expansion types.  s390x
- # supports "full" and "static".  Arm only supports "full".
-@@ -2155,7 +2155,7 @@
+ # It is strongly recommended that @devices contain all writable block
+-# device nodes that can have changed since the original @snapshot-save
++# device nodes that can have changed since the original `snapshot-save`
+ # command execution.
  #
- # @type: expansion type, specifying how to expand the CPU model
- #
--# Returns: a CpuModelExpansionInfo describing the expanded CPU model
-+# Returns: a `CpuModelExpansionInfo` describing the expanded CPU model
- #
- # Errors:
- #     - if expanding CPU models is not supported
-@@ -2194,7 +2194,7 @@
- #     from running in the current host.  (since 2.8)
- #
- # @typename: Type name that can be used as argument to
--#     @device-list-properties, to introspect properties configurable
-+#     `device-list-properties`, to introspect properties configurable
- #     using -cpu or -global.  (since 2.9)
- #
- # @alias-of: Name of CPU model this model is an alias for.  The target
+ # .. qmp-example::
 -- 
 2.49.0
 
