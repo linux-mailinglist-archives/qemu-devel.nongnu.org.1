@@ -2,93 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC5EB04284
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:05:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26123B0427A
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:04:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubKjv-0001ai-2T; Mon, 14 Jul 2025 11:05:11 -0400
+	id 1ubKhX-0007wb-Af; Mon, 14 Jul 2025 11:02:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1ubJLj-0003fI-BD
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:36:08 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1ubJNc-0004gM-Bn
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:38:05 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1ubJLg-00023G-FR
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:36:07 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-7426c44e014so3996084b3a.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 06:36:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1ubJNU-0002N1-NH
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:38:03 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-23636167b30so38167555ad.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 06:37:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752500160; x=1753104960; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xRdIBPORR2L6dl477UWcK22j6l8WxApGJI0v6hHwTAc=;
- b=sFOhM7FkJesJPlnolYEv6cyYWnLiloR6SeLVMpEC6ohMDawNF52y2XcK7EXrK6oLU5
- TMYSf98a6p/dbCny1VzvoGAWXwr5pWyvJFjFaqhnGjr94jg2UAzR1Y3Zpwl/tpoWRn/K
- lSiCrVKJ7FzSwy/AkNydNhVx3+gN1dm2dpR41zUhwjqeDgY29q5UpH4LijfVxgCW4nUg
- Ur9PBSPovAtdjoCczcEkWcA2tstXeVCnKFwWxTUYkgr8NFDLpCtJVWKEAwA/p8jb/K/7
- FxI/E1HdZri8CEuug4PPhwc23ZlNZg2fMSEfcWt/YeldvuNP+htJBJMydp3N10WO8f1e
- lOCA==
+ d=ventanamicro.com; s=google; t=1752500273; x=1753105073; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zlc0P8VCWmuofdzqL3bOeDpuJqP0QcfGjEi1Fn+DLbo=;
+ b=WiuPhoXhUZM6AUJ21tvNC5ayNJN2VaQD5beu23DHRay4lRhqI7M8d9UONY0CVgLzVK
+ qo0O2eXhnBVrpRvqdyht5WPQP4jLcnd8WfTkwjnQ8d5ETjMmJr8oGy/baP9IlM7sBHAc
+ QZlSQleXI0/oHbMCCiIbkcS7AGhGvO+wTb1wpL+BUQTyjXXIQBgn2e4sAvbMeyG33ahy
+ SGa1qb0vM2pqfrCPCQGL0W3Erk6UuCqLQGljybTso41WWFrpubr5fi2kQc3TKwmV0FhX
+ 0ugBcASJrJMvQAd21Tm4I/Bp6oHIGElMGeLW/Wn6wAboHIlYyK45GJE0Ocx7TcMzewKh
+ ymYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752500160; x=1753104960;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xRdIBPORR2L6dl477UWcK22j6l8WxApGJI0v6hHwTAc=;
- b=aKef83lUY7Q6U3Bi7e9HoCPEObkVKU4rwoaPEEjeOZ65Hsl1O3mMMhEsRlu8xm38Q9
- Lt06wAfd/fBfcFNTTxoTTyCvkCO8w6cXkeEKxi8YT7AT/eMLMYGxIt/u6X0dQ3eRQBQ6
- RNEDx6G9ol3Z5y5Kd7gbyfU7zwsO5rzF+B29ZL2Zl9Yfvu4r6BHLubkZGJMXrr2bA6TB
- gBTl+30cauObmXfw0ecrp1E7X8DCHUQmQX5vBgYihdS9tXnWLCsVq1EezRsdfWRFSGYZ
- Djv1120uf1Jvoi/wQB1F4E9wTjllpM9N4GID7UHclrHw4B9mJA54+/P/ZVI3j7usVWR9
- +a7g==
-X-Gm-Message-State: AOJu0YzhHswicUPpmHmrc3Q/1E7DF7WoouJqJUwQMyO0f2IRjh++AxdM
- /7WyNCoftHj56fhnc/OoUuQ7FcwweCg0Ops6O1t/hX27MQQXAsDVPWGqX5OuDOmfQw0=
-X-Gm-Gg: ASbGncuMsz2MJ5EZQoowJOOlAw0n676aHX5s/KXU+sQbxqrl+4uJC7ZmPX101G+6pqP
- YmYcmfv5Z084Kf6JyYWnByFO26yf2/hL3jy08aMAgPVd6o/V5NcUHZ5pfJy4UncRdFSoCYTzXO9
- H87kfI2Ag1qD37PUkLQpTLs6IqJdYBJ0sEVJRHKD6iy/mXp4yKTuszsvsNE3TDooDCzqrtRJlC1
- bvriovlp+YYuFK0QmrTHuYqog5YkoAYBevpbgckS6oju4k6zcL5vcFYOWu8Cuymw/pIstaQvHwq
- uj9V2ldBekZ3t3/fO4yCn7Gk/mo9psJuytYv/dUgH6AnZa6scELR5EsGxiRK94xSefK8yXSwJxp
- r8EL86q7vHTmjpSKarJLnqkFqJf70rqf6PC5v05K3j0sstTk2wV/EB4qRF45dIuv7
-X-Google-Smtp-Source: AGHT+IHRCkohjCmeCWv7MFFIq0idXCb8pqy+rUdbl/bdmVpwz1BxW5jXtgbUlaGmlTdaAx2+3SM1gw==
-X-Received: by 2002:a05:6a00:ac8:b0:746:2ae9:fc42 with SMTP id
- d2e1a72fcca58-74f1ebce5d2mr18847257b3a.19.1752500160105; 
- Mon, 14 Jul 2025 06:36:00 -0700 (PDT)
-Received: from [192.168.0.102] (189-47-46-41.dsl.telesp.net.br. [189.47.46.41])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74eb9f8b984sm10516158b3a.150.2025.07.14.06.35.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jul 2025 06:35:59 -0700 (PDT)
-Message-ID: <e5e99747-00c2-494b-b959-2d56f451d1ad@linaro.org>
-Date: Mon, 14 Jul 2025 10:36:49 -0300
+ d=1e100.net; s=20230601; t=1752500273; x=1753105073;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zlc0P8VCWmuofdzqL3bOeDpuJqP0QcfGjEi1Fn+DLbo=;
+ b=XBtjmSWre62hrbIQQyJFjVijqXRHbwIVtzpmfjOcriw2yXybpCHz6yjopml/Gglz98
+ zh2d3vBjv0GcGQeH9hzw8HdCD+uBWS5DvwJkSvW1jE00U9KzzKmVxcXxpfjMXfPd9ICf
+ 9DmSOhGcLxK3aPRH8Ve2xr42eEQBarNaq0zmrZv6TYHRf4utAMeMU0J8WbQvV72PeBXj
+ 1uUnuoREf0D6O7unvQ68uj25oiUKdkOci5kpRuwV99TsWO5MhrIihucBhvIyMZSVlDZv
+ U4n80rXj9goQz+W1CR+LVIkw4sD124qXkFY0rnn/uL1P4fwFAdNdYYcZGAU74JIh6xks
+ CmAw==
+X-Gm-Message-State: AOJu0Yw/VeCAHzJNQIWrd5lMipTeCJHXECr++Dj4HppyA/QB9Z8Scblv
+ znghFbIPctFkKxm9Gs3dLkTLW2BP6gtR9kQQ4pgoP82B8lzE8Mf523wTQ4vNQ+4LraZuiyW2WDK
+ yX3wm
+X-Gm-Gg: ASbGncs8phYPZSl7d3BBcP/B4mdk8VvZ6InEmeNvmXJsOprchBpIVvauYuTLtOU1YsB
+ YCB1vcJsJ9zFHvy8DFpR58uhHmDnWGnOEQAxQOBcAALcq7B1Si8Nr3uwGwmIWqT0AhIHZw/O5Jl
+ KTLjaC3bNiyLBYkICayWNOebHmixchI8HdQAqBHqysq7QQN67swpgfNArqMxPY5vdxD3z2hm4bT
+ kO44WKC32PY3FgBQA4PDwlMhUw/vglkJ5HPwq+rxPbcbZNn7eKs2ZMDnf8gl3xDNXA5CUPVORC2
+ lLbQENp+UPwq6pOyoSQxFODSdwOznB/qWrHOw4K2zD60QtUJTPyJdOltfGdjOhqXCiBAvS1jETH
+ 92WkAMl2cuH/wjiQk1g8KSaTdrnd4xbqy6Q==
+X-Google-Smtp-Source: AGHT+IFjC5ilZU2AnzoM2lcWxZwG8Acxcl60+TH+ujeKwFLYuCiHmUaYOUXzFNMIS+MNiuIbyLe3Ng==
+X-Received: by 2002:a17:903:13ce:b0:235:81c7:3c45 with SMTP id
+ d9443c01a7336-23dee0de80cmr196832965ad.46.1752500272855; 
+ Mon, 14 Jul 2025 06:37:52 -0700 (PDT)
+Received: from grind ([177.170.118.252]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23de4285a22sm92883555ad.22.2025.07.14.06.37.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Jul 2025 06:37:52 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH] target/riscv: do not call GETPC() in check_ret_from_m_mode()
+Date: Mon, 14 Jul 2025 10:37:39 -0300
+Message-ID: <20250714133739.1248296-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 4/6] target/arm: Add FEAT_TCR2
-To: Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20250711140828.1714666-1-gustavo.romero@linaro.org>
- <20250711140828.1714666-5-gustavo.romero@linaro.org>
- <21bfbfaa-f0df-413d-bad6-b69688ac381a@linaro.org>
- <65e20340-e164-4424-bc60-52d78b9a17b8@linaro.org>
- <f18a652e-b64c-4a33-bd60-63dfa93ffdbd@linaro.org>
-Content-Language: en-US
-From: Gustavo Romero <gustavo.romero@linaro.org>
-In-Reply-To: <f18a652e-b64c-4a33-bd60-63dfa93ffdbd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,39 +97,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
+GETPC() should always be called from the top level helper, e.g. the
+first helper that is called by the translation code. We stopped doing
+that in commit 3157a553ec, and then we introduced problems when
+unwinding the exceptions being thrown by helper_mret(), as reported by
+[1].
 
-On 7/14/25 09:58, Richard Henderson wrote:
-> On 7/14/25 00:21, Pierrick Bouvier wrote:
->> On 7/13/25 2:59 PM, Richard Henderson wrote:
->>> On 7/11/25 08:08, Gustavo Romero wrote:
->>>> Add FEAT_TCR2, which introduces the TCR2_EL1 and TCR2_EL2 registers.
->>>> These registers are extensions of the TCR_ELx registers and provide
->>>> top-level control of the EL10 and EL20 translation regimes.
->>>>
->>>> Since the bits in these registers depend on other CPU features, and only
->>>> FEAT_MEC is supported at the moment, the FEAT_TCR2 only implements the
->>>> AMEC bits for now.
->>>>
->>>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
->>> This causes a regression in tests/functional/test_aarch64_device_passthrough.py, by
->>> continually trapping on an access to TCR2_EL1 while the HCRX_EL2 enable bit is not set.
->>>
->>> Unlike the similar SCTRL2 failure, it's not 100% clear to me how the guest and nested
->>> guest kernels are related.  But it is clear that the outer kernel does not does not
->>> support TCR2_EL1 (and also doesn't manipulate ID_AA64MMFR3_EL1 to hide FEAT_TCR2), but the
->>> nested guest kernel does support TCR2_EL1.
->>>
->>
->> The same kernel is used for host and guest.
->> Maybe it's related to kvm support?
-> 
-> Oops, no, the patch fails to enable HCRX_TCR2EN in hcrx_write or SCR_TCR2EN in scr_write.
-> The same is true for the previous patch with HCRX_SCTLR2EN and SCR_SCTLR2EN.
+Call GETPC() at the top level helper and pass the value along.
 
-Thanks for the investigation. I'm just taking a look at it right now. I'll send a v8 fixing it.
+[1] https://gitlab.com/qemu-project/qemu/-/issues/3020
 
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: 3157a553ec ("target/riscv: Add Smrnmi mnret instruction")
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/3020
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/op_helper.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-Cheers,
-Gustavo
+diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+index 15460bf84b..110292e84d 100644
+--- a/target/riscv/op_helper.c
++++ b/target/riscv/op_helper.c
+@@ -355,21 +355,22 @@ target_ulong helper_sret(CPURISCVState *env)
+ }
+ 
+ static void check_ret_from_m_mode(CPURISCVState *env, target_ulong retpc,
+-                                  target_ulong prev_priv)
++                                  target_ulong prev_priv,
++                                  uintptr_t ra)
+ {
+     if (!(env->priv >= PRV_M)) {
+-        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
++        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, ra);
+     }
+ 
+     if (!riscv_cpu_allow_16bit_insn(&env_archcpu(env)->cfg,
+                                     env->priv_ver,
+                                     env->misa_ext) && (retpc & 0x3)) {
+-        riscv_raise_exception(env, RISCV_EXCP_INST_ADDR_MIS, GETPC());
++        riscv_raise_exception(env, RISCV_EXCP_INST_ADDR_MIS, ra);
+     }
+ 
+     if (riscv_cpu_cfg(env)->pmp &&
+         !pmp_get_num_rules(env) && (prev_priv != PRV_M)) {
+-        riscv_raise_exception(env, RISCV_EXCP_INST_ACCESS_FAULT, GETPC());
++        riscv_raise_exception(env, RISCV_EXCP_INST_ACCESS_FAULT, ra);
+     }
+ }
+ static target_ulong ssdbltrp_mxret(CPURISCVState *env, target_ulong mstatus,
+@@ -394,8 +395,9 @@ target_ulong helper_mret(CPURISCVState *env)
+     target_ulong retpc = env->mepc & get_xepc_mask(env);
+     uint64_t mstatus = env->mstatus;
+     target_ulong prev_priv = get_field(mstatus, MSTATUS_MPP);
++    uintptr_t ra = GETPC();
+ 
+-    check_ret_from_m_mode(env, retpc, prev_priv);
++    check_ret_from_m_mode(env, retpc, prev_priv, ra);
+ 
+     target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV) &&
+                              (prev_priv != PRV_M);
+@@ -443,8 +445,9 @@ target_ulong helper_mnret(CPURISCVState *env)
+     target_ulong retpc = env->mnepc;
+     target_ulong prev_priv = get_field(env->mnstatus, MNSTATUS_MNPP);
+     target_ulong prev_virt;
++    uintptr_t ra = GETPC();
+ 
+-    check_ret_from_m_mode(env, retpc, prev_priv);
++    check_ret_from_m_mode(env, retpc, prev_priv, ra);
+ 
+     prev_virt = get_field(env->mnstatus, MNSTATUS_MNPV) &&
+                 (prev_priv != PRV_M);
+-- 
+2.50.1
+
 
