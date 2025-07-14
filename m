@@ -2,77 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098A8B03ADB
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB217B03AF5
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:38:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubFVp-00020b-Bx; Mon, 14 Jul 2025 05:30:18 -0400
+	id 1ubFch-0006GN-Cn; Mon, 14 Jul 2025 05:37:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ubF4Q-0002fV-19
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:02:01 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ubF4J-0006MZ-G0
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:01:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752483712; x=1784019712;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=99hMgsn9Zr5FPJ+0ltOVKRkMbioyCxp4W0dXfSeNFGg=;
- b=Io0QUDRo8PPjkl0az0O69dYE5uvYgRg38TYCDZLG744nfmIm9bdzfbB3
- NkPoBAZZ2IYHkWHr8anc1gMzT9FUGe81Bj/NsN//NLBMEvpzHUVPuL5+Q
- /9JHlhtQvi0KPWmoPnTE4szoDba8lzJytQ811LdIIdhfskL+Fe3LBgB7k
- 479E+CCnOshBT7CV1jq6mzjDSAIk5hoUdnTkaHNawtYguB/nNxMpwccom
- 4KgPovd0KQPAXu/8cyvDHXQwHofmVjEXuIdF5Wz3xiR4un+UBOH8NcIVG
- bYNos99Kdn7RoXE+PrzkqVGkfaXejr2eA8LMzD6YbKgGYkp2kbTFyt9+k w==;
-X-CSE-ConnectionGUID: kEd99RLzSoiehXjeoBAzVw==
-X-CSE-MsgGUID: cLTILOZSTsafIPRr2SsagA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58438155"
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="58438155"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 02:01:46 -0700
-X-CSE-ConnectionGUID: 5h7PTHTuSJaBKuO11dMocA==
-X-CSE-MsgGUID: sa+f3xMXSOSQaWROpKxtFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="194083720"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 14 Jul 2025 02:01:44 -0700
-Date: Mon, 14 Jul 2025 17:23:13 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Ewan Hai <ewanhai-oc@zhaoxin.com>, Tao Su <tao1.su@intel.com>,
- Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
- qemu-devel@nongnu.org, Tao Su <tao1.su@linux.intel.com>
-Subject: Re: [PATCH v2 2/7] i386/cpu: Mark CPUID 0x80000008 ECX bits[0:7] &
- [12:15] as reserved for Intel/Zhaoxin
-Message-ID: <aHTMgdePYYSYzsUJ@intel.com>
-References: <20250714080859.1960104-1-zhao1.liu@intel.com>
- <20250714080859.1960104-3-zhao1.liu@intel.com>
- <42817b7d-445f-4940-9070-e3c939a6e90f@intel.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1ubFWa-0002Jd-T4
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:31:06 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1ubFWX-0003pm-VV
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:31:04 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8DxbKxMznRosCUpAQ--.20807S3;
+ Mon, 14 Jul 2025 17:30:52 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowJAxE+RKznRorKIWAA--.57786S3;
+ Mon, 14 Jul 2025 17:30:52 +0800 (CST)
+Subject: Re: [PATCH v5 08/11] hw/loongarch: Implement avec set irq
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com
+References: <20250711085915.3042395-1-gaosong@loongson.cn>
+ <20250711085915.3042395-9-gaosong@loongson.cn>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <d27adfdf-ef1e-e46c-3af0-3ceb731dc64f@loongson.cn>
+Date: Mon, 14 Jul 2025 17:29:12 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <42817b7d-445f-4940-9070-e3c939a6e90f@intel.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250711085915.3042395-9-gaosong@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJAxE+RKznRorKIWAA--.57786S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7tr1UKr45Jw1UKF15ZF48KrX_yoW8tryDpa
+ n7AFn0gr4UtF4fZasxG345uwn8Jrs2gry2qanF9FZakF1qgw18WrWkJwnrJF40k347Wryj
+ qrn5Ga13W3WUJrgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07URa0PU
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.992,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,51 +80,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> >           if (threads_per_pkg > 1) {
-> >               /*
-> > -             * Bits 15:12 is "The number of bits in the initial
-> > -             * Core::X86::Apic::ApicId[ApicId] value that indicate
-> > -             * thread ID within a package".
-> > -             * Bits 7:0 is "The number of threads in the package is NC+1"
-> > +             * Don't emulate Bits [7:0] & Bits [15:12] for Intel/Zhaoxin, since
-> > +             * they're using 0x1f leaf.
-> >                */
-> > -            *ecx = (apicid_pkg_offset(topo_info) << 12) |
-> > -                   (threads_per_pkg - 1);
-> > +            if (cpu->vendor_cpuid_only_v2 &&
-> > +                (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-> > +                    *ecx = 0;
-> > +            } else {
-> > +                /*
-> > +                 * Bits 15:12 is "The number of bits in the initial
-> > +                 * Core::X86::Apic::ApicId[ApicId] value that indicate
-> > +                 * thread ID within a package".
-> > +                 * Bits 7:0 is "The number of threads in the package is NC+1"
-> > +                 */
-> > +                *ecx = (apicid_pkg_offset(topo_info) << 12) |
-> > +                       (threads_per_pkg - 1);
-> > +            }
-> >           } else {
-> >               *ecx = 0;
-> >           }
+
+
+On 2025/7/11 下午4:59, Song Gao wrote:
+> Implement avec set irq and update CSR_MSIS.
 > 
-> I prefer below:
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   hw/intc/loongarch_avec.c | 34 ++++++++++++++++++++++++++++++++--
+>   1 file changed, 32 insertions(+), 2 deletions(-)
 > 
-> 	if ((cpu->vendor_cpuid_only_v2 &&
-> 	    (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) ||
-> 	    threads_per_pkg < 2) {
-> 		*ecx = 0;
-> 	} else {
-> 		...
-> 	}
+> diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
+> index 1f9f376898..af6c75c4a9 100644
+> --- a/hw/intc/loongarch_avec.c
+> +++ b/hw/intc/loongarch_avec.c
+> @@ -16,6 +16,12 @@
+>   #include "migration/vmstate.h"
+>   #include "trace.h"
+>   #include "hw/qdev-properties.h"
+> +#include "target/loongarch/cpu.h"
+> +
+> +/* msg addr field */
+> +FIELD(MSG_ADDR, IRQ_NUM, 4, 8)
+> +FIELD(MSG_ADDR, CPU_NUM, 12, 8)
+> +FIELD(MSG_ADDR, FIX, 28, 12)
+>   
+>   static uint64_t loongarch_avec_mem_read(void *opaque,
+>                                           hwaddr addr, unsigned size)
+> @@ -23,12 +29,36 @@ static uint64_t loongarch_avec_mem_read(void *opaque,
+>       return 0;
+>   }
+>   
+> +static void avec_set_irq(LoongArchAVECState *s, int cpu_num, int irq_num, int level)
+> +{
+> +    MachineState *machine = MACHINE(qdev_get_machine());
+> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
+> +    const CPUArchIdList *id_list = NULL;
+> +    CPUState *cpu;
+> +    CPULoongArchState *env;
+> +
+> +    assert(mc->possible_cpu_arch_ids(machine));
+> +    id_list = mc->possible_cpu_arch_ids(machine);
+> +    cpu = id_list->cpus[cpu_num].cpu;
+> +    env = &LOONGARCH_CPU(cpu)->env;
+> +
+> +    if (level) {
+> +        set_bit(irq_num, &env->CSR_MSGIS[irq_num / 64]);
+> +    }
+> +    qemu_set_irq(s->cpu[cpu_num].parent_irq, level);
+> +}
+> +
+>   static void loongarch_avec_mem_write(void *opaque, hwaddr addr,
+>                                        uint64_t val, unsigned size)
+>   {
+> -    return;
+> -}
+> +    int irq_num, cpu_num = 0;
+> +    LoongArchAVECState *s = LOONGARCH_AVEC(opaque);
+> +    uint64_t msg_addr = addr + VIRT_AVEC_BASE;
+>   
+> +    cpu_num = FIELD_EX64(msg_addr, MSG_ADDR, CPU_NUM);
+Here is physical cpuid rather than logic cpu index. We need convert 
+physical cpuid to logic cpu index.
 
-Yes, this works, but I would like to keep the vendor-related checks
-separate from other logic - to avoid mixing them together.
-
-Then it makes the code logic clearer and makes it easier for future
-changes.
-
-Thanks for your review!
-Zhao
+Regards
+Bibo Mao
+> +    irq_num = FIELD_EX64(msg_addr, MSG_ADDR, IRQ_NUM);
+> +    avec_set_irq(s, cpu_num, irq_num, 1);
+> +}
+>   
+>   static const MemoryRegionOps loongarch_avec_ops = {
+>       .read = loongarch_avec_mem_read,
+> 
 
 
