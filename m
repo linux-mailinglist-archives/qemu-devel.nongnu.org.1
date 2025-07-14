@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D791FB04776
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 20:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 457DDB0477A
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 20:44:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubO5j-0002Mf-Ef; Mon, 14 Jul 2025 14:39:55 -0400
+	id 1ubO9X-00065m-20; Mon, 14 Jul 2025 14:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1ubN2U-0001D1-MV
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 13:32:31 -0400
+ id 1ubN33-0001W4-7v
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 13:33:13 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1ubN2R-0006A8-U9
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 13:32:30 -0400
+ id 1ubN30-0006Bp-CA
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 13:33:04 -0400
 Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bgq6w60QTz6L4wZ;
- Tue, 15 Jul 2025 01:28:56 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bgqBB1DBMz6M4KV;
+ Tue, 15 Jul 2025 01:31:46 +0800 (CST)
 Received: from frapeml500003.china.huawei.com (unknown [7.182.85.28])
- by mail.maildlp.com (Postfix) with ESMTPS id 5BFBC14038F;
- Tue, 15 Jul 2025 01:32:24 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id E23621402ED;
+ Tue, 15 Jul 2025 01:32:58 +0800 (CST)
 Received: from a2303103017.china.huawei.com (10.81.206.233) by
  frapeml500003.china.huawei.com (7.182.85.28) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 14 Jul 2025 19:32:23 +0200
+ 15.1.2507.39; Mon, 14 Jul 2025 19:32:57 +0200
 To: <qemu-devel@nongnu.org>, <mst@redhat.com>
 CC: <anisinha@redhat.com>, <gaosong@loongson.cn>, <imammedo@redhat.com>,
  <jiaxun.yang@flygoat.com>, <jonathan.cameron@huawei.com>,
  <linuxarm@huawei.com>, <maobibo@loongson.cn>, <peter.maydell@linaro.org>,
  <prime.zeng@hisilicon.com>, <shameerali.kolothum.thodi@huawei.com>,
  <wangyanan55@huawei.com>, <yangyicong@hisilicon.com>
-Subject: [PATCH v7 1/4] tests: virt: Allow changes to PPTT test table
-Date: Mon, 14 Jul 2025 18:31:43 +0100
-Message-ID: <20250714173146.511-2-alireza.sanaee@huawei.com>
+Subject: [PATCH v7 2/4] hw/acpi/aml-build: Set identical implementation flag
+ for PPTT processor nodes
+Date: Mon, 14 Jul 2025 18:31:44 +0100
+Message-ID: <20250714173146.511-3-alireza.sanaee@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250714173146.511-1-alireza.sanaee@huawei.com>
 References: <20250714173146.511-1-alireza.sanaee@huawei.com>
@@ -76,31 +77,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Yicong Yang <yangyicong@hisilicon.com>
 
-Allow changes to PPTT test table, preparing for adding identical
-implementation flags support and for adding a root node for all
-the system.
+Per ACPI 6.5 Table 5.158: Processor Structure Flags, the identical
+implementation flag indicates whether all the children processors
+of this node share the same identical implementation revision.
+Currently Linux support parsing this field [1] and maybe used to
+identify the heterogeneous platform. Since qemu only support
+homogeneous emulation, set this flag for all the processor node
+to indicates the facts when building the PPTT table. Node leaf
+is an exception since spec says this flag should be ignored
+on leaf nodes by OSPM.
 
-This is related to both loongarch64 and aarch64.
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/pptt.c?h=v6.11-rc1#n810
 
 Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/acpi/aml-build.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..5c3ff47748 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,6 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/aarch64/virt/PPTT",
-+"tests/data/acpi/aarch64/virt/PPTT.acpihmatvirt",
-+"tests/data/acpi/aarch64/virt/PPTT.topology",
-+"tests/data/acpi/loongarch64/virt/PPTT",
-+"tests/data/acpi/loongarch64/virt/PPTT.topology",
+diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
+index cb817a0f31..9b9be4ea0f 100644
+--- a/hw/acpi/aml-build.c
++++ b/hw/acpi/aml-build.c
+@@ -2172,7 +2172,8 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
+             core_id = -1;
+             socket_offset = table_data->len - pptt_start;
+             build_processor_hierarchy_node(table_data,
+-                (1 << 0), /* Physical package */
++                (1 << 0) | /* Physical package */
++                (1 << 4), /* Identical Implementation */
+                 0, socket_id, NULL, 0);
+         }
+ 
+@@ -2183,7 +2184,8 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
+                 core_id = -1;
+                 cluster_offset = table_data->len - pptt_start;
+                 build_processor_hierarchy_node(table_data,
+-                    (0 << 0), /* Not a physical package */
++                    (0 << 0) | /* Not a physical package */
++                    (1 << 4), /* Identical Implementation */
+                     socket_offset, cluster_id, NULL, 0);
+             }
+         } else {
+@@ -2201,7 +2203,8 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
+                 core_id = cpus->cpus[n].props.core_id;
+                 core_offset = table_data->len - pptt_start;
+                 build_processor_hierarchy_node(table_data,
+-                    (0 << 0), /* Not a physical package */
++                    (0 << 0) | /* Not a physical package */
++                    (1 << 4), /* Identical Implementation */
+                     cluster_offset, core_id, NULL, 0);
+             }
+ 
 -- 
 2.43.0
 
