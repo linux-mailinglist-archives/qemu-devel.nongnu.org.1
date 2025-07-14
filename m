@@ -2,100 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6818FB04214
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 16:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC66B04282
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 17:05:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubKQm-0003v7-5o; Mon, 14 Jul 2025 10:45:24 -0400
+	id 1ubKjo-0001Mm-IO; Mon, 14 Jul 2025 11:05:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubIvt-0004ex-Ej
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:09:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubIvq-0005WH-E7
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:09:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752498557;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=d9N0wITcK5nFg/kSgon6hwyI1m1FIJrWlz9I+YSu+kE=;
- b=PXIiL3xHw4kAfdhNhXB/CbXkoPypLlU78sarMsyTNDdTpc0QCTD+/6bQ41i9fdENnjTSRm
- QVg9noOcsqhUtVKem1XhDe7MyT2L9Xa6XhAhu8lNCQIN/jje8Jro6iUZZmyY4UNdYHEPDK
- 6iHEN4MmbgD26uODK+EiMgJ2GnHvnkQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-267-uxumEz_iPyO7L4SfG_E39w-1; Mon, 14 Jul 2025 09:09:15 -0400
-X-MC-Unique: uxumEz_iPyO7L4SfG_E39w-1
-X-Mimecast-MFC-AGG-ID: uxumEz_iPyO7L4SfG_E39w_1752498555
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a52bfda108so2163966f8f.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 06:09:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1ubJL9-0003Rn-TF
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:35:32 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1ubJL2-0001yn-LS
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 09:35:31 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-747c2cc3419so3494969b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 06:35:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1752500121; x=1753104921; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+sKk50Mo4QGxo3A1JEraQgJ7dZKu6iCqoahIO2s8CZw=;
+ b=TLVzrpbz2cierE1ts0dW0in7fw9CTqaMJwW3iQiyuxXvxsKE5N1iWSxr4uV4n6emLD
+ 68CBPOMHx6Jg7KDdQ2qb4UHhrujMYq3G3Rf8KETqOuQNRnYlzbZ9O458TaHQ1CGzJp98
+ yOah6vjRDTYpGTTTYDYvIxWS2bICrjhToYXhfiZ1zazZBF3KzZIPBKJJBNqGFEezx3uo
+ YRA5bKHJZOgMt0GRSS3rWWoVq5c78PXRcHceKsFdTltfzRKCAvoC/i3EkuJnQULKfRIN
+ 0k0JvJ6A/KP0NU1MJDyYeGcSczO3iSaNj2VPJLpE1VTnsQ7MRxSRLHcXUaiLfFpKP2/D
+ 9R3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752498554; x=1753103354;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=d9N0wITcK5nFg/kSgon6hwyI1m1FIJrWlz9I+YSu+kE=;
- b=syEtA0JEoMPd8LcPN52dQdz3XVKrQWc3uTvqZDlt+FwH264JeEuh6tqm4zO6fVP8Kr
- z2jRfOaKWVnFtmx+AZquQq4j85a2zhtpUg+7YvLWV3Ll0qRMWwUzva4+v/WCkbe+Ccsl
- RRMznyAVZ/lj5v99q68t++GBYXNeiicyTd3pWePdAjdu940bKmrov9jC2TndJWA2QVJS
- WcUSjwxaPADQPI5P3iOn2W4YOwSku12Ut/suifRXTj8N2dwjmc+46BeQa+bbmWzbu1G4
- KWs3gFTMcD1rvTnwjUgJXjir5nZRY5wJog/ABj5XyG62lTZbkrzK6zUFHF1kbfAWsjJW
- 9nvQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXq25ZWHwNJ+2Uct3BdQXAwuPWKoOnw3r7+020JFjWxRKPFU02XlVOs5oQPf2jF35omVPuq1JBCaA0j@nongnu.org
-X-Gm-Message-State: AOJu0Yy2SwPMfXBBoANdrSQuoA0kkJ9gsPny9AAiQimvaaWsgLdAsIxG
- Qe5SsQ32d5ko8WFBZXDPgsGQhGcT8ucgQVQPy5lL6HjbdABUNlxis0nXJNhG0g0K2yq4soFxcVC
- F4KuUmKFgB7YyiRfqcJAHGB4jrfGYAQCSc0M3+9O4BLQtvo7E1xk3dh7N
-X-Gm-Gg: ASbGncv7cR+RHKdBCi32z9SfTuBS9ICLAdIuphFwfsb/FH5Ebpxxra2sXajQfHgSySV
- ZWpLKHv9tH7tLB4byUj4zMc6utReoqhj1db5YoYcaqSo0hBTTz5IaUQIp4jQWzFXsdS663Gvwoh
- 5WR/CpMOXLUjhxqRrptWGwQqEvYCskeehJzOzC+bLozeC4dq0lDzSD2YvkoVQ9ohNh0WWUlqc8F
- iUnfbwC16lS7twXftxp7SqbWcDsjyySz39zgRfuOubdTLiCmyMzpNhjtOSGJ9CdLrGvio2/BUIN
- 1DbM2xWwC1uGYUO0uHEbnZqLrCGuK1+1
-X-Received: by 2002:a05:6000:144b:b0:3b2:ef53:5818 with SMTP id
- ffacd0b85a97d-3b5f351e561mr10086504f8f.5.1752498554359; 
- Mon, 14 Jul 2025 06:09:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHoQD9Ho3k1I73zw5t5mB19KW2sR6IMwILqGPakeR1nAQlcLLjYOj1XSNqX+jCnF2w/W+FRLQ==
-X-Received: by 2002:a05:6000:144b:b0:3b2:ef53:5818 with SMTP id
- ffacd0b85a97d-3b5f351e561mr10086480f8f.5.1752498553876; 
- Mon, 14 Jul 2025 06:09:13 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
+ d=1e100.net; s=20230601; t=1752500121; x=1753104921;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+sKk50Mo4QGxo3A1JEraQgJ7dZKu6iCqoahIO2s8CZw=;
+ b=L0gODj3Yb1f766HP1i2JBq+7fr8pGA0r90lI8Y1N/taJpmb0aWQSmYIePwy44ZpA6O
+ vlzW/z9du4ANizPgT6CpT00G56fOIdmBZHeHkh7G2bkH1vFmUXUbSiUWxb83NW8hZER4
+ R4jI4WHn3cWBtS5xsbpp9LgscDTAXvEjONRbEyTRo9WWlEeulTLHA3rAmC7rvvOvq+rW
+ Xc9bZjdE0gLxLIfK0Jbzf2KvFn//ClDZaXNO4IjmjogwJbTlNokcaPe+0W6Dv7Vb1/XY
+ a7idiUZZR/1NO/fF49KLHSr7WOfw1RNOHsRuYt8ADsGt5FhFnMdoK/Ks1JC/QdwYfFgE
+ Xznw==
+X-Gm-Message-State: AOJu0YwS4yJOSaKGlo6QhKl8aVywlIzH1i3u7atKNANQl0nhQ0fDjLwN
+ i6eLikHO5C4MEfYPFw3HEhzI6NrR0SS5t5wVS6G5oScNhofbnqviHhtAob1G18PgJvJ3an/mEA8
+ KkvyW
+X-Gm-Gg: ASbGncuej0euOTJsoCHHqJAl9d9cmoucBZxX6e62U+GdxjoNXyeQ93iZF3if8BHie1n
+ a25xPH7Zl1mnenPNqblLTnWpuFV4xG3e0hWoARWJOHQLzcKmUkmAw2Cz/vTGTkKPE5g0lV1WZqD
+ u1lJZrX/tOP+wTxN/+LXzUjZH7WUTqVkliSmSK3pHfFQ5Tuf33yJL577uVJwnu4VDmlcsygENZ7
+ QYA6fMPY+txCMKjFxNpCNFdexZwiIduC0pmhXELFS2ovDw/0z1tOWaWahlm5RDwM+HlPVRWCnRK
+ 0RBlWILzsQPXbLd+ccwzLfuMjwUVs/bwQCyEdlusoLY952eB1QebeySV4W8SOOAwwL89p4DlNfP
+ EzfnEeo91n0JS14SYhIYzHiXq4zMFzsdUmXmQVg==
+X-Google-Smtp-Source: AGHT+IGS/4lFxPF9rwRlRd16lyhSm3s12ssZ3HK6jYY2yEo16zTSS4YfcrefEmt8DbJKDjAxnh5nAg==
+X-Received: by 2002:a05:6a00:2d12:b0:748:e4f6:ff31 with SMTP id
+ d2e1a72fcca58-74ee129846cmr22352316b3a.8.1752500121018; 
+ Mon, 14 Jul 2025 06:35:21 -0700 (PDT)
+Received: from [192.168.68.110] ([177.170.118.252])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45624651a09sm1472665e9.12.2025.07.14.06.09.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 06:09:13 -0700 (PDT)
-Date: Mon, 14 Jul 2025 09:09:10 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Alireza Sanaee <alireza.sanaee@huawei.com>
-Cc: anisinha@redhat.com, imammedo@redhat.com, jonathan.cameron@huawei.com,
- linuxarm@huawei.com, peter.maydell@linaro.org,
- prime.zeng@hisilicon.com, qemu-devel@nongnu.org,
- shameerali.kolothum.thodi@huawei.com, wangyanan55@huawei.com,
- yangyicong@hisilicon.com, maobibo@loongson.cn, gaosong@loongson.cn,
- jiaxun.yang@flygoat.com
-Subject: Re: [PATCH v6 3/4] hw/acpi/aml-build: Build a root node in the PPTT
- table
-Message-ID: <20250714090807-mutt-send-email-mst@kernel.org>
-References: <20250604115233.1234-1-alireza.sanaee@huawei.com>
- <20250604115233.1234-4-alireza.sanaee@huawei.com>
+ d2e1a72fcca58-74eb9f5c7f7sm11005711b3a.142.2025.07.14.06.35.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 14 Jul 2025 06:35:20 -0700 (PDT)
+Message-ID: <24b7c6e7-4594-4978-8e00-e40d72bccb14@ventanamicro.com>
+Date: Mon, 14 Jul 2025 10:35:16 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250604115233.1234-4-alireza.sanaee@huawei.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/riscv: set mtval = 0 for illegal_inst if no opcode
+ avail
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
+ richard.henderson@linaro.org
+References: <20250714120822.1243870-1-dbarboza@ventanamicro.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20250714120822.1243870-1-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,69 +103,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 04, 2025 at 12:52:32PM +0100, Alireza Sanaee wrote:
-> From: Yicong Yang <yangyicong@hisilicon.com>
+Hi,
+
+
+Please disregard this patch. Richard taught me how to fix the unwinding instead.
+
+
+Thanks,
+
+Daniel
+
+On 7/14/25 9:08 AM, Daniel Henrique Barboza wrote:
+> There is no guarantee that we'll able to get a proper opcode to put into
+> mtval for illegal inst exceptions, as demonstrated in [1].
 > 
-> Currently we build the PPTT starting from the socket node and each
-> socket will be a separate tree. For a multi-socket system it'll
-> be hard for the OS to know the whole system is homogeneous or not
-> (actually we're in the current implementation) since no parent node
-> to telling the identical implementation informentation. Add a
-> root node for indicating this.
+> The 'proper opcode' would be retrieved via unwinding the CPU state (via
+> cpu_restore_state(), down to riscv_restore_state_to_opc()) after
+> riscv_raise_exception(). There are cases where that doesn't happen:
+> we'll see a failure in cpu_restore_state(), where in_code_gen_buffer()
+> will return 'false' even for a 'host_pc' that is retrieved via GETPC()
+> and not in an instruction fetch context.
 > 
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
+> Hopefully we don't have to always provide mtval in these cases. The
+> RISC-V priv ISA says that mtval for illegal_inst exceptions are
+> optional, and the faulting instruction address will be reported in
+> env->mepc.
+> 
+> The ISA also says that we can set mtval to ILEN/MXLEN bits of the
+> faulting insn address, and we could do that when we're not able to fetch
+> the opcode. But that would add inconsistency in how we behave since
+> mtval would have either the opcode or the insn addr, and no easy way of
+> knowing which one we have, and software would need to check it with mepc
+> regardless. Zeroing mtval when we don't have the opcode is clearer.
+> 
+> And yes, zeroing mtval due to an unwind failure isn't ideal either, but
+> it's less worse than reporting a wrong mtval. Until we figure out a way
+> to fix the unwinding in this case, let's clear mtval and let software
+> know that it must find the faulting opcode via other means.
+> 
+> [1] https://gitlab.com/qemu-project/qemu/-/issues/3020
+> 
+> Closes: https://gitlab.com/qemu-project/qemu/-/issues/3020
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 > ---
->  hw/acpi/aml-build.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
+>   target/riscv/cpu_helper.c |  5 +++++
+>   target/riscv/op_helper.c  | 21 +++++++++++++++++++++
+>   2 files changed, 26 insertions(+)
 > 
-> diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-> index 560cee12a2..76a4157a18 100644
-> --- a/hw/acpi/aml-build.c
-> +++ b/hw/acpi/aml-build.c
-> @@ -2153,12 +2153,25 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
->      int64_t socket_id = -1, cluster_id = -1, core_id = -1;
->      uint32_t socket_offset = 0, cluster_offset = 0, core_offset = 0;
->      uint32_t pptt_start = table_data->len;
-> +    uint32_t root_offset;
->      int n;
->      AcpiTable table = { .sig = "PPTT", .rev = 2,
->                          .oem_id = oem_id, .oem_table_id = oem_table_id };
->  
->      acpi_table_begin(&table, table_data);
->  
-> +    /*
-> +     * Build a root node for all the processor nodes. Otherwise when
-> +     * building a multi-socket system each socket tree is separated
-> +     * and will be hard for the OS like Linux to know whether the
-> +     * system is homogeneous.
-> +     */
-> +    root_offset = table_data->len - pptt_start;
-> +    build_processor_hierarchy_node(table_data,
-> +        (1 << 0) | /* Physical package */
-> +        (1 << 4), /* Identical Implementation */
-> +        0, 0, NULL, 0);
+> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> index 3479a62cc7..1cd1849a1d 100644
+> --- a/target/riscv/cpu_helper.c
+> +++ b/target/riscv/cpu_helper.c
+> @@ -2243,6 +2243,11 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+>               break;
+>           case RISCV_EXCP_ILLEGAL_INST:
+>           case RISCV_EXCP_VIRT_INSTRUCTION_FAULT:
+> +            /*
+> +             * Note: we'll set tval = 0 for illegal_inst cases
+> +             * where we failed to unwind and to get the proper
+> +             * opcode. See riscv_raise_exception() for more info.
+> +             */
+>               tval = env->bins;
+>               break;
+>           case RISCV_EXCP_BREAKPOINT:
+> diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+> index 15460bf84b..930981a076 100644
+> --- a/target/riscv/op_helper.c
+> +++ b/target/riscv/op_helper.c
+> @@ -40,6 +40,27 @@ G_NORETURN void riscv_raise_exception(CPURISCVState *env,
+>                             env->pc);
+>   
+>       cs->exception_index = exception;
 > +
->      /*
->       * This works with the assumption that cpus[n].props.*_id has been
->       * sorted from top to down levels in mc->possible_cpu_arch_ids().
-> @@ -2175,7 +2188,7 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
->              build_processor_hierarchy_node(table_data,
->                  (1 << 0) | /* Physical package */
->                  (1 << 4), /* Identical Implementation */
-> -                0, socket_id, NULL, 0);
-> +                root_offset, socket_id, NULL, 0);
->          }
->  
->          if (mc->smp_props.clusters_supported && mc->smp_props.has_clusters) {
-
-
-This function is also used by loongarch64, but you do not update the
-loongarch64 expected files:
-https://gitlab.com/mstredhat/qemu/-/jobs/10672661860
-
-> -- 
-> 2.43.0
+> +    /*
+> +     * There is no guarantee that we'll be able to unwind
+> +     * and set env->bins (the opcode for the current PC)
+> +     * properly via the cpu_restore_state() path. The RISC-V
+> +     * priv ISA says that:
+> +     *
+> +     * "The mtval register can optionally also be used to return
+> +     * the faulting instruction bits on an illegal-instruction
+> +     * exception (mepc points to the faulting instruction in
+> +     * memory)."
+> +     *
+> +     * It's not ideal to set mtval != 0 in some cases and zero
+> +     * in others due to unwind failures, but it's way better
+> +     * than to set mtval to a bogus env->bins opcode from
+> +     * the last successful unwinding.
+> +     */
+> +    if (cs->exception_index == RISCV_EXCP_ILLEGAL_INST) {
+> +        env->bins = 0;
+> +    }
+> +
+>       cpu_loop_exit_restore(cs, pc);
+>   }
+>   
 
 
