@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8AE3B04605
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 19:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B08B04616
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 19:05:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubMWf-0000bh-F7; Mon, 14 Jul 2025 12:59:37 -0400
+	id 1ubMYQ-0003h3-M6; Mon, 14 Jul 2025 13:01:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zenghui.yu@linux.dev>)
- id 1ubLcw-0005Za-Lv
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 12:02:09 -0400
-Received: from out-184.mta0.migadu.com ([2001:41d0:1004:224b::b8])
+ id 1ubLd0-0005am-NS
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 12:02:19 -0400
+Received: from out-188.mta0.migadu.com ([2001:41d0:1004:224b::bc])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zenghui.yu@linux.dev>)
- id 1ubLcu-0008PU-1W
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 12:02:02 -0400
+ id 1ubLcx-0008Ps-85
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 12:02:06 -0400
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
  include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1752508917;
+ t=1752508921;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tJ1ERHb+C6dy+EReHjSkSbsrkf3SXklGrJ5X9wyIe+s=;
- b=uQrlo3bE8U3DUBsvmVxpCTM+Lrv7GgGOmvXMNqf+oDWGIiBJygGHrUCeUs6zVSnzoa97lJ
- JW+omqcb9nIaEK1PPcgzZmVirc8KvuaUIZrSHxjO7JYsTCdzMQXxwK4bBADhVQybcMFREz
- vitSmjPv9gno/nHpedNb4//W3+Fw/8Y=
+ bh=Yzqv4D1JaiwZdiQ5ubH+STSsZry9b6p+Rg5sjIeFz3c=;
+ b=NaY+nQktSuFT8oZnsNgMU+ScMd/Wqw+MP++/csE3JVEVsedMolGziwTBbchNIhW0Y8S+u7
+ KcgR5XACHCkH3ec/poRbAGbAHd2n8qaZDve5BHq9YepgLpjIdcA7i8EfPHID2hUUu0uPId
+ n4SsvWzVIc43En7XalW7p4ncpd0jqhs=
 From: Zenghui Yu <zenghui.yu@linux.dev>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: agraf@csgraf.de, mads@ynddal.dk, peter.maydell@linaro.org,
  Zenghui Yu <zenghui.yu@linux.dev>
-Subject: [PATCH v2 1/2] hvf: arm: Add permission check in GIC sysreg handlers
-Date: Tue, 15 Jul 2025 00:01:38 +0800
-Message-Id: <20250714160139.10404-2-zenghui.yu@linux.dev>
+Subject: [PATCH v2 2/2] hvf: arm: Emulate ICC_RPR_EL1 accesses properly
+Date: Tue, 15 Jul 2025 00:01:39 +0800
+Message-Id: <20250714160139.10404-3-zenghui.yu@linux.dev>
 In-Reply-To: <20250714160139.10404-1-zenghui.yu@linux.dev>
 References: <20250714160139.10404-1-zenghui.yu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=2001:41d0:1004:224b::b8;
- envelope-from=zenghui.yu@linux.dev; helo=out-184.mta0.migadu.com
+Received-SPF: pass client-ip=2001:41d0:1004:224b::bc;
+ envelope-from=zenghui.yu@linux.dev; helo=out-188.mta0.migadu.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -66,55 +66,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Quoting Peter Maydell:
+Commit a2260983c655 ("hvf: arm: Add support for GICv3") added GICv3 support
+by implementing emulation for a few system registers. ICC_RPR_EL1 was
+defined but not plugged in the sysreg handlers (for no good reason).
 
-" hvf_sysreg_read_cp() and hvf_sysreg_write_cp() do not check the .access
-  field of the ARMCPRegInfo to ensure that they forbid writes to registers
-  that are marked with a .access field that says they're read-only (and
-  ditto reads to write-only registers). "
+Fix it.
 
-Before we add more registers in GIC sysreg handlers, let's get it correct
-by adding the .access checks to hvf_sysreg_read_cp() and
-hvf_sysreg_write_cp(). With that, a sysreg access with invalid permission
-will result in an UNDEFINED exception.
-
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: a2260983c655 ("hvf: arm: Add support for GICv3")
 Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
 ---
-
-I hard-code the @current_el parameter of cp_access_ok() to 1 because
-
-* we only support EL0 and EL1 in HVF, and
-* a GIC sysreg access from EL0 would result in an UNDEF exception which is
-  taken to EL1 (without going back to QEMU for emulation).
-
- target/arm/hvf/hvf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/arm/hvf/hvf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 0c7396ad6f..1db0b77fb6 100644
+index 1db0b77fb6..df556626ce 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -1270,6 +1270,9 @@ static bool hvf_sysreg_read_cp(CPUState *cpu, uint32_t reg, uint64_t *val)
- 
-     ri = get_arm_cp_reginfo(arm_cpu->cp_regs, hvf_reg2cp_reg(reg));
-     if (ri) {
-+        if (!cp_access_ok(1, ri, true)) {
-+            return false;
-+        }
-         if (ri->accessfn) {
-             if (ri->accessfn(env, ri, true) != CP_ACCESS_OK) {
-                 return false;
-@@ -1550,6 +1553,9 @@ static bool hvf_sysreg_write_cp(CPUState *cpu, uint32_t reg, uint64_t val)
-     ri = get_arm_cp_reginfo(arm_cpu->cp_regs, hvf_reg2cp_reg(reg));
- 
-     if (ri) {
-+        if (!cp_access_ok(1, ri, false)) {
-+            return false;
-+        }
-         if (ri->accessfn) {
-             if (ri->accessfn(env, ri, false) != CP_ACCESS_OK) {
-                 return false;
+@@ -1368,6 +1368,7 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint64_t *val)
+     case SYSREG_ICC_IGRPEN0_EL1:
+     case SYSREG_ICC_IGRPEN1_EL1:
+     case SYSREG_ICC_PMR_EL1:
++    case SYSREG_ICC_RPR_EL1:
+     case SYSREG_ICC_SGI0R_EL1:
+     case SYSREG_ICC_SGI1R_EL1:
+     case SYSREG_ICC_SRE_EL1:
+@@ -1685,6 +1686,7 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
+     case SYSREG_ICC_IGRPEN0_EL1:
+     case SYSREG_ICC_IGRPEN1_EL1:
+     case SYSREG_ICC_PMR_EL1:
++    case SYSREG_ICC_RPR_EL1:
+     case SYSREG_ICC_SGI0R_EL1:
+     case SYSREG_ICC_SGI1R_EL1:
+     case SYSREG_ICC_SRE_EL1:
 -- 
 2.34.1
 
