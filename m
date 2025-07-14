@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A68B03B2B
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E979BB03B50
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 11:49:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubFir-0002fd-8f; Mon, 14 Jul 2025 05:43:45 -0400
+	id 1ubFoY-0007jq-NO; Mon, 14 Jul 2025 05:49:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1ubFfn-0001cD-Oi
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:40:35 -0400
+ id 1ubFmx-0006Hs-4u
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:48:02 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1ubFfh-0005Vf-0i
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:40:31 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1ubFmt-0006QF-Qm
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 05:47:58 -0400
 Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8BxjayK0HRoXicpAQ--.52428S3;
- Mon, 14 Jul 2025 17:40:26 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxPOJG0nRonSgpAQ--.44995S3;
+ Mon, 14 Jul 2025 17:47:50 +0800 (CST)
 Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJAxQMKI0HRolqQWAA--.53195S3;
- Mon, 14 Jul 2025 17:40:26 +0800 (CST)
-Subject: Re: [PATCH v5 07/11] hw/loongarch: Implement avec controller imput
- and output pins
+ by front1 (Coremail) with SMTP id qMiowJAxQMJD0nRoHacWAA--.53240S3;
+ Mon, 14 Jul 2025 17:47:50 +0800 (CST)
+Subject: Re: [PATCH v5 09/11] target/loongarch: CPU enable msg interrupts.
 To: Song Gao <gaosong@loongson.cn>
 Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com
 References: <20250711085915.3042395-1-gaosong@loongson.cn>
- <20250711085915.3042395-8-gaosong@loongson.cn>
+ <20250711085915.3042395-10-gaosong@loongson.cn>
 From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <3c7fc540-d6d9-ddcd-fde0-db614b97c6a7@loongson.cn>
-Date: Mon, 14 Jul 2025 17:38:46 +0800
+Message-ID: <9753737d-390a-502c-fed8-24af055380db@loongson.cn>
+Date: Mon, 14 Jul 2025 17:46:10 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20250711085915.3042395-8-gaosong@loongson.cn>
+In-Reply-To: <20250711085915.3042395-10-gaosong@loongson.cn>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJAxQMKI0HRolqQWAA--.53195S3
+X-CM-TRANSID: qMiowJAxQMJD0nRoHacWAA--.53240S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxAryftw43XFyUXr43KFyDurX_yoWrXr1rpF
- WUuFn5Kr1UXFZ7Xwn7Ww15u3Z8Zr1kGFyIga1SkrsakF4DGw18Wr48J39IkFWDC3ykX3Wj
- qFn5Xa13Xa17J3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoW7tr1xJr18AF1DXFyrWF4DAwc_yoW8uF4fpw
+ nrCFyvkrWrKrZFy3Z7J3Z8Gwnxur4fKrs29a13GFy2kF13Xw1jgrykt3s7KFyDC3s5urWI
+ vF1Fyry8u3W5J3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
  sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
  IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAF
- wI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JV
- WxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUcCD7
- UUUUU
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AK
+ xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE
+ 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
+ 0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8P5
+ r7UUUUU==
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
  helo=mail.loongson.cn
 X-Spam_score_int: -38
@@ -84,116 +83,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 2025/7/11 下午4:59, Song Gao wrote:
-> the AVEC controller supports 256*256 irqs input, all the irqs connect CPU INT_AVEC irq
+> when loongarch cpu set irq is INT_AVEC, we need set CSR_ESTAT.MSGINT bit.
 > 
 > Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->   hw/intc/loongarch_avec.c | 20 ++++++++++++++++++++
->   hw/loongarch/virt.c      | 11 +++++++++--
->   target/loongarch/cpu.h   |  3 ++-
->   3 files changed, 31 insertions(+), 3 deletions(-)
+>   target/loongarch/cpu-csr.h |  6 ++++--
+>   target/loongarch/cpu.c     | 10 +++++++++-
+>   2 files changed, 13 insertions(+), 3 deletions(-)
 > 
-> diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
-> index 253bab5461..1f9f376898 100644
-> --- a/hw/intc/loongarch_avec.c
-> +++ b/hw/intc/loongarch_avec.c
-> @@ -38,7 +38,12 @@ static const MemoryRegionOps loongarch_avec_ops = {
+> diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
+> index 4792677086..6ec13d13d1 100644
+> --- a/target/loongarch/cpu-csr.h
+> +++ b/target/loongarch/cpu-csr.h
+> @@ -34,11 +34,13 @@ FIELD(CSR_MISC, ALCL, 12, 4)
+>   FIELD(CSR_MISC, DWPL, 16, 3)
 >   
->   static void loongarch_avec_realize(DeviceState *dev, Error **errp)
->   {
-> +    LoongArchAVECState *s = LOONGARCH_AVEC(dev);
->       LoongArchAVECClass *lac = LOONGARCH_AVEC_GET_CLASS(dev);
-> +    MachineState *machine = MACHINE(qdev_get_machine());
-> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
-> +    const CPUArchIdList  *id_list;
-> +    int i;
+>   #define LOONGARCH_CSR_ECFG           0x4 /* Exception config */
+> -FIELD(CSR_ECFG, LIE, 0, 13)
+> +FIELD(CSR_ECFG, LIE, 0, 15)        /*bit 15 is msg interrupt enabled */
+> +FIELD(CSR_ECFG, MSGINT, 14, 1)
+>   FIELD(CSR_ECFG, VS, 16, 3)
 >   
->       Error *local_err = NULL;
->       lac->parent_realize(dev, &local_err);
-> @@ -47,6 +52,21 @@ static void loongarch_avec_realize(DeviceState *dev, Error **errp)
->           return;
->       }
+>   #define LOONGARCH_CSR_ESTAT          0x5 /* Exception status */
+> -FIELD(CSR_ESTAT, IS, 0, 13)
+> +FIELD(CSR_ESTAT, IS, 0, 15)        /*bit 15 is msg interrupt enabled */
+> +FIELD(CSR_ESTAT, MSGINT, 14, 1)
+>   FIELD(CSR_ESTAT, ECODE, 16, 6)
+>   FIELD(CSR_ESTAT, ESUBCODE, 22, 9)
 >   
-> +    assert(mc->possible_cpu_arch_ids);
-> +    id_list = mc->possible_cpu_arch_ids(machine);
-> +    s->num_cpu = id_list->len;
-> +    s->cpu = g_new(AVECCore, s->num_cpu);
-> +    if (s->cpu == NULL) {
-> +        error_setg(errp, "Memory allocation for AVECCore fail");
-> +        return;
-> +    }
-> +
-> +    for (i = 0; i < s->num_cpu; i++) {
-> +        s->cpu[i].arch_id = id_list->cpus[i].arch_id;
-> +        s->cpu[i].cpu = CPU(id_list->cpus[i].cpu);
-> +        qdev_init_gpio_out(dev, &s->cpu[i].parent_irq, 1);
-> +    }
-> +
->       return;
->   }
->   
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index b420d1def9..e3ab165cc5 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -380,7 +380,7 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
->       }
->   }
->   
-> -static void virt_irq_init(LoongArchVirtMachineState *lvms)
-> +static void virt_irq_init(LoongArchVirtMachineState *lvms, MachineState *ms)
-The extra parameter machine is not necessary, it can be acquired from 
-the first parameter lvms, such as:
-       MachineState *ms = MACHINE(lvms);
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index abad84c054..9e21ed1d07 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -130,7 +130,15 @@ void loongarch_cpu_set_irq(void *opaque, int irq, int level)
+>       if (kvm_enabled()) {
+>           kvm_loongarch_set_interrupt(cpu, irq, level);
+>       } else if (tcg_enabled()) {
+> -        env->CSR_ESTAT = deposit64(env->CSR_ESTAT, irq, 1, level != 0);
+> +        /* do INTC_AVEC irqs */
+> +        if (irq == INT_AVEC) {
+> +            irq = find_first_bit(env->CSR_MSGIS, 256);
+> +            if (irq < 256) {
+> +                env->CSR_ESTAT = FIELD_DP64(env->CSR_ESTAT, CSR_ESTAT, MSGINT, 1);
+> +            }
+Why is there such checking for bitmap? Can the original sentence work?
+   env->CSR_ESTAT = deposit64(env->CSR_ESTAT, irq, 1, level != 0);
 
->   {
->       DeviceState *pch_pic, *pch_msi;
->       DeviceState *ipi, *extioi, *avec;
-> @@ -470,6 +470,13 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
->           sysbus_realize_and_unref(SYS_BUS_DEVICE(avec), &error_fatal);
->           memory_region_add_subregion(get_system_memory(), VIRT_AVEC_BASE,
->                           sysbus_mmio_get_region(SYS_BUS_DEVICE(avec), 0));
-> +        CPUState *cpu_state;
-> +        DeviceState *cpudev;
-It is strange to declare new variable between sentences, I think it 
-should be put in the beginning of function.
+This piece of code is a little strange.
 
 Regards
 Bibo Mao
-> +        for (int cpu = 0; cpu < ms->smp.cpus; cpu++) {
-> +            cpu_state = qemu_get_cpu(cpu);
-> +            cpudev = DEVICE(cpu_state);
-> +            qdev_connect_gpio_out(avec, cpu, qdev_get_gpio_in(cpudev, INT_AVEC));
+> +        } else {
+> +            env->CSR_ESTAT = deposit64(env->CSR_ESTAT, irq, 1, level != 0);
 > +        }
->       }
->   
->       /* Create EXTIOI device */
-> @@ -838,7 +845,7 @@ static void virt_init(MachineState *machine)
->       }
->   
->       /* Initialize the IO interrupt subsystem */
-> -    virt_irq_init(lvms);
-> +    virt_irq_init(lvms, machine);
-
->       lvms->machine_done.notify = virt_done;
->       qemu_add_machine_init_done_notifier(&lvms->machine_done);
->        /* connect powerdown request */
-> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-> index 208d3e0cd3..556e9dabb9 100644
-> --- a/target/loongarch/cpu.h
-> +++ b/target/loongarch/cpu.h
-> @@ -217,9 +217,10 @@ FIELD(CSR_CRMD, WE, 9, 1)
->   extern const char * const regnames[32];
->   extern const char * const fregnames[32];
->   
-> -#define N_IRQS      13
-> +#define N_IRQS      15
->   #define IRQ_TIMER   11
->   #define IRQ_IPI     12
-> +#define INT_AVEC    14
->   
->   #define LOONGARCH_STLB         2048 /* 2048 STLB */
->   #define LOONGARCH_MTLB         64   /* 64 MTLB */
+>           if (FIELD_EX64(env->CSR_ESTAT, CSR_ESTAT, IS)) {
+>               cpu_interrupt(cs, CPU_INTERRUPT_HARD);
+>           } else {
 > 
 
 
