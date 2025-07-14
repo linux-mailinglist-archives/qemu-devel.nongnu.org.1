@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07DAB04BF8
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D9FB04C14
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:19:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSHr-0008J8-TW; Mon, 14 Jul 2025 19:08:44 -0400
+	id 1ubSHx-0000Wd-4d; Mon, 14 Jul 2025 19:08:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGu-0005El-7i
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:44 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGw-0005Yl-R2
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGs-0005aE-Mj
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:43 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSGv-0005ai-Ab
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:07:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534462;
+ s=mimecast20190719; t=1752534464;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=/e0EHOrB7ZCBA2nwdmyUuJgNrg4LS48+Pg1+NbLqEN8=;
- b=BseU2w+Uv0FkoGl2zNqPYDRhHbnJHQkJB4144k3/3pvlJmYt+gDK1buIb+UTpxdNBUlg92
- tArNMiC9mLgM9rgjHLkLx8xRLoWqz1jgEkK3zBWuOSSgbiYMrGRzNx91l3JUgT6E91k/y4
- pAtiJ+5KLbtxoGyNl4qyV1lYpL3PodE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HayVIjzAuMFMde366rDMxb9WI+k5iPArbzwUirFkhKc=;
+ b=XZ4vGV0ZkO5PF9HqpQ1ZqcmzqWKMm7O+Ftoj8nDbGpDLfQuTTqvtC3YEQ/h8B7/YQs6s5O
+ a7eXd8YC/d6f1aNOzdVr2a2lN2uEwFWMvXaEzwm/MXa2x7DFRbwQq/7RWCLC9jyvwD+MSJ
+ GTqrEVqw7L9oxC6C3i0vxJESWqDzcsk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-152-4Mr7tG7pNhyc-3YyRAb0Dw-1; Mon, 14 Jul 2025 19:07:40 -0400
-X-MC-Unique: 4Mr7tG7pNhyc-3YyRAb0Dw-1
-X-Mimecast-MFC-AGG-ID: 4Mr7tG7pNhyc-3YyRAb0Dw_1752534460
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4561611dc2aso14152445e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:40 -0700 (PDT)
+ us-mta-116-OMPWg11INdmIjCiP_BMkaQ-1; Mon, 14 Jul 2025 19:07:43 -0400
+X-MC-Unique: OMPWg11INdmIjCiP_BMkaQ-1
+X-Mimecast-MFC-AGG-ID: OMPWg11INdmIjCiP_BMkaQ_1752534462
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3b604541741so926399f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:07:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534459; x=1753139259;
+ d=1e100.net; s=20230601; t=1752534462; x=1753139262;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/e0EHOrB7ZCBA2nwdmyUuJgNrg4LS48+Pg1+NbLqEN8=;
- b=qMoz16UCQlM0fjZaD7WIUod9OVa0tws/C5Lx2SFLuERrsR6mMyI5L1ZpIDKEEy8DoH
- 210OaDIzVPUK3p8b+YOVJSTVU4+codhyoexMzsI+tBfcQfLfAAco0CD1s5sht8jbsiwz
- ZVWztmKTQPZgNaZ42emU3FVhC2iWK+nT0EHJwlmjl/fOcXPB+12+22RsNGUDapKiVnKE
- cy+wWoWOxaw04qPaJgCfERbinWw7IqW0H2CT6FtXKcxTZcw6IikGQMVmBApEZKhc8rgO
- C4awN/gq4AaPs5HGVO12OZBdws2L500Qhg0tPcFSbHRsPMv4x1HB+cuxh0whLyDWne3t
- cTeQ==
-X-Gm-Message-State: AOJu0Yx34DI1CyEPghE2i2k+KhgzCm1BMnhri+Pdil7Bir0SZJJdj73P
- F+lAZmkm8uOlYcKgdlh06KBNDFMw43mrgJCXmTObWtYGgt+dW35wVwfYaQzSkNS7NKxygU/Ae3J
- VBiregXziEHggT1+OTaMNKnlbH+hI8jxw0WDoYaXZpjvERTwpyqiZzGJ35+yN4KkiJmeF5j1bHv
- b23bam5iKOje3l75xNuJynuQJ1V/tjwQmVSw==
-X-Gm-Gg: ASbGncuWrtwI3xQSasGXagol90+MUzubOj1LXOSPl4vO/YferKxI5ieh5iTiBadrhSh
- EKZWkCpmJjaw23ZbZTHXBd99WfMeNFRI9e31ZnFESrjmagThV9Fot2AmcsXKMJG8WO+0YWEYEKT
- 5KkN+tEgruxZgtCwTkHGq9NvmcB/GW4O0Oi4hYvThtbOZOYI5Et6x2cpXDEX1xs0e9BpJxhQocv
- DpofkdkqPzzslw+r4khG9cBEtY5ruQfujnE3vUoLxiJnxlTyF7rz57QOkGAqVF5WoWF9m+/VC7E
- B9kRgF3AIS8IjvcsAdkK8cU/oqg7m/1F
-X-Received: by 2002:a05:6000:bcc:b0:3a5:1222:ac64 with SMTP id
- ffacd0b85a97d-3b60a195aaemr190736f8f.38.1752534459401; 
- Mon, 14 Jul 2025 16:07:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGcHhHVFLiZUb8hcieSC3bxuB3oIa+/Rf9chOWSeUD8xSlPXFGzD9eKwWBCXhGW1HPKy/uIhQ==
-X-Received: by 2002:a05:6000:bcc:b0:3a5:1222:ac64 with SMTP id
- ffacd0b85a97d-3b60a195aaemr190721f8f.38.1752534458966; 
- Mon, 14 Jul 2025 16:07:38 -0700 (PDT)
+ bh=HayVIjzAuMFMde366rDMxb9WI+k5iPArbzwUirFkhKc=;
+ b=WlSb3mHQtubFyfLd5DZm/Q6eKqn8RSIXEsBrAuoZZpc8HM9yEeUciSPqtNW4eq+Atl
+ 4v12zRP6/AZZi5grhKhVGp88ZJ0ZYJMC3bZM/P6FNE9iOXVL51ApZGuBjW1Oc/p1qbcb
+ 81x0sw3sswtHMFCCC8NhDWM7/KKMJfOJg++cGgxrQjI391mTMzJa2bjrL0P2IIlQCEPd
+ hhIovzZrxJifHYLfY2XBkV4eCERh7FxDnrvIffeCGKIUsjkqfPBuZtqmFGZbiWwc3ZB6
+ wbLVZh0QbkpNgsSKS+tB5vmcqruZ9v8FSoP/b5GgNxuNDDaoTcceWzj4/XohhxAnC2Ts
+ 66CA==
+X-Gm-Message-State: AOJu0YytVwoAc3vJlovygJGys1vaY3izz5JxyHMa8+nKCopQpSJG7vx3
+ +Z/XAAdInZeB28OJMCuiz5RnxhAoxzXhs4W6yowEDc+NEdbj+A8cz8LYIfyiexDBSP+LCg7+Ht0
+ /yLSHdgYGi++35o4gCBrHb07xFxdX4cWeVSbtelT78mlfMNvXzeq9Y9qdql3zlTYUcF8ItTeaVL
+ cyIjYAZC8VhxPUqL6nXICw0WsBRH/a65xXjQ==
+X-Gm-Gg: ASbGncs+WsrfAiKxIAPQmxMpAjfxYaQXrQo9BtL/vqIRQ6pUiXx/YEQ5rJ+BiGFmPo1
+ 8Sqa1OT5yXvVZUiGTh+e9B0UWToQfBuMlTG6HeSFXaA2ARZ6bGNg1v9RcJx5++yxlRhfZr5SLFY
+ 4jK7pDHlsYyOLge0DfTm4eajjU2/VW3EHX1rbKBXaNhQGbop8x0WnQAlKhGPFy4qq4BkaSMwrLb
+ qGETEsjoWq/j5bEbEOLc8tWg46VmH/Q2o9yvkqlRcMBwfY8nRFtvFTFptbLzejJbGMnvxNsXCRr
+ VPYYR+9r5sAgznrngrnQkP+ZeFSoYdGQ
+X-Received: by 2002:a05:6000:1a85:b0:3a6:d7e9:4309 with SMTP id
+ ffacd0b85a97d-3b5f2e1b7c9mr11408937f8f.29.1752534462147; 
+ Mon, 14 Jul 2025 16:07:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcA0V1PSlQEy/73nklhQV5wQuTs8JHELTpaahLdOBjrOFTLkOAMv5zJvhbCNOmviEHzZmfGA==
+X-Received: by 2002:a05:6000:1a85:b0:3a6:d7e9:4309 with SMTP id
+ ffacd0b85a97d-3b5f2e1b7c9mr11408919f8f.29.1752534461697; 
+ Mon, 14 Jul 2025 16:07:41 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e285e0sm13239143f8f.101.2025.07.14.16.07.37
+ 5b1f17b1804b1-4561dd91072sm32582915e9.14.2025.07.14.16.07.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:07:38 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:07:37 -0400
+ Mon, 14 Jul 2025 16:07:41 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:07:39 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
  Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 33/97] intel_iommu: Declare supported PASID size
-Message-ID: <f4326d5089b52e581d8c5404ceac85324cf1772d.1752534227.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 34/97] intel_iommu: Implement vtd_get_iotlb_info from
+ PCIIOMMUOps
+Message-ID: <ed916128d87a043d6024cf220532a91ea173e451.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -113,44 +114,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 
-the PSS field of the extended capabilities stores the supported PASID
-size minus 1. This commit adds support for 8bits PASIDs (limited by
-MemTxAttrs::pid).
-
 Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Message-Id: <20250628180226.133285-6-clement.mathieu--drif@eviden.com>
+Message-Id: <20250628180226.133285-7-clement.mathieu--drif@eviden.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu_internal.h | 1 +
- hw/i386/intel_iommu.c          | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ hw/i386/intel_iommu.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index e8b211e8b0..360e937989 100644
---- a/hw/i386/intel_iommu_internal.h
-+++ b/hw/i386/intel_iommu_internal.h
-@@ -192,6 +192,7 @@
- #define VTD_ECAP_SC                 (1ULL << 7)
- #define VTD_ECAP_MHMV               (15ULL << 20)
- #define VTD_ECAP_SRS                (1ULL << 31)
-+#define VTD_ECAP_PSS                (7ULL << 35) /* limit: MemTxAttrs::pid */
- #define VTD_ECAP_PASID              (1ULL << 40)
- #define VTD_ECAP_SMTS               (1ULL << 43)
- #define VTD_ECAP_SLTS               (1ULL << 46)
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 0fb4350d48..71497f1936 100644
+index 71497f1936..affa7768e6 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -4590,7 +4590,7 @@ static void vtd_cap_init(IntelIOMMUState *s)
-     }
- 
-     if (s->pasid) {
--        s->ecap |= VTD_ECAP_PASID;
-+        s->ecap |= VTD_ECAP_PASID | VTD_ECAP_PSS;
-     }
+@@ -4733,10 +4733,20 @@ static AddressSpace *vtd_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+     return &vtd_as->as;
  }
  
++static void vtd_get_iotlb_info(void *opaque, uint8_t *addr_width,
++                               uint32_t *min_page_size)
++{
++    IntelIOMMUState *s = opaque;
++
++    *addr_width = s->aw_bits;
++    *min_page_size = VTD_PAGE_SIZE;
++}
++
+ static PCIIOMMUOps vtd_iommu_ops = {
+     .get_address_space = vtd_host_dma_iommu,
+     .set_iommu_device = vtd_dev_set_iommu_device,
+     .unset_iommu_device = vtd_dev_unset_iommu_device,
++    .get_iotlb_info = vtd_get_iotlb_info,
+ };
+ 
+ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
 -- 
 MST
 
