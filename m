@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155A4B03D96
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB346B03D5E
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 13:28:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubHEx-0000T2-9r; Mon, 14 Jul 2025 07:21:03 -0400
+	id 1ubHEi-0008Fo-Ey; Mon, 14 Jul 2025 07:20:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH03-0001Cw-C5
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:37 -0400
+ id 1ubH05-0001Ej-5v
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ubH00-0001uO-Ec
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:34 -0400
+ id 1ubH01-0001um-8c
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 07:05:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752491129;
+ s=mimecast20190719; t=1752491132;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BVHO2u8SmUDUe3LEdxt2f5AcmTsLQh2zAS3ZSUXRVXU=;
- b=S7Ixespu0aY54NX4RAFC9dcQ8mdeacPZDqe1N3JgRlvaKSzISO5RkbK5PoiV+hqKogIyUt
- cKlpyfRHhx2oXzTObBHn93xnM0Qd2d4xeHUTxuJ3Q81qfGVmkJeSxyyCE8sqVdjirbidRP
- c+r8QO7RMK6JtswoupCp7gNm6BByWPU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bAFYBMqDkt14ySi0Xw+9xNW0w03TjzSq5ICCJDbgD3I=;
+ b=MZ7OX2PuIA2zpED9wfAsXOk+ggb5dLXDmnMzkSG+fZCPQIl5ZWTnJtAlXzd1PvDcO9wBFY
+ sPRGJwF0EzS0NOv2qjiy5js2jzGrs0tKu4QGtqkMWXz7fQ3asTNwyGCA+RCiRvBoAxzPoa
+ GeH0EsKRGP1SFIKt8t52qcnH61stNrs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-220-ZxL0rAm4NO2aocjXxU4oiA-1; Mon, 14 Jul 2025 07:05:28 -0400
-X-MC-Unique: ZxL0rAm4NO2aocjXxU4oiA-1
-X-Mimecast-MFC-AGG-ID: ZxL0rAm4NO2aocjXxU4oiA_1752491127
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3b5f97cb8fbso576970f8f.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:28 -0700 (PDT)
+ us-mta-144-5ycy_HUiMFmIibCKqJHgiA-1; Mon, 14 Jul 2025 07:05:31 -0400
+X-MC-Unique: 5ycy_HUiMFmIibCKqJHgiA-1
+X-Mimecast-MFC-AGG-ID: 5ycy_HUiMFmIibCKqJHgiA_1752491130
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4561c67daebso2041675e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 04:05:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752491126; x=1753095926;
+ d=1e100.net; s=20230601; t=1752491129; x=1753095929;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BVHO2u8SmUDUe3LEdxt2f5AcmTsLQh2zAS3ZSUXRVXU=;
- b=KF1IwXmV2NzjnMnhqexM8/MjFuplp+WGIYEpfvF1XXSrRpa9iefjzOgpZ1Buy7clAg
- zaLjpf79YWyoRsJJC49fNf5nAd/jPQjonz5+KxK7FhluJG078cwQ+AgeII561afMdJ+6
- y/8tnsRPBDXzmohlO9f6lvoIU78ByiMwZZeRSs624a9y6TRgAYHwgfvZd8fUjhr9V5KY
- TX8yGOaXyJ9K3kdKtk2Z/c+jG0+jiR7/0gI5JDCHXXMbmyYopPY2DV0mN2YyK6m3SICh
- T5PzYBaLPRAxuB8ttU5HTbgxH6D3hh5x7vVTeKxf1OOD0G0R6oSAh+nEzSYWmgo4NeGq
- koaQ==
-X-Gm-Message-State: AOJu0YxUr57X0MQib6BVUOoANVIfag3YFuxLSV/JINSYNyzkcWr3939C
- XKT+Vbfr47vR1jMwWlXbfDojuz7KO9NetvP5RUpb7FVDqsZmcrDdYNgJrKq+EQJZSIpiSEt/CW8
- 7ktYkDJr6/oKV2WQ9xQIFgYswXQgiamcnn6SdpGqnVeym3IvxdjGgLvnT6snapxPRxemsycQR9d
- zxe1xocOE7WVogRey99dV+q3x2zBwMlVlbXAhmeOGp
-X-Gm-Gg: ASbGncu0uh7z3iI+HlQ7m21fBN63JdQD0eJi8zCK5BNNaAUrQkxb1WA+D6jSNeVqBDe
- 6jrmHs6UNzvg2hYdfK2RJ+E9NhTt0G7zQH7RljTpPoILoVd6HDXMxvOkj7v8B+9Y8LDXrafgqg3
- T0jeJBbIj+jL3H0cZZE9P8GFz1ldkYvsc+3T6a30BSLZ3VPmOU+Z1i0ukgopaLFLn/nP39Rnvgj
- 34y6+cFVaZ7gc7kyOkrQnDlVwWp9IML5jq2XUE2hHusgLRgPaaZe5roSIlh7j1xFupuQvr+q8fh
- k0ha5a7uVREXKqHVVnpQ2AVQYpvvrDS460gL4NxyL/4=
-X-Received: by 2002:a05:6000:23c8:b0:3a5:2b75:56cc with SMTP id
- ffacd0b85a97d-3b5f1895be6mr7251088f8f.23.1752491126090; 
- Mon, 14 Jul 2025 04:05:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEu4oJOvMpEE+COZ74cajQ5huM1RITiW1sbVI+/xC7GYTvyu58ggMweSEATiVK9zfoL3qMNNg==
-X-Received: by 2002:a05:6000:23c8:b0:3a5:2b75:56cc with SMTP id
- ffacd0b85a97d-3b5f1895be6mr7251061f8f.23.1752491125577; 
- Mon, 14 Jul 2025 04:05:25 -0700 (PDT)
+ bh=bAFYBMqDkt14ySi0Xw+9xNW0w03TjzSq5ICCJDbgD3I=;
+ b=FDKYOeN8vNGPodWVI6fGJpQmHCz0GoGYGrkomLhq4MJX0IepzJhos/870gHQescllf
+ //vejiD5Rf3Zp9TMjstJBTgwzpItlqFv4NtPBl2zdQpZaSRM3eF1vdL0tq7gHVp4IDiP
+ /LjkBVCg1vP+WLCv0/1iexZAkt0CaeFYW9eVBXr5fCI+cG/q1ujD6A+rEbh6SeAui7AB
+ fkPxQFj2+eWSr88B7kWoi9rDucoyn3sjjm9KehS0/JTHBl/NcWCZQzrglIjq6Z0nQ7ac
+ unkofwFwJ3KW01zmXAV33wAKBa7QvzOy2q7/S2j9WVKyu4aOf6EtcCbElu5wTxhOcL0m
+ CDoQ==
+X-Gm-Message-State: AOJu0YxSW0X8Ws9LmsmwR0uA+IhieUViZvajDSkrOi3kxSPpMqcbXjIg
+ TOumUwn9ElUpV/q4dM6Zc0Oec166ntmeQ6VJ8e/3TFSBS9mreOHLgSqtcQswvLkVx2KCE12vI2G
+ WivIIrfZ+icoUQyyJ9hebBgSwTm3c8mYQ3OVDSt//ujkIdPopoqUqwcxLU0tSy2Cy61jOLI26QK
+ y4el3NlXTBfshIRDISpBxieb/DSfhXeK2Y5lW/e8v/
+X-Gm-Gg: ASbGncvuzCKm56oej91ZGKEZkUrMvR8hmunxHRaBfrN6p4yaKeDyUspS0au7up44Mhc
+ SA6NZ9blJ7s15jw0mqUau+gdYWodeJzKIZ2nHqNN4ymh7TeYwW0JHd9W3gfzEEt99kPBWvujUsN
+ cK0TE2RWL5lNrrKISQFcCC5RnlpPOQFBVYWGwvL9tYPDMPom7xXuzRzZ5NRcjHbyIeuWAsTYKEV
+ Kk/0KfOH+w/KAimfOl3tbzcTSYqng2uEDs7ptCd13hlZohi+WGFwFa85XN3kc6S95y4ChxeveHZ
+ FE/SsNzf1UAgi+29JoLscKi2larTFBDCzGaD4PS0Cn4=
+X-Received: by 2002:a05:600c:4e08:b0:439:4b23:9e8e with SMTP id
+ 5b1f17b1804b1-454e31d6d6fmr121554365e9.3.1752491129293; 
+ Mon, 14 Jul 2025 04:05:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0vM9DOBjyUWqieFVCBul1Ha39Puft5Dh5adfBiIWwg3oFstKafSOHcmt1Ef3KM/K44eGYHQ==
+X-Received: by 2002:a05:600c:4e08:b0:439:4b23:9e8e with SMTP id
+ 5b1f17b1804b1-454e31d6d6fmr121553845e9.3.1752491128648; 
+ Mon, 14 Jul 2025 04:05:28 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45623f4f838sm169425e9.1.2025.07.14.04.05.24
+ ffacd0b85a97d-3b5e8dc3a62sm11962455f8f.40.2025.07.14.04.05.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 04:05:24 -0700 (PDT)
+ Mon, 14 Jul 2025 04:05:26 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffman <kraxel@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PULL 29/77] backends/igvm: Process initialization sections in IGVM
- file
-Date: Mon, 14 Jul 2025 13:03:18 +0200
-Message-ID: <20250714110406.117772-30-pbonzini@redhat.com>
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Gerd Hoffman <kraxel@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 30/77] backends/igvm: Handle policy for SEV guests
+Date: Mon, 14 Jul 2025 13:03:19 +0200
+Message-ID: <20250714110406.117772-31-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250714110406.117772-1-pbonzini@redhat.com>
 References: <20250714110406.117772-1-pbonzini@redhat.com>
@@ -111,56 +111,243 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Roy Hopkins <roy.hopkins@randomman.co.uk>
 
-The initialization sections in IGVM files contain configuration that
-should be applied to the guest platform before it is started. This
-includes guest policy and other information that can affect the security
-level and the startup measurement of a guest.
-
-This commit introduces handling of the initialization sections during
-processing of the IGVM file.
+Adds a handler for the guest policy initialization IGVM section and
+builds an SEV policy based on this information and the ID block
+directive if present. The policy is applied using by calling
+'set_guest_policy()' on the ConfidentialGuestSupport object.
 
 Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
 Acked-by: Gerd Hoffman <kraxel@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://lore.kernel.org/r/9de24fb5df402024b40cbe02de0b13faa7cb4d84.1751554099.git.roy.hopkins@randomman.co.uk
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Link: https://lore.kernel.org/r/57707230bef331b53e9366ce6a23ed25cd6f1293.1751554099.git.roy.hopkins@randomman.co.uk
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- backends/igvm.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ backends/igvm.c | 149 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 149 insertions(+)
 
 diff --git a/backends/igvm.c b/backends/igvm.c
-index 2a31021d449..ebdb4594d10 100644
+index ebdb4594d10..b568f06c769 100644
 --- a/backends/igvm.c
 +++ b/backends/igvm.c
-@@ -786,6 +786,27 @@ int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
-         }
-     }
+@@ -27,6 +27,40 @@ typedef struct QIgvmParameterData {
+     uint32_t index;
+ } QIgvmParameterData;
  
-+    header_count =
-+        igvm_header_count(ctx.file, IGVM_HEADER_SECTION_INITIALIZATION);
-+    if (header_count < 0) {
-+        error_setg(
-+            errp,
-+            "Invalid initialization header count in IGVM file. Error code: %X",
-+            header_count);
-+        goto cleanup_parameters;
++/*
++ * Some directives are specific to particular confidential computing platforms.
++ * Define required types for each of those platforms here.
++ */
++
++/* SEV/SEV-ES/SEV-SNP */
++
++/*
++ * These structures are defined in "SEV Secure Nested Paging Firmware ABI
++ * Specification" Rev 1.58, section 8.18.
++ */
++struct QEMU_PACKED sev_id_block {
++    uint8_t ld[48];
++    uint8_t family_id[16];
++    uint8_t image_id[16];
++    uint32_t version;
++    uint32_t guest_svn;
++    uint64_t policy;
++};
++
++struct QEMU_PACKED sev_id_authentication {
++    uint32_t id_key_alg;
++    uint32_t auth_key_algo;
++    uint8_t reserved[56];
++    uint8_t id_block_sig[512];
++    uint8_t id_key[1028];
++    uint8_t reserved2[60];
++    uint8_t id_key_sig[512];
++    uint8_t author_key[1028];
++    uint8_t reserved3[892];
++};
++
++#define IGVM_SEV_ID_BLOCK_VERSION 1
++
+ /*
+  * QIgvm contains the information required during processing
+  * of a single IGVM file.
+@@ -38,6 +72,17 @@ typedef struct QIgvm {
+     uint32_t compatibility_mask;
+     unsigned current_header_index;
+     QTAILQ_HEAD(, QIgvmParameterData) parameter_data;
++    IgvmPlatformType platform_type;
++
++    /*
++     * SEV-SNP platforms can contain an ID block and authentication
++     * that should be verified by the guest.
++     */
++    struct sev_id_block *id_block;
++    struct sev_id_authentication *id_auth;
++
++    /* Define the guest policy for SEV guests */
++    uint64_t sev_policy;
+ 
+     /* These variables keep track of contiguous page regions */
+     IGVM_VHS_PAGE_DATA region_prev_page_data;
+@@ -67,6 +112,11 @@ static int qigvm_directive_environment_info(QIgvm *ctx,
+ static int qigvm_directive_required_memory(QIgvm *ctx,
+                                            const uint8_t *header_data,
+                                            Error **errp);
++static int qigvm_directive_snp_id_block(QIgvm *ctx, const uint8_t *header_data,
++                                  Error **errp);
++static int qigvm_initialization_guest_policy(QIgvm *ctx,
++                                       const uint8_t *header_data,
++                                       Error **errp);
+ 
+ struct QIGVMHandler {
+     uint32_t type;
+@@ -91,6 +141,10 @@ static struct QIGVMHandler handlers[] = {
+       qigvm_directive_environment_info },
+     { IGVM_VHT_REQUIRED_MEMORY, IGVM_HEADER_SECTION_DIRECTIVE,
+       qigvm_directive_required_memory },
++    { IGVM_VHT_SNP_ID_BLOCK, IGVM_HEADER_SECTION_DIRECTIVE,
++      qigvm_directive_snp_id_block },
++    { IGVM_VHT_GUEST_POLICY, IGVM_HEADER_SECTION_INITIALIZATION,
++      qigvm_initialization_guest_policy },
+ };
+ 
+ static int qigvm_handler(QIgvm *ctx, uint32_t type, Error **errp)
+@@ -632,6 +686,74 @@ static int qigvm_directive_required_memory(QIgvm *ctx,
+     return 0;
+ }
+ 
++static int qigvm_directive_snp_id_block(QIgvm *ctx, const uint8_t *header_data,
++                                  Error **errp)
++{
++    const IGVM_VHS_SNP_ID_BLOCK *igvm_id =
++        (const IGVM_VHS_SNP_ID_BLOCK *)header_data;
++
++    if (!(igvm_id->compatibility_mask & ctx->compatibility_mask)) {
++        return 0;
 +    }
 +
-+    for (ctx.current_header_index = 0;
-+         ctx.current_header_index < (unsigned)header_count;
-+         ctx.current_header_index++) {
-+        IgvmVariableHeaderType type =
-+            igvm_get_header_type(ctx.file, IGVM_HEADER_SECTION_INITIALIZATION,
-+                                 ctx.current_header_index);
-+        if (qigvm_handler(&ctx, type, errp) < 0) {
-+            goto cleanup_parameters;
++    if (ctx->id_block) {
++        error_setg(errp, "IGVM: Multiple ID blocks encountered "
++                            "in IGVM file.");
++        return -1;
++    }
++    ctx->id_block = g_new0(struct sev_id_block, 1);
++    ctx->id_auth = g_new0(struct sev_id_authentication, 1);
++
++    memcpy(ctx->id_block->family_id, igvm_id->family_id,
++            sizeof(ctx->id_block->family_id));
++    memcpy(ctx->id_block->image_id, igvm_id->image_id,
++            sizeof(ctx->id_block->image_id));
++    ctx->id_block->guest_svn = igvm_id->guest_svn;
++    ctx->id_block->version = IGVM_SEV_ID_BLOCK_VERSION;
++    memcpy(ctx->id_block->ld, igvm_id->ld, sizeof(ctx->id_block->ld));
++
++    ctx->id_auth->id_key_alg = igvm_id->id_key_algorithm;
++    assert(sizeof(igvm_id->id_key_signature) <=
++           sizeof(ctx->id_auth->id_block_sig));
++    memcpy(ctx->id_auth->id_block_sig, &igvm_id->id_key_signature,
++           sizeof(igvm_id->id_key_signature));
++
++    ctx->id_auth->auth_key_algo = igvm_id->author_key_algorithm;
++    assert(sizeof(igvm_id->author_key_signature) <=
++           sizeof(ctx->id_auth->id_key_sig));
++    memcpy(ctx->id_auth->id_key_sig, &igvm_id->author_key_signature,
++           sizeof(igvm_id->author_key_signature));
++
++    /*
++     * SEV and IGVM public key structure population are slightly different.
++     * See SEV Secure Nested Paging Firmware ABI Specification, Chapter 10.
++     */
++    *((uint32_t *)ctx->id_auth->id_key) = igvm_id->id_public_key.curve;
++    memcpy(&ctx->id_auth->id_key[4], &igvm_id->id_public_key.qx, 72);
++    memcpy(&ctx->id_auth->id_key[76], &igvm_id->id_public_key.qy, 72);
++
++    *((uint32_t *)ctx->id_auth->author_key) =
++        igvm_id->author_public_key.curve;
++    memcpy(&ctx->id_auth->author_key[4], &igvm_id->author_public_key.qx,
++            72);
++    memcpy(&ctx->id_auth->author_key[76], &igvm_id->author_public_key.qy,
++            72);
++
++    return 0;
++}
++
++static int qigvm_initialization_guest_policy(QIgvm *ctx,
++                                       const uint8_t *header_data, Error **errp)
++{
++    const IGVM_VHS_GUEST_POLICY *guest =
++        (const IGVM_VHS_GUEST_POLICY *)header_data;
++
++    if (guest->compatibility_mask & ctx->compatibility_mask) {
++        ctx->sev_policy = guest->policy;
++    }
++    return 0;
++}
++
+ static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **errp)
+ {
+     int32_t header_count;
+@@ -701,12 +823,16 @@ static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **errp)
+     /* Choose the strongest supported isolation technology */
+     if (compatibility_mask_sev_snp != 0) {
+         ctx->compatibility_mask = compatibility_mask_sev_snp;
++        ctx->platform_type = IGVM_PLATFORM_TYPE_SEV_SNP;
+     } else if (compatibility_mask_sev_es != 0) {
+         ctx->compatibility_mask = compatibility_mask_sev_es;
++        ctx->platform_type = IGVM_PLATFORM_TYPE_SEV_ES;
+     } else if (compatibility_mask_sev != 0) {
+         ctx->compatibility_mask = compatibility_mask_sev;
++        ctx->platform_type = IGVM_PLATFORM_TYPE_SEV;
+     } else if (compatibility_mask != 0) {
+         ctx->compatibility_mask = compatibility_mask;
++        ctx->platform_type = IGVM_PLATFORM_TYPE_NATIVE;
+     } else {
+         error_setg(
+             errp,
+@@ -716,6 +842,23 @@ static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **errp)
+     return 0;
+ }
+ 
++static int qigvm_handle_policy(QIgvm *ctx, Error **errp)
++{
++    if (ctx->platform_type == IGVM_PLATFORM_TYPE_SEV_SNP) {
++        int id_block_len = 0;
++        int id_auth_len = 0;
++        if (ctx->id_block) {
++            ctx->id_block->policy = ctx->sev_policy;
++            id_block_len = sizeof(struct sev_id_block);
++            id_auth_len = sizeof(struct sev_id_authentication);
 +        }
++        return ctx->cgsc->set_guest_policy(GUEST_POLICY_SEV, ctx->sev_policy,
++                                          ctx->id_block, id_block_len,
++                                          ctx->id_auth, id_auth_len, errp);
++    }
++    return 0;
++}
++
+ static IgvmHandle qigvm_file_init(char *filename, Error **errp)
+ {
+     IgvmHandle igvm;
+@@ -814,12 +957,18 @@ int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
+      */
+     retval = qigvm_process_mem_page(&ctx, NULL, errp);
+ 
++    if (retval == 0) {
++        retval = qigvm_handle_policy(&ctx, errp);
 +    }
 +
-     /*
-      * Contiguous pages of data with compatible flags are grouped together in
-      * order to reduce the number of memory regions we create. Make sure the
+ cleanup_parameters:
+     QTAILQ_FOREACH(parameter, &ctx.parameter_data, next)
+     {
+         g_free(parameter->data);
+         parameter->data = NULL;
+     }
++    g_free(ctx.id_block);
++    g_free(ctx.id_auth);
+ 
+ cleanup:
+     igvm_free(ctx.file);
 -- 
 2.50.0
 
