@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EEAAB04C30
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9A7B04B9D
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 01:09:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubSI5-0001mx-OY; Mon, 14 Jul 2025 19:08:57 -0400
+	id 1ubSIB-00025p-S9; Mon, 14 Jul 2025 19:09:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHX-0006V8-BK
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHY-0006WV-48
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHU-0005gG-K0
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubSHW-0005gd-CY
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 19:08:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752534498;
+ s=mimecast20190719; t=1752534500;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wprZxgNau5OjvcVyBV3BiqgIT2inRbQfjmepelKWyDE=;
- b=X28CWvrJVJoTLl/4JvAH6MB/SO2UrFLhT7m/kab/eROHKJPb+9M2+80aRCMYqNPa9kOL4J
- HJtNHbEtWvnHJ3yHH/r89695XAso9EvLian4TMDuZ9YLCQtgpzzMr/GKIiwY0Sf0NDb6+7
- xx1uLpgproJ5yM3yqPk/CBtyHzN2qso=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=F+T4n/gyfgbuHU+PmGwWi6LsepOZQGnOvAjcmjnojCQ=;
+ b=NBy8DVFHtT7JMr7PdUNRHFgZsVQ873NTEYC/V9nkhrbjxV/tMT+XOvgc9ILxJmtLckUokE
+ acFTq8ttQUOperuNHu2iJF9WLzaZiKDxLjbc4tfo6IXnMBWE8Veq1RHAJWvKE6+t5e+L1J
+ 1PJTrsiOtB1+SbZW5Q73zjn59WHUUYM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-416-DIvC5RLYMQWVkg5ifkXfbQ-1; Mon, 14 Jul 2025 19:08:17 -0400
-X-MC-Unique: DIvC5RLYMQWVkg5ifkXfbQ-1
-X-Mimecast-MFC-AGG-ID: DIvC5RLYMQWVkg5ifkXfbQ_1752534496
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a52bfda108so2378987f8f.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:16 -0700 (PDT)
+ us-mta-618-04OvPCcAMJCOoaSM6B_z_A-1; Mon, 14 Jul 2025 19:08:19 -0400
+X-MC-Unique: 04OvPCcAMJCOoaSM6B_z_A-1
+X-Mimecast-MFC-AGG-ID: 04OvPCcAMJCOoaSM6B_z_A_1752534498
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4edf5bb4dso3441357f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 16:08:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752534495; x=1753139295;
+ d=1e100.net; s=20230601; t=1752534498; x=1753139298;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wprZxgNau5OjvcVyBV3BiqgIT2inRbQfjmepelKWyDE=;
- b=tBhkplP0A7+Wev8z/VeN0ZwoFpBm2EYf4eS6hFyCXo+DI9Vk6xjELJEJLE3Kbeyw/U
- JWNwB/os+aqp9dtGg+olMXmazkyFe3/7Q4EJwLUGhVBq0Lspjjni4zoY0B8oKh7U2LH0
- 2XJUTEb79MxzdiGUgoaguVylv8MG0iDCX8lq8mDUKqyB+KLlyeCcaYznYzFt+j9ECaiA
- W9VQod+wiAMHts9Hl7px5GYinMCuKRWoqpNxIJcHnWMHULNpOcoUSM9h5kL30CiBnhLv
- JnvbrVnZVqEctvl7jO7+7VQbkLtapBBL4fCpYmcsfesso/3QnuwvTKUs2UV/5YfHH3sh
- HDUQ==
-X-Gm-Message-State: AOJu0YxnG2zSm3ryT6h6NkNBr8Doka1KiL17/5NmiIdKtT+dfKG+ufPP
- jBCivQj0eQeFq9S++g2ODUHLgJ1WOqGuNANI4D/Dox46fMUcav6AbGZnVf3DAp5eG09gUsNMFuH
- pZnR2DCOGKFZKfNE0SlyCzH54Qgxy+ydos+FKryUjf6qagofho+xlHEl6rDjAIli29QKwIs2fRZ
- GYA5LsJXHnbbYC+wkrE1sF4bQF97Dx8F4zeQ==
-X-Gm-Gg: ASbGncveSKKVNAjB3EthkxsKBdQWS/kecTjsqRennnOsvsBq29dtkM8HHQIIbY011nK
- EDDR+cDHppevT9WzFyPij5iziG0ZlupdHmpLaH6dHNFNQxWpS7+HJ906oB/IrVfsNCQ1QysakG5
- f882T+FXT3jyPh5dWzD6rgFES99he3+XxIUU19FqooK1mM1xZJPwA5Kqju/p8csY9G3WVqlfqPA
- Qy0Ur+XYZqL/ZCbhiipBzJYNUW45Sq+VrAjkgXoyvC1X9E7qDXyPE9TarGdD0OtJ/LOqffQMSPX
- JtrNRQjI9/EvT1AHuuMzyEXECIwMQ8az
-X-Received: by 2002:adf:e194:0:b0:3a4:e393:11e2 with SMTP id
- ffacd0b85a97d-3b5f35795c3mr10631077f8f.34.1752534495394; 
- Mon, 14 Jul 2025 16:08:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZ7pzK3m27nyh5CuMGwAD5vfKGnUTLZdbomspEXXyw/msF0CvY/PsNbH98IZeW56tHLiE6uA==
-X-Received: by 2002:adf:e194:0:b0:3a4:e393:11e2 with SMTP id
- ffacd0b85a97d-3b5f35795c3mr10631061f8f.34.1752534494938; 
- Mon, 14 Jul 2025 16:08:14 -0700 (PDT)
+ bh=F+T4n/gyfgbuHU+PmGwWi6LsepOZQGnOvAjcmjnojCQ=;
+ b=S3lrHrwL/wBV+XJTQvIBzadaZDnK7gSHHCyLwVwj6Z4Lv1q37nTzVg14PXCwAAylIt
+ Gj+k/h2W0akdkaSPhc1ZNhb2cSyyw03K8IZRzWjC008ko13/QC07gOVzvq0yEXgfbXT8
+ qkG3Tj75kb1Mm5AilnvVt4lHtJgQfM5SGyCinRjfWWoq4nOs9WsOpL3U3G4GQSK2jnpl
+ D/N87bDBckqBKfANXiLz8R2fuSQfGTdo8hdsAVb6LkoLqfgXeu4P+TWOHabT6/8OIXpR
+ NoBYiTJJCFox79V1HBMBJhxkJ+Q+ISmVB6qT9v+9+BY4MSU3jwq9DVnOIBgBdVdgGSFo
+ bOQg==
+X-Gm-Message-State: AOJu0Yx0H7rQ4uF5wWY9bx99HO55eCJqNGRf2gKnnOS9Lq+7tbcSNbtQ
+ Ug9ibcdoKlEVsArlKu7M63iGnyJKJl8/6SSg+8UISp96ZFbpD5jn0CRQhGvrO36EokCS+ozwO8j
+ 0Nnnry6kKfpMa3QJ8n3HqicXF5Y3hnObZynGBSs9XrjnWElM9V0ot15ALDEezrp51uK/T0cgcaG
+ momCfUDXUQ2xlzQe8bXuw6DItPtOtMRClRbw==
+X-Gm-Gg: ASbGnctlH0SoZE0FdfR013w71UYzP5pHpduIeDU/o5V0jgmgm7EYvPzXsHwpmGi1Idx
+ vRTwffiE3T0G69/n2yHNNOL16EDu9yIU9sGaaEe8ifp5zX5xws8tQC6n0SvEL9n6EX5hF8zXe8L
+ aLnCusmrEk3dRA4UQXbScKQut7k5VVG6+28fi+nTKc0KBvI/QOID/Yw/CZ3BTJslHksyMv9mqUc
+ /7KyqP7HPh0kOfyW67U1JhFWAHIqQ1J2MF8ANpjVW8UD7aPSdEDbtzaKZsaZEj/aMfqunDZya1K
+ ksVMMe+L3UISQ3rA7hOACKjUYbkqRW/y
+X-Received: by 2002:a05:6000:41f7:b0:3a4:d83a:eb4c with SMTP id
+ ffacd0b85a97d-3b60a1bb314mr270557f8f.57.1752534497665; 
+ Mon, 14 Jul 2025 16:08:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF0R+AIKsrHi0wk6hYpVH2t1ggU+X8vweYfpslqXjcCUC9jlwFDrgBMZy8Q0GbHPgH4a5zZwQ==
+X-Received: by 2002:a05:6000:41f7:b0:3a4:d83a:eb4c with SMTP id
+ ffacd0b85a97d-3b60a1bb314mr270532f8f.57.1752534497187; 
+ Mon, 14 Jul 2025 16:08:17 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc1f70sm13408631f8f.27.2025.07.14.16.08.13
+ 5b1f17b1804b1-4560f22cd29sm74051385e9.34.2025.07.14.16.08.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 16:08:14 -0700 (PDT)
-Date: Mon, 14 Jul 2025 19:08:13 -0400
+ Mon, 14 Jul 2025 16:08:16 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:08:15 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PULL 46/97] hw/virtio: Build various files once
-Message-ID: <2e74e46aaa31a6437af2aaf9a9fc47fdd53e142f.1752534227.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 47/97] hw/i386/acpi-build: Make aml_pci_device_dsm() static
+Message-ID: <f2ecded93928bec88b322d126044c5e5f8d69237.1752534227.git.mst@redhat.com>
 References: <cover.1752534227.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -112,124 +117,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
 
-Now that various VirtIO files don't use target specific
-API anymore, we can move them to the system_ss[] source
-set to build them once.
+No need to export aml_pci_device_dsm() as it is only used
+in hw/i386/acpi-build.c.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20250708215320.70426-9-philmd@linaro.org>
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Message-Id: <20250714080639.2525563-2-eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio-config-io.c |  1 -
- hw/block/meson.build         |  6 ++++--
- hw/virtio/meson.build        | 20 +++++++++++---------
- 3 files changed, 15 insertions(+), 12 deletions(-)
+ include/hw/acpi/pci.h | 1 -
+ hw/i386/acpi-build.c  | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/virtio/virtio-config-io.c b/hw/virtio/virtio-config-io.c
-index ad78e0b9bc..f58d90b6e3 100644
---- a/hw/virtio/virtio-config-io.c
-+++ b/hw/virtio/virtio-config-io.c
-@@ -11,7 +11,6 @@
+diff --git a/include/hw/acpi/pci.h b/include/hw/acpi/pci.h
+index 6359d574fd..ab0187a894 100644
+--- a/include/hw/acpi/pci.h
++++ b/include/hw/acpi/pci.h
+@@ -36,7 +36,6 @@ typedef struct AcpiMcfgInfo {
  
- #include "qemu/osdep.h"
- #include "hw/virtio/virtio.h"
--#include "cpu.h"
+ void build_mcfg(GArray *table_data, BIOSLinker *linker, AcpiMcfgInfo *info,
+                 const char *oem_id, const char *oem_table_id);
+-Aml *aml_pci_device_dsm(void);
  
- uint32_t virtio_config_readb(VirtIODevice *vdev, uint32_t addr)
+ void build_append_pci_bus_devices(Aml *parent_scope, PCIBus *bus);
+ void build_pci_bridge_aml(AcpiDevAmlIf *adev, Aml *scope);
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 61851cc840..f59026524f 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -338,7 +338,7 @@ build_facs(GArray *table_data)
+     g_array_append_vals(table_data, reserved, 40); /* Reserved */
+ }
+ 
+-Aml *aml_pci_device_dsm(void)
++static Aml *aml_pci_device_dsm(void)
  {
-diff --git a/hw/block/meson.build b/hw/block/meson.build
-index 655704471a..43ed296cf4 100644
---- a/hw/block/meson.build
-+++ b/hw/block/meson.build
-@@ -13,7 +13,9 @@ system_ss.add(when: 'CONFIG_SSI_M25P80', if_true: files('m25p80_sfdp.c'))
- system_ss.add(when: 'CONFIG_SWIM', if_true: files('swim.c'))
- system_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen-block.c'))
+     Aml *method;
  
--specific_ss.add(when: 'CONFIG_VIRTIO_BLK', if_true: files('virtio-blk.c', 'virtio-blk-common.c'))
--specific_ss.add(when: 'CONFIG_VHOST_USER_BLK', if_true: files('vhost-user-blk.c', 'virtio-blk-common.c'))
-+specific_ss.add(when: 'CONFIG_VIRTIO_BLK', if_true: files('virtio-blk.c'))
-+system_ss.add(when: 'CONFIG_VIRTIO_BLK', if_true: files('virtio-blk-common.c'))
-+specific_ss.add(when: 'CONFIG_VHOST_USER_BLK', if_true: files('vhost-user-blk.c'))
-+system_ss.add(when: 'CONFIG_VHOST_USER_BLK', if_true: files('virtio-blk-common.c'))
- 
- subdir('dataplane')
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index 164f6fd995..3ea7b3cec8 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -1,6 +1,7 @@
- system_virtio_ss = ss.source_set()
- system_virtio_ss.add(files('virtio-bus.c'))
- system_virtio_ss.add(files('iothread-vq-mapping.c'))
-+system_virtio_ss.add(files('virtio-config-io.c'))
- system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('virtio-pci.c'))
- system_virtio_ss.add(when: 'CONFIG_VIRTIO_MMIO', if_true: files('virtio-mmio.c'))
- system_virtio_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto.c'))
-@@ -10,11 +11,11 @@ system_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c')
- 
- specific_virtio_ss = ss.source_set()
- specific_virtio_ss.add(files('virtio.c'))
--specific_virtio_ss.add(files('virtio-config-io.c', 'virtio-qmp.c'))
-+specific_virtio_ss.add(files('virtio-qmp.c'))
- 
- if have_vhost
-   system_virtio_ss.add(files('vhost.c'))
--  specific_virtio_ss.add(files('vhost-backend.c', 'vhost-iova-tree.c'))
-+  system_virtio_ss.add(files('vhost-backend.c', 'vhost-iova-tree.c'))
-   if have_vhost_user
-     # fixme - this really should be generic
-     specific_virtio_ss.add(files('vhost-user.c'))
-@@ -43,22 +44,22 @@ if have_vhost
-   endif
-   if have_vhost_vdpa
-     system_virtio_ss.add(files('vhost-vdpa.c'))
--    specific_virtio_ss.add(files('vhost-shadow-virtqueue.c'))
-+    system_virtio_ss.add(files('vhost-shadow-virtqueue.c'))
-   endif
- else
-   system_virtio_ss.add(files('vhost-stub.c'))
- endif
-+system_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio-rng.c'))
- 
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_BALLOON', if_true: files('virtio-balloon.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_FS', if_true: files('vhost-user-fs.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_PMEM', if_true: files('virtio-pmem.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock.c'))
--specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock.c'))
--specific_virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio-rng.c'))
--specific_virtio_ss.add(when: 'CONFIG_VIRTIO_NSM', if_true: [files('virtio-nsm.c', 'cbor-helpers.c'), libcbor])
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem.c'))
--specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_SCMI', if_true: files('vhost-user-scmi.c'))
--specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_SCMI'], if_true: files('vhost-user-scmi-pci.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_NSM', if_true: files('virtio-nsm.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_NSM', if_true: [files('cbor-helpers.c'), libcbor])
-+system_virtio_ss.add(when: 'CONFIG_VHOST_USER_SCMI', if_true: files('vhost-user-scmi.c'))
- 
- virtio_pci_ss = ss.source_set()
- virtio_pci_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock-pci.c'))
-@@ -67,6 +68,7 @@ virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_BLK', if_true: files('vhost-user-blk-
- virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-user-scsi-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_FS', if_true: files('vhost-user-fs-pci.c'))
-+virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_SCMI', if_true: files('vhost-user-scmi-pci.c'))
- 
- virtio_pci_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VIRTIO_INPUT_HOST', if_true: files('virtio-input-host-pci.c'))
-@@ -85,7 +87,7 @@ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MD', if_true: files('virtio-md-pci.c'))
- 
--specific_virtio_ss.add_all(when: 'CONFIG_VIRTIO_PCI', if_true: virtio_pci_ss)
-+system_virtio_ss.add_all(when: 'CONFIG_VIRTIO_PCI', if_true: virtio_pci_ss)
- 
- system_ss.add_all(when: 'CONFIG_VIRTIO', if_true: system_virtio_ss)
- system_ss.add(when: 'CONFIG_VIRTIO', if_false: files('vhost-stub.c'))
 -- 
 MST
 
