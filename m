@@ -2,91 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D776B04719
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 20:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5131B04740
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Jul 2025 20:12:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubNYw-0007tH-HJ; Mon, 14 Jul 2025 14:06:16 -0400
+	id 1ubNde-000551-Vh; Mon, 14 Jul 2025 14:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ubMSk-0004a6-99
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 12:55:34 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ubMSh-0001J8-84
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 12:55:33 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3a4fd1ba177so2989659f8f.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 09:55:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752512129; x=1753116929; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/WAd9m8e33PKa1oGnuqT0APNMRjVofzTCm9BK9/hgKY=;
- b=E6txaNRu0ZwWrXEoWZqXLHlpl0eSGWws+13zZ5jv7MDEG6zz5zYMdcooBkLl3qQOkT
- 7gDEofiYeO1q8b3H2M/nnrDqFSmMjoChygV1aEVQT7IS/Vi1IyJu7d30rbcAQgOkeaQB
- f6kbbFXQaoAFi1ZUtgjXm48C8Kaoo2K/6KfoUJmUnmdRIoDFBQFU+WZjTG44wyulkhAh
- YOhvfMDQ2tyzBzfL2tkM8uoh9jF9p8yI70d1K+p5YNsKkvuJofSTC9VkyHT7afaGu0nq
- GTS7dytln8s4HoveUl/h2SLae9PVA13CJQSHom3TTWeniN/7HuSfPNBhurQQhzCNEgqE
- ECqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752512129; x=1753116929;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/WAd9m8e33PKa1oGnuqT0APNMRjVofzTCm9BK9/hgKY=;
- b=ETHpDmTqhO8Y+9h83HGHiJoTlHAQa4Dx0xaXe+N/W74IGFRk2mUKxu+GDAsTXjLEk7
- ExFIfVsVsv546KeZsiDL4ptcdxYBCWIgn2kPLFWMipaha7BMg0WAyOe96B5auWRW2B8L
- JQA2tAZFMzQOIikWTS14y5EADIglRX6lQTCQDTcugTfcBSdBg6q6b1SjogklsDWsegIP
- zFdws6qItsaf+S+hrlrJcr2u7JdPVuuoSI2iYpbPg2NCualPDK4I3tjitympuzfo+jhi
- djnZCqO0sfR7q3fCDbspzup9F9s8kXamV6tSlPBv5k1xtLA2rFUkb5EZ6TURomKNQa4i
- e6+Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUAJTzT2cK96O13sqqUC886RzbnIlhIRUR8BGbyR3IBCQkWOhNP5akXPr2TBQ8U27LRqzyOs2va9X0D@nongnu.org
-X-Gm-Message-State: AOJu0YyiujY4CbCVsLdQkHjraFVi01z8qOT1RZLca+HwvweoljJhLHno
- Bdgnqa0rrOazwPoQoo5OFBVSbjlXgCJGDnfJMgaEH+QsRc9aw4rKoKN3WpHOwsGS6aA=
-X-Gm-Gg: ASbGncsgmwuuZKdhwLV7eNZIWXbpNNg5Iuuvg38ceCFkzPYoK3FYU/p51c+jSOieuY5
- phUOf2dnBCJ+n1sAqJG0LsPa+4ZnZgac4uiS4ffla7ccA7XiWE/k/3lopPyp+Iaxw/n6S8BDIKm
- EsdHBoNPQgJantSca4mK4pIzWSmkSNypveHizrI+nHZpOCmMzDoVpv9Oi3Rv5Y9HDWG4asQWEOT
- UmoAZyVtfOIIkogOmzxxRBOgIBz4/amSzVhHurLDa2ffRUhYw4B8w+R91kDBuemfI+e2s2xKRFd
- 4mlRc8aFhje0oTJ9ctfXrHzPJ6r2kwsd2o01xduiEt1fxC/BYyxMnkXNoNTWS9qLElxP/DMw+YL
- weVCHnxw1M85Av6il/m4Z/FaYxC/g
-X-Google-Smtp-Source: AGHT+IF+w0jSj/V7Z7QVWt/OlBIfPTwpI8k28WpIjSbSUuDO/4L33AITtFyF7HxsIxbe/DQsoeDQew==
-X-Received: by 2002:a05:6000:4813:b0:3a5:6860:f47f with SMTP id
- ffacd0b85a97d-3b609522266mr325287f8f.6.1752512129388; 
- Mon, 14 Jul 2025 09:55:29 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8bd15bfsm13164665f8f.19.2025.07.14.09.55.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 09:55:28 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 3/4] hw/net/npcm_gmac.c: Correct test for when to reallocate
- packet buffer
-Date: Mon, 14 Jul 2025 17:55:22 +0100
-Message-ID: <20250714165523.1956235-4-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250714165523.1956235-1-peter.maydell@linaro.org>
-References: <20250714165523.1956235-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1ubMZc-0004yM-AG
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 13:02:50 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1ubMZY-0002QB-G4
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 13:02:40 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bgpSP15X9z6L5Nj;
+ Tue, 15 Jul 2025 00:59:01 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 993BC140142;
+ Tue, 15 Jul 2025 01:02:28 +0800 (CST)
+Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 14 Jul
+ 2025 19:02:28 +0200
+Date: Mon, 14 Jul 2025 18:02:26 +0100
+To: Fan Ni <nifan.cxl@gmail.com>
+CC: "Michael S. Tsirkin" <mst@redhat.com>, <qemu-devel@nongnu.org>,
+ <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Anisa Su
+ <anisa.su@samsung.com>
+Subject: Re: [PATCH qemu 07/11] hw/cxl: mailbox-utils: 0x5602 - FMAPI Set DC
+ Region Config
+Message-ID: <20250714180226.0000562d@huawei.com>
+In-Reply-To: <aHU0K4bXbPLsed5t@lg>
+References: <20250702160219.989731-1-Jonathan.Cameron@huawei.com>
+ <20250702160219.989731-8-Jonathan.Cameron@huawei.com>
+ <20250714052757-mutt-send-email-mst@kernel.org>
+ <20250714150218.00006c95@huawei.com>
+ <20250714151512.00000a2a@huawei.com>
+ <20250714151638.000038ac@huawei.com> <aHU0K4bXbPLsed5t@lg>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,50 +73,174 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In gmac_try_send_next_packet() we have code that does "if this block
-of data won't fit in the buffer, reallocate it".  However, the
-condition it uses is
-  if ((prev_buf_size + tx_buf_len) > sizeof(buf))
-where buf is a uint8_t *.
+On Mon, 14 Jul 2025 09:45:31 -0700
+Fan Ni <nifan.cxl@gmail.com> wrote:
 
-This means that sizeof(buf) is always 8 bytes, and the condition will
-almost always be true, so we will reallocate the buffer more often
-than we need to.
+> On Mon, Jul 14, 2025 at 03:16:38PM +0100, Jonathan Cameron wrote:
+> > On Mon, 14 Jul 2025 15:15:12 +0100
+> > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> >  =20
+> > > On Mon, 14 Jul 2025 15:02:18 +0100
+> > > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> > >  =20
+> > > > On Mon, 14 Jul 2025 05:32:19 -0400
+> > > > "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> > > >    =20
+> > > > > On Wed, Jul 02, 2025 at 05:02:13PM +0100, Jonathan Cameron wrote:=
+     =20
+> > > > > > From: Anisa Su <anisa.su@samsung.com>
+> > > > > >=20
+> > > > > > FM DCD Management command 0x5602 implemented per CXL r3.2 Spec =
+Section 7.6.7.6.3
+> > > > > >=20
+> > > > > > Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> > > > > > Signed-off-by: Anisa Su <anisa.su@samsung.com>
+> > > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  =
+   =20
+> > > >=20
+> > > >    =20
+> > > > > > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-ut=
+ils.c
+> > > > > > index bf1710b251..1fc453f70d 100644
+> > > > > > --- a/hw/cxl/cxl-mailbox-utils.c
+> > > > > > +++ b/hw/cxl/cxl-mailbox-utils.c     =20
+> > > >    =20
+> > > > > > +/* CXL r3.2 section 7.6.7.6.3: Set Host DC Region Configuratio=
+n (Opcode 5602) */
+> > > > > > +static CXLRetCode cmd_fm_set_dc_region_config(const struct cxl=
+_cmd *cmd,
+> > > > > > +                                              uint8_t *payload=
+_in,
+> > > > > > +                                              size_t len_in,
+> > > > > > +                                              uint8_t *payload=
+_out,
+> > > > > > +                                              size_t *len_out,
+> > > > > > +                                              CXLCCI *cci)
+> > > > > > +{
+> > > > > > +    struct {
+> > > > > > +        uint8_t reg_id;
+> > > > > > +        uint8_t rsvd[3];
+> > > > > > +        uint64_t block_sz;
+> > > > > > +        uint8_t flags;
+> > > > > > +        uint8_t rsvd2[3];
+> > > > > > +    } QEMU_PACKED *in =3D (void *)payload_in;
+> > > > > > +    CXLType3Dev *ct3d =3D CXL_TYPE3(cci->d);
+> > > > > > +    CXLEventDynamicCapacity dcEvent =3D {};
+> > > > > > +    CXLDCRegion *region =3D &ct3d->dc.regions[in->reg_id];
+> > > > > > +
+> > > > > > +    /*
+> > > > > > +     * CXL r3.2 7.6.7.6.3: Set DC Region Configuration
+> > > > > > +     * This command shall fail with Unsupported when the Sanit=
+ize on Release
+> > > > > > +     * field does not match the region=E2=80=99s configuration=
+... and the device
+> > > > > > +     * does not support reconfiguration of the Sanitize on Rel=
+ease setting.
+> > > > > > +     *
+> > > > > > +     * Currently not reconfigurable, so always fail if sanitiz=
+e bit (bit 0)
+> > > > > > +     * doesn't match.
+> > > > > > +     */
+> > > > > > +    if ((in->flags & 0x1) !=3D (region->flags & 0x1)) {
+> > > > > > +        return CXL_MBOX_UNSUPPORTED;
+> > > > > > +    }
+> > > > > > +
+> > > > > > +    if (in->reg_id >=3D DCD_MAX_NUM_REGION) {
+> > > > > > +        return CXL_MBOX_UNSUPPORTED;
+> > > > > > +    }
+> > > > > > +
+> > > > > > +    /* Check that no extents are in the region being reconfigu=
+red */
+> > > > > > +    if (!bitmap_empty(region->blk_bitmap, region->len / region=
+->block_size)) {
+> > > > > > +        return CXL_MBOX_UNSUPPORTED;
+> > > > > > +    }
+> > > > > > +
+> > > > > > +    /* Check that new block size is supported */
+> > > > > > +    if (!test_bit(BIT((int) log2(in->block_sz)),
+> > > > > > +                  &region->supported_blk_size_bitmask)) {
+> > > > > > +        return CXL_MBOX_INVALID_INPUT;
+> > > > > > +    }       =20
+> > > > >=20
+> > > > > This does not work: test_bit works on unsigned long, while
+> > > > > supported_blk_size_bitmask is uint64_t.
+> > > > >=20
+> > > > > Why so funky? what is wrong with:
+> > > > >=20
+> > > > > if (!(BIT_ULL(log2(in->block_sz)) & region->supported_blk_size_bi=
+tmask))
+> > > > >=20
+> > > > > And BTW why cast to int here?     =20
+> > > This became obvious when your suggestion didn't build :(
+> > >=20
+> > > ./../hw/cxl/cxl-mailbox-utils.c: In function =E2=80=98cmd_fm_set_dc_r=
+egion_config=E2=80=99:
+> > > /home/jic23/src/qemu/include/qemu/bitops.h:25:39: error: invalid oper=
+ands to binary << (have =E2=80=98long long unsigned int=E2=80=99 and =E2=80=
+=98double=E2=80=99)
+> > >    25 | #define BIT_ULL(nr)             (1ULL << (nr))
+> > >       |                                       ^~ ~~~~
+> > > ../../hw/cxl/cxl-mailbox-utils.c:3436:11: note: in expansion of macro=
+ =E2=80=98BIT_ULL=E2=80=99
+> > >  3436 |     if (!(BIT_ULL(log2(in->block_sz)) & region->supported_blk=
+_size_bitmask)) {
+> > >       |           ^~~~~~~
+> > >=20
+> > > Now I look again, this is effectively 2**(log_2(x)) or x. So
+> > > if (in->block_sz & region->supporte_blk_size_bitmask) =20
+> >=20
+> > it (!(in->block_sz & region->supports_blk_size_bitmask))
+> >=20
+> > I mean. =20
+>=20
+> Make sense to me.=20
+>=20
+> The only thing is how to detect the violation if the passed in block_sz
+> is not power of 2.
+> Or who will do the check if not in qemu?
+Hi Fan,
 
-Correct the condition to test against tx_buffer_size, which is
-where we track how big the allocated buffer is.
+I checked the spec on this.  There isn't an explicit statement that the dev=
+ice
+should return an error on this. Looks to be impdef. I'd happily see such
+a check as a usability improvement though!
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/net/npcm_gmac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I'm just not set up to test this right now so decided to be
+risk averse and not trying adding one.=20
 
-diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
-index a0050a7725f..0c17ae9b2a9 100644
---- a/hw/net/npcm_gmac.c
-+++ b/hw/net/npcm_gmac.c
-@@ -569,7 +569,7 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
-         tx_buf_len = TX_DESC_TDES1_BFFR1_SZ_MASK(tx_desc.tdes1);
-         buf = &tx_send_buffer[prev_buf_size];
- 
--        if ((prev_buf_size + tx_buf_len) > sizeof(buf)) {
-+        if ((prev_buf_size + tx_buf_len) > tx_buffer_size) {
-             tx_buffer_size = prev_buf_size + tx_buf_len;
-             tx_send_buffer = g_realloc(tx_send_buffer, tx_buffer_size);
-             buf = &tx_send_buffer[prev_buf_size];
-@@ -591,7 +591,7 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
-             tx_buf_len = TX_DESC_TDES1_BFFR2_SZ_MASK(tx_desc.tdes1);
-             buf = &tx_send_buffer[prev_buf_size];
- 
--            if ((prev_buf_size + tx_buf_len) > sizeof(buf)) {
-+            if ((prev_buf_size + tx_buf_len) > tx_buffer_size) {
-                 tx_buffer_size = prev_buf_size + tx_buf_len;
-                 tx_send_buffer = g_realloc(tx_send_buffer, tx_buffer_size);
-                 buf = &tx_send_buffer[prev_buf_size];
--- 
-2.43.0
+If you want to send a patch on top I'd be happy to add it.
+
+Jonathan
+
+
+
+>=20
+> Fan
+>=20
+> >=20
+> >  =20
+> > > Should work as long as we know block_size is a power of 2 (which the =
+specification
+> > > says it must be).
+> > >=20
+> > > Anisa?
+> > >  =20
+> > > >=20
+> > > > Change looks fine to me, so I'll prepare an updated set with this
+> > > > and the missing semi colon.  Anisa if you can have a look at this
+> > > > that would be great.=20
+> > > >=20
+> > > > Sorry I seem to have missed Anisa off the cc for this!
+> > > >=20
+> > > > Jonathan
+> > > >    =20
+> > >  =20
+> >  =20
+>=20
 
 
