@@ -2,112 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC49B04A8A
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 00:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECBB7B04AFA
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 00:47:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubRal-0002K1-UY; Mon, 14 Jul 2025 18:24:12 -0400
+	id 1ubRwM-00024Q-Bd; Mon, 14 Jul 2025 18:46:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1ubQBD-0006zQ-82; Mon, 14 Jul 2025 16:53:43 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <kib@kib.kiev.ua>) id 1ubQdq-0008E5-NH
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 17:23:19 -0400
+Received: from kib.kiev.ua ([2001:470:d5e7:1::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1ubQBA-0002ls-Ss; Mon, 14 Jul 2025 16:53:42 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56EH8XS2002668;
- Mon, 14 Jul 2025 20:53:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=jSXttz
- ueQ5TBh1oRu2NkdrCq1iuYDb2+0sVdj/A3oyQ=; b=WV9GZrASM3mdQdUJBqJKhw
- L9bdX4YpGfOdc+/DcKzBhU6jhyCvbGZlm9RQbwdJFubyr1RtYOzJuzFS3tLrcRMq
- h2D+aOGGUxgINolURcWNdtVdvaS4YptvktbmO7BEF0LZdZcvIjPjXlQyo4mz3OTJ
- EYfKa6EXEiXBC2X1sHqPVT34i6vUXQU1Ax7J2Bel4DKvZa7rcFipPhrfXCPhSddn
- JbbzzcCnT31+6p0uLL8HBYtCtiNkWhRQia7Yxb33vRU2HFrrli06kooEPwwTzw41
- qYilewSaNiQKY/CnObOx9QHTPos+HIe30x85UbgCX1xNmsKo9++Z2ab6pc9octqA
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47ue4tumnm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jul 2025 20:53:37 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56EJvHNO021972;
- Mon, 14 Jul 2025 20:53:36 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 47v4r2y6ap-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jul 2025 20:53:36 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 56EKrZin19530494
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Jul 2025 20:53:35 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1653F58053;
- Mon, 14 Jul 2025 20:53:35 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D714B58043;
- Mon, 14 Jul 2025 20:53:33 +0000 (GMT)
-Received: from [9.12.68.85] (unknown [9.12.68.85])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 14 Jul 2025 20:53:33 +0000 (GMT)
-Message-ID: <22f0688b-c33e-4716-baed-fa9e1ef6c30d@linux.ibm.com>
-Date: Mon, 14 Jul 2025 16:53:33 -0400
+ (Exim 4.90_1) (envelope-from <kib@kib.kiev.ua>) id 1ubQdn-0007ln-U2
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 17:23:18 -0400
+Received: from tom.home (kib@localhost [127.0.0.1] (may be forged))
+ by kib.kiev.ua (8.18.1/8.18.1) with ESMTP id 56ELM5fG018818;
+ Tue, 15 Jul 2025 00:22:08 +0300 (EEST)
+ (envelope-from kib@kib.kiev.ua)
+DKIM-Filter: OpenDKIM Filter v2.10.3 kib.kiev.ua 56ELM5fG018818
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=kib.kiev.ua; s=tom;
+ t=1752528130; bh=Nulc9H/OLYQ96IdLYjHYoHT8pJqSbBT6ySlGUA4uNZw=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To;
+ b=DmT0Qe5W3jmTwwaCVEpUi28ImY9B8vDbAPnqFEMvDWQpl41HD48Q8Jtqh8GqRWPA6
+ cWAYESEZKku0cE3sImPEuKUL6guVf9Y4afN0k5kAsR+Mfx8VLe2bIXTcZAAnsLH3Ua
+ NiTn60n1DFF/L2kgYgGgnmkumVk+Z6JsrV9bD0Zs=
+Received: (from kostik@localhost)
+ by tom.home (8.18.1/8.18.1/Submit) id 56ELM3Kj018816;
+ Tue, 15 Jul 2025 00:22:03 +0300 (EEST)
+ (envelope-from kib@kib.kiev.ua)
+X-Authentication-Warning: tom.home: kostik set sender to kib@kib.kiev.ua using
+ -f
+Date: Tue, 15 Jul 2025 00:22:03 +0300
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Le Tan <tamlokveer@gmail.com>,
+ jhb@freebsd.org,
+ =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] intel_iommu: Allow both Status Write and Interrupt
+ Flag in QI wait
+Message-ID: <aHV0-wDJImAjRPPp@kib.kiev.ua>
+References: <0122cbabc0adcc3cf878f5fd7834d8f258c7a2f2.camel@infradead.org>
+ <9ce8b7e6-ad15-4d2e-a430-3896eccc7519@intel.com>
+ <4FE9A8E3-5BA5-46D3-A1FA-EA1B7C85C058@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 18/28] pc-bios/s390-ccw: Refactor zipl_run()
-To: Zhuoying Cai <zycai@linux.ibm.com>, thuth@redhat.com, berrange@redhat.com, 
- richard.henderson@linaro.org, david@redhat.com, pbonzini@redhat.com,
- jrossi@linux.ibm.com, qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-Cc: jjherne@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- farman@linux.ibm.com, mjrosato@linux.ibm.com, iii@linux.ibm.com
-References: <20250711211105.439554-1-zycai@linux.ibm.com>
- <20250711211105.439554-19-zycai@linux.ibm.com>
-Content-Language: en-US
-From: Collin Walling <walling@linux.ibm.com>
-In-Reply-To: <20250711211105.439554-19-zycai@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=baBrUPPB c=1 sm=1 tr=0 ts=68756e51 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=K7vxbn2xGZbTZNcvMCgA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: DVm18RIZjJaQykYVp7Nws6M-uznMkerF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDEzOSBTYWx0ZWRfX0Ym6FgBI07bJ
- NbDBobGJwJ5lq8vY2WB7D9kH2pOC2wv+9RSP5CXFD+OPPCctCYxOerEWPam9be0Uhrgguo/NOgI
- PXVmQ+i59VTXYeOjgh/mtzj+YWEV1e5Z86tcjDfVU8UMawFMoOOVBi3NdLPR8ILmBlK+LpLpXwo
- pV00AVyAyRcpIBD9BmcI8ZOCdbhfaUYQgvVawXW+ytElJraOscNIGhDqF0ieEniNQLTasEd7AEj
- +5wObTBZ5r4Y3qwG83CGSYR/5n0RtPMKt97czA0oz01wNu1xwailawyUa1z4zDTuqgNzetmzBr0
- 2rjNLQNcUhtqiN33nN/1PzJmuVnfEtp4etcArNObjOSGyAZVj05FmuaS+gDcNYJgvTy/XKC5uRB
- fAJqwO/hnYjZ5lDm3HEkfk43hcn3T/zwVv8HnuGGVTfSwXVNOUCWGpduM4JGpi5Ti877kjLU
-X-Proofpoint-ORIG-GUID: DVm18RIZjJaQykYVp7Nws6M-uznMkerF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-14_02,2025-07-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=999
- suspectscore=0 adultscore=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1015 mlxscore=0
- malwarescore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507140139
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=walling@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4FE9A8E3-5BA5-46D3-A1FA-EA1B7C85C058@infradead.org>
+Received-SPF: pass client-ip=2001:470:d5e7:1::1; envelope-from=kib@kib.kiev.ua;
+ helo=kib.kiev.ua
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 14 Jul 2025 18:46:27 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,120 +75,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Konstantin Belousov <kib@kib.kiev.ua>
+From:  Konstantin Belousov via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/25 5:10 PM, Zhuoying Cai wrote:
-> Refactor to enhance readability before enabling secure IPL in later
-> patches.
+On Mon, Jul 14, 2025 at 05:41:22PM +0100, David Woodhouse wrote:
+> On 14 July 2025 15:28:09 GMT+01:00, Yi Liu <yi.l.liu@intel.com> wrote:
+> >Hi David,
+> >
+> >On 2025/7/14 16:00, David Woodhouse wrote:
+> >> From: David Woodhouse <dwmw@amazon.co.uk>
+> >> 
+> >> FreeBSD does both, and this appears to be perfectly valid. The VT-d
+> >> spec even talks about the ordering (the status write should be done
+> >> first, unsurprisingly).
+> >
+> >interesting. Have you tried setting both flags on baremetal and the hw
+> >gives you both the status code and an interrupt?
 > 
-> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
-> ---
->  pc-bios/s390-ccw/bootmap.c | 58 ++++++++++++++++++++++----------------
->  1 file changed, 34 insertions(+), 24 deletions(-)
+> I see no reason why it shouldn't. The spec (§6.5.2.8) gives no that the IF and SW bits should be mutually exclusive and even talks about ordering:
 > 
-> diff --git a/pc-bios/s390-ccw/bootmap.c b/pc-bios/s390-ccw/bootmap.c
-> index 0f8baa0198..ced5190888 100644
-> --- a/pc-bios/s390-ccw/bootmap.c
-> +++ b/pc-bios/s390-ccw/bootmap.c
-> @@ -674,6 +674,38 @@ static int zipl_load_segment(ComponentEntry *entry)
->      return 0;
->  }
->  
-> +static int zipl_run_normal(ComponentEntry *entry, uint8_t *tmp_sec)
-> +{
-> +    while (entry->component_type == ZIPL_COMP_ENTRY_LOAD ||
-> +        entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-> +
+> Section 6.5.2.11 describes queued invalidation ordering considerations. Hardware completes an 
+> invalidation wait command as follows:
+> • If a status write is specified in the wait descriptor (SW=1), hardware performs a coherent write of 
+> the status data to the status address.
+> • If an interrupt is requested in the wait descriptor (IF=1), hardware sets the IWC field in the 
+> Invalidation Completion Status Register. An invalidation completion interrupt may be generated as 
+> described in the following section
+> 
 
-Add space to align this line with the one above, as it was in the code
-you're refactoring:
+Yes, and the FreeBSD DMAR code uses that, and relies on that, as was
+mentioned earlier in the mail thread.
 
-       while (entry->component_type == ZIPL_COMP_ENTRY_LOAD ||
-              entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-
-> +        /* Secure boot is off, so we skip signature entries */
-> +        if (entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-> +            entry++;
-> +            continue;
-> +        }
-> +
-> +        if (zipl_load_segment(entry)) {
-> +            return -1;
-> +        }
-> +
-> +        entry++;
-> +
-> +        if ((uint8_t *)&entry[1] > tmp_sec + MAX_SECTOR_SIZE) {
-> +            puts("Wrong entry value");
-> +            return -EINVAL;
-> +        }
-> +    }
-> +
-> +    if (entry->component_type != ZIPL_COMP_ENTRY_EXEC) {
-> +        puts("No EXEC entry");
-> +        return -EINVAL;
-> +    }
-> +
-> +    write_reset_psw(entry->compdat.load_psw);
-> +    return 0;
-> +}
-> +
->  /* Run a zipl program */
->  static int zipl_run(ScsiBlockPtr *pte)
->  {
-> @@ -700,34 +732,12 @@ static int zipl_run(ScsiBlockPtr *pte)
->  
->      /* Load image(s) into RAM */
->      entry = (ComponentEntry *)(&header[1]);
-> -    while (entry->component_type == ZIPL_COMP_ENTRY_LOAD ||
-> -           entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-> -
-> -        /* We don't support secure boot yet, so we skip signature entries */
-> -        if (entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-> -            entry++;
-> -            continue;
-> -        }
-> -
-> -        if (zipl_load_segment(entry)) {
-> -            return -1;
-> -        }
->  
-> -        entry++;
-> -
-> -        if ((uint8_t *)(&entry[1]) > (tmp_sec + MAX_SECTOR_SIZE)) {
-> -            puts("Wrong entry value");
-> -            return -EINVAL;
-> -        }
-> -    }
-> -
-> -    if (entry->component_type != ZIPL_COMP_ENTRY_EXEC) {
-> -        puts("No EXEC entry");
-> -        return -EINVAL;
-> +    if (zipl_run_normal(entry, tmp_sec)) {
-> +        return -1;
->      }
->  
->      /* should not return */
-> -    write_reset_psw(entry->compdat.load_psw);
->      jump_to_IPL_code(0);
->      return -1;
->  }
-
-Both zipl_run_normal and zipl_run_secure will end with:
-
-   if (entry->component_type != ZIPL_COMP_ENTRY_EXEC) {
-       puts("No EXEC entry");
-       return -EINVAL;
-   }
-
-   write_reset_psw(entry->compdat.load_psw);
-
-I'd suggest making the refactor pass &entry and leaving the checks
-mentioned above at the end of zipl_run.  That way there is less
-duplicate code between _normal and _secure.
-
--- 
-Regards,
-  Collin
+> 
+> 
+> >I think this "if branch" can be moved just after the inv_desc non-zero
+> >reserved bit checking. Hence you don't need a ret at all. :)
+> 
+> We want to return false if the memory write fails, and the interrupt has to happen afterwards.
+> 
+> > btw. I'm
+> >also asking if VT-d spec allows it or not. So let's wait for a while..
+> 
+> Ok.
+> 
+> 
 
