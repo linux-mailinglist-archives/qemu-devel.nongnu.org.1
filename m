@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CB1B06292
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 17:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC85B0625A
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 17:07:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubhNK-00028V-Eb; Tue, 15 Jul 2025 11:15:22 -0400
+	id 1ubhFk-0003pZ-KW; Tue, 15 Jul 2025 11:07:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubggX-0003TT-Ph
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:31:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1ubggh-0003Wm-D3
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:31:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubggT-0006UF-9H
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:31:09 -0400
+ id 1ubgge-0006Vn-Ot
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:31:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752589864;
+ s=mimecast20190719; t=1752589875;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=u3PYgrybvikraahXPw5BOhsK8/KePjmHjr8xKzUf4F4=;
- b=eE1HPunbBTQYTb+YGqqbdO+7rTAeT8nzbv/nG849aenObONlMJTbvoaXyJHRzluycuj+z4
- SSvIw95d+0IfmCz0OGJL8dV6A5M/AiCJOFARmkbwAJXWYenWb6eB/3qiRjAjiQociHguFb
- vwby3jYVNBHRd3FQd/Dp/g+NWPOU4Y4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=0uaEabOSXUahWV4PiOgoybPYT27qnbN4CDQSPyTIrjg=;
+ b=Rb0R3P/GDUL7XOSD5hDWcsyUlqEEzAY/44E3ccYXCadA3y8LuJLakln39Jtp/Ds4c8GPLP
+ KCJugtwR1SnGIw8CeU62qcO1n7PVxyMRvqgMBzWX2+P3un0nnJjVe75X3zTdDiVElVprdo
+ AIcF4V5oCgu9IvbAm8p9ePEUa+Jyr1E=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-6hoQWthENkCc5LKE3ZTwfQ-1; Tue,
- 15 Jul 2025 10:31:01 -0400
-X-MC-Unique: 6hoQWthENkCc5LKE3ZTwfQ-1
-X-Mimecast-MFC-AGG-ID: 6hoQWthENkCc5LKE3ZTwfQ_1752589860
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-kAN5Qq7EMWWx49prYtkJjA-1; Tue,
+ 15 Jul 2025 10:31:09 -0400
+X-MC-Unique: kAN5Qq7EMWWx49prYtkJjA-1
+X-Mimecast-MFC-AGG-ID: kAN5Qq7EMWWx49prYtkJjA_1752589864
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E4EC518001D6; Tue, 15 Jul 2025 14:30:59 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 54861195608F; Tue, 15 Jul 2025 14:31:04 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.173])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8CDCD180045B; Tue, 15 Jul 2025 14:30:47 +0000 (UTC)
+ id 82D8F18002B1; Tue, 15 Jul 2025 14:31:00 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, Jagannathan Raman <jag.raman@oracle.com>,
@@ -54,16 +54,16 @@ Cc: Hanna Reitz <hreitz@redhat.com>, Jagannathan Raman <jag.raman@oracle.com>,
  qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 02/14] python: avoid deprecation warning with get_event_loop
-Date: Tue, 15 Jul 2025 15:30:11 +0100
-Message-ID: <20250715143023.1851000-3-berrange@redhat.com>
+Subject: [PATCH 03/14] python: drop 'is_closing' back compat helper
+Date: Tue, 15 Jul 2025 15:30:12 +0100
+Message-ID: <20250715143023.1851000-4-berrange@redhat.com>
 In-Reply-To: <20250715143023.1851000-1-berrange@redhat.com>
 References: <20250715143023.1851000-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -72,7 +72,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,41 +88,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need to call get_event_loop but have no way of knowing ahead
-of time whether the current thread has an event loop of not. We
-can handle a missing event loop, but we need to hide the warning
-python will emit to avoid tripping up iotests expected output.
+Our minimum python is now 3.9, so back compat with python
+3.6 is no longer required.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- python/qemu/qmp/legacy.py | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ python/qemu/qmp/protocol.py |  3 +--
+ python/qemu/qmp/util.py     | 16 ----------------
+ 2 files changed, 1 insertion(+), 18 deletions(-)
 
-diff --git a/python/qemu/qmp/legacy.py b/python/qemu/qmp/legacy.py
-index e11d05afbd..c6ab3edc86 100644
---- a/python/qemu/qmp/legacy.py
-+++ b/python/qemu/qmp/legacy.py
-@@ -34,6 +34,7 @@
-     TypeVar,
-     Union,
- )
-+import warnings
+diff --git a/python/qemu/qmp/protocol.py b/python/qemu/qmp/protocol.py
+index a4ffdfad51..9a7ada4a1e 100644
+--- a/python/qemu/qmp/protocol.py
++++ b/python/qemu/qmp/protocol.py
+@@ -39,7 +39,6 @@
+     create_task,
+     exception_summary,
+     flush,
+-    is_closing,
+     pretty_traceback,
+     upper_half,
+     wait_closed,
+@@ -825,7 +824,7 @@ async def _bh_close_stream(self, error_pathway: bool = False) -> None:
+         if not self._writer:
+             return
  
- from .error import QMPError
- from .protocol import Runstate, SocketAddrT
-@@ -87,7 +88,11 @@ def __init__(self,
+-        if not is_closing(self._writer):
++        if not self._writer.is_closing():
+             self.logger.debug("Closing StreamWriter.")
+             self._writer.close()
  
-         self._qmp = QMPClient(nickname)
-         try:
--            self._aloop = asyncio.get_event_loop()
-+            with warnings.catch_warnings():
-+                # Python <= 3.13 will trigger deprecation warnings
-+                # if no event loop is set
-+                warnings.simplefilter("ignore")
-+                self._aloop = asyncio.get_event_loop()
-         except RuntimeError:
-             self._aloop = asyncio.new_event_loop()
-         self._address = address
+diff --git a/python/qemu/qmp/util.py b/python/qemu/qmp/util.py
+index ca6225e9cd..39fc341f2f 100644
+--- a/python/qemu/qmp/util.py
++++ b/python/qemu/qmp/util.py
+@@ -104,22 +104,6 @@ def create_task(coro: Coroutine[Any, Any, T],
+     return asyncio.ensure_future(coro, loop=loop)
+ 
+ 
+-def is_closing(writer: asyncio.StreamWriter) -> bool:
+-    """
+-    Python 3.6-compatible `asyncio.StreamWriter.is_closing` wrapper.
+-
+-    :param writer: The `asyncio.StreamWriter` object.
+-    :return: `True` if the writer is closing, or closed.
+-    """
+-    if sys.version_info >= (3, 7):
+-        return writer.is_closing()
+-
+-    # Python 3.6:
+-    transport = writer.transport
+-    assert isinstance(transport, asyncio.WriteTransport)
+-    return transport.is_closing()
+-
+-
+ async def wait_closed(writer: asyncio.StreamWriter) -> None:
+     """
+     Python 3.6-compatible `asyncio.StreamWriter.wait_closed` wrapper.
 -- 
 2.49.0
 
