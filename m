@@ -2,92 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D07B05225
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19239B0522E
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:52:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZTZ-0003ex-Kx; Tue, 15 Jul 2025 02:49:18 -0400
+	id 1ubZVP-0005IM-Sl; Tue, 15 Jul 2025 02:51:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZNJ-0004AK-IL
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:42:50 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZNG-0006wV-P4
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:42:49 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-451d7b50815so33054775e9.2
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:42:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752561764; x=1753166564; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=twUCOjPVDB5dFLy+EA3QoTaV6f9tCXA/fI/J/rklt28=;
- b=I4Vl83/NR9fQsTJGo9Wj4lq4FGoDW5wdeVdI/yhvg8GjgqjRfRnMouI62Vr8/XWKLN
- XEXXRBQRWo4ie80NzWL2zeh3X1DXX4Nv1/XF5ktev+L5Yk9IzB3zn0qemYB0TkCYj1IM
- rkq/HteaSpD45srQIoJcJC3Va1VXqpYDKBnmDS5DQr2CxSOUV7Eo5IX1eymob4aw6tBg
- nUFusWUaEVN6b8/8XYROn1Ub6PIT5Q278Ja+1+Vru74pMOmJCcRXXouc9uWX7ftuSyjI
- /4qLuSKptWU71I4+ywSftBg53lilfLY0QHYcPecEbIs0Sew6TQEg36v/Z5PQ1F6lR4qa
- ZNIA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ubZPN-00071K-0S
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:44:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ubZPI-0007Cs-44
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:44:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752561890;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=g2GNShuYUsv/79m0VWED2XpRtfeIbdJGneDzm8z9mUs=;
+ b=FYfhf8M33t91JmjVEaDAdJmEjsT4lgksCXC/+TNOwVdT5zBDEoT1yLSNLxwld4CqVv+RUc
+ VsI7+dH9zWpgvesaPgnEt9CD7r75Ui3nQCHU7b+qL26FuokmUpWzy8iG1Oh243gNSiiuR7
+ RocZ7+czfCSB/nn7HmY3aliBrSCX4mU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-259-0qK0twfXOMq7LJ_DSiQKKg-1; Tue, 15 Jul 2025 02:44:48 -0400
+X-MC-Unique: 0qK0twfXOMq7LJ_DSiQKKg-1
+X-Mimecast-MFC-AGG-ID: 0qK0twfXOMq7LJ_DSiQKKg_1752561887
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3b20f50da27so2910240f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:44:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752561764; x=1753166564;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=twUCOjPVDB5dFLy+EA3QoTaV6f9tCXA/fI/J/rklt28=;
- b=oUGmacxqnDKNQ0xFangDPwiKckPcQjvjFt7ctx0KEzCQWKUHcKvxUVXCswIjcPNL3m
- PQpIVQ6Jzq7VbxNVFoLcDj+6B97SrYhdATkLFh/L1QJsQLggzSWQ3IAAmFUSLnju5peG
- ka1jnWL8zsKxdsRm+VCOentSNsEkk7MTvF2HKjUejLopGpj24GZjLHvq3j0gz8r8Cbb+
- Aeu6gVZCYoQgti31jKb0B3Nq3l6WAscV9CJYMZnPlhR5dge/4k6Ma5f+MsGeYSbGklZw
- DPzxRMuuYWPA91Gbh9fCeGCoSsaAC/nrZ7A15QROfNFZ5fBVzEVy7lQTHA032HkLpSXy
- TfGQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWoRd3rs0op2d55ohLikymcd5q1Z5arA5c8c/NuLwgRMIfCoiQ77MGHxj6/nceAPxw4pqYviN9159uQ@nongnu.org
-X-Gm-Message-State: AOJu0YzYG6Nf0YQTA08n+Kvl1Fx1yodZanvL5v6JOzT8Wof0z7gJrdiN
- d3wrL9MeHOBipp+uF1G2ORqDP7t/GmwFYCkwxozNKOnDy4hcuBWlldyC3Di02PH+ZzQvvrSslBU
- un+qm
-X-Gm-Gg: ASbGncv/kcqsD8aw9ZY8+U3qwU43DOW8K3h31msvo1I0Aisy7uUiHxldxxRShWBlx4p
- jpiuAzI/nb7b+gjBxDxnKYmtehijGgo0tp4PBZa+qo5Fd4+1+J2+/8tumVYyVHAW/a2TqYOg8nH
- nt1a0NNuV/csOtti2ECQXV6+pIlGY9eTD9wJ+3982jAjeuXU/RD9Wv+rM6cS4EbJmZS+zoHX57l
- XmZgKW9cwuesULOrmPQ7SD069WezeMyPQa/yvEDAzTO3i4m/1/OZDW/7XsB0MYJP0EpZG8RPBeC
- VqZ5v2/RUrX0PYpSsqX+uj51ZIXBuGKtgS4C7Oa4lGl5b9jFoHNMSfefSz3ZhBb1YbOMLIqLU39
- CjH+05NvLYhfbkDnCHTgKhdO5jZQ8qLeam/RjNNM5rbu87zVWEexG0bIodEkidy9dp+k9DlFqJY
- lT
-X-Google-Smtp-Source: AGHT+IG6XA01cgOWCc0iz5/jMcP4Qym6GypxVACMfAsDdOeTdcqgozozmFxrdcJo1EOE0UWeI99S9w==
-X-Received: by 2002:a05:600c:4f03:b0:456:26c6:77f3 with SMTP id
- 5b1f17b1804b1-45626c67d94mr17171395e9.12.1752561764398; 
- Mon, 14 Jul 2025 23:42:44 -0700 (PDT)
-Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45614aeba29sm66631525e9.11.2025.07.14.23.42.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jul 2025 23:42:43 -0700 (PDT)
-Message-ID: <ffbfd05e-6db2-4a75-97f3-672e3e1bdba9@linaro.org>
-Date: Tue, 15 Jul 2025 08:42:43 +0200
+ d=1e100.net; s=20230601; t=1752561887; x=1753166687;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=g2GNShuYUsv/79m0VWED2XpRtfeIbdJGneDzm8z9mUs=;
+ b=jWE4nlQiWxjA4WNE6emFMCqtndyNmZSumeoaVTZZBiqHZnAhcZ4iOx0IrIIKACVbzw
+ Tkz6sjt1P7w7aMMxW9erPbmNTA/1o/NqvfgUCjxpssN0HiJyz5lnQ/lAbAr1ignydhAm
+ /wcyGczBYYk1MtW0rVaulgFnDjnQkL4+cD8WbZQHQ5NmhcW2hOlVy0AcELuTrJn6H4qm
+ I7I/bpRWHoPNCm4uO/GwMZ3Bsp9+Ns7QYQ3Tr90SjYjbMhn08YQc4AcfRbntXSz4i4aC
+ 0GV3HxPGWMTCatib/qGA0fljv06r/YvV2GmcEU13BkEVtRuUJYTegZgxZzghouQqrCL5
+ Neeg==
+X-Gm-Message-State: AOJu0YzgGv/ph4z2uB5/UjUWbUyaabrMLoVPAZcdTVpt075jy2jPziHa
+ Pm6Osb+QUHHcaqVVtJ2j9CKfHIN0x4jCTItzf05eDs1T7r11w2FV4odh371CeRnmtLeRzzwc5/X
+ uPwDpg0dOqYc5EXFSEe/Lf9YK+ApyALQS74Z/ivOz0VCGbzJoyrFSKi7Py8fSTIRBrNWjpfrYfS
+ QBGfS52Fd7hXIgxWJPI5sHfeLLFmVcl4QiuMTTH9Y=
+X-Gm-Gg: ASbGnct9qh674do89Ud/1tOknt7A2WfCaS6+gvClnNDnRkGzIfHYF8gCrLq+9uc+aMW
+ zT+mQyd9DA87qzMB/JVp7lU+CvRSIiZ++Tm31hMQnnoHKUaSFPEfjPUIoceZYa7bBYb0JSUnu92
+ 7/iSAd42xm/682OJ357TRJ
+X-Received: by 2002:a05:6000:3110:b0:3a5:8991:64b7 with SMTP id
+ ffacd0b85a97d-3b609544312mr1795090f8f.26.1752561885863; 
+ Mon, 14 Jul 2025 23:44:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPhPAU4X0sG0qJswruXc3KZypwB/jrAiSfZ5Ssca/maHLnxPrpjARRTw8OVa1cpM5PTc030/cKMRAAKdeUhFc=
+X-Received: by 2002:a05:6000:3110:b0:3a5:8991:64b7 with SMTP id
+ ffacd0b85a97d-3b609544312mr1795070f8f.26.1752561885401; Mon, 14 Jul 2025
+ 23:44:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 02/19] hw/i386/pc_piix.c: remove include for loader.h
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, pbonzini@redhat.com,
- mst@redhat.com, marcel.apfelbaum@gmail.com, eduardo@habkost.net,
- imammedo@redhat.com, qemu-devel@nongnu.org
-References: <20250711095812.543857-1-mark.caveayland@nutanix.com>
- <20250711095812.543857-3-mark.caveayland@nutanix.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250711095812.543857-3-mark.caveayland@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+References: <e41344bd22248b0883752ef7a7c459090a3d9cfc.1752560127.git.mst@redhat.com>
+In-Reply-To: <e41344bd22248b0883752ef7a7c459090a3d9cfc.1752560127.git.mst@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 15 Jul 2025 08:44:35 +0200
+X-Gm-Features: Ac12FXzu2NbTTjK2Kn4T8A4WWAnztR5nmeHB8YOPJEHXzKtb9Xlb52OMm12BFYI
+Message-ID: <CABgObfZE1bZkKqJgEHWLsnwcQ1Zfy2JLNKqudZEGQdA+Nc8TrA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: bindings: allow any number of params
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-rust@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000a06abd0639f21c08"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,15 +100,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/7/25 11:57, Mark Cave-Ayland wrote:
-> This header is not required since the loader functionality is handled separately
-> by pc_memory_init() in pc.c.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> ---
->   hw/i386/pc_piix.c | 1 -
->   1 file changed, 1 deletion(-)
+--000000000000a06abd0639f21c08
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Il mar 15 lug 2025, 08:20 Michael S. Tsirkin <mst@redhat.com> ha scritto:
+
+> We are going to be adding more parameters, and this makes
+> rust unhappy:
+>     Functions with lots of parameters are considered bad style and reduce
+>     readability (=E2=80=9Cwhat does the 5th parameter mean?=E2=80=9D). Co=
+nsider grouping
+>     some parameters into a new type.
+>
+> Specifically:
+>
+> error: this function has too many arguments (8/7)
+>     -->
+> /builds/mstredhat/qemu/build/rust/qemu-api/rust-qemu-api-tests.p/structur=
+ed/bindings.inc.rs:3840
+> :5
+>
+
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+
+
+     |
+> 3840 | /     pub fn new_bitfield_1(
+> 3841 | |         secure: std::os::raw::c_uint,
+> 3842 | |         space: std::os::raw::c_uint,
+> 3843 | |         user: std::os::raw::c_uint,
+> ...    |
+> 3848 | |         address_type: std::os::raw::c_uint,
+> 3849 | |     ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+>      | |____________________________________________^
+>      |
+>      =3D help: for further information visit
+> https://rust-lang.github.io/rust-clippy/master/index.html#too_many_argume=
+nts
+>      =3D note: `-D clippy::too-many-arguments` implied by `-D warnings`
+>      =3D help: to override `-D warnings` add
+> `#[allow(clippy::too_many_arguments)]`
+>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+>  rust/qemu-api/src/bindings.rs | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.r=
+s
+> index 057de4b646..c4f1f755ce 100644
+> --- a/rust/qemu-api/src/bindings.rs
+> +++ b/rust/qemu-api/src/bindings.rs
+> @@ -13,7 +13,8 @@
+>      clippy::missing_const_for_fn,
+>      clippy::ptr_offset_with_cast,
+>      clippy::useless_transmute,
+> -    clippy::missing_safety_doc
+> +    clippy::missing_safety_doc,
+> +    clippy::too_many_arguments
+>  )]
+>
+>  //! `bindgen`-generated declarations.
+> --
+> MST
+>
+>
+>
+
+--000000000000a06abd0639f21c08
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il mar 15 lug 2025, 08:20 Michae=
+l S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com">mst@redhat.com</a>&gt; h=
+a scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
+px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">We ar=
+e going to be adding more parameters, and this makes<br>
+rust unhappy:<br>
+=C2=A0 =C2=A0 Functions with lots of parameters are considered bad style an=
+d reduce<br>
+=C2=A0 =C2=A0 readability (=E2=80=9Cwhat does the 5th parameter mean?=E2=80=
+=9D). Consider grouping<br>
+=C2=A0 =C2=A0 some parameters into a new type.<br>
+<br>
+Specifically:<br>
+<br>
+error: this function has too many arguments (8/7)<br>
+=C2=A0 =C2=A0 --&gt; /builds/mstredhat/qemu/build/rust/qemu-api/rust-qemu-a=
+pi-tests.p/structured/bindings.inc.rs:3840:5<br></blockquote></div></div><d=
+iv dir=3D"auto"><br></div><div dir=3D"auto">Acked-by: Paolo Bonzini &lt;<a =
+href=3D"mailto:pbonzini@redhat.com">pbonzini@redhat.com</a>&gt;</div><div d=
+ir=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=3D"auto"><div cl=
+ass=3D"gmail_quote gmail_quote_container"><blockquote class=3D"gmail_quote"=
+ style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
+adding-left:1ex">
+=C2=A0 =C2=A0 =C2=A0|<br>
+3840 | /=C2=A0 =C2=A0 =C2=A0pub fn new_bitfield_1(<br>
+3841 | |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0secure: std::os::raw::c_uint,<br>
+3842 | |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0space: std::os::raw::c_uint,<br>
+3843 | |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0user: std::os::raw::c_uint,<br>
+...=C2=A0 =C2=A0 |<br>
+3848 | |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0address_type: std::os::raw::c_uin=
+t,<br>
+3849 | |=C2=A0 =C2=A0 =C2=A0) -&gt; __BindgenBitfieldUnit&lt;[u8; 4usize]&g=
+t; {<br>
+=C2=A0 =C2=A0 =C2=A0| |____________________________________________^<br>
+=C2=A0 =C2=A0 =C2=A0|<br>
+=C2=A0 =C2=A0 =C2=A0=3D help: for further information visit <a href=3D"http=
+s://rust-lang.github.io/rust-clippy/master/index.html#too_many_arguments" r=
+el=3D"noreferrer noreferrer" target=3D"_blank">https://rust-lang.github.io/=
+rust-clippy/master/index.html#too_many_arguments</a><br>
+=C2=A0 =C2=A0 =C2=A0=3D note: `-D clippy::too-many-arguments` implied by `-=
+D warnings`<br>
+=C2=A0 =C2=A0 =C2=A0=3D help: to override `-D warnings` add `#[allow(clippy=
+::too_many_arguments)]`<br>
+<br>
+Signed-off-by: Michael S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com" tar=
+get=3D"_blank" rel=3D"noreferrer">mst@redhat.com</a>&gt;<br>
+---<br>
+=C2=A0rust/qemu-api/src/<a href=3D"http://bindings.rs" rel=3D"noreferrer no=
+referrer" target=3D"_blank">bindings.rs</a> | 3 ++-<br>
+=C2=A01 file changed, 2 insertions(+), 1 deletion(-)<br>
+<br>
+diff --git a/rust/qemu-api/src/<a href=3D"http://bindings.rs" rel=3D"norefe=
+rrer noreferrer" target=3D"_blank">bindings.rs</a> b/rust/qemu-api/src/<a h=
+ref=3D"http://bindings.rs" rel=3D"noreferrer noreferrer" target=3D"_blank">=
+bindings.rs</a><br>
+index 057de4b646..c4f1f755ce 100644<br>
+--- a/rust/qemu-api/src/<a href=3D"http://bindings.rs" rel=3D"noreferrer no=
+referrer" target=3D"_blank">bindings.rs</a><br>
++++ b/rust/qemu-api/src/<a href=3D"http://bindings.rs" rel=3D"noreferrer no=
+referrer" target=3D"_blank">bindings.rs</a><br>
+@@ -13,7 +13,8 @@<br>
+=C2=A0 =C2=A0 =C2=A0clippy::missing_const_for_fn,<br>
+=C2=A0 =C2=A0 =C2=A0clippy::ptr_offset_with_cast,<br>
+=C2=A0 =C2=A0 =C2=A0clippy::useless_transmute,<br>
+-=C2=A0 =C2=A0 clippy::missing_safety_doc<br>
++=C2=A0 =C2=A0 clippy::missing_safety_doc,<br>
++=C2=A0 =C2=A0 clippy::too_many_arguments<br>
+=C2=A0)]<br>
+<br>
+=C2=A0//! `bindgen`-generated declarations.<br>
+-- <br>
+MST<br>
+<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000a06abd0639f21c08--
 
 
