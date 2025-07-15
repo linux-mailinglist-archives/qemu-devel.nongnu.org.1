@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040C1B06703
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 827B5B06727
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:44:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublQs-0004wb-I8; Tue, 15 Jul 2025 15:35:19 -0400
+	id 1ublWh-0006lm-OD; Tue, 15 Jul 2025 15:41:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwk-0003vA-WA
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:12 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwg-0003pe-F4
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwj-0001JN-5s
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:10 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwe-0001IX-QC
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606248;
+ s=mimecast20190719; t=1752606243;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=g6wbfJ8bu+RE8DlR1CZafLa6EWF9NJdAu+OwbSDIBAw=;
- b=ejq6+wLiGzErmup7WRX+D3qtc1WS5F6Ed7neZ42xjuvBjH+WcEFyS+8RE++lK73ZHwawLW
- 8It9ZfBXpqkxK6Lzj5gtex0tpM4ZToHMa4r7CcoogCY+L6nON11OpZ21FsdIWh7xBTANm6
- gscDC61oWmW1iSpYuACZo1FT0qrN690=
+ bh=o1hSbirm0FeR7HEVUY1DNIhxsSnwTVjUfV1F5k4OPBg=;
+ b=CorILoU5kCmjusFkAWxRHrACJd+f7JUkvArNVqayRDNIb0/XS+8UPliCJ12vyXIgPWo2II
+ SyJdd9eA/NQ42Wk601pP7NvmpL2SXcVnvJcJufmHJb8FwRnBsz61dyLx3bHzBaSk81AGJN
+ 0b7bUiKGv8+RdFOteAPcfpI6L8ceUzg=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-557-IwaFEtVWPeGzYrCUONepWA-1; Tue,
- 15 Jul 2025 15:03:59 -0400
-X-MC-Unique: IwaFEtVWPeGzYrCUONepWA-1
-X-Mimecast-MFC-AGG-ID: IwaFEtVWPeGzYrCUONepWA_1752606238
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-187-RH-eXnsPPsONcMRZ0BKgzw-1; Tue,
+ 15 Jul 2025 15:04:01 -0400
+X-MC-Unique: RH-eXnsPPsONcMRZ0BKgzw-1
+X-Mimecast-MFC-AGG-ID: RH-eXnsPPsONcMRZ0BKgzw_1752606240
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5FF8918001D6; Tue, 15 Jul 2025 19:03:58 +0000 (UTC)
+ id 6253618001F9; Tue, 15 Jul 2025 19:04:00 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BE441197702B; Tue, 15 Jul 2025 19:03:56 +0000 (UTC)
+ id D4C09197702B; Tue, 15 Jul 2025 19:03:58 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 10/57] block/snapshot: mark bdrv_all_delete_snapshot() as
- GRAPH_UNLOCKED
-Date: Tue, 15 Jul 2025 21:02:43 +0200
-Message-ID: <20250715190330.378764-11-kwolf@redhat.com>
+Subject: [PULL 11/57] block/stream: mark stream_prepare() as GRAPH_UNLOCKED
+Date: Tue, 15 Jul 2025 21:02:44 +0200
+Message-ID: <20250715190330.378764-12-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -66,7 +65,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,34 +83,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fiona Ebner <f.ebner@proxmox.com>
 
-The function bdrv_all_delete_snapshot() calls bdrv_drain_all_begin(),
-which must be called with the graph unlocked.
+The function stream_prepare() calls bdrv_drain_all_begin(), which
+must be called with the graph unlocked.
+
+Also mark the JobDriver's prepare() callback as GRAPH_UNLOCKED_PTR,
+because that is the callback via which stream_prepare() is reached.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20250530151125.955508-33-f.ebner@proxmox.com>
+Message-ID: <20250530151125.955508-34-f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/snapshot.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/qemu/job.h | 2 +-
+ block/stream.c     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/block/snapshot.h b/include/block/snapshot.h
-index 304cc6ea61..2316a43e26 100644
---- a/include/block/snapshot.h
-+++ b/include/block/snapshot.h
-@@ -90,9 +90,9 @@ int bdrv_snapshot_load_tmp_by_id_or_name(BlockDriverState *bs,
+diff --git a/include/qemu/job.h b/include/qemu/job.h
+index a5a04155ea..bb8ee766ef 100644
+--- a/include/qemu/job.h
++++ b/include/qemu/job.h
+@@ -263,7 +263,7 @@ struct JobDriver {
+      * This callback will not be invoked if the job has already failed.
+      * If it fails, abort and then clean will be called.
+      */
+-    int (*prepare)(Job *job);
++    int GRAPH_UNLOCKED_PTR (*prepare)(Job *job);
  
- bool bdrv_all_can_snapshot(bool has_devices, strList *devices,
-                            Error **errp);
--int bdrv_all_delete_snapshot(const char *name,
--                             bool has_devices, strList *devices,
--                             Error **errp);
-+int GRAPH_UNLOCKED
-+bdrv_all_delete_snapshot(const char *name, bool has_devices, strList *devices,
-+                         Error **errp);
- int bdrv_all_goto_snapshot(const char *name,
-                            bool has_devices, strList *devices,
-                            Error **errp);
+     /**
+      * If the callback is not NULL, it will be invoked when all the jobs
+diff --git a/block/stream.c b/block/stream.c
+index 17e240460c..c0616b69e2 100644
+--- a/block/stream.c
++++ b/block/stream.c
+@@ -51,7 +51,7 @@ static int coroutine_fn stream_populate(BlockBackend *blk,
+     return blk_co_preadv(blk, offset, bytes, NULL, BDRV_REQ_PREFETCH);
+ }
+ 
+-static int stream_prepare(Job *job)
++static int GRAPH_UNLOCKED stream_prepare(Job *job)
+ {
+     StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
+     BlockDriverState *unfiltered_bs;
 -- 
 2.50.1
 
