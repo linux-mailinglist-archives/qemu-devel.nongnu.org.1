@@ -2,96 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A33B051B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E7DAB051A3
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:22:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZ14-0002H1-9c; Tue, 15 Jul 2025 02:19:50 -0400
+	id 1ubZ15-0002I6-Ai; Tue, 15 Jul 2025 02:19:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubYz7-0000gs-M4
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:17:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubYz4-0006jB-U2
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:17:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752560264;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ceOromvJJ90nMcwqW2sUYMFaY4IlqDlN3dcUsydUqRc=;
- b=QNKvR3ir/h8R4QLGBcx5RDJiZ+7wtRf8tI3nlWOWhq/ILlRtc+n68wL7UkLlvSfL5gCr0X
- 1GRMDksneu2zdGLV4hDwl3StPGwkyr6Q/S/OiUsjOqipSdjLRmHdvBUMwOFY1rNB8uqK1/
- lNGexhgTqb8bxi8vkuF1aHZpmwXxgXA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-391--e-0tp-cPs-MNVp5kRTUpw-1; Tue, 15 Jul 2025 02:17:43 -0400
-X-MC-Unique: -e-0tp-cPs-MNVp5kRTUpw-1
-X-Mimecast-MFC-AGG-ID: -e-0tp-cPs-MNVp5kRTUpw_1752560262
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43e9b0fd00cso29450655e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:17:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0h-0001tT-0v
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:28 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0e-0006yK-3u
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:26 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-45610582d07so15535885e9.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:19:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752560361; x=1753165161; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=g0sqOibqSPdGl3WuMtWvTYtbXoOWs5R7ZoQJ2IshoJo=;
+ b=iuUQkKTSN6FkuX8kvILcL7YnJYEjadr0IIHHu1BTvlZIEXvzIsEoiTCt6k8n4aHAWC
+ VTIms1qp2tVR+32x6xDBgtPGCfdPTJnJwxURwFeu189bM/ifnY1qwEYwRmMIVNrlwOdf
+ paQAh1NVBzTytncBGlkLcYcGUILfz3GeCtSj1JveWfvMpTWo9BUmZ9gsHBetSuiKj59u
+ YBlQXdPQ5ryy+tFZFScbC7xmZjYcto2PehmFuyUugLdLtxcwn8wQsdtShBXsJsXTWWS4
+ hB4y4XUyPmnZ0v+y647zPeTH0oKNwo1slSkNUsnBNq0AGKl24U115pJqVSoltniS8DTj
+ kBgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752560262; x=1753165062;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ceOromvJJ90nMcwqW2sUYMFaY4IlqDlN3dcUsydUqRc=;
- b=todW3GkYr5MQj8YVUxngjxWd5cKNrvq83XavNzjoX97Ehd3sLfHVrsiLn90aNxYNb7
- G79HWYom/rNDi9Y3oVnlb98jLkpueYdeJtaJccen/5PzS9Q9xuiJSvawWZGvXENuvrpQ
- hnswcazvkzN7tHO2ubrlF2Xp11uEnazyaTDMXwWtdMOGXcmbLOTaFDWhLzk25jf/zVsS
- QEncG9Xi6Wd6/ZsuFH+keLQF0z+iHPsq5ma2J8s4pKPKbVs25MIC2MPXCCIqbwcNnKIu
- L5ezfcIdlf0M9G2A7ZSt/R/n0s2TImeOhl6HP8DzTrnseC0lmWHw4DrKSeCJDVqj9MXx
- TCzw==
-X-Gm-Message-State: AOJu0Yyt5ySWeS8VWOTYtGdzEvCmTcXjPYW7Sgv5Ewyl1+Ifn/fUwW9C
- g4+w7V8RYM0t/QhwPUnMZFAWL/6DAyCj995R9HQTGp/r99O4ZkPXf1v17aO5HGAAZ/SLzvh3r4q
- 3/SRgT7ehSq5pi3nyyxpB9dHdvUkxg9p46S6Z1eyKl+QnbJaFjHbumKYE
-X-Gm-Gg: ASbGncu4YJG3ZmMq+EP8X4bYchU4kdM4Myk7XLsyWshlBQW5Fvo/RxM9FzOVZ2dy0Bt
- boBFyye17TvrmL5sSGJKaP4tAGG+LsYJTcQqxkfA4xiGJIZgenK5AaNsgzhNz64fSvVtrVlZVVA
- aGPAiyuKRPgY0TEm8ZbdXGxSEDdFjC/ipE/QUHPjPzEs25DqWe66aHtPt7Xl+FfQ62GHcBTxESP
- aev8c6/dKyqydqrWFnxenYWuKFmEz0U6BOHxWPlbaA3XkqmJV9PR3Du2de+jxCgfOFV00Cp9k7o
- o3IF462xTun4DAD3TnxfJ5BE3bxsU0+j
-X-Received: by 2002:a05:600c:3b11:b0:456:1157:59ac with SMTP id
- 5b1f17b1804b1-45625e57b96mr21085335e9.7.1752560261630; 
- Mon, 14 Jul 2025 23:17:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHrlYLaJz3zmcZkJrRgyfYIbFQI7MmY6arJUjIjXX/KuoFlMtcxIdMbCArWhQ8OUW6S4eJdFA==
-X-Received: by 2002:a05:600c:3b11:b0:456:1157:59ac with SMTP id
- 5b1f17b1804b1-45625e57b96mr21085015e9.7.1752560261011; 
- Mon, 14 Jul 2025 23:17:41 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45626c7b1a9sm7602835e9.0.2025.07.14.23.17.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 23:17:40 -0700 (PDT)
-Date: Tue, 15 Jul 2025 02:17:38 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- qemu-rust@nongnu.org
-Subject: Re: [PULL 28/97] rust: bindings: allow any number of params
-Message-ID: <20250715021556-mutt-send-email-mst@kernel.org>
-References: <cover.1752534227.git.mst@redhat.com>
- <04130b3dc5af620213a90d300933517b39f43bba.1752534227.git.mst@redhat.com>
- <CAAjaMXb5khPeO5bXGZ_2EALVWRg3i+GPimJygrik83f12JvFjw@mail.gmail.com>
+ d=1e100.net; s=20230601; t=1752560361; x=1753165161;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=g0sqOibqSPdGl3WuMtWvTYtbXoOWs5R7ZoQJ2IshoJo=;
+ b=kevA14BgAM2wEN/Ju9mP6FD6xaspY08FXOtAGBXlAkAyvAM4DheQ6yNzfJMdEp4IqG
+ THlFWqOXLsoV9u7fuMme/fDot5p4ipBZtTpZtv8/uArUtqmgTHXcsELEojrAgZGhxrkR
+ aQe77aoWAzHorW7C3N+bCms277OQqRUMHq9uUifK/D0T7l+eM9d/6Vyk4gxj+WhXSXtj
+ gnI1rVhxdgBIdxMbOOlIHEjZAmcaI4QeBreW9Eb697nqVap5MaUmM7HGB8Q2hqXt4sip
+ Av22r9IKfqqBRF+mH1PHe5PPdHaz/LjGRJ8UquUhEeu+Ks8+4x78mPC+iqZ/VOsSH9K8
+ Re6A==
+X-Gm-Message-State: AOJu0Yx4ILMQd2MbPd/jRZ7MdCFWkTeTkdf5dsjNhFBYyKkRA/xC7vyp
+ JTRtmjZBWkMJ9aKuwcmWllxm1kI9En6nn7rkkI7mkW4OtjQZmhP0z7N/aSiOLoUSLaHdCIMBssl
+ NSnkC
+X-Gm-Gg: ASbGncuIe/UwVqZSrRwWhQcatrR1P6AmrGSEtysSkgLuiN6/S0mn0nsyXiqlmbwWX0s
+ HPpfNY2ux420Zv9gJITBzrDqNQcAESvMuIIL+jam0eRTIptaOUkL08wDNILGOTS2xe5G8Y3ND6O
+ lDUxSQLuT1g3AvkVb1wzl2w8E1WvNQAuiK4RegvdzvNMgCwPqlnETnwvX4MWcaJrn4xDM4vXJL+
+ hPLAX3OoP0n7fLHQfByO77v1okGZT8aUOzIkCTf6giDCl5R5Xv3kDT4hWlcVdKl96epp154zeZE
+ RblKj3eeG7XnbNbrONQoOhpxQP2yY5SD4C9xQ0GrLbXrBl7ne1j0m0GpGeXDxh+AXxM2WdHix+X
+ mmLEl/K6crQ2jMJY2JEAJjjCY5Fb/Gh7GZOvIAY/Xb06KXg4D959RbMxQ7qbKZKfrCSe2d0N9CH
+ AUEEQz2s0=
+X-Google-Smtp-Source: AGHT+IHeqU/X92XMMD7lPZGL+kjHsO3B8ZBarN1K1rlimVaRELx3y722Uq/z54UdzfYWdCPEhp6VbQ==
+X-Received: by 2002:a05:600c:a216:b0:450:d386:1afb with SMTP id
+ 5b1f17b1804b1-45555e4c191mr98453515e9.9.1752560361304; 
+ Mon, 14 Jul 2025 23:19:21 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45627962384sm6015875e9.2.2025.07.14.23.19.20
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 14 Jul 2025 23:19:20 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PULL 00/17] MIPS & Co. patches for 2025-07-15
+Date: Tue, 15 Jul 2025 08:19:00 +0200
+Message-ID: <20250715061918.44971-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAjaMXb5khPeO5bXGZ_2EALVWRg3i+GPimJygrik83f12JvFjw@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,88 +96,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 15, 2025 at 02:30:40AM +0300, Manos Pitsidianakis wrote:
-> On Tue, Jul 15, 2025 at 2:07 AM Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > We are going to be adding more parameters, and this makes
-> > rust unhappy:
-> >     Functions with lots of parameters are considered bad style and reduce
-> >     readability (“what does the 5th parameter mean?”). Consider grouping
-> >     some parameters into a new type.
-> >
-> > Specifically:
-> >
-> > error: this function has too many arguments (8/7)
-> >     --> /builds/mstredhat/qemu/build/rust/qemu-api/rust-qemu-api-tests.p/structured/bindings.inc.rs:3840:5
-> >      |
-> > 3840 | /     pub fn new_bitfield_1(
-> > 3841 | |         secure: std::os::raw::c_uint,
-> > 3842 | |         space: std::os::raw::c_uint,
-> > 3843 | |         user: std::os::raw::c_uint,
-> > ...    |
-> > 3848 | |         address_type: std::os::raw::c_uint,
-> > 3849 | |     ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
-> >      | |____________________________________________^
-> >      |
-> >      = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#too_many_arguments
-> >      = note: `-D clippy::too-many-arguments` implied by `-D warnings`
-> >      = help: to override `-D warnings` add `#[allow(clippy::too_many_arguments)]`
-> >
-> > I didn't want to disable this globally, so I just shut it off for this
-> > file.
-> >
-> > Message-Id: <a4c65fb2b735740bda2874c86de31d29a5ae24d2.1752530758.git.mst@redhat.com>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> >  rust/qemu-api/src/bindings.rs | 12 ++++++++----
-> >  1 file changed, 8 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
-> > index 057de4b646..b4692f9b4b 100644
-> > --- a/rust/qemu-api/src/bindings.rs
-> > +++ b/rust/qemu-api/src/bindings.rs
-> > @@ -18,11 +18,15 @@
-> >
-> >  //! `bindgen`-generated declarations.
-> >
-> > -#[cfg(MESON)]
-> > -include!("bindings.inc.rs");
-> > +#[allow(clippy::too_many_arguments)]
-> > +mod gen {
-> > +    #[cfg(MESON)]
-> > +    include!("bindings.inc.rs");
-> >
-> > -#[cfg(not(MESON))]
-> > -include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
-> > +    #[cfg(not(MESON))]
-> > +    include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
-> > +}
-> > +pub use gen::*;
-> >
-> >  // SAFETY: these are implemented in C; the bindings need to assert that the
-> >  // BQL is taken, either directly or via `BqlCell` and `BqlRefCell`.
-> > --
-> > MST
-> >
-> 
-> Hi Michael,
-> 
-> This patch does not seem to have been reviewed.
-> 
-> The clippy allows are in the top of the file, not above the
-> `include!`. This should be a one line change and the `mod gen` wrap is
-> unnecessary.
-> -- 
-> Manos Pitsidianakis
-> Emulation and Virtualization Engineer at Linaro Ltd
+The following changes since commit 9a4e273ddec3927920c5958d2226c6b38b543336:
 
-Yea sorry - I really wanted the API changes in and I tried to be
-as conservative as possible.
+  Merge tag 'pull-tcg-20250711' of https://gitlab.com/rth7680/qemu into staging (2025-07-13 01:46:04 -0400)
 
-I'll send a revert and the one-liner on top, is that
-ok with you?
+are available in the Git repository at:
+
+  https://github.com/philmd/qemu.git tags/mips-20250715
+
+for you to fetch changes up to 6f8ce26bb00db66e6cec632f16df3cd13e4df934:
+
+  esp.c: only allow ESP commands permitted in the current asc_mode (2025-07-15 00:25:21 +0200)
+
+----------------------------------------------------------------
+MIPS patches queue
+
+- Implement CRC32[c] (Release 6) instructions
+- Convert Octeon LX instructions to decodetree
+- Restrict ITU to TCG
+- Fix ESP issue affecting WinNT (INACCESSIBLE_BOOT_DEVICE BSOD)
+- Add missing FDT dependency for some MicroBlaze machines
+- Remove execute bit on hppa-firmware blobs
+
+----------------------------------------------------------------
+
+Aleksandar Rakic (1):
+  tests/tcg/mips: Add tests for MIPS CRC32[c] instructions
+
+Bernhard Beschow (1):
+  hw/microblaze: Add missing FDT dependency
+
+Cole Robinson (1):
+  roms: re-remove execute bit from hppa-firmware*
+
+Mark Cave-Ayland (7):
+  esp.c: only raise IRQ in esp_transfer_data() for CMD_SEL, CMD_SELATN
+    and CMD_TI commands
+  esp.c: improve comment in esp_transfer_data()
+  esp.h: remove separate ESPState typedef
+  esp.c: only call dma_memory_read function if transfer length is
+    non-zero
+  esp.c: only call dma_memory_write function if transfer length is
+    non-zero
+  esp.c: add asc_mode property to indicate the current ESP mode
+  esp.c: only allow ESP commands permitted in the current asc_mode
+
+Philippe Mathieu-Daudé (6):
+  target/mips: Extract gen_base_index_addr() helper
+  target/mips: Extract generic gen_lx() helper
+  target/mips: Convert Octeon LX instructions to decodetree
+  target/mips: Have gen_[d]lsa() callers add 1 to shift amount argument
+  hw/mips: Restrict ITU to TCG
+  hw/intc/loongarch_extioi: Remove unnecessary 'qemu/typedefs.h' include
+
+Yongbok Kim (1):
+  target/mips: Add support for emulation of CRC32 instructions
+
+ include/hw/scsi/esp.h                         |  15 +-
+ target/mips/helper.h                          |   2 +
+ target/mips/tcg/translate.h                   |   4 +
+ tests/tcg/mips/include/wrappers_mips64r6.h    |  32 ++++
+ target/mips/tcg/octeon.decode                 |   8 +
+ target/mips/tcg/rel6.decode                   |   5 +
+ hw/intc/loongarch_extioi_kvm.c                |   1 -
+ hw/mips/cps.c                                 |   4 +-
+ hw/scsi/esp.c                                 |  94 ++++++++++--
+ target/mips/tcg/msa_translate.c               |   4 +-
+ target/mips/tcg/octeon_translate.c            |  12 ++
+ target/mips/tcg/op_helper.c                   |  26 ++++
+ target/mips/tcg/rel6_translate.c              |  16 +-
+ target/mips/tcg/translate.c                   | 102 +++++++------
+ target/mips/tcg/translate_addr_const.c        |   4 +-
+ .../isa/mips64r6/crc/test_mips64r6_crc32b.c   | 142 ++++++++++++++++++
+ .../isa/mips64r6/crc/test_mips64r6_crc32cb.c  | 142 ++++++++++++++++++
+ .../isa/mips64r6/crc/test_mips64r6_crc32cd.c  | 142 ++++++++++++++++++
+ .../isa/mips64r6/crc/test_mips64r6_crc32ch.c  | 142 ++++++++++++++++++
+ .../isa/mips64r6/crc/test_mips64r6_crc32cw.c  | 142 ++++++++++++++++++
+ .../isa/mips64r6/crc/test_mips64r6_crc32d.c   | 142 ++++++++++++++++++
+ .../isa/mips64r6/crc/test_mips64r6_crc32h.c   | 142 ++++++++++++++++++
+ .../isa/mips64r6/crc/test_mips64r6_crc32w.c   | 142 ++++++++++++++++++
+ target/mips/cpu-defs.c.inc                    |  10 +-
+ target/mips/tcg/micromips_translate.c.inc     |   2 +-
+ target/mips/tcg/nanomips_translate.c.inc      |   7 +-
+ hw/microblaze/Kconfig                         |   4 +-
+ hw/mips/Kconfig                               |   2 +-
+ hw/misc/Kconfig                               |   1 +
+ hw/scsi/trace-events                          |   1 +
+ pc-bios/hppa-firmware.img                     | Bin
+ pc-bios/hppa-firmware64.img                   | Bin
+ target/mips/meson.build                       |   1 +
+ tests/tcg/mips/user/isa/mips64r6/crc/Makefile |  40 +++++
+ 34 files changed, 1447 insertions(+), 86 deletions(-)
+ create mode 100644 tests/tcg/mips/user/isa/mips64r6/crc/test_mips64r6_crc32b.c
+ create mode 100644 tests/tcg/mips/user/isa/mips64r6/crc/test_mips64r6_crc32cb.c
+ create mode 100644 tests/tcg/mips/user/isa/mips64r6/crc/test_mips64r6_crc32cd.c
+ create mode 100644 tests/tcg/mips/user/isa/mips64r6/crc/test_mips64r6_crc32ch.c
+ create mode 100644 tests/tcg/mips/user/isa/mips64r6/crc/test_mips64r6_crc32cw.c
+ create mode 100644 tests/tcg/mips/user/isa/mips64r6/crc/test_mips64r6_crc32d.c
+ create mode 100644 tests/tcg/mips/user/isa/mips64r6/crc/test_mips64r6_crc32h.c
+ create mode 100644 tests/tcg/mips/user/isa/mips64r6/crc/test_mips64r6_crc32w.c
+ mode change 100755 => 100644 pc-bios/hppa-firmware.img
+ mode change 100755 => 100644 pc-bios/hppa-firmware64.img
+ create mode 100644 tests/tcg/mips/user/isa/mips64r6/crc/Makefile
 
 -- 
-MST
+2.49.0
 
 
