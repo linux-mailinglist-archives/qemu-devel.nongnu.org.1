@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C5CB0672B
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1E2B0671E
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:44:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublYt-0003GB-Gv; Tue, 15 Jul 2025 15:43:35 -0400
+	id 1ublZD-000512-KY; Tue, 15 Jul 2025 15:43:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxM-0004BD-72
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:49 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxO-0004CS-Ma
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxK-0001RA-De
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:47 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxM-0001RX-I1
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606285;
+ s=mimecast20190719; t=1752606287;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dyVMTv6sGhp4EucS+e3TQ9pqVVDsby/Mjxux88RCYOU=;
- b=OGLdp+lAofnAlFTwLibRKJNrP4LoIljX9CHxFYlIzOBhdlfNsN9OVNLkRQSy4nDPAXYhqP
- WUJWpSpng+dJ9JQE1cuSNPdCBwvqkECHbJTNwuFrB3YS9VLyIKbq3kjSbXPXkzND2rcmLr
- azbqcI0tfrTb9JMuV3+kOerzM5mvd5A=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=9NhuAW73W93wsBq/i0J12yeR0nN/1/SZBmn64E0RS5A=;
+ b=P8cck4ZADp2AR3pM8caVYeoMtRCuAGS47oSjvErU1cv/77GnHWwv88wU16DBOM7hB8odpA
+ tc2mDlZiw2Osn5bNe4jjoaMlFy6gU62qp4VHGcUvIua3Quity8eyMWI5iFjCaON5nMtcek
+ a/ROehxZtCAn0IGVGjScFRu2MJK4CNM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-93-FOwqosT3MmOyx3uCB1DHZA-1; Tue,
- 15 Jul 2025 15:04:43 -0400
-X-MC-Unique: FOwqosT3MmOyx3uCB1DHZA-1
-X-Mimecast-MFC-AGG-ID: FOwqosT3MmOyx3uCB1DHZA_1752606283
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-685-7xOFwz53PGCAQ2b7K2TJcw-1; Tue,
+ 15 Jul 2025 15:04:46 -0400
+X-MC-Unique: 7xOFwz53PGCAQ2b7K2TJcw-1
+X-Mimecast-MFC-AGG-ID: 7xOFwz53PGCAQ2b7K2TJcw_1752606285
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EB1D31956080; Tue, 15 Jul 2025 19:04:42 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5962E180120B; Tue, 15 Jul 2025 19:04:45 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 66780197702B; Tue, 15 Jul 2025 19:04:41 +0000 (UTC)
+ id 6C138197702C; Tue, 15 Jul 2025 19:04:43 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 31/57] qemu-img: measure: convert img_size to signed,
+Subject: [PULL 32/57] qemu-img: create: convert img_size to signed,
  simplify handling
-Date: Tue, 15 Jul 2025 21:03:04 +0200
-Message-ID: <20250715190330.378764-32-kwolf@redhat.com>
+Date: Tue, 15 Jul 2025 21:03:05 +0200
+Message-ID: <20250715190330.378764-33-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -85,77 +85,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Tokarev <mjt@tls.msk.ru>
 
-qemu_opt_set_number() expects signed int64_t.
-
-Use int64_t instead of uint64_t for img_size, use -1 as "unset"
-value instead of UINT64_MAX, and do not require temporary sval
-for conversion from string.
+Initializing an unsigned as -1, or using temporary
+sval for conversion is awkward.  Since we don't allow
+other "negative" values anyway, use signed value and
+pass it to bdrv_img_create() (where it is properly
+converted to unsigned), simplifying code.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20250531171609.197078-2-mjt@tls.msk.ru>
+Message-ID: <20250531171609.197078-3-mjt@tls.msk.ru>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- qemu-img.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ qemu-img.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index e75707180d..e676602fc7 100644
+index e676602fc7..6750d0657c 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -5370,7 +5370,7 @@ static int img_measure(int argc, char **argv)
-     QemuOpts *sn_opts = NULL;
-     QemuOptsList *create_opts = NULL;
-     bool image_opts = false;
--    uint64_t img_size = UINT64_MAX;
+@@ -511,7 +511,7 @@ static int64_t cvtnum(const char *name, const char *value)
+ static int img_create(int argc, char **argv)
+ {
+     int c;
+-    uint64_t img_size = -1;
 +    int64_t img_size = -1;
-     BlockMeasureInfo *info = NULL;
-     Error *local_err = NULL;
-     int ret = 1;
-@@ -5428,16 +5428,11 @@ static int img_measure(int argc, char **argv)
-             }
-             break;
-         case OPTION_SIZE:
--        {
--            int64_t sval;
+     const char *fmt = "raw";
+     const char *base_fmt = NULL;
+     const char *filename;
+@@ -582,13 +582,10 @@ static int img_create(int argc, char **argv)
+ 
+     /* Get image size, if specified */
+     if (optind < argc) {
+-        int64_t sval;
 -
--            sval = cvtnum("image size", optarg);
--            if (sval < 0) {
-+            img_size = cvtnum("image size", optarg);
-+            if (img_size < 0) {
-                 goto out;
-             }
--            img_size = (uint64_t)sval;
--        }
--        break;
-+            break;
+-        sval = cvtnum("image size", argv[optind++]);
+-        if (sval < 0) {
++        img_size = cvtnum("image size", argv[optind++]);
++        if (img_size < 0) {
+             goto fail;
          }
+-        img_size = (uint64_t)sval;
      }
- 
-@@ -5452,11 +5447,11 @@ static int img_measure(int argc, char **argv)
-         error_report("--image-opts, -f, and -l require a filename argument.");
-         goto out;
-     }
--    if (filename && img_size != UINT64_MAX) {
-+    if (filename && img_size != -1) {
-         error_report("--size N cannot be used together with a filename.");
-         goto out;
-     }
--    if (!filename && img_size == UINT64_MAX) {
-+    if (!filename && img_size == -1) {
-         error_report("Either --size N or one filename must be specified.");
-         goto out;
-     }
-@@ -5504,7 +5499,7 @@ static int img_measure(int argc, char **argv)
-             goto out;
-         }
-     }
--    if (img_size != UINT64_MAX) {
-+    if (img_size != -1) {
-         qemu_opt_set_number(opts, BLOCK_OPT_SIZE, img_size, &error_abort);
-     }
- 
+     if (optind != argc) {
+         error_exit("Unexpected argument: %s", argv[optind]);
 -- 
 2.50.1
 
