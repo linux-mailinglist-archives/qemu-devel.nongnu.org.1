@@ -2,108 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62AC1B0645E
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 18:31:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9986B06484
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 18:41:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubiYS-00066A-1K; Tue, 15 Jul 2025 12:30:56 -0400
+	id 1ubiiR-0003gR-JY; Tue, 15 Jul 2025 12:41:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1ubhuS-00060P-46
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 11:49:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from
+ <bounce.nzdo93pfqcqfkd6=h9pahmoofkg0=g5ixvt3c6anda0@em483429.getutm.app>)
+ id 1ubiCk-0004to-6M
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:08:30 -0400
+Received: from a3i638.smtp2go.com ([203.31.38.126])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1ubhuQ-0005nA-43
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 11:49:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752594571;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EaaynNbXAbeJEzd/3fYvfFQk34QQXdyB/l9XIDKEMdY=;
- b=hYfKuFlKbjMKtzREutT243gh+qb7IwQkgoSuxm5BLGoGrLKSf1vzzzQvwcEAtx3pwdmFDI
- ot2KpM4icU4bR80EhehOKC+OM0LXx7rNQa+nBklQrzk5nucJv4GTnRZQFCgERzXMH2OngF
- v9o/aoJnGMt8AgB2hSumfL9tfrOteVE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-DiV_xYkUOWKjvv8hF3WssA-1; Tue, 15 Jul 2025 11:49:29 -0400
-X-MC-Unique: DiV_xYkUOWKjvv8hF3WssA-1
-X-Mimecast-MFC-AGG-ID: DiV_xYkUOWKjvv8hF3WssA_1752594568
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a4f65a705dso3720855f8f.2
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 08:49:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752594568; x=1753199368;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EaaynNbXAbeJEzd/3fYvfFQk34QQXdyB/l9XIDKEMdY=;
- b=KvyvGWJncpXX2aEbnIs70YmN29ImsHzwSB5Dh0k+NqR7cGHhZgf+rosFOkSoT10fZo
- ka21m+Ehs0ESYzwsfoOKYKPR884G8FXljtJdt2CMget/V3jVZDvtSsxBBYqdd1TSafpj
- aPkWXaKpmHmjN6frPZepZ6mF3aPtacD05fHzmxRU0VzGPls0pf1LS9ezGHxzxKYo4q+h
- GBfc0xrOIpbypvKD3f4gYiYnBYgncZm32w38DxJsHIKFGg7TFU8ELFRSHp98SQuU3rl8
- UKqTuIRURvzzgXxu4x/XlJKRFkygxcPI49K17lmj/tWHEp3qE560dokYQkGwP8lYVFyW
- usHw==
+ (Exim 4.90_1) (envelope-from
+ <bounce.nzdo93pfqcqfkd6=h9pahmoofkg0=g5ixvt3c6anda0@em483429.getutm.app>)
+ id 1ubiCh-0002eP-Lm
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:08:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1752594799; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=HN4AOMwg99rrNE4j5uAvRZY/J+MS1iO7572Vei2UTh8=;
+ b=Auo45qvsMJewnXwvKta6ZWRks8lwINyflBIzBbxVgDqXherz1itkYvN8TxVdiAdxggwKu
+ mMQfYbRETcytmd5rcAabG5rgIxbifao6Zr9r6cmRmMLnRV0gdqJ6g+yUKy5OylldtePAIIj
+ /4waSXgj8210MvzCBXCIyUUPvyaYXReo/s+2zHzRmTk6xrjOAN6n0OQBKkv83JNiJ9u+zBy
+ 1YFFzPU5557+OJvZamZoH1s8FMry1uH3jwXFbObpbUQ0FSxknTXZrhKIBel65CJngpC0reQ
+ oZ3NLj1IuTGN+gvIUD/Ybz37RPLMFDPQmG68sqT2gNyxOvefW8APr35BYFDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=getutm.app;
+ i=@getutm.app; q=dns/txt; s=s483429; t=1752594799; h=from : subject :
+ to : message-id : date;
+ bh=HN4AOMwg99rrNE4j5uAvRZY/J+MS1iO7572Vei2UTh8=;
+ b=dwR+U3/9MwDso8e+lsL0/7CVfHn0k0A9gJ6vcGXikcdgV20LiAjt27ZOZQHECWWW8JKfZ
+ GW2qsQL3MJhD4LtWyXv/wT3+gA/BAnnO6iS+oaBe6NymtPfB5nvlrSv+QElV6tFoG22P/Nv
+ u0f/rM6aIvqDaxe5NMkVFS9nysIeekPqHCHQMR6lI9MUEaJkXD5glYiwst5oN63GCke+sz9
+ zFRtAtlMX2rvMHAFp11xmqcuBCSqofg7+wH7UTYY92vgoipY+FDTsjMgGvsfvF3k0Ll/Iii
+ 4Y2pccSc49z/97CaKnDkBUdk5ohQsnusiX7sULgDImlDoyns9N4PeiQBRayw==
+Received: from [10.159.238.187] (helo=mail-ej1-f49.google.com)
+ by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+ (Exim 4.98.1-S2G) (envelope-from <j@getutm.app>)
+ id 1ubhy1-4o5NDgrgsRZ-uqVC for qemu-devel@nongnu.org;
+ Tue, 15 Jul 2025 15:53:17 +0000
+Received: by mail-ej1-f49.google.com with SMTP id
+ a640c23a62f3a-ae0d758c3a2so883747166b.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 08:53:17 -0700 (PDT)
 X-Forwarded-Encrypted: i=1;
- AJvYcCW6TrZEWF6f/nKkYt/qeqe5Hg1rQawG+efuwysbaoGKKGiB9fWyMxW7Z1Poe+I5I8ZVPWthPZQplt7H@nongnu.org
-X-Gm-Message-State: AOJu0YxYAoi1GnPiyvtgmdiHY3dOtX/bCJ8QThjtf+ya+bvlu2G/GnA+
- jw+eqkcU0KYzCKe0lcS4votXvamui7Bd9LFB4U1TCY+Fi1RUW1fV1wi+DSeiWsvQ2sxbwiYO2HZ
- 2wmqD8Ij2gL80vH23rNPiqkNIZlxUnr+nPWrMrAmcjDH3HqcbMn709+ha
-X-Gm-Gg: ASbGncubI3bDOI9tWe8x4B9GRWSQ3U7PpcjMdHZ6Ow7oKauVwMPuEAdQlESBwdaDUeG
- FRqPZFKyRErcgEzjfzph+E70nqMb/2VL0OMLSVj2Yfrtj4F7SGNfu7UnVZfnCiwvB2PdRkwtj//
- Ke2EX1TL2mtqkBeoiQOeOFXIuoDH1btg3wygLvOILLPruOcpuLRV5t0MUFBEdVqz2bOtkj/yVqq
- e84UmrG15uoNwD+VNH98EXL76trsrmbHjLzGtLRuC6gpUlymKuLBb08GbJjiC7EyuUWKyziWp05
- a5ss1vCvEiu08jFICRmKzsasGmDn8KRZQUgPz3I0q1C4M3SfUkOgvUeRCJ6mXgeWtw9d/jMHz68
- cka5jQu3s/Gs=
-X-Received: by 2002:a05:6000:230e:b0:3b5:e6f2:9117 with SMTP id
- ffacd0b85a97d-3b5f2e3083dmr14052953f8f.39.1752594567552; 
- Tue, 15 Jul 2025 08:49:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF98qDkBB2TTtzIKKvxQc3djL0N5JfUyVilZbHF8FYISQjuvrvFyi7KXBenNz4gs7duy977fg==
-X-Received: by 2002:a05:6000:230e:b0:3b5:e6f2:9117 with SMTP id
- ffacd0b85a97d-3b5f2e3083dmr14052923f8f.39.1752594567106; 
- Tue, 15 Jul 2025 08:49:27 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c?
- ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d758sm15119598f8f.49.2025.07.15.08.49.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Jul 2025 08:49:26 -0700 (PDT)
-Message-ID: <e6626fe6-c66c-4b16-93e4-447e43379424@redhat.com>
-Date: Tue, 15 Jul 2025 17:49:25 +0200
+ AJvYcCVA8ZZouZ33WGm3UtnnO+lS/wHNtTiyDZmSdzCAITBw4e9pltVS8Ojy++cH90uBGJXVbHGxM2vc/kGd@nongnu.org
+X-Gm-Message-State: AOJu0Yz/D7FgoQGuuDWROdimGqBQXB8s3JFtvOhLOiYJxUA7xo7NMp0+
+ z25bHJJ/pIcp79ql3BA6h9EjnQAtURBuQGSgVbe+J47P1S0ikyMT4+XbMCNuv9hgOMsmlpR6m80
+ tg1QE6zsJbG1PLG8xKWd2s9b+HAwLOJI=
+X-Google-Smtp-Source: AGHT+IHNNB4Sny3KHEdKkluwGwlW9Ttf6YK8G2IasdsnikL8APN3BRv6jfKm+9sftw1RO43v6LAzhnvWxis7+0iaCEU=
+X-Received: by 2002:a17:907:7287:b0:ae3:f2a0:459f with SMTP id
+ a640c23a62f3a-ae7012f1b48mr1712186666b.54.1752594796124; Tue, 15 Jul 2025
+ 08:53:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 12/13] net: implement tunnel probing
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang
- <jasowang@redhat.com>, Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Luigi Rizzo <lrizzo@google.com>, Giuseppe Lettieri
- <g.lettieri@iet.unipi.it>, Vincenzo Maffione <v.maffione@gmail.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- kvm@vger.kernel.org
-References: <cover.1752229731.git.pabeni@redhat.com>
- <94ffdec876d61f22a90e63d6a79ff5517d1c727c.1752229731.git.pabeni@redhat.com>
- <93de161a-3867-46aa-bfc0-2da951981bcf@rsg.ci.i.u-tokyo.ac.jp>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <93de161a-3867-46aa-bfc0-2da951981bcf@rsg.ci.i.u-tokyo.ac.jp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pabeni@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <87zfd5zouv.fsf@draig.linaro.org> <86wm898yf4.wl-maz@kernel.org>
+In-Reply-To: <86wm898yf4.wl-maz@kernel.org>
+From: Joelle van Dyne <j@getutm.app>
+Date: Tue, 15 Jul 2025 08:53:03 -0700
+X-Gmail-Original-Message-ID: <CA+E+eSASz9Tx76-8PxMNF30f3L9DfPNYf_Zgf=ENozXapc3gyw@mail.gmail.com>
+X-Gm-Features: Ac12FXwMc4dV-yiQMMCGZ-YNKyxAfTFfwiOdHWlz-hJ1uZAjHvRv-AlgyTBf0Mc
+Message-ID: <CA+E+eSASz9Tx76-8PxMNF30f3L9DfPNYf_Zgf=ENozXapc3gyw@mail.gmail.com>
+Subject: Re: HVF EL2 support in QEMU (aka FEAT_NV/FEAT_NV2) for MacOS
+To: Marc Zyngier <maz@kernel.org>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ qemu-devel <qemu-devel@nongnu.org>, Alexander Graf <agraf@csgraf.de>,
+ Ynddal <mads@ynddal.dk>, 
+ Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>, 
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Mark Burton <mburton@qti.qualcomm.com>, Joelle van Dyne <j@getutm.app>, 
+ Danny Canter <danny_canter@apple.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please forward a copy of this message, including all headers,
+ to <abuse-report@smtp2go.com>
+Feedback-ID: 483429m:483429abrvJvs:483429spy4xxNeMg
+X-smtpcorp-track: iKQJTVH7fqHA.j5_mAIxECu0p.uW5r1g9YpfC
+Received-SPF: pass client-ip=203.31.38.126;
+ envelope-from=bounce.nzdo93pfqcqfkd6=h9pahmoofkg0=g5ixvt3c6anda0@em483429.getutm.app;
+ helo=a3i638.smtp2go.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,24 +109,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/15/25 10:05 AM, Akihiko Odaki wrote:
-> On 2025/07/11 22:02, Paolo Abeni wrote:
->> diff --git a/net/tap-bsd.c b/net/tap-bsd.c
->> index 86b6edee94..e7de0672f4 100644
->> --- a/net/tap-bsd.c
->> +++ b/net/tap-bsd.c
->> @@ -217,6 +217,11 @@ int tap_probe_has_uso(int fd)
->>       return 0;
->>   }
->>   
->> +int tap_probe_has_tunnel(int fd)
-> 
-> This should return bool for consistency.
+UTM currently supports NV only with the Apple Virtualization backend,
+not QEMU HVF. While M2 supports NV, it is not enabled by XNU kernel
+and `hv_vm_config_get_el2_supported` returns false. I heard there was
+some compatibility issue in the hardware. M3 and newer generations
+fully support NV in hardware and by XNU.
 
-Some inconsistency will persist, as others bsd helpers supposed to
-return a bool currently return an int. I tried to be consistent with the
-surrounding code, but no strong objections.
-
-/P
-
+On Tue, Jul 15, 2025 at 4:51=E2=80=AFAM Marc Zyngier <maz@kernel.org> wrote=
+:
+>
+> On Tue, 15 Jul 2025 12:15:52 +0100,
+> Alex Benn=C3=A9e <alex.bennee@linaro.org> wrote:
+>
+> >   - do we know which Apple silicon supports FEAT_NV2?
+>
+> M2 and latter definitely support FEAT_NV2. That's how KVM NV support
+> has been developed for two years until I was given better HW.
+>
+> Whether Apple supports NV on M2 in HVF, I have no idea. The rumour
+> mill says "no", but I don't have a way to check. The M3 I use at $WORK
+> is definitely able to give me EL2 without VHE with UTM. I haven't
+> played with M4, but I have it on the record that it behaves like M3
+> with UTM.
+>
+>         M.
+>
+> --
+> Without deviation from the norm, progress is not possible.
 
