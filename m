@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29080B051C9
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F22B9B051A2
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:22:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZ2A-0002vE-4n; Tue, 15 Jul 2025 02:21:01 -0400
+	id 1ubZ2Z-0002zU-QC; Tue, 15 Jul 2025 02:21:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ1T-0002ku-Gz
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:20:15 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ1Y-0002to-1O
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:20:21 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ1R-0007M9-DW
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:20:15 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4561ca74829so15203155e9.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:20:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ1W-0007NX-5a
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:20:19 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3a54700a463so2779182f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:20:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752560411; x=1753165211; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752560416; x=1753165216; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hgFpG0rF6KVbYpLZQoXHGkLj2oHogtOGTEuxO5gWl6M=;
- b=mjmHK/A1lt27LtoJVdzjdLDVDh94mhl2olX/NlZPs/LyCPWM0TodsFkh2lfXQuzolJ
- ceb9Viy2LuMMLWOdPTNS6hFX5jxpkx8Jj7F9FLi8Rzzt4G6xkd6ZAiIgXxCZm1gFDMXf
- PEySm9DCJItGupaEO1inoBNm9q8gwVxF3kgrbpbFaJlt1LNfvcZufwY7TkcTtQaHVuQA
- BPJJaB5A3JK8AZe5/T6NXZF6Jed1z4P1aLgNCnLgSM6X7zXB15JvTp7Gg7w8gRwmkbA1
- FObOxXK4fKJ6WCeh4+J83H71lHI2XA16zn4vwzCBwkkGRiuV0IOZNXr+fvnxzgoAv/XF
- HO0Q==
+ bh=7S4k+1sCMPbW4jtmuj8Za9v8Er4TEjQFuXvwHmkJEF8=;
+ b=RSX3zvOeBJKdL7G2vc6sOSq7Z9d5pjUmj3b0NvC+jjTAgzYREus5J5EhXvwGXcc5c6
+ UGQsTqK7sN1UTbH6n2U9huKhzsg+ycxn2tWTjda+kTrI3Le50OOrCDB4XsmRY3CrAHU/
+ K5HiEYO6WqJrb4jCjBnia4qf9HO0pSlnbhqcffc+tASIqcWy5EXHIRcTvBhBTn0ejVJS
+ m36qhSToY5iR8NbOnqQeYHJIVC24+f+Z6U2QYGDxzpcFaG8hP/faxHdgkRM+3sqxTuaC
+ ktygxzbych88RbwYyb8znpawdwFHOpJ6gNkFh7tm69a1IQ4qs9UH+EDOreGJuwPaZjGs
+ xmJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752560411; x=1753165211;
+ d=1e100.net; s=20230601; t=1752560416; x=1753165216;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hgFpG0rF6KVbYpLZQoXHGkLj2oHogtOGTEuxO5gWl6M=;
- b=rseIa3f1RKBo1PvdVb6yMOY0ugJfDbMp5P7K1Wj/7muABD95PmqHzCfPh5BlHABbdh
- 4uSHuU04rVP+BHU5JhUK8uFkw4v1ithIMkcJwrANM8w4t0/OlMfQbZgDaijKAFEeMGXr
- NLJD65gWHDa7q/cf2ylY+CdLgohOY68QjnUTxEa3fD3ZnwIrd4yGaY04DdlhzWpejkuS
- 9D+vHSds5LpxHkmTC4fN5F4eCDUNt2KppOy3Q8kGdNYm66ohQ2fJMX3GJcsphMqeX3en
- 0+L3eF+srkb2Ky/XqHf/T9kKVwOWrzM+hOj0rQt4YafJDc7/zzuLXY5XVU8yv3bmjy1+
- V7rw==
-X-Gm-Message-State: AOJu0YwOkF8nO64b6IlOgH7GwPtMN1JJivH2V8qqWibvxnbQ7ELszpQG
- HxRF6vva0LD/RI2PWIIBBvCOVXbN4wpOhWt2Km0rk4+R8d7PyMmTVtUOH6t2BmPf5V//oZBgwkI
- 3BmzI
-X-Gm-Gg: ASbGnctKiphjFaJP/v73oRp117fMJiNuO0cjPBSAJk+JXBfeEM2wjQreFwGiPP6YbUl
- raFMMRA8jkslxc666FGbMiymM0OjWARuhDtEypyhWMIU79DXch6SeTkVI2WpU0Fp+PlT5q3otln
- Nt3Nq2Un0VDmh6w7RmdTDn1HMpv+MbvcXrLGI5chrGJ917Kaa6gV48VUXcv4+et+j0ku6N7gZQh
- UjT/sGTM1Or3LEaKWry29BI+ZLei7FvYDsy/cV3QJzjcOw34YL1UUNld5j2CeoswzRHeO31J2PM
- Uwq2YNqYSnZ1uqZj1K6JrvUwRkoZNgx0ckd6VYjZwRhsN3zBQh8MwonJcTSGA5pP+M6L6gEtJwL
- nSYli6E9l8dfzaxsdLxREyz6PC4tQcyduDg22lX2Io1CSB0Q8WW4S28IXrOXQuissLoee9gn73W
- D5jxQzrH4=
-X-Google-Smtp-Source: AGHT+IFxoEv69qpUFjeyT3G/ueHVC6NbQmo/GK7lh7Y/Vq1AN6tpPlLr4lNo7/ddtloI9jl1rKuA6Q==
-X-Received: by 2002:a05:6000:420a:b0:3a4:d64a:3df6 with SMTP id
- ffacd0b85a97d-3b5f2daca74mr11812653f8f.3.1752560411187; 
- Mon, 14 Jul 2025 23:20:11 -0700 (PDT)
+ bh=7S4k+1sCMPbW4jtmuj8Za9v8Er4TEjQFuXvwHmkJEF8=;
+ b=m+kCriuCthCZHVhumcqpxcx9tI7gi+qBlR9pTEoeWJDJEujFklGSWIHXCoBDr+YZx6
+ 6Zu63ZlS2WgRwBBT5zAOF3gpDXTEF0Q7y05nc3QwGnmV2V3cyzF5cBUvpH26ijqGMtKs
+ IfU/5axrgq6aQCt68otpxA9NjW6ck46R01Qb89fxIY26iOqVyFqe1W2tLSTzP2Hl7H9q
+ g3Stc9YFJ1D2tb6SPFgZKZDfCzrlqYDokMBX5w2HIh1JE8/uG4QK/uLb4dsnh/LDYD2O
+ oB7DDU1Tgn2jXMbBCJ+VStj8VtOFONFRHCVxbekf/4tKTiDsEJDyj+XNu33IFQJVOF68
+ t5SQ==
+X-Gm-Message-State: AOJu0YxjY5vMvLQpaqRLvogW/Y8axvgTg/ipmhngcaAOAxEioRFm21Rw
+ x66Ost3EdSz01247594CM1CJUemhI4E1IDcuZiwoT6KvQdaik3LRa+pE1oZxZ/3F2jMZF7oR7xZ
+ ZB70/
+X-Gm-Gg: ASbGncsxAF3qrmpjVDLDfQth5oi8Wi8amJdrUmKlopLPZJR3P9ViH3nX7Of62qrrjlJ
+ J+bCx4IwdBDb+ejEFWcBMaW3bwMwxlSLCDLTaYO93yo8x9sRp4PegVbkRP/5b4PGLOXh6JQHukq
+ ZV9Y3jgwmJFkM0bWtkgw6ELi2Vd86UpZ8UIZ+H/pfMG6W8zO/x43NgvHjQ61WhPg3qgySGFerqE
+ 4MWF/v9EpsDgMUaWzQcjXUuOD6QxjiowT0YQ5LhdBSaprWAuxypIk8Yqk7v39R/FD7wlUGfPiCl
+ EWZZnHjS18zBZKbR1g70o02xJsHW0+6foMtSt3GHrYh2phVHmc8EfhajKL++dBtuscIWJWBXuxz
+ Lf6iUqjEJnofmAjNk6KlSRN4ZukLO4SxUW08nrLLnbLo5x9lwbl4tpnlcANlUqQovDiWPUqna4M
+ +hnXbynH4=
+X-Google-Smtp-Source: AGHT+IE13DRpDAZHNWNLqC33BuyPYsxffkUHmNlJ7fn3LlYk/Wav1o1g7jLoeHvFsMgbUYv/e6Gmuw==
+X-Received: by 2002:a05:6000:144a:b0:3a4:da0e:517a with SMTP id
+ ffacd0b85a97d-3b60953f5b3mr1848784f8f.23.1752560415969; 
+ Mon, 14 Jul 2025 23:20:15 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b600722780sm6548582f8f.23.2025.07.14.23.20.10
+ ffacd0b85a97d-3b5e8dc9268sm14141612f8f.41.2025.07.14.23.20.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 14 Jul 2025 23:20:10 -0700 (PDT)
+ Mon, 14 Jul 2025 23:20:15 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>,
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PULL 10/17] hw/microblaze: Add missing FDT dependency
-Date: Tue, 15 Jul 2025 08:19:10 +0200
-Message-ID: <20250715061918.44971-11-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PULL 11/17] esp.c: only raise IRQ in esp_transfer_data() for CMD_SEL,
+ CMD_SELATN and CMD_TI commands
+Date: Tue, 15 Jul 2025 08:19:11 +0200
+Message-ID: <20250715061918.44971-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250715061918.44971-1-philmd@linaro.org>
 References: <20250715061918.44971-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,41 +101,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-These boards ship with a bundled DTB, and dtc will be required for generating
-these from device tree sources. Prepare for that by adding an FDT dependency.
+Clarify the logic in esp_transfer_data() to ensure that the deferred interrupt code
+can only be triggered for CMD_SEL, CMD_SELATN and CMD_TI commands. This should already
+be the case, but make it explicit to ensure the logic isn't triggered unexpectedly.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250708204806.1898-2-shentey@gmail.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250711204636.542964-2-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/microblaze/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/scsi/esp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/hw/microblaze/Kconfig b/hw/microblaze/Kconfig
-index b0214b2c8b2..72d8072f764 100644
---- a/hw/microblaze/Kconfig
-+++ b/hw/microblaze/Kconfig
-@@ -1,7 +1,7 @@
- config PETALOGIX_S3ADSP1800
-     bool
-     default y
--    depends on MICROBLAZE
-+    depends on MICROBLAZE && FDT
-     select PFLASH_CFI01
-     select XILINX
-     select XILINX_AXI
-@@ -11,7 +11,7 @@ config PETALOGIX_S3ADSP1800
- config PETALOGIX_ML605
-     bool
-     default y
--    depends on MICROBLAZE
-+    depends on MICROBLAZE && FDT
-     select PFLASH_CFI01
-     select SERIAL_MM
-     select SSI_M25P80
+diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+index f24991fd16d..9181c8810fb 100644
+--- a/hw/scsi/esp.c
++++ b/hw/scsi/esp.c
+@@ -1012,6 +1012,7 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+              */
+              s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
+              s->rregs[ESP_RSEQ] = SEQ_CD;
++             esp_raise_irq(s);
+              break;
+ 
+         case CMD_SELATNS | CMD_DMA:
+@@ -1022,6 +1023,7 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+              */
+              s->rregs[ESP_RINTR] |= INTR_BS;
+              s->rregs[ESP_RSEQ] = SEQ_MO;
++             esp_raise_irq(s);
+              break;
+ 
+         case CMD_TI | CMD_DMA:
+@@ -1032,10 +1034,9 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+              */
+             s->rregs[ESP_CMD] = 0;
+             s->rregs[ESP_RINTR] |= INTR_BS;
++            esp_raise_irq(s);
+             break;
+         }
+-
+-        esp_raise_irq(s);
+     }
+ 
+     /*
 -- 
 2.49.0
 
