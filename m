@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88EFB066E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF46CB066E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:33:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublNd-0003vv-My; Tue, 15 Jul 2025 15:31:58 -0400
+	id 1ublOF-0004dx-Ie; Tue, 15 Jul 2025 15:32:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwv-00043Z-2s
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:21 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwz-00046p-JC
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwt-0001Ld-Bx
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:20 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkww-0001MF-3Q
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606258;
+ s=mimecast20190719; t=1752606261;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6bG2LiKW4UY4F0ikb9ynKo/iZ38MY+OeFpp3X1qbbw8=;
- b=b/Mpf8lNsl4RXFyHZtJSLtQsL6kHVQ3CsTP1qdK3C86G9Fsj8rgoo9hiW3sozg3eucdfYV
- KlOv8rNCrc92M/M0oriUqtQ+YtxzcSDea8SIEO4Rzu7+ircRx9AuzXDjFbJOIlKP7beQ7Z
- trqegB4p2vrNSZGw2IGic7ZMLr2pK90=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=8W8fQy5JCYizGetg+mDWw1LL18wUNUGbfORKfvklxKo=;
+ b=F7qqcCuY39s+YBFjfDPLhSwt31VNfkoI2ktm7XB6IKaoF06+Xw45cgS4whV8+V16tvOxxB
+ f6xr5rxLHE3j+3PGZg/QzIvl2nIyZMslf2xUesvdzO4ooAPCqc5TwERB4dtjwRN+kuruqR
+ QkESwXt4gD+M0CpUdHrsqkSv1tIFYuY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-wAFutUMYMuWbQj8ZZyGjWg-1; Tue,
- 15 Jul 2025 15:04:16 -0400
-X-MC-Unique: wAFutUMYMuWbQj8ZZyGjWg-1
-X-Mimecast-MFC-AGG-ID: wAFutUMYMuWbQj8ZZyGjWg_1752606255
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-9-WJwmQLNkKz1TAbOgkjAQ-1; Tue,
+ 15 Jul 2025 15:04:18 -0400
+X-MC-Unique: 9-WJwmQLNkKz1TAbOgkjAQ-1
+X-Mimecast-MFC-AGG-ID: 9-WJwmQLNkKz1TAbOgkjAQ_1752606257
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B9165180028F; Tue, 15 Jul 2025 19:04:15 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C3D76195608E; Tue, 15 Jul 2025 19:04:17 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 39665197702B; Tue, 15 Jul 2025 19:04:13 +0000 (UTC)
+ id 3A667197702B; Tue, 15 Jul 2025 19:04:15 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 18/57] block/commit: mark commit_abort() as GRAPH_UNLOCKED
-Date: Tue, 15 Jul 2025 21:02:51 +0200
-Message-ID: <20250715190330.378764-19-kwolf@redhat.com>
+Subject: [PULL 19/57] block: Allow bdrv_new() with and without graph lock
+Date: Tue, 15 Jul 2025 21:02:52 +0200
+Message-ID: <20250715190330.378764-20-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -81,49 +81,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+bdrv_new() calls bdrv_drained_begin(), which can poll and therefore
+can't be called while holding the graph lock. One option to make sure
+that this call is allowed would be marking bdrv_new() GRAPH_UNLOCKED.
 
-The function commit_abort() calls bdrv_drained_begin(), which must be
-called with the graph unlocked.
+However, this is actually an unnecessary restriction because we know
+that we only just created the BlockDriverState and it isn't even part of
+the graph yet. We can use bdrv_do_drained_begin_quiesce() instead to
+avoid the polling, which means that bdrv_new() can now safely be called
+from callers that hold the graph lock as well as from callers that
+don't.
 
-Also mark the JobDriver's abort() callback as GRAPH_UNLOCKED_PTR,
-because that is the callback via which commit_abort() is reached.
-
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20250530151125.955508-41-f.ebner@proxmox.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/qemu/job.h | 2 +-
- block/commit.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ block.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/qemu/job.h b/include/qemu/job.h
-index bb8ee766ef..ead31578d3 100644
---- a/include/qemu/job.h
-+++ b/include/qemu/job.h
-@@ -283,7 +283,7 @@ struct JobDriver {
-      * All jobs will complete with a call to either .commit() or .abort() but
-      * never both.
-      */
--    void (*abort)(Job *job);
-+    void GRAPH_UNLOCKED_PTR (*abort)(Job *job);
+diff --git a/block.c b/block.c
+index 932e599f45..fe5aa2e767 100644
+--- a/block.c
++++ b/block.c
+@@ -431,7 +431,7 @@ BlockDriverState *bdrv_new(void)
+     bs->block_status_cache = g_new0(BdrvBlockStatusCache, 1);
  
-     /**
-      * If the callback is not NULL, it will be invoked after a call to either
-diff --git a/block/commit.c b/block/commit.c
-index 7496cf732e..0d9e1a16d7 100644
---- a/block/commit.c
-+++ b/block/commit.c
-@@ -68,7 +68,7 @@ static int commit_prepare(Job *job)
-                                   s->backing_mask_protocol);
- }
+     for (i = 0; i < bdrv_drain_all_count; i++) {
+-        bdrv_drained_begin(bs);
++        bdrv_do_drained_begin_quiesce(bs, NULL);
+     }
  
--static void commit_abort(Job *job)
-+static void GRAPH_UNLOCKED commit_abort(Job *job)
- {
-     CommitBlockJob *s = container_of(job, CommitBlockJob, common.job);
-     BlockDriverState *top_bs = blk_bs(s->top);
+     QTAILQ_INSERT_TAIL(&all_bdrv_states, bs, bs_list);
 -- 
 2.50.1
 
