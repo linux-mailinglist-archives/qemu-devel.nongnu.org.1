@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04AFBB066EF
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4C8B0670F
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:39:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublPU-00082r-1r; Tue, 15 Jul 2025 15:33:54 -0400
+	id 1ublUy-0003bB-Lf; Tue, 15 Jul 2025 15:39:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxo-0004UE-68
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxp-0004Up-Qx
  for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxl-0001hl-00
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:15 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxn-0001i0-1l
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606312;
+ s=mimecast20190719; t=1752606314;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dm3I03o3ziU4+GurmjHfvlVgbFzvqDq0GAQA7zN0PPw=;
- b=N9ngwX9jVciCRfOeWzKAYIejwa1g9wC6c+A/XotyHvI1Ig+gQn9k30KvvA3WdnDwvy7kBH
- bjpjmkOuGZMZVFc+HiAYCYXMMbu0Ji+jHcsCUEwv8rfaI3jN4Wfmu48sXdXc0m/BxAAsCK
- bPN6ytYiluat+ZBWNP8n/U52bTscGUE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=PhLaAdsNrHeY9YCqj4vc9nJxGGtEE9fcIaoknxQSwGI=;
+ b=OkvBcVLKQrzaxEYYG/KEZ4AU3WtRTmQgR/29R3c1rUfcbuf0zZLSJmCDFNFaCYMcR0NcvJ
+ hR8IjzB4Y1JrufBZiDivtcvZXExlSmMyIv+AtRVCZCnWHO7+0WbQ7a79OPpGEaXPZ0o3oH
+ c6JP8Mi1jMnP1mZ5rbH47GEAkjNP51M=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-678--klC0Qf9Mbeo-IIiWrwQow-1; Tue,
- 15 Jul 2025 15:05:08 -0400
-X-MC-Unique: -klC0Qf9Mbeo-IIiWrwQow-1
-X-Mimecast-MFC-AGG-ID: -klC0Qf9Mbeo-IIiWrwQow_1752606308
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-5chfcuU1NcyEo6uZm-_VRw-1; Tue,
+ 15 Jul 2025 15:05:11 -0400
+X-MC-Unique: 5chfcuU1NcyEo6uZm-_VRw-1
+X-Mimecast-MFC-AGG-ID: 5chfcuU1NcyEo6uZm-_VRw_1752606310
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F0F28195608F; Tue, 15 Jul 2025 19:05:07 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5F786180024D; Tue, 15 Jul 2025 19:05:10 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 646DD197702B; Tue, 15 Jul 2025 19:05:06 +0000 (UTC)
+ id 72655197702B; Tue, 15 Jul 2025 19:05:08 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 43/57] qemu-img: info: refresh options/--help
-Date: Tue, 15 Jul 2025 21:03:16 +0200
-Message-ID: <20250715190330.378764-44-kwolf@redhat.com>
+Subject: [PULL 44/57] qemu-img: map: refresh options/--help
+Date: Tue, 15 Jul 2025 21:03:17 +0200
+Message-ID: <20250715190330.378764-45-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -83,52 +83,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Tokarev <mjt@tls.msk.ru>
 
-Add missing long options and --help output.
-Also add -b short option for --backing-chain, and remove
-now-unused OPTION_BACKING_CHAIN.
-
-Reorder options for consistency.
+Add missing long options and --help output,
+reorder options for consistency.
 
 While at it, remove unused option_index variable.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20250531171609.197078-14-mjt@tls.msk.ru>
-[kwolf: Fixed up help text formatting]
+Message-ID: <20250715140903.131529-1-mjt@tls.msk.ru>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- qemu-img.c | 51 ++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 32 insertions(+), 19 deletions(-)
+ qemu-img.c | 59 +++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 21 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 950f319a97..530123bfdf 100644
+index 530123bfdf..a02ccad943 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -3220,50 +3220,63 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
+@@ -3453,41 +3453,53 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
  
      fmt = NULL;
-     for(;;) {
+     for (;;) {
 -        int option_index = 0;
          static const struct option long_options[] = {
              {"help", no_argument, 0, 'h'},
              {"format", required_argument, 0, 'f'},
 -            {"output", required_argument, 0, OPTION_OUTPUT},
--            {"backing-chain", no_argument, 0, OPTION_BACKING_CHAIN},
 -            {"object", required_argument, 0, OPTION_OBJECT},
              {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-+            {"backing-chain", no_argument, 0, OPTION_BACKING_CHAIN},
-             {"force-share", no_argument, 0, 'U'},
+-            {"force-share", no_argument, 0, 'U'},
+             {"start-offset", required_argument, 0, 's'},
+             {"max-length", required_argument, 0, 'l'},
++            {"force-share", no_argument, 0, 'U'},
 +            {"output", required_argument, 0, OPTION_OUTPUT},
 +            {"object", required_argument, 0, OPTION_OBJECT},
              {0, 0, 0, 0}
          };
--        c = getopt_long(argc, argv, ":f:hU",
+-        c = getopt_long(argc, argv, ":f:s:l:hU",
 -                        long_options, &option_index);
-+        c = getopt_long(argc, argv, "hf:U", long_options, NULL);
++        c = getopt_long(argc, argv, "hf:s:l:U",
++                        long_options, NULL);
          if (c == -1) {
              break;
          }
-         switch(c) {
+         switch (c) {
 -        case ':':
 -            missing_argument(argv[optind - 1]);
 -            break;
@@ -137,45 +135,53 @@ index 950f319a97..530123bfdf 100644
 -            break;
          case 'h':
 -            help();
-+            cmd_help(ccmd, "[-f FMT | --image-opts] [--backing-chain] [-U]\n"
-+"        [--output human|json] [--object OBJDEF] FILE\n"
++            cmd_help(ccmd, "[-f FMT | --image-opts]\n"
++"        [--start-offset OFFSET] [--max-length LENGTH]\n"
++"        [--output human|json] [-U] [--object OBJDEF] FILE\n"
 +,
 +"  -f, --format FMT\n"
 +"     specify FILE image format explicitly (default: probing is used)\n"
 +"  --image-opts\n"
 +"     treat FILE as an option string (key=value,..), not a file name\n"
 +"     (incompatible with -f|--format)\n"
-+"  --backing-chain\n"
-+"     display information about the backing chain for copy-on-write overlays\n"
++"  -s, --start-offset OFFSET\n"
++"     start at the given OFFSET in the image, not at the beginning\n"
++"  -l, --max-length LENGTH\n"
++"     process at most LENGTH bytes instead of up to the end of the image\n"
++"  --output human|json\n"
++"     specify output format name (default: human)\n"
 +"  -U, --force-share\n"
 +"     open image in shared mode for concurrent access\n"
-+"  --output human|json\n"
-+"     specify output format (default: human)\n"
 +"  --object OBJDEF\n"
 +"     defines QEMU user-creatable object\n"
 +"  FILE\n"
-+"     name of the image file, or option string (key=value,..)\n"
++"     the image file name, or option string (key=value,..)\n"
 +"     with --image-opts, to operate on\n"
 +);
              break;
          case 'f':
              fmt = optarg;
              break;
+-        case 'U':
+-            force_share = true;
+-            break;
+-        case OPTION_OUTPUT:
+-            output_format = parse_output_format(argv[0], optarg);
 +        case OPTION_IMAGE_OPTS:
 +            image_opts = true;
-+            break;
-+        case OPTION_BACKING_CHAIN:
-+            chain = true;
-+            break;
-         case 'U':
-             force_share = true;
              break;
-         case OPTION_OUTPUT:
-             output_format = parse_output_format(argv[0], optarg);
+         case 's':
+             start_offset = cvtnum("start offset", optarg);
+@@ -3501,12 +3513,17 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
+                 return 1;
+             }
              break;
--        case OPTION_BACKING_CHAIN:
--            chain = true;
--            break;
++        case OPTION_OUTPUT:
++            output_format = parse_output_format(argv[0], optarg);
++            break;
++        case 'U':
++            force_share = true;
++            break;
          case OPTION_OBJECT:
              user_creatable_process_cmdline(optarg);
              break;
