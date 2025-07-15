@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F37B0565B
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 11:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DC9B056C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 11:39:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubbzz-0007Z6-Vm; Tue, 15 Jul 2025 05:30:58 -0400
+	id 1ubc3D-0004C1-5E; Tue, 15 Jul 2025 05:34:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubbzX-0007R1-LM
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:30:27 -0400
+ id 1ubc1A-0000za-QH
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:32:09 -0400
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubbzS-0005cn-Qn
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:30:27 -0400
+ id 1ubc18-0005nN-Hc
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:32:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752571823; x=1784107823;
+ t=1752571927; x=1784107927;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=mP0q4YqqaiGLIAwiuXkkrUZ/nN99pTLywY45wJu2+S4=;
- b=Fa1TUHVw4YYmgd7MflLyfmcFDQzX1lNjKw4BgtoDu60O597xlBgVOJA3
- uB91DsfoXM1ZTYbQsZRDwA2yQ+7sV/IlKCmds8G4jLYcRdxFkhVZqiGAs
- 2xZ3iAPDrxwngQhUczveIF+4gJBZpynX7Zxh51Dqu1B4IXWqYYH2ZfXW5
- 7U41QtAYSUOTu7sDy8uvjQh/O3JGgQrjsQOfn5l6E8bO7/Ib3PK7Y+QwR
- fcvwkMUs5wsQDZU7nd3tG/7hJp1NHVZoFL0oWyjYALe5P8qQUL/9iCHz1
- oe3Na8uvv6I2SbO+irptaTrwsEookPOe93eVXHY59B2JCUpp/CasP+tm8 Q==;
-X-CSE-ConnectionGUID: +QfO6TDpRN6E0tSmrOdM2Q==
-X-CSE-MsgGUID: jabu5E3DTICrmOga/TgaSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54655820"
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; d="scan'208";a="54655820"
+ bh=0szfmmr3b99jV/AQ05PXrI4IEdV20dMAF3J2PItM0PU=;
+ b=hfEXhQ5m0ABNewWB2XmUUwMArbW31w+F7Lylgt4icfcU0GhkAdGZeC7x
+ C4JbYCD6UluV3003geqpo2I2Wdr5Sa0PQtyG/jyCKPZBCjHl2SMoLUXh9
+ t0thpUvIvfg3GaV2ns1xgaMu7/CFT7F2BHXJPNiuqdOidA465JsjWM6Y4
+ i9/ORc5CPzD8Gu0WmrLXd0XlHcJIjS+KdlEA/i7tZBgSSnwPcnPLYLL8N
+ p35vZTZ7lEa8lAVX1yGhUy8axzX4cs4z7aK0BWlxu8trRR8wXttY5Ckhi
+ O+WWkkTg4HJwLB0hjBYmnAnM+T6Gv+FlJbcsdyXmCcPciGbvhFktbBVmR A==;
+X-CSE-ConnectionGUID: ecd+LmU0TTWwHndoLcXFeg==
+X-CSE-MsgGUID: vB4UozodTRmXIBjEpb4e3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54656093"
+X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; d="scan'208";a="54656093"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2025 02:30:19 -0700
-X-CSE-ConnectionGUID: H7HkxjUyQEuo+VYXkbBp6g==
-X-CSE-MsgGUID: dAqX6n9pT/mqL7w8yv3wqA==
+ 15 Jul 2025 02:31:29 -0700
+X-CSE-ConnectionGUID: pHvkkKjsTFGjt40u7IU3Cw==
+X-CSE-MsgGUID: e2gWFKf0R5q1M7U+HNCxEg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; d="scan'208";a="156835507"
+X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; d="scan'208";a="156836022"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
  ([10.124.247.1])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2025 02:30:16 -0700
-Message-ID: <aa44356d-7f1b-4718-bff0-e5bfad88bf26@intel.com>
-Date: Tue, 15 Jul 2025 17:30:11 +0800
+ 15 Jul 2025 02:31:01 -0700
+Message-ID: <f08283bd-51b7-44a0-821c-544107f46dfa@intel.com>
+Date: Tue, 15 Jul 2025 17:30:58 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 v7 1/2] qapi/machine: Add @qom-type field to
- CpuInfoFast structure
+Subject: Re: [PATCH-for-10.1 v7 2/2] hw/core/machine: Display CPU model name
+ in 'info cpus' command
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -59,10 +59,10 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
  Richard Henderson <richard.henderson@linaro.org>
 References: <20250715090624.52377-1-philmd@linaro.org>
- <20250715090624.52377-2-philmd@linaro.org>
+ <20250715090624.52377-3-philmd@linaro.org>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250715090624.52377-2-philmd@linaro.org>
+In-Reply-To: <20250715090624.52377-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.21; envelope-from=xiaoyao.li@intel.com;
@@ -91,52 +91,62 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/15/2025 5:06 PM, Philippe Mathieu-Daudé wrote:
-> Knowing the QOM type name of a CPU can be useful,
-> in particular to infer its model name.
+> Display the CPU model in 'info cpus'. Example before:
+> 
+>   $ qemu-system-aarch64 -M xlnx-versal-virt -S -monitor stdio
+>   QEMU 10.0.0 monitor - type 'help' for more information
+>   (qemu) info cpus
+>   * CPU #0: thread_id=42924
+>     CPU #1: thread_id=42924
+>     CPU #2: thread_id=42924
+>     CPU #3: thread_id=42924
+>   (qemu) q
+> 
+> and after:
+> 
+>   $ qemu-system-aarch64 -M xlnx-versal-virt -S -monitor stdio
+>   QEMU 10.0.50 monitor - type 'help' for more information
+>   (qemu) info cpus
+>   * CPU #0: thread_id=42916 model=cortex-a72
+>     CPU #1: thread_id=42916 model=cortex-a72
+>     CPU #2: thread_id=42916 model=cortex-r5f
+>     CPU #3: thread_id=42916 model=cortex-r5f
+>   (qemu)
 > 
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> Tested-by: Zhao Liu <zhao1.liu@intel.com>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+IIRC, I gave r-b tag before. Anyway,
 
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
 > ---
->   qapi/machine.json          | 3 +++
->   hw/core/machine-qmp-cmds.c | 1 +
->   2 files changed, 4 insertions(+)
+>   hw/core/machine-hmp-cmds.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index f712e7da6d6..a3f6fcec4d3 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -76,6 +76,8 @@
->   #
->   # @cpu-index: index of the virtual CPU
->   #
-> +# @qom-type: QOM type name of the CPU (since 10.1)
-> +#
->   # @qom-path: path to the CPU object in the QOM tree
->   #
->   # @thread-id: ID of the underlying host thread
-> @@ -89,6 +91,7 @@
->   ##
->   { 'union'         : 'CpuInfoFast',
->     'base'          : { 'cpu-index'    : 'int',
-> +                      'qom-type'     : 'str',
->                         'qom-path'     : 'str',
->                         'thread-id'    : 'int',
->                         '*props'       : 'CpuInstanceProperties',
-> diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-> index d82043e1c68..5655bfcfee4 100644
-> --- a/hw/core/machine-qmp-cmds.c
-> +++ b/hw/core/machine-qmp-cmds.c
-> @@ -47,6 +47,7 @@ CpuInfoFastList *qmp_query_cpus_fast(Error **errp)
->           value->cpu_index = cpu->cpu_index;
->           value->qom_path = object_get_canonical_path(OBJECT(cpu));
->           value->thread_id = cpu->thread_id;
-> +        value->qom_type = g_strdup(object_get_typename(OBJECT(cpu)));
+> diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
+> index c6325cdcaaa..54b6f5406dc 100644
+> --- a/hw/core/machine-hmp-cmds.c
+> +++ b/hw/core/machine-hmp-cmds.c
+> @@ -32,6 +32,7 @@ void hmp_info_cpus(Monitor *mon, const QDict *qdict)
+>       cpu_list = qmp_query_cpus_fast(NULL);
 >   
->           if (mc->cpu_index_to_instance_props) {
->               CpuInstanceProperties *props;
+>       for (cpu = cpu_list; cpu; cpu = cpu->next) {
+> +        g_autofree char *cpu_model = cpu_model_from_type(cpu->value->qom_type);
+>           int active = ' ';
+>   
+>           if (cpu->value->cpu_index == monitor_get_cpu_index(mon)) {
+> @@ -40,7 +41,8 @@ void hmp_info_cpus(Monitor *mon, const QDict *qdict)
+>   
+>           monitor_printf(mon, "%c CPU #%" PRId64 ":", active,
+>                          cpu->value->cpu_index);
+> -        monitor_printf(mon, " thread_id=%" PRId64 "\n", cpu->value->thread_id);
+> +        monitor_printf(mon, " thread_id=%" PRId64 " model=%s\n",
+> +                       cpu->value->thread_id, cpu_model);
+>       }
+>   
+>       qapi_free_CpuInfoFastList(cpu_list);
 
 
