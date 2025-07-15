@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C62AB04D72
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 03:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0234EB04F3A
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 05:41:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubUUV-0003XZ-Uh; Mon, 14 Jul 2025 21:29:55 -0400
+	id 1ubWWS-00045C-Ko; Mon, 14 Jul 2025 23:40:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1ubUUT-0003XA-4Z
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 21:29:53 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1ubUUP-0004bw-C6
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 21:29:52 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxlmkIr3VobdApAQ--.21549S3;
- Tue, 15 Jul 2025 09:29:45 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJCxM+QFr3Vo8KgXAA--.63041S3;
- Tue, 15 Jul 2025 09:29:44 +0800 (CST)
-Subject: Re: [PATCH v5 02/11] hw/loongarch: add virt feature avecintc support
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20250711085915.3042395-1-gaosong@loongson.cn>
- <20250711085915.3042395-3-gaosong@loongson.cn>
- <e7f42f9d-498a-e930-570a-c7173400b991@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <11ee6292-ce19-840e-c945-f5c18bfc8d3f@loongson.cn>
-Date: Tue, 15 Jul 2025 09:32:39 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ubWWM-00043h-NH
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 23:39:59 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ubWWK-0006Qm-0S
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 23:39:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752550796; x=1784086796;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=zhKngkI310nx9PU9b2zv40h2kHDRfhghd844MS9S4mY=;
+ b=dJ6c05ffXbOt81q7t4NEe7EpPTmjrcFTrrnT9Kj9QKZCI+34FTAsxQGh
+ 0uXs/t/qZDYWxnT/OpDTKAJZuUMsGuvwISfOAqSBRjxCj47scpW4xwLFl
+ J0JB2gtnovuTBT2TCLuD5ztJ9JzLNI1pTyF4GU6TfDf/WgMK6m6lglW65
+ GnL35YV3YPC4nxlBvOxd/71ktdOytIuNNweJDMzE9LSgIWLjoNVSxe7Ae
+ 6mPlUuWvRZgJhzjDhz0sbWxFnsQqVb1rbYVBd4eKXTCQxxt58I3wq2bn4
+ c63cND0WCzfXC8v0nhLZYakDa6pF5Kmv2hSX/wvks7ULGgRY3n0EYer0c A==;
+X-CSE-ConnectionGUID: 2uS+/c3zTwyz+IBjbOxqdw==
+X-CSE-MsgGUID: rWqZSBP/Svam+fTrd9VwVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="72334912"
+X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="72334912"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 20:39:52 -0700
+X-CSE-ConnectionGUID: 7lV0nEFjREiili/VteL1eQ==
+X-CSE-MsgGUID: BpnnbOhaSRKnTfEwSDjg4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="180808082"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by fmviesa002.fm.intel.com with ESMTP; 14 Jul 2025 20:39:49 -0700
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ ackerleytng@google.com, seanjc@google.com
+Cc: Fuad Tabba <tabba@google.com>, Vishal Annapurve <vannapurve@google.com>,
+ rick.p.edgecombe@intel.com, Kai Huang <kai.huang@intel.com>,
+ binbin.wu@linux.intel.com, yan.y.zhao@intel.com, ira.weiny@intel.com,
+ michael.roth@amd.com, kvm@vger.kernel.org, qemu-devel@nongnu.org,
+ Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [POC PATCH 0/5] QEMU: Enable in-place conversion and hugetlb gmem
+Date: Tue, 15 Jul 2025 11:31:36 +0800
+Message-ID: <20250715033141.517457-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1747264138.git.ackerleytng@google.com>
+References: <cover.1747264138.git.ackerleytng@google.com>
 MIME-Version: 1.0
-In-Reply-To: <e7f42f9d-498a-e930-570a-c7173400b991@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJCxM+QFr3Vo8KgXAA--.63041S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3GrW3CF15KryDKw1Utry7Jwc_yoWxJFW5pF
- 1kJFW8JryUJrn7Wr17tr1DWFy5Jr1xJ3WUXr4xXFWUAF1DGr1jgr1UXr1qgFyUAw4kAr18
- Jr18Xr17Zr17XrXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUU92b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAF
- wI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
- AF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4l
- IxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCw
- CI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVF
- xhVjvjDU0xZFpf9x07UNvtZUUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.933,
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,143 +85,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2025/7/15 上午9:02, Bibo Mao 写道:
->
->
-> On 2025/7/11 下午4:59, Song Gao wrote:
->> Avecintc feature is added in LoongArchVirtMachinState, and it is used
->> to check whether virt machine supports the advanced interrupt controller
->> and by default set avecintc with ON_OFF_AUTO_ON.
->> LoongArchVirtMachineState adds misc_feature and misc_status for misc
->> features and status. and set the default avec feature bit.
->>
->> Signed-off-by: Song Gao <gaosong@loongson.cn>
->> ---
->>   hw/loongarch/virt.c         | 30 ++++++++++++++++++++++++++++++
->>   include/hw/loongarch/virt.h | 14 ++++++++++++++
->>   2 files changed, 44 insertions(+)
->>
->> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
->> index b15ada2078..112cf9a9db 100644
->> --- a/hw/loongarch/virt.c
->> +++ b/hw/loongarch/virt.c
->> @@ -47,6 +47,27 @@
->>   #include "hw/virtio/virtio-iommu.h"
->>   #include "qemu/error-report.h"
->>   +static void virt_get_avecintc(Object *obj, Visitor *v, const char 
->> *name,
->> +                             void *opaque, Error **errp)
->> +{
->> +    LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(obj);
->> +    OnOffAuto avecintc = lvms->avecintc;
->> +
->> +    visit_type_OnOffAuto(v, name, &avecintc, errp);
->> +
->> +}
->> +static void virt_set_avecintc(Object *obj, Visitor *v, const char 
->> *name,
->> +                              void *opaque, Error **errp)
->> +{
->> +    LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(obj);
->> +
->> +    visit_type_OnOffAuto(v, name, &lvms->avecintc, errp);
->> +    if (lvms->avecintc == ON_OFF_AUTO_OFF) {
->> +        lvms->misc_feature &= ~BIT(IOCSRF_AVEC);
->> +        lvms->misc_status &= ~BIT(IOCSRM_AVEC_EN);
->> +    }
->> +}
->> +
->>   static void virt_get_veiointc(Object *obj, Visitor *v, const char 
->> *name,
->>                                 void *opaque, Error **errp)
->>   {
->> @@ -846,6 +867,9 @@ static void virt_initfn(Object *obj)
->>       if (tcg_enabled()) {
->>           lvms->veiointc = ON_OFF_AUTO_OFF;
->>       }
->> +
->> +    lvms->misc_feature = BIT(IOCSRF_AVEC);
->> +    lvms->avecintc = ON_OFF_AUTO_ON;
->>       lvms->acpi = ON_OFF_AUTO_AUTO;
->>       lvms->oem_id = g_strndup(ACPI_BUILD_APPNAME6, 6);
->>       lvms->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
->> @@ -1238,6 +1262,12 @@ static void virt_class_init(ObjectClass *oc, 
->> const void *data)
->>           NULL, NULL);
->>       object_class_property_set_description(oc, "v-eiointc",
->>                               "Enable Virt Extend I/O Interrupt 
->> Controller.");
->> +#ifdef CONFIG_TCG
-> I think it will be better if tcg_enabled() is used here, since 
-> CONFIG_TCG and CONFIG_KVM is enabled by default. It should be 
-> supported in KVM mode now. It is suggested in V4 review process :)
->
-emm, I had tested again , this may be  a bug ,  here tcg_allowed is not 
-set so  the tcg_enabled() not work, the same with kvm_enabled()
+Hi all,
 
-Thanks.,
-Song Gao
-> Regads
-> Bibo Mao
->> +    object_class_property_add(oc, "avecintc", "OnOffAuto",
->> +        virt_get_avecintc, virt_set_avecintc, NULL, NULL);
->> +    object_class_property_set_description(oc, "avecintc",
->> +                            "Enable Advance Interrupt Controller.");
->> +#endif
->>       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RAMFB_DEVICE);
->>       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_UEFI_VARS_SYSBUS);
->>   #ifdef CONFIG_TPM
->> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
->> index 7120b46714..68b8e92e99 100644
->> --- a/include/hw/loongarch/virt.h
->> +++ b/include/hw/loongarch/virt.h
->> @@ -23,6 +23,7 @@
->>   #define IOCSRF_DVFSV1           7
->>   #define IOCSRF_GMOD             9
->>   #define IOCSRF_VM               11
->> +#define IOCSRF_AVEC             15
->>     #define VERSION_REG             0x0
->>   #define FEATURE_REG             0x8
->> @@ -31,6 +32,7 @@
->>   #define MISC_FUNC_REG           0x420
->>   #define IOCSRM_EXTIOI_EN        48
->>   #define IOCSRM_EXTIOI_INT_ENCODE 49
->> +#define IOCSRM_AVEC_EN          51
->>     #define LOONGARCH_MAX_CPUS      256
->>   @@ -69,6 +71,7 @@ struct LoongArchVirtMachineState {
->>       Notifier     powerdown_notifier;
->>       OnOffAuto    acpi;
->>       OnOffAuto    veiointc;
->> +    OnOffAuto    avecintc;
->>       char         *oem_id;
->>       char         *oem_table_id;
->>       DeviceState  *acpi_ged;
->> @@ -84,6 +87,8 @@ struct LoongArchVirtMachineState {
->>       DeviceState *extioi;
->>       struct memmap_entry *memmap_table;
->>       unsigned int memmap_entries;
->> +    uint64_t misc_feature;
->> +    uint64_t misc_status;
->>   };
->>     #define TYPE_LOONGARCH_VIRT_MACHINE MACHINE_TYPE_NAME("virt")
->> @@ -91,6 +96,15 @@ 
->> OBJECT_DECLARE_SIMPLE_TYPE(LoongArchVirtMachineState, 
->> LOONGARCH_VIRT_MACHINE)
->>   void virt_acpi_setup(LoongArchVirtMachineState *lvms);
->>   void virt_fdt_setup(LoongArchVirtMachineState *lvms);
->>   +static inline bool virt_has_avecintc(LoongArchVirtMachineState *lvms)
->> +{
->> +    if (!(lvms->misc_feature & BIT(IOCSRF_AVEC))) {
->> +        return false;
->> +    }
->> +
->> +    return true;
->> +}
->> +
->>   static inline bool 
->> virt_is_veiointc_enabled(LoongArchVirtMachineState *lvms)
->>   {
->>       if (lvms->veiointc == ON_OFF_AUTO_OFF) {
->>
+This is the POC to enable in-place conversion and hugetlb support of
+gmem (guest memfd) in QEMU. It can work with 1G gmem support series[1] and
+TDX hugepage support series[2] to run TDX guest with hugepage. I don't
+have SNP environment and don't know how it goes with SNP.
+
+It is just the POC and we share it to show how QEMU work with gmem ABI.
+
+The POC uses the simple implementation that switches to use in-place
+conversion and hugetlb when it is supported and it doesn't introduce new
+interface in QEMU so that existing command line to boot TDX can work without
+any change.
+
+Please go to each patch (specifically patch 3/4/5) to discuss the ABI
+usage, potential issue, and maybe the upstreamable design.
+
+[1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/
+[2] https://lore.kernel.org/all/20250424030033.32635-1-yan.y.zhao@intel.com/
+
+Xiaoyao Li (4):
+  update-linux-headers: Add guestmem.h
+  headers: Fetch gmem updates
+  memory/guest_memfd: Enable hugetlb support
+  [HACK] memory: Don't enable in-place conversion for internal
+    MemoryRegion with gmem
+
+Yan Zhao (1):
+  memory/guest_memfd: Enable in-place conversion when available
+
+ accel/kvm/kvm-all.c             | 82 ++++++++++++++++++++++++---------
+ accel/stubs/kvm-stub.c          |  2 +
+ include/system/kvm.h            |  2 +
+ include/system/memory.h         |  5 ++
+ include/system/ramblock.h       |  1 +
+ linux-headers/linux/guestmem.h  | 29 ++++++++++++
+ linux-headers/linux/kvm.h       | 18 ++++++++
+ scripts/update-linux-headers.sh |  2 +-
+ system/memory.c                 |  9 +++-
+ system/physmem.c                | 40 ++++++++++++++--
+ 10 files changed, 163 insertions(+), 27 deletions(-)
+ create mode 100644 linux-headers/linux/guestmem.h
+
+-- 
+2.43.0
 
 
