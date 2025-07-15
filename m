@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68926B05211
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95581B05209
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:42:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZMj-0003EE-9i; Tue, 15 Jul 2025 02:42:13 -0400
+	id 1ubZMk-0003FC-VG; Tue, 15 Jul 2025 02:42:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1ubZF9-0003R3-Qb
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1ubZFJ-0003VV-BK
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1ubZF7-0003kf-WD
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:23 -0400
+ id 1ubZFH-0003lx-DO
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752561261;
+ s=mimecast20190719; t=1752561269;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aKPy83W1hiV5/W0xo6GAaKjDBMB+hmRcxLmXHAgpL6c=;
- b=Ilj6UjT+5tEFxLNWMG+ix8f/iZ8WORMPX+HMeIGANaeVYD+l3t3s2nFWjcEA9DRLgXUm9/
- 0wGv+H9YA3do9TDLzUoogF9pq8WT3m08TUuqklTM9smFwDIj2Cz3LGgQsjUYLzk/zKgVGo
- Tyrrs9vJOHq/I0WogPGbM96XUbkhHIo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=/4myqjH/Kdl7ZWCnYA3d+VdEmgMCkL9UEwDV1RI1+bc=;
+ b=f3/SDgFVZS/YQ2x2qAHIGhmvLFvRqICOFEnrBuXgtboAkD7x/wIrRBSlHpDeiu9ZOPl4jz
+ Eh4cV1GWia/wn/G2r559iVKoOGth+685hBAcv1vq6IvZog7U/WyCFiCowRozFmm8RXi3T2
+ bNBgDUg4905hj6EFfNKYivmzvYjfLzs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-232-kCyp9wt-PrqGkG66rdGAXw-1; Tue,
- 15 Jul 2025 02:34:19 -0400
-X-MC-Unique: kCyp9wt-PrqGkG66rdGAXw-1
-X-Mimecast-MFC-AGG-ID: kCyp9wt-PrqGkG66rdGAXw_1752561258
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-47-R2upl8ZnO2acescwyKm7rw-1; Tue,
+ 15 Jul 2025 02:34:25 -0400
+X-MC-Unique: R2upl8ZnO2acescwyKm7rw-1
+X-Mimecast-MFC-AGG-ID: R2upl8ZnO2acescwyKm7rw_1752561264
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B0EDA19560B1; Tue, 15 Jul 2025 06:34:18 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 696011956080; Tue, 15 Jul 2025 06:34:24 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.9])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 30902195609D; Tue, 15 Jul 2025 06:34:16 +0000 (UTC)
+ id 4B0191956094; Tue, 15 Jul 2025 06:34:22 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, Weifeng Liu <weifeng.liu.z@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [PULL v2 11/13] ui/gtk: Add keep-aspect-ratio option
-Date: Tue, 15 Jul 2025 10:32:57 +0400
-Message-ID: <20250715063301.145191-12-marcandre.lureau@redhat.com>
+Subject: [PULL v2 12/13] ui/gtk: Add scale option
+Date: Tue, 15 Jul 2025 10:32:58 +0400
+Message-ID: <20250715063301.145191-13-marcandre.lureau@redhat.com>
 In-Reply-To: <20250715063301.145191-1-marcandre.lureau@redhat.com>
 References: <20250715063301.145191-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -87,92 +87,157 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Weifeng Liu <weifeng.liu.z@gmail.com>
 
-When aspect ratio of host window and that of guest display are not
-aligned, we can either zoom the guest content to fill the whole host
-window or add padding to respect aspect ratio of the guest. Add an
-option keep-aspect-ratio to allow users to select their preferred
-behavior in this case.
+Allow user to set a preferred scale (defaulting to 1) of the virtual
+display. Along with zoom-to-fix=false, this would be helpful for users
+running QEMU on hi-dpi host desktop to achieve pixel to pixel display --
+e.g., if the scale factor of a user's host desktop is set to 200%, then
+they can set a 0.5 scale for the virtual display to avoid magnification
+that might cause blurriness.
 
-Suggested-by: BALATON Zoltan <balaton@eik.bme.hu>
-Suggested-by: Kim, Dongwon <dongwon.kim@intel.com>
 Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Tested-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20250601045245.36778-2-weifeng.liu.z@gmail.com>
+Message-Id: <20250601045245.36778-3-weifeng.liu.z@gmail.com>
 ---
- qapi/ui.json     | 12 ++++++++----
+ qapi/ui.json     |  5 ++++-
  include/ui/gtk.h |  1 +
- ui/gtk.c         | 12 ++++++++++--
- 3 files changed, 19 insertions(+), 6 deletions(-)
+ ui/gtk.c         | 46 +++++++++++++++++++++++++++++-----------------
+ 3 files changed, 34 insertions(+), 18 deletions(-)
 
 diff --git a/qapi/ui.json b/qapi/ui.json
-index 514fa159b1..9e496b4835 100644
+index 9e496b4835..a465d671c7 100644
 --- a/qapi/ui.json
 +++ b/qapi/ui.json
-@@ -1335,13 +1335,17 @@
- # @show-menubar: Display the main window menubar.  Defaults to "on".
- #     (Since 8.0)
+@@ -1338,6 +1338,8 @@
+ # @keep-aspect-ratio: Keep width/height aspect ratio of guest content when
+ #     resizing host window.  Defaults to "on". (Since 10.1)
  #
-+# @keep-aspect-ratio: Keep width/height aspect ratio of guest content when
-+#     resizing host window.  Defaults to "on". (Since 10.1)
++# @scale: Set preferred scale of the display.  Defaults to 1.0.  (Since 10.1)
 +#
  # Since: 2.12
  ##
  { 'struct'  : 'DisplayGTK',
--  'data'    : { '*grab-on-hover' : 'bool',
--                '*zoom-to-fit'   : 'bool',
--                '*show-tabs'     : 'bool',
--                '*show-menubar'  : 'bool'  } }
-+  'data'    : { '*grab-on-hover'     : 'bool',
-+                '*zoom-to-fit'       : 'bool',
-+                '*show-tabs'         : 'bool',
-+                '*show-menubar'      : 'bool',
-+                '*keep-aspect-ratio' : 'bool'  } }
+@@ -1345,7 +1347,8 @@
+                 '*zoom-to-fit'       : 'bool',
+                 '*show-tabs'         : 'bool',
+                 '*show-menubar'      : 'bool',
+-                '*keep-aspect-ratio' : 'bool'  } }
++                '*keep-aspect-ratio' : 'bool',
++                '*scale'             : 'number'  } }
  
  ##
  # @DisplayEGLHeadless:
 diff --git a/include/ui/gtk.h b/include/ui/gtk.h
-index d3944046db..b7cfbf218e 100644
+index b7cfbf218e..3e6ce3cb48 100644
 --- a/include/ui/gtk.h
 +++ b/include/ui/gtk.h
-@@ -140,6 +140,7 @@ struct GtkDisplayState {
-     GdkCursor *null_cursor;
-     Notifier mouse_mode_notifier;
-     gboolean free_scale;
-+    gboolean keep_aspect_ratio;
- 
-     bool external_pause_update;
- 
+@@ -41,6 +41,7 @@ typedef struct VirtualGfxConsole {
+     DisplaySurface *ds;
+     pixman_image_t *convert;
+     cairo_surface_t *surface;
++    double preferred_scale;
+     double scale_x;
+     double scale_y;
+ #if defined(CONFIG_OPENGL)
 diff --git a/ui/gtk.c b/ui/gtk.c
-index 8c4a94c8f6..9104509ee1 100644
+index 9104509ee1..e91d093a49 100644
 --- a/ui/gtk.c
 +++ b/ui/gtk.c
-@@ -828,8 +828,12 @@ void gd_update_scale(VirtualConsole *vc, int ww, int wh, int fbw, int fbh)
+@@ -67,6 +67,7 @@
+ #define VC_TERM_X_MIN     80
+ #define VC_TERM_Y_MIN     25
+ #define VC_SCALE_MIN    0.25
++#define VC_SCALE_MAX       4
+ #define VC_SCALE_STEP   0.25
  
-         sx = (double)ww / fbw;
-         sy = (double)wh / fbh;
--
--        vc->gfx.scale_x = vc->gfx.scale_y = MIN(sx, sy);
-+        if (vc->s->keep_aspect_ratio) {
-+            vc->gfx.scale_x = vc->gfx.scale_y = MIN(sx, sy);
-+        } else {
-+            vc->gfx.scale_x = sx;
-+            vc->gfx.scale_y = sy;
-+        }
+ #ifdef GDK_WINDOWING_X11
+@@ -272,15 +273,11 @@ static void gd_update_geometry_hints(VirtualConsole *vc)
+         if (!vc->gfx.ds) {
+             return;
+         }
+-        if (s->free_scale) {
+-            geo.min_width  = surface_width(vc->gfx.ds) * VC_SCALE_MIN;
+-            geo.min_height = surface_height(vc->gfx.ds) * VC_SCALE_MIN;
+-            mask |= GDK_HINT_MIN_SIZE;
+-        } else {
+-            geo.min_width  = surface_width(vc->gfx.ds) * vc->gfx.scale_x;
+-            geo.min_height = surface_height(vc->gfx.ds) * vc->gfx.scale_y;
+-            mask |= GDK_HINT_MIN_SIZE;
+-        }
++        double scale_x = s->free_scale ? VC_SCALE_MIN : vc->gfx.scale_x;
++        double scale_y = s->free_scale ? VC_SCALE_MIN : vc->gfx.scale_y;
++        geo.min_width  = surface_width(vc->gfx.ds) * scale_x;
++        geo.min_height = surface_height(vc->gfx.ds) * scale_y;
++        mask |= GDK_HINT_MIN_SIZE;
+         geo_widget = vc->gfx.drawing_area;
+         gtk_widget_set_size_request(geo_widget, geo.min_width, geo.min_height);
+ 
+@@ -1579,8 +1576,8 @@ static void gd_menu_full_screen(GtkMenuItem *item, void *opaque)
+         }
+         s->full_screen = FALSE;
+         if (vc->type == GD_VC_GFX) {
+-            vc->gfx.scale_x = 1.0;
+-            vc->gfx.scale_y = 1.0;
++            vc->gfx.scale_x = vc->gfx.preferred_scale;
++            vc->gfx.scale_y = vc->gfx.preferred_scale;
+             gd_update_windowsize(vc);
+         }
      }
+@@ -1636,8 +1633,8 @@ static void gd_menu_zoom_fixed(GtkMenuItem *item, void *opaque)
+     GtkDisplayState *s = opaque;
+     VirtualConsole *vc = gd_vc_find_current(s);
+ 
+-    vc->gfx.scale_x = 1.0;
+-    vc->gfx.scale_y = 1.0;
++    vc->gfx.scale_x = vc->gfx.preferred_scale;
++    vc->gfx.scale_y = vc->gfx.preferred_scale;
+ 
+     gd_update_windowsize(vc);
  }
- /**
-@@ -2328,6 +2332,10 @@ static GSList *gd_vc_gfx_init(GtkDisplayState *s, VirtualConsole *vc,
-         s->free_scale = true;
+@@ -1651,8 +1648,8 @@ static void gd_menu_zoom_fit(GtkMenuItem *item, void *opaque)
+         s->free_scale = TRUE;
+     } else {
+         s->free_scale = FALSE;
+-        vc->gfx.scale_x = 1.0;
+-        vc->gfx.scale_y = 1.0;
++        vc->gfx.scale_x = vc->gfx.preferred_scale;
++        vc->gfx.scale_y = vc->gfx.preferred_scale;
      }
  
-+    s->keep_aspect_ratio = true;
-+    if (s->opts->u.gtk.has_keep_aspect_ratio)
-+        s->keep_aspect_ratio = s->opts->u.gtk.keep_aspect_ratio;
+     gd_update_windowsize(vc);
+@@ -2243,6 +2240,11 @@ static void gl_area_realize(GtkGLArea *area, VirtualConsole *vc)
+ }
+ #endif
+ 
++static bool gd_scale_valid(double scale)
++{
++    return scale >= VC_SCALE_MIN && scale <= VC_SCALE_MAX;
++}
 +
-     for (i = 0; i < INPUT_EVENT_SLOTS_MAX; i++) {
-         struct touch_slot *slot = &touch_slots[i];
-         slot->tracking_id = -1;
+ static GSList *gd_vc_gfx_init(GtkDisplayState *s, VirtualConsole *vc,
+                               QemuConsole *con, int idx,
+                               GSList *group, GtkWidget *view_menu)
+@@ -2252,8 +2254,18 @@ static GSList *gd_vc_gfx_init(GtkDisplayState *s, VirtualConsole *vc,
+ 
+     vc->label = qemu_console_get_label(con);
+     vc->s = s;
+-    vc->gfx.scale_x = 1.0;
+-    vc->gfx.scale_y = 1.0;
++    vc->gfx.preferred_scale = 1.0;
++    if (s->opts->u.gtk.has_scale) {
++        if (gd_scale_valid(s->opts->u.gtk.scale)) {
++            vc->gfx.preferred_scale = s->opts->u.gtk.scale;
++        } else {
++            error_report("Invalid scale value %lf given, being ignored",
++                         s->opts->u.gtk.scale);
++            s->opts->u.gtk.has_scale = false;
++        }
++    }
++    vc->gfx.scale_x = vc->gfx.preferred_scale;
++    vc->gfx.scale_y = vc->gfx.preferred_scale;
+ 
+ #if defined(CONFIG_OPENGL)
+     if (display_opengl) {
 -- 
 2.50.0
 
