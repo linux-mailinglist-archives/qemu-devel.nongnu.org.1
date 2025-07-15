@@ -2,82 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B42B06701
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F4DB066FC
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:35:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublQz-0005SE-Dr; Tue, 15 Jul 2025 15:35:25 -0400
+	id 1ublQh-0004CT-RH; Tue, 15 Jul 2025 15:35:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1ubl87-00023w-Ah
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:15:57 -0400
-Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1ubl0z-0006Vz-5I
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:08:33 -0400
+Received: from fout-a5-smtp.messagingengine.com ([103.168.172.148])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1ubl84-0003VU-Hi
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:15:55 -0400
-Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 8217F3F412
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 19:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1752606949;
- bh=4dblcXqKLHTGAGmcqiKTs/evyLcOqwfNiyLtAlOKjRY=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=fbJmJzmfnV6rBbGL8ZJsT1yVh2qaEKVjb4noXNrCryDIUSuo81OG6E7pcsBBo+wCJ
- i6p2a98LuCXvLU8p//sSpEE2lkGt+0Nzd6wodwSBgiq6xH3aexJ33fFw2+NG3EOYWl
- Bpqg+K+BHPB/nZ7EnNHmi8gtXSnOvrIDTwsCq5Ajfr9+Y69/jJfRBl4XPiUT6d+WIu
- J0Tb8Cpw+iOXh1v02ED9sBgC0E20bL+XmnZYI7IX+XXaLHqNeNF9rPJpshLgHGUaWp
- EBvbEIg3r20SifJsh51QHb5EOv86Tc+rfqAv9UIy03iipRdqAEi5ma2NkFsT5fzRvH
- sblJ/UNjoSB+g==
-Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id 630CD7E139
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 19:15:49 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1ubl0x-0001yj-Fj
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:08:32 -0400
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal
+ [10.202.2.46])
+ by mailfout.phl.internal (Postfix) with ESMTP id BC473EC004E;
+ Tue, 15 Jul 2025 15:08:30 -0400 (EDT)
+Received: from phl-imap-08 ([10.202.2.84])
+ by phl-compute-06.internal (MEProxy); Tue, 15 Jul 2025 15:08:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:content-transfer-encoding:content-type:content-type:date:date
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1752606510;
+ x=1752692910; bh=9PXGdBXHEkP0pmHM6WU1rsR0w2iS+OHLLukB/M/TEjA=; b=
+ Z6qrzYpENDgrwf3u8j0vFndP5mCJ9LaZLAuwhyqTjz1FjUHrAXMlrYQi2QTB3BS9
+ 7CLnewSv7ML6oU+3qU7RLjOYDWlZACvO+hzsdPEVouuauHRJXHkRoo6Vr53hmbkE
+ uCVkT1GUHRVwEEMcD7frEQD3BZYis0RLVCN6jCeVYzAqUJ5cK+nW14AvgTfSgckI
+ 49oR1E0SitpLx2DmzlNYm589ENPk520Jhm8ASMBrh8eByHMTN6qNshCagcvgKZYz
+ riIS0/R4na2pe/l0/IV+uXBwnrvxQZ66ooL38lnGMZq0mOqwMRvzWzTgTF3YkWlm
+ pIfsxPvhUZRT2MhdZu+bsQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+ :x-me-sender:x-sasl-enc; s=fm2; t=1752606510; x=1752692910; bh=9
+ PXGdBXHEkP0pmHM6WU1rsR0w2iS+OHLLukB/M/TEjA=; b=oRwd0M7jCTdu42BHU
+ pqwXsyOxw8dAAwGHuTeq21tNcocGB4iHomQQ8vQxg0ExfjAgQGfLIKSicCTs4hX3
+ FcQW87WayS0bn7OqJzxVw5bBfNqoEk1u5hz3QEP4HenwQETri8zHNap9usTDphz0
+ nztAhDW/lvFQnUhIIxsMKq+kx0q95H9WAPPZde3NGH9HGwhLVzWA/Y7Qu4OhJVZC
+ fxFLGH5ulMJMMoqLMx4v6WDGWsCxA4cnfFjFyd2pstQWXVrNuJfGzWS+z6n7JGML
+ 4VIeHMy0zoUM/TJ+5jFRlUccHPrfqmiXglgCFeLZ+Koq7hpovCyzzh07FtD4UlJn
+ 81l2Q==
+X-ME-Sender: <xms:Lqd2aI2mx3gCcAeU3YzqINLWfPIioFwKAHz0R-sC48syFRWZp5ohlQ>
+ <xme:Lqd2aDG0luTUURboU-qUVSaRwTq4ppEVWFiRpysZpl1_myeDryfnPo5HRXYYwPjq6
+ fcNsEATlW1rMNgf3Zg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehheeifecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+ ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+ hrpefoggffhffvkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedflfhirgiguhhn
+ ucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqnecugg
+ ftrfgrthhtvghrnhepjedvgfetvefhfffhudffheelieeiveelvdeileffgfeghfefkeeu
+ hfdugeefleffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+ homhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomhdpnhgspghrtghpthht
+ ohepvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphhhihhlmhgusehlihhnrg
+ hrohdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhg
+X-ME-Proxy: <xmx:Lqd2aPg4fZ-DucngGRjaq0FHgL7mUQ9PWBzMeAx2PKLwGJ0X2G2LkA>
+ <xmx:Lqd2aMMHaTJD9xgEnJlS9yhOr9EgGLKRlljqNTeFP6b-bFkOQCj6cw>
+ <xmx:Lqd2aA7JTz3v9A73_0V2xp8aq9s0svwfnoyjylKbf9Y-zta3mtNkpA>
+ <xmx:Lqd2aK2sSTCpdo8lmhMO2OA4yFMVNS1NO-hd7iEMuddOOVj4nxfZlw>
+ <xmx:Lqd2aCznaWn2s65310zT2V-r4vGKJTbOZ4I4zvkOhHgwRugtK0eu-ttu>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+ id 7087E2CE0071; Tue, 15 Jul 2025 15:08:30 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-ThreadId: Tb0803b803f43f61f
+Date: Tue, 15 Jul 2025 20:08:08 +0100
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: "QEMU devel" <qemu-devel@nongnu.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Message-Id: <632e091b-9af7-4363-8ce6-73cb6bde41b4@app.fastmail.com>
+In-Reply-To: <20240506-mips-smp-v1-0-3cc234786910@flygoat.com>
+References: <20240506-mips-smp-v1-0-3cc234786910@flygoat.com>
+Subject: Re: [PATCH 0/5] hw/mips: Proper multi core support
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 15 Jul 2025 19:06:10 -0000
-From: Jiaxun Yang <1926277@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=Invalid; importance=Undecided;
- assignee=None; 
-X-Launchpad-Bug-Tags: dvpe evpe mips mt
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: flygoat hansni philmd
-X-Launchpad-Bug-Reporter: Hansni Bu (hansni)
-X-Launchpad-Bug-Modifier: Jiaxun Yang (flygoat)
-References: <161951518027.9817.15696784713381088226.malonedeb@soybean.canonical.com>
- <20210427133343.159718-1-f4bug@amsat.org>
-Message-Id: <970fe4bd-e0a0-4488-8db2-a581568bf090@app.fastmail.com>
-Subject: [Bug 1926277] Re: [PATCH v2] target/mips: Only update MVPControl.EVP
- bit if executed by master VPE
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="2d6e9435c2df831e66deb7fcbe9f03f78dd14743";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: 4ce2637f95a22e0a569ca49aa381e6992a92f233
-Received-SPF: pass client-ip=185.125.188.251;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=103.168.172.148;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fout-a5-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -86,156 +104,108 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 1926277 <1926277@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=E5=9C=A82021=E5=B9=B44=E6=9C=8827=E6=97=A5=E5=91=A8=E4=BA=8C =E4=B8=8B=E5=
-=8D=882:33=EF=BC=8CPhilippe Mathieu-Daud=C3=A9=E5=86=99=E9=81=93=EF=BC=9A
-> According to the 'MIPS MT Application-Speci=EF=AC=81c Extension' manual:
->
->   If the VPE executing the instruction is not a Master VPE,
->   with the MVP bit of the VPEConf0 register set, the EVP bit
->   is unchanged by the instruction.
->
-> Modify the DVPE/EVPE opcodes to only update the MVPControl.EVP bit
-> if executed on a master VPE.
->
-> Reported-by: Hansni Bu <https://launchpad.net/%7Ehansni/+contactuser>
-> Buglink: https://bugs.launchpad.net/qemu/+bug/1926277
-> Fixes: f249412c749 ("mips: Add MT halting and waking of VPEs")
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <f4bug@amsat.org>
 
-Confirmed with uarch behaviour.
 
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+=E5=9C=A82024=E5=B9=B45=E6=9C=886=E6=97=A5=E5=91=A8=E4=B8=80 =E4=B8=8B=E5=
+=8D=884:31=EF=BC=8CJiaxun Yang=E5=86=99=E9=81=93=EF=BC=9A
+> Hi all,
+>
+> This series implemented propper multiple core support for MIPS
+> CPS systsm.
+
+Ping :-)
+
+This is a really long outstanding series, I just want to get some
+review before respin.
 
 Thanks
 Jiaxun
 
-
-> ---
-> Supersedes: <20210427103555.112652-1-f4bug@amsat.org>
-> v2: Check VPEConf0.MVP bit (hansni)
-> ---
->  target/mips/cp0_helper.c | 32 ++++++++++++++++++--------------
->  1 file changed, 18 insertions(+), 14 deletions(-)
 >
-> diff --git a/target/mips/cp0_helper.c b/target/mips/cp0_helper.c
-> index aae2af6eccc..d5f274f5cdf 100644
-> --- a/target/mips/cp0_helper.c
-> +++ b/target/mips/cp0_helper.c
-> @@ -1635,12 +1635,14 @@ target_ulong helper_dvpe(CPUMIPSState *env)
->      CPUState *other_cs =3D first_cpu;
->      target_ulong prev =3D env->mvp->CP0_MVPControl;
->=20
-> -    CPU_FOREACH(other_cs) {
-> -        MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
-> -        /* Turn off all VPEs except the one executing the dvpe.  */
-> -        if (&other_cpu->env !=3D env) {
-> -            other_cpu->env.mvp->CP0_MVPControl &=3D ~(1 << CP0MVPCo_EVP);
-> -            mips_vpe_sleep(other_cpu);
-> +    if (env->CP0_VPEConf0 & (1 << CP0VPEC0_MVP)) {
-> +        CPU_FOREACH(other_cs) {
-> +            MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
-> +            /* Turn off all VPEs except the one executing the dvpe.  */
-> +            if (&other_cpu->env !=3D env) {
-> +                other_cpu->env.mvp->CP0_MVPControl &=3D ~(1 << CP0MVPCo_=
-EVP);
-> +                mips_vpe_sleep(other_cpu);
-> +            }
->          }
->      }
->      return prev;
-> @@ -1651,15 +1653,17 @@ target_ulong helper_evpe(CPUMIPSState *env)
->      CPUState *other_cs =3D first_cpu;
->      target_ulong prev =3D env->mvp->CP0_MVPControl;
->=20
-> -    CPU_FOREACH(other_cs) {
-> -        MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
-> +    if (env->CP0_VPEConf0 & (1 << CP0VPEC0_MVP)) {
-> +        CPU_FOREACH(other_cs) {
-> +            MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
->=20
-> -        if (&other_cpu->env !=3D env
-> -            /* If the VPE is WFI, don't disturb its sleep.  */
-> -            && !mips_vpe_is_wfi(other_cpu)) {
-> -            /* Enable the VPE.  */
-> -            other_cpu->env.mvp->CP0_MVPControl |=3D (1 << CP0MVPCo_EVP);
-> -            mips_vpe_wake(other_cpu); /* And wake it up.  */
-> +            if (&other_cpu->env !=3D env
-> +                /* If the VPE is WFI, don't disturb its sleep.  */
-> +                && !mips_vpe_is_wfi(other_cpu)) {
-> +                /* Enable the VPE.  */
-> +                other_cpu->env.mvp->CP0_MVPControl |=3D (1 << CP0MVPCo_E=
-VP);
-> +                mips_vpe_wake(other_cpu); /* And wake it up.  */
-> +            }
->          }
->      }
->      return prev;
+> Previously all CPUs are being implemented as a smt thread in a
+> single core. Now it respects topology supplied in QEMU args.
+>
+> To test:
+> Build a latest kernel with 64r6el_defconfig (tested on 6.6,
+> next-20240506).
+>
+> Then run:
+> ```
+> qemu-system-mips64el -M boston -cpu I6500 -kernel ~/linux-next/vmlinux=20
+> -smp 4,cores=3D2,threads=3D2 -append "console=3DttyS0,115200" -nograph=
+ic
+> ```
+> In dmesg of guest kernel:
+> ```
+> [    0.000000] VP topology {2,2} total 4
+> ...
+> [    0.085190] smp: Bringing up secondary CPUs ...
+> [    0.090219] Primary instruction cache 64kB, VIPT, 4-way, linesize 6=
+4=20
+> bytes.
+> [    0.095461] Primary data cache 64kB, 4-way, PIPT, no aliases,=20
+> linesize 64 bytes
+> [    0.096658] CPU1 revision is: 0001b000 (MIPS I6500)
+> [    0.096718] FPU revision is: 20f30300
+> [    0.124711] Synchronize counters for CPU 1: done.
+> [    0.940979] Primary instruction cache 64kB, VIPT, 4-way, linesize 6=
+4=20
+> bytes.
+> [    0.941041] Primary data cache 64kB, 4-way, PIPT, no aliases,=20
+> linesize 64 bytes
+> [    0.941256] CPU2 revision is: 0001b000 (MIPS I6500)
+> [    0.941289] FPU revision is: 20f30300
+> [    0.965322] Synchronize counters for CPU 2: done.
+> [    1.260937] Primary instruction cache 64kB, VIPT, 4-way, linesize 6=
+4=20
+> bytes.
+> [    1.261001] Primary data cache 64kB, 4-way, PIPT, no aliases,=20
+> linesize 64 bytes
+> [    1.261172] CPU3 revision is: 0001b000 (MIPS I6500)
+> [    1.261209] FPU revision is: 20f30300
+> [    1.285390] Synchronize counters for CPU 3: done.
+> [    1.346985] smp: Brought up 1 node, 4 CPUs
+> ```
+>
+> Please review.
+>
+> Thanks
+>
+> To: qemu-devel@nongnu.org
+> Cc: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+> Jiaxun Yang (5):
+>       target/mips: Make globalnumber a CPU property
+>       hw/msic/mips_cmgcr: Implement multicore functions
+>       hw/msic/mips_cpc: Implement multi core support
+>       hw/mips/cps: Implement multi core support
+>       hw/mips/boston: Implement multi core support
+>
+>  hw/mips/boston.c             |  37 +++++++++-
+>  hw/mips/cps.c                |  66 ++++++++++-------
+>  hw/misc/mips_cmgcr.c         | 168 ++++++++++++++++++++++++++++++++++=
++--------
+>  hw/misc/mips_cpc.c           |  97 ++++++++++++++++++-------
+>  include/hw/mips/cps.h        |   1 +
+>  include/hw/misc/mips_cmgcr.h |  87 +++++++++++++++++++---
+>  include/hw/misc/mips_cpc.h   |  15 +++-
+>  target/mips/cpu.c            |  16 ++++-
+>  target/mips/cpu.h            |  10 ++-
+>  target/mips/sysemu/machine.c |   5 +-
+>  10 files changed, 403 insertions(+), 99 deletions(-)
+> ---
+> base-commit: 248f6f62df073a3b4158fd0093863ab885feabb5
+> change-id: 20240506-mips-smp-9af9e71ad8c2
+>
+> Best regards,
 > --=20
-> 2.26.3
+> Jiaxun Yang <jiaxun.yang@flygoat.com>
 
 --=20
 - Jiaxun
-
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/1926277
-
-Title:
-  MIPS MT dvpe does not regard VPEConf0.MVP
-
-Status in QEMU:
-  Invalid
-
-Bug description:
-  Hi,
-
-  According to MIPS32=C2=AE Architecture for Programmers VolumeIV-f: The
-  MIPS=C2=AE MT Application-Speci=EF=AC=81c Extension to the MIPS32=C2=AE A=
-rchitecture,
-  for instruction: dvpe, evpe:
-
-  If the VPE executing the instruction is not a Master VPE, with the MVP
-  bit of the VPEConf0 register set, the EVP bit is unchanged by the
-  instruction.
-
-  The pseudo code is:
-
-  data =E2=86=90  MVPControl
-  GPR[rt] =E2=86=90  data
-  if(VPEConf0.MVP =3D 1) then
-    MVPControl.EVP =E2=86=90  sc
-  endif
-
-  However the helper functions of dvpe, evpe does not regard the
-  VPEConf0.MVP bit, namely, it does not check if the VPE is a master
-  VPE. Code is copied below as:
-
-  target_ulong helper_dvpe(CPUMIPSState *env)
-  {
-      CPUState *other_cs =3D first_cpu;
-      target_ulong prev =3D env->mvp->CP0_MVPControl;
-
-      CPU_FOREACH(other_cs) {
-          MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
-          /* Turn off all VPEs except the one executing the dvpe.  */
-          if (&other_cpu->env !=3D env) {
-              other_cpu->env.mvp->CP0_MVPControl &=3D ~(1 << CP0MVPCo_EVP);
-              mips_vpe_sleep(other_cpu);
-          }
-      }
-      return prev;
-  }
-
-  Is this a bug?
-
-  QEMU head commit: 0cef06d18762374c94eb4d511717a4735d668a24 is checked.
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/1926277/+subscriptions
-
 
