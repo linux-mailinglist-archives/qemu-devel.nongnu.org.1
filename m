@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF66B06191
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 16:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4822FB061D5
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 16:51:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubgs2-0004Vs-Ig; Tue, 15 Jul 2025 10:43:02 -0400
+	id 1ubgzY-0004QR-TY; Tue, 15 Jul 2025 10:50:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubgDb-0008U3-L8
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:01:21 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubgKH-00051X-De
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:08:09 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubgDZ-0004JK-Cm
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:01:15 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3a522224582so2798211f8f.3
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 07:01:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubgKF-0006ax-36
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:08:09 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-32b3b250621so48132941fa.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 07:08:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752588070; x=1753192870; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752588484; x=1753193284; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kTH2R2emY9oOZylCpjFlFocpeep/S4agDx3DNsL1BWQ=;
- b=jjTJFColD7ZeNaXoe82nTlpGmf15pNIaTOCXeAG+ViQDCNMaecC5ofzKgKa7cHqxe+
- X29golss0xghi5R9mys98sfqSv712xqu/dftzI2xjoV2HpucEZwewQq+cJkysLL4REd9
- 58iOPGJ1tgkTpeLhKLOURbScrpg0ERXiJxTxoSctR508idtU6/Woj+bSHtKh/QiJXNKE
- K7Ac1tUzF9DXwfgdKMZ30MTk7rChe5cL9cr+LDO+LGuRVMOxOH3M0Hdrt++MWRNTBmKa
- wBBCBIdDdfsv2XpkN+TYU9W/QwUrojC3hJreRpHRDTS9gA3g2t22Mmb6huI1IiKOQcwt
- 18cQ==
+ bh=HlnnQVYR7UDi9FQuqtljHTy9JqrOVxDZXhuwIJFwMtU=;
+ b=ml6ULte8F7aZwGayKUB+gb20Y+q7eifa0igpUCrooCrmnhgrehecjD5cBfZ8lnzg+F
+ YBhMNcqwwPYevfflsJI6DEGCBlDACyQH61q3PxLE3aZQqKNQm3f5MEcDUkKdunPwuS3R
+ EUy3mWmSLd02+K8iZFJEUpaiLvFAs+0TZVVgy2gwOAvqSuytkWtU+TF5E0ey0ucY+Uru
+ v1FpEfY4qQxSlhcxTj0nplo7JdDN3/iG2U6G85wSBaWqObAq1pHEPLoThVGlN/Jv/ITP
+ xxbvqOwNX26lJKm5JwpnXNEkbIY6yd6sOQ+G5SviG1e75U6NIWsY4EG8fZO3ewi/pQfH
+ vYhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752588070; x=1753192870;
+ d=1e100.net; s=20230601; t=1752588484; x=1753193284;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kTH2R2emY9oOZylCpjFlFocpeep/S4agDx3DNsL1BWQ=;
- b=VY+cHnvjJCmHvqgdfaPhkT3uKsSdMXI5t5qfXcKVuJeqstsaq2HGEZtMoTvrfb2hoc
- 2zraJ97GF5LoHNVy0tz/lxZg27rJ+1R++EkcvYiuSdrJb4IcVlLCn3ovYEz2tI4k+88H
- Wxq9NHF6+Vj9/NYwRctMVABsfSRUWzYWRYAUVzzQvtmxSNlLjT1wsIDe6k6cvBhvrlhf
- bWUAyX95z+i7KLGHKTC1Rf4xPJ4ymigegh+LGGLwD1vDlUWZZltzfHGNNK+s53dToBaG
- 1hHuyM6W4CJPQUNQsA0yyQYrDdsak8RtYbU1OGriyQPxrBmLtxziPR+d1nZv92iV4XTd
- a3fA==
-X-Gm-Message-State: AOJu0YwAeIVi0FMAZYj+dczhUc11ZiADa9CW0iy9BtviHVDvF3WvZA7s
- cCO/gPjaZv6KQI++G+ix/PL9m1MsAxjb0s+T1jMQK6ISPjTXbloMC4t23cK6ynLEwFCefGsT6YB
- BUMCw
-X-Gm-Gg: ASbGncsQnRCtrMf290Az/DF6ptHiqOnHwdqDThrjWZhLrgpyHlVzLWd6u81xZyVa6o/
- w3HsQCI972ZqU6ayHTSeQukkIofEnVKfYBMzAA1PUWrTjywtCJU+jHSvJFcRfvnf4HZQCY+EV/o
- Br7gL9unjzmWPQ1S14dXn/OApO6cqh6+EjcVSL72b80FL3qhHXW/2IASnlc0w8og88NzNk0KU1X
- N4N8nzZrjAPWW/pZcDvw1uPmZJsY1aZzDpegRdh/IaiI8M/+kRpzWcfOGOUnJy95FHhLbZBqdjH
- wgTJPGRUcAdzNlFsdh+4KOeKvggVVWCc//6DsUvRMlnHjKbbQOzfED01XcI+TC52DYrSetKe7MW
- U1Yh2E7ypUBk9R+zJlKCT43SIvZfId+K7xYhnke7dujZauMsvCuvcaN3ZdyJuHtCrP4EiwpaUBg
- 7K9g==
-X-Google-Smtp-Source: AGHT+IEdg5iTlyBNsqZZR/W2Y8EdD+BQWLrITiy3Mp8zJFW8F7a9UR1M1kn+ARiSurxEBq2MdpgbwA==
-X-Received: by 2002:a05:6000:20c4:b0:3b5:f93a:bcc with SMTP id
- ffacd0b85a97d-3b5f93a0e5emr7690050f8f.35.1752588067928; 
- Tue, 15 Jul 2025 07:01:07 -0700 (PDT)
+ bh=HlnnQVYR7UDi9FQuqtljHTy9JqrOVxDZXhuwIJFwMtU=;
+ b=Bwt9ebw0kMLXS9Sque4C3z3TwDUVZRZNf8gqETOAcetFm4w49gCxkpnvJAhF+dm6UB
+ mAGSLEAxMrR9XM2H9bL2ff72rvp8aDy4EltWkFl2iCUf/hsjvSsWgj7ThbLOrmkKFgo7
+ e5LM7uzn906ryB3o8lI2eCMKZtiAftEOu/D+n6kO/DPGs8ZO3NUz/HSylhA88ePiOgCv
+ 2PnG4vuSyKgpD9a57tcJruBK/93IrYRToa3K40JxYv39kbaJj3zKGFgp4NcGDRQKLMlZ
+ ofV8VwUkeR4WOdZWnb7bkZDnliawSxM3WX8oL7FAawfQf6hczQB9pm1pL6lMKtXCG10G
+ 8EgQ==
+X-Gm-Message-State: AOJu0YzCjSpxbBBR0iezyCZ/CU2vZ7Kl4FbvI11f+ribfcxbwcba5Voo
+ 7KUf2U5y/MutyxXZ/f5SyPJjFsQfsuPcYdcMwHXw8Odu6u9USJoKBXWHOYZynFGpwyHxTyAICx9
+ gXWSx
+X-Gm-Gg: ASbGncvohMwyJMM4I5WcRiAXvSg5Fuw3tIl54dXG54uksbQWHhYS0A3areoknoYADYz
+ tgYz6H5azMsEvviCo2+42AzWBRz1wDGpzkC2Unxt0+rgADujedho0w5wVLhxd/DzH4mBQwlw49g
+ npUwwN8pGdGpo9zktvI/SLE/v7VQiy34fUePnX6wdZ3dtcaTz1+4b8wCjvQbb0ZQw2HCcvD9AXm
+ UOSsBT1V7nN0ARAWeu4a0EZ6p1RJxxznPR/B5S49HUqQnL3El1UUA3GT4dhvQXaSJzqFEHui9uM
+ d/fDgb6PjihQ46E6E239tGHctEM8hSKTlZuMtHYFlPB4K+FzFa7WiPc80DDjcE25hgMgU2QS1rB
+ fQyH5yGGVJN/527SyrRlt8ot+ShwHaKU1fWS+Z7CBvSUWtgB9nfSu8DNb/MrBKPVCZHHPlht/hl
+ jflg==
+X-Google-Smtp-Source: AGHT+IET6AfPGQspy2YEf5sBC8PEdvdIjXjuOuvGFQU5KEacnAemZCPR5Fs5Vaej4m347Jl0Uoo2Mg==
+X-Received: by 2002:a05:600c:5187:b0:456:1c44:441f with SMTP id
+ 5b1f17b1804b1-4562771c272mr29894655e9.31.1752588074914; 
+ Tue, 15 Jul 2025 07:01:14 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454dd43906dsm164603535e9.3.2025.07.15.07.01.06
+ 5b1f17b1804b1-454dd537785sm165175635e9.23.2025.07.15.07.01.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Jul 2025 07:01:07 -0700 (PDT)
+ Tue, 15 Jul 2025 07:01:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
@@ -75,19 +75,19 @@ Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Mads Ynddal <mads@ynddal.dk>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH-for-10.1 v6 3/8] accel/system: Introduce @x-accel-stats QMP
- command
-Date: Tue, 15 Jul 2025 16:00:43 +0200
-Message-ID: <20250715140048.84942-4-philmd@linaro.org>
+ Mads Ynddal <mads@ynddal.dk>
+Subject: [PATCH-for-10.1 v6 4/8] accel/system: Add 'info accel' on human
+ monitor
+Date: Tue, 15 Jul 2025 16:00:44 +0200
+Message-ID: <20250715140048.84942-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250715140048.84942-1-philmd@linaro.org>
 References: <20250715140048.84942-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,140 +110,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unstable QMP 'x-accel-stats' dispatches to the
-AccelOpsClass::get_stats() and get_vcpu_stats() handlers.
+'info accel' dispatches to the AccelOpsClass::get_stats()
+and get_vcpu_stats() handlers.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- qapi/accelerator.json         | 17 +++++++++++++++++
- include/accel/accel-cpu-ops.h |  3 +++
- include/accel/accel-ops.h     |  2 ++
- accel/accel-qmp.c             | 35 +++++++++++++++++++++++++++++++++++
- accel/accel-system.c          |  1 +
- accel/meson.build             |  2 +-
- 6 files changed, 59 insertions(+), 1 deletion(-)
- create mode 100644 accel/accel-qmp.c
+ accel/accel-system.c |  8 ++++++++
+ hmp-commands-info.hx | 12 ++++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/qapi/accelerator.json b/qapi/accelerator.json
-index d55fe1aa0a3..6029e7307a7 100644
---- a/qapi/accelerator.json
-+++ b/qapi/accelerator.json
-@@ -37,3 +37,20 @@
- #     <- { "return": { "enabled": true, "present": true } }
- ##
- { 'command': 'query-kvm', 'returns': 'KvmInfo' }
-+
-+##
-+# @x-accel-stats:
-+#
-+# Query accelerator statistics
-+#
-+# Features:
-+#
-+# @unstable: This command is meant for debugging.
-+#
-+# Returns: accelerator statistics
-+#
-+# Since: 10.1
-+##
-+{ 'command': 'x-accel-stats',
-+  'returns': 'HumanReadableText',
-+  'features': [ 'unstable' ] }
-diff --git a/include/accel/accel-cpu-ops.h b/include/accel/accel-cpu-ops.h
-index a9191dded7e..0674764914f 100644
---- a/include/accel/accel-cpu-ops.h
-+++ b/include/accel/accel-cpu-ops.h
-@@ -65,6 +65,9 @@ struct AccelOpsClass {
-     /* handle_interrupt is mandatory. */
-     void (*handle_interrupt)(CPUState *cpu, int mask);
- 
-+    /* get_vcpu_stats: Append statistics of this @cpu to @buf */
-+    void (*get_vcpu_stats)(CPUState *cpu, GString *buf);
-+
-     /**
-      * @get_virtual_clock: fetch virtual clock
-      * @set_virtual_clock: set virtual clock
-diff --git a/include/accel/accel-ops.h b/include/accel/accel-ops.h
-index 86a27c30fa4..23a8c246e15 100644
---- a/include/accel/accel-ops.h
-+++ b/include/accel/accel-ops.h
-@@ -25,6 +25,8 @@ struct AccelClass {
-     int (*init_machine)(AccelState *as, MachineState *ms);
-     bool (*cpu_common_realize)(CPUState *cpu, Error **errp);
-     void (*cpu_common_unrealize)(CPUState *cpu);
-+    /* get_stats: Append statistics to @buf */
-+    void (*get_stats)(AccelState *as, GString *buf);
- 
-     /* system related hooks */
-     void (*setup_post)(AccelState *as);
-diff --git a/accel/accel-qmp.c b/accel/accel-qmp.c
-new file mode 100644
-index 00000000000..5fb70c6631f
---- /dev/null
-+++ b/accel/accel-qmp.c
-@@ -0,0 +1,35 @@
-+/*
-+ * QMP commands related to accelerators
-+ *
-+ * Copyright (c) Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/accel.h"
-+#include "qapi/type-helpers.h"
-+#include "qapi/qapi-commands-accelerator.h"
-+#include "accel/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
-+#include "hw/core/cpu.h"
-+
-+HumanReadableText *qmp_x_accel_stats(Error **errp)
-+{
-+    AccelState *accel = current_accel();
-+    AccelClass *acc = ACCEL_GET_CLASS(accel);
-+    g_autoptr(GString) buf = g_string_new("");
-+
-+    if (acc->get_stats) {
-+        acc->get_stats(accel, buf);
-+    }
-+    if (acc->ops->get_vcpu_stats) {
-+        CPUState *cpu;
-+
-+        CPU_FOREACH(cpu) {
-+            acc->ops->get_vcpu_stats(cpu, buf);
-+        }
-+    }
-+
-+    return human_readable_text_from_str(buf);
-+}
 diff --git a/accel/accel-system.c b/accel/accel-system.c
-index 8df561b9539..76cf4e7ef7a 100644
+index 76cf4e7ef7a..1e97c64fdca 100644
 --- a/accel/accel-system.c
 +++ b/accel/accel-system.c
-@@ -26,6 +26,7 @@
+@@ -25,6 +25,8 @@
+ 
  #include "qemu/osdep.h"
  #include "qemu/accel.h"
++#include "qapi/qapi-commands-accelerator.h"
++#include "monitor/monitor.h"
  #include "hw/boards.h"
-+#include "hw/core/cpu.h"
+ #include "hw/core/cpu.h"
  #include "accel/accel-ops.h"
- #include "accel/accel-cpu-ops.h"
- #include "system/cpus.h"
-diff --git a/accel/meson.build b/accel/meson.build
-index 52909314bfa..25b0f100b51 100644
---- a/accel/meson.build
-+++ b/accel/meson.build
-@@ -1,6 +1,6 @@
- common_ss.add(files('accel-common.c'))
- specific_ss.add(files('accel-target.c'))
--system_ss.add(files('accel-system.c', 'accel-blocker.c'))
-+system_ss.add(files('accel-system.c', 'accel-blocker.c', 'accel-qmp.c'))
- user_ss.add(files('accel-user.c'))
+@@ -103,11 +105,17 @@ void accel_init_ops_interfaces(AccelClass *ac)
+     cpus_register_accel(ops);
+ }
  
- subdir('tcg')
++static void accel_ops_class_init(ObjectClass *oc, const void *data)
++{
++    monitor_register_hmp_info_hrt("accel", qmp_x_accel_stats);
++}
++
+ static const TypeInfo accel_ops_type_info = {
+     .name = TYPE_ACCEL_OPS,
+     .parent = TYPE_OBJECT,
+     .abstract = true,
+     .class_size = sizeof(AccelOpsClass),
++    .class_init = accel_ops_class_init,
+ };
+ 
+ static void accel_system_register_types(void)
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index d7979222752..6142f60e7b1 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -267,6 +267,18 @@ ERST
+         .cmd        = hmp_info_sync_profile,
+     },
+ 
++    {
++        .name       = "accel",
++        .args_type  = "",
++        .params     = "",
++        .help       = "show accelerator info",
++    },
++
++SRST
++  ``info accel``
++    Show accelerator info.
++ERST
++
+ SRST
+   ``info sync-profile [-m|-n]`` [*max*]
+     Show synchronization profiling info, up to *max* entries (default: 10),
 -- 
 2.49.0
 
