@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E86B064B8
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 18:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9C7B064BD
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 18:57:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubiwO-0002fN-Ck; Tue, 15 Jul 2025 12:55:41 -0400
+	id 1ubixu-0005N7-0D; Tue, 15 Jul 2025 12:57:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubieg-0006do-HP
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:37:22 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubieh-0006gu-US
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:37:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubied-0003Wx-Rg
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:37:21 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubieg-0003Yw-6e
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:37:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752597439;
+ s=mimecast20190719; t=1752597440;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4LYSA3StRAaAOjegddXO+y32/uop+q8AdhLwkM8tozI=;
- b=bZaCvelKFRPKAhxSN8MV+JbnxDrCoyVvsp99T0cdJaPnLJqt5HbkvhH/ZUEyBBiaHbc0ys
- aqI3BsJUCrnrlahxedhUH0ByZiBV0egt6lv+lVi0GoXR2a1688PyEZP3BLHKFfPY/GSbZU
- vjfSgk8OfKeqBJsY31xZtvPzat6mQW4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Xt2S0+xHW7NhGnqmYKqDMv8+0n5cOBqFu33T0qJRTZs=;
+ b=Hs4Wn3/IA27YHeTg8yB2Ic0O1bWBbjN5ZUYM9ph2UeNa9+6QdlUuHsk9bge+8ijPi6WCm6
+ +iZetG0jw/1UTtlQCxmxI5VTNUOLBfC0VY2UuNkFNURCABGDGvVTkCTdTDmzFbs7ikYCBR
+ q8itxaXrM9bYxH99X8/Xcej3wTwxKTg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-s4rWgXwwP6SDirrrIgGz4Q-1; Tue,
- 15 Jul 2025 12:37:16 -0400
-X-MC-Unique: s4rWgXwwP6SDirrrIgGz4Q-1
-X-Mimecast-MFC-AGG-ID: s4rWgXwwP6SDirrrIgGz4Q_1752597435
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-376-qsbTqvtUMomEXF_7ZmzbSw-1; Tue,
+ 15 Jul 2025 12:37:19 -0400
+X-MC-Unique: qsbTqvtUMomEXF_7ZmzbSw-1
+X-Mimecast-MFC-AGG-ID: qsbTqvtUMomEXF_7ZmzbSw_1752597438
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6F07B18001F7; Tue, 15 Jul 2025 16:37:15 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 354E4195608C; Tue, 15 Jul 2025 16:37:18 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.160])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 888BF3000198; Tue, 15 Jul 2025 16:37:13 +0000 (UTC)
+ id 109F130001A1; Tue, 15 Jul 2025 16:37:15 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  John Levon <john.levon@nutanix.com>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 1/7] =?UTF-8?q?hw/vfio-user:=20add=20C=C3=A9dric=20Le=20Goa?=
- =?UTF-8?q?ter=20as=20a=20maintainer?=
-Date: Tue, 15 Jul 2025 18:36:57 +0200
-Message-ID: <20250715163703.243975-2-clg@redhat.com>
+Subject: [PULL 2/7] hw/vfio: fix region fd initialization
+Date: Tue, 15 Jul 2025 18:36:58 +0200
+Message-ID: <20250715163703.243975-3-clg@redhat.com>
 In-Reply-To: <20250715163703.243975-1-clg@redhat.com>
 References: <20250715163703.243975-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,26 +85,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Levon <john.levon@nutanix.com>
 
+We were not initializing the region fd array to -1, so we would
+accidentally try to close(0) on cleanup for any region that is not
+referenced.
+
+Fixes: 95cdb024 ("vfio: add region info cache")
 Signed-off-by: John Levon <john.levon@nutanix.com>
-Acked-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Link: https://lore.kernel.org/qemu-devel/20250715115954.515819-2-john.levon@nutanix.com
+Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250715115954.515819-3-john.levon@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ hw/vfio/device.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e88ed2c0a974122fffce8ee636d4f48e2dacf7ba..30e9b71e6e23e93a53a0d3d175cafe8df0397561 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4287,6 +4287,7 @@ F: tests/functional/test_multiprocess.py
- VFIO-USER:
- M: John Levon <john.levon@nutanix.com>
- M: Thanos Makatos <thanos.makatos@nutanix.com>
-+M: Cédric Le Goater <clg@redhat.com>
- S: Supported
- F: docs/interop/vfio-user.rst
- F: docs/system/devices/vfio-user.rst
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index 96cf21462cb10f9ebaf1bda54fed13a95b79f223..52a1996dc4e122499a978cc8a5ce7e01620a9639 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -463,6 +463,8 @@ void vfio_device_detach(VFIODevice *vbasedev)
+ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
+                          struct vfio_device_info *info)
+ {
++    int i;
++
+     vbasedev->num_irqs = info->num_irqs;
+     vbasedev->num_regions = info->num_regions;
+     vbasedev->flags = info->flags;
+@@ -477,6 +479,9 @@ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
+                                vbasedev->num_regions);
+     if (vbasedev->use_region_fds) {
+         vbasedev->region_fds = g_new0(int, vbasedev->num_regions);
++        for (i = 0; i < vbasedev->num_regions; i++) {
++            vbasedev->region_fds[i] = -1;
++        }
+     }
+ }
+ 
+@@ -489,7 +494,6 @@ void vfio_device_unprepare(VFIODevice *vbasedev)
+         if (vbasedev->region_fds != NULL && vbasedev->region_fds[i] != -1) {
+             close(vbasedev->region_fds[i]);
+         }
+-
+     }
+ 
+     g_clear_pointer(&vbasedev->reginfo, g_free);
 -- 
 2.50.1
 
