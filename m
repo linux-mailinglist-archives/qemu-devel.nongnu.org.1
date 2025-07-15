@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970F1B055E1
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 11:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7084AB055D8
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 11:07:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubbcb-0006g8-6Q; Tue, 15 Jul 2025 05:06:45 -0400
+	id 1ubbcc-0006gY-D5; Tue, 15 Jul 2025 05:06:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubbcU-0006e9-Gb
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:06:38 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubbcW-0006ee-8u
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:06:40 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubbcO-0005so-1I
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:06:35 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-45629703011so1740535e9.0
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 02:06:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubbcQ-0005t4-MU
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:06:39 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4561514c7f0so17470515e9.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 02:06:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752570386; x=1753175186; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Q0JmIIovkuZ2UkZH/Ms+o9LN+k8Vqh/ex9KD+yCD7TE=;
- b=r7t6mQlC4jQO147nX3iPwD0jH+S1vyWo6NW8vxwWO+yV4BbyHB2EhE1kdHaa8bMZae
- B0BBy5gNWSFjJSwEqjM+yGLtI0jYKWc+BhUMYTg6Awt+IuJGEgrvVZdkIJ36iwnazmLi
- sjq4u10zr5rWi8FS5m86R2vp4RVHFIsgvZfRAsRNz5wYUo9zqfkCalNSLa3Z6UBbT6rK
- uZax/x61nWQbEUQZhH6oEWD7ZCb4Z/k14OzptWugBij8Cbpp19RtESM3GEF2nBb19hWt
- qRBDf3LdEJFdE19VkDEOXser1mHQE243WQXLP9aX0KGtdmlLFlfECEu6vYrVjQ4Po0SB
- xg5w==
+ d=linaro.org; s=google; t=1752570391; x=1753175191; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zhBy/4ghzdrQ703StLbYqMKbdncodWy2li2u96R/420=;
+ b=gltYrOeAX3s4KdW4CJasjuGqD9dvzXz6PvkthIuSoVUmAK044jfa5fN7n3N01ATonW
+ 938ejI2huQZv5kCi1LaHHxBOO9ppFbJp5FtH9EQwUM+3IBpHLzFLBYQSiOzRXtu+wKfG
+ 0hwWz6arMrWrkNGcwAMJl3tiZpq3+rzqhTx7nxg+LLrH3D5IydOn6BbxFDHUta7RLnGz
+ 4UL6Mnec/YzafBW1DqZ/bLy1eGMgKnmcayDPIbtNvLbOzLvBVROJOzlLhQVIShU4aQUv
+ 58/8PD5VaxgR+EtPWexvAWh625/T8YrG+11pMsTRHt9VMod+DoweH7mVsIryN1CQ8xM7
+ vrTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752570386; x=1753175186;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Q0JmIIovkuZ2UkZH/Ms+o9LN+k8Vqh/ex9KD+yCD7TE=;
- b=uHYNKYBWNA0hTSPJP1JK+P0IvWzXHnqnfjQXxRKEbvrDcor85S/r+8gc60gW7v4Egq
- 0T0VSyG7tfstQO9BXc+a/MpwqHJWoeedQnfQMnvWKSMTr9NUPFc7+vXpm6W8csMTz7+n
- sKbtJkV3o+sv0gywPzX9Y5DMongTTKEo1Yc8JJrb+7IDrWiNxylLmhkFEoqXOudG7YbP
- wjc7kHW0s08WQfcCH1FzbW9IPLGW+SAUpZ/cz3d1m3sjuAhYWqxBqGiesW/xVDm2PRFC
- 55HJSbeZIkHWqSpUXNNjcLLtwGy3FBFaKKOfV8QvXlL4iPZ9AJSsaJmeDjniD+2Iul9/
- 948A==
-X-Gm-Message-State: AOJu0Yz8hOYq7nhiyhGC67yn185PLOy9K/lz5IIZsUfGdMK9pYKv68Po
- eLnAS1VHyW0wMeHDi5tTK6bQ0J4us//Hht7Dc4yLFwWfQotM/2SKPDE9TMVD7ZY7BYsLzQ15H0s
- ye54b
-X-Gm-Gg: ASbGncvI4xAZsfM8m9/4Pw1GHs5pTBIXGebucj20ZDgz6fsI/WCZF0rAwNJ4JGo0Qv4
- TAS38zeUU/CgqWdxkp2F+QqpRiBRbLWmKmuhV+QAcIWkoTBRJnNU04++nOAylo7N3Rn24IJd2R5
- xBpo7Nqy3JdiCftHQtwYUNk4McACwJPvSlHhNFwIQbCT+DIgQDgi+m01iDthQ+3vnTTRXwAI5oP
- lBTD1Skp2ieveignk3MkkCJFbjPQJEHsU8CJNeTfjJT1ICJEAm9Yb7ynMuCdTSJpq/fujtzvl6F
- Lee+vFiBVXdd8OQVmkiOciy15TFPXlRF130v4vd48Z6I5dMq5tXTG3pQpdZL/+5WPRsFm81AV6o
- w0qWEBe1JstkcYbDChAcpSPr5IcjfYP4i8O4iNeD6sGVkeHYHiXTf3h1PSjkFxGX97o2XjMQu+N
- mlqA==
-X-Google-Smtp-Source: AGHT+IEpfCkWGgKbmLtq/ObOlz/J/TJJQh0KUV7K0IW/mkE50VRhU/oNmuN1weWM0hDqHqnRaWsM8g==
-X-Received: by 2002:a05:600c:46d5:b0:43c:fe90:1282 with SMTP id
- 5b1f17b1804b1-4555f895b83mr116957685e9.7.1752570386548; 
- Tue, 15 Jul 2025 02:06:26 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752570391; x=1753175191;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zhBy/4ghzdrQ703StLbYqMKbdncodWy2li2u96R/420=;
+ b=cIbJn0kloV3d83ksto1VK+dmPr37+e+Kl7r2nWhpNwVpL7vZfzZMYshxrysLLSnfOV
+ oG58+9cFTfmDb9C3bBv1YzdD6IuxnLwP6Ir8X1dwMJb5G4/fr78kmubtsfXRb/BHPCeu
+ pPyQf2lr/2JPpfdyaoZ4R0K7cZladMocpxpkygu50C0xIIrQSuchtvzmQN4W4Bta3Yzh
+ meLaNq5XN7lLLxax6pSLorwtUuBj/eT30s+i5rjBxRpHLEQFXjZE0B1bwV45sao64djN
+ fI318OFeiUN4pmHDBIv8sudRJJScEOlwg1PK+05S03IqP3HhZA1v0Yp7pjx0Uav3UXtS
+ yL4w==
+X-Gm-Message-State: AOJu0YwJqcs8SdCW0Ckr7r54zuyzg9MXBFluBvn+Uh+N+cLnrDFPui8Y
+ wxpeDWLR2vlHLbMfELv0G29aFZnonSvToT9lYdtzvnqRCL7m3C/KxGBYN8huDLg9WKCGm3i5EsM
+ TjPCO
+X-Gm-Gg: ASbGncuSSWtMmOLWtJ1e994AtvzHTjmjk7YNi0CRW9o9gGXHwRpHI/tUAJlOQq7Z2iF
+ r/B7KYesLWKUp0l+u2vjBRBWdNiL8i6q/T33pNU7IJCjyDPplerbkpq8k2rwtOZ223h9zgAljGG
+ o2d97W/bYjHOtr/xcQBvnRVAls5D6vEEWFjLML64qhxTuqYnIBvM5BOcohiPF2D8l8/ex8+c459
+ fqzQQfdz639DGpRjE/a+qeUjF6uvNhwSGzH4LUqy2fJ4z1Wl3HkaidWppU1avkChIaPvn7/ZoTL
+ gDHSiAeUHpO0Omo4VUCZw6GawOdgOxrvlRyFG7635VB0KYb1GFIimyzAiLFE+pwB+BMsSUeO3to
+ TtgAXTWWTGEqQrEvKJjfZ98hHGsEvuZZTwd8XNvJPz6cOZVa0RVymL+FOTtm5FTJLFpPbRAgGzG
+ 1eRQ==
+X-Google-Smtp-Source: AGHT+IGll0D0e+/kM74h6la/a99t+T3M14QB1SLlRaKPJ1Oxr45tWdR/JpdbVl/o02g4dLweJPy9ag==
+X-Received: by 2002:a05:600c:4684:b0:453:5fde:fb5b with SMTP id
+ 5b1f17b1804b1-454f4255f4dmr148259215e9.19.1752570391473; 
+ Tue, 15 Jul 2025 02:06:31 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4560c50b7b4sm93998325e9.25.2025.07.15.02.06.25
+ 5b1f17b1804b1-456278a4460sm10121405e9.1.2025.07.15.02.06.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Jul 2025 02:06:26 -0700 (PDT)
+ Tue, 15 Jul 2025 02:06:30 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -68,17 +69,20 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH-for-10.1 v7 0/2] hw/core/machine: Display CPU model name in
- 'info cpus' command
-Date: Tue, 15 Jul 2025 11:06:22 +0200
-Message-ID: <20250715090624.52377-1-philmd@linaro.org>
+ Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH-for-10.1 v7 1/2] qapi/machine: Add @qom-type field to
+ CpuInfoFast structure
+Date: Tue, 15 Jul 2025 11:06:23 +0200
+Message-ID: <20250715090624.52377-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250715090624.52377-1-philmd@linaro.org>
+References: <20250715090624.52377-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,22 +105,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v6 [*]:
-- Expose QOM type name on QMP (instead of model name)
+Knowing the QOM type name of a CPU can be useful,
+in particular to infer its model name.
 
-(R-b tags kept)
-
-[*] https://lore.kernel.org/qemu-devel/20250703173248.44995-2-philmd@linaro.org/
-
-Philippe Mathieu-Daudé (2):
-  qapi/machine: Add @qom-type field to CpuInfoFast structure
-  hw/core/machine: Display CPU model name in 'info cpus' command
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
  qapi/machine.json          | 3 +++
- hw/core/machine-hmp-cmds.c | 4 +++-
  hw/core/machine-qmp-cmds.c | 1 +
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ 2 files changed, 4 insertions(+)
 
+diff --git a/qapi/machine.json b/qapi/machine.json
+index f712e7da6d6..a3f6fcec4d3 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -76,6 +76,8 @@
+ #
+ # @cpu-index: index of the virtual CPU
+ #
++# @qom-type: QOM type name of the CPU (since 10.1)
++#
+ # @qom-path: path to the CPU object in the QOM tree
+ #
+ # @thread-id: ID of the underlying host thread
+@@ -89,6 +91,7 @@
+ ##
+ { 'union'         : 'CpuInfoFast',
+   'base'          : { 'cpu-index'    : 'int',
++                      'qom-type'     : 'str',
+                       'qom-path'     : 'str',
+                       'thread-id'    : 'int',
+                       '*props'       : 'CpuInstanceProperties',
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index d82043e1c68..5655bfcfee4 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -47,6 +47,7 @@ CpuInfoFastList *qmp_query_cpus_fast(Error **errp)
+         value->cpu_index = cpu->cpu_index;
+         value->qom_path = object_get_canonical_path(OBJECT(cpu));
+         value->thread_id = cpu->thread_id;
++        value->qom_type = g_strdup(object_get_typename(OBJECT(cpu)));
+ 
+         if (mc->cpu_index_to_instance_props) {
+             CpuInstanceProperties *props;
 -- 
 2.49.0
 
