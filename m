@@ -2,142 +2,202 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1FC6B05149
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 07:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C66CB0514A
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 07:54:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubYbB-0004IP-FU; Tue, 15 Jul 2025 01:53:07 -0400
+	id 1ubYbT-0004Z5-By; Tue, 15 Jul 2025 01:53:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubYaz-0004Eu-Mv
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 01:52:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1ubYbM-0004S5-6G
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 01:53:17 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubYaw-0005gJ-W9
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 01:52:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752558770;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=pnNc1URRzn2V1cZZTOxV0Y823iKjSkXvDR7vxYl4e2s=;
- b=iD3ByBJsEIK3r/oMdkVq0ZuyfBld7wW0swHl0HMbMfqpU5XIYdDEPC/9OirPoH76xXe/nn
- ApLMzZjwauxDWxIYslEYCOK3NjH3jOrNMUaExOlhLbiMi1B3HJoQyjxScLXN4fITW2PBdM
- qBw7eV3vjLetrHyznTnQ4J3t60EyUtg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-170-UV4INdDjMLiXYdpeslQo8g-1; Tue, 15 Jul 2025 01:52:47 -0400
-X-MC-Unique: UV4INdDjMLiXYdpeslQo8g-1
-X-Mimecast-MFC-AGG-ID: UV4INdDjMLiXYdpeslQo8g_1752558766
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a4fac7fa27so1836169f8f.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 22:52:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752558766; x=1753163566;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pnNc1URRzn2V1cZZTOxV0Y823iKjSkXvDR7vxYl4e2s=;
- b=kbHL2P3//R845b9aio4iMdAaTmNgKvg0JO8lpf195/NQTC9bul5TuNSD82jnv3WrsP
- gO+lsSk9ZaHQ5KX1tnVtZJxcunD0vUj7AQX0pMcmvgY5mJC8GtsitRtu8vk7BfDaQch+
- h9bv7Ha+vO3zmjL/ukrVPGrkKPTi4Eqmo1C0IbPIJeUgod3Wm2WkoXRJmehoEyRFQMHY
- PCKTDUc2bxzOePeIin4ty/0Q6F3Kzb+YF2fi4cIvThlFGWzaIVNO2RuJJEbdqEusOOdQ
- CewNeA+3oijaI3L4cJAlphQltPovQcmBZpyT8eQg5LtOqZE9JEy0EyuKhyS/dAgbg3RB
- uBkA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXPC69w4PHJa+zYjyrCHNHaGlAKc5oi/6UHC5G29+Tuo/pLGDWR2EFhLIz+c+/rmyZiJY2nNdVotBVQ@nongnu.org
-X-Gm-Message-State: AOJu0YyAm/Ne3ARQaikZfmOl8bZFHIFUPCFNi4BfEgiUF/3h9SGMNUpa
- SBC6sJzBpRAw5uk82E91jJQoK+1h5ZhmXcX4a9ed2cJ+ezBGuW7/j7JEXgZudL4T7ku8WoYcXIg
- PV6ScuQP4ahcx5U3perJc1lRR/BbqGhoGzaxWDlU5u8eWGRyRmhtfmwQU
-X-Gm-Gg: ASbGnctMfmu2NxS07fuvaXoGr7kNEWOiT/BjdP5xjJzCK3qEwq1I2xW9ZLhBuIkXhke
- Lm3tKyX3rcrmNHxRWzqwbNhc0vK0RPb+YEdvtBDtC0BsTHGemWyea7v3hnqM1uRP0cW3+4FC0C/
- Ox9bE6rKRn2cVBIgzmizY6tryq3hY8uOuM4jdXE4hzwVNNZMAmUucLKYEfRq0vP+iwV6tR/4w0p
- hSNg0Z6pJVzHjlL0obPHg7XXxhZIrsfMmEgEuePnWdmrs+3xQnox5WPY5joqeG2Ft2ezNQK+abg
- Ucgdox/BKdrYKPwPs0bRoMxLs3O8ymmOb0YfEm9UOa3Jes/YXv3SYNh4nP6ovyh6axvKvJ3oXaM
- =
-X-Received: by 2002:a05:6000:2085:b0:3a4:f900:21c4 with SMTP id
- ffacd0b85a97d-3b5f2dd4e12mr12676222f8f.26.1752558766384; 
- Mon, 14 Jul 2025 22:52:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF1rWqRJlqbxOC7aCL9G50sXnUeZexjRyFItRm3079mO7m6Tr135YEJeCGtws0A5yDUKVJgrg==
-X-Received: by 2002:a05:6000:2085:b0:3a4:f900:21c4 with SMTP id
- ffacd0b85a97d-3b5f2dd4e12mr12676207f8f.26.1752558765979; 
- Mon, 14 Jul 2025 22:52:45 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:165:d60:266c:b13b:afd7:40fd?
- ([2a01:e0a:165:d60:266c:b13b:afd7:40fd])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d70csm14432082f8f.62.2025.07.14.22.52.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jul 2025 22:52:45 -0700 (PDT)
-Message-ID: <205c69d8-468e-4984-b27a-4a5fd619f4c6@redhat.com>
-Date: Tue, 15 Jul 2025 07:52:45 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/vfio: fix region fd initialization
-To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>
-References: <20250710154842.1267253-1-john.levon@nutanix.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250710154842.1267253-1-john.levon@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1ubYbE-0005kM-Ru
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 01:53:12 -0400
+Received: from pps.filterd (m0127844.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56EIJDoT017405;
+ Mon, 14 Jul 2025 22:53:06 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ proofpoint20171006; bh=BgM/wEYY7v3KNm+iON0ySMM0cj3s8PbjuudkqoSzx
+ 7E=; b=sqrH8rJISsXAZUYCfDZU4cBlNMeM5HYqo1go/Hi1bK2+EaO/83ycn3Ate
+ q2hHRib1k8/bke1P9TMiGBMsS9y0bM9x9AlaHZTxE+fndi0PP0KEyaQUmJuKrRuN
+ ze7k28Rgl6c8u3ORBrE3iCz25XYQTGhdXtwqWZMHP8RdYSKR20My54fUvcLLI5wk
+ qUaRKuHhEMZ6bU2frPeC3W5TFtS6Umbx1XgGVjdJ/DOO/KuFtZlmpBWIe02KqGY2
+ S/oKp9NQoSgss2K+vfHqnlCe9nwXFIL8crZHjzBZMrcfubHF1T6uD7Bj4xgX3wbH
+ kZJqAPWEmqVUgqju6MbzfSwfGkjVA==
+Received: from nam11-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2134.outbound.protection.outlook.com [40.107.236.134])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 47uq81d9qq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Jul 2025 22:53:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q75ZdwtP1tqnwDmen5xb0DhnKyRWYuWpDMzy9OPuWVIsW9MQwb1X1zoxs6Ads8liZxgCoiSlL/PdbvCGoKMSHy7Xv2B6SHPOJ88NMUtIgvYoFTuUimkHiLoQlqKAhMwjEFqkcYedk/0A06y3c7r5u1O+j4IuczV86tHQK3ZYjNVHjtCUmzMgkj7u6wx1ooN0HVFkSTkrmmbK1Uj/aVI6gIAfIUoyJHkokf507KoGO/KptmogFQJKTQoqmKxxLw2OGJIC6V6q8uLStL56Yh+rXd3lJEVUyhQMSR8IQEySE9BSOIhf9YSbq9U9hi5U9GvDpkSeJltp6ilJUCzMYTSf5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BgM/wEYY7v3KNm+iON0ySMM0cj3s8PbjuudkqoSzx7E=;
+ b=c4IqoMCdNnegqwWn6mkWHLVlBFB7z52Shce9+nyw/t00hl77gaDZGUkqXnQXEIZw9B9xFfcnea/1sM5FIVJAPPAGjj9UbpVRWKx3IQc43NGCeUdFu7YLS4J3hPLzZB7btRtEkWle7DX6I+SIqEa25XZ5fsd8JLu+EE9XjFJPebxUv6wranseJ4dthLOySyvSTVgk5vtjiewXmK+0M7pMhnxcEMZgNmaOZ+ua61LCezXyh3zuhmLnD5hTG6YKzmUq8Gnxg/hHryqoxaOPmpfWtKQ8kaZyPUpNBABhmA0QRA0FQH1CE9tQsdKdUYN2d1LEG/9uUya3Dgv17jMKtWOHhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BgM/wEYY7v3KNm+iON0ySMM0cj3s8PbjuudkqoSzx7E=;
+ b=iYRSaw3UyIVJCXsKEDlE1lL84gevP3w0GPEagTknKSoQRJ1bXJT0yQ1Z+RCv8yoj8n4nDAeaDYmGlJPuD/hT6T82n70KlNg+YJ8NIhckmkj8vMQk4Ow4XLhhXG+hJM0/nK3XQi+Xkm6+lwCIxlDEEDqqpEqx0MPeXFaH/ZlN9tt5g6p/GKQaMGv97BQ14Yx/HCqjV9/Ps9lOVhMxTlVQ+0WwW1+yeSCui4BnEnvqCgiKcmfR/+XL2gLhdqilOUX7cGD9cn5XJ28x3vdu2cjXybaDO1DmWOnrd9nOIHmJdFTswiY741F4J9mtI8l4+e64Jph4Vke1d5ScJEjU8T9TvA==
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
+ by PH0PR02MB8841.namprd02.prod.outlook.com (2603:10b6:510:f4::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Tue, 15 Jul
+ 2025 05:53:04 +0000
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51%7]) with mapi id 15.20.8922.028; Tue, 15 Jul 2025
+ 05:53:04 +0000
+From: John Levon <john.levon@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ John Levon <john.levon@nutanix.com>
+Subject: [PATCH v2 4/4] hw/vfio-user: fix use of uninitialized variable
+Date: Tue, 15 Jul 2025 07:52:46 +0200
+Message-ID: <20250715055246.422834-5-john.levon@nutanix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250715055246.422834-1-john.levon@nutanix.com>
+References: <20250715055246.422834-1-john.levon@nutanix.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-ClientProxiedBy: VI1PR0102CA0005.eurprd01.prod.exchangelabs.com
+ (2603:10a6:802::18) To CH2PR02MB6760.namprd02.prod.outlook.com
+ (2603:10b6:610:7f::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|PH0PR02MB8841:EE_
+X-MS-Office365-Filtering-Correlation-Id: 013edc05-55e3-4906-869f-08ddc363dd48
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?c1dwVkVmMFNLamJCNTI2ckNpeldSN3JwZ2tMS1FNcWRFVFZTVEtBSW01QlJ1?=
+ =?utf-8?B?ZW9NWkJ6NFkrMGR1OEQ3OFErU3BCNHhqZ2J2NENKMVV3Z3JUVGM0bSsxYXp1?=
+ =?utf-8?B?ckt2UnJld2ZMMXUyMWhHc3VScDdONWFva1VpNlBRQjZ3OFNwdUprSFBxcnlL?=
+ =?utf-8?B?VWFJZ1d0blk0MHdJdGJUNkp4SFpJdzVmQThEUTFQM09lTThyZUlDMTlnSC96?=
+ =?utf-8?B?MGJpKzZJcnpSV3E2QWp1U0h3VGNQSitweEhwNm9yZUpTUjlwdXpYU0NHVGwr?=
+ =?utf-8?B?QzNFOEhJYTlGZjdENTJzSUwxdDZLcklqaFdGbTZTaUswRFAwM1hiUERpK1F3?=
+ =?utf-8?B?SDlvbGJ3eDJ2YjYvWllHbVVoWkpWaGltdGs1OVVyb3lGblh1WkFISVQvWXFP?=
+ =?utf-8?B?aDVoR2ZiSHpYTkRCbCtzeVRHclpxVUpyQllsRGJrZWtDZUVLR2Y4WEZ0TnJQ?=
+ =?utf-8?B?bGVxa2dsUWVyWlFpYS9OYVlzSGxyRmZIcnBSZCs3MDgzdkFtZmh0TVBMQjNY?=
+ =?utf-8?B?b3FEd2FucEQ1TkcxOFZsQkhjY3M1S0taWXJjSDZlRFJnQXBPdGZ5UXBRclJx?=
+ =?utf-8?B?MkczbTk5dWszcGZLYkFYWGFJMDdXQjU2OHR3Q0dmNVlodkU0VnRhWElicFB4?=
+ =?utf-8?B?NnRiWUJMNjlQNlBXeXZ3MjdlNVVRT2gzMGlhK3BndkcwNGJTdlVGWWsyVHZp?=
+ =?utf-8?B?RVJNMkJhazZMb0Y4UVFwL2FzSGN1VEJ0UW82V2hVN2NiNUFLRGo0R3hvQ0lU?=
+ =?utf-8?B?RVlaSS9XN2tvR092TzI0bCtkdER3K2UvTDlOTFIyN3BvME1HUXNSUFJGcXFj?=
+ =?utf-8?B?SExMYkxlUENUQU1GWDRXUkxCTTZSNE5Yb0E5bE5WRFBRNEhaczQ4WmNja0xR?=
+ =?utf-8?B?ZFBiSnI4WmR5eTFkSlAxUFhQZzY0Kzd2cjA0VTZ4SnE1NmZLck1lSk50RGhD?=
+ =?utf-8?B?U1BGVXY3cFZyUjFtdC95cE1KYkxMZndQRXlKZWpsUzg0UzM0WlcwczAvQWdx?=
+ =?utf-8?B?cEhwYzgxYVgyMG5PRFRCNDNmWWJPejhNN2xqNGtnK0d5anJsR2lGckJjSGtx?=
+ =?utf-8?B?VTZMZmxOMjFqUkwwOWo1dlpzVkNzRm5XWjJndlcxak54aE9UZFBKMXpwSnE1?=
+ =?utf-8?B?MDcxZlFDSi9heS9WcmEwNUc5VENxQ21GTnFTdkN4ZVlIRzhZTUIxWjNkYjJR?=
+ =?utf-8?B?aWg1ZGZnYkJCZ1ZMdEVsZ25TSnc2dE0zcFpCc1ZOUmZ0Ri9HbWljVkFRZ1A2?=
+ =?utf-8?B?U3Y0TUpvd0Vac0dWWXBtM2FnKzhMSmhuN0E1MHEralUvWnloSTdNSm9IU2xR?=
+ =?utf-8?B?WUllQXhSWnBIVURTZmF0SkRvS3owWEtLUS9YZlNOcXBZRWN4Z2ZIUDJsZTB3?=
+ =?utf-8?B?QllKdldhUmRMcnFmLzBmbFF6YmhaREtDcldEdk5OSGE1UFI2eXRKQUxzSlVF?=
+ =?utf-8?B?SUNCMjU3cXZPN2dzSHQ0RDhsM2Y5ZjVwcExkQ1d6dmJFamxjWXUrcmFJNmlm?=
+ =?utf-8?B?dmFQUVVMck9XYnkxMXE5UExLQVVpZFZmbnl2YWlDbzVTdzI4MXBPcmdZQ0tj?=
+ =?utf-8?B?c2xtQzROcnVUeXl1ZmdNb09BZWlhblVER1VtYXByeFlyaXR4WmRXSE5WTFZG?=
+ =?utf-8?B?eElIejgzdVlic2ZraWQzNE5ydHpMaWxGVEZxTUNTU1lRNEp4WU8xbHpHYUo0?=
+ =?utf-8?B?UE5qQXlsaERidHJTeDA1NUh1SVZrTUtkbmRBV3lhN2J3SExhL3ZIcmJJOTVt?=
+ =?utf-8?B?b1hJbFpvRVhrN0FYeW9jTTJ2NDNhaFpybU5sZDFka09MQlZJcXJacHVTWDJx?=
+ =?utf-8?B?VUlTYTZBVGc5dmltMnNnbW5UM2RGYzBpWHFMQWtrc2lHeGVqZ1d5WW82NDhI?=
+ =?utf-8?B?MmZxaWF0cndMOEt6dkNBNHFOemtiMjJXODhaRU5BcGV6UFE9PQ==?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RkViMHFrTmF3VUtDR2tEZzN3N2U0UkIxampjQWEzWktDeEI1RWtFZ0gyMTdX?=
+ =?utf-8?B?bEx1QVAydDdjN0g0aEZUMGZ2Q3NTVEdYdjdPcjByUGkrZVdBUlBoYVlxOUJD?=
+ =?utf-8?B?MGhxdnZTeDdSZFJVYWpMRklWUm1mMUFaSmY0VEN3TFcvZndVcUkwQVFHZlVl?=
+ =?utf-8?B?RDQ1VmorR1NVOGNKVW5VQ3Q5STRqa0VDWkVHWUZDdFBQTVlCekFqdzFDRnlq?=
+ =?utf-8?B?VFRBRjA3OXd3cncyQjdWTExpcEYyWGZhd0U4Tys3UjVqVHpUbnBna2Iwc0dz?=
+ =?utf-8?B?NjdPOGJEZ0YzWVBwYVFxUWhBaXhLNDBVMjd3VG5GRzZCRkRWNVhYdEhhZnBk?=
+ =?utf-8?B?b2xGZTBNc2hQVDBBVEFPdkNldTNsR1U0b29oaVNhOFVFSEFCaU1CMU1VYWpD?=
+ =?utf-8?B?eVY2cUkwOHQvcjk3Q0VUYmhHRGRmcTl3QzFmdXc1d0VQaDB3ejIvZGlZRTBj?=
+ =?utf-8?B?SGd5UnlXQXBEUnB4Q3dyQkNKMFhPZXNPT0c0Vy94aytmR3Y4cXFrN2pkd28x?=
+ =?utf-8?B?Z2d2cDVSa0t6d1ZpYVJheUptZGF3c1paWWpKUEo2VjdPL0F2anZnTVUvQTlu?=
+ =?utf-8?B?dkZvVXRXclRVZERFVEtjK1MvYjBiVW5PSjRrTWpCNGZiUjlpWXZsSmhaa085?=
+ =?utf-8?B?NFQ0aTRZUzc4TjZHNHNicEo1amtJMzA2bzdqdVpUVlc4VlJNUG9YZlA0cTJp?=
+ =?utf-8?B?ZG90MHdCUFdyZVVkdStLalFoUzN0YjA0aTNCVER4SUxSVzMrbzI3ODhzb2t2?=
+ =?utf-8?B?NWJJUUlWSDhaQk5xVTNOSU4rQmlzckRucklaZ3E3M1hwTisyb2R0RW5VckV1?=
+ =?utf-8?B?c2RpNnZ3aVRSTG50TytmUWtXMHg5cU9nWk5NTWlqYjFTKzFmK3VqSW1CZnBt?=
+ =?utf-8?B?Z24zMFlKOHFDSm5jdWtpcDRuWHU4TVVqRzZ2K3RRUW1ZNVZJeElVQVhhTTZ5?=
+ =?utf-8?B?Z2p2SGZOYWRFL1hQc0JzVWxqRnlUS1hmMERPd045NTRqVUFpQTVBZFh2S0ww?=
+ =?utf-8?B?Z1pJYVdHa1hyVHRYNnlPaFpGdFd2a21taHFBblpuN01KTlhpTVV5dE8yTkNS?=
+ =?utf-8?B?dDExbFJyS3RqV1p2Zm9EbXdMNGFmUFpGbU1QUm5WK1BoNDRJV3FWK3FTRHpK?=
+ =?utf-8?B?QzVjRlgyZGhYOEQyUlBhY2ZNRm1JenJNeWNMcUJHVS9uanJiNHJ1NTlrQTBE?=
+ =?utf-8?B?TTJhaXZ5RFRSL0pDWTZIOHlNbStmdjM2a1cvYkV2TGpYTFUrSlpTZ01uT0lt?=
+ =?utf-8?B?UFdkdkpOL2tTUFhGY1pzWXk4d0R5UEwvUFNaMjhlVnMrcml5SEtpcnFVL2sz?=
+ =?utf-8?B?WkpHL1B6aG5yTjNQK1RpMFpEeGpYcHdVUTkzQVFjN2MzQ1RYWWRORVRzVU9Y?=
+ =?utf-8?B?YVVnVEt0LzBrL0NRYTBoVU96bG1pTkF3K1BYL3pVMisydmNGSlE1MUZVZmFO?=
+ =?utf-8?B?RWJSZEdKQkxmTC8zYU1qRFNBQXhHeGFTbWo4dFphV2ZqR3VXekxIcllLNDRO?=
+ =?utf-8?B?cWx2cUFkcTY4TDlMOTg1MVFPTEIvajRieWwycXNkYUQrL054azFUYVkybDlY?=
+ =?utf-8?B?REt1Q1FBTElkRGsvNWFmcVJzN3FkTUJCbU43WFN1SjZ5cWpKYkVYMU5IV3JE?=
+ =?utf-8?B?K3d2ajY5SlB1eXhuWjNUbjdScTgwTzh1ZTVCNm1RdzNoaU5KSDZVWnNVaHNB?=
+ =?utf-8?B?MDJaZGNSd3luR2szS0ppeUhUcjhjckhxQ1ozSFlCS200UzNJaVUwbDJaSzhr?=
+ =?utf-8?B?aWxSTXlVU25OV3VJaHZLUmM2U2RJZ0VJZUlwRU1kVzAxUU1Oa3dkd3ZpeHlo?=
+ =?utf-8?B?aUwxdzZZaGk4S0FTMlZZQ3JQa2IyaDlQL0tYU3NLM1h4dzIvS2FEdjJxUFAw?=
+ =?utf-8?B?TnNIbGhKUzFRY0FVZm95UEJ3R3FNaFpVSVFGRGE1Zm8zZ0dDL3JBM2hZOTJ0?=
+ =?utf-8?B?S2RSODRSNWpkR1NEZXhmd1MxcEwvdzhDb1RTTVV0UGxiOW0xQWtsSVFJT0FI?=
+ =?utf-8?B?TC9obkN2bkNNUVJpWFpNSkl0NWFqWkkxa3NPQVNEaHJBR2RvcHpwNm5wcGVM?=
+ =?utf-8?B?US8rdE5aTEk5U3R0czB3OVRNL3oyUGN4eFFlcE1ISVNCRkpEZVdDWThmbWVO?=
+ =?utf-8?B?RG16Njg2K2dSUlY0Zy9TalFRbkdaSlpzRnNDa2w1OVMvR21ZdDVSSytVblNr?=
+ =?utf-8?B?TVE9PQ==?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 013edc05-55e3-4906-869f-08ddc363dd48
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 05:53:04.1746 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fxmgXupbdge6ot7D5nsQwaqBfqcQF8SLEj5WlAA7mLhaoqznC38VQv26wKUsAfLoKywSFW3XMpnEf1enzopBeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB8841
+X-Authority-Analysis: v=2.4 cv=bL0WIO+Z c=1 sm=1 tr=0 ts=6875ecc2 cx=c_pps
+ a=9as0x59oiNjQ6UJFME4EAg==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=0kUYKlekyDsA:10
+ a=20KFwNOVAAAA:8 a=64Cc0HZtAAAA:8 a=ElJsUu_2Y0o_wqdk4xsA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: VxQ3ISNatGyaagU8HQE43aeLWbepBQF-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE1MDA1MiBTYWx0ZWRfXyK6P5yFxDgom
+ QaCuvmjOBKkxZe2vPx18kbzsKkeSooHvepgxkWy4RCfy5PumwSiyoEkkKw3DmdrDCOW/8vm6Ruc
+ YW492zKCDBx0yXG/cdb01gsxAEDRaIamCJ37hd/RsqKrmE3C1wje9i6OTl4lIcK3kAM2SVYoaeV
+ mC3VlT9I1UCmseUeZwrxgZ2jP1IXsFplFqdlGqwNH89OoPmE7MaKpchlNzq6atkYsU7HuY1by6X
+ VKx/eMyODhbMBod4/3aYJhNyItV8mDp9zzSN/QjsaOPkx14q2Uq+hc02RZ9TYRwd9Yd2sqQQnCX
+ wnZBjr07tjZg/osWpV3WJCmYobf4Zt2wzIokaHl9ZPWfcO46NQfGSi9DIG4guIK2CbnTAI6M+/Q
+ RjHJw8B5pgM2yX/krBDxwtOBtCmi1zN7Xd8OGS8G9Pa8gYJSucBFLqEwzIxxc3aMxym33c8J
+X-Proofpoint-GUID: VxQ3ISNatGyaagU8HQE43aeLWbepBQF-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-14_03,2025-07-14_01,2025-03-28_01
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12;
+ envelope-from=john.levon@nutanix.com; helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,56 +213,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/10/25 17:48, John Levon wrote:
-> We were not initializing the region fd array to -1, so we would
-> accidentally try to close(0) on cleanup for any region that is not
-> referenced.
-> 
-> Fixes: 95cdb024 ("vfio: add region info cache")
-> Signed-off-by: John Levon <john.levon@nutanix.com>
+Coverity reported:
 
+CID 1611805:         Uninitialized variables
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+in vfio_user_dma_map(). This can occur in the happy path when
+->async_ops was not set; as this doesn't typically happen, it wasn't
+caught during testing.
 
-Thanks,
+Align both map and unmap implementations to initialize ret the same way
+to resolve this.
 
-C.
+Resolves: Coverity CID 1611805
+Fixes: 18e899e6 ("vfio-user: implement VFIO_USER_DMA_MAP/UNMAP")
+Reported-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: John Levon <john.levon@nutanix.com>
+---
+ hw/vfio-user/container.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-
-> ---
->   hw/vfio/device.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-> index 96cf21462c..52a1996dc4 100644
-> --- a/hw/vfio/device.c
-> +++ b/hw/vfio/device.c
-> @@ -463,6 +463,8 @@ void vfio_device_detach(VFIODevice *vbasedev)
->   void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
->                            struct vfio_device_info *info)
->   {
-> +    int i;
-> +
->       vbasedev->num_irqs = info->num_irqs;
->       vbasedev->num_regions = info->num_regions;
->       vbasedev->flags = info->flags;
-> @@ -477,6 +479,9 @@ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
->                                  vbasedev->num_regions);
->       if (vbasedev->use_region_fds) {
->           vbasedev->region_fds = g_new0(int, vbasedev->num_regions);
-> +        for (i = 0; i < vbasedev->num_regions; i++) {
-> +            vbasedev->region_fds[i] = -1;
-> +        }
->       }
->   }
->   
-> @@ -489,7 +494,6 @@ void vfio_device_unprepare(VFIODevice *vbasedev)
->           if (vbasedev->region_fds != NULL && vbasedev->region_fds[i] != -1) {
->               close(vbasedev->region_fds[i]);
->           }
-> -
->       }
->   
->       g_clear_pointer(&vbasedev->reginfo, g_free);
+diff --git a/hw/vfio-user/container.c b/hw/vfio-user/container.c
+index d318e6a339..d589dd90f5 100644
+--- a/hw/vfio-user/container.c
++++ b/hw/vfio-user/container.c
+@@ -64,8 +64,6 @@ static int vfio_user_dma_unmap(const VFIOContainerBase *bcontainer,
+                               0, &local_err)) {
+             error_report_err(local_err);
+             ret = -EFAULT;
+-        } else {
+-            ret = 0;
+         }
+     } else {
+         if (!vfio_user_send_wait(container->proxy, &msgp->hdr, NULL,
+@@ -92,7 +90,7 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                                                 bcontainer);
+     int fd = memory_region_get_fd(mrp);
+     Error *local_err = NULL;
+-    int ret;
++    int ret = 0;
+ 
+     VFIOUserFDs *fds = NULL;
+     VFIOUserDMAMap *msgp = g_malloc0(sizeof(*msgp));
+@@ -135,8 +133,6 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                               0, &local_err)) {
+             error_report_err(local_err);
+             ret = -EFAULT;
+-        } else {
+-            ret = 0;
+         }
+     } else {
+         VFIOUserFDs local_fds = { 1, 0, &fd };
+-- 
+2.43.0
 
 
