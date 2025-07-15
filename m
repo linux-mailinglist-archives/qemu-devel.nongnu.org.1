@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A247DB06719
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561E4B06734
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:46:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublVK-0005na-Bd; Tue, 15 Jul 2025 15:39:54 -0400
+	id 1ublaE-00008d-IG; Tue, 15 Jul 2025 15:44:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubky4-0004c8-7I
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubky4-0004cQ-R6
  for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxy-0001jd-FZ
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:30 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubky1-0001js-MW
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606321;
+ s=mimecast20190719; t=1752606323;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yXO12lqeAejIfqZYD1cIDDsv+hSmsSqDNw0zNqDMET8=;
- b=AClOY5F/XLY6hlG3gAam83fHagSL0qolfsTe1KslUqDrccs4EOYx0qB6XOc3wPEUIijDwn
- ZCqLIkOfp8vC4qS9CXBWZzbwSyqrvqXj/5VOl/RZ80nNTh4ODzidHIRIpyPTSwOkNtUVgR
- JT/hiVHcRvOFnc7326i34NHXPFvOFpg=
+ bh=eoF5O3CxgYBmoMtLJ+YW7avYeQobfPJoF/M2V373gxU=;
+ b=Pn/bK5+rs43+kGLvGudBcpwdbxUMppWtMNoHyuGtQ12kVR544E0BzlREJuysQLzzGvGTCO
+ wJuXyb2zbE/AkyHUhFjSPuspxYmM+lB6DnEBhY6MIfSwCruLgcCaWAE68hkv4qjNmOiwiJ
+ i5fDwIcl6UD0D4ni12ltSXQXV/Bw9DE=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-324-JHI-nqnmPv6EFrRgVs6WLw-1; Tue,
- 15 Jul 2025 15:05:19 -0400
-X-MC-Unique: JHI-nqnmPv6EFrRgVs6WLw-1
-X-Mimecast-MFC-AGG-ID: JHI-nqnmPv6EFrRgVs6WLw_1752606319
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-508-du1X5F9ZN4adgu98xciA5Q-1; Tue,
+ 15 Jul 2025 15:05:21 -0400
+X-MC-Unique: du1X5F9ZN4adgu98xciA5Q-1
+X-Mimecast-MFC-AGG-ID: du1X5F9ZN4adgu98xciA5Q_1752606321
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F110A19560B7; Tue, 15 Jul 2025 19:05:18 +0000 (UTC)
+ id 008EE19560B8; Tue, 15 Jul 2025 19:05:21 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EDEDF197702B; Tue, 15 Jul 2025 19:05:16 +0000 (UTC)
+ id 721F0197702B; Tue, 15 Jul 2025 19:05:19 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 48/57] qemu-img: rebase: refresh options/--help (short option
- change)
-Date: Tue, 15 Jul 2025 21:03:21 +0200
-Message-ID: <20250715190330.378764-49-kwolf@redhat.com>
+Subject: [PULL 49/57] qemu-img: resize: do not always eat last argument
+Date: Tue, 15 Jul 2025 21:03:22 +0200
+Message-ID: <20250715190330.378764-50-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -84,171 +83,108 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Tokarev <mjt@tls.msk.ru>
 
-Add missing long options and --help output,
-reorder options for consistency.
+'qemu-img resize --help' does not work, since it wants more
+arguments.  Also -size is only recognized as a very last
+argument, but it is common for tools to handle other options
+after positional arguments too.
 
-Use -B for --backing-format, keep -F for
-backwards compatibility.
+Tell getopt_long() to return non-options together with options,
+and process filename and size in the loop, and check if there's
+an argument right after filename which looks like -N (number),
+and treat it as size (decrement).  This way we can handle --help,
+and we can also have options after filename and size, and `--'
+will be handled fine too.
 
-Options added:
- --format, --cache - for the image in question
- --backing, --backing-format, --backing-cache, --backing-unsafe -
-   for the new backing file
-(was eg CACHE vs SRC_CACHE, which is unclear).
-
-Probably should rename local variables.
+The only case which is not handled right is when there's an option
+between filename and size, and size is given as decrement, - in
+this case -size will be treated as option, not as size.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20250531171609.197078-19-mjt@tls.msk.ru>
-[kwolf: Removed command description from the argument list]
+Message-ID: <20250531171609.197078-20-mjt@tls.msk.ru>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- docs/tools/qemu-img.rst |  2 +-
- qemu-img.c              | 87 +++++++++++++++++++++++++++++------------
- 2 files changed, 63 insertions(+), 26 deletions(-)
+ qemu-img.c | 41 +++++++++++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/docs/tools/qemu-img.rst b/docs/tools/qemu-img.rst
-index a346988292..5e7b85079d 100644
---- a/docs/tools/qemu-img.rst
-+++ b/docs/tools/qemu-img.rst
-@@ -667,7 +667,7 @@ Command description:
- 
-   List, apply, create or delete snapshots in image *FILENAME*.
- 
--.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] [-c] -b BACKING_FILE [-F BACKING_FMT] FILENAME
-+.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] [-c] -b BACKING_FILE [-B BACKING_FMT] FILENAME
- 
-   Changes the backing file of an image. Only the formats ``qcow2`` and
-   ``qed`` support changing the backing file.
 diff --git a/qemu-img.c b/qemu-img.c
-index cc26ae9100..a02d271af1 100644
+index a02d271af1..36ef998a34 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -3798,45 +3798,89 @@ static int img_rebase(const img_cmd_t *ccmd, int argc, char **argv)
+@@ -4302,7 +4302,7 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+     Error *err = NULL;
+     int c, ret, relative;
+-    const char *filename, *fmt, *size;
++    const char *filename = NULL, *fmt = NULL, *size = NULL;
+     int64_t n, total_size, current_size;
+     bool quiet = false;
+     BlockBackend *blk = NULL;
+@@ -4325,17 +4325,7 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+     bool image_opts = false;
+     bool shrink = false;
+ 
+-    /* Remove size from argv manually so that negative numbers are not treated
+-     * as options by getopt. */
+-    if (argc < 3) {
+-        error_exit(argv[0], "Not enough arguments");
+-        return 1;
+-    }
+-
+-    size = argv[--argc];
+-
+     /* Parse getopt arguments */
+-    fmt = NULL;
      for(;;) {
          static const struct option long_options[] = {
              {"help", no_argument, 0, 'h'},
--            {"object", required_argument, 0, OPTION_OBJECT},
-+            {"format", required_argument, 0, 'f'},
-             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
--            {"force-share", no_argument, 0, 'U'},
-+            {"cache", required_argument, 0, 't'},
-             {"compress", no_argument, 0, 'c'},
-+            {"backing", required_argument, 0, 'b'},
-+            {"backing-format", required_argument, 0, 'B'},
-+            {"backing-cache", required_argument, 0, 'T'},
-+            {"backing-unsafe", no_argument, 0, 'u'},
-+            {"force-share", no_argument, 0, 'U'},
-+            {"progress", no_argument, 0, 'p'},
-+            {"quiet", no_argument, 0, 'q'},
-+            {"object", required_argument, 0, OPTION_OBJECT},
+@@ -4345,7 +4335,7 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+             {"shrink", no_argument, 0, OPTION_SHRINK},
              {0, 0, 0, 0}
          };
--        c = getopt_long(argc, argv, ":hf:F:b:upt:T:qUc",
-+        c = getopt_long(argc, argv, "hf:t:cb:F:B:T:uUpq",
+-        c = getopt_long(argc, argv, ":f:hq",
++        c = getopt_long(argc, argv, "-:f:hq",
                          long_options, NULL);
          if (c == -1) {
              break;
-         }
--        switch(c) {
--        case ':':
--            missing_argument(argv[optind - 1]);
--            break;
--        case '?':
--            unrecognized_option(argv[optind - 1]);
--            break;
-+        switch (c) {
-         case 'h':
--            help();
-+            cmd_help(ccmd, "[-f FMT | --image-opts] [-t CACHE]\n"
-+"        [-b BACKING_FILE [-B BACKING_FMT] [-T BACKING_CACHE]] [-u]\n"
-+"        [-c] [-U] [-p] [-q] [--object OBJDEF] FILE\n"
-+,
-+"  -f, --format FMT\n"
-+"     specify FILE format explicitly (default: probing is used)\n"
-+"  --image-opts\n"
-+"     treat FILE as an option string (key=value,..), not a file name\n"
-+"     (incompatible with -f|--format)\n"
-+"  -t, --cache CACHE\n"
-+"     cache mode for FILE (default: " BDRV_DEFAULT_CACHE ")\n"
-+"  -b, --backing BACKING_FILE|\"\"\n"
-+"     rebase onto this file (specify empty name for no backing file)\n"
-+"  -B, --backing-format BACKING_FMT (was -F in <=10.0)\n"
-+"     specify format for BACKING_FILE explicitly (default: probing is used)\n"
-+"  -T, --backing-cache CACHE\n"
-+"     BACKING_FILE cache mode (default: " BDRV_DEFAULT_CACHE ")\n"
-+"  -u, --backing-unsafe\n"
-+"     do not fail if BACKING_FILE can not be read\n"
-+"  -c, --compress\n"
-+"     compress image (when image supports this)\n"
-+"  -U, --force-share\n"
-+"     open image in shared mode for concurrent access\n"
-+"  -p, --progress\n"
-+"     display progress information\n"
-+"  -q, --quiet\n"
-+"     quiet mode (produce only error messages if any)\n"
-+"  --object OBJDEF\n"
-+"     defines QEMU user-creatable object\n"
-+"  FILE\n"
-+"     name of the image file, or option string (key=value,..)\n"
-+"     with --image-opts, to operate on\n"
-+);
-             return 0;
-         case 'f':
-             fmt = optarg;
+@@ -4383,12 +4373,35 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+         case OPTION_SHRINK:
+             shrink = true;
              break;
--        case 'F':
--            out_basefmt = optarg;
-+        case OPTION_IMAGE_OPTS:
-+            image_opts = true;
++        case 1: /* a non-optional argument */
++            if (!filename) {
++                filename = optarg;
++                /* see if we have -size (number) next to filename */
++                if (optind < argc) {
++                    size = argv[optind];
++                    if (size[0] == '-' && size[1] >= '0' && size[1] <= '9') {
++                        ++optind;
++                    } else {
++                        size = NULL;
++                    }
++                }
++            } else if (!size) {
++                size = optarg;
++            } else {
++                error_exit(argv[0], "Extra argument(s) in command line");
++            }
 +            break;
-+        case 't':
-+            cache = optarg;
-             break;
-         case 'b':
-             out_baseimg = optarg;
-             break;
-+        case 'F': /* <=10.0 */
-+        case 'B':
-+            out_basefmt = optarg;
-+            break;
-         case 'u':
-             unsafe = 1;
-             break;
-+        case 'c':
-+            compress = true;
-+            break;
-+        case 'U':
-+            force_share = true;
-+            break;
-         case 'p':
-             progress = 1;
-             break;
--        case 't':
--            cache = optarg;
--            break;
-         case 'T':
-             src_cache = optarg;
-             break;
-@@ -3846,15 +3890,8 @@ static int img_rebase(const img_cmd_t *ccmd, int argc, char **argv)
-         case OPTION_OBJECT:
-             user_creatable_process_cmdline(optarg);
-             break;
--        case OPTION_IMAGE_OPTS:
--            image_opts = true;
--            break;
--        case 'U':
--            force_share = true;
--            break;
--        case 'c':
--            compress = true;
--            break;
-+        default:
-+            tryhelp(argv[0]);
          }
      }
+-    if (optind != argc - 1) {
++    if (!filename && optind < argc) {
++        filename = argv[optind++];
++    }
++    if (!size && optind < argc) {
++        size = argv[optind++];
++    }
++    if (!filename || !size || optind < argc) {
+         error_exit(argv[0], "Expecting image file name and size");
+     }
+-    filename = argv[optind++];
  
+     /* Choose grow, shrink, or absolute resize mode */
+     switch (size[0]) {
 -- 
 2.50.1
 
