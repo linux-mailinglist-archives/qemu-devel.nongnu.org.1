@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D123B0520F
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC72B05210
 	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:44:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZMi-0003B9-Ae; Tue, 15 Jul 2025 02:42:12 -0400
+	id 1ubZNz-0004zN-Ia; Tue, 15 Jul 2025 02:43:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1ubZF0-0003NS-M6
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1ubZF6-0003PN-RX
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1ubZEy-0003io-Jr
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:14 -0400
+ id 1ubZF4-0003k5-H3
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752561251;
+ s=mimecast20190719; t=1752561257;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/DKBN3+7PHd5LpCAXXeTGQanR81sYEgVkI6B9fYUCVQ=;
- b=K3qhLCNW97wW2rbZVSB0lhCpBYIGVmNYOqpTvRnZzRsNcLs2M3ro1qrEd/d2VnT6b/4Dwk
- e1M/hYcQKUBGTdWO0s0vy3fiB9fIJnpPeLMzL5lk2JL4MqOAjogWPwunmnFDcx1mk7dF6g
- EmrjedgdT7fJl1H6pheaohd3aDLabFs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=s0DW657PuEuVKjB0hxciKKT0eQfi++HEcWHyzhRvOag=;
+ b=UTZqpFQITpJ5z3dN8pqS08tXyiTqN4cP7Z4NcGqT5/AZqMPYtB70fmfajunWcZtLjduCTq
+ dISQajGXAo95ZrnBsJndQCxrutm6kwVPvJexOkzjXiRKAOk9fJhIyy0uXVQSbADZCerJjy
+ Tzs5z51A0CFoxMKfaGhrgsajiN6YJxk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-bPUKmgsxPLirvJ21-TXU_Q-1; Tue,
- 15 Jul 2025 02:34:07 -0400
-X-MC-Unique: bPUKmgsxPLirvJ21-TXU_Q-1
-X-Mimecast-MFC-AGG-ID: bPUKmgsxPLirvJ21-TXU_Q_1752561246
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-396-W0PiTg1TN9WL6WsNCFBEEA-1; Tue,
+ 15 Jul 2025 02:34:14 -0400
+X-MC-Unique: W0PiTg1TN9WL6WsNCFBEEA-1
+X-Mimecast-MFC-AGG-ID: W0PiTg1TN9WL6WsNCFBEEA_1752561253
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C229F1808993; Tue, 15 Jul 2025 06:34:05 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C9B0818011FB; Tue, 15 Jul 2025 06:34:12 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.9])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E372218046C7; Tue, 15 Jul 2025 06:34:03 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id C64CA180045B; Tue, 15 Jul 2025 06:34:10 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: stefanha@redhat.com, Andrew Keesler <ankeesler@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>,
- Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-Subject: [PULL v2 09/13] ui/spice: Blit the scanout texture if its memory
- layout is not linear
-Date: Tue, 15 Jul 2025 10:32:55 +0400
-Message-ID: <20250715063301.145191-10-marcandre.lureau@redhat.com>
+ "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Subject: [PULL v2 10/13] hw/display: Allow injection of virtio-gpu EDID name
+Date: Tue, 15 Jul 2025 10:32:56 +0400
+Message-ID: <20250715063301.145191-11-marcandre.lureau@redhat.com>
 In-Reply-To: <20250715063301.145191-1-marcandre.lureau@redhat.com>
 References: <20250715063301.145191-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -89,163 +91,276 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+From: Andrew Keesler <ankeesler@google.com>
 
-In cases where the scanout buffer is provided as a texture (e.g. Virgl)
-we need to check to see if it has a linear memory layout or not. If
-it doesn't have a linear layout, then blitting it onto the texture
-associated with the display surface (which already has a linear layout)
-seems to ensure that there is no corruption seen regardless of which
-encoder or decoder is used.
+Thanks to 72d277a7, 1ed2cb32, and others, EDID (Extended Display
+Identification Data) is propagated by QEMU such that a virtual display
+presents legitimate metadata (e.g., name, serial number, preferred
+resolutions, etc.) to its connected guest.
 
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Frediano Ziglio <freddy77@gmail.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
-Cc: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
+This change adds the ability to specify the EDID name for a particular
+virtio-vga display. Previously, every virtual display would have the same
+name: "QEMU Monitor". Now, we can inject names of displays in order to test
+guest behavior that is specific to display names. We provide the ability to
+inject the display name from the frontend since this is guest visible
+data. Furthermore, this makes it clear where N potential display outputs
+would get their name from (which will be added in a future change).
+
+Note that we have elected to use a struct here for output data for
+extensibility - we intend to add per-output fields like resolution in a
+future change.
+
+It should be noted that EDID names longer than 12 bytes will be truncated
+per spec (I think?).
+
+Testing: verified that when I specified 2 outputs for a virtio-gpu with
+edid_name set, the names matched those that I configured with my vnc
+display.
+
+  -display vnc=localhost:0,id=aaa,display=vga,head=0 \
+  -display vnc=localhost:1,id=bbb,display=vga,head=1 \
+  -device '{"driver":"virtio-vga",
+            "max_outputs":2,
+            "id":"vga",
+            "outputs":[
+              {
+                 "name":"AAA"
+              },
+              {
+                 "name":"BBB"
+              }
+            ]}'
+
+Signed-off-by: Andrew Keesler <ankeesler@google.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Message-Id: <20250617043546.1022779-8-vivek.kasireddy@intel.com>
+Message-Id: <20250709121126.2946088-2-ankeesler@google.com>
 ---
- include/ui/spice-display.h |  3 ++
- ui/spice-display.c         | 81 +++++++++++++++++++++++++++++++++++---
- 2 files changed, 78 insertions(+), 6 deletions(-)
+ qapi/virtio.json                    | 18 ++++++++++--
+ include/hw/display/edid.h           |  2 ++
+ include/hw/qdev-properties-system.h |  5 ++++
+ include/hw/virtio/virtio-gpu.h      |  3 ++
+ hw/core/qdev-properties-system.c    | 44 +++++++++++++++++++++++++++++
+ hw/display/virtio-gpu-base.c        | 27 ++++++++++++++++++
+ 6 files changed, 97 insertions(+), 2 deletions(-)
 
-diff --git a/include/ui/spice-display.h b/include/ui/spice-display.h
-index 9bdde78266..690ece7380 100644
---- a/include/ui/spice-display.h
-+++ b/include/ui/spice-display.h
-@@ -132,6 +132,9 @@ struct SimpleSpiceDisplay {
-     egl_fb guest_fb;
-     egl_fb blit_fb;
-     egl_fb cursor_fb;
-+    bool backing_y_0_top;
-+    bool blit_scanout_texture;
-+    bool new_scanout_texture;
-     bool have_hot;
+diff --git a/qapi/virtio.json b/qapi/virtio.json
+index 73df718a26..5e658a7033 100644
+--- a/qapi/virtio.json
++++ b/qapi/virtio.json
+@@ -963,17 +963,31 @@
+ { 'struct': 'IOThreadVirtQueueMapping',
+   'data': { 'iothread': 'str', '*vqs': ['uint16'] } }
+ 
++##
++# @VirtIOGPUOutput:
++#
++# Describes configuration of a VirtIO GPU output.
++#
++# @name: the name of the output
++#
++# Since: 10.1
++##
++
++{ 'struct': 'VirtIOGPUOutput',
++  'data': { 'name': 'str' } }
++
+ ##
+ # @DummyVirtioForceArrays:
+ #
+ # Not used by QMP; hack to let us use IOThreadVirtQueueMappingList
+-# internally
++# and VirtIOGPUOutputList internally
+ #
+ # Since: 9.0
+ ##
+ 
+ { 'struct': 'DummyVirtioForceArrays',
+-  'data': { 'unused-iothread-vq-mapping': ['IOThreadVirtQueueMapping'] } }
++  'data': { 'unused-iothread-vq-mapping': ['IOThreadVirtQueueMapping'],
++            'unused-virtio-gpu-output': ['VirtIOGPUOutput'] } }
+ 
+ ##
+ # @GranuleMode:
+diff --git a/include/hw/display/edid.h b/include/hw/display/edid.h
+index 520f8ec202..91c0a428af 100644
+--- a/include/hw/display/edid.h
++++ b/include/hw/display/edid.h
+@@ -1,6 +1,8 @@
+ #ifndef EDID_H
+ #define EDID_H
+ 
++#define EDID_NAME_MAX_LENGTH 12
++
+ typedef struct qemu_edid_info {
+     const char *vendor; /* http://www.uefi.org/pnp_id_list */
+     const char *name;
+diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+index b921392c52..9601a11a09 100644
+--- a/include/hw/qdev-properties-system.h
++++ b/include/hw/qdev-properties-system.h
+@@ -32,6 +32,7 @@ extern const PropertyInfo qdev_prop_cpus390entitlement;
+ extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
+ extern const PropertyInfo qdev_prop_endian_mode;
+ extern const PropertyInfo qdev_prop_vmapple_virtio_blk_variant;
++extern const PropertyInfo qdev_prop_virtio_gpu_output_list;
+ 
+ #define DEFINE_PROP_PCI_DEVFN(_n, _s, _f, _d)                   \
+     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_pci_devfn, int32_t)
+@@ -110,4 +111,8 @@ extern const PropertyInfo qdev_prop_vmapple_virtio_blk_variant;
+                          qdev_prop_vmapple_virtio_blk_variant, \
+                          VMAppleVirtioBlkVariant)
+ 
++#define DEFINE_PROP_VIRTIO_GPU_OUTPUT_LIST(_name, _state, _field) \
++    DEFINE_PROP(_name, _state, _field, qdev_prop_virtio_gpu_output_list, \
++                VirtIOGPUOutputList *)
++
  #endif
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index a42957c4e2..9f16f89a36 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -20,6 +20,7 @@
+ #include "hw/virtio/virtio.h"
+ #include "qemu/log.h"
+ #include "system/vhost-user-backend.h"
++#include "qapi/qapi-types-virtio.h"
+ 
+ #include "standard-headers/linux/virtio_gpu.h"
+ #include "standard-headers/linux/virtio_ids.h"
+@@ -128,6 +129,7 @@ struct virtio_gpu_base_conf {
+     uint32_t xres;
+     uint32_t yres;
+     uint64_t hostmem;
++    VirtIOGPUOutputList *outputs;
  };
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index 854a97c198..9ce622cefc 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -1086,7 +1086,7 @@ static void qemu_spice_gl_scanout_texture(DisplayChangeListener *dcl,
- {
-     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
-     EGLint offset[DMABUF_MAX_PLANES], stride[DMABUF_MAX_PLANES], fourcc = 0;
--    int fd[DMABUF_MAX_PLANES], num_planes;
-+    int fd[DMABUF_MAX_PLANES], num_planes, i;
-     uint64_t modifier;
  
-     assert(tex_id);
-@@ -1098,11 +1098,26 @@ static void qemu_spice_gl_scanout_texture(DisplayChangeListener *dcl,
+ struct virtio_gpu_ctrl_command {
+@@ -167,6 +169,7 @@ struct VirtIOGPUBaseClass {
  
-     trace_qemu_spice_gl_scanout_texture(ssd->qxl.id, w, h, fourcc);
- 
--    /* note: spice server will close the fd */
--    spice_server_gl_scanout(&ssd->qxl, fd, backing_width, backing_height,
--                            (uint32_t *)offset, (uint32_t *)stride, num_planes,
--                            fourcc, modifier, y_0_top);
--    qemu_spice_gl_monitor_config(ssd, x, y, w, h);
-+    if (spice_remote_client && modifier != DRM_FORMAT_MOD_LINEAR) {
-+        egl_fb_destroy(&ssd->guest_fb);
-+        egl_fb_setup_for_tex(&ssd->guest_fb,
-+                             backing_width, backing_height,
-+                             tex_id, false);
-+        ssd->backing_y_0_top = y_0_top;
-+        ssd->blit_scanout_texture = true;
-+        ssd->new_scanout_texture = true;
+ #define VIRTIO_GPU_BASE_PROPERTIES(_state, _conf)                       \
+     DEFINE_PROP_UINT32("max_outputs", _state, _conf.max_outputs, 1),    \
++    DEFINE_PROP_VIRTIO_GPU_OUTPUT_LIST("outputs", _state, _conf.outputs), \
+     DEFINE_PROP_BIT("edid", _state, _conf.flags, \
+                     VIRTIO_GPU_FLAG_EDID_ENABLED, true), \
+     DEFINE_PROP_UINT32("xres", _state, _conf.xres, 1280), \
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 24e145d870..1f810b7ddf 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -1299,3 +1299,47 @@ const PropertyInfo qdev_prop_vmapple_virtio_blk_variant = {
+     .set   = qdev_propinfo_set_enum,
+     .set_default_value = qdev_propinfo_set_default_value_enum,
+ };
 +
-+        for (i = 0; i < num_planes; i++) {
-+            close(fd[i]);
-+        }
-+    } else {
-+        /* note: spice server will close the fd */
-+        spice_server_gl_scanout(&ssd->qxl, fd, backing_width, backing_height,
-+                                (uint32_t *)offset, (uint32_t *)stride,
-+                                num_planes, fourcc, modifier, y_0_top);
-+        qemu_spice_gl_monitor_config(ssd, x, y, w, h);
-+    }
++/* --- VirtIOGPUOutputList --- */
 +
-     ssd->have_surface = false;
-     ssd->have_scanout = true;
- }
-@@ -1168,6 +1183,50 @@ static void qemu_spice_gl_release_dmabuf(DisplayChangeListener *dcl,
-     egl_dmabuf_release_texture(dmabuf);
- }
- 
-+static bool spice_gl_blit_scanout_texture(SimpleSpiceDisplay *ssd,
-+                                          egl_fb *scanout_tex_fb)
++static void get_virtio_gpu_output_list(Object *obj, Visitor *v,
++    const char *name, void *opaque, Error **errp)
 +{
-+    uint32_t offsets[DMABUF_MAX_PLANES], strides[DMABUF_MAX_PLANES];
-+    int fds[DMABUF_MAX_PLANES], num_planes, fourcc;
-+    uint64_t modifier;
-+    bool ret;
++    VirtIOGPUOutputList **prop_ptr =
++        object_field_prop_ptr(obj, opaque);
 +
-+    egl_fb_destroy(scanout_tex_fb);
-+    egl_fb_setup_for_tex(scanout_tex_fb,
-+                         surface_width(ssd->ds), surface_height(ssd->ds),
-+                         ssd->ds->texture, false);
-+    egl_fb_blit(scanout_tex_fb, &ssd->guest_fb, false);
-+    glFlush();
-+
-+    if (!ssd->new_scanout_texture) {
-+        return true;
-+    }
-+
-+    ret = egl_dmabuf_export_texture(ssd->ds->texture,
-+                                    fds,
-+                                    (EGLint *)offsets,
-+                                    (EGLint *)strides,
-+                                    &fourcc,
-+                                    &num_planes,
-+                                    &modifier);
-+    if (!ret) {
-+        error_report("spice: failed to get fd for texture");
-+        return false;
-+    }
-+
-+    spice_server_gl_scanout(&ssd->qxl, fds,
-+                            surface_width(ssd->ds),
-+                            surface_height(ssd->ds),
-+                            (uint32_t *)offsets, (uint32_t *)strides,
-+                            num_planes, fourcc, modifier,
-+                            ssd->backing_y_0_top);
-+    qemu_spice_gl_monitor_config(ssd, 0, 0,
-+                                 surface_width(ssd->ds),
-+                                 surface_height(ssd->ds));
-+    ssd->new_scanout_texture = false;
-+    return true;
++    visit_type_VirtIOGPUOutputList(v, name, prop_ptr, errp);
 +}
 +
- static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-                                  uint32_t x, uint32_t y, uint32_t w, uint32_t h)
- {
-@@ -1175,6 +1234,7 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-     EGLint fourcc = 0;
-     bool render_cursor = false;
-     bool y_0_top = false; /* FIXME */
-+    bool ret;
-     uint32_t width, height, texture;
- 
-     if (!ssd->have_scanout) {
-@@ -1269,6 +1329,15 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-         glFlush();
-     }
- 
-+    if (spice_remote_client && ssd->blit_scanout_texture) {
-+        egl_fb scanout_tex_fb;
++static void set_virtio_gpu_output_list(Object *obj, Visitor *v,
++    const char *name, void *opaque, Error **errp)
++{
++    VirtIOGPUOutputList **prop_ptr =
++        object_field_prop_ptr(obj, opaque);
++    VirtIOGPUOutputList *list;
 +
-+        ret = spice_gl_blit_scanout_texture(ssd, &scanout_tex_fb);
-+        if (!ret) {
-+            return;
++    if (!visit_type_VirtIOGPUOutputList(v, name, &list, errp)) {
++        return;
++    }
++
++    qapi_free_VirtIOGPUOutputList(*prop_ptr);
++    *prop_ptr = list;
++}
++
++static void release_virtio_gpu_output_list(Object *obj,
++    const char *name, void *opaque)
++{
++    VirtIOGPUOutputList **prop_ptr =
++        object_field_prop_ptr(obj, opaque);
++
++    qapi_free_VirtIOGPUOutputList(*prop_ptr);
++    *prop_ptr = NULL;
++}
++
++const PropertyInfo qdev_prop_virtio_gpu_output_list = {
++    .type = "VirtIOGPUOutputList",
++    .description = "VirtIO GPU output list [{\"name\":\"<name>\"},...]",
++    .get = get_virtio_gpu_output_list,
++    .set = set_virtio_gpu_output_list,
++    .release = release_virtio_gpu_output_list,
++};
+diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+index 9eb806b71f..7269477a1c 100644
+--- a/hw/display/virtio-gpu-base.c
++++ b/hw/display/virtio-gpu-base.c
+@@ -19,6 +19,7 @@
+ #include "qemu/error-report.h"
+ #include "hw/display/edid.h"
+ #include "trace.h"
++#include "qapi/qapi-types-virtio.h"
+ 
+ void
+ virtio_gpu_base_reset(VirtIOGPUBase *g)
+@@ -56,6 +57,8 @@ void
+ virtio_gpu_base_generate_edid(VirtIOGPUBase *g, int scanout,
+                               struct virtio_gpu_resp_edid *edid)
+ {
++    size_t output_idx;
++    VirtIOGPUOutputList *node;
+     qemu_edid_info info = {
+         .width_mm = g->req_state[scanout].width_mm,
+         .height_mm = g->req_state[scanout].height_mm,
+@@ -64,6 +67,14 @@ virtio_gpu_base_generate_edid(VirtIOGPUBase *g, int scanout,
+         .refresh_rate = g->req_state[scanout].refresh_rate,
+     };
+ 
++    for (output_idx = 0, node = g->conf.outputs;
++         output_idx <= scanout && node; output_idx++, node = node->next) {
++        if (output_idx == scanout && node->value && node->value->name) {
++            info.name = node->value->name;
++            break;
 +        }
 +    }
 +
-     trace_qemu_spice_gl_update(ssd->qxl.id, w, h, x, y);
-     qemu_spice_gl_block(ssd, true);
-     glFlush();
+     edid->size = cpu_to_le32(sizeof(edid->edid));
+     qemu_edid_generate(edid->edid, sizeof(edid->edid), &info);
+ }
+@@ -172,6 +183,8 @@ virtio_gpu_base_device_realize(DeviceState *qdev,
+                                VirtIOHandleOutput cursor_cb,
+                                Error **errp)
+ {
++    size_t output_idx;
++    VirtIOGPUOutputList *node;
+     VirtIODevice *vdev = VIRTIO_DEVICE(qdev);
+     VirtIOGPUBase *g = VIRTIO_GPU_BASE(qdev);
+     int i;
+@@ -181,6 +194,20 @@ virtio_gpu_base_device_realize(DeviceState *qdev,
+         return false;
+     }
+ 
++    for (output_idx = 0, node = g->conf.outputs;
++         node; output_idx++, node = node->next) {
++        if (output_idx == g->conf.max_outputs) {
++            error_setg(errp, "invalid outputs > %d", g->conf.max_outputs);
++            return false;
++        }
++        if (node->value && node->value->name &&
++            strlen(node->value->name) > EDID_NAME_MAX_LENGTH) {
++            error_setg(errp, "invalid output name '%s' > %d",
++                       node->value->name, EDID_NAME_MAX_LENGTH);
++            return false;
++        }
++    }
++
+     if (virtio_gpu_virgl_enabled(g->conf)) {
+         error_setg(&g->migration_blocker, "virgl is not yet migratable");
+         if (migrate_add_blocker(&g->migration_blocker, errp) < 0) {
 -- 
 2.50.0
 
