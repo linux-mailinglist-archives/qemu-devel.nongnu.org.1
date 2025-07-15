@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A8CB06775
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 22:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F02C6B0675B
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:59:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublsf-0007gj-4p; Tue, 15 Jul 2025 16:04:01 -0400
+	id 1ublo8-00011p-1u; Tue, 15 Jul 2025 15:59:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublay-000249-EY
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:45:45 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublb0-00028M-JI
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:45:47 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublav-0002gF-04
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:45:43 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3a528243636so3290044f8f.3
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 12:45:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublay-0002gZ-ST
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:45:46 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4550709f2c1so30723525e9.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 12:45:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752608737; x=1753213537; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752608743; x=1753213543; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Y4H7q6wtMebLP2FB4L+vyKN4sDObDDcyRkuxy6M8jq4=;
- b=Cr4GL49HyBtSB7fvwVUApXgWlUsWB8HrZMe9Ja7XUMbhOI+Br58D3LVGCJ/1zhhP2d
- EDN9yBfJkZJeKXx8rCirIC7s7dsUE9tHzIBakw4YjtDObqAI5xyUM8upWEQc9fzxg68c
- 1Yk+hvkoxuaIf4U521UFoc03cUjrGfhYp28JyuGMdSIsLDFtlubmgHkYalGPvJo3BiX3
- k7kQyKyfumc7b/mbkf5072vIbLHBM399s1ovcun/3x7vPyCE82hqi6cALAxhDiflFmWq
- UN/ofZZj5P/nYeUQ/UBMkzcQKbw5NefjLw3KpzcS8yAce/am2oEC+P222tLJRd5aCbWd
- 5Dfg==
+ :reply-to; bh=Mg0kAtPoLtyuNx//5J8QI2+xgJAwgK4CqzuD5gBbA9M=;
+ b=BkJ0S3AZRWNVlrHFb+60BIIkc5EkF89x1g5FUIR4uOIqNQ9WDdKdrKnF5iKZ0ubiZ3
+ 31tkuq99U8X2qgLcv07Q3jtcbQmftTJlTOfb6kDVe8TkTKay49Jj4edEsCcfj4wufE1W
+ naogMe4iTwhOd5UvX2AG2YnObqKXSdV4gsW7zXt76Qkm1h1CrEJJbs9l1CuC3L1UM7Vs
+ WpCJXY0mhTjYmY7acH+AU3vGS+GTrp7AssjUJ1XDXidcGIECEq1T4FSSuC9/z/F5RiiK
+ 7Bn26gzJlupryn0OFTb1YeAsuQQO/DHtbrRqVcMbgIIxCPRFlye1ul6VrvQ98GAuQof/
+ vi8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752608737; x=1753213537;
+ d=1e100.net; s=20230601; t=1752608743; x=1753213543;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Y4H7q6wtMebLP2FB4L+vyKN4sDObDDcyRkuxy6M8jq4=;
- b=iC6QZrgntnMSQXYNBw714xCwYSX3+o2v5DQeZZrFlR6/YOVQudyeDfOB16qWNpEvYG
- az9YIgYWTPyPCe+jS1+YxTBneSeSozx/Bh7SgdExuO3Gurru8PeAK1M8Xgjy/JH1opYK
- 857W080Q5Hn1E7T7FSzh+HHAX4IsvhYaAE+AnQNxWL2m+HZBg5fqEtpPAoHjTSrZqOew
- B10ffGsZ3AQMgRwsWzLN00uzZywJYEuG8RDIFbUixdWyQXp4X3s3VBqiw8oMqGE5AoGp
- tKHvP9v5mEwFXEoZI30B4zX3gUHjpbnKuJsuNdwFf6VnlnzDCZJeJT0DNdqsjp+Bf256
- m3uw==
-X-Gm-Message-State: AOJu0Yz+11ZmDhaL1AUEHM6AHc/WWunnoQZw4CAi7LtFVsjLsMFrxXkN
- HVogQow0lXRsCHvDKEGl45dzRsKdkZfLylTD1zL+xPhjb93MnGhG8/4oSyIF7pOjW741naGrbh2
- Zq/Jv
-X-Gm-Gg: ASbGncvSUAJ2VXmnhk2n1yeOdm0NlwkwqaCpji36nQ2nKGC/MHxpFRY3OLOmIg1p+e2
- zjTIO5QJI1WqsJ0v8YmV+9GvZkGfwOLGPqlQWjYSqXsiC1N2dzRY1sblO14B7zA/LevaaEUgLax
- MWKDteBclpruwXFMN0lHPeVgdcP54XJI9vHplAhQAlB+DsWXr6WK7j1oOEp55VNO+vHU+nEQOJm
- d93Nd0QnW9C8kv48X2QATEU/kGy7VQsAeTbapLvXPXAq0QChshhp65pjSW4v+lTAMRqxdBFdUJW
- gtVn/YcEpW6hGk5vh4BeOll+UEjK8oIkjV1ojN+cBs7fblFyvy8CTOXKbhhmpSjo8YczXVK6g/f
- 9vCip0rSDkMsgZs0I32tT6An0HJB7LK7JHLTisw+HNrjQQ/Lc22azz20TxtJUqH4+finBG7mdgp
- +MmQ==
-X-Google-Smtp-Source: AGHT+IGzFn1iXXKcuAtIW+CAVAlkBf21xtLiltI0CRCZv/aO0rvOumkZPCsA0Z0Ehb0+Gn0xt6KOCw==
-X-Received: by 2002:a05:6000:4a06:b0:3a4:dc32:6cbc with SMTP id
- ffacd0b85a97d-3b60dd53fe5mr366440f8f.20.1752608737512; 
- Tue, 15 Jul 2025 12:45:37 -0700 (PDT)
+ bh=Mg0kAtPoLtyuNx//5J8QI2+xgJAwgK4CqzuD5gBbA9M=;
+ b=pHjPPHD/XuB9SkzEjOdk3cflvDJd/yMLvDNz927hxW3VW2gCu9xiqeBGCqI1IdADVn
+ jp2co5co91BqRkc4ZmFABhanVijBMfxhVQ+XHg2r0mm1/fchUvvjSJ1Vi+ror2Rq02Hf
+ kAwIiT2sQAN3gTlD2AL8u6tvuntAfUXWiJU14PWndXBu1fDV66U+K4bXVl2znwWp/eXn
+ ad66L09oZQaTs3OjCaCAmeF5X0/hTTAw0OVwi8JvpZXdpVgCiLQFsdFXVLYql7oxWnMV
+ P8Kx/i59fobyGQRpKbNIEYhSNB+IWh3py5LD36oKnD9yiGtXd8MjQL/oHY3y+8zm8Lav
+ B8Jg==
+X-Gm-Message-State: AOJu0Yz/4CLjzuomhqj71XLK45cLfCvRqOcOkABjEDePRqbadqQQAVr9
+ E1RxsG+icm6wow0rZvDw30/c9sh6urDyHiA92dhw8DSakgIWT7i4ACdPvv8xzMorHCiSSMk3JUz
+ sWmN+
+X-Gm-Gg: ASbGncv5GhrQb5mQdJy1s9v97mX2AoWVGOj1C3CR19kxzEnj8AcT/XOYGO8p5cRRVF3
+ L1KfAYsbiBk3mvoHKWNO0Kc6ugt9b1rqRorY6SkREgmSfvIoBhUrbuLUDta55KSNkZOAF73lXYz
+ 72w5K7nCW/W5b1YBJ2F60ZMb9Vmq2T228yU0dOSFEH9SK00a4gFJ/htjv9I9hMtf0aIhH6T6shm
+ DB79oz10SfbWs9uhLSYZOWO2nKWwVo5NWx6MnqEWl5CB0Lx3LRvYHK4HXosTnp7mr0J4c7mX+GR
+ CAZtExd5xRvaQcLvN7nkhR2GG25g21puLCvVvrsOkaWElDedDKuOctoo7ZPROu5vv5sEyKo3qza
+ qTEyvTY20SuP1jmuvS+UKKc8zxOr/jcTuP0/v01pRFeiMpJ7ghvDYL83K7G9n98Q8avcUMUJzsT
+ pSWw==
+X-Google-Smtp-Source: AGHT+IGd+YL3xbeMnIF/YY+qKHthQWDxQdpn8zi7r87LKBS/d2aao1Rr3a8Xo6WVMya9+36A3TNASQ==
+X-Received: by 2002:a05:600c:450f:b0:456:19b2:6aa8 with SMTP id
+ 5b1f17b1804b1-4562e27497dmr1618115e9.19.1752608742907; 
+ Tue, 15 Jul 2025 12:45:42 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d727sm16076581f8f.51.2025.07.15.12.45.36
+ 5b1f17b1804b1-4562bacfa41sm9300245e9.40.2025.07.15.12.45.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Jul 2025 12:45:37 -0700 (PDT)
+ Tue, 15 Jul 2025 12:45:42 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/17] qapi/machine: Add @qom-type field to CpuInfoFast
- structure
-Date: Tue, 15 Jul 2025 21:45:03 +0200
-Message-ID: <20250715194516.91722-5-philmd@linaro.org>
+Subject: [PULL 05/17] hw/core/machine: Display CPU model name in 'info cpus'
+ command
+Date: Tue, 15 Jul 2025 21:45:04 +0200
+Message-ID: <20250715194516.91722-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250715194516.91722-1-philmd@linaro.org>
 References: <20250715194516.91722-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,52 +98,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Knowing the QOM type name of a CPU can be useful,
-in particular to infer its model name.
+Display the CPU model in 'info cpus'. Example before:
+
+ $ qemu-system-aarch64 -M xlnx-versal-virt -S -monitor stdio
+ QEMU 10.0.0 monitor - type 'help' for more information
+ (qemu) info cpus
+ * CPU #0: thread_id=42924
+   CPU #1: thread_id=42924
+   CPU #2: thread_id=42924
+   CPU #3: thread_id=42924
+ (qemu) q
+
+and after:
+
+ $ qemu-system-aarch64 -M xlnx-versal-virt -S -monitor stdio
+ QEMU 10.0.50 monitor - type 'help' for more information
+ (qemu) info cpus
+ * CPU #0: thread_id=42916 model=cortex-a72
+   CPU #1: thread_id=42916 model=cortex-a72
+   CPU #2: thread_id=42916 model=cortex-r5f
+   CPU #3: thread_id=42916 model=cortex-r5f
+ (qemu)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Tested-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-Id: <20250715090624.52377-2-philmd@linaro.org>
+Message-Id: <20250715090624.52377-3-philmd@linaro.org>
 ---
- qapi/machine.json          | 3 +++
- hw/core/machine-qmp-cmds.c | 1 +
- 2 files changed, 4 insertions(+)
+ hw/core/machine-hmp-cmds.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/machine.json b/qapi/machine.json
-index f80ba264b53..6d3a480bea3 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -76,6 +76,8 @@
- #
- # @cpu-index: index of the virtual CPU
- #
-+# @qom-type: QOM type name of the CPU (since 10.1)
-+#
- # @qom-path: path to the CPU object in the QOM tree
- #
- # @thread-id: ID of the underlying host thread
-@@ -89,6 +91,7 @@
- ##
- { 'union'         : 'CpuInfoFast',
-   'base'          : { 'cpu-index'    : 'int',
-+                      'qom-type'     : 'str',
-                       'qom-path'     : 'str',
-                       'thread-id'    : 'int',
-                       '*props'       : 'CpuInstanceProperties',
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 1af0f29f7d3..b9e7eb64e02 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -48,6 +48,7 @@ CpuInfoFastList *qmp_query_cpus_fast(Error **errp)
-         value->cpu_index = cpu->cpu_index;
-         value->qom_path = object_get_canonical_path(OBJECT(cpu));
-         value->thread_id = cpu->thread_id;
-+        value->qom_type = g_strdup(object_get_typename(OBJECT(cpu)));
+diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
+index 5ca0da77b14..3a612e2232d 100644
+--- a/hw/core/machine-hmp-cmds.c
++++ b/hw/core/machine-hmp-cmds.c
+@@ -33,6 +33,7 @@ void hmp_info_cpus(Monitor *mon, const QDict *qdict)
+     cpu_list = qmp_query_cpus_fast(NULL);
  
-         if (mc->cpu_index_to_instance_props) {
-             CpuInstanceProperties *props;
+     for (cpu = cpu_list; cpu; cpu = cpu->next) {
++        g_autofree char *cpu_model = cpu_model_from_type(cpu->value->qom_type);
+         int active = ' ';
+ 
+         if (cpu->value->cpu_index == monitor_get_cpu_index(mon)) {
+@@ -41,7 +42,8 @@ void hmp_info_cpus(Monitor *mon, const QDict *qdict)
+ 
+         monitor_printf(mon, "%c CPU #%" PRId64 ":", active,
+                        cpu->value->cpu_index);
+-        monitor_printf(mon, " thread_id=%" PRId64 "\n", cpu->value->thread_id);
++        monitor_printf(mon, " thread_id=%" PRId64 " model=%s\n",
++                       cpu->value->thread_id, cpu_model);
+     }
+ 
+     qapi_free_CpuInfoFastList(cpu_list);
 -- 
 2.49.0
 
