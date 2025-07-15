@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE462B0505C
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 06:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF02B0506D
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 06:41:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubXPR-0001wm-QU; Tue, 15 Jul 2025 00:36:53 -0400
+	id 1ubXPL-0001sq-Kc; Tue, 15 Jul 2025 00:36:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1ubXOh-0001TC-Vu
+ id 1ubXOj-0001Tn-Jk
  for qemu-devel@nongnu.org; Tue, 15 Jul 2025 00:36:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1ubXOf-00062z-NH
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 00:36:07 -0400
+ id 1ubXOh-000633-QG
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 00:36:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752554164;
+ s=mimecast20190719; t=1752554166;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m+YvooSYZgdxo1YSHG8Ogjlc2B/r4R8Tf/zQP9kdvCs=;
- b=jGH7bHw52LZ2bo+pQSozk6+vW7NT+Kw04M3Rs8tftaPfim82NLDtyQA8hARdASOhePxGMl
- mxnQYOzGBT+KT+xv8PJHUOG6rcY5L1i3Js3S1YvPX5AhKxf2oNYGBYsJGKn96HNScSDwd1
- CSAQZABromZpJgwg7hJJB0ArnomcyHM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=tQv5wmeY0GaWezx9NXctHKJ6I7SkofkcbyXSQD2bNxc=;
+ b=Gbiuh+cKPTbHEEbZl6qQiVx4P2u0dolPESF7p7SktqOlFIOOq/Y8EqlZWjpXNm4RIed2oj
+ NXCry5fP2UNlDAk3Y2aU1RQLfFr367NlG3kMuU8V6bBk0BrpFsfj6lTveoJTsBMI1SatSB
+ UPPkrCiOZpR/9fZOC2ly0tS16HPY2k0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-92-DxzeGwNtNpGAMYLZ9VHllg-1; Tue,
- 15 Jul 2025 00:36:00 -0400
-X-MC-Unique: DxzeGwNtNpGAMYLZ9VHllg-1
-X-Mimecast-MFC-AGG-ID: DxzeGwNtNpGAMYLZ9VHllg_1752554159
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-206-COqRQ68iOrWdyELG6s8DzQ-1; Tue,
+ 15 Jul 2025 00:36:04 -0400
+X-MC-Unique: COqRQ68iOrWdyELG6s8DzQ-1
+X-Mimecast-MFC-AGG-ID: COqRQ68iOrWdyELG6s8DzQ_1752554163
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 84B49180029E
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 04:35:59 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 39F461809C8B
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 04:36:03 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.42])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 905F41977000; Tue, 15 Jul 2025 04:35:57 +0000 (UTC)
+ id 44F161977000; Tue, 15 Jul 2025 04:35:59 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>,
 	Jason Wang <jasowang@redhat.com>
-Subject: [PULL V2 10/16] net: Allow network backends to advertise max TX queue
- size
-Date: Tue, 15 Jul 2025 12:35:18 +0800
-Message-ID: <20250715043524.21719-11-jasowang@redhat.com>
+Subject: [PULL V2 11/16] net: Add is_vhost_user flag to vhost_net struct
+Date: Tue, 15 Jul 2025 12:35:19 +0800
+Message-ID: <20250715043524.21719-12-jasowang@redhat.com>
 In-Reply-To: <20250715043524.21719-1-jasowang@redhat.com>
 References: <20250715043524.21719-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -87,144 +86,141 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Laurent Vivier <lvivier@redhat.com>
 
-This commit refactors how the maximum transmit queue size for
-virtio-net devices is determined, making the mechanism more generic
-and extensible.
+Introduce a boolean is_vhost_user field to the vhost_net
+structure. This flag is initialized during vhost_net_init based
+on whether the backend is vhost-user.
 
-Previously, virtio_net_max_tx_queue_size() contained hardcoded
-checks for specific network backend types (vhost-user and
-vhost-vdpa) to determine their supported maximum queue size. This
-created direct dependencies and would require modifications for
-every new backend that supports variable queue sizes.
-
-To improve flexibility, a new max_tx_queue_size field is added
-to the vhost_net structure. This allows each network backend
-to advertise its supported maximum transmit queue size directly.
-
-The virtio_net_max_tx_queue_size() function now retrieves the max
-TX queue size from the vhost_net struct, if available and set.
-Otherwise, it defaults to VIRTIO_NET_TX_QUEUE_DEFAULT_SIZE.
+This refactoring simplifies checks for vhost-user specific behavior,
+replacing direct comparisons of 'net->nc->info->type' with the new
+flag. It improves readability and encapsulates the backend type
+information directly within the vhost_net instance.
 
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/vhost_net.c        |  1 +
- hw/net/virtio-net.c       | 24 ++++++++++++------------
- include/hw/virtio/vhost.h |  1 +
- include/net/vhost_net.h   |  1 +
- net/tap.c                 |  1 +
- net/vhost-user.c          |  1 +
- net/vhost-vdpa.c          |  1 +
- 7 files changed, 18 insertions(+), 12 deletions(-)
+ hw/net/vhost_net.c        | 3 ++-
+ hw/net/virtio-net.c       | 8 ++++++--
+ include/hw/virtio/vhost.h | 1 +
+ include/net/vhost_net.h   | 1 +
+ net/tap.c                 | 1 +
+ net/vhost-user.c          | 1 +
+ net/vhost-vdpa.c          | 1 +
+ 7 files changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index 976d2b315a..74d2e3ed90 100644
+index 74d2e3ed90..540492b37d 100644
 --- a/hw/net/vhost_net.c
 +++ b/hw/net/vhost_net.c
-@@ -245,6 +245,7 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
-     net->dev.nvqs = options->nvqs;
+@@ -246,6 +246,7 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
      net->feature_bits = options->feature_bits;
      net->save_acked_features = options->save_acked_features;
-+    net->max_tx_queue_size = options->max_tx_queue_size;
+     net->max_tx_queue_size = options->max_tx_queue_size;
++    net->is_vhost_user = options->is_vhost_user;
  
      net->dev.max_queues = 1;
      net->dev.vqs = net->vqs;
+@@ -440,7 +441,7 @@ int vhost_net_start(VirtIODevice *dev, NetClientState *ncs,
+          * because vhost user doesn't interrupt masking/unmasking
+          * properly.
+          */
+-        if (net->nc->info->type == NET_CLIENT_DRIVER_VHOST_USER) {
++        if (net->is_vhost_user) {
+             dev->use_guest_notifier_mask = false;
+         }
+      }
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index e3400f18c8..39fc280839 100644
+index 39fc280839..00df5fd6cd 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -670,22 +670,22 @@ static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, int mergeable_rx_bufs,
- static int virtio_net_max_tx_queue_size(VirtIONet *n)
+@@ -691,12 +691,14 @@ default_value:
+ static int peer_attach(VirtIONet *n, int index)
  {
-     NetClientState *peer = n->nic_conf.peers.ncs[0];
+     NetClientState *nc = qemu_get_subqueue(n->nic, index);
 +    struct vhost_net *net;
  
--    /*
--     * Backends other than vhost-user or vhost-vdpa don't support max queue
--     * size.
--     */
-     if (!peer) {
--        return VIRTIO_NET_TX_QUEUE_DEFAULT_SIZE;
-+        goto default_value;
+     if (!nc->peer) {
+         return 0;
      }
  
--    switch(peer->info->type) {
--    case NET_CLIENT_DRIVER_VHOST_USER:
--    case NET_CLIENT_DRIVER_VHOST_VDPA:
--        return VIRTQUEUE_MAX_SIZE;
--    default:
--        return VIRTIO_NET_TX_QUEUE_DEFAULT_SIZE;
--    };
-+    net = get_vhost_net(peer);
-+
-+    if (!net || !net->max_tx_queue_size) {
-+        goto default_value;
-+    }
-+
-+    return net->max_tx_queue_size;
-+
-+default_value:
-+    return VIRTIO_NET_TX_QUEUE_DEFAULT_SIZE;
- }
+-    if (nc->peer->info->type == NET_CLIENT_DRIVER_VHOST_USER) {
++    net = get_vhost_net(nc->peer);
++    if (net && net->is_vhost_user) {
+         vhost_net_set_vring_enable(nc->peer, 1);
+     }
  
- static int peer_attach(VirtIONet *n, int index)
+@@ -714,12 +716,14 @@ static int peer_attach(VirtIONet *n, int index)
+ static int peer_detach(VirtIONet *n, int index)
+ {
+     NetClientState *nc = qemu_get_subqueue(n->nic, index);
++    struct vhost_net *net;
+ 
+     if (!nc->peer) {
+         return 0;
+     }
+ 
+-    if (nc->peer->info->type == NET_CLIENT_DRIVER_VHOST_USER) {
++    net = get_vhost_net(nc->peer);
++    if (net && net->is_vhost_user) {
+         vhost_net_set_vring_enable(nc->peer, 0);
+     }
+ 
 diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index b0830bac79..a62992c819 100644
+index a62992c819..f178cf9e1d 100644
 --- a/include/hw/virtio/vhost.h
 +++ b/include/hw/virtio/vhost.h
-@@ -145,6 +145,7 @@ struct vhost_net {
-     struct vhost_virtqueue vqs[2];
-     int backend;
+@@ -147,6 +147,7 @@ struct vhost_net {
      const int *feature_bits;
-+    int max_tx_queue_size;
+     int max_tx_queue_size;
      SaveAcketFeatures *save_acked_features;
++    bool is_vhost_user;
      NetClientState *nc;
  };
+ 
 diff --git a/include/net/vhost_net.h b/include/net/vhost_net.h
-index eb26ed9bdc..8f4fddfb69 100644
+index 8f4fddfb69..879781dad7 100644
 --- a/include/net/vhost_net.h
 +++ b/include/net/vhost_net.h
-@@ -16,6 +16,7 @@ typedef struct VhostNetOptions {
-     uint32_t busyloop_timeout;
+@@ -17,6 +17,7 @@ typedef struct VhostNetOptions {
      unsigned int nvqs;
      const int *feature_bits;
-+    int max_tx_queue_size;
+     int max_tx_queue_size;
++    bool is_vhost_user;
      GetAckedFeatures *get_acked_features;
      SaveAcketFeatures *save_acked_features;
      void *opaque;
 diff --git a/net/tap.c b/net/tap.c
-index 79fa02a65c..2f0cb55c9a 100644
+index 2f0cb55c9a..23536c09b4 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -746,6 +746,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-         options.feature_bits = kernel_feature_bits;
+@@ -747,6 +747,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
          options.get_acked_features = NULL;
          options.save_acked_features = NULL;
-+        options.max_tx_queue_size = 0;
+         options.max_tx_queue_size = 0;
++        options.is_vhost_user = false;
  
          s->vhost_net = vhost_net_init(&options);
          if (!s->vhost_net) {
 diff --git a/net/vhost-user.c b/net/vhost-user.c
-index 8a3df27b02..bf892915de 100644
+index bf892915de..1c3b8b36f3 100644
 --- a/net/vhost-user.c
 +++ b/net/vhost-user.c
-@@ -138,6 +138,7 @@ static int vhost_user_start(int queues, NetClientState *ncs[],
-         options.busyloop_timeout = 0;
-         options.nvqs = 2;
-         options.feature_bits = user_feature_bits;
-+        options.max_tx_queue_size = VIRTQUEUE_MAX_SIZE;
+@@ -141,6 +141,7 @@ static int vhost_user_start(int queues, NetClientState *ncs[],
+         options.max_tx_queue_size = VIRTQUEUE_MAX_SIZE;
          options.get_acked_features = vhost_user_get_acked_features;
          options.save_acked_features = vhost_user_save_acked_features;
++        options.is_vhost_user = true;
  
+         net = vhost_net_init(&options);
+         if (!net) {
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index c63225d3d2..353392b3d7 100644
+index 353392b3d7..943e9c585c 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -204,6 +204,7 @@ static int vhost_vdpa_add(NetClientState *ncs, void *be,
-     options.feature_bits = vdpa_feature_bits;
+@@ -205,6 +205,7 @@ static int vhost_vdpa_add(NetClientState *ncs, void *be,
      options.get_acked_features = NULL;
      options.save_acked_features = NULL;
-+    options.max_tx_queue_size = VIRTQUEUE_MAX_SIZE;
+     options.max_tx_queue_size = VIRTQUEUE_MAX_SIZE;
++    options.is_vhost_user = false;
  
      net = vhost_net_init(&options);
      if (!net) {
