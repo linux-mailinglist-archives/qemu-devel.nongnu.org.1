@@ -2,71 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E902CB066F3
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B747B06739
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:47:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublQD-0001Vf-Fw; Tue, 15 Jul 2025 15:34:38 -0400
+	id 1ublb4-0002Bs-LZ; Tue, 15 Jul 2025 15:45:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkyG-0004hn-JT
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1ubkzC-00052o-Qh
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:06:44 -0400
+Received: from fhigh-a6-smtp.messagingengine.com ([103.168.172.157])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkyE-0001oA-ET
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606341;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1Qy9Tix5Uw1YpHnQdQLk8iYBh0aW/alhW9midwgBcck=;
- b=hTnm7LfV9mRREsMYC6fIM79amOjh57Npk8a41dnShkaTsNK1SgS8I4dSjkM7+SfBSdgm23
- XUHMG7PlY92ifWLT/SqUCvsWrrMZICCIKsfMej8Dj46d5b2qMha4Evl5gvxxQNoZ37ufy3
- ESzDxGKbl6PAwts3cchzU1+GHKndxMw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-304-ANPtvm_0OeiCn8WOrYHOEQ-1; Tue,
- 15 Jul 2025 15:05:38 -0400
-X-MC-Unique: ANPtvm_0OeiCn8WOrYHOEQ-1
-X-Mimecast-MFC-AGG-ID: ANPtvm_0OeiCn8WOrYHOEQ_1752606337
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 775F31800BCB; Tue, 15 Jul 2025 19:05:37 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.44.34.84])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D47FB197702B; Tue, 15 Jul 2025 19:05:35 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	stefanha@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 57/57] qemu-img: extend cvtnum() and use it in more places
-Date: Tue, 15 Jul 2025 21:03:30 +0200
-Message-ID: <20250715190330.378764-58-kwolf@redhat.com>
-In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
-References: <20250715190330.378764-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1ubkz6-0001r8-EO
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:06:41 -0400
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal
+ [10.202.2.46])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id 0AF26140025D;
+ Tue, 15 Jul 2025 15:06:34 -0400 (EDT)
+Received: from phl-imap-08 ([10.202.2.84])
+ by phl-compute-06.internal (MEProxy); Tue, 15 Jul 2025 15:06:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1752606394;
+ x=1752692794; bh=Ld270ARNXKviUbockHvo9cpRjE6+Uk4j3ncQcA5itck=; b=
+ 2SLuZKWsGk+mXk70nrFt4nA2i+GcePOeHwME9sIFTgz3rEItV7LJSlmGej50JOr+
+ xbIqcNTIj4B5DUiZBuogXDBpBr33m8Wxmz2OxD/wcnnRa6Rljaz4PNvDpnbrnm+i
+ mt6LejcvgoSXOjNaVlXy/SogCn8eqNMdPAsTdVUcEevHbOBS2NTcy5zljPnK5DNv
+ Oe8kZTJXzcQAn2jvqP65d1G9Ngu2UII3D6IHOYxtI8Dw0i5+VkpcvTFUh21dlrd9
+ LjVgHRDTFsXheZJm9XvqHta/WbUPxPJKgI/8Ky6UMMgZgDf6d0+yEnoGprNEyuVy
+ n7B0bm6/ZdpTpRurlA9S0A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1752606394; x=
+ 1752692794; bh=Ld270ARNXKviUbockHvo9cpRjE6+Uk4j3ncQcA5itck=; b=c
+ R5r7VgHVNmllDLgLq75rs1lksYEtxh8n1CcuZnphSHFuAPVLHPJsn5Kc9UYR1K0/
+ Cwmgaerl6tUjUy+4TwVEe9TdQMiagcuPYg1OyY2553BHxdiVdTmhwVc/amp5zKHA
+ nJjgto2R5bTAasygn5ZHs1HddgZj9851PH5sI0cm77hl1Bpntn4OFwYK9hXGbmtQ
+ scNwTU7AvMibi+HP5lbqRihtQDjUGi8ZV/dMx8nM1fD+d/5d6rOlwjUuLwr3bwrK
+ vDCrlalARMqRsQW/E8Nj1M0DuZPWHFge8xRedIqYSGwCXIZso5umA3BkDqTCA5yv
+ omauyZDrhY/YQKvUml4HQ==
+X-ME-Sender: <xms:uaZ2aAt7WNjBswmWsssI-6gqFFbr3cG2zgZf2X0-Z5NLgTwNBf1dGA>
+ <xme:uaZ2aNdhUtyHUAxryAMZANZmcwRIfzR3432-0XHP1IYjOVGxvD_QiRiW1s6GMKDlI
+ ClJ90vyyQTgNO9eRqw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehheeifecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+ ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+ hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdflihgrgihu
+ nhcujggrnhhgfdcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenuc
+ ggtffrrghtthgvrhhnpeehfeehkeekhfffueeifeevieejgfekkefffefggefhgefgleeu
+ ffdvheefvedvgfenucffohhmrghinheplhgruhhntghhphgrugdrnhgvthenucevlhhush
+ htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigr
+ nhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhopeeipdhmohguvgepshhmth
+ hpohhuthdprhgtphhtthhopehfgegsuhhgsegrmhhsrghtrdhorhhgpdhrtghpthhtohep
+ rghurhgvlhhivghnsegruhhrvghlfedvrdhnvghtpdhrtghpthhtohepudelvdeivdejje
+ essghughhsrdhlrghunhgthhhprggurdhnvghtpdhrtghpthhtohepvggughgrrhdrihhg
+ lhgvshhirghssehgmhgrihhlrdgtohhmpdhrtghpthhtohepqhgvmhhuqdguvghvvghlse
+ hnohhnghhnuhdrohhrghdprhgtphhtthhopegrlhgvkhhsrghnuggrrhdrrhhikhgrlhho
+ sehshihrmhhirgdrtghomh
+X-ME-Proxy: <xmx:uaZ2aFLg5vFsjcLLpZTb4oTOCCFuGp4MUo9FQBGtDKsxt_H2z4nehA>
+ <xmx:uaZ2aB7-5Lo6KJyNuT3tgSDftmdrx5G5hzYhCtUOatZHRR5LQjvPXQ>
+ <xmx:uaZ2aJ1FpyaQ-OZEA_TmZ7LtnxgKRm_uwF-q5sRI67CH-mWl4l_4Zg>
+ <xmx:uaZ2aHcoiB4WVsJ2ZzyvPaoafiYuLs4GKdrwnbRSNK--tG8eFxRPWA>
+ <xmx:uqZ2aD2NzKDNWe2XKZ8BCuPMG6vpdHRw_34ibpuSw_FU9Wg86b3SdQTY>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+ id 310F92CE0071; Tue, 15 Jul 2025 15:06:33 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-ThreadId: T13493bb08d7ad028
+Date: Tue, 15 Jul 2025 20:06:10 +0100
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
+ "QEMU devel" <qemu-devel@nongnu.org>
+Cc: "Aurelien Jarno" <aurelien@aurel32.net>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ "Aleksandar Rikalo" <aleksandar.rikalo@syrmia.com>,
+ 1926277@bugs.launchpad.net
+Message-Id: <970fe4bd-e0a0-4488-8db2-a581568bf090@app.fastmail.com>
+In-Reply-To: <20210427133343.159718-1-f4bug@amsat.org>
+References: <20210427133343.159718-1-f4bug@amsat.org>
+Subject: Re: [PATCH v2] target/mips: Only update MVPControl.EVP bit if
+ executed by master VPE
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=103.168.172.157;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-a6-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,350 +117,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Tokarev <mjt@tls.msk.ru>
 
-cvtnum() expects input string to specify some sort of size
-(optionally with KMG... suffix).  However, there are a lot
-of other number conversions in there (using qemu_strtol &Co),
-also, not all conversions which use cvtnum, actually expects
-size, - like dd count=nn.
 
-Add bool is_size argument to cvtnum() to specify if it should
-treat the argument as a size or something else, - this changes
-conversion routine in use and error text.
+=E5=9C=A82021=E5=B9=B44=E6=9C=8827=E6=97=A5=E5=91=A8=E4=BA=8C =E4=B8=8B=E5=
+=8D=882:33=EF=BC=8CPhilippe Mathieu-Daud=C3=A9=E5=86=99=E9=81=93=EF=BC=9A
+> According to the 'MIPS MT Application-Speci=EF=AC=81c Extension' manua=
+l:
+>
+>   If the VPE executing the instruction is not a Master VPE,
+>   with the MVP bit of the VPEConf0 register set, the EVP bit
+>   is unchanged by the instruction.
+>
+> Modify the DVPE/EVPE opcodes to only update the MVPControl.EVP bit
+> if executed on a master VPE.
+>
+> Reported-by: Hansni Bu <https://launchpad.net/%7Ehansni/+contactuser>
+> Buglink: https://bugs.launchpad.net/qemu/+bug/1926277
+> Fixes: f249412c749 ("mips: Add MT halting and waking of VPEs")
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <f4bug@amsat.org>
 
-Use the new cvtnum() in more places (like where strtol were used),
-since it never return negative number in successful conversion.
-When it makes sense, also specify upper or lower bounds at the
-same time.  This simplifies option processing in multiple places,
-removing the need of local temporary variables and longer error
-reporting code.
+Confirmed with uarch behaviour.
 
-While at it, fix errors, like depth in measure must be >= 1,
-while the previous code allowed it to be 0.
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-In a few places, change unsigned variables (like of type size_t)
-to be signed instead, - to avoid the need of temporary conversion
-variable.  All these variables are okay to be signed, we never
-assign <0 value to them except of the cases of conversion error,
-where we return immediately.
+Thanks
+Jiaxun
 
-While at it, remove allowed size suffixes from the error message
-as it makes no sense most of the time (should be in help instead).
 
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250531171609.197078-28-mjt@tls.msk.ru>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- qemu-img.c                 | 111 +++++++++++++------------------------
- tests/qemu-iotests/049.out |   9 +--
- 2 files changed, 40 insertions(+), 80 deletions(-)
+> ---
+> Supersedes: <20210427103555.112652-1-f4bug@amsat.org>
+> v2: Check VPEConf0.MVP bit (hansni)
+> ---
+>  target/mips/cp0_helper.c | 32 ++++++++++++++++++--------------
+>  1 file changed, 18 insertions(+), 14 deletions(-)
+>
+> diff --git a/target/mips/cp0_helper.c b/target/mips/cp0_helper.c
+> index aae2af6eccc..d5f274f5cdf 100644
+> --- a/target/mips/cp0_helper.c
+> +++ b/target/mips/cp0_helper.c
+> @@ -1635,12 +1635,14 @@ target_ulong helper_dvpe(CPUMIPSState *env)
+>      CPUState *other_cs =3D first_cpu;
+>      target_ulong prev =3D env->mvp->CP0_MVPControl;
+>=20
+> -    CPU_FOREACH(other_cs) {
+> -        MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
+> -        /* Turn off all VPEs except the one executing the dvpe.  */
+> -        if (&other_cpu->env !=3D env) {
+> -            other_cpu->env.mvp->CP0_MVPControl &=3D ~(1 << CP0MVPCo_E=
+VP);
+> -            mips_vpe_sleep(other_cpu);
+> +    if (env->CP0_VPEConf0 & (1 << CP0VPEC0_MVP)) {
+> +        CPU_FOREACH(other_cs) {
+> +            MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
+> +            /* Turn off all VPEs except the one executing the dvpe.  =
+*/
+> +            if (&other_cpu->env !=3D env) {
+> +                other_cpu->env.mvp->CP0_MVPControl &=3D ~(1 << CP0MVP=
+Co_EVP);
+> +                mips_vpe_sleep(other_cpu);
+> +            }
+>          }
+>      }
+>      return prev;
+> @@ -1651,15 +1653,17 @@ target_ulong helper_evpe(CPUMIPSState *env)
+>      CPUState *other_cs =3D first_cpu;
+>      target_ulong prev =3D env->mvp->CP0_MVPControl;
+>=20
+> -    CPU_FOREACH(other_cs) {
+> -        MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
+> +    if (env->CP0_VPEConf0 & (1 << CP0VPEC0_MVP)) {
+> +        CPU_FOREACH(other_cs) {
+> +            MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
+>=20
+> -        if (&other_cpu->env !=3D env
+> -            /* If the VPE is WFI, don't disturb its sleep.  */
+> -            && !mips_vpe_is_wfi(other_cpu)) {
+> -            /* Enable the VPE.  */
+> -            other_cpu->env.mvp->CP0_MVPControl |=3D (1 << CP0MVPCo_EV=
+P);
+> -            mips_vpe_wake(other_cpu); /* And wake it up.  */
+> +            if (&other_cpu->env !=3D env
+> +                /* If the VPE is WFI, don't disturb its sleep.  */
+> +                && !mips_vpe_is_wfi(other_cpu)) {
+> +                /* Enable the VPE.  */
+> +                other_cpu->env.mvp->CP0_MVPControl |=3D (1 << CP0MVPC=
+o_EVP);
+> +                mips_vpe_wake(other_cpu); /* And wake it up.  */
+> +            }
+>          }
+>      }
+>      return prev;
+> --=20
+> 2.26.3
 
-diff --git a/qemu-img.c b/qemu-img.c
-index b34b1390bb..7a162fdc08 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -398,18 +398,16 @@ static int add_old_style_options(const char *fmt, QemuOpts *opts,
-     return 0;
- }
- 
--static int64_t cvtnum_full(const char *name, const char *value, int64_t min,
--                           int64_t max)
-+static int64_t cvtnum_full(const char *name, const char *value,
-+                           bool is_size, int64_t min, int64_t max)
- {
-     int err;
-     uint64_t res;
- 
--    err = qemu_strtosz(value, NULL, &res);
-+    err = is_size ? qemu_strtosz(value, NULL, &res) :
-+                    qemu_strtou64(value, NULL, 0, &res);
-     if (err < 0 && err != -ERANGE) {
--        error_report("Invalid %s specified. You may use "
--                     "k, M, G, T, P or E suffixes for", name);
--        error_report("kilobytes, megabytes, gigabytes, terabytes, "
--                     "petabytes and exabytes.");
-+        error_report("Invalid %s specified: '%s'", name, value);
-         return err;
-     }
-     if (err == -ERANGE || res > max || res < min) {
-@@ -420,9 +418,9 @@ static int64_t cvtnum_full(const char *name, const char *value, int64_t min,
-     return res;
- }
- 
--static int64_t cvtnum(const char *name, const char *value)
-+static int64_t cvtnum(const char *name, const char *value, bool is_size)
- {
--    return cvtnum_full(name, value, 0, INT64_MAX);
-+    return cvtnum_full(name, value, is_size, 0, INT64_MAX);
- }
- 
- static int img_create(const img_cmd_t *ccmd, int argc, char **argv)
-@@ -525,7 +523,7 @@ static int img_create(const img_cmd_t *ccmd, int argc, char **argv)
- 
-     /* Get image size, if specified */
-     if (optind < argc) {
--        img_size = cvtnum("image size", argv[optind++]);
-+        img_size = cvtnum("image size", argv[optind++], true);
-         if (img_size < 0) {
-             goto fail;
-         }
-@@ -984,7 +982,7 @@ static int img_commit(const img_cmd_t *ccmd, int argc, char **argv)
-             drop = true;
-             break;
-         case 'r':
--            rate_limit = cvtnum("rate limit", optarg);
-+            rate_limit = cvtnum("rate limit", optarg, true);
-             if (rate_limit < 0) {
-                 return 1;
-             }
-@@ -2428,7 +2426,7 @@ static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
-         {
-             int64_t sval;
- 
--            sval = cvtnum("buffer size for sparse output", optarg);
-+            sval = cvtnum("buffer size for sparse output", optarg, true);
-             if (sval < 0) {
-                 goto fail_getopt;
-             } else if (!QEMU_IS_ALIGNED(sval, BDRV_SECTOR_SIZE) ||
-@@ -2462,16 +2460,15 @@ static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
-             force_share = true;
-             break;
-         case 'r':
--            rate_limit = cvtnum("rate limit", optarg);
-+            rate_limit = cvtnum("rate limit", optarg, true);
-             if (rate_limit < 0) {
-                 goto fail_getopt;
-             }
-             break;
-         case 'm':
--            if (qemu_strtol(optarg, NULL, 0, &s.num_coroutines) ||
--                s.num_coroutines < 1 || s.num_coroutines > MAX_COROUTINES) {
--                error_report("Invalid number of coroutines. Allowed number of"
--                             " coroutines is between 1 and %d", MAX_COROUTINES);
-+            s.num_coroutines = cvtnum_full("number of coroutines", optarg,
-+                                           false, 1, MAX_COROUTINES);
-+            if (s.num_coroutines < 0) {
-                 goto fail_getopt;
-             }
-             break;
-@@ -3376,13 +3373,13 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
-             image_opts = true;
-             break;
-         case 's':
--            start_offset = cvtnum("start offset", optarg);
-+            start_offset = cvtnum("start offset", optarg, true);
-             if (start_offset < 0) {
-                 return 1;
-             }
-             break;
-         case 'l':
--            max_length = cvtnum("max length", optarg);
-+            max_length = cvtnum("max length", optarg, true);
-             if (max_length < 0) {
-                 return 1;
-             }
-@@ -4720,9 +4717,9 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
-     int count = 75000;
-     int depth = 64;
-     int64_t offset = 0;
--    size_t bufsize = 4096;
-+    ssize_t bufsize = 4096;
-     int pattern = 0;
--    size_t step = 0;
-+    ssize_t step = 0;
-     int flush_interval = 0;
-     bool drain_on_flush = true;
-     int64_t image_size;
-@@ -4827,27 +4824,17 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
-             }
-             break;
-         case 'c':
--        {
--            unsigned long res;
--
--            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > INT_MAX) {
--                error_report("Invalid request count specified");
-+            count = cvtnum_full("request count", optarg, false, 1, INT_MAX);
-+            if (count < 0) {
-                 return 1;
-             }
--            count = res;
-             break;
--        }
-         case 'd':
--        {
--            unsigned long res;
--
--            if (qemu_strtoul(optarg, NULL, 0, &res) <= 0 || res > INT_MAX) {
--                error_report("Invalid queue depth specified");
-+            depth = cvtnum_full("queue depth", optarg, false, 1, INT_MAX);
-+            if (depth < 0) {
-                 return 1;
-             }
--            depth = res;
-             break;
--        }
-         case 'n':
-             flags |= BDRV_O_NATIVE_AIO;
-             break;
-@@ -4860,64 +4847,40 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
-             }
-             break;
-         case 'o':
--        {
--            offset = cvtnum("offset", optarg);
-+            offset = cvtnum("offset", optarg, true);
-             if (offset < 0) {
-                 return 1;
-             }
-             break;
--        }
--            break;
-         case 's':
--        {
--            int64_t sval;
--
--            sval = cvtnum_full("buffer size", optarg, 0, INT_MAX);
--            if (sval < 0) {
-+            bufsize = cvtnum_full("buffer size", optarg, true, 1, INT_MAX);
-+            if (bufsize < 0) {
-                 return 1;
-             }
--
--            bufsize = sval;
-             break;
--        }
-         case 'S':
--        {
--            int64_t sval;
--
--            sval = cvtnum_full("step_size", optarg, 0, INT_MAX);
--            if (sval < 0) {
-+            step = cvtnum_full("step size", optarg, true, 0, INT_MAX);
-+            if (step < 0) {
-                 return 1;
-             }
--
--            step = sval;
-             break;
--        }
-         case 'w':
-             flags |= BDRV_O_RDWR;
-             is_write = true;
-             break;
-         case OPTION_PATTERN:
--        {
--            unsigned long res;
--
--            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > 0xff) {
--                error_report("Invalid pattern byte specified");
-+            pattern = cvtnum_full("pattern byte", optarg, false, 0, 0xff);
-+            if (pattern < 0) {
-                 return 1;
-             }
--            pattern = res;
-             break;
--        }
-         case OPTION_FLUSH_INTERVAL:
--        {
--            unsigned long res;
--
--            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > INT_MAX) {
--                error_report("Invalid flush interval specified");
-+            flush_interval = cvtnum_full("flush interval", optarg,
-+                                         false, 0, INT_MAX);
-+            if (flush_interval < 0) {
-                 return 1;
-             }
--            flush_interval = res;
-             break;
--        }
-         case OPTION_NO_DRAIN:
-             drain_on_flush = false;
-             break;
-@@ -5129,7 +5092,7 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
-             add = true;
-             break;
-         case 'g':
--            granularity = cvtnum("granularity", optarg);
-+            granularity = cvtnum("granularity", optarg, true);
-             if (granularity < 0) {
-                 return 1;
-             }
-@@ -5314,7 +5277,7 @@ static int img_dd_bs(const char *arg,
- {
-     int64_t res;
- 
--    res = cvtnum_full("bs", arg, 1, INT_MAX);
-+    res = cvtnum_full("bs", arg, true, 1, INT_MAX);
- 
-     if (res < 0) {
-         return 1;
-@@ -5328,7 +5291,7 @@ static int img_dd_count(const char *arg,
-                         struct DdIo *in, struct DdIo *out,
-                         struct DdInfo *dd)
- {
--    dd->count = cvtnum("count", arg);
-+    dd->count = cvtnum("count", arg, true);
- 
-     if (dd->count < 0) {
-         return 1;
-@@ -5359,7 +5322,7 @@ static int img_dd_skip(const char *arg,
-                        struct DdIo *in, struct DdIo *out,
-                        struct DdInfo *dd)
- {
--    in->offset = cvtnum("skip", arg);
-+    in->offset = cvtnum("skip", arg, true);
- 
-     if (in->offset < 0) {
-         return 1;
-@@ -5767,7 +5730,7 @@ static int img_measure(const img_cmd_t *ccmd, int argc, char **argv)
-             user_creatable_process_cmdline(optarg);
-             break;
-         case 's':
--            img_size = cvtnum("image size", optarg);
-+            img_size = cvtnum("image size", optarg, true);
-             if (img_size < 0) {
-                 goto out;
-             }
-diff --git a/tests/qemu-iotests/049.out b/tests/qemu-iotests/049.out
-index 34e1b452e6..70c627538b 100644
---- a/tests/qemu-iotests/049.out
-+++ b/tests/qemu-iotests/049.out
-@@ -98,8 +98,7 @@ qemu-img create -f qcow2 -o size=-1024 TEST_DIR/t.qcow2
- qemu-img: TEST_DIR/t.qcow2: Value '-1024' is out of range for parameter 'size'
- 
- qemu-img create -f qcow2 TEST_DIR/t.qcow2 -- -1k
--qemu-img: Invalid image size specified. You may use k, M, G, T, P or E suffixes for
--qemu-img: kilobytes, megabytes, gigabytes, terabytes, petabytes and exabytes.
-+qemu-img: Invalid image size specified: '-1k'
- 
- qemu-img create -f qcow2 -o size=-1k TEST_DIR/t.qcow2
- qemu-img: TEST_DIR/t.qcow2: Parameter 'size' expects a non-negative number below 2^64
-@@ -107,8 +106,7 @@ Optional suffix k, M, G, T, P or E means kilo-, mega-, giga-, tera-, peta-
- and exabytes, respectively.
- 
- qemu-img create -f qcow2 TEST_DIR/t.qcow2 -- 1kilobyte
--qemu-img: Invalid image size specified. You may use k, M, G, T, P or E suffixes for
--qemu-img: kilobytes, megabytes, gigabytes, terabytes, petabytes and exabytes.
-+qemu-img: Invalid image size specified: '1kilobyte'
- 
- qemu-img create -f qcow2 -o size=1kilobyte TEST_DIR/t.qcow2
- qemu-img: TEST_DIR/t.qcow2: Parameter 'size' expects a non-negative number below 2^64
-@@ -116,8 +114,7 @@ Optional suffix k, M, G, T, P or E means kilo-, mega-, giga-, tera-, peta-
- and exabytes, respectively.
- 
- qemu-img create -f qcow2 TEST_DIR/t.qcow2 -- foobar
--qemu-img: Invalid image size specified. You may use k, M, G, T, P or E suffixes for
--qemu-img: kilobytes, megabytes, gigabytes, terabytes, petabytes and exabytes.
-+qemu-img: Invalid image size specified: 'foobar'
- 
- qemu-img create -f qcow2 -o size=foobar TEST_DIR/t.qcow2
- qemu-img: TEST_DIR/t.qcow2: Parameter 'size' expects a non-negative number below 2^64
--- 
-2.50.1
-
+--=20
+- Jiaxun
 
