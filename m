@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF46CB066E6
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15537B0670C
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:39:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublOF-0004dx-Ie; Tue, 15 Jul 2025 15:32:35 -0400
+	id 1ublRM-0006Kb-49; Tue, 15 Jul 2025 15:35:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwz-00046p-JC
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkx1-000478-TK
  for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkww-0001MF-3Q
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:24 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwz-0001Mj-CY
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606261;
+ s=mimecast20190719; t=1752606263;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8W8fQy5JCYizGetg+mDWw1LL18wUNUGbfORKfvklxKo=;
- b=F7qqcCuY39s+YBFjfDPLhSwt31VNfkoI2ktm7XB6IKaoF06+Xw45cgS4whV8+V16tvOxxB
- f6xr5rxLHE3j+3PGZg/QzIvl2nIyZMslf2xUesvdzO4ooAPCqc5TwERB4dtjwRN+kuruqR
- QkESwXt4gD+M0CpUdHrsqkSv1tIFYuY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=vLNpHxU1zt9qnIq8PoBzTouwSE4SUYUIo9nnck6qlZM=;
+ b=eEDCKdLZoPjfGg7bzCJLMPgye6pKlIAVtdd+20At4mIoDwuHTaE0wRHB/5PpfiDVVkiu6A
+ v6snxO1C03in4GnsWqtOsiNyDGCjlWj/L2keiES22nMFbCqjxDt9vtgElHxpSC4SDE457c
+ wo31JWz+nkUWkJu4/l9+wJu/n5LYF1k=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-9-WJwmQLNkKz1TAbOgkjAQ-1; Tue,
- 15 Jul 2025 15:04:18 -0400
-X-MC-Unique: 9-WJwmQLNkKz1TAbOgkjAQ-1
-X-Mimecast-MFC-AGG-ID: 9-WJwmQLNkKz1TAbOgkjAQ_1752606257
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-369-kN30f_dsP6a-XGgm7jn87w-1; Tue,
+ 15 Jul 2025 15:04:20 -0400
+X-MC-Unique: kN30f_dsP6a-XGgm7jn87w-1
+X-Mimecast-MFC-AGG-ID: kN30f_dsP6a-XGgm7jn87w_1752606260
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C3D76195608E; Tue, 15 Jul 2025 19:04:17 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0C1BB19560A3; Tue, 15 Jul 2025 19:04:20 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3A667197702B; Tue, 15 Jul 2025 19:04:15 +0000 (UTC)
+ id 47B55197702B; Tue, 15 Jul 2025 19:04:18 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 19/57] block: Allow bdrv_new() with and without graph lock
-Date: Tue, 15 Jul 2025 21:02:52 +0200
-Message-ID: <20250715190330.378764-20-kwolf@redhat.com>
+Subject: [PULL 20/57] block: mark bdrv_replace_child_bs() as GRAPH_UNLOCKED
+Date: Tue, 15 Jul 2025 21:02:53 +0200
+Message-ID: <20250715190330.378764-21-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -65,7 +65,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,35 +81,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-bdrv_new() calls bdrv_drained_begin(), which can poll and therefore
-can't be called while holding the graph lock. One option to make sure
-that this call is allowed would be marking bdrv_new() GRAPH_UNLOCKED.
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-However, this is actually an unnecessary restriction because we know
-that we only just created the BlockDriverState and it isn't even part of
-the graph yet. We can use bdrv_do_drained_begin_quiesce() instead to
-avoid the polling, which means that bdrv_new() can now safely be called
-from callers that hold the graph lock as well as from callers that
-don't.
+The function bdrv_replace_child_bs() calls bdrv_drained_begin() which
+must be called with the graph unlocked.
 
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Message-ID: <20250530151125.955508-43-f.ebner@proxmox.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/block/block-global-state.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block.c b/block.c
-index 932e599f45..fe5aa2e767 100644
---- a/block.c
-+++ b/block.c
-@@ -431,7 +431,7 @@ BlockDriverState *bdrv_new(void)
-     bs->block_status_cache = g_new0(BdrvBlockStatusCache, 1);
+diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
+index eec92a98da..706a2cde36 100644
+--- a/include/block/block-global-state.h
++++ b/include/block/block-global-state.h
+@@ -74,8 +74,8 @@ int bdrv_append(BlockDriverState *bs_new, BlockDriverState *bs_top,
+ int GRAPH_WRLOCK
+ bdrv_replace_node(BlockDriverState *from, BlockDriverState *to, Error **errp);
  
-     for (i = 0; i < bdrv_drain_all_count; i++) {
--        bdrv_drained_begin(bs);
-+        bdrv_do_drained_begin_quiesce(bs, NULL);
-     }
- 
-     QTAILQ_INSERT_TAIL(&all_bdrv_states, bs, bs_list);
+-int bdrv_replace_child_bs(BdrvChild *child, BlockDriverState *new_bs,
+-                          Error **errp);
++int GRAPH_UNLOCKED
++bdrv_replace_child_bs(BdrvChild *child, BlockDriverState *new_bs, Error **errp);
+ BlockDriverState *bdrv_insert_node(BlockDriverState *bs, QDict *node_options,
+                                    int flags, Error **errp);
+ int bdrv_drop_filter(BlockDriverState *bs, Error **errp);
 -- 
 2.50.1
 
