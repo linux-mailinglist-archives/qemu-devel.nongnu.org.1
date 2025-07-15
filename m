@@ -2,91 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7707EB051A1
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB53CB0519A
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:20:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZ1L-0002RU-HJ; Tue, 15 Jul 2025 02:20:07 -0400
+	id 1ubZ19-0002Ji-Ol; Tue, 15 Jul 2025 02:19:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ10-0002EJ-Uh
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:47 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0x-000734-Ju
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:46 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3a522224582so2543707f8f.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:19:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752560381; x=1753165181; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=G/zzVpOs+7k/RhkGCFmhDLsEFTRbLNhvwqm9iD4r+MU=;
- b=tqKWL7jVJj0mhLgymvYtQjBUgE/uFnNCruhg/y/KQAIW80G5MyV5mJho9Bf9aUqzwp
- O6shR/zSDgTZkuvTWS+fy9ukdgeDjPbWKAKSB/5d+VKhq8JqgbH1kWs8iugmM5J3Aeh7
- 5G1ENf6k/qhJC/dWgTmGwgg4BkA56t32IQiSpwUQ94P/loOUncOYdP9JD/bqs5SZSdR8
- hkgMbz7seOyzLDvVFsu3tJgKL1cNXodGbiywIroC/NpE5vc5ioOj2dB86CCRE+Qv+9MY
- 8Z+QbHUtHax2ZUGwNkek89olsNmGiXPOIaIGVun3S1X/Q4A9SoZU8dXqadtyn9eJsMRu
- 5ZYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752560381; x=1753165181;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=G/zzVpOs+7k/RhkGCFmhDLsEFTRbLNhvwqm9iD4r+MU=;
- b=tRkj8+64KESPmpx6bb9mByW6F1E0O6jfY0u04Ni29C6XnS7LeDTpv1iuwD5Ypipxgp
- F4AgTz2fS3PDFdOREj87rAJsqf3NHFQNSleK2+byColNgE+I2ciCMLEBOF0doEemIsiI
- vifJeJEy7udYuJb49kov/gTjSePYqC67FDK5prY3xHyYYO1DHSGv+anCo8j4PQmHbuNa
- bslPH/+ZCm0r4yvOeOBmJQ1Hvw/ubuWUw5sWLgzLEr3zdDmQ7wX3OVt8ZGuPaVrVzt4l
- Hw5FokcVM/SdI2Rl2E7OpSOyHYcvFAXfaxk6I6tknNNOUQoEfJv+2gc7doi5GoMKURpx
- YVNA==
-X-Gm-Message-State: AOJu0YwagZO1ZtJQi539k/Wo6PqewYxkaDR2hqh9RJybGrqsRTZaWMB0
- L3pEIId2A/Y83AOY6Mt48/J2PblMo42bJf0LCON+fhtAjrdv/Z2SRhpYo/OQki3ZU/gBSzdgP0h
- jaWsG
-X-Gm-Gg: ASbGncsSodNed23QMewNbPrV8m7qWCnem3IqPzF3EE5bEmFx2/U1UuKxbfIFm0EUyCd
- pSIel4TUsx2XBsb8aA/UMPluoE+Zt5OTINyHpS+mp/htdHeeCSg0CpXDPQ1e027JZq3UDfmY5JM
- S5fcw5wjhOJXj/jJr9iQTBbO9/5J5yHxBgpkPJwDvUYCU6JG5OlxuU9s0TIUFYVDfHzfW+Eqsbp
- 30mOv31+TSh/TpHAG5VeXca7pSrJgJpixDFVqEmQsXAHjqRIJsf28gjxNoXKJyJ48m0if4u+Qqn
- N1UQ7+H0a3ijsexmfT+1fXtxreMFTw1Oy+W86Go6ahzwh160juGrDeb/aHHhVDIt65tzljyBAhG
- yJBJZ/gNquVRIiwvpKkGMj91MMrox7USCmw7dZodAMdWC9jomtIGNJK4uubrdivvQKxfhZLIg
-X-Google-Smtp-Source: AGHT+IG97X6QEDT1w5Cy8eMd2dGsWqLXguZE87Wco8bA4iE3D3bjT+UJiYI/C6vdjH9Wm31McPcoGA==
-X-Received: by 2002:a05:6000:20c4:b0:3b5:f93a:bcc with SMTP id
- ffacd0b85a97d-3b5f93a0e5emr6643111f8f.35.1752560381318; 
- Mon, 14 Jul 2025 23:19:41 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d571sm14479576f8f.57.2025.07.14.23.19.40
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 14 Jul 2025 23:19:40 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
- Richard Henderson <richard.henderson@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PULL 04/17] target/mips: Convert Octeon LX instructions to decodetree
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubZ0i-0001uW-NP
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubZ0f-0006yc-94
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752560364;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=34YtlccilJUgIMydaQXKNd02WQ/ukkEgCw0dzkfH+JQ=;
+ b=KsWb/YHZkaZoPGB3RJ0nVIm8j4Pm+zQ/8FeqCaw9CkWwMTy77SHjQUbhuQkCml2J21Eq6m
+ pxmf/hNuhJjrhPCyzo2bqb8n3eNCeOP1/27APgCV0YWb8Zb5LFmyfNtU3T51jjxhOJe1GZ
+ E5PdGU43dDV2a6GKbFHIKpRvMMC0Jc8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-37-THmVpZaANoiYbWHWevfieQ-1; Tue,
+ 15 Jul 2025 02:19:19 -0400
+X-MC-Unique: THmVpZaANoiYbWHWevfieQ-1
+X-Mimecast-MFC-AGG-ID: THmVpZaANoiYbWHWevfieQ_1752560358
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3CAEA1954205; Tue, 15 Jul 2025 06:19:15 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.44.33.160])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7F22B30001A1; Tue, 15 Jul 2025 06:19:07 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org,
+	qemu-arm@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Ed Tanous <etanous@nvidia.com>
+Subject: [PATCH] docs: Fix Aspeed title
 Date: Tue, 15 Jul 2025 08:19:04 +0200
-Message-ID: <20250715061918.44971-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250715061918.44971-1-philmd@linaro.org>
-References: <20250715061918.44971-1-philmd@linaro.org>
+Message-ID: <20250715061904.97540-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,77 +84,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use Octeon decodetree to call gen_lx() for the LX instructions.
+commit ad8e0e8a0088 removed the "======" underlining the file title
+which broke documentation rendering. Add it back.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241111222936.59869-4-philmd@linaro.org>
+Fixes: ad8e0e8a0088 ("docs: add support for gb200-bmc")
+Cc: Ed Tanous <etanous@nvidia.com>
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- target/mips/tcg/octeon.decode      |  8 ++++++++
- target/mips/tcg/octeon_translate.c | 12 ++++++++++++
- target/mips/tcg/translate.c        |  4 +---
- 3 files changed, 21 insertions(+), 3 deletions(-)
+ docs/system/arm/aspeed.rst | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/mips/tcg/octeon.decode b/target/mips/tcg/octeon.decode
-index 0c787cb498c..102a05860df 100644
---- a/target/mips/tcg/octeon.decode
-+++ b/target/mips/tcg/octeon.decode
-@@ -1,6 +1,7 @@
- # Octeon Architecture Module instruction set
- #
- # Copyright (C) 2022 Pavel Dovgalyuk
-+# Copyright (C) 2024 Philippe Mathieu-Daudé
- #
- # SPDX-License-Identifier: LGPL-2.1-or-later
- #
-@@ -39,3 +40,10 @@ CINS         011100 ..... ..... ..... ..... 11001 . @bitfield
- POP          011100 rs:5 00000 rd:5 00000 10110 dw:1
- SEQNE        011100 rs:5 rt:5 rd:5 00000 10101 ne:1
- SEQNEI       011100 rs:5 rt:5 imm:s10 10111 ne:1
-+
-+&lx          base index rd
-+@lx          ...... base:5 index:5 rd:5 ...... ..... &lx
-+LWX          011111 ..... ..... ..... 00000 001010 @lx
-+LHX          011111 ..... ..... ..... 00100 001010 @lx
-+LBUX         011111 ..... ..... ..... 00110 001010 @lx
-+LDX          011111 ..... ..... ..... 01000 001010 @lx
-diff --git a/target/mips/tcg/octeon_translate.c b/target/mips/tcg/octeon_translate.c
-index d9eb43716e2..b2eca29e06c 100644
---- a/target/mips/tcg/octeon_translate.c
-+++ b/target/mips/tcg/octeon_translate.c
-@@ -174,3 +174,15 @@ static bool trans_SEQNEI(DisasContext *ctx, arg_SEQNEI *a)
-     }
-     return true;
- }
-+
-+static bool trans_lx(DisasContext *ctx, arg_lx *a, MemOp mop)
-+{
-+    gen_lx(ctx, a->rd, a->base, a->index, mop);
-+
-+    return true;
-+}
-+
-+TRANS(LBUX, trans_lx, MO_UB);
-+TRANS(LHX,  trans_lx, MO_SW);
-+TRANS(LWX,  trans_lx, MO_SL);
-+TRANS(LDX,  trans_lx, MO_UQ);
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index b9b2d8bb7e1..d91d6efe02c 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -13607,9 +13607,7 @@ static void decode_opc_special3_legacy(CPUMIPSState *env, DisasContext *ctx)
-         }
-         break;
-     case OPC_LX_DSP:
--        if (!(ctx->insn_flags & INSN_OCTEON)) {
--            check_dsp(ctx);
--        }
-+        check_dsp(ctx);
-         op2 = MASK_LX(ctx->opcode);
-         switch (op2) {
- #if defined(TARGET_MIPS64)
+diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+index bec0a1dfa8b8..bf18c5634700 100644
+--- a/docs/system/arm/aspeed.rst
++++ b/docs/system/arm/aspeed.rst
+@@ -1,4 +1,5 @@
+ Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``gb200nvl-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
++====================================================================================================================================================================================================================================================================================================================================================================================================================================
+ 
+ The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
+ Aspeed evaluation boards. They are based on different releases of the
 -- 
-2.49.0
+2.50.1
 
 
