@@ -2,166 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D255B06944
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 00:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61ED5B06939
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 00:25:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubo82-00054e-OS; Tue, 15 Jul 2025 18:28:02 -0400
+	id 1ubo4j-0001yy-Hi; Tue, 15 Jul 2025 18:24:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1ubo7s-000533-Pn
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 18:27:52 -0400
-Received: from mail-bn8nam12on2087.outbound.protection.outlook.com
- ([40.107.237.87] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1ubo7o-0001Gn-Ia
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 18:27:52 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nuHPz4fvR+APTo1QWprY/wwhi/xrH+W9PLIOss+9zK3w6DH6YS1mNaCAeTxHv2uNCGY/dwfThr2Y/Vx8a+abebHHjLjsc8sMO+vXR8uD1VpdcgGUYJx7rlykz+4/ZxpK/cuugPTN57eYyTf965+loU51ncspVBO6LRao71XQUMmveANGatqzoO5AcO9dDK/n7cTdURWB5GZV/ivbb/5lp5/KzFSgisblfUdtl3YmpHwV0BL0de1UmPOtmO/xdGPP+wiJp7/VLhxNRwwBIqxSrjEy2YYpIYo4slJ6epxb7RiHIjjSLFFoaEwwULjYJAWL9UxtYik9mR8+6mS8pdHsUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EJr17DcCooXzpV3OGnSuhuOYQmK4BOCmZNtG6yXYHkk=;
- b=q/Dj2O9fvx/PNL9qdRIpsYHtKTneBAQ6iEVQ/8G5oOV5vjlXLGvys8+pDMnyfHS/xAjRL6K8MkM5m0lZHe5H8rlCbLLKYZqLKOZlz4BMKFTdJKaojKC2k2JYTpmjjIeBzOQQ0g3IqYgsM8RJyO6ssQy//TrINVC7gc90kMIa6ZIZj7YYO4odd9D1tJFRuKy4pRqgW19uEydR4CGBeNNHKNcTtPQg3wdTr1b7lCNGffc0UQ9oK7B1NJs4FSCxkP7k9N6bgKFIK8Ufvv0ba41kLTaRYY4k0ehO4apbFSO+/fXgrdQM761ziPOldMIsgMXT6qdFKedA+t0hMEiHwgYecQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EJr17DcCooXzpV3OGnSuhuOYQmK4BOCmZNtG6yXYHkk=;
- b=kfG6cVF0wBQPtOfVCjiuE9+ORajuo8NKKdWqZL49PBgPAdQU6CLqqnQOomKhAFCIVsjAJYse1vYth7/L+dF7b6eScpmCRpN12WkpuLvrwUYJlKhGsfiWi3Ek36zje8vU8RrUmF+JeHP+2h/BvLwF5C60BP8dkEE2q24R50JQA38=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MW3PR12MB4553.namprd12.prod.outlook.com (2603:10b6:303:2c::19)
- by SA1PR12MB9471.namprd12.prod.outlook.com (2603:10b6:806:458::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.27; Tue, 15 Jul
- 2025 22:22:39 +0000
-Received: from MW3PR12MB4553.namprd12.prod.outlook.com
- ([fe80::b0ef:2936:fec1:3a87]) by MW3PR12MB4553.namprd12.prod.outlook.com
- ([fe80::b0ef:2936:fec1:3a87%3]) with mapi id 15.20.8922.028; Tue, 15 Jul 2025
- 22:22:39 +0000
-Message-ID: <0e7bb322-e6c3-409a-ba30-1d8a3a6dc865@amd.com>
-Date: Tue, 15 Jul 2025 17:22:37 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] target/i386: Add TSA attack variants TSA-SQ and
- TSA-L1
-To: Babu Moger <babu.moger@amd.com>, pbonzini@redhat.com,
- zhao1.liu@intel.com, bp@alien8.de
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org
-References: <12881b2c03fa351316057ddc5f39c011074b4549.1752176771.git.babu.moger@amd.com>
-Content-Language: en-US
-From: "Moger, Babu" <bmoger@amd.com>
-In-Reply-To: <12881b2c03fa351316057ddc5f39c011074b4549.1752176771.git.babu.moger@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1PR04CA0015.namprd04.prod.outlook.com
- (2603:10b6:806:2ce::11) To MW3PR12MB4553.namprd12.prod.outlook.com
- (2603:10b6:303:2c::19)
+ (Exim 4.90_1) (envelope-from <wuhaotsh@google.com>)
+ id 1ubo4Q-0001sN-RD
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 18:24:19 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wuhaotsh@google.com>)
+ id 1ubo4J-0007ml-DM
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 18:24:17 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-553a5f2d321so3589e87.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 15:24:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1752618246; x=1753223046; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=CPCk36xB/KKy226d6CuRdX7mewTT269FIj3//HjbjKE=;
+ b=eEKEl6M52lezxpS22R1r+iHHMgEF/id7jsKw8jSoCgPYY5qSnD18H2CMFZzfYmqbh5
+ 1AIWEe0l3NAAqKqpPXeS0AOBt9xGuHe+vkjv343r8IxRfTUdtKbIhsH4jzF0N16FdXn6
+ OZJZHPgmhzDTkA7GN+nVd200Ih3oQTlfG12lS592Wjrt9H4dm6Xd4rjfBJ8T/MregdFz
+ 8lxSgeceaxu21g0f5JSalloTsaCbnTW6I8g3DMVdc7BedUqWW7ntgLDOIplLHkqiPAvA
+ d6z2v965mJzzTY/EKC6Frm0ypYWSIpyfxB2mXHz1f6ErXI62ezGOH4mGh30imMT5E6gE
+ F+qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752618246; x=1753223046;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CPCk36xB/KKy226d6CuRdX7mewTT269FIj3//HjbjKE=;
+ b=fyd8rPRmw00bY6+f+GtKP3w4+PMBeAznwLGtt9xq7CKYN71p0c7Cj4J/V0FMmCVz/i
+ kSSwBta1RqMHgQooIk8sKLo2vwvXxsmQ3PquZg7Dec+rMNlX+X1L7LsOXPv/cEjfZzET
+ U6TaQzlDWkeDHHgdGOTIuUcXqmPC4u0U07HZ8q3V1WLP3Em0zaJaqZ9rougu5lelpvWc
+ +Aj6gxntQr4aRy4dvtsfkjdcU/6n44N5vUQuB/07mJsTvn4+eiyqS8ESU5Q2bhBZl9EO
+ xypcSU3lZvbVS4xo2BCJhyk/tGQVuJB1W/TjMc9fXPwMkxc5/pOtDrTOKks7k2/J6UxT
+ GbEQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWbfpa6lg4MsWSzYxdAU7BmT4TKtg+RIdUy+YxAg39qQVoJU05S44G4inlDqU9F2I5aoPRyYoRdR257@nongnu.org
+X-Gm-Message-State: AOJu0YxVIzsqBYHurRPTpPTL9cd+Nc5wy75zFg5Vcp4D+2SmEq4KSAVc
+ yZOToPGpUNdDQrjUcD0Bwm3ukgfV16X0Bo4dRbdve2BbGJR+5qyR8R6CSpVrm3rW8UlTYOuZbF3
+ JLqKKqB3HVMC/w5qXQ6ZQFLAEPwEk55sA44ZPnTPD
+X-Gm-Gg: ASbGncuaa4xbV/HOTLxXJXWSp20qsZ0ZX6xgSxpYwgNL8bape9wK8xxSzEjocpPveSG
+ w105JUwT+6gJkuSUXmIetbsXV3QqJW45IVKGLuQosDuaotob3L6jGi+9qBigoDDlfx1eVYilncM
+ 1zkNqOeEGoBho/gIYzI+b5aIlJsAiyDn/uP/pZc2aqkFZOHc/Dynw4M4vHOLWXObgtdztxBtuNa
+ DMVeMI0KK308Digx1pAIXdTisPmHSlb+Oy/3Q==
+X-Google-Smtp-Source: AGHT+IGIOsA+vNOOAPjA+Qic1Rgu0+d1eKpjpN2vGp23cCpeYz/QXcYzlmn0e/diQIe3GH8vhsLoWOy7GZwbiGVMg7g=
+X-Received: by 2002:a05:6512:60e:20b0:553:bfb8:3b10 with SMTP id
+ 2adb3069b0e04-55a24593184mr13657e87.2.1752618245860; Tue, 15 Jul 2025
+ 15:24:05 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW3PR12MB4553:EE_|SA1PR12MB9471:EE_
-X-MS-Office365-Filtering-Correlation-Id: a90d0079-d902-4fcd-e1a1-08ddc3ee1bc3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Y0dTdkNZZWlLTjFyTWltcnk1Ynk0MmNvcG9WSlErMWY0L09aa0d0TDFzT3dP?=
- =?utf-8?B?eDJRRW1jUlhtY2Q3VlNwdmxrcUVkMHVRTDFGWjJMaGN5aWxMUzI1ZWRMUGVt?=
- =?utf-8?B?L0g1QTNJT3BVVkg1OUNFbE1kQVQxWUFqMnA1SjA1cGVrUWpuNFcxendCTUlQ?=
- =?utf-8?B?R0N3cStNWUVqVkloS052QUY5Y29qVnZmRmNFcG9KbklqQkwyL2RrWVhFSGQ1?=
- =?utf-8?B?a0daS2tIa2lJc3ZuWDl1dzRTdDVWNW9scXc0RnZReG5kMW4yeFJPZUZXWTJs?=
- =?utf-8?B?MlpiUEtJZEpJbExrbzQ2azNnanYrcWFuWU5wdlZvVllIUVJ0TTg2Y2VmTUVm?=
- =?utf-8?B?MFdHWU1uNDgvZHBqYUV3MStpVlR0Szl3Z3lHRHdZd3NhUzNsSW9RYjR4NlN5?=
- =?utf-8?B?aG1jSWlEN1J4bGxwMGU0bmZrUnAycFk1OUFyN1paL1F5TFBuR3luMDZrb2lH?=
- =?utf-8?B?dUxHSXYwQ00zcXZjTkx3VjdyNGRHSHRvUzNCcUpkT21MQVhtQ2dyZ2VISHJz?=
- =?utf-8?B?K2RURStucjFFR2pnVTh4b2tkRENBOFU5NjNUSmNjTW5VSUVaa0l3a2ZMS3lz?=
- =?utf-8?B?ZWs0UGduS29zdC8yT0FkV2Y3c3hVVlhpbFlaVEg5T0M0dmtFRk92L0pMZWNJ?=
- =?utf-8?B?dG81R3FLZkMrUEpMK0loeldjTi9CQ1c3UHVXUVkycGZMUHg0LzZ0bUNGMXpt?=
- =?utf-8?B?Y29tTFU2V1JXaGpIZXlQNDVhVzQ4MWwyYkUxLzRmOVU3UzdBV3dvYlpXL0VR?=
- =?utf-8?B?QjhGR0p5RmlaeHZTWTFEVmxQdDFITTNtUWRUTVQ5TXlQNTJnUW5OSGpINHZn?=
- =?utf-8?B?NkVpVTJKd1B4N0NRL0Z1WnVLcXJZSnZyZGJWV0dKSTJRV2hYdUUvYnZma1Rz?=
- =?utf-8?B?Y2dZQnB3R1I0V2R4TkxTb3RZRUFxVEJuUTd5c2dwRStwZU9pdmxQcFJPWitv?=
- =?utf-8?B?NGRnanc0WTI4YUR1TWplcGROK0ZPNWdJU1dzQ2M5MnJRVU5ZbzVqZGdWOXV6?=
- =?utf-8?B?bGpiZXU5MEJFdmd2Y3pwYXFGMVVmMTFRazRBTFhNQmRXMDZHUm5LYjZpdDhZ?=
- =?utf-8?B?TTBsUlJUb2JOb0VmWDJoNkcwVHhOQ1FnYWpEY202bkRXYUIyL3BtWHhBcTJs?=
- =?utf-8?B?bXRubnZTOFJIcFQ4RG9PaFVPZWRwSDI4UUFmQWRSVkVpMnYrT1F5NXBzV3Ro?=
- =?utf-8?B?ekhGZmh4TTVjOVIxY25XUndFQkh5SDJtZStEUEpZQm1BbTVDN3hKZ0F4dnNG?=
- =?utf-8?B?YURNempmU1ZabW5tMUkrRWkwNExtSk5ZZC9XaE5nNHE0NzB6Nmx3OXNpVHlB?=
- =?utf-8?B?Mnh5RVBiQVBySVMwV0h4VWFxUnA2aGJNdnYyYmRIdW8yU0FLNXRmb1RsNjYz?=
- =?utf-8?B?THlDRjRJS2d0dXVwRjRBMTdJMkxqWlpuaGxrcnZnU1lJRFUvKzhhWkpUbHVX?=
- =?utf-8?B?MmJEM1dmKzRtdjdERmRsR1hRYkxIRSsxSklyWGl1OFZDS1k2OXljOGw0YVpt?=
- =?utf-8?B?SFVFMDVPTVdnTW1UcGx5dncrcjlValZxRW9wdE1rNXNEU3JVVmVwcWxIdnkz?=
- =?utf-8?B?b1ZUWlhuc0pSc0RLMjU4SHhzWVlrUktsT3AxMEdBQVFuQkU3ZmZNWm42QnFF?=
- =?utf-8?B?YWVEYmQ4Mk80YUR0WXgway9JbHJyaW1qY3JNQkhKZ2x2cDRXaldOQmhTSFRj?=
- =?utf-8?B?VEZHRm45Z0FVZG1MU0JoOUVEVE1yZTFYTFpCVVNpamt2LzYvY2pJaTN1U3lq?=
- =?utf-8?B?ZUFERjNkVkJaOGFzN3JTVXE3Ymg5bm8xaHJpMTErZUxuaHdTNVpydEUza2Jk?=
- =?utf-8?B?bnpwTFhYMWxFNlVvU251eGJHb0h2WUtveXE2OEg0RlR4QklraXZrMGNZVzRJ?=
- =?utf-8?B?TWlSUThqeTJPTnA5QzZtZGZ4OU40bkhRNGVWbzRaeWltMkxwT2dzYTFjWEpq?=
- =?utf-8?Q?ILE+oCQI8Ds=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW3PR12MB4553.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NDBPVHNoNkVkNVNSWHFvK0Naa0dOU1RiMjdTUnRDcTBGRVJXcGpPOHZQbFdT?=
- =?utf-8?B?OEwzU3lldjlsanhkOTd4TXhCT0EwelRhYU1DSi9FYkt0VmlYWE9XUThFd1My?=
- =?utf-8?B?TXZlK0ZhSzBCMUpnT0E1UWRLNGpSZFhnODM4RE5IdkFybzROYk9iSDVNbWMy?=
- =?utf-8?B?MDFhSURFZFJFTlN6TUpwd0M5alBFdldPbmdQNksxMUY0WklnY0V4OTQwWVpm?=
- =?utf-8?B?RVArYW1XZjRMd0daY2xQTThYdmpZR1RaUUxqNlFYd29jVS9KcWNJSUVldHR1?=
- =?utf-8?B?aGFncHpwZXg0WEM5RDk3QUlmQ2VTRDN0UUx0bklZaDlYYUgveDdtY3NBMnJZ?=
- =?utf-8?B?cGd2Mm1jdjJ0K0hIcWxGaFVaV1Z1OHYxWldmUzJ4SVRHckhqcUdLS1BsZ1FI?=
- =?utf-8?B?VGE4aWdnQ3l6eTRmclcwRlA4S3BTdS9nK01hUVZGcDIvOU9vTHczeWJyamdT?=
- =?utf-8?B?ZTlJZzhTOXFOSVkxSlk4SU5BbFg2K3VYWGNlM2FoWjgvd1dlYnAxUTNzSlhU?=
- =?utf-8?B?ZDVzVUlCNFpJL0VWV2xnVmFwdUhoU1RuZTZhWGZJZGZGVGxsbmdLcjMyZDA2?=
- =?utf-8?B?SnFGMXJobzY4a3F5YVJyanZYUndGZVJzZXlLQlZTc2EzRTFaeURta2xRRWZu?=
- =?utf-8?B?ZGxjL2I2Sk4rLzg3ZDBrN0dqM0ZXRVMxNWl6Z0FOVDI2Qm5IUjE4WFBKbmFD?=
- =?utf-8?B?SU1JeldGZUdkMXpsZzlJejFGQU1FWnRyUzYxZ003Sk5xQ0xkK0hsaERqc3pU?=
- =?utf-8?B?cDVnY25CQWdacXhaMGllSnZ5bXNHdHV1UkFkQ3piRm9jV1Y3UUxEZlV0ZzFh?=
- =?utf-8?B?VWFRUjM5TWoxZ3U3cXowSW9pZXdZcUR0Q0F6Wjcyd0FRdjhNc0VLYm1ubVZN?=
- =?utf-8?B?bnlqVTdhRkYzU2o3TkxFNHEweUR5alM2aXhnSkE0SEJxb0YxZWNLOFpxc1Y1?=
- =?utf-8?B?Qzg1Q3ozZHR0V3d3S2pIenFqSmxRKzltcUtTK0dxa0dNa3diSVlnRXFoL2p1?=
- =?utf-8?B?WktNZnlvTSs3Y3I4Zi9VdW1rTGlBemlaai9XeWduK3BkMk54ZHl4eVBOQXZq?=
- =?utf-8?B?bCtsU1hwNVBQbFdlQXQvWVFnMHdCb3hOMzI0VjF0bm8yVXphKzhwbU1BUXlV?=
- =?utf-8?B?bGdMOXpjKzAvVExUZzQ4YWNVSTF4cU45MjRNSUp0S0xjMTdqdTBiSW1ZNVdQ?=
- =?utf-8?B?QWQ0RHAwMEFUUnNBQ1E0a0xQSEZkSmdtTDd1YVdjZVhTeTBqWW4rYlVIV1BS?=
- =?utf-8?B?cEtERFVjdncxVmZJUFVnMWtCVmJpQ2o2T0x3cElQRDB4blJTVE1kYzV5Ry91?=
- =?utf-8?B?RFRHRkNjTzczSWYzNGo1aWZYaktqOXJLS3grdUlNU2hrSWZDYmROMVQ3Umcw?=
- =?utf-8?B?RS9JY0pQR3djcmg4aHJQZTBDY0xBRFJsMUlGS1p5UUlQNkg3YkEraWE2U0J0?=
- =?utf-8?B?MmozMUtqU0tRUUxwUjJwRG1tZnNpRjAwbXdlZC9uc2hES2g1MEpDWmhOUGdZ?=
- =?utf-8?B?ZWZYS08xZFdkaGlBSnpiNXJhcXN1ZFVpT2hnZ1k5MkVVOHNrbDN5Y1RaOXlz?=
- =?utf-8?B?aHBNdlVybS9KVE40RGF2UGd1aHJRcVZPeTE3Zm5Md1I3Ykx0dHBVeitCT3A3?=
- =?utf-8?B?SkwyRkdDZXp2R1JnVGJ5ai9hWGQyUCtVQWY2M0xhMndHV0tMSElKTTlLamVM?=
- =?utf-8?B?L3FHTS9sMzRwcWd4WnlqQTRWZXN3Yy9wbm4vL3ZDWXhENElWTStHd08vOXJz?=
- =?utf-8?B?TjJ0cVFzUVFveUoxclZtTVlROXVEcndkOEZhV2tmWVQ4V0NHNm1iTm5ueXN4?=
- =?utf-8?B?RHh4R2o2NXBkNzZHalYzekRZQlg0NVkrMEZSMGdBazk1QThXSnd5OXk5bmQ3?=
- =?utf-8?B?NTVzZm1kRGxCaVlmRkZSd3BJZ25nZzQvRTNyL3FLZ0srd3ZiYlVaclVFd0w1?=
- =?utf-8?B?aElLQm1ubXRveFg0eTBHMDZwNnRnMDI5cHdEK2VWK1QzQkFlNlFORXYra29a?=
- =?utf-8?B?MGxIV1pjdEs3SW9QQVpuNSs1Y1hiNEZOcGZybERBK0hpQVR0UnIyMWZvN0tW?=
- =?utf-8?B?SXI5SjUzK08xMzdNYTJZZ1NVSFliUklhRHpOOGJxU1JZOTZQRnhkb2tWT0Nw?=
- =?utf-8?Q?rS80=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a90d0079-d902-4fcd-e1a1-08ddc3ee1bc3
-X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4553.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 22:22:39.3994 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: caF/zt7y0HtHgQqyrbR9PX8kaNjTklozKWt4JzTvPZ/CBpzY7x6gi6seLKG4XZKk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9471
-Received-SPF: permerror client-ip=40.107.237.87;
- envelope-from=Babu.Moger@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20250714165523.1956235-1-peter.maydell@linaro.org>
+ <20250714165523.1956235-4-peter.maydell@linaro.org>
+ <3138a372-7649-404a-8e8e-53b097c33094@linaro.org>
+In-Reply-To: <3138a372-7649-404a-8e8e-53b097c33094@linaro.org>
+From: Hao Wu <wuhaotsh@google.com>
+Date: Tue, 15 Jul 2025 15:23:51 -0700
+X-Gm-Features: Ac12FXz4Jlt8-8ri6ktptCAIFk04SmlGcvP8Y9_8vX49epF3ZtSgHjnagwQzLqo
+Message-ID: <CAGcCb1184552Ut7r4K7aGxnHXf53Hbqjn6fDKze7+RwFT-qd_w@mail.gmail.com>
+Subject: Re: [PATCH 3/4] hw/net/npcm_gmac.c: Correct test for when to
+ reallocate packet buffer
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, 
+ Tyrone Ting <kfting@nuvoton.com>, Jason Wang <jasowang@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000f907170639ff3bd4"
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=wuhaotsh@google.com; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -177,105 +98,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+--000000000000f907170639ff3bd4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Can these two patches be included in the QEMU 10.1 release? We are only 
-adding bit definitions and not updating the CPU models, so the risk 
-should be very low.
+Thank you for catching that!
 
-thanks
-Babu
+On Mon, Jul 14, 2025 at 1:08=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd=
+@linaro.org>
+wrote:
 
-On 7/10/2025 2:46 PM, Babu Moger wrote:
-> Transient Scheduler Attacks (TSA) are new speculative side channel attacks
-> related to the execution timing of instructions under specific
-> microarchitectural conditions. In some cases, an attacker may be able to
-> use this timing information to infer data from other contexts, resulting in
-> information leakage.
-> 
-> AMD has identified two sub-variants two variants of TSA.
-> CPUID Fn8000_0021 ECX[1] (TSA_SQ_NO).
-> 	If this bit is 1, the CPU is not vulnerable to TSA-SQ.
-> 
-> CPUID Fn8000_0021 ECX[2] (TSA_L1_NO).
-> 	If this bit is 1, the CPU is not vulnerable to TSA-L1.
-> 
-> Add the new feature word FEAT_8000_0021_ECX and corresponding bits to
-> detect TSA variants.
-> 
-> Link: https://www.amd.com/content/dam/amd/en/documents/resources/bulletin/technical-guidance-for-mitigating-transient-scheduler-attacks.pdf
-> Co-developed-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Signed-off-by: Babu Moger <babu.moger@amd.com>
-> ---
-> v2: Split the patches into two.
->      Not adding the feature bit in CPU model now. Users can add the feature
->      bits by using the option "-cpu EPYC-Genoa,+tsa-sq-no,+tsa-l1-no".
-> 
-> v1: https://lore.kernel.org/qemu-devel/20250709104956.GAaG5JVO-74EF96hHO@fat_crate.local/
-> ---
->   target/i386/cpu.c | 17 +++++++++++++++++
->   target/i386/cpu.h |  6 ++++++
->   2 files changed, 23 insertions(+)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 0d35e95430..2cd07b86b5 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -1292,6 +1292,22 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
->           .tcg_features = 0,
->           .unmigratable_flags = 0,
->       },
-> +    [FEAT_8000_0021_ECX] = {
-> +        .type = CPUID_FEATURE_WORD,
-> +        .feat_names = {
-> +            NULL, "tsa-sq-no", "tsa-l1-no", NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +            NULL, NULL, NULL, NULL,
-> +        },
-> +        .cpuid = { .eax = 0x80000021, .reg = R_ECX, },
-> +        .tcg_features = 0,
-> +        .unmigratable_flags = 0,
-> +    },
->       [FEAT_8000_0022_EAX] = {
->           .type = CPUID_FEATURE_WORD,
->           .feat_names = {
-> @@ -7934,6 +7950,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->           *eax = *ebx = *ecx = *edx = 0;
->           *eax = env->features[FEAT_8000_0021_EAX];
->           *ebx = env->features[FEAT_8000_0021_EBX];
-> +        *ecx = env->features[FEAT_8000_0021_ECX];
->           break;
->       default:
->           /* reserved values: zero */
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 51e10139df..6a9eb2dbf7 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -641,6 +641,7 @@ typedef enum FeatureWord {
->       FEAT_8000_0008_EBX, /* CPUID[8000_0008].EBX */
->       FEAT_8000_0021_EAX, /* CPUID[8000_0021].EAX */
->       FEAT_8000_0021_EBX, /* CPUID[8000_0021].EBX */
-> +    FEAT_8000_0021_ECX, /* CPUID[8000_0021].ECX */
->       FEAT_8000_0022_EAX, /* CPUID[8000_0022].EAX */
->       FEAT_C000_0001_EDX, /* CPUID[C000_0001].EDX */
->       FEAT_KVM,           /* CPUID[4000_0001].EAX (KVM_CPUID_FEATURES) */
-> @@ -1124,6 +1125,11 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
->    */
->   #define CPUID_8000_0021_EBX_RAPSIZE    (8U << 16)
->   
-> +/* CPU is not vulnerable TSA SA-SQ attack */
-> +#define CPUID_8000_0021_ECX_TSA_SQ_NO  (1U << 1)
-> +/* CPU is not vulnerable TSA SA-L1 attack */
-> +#define CPUID_8000_0021_ECX_TSA_L1_NO  (1U << 2)
-> +
->   /* Performance Monitoring Version 2 */
->   #define CPUID_8000_0022_EAX_PERFMON_V2  (1U << 0)
->   
+> On 14/7/25 18:55, Peter Maydell wrote:
+> > In gmac_try_send_next_packet() we have code that does "if this block
+> > of data won't fit in the buffer, reallocate it".  However, the
+> > condition it uses is
+> >    if ((prev_buf_size + tx_buf_len) > sizeof(buf))
+> > where buf is a uint8_t *.
+> >
+> > This means that sizeof(buf) is always 8 bytes, and the condition will
+> > almost always be true, so we will reallocate the buffer more often
+> > than we need to.
+> >
+> > Correct the condition to test against tx_buffer_size, which is
+> > where we track how big the allocated buffer is.
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > ---
+> >   hw/net/npcm_gmac.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
+> Reviewed-by: Hao Wu <wuhaotsh@google.com>
 
+--000000000000f907170639ff3bd4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Thank you for catching that!</div><br><div class=3D"g=
+mail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On =
+Mon, Jul 14, 2025 at 1:08=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 &lt;<a hre=
+f=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt; wrote:<br></div><b=
+lockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-le=
+ft:1px solid rgb(204,204,204);padding-left:1ex">On 14/7/25 18:55, Peter May=
+dell wrote:<br>
+&gt; In gmac_try_send_next_packet() we have code that does &quot;if this bl=
+ock<br>
+&gt; of data won&#39;t fit in the buffer, reallocate it&quot;.=C2=A0 Howeve=
+r, the<br>
+&gt; condition it uses is<br>
+&gt;=C2=A0 =C2=A0 if ((prev_buf_size + tx_buf_len) &gt; sizeof(buf))<br>
+&gt; where buf is a uint8_t *.<br>
+&gt; <br>
+&gt; This means that sizeof(buf) is always 8 bytes, and the condition will<=
+br>
+&gt; almost always be true, so we will reallocate the buffer more often<br>
+&gt; than we need to.<br>
+&gt; <br>
+&gt; Correct the condition to test against tx_buffer_size, which is<br>
+&gt; where we track how big the allocated buffer is.<br>
+&gt; <br>
+&gt; Signed-off-by: Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linar=
+o.org" target=3D"_blank">peter.maydell@linaro.org</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0hw/net/npcm_gmac.c | 4 ++--<br>
+&gt;=C2=A0 =C2=A01 file changed, 2 insertions(+), 2 deletions(-)<br>
+<br>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linar=
+o.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
+<br></blockquote><div>Reviewed-by: Hao Wu &lt;<a href=3D"mailto:wuhaotsh@go=
+ogle.com">wuhaotsh@google.com</a>&gt;=C2=A0</div></div></div>
+
+--000000000000f907170639ff3bd4--
 
