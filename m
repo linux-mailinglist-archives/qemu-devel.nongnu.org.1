@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289FFB051F1
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A326B051FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:41:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZIe-0005oS-IR; Tue, 15 Jul 2025 02:38:01 -0400
+	id 1ubZKZ-0000YW-VI; Tue, 15 Jul 2025 02:39:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1ubZEQ-0002xk-Ce
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:33:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1ubZET-00031q-LM
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:33:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1ubZEO-0003en-Ai
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:33:38 -0400
+ id 1ubZER-0003fL-R2
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:33:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752561215;
+ s=mimecast20190719; t=1752561219;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KQNIH2ceD/6p8CyUoQ4Hhxi4tjgzkOrN9UmPsBwnATI=;
- b=TAJMyQaFgpXcXBveSSDbJUttVkIz8f5Xob4mKcLd0n9wITvtzUyh4PhaI+5nknAb8pbZPz
- FnPgB3rDPgZHXsT7brg4XniIW0IU27lqu9KpQCwCHjSV0Jzuo1NOjZ6wcxGPrN1tXQDrvh
- j7b9CpCn7xm95KE4cjwSRMymcLzm+YA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=I2u+YpVEc3NpHC4oX6/xekoaL5sePGqea71QsI6lILA=;
+ b=LDD6ObzYm2H0pnGDYPterzkM0TPyZEmBSyTbgaw3PUrLESSaeBnzRtHMI1xttL90WaOWzL
+ iRq/7Flh+cVku5s6OuO0JgX8urHZWubRs4/ctMCMtEiPGse5xw0BHkbCF8bq+Lco/N3wx1
+ uyv7cTWe/5DfkeB9TS1c8hw4/IG7JaU=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-408-iOEMO65TPDCKyWL4vhhadQ-1; Tue,
- 15 Jul 2025 02:33:30 -0400
-X-MC-Unique: iOEMO65TPDCKyWL4vhhadQ-1
-X-Mimecast-MFC-AGG-ID: iOEMO65TPDCKyWL4vhhadQ_1752561209
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-2-QwGULqPbKoN2f8bdZ7gg-1; Tue,
+ 15 Jul 2025 02:33:36 -0400
+X-MC-Unique: 2-QwGULqPbKoN2f8bdZ7gg-1
+X-Mimecast-MFC-AGG-ID: 2-QwGULqPbKoN2f8bdZ7gg_1752561215
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8E5621955F42; Tue, 15 Jul 2025 06:33:28 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2E65919560A2; Tue, 15 Jul 2025 06:33:35 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.9])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1D4713000198; Tue, 15 Jul 2025 06:33:25 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E604D1977000; Tue, 15 Jul 2025 06:33:32 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, Vivek Kasireddy <vivek.kasireddy@intel.com>,
@@ -53,17 +53,17 @@ Cc: stefanha@redhat.com, Vivek Kasireddy <vivek.kasireddy@intel.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>,
  Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-Subject: [PULL v2 03/13] ui/egl-helpers: Error check the fds in
- egl_dmabuf_export_texture()
-Date: Tue, 15 Jul 2025 10:32:49 +0400
-Message-ID: <20250715063301.145191-4-marcandre.lureau@redhat.com>
+Subject: [PULL v2 04/13] ui/spice: Enable gl=on option for non-local or remote
+ clients
+Date: Tue, 15 Jul 2025 10:32:50 +0400
+Message-ID: <20250715063301.145191-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20250715063301.145191-1-marcandre.lureau@redhat.com>
 References: <20250715063301.145191-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -91,10 +91,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-While trying to export and obtain fds associated with a texture, it
-is possible that the fds returned after eglExportDMABUFImageMESA()
-call have error values. Therefore, we need to evaluate the value of
-all fds and return false if any of them are negative.
+Newer versions of Spice server should be able to accept dmabuf
+fds from Qemu for clients that are connected via the network.
+In other words, when this option is enabled, Qemu would share
+a dmabuf fd with Spice which would encode and send the data
+associated with the fd to a client that could be located on
+a different machine.
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
@@ -104,35 +106,55 @@ Cc: Dongwon Kim <dongwon.kim@intel.com>
 Cc: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Message-Id: <20250617043546.1022779-2-vivek.kasireddy@intel.com>
+Message-Id: <20250617043546.1022779-3-vivek.kasireddy@intel.com>
 ---
- ui/egl-helpers.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/ui/spice-display.h | 1 +
+ ui/spice-core.c            | 4 ++++
+ ui/spice-display.c         | 1 +
+ 3 files changed, 6 insertions(+)
 
-diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
-index 5503a795e4..e3f2872cc1 100644
---- a/ui/egl-helpers.c
-+++ b/ui/egl-helpers.c
-@@ -295,6 +295,7 @@ bool egl_dmabuf_export_texture(uint32_t tex_id, int *fd, EGLint *offset,
+diff --git a/include/ui/spice-display.h b/include/ui/spice-display.h
+index e1a9b36185..6c55f38c8b 100644
+--- a/include/ui/spice-display.h
++++ b/include/ui/spice-display.h
+@@ -151,6 +151,7 @@ struct SimpleSpiceCursor {
+ };
+ 
+ extern bool spice_opengl;
++extern bool spice_remote_client;
+ 
+ int qemu_spice_rect_is_empty(const QXLRect* r);
+ void qemu_spice_rect_union(QXLRect *dest, const QXLRect *r);
+diff --git a/ui/spice-core.c b/ui/spice-core.c
+index 0326c63bec..5acbdd3955 100644
+--- a/ui/spice-core.c
++++ b/ui/spice-core.c
+@@ -836,9 +836,13 @@ static void qemu_spice_init(void)
+ #ifdef HAVE_SPICE_GL
+     if (qemu_opt_get_bool(opts, "gl", 0)) {
+         if ((port != 0) || (tls_port != 0)) {
++#if SPICE_SERVER_VERSION >= 0x000f03 /* release 0.15.3 */
++            spice_remote_client = 1;
++#else
+             error_report("SPICE GL support is local-only for now and "
+                          "incompatible with -spice port/tls-port");
+             exit(1);
++#endif
+         }
+         egl_init(qemu_opt_get(opts, "rendernode"), DISPLAY_GL_MODE_ON, &error_fatal);
+         spice_opengl = 1;
+diff --git a/ui/spice-display.c b/ui/spice-display.c
+index 9c39d2c5c8..0fb72f6d6f 100644
+--- a/ui/spice-display.c
++++ b/ui/spice-display.c
+@@ -31,6 +31,7 @@
+ #include "standard-headers/drm/drm_fourcc.h"
+ 
+ bool spice_opengl;
++bool spice_remote_client;
+ 
+ int qemu_spice_rect_is_empty(const QXLRect* r)
  {
-     EGLImageKHR image;
-     EGLuint64KHR modifiers[DMABUF_MAX_PLANES];
-+    int i;
- 
-     image = eglCreateImageKHR(qemu_egl_display, eglGetCurrentContext(),
-                               EGL_GL_TEXTURE_2D_KHR,
-@@ -314,6 +315,11 @@ bool egl_dmabuf_export_texture(uint32_t tex_id, int *fd, EGLint *offset,
-         *modifier = modifiers[0];
-     }
- 
-+    for (i = 0; i < *num_planes; i++) {
-+        if (fd[i] < 0) {
-+            return false;
-+        }
-+    }
-     return true;
- }
- 
 -- 
 2.50.0
 
