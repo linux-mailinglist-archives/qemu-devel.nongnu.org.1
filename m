@@ -2,74 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127E2B04F3C
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 05:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13239B05033
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 06:19:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubWWd-0004DX-9S; Mon, 14 Jul 2025 23:40:15 -0400
+	id 1ubX7O-00019E-I0; Tue, 15 Jul 2025 00:18:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubWWb-0004CG-IU
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 23:40:13 -0400
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1ubX3C-0007uM-BC
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 00:14:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubWWZ-0006Rk-Ej
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 23:40:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752550812; x=1784086812;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Qeil6/cS4TnDGn/oSbEZUuBv4NuQFCKMlPyhRgS+pqA=;
- b=iZVk9GrKRVX3lwddkefiI+bsA3Kw9u4v/j7/4++UTwpAZxF0JCJGSD2l
- vfNxrd2Il1ccJxqUUXJtPllmFTPJM4NK+QTpBrIj2AfGzIMWN+0evB9l/
- kojCUvhK2xc9lzffnPIJPJa0J+mTi01jKc8Y/2hBHWDLZVk4c9D8idiW4
- 2lYZpcAYzCf3uaDUFmoPQTwTyJOUT/Qgc3m6lQOPWB6rP5pDfrE3s8+5a
- 02dSe5HsFNRjzPd82Q2DVlnxKNAsZrYpvkQgXeB6KoRC0uXBs1Npkn2Ep
- Rpy7ZxuAFoMJcKK3OK8IigW+Ohv4z9blm0vEs5ea2ej/bj0HHpapiP2oz g==;
-X-CSE-ConnectionGUID: yqjRu9P5Rh66xaKYsx4O3Q==
-X-CSE-MsgGUID: mcmHgc6+SpuQNTMplWypSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="72334946"
-X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="72334946"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 20:40:11 -0700
-X-CSE-ConnectionGUID: V/OJWrNDQHSoOfPHxJLXSA==
-X-CSE-MsgGUID: Zf/J+uF7SEqChZOuPe+G6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="180808190"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa002.fm.intel.com with ESMTP; 14 Jul 2025 20:40:07 -0700
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- ackerleytng@google.com, seanjc@google.com
-Cc: Fuad Tabba <tabba@google.com>, Vishal Annapurve <vannapurve@google.com>,
- rick.p.edgecombe@intel.com, Kai Huang <kai.huang@intel.com>,
- binbin.wu@linux.intel.com, yan.y.zhao@intel.com, ira.weiny@intel.com,
- michael.roth@amd.com, kvm@vger.kernel.org, qemu-devel@nongnu.org,
- Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [POC PATCH 5/5] [HACK] memory: Don't enable in-place conversion for
- internal MemoryRegion with gmem
-Date: Tue, 15 Jul 2025 11:31:41 +0800
-Message-ID: <20250715033141.517457-6-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250715033141.517457-1-xiaoyao.li@intel.com>
-References: <cover.1747264138.git.ackerleytng@google.com>
- <20250715033141.517457-1-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1ubX39-0007eh-5v
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 00:13:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752552828;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4kkj667ViCLvZkiJSU23dkS3hxY6bi6u+vpzRPIlZWk=;
+ b=ITfUL7/ICSv+3QL4it1uiJ96rggweWJlD4zXDbbgOs7/xWHaTJ7aDNfyOBq6RIlqj1G/N0
+ LbVpQFmwbZifKGa/G2WQYB1QecW66X4Jd+LmMhFGutQw+ie5WE3wMDe2+3b5dXwjdH4RXs
+ 2V1gG014BdDR/WwmOVzdQBHQSosKf1c=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-208-YT3_5_rJPPSNjvg6v9Rajw-1; Tue, 15 Jul 2025 00:13:46 -0400
+X-MC-Unique: YT3_5_rJPPSNjvg6v9Rajw-1
+X-Mimecast-MFC-AGG-ID: YT3_5_rJPPSNjvg6v9Rajw_1752552826
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-311e98ee3fcso5560980a91.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 21:13:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752552825; x=1753157625;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4kkj667ViCLvZkiJSU23dkS3hxY6bi6u+vpzRPIlZWk=;
+ b=JAhFB5FgWn4ITScVSf4rHqR3p33hB1+Jdktyyn4aC7Q5FTYEO0rua6bLQvaD8kRXw2
+ bv57zLAM8dMK7H2QVMPKGx4kF5CYLb8A+paQNzjXwitTtaXaniqPmJvC1v9KnXODQDvO
+ fZfZOfQv8NWVH2ywnBDHSLF30xurfKNWWJSWjBpuvKVuBxxxh5+oaaCFD7SyvHJHwfJi
+ csk/fkdblgVD7cXQjF21v3GFmQ5c7qRRyWsDWJ6+vqgBuXvhfdOrwFlpvDYh/aFPY48t
+ YSl+xBh9GsAM0yvQt92ozsEWo8jSq7GYzHvuwdhRCCPx2x6y3RfSS7LuunQpoUFxDgQe
+ aHig==
+X-Gm-Message-State: AOJu0Yw4YY6uED9ZNcwmekELDJumzLzvTlX8GveJeCsT1xesUPnQasV9
+ +CG23rWLfK6/fm6sH4o476JF0IEj0LiF6nvCzktgLzTeHbrQYxrX9croDyUd4kZ6Ry87t1f2qBk
+ D1KMZKc4qcHhngMq9uorI566czYGTLY44gucaWeu+6b+Yy1qXFnwMsUd8PAicWOlTTcOofRt/1z
+ Uu7ew0ES11X7Nom5Rsj2OARTiaxNQp6U+/QdIbcuO8NQ==
+X-Gm-Gg: ASbGncv+L+BmE151neg3LDAgdzq/JI2IV+cfl3nmrceQrh/jIa1Xih7w37arI+N5S76
+ cab15x+ubUU6QqyP5upc6hYvFsVFK6e/5SfoVY6hST7psKJDOy5o68ZXHjikpNKIDZ/Ljb2jg28
+ CFTBwxaheBEhPrQji9pjA=
+X-Received: by 2002:a17:90a:da83:b0:311:482a:f956 with SMTP id
+ 98e67ed59e1d1-31c8f7da75emr3132683a91.5.1752552825398; 
+ Mon, 14 Jul 2025 21:13:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1q+ciA1baAO+R+3OwysRaMLIhIXp3sC82bQEvcaz32QErfm34SYa+RW0997RHlo6jthVu+25M+Ys1+cpwCa4=
+X-Received: by 2002:a17:90a:da83:b0:311:482a:f956 with SMTP id
+ 98e67ed59e1d1-31c8f7da75emr3132655a91.5.1752552824875; Mon, 14 Jul 2025
+ 21:13:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20250714053423.10415-1-jasowang@redhat.com>
+In-Reply-To: <20250714053423.10415-1-jasowang@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Tue, 15 Jul 2025 12:13:32 +0800
+X-Gm-Features: Ac12FXz4EZpf5S4Z0oGdqL46s52axZYSpKRKg4CyvY8u0tPzSCenb-tpmW35u9Q
+Message-ID: <CACGkMEuLMqECDb-DYqcEQjF+rhYjT1gf0i7q6DiEWtYh0wuu5w@mail.gmail.com>
+Subject: Re: [PULL 00/13] Net patches
+To: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,95 +99,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, the TDVF cannot work with gmem in-place conversion because
-current implementation of KVM_TDX_INIT_MEM_REGION in KVM requires
-gmem of TDVF to be valid for both shared and private at the same time.
+On Mon, Jul 14, 2025 at 1:34=E2=80=AFPM Jason Wang <jasowang@redhat.com> wr=
+ote:
+>
+> The following changes since commit 9a4e273ddec3927920c5958d2226c6b38b5433=
+36:
+>
+>   Merge tag 'pull-tcg-20250711' of https://gitlab.com/rth7680/qemu into s=
+taging (2025-07-13 01:46:04 -0400)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/jasowang/qemu.git tags/net-pull-request
+>
+> for you to fetch changes up to da703b06a52bfb5fe1a77b0eddbb8d68d3f70762:
+>
+>   net/passt: Implement vhost-user backend support (2025-07-14 13:27:09 +0=
+800)
 
-To workaround it, explicitly not enable in-place conversion for internal
-MemoryRegion with gmem. So that TDVF doesn't use in-place conversion gmem
-and KVM_TDX_INIT_MEM_REGION will initialize the gmem with the separate
-shared memory.
+ I decided to include Daniel's AF_XDP enhancement, so I will post V2
+of the PULL.
 
-To make in-place conversion work with TDX's initial memory, the
-one possible solution and flow would be as below and it requires KVM
-change:
-
-- QEMU create gmem as shared;
-- QEMU mmap the gmem and load TDVF binary into it;
-- QEMU convert gmem to private with the content preserved[1];
-- QEMU invokes KVM_TDX_INIT_MEM_REGION without valid src, so that KVM
-  knows to fetch the content in-place and use in-place PAGE.ADD for TDX.
-
-[1] https://lore.kernel.org/all/aG0pNijVpl0czqXu@google.com/
-
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
- include/system/memory.h | 3 +++
- system/memory.c         | 2 +-
- system/physmem.c        | 8 +++++---
- 3 files changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/include/system/memory.h b/include/system/memory.h
-index f14fbf65805d..89d6449cef70 100644
---- a/include/system/memory.h
-+++ b/include/system/memory.h
-@@ -256,6 +256,9 @@ typedef struct IOMMUTLBEvent {
-  */
- #define RAM_PRIVATE (1 << 13)
- 
-+/* Don't use enable in-place conversion for the guest mmefd backend */
-+#define RAM_GUEST_MEMFD_NO_INPLACE (1 << 14)
-+
- static inline void iommu_notifier_init(IOMMUNotifier *n, IOMMUNotify fn,
-                                        IOMMUNotifierFlag flags,
-                                        hwaddr start, hwaddr end,
-diff --git a/system/memory.c b/system/memory.c
-index 6870a41629ef..c1b73abc4c94 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -3702,7 +3702,7 @@ bool memory_region_init_ram_guest_memfd(MemoryRegion *mr,
-     DeviceState *owner_dev;
- 
-     if (!memory_region_init_ram_flags_nomigrate(mr, owner, name, size,
--                                                RAM_GUEST_MEMFD, errp)) {
-+                                                RAM_GUEST_MEMFD | RAM_GUEST_MEMFD_NO_INPLACE, errp)) {
-         return false;
-     }
-     /* This will assert if owner is neither NULL nor a DeviceState.
-diff --git a/system/physmem.c b/system/physmem.c
-index ea1c27ea2b99..c23379082f38 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1916,7 +1916,8 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
- 
-     if (new_block->flags & RAM_GUEST_MEMFD) {
-         int ret;
--        bool in_place = kvm_guest_memfd_inplace_supported;
-+        bool in_place = !(new_block->flags & RAM_GUEST_MEMFD_NO_INPLACE) &&
-+                        kvm_guest_memfd_inplace_supported;
- 
-         new_block->guest_memfd_flags = 0;
- 
-@@ -2230,7 +2231,8 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
-     ram_flags &= ~RAM_PRIVATE;
- 
-     assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
--                          RAM_NORESERVE | RAM_GUEST_MEMFD)) == 0);
-+                          RAM_NORESERVE | RAM_GUEST_MEMFD |
-+                          RAM_GUEST_MEMFD_NO_INPLACE)) == 0);
-     assert(!host ^ (ram_flags & RAM_PREALLOC));
-     assert(max_size >= size);
- 
-@@ -2314,7 +2316,7 @@ RAMBlock *qemu_ram_alloc(ram_addr_t size, uint32_t ram_flags,
-                          MemoryRegion *mr, Error **errp)
- {
-     assert((ram_flags & ~(RAM_SHARED | RAM_NORESERVE | RAM_GUEST_MEMFD |
--                          RAM_PRIVATE)) == 0);
-+                          RAM_PRIVATE | RAM_GUEST_MEMFD_NO_INPLACE)) == 0);
-     return qemu_ram_alloc_internal(size, size, NULL, NULL, ram_flags, mr, errp);
- }
- 
--- 
-2.43.0
+Thanks
 
 
