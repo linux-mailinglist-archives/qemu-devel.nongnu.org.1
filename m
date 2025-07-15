@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F771B05207
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D269DB05205
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:42:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZMe-00038R-6u; Tue, 15 Jul 2025 02:42:08 -0400
+	id 1ubZMf-000395-Fr; Tue, 15 Jul 2025 02:42:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1ubZEm-0003E7-7m
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:04 -0400
+ id 1ubZEt-0003Hd-DO
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1ubZEk-0003hf-AT
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:33:59 -0400
+ id 1ubZEr-0003iJ-BR
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:34:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752561236;
+ s=mimecast20190719; t=1752561244;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XGxC8pOOHdvNF80rDAG/0y/ryZPUHgUpZxYeZeyNMtI=;
- b=fnhkCGedfgT02h/UInYK0aAYQtF7S984Vza3PEc5hldlh7KQMI3Ig+1+NVtwOzyCJGrV84
- lwmhQkWeBBiaoYRJm+qpql+xNbwADNdu9VKmh+SSfwP0Ib7smnZi5Iu2fFO3zHK1izrBGz
- izxoan6rAGr9+37OVpvX6PB+2owd66I=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=9PoE6bd35sOk0qJdIlAC+wu6emNS0c0T/QE+67h9qX4=;
+ b=aypIHRUvDIh2nkE+Xnh59DfB1obxeC4Du/bTivxlWqnLSM1NOjQQiouyzEf6ZGVaOSuD08
+ gXoaEyA3q40sxBB/m2Ccz+rTUViApuwsf+K9szhrS/0y95cgupGbQ2pnEfvhJe9rftkTzj
+ 6KSjs7Z75LZUBneDG/AZUuQXQp/barY=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-564-O_Aizd2IM3ihX0GyyyvVxQ-1; Tue,
- 15 Jul 2025 02:33:55 -0400
-X-MC-Unique: O_Aizd2IM3ihX0GyyyvVxQ-1
-X-Mimecast-MFC-AGG-ID: O_Aizd2IM3ihX0GyyyvVxQ_1752561234
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-120-gHHXpvWEPsGLLipHp_QyuQ-1; Tue,
+ 15 Jul 2025 02:34:00 -0400
+X-MC-Unique: gHHXpvWEPsGLLipHp_QyuQ-1
+X-Mimecast-MFC-AGG-ID: gHHXpvWEPsGLLipHp_QyuQ_1752561239
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0751F1800289; Tue, 15 Jul 2025 06:33:54 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B823F19560B5; Tue, 15 Jul 2025 06:33:59 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.9])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E70661977000; Tue, 15 Jul 2025 06:33:51 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 0CAF1195609D; Tue, 15 Jul 2025 06:33:57 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, Vivek Kasireddy <vivek.kasireddy@intel.com>,
@@ -52,16 +52,16 @@ Cc: stefanha@redhat.com, Vivek Kasireddy <vivek.kasireddy@intel.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>
-Subject: [PULL v2 07/13] ui/console-gl: Add a helper to create a texture with
- linear memory layout
-Date: Tue, 15 Jul 2025 10:32:53 +0400
-Message-ID: <20250715063301.145191-8-marcandre.lureau@redhat.com>
+Subject: [PULL v2 08/13] ui/spice: Create a new texture with linear layout
+ when gl=on is specified
+Date: Tue, 15 Jul 2025 10:32:54 +0400
+Message-ID: <20250715063301.145191-9-marcandre.lureau@redhat.com>
 In-Reply-To: <20250715063301.145191-1-marcandre.lureau@redhat.com>
 References: <20250715063301.145191-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -90,11 +90,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-There are cases where we do not want the memory layout of a texture to
-be tiled as the component processing the texture would not know how to
-de-tile either via software or hardware. Therefore, ensuring that the
-memory backing the texture has a linear layout is absolutely necessary
-in these situations.
+Since most encoders/decoders (invoked by Spice) may not work properly
+with tiled memory associated with a texture, we need to create another
+texture that has linear memory layout and use that instead.
+
+Note that, there does not seem to be a direct way to indicate to the
+GL implementation that a texture's backing memory needs to be linear.
+Instead, we have to do it in a roundabout way where we need to first
+create a tiled texture and import that as a memory object to create
+a new texture that has a linear memory layout.
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
@@ -105,92 +109,149 @@ Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Co-developed-by: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
 Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Message-Id: <20250617043546.1022779-6-vivek.kasireddy@intel.com>
+Message-Id: <20250617043546.1022779-7-vivek.kasireddy@intel.com>
 ---
- include/ui/console.h |  3 +++
- ui/console-gl.c      | 48 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 51 insertions(+)
+ include/ui/surface.h |  1 +
+ ui/console-gl.c      |  6 ++++
+ ui/spice-display.c   | 82 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 89 insertions(+)
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index 46b3128185..98feaa58bd 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -422,6 +422,9 @@ bool console_gl_check_format(DisplayChangeListener *dcl,
-                              pixman_format_code_t format);
- void surface_gl_create_texture(QemuGLShader *gls,
-                                DisplaySurface *surface);
-+bool surface_gl_create_texture_from_fd(DisplaySurface *surface,
-+                                       int fd, GLuint *texture,
-+                                       GLuint *mem_obj);
- void surface_gl_update_texture(QemuGLShader *gls,
-                                DisplaySurface *surface,
-                                int x, int y, int w, int h);
+diff --git a/include/ui/surface.h b/include/ui/surface.h
+index f16f7be8be..006b1986bb 100644
+--- a/include/ui/surface.h
++++ b/include/ui/surface.h
+@@ -22,6 +22,7 @@ typedef struct DisplaySurface {
+     GLenum glformat;
+     GLenum gltype;
+     GLuint texture;
++    GLuint mem_obj;
+ #endif
+     qemu_pixman_shareable share_handle;
+     uint32_t share_handle_offset;
 diff --git a/ui/console-gl.c b/ui/console-gl.c
-index 103b954017..afb36dba64 100644
+index afb36dba64..403fc36fbd 100644
 --- a/ui/console-gl.c
 +++ b/ui/console-gl.c
-@@ -25,6 +25,7 @@
-  * THE SOFTWARE.
-  */
- #include "qemu/osdep.h"
-+#include "qemu/error-report.h"
- #include "ui/console.h"
- #include "ui/shader.h"
- 
-@@ -96,6 +97,53 @@ void surface_gl_create_texture(QemuGLShader *gls,
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+@@ -184,6 +184,12 @@ void surface_gl_destroy_texture(QemuGLShader *gls,
+     }
+     glDeleteTextures(1, &surface->texture);
+     surface->texture = 0;
++#ifdef GL_EXT_memory_object_fd
++    if (surface->mem_obj) {
++        glDeleteMemoryObjectsEXT(1, &surface->mem_obj);
++        surface->mem_obj = 0;
++    }
++#endif
  }
  
-+bool surface_gl_create_texture_from_fd(DisplaySurface *surface,
-+                                       int fd, GLuint *texture,
-+                                       GLuint *mem_obj)
+ void surface_gl_setup_viewport(QemuGLShader *gls,
+diff --git a/ui/spice-display.c b/ui/spice-display.c
+index e409b6bdb2..854a97c198 100644
+--- a/ui/spice-display.c
++++ b/ui/spice-display.c
+@@ -893,6 +893,81 @@ static void spice_gl_update(DisplayChangeListener *dcl,
+     ssd->gl_updates++;
+ }
+ 
++static bool spice_gl_replace_fd_texture(SimpleSpiceDisplay *ssd,
++                                        int *fds, uint64_t *modifier,
++                                        int *num_planes)
 +{
-+    unsigned long size = surface_stride(surface) * surface_height(surface);
-+    GLenum err = glGetError();
-+    *texture = 0;
-+    *mem_obj = 0;
++    uint32_t offsets[DMABUF_MAX_PLANES], strides[DMABUF_MAX_PLANES];
++    GLuint texture;
++    GLuint mem_obj;
++    int fourcc;
++    bool ret;
 +
-+    if (!epoxy_has_gl_extension("GL_EXT_memory_object") ||
-+        !epoxy_has_gl_extension("GL_EXT_memory_object_fd")) {
-+        error_report("spice: required OpenGL extensions not supported: "
-+                     "GL_EXT_memory_object and GL_EXT_memory_object_fd");
++    if (!spice_remote_client) {
++        return true;
++    }
++
++    if (*modifier == DRM_FORMAT_MOD_LINEAR) {
++        return true;
++    }
++
++    if (*num_planes > 1) {
++        error_report("spice: cannot replace texture with multiple planes");
 +        return false;
 +    }
 +
++    /*
++     * We really want to ensure that the memory layout of the texture
++     * is linear; otherwise, the encoder's output may show corruption.
++     */
++    if (!surface_gl_create_texture_from_fd(ssd->ds, fds[0], &texture,
++                                           &mem_obj)) {
++        error_report("spice: cannot create new texture from fd");
++        return false;
++    }
++
++    /*
++     * A successful return after glImportMemoryFdEXT() means that
++     * the ownership of fd has been passed to GL. In other words,
++     * the fd we got above should not be used anymore.
++     */
++    ret = egl_dmabuf_export_texture(texture,
++                                    fds,
++                                    (EGLint *)offsets,
++                                    (EGLint *)strides,
++                                    &fourcc,
++                                    num_planes,
++                                    modifier);
++    if (!ret) {
++        glDeleteTextures(1, &texture);
 +#ifdef GL_EXT_memory_object_fd
-+    glCreateMemoryObjectsEXT(1, mem_obj);
-+    glImportMemoryFdEXT(*mem_obj, size, GL_HANDLE_TYPE_OPAQUE_FD_EXT, fd);
-+
-+    err = glGetError();
-+    if (err != GL_NO_ERROR) {
-+        error_report("spice: cannot import memory object from fd");
-+        goto cleanup_mem;
-+    }
-+
-+    glGenTextures(1, texture);
-+    glBindTexture(GL_TEXTURE_2D, *texture);
-+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_TILING_EXT, GL_LINEAR_TILING_EXT);
-+    glTexStorageMem2DEXT(GL_TEXTURE_2D, 1, GL_RGBA8, surface_width(surface),
-+                         surface_height(surface), *mem_obj, 0);
-+    err = glGetError();
-+    if (err != GL_NO_ERROR) {
-+        error_report("spice: cannot create texture from memory object");
-+        goto cleanup_tex_and_mem;
-+    }
-+    return true;
-+
-+cleanup_tex_and_mem:
-+    glDeleteTextures(1, texture);
-+cleanup_mem:
-+    glDeleteMemoryObjectsEXT(1, mem_obj);
-+
++        glDeleteMemoryObjectsEXT(1, &mem_obj);
 +#endif
-+    return false;
++
++        /*
++         * Since we couldn't export our newly create texture (or create,
++         * an fd associated with it) we need to backtrack and try to
++         * recreate the fd associated with the original texture.
++         */
++        ret = egl_dmabuf_export_texture(ssd->ds->texture,
++                                        fds,
++                                        (EGLint *)offsets,
++                                        (EGLint *)strides,
++                                        &fourcc,
++                                        num_planes,
++                                        modifier);
++        if (!ret) {
++            surface_gl_destroy_texture(ssd->gls, ssd->ds);
++            warn_report("spice: no texture available to display");
++        }
++    } else {
++        surface_gl_destroy_texture(ssd->gls, ssd->ds);
++        ssd->ds->texture = texture;
++        ssd->ds->mem_obj = mem_obj;
++    }
++    return ret;
 +}
 +
- void surface_gl_update_texture(QemuGLShader *gls,
-                                DisplaySurface *surface,
-                                int x, int y, int w, int h)
+ static void spice_server_gl_scanout(QXLInstance *qxl,
+                                     const int *fd,
+                                     uint32_t width, uint32_t height,
+@@ -917,6 +992,7 @@ static void spice_gl_switch(DisplayChangeListener *dcl,
+                             struct DisplaySurface *new_surface)
+ {
+     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
++    bool ret;
+ 
+     if (ssd->ds) {
+         surface_gl_destroy_texture(ssd->gls, ssd->ds);
+@@ -939,6 +1015,12 @@ static void spice_gl_switch(DisplayChangeListener *dcl,
+             return;
+         }
+ 
++        ret = spice_gl_replace_fd_texture(ssd, fd, &modifier, &num_planes);
++        if (!ret) {
++            surface_gl_destroy_texture(ssd->gls, ssd->ds);
++            return;
++        }
++
+         trace_qemu_spice_gl_surface(ssd->qxl.id,
+                                     surface_width(ssd->ds),
+                                     surface_height(ssd->ds),
 -- 
 2.50.0
 
