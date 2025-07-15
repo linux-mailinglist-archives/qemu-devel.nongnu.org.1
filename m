@@ -2,67 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D02AB06483
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 18:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B016B06493
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 18:46:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubiiD-0003M8-0X; Tue, 15 Jul 2025 12:41:01 -0400
+	id 1ubilw-0007aB-Bc; Tue, 15 Jul 2025 12:44:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubiDx-0005es-Kz
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:09:47 -0400
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1ubiKY-00026k-Bd
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:16:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubiDu-0003aM-43
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:09:45 -0400
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1ubiKW-0006cT-2z
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:16:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752595780;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1752596188;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=H0PqXR5KI6cEIFlFub2JJxd8sveEMDM4intMl0IjxjA=;
- b=UDayi3jE7hqxCsjhXf7sgkTv122Rax8eEczJ3oH3tBI1t+3kxmSVSvo31sFavtlwWhOiFv
- iJC0scNWDVwsZA5PqtTCXRNYVTrOhKhUSute6R7iCIFmlWrWmWVi3eoCjCsqDtXCFOsA3n
- 0yXSd2+63n+jSCkwIXLS+rjw4t0+Nns=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-BxwDQlSfOvKKQE9eN5FtWA-1; Tue,
- 15 Jul 2025 12:09:37 -0400
-X-MC-Unique: BxwDQlSfOvKKQE9eN5FtWA-1
-X-Mimecast-MFC-AGG-ID: BxwDQlSfOvKKQE9eN5FtWA_1752595776
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 613EA19560A5; Tue, 15 Jul 2025 16:09:36 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.173])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EBE40195609D; Tue, 15 Jul 2025 16:09:34 +0000 (UTC)
-Date: Tue, 15 Jul 2025 17:09:31 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, matoro <matoro_mailinglist_qemu@matoro.tk>
-Subject: Re: [PATCH 7/7] crypto: allow client/server cert chains
-Message-ID: <aHZ9O5N67rfnJ9SB@redhat.com>
-References: <20250715092932.1395271-1-berrange@redhat.com>
- <20250715092932.1395271-8-berrange@redhat.com>
- <fa670d22-d882-409c-af3d-1669d6386800@linaro.org>
+ bh=//ZWEb+OCGbk6WWVyBpqReZhP4Q2lKMRmd+WCS2Ppkw=;
+ b=A7pcDq2LJLnJ40e4cvVyLMaTRspqmHB4V0BlU7XMcY/RUeFCu3dpxIaO0A93axenBnnA/R
+ tl2QYwSWF5ZBWUdRQjyuOBvdG4mmVOPXj7XicQbeNzM8+q1BhB6LeB9SV0eOVFo/MoGx0I
+ aMiq+dlM1CWst7TRK0K0IatzbVZmyP4=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-219-5484Nbg_MRGzUKdBSmKQJA-1; Tue, 15 Jul 2025 12:16:27 -0400
+X-MC-Unique: 5484Nbg_MRGzUKdBSmKQJA-1
+X-Mimecast-MFC-AGG-ID: 5484Nbg_MRGzUKdBSmKQJA_1752596186
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4ab701d5317so57131041cf.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 09:16:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752596186; x=1753200986;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:in-reply-to
+ :mime-version:references:from:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=//ZWEb+OCGbk6WWVyBpqReZhP4Q2lKMRmd+WCS2Ppkw=;
+ b=YNwWQCoZ7hdq80M0NXvya9wq+lThaQ9lX85NQGttNoLJJEQGPLwfpGf+CkSjfd4Pjg
+ SqLzxGKlv/H1VUDN+Zz41egYJyMBp+axaQRGPYwb87HV7lpPK7j+UPsW2QmEoO5k7VjF
+ XESMdqjTyj3gCvH1JGvaLXnmoxF91ebM/FVtsjdy99IrR45036bfYRDFs4v1j93PPq8E
+ fHk1A9qrz3nrTIzsLPUSmQMtUhRwfU75/rW/UZEQMsIgOCZo4DFcEc/X/aag96TD6MmQ
+ YjDzQ+rsuVPtu2jzub8vt48aVQXDJa+VfDXXa0jnSwkom+1Df+ERG+ZkcIMqBH4mj5a2
+ xPdw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU03e4E3iqvVlN0GmrEO5FaAtx4kzEjd8f8PkuGs54jHmOyq5xQh/NHWiQjzcNaQyzfSSfkOJat4P9d@nongnu.org
+X-Gm-Message-State: AOJu0Ywx29I8aJOxHB5rOGDQduiZnFMpMxl8yrpbTHHbICXDlNHLUIbb
+ c1S71wSYIiBJ+9DuIswCXX0i+K+okcpy2hPiibQyem40tNxxh/CRMpiUbZfO7YM8cbGQsXBv4fT
+ 7g1mVnfNZzLbxLOHLv5vnjObDp14xLjtLsrp12zhSIAvjRVpNgzAT4DQh9n5Ouy/ZTerudvmmvL
+ SJRkChM3fm5LI0oxUtcHhNq2kXFL4e7E8=
+X-Gm-Gg: ASbGncsJFECr/el8yhHRq/zsA/SvV9oif5/VdxhoZwkbmMZAYlkPYwUKaTU2XR3tXAJ
+ ORqzd1IpuS1G7FemwcOfmNOVpS4DlNSuqmF2KoxtrzmbT6mjU7qced2WBRf/WZCjp2K3YcFkNoS
+ Kl7Uyo1w2tkB/X8qSk5jl9jA==
+X-Received: by 2002:ac8:5d16:0:b0:4ab:8b77:65ce with SMTP id
+ d75a77b69052e-4ab90abae96mr587391cf.23.1752596186471; 
+ Tue, 15 Jul 2025 09:16:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGJcsd0q6abnb3JCzug3oD/emTfvG/yKqDg86GUmk23nOaN91iQHW++aC4StOu6zLlBFd2ICQQu3clbBtVLDJI=
+X-Received: by 2002:ac8:5d16:0:b0:4ab:8b77:65ce with SMTP id
+ d75a77b69052e-4ab90abae96mr587061cf.23.1752596186064; Tue, 15 Jul 2025
+ 09:16:26 -0700 (PDT)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 15 Jul 2025 09:16:24 -0700
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 15 Jul 2025 09:16:24 -0700
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20250610143259.1056400-1-cohuck@redhat.com>
+ <20250610143259.1056400-3-cohuck@redhat.com>
+ <aEhnbN1pSYgdi4EZ@redhat.com>
+ <CABJz62O3FKYfUOyCLMotgYgckWV1frSUb=MtTW2J4fDTEg_==g@mail.gmail.com>
+ <877c09792e.fsf@redhat.com> <aHZ7rpYFMWai-7RL@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fa670d22-d882-409c-af3d-1669d6386800@linaro.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <aHZ7rpYFMWai-7RL@redhat.com>
+Date: Tue, 15 Jul 2025 09:16:24 -0700
+X-Gm-Features: Ac12FXwPblRStPVaHckJJW6xM_jkqDJyoXBQiFy_MpSK9wMWOxv5H2TE8fe62Uk
+Message-ID: <CABJz62P+p_uYiatXroauLkG2AH2TnjS8drbHxLPsgY+=QSB8Lw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] watchdog: generic name for i6300esb
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,49 +108,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 15, 2025 at 11:46:31AM +0200, Philippe Mathieu-Daudé wrote:
-> On 15/7/25 11:29, Daniel P. Berrangé wrote:
-> > From: matoro <matoro@users.noreply.github.com>
-> 
-> Should we use <matoro_mailinglist_qemu@matoro.tk> here?
+On Tue, Jul 15, 2025 at 05:02:54PM +0100, Daniel P. Berrang=C3=A9 wrote:
+> On Tue, Jul 15, 2025 at 05:44:25PM +0200, Cornelia Huck wrote:
+> > Hmm. So
+> > - request a new PCI id (probably in the PCI_DEVICE_ID_REDHAT_* space)
+> > - restructure to have two devices base off the same core functionality
+> > - teach guest operating systems about the new device
+> > - teach management software like libvirt about the new device
+> >
+> > Not sure how fast we can get an ID (or even how to go about it.) The
+> > second step should be reasonably easy. The third step is the most
+> > complex one, but at least teaching Linux should hopefully be easy
+> > enough, and existing guest operating systems could continue to use the
+> > existing device. The last step is probably not that bad.
+> >
+> > I can start down that path, if we have some consensus that this is the
+> > right way to handle this.
+> >
+> > I'd still argue that patch 1 should be applied regardless :)
+>
+> This sounds like a hell of alot of busy work to fix a problem that, IIUC,
+> does not actually exist from a functional POV - it is merely a perception
+> issue that people might be put off by the "Intel 6300ESB" names.
+>
+> IMHO a better use of time is to expand documentation to clarify this is
+> just fine for all PCI architectures, and change nothing in either QEMU
+> or guest kernels.
 
-I generally don't like to change the git metadata that a user
-submits with unless it is clearly broken, which I don't think
-is the case here.
+Agreed that it's not the most high-reward endeavor, but IIRC users
+were getting genuinely confused and annoyed by the string "Intel"
+showing up in their aarch64 guests.
 
-> 
-> > 
-> > The existing implementation assumes that client/server certificates are
-> > single individual certificates.  If using publicly-issued certificates,
-> > or internal CAs that use an intermediate issuer, this is unlikely to be
-> > the case, and they will instead be certificate chains.  While this can
-> > be worked around by moving the intermediate certificates to the CA
-> > certificate, which DOES currently support multiple certificates, this
-> > instead allows the issued certificate chains to be used as-is, without
-> > requiring the overhead of shuffling certificates around.
-> > 
-> > Corresponding libvirt change is available here:
-> > https://gitlab.com/libvirt/libvirt/-/merge_requests/222
-> > 
-> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> > Signed-off-by: matoro <matoro_mailinglist_qemu@matoro.tk>
-> > [DB: adapted for code conflicts with multi-CA patch]
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >   crypto/tlscredsx509.c                 | 157 ++++++++++++--------------
-> >   tests/unit/test-crypto-tlscredsx509.c |  77 +++++++++++++
-> >   2 files changed, 147 insertions(+), 87 deletions(-)
-> 
+You can point them to documentation over and over again, or you can
+work to prevent the confusion/annoyance from showing up in the first
+place. Which of the two approaches is a better use of anyone's time
+is up for debate.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+I for one am grateful that someone put the time in all those years
+ago and, as a result, PCI and USB controllers don't suffer from the
+problem today. Ultimately it's up to Connie though.
+
+--=20
+Andrea Bolognani / Red Hat / Virtualization
 
 
