@@ -2,110 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B747B06739
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B42B06701
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:35:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublb4-0002Bs-LZ; Tue, 15 Jul 2025 15:45:51 -0400
+	id 1ublQz-0005SE-Dr; Tue, 15 Jul 2025 15:35:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1ubkzC-00052o-Qh
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:06:44 -0400
-Received: from fhigh-a6-smtp.messagingengine.com ([103.168.172.157])
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1ubl87-00023w-Ah
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:15:57 -0400
+Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1ubkz6-0001r8-EO
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:06:41 -0400
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal
- [10.202.2.46])
- by mailfhigh.phl.internal (Postfix) with ESMTP id 0AF26140025D;
- Tue, 15 Jul 2025 15:06:34 -0400 (EDT)
-Received: from phl-imap-08 ([10.202.2.84])
- by phl-compute-06.internal (MEProxy); Tue, 15 Jul 2025 15:06:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1752606394;
- x=1752692794; bh=Ld270ARNXKviUbockHvo9cpRjE6+Uk4j3ncQcA5itck=; b=
- 2SLuZKWsGk+mXk70nrFt4nA2i+GcePOeHwME9sIFTgz3rEItV7LJSlmGej50JOr+
- xbIqcNTIj4B5DUiZBuogXDBpBr33m8Wxmz2OxD/wcnnRa6Rljaz4PNvDpnbrnm+i
- mt6LejcvgoSXOjNaVlXy/SogCn8eqNMdPAsTdVUcEevHbOBS2NTcy5zljPnK5DNv
- Oe8kZTJXzcQAn2jvqP65d1G9Ngu2UII3D6IHOYxtI8Dw0i5+VkpcvTFUh21dlrd9
- LjVgHRDTFsXheZJm9XvqHta/WbUPxPJKgI/8Ky6UMMgZgDf6d0+yEnoGprNEyuVy
- n7B0bm6/ZdpTpRurlA9S0A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1752606394; x=
- 1752692794; bh=Ld270ARNXKviUbockHvo9cpRjE6+Uk4j3ncQcA5itck=; b=c
- R5r7VgHVNmllDLgLq75rs1lksYEtxh8n1CcuZnphSHFuAPVLHPJsn5Kc9UYR1K0/
- Cwmgaerl6tUjUy+4TwVEe9TdQMiagcuPYg1OyY2553BHxdiVdTmhwVc/amp5zKHA
- nJjgto2R5bTAasygn5ZHs1HddgZj9851PH5sI0cm77hl1Bpntn4OFwYK9hXGbmtQ
- scNwTU7AvMibi+HP5lbqRihtQDjUGi8ZV/dMx8nM1fD+d/5d6rOlwjUuLwr3bwrK
- vDCrlalARMqRsQW/E8Nj1M0DuZPWHFge8xRedIqYSGwCXIZso5umA3BkDqTCA5yv
- omauyZDrhY/YQKvUml4HQ==
-X-ME-Sender: <xms:uaZ2aAt7WNjBswmWsssI-6gqFFbr3cG2zgZf2X0-Z5NLgTwNBf1dGA>
- <xme:uaZ2aNdhUtyHUAxryAMZANZmcwRIfzR3432-0XHP1IYjOVGxvD_QiRiW1s6GMKDlI
- ClJ90vyyQTgNO9eRqw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehheeifecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
- ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
- hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdflihgrgihu
- nhcujggrnhhgfdcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenuc
- ggtffrrghtthgvrhhnpeehfeehkeekhfffueeifeevieejgfekkefffefggefhgefgleeu
- ffdvheefvedvgfenucffohhmrghinheplhgruhhntghhphgrugdrnhgvthenucevlhhush
- htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigr
- nhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhopeeipdhmohguvgepshhmth
- hpohhuthdprhgtphhtthhopehfgegsuhhgsegrmhhsrghtrdhorhhgpdhrtghpthhtohep
- rghurhgvlhhivghnsegruhhrvghlfedvrdhnvghtpdhrtghpthhtohepudelvdeivdejje
- essghughhsrdhlrghunhgthhhprggurdhnvghtpdhrtghpthhtohepvggughgrrhdrihhg
- lhgvshhirghssehgmhgrihhlrdgtohhmpdhrtghpthhtohepqhgvmhhuqdguvghvvghlse
- hnohhnghhnuhdrohhrghdprhgtphhtthhopegrlhgvkhhsrghnuggrrhdrrhhikhgrlhho
- sehshihrmhhirgdrtghomh
-X-ME-Proxy: <xmx:uaZ2aFLg5vFsjcLLpZTb4oTOCCFuGp4MUo9FQBGtDKsxt_H2z4nehA>
- <xmx:uaZ2aB7-5Lo6KJyNuT3tgSDftmdrx5G5hzYhCtUOatZHRR5LQjvPXQ>
- <xmx:uaZ2aJ1FpyaQ-OZEA_TmZ7LtnxgKRm_uwF-q5sRI67CH-mWl4l_4Zg>
- <xmx:uaZ2aHcoiB4WVsJ2ZzyvPaoafiYuLs4GKdrwnbRSNK--tG8eFxRPWA>
- <xmx:uqZ2aD2NzKDNWe2XKZ8BCuPMG6vpdHRw_34ibpuSw_FU9Wg86b3SdQTY>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
- id 310F92CE0071; Tue, 15 Jul 2025 15:06:33 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1ubl84-0003VU-Hi
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:15:55 -0400
+Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 8217F3F412
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 19:15:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1752606949;
+ bh=4dblcXqKLHTGAGmcqiKTs/evyLcOqwfNiyLtAlOKjRY=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=fbJmJzmfnV6rBbGL8ZJsT1yVh2qaEKVjb4noXNrCryDIUSuo81OG6E7pcsBBo+wCJ
+ i6p2a98LuCXvLU8p//sSpEE2lkGt+0Nzd6wodwSBgiq6xH3aexJ33fFw2+NG3EOYWl
+ Bpqg+K+BHPB/nZ7EnNHmi8gtXSnOvrIDTwsCq5Ajfr9+Y69/jJfRBl4XPiUT6d+WIu
+ J0Tb8Cpw+iOXh1v02ED9sBgC0E20bL+XmnZYI7IX+XXaLHqNeNF9rPJpshLgHGUaWp
+ EBvbEIg3r20SifJsh51QHb5EOv86Tc+rfqAv9UIy03iipRdqAEi5ma2NkFsT5fzRvH
+ sblJ/UNjoSB+g==
+Received: from scripts.lp.internal (localhost [127.0.0.1])
+ by scripts.lp.internal (Postfix) with ESMTP id 630CD7E139
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 19:15:49 +0000 (UTC)
 MIME-Version: 1.0
-X-ThreadId: T13493bb08d7ad028
-Date: Tue, 15 Jul 2025 20:06:10 +0100
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
- "QEMU devel" <qemu-devel@nongnu.org>
-Cc: "Aurelien Jarno" <aurelien@aurel32.net>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- "Aleksandar Rikalo" <aleksandar.rikalo@syrmia.com>,
- 1926277@bugs.launchpad.net
-Message-Id: <970fe4bd-e0a0-4488-8db2-a581568bf090@app.fastmail.com>
-In-Reply-To: <20210427133343.159718-1-f4bug@amsat.org>
-References: <20210427133343.159718-1-f4bug@amsat.org>
-Subject: Re: [PATCH v2] target/mips: Only update MVPControl.EVP bit if
- executed by master VPE
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=103.168.172.157;
- envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-a6-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Date: Tue, 15 Jul 2025 19:06:10 -0000
+From: Jiaxun Yang <1926277@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=qemu; status=Invalid; importance=Undecided;
+ assignee=None; 
+X-Launchpad-Bug-Tags: dvpe evpe mips mt
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: flygoat hansni philmd
+X-Launchpad-Bug-Reporter: Hansni Bu (hansni)
+X-Launchpad-Bug-Modifier: Jiaxun Yang (flygoat)
+References: <161951518027.9817.15696784713381088226.malonedeb@soybean.canonical.com>
+ <20210427133343.159718-1-f4bug@amsat.org>
+Message-Id: <970fe4bd-e0a0-4488-8db2-a581568bf090@app.fastmail.com>
+Subject: [Bug 1926277] Re: [PATCH v2] target/mips: Only update MVPControl.EVP
+ bit if executed by master VPE
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="2d6e9435c2df831e66deb7fcbe9f03f78dd14743";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: 4ce2637f95a22e0a569ca49aa381e6992a92f233
+Received-SPF: pass client-ip=185.125.188.251;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -114,15 +86,13 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Bug 1926277 <1926277@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
 =E5=9C=A82021=E5=B9=B44=E6=9C=8827=E6=97=A5=E5=91=A8=E4=BA=8C =E4=B8=8B=E5=
 =8D=882:33=EF=BC=8CPhilippe Mathieu-Daud=C3=A9=E5=86=99=E9=81=93=EF=BC=9A
-> According to the 'MIPS MT Application-Speci=EF=AC=81c Extension' manua=
-l:
+> According to the 'MIPS MT Application-Speci=EF=AC=81c Extension' manual:
 >
 >   If the VPE executing the instruction is not a Master VPE,
 >   with the MVP bit of the VPEConf0 register set, the EVP bit
@@ -163,17 +133,15 @@ Jiaxun
 > -        MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
 > -        /* Turn off all VPEs except the one executing the dvpe.  */
 > -        if (&other_cpu->env !=3D env) {
-> -            other_cpu->env.mvp->CP0_MVPControl &=3D ~(1 << CP0MVPCo_E=
-VP);
+> -            other_cpu->env.mvp->CP0_MVPControl &=3D ~(1 << CP0MVPCo_EVP);
 > -            mips_vpe_sleep(other_cpu);
 > +    if (env->CP0_VPEConf0 & (1 << CP0VPEC0_MVP)) {
 > +        CPU_FOREACH(other_cs) {
 > +            MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
-> +            /* Turn off all VPEs except the one executing the dvpe.  =
-*/
+> +            /* Turn off all VPEs except the one executing the dvpe.  */
 > +            if (&other_cpu->env !=3D env) {
-> +                other_cpu->env.mvp->CP0_MVPControl &=3D ~(1 << CP0MVP=
-Co_EVP);
+> +                other_cpu->env.mvp->CP0_MVPControl &=3D ~(1 << CP0MVPCo_=
+EVP);
 > +                mips_vpe_sleep(other_cpu);
 > +            }
 >          }
@@ -193,15 +161,14 @@ Co_EVP);
 > -            /* If the VPE is WFI, don't disturb its sleep.  */
 > -            && !mips_vpe_is_wfi(other_cpu)) {
 > -            /* Enable the VPE.  */
-> -            other_cpu->env.mvp->CP0_MVPControl |=3D (1 << CP0MVPCo_EV=
-P);
+> -            other_cpu->env.mvp->CP0_MVPControl |=3D (1 << CP0MVPCo_EVP);
 > -            mips_vpe_wake(other_cpu); /* And wake it up.  */
 > +            if (&other_cpu->env !=3D env
 > +                /* If the VPE is WFI, don't disturb its sleep.  */
 > +                && !mips_vpe_is_wfi(other_cpu)) {
 > +                /* Enable the VPE.  */
-> +                other_cpu->env.mvp->CP0_MVPControl |=3D (1 << CP0MVPC=
-o_EVP);
+> +                other_cpu->env.mvp->CP0_MVPControl |=3D (1 << CP0MVPCo_E=
+VP);
 > +                mips_vpe_wake(other_cpu); /* And wake it up.  */
 > +            }
 >          }
@@ -212,4 +179,63 @@ o_EVP);
 
 --=20
 - Jiaxun
+
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/1926277
+
+Title:
+  MIPS MT dvpe does not regard VPEConf0.MVP
+
+Status in QEMU:
+  Invalid
+
+Bug description:
+  Hi,
+
+  According to MIPS32=C2=AE Architecture for Programmers VolumeIV-f: The
+  MIPS=C2=AE MT Application-Speci=EF=AC=81c Extension to the MIPS32=C2=AE A=
+rchitecture,
+  for instruction: dvpe, evpe:
+
+  If the VPE executing the instruction is not a Master VPE, with the MVP
+  bit of the VPEConf0 register set, the EVP bit is unchanged by the
+  instruction.
+
+  The pseudo code is:
+
+  data =E2=86=90  MVPControl
+  GPR[rt] =E2=86=90  data
+  if(VPEConf0.MVP =3D 1) then
+    MVPControl.EVP =E2=86=90  sc
+  endif
+
+  However the helper functions of dvpe, evpe does not regard the
+  VPEConf0.MVP bit, namely, it does not check if the VPE is a master
+  VPE. Code is copied below as:
+
+  target_ulong helper_dvpe(CPUMIPSState *env)
+  {
+      CPUState *other_cs =3D first_cpu;
+      target_ulong prev =3D env->mvp->CP0_MVPControl;
+
+      CPU_FOREACH(other_cs) {
+          MIPSCPU *other_cpu =3D MIPS_CPU(other_cs);
+          /* Turn off all VPEs except the one executing the dvpe.  */
+          if (&other_cpu->env !=3D env) {
+              other_cpu->env.mvp->CP0_MVPControl &=3D ~(1 << CP0MVPCo_EVP);
+              mips_vpe_sleep(other_cpu);
+          }
+      }
+      return prev;
+  }
+
+  Is this a bug?
+
+  QEMU head commit: 0cef06d18762374c94eb4d511717a4735d668a24 is checked.
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/qemu/+bug/1926277/+subscriptions
+
 
