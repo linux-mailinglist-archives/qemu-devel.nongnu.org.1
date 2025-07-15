@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53568B051CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73485B0519F
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:21:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZ0x-00029o-Na; Tue, 15 Jul 2025 02:19:43 -0400
+	id 1ubZ1F-0002Jx-AY; Tue, 15 Jul 2025 02:20:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0p-00022u-NA
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:35 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0u-00028J-Hr
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:40 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0n-00070J-Rg
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:35 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-455b00339c8so25064445e9.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:19:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0s-00071K-FE
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:40 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-451d3f72391so49800275e9.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:19:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752560371; x=1753165171; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752560376; x=1753165176; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RcBzpRDaRrnDJbIDx3w7L821BpSBhOYClllIovi4m+Y=;
- b=Zsnh0ePmpB4mGcB69W404Pyi0815IGCDfpRugMGLsB03mr0ioc2Q0f5IqXC5pwZbFR
- yGj3a7MY7GWy/75NDfcaS9LEtO3ewyZdp0tIbUg0GTTKIRQQhjdxxpAJVr31qMIXSCnT
- AOKf/onrfp9j7Q+AaFCpRmevklC+8dfryGEHyKIFYJwoSHtHFZ6qUYFp5zyJmEFryBvD
- /lJ02D224jicvLDug8WPW1C2+0cpg2s2h8n/sCvdQUPNx8SCYlBVs8aEn6Prnb5ltWZJ
- CDPEl2drmM5fJEoxhbCBqK+ZZrbzyYbYPic0bzndUqX5Xp4++4Q9syaXskdxj9lotrhD
- rotw==
+ bh=CmqRT40RDvsgTqfFq5PqPhISBaVjONltwNS6X4XWcCM=;
+ b=LpYaBdsQLsJac1AJ3IqV/kXjAoyReO1dJjlD1m9x3dAKvZ5Q5eD16e8YoJxs2y1foM
+ Hd0q07aSq/ntIgbXkgVPg1wQJotHnjfEKGdzX1C+GjkP+zEjQ2ZyARYON8B7rvT6ksLM
+ NNl58ewE0Pay5YRIpvCfjQO9tZAqcMI3/iDyiVrwdgPaOiICiNm5Gp4rT+Pp/GOrWsSg
+ eLrcZnaVVJrZi8DQCx1Htn6UmFJ5411UqUY7RI9dI9cfKXuxVCsvhKdwPgVuTL1PoJj5
+ SdUu7jcpvUGDJKOSmupVuxd975UnnhyVadUaYQh81V+cfwuuspZ+a4cyTsXHPDoq65Co
+ /Mcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752560371; x=1753165171;
+ d=1e100.net; s=20230601; t=1752560376; x=1753165176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RcBzpRDaRrnDJbIDx3w7L821BpSBhOYClllIovi4m+Y=;
- b=nH6/FJvN3lUbg3CxHTQKXb3zUlWMApV3LHgrIiaNbQgG5tJoKHmbTI6MbXE7bEYO1X
- q8WDUMyP5yR7Z74qJ72INhCWRPdVfh1mxwJWo9Kpa3PyD9/DQZ4Vr9cO7YADLbFcAgFe
- VX40iytPyEGMoROjf5tp/Cy2Oz+cqCEIuQW253mlkumQErWuBWu2YxbwTdEzGCa4a7rk
- 9fIOcB7MvAqkWBacPQUoCXiPoLrGQol5k1bUwM4pc1m3Hktr98YtfkFnlhF5ghsBmg/H
- JPuV1/U2VHmC5/0IBZXO84rFZCIEEZAuEm23qP8zzVtBB1AIhXqBJuDpjwSKPFcHJFgk
- fXzQ==
-X-Gm-Message-State: AOJu0Yyr1tvTK3666IO/vYMJfU3X2ykr1YKCignPXVttSJ9i6/k3BKfT
- HygReUPxS+UZP3iPiHnEHZhbyvjepb3A91LZQ5K6wemc7LIo8D1UlId+sYwD8aESa5WeCcOEg7U
- 9n2S8
-X-Gm-Gg: ASbGnct8XlCKZVRqZtV0XaFM+9d8t4DikcvRthGJBgcFN41D2QRr491M1x/Sk+ogXF/
- mgknon6gHw4/yMBdamRCJEUWplP9/umUbO56W4wgsQwd1zJUzBKYv1TRYTXc5jPtJmvWZVt+SEj
- HkQ7eDhT3o+xBJvFIeiQWZxKudv+92xoq2OlNB4702YGLHtrytsKPZIatKKaZYxJxgA6jNdEEoW
- +jRjsKCTiWVQAcQf04URUHaaa5qDtWaGwoqPXQQxLT5AWDPh3++1XnW1QfQcZ/58/cUBpjCT6hg
- 2tlRuUR0ZYwPMTXOrSroF1+BqIiTB0ScIU7xhYMjmsaQypFRf3rjVFZM9Jk3Qv+xAtFrY6i/uWO
- F27aoIQ4EZdlvqAN7e73W8GIslsBvBN1v78B0VrTQk5jOxUmHSPseEymjACDDRG0esQ6N2mPevC
- hgF1ubPBs=
-X-Google-Smtp-Source: AGHT+IFtW9qTbg5ljD79tyErB0jrr+mfC7Wa4AcWfb3NmZzZWmnY+JISdrpOgumcx5m7vc6dX9rjeQ==
-X-Received: by 2002:a05:600c:4e51:b0:456:8eb:a35c with SMTP id
- 5b1f17b1804b1-45608eba50dmr105954455e9.31.1752560371517; 
- Mon, 14 Jul 2025 23:19:31 -0700 (PDT)
+ bh=CmqRT40RDvsgTqfFq5PqPhISBaVjONltwNS6X4XWcCM=;
+ b=Du7n+XN9kcRn2UaC2545AxRiTNBLtP4BG4Q1sKJvZhcOCvHZZJzfkFYj7Q3YGGjDER
+ VmoFVqgt7+AhaBwnbHkLF0GaVYO7Mot/rO1KOV+sMiQ3HOb5o4bQ0z3in0EBb549t56M
+ 87J7Hc55wZ9lPOWn2m81D+P1x8TgksNe39wxMbTGxx5zJUjl2/u1m+J4vlAWv+7Dmr8n
+ 2NEE1sHQd81uugJJjzYYQZYafneMV5i+kOsiOfkxdncOCkhGnVUVPeVWt+PixcHaOwU1
+ 9cxc9qjtCeWhFVEvJzUBCosicFugKx7RCa5Da+9LCWzfAaFRio69jnaUg2HqdMuDjPn+
+ EJXA==
+X-Gm-Message-State: AOJu0YwRK8KOGTXjQWatFf2oLwXvUzB75ncxIdlZqP/u83Lc0XlSYqbg
+ ugvDD6zNIFvAJY6HKkseBa3BI1fzIzbtefvb3w6DSjIAXyWkEH4dsNe4stnZ1Usq+sbZg6poiuQ
+ S/ZA3
+X-Gm-Gg: ASbGnctufC6V1u3XkC5Bg/MELfVUhMPDUvhwhtgzdf2uXsFnXez+wA6f37QpH1dTrJC
+ mNnuBdHlX3w3E+ichfHFzUnLcD/+zfKJbDZhGKfCxqtaXd+NTOt/ZymV+Q7li/L8pvjFczs06j/
+ Qqfm5u9EZN45IexNjpN3YOyJtzf22hliqe8ra5bPnPugLG06pR1s5o5aKYMOA8Fzp6+suy/NVAp
+ iWm390gNKEAVENwCpnvBeVauTqK29T2P2y6Sv50MF0RBTdvCtkRZWh6poGCjxweU/o0M92toAnp
+ gM4YC1eCboBc4GemI0GARUC8Mr2/3HB5ejwyhhTtJCP7gfh9aMFhalkxMKqQqnIcHb/R4GMRfww
+ aycsgM8bCy693n0vZosfHx4aB9+TchljUKMkdJyveIV9Wb9surcIde8knISjOH/v9jBwY4ZKI
+X-Google-Smtp-Source: AGHT+IGvl37IZ7EQKmYyNzSoFjvnK5ndb1yvGSdrFJkrneSSIBf4WtKxeOT7fYDACRV2OT796f8JKg==
+X-Received: by 2002:a05:600c:1392:b0:455:fc16:9ed8 with SMTP id
+ 5b1f17b1804b1-455fc16a23emr124875475e9.30.1752560376367; 
+ Mon, 14 Jul 2025 23:19:36 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc3a62sm14064198f8f.40.2025.07.14.23.19.30
+ ffacd0b85a97d-3b5e8bd181bsm13884227f8f.7.2025.07.14.23.19.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 14 Jul 2025 23:19:31 -0700 (PDT)
+ Mon, 14 Jul 2025 23:19:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -69,17 +68,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Aurelien Jarno <aurelien@aurel32.net>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PULL 02/17] target/mips: Extract gen_base_index_addr() helper
-Date: Tue, 15 Jul 2025 08:19:02 +0200
-Message-ID: <20250715061918.44971-3-philmd@linaro.org>
+Subject: [PULL 03/17] target/mips: Extract generic gen_lx() helper
+Date: Tue, 15 Jul 2025 08:19:03 +0200
+Message-ID: <20250715061918.44971-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250715061918.44971-1-philmd@linaro.org>
 References: <20250715061918.44971-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,81 +101,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Factor out gen_base_index_addr() which is used twice
-but we'll use it more.
+Extract gen_lx() from gen_mips_lx(); inline the Octeon
+check in decode_opc_special3_legacy().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241111222936.59869-2-philmd@linaro.org>
+Message-Id: <20241111222936.59869-3-philmd@linaro.org>
 ---
  target/mips/tcg/translate.h |  1 +
- target/mips/tcg/translate.c | 27 +++++++++++++--------------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ target/mips/tcg/translate.c | 55 +++++++++++++------------------------
+ 2 files changed, 20 insertions(+), 36 deletions(-)
 
 diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
-index 428b53a0dac..e65593815e6 100644
+index e65593815e6..89dde1e7124 100644
 --- a/target/mips/tcg/translate.h
 +++ b/target/mips/tcg/translate.h
-@@ -154,6 +154,7 @@ void check_cp1_registers(DisasContext *ctx, int regs);
- void check_cop1x(DisasContext *ctx);
+@@ -169,6 +169,7 @@ void gen_store_fpr32(DisasContext *ctx, TCGv_i32 t, int reg);
+ void gen_store_fpr64(DisasContext *ctx, TCGv_i64 t, int reg);
+ int get_fp_bit(int cc);
  
- void gen_base_offset_addr(DisasContext *ctx, TCGv addr, int base, int offset);
-+void gen_base_index_addr(DisasContext *ctx, TCGv addr, int base, int index);
- void gen_move_low32(TCGv ret, TCGv_i64 arg);
- void gen_move_high32(TCGv ret, TCGv_i64 arg);
- void gen_load_gpr(TCGv t, int reg);
++void gen_lx(DisasContext *ctx, int rd, int base, int index, MemOp mop);
+ void gen_ldxs(DisasContext *ctx, int base, int index, int rd);
+ void gen_align(DisasContext *ctx, int wordsz, int rd, int rs, int rt, int bp);
+ void gen_addiupc(DisasContext *ctx, int rx, int imm,
 diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 5c80b030329..8816237e929 100644
+index 8816237e929..b9b2d8bb7e1 100644
 --- a/target/mips/tcg/translate.c
 +++ b/target/mips/tcg/translate.c
-@@ -1957,6 +1957,17 @@ void gen_base_offset_addr(DisasContext *ctx, TCGv addr, int base, int offset)
-     }
+@@ -2036,6 +2036,15 @@ static void gen_lxr(DisasContext *ctx, TCGv reg, TCGv addr,
+     tcg_gen_or_tl(reg, t0, t1);
  }
  
-+void gen_base_index_addr(DisasContext *ctx, TCGv addr, int base, int index)
++void gen_lx(DisasContext *ctx, int rd, int base, int index, MemOp mop)
 +{
-+    if (base == 0) {
-+        gen_load_gpr(addr, index);
-+    } else if (index == 0) {
-+        gen_load_gpr(addr, base);
-+    } else {
-+        gen_op_addr_add(ctx, addr, cpu_gpr[base], cpu_gpr[index]);
-+    }
++    TCGv t0 = tcg_temp_new();
++
++    gen_base_index_addr(ctx, t0, base, index);
++    tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, mo_endian(ctx) | mop);
++    gen_store_gpr(t0, rd);
 +}
 +
- static target_ulong pc_relative_pc(DisasContext *ctx)
- {
-     target_ulong pc = ctx->base.pc_next;
-@@ -10546,13 +10557,7 @@ static void gen_flt3_ldst(DisasContext *ctx, uint32_t opc,
- {
-     TCGv t0 = tcg_temp_new();
+ /* Load */
+ static void gen_ld(DisasContext *ctx, uint32_t opc,
+                    int rt, int base, int offset)
+@@ -11328,41 +11337,6 @@ enum {
  
--    if (base == 0) {
--        gen_load_gpr(t0, index);
--    } else if (index == 0) {
--        gen_load_gpr(t0, base);
--    } else {
--        gen_op_addr_add(ctx, t0, cpu_gpr[base], cpu_gpr[index]);
+ /* MIPSDSP functions. */
+ 
+-/* Indexed load is not for DSP only */
+-static void gen_mips_lx(DisasContext *ctx, uint32_t opc,
+-                        int rd, int base, int offset)
+-{
+-    TCGv t0;
+-
+-    if (!(ctx->insn_flags & INSN_OCTEON)) {
+-        check_dsp(ctx);
 -    }
-+    gen_base_index_addr(ctx, t0, base, index);
-     /*
-      * Don't do NOP if destination is zero: we must perform the actual
-      * memory access.
-@@ -11334,13 +11339,7 @@ static void gen_mips_lx(DisasContext *ctx, uint32_t opc,
-     }
-     t0 = tcg_temp_new();
- 
--    if (base == 0) {
--        gen_load_gpr(t0, offset);
--    } else if (offset == 0) {
--        gen_load_gpr(t0, base);
--    } else {
--        gen_op_addr_add(ctx, t0, cpu_gpr[base], cpu_gpr[offset]);
+-    t0 = tcg_temp_new();
+-
+-    gen_base_index_addr(ctx, t0, base, offset);
+-
+-    switch (opc) {
+-    case OPC_LBUX:
+-        tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, MO_UB);
+-        gen_store_gpr(t0, rd);
+-        break;
+-    case OPC_LHX:
+-        tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, mo_endian(ctx) | MO_SW);
+-        gen_store_gpr(t0, rd);
+-        break;
+-    case OPC_LWX:
+-        tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, mo_endian(ctx) | MO_SL);
+-        gen_store_gpr(t0, rd);
+-        break;
+-#if defined(TARGET_MIPS64)
+-    case OPC_LDX:
+-        tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ);
+-        gen_store_gpr(t0, rd);
+-        break;
+-#endif
 -    }
-+    gen_base_index_addr(ctx, t0, base, offset);
- 
-     switch (opc) {
-     case OPC_LBUX:
+-}
+-
+ static void gen_mipsdsp_arith(DisasContext *ctx, uint32_t op1, uint32_t op2,
+                               int ret, int v1, int v2)
+ {
+@@ -13633,15 +13607,24 @@ static void decode_opc_special3_legacy(CPUMIPSState *env, DisasContext *ctx)
+         }
+         break;
+     case OPC_LX_DSP:
++        if (!(ctx->insn_flags & INSN_OCTEON)) {
++            check_dsp(ctx);
++        }
+         op2 = MASK_LX(ctx->opcode);
+         switch (op2) {
+ #if defined(TARGET_MIPS64)
+         case OPC_LDX:
++            gen_lx(ctx, rd, rs, rt, MO_UQ);
++            break;
+ #endif
+         case OPC_LBUX:
++            gen_lx(ctx, rd, rs, rt, MO_UB);
++            break;
+         case OPC_LHX:
++            gen_lx(ctx, rd, rs, rt, MO_SW);
++            break;
+         case OPC_LWX:
+-            gen_mips_lx(ctx, op2, rd, rs, rt);
++            gen_lx(ctx, rd, rs, rt, MO_SL);
+             break;
+         default:            /* Invalid */
+             MIPS_INVAL("MASK LX");
 -- 
 2.49.0
 
