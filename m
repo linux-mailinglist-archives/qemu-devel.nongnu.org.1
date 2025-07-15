@@ -2,99 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E623B0671B
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0F4B06732
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:46:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublX6-0008NY-SH; Tue, 15 Jul 2025 15:41:45 -0400
+	id 1ublaz-0001dd-5b; Tue, 15 Jul 2025 15:45:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1ubl2n-0007Y9-B8
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:10:25 -0400
-Received: from fhigh-a6-smtp.messagingengine.com ([103.168.172.157])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1ubl2l-0002Gp-Cs
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:10:24 -0400
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal
- [10.202.2.46])
- by mailfhigh.phl.internal (Postfix) with ESMTP id 3F39514002DD;
- Tue, 15 Jul 2025 15:10:21 -0400 (EDT)
-Received: from phl-imap-08 ([10.202.2.84])
- by phl-compute-06.internal (MEProxy); Tue, 15 Jul 2025 15:10:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1752606621;
- x=1752693021; bh=RPtF1g5C2CuUdiTxaNPOm74cUCy+x7CnlQHfmQKa0Y0=; b=
- B+iBeWjofw7hrcW1oUL5PXYvU/2ehoplhsAMok+7TxOWAgVwIO6MVEY8pnnAwmxN
- 5L/rhDALHjHTQA33ekj5xkuxuuZUQcdgTYdIFa6VqeQo6mi+3JScfJ4t1tQ484WQ
- f0yFOPvu+P+EraT4JSqmTENXtC3zgqcaj6VHtNmAe8KRPFm2BCM4DLV7KtyOqGtv
- ukwojWRnnqQrePPT6K71irBrGwIYPK4ZeomkSqv5msbEPTtD/QycVST5KmG9Yyv4
- 7pEWYVRgUM1R66Pk+ZORqaUT04rtV/Xg4TtkR63hSNCnfMGSbSsCDV8mpE8BlS9F
- 44UuXG9AJxPVyt1G5aArLw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1752606621; x=
- 1752693021; bh=RPtF1g5C2CuUdiTxaNPOm74cUCy+x7CnlQHfmQKa0Y0=; b=C
- zos33v8Rc8MVjVDZtPEaMD7s8UZAeXe8LfmjJwJunJvXbYz9u7IkS5PgRkmyQ3XX
- MLmxbcx0rnCCC3+IpauE4H7NhLaNHwYMg86oqbHG7bRvHE739pAYKtxPOVo89BH4
- Bk4szDAzqs3FNrKXLS8RXHcqNebC4TxNXiJSHEVEsctnkxmxUXJMaQM9v4iyUrDp
- 6oExcup97m72oZeTIny51UdIPkqC9TwSTKigUTvqAlJHXHJuqMBgCRiraShW4d1A
- c0Z0vdj9b7aS4aQt2KkMJ2U4UO46/2OrmbTgnvcN81M1xZPoseLHyMrbkHGKAFKQ
- 0jl15U3FSDH+AW8TIyT2A==
-X-ME-Sender: <xms:nKd2aA6hSziXfqwel7FEO7CCNqFCmkWcos4HoqpFjhyiHLO2iIsBbA>
- <xme:nKd2aB5DxM9_g0VMdCm7s75fqJsI8jpcuyilDOTm4PpBN3tpoMfW9IRgW7v6bnYgj
- JjwQ02kxalFTF9bbW4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehheeigecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
- ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
- hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdflihgrgihu
- nhcujggrnhhgfdcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenuc
- ggtffrrghtthgvrhhnpeejheefuddvtdfggfdvffekteehhfelgfdvvedvkeeuffefkeeh
- heegvefhveetjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
- hrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphht
- thhopeefpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegthhgvnhhhuhgrtggrih
- eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphhhihhlmhgusehlihhnrghrohdrohhr
- ghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhg
-X-ME-Proxy: <xmx:nad2aBDEAKS9TEhfv2wnnH08gpekEOCHko6SjBpQSOStdaH8P0hnGg>
- <xmx:nad2aCzjt1chNuPpYdRmk2EOkoiyS_5bMuJF0_jxDXjeT1kymPOrAg>
- <xmx:nad2aGDFvwxfydgxgS30gdyM6Etb_ZgzbdG-zw-Cm-27SGbj6YaNCg>
- <xmx:nad2aHbF3FddiGkQr7KHXNTEIKwNl9RWI3t8RnNw5gvem_ZlxnQFLg>
- <xmx:nad2aES3urvcAQ_Bpc0GXsJriIwX0ozQbK23boQF6881bfU3qnWFIUtF>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
- id E3AEC2CE0071; Tue, 15 Jul 2025 15:10:20 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublHe-0006p2-SU
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:25:50 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublHb-00075C-K1
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:25:45 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3a6e2d85705so3387541f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 12:25:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752607541; x=1753212341; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=epbtau3mfk9DJMdMl9jVXDpnXezgjmAx1/t4HCFUui4=;
+ b=qYhXzhGbHiNhlvI5cnfoaVbLpmVAqEHbVmrMWJLwrXZmPT6eWLtnOVsoQwJDb3VEEF
+ 3yHYB7Lksppm0rQhhALzJzMkyqRBWXxdHyhqwBjZ9hbtShEqNpiPJarDnb3Ih8faQKVe
+ J6bn364VeJ88yllqd1bic422IjHmC9+P3LOGt+YZKRBlD75OrkLeX0qxmGLOKvN/Q/pt
+ 5QrzhRVdQsDyq9wZdd6gbC5cHKlJf9uky1CD6cVP5VIFZFo2LDmLq6L5522ZMAShKhtd
+ iKGzYBWD9qmcCX8CFYctawWZ4r2dsNXhnXKu5tyHU/5Qf4dQXS4cFnLmQjDC0/TXDx6/
+ qlJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752607541; x=1753212341;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=epbtau3mfk9DJMdMl9jVXDpnXezgjmAx1/t4HCFUui4=;
+ b=W1363nWMcyxlxiMzHkNBo/XfIsb8TZaQYTqfNHE902FkERw384aa55d/m45yzIwOxx
+ 2YYZt0hYTbLrP7kO09LbEVGbMg1+QOTPm4LIq6jtRGbDWuNaNILkN2wHwEv+LV0pxJWE
+ UeUAu4irPhL/X1B0l1yTPKlXutm2sQdhil4tEcuEQ1XLOw0eKxpvWRejw+/bf14dZXJJ
+ qXPotbbcIBWHBjJYMVkgDj/cRMyvhBV2quHwKo9vUDOH9SgodYCx5EwabArqBDjB7PY2
+ 7qhBLXF+/PFs5M6jZh511p4nMtyiIDPc77kof/72bp3AhcptnptZxc4Cc9DMSwzCJZOS
+ uGig==
+X-Gm-Message-State: AOJu0YyvyMIXST9OojC0nhcMjGsmXSk0PCY9f2bzxVI7VvSw83nZFjge
+ 1AEiZEjKZV9fTxmLihxe+js10YEZZC7aeJ36PL7yB6OpjDydbVZeqvOlAXkHbd0CXPn6EPe8mzV
+ Bc6cf
+X-Gm-Gg: ASbGncvU4cltuldqiyZXVNzo0Fi72DrbOb0cOtzP2BMJ8qfmwNaW5CIKOd3r4+mijmi
+ VNdbrbaD2jrcfENzM9Ma/EbNmkwJCAJuH3jXKvf+pbGyjoayN+NV2D4QuWQssiDoqDXN5nZ4G3T
+ WyIykcPigPTYmH5slV+DvtHTJRIGjvFjWsvjVRyxXdJ2Y0BFfE8RayiWYWZXTcUMQ1YCDAd3pjD
+ MSwPh5uaWPAnS3sYyHkQ6fOY0tYNnBS0vnOJxRKuOaQzwRcg62Ds99PdkYZtaEWEzXfzE7O/xFC
+ pw2r8yrdg7CrTTYcnETYvVI/HxByq0faoxFQxGG6l/fK1wGhoIFnvwUtG1r/Yi4eGgfUtNLlIB0
+ s27YDUzxOiLJqlKK2Ezuw3mwAzd1GMgiZHup4+l92usSC3dOfChyTKcJkcmMDgICs5AFHETA=
+X-Google-Smtp-Source: AGHT+IFpze0b7WsXfdePVDOr1+gg0YPpVi33rfy6T+pguMPneExVvnAdiPASoy/Fln+H+OoB9yKF3g==
+X-Received: by 2002:a5d:5e8a:0:b0:3b5:e6bf:5e0c with SMTP id
+ ffacd0b85a97d-3b60dd95baemr277349f8f.31.1752607541370; 
+ Tue, 15 Jul 2025 12:25:41 -0700 (PDT)
+Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-454d5032e9esm208334115e9.3.2025.07.15.12.25.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 15 Jul 2025 12:25:40 -0700 (PDT)
+Message-ID: <98715ba8-a2b2-4a07-9cac-cc6a40a9f7aa@linaro.org>
+Date: Tue, 15 Jul 2025 21:25:39 +0200
 MIME-Version: 1.0
-X-ThreadId: T86cbbd2d33d83f19
-Date: Tue, 15 Jul 2025 20:09:58 +0100
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: "QEMU devel" <qemu-devel@nongnu.org>
-Cc: "Huacai Chen" <chenhuacai@kernel.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Message-Id: <a972b6c1-5e66-41a9-b3ae-094fd98d6388@app.fastmail.com>
-In-Reply-To: <20250508-bonito-v1-0-4f9f27733028@flygoat.com>
-References: <20250508-bonito-v1-0-4f9f27733028@flygoat.com>
-Subject: Re: [PATCH 0/5] hw/pci-host/bonito: Improve various emulation
- functions
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=103.168.172.157;
- envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-a6-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/xen/arch_hvm: Unify x86 and ARM variants
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ xen-devel@lists.xenproject.org, Anthony PERARD <anthony@xenproject.org>,
+ David Woodhouse <dwmw@amazon.co.uk>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-arm@nongnu.org,
+ Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20250513171737.74386-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250513171737.74386-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,47 +104,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-=E5=9C=A82025=E5=B9=B45=E6=9C=888=E6=97=A5=E5=91=A8=E5=9B=9B =E4=B8=8B=E5=
-=8D=883:46=EF=BC=8CJiaxun Yang=E5=86=99=E9=81=93=EF=BC=9A
-> Hi all,
->
-> This series addressed a couple of missing Bonito functionalities
-> I found when I was trying to test NetBSD against QEMU.
->
-> Please review.
-
-Another ping :-)
-
-Thanks
-Jiaxun
-
->
-> Thanks
-> Jiaxun
->
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+On 13/5/25 19:17, Philippe Mathieu-Daudé wrote:
+> As each target declares the same prototypes, we can
+> use a single header, removing the TARGET_XXX uses.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
-> Jiaxun Yang (5):
->       hw/pci-host/bonito: Implement ICU
->       hw/pci-host/bonito: Implement PCIMAP register
->       hw/pci-host/bonito: Implement DMA address translation
->       hw/pci-host/bonito: Rework PCI config space accessor
->       hw/pci-host/bonito: Add comments about documentation
->
->  hw/pci-host/bonito.c     | 453 +++++++++++++++++++++++++++++---------=
----------
->  hw/pci-host/trace-events |   3 -
->  2 files changed, 284 insertions(+), 172 deletions(-)
-> ---
-> base-commit: c5e2c4042e3c50b96cc5eaa9683325c5a96913b0
-> change-id: 20250507-bonito-482759b2b52f
->
-> Best regards,
-> --=20
-> Jiaxun Yang <jiaxun.yang@flygoat.com>
+>   include/hw/arm/xen_arch_hvm.h  |  9 ---------
+>   include/hw/i386/xen_arch_hvm.h | 11 -----------
+>   include/hw/xen/arch_hvm.h      | 14 ++++++++++----
+>   hw/arm/xen-pvh.c               |  1 -
+>   4 files changed, 10 insertions(+), 25 deletions(-)
+>   delete mode 100644 include/hw/arm/xen_arch_hvm.h
+>   delete mode 100644 include/hw/i386/xen_arch_hvm.h
 
---=20
-- Jiaxun
+Queued, thanks.
 
