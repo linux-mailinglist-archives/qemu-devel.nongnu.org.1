@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38657B05148
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 07:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E09B05155
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 07:57:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubYbJ-0004L7-6T; Tue, 15 Jul 2025 01:53:13 -0400
+	id 1ubYeL-000180-DN; Tue, 15 Jul 2025 01:56:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubYb8-0004Il-TT
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 01:53:03 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubYeJ-00017L-2m
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 01:56:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubYb7-0005iO-5E
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 01:53:02 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubYeG-0007EY-RF
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 01:56:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752558779;
+ s=mimecast20190719; t=1752558974;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=v3xigmgM8ytoSmUEVRkdJqLYA7Sad2hnQEzItXbx6E8=;
- b=ZUGa3X0WzCFm3gv1xPjFdmp5XMPWON/EIKv7pws1jCxdgywqKPJMsDTsIvCN8Zm52IuRe7
- Kkg19Y58wbVtdnDI+zeZdtLcs9WdLaa/WDHc5RHTnlz61BYFWqnZcQcw0RCOGHkmxQJtHe
- 4L7m/n1aHhJQR0YTwj6fMjiW9SW+zFU=
+ bh=tVkiq47P5XoOulO53ufhWHTGMRKpI6tNCXQcYhptSm0=;
+ b=CuafD+Exbly1Eo37MzaF7BrYRHfptIf3Yo5FkJGg4mXKpwU+dCOcl30U4cjX6YWKCt2yaw
+ gfW443v+RyykQ1sii6dcXkXvlv5uns5BmL9FlguAdbw/WFBK4advl9KjyDtmMnhJjyv2kI
+ YYdYegiHdPv6U9QUfOAwrpPCGzqZHyA=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-fZt-HaOnNAOX3mv8KOGtVQ-1; Tue, 15 Jul 2025 01:52:58 -0400
-X-MC-Unique: fZt-HaOnNAOX3mv8KOGtVQ-1
-X-Mimecast-MFC-AGG-ID: fZt-HaOnNAOX3mv8KOGtVQ_1752558777
+ us-mta-641--skKkpNyMh6SGxVZr0U-tA-1; Tue, 15 Jul 2025 01:56:12 -0400
+X-MC-Unique: -skKkpNyMh6SGxVZr0U-tA-1
+X-Mimecast-MFC-AGG-ID: -skKkpNyMh6SGxVZr0U-tA_1752558971
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4560b81ff9eso16958245e9.1
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 22:52:58 -0700 (PDT)
+ 5b1f17b1804b1-4561c67daebso5041055e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 22:56:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752558777; x=1753163577;
+ d=1e100.net; s=20230601; t=1752558971; x=1753163771;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v3xigmgM8ytoSmUEVRkdJqLYA7Sad2hnQEzItXbx6E8=;
- b=OhoSOUAcrJfpflclglZ2FOfPlBCij4eQC8IRfeFezXomPdc4d2fPVRyBD4e///bP4p
- y/GAw3jyHg+shGPfc95ZGlBFLljQ9m80wzRzD3XWrP+UdM9ouXjmNiGInSWd06QtQ7tO
- 6m0f5fAX07zDeOWBBG0wkg16ZFLTLOZV0/sxJOKWFCQ6SvIdIb+emX3CjKjjlrs8MBv/
- +yYC82kCSOKGjzqoBwSh7Cnon02JTLfWx0kXvitgs2RykZSfcoiBVmZdPnu8BD4S8We9
- q4j5lpmcgxNLkG3U1d5MsfSg6ghdHz8/V+3XEtsJr6rvJFRmvXaKL9/XSlz4y3S6N0RW
- 84Fw==
+ bh=tVkiq47P5XoOulO53ufhWHTGMRKpI6tNCXQcYhptSm0=;
+ b=SQfLpnVZ7GoTHFqMFAxzumXha4y+lyL/oZAUO0RstWCxUOW/DBHp9HaSrVCuxpJuqo
+ hhaSAvMYu2G7l/218L4Q4ry/ze4/Y9kEc5s4CCLEAgO8KRquGqGpMcQX3cN7bPPcY7in
+ 4Zz61aeEv4BNh6C73qgSvhruA238rc8yGilr5w5PWTILuCHHaKgq3EGV7pdR1ZUCfjYL
+ XdN/lwLBjDcRZ7txakycbVYhKce7lnDI5yqD9YyrXYDJMe0iVQ0i5f9GVc6H2LVYd8kD
+ mcqmEpvLNTxKQFOT8SGfxnE1hmNBKrymmcMhNRnLSgX10lDZdRkM5X5e5ffIG9/B3v+E
+ R1Yw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCULVsGjir4RNeg8T0nZCpfzU59R6c8MoJLFpNdkamsbsz71lvkZKNLYX4wsSpkb3OcrHOff8lHn+16/@nongnu.org
-X-Gm-Message-State: AOJu0Yyj+gqRBHiRHoqgjgknZKgt+17YgW3RnVq4nDz9mVyn0uDmDmQ5
- Iv0+rfl5AEdw1nYsQgz44zB9ntP65HESxVwkjCG8DBTTiPoRTJ7jhLo/JkJMttV/xoV7DIO9cfI
- Tt8oG+4sr3i5UMFL2gNeal0Hvup2UwrWFiKBJuS93zaDoNYx79iicp01K
-X-Gm-Gg: ASbGnctr53d88z4TZCT+X3KbSqsALmxz/32wtJExKsnwNKXJLQ9NxMsoG1CKiEIy7qX
- 6FN8Bw6AFVrqR91NdoqzmZ85xiB4okcDRkQ9sojv1Gia5WoQ87sWCDu1WFuLo1IQo0+JRHzcNmV
- ao9Ibx2EQ7WfEeJHRmp07oXWETsCgum4LtBYGqoGJeOC3bf5E1ex1ZeRAsm6TrK/9hCPeEHC01V
- 2BjIqs8rAoFi15R3KneSXfLuckN8oKMEhwlC11lmedJFZ2QdB6wcGCuoZxIVEy7VJ6vfXLuy3zg
- sv29sLdK6MlJ5zLjLNPyBddBbw9kBYWd4uVh5ckpejDjcUIyPGStlZSGo2h0UaFFWo3g68J8HWg
+ AJvYcCWlBcRqzB7UjAy0I7VG2+cDVTMejTNuKD+JKSftFVHxEJ5GFy1t5b5DtCM5Xvn78A6/TCH0XnhcaJY4@nongnu.org
+X-Gm-Message-State: AOJu0Yxl5GUsIZm3D1TSvkU1zbfDJ5+mVazmXH4MOKBzE99dwe0UzOxn
+ ky6wTcw7X/klZqcKSyoXRPwIGLRFY19cZuOli+imQ7rWNQrzzeOopLgeokGYYsRjX/INLrn8CgO
+ jnTPV5GCwYEfA12RQcAlz5aH5yLzrjlPyI5CznGvmv3XSU8rMJq7cjrVD
+X-Gm-Gg: ASbGncsi/fzpG8HnyaemVSj28qI7XQ5xWZhxENa1hwGOFoPfdr01g5J+D+TyliKNntJ
+ sofK8TXrjVSSUp/WbTQTyzWJ+2u9nPBGEJvxUQ4RpDOurksXOBzMZ+Q6BVgjQtSzl+A/MO+wqmM
+ QGOA1uKGHKWCNZ0z2F2PFgHJYLtsf5yR1y5pvHj3vQ4FmrBvlVrk+Yv1Ng7hBTc8Mz6SyHTObUK
+ HNUNqUmi7DHz3phs8T2DEYqTyBdGAarHRFDJC3SuOtITgv+lCyjN+3XaI1rklTT32Db32fERyhk
+ SaHSukzV372DiCOprCJ1b2LQx15hFrMQpx3tFA97tIEKsC/puiU/iK5E4h3JZfwGJk4zZ2YShBQ
  =
-X-Received: by 2002:a05:600c:8b21:b0:43d:42b:e186 with SMTP id
- 5b1f17b1804b1-454f427c7a3mr154731375e9.8.1752558777007; 
- Mon, 14 Jul 2025 22:52:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE4L5oZckRmFrqlLtscbR5H/FpQin2BlvLg00zQRniZeynJ1eo9FIgAR3WA/cCfyOEAfNkM4g==
-X-Received: by 2002:a05:600c:8b21:b0:43d:42b:e186 with SMTP id
- 5b1f17b1804b1-454f427c7a3mr154731225e9.8.1752558776626; 
- Mon, 14 Jul 2025 22:52:56 -0700 (PDT)
+X-Received: by 2002:a05:600c:6d1:b0:455:efd7:17dc with SMTP id
+ 5b1f17b1804b1-45625e663dbmr11953415e9.11.1752558971308; 
+ Mon, 14 Jul 2025 22:56:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFK/comgXml7++hUkh/U4rmkVXSnyRz7O+ZzXIZ+CPKhn4LSyhMEDZR8wK990U+8KxK14Lbew==
+X-Received: by 2002:a05:600c:6d1:b0:455:efd7:17dc with SMTP id
+ 5b1f17b1804b1-45625e663dbmr11953225e9.11.1752558970844; 
+ Mon, 14 Jul 2025 22:56:10 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:165:d60:266c:b13b:afd7:40fd?
  ([2a01:e0a:165:d60:266c:b13b:afd7:40fd])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e1e3bdsm13995593f8f.81.2025.07.14.22.52.55
+ 5b1f17b1804b1-454dd466154sm149203685e9.12.2025.07.14.22.56.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jul 2025 22:52:56 -0700 (PDT)
-Message-ID: <6fa745d7-25af-46e5-a143-5a419098b162@redhat.com>
-Date: Tue, 15 Jul 2025 07:52:55 +0200
+ Mon, 14 Jul 2025 22:56:10 -0700 (PDT)
+Message-ID: <2b58e252-d3f5-4dac-8b39-c990d7240853@redhat.com>
+Date: Tue, 15 Jul 2025 07:56:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/vfio-user: fix use of uninitialized variable
+Subject: Re: [PATCH v2 0/4] vfio-user fixes
 To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
-Cc: Thanos Makatos <thanos.makatos@nutanix.com>
-References: <20250708154948.483480-1-john.levon@nutanix.com>
+Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>
+References: <20250715055246.422834-1-john.levon@nutanix.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -125,7 +127,7 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250708154948.483480-1-john.levon@nutanix.com>
+In-Reply-To: <20250715055246.422834-1-john.levon@nutanix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
@@ -153,71 +155,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/8/25 17:49, John Levon wrote:
-> Coverity reported:
+On 7/15/25 07:52, John Levon wrote:
+> Some small Coverity and related fixes for the recently merged vfio-user series.
 > 
-> CID 1611805:         Uninitialized variables
-> 
-> in vfio_user_dma_map(). This can occur in the happy path when
-> ->async_ops was not set; as this doesn't typically happen, it wasn't
-> caught during testing.
-> 
-> Align both map and unmap implementations to initialize ret the same way
-> to resolve this.
+> thanks
+> john
 
-This is not a strict rule, but a trailer like the one below is
-usually added for Coverity fixes :
+Mark,
 
-   Resolves: Coverity CID 1611805
-
-In case you resend, please do so.
-
-
-> Reported-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: John Levon <john.levon@nutanix.com>
-
+Would you please re-add your R-b ?
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+and applied to vfio-next.
 
 Thanks,
 
 C.
 
 
-> ---
->   hw/vfio-user/container.c | 6 +-----
->   1 file changed, 1 insertion(+), 5 deletions(-)
+> John Levon (4):
+>    hw/vfio-user: add Cédric Le Goater as a maintainer
+>    hw/vfio: fix region fd initialization
+>    hw/vfio-user: wait for proxy close correctly
+>    hw/vfio-user: fix use of uninitialized variable
 > 
-> diff --git a/hw/vfio-user/container.c b/hw/vfio-user/container.c
-> index d318e6a339..d589dd90f5 100644
-> --- a/hw/vfio-user/container.c
-> +++ b/hw/vfio-user/container.c
-> @@ -64,8 +64,6 @@ static int vfio_user_dma_unmap(const VFIOContainerBase *bcontainer,
->                                 0, &local_err)) {
->               error_report_err(local_err);
->               ret = -EFAULT;
-> -        } else {
-> -            ret = 0;
->           }
->       } else {
->           if (!vfio_user_send_wait(container->proxy, &msgp->hdr, NULL,
-> @@ -92,7 +90,7 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
->                                                   bcontainer);
->       int fd = memory_region_get_fd(mrp);
->       Error *local_err = NULL;
-> -    int ret;
-> +    int ret = 0;
->   
->       VFIOUserFDs *fds = NULL;
->       VFIOUserDMAMap *msgp = g_malloc0(sizeof(*msgp));
-> @@ -135,8 +133,6 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
->                                 0, &local_err)) {
->               error_report_err(local_err);
->               ret = -EFAULT;
-> -        } else {
-> -            ret = 0;
->           }
->       } else {
->           VFIOUserFDs local_fds = { 1, 0, &fd };
+>   MAINTAINERS              |  1 +
+>   hw/vfio-user/container.c |  6 +-----
+>   hw/vfio-user/proxy.c     | 10 ++++++----
+>   hw/vfio/device.c         |  6 +++++-
+>   4 files changed, 13 insertions(+), 10 deletions(-)
+> 
 
 
