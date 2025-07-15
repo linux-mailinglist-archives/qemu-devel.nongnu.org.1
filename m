@@ -2,95 +2,155 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81BDB0656F
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 20:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EA2B065A6
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 20:07:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubjwD-0007I2-JJ; Tue, 15 Jul 2025 13:59:33 -0400
+	id 1ubk2O-0004YD-9T; Tue, 15 Jul 2025 14:05:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1ubjRB-0006Y6-H4
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 13:27:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1ubjTE-0008Am-Rk; Tue, 15 Jul 2025 13:29:36 -0400
+Received: from mail-dm6nam12on2060c.outbound.protection.outlook.com
+ ([2a01:111:f403:2417::60c]
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1ubjR7-0001w6-Ju
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 13:27:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752600440;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dQpyIpg2nEn3xeo7P2Ii4Wow/2lXCsk1HJhDeBQtdqE=;
- b=WDAKWizmZEZd/byvcVNM8iE/MnDPrDkXU8w/WrcHkzs79exA/sFYUk1Zee6aO/agDgVHHf
- LspMR3pxy/FUySWopfX98J/r6tWFEiIBFavcQ6Jq7Bf7H7cxaEXyGX0QxjpZwhGmmMeYSU
- uxD4eaG5wTJuz8pWfiGMcm7Fcj30W2k=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-319-3sbYrCDUOmSqiWg1giKUFA-1; Tue, 15 Jul 2025 13:27:19 -0400
-X-MC-Unique: 3sbYrCDUOmSqiWg1giKUFA-1
-X-Mimecast-MFC-AGG-ID: 3sbYrCDUOmSqiWg1giKUFA_1752600438
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-2369dd58602so54969385ad.1
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 10:27:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752600438; x=1753205238;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dQpyIpg2nEn3xeo7P2Ii4Wow/2lXCsk1HJhDeBQtdqE=;
- b=E2rLaJ3PExhN54qwL8pXS++YXW1ETy/Bys6assZRNMhWYyQ7N1fR/tNR7ja85jHji+
- ttjEaOUEBzxB9fjzaJe+0zaXJO9Qzn6zHAh4CQqoCOFiHM5t+HFPj7r7uvfJQ6pmAkoX
- 12jAJpsEuYRJXUPWD2n7CM9iKjz03uG5RTBnVBlyci/xiJUiGWV2h6/BNlKRYPFULq+/
- LVR1zJ6+H6pohEkl36XWqdma7DKY1cfQrOiUigSSO4VA3cJLLPSCcihqXgo+APGNk+49
- lnHmYQGORyYKGQ9n/N4HHfk79I48sektNFhTAf6WypjGivScwloIKfYVQ34GhJENh5Sz
- GJrA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWWRR9arADrDy+p/ECgMe7Gzwece/A2oQGFasUdXCYWELHaJkKVbdA7gS3H6dSSVkSr7Sq/M/y+yTL4@nongnu.org
-X-Gm-Message-State: AOJu0YzVQX9gNQXicwC77Vpj76PqWCAQiJVtHtweQg55etQNKfRkGP35
- h/GMqR3u02TNnaUBExPfE5Drzzbz/AUEJQzVG+Ddfr01DkxxC9IhEjnpEbk0P70lXKFHNfiBNq3
- 9kxPDqBYAnSmBFnxM1F4eP3r2S4et0pnwUAiy5NQUIKOXBQ2cD9WflE3z3QH1uR/iCEVRfoPOF1
- zZfmj+vfyz49OluRYWzaYoAMSSisCvFM0=
-X-Gm-Gg: ASbGnculDr/NEERKlcFaJlVLqPlrlSyuDKnRRc3DJmbgE3sOveAibc9lJzTyGbMuuP4
- tYRhWL1RKbmewoeUHl2DA/5cbdmdDYv/8fwOeQ9Vg8zqBJjdJxysivombbOiA/by21Av8EsTwPk
- e8STKTLbgSzh9cwX733nP/5ZUDc3oDYwjmWiNRK8Azlfn8fxGz6+XA
-X-Received: by 2002:a17:902:c408:b0:235:eb8d:800b with SMTP id
- d9443c01a7336-23dee26def9mr258948795ad.26.1752600437757; 
- Tue, 15 Jul 2025 10:27:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGqO2YrM+WHcgmcq5kMhq9qWB3WLziIKgDGU7dkUNNuHtSQZ88hJeBLg2mZmkgDUhlp+68XBwJACtxfDZJHmRM=
-X-Received: by 2002:a17:902:c408:b0:235:eb8d:800b with SMTP id
- d9443c01a7336-23dee26def9mr258948195ad.26.1752600437169; Tue, 15 Jul 2025
- 10:27:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1ubjTB-00023U-DY; Tue, 15 Jul 2025 13:29:36 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dskVgyAi4LcvHt6LDkgFOB5wbGKBbmmv0sfr+A9z79WUQGBhGiciA0+0x306jE+PArL0MqBGdnmFlm1bGPVoI+1PSORv1sHSi3+VQbHkQDAqhHWpzDSGtl9prrJJBg3NWHz6ttqa81fKy74xSg7tieYvn21h47cZ1T0OqbC5HOoqzhDrshgsgHmFsh+Q8n19d0b1sInTb4mVHtrpg7nXQ/voZ+1wyNWSay2OpgQ463nXeZ7sGgmEZu9eEEWwGWAO024vn9+RxEuGzFQRReX/QxgJuPWaXZrUlaEVxl4P3kXx04/Fi6xnHnAQgFG9S+RK6aIlEWXQizsYjosQ9M8/kQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GOa4oOPzi4HncXe++APvtmjbVRwSRukwk+2y46DTsYM=;
+ b=VlMTjxnjiRqi7oBFoFDrXtyR3uosmA+c4LBaSPDUiCpRnQV5KKyIkJ40rzis6FLmg4UJs3Sc+1xR+c/m+Z3CxJdBTip+qoxJA3qNTsF2EDom4P8SXLflpCVsalUcCKaht3d6qybgBHwW0ZJwd39vBwhz/9xj7qHUVhfI7582jBnQk40FJjIunTZ/e9n+xb1bGcWlR46qE9hPiBMzDpRBt2rZPZu53OMA879xTC1KoPQwoOJ3SqXrXmTAgGzjONp8H1bctjoHM4feXz0xxUDwoMaYn1N660zzeDW14A3SngDcTn5ezafP7MD7UmaNSlH7J+PjvylKd2q0y6SA2NCi3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GOa4oOPzi4HncXe++APvtmjbVRwSRukwk+2y46DTsYM=;
+ b=cnpEO6aXADUx1tXyQFlvR7YAOm5TKXJe54k/TPrWt7Jwko5KT+XQMLvWWqQRKv3LSRsv0vMVGN3vpJrqp1oBU6Z2YMtA7kXtrDN3C9/h+KtF7aqeMoWpvrNmlr1OxhuwAt8lfSPLuu707mwnP/WVr64KNkLKaSftdcQWsD8TtEDweFce/khxEhguq61t/e2V89CZ6xY7abLujs3JGHuYjhGlx086pw/pEZcFm1427P4OGE9BvOKo8YYAqORaC6HO/rukhuD/mHwmdiba9X1H8YrGeN49wlPBipRe2LN6hBcZrN+orVJADfY1qjxaVp0ZQarSi3d2nSSYRvrVLv3h2A==
+Received: from CH0PR04CA0092.namprd04.prod.outlook.com (2603:10b6:610:75::7)
+ by MW4PR12MB6897.namprd12.prod.outlook.com (2603:10b6:303:20a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Tue, 15 Jul
+ 2025 17:29:24 +0000
+Received: from CH1PEPF0000AD76.namprd04.prod.outlook.com
+ (2603:10b6:610:75:cafe::1e) by CH0PR04CA0092.outlook.office365.com
+ (2603:10b6:610:75::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.17 via Frontend Transport; Tue,
+ 15 Jul 2025 17:29:24 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH1PEPF0000AD76.mail.protection.outlook.com (10.167.244.53) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8922.22 via Frontend Transport; Tue, 15 Jul 2025 17:29:23 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 15 Jul
+ 2025 10:29:04 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 15 Jul
+ 2025 10:29:03 -0700
+Received: from Asurada-Nvidia (10.127.8.10) by mail.nvidia.com (10.129.68.10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Tue, 15 Jul 2025 10:29:02 -0700
+Date: Tue, 15 Jul 2025 10:29:01 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+CC: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, "nathanc@nvidia.com"
+ <nathanc@nvidia.com>, "mochs@nvidia.com" <mochs@nvidia.com>,
+ "smostafa@google.com" <smostafa@google.com>, "linuxarm@huawei.com"
+ <linuxarm@huawei.com>, "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>,
+ "jiangkunkun@huawei.com" <jiangkunkun@huawei.com>,
+ "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
+ "shameerkolothum@gmail.com" <shameerkolothum@gmail.com>
+Subject: Re: [RFC PATCH v3 05/15] hw/arm/smmuv3-accel: Introduce smmuv3 accel
+ device
+Message-ID: <aHaP3ULG90gGqWHJ@Asurada-Nvidia>
+References: <20250714155941.22176-1-shameerali.kolothum.thodi@huawei.com>
+ <20250714155941.22176-6-shameerali.kolothum.thodi@huawei.com>
+ <IA3PR11MB9136ACFB4721D47304A9885C9257A@IA3PR11MB9136.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-References: <1752164694-215567-1-git-send-email-steven.sistare@oracle.com>
- <1752164694-215567-3-git-send-email-steven.sistare@oracle.com>
- <871pqmwzqr.fsf@pond.sub.org>
-In-Reply-To: <871pqmwzqr.fsf@pond.sub.org>
-From: John Snow <jsnow@redhat.com>
-Date: Tue, 15 Jul 2025 13:27:05 -0400
-X-Gm-Features: Ac12FXyZd4p6SZz3b0TzlZVkAESRQDKTQmPzwq50P4wnJbU6MpFgPycPQAuJk6Y
-Message-ID: <CAFn=p-YhYqG5oyWt=zpPCic=2npUkxNJuvuGBuxwthqfMAxL1g@mail.gmail.com>
-Subject: Re: [PATCH V4 2/3] python: use qom-list-get
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Steve Sistare <steven.sistare@oracle.com>,
- qemu-devel <qemu-devel@nongnu.org>, 
- Cleber Rosa <crosa@redhat.com>, Eric Blake <eblake@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>, 
- Laurent Vivier <lvivier@redhat.com>, Philippe Mathieu-Daude <philmd@linaro.org>
-Content-Type: multipart/alternative; boundary="0000000000007dcf520639fb1620"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <IA3PR11MB9136ACFB4721D47304A9885C9257A@IA3PR11MB9136.namprd11.prod.outlook.com>
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD76:EE_|MW4PR12MB6897:EE_
+X-MS-Office365-Filtering-Correlation-Id: d420197f-8ee5-4c17-c99e-08ddc3c5244c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|82310400026|7416014|376014|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?J0+bETXl5nl2gTQNJ/TuVhvuUxNXTzTJJV4GDI14iISaWihdRIYQeyL0k7GE?=
+ =?us-ascii?Q?HQKrpHWqA/QgMod9iTMMTBTVINj2AFfa14GsT6iqQW+rw5DYiHHANbzdmnQ2?=
+ =?us-ascii?Q?+0s3EPvbiWt6BVpqyoiH/w18O/X2p7ybXeJN6NRJAhmmS4ZsmDOY1pUU3coW?=
+ =?us-ascii?Q?Xs9F33+Rl0ppO4Hj/VLZzebzRdUPixgdpB2jl7rAyfRbN5UPoVwzivByq9ME?=
+ =?us-ascii?Q?/SvZ3nOTjjkxlVHDtZUGhKUQuFzAfuk6uA+ljNH3KU2DAX1Uh3yS0vSUTetO?=
+ =?us-ascii?Q?6O78q6g49u9CypVHo9KfrV6ei265qD20NPTFCJvS34P5Quo7LI9BNAlYvT0o?=
+ =?us-ascii?Q?K4uV3lZXIAYZnTckehsZEdmRr1CnD5/EjXA5h4jr+itavHhFx8aEtTiVQLKF?=
+ =?us-ascii?Q?ki6WSKwk7ixBTL1XvDL1WhbcQncNqV8xh4hZ+zrA5/AHvudy2m8PIVMXRGi7?=
+ =?us-ascii?Q?pW/maND86DpMm+ckssHUF14Ik2iY0FZgLNHSky12HZiUjEBFpUCGkhYAXWO/?=
+ =?us-ascii?Q?hwz1H3SZwegu+MFE/kXLfPon76t/Sswz3ccp9csQRwZFSsnMpIbU9flGH99/?=
+ =?us-ascii?Q?ZbaFAIkTpXa/x9l/NWKI7AqMfe6SGq5PFMKfvpFTpnDAInALJBAULcY19E+a?=
+ =?us-ascii?Q?D79CphZN1I7ZBnbnoPcXIV+FBLXORLL6qUpojZdc8kGaze8Yx5vFmqKW7Xfm?=
+ =?us-ascii?Q?L5LUQ0oWFZFN7vcXSitDo3ZyE9P2xzvVOW1f+clPxOdkp39Xr1P8ShRWKAQz?=
+ =?us-ascii?Q?Bw2tV7xaRBTSIsU8kGY4SREimPEtl+LcKDUhaR0EafM8P34wafNsZ9RbxQl8?=
+ =?us-ascii?Q?1NYeGHJhSY0pzk9oYbNT8OFLQUvEN+db6QpsoGp4OloPXkQwn7yybPQjMMwS?=
+ =?us-ascii?Q?uJ3+GG1z5iCBjP/a6QcAKnsd+cbVqGSJfRHdUqZ2N6kLm5vmXf8KIQUoks8y?=
+ =?us-ascii?Q?jLgfx+oOt9yuM8cHWzfIIpBPk/nlH18RBYzu/2nKhIovsqHquPdME94vjghw?=
+ =?us-ascii?Q?yqU/GSeOmMnLMP1lh7KVv3BEprmetHRY7OwnscFgNnjmUFx9tq4rdgk1X0rb?=
+ =?us-ascii?Q?+LAaYc/wmC8TeQN1KhdyX86gRboqmnJibEqvOAT7OGHrOJTmz3pvErzTrn3M?=
+ =?us-ascii?Q?+4fKmppqWwPdxsly/rMTjFUfImacge0YRg2QGuo5UBbGbYksfPA0hTP5z+DE?=
+ =?us-ascii?Q?yeGRureS6lbIo8OG/bV8l8ngi3yO+jaVWjoOy/Gf0+Sgwa58VQ0p6AVzFyJf?=
+ =?us-ascii?Q?qfVPr6R1aJcjTQEBSstnTAISKl5kO3jmFQ/dJ4IzCLa86TdpMkqdZfM+/5k2?=
+ =?us-ascii?Q?v1YN5/P/uPPmQf1xsgonUpphvK9jUCJO7BtZsHle36qxHq7IWCbv/vE6/zb/?=
+ =?us-ascii?Q?ZSRMpaS42GXpq0mSA5Jjny3sZf157iCJ+Aj5LucZW6lV5MVtKcA3LEKU3BRY?=
+ =?us-ascii?Q?q4EkmtB+30Wu5lGl1N3Q0ZwHsw89e1mwLKeqVcY5ImhDkd+rRN+zhSAm5I+s?=
+ =?us-ascii?Q?FbdgiFWEZL0GqTmIQ0FtPwOhgttB+sE/7HaE?=
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230040)(36860700013)(82310400026)(7416014)(376014)(1800799024); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 17:29:23.9762 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d420197f-8ee5-4c17-c99e-08ddc3c5244c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD76.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6897
+Received-SPF: permerror client-ip=2a01:111:f403:2417::60c;
+ envelope-from=nicolinc@nvidia.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,250 +166,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000007dcf520639fb1620
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Tue, Jul 15, 2025 at 10:48:31AM +0000, Duan, Zhenzhong wrote:
+> >+static const TypeInfo types[] = {
+> >+    {
+> >+        .name = TYPE_ARM_SMMUV3_ACCEL,
+> >+        .parent = TYPE_ARM_SMMUV3,
+> >+        .class_init = smmuv3_accel_class_init,
+> >+    }
+> 
+> In cover-letter, I see "-device arm-smmuv3", so where is above accel device
+> created so we could use smmuv3_accel_ops?
 
-On Fri, Jul 11, 2025, 10:47=E2=80=AFAM Markus Armbruster <armbru@redhat.com=
-> wrote:
+The smmu-common.c is the shared file between accel and non-accel
+instances. It has a module property:
+    DEFINE_PROP_BOOL("accel", SMMUState, accel, false),
 
-> Steve Sistare <steven.sistare@oracle.com> writes:
->
-> > Use qom-list-get to speed up the qom-tree command.
-> >
-> > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->
-> Quick test...  Differences in output before and after match expectations
-> (see appended diff).
->
-> New version:
->
->     real    0m0.446s
->     user    0m0.062s
->     sys     0m0.017s
->
-> Old version barfs a stack backtrace (appended), and is ~18x slower:
->
->     real    0m8.176s
->     user    0m0.395s
->     sys     0m0.126s
->
-> Did you see the stack backtrace, too?
->
-> Regardless
-> Acked-by: Markus Armbruster <armbru@redhat.com>
->
->
->
-> $ diff old new
-> 59c59
-> <   rtc-time: {'tm_year': 125, 'tm_sec': 24, 'tm_hour': 14, 'tm_min': 39,
-> 'tm_mon': 6, 'tm_mday': 11} (struct tm)
-> ---
-> >   rtc-time: {'tm_year': 125, 'tm_sec': 28, 'tm_hour': 14, 'tm_min': 40,
-> 'tm_mon': 6, 'tm_mday': 11} (struct tm)
-> 486c486
-> <   date: {'tm_year': 125, 'tm_sec': 25, 'tm_hour': 14, 'tm_min': 39,
-> 'tm_mon': 6, 'tm_mday': 11} (struct tm)
-> ---
-> >   date: {'tm_year': 125, 'tm_sec': 28, 'tm_hour': 14, 'tm_min': 40,
-> 'tm_mon': 6, 'tm_mday': 11} (struct tm)
-> 832c832
-> <   legacy-memory: <EXCEPTION: Property 'qemu64-x86_64-cpu.legacy-memory'
-> is not readable> (str)
-> ---
-> >   legacy-memory: <EXCEPTION: property could not be read> (str)
-> 1109c1109
-> <   crash-information: <EXCEPTION: No crash occurred>
-> (GuestPanicInformation)
-> ---
-> >   crash-information: <EXCEPTION: property could not be read>
-> (GuestPanicInformation)
-> 1554c1554
-> <   legacy-i8042: <EXCEPTION: Property 'vmmouse.legacy-i8042' is not
-> readable> (str)
-> ---
-> >   legacy-i8042: <EXCEPTION: property could not be read> (str)
-> 2436c2436
-> <   legacy-iothread: <EXCEPTION: Property
-> 'virtio-blk-device.legacy-iothread' is not readable> (str)
-> ---
-> >   legacy-iothread: <EXCEPTION: property could not be read> (str)
-> 2493c2493
-> <   legacy-iothread: <EXCEPTION: Property
-> 'virtio-blk-device.legacy-iothread' is not readable> (str)
-> ---
-> >   legacy-iothread: <EXCEPTION: property could not be read> (str)
->
->
-> Exception ignored in: <function QEMUMonitorProtocol.__del__ at
-> 0x7fcfcd080d60>
-> Traceback (most recent call last):
->   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/legacy.py",
-> line 310, in __del__
->     self.close()
->   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/legacy.py",
-> line 281, in close
->     self._sync(
->   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/legacy.py",
-> line 102, in _sync
->     return self._aloop.run_until_complete(
->   File "/usr/lib64/python3.13/asyncio/base_events.py", line 719, in
-> run_until_complete
->     return future.result()
->   File "/usr/lib64/python3.13/asyncio/tasks.py", line 507, in wait_for
->     return await fut
->   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/protocol.py",
-> line 399, in disconnect
->     await self._wait_disconnect()
->   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/protocol.py",
-> line 719, in _wait_disconnect
->     await all_defined_tasks  # Raise Exceptions from the bottom half.
->   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/protocol.py",
-> line 870, in _bh_loop_forever
->     await async_fn()
-> RuntimeError: cannot reuse already awaited coroutine
->
+where it directs to different iommu_ops:
+937 static const PCIIOMMUOps *smmu_iommu_ops_by_type(SMMUState *s)                                                                                                                                                                                                                                                                                          
+938 {                                                                                                                                                                                                                                                                                                                                                       
+939     SMMUBaseClass *sbc;                                                                                                                                                                                                                                                                                                                                 
+940                                                                                                                                                                                                                                                                                                                                                         
+941     if (s->accel) {                                                                                                                                                                                                                                                                                                                                     
+942         sbc = ARM_SMMU_CLASS(object_class_by_name(TYPE_ARM_SMMUV3_ACCEL));                                                                                                                                                                                                                                                                              
+943     } else {                                                                                                                                                                                                                                                                                                                                            
+944         sbc = ARM_SMMU_CLASS(object_class_by_name(TYPE_ARM_SMMU));                                                                                                                                                                                                                                                                                      
+945     }                                                                                                                                                                                                                                                                                                                                                   
+946     assert(sbc->iommu_ops);                                                                                                                                                                                                                                                                                                                             
+947                                                                                                                                                                                                                                                                                                                                                         
+948     return sbc->iommu_ops;                                                                                                                                                                                                                                                                                                                              
+949 }   
 
-Curious about this backtrace. It looks like something has gone
-fundamentally wrong in the internals and the error is being raised by the
-garbage collector which is not ideal.
-
-Can you help me reproduce this? Even if it's old/bad code, I don't want
-python-qemu-qmp faulting like this.
-
->
-
---0000000000007dcf520639fb1620
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Jul 11, 2025, 10:47=E2=
-=80=AFAM Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com">armbru@=
-redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">Steve Si=
-stare &lt;<a href=3D"mailto:steven.sistare@oracle.com" target=3D"_blank" re=
-l=3D"noreferrer">steven.sistare@oracle.com</a>&gt; writes:<br>
-<br>
-&gt; Use qom-list-get to speed up the qom-tree command.<br>
-&gt;<br>
-&gt; Signed-off-by: Steve Sistare &lt;<a href=3D"mailto:steven.sistare@orac=
-le.com" target=3D"_blank" rel=3D"noreferrer">steven.sistare@oracle.com</a>&=
-gt;<br>
-<br>
-Quick test...=C2=A0 Differences in output before and after match expectatio=
-ns<br>
-(see appended diff).<br>
-<br>
-New version:<br>
-<br>
-=C2=A0 =C2=A0 real=C2=A0 =C2=A0 0m0.446s<br>
-=C2=A0 =C2=A0 user=C2=A0 =C2=A0 0m0.062s<br>
-=C2=A0 =C2=A0 sys=C2=A0 =C2=A0 =C2=A00m0.017s<br>
-<br>
-Old version barfs a stack backtrace (appended), and is ~18x slower:<br>
-<br>
-=C2=A0 =C2=A0 real=C2=A0 =C2=A0 0m8.176s<br>
-=C2=A0 =C2=A0 user=C2=A0 =C2=A0 0m0.395s<br>
-=C2=A0 =C2=A0 sys=C2=A0 =C2=A0 =C2=A00m0.126s<br>
-<br>
-Did you see the stack backtrace, too?<br>
-<br>
-Regardless<br>
-Acked-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" target=
-=3D"_blank" rel=3D"noreferrer">armbru@redhat.com</a>&gt;<br>
-<br>
-<br>
-<br>
-$ diff old new<br>
-59c59<br>
-&lt;=C2=A0 =C2=A0rtc-time: {&#39;tm_year&#39;: 125, &#39;tm_sec&#39;: 24, &=
-#39;tm_hour&#39;: 14, &#39;tm_min&#39;: 39, &#39;tm_mon&#39;: 6, &#39;tm_md=
-ay&#39;: 11} (struct tm)<br>
----<br>
-&gt;=C2=A0 =C2=A0rtc-time: {&#39;tm_year&#39;: 125, &#39;tm_sec&#39;: 28, &=
-#39;tm_hour&#39;: 14, &#39;tm_min&#39;: 40, &#39;tm_mon&#39;: 6, &#39;tm_md=
-ay&#39;: 11} (struct tm)<br>
-486c486<br>
-&lt;=C2=A0 =C2=A0date: {&#39;tm_year&#39;: 125, &#39;tm_sec&#39;: 25, &#39;=
-tm_hour&#39;: 14, &#39;tm_min&#39;: 39, &#39;tm_mon&#39;: 6, &#39;tm_mday&#=
-39;: 11} (struct tm)<br>
----<br>
-&gt;=C2=A0 =C2=A0date: {&#39;tm_year&#39;: 125, &#39;tm_sec&#39;: 28, &#39;=
-tm_hour&#39;: 14, &#39;tm_min&#39;: 40, &#39;tm_mon&#39;: 6, &#39;tm_mday&#=
-39;: 11} (struct tm)<br>
-832c832<br>
-&lt;=C2=A0 =C2=A0legacy-memory: &lt;EXCEPTION: Property &#39;qemu64-x86_64-=
-cpu.legacy-memory&#39; is not readable&gt; (str)<br>
----<br>
-&gt;=C2=A0 =C2=A0legacy-memory: &lt;EXCEPTION: property could not be read&g=
-t; (str)<br>
-1109c1109<br>
-&lt;=C2=A0 =C2=A0crash-information: &lt;EXCEPTION: No crash occurred&gt; (G=
-uestPanicInformation)<br>
----<br>
-&gt;=C2=A0 =C2=A0crash-information: &lt;EXCEPTION: property could not be re=
-ad&gt; (GuestPanicInformation)<br>
-1554c1554<br>
-&lt;=C2=A0 =C2=A0legacy-i8042: &lt;EXCEPTION: Property &#39;vmmouse.legacy-=
-i8042&#39; is not readable&gt; (str)<br>
----<br>
-&gt;=C2=A0 =C2=A0legacy-i8042: &lt;EXCEPTION: property could not be read&gt=
-; (str)<br>
-2436c2436<br>
-&lt;=C2=A0 =C2=A0legacy-iothread: &lt;EXCEPTION: Property &#39;virtio-blk-d=
-evice.legacy-iothread&#39; is not readable&gt; (str)<br>
----<br>
-&gt;=C2=A0 =C2=A0legacy-iothread: &lt;EXCEPTION: property could not be read=
-&gt; (str)<br>
-2493c2493<br>
-&lt;=C2=A0 =C2=A0legacy-iothread: &lt;EXCEPTION: Property &#39;virtio-blk-d=
-evice.legacy-iothread&#39; is not readable&gt; (str)<br>
----<br>
-&gt;=C2=A0 =C2=A0legacy-iothread: &lt;EXCEPTION: property could not be read=
-&gt; (str)<br>
-<br>
-<br>
-Exception ignored in: &lt;function QEMUMonitorProtocol.__del__ at 0x7fcfcd0=
-80d60&gt;<br>
-Traceback (most recent call last):<br>
-=C2=A0 File &quot;/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/legac=
-y.py&quot;, line 310, in __del__<br>
-=C2=A0 =C2=A0 self.close()<br>
-=C2=A0 File &quot;/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/legac=
-y.py&quot;, line 281, in close<br>
-=C2=A0 =C2=A0 self._sync(<br>
-=C2=A0 File &quot;/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/legac=
-y.py&quot;, line 102, in _sync<br>
-=C2=A0 =C2=A0 return self._aloop.run_until_complete(<br>
-=C2=A0 File &quot;/usr/lib64/python3.13/asyncio/base_events.py&quot;, line =
-719, in run_until_complete<br>
-=C2=A0 =C2=A0 return future.result()<br>
-=C2=A0 File &quot;/usr/lib64/python3.13/asyncio/tasks.py&quot;, line 507, i=
-n wait_for<br>
-=C2=A0 =C2=A0 return await fut<br>
-=C2=A0 File &quot;/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/proto=
-col.py&quot;, line 399, in disconnect<br>
-=C2=A0 =C2=A0 await self._wait_disconnect()<br>
-=C2=A0 File &quot;/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/proto=
-col.py&quot;, line 719, in _wait_disconnect<br>
-=C2=A0 =C2=A0 await all_defined_tasks=C2=A0 # Raise Exceptions from the bot=
-tom half.<br>
-=C2=A0 File &quot;/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/proto=
-col.py&quot;, line 870, in _bh_loop_forever<br>
-=C2=A0 =C2=A0 await async_fn()<br>
-RuntimeError: cannot reuse already awaited coroutine<br></blockquote></div>=
-</div><div dir=3D"auto"><br></div><div dir=3D"auto">Curious about this back=
-trace. It looks like something has gone fundamentally wrong in the internal=
-s and the error is being raised by the garbage collector which is not ideal=
-.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Can you help me reprod=
-uce this? Even if it&#39;s old/bad code, I don&#39;t want python-qemu-qmp f=
-aulting like this.=C2=A0</div><div dir=3D"auto"><div class=3D"gmail_quote g=
-mail_quote_container"><blockquote class=3D"gmail_quote" style=3D"margin:0 0=
- 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-</blockquote></div></div></div>
-
---0000000000007dcf520639fb1620--
-
+Nicolin
 
