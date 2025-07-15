@@ -2,122 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77CFB0621C
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 16:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40297B0625F
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 17:08:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubh6g-0005h9-Tg; Tue, 15 Jul 2025 10:58:10 -0400
+	id 1ubhGB-0004eT-53; Tue, 15 Jul 2025 11:07:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1ubgVR-0005pr-GN; Tue, 15 Jul 2025 10:19:41 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ubggQ-0003Mh-Lc
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:31:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1ubgVP-0002h2-09; Tue, 15 Jul 2025 10:19:41 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56FA0o7h029388;
- Tue, 15 Jul 2025 14:19:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=fRcdQQ
- XN0CMnsUESFCsH7ltSTPNqyjWVjf1Y91CHfT0=; b=mujy/8tDJ99u6oIeX0ePyX
- hRFFYDSrf5X2ynPEdMh53iYzWfHKv/5lOCodeuhv67rclHw0IJQn99Lc1YdzINm3
- dHT+Fv9hmswAAs6Xf+Rh2MKquzyvJ27cMDOOB7JUvWdfTKuZIdybNTkFt014U/w4
- yMuqYfFE5hDesv4in9xcNa3SpcJ3SE3I9sPU7oOSCfve40VlDWhi/Tedfd+1cOvT
- BDR9q31oZUwBdWlxkgdvEHUPOt2HHAVzEEOcOILLYjikFXE/V3iT5ITRGOFdlw1q
- Zld4ccDlMuzkIB+6cRj/Awp2cQJ6NDd0PDjT6v9EkIK0Y+Zs8uhdAkdW2Jy/FwCg
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47uf7cyr4m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jul 2025 14:19:32 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56FEHq1J005520;
- Tue, 15 Jul 2025 14:19:32 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47uf7cyr4h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jul 2025 14:19:32 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56FCGkcf031905;
- Tue, 15 Jul 2025 14:19:31 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 47v21u307s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jul 2025 14:19:31 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 56FEJTNY32047816
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Jul 2025 14:19:29 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6FC385805E;
- Tue, 15 Jul 2025 14:19:29 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AF4385805A;
- Tue, 15 Jul 2025 14:19:27 +0000 (GMT)
-Received: from [9.61.114.9] (unknown [9.61.114.9])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 15 Jul 2025 14:19:27 +0000 (GMT)
-Message-ID: <7eca1e6b-9c70-4526-909b-0adfcb4ad7b6@linux.ibm.com>
-Date: Tue, 15 Jul 2025 10:19:26 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ubggH-0006Ro-FY
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:30:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752589845;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=iyNyrnSHbk4/7fyJOstUqLI1vVB3c8BGLCeHWEkS/x8=;
+ b=iXqFH5mRAHbdcF6YEfO+CxFDN1ekKCdz3vVMXmo1hTQVl2KYckGDbVmbPyyZOsQ44gX5xk
+ QiUekh9SMD2PMB+daYJZl/ss/Od1qk5TxjnBmzmvXFY0TKwLWHZSMEmZ7Onxj2syUiUEcw
+ iIJjqQAuzpA+QDbutR+zN3FJ4z2t81k=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-284-EFAsHS8jOiii1k3w8bRKpQ-1; Tue,
+ 15 Jul 2025 10:30:35 -0400
+X-MC-Unique: EFAsHS8jOiii1k3w8bRKpQ-1
+X-Mimecast-MFC-AGG-ID: EFAsHS8jOiii1k3w8bRKpQ_1752589834
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4AB5E19560A2; Tue, 15 Jul 2025 14:30:34 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.173])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id EC9F7180045B; Tue, 15 Jul 2025 14:30:27 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>, Jagannathan Raman <jag.raman@oracle.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Thomas Huth <thuth@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 00/14] python: misc cleanups for python code
+Date: Tue, 15 Jul 2025 15:30:09 +0100
+Message-ID: <20250715143023.1851000-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 21/22] s390x/s390-pci-vfio.c: use QOM casts where
- appropriate
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
- danielhb413@gmail.com, harshpb@linux.ibm.com, farman@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, thuth@redhat.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- john.levon@nutanix.com, thanos.makatos@nutanix.com,
- alex.williamson@redhat.com, clg@redhat.com, steven.sistare@oracle.com,
- tomitamoeko@gmail.com, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org
-References: <20250715093110.107317-1-mark.caveayland@nutanix.com>
- <20250715093110.107317-22-mark.caveayland@nutanix.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20250715093110.107317-22-mark.caveayland@nutanix.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zc5vnTqke3mX0dOJmLGs89CyP4CdUaz8
-X-Authority-Analysis: v=2.4 cv=LoGSymdc c=1 sm=1 tr=0 ts=68766374 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=64Cc0HZtAAAA:8 a=VnNF1IyMAAAA:8
- a=6V_Z78ehL-hMsaM6yTMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: RXMXXy-SbI07QefzcXLhIpobU6tcMoJm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE1MDEzMSBTYWx0ZWRfXyGjufKPjQ3Qp
- zBtfol6LGjEWeKtOsSrVKW74eV5ULsfwPAYEwUgErwR9p+YnzmBbMErOpySXqsxnUw93ESAKi57
- M61JmkJI45L5albD+pEEr8iYeJHi9gXWAj+e7gPfuGjYXW2tyxSdc+yUr+CG/pBPSxse92HvRM4
- s5axT6/WBQ6yRrTHeN0Qw4BJiwHCcij7uQAzgNpLKHuVJfZ+lcgYhcMP+wsULAypsPORrhal9Qd
- 7zQabqMrGvu1yCffLtmiT2btMVkERywH0RsltYOzxx3Ih49op2OZoC9GjVAhGAFUoB/ZThIcVZg
- JIdLADw06EfY9SFMxOzAf+99TbBhE1BhMokDpmwbqn+Nlz9K7rr0wnLdKdUBbtFLSvZnOwLKtKl
- 4H1AaAuJZeCau5AiW2AAZX735r1JLmvKfujrLm93+hyF2Awu+NF+LaAw43RATlgfSCRX+B4F
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-15_03,2025-07-15_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 impostorscore=0
- clxscore=1011 phishscore=0 mlxlogscore=999 priorityscore=1501
- suspectscore=0 mlxscore=0 adultscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507150131
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,13 +85,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/15/25 5:26 AM, Mark Cave-Ayland wrote:
-> Use QOM casts to cast to VFIOPCIDevice instead of using container_of().
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> ---
->  hw/s390x/s390-pci-vfio.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+This spun out of understanding why we didn't get prior warning
+about our use of the deprecated 'asyncio.get_event_loop' feature.
+The answer is that python doesn't print any deprecation messages
+by default unless directly triggered by the __main__ module.
 
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+So here I wanted to get all python warning messages enabled for
+the iotests and functional tests, so we get a heads up of any
+other failures coming out way.
+
+In doing this it uncovered numerous places where we failed to
+cleanup with dangling file handles.
+
+I further uncovered lots of old compat code for py3.6 which
+we stopped needing a long while ago.
+
+I'm in two minds over whether the very last commit is suitable
+or not though.  The iotests do strict comparison of stdout /
+stderr, so if we allow python warnings to appear that will
+break the iotests. At the same time though we do really want
+to see these warnings, especially when developers run the
+iotests manually, so just turning them on in CI is not very
+desirable. So wondering how to get the warnings for devs but
+not for users running from released tarballs?
+
+Also note that I ran 'check', 'check -qcow' and 'check -nbd'
+but this doesn't cover all possible iotest usage. So there
+might still be some resource leaks hiding in there which will
+cause failures for devs running tests with unusual config
+scenarios.
+
+
+Daniel P. Berrangé (13):
+  python: avoid deprecation warning with get_event_loop
+  python: drop 'is_closing' back compat helper
+  python: drop 'wait_closed' back compat helper
+  python: drop 'asyncio_run' back compat helper
+  python: drop 'create_task' back compat helper
+  iotests: drop compat for old version context manager
+  functional: ensure log handlers are closed
+  functional: ensure sockets and files are closed
+  functional: always enable all python warnings
+  python: ensure QEMUQtestProtocol closes its socket
+  iotests/147: ensure temporary sockets are closed before exiting
+  iotests/151: ensure subprocesses are cleaned up
+  iotests/check: always enable all python warnings
+
+Richard W.M. Jones (1):
+  python: Replace asyncio.get_event_loop for Python 3.14
+
+ python/qemu/machine/qtest.py           |  2 +
+ python/qemu/qmp/legacy.py              | 10 ++-
+ python/qemu/qmp/protocol.py            | 13 ++--
+ python/qemu/qmp/qmp_tui.py             | 10 +--
+ python/qemu/qmp/util.py                | 97 +-------------------------
+ python/tests/protocol.py               |  9 ++-
+ tests/functional/qemu_test/testcase.py |  6 ++
+ tests/functional/test_multiprocess.py  |  3 +
+ tests/functional/test_virtio_gpu.py    |  2 +
+ tests/qemu-iotests/147                 |  1 +
+ tests/qemu-iotests/151                 |  5 ++
+ tests/qemu-iotests/check               |  4 ++
+ tests/qemu-iotests/testenv.py          |  7 +-
+ tests/qemu-iotests/testrunner.py       |  9 +--
+ 14 files changed, 51 insertions(+), 127 deletions(-)
+
+-- 
+2.49.0
+
 
