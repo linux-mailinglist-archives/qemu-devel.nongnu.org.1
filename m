@@ -2,73 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB53CB0519A
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C61BB051A4
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:22:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZ19-0002Ji-Ol; Tue, 15 Jul 2025 02:19:59 -0400
+	id 1ubZ1E-0002K4-To; Tue, 15 Jul 2025 02:20:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubZ0i-0001uW-NP
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubZ0f-0006yc-94
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752560364;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=34YtlccilJUgIMydaQXKNd02WQ/ukkEgCw0dzkfH+JQ=;
- b=KsWb/YHZkaZoPGB3RJ0nVIm8j4Pm+zQ/8FeqCaw9CkWwMTy77SHjQUbhuQkCml2J21Eq6m
- pxmf/hNuhJjrhPCyzo2bqb8n3eNCeOP1/27APgCV0YWb8Zb5LFmyfNtU3T51jjxhOJe1GZ
- E5PdGU43dDV2a6GKbFHIKpRvMMC0Jc8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-37-THmVpZaANoiYbWHWevfieQ-1; Tue,
- 15 Jul 2025 02:19:19 -0400
-X-MC-Unique: THmVpZaANoiYbWHWevfieQ-1
-X-Mimecast-MFC-AGG-ID: THmVpZaANoiYbWHWevfieQ_1752560358
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3CAEA1954205; Tue, 15 Jul 2025 06:19:15 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.44.33.160])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7F22B30001A1; Tue, 15 Jul 2025 06:19:07 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Ed Tanous <etanous@nvidia.com>
-Subject: [PATCH] docs: Fix Aspeed title
-Date: Tue, 15 Jul 2025 08:19:04 +0200
-Message-ID: <20250715061904.97540-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ14-0002I5-Ep
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:50 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ12-00073r-Eb
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:50 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3a6cdc27438so4184210f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:19:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752560386; x=1753165186; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0oLj9I136vA6ZJns/MpzluU+zNCyNhpu0U3nlVsQVbc=;
+ b=C7Pm0/GsizP4CRVleM8cCEHpDlYhbpqXNa0Ukh80UjEOXy613cd1ZsbuZquzD2SY+h
+ JryUVAYWhNNi1LeaOHU5Tuz6xUlX24xVS9CMiXmPLJOwazmwBNiDyA3ZtJZw2G08Myt7
+ +3daW1oA3A/mboQQtHDTkiZKDMSfKX/g6Y/gTUyhGpRZ73Cab7mhlv93Jkt+noUWcStm
+ sbg0KDvT+j6baVhV51MySghUWV6+LfiaSN4yik0hQliMvnSmf/i5+iWX5JRoWhl7Cuc3
+ HxUbXjtmGwBKUx7UyLiwQwxo1eOt28TDcG705QHn1bXEY36Ti6nig80rLs9W9aipfPJA
+ Zm7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752560386; x=1753165186;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0oLj9I136vA6ZJns/MpzluU+zNCyNhpu0U3nlVsQVbc=;
+ b=oeCw5i8w0lVUNMvaGCJ8pWin1IsyvCG5TY+jOq6pzhlyeoSFmnCPvhjTA7kHvt0XDH
+ eapFTAy2mpIdyCcC4ixVB3bVJMsoR3C8yDlZTK0mHu/E5RU3cuw96fEmfvT75EJ3Rzpl
+ RfRGzg7UrXrvaYTenkp2Ynt5qPUlAzW5z2uwdplCd70Ms5YATmZ8aQM32w8Pa9g2BgT6
+ 20zMgJCWL2ZXlbXda619kdjy+BP+pvu+YityN4mo+kz0WvlBQM2bqIb/roeez1UhjwVH
+ 5fdvnGl6tuddkG1G5YvCB+2CBbxQ0vCJd3y08tOHmTChRuDdwG5l1aEUCT47u2twKDgF
+ GsLQ==
+X-Gm-Message-State: AOJu0Yy7SNYyB6KXamg3hvPu/2lfNlpL6EsksqHskyFUvedFMnp8meiu
+ 4j24QbsoFrDLcPHIgZa8bDDenkIWD1pUEKAdKF1KojkyMUUArGWCfaT0qrIu+cx1phvknyKCYpI
+ OctQa
+X-Gm-Gg: ASbGncsjjX6jH0Pv6YF6NoLJy6kLLm/g6p4aBNLpi8Kv0O2OBrIDjnfYDAVNKBGLEiZ
+ suoJ9hxyrNad1J8q//kgn4WJMalesxos1H9hunMpZBwiMyg/qK4uuHGLMYwIDq7BPbyyt5uJ+1o
+ Tpu815Q5KtKHAQ8sjRkKjmxWVNBi4wc7XKZZTUlp9Ue/GH29HTr0niLdAepeJkSmNcw5t6T2ofc
+ 7bam17YDGAa7JiuTuwCe91I5UbSFL29B6l/qxjhudsYA174Nv+57Ax4AASpIA8GhDGLVihrDAc8
+ WxRYEcIErLNJO7Ci5PIcC+vNBMMgwYIoBxUdS24YndoVIJi/5YE0eFcWskmy8O550eBp9l//1BX
+ OGruavoKiiWfRjWmR09W9Zp5uotUKLJ931t91h+ZYUxHReB2u7VlZ9D1sbeTBOLHgZbQj1gCc
+X-Google-Smtp-Source: AGHT+IHkq1ccNKUzGMehQoWdsomNsA7HAMbw1ngTaheYWlB4DZdtgMTDOMIFvfWLf/hPt8DPdjNBlg==
+X-Received: by 2002:a05:6000:144b:b0:3b4:9721:2b13 with SMTP id
+ ffacd0b85a97d-3b5f2dbef03mr12739369f8f.14.1752560386117; 
+ Mon, 14 Jul 2025 23:19:46 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8e1e135sm14338578f8f.72.2025.07.14.23.19.45
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 14 Jul 2025 23:19:45 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>
+Subject: [PULL 05/17] target/mips: Have gen_[d]lsa() callers add 1 to shift
+ amount argument
+Date: Tue, 15 Jul 2025 08:19:05 +0200
+Message-ID: <20250715061918.44971-6-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250715061918.44971-1-philmd@linaro.org>
+References: <20250715061918.44971-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,28 +102,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-commit ad8e0e8a0088 removed the "======" underlining the file title
-which broke documentation rendering. Add it back.
+Having the callee add 1 to shift amount is misleading (see the
+NM_LSA case in decode_nanomips_32_48_opc() where we have to
+manually substract 1). Rather have the callers pass a modified
+$sa.
 
-Fixes: ad8e0e8a0088 ("docs: add support for gb200-bmc")
-Cc: Ed Tanous <etanous@nvidia.com>
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20241112172022.88348-4-philmd@linaro.org>
 ---
- docs/system/arm/aspeed.rst | 1 +
- 1 file changed, 1 insertion(+)
+ target/mips/tcg/msa_translate.c           | 4 ++--
+ target/mips/tcg/rel6_translate.c          | 4 ++--
+ target/mips/tcg/translate_addr_const.c    | 4 ++--
+ target/mips/tcg/micromips_translate.c.inc | 2 +-
+ target/mips/tcg/nanomips_translate.c.inc  | 7 +------
+ 5 files changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index bec0a1dfa8b8..bf18c5634700 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -1,4 +1,5 @@
- Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``gb200nvl-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
-+====================================================================================================================================================================================================================================================================================================================================================================================================================================
+diff --git a/target/mips/tcg/msa_translate.c b/target/mips/tcg/msa_translate.c
+index 75cf80a20ed..82b149922fa 100644
+--- a/target/mips/tcg/msa_translate.c
++++ b/target/mips/tcg/msa_translate.c
+@@ -780,7 +780,7 @@ TRANS_DF_iv(ST, trans_msa_ldst, gen_helper_msa_st);
  
- The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
- Aspeed evaluation boards. They are based on different releases of the
+ static bool trans_LSA(DisasContext *ctx, arg_r *a)
+ {
+-    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
++    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
+ }
+ 
+ static bool trans_DLSA(DisasContext *ctx, arg_r *a)
+@@ -788,5 +788,5 @@ static bool trans_DLSA(DisasContext *ctx, arg_r *a)
+     if (TARGET_LONG_BITS != 64) {
+         return false;
+     }
+-    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa);
++    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
+ }
+diff --git a/target/mips/tcg/rel6_translate.c b/target/mips/tcg/rel6_translate.c
+index 89335063977..4c056621c97 100644
+--- a/target/mips/tcg/rel6_translate.c
++++ b/target/mips/tcg/rel6_translate.c
+@@ -23,7 +23,7 @@ bool trans_REMOVED(DisasContext *ctx, arg_REMOVED *a)
+ 
+ static bool trans_LSA(DisasContext *ctx, arg_r *a)
+ {
+-    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
++    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
+ }
+ 
+ static bool trans_DLSA(DisasContext *ctx, arg_r *a)
+@@ -31,7 +31,7 @@ static bool trans_DLSA(DisasContext *ctx, arg_r *a)
+     if (TARGET_LONG_BITS != 64) {
+         return false;
+     }
+-    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa);
++    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
+ }
+ 
+ static bool trans_CRC32(DisasContext *ctx, arg_special3_crc *a)
+diff --git a/target/mips/tcg/translate_addr_const.c b/target/mips/tcg/translate_addr_const.c
+index 6f4b39f715b..1d140e918da 100644
+--- a/target/mips/tcg/translate_addr_const.c
++++ b/target/mips/tcg/translate_addr_const.c
+@@ -26,7 +26,7 @@ bool gen_lsa(DisasContext *ctx, int rd, int rt, int rs, int sa)
+     t1 = tcg_temp_new();
+     gen_load_gpr(t0, rs);
+     gen_load_gpr(t1, rt);
+-    tcg_gen_shli_tl(t0, t0, sa + 1);
++    tcg_gen_shli_tl(t0, t0, sa);
+     tcg_gen_add_tl(cpu_gpr[rd], t0, t1);
+     tcg_gen_ext32s_tl(cpu_gpr[rd], cpu_gpr[rd]);
+     return true;
+@@ -47,7 +47,7 @@ bool gen_dlsa(DisasContext *ctx, int rd, int rt, int rs, int sa)
+     t1 = tcg_temp_new();
+     gen_load_gpr(t0, rs);
+     gen_load_gpr(t1, rt);
+-    tcg_gen_shli_tl(t0, t0, sa + 1);
++    tcg_gen_shli_tl(t0, t0, sa);
+     tcg_gen_add_tl(cpu_gpr[rd], t0, t1);
+     return true;
+ }
+diff --git a/target/mips/tcg/micromips_translate.c.inc b/target/mips/tcg/micromips_translate.c.inc
+index c479bec1081..8fda7c8a214 100644
+--- a/target/mips/tcg/micromips_translate.c.inc
++++ b/target/mips/tcg/micromips_translate.c.inc
+@@ -1795,7 +1795,7 @@ static void decode_micromips32_opc(CPUMIPSState *env, DisasContext *ctx)
+             return;
+         case LSA:
+             check_insn(ctx, ISA_MIPS_R6);
+-            gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2));
++            gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2) + 1);
+             break;
+         case ALIGN:
+             check_insn(ctx, ISA_MIPS_R6);
+diff --git a/target/mips/tcg/nanomips_translate.c.inc b/target/mips/tcg/nanomips_translate.c.inc
+index 1e274143bbd..9d4e0bee81f 100644
+--- a/target/mips/tcg/nanomips_translate.c.inc
++++ b/target/mips/tcg/nanomips_translate.c.inc
+@@ -3626,12 +3626,7 @@ static int decode_nanomips_32_48_opc(CPUMIPSState *env, DisasContext *ctx)
+                 gen_p_lsx(ctx, rd, rs, rt);
+                 break;
+             case NM_LSA:
+-                /*
+-                 * In nanoMIPS, the shift field directly encodes the shift
+-                 * amount, meaning that the supported shift values are in
+-                 * the range 0 to 3 (instead of 1 to 4 in MIPSR6).
+-                 */
+-                gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2) - 1);
++                gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2));
+                 break;
+             case NM_EXTW:
+                 gen_ext(ctx, 32, rd, rs, rt, extract32(ctx->opcode, 6, 5));
 -- 
-2.50.1
+2.49.0
 
 
