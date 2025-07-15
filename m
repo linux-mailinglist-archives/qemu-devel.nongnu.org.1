@@ -2,95 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFB7B056B3
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 11:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DECC9B056B5
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 11:38:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubc4b-0007eP-1C; Tue, 15 Jul 2025 05:35:41 -0400
+	id 1ubc4Q-0006uc-8x; Tue, 15 Jul 2025 05:35:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubc3g-0005H2-N6
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:34:46 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubc3e-00069Q-OL
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:34:44 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3a6cd1a6fecso5028708f8f.3
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 02:34:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752572081; x=1753176881; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=awFLybBLZuWieb9XS2tr2flBf5L0SERFOrKuBtfoTzA=;
- b=NcdO/wKtHGhtxklkihXaEyvjLCSXxmzNLmgOGH6xGXX2I9lsoDfwpA3aK2tmLDbE6Q
- +QwiwuNnULjWZjtPdAvbgyKGmmcTdKi53rWcWgtWJgtMj88D0ZTdMMcxzjRyD3EYtmC3
- 0FzKRGXC10BQYcDRIcKDXr+libWu+jUNPNaTugxJwHMMASjAzWqY1VQ0fB2oL+bdMzeC
- 7ddk6U6CBO2kjl+Lakf2wNbqx9NyaYy2yPePy/4uWUjWFoGFDzgWi5g7WrrTCtTIr+9T
- G6AVTH9chv8ZQLcqovznjXaPA0zAi2BXJ7XFuYC3WEGOZtSndm7bDpMz9/jb9UmiKcOF
- WOTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752572081; x=1753176881;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=awFLybBLZuWieb9XS2tr2flBf5L0SERFOrKuBtfoTzA=;
- b=clCfeLjBR6PNO2pHQ4CyN9q3O/YaonSW04lmpDnwb+PUg1pg7tOrfxwZOGCfnfoZeV
- gHI3sFslxTyyg5N+PrOmJ5XmNFZxpuXG4L3bWsXghnrtIi6ytpa+EbfgvUAlVOFQWad/
- NZb6ivq/p/YkPmXD0a49UVgyWeUutupR0OVcvPwi4TFxs0k0qij437ZuGdrYV/zjLzD1
- ebU5YnekwYhAv+zrifWLU1XNQJxCm7YiacicG6iMWx7KVolQvv6jwnkhNB2vh7I5BhxC
- VxXYCP8HnSmqWwIpUs+UxbDthBjdqpz/Z3/Pr9jt5zcnIZJdl37j9/uQP5fcF3UhGvdj
- 6ikA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV3/Ol/KuohVriGmR+7HuykljLbyN3e/hQ+krK8E9hXQeJc9K5wAkXzO4u20+8lerk4AM5/uCh2eUeJ@nongnu.org
-X-Gm-Message-State: AOJu0YwiU2VHRQ1WzLbTSD586x8F4/cAhh7fXl5SxIdZocg+XYZTDatv
- sJY6+Km27NrEdZ6Zq65xp6DyVIY21rlJtU1qlcoHWGYb79JlgQwRTF+q1PaStzVo2dA=
-X-Gm-Gg: ASbGncuY0IkD61xMckyitDlZQjhHjFmfOC80CEfZq6wyzHjnJPjr36yegC7XvyNbPuR
- LERw38IgZgjqaWQrApseCQJDfG3SbEa5jAZiER9Mwl1dQxaj0ctIPpwvpdh/XQXTrq6mSqnHr7G
- DcwXVoKhuNUSNi1BX2IM0hJ5fMSFFz5gEt9vulFqnATXPH12w0FIWu4MRsbw7IvhSFRPYj3P22v
- 6QdiZcqGh5C/UA/oLwfNPYIc7SssgFUATrEujLwRjX6bGt8jc+Q+IRjccW+VQbUT4yqJrhotOix
- txfb3LMKgtsuI103HgSSmbvfAecnNl8Wr4XdvWCrWlXtkAgsM33GpLgYmoeCtGuOTKSqx0O7YBY
- l6VCPbwwhkF8m4gJm0GJswRUJzxu7YS+vQgs9XzZKCgKjJuPXdepmjzZbRA9ubVMPKWghO/0=
-X-Google-Smtp-Source: AGHT+IFSXby/xuDQYR2aRC9j+ugEs+E0byGaNbeFsENQ8YKEh3HxZGdxCqzDD+djbMKimO65DhdQ7w==
-X-Received: by 2002:a05:6000:288f:b0:3b3:a6b2:9cd3 with SMTP id
- ffacd0b85a97d-3b60a1ac2d6mr1659558f8f.48.1752572080934; 
- Tue, 15 Jul 2025 02:34:40 -0700 (PDT)
-Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0d70csm14905575f8f.62.2025.07.15.02.34.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Jul 2025 02:34:40 -0700 (PDT)
-Message-ID: <7acc0a84-96f1-482b-9b3d-ecff16944ec7@linaro.org>
-Date: Tue, 15 Jul 2025 11:34:39 +0200
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ubc3x-0005rQ-O2
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:35:03 -0400
+Received: from mgamail.intel.com ([192.198.163.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ubc3v-0006B6-GH
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:35:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752572099; x=1784108099;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=gVsr+8cCixkAIs1k5OIyl7/e+cq+6fDNvyB/Ack6b6E=;
+ b=cHgZXfEWOE9iRB9/w1/2VrfHWeyrSK8OPYM1895Ro8scF1njnhSXsm4z
+ CwnB2eCMLqAHgXt38yTkB9Mil/in8c8QlATXz0PrDofruVdmRGIwtpklh
+ 9YWEan2Hj2El07cx+/Jk1svNIWp5BBepZNm1ux4ax8CNiIScrlyNn+X7K
+ adyVXPz4ox83IkzpSYPKaiyTIStlRuJYIfGKiSad0wVpKtnVn/OBXgep/
+ qWz4/AxL1h/pdyX2ktZR6hs9wR7k/ypSY1UVJO4DdBKHeNMjA2e0katM8
+ OBhl8ovlIVb5E8Gfv5O+O07+FhQ/VMzGomFKzNRl/rcCJSo8C8HHJdI+j w==;
+X-CSE-ConnectionGUID: baGNWh8sQIW9BUqx+ITfYg==
+X-CSE-MsgGUID: Bo6OqYUxTma+XYea9FEc0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58592256"
+X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; d="scan'208";a="58592256"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jul 2025 02:34:57 -0700
+X-CSE-ConnectionGUID: A5d4uC20QpasBN1iHQVOWA==
+X-CSE-MsgGUID: IY4Bzi2CTbaHVk6Q+CH0MA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; d="scan'208";a="157686788"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jul 2025 02:34:54 -0700
+Message-ID: <50e5017b-6c1f-4d25-b5a4-247e9eacaa5d@intel.com>
+Date: Tue, 15 Jul 2025 17:34:51 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 v7 2/2] hw/core/machine: Display CPU model name
- in 'info cpus' command
-To: Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Eric Blake
- <eblake@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20250715090624.52377-1-philmd@linaro.org>
- <20250715090624.52377-3-philmd@linaro.org>
- <f08283bd-51b7-44a0-821c-544107f46dfa@intel.com>
+Subject: Re: [PATCH v6 03/39] system/runstate: Document
+ qemu_add_vm_change_state_handler()
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+References: <20250703173248.44995-1-philmd@linaro.org>
+ <20250703173248.44995-4-philmd@linaro.org>
+ <9a4fb69b-540e-4758-9168-60994f58f95c@intel.com>
+ <87bjpl25e6.fsf@draig.linaro.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <f08283bd-51b7-44a0-821c-544107f46dfa@intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <87bjpl25e6.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=192.198.163.12; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,39 +91,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/7/25 11:30, Xiaoyao Li wrote:
-> On 7/15/2025 5:06 PM, Philippe Mathieu-Daudé wrote:
->> Display the CPU model in 'info cpus'. Example before:
->>
->>   $ qemu-system-aarch64 -M xlnx-versal-virt -S -monitor stdio
->>   QEMU 10.0.0 monitor - type 'help' for more information
->>   (qemu) info cpus
->>   * CPU #0: thread_id=42924
->>     CPU #1: thread_id=42924
->>     CPU #2: thread_id=42924
->>     CPU #3: thread_id=42924
->>   (qemu) q
->>
->> and after:
->>
->>   $ qemu-system-aarch64 -M xlnx-versal-virt -S -monitor stdio
->>   QEMU 10.0.50 monitor - type 'help' for more information
->>   (qemu) info cpus
->>   * CPU #0: thread_id=42916 model=cortex-a72
->>     CPU #1: thread_id=42916 model=cortex-a72
->>     CPU #2: thread_id=42916 model=cortex-r5f
->>     CPU #3: thread_id=42916 model=cortex-r5f
->>   (qemu)
->>
->> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
->> Tested-by: Zhao Liu <zhao1.liu@intel.com>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 7/15/2025 5:02 PM, Alex Bennée wrote:
+> Xiaoyao Li <xiaoyao.li@intel.com> writes:
 > 
-> IIRC, I gave r-b tag before. Anyway,
+>> On 7/4/2025 1:32 AM, Philippe Mathieu-Daudé wrote:
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>>> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+>>> ---
+>>>    include/system/runstate.h | 10 ++++++++++
+>>>    1 file changed, 10 insertions(+)
+>>> diff --git a/include/system/runstate.h b/include/system/runstate.h
+>>> index fdd5c4a5172..b6e8d6beab7 100644
+>>> --- a/include/system/runstate.h
+>>> +++ b/include/system/runstate.h
+>>> @@ -14,6 +14,16 @@ void runstate_replay_enable(void);
+>>>    typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
+>>>    typedef int VMChangeStateHandlerWithRet(void *opaque, bool running, RunState state);
+>>>    +/**
+>>> + * qemu_add_vm_change_state_handler:
+>>> + * @cb: the callback to invoke
+>>> + * @opaque: user data passed to the callback
+>>> + *
+>>> + * Register a callback function that is invoked when the vm starts or stops
+>>> + * running.
+>>> + *
+>>> + * Returns: an entry to be freed using qemu_del_vm_change_state_handler()
+>>> + */
+>>
+>> qemu_add_vm_change_state_handler_prio() and
+>> qemu_add_vm_change_state_handler_prio_full() put the document in the
+>> implementation in system/runstate.c.
 > 
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Generally APIs to the rest of QEMU should be documented in the headers.
+> Comments on individual functions or internal details are fine to live in
+> the C files.
 
-Sorry I missed it and thank you :)
+I totally understand it.
+
+I was not asking to put the document into C files, but to ...
+
+>>
+>> Please make them consistent.
+
+... make them consistent. IOW, I would expect an additional patch to 
+move the document of qemu_add_vm_change_state_handler_prio() and 
+qemu_add_vm_change_state_handler_prio_full() from C files to this header 
+file.
+
+>>>    VMChangeStateEntry *qemu_add_vm_change_state_handler(VMChangeStateHandler *cb,
+>>>                                                         void *opaque);
+>>>    VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
+> 
 
 
