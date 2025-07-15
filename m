@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821F1B0675F
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 22:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3636AB0677E
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 22:05:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubloh-0001gC-M0; Tue, 15 Jul 2025 15:59:56 -0400
+	id 1ublsi-0007iv-CK; Tue, 15 Jul 2025 16:04:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublbE-0002zo-0m
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:46:04 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublbK-00039m-Ds
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:46:21 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublbB-0002iN-Vs
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:45:59 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-454ac069223so1181535e9.1
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 12:45:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublbG-0002io-Gh
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:46:04 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3a531fcaa05so3333110f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 12:46:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752608756; x=1753213556; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752608761; x=1753213561; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8fk9V0N9x/W+vNzRtti/sddaZjw+YfCrgEKksP+0n4A=;
- b=rKlPE0/e9hmcz4HhJjt2kxTWsbs6gP5JyrAg4IGORdDkjos01Gt/XD7T9eap3dUhKB
- cBAPNS5mlnIGrA4yYL3sF3WLR5OniqXne0v+3N/X58iswWx2hZPcgnqChorTwmJbzG1r
- Fv2v3oC4/SXipHw3cmCFEK1vwVi6gJoS+JiRdE5yAigD2GF/3Y1rnZvsy17JukdROQrV
- 9rZY+sgt9ZWmAAKd/6K8eCpz+EuaMoCp+RhY0yEgkLZfsdpsR2wiZ6xbfFv8oIW40Xoo
- Hp8FjJpOkSWSesInAG6sRZv+B6W/X/V1vofq40yMYuVHyGSuY1jurYoWbVAjmGYicae1
- NDug==
+ :reply-to; bh=nJSJKfpTNzHi1jnqzNrlZAkGPIYhBAycDFjBaXl6h9M=;
+ b=BMb3UOuEMQNxrZzURfbigKsgjn0oFFJqpmZGogbO9t/KQT1aa/B1NeIztWJcd6FKha
+ Y1PtP19q5+DEuTSs+bPhbV9iLgzlfUTKKrov8nq+piC6u+2jABj/vp9BspJFkplwiQdz
+ v1nTJH6M8iQIhPltOCPgHSn5E1RPKGyTzuM2RLNKzkDmxVHp4mzzxiaBN1cZXYWYTgGn
+ 8VuUIMhESuPFAWLQLyu6WN5HAQFPOESMPv055pB3S1jcJa5wCEio+52WjerGzWnU0Sm4
+ DOVw/YkJmQM7d0MwY+sv6RQfBld60a4FhwpoluacvmF92favyyAXPz1ztv+5wWHO1bYG
+ PNfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752608756; x=1753213556;
+ d=1e100.net; s=20230601; t=1752608761; x=1753213561;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8fk9V0N9x/W+vNzRtti/sddaZjw+YfCrgEKksP+0n4A=;
- b=Y6EWyN0r/MarpftejIOTAkKSNj05AT228rxZPEMaQy2qTYnDGPyNrYYNAN3AgJfShc
- +8tIwu3DrNbAe3vYRXqj7b2Mk4Zxaf1Wg6kRoTvEBozrRq/PM2J1b9w9eZYBfnO8zDH0
- tLKRDLb0yuY6tog/t56IAM7GJwQr146K0O1qgUI4sXZmhELxetlIKsZW8LPPxPS9o7rq
- hMSdCpaD9BckjDmz+EKQu+oN6G5gRd/7tbiAZK6hSbidzzAtowUpZtgzBbRjlg8y3v8P
- EgE1xuL0J0wHvlCyDe8biXwtZUG2Tz0wovDhcqKFUxC2X05c6I+X9CPHrAGyQEOB4z1c
- DVBA==
-X-Gm-Message-State: AOJu0YwxbsDYi0z2y/XSrvu/RpUHfwl1gWPH9BcP/+7CmvWBETNTOq0M
- mbRza+kVcWT6ZpxhItFYnEbG4v0VwKAabQJiD4rmlLMXHJYS7ydJ79q0VX9gRmWkVTNmgDffaTN
- kwdAK
-X-Gm-Gg: ASbGncuFCDpvFVkDj0jVa4vF5bn1glXJhtSsocaRTXsR6LwbdsBZL+mayfg8Y2jGHuu
- etd43StBjuQtBHJMAH0F+GimKFhu/6QTaH7+adHlPvWVhhIQiwD1WoIIx33njXX4qxauLSjLZME
- J8h3fEZOp4pdVyPvZMxIHErGJdl7cY/UJejfRmHQFyPUsYqMPyuogwxQR2VX/AuenBN1e2eyBux
- BJqMlis3zELK1oznzdVoq4dYRuSjJ5qBKCjJZw3ap8Mzk46pTHA6B36TGNOgOlx4P4it9qwOaAY
- OsRNmBtak9xqPS7xYbLs5Kz7xgF+MS/kazY1GDCdgAJy+2mp0mHSsC7E3ACZsmgOLVS+1vP8bjb
- JP9k78f6isKEvagjbhbFPj8XrCgHuPjfXDUxnrKMPrHpLQuvPAa+HQnv2g0GXUnMHM/XK6L9uux
- lXNA==
-X-Google-Smtp-Source: AGHT+IFP+F0+N7LxTOOa23GeO8OWAxEbaY9tRnCFG6/wG8LGRy2Av5Q5skYT0w6Tv/S1NNF7lJcjCA==
-X-Received: by 2002:a05:600c:3b9f:b0:455:f7b8:235c with SMTP id
- 5b1f17b1804b1-4562dccb666mr4391545e9.14.1752608755900; 
- Tue, 15 Jul 2025 12:45:55 -0700 (PDT)
+ bh=nJSJKfpTNzHi1jnqzNrlZAkGPIYhBAycDFjBaXl6h9M=;
+ b=pv4vJraTxCgCh8czEJrGiY57KajbTUSIutzp3Wt0ChfklBpggyligyH7EEMhvsI8gK
+ DS7kFr8T4rmKqyUhrj2zCiPpT7LiM8XjQG41AW4CJMb1TNra6HrGe1AGlesmP+NsS74w
+ tMeb/m1MONmFiOWCJJx5kdDeowi+Ab15RaKak4+a2BR2dQa82njZJkXKHuZV9oZm/9rO
+ K9fjoRUHk6JYg6ix1LVTEr7G+PeHGsiR1sVpAe8WGT3gtNiEoGHezcs/el/fYQVbv6+y
+ F0bGZR99gLAkuMilUlZ2T4wQxbFa7zVLHmT5ksnB2vnyaWtorXj6ax6bdWLrWATm2+yx
+ 8TRg==
+X-Gm-Message-State: AOJu0Yz0yfcaBLA0XClB/DSVYEFYsF9VLXUKz/mEy+KGQMicmZa5Dum/
+ Iu52VhMYLMJLM/vW5NPoA994VhuML3mERGn4fPv+Y/ZEAzcqbOE9MFfZD+Kfssw4Z4gF+HvkS3/
+ 5bZ+w
+X-Gm-Gg: ASbGnctG1PUFQVt3SOgmrXVQLec5Srr8Meqo71WJfLHANPfi1QFudGBRlQPsKcUVWuV
+ laA8iT4juO2xFEXnv5sVCAdR9en/CMy4oPSGTa1syJVh5Ml7LJohHHHO5Dkfv+dXC0S9uMX0fZ0
+ 1WeAS4ao3zejEXhNKUritbAJL7jpEnlDsiBK+WQCOictgT5cxjoVZj2XNoBQuIB7dWMkpIiaj0P
+ sk6ATolUbfrNfvEAcW+1Ib5TT1uqpCfryjyFd3lPoyHtn5xHZk0zqyInHaEvtzalarkRsNy5jFU
+ HR1blNUmgrXb8hnm1IjO/VVR6nHpHPFpnkWXS+vV3lI63r+FfbZkycMG5gBVfD3TinDLRw8QiW0
+ W113FXp3n9Wz12182n9u0eUaAOIjacaQ8wA+WBwyhxJF9bNjolmbzhPiP54Sqs1k6Vm8jNIgxo5
+ K5BA==
+X-Google-Smtp-Source: AGHT+IH83fA8jRm1gBDT3szyVaCwNqF+aJh9bmpEmtpeu2mCCaq3/OQjsifnggBgdSWRGiUy8IKJ7g==
+X-Received: by 2002:a05:6000:2b07:b0:3a5:8934:493a with SMTP id
+ ffacd0b85a97d-3b60dd80da6mr229356f8f.44.1752608760450; 
+ Tue, 15 Jul 2025 12:46:00 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454dd4669c3sm168689765e9.14.2025.07.15.12.45.55
+ ffacd0b85a97d-3b5e8dc201asm15701166f8f.22.2025.07.15.12.45.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Jul 2025 12:45:55 -0700 (PDT)
+ Tue, 15 Jul 2025 12:45:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/17] accel: Rename 'system/accel-ops.h' ->
- 'accel/accel-cpu-ops.h'
-Date: Tue, 15 Jul 2025 21:45:06 +0200
-Message-ID: <20250715194516.91722-8-philmd@linaro.org>
+Subject: [PULL 08/17] accel: Extract AccelClass definition to
+ 'accel/accel-ops.h'
+Date: Tue, 15 Jul 2025 21:45:07 +0200
+Message-ID: <20250715194516.91722-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250715194516.91722-1-philmd@linaro.org>
 References: <20250715194516.91722-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,209 +98,359 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unfortunately "system/accel-ops.h" handlers are not only
-system-specific. For example, the cpu_reset_hold() hook
-is part of the vCPU creation, after it is realized.
-
-Mechanical rename to drop 'system' using:
-
-  $ sed -i -e s_system/accel-ops.h_accel/accel-cpu-ops.h_g \
-              $(git grep -l system/accel-ops.h)
+Only accelerator implementations (and the common accelator
+code) need to know about AccelClass internals. Move the
+definition out but forward declare AccelState and AccelClass.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250703173248.44995-38-philmd@linaro.org>
+Message-Id: <20250703173248.44995-39-philmd@linaro.org>
 ---
- include/{system/accel-ops.h => accel/accel-cpu-ops.h} | 8 ++++----
- accel/accel-system.c                                  | 2 +-
- accel/hvf/hvf-accel-ops.c                             | 2 +-
- accel/kvm/kvm-accel-ops.c                             | 2 +-
- accel/qtest/qtest.c                                   | 2 +-
- accel/tcg/tcg-accel-ops.c                             | 2 +-
- accel/xen/xen-all.c                                   | 2 +-
- cpu-target.c                                          | 2 +-
- gdbstub/system.c                                      | 2 +-
- system/cpus.c                                         | 2 +-
- target/i386/nvmm/nvmm-accel-ops.c                     | 2 +-
- target/i386/whpx/whpx-accel-ops.c                     | 2 +-
- 12 files changed, 15 insertions(+), 15 deletions(-)
- rename include/{system/accel-ops.h => accel/accel-cpu-ops.h} (95%)
+ MAINTAINERS                 |  2 +-
+ include/accel/accel-ops.h   | 49 +++++++++++++++++++++++++++++++++++++
+ include/qemu/accel.h        | 39 ++---------------------------
+ include/system/hvf_int.h    |  3 ++-
+ include/system/kvm_int.h    |  1 +
+ accel/accel-common.c        |  2 ++
+ accel/accel-system.c        |  1 +
+ accel/hvf/hvf-all.c         |  1 +
+ accel/kvm/kvm-all.c         |  1 +
+ accel/qtest/qtest.c         |  1 +
+ accel/tcg/tcg-accel-ops.c   |  1 +
+ accel/tcg/tcg-all.c         |  2 ++
+ accel/xen/xen-all.c         |  1 +
+ bsd-user/main.c             |  1 +
+ gdbstub/system.c            |  1 +
+ linux-user/main.c           |  1 +
+ system/memory.c             |  1 +
+ target/i386/nvmm/nvmm-all.c |  1 +
+ target/i386/whpx/whpx-all.c |  1 +
+ 19 files changed, 71 insertions(+), 39 deletions(-)
+ create mode 100644 include/accel/accel-ops.h
 
-diff --git a/include/system/accel-ops.h b/include/accel/accel-cpu-ops.h
-similarity index 95%
-rename from include/system/accel-ops.h
-rename to include/accel/accel-cpu-ops.h
-index bf7383511d0..a9191dded7e 100644
---- a/include/system/accel-ops.h
-+++ b/include/accel/accel-cpu-ops.h
-@@ -1,5 +1,5 @@
- /*
-- * Accelerator OPS, used for cpus.c module
-+ * Accelerator per-vCPU handlers
-  *
-  * Copyright 2021 SUSE LLC
-  *
-@@ -7,8 +7,8 @@
-  * See the COPYING file in the top-level directory.
-  */
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0e945f3bd26..9d88c174331 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -502,7 +502,7 @@ F: include/exec/target_long.h
+ F: include/qemu/accel.h
+ F: include/system/accel-*.h
+ F: include/system/cpus.h
+-F: include/accel/accel-cpu*.h
++F: include/accel/accel-*.h
+ F: accel/accel-*.?
+ F: accel/dummy-cpus.?
+ F: accel/Makefile.objs
+diff --git a/include/accel/accel-ops.h b/include/accel/accel-ops.h
+new file mode 100644
+index 00000000000..86a27c30fa4
+--- /dev/null
++++ b/include/accel/accel-ops.h
+@@ -0,0 +1,49 @@
++/*
++ * Accelerator handlers
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef ACCEL_OPS_H
++#define ACCEL_OPS_H
++
++#include "exec/hwaddr.h"
++#include "qemu/accel.h"
++#include "qom/object.h"
++
++struct AccelState {
++    Object parent_obj;
++};
++
++struct AccelClass {
++    ObjectClass parent_class;
++
++    const char *name;
++    /* Cached by accel_init_ops_interfaces() when created */
++    AccelOpsClass *ops;
++
++    int (*init_machine)(AccelState *as, MachineState *ms);
++    bool (*cpu_common_realize)(CPUState *cpu, Error **errp);
++    void (*cpu_common_unrealize)(CPUState *cpu);
++
++    /* system related hooks */
++    void (*setup_post)(AccelState *as);
++    void (*pre_resume_vm)(AccelState *as, bool step_pending);
++    bool (*has_memory)(AccelState *accel, AddressSpace *as,
++                       hwaddr start_addr, hwaddr size);
++
++    /* gdbstub related hooks */
++    int (*gdbstub_supported_sstep_flags)(AccelState *as);
++
++    bool *allowed;
++    /*
++     * Array of global properties that would be applied when specific
++     * accelerator is chosen. It works like MachineClass.compat_props
++     * but it's for accelerators not machines. Accelerator-provided
++     * global properties may be overridden by machine-type
++     * compat_props or user-provided global properties.
++     */
++    GPtrArray *compat_props;
++};
++
++#endif /* ACCEL_OPS_H */
+diff --git a/include/qemu/accel.h b/include/qemu/accel.h
+index 9e821d0faea..d3638c7bfda 100644
+--- a/include/qemu/accel.h
++++ b/include/qemu/accel.h
+@@ -26,43 +26,8 @@
+ #include "qom/object.h"
+ #include "exec/hwaddr.h"
  
--#ifndef ACCEL_OPS_H
--#define ACCEL_OPS_H
-+#ifndef QEMU_ACCEL_CPU_OPS_H
-+#define QEMU_ACCEL_CPU_OPS_H
+-struct AccelState {
+-    /*< private >*/
+-    Object parent_obj;
+-};
+-
+-typedef struct AccelClass {
+-    /*< private >*/
+-    ObjectClass parent_class;
+-    /*< public >*/
+-
+-    const char *name;
+-    /* Cached by accel_init_ops_interfaces() when created */
+-    AccelOpsClass *ops;
+-
+-    int (*init_machine)(AccelState *as, MachineState *ms);
+-    bool (*cpu_common_realize)(CPUState *cpu, Error **errp);
+-    void (*cpu_common_unrealize)(CPUState *cpu);
+-
+-    /* system related hooks */
+-    void (*setup_post)(AccelState *as);
+-    void (*pre_resume_vm)(AccelState *as, bool step_pending);
+-    bool (*has_memory)(AccelState *accel, AddressSpace *as,
+-                       hwaddr start_addr, hwaddr size);
+-
+-    /* gdbstub related hooks */
+-    int (*gdbstub_supported_sstep_flags)(AccelState *as);
+-
+-    bool *allowed;
+-    /*
+-     * Array of global properties that would be applied when specific
+-     * accelerator is chosen. It works like MachineClass.compat_props
+-     * but it's for accelerators not machines. Accelerator-provided
+-     * global properties may be overridden by machine-type
+-     * compat_props or user-provided global properties.
+-     */
+-    GPtrArray *compat_props;
+-} AccelClass;
++typedef struct AccelState AccelState;
++typedef struct AccelClass AccelClass;
  
- #include "qemu/accel.h"
+ #define TYPE_ACCEL "accel"
+ 
+diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
+index 5150c7dd9c9..a3b06a3e75b 100644
+--- a/include/system/hvf_int.h
++++ b/include/system/hvf_int.h
+@@ -14,6 +14,7 @@
+ #include "qemu/queue.h"
  #include "exec/vaddr.h"
-@@ -89,4 +89,4 @@ struct AccelOpsClass {
+ #include "qom/object.h"
++#include "accel/accel-ops.h"
  
- void generic_handle_interrupt(CPUState *cpu, int mask);
+ #ifdef __aarch64__
+ #include <Hypervisor/Hypervisor.h>
+@@ -45,7 +46,7 @@ typedef struct hvf_vcpu_caps {
+ } hvf_vcpu_caps;
  
--#endif /* ACCEL_OPS_H */
-+#endif /* QEMU_ACCEL_CPU_OPS_H */
+ struct HVFState {
+-    AccelState parent;
++    AccelState parent_obj;
+ 
+     hvf_slot slots[32];
+     int num_slots;
+diff --git a/include/system/kvm_int.h b/include/system/kvm_int.h
+index 756a3c0a250..9247493b029 100644
+--- a/include/system/kvm_int.h
++++ b/include/system/kvm_int.h
+@@ -14,6 +14,7 @@
+ #include "qemu/accel.h"
+ #include "qemu/queue.h"
+ #include "system/kvm.h"
++#include "accel/accel-ops.h"
+ #include "hw/boards.h"
+ #include "hw/i386/topology.h"
+ #include "io/channel-socket.h"
+diff --git a/accel/accel-common.c b/accel/accel-common.c
+index 591ff4cbb65..850c5ab4b8e 100644
+--- a/accel/accel-common.c
++++ b/accel/accel-common.c
+@@ -10,7 +10,9 @@
+ #include "qemu/osdep.h"
+ #include "qemu/accel.h"
+ #include "qemu/target-info.h"
++#include "accel/accel-ops.h"
+ #include "accel/accel-cpu.h"
++#include "accel/accel-cpu-ops.h"
+ #include "accel-internal.h"
+ 
+ /* Lookup AccelClass from opt_name. Returns NULL if not found */
 diff --git a/accel/accel-system.c b/accel/accel-system.c
-index c54c30f18ba..c2a955a6daa 100644
+index c2a955a6daa..8df561b9539 100644
 --- a/accel/accel-system.c
 +++ b/accel/accel-system.c
-@@ -26,7 +26,7 @@
+@@ -26,6 +26,7 @@
  #include "qemu/osdep.h"
  #include "qemu/accel.h"
  #include "hw/boards.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
++#include "accel/accel-ops.h"
+ #include "accel/accel-cpu-ops.h"
  #include "system/cpus.h"
  #include "qemu/error-report.h"
- #include "accel-internal.h"
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index be8724ac896..214454bd0b4 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -54,7 +54,7 @@
- #include "gdbstub/enums.h"
- #include "exec/cpu-common.h"
- #include "hw/core/cpu.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
- #include "system/cpus.h"
- #include "system/hvf.h"
- #include "system/hvf_int.h"
-diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
-index 0eafc902c3f..b709187c7d7 100644
---- a/accel/kvm/kvm-accel-ops.c
-+++ b/accel/kvm/kvm-accel-ops.c
-@@ -16,7 +16,7 @@
+diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+index 1fa07c8b695..e67a8105a66 100644
+--- a/accel/hvf/hvf-all.c
++++ b/accel/hvf/hvf-all.c
+@@ -10,6 +10,7 @@
+ 
  #include "qemu/osdep.h"
  #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
- #include "system/kvm.h"
- #include "system/kvm_int.h"
++#include "accel/accel-ops.h"
+ #include "system/address-spaces.h"
+ #include "system/memory.h"
+ #include "system/hvf.h"
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index a106d1ba0f0..659ff881563 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -32,6 +32,7 @@
  #include "system/runstate.h"
+ #include "system/cpus.h"
+ #include "system/accel-blocker.h"
++#include "accel/accel-ops.h"
+ #include "qemu/bswap.h"
+ #include "exec/tswap.h"
+ #include "system/memory.h"
 diff --git a/accel/qtest/qtest.c b/accel/qtest/qtest.c
-index 2b831260201..a7fc8bee6dd 100644
+index a7fc8bee6dd..1d4337d698e 100644
 --- a/accel/qtest/qtest.c
 +++ b/accel/qtest/qtest.c
-@@ -18,7 +18,7 @@
+@@ -18,6 +18,7 @@
  #include "qemu/option.h"
  #include "qemu/config-file.h"
  #include "qemu/accel.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
++#include "accel/accel-ops.h"
+ #include "accel/accel-cpu-ops.h"
  #include "system/qtest.h"
  #include "system/cpus.h"
- #include "qemu/guest-random.h"
 diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index 279dbfa1cf7..58ded9d6f0d 100644
+index 58ded9d6f0d..3b0d7d298e6 100644
 --- a/accel/tcg/tcg-accel-ops.c
 +++ b/accel/tcg/tcg-accel-ops.c
-@@ -26,7 +26,7 @@
+@@ -26,6 +26,7 @@
   */
  
  #include "qemu/osdep.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
++#include "accel/accel-ops.h"
+ #include "accel/accel-cpu-ops.h"
  #include "system/tcg.h"
  #include "system/replay.h"
- #include "exec/icount.h"
+diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+index 5904582a68d..eaeb465dfd5 100644
+--- a/accel/tcg/tcg-all.c
++++ b/accel/tcg/tcg-all.c
+@@ -39,6 +39,8 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "hw/boards.h"
+ #endif
++#include "accel/accel-ops.h"
++#include "accel/accel-cpu-ops.h"
+ #include "accel/tcg/cpu-ops.h"
+ #include "internal-common.h"
+ 
 diff --git a/accel/xen/xen-all.c b/accel/xen/xen-all.c
-index bd0ff64befc..55a60bb42c2 100644
+index 55a60bb42c2..97377d67d1c 100644
 --- a/accel/xen/xen-all.c
 +++ b/accel/xen/xen-all.c
-@@ -19,7 +19,7 @@
+@@ -19,6 +19,7 @@
  #include "chardev/char.h"
  #include "qemu/accel.h"
  #include "accel/dummy-cpus.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
++#include "accel/accel-ops.h"
+ #include "accel/accel-cpu-ops.h"
  #include "system/cpus.h"
  #include "system/xen.h"
- #include "system/runstate.h"
-diff --git a/cpu-target.c b/cpu-target.c
-index 1c90a307593..2049eb1d0f6 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -19,7 +19,7 @@
- 
- #include "qemu/osdep.h"
- #include "cpu.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
- #include "system/cpus.h"
- #include "exec/cpu-common.h"
- #include "exec/tswap.h"
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index d0cc8e0088f..7e5d4bbce09 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -38,6 +38,7 @@
+ #include "qemu/plugin.h"
+ #include "user/guest-base.h"
+ #include "user/page-protection.h"
++#include "accel/accel-ops.h"
+ #include "tcg/startup.h"
+ #include "qemu/timer.h"
+ #include "qemu/envlist.h"
 diff --git a/gdbstub/system.c b/gdbstub/system.c
-index 8a32d8e1a1d..5b6f8d07334 100644
+index 5b6f8d07334..5be0d3c58ce 100644
 --- a/gdbstub/system.c
 +++ b/gdbstub/system.c
-@@ -19,7 +19,7 @@
+@@ -19,6 +19,7 @@
  #include "gdbstub/commands.h"
  #include "exec/hwaddr.h"
  #include "exec/tb-flush.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
++#include "accel/accel-ops.h"
+ #include "accel/accel-cpu-ops.h"
  #include "system/cpus.h"
  #include "system/runstate.h"
- #include "system/replay.h"
-diff --git a/system/cpus.c b/system/cpus.c
-index 8e6da2e0606..256723558d0 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -31,7 +31,7 @@
- #include "qapi/qapi-events-run-state.h"
- #include "qapi/qmp/qerror.h"
+diff --git a/linux-user/main.c b/linux-user/main.c
+index f4f20074396..68972f00a15 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -42,6 +42,7 @@
+ #include "user/page-protection.h"
  #include "exec/gdbstub.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
- #include "system/hw_accel.h"
- #include "exec/cpu-common.h"
- #include "qemu/thread.h"
-diff --git a/target/i386/nvmm/nvmm-accel-ops.c b/target/i386/nvmm/nvmm-accel-ops.c
-index a5517b0abf3..3799260bbde 100644
---- a/target/i386/nvmm/nvmm-accel-ops.c
-+++ b/target/i386/nvmm/nvmm-accel-ops.c
-@@ -10,7 +10,7 @@
- #include "qemu/osdep.h"
- #include "system/kvm_int.h"
- #include "qemu/main-loop.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
+ #include "gdbstub/user.h"
++#include "accel/accel-ops.h"
+ #include "tcg/startup.h"
+ #include "qemu/timer.h"
+ #include "qemu/envlist.h"
+diff --git a/system/memory.c b/system/memory.c
+index e8d9b15b28f..0983ff89622 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -29,6 +29,7 @@
+ #include "system/runstate.h"
+ #include "system/tcg.h"
+ #include "qemu/accel.h"
++#include "accel/accel-ops.h"
+ #include "hw/boards.h"
+ #include "migration/vmstate.h"
+ #include "system/address-spaces.h"
+diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
+index b4a4d50e860..aab12d77326 100644
+--- a/target/i386/nvmm/nvmm-all.c
++++ b/target/i386/nvmm/nvmm-all.c
+@@ -12,6 +12,7 @@
+ #include "system/address-spaces.h"
+ #include "system/ioport.h"
+ #include "qemu/accel.h"
++#include "accel/accel-ops.h"
+ #include "system/nvmm.h"
  #include "system/cpus.h"
- #include "qemu/guest-random.h"
- 
-diff --git a/target/i386/whpx/whpx-accel-ops.c b/target/i386/whpx/whpx-accel-ops.c
-index 5f4841c9fa4..da58805b1a6 100644
---- a/target/i386/whpx/whpx-accel-ops.c
-+++ b/target/i386/whpx/whpx-accel-ops.c
-@@ -11,7 +11,7 @@
- #include "qemu/osdep.h"
- #include "system/kvm_int.h"
- #include "qemu/main-loop.h"
--#include "system/accel-ops.h"
-+#include "accel/accel-cpu-ops.h"
+ #include "system/runstate.h"
+diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
+index faf56e19722..10df2d398f7 100644
+--- a/target/i386/whpx/whpx-all.c
++++ b/target/i386/whpx/whpx-all.c
+@@ -14,6 +14,7 @@
+ #include "system/ioport.h"
+ #include "gdbstub/helpers.h"
+ #include "qemu/accel.h"
++#include "accel/accel-ops.h"
+ #include "system/whpx.h"
  #include "system/cpus.h"
- #include "qemu/guest-random.h"
- 
+ #include "system/runstate.h"
 -- 
 2.49.0
 
