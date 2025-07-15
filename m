@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850B6B051B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D116CB051A6
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:22:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZ3a-0005al-6U; Tue, 15 Jul 2025 02:22:26 -0400
+	id 1ubZ3L-0004BL-BP; Tue, 15 Jul 2025 02:22:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ1w-0003UX-OR
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ21-0003aT-Gr
  for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:21:01 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ1r-0007RW-CJ
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:20:41 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3a4e742dc97so3551770f8f.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:20:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ1w-0007TA-GY
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:20:49 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3a528243636so2737483f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:20:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752560435; x=1753165235; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752560440; x=1753165240; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AAAEB3eVJKoeoejF7sQrJUuJBjbwnpIt5RH1cN5JYiQ=;
- b=aRo+vdHm6y4mNOdyIpRrV/b5qAJtOH4n/l8/LKrIUJzxBVcZJdwP+hBQzmxxZHvzt+
- pbGTwhvBRhscR07QfbSQSeTwcp7FuIlx701TkUNLa/jnFwiz1qm15bdl7Z6sAbwTy8gQ
- Jf0kRnZz1Mz05mUrAgzIKysGonDHhsCeQUKwYAtCdc6TdIys69YyjdTZe460IOXiW5+W
- 6gMAs7ykCIYrF1VYjB1vUSoP8WlB821brqArKqO0Frx+ZVLO4TYC6GwE9J1GMxbAQCUw
- 9PSsHLiEr5U6XBqurg17MKJOOOW5aynkvX0h99Mw1kCpBeoMxb6yDOSQmLIutRrObPf6
- pM/w==
+ bh=W2AWFB5Pyqah58zjvyeLVbkHACcax2vJ0ewRGYfkQd8=;
+ b=TukdXiaMJY4RBPOxrm54+aFfT39csaxfEQnjepRKYLOjvFvlg5jURFMwQzuxg99a7V
+ qPTGlPj67AsozNIKEuwnFkuPNs0XhZ3MQxA+Dc347h67yAyfC7ansWi/R9rqbOKTlCEi
+ O15bHvEQ2N0hRmxD0ChTpPMbkduhy6NKRwHuXkjXUhuVtzOhntD9D4rqEQfBNIQPyAkq
+ 8SHbJEt4UJTOZT/rKwSzRMQ40UZ8sZZggRCBehGy+LqDnrk/9CUBCpAEBSfii/ecm/t0
+ udViYdLrUZ5wIV0B8QTwVrydUkppnF7PFzFeMgSE9cYXaU8dQVS92nqeAzBvu1Eg+f7B
+ 0f2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752560435; x=1753165235;
+ d=1e100.net; s=20230601; t=1752560440; x=1753165240;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AAAEB3eVJKoeoejF7sQrJUuJBjbwnpIt5RH1cN5JYiQ=;
- b=Gso4BCTUut37I+YQQ8S3UdiIiKhdwq5Xts89iQFq23h8ibkef8Rt98KLsu9B03vrh9
- iTD+v4Ncfi+2uSxpvI+q6T8WK2LiUsdS0OSpUeeBxcoSa1stpZVAF+CuQicfQyPv61kV
- WbNIUJC7/ZdHYUORLzezdAQRig90WBxvQLzEALEXraKtoXffTuub/lu+iG4Hu8JS2zXj
- lvV+lLeDSk0GvwHLYs62BW0BbumuouQqvlqAs1JO+XBRIzg/Z/Mtlm7/w9h3ea+Jjllv
- 0Nuz/zMgbZmjgJMzdsDn8w6m3YHpuSyiI2308kqWSuiy0IU6I61MVCAAg5c3d/zpRCxP
- Oj7A==
-X-Gm-Message-State: AOJu0YxbW5/REr73YNgzbZQL3d0UCi0CZAAq63HM++KaEiBH43+yk/5n
- Z7oP31uppWT4hMmSgD6znz4oTk1cEyLUXU7YbcRQSGTxDiZQpip61Gnr2n4mXpTkJZ/IkqLAbv4
- wqwkn
-X-Gm-Gg: ASbGncsZio1POsifwxZdQ0cLn0sHZNVf9Nbd9rs3D/DPQBjq4etkNYWYjy/H3a/CdSE
- Xf1dIVsVr2mPomapj6id8mP3qXTidDHbNMkUJTRDgeeZJLgFg5twOLyTgyCmdwnaq5A+dIrq4rW
- FH7gd/9vAGuU9YVHWxTDu7z1vdSa2jOsdHZ/Y84g9PImpeHj/B2Wx6bZdkca1P++B4xBhTVsP0F
- awhYpc3I5+fTLpy893a0uHADXJZ7618uz+D22E956VdrQW9ed7fi2n53k7kZoAtCxHFyRLeN8St
- 2B8UATVSQSXpdUaW023kK4iQIG/0RWUlizOTACCKyj76qK0BqncAr0n+Zz1DxxlyXwKnf/lL1CU
- ruNNI1E/PoA12XSXR//OazIV3RG/0TLduyXDmVF7ZI1MX4f71X1QDlrL1IWy9FZ0w0Sl0gAc0FR
- nliXa7M8M=
-X-Google-Smtp-Source: AGHT+IE4kM2zPLwHhA8KcuIIH8p3I9fuc0n6FZDfc1V21iDYd5ErMap3SVHNE2uZlFs7uRpHnPFVzQ==
-X-Received: by 2002:a05:6000:2307:b0:3a5:8934:4959 with SMTP id
- ffacd0b85a97d-3b609544322mr1440705f8f.27.1752560435072; 
- Mon, 14 Jul 2025 23:20:35 -0700 (PDT)
+ bh=W2AWFB5Pyqah58zjvyeLVbkHACcax2vJ0ewRGYfkQd8=;
+ b=QYEqptSlcmrZdsftXPhsPFEnsfV0TX79PhR2Litz8oe3IxDHs8rFnRNiRqYRezqjM3
+ eGbtgCx0azfEDo1SiJMJUeodUtCuCuCrTacGMp6VUwUksuM0PM/yR62I6Bqnk3nbuS4k
+ bnvYWGsAv8Dx8jhZGQTvJpRLk9OR240iXlFVzoilQ/uCXmLgTPLBSChhYJnJwmma6tkz
+ 07iA+O5ccnEJil6cXkcum3mEXSgdMoosit+mTXI8s9bplBgNThRfIWHy+X91c03VaBJE
+ zceLJMRGYv49KJWgnItcDzZlHsxVvitdmj1lytLm8X1csa+6WY3Hpc//BweYT8Jnm3V3
+ NLHg==
+X-Gm-Message-State: AOJu0YyUoPqt6mLzTRH4YtaQTqvNfTI0afmN/XRUzMLCQY5FGERTI5j4
+ +I8fvdrjIvya+67YMbWAdncTEgodRJko6L3Vppo2DK0snMcuV6A3Bryb45cGp820WnRplESUuJ6
+ dIaVL
+X-Gm-Gg: ASbGncvZnC9mciTnvHLKZ+FC4o1OvWchaLdHXISt7JamTw3q8CNtLRciTyeHZoxi8VM
+ qgjZIRgBrkUtiJbLNAoOW4LZs6o5Qvl+On1qX17WYLfc4rVRFPZVdwJv77s/P0qgDvnJNiW5THZ
+ Jq+yrgwbkasLC8iN0Od5+5CqRTtnMjYiF5NJYy3gQG/BQLIIZIDZ8d4f7AoudR6E33g5l7WCnzL
+ /1LPV6ssVtCueQS5daMdeVqrdrL//u9nmQ/1hTYbpEUml2vEZhbFUDN4+oLPUUph+nvtLpphqzX
+ 4Om3NfZ8wYN2hR9XqG6jBft18ohVcWF6u76B5SadGFxfwozs+axm5KZDdej+z+r23JRAT2o2wta
+ 791MUgsHHENeINlMCs7VW5Z9ifV24FF7V/BwprKtVPxCKaJPSwLShJgYboI1U7tIB8szISTVeSr
+ F5Fsvlufg=
+X-Google-Smtp-Source: AGHT+IH2njBaVNZQOwFvE3Wq0RqZ+qCbBD9uRBscHqX9O9Z7FHe7Bx/nXB7qRK/pRO4kV/VqEU5b4g==
+X-Received: by 2002:adf:ea45:0:b0:3a8:38b3:1aa1 with SMTP id
+ ffacd0b85a97d-3b5f18cf218mr10693915f8f.27.1752560439711; 
+ Mon, 14 Jul 2025 23:20:39 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454d5032e9esm190623215e9.3.2025.07.14.23.20.34
+ ffacd0b85a97d-3b5e8dc2025sm14502765f8f.31.2025.07.14.23.20.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 14 Jul 2025 23:20:34 -0700 (PDT)
+ Mon, 14 Jul 2025 23:20:39 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PULL 15/17] esp.c: only call dma_memory_write function if transfer
- length is non-zero
-Date: Tue, 15 Jul 2025 08:19:15 +0200
-Message-ID: <20250715061918.44971-16-philmd@linaro.org>
+Subject: [PULL 16/17] esp.c: add asc_mode property to indicate the current ESP
+ mode
+Date: Tue, 15 Jul 2025 08:19:16 +0200
+Message-ID: <20250715061918.44971-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250715061918.44971-1-philmd@linaro.org>
 References: <20250715061918.44971-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,53 +103,134 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-In the cases where mixed DMA/non-DMA transfers are used or no data is
-available, it is possible for the calculated transfer length to be zero.
-Only call the dma_memory_write function where the transfer length is
-non-zero to avoid invoking the DMA engine for a zero length transfer
-which can have side-effects (along with generating additional tracing
-noise).
+Add a new asc_mode property to ESPState which indicates the current mode of
+the ESP and update the ESP state machine accordingly.
+
+Bump the vmstate version and include migration logic to ensure that asc_mode
+is set to initiator mode such that any commands in progress will always
+continue.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250711204636.542964-6-mark.cave-ayland@ilande.co.uk>
+Message-ID: <20250711204636.542964-7-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/scsi/esp.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/hw/scsi/esp.h |  7 +++++++
+ hw/scsi/esp.c         | 21 ++++++++++++++++++++-
+ 2 files changed, 27 insertions(+), 1 deletion(-)
 
+diff --git a/include/hw/scsi/esp.h b/include/hw/scsi/esp.h
+index c9afcb7cac0..6327060c7c7 100644
+--- a/include/hw/scsi/esp.h
++++ b/include/hw/scsi/esp.h
+@@ -14,6 +14,12 @@ typedef void (*ESPDMAMemoryReadWriteFunc)(void *opaque, uint8_t *buf, int len);
+ #define ESP_FIFO_SZ 16
+ #define ESP_CMDFIFO_SZ 32
+ 
++enum ESPASCMode {
++    ESP_ASC_MODE_DIS = 0,    /* Disconnected */
++    ESP_ASC_MODE_INI = 1,    /* Initiator */
++    ESP_ASC_MODE_TGT = 2     /* Target */
++};
++
+ #define TYPE_ESP "esp"
+ OBJECT_DECLARE_SIMPLE_TYPE(ESPState, ESP)
+ 
+@@ -38,6 +44,7 @@ struct ESPState {
+     uint8_t cmdfifo_cdb_offset;
+     uint8_t lun;
+     uint32_t do_cmd;
++    uint8_t asc_mode;
+ 
+     bool data_ready;
+     int dma_enabled;
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index ec9fcbeddf4..1c7bad8fc02 100644
+index 1c7bad8fc02..4aa58f9e485 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -631,7 +631,9 @@ static void esp_do_dma(ESPState *s)
-         switch (s->rregs[ESP_CMD]) {
-         case CMD_TI | CMD_DMA:
-             if (s->dma_memory_write) {
--                s->dma_memory_write(s->dma_opaque, s->async_buf, len);
-+                if (len) {
-+                    s->dma_memory_write(s->dma_opaque, s->async_buf, len);
-+                }
-             } else {
-                 /* Copy device data to FIFO */
-                 len = MIN(len, fifo8_num_free(&s->fifo));
-@@ -681,6 +683,7 @@ static void esp_do_dma(ESPState *s)
-                 buf[0] = s->status;
+@@ -275,6 +275,7 @@ static int esp_select(ESPState *s)
+     if (!s->current_dev) {
+         /* No such drive */
+         s->rregs[ESP_RSTAT] = 0;
++        s->asc_mode = ESP_ASC_MODE_DIS;
+         s->rregs[ESP_RINTR] = INTR_DC;
+         esp_raise_irq(s);
+         return -1;
+@@ -284,6 +285,7 @@ static int esp_select(ESPState *s)
+      * Note that we deliberately don't raise the IRQ here: this will be done
+      * either in esp_transfer_data() or esp_command_complete()
+      */
++    s->asc_mode = ESP_ASC_MODE_INI;
+     return 0;
+ }
  
-                 if (s->dma_memory_write) {
-+                    /* Length already non-zero */
-                     s->dma_memory_write(s->dma_opaque, buf, len);
-                 } else {
-                     esp_fifo_push_buf(s, buf, len);
-@@ -715,6 +718,7 @@ static void esp_do_dma(ESPState *s)
-                 buf[0] = 0;
+@@ -308,6 +310,7 @@ static void do_command_phase(ESPState *s)
+     if (!current_lun) {
+         /* No such drive */
+         s->rregs[ESP_RSTAT] = 0;
++        s->asc_mode = ESP_ASC_MODE_DIS;
+         s->rregs[ESP_RINTR] = INTR_DC;
+         s->rregs[ESP_RSEQ] = SEQ_0;
+         esp_raise_irq(s);
+@@ -1102,6 +1105,7 @@ void esp_hard_reset(ESPState *s)
+     fifo8_reset(&s->cmdfifo);
+     s->dma = 0;
+     s->dma_cb = NULL;
++    s->asc_mode = ESP_ASC_MODE_DIS;
  
-                 if (s->dma_memory_write) {
-+                    /* Length already non-zero */
-                     s->dma_memory_write(s->dma_opaque, buf, len);
-                 } else {
-                     esp_fifo_push_buf(s, buf, len);
+     s->rregs[ESP_CFG1] = 7;
+ }
+@@ -1170,6 +1174,7 @@ static void esp_run_cmd(ESPState *s)
+         break;
+     case CMD_MSGACC:
+         trace_esp_mem_writeb_cmd_msgacc(cmd);
++        s->asc_mode = ESP_ASC_MODE_DIS;
+         s->rregs[ESP_RINTR] |= INTR_DC;
+         s->rregs[ESP_RSEQ] = 0;
+         s->rregs[ESP_RFLAGS] = 0;
+@@ -1337,6 +1342,14 @@ static bool esp_is_between_version_5_and_6(void *opaque, int version_id)
+     return version_id >= 5 && version_id <= 6;
+ }
+ 
++static bool esp_is_version_8(void *opaque, int version_id)
++{
++    ESPState *s = ESP(opaque);
++
++    version_id = MIN(version_id, s->mig_version_id);
++    return version_id >= 8;
++}
++
+ int esp_pre_save(void *opaque)
+ {
+     ESPState *s = ESP(object_resolve_path_component(
+@@ -1368,13 +1381,18 @@ static int esp_post_load(void *opaque, int version_id)
+         }
+     }
+ 
++    if (version_id < 8) {
++        /* Assume initiator mode to allow all commands to continue */
++        s->asc_mode = ESP_ASC_MODE_INI;
++    }
++
+     s->mig_version_id = vmstate_esp.version_id;
+     return 0;
+ }
+ 
+ const VMStateDescription vmstate_esp = {
+     .name = "esp",
+-    .version_id = 7,
++    .version_id = 8,
+     .minimum_version_id = 3,
+     .post_load = esp_post_load,
+     .fields = (const VMStateField[]) {
+@@ -1406,6 +1424,7 @@ const VMStateDescription vmstate_esp = {
+                            esp_is_between_version_5_and_6),
+         VMSTATE_UINT8_TEST(lun, ESPState, esp_is_version_6),
+         VMSTATE_BOOL(drq_state, ESPState),
++        VMSTATE_UINT8_TEST(asc_mode, ESPState, esp_is_version_8),
+         VMSTATE_END_OF_LIST()
+     },
+ };
 -- 
 2.49.0
 
