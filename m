@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A38AB066E4
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 058B7B06717
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:41:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublMT-0001of-CW; Tue, 15 Jul 2025 15:30:45 -0400
+	id 1ublVP-0006Ec-4S; Tue, 15 Jul 2025 15:40:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwR-0003Yr-Ou
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:03:54 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwY-0003fL-DB
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:03:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwP-0001FN-S8
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:03:51 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwW-0001Gd-68
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:03:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606229;
+ s=mimecast20190719; t=1752606235;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VozVVm7+4vUKUcxr3dAo1lApjn1lz5m0QkTvFup66SM=;
- b=eBFtaJ9FANQl133d6BZ3Uwn6wz0wC4v66UT/Mb5JyfUAcpNKw1qRzLqMGGaqM/V5B790BO
- UMbEtfeQfqIXwa3Lw4UrGRnEiSOqRcxvLoFbss8PMtR+jU0cY4b6/RzHWljCGM6vrA4Iwv
- VVNP0Ucsvt0LEStHnZMmDSiiBhhSVjo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=6trNushndsv+D2tzWKPPnv40MMao6ZPGsi50y3Zk2k4=;
+ b=DCrFfVxQ2V/G5LEWzxJ1QTX1WjslvycqrTx9Ne+yZSE0Tu+Ooo1r7tnf6OueXHhj5BuJdT
+ BZudigOfDmSLkFqnsyBSBzlGvGuHcRaVxgF67eOyEzL6kZS+EFYaV3IGxTFPe1YfURrJrp
+ IauQUaKV0vyhn5v1w5h0rjeXpQ94Klo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-54-IYg0NmTrMCy18Kgdf7BWpg-1; Tue,
- 15 Jul 2025 15:03:46 -0400
-X-MC-Unique: IYg0NmTrMCy18Kgdf7BWpg-1
-X-Mimecast-MFC-AGG-ID: IYg0NmTrMCy18Kgdf7BWpg_1752606225
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-156-C4PmwvTaOYO_cL0G6c1GSg-1; Tue,
+ 15 Jul 2025 15:03:48 -0400
+X-MC-Unique: C4PmwvTaOYO_cL0G6c1GSg-1
+X-Mimecast-MFC-AGG-ID: C4PmwvTaOYO_cL0G6c1GSg_1752606227
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9C70D1800368; Tue, 15 Jul 2025 19:03:45 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9F248195608C; Tue, 15 Jul 2025 19:03:47 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E5B09197702B; Tue, 15 Jul 2025 19:03:43 +0000 (UTC)
+ id 1EA65197702B; Tue, 15 Jul 2025 19:03:45 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 04/57] block/commit: switch to bdrv_set_backing_hd_drained()
- variant
-Date: Tue, 15 Jul 2025 21:02:37 +0200
-Message-ID: <20250715190330.378764-5-kwolf@redhat.com>
+Subject: [PULL 05/57] block: call bdrv_set_backing_hd() while unlocked in
+ bdrv_open_backing_file()
+Date: Tue, 15 Jul 2025 21:02:38 +0200
+Message-ID: <20250715190330.378764-6-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -87,102 +87,47 @@ From: Fiona Ebner <f.ebner@proxmox.com>
 This is in preparation to mark bdrv_set_backing_hd() as
 GRAPH_UNLOCKED.
 
-Switch to using the bdrv_set_backing_hd_drained() variant. For the
-first pair of calls to avoid draining and locking twice in a row
-within the individual calls. For the third call, so that the drained
-and locked section can also cover bdrv_cow_bs().
-
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20250530151125.955508-27-f.ebner@proxmox.com>
+Message-ID: <20250530151125.955508-28-f.ebner@proxmox.com>
+[kwolf: Removed an extra blank line]
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/commit.c | 32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ block.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/block/commit.c b/block/commit.c
-index dc1942483b..c9690a5da0 100644
---- a/block/commit.c
-+++ b/block/commit.c
-@@ -514,28 +514,32 @@ int bdrv_commit(BlockDriverState *bs)
+diff --git a/block.c b/block.c
+index 1da10d55f0..9ef3b0262c 100644
+--- a/block.c
++++ b/block.c
+@@ -3632,7 +3632,8 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
      Error *local_err = NULL;
  
      GLOBAL_STATE_CODE();
 -    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (!drv)
-         return -ENOMEDIUM;
- 
-+    bdrv_graph_rdlock_main_loop();
 +
-     backing_file_bs = bdrv_cow_bs(bs);
++    bdrv_graph_rdlock_main_loop();
  
-     if (!backing_file_bs) {
--        return -ENOTSUP;
-+        ret = -ENOTSUP;
-+        goto out;
-     }
+     if (bs->backing != NULL) {
+         goto free_exit;
+@@ -3713,7 +3714,9 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
  
-     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_COMMIT_SOURCE, NULL) ||
-         bdrv_op_is_blocked(backing_file_bs, BLOCK_OP_TYPE_COMMIT_TARGET, NULL))
-     {
--        return -EBUSY;
-+        ret = -EBUSY;
-+        goto out;
-     }
- 
-     ro = bdrv_is_read_only(backing_file_bs);
- 
-     if (ro) {
-         if (bdrv_reopen_set_read_only(backing_file_bs, false, NULL)) {
--            return -EACCES;
-+            ret = -EACCES;
-+            goto out;
-         }
-     }
- 
-@@ -559,8 +563,14 @@ int bdrv_commit(BlockDriverState *bs)
-         goto ro_cleanup;
-     }
- 
--    bdrv_set_backing_hd(commit_top_bs, backing_file_bs, &error_abort);
--    bdrv_set_backing_hd(bs, commit_top_bs, &error_abort);
+     /* Hook up the backing file link; drop our reference, bs owns the
+      * backing_hd reference now */
 +    bdrv_graph_rdunlock_main_loop();
-+
-+    bdrv_graph_wrlock_drained();
-+    bdrv_set_backing_hd_drained(commit_top_bs, backing_file_bs, &error_abort);
-+    bdrv_set_backing_hd_drained(bs, commit_top_bs, &error_abort);
-+    bdrv_graph_wrunlock();
-+
+     ret = bdrv_set_backing_hd(bs, backing_hd, errp);
 +    bdrv_graph_rdlock_main_loop();
+     bdrv_unref(backing_hd);
  
-     ret = blk_insert_bs(backing, backing_file_bs, &local_err);
      if (ret < 0) {
-@@ -635,9 +645,14 @@ int bdrv_commit(BlockDriverState *bs)
-     ret = 0;
- ro_cleanup:
-     blk_unref(backing);
-+
+@@ -3725,6 +3728,7 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
+ free_exit:
+     g_free(backing_filename);
+     qobject_unref(tmp_parent_options);
 +    bdrv_graph_rdunlock_main_loop();
-+    bdrv_graph_wrlock_drained();
-     if (bdrv_cow_bs(bs) != backing_file_bs) {
--        bdrv_set_backing_hd(bs, backing_file_bs, &error_abort);
-+        bdrv_set_backing_hd_drained(bs, backing_file_bs, &error_abort);
-     }
-+    bdrv_graph_wrunlock();
-+    bdrv_graph_rdlock_main_loop();
-     bdrv_unref(commit_top_bs);
-     blk_unref(src);
- 
-@@ -646,5 +661,8 @@ ro_cleanup:
-         bdrv_reopen_set_read_only(backing_file_bs, true, NULL);
-     }
- 
-+out:
-+    bdrv_graph_rdunlock_main_loop();
-+
      return ret;
  }
+ 
 -- 
 2.50.1
 
