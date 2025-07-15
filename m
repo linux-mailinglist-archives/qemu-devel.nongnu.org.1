@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB073B04C9D
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 02:01:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B30AB04CA5
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 02:02:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubT6Q-0001zU-1F; Mon, 14 Jul 2025 20:00:58 -0400
+	id 1ubT6L-0001iK-Uu; Mon, 14 Jul 2025 20:00:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
- id 1ubT6J-0001es-Us
+ id 1ubT6K-0001ff-Gz
  for qemu-devel@nongnu.org; Mon, 14 Jul 2025 20:00:52 -0400
-Received: from mail-qv1-xf2a.google.com ([2607:f8b0:4864:20::f2a])
+Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
- id 1ubT6H-00083Y-Lr
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 20:00:51 -0400
-Received: by mail-qv1-xf2a.google.com with SMTP id
- 6a1803df08f44-6fafdd322d3so41847696d6.3
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 17:00:48 -0700 (PDT)
+ id 1ubT6H-00083g-Uh
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 20:00:52 -0400
+Received: by mail-qk1-x72b.google.com with SMTP id
+ af79cd13be357-7d9eac11358so483920985a.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 17:00:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1752537647; x=1753142447; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=JrIhx6eISGfYFMzOikqtWPrp3DNp3jH05jHJYiMTBK0=;
- b=DiqkVWhBHvuzdIp3vmNOnv4iqRn0yX7UQrxFBlLulJKHjUdcXwwc1F6QVzIeEfJd0g
- 0bGrLwVk2sn5ut8++ugv13Ka+zxm5Q49fqIcOPU1U8q20VSPTBwaoxCCjhUJbFfcZFMJ
- odlPU5OHozic+B2UFYIABa9EcAEWgwEmSmH1HHRDXDHffEz83MI5uFHrUmNb8/yuIRaS
- AmahdrriMYvN/iEq1pESbv2GhwuMIP0RQVhn8MCwH4/ZsrEn4nxtwXmrEwbnCyvfgEV6
- DU9zX0UJmbuJ6ojYFNebdBp7OAfiUxcH+fY/3tjoHe8qvHIrUiyagXcJI3o1yIhjsuEq
- fiEQ==
+ d=gmail.com; s=20230601; t=1752537648; x=1753142448; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nx+xC+J/lP71Qi4WUZDurONxg6YN8jBhmpt2oNrZWbI=;
+ b=lZPZxq1ki8Uj0xqlqOLC9xuJNxMgVkyAWOLsMBACRNFwoIAniryzJl7VzuwTKigl5Q
+ ToUjYU6iWxFYJTgLiInOGnGO8CBYtTgY252pLxqb2bqnUOA4Jy2VIg3tsqKZuRnhQB9i
+ jIbwnNpLyC8/Dn50vTcJPOljYfrkOiUohVD055Cp3zWg/v+56+rPdLS6fvCNlMVCvq/i
+ JReSKR9W/FkmY+6GgoUQjrgOpH7j0eiVttsvwHMYrUWm5x5OLzBvv/2BlIakCI1t/gaL
+ H/OkmDMXL1psDso3a/3K6j2nZ8p6g8tsiWNNMcrdhh1Ytv/jBTN0rnwOKq2GRPT7RujF
+ W6Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752537647; x=1753142447;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JrIhx6eISGfYFMzOikqtWPrp3DNp3jH05jHJYiMTBK0=;
- b=a/uIU9rGGP2IwJhXKCxZEUGp9Cy1wIemjziRTgqavgZ5uf3qLqSdoiwMWw0kWJDHt/
- XdynMQACFz6+IBKLGoUaUcdfQXY1X2p8eGJuWM6cCcz0CxaINvBG+vtYe8cfAmJfpz+f
- E88uGTqN9daPxG/GHHucR5c5dgAJZHIHBC9n1Da852Q/QljiglVxNJkfCxQUjTGTYOwk
- NghzMPjW9WfRUM4y6SmbR1Y1s4C5En4JW1gW4oaZDOIuXMPx/LHOhQxAHSKqa4OFkZNW
- vzBA2mQF1uyflBhoHm0KQeUISZ+ZNfWRgCMfaruP3kT49d5qCUOoZXWsliBh9dztoB5Q
- C8/g==
-X-Gm-Message-State: AOJu0Yw7Nxf9JGA+pmPfxz0XVE+lOptoVI3SkqZCMz+dM4dSGbn3q7hp
- 8IeSI3pcRk1BXCFXdtKmIQe4Te3f/Fx0Yz638mcNohzuq8ysfOf5y3t1TlSb1w==
-X-Gm-Gg: ASbGncuzyFvf7pC40Y7+gBOTlVWJfk1d7zmtp/zW50alJvLRzYKjZrHaVfVzOqOQFcI
- xNg5kSGPUzlKHoI0h1aLmKvlLbvPr0e4eSKvLWaKcQxCEhD1+jdcS3+km/ZWId7Zg8CfGEGH4PK
- MJtAFQkJQCKJBkwDFeBFF1zH2kWxMPD5eOSjgmTJsuO4FrdF3n0n8ZcDZTgX0HIDt08XVhBpLpY
- jnKNgQo+nk+IXkPDANLNFIBKo5H7UuhMzx2ePRNuZM/iRxzrQ3KmoDeqI48c3xjB1mS8AvVgbXW
- cmYZhWPLNjKTvG7Z4sGa7sLXEoFD5WhU5oYnEbHGoDBnklrHQz2SM/GpHpXzwnz6O0sbGyCWUGX
- htPj8aSMRYXK6Kwdtb8bQIiaI9lhHml4pIzU5j07aqtc6b7E=
-X-Google-Smtp-Source: AGHT+IFne4kz+MjUvh8al6Ge6MmB/TuPtHKxMkV9nRDeSiSF0GN51wmL+HGeSkyvLZmtVguRcH1ZkA==
-X-Received: by 2002:a05:6214:2465:b0:704:8d8e:e9a7 with SMTP id
- 6a1803df08f44-704a42b0a68mr212736216d6.24.1752537647070; 
- Mon, 14 Jul 2025 17:00:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752537648; x=1753142448;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nx+xC+J/lP71Qi4WUZDurONxg6YN8jBhmpt2oNrZWbI=;
+ b=Hbh4SuWKleVnd2dFuddmjjvvRDBCigxvH43MA/1UXtetRR8FtTsFBnuGCsS7pqaFOV
+ hkKlR0594mqE+1NtL4IRbqz9Vs6iHAnaEJNC3Y7GiOA3QEF+OfDH6M/QqeInqsQ6KGIG
+ jOGcZcnwt6pTyGiGiicsVuKuf2p7vGmnBVQeuzOG9IowkAwwqAyHrNiPMpaIjzrhhGxB
+ gyjwqsXORDmQFLdPtJMcu/rdMzpTXiJT0VNiXAAguh9j1RdEiWFDjYUGX5TG5Zaa33tG
+ FqeBwBcaW/30/Oy3x9v2ABfFGFtUUMPE/cH6GCjK5CN9JKrrFPe4IqQU0QXBNCfoLXxg
+ +Sew==
+X-Gm-Message-State: AOJu0YyXgtu3IlowYVE+eb14JLO1d9ZwEahsxR6jN9ZixzhpaZjCIS3V
+ rd58L8d8Fhys6eTjmmUe17tl1POQyEwzrL07ooqtYVX9O69280FA3YtKhynpRw==
+X-Gm-Gg: ASbGncuE7sI2jv6vJuOVdNGephUMSxlFcKZZwL+SP6zToTxEDFcX38Qyjd24/PGFIuH
+ GAbMHad/5uiCoi1q/xxD+F9T7/f9QmJ0U5lFjQf2b/QX7IfibbbSgWqlGgxN4XSXzje3ReVxj0o
+ GM1QNtCKGR8L0MZkYSaQNNlFf+pzMLh9If6qSgBlSwjgqjLx6dW0Ki91697Cnv0jCF/1sqimsJX
+ 5yq4Q0iegNQ8JLUbJBcH31wsK/ADAD81Tl32sIRcC3XNxLjELvd8ht7ZheJdzt8ELvRSWY2Wovp
+ 01LwuNG73XmqlA+hqoWOXtBo2Bah+K85lR6ibsuynPw1aW6bJbzkqU4cHTbvjsIvSbUFqdaYG4O
+ aOt8/z6Gp064tNi7EVVrbX1AZyxbZVgnztQcxVboet+cR3FsUQl88kpE2Ng==
+X-Google-Smtp-Source: AGHT+IGRhblmx1FY8srB8MyrPDAqASX2Jxr7sB47RkjJOqvBnx+J54fznEP/yN1aZ9hJeoQKxhN8Xw==
+X-Received: by 2002:a05:620a:1726:b0:7d3:a6bd:93fc with SMTP id
+ af79cd13be357-7ddebc935b0mr2096357685a.28.1752537648223; 
+ Mon, 14 Jul 2025 17:00:48 -0700 (PDT)
 Received: from user-jcksn.mynetworksettings.com
  ([2600:4040:b51a:4200:2f17:e99b:e0cd:fdf7])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-70497d8eee2sm52296276d6.97.2025.07.14.17.00.46
+ 6a1803df08f44-70497d8eee2sm52296276d6.97.2025.07.14.17.00.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jul 2025 17:00:46 -0700 (PDT)
+ Mon, 14 Jul 2025 17:00:47 -0700 (PDT)
 From: Jackson Donaldson <jackson88044@gmail.com>
 X-Google-Original-From: Jackson Donaldson <jcksn@duck.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v5 00/11] MAX78000FTHR Implementation
-Date: Mon, 14 Jul 2025 20:00:34 -0400
-Message-Id: <20250715000045.57332-1-jcksn@duck.com>
+Subject: [PATCH v5 01/11] MAX78000: Add MAX78000FTHR Machine
+Date: Mon, 14 Jul 2025 20:00:35 -0400
+Message-Id: <20250715000045.57332-2-jcksn@duck.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250715000045.57332-1-jcksn@duck.com>
+References: <20250715000045.57332-1-jcksn@duck.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2a;
- envelope-from=jackson88044@gmail.com; helo=mail-qv1-xf2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
+ envelope-from=jackson88044@gmail.com; helo=mail-qk1-x72b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,180 +100,349 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v5:
+This patch adds support for the MAX78000FTHR machine.
 
-> > +    AES_KEY key;
-> > +    if ((s->ctrl & TYPE) == 0) {
-> > +        AES_set_encrypt_key(keydata, keylen, &key);
-> > +        AES_set_decrypt_key(keydata, keylen, &s->internal_key);
-> > +        AES_encrypt(s->data, s->result, &key);
-> Here we call AES_set_encrypt_key() and AES_set_decrypt_key()
-> before calling AES_encrypt()...
+The MAX78000FTHR contains a MAX78000 and a RISC-V core. This patch
+implements only the MAX78000, which is Cortex-M4 based.
+Details can be found at:
+https://www.analog.com/media/en/technical-documentation/user-guides/max78000-user-guide.pdf
 
-> > +        s->result_index = 16;
-> > +    } else if ((s->ctrl & TYPE) == 1 << 8) {
-> > +        AES_set_decrypt_key(keydata, keylen, &key);
-> > +        AES_set_decrypt_key(keydata, keylen, &s->internal_key);
-> > +        AES_decrypt(s->data, s->result, &key);
-> 
-> ...here we call AES_set_decrypt_key() twice before
-> calling AES_decrypt(). This looks a bit odd: should we either
-> (a) call both AES_set_decrypt_key() and AES_set_encrypt_key()
-> in each half of the if(), or (b) call AES_set_encyrypt_key()
-> twice in the AES_encrypt() code path ?
-> 
-> (Coverity is sometimes wrong, as it's only using a heuristic
-> here, so the other option is "the code as written is correct",
-> but in that case a comment might be helpful for human readers.)
-
-> thanks
-> -- PMM
-
-The AES engine stores an internal key which it uses only for decryption
-when in the last TYPE. This results in the odd-looking call pairs.
-I've added the requested comment.
-- Jackson
-
-v4:
-
-Spacing and style standard changes in GCR SOC, TRNG SOC, and AES SOC
-
-v3:
-
-Addresses a few more comments by Peter. Really appreciate the review, thank you.
-
-ICC SOC:
-Gave each device a unique name
-
-UART SOC:
-Removed references to DeviceState and gave each device a unique name
-
-GCR SOC:
-Set object property links statically, instead of by reference to device id
-
-TRNG:
-Added comments explaining interrupt generation logic. See further rationale under v2.
-It's certainly possible I'm missing something here, but I think what I have is correct.
-
-TRNG SOC:
-Removed reference to DeviceState
-
-AES:
-Simplified integer load & stores, added assertion before writing to memory_region_init_ram
-
-AES SOC:
-Removed reference to DeviceState
-
-v2:
-
-Addresses comments by Peter.
-For each device:
-- Switched soc to use sysbus_realize
-- Standardized switch case bracing, indentation, and error case
-- Added valid min and max access size
-- Changed endianness to DEVICE_LITTLE_ENDIAN
-- Added reset method, if not already implemented
-- Added migration support
-- Split soc integration into separate commit
-
-Machine Implementation:
-Added user guide URL
-Removed refclk. According to https://developer.arm.com/documentation/ddi0403/d/System-Level-Architecture/System-Address-Map/The-system-timer--SysTick/SysTick-Control-and-Status-Register--SYST-CSR the systick clock can be either the processor clock or an implementation defined external reference clock. As far as I can tell based on the user guide, the MAX78000 does not define an external reference clock. I have not confirmed this in hardware.
-Changed IRQ count to 120 and noted that the user guide is unclear on this number
-Fixed unimplemented device lengths and names
-
-ICC:
-Removed ICC_Invalidate
-Added number to device names
-
-UART:
-Fixed interrupts, allowing async UART
-Added number to device names
-
-GCR:
-Changed string-based device search to prop links for device reset
-Changed cpu_physical_memory_write to address_space_write
-
-TRNG:
-Changed source of randomness to qemu_guest_getrandom_nofail
-Did not change interrupt generation
-> Your interrupt generation code in this device doesn't look
-> right: the interrupt is supposed to be generated when each
-> new random number is ready, so in our "generation takes
-> zero time" model a read from DATA should provoke a new
-> interrupt immediately (assuming the interrupt is enabled):
-> you need to simulate the ready status bit going low and
-> then high again.
-
-I believe the interrupt generation is fine in this case;
-by latching it high so long as the interrupt is enabled,
-the interrupt handler gets called repeatedly until it
-receives the desired amount of data and disables the interrupt.
-I've tested this and it works with the maxim sdk's
-implementation of asynchronous trng.
-
-> See also my comments on an earlier patch about the usual
-> logic being to have an update function which does
-> "set interrupt to (condition && enabled)".
-
-In this case there is only one possible interrupt condition
-(is there random data ready), which is always true when enabled.
-As such I don't think a handler function is really necessary
-
-v1:
-This patch series implements basic support for the MAX78000FTHR machine
-
-https://github.com/JacksonDonaldson/max78000Test
-Contains instructions for building a test program against the MAX78000FTHR
-as well as results of the test suite run on QEMU and hardware.
-
-Jackson Donaldson (11):
-  MAX78000: Add MAX78000FTHR Machine
-  MAX78000: ICC Implementation
-  MAX78000: Add ICC to SOC
-  MAX78000: UART Implementation
-  MAX78000: Add UART to SOC
-  MAX78000: GCR Implementation
-  MAX78000: Add GCR to SOC
-  MAX78000: TRNG Implementation
-  MAX78000: Add TRNG to SOC
-  MAX78000: AES implementation
-  MAX78000: Add AES to SOC
-
- hw/arm/Kconfig                  |  15 ++
- hw/arm/max78000_soc.c           | 232 +++++++++++++++++++++
- hw/arm/max78000fthr.c           |  50 +++++
- hw/arm/meson.build              |   2 +
- hw/char/Kconfig                 |   3 +
- hw/char/max78000_uart.c         | 285 ++++++++++++++++++++++++++
- hw/char/meson.build             |   1 +
- hw/misc/Kconfig                 |  12 ++
- hw/misc/max78000_aes.c          | 229 +++++++++++++++++++++
- hw/misc/max78000_gcr.c          | 351 ++++++++++++++++++++++++++++++++
- hw/misc/max78000_icc.c          | 120 +++++++++++
- hw/misc/max78000_trng.c         | 139 +++++++++++++
- hw/misc/meson.build             |   4 +
- include/hw/arm/max78000_soc.h   |  50 +++++
- include/hw/char/max78000_uart.h |  78 +++++++
- include/hw/misc/max78000_aes.h  |  68 +++++++
- include/hw/misc/max78000_gcr.h  | 131 ++++++++++++
- include/hw/misc/max78000_icc.h  |  33 +++
- include/hw/misc/max78000_trng.h |  35 ++++
- 19 files changed, 1838 insertions(+)
+Signed-off-by: Jackson Donaldson <jcksn@duck.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/arm/Kconfig                |  10 ++
+ hw/arm/max78000_soc.c         | 172 ++++++++++++++++++++++++++++++++++
+ hw/arm/max78000fthr.c         |  50 ++++++++++
+ hw/arm/meson.build            |   2 +
+ include/hw/arm/max78000_soc.h |  35 +++++++
+ 5 files changed, 269 insertions(+)
  create mode 100644 hw/arm/max78000_soc.c
  create mode 100644 hw/arm/max78000fthr.c
- create mode 100644 hw/char/max78000_uart.c
- create mode 100644 hw/misc/max78000_aes.c
- create mode 100644 hw/misc/max78000_gcr.c
- create mode 100644 hw/misc/max78000_icc.c
- create mode 100644 hw/misc/max78000_trng.c
  create mode 100644 include/hw/arm/max78000_soc.h
- create mode 100644 include/hw/char/max78000_uart.h
- create mode 100644 include/hw/misc/max78000_aes.h
- create mode 100644 include/hw/misc/max78000_gcr.h
- create mode 100644 include/hw/misc/max78000_icc.h
- create mode 100644 include/hw/misc/max78000_trng.h
 
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index f543d944c3..ddaafa8faa 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -95,6 +95,12 @@ config INTEGRATOR
+     select PL181 # display
+     select SMC91C111
+ 
++config MAX78000FTHR
++    bool
++    default y
++    depends on TCG && ARM
++    select MAX78000_SOC
++
+ config MPS3R
+     bool
+     default y
+@@ -357,6 +363,10 @@ config ALLWINNER_R40
+     select USB_EHCI_SYSBUS
+     select SD
+ 
++config MAX78000_SOC
++    bool
++    select ARM_V7M
++
+ config RASPI
+     bool
+     default y
+diff --git a/hw/arm/max78000_soc.c b/hw/arm/max78000_soc.c
+new file mode 100644
+index 0000000000..9676ada6a2
+--- /dev/null
++++ b/hw/arm/max78000_soc.c
+@@ -0,0 +1,172 @@
++/*
++ * MAX78000 SOC
++ *
++ * Copyright (c) 2025 Jackson Donaldson <jcksn@duck.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Implementation based on stm32f205 and Max78000 user guide at
++ * https://www.analog.com/media/en/technical-documentation/user-guides/max78000-user-guide.pdf
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "system/address-spaces.h"
++#include "system/system.h"
++#include "hw/arm/max78000_soc.h"
++#include "hw/qdev-clock.h"
++#include "hw/misc/unimp.h"
++
++static void max78000_soc_initfn(Object *obj)
++{
++    MAX78000State *s = MAX78000_SOC(obj);
++
++    object_initialize_child(obj, "armv7m", &s->armv7m, TYPE_ARMV7M);
++
++    s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
++}
++
++static void max78000_soc_realize(DeviceState *dev_soc, Error **errp)
++{
++    MAX78000State *s = MAX78000_SOC(dev_soc);
++    MemoryRegion *system_memory = get_system_memory();
++    DeviceState *armv7m;
++    Error *err = NULL;
++
++    if (!clock_has_source(s->sysclk)) {
++        error_setg(errp, "sysclk clock must be wired up by the board code");
++        return;
++    }
++
++    memory_region_init_rom(&s->flash, OBJECT(dev_soc), "MAX78000.flash",
++                           FLASH_SIZE, &err);
++    if (err != NULL) {
++        error_propagate(errp, err);
++        return;
++    }
++
++    memory_region_add_subregion(system_memory, FLASH_BASE_ADDRESS, &s->flash);
++
++    memory_region_init_ram(&s->sram, NULL, "MAX78000.sram", SRAM_SIZE,
++                           &err);
++    if (err != NULL) {
++        error_propagate(errp, err);
++        return;
++    }
++    memory_region_add_subregion(system_memory, SRAM_BASE_ADDRESS, &s->sram);
++
++    armv7m = DEVICE(&s->armv7m);
++
++    /*
++     * The MAX78000 user guide's Interrupt Vector Table section
++     * suggests that there are 120 IRQs in the text, while only listing
++     * 104 in table 5-1. Implement the more generous of the two.
++     * This has not been tested in hardware.
++     */
++    qdev_prop_set_uint32(armv7m, "num-irq", 120);
++    qdev_prop_set_uint8(armv7m, "num-prio-bits", 3);
++    qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
++    qdev_prop_set_bit(armv7m, "enable-bitband", true);
++    qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
++    object_property_set_link(OBJECT(&s->armv7m), "memory",
++                             OBJECT(system_memory), &error_abort);
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->armv7m), errp)) {
++        return;
++    }
++
++    create_unimplemented_device("globalControl",        0x40000000, 0x400);
++    create_unimplemented_device("systemInterface",      0x40000400, 0x400);
++    create_unimplemented_device("functionControl",      0x40000800, 0x400);
++    create_unimplemented_device("watchdogTimer0",       0x40003000, 0x400);
++    create_unimplemented_device("dynamicVoltScale",     0x40003c00, 0x40);
++    create_unimplemented_device("SIMO",                 0x40004400, 0x400);
++    create_unimplemented_device("trimSystemInit",       0x40005400, 0x400);
++    create_unimplemented_device("generalCtrlFunc",      0x40005800, 0x400);
++    create_unimplemented_device("wakeupTimer",          0x40006400, 0x400);
++    create_unimplemented_device("powerSequencer",       0x40006800, 0x400);
++    create_unimplemented_device("miscControl",          0x40006c00, 0x400);
++
++    create_unimplemented_device("aes",                  0x40007400, 0x400);
++    create_unimplemented_device("aesKey",               0x40007800, 0x400);
++
++    create_unimplemented_device("gpio0",                0x40008000, 0x1000);
++    create_unimplemented_device("gpio1",                0x40009000, 0x1000);
++
++    create_unimplemented_device("parallelCamInterface", 0x4000e000, 0x1000);
++    create_unimplemented_device("CRC",                  0x4000f000, 0x1000);
++
++    create_unimplemented_device("timer0",               0x40010000, 0x1000);
++    create_unimplemented_device("timer1",               0x40011000, 0x1000);
++    create_unimplemented_device("timer2",               0x40012000, 0x1000);
++    create_unimplemented_device("timer3",               0x40013000, 0x1000);
++
++    create_unimplemented_device("i2c0",                 0x4001d000, 0x1000);
++    create_unimplemented_device("i2c1",                 0x4001e000, 0x1000);
++    create_unimplemented_device("i2c2",                 0x4001f000, 0x1000);
++
++    create_unimplemented_device("standardDMA",          0x40028000, 0x1000);
++    create_unimplemented_device("flashController0",     0x40029000, 0x400);
++
++    create_unimplemented_device("icc0",                 0x4002a000, 0x800);
++    create_unimplemented_device("icc1",                 0x4002a800, 0x800);
++
++    create_unimplemented_device("adc",                  0x40034000, 0x1000);
++    create_unimplemented_device("pulseTrainEngine",     0x4003c000, 0xa0);
++    create_unimplemented_device("oneWireMaster",        0x4003d000, 0x1000);
++    create_unimplemented_device("semaphore",            0x4003e000, 0x1000);
++
++    create_unimplemented_device("uart0",                0x40042000, 0x1000);
++    create_unimplemented_device("uart1",                0x40043000, 0x1000);
++    create_unimplemented_device("uart2",                0x40044000, 0x1000);
++
++    create_unimplemented_device("spi1",                 0x40046000, 0x2000);
++    create_unimplemented_device("trng",                 0x4004d000, 0x1000);
++    create_unimplemented_device("i2s",                  0x40060000, 0x1000);
++    create_unimplemented_device("lowPowerControl",      0x40080000, 0x400);
++    create_unimplemented_device("gpio2",                0x40080400, 0x200);
++    create_unimplemented_device("lowPowerWatchdogTimer",    0x40080800, 0x400);
++    create_unimplemented_device("lowPowerTimer4",       0x40080c00, 0x400);
++
++    create_unimplemented_device("lowPowerTimer5",       0x40081000, 0x400);
++    create_unimplemented_device("lowPowerUART0",        0x40081400, 0x400);
++    create_unimplemented_device("lowPowerComparator",   0x40088000, 0x400);
++
++    create_unimplemented_device("spi0",                 0x400be000, 0x400);
++
++    /*
++     * The MAX78000 user guide's base address map lists the CNN TX FIFO as
++     * beginning at 0x400c0400 and ending at 0x400c0400. Given that CNN_FIFO
++     * is listed as having data accessible up to offset 0x1000, the user
++     * guide is likely incorrect.
++     */
++    create_unimplemented_device("cnnTxFIFO",            0x400c0400, 0x2000);
++
++    create_unimplemented_device("cnnGlobalControl",     0x50000000, 0x10000);
++    create_unimplemented_device("cnnx16quad0",          0x50100000, 0x40000);
++    create_unimplemented_device("cnnx16quad1",          0x50500000, 0x40000);
++    create_unimplemented_device("cnnx16quad2",          0x50900000, 0x40000);
++    create_unimplemented_device("cnnx16quad3",          0x50d00000, 0x40000);
++
++}
++
++static void max78000_soc_class_init(ObjectClass *klass, const void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->realize = max78000_soc_realize;
++}
++
++static const TypeInfo max78000_soc_info = {
++    .name          = TYPE_MAX78000_SOC,
++    .parent        = TYPE_SYS_BUS_DEVICE,
++    .instance_size = sizeof(MAX78000State),
++    .instance_init = max78000_soc_initfn,
++    .class_init    = max78000_soc_class_init,
++};
++
++static void max78000_soc_types(void)
++{
++    type_register_static(&max78000_soc_info);
++}
++
++type_init(max78000_soc_types)
+diff --git a/hw/arm/max78000fthr.c b/hw/arm/max78000fthr.c
+new file mode 100644
+index 0000000000..c4f6b5b1b0
+--- /dev/null
++++ b/hw/arm/max78000fthr.c
+@@ -0,0 +1,50 @@
++/*
++ * MAX78000FTHR Evaluation Board
++ *
++ * Copyright (c) 2025 Jackson Donaldson <jcksn@duck.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "hw/boards.h"
++#include "hw/qdev-properties.h"
++#include "hw/qdev-clock.h"
++#include "qemu/error-report.h"
++#include "hw/arm/max78000_soc.h"
++#include "hw/arm/boot.h"
++
++/* 60MHz is the default, but other clocks can be selected. */
++#define SYSCLK_FRQ 60000000ULL
++static void max78000_init(MachineState *machine)
++{
++    DeviceState *dev;
++    Clock *sysclk;
++
++    sysclk = clock_new(OBJECT(machine), "SYSCLK");
++    clock_set_hz(sysclk, SYSCLK_FRQ);
++
++    dev = qdev_new(TYPE_MAX78000_SOC);
++    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
++    qdev_connect_clock_in(dev, "sysclk", sysclk);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++
++    armv7m_load_kernel(ARM_CPU(first_cpu),
++                       machine->kernel_filename,
++                       0x00000000, FLASH_SIZE);
++}
++
++static void max78000_machine_init(MachineClass *mc)
++{
++    static const char * const valid_cpu_types[] = {
++        ARM_CPU_TYPE_NAME("cortex-m4"),
++        NULL
++    };
++
++    mc->desc = "MAX78000FTHR Board (Cortex-M4 / (Unimplemented) RISC-V)";
++    mc->init = max78000_init;
++    mc->valid_cpu_types = valid_cpu_types;
++}
++
++DEFINE_MACHINE("max78000fthr", max78000_machine_init)
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index d90be8f4c9..dc68391305 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -27,6 +27,7 @@ arm_common_ss.add(when: 'CONFIG_OMAP', if_true: files('omap1.c'))
+ arm_common_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('allwinner-a10.c', 'cubieboard.c'))
+ arm_common_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3.c', 'orangepi.c'))
+ arm_common_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true: files('allwinner-r40.c', 'bananapi_m2u.c'))
++arm_common_ss.add(when: 'CONFIG_MAX78000_SOC', if_true: files('max78000_soc.c'))
+ arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2836.c', 'raspi.c'))
+ arm_common_ss.add(when: ['CONFIG_RASPI', 'TARGET_AARCH64'], if_true: files('bcm2838.c', 'raspi4b.c'))
+ arm_common_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
+@@ -71,6 +72,7 @@ arm_ss.add(when: 'CONFIG_XEN', if_true: files(
+ arm_common_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmu-common.c'))
+ arm_common_ss.add(when: 'CONFIG_COLLIE', if_true: files('collie.c'))
+ arm_common_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4_boards.c'))
++arm_common_ss.add(when: 'CONFIG_MAX78000FTHR', if_true: files('max78000fthr.c'))
+ arm_common_ss.add(when: 'CONFIG_NETDUINO2', if_true: files('netduino2.c'))
+ arm_common_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_peripherals.c'))
+ arm_common_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2838_peripherals.c'))
+diff --git a/include/hw/arm/max78000_soc.h b/include/hw/arm/max78000_soc.h
+new file mode 100644
+index 0000000000..97bf4099c9
+--- /dev/null
++++ b/include/hw/arm/max78000_soc.h
+@@ -0,0 +1,35 @@
++/*
++ * MAX78000 SOC
++ *
++ * Copyright (c) 2025 Jackson Donaldson <jcksn@duck.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef HW_ARM_MAX78000_SOC_H
++#define HW_ARM_MAX78000_SOC_H
++
++#include "hw/or-irq.h"
++#include "hw/arm/armv7m.h"
++#include "qom/object.h"
++
++#define TYPE_MAX78000_SOC "max78000-soc"
++OBJECT_DECLARE_SIMPLE_TYPE(MAX78000State, MAX78000_SOC)
++
++#define FLASH_BASE_ADDRESS 0x10000000
++#define FLASH_SIZE (512 * 1024)
++#define SRAM_BASE_ADDRESS 0x20000000
++#define SRAM_SIZE (128 * 1024)
++
++struct MAX78000State {
++    SysBusDevice parent_obj;
++
++    ARMv7MState armv7m;
++
++    MemoryRegion sram;
++    MemoryRegion flash;
++
++    Clock *sysclk;
++};
++
++#endif
 -- 
 2.34.1
 
