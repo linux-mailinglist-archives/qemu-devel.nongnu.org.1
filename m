@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C287B06780
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 22:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6A2B06778
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 22:05:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublsj-0007lI-B4; Tue, 15 Jul 2025 16:04:05 -0400
+	id 1ublso-0007lm-6K; Tue, 15 Jul 2025 16:04:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublbt-0003V4-G4
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:46:41 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublby-0003ww-Ox
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:46:46 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublbr-0002m8-ON
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:46:41 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4537edf2c3cso61067195e9.3
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 12:46:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ublbw-0002mW-Pu
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:46:46 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-451dbe494d6so53841265e9.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 12:46:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752608798; x=1753213598; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752608803; x=1753213603; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nL2lXZw+q8MLc6/8xrYKH/mR5NWKLcZkaleiPZ9lfnQ=;
- b=xyEGcB3i7Gdpm+H6LXT9ARVlaecDZyL6mKhiggcq3R/rdWcAbWoe3skH2jHyUnZmmA
- ncr8q6wJlHsTQdiOZnB+/iFla9wUbgo2K0HK3YfpK6AE2oiCvBa85vFhUTkH7/RAEf/m
- 0Pgbk1o7qnc4bk/3vF1Jkvpwen8NgOoYilIrqucRL59ylTGWhco5587sUhSSu4WBxIZ+
- pQyvwunEbvQ7VRDYZmOnp4TjuOuQc4sekp2bxs7N7+ucz7pRPxkaGQr8UJkBuo0t+b+k
- YLbUNVO/seVZdEpNR8hN3mHNXzBt1PeoK65jDen3jPR5erXU8081/7XjL1z4Nb899Rze
- kvBg==
+ :reply-to; bh=C5pXkzQHaUuU2g6dRUjmsncT3yyVU5ukELcU+QSiw3k=;
+ b=BWCSM74mYAN8XYGtyNneakN3zLRuYFLmIm3It3oj4/4tpufeMHujXTZydcGEpKf71s
+ Mpw13mOmlFwoclpcWBxbNga9j9FF3CWjq/JOdd1B70oCL09ciYf/VU+9nUGTohIVzM42
+ FhJOwHeqUJ3eeLBwAWNEarHbSkj3PcrUsYuyGut1a55+A77WVCbVLCSwPRLXB2tNHsTv
+ I09EWK3WyxJNSupwk1c293DlpBZI1gg5Ic8ugzg7u7j6zmuS376fFcYqEEwfXnEK72KR
+ jdP+bGAuEndHxdZYPRot5v3BcS3cQ9wFw1nn4VdSo5OBuwZWdRr/vZvkmdjH6C64nRT+
+ LDmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752608798; x=1753213598;
+ d=1e100.net; s=20230601; t=1752608803; x=1753213603;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nL2lXZw+q8MLc6/8xrYKH/mR5NWKLcZkaleiPZ9lfnQ=;
- b=wrykgE7lZegEG/p+5YvpigCLj1x+qKJw7rthPhhFFx5gh6TWsetHOq5oAo77Lj5AX2
- EJOg9y4FgoxyxIXlcECuAect8h5wP8sQ7xaTfdQJSn7CbkfYXLSREDKYqjolHtWFeJyw
- JfN888VdofE7z80nyJmLiCDsVQEKVSYa743TQqWjVwUyHpEEU1jqW9L8HMsvhTfIr/YT
- 9F99kQBgU+58glFVbPQLwre/0k3+/UnBHrxMvcEFqHm1ilshnJHuXRjbCGA+4CxKiTVo
- LkEaRQ+dmvACnP+uzVvivj+EFi9H7sV8Fs+qRl3Y4ypbdd/3NtuXCPeJTU8kmzcdZ6vg
- /RnQ==
-X-Gm-Message-State: AOJu0YzEGTHzBsTmw02B0c3s2bwsjCCIJMHjaITk+03lo8A8O5uHtPXG
- s32nQkmc9Ay7LMOzWrH8RAwUokNjB19aoYDiO9cCJZy4CKDvRthJ4pc6hZGxPGfKYS13wKl21QV
- DUpZz
-X-Gm-Gg: ASbGncu1+ASEeA/mm6cdw10TUlGb0QsHX4CBQPC6lL5rzcBOxuULvWKYkSUqNV0Acfs
- urpjcz9CeZS54uh7eCV5ay3CM6lhT2DwsUinGcDTgU6Y+KqicOhPiO/OpP+US3l4W5jnhF0DZmM
- IDiHxG9vA8ErwVwD00ypo16uv4q1tQ/WWf1Sl9Y0u9Nu/7tl6t1pSmeTKjB2RnpnxQvsvI3A+Kg
- +s0VIUtDaW+pQ9TdkbTz/2w1SLf2wjOHBU1Xv3VaAiuhotpy25UyCT2qtk5hy5boGYMBS/hS4EK
- sqG8KeNMnH6DhKRaw1KqNUau3WxLacc4q+T2jpJljtJlGtYzyH9EfHYM9ckiimfH7L1vuiDMbyl
- bSvfaJo1CUwKnUNJvgXsyqLPhFzBSoWcMsZn1+T8+0u50GQB6FnrRh9P3PLeGGtvRrylS5OMoMR
- JDQg==
-X-Google-Smtp-Source: AGHT+IEcy8qqSFCGOyBdgUAzzlfNNPzfRZwJimXC08icgg9nbwvx73zCqxCGIC8IsO68iawmKXkPSQ==
-X-Received: by 2002:a05:600c:4f91:b0:456:25e7:bed with SMTP id
- 5b1f17b1804b1-4562e23b6a5mr1759945e9.14.1752608797778; 
- Tue, 15 Jul 2025 12:46:37 -0700 (PDT)
+ bh=C5pXkzQHaUuU2g6dRUjmsncT3yyVU5ukELcU+QSiw3k=;
+ b=px9yhrfhPf71RnYsWuEOEjztQyuYhTkZMjDLuLb0w3oiU3YbDriAg9ukF0ewOGxk3B
+ 8elIa6YPtIAoyNK/VYLqtmSGTj9gsjzGOn/YsiWT8TCS2K3Ay17bYEFdFSHWO81Jkspm
+ qZqKwfwc4RnKzlAMlOCUWEzUp6Ty6XLRuhiGOljZ5eR7giQc3wyfs6IRluWd/OYvruhs
+ jPdp3PQakoDEQ/9IKuyIix6l87i1Ani/ql7krjeOi2vkishutXxY1yiSiJZjezXHH7Po
+ MSlsqbOAs0mb2c8Lo3WyBT4MQJqVFMxpYpNb1RW25M7rIpaAhKW0Tsac/rKdr6kHOCMk
+ m29A==
+X-Gm-Message-State: AOJu0YysG2jxfRab+0gr5d8fwffg00iHGZiVXbNNk4MtX93cXIbjZXh4
+ csL5U5q62aGryR7cPF3/JegY6J6tA9X9I7nCqwVPh52y8xe/MH1Sz0Ee2bAtFmcjfQBxx1wjngu
+ ZCQ9X
+X-Gm-Gg: ASbGncs86WVP5kBCHUxl9hoI0za9pYGRH3XbrsdVv0tiWP1DLfnRjMv8bUQ0XCEm8vG
+ 4ylEo0qDrGFJU/Puq2r1ieycysIzqo+P+/SCuYs6TQuTxugTMRFtTjZ/gSOZWgtQtR09kMnHTeM
+ 5bShZ6b4XfT93rFN+Gcm0mtE049yczzFkTadigc4YrvcT4KIzWOnHjSS3qAaWD3PF8CXURFUNXR
+ u8Wm6GdeJj3R+jYkOxfitLUexfPIBOwOfKhnBnP7UAJUtcjD7lj47UAqWaFAfmtNW9JvIvyJeTI
+ LAIlR4mA3NvPZJieQXuzy+DDVHspmrPv9WxjTKFkf8ABhRKuXhAB3AUoVfsMJrRiKmemelZWjM8
+ Fh3FJCRcty050TUsMy73l2vL5WFXptHMR3p8fuPBUNJEsFGClMfy7vO0aF48rLCYI3dv4z8bswa
+ vrLnHEbrv5A0Nt
+X-Google-Smtp-Source: AGHT+IEzq0cOnWr0UxxgkyKNJkYe/svL/RMx+afWzf7BVsfoFfYal8xnNGhJB0t/7gCdogh0F7AfbQ==
+X-Received: by 2002:a05:600c:310a:b0:456:1e5a:8880 with SMTP id
+ 5b1f17b1804b1-4562e38a0b9mr593335e9.13.1752608802750; 
+ Tue, 15 Jul 2025 12:46:42 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-456030270f8sm113083725e9.22.2025.07.15.12.46.37
+ 5b1f17b1804b1-45617dc1fccsm79628225e9.5.2025.07.15.12.46.41
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Jul 2025 12:46:37 -0700 (PDT)
+ Tue, 15 Jul 2025 12:46:42 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/17] system/runstate: Document
- qemu_add_vm_change_state_handler()
-Date: Tue, 15 Jul 2025 21:45:15 +0200
-Message-ID: <20250715194516.91722-17-philmd@linaro.org>
+Subject: [PULL 17/17] system/runstate: Document
+ qemu_add_vm_change_state_handler_prio* in hdr
+Date: Tue, 15 Jul 2025 21:45:16 +0200
+Message-ID: <20250715194516.91722-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250715194516.91722-1-philmd@linaro.org>
 References: <20250715194516.91722-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,36 +98,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Generally APIs to the rest of QEMU should be documented in the headers.
+Comments on individual functions or internal details are fine to live
+in the C files. Make qemu_add_vm_change_state_handler_prio[_full]()
+docstrings consistent by moving them from source to header.
+
+Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20250703173248.44995-4-philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20250715171920.89670-1-philmd@linaro.org>
 ---
- include/system/runstate.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/system/runstate.h | 30 ++++++++++++++++++++++++++++++
+ system/runstate.c         | 30 ------------------------------
+ 2 files changed, 30 insertions(+), 30 deletions(-)
 
 diff --git a/include/system/runstate.h b/include/system/runstate.h
-index fdd5c4a5172..b6e8d6beab7 100644
+index b6e8d6beab7..b8d1bc3d273 100644
 --- a/include/system/runstate.h
 +++ b/include/system/runstate.h
-@@ -14,6 +14,16 @@ void runstate_replay_enable(void);
- typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
- typedef int VMChangeStateHandlerWithRet(void *opaque, bool running, RunState state);
- 
+@@ -26,9 +26,39 @@ typedef int VMChangeStateHandlerWithRet(void *opaque, bool running, RunState sta
+  */
+ VMChangeStateEntry *qemu_add_vm_change_state_handler(VMChangeStateHandler *cb,
+                                                      void *opaque);
 +/**
-+ * qemu_add_vm_change_state_handler:
++ * qemu_add_vm_change_state_handler_prio:
 + * @cb: the callback to invoke
 + * @opaque: user data passed to the callback
++ * @priority: low priorities execute first when the vm runs and the reverse is
++ *            true when the vm stops
 + *
 + * Register a callback function that is invoked when the vm starts or stops
 + * running.
 + *
 + * Returns: an entry to be freed using qemu_del_vm_change_state_handler()
 + */
- VMChangeStateEntry *qemu_add_vm_change_state_handler(VMChangeStateHandler *cb,
-                                                      void *opaque);
  VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
+         VMChangeStateHandler *cb, void *opaque, int priority);
+ VMChangeStateEntry *
++/**
++ * qemu_add_vm_change_state_handler_prio_full:
++ * @cb: the main callback to invoke
++ * @prepare_cb: a callback to invoke before the main callback
++ * @cb_ret: the main callback to invoke with return value
++ * @opaque: user data passed to the callbacks
++ * @priority: low priorities execute first when the vm runs and the reverse is
++ *            true when the vm stops
++ *
++ * Register a main callback function and an optional prepare callback function
++ * that are invoked when the vm starts or stops running. The main callback and
++ * the prepare callback are called in two separate phases: First all prepare
++ * callbacks are called and only then all main callbacks are called. As its
++ * name suggests, the prepare callback can be used to do some preparatory work
++ * before invoking the main callback.
++ *
++ * Returns: an entry to be freed using qemu_del_vm_change_state_handler()
++ */
+ qemu_add_vm_change_state_handler_prio_full(VMChangeStateHandler *cb,
+                                            VMChangeStateHandler *prepare_cb,
+                                            VMChangeStateHandlerWithRet *cb_ret,
+diff --git a/system/runstate.c b/system/runstate.c
+index 38900c935a3..fa32aa47958 100644
+--- a/system/runstate.c
++++ b/system/runstate.c
+@@ -306,18 +306,6 @@ struct VMChangeStateEntry {
+ static QTAILQ_HEAD(, VMChangeStateEntry) vm_change_state_head =
+     QTAILQ_HEAD_INITIALIZER(vm_change_state_head);
+ 
+-/**
+- * qemu_add_vm_change_state_handler_prio:
+- * @cb: the callback to invoke
+- * @opaque: user data passed to the callback
+- * @priority: low priorities execute first when the vm runs and the reverse is
+- *            true when the vm stops
+- *
+- * Register a callback function that is invoked when the vm starts or stops
+- * running.
+- *
+- * Returns: an entry to be freed using qemu_del_vm_change_state_handler()
+- */
+ VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
+         VMChangeStateHandler *cb, void *opaque, int priority)
+ {
+@@ -325,24 +313,6 @@ VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
+                                                       opaque, priority);
+ }
+ 
+-/**
+- * qemu_add_vm_change_state_handler_prio_full:
+- * @cb: the main callback to invoke
+- * @prepare_cb: a callback to invoke before the main callback
+- * @cb_ret: the main callback to invoke with return value
+- * @opaque: user data passed to the callbacks
+- * @priority: low priorities execute first when the vm runs and the reverse is
+- *            true when the vm stops
+- *
+- * Register a main callback function and an optional prepare callback function
+- * that are invoked when the vm starts or stops running. The main callback and
+- * the prepare callback are called in two separate phases: First all prepare
+- * callbacks are called and only then all main callbacks are called. As its
+- * name suggests, the prepare callback can be used to do some preparatory work
+- * before invoking the main callback.
+- *
+- * Returns: an entry to be freed using qemu_del_vm_change_state_handler()
+- */
+ VMChangeStateEntry *
+ qemu_add_vm_change_state_handler_prio_full(VMChangeStateHandler *cb,
+                                            VMChangeStateHandler *prepare_cb,
 -- 
 2.49.0
 
