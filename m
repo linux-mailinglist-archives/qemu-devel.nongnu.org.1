@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B80BB051C7
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53568B051CA
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 08:30:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubZ0v-00028Y-SI; Tue, 15 Jul 2025 02:19:41 -0400
+	id 1ubZ0x-00029o-Na; Tue, 15 Jul 2025 02:19:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0l-0001xz-Gw
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:31 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0p-00022u-NA
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:35 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0j-0006zK-19
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:31 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3a4e742dc97so3551299f8f.0
- for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:19:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubZ0n-00070J-Rg
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 02:19:35 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-455b00339c8so25064445e9.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Jul 2025 23:19:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752560367; x=1753165167; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752560371; x=1753165171; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2pNq5oOIokbsGMXuot2xEONo/kkTMB903Abh0CvL50U=;
- b=PE4lBAOJW6A3fbS3ssWB02D6RGKpkVKsWXkhyShjN0fIAMGzTHIm9wHH2lDqFDsASZ
- IVTxC1K9s1QzIN7GDEI2Vpb/j5bxi4XXY1KIxUvjaqSGT9kIIB+OhOIhKEqO6FF3FYai
- 33I9dNMPHqVRiy+pjXIQ2Gi/jxiw+G4e36khdSvq7jhwW2kzh3PymmG3S4XwcdMLGZC9
- GtVD6Qah+o7u8mRS2Bw6NpB4HylRaM8Ksz7qwK6BLObRBBaHDhMqCsm8hKURT0lp61zM
- QG7ZpRz0lkIjIQnFPxoJlBgqpw7M6mc/uAondUsTbrPnLRmglrCtbDHFrVxANvG9Ctpa
- N5BA==
+ bh=RcBzpRDaRrnDJbIDx3w7L821BpSBhOYClllIovi4m+Y=;
+ b=Zsnh0ePmpB4mGcB69W404Pyi0815IGCDfpRugMGLsB03mr0ioc2Q0f5IqXC5pwZbFR
+ yGj3a7MY7GWy/75NDfcaS9LEtO3ewyZdp0tIbUg0GTTKIRQQhjdxxpAJVr31qMIXSCnT
+ AOKf/onrfp9j7Q+AaFCpRmevklC+8dfryGEHyKIFYJwoSHtHFZ6qUYFp5zyJmEFryBvD
+ /lJ02D224jicvLDug8WPW1C2+0cpg2s2h8n/sCvdQUPNx8SCYlBVs8aEn6Prnb5ltWZJ
+ CDPEl2drmM5fJEoxhbCBqK+ZZrbzyYbYPic0bzndUqX5Xp4++4Q9syaXskdxj9lotrhD
+ rotw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752560367; x=1753165167;
+ d=1e100.net; s=20230601; t=1752560371; x=1753165171;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2pNq5oOIokbsGMXuot2xEONo/kkTMB903Abh0CvL50U=;
- b=Zx9dCqpHDfeLukFdohAlQlAXK0CRpCCKk3bkJrkn13Q0JOMOdixiEl1dsw7mHY51cY
- EfVMilNLwM41hwxwKqdh7jfM6brs6LC6yCbNu/vNaGl1WLORkP6b+URvuyVK3HLA4wsh
- RAoO1LrNsJ4Ckc5KrQ0s7ozz5uSXIsqBCtmYndwB7uPtVtKFdvzRq/9N+bloqyD4Jc/D
- yfD5vv2MGc9nqG3uZBsg9tV5FUck3kLj32AH4aYYmtiW0uUIVbR8rMjQ5LTxD7qxANNG
- rH90ROvJD6Iown48UqrTc9ffYTJlK356BC2uG84yqF1hlVwCD1AxVm+vQk1Vklm7Avyy
- M4ag==
-X-Gm-Message-State: AOJu0YygSusaT/lqV2sM3pteIkp73xUC3MptFWJ+0GDiSB/bHnGGIns8
- TMPlfFtZm/nO55wpsHYJF4ecoGD4R4W4OJ2LuVaa5Skx1U038xouJdVwujt1Hta0Vb4kQ5kM81a
- uPabn
-X-Gm-Gg: ASbGncucdxXud5W2QA7ksa+2MXAs4+Q6LA6X3W5A9VAfUyiwnUS1FraFAvVLiz6sZYu
- Wby7Eety3qH39oNc450M8RGUeokm2GjmnxXIFEVYPVbnqAEEiczn4UPbCFxSkI897elk+nTfSSC
- Fdi8vjWKWTrd6mE5lOdI2rglqRUkIy8sH0C1h79J0IzQSB3wD3wi0Kd3SxGTYhEmz4018PywOfO
- 4cO+Y6JXQnHK4m2iG4tpZdA/OWBurJqBBrC2aH5mjQChwXTcY3KdX57c9bYaAZCYiF2ARNFqVG6
- 5Akm+IcPe8axQ31N0+1Xttb65qiXpgMo12UsYUmZSYjfcguV18QloRQw0/QuKEeOlmqCBrtjvDD
- oZeyKv2F1bEQDFtpxg+lSA7t2aj1naiDu3EV5Yn5SzAJxM2zpKXkedF6K9ESAPtukMruMbPWm
-X-Google-Smtp-Source: AGHT+IFsbWuYSsedIzBCoffsoHKmCZnm42WbZw/1pbC/XN0V01soZCDtm/VdiVHUfXZtvfvfX/Et0w==
-X-Received: by 2002:a05:6000:70f:b0:3a3:7117:1bba with SMTP id
- ffacd0b85a97d-3b6095339d4mr1782973f8f.24.1752560366730; 
- Mon, 14 Jul 2025 23:19:26 -0700 (PDT)
+ bh=RcBzpRDaRrnDJbIDx3w7L821BpSBhOYClllIovi4m+Y=;
+ b=nH6/FJvN3lUbg3CxHTQKXb3zUlWMApV3LHgrIiaNbQgG5tJoKHmbTI6MbXE7bEYO1X
+ q8WDUMyP5yR7Z74qJ72INhCWRPdVfh1mxwJWo9Kpa3PyD9/DQZ4Vr9cO7YADLbFcAgFe
+ VX40iytPyEGMoROjf5tp/Cy2Oz+cqCEIuQW253mlkumQErWuBWu2YxbwTdEzGCa4a7rk
+ 9fIOcB7MvAqkWBacPQUoCXiPoLrGQol5k1bUwM4pc1m3Hktr98YtfkFnlhF5ghsBmg/H
+ JPuV1/U2VHmC5/0IBZXO84rFZCIEEZAuEm23qP8zzVtBB1AIhXqBJuDpjwSKPFcHJFgk
+ fXzQ==
+X-Gm-Message-State: AOJu0Yyr1tvTK3666IO/vYMJfU3X2ykr1YKCignPXVttSJ9i6/k3BKfT
+ HygReUPxS+UZP3iPiHnEHZhbyvjepb3A91LZQ5K6wemc7LIo8D1UlId+sYwD8aESa5WeCcOEg7U
+ 9n2S8
+X-Gm-Gg: ASbGnct8XlCKZVRqZtV0XaFM+9d8t4DikcvRthGJBgcFN41D2QRr491M1x/Sk+ogXF/
+ mgknon6gHw4/yMBdamRCJEUWplP9/umUbO56W4wgsQwd1zJUzBKYv1TRYTXc5jPtJmvWZVt+SEj
+ HkQ7eDhT3o+xBJvFIeiQWZxKudv+92xoq2OlNB4702YGLHtrytsKPZIatKKaZYxJxgA6jNdEEoW
+ +jRjsKCTiWVQAcQf04URUHaaa5qDtWaGwoqPXQQxLT5AWDPh3++1XnW1QfQcZ/58/cUBpjCT6hg
+ 2tlRuUR0ZYwPMTXOrSroF1+BqIiTB0ScIU7xhYMjmsaQypFRf3rjVFZM9Jk3Qv+xAtFrY6i/uWO
+ F27aoIQ4EZdlvqAN7e73W8GIslsBvBN1v78B0VrTQk5jOxUmHSPseEymjACDDRG0esQ6N2mPevC
+ hgF1ubPBs=
+X-Google-Smtp-Source: AGHT+IFtW9qTbg5ljD79tyErB0jrr+mfC7Wa4AcWfb3NmZzZWmnY+JISdrpOgumcx5m7vc6dX9rjeQ==
+X-Received: by 2002:a05:600c:4e51:b0:456:8eb:a35c with SMTP id
+ 5b1f17b1804b1-45608eba50dmr105954455e9.31.1752560371517; 
+ Mon, 14 Jul 2025 23:19:31 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8bd1924sm14475399f8f.16.2025.07.14.23.19.25
+ ffacd0b85a97d-3b5e8dc3a62sm14064198f8f.40.2025.07.14.23.19.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 14 Jul 2025 23:19:26 -0700 (PDT)
+ Mon, 14 Jul 2025 23:19:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Yongbok Kim <yongbok.kim@mips.com>,
- Aleksandar Markovic <amarkovic@wavecomp.com>,
- Aleksandar Rakic <aleksandar.rakic@htecgroup.com>,
- Aleksandar Rikalo <arikalo@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 01/17] target/mips: Add support for emulation of CRC32
- instructions
-Date: Tue, 15 Jul 2025 08:19:01 +0200
-Message-ID: <20250715061918.44971-2-philmd@linaro.org>
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>
+Subject: [PULL 02/17] target/mips: Extract gen_base_index_addr() helper
+Date: Tue, 15 Jul 2025 08:19:02 +0200
+Message-ID: <20250715061918.44971-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250715061918.44971-1-philmd@linaro.org>
 References: <20250715061918.44971-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,231 +102,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yongbok Kim <yongbok.kim@mips.com>
+Factor out gen_base_index_addr() which is used twice
+but we'll use it more.
 
-Add emulation of MIPS' CRC32 (Cyclic Redundancy Check) instructions.
-Reuse zlib crc32() and Linux crc32c().
-
-Corresponding disassembly has been added in commit 99029be1c28
-("target/mips: Add implementation of GINVT instruction").
-
-Signed-off-by: Yongbok Kim <yongbok.kim@mips.com>
-Signed-off-by: Aleksandar Markovic <amarkovic@wavecomp.com>
-Signed-off-by: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>
-Reviewed-by: Aleksandar Rikalo <arikalo@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <PA4PR09MB486489692D843DDFC25F3CF1846B2@PA4PR09MB4864.eurprd09.prod.outlook.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20241111222936.59869-2-philmd@linaro.org>
 ---
- target/mips/helper.h             |  2 ++
- target/mips/tcg/translate.h      |  2 ++
- target/mips/tcg/rel6.decode      |  5 +++++
- target/mips/tcg/op_helper.c      | 26 ++++++++++++++++++++++++++
- target/mips/tcg/rel6_translate.c | 12 ++++++++++++
- target/mips/tcg/translate.c      | 24 ++++++++++++++++++++++++
- target/mips/cpu-defs.c.inc       | 10 ++++++----
- target/mips/meson.build          |  1 +
- 8 files changed, 78 insertions(+), 4 deletions(-)
+ target/mips/tcg/translate.h |  1 +
+ target/mips/tcg/translate.c | 27 +++++++++++++--------------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/target/mips/helper.h b/target/mips/helper.h
-index 7e400418281..b6cd53c8538 100644
---- a/target/mips/helper.h
-+++ b/target/mips/helper.h
-@@ -21,6 +21,8 @@ DEF_HELPER_FLAGS_1(bitswap, TCG_CALL_NO_RWG_SE, tl, tl)
- DEF_HELPER_FLAGS_1(dbitswap, TCG_CALL_NO_RWG_SE, tl, tl)
- #endif
- 
-+DEF_HELPER_3(crc32, tl, tl, tl, i32)
-+DEF_HELPER_3(crc32c, tl, tl, tl, i32)
- DEF_HELPER_FLAGS_4(rotx, TCG_CALL_NO_RWG_SE, tl, tl, i32, i32, i32)
- 
- /* microMIPS functions */
 diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
-index 1bf153d1838..428b53a0dac 100644
+index 428b53a0dac..e65593815e6 100644
 --- a/target/mips/tcg/translate.h
 +++ b/target/mips/tcg/translate.h
-@@ -51,6 +51,7 @@ typedef struct DisasContext {
-     bool abs2008;
-     bool mi;
-     int gi;
-+    bool crcp;
- } DisasContext;
+@@ -154,6 +154,7 @@ void check_cp1_registers(DisasContext *ctx, int regs);
+ void check_cop1x(DisasContext *ctx);
  
- #define DISAS_STOP       DISAS_TARGET_0
-@@ -181,6 +182,7 @@ bool gen_lsa(DisasContext *ctx, int rd, int rt, int rs, int sa);
- bool gen_dlsa(DisasContext *ctx, int rd, int rt, int rs, int sa);
- 
- void gen_rdhwr(DisasContext *ctx, int rt, int rd, int sel);
-+void gen_crc32(DisasContext *ctx, int rd, int rs, int rt, int sz, int crc32c);
- 
- extern TCGv cpu_gpr[32], cpu_PC;
- #if defined(TARGET_MIPS64)
-diff --git a/target/mips/tcg/rel6.decode b/target/mips/tcg/rel6.decode
-index d6989cf56e8..7fbcb109b4e 100644
---- a/target/mips/tcg/rel6.decode
-+++ b/target/mips/tcg/rel6.decode
-@@ -16,11 +16,16 @@
- 
- &r                  rs rt rd sa
- 
-+&special3_crc       rs rt c sz
-+
- @lsa                ...... rs:5 rt:5 rd:5 ... sa:2 ......   &r
-+@crc32              ...... rs:5 rt:5 ..... c:3 sz:2 ......  &special3_crc
- 
- LSA                 000000 ..... ..... ..... 000 .. 000101  @lsa
- DLSA                000000 ..... ..... ..... 000 .. 010101  @lsa
- 
-+CRC32               011111 ..... ..... 00000 ... .. 001111  @crc32
-+
- REMOVED             010011 ----- ----- ----- ----- ------   # COP1X (COP3)
- 
- REMOVED             011100 ----- ----- ----- ----- ------   # SPECIAL2
-diff --git a/target/mips/tcg/op_helper.c b/target/mips/tcg/op_helper.c
-index b906d10204b..4502ae2b5be 100644
---- a/target/mips/tcg/op_helper.c
-+++ b/target/mips/tcg/op_helper.c
-@@ -24,6 +24,8 @@
- #include "exec/helper-proto.h"
- #include "exec/memop.h"
- #include "fpu_helper.h"
-+#include "qemu/crc32c.h"
-+#include <zlib.h>
- 
- static inline target_ulong bitswap(target_ulong v)
- {
-@@ -142,6 +144,30 @@ target_ulong helper_rotx(target_ulong rs, uint32_t shift, uint32_t shiftx,
-     return (int64_t)(int32_t)(uint32_t)tmp5;
- }
- 
-+/* these crc32 functions are based on target/loongarch/tcg/op_helper.c */
-+target_ulong helper_crc32(target_ulong val, target_ulong m, uint32_t sz)
-+{
-+    uint8_t buf[8];
-+    target_ulong mask = ((sz * 8) == 64) ?
-+                        (target_ulong) -1ULL :
-+                        ((1ULL << (sz * 8)) - 1);
-+
-+    m &= mask;
-+    stq_le_p(buf, m);
-+    return (int32_t) (crc32(val ^ 0xffffffff, buf, sz) ^ 0xffffffff);
-+}
-+
-+target_ulong helper_crc32c(target_ulong val, target_ulong m, uint32_t sz)
-+{
-+    uint8_t buf[8];
-+    target_ulong mask = ((sz * 8) == 64) ?
-+                        (target_ulong) -1ULL :
-+                        ((1ULL << (sz * 8)) - 1);
-+    m &= mask;
-+    stq_le_p(buf, m);
-+    return (int32_t) (crc32c(val, buf, sz) ^ 0xffffffff);
-+}
-+
- void helper_fork(target_ulong arg1, target_ulong arg2)
- {
-     /*
-diff --git a/target/mips/tcg/rel6_translate.c b/target/mips/tcg/rel6_translate.c
-index 59f237ba3ba..89335063977 100644
---- a/target/mips/tcg/rel6_translate.c
-+++ b/target/mips/tcg/rel6_translate.c
-@@ -33,3 +33,15 @@ static bool trans_DLSA(DisasContext *ctx, arg_r *a)
-     }
-     return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa);
- }
-+
-+static bool trans_CRC32(DisasContext *ctx, arg_special3_crc *a)
-+{
-+    if (unlikely(!ctx->crcp)
-+        || unlikely((a->sz == 3) && (!(ctx->hflags & MIPS_HFLAG_64)))
-+        || unlikely((a->c >= 2))) {
-+        gen_reserved_instruction(ctx);
-+        return true;
-+    }
-+    gen_crc32(ctx, a->rt, a->rs, a->rt, a->sz, a->c);
-+    return true;
-+}
+ void gen_base_offset_addr(DisasContext *ctx, TCGv addr, int base, int offset);
++void gen_base_index_addr(DisasContext *ctx, TCGv addr, int base, int index);
+ void gen_move_low32(TCGv ret, TCGv_i64 arg);
+ void gen_move_high32(TCGv ret, TCGv_i64 arg);
+ void gen_load_gpr(TCGv t, int reg);
 diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 8658315f938..5c80b030329 100644
+index 5c80b030329..8816237e929 100644
 --- a/target/mips/tcg/translate.c
 +++ b/target/mips/tcg/translate.c
-@@ -13449,6 +13449,29 @@ static void decode_opc_special2_legacy(CPUMIPSState *env, DisasContext *ctx)
+@@ -1957,6 +1957,17 @@ void gen_base_offset_addr(DisasContext *ctx, TCGv addr, int base, int offset)
      }
  }
  
-+void gen_crc32(DisasContext *ctx, int rd, int rs, int rt, int sz,
-+               int crc32c)
++void gen_base_index_addr(DisasContext *ctx, TCGv addr, int base, int index)
 +{
-+    TCGv t0;
-+    TCGv t1;
-+    TCGv_i32 tsz = tcg_constant_i32(1 << sz);
-+    if (rd == 0) {
-+        /* Treat as NOP. */
-+        return;
-+    }
-+    t0 = tcg_temp_new();
-+    t1 = tcg_temp_new();
-+
-+    gen_load_gpr(t0, rt);
-+    gen_load_gpr(t1, rs);
-+
-+    if (crc32c) {
-+        gen_helper_crc32c(cpu_gpr[rd], t0, t1, tsz);
++    if (base == 0) {
++        gen_load_gpr(addr, index);
++    } else if (index == 0) {
++        gen_load_gpr(addr, base);
 +    } else {
-+        gen_helper_crc32(cpu_gpr[rd], t0, t1, tsz);
++        gen_op_addr_add(ctx, addr, cpu_gpr[base], cpu_gpr[index]);
 +    }
 +}
 +
- static void decode_opc_special3_r6(CPUMIPSState *env, DisasContext *ctx)
+ static target_ulong pc_relative_pc(DisasContext *ctx)
  {
-     int rs, rt, rd, sa;
-@@ -15095,6 +15118,7 @@ static void mips_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     ctx->abs2008 = (env->active_fpu.fcr31 >> FCR31_ABS2008) & 1;
-     ctx->mi = (env->CP0_Config5 >> CP0C5_MI) & 1;
-     ctx->gi = (env->CP0_Config5 >> CP0C5_GI) & 3;
-+    ctx->crcp = (env->CP0_Config5 >> CP0C5_CRCP) & 1;
-     restore_cpu_state(env, ctx);
- #ifdef CONFIG_USER_ONLY
-         ctx->mem_idx = MIPS_HFLAG_UM;
-diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc
-index 922fc39138d..d93b9d341ac 100644
---- a/target/mips/cpu-defs.c.inc
-+++ b/target/mips/cpu-defs.c.inc
-@@ -756,8 +756,9 @@ const mips_def_t mips_defs[] =
-                        (1 << CP0C3_RXI) | (1 << CP0C3_LPA) | (1 << CP0C3_VInt),
-         .CP0_Config4 = MIPS_CONFIG4 | (1U << CP0C4_M) | (3 << CP0C4_IE) |
-                        (1 << CP0C4_AE) | (0xfc << CP0C4_KScrExist),
--        .CP0_Config5 = MIPS_CONFIG5 | (1 << CP0C5_XNP) | (1 << CP0C5_VP) |
--                       (1 << CP0C5_LLB) | (1 << CP0C5_MRP) | (3 << CP0C5_GI),
-+        .CP0_Config5 = MIPS_CONFIG5 | (1 << CP0C5_CRCP) | (1 << CP0C5_XNP) |
-+                       (1 << CP0C5_VP) | (1 << CP0C5_LLB) | (1 << CP0C5_MRP) |
-+                       (3 << CP0C5_GI),
-         .CP0_Config5_rw_bitmask = (1 << CP0C5_MSAEn) | (1 << CP0C5_SBRI) |
-                                   (1 << CP0C5_FRE) | (1 << CP0C5_UFE),
-         .CP0_LLAddr_rw_bitmask = 0,
-@@ -796,8 +797,9 @@ const mips_def_t mips_defs[] =
-                        (1 << CP0C3_RXI) | (1 << CP0C3_LPA) | (1 << CP0C3_VInt),
-         .CP0_Config4 = MIPS_CONFIG4 | (1U << CP0C4_M) | (3 << CP0C4_IE) |
-                        (1 << CP0C4_AE) | (0xfc << CP0C4_KScrExist),
--        .CP0_Config5 = MIPS_CONFIG5 | (1 << CP0C5_XNP) | (1 << CP0C5_VP) |
--                       (1 << CP0C5_LLB) | (1 << CP0C5_MRP) | (3 << CP0C5_GI),
-+        .CP0_Config5 = MIPS_CONFIG5 | (1 << CP0C5_CRCP) | (1 << CP0C5_XNP) |
-+                       (1 << CP0C5_VP) | (1 << CP0C5_LLB) | (1 << CP0C5_MRP) |
-+                       (3 << CP0C5_GI),
-         .CP0_Config5_rw_bitmask = (1 << CP0C5_MSAEn) | (1 << CP0C5_SBRI) |
-                                   (1 << CP0C5_FRE) | (1 << CP0C5_UFE),
-         .CP0_LLAddr_rw_bitmask = 0,
-diff --git a/target/mips/meson.build b/target/mips/meson.build
-index 247979a2cfc..abf0ce3e8b9 100644
---- a/target/mips/meson.build
-+++ b/target/mips/meson.build
-@@ -7,6 +7,7 @@ mips_ss.add(files(
-   'gdbstub.c',
-   'msa.c',
- ))
-+mips_ss.add(zlib)
+     target_ulong pc = ctx->base.pc_next;
+@@ -10546,13 +10557,7 @@ static void gen_flt3_ldst(DisasContext *ctx, uint32_t opc,
+ {
+     TCGv t0 = tcg_temp_new();
  
- if have_system
-   subdir('system')
+-    if (base == 0) {
+-        gen_load_gpr(t0, index);
+-    } else if (index == 0) {
+-        gen_load_gpr(t0, base);
+-    } else {
+-        gen_op_addr_add(ctx, t0, cpu_gpr[base], cpu_gpr[index]);
+-    }
++    gen_base_index_addr(ctx, t0, base, index);
+     /*
+      * Don't do NOP if destination is zero: we must perform the actual
+      * memory access.
+@@ -11334,13 +11339,7 @@ static void gen_mips_lx(DisasContext *ctx, uint32_t opc,
+     }
+     t0 = tcg_temp_new();
+ 
+-    if (base == 0) {
+-        gen_load_gpr(t0, offset);
+-    } else if (offset == 0) {
+-        gen_load_gpr(t0, base);
+-    } else {
+-        gen_op_addr_add(ctx, t0, cpu_gpr[base], cpu_gpr[offset]);
+-    }
++    gen_base_index_addr(ctx, t0, base, offset);
+ 
+     switch (opc) {
+     case OPC_LBUX:
 -- 
 2.49.0
 
