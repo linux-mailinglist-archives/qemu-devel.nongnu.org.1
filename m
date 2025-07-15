@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69CFCB04F3D
+	by mail.lfdr.de (Postfix) with ESMTPS id 127E2B04F3C
 	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 05:41:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubWWb-0004Ak-78; Mon, 14 Jul 2025 23:40:13 -0400
+	id 1ubWWd-0004DX-9S; Mon, 14 Jul 2025 23:40:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubWWX-00049S-T0
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 23:40:10 -0400
+ id 1ubWWb-0004CG-IU
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 23:40:13 -0400
 Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ubWWV-0006Rk-Rh
- for qemu-devel@nongnu.org; Mon, 14 Jul 2025 23:40:09 -0400
+ id 1ubWWZ-0006Rk-Ej
+ for qemu-devel@nongnu.org; Mon, 14 Jul 2025 23:40:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752550808; x=1784086808;
+ t=1752550812; x=1784086812;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=337nkqGcMNjO0TXjHY3O+IoJvy4v6WC372UutXb1xJ4=;
- b=Fvz5MghPudgFqGuGi/U+ekKWXxP6Gqbnl22Pna5L88KmH/pNwdEFZC5Z
- +zL5eo5knTh58pPgEHUz3SF5XzZkSDfHAI4Hvp0+qb+m+eo0uwezVM5MR
- zgvWbw9JWwq+FY6EH2g1vbphjs68+BdL5RDlNEfOmAl5vZFud7eI0iqEv
- 0HUgJFD61VI26FpuHCzuPJ5rD/G9jPThCRzjYyU8drIqSV1NgqIN51Kdj
- OprEGwW3xhtN+Gg7BKDsTnhzO/k0qpr7i8OuxMaF0/a7qitPpGYmMx9dW
- d+mIRbCF9m4TrMaAwos4iE7teU4BptjOB5AlW56twOAxMGYxuyoku5CTq g==;
-X-CSE-ConnectionGUID: B4Dpc/shSM+G2Yg3LWzn5A==
-X-CSE-MsgGUID: EeU0YNXySK6DBAD4z0TLsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="72334940"
-X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="72334940"
+ bh=Qeil6/cS4TnDGn/oSbEZUuBv4NuQFCKMlPyhRgS+pqA=;
+ b=iZVk9GrKRVX3lwddkefiI+bsA3Kw9u4v/j7/4++UTwpAZxF0JCJGSD2l
+ vfNxrd2Il1ccJxqUUXJtPllmFTPJM4NK+QTpBrIj2AfGzIMWN+0evB9l/
+ kojCUvhK2xc9lzffnPIJPJa0J+mTi01jKc8Y/2hBHWDLZVk4c9D8idiW4
+ 2lYZpcAYzCf3uaDUFmoPQTwTyJOUT/Qgc3m6lQOPWB6rP5pDfrE3s8+5a
+ 02dSe5HsFNRjzPd82Q2DVlnxKNAsZrYpvkQgXeB6KoRC0uXBs1Npkn2Ep
+ Rpy7ZxuAFoMJcKK3OK8IigW+Ohv4z9blm0vEs5ea2ej/bj0HHpapiP2oz g==;
+X-CSE-ConnectionGUID: yqjRu9P5Rh66xaKYsx4O3Q==
+X-CSE-MsgGUID: mcmHgc6+SpuQNTMplWypSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="72334946"
+X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="72334946"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 20:40:07 -0700
-X-CSE-ConnectionGUID: BySPT4tMS0OtYrtHF6wKWQ==
-X-CSE-MsgGUID: WfFHQ5O7Q6qMylZNFgEpnQ==
+ 14 Jul 2025 20:40:11 -0700
+X-CSE-ConnectionGUID: V/OJWrNDQHSoOfPHxJLXSA==
+X-CSE-MsgGUID: Zf/J+uF7SEqChZOuPe+G6Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="180808164"
+X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="180808190"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa002.fm.intel.com with ESMTP; 14 Jul 2025 20:40:04 -0700
+ by fmviesa002.fm.intel.com with ESMTP; 14 Jul 2025 20:40:07 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  ackerleytng@google.com, seanjc@google.com
@@ -52,9 +52,10 @@ Cc: Fuad Tabba <tabba@google.com>, Vishal Annapurve <vannapurve@google.com>,
  michael.roth@amd.com, kvm@vger.kernel.org, qemu-devel@nongnu.org,
  Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [POC PATCH 4/5] memory/guest_memfd: Enable hugetlb support
-Date: Tue, 15 Jul 2025 11:31:40 +0800
-Message-ID: <20250715033141.517457-5-xiaoyao.li@intel.com>
+Subject: [POC PATCH 5/5] [HACK] memory: Don't enable in-place conversion for
+ internal MemoryRegion with gmem
+Date: Tue, 15 Jul 2025 11:31:41 +0800
+Message-ID: <20250715033141.517457-6-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250715033141.517457-1-xiaoyao.li@intel.com>
 References: <cover.1747264138.git.ackerleytng@google.com>
@@ -86,111 +87,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(This is just the POC code to use gmem with hugetlb.)
+Currently, the TDVF cannot work with gmem in-place conversion because
+current implementation of KVM_TDX_INIT_MEM_REGION in KVM requires
+gmem of TDVF to be valid for both shared and private at the same time.
 
-Try with hugetlb first when hugetlb is supported by gmem. If hugetlb
-cannot afford the requested memory size and returns -ENOMEM, fallback to
-create gmem withtout hugetlb.
+To workaround it, explicitly not enable in-place conversion for internal
+MemoryRegion with gmem. So that TDVF doesn't use in-place conversion gmem
+and KVM_TDX_INIT_MEM_REGION will initialize the gmem with the separate
+shared memory.
 
-The hugetlb size is hardcoded as GUESTMEM_HUGETLB_FLAG_2MB. I'm not sure
-if it will be better if gmem can report the supported hugetlb size.
-But look at the current implementation of memfd, it just tries with
-the requested hugetlb size from user and fail when not supported.
-Hence gmem can do the same way without the supported size being
-enuemrated.
+To make in-place conversion work with TDX's initial memory, the
+one possible solution and flow would be as below and it requires KVM
+change:
 
-For a upstreamable solution, the hugetlb support of gmem can be
-implemented as "hugetlb" and "hugetlbsize" properties of
-memory-backend-guestmemfd as similar of memory-backend-memfd. (It
-requires memory-backed-guestmemfd introduced for in-place conversion
-gmem at first)
+- QEMU create gmem as shared;
+- QEMU mmap the gmem and load TDVF binary into it;
+- QEMU convert gmem to private with the content preserved[1];
+- QEMU invokes KVM_TDX_INIT_MEM_REGION without valid src, so that KVM
+  knows to fetch the content in-place and use in-place PAGE.ADD for TDX.
+
+[1] https://lore.kernel.org/all/aG0pNijVpl0czqXu@google.com/
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- accel/kvm/kvm-all.c    |  3 ++-
- accel/stubs/kvm-stub.c |  1 +
- include/system/kvm.h   |  1 +
- system/physmem.c       | 13 +++++++++++++
- 4 files changed, 17 insertions(+), 1 deletion(-)
+ include/system/memory.h | 3 +++
+ system/memory.c         | 2 +-
+ system/physmem.c        | 8 +++++---
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 609537738d38..2d18e961714e 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -106,6 +106,7 @@ static bool kvm_immediate_exit;
- static uint64_t kvm_supported_memory_attributes;
- static bool kvm_guest_memfd_supported;
- bool kvm_guest_memfd_inplace_supported;
-+bool kvm_guest_memfd_hugetlb_supported;
- static hwaddr kvm_max_slot_size = ~0;
+diff --git a/include/system/memory.h b/include/system/memory.h
+index f14fbf65805d..89d6449cef70 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -256,6 +256,9 @@ typedef struct IOMMUTLBEvent {
+  */
+ #define RAM_PRIVATE (1 << 13)
  
- static const KVMCapabilityInfo kvm_required_capabilites[] = {
-@@ -2808,6 +2809,7 @@ static int kvm_init(AccelState *as, MachineState *ms)
-     kvm_guest_memfd_inplace_supported =
-         kvm_check_extension(s, KVM_CAP_GMEM_SHARED_MEM) &&
-         kvm_check_extension(s, KVM_CAP_GMEM_CONVERSION);
-+    kvm_guest_memfd_hugetlb_supported = kvm_check_extension(s, KVM_CAP_GMEM_HUGETLB);
-     kvm_pre_fault_memory_supported = kvm_vm_check_extension(s, KVM_CAP_PRE_FAULT_MEMORY);
++/* Don't use enable in-place conversion for the guest mmefd backend */
++#define RAM_GUEST_MEMFD_NO_INPLACE (1 << 14)
++
+ static inline void iommu_notifier_init(IOMMUNotifier *n, IOMMUNotify fn,
+                                        IOMMUNotifierFlag flags,
+                                        hwaddr start, hwaddr end,
+diff --git a/system/memory.c b/system/memory.c
+index 6870a41629ef..c1b73abc4c94 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -3702,7 +3702,7 @@ bool memory_region_init_ram_guest_memfd(MemoryRegion *mr,
+     DeviceState *owner_dev;
  
-     if (s->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
-@@ -4536,7 +4538,6 @@ int kvm_create_guest_memfd(uint64_t size, uint64_t flags, Error **errp)
-     fd = kvm_vm_ioctl(kvm_state, KVM_CREATE_GUEST_MEMFD, &guest_memfd);
-     if (fd < 0) {
-         error_setg_errno(errp, errno, "Error creating KVM guest_memfd");
--        return -1;
+     if (!memory_region_init_ram_flags_nomigrate(mr, owner, name, size,
+-                                                RAM_GUEST_MEMFD, errp)) {
++                                                RAM_GUEST_MEMFD | RAM_GUEST_MEMFD_NO_INPLACE, errp)) {
+         return false;
      }
- 
-     return fd;
-diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-index bf0ccae27b62..fbc1d7c4e9b5 100644
---- a/accel/stubs/kvm-stub.c
-+++ b/accel/stubs/kvm-stub.c
-@@ -25,6 +25,7 @@ bool kvm_allowed;
- bool kvm_readonly_mem_allowed;
- bool kvm_msi_use_devid;
- bool kvm_guest_memfd_inplace_supported;
-+bool kvm_guest_memfd_hugetlb_supported;
- 
- void kvm_flush_coalesced_mmio_buffer(void)
- {
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index 32f2be5f92e1..d1d79510ee26 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -44,6 +44,7 @@ extern bool kvm_readonly_mem_allowed;
- extern bool kvm_msi_use_devid;
- extern bool kvm_pre_fault_memory_supported;
- extern bool kvm_guest_memfd_inplace_supported;
-+extern bool kvm_guest_memfd_hugetlb_supported;
- 
- #define kvm_enabled()           (kvm_allowed)
- /**
+     /* This will assert if owner is neither NULL nor a DeviceState.
 diff --git a/system/physmem.c b/system/physmem.c
-index 955480685310..ea1c27ea2b99 100644
+index ea1c27ea2b99..c23379082f38 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -1940,8 +1940,21 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-                                             GUEST_MEMFD_FLAG_INIT_PRIVATE;
-         }
+@@ -1916,7 +1916,8 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
  
-+        if (kvm_guest_memfd_hugetlb_supported) {
-+            new_block->guest_memfd_flags |= GUEST_MEMFD_FLAG_HUGETLB |
-+                                            GUESTMEM_HUGETLB_FLAG_2MB;
-+        }
-+
-+        new_block->guest_memfd = kvm_create_guest_memfd(new_block->max_length,
-+                                 new_block->guest_memfd_flags, &err);
-+        if (new_block->guest_memfd == -ENOMEM) {
-+            error_free(err);
-+            new_block->guest_memfd_flags &= ~(GUEST_MEMFD_FLAG_HUGETLB |
-+                                              GUESTMEM_HUGETLB_FLAG_2MB);
-+        }
-         new_block->guest_memfd = kvm_create_guest_memfd(new_block->max_length,
-                                  new_block->guest_memfd_flags, errp);
-+
-         if (new_block->guest_memfd < 0) {
-             qemu_mutex_unlock_ramlist();
-             goto out_free;
+     if (new_block->flags & RAM_GUEST_MEMFD) {
+         int ret;
+-        bool in_place = kvm_guest_memfd_inplace_supported;
++        bool in_place = !(new_block->flags & RAM_GUEST_MEMFD_NO_INPLACE) &&
++                        kvm_guest_memfd_inplace_supported;
+ 
+         new_block->guest_memfd_flags = 0;
+ 
+@@ -2230,7 +2231,8 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+     ram_flags &= ~RAM_PRIVATE;
+ 
+     assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
+-                          RAM_NORESERVE | RAM_GUEST_MEMFD)) == 0);
++                          RAM_NORESERVE | RAM_GUEST_MEMFD |
++                          RAM_GUEST_MEMFD_NO_INPLACE)) == 0);
+     assert(!host ^ (ram_flags & RAM_PREALLOC));
+     assert(max_size >= size);
+ 
+@@ -2314,7 +2316,7 @@ RAMBlock *qemu_ram_alloc(ram_addr_t size, uint32_t ram_flags,
+                          MemoryRegion *mr, Error **errp)
+ {
+     assert((ram_flags & ~(RAM_SHARED | RAM_NORESERVE | RAM_GUEST_MEMFD |
+-                          RAM_PRIVATE)) == 0);
++                          RAM_PRIVATE | RAM_GUEST_MEMFD_NO_INPLACE)) == 0);
+     return qemu_ram_alloc_internal(size, size, NULL, NULL, ram_flags, mr, errp);
+ }
+ 
 -- 
 2.43.0
 
