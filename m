@@ -2,60 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0B3B066F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C80B0670E
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:39:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublPx-0000Rz-SZ; Tue, 15 Jul 2025 15:34:21 -0400
+	id 1ublV6-0004Ly-Bu; Tue, 15 Jul 2025 15:39:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxz-0004X5-Mb
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubky0-0004XW-Bi
  for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxp-0001ie-K4
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:20 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxr-0001j1-FW
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606316;
+ s=mimecast20190719; t=1752606318;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8YilhHk/UupSHNVVc6qLt52jWenjz4rlqCmqsdLRsaA=;
- b=RgFIVkh0nQ893hzKBPbQC73z9VvukWoHPzFSk/6FcysFydmTp/HszjVENvbQLFV8zaJ//q
- bJIAEb9leshyfILKrrfG0iLaI/qxlEQO5VhSUL7jeSjxlOZSjvkRWt2L9Fm0/21VYoB3lb
- DazLdKaYckv9aEQOhGAZXhdzqbj/oxg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=NeOFjbUAUkbawhAGEAoI45uP3K98VPQeRTW+1GJ6km0=;
+ b=Oa8vJ0NjDB4t3dwUhQCCTkcRX1ha80IOxzQo4OLtCyWn4GFvZr6rr7ATeDvMKbA4sp3Zgo
+ YvMpYn5OMsaqGSlsWEeXCwIirCSoIJKLvsKQb/2LpHRfL4SweZM7n8RcQpyhb9TfVhdo98
+ dBO0dXO+6CX951Pa5fz14RkTuUA80dA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-428-Bnmzms4UMJWY-IaFOVf78A-1; Tue,
- 15 Jul 2025 15:05:15 -0400
-X-MC-Unique: Bnmzms4UMJWY-IaFOVf78A-1
-X-Mimecast-MFC-AGG-ID: Bnmzms4UMJWY-IaFOVf78A_1752606314
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-5xLuTCxHNzaBqpsCNJWiYA-1; Tue,
+ 15 Jul 2025 15:05:17 -0400
+X-MC-Unique: 5xLuTCxHNzaBqpsCNJWiYA-1
+X-Mimecast-MFC-AGG-ID: 5xLuTCxHNzaBqpsCNJWiYA_1752606316
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 78529195608E; Tue, 15 Jul 2025 19:05:14 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 797D21800368; Tue, 15 Jul 2025 19:05:16 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EC480197702B; Tue, 15 Jul 2025 19:05:12 +0000 (UTC)
+ id EDCC2197702B; Tue, 15 Jul 2025 19:05:14 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 46/57] qemu-img: snapshot: make -l (list) the default,
- simplify option handling
-Date: Tue, 15 Jul 2025 21:03:19 +0200
-Message-ID: <20250715190330.378764-47-kwolf@redhat.com>
+Subject: [PULL 47/57] qemu-img: snapshot: refresh options/--help
+Date: Tue, 15 Jul 2025 21:03:20 +0200
+Message-ID: <20250715190330.378764-48-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
@@ -85,134 +83,114 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Tokarev <mjt@tls.msk.ru>
 
-When no -l/-a/-c/-d specified, assume -l (list).
-
-Use the same values for SNAPSHOT_LIST/etc constants as the
-option chars (lacd), this makes it possible to simplify
-option handling a lot, combining cases for 4 options into
-one.
-
-Also remove bdrv_oflags handling (only list can use RO mode).
+Add missing long options and --help output,
+reorder options for consistency.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250531171609.197078-17-mjt@tls.msk.ru>
+Message-ID: <20250531171609.197078-18-mjt@tls.msk.ru>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- docs/tools/qemu-img.rst |  2 +-
- qemu-img.c              | 52 ++++++++++++++---------------------------
- 2 files changed, 19 insertions(+), 35 deletions(-)
+ qemu-img.c | 60 +++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 44 insertions(+), 16 deletions(-)
 
-diff --git a/docs/tools/qemu-img.rst b/docs/tools/qemu-img.rst
-index 935f28bbc5..a346988292 100644
---- a/docs/tools/qemu-img.rst
-+++ b/docs/tools/qemu-img.rst
-@@ -256,7 +256,7 @@ Parameters to snapshot subcommand:
- 
- .. option:: -l
- 
--  Lists all snapshots in the given image
-+  Lists all snapshots in the given image (default action)
- 
- Command description:
- 
 diff --git a/qemu-img.c b/qemu-img.c
-index 49c61c8b54..f117efe687 100644
+index f117efe687..cc26ae9100 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -3587,10 +3587,11 @@ out:
-     return ret < 0;
- }
- 
--#define SNAPSHOT_LIST   1
--#define SNAPSHOT_CREATE 2
--#define SNAPSHOT_APPLY  3
--#define SNAPSHOT_DELETE 4
-+/* the same as options */
-+#define SNAPSHOT_LIST   'l'
-+#define SNAPSHOT_CREATE 'c'
-+#define SNAPSHOT_APPLY  'a'
-+#define SNAPSHOT_DELETE 'd'
- 
- static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
- {
-@@ -3598,7 +3599,7 @@ static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
-     BlockDriverState *bs;
-     QEMUSnapshotInfo sn;
-     char *filename, *fmt = NULL, *snapshot_name = NULL;
--    int c, ret = 0, bdrv_oflags;
-+    int c, ret = 0;
-     int action = 0;
-     bool quiet = false;
-     Error *err = NULL;
-@@ -3606,7 +3607,6 @@ static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
-     bool force_share = false;
-     int64_t rt;
- 
--    bdrv_oflags = BDRV_O_RDWR;
-     /* Parse commandline parameters */
+@@ -3611,29 +3611,58 @@ static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
      for(;;) {
          static const struct option long_options[] = {
-@@ -3634,36 +3634,15 @@ static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
+             {"help", no_argument, 0, 'h'},
+-            {"object", required_argument, 0, OPTION_OBJECT},
++            {"format", required_argument, 0, 'f'},
+             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
++            {"list", no_argument, 0, SNAPSHOT_LIST},
++            {"apply", required_argument, 0, SNAPSHOT_APPLY},
++            {"create", required_argument, 0, SNAPSHOT_CREATE},
++            {"delete", required_argument, 0, SNAPSHOT_DELETE},
+             {"force-share", no_argument, 0, 'U'},
++            {"quiet", no_argument, 0, 'q'},
++            {"object", required_argument, 0, OPTION_OBJECT},
+             {0, 0, 0, 0}
+         };
+-        c = getopt_long(argc, argv, ":la:c:d:f:hqU",
++        c = getopt_long(argc, argv, "hf:la:c:d:Uq",
+                         long_options, NULL);
+         if (c == -1) {
+             break;
+         }
+         switch(c) {
+-        case ':':
+-            missing_argument(argv[optind - 1]);
+-            break;
+-        case '?':
+-            unrecognized_option(argv[optind - 1]);
+-            break;
+         case 'h':
+-            help();
+-            return 0;
++            cmd_help(ccmd, "[-f FMT | --image-opts] [-l | -a|-c|-d SNAPSHOT]\n"
++"        [-U] [-q] [--object OBJDEF] FILE\n"
++,
++"  -f, --format FMT\n"
++"     specify FILE format explicitly (default: probing is used)\n"
++"  --image-opts\n"
++"     treat FILE as an option string (key=value,..), not a file name\n"
++"     (incompatible with -f|--format)\n"
++"  -l, --list\n"
++"     list snapshots in FILE (default action if no -l|-c|-a|-d is given)\n"
++"  -c, --create SNAPSHOT\n"
++"     create named snapshot\n"
++"  -a, --apply SNAPSHOT\n"
++"     apply named snapshot to the base\n"
++"  -d, --delete SNAPSHOT\n"
++"     delete named snapshot\n"
++"  (only one of -l|-c|-a|-d can be specified)\n"
++"  -U, --force-share\n"
++"     open image in shared mode for concurrent access\n"
++"  -q, --quiet\n"
++"     quiet mode (produce only error messages if any)\n"
++"  --object OBJDEF\n"
++"     defines QEMU user-creatable object\n"
++"  FILE\n"
++"     name of the image file, or option string (key=value,..)\n"
++"     with --image-opts) to operate on\n"
++);
++            break;
          case 'f':
              fmt = optarg;
              break;
--        case 'l':
--            if (action) {
--                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
--                return 0;
--            }
--            action = SNAPSHOT_LIST;
--            bdrv_oflags &= ~BDRV_O_RDWR; /* no need for RW */
--            break;
--        case 'a':
-+        case SNAPSHOT_LIST:
-+        case SNAPSHOT_APPLY:
-+        case SNAPSHOT_CREATE:
-+        case SNAPSHOT_DELETE:
-             if (action) {
-                 error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
-                 return 0;
-             }
--            action = SNAPSHOT_APPLY;
--            snapshot_name = optarg;
--            break;
--        case 'c':
--            if (action) {
--                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
--                return 0;
--            }
--            action = SNAPSHOT_CREATE;
--            snapshot_name = optarg;
--            break;
--        case 'd':
--            if (action) {
--                error_exit(argv[0], "Cannot mix '-l', '-a', '-c', '-d'");
--                return 0;
--            }
--            action = SNAPSHOT_DELETE;
-+            action = c;
++        case OPTION_IMAGE_OPTS:
++            image_opts = true;
++            break;
+         case SNAPSHOT_LIST:
+         case SNAPSHOT_APPLY:
+         case SNAPSHOT_CREATE:
+@@ -3645,18 +3674,17 @@ static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
+             action = c;
              snapshot_name = optarg;
              break;
-         case 'q':
-@@ -3686,9 +3665,14 @@ static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
+-        case 'q':
+-            quiet = true;
+-            break;
+         case 'U':
+             force_share = true;
+             break;
++        case 'q':
++            quiet = true;
++            break;
+         case OPTION_OBJECT:
+             user_creatable_process_cmdline(optarg);
+             break;
+-        case OPTION_IMAGE_OPTS:
+-            image_opts = true;
+-            break;
++        default:
++            tryhelp(argv[0]);
+         }
      }
-     filename = argv[optind++];
  
-+    if (!action) {
-+        action = SNAPSHOT_LIST;
-+    }
-+
-     /* Open the image */
--    blk = img_open(image_opts, filename, fmt, bdrv_oflags, false, quiet,
--                   force_share);
-+    blk = img_open(image_opts, filename, fmt,
-+                   action == SNAPSHOT_LIST ? 0 : BDRV_O_RDWR,
-+                   false, quiet, force_share);
-     if (!blk) {
-         return 1;
-     }
 -- 
 2.50.1
 
