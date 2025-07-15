@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1BA0B0673E
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFCFB066EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:33:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublXJ-0008QY-ND; Tue, 15 Jul 2025 15:42:10 -0400
+	id 1ublNX-0003c6-Px; Tue, 15 Jul 2025 15:31:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwo-0003xc-EX
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:15 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwt-000427-QT
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwm-0001KN-If
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:14 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwr-0001LN-Ho
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606251;
+ s=mimecast20190719; t=1752606256;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9TEp5F51Wr4fzDNqxQrYHyGc/wDiNmCHrnHqf+CaHzk=;
- b=Yt+iSr2M5w4k+liqqiiaNSpCcxAaEyBr6WLd8VPy9OrIa5IhgpbNoTqM344QloKZxRqeRe
- ycgD+RG0HbYKLMBwu9IKrdQe2zyqwKBlxk965wIJuWLsXAO7IlaPIHHSeMbe2ghyDyTS73
- ZtT2Ja/0KoGTFFB7inaeq6Hsu/QczcE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=e4eR9iFA8/DFM+XIWQzDsp67WfYTuUdYYg3aIWy47ew=;
+ b=JxW4Xe2ciiRGZ2C5YZ6jWeE+NpAlRzazkw5OmGaRoMq+oX9StELx2PMZv9dijKHFC0bkOt
+ xcuQSDBYFdwK8nkoj1/2nZO6n45rPMqWJLUV11jnnWYqTbqNOLJhoArGvBF5buCsOYkuj9
+ lNYtMmYN507cOmCZJZhv4+LoKxgoKa8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-uIkVnprzMLWczPbjCP7yDA-1; Tue,
- 15 Jul 2025 15:04:10 -0400
-X-MC-Unique: uIkVnprzMLWczPbjCP7yDA-1
-X-Mimecast-MFC-AGG-ID: uIkVnprzMLWczPbjCP7yDA_1752606249
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-R-YAtYR_M9GiXIaWZKudZA-1; Tue,
+ 15 Jul 2025 15:04:12 -0400
+X-MC-Unique: R-YAtYR_M9GiXIaWZKudZA-1
+X-Mimecast-MFC-AGG-ID: R-YAtYR_M9GiXIaWZKudZA_1752606251
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6A0CE1956086; Tue, 15 Jul 2025 19:04:09 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AE3E918002AC; Tue, 15 Jul 2025 19:04:11 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 01EB1197702B; Tue, 15 Jul 2025 19:04:06 +0000 (UTC)
+ id DF003197702C; Tue, 15 Jul 2025 19:04:09 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 15/57] block: mark blk_remove_bs() as GRAPH_UNLOCKED
-Date: Tue, 15 Jul 2025 21:02:48 +0200
-Message-ID: <20250715190330.378764-16-kwolf@redhat.com>
+Subject: [PULL 16/57] block: mark blk_drain() as GRAPH_UNLOCKED
+Date: Tue, 15 Jul 2025 21:02:49 +0200
+Message-ID: <20250715190330.378764-17-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -65,7 +65,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,94 +83,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fiona Ebner <f.ebner@proxmox.com>
 
-The function blk_remove_bs() calls bdrv_graph_wrlock_drained() and can
-also call bdrv_drained_begin(), both of which which must be called with
-the graph unlocked.
-
-Marking blk_remove_bs() as GRAPH_UNLOCKED requires temporarily
-unlocking in hmp_drive_del().
+The function blk_drain() calls bdrv_drained_begin(), which must be
+called with the graph unlocked.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20250530151125.955508-38-f.ebner@proxmox.com>
+Message-ID: <20250530151125.955508-39-f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/system/block-backend-global-state.h |  2 +-
- block/monitor/block-hmp-cmds.c              | 15 ++++++++++-----
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ include/system/block-backend-global-state.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/system/block-backend-global-state.h b/include/system/block-backend-global-state.h
-index a62dbdf0dc..1a134083b7 100644
+index 1a134083b7..f6ec1174e6 100644
 --- a/include/system/block-backend-global-state.h
 +++ b/include/system/block-backend-global-state.h
-@@ -55,7 +55,7 @@ void monitor_remove_blk(BlockBackend *blk);
- 
- BlockBackendPublic *blk_get_public(BlockBackend *blk);
- 
--void blk_remove_bs(BlockBackend *blk);
-+void GRAPH_UNLOCKED blk_remove_bs(BlockBackend *blk);
- int blk_insert_bs(BlockBackend *blk, BlockDriverState *bs, Error **errp);
- int blk_replace_bs(BlockBackend *blk, BlockDriverState *new_bs, Error **errp);
- bool GRAPH_RDLOCK bdrv_has_blk(BlockDriverState *bs);
-diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
-index 6919a49bf5..282d1c386e 100644
---- a/block/monitor/block-hmp-cmds.c
-+++ b/block/monitor/block-hmp-cmds.c
-@@ -144,7 +144,7 @@ void hmp_drive_del(Monitor *mon, const QDict *qdict)
-     Error *local_err = NULL;
- 
-     GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+    bdrv_graph_rdlock_main_loop();
- 
-     bs = bdrv_find_node(id);
-     if (bs) {
-@@ -152,29 +152,31 @@ void hmp_drive_del(Monitor *mon, const QDict *qdict)
-         if (local_err) {
-             error_report_err(local_err);
-         }
--        return;
-+        goto unlock;
-     }
- 
-     blk = blk_by_name(id);
-     if (!blk) {
-         error_report("Device '%s' not found", id);
--        return;
-+        goto unlock;
-     }
- 
-     if (!blk_legacy_dinfo(blk)) {
-         error_report("Deleting device added with blockdev-add"
-                      " is not supported");
--        return;
-+        goto unlock;
-     }
- 
-     bs = blk_bs(blk);
-     if (bs) {
-         if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_DRIVE_DEL, &local_err)) {
-             error_report_err(local_err);
--            return;
-+            goto unlock;
-         }
- 
-+        bdrv_graph_rdunlock_main_loop();
-         blk_remove_bs(blk);
-+        bdrv_graph_rdlock_main_loop();
-     }
- 
-     /* Make the BlockBackend and the attached BlockDriverState anonymous */
-@@ -191,6 +193,9 @@ void hmp_drive_del(Monitor *mon, const QDict *qdict)
-     } else {
-         blk_unref(blk);
-     }
-+
-+unlock:
-+    bdrv_graph_rdunlock_main_loop();
- }
- 
- void hmp_commit(Monitor *mon, const QDict *qdict)
+@@ -78,7 +78,7 @@ int blk_make_zero(BlockBackend *blk, BdrvRequestFlags flags);
+ void blk_aio_cancel(BlockAIOCB *acb);
+ int blk_commit_all(void);
+ bool blk_in_drain(BlockBackend *blk);
+-void blk_drain(BlockBackend *blk);
++void GRAPH_UNLOCKED blk_drain(BlockBackend *blk);
+ void GRAPH_UNLOCKED blk_drain_all(void);
+ void blk_set_on_error(BlockBackend *blk, BlockdevOnError on_read_error,
+                       BlockdevOnError on_write_error);
 -- 
 2.50.1
 
