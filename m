@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BCDB06737
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D02BB066F1
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:34:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublZX-0006VM-Pa; Tue, 15 Jul 2025 15:44:16 -0400
+	id 1ublQ3-0000mg-Bp; Tue, 15 Jul 2025 15:34:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxi-0004TN-9x
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxk-0004Tq-DL
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxf-0001gA-SH
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:09 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxi-0001h3-2O
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606306;
+ s=mimecast20190719; t=1752606308;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=834C0oDXKZn6AI4lUTo5/qab+PV2c+RGK0C5HaB+c0Q=;
- b=cWoSrSXuKEbwD3pzI4UYFkfSwKMalmn86Mh93ikAbEROzxwIFDd2HO/66sCJYb4kDk3KCa
- ZLW4jCZeRDcPBSVErTmLOq5RT5GufEE8K7f/pLXqW6tk4R0VKRQ+Pg7DgoXN50jOK/eVuH
- nQi3/W5XzcsUGXRyHvoHlF8wZ9BFBzU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=taA1HNznqd+8+gUd6weUC37cDbdr9lH7xvfJoqHRmag=;
+ b=CnnN1M3vlLQd1IvvcAmaL1ja4phQA2J0PTxOB0hWfkZLaj92foBMMLOSx8JhdxnGMib1/C
+ uK+V52ETeejmWqGPSTwMWUA7KeAnhsCeO1Dfumc0p7MkXfsui9x6H5SXpZFmxqO3BfLjua
+ hGNzxwJtg+8FuXpuWLWd+7l9AAiGoCk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-6mSjq-sgMuetMvgw-8JgFw-1; Tue,
- 15 Jul 2025 15:05:02 -0400
-X-MC-Unique: 6mSjq-sgMuetMvgw-8JgFw-1
-X-Mimecast-MFC-AGG-ID: 6mSjq-sgMuetMvgw-8JgFw_1752606302
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-187-JHv3wn5sOyC5UBGW2mQIvQ-1; Tue,
+ 15 Jul 2025 15:05:04 -0400
+X-MC-Unique: JHv3wn5sOyC5UBGW2mQIvQ-1
+X-Mimecast-MFC-AGG-ID: JHv3wn5sOyC5UBGW2mQIvQ_1752606304
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0855A195608E; Tue, 15 Jul 2025 19:05:02 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E03E5195608C; Tue, 15 Jul 2025 19:05:03 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 19C00197702B; Tue, 15 Jul 2025 19:04:59 +0000 (UTC)
+ id 604C81977030; Tue, 15 Jul 2025 19:05:02 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 40/57] qemu-img: compare: use helper function for --object
-Date: Tue, 15 Jul 2025 21:03:13 +0200
-Message-ID: <20250715190330.378764-41-kwolf@redhat.com>
+Subject: [PULL 41/57] qemu-img: compare: refresh options/--help
+Date: Tue, 15 Jul 2025 21:03:14 +0200
+Message-ID: <20250715190330.378764-42-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,44 +83,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Tokarev <mjt@tls.msk.ru>
 
-Use the same function to parse --object as used by all
-other qemu-img subcommands.
+Add long options, add help, reorder options for consistency.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20250531171609.197078-11-mjt@tls.msk.ru>
+Message-ID: <20250531171609.197078-12-mjt@tls.msk.ru>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- qemu-img.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ qemu-img.c | 64 +++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 46 insertions(+), 18 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 9d2eba3b36..a7a07ed4bc 100644
+index a7a07ed4bc..5697e45ae6 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -1529,20 +1529,8 @@ static int img_compare(const img_cmd_t *ccmd, int argc, char **argv)
-             force_share = true;
+@@ -1487,25 +1487,51 @@ static int img_compare(const img_cmd_t *ccmd, int argc, char **argv)
+     for (;;) {
+         static const struct option long_options[] = {
+             {"help", no_argument, 0, 'h'},
+-            {"object", required_argument, 0, OPTION_OBJECT},
++            {"a-format", required_argument, 0, 'f'},
++            {"b-format", required_argument, 0, 'F'},
+             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
++            {"strict", no_argument, 0, 's'},
++            {"cache", required_argument, 0, 'T'},
+             {"force-share", no_argument, 0, 'U'},
++            {"progress", no_argument, 0, 'p'},
++            {"quiet", no_argument, 0, 'q'},
++            {"object", required_argument, 0, OPTION_OBJECT},
+             {0, 0, 0, 0}
+         };
+-        c = getopt_long(argc, argv, ":hf:F:T:pqsU",
++        c = getopt_long(argc, argv, "hf:F:sT:Upq",
+                         long_options, NULL);
+         if (c == -1) {
              break;
-         case OPTION_OBJECT:
--            {
--                Error *local_err = NULL;
--
--                if (!user_creatable_add_from_str(optarg, &local_err)) {
--                    if (local_err) {
--                        error_report_err(local_err);
--                        exit(2);
--                    } else {
--                        /* Help was printed */
--                        exit(EXIT_SUCCESS);
--                    }
--                }
--                break;
--            }
-+            user_creatable_process_cmdline(optarg);
+         }
+         switch (c) {
+-        case ':':
+-            missing_argument(argv[optind - 1]);
+-            break;
+-        case '?':
+-            unrecognized_option(argv[optind - 1]);
+-            break;
+         case 'h':
+-            help();
++            cmd_help(ccmd,
++"[[-f FMT] [-F FMT] | --image-opts] [-s] [-T CACHE]\n"
++"        [-U] [-p] [-q] [--object OBJDEF] FILE1 FILE2\n"
++,
++"  -f, --a-format FMT\n"
++"     specify FILE1 image format explicitly (default: probing is used)\n"
++"  -F, --b-format FMT\n"
++"     specify FILE2 image format explicitly (default: probing is used)\n"
++"  --image-opts\n"
++"     treat FILE1 and FILE2 as option strings (key=value,..), not file names\n"
++"     (incompatible with -f|--a-format and -F|--b-format)\n"
++"  -s, --strict\n"
++"     strict mode, also check if sizes are equal\n"
++"  -T, --cache CACHE_MODE\n"
++"     images caching mode (default: " BDRV_DEFAULT_CACHE ")\n"
++"  -U, --force-share\n"
++"     open images in shared mode for concurrent access\n"
++"  -p, --progress\n"
++"     display progress information\n"
++"  -q, --quiet\n"
++"     quiet mode (produce only error messages if any)\n"
++"  --object OBJDEF\n"
++"     defines QEMU user-creatable object\n"
++"  FILE1, FILE2\n"
++"     names of the image files, or option strings (key=value,..)\n"
++"     with --image-opts, to compare\n"
++);
+             break;
+         case 'f':
+             fmt1 = optarg;
+@@ -1513,27 +1539,29 @@ static int img_compare(const img_cmd_t *ccmd, int argc, char **argv)
+         case 'F':
+             fmt2 = optarg;
+             break;
++        case OPTION_IMAGE_OPTS:
++            image_opts = true;
 +            break;
-         case OPTION_IMAGE_OPTS:
-             image_opts = true;
++        case 's':
++            strict = true;
++            break;
+         case 'T':
+             cache = optarg;
              break;
++        case 'U':
++            force_share = true;
++            break;
+         case 'p':
+             progress = true;
+             break;
+         case 'q':
+             quiet = true;
+             break;
+-        case 's':
+-            strict = true;
+-            break;
+-        case 'U':
+-            force_share = true;
+-            break;
+         case OPTION_OBJECT:
+             user_creatable_process_cmdline(optarg);
+             break;
+-        case OPTION_IMAGE_OPTS:
+-            image_opts = true;
+-            break;
++        default:
++            tryhelp(argv[0]);
+         }
+     }
+ 
 -- 
 2.50.1
 
