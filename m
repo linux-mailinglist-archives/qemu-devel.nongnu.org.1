@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827B5B06727
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA84B0670A
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:39:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublWh-0006lm-OD; Tue, 15 Jul 2025 15:41:20 -0400
+	id 1ublQm-0004dX-Rf; Tue, 15 Jul 2025 15:35:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwg-0003pe-F4
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwj-0003t5-0y
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwe-0001IX-QC
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:06 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwh-0001J8-Be
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:04:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606243;
+ s=mimecast20190719; t=1752606246;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=o1hSbirm0FeR7HEVUY1DNIhxsSnwTVjUfV1F5k4OPBg=;
- b=CorILoU5kCmjusFkAWxRHrACJd+f7JUkvArNVqayRDNIb0/XS+8UPliCJ12vyXIgPWo2II
- SyJdd9eA/NQ42Wk601pP7NvmpL2SXcVnvJcJufmHJb8FwRnBsz61dyLx3bHzBaSk81AGJN
- 0b7bUiKGv8+RdFOteAPcfpI6L8ceUzg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=dsMwsThFLoJaZZKZ4zj+/Nv7SnOyR7h5y7MYGS1V5ug=;
+ b=fQkwW3DjlOEgkNq31CcaIXSMqizT1e24IyKOPF4kuH2iF//havEyhaJNMchw6os9KsIIY5
+ dtKakqlancbPv3xbnbddS7g/c9QMFpmCo6LAVLy/redEkfDhG2HBSHx0scGpjNyr1dlqn+
+ 0TeGRtCx7XyV1c93ZtND9Msf7NMeGL4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-187-RH-eXnsPPsONcMRZ0BKgzw-1; Tue,
- 15 Jul 2025 15:04:01 -0400
-X-MC-Unique: RH-eXnsPPsONcMRZ0BKgzw-1
-X-Mimecast-MFC-AGG-ID: RH-eXnsPPsONcMRZ0BKgzw_1752606240
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-494-vELb6pa-PLWpepkxvfZwvA-1; Tue,
+ 15 Jul 2025 15:04:03 -0400
+X-MC-Unique: vELb6pa-PLWpepkxvfZwvA-1
+X-Mimecast-MFC-AGG-ID: vELb6pa-PLWpepkxvfZwvA_1752606242
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6253618001F9; Tue, 15 Jul 2025 19:04:00 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 62FF61956087; Tue, 15 Jul 2025 19:04:02 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D4C09197702B; Tue, 15 Jul 2025 19:03:58 +0000 (UTC)
+ id D6DCB197702C; Tue, 15 Jul 2025 19:04:00 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 11/57] block/stream: mark stream_prepare() as GRAPH_UNLOCKED
-Date: Tue, 15 Jul 2025 21:02:44 +0200
-Message-ID: <20250715190330.378764-12-kwolf@redhat.com>
+Subject: [PULL 12/57] block: mark bdrv_reopen_queue() and
+ bdrv_reopen_multiple() as GRAPH_UNLOCKED
+Date: Tue, 15 Jul 2025 21:02:45 +0200
+Message-ID: <20250715190330.378764-13-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,47 +84,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fiona Ebner <f.ebner@proxmox.com>
 
-The function stream_prepare() calls bdrv_drain_all_begin(), which
+The function bdrv_reopen_queue() can call bdrv_drain_all_begin(),
+which must be called with the graph unlocked.
+
+The function bdrv_reopen_multiple() calls bdrv_reopen_prepare() which
 must be called with the graph unlocked.
 
-Also mark the JobDriver's prepare() callback as GRAPH_UNLOCKED_PTR,
-because that is the callback via which stream_prepare() is reached.
+To mark bdrv_reopen_queue() as GRAPH_UNLOCKED, it is necessary to make
+the locked section in reopen_backing_file() shorter.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20250530151125.955508-34-f.ebner@proxmox.com>
+Message-ID: <20250530151125.955508-35-f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/qemu/job.h | 2 +-
- block/stream.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/block/block-global-state.h | 9 +++++----
+ block/replication.c                | 3 ++-
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/include/qemu/job.h b/include/qemu/job.h
-index a5a04155ea..bb8ee766ef 100644
---- a/include/qemu/job.h
-+++ b/include/qemu/job.h
-@@ -263,7 +263,7 @@ struct JobDriver {
-      * This callback will not be invoked if the job has already failed.
-      * If it fails, abort and then clean will be called.
+diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
+index bcbb624a7b..f25c65c1b4 100644
+--- a/include/block/block-global-state.h
++++ b/include/block/block-global-state.h
+@@ -121,11 +121,12 @@ BlockDriverState *bdrv_new_open_driver_opts(BlockDriver *drv,
+                                             Error **errp);
+ BlockDriverState *bdrv_new_open_driver(BlockDriver *drv, const char *node_name,
+                                        int flags, Error **errp);
+-BlockReopenQueue *bdrv_reopen_queue(BlockReopenQueue *bs_queue,
+-                                    BlockDriverState *bs, QDict *options,
+-                                    bool keep_old_opts);
++BlockReopenQueue * GRAPH_UNLOCKED
++bdrv_reopen_queue(BlockReopenQueue *bs_queue, BlockDriverState *bs,
++                  QDict *options, bool keep_old_opts);
+ void bdrv_reopen_queue_free(BlockReopenQueue *bs_queue);
+-int bdrv_reopen_multiple(BlockReopenQueue *bs_queue, Error **errp);
++int GRAPH_UNLOCKED
++bdrv_reopen_multiple(BlockReopenQueue *bs_queue, Error **errp);
+ int bdrv_reopen(BlockDriverState *bs, QDict *opts, bool keep_old_opts,
+                 Error **errp);
+ int bdrv_reopen_set_read_only(BlockDriverState *bs, bool read_only,
+diff --git a/block/replication.c b/block/replication.c
+index 83978b61f5..3a431e908c 100644
+--- a/block/replication.c
++++ b/block/replication.c
+@@ -364,14 +364,15 @@ static void reopen_backing_file(BlockDriverState *bs, bool writable,
+     BlockReopenQueue *reopen_queue = NULL;
+ 
+     GLOBAL_STATE_CODE();
+-    GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
++    bdrv_graph_rdlock_main_loop();
+     /*
+      * s->hidden_disk and s->secondary_disk may not be set yet, as they will
+      * only be set after the children are writable.
       */
--    int (*prepare)(Job *job);
-+    int GRAPH_UNLOCKED_PTR (*prepare)(Job *job);
+     hidden_disk = bs->file->bs->backing;
+     secondary_disk = hidden_disk->bs->backing;
++    bdrv_graph_rdunlock_main_loop();
  
-     /**
-      * If the callback is not NULL, it will be invoked when all the jobs
-diff --git a/block/stream.c b/block/stream.c
-index 17e240460c..c0616b69e2 100644
---- a/block/stream.c
-+++ b/block/stream.c
-@@ -51,7 +51,7 @@ static int coroutine_fn stream_populate(BlockBackend *blk,
-     return blk_co_preadv(blk, offset, bytes, NULL, BDRV_REQ_PREFETCH);
- }
- 
--static int stream_prepare(Job *job)
-+static int GRAPH_UNLOCKED stream_prepare(Job *job)
- {
-     StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
-     BlockDriverState *unfiltered_bs;
+     if (writable) {
+         s->orig_hidden_read_only = bdrv_is_read_only(hidden_disk->bs);
 -- 
 2.50.1
 
