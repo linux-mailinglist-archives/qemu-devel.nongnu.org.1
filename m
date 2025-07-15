@@ -2,115 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BACFB05B63
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 15:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5DCB05B48
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 15:19:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubfWx-0005cR-G4; Tue, 15 Jul 2025 09:17:11 -0400
+	id 1ubfXq-0005zq-45; Tue, 15 Jul 2025 09:18:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ubf35-00012n-VH
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 08:46:24 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ubf3F-00016y-B9
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 08:46:33 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ubf2z-0004r3-Lc
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 08:46:18 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ubf3A-0004sO-B5
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 08:46:28 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 142C221214;
- Tue, 15 Jul 2025 12:46:08 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 40B981F38F;
+ Tue, 15 Jul 2025 12:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1752583568; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1752583570; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+sDEqGp1KwO3i0sstWkwwfjWP+GHVJqvLLkRMAUvYwk=;
- b=uaGRTPTF9zb1bgOG/jVORgJdOcrOQpaTQpoCYD3oKQMrKZyouGX/YXTUogC79keUk2uji3
- rxJEvFw0BhCGJLxrrJNq+N+nDETASXXQtBdQjkrsWo4SFAR9P1a5jgbwqpaZJ7BUm/WJt1
- c29sv4pjZT6SArUHReX11JHwUQCbJO0=
+ bh=9Ue/1ZT8MzZ8v7guZM96vxMTgrZWJ6Tz5qKYXtjRr3Y=;
+ b=MpiSwF84Lcj3ITwfRCp1aGH/YwrPXg7BAm7gt/1UEX8RGd8iR9Vv7KVY/34QyJudBZYz++
+ 1xjdzsLE2Mq0Stkebgk7a6CGZ+gye6C5/DHEsdNP1a2CBU8pkE8cqZALwwJq3hL+svvHll
+ mEumSAnzaxf3srGPmcq492zsmbXz5GA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1752583568;
+ s=susede2_ed25519; t=1752583570;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+sDEqGp1KwO3i0sstWkwwfjWP+GHVJqvLLkRMAUvYwk=;
- b=CT7BdT8z352qflupYHw2sWAh8fWKxNDz9B66Rimykj/vOGy2LC7Y4kPtvXzcyByg3rFkld
- +4abPjlShLLWILAg==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uaGRTPTF;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CT7BdT8z
+ bh=9Ue/1ZT8MzZ8v7guZM96vxMTgrZWJ6Tz5qKYXtjRr3Y=;
+ b=yZji1Avdg94PEmqf/XWEGbJ7S5/ZjSNp1n/sR7yWtPdafCuFT1FpbIyoqdFiZBeAVAApv9
+ 5C+zY8clL2v7Z7DA==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MpiSwF84;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yZji1Avd
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1752583568; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1752583570; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+sDEqGp1KwO3i0sstWkwwfjWP+GHVJqvLLkRMAUvYwk=;
- b=uaGRTPTF9zb1bgOG/jVORgJdOcrOQpaTQpoCYD3oKQMrKZyouGX/YXTUogC79keUk2uji3
- rxJEvFw0BhCGJLxrrJNq+N+nDETASXXQtBdQjkrsWo4SFAR9P1a5jgbwqpaZJ7BUm/WJt1
- c29sv4pjZT6SArUHReX11JHwUQCbJO0=
+ bh=9Ue/1ZT8MzZ8v7guZM96vxMTgrZWJ6Tz5qKYXtjRr3Y=;
+ b=MpiSwF84Lcj3ITwfRCp1aGH/YwrPXg7BAm7gt/1UEX8RGd8iR9Vv7KVY/34QyJudBZYz++
+ 1xjdzsLE2Mq0Stkebgk7a6CGZ+gye6C5/DHEsdNP1a2CBU8pkE8cqZALwwJq3hL+svvHll
+ mEumSAnzaxf3srGPmcq492zsmbXz5GA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1752583568;
+ s=susede2_ed25519; t=1752583570;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+sDEqGp1KwO3i0sstWkwwfjWP+GHVJqvLLkRMAUvYwk=;
- b=CT7BdT8z352qflupYHw2sWAh8fWKxNDz9B66Rimykj/vOGy2LC7Y4kPtvXzcyByg3rFkld
- +4abPjlShLLWILAg==
+ bh=9Ue/1ZT8MzZ8v7guZM96vxMTgrZWJ6Tz5qKYXtjRr3Y=;
+ b=yZji1Avdg94PEmqf/XWEGbJ7S5/ZjSNp1n/sR7yWtPdafCuFT1FpbIyoqdFiZBeAVAApv9
+ 5C+zY8clL2v7Z7DA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6DF1A13306;
- Tue, 15 Jul 2025 12:46:06 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9BD4413306;
+ Tue, 15 Jul 2025 12:46:08 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id mOkJC45NdmiKKAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 15 Jul 2025 12:46:06 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id wB8tFpBNdmiKKAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 15 Jul 2025 12:46:08 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 1/2] migration: Fix postcopy latency distribution formatting
- computation
-Date: Tue, 15 Jul 2025 09:45:51 -0300
-Message-Id: <20250715124552.28038-2-farosas@suse.de>
+Subject: [PATCH 2/2] cutils: Add time_us_to_str
+Date: Tue, 15 Jul 2025 09:45:52 -0300
+Message-Id: <20250715124552.28038-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250715124552.28038-1-farosas@suse.de>
 References: <20250715124552.28038-1-farosas@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
+X-Rspamd-Queue-Id: 40B981F38F
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; TO_DN_SOME(0.00)[];
+ MX_GOOD(-0.01)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_RATELIMITED(0.00)[rspamd.com];
+ TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
  RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ ARC_NA(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
  RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[];
  SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
- RCVD_VIA_SMTP_AUTH(0.00)[];
  RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- RCPT_COUNT_THREE(0.00)[4];
- DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email, imap1.dmz-prg2.suse.org:helo,
- imap1.dmz-prg2.suse.org:rdns, suse.de:mid, suse.de:dkim, suse.de:email]
-X-Rspamd-Queue-Id: 142C221214
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+ RCPT_COUNT_THREE(0.00)[4]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ DKIM_TRACE(0.00)[suse.de:+];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email, imap1.dmz-prg2.suse.org:rdns,
+ imap1.dmz-prg2.suse.org:helo, suse.de:dkim, suse.de:mid, suse.de:email]
+X-Spam-Score: -3.51
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -134,39 +133,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity has caught a bug in the formatting of time intervals for
-postcopy latency distribution display in 'info migrate'.
+The migration code has a function that converts a time value (us) to a
+string with the proper suffix. Move it to cutils since it's generic
+enough that it could be reused.
 
-While bounds checking the labels array, sizeof is incorrectly being
-used. ARRAY_SIZE is the correct form of obtaining the size of an
-array.
-
-Fixes: 3345fb3b6d ("migration/postcopy: Add latency distribution report for blocktime")
-Resolves: Coverity CID 1612248
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration-hmp-cmds.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ include/qemu/cutils.h          |  1 +
+ migration/migration-hmp-cmds.c | 17 ++---------------
+ util/cutils.c                  | 13 +++++++++++++
+ 3 files changed, 16 insertions(+), 15 deletions(-)
 
+diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
+index 36c68ce86c..7621726621 100644
+--- a/include/qemu/cutils.h
++++ b/include/qemu/cutils.h
+@@ -171,6 +171,7 @@ int qemu_strtosz_MiB(const char *nptr, const char **end, uint64_t *result);
+ int qemu_strtosz_metric(const char *nptr, const char **end, uint64_t *result);
+ 
+ char *size_to_str(uint64_t val);
++char *time_us_to_str(uint64_t val);
+ 
+ /**
+  * freq_to_str:
 diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index cef5608210..bb954881d7 100644
+index bb954881d7..1706f3a0f7 100644
 --- a/migration/migration-hmp-cmds.c
 +++ b/migration/migration-hmp-cmds.c
-@@ -57,11 +57,9 @@ static const gchar *format_time_str(uint64_t us)
-     const char *units[] = {"us", "ms", "sec"};
-     int index = 0;
+@@ -52,19 +52,6 @@ static void migration_global_dump(Monitor *mon)
+                    ms->clear_bitmap_shift);
+ }
  
--    while (us > 1000) {
+-static const gchar *format_time_str(uint64_t us)
+-{
+-    const char *units[] = {"us", "ms", "sec"};
+-    int index = 0;
+-
+-    while (us > 1000 && index + 1 < ARRAY_SIZE(units)) {
+-        us /= 1000;
+-        index++;
+-    }
+-
+-    return g_strdup_printf("%"PRIu64" %s", us, units[index]);
+-}
+-
+ static void migration_dump_blocktime(Monitor *mon, MigrationInfo *info)
+ {
+     if (info->has_postcopy_blocktime) {
+@@ -121,8 +108,8 @@ static void migration_dump_blocktime(Monitor *mon, MigrationInfo *info)
+         monitor_printf(mon, "Postcopy Latency Distribution:\n");
+ 
+         while (item) {
+-            g_autofree const gchar *from = format_time_str(1UL << count);
+-            g_autofree const gchar *to = format_time_str(1UL << (count + 1));
++            g_autofree const gchar *from = time_us_to_str(1UL << count);
++            g_autofree const gchar *to = time_us_to_str(1UL << (count + 1));
+ 
+             monitor_printf(mon, "  [ %8s - %8s ]: %10"PRIu64"\n",
+                            from, to, item->value);
+diff --git a/util/cutils.c b/util/cutils.c
+index 9803f11a59..023793211a 100644
+--- a/util/cutils.c
++++ b/util/cutils.c
+@@ -1004,6 +1004,19 @@ char *freq_to_str(uint64_t freq_hz)
+     return g_strdup_printf("%0.3g %sHz", freq, si_prefix(exp10));
+ }
+ 
++char *time_us_to_str(uint64_t us)
++{
++    const char *units[] = {"us", "ms", "sec"};
++    int index = 0;
++
 +    while (us > 1000 && index + 1 < ARRAY_SIZE(units)) {
-         us /= 1000;
--        if (++index >= (sizeof(units) - 1)) {
--            break;
--        }
++        us /= 1000;
 +        index++;
-     }
- 
-     return g_strdup_printf("%"PRIu64" %s", us, units[index]);
++    }
++
++    return g_strdup_printf("%"PRIu64" %s", us, units[index]);
++}
++
+ int qemu_pstrcmp0(const char **str1, const char **str2)
+ {
+     return g_strcmp0(*str1, *str2);
 -- 
 2.35.3
 
