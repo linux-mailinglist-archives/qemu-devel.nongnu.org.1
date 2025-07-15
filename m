@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9FEB064C1
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 18:57:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74FCAB064BA
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 18:56:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubiyA-0005op-HY; Tue, 15 Jul 2025 12:57:30 -0400
+	id 1ubiwb-0003Jz-Ns; Tue, 15 Jul 2025 12:55:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubiep-0006we-H9
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:37:32 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubieo-0006uN-25
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:37:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubien-0003eq-NJ
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:37:31 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubiem-0003eA-4q
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:37:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752597448;
+ s=mimecast20190719; t=1752597447;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wes96bumQRuDZW+mPq0Q32pK6AXZIl13N1XQxgXrrwE=;
- b=NiQzGYax4JPMzkbvN5GnWH3Eg4HqWl1IlK8xdLsAYwX825+zwFtD2oMLJkwDrFp3MaCLlc
- JJBJZ4wEj8TulNyrlaxWdTCjiRRcVM+dIFUKe1aXm0PoKSF+8I36M31oxvXePwvViBwHa0
- 32H/XDyj3mA5IwiB51rc6HjzygO7SUc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=zBw0IywAQRqJPhdyEUhiI/DcTtnx//cepxucbpp+PEo=;
+ b=R//2p4TxslNDISO649Q8F9f7/hC9g7WFkCzj0R1K5R/ObjWFsdneVz8/LU7zO3mggT2WgP
+ wcI8kBf/E2zWj1asK0pphxqmXBO7+4ZA32zYVg1E5J6Nu++3BRuKIZbYVFRProIBD9BPx2
+ Gkyb08aiIVlOhB3dKDbAyP3/IRkKa+8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-i_9vq3-xO6SiwBR66aWNtg-1; Tue,
- 15 Jul 2025 12:37:21 -0400
-X-MC-Unique: i_9vq3-xO6SiwBR66aWNtg-1
-X-Mimecast-MFC-AGG-ID: i_9vq3-xO6SiwBR66aWNtg_1752597440
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-400-dvghnk3YOaKg_qA5QNroCQ-1; Tue,
+ 15 Jul 2025 12:37:23 -0400
+X-MC-Unique: dvghnk3YOaKg_qA5QNroCQ-1
+X-Mimecast-MFC-AGG-ID: dvghnk3YOaKg_qA5QNroCQ_1752597443
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BF6C21800BC3; Tue, 15 Jul 2025 16:37:20 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 052491800253; Tue, 15 Jul 2025 16:37:23 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.160])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B0ABA3000198; Tue, 15 Jul 2025 16:37:18 +0000 (UTC)
+ id 29E8630001A1; Tue, 15 Jul 2025 16:37:20 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  John Levon <john.levon@nutanix.com>,
- Mark Cave-Ayland <markcaveayland@nutanix.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 3/7] hw/vfio-user: wait for proxy close correctly
-Date: Tue, 15 Jul 2025 18:36:59 +0200
-Message-ID: <20250715163703.243975-4-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Subject: [PULL 4/7] hw/vfio-user: fix use of uninitialized variable
+Date: Tue, 15 Jul 2025 18:37:00 +0200
+Message-ID: <20250715163703.243975-5-clg@redhat.com>
 In-Reply-To: <20250715163703.243975-1-clg@redhat.com>
 References: <20250715163703.243975-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -87,59 +87,58 @@ From: John Levon <john.levon@nutanix.com>
 
 Coverity reported:
 
-CID 1611806: Concurrent data access violations (BAD_CHECK_OF_WAIT_COND)
+CID 1611805:         Uninitialized variables
 
-A wait is performed without a loop. If there is a spurious wakeup, the
-condition may not be satisfied.
+in vfio_user_dma_map(). This can occur in the happy path when
+->async_ops was not set; as this doesn't typically happen, it wasn't
+caught during testing.
 
-Fix this by checking ->state for VFIO_PROXY_CLOSED in a loop.
+Align both map and unmap implementations to initialize ret the same way
+to resolve this.
 
-Also rename the callback for clarity.
-
+Resolves: Coverity CID 1611805
+Fixes: 18e899e6 ("vfio-user: implement VFIO_USER_DMA_MAP/UNMAP")
+Reported-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: John Levon <john.levon@nutanix.com>
-Reviewed-by: Mark Cave-Ayland <markcaveayland@nutanix.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250715115954.515819-4-john.levon@nutanix.com
+Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Link: https://lore.kernel.org/qemu-devel/20250715115954.515819-5-john.levon@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio-user/proxy.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ hw/vfio-user/container.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/hw/vfio-user/proxy.c b/hw/vfio-user/proxy.c
-index c418954440839b92864518cd757c750f0576d0af..2275d3fe395f2ba5915f1244e7e5acae8fecf731 100644
---- a/hw/vfio-user/proxy.c
-+++ b/hw/vfio-user/proxy.c
-@@ -32,7 +32,6 @@ static void vfio_user_recycle(VFIOUserProxy *proxy, VFIOUserMsg *msg);
+diff --git a/hw/vfio-user/container.c b/hw/vfio-user/container.c
+index d318e6a3395e8d48e3a6da69ed4bef454e70ba82..d589dd90f501bbb3442c7fdc263529501086510d 100644
+--- a/hw/vfio-user/container.c
++++ b/hw/vfio-user/container.c
+@@ -64,8 +64,6 @@ static int vfio_user_dma_unmap(const VFIOContainerBase *bcontainer,
+                               0, &local_err)) {
+             error_report_err(local_err);
+             ret = -EFAULT;
+-        } else {
+-            ret = 0;
+         }
+     } else {
+         if (!vfio_user_send_wait(container->proxy, &msgp->hdr, NULL,
+@@ -92,7 +90,7 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                                                 bcontainer);
+     int fd = memory_region_get_fd(mrp);
+     Error *local_err = NULL;
+-    int ret;
++    int ret = 0;
  
- static void vfio_user_recv(void *opaque);
- static void vfio_user_send(void *opaque);
--static void vfio_user_cb(void *opaque);
- 
- static void vfio_user_request(void *opaque);
- 
-@@ -492,7 +491,7 @@ static void vfio_user_send(void *opaque)
-     }
- }
- 
--static void vfio_user_cb(void *opaque)
-+static void vfio_user_close_cb(void *opaque)
- {
-     VFIOUserProxy *proxy = opaque;
- 
-@@ -984,8 +983,11 @@ void vfio_user_disconnect(VFIOUserProxy *proxy)
-      * handler to run after the proxy fd handlers were
-      * deleted above.
-      */
--    aio_bh_schedule_oneshot(proxy->ctx, vfio_user_cb, proxy);
--    qemu_cond_wait(&proxy->close_cv, &proxy->lock);
-+    aio_bh_schedule_oneshot(proxy->ctx, vfio_user_close_cb, proxy);
-+
-+    while (proxy->state != VFIO_PROXY_CLOSED) {
-+        qemu_cond_wait(&proxy->close_cv, &proxy->lock);
-+    }
- 
-     /* we now hold the only ref to proxy */
-     qemu_mutex_unlock(&proxy->lock);
+     VFIOUserFDs *fds = NULL;
+     VFIOUserDMAMap *msgp = g_malloc0(sizeof(*msgp));
+@@ -135,8 +133,6 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                               0, &local_err)) {
+             error_report_err(local_err);
+             ret = -EFAULT;
+-        } else {
+-            ret = 0;
+         }
+     } else {
+         VFIOUserFDs local_fds = { 1, 0, &fd };
 -- 
 2.50.1
 
