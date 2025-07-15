@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE942B06714
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD6BB066E1
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:31:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublVK-0005gz-8E; Tue, 15 Jul 2025 15:39:54 -0400
+	id 1ublMv-0001uB-NZ; Tue, 15 Jul 2025 15:31:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwV-0003cN-PI
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:03:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwX-0003dm-0B
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:03:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwU-0001G6-5I
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:03:55 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkwV-0001GH-32
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:03:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606233;
+ s=mimecast20190719; t=1752606234;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rd2bW5Ju0kM9EaHmRUryA+cUxt9TVzFmzt/26FPFvq8=;
- b=Swf/1c13g4HaXX2xe+k9kofCzacqI0RgX5HVtZBoQHrGJsw8OATi40trsWn/G4FuJ4r13U
- D3i9gr+GdB9eIdp3k0MKi6MjmAL0o41Pi1XgFBg+rRyTVcwLxudUwkVd38M7I5vMvqi4GQ
- SdA9h7QgiGWCfO9idOwI/Uor0FrnbWI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=wig8VCwbp0AmNDJnIb/oPWtjxxq10qBR4IkeFYlDmpA=;
+ b=aeppKzMAnaITlnMi6ml/lDLqzswL5FaHW1751H/5crKm79SGl70Lg4YUt5fnhZ06KKHhB6
+ mxjQMYj8OFwy/aNDjLBoIIqXZdsXNgS2CP3HCpReFQ0SoSH5zaViLsLmOmMG60OSvRzEMY
+ UA1JVsfrxCIyumZ6i6lQmAs9Y3UD9NM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-idQTrPGsM62xR43SuZ-YaQ-1; Tue,
- 15 Jul 2025 15:03:50 -0400
-X-MC-Unique: idQTrPGsM62xR43SuZ-YaQ-1
-X-Mimecast-MFC-AGG-ID: idQTrPGsM62xR43SuZ-YaQ_1752606229
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-456-FvH5FVZLN66gRNTP3YOR3Q-1; Tue,
+ 15 Jul 2025 15:03:52 -0400
+X-MC-Unique: FvH5FVZLN66gRNTP3YOR3Q-1
+X-Mimecast-MFC-AGG-ID: FvH5FVZLN66gRNTP3YOR3Q_1752606232
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C49E418001F9; Tue, 15 Jul 2025 19:03:49 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 01385195608F; Tue, 15 Jul 2025 19:03:52 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 209A9197702B; Tue, 15 Jul 2025 19:03:47 +0000 (UTC)
+ id 452E1197702B; Tue, 15 Jul 2025 19:03:50 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 06/57] block: mark bdrv_set_backing_hd() as GRAPH_UNLOCKED
-Date: Tue, 15 Jul 2025 21:02:39 +0200
-Message-ID: <20250715190330.378764-7-kwolf@redhat.com>
+Subject: [PULL 07/57] blockdev: avoid locking and draining multiple times in
+ external_snapshot_abort()
+Date: Tue, 15 Jul 2025 21:02:40 +0200
+Message-ID: <20250715190330.378764-8-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,33 +84,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fiona Ebner <f.ebner@proxmox.com>
 
-The function bdrv_set_backing_hd() calls bdrv_drain_all_begin(), which
-must be called with the graph unlocked.
+By using the appropriate variants bdrv_set_backing_hd_drained() and
+bdrv_try_change_aio_context_locked(), there only needs to be a single
+drained and write-locked section in external_snapshot_abort().
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20250530151125.955508-29-f.ebner@proxmox.com>
+Message-ID: <20250530151125.955508-30-f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/block-global-state.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ blockdev.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index 84a2a4ecd5..009b9ac946 100644
---- a/include/block/block-global-state.h
-+++ b/include/block/block-global-state.h
-@@ -100,8 +100,9 @@ bdrv_open_blockdev_ref(BlockdevRef *ref, Error **errp);
- BlockDriverState * coroutine_fn no_co_wrapper
- bdrv_co_open_blockdev_ref(BlockdevRef *ref, Error **errp);
+diff --git a/blockdev.c b/blockdev.c
+index e625534925..3c53472a23 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -1580,11 +1580,19 @@ static void external_snapshot_abort(void *opaque)
+             AioContext *tmp_context;
+             int ret;
  
--int bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
--                        Error **errp);
-+int GRAPH_UNLOCKED
-+bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
-+                    Error **errp);
- int GRAPH_WRLOCK
- bdrv_set_backing_hd_drained(BlockDriverState *bs, BlockDriverState *backing_hd,
-                             Error **errp);
++            bdrv_graph_wrlock_drained();
++
+             aio_context = bdrv_get_aio_context(state->old_bs);
+ 
+-            bdrv_ref(state->old_bs);   /* we can't let bdrv_set_backind_hd()
+-                                          close state->old_bs; we need it */
+-            bdrv_set_backing_hd(state->new_bs, NULL, &error_abort);
++            /*
++             * Note that state->old_bs would not disappear during the
++             * write-locked section, because the unref from
++             * bdrv_set_backing_hd_drained() only happens at the end of the
++             * write-locked section. However, just be explicit about keeping a
++             * reference and don't rely on that implicit detail.
++             */
++            bdrv_ref(state->old_bs);
++            bdrv_set_backing_hd_drained(state->new_bs, NULL, &error_abort);
+ 
+             /*
+              * The call to bdrv_set_backing_hd() above returns state->old_bs to
+@@ -1593,16 +1601,14 @@ static void external_snapshot_abort(void *opaque)
+              */
+             tmp_context = bdrv_get_aio_context(state->old_bs);
+             if (aio_context != tmp_context) {
+-                ret = bdrv_try_change_aio_context(state->old_bs,
+-                                                  aio_context, NULL, NULL);
++                ret = bdrv_try_change_aio_context_locked(state->old_bs,
++                                                         aio_context, NULL,
++                                                         NULL);
+                 assert(ret == 0);
+             }
+ 
+-            bdrv_drained_begin(state->new_bs);
+-            bdrv_graph_wrlock();
+             bdrv_replace_node(state->new_bs, state->old_bs, &error_abort);
+             bdrv_graph_wrunlock();
+-            bdrv_drained_end(state->new_bs);
+ 
+             bdrv_unref(state->old_bs); /* bdrv_replace_node() ref'ed old_bs */
+         }
 -- 
 2.50.1
 
