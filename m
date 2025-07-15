@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C80B0670E
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A247DB06719
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 21:42:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ublV6-0004Ly-Bu; Tue, 15 Jul 2025 15:39:40 -0400
+	id 1ublVK-0005na-Bd; Tue, 15 Jul 2025 15:39:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubky0-0004XW-Bi
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:29 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubky4-0004c8-7I
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxr-0001j1-FW
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:21 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ubkxy-0001jd-FZ
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 15:05:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752606318;
+ s=mimecast20190719; t=1752606321;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NeOFjbUAUkbawhAGEAoI45uP3K98VPQeRTW+1GJ6km0=;
- b=Oa8vJ0NjDB4t3dwUhQCCTkcRX1ha80IOxzQo4OLtCyWn4GFvZr6rr7ATeDvMKbA4sp3Zgo
- YvMpYn5OMsaqGSlsWEeXCwIirCSoIJKLvsKQb/2LpHRfL4SweZM7n8RcQpyhb9TfVhdo98
- dBO0dXO+6CX951Pa5fz14RkTuUA80dA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=yXO12lqeAejIfqZYD1cIDDsv+hSmsSqDNw0zNqDMET8=;
+ b=AClOY5F/XLY6hlG3gAam83fHagSL0qolfsTe1KslUqDrccs4EOYx0qB6XOc3wPEUIijDwn
+ ZCqLIkOfp8vC4qS9CXBWZzbwSyqrvqXj/5VOl/RZ80nNTh4ODzidHIRIpyPTSwOkNtUVgR
+ JT/hiVHcRvOFnc7326i34NHXPFvOFpg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-5xLuTCxHNzaBqpsCNJWiYA-1; Tue,
- 15 Jul 2025 15:05:17 -0400
-X-MC-Unique: 5xLuTCxHNzaBqpsCNJWiYA-1
-X-Mimecast-MFC-AGG-ID: 5xLuTCxHNzaBqpsCNJWiYA_1752606316
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-324-JHI-nqnmPv6EFrRgVs6WLw-1; Tue,
+ 15 Jul 2025 15:05:19 -0400
+X-MC-Unique: JHI-nqnmPv6EFrRgVs6WLw-1
+X-Mimecast-MFC-AGG-ID: JHI-nqnmPv6EFrRgVs6WLw_1752606319
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 797D21800368; Tue, 15 Jul 2025 19:05:16 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F110A19560B7; Tue, 15 Jul 2025 19:05:18 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.34.84])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EDCC2197702B; Tue, 15 Jul 2025 19:05:14 +0000 (UTC)
+ id EDEDF197702B; Tue, 15 Jul 2025 19:05:16 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 47/57] qemu-img: snapshot: refresh options/--help
-Date: Tue, 15 Jul 2025 21:03:20 +0200
-Message-ID: <20250715190330.378764-48-kwolf@redhat.com>
+Subject: [PULL 48/57] qemu-img: rebase: refresh options/--help (short option
+ change)
+Date: Tue, 15 Jul 2025 21:03:21 +0200
+Message-ID: <20250715190330.378764-49-kwolf@redhat.com>
 In-Reply-To: <20250715190330.378764-1-kwolf@redhat.com>
 References: <20250715190330.378764-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -86,105 +87,162 @@ From: Michael Tokarev <mjt@tls.msk.ru>
 Add missing long options and --help output,
 reorder options for consistency.
 
+Use -B for --backing-format, keep -F for
+backwards compatibility.
+
+Options added:
+ --format, --cache - for the image in question
+ --backing, --backing-format, --backing-cache, --backing-unsafe -
+   for the new backing file
+(was eg CACHE vs SRC_CACHE, which is unclear).
+
+Probably should rename local variables.
+
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20250531171609.197078-18-mjt@tls.msk.ru>
+Message-ID: <20250531171609.197078-19-mjt@tls.msk.ru>
+[kwolf: Removed command description from the argument list]
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- qemu-img.c | 60 +++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 44 insertions(+), 16 deletions(-)
+ docs/tools/qemu-img.rst |  2 +-
+ qemu-img.c              | 87 +++++++++++++++++++++++++++++------------
+ 2 files changed, 63 insertions(+), 26 deletions(-)
 
+diff --git a/docs/tools/qemu-img.rst b/docs/tools/qemu-img.rst
+index a346988292..5e7b85079d 100644
+--- a/docs/tools/qemu-img.rst
++++ b/docs/tools/qemu-img.rst
+@@ -667,7 +667,7 @@ Command description:
+ 
+   List, apply, create or delete snapshots in image *FILENAME*.
+ 
+-.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] [-c] -b BACKING_FILE [-F BACKING_FMT] FILENAME
++.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] [-c] -b BACKING_FILE [-B BACKING_FMT] FILENAME
+ 
+   Changes the backing file of an image. Only the formats ``qcow2`` and
+   ``qed`` support changing the backing file.
 diff --git a/qemu-img.c b/qemu-img.c
-index f117efe687..cc26ae9100 100644
+index cc26ae9100..a02d271af1 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -3611,29 +3611,58 @@ static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
+@@ -3798,45 +3798,89 @@ static int img_rebase(const img_cmd_t *ccmd, int argc, char **argv)
      for(;;) {
          static const struct option long_options[] = {
              {"help", no_argument, 0, 'h'},
 -            {"object", required_argument, 0, OPTION_OBJECT},
 +            {"format", required_argument, 0, 'f'},
              {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-+            {"list", no_argument, 0, SNAPSHOT_LIST},
-+            {"apply", required_argument, 0, SNAPSHOT_APPLY},
-+            {"create", required_argument, 0, SNAPSHOT_CREATE},
-+            {"delete", required_argument, 0, SNAPSHOT_DELETE},
-             {"force-share", no_argument, 0, 'U'},
+-            {"force-share", no_argument, 0, 'U'},
++            {"cache", required_argument, 0, 't'},
+             {"compress", no_argument, 0, 'c'},
++            {"backing", required_argument, 0, 'b'},
++            {"backing-format", required_argument, 0, 'B'},
++            {"backing-cache", required_argument, 0, 'T'},
++            {"backing-unsafe", no_argument, 0, 'u'},
++            {"force-share", no_argument, 0, 'U'},
++            {"progress", no_argument, 0, 'p'},
 +            {"quiet", no_argument, 0, 'q'},
 +            {"object", required_argument, 0, OPTION_OBJECT},
              {0, 0, 0, 0}
          };
--        c = getopt_long(argc, argv, ":la:c:d:f:hqU",
-+        c = getopt_long(argc, argv, "hf:la:c:d:Uq",
+-        c = getopt_long(argc, argv, ":hf:F:b:upt:T:qUc",
++        c = getopt_long(argc, argv, "hf:t:cb:F:B:T:uUpq",
                          long_options, NULL);
          if (c == -1) {
              break;
          }
-         switch(c) {
+-        switch(c) {
 -        case ':':
 -            missing_argument(argv[optind - 1]);
 -            break;
 -        case '?':
 -            unrecognized_option(argv[optind - 1]);
 -            break;
++        switch (c) {
          case 'h':
 -            help();
--            return 0;
-+            cmd_help(ccmd, "[-f FMT | --image-opts] [-l | -a|-c|-d SNAPSHOT]\n"
-+"        [-U] [-q] [--object OBJDEF] FILE\n"
++            cmd_help(ccmd, "[-f FMT | --image-opts] [-t CACHE]\n"
++"        [-b BACKING_FILE [-B BACKING_FMT] [-T BACKING_CACHE]] [-u]\n"
++"        [-c] [-U] [-p] [-q] [--object OBJDEF] FILE\n"
 +,
 +"  -f, --format FMT\n"
 +"     specify FILE format explicitly (default: probing is used)\n"
 +"  --image-opts\n"
 +"     treat FILE as an option string (key=value,..), not a file name\n"
 +"     (incompatible with -f|--format)\n"
-+"  -l, --list\n"
-+"     list snapshots in FILE (default action if no -l|-c|-a|-d is given)\n"
-+"  -c, --create SNAPSHOT\n"
-+"     create named snapshot\n"
-+"  -a, --apply SNAPSHOT\n"
-+"     apply named snapshot to the base\n"
-+"  -d, --delete SNAPSHOT\n"
-+"     delete named snapshot\n"
-+"  (only one of -l|-c|-a|-d can be specified)\n"
++"  -t, --cache CACHE\n"
++"     cache mode for FILE (default: " BDRV_DEFAULT_CACHE ")\n"
++"  -b, --backing BACKING_FILE|\"\"\n"
++"     rebase onto this file (specify empty name for no backing file)\n"
++"  -B, --backing-format BACKING_FMT (was -F in <=10.0)\n"
++"     specify format for BACKING_FILE explicitly (default: probing is used)\n"
++"  -T, --backing-cache CACHE\n"
++"     BACKING_FILE cache mode (default: " BDRV_DEFAULT_CACHE ")\n"
++"  -u, --backing-unsafe\n"
++"     do not fail if BACKING_FILE can not be read\n"
++"  -c, --compress\n"
++"     compress image (when image supports this)\n"
 +"  -U, --force-share\n"
 +"     open image in shared mode for concurrent access\n"
++"  -p, --progress\n"
++"     display progress information\n"
 +"  -q, --quiet\n"
 +"     quiet mode (produce only error messages if any)\n"
 +"  --object OBJDEF\n"
 +"     defines QEMU user-creatable object\n"
 +"  FILE\n"
 +"     name of the image file, or option string (key=value,..)\n"
-+"     with --image-opts) to operate on\n"
++"     with --image-opts, to operate on\n"
 +);
-+            break;
+             return 0;
          case 'f':
              fmt = optarg;
              break;
+-        case 'F':
+-            out_basefmt = optarg;
 +        case OPTION_IMAGE_OPTS:
 +            image_opts = true;
 +            break;
-         case SNAPSHOT_LIST:
-         case SNAPSHOT_APPLY:
-         case SNAPSHOT_CREATE:
-@@ -3645,18 +3674,17 @@ static int img_snapshot(const img_cmd_t *ccmd, int argc, char **argv)
-             action = c;
-             snapshot_name = optarg;
++        case 't':
++            cache = optarg;
              break;
--        case 'q':
--            quiet = true;
--            break;
-         case 'U':
-             force_share = true;
+         case 'b':
+             out_baseimg = optarg;
              break;
-+        case 'q':
-+            quiet = true;
++        case 'F': /* <=10.0 */
++        case 'B':
++            out_basefmt = optarg;
 +            break;
+         case 'u':
+             unsafe = 1;
+             break;
++        case 'c':
++            compress = true;
++            break;
++        case 'U':
++            force_share = true;
++            break;
+         case 'p':
+             progress = 1;
+             break;
+-        case 't':
+-            cache = optarg;
+-            break;
+         case 'T':
+             src_cache = optarg;
+             break;
+@@ -3846,15 +3890,8 @@ static int img_rebase(const img_cmd_t *ccmd, int argc, char **argv)
          case OPTION_OBJECT:
              user_creatable_process_cmdline(optarg);
              break;
 -        case OPTION_IMAGE_OPTS:
 -            image_opts = true;
+-            break;
+-        case 'U':
+-            force_share = true;
+-            break;
+-        case 'c':
+-            compress = true;
 -            break;
 +        default:
 +            tryhelp(argv[0]);
