@@ -2,98 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E49AB065A4
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 20:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92677B065D0
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 20:14:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubk2M-0004VN-NI; Tue, 15 Jul 2025 14:05:54 -0400
+	id 1ubk99-00036L-Hq; Tue, 15 Jul 2025 14:12:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubjT7-00082M-Vf
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 13:29:30 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubjT5-00022p-Ky
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 13:29:29 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-451d54214adso38658845e9.3
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 10:29:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752600565; x=1753205365; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=p77qLlmQm6mw1/vACqNGs3V36Q2nIwbu1jpy4ppWkNU=;
- b=NYsICV/D9aOcew9qYoMGINIku77O12Ew6cGOCfS5fiat5HuPR0z9IwGo3feMIxJO7K
- a1U0KIHv3+egNjxDToLdtBNfV7XbBA9rde5aBL3rQ8D483RPP0IyQP5SSh2hyTc1oVmE
- EW5Hy8rYi2XnEwGHMwtHHiUYS40l6Qqwhct9CjUYR9piyeJS8ERbkSl+sIawrprp/54i
- BLl42ySlmKbN2He3q9L9lI7qnhVZbKEIhtTrW2N1ErkHFkRsbteePUU++hM9LntVy89p
- QlFoQNK/POSWtSU5T+1tgwEiDLsn8s9XKHrcLGT5fIqOmIpfqcPY0V0FB5RvUVUYyV2v
- GvoA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubja4-0005lY-Mt
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 13:36:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ubja1-00031V-Sq
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 13:36:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752600994;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=day658YKIQbW8r75aOdYjZTSiajvic/kfG8T2N/ZV/k=;
+ b=O8zj+lySUYbIiI0+j91U+K+s8YNgLkXUTeTG/PGp7Z2jHP30yH/76E73lJqa3Zeudh8qfZ
+ QZ011t1e/d1pDTJdH7mLnHdTaQWxzj60GkmChT0oZ/ZNwLc0OIj78l/IVMO50Pf30xfKYo
+ INBL9eV3v6U8oTpoXZ1CQkModV+h5to=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-558-sQWdTwpePGqBEVl8r8ZgCA-1; Tue, 15 Jul 2025 13:36:32 -0400
+X-MC-Unique: sQWdTwpePGqBEVl8r8ZgCA-1
+X-Mimecast-MFC-AGG-ID: sQWdTwpePGqBEVl8r8ZgCA_1752600991
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4561dbbcc7eso8359975e9.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 10:36:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752600565; x=1753205365;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=p77qLlmQm6mw1/vACqNGs3V36Q2nIwbu1jpy4ppWkNU=;
- b=dphT2H3jAWsE0s33CcGMJSRDgucz0Rf4xddyi0Qk2sL0ojHHn42vMhg0YzAPi2anQm
- wcHbI+n4//cGmFxcqyq8fBDF+yqHE3u7+2XwNAG2ZfI9LtGhwNHHswBARXW6+O38XAPp
- uNQCFdWmjs/Yj1oNe3Wy3eLDftpoNe0MqktWHe2x1ee4ZcggNWOpz6Z57K/M7u33kHw8
- OSi7NLoJAKGeg8+xD4i3yzwIG511kna4M7aLZIubnTooMUPdPxoF2/pl0LjI2+ea/aB/
- W3KbfrTsymKbwfL2CdfHKtOpGr6s2UdyPHA14zZ+uD0/x92frnRdM98OSVV/Sa5yOS2K
- mRZw==
-X-Gm-Message-State: AOJu0YxeilCWYoRgzvymmybuZ3f8G0643j1tuEMq0xQR5e+OiLLb128x
- UcO124NinsotkMUH4IqzbTdGR+ehOSEi05FMDr4zEWTnmsWRCq1gaPtlbIxr8BhDvV47I+9/Fo1
- QlO6A
-X-Gm-Gg: ASbGncsahreQqSOXYpN07f/kKT8C6ey7WkUhGPPbtwGO8bapzGNITce94B+exc5G9Ep
- 5QxJO+g78vDJ3M79zasZTVbXz6/XxWD0sfZYcFosg1exBwwYuk977o/ij0nbcmFYyxq8lTFmsb0
- ACF3r0SGlD8qEcdfjt179ant/uPIFGQ+ngSnpm6o+TZ/anQJaAgNv+rSSHo625NJK7DNsxf7dtS
- z04/oEtMeEwQ7VvJRLxcJLFyWKSgzbPyXcpYZ9eHAOC6SUD3ltK3PF65l9gOUFkAencsp7OhDkZ
- es6W42MIUFSn/HxAWGV3W4YnKob+NqxeN24n2rDJjr+wCZHVagiDVPaoa7Db7xp/OTXqp7Pyn3U
- lszrd71pEAkvyZHMVySMWbXlpnlReEA7wvZu+c/w/tAqJSSCzP7avH5Cq5Vw4zPnWYA==
-X-Google-Smtp-Source: AGHT+IEetbCw3v3Wg7oRMJ4/uLwnGdMXt+12vLUongo9duAKsyNOh2w2TBpxLD2SByXbpUz8ryFiNw==
-X-Received: by 2002:a05:600c:1c10:b0:450:6b55:cf91 with SMTP id
- 5b1f17b1804b1-45623234fdemr62288915e9.6.1752600565129; 
- Tue, 15 Jul 2025 10:29:25 -0700 (PDT)
-Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4562797b8d2sm24769385e9.8.2025.07.15.10.29.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Jul 2025 10:29:24 -0700 (PDT)
-Message-ID: <6b4ed606-c0d2-4dfe-8795-a2af6bc500b6@linaro.org>
-Date: Tue, 15 Jul 2025 19:29:23 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 28/69] qapi: Move definitions related to accelerators
- in their own file
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ d=1e100.net; s=20230601; t=1752600991; x=1753205791;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=day658YKIQbW8r75aOdYjZTSiajvic/kfG8T2N/ZV/k=;
+ b=o1t/1kn1jjpwTfkXuGeX9TX2ltSmrEhkV5/wL22WzfQ+fC27tc053VMNEGSblMedRw
+ LZHa6pf1hIaRTnNIMCw5EQWmDiXUHwVLajjvRMvS/z3AfhM+AWxy/8SefMh6CcJ2nhRl
+ 2wIveG6DfRW4DV2AzrJ9Vz62gRRvA9RBQ2Mfqw9QqPNd0NpxfYu03w6MBO9p0Ak/Pnmi
+ QSJOqu9gxh6jP3F21PvR8P+i7lJlQsI26Ymvck46h/+TVY55dro04Ebcll5TsPVwFKC7
+ Sort5haCHFEPHM0roI+VNizQKZpnuxhbjRK5pctn5ssUVW7WrbL/vcyuL9HAioMTseIx
+ NhOw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVRJVqwE1qHIhepqWnL6bDVWakx4+U44BARhEfegzp/0ozGWzKgGaxY3FmESk1Q7p8ju+35Xuxc1bbl@nongnu.org
+X-Gm-Message-State: AOJu0Yw3KQZVC80uv9dygIrVFTXPR8vDPL7mrUeuZcBlTyYNLkGRoHIS
+ BbwYO5wnQDYsGzAgSflz9jxQDB6+QzHKGO+cdlV0ZYSA2yhyX1rxJsW3wvIBYM8yZHJ2wQhD220
+ svq3YUU9+xYNUIeDMhe4MPmMzbNBfHB6EZVCCvRMVQlTS+cAHed2/64BH
+X-Gm-Gg: ASbGncu27zNqVwWlIEb599KLlRxY9IPy0fXV6zCv783fVCZ1css8N9JlFDZXvu3Ttv8
+ csld8503mujJmtU2EwykiCiZFcIL19M6elrIZ8080TxodxpnbYsh1V2yzWa+01xEgZT1i827Jg0
+ bypq8p3fv0bwDgs4mAVjxoIXpr/LKCz9fWfjIqezP2QW7ReOIuG7hnQDr3S6naybwskvbF+rbRF
+ /Eij/TEVpAKC8m305UMXcV+JoeFEtGqbnGDICPzSHf7Rey6qyR+o5Rg/u13N7Ayxw657WHILmxx
+ UZSkQu1IB8lyagHjbm722XIA2cmCeFgG
+X-Received: by 2002:a05:600c:1e8a:b0:456:18ca:68db with SMTP id
+ 5b1f17b1804b1-45618ca6fbcmr88881425e9.8.1752600991235; 
+ Tue, 15 Jul 2025 10:36:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF16b3YOx+Ogh7UeyDcMz2z8ZoA+/bnGN8dm1xA14v40A4+mY6qroqciY4O+dckrPLW3UsPBA==
+X-Received: by 2002:a05:600c:1e8a:b0:456:18ca:68db with SMTP id
+ 5b1f17b1804b1-45618ca6fbcmr88881085e9.8.1752600990658; 
+ Tue, 15 Jul 2025 10:36:30 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:150d:fc00:de3:4725:47c6:6809])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45624651a09sm36942335e9.12.2025.07.15.10.36.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 15 Jul 2025 10:36:30 -0700 (PDT)
+Date: Tue, 15 Jul 2025 13:36:26 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Igor Mammedov <imammedo@redhat.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ kvm@vger.kernel.org, Cleber Rosa <crosa@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Eric Blake <eblake@redhat.com>, John Snow <jsnow@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-References: <20250703105540.67664-1-philmd@linaro.org>
- <20250703105540.67664-29-philmd@linaro.org>
- <db0b2ce0-e702-4f32-b284-29cccc8d67ba@linaro.org>
-Content-Language: en-US
-In-Reply-To: <db0b2ce0-e702-4f32-b284-29cccc8d67ba@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+ Markus Armbruster <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 (RESEND) 00/20] Change ghes to use HEST-based offsets
+ and add support for error inject
+Message-ID: <20250715133423-mutt-send-email-mst@kernel.org>
+References: <cover.1749741085.git.mchehab+huawei@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1749741085.git.mchehab+huawei@kernel.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,99 +120,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/25 18:42, Philippe Mathieu-Daudé wrote:
-> Hi Markus,
+On Thu, Jun 12, 2025 at 05:17:24PM +0200, Mauro Carvalho Chehab wrote:
+> Hi Michael,
 > 
-> On 3/7/25 12:54, Philippe Mathieu-Daudé wrote:
->> Extract TCG and KVM definitions from machine.json to accelerator.json.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
->> ---
->>   MAINTAINERS                |  1 +
->>   qapi/accelerator.json      | 57 ++++++++++++++++++++++++++++++++++++++
->>   qapi/machine.json          | 47 -------------------------------
->>   qapi/qapi-schema.json      |  1 +
->>   accel/tcg/monitor.c        |  2 +-
->>   hw/core/machine-hmp-cmds.c |  1 +
->>   hw/core/machine-qmp-cmds.c |  1 +
->>   qapi/meson.build           |  1 +
->>   8 files changed, 63 insertions(+), 48 deletions(-)
->>   create mode 100644 qapi/accelerator.json
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index b1cbfe115bc..c3ce0d37779 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -507,6 +507,7 @@ F: accel/Makefile.objs
->>   F: accel/stubs/Makefile.objs
->>   F: cpu-common.c
->>   F: cpu-target.c
->> +F: qapi/accelerator.json
->>   F: system/cpus.c
->>   Apple Silicon HVF CPUs
->> diff --git a/qapi/accelerator.json b/qapi/accelerator.json
->> new file mode 100644
->> index 00000000000..00d25427059
->> --- /dev/null
->> +++ b/qapi/accelerator.json
->> @@ -0,0 +1,57 @@
->> +# -*- Mode: Python -*-
->> +# vim: filetype=python
->> +#
->> +# SPDX-License-Identifier: GPL-2.0-or-later
->> +
->> +##
->> +# = Accelerators
->> +##
->> +
->> +{ 'include': 'common.json' }
-> 
-> common.json defines @HumanReadableText, ...
-> 
-> [...]
-> 
->> +##
->> +# @x-query-jit:
->> +#
->> +# Query TCG compiler statistics
->> +#
->> +# Features:
->> +#
->> +# @unstable: This command is meant for debugging.
->> +#
->> +# Returns: TCG compiler statistics
->> +#
->> +# Since: 6.2
->> +##
->> +{ 'command': 'x-query-jit',
->> +  'returns': 'HumanReadableText',
->> +  'if': 'CONFIG_TCG',
-> 
-> ... which is *optionally* used here, triggering when
-> TCG is not built in:
-> 
-> qapi/qapi-commands-accelerator.c:85:13: error: 
-> ‘qmp_marshal_output_HumanReadableText’ defined but not used [- 
-> Werror=unused-function]
->     85 | static void 
-> qmp_marshal_output_HumanReadableText(HumanReadableText *ret_in,
->        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> cc1: all warnings being treated as errors
-> 
-> We previously discussed that issue:
-> https://mail.gnu.org/archive/html/qemu-devel/2021-06/msg02667.html
-> 
-> where you said:
-> 
-> "conditional commands returning an unconditional type is a bit
-> of a code smell". Is it however a "non-smelly instances of this pattern"?
+> This is v10 of the patch series, rebased to apply after release
+> 10.0. The only difference against v9 is a minor confict resolution.
 
-For now I'm queuing this patch moving only KVM definitions,
-not the conditional TCG one.
+Unfortunately, this needs a rebase on top of latest PCIHP
+changes in my tree.  The changes are non trivial, too.
+I should have let you know more early, sorry :(
 
-Regards,
 
-Phil.
+> I sent already the patch with conflicts, but, as you didn't pick,
+> I'm assuming you're opting to see the entire series again, as it
+> could make easier for you to use b4 or some other script you may
+> use to pick patches. So, let me resend the entire series.
+> 
+> It is nearly identical to v9 which addressed 3 issues:
+> 
+> - backward compatibility logic moved to version 10.0;
+> - fixed a compilation issue with target/arm/kvm.c (probably
+>   caused by some rebase - funny enough, incremental 
+>   compilation was fine here);
+> - added two missing SPDX comments.
+> 
+> As ghes_record_cper_errors() was written since the beginning
+> to be public and used by ghes-cper.c. It ended being meged
+> earlier because the error-injection series become too big,
+> so it was decided last year to split in two to make easier for
+> reviewers and maintainers to discuss.
+> 
+> This series change the way HEST table offsets are calculated,
+> making them identical to what an OSPM would do and allowing
+> multiple HEST entries without causing migration issues. It open
+> space to add HEST support for non-arm architectures, as now
+> the number and type of HEST notification entries are not
+> hardcoded at ghes.c. Instead, they're passed as a parameter
+> from the arch-dependent init code.
+> 
+> With such issue addressed, it adds a new notification type and
+> add support to inject errors via a Python script. The script
+> itself is at the final patch.
+> 
+> ---
+> 
+> v10:
+> - rebased on the top of current upstream:
+>   d9ce74873a6a ("Merge tag 'pull-vfio-20250611' of https://github.com/legoater/qemu into staging")
+> - solved a minor conflict
+> 
+> v9:
+> - backward compatibility logic moved to version 10.0;
+> - fixed a compilation issue with target/arm/kvm.c (probably
+>   caused by some rebase - funny enough, incremental 
+>   compilation was fine here);
+> - added two missing SPDX comments.
+> 
+> v8:
+>   - added a patch to revert recently-added changeset causing a
+>     conflict with these. All remaining patches are identical.
+> 
+> v7:
+>   - minor editorial change at the patch updating HEST doc spec
+>    with the new workflow
+> 
+> v6:
+> - some minor nits addressed:
+>    - use GPA instead of offset;
+>    - merged two patches;
+>    - fixed a couple of long line coding style issues;
+>    - the HEST/DSDT diff inside a patch was changed to avoid troubles
+>      applying it.
+> 
+> v5:
+> - make checkpatch happier;
+> - HEST table is now tested;
+> - some changes at HEST spec documentation to align with code changes;
+> - extra care was taken with regards to git bisectability.
+> 
+> v4:
+> - added an extra comment for AcpiGhesState structure;
+> - patches reordered;
+> - no functional changes, just code shift between the patches in this series.
+> 
+> v3:
+> - addressed more nits;
+> - hest_add_le now points to the beginning of HEST table;
+> - removed HEST from tests/data/acpi;
+> - added an extra patch to not use fw_cfg with virt-10.0 for hw_error_le
+> 
+> v2:
+> - address some nits;
+> - improved ags cleanup patch and removed ags.present field;
+> - added some missing le*_to_cpu() calls;
+> - update date at copyright for new files to 2024-2025;
+> - qmp command changed to: inject-ghes-v2-error ans since updated to 10.0;
+> - added HEST and DSDT tables after the changes to make check target happy.
+>   (two patches: first one whitelisting such tables; second one removing from
+>    whitelist and updating/adding such tables to tests/data/acpi)
+> 
+> Mauro Carvalho Chehab (20):
+>   tests/acpi: virt: add an empty HEST file
+>   tests/qtest/bios-tables-test: extend to also check HEST table
+>   tests/acpi: virt: update HEST file with its current data
+>   Revert "hw/acpi/ghes: Make ghes_record_cper_errors() static"
+>   acpi/ghes: Cleanup the code which gets ghes ged state
+>   acpi/ghes: prepare to change the way HEST offsets are calculated
+>   acpi/ghes: add a firmware file with HEST address
+>   acpi/ghes: Use HEST table offsets when preparing GHES records
+>   acpi/ghes: don't hard-code the number of sources for HEST table
+>   acpi/ghes: add a notifier to notify when error data is ready
+>   acpi/generic_event_device: Update GHES migration to cover hest addr
+>   acpi/generic_event_device: add logic to detect if HEST addr is
+>     available
+>   acpi/generic_event_device: add an APEI error device
+>   tests/acpi: virt: allow acpi table changes at DSDT and HEST tables
+>   arm/virt: Wire up a GED error device for ACPI / GHES
+>   qapi/acpi-hest: add an interface to do generic CPER error injection
+>   acpi/generic_event_device.c: enable use_hest_addr for QEMU 10.x
+>   tests/acpi: virt: update HEST and DSDT tables
+>   docs: hest: add new "etc/acpi_table_hest_addr" and update workflow
+>   scripts/ghes_inject: add a script to generate GHES error inject
+> 
+>  MAINTAINERS                                   |  10 +
+>  docs/specs/acpi_hest_ghes.rst                 |  28 +-
+>  hw/acpi/Kconfig                               |   5 +
+>  hw/acpi/aml-build.c                           |  10 +
+>  hw/acpi/generic_event_device.c                |  44 ++
+>  hw/acpi/ghes-stub.c                           |   7 +-
+>  hw/acpi/ghes.c                                | 233 ++++--
+>  hw/acpi/ghes_cper.c                           |  39 +
+>  hw/acpi/ghes_cper_stub.c                      |  20 +
+>  hw/acpi/meson.build                           |   2 +
+>  hw/arm/virt-acpi-build.c                      |  35 +-
+>  hw/arm/virt.c                                 |  19 +-
+>  hw/core/machine.c                             |   2 +
+>  include/hw/acpi/acpi_dev_interface.h          |   1 +
+>  include/hw/acpi/aml-build.h                   |   2 +
+>  include/hw/acpi/generic_event_device.h        |   1 +
+>  include/hw/acpi/ghes.h                        |  51 +-
+>  include/hw/arm/virt.h                         |   2 +
+>  qapi/acpi-hest.json                           |  35 +
+>  qapi/meson.build                              |   1 +
+>  qapi/qapi-schema.json                         |   1 +
+>  scripts/arm_processor_error.py                | 476 ++++++++++++
+>  scripts/ghes_inject.py                        |  51 ++
+>  scripts/qmp_helper.py                         | 703 ++++++++++++++++++
+>  target/arm/kvm.c                              |   7 +-
+>  tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5240 bytes
+>  .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5326 bytes
+>  tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6601 bytes
+>  tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7723 bytes
+>  tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5442 bytes
+>  tests/data/acpi/aarch64/virt/HEST             | Bin 0 -> 224 bytes
+>  tests/qtest/bios-tables-test.c                |   2 +-
+>  32 files changed, 1697 insertions(+), 90 deletions(-)
+>  create mode 100644 hw/acpi/ghes_cper.c
+>  create mode 100644 hw/acpi/ghes_cper_stub.c
+>  create mode 100644 qapi/acpi-hest.json
+>  create mode 100644 scripts/arm_processor_error.py
+>  create mode 100755 scripts/ghes_inject.py
+>  create mode 100755 scripts/qmp_helper.py
+>  create mode 100644 tests/data/acpi/aarch64/virt/HEST
+> 
+> -- 
+> 2.49.0
+
 
