@@ -2,91 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03043B0589E
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 13:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC468B058CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 13:30:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubdib-0006x2-GQ; Tue, 15 Jul 2025 07:21:05 -0400
+	id 1ubdqP-0005Eq-MV; Tue, 15 Jul 2025 07:29:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ubdhs-0006Tr-F5
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 07:20:20 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ubdhq-00022i-MY
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 07:20:20 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-60c79bedc19so9409025a12.3
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 04:20:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752578417; x=1753183217; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cWMocM6QAqDQpxLmEfZwga6mJPOav7XzAWImkVKgVg0=;
- b=ojtAHhlrHFjYZTF5gnpWkwqDX3pTixhBF3/0UdyGWaOJdgX1LpbYt+MbDcCgXIVBag
- JjjOi9XQ9KYxKLnVybvk7cxxxnvMgzPCFagNYevuOL/J+BkxSKDAb9r5FUzMM3P7kuHs
- QJBw525JkvudOXgmqN/8nN522fTk3MyANprLXimcfnKZg46zq4hmACi0yX6juQrGNoBr
- 6hWVhGYR4utjLgNBLsyXAZDIkh7PVAMJhS6NtSK4JSJ6EZ4odZ8ugApCTkHv0z8MGyPI
- IIlyGIiRLzdUIyUfj1TB6fe52kkHQeoS/crheoakBThwXFKmGWCJszQ0HeqOLKX12sMx
- PfAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752578417; x=1753183217;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cWMocM6QAqDQpxLmEfZwga6mJPOav7XzAWImkVKgVg0=;
- b=DOc9sy+wqbp6Xvv2We4XNj8f9Q8MnwPAMiydj2pkvY18qwfkmUx2VMp41frDiKsv4J
- 7Wdm+vepvMIbXYMU5ESHnnmWqEdhU+d7kaRXdXfmbk/ihSAY3wVCpAyJjJg/g36KIkOc
- 0WBf/Hc2yqK/BJ9UzyWVce855cd2JhU/gPHw0Na4TgsW+jOMKSMpSzBov+WH5XzuX1AQ
- lIMU+OUFuXRi5BIBcKnCc+LdXNAnGMggQDL6USRwEAeQQUl7fb/1a2x78rI/LedurcFo
- fe97eHLxCnRsS5Ttnbd2Koa7TZvemkXan1Ced3sxWDcEcSiP1XAi/iW3RqMttogCkgks
- p5JA==
-X-Gm-Message-State: AOJu0YxMRs48xfVkzWwHJayvMV8d3vVXXgh+LLn5U6bbBnr/B/zUXMAd
- ZsUgOaRgaDeYS4lW0/n5ywc4IjFxq/4PjkpBcoFIPapl5wYqsjzoZ9Qkj//HSe1mxDIHoG0j4cX
- FmcEE+9S8E6Q9NvVtdm/8KUL/m96FtMjPVkK8KZT8pQ==
-X-Gm-Gg: ASbGncsSLYmgQRiiz02ZGHqxMR5quC3eyX/4Ql7/2F3ZCZV46rAFQvwBipyFxGTRJ6Z
- LPtkQrHnoawl1DqlzGi6p/CyJ8OWYZ+V/GCZG03uoyptXMY0MgyEKgLkhEID3N2dgplcxhJb7yM
- WeXVp5EnYtCSnqqxkYbakM2E4v+r9Z4Zh/AQ7tWEKJbrUtQ2VcUP5SnhbWLaHVSF+PIXNyhl25k
- p2kp62bFN8NwzSnRw==
-X-Google-Smtp-Source: AGHT+IGONpUCo+IxO1tKzv5O38MP1ISShc22Rhi5hJsaeGaIB7iiVstZhqD7eyu6xC/22bIwAof4ukbNL6W0Fi2/k18=
-X-Received: by 2002:a50:d7d9:0:b0:608:6501:6a1f with SMTP id
- 4fb4d7f45d1cf-611e7610162mr9553523a12.1.1752578416705; Tue, 15 Jul 2025
- 04:20:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1ubdqG-0005Am-M7
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 07:29:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1ubdqB-0005HB-IX
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 07:29:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752578933;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=sqJsHTma5N5AL5TQNEsRLmKN9P/vknG7ydS3fCg/YQM=;
+ b=WnhdBfaeeDoJKOOwZ2WQOBs06rXqczvs/iVj4qJfd8QhoMalbf6kDZkKFFNhXEHjaWaPM/
+ cS61RtegnoMq5SNC6Guak4h7VfhCIO3B6kPU6kAQ9XIRXAYpo5I/DkSZlaSvS/uUWWOpXn
+ mfuJYGhvxDb/tc48rKcVD/Km6AmAb8Q=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-297-FTxLD6jfNfuDb3l8X5-BsQ-1; Tue,
+ 15 Jul 2025 07:28:51 -0400
+X-MC-Unique: FTxLD6jfNfuDb3l8X5-BsQ-1
+X-Mimecast-MFC-AGG-ID: FTxLD6jfNfuDb3l8X5-BsQ_1752578930
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BA1D21956080
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 11:28:50 +0000 (UTC)
+Received: from cash.home.annexia.org (unknown [10.44.32.10])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B80B93000198; Tue, 15 Jul 2025 11:28:48 +0000 (UTC)
+From: "Richard W.M. Jones" <rjones@redhat.com>
+To: jsnow@redhat.com
+Cc: crosa@redhat.com, qemu-devel@nongnu.org, berrange@redhat.com,
+ mhroncok@redhat.com
+Subject: [PATCH v2] python: Replace asyncio.get_event_loop for Python 3.14
+Date: Tue, 15 Jul 2025 12:27:51 +0100
+Message-ID: <20250715112846.799288-1-rjones@redhat.com>
 MIME-Version: 1.0
-References: <20250715104015.72663-1-philmd@linaro.org>
- <20250715104015.72663-2-philmd@linaro.org>
-In-Reply-To: <20250715104015.72663-2-philmd@linaro.org>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Tue, 15 Jul 2025 14:19:50 +0300
-X-Gm-Features: Ac12FXwdICfN91AWnKKpVJqALD4LHikY9zBusPw1doN8k7PvE5O90gHwnCoCRZw
-Message-ID: <CAAjaMXarV_CAzkfT8UJJgzPpMt6pbjUHT-FgHWwM5i=zbCr0dQ@mail.gmail.com>
-Subject: Re: [PATCH-for-10.1 v5 1/7] Revert "accel/tcg: Unregister the RCU
- before exiting RR thread"
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Eric Blake <eblake@redhat.com>, Cameron Esfahani <dirty@apple.com>,
- Mads Ynddal <mads@ynddal.dk>, 
- Phil Dennis-Jordan <phil@philjordan.eu>, Paolo Bonzini <pbonzini@redhat.com>, 
- Roman Bolshakov <rbolshakov@ddn.com>, Peter Maydell <peter.maydell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x533.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=rjones@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,35 +79,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 15, 2025 at 1:40=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> This reverts commit bc93332fe460211c2d2f4ff50e1a0e030c7b5159,
-> which was merged prematurely, re-introducing Coverity CID 1547782
-> (unreachable code).
->
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  accel/tcg/tcg-accel-ops-rr.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-> index a578698d071..6eec5c9eee9 100644
-> --- a/accel/tcg/tcg-accel-ops-rr.c
-> +++ b/accel/tcg/tcg-accel-ops-rr.c
-> @@ -302,8 +302,6 @@ static void *rr_cpu_thread_fn(void *arg)
->          rr_deal_with_unplugged_cpus();
->      }
->
-> -    rcu_unregister_thread();
-> -
->      g_assert_not_reached();
->  }
->
-> --
-> 2.49.0
->
+Updated the patch with the suggestions from Miro Hrončok & Daniel
+Berrangé, and retested it with Python 3.14 b4.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Rich.
+
 
