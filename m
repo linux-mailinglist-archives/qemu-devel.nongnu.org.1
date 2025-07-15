@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50EFDB0626C
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 17:10:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 663E5B0627C
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 17:11:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubhH2-0005yS-7W; Tue, 15 Jul 2025 11:08:53 -0400
+	id 1ubhGA-0004Wj-Ck; Tue, 15 Jul 2025 11:07:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubghZ-0003zM-PL
+ id 1ubghc-0003zY-UY
  for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:32:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubghT-0006bW-8Q
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:32:13 -0400
+ id 1ubghb-0006ch-1Y
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:32:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752589924;
+ s=mimecast20190719; t=1752589933;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IZ3foe1ZhYVOU+EUTtxX2+V2nOzECffCYWtzlONizqo=;
- b=hkO4ue4UqruV6mE4/sx46fiCMFxt91mzaaN7/xSEpCvRpxdbbrPQ0le9ZseU6UpxAJ+zBu
- CQwv1MuucjofVV2tRgOfKiQtoc5NE9E52QWcjUcCpIoChhcYivernZjgMJYqCTzdBm9kl5
- NacTTEXr6OlPisk79VryjgUskSl4nPM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=yzYihAHi2LaQQcUUG8xQC4gjom5PyI+zMgH+7AFzw2s=;
+ b=Sm79a5JCf8XkFIMGdME88vNtfdwKHU1RHMDTxkusq3HJof5399Er+ynnTS92QV15TpxkgW
+ azsgPuDNDiUu7ji2eUQN+3umaK/gD6BQUEyqhcJvkLaDqIT253ISp8JRBYM990VnNVj/D0
+ F4V3GDSwiBdz85MQXT+QTWzTXHRL8ok=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-370-1t56j7CSPpGy3ragLQ2WbQ-1; Tue,
- 15 Jul 2025 10:32:01 -0400
-X-MC-Unique: 1t56j7CSPpGy3ragLQ2WbQ-1
-X-Mimecast-MFC-AGG-ID: 1t56j7CSPpGy3ragLQ2WbQ_1752589920
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-463-VNPeAuLVMm-cgaaPQdMsmA-1; Tue,
+ 15 Jul 2025 10:32:09 -0400
+X-MC-Unique: VNPeAuLVMm-cgaaPQdMsmA-1
+X-Mimecast-MFC-AGG-ID: VNPeAuLVMm-cgaaPQdMsmA_1752589927
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4063F18001DF; Tue, 15 Jul 2025 14:32:00 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9DD3D19560A2; Tue, 15 Jul 2025 14:32:07 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.173])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BAA34180045B; Tue, 15 Jul 2025 14:31:51 +0000 (UTC)
+ id ECFEE180045B; Tue, 15 Jul 2025 14:32:00 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, Jagannathan Raman <jag.raman@oracle.com>,
@@ -54,16 +54,16 @@ Cc: Hanna Reitz <hreitz@redhat.com>, Jagannathan Raman <jag.raman@oracle.com>,
  qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 08/14] functional: ensure log handlers are closed
-Date: Tue, 15 Jul 2025 15:30:17 +0100
-Message-ID: <20250715143023.1851000-9-berrange@redhat.com>
+Subject: [PATCH 09/14] functional: ensure sockets and files are closed
+Date: Tue, 15 Jul 2025 15:30:18 +0100
+Message-ID: <20250715143023.1851000-10-berrange@redhat.com>
 In-Reply-To: <20250715143023.1851000-1-berrange@redhat.com>
 References: <20250715143023.1851000-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,32 +88,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This avoids a resource leak warning from python when the
-log handler is garbage collected.
+The multiprocess and virtio_gpu tests open sockets but then forget
+to close them, which triggers resource leak warnings
+
+The virtio_gpu test also fails to close a log file it opens.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/qemu_test/testcase.py | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/functional/test_multiprocess.py | 3 +++
+ tests/functional/test_virtio_gpu.py   | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index 2082c6fce4..71c7160adc 100644
---- a/tests/functional/qemu_test/testcase.py
-+++ b/tests/functional/qemu_test/testcase.py
-@@ -232,6 +232,7 @@ def tearDown(self):
-             self.socketdir = None
-         self.machinelog.removeHandler(self._log_fh)
-         self.log.removeHandler(self._log_fh)
-+        self._log_fh.close()
+diff --git a/tests/functional/test_multiprocess.py b/tests/functional/test_multiprocess.py
+index 751cf10e63..92d5207b0e 100755
+--- a/tests/functional/test_multiprocess.py
++++ b/tests/functional/test_multiprocess.py
+@@ -83,6 +83,9 @@ def do_test(self, kernel_asset, initrd_asset,
+                                           'cat /sys/bus/pci/devices/*/uevent',
+                                           'PCI_ID=1000:0012')
  
-     def main():
-         path = os.path.basename(sys.argv[0])[:-3]
-@@ -399,4 +400,5 @@ def tearDown(self):
-         for vm in self._vms.values():
-             vm.shutdown()
-         logging.getLogger('console').removeHandler(self._console_log_fh)
-+        self._console_log_fh.close()
-         super().tearDown()
++        proxy_sock.close()
++        remote_sock.close()
++
+     def test_multiprocess(self):
+         kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
+         if self.arch == 'x86_64':
+diff --git a/tests/functional/test_virtio_gpu.py b/tests/functional/test_virtio_gpu.py
+index 81c9156d63..be96de24da 100755
+--- a/tests/functional/test_virtio_gpu.py
++++ b/tests/functional/test_virtio_gpu.py
+@@ -108,6 +108,7 @@ def test_vhost_user_vga_virgl(self):
+             shell=False,
+             close_fds=False,
+         )
++        self._vug_log_file.close()
+ 
+         self.vm.set_console()
+         self.vm.add_args("-cpu", "host")
+@@ -135,6 +136,7 @@ def test_vhost_user_vga_virgl(self):
+                                           "features: +virgl +edid")
+         self.vm.shutdown()
+         qemu_sock.close()
++        vug_sock.close()
+         vugp.terminate()
+         vugp.wait()
+ 
 -- 
 2.49.0
 
