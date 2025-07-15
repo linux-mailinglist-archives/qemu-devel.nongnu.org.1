@@ -2,92 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A64B061B2
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 16:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47023B061B5
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 16:47:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubgvo-0007rS-6a; Tue, 15 Jul 2025 10:46:56 -0400
+	id 1ubgw3-00007T-3c; Tue, 15 Jul 2025 10:47:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubgE5-0000My-9s
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:01:55 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubgES-0000Ve-Ps
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:02:14 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubgE2-0004W1-7k
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:01:44 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3a531fcaa05so3143760f8f.3
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 07:01:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ubgEM-0004Yf-Rx
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:02:05 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-451d7b50815so36123625e9.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 07:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752588098; x=1753192898; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oELVOVKA0MGEve9Q14hme01S+F7vJ1BQLOYs79+MlnE=;
- b=Fpbk+wcBZO0V6dpwM9WIcJ3kyEMDhxjUzI9qg0NwRilTW+UUnz3ttuD41kfvo/OSHx
- 4k0KwttYDBs+EN9d7SkgsxjLI8DuywbHqK2lK6UfVDYRKy4XZEkwxJyDcjVB1pQbSxBK
- 0oei9JHe4AgHnurNHl1qLAUTZV99uPWfl+hphfdRKT6GKpmfuH7xoitvwrpg4wkz/g0E
- WnIhvlyFz9fsY/ECHztrs5Bn9loOjXc6GjBqJVWoVud9hiGm5hoLnVYP7B04ULR74Kot
- 0uz6Y3hktluICaYYYEVmq8ot8vrKVO6PDGfWwu172fpRz0+T1r8g28GSOf5Rp+FmjJFM
- w1KA==
+ d=linaro.org; s=google; t=1752588120; x=1753192920; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=UNlFSgzj2n1UwvZChUhOmnewBJp2CDZWtQZsad+y6Ew=;
+ b=X2FRzaokvGxxZ0vN0vl/DvPbYLsBh002YquvBji0Os2KEgVuQqBrHnNGu9mcekUqd3
+ DI7bxPE4BL47VCHyhMWS05NzKL1hNSg2QnvrYxXeAuheW8ahDqusIH9VSPDWDn+dhEz+
+ 6DuXdx4gUzm/8ojRd9tSwzKPJiXuEF+upr5cfUUO8OednMqnVZQMs65dOFOxBTPf7rRQ
+ xBRKiuP33BchVG06wkaAl7nFAeif58xvZ0PbFe7A7g8LN71sZ4E1cJy9RdXvV7kCU92g
+ 329SeXsBabWEK5Vlru4+9Bi0mgJsGbcnN7kcvtzOercb6uEQHbblPAN5+iJb1MqlxKxe
+ J2Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752588098; x=1753192898;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oELVOVKA0MGEve9Q14hme01S+F7vJ1BQLOYs79+MlnE=;
- b=Qiv38W821NQ5aGWACAsNBtAoTczGm5vq0vVhbO2Jamt8y9daRr+d0mwMWhWkTFZEUq
- ngzLnlm1ktF8MNjsQocBYqgGEGwV7WGz5Z4t18tBmj9vaa1RB0IqXx1mjxDFxITvYLoh
- BUrHy3z0l8IWbY+WIXJ19r0linScF3nIegUefoqMXcdXoLdYzIP44Tj1DaozbbkKeAFb
- YBQjtQ3fQ5Zuyao/qA4TN85C26GOsF09iXhGHEcOV5WgBOKO9rRbVYgHEX/3L9ukI9FC
- 3iWx1pfuY3hJTWX1bjf0ijvWKNjxbcN819K0Z+S/Nl+UM1/8PIDYn+FcdousmtetIK4C
- /bXw==
-X-Gm-Message-State: AOJu0Yy/bZp/HrAEQMjuBLGrB2NMwxcU61/zcSah9RVJrPO52sHLFEzi
- aFaVOrfw13mlH3wxTUjHQQNBqs1M80ScwAkgnz80/Prv2eZCjcWkJTIlZv2T8sfIDRW6A9z+uLy
- 98XGm
-X-Gm-Gg: ASbGncsauxrbqSswRx3jC5DOGikAD0mzefc7M8yFcjcTywomeSzhLNZcznUjP4Mu1+n
- oJFufT2Giw7KuTtG5CCmgH+0oCh/tXgDWJ728TG8wkWm98gHguZNW4wFEe2CyDFiLJhqqyEPqvE
- wRDEuXRTZ4WnH0OcmJUcc+0ySjo2tdWajIMiS/6Be744KwcCs7QyH2fr3fmQgWB2DHtTiuUA87y
- G/cO0JbwZPMV/Szv38eq0CZh8QRKYI6D3E8Umix++jgcuDusJiJWhe1KngX9r4O3uhCNXjWnAd1
- QmH5wn/aZcaIYWqcKnexe9CZF2oJcRUZ+PwebBc4KumPni8vs2LV4UwOCcqkWs6e3gk60eYHmhC
- SNAh5XpI+llkCtJVcimy4At5C3zRA2WvQ39LYK2fUGawzJWRH2ggRoHzlx2Ssn+3/B/K8L0YIGu
- OR7w==
-X-Google-Smtp-Source: AGHT+IFhcfsSVuk2qIVamaTXEBpqKqkAfKnwZJlz1xkHDkl/GwT1S7OC2frwtK0W/txuJ7NuWbOoVg==
-X-Received: by 2002:a05:6000:240d:b0:3a3:7987:945f with SMTP id
- ffacd0b85a97d-3b5f190000bmr15915830f8f.57.1752588097039; 
- Tue, 15 Jul 2025 07:01:37 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1752588120; x=1753192920;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UNlFSgzj2n1UwvZChUhOmnewBJp2CDZWtQZsad+y6Ew=;
+ b=ucpIj9gFg6kUCQ5UKVzNth0mdSZXI7BUxqld33sRBjU+F0TF7otzgRgNJAt8IehMEc
+ ByZBJeIOuausvBM4YxxOPTp870KQR+tuvdOnkbksLTZ6h/SUpSASi24TXfchnSf4qFg+
+ EP8wk5PzlP4jAFs4XklGPQdwwr3EBKZ7/OfAaaq93DcVuL5hIXEFvtOZ+UJ+zl/mtnZQ
+ yxSHXTzb7SZihc8kuoMrHrGR/I5E7Jw9J2n2os6GpmwPzhagTjekh38dNb6mru/U1k5u
+ HnvTbiAZSpsBq/BYJBi5KRp3HO9kux8qwjAXCvWlELS55TU4rVJrZp1RmjGA/OVtq9MX
+ plzQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVBW8JLJj4swyncafRqq3cmBKfFgXbo0d+0hRJ0OGN8kMDOzlMEEdyUTzkuP3AHqUlOloWGw56i0LIs@nongnu.org
+X-Gm-Message-State: AOJu0Yy+EuZPt47pjGF4m7Ohm8eKcdBGhjvzhiA66h2oEIpnv8rFKw3K
+ VEKhXbL0GQBwNIRIPEbQj7NtjKhKid1+MX5fwqCuPfSp1fFk1/FsVFR12f5cQIfzPbHhSmpMHTA
+ pcI4n
+X-Gm-Gg: ASbGncuFDry5XitY/V4VEqWuorqs7E244M7PgMr9MRuvXYYNprXbWg8l3hlzSzpiYn1
+ 5Q/7dvrTEqROVKHzY1oN1ZGG+jyoHzHc6/Ho0DBsxuDcfw4owkGCQ1QZwQFl5raVlV/jVyM58yg
+ 1VfhI7hnMqvz98rFg0t7W2sm/09iOFHaBeKKr1IXXAa8DXjl5SUEvZL6sPp+12PCmhmaW+jqBOg
+ JN0rbPpQzapFkLVtJEfmJQlhCVDN/o6lp0Mgza/uqtCJRshys/9/kRrWnhkNew9i4TCl34rtBla
+ Un7L6pXGRZDbQMviEEo1mpLuQ4Uto0XjJLG4ldR9cTw0KXFn/Ouc8T1evd40XNWB4O5Cf/eBbLv
+ WAIMhJdpc6TziumP/omk7I5ekMXLIwGQT6DjH/HYruW45SkUGqGVauLSXnUjYgSphKKFf9hk=
+X-Google-Smtp-Source: AGHT+IEOTDEhtZ2sQTDASygYd5Ho7vHVnuTfsTcxprlhtSrYVZibUkCZP6tUZFZcIyPpjUDvr7/+eQ==
+X-Received: by 2002:a05:600c:1c10:b0:456:1e5a:8879 with SMTP id
+ 5b1f17b1804b1-4561e5a903dmr66453555e9.9.1752588119184; 
+ Tue, 15 Jul 2025 07:01:59 -0700 (PDT)
+Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454dd43906dsm164616095e9.3.2025.07.15.07.01.35
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Jul 2025 07:01:36 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Laurent Vivier <laurent@vivier.eu>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>, Eric Blake <eblake@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Mads Ynddal <mads@ynddal.dk>
-Subject: [NOTFORMERGE PATCH-for-10.1 v6 8/8] linux-user: Dump TCG stats to
- logfile
-Date: Tue, 15 Jul 2025 16:00:48 +0200
-Message-ID: <20250715140048.84942-9-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250715140048.84942-1-philmd@linaro.org>
-References: <20250715140048.84942-1-philmd@linaro.org>
+ ffacd0b85a97d-3b5e8dc21fdsm15223556f8f.33.2025.07.15.07.01.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 15 Jul 2025 07:01:58 -0700 (PDT)
+Message-ID: <6c3f1467-8e47-4941-bd65-c27559b4bab5@linaro.org>
+Date: Tue, 15 Jul 2025 16:01:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] migration: Fix postcopy latency distribution
+ formatting computation
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+References: <20250715124552.28038-1-farosas@suse.de>
+ <20250715124552.28038-2-farosas@suse.de>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250715124552.28038-2-farosas@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,44 +102,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Running 'qemu-user -D stats.log' will dump TCG statistics
-to 'stats.log' before exiting.
+On 15/7/25 14:45, Fabiano Rosas wrote:
+> Coverity has caught a bug in the formatting of time intervals for
+> postcopy latency distribution display in 'info migrate'.
+> 
+> While bounds checking the labels array, sizeof is incorrectly being
+> used. ARRAY_SIZE is the correct form of obtaining the size of an
+> array.
+> 
+> Fixes: 3345fb3b6d ("migration/postcopy: Add latency distribution report for blocktime")
+> Resolves: Coverity CID 1612248
+> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>   migration/migration-hmp-cmds.c | 6 ++----
+>   1 file changed, 2 insertions(+), 4 deletions(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- linux-user/exit.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/linux-user/exit.c b/linux-user/exit.c
-index 1ff8fe4f072..17d2ad0517b 100644
---- a/linux-user/exit.c
-+++ b/linux-user/exit.c
-@@ -21,7 +21,9 @@
- #include "gdbstub/syscalls.h"
- #include "qemu.h"
- #include "user-internals.h"
-+#include "qemu/log.h"
- #include "qemu/plugin.h"
-+#include "tcg/tcg.h"
- 
- #ifdef CONFIG_GCOV
- extern void __gcov_dump(void);
-@@ -29,10 +31,14 @@ extern void __gcov_dump(void);
- 
- void preexit_cleanup(CPUArchState *env, int code)
- {
-+        g_autoptr(GString) buf = g_string_new("");
-+
- #ifdef CONFIG_GCOV
-         __gcov_dump();
- #endif
-         gdb_exit(code);
-         qemu_plugin_user_exit();
-         perf_exit();
-+        tcg_dump_stats(buf);
-+        qemu_log("TCG stats: %s", buf->str);
- }
--- 
-2.49.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
