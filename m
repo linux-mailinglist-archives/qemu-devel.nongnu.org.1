@@ -2,73 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE602B064B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 18:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B50B064B3
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 18:55:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubiuv-0008U9-87; Tue, 15 Jul 2025 12:54:10 -0400
+	id 1ubivR-0001tu-Bi; Tue, 15 Jul 2025 12:54:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubibQ-0001ro-3t
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:34:00 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1ubidV-0003tq-2a
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:36:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubibO-00024z-1m
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:33:59 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1ubidT-0002xe-E4
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 12:36:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752597236;
+ s=mimecast20190719; t=1752597366;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2IiM6oOq3bf8NGqHVqQwL/vI+ZcohsPzarKDhi0MFxw=;
- b=IxnR51z5otMn6Pg3ZooHKqk9gcxjfKsLJab7diZQF2feNa5i3WKXHkVv+gxGek75YKnOWO
- 1Kl7tmGAECQTfzfi0KP9672Mgi1eQX5iMWyYgGSbgbh4Plc1EmlxxSMJGn1aL3en+0hQs+
- 1WelNWvBhkz+KskCVzOjGxXs2hPKrAM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-e5Db-tDDOrKLfTbk-qmheQ-1; Tue,
- 15 Jul 2025 12:33:53 -0400
-X-MC-Unique: e5Db-tDDOrKLfTbk-qmheQ-1
-X-Mimecast-MFC-AGG-ID: e5Db-tDDOrKLfTbk-qmheQ_1752597233
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E5BAF1800247
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 16:33:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.173])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B947B19560AF; Tue, 15 Jul 2025 16:33:50 +0000 (UTC)
-Date: Tue, 15 Jul 2025 17:33:47 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Andrea Bolognani <abologna@redhat.com>
-Cc: Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/2] watchdog: generic name for i6300esb
-Message-ID: <aHaC6_2vdXJqdxLo@redhat.com>
-References: <20250610143259.1056400-1-cohuck@redhat.com>
- <20250610143259.1056400-3-cohuck@redhat.com>
- <aEhnbN1pSYgdi4EZ@redhat.com>
- <CABJz62O3FKYfUOyCLMotgYgckWV1frSUb=MtTW2J4fDTEg_==g@mail.gmail.com>
- <877c09792e.fsf@redhat.com> <aHZ7rpYFMWai-7RL@redhat.com>
- <CABJz62P+p_uYiatXroauLkG2AH2TnjS8drbHxLPsgY+=QSB8Lw@mail.gmail.com>
+ bh=ShMPyh1RRebJ1+FKIOsSra0OAkW1VG4bG3dUi1mKyhk=;
+ b=GPB2i9ucWTEhG5ohjnQFsT23JATJb+A3eb1lLCq9G2jdjg+C5a8lEsPi4b7sedJu6Mslrw
+ RxRiQbvDzfU3QNFWQNLLd5ggf3j2+aDnmoy/pT/MBIHR1gNm+cml1x4lmOdfyjDqvv03Ri
+ RIU2eMbWe+IbGGNYjeC77ObhKOPs+qA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-115-WfyVwYZnPx-KySdAaXYwzQ-1; Tue, 15 Jul 2025 12:36:04 -0400
+X-MC-Unique: WfyVwYZnPx-KySdAaXYwzQ-1
+X-Mimecast-MFC-AGG-ID: WfyVwYZnPx-KySdAaXYwzQ_1752597363
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a50816cc58so1986969f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 09:36:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752597363; x=1753202163;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ShMPyh1RRebJ1+FKIOsSra0OAkW1VG4bG3dUi1mKyhk=;
+ b=RSpJmvrCCOAVeaXFK2WYAp8s3pdL/6ZfQlaAnJMjaZGRjAkXXaxzkor/qw0mpe2OeW
+ mnrpefcwdcLcjbFeg/6+J0GWkf2fk5CZUJxBEiK+KwLyVauVMTQ0MHBZiRADLBadImEZ
+ bOopSbmM+xeJcnOPy1hu580He+mm9gBpOmDW2XvG3ypA+V27yFF+WBuIaTlcP21YuJZy
+ pAvPkJQ4M3AfSDrz90/+9VkfGu2L1asaBM3ExNak8MwvCJpFX3kOq74NXoB75rStgHCV
+ E4CY8EXPUPYrR18I89roPIS7drSjjX8h9g/Xs91kRgQex0s5bCAAtf6IId9S+Y6VREHJ
+ s/HQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUVHMqziTpZycjcJk7t+TmR+r3b+skdO6NIM6hwIyolzH3YORJ+vx9nIkb/7vBz7jUIG8/ZAQMZ3+cS@nongnu.org
+X-Gm-Message-State: AOJu0YxAW/mZj+maFp6uPSwxZRaOLgIvgWAs5djumOrmCvm7VXLCgrC5
+ jWk8+MOIiJbWyL4Ll4pGcTmG3StrVPnnnGjqpbdjhL6SWmpx+UonuS0RoO+2T+yuC2BvYnR3sFn
+ RRs5xmV9ME/6ayVXI1DbihFLjlRW/oEWGYSqnLReXphlgM2d3Q4k4dDT+
+X-Gm-Gg: ASbGncu4di7lJkAXgdAqf2Lm1s5+ONTATyUpYa9wPfbMRYvNAvGmf7mdJri1hLfGcXZ
+ O301fC1DttGtATeec24A1IHzFSBwvAK2toG/LPWKJ5UOyQ5Aeg1q6xHbPBndXyObzoGbkd07v3Q
+ 9MSA1DxX78qKP09/VEyLbIIBRNoiXVgyJMiNagQBJjs2UAhadW17M/HfbyR9X44tMt+gnaSBEf8
+ yG+6YEIDxSvl/KyUVeNRQESfJhSBV8oF+2cqch8ySeOMMIr/mlF0H3QoLUFkPXP2RDpkSzajKXv
+ bUbBe5y5Hc2fXB8MN2tSwS6FeHI7FuqrC8DIwvj6JTLq+AbQj9n6UEIqDQGsfhmmE6CHHyVkdx1
+ mBJ6lhh6xjxM=
+X-Received: by 2002:a05:6000:643:b0:3a5:25e0:1851 with SMTP id
+ ffacd0b85a97d-3b5f1875e37mr15895602f8f.7.1752597363444; 
+ Tue, 15 Jul 2025 09:36:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGby+GBrc1XY2Ds/yqVXjHtSwQ1ptYpfJbd+cSzzRZ8SDHOH3ZlrYqi8oTbQY58aylgykD9Uw==
+X-Received: by 2002:a05:6000:643:b0:3a5:25e0:1851 with SMTP id
+ ffacd0b85a97d-3b5f1875e37mr15895573f8f.7.1752597363035; 
+ Tue, 15 Jul 2025 09:36:03 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8dc9268sm15431871f8f.41.2025.07.15.09.36.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 15 Jul 2025 09:36:01 -0700 (PDT)
+Message-ID: <e543cd27-f70e-416f-b59d-bb681a207ab6@redhat.com>
+Date: Tue, 15 Jul 2025 18:36:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABJz62P+p_uYiatXroauLkG2AH2TnjS8drbHxLPsgY+=QSB8Lw@mail.gmail.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/20] vfio/iommufd: Force creating nested parent domain
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
+ joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
+ kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com
+References: <20250708110601.633308-1-zhenzhong.duan@intel.com>
+ <20250708110601.633308-5-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250708110601.633308-5-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,72 +115,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 15, 2025 at 09:16:24AM -0700, Andrea Bolognani wrote:
-> On Tue, Jul 15, 2025 at 05:02:54PM +0100, Daniel P. Berrangé wrote:
-> > On Tue, Jul 15, 2025 at 05:44:25PM +0200, Cornelia Huck wrote:
-> > > Hmm. So
-> > > - request a new PCI id (probably in the PCI_DEVICE_ID_REDHAT_* space)
-> > > - restructure to have two devices base off the same core functionality
-> > > - teach guest operating systems about the new device
-> > > - teach management software like libvirt about the new device
-> > >
-> > > Not sure how fast we can get an ID (or even how to go about it.) The
-> > > second step should be reasonably easy. The third step is the most
-> > > complex one, but at least teaching Linux should hopefully be easy
-> > > enough, and existing guest operating systems could continue to use the
-> > > existing device. The last step is probably not that bad.
-> > >
-> > > I can start down that path, if we have some consensus that this is the
-> > > right way to handle this.
-> > >
-> > > I'd still argue that patch 1 should be applied regardless :)
-> >
-> > This sounds like a hell of alot of busy work to fix a problem that, IIUC,
-> > does not actually exist from a functional POV - it is merely a perception
-> > issue that people might be put off by the "Intel 6300ESB" names.
-> >
-> > IMHO a better use of time is to expand documentation to clarify this is
-> > just fine for all PCI architectures, and change nothing in either QEMU
-> > or guest kernels.
-> 
-> Agreed that it's not the most high-reward endeavor, but IIRC users
-> were getting genuinely confused and annoyed by the string "Intel"
-> showing up in their aarch64 guests.
 
-So be it, that's far from the only wierd thing in virt.
 
-> You can point them to documentation over and over again, or you can
-> work to prevent the confusion/annoyance from showing up in the first
-> place. Which of the two approaches is a better use of anyone's time
-> is up for debate.
-> 
-> I for one am grateful that someone put the time in all those years
-> ago and, as a result, PCI and USB controllers don't suffer from the
-> problem today. Ultimately it's up to Connie though.
+On 7/8/25 1:05 PM, Zhenzhong Duan wrote:
+> Call pci_device_get_viommu_cap() to get if vIOMMU supports VIOMMU_CAP_STAGE1,
+> if yes, create nested parent domain which could be reused by vIOMMU to create
+> nested domain.
+>
+> It is safe because hw_caps & VIOMMU_CAP_STAGE1 cannot be set yet because
+> s->flts is forbidden until we support passthrough device with x-flts=on.
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-The PCI/USB controller situation is not the same tradeoff though.
-Those guest kernel drivers will identify and attach to these two
-controllers regardless of their PCI vendor/product, via the PCI
-class property. In that case changing the PCI ID and other device
-metadata in QEMU is cheap as it has no negative impact on guest OS
-driver compibility.
+Eric
 
-In the case of 6300ESB though the guest driver is tied directly to
-the currently used PCI device product/vendor ID.
-
-If we change this then we have actually created new functional
-problems with guest/QEMU compatibility, in order to placate a
-non-functional problem. That is not a good thing.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+>
+> Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
+> Suggested-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  hw/vfio/iommufd.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index 48c590b6a9..c172c177fc 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -20,6 +20,7 @@
+>  #include "trace.h"
+>  #include "qapi/error.h"
+>  #include "system/iommufd.h"
+> +#include "hw/iommu.h"
+>  #include "hw/qdev-core.h"
+>  #include "hw/vfio/vfio-cpr.h"
+>  #include "system/reset.h"
+> @@ -379,6 +380,19 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+>          flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
+>      }
+>  
+> +    /*
+> +     * If vIOMMU supports stage-1 translation, force to create nested parent
+> +     * domain which could be reused by vIOMMU to create nested domain.
+> +     */
+> +    if (vbasedev->type == VFIO_DEVICE_TYPE_PCI) {
+> +        VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
+> +
+> +        hw_caps = pci_device_get_viommu_cap(&vdev->pdev);
+> +        if (hw_caps & VIOMMU_CAP_STAGE1) {
+> +            flags |= IOMMU_HWPT_ALLOC_NEST_PARENT;
+> +        }
+> +    }
+> +
+>      if (cpr_is_incoming()) {
+>          hwpt_id = vbasedev->cpr.hwpt_id;
+>          goto skip_alloc;
 
 
