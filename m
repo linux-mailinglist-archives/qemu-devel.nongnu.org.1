@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BAAEB0628A
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 17:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E865EB0625B
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 17:07:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubhFn-0003yf-BI; Tue, 15 Jul 2025 11:07:35 -0400
+	id 1ubhFs-00045J-TQ; Tue, 15 Jul 2025 11:07:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubggq-0003Zb-8f
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:31:29 -0400
+ id 1ubgh4-0003lT-V7
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:31:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubggn-0006Wm-6P
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:31:28 -0400
+ id 1ubggw-0006Y1-7d
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 10:31:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752589882;
+ s=mimecast20190719; t=1752589892;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5JPC+kbOWzUd5lzM486OiMcy9RbtJKSJFRN42oWXHNo=;
- b=AVt8YFiMO0INQRy/CU+gdEbMXodmo7GZYBARt/OuPD7hCxdiF7zrSRqJIXWFyBKCa/ICft
- d3MOFt+DAQiLcxA1yZk+BYteKZGfk688z02M744PlNIgrAsAhcclyUJdBbztVvWzrGq/1b
- iJb0b+ca9wrxzHRQ1NeVbFSNUMX1Ud8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=HougeRGUQoKQWzLFt3pBzu7NGeq3jnotTER3D67Tr4A=;
+ b=S9GGGJ89O2sXW15YVDH1SS6l6ovT+zjH0nxPhVPl+4cnEcgoK+5m+mA8lS2529w3Dhc+ve
+ 8f9pXINl9GgoX3lkDc2mceVlPi08nPMtrRtBDYfrr41VdyRHcOQb+ySfGR5WrnKfywkoRp
+ XesdOaKMMD6Y412Ov0OY7xn6xFWk+Xk=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-ual90419OAS7DsHsRexILw-1; Tue,
- 15 Jul 2025 10:31:14 -0400
-X-MC-Unique: ual90419OAS7DsHsRexILw-1
-X-Mimecast-MFC-AGG-ID: ual90419OAS7DsHsRexILw_1752589873
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-395-yhLrqXfINQWZMktQr2q9gQ-1; Tue,
+ 15 Jul 2025 10:31:29 -0400
+X-MC-Unique: yhLrqXfINQWZMktQr2q9gQ-1
+X-Mimecast-MFC-AGG-ID: yhLrqXfINQWZMktQr2q9gQ_1752589888
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3C1D419560B6; Tue, 15 Jul 2025 14:31:13 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0A0F1195608A; Tue, 15 Jul 2025 14:31:28 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.173])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2BB5118002B1; Tue, 15 Jul 2025 14:31:04 +0000 (UTC)
+ id 65E9E180035C; Tue, 15 Jul 2025 14:31:14 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, Jagannathan Raman <jag.raman@oracle.com>,
@@ -54,9 +54,9 @@ Cc: Hanna Reitz <hreitz@redhat.com>, Jagannathan Raman <jag.raman@oracle.com>,
  qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 04/14] python: drop 'wait_closed' back compat helper
-Date: Tue, 15 Jul 2025 15:30:13 +0100
-Message-ID: <20250715143023.1851000-5-berrange@redhat.com>
+Subject: [PATCH 05/14] python: drop 'asyncio_run' back compat helper
+Date: Tue, 15 Jul 2025 15:30:14 +0100
+Message-ID: <20250715143023.1851000-6-berrange@redhat.com>
 In-Reply-To: <20250715143023.1851000-1-berrange@redhat.com>
 References: <20250715143023.1851000-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -70,9 +70,9 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,71 +93,53 @@ Our minimum python is now 3.9, so back compat with python
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- python/qemu/qmp/protocol.py |  3 +--
- python/qemu/qmp/util.py     | 29 -----------------------------
- 2 files changed, 1 insertion(+), 31 deletions(-)
+ python/qemu/qmp/util.py  | 19 -------------------
+ python/tests/protocol.py |  2 +-
+ 2 files changed, 1 insertion(+), 20 deletions(-)
 
-diff --git a/python/qemu/qmp/protocol.py b/python/qemu/qmp/protocol.py
-index 9a7ada4a1e..deb6b20d29 100644
---- a/python/qemu/qmp/protocol.py
-+++ b/python/qemu/qmp/protocol.py
-@@ -41,7 +41,6 @@
-     flush,
-     pretty_traceback,
-     upper_half,
--    wait_closed,
- )
- 
- 
-@@ -830,7 +829,7 @@ async def _bh_close_stream(self, error_pathway: bool = False) -> None:
- 
-         self.logger.debug("Waiting for StreamWriter to close ...")
-         try:
--            await wait_closed(self._writer)
-+            await self._writer.wait_closed()
-         except Exception:  # pylint: disable=broad-except
-             # It's hard to tell if the Stream is already closed or
-             # not. Even if one of the tasks has failed, it may have
 diff --git a/python/qemu/qmp/util.py b/python/qemu/qmp/util.py
-index 39fc341f2f..b5e9750576 100644
+index b5e9750576..7f9e718154 100644
 --- a/python/qemu/qmp/util.py
 +++ b/python/qemu/qmp/util.py
-@@ -104,35 +104,6 @@ def create_task(coro: Coroutine[Any, Any, T],
+@@ -104,25 +104,6 @@ def create_task(coro: Coroutine[Any, Any, T],
      return asyncio.ensure_future(coro, loop=loop)
  
  
--async def wait_closed(writer: asyncio.StreamWriter) -> None:
+-def asyncio_run(coro: Coroutine[Any, Any, T], *, debug: bool = False) -> T:
 -    """
--    Python 3.6-compatible `asyncio.StreamWriter.wait_closed` wrapper.
+-    Python 3.6-compatible `asyncio.run` wrapper.
 -
--    :param writer: The `asyncio.StreamWriter` to wait on.
+-    :param coro: A coroutine to execute now.
+-    :return: The return value from the coroutine.
 -    """
 -    if sys.version_info >= (3, 7):
--        await writer.wait_closed()
--        return
+-        return asyncio.run(coro, debug=debug)
 -
 -    # Python 3.6
--    transport = writer.transport
--    assert isinstance(transport, asyncio.WriteTransport)
+-    loop = asyncio.get_event_loop()
+-    loop.set_debug(debug)
+-    ret = loop.run_until_complete(coro)
+-    loop.close()
 -
--    while not transport.is_closing():
--        await asyncio.sleep(0)
--
--    # This is an ugly workaround, but it's the best I can come up with.
--    sock = transport.get_extra_info('socket')
--
--    if sock is None:
--        # Our transport doesn't have a socket? ...
--        # Nothing we can reasonably do.
--        return
--
--    while sock.fileno() != -1:
--        await asyncio.sleep(0)
+-    return ret
 -
 -
- def asyncio_run(coro: Coroutine[Any, Any, T], *, debug: bool = False) -> T:
-     """
-     Python 3.6-compatible `asyncio.run` wrapper.
+ # ----------------------------
+ # Section: Logging & Debugging
+ # ----------------------------
+diff --git a/python/tests/protocol.py b/python/tests/protocol.py
+index db5d54d83f..4a0ee94727 100644
+--- a/python/tests/protocol.py
++++ b/python/tests/protocol.py
+@@ -8,7 +8,7 @@
+ 
+ from qemu.qmp import ConnectError, Runstate
+ from qemu.qmp.protocol import AsyncProtocol, StateError
+-from qemu.qmp.util import asyncio_run, create_task
++from qemu.qmp.util import create_task
+ 
+ 
+ class NullProtocol(AsyncProtocol[None]):
 -- 
 2.49.0
 
