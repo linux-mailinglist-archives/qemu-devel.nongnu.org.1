@@ -2,92 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B79D0B0563B
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 11:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E176EB05647
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 11:25:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubbrk-0001Sg-Ur; Tue, 15 Jul 2025 05:22:26 -0400
+	id 1ubbuS-0004A9-W8; Tue, 15 Jul 2025 05:25:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubbrT-0001Q2-Q9
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:22:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubbuR-00048u-2w
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:25:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubbrP-00023N-JJ
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:22:07 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ubbuO-0002m7-Ak
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:25:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752571320;
+ s=mimecast20190719; t=1752571507;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=oR1PDVnZhgu3pT7GkP3NYWwwEvK29p9dkZG1H3mvDLI=;
- b=hoacfAGJFVnzw80ipxJxcj8LK31OrR7XKjhNhK7swwJjglDcSWgcUkaVsT4VlScImzsvff
- pMg8w2hMewpfJCQ03S5XqGbMJj0VDsgJzIS64XFA5zlMjZKcAm5uOSiKyPOF8F4FHaeP8q
- a68N9Q9UQsDIsNHam5u2FEEkYkkDpVc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=buIRkHnvb4fSBDO8wBdvc7FHno8E6FZPFPoKmrJoMY0=;
+ b=ZCWVKJOmwwmn1bcH2SWAtEA+8hjPpHaXq1C+ik5Rhdms8H4R0ltDojPYcE0tQn0S3IxwjP
+ 5tCiCFCVEAgLGj6+W3D3LKFwBS6R4h75CkyhFWZXkUP6CsQL7zzKaWzTVd4m3X9nWZ/DZu
+ TwUMIo3eoaXBRjRCwRZTDAR3rziOpzg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-490-kkWg3oyxMOyF2Zvhz09LVA-1; Tue, 15 Jul 2025 05:21:59 -0400
-X-MC-Unique: kkWg3oyxMOyF2Zvhz09LVA-1
-X-Mimecast-MFC-AGG-ID: kkWg3oyxMOyF2Zvhz09LVA_1752571318
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-455ea9cb0beso30006995e9.0
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 02:21:59 -0700 (PDT)
+ us-mta-195-GyG5Z6t3MuOCQ-4OCna_xw-1; Tue, 15 Jul 2025 05:25:04 -0400
+X-MC-Unique: GyG5Z6t3MuOCQ-4OCna_xw-1
+X-Mimecast-MFC-AGG-ID: GyG5Z6t3MuOCQ-4OCna_xw_1752571503
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-456106b7c4aso8975595e9.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 02:25:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752571318; x=1753176118;
+ d=1e100.net; s=20230601; t=1752571503; x=1753176303;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oR1PDVnZhgu3pT7GkP3NYWwwEvK29p9dkZG1H3mvDLI=;
- b=CqSTUQotEKPNH9s4eQNqObtgi9B6HFuUFMRKIqBHPPBtOK5z7q2l1BmQJciq4NASFC
- tpBR0PpH3dN2gXIaDTzgyO8QNrFXX3jjtF5hdABF1nWtBr9R6VDnPA0Pc6yXodwYHNSX
- YNWyiljtOoqOvCjEFmPOUfDCS+Kl6JEjtHc1YpwKSUdoAcyTmXq774H1jzbQ8fUVPfFs
- li6tJojUkPaKbSWiNArFTUECYqY0lt9G+i8/9rjRrjFwHAngH1CXVQOEY3RlUYV5vNVb
- ffgbjpt8CVr1GPlfWDaofoPyqUXU8RVDSljzdgI0BqrlnH7N8C8q+WvlOQhF7sacpPFD
- dXcA==
+ bh=buIRkHnvb4fSBDO8wBdvc7FHno8E6FZPFPoKmrJoMY0=;
+ b=qIcBBgyGoqCbT6OmPRQmGMOdvbDzX7OMKVFX2k2iFJR0PyFSfeEjOi1r+gy2Zchq19
+ 34qFGM+V/2zizwFqB8CYGa0tlJDjk47OK5xScrx15m1VqwCWP3AQM+Re0X8LL6pBZIT1
+ iZvtBlZJAd3y1Zaw/Ij4a6zhEMjcGtpE+tjLkj4iJBFNbif53sXoooYpWnPheuwX16J1
+ NpaW9F+0VQlt15KeYbKHOr/zPpkx2ssa+iuopWPHOF/X8NexWgknFAQ1LiVvCAnw/E2o
+ rCLwFuU+ieqd1wfkm20hxBH9lCsKB24iSlQ92SJgsiIPheY/C2XMiJAuYGuL6KqS+g2Y
+ JEQw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXApt/GN+EGjcENG+FtovdbWLNJHwS6E+JR1cf9bxnFzEyfRUX0kwUIpcsYZOQbvmPFR9gyHQJHP7BI@nongnu.org
-X-Gm-Message-State: AOJu0YxhJet0i2y/AShouwcFPDGDZnIaBqnHaUdb/8biXYQlK7DFu+kA
- 3JETETkNjFAQVY4hAJ+kwovBDjq+kGwPtGGGY53EGXf0MYfKZ6LelKkW0oYWb5UCqHjzp32K1AR
- 0qdqWSeazNSGw7G2DBjPLwzyoe52O3Qh5VnIkrybWtAZ89HpNugAMqP7F
-X-Gm-Gg: ASbGncsCYoV7pPwwIJ2Ao27n/7Yj9JpyXhyuO8QAMmkEiO2n9/DUWGcSuvKl8AflVCd
- 4xD72lOz5RRe4Ccm6TBrCfwrS3230knPG8zVu/DGcEfYiwKL9lCMgOeXGpmKvI0oL8sr3w6uo4u
- gua9FiDesL11WTgw6fMFPvqKyMluXT5H6F+dRQw4/ZD8xAusVI3q2sczZn+U5r083f7XRX9y2bE
- jUXxpBk3k/VQgZYRCTFHyHSDXeVK2VeF5LZz4BhWN5EXntqFYZX3bf3jvoeGbTR5b27/fSXo2d2
- SLNmu/SYUWjNBAzAQVXz8LyxrEtDJlhEwRIYpW1qVMyZaulZDrQ6MqQh+7xrRXtbuafKbA6J2DM
+ AJvYcCWtMdW3le33sKoHaI4YeCEiIobKBy7gQXlCqPumQEa9u2pce+GEFTkRoJIX0Ll2nGCBwLXdJO2i4Ghz@nongnu.org
+X-Gm-Message-State: AOJu0YxXcyO7tfgpxAIOllVui8zXaWHDlBDMFtCP/nHXVfk5Y2/Vau4+
+ Yr120Yo2hOe7CYgRSvnt8Ytnjs8IYIrILDDRvnzDHzQ0p05Fp7dudUc2M4il41oiDQ54KxAz9rk
+ ux08+p7xrvFtijMxJX3plnkF6LowzdF6uFarYbXkVwK8BiHO9KmeSpB/Z
+X-Gm-Gg: ASbGncvGsbw7CElN8+gZbTY5XtP/fjsmnuqGysNjcAACgK4NLfjV+t61alcPlMTdeyY
+ Vr/aQovYNqgTWRKP2xnSPMo1pRBUN0bGNMboxIxb6LIkYuKwfwFRJOgaL4tcTCJ9BHWbHohGMPY
+ KHS7iefJ5wJ43YzWNDivQm5gaWFKQSv73SQuYtXtelVOROCNe5loD/d3PeJ0HdEyup3uEGj4qAs
+ I7Qq53O+Cqt4M/7ERIL4yXhVeg/aopl1zeGLm/xwDkLehxx5D471q4VOs2/1YhdZyteIduFXozg
+ wiWyhsHCJSxGIorbUhCZHUzefL5YAx0jEeyC+saj5O40D0ifXYjoGzQW9LTOkGjemezcZ0SKUbY
  =
-X-Received: by 2002:a05:600c:8b07:b0:456:1752:2b43 with SMTP id
- 5b1f17b1804b1-4561752359dmr71027935e9.21.1752571318114; 
- Tue, 15 Jul 2025 02:21:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF++nvvw00UtxNe1Qn9qPGKQaBlwp6+hvm180RdU8mDHCTmUsoy+mk2rHtY8+qXsI3VrOmEbg==
-X-Received: by 2002:a05:600c:8b07:b0:456:1752:2b43 with SMTP id
- 5b1f17b1804b1-4561752359dmr71027625e9.21.1752571317700; 
- Tue, 15 Jul 2025 02:21:57 -0700 (PDT)
+X-Received: by 2002:a05:600c:1d8a:b0:456:1122:8342 with SMTP id
+ 5b1f17b1804b1-45625e2a951mr22749465e9.5.1752571502823; 
+ Tue, 15 Jul 2025 02:25:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEoyb+TyS3zO0+/QabBse5zMuxXT/dibI8V2KoJ7FdylmlN49PvPazGBgSwbA7f3vFLMZncaQ==
+X-Received: by 2002:a05:600c:1d8a:b0:456:1122:8342 with SMTP id
+ 5b1f17b1804b1-45625e2a951mr22749185e9.5.1752571502422; 
+ Tue, 15 Jul 2025 02:25:02 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:165:d60:266c:b13b:afd7:40fd?
  ([2a01:e0a:165:d60:266c:b13b:afd7:40fd])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4560394e061sm98911175e9.31.2025.07.15.02.21.56
+ 5b1f17b1804b1-454dd538b63sm157339755e9.19.2025.07.15.02.25.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Jul 2025 02:21:57 -0700 (PDT)
-Message-ID: <964728df-afff-4e7a-b1f1-f920e6a7913f@redhat.com>
-Date: Tue, 15 Jul 2025 11:21:51 +0200
+ Tue, 15 Jul 2025 02:25:01 -0700 (PDT)
+Message-ID: <b87ed404-4214-4d83-9912-95609903eba6@redhat.com>
+Date: Tue, 15 Jul 2025 11:25:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] vfio/migration: Add
- x-migration-load-config-after-iter VFIO property
+Subject: Re: [PATCH 0/3] VFIO multifd device state transfer patches for QEMU
+ 10.1
 To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
- <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Eric Auger <eric.auger@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Avihai Horon <avihaih@nvidia.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Avihai Horon <avihaih@nvidia.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
 References: <cover.1750787338.git.maciej.szmigiero@oracle.com>
- <22e94f25448f9ff42b84c84df3960c4ecc94cbdc.1750787338.git.maciej.szmigiero@oracle.com>
- <9bfa5e01-37a9-4e2a-bff5-264909e0dab9@redhat.com>
- <8a541c48-15d9-4609-bad7-a1606eeff22e@maciej.szmigiero.name>
+ <59a87a67-9283-4dd0-a29b-dae58fffe9ea@maciej.szmigiero.name>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -133,10 +130,10 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <8a541c48-15d9-4609-bad7-a1606eeff22e@maciej.szmigiero.name>
+In-Reply-To: <59a87a67-9283-4dd0-a29b-dae58fffe9ea@maciej.szmigiero.name>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -161,21 +158,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->> Using 'strcmp(target_name(), "aarch64")' is quite unique in the QEMU code
->> base, and to be honest, I’m not too keen on adding it unless there’s really
->> no other option.
->
-> The previous versions simply tested the TARGET_ARM macro but commit
-> 5731baee6c3c ("hw/vfio: Compile some common objects once") made the
-> migration-multifd.c file target-independent so it cannot use target-specific
-> macros now.
+On 7/14/25 11:46, Maciej S. Szmigiero wrote:
+> On 24.06.2025 19:51, Maciej S. Szmigiero wrote:
+>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>
+>> When VFIO multifd device state transfer support was merged in QEMU 10.0
+>> some of patches were separated for the future QEMU release after the
+>> spring cleanup.
+>>
+>> Since QEMU 10.1 code freeze is getting closer let's have them reviewed
+>> now.
+>>
 > 
-> Another option would be to move vfio_load_config_after_iter() to helpers.c
-> since that file is target-dependent and can simply test TARGET_ARM
-> macro (#if defined(TARGET_ARM)) instead of doing strcmp(target_name(), "aarch64")
-> which I agree looks weird.
+> Hey Cédric,
+> 
+> I see these patches in your "vfio-10.1" GitHub tree
 
-This would look better than testing target_name(). Let's do that.
+vfio-x.y is the branch I use for vfio-next candidates.
+
+
+> but I don't see them
+> as a pull request on the qemu-devel mailing list.
+> > Are you going to post them? - the soft code freeze is tomorrow.
+
+We still have some time. Let's see how v2 looks like.
+
+I would prefer to have some feedback from the virt-arm team or
+a Tested-by at least.
 
 Thanks,
 
