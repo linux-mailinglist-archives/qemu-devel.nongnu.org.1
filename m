@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8650EB0568B
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 11:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73066B0568C
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 11:35:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubbzP-0007Go-Bd; Tue, 15 Jul 2025 05:30:19 -0400
+	id 1ubbzV-0007NM-Dj; Tue, 15 Jul 2025 05:30:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubbyw-00076C-Fo
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:29:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1ubbyy-00076S-3i
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:29:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubbyu-0005Me-Bg
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:29:50 -0400
+ id 1ubbyv-0005Mr-2z
+ for qemu-devel@nongnu.org; Tue, 15 Jul 2025 05:29:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752571786;
+ s=mimecast20190719; t=1752571787;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QpWqU00kyJ46uBJX/8q6m9qNXL/f5lMMPqQt/sAr2V0=;
- b=OrLBw+29Ryhdr4upmjTvhpZzB7hJDUz3GF9aeaVP8r8zjzHDP/t1nTCNItAmrZPICXipPf
- NnoShTFO6kYUisGAhmIl1fW9+4ARGirtA1tjP+yeTmq8LDhTlgoE6iQ72+/vZtC4+4iD0T
- 7I9GM0Tk3Owu/K6U3vKnE7oerfl3qMo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=8AUPVGBXS/Kui/rrOIuFW46BClYNN60cHLU9rgFNq00=;
+ b=Zweff70l9iNwRxDLd8skxPzojKaSg9YZPK11tr/TTl8vMYdVq293wOC2y25tuj7hcyUZYM
+ pnHG7y7miugFnIZA/0Lyyh3baU3eXOI0TwveaZDHXOCytoHSmRSTgatqUFc+kkSu/x61Gw
+ I/0tSHwWY8//rJL0dckFvo5B3cG76RA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-uA0HOz4XMG-6yf2mA6KFlg-1; Tue,
- 15 Jul 2025 05:29:44 -0400
-X-MC-Unique: uA0HOz4XMG-6yf2mA6KFlg-1
-X-Mimecast-MFC-AGG-ID: uA0HOz4XMG-6yf2mA6KFlg_1752571784
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-621-mqshwitKPG-LucKGaI2aGg-1; Tue,
+ 15 Jul 2025 05:29:45 -0400
+X-MC-Unique: mqshwitKPG-LucKGaI2aGg-1
+X-Mimecast-MFC-AGG-ID: mqshwitKPG-LucKGaI2aGg_1752571785
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DD59B19560AD
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 09:29:43 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2BDE418011DF
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 09:29:45 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.173])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 09B621977000; Tue, 15 Jul 2025 09:29:42 +0000 (UTC)
+ id 4C48D1977000; Tue, 15 Jul 2025 09:29:44 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 5/7] crypto: remove extraneous pointer usage in gnutls certs
-Date: Tue, 15 Jul 2025 10:29:30 +0100
-Message-ID: <20250715092932.1395271-6-berrange@redhat.com>
+Subject: [PATCH 6/7] crypto: fix error reporting in cert chain checks
+Date: Tue, 15 Jul 2025 10:29:31 +0100
+Message-ID: <20250715092932.1395271-7-berrange@redhat.com>
 In-Reply-To: <20250715092932.1395271-1-berrange@redhat.com>
 References: <20250715092932.1395271-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,58 +83,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'gnutls_x509_crt_t' type is already a pointer, not a struct,
-so the extra level of pointer indirection is not needed.
+The loop that checks the CA certificate chain can fail to report
+an error message if one of the certs in the chain has an issuer
+than is not present in the chain. In this case, the outer loop
+'while (checking_issuer)' will terminate after failing to find
+the issuer, and no error message will be reported.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/tlscredsx509.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ crypto/tlscredsx509.c | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
 
 diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
-index ec6ff43af2..95ddfe2f98 100644
+index 95ddfe2f98..d6897ca57b 100644
 --- a/crypto/tlscredsx509.c
 +++ b/crypto/tlscredsx509.c
-@@ -317,25 +317,25 @@ qcrypto_tls_creds_check_authority_chain(QCryptoTLSCredsX509 *creds,
-                                         bool isCA,
+@@ -318,11 +318,11 @@ qcrypto_tls_creds_check_authority_chain(QCryptoTLSCredsX509 *creds,
                                          Error **errp)
  {
--    gnutls_x509_crt_t *cert_to_check = &cert;
-+    gnutls_x509_crt_t cert_to_check = cert;
-     int checking_issuer = 1;
-     int retval = 0;
+     gnutls_x509_crt_t cert_to_check = cert;
+-    int checking_issuer = 1;
+-    int retval = 0;
++    gnutls_datum_t dn = {};
++    int rv;
  
-     while (checking_issuer) {
-         checking_issuer = 0;
+-    while (checking_issuer) {
+-        checking_issuer = 0;
++    for (;;) {
++        gnutls_x509_crt_t cert_issuer = NULL;
  
--        if (gnutls_x509_crt_check_issuer(*cert_to_check,
--                                         *cert_to_check)) {
-+        if (gnutls_x509_crt_check_issuer(cert_to_check,
-+                                         cert_to_check)) {
-             /*
-              * The cert is self-signed indicating we have
-              * reached the root of trust.
-              */
-             return qcrypto_tls_creds_check_cert(
--                creds, *cert_to_check, cacertFile,
-+                creds, cert_to_check, cacertFile,
-                 isServer, isCA, errp);
-         }
+         if (gnutls_x509_crt_check_issuer(cert_to_check,
+                                          cert_to_check)) {
+@@ -337,19 +337,30 @@ qcrypto_tls_creds_check_authority_chain(QCryptoTLSCredsX509 *creds,
          for (int i = 0; i < ncacerts; i++) {
--            if (gnutls_x509_crt_check_issuer(*cert_to_check,
-+            if (gnutls_x509_crt_check_issuer(cert_to_check,
+             if (gnutls_x509_crt_check_issuer(cert_to_check,
                                               cacerts[i])) {
-                 retval = qcrypto_tls_creds_check_cert(
-                     creds, cacerts[i], cacertFile,
-@@ -343,7 +343,7 @@ qcrypto_tls_creds_check_authority_chain(QCryptoTLSCredsX509 *creds,
-                 if (retval < 0) {
-                     return retval;
-                 }
--                cert_to_check = &cacerts[i];
-+                cert_to_check = cacerts[i];
-                 checking_issuer = 1;
+-                retval = qcrypto_tls_creds_check_cert(
+-                    creds, cacerts[i], cacertFile,
+-                    isServer, isCA, errp);
+-                if (retval < 0) {
+-                    return retval;
+-                }
+-                cert_to_check = cacerts[i];
+-                checking_issuer = 1;
++                cert_issuer = cacerts[i];
                  break;
              }
+         }
++        if (!cert_issuer) {
++            break;
++        }
++
++        if (qcrypto_tls_creds_check_cert(creds, cert_issuer, cacertFile,
++                                         isServer, isCA, errp) < 0) {
++            return -1;
++        }
++
++        cert_to_check = cert_issuer;
+     }
+ 
++    rv = gnutls_x509_crt_get_dn2(cert_to_check, &dn);
++    if (rv < 0) {
++        error_setg(errp, "Unable to fetch cert DN: %s",
++                   gnutls_strerror(rv));
++        return -1;
++    }
++    error_setg(errp, "Cert '%s' has no issuer in CA chain", dn.data);
++    gnutls_free(dn.data);
+     return -1;
+ }
+ 
 -- 
 2.49.0
 
