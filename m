@@ -2,91 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BF7B06890
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 23:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE22B068D7
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Jul 2025 23:51:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubnEg-0007HB-Cn; Tue, 15 Jul 2025 17:30:54 -0400
+	id 1ubnWc-0003lP-KM; Tue, 15 Jul 2025 17:49:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ubnD8-0006ek-SI
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 17:29:16 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ubnD6-000404-V2
- for qemu-devel@nongnu.org; Tue, 15 Jul 2025 17:29:14 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-235ea292956so56133415ad.1
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 14:29:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752614951; x=1753219751; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6l+0C+UGbHAJtkqka30GvC5sClrPTPa6suxK3B3wEQY=;
- b=oxfiJfvWQzQQ/n5KCGOj0ht9sk19kLicY/wpw4qLRqFjuCDtadcpdXch5pBy+smbd5
- w+xjRtsSsgSyJfhFbB7Wb/9qelGe9So+pePOTZi2uF1sqaIwtll1mgpo4DI/fS3m2XKp
- mnY9LbfRANiuy9WQNTc9kADznkKW4GfS7edC0UyCIkz25Qm+Q/PK+DHpyCBeyQ1zsLTC
- nuiie71yNKwMc1YyQu01qqn8CUTOJk8fPb9VOQVFsvMXlTJjSmZ4yFIOWOgm7Jos6cIi
- tsy0LZExR2P/3ykDkhqKd8OitYWytGIbj16z+wDsMhtHFc54j5wIU3QOsiJXaACD4EYV
- mFtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752614951; x=1753219751;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6l+0C+UGbHAJtkqka30GvC5sClrPTPa6suxK3B3wEQY=;
- b=Df/58pCoWbbyQVJMe9FYjcdYlyc6sOODahu87BkO6Y4oh2Qr4nCDFqiOsMn0FjLrFh
- z+jbZtrMMdGuppTuM+QyZhNATFb7x+BUPCfM4dN+2WOwxO8l9R/7Cm9RJPyuW1QWbE5a
- J31ZCPITHIUEpZeV5R7DpL64R3AVQIRlbXatuDjlKQVZCprl5RghuMdjviyWJDvi7x5d
- wqN5X7YWXS36TArRO0pAlH3T4p9D9wertL0onlakqHQsT1seOOk0uPNjNP/loc6SIE+z
- LNizUw7h/g5bTFPbVS7XsAn152F4IBorme9XuCCNBJjLG3zbPMtZfBZiX/s2qK8Gsm70
- sNSA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVjZm5Lj0muIA9yzpA+/vuGwHPyTAE32OOzUJ9TnfyXZdf+voty9GcCwPuP/MZH3LRV4jn/f/P9mhlG@nongnu.org
-X-Gm-Message-State: AOJu0Yx7szpTM3ogY64SyAY9hQXanI+/SYUV1vzVVqPwhldNabfCo/JU
- K52nBGXVqo8tt7PKvyDow+WA9cJiNaPztRHIuqSF13sYA0Q8UkoVDnF+aWyXOcr7jEc=
-X-Gm-Gg: ASbGncvJN2PlXMf7A9UqMqC9BmDnlHpccMI6Ho9mQKvfPSXRsXVtsmVm7NC66KRuM2l
- AkxPiW8A1KY/2br4/f1P1rLvXm+UNksvkWpGk7SE81bYrQEktO11rePCSZvR+1SEtIT+rLKEceN
- xGvLBjUpAB686g0bluildgUaBq8prwlOgOt72qyyYTzNLMGFQviTSNL2udIM+yJyrynzoqMllOC
- WYF3foztnowk+MW9gYST/ABikiBY0R7qIcUCq9f5O8TvFpYrTHMQTUac41qfeq17fIhiit4I5o3
- 7HINZyIFdInbz6bXUTzyzcqP7Kx3dddqDt3bRI2KFyGc1sJTcwstR2r3J6sfIsQ1cmaeFfhMIvX
- 7+KHE0sepFuSzorVXtEH8dpzDaB/rm/FH984=
-X-Google-Smtp-Source: AGHT+IGJF1xVJa/IhyK8K4jUskHC5KXi8q4c5AzZt81ORy1E+DkglG94/O6ZxJ2i9hQLBFT1wFNG6g==
-X-Received: by 2002:a17:903:32d2:b0:234:909b:3dba with SMTP id
- d9443c01a7336-23e256c99b3mr4119945ad.20.1752614950974; 
- Tue, 15 Jul 2025 14:29:10 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23de43228b3sm119187535ad.135.2025.07.15.14.29.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Jul 2025 14:29:10 -0700 (PDT)
-Message-ID: <c2c5d91d-3531-4f60-8ffb-e47eba82eec8@linaro.org>
-Date: Tue, 15 Jul 2025 14:29:09 -0700
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1ubnW8-0003bI-G9; Tue, 15 Jul 2025 17:48:58 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1ubnW6-0007hW-CU; Tue, 15 Jul 2025 17:48:52 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56FI1bbx008271;
+ Tue, 15 Jul 2025 21:48:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=Pny8zE
+ XFiwDtVqLt+k6znuKLegCV8NRjy3uhVdC9iOo=; b=Z7HHudyskdP3koEyGaXjay
+ QlOJVk6aorfYjek7YsBOvlu82eeCSGB/pZkkl+ipvScudBClJFXGRE//m712dNVs
+ +1AWIEYPzN7+dtrZ1mtvNqL+N6/QnfDp10cVrAEcc5mhs3JpA/9jvRvkq+yETBHx
+ vo/jB5a79L5Ozw/SrWeC5EpsyvMTTlB+RP1315tnnRTO9gH2Nozh++J7ec4Vlt1J
+ IiKBqkgi36eJEyvUwLU4+tk18nlHh63O50+AhoIzPuuBKkZhIu5Q4DVOTQ0ZSMUm
+ d1W939swJAFlKWzMJpJOdBE1oviRJx4L+YxqumTdxgkBORXrMTtKUYpaqshnY63Q
+ ==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47ufc71hs6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Jul 2025 21:48:42 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56FIUT8b021914;
+ Tue, 15 Jul 2025 21:48:41 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 47v4r344u4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Jul 2025 21:48:41 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 56FLmdXm17498752
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 15 Jul 2025 21:48:40 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB0E958053;
+ Tue, 15 Jul 2025 21:48:39 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 85D9758043;
+ Tue, 15 Jul 2025 21:48:38 +0000 (GMT)
+Received: from [9.12.68.85] (unknown [9.12.68.85])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Tue, 15 Jul 2025 21:48:38 +0000 (GMT)
+Message-ID: <ead03e08-4121-4636-bbdf-77572f42e9f7@linux.ibm.com>
+Date: Tue, 15 Jul 2025 17:48:37 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/4] target/arm: Add FEAT_MEC to max cpu
+Subject: Re: [PATCH v4 19/28] pc-bios/s390-ccw: Refactor zipl_load_segment
+ function
+To: Zhuoying Cai <zycai@linux.ibm.com>, thuth@redhat.com, berrange@redhat.com, 
+ richard.henderson@linaro.org, david@redhat.com, pbonzini@redhat.com,
+ jrossi@linux.ibm.com, qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Cc: jjherne@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ farman@linux.ibm.com, mjrosato@linux.ibm.com, iii@linux.ibm.com
+References: <20250711211105.439554-1-zycai@linux.ibm.com>
+ <20250711211105.439554-20-zycai@linux.ibm.com>
+ <be952290-0791-41e3-bfc7-a22eecfe97d6@linux.ibm.com>
+ <310f1563-e04a-4aa2-aed1-ee631676c4a0@linux.ibm.com>
 Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, gustavo.romero@linaro.org
-References: <20250714155836.1514748-1-richard.henderson@linaro.org>
- <97292e35-b7f2-40ca-aed6-34ef39396433@linaro.org>
-In-Reply-To: <97292e35-b7f2-40ca-aed6-34ef39396433@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Collin Walling <walling@linux.ibm.com>
+In-Reply-To: <310f1563-e04a-4aa2-aed1-ee631676c4a0@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Je68rVKV c=1 sm=1 tr=0 ts=6876ccba cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=_g1u71sQhU4pD6qgZ1wA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE1MDIwMiBTYWx0ZWRfX1el31TZsdNwb
+ oKe+Hn6m0cgojqa1zqqRP7Z58f4FwSYK0qbu9hOl5t3Zzds8szSmTKQLlrcOtRwAVkSkeWgEMYm
+ tRm56R5cgUWiO9RjAddIk5dXX4exszVFoCEstQB0u0uW5FrSpbVBmqbq9EBK+YK0IOLwJMB2ge0
+ Ow8OKwd8dqa+eDO5AuR7oXUZ1VNs//CxYvTGVJagmQCoW+WH1OmsvLD6cu9BtlSrWbt5omvOqLY
+ EQBmWEDcsVLL9UmyFt6YYAUrW2foKRqAall5OY49gaUY5IfJl7v6AK2n36KCjHyvh2huer34nLQ
+ 8DZlNBAeeGFqrwWYUYfe71UXiDgWW9EawF27R3gRK6VBlJGV9R0VOS0UUrqzg+Zvui4oPP+XE28
+ SQV9vdA0QAWj9y/rAar/0+KSHRi7ismmhyouHD5tCSfBM1oI7OtlDKZmY2FbrQZ5hurzN2+X
+X-Proofpoint-GUID: yBG_G-akp92V3CMs9dMB_5IT96JgJ6CB
+X-Proofpoint-ORIG-GUID: yBG_G-akp92V3CMs9dMB_5IT96JgJ6CB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-15_05,2025-07-15_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 bulkscore=0 phishscore=0 spamscore=0
+ mlxlogscore=844 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507150202
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=walling@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,37 +125,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/14/25 10:09 AM, Pierrick Bouvier wrote:
-> On 7/14/25 8:58 AM, Richard Henderson wrote:
->> Changes for v8:
->>     - Re-order SCTLR2 and TCR2 so that they are independent of MEC.
->>     - Enable the SCTLR2 and TCR2 enable bits.
->>     - Squash 3 smaller MEC patches together.
+[...]
+
+>>> @@ -662,6 +661,9 @@ static int zipl_load_segment(ComponentEntry *entry)
+>>>                   */
+>>>                  break;
+>>>              }
+>>> +
+>>> +            comp_len += bprs->size * (bprs[i].blockct + 1);
+>>> +
 >>
->> This still fails the RME tests, because we still need TF-A rebuilt
->> with ENABLE_FEAT_SCTLR2 and ENABLE_FEAT_TCR2.  Pierrick, since you
->> have just done such a build, could you re-test with this series?
+>> I'm confused by the arithmetic here.  Why is size multiplied by the
+>> block count?  Won't that artificially inflate the value representing the
+>> size of the component?  What's the reason that comp_len += bprs->size
+>> isn't sufficient?
 >>
 > 
-> I tested that on my local Realm enabled setup and I can confirm this
-> solved the issue and current series works.
-> Both flags are needed in TF-A. ENABLE_FEAT_TCR2 is needed to boot host,
-> and ENABLE_FEAT_SCTLR2 is needed to boot nested guest.
+> A component table entry points to a segment table, which holds pointers
+> to code segments loaded into contiguous memory.
 > 
-> As I'm off today, I'll update that properly tomorrow when I have time,
-> and not rush things. I'll update RME images for sbsa and virt tests +
-> device passthrough test, and post associated patches.
->
+> Since segments can vary in length, the block count field may be nonzero.
+> 
+> Block size indicates the number of bytes in a single logical block, so
+> the total component size is the block size multiplied by the block count.
+> 
 
-Richard, patches updating tests images have been sent [1].
-I tested them with and without current series.
+Okay.  After referencing both your explanation and our disk layout docs,
+this makes more sense to me.  Thanks!
 
-You're welcome to merge that in current series (preferably before the 
-current series, to not break bisection for concerned tests).
+More nitpicking: I think it reads better to put this line of code as the
+last line of the for loop.  That will keep all disk-reading code
+together and make it a little more clear that this variable isn't used
+elsewhere in the inner loop.
 
-[1] 
-https://lore.kernel.org/qemu-devel/20250715212335.2215509-1-pierrick.bouvier@linaro.org/T/#t
+Functionally, I think the patch is fine :)
 
+[...]
+
+-- 
 Regards,
-Pierrick
+  Collin
 
