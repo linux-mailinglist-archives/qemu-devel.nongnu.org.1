@@ -2,99 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741EBB070A0
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 10:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8DBB0703D
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 10:20:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubxYw-0004Uo-Ug; Wed, 16 Jul 2025 04:32:26 -0400
+	id 1ubxL2-00043v-FY; Wed, 16 Jul 2025 04:18:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danny_canter@apple.com>)
- id 1ubxYq-0004Si-9h
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 04:32:20 -0400
-Received: from ma-mx02.apple.com ([17.23.4.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danny_canter@apple.com>)
- id 1ubxYo-0005Xb-7V
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 04:32:20 -0400
-Received: from mr55p01nt-mtap01.apple.com
- (mr55p01nt-mtap01.apple.com [10.170.185.217]) by st47p01nt-mxp02.apple.com
- (Oracle Communications Messaging Server 8.1.0.27.20250130 64bit (built Jan 30
- 2025)) with ESMTPS id <0SZH17CPQE1AZ620@st47p01nt-mxp02.apple.com> for
- qemu-devel@nongnu.org; Wed, 16 Jul 2025 07:27:15 +0000 (GMT)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-16_01,2025-07-15_02,2025-03-28_01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=apple.com; h=cc :
- content-transfer-encoding : content-type : date : from : in-reply-to :
- message-id : mime-version : references : subject : to; s=20180706;
- bh=8vl5Of5/yCNYlEpL8nhCBoDvh+ovojhlvhAJAMlBfyM=;
- b=A3qHSBkPOriOZ+H/UjcDRuEVXca6A2XiUdTwpVW0tIBX4m8PQHTSWt6wE/IZ+3oVURXs
- VBRUYsuCep/3U47kHl9xpY/Pa40ED/fwSldLnP4Xnc6060/bhrLD4PGiTzpsoo8kGpo5
- NZ9dz1XkinMtp70Q90+dM6Z0tKALjVY819ciqldzcpxTIC8JOAUtJJu1Jbi/CQLFHuj9
- PVp0ozUb0p0HCd7jI5ZlGs/Fa384O7zzHZqkLfUI25WiS8kltQdcxg0V7Uflv2QTmB+9
- +j4Xs56bYzzAkBwDK8Sb36tPWOAEQh0NCXjJr7YvnCeLAslPc7UW/0cdminfpssNuMUQ Yw==
-Received: from mr55p01nt-mmpp01.apple.com
- (mr55p01nt-mmpp01.apple.com [10.170.185.219]) by mr55p01nt-mtap01.apple.com
- (Oracle Communications Messaging Server 8.1.0.27.20250130 64bit (built Jan 30
- 2025)) with ESMTPS id <0SZH2354DE1BYB30@mr55p01nt-mtap01.apple.com>; Wed,
- 16 Jul 2025 07:27:12 +0000 (GMT)
-Received: from process_milters-daemon.mr55p01nt-mmpp01.apple.com by
- mr55p01nt-mmpp01.apple.com
- (Oracle Communications Messaging Server 8.1.0.27.20250130 64bit (built Jan 30
- 2025)) id <0SZH12C00DJQK600@mr55p01nt-mmpp01.apple.com>; Wed,
- 16 Jul 2025 07:27:11 +0000 (GMT)
-X-Va-A: 
-X-Va-T-CD: 874eb03d5c71380729cfc7a4af7a316f
-X-Va-E-CD: 28aaa44b059d8724bc96c7c9acdd18d1
-X-Va-R-CD: 959c523f5b818a32ab2fcfa542961938
-X-Va-ID: 2f9424b5-1e5b-4741-9935-736f8bacdc7e
-X-Va-CD: 0
-X-V-A: 
-X-V-T-CD: 874eb03d5c71380729cfc7a4af7a316f
-X-V-E-CD: 28aaa44b059d8724bc96c7c9acdd18d1
-X-V-R-CD: 959c523f5b818a32ab2fcfa542961938
-X-V-ID: cedc2b9b-b29a-4035-899f-4fa9bf3bb3d9
-X-V-CD: 0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-16_01,2025-07-15_02,2025-03-28_01
-Received: from smtpclient.apple (unknown [17.11.213.254])
- by mr55p01nt-mmpp01.apple.com
- (Oracle Communications Messaging Server 8.1.0.27.20250130 64bit (built Jan 30
- 2025)) with ESMTPSA id <0SZH12Q1KE1AZS00@mr55p01nt-mmpp01.apple.com>; Wed,
- 16 Jul 2025 07:27:11 +0000 (GMT)
-Content-type: text/plain; charset=utf-8
-MIME-version: 1.0 (Mac OS X Mail 16.0 \(3859.100.2\))
-Subject: Re: HVF EL2 support in QEMU (aka FEAT_NV/FEAT_NV2) for MacOS
-From: Danny Canter <danny_canter@apple.com>
-In-reply-to: <CA+E+eSASz9Tx76-8PxMNF30f3L9DfPNYf_Zgf=ENozXapc3gyw@mail.gmail.com>
-Date: Wed, 16 Jul 2025 00:27:00 -0700
-Cc: Marc Zyngier <maz@kernel.org>,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel <qemu-devel@nongnu.org>, Alexander Graf <agraf@csgraf.de>,
- Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>,
- Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan <phil@philjordan.eu>, 
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Mark Burton <mburton@qti.qualcomm.com>
-Content-transfer-encoding: quoted-printable
-Message-id: <03A3BBBF-6A01-4ECB-BE50-8103B9201528@apple.com>
-References: <87zfd5zouv.fsf@draig.linaro.org> <86wm898yf4.wl-maz@kernel.org>
- <CA+E+eSASz9Tx76-8PxMNF30f3L9DfPNYf_Zgf=ENozXapc3gyw@mail.gmail.com>
-To: Joelle van Dyne <j@getutm.app>
-X-Mailer: Apple Mail (2.3859.100.2)
-Received-SPF: pass client-ip=17.23.4.17; envelope-from=danny_canter@apple.com;
- helo=ma-mx02.apple.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1ubxA2-0003Ri-LQ; Wed, 16 Jul 2025 04:06:43 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1ubx9y-000824-Td; Wed, 16 Jul 2025 04:06:42 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bhpWb1tGhz6M4hS;
+ Wed, 16 Jul 2025 16:05:15 +0800 (CST)
+Received: from frapeml100005.china.huawei.com (unknown [7.182.85.132])
+ by mail.maildlp.com (Postfix) with ESMTPS id 6635B14027A;
+ Wed, 16 Jul 2025 16:06:30 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml100005.china.huawei.com (7.182.85.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 16 Jul 2025 10:06:30 +0200
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Wed, 16 Jul 2025 10:06:29 +0200
+To: Nicolin Chen <nicolinc@nvidia.com>, "Duan, Zhenzhong"
+ <zhenzhong.duan@intel.com>
+CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, "nathanc@nvidia.com"
+ <nathanc@nvidia.com>, "mochs@nvidia.com" <mochs@nvidia.com>,
+ "smostafa@google.com" <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>,
+ "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
+ <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
+ "shameerkolothum@gmail.com" <shameerkolothum@gmail.com>
+Subject: RE: [RFC PATCH v3 06/15] hw/arm/smmuv3-accel: Restrict accelerated
+ SMMUv3 to vfio-pci endpoints with iommufd
+Thread-Topic: [RFC PATCH v3 06/15] hw/arm/smmuv3-accel: Restrict accelerated
+ SMMUv3 to vfio-pci endpoints with iommufd
+Thread-Index: AQHb9NhJqDDdVP51l0m0Xe+3c+VdWbQy4kYAgAB23gCAAQTY8A==
+Date: Wed, 16 Jul 2025 08:06:29 +0000
+Message-ID: <756cf804fbd14d66ba8f23358524fe96@huawei.com>
+References: <20250714155941.22176-1-shameerali.kolothum.thodi@huawei.com>
+ <20250714155941.22176-7-shameerali.kolothum.thodi@huawei.com>
+ <IA3PR11MB9136A660E9FAE540037986FB9257A@IA3PR11MB9136.namprd11.prod.outlook.com>
+ <aHaW9IpjbaVcRUpA@Asurada-Nvidia>
+In-Reply-To: <aHaW9IpjbaVcRUpA@Asurada-Nvidia>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,43 +86,107 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Joelle is correct, M3 and newer SoCs have support for the EL2 APIs.
 
--Danny
 
-> On Jul 15, 2025, at 8:53=E2=80=AFAM, Joelle van Dyne <j@getutm.app> =
-wrote:
+> -----Original Message-----
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> Sent: Tuesday, July 15, 2025 6:59 PM
+> To: Duan, Zhenzhong <zhenzhong.duan@intel.com>
+> Cc: Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com>; qemu-arm@nongnu.org;
+> qemu-devel@nongnu.org; eric.auger@redhat.com;
+> peter.maydell@linaro.org; jgg@nvidia.com; ddutile@redhat.com;
+> berrange@redhat.com; nathanc@nvidia.com; mochs@nvidia.com;
+> smostafa@google.com; Linuxarm <linuxarm@huawei.com>; Wangzhou (B)
+> <wangzhou1@hisilicon.com>; jiangkunkun <jiangkunkun@huawei.com>;
+> Jonathan Cameron <jonathan.cameron@huawei.com>;
+> zhangfei.gao@linaro.org; shameerkolothum@gmail.com
+> Subject: Re: [RFC PATCH v3 06/15] hw/arm/smmuv3-accel: Restrict
+> accelerated SMMUv3 to vfio-pci endpoints with iommufd
+
+...
+
+> > >+    if (pdev && !smmuv3_accel_pdev_allowed(pdev, &vfio_pci)) {
+> > >+        error_report("Device(%s) not allowed. Only PCIe root complex
+> > >devices "
+> > >+                     "or PCI bridge devices or vfio-pci endpoint devi=
+ces
+> > >with "
+> > >+                     "iommufd as backend is allowed with
+> > >arm-smmuv3,accel=3Don",
+> > >+                     pdev->name);
+> > >+        exit(1);
+> >
+> > Seems aggressive for a hotplug, could we fail hotplug instead of kill
+> QEMU?
+
+That's right. I will try to see whether it is possible to do a dev->hotplug=
+ged
+check here.
+=20
+> Hotplug will unlikely be supported well, as it would introduce
+> too much complication.
 >=20
-> UTM currently supports NV only with the Apple Virtualization backend,
-> not QEMU HVF. While M2 supports NV, it is not enabled by XNU kernel
-> and `hv_vm_config_get_el2_supported` returns false. I heard there was
-> some compatibility issue in the hardware. M3 and newer generations
-> fully support NV in hardware and by XNU.
+> With iommufd, a vIOMMU object is allocated per device (vfio). If
+> the device fd (cdev) is not yet given to the QEMU. It isn't able
+> to allocate a vIOMMU object when creating a VM.
 >=20
-> On Tue, Jul 15, 2025 at 4:51=E2=80=AFAM Marc Zyngier <maz@kernel.org> =
-wrote:
->>=20
->> On Tue, 15 Jul 2025 12:15:52 +0100,
->> Alex Benn=C3=A9e <alex.bennee@linaro.org> wrote:
->>=20
->>>  - do we know which Apple silicon supports FEAT_NV2?
->>=20
->> M2 and latter definitely support FEAT_NV2. That's how KVM NV support
->> has been developed for two years until I was given better HW.
->>=20
->> Whether Apple supports NV on M2 in HVF, I have no idea. The rumour
->> mill says "no", but I don't have a way to check. The M3 I use at =
-$WORK
->> is definitely able to give me EL2 without VHE with UTM. I haven't
->> played with M4, but I have it on the record that it behaves like M3
->> with UTM.
->>=20
->>        M.
->>=20
->> --
->> Without deviation from the norm, progress is not possible.
+> While a vIOMMU object can be allocated at a later stage once the
+> device is hotplugged. But things like IORT mappings aren't able
+> to get refreshed since the OS is likely already booted.
 
+Why do we need IORT mappings to be refreshed during hotplug?
+AFAICS, the mappings are created per host bridge Ids. And how is this
+different from a host machine doing hotplug?
+
+ Even an
+> IOMMU capability sync via the hw_info ioctl will be difficult to
+> do at the runtime post the guest iommu driver's initialization.
+
+We had some discussion on this "at least one vfio-pci" restriction
+for accelerated mode previously here.
+https://lore.kernel.org/qemu-devel/Z6TtCLQ35UI12T77@redhat.com/#t
+
+I am not sure we reached any consensus on that. The 3 different approaches
+discussed were,
+
+1. The current one used here. At least one cold plugged vfio-pci device
+   so that  we can retrieve the host SMMUV3 HW_INFO as per current
+  IOMMUFD APIs.
+
+2. A new IOMMUFD API to retrieve HW_INFO without a device.=20
+
+3. A fully specified vSMMUv3 through Qemu command line so that we
+   don't need HW_INFO from kernel.
+
+We're going with option one for now, but completely blocking hotplug
+because of it  feels a bit too restrictive to me.
+
+The real issue (for now), as I see it, is that we need some way to remember
+the Guest SMMUv3 <-> Host SMMUv3 mapping after the guest has booted.
+That way, even if all devices tied to a Guest SMMUv3 get hot-unplugged,
+QEMU can still block attaching a device that belongs to a different Host
+SMMUv3.
+
+Thanks,
+Shameer
+
+> I am not 100% sure. But I think Intel model could have a similar
+> problem if the guest boots with zero cold-plugged device and then
+> hot-plugs a PASID-capable device at the runtime, when the guest-
+> level IOMMU driver is already inited?
+>=20
+> FWIW, Shameer's cover-letter has the following line:
+>  "At least one vfio-pci device must currently be cold-plugged to
+>   a PCIe root complex associated with arm-smmuv3,accel=3Don."
+>=20
+> Perhaps there should be a similar highlight in this smmuv3-accel
+> file as well (@Shameer).
+>=20
+> Nicolin
 
