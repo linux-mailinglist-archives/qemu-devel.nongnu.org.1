@@ -2,85 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590B9B07C9E
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 20:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7513BB07CB2
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 20:21:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc6fs-0005LU-Vx; Wed, 16 Jul 2025 14:16:20 -0400
+	id 1uc6kh-0008Uh-4I; Wed, 16 Jul 2025 14:21:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uc6d4-0003uH-Ro
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 14:13:25 -0400
-Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uc6gI-0005gl-MC
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 14:16:41 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uc6d3-0007vx-9p
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 14:13:18 -0400
-Received: by mail-vk1-xa2b.google.com with SMTP id
- 71dfb90a1353d-5373b62bdb4so1310298e0c.1
- for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 11:13:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uc6gC-0000K8-ME
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 14:16:38 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-237311f5a54so667105ad.2
+ for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 11:16:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752689596; x=1753294396; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=cjFqfHyGl+l2DeX2nCvra4CnmLYud68pFPe96jjv6Y8=;
- b=t3oPuBSoA3CAFEfDdvNqEwQTuTh7txy4KmPa3wpjFgk35z3zzXnrc9SpNb3c33GpV4
- VScW66Y7zivih1admv27mXOebmE4iTF8OBKaA+2iRGRFGaD0ryGILn8o94FHuasG4QuR
- lMWPffFLUqAOBLIuR29IIUnAWqVBNxYOYTR0YuMCviaPoAuetQfW8rmLry+6Fvtb8lhq
- TR89S3tPtUNW7rFUOBjW/6JudkyUXKUUrjyc8iRYA4I1WGhE66mgjBBRFuMptprnclT2
- o22Gu6w9dq5lNIEBxUt5lXPpE9iZmBqY32Pot9XaEFBnFGtd0Xv+I3UGO5Jz8noYItHk
- nnbg==
+ d=linaro.org; s=google; t=1752689790; x=1753294590; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=PmXkhU9cXb7ZCQ3ywq0ZeSrFAdPVD8d7qeWBdr+HihQ=;
+ b=WS3BtvnuYXrd0HEwKeH+VhilccEtUO0arxd2zgW/TqMZ5JZgFmKG4XdSpp2WB84SNZ
+ qeF2xC58qDscWmyT1aAI8gR0z8HCO9D1uEhP/jZYj2zL14RbjA/nBL4HweVFzCsP1sPh
+ voNT/l4eQeOIZT3oXMvPHbaVr2evi8VRsdmmc6DDiV4JpNR7a8CrxD4c4VZA441N/AwN
+ A1e13rRCWB6t/tuBQdIK0/0xI0kNAcnLYiZXmqRM7pJwdcDvcXuhEw4tgBmrGeizM5CA
+ WcFsue7Kho4WaS4rZ9JkJtApakEW2PixLmyqVu6/LIpnuEERGwXHJhUF1EUJcsPpedNe
+ SkdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752689596; x=1753294396;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cjFqfHyGl+l2DeX2nCvra4CnmLYud68pFPe96jjv6Y8=;
- b=kp3ZIi4J9mtFqiVhK/CyuWP+e9UB4uppgYuJZsPR/YWapFfAqxQDWs0QfAq8nuEbS8
- DATwoyPMMEmfP77VaIg7nKY3fu2RP5KJ/6RNzs08PBCM/BDqVOiMMrYE3wBFrpnwrmVC
- 1p93mnjA5IGTEw9WMpNpuQGHIFj8G/DbktJNQUOTRb9VJMxgkucKqBAVk7IU9owyI1te
- 3ULIipWT8wLFP3qO5mN+uGRR5wXdx1oLolrvRcWKKduCakH/glrTnvQsxlIfGNQiWDsd
- P2qksMyhHAm4OyOtUUbx6MEgtBmwWcxt7UkjuS4ua+DjC84lW+AC3vTUAMThbJVvxLGw
- ZqRg==
-X-Gm-Message-State: AOJu0Ywy5AoHBy19AbVuS8d0PkSzy3y1bz+tJLRsFwy6hBVjiGZIBVwh
- DRWPQyVQ5voJ6ZE9JhphxWFbab8RKD6+ctzNQUT/AAcRgFOACELg+cxrV6QMmBZKpSQs8qmiYsm
- vZGKo/VKRY54QOT5bweQGqVrNGU8Hp4tVW/31PGQMWw==
-X-Gm-Gg: ASbGncvdXrWS9LkoeNkoKIGyMXcDrpII/uP1bZBdYQ6ewR0Qoqo/pXTDni4xbme+x9q
- b2YorMe6/HVxpEzS8rHs7uwLKEyiESTXRa7C0AVi9OzZ1NL7jEL0tX9L7rc4mycEo+qf+jcNa/G
- QUyEDU+ll44h/s1x+v82tXYef32hfGl6kZY2gi8hIg//o4yJaPBbqLh4UC1nfw2NEdOMIppUyGf
- FFQL8M=
-X-Google-Smtp-Source: AGHT+IG888u3KDeZ/hn+COj8WVG4qKdOz7Mv0i6RscFCABSPiwRFCOB/AGuGvpxxNk5WURHndZBsuOVS/O870eUXD9E=
-X-Received: by 2002:a05:6122:2896:b0:520:4806:a422 with SMTP id
- 71dfb90a1353d-5374dde2768mr335456e0c.3.1752689595611; Wed, 16 Jul 2025
- 11:13:15 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752689790; x=1753294590;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PmXkhU9cXb7ZCQ3ywq0ZeSrFAdPVD8d7qeWBdr+HihQ=;
+ b=edoMelco+oWvzBvr2QVJ3lHNd9xjyVakyTYg0nNd5PKzgHs261DRnxkJml8vn/xp5X
+ rr8RzFVMZMYqwd3DGpNjSdmna7neofjF7woO0kWfasQYSOjGNF7vYElVzbap4tmowuIi
+ NAr6B9Qz1hzysKNfzROJE5CaQs67njdJPhUUVaiorN3cLrLMVWS42j88aOUL4wtBKPkG
+ IpiqmFu380RBX0hW81pSbDhPL5gWJ93J2bAJ1fMIM+BTzOTZZohNuVhU52rF7/Tpgp69
+ Lwn+QobDmMTa9cpWiRPSUrIS8s9ZgEdMNHBRA62M6zRQbfX2xhaoXrd4sdKyqqVlC6X3
+ TQqQ==
+X-Gm-Message-State: AOJu0YzmFTmzMX8HcL/yoKyB0YE5LOAMzHClaigqY+IFeenHe5dqQeAM
+ 4CkIC/Vgb0oEvDNnHHZb3aacGJet6Y+bDl7Lg/mXeL3cGBHTIT0CK733bfiq0HlEXWE=
+X-Gm-Gg: ASbGnct9iCT3R3kVyC0gDJj62V7pvbWTiofJPE9kouJmdaMS6f0YmsQNojmvf7T8IIY
+ BbOS4pHrVHNCn1lAZIRapzNab8vhUJ86Iz2ZMbCnrtywoH3gfvwyD9EQn6xZTVndkYDXeiJTT/V
+ 9eL5a1qXVzmj0Io4OzMDlKoht+oZYOB0ChHIpPArhOUZchiSUbjWphVCHs4K+9v/RXUQSWQqB3g
+ FZCmlFzhoNc2D8c4aYchAlUGKoXTM4ERSK/4C4K1KXeQbTp8wipvecWA+NR+yMZJ3p+POyghd32
+ Fax07Az+H5nV26cAiOV9Q7igyLnJkhDApDxGAk/PrGl/ZTqVcDSsb9ERPIg2Q73WIciJwaH2X+m
+ QBjFsulnjujwhDx5SZqRYUH5Ij45vgfMH22BtHkFYe8tncQ==
+X-Google-Smtp-Source: AGHT+IFBjWJ9KvGODVlpl1Kb9GO6QsZQgWAL9j2b92o0if1VE9RGKGMSuT13hM2/VLmzPUQsResKdw==
+X-Received: by 2002:a17:902:c944:b0:234:8a4a:adac with SMTP id
+ d9443c01a7336-23e256b741amr54178435ad.20.1752689789763; 
+ Wed, 16 Jul 2025 11:16:29 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23de42ae9f5sm129174945ad.66.2025.07.16.11.16.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Jul 2025 11:16:29 -0700 (PDT)
+Message-ID: <ddbd0892-6ce6-448c-9a86-df70133e69b1@linaro.org>
+Date: Wed, 16 Jul 2025 11:16:28 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] aarch64: update test images with new trusted firmware
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>,
+ qemu-arm <qemu-arm@nongnu.org>, jean-philippe@linaro.org,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Gustavo Bueno Romero <gustavo.romero@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
 References: <20250715212335.2215509-1-pierrick.bouvier@linaro.org>
  <52c5ed4a-0225-4360-b1c8-e3866041c4b3@linaro.org>
  <1de7b0a3-846b-4e7b-b4a7-1b753f61ad0f@linaro.org>
-In-Reply-To: <1de7b0a3-846b-4e7b-b4a7-1b753f61ad0f@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Date: Wed, 16 Jul 2025 12:13:04 -0600
-X-Gm-Features: Ac12FXxyn71ofdPfjAAV5ECKeXYPmgj6FFRSBA8wjgd-HhYwIAZBnq5cBWHe1EU
-Message-ID: <CAFXwXrn3oUHeo=h2OZshZj3C24bf=tY6Mdz+rDX4YO0MAk70xQ@mail.gmail.com>
-Subject: Re: [PATCH 0/2] aarch64: update test images with new trusted firmware
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>,
- qemu-arm <qemu-arm@nongnu.org>, jean-philippe@linaro.org, 
- Mathieu Poirier <mathieu.poirier@linaro.org>, 
- Gustavo Bueno Romero <gustavo.romero@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Content-Type: multipart/alternative; boundary="000000000000bf923f063a0fd863"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2b;
- envelope-from=richard.henderson@linaro.org; helo=mail-vk1-xa2b.google.com
+ <CAFXwXrn3oUHeo=h2OZshZj3C24bf=tY6Mdz+rDX4YO0MAk70xQ@mail.gmail.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <CAFXwXrn3oUHeo=h2OZshZj3C24bf=tY6Mdz+rDX4YO0MAk70xQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,38 +106,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000bf923f063a0fd863
-Content-Type: text/plain; charset="UTF-8"
+On 7/16/25 11:13 AM, Richard Henderson wrote:
+> On Wed, 16 July 2025, 10:50 Pierrick Bouvier, 
+> <pierrick.bouvier@linaro.org <mailto:pierrick.bouvier@linaro.org>> wrote:
+> 
+>     Do you plan to merge FEAT_MEC for 10.1, or prefer to wait for 10.2?
+> 
+> 
+> We have missed the soft freeze window. It must wait for 10.2 now.
+> 
 
-On Wed, 16 July 2025, 10:50 Pierrick Bouvier, <pierrick.bouvier@linaro.org>
-wrote:
+Oh right, I thought it was end of this week, but saw it was yesterday.
 
-> Do you plan to merge FEAT_MEC for 10.1, or prefer to wait for 10.2?
->
+> 
+> r~
+> 
 
-We have missed the soft freeze window. It must wait for 10.2 now.
-
-
-r~
-
->
-
---000000000000bf923f063a0fd863
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div dir=3D"auto">On Wed, 16 July 2025, 10:50 Pierrick Bo=
-uvier, &lt;<a href=3D"mailto:pierrick.bouvier@linaro.org">pierrick.bouvier@=
-linaro.org</a>&gt; wrote:</div><div class=3D"gmail_quote gmail_quote_contai=
-ner" dir=3D"auto"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .=
-8ex;border-left:1px #ccc solid;padding-left:1ex">
-Do you plan to merge FEAT_MEC for 10.1, or prefer to wait for 10.2?<br></bl=
-ockquote></div><div dir=3D"auto"><br></div><div dir=3D"auto">We have missed=
- the soft freeze window. It must wait for 10.2 now.</div><div dir=3D"auto">=
-<br></div><div dir=3D"auto"><br></div><div dir=3D"auto">r~</div><div class=
-=3D"gmail_quote gmail_quote_container" dir=3D"auto"><blockquote class=3D"gm=
-ail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-le=
-ft:1ex"></blockquote></div></div>
-
---000000000000bf923f063a0fd863--
 
