@@ -2,122 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF456B06FD1
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 10:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 741EBB070A0
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 10:33:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubx5f-0006Nl-Kq; Wed, 16 Jul 2025 04:02:11 -0400
+	id 1ubxYw-0004Uo-Ug; Wed, 16 Jul 2025 04:32:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1ubx5G-0005ms-LW; Wed, 16 Jul 2025 04:01:56 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1ubx5B-0006v4-73; Wed, 16 Jul 2025 04:01:45 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56FKYpWM016564;
- Wed, 16 Jul 2025 08:01:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=56sGgF
- WHJvMwcvHyke0RqrUPhZ0POB14rvLCip72W8g=; b=JSvAYvkqhKJ2LjyxKt6PV0
- n8yNG9HamGlbQdopVk5KjMNbAVDefya8FB+OFeK8w+FpIB087Vn0jjMRPKVM2sny
- QHklJU2rfUJzxxEDyhLP7pLI6/6BweP6nciEIsjbNfhKiTy6lw4cgUH2xCdo4KfM
- iGMsxB/BmlVkFiUMBv5rdI6yl4NQd4QXma215cMdYyak+6J+eB/XIiztKsSnEjdK
- F//EPdru2M6+1St44nyZmDw8THzGa3HA9iIj7msudB5br+XWQt0+Qjjbhtxw3tbP
- n0GwTIy8t0LCAGbl8ujIQpdXImMVGA35qvg0yKGF4KyzqZzV+kyUE/+cLaot/kBw
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47ue4u3n98-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Jul 2025 08:01:38 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56G7xIpH019451;
- Wed, 16 Jul 2025 08:01:37 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47ue4u3n8x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Jul 2025 08:01:37 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56G5U2Er031904;
- Wed, 16 Jul 2025 08:01:36 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 47v21u6jeu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Jul 2025 08:01:36 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 56G81Zds28836378
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Jul 2025 08:01:35 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 94315580D1;
- Wed, 16 Jul 2025 08:01:31 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3DFBB580CF;
- Wed, 16 Jul 2025 08:01:25 +0000 (GMT)
-Received: from [9.39.30.73] (unknown [9.39.30.73])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 16 Jul 2025 08:01:24 +0000 (GMT)
-Message-ID: <96da7431-0c99-4f9e-b7eb-9fe759ba3dfb@linux.ibm.com>
-Date: Wed, 16 Jul 2025 13:31:23 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/22] vfio/spapr.c: use QOM casts where appropriate
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
- danielhb413@gmail.com, mjrosato@linux.ibm.com, farman@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, thuth@redhat.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- john.levon@nutanix.com, thanos.makatos@nutanix.com,
- alex.williamson@redhat.com, clg@redhat.com, steven.sistare@oracle.com,
- tomitamoeko@gmail.com, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org
-References: <20250715093110.107317-1-mark.caveayland@nutanix.com>
- <20250715093110.107317-7-mark.caveayland@nutanix.com>
-Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20250715093110.107317-7-mark.caveayland@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=baBrUPPB c=1 sm=1 tr=0 ts=68775c62 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=f7IdgyKtn90A:10 a=64Cc0HZtAAAA:8
- a=VnNF1IyMAAAA:8 a=AaRrkq5CDUwCYl7pSLkA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: TYmNIJPmYpCrkYteTJsIt0Cvanynskve
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE2MDA2OSBTYWx0ZWRfXyc/gYvT/aJ4j
- jIOfqyaGJgpg7GQk7nruhtB5Uno6o8m9/oMmdnF/N9gum4+EkoClQO/ZwDG1y9ZXCIsciz6KscI
- RQK5EQFO2p/4Ey7+8nruBowahXzKH7nWH6wuzyFbmKBLvE/vq3WjJPfDyqbTyl4Cf+I3v4Ln/HE
- mGrlBmrfxCD95IM9MxwI83PIT1GSw+LQ/CEVN3HuqR99BkAxYNbK0v4d7bKmjOsad+zAWnuliGI
- jMJJBj6leaBtg0sFA3rV1Q5xdsWKFpKffm0G3+VZCk5fezOGZX7aqu2gnB2R8lsrEWJeK2juAsr
- ahXvA5XbJpLvwpRU6e/xEeHMIq0Z2mnG6/lBx+bi2VMUkUDftA6ebY4yFTKCQcv5TQFtCPcDaHt
- PgB6+ZkqNa6ZFnzcwNF1MuuDCgyx8gTdl1UTMUb70IH6n94HIXnediFuDLcxv86Lio/sPAFX
-X-Proofpoint-ORIG-GUID: VxvDy98nkhpK5jLekVbqaLmv-BeS6ASA
+ (Exim 4.90_1) (envelope-from <danny_canter@apple.com>)
+ id 1ubxYq-0004Si-9h
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 04:32:20 -0400
+Received: from ma-mx02.apple.com ([17.23.4.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danny_canter@apple.com>)
+ id 1ubxYo-0005Xb-7V
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 04:32:20 -0400
+Received: from mr55p01nt-mtap01.apple.com
+ (mr55p01nt-mtap01.apple.com [10.170.185.217]) by st47p01nt-mxp02.apple.com
+ (Oracle Communications Messaging Server 8.1.0.27.20250130 64bit (built Jan 30
+ 2025)) with ESMTPS id <0SZH17CPQE1AZ620@st47p01nt-mxp02.apple.com> for
+ qemu-devel@nongnu.org; Wed, 16 Jul 2025 07:27:15 +0000 (GMT)
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-16_01,2025-07-15_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=999
- suspectscore=0 adultscore=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1011 mlxscore=0
- malwarescore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507160069
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=apple.com; h=cc :
+ content-transfer-encoding : content-type : date : from : in-reply-to :
+ message-id : mime-version : references : subject : to; s=20180706;
+ bh=8vl5Of5/yCNYlEpL8nhCBoDvh+ovojhlvhAJAMlBfyM=;
+ b=A3qHSBkPOriOZ+H/UjcDRuEVXca6A2XiUdTwpVW0tIBX4m8PQHTSWt6wE/IZ+3oVURXs
+ VBRUYsuCep/3U47kHl9xpY/Pa40ED/fwSldLnP4Xnc6060/bhrLD4PGiTzpsoo8kGpo5
+ NZ9dz1XkinMtp70Q90+dM6Z0tKALjVY819ciqldzcpxTIC8JOAUtJJu1Jbi/CQLFHuj9
+ PVp0ozUb0p0HCd7jI5ZlGs/Fa384O7zzHZqkLfUI25WiS8kltQdcxg0V7Uflv2QTmB+9
+ +j4Xs56bYzzAkBwDK8Sb36tPWOAEQh0NCXjJr7YvnCeLAslPc7UW/0cdminfpssNuMUQ Yw==
+Received: from mr55p01nt-mmpp01.apple.com
+ (mr55p01nt-mmpp01.apple.com [10.170.185.219]) by mr55p01nt-mtap01.apple.com
+ (Oracle Communications Messaging Server 8.1.0.27.20250130 64bit (built Jan 30
+ 2025)) with ESMTPS id <0SZH2354DE1BYB30@mr55p01nt-mtap01.apple.com>; Wed,
+ 16 Jul 2025 07:27:12 +0000 (GMT)
+Received: from process_milters-daemon.mr55p01nt-mmpp01.apple.com by
+ mr55p01nt-mmpp01.apple.com
+ (Oracle Communications Messaging Server 8.1.0.27.20250130 64bit (built Jan 30
+ 2025)) id <0SZH12C00DJQK600@mr55p01nt-mmpp01.apple.com>; Wed,
+ 16 Jul 2025 07:27:11 +0000 (GMT)
+X-Va-A: 
+X-Va-T-CD: 874eb03d5c71380729cfc7a4af7a316f
+X-Va-E-CD: 28aaa44b059d8724bc96c7c9acdd18d1
+X-Va-R-CD: 959c523f5b818a32ab2fcfa542961938
+X-Va-ID: 2f9424b5-1e5b-4741-9935-736f8bacdc7e
+X-Va-CD: 0
+X-V-A: 
+X-V-T-CD: 874eb03d5c71380729cfc7a4af7a316f
+X-V-E-CD: 28aaa44b059d8724bc96c7c9acdd18d1
+X-V-R-CD: 959c523f5b818a32ab2fcfa542961938
+X-V-ID: cedc2b9b-b29a-4035-899f-4fa9bf3bb3d9
+X-V-CD: 0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-16_01,2025-07-15_02,2025-03-28_01
+Received: from smtpclient.apple (unknown [17.11.213.254])
+ by mr55p01nt-mmpp01.apple.com
+ (Oracle Communications Messaging Server 8.1.0.27.20250130 64bit (built Jan 30
+ 2025)) with ESMTPSA id <0SZH12Q1KE1AZS00@mr55p01nt-mmpp01.apple.com>; Wed,
+ 16 Jul 2025 07:27:11 +0000 (GMT)
+Content-type: text/plain; charset=utf-8
+MIME-version: 1.0 (Mac OS X Mail 16.0 \(3859.100.2\))
+Subject: Re: HVF EL2 support in QEMU (aka FEAT_NV/FEAT_NV2) for MacOS
+From: Danny Canter <danny_canter@apple.com>
+In-reply-to: <CA+E+eSASz9Tx76-8PxMNF30f3L9DfPNYf_Zgf=ENozXapc3gyw@mail.gmail.com>
+Date: Wed, 16 Jul 2025 00:27:00 -0700
+Cc: Marc Zyngier <maz@kernel.org>,
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel <qemu-devel@nongnu.org>, Alexander Graf <agraf@csgraf.de>,
+ Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan <phil@philjordan.eu>, 
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Mark Burton <mburton@qti.qualcomm.com>
+Content-transfer-encoding: quoted-printable
+Message-id: <03A3BBBF-6A01-4ECB-BE50-8103B9201528@apple.com>
+References: <87zfd5zouv.fsf@draig.linaro.org> <86wm898yf4.wl-maz@kernel.org>
+ <CA+E+eSASz9Tx76-8PxMNF30f3L9DfPNYf_Zgf=ENozXapc3gyw@mail.gmail.com>
+To: Joelle van Dyne <j@getutm.app>
+X-Mailer: Apple Mail (2.3859.100.2)
+Received-SPF: pass client-ip=17.23.4.17; envelope-from=danny_canter@apple.com;
+ helo=ma-mx02.apple.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,80 +111,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Joelle is correct, M3 and newer SoCs have support for the EL2 APIs.
 
+-Danny
 
-On 7/15/25 14:55, Mark Cave-Ayland wrote:
-> Use QOM casts to convert between VFIOContainer and VFIOContainerBase instead
-> of accessing bcontainer directly.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+> On Jul 15, 2025, at 8:53=E2=80=AFAM, Joelle van Dyne <j@getutm.app> =
+wrote:
+>=20
+> UTM currently supports NV only with the Apple Virtualization backend,
+> not QEMU HVF. While M2 supports NV, it is not enabled by XNU kernel
+> and `hv_vm_config_get_el2_supported` returns false. I heard there was
+> some compatibility issue in the hardware. M3 and newer generations
+> fully support NV in hardware and by XNU.
+>=20
+> On Tue, Jul 15, 2025 at 4:51=E2=80=AFAM Marc Zyngier <maz@kernel.org> =
+wrote:
+>>=20
+>> On Tue, 15 Jul 2025 12:15:52 +0100,
+>> Alex Benn=C3=A9e <alex.bennee@linaro.org> wrote:
+>>=20
+>>>  - do we know which Apple silicon supports FEAT_NV2?
+>>=20
+>> M2 and latter definitely support FEAT_NV2. That's how KVM NV support
+>> has been developed for two years until I was given better HW.
+>>=20
+>> Whether Apple supports NV on M2 in HVF, I have no idea. The rumour
+>> mill says "no", but I don't have a way to check. The M3 I use at =
+$WORK
+>> is definitely able to give me EL2 without VHE with UTM. I haven't
+>> played with M4, but I have it on the record that it behaves like M3
+>> with UTM.
+>>=20
+>>        M.
+>>=20
+>> --
+>> Without deviation from the norm, progress is not possible.
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-
-> ---
->   hw/vfio/spapr.c | 16 ++++++----------
->   1 file changed, 6 insertions(+), 10 deletions(-)
-> 
-> diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-> index 564b70ef97..c41e4588d6 100644
-> --- a/hw/vfio/spapr.c
-> +++ b/hw/vfio/spapr.c
-> @@ -62,7 +62,7 @@ static void vfio_prereg_listener_region_add(MemoryListener *listener,
->       VFIOSpaprContainer *scontainer = container_of(listener, VFIOSpaprContainer,
->                                                     prereg_listener);
->       VFIOContainer *container = &scontainer->container;
-> -    VFIOContainerBase *bcontainer = &container->bcontainer;
-> +    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
->       const hwaddr gpa = section->offset_within_address_space;
->       hwaddr end;
->       int ret;
-> @@ -244,7 +244,7 @@ static bool vfio_spapr_create_window(VFIOContainer *container,
->                                       hwaddr *pgsize, Error **errp)
->   {
->       int ret = 0;
-> -    VFIOContainerBase *bcontainer = &container->bcontainer;
-> +    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
->       VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
->                                                     container);
->       IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
-> @@ -352,8 +352,7 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
->                                           MemoryRegionSection *section,
->                                           Error **errp)
->   {
-> -    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> -                                            bcontainer);
-> +    VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
->       VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
->                                                     container);
->       VFIOHostDMAWindow *hostwin;
-> @@ -443,8 +442,7 @@ static void
->   vfio_spapr_container_del_section_window(VFIOContainerBase *bcontainer,
->                                           MemoryRegionSection *section)
->   {
-> -    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> -                                            bcontainer);
-> +    VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
->       VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
->                                                     container);
->   
-> @@ -465,8 +463,7 @@ vfio_spapr_container_del_section_window(VFIOContainerBase *bcontainer,
->   
->   static void vfio_spapr_container_release(VFIOContainerBase *bcontainer)
->   {
-> -    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> -                                            bcontainer);
-> +    VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
->       VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
->                                                     container);
->       VFIOHostDMAWindow *hostwin, *next;
-> @@ -484,8 +481,7 @@ static void vfio_spapr_container_release(VFIOContainerBase *bcontainer)
->   static bool vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
->                                          Error **errp)
->   {
-> -    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> -                                            bcontainer);
-> +    VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
->       VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
->                                                     container);
->       struct vfio_iommu_spapr_tce_info info;
 
