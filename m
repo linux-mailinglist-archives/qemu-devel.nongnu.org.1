@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D749B07BFF
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 19:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE545B07C04
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 19:29:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc5vl-0001oy-3A; Wed, 16 Jul 2025 13:28:33 -0400
+	id 1uc5vv-00020m-0Y; Wed, 16 Jul 2025 13:28:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uc5vj-0001mV-2J
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:28:31 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uc5vo-0001uc-5I
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:28:36 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uc5vg-00009c-FL
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:28:30 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3a536ecbf6fso64122f8f.2
- for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 10:28:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uc5vl-0000Br-DK
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:28:35 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4561514c7f0so881035e9.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 10:28:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752686907; x=1753291707; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752686911; x=1753291711; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ps+e7ssT12p6go031p/X+dV+am0FTNx9EebSq8FDbrI=;
- b=N6FXTTWLGG5YeXXELOO74tYoCVMA73dSGsfZj1p7L20KemmByQfU5K0EKr0Hdeoioh
- caiG9+OoaPH3VvIg51YL82IONQ8Q3Wt9KlCKbpT00bwhNjgdaJ0UPPvTfwXrL9zSBEju
- +6NupagxzwT1LhQma16ITh8oZ0LfslHYphgE6t24TmSu0nADJSAuPUesjL38vV3lHIba
- vyJHtfevqfAtwlmCRsrqf0XqxEVtJz5SopF/qykDzICYrK7UDgSnM2pDMMC2dP4BE6Cc
- jkl3xlXNcc7Frriot4m58QNheJK7FdfO+i74383MdchdZz3B2D4BPss1wxVd8u8gcWiO
- T62w==
+ bh=tWQe0nwaHjFSPbzauTR/fxg60n5AbbyVfV/ixwGD2ZA=;
+ b=joR7FKTo8VLlQrV//2eA0+ep+sNdHtOZvnZbJxl0kl4tFQ65bdsQwYNa75qZr4kyrD
+ GoySaN+P21wck7cPBGDQrgNvOUeIp2lF19or2HRnTh07I6cPp44vcmWkpLBQVSfA3NBO
+ YIVb5/ALUGrvuS3P6nxYS3u2kqSuCcIkEBAgnL6ROvzQvxhHBAZHYCq+GkgKulVoSoFi
+ XZzc4xFk91Jgiesn9oOh3koQy/dhXPfbxTVcBCd9UWsIzQoKgy6h7E/x96XSp6sAq76X
+ inrNUFLUNFnTZq2mY/bC4TaaFVRDceTL70R90NurYRtgGpkOaH1T7lwv2wVCLgOoojd1
+ u1rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752686907; x=1753291707;
+ d=1e100.net; s=20230601; t=1752686911; x=1753291711;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ps+e7ssT12p6go031p/X+dV+am0FTNx9EebSq8FDbrI=;
- b=MgfaDTz87hFnGaYoGhKJ+7waONlTiCh8/qv/uY4GfcbSa3UNjIpoP1WartQn3viQJA
- LYgiRSLRgw5zGDzJLLYwsxCBLgNEdSC7w+6iTf/MmwIaBlrJUb8AalofghDkxOUZF2s/
- Wc84YDH0j7htMWb4UtUY3AmKZ8s2SmvOWZooUCXU4W4iNPHiMHcNqtY4w/KSaaOZ+Dr5
- R2iMpfe5LqEJGQX3W+1Nim6bp8zStgPnk31O2pyc1OZtGRwz3NLoeq/iNOcyD9/Z/7dU
- zhCAqn3qEWOE6XfrB6ZhY5ZvknJE7zL1mPJ6dhYGS0I1Sz8eYUjB70eBnMRtVAg7OmiY
- cWXw==
-X-Gm-Message-State: AOJu0YzjE2wYCX1diy0cyakEH0lUj010TOLqVfC4iaf9Ij0IMDEv6SoW
- ai70yKan6VCDzDUZZRuwSVpl4hETV8qN7nJndBRHrkV9/9KbTlYoi9sgE4TdXF5YbAuDS5v4p2l
- wU7by7Mo=
-X-Gm-Gg: ASbGnctwncme3UzcCRmaPqT8wBz7t9scBT4RvJhRbna++IC12MVftjUhDcQcyUxoWhX
- sVqe3DjglrUMJ2uFv/Qh61WOpzMyPygufkJOfuh4SS0GoY9k2Co4pbrS3sTcw2UwpJCyjKCXsZy
- ziogMR9gs9FscVmASMvs37MHgwn3y2BH0iU/aSF7wnusxXpDi1OCRal3NMj6z7PKfYfBueAevUI
- 64kp7H2C79tYAxlLyXt0J+50yxD8jBNWk+IJzR/LgFh7oYNLWgGNYvA4AvGhRfxpx75l4Yhqho3
- dYcqfhF4rI7gn27ikHSRELN8O/LYh58JqXjqEoLjQO/LaJ8sDvivsprQ9EsKDxP89+dofDjSNuf
- j7HRGeM3mYnmBUGUCDOEHdX0eMPxhQG3R8u3C2MNnhqNz76zucv+0FGWMabqoXUuNJl6OofA3
-X-Google-Smtp-Source: AGHT+IFte4bkpthavf7WGnbTSeu2PaFexmWzi13urEVA104uU+T2KnJRvcGU4bDaP/sF9cM3LdR4yQ==
-X-Received: by 2002:a05:6000:12cf:b0:3a5:3b14:1ba3 with SMTP id
- ffacd0b85a97d-3b60dd89a00mr2708265f8f.49.1752686906526; 
- Wed, 16 Jul 2025 10:28:26 -0700 (PDT)
+ bh=tWQe0nwaHjFSPbzauTR/fxg60n5AbbyVfV/ixwGD2ZA=;
+ b=CJ4sbmPqCainzt1QNDmqXJlOxoownkxGO2UQohGyLZ3MuHzhw2Qh+MgrnnDDbYSAcN
+ KcvFzKEBaZ8QOhB2sF9/mCDftNb/CPhxHQUbtmH4IQBwtYYO4yf+ZSbdZWXbQIEkfRsB
+ 9BsTC+apC/xV2sLDTsHwkBXy1RqDWEK+vESA8ka40I5RyyXHIualORwISAky0kN4Rrf8
+ g5GLCKVJuqmQVf8alTv4JfOETlq6SYMUBGi+GV7Vo6jHVyrDZCU5NHjIpUZX8cQLjWSA
+ hyKGUhF7/JgZ7yyiR3f35uBZXLe+Ioq2d6r+JMEwZC8QpAgAH4UWvgeDVdYWtoABOj8p
+ AgHg==
+X-Gm-Message-State: AOJu0YyoTaJBg/j4YBks7VDzBmv9h30Kw8FcmEdcgw13nhFM8oV/xiS6
+ nIQNlnZrtE7qzKhR7AxmrjPsnoVi3rcs5rhUE/jcB13wITZc0UI0q+SBcuBBZv/7yQ1ZfM7SjaV
+ YNsBbMns=
+X-Gm-Gg: ASbGncvy1gMCTNEPt0ojmhq/njJpEabt6voYzWJMnbKMqeOoYVGp889eMcNn5xXrtIz
+ MufUXOOBapsMIpBncg5J5d8OZhwicLe4S6nckSFLgHs/ak52h2DMKOEk6d2PUkAMtgJ6PS51WJI
+ xJXOJCXpkr8DINhQeWhSlHtEB9U4bS8U7We21rKSyr/W9thT4zZCleN8L/LgvKZnNVGnlbf72i+
+ 3TwWmIwkfq2EfCyO8dQMXH3G7BVNAXQtvXNQfRe0bfpExC+yZbjUK9I81IbVhdbJVg3vpKRjmNm
+ Nm988CB4aggxlVuaprQZY4au1yPkRgiedEamChEE7gALHqJ8axqV4YnFV5ePZ9mJcELk28drUOm
+ +IqRn2lQ1NRg2MLsV1c7JP+n9LAe7VMc9A1weHIdM/r0/W0SNCnw9GEPEynBnGTmE0mlM4DAb
+X-Google-Smtp-Source: AGHT+IEjy5mT+VlMmimH2ItxJttWj0qTFpf6nuSVx7+W3QydPRBGRLmZ/xijNFByXbddHOJj4wQBww==
+X-Received: by 2002:a05:600c:3496:b0:456:1b8b:b8c6 with SMTP id
+ 5b1f17b1804b1-4562edaa066mr35328655e9.14.1752686911508; 
+ Wed, 16 Jul 2025 10:28:31 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e0dc3esm18308292f8f.47.2025.07.16.10.28.25
+ 5b1f17b1804b1-4562e83c712sm26892265e9.33.2025.07.16.10.28.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 16 Jul 2025 10:28:26 -0700 (PDT)
+ Wed, 16 Jul 2025 10:28:30 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>,
@@ -68,18 +68,18 @@ Cc: Cameron Esfahani <dirty@apple.com>,
  Roman Bolshakov <rbolshakov@ddn.com>, Mads Ynddal <mads@ynddal.dk>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 2/3] accel/hvf: Do not abort in
- hvf_arm_get_*_ipa_bit_size()
-Date: Wed, 16 Jul 2025 19:28:12 +0200
-Message-ID: <20250716172813.73405-3-philmd@linaro.org>
+Subject: [PATCH-for-10.1 3/3] hw/arm/virt: Warn when HVF doesn't report IPA
+ bit length
+Date: Wed, 16 Jul 2025 19:28:13 +0200
+Message-ID: <20250716172813.73405-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250716172813.73405-1-philmd@linaro.org>
 References: <20250716172813.73405-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,70 +102,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not abort in hvf_arm_get_default_ipa_bit_size()
-and hvf_arm_get_max_ipa_bit_size() when the IPA can
-not be fetched. Return 0 (and document it).
+Emit a warning when HVF doesn't return the IPA bit length
+and return -1 as "this accelerator is not usable", allowing
+QEMU to try with the next one (when using '-accel hvf:tcg').
 
+Reported-by: Ivan Krasilnikov
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2981
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/hvf_arm.h | 11 +++++++++++
- target/arm/hvf/hvf.c |  8 ++------
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ hw/arm/virt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
-index ea82f2691df..21a69e7d105 100644
---- a/target/arm/hvf_arm.h
-+++ b/target/arm/hvf_arm.h
-@@ -22,7 +22,18 @@ void hvf_arm_init_debug(void);
- 
- void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
- 
-+/**
-+ * hvf_arm_get_default_ipa_bit_size:
-+ *
-+ * Returns the default intermediate physical address bit length or 0 on error.
-+ */
- uint32_t hvf_arm_get_default_ipa_bit_size(void);
-+
-+/**
-+ * hvf_arm_get_max_ipa_bit_size:
-+ *
-+ * Returns the maximum intermediate physical address bit length or 0 on error.
-+ */
- uint32_t hvf_arm_get_max_ipa_bit_size(void);
- 
- #endif
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index c9cfcdc08bb..180fd94def2 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -943,24 +943,20 @@ uint32_t hvf_arm_get_default_ipa_bit_size(void)
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index ef6be3660f5..062812bf252 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -3149,8 +3149,12 @@ static int virt_hvf_get_physical_address_range(MachineState *ms)
  {
-     uint32_t default_ipa_size;
-     hv_return_t ret = hv_vm_config_get_default_ipa_size(&default_ipa_size);
--    assert_hvf_ok(ret);
--
--    return default_ipa_size;
-+    return ret == HV_SUCCESS ? default_ipa_size : 0;
- }
+     VirtMachineState *vms = VIRT_MACHINE(ms);
  
- uint32_t hvf_arm_get_max_ipa_bit_size(void)
- {
-     uint32_t max_ipa_size;
-     hv_return_t ret = hv_vm_config_get_max_ipa_size(&max_ipa_size);
--    assert_hvf_ok(ret);
--
-     /*
-      * We clamp any IPA size we want to back the VM with to a valid PARange
-      * value so the guest doesn't try and map memory outside of the valid range.
-      * This logic just clamps the passed in IPA bit size to the first valid
-      * PARange value <= to it.
-      */
--    return round_down_to_parange_bit_size(max_ipa_size);
-+    return ret == HV_SUCCESS ? round_down_to_parange_bit_size(max_ipa_size) : 0;
- }
+-    int default_ipa_size = hvf_arm_get_default_ipa_bit_size();
+-    int max_ipa_size = hvf_arm_get_max_ipa_bit_size();
++    uint32_t default_ipa_size = hvf_arm_get_default_ipa_bit_size();
++    uint32_t max_ipa_size = hvf_arm_get_max_ipa_bit_size();
++    if (!default_ipa_size || !max_ipa_size) {
++        warn_report("HVF didn't report IPA bit length");
++        return -1;
++    }
  
- void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu)
+     /* We freeze the memory map to compute the highest gpa */
+     virt_set_memmap(vms, max_ipa_size);
 -- 
 2.49.0
 
