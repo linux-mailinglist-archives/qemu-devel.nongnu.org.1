@@ -2,69 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53F8B07631
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 14:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEF2B076B9
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 15:17:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc1WN-0001Dq-Em; Wed, 16 Jul 2025 08:46:03 -0400
+	id 1uc1zg-00012g-6A; Wed, 16 Jul 2025 09:16:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uc1S3-0006bi-5L
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 08:41:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1)
+ (envelope-from <44f51c1a3cf435daa82eb757740b59b1fd4fe71c@kylie.crudebyte.com>)
+ id 1uc1sr-0004MY-EX
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 09:09:17 -0400
+Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uc1S1-0000Nd-5p
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 08:41:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752669690;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=06YoYnLjv2nvQZl5YA5wtTvuJP2M1i+E9WUF0tyNmJ0=;
- b=hWqd7VgZIQTVNVu9yJDQmU7Dpj+fz3rod5LU5aurp13nYeeD5wag/rKstNq/2z6AHFCxbB
- Rojx9chyHutNT95y+BOeIySgdZBV7HP4frpVRtRcEwOpXY/h0dp0JxZeemROcnjfB4Gmbt
- 9f001QF/4YuYBA53DwXzPB5HxdUgLVo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-353-7pCSE9uNNUmM0j45WDh_wg-1; Wed,
- 16 Jul 2025 08:41:26 -0400
-X-MC-Unique: 7pCSE9uNNUmM0j45WDh_wg-1
-X-Mimecast-MFC-AGG-ID: 7pCSE9uNNUmM0j45WDh_wg_1752669686
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 118091955F43; Wed, 16 Jul 2025 12:41:26 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.35])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5F508180035E; Wed, 16 Jul 2025 12:41:25 +0000 (UTC)
-Date: Wed, 16 Jul 2025 08:41:24 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/17] Accelerators patches for 2025-07-15
-Message-ID: <20250716124124.GA328360@fedora>
-References: <20250715194516.91722-1-philmd@linaro.org>
+ (Exim 4.90_1)
+ (envelope-from <44f51c1a3cf435daa82eb757740b59b1fd4fe71c@kylie.crudebyte.com>)
+ id 1uc1sp-0004JJ-Gg
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 09:09:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Cc:To:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Subject:Date:From:References:In-Reply-To:Message-Id:Content-ID:
+ Content-Description; bh=S/kV/YcAxXkSzIbKGiyjCfmHoVC9Nicn11iDfG+0lG8=; b=PdSHd
+ hx0bhGQIFeRiJ3xKat7JRZOEco4D94aP3hBUNvgpoZdcRcw1td//7AKS6ycd5Ix/fIkh+mrxL4lLS
+ 4kW2TC6XsRWajAT3TXdqlbRq3j+UHXEOJcfi2rN7RIVy6OR/6s5g3rHb8TDw/cDFqstvZ5u9UJcG/
+ 1mvPSr+BJRON23a/V8LfSNt2VznDeTg2GgVGootfMpNejHVsKuL2FcQw4Hc2X8cWXQ8mZ1EZHRvgt
+ 8WuDnQhT56SeGdOvJPkWgVHJnwi6PJbBHQkp6mQI6tvCcyvWoPjyRD86Y0b+4RAkdVixsI4nmzcyn
+ xXE35LL9oT22mnnescHza2BJnbxvKdOworKaC+7nnqkKQNT8E24nslVmg7nqmSxwa6fUFLcmUOBW/
+ yrWbOMXyPFfZM41krWuZbG54yBlzqhMJnzWx3txwGNp70WFfxsdWaONYbjhbPBVqrkEBLTOA19UC1
+ /71QmyCksYQof9C3XsSIW9AAYqMOBHpQwjPgkhma93fLnwrA9ZuT5sf74h1FmobkNotcyYHq3uUy/
+ Teko4fu0j4gyAcU1xnzdtCkySvJQ/tnRetHyEkud4kQz65PVnj6vAtg0+2dPKIP2jCQd4UcpgcCpz
+ W6iCoEvZGWNB0685DthsM74Abdg0qm1V6qRcWf1BJzJ1tZDgie4PaVX+MIzjOY=;
+Message-Id: <44f51c1a3cf435daa82eb757740b59b1fd4fe71c.1752669861.git.qemu_oss@crudebyte.com>
+In-Reply-To: <cover.1752669861.git.qemu_oss@crudebyte.com>
+References: <cover.1752669861.git.qemu_oss@crudebyte.com>
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Date: Wed, 16 Jul 2025 14:44:22 +0200
+Subject: [PULL 2/2] hw/9pfs: move G_GNUC_PRINTF to header
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="HXvPhIMaHt2OlSrn"
-Content-Disposition: inline
-In-Reply-To: <20250715194516.91722-1-philmd@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To: qemu-devel@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>,
+    Sean Wei <me@sean.taipei>,
+    Philippe Mathieu-Daudé <philmd@linaro.org>
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=44f51c1a3cf435daa82eb757740b59b1fd4fe71c@kylie.crudebyte.com;
+ helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,30 +71,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Sean Wei <me@sean.taipei>
 
---HXvPhIMaHt2OlSrn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+v9fs_path_sprintf() is annotated with G_GNUC_PRINTF(2, 3) in
+hw/9pfs/9p.c, but the prototype in hw/9pfs/9p.h is missing the
+attribute, so callers that include only the header do not get format
+checking.
 
-Applied, thanks.
+Move the annotation to the header and delete the duplicate in the
+source file. No behavior change.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
+Signed-off-by: Sean Wei <me@sean.taipei>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250613.qemu.9p.02@sean.taipei>
+[CS: fix code style (max. 80 chars per line)]
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+---
+ hw/9pfs/9p.c | 3 +--
+ hw/9pfs/9p.h | 3 ++-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---HXvPhIMaHt2OlSrn
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmh3nfQACgkQnKSrs4Gr
-c8gahwf/TGDBE+4bepIXM/WumQYBcDTRpF+dc/p9RTvw+tLVZMLfhcen9P280svw
-Bodivr+Eyj3AKG0hYeSnIvhg10nqnpIl6wmR6j6xiRwiviKWI0lrx4K3CJXkbIVG
-S9vAcJn/RjrzmqzdMvdlEX0+qDxCjHOpflCpE82rKmO5z9g1fyf1TPML9TJDZIiB
-QabCiaDBpg9QAAWXNQ9opAbjSDA1IzDrnuJ9eZ+dqBXVTWz/2G0H2OE+iQ9v6kEq
-+Ec4R+57Mt4yNpGentflcbx8NUaXfUWE/yiQb8t4e3Qse33QaI8WNQbV9Fx7OGbE
-zI2QD8g7yx2cCJzajrdr+JstOj0Zvg==
-=htjk
------END PGP SIGNATURE-----
-
---HXvPhIMaHt2OlSrn--
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 8b001b9112..acfa7db4e1 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -201,8 +201,7 @@ void v9fs_path_free(V9fsPath *path)
+ }
+ 
+ 
+-void G_GNUC_PRINTF(2, 3)
+-v9fs_path_sprintf(V9fsPath *path, const char *fmt, ...)
++void v9fs_path_sprintf(V9fsPath *path, const char *fmt, ...)
+ {
+     va_list ap;
+ 
+diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
+index 259ad32ed1..65cc45e344 100644
+--- a/hw/9pfs/9p.h
++++ b/hw/9pfs/9p.h
+@@ -456,7 +456,8 @@ static inline uint8_t v9fs_request_cancelled(V9fsPDU *pdu)
+ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu);
+ void v9fs_path_init(V9fsPath *path);
+ void v9fs_path_free(V9fsPath *path);
+-void v9fs_path_sprintf(V9fsPath *path, const char *fmt, ...);
++void G_GNUC_PRINTF(2, 3) v9fs_path_sprintf(V9fsPath *path, const char *fmt,
++                                           ...);
+ void v9fs_path_copy(V9fsPath *dst, const V9fsPath *src);
+ size_t v9fs_readdir_response_size(V9fsString *name);
+ int v9fs_name_to_path(V9fsState *s, V9fsPath *dirpath,
+-- 
+2.30.2
 
 
