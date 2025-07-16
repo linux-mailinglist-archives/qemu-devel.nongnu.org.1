@@ -2,60 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC23AB076B8
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 15:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE91FB07648
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 14:54:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc1zc-000112-JI; Wed, 16 Jul 2025 09:16:16 -0400
+	id 1uc1bd-0006Xp-GV; Wed, 16 Jul 2025 08:51:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <44b540338a3e271866a3d636359bfe6b2edecbb6@kylie.crudebyte.com>)
- id 1uc1sm-0004KT-LB
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 09:09:17 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <44b540338a3e271866a3d636359bfe6b2edecbb6@kylie.crudebyte.com>)
- id 1uc1sj-0004Ie-MC
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 09:09:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Cc:To:Content-Transfer-Encoding:Content-Type:
- MIME-Version:Subject:Date:From:References:In-Reply-To:Message-Id:Content-ID:
- Content-Description; bh=OYEY8UxDeP49eAShbSD6pdDT/uizTiS7zwXmv8Bx9IU=; b=BCxKg
- IFE29VLp0y0VuV7ojYl93baptDbIP4XI0lrYWycJnn4DXpa/NkLdZRzG4Mt3lqU1ms2ku9qL/tC3x
- A+f9foiW6pXilxxK3JD/0GVCC2HU0EwiiozGU7RI7IqtzR11lw9WfSUSX0ubb1Swnb7Jyq4Vu3tEZ
- R2Jqx1PQxSuTG2AzjNfo8Pn2CYFauUl32xHYYfoO/AHRcRZy90TWhV2X+dBH0jCJVtLRvSNPm8NPZ
- hfdyzDNCU4QlJTy+34n1yOhrVx6LBAT0mOjK4TLAy7A3JJ02dVztZvuS1KovJ22l/rnmy0Wkrp5Kd
- OC7c7st29kC5DshCqFCASIaMMiSJ2GEw/Fj8QPHROWI3lCxkaRZTa71KXn1f/OeByYRiEYrBqivsi
- AIlXrAcEXE95wZrxNM3kMTsslUmi67/o6uuAmdqB/qhHZHYSzGQxKxdvtHmybNnbtCLm8CrgCy1FP
- uRAMpk8UQkYtqmbwdZ3FSUbrXg90GorlFC4nB/Rlul68F1M1rZ3bbZw78lmL2XMR8ttjiD23ZVyXS
- 7DmSXpE4oNARRWkkoESDs//4dLI8AhiDpq5URUGIrsIUEZGpxx1icU8mwSAFjo5xRK3vZ/vHsP9zT
- UhZM2cPUNtAIDlliKQQIbvo/IPW9zMUAvd+cYDf08W1ZKM+tnOUpoIKXA82PgM=;
-Message-Id: <44b540338a3e271866a3d636359bfe6b2edecbb6.1752669861.git.qemu_oss@crudebyte.com>
-In-Reply-To: <cover.1752669861.git.qemu_oss@crudebyte.com>
-References: <cover.1752669861.git.qemu_oss@crudebyte.com>
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Wed, 16 Jul 2025 14:44:22 +0200
-Subject: [PULL 1/2] fsdev/9p-marshal: move G_GNUC_PRINTF to header
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1uc1X9-0002Am-1w
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 08:47:00 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1uc1X5-00011p-0D
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 08:46:49 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-ae9be1697easo164533066b.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 05:46:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1752670002; x=1753274802; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=OQQHOH036lzK2/lR2CPj9pEdFWk43E3YGTCjm+aR+lY=;
+ b=fjIOec696wB/U1uOUnnHZ8qAiPrrbVMwW85Cr63+gZwxwDnS7mrYictZqMdf9IsHw+
+ PN2W1/N3KC/exkVz+WAhG1Wrw3vSThOQZbtHO6IDN98/yl/WtzMHxwjynbE9BvbAXcJO
+ ccvT/MmOcK0wL1GyQuJQGMcFwJ+UZlNgWSSuKKScGS3bHbqxQPeR/JOop5sXJEbPgKUC
+ qY4KO8dr0pt2wSdF9+Z8EG2BPhBTRaj+DPSevhDvHMTjD8Yxu4hfhJQRFpm3Gue4RosG
+ c/WW53NqRtkQeD/3+pPbcU3beIFrgIxPkkuoQFaFZj1xIhAPXBgrvyLfje1bMf4wGHxb
+ siag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752670002; x=1753274802;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OQQHOH036lzK2/lR2CPj9pEdFWk43E3YGTCjm+aR+lY=;
+ b=JZtNH16DMLVT/G+//pzjZOdkc5GJFNElRQtI2j3BZihQ4U/oPzTARBK3mpmzHQw5wl
+ Dw6yRTlIpgmSlbwZKuWE/igUZA7TcmsAL9I1x/UDVtD1xQBkp2Sztb9wSxQupyacstWf
+ KLojmXRTAivzYn/qIjrnWLWv8FjsjD+xEsnnUhR0UBnhQ6YdHXElaOBS8rUjYCwOvIbW
+ k92YnR0KsLD7kH1MZgN7LWl5jI2PW8NG+V1n7vENOxLwfDFG5KeFT9yJRJKFgvIGu5Mn
+ eZzYuKw9EG34lGSSnGNRDzEPejGp+UTE7PbGl//U6EPUPycPJZfJnqNRwoqEi8o6XWZS
+ niNw==
+X-Gm-Message-State: AOJu0YwW3Khn4RLfmeQXttia+EIm/GM18dGF9Z8x+1fbGaSp8jNa2c6P
+ ZUfRhFEpZYJ/TQDuWUvk7yD5eNt8eDpLps8f15jnDQZQMyUed/q4g6N4Pj7+uOo14inrVNPqkMr
+ pqRrQWolCOHsPFSpMAPm3/qRW25QiPUP/IfaB
+X-Gm-Gg: ASbGncs1YVAu9ocT+EFKWvczeu4y5zbE2mNRnktLnMfWOaoxMORnWFgvUDybi4vkose
+ Q/5aWIZq23fYht9B7KjkXx8Xh9AyMLLiDvQkGfF6L5qOF2eshw12N9j/ys3oI7IpTb/k3av8SV4
+ rYBy1CMXxQCmv1LCQ9bcaXhvn8eX390MeEXdLT48k7wOB9Z2h4/3oKryZFL/dgbUX0TonZSTpNo
+ +EeAw==
+X-Google-Smtp-Source: AGHT+IFAlqBAHI03/D7HAUUpUE2vRO8lMwadeUYmLfQT+sLtCbiQ5KTV/ceMnZWW6wecZu9m8h3AkHYVMoxrKMM5kdU=
+X-Received: by 2002:a17:907:cca1:b0:ad8:e448:6c64 with SMTP id
+ a640c23a62f3a-ae9b5d844f5mr503884866b.24.1752670002078; Wed, 16 Jul 2025
+ 05:46:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>,
-    Sean Wei <me@sean.taipei>,
-    Philippe Mathieu-Daudé <philmd@linaro.org>
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=44b540338a3e271866a3d636359bfe6b2edecbb6@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 16 Jul 2025 08:46:30 -0400
+X-Gm-Features: Ac12FXwCgHkaJt4S-zotP2PiITTuMp5ihv9AewnEgDDlBW3R8PI9lgiiJ-uuSyk
+Message-ID: <CAJSP0QUD5-4wSqAm7kfEiCsuoqpZ0nf4zcfumQO3=xh6vEXcxg@mail.gmail.com>
+Subject: Entering QEMU 10.1 soft freeze
+To: qemu-devel <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=stefanha@gmail.com; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,55 +86,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sean Wei <me@sean.taipei>
+Dear QEMU developers,
+QEMU has entered soft freeze for the 10.1 release cycle. You can find
+the QEMU 10.1 release schedule here:
+https://wiki.qemu.org/Planning/10.1
 
-v9fs_string_sprintf() is annotated with G_GNUC_PRINTF(2, 3) in
-9p-marshal.c, but the prototype in fsdev/9p-marshal.h is missing the
-attribute, so callers that include only the header do not get format
-checking.
+What is the soft feature freeze?
 
-Move the annotation to the header and delete the duplicate in the
-source file. No behavior change.
+The soft feature freeze is the beginning of the stabilization phase of
+QEMU's development process.  By the date of the soft feature freeze,
+maintainers must have sent their pull request to the mailing list.
+This means that features, and in particular non-trivial ones, must
+have been merged into maintainer trees before the soft freeze date.
 
-Signed-off-by: Sean Wei <me@sean.taipei>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20250613.qemu.9p.01@sean.taipei>
-[CS: fix code style (max. 80 chars per line)]
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- fsdev/9p-marshal.c | 3 +--
- fsdev/9p-marshal.h | 3 ++-
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/fsdev/9p-marshal.c b/fsdev/9p-marshal.c
-index f9b0336cd5..3455580703 100644
---- a/fsdev/9p-marshal.c
-+++ b/fsdev/9p-marshal.c
-@@ -27,8 +27,7 @@ void v9fs_string_free(V9fsString *str)
-     str->size = 0;
- }
- 
--void G_GNUC_PRINTF(2, 3)
--v9fs_string_sprintf(V9fsString *str, const char *fmt, ...)
-+void v9fs_string_sprintf(V9fsString *str, const char *fmt, ...)
- {
-     va_list ap;
- 
-diff --git a/fsdev/9p-marshal.h b/fsdev/9p-marshal.h
-index f1abbe151c..8995e42067 100644
---- a/fsdev/9p-marshal.h
-+++ b/fsdev/9p-marshal.h
-@@ -76,7 +76,8 @@ static inline void v9fs_string_init(V9fsString *str)
-     str->size = 0;
- }
- void v9fs_string_free(V9fsString *str);
--void v9fs_string_sprintf(V9fsString *str, const char *fmt, ...);
-+void G_GNUC_PRINTF(2, 3) v9fs_string_sprintf(V9fsString *str, const char *fmt,
-+                                             ...);
- void v9fs_string_copy(V9fsString *lhs, V9fsString *rhs);
- 
- #endif
--- 
-2.30.2
-
+Stefan
 
