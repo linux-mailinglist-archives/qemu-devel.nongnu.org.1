@@ -2,61 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CEEB076BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 15:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8FCB0754B
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 14:06:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc20g-0001Pj-BW; Wed, 16 Jul 2025 09:17:34 -0400
+	id 1uc0tQ-00037x-Er; Wed, 16 Jul 2025 08:05:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiangwencheng@lanxincomputing.com>)
- id 1ubwsU-0008UQ-8w
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 03:48:34 -0400
-Received: from sg-1-39.ptr.blmpb.com ([118.26.132.39])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xiangwencheng@lanxincomputing.com>)
- id 1ubwsM-00044T-E5
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 03:48:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=lanxincomputing-com.20200927.dkim.feishu.cn; t=1752652083;
- h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=U5ICjmmFh2LQm39YKHRoRRqmKT3VyQukSkY/TuMa9z8=;
- b=Ru5lITW0DJyz0DIdH/UXxuWs2UpXpOcBz03ws2eo0KT2gc9UORJjfDIqpTmOP9gTDqCBWP
- b2qBdd7tPVmfP1sUnfC0WoXUTFxHcibCE2INhuEgZ9GjiZGOkAJ0rcPxuvyosbhMwEpOpl
- F4nyGHgBwN9IOi08R8pe93huxpQtLa7EHRjuERYFXO1xoojWVoUh15vKUv7/eBRJKrOGTZ
- Dn7aQ8NbA89fJRYrIxIo1sV/4RYCau6FlFggH/7+S8ywXZwMcO5VDsNzLqzKl0rq5OYUzT
- 2uoxCZ2oB+dXKPauGid229TptsCm9HSnrYk7tTje0cSQpTvEgb3rkKjdszKTDQ==
-From: "BillXiang" <xiangwencheng@lanxincomputing.com>
-Subject: [PATCH] target/riscv/kvm: Introduce simple handler for VS-file
- allocation failure
-Received: from localhost.localdomain ([222.128.9.250]) by smtp.feishu.cn with
- ESMTP; Wed, 16 Jul 2025 15:48:00 +0800
-Date: Wed, 16 Jul 2025 15:47:37 +0800
-Message-Id: <20250716074738.1075-1-xiangwencheng@lanxincomputing.com>
-Mime-Version: 1.0
-X-Original-From: BillXiang <xiangwencheng@lanxincomputing.com>
-To: <palmer@dabbelt.com>
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: git-send-email 2.46.2.windows.1
-Cc: <alistair.francis@wdc.com>, <liwei1518@gmail.com>, 
- <dbarboza@ventanamicro.com>, <zhiwei_liu@linux.alibaba.com>, 
- <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>, 
- "BillXiang" <xiangwencheng@lanxincomputing.com>
-X-Lms-Return-Path: <lba+268775931+3e4abb+nongnu.org+xiangwencheng@lanxincomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Received-SPF: pass client-ip=118.26.132.39;
- envelope-from=xiangwencheng@lanxincomputing.com; helo=sg-1-39.ptr.blmpb.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uc0oy-0008TZ-7D
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 08:01:28 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uc0ou-0000yE-82
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 08:01:11 -0400
+Received: from [157.82.206.39] ([157.82.206.39]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 56GC0iQM034126
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Wed, 16 Jul 2025 21:00:44 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=DUA9zl7P8Tu6TlT+ueMdR11qSW4yTfnVp0swAEHI/jQ=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1752667245; v=1;
+ b=r0QJjZ2zldg5upfbmdV0xlKdIRFSCo46g8rvFdC6ZqbhkIZ4W6f5oixA1Ej1rS4D
+ 3Pxc3ZU4hugUbGXYOC81Uow6nm85VbUQowSjLl5q/Y/MeiklcviWe58Hb5y2JgkA
+ 1yG0ZUCUrmeASrQC0cE4pHWssBTHVtVfB0q0kWtJc7EwLQVQDPuOlHkFVpZQ7hMi
+ UilgRZ5ZlHLoXMhUdTi0Qxw2sj6eTVao2lg3Vm8/+h3qKekI3wEjNs68fXGxvV+I
+ GHHv9BSYbmUuTu/K68sbByjCR7PsUdvy9QljiqiSM2AJ2Bl/YSZpt56OrDHbBx4M
+ dFOnnmTxJLGpDEu3b3k96Q==
+Message-ID: <c1c64a05-49c3-45b3-bb8a-8fc075e57286@rsg.ci.i.u-tokyo.ac.jp>
+Date: Wed, 16 Jul 2025 21:00:44 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 08/13] qmp: update virtio features map to support
+ extended features
+To: Paolo Abeni <pabeni@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang
+ <jasowang@redhat.com>, Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Luigi Rizzo <lrizzo@google.com>,
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
+ Vincenzo Maffione <v.maffione@gmail.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ kvm@vger.kernel.org
+References: <cover.1752229731.git.pabeni@redhat.com>
+ <5f5a6718fa5ae82d5cd3b73523deea41089ffeb5.1752229731.git.pabeni@redhat.com>
+ <aab8c434-364e-4305-9d8b-943eb0c98406@rsg.ci.i.u-tokyo.ac.jp>
+ <b0ff2033-b8ab-4cee-833c-83e70951a9d9@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <b0ff2033-b8ab-4cee-833c-83e70951a9d9@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 16 Jul 2025 09:11:16 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,60 +83,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Consider a system with 8 harts, where each hart supports 5
-Guest Interrupt Files (GIFs), yielding 40 total GIFs.
-If we launch a QEMU guest with over 5 vCPUs using
-"-M virt,aia=3D'aplic-imsic' -accel kvm,riscv-aia=3Dhwaccel" =E2=80=93 whic=
-h
-relies solely on VS-files (not SW-files) for higher performance =E2=80=93 t=
-he
-guest requires more than 5 GIFs. However, the current Linux scheduler
-lacks GIF awareness, potentially scheduling >5 vCPUs to a single hart.
-This triggers VS-file allocation failure, and since no handler exists
-for this error, the QEMU guest becomes corrupted.
+On 2025/07/16 0:43, Paolo Abeni wrote:
+> On 7/15/25 9:59 AM, Akihiko Odaki wrote:
+>> On 2025/07/11 22:02, Paolo Abeni wrote:
+>>> @@ -785,11 +821,12 @@ VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
+>>>            status->vhost_dev->nvqs = hdev->nvqs;
+>>>            status->vhost_dev->vq_index = hdev->vq_index;
+>>>            status->vhost_dev->features =
+>>> -            qmp_decode_features(vdev->device_id, hdev->features);
+>>> +            qmp_decode_features(vdev->device_id, hdev->features_array);
+>>>            status->vhost_dev->acked_features =
+>>> -            qmp_decode_features(vdev->device_id, hdev->acked_features);
+>>> +            qmp_decode_features(vdev->device_id, hdev->acked_features_array);
+>>>            status->vhost_dev->backend_features =
+>>> -            qmp_decode_features(vdev->device_id, hdev->backend_features);
+>>> +            qmp_decode_features(vdev->device_id, hdev->backend_features_array);
+>>> +
+>>>            status->vhost_dev->protocol_features =
+>>>                qmp_decode_protocols(hdev->protocol_features);
+>>>            status->vhost_dev->max_queues = hdev->max_queues;
+>>> diff --git a/hw/virtio/virtio-qmp.h b/hw/virtio/virtio-qmp.h
+>>> index 245a446a56..e0a1e49035 100644
+>>> --- a/hw/virtio/virtio-qmp.h
+>>> +++ b/hw/virtio/virtio-qmp.h
+>>> @@ -18,6 +18,7 @@
+>>>    VirtIODevice *qmp_find_virtio_device(const char *path);
+>>>    VirtioDeviceStatus *qmp_decode_status(uint8_t bitmap);
+>>>    VhostDeviceProtocols *qmp_decode_protocols(uint64_t bitmap);
+>>> -VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap);
+>>> +VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id,
+>>> +                                          const uint64_t *bitmap);
+>>>    
+>>>    #endif
+>>> diff --git a/qapi/virtio.json b/qapi/virtio.json
+>>> index 73df718a26..f0442e144b 100644
+>>> --- a/qapi/virtio.json
+>>> +++ b/qapi/virtio.json
+>>> @@ -488,14 +488,18 @@
+>>>    #     unique features)
+>>>    #
+>>>    # @unknown-dev-features: Virtio device features bitmap that have not
+>>> -#     been decoded
+>>> +#     been decoded (lower 64 bit)
+>>> +#
+>>> +# @unknown-dev-features-dword2: Virtio device features bitmap that have not
+>>> +#     been decoded (bits 65-128)
+>>>    #
+>>>    # Since: 7.2
+>>>    ##
+>>>    { 'struct': 'VirtioDeviceFeatures',
+>>>      'data': { 'transports': [ 'str' ],
+>>>                '*dev-features': [ 'str' ],
+>>> -            '*unknown-dev-features': 'uint64' } }
+>>> +            '*unknown-dev-features': 'uint64',
+>>> +            '*unknown-dev-features-dword2': 'uint64' } }
+>>
+>> Let's omit "dword" for consistency with unknown-dev-features, which is
+>> also uint64 but don't have the keyword.
+> 
+> Ok. Can I infer that is actually legit to update a qapi struct
+> definition? It's not clear to me it such change violates any qemu
+> assumptions.
 
-To address this, we introduce this simple handler by rescheduling vCPU
-to alternative harts when VS-file allocation fails on the current hart.
-
-Signed-off-by: BillXiang <xiangwencheng@lanxincomputing.com>
----
- target/riscv/kvm/kvm-cpu.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 5c19062c19..7cf258604f 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1706,6 +1706,9 @@ static bool kvm_riscv_handle_debug(CPUState *cs)
- int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
- {
-     int ret =3D 0;
-+    uint64_t code;
-+    cpu_set_t set;
-+    long cpus;
-     switch (run->exit_reason) {
-     case KVM_EXIT_RISCV_SBI:
-         ret =3D kvm_riscv_handle_sbi(cs, run);
-@@ -1718,6 +1721,18 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_ru=
-n *run)
-             ret =3D EXCP_DEBUG;
-         }
-         break;
-+    case KVM_EXIT_FAIL_ENTRY:
-+        code =3D run->fail_entry.hardware_entry_failure_reason;
-+        if (code =3D=3D CSR_HSTATUS) {
-+            // Schedule vcpu to next hart upon VS-file=20
-+            // allocation failure on current hart.
-+            cpus =3D sysconf(_SC_NPROCESSORS_ONLN);
-+            CPU_ZERO(&set);
-+            CPU_SET((run->fail_entry.cpu+1)%cpus, &set);
-+            ret =3D sched_setaffinity(0, sizeof(set), &set);
-+            break;
-+        }
-+        /* FALLTHRU */
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: un-handled exit reason %d\n",
-                       __func__, run->exit_reason);
---=20
-2.46.2.windows.1
+Adding a property is fine but renaming one is not as it can break 
+application that use QAPI such as libvirt. For some guidance, please 
+see: docs/devel/qapi-code-gen.rst
 
