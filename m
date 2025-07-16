@@ -2,153 +2,124 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988BAB07D5B
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 21:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1CF2B07E7A
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 22:00:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc7QW-0000ME-0f; Wed, 16 Jul 2025 15:04:24 -0400
+	id 1uc8HV-0002zZ-P2; Wed, 16 Jul 2025 15:59:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1uc7Gn-000386-2a; Wed, 16 Jul 2025 14:54:21 -0400
-Received: from mail-dm3nam02on2062e.outbound.protection.outlook.com
- ([2a01:111:f403:2405::62e]
- helo=NAM02-DM3-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1uc7Gk-000636-NB; Wed, 16 Jul 2025 14:54:20 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fQwVknhHid3KemHmkmi40cNECet4sIlr/Iuq9RJQ2iRkGJNNkE36uNNB/JbKOj9BURAp5n/HiapuXUS1RgKulLlRQ6pmxek4dC1kjN3GyJ6WFnrYK0H2+IQepRMoiNx1DR/k1KDOhPHZjrw/WsgdFL+vJaLK+Hw3i2bTrSUBwsqA9V0YXvIJB+KTFOH1Pq50oAvYVIKKUPHEq7ISOGVmUvag/eDCkVfMzGDbAL7V9c57PonRCEfr1ckTHBiozpRu8OjlPHeWhH3ouUEvlLcHOEqmWOGSTnlZe2Eri4gs5Fk2WcarfCFhzvOKK95MNEdDhxR17OnkhidXjvOnXlGKVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2zi4VU7zOTfpc7wrxeAvXTMDb/VEdd1HJc6rbthSX4M=;
- b=sirbpGFUs0LIgCQeI8TyUdBeHUaaQiSsaXiTwFkeUODh0SWheheek9rHuj4RiW/0zCMHFNDTGK/hyKsJD+7CMB/zK4GgBJA/PnGTtm3SAoYCQMp05aII1Pq8+ZwVLV1IKe4k2CJxdCJcbRx39iEAl9352xBQcbJEkMwgCqVr6zihP1euAFUtPGHTyILtlmxW0RxzBANLQEszwim0QZG1E8lIYtP7bx86bWObZ/RZHH7qsIyMhcTfO6qzqUMeZGZTEbcOTlrkslppox0IFTtw40Oeo/YNTbP2krn2hSxqt+jP3bY6f2r4zfeK69m6c6hZe0lrCPHweUDAtoFaknK6Vg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=linaro.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2zi4VU7zOTfpc7wrxeAvXTMDb/VEdd1HJc6rbthSX4M=;
- b=M/YUfCPbLkxMtjdg257PkCXa3Mcc24Hn1nYzL1OfHBXO9eKM3DvjE/1Ks5i1IgTSc8hJancdA+whBgLI9LvAtxQOi/YtpA2midM2HdGDa8bGjo59d3G5dYgWc3vdUITtzx51Fpqx4dbOmZ33dMUtWrUNxscmE084g3QTuRtWiZOKyjyUslxhjWyqF8yL/bzkxffxm+/FloOJs4ILUNW+bIZSav/5AA9CUr8FOlEaxeMMKaxUrmUpGT7v3kjIGbarOaQb17qDO4845CrkErFBmR5yEvV8/gawb9oVifZJxB1vJQwvXdUcPdhjYuzYbirKCA62qOgaX45HsR35760KHg==
-Received: from BY3PR05CA0031.namprd05.prod.outlook.com (2603:10b6:a03:39b::6)
- by BN7PPF862C85B20.namprd12.prod.outlook.com
- (2603:10b6:40f:fc02::6d7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.23; Wed, 16 Jul
- 2025 18:54:12 +0000
-Received: from BY1PEPF0001AE16.namprd04.prod.outlook.com
- (2603:10b6:a03:39b:cafe::fe) by BY3PR05CA0031.outlook.office365.com
- (2603:10b6:a03:39b::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.17 via Frontend Transport; Wed,
- 16 Jul 2025 18:54:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BY1PEPF0001AE16.mail.protection.outlook.com (10.167.242.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8943.21 via Frontend Transport; Wed, 16 Jul 2025 18:54:12 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 16 Jul
- 2025 11:53:52 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 16 Jul
- 2025 11:53:52 -0700
-Received: from Asurada-Nvidia (10.127.8.10) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Wed, 16 Jul 2025 11:53:51 -0700
-Date: Wed, 16 Jul 2025 11:53:49 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <eric.auger@redhat.com>,
- <peter.maydell@linaro.org>, <ddutile@redhat.com>, <berrange@redhat.com>,
- <nathanc@nvidia.com>, <mochs@nvidia.com>, <smostafa@google.com>,
- <linuxarm@huawei.com>, <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
- <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>,
- <zhenzhong.duan@intel.com>, <shameerkolothum@gmail.com>
-Subject: Re: [RFC PATCH v3 14/15] Read and validate host SMMUv3 feature bits
-Message-ID: <aHf1PZAAVlUx6g9u@Asurada-Nvidia>
-References: <20250714155941.22176-1-shameerali.kolothum.thodi@huawei.com>
- <20250714155941.22176-15-shameerali.kolothum.thodi@huawei.com>
- <aHcVNYtd9qe+sHAT@Asurada-Nvidia>
- <20250716115123.GW2067380@nvidia.com>
- <aHfi3SS/V6qlx77H@Asurada-Nvidia>
- <20250716174506.GB2177622@nvidia.com>
- <aHfq6ccB44yupGb1@Asurada-Nvidia>
- <20250716184239.GC2177622@nvidia.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uc8HO-0002xQ-Jw
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 15:59:02 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uc8HM-0007pt-Gl
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 15:59:02 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 272E121212;
+ Wed, 16 Jul 2025 19:58:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1752695936; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cSq5eAdw2CYugbvWLY+MWGgtbHDHpYzY5yAnMyoffzQ=;
+ b=aOyTJO8GeNEgDBwhpOJXQZRqDv9B70tP0pI/YzEDnWcs4Dg2efusWu1YZCdwQzbLNBzvVw
+ LOBi76wBul/rBM6l6y2Zi8yiI073l1BtxLzfXsYvCcmTScIesSvLReijHs0ffeFksBXc6c
+ wYMUVdNvwK2OqoghYeHSK1dtceAaOXI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1752695936;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cSq5eAdw2CYugbvWLY+MWGgtbHDHpYzY5yAnMyoffzQ=;
+ b=KAQfezooCgpwGoCXtMf0AB2gmd/z2A/flDOqPXp14peEVGfuvc/+odhqekI02KrNm3RjP/
+ HJgmk4VWixePiBAw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1752695936; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cSq5eAdw2CYugbvWLY+MWGgtbHDHpYzY5yAnMyoffzQ=;
+ b=aOyTJO8GeNEgDBwhpOJXQZRqDv9B70tP0pI/YzEDnWcs4Dg2efusWu1YZCdwQzbLNBzvVw
+ LOBi76wBul/rBM6l6y2Zi8yiI073l1BtxLzfXsYvCcmTScIesSvLReijHs0ffeFksBXc6c
+ wYMUVdNvwK2OqoghYeHSK1dtceAaOXI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1752695936;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cSq5eAdw2CYugbvWLY+MWGgtbHDHpYzY5yAnMyoffzQ=;
+ b=KAQfezooCgpwGoCXtMf0AB2gmd/z2A/flDOqPXp14peEVGfuvc/+odhqekI02KrNm3RjP/
+ HJgmk4VWixePiBAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4A8DE138D2;
+ Wed, 16 Jul 2025 19:58:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id qkLgEX8EeGjMcQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 16 Jul 2025 19:58:55 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Arun Menon <armenon@redhat.com>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Cornelia Huck <cohuck@redhat.com>, Halil
+ Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Richard
+ Henderson <richard.henderson@linaro.org>, David Hildenbrand
+ <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth
+ <thuth@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>, Nicholas
+ Piggin <npiggin@gmail.com>, Daniel Henrique Barboza
+ <danielhb413@gmail.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Alex
+ Williamson <alex.williamson@redhat.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>, Peter Xu <peterx@redhat.com>, Hailiang Zhang
+ <zhanghailiang@xfusion.com>, Steve Sistare <steven.sistare@oracle.com>,
+ qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, Stefan Berger
+ <stefanb@linux.vnet.ibm.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, Dmitry Osipenko
+ <dmitry.osipenko@collabora.com>, Matthew Rosato <mjrosato@linux.ibm.com>,
+ Arun Menon <armenon@redhat.com>, Stefan Berger <stefanb@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4 00/23] migration: propagate vTPM errors using Error
+ objects
+In-Reply-To: <20250716-propagate_tpm_error-v4-0-7141902077c0@redhat.com>
+References: <20250716-propagate_tpm_error-v4-0-7141902077c0@redhat.com>
+Date: Wed, 16 Jul 2025 16:58:52 -0300
+Message-ID: <87zfd3lxfn.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250716184239.GC2177622@nvidia.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE16:EE_|BN7PPF862C85B20:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2bc910ba-46b6-4751-835f-08ddc49a27c4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|376014|36860700013|7416014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?8mqT7JouJpNtKhIz68NDtrn8r0uxWnOuKCXWn/IY93kFCqfCuxOPzkI/H6r9?=
- =?us-ascii?Q?KyAyIZtKbsg24S+d9XjtvzGCfxoIi0XdoW+4LX4XaznVaJRqTgD5u5eOsiRy?=
- =?us-ascii?Q?Q2EPwpJLOimdYDVIiagK8rnRBt5aM7Qd5he5f3OjavQZv8NuDAg07Q8exTgE?=
- =?us-ascii?Q?9RTrY62SQUIL3rUP5sREuumYBSqv/2s1pI7QTwQWXp0FuhCE7SNXB3YFCAuS?=
- =?us-ascii?Q?kRrmOiPianpor73gKjr3L7YEFDtfK/D9/IlgEaeW6RvYtWLdOnmZbIf6fQ3V?=
- =?us-ascii?Q?7IDCVkrTIgTF+9xiXYGSuWx5Bj3ppEFY8D5+yyXZs3dPdSDtqVGDFXZ1+n9K?=
- =?us-ascii?Q?sm1C0xAMCOKY6dB6YR5ZYA27MdwonQ8eaVJR9pjfIXxUh3WOLwjfiVBs9UP+?=
- =?us-ascii?Q?n3vIS9J4OyZcXIqSmAJQ/uGCHeq/SvbKpLirz1TUoog8EEdTHcvMLo+y9kjb?=
- =?us-ascii?Q?2/0CmARHoLxThIJByKXhG++NH7406JD1UC7+iVoqAD9aPkSbqnQ3cgK91tIE?=
- =?us-ascii?Q?jjWwpNFSXFow5gbNZ6OamZhhdfqP9pd8GmtdoeSCBpua67mGPgMgxecKQBlT?=
- =?us-ascii?Q?iZlQr/HJ5G6HsvW5pK4T6FzBMBJsHvEVCQu9k+p5OSUL22i8q0y4vKIaRTsV?=
- =?us-ascii?Q?k3eQV5r06zIlou31EGD/m/KkzKAvr8YqU1mW1gQhf9dEbcpD2asp6FFW5cVZ?=
- =?us-ascii?Q?YKtiLSiM3KXVbyCIjXVz+jdNMlRaUg3Sg9fVH1vm9FeEC4KvYIbOTSfr/Fdz?=
- =?us-ascii?Q?GvX/sJE2lRhkg7YAWicTEE2gwMWePzDT16vaJ1YHSfecVYKhpH9h6526XntK?=
- =?us-ascii?Q?K2546rSRHPY8ll2nm9f0qkuTxEymYcb8pYFwBzHsC430H0NIrS2ni59rm/BG?=
- =?us-ascii?Q?iy70eJM4hhDoDlm/S8KPNe/fFkZxvqECw34cEtixVVJzUpefACxeNDyui3PM?=
- =?us-ascii?Q?00nYoGtIkMQOOBb1WkL/O8ic7dlnjcp65iOrdQy80lg/nrsBo9Er9PJFAcdW?=
- =?us-ascii?Q?SvBTfz47fZIQkpnrnZ6oal/azxxXn44+mPHvlKR6CXwWhrhlYpABLGtxP7gG?=
- =?us-ascii?Q?bOatRQqzAwk4/ehWneqMXZ4Q68J8RiyUBrvIHOiGv3pJRVn3dtWlJqV1gabj?=
- =?us-ascii?Q?lZQd9xNOfU01s+U9L3WTicjJs90RCA8NM9c3h75a6JmnumHqPTgo9Ou9Rj0a?=
- =?us-ascii?Q?UNGCaKuY9BSjP3w8z7cNMrTGzWWte9FbuRLrOrHl2iOPR5GE9SvNcKtZjl5G?=
- =?us-ascii?Q?pZdJWAkaTCJa6gElZ5y0Idj+sbCXr8JJYbQLMRbx1tCKkT0N0i3VgW3+x8QV?=
- =?us-ascii?Q?SIUZqacazCNavEhEzTEBv+s1yp5HBp2za86sxHpHyyOVl9gSX1CqBPAcPLpW?=
- =?us-ascii?Q?w+sOPkIOVl+xRo056ErJgdhMdk8j2cCA+BT1Q82NGMjgb94oaZiAbeMqUaNR?=
- =?us-ascii?Q?qA04n1Mq+9/K02oiAPdsCPkOuphF8e1/2cJptmpwqn3GUTuFALSNDIPLcCxX?=
- =?us-ascii?Q?S3+rNy2pD56HbSRTlG1wadeR8KGz10yV902M?=
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013)(7416014); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 18:54:12.6365 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2bc910ba-46b6-4751-835f-08ddc49a27c4
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BY1PEPF0001AE16.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF862C85B20
-Received-SPF: permerror client-ip=2a01:111:f403:2405::62e;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM02-DM3-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ MIME_TRACE(0.00)[0:+]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ TO_DN_SOME(0.00)[]; RCPT_COUNT_TWELVE(0.00)[32];
+ TAGGED_RCPT(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ R_RATELIMIT(0.00)[to_ip_from(RL96jwb13nk98k7j3ws9zhxhn8)];
+ FROM_HAS_DN(0.00)[];
+ FREEMAIL_CC(0.00)[redhat.com,gmail.com,linux.ibm.com,linaro.org,euphon.net,xfusion.com,oracle.com,nongnu.org,linux.vnet.ibm.com,rsg.ci.i.u-tokyo.ac.jp,collabora.com];
+ RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,33 +135,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 16, 2025 at 03:42:39PM -0300, Jason Gunthorpe wrote:
-> On Wed, Jul 16, 2025 at 11:09:45AM -0700, Nicolin Chen wrote:
-> > OK. I see your point. That will leads to a very long list of
-> > parameters.
-> 
-> I would have some useful prebaked ones. Realistically there are not
-> that many combinations of HW capabilities that are
-> interesting/exist.
+Arun Menon <armenon@redhat.com> writes:
 
-Maybe starting with a configurable subversion could be a good one.
+> Hello,
+>
+> Currently, when a migration of a VM with an encrypted vTPM
+> fails on the destination host (e.g., due to a mismatch in secret values),
+> the error message displayed on the source host is generic and unhelpful.
+>
+> For example, a typical error looks like this:
+> "operation failed: job 'migration out' failed: Sibling indicated error 1.
+> operation failed: job 'migration in' failed: load of migration failed:
+> Input/output error"
+>
+> This message does not provide any specific indication of a vTPM failure.
+> Such generic errors are logged using error_report(), which prints to
+> the console/monitor but does not make the detailed error accessible via
+> the QMP query-migrate command.
+>
+> This series addresses the issue, by ensuring that specific TPM error
+> messages are propagated via the QEMU Error object.
+> To make this possible,
+> - A set of functions in the call stack is changed
+>   to incorporate an Error object as an additional parameter.
+> - Also, the TPM backend makes use of a new hook called post_load_errp()
+>   that explicitly passes an Error object.
+>
+> It is organized as follows,
+>  - Patches 1-21 focuses on pushing Error object into the functions
+>    that are important in the call stack where TPM errors are observed.
+>    We still need to make changes in rest of the functions in savevm.c
+>    such that they also incorporate the errp object for propagating errors.
+>  - Patch 22 introduces the new variants of the hooks in VMStateDescription
+>    structure. These hooks should be used in future implementations.
+>  - Patch 23 focuses on changing the TPM backend such that the errors are
+>    set in the Error object.
+>
+> While this series focuses specifically on TPM error reporting during
+> live migration, it lays the groundwork for broader improvements.
+> A lot of methods in savevm.c that previously returned an integer now capture
+> errors in the Error object, enabling other modules to adopt the
+> post_load_errp hook in the future.
+>
+> One such change previously attempted:
+> https://lists.gnu.org/archive/html/qemu-devel/2021-02/msg01727.html
+>
+> Resolves: https://issues.redhat.com/browse/RHEL-82826
+>
+> Signed-off-by: Arun Menon <armenon@redhat.com>
+> ---
+> Changes in v4:
+> - Split the patches into smaller ones based on functions. Pass NULL in the
+>   caller until errp is made available. Every function that has an
+>   Error **errp object passed to it, ensures that it sets the errp object
+>   in case of failure.
+> - A few more functions within loadvm_process_command() now handle errors using
+>   the errp object. I've converted these for consistency, taking Daniel's
+>   patches (link above) as a reference.
+> - Along with the post_load_errp() hook, other duplicate hooks are also introduced.
+>   This will enable us to migrate to the newer versions eventually.
+> - Fix some semantic errors, like using error_propagate_prepend() in places where
+>   we need to preserve existing behaviour of accumulating the error in local_err
+>   and then propagating it to errp. This can be refactored in a later commit.
+> - Add more information in commit messages explaining the changes.
+> - Link to v3: https://lore.kernel.org/qemu-devel/20250702-propagate_tpm_error-v3-0-986d94540528@redhat.com
+>
+> Changes in v3:
+> - Split the 2nd patch into 2. Introducing post_load_with_error() hook
+>   has been separated from using it in the backends TPM module. This is
+>   so that it can be acknowledged.
+> - Link to v2: https://lore.kernel.org/qemu-devel/20250627-propagate_tpm_error-v2-0-85990c89da29@redhat.com
+>
+> Changes in v2:
+> - Combine the first two changes into one, focusing on passing the
+>   Error object (errp) consistently through functions involved in
+>   loading the VM's state. Other functions are not yet changed.
+> - As suggested in the review comment, add null checks for errp
+>   before adding error messages, preventing crashes.
+>   We also now correctly set errors when post-copy migration fails.
+> - In process_incoming_migration_co(), switch to error_prepend
+>   instead of error_setg. This means we now null-check local_err in
+>   the "fail" section before using it, preventing dereferencing issues.
+> - Link to v1: https://lore.kernel.org/qemu-devel/20250624-propagate_tpm_error-v1-0-2171487a593d@redhat.com
+>
+> ---
+> Arun Menon (23):
+>       migration: push Error **errp into vmstate_subsection_load()
+>       migration: push Error **errp into vmstate_load_state()
+>       migration: push Error **errp into qemu_loadvm_state_header()
+>       migration: push Error **errp into vmstate_load()
+>       migration: push Error **errp into qemu_loadvm_section_start_full()
+>       migration: push Error **errp into qemu_loadvm_section_part_end()
+>       migration: push Error **errp into loadvm_process_command()
+>       migration: push Error **errp into loadvm_handle_cmd_packaged()
+>       migration: push Error **errp into ram_postcopy_incoming_init()
+>       migration: push Error **errp into loadvm_postcopy_handle_advise()
+>       migration: push Error **errp into loadvm_postcopy_handle_listen()
+>       migration: push Error **errp into loadvm_postcopy_handle_run()
+>       migration: push Error **errp into loadvm_postcopy_ram_handle_discard()
+>       migration: make loadvm_postcopy_handle_resume() void
+>       migration: push Error **errp into loadvm_handle_recv_bitmap()
+>       migration: push Error **errp into loadvm_process_enable_colo()
+>       migration: push Error **errp into loadvm_postcopy_handle_switchover_start()
+>       migration: push Error **errp into qemu_loadvm_state_main()
+>       migration: push Error **errp into qemu_loadvm_state()
+>       migration: push Error **errp into qemu_load_device_state()
+>       migration: Capture error in postcopy_ram_listen_thread()
+>       migration: Add error-parameterized function variants in VMSD struct
+>       backends/tpm: Propagate vTPM error on migration failure
+>
+>  backends/tpm/tpm_emulator.c |  39 +++---
+>  hw/display/virtio-gpu.c     |   2 +-
+>  hw/pci/pci.c                |   2 +-
+>  hw/s390x/virtio-ccw.c       |   2 +-
+>  hw/scsi/spapr_vscsi.c       |   2 +-
+>  hw/vfio/pci.c               |   2 +-
+>  hw/virtio/virtio-mmio.c     |   2 +-
+>  hw/virtio/virtio-pci.c      |   2 +-
+>  hw/virtio/virtio.c          |   4 +-
+>  include/migration/colo.h    |   2 +-
+>  include/migration/vmstate.h |  13 +-
+>  migration/colo.c            |  10 +-
+>  migration/cpr.c             |   4 +-
+>  migration/migration.c       |  19 +--
+>  migration/postcopy-ram.c    |   9 +-
+>  migration/postcopy-ram.h    |   2 +-
+>  migration/ram.c             |  14 +--
+>  migration/ram.h             |   4 +-
+>  migration/savevm.c          | 299 +++++++++++++++++++++++++-------------------
+>  migration/savevm.h          |   7 +-
+>  migration/vmstate-types.c   |  10 +-
+>  migration/vmstate.c         |  83 ++++++++----
+>  tests/unit/test-vmstate.c   |  18 +--
+>  ui/vdagent.c                |   2 +-
+>  24 files changed, 325 insertions(+), 228 deletions(-)
+> ---
+> base-commit: 9a4e273ddec3927920c5958d2226c6b38b543336
+> change-id: 20250624-propagate_tpm_error-bf4ae6c23d30
+>
+> Best regards,
 
-But I suspect there can be some case where somebody wants certain
-bits to be off on top of a subversion prebake..
+Hi Arun, make check is failing, please take a look:
 
-> > So, a vSMMU model is defined following the parameters in the
-> > command line. A device (and its attaching SMMU HW) that's not
-> > compatibile should just fail the cold-plug at the beginning.
-> 
-> Yes
-> 
-> And if you want to do hotplug the SMMU is already fully defined so you
-> don't need to discover anything at VM startup time.
-
-Yea, basically every device (whether hotplug or coldplug) should
-run hw_info to make sure it's compatible to the predefined vSMMU,
-not the other way around that I expected.
-
-Thanks
-Nicolin
+QTEST_LOG=1 QTEST_QEMU_BINARY=./qemu-system-x86_64 \
+./tests/qtest/migration-test \
+--full -p /x86_64/migration/postcopy/recovery/double-failures/handshake
+...
+qemu-system-x86_64: ../util/error.c:65: error_setv: Assertion `*errp ==
+NULL' failed.
 
