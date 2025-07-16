@@ -2,76 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D74CB07085
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 10:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E80B070A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 10:33:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubxUK-0008Tb-Mi; Wed, 16 Jul 2025 04:27:40 -0400
+	id 1ubxZT-00055N-IL; Wed, 16 Jul 2025 04:33:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubxQV-00033F-EQ
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 04:23:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubxZI-000516-Dz
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 04:32:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubxQO-0002qn-UW
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 04:23:43 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubxZE-0005ab-E9
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 04:32:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752654215;
+ s=mimecast20190719; t=1752654760;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=STUiBIB+Th2T363ay6GOHVdT+QkghnT6vecX0DXWUeM=;
- b=exXqPj6Wy9JdyE02Sn9DMdT9J2DR76lV62Hav/curm/CDE44nOA8CKpJ3jZhFuhfdgRzfs
- /wgVukx0xolJfn+ZXOL9PCvdvSioGgKZkl1aPWeAqM8wwl3XUavcHTP6oNpM/E/SAi9Cjh
- weEO+mBPaKLZ1WfMVccUP/M4gBt4cVA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=PFb4HEJSeyKMX7IqSneL6waLr0C5Osf3xxuDffuPHM0=;
+ b=BtaUtvLJZozwxqCnV5EtocJLy7k14asfbHponYvVqQ1VP/NWAMyw+tFAi4jNBoAijeerej
+ KxQLLnuKvs4NhCIi5LgHGDH2II6yiA5LHDK/qKSfd4PHtSgcKRoRcMKOkEF7IS37bSUdw0
+ UE3H99yn+2+mRFHyn/ThnNZhWZdUU2I=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-41NsQrsXNwWBG8ttagMCbg-1; Wed,
- 16 Jul 2025 04:23:32 -0400
-X-MC-Unique: 41NsQrsXNwWBG8ttagMCbg-1
-X-Mimecast-MFC-AGG-ID: 41NsQrsXNwWBG8ttagMCbg_1752654210
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-267-U3o5QyRuMkeHLqB--_ybzA-1; Wed,
+ 16 Jul 2025 04:32:38 -0400
+X-MC-Unique: U3o5QyRuMkeHLqB--_ybzA-1
+X-Mimecast-MFC-AGG-ID: U3o5QyRuMkeHLqB--_ybzA_1752654757
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 23F491800366; Wed, 16 Jul 2025 08:23:30 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 64B1519560A5; Wed, 16 Jul 2025 08:32:37 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8355F1955F16; Wed, 16 Jul 2025 08:23:29 +0000 (UTC)
+ id 0D8191955F16; Wed, 16 Jul 2025 08:32:37 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D3D1D21E6A27; Wed, 16 Jul 2025 10:23:26 +0200 (CEST)
+ id 51C8521E6A27; Wed, 16 Jul 2025 10:32:34 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>,  kvm@vger.kernel.org,  Richard Henderson
- <richard.henderson@linaro.org>,  Zhao Liu <zhao1.liu@intel.com>,  Eduardo
- Habkost <eduardo@habkost.net>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Yanan Wang <wangyanan55@huawei.com>,  Eric
- Blake <eblake@redhat.com>,  Michael Roth <michael.roth@amd.com>,  Daniel
- P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PATCH v5 28/69] qapi: Move definitions related to accelerators
- in their own file
-In-Reply-To: <db0b2ce0-e702-4f32-b284-29cccc8d67ba@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 3 Jul 2025 18:42:06
- +0200")
-References: <20250703105540.67664-1-philmd@linaro.org>
- <20250703105540.67664-29-philmd@linaro.org>
- <db0b2ce0-e702-4f32-b284-29cccc8d67ba@linaro.org>
-Date: Wed, 16 Jul 2025 10:23:26 +0200
-Message-ID: <877c08wnlt.fsf@pond.sub.org>
+To: John Snow <jsnow@redhat.com>
+Cc: Steve Sistare <steven.sistare@oracle.com>,  qemu-devel
+ <qemu-devel@nongnu.org>,  Cleber Rosa <crosa@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  "Daniel P.
+ Berrange" <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,
+ Fabiano Rosas <farosas@suse.de>,  Laurent Vivier <lvivier@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>
+Subject: Re: [PATCH V4 2/3] python: use qom-list-get
+In-Reply-To: <CAFn=p-YhYqG5oyWt=zpPCic=2npUkxNJuvuGBuxwthqfMAxL1g@mail.gmail.com>
+ (John Snow's message of "Tue, 15 Jul 2025 13:27:05 -0400")
+References: <1752164694-215567-1-git-send-email-steven.sistare@oracle.com>
+ <1752164694-215567-3-git-send-email-steven.sistare@oracle.com>
+ <871pqmwzqr.fsf@pond.sub.org>
+ <CAFn=p-YhYqG5oyWt=zpPCic=2npUkxNJuvuGBuxwthqfMAxL1g@mail.gmail.com>
+Date: Wed, 16 Jul 2025 10:32:34 +0200
+Message-ID: <87zfd4v8m5.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,113 +92,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+John Snow <jsnow@redhat.com> writes:
 
-> Hi Markus,
-
-I missed this one, sorry!
-
-> On 3/7/25 12:54, Philippe Mathieu-Daud=C3=A9 wrote:
->> Extract TCG and KVM definitions from machine.json to accelerator.json.
->> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> On Fri, Jul 11, 2025, 10:47=E2=80=AFAM Markus Armbruster <armbru@redhat.c=
+om> wrote:
 
 [...]
 
->> diff --git a/qapi/accelerator.json b/qapi/accelerator.json
->> new file mode 100644
->> index 00000000000..00d25427059
->> --- /dev/null
->> +++ b/qapi/accelerator.json
->> @@ -0,0 +1,57 @@
->> +# -*- Mode: Python -*-
->> +# vim: filetype=3Dpython
->> +#
->> +# SPDX-License-Identifier: GPL-2.0-or-later
->> +
->> +##
->> +# =3D Accelerators
->> +##
->> +
->> +{ 'include': 'common.json' }
+>> Exception ignored in: <function QEMUMonitorProtocol.__del__ at
+>> 0x7fcfcd080d60>
+>> Traceback (most recent call last):
+>>   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/legacy.py",
+>> line 310, in __del__
+>>     self.close()
+>>   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/legacy.py",
+>> line 281, in close
+>>     self._sync(
+>>   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/legacy.py",
+>> line 102, in _sync
+>>     return self._aloop.run_until_complete(
+>>   File "/usr/lib64/python3.13/asyncio/base_events.py", line 719, in
+>> run_until_complete
+>>     return future.result()
+>>   File "/usr/lib64/python3.13/asyncio/tasks.py", line 507, in wait_for
+>>     return await fut
+>>   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/protocol.py",
+>> line 399, in disconnect
+>>     await self._wait_disconnect()
+>>   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/protocol.py",
+>> line 719, in _wait_disconnect
+>>     await all_defined_tasks  # Raise Exceptions from the bottom half.
+>>   File "/work/armbru/qemu/scripts/qmp/../../python/qemu/qmp/protocol.py",
+>> line 870, in _bh_loop_forever
+>>     await async_fn()
+>> RuntimeError: cannot reuse already awaited coroutine
+>>
 >
-> common.json defines @HumanReadableText, ...
+> Curious about this backtrace. It looks like something has gone
+> fundamentally wrong in the internals and the error is being raised by the
+> garbage collector which is not ideal.
 >
-> [...]
->
->> +##
->> +# @x-query-jit:
->> +#
->> +# Query TCG compiler statistics
->> +#
->> +# Features:
->> +#
->> +# @unstable: This command is meant for debugging.
->> +#
->> +# Returns: TCG compiler statistics
->> +#
->> +# Since: 6.2
->> +##
->> +{ 'command': 'x-query-jit',
->> +  'returns': 'HumanReadableText',
->> +  'if': 'CONFIG_TCG',
->
-> ... which is *optionally* used here, triggering when
-> TCG is not built in:
->
-> qapi/qapi-commands-accelerator.c:85:13: error: =E2=80=98qmp_marshal_outpu=
-t_HumanReadableText=E2=80=99 defined but not used [-Werror=3Dunused-functio=
-n]
->    85 | static void qmp_marshal_output_HumanReadableText(HumanReadableTex=
-t *ret_in,
->       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> cc1: all warnings being treated as errors
+> Can you help me reproduce this? Even if it's old/bad code, I don't want
+> python-qemu-qmp faulting like this.
 
-This is a defect in the QAPI code generator.  More below.
+Reproducer for Fedora 41, current master c079d3a31e4:
 
-> We previously discussed that issue:
-> https://mail.gnu.org/archive/html/qemu-devel/2021-06/msg02667.html
->
-> where you said:
->
-> "conditional commands returning an unconditional type is a bit
-> of a code smell". Is it however a "non-smelly instances of this pattern"?
+Run
 
-The instance discussed there wasn't.
+    $ qemu-system-x86_64 -S -display none -chardev socket,id=3Dmon1,path=3D=
+test-qmp,server=3Don,wait=3Doff -mon mode=3Dcontrol,id=3Dqmp,chardev=3Dmon1
 
-You ran into it when you made TPM commands conditional on CONFIG_TPM
-without also making the types they return conditional.  The proper
-solution was to make the types conditional, too.  Avoided generating
-dead code.  I told you "The user is responsible for making T's 'if' the
-conjunction of the commands'."
+and
 
-Some of the commands returning HumanReadableText are unconditional, so
-said conjunction is also unconditional.  So how do we end up with unused
-qmp_marshal_output_HumanReadableText()?
+    $ scripts/qmp/qom-tree -s test-qmp >/dev/null
 
-A qmp_marshal_output_T() is only ever called by qmp_marshal_C() for a
-command C that returns T.
-
-We've always generated it as a static function on demand, i.e. when we
-generate a call.
-
-Since we split up monolithic generated code into modules, we do this on
-per module.  This can result in identical (static)
-qmp_marshal_output_T() in several modules.  Fine, but we haven't
-considered conditionals, yet.
-
-As long as all functions returning T are in the same module, "making T's
-'if' the conjunction of the commands'" works.  This is the case for the
-TPM commands.
-
-However, it need not work when the functions returning T are in multiple
-modules.  For each module, we need the conjunction of that module's
-commands' conditions.  We can't make it T's condition unless they are
-all the same.  They aren't for HumanReadableText, as you found out.
-
-I need to ponder this to decide on a solution.
-
-Thanks!
+Questions?
 
 
