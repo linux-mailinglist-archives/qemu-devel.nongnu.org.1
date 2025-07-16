@@ -2,74 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9ACB074F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 13:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 759A2B074F4
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 13:45:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc0Yf-0005EA-Bo; Wed, 16 Jul 2025 07:44:22 -0400
+	id 1uc0Xu-0004dv-Ge; Wed, 16 Jul 2025 07:43:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uc0Mk-0004gk-HF
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 07:32:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uc0OL-0005u3-KT
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 07:33:42 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uc0Me-0003Sv-Dz
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 07:32:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752665513;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=Df1vCYquYpEq0apqkonugHu7yYo89n8zohC3t1WF15k=;
- b=HaoDc4nmk8Cx0+5s4xI/wmwJJG5EwcG0M+hfvroK215bBnoWi24vufCv6c0SdZO5zjIIrI
- QfOtoaakV5GVHCu1+QPY0qzfrDQMr7IIdHe7BQ0M2tVwbPOsZfiNQEDwDm+S7T+28iy16+
- n1S7KwF/gtVjbyYmQTl7zYw8l44vqD8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-90-TuQDrxyDPG-169N8GjzbEw-1; Wed,
- 16 Jul 2025 07:31:49 -0400
-X-MC-Unique: TuQDrxyDPG-169N8GjzbEw-1
-X-Mimecast-MFC-AGG-ID: TuQDrxyDPG-169N8GjzbEw_1752665509
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DD9F21800C37; Wed, 16 Jul 2025 11:31:48 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.68])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3D92A1955F16; Wed, 16 Jul 2025 11:31:43 +0000 (UTC)
-Date: Wed, 16 Jul 2025 12:31:40 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Roy Hopkins <roy.hopkins@randomman.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffman <kraxel@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: Re: [PULL 17/77] meson: Add optional dependency on IGVM library
-Message-ID: <aHeNnCnN2RGmbxWm@redhat.com>
-References: <20250714110406.117772-1-pbonzini@redhat.com>
- <20250714110406.117772-18-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uc0OA-0003bc-Og
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 07:33:40 -0400
+Received: from [157.82.206.39] ([157.82.206.39]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 56GBWqxB026035
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Wed, 16 Jul 2025 20:32:52 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=ICTS1Ps0EN4b96NtX6XGLQlHBYf4LG/YqpIJ5KhSIUo=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1752665572; v=1;
+ b=mZKsqwvN1S8meHTxAObOEVF3Zxy+Szlfym3D07WhtRGxYD10NZwmjTb2U8JJJClF
+ 2V2fjZdZgydkpgrefVKcEjybs1JiBVJ/fdBb6NKVZ3qhxV0f7CE4xUtCDQfwLoeD
+ EGKwiWvH3+w/yA9eK1skzXaOq4pFIbU1D5lEgyWVdKpEUjEi+qWs93O1/Pj/9b8f
+ v71cuBQiqLCNryi3LF1Wb5EPRWEHARzg0HS5j+wwBOEJrXLU4nE+2ZGaXaHeTFXt
+ TO2N7wJvTtRugyYX6yWDjZu0v4IrZ5FILnQEw8IWxxYHxfU89N3NBTPuOgx2lNyy
+ B0givpv91oc52nHeu1C1Vg==
+Message-ID: <f2674001-9489-44c9-b17a-c9d8a66b3935@rsg.ci.i.u-tokyo.ac.jp>
+Date: Wed, 16 Jul 2025 20:32:52 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250714110406.117772-18-pbonzini@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 01/13] net: bundle all offloads in a single struct
+To: Paolo Abeni <pabeni@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang
+ <jasowang@redhat.com>, Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Luigi Rizzo <lrizzo@google.com>,
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
+ Vincenzo Maffione <v.maffione@gmail.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ kvm@vger.kernel.org
+References: <cover.1752229731.git.pabeni@redhat.com>
+ <6e85b684df9f953f04b10c75288e2d4065af49a2.1752229731.git.pabeni@redhat.com>
+ <d434b098-aebc-42cb-b589-d84f7bd78c21@rsg.ci.i.u-tokyo.ac.jp>
+ <bbf7744c-9340-4d59-804b-87f7ff9bdcc4@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <bbf7744c-9340-4d59-804b-87f7ff9bdcc4@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,65 +79,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 14, 2025 at 01:03:06PM +0200, Paolo Bonzini wrote:
-> From: Roy Hopkins <roy.hopkins@randomman.co.uk>
+On 2025/07/15 23:52, Paolo Abeni wrote:
+> On 7/15/25 8:36 AM, Akihiko Odaki wrote:
+>> On 2025/07/11 22:02, Paolo Abeni wrote:
+>>> The set_offload() argument list is already pretty long and
+>>> we are going to introduce soon a bunch of additional offloads.
+>>>
+>>> Replace the offload arguments with a single struct and update
+>>> all the relevant call-sites.
+>>>
+>>> No functional changes intended.
+>>>
+>>> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+>>> ---
+>>> Note: I maintained  the struct usage as opposed to uint64_t bitmask usage
+>>> as suggested by Akihiko, because the latter feel a bit more invasive.
+>>
+>> I think a bitmask will be invasive to the same extent with the current
+>> version; most part of this change comes from the parameter passing,
+>> which does not depend on the representation of the parameter.
 > 
-> The IGVM library allows Independent Guest Virtual Machine files to be
-> parsed and processed. IGVM files are used to configure guest memory
-> layout, initial processor state and other configuration pertaining to
-> secure virtual machines.
+> Do you have strong feeling WRT the bitmask usage?
 > 
-> This adds the --enable-igvm configure option, enabled by default, which
-> attempts to locate and link against the IGVM library via pkgconfig and
-> sets CONFIG_IGVM if found.
-> 
-> The library is added to the system_ss target in backends/meson.build
-> where the IGVM parsing will be performed by the ConfidentialGuestSupport
-> object.
+> Another argument vs the bitmask usage is that it will requires some
+> extra input validation of the selected offload bits (most of them don't
+> make sense in this context).
 
-> diff --git a/meson_options.txt b/meson_options.txt
-> index a442be29958..1e429311a2d 100644
-> --- a/meson_options.txt
-> +++ b/meson_options.txt
-> @@ -117,6 +117,8 @@ option('tpm', type : 'feature', value : 'auto',
->         description: 'TPM support')
->  option('valgrind', type : 'feature', value: 'auto',
->         description: 'valgrind debug support for coroutine stacks')
-> +option('igvm', type: 'feature', value: 'auto',
-> +       description: 'Independent Guest Virtual Machine (IGVM) file support')
+I don't think such a validation is necessary.
 
-This description does not match...
+There is practically no chance to have a wrong bit set by mistake when 
+callers specify bits with macros prefixed with VIRTIO_NET_O_GUEST_. 
+There will be a compilation error if the caller specify a offload bit 
+that doesn't exist.
 
->  
->  # Do not enable it by default even for Mingw32, because it doesn't
->  # work on Wine.
-> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-> index 73e0770f42b..78515404450 100644
-> --- a/scripts/meson-buildoptions.sh
-> +++ b/scripts/meson-buildoptions.sh
-> @@ -130,6 +130,7 @@ meson_options_help() {
->    printf "%s\n" '  hv-balloon      hv-balloon driver (requires Glib 2.68+ GTree API)'
->    printf "%s\n" '  hvf             HVF acceleration support'
->    printf "%s\n" '  iconv           Font glyph conversion support'
-> +  printf "%s\n" '  igvm            IGVM file support'
+It is also obvious if a caller specified something unrelated (i.e., not 
+prefixed with VIRTIO_NET_O_GUEST_). A real downside here would be that 
+we will need to type VIRTIO_NET_O_GUEST_ each time referring an offload 
+bit; such a redundancy does not exist with struct because the type 
+system knows the bits bound to the type.
 
-... this description here, so when this file is re-generated by any
-other pending patch touching meson options we get a spurious diff
-for IGVM.
+That said, 1) I prefer bitmasks much over struct though 2) I will be in 
+favor of merging this series if everything else gets sorted out while 
+the struct remains.
 
-We really need to get something into 'make check' that runs the
-generator and compares its output to 'meson-buildoptions.sh' as
-we have hit this problem over & over again.
+I'll explain the reason for 1) first:
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+There are both a downside and an upside with bitmasks. The downside is 
+the redundancy of syntax, which I have just pointed out. The upside is 
+the consistency with virtio's offload configuration, which defines the 
+functionality of set_offload().
 
+I consider the following two factors in such a trade-off scenario:
+a) The balance between the downside and upside
+b) Prior examples in the code base
+
+Regarding a), I think the upside outweighs the downside but its extent 
+is small.
+
+b) matters more for this particular case; there are bunch of examples 
+that use bitmasks in "include", excluding "include/hw" but there are 
+none of structs that are dedicated for bools. Consistency matters for a 
+big code base like QEMU so I want a good reason when making an exception.
+
+The reasoning behind 2) is that having this patch is still better than 
+the status quo.
+
+Regards,
+Akihiko Odaki
 
