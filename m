@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B8FB06D40
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 07:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C384B06D76
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 07:53:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubumf-0007Fb-JJ; Wed, 16 Jul 2025 01:34:25 -0400
+	id 1ubv3T-0007u1-Lb; Wed, 16 Jul 2025 01:51:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ubumc-00074H-Ld
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 01:34:22 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1ubuy7-0002EO-0X
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 01:46:17 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ubuma-0007se-1e
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 01:34:22 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-748e81d37a7so3773057b3a.1
- for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 22:34:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1ubuy4-0001cY-K4
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 01:46:14 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-611f74c1837so8893182a12.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 22:46:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752644058; x=1753248858; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1752644770; x=1753249570; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wasM4fPfefe8yCV5m/8wwSU7LP5OnhI1b90/+w6CwIM=;
- b=dAoPbp4od4qwcnwvLqWddaPVBUtSdFd/yItZRd6IjEDBv94+9YVj0FfPTr9+/VZ86j
- 0AdbiTUN3d7wi7zdEuDgOa+opILf5LdYN0IeJh/cvovN487hgzzVxvWj9wk9vRTLjbmW
- rtr3POs9zqa2LOp5pbEJjVEiYcre44PUvKMOLjGOkQcWrAuQiu295JQEQYCF66QF0pjs
- drjKORnS/1c93wZjf3tZVUDoJ3QvurwqYirlcMouSd7CCfgraDP62d7v7DFFo9ERoeIb
- uHWUkVnFRK0SvY1taPazm7V4z05kx0A1o/JRVD3+asC1aiqRJYKKtj6qnYkgfirMzr2I
- LMxA==
+ bh=lLewxkWgNZ+c/eFkdWePc1JtOWsf1qVmnafs+m2hbjk=;
+ b=cRW9fdPqOWyl4ipCUzke2H4oFUYPhdQ76OgI2Gz0VGC/3JNtYTP7BQ6JT6mJ4M4RVB
+ G7TL/1DAqM1L3HPRbQmt5ojP4v7BNsZtzY67f49ESHRLP9dDC6XJQHNdpZ8ZVEmV2FEt
+ dZanzv8LQI9fXYPydZ/XP+TtZCFnvyteX9jmo03ZYzgBs9ABoZT7SI//LSiaH+I7wOz5
+ zGB9vyL1ro1po5p9jKve7CiuMlSiqekZSoEp44I/kurNHSavlhjOggpTo5eoKU/ee8Hs
+ LyoT5N+ct5wle0MchYxfJsODpsMShWqvsGAATh/R+6ME3goIf7lO/3vHiBryms0HrPPj
+ sK5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752644058; x=1753248858;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1752644770; x=1753249570;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wasM4fPfefe8yCV5m/8wwSU7LP5OnhI1b90/+w6CwIM=;
- b=igAn3gQHfjgKI+n19hdWs30y25PXi/r5IJXPR9AwawxCD+gM5aixkWluStcvWDhFMD
- 437YgEYwyx+n/fA5FgkmiuSGNOBBBbyAX8480jJ/1kdORIYR7RIgH9GDY+sYYrd9coj+
- vUSafTospAP378vE/FdaBoPYTqISEpQqA8RcDDfFFEoSJZvpZHttVJTyyxCtUxfvctr0
- XXcJTbS/5GoRZJQgLa6RdinzDHihO/RoxR3Kq+MNfzJjeAHKuS5/X/4k+6zkVzBuh0OC
- vXDa7fW0YopdWWwANMs+vksjidRlJHp722hMSlZmkfPr0VqGU99GdXCUt9BzcOGEg3F+
- aHmw==
-X-Gm-Message-State: AOJu0YzIKN2tIDu7b3wR8hPYXyaeL+1Tmo6uhdlp6N647OjEfXs0ntjT
- 2OPbY1+o9cTD65UlKpeOWVIaeLN1u8fgRox9+Pusz/bN9utAdmQyd568DqW4Vws09bB20hVpWKv
- UXtp+
-X-Gm-Gg: ASbGncunb/vm1mql8pi+YX86awxnO1lEa+5LdHvN5FzMsv6oMzEzLVyT1tFD3k4xlG9
- F7gUhIwUzCdbm3aPpJNbewk4Hn0ojYx6pnkpx2YxxQCT84Vq3Rk2zn2fsUCtcI/rNUlxNzRSgQ6
- RQJOBfE5bkN74j/OiBJQrYYEaN41KMYZ0GYPYxXJv/4f4v5KGA5J6uDCklpWcQKP+LrKu/+iDjP
- he87U/sAqdHhBMjqUeOudoFIzfL/D5lcNr18PMSL0YZujrAJrN2Wwa8IwCq44GJp/mkC/TxlSuy
- onlnQoCi10dh64k6E2zSOQpV0+v/KH0wFzCZ03yGJtKro8h5Ni/0ve5XVlKKCh0fBfrwOeW2l1N
- 2lyQOb4nC7uSiFLJuMcVazQ/VX3XHQuxv
-X-Google-Smtp-Source: AGHT+IFLwHudL9d9qW6U7bWLmI6I4KSEOMPOt2iTDvqWbbXbh9ySEdZpDRhRbczUuaEPDf7pHSTRgw==
-X-Received: by 2002:a05:6a00:b70f:b0:748:e150:ac5c with SMTP id
- d2e1a72fcca58-756ea8b92dcmr2947582b3a.23.1752644058042; 
- Tue, 15 Jul 2025 22:34:18 -0700 (PDT)
-Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74eb9e06aa6sm13790162b3a.62.2025.07.15.22.34.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Jul 2025 22:34:17 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Alexandre Iooss <erdnaxe@crans.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- rowan Hart <rowanbhart@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 6/6] contrib/plugins/uftrace: add documentation
-Date: Tue, 15 Jul 2025 22:34:07 -0700
-Message-ID: <20250716053407.2814736-7-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250716053407.2814736-1-pierrick.bouvier@linaro.org>
-References: <20250716053407.2814736-1-pierrick.bouvier@linaro.org>
+ bh=lLewxkWgNZ+c/eFkdWePc1JtOWsf1qVmnafs+m2hbjk=;
+ b=Y6hPfcRFvawqVt9lhPX4tyzkhNnDufZbtL1Jekjk0vUHcXZg0LXGxjKqTQTFVpeZQ6
+ wcbg1O1qhLns1bc3hZj8a2rCsgO/UnL6XKbegyilj4QUnxNTq92C/hDqzrS0RAuLcdl+
+ sALqOS64uR4Y/E/YnBaequoinzIaJswmWzI7C9YsU/KgpefPZGeqG7p6dHeZKvxm4xep
+ 9yFQg3Xx1Wz74gVjFiG0jaS0OyPQAu7xYV4eKgGgTUMA8Yr49fvPLHSJGxi3ygzkUJcv
+ QQ7wtbPrkxn9VcnEGmftYDqoO28dKGRx8e3GPoyCLn7M4CLeS/G5AKuwytPUYCJMgibA
+ gwCQ==
+X-Gm-Message-State: AOJu0YyQdazvutDdSMmZwVexyX5RPFBYs+hYqFiOGway5CvmedEjSHJl
+ 69xj+NWW6H8mDrLSQbflWI75P1+/Il7S12wbJGwQxSfkcUSiz7B0AbVMFoCa16/j34RBmtY8oKt
+ IuaOOcB243eT2mqi8at7ECLe/XfU8ShrwPPSimfQyFQ==
+X-Gm-Gg: ASbGncsY4mGxM4Z1bZnr5Za3eh2GUv55mlZ59V7/aq4lAq3XBhs+yyWR5YeYrbKadI9
+ 6Zm9JLMusxVE7pzfcLi50PF0acPHg3mo/HY8CmnHt9e1bJpK5uOjkLSPUuOuulAohPLeGy5RERo
+ 2PjwAlpkvQp32FC5ZrDlh6IJkDnLntF3+Oej6MIIFwWzndnkHy8zu6UoE66muwtBXMvz1TN3u3t
+ At+0A==
+X-Google-Smtp-Source: AGHT+IFkwOurNtpCU7cYXMvcEo/EDLBpeiO9i6U3sbakOiQBWie3k+LVG5RHLGt7bVdMGb7jvtIEYisd4GUv8iM+v5g=
+X-Received: by 2002:a17:906:d246:b0:ae2:4630:7de4 with SMTP id
+ a640c23a62f3a-ae9c9af2636mr168892466b.34.1752644770287; Tue, 15 Jul 2025
+ 22:46:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
+References: <20250715212335.2215509-1-pierrick.bouvier@linaro.org>
+ <20250715212335.2215509-3-pierrick.bouvier@linaro.org>
+In-Reply-To: <20250715212335.2215509-3-pierrick.bouvier@linaro.org>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Wed, 16 Jul 2025 08:45:44 +0300
+X-Gm-Features: Ac12FXzYt2pP0VXDey-qJk-TUSzOtKHjfZt4avYSUlqTui_pdFqLgjltZ9YRGJ8
+Message-ID: <CAAjaMXYVVL-_wC2yqcYveb4dgCvcYr02GrTP21EmMAzohQ7=XA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] tests/functional/test_aarch64_rme: update image
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, jean-philippe@linaro.org, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, gustavo.romero@linaro.org, 
+ Peter Maydell <peter.maydell@linaro.org>, richard.henderson@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,227 +95,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This documentation summarizes how to use the plugin, and present two
-examples of the possibilities offered by it.
+On Wed, Jul 16, 2025 at 12:25=E2=80=AFAM Pierrick Bouvier
+<pierrick.bouvier@linaro.org> wrote:
+>
+> TF-A needs to be patched to enable support for FEAT_TCR2 and
+> FEAT_SCTLR2. This new image contains updated firmware.
+>
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>  tests/functional/test_aarch64_rme_sbsaref.py | 9 +++++----
+>  tests/functional/test_aarch64_rme_virt.py    | 9 +++++----
+>  2 files changed, 10 insertions(+), 8 deletions(-)
+>
+> diff --git a/tests/functional/test_aarch64_rme_sbsaref.py b/tests/functio=
+nal/test_aarch64_rme_sbsaref.py
+> index 746770e776d..70737d3d599 100755
+> --- a/tests/functional/test_aarch64_rme_sbsaref.py
+> +++ b/tests/functional/test_aarch64_rme_sbsaref.py
+> @@ -21,10 +21,11 @@ class Aarch64RMESbsaRefMachine(QemuSystemTest):
+>      # Stack is built with OP-TEE build environment from those instructio=
+ns:
+>      # https://linaro.atlassian.net/wiki/spaces/QEMU/pages/29051027459/
+>      # https://github.com/pbo-linaro/qemu-rme-stack
+> +    # ./container.sh ./build_sbsa.sh && ./archive_artifacts.sh sbsa sbsa=
+.tar.xz
+>      ASSET_RME_STACK_SBSA =3D Asset(
+> -        ('https://fileserver.linaro.org/s/KJyeBxL82mz2r7F/'
+> -         'download/rme-stack-op-tee-4.2.0-cca-v4-sbsa.tar.gz'),
+> -         'dd9ab28ec869bdf3b5376116cb3689103b43433fd5c4bca0f4a8d8b3c10499=
+9e')
+> +        ('https://fileserver.linaro.org/s/gW3mmtC4ZQaxNJ2/'
+> +         'download/sbsa_cca_v10.tar.xz'),
+> +         'b6ec3435a459eb298f221beb5073e485f290d38055d0aafbcff7d8e7c334aa=
+73')
+>
+>      # This tests the FEAT_RME cpu implementation, by booting a VM suppor=
+ting it,
+>      # and launching a nested VM using it.
+> @@ -38,7 +39,7 @@ def test_aarch64_rme_sbsaref(self):
+>          stack_path_tar_gz =3D self.ASSET_RME_STACK_SBSA.fetch()
+>          self.archive_extract(stack_path_tar_gz, format=3D"tar")
+>
+> -        rme_stack =3D self.scratch_file('rme-stack-op-tee-4.2.0-cca-v4-s=
+bsa')
+> +        rme_stack =3D self.scratch_file('.')
+>          pflash0 =3D os.path.join(rme_stack, 'images', 'SBSA_FLASH0.fd')
+>          pflash1 =3D os.path.join(rme_stack, 'images', 'SBSA_FLASH1.fd')
+>          virtual =3D os.path.join(rme_stack, 'images', 'disks', 'virtual'=
+)
+> diff --git a/tests/functional/test_aarch64_rme_virt.py b/tests/functional=
+/test_aarch64_rme_virt.py
+> index 8452d27928f..fcc321b6006 100755
+> --- a/tests/functional/test_aarch64_rme_virt.py
+> +++ b/tests/functional/test_aarch64_rme_virt.py
+> @@ -49,10 +49,11 @@ class Aarch64RMEVirtMachine(QemuSystemTest):
+>      # Stack is built with OP-TEE build environment from those instructio=
+ns:
+>      # https://linaro.atlassian.net/wiki/spaces/QEMU/pages/29051027459/
+>      # https://github.com/pbo-linaro/qemu-rme-stack
+> +    # ./container.sh ./build_virt.sh && ./archive_artifacts.sh virt virt=
+.tar.xz
+>      ASSET_RME_STACK_VIRT =3D Asset(
+> -        ('https://fileserver.linaro.org/s/iaRsNDJp2CXHMSJ/'
+> -         'download/rme-stack-op-tee-4.2.0-cca-v4-qemu_v8.tar.gz'),
+> -         '1851adc232b094384d8b879b9a2cfff07ef3d6205032b85e9b3a4a9ae6b0b7=
+ad')
+> +        ('https://fileserver.linaro.org/s/YpLmzLNL6BAxYL8/'
+> +         'download/virt_cca_v10.tar.xz'),
+> +         'bc432c92d62f3cd3542a943cd5a6329b2464c986f8f5dc48f727a0e5386a0e=
+95')
+>
+>      # This tests the FEAT_RME cpu implementation, by booting a VM suppor=
+ting it,
+>      # and launching a nested VM using it.
+> @@ -66,7 +67,7 @@ def test_aarch64_rme_virt(self):
+>          stack_path_tar_gz =3D self.ASSET_RME_STACK_VIRT.fetch()
+>          self.archive_extract(stack_path_tar_gz, format=3D"tar")
+>
+> -        rme_stack =3D self.scratch_file('rme-stack-op-tee-4.2.0-cca-v4-q=
+emu_v8')
+> +        rme_stack =3D self.scratch_file('.')
+>          kernel =3D os.path.join(rme_stack, 'out', 'bin', 'Image')
+>          bios =3D os.path.join(rme_stack, 'out', 'bin', 'flash.bin')
+>          drive =3D os.path.join(rme_stack, 'out-br', 'images', 'rootfs.ex=
+t4')
+> --
+> 2.47.2
+>
+>
 
-As well, it explains how to rebuild and reproduce easily the system boot
-example.
-
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- docs/about/emulation.rst  | 184 ++++++++++++++++++++++++++++++++++++++
- contrib/plugins/uftrace.c |   2 +
- 2 files changed, 186 insertions(+)
-
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index 456d01d5b08..93921b12ae9 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -816,6 +816,190 @@ This plugin can limit the number of Instructions Per Second that are executed::
-       The lower the number the more accurate time will be, but the less efficient the plugin.
-       Defaults to ips/10
- 
-+Uftrace
-+.......
-+
-+``contrib/plugins/uftrace.c``
-+
-+This plugin generates a binary trace compatible with
-+`uftrace <https://github.com/namhyung/uftrace>`_.
-+
-+Plugin supports aarch64 only (x64 support should be trivial to add), and works
-+in user and system mode, allowing to trace a system boot, which is not something
-+possible usually.
-+
-+In user mode, the memory mapping is directly copied from ``/proc/self/maps`` at
-+the end of execution. Uftrace should be able to retrieve symbols by itself,
-+without any additional step.
-+In system mode, the default memory mapping is empty, and you can generate
-+one (and associated symbols) using ``contrib/plugins/uftrace_symbols.py``.
-+Symbols must be present in ELF binaries.
-+
-+It tracks the call stack (based on frame pointer analysis). Thus, your program
-+and its dependencies must be compiled using ``-fno-omit-frame-pointer
-+-mno-omit-leaf-frame-pointer``. In 2024, `Ubuntu and Fedora enabled it by
-+default again on x64
-+<https://www.brendangregg.com/blog/2024-03-17/the-return-of-the-frame-pointers.html>`_.
-+On aarch64, this is less of a problem, as they are usually part of the ABI,
-+except for leaf functions. That's true for user space applications, but not
-+necessarily for bare metal code.
-+
-+Timestamps used for events are the number of instructions executed so far by
-+default. As it's tracked per vcpu, each timeline should be considered
-+separately. It's possible to use real timestamps by using option
-+``timestamp-based-on-real-time``. This is not the default, as considering real
-+time when doing emulation and instrumentation may not necessarily report correct
-+things.
-+
-+Performance wise, overhead compared to normal tcg execution can vary from x2
-+(sampling only) to x10-x15 (precise stack tracking).
-+
-+.. list-table:: Uftrace plugin arguments
-+  :widths: 20 80
-+  :header-rows: 1
-+
-+  * - Option
-+    - Description
-+  * - trace-privilege-level=[on|off]
-+    - Generate one trace per privilege level (Exception Level + Security State
-+      on aarch64).
-+  * - trace-sample=N
-+    - Instead of precise tracking, perform stack sampling every N instructions.
-+      If combined with ``trace-privilege-level``, it will still contain precise
-+      stacks for privilege level changes, and will sample stack between those.
-+  * - timestamp-based-on-real-time=[on|off]
-+    - Use real time for timestamps instead of number of instructions executed.
-+
-+.. list-table:: uftrace_symbols.py arguments
-+  :widths: 20 80
-+  :header-rows: 1
-+
-+  * - Option
-+    - Description
-+  * - elf_file [elf_file ...]
-+    - path to an ELF file. Use /path/to/file:0xdeadbeef to add a mapping offset.
-+  * - --prefix-symbols
-+    - prepend binary name to symbols
-+
-+Example user trace
-+++++++++++++++++++
-+
-+As an example, we can trace qemu itself running git::
-+
-+    $ ./build/qemu-aarch64 -plugin \
-+      build/contrib/plugins/libuftrace.so,timestamp-based-on-real-time=on \
-+      ./build/qemu-aarch64 /usr/bin/git --help
-+
-+    # and generate a chrome trace directly
-+    $ uftrace dump --chrome | gzip > ~/qemu_aarch64_git_help.json.gz
-+
-+For convenience, you can download this trace `qemu_aarch64_git_help.json.gz
-+<https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz>`_.
-+Download it and open this trace on https://ui.perfetto.dev/. You can zoom in/out
-+using w,a,s,d keys. Some sequences taken from this trace:
-+
-+- Loading program and its interpreter
-+
-+.. image:: https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
-+   :height: 200px
-+
-+- open syscall
-+
-+.. image:: https://fileserver.linaro.org/s/rsXPTeZZPza4PcE/preview
-+   :height: 200px
-+
-+- TB creation
-+
-+.. image:: https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
-+   :height: 200px
-+
-+It's usually better to use ``uftrace record`` directly. However, tracing
-+binaries through qemu-user can be convenient when you don't want to recompile
-+them (``uftrace record`` requires instrumentation), as long as symbols are
-+present.
-+
-+Example system trace
-+++++++++++++++++++++
-+
-+A full trace example (chrome trace, from instructions below) generated from a
-+system boot can be found `here
-+<https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz>`_.
-+Download it and open this trace on https://ui.perfetto.dev/. You can see code
-+executed for all privilege levels, and zoom in/out using w,a,s,d keys. You can
-+find below some sequences taken from this trace:
-+
-+- Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
-+
-+.. image:: https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
-+   :height: 200px
-+
-+- U-boot initialization (until code relocation, after which we can't track it)
-+
-+.. image:: https://fileserver.linaro.org/s/LKTgsXNZFi5GFNC/preview
-+   :height: 200px
-+
-+- Stat and open syscalls in kernel
-+
-+.. image:: https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
-+   :height: 200px
-+
-+- Timer interrupt
-+
-+.. image:: https://fileserver.linaro.org/s/TM5yobYzJtP7P3C/preview
-+   :height: 200px
-+
-+- Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
-+
-+.. image:: https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
-+   :height: 200px
-+
-+Build and run system example
-+++++++++++++++++++++++++++++
-+
-+Building a full system image with frame pointers is not trivial.
-+
-+We provide a `simple way <https://github.com/pbo-linaro/qemu-linux-stack>`_ to
-+build an aarch64 system, combining Arm Trusted firmware, U-boot, Linux kernel
-+and debian userland. It's based on containers (``podman`` only) and
-+``qemu-user-binfmt`` to make sure it's easily reproducible and does not depend
-+on machine where you build it.
-+
-+To build the system::
-+
-+    # Install dependencies
-+    $ sudo apt install -y podman qemu-user-binfmt
-+
-+    $ git clone https://github.com/pbo-linaro/qemu-linux-stack
-+    $ cd qemu-linux-stack
-+    $ ./build.sh
-+
-+    # system can be started using:
-+    ./run.sh /path/to/qemu-system-aarch64
-+
-+To generate a uftrace for a system boot from that::
-+
-+    # run true and poweroff the system
-+    $ env INIT=true ./run.sh path/to/qemu-system-aarch64 \
-+      -plugin path/to/contrib/plugins/libuftrace.so,trace-privilege-level=on
-+
-+    # generate symbols and memory mapping
-+    $ path/to/contrib/plugins/uftrace_symbols.py \
-+      --prefix-symbols \
-+      arm-trusted-firmware/build/qemu/debug/bl1/bl1.elf \
-+      arm-trusted-firmware/build/qemu/debug/bl2/bl2.elf \
-+      arm-trusted-firmware/build/qemu/debug/bl31/bl31.elf \
-+      u-boot/u-boot:0x60000000 \
-+      linux/vmlinux
-+
-+    # inspect trace with
-+    $ uftrace replay
-+
-+Uftrace allows to filter the trace, and dump flamegraphs, or a chrome trace.
-+This last one is very interesting to see visually the boot process::
-+
-+    $ uftrace dump --chrome > boot.json
-+    # Open your browser, and load boot.json on https://ui.perfetto.dev/.
-+
- Other emulation features
- ------------------------
- 
-diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
-index 7bf658311b1..a040fc6ad1f 100644
---- a/contrib/plugins/uftrace.c
-+++ b/contrib/plugins/uftrace.c
-@@ -4,6 +4,8 @@
-  * Generates a trace compatible with uftrace (similar to uftrace record).
-  * https://github.com/namhyung/uftrace
-  *
-+ * See docs/about/emulation.rst|Uftrace for details and examples.
-+ *
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
--- 
-2.47.2
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Tested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
