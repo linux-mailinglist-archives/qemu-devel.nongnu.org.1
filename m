@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70129B07413
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AC9B0741B
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:58:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubzo8-00038L-OF; Wed, 16 Jul 2025 06:56:17 -0400
+	id 1ubzp2-0003pI-4L; Wed, 16 Jul 2025 06:57:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ubzmJ-0007oi-7p
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:54:23 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1ubzmQ-0007x4-8o
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:54:33 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ubzmF-0002TK-EX
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:54:22 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-60780d74c8cso10787116a12.2
- for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 03:54:18 -0700 (PDT)
+ id 1ubzmJ-0002U6-QP
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:54:29 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-607ec30df2bso12531777a12.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 03:54:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752663257; x=1753268057; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752663262; x=1753268062; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qU/lIoftl35AmMIjfDZPJ2CybmJfSii4BWcr/TA27jw=;
- b=oIRhDkiyCPOE/VwX3W3HEO4Gb53f/Q20EcY+OpXogH5uPQibwvUehmdCQYMhFDSa4j
- gQHxsLdZj+wSQvguIjVs4m+dyN3E2ITJZCXxPxQBluoFRs3tgqrldE6RY2dStoJ3gIIs
- DkbuIgqG9PxD6zC+jGYxAo/gW34NR+w+015W77W6Eqo5VAe1NVflRzJrSFhkM4yQAQFP
- +zA4JmyrZS+73aMnisa63gp5PXLz3TDcwlK8jx09hlXGCguLd+Z7RJwVKcHzrMG2HVW6
- Hsom8xl6ObYB3BtTaKSUtwybdwwt5ODS8m6Za1UQEo2Vfm1SRueKx5ikunPEdmMAA0CM
- C/aw==
+ bh=uhgCOgfTbD7UntD+Ov8uW1QfuDI5YjoRWrI6SxQa7qw=;
+ b=VR5DeQTOokCk8jCxdyMW/mNeWW0d2TZKr19ws9m+yAcdE1rDGEor6+5CcXRaNYW3TF
+ lMJtHzyzlL3E53mzQF82t0ZiQXp1Q37D6UsKUNTN7zXkC4pJXfEdMdXTVxhgkSPuRGm0
+ p0wA8p9tAzT4hwjKYcm1RqselmIVgUNozyBq/dZyfpWAfVm3evIWDIRCHCG5m55rhKhm
+ 7fLYo12wGWE7bl8mV0EA8SXwDyUs6JpmdC8RghhWcTqo1LU2TSvi5xa6tJLeV71YHDVv
+ +d57APacIs5d6rzFFIw/7woXodQxYA7DzvNzsM7RTDenvxlqLXyt6HYptqf5ajE7N04Y
+ Bwpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752663257; x=1753268057;
+ d=1e100.net; s=20230601; t=1752663262; x=1753268062;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qU/lIoftl35AmMIjfDZPJ2CybmJfSii4BWcr/TA27jw=;
- b=N2qHAgOVK8f+kXsG+4BHG5E2O/Dx0Ww3flB0qSFm2J4gvBcCDicrDdnS4NmrtYBSfA
- 7WX9UUfO8/nRxd0qbHtDHQ3rhHQt2tcmZtEuYU3DGeHKmRI9J399UhbCV3mLOHLLUmah
- x3I1YothTzgzDedXVmeMM5gPxiM5V9DqtnrxR1dvvwmBYuU0ElJKqfUz0+SUidgaT+wB
- zOfkUZlwnYf5twlSkPP5H7OnfZCaFoNI/q2nT/BWAZDsmKwqAqzBLHNxQbQWgurYluhL
- ekHRnAu53mJTeJSz8zrguPoRIPuaq62vcNPHTXQIt4anCu8zcNOAEaUY1wxJy6m/hial
- iHxw==
-X-Gm-Message-State: AOJu0Yy/4w0FlJk/Qd6J/7LnOri+TaPvUHlXTVtzUfPIozcuOQa47bpc
- XBQ2+6S2TmyH/6XAmGHHXHtpjXjuWHjig0wh0wGThvpWIGC1PULngv5nDr9AnVRfSTc=
-X-Gm-Gg: ASbGnctrVVYg/gU/Zy9pNuFvXEre6IcgWC89nO97O6jFZiXp86FKQm7vspIR/7esIfy
- 44iCvf0cesKTCIuF4FsnAlzkPPKv8H1IyQmnqEV+fC3jWamCKRJURvbdrj28LicKciSR0+BySzE
- D55xB8KyVH2gFlXMUOS3e3ZnC4N7MTwDyptkR8AN946coMle7tf+krLO6lK27hmFhMhqjGZ5mN+
- IFUdqU2y/6kg8kySz6o9gJHv+6BV0QMRctKYcUBvfDo9JRG1/b6kpog/k1K/jlqHSiX7vCaFd7K
- TZw02FqH+7wL1dCjPKqjuPULC2vg3BrAjmUr/h8rpbR50UQhQ4Y+qq0Qv6VINHQuVIFP8ieacBH
- bXnPPDUO3Zn5R/gKtsT4zxPU=
-X-Google-Smtp-Source: AGHT+IHOyGm92EJtrV/D50upuX6iV8SKIt6KbM6JqWfaCXOWDNCXJcDUCAtsdYG2YR6ZLoHbuH08nw==
-X-Received: by 2002:a17:907:b1a:b0:ae3:cc60:8cf0 with SMTP id
- a640c23a62f3a-ae9ce0b938cmr140697866b.34.1752663256766; 
- Wed, 16 Jul 2025 03:54:16 -0700 (PDT)
+ bh=uhgCOgfTbD7UntD+Ov8uW1QfuDI5YjoRWrI6SxQa7qw=;
+ b=T6XxvmqjuUKA5T2rbmSYC6MkCZt2IArGRTUgLmTM81/XITZeo7mq40CBwJDvwJtMxR
+ mE1PyID2ymFdBr/ruWSrkX+FO2EPXHZ7lFPn4O4R/0qIU/gBCIrkmmMP/LKReWaKoHH1
+ iAfkGkC2v7yXWdjNN+Tg5I5UBlAIO5CstYIETHcGDCre1ZNWNJVgtDK17fDnlioQMG35
+ RlnvnV3qxYoHowD1mytM22tHuNAtQPabWun7/kZlmPGpya1dfl/tI1UnjDlBos9WtJVW
+ V4TUpLq0zoH9/+iT8cwMU41CTKr1DoOur4T8i2Ax6JTyTSyllk1ifbD98qzSSUa3i2Pe
+ sEtQ==
+X-Gm-Message-State: AOJu0Yy2gg/PJrBfz/0snrvacKuUGTvuOdoE5rlFcbMVl+l8dxLu3hFG
+ Ax0V9bUYgc9XtxVrK3C4IsoKo161tAtslWLcTAmwyTb6Oysxs/d1TVnWxzHN0vr440c=
+X-Gm-Gg: ASbGnctIf4nGaz/m33imoXQzqCwTSQBqIW6AaTP5XIwXKuIHPUE7bA/8g3WdEvBDBKG
+ vtXvzhI32Sn0B9sKm9JuSUPxijHoYK6dadjCHz1uahidDjugK8bM6j6T9ORA75byIg532kcN6ej
+ TOP/aS7pDnKzGyu/oosTFJ7bRHwSMKGAvSvTLJeEg3tM/ChRBu/gz9WSaNsL6tgmj2w0ySG3kxX
+ DnyAVkUXsiYtKEhzvKg+PHoymYuTkxxrpeDkKeVB+8K0Fg7EjzpdDm820wsRA3ygEib5zf2YYs7
+ sw6YiFLM/dox238x0bCxjYLFMYpCgwfx8azuDc+i1oN0DXtfTlg3Dvmc8w26+bPRqoQvMZqHzKy
+ 7Vlu0v7EmTaOHQON0/c5GoOU=
+X-Google-Smtp-Source: AGHT+IH0qfqtPU2sEfHn4NeNqbFVhGxuVJ2Ax+8dGfMckcVxsjw9gChrIXLAKafnlCXFcL2UmPjIcQ==
+X-Received: by 2002:a17:907:f1c1:b0:ae9:928d:f285 with SMTP id
+ a640c23a62f3a-ae9c9b82fc1mr267383166b.55.1752663261616; 
+ Wed, 16 Jul 2025 03:54:21 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae6e82645b8sm1165789566b.106.2025.07.16.03.54.15
+ a640c23a62f3a-ae6e82645fdsm1181662666b.97.2025.07.16.03.54.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Jul 2025 03:54:15 -0700 (PDT)
+ Wed, 16 Jul 2025 03:54:20 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 43F965F8B4;
+ by draig.lan (Postfix) with ESMTP id 59F6D5F8B5;
  Wed, 16 Jul 2025 11:54:15 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,17 +73,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  devel@lists.libvirt.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [RFC PATCH 4/6] tests/docker: add sparc-leon-cross container image
-Date: Wed, 16 Jul 2025 11:54:12 +0100
-Message-ID: <20250716105414.2330204-5-alex.bennee@linaro.org>
+Subject: [RFC PATCH 5/6] configure: enable the container fallbacks for
+ sparc/sparc32plus
+Date: Wed, 16 Jul 2025 11:54:13 +0100
+Message-ID: <20250716105414.2330204-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250716105414.2330204-1-alex.bennee@linaro.org>
 References: <20250716105414.2330204-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -106,65 +107,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The distros no longer ship sparc compilers so we must use some others.
-The best I could find was Frontgrade Gasiler who ship gcc binaries:
-
-  https://www.gaisler.com/compilers-operating-systems
-
-Add a simple image for building the test cases.
-
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .../dockerfiles/sparc-leon-cross.docker       | 40 +++++++++++++++++++
- 1 file changed, 40 insertions(+)
- create mode 100644 tests/docker/dockerfiles/sparc-leon-cross.docker
+ configure | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/docker/dockerfiles/sparc-leon-cross.docker b/tests/docker/dockerfiles/sparc-leon-cross.docker
-new file mode 100644
-index 0000000000..ec391b01eb
---- /dev/null
-+++ b/tests/docker/dockerfiles/sparc-leon-cross.docker
-@@ -0,0 +1,40 @@
-+#
-+# Docker sparc cross-compiler target (tests only)
-+#
-+#
-+#
-+# While the normal cross builds take care to setup proper multiarch
-+# build environments which can cross build QEMU this just installs the
-+# basic compilers for as many targets as possible. We shall use this
-+# to build and run linux-user tests on GitLab
-+#
-+FROM docker.io/library/debian:12-slim
-+
-+RUN export DEBIAN_FRONTEND=noninteractive && \
-+    apt-get update && \
-+    apt-get install -y eatmydata && \
-+    eatmydata apt-get dist-upgrade -y
-+
-+# Add extra build tools and as many cross compilers as we can for testing
-+RUN DEBIAN_FRONTEND=noninteractive eatmydata\
-+        apt install -y --no-install-recommends \
-+        ca-certificates \
-+        ccache \
-+        curl \
-+        tar \
-+        xz-utils
-+
-+RUN mkdir -p /opt
-+
-+RUN curl -#SL https://download.gaisler.com/anonftp/linux/linux-2.6/toolchains/sparc-gaisler-linux5.10-2.1.tar.xz \
-+    | tar -xvJC /opt
-+
-+
-+ENV PATH $PATH:/opt/sparc-gaisler-linux5.10/bin
-+ENV LD_LIBRARY_PATH /opt/sparc-gaisler-linux5.10/sysroot/leon5/lib/:$LD_LIBRARY_PATH
-+
-+# As a final step configure the user (if env is defined)
-+ARG USER
-+ARG UID
-+RUN if [ "${USER}" ]; then \
-+  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
+diff --git a/configure b/configure
+index 3651cc3085..f187480d3a 100755
+--- a/configure
++++ b/configure
+@@ -1442,6 +1442,8 @@ probe_target_compiler() {
+     riscv64) container_hosts=x86_64 ;;
+     s390x) container_hosts=x86_64 ;;
+     sh4) container_hosts=x86_64 ;;
++    sparc) container_hosts=x86_64 ;;
++    sparc32plus) container_hosts=x86_64 ;;
+     sparc64) container_hosts=x86_64 ;;
+     tricore) container_hosts=x86_64 ;;
+     x86_64) container_hosts="aarch64 ppc64le x86_64" ;;
+@@ -1469,6 +1471,10 @@ probe_target_compiler() {
+         container_image=debian-all-test-cross
+         container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
+         ;;
++      sparc|sparc32plus)
++        container_image=sparc-leon-cross
++        container_cross_prefix=sparc-gaisler-linux5.10-
++        ;;
+ 
+       # debian-legacy-test-cross architectures (need Debian 11)
+       # - libc6.1-dev-alpha-cross: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1054412
 -- 
 2.47.2
 
