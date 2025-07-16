@@ -2,71 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C183B06CB5
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 06:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 997ADB06D0B
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 07:12:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubtqT-0006sz-Pk; Wed, 16 Jul 2025 00:34:17 -0400
+	id 1ubuPx-0000N6-T2; Wed, 16 Jul 2025 01:10:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ubtqP-0006lE-On
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 00:34:13 -0400
-Received: from mgamail.intel.com ([198.175.65.18])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ubuPu-0000Db-FZ
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 01:10:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ubtqN-0002cp-Rs
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 00:34:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752640452; x=1784176452;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=hup3CwDErWU2vwExe2NkM/8/9ILhHcpWQJJ/GZbPCH0=;
- b=ZPjhuDkKsYG5vnVmJoAj34cUKqbVYRz049Fnslos9DBpyCqtvW5xVleR
- ZSMgwzPBzrVyTIFqPMtzIhVY5xfGi8WAbTbgZJ9061lub9RZ/mb5nWEXZ
- xDvhYCpe/2qW4SLWY6frN6BBXSp/qjBnp0o/S1VKqDYlGtHO2uKGuWT3S
- UDRsUgNpAlctQhpKBSjt80cCDmnuDFZbGASwQpIxD3lR0xp7ThOOK1ASL
- zG9jhw5U3897CwWY6qesKHbIB3r4fcmLPurciavthhwA2NtD5Zwh3rBlb
- E63adFBCXu4Kjm31V0e9gkSmxbIaaaTfTdSx9bwXmpXbT4ZnXna8Is1NH w==;
-X-CSE-ConnectionGUID: KnzonnSKRwCkDXXIbsgcYA==
-X-CSE-MsgGUID: sw778RR+Te6F4d1vEbOUeg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54997134"
-X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="54997134"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2025 21:34:11 -0700
-X-CSE-ConnectionGUID: DZbXId9MRSWw5oqweECDvw==
-X-CSE-MsgGUID: u56ysXoBR8SStOEa8o1s+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="163039185"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 15 Jul 2025 21:34:09 -0700
-Date: Wed, 16 Jul 2025 12:55:39 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Babu Moger <babu.moger@amd.com>
-Cc: pbonzini@redhat.com, bp@alien8.de, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] target/i386: Add TSA feature flag verw-clear
-Message-ID: <aHcwy7BRIh219WHh@intel.com>
-References: <12881b2c03fa351316057ddc5f39c011074b4549.1752176771.git.babu.moger@amd.com>
- <e6362672e3a67a9df661a8f46598335a1a2d2754.1752176771.git.babu.moger@amd.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ubuPr-0002k8-4b
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 01:10:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752642648;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=EOgqAXF7S+HeUbcQlZUt3c53FOldQXgDheMkvB1wRv8=;
+ b=S8t6b6YIoFtBzbM/++5shpWq3LLqzALGorZhM1vKLe5FUMbia9BPehbe8zn0NpjwVm3ldy
+ Brukm5yZztGic7N7cYj9dQENW6PvOyKCBl+EIpmigUM05KJeh70H6Loeu+VGhOb4BT4/tS
+ FcbIxApYERPYctkTO08s9glEXZPbfmo=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-464-0IpH9G0TMmCtjzFTP3m5yg-1; Wed, 16 Jul 2025 01:10:46 -0400
+X-MC-Unique: 0IpH9G0TMmCtjzFTP3m5yg-1
+X-Mimecast-MFC-AGG-ID: 0IpH9G0TMmCtjzFTP3m5yg_1752642645
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-ade6db50b9cso683248166b.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Jul 2025 22:10:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752642645; x=1753247445;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EOgqAXF7S+HeUbcQlZUt3c53FOldQXgDheMkvB1wRv8=;
+ b=fRMrsBVplBR4z3C0s+3KoS6RWQZjfaYLEZmfn566x7sfv0URgpsYhcOmcbtV8l+vv/
+ Bckz5HqAiffpcQBZWm5UxuxdRDw1Uxj7RJY7GVl6uMHG5g718mNNCjxG+sHpgk6wuta4
+ 1ph1AzFS8Fm4jZ6zJ8Sx0zJmhRRv9A2f3NGItfM6vX0Vk9BXec/PgIFaD/nrFTZGts6S
+ uWrAJWfp1WSSXlHwN1+UWMoYuKuS/IG8DnJ090iAGlY37scMGZE5SmmYpXQBIYlpPk87
+ pdxwgZHIIl7Dc5vphConU4mWKkT+HXIMMxViLbpFhkslWT/8oGVuOdJjQ62OYFELcEqS
+ tTKA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVDMt43T3zt5d3OacPSFx2YAxseMTESUxaTLZgZhHDpagXD0j2MlsXuOIHDborUYBBFwR/CVwOIb/q2@nongnu.org
+X-Gm-Message-State: AOJu0Yw0YlhXaH+KJzoNa1zRXcqYVC6+CPlNBT4MQafxetkbtQi+J1Xx
+ kXl07s8Ky2N5Ke4zB3XUQjnrnoAPdM15602Xy6DhkwltQxJvYw66CI3HC2ju2PcTp2TgGZGaSnR
+ +TeMlNYopl47qrFQtMWLfNzBho1Mz0j2ZI0hnmM9x7mJ6UKh6SdvHi6uz
+X-Gm-Gg: ASbGncsXiYiaVxBsSniokgwHsZswqi4tO14mP+H8+PtQ/jnMkyHspscQ6Wk4d8Ts3lD
+ SwfN2XWrN1L7Ez9O0SVF265ufcgQfQTAx+CzF1MdCUhiCrwiANR3S6OhYTQPOW93dUnC3qhgC3O
+ 3k4iNrf5afZd7ryLYETTpYhc+jRT4rBcXYKQhzxuI0j5/OsY4GqD1N/nuknHXwcGMH6JiGA8LXq
+ bTtSRMKvHfBMBwSu21Zw+VwPIt2rlwWi4S+BbMxVaL3N3FkiA58c4jVCnwhqAOKYWTLBkxcw5Tw
+ OTM3C6/e8SovM44lYr6lKeT7aBhdRVGbGH6YRo9awUreeSNDQOoqk2193/96FDtCiM4jITxq4Yn
+ Mw1dX
+X-Received: by 2002:a17:906:7946:b0:ae9:8dcb:4dac with SMTP id
+ a640c23a62f3a-ae9c99bac5fmr184215366b.14.1752642644735; 
+ Tue, 15 Jul 2025 22:10:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxFZSZ82wy+MfRNO8NnyB3QgIFmVV2nplBUWeV45HO7VnC05EV9Ea2yxfNPf7z9ey4y+6yXQ==
+X-Received: by 2002:a17:906:7946:b0:ae9:8dcb:4dac with SMTP id
+ a640c23a62f3a-ae9c99bac5fmr184212866b.14.1752642644283; 
+ Tue, 15 Jul 2025 22:10:44 -0700 (PDT)
+Received: from [192.168.0.6] (ltea-047-064-115-130.pools.arcor-ip.net.
+ [47.64.115.130]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ae6e8264636sm1110171566b.86.2025.07.15.22.10.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 15 Jul 2025 22:10:43 -0700 (PDT)
+Message-ID: <8e8fdba8-b3b1-4338-abd0-89005f747362@redhat.com>
+Date: Wed, 16 Jul 2025 07:10:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e6362672e3a67a9df661a8f46598335a1a2d2754.1752176771.git.babu.moger@amd.com>
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] docs, python: bump sphinx preferred version
+To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+References: <20250715212848.171879-1-jsnow@redhat.com>
+ <CAFn=p-bZBok_n-evUwjm6cdCmr+4ofjTRbVRJ+DNxft9gV4PpA@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CAFn=p-bZBok_n-evUwjm6cdCmr+4ofjTRbVRJ+DNxft9gV4PpA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,36 +152,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 10, 2025 at 02:46:11PM -0500, Babu Moger wrote:
-> Date: Thu, 10 Jul 2025 14:46:11 -0500
-> From: Babu Moger <babu.moger@amd.com>
-> Subject: [PATCH v2 2/2] target/i386: Add TSA feature flag verw-clear
-> X-Mailer: git-send-email 2.34.1
-> 
-> Transient Scheduler Attacks (TSA) are new speculative side channel attacks
-> related to the execution timing of instructions under specific
-> microarchitectural conditions. In some cases, an attacker may be able to
-> use this timing information to infer data from other contexts, resulting in
-> information leakage
-> 
-> CPUID Fn8000_0021 EAX[5] (VERW_CLEAR). If this bit is 1, the memory form of
-> the VERW instruction may be used to help mitigate TSA.
-> 
-> Link: https://www.amd.com/content/dam/amd/en/documents/resources/bulletin/technical-guidance-for-mitigating-transient-scheduler-attacks.pdf
-> Co-developed-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Signed-off-by: Babu Moger <babu.moger@amd.com>
-> ---
-> v2: Split the patches into two.
->     Not adding the feature bit in CPU model now. Users can add the feature
->     bits by using the option "-cpu EPYC-Genoa,+verw-clear".
-> 
-> v1: https://lore.kernel.org/qemu-devel/20250709104956.GAaG5JVO-74EF96hHO@fat_crate.local/
-> ---
->  target/i386/cpu.c | 2 +-
->  target/i386/cpu.h | 2 ++
->  2 files changed, 3 insertions(+), 1 deletion(-)
+On 16/07/2025 00.20, John Snow wrote:
+> fwiw, I think this is important enough / harmless enough to sneak into
+> the rc releases, if possible.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Yes, sounds like a good idea to avoid breakage with the latest Python versions.
+
+Series
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
+
+> On Tue, Jul 15, 2025 at 5:28 PM John Snow <jsnow@redhat.com> wrote:
+>>
+>> CI: https://gitlab.com/jsnow/qemu/-/pipelines/1928836481
+>>
+>> Unlike the previous series, this series only adjusts the *preferred*
+>> sphinx version to be higher, leaving the accepted version at 3.4.3, the
+>> version that CentOS Stream 9 still ships with.
+>>
+>> Unfortunately, this means we can't cut out the compatibility code for
+>> sphinx we're still carrying around just yet, but we'll await that
+>> glorious moment to arrive on some future day.
+>>
+>> Sphinx 6.2.1 is being chosen as the new default because it still offers
+>> support for Python 3.8+, but is new enough to support Python 3.13+.
+>>
+>> Distro version information for supported platforms as of 2025-07-15:
+>>
+>> distro              python3  pip     setuptools  sphinx
+>> -------------------------------------------------------
+>> alpine_3_19         3.11.13  23.3.1  70.3.0      6.2.1
+>> alpine_3_20         3.12.11  24.0    70.3.0      7.2.6
+>> alpine_3_21         3.12.11  24.3.1  70.3.0      8.1.3
+>> alpine_3_22         3.12.11  25.1.1  80.9.0      8.2.3
+>> centos_stream_9     3.9.23   21.3.1  53.0.0      3.4.3
+>> centos_stream_10    3.12.11  23.3.2  69.0.3      7.2.6
+>> debian_12           3.11.2   23.0.1  66.1.1      5.3.0
+>> fedora_41           3.13.5   24.2    69.2.0      7.3.7
+>> fedora_42           3.13.5   24.3.1  74.1.3      8.1.3
+>> freebsd             3.11.13  23.3.2  63.1.0      5.3.0
+>> homebrew            3.13.5   ---     80.9.0      8.2.3
+>> macports            3.13.5   25.1.1  78.1.1      8.2.3
+>> openbsd             3.12.11  25.1.1  79.0.1      8.2.3
+>> pkgsrc_current      3.12.11  25.1.1  80.9.0      8.2.3
+>> ubuntu_22_04        3.10.12  22.0.2  59.6.0      4.3.2
+>> ubuntu_24_04        3.12.3   24.0    68.1.2      7.2.6
+>> ubuntu_24_10        3.12.7   24.2    74.1.2      7.4.7
+>> ubuntu_25_04        3.13.3   25.0    75.8.0      8.1.3
+>>
+>> Akihiko Odaki (2):
+>>    docs: Bump sphinx to 6.2.1
+>>    MAINTAINERS: Add docs/requirements.txt
+>>
+>>   MAINTAINERS           | 1 +
+>>   docs/requirements.txt | 4 ++--
+>>   pythondeps.toml       | 4 ++--
+>>   3 files changed, 5 insertions(+), 4 deletions(-)
+>>
+>> --
+>> 2.50.0
+>>
+>>
+> 
+> 
 
 
