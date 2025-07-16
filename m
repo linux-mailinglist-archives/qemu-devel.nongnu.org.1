@@ -2,65 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45178B07386
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 524BBB0739F
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:39:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubzSB-0002ZA-6p; Wed, 16 Jul 2025 06:33:35 -0400
+	id 1ubzX2-0008Ek-SC; Wed, 16 Jul 2025 06:38:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1ubzNr-0007ng-6e; Wed, 16 Jul 2025 06:29:12 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ubzP8-0000Fl-Qc
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:30:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1ubzNh-0005Pv-G0; Wed, 16 Jul 2025 06:29:05 -0400
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:29a1:0:640:5fbc:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 35FECC015F;
- Wed, 16 Jul 2025 13:28:50 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:748::1:e] (unknown [2a02:6bf:8080:748::1:e])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id mSJaXP0Gr8c0-O6p8sEwK; Wed, 16 Jul 2025 13:28:49 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1752661729;
- bh=VheFPJEX7HSPNGn/4KfSQr2XMtVdDiYl84SAO2wCj0g=;
- h=In-Reply-To:Cc:Date:References:To:From:Subject:Message-ID;
- b=X6xucEJG1my9XbLMhueLk2K+qxe/LmVZqC5pW6HSEH7SY1v+JYKfs+gOwBCRyJ2v4
- yfRxBiStujGRsUT33GH6VYRxmYGgFWTWFuTD/M+oP/QhXgIGF/Yx1iFK0V/zb71K7o
- 51pJBsMcXlrWqWvctQrNvDcVkTlR4GnVON5reZXI=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <9d839afc-f34f-401a-8716-e0ed098de272@yandex-team.ru>
-Date: Wed, 16 Jul 2025 13:28:48 +0300
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ubzP4-0005aS-6t
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:30:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752661814;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=hpB4NG9+qfALvO+yzTtaBSuiqkIsRAfUoR07sJ8qqog=;
+ b=LEEYdRyk8UB95pqLYw1P1ibWC1owFyoR6ZtCmjO3IEIARrQXACCNxQY4uOSju2Qhu5QORV
+ 83EQI18fw74mb3lZmhI8/LrLm48EBRQml4AthJEKWMIy9NTOnDXMSMExfihq2isAb9T0gR
+ rfqSNUvy3p8FlfgQMQYb/CpxNHLpyQE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-AthkKU0yOfSvmNq07g3x9g-1; Wed,
+ 16 Jul 2025 06:30:13 -0400
+X-MC-Unique: AthkKU0yOfSvmNq07g3x9g-1
+X-Mimecast-MFC-AGG-ID: AthkKU0yOfSvmNq07g3x9g_1752661812
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6D2AA1955F4A
+ for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 10:30:12 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.68])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id EEE6D1954214; Wed, 16 Jul 2025 10:30:10 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 0/4] Misc crypto & UI patches
+Date: Wed, 16 Jul 2025 11:30:05 +0100
+Message-ID: <20250716103009.2047433-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] vhost: drop backend_features
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, fam@euphon.net,
- pbonzini@redhat.com, jasowang@redhat.com, hreitz@redhat.com,
- kwolf@redhat.com, sgarzare@redhat.com, raphael@enfabrica.net
-References: <20250703124713.2530079-1-vsementsov@yandex-team.ru>
- <20250714062807-mutt-send-email-mst@kernel.org>
- <d428a737-6733-457b-a973-28a70610c46d@yandex-team.ru>
-Content-Language: en-US
-In-Reply-To: <d428a737-6733-457b-a973-28a70610c46d@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,105 +81,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14.07.25 22:23, Vladimir Sementsov-Ogievskiy wrote:
-> On 14.07.25 13:41, Michael S. Tsirkin wrote:
->> On Thu, Jul 03, 2025 at 03:47:08PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->>> This field is mostly unused and sometimes confusing (we even have
->>> a TODO-like comment to drop it). Let's finally do.
->>
->> Breaks make check with UBSAN enabled:
->> 32/109 /arm/virt/virtio-mmio/virtio-bus/virtio-net-device/virtio-net/virtio-net-tests/vhost-user/flags-mismatch - ERROR:../tests/qtest/qos-test.c:189:subprocess_run_one_test: child process (/arm/virt/virtio-mmio/virtio-bus/virtio-net-device/virtio-net/virtio-net-tests/vhost-user/flags-mismatch/subprocess [9701]) failed unexpectedly FAIL
->>
->>
->>
->> https://gitlab.com/mstredhat/qemu/-/jobs/10668177755
->>
->>
->> To trigger, configure with:
->>
->> ./configure '--cc=clang' '--cxx=clang++' '--enable-ubsan' '--extra-cflags=-fno-sanitize-recover=undefined -fno-sanitize=pointer-overflow' '--target-list=arm-softmmu'
->>
->> make
->> make check
-> 
-> 
-> Thanks for reproducer, it works for me.
-> 
-> 
-> Hm. Seems, that because I miss that I've changed the behavior for vhost_net_ack_features():
-> with may patches it doesn't include VHOST_USER_F_PROTOCOL_FEATURES (taken from backend_features) into acked_features..
-> 
-> And with such change:
-> 
->   void vhost_net_ack_features(struct vhost_net *net, uint64_t features)
->   {
-> -    net->dev.acked_features = qemu_has_vnet_hdr(net->nc)
-> -        ? 0 : (1ULL << VHOST_NET_F_VIRTIO_NET_HDR);
-> +    net->dev.acked_features =
-> +        (qemu_has_vnet_hdr(net->nc) ? 0 :
-> +                                      (1ULL << VHOST_NET_F_VIRTIO_NET_HDR)) |
-> +        (net->dev.features & (1ULL << VHOST_USER_F_PROTOCOL_FEATURES));
->       vhost_ack_features(&net->dev, vhost_net_get_feature_bits(net), features);
->   }
-> 
-> 
-> test starts to work again.
-> 
-> But I can't understand, what is the relation with VHOST_USER_F_PROTOCOL_FEATURES and acked_features.
-> I though, VHOST_USER_F_PROTOCOL_FEATURES make sense only for vhost <-> QEMU communication, and should
-> not present in guest-negotiated acked_features..
-> 
-> 
+The following changes since commit c079d3a31e45093286c65f8ca5350beb3a4404a9:
 
-UPD: undestand.
+  Merge tag 'pull-10.1-rc0-maintainer-140725-1' of https://gitlab.com/stsquad/qemu into staging (2025-07-15 00:12:07 -0400)
 
-the test wants to check features mismatch, and on this code in vhost_net_init():
+are available in the Git repository at:
 
-#ifdef CONFIG_VHOST_NET_USER
-     if (net->nc->info->type == NET_CLIENT_DRIVER_VHOST_USER) {
-         features = vhost_user_get_acked_features(net->nc);
-         if (~net->dev.features & features) {
-             fprintf(stderr, "vhost lacks feature mask 0x%" PRIx64
-                     " for backend\n",
-                     (uint64_t)(~net->dev.features & features));
-             goto fail;
-         }
-     }
-#endif
+  https://gitlab.com/berrange/qemu tags/misc-next-pull-request
 
-still the only mismatching feature is VHOST_USER_F_PROTOCOL_FEATURES, which vhost_net code (before my changes) passes to acked features.
+for you to fetch changes up to def71a6b12d817b95a81b622bad2ca096ed5a3ab:
 
-Instead of exploiting acked_features this way, we may improve this check to also check VHOST_USER_F_PROTOCOL_FEATURES, which is vhost-user-only.
+  crypto: load all certificates in X509 CA file (2025-07-16 11:27:30 +0100)
 
-I'll resend
+----------------------------------------------------------------
+* Fix endian defaults when no VNC pixel format message is set
+* Add more trace events for VNC messages
+* Fix checking of certificate loading
+* Eliminate cert limit on loading CA certificates
 
->>
->>
->>> Vladimir Sementsov-Ogievskiy (4):
->>>    vhost: introduce vhost_ops->vhost_set_vring_enable_supported method
->>>    vhost-user: stop use backend_features
->>>    vhost_net: stop use backend_features
->>>    hw/vhost: finally drop vhost_dev.backend_features field
->>>
->>>   hw/block/vhost-user-blk.c         |  1 -
->>>   hw/net/vhost_net.c                | 14 ++++++--------
->>>   hw/scsi/vhost-scsi.c              |  1 -
->>>   hw/scsi/vhost-user-scsi.c         |  1 -
->>>   hw/virtio/vdpa-dev.c              |  1 -
->>>   hw/virtio/vhost-user.c            | 25 ++++++++++++++++---------
->>>   hw/virtio/vhost.c                 | 15 ++++++---------
->>>   hw/virtio/virtio-qmp.c            |  2 --
->>>   include/hw/virtio/vhost-backend.h |  2 ++
->>>   include/hw/virtio/vhost.h         |  7 -------
->>>   10 files changed, 30 insertions(+), 39 deletions(-)
->>>
->>> -- 
->>> 2.48.1
->>
-> 
+----------------------------------------------------------------
+
+Daniel P. Berrangé (2):
+  ui: fix setting client_endian field defaults
+  ui: add trace events for all client messages
+
+Henry Kleynhans (1):
+  crypto: load all certificates in X509 CA file
+
+Peter Maydell (1):
+  crypto/x509-utils: Check for error from gnutls_x509_crt_init()
+
+ crypto/tlscredsx509.c | 23 +++++++++----------
+ crypto/x509-utils.c   |  6 ++++-
+ ui/trace-events       | 14 ++++++++++++
+ ui/vnc.c              | 53 +++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 83 insertions(+), 13 deletions(-)
 
 -- 
-Best regards,
-Vladimir
+2.49.0
 
 
