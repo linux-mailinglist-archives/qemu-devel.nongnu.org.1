@@ -2,136 +2,133 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A729BB072C6
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F37FB072AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:08:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubysy-0004qT-CR; Wed, 16 Jul 2025 05:57:12 -0400
+	id 1ubytN-00070N-NS; Wed, 16 Jul 2025 05:57:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1ubyrn-0001aF-MZ; Wed, 16 Jul 2025 05:56:03 -0400
-Received: from mail-bn7nam10on20607.outbound.protection.outlook.com
- ([2a01:111:f403:2009::607]
- helo=NAM10-BN7-obe.outbound.protection.outlook.com)
+ id 1ubyrr-0001bx-IE; Wed, 16 Jul 2025 05:56:06 -0400
+Received: from mail-dm6nam12on2062d.outbound.protection.outlook.com
+ ([2a01:111:f403:2417::62d]
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1ubyrh-0006dc-Fg; Wed, 16 Jul 2025 05:55:58 -0400
+ id 1ubyrn-0006fd-UF; Wed, 16 Jul 2025 05:56:03 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=crwpWJOgSU1kIOS3ytixBoGfDZ8uRXJ1iGnLnlZZIKuYU4LRo263XqGvdiH7xivvGwjSLfNNg4K56ZrwRHL+UfsJeuM9XszDEiJ/28rbKw01A4NCs8AcZFJRi9mEh9OHzIsvfFvpyspm4e1BsthwkuE442516R1c9W06QDSJiYbM+WiXOhK54bx08IMIq2XteMl3VJZq42Cxx+DSVDt/Pfyfz42BNgx3+a2iWKqUezm2Dm0Lo91ynWgr3Z2ok+DaX/MhvxcAJmwr/+Aa9obZNrDCzOgV5B2DceVN58llW9GAAVg4g1RUZFuGKsqA/32evXYV9wgp+fymyV7DExz5WQ==
+ b=ecJBuAEbvsGi7SEktYBs1bXGyEvMzZWknq6zp7WYtNfkUEo2l8RJwKbYT81upJfFwH6U23+V3ckZAyXgBnOoY6lVXubRWEMDqZ0lbyZTaZjIE0o5wk8zaPaKz7n4vFu7zYaADEYUIT4UYXZRk/1umvw+Du5CXhbLm1zzOt7MWrE4fcvE+HfS2f0VtLu0Xl5bK+Xx9s2mN7u+hktKDYd9YdOxL6X+P93mFScAHR66NA3bmV+zJ7HWEgxrnPJKQ8bvYF7LQX6CiGRt6E5/QmOjDDVPnI1putrjiR1qouWFuRgzx8O+budN2n/RysLlP0agpPcwp/xLhF6WFd4BrHuynA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y76AYBRy3bIJkmzam4taMXdycqeHz91uhzCM23rSu2g=;
- b=aUQYH+RZwdr0qvWjyInT2cRzt+7ZKacMTbKPOLLbwohKjpaH/tZ2E5wuZZa6nlyc/y1vzJGGEH4VEinF28HVwxuBha0mv65ikXI9FoQI1enpRvgoo3MU5MA+KTlIA+YIX1eIXQEGCOQrmu9S1vL/J67CZF71rJ0hd+56nJK0iK+7j/gykIPoBL8+b5jo1Nha1CpSsAU74vc2n8odPD/CKcMLVsuVTtic/2epo8/ng48zlFJwM7vMpN+PuIk/kh6GMoydBTZYBs/OkG9XAOypp3OE0hC9ziqK90ZrBEt5ZIbd4Terp75judqDtuZJr25l6fDExWtVHmXI/WWnge3siA==
+ bh=kPNMAC11ud0HBQlAvwKbsCZ3d2P3OYQLHDKguYThcF4=;
+ b=iwKcv0NyZt2Uw/xhF3GJV8ePGWYwLdRLlX50MZiS0jqMpLPWUBf3MKIcmUucDhbiioLFie2AiJ64KAGwzXcEit5gpqOuwf0jz4ozHNN3BBQysaUWrJWuw8YEiWsbqXG0yuCbecpY92WqO/6SJ4P75nLfA2eevbhQuPOK6sKe6ZBOMZyiTSntWCQfFZbCT7Rxy8sxnfxbNBboe1F30/GBtuRWxZLDEhx9nYgCW3mHy4/mS095YiyzX7rNUfrmK62UFa0MxgDPXSVrQgfgelJ9EpXn3YgOC3TS+XM2FxSzlwsn8Y5gQMZmegyoq5zRISs/UFqd7B6NQxS1Qu5GRgjvAQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y76AYBRy3bIJkmzam4taMXdycqeHz91uhzCM23rSu2g=;
- b=yQqaxrVIjKO7S2Kk+T7ZiDydrgtaU0Wvuap0fpkgVtd45mpylpDBoxnDKMWG/yV+a7HsVpjPpkhzafT2afhsMxByHy3B5tdSdXlVQPQngu7laWfd80Tsuan7jO7c/i0FMUzVzBDngTCxN6W60C1V4HY2ebTxEZLZrs37sqJUIAs=
-Received: from SJ0PR03CA0078.namprd03.prod.outlook.com (2603:10b6:a03:331::23)
- by SA0PR12MB7090.namprd12.prod.outlook.com (2603:10b6:806:2d5::16)
+ bh=kPNMAC11ud0HBQlAvwKbsCZ3d2P3OYQLHDKguYThcF4=;
+ b=E22A3xQ/7iL9oNe5QPy1SpCnCWHq7RelwBPO29IL26OYgNNABbKCrsBcML9y+/JbGb+wHJkxEzifhPE0tuZ1PM/4O+4qRLUqipQOROUiDAO2aHi0RaH63wPigf1qRj3LsoZKLwrBVQSEYSCdSoJxJKXJ6HgPhdFcXwx+kAAIdpU=
+Received: from CH0PR03CA0409.namprd03.prod.outlook.com (2603:10b6:610:11b::17)
+ by CH3PR12MB8933.namprd12.prod.outlook.com (2603:10b6:610:17a::22)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.26; Wed, 16 Jul
- 2025 09:55:47 +0000
-Received: from SJ5PEPF0000020A.namprd05.prod.outlook.com
- (2603:10b6:a03:331:cafe::b0) by SJ0PR03CA0078.outlook.office365.com
- (2603:10b6:a03:331::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Wed, 16 Jul
+ 2025 09:55:53 +0000
+Received: from DS2PEPF0000343C.namprd02.prod.outlook.com
+ (2603:10b6:610:11b:cafe::95) by CH0PR03CA0409.outlook.office365.com
+ (2603:10b6:610:11b::17) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.20 via Frontend Transport; Wed,
- 16 Jul 2025 09:55:47 +0000
+ 16 Jul 2025 09:55:53 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- SJ5PEPF0000020A.mail.protection.outlook.com (10.167.244.43) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS2PEPF0000343C.mail.protection.outlook.com (10.167.18.39) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8922.22 via Frontend Transport; Wed, 16 Jul 2025 09:55:47 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.8943.21 via Frontend Transport; Wed, 16 Jul 2025 09:55:53 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 16 Jul
- 2025 04:55:46 -0500
+ 2025 04:55:52 -0500
 Received: from XFR-LUMICHEL-L2.xilinx.com (10.180.168.240) by
  SATLEXMB03.amd.com (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Wed, 16 Jul 2025 04:55:44 -0500
+ via Frontend Transport; Wed, 16 Jul 2025 04:55:51 -0500
 From: Luc Michel <luc.michel@amd.com>
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: Francisco Iglesias <francisco.iglesias@xilinx.com>, Peter Maydell
- <peter.maydell@linaro.org>, Francisco Iglesias <francisco.iglesias@amd.com>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Alistair
- Francis" <alistair@alistair23.me>, Frederic Konrad <frederic.konrad@amd.com>, 
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>, "Edgar E. Iglesias"
- <edgar.iglesias@xilinx.com>
-Subject: [PATCH 24/48] hw/intc/arm_gicv3: Introduce a 'first-cpu-index'
- property
-Date: Wed, 16 Jul 2025 11:54:06 +0200
-Message-ID: <20250716095432.81923-25-luc.michel@amd.com>
+CC: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ Francisco Iglesias <francisco.iglesias@amd.com>, "Edgar E . Iglesias"
+ <edgar.iglesias@amd.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Alistair Francis <alistair@alistair23.me>, "Frederic
+ Konrad" <frederic.konrad@amd.com>, Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+Subject: [PATCH 27/48] hw/arm/xlnx-versal: rpu: refactor creation
+Date: Wed, 16 Jul 2025 11:54:09 +0200
+Message-ID: <20250716095432.81923-28-luc.michel@amd.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250716095432.81923-1-luc.michel@amd.com>
 References: <20250716095432.81923-1-luc.michel@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: luc.michel@amd.com does not designate
+Received-SPF: None (SATLEXMB04.amd.com: luc.michel@amd.com does not designate
  permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF0000020A:EE_|SA0PR12MB7090:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51b99354-60a9-4a90-6471-08ddc44ef04a
+X-MS-TrafficTypeDiagnostic: DS2PEPF0000343C:EE_|CH3PR12MB8933:EE_
+X-MS-Office365-Filtering-Correlation-Id: f725e1cf-ce8d-48bf-b246-08ddc44ef3ef
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|376014|1800799024|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?PKolCJztrtl5a41O+GVmVWOY5+5yEKIPcqJ/5DcynxL6SH5tjBceZgwcTcch?=
- =?us-ascii?Q?RSyxSYw1GSyC+eEEi8mJeaMLeWdjoG42Op/Jr5I8UBcYshBe3QIzRztmcZ9b?=
- =?us-ascii?Q?554ftTAP3UbeD3fDJfT4/t/PZMgBTb+J/ZycAN7BTY0QPBRhfMkzrfjQF9Gr?=
- =?us-ascii?Q?v2c62MJ7a9kvS0aspTpk/NGDhgL7VfaC8JK1p+gzmh+aIhVSRTTNjuYd7FOT?=
- =?us-ascii?Q?xHFBBMO4zm2hXkdlA4FFhiNa4w5htfJujCQvgn4/AbO2wbj+Z46opRVRrNUv?=
- =?us-ascii?Q?K+TJ6uhVUxN7H6OtZUkLuYxZKqTkr6Xzeu7Twf0RlZxvpKHqjXztxarIcBig?=
- =?us-ascii?Q?LUsd5NWcGOqT/tn/u4GczfQV/LZ1sdwtd6+p//zg4+CPlwYBlFpsdYw9Heyl?=
- =?us-ascii?Q?qtsrVRy8g6/NOomnZ0ZVlyNJpGloVL3XpCSUV35XltxBXWBQONbCq65437m2?=
- =?us-ascii?Q?Opel396+Oc3jjQ/2MY1ZZwmLacVhwqd7YbyI9wb6m7k/kM4sJKQdP1M5NXeT?=
- =?us-ascii?Q?15fffLlbSIIXMPbBAB3EqV4X3f3SMsFwf1DEm3QCqvcQ8YCKWK8XTQfu/8u2?=
- =?us-ascii?Q?kCmPZQ88/c2OTGJaJkrRDNla/m85dJVU4nZF28arX56vLFIDyq61vQlRXzBj?=
- =?us-ascii?Q?/kKyqtnNhnnp3+AUVjse+WVPI01MRTMc7ZSWjCYuybloZXzUnXDjWoEi7C7o?=
- =?us-ascii?Q?iKdnPJjf5yD8nXWVUk3jZzFKnzRvh5DhGN8ALIYohWaMmIJzeh3o84UE/I90?=
- =?us-ascii?Q?tGi6qUIUMyC/25ly680N5NEDJNQ/SFRxV7WSCyGk+YJ68Gpsz3Ndva4PMIlY?=
- =?us-ascii?Q?AIykmGo6HrzBBJzJDx5DUvhut8Ug4MdgW+mQuKlq0EgDBm4VVPJHuqeM7lq1?=
- =?us-ascii?Q?VRzozzcedNkeQiNErZ3/LSLlPkHAkavz6xPL2rf5jy+8+vCCJI0bQr/Nw/BH?=
- =?us-ascii?Q?/PD3oEq40+AupJaNIYEyWYHSF+w3n0bQZLP6e+O1MKs3J+SkUqzKLpBpHeWY?=
- =?us-ascii?Q?05ZotXRIwmQYhHfzRyYD+W98ef5Dt2YQrVzFxb5rnGxVe9o6ozWs3DJm19YS?=
- =?us-ascii?Q?pTaO2HrmhDGz3n/pKDIn43ZUUBWLc0zXOn6rRD1jMyZpbxmpSPVYzJR+sLU7?=
- =?us-ascii?Q?FkwrzgnAW6EGSqVHJZrFh1HRChKcODzzMmNswyHiOptJkRvVC9KvixPif8bW?=
- =?us-ascii?Q?8nG/mFG8i62Q/fijFOn369aN0CW0o71cJvGAzARh9l+FMMYVmaSKdmHhJ9dj?=
- =?us-ascii?Q?1zKzqRD2qwhNHt7G9bQwf/1HdVf3GhCNiX7ZvEPqfDXP0wTrhjCXQ4eIe5eF?=
- =?us-ascii?Q?6IM5Kqh6udYd+oGicr6HgGIpkxyXd6SWGcz4Xeivb9H14vJnwpnFRlzJ/e+h?=
- =?us-ascii?Q?plM1JdHmR/cnTNQSeznPjSmWjx5sHc0UASG+8E1ivxU14U1pDqdL5NnfvOcj?=
- =?us-ascii?Q?B6o2SoyR3VQKp3dqhZf/wDo9zLtWlMRso5gJ0OmQXNL+z96ZAR9BfJ4QZQcD?=
- =?us-ascii?Q?Wv1AT35KfdPKbNOFT11/jLdn4xfRlQwbIs7H?=
+ ARA:13230040|1800799024|30052699003|376014|36860700013|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?jlSsrqrMlfSUWI8aqH9fme96LiUoyrdYUq1mySbuohvYrn1hWJAqNHCjrc7D?=
+ =?us-ascii?Q?xZo/wo6N+VdJ3ty6ng6xy/YPCrrfCKYP1t27Ltu+VsQOSjYAxiiokytrIIS5?=
+ =?us-ascii?Q?N1+jx5LmxRRrXjy9fMd4xOOpXfnoP6vZJBTbZLAiFCygz6XAUIAF0ctHhnYE?=
+ =?us-ascii?Q?rBmuyfjYrm8S5HsCzMU501l3ox9UrwxmfSaVU+lxrkzgxvhgDd/kXdXturcp?=
+ =?us-ascii?Q?FR49Y0pedzZ5Y4Sot6B2z3oywCAeQbi+CuiXh6Y3O7THs0lfHodnS7QFJT/e?=
+ =?us-ascii?Q?MviGah0jKIMGnThuj3sYvCFtgHT7UJRDXqELVNYE8ZTSZ4vf5fuBwFJ1nByV?=
+ =?us-ascii?Q?635G/0+Pbu2EVM7cHEm/bKvSlI7X0Xnb5ZElJzusZTyoTNhXnm9gJduJXrs7?=
+ =?us-ascii?Q?8KwszGLT5zm1PqNmpeHDjgXBunAGGwOTYqnhc86uNIggDK3gdt7nx7U/c2ux?=
+ =?us-ascii?Q?WOeJhHsr7MfupLkKeqRDqXsZRQP/F2CPxPsuTZ6VDxfvlE14Q+D5a32kEagX?=
+ =?us-ascii?Q?39Aj5JWmKJef+032yTmVYzt0exIB7gx29Nv/Z0TQFf+qb5Y/H+JiqRUcsxml?=
+ =?us-ascii?Q?YlpJzwfMzMZ6MFNT+DRxngHqsZyPkujSm4DZkScopjeZ3Kagvm0jG3j9erBK?=
+ =?us-ascii?Q?eFsZqJSiNm5Kzl3sL35OqRx92Xm0+hLmDG+Sy5nnjeVQwlM0937eQAWF79f0?=
+ =?us-ascii?Q?xikUCoPG8jtgylzo3qnJwt1CWiRE5LDbZYaYwWE5aQAQjLl3ixaYqPgy7dVF?=
+ =?us-ascii?Q?U2m+uuVKgWhZ1yS8JDTS41CoXV9V1vCmx5UfTJl29cbOqyUPAF6py2Q995lZ?=
+ =?us-ascii?Q?5kylb/zz/BZJ9sqTCt0W9G/c6muRP5ql0ptmHZGwYEsDGws9697oZq+45A55?=
+ =?us-ascii?Q?bx7RihFtkZwSL6NzMwgULPVMIqm1sakqvhgpOSIIvULcnt+trL/PC1t/DbA7?=
+ =?us-ascii?Q?cvo86pg7/HD/Oje4KBSxwpYpFzbQ7MAGDkz+sYShN31CYo9/te3AXqVsF8Ei?=
+ =?us-ascii?Q?R/3Um9bdkEpeZ5yu9S44vRPk+y6l2uz/FNceLXkhrkB0S4s/3BsnnxpJMyZH?=
+ =?us-ascii?Q?G7RKYaNLFhYFYEypJxdy9ifgAGQchNQamkpG3TSUD3XWw6nPOuzYdS5lUnj/?=
+ =?us-ascii?Q?egXzwC+DJOEq5WRwYSvbUVHRx//oOSBBkfY+v4ydENkMSNP4N+r+70tpfW0W?=
+ =?us-ascii?Q?Xcube5c9EvO5/IG+Wxlxiv1nne2DuRg3hT8cm7y1mMyLTqtNJ38ivWPvq85v?=
+ =?us-ascii?Q?wilOFJ9ESoH2/q7mODGvxPWzX6xRRIsNl0q9b83kTAuLFySIxyFDaauuycXY?=
+ =?us-ascii?Q?0U+d9YlWL+WmiDMoS1A9xknzI0+lWOVgrGd78KbCSXUlISUXG4xpkMC2vPC+?=
+ =?us-ascii?Q?pTWNWwdKGFNiIggpTTVmrelkLG5xDpscA0uZk9xT5QaJo6hRhyzUhChwsiua?=
+ =?us-ascii?Q?lDYnZY85FZJBTsGDekKjhgy+dbqj0bppL/B0v1+DRYqCuJy211Oe5fZfsZek?=
+ =?us-ascii?Q?R+dtQk1I02SM6mzsCNZ0QiXCm5IpgVFjM2l9?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026); DIR:OUT;
- SFP:1101; 
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(30052699003)(376014)(36860700013)(82310400026);
+ DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 09:55:47.3042 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51b99354-60a9-4a90-6471-08ddc44ef04a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 09:55:53.4751 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f725e1cf-ce8d-48bf-b246-08ddc44ef3ef
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF0000020A.namprd05.prod.outlook.com
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF0000343C.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7090
-Received-SPF: permerror client-ip=2a01:111:f403:2009::607;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8933
+Received-SPF: permerror client-ip=2a01:111:f403:2417::62d;
  envelope-from=Luc.Michel@amd.com;
- helo=NAM10-BN7-obe.outbound.protection.outlook.com
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -153,82 +150,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Francisco Iglesias <francisco.iglesias@xilinx.com>
+Refactor the RPU cluster creation using the VersalMap structure. This
+effectively instantiate the RPU GICv2 which was not instantiated before.
 
-Introduce a 'first-cpu-index' property for specifying the first QEMU CPU
-connected to the GICv3. This makes it possible to have multiple instances
-of the GICv3 connected to different CPU clusters.
-
-Signed-off-by: Francisco Iglesias <francisco.iglesias@xilinx.com>
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@xilinx.com>
+Signed-off-by: Luc Michel <luc.michel@amd.com>
 ---
- include/hw/intc/arm_gicv3_common.h | 1 +
- hw/intc/arm_gicv3_common.c         | 3 ++-
- hw/intc/arm_gicv3_cpuif.c          | 2 +-
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ include/hw/arm/xlnx-versal.h | 11 -------
+ hw/arm/xlnx-versal-virt.c    |  1 +
+ hw/arm/xlnx-versal.c         | 60 +++++++++++++++---------------------
+ 3 files changed, 26 insertions(+), 46 deletions(-)
 
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index c18503869f9..3c2ed30de71 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -226,10 +226,11 @@ struct GICv3State {
-     MemoryRegion iomem_dist; /* Distributor */
-     GICv3RedistRegion *redist_regions; /* Redistributor Regions */
-     uint32_t *redist_region_count; /* redistributor count within each region */
-     uint32_t nb_redist_regions; /* number of redist regions */
+diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
+index 9b11ffb845d..62b8d234ecb 100644
+--- a/include/hw/arm/xlnx-versal.h
++++ b/include/hw/arm/xlnx-versal.h
+@@ -12,14 +12,12 @@
  
-+    uint32_t first_cpu_idx;
-     uint32_t num_cpu;
-     uint32_t num_irq;
-     uint32_t revision;
-     uint32_t maint_irq;
-     bool lpi_enable;
-diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-index e438d8c042d..2d0df6da86c 100644
---- a/hw/intc/arm_gicv3_common.c
-+++ b/hw/intc/arm_gicv3_common.c
-@@ -434,11 +434,11 @@ static void arm_gicv3_common_realize(DeviceState *dev, Error **errp)
+ #ifndef XLNX_VERSAL_H
+ #define XLNX_VERSAL_H
+ 
+ #include "hw/sysbus.h"
+-#include "hw/cpu/cluster.h"
+ #include "qom/object.h"
+ #include "net/can_emu.h"
+-#include "target/arm/cpu.h"
+ #include "hw/arm/xlnx-versal-version.h"
+ 
+ #define TYPE_XLNX_VERSAL_BASE "xlnx-versal-base"
+ OBJECT_DECLARE_TYPE(Versal, VersalClass, XLNX_VERSAL_BASE)
+ 
+@@ -50,19 +48,10 @@ struct Versal {
+         MemoryRegion mr_ddr_ranges[4];
+     } noc;
+ 
+     struct {
+         MemoryRegion mr_ocm;
+-
+-        /* Real-time Processing Unit.  */
+-        struct {
+-            MemoryRegion mr;
+-            MemoryRegion mr_ps_alias;
+-
+-            CPUClusterState cluster;
+-            ARMCPU cpu[XLNX_VERSAL_NR_RCPUS];
+-        } rpu;
+     } lpd;
+ 
+     struct {
+         uint32_t clk_25mhz;
+         uint32_t clk_125mhz;
+diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
+index 55159536ceb..cad345b98e0 100644
+--- a/hw/arm/xlnx-versal-virt.c
++++ b/hw/arm/xlnx-versal-virt.c
+@@ -22,10 +22,11 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/arm/xlnx-versal.h"
+ #include "hw/arm/boot.h"
+ #include "target/arm/multiprocessing.h"
+ #include "qom/object.h"
++#include "target/arm/cpu.h"
+ 
+ #define TYPE_XLNX_VERSAL_VIRT_MACHINE MACHINE_TYPE_NAME("xlnx-versal-virt")
+ OBJECT_DECLARE_SIMPLE_TYPE(VersalVirt, XLNX_VERSAL_VIRT_MACHINE)
+ 
+ #define XLNX_VERSAL_NUM_OSPI_FLASH 4
+diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+index 771f6108558..3905549b32e 100644
+--- a/hw/arm/xlnx-versal.c
++++ b/hw/arm/xlnx-versal.c
+@@ -45,10 +45,12 @@
+ #include "hw/misc/xlnx-versal-crl.h"
+ #include "hw/intc/arm_gicv3_common.h"
+ #include "hw/intc/arm_gicv3_its_common.h"
+ #include "hw/intc/arm_gic.h"
+ #include "hw/core/split-irq.h"
++#include "target/arm/cpu.h"
++#include "hw/cpu/cluster.h"
+ 
+ #define XLNX_VERSAL_ACPU_TYPE ARM_CPU_TYPE_NAME("cortex-a72")
+ #define XLNX_VERSAL_RCPU_TYPE ARM_CPU_TYPE_NAME("cortex-r5f")
+ #define GEM_REVISION        0x40070106
+ 
+@@ -107,10 +109,11 @@ typedef struct VersalCpuClusterMap {
+     enum StartPoweredOffMode start_powered_off;
+ } VersalCpuClusterMap;
+ 
+ typedef struct VersalMap {
+     VersalCpuClusterMap apu;
++    VersalCpuClusterMap rpu;
+ 
+     VersalSimplePeriphMap uart[2];
+     size_t num_uart;
+ 
+     VersalSimplePeriphMap canfd[4];
+@@ -227,10 +230,31 @@ static const VersalMap VERSAL_MAP = {
+             .has_its = true,
+             .its = 0xf9020000,
+         },
+     },
+ 
++    .rpu = {
++        .name = "rpu",
++        .cpu_model = ARM_CPU_TYPE_NAME("cortex-r5f"),
++        .num_cluster = 1,
++        .num_core = 2,
++        .qemu_cluster_id = 1,
++        .mp_affinity = {
++            .base = 0x100,
++            .core_mask = 0xff,
++            .core_shift = 0,
++        },
++        .start_powered_off = SPO_ALL,
++        .dtb_expose = false,
++        .gic = {
++            .version = 2,
++            .dist = 0xf9000000,
++            .cpu_iface = 0xf9001000,
++            .num_irq = 192,
++        },
++    },
++
+     .uart[0] = { 0xff000000, 18 },
+     .uart[1] = { 0xff010000, 19 },
+     .num_uart = 2,
+ 
+     .canfd[0] = { 0xff060000, 20 },
+@@ -809,39 +833,10 @@ static void versal_create_cpu_cluster(Versal *s, const VersalCpuClusterMap *map)
+         qemu_fdt_setprop(s->cfg.fdt, "/timer", "compatible",
+                          compatible, sizeof(compatible));
+     }
+ }
+ 
+-static void versal_create_rpu_cpus(Versal *s)
+-{
+-    int i;
+-
+-    object_initialize_child(OBJECT(s), "rpu-cluster", &s->lpd.rpu.cluster,
+-                            TYPE_CPU_CLUSTER);
+-    qdev_prop_set_uint32(DEVICE(&s->lpd.rpu.cluster), "cluster-id", 1);
+-
+-    for (i = 0; i < ARRAY_SIZE(s->lpd.rpu.cpu); i++) {
+-        Object *obj;
+-
+-        object_initialize_child(OBJECT(&s->lpd.rpu.cluster),
+-                                "rpu-cpu[*]", &s->lpd.rpu.cpu[i],
+-                                XLNX_VERSAL_RCPU_TYPE);
+-        obj = OBJECT(&s->lpd.rpu.cpu[i]);
+-        object_property_set_bool(obj, "start-powered-off", true,
+-                                 &error_abort);
+-
+-        object_property_set_int(obj, "mp-affinity", 0x100 | i, &error_abort);
+-        object_property_set_int(obj, "core-count", ARRAY_SIZE(s->lpd.rpu.cpu),
+-                                &error_abort);
+-        object_property_set_link(obj, "memory", OBJECT(&s->lpd.rpu.mr),
+-                                 &error_abort);
+-        qdev_realize(DEVICE(obj), NULL, &error_fatal);
+-    }
+-
+-    qdev_realize(DEVICE(&s->lpd.rpu.cluster), NULL, &error_fatal);
+-}
+-
+ static void versal_create_uart(Versal *s,
+                                const VersalSimplePeriphMap *map,
+                                int chardev_idx)
+ {
+     DeviceState *dev;
+@@ -1637,11 +1632,11 @@ static void versal_realize(DeviceState *dev, Error **errp)
+     qemu_fdt_setprop_cell(s->cfg.fdt, "/", "interrupt-parent", s->phandle.gic);
+     qemu_fdt_setprop_cell(s->cfg.fdt, "/", "#size-cells", 0x2);
+     qemu_fdt_setprop_cell(s->cfg.fdt, "/", "#address-cells", 0x2);
+ 
+     versal_create_cpu_cluster(s, &map->apu);
+-    versal_create_rpu_cpus(s);
++    versal_create_cpu_cluster(s, &map->rpu);
+ 
+     for (i = 0; i < map->num_uart; i++) {
+         versal_create_uart(s, &map->uart[i], i);
      }
  
-     s->cpu = g_new0(GICv3CPUState, s->num_cpu);
+@@ -1687,12 +1682,10 @@ static void versal_realize(DeviceState *dev, Error **errp)
+     /* Create the On Chip Memory (OCM).  */
+     memory_region_init_ram(&s->lpd.mr_ocm, OBJECT(s), "ocm",
+                            MM_OCM_SIZE, &error_fatal);
  
-     for (i = 0; i < s->num_cpu; i++) {
--        CPUState *cpu = qemu_get_cpu(i);
-+        CPUState *cpu = qemu_get_cpu(s->first_cpu_idx + i);
-         uint64_t cpu_affid;
+     memory_region_add_subregion_overlap(&s->mr_ps, MM_OCM, &s->lpd.mr_ocm, 0);
+-    memory_region_add_subregion_overlap(&s->lpd.rpu.mr, 0,
+-                                        &s->lpd.rpu.mr_ps_alias, 0);
+ }
  
-         s->cpu[i].cpu = cpu;
-         s->cpu[i].gic = s;
-         /* Store GICv3CPUState in CPUARMState gicv3state pointer */
-@@ -620,10 +620,11 @@ static const Property arm_gicv3_common_properties[] = {
-     DEFINE_PROP_BOOL("force-8-bit-prio", GICv3State, force_8bit_prio, 0),
-     DEFINE_PROP_ARRAY("redist-region-count", GICv3State, nb_redist_regions,
-                       redist_region_count, qdev_prop_uint32, uint32_t),
-     DEFINE_PROP_LINK("sysmem", GICv3State, dma, TYPE_MEMORY_REGION,
-                      MemoryRegion *),
-+    DEFINE_PROP_UINT32("first-cpu-index", GICv3State, first_cpu_idx, 0),
- };
- 
- static void arm_gicv3_common_class_init(ObjectClass *klass, const void *data)
+ void versal_sdhci_plug_card(Versal *s, int sd_idx, BlockBackend *blk)
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index 4b4cf091570..1af7690b958 100644
---- a/hw/intc/arm_gicv3_cpuif.c
-+++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -3022,11 +3022,11 @@ void gicv3_init_cpuif(GICv3State *s)
-      * registers with the CPU
-      */
-     int i;
+     DeviceState *sdhci, *card;
+@@ -1794,14 +1787,11 @@ int versal_get_num_sdhci(VersalVersion version)
+ static void versal_base_init(Object *obj)
+ {
+     Versal *s = XLNX_VERSAL_BASE(obj);
+     size_t i, num_can;
  
-     for (i = 0; i < s->num_cpu; i++) {
--        ARMCPU *cpu = ARM_CPU(qemu_get_cpu(i));
-+        ARMCPU *cpu = ARM_CPU(qemu_get_cpu(s->first_cpu_idx + i));
-         GICv3CPUState *cs = &s->cpu[i];
+-    memory_region_init(&s->lpd.rpu.mr, obj, "mr-rpu", UINT64_MAX);
+     memory_region_init(&s->mr_ps, obj, "mr-ps-switch", UINT64_MAX);
+-    memory_region_init_alias(&s->lpd.rpu.mr_ps_alias, OBJECT(s),
+-                             "mr-rpu-ps-alias", &s->mr_ps, 0, UINT64_MAX);
+     s->intc = g_array_new(false, false, sizeof(DeviceState *));
  
-         /*
-          * If the CPU doesn't define a GICv3 configuration, probably because
-          * in real hardware it doesn't have one, then we use default values
+     num_can = versal_get_map(s)->num_canfd;
+     s->cfg.canbus = g_new0(CanBusState *, num_can);
+ 
 -- 
 2.50.0
 
