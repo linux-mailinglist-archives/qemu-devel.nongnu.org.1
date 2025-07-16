@@ -2,83 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD12B0738F
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45178B07386
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:33:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubzUo-0004x0-HH; Wed, 16 Jul 2025 06:36:19 -0400
+	id 1ubzSB-0002ZA-6p; Wed, 16 Jul 2025 06:33:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1ubzLr-0005wG-Ty
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:27:14 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1ubzLp-00051c-E0
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:27:03 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-60c01f70092so10712642a12.3
- for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 03:27:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1752661618; x=1753266418; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ib04l/ykAWQliB1DGXibqTIzCBddfVjfjwviN9NuPKA=;
- b=fdcwP6leL+/7VPEnkc+f2DVnKPmU2sNcJRHOcRfc7IqDEwomuqC89pmxvzu24lfBF8
- sV3O7Fns9PzwvJ7BeEkzwZdzXXR2QtPl90sCkwMBoSA5nfkZ0re4L3DFMEUME0TQSEqA
- 1eHn8NmcYQ48QvObRszPkuQ+QkoZH6jZn4n1bc/mTYCMtLrXM6C/DfwVccJJlqo8HVQj
- I3pVJhpr4noW0nHms4y5EkTgLVZl65P0xz1oRpIAt3THnpI418F/8Ez7Ye59KACA3hBD
- kFrA650GIatY2DcTMCNoUG7yyzrSHrxOYmMF/IVGsX8f7sPdgi8eI5RcWWHfGOcmHWvb
- GNMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752661618; x=1753266418;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ib04l/ykAWQliB1DGXibqTIzCBddfVjfjwviN9NuPKA=;
- b=Hz2bv25Z8LuxSb+7U0pQ7TEqULt/+82aIAiOwH2ig2vxrTQGQaQcSVEvy+MBsu8kZW
- XFIlGs7bmA77596m7tyKyWicyQgQOOmmwXTa24daHoQAEU5IvtorPmsDI4+23z5MO/oh
- oKigmC1tQQ/gTjPDvLRPB5RH8b1tLvpDxFKPnNLlKQweMJJjN7M50gkb6S7jO3FxPbeQ
- WE2aFPcIi9NYy2VDzGLJsbYlLLCNlnlW1gvu9wQ7GpeHfj3Dh16FshEvYmICcCvj00Eb
- gr/OmWUaLqC6L0fEOLSz8j7AtDF1U5a6NKPNzK/gSiWYET+vFEB15ZsuX90FhD9pYsK4
- ZFJQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUb5KsqLkGrioOWh0QIThaLwRtTdrH6oFGGHPiwMHPKxJFGvFaRRXcZJN1DQUBTsHjQq4svjbqZuFHR@nongnu.org
-X-Gm-Message-State: AOJu0YxtuVwpvz5GjionQ522NSV/1xsKFd3IPl6IvuVH0vsfUWHGk4m1
- cJ0M1TdBLrqng+dIlglI4OQf9lZBWHzqnxpevDoMJK+I/zbZAg9QBqrwmj+Xm++wBZTO6heGgvi
- iVGUGolgdWsHfByCi4EOoXzJay4XzHm8=
-X-Gm-Gg: ASbGncuEbZrAGzEznDMMS2l3vzUfP0DX8UYVeA0pNm0x0REef+X88m1ex17VkHWdGvI
- +nPiY1SKJsnib29OGPHxJZGni+loPzDJiPVEI1XUHOrF51/S+za21S/zKHHHkXwi2KV+SRnistG
- YhIF8v0DOi3uzQT4KJDti7miWTdncmToVA2yjeKSeSIQ31Vf9dfWUMQdpCTnEfae89FXcYt+SRI
- QamNA==
-X-Google-Smtp-Source: AGHT+IEVU77xKPPXqqZ0Dv55ZhngcETDUqwoIhrZq98+WtFw2Gaqb8saFUz4taNEIaMklmYleQ2Nj3I4N17HZH8W7as=
-X-Received: by 2002:a17:907:78c:b0:ad5:2328:e39b with SMTP id
- a640c23a62f3a-ae9c9af078bmr271062866b.31.1752661618382; Wed, 16 Jul 2025
- 03:26:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ubzNr-0007ng-6e; Wed, 16 Jul 2025 06:29:12 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ubzNh-0005Pv-G0; Wed, 16 Jul 2025 06:29:05 -0400
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:29a1:0:640:5fbc:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 35FECC015F;
+ Wed, 16 Jul 2025 13:28:50 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:748::1:e] (unknown [2a02:6bf:8080:748::1:e])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id mSJaXP0Gr8c0-O6p8sEwK; Wed, 16 Jul 2025 13:28:49 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1752661729;
+ bh=VheFPJEX7HSPNGn/4KfSQr2XMtVdDiYl84SAO2wCj0g=;
+ h=In-Reply-To:Cc:Date:References:To:From:Subject:Message-ID;
+ b=X6xucEJG1my9XbLMhueLk2K+qxe/LmVZqC5pW6HSEH7SY1v+JYKfs+gOwBCRyJ2v4
+ yfRxBiStujGRsUT33GH6VYRxmYGgFWTWFuTD/M+oP/QhXgIGF/Yx1iFK0V/zb71K7o
+ 51pJBsMcXlrWqWvctQrNvDcVkTlR4GnVON5reZXI=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <9d839afc-f34f-401a-8716-e0ed098de272@yandex-team.ru>
+Date: Wed, 16 Jul 2025 13:28:48 +0300
 MIME-Version: 1.0
-References: <20250714053423.10415-1-jasowang@redhat.com>
- <20250715195028.GA242340@fedora>
- <CACGkMEs=VtoeLUeXHy9Uyqb+YsRrZDXO7tOJVKrhGqidsjOn8g@mail.gmail.com>
-In-Reply-To: <CACGkMEs=VtoeLUeXHy9Uyqb+YsRrZDXO7tOJVKrhGqidsjOn8g@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 16 Jul 2025 06:26:46 -0400
-X-Gm-Features: Ac12FXxhZTZOOu3itkoUXlOVylJIQxFWnU0TTvHyr4hTK-7ctjKjut3LFLBkxEg
-Message-ID: <CAJSP0QUOY9V=8Hkj4O0ohtz3u2nFxpbr0JxLkMiL3iRN27vXXw@mail.gmail.com>
-Subject: Re: [PULL 00/13] Net patches
-To: Jason Wang <jasowang@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x531.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] vhost: drop backend_features
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, fam@euphon.net,
+ pbonzini@redhat.com, jasowang@redhat.com, hreitz@redhat.com,
+ kwolf@redhat.com, sgarzare@redhat.com, raphael@enfabrica.net
+References: <20250703124713.2530079-1-vsementsov@yandex-team.ru>
+ <20250714062807-mutt-send-email-mst@kernel.org>
+ <d428a737-6733-457b-a973-28a70610c46d@yandex-team.ru>
+Content-Language: en-US
+In-Reply-To: <d428a737-6733-457b-a973-28a70610c46d@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,32 +76,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 15, 2025 at 10:23=E2=80=AFPM Jason Wang <jasowang@redhat.com> w=
-rote:
->
-> Hi Stefan:
->
-> On Wed, Jul 16, 2025 at 3:55=E2=80=AFAM Stefan Hajnoczi <stefanha@redhat.=
-com> wrote:
-> >
-> > Applied, thanks.
-> >
-> > Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for=
- any user-visible changes.
->
-> I sent a V2 of the PULL:
->
-> https://mail.gnu.org/archive/html/qemu-devel/2025-07/msg03794.html
->
-> That includes some enhancement of AF_XDP. Considering you've merged
-> V1, I wonder how to proceed.
->
-> Are you ok to include those three patches in the next pull before hard fr=
-eeze?
+On 14.07.25 22:23, Vladimir Sementsov-Ogievskiy wrote:
+> On 14.07.25 13:41, Michael S. Tsirkin wrote:
+>> On Thu, Jul 03, 2025 at 03:47:08PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>>> This field is mostly unused and sometimes confusing (we even have
+>>> a TODO-like comment to drop it). Let's finally do.
+>>
+>> Breaks make check with UBSAN enabled:
+>> 32/109 /arm/virt/virtio-mmio/virtio-bus/virtio-net-device/virtio-net/virtio-net-tests/vhost-user/flags-mismatch - ERROR:../tests/qtest/qos-test.c:189:subprocess_run_one_test: child process (/arm/virt/virtio-mmio/virtio-bus/virtio-net-device/virtio-net/virtio-net-tests/vhost-user/flags-mismatch/subprocess [9701]) failed unexpectedly FAIL
+>>
+>>
+>>
+>> https://gitlab.com/mstredhat/qemu/-/jobs/10668177755
+>>
+>>
+>> To trigger, configure with:
+>>
+>> ./configure '--cc=clang' '--cxx=clang++' '--enable-ubsan' '--extra-cflags=-fno-sanitize-recover=undefined -fno-sanitize=pointer-overflow' '--target-list=arm-softmmu'
+>>
+>> make
+>> make check
+> 
+> 
+> Thanks for reproducer, it works for me.
+> 
+> 
+> Hm. Seems, that because I miss that I've changed the behavior for vhost_net_ack_features():
+> with may patches it doesn't include VHOST_USER_F_PROTOCOL_FEATURES (taken from backend_features) into acked_features..
+> 
+> And with such change:
+> 
+>   void vhost_net_ack_features(struct vhost_net *net, uint64_t features)
+>   {
+> -    net->dev.acked_features = qemu_has_vnet_hdr(net->nc)
+> -        ? 0 : (1ULL << VHOST_NET_F_VIRTIO_NET_HDR);
+> +    net->dev.acked_features =
+> +        (qemu_has_vnet_hdr(net->nc) ? 0 :
+> +                                      (1ULL << VHOST_NET_F_VIRTIO_NET_HDR)) |
+> +        (net->dev.features & (1ULL << VHOST_USER_F_PROTOCOL_FEATURES));
+>       vhost_ack_features(&net->dev, vhost_net_get_feature_bits(net), features);
+>   }
+> 
+> 
+> test starts to work again.
+> 
+> But I can't understand, what is the relation with VHOST_USER_F_PROTOCOL_FEATURES and acked_features.
+> I though, VHOST_USER_F_PROTOCOL_FEATURES make sense only for vhost <-> QEMU communication, and should
+> not present in guest-negotiated acked_features..
+> 
+> 
 
-Hi Jason,
-I'm doing a final merge today before tagging -rc0 because I see there
-are more pull requests waiting. I will include your v2.
+UPD: undestand.
 
-Stefan
+the test wants to check features mismatch, and on this code in vhost_net_init():
+
+#ifdef CONFIG_VHOST_NET_USER
+     if (net->nc->info->type == NET_CLIENT_DRIVER_VHOST_USER) {
+         features = vhost_user_get_acked_features(net->nc);
+         if (~net->dev.features & features) {
+             fprintf(stderr, "vhost lacks feature mask 0x%" PRIx64
+                     " for backend\n",
+                     (uint64_t)(~net->dev.features & features));
+             goto fail;
+         }
+     }
+#endif
+
+still the only mismatching feature is VHOST_USER_F_PROTOCOL_FEATURES, which vhost_net code (before my changes) passes to acked features.
+
+Instead of exploiting acked_features this way, we may improve this check to also check VHOST_USER_F_PROTOCOL_FEATURES, which is vhost-user-only.
+
+I'll resend
+
+>>
+>>
+>>> Vladimir Sementsov-Ogievskiy (4):
+>>>    vhost: introduce vhost_ops->vhost_set_vring_enable_supported method
+>>>    vhost-user: stop use backend_features
+>>>    vhost_net: stop use backend_features
+>>>    hw/vhost: finally drop vhost_dev.backend_features field
+>>>
+>>>   hw/block/vhost-user-blk.c         |  1 -
+>>>   hw/net/vhost_net.c                | 14 ++++++--------
+>>>   hw/scsi/vhost-scsi.c              |  1 -
+>>>   hw/scsi/vhost-user-scsi.c         |  1 -
+>>>   hw/virtio/vdpa-dev.c              |  1 -
+>>>   hw/virtio/vhost-user.c            | 25 ++++++++++++++++---------
+>>>   hw/virtio/vhost.c                 | 15 ++++++---------
+>>>   hw/virtio/virtio-qmp.c            |  2 --
+>>>   include/hw/virtio/vhost-backend.h |  2 ++
+>>>   include/hw/virtio/vhost.h         |  7 -------
+>>>   10 files changed, 30 insertions(+), 39 deletions(-)
+>>>
+>>> -- 
+>>> 2.48.1
+>>
+> 
+
+-- 
+Best regards,
+Vladimir
+
 
