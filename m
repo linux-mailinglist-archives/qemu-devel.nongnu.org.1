@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF30B07BFE
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 19:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D25A3B07C02
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 19:29:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc5vg-0001iQ-13; Wed, 16 Jul 2025 13:28:28 -0400
+	id 1uc5vk-0001nx-Cg; Wed, 16 Jul 2025 13:28:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uc5vY-0001gX-II
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:28:21 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uc5vd-0001iX-4c
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:28:25 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uc5vW-00006X-OU
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:28:20 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4560d176f97so1125645e9.0
- for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 10:28:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uc5vb-000087-Cs
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:28:24 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3b45edf2303so62386f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 10:28:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752686896; x=1753291696; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zfdOUM49AERFEXBtCOKeieddkFu03hCWo6FYXNJke2A=;
- b=Xz3F+PkYjaFKqPRKBAHhBnWUxPT8VPZrt4Cx7ncKKwkOcdEOePH/RhPDcIzzQy7xM0
- 3T0YzBxLNzoKBrR0WbNZTWZln6xZKd73PHRbq92Ca/a5wa2zntYcDLIiX9PP0DAgrD62
- Cq9leII6Gd1HT2w5aoIp2e6Mve+vpQjijtgFwLA76VijTPzFLE8gQtc2E0mIKRT9VwRl
- Z9mO1P+mShS9gBVmVtYY7WGKz4lea5MnpqMKuLr5v3IAHEOIXo1H+49GSLP8+qytqQdi
- koaBxTTVIblx6nCyPS3H6iQGJ6JrQxSAtaZzoLXpxTDHIERb//MqAO5HNOFIFR6HzA2k
- iJLw==
+ d=linaro.org; s=google; t=1752686901; x=1753291701; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jvMqfwhNEUaAbyBTg3ZU/8Yl+gwZdDpyb6yyXj/6hXQ=;
+ b=iwuRCXFRw/tt5MDLDAhuz/Myp6KecDaKVwyvBDHW+SnsFEF3iU34qCKlDUpzOxN1Zj
+ 5wFrLd5Bw5MFtOhYorjZcjTVu1KuYM7PMIOkd4SfuCYKmGlqK4QrUxhPwLKdUvOmlJbE
+ wJC0Wk2TCoIGt63gWKo3wj3sxsEbv3r7HHRvAZqbKObD6sTV+zOuKu7DlxzuZelmyrc9
+ avX6zrgM3SzDHyXcEwXvtgwXF581/5nHu4RaXGloFYJN3JoDvn8wc3k7/Bsz1DqEf9TD
+ 1H6KgPzxwh1W5vcaeitnsu6OMgu/veWn+s/ffkuIU9dGlHhpwPNQ2nA/IlUmr23O/xwH
+ H7ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752686896; x=1753291696;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zfdOUM49AERFEXBtCOKeieddkFu03hCWo6FYXNJke2A=;
- b=A4mkSExvhkV7fJTSF13usZ8rQDs3No50X9uxkyuA/3ma+2lZGsQQKPp1WDkOnHLxMv
- 6hXtB7xi4kc8sEzCe4Xlb4R4IGIH/Jdh2ju/FPwp6Tg3BpNzeweMzb+VSpy3+icZOR9S
- PXw0CA03HoVjeJ/aaQAsh/EEcSZhW6BrrycrJnAYJ5cH85/Ill27m9gRKD5CFaLd9Df8
- AtnMWZ9VcOqyzpTKUwbh+/IcIcydck0ac/eQHYc6L6SBizJ4mHGIHt/dGjyKUDthdanC
- XElG/JTTc3LT9wkGT7widLF3c0UanWYFWa5f3SofvxrCKBl6iR8DaCtvgK22xoimFmCm
- n82w==
-X-Gm-Message-State: AOJu0YxeBYI/6tIy0E5Lb045PG6v6f+9gm8d+13xMFt9GqdAJWhPqWE9
- 3bAcUlSRG+65V02rv+g4rDYKST7LhJSWzx7IqvJbHXBOMrK6nr2OrK3oFHbm1O42dY4YBUCnZf3
- dD74IlHc=
-X-Gm-Gg: ASbGncutBGMOhp8Wjk+YBYVBRWZ5vYa3UYasTKZha2GOVUez+/pYbULizL007+UB+bt
- IpJdzA34sfVujjZDQQxMA7GpH1zGsFj0V7gfKf50tRnisA4itv/ddKXjrqL+rXKwgm6f3R5PJsR
- ar9oe6ZOo4qxzbqR6VKhPxSZZ9p6K6xIjKIL/7grOxrZaRPO0vjhEH2QlBj7ITTG/EsvXUO1DBa
- kqPFp2sJMf65561syx0xtYydSgH4ah4Mei2VuxxrIRm1mtRtmNjTTNGR9eNj7HbfN2x5dgzbdDS
- jLt9djs3TclqpMO01YC2RG87kzAC2DCLC9+cpngluP3k6kpPQznEmqBrV7clvHLwQg+ffsUsLMC
- CA1EOFVoE/G9gFF4ye+Dw8MRJaL0TyMsbwnpzpnsKVLVMRQrKrZcd+b1guFvH2e3IOLGFlNhU
-X-Google-Smtp-Source: AGHT+IEnQpaKgxrMbeoDi1PApgvzv0TxJCGw3XJhrpzOHlnbGg4/nxjdKi7XEZtpHAUDfKCughKksA==
-X-Received: by 2002:a05:6000:4383:b0:3a5:27ba:479c with SMTP id
- ffacd0b85a97d-3b60e50ff53mr2777751f8f.43.1752686895804; 
- Wed, 16 Jul 2025 10:28:15 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752686901; x=1753291701;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jvMqfwhNEUaAbyBTg3ZU/8Yl+gwZdDpyb6yyXj/6hXQ=;
+ b=ZTMOi/q0/YOXD4DT4vc2+rqK6kUy4Fyd5Mr/efmVWjtWZA0OhOok45m5OsQan+dqIk
+ GBtjZJdgbA58noDR0RPCDKmXv/eiOunhKGGsYXDlAuIptmkX+/2aJszsZbPAu2NgiuiC
+ 3jQorpHVL2BQVyfPeX5BvxFa4fOXbXCpSWPN7oYxdrMOCbg8rx8tEmR634MzPTCt9uAT
+ zavctNQx4nmz69bkIcVaHxNI8AE+75akgJc1qtvkdX2PVSWSvLmFO2U4RA9jIN/ah7y7
+ ADC6M6sGhsqm7/u45/hDzn6t5sCkR8qPJluKHT+j0TuJHlQDXwG0I5mH6EhTnh1RYJfc
+ JRWQ==
+X-Gm-Message-State: AOJu0YwI4r7BUY6UObWaF5o+ocSOA5CnrH2+yxDlrHjkAu1mb+Xcr6DZ
+ pb2r0hPyAG6q2MSbVbi/ys6N4PjU6QJf9n9MagxldKh9uZo9zqX/kH82BRJZNqZDPkrhZ2CijGX
+ q4E7u4dk=
+X-Gm-Gg: ASbGncuRvgjCAG+It1SsEuPmiEWfd9uW8I3Uqp4CpAy+XLvIWfgx0IkRs2czWomMgFr
+ T1reUsrqyNjzDHBWgPkPczdCggK7D/YoOvmaAiqTFLbo68cE+wHiwmRfNTe9yxVRW0n0C7a/4Vq
+ ovJKAMNuw5j877LKfYfy5ghXxHczYoHm4fAbcB5NqxXx3jjOMW2KPD5280tGgxZykauaNcAr/GT
+ H7BzoVd/KKKbV7SwdOSAXAvpvLYimVjiouQYAesyFTXnaVIoPKoAATrE+deWy5duczlxUAFNBCC
+ SREwKligzflhWwCRHYAQfB77ZdUNznKagvZGE3w9zNnwkwRFSXyCKm/h7RaBuGOArqwHAO+3GMx
+ KLtfx8SKcuI8UtlCh7xbHTxImpan/Xm8IB7QqA85kA/PEd+4LfLqNJnMzuT2+jRHa1Blr7DZWKg
+ kZcqT5PAk=
+X-Google-Smtp-Source: AGHT+IEySn6a4TwkwiHvZsCcDGfvrS+Pq05mAv5J6DwrLCGyKDFZtWtTqsOikgNI0LL+aO8PTZe12g==
+X-Received: by 2002:a05:6000:43c8:b0:3a6:ec1b:5742 with SMTP id
+ ffacd0b85a97d-3b60dd4f78amr2806114f8f.22.1752686901040; 
+ Wed, 16 Jul 2025 10:28:21 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8e14d12sm18627471f8f.70.2025.07.16.10.28.14
+ 5b1f17b1804b1-4562f7514afsm22412785e9.8.2025.07.16.10.28.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 16 Jul 2025 10:28:15 -0700 (PDT)
+ Wed, 16 Jul 2025 10:28:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Roman Bolshakov <rbolshakov@ddn.com>, Mads Ynddal <mads@ynddal.dk>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 0/3] accel/hvf: Do not abort in
- hvf_arm_get_*_ipa_bit_size()
-Date: Wed, 16 Jul 2025 19:28:10 +0200
-Message-ID: <20250716172813.73405-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH-for-10.1 1/3] accel/hvf: Display executable bit as 'X'
+Date: Wed, 16 Jul 2025 19:28:11 +0200
+Message-ID: <20250716172813.73405-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250716172813.73405-1-philmd@linaro.org>
+References: <20250716172813.73405-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,22 +103,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Have get_physical_address_range() return when HVF is not
-usable, allowing to try another accelerator if requested
-with '-accel hvf:tcg', reported here:
-https://gitlab.com/qemu-project/qemu/-/issues/2981
+Developers are custom to read RWX, not RWE.
+Replace E -> X.
 
-Philippe Mathieu-Daudé (3):
-  accel/hvf: Display executable bit as 'X'
-  accel/hvf: Do not abort in hvf_arm_get_*_ipa_bit_size()
-  hw/arm/virt: Warn when HVF doesn't report IPA bit length
+Reported-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ accel/hvf/hvf-all.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- target/arm/hvf_arm.h | 11 +++++++++++
- accel/hvf/hvf-all.c  |  2 +-
- hw/arm/virt.c        |  8 ++++++--
- target/arm/hvf/hvf.c |  8 ++------
- 4 files changed, 20 insertions(+), 9 deletions(-)
-
+diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+index e67a8105a66..0a4b498e836 100644
+--- a/accel/hvf/hvf-all.c
++++ b/accel/hvf/hvf-all.c
+@@ -84,7 +84,7 @@ static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
+     trace_hvf_vm_map(slot->start, slot->size, slot->mem, flags,
+                      flags & HV_MEMORY_READ ?  'R' : '-',
+                      flags & HV_MEMORY_WRITE ? 'W' : '-',
+-                     flags & HV_MEMORY_EXEC ?  'E' : '-');
++                     flags & HV_MEMORY_EXEC ?  'X' : '-');
+     ret = hv_vm_map(slot->mem, slot->start, slot->size, flags);
+     assert_hvf_ok(ret);
+     return 0;
 -- 
 2.49.0
 
