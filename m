@@ -2,73 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44556B07BED
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 19:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF30B07BFE
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 19:28:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc5t8-00031F-DN; Wed, 16 Jul 2025 13:25:50 -0400
+	id 1uc5vg-0001iQ-13; Wed, 16 Jul 2025 13:28:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uc5t4-0002wI-Lb
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:25:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uc5t2-00087A-ET
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:25:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752686743;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2VmYcaAWrzHYKzdLBAzRIHRGWAPQr/dchlEpupFY0ww=;
- b=BwCM4xoYlLRPxmESGQNRYjqk9gfnSMcKLjVLAYlOMf8XuW7MTSa2+llL9OGJ1gYzQzflOx
- 3Q9I2bsOED8ZDB+2R4Cv3pPt4qt48utCIYP0aHPXfjwehplo8oY9dvNE90BZmJUsLDZCg4
- EYFH6/278FoysHQqZwsQNQd04hJzrxs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-346-6OG9UCZ7ND-o2TJ-d3vfQQ-1; Wed,
- 16 Jul 2025 13:25:42 -0400
-X-MC-Unique: 6OG9UCZ7ND-o2TJ-d3vfQQ-1
-X-Mimecast-MFC-AGG-ID: 6OG9UCZ7ND-o2TJ-d3vfQQ_1752686741
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8AE901800165
- for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 17:25:41 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4366B180045B
- for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 17:25:41 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 74ADE21E6741; Wed, 16 Jul 2025 19:25:35 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uc5vY-0001gX-II
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:28:21 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uc5vW-00006X-OU
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:28:20 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4560d176f97so1125645e9.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 10:28:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752686896; x=1753291696; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zfdOUM49AERFEXBtCOKeieddkFu03hCWo6FYXNJke2A=;
+ b=Xz3F+PkYjaFKqPRKBAHhBnWUxPT8VPZrt4Cx7ncKKwkOcdEOePH/RhPDcIzzQy7xM0
+ 3T0YzBxLNzoKBrR0WbNZTWZln6xZKd73PHRbq92Ca/a5wa2zntYcDLIiX9PP0DAgrD62
+ Cq9leII6Gd1HT2w5aoIp2e6Mve+vpQjijtgFwLA76VijTPzFLE8gQtc2E0mIKRT9VwRl
+ Z9mO1P+mShS9gBVmVtYY7WGKz4lea5MnpqMKuLr5v3IAHEOIXo1H+49GSLP8+qytqQdi
+ koaBxTTVIblx6nCyPS3H6iQGJ6JrQxSAtaZzoLXpxTDHIERb//MqAO5HNOFIFR6HzA2k
+ iJLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752686896; x=1753291696;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zfdOUM49AERFEXBtCOKeieddkFu03hCWo6FYXNJke2A=;
+ b=A4mkSExvhkV7fJTSF13usZ8rQDs3No50X9uxkyuA/3ma+2lZGsQQKPp1WDkOnHLxMv
+ 6hXtB7xi4kc8sEzCe4Xlb4R4IGIH/Jdh2ju/FPwp6Tg3BpNzeweMzb+VSpy3+icZOR9S
+ PXw0CA03HoVjeJ/aaQAsh/EEcSZhW6BrrycrJnAYJ5cH85/Ill27m9gRKD5CFaLd9Df8
+ AtnMWZ9VcOqyzpTKUwbh+/IcIcydck0ac/eQHYc6L6SBizJ4mHGIHt/dGjyKUDthdanC
+ XElG/JTTc3LT9wkGT7widLF3c0UanWYFWa5f3SofvxrCKBl6iR8DaCtvgK22xoimFmCm
+ n82w==
+X-Gm-Message-State: AOJu0YxeBYI/6tIy0E5Lb045PG6v6f+9gm8d+13xMFt9GqdAJWhPqWE9
+ 3bAcUlSRG+65V02rv+g4rDYKST7LhJSWzx7IqvJbHXBOMrK6nr2OrK3oFHbm1O42dY4YBUCnZf3
+ dD74IlHc=
+X-Gm-Gg: ASbGncutBGMOhp8Wjk+YBYVBRWZ5vYa3UYasTKZha2GOVUez+/pYbULizL007+UB+bt
+ IpJdzA34sfVujjZDQQxMA7GpH1zGsFj0V7gfKf50tRnisA4itv/ddKXjrqL+rXKwgm6f3R5PJsR
+ ar9oe6ZOo4qxzbqR6VKhPxSZZ9p6K6xIjKIL/7grOxrZaRPO0vjhEH2QlBj7ITTG/EsvXUO1DBa
+ kqPFp2sJMf65561syx0xtYydSgH4ah4Mei2VuxxrIRm1mtRtmNjTTNGR9eNj7HbfN2x5dgzbdDS
+ jLt9djs3TclqpMO01YC2RG87kzAC2DCLC9+cpngluP3k6kpPQznEmqBrV7clvHLwQg+ffsUsLMC
+ CA1EOFVoE/G9gFF4ye+Dw8MRJaL0TyMsbwnpzpnsKVLVMRQrKrZcd+b1guFvH2e3IOLGFlNhU
+X-Google-Smtp-Source: AGHT+IEnQpaKgxrMbeoDi1PApgvzv0TxJCGw3XJhrpzOHlnbGg4/nxjdKi7XEZtpHAUDfKCughKksA==
+X-Received: by 2002:a05:6000:4383:b0:3a5:27ba:479c with SMTP id
+ ffacd0b85a97d-3b60e50ff53mr2777751f8f.43.1752686895804; 
+ Wed, 16 Jul 2025 10:28:15 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8e14d12sm18627471f8f.70.2025.07.16.10.28.14
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 16 Jul 2025 10:28:15 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com,
-	John Snow <jsnow@redhat.com>
-Subject: [PULL 6/6] python: fix editable installs for modern pip/setuptools
-Date: Wed, 16 Jul 2025 19:25:35 +0200
-Message-ID: <20250716172535.3520175-7-armbru@redhat.com>
-In-Reply-To: <20250716172535.3520175-1-armbru@redhat.com>
-References: <20250716172535.3520175-1-armbru@redhat.com>
+Cc: Cameron Esfahani <dirty@apple.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Roman Bolshakov <rbolshakov@ddn.com>, Mads Ynddal <mads@ynddal.dk>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-10.1 0/3] accel/hvf: Do not abort in
+ hvf_arm_get_*_ipa_bit_size()
+Date: Wed, 16 Jul 2025 19:28:10 +0200
+Message-ID: <20250716172813.73405-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,82 +99,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Snow <jsnow@redhat.com>
+Have get_physical_address_range() return when HVF is not
+usable, allowing to try another accelerator if requested
+with '-accel hvf:tcg', reported here:
+https://gitlab.com/qemu-project/qemu/-/issues/2981
 
-The way editable installs work has changed at some point since Fedora 40
-was released. Generally, we should be opting to use pyproject.toml
-installs (PEP517/518) - but those are not fully supported until v61 of
-setuptools, and CentOS Stream 9 ships v53.
+Philippe Mathieu-Daudé (3):
+  accel/hvf: Display executable bit as 'X'
+  accel/hvf: Do not abort in hvf_arm_get_*_ipa_bit_size()
+  hw/arm/virt: Warn when HVF doesn't report IPA bit length
 
-Until that time, we can make use of a transitional feature in
-pip/setuptools to use "legacy" editable installs, which is enough to fix
-"make check-dev" on modern local workstations for now.
+ target/arm/hvf_arm.h | 11 +++++++++++
+ accel/hvf/hvf-all.c  |  2 +-
+ hw/arm/virt.c        |  8 ++++++--
+ target/arm/hvf/hvf.c |  8 ++------
+ 4 files changed, 20 insertions(+), 9 deletions(-)
 
-By using the environment variable approach to configure pip, we avoid
-any problems for older versions of pip that don't recognize this option,
-so it's harmless. The config-settings option first appeared in v23 of
-pip. editable_mode was first supported by setuptools in v64.
-
-(I'm not currently precisely aware of when the default behavior of '-e'
-switched away from 'compat', but it appears to be a joint effect between
-setuptools and pip versions.)
-
-Version information for supported build platforms:
-
-distro              python3  pip     setuptools  sphinx
---------------------------------------------------------
-centos_stream_9     3.9.23   21.3.1  53.0.0      3.4.3
-ubuntu_22_04        3.10.12  22.0.2  59.6.0      4.3.2
-
-** pyproject.toml installs supported as of here **
-
-freebsd             3.11.13  23.3.2  63.1.0      5.3.0
-debian_12           3.11.2   23.0.1  66.1.1      5.3.0
-ubuntu_24_04        3.12.3   24.0    68.1.2      7.2.6
-centos_stream_10    3.12.11  23.3.2  69.0.3      7.2.6
-fedora_41           3.13.5   24.2    69.2.0      7.3.7
-alpine_3_19         3.11.13  23.3.1  70.3.0      6.2.1
-alpine_3_20         3.12.11  24.0    70.3.0      7.2.6
-alpine_3_21         3.12.11  24.3.1  70.3.0      8.1.3
-ubuntu_24_10        3.12.7   24.2    74.1.2      7.4.7
-fedora_42           3.13.5   24.3.1  74.1.3      8.1.3
-ubuntu_25_04        3.13.3   25.0    75.8.0      8.1.3
-macports            3.13.5   25.1.1  78.1.1      8.2.3
-openbsd             3.12.11  25.1.1  79.0.1      8.2.3
-alpine_3_22         3.12.11  25.1.1  80.9.0      8.2.3
-homebrew            3.13.5   ---     80.9.0      8.2.3
-pkgsrc_current      3.12.11  25.1.1  80.9.0      8.2.3
-
-Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250715222548.198888-1-jsnow@redhat.com>
-Tested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- python/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/python/Makefile b/python/Makefile
-index 764b79ccb2..32aedce413 100644
---- a/python/Makefile
-+++ b/python/Makefile
-@@ -68,7 +68,7 @@ $(QEMU_MINVENV_DIR) $(QEMU_MINVENV_DIR)/bin/activate: setup.cfg tests/minreqs.tx
- 		echo "INSTALL -r tests/minreqs.txt $(QEMU_MINVENV_DIR)";\
- 		$(PIP_INSTALL) -r tests/minreqs.txt 1>/dev/null;	\
- 		echo "INSTALL -e qemu $(QEMU_MINVENV_DIR)";		\
--		$(PIP_INSTALL) -e . 1>/dev/null;			\
-+		PIP_CONFIG_SETTINGS="editable_mode=compat" $(PIP_INSTALL) -e . 1>/dev/null;	\
- 	)
- 	@touch $(QEMU_MINVENV_DIR)
- 
-@@ -103,7 +103,7 @@ check-dev: dev-venv
- 
- .PHONY: develop
- develop:
--	$(PIP_INSTALL) -e .[devel]
-+	PIP_CONFIG_SETTINGS="editable_mode=compat" $(PIP_INSTALL) -e .[devel]
- 
- .PHONY: check
- check:
 -- 
 2.49.0
 
