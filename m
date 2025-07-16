@@ -2,81 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4772B07407
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:53:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F315B07417
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:57:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubzjo-0004Qu-LW; Wed, 16 Jul 2025 06:51:49 -0400
+	id 1ubzoo-0003Xt-02; Wed, 16 Jul 2025 06:56:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubzih-00038T-12
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:50:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ubzid-0001dx-Hd
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:50:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752663034;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dozKJgDd6RGu0xt6mbLW82FDE4IZQplR1LeO0cZYeEE=;
- b=LT8XRLLZdhBeluMbV9pXEkWlog8kpmpgJhqEpQU8nyNiMFU5/BQbiojFKLR406uKgriNJp
- k00W2Mp+zCiVeMQgrJciXINsY4JS8TM2GmQi5qlx2y/4tzeZAH5yYPMCoi1bvqd+Sk/Mh5
- eoK1mLxWu4XFkcwgU9NzI0RDm2jkSo0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-474-CBxXucT5MrS9Uw55n3MGIQ-1; Wed,
- 16 Jul 2025 06:50:31 -0400
-X-MC-Unique: CBxXucT5MrS9Uw55n3MGIQ-1
-X-Mimecast-MFC-AGG-ID: CBxXucT5MrS9Uw55n3MGIQ_1752663030
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EF8CC1800283; Wed, 16 Jul 2025 10:50:29 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.68])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4452B195E772; Wed, 16 Jul 2025 10:50:25 +0000 (UTC)
-Date: Wed, 16 Jul 2025 11:50:22 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Stefan Weil <sw@weilnetz.de>, qemu-block@nongnu.org
-Subject: Re: [RFC PATCH 1/2] system/os-win32: Remove unused Error** argument
- in qemu_socket_unselect
-Message-ID: <aHeD7oWuKE_GKF4j@redhat.com>
-References: <20250715083517.47556-1-philmd@linaro.org>
- <20250715083517.47556-2-philmd@linaro.org>
- <aHYXP3XNpZVUug9c@redhat.com> <87tt3cto2s.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1ubzmO-0007w3-9P
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:54:31 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1ubzmG-0002Td-CU
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:54:27 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-ae0c571f137so1214535066b.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 03:54:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752663258; x=1753268058; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2yDR5WJ9OW5kxmFisrP8SwQ6sGdbHJXz6jo6wbRIeWk=;
+ b=yWDsIjwKnPTobkQ7WOxNcp6VRRT6LXSAbhtKuy19xoGr4fYAqgGQshsxo4xD6up62Z
+ GGo4jaz9FWX0HeBSF9w39wqjaw7tdjKqo2+vGqxv3bQSmm4v6HLduttmaU5EZ1YfNUdf
+ nkcGyRRY8eBuQpJplUpAHRvpXltZ+8uZwEWVeiZwrEmAF1e3cz+/L2jZEYzJy87B2ZXg
+ 2w7QlubTxVFbKlL5CIHflvnxuOgwn8XQnciVXSfqZwFhzJL0OltMDrh8qhoIR4oG6RcV
+ Oq5mIhHR0EmQ4EC0ww6k54H9rCJFvzYXdZqE9DtDILp0A63kAjnyl5l5ruutmWOBkScy
+ UQOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752663258; x=1753268058;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2yDR5WJ9OW5kxmFisrP8SwQ6sGdbHJXz6jo6wbRIeWk=;
+ b=gDL15dhLHGWJad/CFl063yPLdX5x46z9cOwgCSLykXXserR6h6+Hr1S6GEMeUVAslq
+ hzajSAR5kuDbn//GcR41/+DrnZK9YalG68lTspCXv7HsEiygPdbAQJdP930Y0CPt7Rx+
+ 7are+DDFmgS1DVYGNWCQ+SG5z8zI7EBQfRSqKMPMR0GG4+YeKdLrurE1MYdKrSn2OHMq
+ oIOh619NW72Pfz0ER7wR2rOZQoQ2tK2x4CtREuCq/4heknMEo/2eMkZcFqTeOf9zyUnE
+ YP1Hun+ugtYiBjL8fXFGtqVzCJDgmP0Gsw5TTtTN/vBY/uqTgTSGIXiGo/GezcCVJsrz
+ MFLA==
+X-Gm-Message-State: AOJu0Yx6d/m/UZ5XyqhxTerl5KU+oiBXf9W5DEgaFgC5ELxpVpy2bW+A
+ Zo2xNfr6xw06CRRgudaZYrRSSK44ZZUFuRqHkKrpwGSeiusO9mU4n/bDrL299R5eMtc=
+X-Gm-Gg: ASbGncsun+Rb05qGdtkhdewxCsxTuMrrUCqoj4xM4Sh5udKXcZieQX2hrvtO8fLD6f6
+ u/6kszGqiQNs9RmNm1G4thEoZqzaqoZjWNPCQuBy2kQDv9QLnVgwFVlRVNB0wYdshsancBFAJO2
+ fJ2ylPpi6Y62ZGaakGdP6gvby+D7PuWLrWxjSozXychnFPq74ZiVK800Wu9GlmuRY5gOnWKaaQU
+ lXJ7JqMxdSGdxBk2FFFqE0M0CsjlZsaTUITrR8dh06+P/+tSQiBuaXJoiI2CtFF92NNBJMLvdxq
+ DTdv0L9Zc5xwdQNRUw8V7hPh9xflf6b983frFxLgwqgo79YV29kPrLTk2sahLG2v3aoUQII1Bnw
+ Lx1T19l7YMKNozWCLy2xfJfT8iVqz0suHpQ==
+X-Google-Smtp-Source: AGHT+IHCZacBFDTN2v9FlfKT2YpbhxXVY+40ghPhSTmNr7MtWL68Chi/OtORgrExloRg/HUo+Fy+2Q==
+X-Received: by 2002:a17:907:fdcb:b0:ae3:bb0a:1cd8 with SMTP id
+ a640c23a62f3a-ae9c99be1ddmr240182466b.19.1752663258397; 
+ Wed, 16 Jul 2025 03:54:18 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ae6e7eec2b1sm1184025566b.68.2025.07.16.03.54.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Jul 2025 03:54:15 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id DD0F85F885;
+ Wed, 16 Jul 2025 11:54:14 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ devel@lists.libvirt.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [RFC PATCH 0/6] Fix building of sparc/sparc32plus test cases
+Date: Wed, 16 Jul 2025 11:54:08 +0100
+Message-ID: <20250716105414.2330204-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87tt3cto2s.fsf@pond.sub.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,123 +100,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 16, 2025 at 12:41:31PM +0200, Markus Armbruster wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
-> 
-> > On Tue, Jul 15, 2025 at 10:35:16AM +0200, Philippe Mathieu-Daudé wrote:
-> >> @errp is always NULL. Remove it, as unused.
-> >> 
-> >> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> >> ---
-> >>  include/system/os-win32.h | 2 +-
-> >>  io/channel-socket.c       | 4 ++--
-> >>  util/oslib-win32.c        | 6 +++---
-> >>  3 files changed, 6 insertions(+), 6 deletions(-)
-> >> 
-> >> diff --git a/include/system/os-win32.h b/include/system/os-win32.h
-> >> index 3aa6cee4c23..40712a948c3 100644
-> >> --- a/include/system/os-win32.h
-> >> +++ b/include/system/os-win32.h
-> >> @@ -172,7 +172,7 @@ static inline void qemu_funlockfile(FILE *f)
-> >>  bool qemu_socket_select(int sockfd, WSAEVENT hEventObject,
-> >>                          long lNetworkEvents, Error **errp);
-> >>  
-> >> -bool qemu_socket_unselect(int sockfd, Error **errp);
-> >> +bool qemu_socket_unselect(int sockfd);
-> >>  
-> >>  /* We wrap all the sockets functions so that we can set errno based on
-> >>   * WSAGetLastError(), and use file-descriptors instead of SOCKET.
-> >> diff --git a/io/channel-socket.c b/io/channel-socket.c
-> >> index 3b7ca924ff3..6ee6217e7ac 100644
-> >> --- a/io/channel-socket.c
-> >> +++ b/io/channel-socket.c
-> >> @@ -454,7 +454,7 @@ static void qio_channel_socket_finalize(Object *obj)
-> 
->     static void qio_channel_socket_finalize(Object *obj)
->     {
->         QIOChannelSocket *ioc = QIO_CHANNEL_SOCKET(obj);
-> 
->         if (ioc->fd != -1) {
->             QIOChannel *ioc_local = QIO_CHANNEL(ioc);
->             if (qio_channel_has_feature(ioc_local, QIO_CHANNEL_FEATURE_LISTEN)) {
->                 Error *err = NULL;
-> 
->                 socket_listen_cleanup(ioc->fd, &err);
->                 if (err) {
->                     error_report_err(err);
->                     err = NULL;
-> >>              }
-> >>          }
-> >>  #ifdef WIN32
-> >> -        qemu_socket_unselect(ioc->fd, NULL);
-> >> +        qemu_socket_unselect(ioc->fd);
-> >>  #endif
-> >
-> > It seems to me like this code should instead be using
-> > &error_warn, because the errors are still relevant and
-> > potentially a sign of a bug, but we don't want to stop
-> > this finalization path.
-> 
-> Would such a warning be actionable for the user?
-> 
-> Why is this failure a warning, but the failure right above is an error?
-> 
-> What are the possible failures?
-> 
-> On reporting errors with error_report() & friends: doing so within a
-> function that uses an Error **errp parameter to return errors is almost
-> always wrong.  Can qio_channel_socket_finalize() run within such a
-> function?
+We didn't have any reliable way to build sparc test cases. I have
+found someone who ships a compiler but the binaries still don't run
+due to the need for CASA.
 
-No finalize() function can ever propagate errors - these are run
-transparently when the "unref" drops the last reference count.
-So error_report is the best we can manage in finalize functions.
+I'm posting mainly for those who actually care who might want to fix
+up the remaining cases.
 
-It is actionable for the user in so much as if they see such
-warnings, it is sign of a code bug somewhere and this will be
-a useful diagnostic to receive in the bug report.
+Alex.
 
-> 
-> >
-> >>          close(ioc->fd);
-> >>          ioc->fd = -1;
-> >> @@ -890,7 +890,7 @@ qio_channel_socket_close(QIOChannel *ioc,
-> >>  
-> >>      if (sioc->fd != -1) {
-> >>  #ifdef WIN32
-> >> -        qemu_socket_unselect(sioc->fd, NULL);
-> >> +        qemu_socket_unselect(sioc->fd);
-> >>  #endif
-> >
-> > Here too, we don't want to stop the close operation early,
-> > as we need to 'close()' the FD, but we should diagnose
-> > the failure none the less
-> 
-> Same questions.
+Alex Bennée (6):
+  tests/tcg: special case sparc test cases
+  tests/tcg: special case sparc32plus test cases
+  configure: update sparc and sparc32plus target compiler detection
+  tests/docker: add sparc-leon-cross container image
+  configure: enable the container fallbacks for sparc/sparc32plus
+  docs/about: deprecate add sparc/sparc32plus-*-user
 
-Close can propagate errors, but we need a little more careful dance.
-We really really really want to still successfully close the underlying
-socket FD, and if that causes an error too, we'll prefer to see the
-latter error, over this earlier error IMHO. So we should propagate an
-error here, but delay propagation until the rest of this method has
-run.
+ docs/about/deprecated.rst                     |  8 ++++
+ configure                                     | 11 ++++-
+ .../dockerfiles/sparc-leon-cross.docker       | 40 +++++++++++++++++
+ tests/tcg/Makefile.target                     |  9 ++--
+ tests/tcg/sparc/Makefile.target               | 45 +++++++++++++++++++
+ tests/tcg/sparc32plus                         |  1 +
+ 6 files changed, 108 insertions(+), 6 deletions(-)
+ create mode 100644 tests/docker/dockerfiles/sparc-leon-cross.docker
+ create mode 100644 tests/tcg/sparc/Makefile.target
+ create mode 120000 tests/tcg/sparc32plus
 
-> 
-> >>          if (qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_LISTEN)) {
-> >>              socket_listen_cleanup(sioc->fd, errp);
-> 
-> [...]
-> 
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.47.2
 
 
