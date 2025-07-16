@@ -2,91 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721DBB07E6D
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 21:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 794BDB07C81
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 20:09:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc8CM-0004Qa-LC; Wed, 16 Jul 2025 15:53:50 -0400
+	id 1uc6Xs-00056P-LF; Wed, 16 Jul 2025 14:07:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uc8CF-0004OT-8K; Wed, 16 Jul 2025 15:53:43 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uc8CD-00076t-6H; Wed, 16 Jul 2025 15:53:43 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-ae9c2754a00so36347366b.2; 
- Wed, 16 Jul 2025 12:53:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1752695618; x=1753300418; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:to:from:date:from:to:cc:subject:date:message-id
- :reply-to; bh=EpcnJSl3lxpbh2/i58SbVVgDVACLQgiYDkz9zW3X47w=;
- b=eNaDffKukWNqAkogPtLdzijBjE4FvQYYj7j0Y6ykyOqbuq/0VEzYUpdPjqbYyZqopH
- yDSO8bp92BcP9fXuckwkGZgHeVp+e16kyI3KCtFGi0ARtNlZkesupezYIgrE4zOA/48u
- jgNiOZNum7q6Hdcj2lOBODkbR/06Y9RCutz8VG6bXm55FnxRWl/miPXe2Cs9Ockh0bp5
- Db14h+ljlcSS60kSwwPqLomQjpTasMyzXFFMDQJ6L5h7bz/hjFLomOAiZpE44sIUr+UX
- EPFpuIUeyo8b5ZLkxWABptvjT6fIZ1jxGBH1m4AQl3GergHDXimd7SCxfeqHzzNkc9j6
- 914Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752695618; x=1753300418;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EpcnJSl3lxpbh2/i58SbVVgDVACLQgiYDkz9zW3X47w=;
- b=TgV9yM0EssRdyVO1InPT5RwMwJvWYsw44Tw935hKO14x3D+L82VK0UMxFPXuDiCavU
- INua6oUUoYTEqLWRZU/+FumG42FQPTa0YZQnntkiBPrtGUI39Tm7t3ytHKiyyMyTzWeg
- QfF5rNtCcWVqFSAy1NlPTtazSG7xekmlzcFzzg4vF6Sgckw/uIyLZNynAAD5jhDQcUSx
- J+Frz9L5USEuTtkMzG3k9hFCd9SBke7ui/59/j0S6iSu6OSgkVRMd0gE/k/NVlQWuZfL
- W22RFqjWo5dhwr+z5SPLvVO9RZm7xYeYWK2gwS5V6bqGy1x/QR6UgF6u5alqopzG4FV4
- zKiw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWFJMokfcSUDmS8dqQVO6DOrYObIleAw9ud6timoEcvsK2ebk5XcV6V4U71kIxv43/A2g9Mu+aahQ==@nongnu.org
-X-Gm-Message-State: AOJu0YxMsGdsomHxSjT+TCkEI1zp5Df7Mfnh2C/3kttpUmHqNJx7Y0pV
- R5IJ1WHWjNtcrh3TWeLmbJQw0O53vyWQ8g7krQ20/riKWGTj/2sJZDGi0R0SJA==
-X-Gm-Gg: ASbGncuspUEue1/MyTjPBLvmnCsvGdiOfT5c9ZHxFkYPeEyCEdkPpNUMtIUEyYoNSMB
- 1hlwzZpJMN4SKnHeu3Ae68qoxXaF3ybnV7FlhvcFts+zjhuRAnCywiLu1UxGobGiSKa4LWL7qnK
- iX6bg4eUvVYtywF/qD4naONLb1LZRAomqG98/papsNC5QLEEX8z/YNqo1deoAIhwxQopadQrhmR
- pPiV+7obLp6E3euWfUuN6BiXn/MOW7Fy7zPG9+f6qd10WSt62VIG9haBhRkemJfsAREn1iCydO1
- BGjO5Br3w18ifbG2tommcBHxFqAJv9I28/E0rL+ntAe6B4E9orulPsYseBFJrodrMfWT2HXf6SL
- n+JUltl5JYf0jDWRlWDP38yYUkEhuzrvfb1XxDJqRsYM1LRgf21BbTzxCOJ7EcBqOsvtElr2hcT
- on1sTWFZ9kdCjIhjqlY7Zqe7BhX8xNAA==
-X-Google-Smtp-Source: AGHT+IHcMGtuzOp2u/skIaH40mSQ+Xv9Km6EJSfl311JODYAxQioVScm2UMt8+AkVOIgFWuEYdf4wA==
-X-Received: by 2002:a17:907:1b02:b0:ae0:1fdf:ea65 with SMTP id
- a640c23a62f3a-aec4fa9542fmr26736766b.17.1752695618086; 
- Wed, 16 Jul 2025 12:53:38 -0700 (PDT)
-Received: from ?IPv6:::1?
- (dynamic-2a02-3100-189e-df00-bd73-623e-7632-a2ac.310.pool.telefonica.de.
- [2a02:3100:189e:df00:bd73:623e:7632:a2ac])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae6e82df56esm1241389366b.156.2025.07.16.12.53.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Jul 2025 12:53:37 -0700 (PDT)
-Date: Wed, 16 Jul 2025 17:53:10 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, zhangzhijie <zhangzhijie@bosc.ac.cn>,
- zhangzhijie@bosc.ac.cn, wangran@bosc.ac.cn, zhangjian@bosc.ac.cn,
- peter.maydell@linaro.org, andrew.smirnov@gmail.com, qemu-arm@nongnu.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v1=5D_PCIE-Host_Support_64?=
- =?US-ASCII?Q?Bit_resource_for_DesignwarePCIEHost?=
-In-Reply-To: <20250715064400.2289152-1-zhangzhijie@bosc.ac.cn>
-References: <20250715064400.2289152-1-zhangzhijie@bosc.ac.cn>
-Message-ID: <631BA6B2-268F-4DDC-9DA6-77697373A5DF@gmail.com>
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uc6WI-0003sc-4L
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 14:06:23 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uc6WF-0006UP-QA
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 14:06:17 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56GHgIkV010941;
+ Wed, 16 Jul 2025 18:06:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2025-04-25; bh=LgBW7cdlJHDrw0fG
+ TI3W7zZIgKORiL0oWXnecXRuznw=; b=bWJHd6xxSOnIi+dScSrSLiEYa3o0Hu5+
+ m/rKTcN6dujmLp6aSrRp0R2enqsmvBu6eNLmt/xLI8rtM+VudGfmRxt/yQ/kxO/G
+ Hlz62dAsui9U+wkYdRmaaecKq9iPBOubia2PQV7BZfvbbY57nl+6ALBQ0R60z7kX
+ wVd/blBchqaodDsF0lQWNdcOtIsDsTBCZ7SoZX76Fn4/9bUqaOKJcscK24DqotOJ
+ 9bLcO8uAGr8RZCUtTSel4GM1ZJkm7bN6++tKXErdEOVdGNxZ/ReJCJ53o/WZcGUF
+ UfpdzNPm/yOfxrS00GcWEf0TMKeUexeheODZZbEQPTk/+hfmeqW/Zw==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47ujr11d36-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Jul 2025 18:06:12 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 56GGds2p039715; Wed, 16 Jul 2025 18:06:11 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 47ue5bq5ud-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Jul 2025 18:06:11 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56GI5BvD002385;
+ Wed, 16 Jul 2025 18:06:11 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 47ue5bq5tx-1; Wed, 16 Jul 2025 18:06:10 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Cedric Le Goater <clg@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V2 0/2] preserve pending interrupts during cpr
+Date: Wed, 16 Jul 2025 11:06:07 -0700
+Message-Id: <1752689169-233452-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-16_03,2025-07-16_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ mlxscore=0 adultscore=0
+ spamscore=0 suspectscore=0 phishscore=0 mlxlogscore=924 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2507160163
+X-Authority-Analysis: v=2.4 cv=d9T1yQjE c=1 sm=1 tr=0 ts=6877ea14 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=rsN0t9O5Kin3QS32dkkA:9
+ a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10 cc=ntf awl=host:13600
+X-Proofpoint-ORIG-GUID: Tu5mHAHy6C16d7Q3GILEnjCwRREaYKAc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE2MDE2MyBTYWx0ZWRfX2vMiE4OLhGSb
+ 2GAbapsHp1A1rRwT4yyhH4/VzmU5TqpSOUw86k6Re2DEzWyRDfkUuKiDnc8NUe1f6ikqvOKn6dq
+ TTpB5EOldsuPM7mbRy2qmcx19YaTTMhNjLieXo+ElSm9nWt37eZe/rdSWQuq9QPkDsZWI83t3zZ
+ M6LacGkzCH0TQBAAF2vkFT1IxGqlvVm7aqY4TX+vcMPw2Ffhwh654VzZ18jri483gXuRjTqBRY2
+ HZn5Yowve89It2N9Ci0fiEhWCIGvcsy7jp9H23XmQOgVCpTWrYNdFA+pkI3sb74NGxNQ+Jec0fG
+ tVAbpa+APNlJjdR1bz5TGN7S72Phf8PUHaEdAoQJIoLWRBPi6NsXzR1id7ktSze23Mx6QLzSrgP
+ sYhOugFKAiaMdWAXMh//szm8/ItKEyIUD/I3APwCJOivf9NKG6jGk3iWQfRDRMJHzIaQHHnv
+X-Proofpoint-GUID: Tu5mHAHy6C16d7Q3GILEnjCwRREaYKAc
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,89 +110,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Close a race condition that causes cpr-transfer to lose VFIO
+interrupts.  See commit messages for details.
 
+Steve Sistare (2):
+  vfio/pci: augment set_handler
+  vfio/pci: preserve pending interrupts
 
-Am 15=2E Juli 2025 06:44:00 UTC schrieb zhangzhijie <zhangzhijie@bosc=2Eac=
-=2Ecn>:
->0=2E DW pcie support 64bit resource
->1=2E DW version type using Linux kernel
+ hw/vfio/cpr.c              | 93 +++++++++++++++++++++++++++++++++++++-
+ hw/vfio/pci.c              | 15 +++++-
+ hw/vfio/pci.h              |  4 +-
+ include/hw/vfio/vfio-cpr.h |  6 +++
+ 4 files changed, 114 insertions(+), 4 deletions(-)
 
-Which machines in QEMU require this change?
+-- 
+2.39.3
 
->
->Signed-off-by: zhangzhijie <zhangzhijie@bosc=2Eac=2Ecn>
->---
-> hw/pci-host/designware=2Ec         | 12 +++++++++---
-> include/hw/pci-host/designware=2Eh |  2 +-
-> 2 files changed, 10 insertions(+), 4 deletions(-)
->
->diff --git a/hw/pci-host/designware=2Ec b/hw/pci-host/designware=2Ec
->index f6e49ce9b8=2E=2E99d791c0a7 100644
->--- a/hw/pci-host/designware=2Ec
->+++ b/hw/pci-host/designware=2Ec
->@@ -41,6 +41,8 @@
-> #define DESIGNWARE_PCIE_MSI_INTR0_ENABLE           0x828
-> #define DESIGNWARE_PCIE_MSI_INTR0_MASK             0x82C
-> #define DESIGNWARE_PCIE_MSI_INTR0_STATUS           0x830
->+#define PCIE_VERSION_NUMBER                        0x8F8
->+#define PCIE_VERSION_TYPE                          0x8FC
-> #define DESIGNWARE_PCIE_ATU_VIEWPORT               0x900
-> #define DESIGNWARE_PCIE_ATU_REGION_INBOUND         BIT(31)
-> #define DESIGNWARE_PCIE_ATU_CR1                    0x904
->@@ -144,6 +146,10 @@ designware_pcie_root_config_read(PCIDevice *d, uint3=
-2_t address, int len)
->     uint32_t val;
->=20
->     switch (address) {
->+    case PCIE_VERSION_NUMBER:
->+    case PCIE_VERSION_TYPE:
->+        val =3D 0x3534302a;
->+        break;
->     case DESIGNWARE_PCIE_PORT_LINK_CONTROL:
->         /*
->          * Linux guest uses this register only to configure number of
->@@ -427,7 +433,7 @@ static void designware_pcie_root_realize(PCIDevice *d=
-ev, Error **errp)
->         viewport->inbound =3D true;
->         viewport->base    =3D 0x0000000000000000ULL;
->         viewport->target  =3D 0x0000000000000000ULL;
->-        viewport->limit   =3D UINT32_MAX;
->+        viewport->limit   =3D UINT64_MAX;
->         viewport->cr[0]   =3D DESIGNWARE_PCIE_ATU_TYPE_MEM;
->=20
->         source      =3D &host->pci=2Eaddress_space_root;
->@@ -451,7 +457,7 @@ static void designware_pcie_root_realize(PCIDevice *d=
-ev, Error **errp)
->         viewport->inbound =3D false;
->         viewport->base    =3D 0x0000000000000000ULL;
->         viewport->target  =3D 0x0000000000000000ULL;
->-        viewport->limit   =3D UINT32_MAX;
->+        viewport->limit   =3D UINT64_MAX;
->         viewport->cr[0]   =3D DESIGNWARE_PCIE_ATU_TYPE_MEM;
->=20
->         destination =3D &host->pci=2Ememory;
->@@ -558,7 +564,7 @@ static const VMStateDescription vmstate_designware_pc=
-ie_viewport =3D {
->     =2Efields =3D (const VMStateField[]) {
->         VMSTATE_UINT64(base, DesignwarePCIEViewport),
->         VMSTATE_UINT64(target, DesignwarePCIEViewport),
->-        VMSTATE_UINT32(limit, DesignwarePCIEViewport),
->+        VMSTATE_UINT64(limit, DesignwarePCIEViewport),
->         VMSTATE_UINT32_ARRAY(cr, DesignwarePCIEViewport, 2),
->         VMSTATE_END_OF_LIST()
->     }
->diff --git a/include/hw/pci-host/designware=2Eh b/include/hw/pci-host/des=
-ignware=2Eh
->index a35a3bd06c=2E=2E6e06f54801 100644
->--- a/include/hw/pci-host/designware=2Eh
->+++ b/include/hw/pci-host/designware=2Eh
->@@ -46,7 +46,7 @@ typedef struct DesignwarePCIEViewport {
->=20
->     uint64_t base;
->     uint64_t target;
->-    uint32_t limit;
->+    uint64_t limit;
->     uint32_t cr[2];
->=20
->     bool inbound;
 
