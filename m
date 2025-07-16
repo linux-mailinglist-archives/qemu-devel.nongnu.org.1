@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A36B07409
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4772B07407
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:53:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubzjk-00046M-8b; Wed, 16 Jul 2025 06:51:44 -0400
+	id 1ubzjo-0004Qu-LW; Wed, 16 Jul 2025 06:51:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubzhG-0007bo-4a
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:49:10 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ubzih-00038T-12
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:50:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ubzhB-0001GU-BA
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:49:09 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ubzid-0001dx-Hd
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:50:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752662943;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1752663034;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HSutu/xdnwXZKXQYz8tfD7LlPU/g8isicfSZg2E2jVc=;
- b=AJfqW1izPazhWVGnawJh62jOJZyD+9M5g3J3y0sNASBYBx9oXTJVv6hirJhiskVWdPcs0R
- kJmz13SXDxtjaeB3/kzNO87TGvgfNpb1abofSZ38Ft4EYOaNLzhDeo7R45bzHvSVYuv0JM
- k7eY4X5h+NtA7KHHgPYkvdWPVQOiZFQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=dozKJgDd6RGu0xt6mbLW82FDE4IZQplR1LeO0cZYeEE=;
+ b=LT8XRLLZdhBeluMbV9pXEkWlog8kpmpgJhqEpQU8nyNiMFU5/BQbiojFKLR406uKgriNJp
+ k00W2Mp+zCiVeMQgrJciXINsY4JS8TM2GmQi5qlx2y/4tzeZAH5yYPMCoi1bvqd+Sk/Mh5
+ eoK1mLxWu4XFkcwgU9NzI0RDm2jkSo0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-N2LAGAMrOZi_FflyNVVsbg-1; Wed,
- 16 Jul 2025 06:49:00 -0400
-X-MC-Unique: N2LAGAMrOZi_FflyNVVsbg-1
-X-Mimecast-MFC-AGG-ID: N2LAGAMrOZi_FflyNVVsbg_1752662939
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-474-CBxXucT5MrS9Uw55n3MGIQ-1; Wed,
+ 16 Jul 2025 06:50:31 -0400
+X-MC-Unique: CBxXucT5MrS9Uw55n3MGIQ-1
+X-Mimecast-MFC-AGG-ID: CBxXucT5MrS9Uw55n3MGIQ_1752663030
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 846961800359; Wed, 16 Jul 2025 10:48:58 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E5D7818016F9; Wed, 16 Jul 2025 10:48:57 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 620B221E6A27; Wed, 16 Jul 2025 12:48:55 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EF8CC1800283; Wed, 16 Jul 2025 10:50:29 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.68])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4452B195E772; Wed, 16 Jul 2025 10:50:25 +0000 (UTC)
+Date: Wed, 16 Jul 2025 11:50:22 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
 Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,  Fam
- Zheng <fam@euphon.net>,  Stefan Hajnoczi <stefanha@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Stefan
- Weil <sw@weilnetz.de>,  qemu-block@nongnu.org
-Subject: Re: [RFC PATCH 2/2] system/os-win32: Remove unused Error** argument
- in qemu_socket_select
-In-Reply-To: <aHYXqRUPOVbyw0mN@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Tue, 15 Jul 2025 09:56:09 +0100")
+ qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>, qemu-block@nongnu.org
+Subject: Re: [RFC PATCH 1/2] system/os-win32: Remove unused Error** argument
+ in qemu_socket_unselect
+Message-ID: <aHeD7oWuKE_GKF4j@redhat.com>
 References: <20250715083517.47556-1-philmd@linaro.org>
- <20250715083517.47556-3-philmd@linaro.org>
- <aHYXqRUPOVbyw0mN@redhat.com>
-Date: Wed, 16 Jul 2025 12:48:55 +0200
-Message-ID: <87o6tktnqg.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ <20250715083517.47556-2-philmd@linaro.org>
+ <aHYXP3XNpZVUug9c@redhat.com> <87tt3cto2s.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87tt3cto2s.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -76,7 +76,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,110 +89,123 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On Wed, Jul 16, 2025 at 12:41:31PM +0200, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > On Tue, Jul 15, 2025 at 10:35:16AM +0200, Philippe Mathieu-Daudé wrote:
+> >> @errp is always NULL. Remove it, as unused.
+> >> 
+> >> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> >> ---
+> >>  include/system/os-win32.h | 2 +-
+> >>  io/channel-socket.c       | 4 ++--
+> >>  util/oslib-win32.c        | 6 +++---
+> >>  3 files changed, 6 insertions(+), 6 deletions(-)
+> >> 
+> >> diff --git a/include/system/os-win32.h b/include/system/os-win32.h
+> >> index 3aa6cee4c23..40712a948c3 100644
+> >> --- a/include/system/os-win32.h
+> >> +++ b/include/system/os-win32.h
+> >> @@ -172,7 +172,7 @@ static inline void qemu_funlockfile(FILE *f)
+> >>  bool qemu_socket_select(int sockfd, WSAEVENT hEventObject,
+> >>                          long lNetworkEvents, Error **errp);
+> >>  
+> >> -bool qemu_socket_unselect(int sockfd, Error **errp);
+> >> +bool qemu_socket_unselect(int sockfd);
+> >>  
+> >>  /* We wrap all the sockets functions so that we can set errno based on
+> >>   * WSAGetLastError(), and use file-descriptors instead of SOCKET.
+> >> diff --git a/io/channel-socket.c b/io/channel-socket.c
+> >> index 3b7ca924ff3..6ee6217e7ac 100644
+> >> --- a/io/channel-socket.c
+> >> +++ b/io/channel-socket.c
+> >> @@ -454,7 +454,7 @@ static void qio_channel_socket_finalize(Object *obj)
+> 
+>     static void qio_channel_socket_finalize(Object *obj)
+>     {
+>         QIOChannelSocket *ioc = QIO_CHANNEL_SOCKET(obj);
+> 
+>         if (ioc->fd != -1) {
+>             QIOChannel *ioc_local = QIO_CHANNEL(ioc);
+>             if (qio_channel_has_feature(ioc_local, QIO_CHANNEL_FEATURE_LISTEN)) {
+>                 Error *err = NULL;
+> 
+>                 socket_listen_cleanup(ioc->fd, &err);
+>                 if (err) {
+>                     error_report_err(err);
+>                     err = NULL;
+> >>              }
+> >>          }
+> >>  #ifdef WIN32
+> >> -        qemu_socket_unselect(ioc->fd, NULL);
+> >> +        qemu_socket_unselect(ioc->fd);
+> >>  #endif
+> >
+> > It seems to me like this code should instead be using
+> > &error_warn, because the errors are still relevant and
+> > potentially a sign of a bug, but we don't want to stop
+> > this finalization path.
+> 
+> Would such a warning be actionable for the user?
+> 
+> Why is this failure a warning, but the failure right above is an error?
+> 
+> What are the possible failures?
+> 
+> On reporting errors with error_report() & friends: doing so within a
+> function that uses an Error **errp parameter to return errors is almost
+> always wrong.  Can qio_channel_socket_finalize() run within such a
+> function?
 
-> On Tue, Jul 15, 2025 at 10:35:17AM +0200, Philippe Mathieu-Daud=C3=A9 wro=
-te:
->> @errp is always NULL. Remove it, as unused.
->>=20
->> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->> ---
->>  include/system/os-win32.h |  2 +-
->>  util/aio-win32.c          |  2 +-
->>  util/oslib-win32.c        | 13 +++++--------
->>  3 files changed, 7 insertions(+), 10 deletions(-)
->>=20
->> diff --git a/include/system/os-win32.h b/include/system/os-win32.h
->> index 40712a948c3..47882bc2f49 100644
->> --- a/include/system/os-win32.h
->> +++ b/include/system/os-win32.h
->> @@ -170,7 +170,7 @@ static inline void qemu_funlockfile(FILE *f)
->>=20=20
->>  /* Helper for WSAEventSelect, to report errors */
->>  bool qemu_socket_select(int sockfd, WSAEVENT hEventObject,
->> -                        long lNetworkEvents, Error **errp);
->> +                        long lNetworkEvents);
->>=20=20
->>  bool qemu_socket_unselect(int sockfd);
->>=20=20
->> diff --git a/util/aio-win32.c b/util/aio-win32.c
->> index 6583d5c5f31..9c2f0fb86e7 100644
->> --- a/util/aio-win32.c
->> +++ b/util/aio-win32.c
->> @@ -121,7 +121,7 @@ void aio_set_fd_handler(AioContext *ctx,
->>=20=20
->>          QLIST_INSERT_HEAD_RCU(&ctx->aio_handlers, node, node);
->>          event =3D event_notifier_get_handle(&ctx->notifier);
->> -        qemu_socket_select(fd, event, bitmask, NULL);
->> +        qemu_socket_select(fd, event, bitmask);
->
-> This should likely be &error_abort, as we never expect this
-> to fail AFAICT.
->
->
->> diff --git a/util/oslib-win32.c b/util/oslib-win32.c
->> index 7ac3482d449..fed5ab14efb 100644
->> --- a/util/oslib-win32.c
->> +++ b/util/oslib-win32.c
->> @@ -292,21 +292,18 @@ char *qemu_get_pid_name(pid_t pid)
->>=20=20
->>=20=20
->>  bool qemu_socket_select(int sockfd, WSAEVENT hEventObject,
->> -                        long lNetworkEvents, Error **errp)
->> +                        long lNetworkEvents)
->>  {
->>      SOCKET s =3D _get_osfhandle(sockfd);
->>=20=20
->> -    if (errp =3D=3D NULL) {
->> -        errp =3D &error_warn;
->> -    }
->
-> This pre-existing code should never have existed - the caller should
-> have decided this reporting policy by passing in &error_warn.
+No finalize() function can ever propagate errors - these are run
+transparently when the "unref" drops the last reference count.
+So error_report is the best we can manage in finalize functions.
 
-Yes.
+It is actionable for the user in so much as if they see such
+warnings, it is sign of a code bug somewhere and this will be
+a useful diagnostic to receive in the bug report.
 
-A function that uses an Error **errp parameter to return errors leaves
-handling the error to the caller.  The code you remove violates this
-principle.
+> 
+> >
+> >>          close(ioc->fd);
+> >>          ioc->fd = -1;
+> >> @@ -890,7 +890,7 @@ qio_channel_socket_close(QIOChannel *ioc,
+> >>  
+> >>      if (sioc->fd != -1) {
+> >>  #ifdef WIN32
+> >> -        qemu_socket_unselect(sioc->fd, NULL);
+> >> +        qemu_socket_unselect(sioc->fd);
+> >>  #endif
+> >
+> > Here too, we don't want to stop the close operation early,
+> > as we need to 'close()' the FD, but we should diagnose
+> > the failure none the less
+> 
+> Same questions.
 
->
->> -
->>      if (s =3D=3D INVALID_SOCKET) {
->> -        error_setg(errp, "invalid socket fd=3D%d", sockfd);
->> +        error_setg(&error_warn, "invalid socket fd=3D%d", sockfd);
+Close can propagate errors, but we need a little more careful dance.
+We really really really want to still successfully close the underlying
+socket FD, and if that causes an error too, we'll prefer to see the
+latter error, over this earlier error IMHO. So we should propagate an
+error here, but delay propagation until the rest of this method has
+run.
 
-From error_setg()'s contract:
+> 
+> >>          if (qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_LISTEN)) {
+> >>              socket_listen_cleanup(sioc->fd, errp);
+> 
+> [...]
+> 
 
- * Please don't error_setg(&error_fatal, ...), use error_report() and
- * exit(), because that's more obvious.
- * Likewise, don't error_setg(&error_abort, ...), use assert().
-
-Not said: use warn_report() instead of error_set(&error_warn).
-Should've been added in commit 3ffef1a55ca (error: add global
-&error_warn destination).
-
-I consider &error_warn a mistake.
-
->>          return false;
->>      }
->>=20=20
->>      if (WSAEventSelect(s, hEventObject, lNetworkEvents) !=3D 0) {
->> -        error_setg_win32(errp, WSAGetLastError(), "failed to WSAEventSe=
-lect()");
->> +        error_setg_win32(&error_warn, WSAGetLastError(),
->> +                         "failed to WSAEventSelect()");
->>          return false;
->>      }
->>=20=20
->> @@ -315,7 +312,7 @@ bool qemu_socket_select(int sockfd, WSAEVENT hEventO=
-bject,
->
->
-> With regards,
-> Daniel
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
