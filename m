@@ -2,100 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615B2B0767C
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 15:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B98B07690
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 15:05:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc1jn-0005iO-Cf; Wed, 16 Jul 2025 08:59:55 -0400
+	id 1uc1o2-0008J1-PY; Wed, 16 Jul 2025 09:04:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uc1eB-0001kQ-Mn
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 08:54:13 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uc1gX-0003Bz-EE
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 08:56:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uc1e0-0002IP-K5
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 08:54:07 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uc1gS-0002gZ-1w
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 08:56:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752670434;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1752670586;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vY0EvUnaMKksTmgyHQxFYcdzJp8Owdw5fv683Oyqk10=;
- b=YEnhE2RoJHL/ho6QbPR0z0bOZBsAUDJPwHuJa5NWqf93GaUDBfrgrkkDth0RXjx4FRXSVM
- hzeIPSiTA0mycz9jhhY0U+Wm+pXsPgPc5ERt07zgAEnTGrYTWIsm4LzFdEXfzKakKLUmh/
- JstagujVWhhT94l26/hFp/mvduL27Iw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=BXrNxjvyFHpViQBxomm0h75tvWZer25+/DefY724f9I=;
+ b=bF4uBwKRdln7kbEqmF42ret4akaPmcN1skqKl9X6AowQd4kYYkJi5o9Wji2lhWcSZxXkNz
+ nT1PNRbWOuaSkN0jUo8TVHrY1lfSHKQhikJOLW03K+5SG6f8xwvhLZ3StS52jTKR0imxTK
+ pR1L3Xhf8Hxy9hRJxkzLvTmBse9SJj8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-352-9clHmTRBOKarUQ9vx216pg-1; Wed, 16 Jul 2025 08:53:52 -0400
-X-MC-Unique: 9clHmTRBOKarUQ9vx216pg-1
-X-Mimecast-MFC-AGG-ID: 9clHmTRBOKarUQ9vx216pg_1752670432
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-456175dba68so26689405e9.2
- for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 05:53:52 -0700 (PDT)
+ us-mta-678-qmlZzlDMM_edRwdWWZLqXQ-1; Wed, 16 Jul 2025 08:56:25 -0400
+X-MC-Unique: qmlZzlDMM_edRwdWWZLqXQ-1
+X-Mimecast-MFC-AGG-ID: qmlZzlDMM_edRwdWWZLqXQ_1752670584
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a4f858bc5eso4980530f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 05:56:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752670431; x=1753275231;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vY0EvUnaMKksTmgyHQxFYcdzJp8Owdw5fv683Oyqk10=;
- b=wP1BdoNRMWdKye3+EiT/H/sRjJvQYgP9AVML8XJa8PGqJsc28WNol+2xxUZHc5AYKB
- YTzhfYYk964COAsFWWrM9jT+5R73yTEU8jOT1h/Kkq0f9r+Tf4dqC9BgESF53Bd8lWjx
- iw4szUxYLk4zaRfZqiHzj74xUujjrKcCRP9jzeruvh8lN6+8y574Ibf6jZplJqFlSWF6
- B4JuTcWQjCfrR8VASKh5MYmPU9wU94ZmhwN+l2HjOIKxwlAZAQNNKfFsi1sikGUJR/oC
- /rXggzolbAGxxVZYOYc5PRBXT3IanN5al0n2pv/5iZzsOlCQsGwPGSVwaopZvBYT2v+W
- mKAA==
+ d=1e100.net; s=20230601; t=1752670584; x=1753275384;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BXrNxjvyFHpViQBxomm0h75tvWZer25+/DefY724f9I=;
+ b=h1V1vPEVVKrFuuyOYgyZ1iTtOfxz1b7tIGvzJoOL3OE5wdCg2N+SpAoxylVf7iEGap
+ YXpG4rGmqjUgi217OuvE5gFWt0UIwkbW1BatKTMA5YMXfI+XdODAC8mFDATqYfkJUhLc
+ 6NHVh3qnp4RLxt3YiDHpyY2CJca9ndOAqkQAUiStiRgrqcK3VOiH62z1LRC12/NFW65G
+ 48i3HIGTYEHqbV1btG3zN0Y/nIJgOFXMMwzHiZ+EuJ6hXiZgyWVIi1h5Wd2Wbnw/CU+/
+ mJvRYSCDU51gip7HL8Hn4EwhXF/VnsCNFCjhSQGp8Ey3AOzY5pbE3AG78W/ifUGmkDIg
+ dToQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUyWqTiY6KFyrt3kyTfWa+XdLYmvxGj1e9F+h9qh2vzRmAa1ELGEY4Asz3OHpIq/+S3vocFa1EWigEI@nongnu.org
-X-Gm-Message-State: AOJu0Ywt27s4K41L6J/PHnOh3EaYN/X4V3UNfctpWcaUMCO6P/ZYgaee
- vZH/CZJuAsvKr78W4PcbdT489Q5yMduBbJ66/xp7W78zGBmzKH/wC99LAR4QzavJ236QSqNoYKe
- 30LGD9V7febs9KlmwlcbGkA+z8LZdN9Oqdrvt/+WnIDuPfrGg8KdtvhYd
-X-Gm-Gg: ASbGncvqZEr0AhKkFtt6vK4sa9+Etd3GsPnmqXXC/zZz9kVBJt/tLnfrUDGqdkzSX9T
- GaDzexdWUQDGH6FI/0gyfCrDraR04sb6Fp+6TC0MZ9akCu3m8krQckbIGvVQ4FcxrEOcNo/XOHT
- 1V8+MTpkIey0DAoAElH5uMwV9WytWm4R4Xbx7rQAjhKp5iIaK2LeyCf+B/OJzm1WR020/Awis6e
- 9prM2AF8WyIEFlWLfcOObFBlZD2EuOq1tBhwZZYOSu+mOvW05f/Qu/LFL2x4fizJUqeucIvDFcM
- n20WadkmsMPZb88p/SbXKa59vJebCooYrVNErO9UtHdjmaRy77IjmfnPAZ50v73QUW7A9fMWxcW
- /adFzDhIRvoQ=
-X-Received: by 2002:a05:600c:444f:b0:456:26d1:445d with SMTP id
- 5b1f17b1804b1-4562e38007cmr29762155e9.31.1752670431508; 
- Wed, 16 Jul 2025 05:53:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQWuXkomIvjLiavUQ3dV4XM5NUMc2z/+DBR0v0ZoZ4SqJk5WL08RLB4ikqClel+Q/5dw5AhA==
-X-Received: by 2002:a05:600c:444f:b0:456:26d1:445d with SMTP id
- 5b1f17b1804b1-4562e38007cmr29761955e9.31.1752670431063; 
- Wed, 16 Jul 2025 05:53:51 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ AJvYcCXkRE6W0piPGBLw4xPLYGMXAKRKmg6Q8EZjGXaRTfALGC3SCyh6rbfW8QxHe/VQo68tdmRCINeG4rs8@nongnu.org
+X-Gm-Message-State: AOJu0Yx4sI2OBbX1GUFjN6uCMvmbEOr5vLdN3bp8uMYl1YjXqEOhzehX
+ hHPJJ0ZcqxnS2oa6mVBJDpWsQot8SWhbWmIci+59vhNlEZI/kHMEHudecV106a6ePE69XvMh283
+ PnYSSuhrU/lBadcirNerv5oTFWK+LYFmX9zuJwPEVCrPYguVBm44Jdnlg
+X-Gm-Gg: ASbGnctQnnklP4l5TE+1PxPXUU+XquDLjkgCuzwBfpiX6oXdmTFw6MPICRFcQtJSjJz
+ Oi5ZgbkJb3rmyas62u6QtEibGJnu51ve60rf2njK5C/abEuBQdGMye+78UmFWlRSqnPkwtb3MeB
+ HxWXDAKq3EF4xKIlv5GzSopX1G0nD4ftBJTLWUPvQ7ZWEaVGC9UMPY5EsiQlQk8yl+/n2Y4Mp5v
+ Z5x1J9bqG0qeYXSXvFGcflC68RbJAY2/hg/eA52zvApq+DxJRi4apUHxLaHNpjuL5vyUUF6i3iW
+ g/iCZu46rJgR7R/cSpri+zFyvQOcVm5y+7U9cHqwy+i6xZWWGxkWAHBerKGaakpJOmHGGlxNDCw
+ =
+X-Received: by 2002:a05:6000:4311:b0:3a5:25e4:264f with SMTP id
+ ffacd0b85a97d-3b60e51caa8mr2158777f8f.31.1752670583710; 
+ Wed, 16 Jul 2025 05:56:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGu9Qmupd0FoCZmGg0/HMdoFn5qoYKv7e2foN+FBmd68CYJoI9ZFk7v1L7TKVvONLJvaRK2hg==
+X-Received: by 2002:a05:6000:4311:b0:3a5:25e4:264f with SMTP id
+ ffacd0b85a97d-3b60e51caa8mr2158750f8f.31.1752670583265; 
+ Wed, 16 Jul 2025 05:56:23 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:165:d60:266c:b13b:afd7:40fd?
+ ([2a01:e0a:165:d60:266c:b13b:afd7:40fd])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4562e80223esm20342305e9.10.2025.07.16.05.53.49
+ ffacd0b85a97d-3b5e8e0d719sm17967265f8f.54.2025.07.16.05.56.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Jul 2025 05:53:50 -0700 (PDT)
-Message-ID: <3f8e0021-9a68-4326-8100-152dfc36cd13@redhat.com>
-Date: Wed, 16 Jul 2025 14:53:48 +0200
+ Wed, 16 Jul 2025 05:56:22 -0700 (PDT)
+Message-ID: <d6ec47f3-2884-4d4b-83dd-94008a24b6b2@redhat.com>
+Date: Wed, 16 Jul 2025 14:56:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/20] intel_iommu: Introduce two helpers
- vtd_as_from/to_iommu_pasid_locked
-Content-Language: en-US
+Subject: Re: [PATCH] vfio/pci: Recover sub-page BAR size when base address is
+ not aligned
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
- jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
- joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
- kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com
-References: <20250708110601.633308-1-zhenzhong.duan@intel.com>
- <20250708110601.633308-10-zhenzhong.duan@intel.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250708110601.633308-10-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8
+Cc: alex.williamson@redhat.com, eric.auger@redhat.com,
+ steven.sistare@oracle.com, chao.p.peng@intel.com
+References: <20250715065952.213057-1-zhenzhong.duan@intel.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250715065952.213057-1-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,7 +139,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,105 +152,40 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
-
-On 7/8/25 1:05 PM, Zhenzhong Duan wrote:
-> PCI device supports two request types, Requests-without-PASID and
-> Requests-with-PASID. Requests-without-PASID doesn't include a PASID TLP
-> prefix, IOMMU fetches rid_pasid from context entry and use it as IOMMU's
-> pasid to index pasid table.
->
-> So we need to translate between PCI's pasid and IOMMU's pasid specially
-> for Requests-without-PASID, e.g., PCI_NO_PASID(-1) <-> rid_pasid.
-> For Requests-with-PASID, PCI's pasid and IOMMU's pasid are same value.
->
-> vtd_as_from_iommu_pasid_locked() translates from BDF+iommu_pasid to vtd_as
-> which contains PCI's pasid vtd_as->pasid.
->
-> vtd_as_to_iommu_pasid_locked() translates from BDF+vtd_as->pasid to iommu_pasid.
->
+On 7/15/25 08:59, Zhenzhong Duan wrote:
+> Currently region_mr and mmap_mr size are recovered to original size when
+> base address is updated to non-PAGE_SIZE aligned, but still leave base_mr
+> with PAGE_SIZE size. This is harmless as base_mr is a only container but
+> still a bit confusing when executing hmp command mtree.
+> 
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->  hw/i386/intel_iommu.c | 58 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 58 insertions(+)
->
-> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index 15f4393d6f..38e7f7b7be 100644
-> --- a/hw/i386/intel_iommu.c
-> +++ b/hw/i386/intel_iommu.c
-> @@ -1602,6 +1602,64 @@ static int vtd_dev_to_context_entry(IntelIOMMUState *s, uint8_t bus_num,
->      return 0;
->  }
->  
-> +static int vtd_as_to_iommu_pasid_locked(VTDAddressSpace *vtd_as,
-> +                                        uint32_t *pasid)
-> +{
-> +    VTDContextCacheEntry *cc_entry = &vtd_as->context_cache_entry;
-> +    IntelIOMMUState *s = vtd_as->iommu_state;
-> +    uint8_t bus_num = pci_bus_num(vtd_as->bus);
-> +    uint8_t devfn = vtd_as->devfn;
-> +    VTDContextEntry ce;
-> +    int ret;
-> +
-> +    if (cc_entry->context_cache_gen == s->context_cache_gen) {
-> +        ce = cc_entry->context_entry;
-> +    } else {
-> +        ret = vtd_dev_to_context_entry(s, bus_num, devfn, &ce);
-> +        if (ret) {
-> +            return ret;
-you need to retrieve the ce only if vtd_as->pasid. So this can be moved
-to the conditional block below.
-> +        }
-> +    }
-> +
-> +    /* Translate to iommu pasid if PCI_NO_PASID */
-> +    if (vtd_as->pasid == PCI_NO_PASID) {
-> +        *pasid = VTD_CE_GET_RID2PASID(&ce);
-> +    } else {
-> +        *pasid = vtd_as->pasid;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static gboolean vtd_find_as_by_sid_and_iommu_pasid(gpointer key, gpointer value,
-> +                                                   gpointer user_data)
-> +{
-> +    VTDAddressSpace *vtd_as = (VTDAddressSpace *)value;
-> +    struct vtd_as_raw_key *target = (struct vtd_as_raw_key *)user_data;
-> +    uint16_t sid = PCI_BUILD_BDF(pci_bus_num(vtd_as->bus), vtd_as->devfn);
-> +    uint32_t pasid;
-> +
-> +    if (vtd_as_to_iommu_pasid_locked(vtd_as, &pasid)) {
-> +        return false;
-> +    }
-> +
-> +    return (pasid == target->pasid) && (sid == target->sid);
-> +}
-> +
-> +/* Translate iommu pasid to vtd_as */
-> +static inline
-> +VTDAddressSpace *vtd_as_from_iommu_pasid_locked(IntelIOMMUState *s,
-> +                                                uint16_t sid, uint32_t pasid)
-> +{
-> +    struct vtd_as_raw_key key = {
-> +        .sid = sid,
-> +        .pasid = pasid
-> +    };
-> +
-> +    return g_hash_table_find(s->vtd_address_spaces,
-> +                             vtd_find_as_by_sid_and_iommu_pasid, &key);
-> +}
-> +
->  static int vtd_sync_shadow_page_hook(const IOMMUTLBEvent *event,
->                                       void *private)
->  {
-With that addressed,
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Eric
+>   hw/vfio/pci.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 1093b28df7..0455e6ce30 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -1348,9 +1348,7 @@ static void vfio_sub_page_bar_update_mapping(PCIDevice *pdev, int bar)
+>   
+>       memory_region_transaction_begin();
+>   
+> -    if (vdev->bars[bar].size < size) {
+> -        memory_region_set_size(base_mr, size);
+> -    }
+> +    memory_region_set_size(base_mr, size);
+>       memory_region_set_size(region_mr, size);
+>       memory_region_set_size(mmap_mr, size);
+>       if (size != vdev->bars[bar].size && memory_region_is_mapped(base_mr)) {
+
+Looks ok to me. I'll queue it for 10.2 though.
+
+Thanks,
+
+C.
 
 
