@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF685B07BF1
+	by mail.lfdr.de (Postfix) with ESMTPS id A7865B07BF0
 	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 19:26:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uc5tB-00036v-1F; Wed, 16 Jul 2025 13:25:53 -0400
+	id 1uc5tD-0003Aq-6h; Wed, 16 Jul 2025 13:25:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uc5t5-0002yR-J8
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:25:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uc5t7-00033D-Hd
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:25:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uc5t0-00086c-8c
- for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:25:47 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uc5t5-00088D-S3
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 13:25:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752686740;
+ s=mimecast20190719; t=1752686747;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FPUlDJRm3C4ZC75Wzw+UoTp2VLEQ+sxvcVRKb5M1UQ8=;
- b=gdGyWXNkpXjwoVadtAh4vrllP03RAIO0N5LHBhNvKvkMdHSEVr39voBxsPfR9HccXVkL7R
- jRBF9Gmhi+5JElStfBf0wSOUPIbk9ZQ29XXIgXMD19NhItdyhATKwbdTbrQV8dYSszqarz
- xRbPQrfa6/kuFUpz5uCQ6BNfE0FhGuM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=2e/pVvhtHMbcOnZ8ItHw9M708WrBDptEouqHTHbBKVM=;
+ b=EovfSB0b552j/YCek4CxmARvWc27vuPRaUk+EspMfykOyikt/7nisGPXsV8yL+BcQ9RF48
+ Hgd9GfY+/rQfbHBX6weUqOPCOcDqhhlLtGHhOxYI/PhM7+HbM/m4R+oSbbQoSv05PKn4fu
+ SRGM0C7MFu4ZgR9/bzPfefblcilJqt0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-111-sGVv4119NWe1ELS8H5o4qg-1; Wed,
- 16 Jul 2025 13:25:39 -0400
-X-MC-Unique: sGVv4119NWe1ELS8H5o4qg-1
-X-Mimecast-MFC-AGG-ID: sGVv4119NWe1ELS8H5o4qg_1752686738
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-472-crBSTxisPkKh0Gri1Hx-UQ-1; Wed,
+ 16 Jul 2025 13:25:42 -0400
+X-MC-Unique: crBSTxisPkKh0Gri1Hx-UQ-1
+X-Mimecast-MFC-AGG-ID: crBSTxisPkKh0Gri1Hx-UQ_1752686741
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B1FFE1800292; Wed, 16 Jul 2025 17:25:38 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CF0CF19560B2; Wed, 16 Jul 2025 17:25:41 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1A07819373D8; Wed, 16 Jul 2025 17:25:38 +0000 (UTC)
+ id 5207C1955F16; Wed, 16 Jul 2025 17:25:41 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6C97321E675E; Wed, 16 Jul 2025 19:25:35 +0200 (CEST)
+ id 7056121E676A; Wed, 16 Jul 2025 19:25:35 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, Akihiko Odaki <akihiko.odaki@daynix.com>,
  John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 4/6] docs: Bump sphinx to 6.2.1
-Date: Wed, 16 Jul 2025 19:25:33 +0200
-Message-ID: <20250716172535.3520175-5-armbru@redhat.com>
+Subject: [PULL 5/6] MAINTAINERS: Add docs/requirements.txt
+Date: Wed, 16 Jul 2025 19:25:34 +0200
+Message-ID: <20250716172535.3520175-6-armbru@redhat.com>
 In-Reply-To: <20250716172535.3520175-1-armbru@redhat.com>
 References: <20250716172535.3520175-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,61 +84,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-sphinx 5.3.0 fails with Python 3.13.1:
-
-../docs/meson.build:37: WARNING: /home/me/qemu/build/pyvenv/bin/sphinx-build:
-Extension error:
-Could not import extension sphinx.builders.epub3 (exception: No module named 'imghdr')
-
-../docs/meson.build:39:6: ERROR: Problem encountered: Install a Python 3 version of python-sphinx and the readthedoc theme
-
-Bump sphinx to 6.2.1 and also sphinx_rtd_theme as required for the new
-sphinx version.
-
-(jsnow note: this patch bumps the recommended version for Sphinx to
-install when it is missing, but allows old versions to be used if they
-are present and functional. The version used for building docs on
-readthedocs is pinned to the recommended version, 6.2.1.)
+Add docs/requirements.txt to
+"Sphinx documentation configuration and build machinery".
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Tested-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: John Snow <jsnow@redhat.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250715212848.171879-2-jsnow@redhat.com>
+Message-ID: <20250715212848.171879-3-jsnow@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/requirements.txt | 4 ++--
- pythondeps.toml       | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/docs/requirements.txt b/docs/requirements.txt
-index 02583f209a..87f7afcb2e 100644
---- a/docs/requirements.txt
-+++ b/docs/requirements.txt
-@@ -1,5 +1,5 @@
- # Used by readthedocs.io
- # Should be in sync with the "installed" key of pythondeps.toml
- 
--sphinx==5.3.0
--sphinx_rtd_theme==1.1.1
-+sphinx==6.2.1
-+sphinx_rtd_theme==1.2.2
-diff --git a/pythondeps.toml b/pythondeps.toml
-index 7884ab521d..b2eec940ce 100644
---- a/pythondeps.toml
-+++ b/pythondeps.toml
-@@ -24,8 +24,8 @@ pycotap = { accepted = ">=1.1.0", installed = "1.3.1" }
- 
- [docs]
- # Please keep the installed versions in sync with docs/requirements.txt
--sphinx = { accepted = ">=3.4.3", installed = "5.3.0", canary = "sphinx-build" }
--sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.1.1" }
-+sphinx = { accepted = ">=3.4.3", installed = "6.2.1", canary = "sphinx-build" }
-+sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.2.2" }
- 
- [testdeps]
- qemu.qmp = { accepted = ">=0.0.3", installed = "0.0.3" }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index bc0af3e8dd..a462345618 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4428,6 +4428,7 @@ M: Peter Maydell <peter.maydell@linaro.org>
+ S: Maintained
+ F: docs/conf.py
+ F: docs/*/conf.py
++F: docs/requirements.txt
+ F: docs/sphinx/
+ F: docs/_templates/
+ F: docs/devel/docs.rst
 -- 
 2.49.0
 
