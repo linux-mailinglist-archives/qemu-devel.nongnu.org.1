@@ -2,138 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47226B072D9
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94631B07356
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Jul 2025 12:29:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ubyv1-0003F2-Gi; Wed, 16 Jul 2025 05:59:19 -0400
+	id 1ubzML-0006Uq-S6; Wed, 16 Jul 2025 06:27:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1ubysY-0002pC-53; Wed, 16 Jul 2025 05:56:46 -0400
-Received: from mail-bn8nam12on20609.outbound.protection.outlook.com
- ([2a01:111:f403:2418::609]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1ubz8X-0000Zk-VH
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:13:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1ubysV-0006po-T8; Wed, 16 Jul 2025 05:56:45 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m+vOa0PKJOFHmkuW1LfZZesi6IjNblJTc1P9alhUf9s1EXWKkZF+lGgN8mrStL/idxV60xUb2Y2SI8N/mt9+F6uY6aenDrht/BqEI2KoeUKxrR+OAUeOt0f2U1IC7qMRi7kEU4MVMZC7MUGS30809cF+wF/mYoG7WUN5vaza7t0vI/DxtUzoLdqeV4oL68rFsbj+vY4xg02SPzdASw8OhNMUINMw4mY5N7jgfGsUk4ZETSBFYbxy4xWrHBACsQSqUi4XaMPBHsPsQRnfm423l7mHGhrU5xk6m9yEiTQNMOE490P00apgzVnsJYdP/Ahb4UgkyxqDdhqktP+0Q8Ex2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pR7RusYRlXJOiL/py+ko9ymo2tWV4kBZXkvon8Zsz+s=;
- b=WVvxD7cCEiY0NbjLi3p8jMVUzY4wFD/vhiKqLJv3bNPA0cs3oMgGhjRZTwVYqW2xL0mETf0eXMILiuy+hGAGpHmnaeUVj5OQl60dm/uYekL28vY7rCEUNib/vi+jxToDR1i7CwLTs/LyvZZdJry0p86bmMQRw57JaVgdPbgg76VDc4ZsBZhivIduUUZpbFJqR4MwK39LmwT9oZzAcIHCmkFWigEGFFtQroY3X06y/NhXaEraytDHvj3dYSgxRL9rL1Uu1PFh+D4VoldLPP2/xsYf7pGRvOFrZdVwWeKOgXjYJKYbSHANIQ5Pe3GAa4AyPJIu98gIM/6OCORvL+Cg0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pR7RusYRlXJOiL/py+ko9ymo2tWV4kBZXkvon8Zsz+s=;
- b=zWXachF9CCBMwnOKkolwnaxcjAM8+3rbnaoa7AIwbT77q7rlrhSoi4/L7Tnm2iR8J2Z0/KDDIoL39cdahkyXu4+lJAvrLyaD3ewCU+JTH0Owm27ctyDXnRoGEgsZ3QZZiJfdwWtBIVKs9JRTKJNvIb1L91/ENCtqXr4bpNo8Mfg=
-Received: from CH3P220CA0021.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:1e8::31)
- by DM6PR12MB4155.namprd12.prod.outlook.com (2603:10b6:5:221::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.36; Wed, 16 Jul
- 2025 09:56:36 +0000
-Received: from DS2PEPF0000343E.namprd02.prod.outlook.com
- (2603:10b6:610:1e8:cafe::46) by CH3P220CA0021.outlook.office365.com
- (2603:10b6:610:1e8::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.19 via Frontend Transport; Wed,
- 16 Jul 2025 09:56:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS2PEPF0000343E.mail.protection.outlook.com (10.167.18.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8922.22 via Frontend Transport; Wed, 16 Jul 2025 09:56:36 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 16 Jul
- 2025 04:56:35 -0500
-Received: from XFR-LUMICHEL-L2.xilinx.com (10.180.168.240) by
- SATLEXMB03.amd.com (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Wed, 16 Jul 2025 04:56:34 -0500
-From: Luc Michel <luc.michel@amd.com>
-To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>, 
- Francisco Iglesias <francisco.iglesias@amd.com>, "Edgar E . Iglesias"
- <edgar.iglesias@amd.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Alistair Francis <alistair@alistair23.me>, "Frederic
- Konrad" <frederic.konrad@amd.com>, Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Subject: [PATCH 48/48] tests/functional/test_aarch64_xlnx_versal: test the
- versal2 machine
-Date: Wed, 16 Jul 2025 11:54:30 +0200
-Message-ID: <20250716095432.81923-49-luc.michel@amd.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250716095432.81923-1-luc.michel@amd.com>
-References: <20250716095432.81923-1-luc.michel@amd.com>
+ (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1ubz8U-0001ho-IM
+ for qemu-devel@nongnu.org; Wed, 16 Jul 2025 06:13:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752660791;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SDg9fNKVULSPywM4snHAHkQlAePZyW2iPDo8IaasA5s=;
+ b=EyWxFCS0TUdNP1TxBG4hcUaeUhkrxp7OegIWbXDxYGl1dB49bk0nh/lk5abCBAvHsuNFGf
+ 1UcWBcplrEie612ee45tT9CjPZeA9KNQEtKSPf3D1jFGVo97tKhtInrCHkDD5IAVQPjkz+
+ CTVcL/Fm8YqBD4f8sGCmTeLbax/XN88=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-264-3MeJo9W2PRSztNs8lPIZeA-1; Wed, 16 Jul 2025 06:13:09 -0400
+X-MC-Unique: 3MeJo9W2PRSztNs8lPIZeA-1
+X-Mimecast-MFC-AGG-ID: 3MeJo9W2PRSztNs8lPIZeA_1752660788
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3af3c860ed7so2841639f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 03:13:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752660788; x=1753265588;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SDg9fNKVULSPywM4snHAHkQlAePZyW2iPDo8IaasA5s=;
+ b=oNoZGcKmuC0DHksJ3M4xlkwy1bqKJGBcn2Bn3ca9q35rMRENW5nfymuw5K7Lju8iwm
+ WF8y6L3HUB6VHVsXSTSalBed8dsJqDcun0Be6mxYLXbhMdzn9Xhrq+kuHMgCoFcfRqlo
+ GDxztQwoq4ERmHuE0trpz9OrhQpVx4+l35AD5Wad4mFekfQiifG9zgV6jVjriu+iqBdL
+ pyou0d+V6wZlBoUVPW1pyyqhOaOhYQgJBC/baIz6M5bTrrtu+CQeiEDBz4EZ614e87mz
+ ui1sskIEXOAsMZIojqzekDfe/NnVNps1s++KN/z4K1IiZLCPmOCehGA5bWCEJSK1k9Pj
+ vDWQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUZycsGyJYBmLFybk5hosNSqNb6lrrr2DN3Rg1fnhTGxYi86o5LUgPwDdjG+Y3LKfDsKq7J56pScvwl@nongnu.org
+X-Gm-Message-State: AOJu0YzwWpcDrClQ1Kw3OBdsvDn7AXFxsLiSAjuRp66HcL46c5FUu3Ib
+ dk02ZcHbuggAM3+QD6Y6WBhTzhaGCGi6G6/jzbkd0LAfzHcElFne7SlPfETLqsilq8rA1IqSBly
+ IKDA5qtfPlzd1wq40usgiTH6u4vI8QqF6ndOMBY4Wm/oJboPHtHVJUocd
+X-Gm-Gg: ASbGnctZSgUgtgMVUllc72zZ9UTLmulLRYX3NckA/nvKxiBc1glUY6e+pSBbeFf+PDJ
+ KzCQYje8QU44CJOpgk+44b1znTFxvv+5azufyp//Ngy3Bd6rB0Fa80wxSzUbIOB/gYS2arQ+/Iw
+ ReKpNURRyihlRZp86r+ecVZPFVoBJGrtooDZD3e8jx+9B+V/CF0I779nwUi1Dehf2hlkmar1tm1
+ KfaJuz4J7jAyZ0skhyPAd/OAX8/GlXf5NWDORfy+MN7IwCw8ZW7GQInTvCYladtiBNTOSYT3bOE
+ DLURPnjKhuoHqb/4VtlS+b0J30N/W63AC9/mOUvWUl5tCFZ4ps0AHQIvfQDCvr11NnTdB7xBhTp
+ z+sqi/2Do6K0=
+X-Received: by 2002:a05:6000:22c2:b0:3a4:eef9:818a with SMTP id
+ ffacd0b85a97d-3b60e523c46mr1553380f8f.27.1752660787785; 
+ Wed, 16 Jul 2025 03:13:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHoGu1ZMJP681KqUVqeq25FjmKb96lWRRkwj0gCeExoWeI/XqpEHgo8aaGRe7lLpQzLbwrMAA==
+X-Received: by 2002:a05:6000:22c2:b0:3a4:eef9:818a with SMTP id
+ ffacd0b85a97d-3b60e523c46mr1553350f8f.27.1752660787282; 
+ Wed, 16 Jul 2025 03:13:07 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c?
+ ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8e0dc3esm17279608f8f.47.2025.07.16.03.13.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Jul 2025 03:13:06 -0700 (PDT)
+Message-ID: <1d582df4-2995-423c-8b6c-351beaf94139@redhat.com>
+Date: Wed, 16 Jul 2025 12:13:05 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: luc.michel@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF0000343E:EE_|DM6PR12MB4155:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5d06f721-798c-4ab6-cabb-08ddc44f0d91
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|82310400026|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?h3VGWv0Fyu92H8Hh3ldITog/3wpdfzMTDhJKIJBeEViAIHWNOOjNaiDT4/tW?=
- =?us-ascii?Q?KP7dsRywXh9wfJAndK7KASiArfFKFmTDImWNGCaH6c29omOM/q1fSYAujyUO?=
- =?us-ascii?Q?/k3GYk5VsL87ZN+j6LaUbpPwtagsEUoPWba+UCrgDz4dle61wUKhwShNWXoh?=
- =?us-ascii?Q?hocoxISx63S6QJSd0jSUGuJWNJuZ001eTlIbyKvjHx92WRUY+joQ6Bqd5d9l?=
- =?us-ascii?Q?vy0FVxdtEevWkGDAfMJ9Z5p32meVErBm2SA+g3IT8plm2JPQ9W/muitMUnrx?=
- =?us-ascii?Q?0Pgjfmr+0Tz+XDKPnssS3me+pTUqdwUPAgWR6AtREo5kyfsxKIo2QIl7ySL1?=
- =?us-ascii?Q?sa8AXwgIJ5XU5J5wWWkWpI97lVYeJ/YkTw6vb4DyExZqnF6kYHF0QhzSa/mP?=
- =?us-ascii?Q?Bl28vdfn4B+Hd3DDwH5RO5Nm4xfum9v0qbQuv0RRKV1uA2gn8nxj/wzRIh8p?=
- =?us-ascii?Q?tjyxD7XpJxkgS7hzVzxPjyJWdZ5MJPZKuho8tSqo/knzJUiq1lzOg+y2mM2y?=
- =?us-ascii?Q?rYnmI/Dvl2amEr3dWGYwV11r3NwNC0+NF8l7NrQWcvXk70i8P5q1XDqkGfW4?=
- =?us-ascii?Q?d+Ckbnxx5GOA0VSwa43EplHRFQPkHXsdC60f9JwEx0aa5ttSoedpZyomgpaX?=
- =?us-ascii?Q?YzaG7er+einNPI/3MJahGmpeU+CVdpm6qGgakrO2+bCiHfHqntzZbk68ySy+?=
- =?us-ascii?Q?VmLI3wmB6L6UWksK13fMq3mSfEskLm3kgEKyz5Hy4hwE8jdRFfshg+hst3OV?=
- =?us-ascii?Q?fKEQAvvn4M37xAdlnYjcjN5NMxqaP9eZJPrnuixfFNvezZbtdYBVftfjYd6U?=
- =?us-ascii?Q?ZuhAjvMt809znH7rRefFMOTDqtRMDQ3fJfXPZlCW1i9Ohb0RX6Yb/SYjnUFE?=
- =?us-ascii?Q?jsSlkO7jOGTRBr2zA+EG67hNoiHdTtVP3osEtiWyeqGAgdDNSiI/4i5YULlc?=
- =?us-ascii?Q?6qJ1lYgudBgRddnQTf+NrCsmrRqxq+spxuTPxsdRFKYV+aHjXCQFxzCpF22S?=
- =?us-ascii?Q?myTOHKz5j303Z5igJltsL8b7TOMcMqqMiAqCSsZ5JN6RmucLwNuCIafuqm/X?=
- =?us-ascii?Q?hEcOf9lihO4ALqzJc+4ErLGMyYmgLp18kuoXQ7Ud3MUxUq796Lu/hmyZ0eix?=
- =?us-ascii?Q?q2oYyZc7hoVp2ECg+Ok+h1q5rvpOw/Iyp8Jne96pNMIpv0kryISgKxJeg09x?=
- =?us-ascii?Q?z0uxG8gtHwcNDDytwKVCRAn5IrJmTaft/GjTbpMcHMRPoTqEJI2PnBlLXHA6?=
- =?us-ascii?Q?Ts51FxAWxamx4Qry8/bZhaNhr7gvmyXGSxYDiaWtIQlB5giUYHhqBghDazIp?=
- =?us-ascii?Q?U+geHmPtTpFoYNl600oZoGzqlizqflmDKIDNCR7YzjMqqX2ar1/H/TH9qxpW?=
- =?us-ascii?Q?McN/aklXyQcFzfnCYPfon1/2yFl35H6kcrkzKnEHEA4XH1mh3B70A10JlafD?=
- =?us-ascii?Q?oZql8YX+ZcEmTnoKBdCAHeMgNP5IhkZ/3rhJ0OvGhbTs88aC9pdhEw=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 09:56:36.4817 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d06f721-798c-4ab6-cabb-08ddc44f0d91
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF0000343E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4155
-Received-SPF: permerror client-ip=2a01:111:f403:2418::609;
- envelope-from=Luc.Michel@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 13/13] net: implement UDP tunnel features offloading
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang
+ <jasowang@redhat.com>, Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Luigi Rizzo <lrizzo@google.com>, Giuseppe Lettieri
+ <g.lettieri@iet.unipi.it>, Vincenzo Maffione <v.maffione@gmail.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ kvm@vger.kernel.org
+References: <cover.1752229731.git.pabeni@redhat.com>
+ <509e49207e4dc4a10ef36492a2ee1f90f3c2c237.1752229731.git.pabeni@redhat.com>
+ <f266ffe9-f601-46cc-85be-515475cbfe12@rsg.ci.i.u-tokyo.ac.jp>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <f266ffe9-f601-46cc-85be-515475cbfe12@rsg.ci.i.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pabeni@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -150,48 +119,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test for the amd-versal2-virt machine using the same command line,
-kernel, initrd than the ones used for amd-versal-virt.
+On 7/15/25 10:07 AM, Akihiko Odaki wrote:
+> On 2025/07/11 22:02, Paolo Abeni wrote:
+>> When any host or guest GSO over UDP tunnel offload is enabled the
+>> virtio net header includes the additional tunnel-related fields,
+>> update the size accordingly.
+>>
+>> Push the GSO over UDP tunnel offloads all the way down to the tap
+>> device extending the newly introduced NetFeatures struct, and
+>> eventually enable the associated features.
+>>
+>> As per virtio specification, to convert features bit to offload bit,
+>> map the extended features into the reserved range.
+>>
+>> Finally, make the vhost backend aware of the exact header layout, to
+>> copy it correctly. The tunnel-related field are present if either
+>> the guest or the host negotiated any UDP tunnel related feature:
+>> add them to host kernel supported features list, to allow qemu
+>> transfer to such backend the needed information.
+> 
+> Please also update: hw/virtio/virtio-qmp.c
 
-Signed-off-by: Luc Michel <luc.michel@amd.com>
----
- tests/functional/test_aarch64_xlnx_versal.py | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Do you mean by adding FEATURE_ENTRY() for
+{GUEST,HOST}_UDP_TUNNEL_GSO{,_CSUM} ?
 
-diff --git a/tests/functional/test_aarch64_xlnx_versal.py b/tests/functional/test_aarch64_xlnx_versal.py
-index 4b9c49e5d64..f32d904ef7e 100755
---- a/tests/functional/test_aarch64_xlnx_versal.py
-+++ b/tests/functional/test_aarch64_xlnx_versal.py
-@@ -18,12 +18,12 @@ class XlnxVersalVirtMachine(LinuxKernelTest):
-         ('http://ports.ubuntu.com/ubuntu-ports/dists/bionic-updates/main/'
-          'installer-arm64/20101020ubuntu543.19/images/netboot/'
-          '/ubuntu-installer/arm64/initrd.gz'),
-         'e7a5e716b6f516d8be315c06e7331aaf16994fe4222e0e7cfb34bc015698929e')
- 
--    def test_aarch64_xlnx_versal_virt(self):
--        self.set_machine('xlnx-versal-virt')
-+    def common_aarch64_amd_versal_virt(self, machine):
-+        self.set_machine(machine)
-         kernel_path = self.ASSET_KERNEL.fetch()
-         initrd_path = self.ASSET_INITRD.fetch()
- 
-         self.vm.set_console()
-         self.vm.add_args('-m', '2G',
-@@ -31,7 +31,13 @@ def test_aarch64_xlnx_versal_virt(self):
-                          '-kernel', kernel_path,
-                          '-initrd', initrd_path)
-         self.vm.launch()
-         self.wait_for_console_pattern('Checked W+X mappings: passed')
- 
-+    def test_aarch64_amd_versal_virt(self):
-+        self.common_aarch64_amd_versal_virt('amd-versal-virt')
-+
-+    def test_aarch64_amd_versal2_virt(self):
-+        self.common_aarch64_amd_versal_virt('amd-versal2-virt')
-+
- if __name__ == '__main__':
-     LinuxKernelTest.main()
--- 
-2.50.0
+Such entries are added in patch 8/13 "qmp: update virtio features map to
+support extended features". Even if the features are not supported yet
+in such patch, I think the code could already parse their name.
+
+Do you prefer I move the features entry definition here?
+
+Thanks,
+
+Paolo
 
 
