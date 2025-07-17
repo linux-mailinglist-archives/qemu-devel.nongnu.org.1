@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0ABB089AD
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31064B089DA
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:53:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLCl-0004oa-Ub; Thu, 17 Jul 2025 05:47:08 -0400
+	id 1ucLHV-0007bW-Nw; Thu, 17 Jul 2025 05:52:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL0T-0001pp-7I; Thu, 17 Jul 2025 05:34:29 -0400
+ id 1ucL0V-0001qG-8e; Thu, 17 Jul 2025 05:34:29 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL0R-0001nW-Ei; Thu, 17 Jul 2025 05:34:24 -0400
+ id 1ucL0T-0001o1-Dp; Thu, 17 Jul 2025 05:34:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5E60F137CEA;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6BD21137CEB;
  Thu, 17 Jul 2025 12:34:04 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 37E6F2491E4;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4F24F2491E5;
  Thu, 17 Jul 2025 12:34:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 42/65] hw/arm/fsl-imx8mp: Wire VIRQ and VFIQ
-Date: Thu, 17 Jul 2025 12:33:38 +0300
-Message-ID: <20250717093412.728292-3-mjt@tls.msk.ru>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 43/65] linux-user: Implement fchmodat2 syscall
+Date: Thu, 17 Jul 2025 12:33:39 +0300
+Message-ID: <20250717093412.728292-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
@@ -59,33 +60,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Allows to run KVM guests inside the imx8mp-evk machine.
+The fchmodat2 syscall is new from Linux 6.6; it is like the
+existing fchmodat syscall except that it takes a flags parameter.
 
-Fixes: a4eefc69b237 ("hw/arm: Add i.MX 8M Plus EVK board")
-CC: qemu-stable
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3019
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 930180f3b9a292639eb894f1ca846683834ed4b7)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250710113123.1109461-1-peter.maydell@linaro.org>
+(cherry picked from commit 6a3e132a1be8c9e649967a4eb341d00731be7f51)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
-index 82edf61082..d775aa934a 100644
---- a/hw/arm/fsl-imx8mp.c
-+++ b/hw/arm/fsl-imx8mp.c
-@@ -356,6 +356,10 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
-                                qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
-             sysbus_connect_irq(gicsbd, i + ms->smp.cpus,
-                                qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
-+            sysbus_connect_irq(gicsbd, i + 2 * ms->smp.cpus,
-+                               qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
-+            sysbus_connect_irq(gicsbd, i + 3 * ms->smp.cpus,
-+                               qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
-         }
-     }
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 8bfe4912e1..9b397bac7e 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -789,6 +789,10 @@ safe_syscall6(ssize_t, copy_file_range, int, infd, loff_t *, pinoff,
+               int, outfd, loff_t *, poutoff, size_t, length,
+               unsigned int, flags)
+ #endif
++#if defined(TARGET_NR_fchmodat2) && defined(__NR_fchmodat2)
++safe_syscall4(int, fchmodat2, int, dfd, const char *, filename,
++              unsigned short, mode, unsigned int, flags)
++#endif
  
+ /* We do ioctl like this rather than via safe_syscall3 to preserve the
+  * "third argument might be integer or pointer or not present" behaviour of
+@@ -10709,6 +10713,15 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         ret = get_errno(fchmodat(arg1, p, arg3, 0));
+         unlock_user(p, arg2, 0);
+         return ret;
++#endif
++#if defined(TARGET_NR_fchmodat2) && defined(__NR_fchmodat2)
++    case TARGET_NR_fchmodat2:
++        if (!(p = lock_user_string(arg2))) {
++            return -TARGET_EFAULT;
++        }
++        ret = get_errno(safe_fchmodat2(arg1, p, arg3, arg4));
++        unlock_user(p, arg2, 0);
++        return ret;
+ #endif
+     case TARGET_NR_getpriority:
+         /* Note that negative values are valid for getpriority, so we must
 -- 
 2.47.2
 
