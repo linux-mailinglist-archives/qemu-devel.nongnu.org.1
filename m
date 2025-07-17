@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5567BB09502
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BCFB094F6
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:25:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucUKU-0002eR-N1; Thu, 17 Jul 2025 15:31:42 -0400
+	id 1ucUDr-00079p-GA; Thu, 17 Jul 2025 15:24:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucRn9-0007Ae-BE
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:49:13 -0400
+ id 1ucRsh-0000lA-0e
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:54:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucRn7-0007oh-5S
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:49:06 -0400
+ id 1ucRse-0008Sh-5c
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:54:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752770943;
+ s=mimecast20190719; t=1752771287;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=1MimOt7JSOZXWdvOHA5q5cv+NY3Ej2RMg8rLSC/H0+s=;
- b=f+jQDxSAQPEwWpUClB0FcsY7lL+Al9fcsQeba8NFnXNXgwx4aRra1jvpug/TDsUulB9J7W
- ul3TCr3NcyLT5vgfDroVsKZfRDxFgpO8untFNU88iTBu9zKnuCEVPZPYroW/FGhr5tPbNX
- BHnidMS224YpJ/lhC6ZTpWSjDvG5ars=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=1hnP2N81isxfdjl/8L9hYbyrsJxStRUl9RGndJBQ54o=;
+ b=iyuSEm0kAuhG4P//mxJbtFBrQPnZ+Fut75TNhxm1FWmRxkUXSN2gwGBK7t3X0KY/MJeQEu
+ /KJ6bjYkVaA3CHh6AL0USHlaycLrHWyPxOW4dpmQkmC918r0+n8X73j8RsWilzIf0lwV2t
+ XgFKCb+F8sc4f6Ff2mtenuID0pdrrbI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-120-0G5XO7lePQiVvKFN6W-xfQ-1; Thu,
- 17 Jul 2025 12:49:00 -0400
-X-MC-Unique: 0G5XO7lePQiVvKFN6W-xfQ-1
-X-Mimecast-MFC-AGG-ID: 0G5XO7lePQiVvKFN6W-xfQ_1752770937
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-NN1KyYkjNbyZNDgpuLxsWQ-1; Thu,
+ 17 Jul 2025 12:54:44 -0400
+X-MC-Unique: NN1KyYkjNbyZNDgpuLxsWQ-1
+X-Mimecast-MFC-AGG-ID: NN1KyYkjNbyZNDgpuLxsWQ_1752771281
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4305219560B6; Thu, 17 Jul 2025 16:48:57 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3D6BC1800296; Thu, 17 Jul 2025 16:54:41 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.171])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5ACB530001B1; Thu, 17 Jul 2025 16:48:49 +0000 (UTC)
-Date: Thu, 17 Jul 2025 17:48:46 +0100
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BC9FF1800D82; Thu, 17 Jul 2025 16:54:32 +0000 (UTC)
+Date: Thu, 17 Jul 2025 17:54:29 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Arun Menon <armenon@redhat.com>
 Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -70,17 +70,17 @@ Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>
-Subject: Re: [PATCH v5 06/23] migration: push Error **errp into
- qemu_loadvm_section_part_end()
-Message-ID: <aHkpboSZOIfcLtxe@redhat.com>
+Subject: Re: [PATCH v5 07/23] migration: push Error **errp into
+ loadvm_process_command()
+Message-ID: <aHkqxfMNeA6_YSBP@redhat.com>
 References: <20250717-propagate_tpm_error-v5-0-1f406f88ee65@redhat.com>
- <20250717-propagate_tpm_error-v5-6-1f406f88ee65@redhat.com>
+ <20250717-propagate_tpm_error-v5-7-1f406f88ee65@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250717-propagate_tpm_error-v5-6-1f406f88ee65@redhat.com>
+In-Reply-To: <20250717-propagate_tpm_error-v5-7-1f406f88ee65@redhat.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -107,53 +107,150 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 17, 2025 at 06:07:29AM +0530, Arun Menon wrote:
+On Thu, Jul 17, 2025 at 06:07:30AM +0530, Arun Menon wrote:
 > This is an incremental step in converting vmstate loading
 > code to report error via Error objects instead of directly
 > printing it to console/monitor.
-> It is ensured that qemu_loadvm_section_part_end() must report an error
+> It is ensured that loadvm_process_command() must report an error
 > in errp, in case of failure.
 > 
 > Signed-off-by: Arun Menon <armenon@redhat.com>
 > ---
->  migration/savevm.c | 17 +++++++++--------
->  1 file changed, 9 insertions(+), 8 deletions(-)
+>  migration/savevm.c | 89 ++++++++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 67 insertions(+), 22 deletions(-)
 > 
 > diff --git a/migration/savevm.c b/migration/savevm.c
-> index 63125971751394b72efc9bcaf7c4364715eef07f..22d73999595384519c755c9416b74ba1263a8bb9 100644
+> index 22d73999595384519c755c9416b74ba1263a8bb9..98711bb38a4548d4f168459f729f604a78716c25 100644
 > --- a/migration/savevm.c
 > +++ b/migration/savevm.c
-> @@ -2764,7 +2764,7 @@ qemu_loadvm_section_start_full(QEMUFile *f, uint8_t type, Error **errp)
->  }
->  
->  static int
-> -qemu_loadvm_section_part_end(QEMUFile *f, uint8_t type)
-> +qemu_loadvm_section_part_end(QEMUFile *f, uint8_t type, Error **errp)
+> @@ -2540,12 +2540,13 @@ static int loadvm_postcopy_handle_switchover_start(void)
+>   * LOADVM_QUIT All good, but exit the loop
+>   * <0          Error
+>   */
+> -static int loadvm_process_command(QEMUFile *f)
+> +static int loadvm_process_command(QEMUFile *f, Error **errp)
 >  {
->      bool trace_downtime = (type == QEMU_VM_SECTION_END);
->      int64_t start_ts, end_ts;
-> @@ -2776,8 +2776,8 @@ qemu_loadvm_section_part_end(QEMUFile *f, uint8_t type)
+>      MigrationIncomingState *mis = migration_incoming_get_current();
+>      uint16_t cmd;
+>      uint16_t len;
+>      uint32_t tmp32;
+> +    int ret;
 >  
->      ret = qemu_file_get_error(f);
->      if (ret) {
-> -        error_report("%s: Failed to read section ID: %d",
-> -                     __func__, ret);
-> +        error_setg(errp, "%s: Failed to read section ID: %d",
-> +                   __func__, ret);
-
-Same note about dropping __func__
-
-> @@ -2810,6 +2810,7 @@ qemu_loadvm_section_part_end(QEMUFile *f, uint8_t type)
+>      cmd = qemu_get_be16(f);
+>      len = qemu_get_be16(f);
+> @@ -2556,16 +2557,16 @@ static int loadvm_process_command(QEMUFile *f)
 >      }
 >  
->      if (!check_section_footer(f, se)) {
-> +        error_setg(errp, "Check section footer error");
-
-Include "section_id" as that's the only context we have available.
-
+>      if (cmd >= MIG_CMD_MAX || cmd == MIG_CMD_INVALID) {
+> -        error_report("MIG_CMD 0x%x unknown (len 0x%x)", cmd, len);
+> +        error_setg(errp, "MIG_CMD 0x%x unknown (len 0x%x)", cmd, len);
 >          return -EINVAL;
 >      }
 >  
+
+
+> @@ -2578,7 +2579,7 @@ static int loadvm_process_command(QEMUFile *f)
+>          }
+>          mis->to_src_file = qemu_file_get_return_path(f);
+>          if (!mis->to_src_file) {
+> -            error_report("CMD_OPEN_RETURN_PATH failed");
+> +            error_setg(errp, "CMD_OPEN_RETURN_PATH failed");
+
+This is a wierd one, according to the docs qemu_file_get_return_path
+can return NULL, but according to the impl it will always succeed.
+
+Suggest creating an earlier patch that fixes the docs and removes
+the check for failure here, not least because this existing error
+message provides no useful information, and none will be available
+since it can't fail.
+
+
+>      case MIG_CMD_PACKAGED:
+> -        return loadvm_handle_cmd_packaged(mis);
+> +        ret = loadvm_handle_cmd_packaged(mis);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to load device state command: %d", ret);
+> +            return -1;
+> +        }
+> +        return ret;
+>  
+>      case MIG_CMD_POSTCOPY_ADVISE:
+> -        return loadvm_postcopy_handle_advise(mis, len);
+> +        ret = loadvm_postcopy_handle_advise(mis, len);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to load device state command: %d", ret);
+> +            return -1;
+> +        }
+> +        return ret;
+>  
+>      case MIG_CMD_POSTCOPY_LISTEN:
+> -        return loadvm_postcopy_handle_listen(mis);
+> +        ret = loadvm_postcopy_handle_listen(mis);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to load device state command: %d", ret);
+> +            return -1;
+> +        }
+> +        return ret;
+>  
+>      case MIG_CMD_POSTCOPY_RUN:
+> -        return loadvm_postcopy_handle_run(mis);
+> +        ret = loadvm_postcopy_handle_run(mis);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to load device state command: %d", ret);
+> +            return -1;
+> +        }
+> +        return ret;
+>  
+>      case MIG_CMD_POSTCOPY_RAM_DISCARD:
+> -        return loadvm_postcopy_ram_handle_discard(mis, len);
+> +        ret = loadvm_postcopy_ram_handle_discard(mis, len);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to load device state command: %d", ret);
+> +            return -1;
+> +        }
+> +        return ret;
+>  
+>      case MIG_CMD_POSTCOPY_RESUME:
+> -        return loadvm_postcopy_handle_resume(mis);
+> +        ret = loadvm_postcopy_handle_resume(mis);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to load device state command: %d", ret);
+> +            return -1;
+> +        }
+> +        return ret;
+>  
+>      case MIG_CMD_RECV_BITMAP:
+> -        return loadvm_handle_recv_bitmap(mis, len);
+> +        ret = loadvm_handle_recv_bitmap(mis, len);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to load device state command: %d", ret);
+> +            return -1;
+> +        }
+> +        return ret;
+>  
+>      case MIG_CMD_ENABLE_COLO:
+> -        return loadvm_process_enable_colo(mis);
+> +        ret = loadvm_process_enable_colo(mis);
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to load device state command: %d", ret);
+> +            return -1;
+> +        }
+> +        return ret;
+>  
+>      case MIG_CMD_SWITCHOVER_START:
+> -        return loadvm_postcopy_handle_switchover_start();
+> +        ret = loadvm_postcopy_handle_switchover_start();
+> +        if (ret < 0) {
+> +            error_setg(errp, "Failed to load device state command: %d", ret);
+> +            return -1;
+> +        }
+> +        return ret;
+>      }
+
+Can you ensure that each of these have unique error message strings,
+as if they ever appear, it will be important to distinguish which of
+these nine commands actually failed.
+
 
 With regards,
 Daniel
