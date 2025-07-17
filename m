@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B9FB094E3
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB6AB094A0
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:13:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucU9y-0004Ig-N3; Thu, 17 Jul 2025 15:20:51 -0400
+	id 1ucU1I-0006ns-9Q; Thu, 17 Jul 2025 15:11:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucRXB-0008AT-PA
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:32:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1ucRbC-0001br-NK
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:36:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucRX8-0005co-QY
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:32:37 -0400
+ id 1ucRb2-0006De-MJ
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:36:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752769953;
+ s=mimecast20190719; t=1752770195;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=65/LOSSnuz26QTJtZP9R5d8KCo2BtuXFDpSCPc/v0L8=;
- b=hFm1teK1rusu1HTclTSgBsdMhIBgSCyIK0qC+M0m4/ig1rx6cXDOQQfZg+G/rNf8WhwrfF
- ac281Z7+QBtz5CmEy/edDMqXihWQnloQtS0KVqe0imFeeUCOG5aUW17nA0tPUEmf0ripuh
- jufYJeXtUMqYgcUltBu5UEkbyuKbL5Y=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=yXNZUZPoMl2H5tZ/pHjB28pEfckqWlchcdV5ePxwDic=;
+ b=OMVXTRtm34p+od3REYO5cruR0qCsRcYDJnmTPf0+zqm546dw3mfHxOyRpKCM5d2g5Qk+pN
+ HnRFUgsWJnMV7yeUIGSOOeCxnE2i6R2xJrkoRwmcd+EjH9MfJ3yZhvr6d7ZCiyMYXvIwoz
+ xjCyIpdX77NkP5zFXvwys4CRwrUCjpA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-a51U89TUOy-O4sBPF1a1Qg-1; Thu,
- 17 Jul 2025 12:32:30 -0400
-X-MC-Unique: a51U89TUOy-O4sBPF1a1Qg-1
-X-Mimecast-MFC-AGG-ID: a51U89TUOy-O4sBPF1a1Qg_1752769948
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-eVCVkOeKO76PabzSyn_cOg-1; Thu,
+ 17 Jul 2025 12:36:31 -0400
+X-MC-Unique: eVCVkOeKO76PabzSyn_cOg-1
+X-Mimecast-MFC-AGG-ID: eVCVkOeKO76PabzSyn_cOg_1752770188
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 52AFA1800EEF; Thu, 17 Jul 2025 16:32:27 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E04EC19560AB; Thu, 17 Jul 2025 16:36:27 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.171])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8DE8E180049D; Thu, 17 Jul 2025 16:32:17 +0000 (UTC)
-Date: Thu, 17 Jul 2025 17:32:14 +0100
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C650F196664F; Thu, 17 Jul 2025 16:36:19 +0000 (UTC)
+Date: Thu, 17 Jul 2025 17:36:16 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Arun Menon <armenon@redhat.com>
 Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -70,18 +70,18 @@ Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>
-Subject: Re: [PATCH v5 02/23] migration: push Error **errp into
- vmstate_load_state()
-Message-ID: <aHkljmIk5lTbmumj@redhat.com>
+Subject: Re: [PATCH v5 03/23] migration: push Error **errp into
+ qemu_loadvm_state_header()
+Message-ID: <aHkmgIgpJhSHrTym@redhat.com>
 References: <20250717-propagate_tpm_error-v5-0-1f406f88ee65@redhat.com>
- <20250717-propagate_tpm_error-v5-2-1f406f88ee65@redhat.com>
+ <20250717-propagate_tpm_error-v5-3-1f406f88ee65@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250717-propagate_tpm_error-v5-2-1f406f88ee65@redhat.com>
+In-Reply-To: <20250717-propagate_tpm_error-v5-3-1f406f88ee65@redhat.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,157 +107,50 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 17, 2025 at 06:07:25AM +0530, Arun Menon wrote:
+On Thu, Jul 17, 2025 at 06:07:26AM +0530, Arun Menon wrote:
 > This is an incremental step in converting vmstate loading
 > code to report error via Error objects instead of directly
 > printing it to console/monitor.
-> It is ensured that vmstate_load_state() must report an error
+> It is ensured that qemu_loadvm_state_header() must report an error
 > in errp, in case of failure.
 > 
 > Signed-off-by: Arun Menon <armenon@redhat.com>
 > ---
->  hw/display/virtio-gpu.c     |  2 +-
->  hw/pci/pci.c                |  2 +-
->  hw/s390x/virtio-ccw.c       |  2 +-
->  hw/scsi/spapr_vscsi.c       |  2 +-
->  hw/vfio/pci.c               |  2 +-
->  hw/virtio/virtio-mmio.c     |  2 +-
->  hw/virtio/virtio-pci.c      |  2 +-
->  hw/virtio/virtio.c          |  4 ++--
->  include/migration/vmstate.h |  2 +-
->  migration/cpr.c             |  4 ++--
->  migration/savevm.c          |  6 ++++--
->  migration/vmstate-types.c   | 10 +++++-----
->  migration/vmstate.c         | 43 +++++++++++++++++++++++++++----------------
->  tests/unit/test-vmstate.c   | 18 +++++++++---------
->  ui/vdagent.c                |  2 +-
->  15 files changed, 58 insertions(+), 45 deletions(-)
+>  migration/savevm.c | 25 ++++++++++++++++---------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
 > 
-
-> diff --git a/migration/vmstate.c b/migration/vmstate.c
-> index 526668a020562f303d2ddf030b1c8466659b67be..078a00003023cc248fb16f05017d4c4251fd86df 100644
-> --- a/migration/vmstate.c
-> +++ b/migration/vmstate.c
-> @@ -132,29 +132,30 @@ static void vmstate_handle_alloc(void *ptr, const VMStateField *field,
+> diff --git a/migration/savevm.c b/migration/savevm.c
+> index ab947620f724874f325fb9fb59bef50b7c16fb51..3ccbc724eb808db09b77088a858ecc7f06b21155 100644
+> --- a/migration/savevm.c
+> +++ b/migration/savevm.c
+> @@ -2814,35 +2814,42 @@ qemu_loadvm_section_part_end(QEMUFile *f, uint8_t type)
+>      return 0;
 >  }
 >  
->  int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-> -                       void *opaque, int version_id)
-> +                       void *opaque, int version_id, Error **errp)
+> -static int qemu_loadvm_state_header(QEMUFile *f)
+> +static int qemu_loadvm_state_header(QEMUFile *f, Error **errp)
 >  {
->      const VMStateField *field = vmsd->fields;
->      int ret = 0;
+>      unsigned int v;
+>      int ret;
 >  
->      trace_vmstate_load_state(vmsd->name, version_id);
->      if (version_id > vmsd->version_id) {
-> -        error_report("%s: incoming version_id %d is too new "
-> -                     "for local version_id %d",
-> -                     vmsd->name, version_id, vmsd->version_id);
-> +        error_setg(errp, "%s: incoming version_id %d is too new "
-> +                   "for local version_id %d",
-> +                   vmsd->name, version_id, vmsd->version_id);
->          trace_vmstate_load_state_end(vmsd->name, "too new", -EINVAL);
+>      v = qemu_get_be32(f);
+>      if (v != QEMU_VM_FILE_MAGIC) {
+> -        error_report("Not a migration stream");
+> +        error_setg(errp, "Not a migration stream, "
+> +                   "magic: %x != %x", v, QEMU_VM_FILE_MAGIC);
 >          return -EINVAL;
 >      }
->      if  (version_id < vmsd->minimum_version_id) {
-> -        error_report("%s: incoming version_id %d is too old "
-> -                     "for local minimum version_id  %d",
-> -                     vmsd->name, version_id, vmsd->minimum_version_id);
-> +        error_setg(errp, "%s: incoming version_id %d is too old "
-> +                   "for local minimum version_id  %d",
-> +                   vmsd->name, version_id, vmsd->minimum_version_id);
->          trace_vmstate_load_state_end(vmsd->name, "too old", -EINVAL);
->          return -EINVAL;
->      }
->      if (vmsd->pre_load) {
->          ret = vmsd->pre_load(opaque);
->          if (ret) {
-> +            error_setg(errp, "VM pre load failed : %d", ret);
-
-Suggest including
-
-  vmsd->name, version_id, vmsd->minimum_version_id
-
-as those are all relevant context which may aid in diagnosing
-this error.
-
->              return ret;
->          }
->      }
-> @@ -192,10 +193,12 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
 >  
->                  if (inner_field->flags & VMS_STRUCT) {
->                      ret = vmstate_load_state(f, inner_field->vmsd, curr_elem,
-> -                                             inner_field->vmsd->version_id);
-> +                                             inner_field->vmsd->version_id,
-> +                                             errp);
->                  } else if (inner_field->flags & VMS_VSTRUCT) {
->                      ret = vmstate_load_state(f, inner_field->vmsd, curr_elem,
-> -                                             inner_field->struct_version_id);
-> +                                             inner_field->struct_version_id,
-> +                                             errp);
->                  } else {
->                      ret = inner_field->info->get(f, curr_elem, size,
->                                                   inner_field);
+>      v = qemu_get_be32(f);
+>      if (v == QEMU_VM_FILE_VERSION_COMPAT) {
+> -        error_report("SaveVM v2 format is obsolete and don't work anymore");
+> +        error_setg(errp, "SaveVM v2 format is obsolete and don't "
+> +                   "work anymore, file version %x != %x",
 
-This should have the "error_setg" call, so...
+This is a pre-existing issue, but can be fix the tail end of the
+message to say
 
-> @@ -211,27 +214,35 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
->                  }
->                  if (ret < 0) {
->                      qemu_file_set_error(f, ret);
-> -                    error_report("Failed to load %s:%s", vmsd->name,
-> -                                 field->name);
-> +                    if (errp != NULL) {
-> +                        error_prepend(errp, "Failed to load %s:%s ", vmsd->name,
-> +                                      field->name);
-> +                    } else {
-> +                        error_setg(errp, "Failed to load %s:%s", vmsd->name,
-> +                                   field->name);
-> +                    }
-
-...this should exclusively do error_prepend.
-
-Also include the 'version_id' here as an bit of extra context.
-
->                      trace_vmstate_load_field_error(field->name, ret);
->                      return ret;
->                  }
->              }
->          } else if (field->flags & VMS_MUST_EXIST) {
-> -            error_report("Input validation failed: %s/%s",
-> -                         vmsd->name, field->name);
-> +            error_setg(errp, "Input validation failed: %s/%s",
-> +                       vmsd->name, field->name);
-
-
-Inlucde the version_id too
-
->              return -1;
->          }
->          field++;
->      }
->      assert(field->flags == VMS_END);
-> -    ret = vmstate_subsection_load(f, vmsd, opaque, NULL);
-> +    ret = vmstate_subsection_load(f, vmsd, opaque, errp);
->      if (ret != 0) {
->          qemu_file_set_error(f, ret);
->          return ret;
->      }
->      if (vmsd->post_load) {
->          ret = vmsd->post_load(opaque, version_id);
-> +        if (ret < 0) {
-> +            error_setg(errp, "VM Post load failed : %d", ret);
-> +        }
-
-Suggest including
-
-  vmsd->name, version_id, vmsd->minimum_version_id
-
-
->      }
->      trace_vmstate_load_state_end(vmsd->name, "end", ret);
->      return ret;
+   "SaveVM v2 format is obsolete and no longer supported, file version %x != %x"
 
 
 
