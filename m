@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81864B093D2
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A47B093D7
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:23:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucTCo-0004eW-IU; Thu, 17 Jul 2025 14:19:42 -0400
+	id 1ucTCu-0004ib-Gc; Thu, 17 Jul 2025 14:19:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucQSM-0004cI-Tw
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:23:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1ucQSO-0004cj-9h
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:23:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucQSF-0004JO-HA
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:23:31 -0400
+ id 1ucQSI-0004Jm-Gn
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:23:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752765806;
+ s=mimecast20190719; t=1752765809;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7Xv86/Rz+8Kqo5xHCX7FN9w/MZvl13ciifCpIY3ePjE=;
- b=M4PoIYi6jcoP5/kxMXGg8JiU8E/v395pFo2/+Rx+o6nuoBEbNj1Qy5PbH8j7zX+3hqPgc/
- vGI5KZeYRKSamyqguIB90vY23rKOzt1Z9ZVB3ZaMI4rtip9X01rJjBx3ktB9pnMjL1aNn3
- zkHAjF0yW+9agdrakmpO4V/0zpNP61U=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SqG2DiLmplhxW74U3B4JYB/l83wKcoDTCpLDYKMWsIY=;
+ b=Q5LPT0PAy5ROfUOVav+h3KeQrNdR/DxpnGq4eXm3z0yjx+v19O1gwqKVkMeKnjtNS8OdO5
+ MMdm2YW+6HjSOjj8udkbzHkApTs7+JQ4Z4k7l4DgsmEyOgAtT9KswxraOMx2zliIj7Y7qp
+ KWy1B5G50rTN7Lcg1cpvUvsDznHX2Hc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-49-Dj8toFnjM8aeb2ghobf33g-1; Thu, 17 Jul 2025 11:23:24 -0400
-X-MC-Unique: Dj8toFnjM8aeb2ghobf33g-1
-X-Mimecast-MFC-AGG-ID: Dj8toFnjM8aeb2ghobf33g_1752765804
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-451ecc3be97so5630435e9.0
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 08:23:24 -0700 (PDT)
+ us-mta-114-HZUGwbhiNSisxlYag485lg-1; Thu, 17 Jul 2025 11:23:27 -0400
+X-MC-Unique: HZUGwbhiNSisxlYag485lg-1
+X-Mimecast-MFC-AGG-ID: HZUGwbhiNSisxlYag485lg_1752765806
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-451d7de4ae3so7434505e9.2
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 08:23:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752765803; x=1753370603;
+ d=1e100.net; s=20230601; t=1752765806; x=1753370606;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7Xv86/Rz+8Kqo5xHCX7FN9w/MZvl13ciifCpIY3ePjE=;
- b=NR5IiF3+y2t8ekzRI/zOOOzApwylu2ju5i/N6zd+lZrp73PxVD29kYphCit0fHnYJ6
- YNHkxdv4JM27HO4hw5r2JOigxmRoSfd0bWP0a17RBVCTyXzGL91w31GFZDSKoEMcCzX5
- iLJnmqQr5mbbk06GOK7kcV72e70K53RqbuijC38FmCALoD0Z5rvgk0Dobdp2/hEf5rml
- 5Lndk3MjmOk7I2RAH67owRP5+qKK5eUyDM52Hy0jtSyZQgf6SrfIte98+DbgO1mlzXib
- +7o6YWcZbsIRrI8cJ3LSgvsOK7AjEfw1qB3zG1WY5xjxWqT+cMjxdio4n6vpdeYkIgaa
- AfSA==
-X-Gm-Message-State: AOJu0YwQj/12zcd0eSSaLDBI2h8QfYodt22Z3HRvnGF8/Oqo2ZFBi7Ph
- GepUgDzYdg/K1YzNJIQkVnL957P2EeG0Li9ADSF1sDnaHoXwWBFd5elHx5DLa8PPHMJ8drVhObc
- TH17uF41MJ0sgHUo71ss8VFELnxWBRb+d6E7GGDTuyqxtKWFc7yhXiR9078Elgne6gF9KScMZdw
- ZcK1sL9tTz+c8EARHudTcHd5n4SBBJcgHS12L/YFRw
-X-Gm-Gg: ASbGncu8GCJ59gzIBFpVCqX3R58vGMUbbp+oaVUDw868jQ85TRte/8pDNvvjw2W7oS4
- DJbl7tAoh4FF8NzU2i64IwWNbFTMLsgCEBofqUpe367fEyzk67ubEqtctpxaR7VaJegoe0YJbsg
- gebx2tN1P2bsZm2/vQSPThPmVPKyoRoH2WwdXj7mUBIUl/j+0w8hSBU3ISO3clQt+0aWuTvXQu5
- wnVQCJCIXucDDciZ603YnTZ1eq73ab1z/93kzSiiDGxSEwgeH0bb0AfEQfiX1D+3nOd+nQzsguM
- p2hGRrFcj2lrPmfuCcC8rNtkR8pthUS9wW11WrznDDo=
-X-Received: by 2002:a05:600c:1c11:b0:43b:ca39:6c75 with SMTP id
- 5b1f17b1804b1-4562e274934mr82607785e9.16.1752765802785; 
- Thu, 17 Jul 2025 08:23:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHg2fJ0nfaWBUJ7ETJWQ7F0WDZ0q+rmglZ+3V/8Vv7YyA9j32WSBiYDzx6mf2uUBCvA3Ljl0g==
-X-Received: by 2002:a05:600c:1c11:b0:43b:ca39:6c75 with SMTP id
- 5b1f17b1804b1-4562e274934mr82607415e9.16.1752765802262; 
- Thu, 17 Jul 2025 08:23:22 -0700 (PDT)
+ bh=SqG2DiLmplhxW74U3B4JYB/l83wKcoDTCpLDYKMWsIY=;
+ b=lqdgFBbrFoDN5o6fR7MR/LkQXmX/tTxTzXVL23FWnrw7Xc61TDlkw/xrVk3jpcJIMc
+ utDtQamYKtNyj7oO1G+VcQCswug4CFVEdi7ly5yA1aPurTyXpiPHQnm2wgRNBbKch89Z
+ 6UKYiAvwU0UVyTsuWE9quNfBwDB8qzQi94PkdGk6vRzYDc2FafEeIVmAXaLpV/QLYAh0
+ piygrEQO7M9TfMQee35RPJZOFTwGNGJR4SK/VfO3DDO0Zg46LZFU4RjpEN6UkRft0tRx
+ x3AKOsFrrR0e01jCX+n40dUdqgLnlTNeP/EAP1iea5/xryDwpAWpn/hOim9T9Z/1j0GI
+ pLDQ==
+X-Gm-Message-State: AOJu0Yz1K0L2aiE2CIVyAiWGf/kjV4WcP0sDYv5wYRwBdUN1gJZxmYzr
+ ijCcnvjqBbeguyzPL0rAf3XYxBbThucESUa3Bjzw2AhS2eOXknmm9fKmdimW4EH8dai1fW+qqm/
+ qHXx2VKPOYHkIIdEiBBFsGv81/pHVlgLZsyWVT90NWMHXyDndAd+lQ2xdjmHxdtrHjqerFiWv/U
+ 4DCzQsBZFNaiKodbnzz3EiQOfk/8kRh6+RS3cfs7M8
+X-Gm-Gg: ASbGnctwA21DaCMS81buyIPkj4In/QO8WEo08WvgD4PfadTpus6icY/TtTYW05NEFuf
+ Zjes+h9DX4GJh/38bcM+hqNgobY+HJiTNyhbqJ9sp/EHCovprRRaUlOdVImX/1Noh4kxqnZSRyC
+ vr6S3ZwGtv9odTtl5yIp/0O2EZv6e55dB7k7l714Agxv9subcM/NJSI8HZ1BsfXJ0TbV8JhQVeC
+ YfqhIpkk9wK2YcJ1lJytF9zQssIcnYt5SHvXKFZj7uEB/1/pVjBiExMcanveZg2SlH9afaUjALE
+ 2nKkfPfxbs6u5+TT9yCgDxHd5B+y8lrWWKvj7oYcD90=
+X-Received: by 2002:a05:600c:450f:b0:456:19b2:6aa8 with SMTP id
+ 5b1f17b1804b1-4562e27497dmr82003955e9.19.1752765805963; 
+ Thu, 17 Jul 2025 08:23:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3T/LVF2KN+smCrvn0joUa8mhv8EM7POcMbCgIwKCjMzWv4zcCtN5TPP/D9zdUacM+VR/UKA==
+X-Received: by 2002:a05:600c:450f:b0:456:19b2:6aa8 with SMTP id
+ 5b1f17b1804b1-4562e27497dmr82003595e9.19.1752765805445; 
+ Thu, 17 Jul 2025 08:23:25 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45627962384sm46960205e9.2.2025.07.17.08.23.20
+ 5b1f17b1804b1-45634f6b1a0sm25064235e9.16.2025.07.17.08.23.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jul 2025 08:23:20 -0700 (PDT)
+ Thu, 17 Jul 2025 08:23:23 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Abeni <pabeni@redhat.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 2/6] i386/cpu: Move x86_ext_save_areas[] initialization to
- .instance_init
-Date: Thu, 17 Jul 2025 17:23:12 +0200
-Message-ID: <20250717152316.353049-3-pbonzini@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>, roy.hopkins@randomman.co.uk,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 3/6] meson: re-generate scripts/meson-buildoptions.sh to fix
+ IGVM entry
+Date: Thu, 17 Jul 2025 17:23:13 +0200
+Message-ID: <20250717152316.353049-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250717152316.353049-1-pbonzini@redhat.com>
 References: <20250717152316.353049-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,80 +109,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-In x86_cpu_post_initfn(), the initialization of x86_ext_save_areas[]
-marks the unsupported xsave areas based on Host support.
+Commit 84fe49d94a ("meson: Add optional dependency on IGVM library")
+was inconsistent with the contents of meson_options.txt and the one
+generated in scripts/meson-buildoptions.sh
 
-This step must be done before accel_cpu_instance_init(), otherwise,
-KVM's assertion on host xsave support would fail:
+Let's regenerate the file in this way to keep them consistent and prevent
+future changes from including the spurious diff:
 
-qemu-system-x86_64: ../target/i386/kvm/kvm-cpu.c:149:
-kvm_cpu_xsave_init: Assertion `esa->size == eax' failed.
+    touch meson_options.txt
+    make update-buildoptions
 
-(on AMD EPYC 7302 16-Core Processor)
-
-Move x86_ext_save_areas[] initialization to .instance_init and place it
-before accel_cpu_instance_init().
-
-Fixes: commit 5f158abef44c ("target/i386: move accel_cpu_instance_init to .instance_init")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Tested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250717023933.2502109-1-zhao1.liu@intel.com
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Fixes: 84fe49d94a ("meson: Add optional dependency on IGVM library")
+Cc: roy.hopkins@randomman.co.uk
+Reported-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20250717131256.157383-1-sgarzare@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ scripts/meson-buildoptions.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index da7d8dca633..251d5760a0b 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -9619,6 +9619,16 @@ static void x86_cpu_register_feature_bit_props(X86CPUClass *xcc,
- }
- 
- static void x86_cpu_post_initfn(Object *obj)
-+{
-+#ifndef CONFIG_USER_ONLY
-+    if (current_machine && current_machine->cgs) {
-+        x86_confidential_guest_cpu_instance_init(
-+            X86_CONFIDENTIAL_GUEST(current_machine->cgs), (CPU(obj)));
-+    }
-+#endif
-+}
-+
-+static void x86_cpu_init_xsave(void)
- {
-     static bool first = true;
-     uint64_t supported_xcr0;
-@@ -9639,13 +9649,6 @@ static void x86_cpu_post_initfn(Object *obj)
-             }
-         }
-     }
--
--#ifndef CONFIG_USER_ONLY
--    if (current_machine && current_machine->cgs) {
--        x86_confidential_guest_cpu_instance_init(
--            X86_CONFIDENTIAL_GUEST(current_machine->cgs), (CPU(obj)));
--    }
--#endif
- }
- 
- static void x86_cpu_init_default_topo(X86CPU *cpu)
-@@ -9715,6 +9718,11 @@ static void x86_cpu_initfn(Object *obj)
-         x86_cpu_load_model(cpu, xcc->model);
-     }
- 
-+    /*
-+     * accel's cpu_instance_init may have the xsave check,
-+     * so x86_ext_save_areas[] must be initialized before this.
-+     */
-+    x86_cpu_init_xsave();
-     accel_cpu_instance_init(CPU(obj));
- }
- 
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index e8504689e80..0ebe6bc52a6 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -130,7 +130,7 @@ meson_options_help() {
+   printf "%s\n" '  hv-balloon      hv-balloon driver (requires Glib 2.68+ GTree API)'
+   printf "%s\n" '  hvf             HVF acceleration support'
+   printf "%s\n" '  iconv           Font glyph conversion support'
+-  printf "%s\n" '  igvm            IGVM file support'
++  printf "%s\n" '  igvm            Independent Guest Virtual Machine (IGVM) file support'
+   printf "%s\n" '  jack            JACK sound support'
+   printf "%s\n" '  keyring         Linux keyring support'
+   printf "%s\n" '  kvm             KVM acceleration support'
 -- 
 2.50.1
 
