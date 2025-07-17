@@ -2,96 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6729AB08A3D
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:05:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB31B08A3E
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:05:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLTm-0001lw-Hf; Thu, 17 Jul 2025 06:04:42 -0400
+	id 1ucLTu-0002XQ-Oc; Thu, 17 Jul 2025 06:04:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ucLTL-0001UK-Kc
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:04:15 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ucLTJ-0005db-DE
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:04:15 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-ad572ba1347so115062666b.1
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 03:04:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752746651; x=1753351451; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mWBKCFK1cZMBxegyF04FtHgxoVcZCsmSJZ3sN8URrZc=;
- b=CoctvwnAV3HVyNMk9SSsds9IAfJyUIIZ58xqE7MzvqCWSPXax+pvtJoyp1PITVOYfo
- JUcX4gpIeUb2+OUq4gvKIfirROzzYhQFbL9Zcda86hfjWLK58YPoJPCt2CAttNhQ67GW
- jgumR/iJXMfz3bC88Nkf2gBAtJOr0jUjye24w/4wH9QMNomM8tc7qtidduta/99OwN3t
- +GXINLdXPH5tqGbxjYx/1Z7MxU0RfVdHrwU+bLXS214t9vrsRRyaLOtx9/GklrPFtwAH
- jxaMvKe5sMG1Ygr+6KVE25Gz9806AwGSTGQpr4nFYz6cbbHRj1HXDL8sj625HTrVCOVB
- 6Y5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752746651; x=1753351451;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=mWBKCFK1cZMBxegyF04FtHgxoVcZCsmSJZ3sN8URrZc=;
- b=xTcG7vCMuNhEGrBimka8jHjoVRQdzvmSif6/OEKmXxjL36Uq7CHdhs5EIr4ZLg0Pmk
- d2euEwXEFiXxcp41TIizKIj1BGhgZUx9cUWeo/ovaerrizmoiln6MiPb/DdYiMmgfm6N
- 0vhNMCx6jrLZcOPCcCGmOzF9DMOJptpwzBeVfsKrgpYXU7GI6Tt4LMvci51p2wAM9/kd
- GH9M5Q7e/CweUf/d9PX5V/ujtD4E+Q7Vg/S703ozVwC+4HHqKhoHYGcVVqvEgOxZz6p1
- wl9Krwn6m9vZf0qdb38f+03X+JLDF8oJmfquwqfpWtxSNJSrCk957G/96PblO/q3jlgC
- AWyg==
-X-Gm-Message-State: AOJu0YxTReq0gjiaG7dYZWfByGVIrgNGAGf9SnpKHP/uMQNXLm2rDeTh
- s+hetbn4aBxK0zRJ2tvUxE2hWYYujhfDlZN4Msgs+1NwxnjqBw8ZDJElOiczTVxEltI=
-X-Gm-Gg: ASbGncticisrBqs5vzKpbMprnQjGtzGG7vkRCoyNft4qSKOznSgvGAzy1JxgrqVtdNC
- sePgWQ6kANG6wGY0qx/YzLePboysMhkjYPPY2KRCGwQlG7Y6pCPy1ubiIRv/WouN1QrpUZ9NSJY
- Ebq8GHp+V0zX5M/bvsPblsh30ajWzJfcI0aDXtjOqmO2VWk775ZiRmpL8Tkbj8sjHS8soLiItXK
- gGEW9bI6GZM8W58LdEOKDgTSfKw/Iasjev2DrWflRxhtG1R/7oIaXkp+KAJtAxg4aOwuVd3o6Sd
- 4md8jcvwzL7o9TfT/YoaEdA7dkdTsYygD44NDeiff2wuoZYN8NsVLVxT3ljoXQiUeIscexZsRRA
- yceViNxQjVjDIWjZc0JK61yU=
-X-Google-Smtp-Source: AGHT+IG2m49Xsxsl5Akp9nZn1KxhgVA0PuuMuOg8GOvXZubUVcg9V4NXBGVOKn9TIxXODIlNobQTHg==
-X-Received: by 2002:a17:907:7286:b0:ae3:a799:8e84 with SMTP id
- a640c23a62f3a-ae9cddaa532mr507297466b.8.1752746651209; 
- Thu, 17 Jul 2025 03:04:11 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae6e826469asm1321299366b.85.2025.07.17.03.04.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jul 2025 03:04:10 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 992975F812;
- Thu, 17 Jul 2025 11:04:09 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH] tests/functional: add --debug CLI arg
-In-Reply-To: <CAAjaMXapnp2b2QJ2BGRF636vtY5fNEjmxiC2hgZbA4rTzhmM1Q@mail.gmail.com>
- (Manos Pitsidianakis's message of "Thu, 17 Jul 2025 11:47:12 +0300")
-References: <20250716-functional_tests_debug_arg-v1-1-6a9cd68318bb@linaro.org>
- <87ms93xl69.fsf@draig.linaro.org>
- <CAAjaMXapnp2b2QJ2BGRF636vtY5fNEjmxiC2hgZbA4rTzhmM1Q@mail.gmail.com>
-User-Agent: mu4e 1.12.11; emacs 30.1
-Date: Thu, 17 Jul 2025 11:04:09 +0100
-Message-ID: <87h5zbxheu.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ucLTo-0002IH-Aw
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:04:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ucLTl-0005go-6w
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:04:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752746678;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KpKvPUOPJzeK0RYyhaYtz/Zt9bRWzjzVaa0I11VTKA0=;
+ b=chSAS3evpPZsjRt+wNDB69y867n4frPSTbW1mWptXv1eYYDnIyk+Lf5UtvivI279EktAbe
+ sRaetuXS9A5GYgmJE86zBZSfw0qkSAIXNRnJQ5x2k26rXF8tKwnOlg0ZqL1lRp1NI/5/je
+ XRPbembOIWrvwvUNfNTGFhIyrurdax8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-Qi9t1MP2Oqm9ViLVbrCv2Q-1; Thu,
+ 17 Jul 2025 06:04:35 -0400
+X-MC-Unique: Qi9t1MP2Oqm9ViLVbrCv2Q-1
+X-Mimecast-MFC-AGG-ID: Qi9t1MP2Oqm9ViLVbrCv2Q_1752746674
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7A32C19560B0; Thu, 17 Jul 2025 10:04:34 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1653B18003FC; Thu, 17 Jul 2025 10:04:34 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 85D5521E6A27; Thu, 17 Jul 2025 12:04:31 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  eblake@redhat.com,  michael.roth@amd.com,
+ kkostiuk@redhat.com,  jsnow@redhat.com
+Subject: Re: [PATCH 4/4] qga: Add cross-references
+In-Reply-To: <aHi053WApxOX3XkY@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Thu, 17 Jul 2025 09:31:35 +0100")
+References: <20250717082117.3767754-1-armbru@redhat.com>
+ <20250717082117.3767754-5-armbru@redhat.com>
+ <aHi053WApxOX3XkY@redhat.com>
+Date: Thu, 17 Jul 2025 12:04:31 +0200
+Message-ID: <87ikjrkua8.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,136 +88,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> On Thu, Jul 17, 2025 at 11:42=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@li=
-naro.org> wrote:
->>
->> Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
->>
->> > Add argument parsing to functional tests to improve developer experien=
-ce
->> > when running individual tests. All logs are printed to stdout
->> > interspersed with TAP output.
->> >
->> >   ./pyvenv/bin/python3 ../tests/functional/test_aarch64_virt.py --help
->> >   usage: test_aarch64_virt [-h] [-d]
->>
->> Am I holding it wrong?
->>
->>   =E2=9E=9C  ./pyvenv/bin/python ../../tests/functional/test_aarch64_vir=
-t.py --help
->>   Traceback (most recent call last):
->>     File "/home/alex/lsrc/qemu.git/builds/all/../../tests/functional/tes=
-t_aarch64_virt.py", line 16, in <module>
->>       from qemu_test import QemuSystemTest, Asset, exec_command_and_wait=
-_for_pattern
->>     File "/home/alex/lsrc/qemu.git/tests/functional/qemu_test/__init__.p=
-y", line 14, in <module>
->>       from .testcase import QemuBaseTest, QemuUserTest, QemuSystemTest
->>     File "/home/alex/lsrc/qemu.git/tests/functional/qemu_test/testcase.p=
-y", line 26, in <module>
->>       from qemu.machine import QEMUMachine
->>   ModuleNotFoundError: No module named 'qemu'
->>
->> I thought the point of the venv is we had all the modules we need
->> automatically available to the PYTHONPATH?
+> On Thu, Jul 17, 2025 at 10:21:17AM +0200, Markus Armbruster wrote:
+>> Enclose command and type names in `backquotes`, so they become links
+>> in generated HTML.
+>>=20
+>> We did this for qapi/ in merge commit 504632dcc631.
+>>=20
+>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>> ---
+>>  qga/qapi-schema.json | 50 ++++++++++++++++++++++----------------------
+>>  1 file changed, 25 insertions(+), 25 deletions(-)
 >
-> Is PYTHONPATH exported? Check that you've done the instructions
-> detailed here:
-> https://www.qemu.org/docs/master/devel/testing/functional.html#running-te=
-sts
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>
+>
+>> @@ -585,7 +585,7 @@
+>>  # - pm-utils (via pm-hibernate)
+>>  # - manual write into sysfs
+>>  #
+>> -# IMPORTANT: guest-suspend-ram requires working wakeup support in
+>> +# IMPORTANT: `guest-suspend-ram` requires working wakeup support in
+>>  # QEMU. You should check QMP command query-current-machine returns
+>>  # wakeup-suspend-support: true before issuing this command.  Failure
+>
+> I presume you're not updating 'query-current-machine' and
+> 'wakeup-suspend-support' due to an inability do cross references
+> across the two QAPI schemas ?
 
-We should probably include enough in the commit message so a blind copy
-and paste works, or at least indicates you need more setup to run the
-test:
+I'm not updating them because I missed them!
 
-  set -x PYTHONPATH ../../python:../../tests/functional/
-  env QEMU_TEST_QEMU_BINARY=3D./qemu-system-aarch64 ./pyvenv/bin/python ../=
-../tests/functional/test_aarch64_virt.py --debug
+Putting query-current-machine in backquotes just works.  There are a few
+more.  I'll respin.
 
->>
->> >
->> >   QEMU Functional test
->> >
->> >   options:
->> >     -h, --help   show this help message and exit
->> >     -d, --debug  Also print test and console logs on stdout. This will
->> >                  make the TAP output invalid and is meant for debugging
->> >                  only.
->> >
->> > Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->> > ---
->> >  docs/devel/testing/functional.rst      |  2 ++
->> >  tests/functional/qemu_test/testcase.py | 51 +++++++++++++++++++++++++=
-+++++++--
->> >  2 files changed, 50 insertions(+), 3 deletions(-)
->> >
->> > diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/fu=
-nctional.rst
->> > index 9e56dd1b1189216b9b4aede00174c15203f38b41..9d08abe2848277d635befb=
-0296f578cfaa4bd66d 100644
->> > --- a/docs/devel/testing/functional.rst
->> > +++ b/docs/devel/testing/functional.rst
->> > @@ -63,6 +63,8 @@ directory should be your build folder. For example::
->> >    $ export QEMU_TEST_QEMU_BINARY=3D$PWD/qemu-system-x86_64
->> >    $ pyvenv/bin/python3 ../tests/functional/test_file.py
->> >
->> > +By default, functional tests redirect informational logs and console =
-output to
->> > +log files. Specify the ``--debug`` flag to also print those to standa=
-rd output.
->> >  The test framework will automatically purge any scratch files created=
- during
->> >  the tests. If needing to debug a failed test, it is possible to keep =
-these
->> >  files around on disk by setting ```QEMU_TEST_KEEP_SCRATCH=3D1``` as a=
-n env
->> > diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional=
-/qemu_test/testcase.py
->> > index 2082c6fce43b0544d4e4258cd4155f555ed30cd4..fad7a946c6677e9ef5c42b=
-8f77187ba836c11aeb 100644
->> > --- a/tests/functional/qemu_test/testcase.py
->> > +++ b/tests/functional/qemu_test/testcase.py
->> > @@ -11,6 +11,7 @@
->> >  # This work is licensed under the terms of the GNU GPL, version 2 or
->> >  # later.  See the COPYING file in the top-level directory.
->> >
->> > +import argparse
->> >  import logging
->> >  import os
->> >  from pathlib import Path
->> > @@ -31,6 +32,20 @@
->> >  from .uncompress import uncompress
->> >
->> >
->> > +def parse_args(test_name: str) -> argparse.Namespace:
->> > +    parser =3D argparse.ArgumentParser(
->> > +        prog=3Dtest_name, description=3D"QEMU Functional test"
->> > +    )
->> > +    parser.add_argument(
->> > +        "-d",
->> > +        "--debug",
->> > +        action=3D"store_true",
->> > +        help=3D"Also print test and console logs on stdout. This will=
- make the"
->> > +        " TAP output invalid and is meant for debugging only.",
->> > +    )
->> > +    return parser.parse_args()
->> > +
->> > +
+I don't know how to reference a member of a type from outside the type.
+Left for later.
 
-I'm definitely onboard for improving the ergonomics of calling the tests
-directly. Others to consider:
+Thanks!
 
-  - triggering the behaviour of QEMU_TEST_KEEP_SCRATCH
-  - dumping the command line without the test harness QMP/serial pipes conn=
-ected
-
-
-<snip>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
