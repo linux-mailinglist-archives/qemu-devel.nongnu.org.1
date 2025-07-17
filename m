@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3428B08A15
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B97CAB089AF
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:48:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLGd-00055H-VA; Thu, 17 Jul 2025 05:51:08 -0400
+	id 1ucLDp-0006Ba-DD; Thu, 17 Jul 2025 05:48:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL1F-00027o-Ih; Thu, 17 Jul 2025 05:35:16 -0400
+ id 1ucL1Q-0002L6-F0; Thu, 17 Jul 2025 05:35:26 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL1B-00023A-Pb; Thu, 17 Jul 2025 05:35:12 -0400
+ id 1ucL1F-00023n-SW; Thu, 17 Jul 2025 05:35:23 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 10A69137CF4;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1F37A137CF5;
  Thu, 17 Jul 2025 12:34:05 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E7F242491EE;
- Thu, 17 Jul 2025 12:34:12 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 01C172491EF;
+ Thu, 17 Jul 2025 12:34:13 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
  Vasant Hegde <vasant.hegde@amd.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 52/65] amd_iommu: Fix Device ID decoding for
- INVALIDATE_IOTLB_PAGES command
-Date: Thu, 17 Jul 2025 12:33:48 +0300
-Message-ID: <20250717093412.728292-13-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 53/65] amd_iommu: Update bitmasks representing DTE
+ reserved fields
+Date: Thu, 17 Jul 2025 12:33:49 +0300
+Message-ID: <20250717093412.728292-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
@@ -61,42 +61,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-The DeviceID bits are extracted using an incorrect offset in the call to
-amdvi_iotlb_remove_page(). This field is read (correctly) earlier, so use
-the value already retrieved for devid.
+The DTE validation method verifies that all bits in reserved DTE fields are
+unset. Update them according to the latest definition available in AMD I/O
+Virtualization Technology (IOMMU) Specification - Section 2.2.2.1 Device
+Table Entry Format. Remove the magic numbers and use a macro helper to
+generate bitmasks covering the specified ranges for better legibility.
+
+Note that some reserved fields specify that events are generated when they
+contain non-zero bits, or checks are skipped under certain configurations.
+This change only updates the reserved masks, checks for special conditions
+are not yet implemented.
 
 Cc: qemu-stable@nongnu.org
-Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250617150427.20585-3-alejandro.j.jimenez@oracle.com>
+Message-Id: <20250617150427.20585-4-alejandro.j.jimenez@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit c63b8d1425ba8b3b08ee4f7346457fd8a7f12a24)
+(cherry picked from commit ff3dcb3bf652912466dcc1cd10d3267f185c212e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index af85706b8a..de55074b21 100644
+index de55074b21..69d69a9b2d 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -508,7 +508,7 @@ static void amdvi_inval_inttable(AMDVIState *s, uint64_t *cmd)
- static void iommu_inval_iotlb(AMDVIState *s, uint64_t *cmd)
+@@ -848,9 +848,10 @@ static inline uint64_t amdvi_get_perms(uint64_t entry)
+ static bool amdvi_validate_dte(AMDVIState *s, uint16_t devid,
+                                uint64_t *dte)
  {
+-    if ((dte[0] & AMDVI_DTE_LOWER_QUAD_RESERVED)
+-        || (dte[1] & AMDVI_DTE_MIDDLE_QUAD_RESERVED)
+-        || (dte[2] & AMDVI_DTE_UPPER_QUAD_RESERVED) || dte[3]) {
++    if ((dte[0] & AMDVI_DTE_QUAD0_RESERVED) ||
++        (dte[1] & AMDVI_DTE_QUAD1_RESERVED) ||
++        (dte[2] & AMDVI_DTE_QUAD2_RESERVED) ||
++        (dte[3] & AMDVI_DTE_QUAD3_RESERVED)) {
+         amdvi_log_illegaldevtab_error(s, devid,
+                                       s->devtab +
+                                       devid * AMDVI_DEVTAB_ENTRY_SIZE, 0);
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 921f7e1a4f..60af62bef6 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -25,6 +25,8 @@
+ #include "hw/i386/x86-iommu.h"
+ #include "qom/object.h"
  
--    uint16_t devid = extract64(cmd[0], 0, 16);
-+    uint16_t devid = cpu_to_le16(extract64(cmd[0], 0, 16));
-     if (extract64(cmd[1], 1, 1) || extract64(cmd[1], 3, 1) ||
-         extract64(cmd[1], 6, 6)) {
-         amdvi_log_illegalcom_error(s, extract64(cmd[0], 60, 4),
-@@ -521,7 +521,7 @@ static void iommu_inval_iotlb(AMDVIState *s, uint64_t *cmd)
-                                     &devid);
-     } else {
-         amdvi_iotlb_remove_page(s, cpu_to_le64(extract64(cmd[1], 12, 52)) << 12,
--                                cpu_to_le16(extract64(cmd[1], 0, 16)));
-+                                devid);
-     }
-     trace_amdvi_iotlb_inval();
- }
++#define GENMASK64(h, l)  (((~0ULL) >> (63 - (h) + (l))) << (l))
++
+ /* Capability registers */
+ #define AMDVI_CAPAB_BAR_LOW           0x04
+ #define AMDVI_CAPAB_BAR_HIGH          0x08
+@@ -162,9 +164,10 @@
+ #define AMDVI_FEATURE_PC                  (1ULL << 9) /* Perf counters       */
+ 
+ /* reserved DTE bits */
+-#define AMDVI_DTE_LOWER_QUAD_RESERVED  0x80300000000000fc
+-#define AMDVI_DTE_MIDDLE_QUAD_RESERVED 0x0000000000000100
+-#define AMDVI_DTE_UPPER_QUAD_RESERVED  0x08f0000000000000
++#define AMDVI_DTE_QUAD0_RESERVED        (GENMASK64(6, 2) | GENMASK64(63, 63))
++#define AMDVI_DTE_QUAD1_RESERVED        0
++#define AMDVI_DTE_QUAD2_RESERVED        GENMASK64(53, 52)
++#define AMDVI_DTE_QUAD3_RESERVED        (GENMASK64(14, 0) | GENMASK64(53, 48))
+ 
+ /* AMDVI paging mode */
+ #define AMDVI_GATS_MODE                 (2ULL <<  12)
 -- 
 2.47.2
 
