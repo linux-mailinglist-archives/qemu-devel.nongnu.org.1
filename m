@@ -2,60 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5631AB087D5
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 10:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AACB087D2
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 10:22:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucJsZ-0005lq-Ve; Thu, 17 Jul 2025 04:22:13 -0400
+	id 1ucJsW-0005de-Rc; Thu, 17 Jul 2025 04:22:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ucJru-0005Cf-TS
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:21:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ucJrv-0005D3-8W
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:21:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ucJrq-0000wj-NV
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ucJrr-0000wr-AY
  for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:21:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1752740485;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Jz+uAt/0NPmH6HIiMA9hHifRk4wyBRNvnaHaVXqjdsg=;
- b=aGLCQShy4bzBfYmIjduXPffXno6iRQ24vrx5F6zTAZsQJG0oqfB0LLldgo9IUdaq7AYcuw
- Wl1nzXhT/VTD5eT1y8VU85vYrCQal5eHaNTkByVKaS5Kwptcp7DBe6SOd7z90R8ZohdNZ2
- pM5uIw4vIINJ//erJZRGJCTI/QYWZxA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Yj9/HwS3k1M0O5YACAdx/JDck9GGndfhiwLtBfQycmo=;
+ b=BZhG8WU0veOH4YZh3JaPyEAb+NfiS+IkbvAtPJm4lFgRdtgg5dBWAmQRREOcZDDB/0IUee
+ FzvSlFycBuHlLDgDFbIePucqR6BF0+0/Af6zCn1RTx3uIWKhEeQKBCxLTNmbcO2fHYPbkg
+ 79JikmZD6kecGNQIRsCCU3mPnbufbD4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-417-4UExQNgVM5S_uZXzhy3etw-1; Thu,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-Ury0_haMP6ONbePMz1xX5w-1; Thu,
  17 Jul 2025 04:21:21 -0400
-X-MC-Unique: 4UExQNgVM5S_uZXzhy3etw-1
-X-Mimecast-MFC-AGG-ID: 4UExQNgVM5S_uZXzhy3etw_1752740481
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+X-MC-Unique: Ury0_haMP6ONbePMz1xX5w-1
+X-Mimecast-MFC-AGG-ID: Ury0_haMP6ONbePMz1xX5w_1752740481
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D8CCC1800284; Thu, 17 Jul 2025 08:21:20 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F20D51800C37; Thu, 17 Jul 2025 08:21:20 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 66AA71956089; Thu, 17 Jul 2025 08:21:20 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 79F6730001B9; Thu, 17 Jul 2025 08:21:20 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AE49321E6A27; Thu, 17 Jul 2025 10:21:17 +0200 (CEST)
+ id B07B521E6924; Thu, 17 Jul 2025 10:21:17 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: eblake@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
  jsnow@redhat.com
-Subject: [PATCH 0/4] qga: Doc fixes and improvements
-Date: Thu, 17 Jul 2025 10:21:13 +0200
-Message-ID: <20250717082117.3767754-1-armbru@redhat.com>
+Subject: [PATCH 1/4] qga: Fix guest-network-get-route return value
+ documentation
+Date: Thu, 17 Jul 2025 10:21:14 +0200
+Message-ID: <20250717082117.3767754-2-armbru@redhat.com>
+In-Reply-To: <20250717082117.3767754-1-armbru@redhat.com>
+References: <20250717082117.3767754-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,17 +83,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series touches only doc comments.  I'd like to get it into 10.1.
+Tagged sections are only recognized at the beginning of a paragraph.
+guest-network-get-route's Returns: isn't, and therefore gets rendered
+as ordinary text within its paragraph:
 
-Markus Armbruster (4):
-  qga: Fix guest-network-get-route return value documentation
-  qga: Remove trivial "Returns:" sections
-  qga: Rephrase return docs to avoid type name
-  qga: Add cross-references
+    Retrieve information about route of network. Returns: List of route
+    info of guest.
 
- qga/qapi-schema.json | 79 +++++++++++++++-----------------------------
- 1 file changed, 27 insertions(+), 52 deletions(-)
+Since there is no (recognized) Returns: section, the doc generator
+adds
 
+    Return:
+       [GuestNetworkRoute]
+
+Note: only since recent commit 636c96cd77d (qapi: Fix undocumented
+return values by generating something).
+
+Insert the required blank line so that Returns: is recognized.
+Result:
+
+    Retrieve information about route of network.
+
+    Return:
+       [GuestNetworkRoute] -- List of route info of guest.
+
+Fixes: commit 8e326d36dd16 (qga/linux: Add new api 'guest-network-get-route')
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ qga/qapi-schema.json | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+index 6d770f7b8e..a569a14b55 100644
+--- a/qga/qapi-schema.json
++++ b/qga/qapi-schema.json
+@@ -1966,6 +1966,7 @@
+ # @guest-network-get-route:
+ #
+ # Retrieve information about route of network.
++#
+ # Returns: List of route info of guest.
+ #
+ # Since: 9.1
 -- 
 2.49.0
 
