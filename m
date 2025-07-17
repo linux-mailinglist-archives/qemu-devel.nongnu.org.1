@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79CEB094F9
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66297B094B1
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:16:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucUFh-0008GH-Ho; Thu, 17 Jul 2025 15:26:46 -0400
+	id 1ucU5F-0001bC-Mk; Thu, 17 Jul 2025 15:15:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucRdB-0002RU-41
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:38:49 -0400
+ id 1ucRli-0006Nn-BI
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:47:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucRd8-0006Sv-IV
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:38:48 -0400
+ id 1ucRlc-0007ga-Qj
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:47:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752770325;
+ s=mimecast20190719; t=1752770850;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=nMpR9U8nwhCjPwTac4K009c9q9PV6YlKYQM6l0cuPmE=;
- b=RcFSwesxJPAnSttEObqG6RcHReuy4gH6vKfh7gM6kGpvt3b4wSQ/YQGHL/ZUySvmQ6/Pum
- xzfXmhJSb6mE5lI4NwRYXCCGugpz9fny0Yy/JJHD3ZqNjcJa9sXlIGZQY4MMxrNbw2ebCg
- gMQw7L70a71oPE1MPVwkrXunYIf6JNs=
+ bh=OJN8WFZzIKWAMGTwLIqnbzlDiBycrjA3Hh6NYFnam/Q=;
+ b=Mj6BBODqwImykqM3QqqQetCFb3tMAl7jbDTpW3WSXGmvPY5d3T4TeP2IS5Y+QSFQu60FM/
+ Rn4Vswpwd8bZyL/0lXzPr0RWAxhw5EiNGlyMWJ6WzpiIeL/XsXWN5ifbPOGPWfITXWPtYd
+ EuCIDzJZAu2abuZ+5Q7GL0Bi0yAuhO8=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-tFdAdyY7Ng-DZunFmZTA9Q-1; Thu,
- 17 Jul 2025 12:38:41 -0400
-X-MC-Unique: tFdAdyY7Ng-DZunFmZTA9Q-1
-X-Mimecast-MFC-AGG-ID: tFdAdyY7Ng-DZunFmZTA9Q_1752770319
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-SN2gu41IMtSMyxve2Tq5Kg-1; Thu,
+ 17 Jul 2025 12:47:27 -0400
+X-MC-Unique: SN2gu41IMtSMyxve2Tq5Kg-1
+X-Mimecast-MFC-AGG-ID: SN2gu41IMtSMyxve2Tq5Kg_1752770844
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 21F6319560AD; Thu, 17 Jul 2025 16:38:39 +0000 (UTC)
+ id C4B4619560AA; Thu, 17 Jul 2025 16:47:23 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.171])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E60871966650; Thu, 17 Jul 2025 16:38:31 +0000 (UTC)
-Date: Thu, 17 Jul 2025 17:38:28 +0100
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 89A53180045B; Thu, 17 Jul 2025 16:47:15 +0000 (UTC)
+Date: Thu, 17 Jul 2025 17:47:12 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Arun Menon <armenon@redhat.com>
 Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -70,16 +70,17 @@ Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>
-Subject: Re: [PATCH v5 04/23] migration: push Error **errp into vmstate_load()
-Message-ID: <aHknBAvqiuNzripC@redhat.com>
+Subject: Re: [PATCH v5 05/23] migration: push Error **errp into
+ qemu_loadvm_section_start_full()
+Message-ID: <aHkpEGCl-tVN1tLF@redhat.com>
 References: <20250717-propagate_tpm_error-v5-0-1f406f88ee65@redhat.com>
- <20250717-propagate_tpm_error-v5-4-1f406f88ee65@redhat.com>
+ <20250717-propagate_tpm_error-v5-5-1f406f88ee65@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250717-propagate_tpm_error-v5-4-1f406f88ee65@redhat.com>
+In-Reply-To: <20250717-propagate_tpm_error-v5-5-1f406f88ee65@redhat.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -106,43 +107,48 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 17, 2025 at 06:07:27AM +0530, Arun Menon wrote:
+On Thu, Jul 17, 2025 at 06:07:28AM +0530, Arun Menon wrote:
 > This is an incremental step in converting vmstate loading
 > code to report error via Error objects instead of directly
 > printing it to console/monitor.
-> It is ensured that vmstate_load() must report an error
+> It is ensured that qemu_loadvm_section_start_full() must report an error
 > in errp, in case of failure.
 > 
 > Signed-off-by: Arun Menon <armenon@redhat.com>
 > ---
->  migration/savevm.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  migration/savevm.c | 34 ++++++++++++++++++----------------
+>  1 file changed, 18 insertions(+), 16 deletions(-)
 > 
 > diff --git a/migration/savevm.c b/migration/savevm.c
-> index 3ccbc724eb808db09b77088a858ecc7f06b21155..1c1a46e4a01f812b559c451d278916426aa1cf40 100644
+> index 1c1a46e4a01f812b559c451d278916426aa1cf40..63125971751394b72efc9bcaf7c4364715eef07f 100644
 > --- a/migration/savevm.c
 > +++ b/migration/savevm.c
-> @@ -963,14 +963,14 @@ void vmstate_unregister(VMStateIf *obj, const VMStateDescription *vmsd,
->      }
->  }
->  
-> -static int vmstate_load(QEMUFile *f, SaveStateEntry *se)
-> +static int vmstate_load(QEMUFile *f, SaveStateEntry *se, Error **errp)
->  {
->      trace_vmstate_load(se->idstr, se->vmsd ? se->vmsd->name : "(old)");
->      if (!se->vmsd) {         /* Old style */
->          return se->ops->load_state(f, se->opaque, se->load_version_id);
+> @@ -2684,7 +2684,7 @@ static bool check_section_footer(QEMUFile *f, SaveStateEntry *se)
 
-This method can return a failure code, so we need error_setg() here
-surely ? (and later augment/replace 'load_state' with a variant that
-has an "errp" parameter)
-
->      }
->      return vmstate_load_state(f, se->vmsd, se->opaque, se->load_version_id,
-> -                              NULL);
-> +                              errp);
->  }
+> @@ -2705,8 +2705,8 @@ qemu_loadvm_section_start_full(QEMUFile *f, uint8_t type)
 >  
+>      ret = qemu_file_get_error(f);
+>      if (ret) {
+> -        error_report("%s: Failed to read instance/version ID: %d",
+> -                     __func__, ret);
+> +        error_setg(errp, "%s: Failed to read instance/version ID: %d",
+> +                   __func__, ret);
+
+If we're going to use "__func__" in error messages, it should be done
+universally, not as a one-off. IMHO, it is almost always not desirable
+though, as error messages ought to be expressive enough to not need
+the C function name included.  IOW, just drop __func__, it is fine
+without it here.
+
+> @@ -2755,6 +2756,7 @@ qemu_loadvm_section_start_full(QEMUFile *f, uint8_t type)
+>      }
+>  
+>      if (!check_section_footer(f, se)) {
+> +        error_setg(errp, "Reading footer section failed");
+
+Since we have them from earlier, can you include things like
+idstr, instance_id, version_id as context.
+
 
 With regards,
 Daniel
