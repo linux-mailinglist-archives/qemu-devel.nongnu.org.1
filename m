@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74721B09542
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E626CB09556
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 22:03:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucUhR-0002JA-J9; Thu, 17 Jul 2025 15:55:25 -0400
+	id 1ucUoC-0007Ey-HC; Thu, 17 Jul 2025 16:02:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucSDU-0004vW-QW
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:16:31 -0400
+ id 1ucSEh-0005uI-CE
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:17:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucSDR-0003ME-OV
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:16:19 -0400
+ id 1ucSEe-0003Ty-Sb
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:17:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752772575;
+ s=mimecast20190719; t=1752772652;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7SuB/cREXgU5ziinBD1sAM0hF24tnG1KNTw427GwJXM=;
- b=GO9jjkYk+mTS24X3AQKeo5oVukC9mWjTBDlPgYC3udTzCw3HXYyxAq9aOufKoyRz15Pijw
- vW+8DcoLil3hX883td4YR2TDkNP6RLaFFDNYw/ix1zZJZno7p+9KQ1R1yMy+eWbXY7dZ1L
- c/toPG1Ok2q6eD0wbyFBkqHRwO8uijM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=NYOVhoPPpQEYR2teZAkfHcQNKz+WsbhUpZ10inE+7ao=;
+ b=LrcUK6nk3JI2qldM0z83YoSiJhQ+misODe4ENIUJTGKTh79g9+bqvD6dw/CZ2gQ5J+wR3u
+ qEDGragON+dIY/NZxlENZmmbRClP5cP3XL2KqjhXyt6mH9s9lyyHhj6yd9ZvuSOcCBX/nT
+ lSOD5AIKWd6GGpVlUjrBX0b5fwIW+T4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-9jcJMzYPO8-4nB696dAQlA-1; Thu,
- 17 Jul 2025 13:16:12 -0400
-X-MC-Unique: 9jcJMzYPO8-4nB696dAQlA-1
-X-Mimecast-MFC-AGG-ID: 9jcJMzYPO8-4nB696dAQlA_1752772570
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-pQVBrhJeOWOQCaf7x_yonA-1; Thu,
+ 17 Jul 2025 13:17:28 -0400
+X-MC-Unique: pQVBrhJeOWOQCaf7x_yonA-1
+X-Mimecast-MFC-AGG-ID: pQVBrhJeOWOQCaf7x_yonA_1752772645
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D23D01944D01; Thu, 17 Jul 2025 17:16:09 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9CA0219560A2; Thu, 17 Jul 2025 17:17:25 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.171])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B59A818002B6; Thu, 17 Jul 2025 17:16:01 +0000 (UTC)
-Date: Thu, 17 Jul 2025 18:15:58 +0100
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EF3BF196664F; Thu, 17 Jul 2025 17:17:17 +0000 (UTC)
+Date: Thu, 17 Jul 2025 18:17:14 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Arun Menon <armenon@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+To: Arun Menon <armenon@redhat.com>, qemu-devel@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>,
@@ -72,18 +72,19 @@ Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>
-Subject: Re: [PATCH v5 14/23] migration: make loadvm_postcopy_handle_resume()
- void
-Message-ID: <aHkvzlFOMYTKdyu1@redhat.com>
+Subject: Re: [PATCH v5 07/23] migration: push Error **errp into
+ loadvm_process_command()
+Message-ID: <aHkwGi8Pe5pnxd6R@redhat.com>
 References: <20250717-propagate_tpm_error-v5-0-1f406f88ee65@redhat.com>
- <20250717-propagate_tpm_error-v5-14-1f406f88ee65@redhat.com>
+ <20250717-propagate_tpm_error-v5-7-1f406f88ee65@redhat.com>
+ <aHkqxfMNeA6_YSBP@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250717-propagate_tpm_error-v5-14-1f406f88ee65@redhat.com>
+In-Reply-To: <aHkqxfMNeA6_YSBP@redhat.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -93,7 +94,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,37 +111,113 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 17, 2025 at 06:07:37AM +0530, Arun Menon wrote:
-> This is an incremental step in converting vmstate loading
-> code to report error via Error objects instead of directly
-> printing it to console/monitor.
+On Thu, Jul 17, 2025 at 05:54:41PM +0100, Daniel P. Berrangé wrote:
+> On Thu, Jul 17, 2025 at 06:07:30AM +0530, Arun Menon wrote:
+> > This is an incremental step in converting vmstate loading
+> > code to report error via Error objects instead of directly
+> > printing it to console/monitor.
+> > It is ensured that loadvm_process_command() must report an error
+> > in errp, in case of failure.
+> > 
+> > Signed-off-by: Arun Menon <armenon@redhat.com>
+> > ---
+> >  migration/savevm.c | 89 ++++++++++++++++++++++++++++++++++++++++--------------
+> >  1 file changed, 67 insertions(+), 22 deletions(-)
+> > 
+> > diff --git a/migration/savevm.c b/migration/savevm.c
+> > index 22d73999595384519c755c9416b74ba1263a8bb9..98711bb38a4548d4f168459f729f604a78716c25 100644
+> > --- a/migration/savevm.c
+> > +++ b/migration/savevm.c
+
+> >      case MIG_CMD_PACKAGED:
+> > -        return loadvm_handle_cmd_packaged(mis);
+> > +        ret = loadvm_handle_cmd_packaged(mis);
+> > +        if (ret < 0) {
+> > +            error_setg(errp, "Failed to load device state command: %d", ret);
+> > +            return -1;
+> > +        }
+> > +        return ret;
+> >  
+> >      case MIG_CMD_POSTCOPY_ADVISE:
+> > -        return loadvm_postcopy_handle_advise(mis, len);
+> > +        ret = loadvm_postcopy_handle_advise(mis, len);
+> > +        if (ret < 0) {
+> > +            error_setg(errp, "Failed to load device state command: %d", ret);
+> > +            return -1;
+> > +        }
+> > +        return ret;
+> >  
+> >      case MIG_CMD_POSTCOPY_LISTEN:
+> > -        return loadvm_postcopy_handle_listen(mis);
+> > +        ret = loadvm_postcopy_handle_listen(mis);
+> > +        if (ret < 0) {
+> > +            error_setg(errp, "Failed to load device state command: %d", ret);
+> > +            return -1;
+> > +        }
+> > +        return ret;
+> >  
+> >      case MIG_CMD_POSTCOPY_RUN:
+> > -        return loadvm_postcopy_handle_run(mis);
+> > +        ret = loadvm_postcopy_handle_run(mis);
+> > +        if (ret < 0) {
+> > +            error_setg(errp, "Failed to load device state command: %d", ret);
+> > +            return -1;
+> > +        }
+> > +        return ret;
+> >  
+> >      case MIG_CMD_POSTCOPY_RAM_DISCARD:
+> > -        return loadvm_postcopy_ram_handle_discard(mis, len);
+> > +        ret = loadvm_postcopy_ram_handle_discard(mis, len);
+> > +        if (ret < 0) {
+> > +            error_setg(errp, "Failed to load device state command: %d", ret);
+> > +            return -1;
+> > +        }
+> > +        return ret;
+> >  
+> >      case MIG_CMD_POSTCOPY_RESUME:
+> > -        return loadvm_postcopy_handle_resume(mis);
+> > +        ret = loadvm_postcopy_handle_resume(mis);
+> > +        if (ret < 0) {
+> > +            error_setg(errp, "Failed to load device state command: %d", ret);
+> > +            return -1;
+> > +        }
+> > +        return ret;
+> >  
+> >      case MIG_CMD_RECV_BITMAP:
+> > -        return loadvm_handle_recv_bitmap(mis, len);
+> > +        ret = loadvm_handle_recv_bitmap(mis, len);
+> > +        if (ret < 0) {
+> > +            error_setg(errp, "Failed to load device state command: %d", ret);
+> > +            return -1;
+> > +        }
+> > +        return ret;
+> >  
+> >      case MIG_CMD_ENABLE_COLO:
+> > -        return loadvm_process_enable_colo(mis);
+> > +        ret = loadvm_process_enable_colo(mis);
+> > +        if (ret < 0) {
+> > +            error_setg(errp, "Failed to load device state command: %d", ret);
+> > +            return -1;
+> > +        }
+> > +        return ret;
+> >  
+> >      case MIG_CMD_SWITCHOVER_START:
+> > -        return loadvm_postcopy_handle_switchover_start();
+> > +        ret = loadvm_postcopy_handle_switchover_start();
+> > +        if (ret < 0) {
+> > +            error_setg(errp, "Failed to load device state command: %d", ret);
+> > +            return -1;
+> > +        }
+> > +        return ret;
+> >      }
 > 
-> Signed-off-by: Arun Menon <armenon@redhat.com>
-> ---
->  migration/savevm.c | 14 ++++----------
->  1 file changed, 4 insertions(+), 10 deletions(-)
+> Can you ensure that each of these have unique error message strings,
+> as if they ever appear, it will be important to distinguish which of
+> these nine commands actually failed.
 
-> diff --git a/migration/savevm.c b/migration/savevm.c
-> index 6f181c381dc6ecd996a1f8dbc25cceead7ebe014..20dce4b43a181d2f47b6b22e7a15aa4fc45cac5c 100644
-> --- a/migration/savevm.c
-> +++ b/migration/savevm.c
-> @@ -2333,12 +2333,12 @@ static void migrate_send_rp_req_pages_pending(MigrationIncomingState *mis)
->      }
->  }
->  
-> -static int loadvm_postcopy_handle_resume(MigrationIncomingState *mis)
-> +static void loadvm_postcopy_handle_resume(MigrationIncomingState *mis)
->  {
->      if (mis->state != MIGRATION_STATUS_POSTCOPY_RECOVER) {
->          error_report("%s: illegal resume received", __func__);
-
-Pre-existing mistake, but can you change this to 'warn_report' given that
-we're not treating it as an error.
-
-
-Aside from that
-
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Ignore this comment. I see you eliminate all these generic error messages
+in following patches, so this is only ever a transient issue half way
+through the patch series.
 
 
 With regards,
