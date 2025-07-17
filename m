@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C2BB089C7
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE70BB089FE
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:56:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLGO-0003vy-EP; Thu, 17 Jul 2025 05:50:52 -0400
+	id 1ucLIW-0008Ur-9x; Thu, 17 Jul 2025 05:53:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL0Z-0001rq-Pa; Thu, 17 Jul 2025 05:34:41 -0400
+ id 1ucL0c-0001t1-It; Thu, 17 Jul 2025 05:34:48 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL0X-0001oi-Ud; Thu, 17 Jul 2025 05:34:31 -0400
+ id 1ucL0a-0001pA-1X; Thu, 17 Jul 2025 05:34:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9B100137CEE;
+ by isrv.corpit.ru (Postfix) with ESMTP id A92E0137CEF;
  Thu, 17 Jul 2025 12:34:04 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 757872491E8;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8BDF62491E9;
  Thu, 17 Jul 2025 12:34:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "Chaney, Ben" <bchaney@akamai.com>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 46/65] migration: Don't sync volatile memory after
- migration completes
-Date: Thu, 17 Jul 2025 12:33:42 +0300
-Message-ID: <20250717093412.728292-7-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 47/65] linux-user: Use qemu_set_cloexec() to mark
+ pidfd as FD_CLOEXEC
+Date: Thu, 17 Jul 2025 12:33:43 +0300
+Message-ID: <20250717093412.728292-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,34 +61,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Chaney, Ben" <bchaney@akamai.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Syncing volatile memory provides no benefit, instead it can cause
-performance issues in some cases.  Only sync memory that is marked as
-non-volatile after migration completes on destination.
+In the linux-user do_fork() function we try to set the FD_CLOEXEC
+flag on a pidfd like this:
 
-Signed-off-by: Ben Chaney <bchaney@akamai.com>
-Fixes: bd108a44bc29 (migration: ram: Switch to ram block writeback)
-Link: https://lore.kernel.org/r/1CC43F59-336F-4A12-84AD-DB89E0A17A95@akamai.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 983899eab4939dc4dff67fa4d822c5b4df7eae21)
+    fcntl(pid_fd, F_SETFD, fcntl(pid_fd, F_GETFL) | FD_CLOEXEC);
+
+This has two problems:
+ (1) it doesn't check errors, which Coverity complains about
+ (2) we use F_GETFL when we mean F_GETFD
+
+Deal with both of these problems by using qemu_set_cloexec() instead.
+That function will assert() if the fcntls fail, which is fine (we are
+inside fork_start()/fork_end() so we know nothing can mess around
+with our file descriptors here, and we just got this one from
+pidfd_open()).
+
+(As we are touching the if() statement here, we correct the
+indentation.)
+
+Coverity: CID 1508111
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250711141217.1429412-1-peter.maydell@linaro.org>
+(cherry picked from commit d6390204c61e148488f034d1f79be35cd3318d93)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 424df6d9f1..a0784d99b2 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3598,7 +3598,9 @@ static int ram_load_cleanup(void *opaque)
-     RAMBlock *rb;
- 
-     RAMBLOCK_FOREACH_NOT_IGNORED(rb) {
--        qemu_ram_block_writeback(rb);
-+        if (memory_region_is_nonvolatile(rb->mr)) {
-+            qemu_ram_block_writeback(rb);
-+        }
-     }
- 
-     xbzrle_load_cleanup();
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index a8eea5dd52..3a25abfaca 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -6746,10 +6746,9 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
+                 int pid_child = ret;
+                 pid_fd = pidfd_open(pid_child, 0);
+                 if (pid_fd >= 0) {
+-                        fcntl(pid_fd, F_SETFD, fcntl(pid_fd, F_GETFL)
+-                                               | FD_CLOEXEC);
++                    qemu_set_cloexec(pid_fd);
+                 } else {
+-                        pid_fd = 0;
++                    pid_fd = 0;
+                 }
+ #endif
+                 put_user_u32(pid_fd, parent_tidptr);
 -- 
 2.47.2
 
