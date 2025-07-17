@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E0FB08B47
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB82CB08B50
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:57:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucMH9-00082N-Dc; Thu, 17 Jul 2025 06:55:43 -0400
+	id 1ucMHF-0008DG-3G; Thu, 17 Jul 2025 06:55:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucMGV-0007Xi-S7; Thu, 17 Jul 2025 06:55:03 -0400
+ id 1ucMGZ-0007ch-Dh; Thu, 17 Jul 2025 06:55:07 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucMGT-0003Bo-Rl; Thu, 17 Jul 2025 06:55:03 -0400
+ id 1ucMGW-0003D7-Fq; Thu, 17 Jul 2025 06:55:06 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 60ACB137E24;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7B2B9137E25;
  Thu, 17 Jul 2025 13:54:35 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5070524926E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6A44024926F;
  Thu, 17 Jul 2025 13:54:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+Cc: qemu-stable@nongnu.org, Ethan Milon <ethan.milon@eviden.com>,
  Vasant Hegde <vasant.hegde@amd.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 24/26] amd_iommu: Remove duplicated definitions
-Date: Thu, 17 Jul 2025 13:54:38 +0300
-Message-ID: <20250717105442.735202-9-mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 25/26] amd_iommu: Fix truncation of oldval in
+ amdvi_writeq
+Date: Thu, 17 Jul 2025 13:54:39 +0300
+Message-ID: <20250717105442.735202-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.19-20250717135416@cover.tls.msk.ru>
 References: <qemu-stable-7.2.19-20250717135416@cover.tls.msk.ru>
@@ -58,33 +59,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+From: Ethan Milon <ethan.milon@eviden.com>
 
-No functional change.
+The variable `oldval` was incorrectly declared as a 32-bit `uint32_t`.
+This could lead to truncation and incorrect behavior where the upper
+read-only 32 bits are significant.
 
-Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Fix the type of `oldval` to match the return type of `ldq_le_p()`.
+
+Cc: qemu-stable@nongnu.org
+Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
+Signed-off-by: Ethan Milon <ethan.milon@eviden.com>
+Message-Id: <20250617150427.20585-9-alejandro.j.jimenez@oracle.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250617150427.20585-8-alejandro.j.jimenez@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 5959b641c98b5ae9677e2c1d89902dac31b344d9)
+(cherry picked from commit 5788929e05e18ed5f76dc8ade4210f022c9ba5a1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 15ed663001..c8d1a6d353 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -204,10 +204,6 @@
- /* Completion Wait data size */
- #define AMDVI_COMPLETION_DATA_SIZE    8
- 
--#define AMDVI_COMMAND_SIZE   16
--/* Completion Wait data size */
--#define AMDVI_COMPLETION_DATA_SIZE    8
--
- #define AMDVI_COMMAND_SIZE   16
- 
- #define AMDVI_INT_ADDR_FIRST    0xfee00000
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 0df9c1a232..09c7d3c560 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -127,7 +127,7 @@ static void amdvi_writeq(AMDVIState *s, hwaddr addr, uint64_t val)
+ {
+     uint64_t romask = ldq_le_p(&s->romask[addr]);
+     uint64_t w1cmask = ldq_le_p(&s->w1cmask[addr]);
+-    uint32_t oldval = ldq_le_p(&s->mmior[addr]);
++    uint64_t oldval = ldq_le_p(&s->mmior[addr]);
+     stq_le_p(&s->mmior[addr],
+             ((oldval & romask) | (val & ~romask)) & ~(val & w1cmask));
+ }
 -- 
 2.47.2
 
