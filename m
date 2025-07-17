@@ -2,90 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98ACBB093DB
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A60B093F8
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:32:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucTCu-0004iZ-HR; Thu, 17 Jul 2025 14:19:48 -0400
+	id 1ucTO5-000532-IS; Thu, 17 Jul 2025 14:31:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yvugenfi@redhat.com>)
- id 1ucQb9-0001cn-Fn
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:32:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yvugenfi@redhat.com>)
- id 1ucQb7-0005i8-CD
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:32:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752766355;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uhn6BLbVv5iMyDashu1Hh6ot6uyhvqJgGPc0IbKWsRY=;
- b=BQlKwuwAhi1krl2yNzJUD9w/8QaeP/ZjLbdzY1TEV1yKsChrGhZrVqdKJs1K10WagCg9sd
- ZYpz4SYK7+b/iMJ4lYPKVCFPke9DXHmFl5h/0tQ1MrEFpl55w2BwTSjMNKV06zTSXPKJDw
- 5jvIXS33FzC+n5LHwhrCxYKfQ2IezJc=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-Zr-IGWPLNqic9gfX796Pcg-1; Thu, 17 Jul 2025 11:28:38 -0400
-X-MC-Unique: Zr-IGWPLNqic9gfX796Pcg-1
-X-Mimecast-MFC-AGG-ID: Zr-IGWPLNqic9gfX796Pcg_1752766118
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-70e4269deb2so13862487b3.3
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 08:28:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ucQex-00049q-EK
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:36:35 -0400
+Received: from mail-yb1-xb2b.google.com ([2607:f8b0:4864:20::b2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ucQeu-0006Gv-U5
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:36:34 -0400
+Received: by mail-yb1-xb2b.google.com with SMTP id
+ 3f1490d57ef6-e8bc1258b2eso889035276.2
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 08:36:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752766590; x=1753371390; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/XVo2bXdUxDhLG7R29MKUOxOmyPRvZ8AnbYNITcG4hQ=;
+ b=VWsageEPqqZntjeKj4diUfhLzXo6zr0NrvtXSNPhyq0ImfKOyUyM5my3xAwrRKTxkZ
+ VvQlkHMMCSsr701DQB8xBdGkqaD4s9jAg8hX0q/vDTvCYXXuQYSNPDI8mvvOnkz/IAWK
+ FLje/IqoNt69gALVGB9oeEdAtkFBhX3RycUs/xhfQANAQy1zant7pX7+1NkWSbSTjGp+
+ ZxjVukCwxlSRUIj1bjKaslPW7LIyoad5WbLNOdfkPhPql5Ngw9D0DydC9VuHp8QFaI3t
+ XLy4lt8tB4Ua52Th7Irx+DUby0EZpyS7whJz47GdYuHgtxbdFWnzQly6v1Ox2r4KFy33
+ xdfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752766118; x=1753370918;
+ d=1e100.net; s=20230601; t=1752766590; x=1753371390;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uhn6BLbVv5iMyDashu1Hh6ot6uyhvqJgGPc0IbKWsRY=;
- b=OaaMWMDeQNT67d58FuWOZtQMDDgbHvBkVSQYKb63pR37lZv8xImZZwBfGxobC/HOm0
- 5mG0dETC0sq3uiHP2N2juIHeWuZKDntEDB73HdEOHwef5g2Y8vcXeVLNzXwmRfqfDwXj
- vA+rO8hC4LRIXvlYRHmvd9zCuBAxHlzLxSbei+WuOBjexbJ5yS7dXoxuYX/YLHirEGLa
- 9i7+wpMrPq9AynGK2CVpi1BZWihFHkJ999JR4RwjYeKbmiXD4Fi4+6VfVONzS5dTHVnv
- HtxYvgBdtVaB4czkflgpxycGV97+YTJUJPgRvfWz2QdKAF5JmRox2/3CVMqyGVQ2YuSU
- uRXw==
-X-Gm-Message-State: AOJu0YzAi4TcgnJTSahGYCnQ6W/YDRiso+Ws5Iepi2zSkpH5iPO5LHXx
- R6hw8fKdixgIAA2g9JFgeaZAf0zTDDCqzKug8oSu0mc3N4LJw7FEhQQxHnxT7M5l6EG6IL/w81z
- LBREcJqv1iQoUIEImFK66SofpmN2tWzxCZzWy16OwKBQ6cGs61ZLzkM/je3S+zZXlWrlmT30Eno
- bJzxELEtydbXgC3q6yUudDu4BQhu5928Q=
-X-Gm-Gg: ASbGncuS3nJBqFYhfuj5qsJTmcd88wAOQYcPtsYS6rU61pW4klSHNcwOZCKq0Q14e5A
- 0Dtvyd3c/ZCgfLfAKZAw+09+kXYXbfBLP8f6pHtGf/Uk9wyekLH5RpEkm2HkiDfNQQChr/nKW0p
- n/jT3nTDxcpmInfmq7JP7UINc5cAS5z0+cS5TV+orPNhJ9Ny86GzHizeU=
-X-Received: by 2002:a05:690c:9:b0:717:c649:7849 with SMTP id
- 00721157ae682-7183515f438mr112236107b3.31.1752766117842; 
- Thu, 17 Jul 2025 08:28:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECUJ+FZheo7t/BC00YsCCS4CVFgpM0z/1KpNSsLUcOC22t+ODkOh1QNFhqaxeu+ZhXiTwgir24oMyAfvMezOE=
-X-Received: by 2002:a05:690c:9:b0:717:c649:7849 with SMTP id
- 00721157ae682-7183515f438mr112235627b3.31.1752766117369; Thu, 17 Jul 2025
- 08:28:37 -0700 (PDT)
+ bh=/XVo2bXdUxDhLG7R29MKUOxOmyPRvZ8AnbYNITcG4hQ=;
+ b=wvdTk/VYmApIGvhGuo0v7A4DkkrQh/iSCOgPamAAk7S7KXoaFHdrfKduMz1Nwyco92
+ zcJPbT+8OQbPK11Nfx35Rg6NBZb1KSVQ+k0zGfECHjL7oTQGdsejuOUYDHNGvqaEho1J
+ ZGPGNP6uNRAJUuFzmEB3W/JZ72L6/2/Aw+h13CRblZ1ozid9PovfeXHHh/pd78h46mmT
+ w4PfWlkQTAH/HOTUZ0XOIt2Ui3rsNj8UqbwuJjZtR3RnqvfNiqcVniwguG8wis52a6e/
+ Yzpd1ewo9EUyLTTrxktL2vZiWwb6hGg2Q9avqd62T61+uhL+qBIHd79DSkXcHZVShq3e
+ 69Hw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXQw+yPcRF3ZPEzPMoXn8MsQj/cEItxbqTIz2x9rZVIO4ZwEieOms0HTaiH4uW8Qy4ePaXEVc9QBb06@nongnu.org
+X-Gm-Message-State: AOJu0YwzyTbasoGKsFdJDp7Vd04zrHtIb66pxI+DhTd45B/CrRm7584v
+ IfVP7CxpRMIgVz4pdOCho9VR14DwWIyD6iRFK3QxdKISMUzlWSegelGea0FNKoc7dlnm3mSbq7Y
+ Lhyz8h2S0gaL0LudrifHHHKcT7q6caeVMAyiugAV9Gw==
+X-Gm-Gg: ASbGncvbcYcmXT+sxQd6jBe1b8a7AsoTV+u9J/uG7Gwt7PR6akDmQffVZ1JT1POj073
+ napCir2yfT6g6Sgs+0UGVeyJXRW89JYUQ83u1jmwCtum8FJOHMZLU+aV5VYzdsi9lKjrnbE1if/
+ YKjb4PUYL+YKvbNOT9aZN71vuQ1z/sNBMGmCasuBfStzc+WY5c+3I5u2oPi/NKFK7hUegAtOX0S
+ heaMirf
+X-Google-Smtp-Source: AGHT+IEc82Stb7vdFyJLAbi4D+KzLmB2iw3wv4zDOEyKSWdtk5KL5/WU0WGjh6Re48Yaeo6Fvb0w4hXVNhU7mlSJHxQ=
+X-Received: by 2002:a05:690c:2605:b0:70d:f673:141b with SMTP id
+ 00721157ae682-718370b0d5fmr97974027b3.13.1752766590295; Thu, 17 Jul 2025
+ 08:36:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250717145948.77870-1-kkostiuk@redhat.com>
-In-Reply-To: <20250717145948.77870-1-kkostiuk@redhat.com>
-From: Yan Vugenfirer <yvugenfi@redhat.com>
-Date: Thu, 17 Jul 2025 18:28:24 +0300
-X-Gm-Features: Ac12FXy17nTgHmHi_hP4IVyxwptrz-NixSF4mfkkIATcpOnr38YoDIxdXIZ5Gqo
-Message-ID: <CAGoVJZwqxicH1Pd=j4MbijvcnSM-E5bx0H_CtzQrtt-D-K+b1w@mail.gmail.com>
-Subject: Re: [PATCH] util: win32: Write hex value when can't get error message
-To: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- =?UTF-8?Q?Daniel_Berrang=C3=A9?= <berrange@redhat.com>
+References: <87zfd5zouv.fsf@draig.linaro.org> <86wm898yf4.wl-maz@kernel.org>
+ <CA+E+eSASz9Tx76-8PxMNF30f3L9DfPNYf_Zgf=ENozXapc3gyw@mail.gmail.com>
+ <03A3BBBF-6A01-4ECB-BE50-8103B9201528@apple.com>
+ <87a554z5wp.fsf@draig.linaro.org>
+ <B08AAF88-3770-478A-8589-ADB407878B19@apple.com>
+In-Reply-To: <B08AAF88-3770-478A-8589-ADB407878B19@apple.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 17 Jul 2025 16:36:18 +0100
+X-Gm-Features: Ac12FXzNZAgYbfyH1HfExqEi1wiIdOom20TdEA6oa9pEE7an6buiNpZpLFsxIG4
+Message-ID: <CAFEAcA_s2zXkSZCWXqJ7nWTka5wwBPiKJyHmYE7fGr2=fNsOvw@mail.gmail.com>
+Subject: Re: HVF EL2 support in QEMU (aka FEAT_NV/FEAT_NV2) for MacOS
+To: Danny Canter <danny_canter@apple.com>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Joelle van Dyne <j@getutm.app>, Marc Zyngier <maz@kernel.org>,
+ qemu-devel <qemu-devel@nongnu.org>, 
+ Alexander Graf <agraf@csgraf.de>, Ynddal <mads@ynddal.dk>,
+ Cameron Esfahani <dirty@apple.com>, 
+ Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan <phil@philjordan.eu>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Mark Burton <mburton@qti.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=yvugenfi@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,53 +106,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 17, 2025 at 5:59=E2=80=AFPM Kostiantyn Kostiuk <kkostiuk@redhat=
-.com> wrote:
->
-> g_win32_error_message - translate a Win32 error code
-> (as returned by GetLastError()) into the corresponding message.
->
-> In the same time, we call error_setg_win32_internal with
-> error codes from different Windows componets like VSS or
-> Performance monitor that provides different codes and
-> can't be converted with g_win32_error_message. In this
-> case, the empty suffix will be returned so error will be
-> masked.
->
-> QGA error example:
->  - before changes:
->   {"error": {"class": "GenericError", "desc": "failed to add D:\\ to snap=
-shot set: "}}
->  - after changes:
->   {"error": {"class": "GenericError", "desc": "failed to add D:\\ to snap=
-shot set: unknown Windows error 0x8004230e"}}
->
-> Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-> ---
->  util/error.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/util/error.c b/util/error.c
-> index daea2142f3..b1342558ae 100644
-> --- a/util/error.c
-> +++ b/util/error.c
-> @@ -188,6 +188,11 @@ void error_setg_win32_internal(Error **errp,
->
->      if (win32_err !=3D 0) {
->          suffix =3D g_win32_error_message(win32_err);
-> +        // g_win32_error_message() failed
-> +        if (!suffix[0]) {
-> +            g_free(suffix);
-> +            suffix =3D g_strdup_printf("unknown Windows error 0x%x", win=
-32_err);
-> +        }
->      }
->
->      va_start(ap, fmt);
-> --
-> 2.48.1
->
+On Thu, 17 Jul 2025 at 16:16, Danny Canter <danny_canter@apple.com> wrote:
+> - The new GIC APIs take care of interrupt injection, and would need to be=
+ used in concert with the EL2 APIs if you need interrupt support (highly li=
+kely =F0=9F=98=AC). This would
+> be where I=E2=80=99d investigate on the QEMU end first to see if this wou=
+ld fit within the architecture without a bunch of reworks. https://develope=
+r.apple.com/documentation/hypervisor/hv_gic_create(_:)
 
-Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
+Ah, Hypervisor.framework supports providing a GIC now? We
+should definitely switch to using that instead of our
+userspace fully emulated GICv3 whenever the host supports it.
 
+thanks
+-- PMM
 
