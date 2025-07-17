@@ -2,98 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF63AB09472
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34903B09493
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:08:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucThv-0008Bc-LN; Thu, 17 Jul 2025 14:51:52 -0400
+	id 1ucTx2-0004Pd-SV; Thu, 17 Jul 2025 15:07:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucR8r-0002vg-3P
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:07:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>) id 1ucREV-0005z4-VM
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:13:22 -0400
+Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucR8m-0002H8-0y
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:07:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752768439;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6zxpl/PQRwn3jQnhX2F8Ka6KHfmWqxvN4L1LgBM5SOU=;
- b=KnDUx7L5XPUJF/zka/ahU9GUqfnPUGFBSzdUY666zbPO/GjGoywQ9u+Gz72XsH8cFYJZjK
- hRl8C4B1H5E/FAB6AtT9e/xPMTe7d9m0ZDB1DoAMEKpzR02l6v6RiYxhBOUDjYpntUKr+A
- WmX7ynbnRJXlYP6ru/WRzEjw+50RT7c=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-vkbwoY8QMhKfg-wkoswWBA-1; Thu, 17 Jul 2025 12:07:18 -0400
-X-MC-Unique: vkbwoY8QMhKfg-wkoswWBA-1
-X-Mimecast-MFC-AGG-ID: vkbwoY8QMhKfg-wkoswWBA_1752768437
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-456267c79deso3751585e9.1
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 09:07:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752768436; x=1753373236;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6zxpl/PQRwn3jQnhX2F8Ka6KHfmWqxvN4L1LgBM5SOU=;
- b=fdUnd5E/h7bEvtZG18iGVPuUx0QRfjMHdnszOKPn+coMTMVwgowEq3+wj0/LccjHqC
- ovyqIZv+0ylpgECLyBapk1ZG45/O61JMomjquAoCOMLtxLUIpXGa+5TIzqqXi6PtDGNk
- 0RqWdm5lKkYwX+9J1IbrDPlVDhyAkvZgYk4Bws5WxGAF8GOF7gF1KLBUphSGvPD79RR8
- FGzzw+39HApNgFW6qgk88LJwtNOw+ipQ4PZjVAu5vmEgdLWLHeBelQ01klLTgeaiAa4/
- AXKCOkCJVv/uZdTYmTQhgN+RtsTa84ydWO9jhrLQtI9mrXH0u763w9uMpsLHgDOTth2j
- lE6A==
-X-Gm-Message-State: AOJu0YwjdtBbPAwpQNcHGFRVrpDWmyUwq8VZo39AO7SXXlqdMdd2N0Zy
- lqGR9YMVQCMghF5e6RJDhed4A9wM2Tp/H+pmjvyOM5/wK1uqibh8y55HGogEYrgw16Dug4SqS7g
- mk3RJWSBrFmQRqMoRe1nZRDjpWFeey+Bq2tOE0pzBZRt4GrrIS6yNsFpm8N2i1cYRAM0xzt9HiW
- 2avpV0UxpWYp/ZbmYcI47j7/5Uw+fYnZtUkSoI+/Cc
-X-Gm-Gg: ASbGncuQGJAoPhMi8Q82Y3n5R2sOEWYM3QGfECrRYzVdfD9oG7iMrEMAQ98tD5r7QYL
- RY/HSEo2pkIY7z4JEVdV9uGrZHcWdBrGf2bt8i7PQoWyQkyALhX0AkAhG5PiCpburSG3gFhY0Sq
- nVBrUFXxD4p2BZdT5uF0WyUutgDMJeu2f2yYq/pQi2hec1VBx8fYGoCRE6j+qTAkjgciI4iD5+D
- PXZlMkITp5r1yH6VNfcGIL9yUvoqu0r+lU3VOBu1m3j8E6t9UY9IlWZtnbmch+xslLaqCCoS9p9
- wMV276Y2dcIT+Q4Q1RRAbtoQivb4Oz5zAMovxbo3Buo=
-X-Received: by 2002:a05:600c:3481:b0:43c:fcbc:9680 with SMTP id
- 5b1f17b1804b1-4562e3c4b8bmr63183015e9.25.1752768436428; 
- Thu, 17 Jul 2025 09:07:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGuchvTf+jdstqtSaVFZsjDPxLdC0wssJpUGm/o7pWMq6jaG91Q0jM+Wt9WLF+B+hMLMqWuLQ==
-X-Received: by 2002:a05:600c:3481:b0:43c:fcbc:9680 with SMTP id
- 5b1f17b1804b1-4562e3c4b8bmr63182535e9.25.1752768435895; 
- Thu, 17 Jul 2025 09:07:15 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.73.155])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4562e886113sm55937915e9.23.2025.07.17.09.07.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jul 2025 09:07:13 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 6/6] i386/tdx: Remove the redundant qemu_mutex_init(&tdx->lock)
-Date: Thu, 17 Jul 2025 18:07:00 +0200
-Message-ID: <20250717160700.357384-7-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250717160700.357384-1-pbonzini@redhat.com>
-References: <20250717160700.357384-1-pbonzini@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>) id 1ucREU-0002xZ-5E
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:13:19 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id 2E725A579F2;
+ Thu, 17 Jul 2025 16:13:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9DEC4CEE3;
+ Thu, 17 Jul 2025 16:13:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1752768793;
+ bh=yXaeA1V7daaolkCE+XmSLVGIVgLBr/+ARyqVfPyk9LM=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=aBIyEdRu4dK1hIwiHqKCNIjc41reRkzNGP4sy4Y9eamqOESOhqzzv3Wl06y8COd8q
+ utSHRCMOohyN3dpLSkfSllytsQaKRS36aOUpmQr/s7oXITAyvLmGkPehR9G3YzGIyw
+ 6M7QJXbM9qKoya/W8rE1UtBWz/EBFEpN0vyZJZImche+v5EppTfRbAPxXDb1Ribl2S
+ gQnO17+oERJvWZZuSHlXwCDb8a1q5GcQ2aKlG2yKEOg9uq1HqRrHP2K9tsofNrs+R7
+ CiycuqzBWWwtiaF4G8MsIHEQZ7Our6tY/+goKJwcRMXuZ9B2NfYL4JcsQv2rvWOSxM
+ bgAFPF3Mfetyg==
+Received: from sofa.misterjones.org ([185.219.108.64]
+ helo=goblin-girl.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.95)
+ (envelope-from <maz@kernel.org>) id 1ucREN-00GfRK-BZ;
+ Thu, 17 Jul 2025 17:13:11 +0100
+Date: Thu, 17 Jul 2025 17:13:11 +0100
+Message-ID: <86tt3a94o8.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Burton <mburton@qti.qualcomm.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,	Danny Canter
+ <danny_canter@apple.com>,	Alex =?UTF-8?B?QmVubsOpZQ==?=
+ <alex.bennee@linaro.org>,	Joelle van Dyne <j@getutm.app>,	qemu-devel
+ <qemu-devel@nongnu.org>,	Alexander Graf <agraf@csgraf.de>,	Ynddal
+ <mads@ynddal.dk>,	Cameron Esfahani <dirty@apple.com>,	Roman Bolshakov
+ <rbolshakov@ddn.com>,	Phil Dennis-Jordan <phil@philjordan.eu>,	Philippe
+ =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>,	Richard Henderson
+ <richard.henderson@linaro.org>
+Subject: Re: HVF EL2 support in QEMU (aka FEAT_NV/FEAT_NV2) for MacOS
+In-Reply-To: <CO1PR02MB86174C98FACECFFD6116231B8F51A@CO1PR02MB8617.namprd02.prod.outlook.com>
+References: <87zfd5zouv.fsf@draig.linaro.org> <86wm898yf4.wl-maz@kernel.org>
+ <CA+E+eSASz9Tx76-8PxMNF30f3L9DfPNYf_Zgf=ENozXapc3gyw@mail.gmail.com>
+ <03A3BBBF-6A01-4ECB-BE50-8103B9201528@apple.com>
+ <87a554z5wp.fsf@draig.linaro.org>
+ <B08AAF88-3770-478A-8589-ADB407878B19@apple.com>
+ <CAFEAcA_s2zXkSZCWXqJ7nWTka5wwBPiKJyHmYE7fGr2=fNsOvw@mail.gmail.com>
+ <CO1PR02MB86174C98FACECFFD6116231B8F51A@CO1PR02MB8617.namprd02.prod.outlook.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mburton@qti.qualcomm.com, peter.maydell@linaro.org,
+ danny_canter@apple.com, alex.bennee@linaro.org, j@getutm.app,
+ qemu-devel@nongnu.org, agraf@csgraf.de, mads@ynddal.dk, dirty@apple.com,
+ rbolshakov@ddn.com, phil@philjordan.eu, philmd@linaro.org,
+ richard.henderson@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
+Received-SPF: pass client-ip=147.75.193.91; envelope-from=maz@kernel.org;
+ helo=nyc.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,37 +97,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+On Thu, 17 Jul 2025 16:45:37 +0100,
+Mark Burton <mburton@qti.qualcomm.com> wrote:
+> 
+> So long as we can also switch to the emulated GIC when we want/need
+> to :-) (looking at you KVM :-))
 
-Commit 40da501d8989 ("i386/tdx: handle TDG.VP.VMCALL<GetQuote>") added
-redundant qemu_mutex_init(&tdx->lock) in tdx_guest_init by mistake.
+KVM really doesn't need such a non-feature. Specially as it cannot be
+implemented without an actual GICv3 in HW, for obvious reasons.
 
-Fix it by removing the redundant one.
+My not-so-secret plan is to eventually deprecate the userspace
+interface anyway, as it has been bitrotting for quite some time, and
+can be replaced with an in-kernel GICv2 emulation.
 
-Fixes: 40da501d8989 ("i386/tdx: handle TDG.VP.VMCALL<GetQuote>")
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Link: https://lore.kernel.org/r/20250717103707.688929-1-xiaoyao.li@intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/kvm/tdx.c | 2 --
- 1 file changed, 2 deletions(-)
+But this is getting majorly off-topic in this thread...
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 1574e7d76fe..dbf0fa2c918 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -1527,8 +1527,6 @@ static void tdx_guest_init(Object *obj)
-                             tdx_guest_set_qgs,
-                             NULL, NULL);
- 
--    qemu_mutex_init(&tdx->lock);
--
-     tdx->event_notify_vector = -1;
-     tdx->event_notify_apicid = -1;
- }
+	M.
+
 -- 
-2.50.1
-
+Without deviation from the norm, progress is not possible.
 
