@@ -2,87 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3479B09394
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 19:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AE3B09386
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 19:43:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucSjA-0000r0-Nl; Thu, 17 Jul 2025 13:49:05 -0400
+	id 1ucSdn-0005lO-PT; Thu, 17 Jul 2025 13:43:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ucQA7-0005T1-VE
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:04:44 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ucQA5-0001fu-SA
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:04:43 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-60bfcada295so1630507a12.1
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 08:04:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752764679; x=1753369479; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=orCS500NhnFyli9cek+sOZZKW3weyj51fzmO3ykBAqU=;
- b=tP9Xg1rGil05doqnt72ykU3T/PzCC0zk6/BSwA8ALe75W4kV9lSqBsv9nWtXJsRg/P
- o3Nq4iunTeq1VJ2+jKMBBapszR5gUew8KO5qEnBY4GUwCGsh0k8Z3szrVEHpswHliwkl
- EbVcWH00CXD+eqNFWZezEPAmzeZwxdI5et6fxEEarTGxkQtnUX4dfdEVU04Y+4vfTqhQ
- uHxF2yKte6eR2O0WIV/fNczPmE8892glTt300bh+tDu4w54OM3Z77BqbC+9j+o8/vq5I
- QrKnqHlA0scdOzFHn1AgySQCmRap5fn4qiAl2M9IqcOwlCLiAqwZwqdGsjZh0gjnGltI
- 3KUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752764679; x=1753369479;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=orCS500NhnFyli9cek+sOZZKW3weyj51fzmO3ykBAqU=;
- b=s+rsOdSbWarRmjWmNTBa6rMxrhg1ytTyGyTqTUh1M0rDd7jE0jERwAftDmBdj5Sc1b
- 87gfdPkOS5B3sow+hAEXFG5qWQ/QK6qHgU2xtcMs+ezGqgVqAYlNJzd4Zqt8Dqf+4Owe
- 13YnjHAXorNASws6Wv4DBTEOvi+P5udU2qqBeD2DN7Q9ko/4E37IILF2tftB1TXtpjhP
- 47zS8xRZJEng/7K2/zM6yPYOd+7E0Zlck4KpVx/eyU+XXhRZrRWZrpyTg7L8JjDbZYEU
- cOAp1FaRpuYCRRfx7SK5SmQDTldGwMNE8xtG7WrqVXyQqfqXCWTTXHY2qWKnOCttYhLA
- L90g==
-X-Gm-Message-State: AOJu0Yyrs5nJ1YoW5Us5PaldLn0XoxDtONZvwfm2vULeF/5t+1/I75Bo
- gOE5IuONxWvmfqZKN7Lp+pMywmJgC5P84bFJ0Utb0WhEfH1732HUwG+sXsRxaf5tKIC0cOp/HyO
- ie9fVepm/UdzTNbQdWopnRM5OlVdqrqQg8oD9kqTD4Q==
-X-Gm-Gg: ASbGnctHzZEXCnANR44a1osWMRYMW5oAw6ds/sO19J4cI5BxLN3Ij8RMatcpFwLB1Wu
- iD8js0T5dxrTjFujmSPqp2/SXfV7TK5a9+NIvnvSVJ22rh9lkbFd2YkcvgHFprBQcHqf1RbV1g9
- cfUZbYy2yWc1wvKNZU7lngtiEXMYelmNUghJiO6VfWV6+445Lv4Np19j+vzTUBx2qKJtNAbj287
- 1CQ2w==
-X-Google-Smtp-Source: AGHT+IEDTr33QqJ8Q3HnMkPm3goGuvUr85bMM1YtLRCFy+ANVuYzksI+SXS+5lhAh/3Fl+TCnwjt5bOIYx6bCbQ1GRU=
-X-Received: by 2002:a05:6402:430f:b0:60c:44d6:281f with SMTP id
- 4fb4d7f45d1cf-6128590b4c6mr6601810a12.7.1752764679172; Thu, 17 Jul 2025
- 08:04:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1ucQDg-0006nW-6t
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:08:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1ucQDb-00027N-14
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:08:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752764893;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=14czh6RRPcrgej6f9V9oJtuw78x+35YkVJBQTbjE4ng=;
+ b=J5jDqI7mJGOD1oUqAAIlgRd8ILu4BsMaoh23AEdJ5b8Ap3Np46KniUXqheuRaGgXL/fL2X
+ Rd9GAaEDzuJ9pRRJVU1IgUPk5Lpms0CBlUGaj/Zusz/4viA4ApPlZBoI/Y0K1UGfCtmd4W
+ CIzYAz0n078DWv38M0fthy5/JYgGZWE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-RZnx5VtbOX-sV2ebTfkTjg-1; Thu,
+ 17 Jul 2025 11:08:10 -0400
+X-MC-Unique: RZnx5VtbOX-sV2ebTfkTjg-1
+X-Mimecast-MFC-AGG-ID: RZnx5VtbOX-sV2ebTfkTjg_1752764889
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3E8CC19560B3
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 15:08:09 +0000 (UTC)
+Received: from lenovo-t14s.redhat.com (unknown [10.44.33.65])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 74C2E180049D; Thu, 17 Jul 2025 15:08:07 +0000 (UTC)
+From: Laurent Vivier <lvivier@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH 0/6] net: Fix various Coverity issues in vhost-user and passt
+Date: Thu, 17 Jul 2025 17:07:59 +0200
+Message-ID: <20250717150805.1344034-1-lvivier@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20250717131256.157383-1-sgarzare@redhat.com>
-In-Reply-To: <20250717131256.157383-1-sgarzare@redhat.com>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 17 Jul 2025 18:04:13 +0300
-X-Gm-Features: Ac12FXzD_nuF-8WaRNW6Df9x0_jul4ApU40bQ1mMlknK5E-BYpDT8NBF9Uqud_4
-Message-ID: <CAAjaMXYdxJBu1mLSp1vcGzbMWq6Voj=LR-za95xce3XenY=aFw@mail.gmail.com>
-Subject: Re: [PATCH] meson: re-generate scripts/meson-buildoptions.sh to fix
- IGVM entry
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- roy.hopkins@randomman.co.uk
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52f.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,49 +81,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 17, 2025 at 6:00=E2=80=AFPM Stefano Garzarella <sgarzare@redhat=
-.com> wrote:
->
-> From: Stefano Garzarella <sgarzare@redhat.com>
->
-> Commit 84fe49d94a ("meson: Add optional dependency on IGVM library")
-> was inconsistent with the contents of meson_options.txt and the one
-> generated in scripts/meson-buildoptions.sh
->
-> Let's regenerate the file in this way to keep them consistent and prevent
-> future changes from including the spurious diff:
->
->     touch meson_options.txt
->     make update-buildoptions
->
-> Fixes: 84fe49d94a ("meson: Add optional dependency on IGVM library")
-> Cc: roy.hopkins@randomman.co.uk
-> Reported-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
->  scripts/meson-buildoptions.sh | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.s=
-h
-> index e8504689e8..0ebe6bc52a 100644
-> --- a/scripts/meson-buildoptions.sh
-> +++ b/scripts/meson-buildoptions.sh
-> @@ -130,7 +130,7 @@ meson_options_help() {
->    printf "%s\n" '  hv-balloon      hv-balloon driver (requires Glib 2.68=
-+ GTree API)'
->    printf "%s\n" '  hvf             HVF acceleration support'
->    printf "%s\n" '  iconv           Font glyph conversion support'
-> -  printf "%s\n" '  igvm            IGVM file support'
-> +  printf "%s\n" '  igvm            Independent Guest Virtual Machine (IG=
-VM) file support'
->    printf "%s\n" '  jack            JACK sound support'
->    printf "%s\n" '  keyring         Linux keyring support'
->    printf "%s\n" '  kvm             KVM acceleration support'
-> --
-> 2.50.1
->
->
+This patch series addresses several static analysis warnings reported by=0D
+Coverity (CIDs 1612365, 1612368, 1612369, 1612371, 1612372, 1612375)=0D
+in the vhost-user and passt networking code.=0D
+=0D
+The changes are mostly minor cleanups and fixes:=0D
+=0D
+Three patches remove an unused "err" variable and its associated=0D
+unreachable error handling block.=0D
+=0D
+One patch removes another piece of dead code in an error path by=0D
+refactoring away a goto.=0D
+=0D
+The remaining two patches initialize a pointer to prevent a potential=0D
+illegal memory access and add a check for the return value of=0D
+g_remove() to log potential errors.=0D
+=0D
+Laurent Vivier (6):=0D
+  net/passt: Remove unused "err" from passt_vhost_user_event() (CID=0D
+    1612375)=0D
+  net/vhost-user: Remove unused "err" from net_vhost_user_event() (CID=0D
+    1612372)=0D
+  net/passt: Remove dead code in passt_vhost_user_start error path (CID=0D
+    1612371)=0D
+  net/passt: Check return value of g_remove() in net_passt_cleanup()=0D
+    (CID 1612369)=0D
+  net/passt: Initialize "error" variable in net_passt_send() (CID=0D
+    1612368)=0D
+  net/vhost-user: Remove unused "err" from chr_closed_bh() (CID 1612365)=0D
+=0D
+ net/passt.c      | 22 +++++++---------------=0D
+ net/vhost-user.c |  9 ---------=0D
+ 2 files changed, 7 insertions(+), 24 deletions(-)=0D
+=0D
+-- =0D
+2.49.0=0D
+=0D
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
