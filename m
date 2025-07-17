@@ -2,76 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533EAB09507
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C617B0950C
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:36:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucUME-0003lC-Ne; Thu, 17 Jul 2025 15:33:32 -0400
+	id 1ucUOP-0005AO-H9; Thu, 17 Jul 2025 15:35:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucRxf-0003Tw-VK
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:00:10 -0400
-Received: from mail-yb1-xb31.google.com ([2607:f8b0:4864:20::b31])
+ id 1ucRyk-0003rK-Bx
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:01:09 -0400
+Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucRxd-0000g9-VQ
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:59:59 -0400
-Received: by mail-yb1-xb31.google.com with SMTP id
- 3f1490d57ef6-e8bcbe46cf1so1194736276.2
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 09:59:56 -0700 (PDT)
+ id 1ucRyi-00012m-8X
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:01:05 -0400
+Received: by mail-yb1-xb36.google.com with SMTP id
+ 3f1490d57ef6-e8d70c65abcso663747276.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 10:01:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752771595; x=1753376395; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SIQ5WgqD/M4tar5f/JqNwEkwk3JLal/n3LfaTLUzYGA=;
- b=JmeqCT/hxunuIz2gucdiFUGJ2QRY5s5/m1LmGsHPJAxiOJuV55sJFv20x5SuYXIkF4
- vZP+7h0UR58um2n967u/G8mwztOqOw81HDrjMN1MEK9CZKxvAFdMJv+HLQ1JK/LokeF1
- AFuKosfqSSoMKXreBPSB0/69Vv9L4wD3fB4tv0OKhNbbuxNyyB+2gIOja4nS2Xiy0p5t
- NkKjjPvOM/GV+IYk4QuVrwm14/h2tio+KyM6J6QAFjssdYsNJG+uLsUG9WIblXCsvSLM
- zxRqisztQL3OFL9eaWJ2N6WkPSfKW6KncFoC1lOX6BMUnKyGfiwxJ1NTsjJZQswDAm+z
- 43oA==
+ d=linaro.org; s=google; t=1752771663; x=1753376463; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=7wp315y9iORLm1It62Sfp8STPRHaleSwNrWhxfXR45w=;
+ b=nG5zEGWHJztLE3CCHd+J7228VYMweDiXlxMgML2HVD3C6gpMQXJ9xsecVjqOvSQUai
+ TLlLhsBRIMKWw7BNEj8CbXqrrxXLyCrikQ3Zrp/vRcpp5fccRG8+AKwVlWrw83rkv7bb
+ /LW4Os4Z6js4VUgl5WT5wWjvx3rdjXOKe/BLecT5yExaScQ+FK+5Hh1AtqBa/X3cLSfA
+ qjIy7qSKEPQl19RwWfDUJdm+aD9d+SOuE91qFfby8k0U7Cl6QnoAycHb6Nkk/c2jsyc1
+ dId8E8KRDz7RL1BJWDN53TzRJxGYwKcj5d3tCvO2j/2fOwG7L+fbKFOhlgRVCM6qBki9
+ t6Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752771595; x=1753376395;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SIQ5WgqD/M4tar5f/JqNwEkwk3JLal/n3LfaTLUzYGA=;
- b=LLq3T5kdk2BzqyvDN2LYZkOM/JfNnvLjkCWTe0srpjHKJGLznFllQxnLqv1GJc0sme
- JTSl5/+9FU6t8LeU5xEkh7T7o9KDDZ2+jfzXxJgtk/GNeACWGCWZnBqpdyIAeMwoa/xH
- 7qS2ey3OKaPKa6Oww/2mERXvj4EB3PWx9FwHrwkcbxmnGUQSArMH175LunrK7rHk0FiX
- NgVU+EPNoZyACZDOPSuyhm81/dFrI2Pokg//QL8asHhkjZwwt5mjniVI++3r7OoQLjsB
- BP9czXd/3C6Aay/B7bsQdXNpPKSKJNEGvL1fLMCEuyBX9QEfl2/1ijNAMJxbfANZfxul
- H0NA==
-X-Gm-Message-State: AOJu0YzbTsc9UGwkYglrXsEhPifoIf4f2TccsvLqN6sLBE3btFtqh1es
- CidxD6Qv//0YQDjEUaOz+OOZ0UIVhzJRSQDYTzmnlJxu7yHkZjInlmMuSuw3A3yE+4YwbcoEjgV
- 4cAqK8nAooqfG6fOnvqbZTXLdifUbgB9TZk1FGLBZqw==
-X-Gm-Gg: ASbGnctaNfyiliUKDCKL71I964wiXA8gs//ALn0o5VVlNNoDaLSeX20hPd+B0XUI3RH
- QT6rmLHd0068+QiyHJIS/oexRHIJAZVyLEWDg1vEqT0Yl/CODQsHAwYl29TSltt5OorejoPEhd7
- B/Q4IffromOhy7PL/END0zDfQwR1Z3GBrMUi9viPPR3hZgZ5Fg816MdUcBJkrKAE3j3y5OvcyFT
- HvSUc7Y
-X-Google-Smtp-Source: AGHT+IGnHTy2RcMfGqoYK2d4tZSBDfR6EFZOyvywJ2w8PKKnrjffoLIYdE3fpoMcxn2/zVoTOg2d4YAV3JNRp+o9438=
-X-Received: by 2002:a05:690c:9b10:b0:70f:8884:a5fc with SMTP id
- 00721157ae682-718370ee6e1mr89715287b3.4.1752771595627; Thu, 17 Jul 2025
- 09:59:55 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752771663; x=1753376463;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7wp315y9iORLm1It62Sfp8STPRHaleSwNrWhxfXR45w=;
+ b=JbaeV3v2yAxEb4XF4pFwxl4aYY4E4fi7XSS6ItsrsLM72bPPv0GLynB+FHvvUO348r
+ WZEr1b0dnPdRvLXYzoKMfgu511Q/jsfHnU+0OCwczb/LCjnC0KW2kTLlZiQggv9aM/vh
+ NTCdsstWS+Q5+2MGxYNdYb5rq8HIaTkxc8qdWpGkMXdE2ji1LWa0EmF2AE1GPGm+JE++
+ zQPTijL+asrtVr0yAEVSAgbJQitdx9bqxBqelZD0NvZ94svlH5GjNc5jC7eoxaJYbwBT
+ 0X/keO4YbQ780LsFZcMch6xrYzOQA1eCWwXvkA8uFIt7UvK/Wda2exOuFikX75jIbgI1
+ I8Ug==
+X-Gm-Message-State: AOJu0YwE0kSaYY8FJfwIOfZs4xWim0iDgcSBF8S+B6SoMqjSFkUDAYrT
+ T5epD2X3QWg3noB8hUqrowZcGdoMJ5FaAa074JECKzlpMmIm2kNoYHY4bfnAmnDDbEzUS5CiDud
+ jeTls4J8UUXAkyLs1lKQSuXK30TthZrCoUvrpcBtVwg==
+X-Gm-Gg: ASbGnctL32+kQpLSVTOMNpHafaSi0r4GeUqwl+7hbtP8cB4R02mUzlBrR95L2S1WWWW
+ cgeh5henVbo5Ly5UySEAPSlrpYabhL+6oRRZz0p/wwkApey+kS8B78x10Ha8z8/7AGMJCZZ9g8H
+ Y+6Zbi55Gvm86zbRbVSZ+dne5I0IvN1D9IHbg+0quqHbFtATw6J7Ycf0NgVyhK7kz8dOl4NX/cM
+ 3F6KCLK
+X-Google-Smtp-Source: AGHT+IHN5qYz/FrWQ0VqwcyPSyHOHuXifbW+bQ1Uoc/KrVcL2BwP6Y43kCAhtcPQWzUqHjklMgsurOuabgIGd2hd0ok=
+X-Received: by 2002:a05:690c:350c:b0:712:e22d:a235 with SMTP id
+ 00721157ae682-7183504278emr117149807b3.17.1752771662665; Thu, 17 Jul 2025
+ 10:01:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250714145033.1908788-1-peter.maydell@linaro.org>
- <2b9a18a9-239d-40cc-bd65-225bad2706d3@linaro.org>
-In-Reply-To: <2b9a18a9-239d-40cc-bd65-225bad2706d3@linaro.org>
+References: <20250716002622.84685-1-jcksn@duck.com>
+In-Reply-To: <20250716002622.84685-1-jcksn@duck.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 17 Jul 2025 17:59:41 +0100
-X-Gm-Features: Ac12FXy23CXYFPOgo8Z5U2tHioxJcnVfAXch8HJCo6getewcYej3AmsS93IZ7SU
-Message-ID: <CAFEAcA8hznDWTOXYMPbBscHmy5F_gKXhaAtyPk1LPcGf54RPXQ@mail.gmail.com>
-Subject: Re: [PATCH] host-utils: Drop workaround for buggy Apple Clang
- __builtin_subcll()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
+Date: Thu, 17 Jul 2025 18:00:49 +0100
+X-Gm-Features: Ac12FXzFWP9AgWgEJ60Jcupzar5GSKrNZAuMTqaWqRPpDJVROW3gm_ip8GToIJc
+Message-ID: <CAFEAcA_UNG=7fcUqy2N8ymod558JFuMBb9ybiTXZvip7T7n7kw@mail.gmail.com>
+Subject: Re: [PATCH] hw/misc/max78000_aes: Comment Internal Key Storage
+To: Jackson Donaldson <jackson88044@gmail.com>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b31;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,33 +90,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 14 Jul 2025 at 20:52, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
+On Wed, 16 Jul 2025 at 01:26, Jackson Donaldson <jackson88044@gmail.com> wrote:
 >
-> On 14/7/25 16:50, Peter Maydell wrote:
-> > In commit b0438861efe ("host-utils: Avoid using __builtin_subcll on
-> > buggy versions of Apple Clang") we added a workaround for a bug in
-> > Apple Clang 14 where its __builtin_subcll() implementation was wrong.
-> > This bug was only present in Apple Clang 14, not in upstream clang,
-> > and is not present in Apple Clang versions 15 and newer.
-> >
-> > Since commit 4e035201 we have required at least Apple Clang 15, so we
-> > no longer build with the buggy versions.  We can therefore drop the
-> > workaround. This is effectively a revert of b0438861efe.
-> >
-> > This should not be backported to stable branches, which may still
-> > need to support Apple Clang 14.
-> >
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3030
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> > ---
-> >   include/qemu/compiler.h   | 13 -------------
-> >   include/qemu/host-utils.h |  2 +-
-> >   2 files changed, 1 insertion(+), 14 deletions(-)
+> Coverity Scan noted an unusual pattern in the
+> MAX78000 aes device, with duplicated calls to
+> set_decrypt. This commit adds a comment noting
+> why the implementation is correct.
 >
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: Jackson Donaldson <jcksn@duck.com>
+> ---
+>  hw/misc/max78000_aes.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/hw/misc/max78000_aes.c b/hw/misc/max78000_aes.c
+> index 0bfb2f02b5..d883ddd2b6 100644
+> --- a/hw/misc/max78000_aes.c
+> +++ b/hw/misc/max78000_aes.c
+> @@ -79,6 +79,12 @@ static void max78000_aes_do_crypto(Max78000AesState *s)
+>          keydata += 8;
+>      }
+>
+> +    /*
+> +     * The MAX78000 AES engine stores an internal key, which it uses only
+> +     * for decryption. This results in the slighly odd looking pairs of
+> +     * set_encrypt and set_decrypt calls below; s->internal_key is
+> +     * being stored for later use in both cases.
+> +     */
+>      AES_KEY key;
+>      if ((s->ctrl & TYPE) == 0) {
+>          AES_set_encrypt_key(keydata, keylen, &key);
 
-Thanks all for the review; I'll pick this up via target-arm.next.
+
+
+Applied to target-arm.next, thanks.
 
 -- PMM
 
