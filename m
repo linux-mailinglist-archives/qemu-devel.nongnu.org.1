@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5907B09396
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 19:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B36B0938B
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 19:44:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucSkS-0001We-7X; Thu, 17 Jul 2025 13:50:24 -0400
+	id 1ucSeh-0006Yt-M6; Thu, 17 Jul 2025 13:44:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1ucQDg-0006nR-2J
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:08:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1ucQDi-0006pE-Ix
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:08:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1ucQDb-00027x-56
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:08:23 -0400
+ id 1ucQDd-00028F-EL
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:08:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752764898;
+ s=mimecast20190719; t=1752764900;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qdmYQyp1if23DWfbBGI3waNotU+eaTtpUKnbCvSdG7U=;
- b=AxVc3lEK++hUopWYuKR/rTfwHe1fner0WiVWmj4URe0BSyamLHJpODjsFmxhLB9gJzEGQj
- rlVJuJ9MWMdv8kP6DB3zWSIhYqM3br3aCCwg7/HowOX4d5ZzQZ+izh0vmY2NjiejixXMOn
- YALZPRqStOLcAeJq7jcFPMKSBZ9EAiI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=M2Bf86os9SSI0e5+gs1+aDE+pC3O9YFtF/ov/MW6nrA=;
+ b=Z6ds5+J0hTqOhJ6qyZSniw400WpZ3tXqedg6qWeTDteQPruceUfCzntjnvLS0q/JX3zqeO
+ 7kbDtyVGufpULNk+tZPg51t9vNFJw7JZ/tUk1IszMs52mPy17+xtN47oFP5KYQ3waiGPgj
+ 95AEqScTkysmgWdq2a8M7tGTqf/6icA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-574-meiAwj9GPeWJfLskkZfyCQ-1; Thu,
- 17 Jul 2025 11:08:16 -0400
-X-MC-Unique: meiAwj9GPeWJfLskkZfyCQ-1
-X-Mimecast-MFC-AGG-ID: meiAwj9GPeWJfLskkZfyCQ_1752764895
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-125-w47qddlQOE-cDo5LHL4_Fw-1; Thu,
+ 17 Jul 2025 11:08:18 -0400
+X-MC-Unique: w47qddlQOE-cDo5LHL4_Fw-1
+X-Mimecast-MFC-AGG-ID: w47qddlQOE-cDo5LHL4_Fw_1752764898
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CADA619560A5
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 15:08:15 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E9225195FE11
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 15:08:17 +0000 (UTC)
 Received: from lenovo-t14s.redhat.com (unknown [10.44.33.65])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3A53118003FC; Thu, 17 Jul 2025 15:08:13 +0000 (UTC)
+ id 503F818003FC; Thu, 17 Jul 2025 15:08:16 +0000 (UTC)
 From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH 3/6] net/passt: Remove dead code in passt_vhost_user_start
- error path (CID 1612371)
-Date: Thu, 17 Jul 2025 17:08:02 +0200
-Message-ID: <20250717150805.1344034-4-lvivier@redhat.com>
+Subject: [PATCH 4/6] net/passt: Check return value of g_remove() in
+ net_passt_cleanup() (CID 1612369)
+Date: Thu, 17 Jul 2025 17:08:03 +0200
+Message-ID: <20250717150805.1344034-5-lvivier@redhat.com>
 In-Reply-To: <20250717150805.1344034-1-lvivier@redhat.com>
 References: <20250717150805.1344034-1-lvivier@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,49 +84,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In passt_vhost_user_start(), if vhost_net_init() fails, the "net"
-variable is NULL and execution jumps to the "err:" label.
-
-The cleanup code within this label is conditioned on "if (net)",
-which can never be true in this error case. This makes the cleanup
-block dead code, as reported by Coverity (CID 1612371).
-
-Refactor the error handling to occur inline, removing the goto and
-the unreachable cleanup block.
+If g_remove() fails, use warn_report() to log an error.
 
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 ---
- net/passt.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ net/passt.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/net/passt.c b/net/passt.c
-index 9cd5b3e6f2af..ef59d0682be1 100644
+index ef59d0682be1..43c336e5968c 100644
 --- a/net/passt.c
 +++ b/net/passt.c
-@@ -375,7 +375,8 @@ static int passt_vhost_user_start(NetPasstState *s, VhostUserState *be)
-     net = vhost_net_init(&options);
-     if (!net) {
-         error_report("failed to init passt vhost_net");
--        goto err;
-+        passt_vhost_user_stop(s);
-+        return -1;
-     }
+@@ -103,7 +103,10 @@ static void net_passt_cleanup(NetClientState *nc)
+ #endif
  
-     if (s->vhost_net) {
-@@ -385,13 +386,6 @@ static int passt_vhost_user_start(NetPasstState *s, VhostUserState *be)
-     s->vhost_net = net;
- 
-     return 0;
--err:
--    if (net) {
--        vhost_net_cleanup(net);
--        g_free(net);
--    }
--    passt_vhost_user_stop(s);
--    return -1;
+     kill(s->pid, SIGTERM);
+-    g_remove(s->pidfile);
++    if (g_remove(s->pidfile) != 0) {
++        warn_report("Failed to remove passt pidfile %s: %s",
++                    s->pidfile, strerror(errno));
++    }
+     g_free(s->pidfile);
+     g_ptr_array_free(s->args, TRUE);
  }
- 
- static void passt_vhost_user_event(void *opaque, QEMUChrEvent event)
 -- 
 2.49.0
 
