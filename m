@@ -2,73 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A84B0913C
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 18:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90FA7B0937F
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 19:42:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucR4M-00019t-Nn; Thu, 17 Jul 2025 12:02:51 -0400
+	id 1ucSc0-00042K-Lw; Thu, 17 Jul 2025 13:41:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ucP6t-00015a-Lg; Thu, 17 Jul 2025 09:57:22 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1ucQ1b-0001BB-ER; Thu, 17 Jul 2025 10:55:56 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ucP6q-0008Jq-RO; Thu, 17 Jul 2025 09:57:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752760636; x=1784296636;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=eTMXcvi7nZy2wB8ufIHkow9klfmXZAaMVkrsZW5XBk4=;
- b=EMsEQ5Zv3TiNUgo5Qx6to6KTOZFv2ka+inWs6E0cp+DQ7q1+XoJkoytP
- uqq5qH2zC8k8jvTXSjtxymU53gSMSiq6nxhcmWN2GOHj+e1Tb8XEENQQs
- qsE02evno2wrMQ96ThEA7w+bwNnsRqg2Z1Iu0Aj4LF8Ei6ti9s8vOBebj
- JlCedeQ5O2r2EcEm8RgWNEcugfLiRvleVYdqzEnI8OkUbbCVOImTq9/BX
- ZFalSfoXlm+3UwTDH0oxRkutocIKOFgH9h0F6+K0U+kHUUE+ImrBjYrJZ
- U0jiymBxNDR4JCxlCa9qpxqHn8IDOLMc/ul+ssErrnJzLAp0cuqurnIWc g==;
-X-CSE-ConnectionGUID: PobEOHeTRkaoTga1PQghVQ==
-X-CSE-MsgGUID: +cmVfYC+R/KPkDBvq0k+6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="54144105"
-X-IronPort-AV: E=Sophos;i="6.16,319,1744095600"; d="scan'208";a="54144105"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2025 06:57:12 -0700
-X-CSE-ConnectionGUID: 255UZBKPQ82UM5jpD2tegg==
-X-CSE-MsgGUID: JGZdfFmjR4OgYhsWMpvCzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,319,1744095600"; d="scan'208";a="181504735"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 17 Jul 2025 06:57:10 -0700
-Date: Thu, 17 Jul 2025 22:18:41 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Shaoqin Huang <shahuang@redhat.com>
-Cc: qemu-arm@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Eric Auger <eauger@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Alex Williamson <alex.williamson@redhat.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
-Subject: Re: [PATCH v11 2/3] vfio: Move the TYPE_* to hw/vfio/types.h
-Message-ID: <aHkGQWeqoFiMKMwN@intel.com>
-References: <20250717100941.2230408-1-shahuang@redhat.com>
- <20250717100941.2230408-3-shahuang@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1ucQ1Z-0000Cm-4T; Thu, 17 Jul 2025 10:55:55 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id D400255BC04;
+ Thu, 17 Jul 2025 16:55:46 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id Rv8on3HrgbB1; Thu, 17 Jul 2025 16:55:44 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id CE9A055BC02; Thu, 17 Jul 2025 16:55:44 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id CBADF745682;
+ Thu, 17 Jul 2025 16:55:44 +0200 (CEST)
+Date: Thu, 17 Jul 2025 16:55:44 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, Cameron Esfahani <dirty@apple.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
+ Roman Bolshakov <rbolshakov@ddn.com>, Mads Ynddal <mads@ynddal.dk>, 
+ Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>, 
+ =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
+Subject: Re: [PATCH-for-10.1 1/3] accel/hvf: Display executable bit as 'X'
+In-Reply-To: <1edeecdd-76cf-4baa-97d8-c07df20b4824@intel.com>
+Message-ID: <2749ad31-b071-e91a-f7dc-25be726c7ed3@eik.bme.hu>
+References: <20250716172813.73405-1-philmd@linaro.org>
+ <20250716172813.73405-2-philmd@linaro.org>
+ <1edeecdd-76cf-4baa-97d8-c07df20b4824@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250717100941.2230408-3-shahuang@redhat.com>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed; boundary="3866299591-1962885198-1752764144=:773"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,25 +66,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 17, 2025 at 06:09:40AM -0400, Shaoqin Huang wrote:
-> Date: Thu, 17 Jul 2025 06:09:40 -0400
-> From: Shaoqin Huang <shahuang@redhat.com>
-> Subject: [PATCH v11 2/3] vfio: Move the TYPE_* to hw/vfio/types.h
-> 
-> Move the TYPE_* to a new file hw/vfio/types.h because the
-> TYPE_VFIO_PCI will be used in later patch, but directly include the
-> hw/vfio/pci.h can cause some compilation error when cross build the
-> windows version.
-> 
-> The hw/vfio/types.h can be included to mitigate that problem.
-> 
-> Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
-> ---
->  hw/vfio/pci.h   | 10 +---------
->  hw/vfio/types.h | 21 +++++++++++++++++++++
->  2 files changed, 22 insertions(+), 9 deletions(-)
->  create mode 100644 hw/vfio/types.h
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+--3866299591-1962885198-1752764144=:773
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
+On Thu, 17 Jul 2025, Xiaoyao Li wrote:
+> On 7/17/2025 1:28 AM, Philippe Mathieu-Daudé wrote:
+>> Developers are custom to read RWX, not RWE.
+
+"accustomed to"
+
+>> Replace E -> X.
+>> 
+>> Reported-by: Alex Bennée <alex.bennee@linaro.org>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>
+>> ---
+>>   accel/hvf/hvf-all.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+>> index e67a8105a66..0a4b498e836 100644
+>> --- a/accel/hvf/hvf-all.c
+>> +++ b/accel/hvf/hvf-all.c
+>> @@ -84,7 +84,7 @@ static int do_hvf_set_memory(hvf_slot *slot, 
+>> hv_memory_flags_t flags)
+>>       trace_hvf_vm_map(slot->start, slot->size, slot->mem, flags,
+>>                        flags & HV_MEMORY_READ ?  'R' : '-',
+>>                        flags & HV_MEMORY_WRITE ? 'W' : '-',
+>> -                     flags & HV_MEMORY_EXEC ?  'E' : '-');
+>> +                     flags & HV_MEMORY_EXEC ?  'X' : '-');
+>>       ret = hv_vm_map(slot->mem, slot->start, slot->size, flags);
+>>       assert_hvf_ok(ret);
+>>       return 0;
+>
+>
+>
+--3866299591-1962885198-1752764144=:773--
 
