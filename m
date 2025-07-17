@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7579B087F3
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 10:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9611B087F6
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 10:32:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucK0W-0001Lt-Iy; Thu, 17 Jul 2025 04:30:25 -0400
+	id 1ucK2S-0004Xt-0H; Thu, 17 Jul 2025 04:32:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucK0P-0001Da-KN
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:30:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1ucK1v-0004ED-6Y
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:32:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucK0N-00023L-1Y
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:30:17 -0400
+ id 1ucK1s-0002C7-R1
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:31:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752741013;
+ s=mimecast20190719; t=1752741107;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9htU0AkolloiIiEEEuiIAcJQH0DfnfTSgFlKFzQcKyo=;
- b=VQB80sfhYheQlQymO7LvG/kTGvxVDTwOqiIODUrnxfijiOF23Af8s852xRE4c8lft7Cqsj
- W2UQ90xpv1YeZmD5C+/33xjwDS1u+bnhIpJzXxNp+8wDnGnsep3YdHXgIW8GOXBeumkiNu
- iqTKI6nqkNLOTGhDpYe0NWMY13IawE4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=BNeCG793zXes7BCJXfHnynX/cUwq+pKu66m/YQR/1OE=;
+ b=gRZP4z37jKSb/Jh+wt5IluOE0et4gTMfX2cqvHBtk5z7u5L5QRzHP5dxwKdyauecQsWen2
+ FxDMDG9VnsBsFoWRh7DLxI0NvLhPSHYdFGE63pZneg0CgaUzJexyGV2ynFr2oAzG1oCwyV
+ vgcuztHHfBTtxC1ukQJDWeXxPFy/bgk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-245-LiKtwVUdMOy_-HlhTTdy7g-1; Thu,
- 17 Jul 2025 04:30:12 -0400
-X-MC-Unique: LiKtwVUdMOy_-HlhTTdy7g-1
-X-Mimecast-MFC-AGG-ID: LiKtwVUdMOy_-HlhTTdy7g_1752741011
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-158-h1WQJ70HOnWe6D1_F2FE9A-1; Thu,
+ 17 Jul 2025 04:31:42 -0400
+X-MC-Unique: h1WQJ70HOnWe6D1_F2FE9A-1
+X-Mimecast-MFC-AGG-ID: h1WQJ70HOnWe6D1_F2FE9A_1752741101
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2B57F197730E; Thu, 17 Jul 2025 08:30:11 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4AF3F195FCC2; Thu, 17 Jul 2025 08:31:41 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.171])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1990318002B6; Thu, 17 Jul 2025 08:30:04 +0000 (UTC)
-Date: Thu, 17 Jul 2025 09:29:59 +0100
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 20B251956089; Thu, 17 Jul 2025 08:31:38 +0000 (UTC)
+Date: Thu, 17 Jul 2025 09:31:35 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org, eblake@redhat.com, michael.roth@amd.com,
  kkostiuk@redhat.com, jsnow@redhat.com
-Subject: Re: [PATCH 3/4] qga: Rephrase return docs to avoid type name
-Message-ID: <aHi0hx-z6sgHSFwR@redhat.com>
+Subject: Re: [PATCH 4/4] qga: Add cross-references
+Message-ID: <aHi053WApxOX3XkY@redhat.com>
 References: <20250717082117.3767754-1-armbru@redhat.com>
- <20250717082117.3767754-4-armbru@redhat.com>
+ <20250717082117.3767754-5-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250717082117.3767754-4-armbru@redhat.com>
+In-Reply-To: <20250717082117.3767754-5-armbru@redhat.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,24 +88,33 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 17, 2025 at 10:21:16AM +0200, Markus Armbruster wrote:
-> "Returns: <description>" is rendered like
+On Thu, Jul 17, 2025 at 10:21:17AM +0200, Markus Armbruster wrote:
+> Enclose command and type names in `backquotes`, so they become links
+> in generated HTML.
 > 
->     Return: <Type> – <description>
-> 
-> Mentioning the type in the description again is commonly redundant.
-> There is just one such description.  Rephrase it not to mention the
-> type.
-> 
-> We did this for qapi/ in commit f7296f8de5c (qapi: rephrase return
-> docs to avoid type name).
+> We did this for qapi/ in merge commit 504632dcc631.
 > 
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->  qga/qapi-schema.json | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  qga/qapi-schema.json | 50 ++++++++++++++++++++++----------------------
+>  1 file changed, 25 insertions(+), 25 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
+
+> @@ -585,7 +585,7 @@
+>  # - pm-utils (via pm-hibernate)
+>  # - manual write into sysfs
+>  #
+> -# IMPORTANT: guest-suspend-ram requires working wakeup support in
+> +# IMPORTANT: `guest-suspend-ram` requires working wakeup support in
+>  # QEMU. You should check QMP command query-current-machine returns
+>  # wakeup-suspend-support: true before issuing this command.  Failure
+
+I presume you're not updating 'query-current-machine' and
+'wakeup-suspend-support' due to an inability do cross references
+across the two QAPI schemas ?
+
 
 
 With regards,
