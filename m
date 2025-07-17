@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744A7B08A04
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFB2B089B4
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:49:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLGk-0005uu-4n; Thu, 17 Jul 2025 05:51:14 -0400
+	id 1ucLED-0007uA-1R; Thu, 17 Jul 2025 05:48:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL1r-0002oS-Tq; Thu, 17 Jul 2025 05:35:51 -0400
+ id 1ucL1v-0002w9-Kj; Thu, 17 Jul 2025 05:35:55 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL1p-000267-ER; Thu, 17 Jul 2025 05:35:51 -0400
+ id 1ucL1t-00027H-9O; Thu, 17 Jul 2025 05:35:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 88FA0137CFC;
+ by isrv.corpit.ru (Postfix) with ESMTP id A3048137CFD;
  Thu, 17 Jul 2025 12:34:05 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6BA5A2491F5;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 79B682491F6;
  Thu, 17 Jul 2025 12:34:13 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Tingting Mao <timao@redhat.com>, Eric Blake <eblake@redhat.com>,
+Cc: qemu-stable@nongnu.org, Cole Robinson <crobinso@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 59/65] file-posix: Fix aio=threads performance
- regression after enablign FUA
-Date: Thu, 17 Jul 2025 12:33:55 +0300
-Message-ID: <20250717093412.728292-20-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 60/65] roms: re-remove execute bit from hppa-firmware*
+Date: Thu, 17 Jul 2025 12:33:56 +0300
+Message-ID: <20250717093412.728292-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,95 +61,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+From: Cole Robinson <crobinso@redhat.com>
 
-For aio=threads, we're currently not implementing REQ_FUA in any useful
-way, but just do a separate raw_co_flush_to_disk() call. This changes
-behaviour compared to the old state, which used bdrv_co_flush() with its
-optimisations. As a quick fix, call bdrv_co_flush() again like before.
-Eventually, we can use pwritev2() to make use of RWF_DSYNC if available,
-but we'll still have to keep this code path as a fallback, so this fix
-is required either way.
+This was fixed in c9d77526bddba0803a1fa982fb59ec98057150f9 for
+9.2.0 but regressed in db34be329162cf6b06192703065e6c1010dbe3c5 in
+10.0.0
 
-While the fix itself is a one-liner, some new graph locking annotations
-are needed to convince TSA that the locking is correct.
+When the bit is present, rpmbuild complains about missing ELF build-id
 
-Cc: qemu-stable@nongnu.org
-Fixes: 984a32f17e8d ("file-posix: Support FUA writes")
-Buglink: https://issues.redhat.com/browse/RHEL-96854
-Reported-by: Tingting Mao <timao@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20250625085019.27735-1-kwolf@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit d402da1360c2240e81f0e5fc80ddbfc6238e0da8)
+Signed-off-by: Cole Robinson <crobinso@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Acked-by: Helge Deller <deller@gmx.de>
+Message-ID: <52d0edfbb9b2f63a866f0065a721f3a95da6f8ba.1747590860.git.crobinso@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit a598090ebaeb930ce33c2df0d80d87da13be8848)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 56d1972d15..796553bafd 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -2484,9 +2484,9 @@ static inline bool raw_check_linux_aio(BDRVRawState *s)
- }
- #endif
- 
--static int coroutine_fn raw_co_prw(BlockDriverState *bs, int64_t *offset_ptr,
--                                   uint64_t bytes, QEMUIOVector *qiov, int type,
--                                   int flags)
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_prw(BlockDriverState *bs, int64_t *offset_ptr, uint64_t bytes,
-+           QEMUIOVector *qiov, int type, int flags)
- {
-     BDRVRawState *s = bs->opaque;
-     RawPosixAIOData acb;
-@@ -2545,7 +2545,7 @@ static int coroutine_fn raw_co_prw(BlockDriverState *bs, int64_t *offset_ptr,
-     ret = raw_thread_pool_submit(handle_aiocb_rw, &acb);
-     if (ret == 0 && (flags & BDRV_REQ_FUA)) {
-         /* TODO Use pwritev2() instead if it's available */
--        ret = raw_co_flush_to_disk(bs);
-+        ret = bdrv_co_flush(bs);
-     }
-     goto out; /* Avoid the compiler err of unused label */
- 
-@@ -2580,16 +2580,16 @@ out:
-     return ret;
- }
- 
--static int coroutine_fn raw_co_preadv(BlockDriverState *bs, int64_t offset,
--                                      int64_t bytes, QEMUIOVector *qiov,
--                                      BdrvRequestFlags flags)
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_preadv(BlockDriverState *bs, int64_t offset, int64_t bytes,
-+              QEMUIOVector *qiov, BdrvRequestFlags flags)
- {
-     return raw_co_prw(bs, &offset, bytes, qiov, QEMU_AIO_READ, flags);
- }
- 
--static int coroutine_fn raw_co_pwritev(BlockDriverState *bs, int64_t offset,
--                                       int64_t bytes, QEMUIOVector *qiov,
--                                       BdrvRequestFlags flags)
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_pwritev(BlockDriverState *bs, int64_t offset, int64_t bytes,
-+               QEMUIOVector *qiov, BdrvRequestFlags flags)
- {
-     return raw_co_prw(bs, &offset, bytes, qiov, QEMU_AIO_WRITE, flags);
- }
-@@ -3525,10 +3525,11 @@ static int coroutine_fn raw_co_zone_mgmt(BlockDriverState *bs, BlockZoneOp op,
- #endif
- 
- #if defined(CONFIG_BLKZONED)
--static int coroutine_fn raw_co_zone_append(BlockDriverState *bs,
--                                           int64_t *offset,
--                                           QEMUIOVector *qiov,
--                                           BdrvRequestFlags flags) {
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_zone_append(BlockDriverState *bs,
-+                   int64_t *offset,
-+                   QEMUIOVector *qiov,
-+                   BdrvRequestFlags flags) {
-     assert(flags == 0);
-     int64_t zone_size_mask = bs->bl.zone_size - 1;
-     int64_t iov_len = 0;
+diff --git a/pc-bios/hppa-firmware.img b/pc-bios/hppa-firmware.img
+old mode 100755
+new mode 100644
+diff --git a/pc-bios/hppa-firmware64.img b/pc-bios/hppa-firmware64.img
+old mode 100755
+new mode 100644
 -- 
 2.47.2
 
