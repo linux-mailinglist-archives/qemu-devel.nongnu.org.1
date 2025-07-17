@@ -2,120 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9404B0855E
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 08:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5D0B0856B
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 08:50:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucIQN-0003kR-C6; Thu, 17 Jul 2025 02:48:59 -0400
+	id 1ucIRy-00064d-Ii; Thu, 17 Jul 2025 02:50:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1ucIQ8-0003OT-Dm
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 02:48:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>)
+ id 1ucIQD-0003Yl-57; Thu, 17 Jul 2025 02:48:50 -0400
+Received: from mout.kundenserver.de ([212.227.126.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1ucIQ0-0002Tx-KS
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 02:48:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752734915;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HT6WUAOQ4JuVf6zBd7rvzQZtq5ioZAR+rSbftzCeQCE=;
- b=LR3YGoUjjMWkX/t4foRlX/h9D5kbrVAWnNjckvWYJJxeoK+xDmMOWdJrpVU+QUnOzKPVi8
- jczAjcop2ZlyoH1ZuUVZC/iyoP7H8XlI3aWCnEYxB52AdWdv3ZcljLWfyGLECH+kI+rlsa
- 5KEzBqPK6LMYqmNccs5RYMzzg+KlUwk=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-Dgy-fDdZOE-mizAjCdYy0A-1; Thu, 17 Jul 2025 02:48:33 -0400
-X-MC-Unique: Dgy-fDdZOE-mizAjCdYy0A-1
-X-Mimecast-MFC-AGG-ID: Dgy-fDdZOE-mizAjCdYy0A_1752734912
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a4eee2398bso232595f8f.1
- for <qemu-devel@nongnu.org>; Wed, 16 Jul 2025 23:48:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752734912; x=1753339712;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HT6WUAOQ4JuVf6zBd7rvzQZtq5ioZAR+rSbftzCeQCE=;
- b=Nk4XqmXmmE76v9GpYTazOoxpnbn4drdp+sgpgeo0nUN7K1PcPOs2Qn4kFHjY8ie4OY
- MTrAR+D8HxGfTDQ/i/ZDJB/VqGc9eUnlMq2dxV5u4rZilfxfA7NmEspe9kGQ+RAmyXu4
- wGNWyrRGLmKS21miwARiUmG7PH1Z0/gmUt2PXbCOUyya1+kks3SIL9dRYxRuj6N+vzrT
- fg+R4w7+VMzHZ1fKZHb3hF8YBEhm76Q6JR2lqrWcBEzeMg/k7W7264dXm8Ldh28Ab23o
- 4iGfRVxToas+0l42a2tLLqJgGLvI7e+ryY6pajFspj8qA5zu+TNAbSLefvuE37FMIfAQ
- 33Uw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXu2mNbVwGzGy0uI1kveaxPBCsjEdtuS+fHweFf7pGsNup88B/HqEqkMNkMJdQDyJ3Wl7+NAfoP/0D2@nongnu.org
-X-Gm-Message-State: AOJu0YwataIVSOVZ8LvCcZMnJcgiQv2AxO9L/IwJsu+DQyJp85ma3Ecl
- YSE5FhNVKYcJ6NJPZED0G66XtflTcXh0F7ZDu/LbN6wnfBBU3PlkpAE021/7WPnJoG01Q11SqF3
- 5T6RbIhDHcBLd6uWfYLmFU8ISUeL5tkg9MIHzDXm/Ppw/qmbRmZLxpIJ5
-X-Gm-Gg: ASbGncs6UAeAWcUAKsb0xvnLd6QzYX2Cb6lSb0JSh2B/h2VT4z4jedjiMJ2MZGhidAi
- W+t/0Y7WNJ2sYAzDrA6C+UemFuKaSzuFrmf6QpJVczdBS8mWDs+wMPRcD7RNSokO0EDLqdfA7rI
- fvzy7cE/1BIJTHRaisH03SFU6dSAXC2dsxkIYbKZnD+upF2OunGSYGZ7YZ5qiBCpd3jiqQuWAHO
- iwo1R0KJLHE6mHbcIgmrx4f5T13BSzjYVqTHKYtzQzmr2ufVRrLKAVW0NJKSxZQjNmqKYSfw7ci
- /ye9IHn2Eajfuq8/qGGKNkpLApdhOPNdRYIeMQZ4Z+/mNDNYuhENv3WtgevcJLYu9PX6LMkEOVQ
- fKzj208Xub28=
-X-Received: by 2002:a05:6000:4602:b0:3b5:e6f2:ab4d with SMTP id
- ffacd0b85a97d-3b60dd997cbmr4143355f8f.42.1752734912344; 
- Wed, 16 Jul 2025 23:48:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDWvMf7a4JhT4akbCWXX+idRqkHLugX1pm+Rhp9R0kH0H2MIFchuh/KCxmsYLONGHdTm344A==
-X-Received: by 2002:a05:6000:4602:b0:3b5:e6f2:ab4d with SMTP id
- ffacd0b85a97d-3b60dd997cbmr4143331f8f.42.1752734911837; 
- Wed, 16 Jul 2025 23:48:31 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5f16a6016sm17938812f8f.69.2025.07.16.23.48.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Jul 2025 23:48:30 -0700 (PDT)
-Message-ID: <ea639677-65e4-4eda-be7e-e65d13a22afc@redhat.com>
-Date: Thu, 17 Jul 2025 08:48:29 +0200
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>)
+ id 1ucIQB-0002Uj-3l; Thu, 17 Jul 2025 02:48:48 -0400
+Received: from [192.168.100.1] ([82.64.211.94]) by mrelayeu.kundenserver.de
+ (mreue010 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1MsqIi-1urcJb1rGS-00wGO0; Thu, 17 Jul 2025 08:48:39 +0200
+Message-ID: <e1fe443a-b715-41e8-a292-98449468e321@vivier.eu>
+Date: Thu, 17 Jul 2025 08:48:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/20] intel_iommu: Check for compatibility with
- IOMMUFD backed device when x-flts=on
-Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "ddutile@redhat.com" <ddutile@redhat.com>, "jgg@nvidia.com"
- <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "shameerali.kolothum.thodi@huawei.com"
- <shameerali.kolothum.thodi@huawei.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "clement.mathieu--drif@eviden.com" <clement.mathieu--drif@eviden.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>
-References: <20250708110601.633308-1-zhenzhong.duan@intel.com>
- <20250708110601.633308-8-zhenzhong.duan@intel.com>
- <342129d6-0b96-440c-83ac-e9b8bc5b18a0@redhat.com>
- <IA3PR11MB9136C85F0799CB91572121FB9256A@IA3PR11MB9136.namprd11.prod.outlook.com>
- <081c3534-332f-454a-985b-4dc81a3dd2a7@redhat.com>
- <IA3PR11MB9136ABA0E88C04CB6E9E80BA9251A@IA3PR11MB9136.namprd11.prod.outlook.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <IA3PR11MB9136ABA0E88C04CB6E9E80BA9251A@IA3PR11MB9136.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Subject: Re: [PATCH qemu 1/2] Don't reverse bFLT endianess when not needed
+To: ~wojtekka <wojtekka@toxygen.net>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org
+References: <175270306503.19369.144677794735042916-1@git.sr.ht>
+Content-Language: en-US, fr-FR
+From: Laurent Vivier <laurent@vivier.eu>
+In-Reply-To: <175270306503.19369.144677794735042916-1@git.sr.ht>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:rejVcnrlK+88EX8UJuo6xZivVERj+TEkT/49biszroQXcK1KwAb
+ e6+cjB1t/I2lofmkbJjwT/FhkmFp205Aqo2tfga1+gW9jalZMRYcpRwBCWjfpHVorOGgjZ4
+ xcTl8HQImQLu9l3XoVB8YZMv4Jh0w/YMfRiTz1oVVN7lBDTzy2A/7rltIFII1IMgoHL1p+s
+ xrNu5cIsqmakYblTN8UOg==
+UI-OutboundReport: notjunk:1;M01:P0:59CfV1iYz5E=;SlJDWzIdW7r3fbTjes9lk1q0PG8
+ gEdN1LyoKB6lsnl9ZSt5mco8oZSHiQ1km2L9hMAtZpgQ3ONX5Ukw4eu2VFfoW62UufZk/ACG8
+ HJz/LE/zlRR1r5RhFjt49pHVrzV1iWpEEW04N5MwLyvdlY0XAYR00WG/JNZD5d2aUBfiDG0JO
+ jpdDsyBjbSMBiHxcEU5a3uketJsbHuWE22JW3vPVfbnd2EMi30gRNpZIBl66wOVNmbTNmIXlF
+ vYtsCh1CReQMOIJhB+NVHog9mucbVDvMFC7miUn6uvsXlj6oh8GRgnT8uZXnl0Pcy2B4m6274
+ n0aBsOHBpq6qSOq0RG6CdVzPgirFJwhGY9ELCgQP6IrhDsDFNvVS/biplqjPX6d/1SrFkpLAy
+ nAaVbI0eG0P1o1xUmKpCA1ys6zxLBHRwp4JKs8GT/zouxcsGmNpSvb9kGYT4G1WJ5E9RmA35c
+ P+wj7nuTVdqixrqCqjd4VE4z2C4BLpNw30pGd+ehBO0gxSkJXjz3ot2y+TiAfrUu+qQputvRW
+ 8/p7CyYZUO3RDY5sVwHc4Mi950xr0A91QxuiEpzRDHDxKVRH4zmxQcPW+QnyfLAbqeTWURAWx
+ 8xEEsVsYXKHtbTvQ78KflCPLh9d0zKjjMtAcvDlBcD1yskBe7GXNo7WYvw5fFbEYUskNglyYZ
+ fy3E4aAIfD9GU8RPfjUiThYcHMPKexfhc1sdnJ39sleQivwzCrxuVBEfHnGH1ZxYHIOKo+FE8
+ YTu6eKWa7DbfWQjQajtqS3J+btGW1lg5+u6hfnyJ3cf96HxOpmcD8PHpDvFG4aMxhRc5d4oR0
+ mGlQBq9sikMDVTVaMYY3ErSaELLMh/L48WER2wlX/3o+l1Ek2ajztvBWmxCttBE8iIyZlq3FN
+ r8uj6u2QeMflvjwrzNdyL01+v35N3q5VYezu6Wm5gWBsiDFsmFXKpDXOhiYJ3V4qd5sp+esEk
+ Lhe7qU+eMkONyygB0SnaG2MvHPqmWvkTUyEm9+LlDSo3PS+TsgCF2WXfjorHQrvc2OWlXQ9Hc
+ yDFOguYkGwQHpvMlr7+JGUX9ye9ExFbTrjCuOu93h/nOADNvNm1bzL+vv2SGUT3BDWTI31ufZ
+ nxv7vfo8tIWlm8sTXPpaZLOjVMVgmPwXmsqajIYXQYhtUNA9fq4QJf04QNjPdCxfknNebmQgw
+ TZ4KMycXh3kHacdVOPK3VrdnjTdBVEp6di/Bjho2P0FyZNkcIbrgqz1x5EL+oriV4ndfonbKe
+ XvXyjFa25cRf0OkVfFL74SIzHrXf4aqlRjc3PYIYEjX4M40f4GN+iV/bXlLdIwnGQ3+3lO7gX
+ xON+2e3EwRFUizkdWmi+Yq0X0dJ6YFv/OLmXLiqyzZ8fEz6mwSPSb5gBQwkbk1sGvt22HICvm
+ CEEJyQkegxMfFX/kWy+Mh8cZ1Yxa4P5i7KU2YzXkrLKcBIZvHU85ZzOLBp/25iaWkZfQUJzWr
+ sPcbNNkCQ/d6TjL2lTNMShL0o0uk0GatWhZlD2iGPWvqqOwjHX0KmQyZVVmy1ehDl39itzAkA
+ a1ATAz88CQsQeKHbCDxvcoj/wDaatvvRFDeIklnJg3AO7v6eXLLm+kk4wGuj/g==
+Received-SPF: pass client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,136 +80,72 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
 
-On 7/17/25 5:47 AM, Duan, Zhenzhong wrote:
-> Hi Eric,
->
->> -----Original Message-----
->> From: Eric Auger <eric.auger@redhat.com>
->> Sent: Wednesday, July 16, 2025 8:09 PM
->> To: Duan, Zhenzhong <zhenzhong.duan@intel.com>;
->> qemu-devel@nongnu.org
->> Cc: alex.williamson@redhat.com; clg@redhat.com; mst@redhat.com;
->> jasowang@redhat.com; peterx@redhat.com; ddutile@redhat.com;
->> jgg@nvidia.com; nicolinc@nvidia.com;
->> shameerali.kolothum.thodi@huawei.com; joao.m.martins@oracle.com;
->> clement.mathieu--drif@eviden.com; Tian, Kevin <kevin.tian@intel.com>; Liu,
->> Yi L <yi.l.liu@intel.com>; Peng, Chao P <chao.p.peng@intel.com>
->> Subject: Re: [PATCH v3 07/20] intel_iommu: Check for compatibility with
->> IOMMUFD backed device when x-flts=on
->>
->> Hi Zhenzhong,
->>
->> On 7/16/25 12:31 PM, Duan, Zhenzhong wrote:
->>> Hi Eric,
->>>
->>>> -----Original Message-----
->>>> From: Eric Auger <eric.auger@redhat.com>
->>>> Subject: Re: [PATCH v3 07/20] intel_iommu: Check for compatibility with
->>>> IOMMUFD backed device when x-flts=on
->>>>
->>>> Hi Zhenzhong,
->>>>
->>>> On 7/8/25 1:05 PM, Zhenzhong Duan wrote:
->>>>> When vIOMMU is configured x-flts=on in scalable mode, stage-1 page
->> table
->>>>> is passed to host to construct nested page table. We need to check
->>>>> compatibility of some critical IOMMU capabilities between vIOMMU and
->>>>> host IOMMU to ensure guest stage-1 page table could be used by host.
->>>>>
->>>>> For instance, vIOMMU supports stage-1 1GB huge page mapping, but
->> host
->>>>> does not, then this IOMMUFD backed device should fail.
->>>>>
->>>>> Even of the checks pass, for now we willingly reject the association
->>>>> because all the bits are not there yet.
->>>>>
->>>>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->>>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>>>> ---
->>>>>  hw/i386/intel_iommu.c          | 30
->>>> +++++++++++++++++++++++++++++-
->>>>>  hw/i386/intel_iommu_internal.h |  1 +
->>>>>  2 files changed, 30 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
->>>>> index e90fd2f28f..c57ca02cdd 100644
->>>>> --- a/hw/i386/intel_iommu.c
->>>>> +++ b/hw/i386/intel_iommu.c
->>>>> @@ -40,6 +40,7 @@
->>>>>  #include "kvm/kvm_i386.h"
->>>>>  #include "migration/vmstate.h"
->>>>>  #include "trace.h"
->>>>> +#include "system/iommufd.h"
->>>>>
->>>>>  /* context entry operations */
->>>>>  #define VTD_CE_GET_RID2PASID(ce) \
->>>>> @@ -4355,7 +4356,34 @@ static bool vtd_check_hiod(IntelIOMMUState
->> *s,
->>>> HostIOMMUDevice *hiod,
->>>>>          return true;
->>>>>      }
->>>>>
->>>>> -    error_setg(errp, "host device is uncompatible with stage-1
->>>> translation");
->>>>> +#ifdef CONFIG_IOMMUFD
->>>>> +    struct HostIOMMUDeviceCaps *caps = &hiod->caps;
->>>>> +    struct iommu_hw_info_vtd *vtd = &caps->vendor_caps.vtd;
->>>> I am now confused about how this relates to vtd_get_viommu_cap().
->>>> PCIIOMMUOps.set_iommu_device = vtd_dev_set_iommu_device calls
->>>> vtd_check_hiod()
->>>> viommu might return HW_NESTED_CAP through
->>>> PCIIOMMUOps.get_viommu_cap
->>>> without making sure the underlying HW IOMMU does support it. Is that a
->>>> correct understanding? Maybe we should clarify the calling order between
->>>> set_iommu_device vs get_viommu_cap? Could we check HW IOMMU
->>>> prerequisites in vtd_get_viommu_cap() by enforcing this is called after
->>>> set_iommu_device. I think we should clarify the exact semantic of
->>>> get_viommu_cap().Thanks Eric
->>> My understanding get_viommu_cap() returns pure vIOMMU's capabilities
->>> with no host IOMMU's capabilities involved.
->>>
->>> For example, returned HW_NESTED_CAP means this vIOMMU has code
->>> to support creating nested hwpt and attaching, no matter if host IOMMU
->>> supports nesting or not.
->> Then I think you need to refine the description in 2/20 to make this clear.
->> stating explicitly get_viommu_cap returns theoretical capabilities which
->> are independent on the actual host capabilities they may depend on.
-> Will do.
->
-> For virtual vtd, we are unable to return capabilities depending on host capacities,
-> Because different host IOMMU may have different capabilities, we want to return
-> a consistent result only depending on user's cmdline config.
-ok
->
->>> The compatibility check between host IOMMU vs vIOMMU is done in
->>> set_iommu_device(), see vtd_check_hiod().
->>>
->>> It's too late for VFIO to call get_viommu_cap() after set_iommu_device()
->>> because we need get_viommu_cap() to determine if creating nested parent
->>> hwpt or not at attaching stage.
->> isn't it possible to rework the call sequence?
-> I think not. Current sequence:
->
-> attach_device()
->     get_viommu_cap()
->     create hwpt
-> ...
-> create hiod
-> set_iommu_device(hiod)
->
-> Hiod realize needs iommufd,devid and hwpt_id which are ready after attach_device().
-OK. I would add this explanation in the commit msg too.
->
-> Thanks
-> Zhenzhong
-Thanks
 
-Eric
+Le 16/07/2025 à 21:24, ~wojtekka a écrit :
+> From: Wojtek Kaniewski <wojtekka@toxygen.net>
+> 
+> bFLT format is big-endian. get_user_ual() returns host value so for
+> little-endian target and little-endian host it's necessary to reverse
+> words using ntohl(). For big-endian targets we end up with incorrect
+> endianess:
+> 
+>      $ qemu-m68k-static ./test
+>      BINFMT_FLAT: reloc outside program 0x801f0000 (0 - 0x41f0/0x1e40)
+>      Aborted (core dumped)
+> 
+> For comparison the output of `flthdr` follows:
+> 
+>      $ m68k-elf-flthdr -P ./test
+>      ./test
+>          Magic:        bFLT
+>          Rev:          4
+>          Build Date:   Tue Jul 15 23:02:00 2025
+>          Entry:        0x44
+>          Data Start:   0x1e80
+>          Data End:     0x205c
+>          BSS End:      0x40a0
+>          Stack Size:   0x1000
+>          Reloc Start:  0x205c
+>          Reloc Count:  0x17
+>          Flags:        0x2 ( Has-PIC-GOT )
+>          Relocs:
+>          #	reloc      (  address )	data
+>          0	0x00001f80 (0x00001f80)	3c200000
+>                    ^^^^^^^^
+>          1	0x00001f84 (0x00001f84)	3c300000
+>          2	0x00001f88 (0x00001f88)	3c200000
+>          ...
+> 
+> Signed-off-by: Wojtek Kaniewski <wojtekka@toxygen.net>
+> ---
+>   linux-user/flatload.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/linux-user/flatload.c b/linux-user/flatload.c
+> index 4beb3ed1b9..afaff4ac44 100644
+> --- a/linux-user/flatload.c
+> +++ b/linux-user/flatload.c
+> @@ -413,7 +413,9 @@ static int load_flat_file(struct linux_binprm * bprm,
+>                  relocated first).  */
+>               if (get_user_ual(relval, reloc + i * sizeof(abi_ulong)))
+>                   return -EFAULT;
+> +#if !TARGET_BIG_ENDIAN
+>               relval = ntohl(relval);
+> +#endif
+>               if (flat_set_persistent(relval, &persistent))
+>                   continue;
+>               addr = flat_get_relocate_addr(relval);
+
+I think the ntohl() should be removed totally and flat_set_persistent() 
+should use put_user_ual().
+
+Could you test this?
+
+Thanks,
+Laurent
 
 
