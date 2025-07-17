@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13CAB093D1
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8B5B093D6
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:22:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucTCr-0004gr-7E; Thu, 17 Jul 2025 14:19:45 -0400
+	id 1ucTCw-0004lF-B9; Thu, 17 Jul 2025 14:19:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucQSO-0004co-Rn
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:23:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1ucQSS-0004dq-7q
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:23:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucQSM-0004KR-7N
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:23:36 -0400
+ id 1ucQSP-0004LA-5P
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:23:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752765812;
+ s=mimecast20190719; t=1752765815;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XDBnlPqeGv4rwPb8eQVz5uOF6kllE9KhwMqiqUrgjcE=;
- b=HkyNIwDdXGHcqFzE++IkQMdC285jVxkTBLIjzIH05eYCC7/1vddlXl64c/Zz4s2zexELCV
- 7D57RyWGKgKsGWtd6s0VY+u/DnMbiq1LepakiXcmmQkcfQn+WdPSExw+XYM+YqV6ptfEJQ
- hRjMdXoUwF2vUBcwMuHBhKj1Auc6n70=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2WlmBVN2Qucvf1vEE6nWUJB/kVdkIb8dEtL75AIz63Q=;
+ b=GjKvVlIQmb7Gq7h9wZdysYQSvDug6GzFudjrs+nSmDSb89Z0bSMNfS5ipami1DstyUCtjx
+ yqusZsAfiQolaLTDzMKRSWFNAGvSMyDvhzFBvDvCM2BrHSRRRBj7DDbjVuB+RPP6w5I2he
+ 7pUXFUdzpld4SqxK6fQfDwbtDB6IVgg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-352-NlHHr0ayOBKuHmvPZcSNZg-1; Thu, 17 Jul 2025 11:23:31 -0400
-X-MC-Unique: NlHHr0ayOBKuHmvPZcSNZg-1
-X-Mimecast-MFC-AGG-ID: NlHHr0ayOBKuHmvPZcSNZg_1752765809
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-456013b59c1so6261255e9.3
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 08:23:29 -0700 (PDT)
+ us-mta-299-HCWi4nO-N6qm72AlbbfqGg-1; Thu, 17 Jul 2025 11:23:32 -0400
+X-MC-Unique: HCWi4nO-N6qm72AlbbfqGg-1
+X-Mimecast-MFC-AGG-ID: HCWi4nO-N6qm72AlbbfqGg_1752765811
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4560f28b2b1so3939395e9.2
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 08:23:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752765808; x=1753370608;
+ d=1e100.net; s=20230601; t=1752765811; x=1753370611;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XDBnlPqeGv4rwPb8eQVz5uOF6kllE9KhwMqiqUrgjcE=;
- b=Tjo/CpOqyQV/txyiqZc2JkGd/Aiksm5yAcLGOLId70/T6y4FUJj6hIniY3RoOl6v3D
- +FTXknzsUWYUwEL/4I4/+gatxwFlnRSowqNseAUBM1I1THrHun3fss/55oKdNRAyNGwx
- aYt31Z/jb6htvifX6dSCb3zccJEL2qXgyViw3zbRamim5U2wb10zqpGgUkVlBSKdzXIV
- VjjPjcggH+TxF8kqGk+U4b/8czoQHSTPQuwUVz0Hq6WbkjG+pbmi1/Qlgf1PEHDoMbFe
- SlQnet+gHwu7Sv5NRGIQr65BuWpoKw9wJWTm1fGQ91R/ygkx+uovR1cJHzBBMl8FWgcv
- 2z3A==
-X-Gm-Message-State: AOJu0YyC13E7P+87XIm7NDfqgXSjonrMVTvQTe2o3jnjQ5dDY1wY0/Q0
- uvJqLVO5jfbJ60ExqOZ3kQTUYtrPyW6XttxcasQprFg4uXSRMJmLHIIYkaHaEF5koGHlpV1W5Bs
- YfjdQgin4rMgUnIvXFRXTDljkRPSqGgPQJB1GCGKTstxJl5R/3yq6N5MO/5Ke9FhI97ELTm4apS
- g4R2+vpcl3hFrJ4U6pAkjXPwIxqr3T6g8Naf6YaDIU
-X-Gm-Gg: ASbGnctwNBDRcJ/aweFULMDjfFx3j2naahoDpuqnW9AXhPfYOPsixRXepKotzAbGiPk
- vZrxd+RUWpFoxU6NLhPZliOF3XEXrxq0VEMMUx33GDtVtufW0JvueFGVtYQ4xg/ARmxviNEXi+l
- ZVexHWO4f4aAaoqiun+LNoR7KsYEhT8vAoY/p2A0Z1fdnwrRBwTYFSA+tyMRNYkD2z6w2HVexbh
- PgbCSQfyW+/S+Md73pw81iHoSASqKXxC2rrmW3DOWYpi3iG3YcO2lFRTfg/1H4WAjWqYx7hmyq4
- C8AVHM/N0tNZD4aMRhcje9w0+kkKa7GWDro3Baydp7w=
-X-Received: by 2002:a05:600c:3b15:b0:43c:eeee:b713 with SMTP id
- 5b1f17b1804b1-4562e36c7b1mr64527205e9.20.1752765808328; 
- Thu, 17 Jul 2025 08:23:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyN8eEMJD/Pih4TSdIuIrq9ldSM/t9VtjwaF21Y2H3uzUD9WAPATka0Ucye/+U88+to8Ecjw==
-X-Received: by 2002:a05:600c:3b15:b0:43c:eeee:b713 with SMTP id
- 5b1f17b1804b1-4562e36c7b1mr64526895e9.20.1752765807843; 
- Thu, 17 Jul 2025 08:23:27 -0700 (PDT)
+ bh=2WlmBVN2Qucvf1vEE6nWUJB/kVdkIb8dEtL75AIz63Q=;
+ b=U/WrC2sOPINLBsJNs+7mVULyf8f8N+VlEOG929CWOJvX3s39sR38YWkGDzgmp7Q74Z
+ MX9s9n4UPG0FCmnePwfO6mmYKkDBQ0Pl64IusiNcC2rz8cYPe6gaWuLhFkuOxDSzZiRB
+ AoLDWrtYlVejxJ9EfWtA1bCqJwrfjAoFee544p/YXBpe3nAqvM6gFmbTY0k4Jm7kM0WU
+ tks340DyRzphHw98+M1BtA6HSuYVmTHmYMU4TL72+DI7QzEQO8HLk+GA53ULxAMEyY9v
+ qaXtFgFBGdyR5lNtDlsqGCM9hXgoOhmUSs9Taa2lnUxqIwjLM9F0IgRvCjInt1zd8Lcp
+ pyog==
+X-Gm-Message-State: AOJu0YzeipijDy/Om8YYhuQwwfh6oG9ovEOPS5Mcq40J73oxboMMI2XX
+ GyaASs5NR++SgphQshfrbpuRx/6AtOiVTM3Zjy7VOh97XJvQVrGGqMrase402B4ILyXDm6MSOiQ
+ zYe0LuvfKeMspUcTWRv3Y/jHW2ZAL5zlQMy3pgkqDs42Rh/SETWadO4anBA3Yj+4yfVD5HfxZ83
+ fdFffFtE/WI1uoLpPH4xvbVPOZaE2H2qARLxSckB5z
+X-Gm-Gg: ASbGnctA23qZx7DVE9HOiAfQLu1LqyhH09TLjpessg5LJauWyOF5+vCTeqi5yHhgqJa
+ 9wkgDwq6mIsspS/1ilD4NK/ZZz4IWS/mQYvZMMjVk6F1iw62hdoOYOs8sj6R3uNNlL5+dFDguT4
+ 4TTLat+R0K0HK0HIjKH7c+jejJtnjtHyZKoNI7jjYoB/pgMVXTACrQLInOJ7tS2jLtyAjLgqLi1
+ fLAxEaB6ernHX3FutE+ffNn42sph8l4tZyyroLKkVXXkRsXgsL0Xu28aTDAweP0IyNAsWieXb27
+ mPe1MQVxjuxRh1o+h/5F8OdaPiFce0uBgTmBQEyiIvs=
+X-Received: by 2002:a05:600c:8b85:b0:456:2347:3f01 with SMTP id
+ 5b1f17b1804b1-456355c60d3mr30190975e9.20.1752765810925; 
+ Thu, 17 Jul 2025 08:23:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF67RAZBw5pAQGPD0Rra2YQASNKHOLGkzgIaXyjKt0rQcg3SLQOiJfNtU+Yo6hAi05d7dFIMg==
+X-Received: by 2002:a05:600c:8b85:b0:456:2347:3f01 with SMTP id
+ 5b1f17b1804b1-456355c60d3mr30190615e9.20.1752765810367; 
+ Thu, 17 Jul 2025 08:23:30 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45634f9a53asm25053995e9.30.2025.07.17.08.23.25
+ ffacd0b85a97d-3b5e8e0d872sm21195130f8f.60.2025.07.17.08.23.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jul 2025 08:23:26 -0700 (PDT)
+ Thu, 17 Jul 2025 08:23:29 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 4/6] target/i386: tdx: fix locking for interrupt injection
-Date: Thu, 17 Jul 2025 17:23:14 +0200
-Message-ID: <20250717152316.353049-5-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 5/6] i386/cpu: Cleanup host_cpu_max_instance_init()
+Date: Thu, 17 Jul 2025 17:23:15 +0200
+Message-ID: <20250717152316.353049-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250717152316.353049-1-pbonzini@redhat.com>
 References: <20250717152316.353049-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,50 +109,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Take tdx_guest->lock when injecting the event notification interrupt into
-the guest.
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Fixes CID 1612364.
+The implementation of host_cpu_max_instance_init() was merged into
+host_cpu_instance_init() by commit 29f1ba338baf ("target/i386: merge
+host_cpu_instance_init() and host_cpu_max_instance_init()"), while the
+declaration of it remains in host-cpu.h.
 
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Clean it up.
+
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20250716063117.602050-1-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/tdx.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ target/i386/host-cpu.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 7d69d6d7b06..1574e7d76fe 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -1126,10 +1126,15 @@ int tdx_parse_tdvf(void *flash_ptr, int size)
-     return tdvf_parse_metadata(&tdx_guest->tdvf, flash_ptr, size);
- }
+diff --git a/target/i386/host-cpu.h b/target/i386/host-cpu.h
+index 10df4b3a3a7..ee653242254 100644
+--- a/target/i386/host-cpu.h
++++ b/target/i386/host-cpu.h
+@@ -12,7 +12,6 @@
  
--static void tdx_inject_interrupt(uint32_t apicid, uint32_t vector)
-+static void tdx_inject_interrupt(TdxGuest *tdx)
- {
-     int ret;
-+    uint32_t apicid, vector;
+ uint32_t host_cpu_phys_bits(void);
+ void host_cpu_instance_init(X86CPU *cpu);
+-void host_cpu_max_instance_init(X86CPU *cpu);
+ bool host_cpu_realizefn(CPUState *cs, Error **errp);
  
-+    qemu_mutex_lock(&tdx->lock);
-+    vector = tdx->event_notify_vector;
-+    apicid = tdx->event_notify_apicid;
-+    qemu_mutex_unlock(&tdx->lock);
-     if (vector < 32 || vector > 255) {
-         return;
-     }
-@@ -1179,8 +1184,7 @@ static void tdx_get_quote_completion(TdxGenerateQuoteTask *task)
-         error_report("TDX: get-quote: failed to update GetQuote header.");
-     }
- 
--    tdx_inject_interrupt(tdx_guest->event_notify_apicid,
--                         tdx_guest->event_notify_vector);
-+    tdx_inject_interrupt(tdx);
- 
-     g_free(task->send_data);
-     g_free(task->receive_buf);
+ void host_cpu_vendor_fms(char *vendor, int *family, int *model, int *stepping);
 -- 
 2.50.1
 
