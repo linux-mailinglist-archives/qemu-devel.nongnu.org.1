@@ -2,79 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EDC7B09480
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6621BB09473
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:52:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucTly-0004Sm-F0; Thu, 17 Jul 2025 14:56:02 -0400
+	id 1ucThl-00081A-9g; Thu, 17 Jul 2025 14:51:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucR8b-0002tU-UJ
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:07:29 -0400
+ id 1ucR8d-0002tk-Gr
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:07:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucR8X-0002F4-D0
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:07:12 -0400
+ id 1ucR8b-0002Fx-P1
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:07:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752768426;
+ s=mimecast20190719; t=1752768432;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=3Lm68o9Wr9o652txBCwt/ZL0omPMYt4O8DFykRcXrP4=;
- b=M4ffjtc7MGcPqAZSqVgnXyy5H6+mmTGZvY/ZYWEmuC3MlmKjQIPLmUI0MrW70WiKu3kvj1
- EuZWpTcbrrZrko6FffAjizI6PuYGczLZdAHOnbzKlfUd/I55zUNaUtLpPLVeliPxlfOs3T
- DpUsIWbU8K26FCMG96MvELfTS59ZGlg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PLrQp95rvm2mOaUAqrOiIgoBJpm3/ZUBPdW5pZC03uU=;
+ b=NCtF0OlOIgk9N11OB97WUUIuo1MBFh529wE+NoatHbHw3w2Yc1+7ELFVZnTKSJsTycrAa2
+ gyd+uH1mdij5q+kv63yrNyf+YiYA7uBW6yCS12wlHpxcqyLuXjvL5OOy0+/mwdonY/CJgT
+ 7cNKtEMegMKULAgLqZz3CsiAiU4rsDU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-O5a21o_QMkKvmCGM5koY8A-1; Thu, 17 Jul 2025 12:07:04 -0400
-X-MC-Unique: O5a21o_QMkKvmCGM5koY8A-1
-X-Mimecast-MFC-AGG-ID: O5a21o_QMkKvmCGM5koY8A_1752768423
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-456106b7c4aso10035405e9.0
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 09:07:04 -0700 (PDT)
+ us-mta-349-uI2ASmdsPtiGg8u6t1k6HA-1; Thu, 17 Jul 2025 12:07:11 -0400
+X-MC-Unique: uI2ASmdsPtiGg8u6t1k6HA-1
+X-Mimecast-MFC-AGG-ID: uI2ASmdsPtiGg8u6t1k6HA_1752768430
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-453817323afso7991155e9.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 09:07:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752768423; x=1753373223;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3Lm68o9Wr9o652txBCwt/ZL0omPMYt4O8DFykRcXrP4=;
- b=NYcn0+MVEC67vwVh12er2JY3asnWigPC7aAvW57dBY+2JoP70gHFEmSQ1vA/M37mtC
- 3yq5jVoNxmZuWg7Ibp1c0meN9ME2JQBZSvNGvGrt10zV7iOulb3cjy1R9QZQK4PHPT7d
- agkJWLjLLWViNkwYlrbkF2ifZWD4vLERx6LoefLRq/ca0OBrM3r3ZDG9XgorNcDc2M0o
- /NYg1H+amv+FQODUVAeF6eoDBcIiUXmIGVZZ8ZT/FG9cDzZmndbZdKE7+tK+BnUVRmF1
- Ywt75MwJG2OLyji7pFU01kM3qkN7DrskmXYZPermB+jwY0/4r1qLiROq1gJ0h8caCKa9
- wPFA==
-X-Gm-Message-State: AOJu0YyIWdJ4mmVtnEuZqbYDSLPkRgpN/tCccUtSF9tX9bRNFgmyzCeb
- Q7cKcu1Tlt6fPVuM/eHKT+7GORE3xuqHTWlH02wcexJhKneGRf/6sCo+DWGTNdo5OEfjuLg8SzH
- ewyyvn7zZh4hSM/uzj3he49EHY7yob9UdUuIo1CrzD10K7tokZFV713JRURwrkf0EP5seVRDS5x
- zYI3EWsAANo4gouJZ65F4Bznoc8N8HImOq4Mv5f0Oe
-X-Gm-Gg: ASbGncu5mzgUAH8AjhKGnCXxQMpE+aa+WMXQg8dONOOzzK/tKUPN2bSl4jD8XQ5MFsr
- BBD4JoYySXcQJTFy48heLOmgPAcKBgfEsuK0W4C3819Eb7U6IovI3S2z95BxPPj/hc6PnKkEM2J
- I4AMqeVKmwXcAvs/TwSCdq7ar6Zs8JacYOOK43jBWDpjd+hyTs51UzgbBzkwudoSdVSA+0Y4Ryl
- TIekB4Omc5McHMwDhXenrpgpSAZ5J1aTQJGGS2CndymhyfvwOo+QbHlCMVjA+3P65ucHFmrTAm/
- 5pz0smgUJGV30f5N5kvDsQ/HO42zgUHDhdcjQ4sRv7M=
-X-Received: by 2002:a05:600c:214b:b0:455:efd7:17dc with SMTP id
- 5b1f17b1804b1-4563a5416ebmr3189005e9.11.1752768422377; 
- Thu, 17 Jul 2025 09:07:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHI/DvTbuqbW0p5krFkZSqfHJ50Rn62Om75b1gu1KgDXnHAoIZpvuRsacmqpd2ZiaoMzEaG2w==
-X-Received: by 2002:a05:600c:214b:b0:455:efd7:17dc with SMTP id
- 5b1f17b1804b1-4563a5416ebmr3188315e9.11.1752768421688; 
- Thu, 17 Jul 2025 09:07:01 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752768428; x=1753373228;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=PLrQp95rvm2mOaUAqrOiIgoBJpm3/ZUBPdW5pZC03uU=;
+ b=vRG+bh68wZfGp08CxQHKvYJ7CWnOIi40vy3chlicXDcp7p4axrJWeR6TcKoIb7nPuH
+ BNZmqjW6OI5lmIqA9qveYIBWrG3khNU9RdMqex1flFIQdqG4h2qXMXodScUPE099CXUs
+ mxIu/VbIDvaFZFltJtFsO9bQGmuID35iKFZR+19W8EXgdXAabu6LPNlI8uOU3JODiFJU
+ 7zQWddt8rZGB1BOyBeDwGvUSa+6zT82FjeYK3M8jf9+qlst5BZpAcxjJAdoTMLF61Lql
+ U4BS9oBEmv8Hrb6NTi3xTLK98bgP+OvbQUhpxc+tvrqFDVMysYuLSHAkPe668gQY5F1W
+ k/JA==
+X-Gm-Message-State: AOJu0YzE0gDalDWKCIidQl90A8goehjKP1DXf/A0cG4foQKWA7TT/0Dl
+ ZpVcPyO+Q8ps62JTIaPO+8qYdFisWPeDvjipfPf33mbB1IDsgW4TwsDoUg2md150ZPxrRcuaF1e
+ ldEItI/9HsJsGnId1cqoCEANM0FRwOWYFq5I26GRFP4iYPNeVudT1hIr++F+Cooj8KG/3JpCtgy
+ b6PdarBczBJvS2HEU+DvsU59qtEDcFL17EhswPKUdn
+X-Gm-Gg: ASbGncsSy/Qntd1q28xJhFLY1pol3MB9ntpUzKbuIVOcBkkTLgMmph8yINh70JyrCvs
+ cYixQVHohiapDe6WgMcz4F3x8VMOOISpyBt8asfzseSEIJ2W/oJ3aV7Si2BRkGWRHRRJLrBCgD4
+ d/xcjlqlbJVHbA0GpbMya9tXRctlTwzcMLDdGr85H0kyPcj3Clfg4JGMT0GSDM2d4lSetmBOK5p
+ JvH6c11UKcowtpTYRCN7y9VXu40HL72anWl17onIojjrXyKakwDAMezApNW5caEnaJtO6RILrOn
+ 6y+c7+cSU+zxYtOvfR7FkF80FH5TZWG0xZlQJ44MiCM=
+X-Received: by 2002:a05:600c:3b29:b0:453:7713:546a with SMTP id
+ 5b1f17b1804b1-4562f164b1bmr80081325e9.14.1752768423699; 
+ Thu, 17 Jul 2025 09:07:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHdGQzMTN+ad5BHVXV7gltb3idOqFI05xWmY6qv2AqFAOMK/pm8K/0ir4Kl8p5iFOJ3m3KP+A==
+X-Received: by 2002:a05:600c:3b29:b0:453:7713:546a with SMTP id
+ 5b1f17b1804b1-4562f164b1bmr80080645e9.14.1752768423116; 
+ Thu, 17 Jul 2025 09:07:03 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4562e89c87esm54596725e9.33.2025.07.17.09.07.00
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-45634f4c848sm27537025e9.4.2025.07.17.09.07.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jul 2025 09:07:01 -0700 (PDT)
+ Thu, 17 Jul 2025 09:07:02 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/6] Mostly target/i386 patches for QEMU 10.1 hard freeze
-Date: Thu, 17 Jul 2025 18:06:54 +0200
-Message-ID: <20250717160700.357384-1-pbonzini@redhat.com>
+Cc: Alexandre Chartre <alexandre.chartre@oracle.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 1/6] target/i386: do not expose ARCH_CAPABILITIES on AMD CPU
+Date: Thu, 17 Jul 2025 18:06:55 +0200
+Message-ID: <20250717160700.357384-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250717160700.357384-1-pbonzini@redhat.com>
+References: <20250717160700.357384-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -103,43 +109,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit f96b157ebb93f94cd56ebbc99bc20982b8fd86ef:
+KVM emulates the ARCH_CAPABILITIES on x86 for both Intel and AMD
+cpus, although the IA32_ARCH_CAPABILITIES MSR is an Intel-specific
+MSR and it makes no sense to emulate it on AMD.
 
-  Merge tag 'accel-20250715' of https://github.com/philmd/qemu into staging (2025-07-16 07:13:40 -0400)
+As a consequence, VMs created on AMD with qemu -cpu host and using
+KVM will advertise the ARCH_CAPABILITIES feature and provide the
+IA32_ARCH_CAPABILITIES MSR. This can cause issues (like Windows BSOD)
+as the guest OS might not expect this MSR to exist on such cpus (the
+AMD documentation specifies that ARCH_CAPABILITIES feature and MSR
+are not defined on the AMD architecture).
 
-are available in the Git repository at:
+A fix was proposed in KVM code, however KVM maintainers don't want to
+change this behavior that exists for 6+ years and suggest changes to be
+done in QEMU instead.  Therefore, hide the bit from "-cpu host":
+migration of -cpu host guests is only possible between identical host
+kernel and QEMU versions, therefore this is not a problematic breakage.
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+If a future AMD machine does include the MSR, that would re-expose the
+Windows guest bug; but it would not be KVM/QEMU's problem at that
+point, as we'd be following a genuine physical CPU impl.
 
-for you to fetch changes up to f64832033d1262983bfe759669b4f65080f760dc:
+Reported-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/kvm/kvm.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-  i386/tdx: Remove the redundant qemu_mutex_init(&tdx->lock) (2025-07-17 17:18:59 +0200)
-
-----------------------------------------------------------------
-* target/i386: bugfixes
-* regenerate meson-buildoptions.sh
-
-----------------------------------------------------------------
-Paolo Bonzini (2):
-      target/i386: do not expose ARCH_CAPABILITIES on AMD CPU
-      target/i386: tdx: fix locking for interrupt injection
-
-Stefano Garzarella (1):
-      meson: re-generate scripts/meson-buildoptions.sh to fix IGVM entry
-
-Xiaoyao Li (2):
-      i386/cpu: Cleanup host_cpu_max_instance_init()
-      i386/tdx: Remove the redundant qemu_mutex_init(&tdx->lock)
-
-Zhao Liu (1):
-      i386/cpu: Move x86_ext_save_areas[] initialization to .instance_init
-
- target/i386/host-cpu.h        |  1 -
- target/i386/cpu.c             | 22 +++++++++++++++-------
- target/i386/kvm/kvm.c         |  6 +++++-
- target/i386/kvm/tdx.c         | 12 +++++++-----
- scripts/meson-buildoptions.sh |  2 +-
- 5 files changed, 28 insertions(+), 15 deletions(-)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index e8c8be09bae..369626f8c8d 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -503,8 +503,12 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+          * Linux v4.17-v4.20 incorrectly return ARCH_CAPABILITIES on SVM hosts.
+          * We can detect the bug by checking if MSR_IA32_ARCH_CAPABILITIES is
+          * returned by KVM_GET_MSR_INDEX_LIST.
++         *
++         * But also, because Windows does not like ARCH_CAPABILITIES on AMD
++         * mcahines at all, do not show the fake ARCH_CAPABILITIES MSR that
++         * KVM sets up.
+          */
+-        if (!has_msr_arch_capabs) {
++        if (!has_msr_arch_capabs || !(edx & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
+             ret &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
+         }
+     } else if (function == 7 && index == 1 && reg == R_EAX) {
 -- 
 2.50.1
 
