@@ -2,99 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0247B08ADA
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03369B08B01
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:45:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLz0-0004sh-K5; Thu, 17 Jul 2025 06:36:58 -0400
+	id 1ucM7J-0005Ts-Ec; Thu, 17 Jul 2025 06:45:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ucLyx-0004qV-6s
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:36:55 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ucLyu-0001E6-8G
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:36:53 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3a536ecbf6fso486335f8f.2
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 03:36:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752748610; x=1753353410; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kwuNpPmxzGwb8R/Whlcr/GY3SicfNUIPsQQINOYciu4=;
- b=wJn/rN9HJxdxa26E3sdVlBvf7xtI2rh9Sp1Xu+2DHPLSb5qKgcDW4YYlMyeyXUbFos
- LRXUvtAnRTdSyN1VamSwtxxkOKeA1bIPLiNt/IqHm3L7/5N3+c7RqmTAi4mqqEUiB97g
- IWZkijs68FqNEg7vRjLLks7aZ1rSYhYHYt9HMaPmduRWyZvtR9rVD4kWWrV5dpbizMZo
- 6kYLyHKUdj/puoZJ6fi7mpCfX/7Khc+uI3j2PtRIW8PmfwypkfPvQJaSXnFY/n7qWsrC
- 7r+Ng8OlOHSFMw0nsw3LC3qn0lZ2THagPQrVUeucY1I2f4IADXFawfQwiFNTu8b2yG+U
- hn5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752748610; x=1753353410;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=kwuNpPmxzGwb8R/Whlcr/GY3SicfNUIPsQQINOYciu4=;
- b=r2MD0is9/QmnY25mb8HVxclUFxTicEV2Sz/q4lJ95AvD9vMRr++CtZRvVrjhM1cm6d
- D/SVurgNXa1YirSjq0hS96dauRDjMYxfEVdd65U8Vov2VpS+j5p6oFd9/N7h+vg804k7
- citwF32qJJegMrUmyqrqYRD0Qb7eqElNkhWP/rQzLppLm+bVckxNlL+n6UeQLI+4ULXa
- B6fbWJ/Q7KXqDnbsGR9tjhVldKki4/g7zC4WjR9WjmoqAhRRDvNzFzBfxVQgVNGxi9st
- Cz+DzB1R3vnuCnGwL9MimKtSCqrGXe9oaXQQOaBJfgrRicAS4ybaHuJ6+mxFKTZNyfn/
- vBgg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXobFfTffGHebEs3VdslEyomnzDXmBvXWEZm05s6X5OgZJ+N4UhrcY1hE7gzAktyhDpf63O3U4OIwpN@nongnu.org
-X-Gm-Message-State: AOJu0YwV+pNaQdTWJTjKxOuwmWGgjNojWZ5V/4EFqWH8HLxx2Ce0DgG1
- 1AuqzxwaQbIRQZplTTYFrYOGmRBX/qe+yUfEW1bJSnicuwfjZt6SffBZmEIWqw2eVhg=
-X-Gm-Gg: ASbGnctkezLagzPSNvcxqP98s9Hu8bQt2j55vypmZ2zJc1SGX36Eu35KGn26YspQXz3
- r1Z5EOgo5znEhualNXUPZRb7wNj2WZoF2PF1JKH3zANAJuj6i19PfNCRjsSeeP50MAckZSX1JDL
- DAu53LT7UvhZQ2SU03SSlZ/IhPlwURwdleIKVM1bt8zYXBbjZ9aYlnB6Sj9wGfWmsk8pVPkSYGx
- Cdzh2RNXgiUf5sBOpT2fxsGOhSTm9i22les03J+V8Hcxvz8dYGvUkx+vLg9BTWh9TXzXl/FZDq7
- mdsK86FQlwIj0t0j9lzlt7Q9tlo5DWhJERl2RuadpbaMgCLpvVBbK+ez7OcEOFa2IRp5up7w3an
- 1CszrYAlJkqB9dw57Mh/5H3w=
-X-Google-Smtp-Source: AGHT+IFQOeJ/UR6EbPhewdUzoDKZZSwigRxXMPzPkE8typoJINA/gOK2Ss28XI6yCyLJIdHiDpakfw==
-X-Received: by 2002:a05:6000:460a:b0:3b5:dc04:3f59 with SMTP id
- ffacd0b85a97d-3b613e97badmr1654224f8f.37.1752748610064; 
- Thu, 17 Jul 2025 03:36:50 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8bd1792sm20570226f8f.13.2025.07.17.03.36.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jul 2025 03:36:49 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7328C5F812;
- Thu, 17 Jul 2025 11:36:48 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Gustavo Romero
- <gustavo.romero@linaro.org>,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH] tests/functional: add --debug CLI arg
-In-Reply-To: <7924aab8-2d89-4b69-be5d-40ffb0c839a5@redhat.com> (Thomas Huth's
- message of "Thu, 17 Jul 2025 10:46:46 +0200")
-References: <20250716-functional_tests_debug_arg-v1-1-6a9cd68318bb@linaro.org>
- <87ms93xl69.fsf@draig.linaro.org>
- <7924aab8-2d89-4b69-be5d-40ffb0c839a5@redhat.com>
-User-Agent: mu4e 1.12.11; emacs 30.1
-Date: Thu, 17 Jul 2025 11:36:48 +0100
-Message-ID: <875xfrxfwf.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ucM7F-0005QS-Sg
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:45:30 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ucM7C-0002KQ-GC
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:45:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752749126; x=1784285126;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=VuOHG4yfjhFfu2k1h5Oo2cZyNPDLb7qJELcmd/eZFmo=;
+ b=Enln1eT+Ggnl+mn8FWN7+pjGGgjdq0hALC67UfnQB9ny92RGHC4ls3BO
+ 5MQCH5hVj04Hu4g/FH49MwNylv72zdonQNWkaVeUcVRN3yRE0o7oXy49q
+ hl2jMvJb1CjwR1GeD71L8s7ztb5US9A+BZyLB+mppguplEno/LUxrqmN8
+ 4oOsvbNtlkyawd8aYnKyTf+cursXHQVpucAUtu1vHD1cW96Zm32Fm4+Jp
+ TqoWg0DyFgLZCcfxXrvTIUmIWsLU0Lx0veQgORFQrSCmM4Ia2ESCHrMdn
+ U6nlHb4SWkrmm873qvVe/9q1pHP+WWsc5d2iM3kAv3QUwDFpxxXJaXFet w==;
+X-CSE-ConnectionGUID: 0F7AWRrRRCuoufobyspCHg==
+X-CSE-MsgGUID: L+zJTtUCSvanl4I0+PI6CQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="65588832"
+X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="65588832"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2025 03:45:23 -0700
+X-CSE-ConnectionGUID: 271oVsK9Qf++Cd+/5MAf3Q==
+X-CSE-MsgGUID: DDOP5Q0rQgmSH7/6mzcSHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="194896788"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by orviesa001.jf.intel.com with ESMTP; 17 Jul 2025 03:45:21 -0700
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH] i386/tdx: Remove the redundant qemu_mutex_init(&tdx->lock)
+Date: Thu, 17 Jul 2025 18:37:07 +0800
+Message-ID: <20250717103707.688929-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,41 +78,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+Commit 40da501d8989 ("i386/tdx: handle TDG.VP.VMCALL<GetQuote>") added
+redundant qemu_mutex_init(&tdx->lock) in tdx_guest_init by mistake.
 
-> On 17/07/2025 10.42, Alex Benn=C3=A9e wrote:
->> Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
->>=20
->>> Add argument parsing to functional tests to improve developer experience
->>> when running individual tests. All logs are printed to stdout
->>> interspersed with TAP output.
->>>
->>>    ./pyvenv/bin/python3 ../tests/functional/test_aarch64_virt.py --help
->>>    usage: test_aarch64_virt [-h] [-d]
->> Am I holding it wrong?
->>    =E2=9E=9C  ./pyvenv/bin/python
->> ../../tests/functional/test_aarch64_virt.py --help
->>    Traceback (most recent call last):
->>      File "/home/alex/lsrc/qemu.git/builds/all/../../tests/functional/te=
-st_aarch64_virt.py", line 16, in <module>
->>        from qemu_test import QemuSystemTest, Asset, exec_command_and_wai=
-t_for_pattern
->>      File "/home/alex/lsrc/qemu.git/tests/functional/qemu_test/__init__.=
-py", line 14, in <module>
->>        from .testcase import QemuBaseTest, QemuUserTest, QemuSystemTest
->>      File "/home/alex/lsrc/qemu.git/tests/functional/qemu_test/testcase.=
-py", line 26, in <module>
->>        from qemu.machine import QEMUMachine
->>    ModuleNotFoundError: No module named 'qemu'
->> I thought the point of the venv is we had all the modules we need
->> automatically available to the PYTHONPATH?
->
-> The "qemu" module is special since we ship it in our repository. See
-> the "PYTHONPATH" description in docs/devel/testing/functional.rst.
+Fix it by removing the redundant one.
 
-Is there anyway to setup the venv so it automatically does that?
+Fixes: 40da501d8989 ("i386/tdx: handle TDG.VP.VMCALL<GetQuote>")
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+---
+ target/i386/kvm/tdx.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index 7d69d6d7b066..107058ed794c 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -1523,8 +1523,6 @@ static void tdx_guest_init(Object *obj)
+                             tdx_guest_set_qgs,
+                             NULL, NULL);
+ 
+-    qemu_mutex_init(&tdx->lock);
+-
+     tdx->event_notify_vector = -1;
+     tdx->event_notify_apicid = -1;
+ }
+-- 
+2.43.0
+
 
