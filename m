@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762B4B08A1E
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6016CB089BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:50:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLGu-0006i5-QU; Thu, 17 Jul 2025 05:51:25 -0400
+	id 1ucLEH-0008D9-Dp; Thu, 17 Jul 2025 05:48:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL1w-0002xj-MA; Thu, 17 Jul 2025 05:35:57 -0400
+ id 1ucL1z-000341-8i; Thu, 17 Jul 2025 05:35:59 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL1u-00027P-Bs; Thu, 17 Jul 2025 05:35:56 -0400
+ id 1ucL1x-00027n-5W; Thu, 17 Jul 2025 05:35:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B4435137CFE;
+ by isrv.corpit.ru (Postfix) with ESMTP id C15D7137CFF;
  Thu, 17 Jul 2025 12:34:05 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 940BD2491F7;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A4C1F2491F8;
  Thu, 17 Jul 2025 12:34:13 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, David Hildenbrand <david@redhat.com>,
- yuanminghao <yuanmh12@chinatelecom.cn>,
- Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 61/65] vhost: Fix used memslot tracking when
- destroying a vhost device
-Date: Thu, 17 Jul 2025 12:33:57 +0300
-Message-ID: <20250717093412.728292-22-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 62/65] ui/vnc: Do not copy z_stream
+Date: Thu, 17 Jul 2025 12:33:58 +0300
+Message-ID: <20250717093412.728292-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,124 +60,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Hildenbrand <david@redhat.com>
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
-When we unplug a vhost device, we end up calling vhost_dev_cleanup()
-where we do a memory_listener_unregister().
+vnc_worker_thread_loop() copies z_stream stored in its local VncState to
+the persistent VncState, and the copied one is freed with deflateEnd()
+later. However, deflateEnd() refuses to operate with a copied z_stream
+and returns Z_STREAM_ERROR, leaking the allocated memory.
 
-This memory_listener_unregister() call will end up disconnecting the
-listener from the address space through listener_del_address_space().
+Avoid copying the zlib state to fix the memory leak.
 
-In that process, we effectively communicate the removal of all memory
-regions from that listener, resulting in region_del() + commit()
-callbacks getting triggered.
-
-So in case of vhost, we end up calling vhost_commit() with no remaining
-memory slots (0).
-
-In vhost_commit() we end up overwriting the global variables
-used_memslots / used_shared_memslots, used for detecting the number
-of free memslots. With used_memslots / used_shared_memslots set to 0
-by vhost_commit() during device removal, we'll later assume that the
-other vhost devices still have plenty of memslots left when calling
-vhost_get_free_memslots().
-
-Let's fix it by simply removing the global variables and depending
-only on the actual per-device count.
-
-Easy to reproduce by adding two vhost-user devices to a VM and then
-hot-unplugging one of them.
-
-While at it, detect unexpected underflows in vhost_get_free_memslots()
-and issue a warning.
-
-Reported-by: yuanminghao <yuanmh12@chinatelecom.cn>
-Link: https://lore.kernel.org/qemu-devel/20241121060755.164310-1-yuanmh12@chinatelecom.cn/
-Fixes: 2ce68e4cf5be ("vhost: add vhost_has_free_slot() interface")
-Cc: Igor Mammedov <imammedo@redhat.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20250603111336.1858888-1-david@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 9f749129e2629b19f424df106c92c5a5647e396c)
+Fixes: bd023f953e5e ("vnc: threaded VNC server")
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20250603-zlib-v3-1-20b857bd8d05@rsg.ci.i.u-tokyo.ac.jp>
+(cherry picked from commit aef22331b5a4670f42638a5f63a26e93bf779aae)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 6aa72fd434..99d31cc1b4 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -47,12 +47,6 @@ static struct vhost_log *vhost_log[VHOST_BACKEND_TYPE_MAX];
- static struct vhost_log *vhost_log_shm[VHOST_BACKEND_TYPE_MAX];
- static QLIST_HEAD(, vhost_dev) vhost_log_devs[VHOST_BACKEND_TYPE_MAX];
+diff --git a/ui/vnc-enc-zlib.c b/ui/vnc-enc-zlib.c
+index 900ae5b30f..52e9193eab 100644
+--- a/ui/vnc-enc-zlib.c
++++ b/ui/vnc-enc-zlib.c
+@@ -48,21 +48,21 @@ void vnc_zlib_zfree(void *x, void *addr)
  
--/* Memslots used by backends that support private memslots (without an fd). */
--static unsigned int used_memslots;
--
--/* Memslots used by backends that only support shared memslots (with an fd). */
--static unsigned int used_shared_memslots;
--
- static QLIST_HEAD(, vhost_dev) vhost_devices =
-     QLIST_HEAD_INITIALIZER(vhost_devices);
+ static void vnc_zlib_start(VncState *vs)
+ {
+-    buffer_reset(&vs->zlib.zlib);
++    buffer_reset(&vs->zlib->zlib);
  
-@@ -74,15 +68,15 @@ unsigned int vhost_get_free_memslots(void)
- 
-     QLIST_FOREACH(hdev, &vhost_devices, entry) {
-         unsigned int r = hdev->vhost_ops->vhost_backend_memslots_limit(hdev);
--        unsigned int cur_free;
-+        unsigned int cur_free = r - hdev->mem->nregions;
- 
--        if (hdev->vhost_ops->vhost_backend_no_private_memslots &&
--            hdev->vhost_ops->vhost_backend_no_private_memslots(hdev)) {
--            cur_free = r - used_shared_memslots;
-+        if (unlikely(r < hdev->mem->nregions)) {
-+            warn_report_once("used (%u) vhost backend memory slots exceed"
-+                             " the device limit (%u).", hdev->mem->nregions, r);
-+            free = 0;
-         } else {
--            cur_free = r - used_memslots;
-+            free = MIN(free, cur_free);
-         }
--        free = MIN(free, cur_free);
-     }
-     return free;
+     // make the output buffer be the zlib buffer, so we can compress it later
+-    vs->zlib.tmp = vs->output;
+-    vs->output = vs->zlib.zlib;
++    vs->zlib->tmp = vs->output;
++    vs->output = vs->zlib->zlib;
  }
-@@ -666,13 +660,6 @@ static void vhost_commit(MemoryListener *listener)
-     dev->mem = g_realloc(dev->mem, regions_size);
-     dev->mem->nregions = dev->n_mem_sections;
  
--    if (dev->vhost_ops->vhost_backend_no_private_memslots &&
--        dev->vhost_ops->vhost_backend_no_private_memslots(dev)) {
--        used_shared_memslots = dev->mem->nregions;
--    } else {
--        used_memslots = dev->mem->nregions;
--    }
--
-     for (i = 0; i < dev->n_mem_sections; i++) {
-         struct vhost_memory_region *cur_vmr = dev->mem->regions + i;
-         struct MemoryRegionSection *mrs = dev->mem_sections + i;
-@@ -1619,15 +1606,11 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
+ static int vnc_zlib_stop(VncState *vs)
+ {
+-    z_streamp zstream = &vs->zlib.stream;
++    z_streamp zstream = &vs->zlib->stream;
+     int previous_out;
  
-     /*
--     * The listener we registered properly updated the corresponding counter.
--     * So we can trust that these values are accurate.
-+     * The listener we registered properly setup the number of required
-+     * memslots in vhost_commit().
-      */
--    if (hdev->vhost_ops->vhost_backend_no_private_memslots &&
--        hdev->vhost_ops->vhost_backend_no_private_memslots(hdev)) {
--        used = used_shared_memslots;
--    } else {
--        used = used_memslots;
--    }
-+    used = hdev->mem->nregions;
+     // switch back to normal output/zlib buffers
+-    vs->zlib.zlib = vs->output;
+-    vs->output = vs->zlib.tmp;
++    vs->zlib->zlib = vs->output;
++    vs->output = vs->zlib->tmp;
+ 
+     // compress the zlib buffer
+ 
+@@ -85,24 +85,24 @@ static int vnc_zlib_stop(VncState *vs)
+             return -1;
+         }
+ 
+-        vs->zlib.level = vs->tight->compression;
++        vs->zlib->level = vs->tight->compression;
+         zstream->opaque = vs;
+     }
+ 
+-    if (vs->tight->compression != vs->zlib.level) {
++    if (vs->tight->compression != vs->zlib->level) {
+         if (deflateParams(zstream, vs->tight->compression,
+                           Z_DEFAULT_STRATEGY) != Z_OK) {
+             return -1;
+         }
+-        vs->zlib.level = vs->tight->compression;
++        vs->zlib->level = vs->tight->compression;
+     }
+ 
+     // reserve memory in output buffer
+-    buffer_reserve(&vs->output, vs->zlib.zlib.offset + 64);
++    buffer_reserve(&vs->output, vs->zlib->zlib.offset + 64);
+ 
+     // set pointers
+-    zstream->next_in = vs->zlib.zlib.buffer;
+-    zstream->avail_in = vs->zlib.zlib.offset;
++    zstream->next_in = vs->zlib->zlib.buffer;
++    zstream->avail_in = vs->zlib->zlib.offset;
+     zstream->next_out = vs->output.buffer + vs->output.offset;
+     zstream->avail_out = vs->output.capacity - vs->output.offset;
+     previous_out = zstream->avail_out;
+@@ -147,8 +147,8 @@ int vnc_zlib_send_framebuffer_update(VncState *vs, int x, int y, int w, int h)
+ 
+ void vnc_zlib_clear(VncState *vs)
+ {
+-    if (vs->zlib.stream.opaque) {
+-        deflateEnd(&vs->zlib.stream);
++    if (vs->zlib->stream.opaque) {
++        deflateEnd(&vs->zlib->stream);
+     }
+-    buffer_free(&vs->zlib.zlib);
++    buffer_free(&vs->zlib->zlib);
+ }
+diff --git a/ui/vnc.c b/ui/vnc.c
+index c96bd8ceea..ca02ff872a 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -56,6 +56,11 @@
+ #include "io/dns-resolver.h"
+ #include "monitor/monitor.h"
+ 
++typedef struct VncConnection {
++    VncState vs;
++    VncZlib zlib;
++} VncConnection;
 +
-     /*
-      * We assume that all reserved memslots actually require a real memslot
-      * in our vhost backend. This might not be true, for example, if the
+ #define VNC_REFRESH_INTERVAL_BASE GUI_REFRESH_INTERVAL_DEFAULT
+ #define VNC_REFRESH_INTERVAL_INC  50
+ #define VNC_REFRESH_INTERVAL_MAX  GUI_REFRESH_INTERVAL_IDLE
+@@ -1364,7 +1369,7 @@ void vnc_disconnect_finish(VncState *vs)
+     vs->magic = 0;
+     g_free(vs->zrle);
+     g_free(vs->tight);
+-    g_free(vs);
++    g_free(container_of(vs, VncConnection, vs));
+ }
+ 
+ size_t vnc_client_io_error(VncState *vs, ssize_t ret, Error *err)
+@@ -3243,11 +3248,13 @@ static void vnc_refresh(DisplayChangeListener *dcl)
+ static void vnc_connect(VncDisplay *vd, QIOChannelSocket *sioc,
+                         bool skipauth, bool websocket)
+ {
+-    VncState *vs = g_new0(VncState, 1);
++    VncConnection *vc = g_new0(VncConnection, 1);
++    VncState *vs = &vc->vs;
+     bool first_client = QTAILQ_EMPTY(&vd->clients);
+     int i;
+ 
+     trace_vnc_client_connect(vs, sioc);
++    vs->zlib = &vc->zlib;
+     vs->zrle = g_new0(VncZrle, 1);
+     vs->tight = g_new0(VncTight, 1);
+     vs->magic = VNC_MAGIC;
+@@ -3270,7 +3277,7 @@ static void vnc_connect(VncDisplay *vd, QIOChannelSocket *sioc,
+ #ifdef CONFIG_PNG
+     buffer_init(&vs->tight->png,      "vnc-tight-png/%p", sioc);
+ #endif
+-    buffer_init(&vs->zlib.zlib,      "vnc-zlib/%p", sioc);
++    buffer_init(&vc->zlib.zlib,      "vnc-zlib/%p", sioc);
+     buffer_init(&vs->zrle->zrle,      "vnc-zrle/%p", sioc);
+     buffer_init(&vs->zrle->fb,        "vnc-zrle-fb/%p", sioc);
+     buffer_init(&vs->zrle->zlib,      "vnc-zrle-zlib/%p", sioc);
+diff --git a/ui/vnc.h b/ui/vnc.h
+index 02613aa63a..82b883bb69 100644
+--- a/ui/vnc.h
++++ b/ui/vnc.h
+@@ -340,7 +340,7 @@ struct VncState
+      *  update vnc_async_encoding_start()
+      */
+     VncTight *tight;
+-    VncZlib zlib;
++    VncZlib *zlib;
+     VncHextile hextile;
+     VncZrle *zrle;
+     VncZywrle zywrle;
 -- 
 2.47.2
 
