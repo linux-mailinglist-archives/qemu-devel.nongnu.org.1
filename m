@@ -2,89 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F797B08AF8
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E88B08B12
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:48:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucM3E-0001LZ-8Q; Thu, 17 Jul 2025 06:41:20 -0400
+	id 1ucM9p-0007kq-5S; Thu, 17 Jul 2025 06:48:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ucM37-0001JZ-QC
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:41:13 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ucM36-0001si-1r
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:41:13 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3a6e2d85705so428792f8f.0
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 03:41:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752748869; x=1753353669; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=f40l+JNxa+Qw1Eq4rHtyYUgPIKTykLZgO8+SLZoFHrw=;
- b=yvnLXiv1J8x0e/r1v8X6Ve9DVbikwESEjX6x4ZkMH4NmoLwDaJjTJD1Zk5b5TaP7gk
- 7pC/i2hXbjXg71QBX7rbjZM5O74HnMY0ydeW/PjpGL7yhXMs0UvV3svBKUhXw9hcMk4H
- mvMkZtaO7bgDvpBvglcehRS7TU9lBa3B3d4khs/SZ+DKBKhJ8SKhkW4gfDGzYz3h4kcz
- cfXLyVrybtNZ8pCEatOWEmD104IMxy6P7AG1b3H+CU216DHWKqlJCJ8ZTFq2wvFTLQMm
- U1Q446hBviQvGqi95HjRHNganemlePLxRRAvdpres0lrX2XIb5yRsSuFlYHnkRvzTZSD
- masQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752748869; x=1753353669;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=f40l+JNxa+Qw1Eq4rHtyYUgPIKTykLZgO8+SLZoFHrw=;
- b=LtSMCjxCBzmYuOkXRETH0l98/aPaJ+iJTZjGR092npjSCuCiwRQ8irxOoKluKFw5Zf
- yvJ7T1kXVxATyhiQNGqmnU/gpGHTnmLAftHK/eUXSUSEPkCvNGipXKRTMpNyzUwn67OG
- bxnI0FYSab57mErv08HGzWSUcDnkND9Bic74/w1NR75phnFNTMdmPfDkkoBb6cYN4oQG
- FJG8y1crlBgVmdGawcOxriD9u7HgnYPkVLNeBg2n3elO4TxghMSyhIlcp4M3pfe8GMrA
- BSig8KaXoqZjWG6kUgx7HAKbh/qVtz4A0ECMjgyAWWSUl3OahfkI4AI3AyIIsPAliNTi
- auEg==
-X-Gm-Message-State: AOJu0YxPkHUj1Y89V7w4uw0cxvXjK3W2GXF/ZCb1nwVGGc2BSVhsaLJq
- RcR14iTKsO/aVgEVhLLCGDIc3yppByzb/tOIvhL5JqdCk41GD/jX7a8FQktRMYRZJrc=
-X-Gm-Gg: ASbGncu3e4a2962OBAxEgDE3lPFcv9QHp9+ESNykteCuzFEIFQ6T4vKtzsYE0Sk5dUR
- 71mOeohd6tLnwOHsNRVdUuv6HsOFk6Wh7mDVdUqQSmaeYXwtemhLsR5lrFtRj/sAqQ+RBlMttiS
- BsUe4MmXQe3EHEZXh1d9/OnlR2rrWNUAzP9/wqJRCPuek32tO9c/rQ9rf6UbdAQHem+7WpcA3e6
- IHj0BQ27uhxl/l894343OZTg3ti9yVgSsO6+DZLRIN5XD2wxIhIQ+te8RmwsNtUW53DmwMrH+ko
- 0UV2F9Yx9jsBp6Y3/IMZNTNjKG+qxdaRj2ZMiCkev+jv4mpoMaXC8Ed/IDIqHOREY5dC/Kwn7+x
- RBUDifxjCEEUJWnwyry3V29V5dlvjIczVIA==
-X-Google-Smtp-Source: AGHT+IFBmb+TymsC0W08YEySPCmqoCe8+KGUa4leAam25j8sJ77JlrImIYbc6IDOvORepwc8PPJAFg==
-X-Received: by 2002:a05:6000:2486:b0:3a5:232c:6976 with SMTP id
- ffacd0b85a97d-3b60dd99677mr4771385f8f.44.1752748869405; 
- Thu, 17 Jul 2025 03:41:09 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc9268sm20297868f8f.41.2025.07.17.03.41.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jul 2025 03:41:08 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E85115F812;
- Thu, 17 Jul 2025 11:41:07 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH] docs/devel: fix over-quoting of QEMU_TEST_KEEP_SCRATCH
-Date: Thu, 17 Jul 2025 11:41:05 +0100
-Message-ID: <20250717104105.2656786-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.2
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ucM9c-0007hC-Ke
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:47:59 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1ucM9a-0002QL-8J
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 06:47:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752749274; x=1784285274;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=vYjlUOntGnmJAibyw1xm8s2fZs+pkxqH0hQWiB8zba0=;
+ b=QrZXihflXvmNs5Gue+ERtSg6RMPDa5YyEeiorCoTEGPQqO0BTpe6yMxc
+ O6ZAGn7jVzsgEVoPW98cbGDZslTucEafXOFMQSYTzygK1sLxL6M4baHgv
+ pq5zwOA6gpsYKsa2mx3mZPAjO1vQ/WRVVEZHhl0X1qFVYXIE5pckfmEPE
+ 5kuRg5Xefgebc5BMBd05o0rSPtIp7YrvO2e2q/MVMlL/iZvXy1Lkr01Bf
+ G/2AWgwWJNNZQndPt00SaM7ymbCtCzQpuAP57QegebuBfuGODEsIPc3hx
+ jU7ZVIpbey6F+sB/9vXImxQHb6a+LGkAgEbz8G8j+MWgbmhRLu16iPIhd w==;
+X-CSE-ConnectionGUID: EKVg4VXjRdy/Bamiezmtsg==
+X-CSE-MsgGUID: JaUL3EpSTPWGpTorggiUFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="65588998"
+X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="65588998"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2025 03:47:52 -0700
+X-CSE-ConnectionGUID: mxZ6V3Y6QAWACtgHm16a2g==
+X-CSE-MsgGUID: 3m95SUU5RkS7FXJ2700L2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="194896931"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2025 03:47:51 -0700
+Message-ID: <48791f8d-0b24-4435-93bd-ceb4cf341919@intel.com>
+Date: Thu, 17 Jul 2025 18:47:48 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/i386: tdx: fix locking for interrupt injection
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+References: <20250717103915.331309-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250717103915.331309-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,25 +83,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- docs/devel/testing/functional.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 7/17/2025 6:39 PM, Paolo Bonzini wrote:
+> Take tdx_guest->lock when injecting the event notification interrupt into
+> the guest.
+> 
+> Fixes CID 1612364.
+> 
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
-index 9d08abe284..2725633e09 100644
---- a/docs/devel/testing/functional.rst
-+++ b/docs/devel/testing/functional.rst
-@@ -67,7 +67,7 @@ By default, functional tests redirect informational logs and console output to
- log files. Specify the ``--debug`` flag to also print those to standard output.
- The test framework will automatically purge any scratch files created during
- the tests. If needing to debug a failed test, it is possible to keep these
--files around on disk by setting ```QEMU_TEST_KEEP_SCRATCH=1``` as an env
-+files around on disk by setting ``QEMU_TEST_KEEP_SCRATCH=1`` as an env
- variable.  Any preserved files will be deleted the next time the test is run
- without this variable set.
- 
--- 
-2.47.2
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+> ---
+>   target/i386/kvm/tdx.c | 10 +++++++---
+>   1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+> index 7d69d6d7b06..7dcf2f75026 100644
+> --- a/target/i386/kvm/tdx.c
+> +++ b/target/i386/kvm/tdx.c
+> @@ -1126,10 +1126,15 @@ int tdx_parse_tdvf(void *flash_ptr, int size)
+>       return tdvf_parse_metadata(&tdx_guest->tdvf, flash_ptr, size);
+>   }
+>   
+> -static void tdx_inject_interrupt(uint32_t apicid, uint32_t vector)
+> +static void tdx_inject_interrupt(TdxGuest *tdx_guest)
+>   {
+>       int ret;
+> +    uint32_t apicid, vector;
+>   
+> +    qemu_mutex_lock(&tdx_guest->lock);
+> +    vector = tdx_guest->event_notify_vector;
+> +    apicid = tdx_guest->event_notify_apicid;
+> +    qemu_mutex_unlock(&tdx_guest->lock);
+>       if (vector < 32 || vector > 255) {
+>           return;
+>       }
+> @@ -1179,8 +1184,7 @@ static void tdx_get_quote_completion(TdxGenerateQuoteTask *task)
+>           error_report("TDX: get-quote: failed to update GetQuote header.");
+>       }
+>   
+> -    tdx_inject_interrupt(tdx_guest->event_notify_apicid,
+> -                         tdx_guest->event_notify_vector);
+> +    tdx_inject_interrupt(tdx);
+>   
+>       g_free(task->send_data);
+>       g_free(task->receive_buf);
 
 
