@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB98FB08393
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 05:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35DC3B0838C
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 05:49:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucFXB-0005QV-7l; Wed, 16 Jul 2025 23:43:50 -0400
+	id 1ucFZU-00021e-M0; Wed, 16 Jul 2025 23:46:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ucFVJ-0003ig-F2; Wed, 16 Jul 2025 23:42:04 -0400
+ id 1ucFVV-0003lq-0X; Wed, 16 Jul 2025 23:42:11 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ucFVI-0000ZH-2y; Wed, 16 Jul 2025 23:41:53 -0400
+ id 1ucFVO-0000g2-Nm; Wed, 16 Jul 2025 23:41:59 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 17 Jul
@@ -29,10 +29,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v1 13/21] hw/arm/ast27x0: Start SSP in powered-off state to
+Subject: [PATCH v1 14/21] hw/arm/ast27x0: Start TSP in powered-off state to
  match hardware behavior
-Date: Thu, 17 Jul 2025 11:40:41 +0800
-Message-ID: <20250717034054.1903991-14-jamin_lin@aspeedtech.com>
+Date: Thu, 17 Jul 2025 11:40:42 +0800
+Message-ID: <20250717034054.1903991-15-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250717034054.1903991-1-jamin_lin@aspeedtech.com>
 References: <20250717034054.1903991-1-jamin_lin@aspeedtech.com>
@@ -64,33 +64,33 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the previous design, both the PSP and SSP were started together during
-SoC initialization. However, on real hardware, the SSP begins in a powered-off
+In the previous design, both the PSP and TSP were started together during
+SoC initialization. However, on real hardware, the TSP begins in a powered-off
 state. The typical boot sequence involves the PSP powering up first, loading
-the SSP firmware binary into shared memory via DRAM remap, and then releasing
-the SSP reset and enabling it through SCU control registers.
+the TSP firmware binary into shared memory via DRAM remap, and then releasing
+the TSP reset and enabling it through SCU control registers.
 
 To more accurately model this behavior in QEMU, this commit sets the
-"start-powered-off" property for the SSP's ARMv7M core. This change ensures
-the SSP remains off until explicitly enabled via the SCU, simulating the
-real-world flow where the PSP controls SSP boot through SCU interaction.
+"start-powered-off" property for the TSP's ARMv7M core. This change ensures
+the TSP remains off until explicitly enabled via the SCU, simulating the
+real-world flow where the PSP controls TSP boot through SCU interaction.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0-ssp.c | 7 +++++++
+ hw/arm/aspeed_ast27x0-tsp.c | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/hw/arm/aspeed_ast27x0-ssp.c b/hw/arm/aspeed_ast27x0-ssp.c
-index fff95eac6a..b1dfbc4292 100644
---- a/hw/arm/aspeed_ast27x0-ssp.c
-+++ b/hw/arm/aspeed_ast27x0-ssp.c
-@@ -177,6 +177,13 @@ static void aspeed_soc_ast27x0ssp_realize(DeviceState *dev_soc, Error **errp)
+diff --git a/hw/arm/aspeed_ast27x0-tsp.c b/hw/arm/aspeed_ast27x0-tsp.c
+index 4c3b18695e..49a49604de 100644
+--- a/hw/arm/aspeed_ast27x0-tsp.c
++++ b/hw/arm/aspeed_ast27x0-tsp.c
+@@ -177,6 +177,13 @@ static void aspeed_soc_ast27x0tsp_realize(DeviceState *dev_soc, Error **errp)
      qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
      object_property_set_link(OBJECT(&a->armv7m), "memory",
                               OBJECT(s->memory), &error_abort);
 +    /*
-+     * The SSP starts in a powered-down state and can be powered up
-+     * by setting the SSP Control Register through the SCU
++     * The TSP starts in a powered-down state and can be powered up
++     * by setting the TSP Control Register through the SCU
 +     * (System Control Unit)
 +     */
 +    object_property_set_bool(OBJECT(&a->armv7m), "start-powered-off", true,
