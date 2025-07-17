@@ -2,138 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A841FB09D71
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 10:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FC3B09DBC
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 10:20:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucgB3-0005Y3-1T; Fri, 18 Jul 2025 04:10:45 -0400
+	id 1ucgJY-00080D-6L; Fri, 18 Jul 2025 04:19:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucgA5-0004fF-5M
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 04:09:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ayush.m55@samsung.com>)
+ id 1ucgJP-0007v0-Hw
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 04:19:23 -0400
+Received: from mailout2.samsung.com ([203.254.224.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucgA2-0003Rq-TD
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 04:09:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752826177;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=DuTqUrOS2+eTUqjD1xeTjU//byX65LF2BvnlqEJg94o=;
- b=EAD24X2blYJGh5Elhu1+8T9vVxs3BSQ0U+EyBQaQZTRad6hDA5fALikHEga4WIEmxDHaO2
- qosMPy0GnP1qeaPkzPh4fx8ob5bDvG/t4LZOvKZoELtc+UovAKnWZFBcggn8scxsTx4IS+
- cZe9vs3yySDMT3fd7qF7wzOZuX/x0fA=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-438-wGgzGRy7PWWMXkbf7qOCqQ-1; Fri, 18 Jul 2025 04:09:36 -0400
-X-MC-Unique: wGgzGRy7PWWMXkbf7qOCqQ-1
-X-Mimecast-MFC-AGG-ID: wGgzGRy7PWWMXkbf7qOCqQ_1752826173
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-6069f1c97b3so1506501a12.2
- for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 01:09:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752826173; x=1753430973;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DuTqUrOS2+eTUqjD1xeTjU//byX65LF2BvnlqEJg94o=;
- b=Q5csNYruQOQvyIY/b491zyeNgEUdhzFOsJdP5QIIGuVb5Z4TfciiT4w7t5Dp+PcU8e
- yuAdWok4gDuhEOIZ2GFhGeCGAWL1cDzx7o8Rp3fKqbH8z4ndQLoA/IiFWXVPf+3CqDD9
- ATBDHyFSvT21+o8nvyLdDAJYQRgDD0Hp/dU55iniYysShDzHxtaOZZWMLpFD3nhSLee+
- Sk+hna/4n1Z69TZ9Syzoznkht0jyQRDwbCKIM4nyIO2ngcW5dOBHKdE6pkAL8CTSD+hp
- PC86I6Nz4twZE9dKC/29I0ly/LT+fY0Iv6bVF7q2c6Gd2yL7SUZR+3yzd1MzsLUnuXz8
- CiWA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUeunee/5agrOC4/mSnkULeF6I6/O/QzCzbyxZ+ejpNpBp9CnyUnpVTm7xZ1kapbEP/yt/my7MEL2Y1@nongnu.org
-X-Gm-Message-State: AOJu0YxmSRQj6QcV+pHFofifEMmeJoBztae5rUEEVRbGkW9hEVOasltu
- Hw0PQXBcefMag5DM3VJWjvmUk35jFKnDlkvWhZoaPiMgurSy6mudInzWiChImIovUs3kkT3aV8o
- QqeBm/YgjG/BJkb4tr8IGtnpVSy7xNOJV6UN+m+K2rT4aXgHjNWUM6wQr
-X-Gm-Gg: ASbGnctYFA4vB9f+VG4eQ9ZNyBFb3F0AWn9Zc+kO1rMitgMGXaM8v6Ys4jTwTkqJ5Dj
- BYf+XICYIABjDcvqaUNJ86CgnP+OKkZTxEga/OP2wWui8IC1oPXfX6/X59CWV7cFcswGG3rWVoV
- iEXDhLreo1nCMF5sMQmZ0rjf25hGDqiaUz+/JKh5dBngO2FF1BOryY5oxqqcFP4250B+qYMXzYT
- H9+1Xgp0fHhYPfehIbQ8BIDL85Fl1dg7aR+dAhzhMJPL9QteYLn5JkLB7asUsHR5xuZ02Y3uCyC
- tiglVUOrpTmHucQHCb8vT7ZD7vMZ6JdxUwN9rteplaU=
-X-Received: by 2002:a17:907:e2d3:b0:ae0:1883:78ce with SMTP id
- a640c23a62f3a-ae9ce15657amr925201066b.47.1752826172873; 
- Fri, 18 Jul 2025 01:09:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEaIU/XIr1gWEg05SCBQTK9iPlO05+q2JQOtJ8S7Rs2/Y0Y2zvP4fgJMjlpiAygeQyAsvHLZA==
-X-Received: by 2002:a17:907:e2d3:b0:ae0:1883:78ce with SMTP id
- a640c23a62f3a-ae9ce15657amr925198566b.47.1752826172296; 
- Fri, 18 Jul 2025 01:09:32 -0700 (PDT)
-Received: from [10.131.45.123] ([151.49.73.155])
- by smtp.googlemail.com with ESMTPSA id
- a640c23a62f3a-aec6c79a089sm76393466b.20.2025.07.18.01.09.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 18 Jul 2025 01:09:31 -0700 (PDT)
-Message-ID: <993ed8bd-a953-48db-b37e-42178cd0c4b1@redhat.com>
-Date: Fri, 18 Jul 2025 10:09:30 +0200
+ (Exim 4.90_1) (envelope-from <ayush.m55@samsung.com>)
+ id 1ucgJG-0001Tz-5t
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 04:19:21 -0400
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+ by mailout2.samsung.com (KnoxPortal) with ESMTP id
+ 20250718081901epoutp0242567e894b32aa1f3b31e306f1e371c2~TSqJ-acXK1583415834epoutp02C
+ for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 08:19:01 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com
+ 20250718081901epoutp0242567e894b32aa1f3b31e306f1e371c2~TSqJ-acXK1583415834epoutp02C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1752826741;
+ bh=cOokfbc9c4TzXNfl5s7zwonsIacN1OcYbXez7r/js4E=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=b94aNm6JWdUmyBiUhJMbaclomPhCJ8CebGKLc8x+iukeQbpr8IA+kEP3ymFO+R614
+ qtC3s8OmFU/rLs+lXCyhftoN+XT5PqvDmlwjI1+xpr1JY3IXWyFnW7jLB7VyTwdRRC
+ yrHWjhxOec1sSe0+0Ib7QcFe9AVYUoVM3BVt2oHM=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+ epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
+ 20250718081901epcas5p229d3b2b026d147947d0a48130e1cbee2~TSqJh17Zr2839428394epcas5p2w;
+ Fri, 18 Jul 2025 08:19:01 +0000 (GMT)
+Received: from epcas5p2.samsung.com (unknown [182.195.38.94]) by
+ epsnrtp03.localdomain (Postfix) with ESMTP id 4bk2kX40PVz3hhTH; Fri, 18 Jul
+ 2025 08:19:00 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+ 20250717114154epcas5p3a532088018909ae109f726c8f8518fab~TByAtw5at1458814588epcas5p3S;
+ Thu, 17 Jul 2025 11:41:54 +0000 (GMT)
+Received: from test-X570-AORUS-ULTRA.samsungds.net (unknown [107.99.41.42])
+ by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+ 20250717114154epsmtip2a8df438e17b0982331ed96e2c1f61dc3~TByABHuTG1245312453epsmtip2f;
+ Thu, 17 Jul 2025 11:41:53 +0000 (GMT)
+From: Ayush Mishra <ayush.m55@samsung.com>
+To: qemu-devel@nongnu.org
+Cc: kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, Ayush Mishra
+ <ayush.m55@samsung.com>
+Subject: [PATCH 0/2] hw/nvme: Add support for LID 00h and LID 12h
+Date: Thu, 17 Jul 2025 16:50:27 +0530
+Message-ID: <20250717112029.28242-1-ayush.m55@samsung.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 1/6] target/i386: do not expose ARCH_CAPABILITIES on AMD CPU
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: Alexandre Chartre <alexandre.chartre@oracle.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, qemu-stable <qemu-stable@nongnu.org>
-References: <20250717152316.353049-1-pbonzini@redhat.com>
- <20250717152316.353049-2-pbonzini@redhat.com>
- <df3745a5-28ab-482c-9fa1-434d2c0327de@tls.msk.ru>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <df3745a5-28ab-482c-9fa1-434d2c0327de@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-CMS-MailID: 20250717114154epcas5p3a532088018909ae109f726c8f8518fab
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250717114154epcas5p3a532088018909ae109f726c8f8518fab
+References: <CGME20250717114154epcas5p3a532088018909ae109f726c8f8518fab@epcas5p3.samsung.com>
+Received-SPF: pass client-ip=203.254.224.25;
+ envelope-from=ayush.m55@samsung.com; helo=mailout2.samsung.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -149,37 +90,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/18/25 09:21, Michael Tokarev wrote:
-> On 17.07.2025 18:23, Paolo Bonzini wrote:
->> KVM emulates the ARCH_CAPABILITIES on x86 for both Intel and AMD
->> cpus, although the IA32_ARCH_CAPABILITIES MSR is an Intel-specific
->> MSR and it makes no sense to emulate it on AMD.
->>
->> As a consequence, VMs created on AMD with qemu -cpu host and using
->> KVM will advertise the ARCH_CAPABILITIES feature and provide the
->> IA32_ARCH_CAPABILITIES MSR. This can cause issues (like Windows BSOD)
->> as the guest OS might not expect this MSR to exist on such cpus (the
->> AMD documentation specifies that ARCH_CAPABILITIES feature and MSR
->> are not defined on the AMD architecture).
->>
->> A fix was proposed in KVM code, however KVM maintainers don't want to
->> change this behavior that exists for 6+ years and suggest changes to be
->> done in QEMU instead.  Therefore, hide the bit from "-cpu host":
->> migration of -cpu host guests is only possible between identical host
->> kernel and QEMU versions, therefore this is not a problematic breakage.
->>
->> If a future AMD machine does include the MSR, that would re-expose the
->> Windows guest bug; but it would not be KVM/QEMU's problem at that
->> point, as we'd be following a genuine physical CPU impl.
->>
->> Reported-by: Alexandre Chartre <alexandre.chartre@oracle.com>
->> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
->> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> This feels like a qemu-stable material, is it not?
-Yes, good idea.
+This series adds support for:
+- Log Page ID 0x00: Supported Log Pages
+- Log Page ID 0x12: Feature Identifiers Supported and Effects
 
-Paolo
+These changes improve compliance with newer NVMe specifications and enhance introspection capabilities for NVMe devices under QEMU.
+
+Tested using:
+- Custom log page queries from guest OS
+- Manual validation of returned data structures
+
+Regards,
+Ayush Mishra
+
+Ayush Mishra (2):
+  hw/nvme: Adding support for LID 0x00- Supported Log Pages
+  hw/nvme: Adding Support for Feature Identifiers Supported and Effects
+    (Log Identifier 12h)
+
+ hw/nvme/ctrl.c       | 95 ++++++++++++++++++++++++++++++++++++++++++++
+ hw/nvme/nvme.h       |  2 +
+ include/block/nvme.h | 32 +++++++++++++++
+ 3 files changed, 129 insertions(+)
+
+-- 
+2.43.0
 
 
