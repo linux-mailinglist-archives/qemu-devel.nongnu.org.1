@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C129B09481
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:56:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF63AB09472
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:52:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucTm5-0004za-7A; Thu, 17 Jul 2025 14:56:09 -0400
+	id 1ucThv-0008Bc-LN; Thu, 17 Jul 2025 14:51:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucR8q-0002vf-I5
+ id 1ucR8r-0002vg-3P
  for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:07:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ucR8m-0002H0-0h
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:07:27 -0400
+ id 1ucR8m-0002H8-0y
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 12:07:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752768438;
+ s=mimecast20190719; t=1752768439;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2WlmBVN2Qucvf1vEE6nWUJB/kVdkIb8dEtL75AIz63Q=;
- b=b9txktO4eqxMC+n/D2BEqsVDuALNgdU+/NlvsfA2S22Pz1ti+rAv2GsM+IibCa4N/c2OJi
- /B1vHwR3hjlDef+EsPqwSqnvtYqdMaxlzTMcUTpocJw5uXrCo8G9mJiFqDuWOvxNVvzY72
- 3dRK3XI0N6vyOg432pk8HEjNEYLF3gg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6zxpl/PQRwn3jQnhX2F8Ka6KHfmWqxvN4L1LgBM5SOU=;
+ b=KnDUx7L5XPUJF/zka/ahU9GUqfnPUGFBSzdUY666zbPO/GjGoywQ9u+Gz72XsH8cFYJZjK
+ hRl8C4B1H5E/FAB6AtT9e/xPMTe7d9m0ZDB1DoAMEKpzR02l6v6RiYxhBOUDjYpntUKr+A
+ WmX7ynbnRJXlYP6ru/WRzEjw+50RT7c=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-Guis2k6PNiOkOHCqnV-xXw-1; Thu, 17 Jul 2025 12:07:15 -0400
-X-MC-Unique: Guis2k6PNiOkOHCqnV-xXw-1
-X-Mimecast-MFC-AGG-ID: Guis2k6PNiOkOHCqnV-xXw_1752768434
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a4f7f1b932so746676f8f.2
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 09:07:15 -0700 (PDT)
+ us-mta-517-vkbwoY8QMhKfg-wkoswWBA-1; Thu, 17 Jul 2025 12:07:18 -0400
+X-MC-Unique: vkbwoY8QMhKfg-wkoswWBA-1
+X-Mimecast-MFC-AGG-ID: vkbwoY8QMhKfg-wkoswWBA_1752768437
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-456267c79deso3751585e9.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 09:07:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752768433; x=1753373233;
+ d=1e100.net; s=20230601; t=1752768436; x=1753373236;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2WlmBVN2Qucvf1vEE6nWUJB/kVdkIb8dEtL75AIz63Q=;
- b=ONmee9AnXPgxNi4zDPCzUyHx+6rFZIWExLsA4VvWulyhZBmogt8nOHZCiijYeytlD8
- lLpCblW1GtunjfjGED4IaqKmyR53lCoi2zlunWBSyrc5X6+PG1oR3tWNU8pjr3TZr11m
- GqBKuTyPQZAregUCbf4UdRVZJWrtP6Za2Vpgs5XGWe12s1Viu2lTR9IgbSWPzQVP11Vl
- wgdiBXcqFubZXRGFckl4sJQT+O2sekSnHSM1qkd1GHC9Ws7p4gjZsGADV/HMd8hREN5/
- KPENucsbgNnfjQ5JWmiQhHWSvF5lJAwYMP0ersxQwtJdgV0FQzvHvvwsY6q6qv0Sfnfm
- Dllw==
-X-Gm-Message-State: AOJu0Yx7MQGnHPRYRF5cEDl74so/vaeL6vPl708TRbzA1hPWvsITdz6L
- uzhLLsyBuRC5LeRpL1bKLtA2RcoJszpfikfEniTq8wi0j6swtLYExzUDM8UcKk1qV6YgTOIwbx1
- lyL4eirIqqlnwXID1kOjezvJpFAiELBO6N5Qey91hwSMczmfN5LZrn59hEnXTjdOBKtvrf2RxAu
- plLDR8OaB7uN53tRMO9evFQFatR+coryEdkMv36aRK
-X-Gm-Gg: ASbGncu1SaTh57OaqUUh+hXJBgoAuD1i48LrfbB0kbmVJz1/b0NTggeiMAWSvOxxOgx
- 3QvteypHMjIvShIA20hPGPf+y05egCrDpcjgLrDt8i1kT88x8l3hzFISj3G9fA5oIjLwmbl3VGZ
- MZD6ndC7Y3iZBnoJsy/y2UwFBQt4gwKXNQpTm46TtZqqNdv0lt4NYEhpidTguXzNmNhXPvuHcu0
- egmBBZb2kV3UM4zSbGxXOw62Ru/oGSc37b+6jDln3QPrRHGBRGPPEDvQKBOGV1gAgfSHQPWgeNz
- HG92AlYwswsPGGUT3wt6t0FsMhR7416uTlkdnIy4C4s=
-X-Received: by 2002:a05:6000:3cf:b0:3a6:d95c:5db with SMTP id
- ffacd0b85a97d-3b60e4cb61emr5917227f8f.26.1752768433401; 
- Thu, 17 Jul 2025 09:07:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHBxF7NwvzEYIrMWoobfi+hBkxyhSRo1CYY1NScwW7whzUJBhehuib06kZ4TbSr/Rt6p3o7zQ==
-X-Received: by 2002:a05:6000:3cf:b0:3a6:d95c:5db with SMTP id
- ffacd0b85a97d-3b60e4cb61emr5917178f8f.26.1752768432823; 
- Thu, 17 Jul 2025 09:07:12 -0700 (PDT)
+ bh=6zxpl/PQRwn3jQnhX2F8Ka6KHfmWqxvN4L1LgBM5SOU=;
+ b=fdUnd5E/h7bEvtZG18iGVPuUx0QRfjMHdnszOKPn+coMTMVwgowEq3+wj0/LccjHqC
+ ovyqIZv+0ylpgECLyBapk1ZG45/O61JMomjquAoCOMLtxLUIpXGa+5TIzqqXi6PtDGNk
+ 0RqWdm5lKkYwX+9J1IbrDPlVDhyAkvZgYk4Bws5WxGAF8GOF7gF1KLBUphSGvPD79RR8
+ FGzzw+39HApNgFW6qgk88LJwtNOw+ipQ4PZjVAu5vmEgdLWLHeBelQ01klLTgeaiAa4/
+ AXKCOkCJVv/uZdTYmTQhgN+RtsTa84ydWO9jhrLQtI9mrXH0u763w9uMpsLHgDOTth2j
+ lE6A==
+X-Gm-Message-State: AOJu0YwjdtBbPAwpQNcHGFRVrpDWmyUwq8VZo39AO7SXXlqdMdd2N0Zy
+ lqGR9YMVQCMghF5e6RJDhed4A9wM2Tp/H+pmjvyOM5/wK1uqibh8y55HGogEYrgw16Dug4SqS7g
+ mk3RJWSBrFmQRqMoRe1nZRDjpWFeey+Bq2tOE0pzBZRt4GrrIS6yNsFpm8N2i1cYRAM0xzt9HiW
+ 2avpV0UxpWYp/ZbmYcI47j7/5Uw+fYnZtUkSoI+/Cc
+X-Gm-Gg: ASbGncuQGJAoPhMi8Q82Y3n5R2sOEWYM3QGfECrRYzVdfD9oG7iMrEMAQ98tD5r7QYL
+ RY/HSEo2pkIY7z4JEVdV9uGrZHcWdBrGf2bt8i7PQoWyQkyALhX0AkAhG5PiCpburSG3gFhY0Sq
+ nVBrUFXxD4p2BZdT5uF0WyUutgDMJeu2f2yYq/pQi2hec1VBx8fYGoCRE6j+qTAkjgciI4iD5+D
+ PXZlMkITp5r1yH6VNfcGIL9yUvoqu0r+lU3VOBu1m3j8E6t9UY9IlWZtnbmch+xslLaqCCoS9p9
+ wMV276Y2dcIT+Q4Q1RRAbtoQivb4Oz5zAMovxbo3Buo=
+X-Received: by 2002:a05:600c:3481:b0:43c:fcbc:9680 with SMTP id
+ 5b1f17b1804b1-4562e3c4b8bmr63183015e9.25.1752768436428; 
+ Thu, 17 Jul 2025 09:07:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGuchvTf+jdstqtSaVFZsjDPxLdC0wssJpUGm/o7pWMq6jaG91Q0jM+Wt9WLF+B+hMLMqWuLQ==
+X-Received: by 2002:a05:600c:3481:b0:43c:fcbc:9680 with SMTP id
+ 5b1f17b1804b1-4562e3c4b8bmr63182535e9.25.1752768435895; 
+ Thu, 17 Jul 2025 09:07:15 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.73.155])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b5e8dc22a8sm21537275f8f.34.2025.07.17.09.07.11
+ 5b1f17b1804b1-4562e886113sm55937915e9.23.2025.07.17.09.07.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jul 2025 09:07:12 -0700 (PDT)
+ Thu, 17 Jul 2025 09:07:13 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 5/6] i386/cpu: Cleanup host_cpu_max_instance_init()
-Date: Thu, 17 Jul 2025 18:06:59 +0200
-Message-ID: <20250717160700.357384-6-pbonzini@redhat.com>
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 6/6] i386/tdx: Remove the redundant qemu_mutex_init(&tdx->lock)
+Date: Thu, 17 Jul 2025 18:07:00 +0200
+Message-ID: <20250717160700.357384-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250717160700.357384-1-pbonzini@redhat.com>
 References: <20250717160700.357384-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -111,34 +111,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-The implementation of host_cpu_max_instance_init() was merged into
-host_cpu_instance_init() by commit 29f1ba338baf ("target/i386: merge
-host_cpu_instance_init() and host_cpu_max_instance_init()"), while the
-declaration of it remains in host-cpu.h.
+Commit 40da501d8989 ("i386/tdx: handle TDG.VP.VMCALL<GetQuote>") added
+redundant qemu_mutex_init(&tdx->lock) in tdx_guest_init by mistake.
 
-Clean it up.
+Fix it by removing the redundant one.
 
+Fixes: 40da501d8989 ("i386/tdx: handle TDG.VP.VMCALL<GetQuote>")
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250716063117.602050-1-xiaoyao.li@intel.com
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Link: https://lore.kernel.org/r/20250717103707.688929-1-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/host-cpu.h | 1 -
- 1 file changed, 1 deletion(-)
+ target/i386/kvm/tdx.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/target/i386/host-cpu.h b/target/i386/host-cpu.h
-index 10df4b3a3a7..ee653242254 100644
---- a/target/i386/host-cpu.h
-+++ b/target/i386/host-cpu.h
-@@ -12,7 +12,6 @@
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index 1574e7d76fe..dbf0fa2c918 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -1527,8 +1527,6 @@ static void tdx_guest_init(Object *obj)
+                             tdx_guest_set_qgs,
+                             NULL, NULL);
  
- uint32_t host_cpu_phys_bits(void);
- void host_cpu_instance_init(X86CPU *cpu);
--void host_cpu_max_instance_init(X86CPU *cpu);
- bool host_cpu_realizefn(CPUState *cs, Error **errp);
- 
- void host_cpu_vendor_fms(char *vendor, int *family, int *model, int *stepping);
+-    qemu_mutex_init(&tdx->lock);
+-
+     tdx->event_notify_vector = -1;
+     tdx->event_notify_apicid = -1;
+ }
 -- 
 2.50.1
 
