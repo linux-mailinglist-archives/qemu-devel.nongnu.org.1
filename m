@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96691B09533
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 21:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2293B09555
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 22:03:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucUbX-0006Dj-EM; Thu, 17 Jul 2025 15:49:19 -0400
+	id 1ucUoO-0007Qj-PR; Thu, 17 Jul 2025 16:02:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucS7E-0008Nw-5J
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:09:59 -0400
+ id 1ucSA2-0002BV-V1
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:12:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ucS7B-0002F3-D6
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:09:51 -0400
+ id 1ucSA0-0002ig-5h
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 13:12:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752772186;
+ s=mimecast20190719; t=1752772363;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PXVTDH+hbxdnvOJxnih2614wpTzmDUV06R/SpK1bRKM=;
- b=U8V0hczaLLuWr2uN8tbBYw88kkSHqH1cDYMhb6euWrunHJoQJfygogRZr4Auqe7f0AJOse
- Qf2Icor4sNpLkG/QxXq63ijVBMUj8spcY6z+ApZDHpCK/dydLm6KZ06/4Hwjntm/ig7tcd
- iw/wLm8m6Un2S7TW3alrjQK1HnOL4qE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=xQTbZ2aD167oqML88RH+6uVfwgrVRD/PNO1hK8N22R0=;
+ b=gbFShtPEHR4FkikHx83hBo+SSN4myZelrmqz9HvuKMHNKYTAZs+nj60kDIjtsuiIsSItaD
+ QVQ8qupgT+wexdg3pMKg3zTvdhOn24mZ+9IlEaagN/o8/VZZcAuL6STjbUej55WSKuYsa3
+ kHRVRnNMexhd3qzlyAwh/9xSN5FjjOw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-nmsvsXgQNiW_uyFGk2tMZQ-1; Thu,
- 17 Jul 2025 13:09:42 -0400
-X-MC-Unique: nmsvsXgQNiW_uyFGk2tMZQ-1
-X-Mimecast-MFC-AGG-ID: nmsvsXgQNiW_uyFGk2tMZQ_1752772180
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-42-vhdCCjqAPpiNiNdkb7ywRg-1; Thu,
+ 17 Jul 2025 13:12:39 -0400
+X-MC-Unique: vhdCCjqAPpiNiNdkb7ywRg-1
+X-Mimecast-MFC-AGG-ID: vhdCCjqAPpiNiNdkb7ywRg_1752772355
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F3819195FE1E; Thu, 17 Jul 2025 17:09:38 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 683F41800C37; Thu, 17 Jul 2025 17:12:35 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.171])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 213FF30001B9; Thu, 17 Jul 2025 17:09:28 +0000 (UTC)
-Date: Thu, 17 Jul 2025 18:09:26 +0100
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C8D40189F07A; Thu, 17 Jul 2025 17:11:55 +0000 (UTC)
+Date: Thu, 17 Jul 2025 18:11:52 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Arun Menon <armenon@redhat.com>
 Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -72,18 +72,18 @@ Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>
-Subject: Re: [PATCH v5 10/23] migration: push Error **errp into
- loadvm_postcopy_handle_advise()
-Message-ID: <aHkuRkaMw226cU4W@redhat.com>
+Subject: Re: [PATCH v5 11/23] migration: push Error **errp into
+ loadvm_postcopy_handle_listen()
+Message-ID: <aHku2LQVuLWgjfGY@redhat.com>
 References: <20250717-propagate_tpm_error-v5-0-1f406f88ee65@redhat.com>
- <20250717-propagate_tpm_error-v5-10-1f406f88ee65@redhat.com>
+ <20250717-propagate_tpm_error-v5-11-1f406f88ee65@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250717-propagate_tpm_error-v5-10-1f406f88ee65@redhat.com>
+In-Reply-To: <20250717-propagate_tpm_error-v5-11-1f406f88ee65@redhat.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -110,17 +110,17 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 17, 2025 at 06:07:33AM +0530, Arun Menon wrote:
+On Thu, Jul 17, 2025 at 06:07:34AM +0530, Arun Menon wrote:
 > This is an incremental step in converting vmstate loading
 > code to report error via Error objects instead of directly
 > printing it to console/monitor.
-> It is ensured that loadvm_postcopy_handle_advise() must report an error
+> It is ensured that loadvm_postcopy_handle_listen() must report an error
 > in errp, in case of failure.
 > 
 > Signed-off-by: Arun Menon <armenon@redhat.com>
 > ---
->  migration/savevm.c | 39 +++++++++++++++++----------------------
->  1 file changed, 17 insertions(+), 22 deletions(-)
+>  migration/savevm.c | 18 +++++++-----------
+>  1 file changed, 7 insertions(+), 11 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
