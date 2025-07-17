@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C01D0B089B1
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 744A7B08A04
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:57:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLE8-0007Xx-R6; Thu, 17 Jul 2025 05:48:33 -0400
+	id 1ucLGk-0005uu-4n; Thu, 17 Jul 2025 05:51:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL1r-0002nc-LQ; Thu, 17 Jul 2025 05:35:51 -0400
+ id 1ucL1r-0002oS-Tq; Thu, 17 Jul 2025 05:35:51 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL1p-000265-DO; Thu, 17 Jul 2025 05:35:51 -0400
+ id 1ucL1p-000267-ER; Thu, 17 Jul 2025 05:35:51 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 79E7E137CFB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 88FA0137CFC;
  Thu, 17 Jul 2025 12:34:05 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 52A722491F4;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6BA5A2491F5;
  Thu, 17 Jul 2025 12:34:13 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ethan Milon <ethan.milon@eviden.com>,
- Vasant Hegde <vasant.hegde@amd.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Tingting Mao <timao@redhat.com>, Eric Blake <eblake@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 58/65] amd_iommu: Fix truncation of oldval in
- amdvi_writeq
-Date: Thu, 17 Jul 2025 12:33:54 +0300
-Message-ID: <20250717093412.728292-19-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 59/65] file-posix: Fix aio=threads performance
+ regression after enablign FUA
+Date: Thu, 17 Jul 2025 12:33:55 +0300
+Message-ID: <20250717093412.728292-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
@@ -59,37 +59,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ethan Milon <ethan.milon@eviden.com>
+From: Kevin Wolf <kwolf@redhat.com>
 
-The variable `oldval` was incorrectly declared as a 32-bit `uint32_t`.
-This could lead to truncation and incorrect behavior where the upper
-read-only 32 bits are significant.
+For aio=threads, we're currently not implementing REQ_FUA in any useful
+way, but just do a separate raw_co_flush_to_disk() call. This changes
+behaviour compared to the old state, which used bdrv_co_flush() with its
+optimisations. As a quick fix, call bdrv_co_flush() again like before.
+Eventually, we can use pwritev2() to make use of RWF_DSYNC if available,
+but we'll still have to keep this code path as a fallback, so this fix
+is required either way.
 
-Fix the type of `oldval` to match the return type of `ldq_le_p()`.
+While the fix itself is a one-liner, some new graph locking annotations
+are needed to convince TSA that the locking is correct.
 
 Cc: qemu-stable@nongnu.org
-Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
-Signed-off-by: Ethan Milon <ethan.milon@eviden.com>
-Message-Id: <20250617150427.20585-9-alejandro.j.jimenez@oracle.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 5788929e05e18ed5f76dc8ade4210f022c9ba5a1)
+Fixes: 984a32f17e8d ("file-posix: Support FUA writes")
+Buglink: https://issues.redhat.com/browse/RHEL-96854
+Reported-by: Tingting Mao <timao@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20250625085019.27735-1-kwolf@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit d402da1360c2240e81f0e5fc80ddbfc6238e0da8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 06df344575..f773653487 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -140,7 +140,7 @@ static void amdvi_writeq(AMDVIState *s, hwaddr addr, uint64_t val)
- {
-     uint64_t romask = ldq_le_p(&s->romask[addr]);
-     uint64_t w1cmask = ldq_le_p(&s->w1cmask[addr]);
--    uint32_t oldval = ldq_le_p(&s->mmior[addr]);
-+    uint64_t oldval = ldq_le_p(&s->mmior[addr]);
-     stq_le_p(&s->mmior[addr],
-             ((oldval & romask) | (val & ~romask)) & ~(val & w1cmask));
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 56d1972d15..796553bafd 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -2484,9 +2484,9 @@ static inline bool raw_check_linux_aio(BDRVRawState *s)
  }
+ #endif
+ 
+-static int coroutine_fn raw_co_prw(BlockDriverState *bs, int64_t *offset_ptr,
+-                                   uint64_t bytes, QEMUIOVector *qiov, int type,
+-                                   int flags)
++static int coroutine_fn GRAPH_RDLOCK
++raw_co_prw(BlockDriverState *bs, int64_t *offset_ptr, uint64_t bytes,
++           QEMUIOVector *qiov, int type, int flags)
+ {
+     BDRVRawState *s = bs->opaque;
+     RawPosixAIOData acb;
+@@ -2545,7 +2545,7 @@ static int coroutine_fn raw_co_prw(BlockDriverState *bs, int64_t *offset_ptr,
+     ret = raw_thread_pool_submit(handle_aiocb_rw, &acb);
+     if (ret == 0 && (flags & BDRV_REQ_FUA)) {
+         /* TODO Use pwritev2() instead if it's available */
+-        ret = raw_co_flush_to_disk(bs);
++        ret = bdrv_co_flush(bs);
+     }
+     goto out; /* Avoid the compiler err of unused label */
+ 
+@@ -2580,16 +2580,16 @@ out:
+     return ret;
+ }
+ 
+-static int coroutine_fn raw_co_preadv(BlockDriverState *bs, int64_t offset,
+-                                      int64_t bytes, QEMUIOVector *qiov,
+-                                      BdrvRequestFlags flags)
++static int coroutine_fn GRAPH_RDLOCK
++raw_co_preadv(BlockDriverState *bs, int64_t offset, int64_t bytes,
++              QEMUIOVector *qiov, BdrvRequestFlags flags)
+ {
+     return raw_co_prw(bs, &offset, bytes, qiov, QEMU_AIO_READ, flags);
+ }
+ 
+-static int coroutine_fn raw_co_pwritev(BlockDriverState *bs, int64_t offset,
+-                                       int64_t bytes, QEMUIOVector *qiov,
+-                                       BdrvRequestFlags flags)
++static int coroutine_fn GRAPH_RDLOCK
++raw_co_pwritev(BlockDriverState *bs, int64_t offset, int64_t bytes,
++               QEMUIOVector *qiov, BdrvRequestFlags flags)
+ {
+     return raw_co_prw(bs, &offset, bytes, qiov, QEMU_AIO_WRITE, flags);
+ }
+@@ -3525,10 +3525,11 @@ static int coroutine_fn raw_co_zone_mgmt(BlockDriverState *bs, BlockZoneOp op,
+ #endif
+ 
+ #if defined(CONFIG_BLKZONED)
+-static int coroutine_fn raw_co_zone_append(BlockDriverState *bs,
+-                                           int64_t *offset,
+-                                           QEMUIOVector *qiov,
+-                                           BdrvRequestFlags flags) {
++static int coroutine_fn GRAPH_RDLOCK
++raw_co_zone_append(BlockDriverState *bs,
++                   int64_t *offset,
++                   QEMUIOVector *qiov,
++                   BdrvRequestFlags flags) {
+     assert(flags == 0);
+     int64_t zone_size_mask = bs->bl.zone_size - 1;
+     int64_t iov_len = 0;
 -- 
 2.47.2
 
