@@ -2,91 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99876B09426
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E82CAB09467
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 20:50:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucTWm-0000Xs-JC; Thu, 17 Jul 2025 14:40:20 -0400
+	id 1ucTfC-0005vG-6R; Thu, 17 Jul 2025 14:49:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucQpW-0004yF-HP
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:47:35 -0400
-Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucQpQ-0007rA-2R
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:47:28 -0400
-Received: by mail-yb1-xb32.google.com with SMTP id
- 3f1490d57ef6-e8d2c331bb5so619755276.1
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 08:47:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752767242; x=1753372042; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gTf4QJyETBDFeIIbUs0tvAi/F1lfywz0zSllEIAn9/Q=;
- b=Nresjfts56Xp4roEoAmlk6bea55Kk3IiIZmznClkTr/ZHUXa2MrCXXpv9cet69Nqlm
- tu4iHeDZiTFbFxvXTXcGfTHgq6yoGmmhCOkwtVw1y/MFc2usv9xU9D0+tSfAzioEoqRj
- h1ZLnWgibMJQ2dmcThil4/Vp6cdKZpp15VD1CampizqA/MMpgasbJFZRSLEwvTVaO+Xo
- DruB5aviFsQYNXZh3o9cd+vVnj21Zo1dFLcaaTYG46tZaO9SXNQ0bhI+i87/KAWC+q5e
- xbA9id3yLscl49z17YneVsSLBNGuxDGsWHoRuiV1uvZ+3cl/Vs7cd0I7iy4+QFBBsytI
- 2qhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752767242; x=1753372042;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gTf4QJyETBDFeIIbUs0tvAi/F1lfywz0zSllEIAn9/Q=;
- b=hNg2S7+RcyYLLIgNBT2KaDnxIKG4+aUiZbhKS5pJHMve7BBRmOt6EYfKPWQjUmSYUM
- qL/QqbPXBYwYqT347+Z7o27UXPzPUDeHqLJlj0ZIdL2W6BXLsCBSf3PSurrt0XV2j7an
- YQmhiCc2duXwRNW/pfd2kxTqmb1IKwWtvZP4JLYZw9A/hCdE/pMxWD+s4tOG3CmHcnd+
- HKZatTdC5K/UDveVRxQfa6IQiLGNfYkciJQ7syeCHzuPtCs2fGanZUtgVARNx54mqL59
- fK7n+s+/74fAQfWN7lvf2LdTsOAp599XARYYcJhFzbNLncwVz6JZFExRqbaok3bzvcHH
- Fo7A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVD8gNw23wpTkUCiE+i2Jw/V0StngAU44WmEv0T6pN4fHTpLEIj+17Ixp4kpsjaXeMkwRfceSYbVTUP@nongnu.org
-X-Gm-Message-State: AOJu0Ywo/biDSHWXprOUt46ENA2fmsMnsdL1DkcsLNJ8w4j3fjcL/cJ+
- xivTziHaX9BBoKxF+k7z+zTIDm/5izPtwTbYQLebuqQy2pmhNL4J9mQPK2S3dYCOroL9YnfZs4a
- HAC09oHi6EgBL/E5+gqi9AmC41+6UWg4cTKZRRaX1tYMsIX3emyMz
-X-Gm-Gg: ASbGncvZ+fuslUcMLdqDg2QxzHtZcSjRp8r2aQQYVNa8Lrx0YLXZozGrA3hWWzTAfFS
- anayy2LqXMN5KAZIqwIDFs7drqly1Iy9xz3QyaDjysWjFZLP/LP6/yqW50E+V+O4xqgQ69vIup9
- dKfcu380G9vpUUnGF3sE38QCpgrkiZQp64rdasb5FFBzFDtoxf/x9z/RXPVzXUetNa8VT/4bL7i
- RhZGIDD
-X-Google-Smtp-Source: AGHT+IECycG6jnttUfo8RPoH2Xla09m6DbjzFbnqRbbLP8Np8mGtYtDxXh4IRhe8lPsd6aOfmAd+qbSyBV7B1Hnj05Q=
-X-Received: by 2002:a05:690c:6908:b0:703:b47a:7312 with SMTP id
- 00721157ae682-7184f7f653cmr49530407b3.15.1752767242633; Thu, 17 Jul 2025
- 08:47:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ucQs7-0005lC-Jp
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:50:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ucQs3-0008N7-V2
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 11:50:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752767406;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=u5H+dIwi42KvMOnLtP+PfzlFzqA05+K9pKVyEGotqVg=;
+ b=EWSYSuAYqIzL1x5Fw4WS4fULcTxW3PrvRjy7ahdKTscoYBK3EyA4WZyZ5Mjq2coKI9JLLq
+ NzchB09jqAqUV+LxJgEwy6XZPznQPLIoSkAvZiwz4UagPqeiyvvnmNGYwhYzOJQO2BXxSM
+ 5Mwk5HJ90o1+OVw4HurSpeMSxmd0TGk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-HfL7i-cCNaqZo-bSzlSt9Q-1; Thu,
+ 17 Jul 2025 11:49:59 -0400
+X-MC-Unique: HfL7i-cCNaqZo-bSzlSt9Q-1
+X-Mimecast-MFC-AGG-ID: HfL7i-cCNaqZo-bSzlSt9Q_1752767398
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7E68C19560B4
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 15:49:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.171])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 72565196664F; Thu, 17 Jul 2025 15:49:56 +0000 (UTC)
+Date: Thu, 17 Jul 2025 16:49:53 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Cornelia Huck <cohuck@redhat.com>
+Cc: Andrea Bolognani <abologna@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 2/2] watchdog: generic name for i6300esb
+Message-ID: <aHkboV03D6lSzpgK@redhat.com>
+References: <20250610143259.1056400-1-cohuck@redhat.com>
+ <20250610143259.1056400-3-cohuck@redhat.com>
+ <aEhnbN1pSYgdi4EZ@redhat.com>
+ <CABJz62O3FKYfUOyCLMotgYgckWV1frSUb=MtTW2J4fDTEg_==g@mail.gmail.com>
+ <877c09792e.fsf@redhat.com> <aHZ7rpYFMWai-7RL@redhat.com>
+ <CABJz62P+p_uYiatXroauLkG2AH2TnjS8drbHxLPsgY+=QSB8Lw@mail.gmail.com>
+ <aHaC6_2vdXJqdxLo@redhat.com> <874iva7so9.fsf@redhat.com>
 MIME-Version: 1.0
-References: <20250714110406.117772-1-pbonzini@redhat.com>
- <20250714110406.117772-18-pbonzini@redhat.com>
- <aHeNnCnN2RGmbxWm@redhat.com>
- <CAGxU2F5VvrgCTzi1MXWqBA+G0hgi0xLf0mm7+v5==sDAVUKJpA@mail.gmail.com>
- <aHj7sd7l8DUbhM65@redhat.com>
-In-Reply-To: <aHj7sd7l8DUbhM65@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 17 Jul 2025 16:47:10 +0100
-X-Gm-Features: Ac12FXwFDPV7i-gP4VR4uX0StcLqkF1tS8T6o60mKBs5N4hb245p6PuH9CmxUsA
-Message-ID: <CAFEAcA_34dcrOmX13TPumQ18-V5jqra+2M75Cj_jFL8yKx=79w@mail.gmail.com>
-Subject: Re: [PULL 17/77] meson: Add optional dependency on IGVM library
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
- Roy Hopkins <roy.hopkins@randomman.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Gerd Hoffman <kraxel@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb32.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <874iva7so9.fsf@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,38 +91,105 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 17 Jul 2025 at 16:43, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
->
-> On Thu, Jul 17, 2025 at 03:30:06PM +0200, Stefano Garzarella wrote:
-> > On Wed, 16 Jul 2025 at 13:31, Daniel P. Berrang=C3=A9 <berrange@redhat.=
-com> wrote:
-> > > We really need to get something into 'make check' that runs the
-> > > generator and compares its output to 'meson-buildoptions.sh' as
-> > > we have hit this problem over & over again.
+On Thu, Jul 17, 2025 at 05:17:42PM +0200, Cornelia Huck wrote:
+> On Tue, Jul 15 2025, Daniel P. Berrangé <berrange@redhat.com> wrote:
+> 
+> > On Tue, Jul 15, 2025 at 09:16:24AM -0700, Andrea Bolognani wrote:
+> >> On Tue, Jul 15, 2025 at 05:02:54PM +0100, Daniel P. Berrangé wrote:
+> >> > On Tue, Jul 15, 2025 at 05:44:25PM +0200, Cornelia Huck wrote:
+> >> > > Hmm. So
+> >> > > - request a new PCI id (probably in the PCI_DEVICE_ID_REDHAT_* space)
+> >> > > - restructure to have two devices base off the same core functionality
+> >> > > - teach guest operating systems about the new device
+> >> > > - teach management software like libvirt about the new device
+> >> > >
+> >> > > Not sure how fast we can get an ID (or even how to go about it.) The
+> >> > > second step should be reasonably easy. The third step is the most
+> >> > > complex one, but at least teaching Linux should hopefully be easy
+> >> > > enough, and existing guest operating systems could continue to use the
+> >> > > existing device. The last step is probably not that bad.
+> >> > >
+> >> > > I can start down that path, if we have some consensus that this is the
+> >> > > right way to handle this.
+> >> > >
+> >> > > I'd still argue that patch 1 should be applied regardless :)
+> >> >
+> >> > This sounds like a hell of alot of busy work to fix a problem that, IIUC,
+> >> > does not actually exist from a functional POV - it is merely a perception
+> >> > issue that people might be put off by the "Intel 6300ESB" names.
+> >> >
+> >> > IMHO a better use of time is to expand documentation to clarify this is
+> >> > just fine for all PCI architectures, and change nothing in either QEMU
+> >> > or guest kernels.
+> >> 
+> >> Agreed that it's not the most high-reward endeavor, but IIRC users
+> >> were getting genuinely confused and annoyed by the string "Intel"
+> >> showing up in their aarch64 guests.
 > >
-> > Do we already have something similar for other generated files to be
-> > inspired by?
->
-> Not that I'm aware of.
+> > So be it, that's far from the only wierd thing in virt.
+> 
+> So I'm wondering what the general sentiment is towards having an "Intel"
+> device show up in your non-Intel guest. This device is generic enough to
+> be included in PCI_DEVICES, and should be usable on any of those
+> platforms.
 
-In particular, meson-buildoptions.sh is an oddball, because the
-most common patterns we have are:
- (1) the generated file is not committed to version control
- (2) the generated file is committed, but doing an update
-     requires an explicit manual action by somebody (examples
-     include all the guest BIOS files, and the results of
-     the update-linux-header.sh script)
+That is not all that different from an "Intel" device showing up
+in my "AMD" guest, or that my "modern" virt guest is exposing an
+Intel machine board from 2005, or that what we advertize as a
+"q35" machine is actually a "p35" machine, or many other wierd
+virt things.
 
-The reason we keep hitting issues with meson-buildoptions.sh
-is that it is both committed to version control *and* we
-have meson build runes that will regenerate it automatically
-when the input files are changed, which I think is a rare
-combination.
+> Linux treats this as a generic PCI driver as well. Do we know what
+> Windows on non-x86 expects? The *BSDs? Others?
 
-thanks
--- PMM
+I'm not sure offhand.
+
+> >> You can point them to documentation over and over again, or you can
+> >> work to prevent the confusion/annoyance from showing up in the first
+> >> place. Which of the two approaches is a better use of anyone's time
+> >> is up for debate.
+> >> 
+> >> I for one am grateful that someone put the time in all those years
+> >> ago and, as a result, PCI and USB controllers don't suffer from the
+> >> problem today. Ultimately it's up to Connie though.
+> >
+> > The PCI/USB controller situation is not the same tradeoff though.
+> > Those guest kernel drivers will identify and attach to these two
+> > controllers regardless of their PCI vendor/product, via the PCI
+> > class property. In that case changing the PCI ID and other device
+> > metadata in QEMU is cheap as it has no negative impact on guest OS
+> > driver compibility.
+> >
+> > In the case of 6300ESB though the guest driver is tied directly to
+> > the currently used PCI device product/vendor ID.
+> >
+> > If we change this then we have actually created new functional
+> > problems with guest/QEMU compatibility, in order to placate a
+> > non-functional problem. That is not a good thing.
+> 
+> I don't think the suggestion was to disable the existing driver on
+> non-Intel setups, but to add a more generic one. Still, more work to get
+> this actually propagated into guests than doing the change in
+> QEMU. Before I start down that route, I'd like to know whether the issue
+> is actually big enough to make investing time there worth it.
+
+If we're a mmgmt app provisioning a guest, we have to choose what
+watchdog to create - either the old one which works everywhere
+that currently has a driver, or the new one will will work in
+far fewer places. We'll have to wire up guest OS info about
+watchdogs into osinfo, and then wire up all the mgmt apps to
+query this and take action based off it. All possible, but it
+still feels like a huge waste of time to me.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
