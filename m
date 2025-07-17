@@ -2,49 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69953B08B6D
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:59:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1EE1B08B76
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 13:00:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucMHv-00005M-Th; Thu, 17 Jul 2025 06:56:34 -0400
+	id 1ucMLl-0008VK-30; Thu, 17 Jul 2025 07:00:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucMGu-0007za-Uk; Thu, 17 Jul 2025 06:55:31 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucMGr-0003G4-DA; Thu, 17 Jul 2025 06:55:27 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8994D137E26;
- Thu, 17 Jul 2025 13:54:35 +0300 (MSK)
-Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 846F3249270;
- Thu, 17 Jul 2025 13:54:43 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 26/26] ui/vnc: Do not copy z_stream
-Date: Thu, 17 Jul 2025 13:54:40 +0300
-Message-ID: <20250717105442.735202-11-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <qemu-stable-7.2.19-20250717135416@cover.tls.msk.ru>
-References: <qemu-stable-7.2.19-20250717135416@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ucMLX-0008Jc-6o
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 07:00:16 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ucMLV-0003tJ-De
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 07:00:14 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4561514c7f0so8430645e9.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 04:00:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752750011; x=1753354811; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=m9VGDQ5p29SEmIud5CccOWSz0DIopmjYl0YiPm2OVNA=;
+ b=A6eCikWT9/8KYXzsc/F6CtjdAmRjx7Z/cmHeIbkVvoPdQPc9Q7b5X5YFJCSb4jbjU6
+ L6zo+M9JmT5Hh37pKEiggTfLEqhqte3PH23pcRNIvIaEc/e/MVfUj65w0L9TgVEnvIlv
+ M8xnDT9AOYqaDPNsAV/syZHDtl2CCXZIPRGk6nMxTwwpd6UmKu8Hy0BmXbshCfBwizZy
+ qKQ+1iXXFeongRTzZx6rh96rJuhFnhWZY1bj/rTvAQ1KMTILGkxa40X9k1cE712s7fQs
+ EYEiVMmkpFZmT8w8H5vOeAzzEjgPV3UUtydh7kwXmN8hQf5+y3sQw86fX5yumBoGFH1v
+ l9Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752750011; x=1753354811;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=m9VGDQ5p29SEmIud5CccOWSz0DIopmjYl0YiPm2OVNA=;
+ b=PEODin3WlTOMqoUSnOQ9KEN7ucBDhzK9rDyq6btQqdx6QbY2SMXr1G5yxAPAz7GFGO
+ RRO3v48IM7PNAO6AaBSMvE0VeL0f2ZEsogcW9DrYWByxE/vbJkeifeQiJsN2LDz0bDme
+ 1K3KUIoqqFuuiH/2NxKa+SafXKUCd9OL2toaiDCS2w86J86jEgGawBrxvLzrh/AKC1CX
+ mVruGyxkUGcOODtPxbwk8ICLfVMhbpa9NzADQ88D2kYI/i0JpS/Hk7kfOQI/nPC0r+Yq
+ AC+ly83q+PiwLMlCatIwADR6j1zZlnMT0Ei8/CNkylbE75dUjLO26kFqq3kYoQuEKaYD
+ KORw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUJKSIYmo6jMrdCg2I/FdfUFKSEho0KoNiXXY5GuE8jgI//DW2gWgpB9t8gLaKEbSjN7ht8oTkfXQsk@nongnu.org
+X-Gm-Message-State: AOJu0YwsXJQjiPY5/vOiIEZJknSjLE5SZjHGGhz3NQlHsGD9omQuWemn
+ FK7u80tachpbgu5qEtaQKe4bJVj2Co1Kl9swTXfhK7SR4iPpJQZ+M/Bat/V1bzswNSdQyhck71V
+ j+EVIEnE=
+X-Gm-Gg: ASbGncu64D04PA6INVh5apdPJoWIFqY56j4erCXZRxXcqpMRslnRPQXZj5HnZL121Ay
+ UiFeI0VaU+jLm+4UMPhb8M86hI1REFWlz+HKz1kYpcpgsH71vxNDkku/pS6iItF8LsvMc3bjZqS
+ HtrCUJ6eS7EiDDHzDmkzSwy7/G+QGs03MYAI43iYml8JWFFgcU5og+Etce77p9lro9fOjN0aZkH
+ CrvCAb9eqy89uDGvc61ccZwN0OaxXqBR3uFcSnRghj/MvHwq5VKBIZDrOJNqADmEnW2Cjlzy7XJ
+ hs0tN/oItTCYxsqMQiCksJd+0yaHzVDek3oOfZvCDTywzRXorJStlfkkjskmU2FdMS+rKl4BAez
+ HLkXe7hWOxBjGTmF9LlzrxcyEY5mYpHU1y+z1Axghq3T1JDSaJAPdAT7W4nrhl+lBiA==
+X-Google-Smtp-Source: AGHT+IEuL2N13vrD7FLs8NSlKUBTdssqAGv6nO3FwQTS++GNt2xACuAeWKDN8xYbm8ka5/bBIbRFkQ==
+X-Received: by 2002:a5d:5d0f:0:b0:3a5:2875:f985 with SMTP id
+ ffacd0b85a97d-3b60e541decmr5001179f8f.59.1752750011510; 
+ Thu, 17 Jul 2025 04:00:11 -0700 (PDT)
+Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8dc22a8sm20827582f8f.34.2025.07.17.04.00.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 17 Jul 2025 04:00:11 -0700 (PDT)
+Message-ID: <cab37022-776e-4e41-96ef-5220a032df0d@linaro.org>
+Date: Thu, 17 Jul 2025 13:00:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs/devel: fix over-quoting of QEMU_TEST_KEEP_SCRATCH
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+References: <20250717104105.2656786-1-alex.bennee@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250717104105.2656786-1-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,161 +102,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+On 17/7/25 12:41, Alex Bennée wrote:
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   docs/devel/testing/functional.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-vnc_worker_thread_loop() copies z_stream stored in its local VncState to
-the persistent VncState, and the copied one is freed with deflateEnd()
-later. However, deflateEnd() refuses to operate with a copied z_stream
-and returns Z_STREAM_ERROR, leaking the allocated memory.
-
-Avoid copying the zlib state to fix the memory leak.
-
-Fixes: bd023f953e5e ("vnc: threaded VNC server")
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20250603-zlib-v3-1-20b857bd8d05@rsg.ci.i.u-tokyo.ac.jp>
-(cherry picked from commit aef22331b5a4670f42638a5f63a26e93bf779aae)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/ui/vnc-enc-zlib.c b/ui/vnc-enc-zlib.c
-index 900ae5b30f..52e9193eab 100644
---- a/ui/vnc-enc-zlib.c
-+++ b/ui/vnc-enc-zlib.c
-@@ -48,21 +48,21 @@ void vnc_zlib_zfree(void *x, void *addr)
- 
- static void vnc_zlib_start(VncState *vs)
- {
--    buffer_reset(&vs->zlib.zlib);
-+    buffer_reset(&vs->zlib->zlib);
- 
-     // make the output buffer be the zlib buffer, so we can compress it later
--    vs->zlib.tmp = vs->output;
--    vs->output = vs->zlib.zlib;
-+    vs->zlib->tmp = vs->output;
-+    vs->output = vs->zlib->zlib;
- }
- 
- static int vnc_zlib_stop(VncState *vs)
- {
--    z_streamp zstream = &vs->zlib.stream;
-+    z_streamp zstream = &vs->zlib->stream;
-     int previous_out;
- 
-     // switch back to normal output/zlib buffers
--    vs->zlib.zlib = vs->output;
--    vs->output = vs->zlib.tmp;
-+    vs->zlib->zlib = vs->output;
-+    vs->output = vs->zlib->tmp;
- 
-     // compress the zlib buffer
- 
-@@ -85,24 +85,24 @@ static int vnc_zlib_stop(VncState *vs)
-             return -1;
-         }
- 
--        vs->zlib.level = vs->tight->compression;
-+        vs->zlib->level = vs->tight->compression;
-         zstream->opaque = vs;
-     }
- 
--    if (vs->tight->compression != vs->zlib.level) {
-+    if (vs->tight->compression != vs->zlib->level) {
-         if (deflateParams(zstream, vs->tight->compression,
-                           Z_DEFAULT_STRATEGY) != Z_OK) {
-             return -1;
-         }
--        vs->zlib.level = vs->tight->compression;
-+        vs->zlib->level = vs->tight->compression;
-     }
- 
-     // reserve memory in output buffer
--    buffer_reserve(&vs->output, vs->zlib.zlib.offset + 64);
-+    buffer_reserve(&vs->output, vs->zlib->zlib.offset + 64);
- 
-     // set pointers
--    zstream->next_in = vs->zlib.zlib.buffer;
--    zstream->avail_in = vs->zlib.zlib.offset;
-+    zstream->next_in = vs->zlib->zlib.buffer;
-+    zstream->avail_in = vs->zlib->zlib.offset;
-     zstream->next_out = vs->output.buffer + vs->output.offset;
-     zstream->avail_out = vs->output.capacity - vs->output.offset;
-     previous_out = zstream->avail_out;
-@@ -147,8 +147,8 @@ int vnc_zlib_send_framebuffer_update(VncState *vs, int x, int y, int w, int h)
- 
- void vnc_zlib_clear(VncState *vs)
- {
--    if (vs->zlib.stream.opaque) {
--        deflateEnd(&vs->zlib.stream);
-+    if (vs->zlib->stream.opaque) {
-+        deflateEnd(&vs->zlib->stream);
-     }
--    buffer_free(&vs->zlib.zlib);
-+    buffer_free(&vs->zlib->zlib);
- }
-diff --git a/ui/vnc.c b/ui/vnc.c
-index 629a500adc..e56ef2609a 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -56,6 +56,11 @@
- #include "io/dns-resolver.h"
- #include "monitor/monitor.h"
- 
-+typedef struct VncConnection {
-+    VncState vs;
-+    VncZlib zlib;
-+} VncConnection;
-+
- #define VNC_REFRESH_INTERVAL_BASE GUI_REFRESH_INTERVAL_DEFAULT
- #define VNC_REFRESH_INTERVAL_INC  50
- #define VNC_REFRESH_INTERVAL_MAX  GUI_REFRESH_INTERVAL_IDLE
-@@ -1378,7 +1383,7 @@ void vnc_disconnect_finish(VncState *vs)
-     vs->magic = 0;
-     g_free(vs->zrle);
-     g_free(vs->tight);
--    g_free(vs);
-+    g_free(container_of(vs, VncConnection, vs));
- }
- 
- size_t vnc_client_io_error(VncState *vs, ssize_t ret, Error *err)
-@@ -3242,11 +3247,13 @@ static void vnc_refresh(DisplayChangeListener *dcl)
- static void vnc_connect(VncDisplay *vd, QIOChannelSocket *sioc,
-                         bool skipauth, bool websocket)
- {
--    VncState *vs = g_new0(VncState, 1);
-+    VncConnection *vc = g_new0(VncConnection, 1);
-+    VncState *vs = &vc->vs;
-     bool first_client = QTAILQ_EMPTY(&vd->clients);
-     int i;
- 
-     trace_vnc_client_connect(vs, sioc);
-+    vs->zlib = &vc->zlib;
-     vs->zrle = g_new0(VncZrle, 1);
-     vs->tight = g_new0(VncTight, 1);
-     vs->magic = VNC_MAGIC;
-@@ -3269,7 +3276,7 @@ static void vnc_connect(VncDisplay *vd, QIOChannelSocket *sioc,
- #ifdef CONFIG_PNG
-     buffer_init(&vs->tight->png,      "vnc-tight-png/%p", sioc);
- #endif
--    buffer_init(&vs->zlib.zlib,      "vnc-zlib/%p", sioc);
-+    buffer_init(&vc->zlib.zlib,      "vnc-zlib/%p", sioc);
-     buffer_init(&vs->zrle->zrle,      "vnc-zrle/%p", sioc);
-     buffer_init(&vs->zrle->fb,        "vnc-zrle-fb/%p", sioc);
-     buffer_init(&vs->zrle->zlib,      "vnc-zrle-zlib/%p", sioc);
-diff --git a/ui/vnc.h b/ui/vnc.h
-index a60fb13115..e0888c6bb5 100644
---- a/ui/vnc.h
-+++ b/ui/vnc.h
-@@ -342,7 +342,7 @@ struct VncState
-      *  update vnc_async_encoding_start()
-      */
-     VncTight *tight;
--    VncZlib zlib;
-+    VncZlib *zlib;
-     VncHextile hextile;
-     VncZrle *zrle;
-     VncZywrle zywrle;
--- 
-2.47.2
 
 
