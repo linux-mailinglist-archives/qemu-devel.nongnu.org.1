@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DC3B0838C
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 05:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7459B08391
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 05:50:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucFZU-00021e-M0; Wed, 16 Jul 2025 23:46:15 -0400
+	id 1ucFZx-0002nD-N9; Wed, 16 Jul 2025 23:46:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ucFVV-0003lq-0X; Wed, 16 Jul 2025 23:42:11 -0400
+ id 1ucFVV-0003lr-1O; Wed, 16 Jul 2025 23:42:11 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ucFVO-0000g2-Nm; Wed, 16 Jul 2025 23:41:59 -0400
+ id 1ucFVS-0000g2-0W; Wed, 16 Jul 2025 23:42:03 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 17 Jul
- 2025 11:40:59 +0800
+ 2025 11:41:00 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Thu, 17 Jul 2025 11:40:59 +0800
+ Transport; Thu, 17 Jul 2025 11:41:00 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
  Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v1 14/21] hw/arm/ast27x0: Start TSP in powered-off state to
- match hardware behavior
-Date: Thu, 17 Jul 2025 11:40:42 +0800
-Message-ID: <20250717034054.1903991-15-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 15/21] hw/misc/aspeed_scu: Add SCU support for SSP SDRAM
+ remap
+Date: Thu, 17 Jul 2025 11:40:43 +0800
+Message-ID: <20250717034054.1903991-16-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250717034054.1903991-1-jamin_lin@aspeedtech.com>
 References: <20250717034054.1903991-1-jamin_lin@aspeedtech.com>
@@ -64,40 +64,173 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the previous design, both the PSP and TSP were started together during
-SoC initialization. However, on real hardware, the TSP begins in a powered-off
-state. The typical boot sequence involves the PSP powering up first, loading
-the TSP firmware binary into shared memory via DRAM remap, and then releasing
-the TSP reset and enabling it through SCU control registers.
+This commit adds SCU register support for SSP SDRAM remap control and runtime
+activation. It introduces logic for the PSP to dynamically configure the mapping
+of its own DRAM windows into SSP-visible SDRAM space, enabling shared memory
+communication via memory region aliases.
 
-To more accurately model this behavior in QEMU, this commit sets the
-"start-powered-off" property for the TSP's ARMv7M core. This change ensures
-the TSP remains off until explicitly enabled via the SCU, simulating the
-real-world flow where the PSP controls TSP boot through SCU interaction.
+Two MemoryRegion aliases are attached to the SCU via QOM property links:
+  - ssp-sdram-remap1: maps PSP DRAM at 0x400000000 (size: 32MB) to SSP SDRAM
+    offset 0x2000000
+  - ssp-sdram-remap2: maps PSP DRAM at 0x42c000000 (size: 32MB) to SSP SDRAM
+    offset 0x0
+
+The SCU registers AST2700_SCU_SSP_CTRL_1/2 and
+AST2700_SCU_SSP_REMAP_ADDR_{1,2} / REMAP_SIZE_{1,2} allow runtime reconfiguration
+of alias offset, base, and size.
+
+Bumps the SCU VMState version to 3.
+
+|------------------------------------------|         |----------------------------|
+|               PSP DRAM                   |         |        SSP SDRAM           |
+|------------------------------------------|         |----------------------------|
+| 0x4_0000_0000 (SCU_124 << 4)             |     --> | 0x0000_0000                |
+|   remap1 base                            |---| |   |  - SCU_150: target addr    |
+|   size: 32MB    (SCU_14C)                |   | |   |    remap2                  |
+|------------------------------------------|   | |   |----------------------------|
+|                                          |   | |   |                            |
+| 0x4_2C00_0000 (SCU_128 << 4)             |-----|   | 0x0200_0000                |
+|   remap2 base                            |   |     |  - SCU_148: target addr    |
+|   size: 32MB    (SCU_154)                |   |---> |    remap1                  |
+|------------------------------------------|         |----------------------------|
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0-tsp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/hw/misc/aspeed_scu.h |  3 ++
+ hw/arm/aspeed_ast27x0.c      |  6 ++++
+ hw/misc/aspeed_scu.c         | 53 ++++++++++++++++++++++++++++++++++--
+ 3 files changed, 60 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/aspeed_ast27x0-tsp.c b/hw/arm/aspeed_ast27x0-tsp.c
-index 4c3b18695e..49a49604de 100644
---- a/hw/arm/aspeed_ast27x0-tsp.c
-+++ b/hw/arm/aspeed_ast27x0-tsp.c
-@@ -177,6 +177,13 @@ static void aspeed_soc_ast27x0tsp_realize(DeviceState *dev_soc, Error **errp)
-     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
-     object_property_set_link(OBJECT(&a->armv7m), "memory",
-                              OBJECT(s->memory), &error_abort);
-+    /*
-+     * The TSP starts in a powered-down state and can be powered up
-+     * by setting the TSP Control Register through the SCU
-+     * (System Control Unit)
-+     */
-+    object_property_set_bool(OBJECT(&a->armv7m), "start-powered-off", true,
-+                             &error_abort);
-     sysbus_realize(SYS_BUS_DEVICE(&a->armv7m), &error_abort);
+diff --git a/include/hw/misc/aspeed_scu.h b/include/hw/misc/aspeed_scu.h
+index 684b48b722..408f821379 100644
+--- a/include/hw/misc/aspeed_scu.h
++++ b/include/hw/misc/aspeed_scu.h
+@@ -39,6 +39,9 @@ struct AspeedSCUState {
+     uint32_t hw_strap1;
+     uint32_t hw_strap2;
+     uint32_t hw_prot_key;
++
++    MemoryRegion *ssp_sdram_remap1;
++    MemoryRegion *ssp_sdram_remap2;
+ };
  
-     /* SDRAM */
+ #define AST2400_A0_SILICON_REV   0x02000303U
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index 0f988eaa4d..587c042c30 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -833,6 +833,12 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+         memory_region_init_alias(&a->tsp.sdram_remap_alias, OBJECT(a),
+                                  "tsp.sdram.remap", s->memory,
+                                  0x42e000000, 32 * MiB);
++        object_property_set_link(OBJECT(&s->scu), "ssp-sdram-remap1",
++                                 OBJECT(&a->ssp.sdram_remap1_alias),
++                                 &error_abort);
++        object_property_set_link(OBJECT(&s->scu), "ssp-sdram-remap2",
++                                 OBJECT(&a->ssp.sdram_remap2_alias),
++                                 &error_abort);
+     }
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->scu), errp)) {
+         return;
+diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
+index a0ab5eed8f..df379cafbe 100644
+--- a/hw/misc/aspeed_scu.c
++++ b/hw/misc/aspeed_scu.c
+@@ -143,6 +143,14 @@
+ #define AST2700_HW_STRAP1_SEC2    TO_REG(0x28)
+ #define AST2700_HW_STRAP1_SEC3    TO_REG(0x2C)
+ 
++/* SSP */
++#define AST2700_SCU_SSP_CTRL_1          TO_REG(0x124)
++#define AST2700_SCU_SSP_CTRL_2          TO_REG(0x128)
++#define AST2700_SCU_SSP_REMAP_ADDR_1    TO_REG(0x148)
++#define AST2700_SCU_SSP_REMAP_SIZE_1    TO_REG(0x14c)
++#define AST2700_SCU_SSP_REMAP_ADDR_2    TO_REG(0x150)
++#define AST2700_SCU_SSP_REMAP_SIZE_2    TO_REG(0x154)
++
+ #define AST2700_SCU_CLK_SEL_1       TO_REG(0x280)
+ #define AST2700_SCU_HPLL_PARAM      TO_REG(0x300)
+ #define AST2700_SCU_HPLL_EXT_PARAM  TO_REG(0x304)
+@@ -605,8 +613,8 @@ static void aspeed_scu_realize(DeviceState *dev, Error **errp)
+ 
+ static const VMStateDescription vmstate_aspeed_scu = {
+     .name = "aspeed.scu",
+-    .version_id = 2,
+-    .minimum_version_id = 2,
++    .version_id = 3,
++    .minimum_version_id = 3,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(regs, AspeedSCUState, ASPEED_AST2600_SCU_NR_REGS),
+         VMSTATE_END_OF_LIST()
+@@ -618,6 +626,10 @@ static const Property aspeed_scu_properties[] = {
+     DEFINE_PROP_UINT32("hw-strap1", AspeedSCUState, hw_strap1, 0),
+     DEFINE_PROP_UINT32("hw-strap2", AspeedSCUState, hw_strap2, 0),
+     DEFINE_PROP_UINT32("hw-prot-key", AspeedSCUState, hw_prot_key, 0),
++    DEFINE_PROP_LINK("ssp-sdram-remap1", AspeedSCUState, ssp_sdram_remap1,
++                     TYPE_MEMORY_REGION, MemoryRegion *),
++    DEFINE_PROP_LINK("ssp-sdram-remap2", AspeedSCUState, ssp_sdram_remap2,
++                     TYPE_MEMORY_REGION, MemoryRegion *),
+ };
+ 
+ static void aspeed_scu_class_init(ObjectClass *klass, const void *data)
+@@ -902,6 +914,7 @@ static void aspeed_ast2700_scu_write(void *opaque, hwaddr offset,
+     int reg = TO_REG(offset);
+     /* Truncate here so bitwise operations below behave as expected */
+     uint32_t data = data64;
++    MemoryRegion *mr;
+ 
+     if (reg >= ASPEED_AST2700_SCU_NR_REGS) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+@@ -913,6 +926,36 @@ static void aspeed_ast2700_scu_write(void *opaque, hwaddr offset,
+     trace_aspeed_ast2700_scu_write(offset, size, data);
+ 
+     switch (reg) {
++    case AST2700_SCU_SSP_CTRL_1:
++    case AST2700_SCU_SSP_CTRL_2:
++        mr = (reg == AST2700_SCU_SSP_CTRL_1) ?
++            s->ssp_sdram_remap1 : s->ssp_sdram_remap2;
++        if (mr == NULL) {
++            return;
++        }
++        data &= 0x7fffffff;
++        memory_region_set_alias_offset(mr, (uint64_t) data << 4);
++        break;
++    case AST2700_SCU_SSP_REMAP_ADDR_1:
++    case AST2700_SCU_SSP_REMAP_ADDR_2:
++        mr = (reg == AST2700_SCU_SSP_REMAP_ADDR_1) ?
++            s->ssp_sdram_remap1 : s->ssp_sdram_remap2;
++        if (mr == NULL) {
++            return;
++        }
++        data &= 0x3fffffff;
++        memory_region_set_address(mr, data);
++        break;
++    case AST2700_SCU_SSP_REMAP_SIZE_1:
++    case AST2700_SCU_SSP_REMAP_SIZE_2:
++        mr = (reg == AST2700_SCU_SSP_REMAP_SIZE_1) ?
++            s->ssp_sdram_remap1 : s->ssp_sdram_remap2;
++        if (mr == NULL) {
++            return;
++        }
++        data &= 0x3fffffff;
++        memory_region_set_size(mr, data);
++        break;
+     default:
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "%s: Unhandled write at offset 0x%" HWADDR_PRIx "\n",
+@@ -940,6 +983,12 @@ static const uint32_t ast2700_a0_resets[ASPEED_AST2700_SCU_NR_REGS] = {
+     [AST2700_HW_STRAP1_SEC1]        = 0x000000FF,
+     [AST2700_HW_STRAP1_SEC2]        = 0x00000000,
+     [AST2700_HW_STRAP1_SEC3]        = 0x1000408F,
++    [AST2700_SCU_SSP_CTRL_1]        = 0x40000000,
++    [AST2700_SCU_SSP_CTRL_2]        = 0x42C00000,
++    [AST2700_SCU_SSP_REMAP_ADDR_1]  = 0x02000000,
++    [AST2700_SCU_SSP_REMAP_SIZE_1]  = 0x02000000,
++    [AST2700_SCU_SSP_REMAP_ADDR_2]  = 0x00000000,
++    [AST2700_SCU_SSP_REMAP_SIZE_2]  = 0x02000000,
+     [AST2700_SCU_HPLL_PARAM]        = 0x0000009f,
+     [AST2700_SCU_HPLL_EXT_PARAM]    = 0x8000004f,
+     [AST2700_SCU_DPLL_PARAM]        = 0x0080009f,
 -- 
 2.43.0
 
