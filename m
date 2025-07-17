@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29BA2B089FD
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 073A2B089C6
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:51:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLIf-0000j3-CG; Thu, 17 Jul 2025 05:53:13 -0400
+	id 1ucLGS-0004BZ-34; Thu, 17 Jul 2025 05:50:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL0d-0001tT-7O; Thu, 17 Jul 2025 05:34:48 -0400
+ id 1ucL0g-0001uO-4m; Thu, 17 Jul 2025 05:34:48 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL0b-0001pK-AE; Thu, 17 Jul 2025 05:34:34 -0400
+ id 1ucL0e-0001pe-F5; Thu, 17 Jul 2025 05:34:37 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C008A137CF0;
+ by isrv.corpit.ru (Postfix) with ESMTP id D966A137CF1;
  Thu, 17 Jul 2025 12:34:04 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 99AA42491EA;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B0D892491EB;
  Thu, 17 Jul 2025 12:34:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Anastasia Belova <nabelova31@gmail.com>,
+ Ilya Maximets <i.maximets@ovn.org>, Jason Wang <jasowang@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 48/65] accel/kvm: Adjust the note about the minimum
- required kernel version
-Date: Thu, 17 Jul 2025 12:33:44 +0300
-Message-ID: <20250717093412.728292-9-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 49/65] net: fix buffer overflow in af_xdp_umem_create()
+Date: Thu, 17 Jul 2025 12:33:45 +0300
+Message-ID: <20250717093412.728292-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,35 +58,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Anastasia Belova <nabelova31@gmail.com>
 
-Since commit 126e7f78036 ("kvm: require KVM_CAP_IOEVENTFD and
-KVM_CAP_IOEVENTFD_ANY_LENGTH") we require at least kernel 4.5 to
-be able to use KVM. Adjust the upgrade_note accordingly.
-While we're at it, remove the text about kvm-kmod and the
-SourceForge URL since this is not actively maintained anymore.
+s->pool has n_descs elements so maximum i should be
+n_descs - 1. Fix the upper bound.
 
-Fixes: 126e7f78036 ("kvm: require KVM_CAP_IOEVENTFD and KVM_CAP_IOEVENTFD_ANY_LENGTH")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: cb039ef3d9 ("net: add initial support for AF_XDP network backend")
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Signed-off-by: Anastasia Belova <nabelova31@gmail.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit 110d0fa2d4d1f754242f6775baec43776a9adb35)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit f180e367fce44b336105a11a62edf9610b6b2a06)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 951e8214e0..d6002b631e 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2556,8 +2556,7 @@ static int kvm_init(MachineState *ms)
- {
-     MachineClass *mc = MACHINE_GET_CLASS(ms);
-     static const char upgrade_note[] =
--        "Please upgrade to at least kernel 2.6.29 or recent kvm-kmod\n"
--        "(see http://sourceforge.net/projects/kvm).\n";
-+        "Please upgrade to at least kernel 4.5.\n";
-     const struct {
-         const char *name;
-         int num;
+diff --git a/net/af-xdp.c b/net/af-xdp.c
+index 01c5fb914e..d022534d76 100644
+--- a/net/af-xdp.c
++++ b/net/af-xdp.c
+@@ -323,7 +323,7 @@ static int af_xdp_umem_create(AFXDPState *s, int sock_fd, Error **errp)
+ 
+     s->pool = g_new(uint64_t, n_descs);
+     /* Fill the pool in the opposite order, because it's a LIFO queue. */
+-    for (i = n_descs; i >= 0; i--) {
++    for (i = n_descs - 1; i >= 0; i--) {
+         s->pool[i] = i * XSK_UMEM__DEFAULT_FRAME_SIZE;
+     }
+     s->n_pool = n_descs;
 -- 
 2.47.2
 
