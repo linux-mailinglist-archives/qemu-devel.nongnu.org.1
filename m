@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D31DB08B40
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBDC1B08B46
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:55:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucMGM-0007F2-CY; Thu, 17 Jul 2025 06:54:54 -0400
+	id 1ucMGO-0007Jt-GD; Thu, 17 Jul 2025 06:54:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucMGF-00079w-JQ; Thu, 17 Jul 2025 06:54:50 -0400
+ id 1ucMGF-00079v-Lb; Thu, 17 Jul 2025 06:54:50 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucMGD-00036r-AN; Thu, 17 Jul 2025 06:54:47 -0400
+ id 1ucMGD-00036s-AM; Thu, 17 Jul 2025 06:54:47 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B69F3137E1B;
+ by isrv.corpit.ru (Postfix) with ESMTP id C179F137E1C;
  Thu, 17 Jul 2025 13:54:34 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B1594249265;
+ by tsrv.corpit.ru (Postfix) with ESMTP id BD21F249266;
  Thu, 17 Jul 2025 13:54:42 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 v2 00/26] Patch Round-up for stable 7.2.19,
- freeze on 2025-07-21
-Date: Thu, 17 Jul 2025 13:54:29 +0300
-Message-ID: <qemu-stable-7.2.19-20250717135416@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Geoffrey Thomas <geofft@ldpreload.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 16/26] linux-user: Hold the fd-trans lock across fork
+Date: Thu, 17 Jul 2025 13:54:30 +0300
+Message-ID: <20250717105442.735202-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <qemu-stable-7.2.19-20250717135416@cover.tls.msk.ru>
+References: <qemu-stable-7.2.19-20250717135416@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,78 +58,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.19:
+From: Geoffrey Thomas <geofft@ldpreload.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+If another thread is holding target_fd_trans_lock during a fork,
+then the lock becomes permanently locked in the child and the
+emulator deadlocks at the next interaction with the fd-trans table.
+As with other locks, acquire the lock in fork_start() and release
+it in fork_end().
 
-Patch freeze is 2025-07-21, and the release is planned for 2025-07-23:
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Geoffrey Thomas <geofft@ldpreload.com>
+Fixes: c093364f4d91 "fd-trans: Fix race condition on reallocation of the translation table."
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2846
+Buglink: https://github.com/astral-sh/uv/issues/6105
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250314124742.4965-1-geofft@ldpreload.com>
+(cherry picked from commit e4e839b2eeea5745c48ce47144c7842eb7cd455f)
+(Mjt: adjust context in linux/main.c for 7.2)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-  https://wiki.qemu.org/Planning/7.2
+diff --git a/linux-user/fd-trans.h b/linux-user/fd-trans.h
+index 910faaf237..e14f96059c 100644
+--- a/linux-user/fd-trans.h
++++ b/linux-user/fd-trans.h
+@@ -36,6 +36,16 @@ static inline void fd_trans_init(void)
+     qemu_mutex_init(&target_fd_trans_lock);
+ }
+ 
++static inline void fd_trans_prefork(void)
++{
++    qemu_mutex_lock(&target_fd_trans_lock);
++}
++
++static inline void fd_trans_postfork(void)
++{
++    qemu_mutex_unlock(&target_fd_trans_lock);
++}
++
+ static inline TargetFdDataFunc fd_trans_target_to_host_data(int fd)
+ {
+     if (fd < 0) {
+diff --git a/linux-user/main.c b/linux-user/main.c
+index a17fed045b..3572d95e69 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -143,10 +143,12 @@ void fork_start(void)
+     mmap_fork_start();
+     cpu_list_lock();
+     qemu_plugin_user_prefork_lock();
++    fd_trans_prefork();
+ }
+ 
+ void fork_end(int child)
+ {
++    fd_trans_postfork();
+     qemu_plugin_user_postfork(child);
+     mmap_fork_end(child);
+     if (child) {
+-- 
+2.47.2
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
-
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01* fb8e59abbe46 Jamin Lin:
-   hw/misc/aspeed_hace: Ensure HASH_IRQ is always set to prevent firmware 
-   hang
-02* a9403bfcd930 Huaitong Han:
-   vhost: Don't set vring call if guest notifier is unused
-03* 5ddd6c8dc849 Volker Rümelin:
-   audio: fix SIGSEGV in AUD_get_buffer_size_out()
-04* eef2dd03f948 Fiona Ebner:
-   hw/core/qdev-properties-system: Add missing return in set_drive_helper()
-05* 9c55c03c05c1 Bibo Mao:
-   hw/loongarch/virt: Fix big endian support with MCFG table
-06* f5ec751ee70d Shameer Kolothum:
-   hw/arm/virt: Check bypass iommu is not set for iommu-map DT property
-07* e372214e663a Ethan Chen:
-   qemu-options.hx: Fix reversed description of icount sleep behavior
-08* 5ad2b1f443a9 J. Neuschäfer:
-   linux-user/arm: Fix return value of SYS_cacheflush
-09* 0d0fc3f46589 Richard Henderson:
-   tcg: Fix constant propagation in tcg_reg_alloc_dup
-10* a412575837b6 Philippe Mathieu-Daudé:
-   target/arm: Correct KVM & HVF dtb_compatible value
-11* f9b0f6930407 Richard Henderson:
-   target/arm: Fix SME vs AdvSIMD exception priority
-12* b4b2e070f41d Richard Henderson:
-   target/arm: Fix sve_access_check for SME
-13* e6ffd009c771 Richard Henderson:
-   target/arm: Fix 128-bit element ZIP, UZP, TRN
-14* 3801c5b75ffc Richard Henderson:
-   target/arm: Fix PSEL size operands to tcg_gen_gvec_ands
-15* cfc688c00ade Richard Henderson:
-   target/arm: Fix f16_dotadd vs nan selection
-16 e4e839b2eeea Geoffrey Thomas:
-   linux-user: Hold the fd-trans lock across fork
-17 983899eab493 Chaney, Ben:
-   migration: Don't sync volatile memory after migration completes
-18 091c7d7924f3 Alejandro Jimenez:
-   amd_iommu: Fix Miscellaneous Information Register 0 encoding
-19 c63b8d1425ba Alejandro Jimenez:
-   amd_iommu: Fix Device ID decoding for INVALIDATE_IOTLB_PAGES command
-20 ff3dcb3bf652 Alejandro Jimenez:
-   amd_iommu: Update bitmasks representing DTE reserved fields
-21 108e10ff6909 Alejandro Jimenez:
-   amd_iommu: Fix masks for various IOMMU MMIO Registers
-22 123cf4bdd378 Alejandro Jimenez:
-   amd_iommu: Fix mask to retrieve Interrupt Table Root Pointer from DTE
-23 67d3077ee403 Alejandro Jimenez:
-   amd_iommu: Fix the calculation for Device Table size
-24 5959b641c98b Alejandro Jimenez:
-   amd_iommu: Remove duplicated definitions
-25 5788929e05e1 Ethan Milon:
-   amd_iommu: Fix truncation of oldval in amdvi_writeq
-26 aef22331b5a4 Akihiko Odaki:
-   ui/vnc: Do not copy z_stream
-
-(commit(s) marked with * were in previous series and are not resent)
 
