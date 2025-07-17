@@ -2,80 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3242B089D7
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AE3B089AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:48:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLGo-0006Oc-SX; Thu, 17 Jul 2025 05:51:18 -0400
+	id 1ucLCf-0004eK-3s; Thu, 17 Jul 2025 05:47:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucKz9-0000Kb-R0
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 05:33:03 -0400
-Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucKz7-0001jK-HL
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 05:33:03 -0400
-Received: by mail-yw1-x112c.google.com with SMTP id
- 00721157ae682-70e4043c5b7so6512697b3.1
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 02:33:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752744779; x=1753349579; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2eDfCkJRKvCC4vrCEpJ6RDo2VY+OKvz+R0kL3RT7qaY=;
- b=ra0obK5uF64BgbTylf7CB2CAdahO5vTKkzkfGXRX8iXBrFh5L+FB5TTzeEDjzrQ+18
- HjOtrSYJRUkwujJ6FHHu4EoAlXBVtY+3wKqLt4+tAj2Y22RBRHT3s7SupvIo1jn+W1Ad
- 4eey64uIDPOpI6HuQ8m9Fhl9Drv4mL/kThHro3sip0lvncaMY2oySPPWqowkpdJVG08U
- D0GP+PTN7/CMBlbvqFUTKkFVSWjpnLGwjYqiKnHvYGgzaTVZM/CRIqsGWj8KLD27IzEJ
- jSi2yZysMtwuDWaUTw5NSJitfqXZHj1yVJwmnHJOdZykKX2oOrSqKL9p3yKGcYC+Mw8C
- 2Cfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752744779; x=1753349579;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2eDfCkJRKvCC4vrCEpJ6RDo2VY+OKvz+R0kL3RT7qaY=;
- b=wdlQDpBY6x5BdQp2v+es1tM0N7W4y3zQPdHwTtIXM98ol5a1CE8dtNIhRpawvfclcG
- kPAxMDgVtMPZqNS1kkOkxPmvUXyktyP48ErECcLlFG1ojcqGrDOh/fZ7bsCqjz8JX1RM
- wj7yJ4d2GdUWAE1QWvEvzVBv/+l2GsRDuH0tVzDeU63wKXYXPhIjH9R/FrcBvftToakn
- sYrAQotzjYDgfr4VauggHXGr+9iEbHbMf+VDSc3HROfUPIVjK+2fGh2R9nYTcdCPg2Lb
- 3f+Xtr2s7ZPdeGp1YNFEVWxIl0evuNTgqimXtWogeGNSrNvcvINhBL1DYzFVnobkhfm+
- LD3g==
-X-Gm-Message-State: AOJu0YyydGPmf6+i+1q5bMQVulOjWlLVBq/g/3teqw3Fj4XlbLqa8qA+
- ujXrpOscQk2edaPmIXGiesxZWllLmtd+KvOZn1ziVUhu+blz0C7t0KQoKwZA031k4aJacLy2eoa
- MDTkHeY1HuRw7qFjEcs3q/NTQwW1DjzsTKph3HWED6y6x3qsgiVgI
-X-Gm-Gg: ASbGnctOZ1MBO71F1pv27PSXesY6x28C2dj4pVmbh1uClDpdeRmHjwgZNB3UpqSvfpa
- OeY3WtIbD4r8r2YkztW5ljICN3jj5aiv59Lh0grWMpWH7a4zqnCscl7WQU2L2frFSjWf6Uu0P5y
- PVcl+RNYIhNc3OAYKQusuUuO1a+6RapF/hEKR3VWjZYpi/UUNgeEcobrjVpcSsrqT+6/vR0GqO5
- yUfgKxL
-X-Google-Smtp-Source: AGHT+IE/7lRs6tu6otEFCHlyTfIbpz8Ei8U0Ju3LrkLJi7oBmYxxbFpBBIoxtep1g57FCP7BK5v5DNIS5VId0iPP18k=
-X-Received: by 2002:a05:690c:34ca:b0:717:9ea1:ab2b with SMTP id
- 00721157ae682-71837124ab4mr70982007b3.9.1752744779398; Thu, 17 Jul 2025
- 02:32:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1ucL0O-0001n9-RK; Thu, 17 Jul 2025 05:34:21 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1ucL0M-0001mc-Be; Thu, 17 Jul 2025 05:34:20 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 2D17B137CE7;
+ Thu, 17 Jul 2025 12:34:04 +0300 (MSK)
+Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1058E2491E1;
+ Thu, 17 Jul 2025 12:34:12 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 v2 00/65] Patch Round-up for stable 10.0.3,
+ freeze on 2025-07-21
+Date: Thu, 17 Jul 2025 12:33:35 +0300
+Message-ID: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-References: <20250715043524.21719-1-jasowang@redhat.com>
- <20250715043524.21719-14-jasowang@redhat.com>
-In-Reply-To: <20250715043524.21719-14-jasowang@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 17 Jul 2025 10:32:48 +0100
-X-Gm-Features: Ac12FXxbEtuRJ4plgNqG4Wr_AlwGiVu4i_zszCVENzi88W-S5tsf6-4xLwfs1_c
-Message-ID: <CAFEAcA-VvzJN9AY2aezaV1-Zs8bqJjm7ExbYEO8pm=hC0U6wkQ@mail.gmail.com>
-Subject: Re: [PULL V2 13/16] net/passt: Implement vhost-user backend support
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,119 +57,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 15 Jul 2025 at 05:37, Jason Wang <jasowang@redhat.com> wrote:
->
-> From: Laurent Vivier <lvivier@redhat.com>
->
-> This commit adds support for the vhost-user interface to the passt
-> network backend, enabling high-performance, accelerated networking for
-> guests using passt.
->
-> The passt backend can now operate in a vhost-user mode, where it
-> communicates with the guest's virtio-net device over a socket pair
-> using the vhost-user protocol. This offloads the datapath from the
-> main QEMU loop, significantly improving network performance.
->
-> When the vhost-user=on option is used with -netdev passt, the new
-> vhost initialization path is taken instead of the standard
-> stream-based connection.
->
-> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-> Signed-off-by: Jason Wang <jasowang@redhat.com>
+The following patches are queued for QEMU stable v10.0.3:
 
-Another couple of coverity issues:
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-10.0
 
-> +static int passt_vhost_user_start(NetPasstState *s, VhostUserState *be)
-> +{
-> +    struct vhost_net *net = NULL;
-> +    VhostNetOptions options;
-> +
-> +    options.backend_type = VHOST_BACKEND_TYPE_USER;
-> +    options.net_backend = &s->data.nc;
-> +    options.opaque = be;
-> +    options.busyloop_timeout = 0;
-> +    options.nvqs = 2;
-> +    options.feature_bits = user_feature_bits;
-> +    options.max_tx_queue_size = VIRTQUEUE_MAX_SIZE;
-> +    options.get_acked_features = passt_get_acked_features;
-> +    options.save_acked_features = passt_save_acked_features;
-> +    options.is_vhost_user = true;
-> +
-> +    net = vhost_net_init(&options);
-> +    if (!net) {
-> +        error_report("failed to init passt vhost_net");
-> +        goto err;
-> +    }
-> +
-> +    if (s->vhost_net) {
-> +        vhost_net_cleanup(s->vhost_net);
-> +        g_free(s->vhost_net);
-> +    }
-> +    s->vhost_net = net;
-> +
-> +    return 0;
-> +err:
-> +    if (net) {
+Patch freeze is 2025-07-21, and the release is planned for 2025-07-23:
 
-There is no path of code execution which can get here with
-net not being NULL, so this code in the if() is dead. CID 1612371.
+  https://wiki.qemu.org/Planning/10.0
 
-> +        vhost_net_cleanup(net);
-> +        g_free(net);
-> +    }
-> +    passt_vhost_user_stop(s);
-> +    return -1;
-> +}
-> +
-> +static void passt_vhost_user_event(void *opaque, QEMUChrEvent event)
-> +{
-> +    NetPasstState *s = opaque;
-> +    Error *err = NULL;
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-We declare err here...
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
-> +
-> +    switch (event) {
-> +    case CHR_EVENT_OPENED:
-> +        if (passt_vhost_user_start(s, s->vhost_user) < 0) {
-> +            qemu_chr_fe_disconnect(&s->vhost_chr);
-> +            return;
-> +        }
-> +        s->vhost_watch = qemu_chr_fe_add_watch(&s->vhost_chr, G_IO_HUP,
-> +                                               passt_vhost_user_watch, s);
-> +        net_client_set_link(&(NetClientState *){ &s->data.nc }, 1, true);
-> +        s->started = true;
-> +        break;
-> +    case CHR_EVENT_CLOSED:
-> +        if (s->vhost_watch) {
-> +            AioContext *ctx = qemu_get_current_aio_context();
-> +
-> +            g_source_remove(s->vhost_watch);
-> +            s->vhost_watch = 0;
-> +            qemu_chr_fe_set_handlers(&s->vhost_chr, NULL, NULL,  NULL, NULL,
-> +                                     NULL, NULL, false);
-> +
-> +            aio_bh_schedule_oneshot(ctx, chr_closed_bh, s);
-> +        }
-> +        break;
-> +    case CHR_EVENT_BREAK:
-> +    case CHR_EVENT_MUX_IN:
-> +    case CHR_EVENT_MUX_OUT:
-> +        /* Ignore */
-> +        break;
-> +    }
+Thanks!
 
-...but we never use it in any of the event handling code..
+/mjt
 
-> +
-> +    if (err) {
-> +        error_report_err(err);
+--------------------------------------
+01* fb8e59abbe46 Jamin Lin:
+   hw/misc/aspeed_hace: Ensure HASH_IRQ is always set to prevent firmware hang
+02* e6941ac10619 Jamin Lin:
+   hw/arm/aspeed_ast27x0: Fix RAM size detection failure on BE hosts
+03* 9498e2f7e1a2 Weifeng Liu:
+   ui/gtk: Document scale and coordinate handling
+04* 3a6b314409b4 Weifeng Liu:
+   ui/gtk: Use consistent naming for variables in different coordinates
+05* a19665448156 Weifeng Liu:
+   gtk/ui: Introduce helper gd_update_scale
+06* 8fb072472c38 Weifeng Liu:
+   ui/gtk: Update scales in fixed-scale mode when rendering GL area
+07* 30aa105640b0 Weifeng Liu:
+   ui/sdl: Consider scaling in mouse event handling
+08* 7ed96710e82c Daniel P. Berrangé:
+   ui/vnc.c: replace big endian flag with byte order value
+09* 70097442853c Daniel P. Berrangé:
+   ui/vnc: take account of client byte order in pixman format
+10* 63d320909220 Daniel P. Berrangé:
+   ui/vnc: fix tight palette pixel encoding for 8/16-bpp formats
+11* e6bc01777e5a Guenter Roeck:
+   hw/arm: Add missing psci_conduit to NPCM8XX SoC boot info
+12* a9403bfcd930 Huaitong Han:
+   vhost: Don't set vring call if guest notifier is unused
+13* 0b006153b7ec Bernhard Beschow:
+   hw/i386/pc_piix: Fix RTC ISA IRQ wiring of isapc machine
+14* 31753d5a336f Sairaj Kodilkar:
+   hw/i386/amd_iommu: Fix device setup failure when PT is on.
+15* 0f178860df34 Vasant Hegde:
+   hw/i386/amd_iommu: Fix xtsup when vcpus < 255
+16* 5ddd6c8dc849 Volker Rümelin:
+   audio: fix SIGSEGV in AUD_get_buffer_size_out()
+17* ccb4fec0e5f2 Volker Rümelin:
+   audio: fix size calculation in AUD_get_buffer_size_out()
+18* d009f26a54f5 Volker Rümelin:
+   hw/audio/asc: fix SIGSEGV in asc_realize()
+19* 0b901459a87a Xin Li (Intel):
+   target/i386: Remove FRED dependency on WRMSRNS
+20* 2e887187454e Stefan Hajnoczi:
+   iotests: fix 240
+21* eef2dd03f948 Fiona Ebner:
+   hw/core/qdev-properties-system: Add missing return in set_drive_helper()
+22* 9c55c03c05c1 Bibo Mao:
+   hw/loongarch/virt: Fix big endian support with MCFG table
+23* f5ec751ee70d Shameer Kolothum:
+   hw/arm/virt: Check bypass iommu is not set for iommu-map DT property
+24* e372214e663a Ethan Chen:
+   qemu-options.hx: Fix reversed description of icount sleep behavior
+25* cd38e638c43e Peter Maydell:
+   hw/arm/mps2: Configure the AN500 CPU with 16 MPU regions
+26* 5ad2b1f443a9 J. Neuschäfer:
+   linux-user/arm: Fix return value of SYS_cacheflush
+27* e7788da9860c Song Gao:
+   target/loongarch: add check for fcond
+28* c2a2e1ad2a74 Song Gao:
+   target/loongarch: fix vldi/xvldi raise wrong error
+29* 0d0fc3f46589 Richard Henderson:
+   tcg: Fix constant propagation in tcg_reg_alloc_dup
+30* 9a3bf0e0ab62 Solomon Tan:
+   target/arm: Make RETA[AB] UNDEF when pauth is not implemented
+31* a412575837b6 Philippe Mathieu-Daudé:
+   target/arm: Correct KVM & HVF dtb_compatible value
+32* 1fa2ffdbec55 Yiwei Zhang:
+   virtio-gpu: support context init multiple timeline
+33* 78e378154120 Kevin Wolf:
+   hw/s390x/ccw-device: Fix memory leak in loadparm setter
+34* f9b0f6930407 Richard Henderson:
+   target/arm: Fix SME vs AdvSIMD exception priority
+35* b4b2e070f41d Richard Henderson:
+   target/arm: Fix sve_access_check for SME
+36* e6ffd009c771 Richard Henderson:
+   target/arm: Fix 128-bit element ZIP, UZP, TRN
+37* 3801c5b75ffc Richard Henderson:
+   target/arm: Fix PSEL size operands to tcg_gen_gvec_ands
+38* cfc688c00ade Richard Henderson:
+   target/arm: Fix f16_dotadd vs nan selection
+39* bf020eaa6741 Richard Henderson:
+   target/arm: Fix bfdotadd_ebf vs nan selection
+40 0f1d6606c28d Mark Cave-Ayland:
+   target/i386: fix TB exit logic in gen_movl_seg() when writing to SS
+41 c563cd7e61d0 Peter Maydell:
+   target/arm: Don't enforce NSE,NS check for EL3->EL3 returns
+42 930180f3b9a2 Bernhard Beschow:
+   hw/arm/fsl-imx8mp: Wire VIRQ and VFIQ
+43 6a3e132a1be8 Peter Maydell:
+   linux-user: Implement fchmodat2 syscall
+44 c4828cb8502d Peter Maydell:
+   linux-user: Check for EFAULT failure in nanosleep
+45 e4e839b2eeea Geoffrey Thomas:
+   linux-user: Hold the fd-trans lock across fork
+46 983899eab493 Chaney, Ben:
+   migration: Don't sync volatile memory after migration completes
+47 d6390204c61e Peter Maydell:
+   linux-user: Use qemu_set_cloexec() to mark pidfd as FD_CLOEXEC
+48 f180e367fce4 Thomas Huth:
+   accel/kvm: Adjust the note about the minimum required kernel version
+49 110d0fa2d4d1 Anastasia Belova:
+   net: fix buffer overflow in af_xdp_umem_create()
+50 adda0ad56bd2 Akihiko Odaki:
+   virtio-net: Add queues for RSS during migration
+51 091c7d7924f3 Alejandro Jimenez:
+   amd_iommu: Fix Miscellaneous Information Register 0 encoding
+52 c63b8d1425ba Alejandro Jimenez:
+   amd_iommu: Fix Device ID decoding for INVALIDATE_IOTLB_PAGES command
+53 ff3dcb3bf652 Alejandro Jimenez:
+   amd_iommu: Update bitmasks representing DTE reserved fields
+54 108e10ff6909 Alejandro Jimenez:
+   amd_iommu: Fix masks for various IOMMU MMIO Registers
+55 123cf4bdd378 Alejandro Jimenez:
+   amd_iommu: Fix mask to retrieve Interrupt Table Root Pointer from DTE
+56 67d3077ee403 Alejandro Jimenez:
+   amd_iommu: Fix the calculation for Device Table size
+57 5959b641c98b Alejandro Jimenez:
+   amd_iommu: Remove duplicated definitions
+58 5788929e05e1 Ethan Milon:
+   amd_iommu: Fix truncation of oldval in amdvi_writeq
+59 d402da1360c2 Kevin Wolf:
+   file-posix: Fix aio=threads performance regression after enablign FUA
+60 a598090ebaeb Cole Robinson:
+   roms: re-remove execute bit from hppa-firmware*
+61 9f749129e262 David Hildenbrand:
+   vhost: Fix used memslot tracking when destroying a vhost device
+62 aef22331b5a4 Akihiko Odaki:
+   ui/vnc: Do not copy z_stream
+63 a62fef582995 Michael Tokarev:
+   i386/cpu: Fix cpu number overflow in CPUID.01H.EBX[23:16]
+64 3e86124e7cb9 Qian Wen:
+   i386/cpu: Fix overflow of cache topology fields in CPUID.04H
+65 5d21ee453ad8 Zhao Liu:
+   i386/cpu: Honor maximum value for CPUID.8000001DH.EAX[25:14]
 
-...so this if() block is dead code. CID 1612375.
-
-> +    }
-> +}
-
-thanks
--- PMM
+(commit(s) marked with * were in previous series and are not resent)
 
