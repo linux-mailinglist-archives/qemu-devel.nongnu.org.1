@@ -2,70 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05891B087F2
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 10:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E933AB08804
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 10:37:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucK0j-000299-1q; Thu, 17 Jul 2025 04:30:37 -0400
+	id 1ucK7B-0002sI-1C; Thu, 17 Jul 2025 04:37:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1ucK0c-0001vD-Lv
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:30:31 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1ucK0Z-00024J-DM
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:30:30 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Axz3OatHho7vYrAQ--.24782S3;
- Thu, 17 Jul 2025 16:30:18 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJDx_8OXtHho08EaAA--.12164S3;
- Thu, 17 Jul 2025 16:30:17 +0800 (CST)
-Subject: Re: [PATCH v5 08/11] hw/loongarch: Implement avec set irq
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com
-References: <20250711085915.3042395-1-gaosong@loongson.cn>
- <20250711085915.3042395-9-gaosong@loongson.cn>
- <d27adfdf-ef1e-e46c-3af0-3ceb731dc64f@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <7fefe852-c308-54bf-ef38-c261a498edab@loongson.cn>
-Date: Thu, 17 Jul 2025 16:33:17 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ucK72-0002nT-PZ
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:37:09 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ucK70-0002oD-Vi
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 04:37:08 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3a54700a46eso410106f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 01:37:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752741425; x=1753346225; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7RD8Sq8xGxltfRg2gpAeKzeKjiELPbaFso96la2dkgw=;
+ b=K0IpL1OH+8HpfcPtpJbuTxDTPeT85ZdEo8AfooINsoahpU4R3FRco9mt5S0psU2U4D
+ 9k/CBIEULXJrV9gUk6qMOQ4LbUYQqsYOZH1NYSOLfwWa8OXnldEdfBEHJrhN3pVMCV0O
+ GuJupYf6Cn6zF/21efrmMdn6jtPNkQsxNtQ65MptraP8DGZ4DdlBB9V+JmqxH4xIWyPE
+ P5ZUTFsMNGYjjcOisjxUyD9NNwaWbIi6GfgplFTC3WhfrYgHshtQmQcNbDeDAPPExU/j
+ SXWQR4p00TiMs6l9ecXXwivUJVfLaRktlF4/58MDE4g6q+4yQ4BMAPVNhf9YyxVWiPFe
+ +rvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752741425; x=1753346225;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7RD8Sq8xGxltfRg2gpAeKzeKjiELPbaFso96la2dkgw=;
+ b=TXHhHN/f23TTQWIFzFgiigt8cniUpZl36GRW7rRzk1L3VPw0MTVCcY5vcnw0SkbgmW
+ lcxM7K7JU5AexToWnil3zIiwCJ14SgT+easnIxPodG4NmWV6jfThFLXwnJfIKR/a4e/7
+ P6RjiT9qXAhtKwjFOKA4iIEEbeix7a/x5OfWUuPG6hYdVUmf8ziB2M9P+3cdrbg3B2ZX
+ /rcbKbjf5k67ll3OUxpk4OsWX62k6FmF2D65AcqCgGu6pp+Oj35D6gPrZB3a2kqhV2Uq
+ z/bMBNGv7RxE+DRpHKxH6UpZC/S3Qjp5Rh5PSJDhO8BCuapGNjxNxJuxCgFusjc1S/zU
+ M4ng==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXdEPhy1lyDNtReZ/wXzJpu1qEzcJcWAMrwclr5z3WRMO2t1EYzc9Y5SJBNS8Eop7OvoH4Rpn+uIW1J@nongnu.org
+X-Gm-Message-State: AOJu0YzvPOLY80WiZpIIGO6RYG/nrtzFxTRZkec1VIeG4pEciqQu/vmS
+ 4/lyuS9xaRY9fUXkFDdMF16lRrvS6QJFeaSH+JX3wwGQIxYwMIGLecb0MSHelHfOXss=
+X-Gm-Gg: ASbGncuRfFdsLE/v1ZABV7j3BluGxzd8Px2IzmPMHwYj2XZ0PaQhJHnhpzkMJvkELyh
+ A4EEtIkNKNEOohi/lju/EzR1eUdhLNq6J8TuLFCuWyhAePcDDFvNVIkUn0kJGBpulE2wZhxAiKr
+ jVvXr/cuy9SaWbvblkLmiHB+yr9y9kUx79mria4XRzovLYGlDIpNCN6wzANU+P+RQkUaDmsWbnf
+ qc8rAL25cPZOEazbs3mzzDj7JcZEGAJa/8SSYhIb7kBemiPDTCUdcjRGhpBpMbl55jG5Oi1rQSq
+ uM7ypQW4EP09HqP/wZLLYokoSHEKvy9gOsLNpMAa30ctgfqvc3x8+Gs9IPUBb9faXZcr5EX6PTG
+ zeJTnKpDbMVCpG+jBvVaLr0ThvZJdK3pMaHBQhrmCdkmKgjzaWc0vSiy+r6aAipSn+A==
+X-Google-Smtp-Source: AGHT+IET8wnwX6vLNgQzuFlhd9SiMxbPlUPaooNfKvHEJzJmcDxZ3xYq+dYVIwqDO1AM670n6VRQkg==
+X-Received: by 2002:a05:6000:1a8e:b0:3a4:f7e7:416b with SMTP id
+ ffacd0b85a97d-3b613e66f70mr1768695f8f.16.1752741424939; 
+ Thu, 17 Jul 2025 01:37:04 -0700 (PDT)
+Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b5e8bd1647sm20000606f8f.1.2025.07.17.01.37.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 17 Jul 2025 01:37:04 -0700 (PDT)
+Message-ID: <a2a3292c-f662-44e4-8b15-391428dab297@linaro.org>
+Date: Thu, 17 Jul 2025 10:37:01 +0200
 MIME-Version: 1.0
-In-Reply-To: <d27adfdf-ef1e-e46c-3af0-3ceb731dc64f@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] migration: HMP: Fix postcopy latency distribution
+ label
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Prasad Pandit <ppandit@redhat.com>
+References: <20250716182648.30202-1-farosas@suse.de>
+ <20250716182648.30202-3-farosas@suse.de>
 Content-Language: en-US
-X-CM-TRANSID: qMiowJDx_8OXtHho08EaAA--.12164S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxXFW8Gw4DGF4DGryDtw13trc_yoW5ZrW7pF
- 1kArZ8WryUJrn3XwnxG345WFy5Jr1xWw17t3WIgFyIyF1Dur10gry8Xr1qgF1UCw48Xr1U
- Xr18X3W3uF17JrgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jUsqXU
- UUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.695,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250716182648.30202-3-farosas@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,91 +102,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2025/7/14 下午5:29, Bibo Mao 写道:
->
->
-> On 2025/7/11 下午4:59, Song Gao wrote:
->> Implement avec set irq and update CSR_MSIS.
->>
->> Signed-off-by: Song Gao <gaosong@loongson.cn>
->> ---
->>   hw/intc/loongarch_avec.c | 34 ++++++++++++++++++++++++++++++++--
->>   1 file changed, 32 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
->> index 1f9f376898..af6c75c4a9 100644
->> --- a/hw/intc/loongarch_avec.c
->> +++ b/hw/intc/loongarch_avec.c
->> @@ -16,6 +16,12 @@
->>   #include "migration/vmstate.h"
->>   #include "trace.h"
->>   #include "hw/qdev-properties.h"
->> +#include "target/loongarch/cpu.h"
->> +
->> +/* msg addr field */
->> +FIELD(MSG_ADDR, IRQ_NUM, 4, 8)
->> +FIELD(MSG_ADDR, CPU_NUM, 12, 8)
->> +FIELD(MSG_ADDR, FIX, 28, 12)
->>     static uint64_t loongarch_avec_mem_read(void *opaque,
->>                                           hwaddr addr, unsigned size)
->> @@ -23,12 +29,36 @@ static uint64_t loongarch_avec_mem_read(void 
->> *opaque,
->>       return 0;
->>   }
->>   +static void avec_set_irq(LoongArchAVECState *s, int cpu_num, int 
->> irq_num, int level)
->> +{
->> +    MachineState *machine = MACHINE(qdev_get_machine());
->> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
->> +    const CPUArchIdList *id_list = NULL;
->> +    CPUState *cpu;
->> +    CPULoongArchState *env;
->> +
->> +    assert(mc->possible_cpu_arch_ids(machine));
->> +    id_list = mc->possible_cpu_arch_ids(machine);
->> +    cpu = id_list->cpus[cpu_num].cpu;
->> +    env = &LOONGARCH_CPU(cpu)->env;
->> +
->> +    if (level) {
->> +        set_bit(irq_num, &env->CSR_MSGIS[irq_num / 64]);
->> +    }
->> +    qemu_set_irq(s->cpu[cpu_num].parent_irq, level);
->> +}
->> +
->>   static void loongarch_avec_mem_write(void *opaque, hwaddr addr,
->>                                        uint64_t val, unsigned size)
->>   {
->> -    return;
->> -}
->> +    int irq_num, cpu_num = 0;
->> +    LoongArchAVECState *s = LOONGARCH_AVEC(opaque);
->> +    uint64_t msg_addr = addr + VIRT_AVEC_BASE;
->>   +    cpu_num = FIELD_EX64(msg_addr, MSG_ADDR, CPU_NUM);
-> Here is physical cpuid rather than logic cpu index. We need convert 
-> physical cpuid to logic cpu index.
-How about the following code;
-+    CPUState * cpu = cpu_by_arch_id(cpu_num);
-+    cpu_num = cpu->cpu_index;
+On 16/7/25 20:26, Fabiano Rosas wrote:
+> Fix the loop condition to avoid having a label with "1000 us" instead
+> of "1 ms".
+> 
+> Reported-by: Prasad Pandit <ppandit@redhat.com>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>   migration/migration-hmp-cmds.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-or like the IPI device add an  function pointer in LoongsonIPICommonClass
-     LoongsonIPICommonClass {
-     [..]
-     int (*cpu_by_arch_id)(LoongsonIPICommonState *lics, int64_t id,
-                           int *index, CPUState **pcs);
-     [...]
+Good catch.
 
-
-Thanks.
-Song Gao
-
->
-> Regards
-> Bibo Mao
->> +    irq_num = FIELD_EX64(msg_addr, MSG_ADDR, IRQ_NUM);
->> +    avec_set_irq(s, cpu_num, irq_num, 1);
->> +}
->>     static const MemoryRegionOps loongarch_avec_ops = {
->>       .read = loongarch_avec_mem_read,
->>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
