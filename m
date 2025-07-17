@@ -2,79 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A033B096E3
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 00:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6326B09709
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 00:49:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucX0n-0001qb-Oz; Thu, 17 Jul 2025 18:23:35 -0400
+	id 1ucXPB-0007J7-RV; Thu, 17 Jul 2025 18:48:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3w2N5aAQKCrowpnwlttlqj.htrvjrz-ij0jqstslsz.twl@flex--rkir.bounces.google.com>)
- id 1ucVfj-0007eU-Pw
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 16:57:44 -0400
-Received: from mail-pj1-x104a.google.com ([2607:f8b0:4864:20::104a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3w2N5aAQKCrowpnwlttlqj.htrvjrz-ij0jqstslsz.twl@flex--rkir.bounces.google.com>)
- id 1ucVfi-0005S4-Av
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 16:57:43 -0400
-Received: by mail-pj1-x104a.google.com with SMTP id
- 98e67ed59e1d1-3138e64b3f1so1900151a91.3
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 13:57:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1752785860; x=1753390660; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=7GNLAb9+HAgXzXVkivfD2j5NSWuBMdtsr/kW1eIs5w8=;
- b=Vwa+hqyjIVAjwfNyVJCxMWg2hl6ReRl/VL3ZrMH2xDpD/vD+m2MroomtYkJBwSgF07
- AGaNAZojCgzA7wSzCU1a3bv58jugvCjogqGFuMnPrvYSLyuFD7dK20ldrSS92XgWglO8
- kBhhQWQD9rs/DXLBJ/pam6sZH+kdPf1aG7Qbp/KY6QVhUhqVAT0TN+AE5Xy3uac3exkp
- 0Sz0gDGs2vC7qsfqieEWddMAdis0YVmH0gK7sED1m08g6JnuvrGLJjmWipVBF1d0W0Zs
- c/AT1WjAJs54MSicn72tFdEgMvQGTETUAOgvnwUyuOvoz7DPT1YhWe/GZ1XgFGiLHk2S
- nVHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752785860; x=1753390660;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7GNLAb9+HAgXzXVkivfD2j5NSWuBMdtsr/kW1eIs5w8=;
- b=XsviQKwyKY1IFePioY4h/GChNxFadhmbXbE/kUM5LycGF/0xaIcW8LQV22nHeEj51J
- 9liDYElED2nGIC/2kB/o6LxwE6WW+iYwpTBM15WklJ/kziDCzcnOgV8GHxetrJViWeYS
- Hq94Vw43P9VvlO+h3vVrQSzL3f5Ha3c8dBa8mdh1jbeeoG0KW6NnBfpLighoK+6viVE/
- bQcF3cMEOc83CjIBww/Z50DbEsVB9b7VTLzP90kWiVCx9vL8s8Qdce7RdFNPBLRIo55y
- R3s/3Z3jiI7hv+rNAHwawRkNmDgJyaOLT7Nyz+tLmhUWLSMiVRppPOHkJJg0xRtG2nbA
- UuNA==
-X-Gm-Message-State: AOJu0Yzk+hoNnib0v1mqL8ugM9qx3mtzV027vpPwpTso4hySmrSmdP+f
- KjMEfxshZCUUjpStkLH8Y9jwAEJakWcn4+j85AWqWgybiVkoUe2CrGlqxzOqYuYNg7mKvw+ceD5
- 0BoJx5EVEmELJE0B6FWZEPLGG9+FJxbM6Wmj0zKFvtx5GaDLPf2vLnBsFZFRl1JYvz1uacylkhY
- 0UIFaZOSySoAZZqUB4ewo6AlTc
-X-Google-Smtp-Source: AGHT+IF0S3FJ39z89y9XS8sAMGlgwSJ4VPdn0F/0DbDjr/DMlFKKEoR8B+TWvuR0qDsvTcUNxLvTbyyo
-X-Received: from pjbme10.prod.google.com ([2002:a17:90b:17ca:b0:314:d44:4108])
- (user=rkir job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:5846:b0:312:e731:5a66
- with SMTP id 98e67ed59e1d1-31c9f398bf1mr11315983a91.3.1752785859814; Thu, 17
- Jul 2025 13:57:39 -0700 (PDT)
-Date: Thu, 17 Jul 2025 13:57:35 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250717205735.2345674-1-rkir@google.com>
-Subject: [PATCH] hw/arm: remove `inline` from `smmu_iotlb_inv_vmid_s1`
-From: Roman Kiryanov <rkir@google.com>
+ (Exim 4.90_1) (envelope-from <awilliam@redhat.com>)
+ id 1ucWhP-00047X-NF
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 18:03:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <awilliam@redhat.com>)
+ id 1ucWhN-00021F-Fi
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 18:03:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752789807;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=hosMPFD9DjbGtRmFRvT2OvwkrUJr/nIyXgIjKqas5bE=;
+ b=bex3p3WtTCHvpcNDE5jsACBISM45t66RqKn8hHFJ3sfhwEdKA3mkMhghHiZfIwfvMkeMTf
+ OsdSrruuWqLGU6KD5N/18qAsf0HXG3sNkHCqaRpgruOt37Ag1D64VRufeoPd3Dwy2dot7i
+ idYCG2pKi4UmZTaM+D/UrFOfZPu6lRQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-490-vsZ3QOn1PSKJ2iYi8B5fqQ-1; Thu,
+ 17 Jul 2025 18:02:14 -0400
+X-MC-Unique: vsZ3QOn1PSKJ2iYi8B5fqQ-1
+X-Mimecast-MFC-AGG-ID: vsZ3QOn1PSKJ2iYi8B5fqQ_1752789733
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BFFCD19560AD; Thu, 17 Jul 2025 22:02:12 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.22.88.95])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 14D831800D82; Thu, 17 Jul 2025 22:02:10 +0000 (UTC)
+From: Adam Williamson <awilliam@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: eric.auger@redhat.com, mjt@tls.msk.ru, whollins@google.com, 
- jansene@google.com, jpcottin@google.com, Roman Kiryanov <rkir@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::104a;
- envelope-from=3w2N5aAQKCrowpnwlttlqj.htrvjrz-ij0jqstslsz.twl@flex--rkir.bounces.google.com;
- helo=mail-pj1-x104a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+Cc: Paul Durrant <paul@xen.org>, xen-devel@lists.xenproject.org,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Anthony PERARD <anthony@xenproject.org>
+Subject: [PATCH] xen/passthrough: add missing error-report include
+Date: Thu, 17 Jul 2025 15:02:07 -0700
+Message-ID: <20250717220207.171040-1-awilliam@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=awilliam@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,31 +81,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-this function is declared in smmu-common.h without
-`inline`. It is also used outside of this file
-which causes linking errors because the non-inline
-version is not generated.
+In cfcacba an `error_report` was added to this file, but the
+corresponding include of `qemu/error-report.h` was missed. This
+only becomes apparent when building against Xen 4.20+.
 
-Signed-off-by: Will Hollins <whollins@google.com>
-Signed-off-by: Roman Kiryanov <rkir@google.com>
+Signed-off-by: Adam Williamson <awilliam@redhat.com>
 ---
- hw/arm/smmu-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/xen/xen_pt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
-index f39b99e526..0dcaf2f589 100644
---- a/hw/arm/smmu-common.c
-+++ b/hw/arm/smmu-common.c
-@@ -319,7 +319,7 @@ void smmu_iotlb_inv_vmid(SMMUState *s, int vmid)
-     g_hash_table_foreach_remove(s->iotlb, smmu_hash_remove_by_vmid, &vmid);
- }
+diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
+index 9d16644d82..006b5b55f2 100644
+--- a/hw/xen/xen_pt.c
++++ b/hw/xen/xen_pt.c
+@@ -54,6 +54,7 @@
  
--inline void smmu_iotlb_inv_vmid_s1(SMMUState *s, int vmid)
-+void smmu_iotlb_inv_vmid_s1(SMMUState *s, int vmid)
- {
-     trace_smmu_iotlb_inv_vmid_s1(vmid);
-     g_hash_table_foreach_remove(s->iotlb, smmu_hash_remove_by_vmid_s1, &vmid);
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
++#include "qemu/error-report.h"
+ #include <sys/ioctl.h>
+ 
+ #include "hw/pci/pci.h"
 -- 
-2.50.0.727.gbf7dc18ff4-goog
+2.50.1
 
 
