@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3249DB095E6
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 22:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7B1B095F9
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 22:50:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucVSx-00073I-L9; Thu, 17 Jul 2025 16:44:31 -0400
+	id 1ucVWu-0004Uz-Fu; Thu, 17 Jul 2025 16:48:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1ucTW6-0008Uy-Nz
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 14:39:39 -0400
+ id 1ucTWC-00009O-Hf
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 14:39:44 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1ucTW3-00008R-UN
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 14:39:37 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56HH0j66010805;
+ id 1ucTW5-00008Q-BE
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 14:39:44 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56HH0i2q018938;
  Thu, 17 Jul 2025 18:39:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=CPjLh5gQBfnwSKznR9Oac4ZSf2Y+9lmNJZ/lIKEoDXA=; b=
- PIZcTRxOg8HYBVMUJzHJ9Vp+BXQHn8wmG0R/bE2EsrY7BRoYN3g+3c9qVoVp1goX
- 5pNZub8iKl3bk9IEHskEYpmSlt1M0753nGUPnInlQOwEiTmT+1YDMy5+tnMs2PRq
- wZpV7jpkxJvDXmSgi0DApC/0j1QjfWkIV3QAjYCPCoS4/YXxjeSBns/FlkFRHInR
- NQC1WCxbUGOWQxh2rNU+rec6JEnlS/D4jZF1qYZ14hoygcx0BJOnpJB5C9vqh8Dx
- Olof6D/p/K9h1eLGEgMWY8jC6NtrQVUDDf6p0if801lBNOY9Ut4Ys1S87qud+zHY
- ONzWzIVkRwQukXkmNzs+Qw==
+ corp-2025-04-25; bh=g4cQG70O0Kg5s+vb7pr/SM4gt9CRW62U+GGQNlaa3Mw=; b=
+ ZPAy147zVqklHm+Sx08fABW1/ERmrBr8u4k5ajxdpjm6BFB5i7RpQ1TePrGdCjSy
+ vWGKwIzaelxcrFSZLvPt2g/wzM/4p1Btw5PCdbnNOQz2h+uzzzWISy92dTZbI4Fz
+ Je1Lmhp4rBc11CMPmadjbkHMD0kUEV9QaUjV1kqMAoCm8WDF+AmUvHla1lk2ja74
+ +1Nyja0zjXGejWZfbYhopin2tzHn477LzNKdamgtu+Q3n+zBxDCyjRrQm3enUgOy
+ p+7vQ49UNxS33JrLhqo8k5ocbLjyeYNQc+RFkdlE1Ol7+XftTu2C+0OGNc16h7DQ
+ TXnVxjwCI518wv0KIdam7A==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47uhjfcad1-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47uhx83yba-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Jul 2025 18:39:31 +0000 (GMT)
+ Thu, 17 Jul 2025 18:39:32 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 56HGsXuY023941; Thu, 17 Jul 2025 18:39:30 GMT
+ with ESMTP id 56HHnugw023912; Thu, 17 Jul 2025 18:39:31 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 47ue5d2t9p-1
+ 47ue5d2ta3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Jul 2025 18:39:30 +0000
+ Thu, 17 Jul 2025 18:39:31 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56HIcoil007425;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56HIcoin007425;
  Thu, 17 Jul 2025 18:39:30 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 47ue5d2t8q-3; Thu, 17 Jul 2025 18:39:30 +0000
+ ESMTP id 47ue5d2t8q-4; Thu, 17 Jul 2025 18:39:30 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Hamza Khan <hamza.khan@nutanix.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V2 2/8] migration: cpr setup notifier
-Date: Thu, 17 Jul 2025 11:39:22 -0700
-Message-Id: <1752777568-236368-3-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V2 3/8] vhost: reset vhost devices for cpr
+Date: Thu, 17 Jul 2025 11:39:23 -0700
+Message-Id: <1752777568-236368-4-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1752777568-236368-1-git-send-email-steven.sistare@oracle.com>
 References: <1752777568-236368-1-git-send-email-steven.sistare@oracle.com>
@@ -71,18 +71,18 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
  mlxlogscore=999 malwarescore=0 mlxscore=0 suspectscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2507170165
-X-Proofpoint-GUID: P4GrYe6bmPEe7RQpPF5amFGTalN4MHsm
-X-Authority-Analysis: v=2.4 cv=O6g5vA9W c=1 sm=1 tr=0 ts=68794363 b=1 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=auKyCTZV c=1 sm=1 tr=0 ts=68794364 b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=8YgkOPFe86U-wwtjNboA:9
-X-Proofpoint-ORIG-GUID: P4GrYe6bmPEe7RQpPF5amFGTalN4MHsm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDE2NSBTYWx0ZWRfX+x/0f5gL7ahI
- HJW8UV3LmZS7qWB9DltXIoN4ZJDqgQiItt/zzKYqKNIhvuX4z7b/pntbGuFfA5+y+yCduiQ0ATo
- /SbaAWUNEJVj0FFPddThU3p0hw0zLeFJXKqxOhIPBZAXpN+bq0NMcILUcj2tSfc2uq8DD4twHQ4
- NLu4Xz7E2QW4U2FBFkd61UV1xbs4maAwn8/O7yVXvTHsmOm7ggAIQy56cDjb/zy1t9RB+lzsocB
- kcwoSsg9bgz3CAquf+vNIO9kEgY9wMvBfUNzDFHZW3ZRaqBIS8N8zrVz0k36cyVQTTVvVR1HeNs
- oDZ4Dc6F+vGGelMas2wcoXpBHFDAo6y1XcLKs7wwDhuOXMSDBcJegwdQzNKG6xWdbm5+tRCmA3B
- 0V7fp1wkOV0KU08+rE68+THtqpsr7HzVqh5sCmvdX/qKBIbEf7izpr+09Mg9Hw9Ey1YwBTyG
+ a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=XmC3YHyv0GhogxYF6KIA:9
+X-Proofpoint-ORIG-GUID: NXD9eTJ9Zd8U_WCSz2X2NyUmdWBrlTnP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDE2NSBTYWx0ZWRfX1XRjisFGRtqG
+ EAQeBOr9D6PjH2P/GDlm8t5hvywr51xHib8RrNrPvvs2xBufd9DhcUT95q5u0ofbLHq4uDmrSj5
+ KwWffKNel+PEdwZvH6sQEfPatECDYKen1G9O1J1CwFrdYaR0WUAcDnPCNPFnmmZbuZ9N9n8wjZi
+ Pa+zjytqUNsD5BmM86UjOUeXjKHlbLROTQSBgfeGbAVzW4NBGp1voEiZaER7BSQMuIzY0feozjz
+ 8cuXo4Y6ZWZQlhRcDUo88QM2jMmwf+mNxZt/BMzr33Ep5EE3CJsge40l8hN3k91zzTGtNKjizo7
+ xHKyZvplU8/kjSrRiT7G9K2kiJ472MkkwKhZYEcAtdR9BLM+9hC9AHcpNZvgbLw08pBxbbdOOtU
+ uzkPYCd4wfx4lhzpq2LuB+XjjRIv+ncU7xsHTfeDtv7PHY7/R8HBtiRcB3GUpUSUdUZZF/Bo
+X-Proofpoint-GUID: NXD9eTJ9Zd8U_WCSz2X2NyUmdWBrlTnP
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -108,45 +108,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Call MIG_EVENT_PRECOPY_SETUP earlier, before CPR starts.  An early notifier
-is needed for resetting vhost devices, as explained in the next patch.
+When preserving a vhost fd using CPR, call VHOST_RESET_OWNER prior to CPR
+in old QEMU.  Otherwise, new QEMU will fail when it calls VHOST_SET_OWNER
+during vhost_dev_init.
 
+Signed-off-by: Mark Kanda <mark.kanda@oracle.com>
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- migration/migration.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ include/hw/virtio/vhost.h |  1 +
+ hw/virtio/vhost.c         | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 2efe60a..49d1e7d 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2259,7 +2259,14 @@ void qmp_migrate(const char *uri, bool has_channels,
-         stopped = true;
-     }
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 38800a7..88a4838 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -132,6 +132,7 @@ struct vhost_dev {
+     QLIST_ENTRY(vhost_dev) logdev_entry;
+     QLIST_HEAD(, vhost_iommu) iommu_list;
+     IOMMUNotifier n;
++    NotifierWithReturn cpr_transfer_notifier;
+     const VhostDevConfigOps *config_ops;
+ };
  
-+    /* Notify before starting migration thread, and before starting cpr */
-+    if (!resume_requested &&
-+        migration_call_notifiers(s, MIG_EVENT_PRECOPY_SETUP, &local_err)) {
-+        goto out;
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index fc43853..a562e0c 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -24,6 +24,7 @@
+ #include "standard-headers/linux/vhost_types.h"
+ #include "hw/virtio/virtio-bus.h"
+ #include "hw/mem/memory-device.h"
++#include "migration/misc.h"
+ #include "migration/blocker.h"
+ #include "migration/qemu-file-types.h"
+ #include "system/dma.h"
+@@ -1506,6 +1507,32 @@ static void vhost_virtqueue_cleanup(struct vhost_virtqueue *vq)
+     }
+ }
+ 
++static int vhost_cpr_notifier(NotifierWithReturn *notifier,
++                              MigrationEvent *e, Error **errp)
++{
++    struct vhost_dev *dev;
++    int r;
++
++    dev = container_of(notifier, struct vhost_dev, cpr_transfer_notifier);
++
++    if (dev->vhost_ops->backend_type != VHOST_BACKEND_TYPE_KERNEL) {
++        return 0;
 +    }
 +
-     if (cpr_state_save(cpr_channel, &local_err)) {
-+        migration_call_notifiers(s, MIG_EVENT_PRECOPY_FAILED, NULL);
-         goto out;
-     }
++    if (e->type == MIG_EVENT_PRECOPY_SETUP) {
++        r = dev->vhost_ops->vhost_reset_device(dev);
++        if (r < 0) {
++            VHOST_OPS_DEBUG(r, "vhost_reset_device failed");
++        }
++    } else if (e->type == MIG_EVENT_PRECOPY_FAILED) {
++        r = dev->vhost_ops->vhost_set_owner(dev);
++        if (r < 0) {
++            VHOST_OPS_DEBUG(r, "vhost_set_owner failed");
++        }
++    }
++    return 0;
++}
++
+ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+                    VhostBackendType backend_type, uint32_t busyloop_timeout,
+                    Error **errp)
+@@ -1516,6 +1543,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
  
-@@ -4010,11 +4017,6 @@ void migration_connect(MigrationState *s, Error *error_in)
-     } else {
-         /* This is a fresh new migration */
-         rate_limit = migrate_max_bandwidth();
--
--        /* Notify before starting migration thread */
--        if (migration_call_notifiers(s, MIG_EVENT_PRECOPY_SETUP, &local_err)) {
--            goto fail;
--        }
-     }
+     hdev->vdev = NULL;
+     hdev->migration_blocker = NULL;
++    hdev->cpr_transfer_notifier.notify = NULL;
  
-     migration_rate_set(rate_limit);
+     r = vhost_set_backend_type(hdev, backend_type);
+     assert(r >= 0);
+@@ -1616,6 +1644,9 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+     hdev->log_enabled = false;
+     hdev->started = false;
+     memory_listener_register(&hdev->memory_listener, &address_space_memory);
++    migration_add_notifier_mode(&hdev->cpr_transfer_notifier,
++                                vhost_cpr_notifier,
++                                MIG_MODE_CPR_TRANSFER);
+     QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
+ 
+     /*
+@@ -1672,6 +1703,7 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
+         QLIST_REMOVE(hdev, entry);
+     }
+     migrate_del_blocker(&hdev->migration_blocker);
++    migration_remove_notifier(&hdev->cpr_transfer_notifier);
+     g_free(hdev->mem);
+     g_free(hdev->mem_sections);
+     if (hdev->vhost_ops) {
 -- 
 1.8.3.1
 
