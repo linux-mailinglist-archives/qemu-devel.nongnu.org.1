@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A57B08B6A
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E0FB08B47
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:56:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucMH6-0007mk-RE; Thu, 17 Jul 2025 06:55:41 -0400
+	id 1ucMH9-00082N-Dc; Thu, 17 Jul 2025 06:55:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucMGU-0007Wy-HQ; Thu, 17 Jul 2025 06:55:03 -0400
+ id 1ucMGV-0007Xi-S7; Thu, 17 Jul 2025 06:55:03 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucMGS-0003BO-Lk; Thu, 17 Jul 2025 06:55:02 -0400
+ id 1ucMGT-0003Bo-Rl; Thu, 17 Jul 2025 06:55:03 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 45E9C137E23;
+ by isrv.corpit.ru (Postfix) with ESMTP id 60ACB137E24;
  Thu, 17 Jul 2025 13:54:35 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 403FB24926D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5070524926E;
  Thu, 17 Jul 2025 13:54:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
  Vasant Hegde <vasant.hegde@amd.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.19 23/26] amd_iommu: Fix the calculation for Device Table
- size
-Date: Thu, 17 Jul 2025 13:54:37 +0300
-Message-ID: <20250717105442.735202-8-mjt@tls.msk.ru>
+Subject: [Stable-7.2.19 24/26] amd_iommu: Remove duplicated definitions
+Date: Thu, 17 Jul 2025 13:54:38 +0300
+Message-ID: <20250717105442.735202-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.19-20250717135416@cover.tls.msk.ru>
 References: <qemu-stable-7.2.19-20250717135416@cover.tls.msk.ru>
@@ -61,34 +60,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-Correctly calculate the Device Table size using the format encoded in the
-Device Table Base Address Register (MMIO Offset 0000h).
+No functional change.
 
-Cc: qemu-stable@nongnu.org
-Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250617150427.20585-7-alejandro.j.jimenez@oracle.com>
+Message-Id: <20250617150427.20585-8-alejandro.j.jimenez@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 67d3077ee403472d45794399e97c9f329242fce9)
+(cherry picked from commit 5959b641c98b5ae9677e2c1d89902dac31b344d9)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index f2da6348f6..0df9c1a232 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -640,8 +640,8 @@ static inline void amdvi_handle_devtab_write(AMDVIState *s)
-     uint64_t val = amdvi_readq(s, AMDVI_MMIO_DEVICE_TABLE);
-     s->devtab = (val & AMDVI_MMIO_DEVTAB_BASE_MASK);
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 15ed663001..c8d1a6d353 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -204,10 +204,6 @@
+ /* Completion Wait data size */
+ #define AMDVI_COMPLETION_DATA_SIZE    8
  
--    /* set device table length */
--    s->devtab_len = ((val & AMDVI_MMIO_DEVTAB_SIZE_MASK) + 1 *
-+    /* set device table length (i.e. number of entries table can hold) */
-+    s->devtab_len = (((val & AMDVI_MMIO_DEVTAB_SIZE_MASK) + 1) *
-                     (AMDVI_MMIO_DEVTAB_SIZE_UNIT /
-                      AMDVI_MMIO_DEVTAB_ENTRY_SIZE));
- }
+-#define AMDVI_COMMAND_SIZE   16
+-/* Completion Wait data size */
+-#define AMDVI_COMPLETION_DATA_SIZE    8
+-
+ #define AMDVI_COMMAND_SIZE   16
+ 
+ #define AMDVI_INT_ADDR_FIRST    0xfee00000
 -- 
 2.47.2
 
