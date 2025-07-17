@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFC4B08382
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 05:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0E3B08389
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 05:47:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucFWf-0004hY-Vn; Wed, 16 Jul 2025 23:43:18 -0400
+	id 1ucFZD-0001Q5-HT; Wed, 16 Jul 2025 23:45:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ucFUj-0003WO-JQ; Wed, 16 Jul 2025 23:41:18 -0400
+ id 1ucFUk-0003Wd-1G; Wed, 16 Jul 2025 23:41:22 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ucFUh-0000YT-Uu; Wed, 16 Jul 2025 23:41:17 -0400
+ id 1ucFUi-0000ZH-Az; Wed, 16 Jul 2025 23:41:17 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 17 Jul
- 2025 11:40:56 +0800
+ 2025 11:40:57 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Thu, 17 Jul 2025 11:40:56 +0800
+ Transport; Thu, 17 Jul 2025 11:40:57 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
  Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v1 05/21] hw/arm/aspeed_ast27x0-tsp: Switch TSP memory to
- SDRAM and use dram_container for remap support
-Date: Thu, 17 Jul 2025 11:40:33 +0800
-Message-ID: <20250717034054.1903991-6-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 06/21] hw/arm/ast27x0: Add SRAM alias for SSP and ensure
+ correct device realization order
+Date: Thu, 17 Jul 2025 11:40:34 +0800
+Message-ID: <20250717034054.1903991-7-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250717034054.1903991-1-jamin_lin@aspeedtech.com>
 References: <20250717034054.1903991-1-jamin_lin@aspeedtech.com>
@@ -64,87 +64,102 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the AST2700 design, the TSP coprocessor uses its own SDRAM
-instead of SRAM. Additionally, all three coprocessors—SSP, TSP, and PSP—share
-a common SRAM block. In the previous implementation, the TSP memory region
-was labeled and sized as "SRAM", but in practice it was being used as TSP's
-local SDRAM.
+AST2700 has a 128KB SRAM, physically mapped at 0x10000000–0x1001FFFF for the
+main CA35 processor. The SSP coprocessor accesses this same memory at a
+different memory address: 0x70000000–0x7001FFFF.
 
-This commit updates the TSP memory mapping to reflect the correct hardware
-design:
+To support this shared memory model, this commit introduces "ssp.sram_mr_alias",
+a "MemoryRegion" alias of the original SRAM region ("s->sram"). The alias is
+realized during SSP SoC setup and mapped into the SSP's SoC memory map.
 
-- Replace the SRAM region with a 512MB SDRAM region starting at 0x0.
-- Rename the internal variable from `sram` to `dram_container` for clarity.
-- Use "AST2700_TSP_SDRAM_SIZE" (512MB) instead of the previous 32MB SRAM size.
-- Map the new region using "ASPEED_DEV_SDRAM" instead of "ASPEED_DEV_SRAM".
+Additionally, because the SRAM must be realized before the SSP can create an
+alias to it, the device realization order is explicitly managed:
+"aspeed_soc_ast2700_ssp_realize()" is invoked after SRAM is initialized.
 
-This change also prepares for future enhancements where PSP DRAM will be
-remapped into this TSP SDRAM container using subregions at specific offsets.
-Using "dram_container" makes it easier to manage aliases and remap logic.
+This ensures that SSP’s access to shared SRAM functions correctly.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0-tsp.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ include/hw/arm/aspeed_soc.h |  1 +
+ hw/arm/aspeed_ast27x0-ssp.c |  5 +++++
+ hw/arm/aspeed_ast27x0.c     | 15 ++++++++++++++-
+ 3 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/aspeed_ast27x0-tsp.c b/hw/arm/aspeed_ast27x0-tsp.c
-index 4e0efaef07..a70e30fc16 100644
---- a/hw/arm/aspeed_ast27x0-tsp.c
-+++ b/hw/arm/aspeed_ast27x0-tsp.c
-@@ -15,10 +15,10 @@
- #include "hw/misc/unimp.h"
- #include "hw/arm/aspeed_soc.h"
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index 3dd317cfee..9b935b9bca 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -134,6 +134,7 @@ struct Aspeed27x0SSPSoCState {
+     UnimplementedDeviceState ipc[2];
+     UnimplementedDeviceState scuio;
+     MemoryRegion memory;
++    MemoryRegion sram_mr_alias;
  
--#define AST2700_TSP_RAM_SIZE (32 * MiB)
-+#define AST2700_TSP_SDRAM_SIZE (512 * MiB)
+     ARMv7MState armv7m;
+ };
+diff --git a/hw/arm/aspeed_ast27x0-ssp.c b/hw/arm/aspeed_ast27x0-ssp.c
+index 9641e27de1..b7b886f4bf 100644
+--- a/hw/arm/aspeed_ast27x0-ssp.c
++++ b/hw/arm/aspeed_ast27x0-ssp.c
+@@ -19,6 +19,7 @@
  
- static const hwaddr aspeed_soc_ast27x0tsp_memmap[] = {
--    [ASPEED_DEV_SRAM]      =  0x00000000,
-+    [ASPEED_DEV_SDRAM]     =  0x00000000,
+ static const hwaddr aspeed_soc_ast27x0ssp_memmap[] = {
+     [ASPEED_DEV_SDRAM]     =  0x00000000,
++    [ASPEED_DEV_SRAM]      =  0x70000000,
      [ASPEED_DEV_INTC]      =  0x72100000,
      [ASPEED_DEV_SCU]       =  0x72C02000,
      [ASPEED_DEV_SCUIO]     =  0x74C02000,
-@@ -163,7 +163,7 @@ static void aspeed_soc_ast27x0tsp_realize(DeviceState *dev_soc, Error **errp)
-     AspeedSoCState *s = ASPEED_SOC(dev_soc);
-     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
-     DeviceState *armv7m;
--    g_autofree char *sram_name = NULL;
-+    g_autofree char *name = NULL;
-     int i;
+@@ -192,6 +193,10 @@ static void aspeed_soc_ast27x0ssp_realize(DeviceState *dev_soc, Error **errp)
+                                 sc->memmap[ASPEED_DEV_SDRAM],
+                                 &s->dram_container);
  
-     if (!clock_has_source(s->sysclk)) {
-@@ -180,16 +180,17 @@ static void aspeed_soc_ast27x0tsp_realize(DeviceState *dev_soc, Error **errp)
-                              OBJECT(s->memory), &error_abort);
-     sysbus_realize(SYS_BUS_DEVICE(&a->armv7m), &error_abort);
- 
--    sram_name = g_strdup_printf("aspeed.dram.%d",
--                                CPU(a->armv7m.cpu)->cpu_index);
-+    /* SDRAM */
-+    name = g_strdup_printf("aspeed.sdram-container.%d",
-+                           CPU(a->armv7m.cpu)->cpu_index);
- 
--    if (!memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size,
--                                errp)) {
-+    if (!memory_region_init_ram(&s->dram_container, OBJECT(s), name,
-+                                AST2700_TSP_SDRAM_SIZE, errp)) {
-         return;
-     }
-     memory_region_add_subregion(s->memory,
--                                sc->memmap[ASPEED_DEV_SRAM],
--                                &s->sram);
-+                                sc->memmap[ASPEED_DEV_SDRAM],
-+                                &s->dram_container);
- 
++    /* SRAM */
++    memory_region_add_subregion(s->memory, sc->memmap[ASPEED_DEV_SRAM],
++                                &a->sram_mr_alias);
++
      /* SCU */
      if (!sysbus_realize(SYS_BUS_DEVICE(&s->scu), errp)) {
-@@ -268,7 +269,6 @@ static void aspeed_soc_ast27x0tsp_class_init(ObjectClass *klass, const void *dat
+         return;
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index 665627f788..9064249bed 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -624,6 +624,7 @@ static bool aspeed_soc_ast2700_ssp_realize(DeviceState *dev, Error **errp)
+ {
+     Aspeed27x0SoCState *a = ASPEED27X0_SOC(dev);
+     AspeedSoCState *s = ASPEED_SOC(dev);
++    MemoryRegion *mr;
+     Clock *sysclk;
  
-     sc->valid_cpu_types = valid_cpu_types;
-     sc->silicon_rev = AST2700_A1_SILICON_REV;
--    sc->sram_size = AST2700_TSP_RAM_SIZE;
-     sc->spis_num = 0;
-     sc->ehcis_num = 0;
-     sc->wdts_num = 0;
+     sysclk = clock_new(OBJECT(s), "SSP_SYSCLK");
+@@ -637,6 +638,9 @@ static bool aspeed_soc_ast2700_ssp_realize(DeviceState *dev, Error **errp)
+         return false;
+     }
+ 
++    mr = &s->sram;
++    memory_region_init_alias(&a->ssp.sram_mr_alias, OBJECT(s), "ssp.sram.alias",
++                             mr, 0, memory_region_size(mr));
+     if (!qdev_realize(DEVICE(&a->ssp), NULL, &error_abort)) {
+         return false;
+     }
+@@ -779,7 +783,16 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->scuio), 0,
+                     sc->memmap[ASPEED_DEV_SCUIO]);
+ 
+-    /* Coprocessors */
++    /*
++     * Coprocessors must be realized after the SRAM region.
++     *
++     * The SRAM is used for shared memory between the main CPU (PSP) and
++     * coprocessors. The coprocessors accesses this shared SRAM region
++     * through a memory alias mapped to a different physical address.
++     *
++     * Therefore, the SRAM must be fully initialized before the coprocessors
++     * can create aliases pointing to it.
++     */
+     if (mc->default_cpus > sc->num_cpus) {
+         if (!aspeed_soc_ast2700_ssp_realize(dev, errp)) {
+             return;
 -- 
 2.43.0
 
