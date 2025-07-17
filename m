@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31064B089DA
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:53:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC3AB089C0
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:51:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLHV-0007bW-Nw; Thu, 17 Jul 2025 05:52:02 -0400
+	id 1ucLG5-0003EG-5S; Thu, 17 Jul 2025 05:50:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL0V-0001qG-8e; Thu, 17 Jul 2025 05:34:29 -0400
+ id 1ucL0W-0001qJ-FY; Thu, 17 Jul 2025 05:34:29 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL0T-0001o1-Dp; Thu, 17 Jul 2025 05:34:27 -0400
+ id 1ucL0U-0001oG-NB; Thu, 17 Jul 2025 05:34:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6BD21137CEB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 78810137CEC;
  Thu, 17 Jul 2025 12:34:04 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4F24F2491E5;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5D2762491E6;
  Thu, 17 Jul 2025 12:34:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 43/65] linux-user: Implement fchmodat2 syscall
-Date: Thu, 17 Jul 2025 12:33:39 +0300
-Message-ID: <20250717093412.728292-4-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 44/65] linux-user: Check for EFAULT failure in
+ nanosleep
+Date: Thu, 17 Jul 2025 12:33:40 +0300
+Message-ID: <20250717093412.728292-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,49 +61,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-The fchmodat2 syscall is new from Linux 6.6; it is like the
-existing fchmodat syscall except that it takes a flags parameter.
+target_to_host_timespec() returns an error if the memory the guest
+passed us isn't actually readable.  We check for this everywhere
+except the callsite in the TARGET_NR_nanosleep case, so this mistake
+was caught by a Coverity heuristic.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3019
+Add the missing error checks to the calls that convert between the
+host and target timespec structs.
+
+Coverity: CID 1507104
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250710113123.1109461-1-peter.maydell@linaro.org>
-(cherry picked from commit 6a3e132a1be8c9e649967a4eb341d00731be7f51)
+Message-ID: <20250710164355.1296648-1-peter.maydell@linaro.org>
+(cherry picked from commit c4828cb8502d0b2adc39b9cde93df7d2886df897)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 8bfe4912e1..9b397bac7e 100644
+index 9b397bac7e..a8eea5dd52 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -789,6 +789,10 @@ safe_syscall6(ssize_t, copy_file_range, int, infd, loff_t *, pinoff,
-               int, outfd, loff_t *, poutoff, size_t, length,
-               unsigned int, flags)
- #endif
-+#if defined(TARGET_NR_fchmodat2) && defined(__NR_fchmodat2)
-+safe_syscall4(int, fchmodat2, int, dfd, const char *, filename,
-+              unsigned short, mode, unsigned int, flags)
-+#endif
- 
- /* We do ioctl like this rather than via safe_syscall3 to preserve the
-  * "third argument might be integer or pointer or not present" behaviour of
-@@ -10709,6 +10713,15 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         ret = get_errno(fchmodat(arg1, p, arg3, 0));
-         unlock_user(p, arg2, 0);
+@@ -11639,10 +11639,14 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     case TARGET_NR_nanosleep:
+         {
+             struct timespec req, rem;
+-            target_to_host_timespec(&req, arg1);
++            if (target_to_host_timespec(&req, arg1)) {
++                return -TARGET_EFAULT;
++            }
+             ret = get_errno(safe_nanosleep(&req, &rem));
+             if (is_error(ret) && arg2) {
+-                host_to_target_timespec(arg2, &rem);
++                if (host_to_target_timespec(arg2, &rem)) {
++                    return -TARGET_EFAULT;
++                }
+             }
+         }
          return ret;
-+#endif
-+#if defined(TARGET_NR_fchmodat2) && defined(__NR_fchmodat2)
-+    case TARGET_NR_fchmodat2:
-+        if (!(p = lock_user_string(arg2))) {
-+            return -TARGET_EFAULT;
-+        }
-+        ret = get_errno(safe_fchmodat2(arg1, p, arg3, arg4));
-+        unlock_user(p, arg2, 0);
-+        return ret;
- #endif
-     case TARGET_NR_getpriority:
-         /* Note that negative values are valid for getpriority, so we must
 -- 
 2.47.2
 
