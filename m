@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27582B095FF
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 22:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE86B095E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 22:45:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucVZq-0000oY-PB; Thu, 17 Jul 2025 16:51:38 -0400
+	id 1ucVT2-0007Bh-7w; Thu, 17 Jul 2025 16:44:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1ucTWA-00006u-Im
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 14:39:42 -0400
+ id 1ucTW8-0008WF-Be
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 14:39:40 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1ucTW5-000098-7Z
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 14:39:42 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56HH0kGn019010;
- Thu, 17 Jul 2025 18:39:34 GMT
+ id 1ucTW4-00009G-5F
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 14:39:40 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56HH0iHs027536;
+ Thu, 17 Jul 2025 18:39:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=eSNzcugpJDUELIC5DRj7TTBvV/Xir0IRT2uoMB+BwnI=; b=
- RaEN3CgBQWMDib62Av8EbVIJl++i5vlhMJc7trRJ8F4fWLyxLSi3jyjmHB+J2ta3
- VK20DYQavWoq1dd4hgy0TDsRdTk47ZEBtm0SW1/5sseLhAbCLd1fqbFIWaNhv1mF
- jtZZoxNGPzzf1cvRCqc+4aWarRTRmh3v+NfxDTsAIKkPL6ZDZ/puiQsJzwlD+8vP
- VpYf1hYA9Zky5zIhk5XOFcVE8bhN2EvXMsOlOHdnFAVBT3Mn+SueYQ9FOAciglOC
- J5p+eYorcNxUe7r04B7LYRzPFTq4kb+9CQ11AX2Wgf6Qc373dfyr1n5GiUTPYmpr
- 7963Xtn2lVa3F45wIiLKzg==
+ corp-2025-04-25; bh=jEMH++dDedb77qsgBrEOe/ieXuj7ISA+5MLtq4+Sies=; b=
+ StY7DoXSnMdbB5velfWadQ1tsyYiP6uP9Ku16hgj9BPW5je3vvpWvTlhkD8SReKl
+ wOYuePOOvWcyJ0X6zzGEl2Q82ZipEcpEZDL7EyR9cjymrWa2SLjslxy3M3k9s9fV
+ hS0tNj5euUnRPKQh8BMVXCLvwgRtL4ubv1IUHZPfMcZ88SNQktkpUitwzooivTA3
+ iWyBzZirFdVXplwpU24AOSegT5xnut79ZHIBfj3xlVt85r2vtQdQHwfEeVqC6I5w
+ wnJLhn2djuQNm6KjqtYI7ar8EOIa0/3c0lYyLwp85l94FFM/pUEXQOMC4jMC1lT8
+ l+CRDOSEPBwE9UZUgLH9Rg==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47uhx83ybd-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47uk1b3s4b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 17 Jul 2025 18:39:34 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 56HHZgwK023985; Thu, 17 Jul 2025 18:39:33 GMT
+ with ESMTP id 56HHNQRY023999; Thu, 17 Jul 2025 18:39:33 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 47ue5d2tay-1
+ 47ue5d2tba-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 17 Jul 2025 18:39:33 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56HIcoit007425;
- Thu, 17 Jul 2025 18:39:32 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56HIcoiv007425;
+ Thu, 17 Jul 2025 18:39:33 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 47ue5d2t8q-7; Thu, 17 Jul 2025 18:39:32 +0000
+ ESMTP id 47ue5d2t8q-8; Thu, 17 Jul 2025 18:39:33 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Hamza Khan <hamza.khan@nutanix.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V2 6/8] tap: common return label
-Date: Thu, 17 Jul 2025 11:39:26 -0700
-Message-Id: <1752777568-236368-7-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V2 7/8] tap: cpr support
+Date: Thu, 17 Jul 2025 11:39:27 -0700
+Message-Id: <1752777568-236368-8-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1752777568-236368-1-git-send-email-steven.sistare@oracle.com>
 References: <1752777568-236368-1-git-send-email-steven.sistare@oracle.com>
@@ -71,18 +71,18 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
  mlxlogscore=999 malwarescore=0 mlxscore=0 suspectscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2507170165
-X-Authority-Analysis: v=2.4 cv=auKyCTZV c=1 sm=1 tr=0 ts=68794366 b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDE2NSBTYWx0ZWRfX+xFLPmS9IJMl
+ jDh6wl3jEYLbxz5n1NHPoe5nZcqo2QpT7qo4wnihhXvvNXxoNaLSoLOgybsZwkRsMeS1QVBvA+C
+ 7d2QSKZcZNG2qYS4e8agrW/ohFdlE0kZMLNXCP0qx/9RAAC9E2Bas4CFdxY2BhXIi59p/FoNXgN
+ Y2oHkuUgEiSZmSMJl0ITKY9u4e2WjixBNEcQHbP/Ybh6ZdCOmpBuZICy08zEHCogW60bmZLgpru
+ O2685TuWq2eZCtMFKvVzsTgMK0s4KIcBcZL21uacVKLaHo9wq7zZxoOtGyq8Zmt9HCEwDAA2Y0O
+ c/zEusUFH3ecpSyf/+o7eTMnqalBVO6GcHFnexygVhl+oN12eQYM9Pw+W+Yx6XanD0iCvGpnDyR
+ 7ejSV61A3wergECiIIJK9/FyaGdLvxETu0+OtdF/kB1gq822HM/KUdEUyL3YoHdrOwfEU2a7
+X-Proofpoint-GUID: JjMflIiwhoPO3hSA330PDfJC50M978U8
+X-Proofpoint-ORIG-GUID: JjMflIiwhoPO3hSA330PDfJC50M978U8
+X-Authority-Analysis: v=2.4 cv=J8mq7BnS c=1 sm=1 tr=0 ts=68794366 b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=zPeY32rCmRbJBjnbAY4A:9
-X-Proofpoint-ORIG-GUID: Zgn7E2gluDKCN_Rwgh-UxEcF0aTfhg5L
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDE2NSBTYWx0ZWRfX3RldsngSgD9N
- 0JLhOJxXVI/PKGMDnjpvtDPswtyhSa7abvBkZ9rREN9paTgqheXuXQj6Gxb7hI2XsUVift4VxNl
- Xqw3D4q7oeqyBtAfUHefMKMqLJfczOJCElaBex5tBZhQtDa56Qli/DdH3jb9Zm33Ae1+1p3nfIa
- JA67EQiYW/9aZ/92XjKVcHfwtHZMiyE/Jw7suvKT8fVYpdC79sI+Scg24jY4aCd/jZhD4jRpDYO
- vY/FBFVKVZEkeq89mvLtJgvgg6rWNfmW4x12igOwzjEnxMIxhd5fX9zO79+q4SYSSDHkTo/arB+
- Q4vneTM/xuCioDOPgT1MJ9DnccxU+yXdtzE3y2vf9H7PG+ugaaaQW1sYWKJkEoDOpZa4u+QHE8y
- lOIejllFErdsD1kW4CPv/X3oPAZDzy/vSx9YUghdwBTQQm/vdw1oN6pl2pdlzUXAQanzulTG
-X-Proofpoint-GUID: Zgn7E2gluDKCN_Rwgh-UxEcF0aTfhg5L
+ a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=zKPUYSCetFGJfgUTIKcA:9
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -108,178 +108,335 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Modify net_init_tap so every return branches to a common label, for
-common cleanup in a subsequent patch.  No functional change.
+Provide the cpr=on option to preserve TAP and vhost descriptors during
+cpr-transfer, so the management layer does not need to create a new
+device for the target.
+
+Save all tap fd's in canonical order, leveraging the index argument of
+cpr_save_fd.  For the i'th queue, the tap device fd is saved at index 2*i,
+and the vhostfd (if any) at index 2*i+1.
+
+tap and vhost fd's are passed by name to the monitor when a NIC is hot
+plugged, but the name is not known to qemu after cpr.  Allow the manager
+to pass -1 for the fd "name" in the new qemu args to indicate that QEMU
+should search for a saved value.  Example:
+
+  -netdev tap,id=hostnet2,fds=-1:-1,vhostfds=-1:-1,cpr=on
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- net/tap.c | 54 ++++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 36 insertions(+), 18 deletions(-)
+ qapi/net.json           |  5 +++-
+ include/migration/cpr.h |  2 +-
+ hw/vfio/device.c        |  2 +-
+ migration/cpr.c         | 11 ++++----
+ net/tap.c               | 70 ++++++++++++++++++++++++++++++++++++++-----------
+ 5 files changed, 67 insertions(+), 23 deletions(-)
 
+diff --git a/qapi/net.json b/qapi/net.json
+index 97ea183..5c7422b 100644
+--- a/qapi/net.json
++++ b/qapi/net.json
+@@ -238,6 +238,8 @@
+ # @poll-us: maximum number of microseconds that could be spent on busy
+ #     polling for tap (since 2.7)
+ #
++# @cpr: preserve fds and vhostfds during cpr-transfer.
++#
+ # Since: 1.2
+ ##
+ { 'struct': 'NetdevTapOptions',
+@@ -256,7 +258,8 @@
+     '*vhostfds':   'str',
+     '*vhostforce': 'bool',
+     '*queues':     'uint32',
+-    '*poll-us':    'uint32'} }
++    '*poll-us':    'uint32',
++    '*cpr':        'bool'} }
+ 
+ ##
+ # @NetdevSocketOptions:
+diff --git a/include/migration/cpr.h b/include/migration/cpr.h
+index 0fa57dd..baff57f 100644
+--- a/include/migration/cpr.h
++++ b/include/migration/cpr.h
+@@ -45,7 +45,7 @@ void cpr_state_close(void);
+ struct QIOChannel *cpr_state_ioc(void);
+ 
+ bool cpr_incoming_needed(void *opaque);
+-int cpr_get_fd_param(const char *name, const char *fdname, int index,
++int cpr_get_fd_param(const char *name, const char *fdname, int index, bool cpr,
+                      Error **errp);
+ 
+ QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp);
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index 96cf214..9eb6699 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -351,7 +351,7 @@ void vfio_device_free_name(VFIODevice *vbasedev)
+ 
+ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp)
+ {
+-    vbasedev->fd = cpr_get_fd_param(vbasedev->dev->id, str, 0, errp);
++    vbasedev->fd = cpr_get_fd_param(vbasedev->dev->id, str, 0, true, errp);
+ }
+ 
+ static VFIODeviceIOOps vfio_device_io_ops_ioctl;
+diff --git a/migration/cpr.c b/migration/cpr.c
+index e97be9d..6d01b8c 100644
+--- a/migration/cpr.c
++++ b/migration/cpr.c
+@@ -282,6 +282,7 @@ bool cpr_incoming_needed(void *opaque)
+  * @name: CPR name for the descriptor
+  * @fdname: An integer-valued string, or a name passed to a getfd command
+  * @index: CPR index of the descriptor
++ * @cpr: use cpr
+  * @errp: returned error message
+  *
+  * If CPR is not being performed, then use @fdname to find the fd.
+@@ -291,22 +292,22 @@ bool cpr_incoming_needed(void *opaque)
+  * On success returns the fd value, else returns -1.
+  */
+ int cpr_get_fd_param(const char *name, const char *fdname, int index,
+-                     Error **errp)
++                     bool cpr, Error **errp)
+ {
+     ERRP_GUARD();
+     int fd;
+ 
+-    if (cpr_is_incoming()) {
++    if (cpr && cpr_is_incoming()) {
+         fd = cpr_find_fd(name, index);
+         if (fd < 0) {
+             error_setg(errp, "cannot find saved value for fd %s", fdname);
+         }
+     } else {
+         fd = monitor_fd_param(monitor_cur(), fdname, errp);
+-        if (fd >= 0) {
+-            cpr_save_fd(name, index, fd);
+-        } else {
++        if (fd < 0) {
+             error_prepend(errp, "Could not parse object fd %s:", fdname);
++        } else if (cpr) {
++            cpr_save_fd(name, index, fd);
+         }
+     }
+     return fd;
 diff --git a/net/tap.c b/net/tap.c
-index 35552c4..1b239fd 100644
+index 1b239fd..6a12751 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -780,7 +780,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
-      * For -netdev, peer is always NULL. */
-     if (peer && (tap->has_queues || tap->fds || tap->vhostfds)) {
-         error_setg(errp, "Multiqueue tap cannot be used with hubs");
--        return -1;
-+        ret = -1;
-+        goto out;
-     }
+@@ -35,6 +35,7 @@
+ #include "net/eth.h"
+ #include "net/net.h"
+ #include "clients.h"
++#include "migration/cpr.h"
+ #include "monitor/monitor.h"
+ #include "system/system.h"
+ #include "qapi/error.h"
+@@ -59,6 +60,7 @@ typedef struct TAPState {
+     bool has_ufo;
+     bool has_uso;
+     bool enabled;
++    bool cpr;
+     VHostNetState *vhost_net;
+     unsigned host_vnet_hdr_len;
+     Notifier exit;
+@@ -290,6 +292,9 @@ static void tap_cleanup(NetClientState *nc)
+ {
+     TAPState *s = DO_UPCAST(TAPState, nc, nc);
  
-     if (tap->fd) {
-@@ -790,25 +791,29 @@ int net_init_tap(const Netdev *netdev, const char *name,
-             error_setg(errp, "ifname=, script=, downscript=, vnet_hdr=, "
-                        "helper=, queues=, fds=, and vhostfds= "
-                        "are invalid with fd=");
--            return -1;
-+            ret = -1;
-+            goto out;
++    if (s->cpr) {
++        cpr_delete_fd_all(nc->name);
++    }
+     if (s->vhost_net) {
+         vhost_net_cleanup(s->vhost_net);
+         g_free(s->vhost_net);
+@@ -642,18 +647,24 @@ static int net_tap_init(const NetdevTapOptions *tap, int *vnet_hdr,
+     return fd;
+ }
+ 
++/* CPR fd's for each queue are saved at these indices */
++#define TAP_FD_INDEX(queue)         (2 * (queue) + 0)
++#define TAP_VHOSTFD_INDEX(queue)    (2 * (queue) + 1)
++
+ #define MAX_TAP_QUEUES 1024
+ 
+ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+                              const char *model, const char *name,
+                              const char *ifname, const char *script,
+                              const char *downscript, const char *vhostfdname,
+-                             int vnet_hdr, int fd, Error **errp)
++                             int vnet_hdr, int fd, int index, Error **errp)
+ {
+     Error *err = NULL;
+     TAPState *s = net_tap_fd_init(peer, model, name, fd, vnet_hdr);
++    bool cpr = tap->has_cpr ? tap->cpr : false;
+     int vhostfd;
+ 
++    s->cpr = cpr;
+     tap_set_sndbuf(s->fd, tap, &err);
+     if (err) {
+         error_propagate(errp, err);
+@@ -688,7 +699,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
          }
  
-         fd = monitor_fd_param(monitor_cur(), tap->fd, errp);
+         if (vhostfdname) {
+-            vhostfd = monitor_fd_param(monitor_cur(), vhostfdname, &err);
++            vhostfd = cpr_get_fd_param(name, vhostfdname, index, cpr, &err);
+             if (vhostfd == -1) {
+                 error_propagate(errp, err);
+                 goto failed;
+@@ -699,7 +710,13 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+                 goto failed;
+             }
+         } else {
+-            vhostfd = open("/dev/vhost-net", O_RDWR);
++            vhostfd = cpr ? cpr_find_fd(name, index) : -1;
++            if (vhostfd < 0) {
++                vhostfd = open("/dev/vhost-net", O_RDWR);
++                if (cpr && vhostfd >= 0) {
++                    cpr_save_fd(name, index, vhostfd);
++                }
++            }
+             if (vhostfd < 0) {
+                 error_setg_errno(errp, errno,
+                                  "tap: open vhost char device failed");
+@@ -727,6 +744,9 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+     return;
+ 
+ failed:
++    if (cpr) {
++        cpr_delete_fd_all(name);
++    }
+     qemu_del_net_client(&s->nc);
+ }
+ 
+@@ -759,7 +779,8 @@ static int get_fds(char *str, char *fds[], int max)
+ int net_init_tap(const Netdev *netdev, const char *name,
+                  NetClientState *peer, Error **errp)
+ {
+-    const NetdevTapOptions *tap;
++    const NetdevTapOptions *tap = &netdev->u.tap;
++    bool cpr = tap->has_cpr ? tap->cpr : false;
+     int fd, vnet_hdr = 0, i = 0, queues;
+     /* for the no-fd, no-helper case */
+     const char *script;
+@@ -795,7 +816,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
+             goto out;
+         }
+ 
+-        fd = monitor_fd_param(monitor_cur(), tap->fd, errp);
++        fd = cpr_get_fd_param(name, tap->fd, TAP_FD_INDEX(0), cpr, errp);
          if (fd == -1) {
--            return -1;
-+            ret = -1;
-+            goto out;
-         }
- 
-         if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
-             error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
-                              name, fd);
-             close(fd);
--            return -1;
-+            ret = -1;
-+            goto out;
-         }
- 
-         vnet_hdr = tap_probe_vnet_hdr(fd, errp);
-         if (vnet_hdr < 0) {
-             close(fd);
--            return -1;
-+            ret = -1;
-+            goto out;
-         }
+             ret = -1;
+             goto out;
+@@ -818,13 +839,14 @@ int net_init_tap(const Netdev *netdev, const char *name,
  
          net_init_tap_one(tap, peer, "tap", name, NULL,
-@@ -817,7 +822,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
+                          script, downscript,
+-                         vhostfdname, vnet_hdr, fd, &err);
++                         vhostfdname, vnet_hdr, fd, TAP_VHOSTFD_INDEX(0), &err);
          if (err) {
              error_propagate(errp, err);
              close(fd);
--            return -1;
-+            ret = -1;
-+            goto out;
+             ret = -1;
+             goto out;
          }
++
      } else if (tap->fds) {
          char **fds;
-@@ -830,7 +836,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
-             error_setg(errp, "ifname=, script=, downscript=, vnet_hdr=, "
-                        "helper=, queues=, and vhostfd= "
-                        "are invalid with fds=");
--            return -1;
-+            ret = -1;
-+            goto out;
+         char **vhost_fds;
+@@ -855,7 +877,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
          }
  
-         fds = g_new0(char *, MAX_TAP_QUEUES);
-@@ -894,30 +901,35 @@ free_fail:
-         }
-         g_free(fds);
-         g_free(vhost_fds);
--        return ret;
-+        goto out;
-+
-     } else if (tap->helper) {
-         if (tap->ifname || tap->script || tap->downscript ||
-             tap->has_vnet_hdr || tap->has_queues || tap->vhostfds) {
-             error_setg(errp, "ifname=, script=, downscript=, vnet_hdr=, "
-                        "queues=, and vhostfds= are invalid with helper=");
--            return -1;
-+            ret = -1;
-+            goto out;
+         for (i = 0; i < nfds; i++) {
+-            fd = monitor_fd_param(monitor_cur(), fds[i], errp);
++            fd = cpr_get_fd_param(name, fds[i], TAP_FD_INDEX(i), cpr, errp);
+             if (fd == -1) {
+                 ret = -1;
+                 goto free_fail;
+@@ -884,7 +906,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
+             net_init_tap_one(tap, peer, "tap", name, ifname,
+                              script, downscript,
+                              tap->vhostfds ? vhost_fds[i] : NULL,
+-                             vnet_hdr, fd, &err);
++                             vnet_hdr, fd, TAP_VHOSTFD_INDEX(i), &err);
+             if (err) {
+                 error_propagate(errp, err);
+                 ret = -1;
+@@ -912,9 +934,15 @@ free_fail:
+             goto out;
          }
  
-         fd = net_bridge_run_helper(tap->helper,
-                                    tap->br ?: DEFAULT_BRIDGE_INTERFACE,
-                                    errp);
+-        fd = net_bridge_run_helper(tap->helper,
+-                                   tap->br ?: DEFAULT_BRIDGE_INTERFACE,
+-                                   errp);
++        fd = cpr ? cpr_find_fd(name, TAP_FD_INDEX(0)) : -1;
++        if (fd < 0) {
++            fd = net_bridge_run_helper(tap->helper,
++                                    tap->br ?: DEFAULT_BRIDGE_INTERFACE,
++                                    errp);
++            if (cpr && fd >= 0) {
++                cpr_save_fd(name, TAP_FD_INDEX(0), fd);
++            }
++        }
          if (fd == -1) {
--            return -1;
-+            ret = -1;
-+            goto out;
-         }
- 
-         if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
-             error_setg_errno(errp, errno, "Failed to set FD nonblocking");
--            return -1;
-+            ret = -1;
-+            goto out;
-         }
-         vnet_hdr = tap_probe_vnet_hdr(fd, errp);
-         if (vnet_hdr < 0) {
-             close(fd);
--            return -1;
-+            ret = -1;
-+            goto out;
-         }
+             ret = -1;
+             goto out;
+@@ -934,13 +962,14 @@ free_fail:
  
          net_init_tap_one(tap, peer, "bridge", name, ifname,
-@@ -926,14 +938,16 @@ free_fail:
+                          script, downscript, vhostfdname,
+-                         vnet_hdr, fd, &err);
++                         vnet_hdr, fd, TAP_VHOSTFD_INDEX(0), &err);
          if (err) {
              error_propagate(errp, err);
              close(fd);
--            return -1;
-+            ret = -1;
-+            goto out;
+             ret = -1;
+             goto out;
          }
++
      } else {
          g_autofree char *default_script = NULL;
          g_autofree char *default_downscript = NULL;
-         if (tap->vhostfds) {
-             error_setg(errp, "vhostfds= is invalid if fds= wasn't specified");
--            return -1;
-+            ret = -1;
-+            goto out;
+@@ -965,8 +994,14 @@ free_fail:
          }
  
-         if (!script) {
-@@ -954,14 +968,16 @@ free_fail:
-             fd = net_tap_init(tap, &vnet_hdr, i >= 1 ? "no" : script,
-                               ifname, sizeof ifname, queues > 1, errp);
+         for (i = 0; i < queues; i++) {
+-            fd = net_tap_init(tap, &vnet_hdr, i >= 1 ? "no" : script,
+-                              ifname, sizeof ifname, queues > 1, errp);
++            fd = cpr ? cpr_find_fd(name, TAP_FD_INDEX(i)) : -1;
++            if (fd < 0) {
++                fd = net_tap_init(tap, &vnet_hdr, i >= 1 ? "no" : script,
++                                ifname, sizeof ifname, queues > 1, errp);
++                if (cpr && fd >= 0) {
++                    cpr_save_fd(name, TAP_FD_INDEX(i), fd);
++                }
++            }
              if (fd == -1) {
--                return -1;
-+                ret = -1;
-+                goto out;
-             }
- 
-             if (queues > 1 && i == 0 && !tap->ifname) {
-                 if (tap_fd_get_ifname(fd, ifname)) {
-                     error_setg(errp, "Fail to get ifname");
-                     close(fd);
--                    return -1;
-+                    ret = -1;
-+                    goto out;
-                 }
-             }
- 
-@@ -972,12 +988,14 @@ free_fail:
+                 ret = -1;
+                 goto out;
+@@ -984,7 +1019,9 @@ free_fail:
+             net_init_tap_one(tap, peer, "tap", name, ifname,
+                              i >= 1 ? "no" : script,
+                              i >= 1 ? "no" : downscript,
+-                             vhostfdname, vnet_hdr, fd, &err);
++                             vhostfdname, vnet_hdr,
++                             fd, TAP_VHOSTFD_INDEX(i),
++                             &err);
              if (err) {
                  error_propagate(errp, err);
                  close(fd);
--                return -1;
-+                ret = -1;
-+                goto out;
-             }
-         }
+@@ -995,6 +1032,9 @@ free_fail:
      }
  
--    return 0;
-+out:
-+    return ret;
+ out:
++    if (ret && cpr) {
++        cpr_delete_fd_all(name);
++    }
+     return ret;
  }
  
- VHostNetState *tap_get_vhost_net(NetClientState *nc)
 -- 
 1.8.3.1
 
