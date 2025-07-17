@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC3AB089C0
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C72E0B089BE
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 11:50:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLG5-0003EG-5S; Thu, 17 Jul 2025 05:50:33 -0400
+	id 1ucLGI-0003Vu-Ez; Thu, 17 Jul 2025 05:50:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL0W-0001qJ-FY; Thu, 17 Jul 2025 05:34:29 -0400
+ id 1ucL0Y-0001rZ-GA; Thu, 17 Jul 2025 05:34:35 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucL0U-0001oG-NB; Thu, 17 Jul 2025 05:34:28 -0400
+ id 1ucL0W-0001oW-ME; Thu, 17 Jul 2025 05:34:30 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 78810137CEC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 84EB9137CED;
  Thu, 17 Jul 2025 12:34:04 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5D2762491E6;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 695D72491E7;
  Thu, 17 Jul 2025 12:34:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+Cc: qemu-stable@nongnu.org, Geoffrey Thomas <geofft@ldpreload.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 44/65] linux-user: Check for EFAULT failure in
- nanosleep
-Date: Thu, 17 Jul 2025 12:33:40 +0300
-Message-ID: <20250717093412.728292-5-mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 45/65] linux-user: Hold the fd-trans lock across fork
+Date: Thu, 17 Jul 2025 12:33:41 +0300
+Message-ID: <20250717093412.728292-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250717113032@cover.tls.msk.ru>
@@ -59,45 +58,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Geoffrey Thomas <geofft@ldpreload.com>
 
-target_to_host_timespec() returns an error if the memory the guest
-passed us isn't actually readable.  We check for this everywhere
-except the callsite in the TARGET_NR_nanosleep case, so this mistake
-was caught by a Coverity heuristic.
+If another thread is holding target_fd_trans_lock during a fork,
+then the lock becomes permanently locked in the child and the
+emulator deadlocks at the next interaction with the fd-trans table.
+As with other locks, acquire the lock in fork_start() and release
+it in fork_end().
 
-Add the missing error checks to the calls that convert between the
-host and target timespec structs.
-
-Coverity: CID 1507104
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Geoffrey Thomas <geofft@ldpreload.com>
+Fixes: c093364f4d91 "fd-trans: Fix race condition on reallocation of the translation table."
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2846
+Buglink: https://github.com/astral-sh/uv/issues/6105
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250710164355.1296648-1-peter.maydell@linaro.org>
-(cherry picked from commit c4828cb8502d0b2adc39b9cde93df7d2886df897)
+Message-ID: <20250314124742.4965-1-geofft@ldpreload.com>
+(cherry picked from commit e4e839b2eeea5745c48ce47144c7842eb7cd455f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 9b397bac7e..a8eea5dd52 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -11639,10 +11639,14 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-     case TARGET_NR_nanosleep:
-         {
-             struct timespec req, rem;
--            target_to_host_timespec(&req, arg1);
-+            if (target_to_host_timespec(&req, arg1)) {
-+                return -TARGET_EFAULT;
-+            }
-             ret = get_errno(safe_nanosleep(&req, &rem));
-             if (is_error(ret) && arg2) {
--                host_to_target_timespec(arg2, &rem);
-+                if (host_to_target_timespec(arg2, &rem)) {
-+                    return -TARGET_EFAULT;
-+                }
-             }
-         }
-         return ret;
+diff --git a/linux-user/fd-trans.h b/linux-user/fd-trans.h
+index 910faaf237..e14f96059c 100644
+--- a/linux-user/fd-trans.h
++++ b/linux-user/fd-trans.h
+@@ -36,6 +36,16 @@ static inline void fd_trans_init(void)
+     qemu_mutex_init(&target_fd_trans_lock);
+ }
+ 
++static inline void fd_trans_prefork(void)
++{
++    qemu_mutex_lock(&target_fd_trans_lock);
++}
++
++static inline void fd_trans_postfork(void)
++{
++    qemu_mutex_unlock(&target_fd_trans_lock);
++}
++
+ static inline TargetFdDataFunc fd_trans_target_to_host_data(int fd)
+ {
+     if (fd < 0) {
+diff --git a/linux-user/main.c b/linux-user/main.c
+index e2ec5970be..2cd867491b 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -149,12 +149,14 @@ void fork_start(void)
+     cpu_list_lock();
+     qemu_plugin_user_prefork_lock();
+     gdbserver_fork_start();
++    fd_trans_prefork();
+ }
+ 
+ void fork_end(pid_t pid)
+ {
+     bool child = pid == 0;
+ 
++    fd_trans_postfork();
+     qemu_plugin_user_postfork(child);
+     mmap_fork_end(child);
+     if (child) {
 -- 
 2.47.2
 
