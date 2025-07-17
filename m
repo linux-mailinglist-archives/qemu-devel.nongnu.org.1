@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEDAB08A31
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C706BB08A30
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Jul 2025 12:03:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucLM0-00037I-65; Thu, 17 Jul 2025 05:56:42 -0400
+	id 1ucLM6-0003oM-Ci; Thu, 17 Jul 2025 05:56:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucL6c-0008Nt-Kq
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 05:40:46 -0400
-Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
+ id 1ucLCJ-0004Rj-EL
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 05:46:41 -0400
+Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucL6a-0002pj-Nz
- for qemu-devel@nongnu.org; Thu, 17 Jul 2025 05:40:46 -0400
-Received: by mail-yw1-x1133.google.com with SMTP id
- 00721157ae682-7184015180fso8386757b3.2
- for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 02:40:44 -0700 (PDT)
+ id 1ucLCH-0003MN-Jd
+ for qemu-devel@nongnu.org; Thu, 17 Jul 2025 05:46:39 -0400
+Received: by mail-yb1-xb2d.google.com with SMTP id
+ 3f1490d57ef6-e8d70c65ad5so229399276.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Jul 2025 02:46:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752745243; x=1753350043; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752745596; x=1753350396; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=KT/cNhNrsVLlNFlNs9ur5OR9ca2bG5fE8QkwKdsISmA=;
- b=TC3lIfyRTiLKHMCeu0smL/moGjOu93iviFYnKfpuDKXkECmeFQjd4zfDt0xsJUyOmN
- T6rVqYxyyG3lSnh3UGLp7rJr7f7vHqMDC2G/QUZ5CB7YJ3ZhDEqeLNKi/+FgXAClckbz
- UlR+yi0zXAuYtHT/hY83o2PdUNS44V7OQiXU65EO8e/iRWt9c5Jyzd9rfzC+J1gT5p9T
- cs65zMV2y3jUUCkIONdSkDmGGB0i+qDCmqgMo7KsqCCkgbFRjEh1mjkhXys5GuF+azim
- nnVI7nH++DoHmYCZYnMcfmjgR0Ky5BEl5LSEPZQ7UkP5MGSG2LaVfZ22Lr0qlFvQ4jHo
- GLcg==
+ bh=8CioygTmfycSr8QAYzyE0OTziroi6lit3MpcoLG0JVQ=;
+ b=WMHPnWJF5ECR+4xNz4GPRAWhCHt1knE540humzK6yhNFZg0veUwZs10oQcCoQGrpb7
+ jh/C2MFehVJNkfd1DPBeCJzfpojpKceW1H89f3tMQG8czoHWu8QxOo/JiNTaB+KRkd7N
+ qvd+Vx4825JxdRHJEunurNHs2+tDdgfS8StUuVsc6QJIbrbcg4PehqfHTUqerpSfWZO/
+ EbMQVHFllBf5YG2SZ08+E0QW4WL78U0u+ODPd8H4Vklp4q2seszHOVN5uMXRKcaWda4D
+ 8P1NloZUkUWX4BhbbxJ9tBg84gQwjmRG/gtjFLgqoPVvwPpaEnU4F1tSjBjCMcSmUHnp
+ Dxwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752745243; x=1753350043;
+ d=1e100.net; s=20230601; t=1752745596; x=1753350396;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=KT/cNhNrsVLlNFlNs9ur5OR9ca2bG5fE8QkwKdsISmA=;
- b=J8+tnOLs338Rs98eNvAJ3kUJ9SGfH3KGhxs6FheK/o2olFTsVD4p8U/LBDkqrfucoN
- 7SEAjZZVxm64VMlLp/yo1AsEI7/FY45y3YiDmZLJGOyGqgM6RPcnP2O+c8h3Hr7bzDq8
- 22YT+BZdaP4rzGoNKrbRP4eQQU70oB0G7CwN6ngl5F7MKNaj9EwMhBHDk+qD4dtk5iYS
- PmTYgejufgTkd/vwoup6885WXtJUcqdAXpsPvuH7j4fXNLKV//ApRwYV4eQwy14fZJRK
- UTZZKpu5dnR8wgewzV27bnUiOF6rrPlbNfKz10hCWixPLpStYm+LOCu4CeiuOIeaCHn4
- eIpA==
-X-Gm-Message-State: AOJu0YySahRhdozK1pD9KDyUHucDvrs2wWEnyLaB+uY0ciraW+FpRq+v
- ZIilgz6sAgLG7+v5ukAKGanWmwMzatjwEU034NFOIJS2BX2JaSxzn9TupSE/6n6Hu20l68P+AOn
- otAjdBFz0kSLz/wS8YrtJftz+OJnsAOmJLPZhEHO2fg==
-X-Gm-Gg: ASbGncuVuIFlaLXLQ6tbkQREQ3kKF8D/Rq5JCiXvhepPWMh1ZHPPYUSd6Fy5hFofcIo
- UKC/De4ozAoi2Xt9E2wTvbtF/WxFU2C52QtXEU4WlvpFWREz34cPpMT08/EjLB9Ad4FA2Trob2D
- yod7n1UEkBrDv/HGZm9Xe35VNdzJ/hK0MBlxtv7hb1G+2i5SSq9fNCZXODzcANRPPX96q32UvY/
- RUPSktB
-X-Google-Smtp-Source: AGHT+IFBPVI8rWM8Qau+qY7/op+ABQ72OsePj8b5hpUDw5Dd5eCwgAyBGqsP7AzhXnnq6TyL/q0BkBqBtBeJ0zVsUOs=
-X-Received: by 2002:a05:690c:7343:b0:70e:7ae4:5a3e with SMTP id
- 00721157ae682-7183712c96dmr58072227b3.11.1752745243059; Thu, 17 Jul 2025
- 02:40:43 -0700 (PDT)
+ bh=8CioygTmfycSr8QAYzyE0OTziroi6lit3MpcoLG0JVQ=;
+ b=VrDhcNmFVeBup1GWT+1wjx74VNNhlVHGhvL1XE9jHgU4Cs7nbVUgefxwyWSJDo1vDu
+ Ih1/yzr5dCLlPk+OBX4fen/v8gMdwyJYXxpFi9L9cVTdR7ZaKuhrXGQD0YllVUewMnRa
+ uqHxRfJbWc7EgHHZX+gHXWBbkNNFcvIr6MShrgdcnhPl3qusZdESOxu1z/gh3myXiXL5
+ Q604X/18H6/hD8k++rOg6tXDeCPumZQbuVD1Uu8tqT8KgvS9E+MOrGib/uW7JMOYJkNE
+ XIvDxiS0UrgBi5tLGK0x2m5GxG17O88BtP0YZAUbgOcqdyWlsJgJpVJ3RZE9CqJqljUb
+ SIIw==
+X-Gm-Message-State: AOJu0YwH442TxdmAuI3dHmYtYyZE3y+5TYjUkD25jBI16b3n52h1BZDR
+ ZqJWNPGXu2ufECkb0PUZjogra/VKVylyIQCByJY8/QFjaFgplDF2cbZ1K3xyCM/feQhYQCesjTD
+ F0KkMCmLXMe/zHhxYtmJ8amkNgx/cDwS/lHea4hU+dQ==
+X-Gm-Gg: ASbGncu0sh2qnRlEvMJL980o5vrvej17nvxGlihMiza9TJUDYfSimj4GhlVKJTZOANC
+ UFGeJEkdF7mvLOXlb/c3+tfIy9NdmpHkdkcU7kDaJXCFD9TdieIQ3/O3yUwDYGtaGXcfIcMSr05
+ TcG3XT8FSM64Frh9IOrxaqI9he+qxrLJy5emeoI0to/aRPnx+j32GuH7dG+TibJmwNdYn6K9tm3
+ 2/f9UvzutcVsxxXXyg=
+X-Google-Smtp-Source: AGHT+IHhAlDDKzb5xF+qmj2ly+uE3KXFY5gguo1/WQPn9uCzn3MUs9pzxD5Zq/Xwr7GEXab2U79HIVQdPSY5BuNf7E0=
+X-Received: by 2002:a05:690c:6082:b0:6fb:1e5a:fcdd with SMTP id
+ 00721157ae682-71837109292mr80646997b3.17.1752745595969; Thu, 17 Jul 2025
+ 02:46:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250530071250.2050910-1-pbonzini@redhat.com>
- <20250530071250.2050910-21-pbonzini@redhat.com>
-In-Reply-To: <20250530071250.2050910-21-pbonzini@redhat.com>
+References: <20250714110406.117772-1-pbonzini@redhat.com>
+ <20250714110406.117772-16-pbonzini@redhat.com>
+In-Reply-To: <20250714110406.117772-16-pbonzini@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 17 Jul 2025 10:40:31 +0100
-X-Gm-Features: Ac12FXx4YpBtJY66w70lyO7YrV280bpxC-tvkNIE2fAVoe8AVQaFGsiWfPF4iWI
-Message-ID: <CAFEAcA8XdxQbvSJmo9BZOcxojTNgaFvCdO4xDuUi0eXcj13uAw@mail.gmail.com>
-Subject: Re: [PULL 20/77] i386/tdx: Initialize TDX before creating TD vcpus
+Date: Thu, 17 Jul 2025 10:46:23 +0100
+X-Gm-Features: Ac12FXy8-gBLS_ae3mCElDrpJ2AcoQkry5b26YxJUKHiKow1fx1K5pl_AVW-jlI
+Message-ID: <CAFEAcA9Hz0K9Z27mVs2fYcXpa-1p=kJvtgWEVjGTg-C+-egnVg@mail.gmail.com>
+Subject: Re: [PULL 15/77] i386/tdx: handle
+ TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT
 To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>, 
- Gerd Hoffmann <kraxel@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1133.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,35 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 30 May 2025 at 08:23, Paolo Bonzini <pbonzini@redhat.com> wrote:
+On Mon, 14 Jul 2025 at 12:13, Paolo Bonzini <pbonzini@redhat.com> wrote:
 >
 > From: Xiaoyao Li <xiaoyao.li@intel.com>
 >
-> Invoke KVM_TDX_INIT_VM in kvm_arch_pre_create_vcpu() that
-> KVM_TDX_INIT_VM configures global TD configurations, e.g. the canonical
-> CPUID config, and must be executed prior to creating vCPUs.
+> Record the interrupt vector and the apic id of the vcpu that calls
+> TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT.
 >
-> Use kvm_x86_arch_cpuid() to setup the CPUID settings for TDX VM.
+> Inject the interrupt to TD guest to notify the completion of <GetQuote>
+> when notify interrupt vector is valid.
 >
-> Note, this doesn't address the fact that QEMU may change the CPUID
-> configuration when creating vCPUs, i.e. punts on refactoring QEMU to
-> provide a stable CPUID config prior to kvm_arch_init().
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Link: https://lore.kernel.org/r/20250703024021.3559286-5-xiaoyao.li@intel.com
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Hi; I noticed something odd about this change when I was
-investigating a false-positive Coverity issue:
+Hi; Coverity (CID 1612364) thinks the locking might not
+be right in this code change (though it has a fairly
+simple heuristic so it may be wrong):
 
-> @@ -162,6 +265,8 @@ static void tdx_guest_init(Object *obj)
->      ConfidentialGuestSupport *cgs = CONFIDENTIAL_GUEST_SUPPORT(obj);
->      TdxGuest *tdx = TDX_GUEST(obj);
+
+> @@ -1154,6 +1179,9 @@ static void tdx_get_quote_completion(TdxGenerateQuoteTask *task)
+>          error_report("TDX: get-quote: failed to update GetQuote header.");
+>      }
 >
-> +    qemu_mutex_init(&tdx->lock);
+> +    tdx_inject_interrupt(tdx_guest->event_notify_apicid,
+> +                         tdx_guest->event_notify_vector);
+
+In this function we access tdx_guest->event_notify_apicid
+and event_notify_vector without taking any lock...
+
 > +
+>      g_free(task->send_data);
+>      g_free(task->receive_buf);
+>      g_free(task);
 
-This adds a qemu_mutex_init() call, but we were already
-doing that later on in this function, so now we init the mutex twice.
+> +void tdx_handle_setup_event_notify_interrupt(X86CPU *cpu, struct kvm_run *run)
+> +{
+> +    uint64_t vector = run->tdx.setup_event_notify.vector;
+> +
+> +    if (vector >= 32 && vector < 256) {
+> +        qemu_mutex_lock(&tdx_guest->lock);
+> +        tdx_guest->event_notify_vector = vector;
+> +        tdx_guest->event_notify_apicid = cpu->apic_id;
+> +        qemu_mutex_unlock(&tdx_guest->lock);
 
->      cgs->require_guest_memfd = true;
->      tdx->attributes = 0;
+...but here when we are setting those fields we take the
+tdx_guest->lock.
+
+Should we hold the tdx_guest->lock also when we read the
+fields in tdx_get_quote_completion() ?
 
 thanks
 -- PMM
