@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCD5B0A9C1
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 19:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0B8B0A9A4
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 19:38:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucp8b-00009i-Ar; Fri, 18 Jul 2025 13:44:49 -0400
+	id 1ucp28-0001wX-3I; Fri, 18 Jul 2025 13:38:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucov2-00054b-30
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 13:30:48 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1ucov3-00055a-An
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 13:30:51 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucouy-0000rR-NT
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 13:30:47 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3a588da60dfso1454243f8f.1
- for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 10:30:43 -0700 (PDT)
+ id 1ucouz-0000s8-Pv
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 13:30:48 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-45619d70c72so27916785e9.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 10:30:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752859843; x=1753464643; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752859844; x=1753464644; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VyMsfSztYFHbGVMCLKLC5I8Ijnyva6nXu44zZ1IshgE=;
- b=ljupMkHrAwyFR9XozWzoypbNuZqqiZDg4n0HEJuO5c6aPfpLTjo6zbZuUaohmE106J
- 5LiWxtbgq0EbDIEQR90PDHN+eveBM9P2s+19UzTOQjdGdQjpd4cMw98g0wxh7ZG7gfNb
- ThwInp5LjbR3gnK2BAZFSS0GlSFZAvqowIKQiLzGzwmX2zygy5vTyV+BALdMvGhsNqUe
- HMu1m2f3k9Nspf6MROhYGe/D7fi2lqkW2QMU+mRu9JYqPtBlaFcmIHp1Q6IOFgOkxqok
- g4/eC2V2NGAd1Fk0+AuU99lvuiFUm7UF9oBXv6HbpC/WHbjKqI2JNywgf5iTWbKnStt6
- wqJQ==
+ bh=XvEZoZH3mUSnAV2VTJKTR+Ia4eaH8LTVsbCwMx9JGI4=;
+ b=dOFS40arjTd82yGeo/6/JZeJh8EtxaQ3O+PQu8GCP9We7ZQLMSe65/svq0PzjwdRgA
+ cgDTpmj7xEF3YwT3SLemPul9AtqCoQ+pR0vedc8l4qr2GxhtnQvkl3gXmMuFzq3+e/PM
+ BgMwh/vwnhwIFFdJbWY2FLz8ELccxJjA50DlWjtKQGm8aGkYHBS+b6NDT8nWnm1ujslp
+ QcfAM6y0bcVawBQDDynGbPBjeRM4/Tv1SVWWDLZRt5UF+fipOg+Y1Ij2qvNV+i0r7DaL
+ rlOLhkOPR4Wj6yFtut1Jt3WtfjROhfPt5LD6TiDGRt3jkIMN6R7AXFSeaEsH4scG9ZFL
+ FXew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752859843; x=1753464643;
+ d=1e100.net; s=20230601; t=1752859844; x=1753464644;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VyMsfSztYFHbGVMCLKLC5I8Ijnyva6nXu44zZ1IshgE=;
- b=L4Qm7pHUUNrNIFCGGq9mrDg1CzTk7qD24vxCfDwaGk2gZeYYI57SH77MjxJe2EqpdR
- r+r59w+xDAHF7y5XhcpbceCqvCPn3qFoSPlAnvOKp+bDB95c+JVtx+U4O9mg/gYjijcr
- +s9gIjdgz1R/nT6lHbT9LI7mizt6AG97H54hXRBSKhm/Q93yLr3bSPaganmgIX9tda1s
- aXDKpb4f+lmMYHBUYqp3JmsAVbRcV92RBtBsDDNeBAkMPxo1fVzj7rY/x0DhhWuj0qZh
- Db+HsU9h/4D3+LKu7Z/DWBFqDSVpk2SHM40GCIeSAo2XBoG9fGUuRq8TeyZfq16JXdVw
- eOlQ==
+ bh=XvEZoZH3mUSnAV2VTJKTR+Ia4eaH8LTVsbCwMx9JGI4=;
+ b=I78lVfXnq6FptUPyfp/vRVVyOceCNw/fAwVDVYlqAHa3cYVxsi0hnichqamjJ27nwA
+ 36N8byRVBeIN8nIhtOPDjHbb/CQcusen2WYJ/eH1VM6PziPgWqavoI6O4drNC5LfUbZf
+ KpVhGwwm/o32X5xiBtL9L7ZgmJuLSnVaEFzuGpouI0nm2DqasxfNW/b97q6QOLlWdXNb
+ bwN9NH/UUSIJxBTLUXc18Yrq43ckwp9aOh3dnIUi9BPb58BbSqNrf2/21Z/YKNhYD+En
+ Vkip9RCvtWNov/g7aryFafmrHR4rjnzwWgsoCgiQRMJMZbbFYjBoHmKDiGB1+wRZTqnv
+ uMig==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVdzEK9tiIHK6CwfurKo51MCAm2QjQfQiVq0lrA23wTXDGvsstb0Y87gyCN6hrgyVgxWeCAuj5/5d2R@nongnu.org
-X-Gm-Message-State: AOJu0YwjOu+tV03bM0QylVslcQjSbjSVkY2sZnb/oppmpnqkwwwJTUMW
- XcKBZdKRYSne+QAeR16kioFvWNJ85m5lSJOzMZ9sZ21nnwD5/xkxBkINjXvSqyy/bC1wurr3zk6
- 2hAnH
-X-Gm-Gg: ASbGncsyGN5AvqnC7nBeKK1WC1CexPHq4o141jri+WzdMaWuBrrSRQs+uUxCZwgs0qZ
- Oali8fHeBtApYBbwPh+9Y8F3HCKEX8ujpylbv3pA4ZStciAWoWVVpGoxO0w7QvVhfGkGgPIadH7
- xC0XWPFJHOBztoiNUu7Mqp22kmIcVmYyDQL6pJMsxGvH0uSoQlxxpDjORzh6RDPXyMeYdClJhUD
- I1s6FU2Y+nGlvffxVclX3J11ayQdTb7rpZOv04VMAhg1yCwiO5LPr2O6e/OxrE0+R4D3hS3vfh8
- GVVVY/2YmpH6FZzFQDQiJCfUj+VYl6wyntA8sadk73Inl+3l8Iktz5fobWEAPIoxBTs4Rsu7PQ3
- 8rCaPd7ZvIxGRdCzQ3xmEXiwzQc5nim7sVj+TJBw=
-X-Google-Smtp-Source: AGHT+IF8JvaDI+K4gJ6Ood9Ko2I0lJRIE7kQvERFUFXAxL5aRNdguIns1WeHEMxzzgU7H6yDCVb6vw==
-X-Received: by 2002:a05:6000:2002:b0:3a3:ec58:ebf2 with SMTP id
- ffacd0b85a97d-3b60e4c4915mr7728316f8f.7.1752859842562; 
- Fri, 18 Jul 2025 10:30:42 -0700 (PDT)
+ AJvYcCXK4mTfUb8fTurkakt2EWkRFrbQ8QR9AkZO2ucS+UuFfizwC/Oju33MI3ZKzPK/RWqIKzu2FPZPxnNC@nongnu.org
+X-Gm-Message-State: AOJu0Ywex/8q4bPpQ1ErCO7lMY+k4UGQnQOqIM3DqK55houdRplRQgHZ
+ IVkzQIdZQgWG4aCFw7IA07EWLQcGI3dwIPQyZZfkDLm6ikOEOqY1lNIvAdR25LZhBYbNVQC2ym3
+ mlMDp
+X-Gm-Gg: ASbGncujdrKv+dcc9RCHcDqC2K2KrUiRxn2Y8ybDgtJ/o1l6XBV1zozKNpe5GYZHY+L
+ sXIHAnKP27B0IAqpNCBAtlP/KhjOOqkKVWxEEZhAw7ss6ELVMxEOzRIrZAfn8MBVNVHAzbgK3t5
+ 6ZgDDkHMCg+9/LtctTyFgo1V213ZVsewkZ4zJZwIVcopPul1FFPSeffdKqqvdkP5hzyqg0sA/aK
+ 3NkYa1Ia0FGTq+Z3CWrigoTySFm4k7J+EonDp6LEfTVF74RN1q30xDVc8ppF0onXdlNtqWszhgl
+ WN0NfLIx0AE1txaDwv5NDDYZGWoaBX5aXH0pnSOWSpCw4Xrm33jmVvZ9AX2cXj6aLCJEewSSzHI
+ 30FPKgvL8azA6CUShwDbUXLFzduS6fvXROrtwCXk=
+X-Google-Smtp-Source: AGHT+IFrnkwHPbSooHVEXVPASDSTgFr48II+Atg7XpMzelaM+pU51pxQrmZcUuFUHaUMFnjvgtSzvQ==
+X-Received: by 2002:a5d:5f47:0:b0:3a5:7895:7f6b with SMTP id
+ ffacd0b85a97d-3b613ab26f5mr7415234f8f.7.1752859843644; 
+ Fri, 18 Jul 2025 10:30:43 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca25443sm2454655f8f.9.2025.07.18.10.30.41
+ ffacd0b85a97d-3b61ca25443sm2454655f8f.9.2025.07.18.10.30.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Jul 2025 10:30:41 -0700 (PDT)
+ Fri, 18 Jul 2025 10:30:42 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH for-10.1 06/10] target/arm: Add BFMLA, BFMLS (indexed)
-Date: Fri, 18 Jul 2025 18:30:28 +0100
-Message-ID: <20250718173032.2498900-7-peter.maydell@linaro.org>
+Subject: [PATCH for-10.1 07/10] target/arm: Correct sense of FPCR.AH test for
+ FMAXQV and FMINQV
+Date: Fri, 18 Jul 2025 18:30:29 +0100
+Message-ID: <20250718173032.2498900-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250718173032.2498900-1-peter.maydell@linaro.org>
 References: <20250718173032.2498900-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,78 +102,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FEAT_SVE_B16B16 adds bfloat16 versions of the FMLA and FMLS insns in
-the SVE floating-point multiply-add (indexed) insn group.  Implement
-these.
+When we implemented the FMAXQV and FMINQV insns we accidentally
+inverted the sense of the FPCR.AH test, so we gave the AH=1 behaviour
+when FPCR.AH was zero, and vice-versa.  (The difference is limited to
+hadling of negative zero and NaN inputs.)
 
-Fixes: 7b1613a1020d2942 ("target/arm: Enable FEAT_SME2p1 on -cpu max")
+Fixes: 1de7ecfc12d05 ("target/arm: Implement FADDQV, F{MIN, MAX}{NM}QV for SVE2p1")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/sve.decode      |  2 ++
- target/arm/tcg/translate-sve.c | 25 ++++++++++++++++---------
- 2 files changed, 18 insertions(+), 9 deletions(-)
+ target/arm/tcg/translate-sve.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
-index a76f2236f43..a77b725c876 100644
---- a/target/arm/tcg/sve.decode
-+++ b/target/arm/tcg/sve.decode
-@@ -1052,9 +1052,11 @@ FCMLA_zzxz      01100100 11 1 index:1 rm:4 0001 rot:2 rn:5 rd:5 \
- ### SVE FP Multiply-Add Indexed Group
- 
- # SVE floating-point multiply-add (indexed)
-+FMLA_zzxz       01100100 0. 1 ..... 000010 ..... .....  @rrxr_3 esz=0
- FMLA_zzxz       01100100 0. 1 ..... 000000 ..... .....  @rrxr_3 esz=1
- FMLA_zzxz       01100100 10 1 ..... 000000 ..... .....  @rrxr_2 esz=2
- FMLA_zzxz       01100100 11 1 ..... 000000 ..... .....  @rrxr_1 esz=3
-+FMLS_zzxz       01100100 0. 1 ..... 000011 ..... .....  @rrxr_3 esz=0
- FMLS_zzxz       01100100 0. 1 ..... 000001 ..... .....  @rrxr_3 esz=1
- FMLS_zzxz       01100100 10 1 ..... 000001 ..... .....  @rrxr_2 esz=2
- FMLS_zzxz       01100100 11 1 ..... 000001 ..... .....  @rrxr_1 esz=3
 diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 37ecbc2b7c0..fc76624b5a1 100644
+index fc76624b5a1..2ed440aff15 100644
 --- a/target/arm/tcg/translate-sve.c
 +++ b/target/arm/tcg/translate-sve.c
-@@ -3883,24 +3883,31 @@ DO_SVE2_RRXR_ROT(CDOT_zzxw_d, gen_helper_sve2_cdot_idx_d)
-  *** SVE Floating Point Multiply-Add Indexed Group
-  */
- 
-+static bool do_fmla_zzxz(DisasContext *s, arg_rrxr_esz *a,
-+                         gen_helper_gvec_4_ptr *fn)
-+{
-+    /* These insns use MO_8 to encode BFloat16 */
-+    if (a->esz == MO_8 && !dc_isar_feature(aa64_sve_b16b16, s)) {
-+        return false;
-+    }
-+    return gen_gvec_fpst_zzzz(s, fn, a->rd, a->rn, a->rm, a->ra, a->index,
-+                              a->esz == MO_16 ? FPST_A64_F16 : FPST_A64);
-+}
-+
- static gen_helper_gvec_4_ptr * const fmla_idx_fns[4] = {
--    NULL,                       gen_helper_gvec_fmla_idx_h,
-+    gen_helper_gvec_bfmla_idx, gen_helper_gvec_fmla_idx_h,
-     gen_helper_gvec_fmla_idx_s, gen_helper_gvec_fmla_idx_d
+@@ -4020,7 +4020,7 @@ static gen_helper_gvec_3_ptr * const fmaxqv_ah_fns[4] = {
+     gen_helper_sve2p1_ah_fmaxqv_s, gen_helper_sve2p1_ah_fmaxqv_d,
  };
--TRANS_FEAT(FMLA_zzxz, aa64_sve, gen_gvec_fpst_zzzz,
--           fmla_idx_fns[a->esz], a->rd, a->rn, a->rm, a->ra, a->index,
--           a->esz == MO_16 ? FPST_A64_F16 : FPST_A64)
-+TRANS_FEAT(FMLA_zzxz, aa64_sve, do_fmla_zzxz, a, fmla_idx_fns[a->esz])
+ TRANS_FEAT(FMAXQV, aa64_sme2p1_or_sve2p1, gen_gvec_fpst_arg_zpz,
+-           (s->fpcr_ah ? fmaxqv_fns : fmaxqv_ah_fns)[a->esz], a, 0,
++           (s->fpcr_ah ? fmaxqv_ah_fns : fmaxqv_fns)[a->esz], a, 0,
+            a->esz == MO_16 ? FPST_A64_F16 : FPST_A64)
  
- static gen_helper_gvec_4_ptr * const fmls_idx_fns[4][2] = {
--    { NULL, NULL },
-+    { gen_helper_gvec_bfmls_idx, gen_helper_gvec_ah_bfmls_idx },
-     { gen_helper_gvec_fmls_idx_h, gen_helper_gvec_ah_fmls_idx_h },
-     { gen_helper_gvec_fmls_idx_s, gen_helper_gvec_ah_fmls_idx_s },
-     { gen_helper_gvec_fmls_idx_d, gen_helper_gvec_ah_fmls_idx_d },
+ static gen_helper_gvec_3_ptr * const fminqv_fns[4] = {
+@@ -4032,7 +4032,7 @@ static gen_helper_gvec_3_ptr * const fminqv_ah_fns[4] = {
+     gen_helper_sve2p1_ah_fminqv_s, gen_helper_sve2p1_ah_fminqv_d,
  };
--TRANS_FEAT(FMLS_zzxz, aa64_sve, gen_gvec_fpst_zzzz,
--           fmls_idx_fns[a->esz][s->fpcr_ah],
--           a->rd, a->rn, a->rm, a->ra, a->index,
--           a->esz == MO_16 ? FPST_A64_F16 : FPST_A64)
-+TRANS_FEAT(FMLS_zzxz, aa64_sve, do_fmla_zzxz, a,
-+           fmls_idx_fns[a->esz][s->fpcr_ah])
+ TRANS_FEAT(FMINQV, aa64_sme2p1_or_sve2p1, gen_gvec_fpst_arg_zpz,
+-           (s->fpcr_ah ? fminqv_fns : fminqv_ah_fns)[a->esz], a, 0,
++           (s->fpcr_ah ? fminqv_ah_fns : fminqv_fns)[a->esz], a, 0,
+            a->esz == MO_16 ? FPST_A64_F16 : FPST_A64)
  
  /*
-  *** SVE Floating Point Multiply Indexed Group
 -- 
 2.43.0
 
