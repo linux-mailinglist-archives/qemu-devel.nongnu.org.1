@@ -2,97 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5E7B0A57A
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 15:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D70B0A59E
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 15:55:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uclOG-0000We-7X; Fri, 18 Jul 2025 09:44:44 -0400
+	id 1uclXT-0002ik-IL; Fri, 18 Jul 2025 09:54:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uclO2-0000SA-AB
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 09:44:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1uclSd-0005vI-Bl
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 09:49:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uclO0-00078i-Eh
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 09:44:30 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1uclSb-0008PY-M9
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 09:49:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752846265;
+ s=mimecast20190719; t=1752846552;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=s2+GrSOjq5KttP/Ki1fhgykpHMooKGjZ+P9E74TQdV0=;
- b=eOHYclIMyd+892g8/c+JOrlRT/EAR/ijYM9qeeDTNgVxcHs3TSCJ4c8OjY0NgQAYW/uY9O
- cdp3JGIOBkSODASnrDe9CX5am12aR1G9aKnmjhdUvPbLQYUBF0jlPqarBYzX9e16dcJxG0
- TV26j9vBMneaQ/UVhubtbJgZuybsXxM=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mjGlNlf8zwpGQynY2vEPoNssNpsDu6qikmmpoXGF1Kk=;
+ b=ItxbDnB6e9/3TuNqzp7PuE6SxKaYpbKIeOD7tjfuZwoHxsE/szxqjOr2AbaC+klmwiur2b
+ oJvnxyHlAkFsTEj3ycHguV3uPP2PlwLpgwD/NUx+QCPZNwo+onYW7ouXMxT6vwwfDnYPoT
+ OiiaB8hogzbkSOe+bmc1W68MWlVZ8LQ=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-375-hr-FB83rPAmvel1bYhyf9g-1; Fri, 18 Jul 2025 09:44:24 -0400
-X-MC-Unique: hr-FB83rPAmvel1bYhyf9g-1
-X-Mimecast-MFC-AGG-ID: hr-FB83rPAmvel1bYhyf9g_1752846263
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ae3c5ca46f2so169488666b.2
- for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 06:44:23 -0700 (PDT)
+ us-mta-680-aahiOxrUMyy9gPvw3q5YGA-1; Fri, 18 Jul 2025 09:49:10 -0400
+X-MC-Unique: aahiOxrUMyy9gPvw3q5YGA-1
+X-Mimecast-MFC-AGG-ID: aahiOxrUMyy9gPvw3q5YGA_1752846550
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6fb0e344e3eso20959136d6.1
+ for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 06:49:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752846263; x=1753451063;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=s2+GrSOjq5KttP/Ki1fhgykpHMooKGjZ+P9E74TQdV0=;
- b=IG9HAhZz/Lnok5KRT/j71WT0vSgki5ChO0zME71M6RaMkRgUDxQiozZ1mZT8hC+toP
- gk7xuttoQhEz6P1HoEtZqlaNK+BGbdknZ1lGcLsqny5JuYbFjBRyBR+QZJwuoozmAyBL
- xR0v2tqFVWgeMDUCkxUR/wHOHJbVJR2OHEKSFKGoj5YzgZzN6+UgT4l4MP7kF/MKKrZK
- y6ijy6HLPqVMjUE3q/KCK1Aqh9ROnwS5IzAAkBLCOogop9XPfgnKjh8ucKDQML/pkLfZ
- nMWRyaJ6qzND/MAEbJ/Ws+HsKX3XNEYCC79Tj/vuBkqMzOEjYf8n7xf+swz2h3qnUcOU
- N/SQ==
-X-Gm-Message-State: AOJu0YwUqFfP03kAeMdLBLnQs3eEYsziMVWTAG898Sef/nAbQB8hG+6k
- K7ONcxpau1gh/7V2wLjw7xdIhQdMyXeE2Y+rXkQuDR1B2Y4UOHRSHjPZShpHNaOSRJv7mRftLzZ
- pwxOvvhcZAEDWQlhmeGaTDYl9rRtrje8Ndp2ZeKbVQOE5xa6v5xvgFrCT
-X-Gm-Gg: ASbGncvI+/GQxQP6mWDIimeVnvUkZo0OuGpuTjqdziXswgwwLXIJMUQlVO7FYotlQrC
- mkK8LpiEvUkezi/QI1YACcm7w4D+SMik0Zqs5KFOCkPQeZXrE7AvJKeqZVxScpvutCVWPlK5bxX
- 3jfyt7jWud1cUbwCtws4nl4ZxHwFnLsUuoiIbfN/HiJIP5Tf1v3sxtRvw+AxsKThvo57InvvIKm
- 1otZqtLWsUs7VBl68B5GlikEsDBuWbtESTETbfDJnqzfjKmNIocd9Cns1AATtiWcoNhGm63WCcX
- GCqBqgqXE77YPG6XKXlVoSVXMo0Ya0DIDO3KE5pWLESmTmeRYv8ELHqPrrrK5j6zI/6BFqnno2Y
- 9M/Doj9HwWOc=
-X-Received: by 2002:a17:907:3c82:b0:ade:2e4b:50d1 with SMTP id
- a640c23a62f3a-ae9ce0a5a13mr1051132766b.29.1752846262759; 
- Fri, 18 Jul 2025 06:44:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzkc2i1OIXfCMc4KRkOqG1yPz743WRAu2XBFMZP1MAbJ+5jKuTTSGOb+rqU8G1uY3dT4yW0A==
-X-Received: by 2002:a17:907:3c82:b0:ade:2e4b:50d1 with SMTP id
- a640c23a62f3a-ae9ce0a5a13mr1051127866b.29.1752846262235; 
- Fri, 18 Jul 2025 06:44:22 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c?
- ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aec6ca310aasm123506466b.72.2025.07.18.06.44.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 18 Jul 2025 06:44:21 -0700 (PDT)
-Message-ID: <a137cad8-862f-4601-93ca-b1d9240acc71@redhat.com>
-Date: Fri, 18 Jul 2025 15:44:20 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 13/13] net: implement UDP tunnel features offloading
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ d=1e100.net; s=20230601; t=1752846550; x=1753451350;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mjGlNlf8zwpGQynY2vEPoNssNpsDu6qikmmpoXGF1Kk=;
+ b=TD8hCti7UwOrr1X559/wpizNDvQo9SizGhCPzKP7rB/LKUP8Uz7Ajoj5IIDzpjPKKd
+ /7HzQpb7dtyBGEPBdv40MsQzj2YIxUkuHQOJfgoZOVHe6XgcGG8lWj2S/uwn82ccuQLv
+ MOqezIRXjfqYnHK6nPq0/36Fs24e3MUXgBZYkbw5YyPM2o8sUpVruYosxXQO41LyBq8f
+ +A7o3GMcP2aSZ81D2gVolwHSN83POdxvHxtm82bulNS36LLW1TYkFFNUAphNf6ZPtuMR
+ seIDzGkku4+jZ+OtWDU5isi0XSqHCBG+YaJ2sVTvDwA+pjWz1KAoLWrYImquV0q4Znoc
+ 09kg==
+X-Gm-Message-State: AOJu0YyFPg3g3QIm48jHIFv0kCGlkaYMSPGR+ZHm6kAIzukKbZzpWcav
+ ssGjZTEazIn39j60q/9BeGlimPaF8K9e6wRnf1tIHKV6UPPxJrACH7V6Ph8hCji73rI12PnllDK
+ 6FduilbEcZK5WGFRenHrRWP4IQYGZnU+1bPuhNzZmLQ3zz1Z4GvKpTBG7
+X-Gm-Gg: ASbGncvJdWCxOoHf3JeAUO0V1Pux8Ex8A255OXYN9RNrmNSNnPBPw4Ag/sw2xjl8Xue
+ xdN32jWHnkmLpkwfga4sWngwDo4434t5VjpdCyfzSeiIl0aZPLepTZ86gB20mSMRJIayKmTWF9x
+ ClRmHO1OK0OosNaFzkNWQTvJUTt8ofhnZC2RZDG+67l+//H1wejH/HSw1mCeoF4HicqJCCCUZHT
+ 09b7Fr5tkdK9JWcYNkFHmFZHaMs/GJ1hb7AeR0ZOhfafQwJUx7yMg4FbVUcMTNyyGvgOPvwD8q3
+ LTLt6wTH7Gtj7UbP9rfxJ5ovTAaJaUTJ/WncvTUSrC/4r+VEFvAI7l2Rx8Q4zUzDNAn13jqbQrX
+ ean1aFRnzOLV2ioY=
+X-Received: by 2002:a05:6214:3c88:b0:6e4:2f7f:d0bb with SMTP id
+ 6a1803df08f44-704f69d2e2amr116970806d6.4.1752846550218; 
+ Fri, 18 Jul 2025 06:49:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1ytU/9AFkclHqqERvVcEGpp16bR3Z+MIdD5y1g8q3lBEalfyjUDnC/Wq7BCKS4E8rg1cBjA==
+X-Received: by 2002:a05:6214:3c88:b0:6e4:2f7f:d0bb with SMTP id
+ 6a1803df08f44-704f69d2e2amr116970236d6.4.1752846549550; 
+ Fri, 18 Jul 2025 06:49:09 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-45-205-118.retail.telecomitalia.it.
+ [79.45.205.118]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-7051ba93626sm7630916d6.87.2025.07.18.06.49.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 18 Jul 2025 06:49:09 -0700 (PDT)
+Date: Fri, 18 Jul 2025 15:48:59 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
  Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
  Jason Wang <jasowang@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Luigi Rizzo <lrizzo@google.com>, Giuseppe Lettieri
- <g.lettieri@iet.unipi.it>, Vincenzo Maffione <v.maffione@gmail.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
+ Luigi Rizzo <lrizzo@google.com>, Giuseppe Lettieri <g.lettieri@iet.unipi.it>, 
+ Vincenzo Maffione <v.maffione@gmail.com>, Eric Blake <eblake@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH RFC v3 13/13] net: implement UDP tunnel features offloading
+Message-ID: <fm3i2r4lmvzdjp4tly6gbk57knayn7533a27yzk2b3qc6o56io@idk2vwpexjfo>
 References: <cover.1752828082.git.pabeni@redhat.com>
  <b59ee8e3eb926dd510a7a0f2de16f3d0380589f0.1752828082.git.pabeni@redhat.com>
  <7eaaizkny73ki3o3ph7bi2x6y7cjtfgyupsbyywxmcismtkdvn@vtgzq3bfygzz>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <7eaaizkny73ki3o3ph7bi2x6y7cjtfgyupsbyywxmcismtkdvn@vtgzq3bfygzz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pabeni@redhat.com;
+ <a137cad8-862f-4601-93ca-b1d9240acc71@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <a137cad8-862f-4601-93ca-b1d9240acc71@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -117,34 +116,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/18/25 3:22 PM, Stefano Garzarella wrote:
-> On Fri, Jul 18, 2025 at 10:52:39AM +0200, Paolo Abeni wrote:
->> diff --git a/net/tap.c b/net/tap.c
->> index 23c6c118e7..2dfa843547 100644
->> --- a/net/tap.c
->> +++ b/net/tap.c
->> @@ -62,6 +62,8 @@ static const int kernel_feature_bits[] = {
->>     VIRTIO_F_NOTIFICATION_DATA,
->>     VIRTIO_NET_F_RSC_EXT,
->>     VIRTIO_NET_F_HASH_REPORT,
->> +    VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO,
->> +    VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO,
-> 
-> The *_GSO_CSUM are not supported by vhost-net, right?
-> (sorry, I don't know the details, it just occurred to me by looking at 
-> the fetaures we enable in the other patch.)
+On Fri, Jul 18, 2025 at 03:44:20PM +0200, Paolo Abeni wrote:
+>On 7/18/25 3:22 PM, Stefano Garzarella wrote:
+>> On Fri, Jul 18, 2025 at 10:52:39AM +0200, Paolo Abeni wrote:
+>>> diff --git a/net/tap.c b/net/tap.c
+>>> index 23c6c118e7..2dfa843547 100644
+>>> --- a/net/tap.c
+>>> +++ b/net/tap.c
+>>> @@ -62,6 +62,8 @@ static const int kernel_feature_bits[] = {
+>>>     VIRTIO_F_NOTIFICATION_DATA,
+>>>     VIRTIO_NET_F_RSC_EXT,
+>>>     VIRTIO_NET_F_HASH_REPORT,
+>>> +    VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO,
+>>> +    VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO,
+>>
+>> The *_GSO_CSUM are not supported by vhost-net, right?
+>> (sorry, I don't know the details, it just occurred to me by looking at
+>> the fetaures we enable in the other patch.)
+>
+>Yes, the kernel module supports/exposes only the 2 features above:
+>vhost-net need only to be aware of the exact virtio_net_header size,
+>which in turn depends just on them. Enabling/disabling the outer header
+>csum offload does not change the virtio_net_header struct.
+>
+>The actual csum offload is implemented by the tun device.
+>
+>Please LMK if the above solves your doubt.
 
-Yes, the kernel module supports/exposes only the 2 features above:
-vhost-net need only to be aware of the exact virtio_net_header size,
-which in turn depends just on them. Enabling/disabling the outer header
-csum offload does not change the virtio_net_header struct.
+Yes, thanks!
 
-The actual csum offload is implemented by the tun device.
-
-Please LMK if the above solves your doubt.
-
-Thanks,
-
-Paolo
+Stefano
 
 
