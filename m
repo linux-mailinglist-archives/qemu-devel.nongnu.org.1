@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C21FB0A193
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 13:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F11B0A190
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 13:06:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uciuA-0002wc-22; Fri, 18 Jul 2025 07:05:30 -0400
+	id 1uciu1-0002h7-RK; Fri, 18 Jul 2025 07:05:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ucitN-0002W2-GH
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 07:04:42 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1ucitO-0002YD-Th
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 07:04:43 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ucitL-0005nU-QY
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 07:04:41 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3a4f72cba73so1867108f8f.1
- for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 04:04:39 -0700 (PDT)
+ id 1ucitN-0005om-5q
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 07:04:42 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3a6e8b1fa37so1373970f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 04:04:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752836678; x=1753441478; darn=nongnu.org;
+ d=linaro.org; s=google; t=1752836679; x=1753441479; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4FE6XAW701ynTljBiWtyWjziNFIq+ltoCFGeQIJ6K/k=;
- b=ixs+rO0bKOBtOwPE/cYBg16RLF0OgQ2n9YqUmcxNIiWoUicSIa/Rwvwk5NkvWyTZDl
- WgKRd4HFS4steW3TkPObr8qcPp6Fgb9fHKWcjgWnpS+qzjeSgedYHqsRxmjzaAojhl9G
- HEMg1aEnN+KFRF5nOMvMGmxkIcbDyHCm5EZbFjHGJp0G9ypfjpcvh+E+N09XFzzHUUse
- goA73t/+8EQnFVrgIwbgIMV7lzq/rFtURhwzNDwnAdHXe/pWFD7SnJFPHYH3rrGFUCT5
- y84AeFMJKxWzeWcXy32B9VyaU/OLFxY6pwH4PPSysxO9RIf2fVugLL9VUcZ1XCpz9im+
- EgIw==
+ :reply-to; bh=nI52mj/NOpmVxIV/aC5RI+b8iaJ7jsY+o3+3JbLpnyM=;
+ b=W0umaNY8+upSIlPPea+SGejreaoHFpIAYKYkbvKXla+pt50IBG2mmmuYJ/z6AsxL+H
+ FbMbXXqOAh4ysm1Ba1Zpycbd4oKZF32lp2xnYf5jDMoqsHAMsxO+qT6+ceHHO3ZDf5nY
+ +++eSoZPU+Ty8Ck8Tu+1L/9UYfDKt5XfKw8nbl5jPmmM6K5L9S4pWsykPWBWEmH3QIbH
+ N4dwKChtXzhj6BKFnxfXhWWqHInnf/XJFOWFCV/kTo2F9RuqvVl9oWJ9f4EwqmFC6uAw
+ dw2i0CYvRc54dvXZJT2Kr5Vq6/g/LlVm/n3jHQ2jBMnE/mq1pQTaauXtXcKkJxR2NmiY
+ v37g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752836678; x=1753441478;
+ d=1e100.net; s=20230601; t=1752836679; x=1753441479;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4FE6XAW701ynTljBiWtyWjziNFIq+ltoCFGeQIJ6K/k=;
- b=BWGy16YAcThUMdBym0diApmrk/r08dQUQgAFcsLrSYcRB6MkShsMloBeY/G2Ym8AdJ
- MFVrUAnyRFWmhxMb8LwX6iEyHfOQWzKXWpMsn0bi8E37AiPe+APy3Ebd02jvaRy/DZEf
- Gxsi6CnxWuaghZNSO3P4r2vLFOaBpge31zX1Qb0xP4z19wbp8pGki3wpZylsUBBtC/mt
- o2LJGjcbER76+TriL2FaAq6aw9RLbCJMymyYrvZltYSnzqyY9K2HH8YGnjlshPNd6qcW
- 68pxyXwajOwmbvcnP9QHIQfZaMSJbD4xIiv2gIahCcMX2hlEcDWwrSEtiN14B686I2ij
- lumA==
-X-Gm-Message-State: AOJu0Yyh+q+o7aeQHGXS58i9LvPVoXdymWz+Q8/9qWCINvUuZNAimUE/
- zworXPXP+ymy3YLoIzNToNBlUrCWkd9OdOIWE7lEdUQm+S4udXF5LgluUG4keAmHhuBADY6w3rv
- 84eYY
-X-Gm-Gg: ASbGncuHqL8Vm4rbI5FEDFSP/NZnPJEEufWhhVlfksFTFIg5xPZUxL5mCjQhFV6g1i4
- zna8kLnjpH4gntXDYJGoL0nzPW28OCP7phHelWcPQxdb0QiaTIJTLIfD0ASz+ouB1hPluWC4q1g
- dECL9V+A1vfLdbk0v0x/25EKxceuszgC+lOgzwhdxAIAVvy8mtV7Nk6/5SRUd1DZrap1UWvSVnO
- EwJjsdK8DpCQCMTIiVpQosPR205bUO8v7G3kaY2B4mqrCijaoT3yF3B/b7reKkSNEmqnJ1YlTzX
- G9rv4oqcSIejlUh/ZJNQdHAjwFT7TlSCA500VpXMOPx/yfOpswa/DtqH1GX9nGdMqFZ173uOj8Q
- fPCUFlbyjI0tbF12MEyId+1VPkK1mLZBWsao62g4mEhOLmj0SuU7JL7FOftxJu4H77n8=
-X-Google-Smtp-Source: AGHT+IHM+lZWElOff+5DxezrZrsWWmT1EcamKr8fpRJIe3MI6BhiZyAlJDQSESwGWs5efTjbq9SQeg==
-X-Received: by 2002:a05:6000:2b02:b0:3a5:270e:7d3 with SMTP id
- ffacd0b85a97d-3b619cc16f8mr1857300f8f.13.1752836677880; 
- Fri, 18 Jul 2025 04:04:37 -0700 (PDT)
+ bh=nI52mj/NOpmVxIV/aC5RI+b8iaJ7jsY+o3+3JbLpnyM=;
+ b=XvW2NiqcOKfnBP81+Yikp0goahygz+AsMAAUFGVHaFPcesbhHwaSXY89UNOlBrfNwL
+ TFT18kf91cieEwQnDReDlJ5bTp/JcyTF/kjQd5UHeobIUPBDYA/L02X65B7vqZ0eXJMG
+ YgiHyrCGk/pJz56yt0ziKiRsQcr8FT0xiJUEiPNyzGmHt/BB4hvJNUxVj/HIzfu7MrFz
+ 4F7BV5bCmxrIypV/Bg4B5gJj8dkivX1/oTLYg4+lbmpOpcmwj4KnHC8MpOf175AI4dqp
+ CDLYc9EFQaMyISjgQ7irpA6B6Db6TNtW+OBKTdlf6SRK4g3Ze4/N5Ehb9xNF4wopkNrl
+ 6r/g==
+X-Gm-Message-State: AOJu0YxiZ4lGBOXKYIWFV+hPWs6DZZETe/d3XI3FEiM9/qgsd2kcMlSG
+ Agb/rCiTv8Y64fsEQd/FmoNEpu/jw5OpcXD7RYFRc3P/HlDGEQivQOC+tkX9llAPciTHkbQIvdo
+ 60Q2k
+X-Gm-Gg: ASbGncuxr573QfoPCTKhnDfDsD7EWV23C0gCE6vdJ/p6uUYsEfR6WqZApvVDPefg+h7
+ wwzQbsjv+dzOUeshjl8zLcCQ8jKqUrLkiDgMZvS4b36rNkq7quttgMx7rBc7+g9SMiSe70JydWr
+ X2rzRNyCpA55LG7LpLA9bVJ8YabJ42mopohpO1jZeDdgaNebG0FFvZxDHfNZWpjc5zlxK65rhG9
+ 17ahDLuldp5NLDrzCQt/wFSty6dyrXJmsak0dBGcddjOS+lwNZnjhSaaPEs1O32y7WL/9f5iX3w
+ B9yukpMAcERqkoe5NkdPUzc4bdJPwm06+xE/08DCTfEezbQA4GhuI7ydpjt8fRrSX/h+0XiAp+F
+ +x87W7yTSWB/U2W3uLm1IvCPbBZ9fJFE8eZClcrL5Ye49/aFodpoSuggsMnNv9NT7MPg=
+X-Google-Smtp-Source: AGHT+IE6AiflDnatX31QFul2w7FK2lYVC/cT9RI3+d4u0PWxx5vC16EqPttF8Y8+0j3D580V1o1b9g==
+X-Received: by 2002:a05:6000:4b1e:b0:3b4:b4d:6861 with SMTP id
+ ffacd0b85a97d-3b60e50fe9cmr7635945f8f.27.1752836679144; 
+ Fri, 18 Jul 2025 04:04:39 -0700 (PDT)
 Received: from [127.0.1.1] (ppp-2-86-210-241.home.otenet.gr. [2.86.210.241])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4562e8ab891sm76117585e9.35.2025.07.18.04.04.36
+ 5b1f17b1804b1-4562e8ab891sm76117585e9.35.2025.07.18.04.04.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Jul 2025 04:04:37 -0700 (PDT)
+ Fri, 18 Jul 2025 04:04:38 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Fri, 18 Jul 2025 14:04:26 +0300
-Subject: [PATCH v2 2/3] tests/functional: add --list-tests CLI arg
+Date: Fri, 18 Jul 2025 14:04:27 +0300
+Subject: [PATCH v2 3/3] tests/functional: add -k TEST_NAME_PATTERN CLI arg
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250718-functional_tests_args-v2-2-cde6e08bf98e@linaro.org>
+Message-Id: <20250718-functional_tests_args-v2-3-cde6e08bf98e@linaro.org>
 References: <20250718-functional_tests_args-v2-0-cde6e08bf98e@linaro.org>
 In-Reply-To: <20250718-functional_tests_args-v2-0-cde6e08bf98e@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,30 +80,30 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, 
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2173;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2179;
  i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=joWFlCcQxxcouUINLmn1zvetOg8EQnvEktQFlMPdPTA=;
+ bh=1CgM+Kp1f+WKnkXx4AdXZu8CWuCTr/dCbXb3gkwdtYU=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm9laXBCc2hXenVSR3UwRTJ5QmQreHBNUTFaUGNICm83cTBlY2RJdW1zbkVBcXRK
- VGFKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUhvcVFRQUt
- DUkIzS2Nkd2YzNEowR3VvRC85dmYwd2hyaFhCMVQ0QlhYVUQwNlM1UUo1ZWJpcll1bmN0TERFZg
- p6T21lMGU3UmdqOGlEVEhmajg0MUVNUjZVYk1kTmFxMjF3RWhoTm0ydGdjdzVyNGFScnJheWVPL
- 3p5eWhkWFlWCkFCN0ltLzdHMU5VMExTMnlpZXFFZHBPbS84SXBEYXhDeDhSV2NMMjBDc1YzTzIz
- SFFLYjVNSDNnWDZhdFFVSU4KTHpFNjJZbDlhOFdqcUNqK09kdSttOXQxTXhvYkE2dHA5UmlRTHZ
- aVGE3WlY0b1gwSEROenJQUGZaMGQ1bUx6bAptVzJtdWFwN1ZwRDd4Qm83U2sydkloUlEwMlpRbX
- VLZlNqT3gydG1OK0p0QUFFSWhKVTJoaExVNW9pUEJGVDZrCnl5T1RveENvWk1ubVZVUXVEdW1DS
- FFDeTRrSngwS1V4cVoxS3dIZXJjVDVxRnV4dTlNMlR3eDFUaWVSREZ6MWUKeDdWU3JrbmI5bzN0
- QkYyZUNRbTg4TGYvOG91WjN4OTJURnpCMElZS0FJTWNMNjR0YkNodG5GL3haTjRwdW5zSApaL2t
- YaU9VVW5TQ0F6aUE3Qkt3SWpxOHkvQjZyTTRHUHI1ZnFQbTlNakRRSnBFcTRpS05qQTZiT0l1aG
- hta2ZFClVpWmpGeGppUmtnTVhrbThlTmZ3OTQxekRQQmtBUEdwWmJySHJRU3NGMzJjN2NocHhDW
- nJyY243UXdoWmxuRU4KWDNURDQ3dVFkUDV5MitxWGEzYmVuK3ZNeFc5Rk92ZnJBS0N1dUR4ZzJz
- M0ZGSFRweG91ZmZCc2gyOHh5QWdQWgpELzVDSXh1WlRtMWpYd295VlkyVXRMTUNsaVR2WkdIQi8
- wb0VPdCtwRHhhSU1mTVNzSVlYajNodUxiTFN6UzRWCkdPWStsZz09Cj1Ga0pxCi0tLS0tRU5EIF
+ 25RQWNzbVlnQm9laXBDZURNR2lDNS9EWTZQV01xZm9pSTd4VjRTCjlEVDhnelJNVGhwanRxbDlL
+ aVdKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUhvcVFnQUt
+ DUkIzS2Nkd2YzNEowUFQwRC8wZVpWbTM0VE9sZUlqMTdjYjlvN0J5OXlRYkluN1ZucVdkRWhWTQ
+ phbGVpM0RhQnlHTkxOcEF3bzhRV2xwV1ZaMlVZTVVtSFVlQWd0ci9yUUh3WGhHT3o5Ni93Y0pwR
+ m1aTmhuVXQ2CjlVTlo5VStlQ3VYMFk5dHN2RU5WRTc4WVRWbjJDcDJFVnNFMmRleG0wRmY1UVVI
+ SGlheHhTM3A1RGRNYzlqTlgKMFhsSi95UVE2QTgwMXVLb0hEMUp5djErNE5kWDBzYkFvQ3d4U3h
+ zbHZRV1VmbmdSQVUrczQwdGowK2xzbkdXeApIaTl0K3ZOdjZJWkxrUXhDTklqY0dPT1VJNXR1aX
+ BrZVcraFBsMU1vOEl0UnJGcFNtSkZaRVk0eDcvblhqWnZCCi9vWWdKZWZnU0ZLRUljNUkzNGxmM
+ zd0RHdMbWNKTEU1QUl6NzJvVnJjdVRqUjhWbUl4WHpoZnVPcWQ2M25nVmwKaHRlMFNXQUZmZFIx
+ dVJDVWdiOGF0L3F3bUl2SmdIcWxjTXk2d0RUcFFCKys1dHl3NXNvbnRMNVo3RnhpV2xESQpIc1V
+ wUnljVVJYWjBILzhFOGJBcDA4M2tWMWJCM1pjcHJtbnNXcGhwVGtpdHFqbU1ua1dhcDR4Q0E5M1
+ hiMVF2CmVKYnJtSUxVNmtzT2VwL3VkR0RRWDJiZVFsNVg5cFIwb1JYY0tRSStyaWZQb2tDbjlKc
+ UlrSlV4cEtwMzFpakYKWFZ2WkVWUzBzK2FJTWwyT0FWcFhwbFc0RG9tNkt1eW1WQnNtN2R5S1pm
+ MEtGT2E5RFZxSzl6d3ZrdmF6MHpBWgoxb01QaWgzQkhGZjhrcHl1UHd2VTRpZktUSnBNTURza3J
+ CZDNZRnlOK3F0VVZwQ0lVczJHWmRnN0xjRHI4eVZSClZjY1Rsdz09Cj1DcUJTCi0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
  fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -126,56 +126,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add CLI argument to list tests and exit.
-
-Example output (current dir is build directory under root dir):
-
-  $ export PYTHONPATH=../python:../tests/functional
-  $ export QEMU_TEST_QEMU_BINARY="$(pwd)/qemu-system-aarch64"
-  $ ./pyvenv/bin/python3 ../tests/functional/test_aarch64_virt.py --list-tests
-  test_aarch64_virt_gicv2 (test_aarch64_virt.Aarch64VirtMachine.test_aarch64_virt_gicv2)
-  test_aarch64_virt_gicv3 (test_aarch64_virt.Aarch64VirtMachine.test_aarch64_virt_gicv3)
-  test_alpine_virt_tcg_gic_max (test_aarch64_virt.Aarch64VirtMachine.test_alpine_virt_tcg_gic_max)
+Add a CLI argument that takes fnmatch(3)-style patterns as value and can
+be specified many times. Only tests that match the pattern will be
+executed. This argument is passed to unittest.main which takes the same
+argument.
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- tests/functional/qemu_test/testcase.py | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ tests/functional/qemu_test/testcase.py | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
 diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index 9b00c63e6ca7a2a669fd456f1d1b51501ce4a726..bfee6638edf6f9853ead1e3809ae3c9152089406 100644
+index bfee6638edf6f9853ead1e3809ae3c9152089406..e137c05baf91f6f88d6228d86d98aa9498797382 100644
 --- a/tests/functional/qemu_test/testcase.py
 +++ b/tests/functional/qemu_test/testcase.py
-@@ -50,6 +50,11 @@ def parse_args(test_name: str) -> argparse.Namespace:
-         "This is equivalent to setting QEMU_TEST_KEEP_SCRATCH=1 in the "
-         "environment.",
+@@ -16,6 +16,7 @@
+ import os
+ from pathlib import Path
+ import pycotap
++import itertools
+ import shutil
+ from subprocess import run
+ import sys
+@@ -55,6 +56,14 @@ def parse_args(test_name: str) -> argparse.Namespace:
+         action="store_true",
+         help="List all tests that would be executed and exit.",
      )
 +    parser.add_argument(
-+        "--list-tests",
-+        action="store_true",
-+        help="List all tests that would be executed and exit.",
++        "-k",
++        dest="test_name_patterns",
++        action="append",
++        type=str,
++        help="Only run tests which match the given substring. "
++        "This argument is passed to unittest.main verbatim.",
 +    )
      return parser.parse_args()
  
  
-@@ -280,10 +285,13 @@ def tearDown(self):
+@@ -300,8 +309,16 @@ def main():
  
-     def main():
-         path = os.path.basename(sys.argv[0])[:-3]
--        # If argparse receives --help or an unknown argument, it will raise a
--        # SystemExit which will get caught by the test runner. Parse the
--        # arguments here too to handle that case.
--        parse_args(path)
-+        args = parse_args(path)
-+        if args.list_tests:
-+            loader = unittest.TestLoader()
-+            for test_suite in loader.loadTestsFromName(path):
-+                for test in test_suite:
-+                    print(test)
-+            return
+         tr = pycotap.TAPTestRunner(message_log = pycotap.LogMode.LogToError,
+                                    test_output_log = pycotap.LogMode.LogToError)
+-        res = unittest.main(module = None, testRunner = tr, exit = False,
+-                            argv=["__dummy__", path])
++        argv = ["__dummy__", path] + (
++            list(
++                itertools.chain.from_iterable(
++                    ["-k", x] for x in args.test_name_patterns
++                )
++            )
++            if args.test_name_patterns
++            else []
++        )
++        res = unittest.main(module=None, testRunner=tr, exit=False, argv=argv)
+         for (test, message) in res.result.errors + res.result.failures:
  
-         cache = os.environ.get("QEMU_TEST_PRECACHE", None)
-         if cache is not None:
+             if hasattr(test, "log_filename"):
 
 -- 
 2.47.2
