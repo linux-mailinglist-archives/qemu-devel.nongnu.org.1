@@ -2,83 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058D6B09E56
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 10:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA62B09E67
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 10:53:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucgml-00045p-Ar; Fri, 18 Jul 2025 04:49:43 -0400
+	id 1ucgqK-0000fL-Tv; Fri, 18 Jul 2025 04:53:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1ucgmM-00040s-IG
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 04:49:19 -0400
+ (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1ucgqG-0000Us-JP
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 04:53:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1ucgmK-0006CB-Gc
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 04:49:18 -0400
+ (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1ucgqE-00014N-Nk
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 04:53:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752828554;
+ s=mimecast20190719; t=1752828797;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0cvVw+85pNKxFqV+0OY3kncHAyjo1jX8gmQq9i/RVdY=;
- b=U6fedSiYXme1wTplTA9WwBj83mh7xPFZw5grhH1xtcL5z5ENsRII8Vu+5uIaomoWb+3SN6
- jThq67PuQG6SRnAbnaA/SK/hqO/vUDcOpjmKWOHnvyRqvyrwRql+Dd8KZvm10WROThT9Or
- eZve+VrJyTtzRf/Nz9cZQ2Ic4GyFr54=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-114-j8xwtbTVOXuKkCxcqKmsFQ-1; Fri, 18 Jul 2025 04:49:11 -0400
-X-MC-Unique: j8xwtbTVOXuKkCxcqKmsFQ-1
-X-Mimecast-MFC-AGG-ID: j8xwtbTVOXuKkCxcqKmsFQ_1752828549
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-60c9a1db851so1618582a12.0
- for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 01:49:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752828549; x=1753433349;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0cvVw+85pNKxFqV+0OY3kncHAyjo1jX8gmQq9i/RVdY=;
- b=I6ezvuqene8erNcAMkhxu+PWKvooXqLd9TdyGL7OGYmTUrPN85imsJnX1C/pvrqRkE
- u7julzTf+UHzFxaGO7WkCTX7Pt8DVzS5v7ZXdq7oGW6ENLbU7gp2AgRrb5mccZDhbP31
- 1A+36ecmDqoFT+88IzTwM/H18BT5CORsrwdyufN/QnzBlvX+pV1/W07pjbeYcxR2YRf3
- DY4YYkPPL04Y8WnboHbt2MQiehki+zrbyEwsjf/imBQdN+GVa/Ck9z8pKVMw/vKs3wYP
- iatXwxtN2DEvV5BOotH2sPvNZRjyoEM6a4r1/eBHzznNsCFDRYpq7dTdQP4Cl2jQGl0T
- Sugw==
-X-Gm-Message-State: AOJu0YxqxsyiHVzsLnHGCed7I+p2tsZepNyEYvfW89hSzX5PL+rH/JTY
- 9ZXXPhLH00D3ebfdbK4ry1XA1p6zyxDypFAOVfxgKHEnYoouxQpYCLWzhA1iPiIZF3cxNU3hrhp
- un1h4t5KEBJEAu+9P7vvGeeFqaFr0pnDQKBLw7G7AOW8hugyJ2gztlcsKiLxsG9WhYv4fwLjqzA
- k3vhGcJ7B/To2MKx3NiPxdME1RKeiAZo8=
-X-Gm-Gg: ASbGnct9N7y9/1v0/zbMgGzcVmkaNRtYu7bWn3ovW0H/r8q7g+vnzsP2kIlB8rn12FS
- mHcuQdEH4Sq5pFUfgNciMHWg1cpcvwsl7MVl75/EQGxAxjJtyCEi19wQQMHSs0OHdbCuUhTtAiE
- J5CynzOu23i7Z9qj2KOrBs
-X-Received: by 2002:a17:907:da4:b0:aec:5a33:1573 with SMTP id
- a640c23a62f3a-aec5a3354femr467396366b.41.1752828549371; 
- Fri, 18 Jul 2025 01:49:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGF20TY5u8J2rQOZX1pga0UUD3urvA9h5LuyEt2ZYjRmNljVCdQuyDQGE/Pd5blIffuEElOB49NgB31knQwLB8=
-X-Received: by 2002:a17:907:da4:b0:aec:5a33:1573 with SMTP id
- a640c23a62f3a-aec5a3354femr467393166b.41.1752828548957; Fri, 18 Jul 2025
- 01:49:08 -0700 (PDT)
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=kPyyQ2PBnOZSzO3RtqsQGHHh8YMRL4h7XkVs+HJKY20=;
+ b=cCJrgQ55MiP9qRgfmudETIK8F5oIUCU1XGdVZ5yPdT2ft+BkBlnJOiwnOSC1FcRSYa6Axf
+ sjqSdqXyYU4qW2cgWvjoLbuIhER55wSIQEFzNTCHj76tMeGXx9bMptN/vh8GEZUe+to7YZ
+ mHsz00px0ib92BgK2Tp9iAxWR7dIUqk=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-414-aVJisPXhNIiWQ9vvwYyWIw-1; Fri,
+ 18 Jul 2025 04:53:13 -0400
+X-MC-Unique: aVJisPXhNIiWQ9vvwYyWIw-1
+X-Mimecast-MFC-AGG-ID: aVJisPXhNIiWQ9vvwYyWIw_1752828792
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 674BC19560AD; Fri, 18 Jul 2025 08:53:11 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.33.19])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E1F371956089; Fri, 18 Jul 2025 08:53:05 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Jason Wang <jasowang@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Luigi Rizzo <lrizzo@google.com>,
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
+ Vincenzo Maffione <v.maffione@gmail.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH RFC v3 00/13] virtio: introduce support for GSO over UDP tunnel
+Date: Fri, 18 Jul 2025 10:52:26 +0200
+Message-ID: <cover.1752828082.git.pabeni@redhat.com>
 MIME-Version: 1.0
-References: <1752777568-236368-1-git-send-email-steven.sistare@oracle.com>
-In-Reply-To: <1752777568-236368-1-git-send-email-steven.sistare@oracle.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Fri, 18 Jul 2025 16:48:31 +0800
-X-Gm-Features: Ac12FXwRPXasSb4VA957KBQIAa0CjJZbtkJfboqM9JGWP2CoxqPOsA7YkNzTE3U
-Message-ID: <CAPpAL=y=2os30kCA4_MCMT8OdE3PqGZdg7oBPeS8SKCN0heMrg@mail.gmail.com>
-Subject: Re: [RFC V2 0/8] Live update: tap and vhost
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- Peter Xu <peterx@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Hamza Khan <hamza.khan@nutanix.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=leiyang@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pabeni@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,68 +86,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Steve
+Some virtualized deployments use UDP tunnel pervasively and are impacted
+negatively by the lack of GSO support for such kind of traffic in the
+virtual NIC driver.
 
-I tested your patch which hit a problem under enable/disable nic mq
-state(The full test scenario is live migration vm at local under
-enable/disable vm nic mq state):
-Run command: /qemu-img info /home/images/vm1.qcow2 --output=3Djson
-Error info: qemu-img: Could not open '/home/images/vm1.qcow2': Failed
-to get shared "write" lock
+The virtio_net specification recently introduced support for GSO over
+UDP tunnel, and the kernel side of the implementation has been merged
+into the net-next tree; this series updates the virtio implementation to
+support such a feature.
 
-In the same environment if I remove the enable/disable nic mq steps,
-it can work well.
+Currently the qemu virtio support limits the features space to 64 bits,
+while the virtio specification allows for a larger number of features.
+Specifically the GSO-over-UDP-tunnel-related virtio features use bits
+65-69; the larger part of this series (patches 3-11) actually deals with
+extending the features space.
 
-Note: This issue has not been reproduced 100%, but in order to confirm
-this is really a bug, I test the following:
-1. Live migration vm at local under enable/disable nic mq state: 3/5
-reproduce ratio
-2. Only live migration 5 times are all passed.
+The extended features are carried by fixed size uint64_t arrays,
+bringing the current maximum features number to 128.
 
-Thanks
-Lei
+The patches use some syntactic sugar to try to minimize the otherwise
+very large code churn. Specifically the extended features are boundled
+in an union with 'legacy' features definition, allowing no changes in
+the virtio devices not needing the extended features set.
 
-On Fri, Jul 18, 2025 at 4:48=E2=80=AFAM Steve Sistare <steven.sistare@oracl=
-e.com> wrote:
->
-> Tap and vhost devices can be preserved during cpr-transfer using
-> traditional live migration methods, wherein the management layer
-> creates new interfaces for the target and fiddles with 'ip link'
-> to deactivate the old interface and activate the new.
->
-> However, CPR can simply send the file descriptors to new QEMU,
-> with no special management actions required.  The user enables
-> this behavior by specifing '-netdev tap,cpr=3Don'.  The default
-> is cpr=3Doff.
->
-> Steve Sistare (8):
->   migration: stop vm earlier for cpr
->   migration: cpr setup notifier
->   vhost: reset vhost devices for cpr
->   cpr: delete all fds
->   Revert "vhost-backend: remove vhost_kernel_reset_device()"
->   tap: common return label
->   tap: cpr support
->   tap: postload fix for cpr
->
->  qapi/net.json             |   5 +-
->  include/hw/virtio/vhost.h |   1 +
->  include/migration/cpr.h   |   3 +-
->  include/net/tap.h         |   1 +
->  hw/net/virtio-net.c       |  20 +++++++
->  hw/vfio/device.c          |   2 +-
->  hw/virtio/vhost-backend.c |   6 ++
->  hw/virtio/vhost.c         |  32 +++++++++++
->  migration/cpr.c           |  24 ++++++--
->  migration/migration.c     |  38 ++++++++-----
->  net/tap-win32.c           |   5 ++
->  net/tap.c                 | 141 +++++++++++++++++++++++++++++++++++-----=
-------
->  12 files changed, 223 insertions(+), 55 deletions(-)
->
-> --
-> 1.8.3.1
->
->
+The actual offload implementation is in patches 12 and 13 and boils down
+to propagating the new offload to the tun devices and the vhost backend.
+
+Finally patch 1 is a small pre-req refactor that ideally could enter the
+tree separately; it's presented here in the same series to help
+reviewers more easily getting the full picture and patch 2 is a needed
+linux headers update.
+
+Tested with basic stream transfer with all the possible permutations of
+host kernel/qemu/guest kernel with/without GSO over UDP tunnel support,
+vs snapshots creation and restore and vs migration.
+
+Sharing again as RFC as the kernel bits have not entered the Linus tree
+yet - but they should on next merge window.
+
+---
+v2 -> v3:
+  - consolidated suffixes for new fields to '_ex'
+  - avoid pre/post load trickery and relay on reset zeroing the features
+  - cleaned-up virtio store implementation deduplicating a bit of code
+  - many more cleanups, see the individual patches changelog for the
+    details
+  - I left patch 1 unmodified, still some hope we could live with that;)
+
+Paolo Abeni (13):
+  net: bundle all offloads in a single struct
+  linux-headers: Update to Linux ~v6.16-rc5 net-next
+  virtio: introduce extended features type
+  virtio: serialize extended features state
+  virtio: add support for negotiating extended features
+  virtio-pci: implement support for extended features
+  vhost: add support for negotiating extended features
+  qmp: update virtio features map to support extended features
+  vhost-backend: implement extended features support
+  vhost-net: implement extended features support
+  virtio-net: implement extended features support
+  net: implement tunnel probing
+  net: implement UDP tunnel features offloading
+
+ hw/net/e1000e_core.c                         |   5 +-
+ hw/net/igb_core.c                            |   5 +-
+ hw/net/vhost_net-stub.c                      |   8 +-
+ hw/net/vhost_net.c                           |  46 ++--
+ hw/net/virtio-net.c                          | 226 +++++++++++++------
+ hw/net/vmxnet3.c                             |  13 +-
+ hw/virtio/vhost-backend.c                    |  62 ++++-
+ hw/virtio/vhost.c                            |  73 +++++-
+ hw/virtio/virtio-bus.c                       |  11 +-
+ hw/virtio/virtio-hmp-cmds.c                  |   3 +-
+ hw/virtio/virtio-pci.c                       |  54 ++++-
+ hw/virtio/virtio-qmp.c                       |  89 +++++---
+ hw/virtio/virtio-qmp.h                       |   3 +-
+ hw/virtio/virtio.c                           | 102 ++++++---
+ include/hw/virtio/vhost-backend.h            |   6 +
+ include/hw/virtio/vhost.h                    |  33 ++-
+ include/hw/virtio/virtio-features.h          | 123 ++++++++++
+ include/hw/virtio/virtio-net.h               |   2 +-
+ include/hw/virtio/virtio-pci.h               |   2 +-
+ include/hw/virtio/virtio.h                   |  11 +-
+ include/net/net.h                            |  20 +-
+ include/net/vhost_net.h                      |  33 ++-
+ include/standard-headers/linux/ethtool.h     |   4 +-
+ include/standard-headers/linux/vhost_types.h |   5 +
+ include/standard-headers/linux/virtio_net.h  |  33 +++
+ linux-headers/linux/vhost.h                  |   7 +
+ net/net.c                                    |  17 +-
+ net/netmap.c                                 |   3 +-
+ net/tap-bsd.c                                |   8 +-
+ net/tap-linux.c                              |  38 +++-
+ net/tap-linux.h                              |   9 +
+ net/tap-solaris.c                            |   9 +-
+ net/tap-stub.c                               |   8 +-
+ net/tap.c                                    |  21 +-
+ net/tap_int.h                                |   5 +-
+ qapi/virtio.json                             |   8 +-
+ 36 files changed, 857 insertions(+), 248 deletions(-)
+ create mode 100644 include/hw/virtio/virtio-features.h
+
+-- 
+2.50.0
 
 
