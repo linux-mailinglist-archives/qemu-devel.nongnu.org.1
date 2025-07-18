@@ -2,114 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB5FB09F1C
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 11:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FEEB09F49
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 11:23:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uchF0-0006x3-EZ; Fri, 18 Jul 2025 05:18:54 -0400
+	id 1uchIs-0004Mh-Th; Fri, 18 Jul 2025 05:22:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uch9u-0002NW-Hn
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 05:13:38 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uch9s-0000MR-MA
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 05:13:38 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-451d3f72391so17902535e9.3
- for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 02:13:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752830015; x=1753434815; darn=nongnu.org;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5y0mBgXrmDS3hH/TI02TmHONGftjjb8PmM1JkTQOtQQ=;
- b=Aq8QE37k1dB5iYwkrlA60zv1bGcszqH7oGEUSx1S6cRDJpa3HGtPAxLlcKszDxhlQH
- q1ANIU/kUfsgRraGc5r9KGNAu0lkpmluD1nksRKkRn1q1NDISJTUsZumkeBcRqEAM0Rf
- DW/1sDWBgpPtTeChci+0tf5pqPqSNHi4oW9gg/6QoS6+vcWYCgIRIMmaq1qI21/vdi4b
- PrFpJmOdJFUrcUfblN2itz3ehMUKZZKOKCtEwR2CH6xfqUyVnnnw0PVNTLPdbm6mjQiL
- DwoPMd5LEA8xMZbRpFYwBG1b30SjuC5Hpi7gL4sUDENRCX9vRHAQ+s3kkak0YJ2AYsxa
- x9gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752830015; x=1753434815;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5y0mBgXrmDS3hH/TI02TmHONGftjjb8PmM1JkTQOtQQ=;
- b=ftRr5p6DXDFk3fDXR7fYxmbcVdFCdyPlqTpaDtaLjqmCEk1XK4bj1fUbFeVAdwCzkh
- rpkBfvCGTN3PvNXEd5fAIeV7Di2zDtcCcHN5u4F1yMgLlFpQSxYee2xmBzgMvYM/dXvz
- IgLRWDYKI7QT9GnJUzn9qN72HQIO94cZkdQhW2A/mRTznCYqSbHaglTsT4kpTRMoY9mN
- 6JWbskT883gGYKZS5y4mCTTSH4OvZwtIRuyx9EHVYHE35Zb2hq3eaQOIdZRjKA3q44mf
- gCJe+Gj7r97ms+AGjYmGx2yDI9bbWXEIiD23vhUSCsWz8QBBLHx8vsWL8yol/uIDoaBk
- k6Sw==
-X-Gm-Message-State: AOJu0YyJGPaDdQeo1v2vvZeo9ygaGNRvEm5Ch/l6OsViPZVx8nr3OMHH
- Hmcw714PuoqkfTSCTaq9nNz5CoShkrs2komBYPPiILBr2MUGdRSjQEqfkuWUodvyxok=
-X-Gm-Gg: ASbGnctsOMAnCJuSJzS0xqNq1/kaGYoe8km0NEzp5u3KSJgg9iN6gg3BP9WN5j7AYvv
- 1+LOwNxSrNMQZsPYmpxvuz7k4EbwYFW9/JiJreiqWhp/maLlO43g1Q+Xiqg3zzWgb0gr5DnTut1
- MfvWcX5XrFzVHpVP/rQ8DHinxDxq/AHHV4P3V+vOD/3XnLmv/bc7YZiTmV7oZbrmZP5xzaXrwXv
- rOURznbZ8ZSFc+7Aeg/aGib5WdgatG6DqsKNdzd137vsxGJwaVKA79vwozJVkI+u9s6ZiZNCQOz
- 3+2LiILSlUX8Zau7X45MkBc+o7IIEmx3Q3iDwIUt4YTikX8fQn7eMWtwREHQg2kGBwxOgld2vdN
- /E2iCIWe1MR3zIXsTctlRpXq6LW1+Afc3weFmW4hWvmrYJaKIRZkO56YP46edCawRI8N67ZgOuU
- rcgQ==
-X-Google-Smtp-Source: AGHT+IH26TZOlXiKMAJessNtnfGni0jwKCETPsuSn0RMVzw5SdxHeD3t9dV6o2Heksn/H/nGLccErA==
-X-Received: by 2002:a05:600c:a305:b0:453:8bc7:5e53 with SMTP id
- 5b1f17b1804b1-4562e853505mr84291485e9.0.1752830014628; 
- Fri, 18 Jul 2025 02:13:34 -0700 (PDT)
-Received: from [127.0.1.1] (ppp-2-86-210-241.home.otenet.gr. [2.86.210.241])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca487fdsm1267145f8f.48.2025.07.18.02.13.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Jul 2025 02:13:34 -0700 (PDT)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Fri, 18 Jul 2025 12:12:54 +0300
-Subject: [PATCH 3/3] tests/functional: add -k TEST_NAME_PATTERN CLI arg
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uchGt-0001oi-AM
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 05:20:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uchGo-0004kV-BG
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 05:20:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752830443;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=6pBhrNTfMsddwGB+laQnyVT5zoSOo4gs6dG+UlZDoYs=;
+ b=W+IQ1UOKnsOdoNqAYnKeDTRxEk4mFFO6rb+99M+P3bi+lB5BTNJqAg55whDzfSngeQ5nxL
+ 3cQWyKUnOAfJXP2WfSl+03srKySeG3/4nNXGJS2r3zMvUWRAKTGcvw5IYUtgzo0Hn4a/sz
+ gdWSZtTdUnabfkEgSmqxnR1rIPwmwKs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-257-d43oB4-zMgCY1zcKY0lVQw-1; Fri,
+ 18 Jul 2025 05:20:41 -0400
+X-MC-Unique: d43oB4-zMgCY1zcKY0lVQw-1
+X-Mimecast-MFC-AGG-ID: d43oB4-zMgCY1zcKY0lVQw_1752830440
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 36A35195FDD9; Fri, 18 Jul 2025 09:20:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.137])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8A25D1800D82; Fri, 18 Jul 2025 09:20:37 +0000 (UTC)
+Date: Fri, 18 Jul 2025 10:20:33 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: Re: [PATCH v2] tests/functional: add --debug CLI arg
+Message-ID: <aHoR4YgTKOgGsZgT@redhat.com>
+References: <20250717-functional_tests_debug_arg-v2-1-4f0d991e16f7@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250718-functional_tests_args-v1-3-54d4c6207690@linaro.org>
-References: <20250718-functional_tests_args-v1-0-54d4c6207690@linaro.org>
-In-Reply-To: <20250718-functional_tests_args-v1-0-54d4c6207690@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1844;
- i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=80H8891T8c/kBfQKrgmGneoP6IgO83uKmcWZ5Z0ox8U=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm9laEE1bUNRaGVjSzg3dVY0VnR4TXlZZ2FCWFljCmdTaE4rdkJzRmxOV1YxOUlU
- ZGVKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUhvUU9RQUt
- DUkIzS2Nkd2YzNEowSVlyRC93TVc3ajRIYTZWQk5QRjFteURnaHU4dVY3SFdwTzNIVzU5U0RGRQ
- pGWGpLWElIRWJTWCtOUmFXR2kxdS9vU0FZUXl4VnMyNFFqUEllcWNxNTVzQkxHUm8yU0V6dXFKY
- UhwbHBpK2JUCjhrZXczeXM5bThjVEUyYnZoRTl0M2lyOTBmYkpPTFpNdlFGWG9NSHkrNXNWVnBw
- UCs2V2ZBeUpGRDA4eHNEZVgKM0VkV3ZlRERhRFBoVGJZS2xoaEM3LzR0eEdoSTdBejBpazQ5NE1
- CUjR3T0tPQ09sbGNYTzU5ZlBSVUhmY0NBKwoxZStqc3dnSjJhSHdhL3BaU2dQb2hmT01CaDNaak
- 05RUZJZ3JHMHVCVU5HZktLUDB4TGZFOE9STVdkMWJnSDBiClQvK0NBR3diWVBocFNsZGFQa3g4b
- FNDbnNVR0ttVVZqZzI0L0xTWjhmeCtFRVVJN1BXWlhDRVUraDBWdW9iMEsKbjdLMTdjb2hqWTFo
- Q2VacDBMMkRKSkx0REJqdW5HSWtWb1h1TEZRc3loMmI2cUpseUpJQUFnWVJ4NGlWS0szeAppYXl
- UblNINUxoZDl6dnAySUc5VzlyeDlkdkppbS8zVWR3QVlRem53NFFmZnRjTll1NWsrQlV1eVd4TH
- NsYVg2ClQ1b1pFUS9mMXJUWmo1T0NCMzNpcU9FeHpPUGEwRzVueU9GeXV4R3R4M0JHM2Jid2dXe
- kxDY3FPUnJwMklmMlIKN2xxT1Bnb0F1TEhvUzVIUDJ1TVg2eEFKcFZ6VStyMkNUUFRGandpUDdP
- ejJ6VHJCTjNSNXRKa20ra0pPU3RxYwpmTHdxaHVpSm0xUTJ6Mks1bUJENzQ2VEsvTVpGcW9Ob1o
- 3Yk16TjMzdDZ0YVpUb2VDZWRnUzlZdktwZWJpV2p2Ck9yakxEQT09Cj1iUTQ2Ci0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
- fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x334.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250717-functional_tests_debug_arg-v2-1-4f0d991e16f7@linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,54 +83,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a CLI argument that takes fnmatch(3)-style patterns as value and can
-be specified many times. Only tests that match the pattern will be
-executed. This argument is passed to unittest.main which takes the same
-argument.
+On Thu, Jul 17, 2025 at 01:34:13PM +0300, Manos Pitsidianakis wrote:
+> Add argument parsing to functional tests to improve developer experience
+> when running individual tests. All logs are printed to stdout
+> interspersed with TAP output.
+> 
+> Example usage, assuming current build directory with qemu source code in
+> the parent directory (see docs/devel/testing/functional.rst for details):
+> 
+>   $ export PYTHONPATH=../python:../tests/functional
+>   $ export QEMU_TEST_QEMU_BINARY="$(pwd)/qemu-system-aarch64"
+>   $ ./pyvenv/bin/python3 ../tests/functional/test_aarch64_virt.py --help
+>   usage: test_aarch64_virt [-h] [-d]
+> 
+>   QEMU Functional test
+> 
+>   options:
+>     -h, --help   show this help message and exit
+>     -d, --debug  Also print test and console logs on stdout. This will
+>                  make the TAP output invalid and is meant for debugging
+>                  only.
+> 
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+> Changes in v2:
+> - Store stdout handler in `self` object (thanks Daniel)
+> - Deduplicate handler removal code (Daniel)
+> - Amend commit description to mention PYTHONPATH (thanks Alex)
+> - Link to v1: https://lore.kernel.org/qemu-devel/20250716-functional_tests_debug_arg-v1-1-6a9cd68318bb@linaro.org
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- tests/functional/qemu_test/testcase.py | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+You've ignored my v1 review requests that the code for creating
+log handlers should be moved into a helper method in util.py, and
+likewise that the argparse code moved into util.py, and thus not
+called in both main & setUp.
 
-diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index 4455fcc38016c14db04019bbd64eaae9b47363c1..b7a660fd729afe39ff8cf7a0be97c2fc2f2f573f 100644
---- a/tests/functional/qemu_test/testcase.py
-+++ b/tests/functional/qemu_test/testcase.py
-@@ -55,6 +55,14 @@ def parse_args(test_name: str) -> argparse.Namespace:
-         action="store_true",
-         help="List all tests that would be executed and exit.",
-     )
-+    parser.add_argument(
-+        "-k",
-+        dest="test_name_patterns",
-+        action="append",
-+        type=str,
-+        help="Only run tests which match the given substring. "
-+        "This argument is passed to unittest.main verbatim.",
-+    )
-     return parser.parse_args()
- 
- 
-@@ -301,8 +309,12 @@ def main():
- 
-         tr = pycotap.TAPTestRunner(message_log = pycotap.LogMode.LogToError,
-                                    test_output_log = pycotap.LogMode.LogToError)
-+        argv = ["__dummy__", path] + (
-+            (["-k"] + args.test_name_patterns)
-+            if args.test_name_patterns else []
-+        )
-         res = unittest.main(module = None, testRunner = tr, exit = False,
--                            argv=["__dummy__", path])
-+                            argv=argv)
-         for (test, message) in res.result.errors + res.result.failures:
- 
-             if hasattr(test, "log_filename"):
 
+With regards,
+Daniel
 -- 
-2.47.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
