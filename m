@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F60BB09F1D
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 11:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24565B09F1E
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 11:19:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uchEL-0006HR-R0; Fri, 18 Jul 2025 05:18:14 -0400
+	id 1uchEP-0006Ji-Cc; Fri, 18 Jul 2025 05:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uch9r-0002Jm-Jn
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 05:13:35 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1uch9r-0002KD-Ub
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 05:13:36 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uch9p-0000LZ-Pe
+ id 1uch9q-0000Lp-39
  for qemu-devel@nongnu.org; Fri, 18 Jul 2025 05:13:35 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3a6d77b43c9so1489333f8f.3
- for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 02:13:32 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3a54700a46eso1098367f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 02:13:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752830011; x=1753434811; darn=nongnu.org;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=tMtPjRXELbNHZ/a5argmjfOTYLCyxkCFRhNU2rNrFZg=;
- b=XzesmwrT9YMPiBmrVaKeLtnZuIkoIz6twq2ynCbp33CXmHw3dL8F34Yu6Xln9FfWL0
- ePNAgs5TKdiG7NfHIcwd9BDYbO+A1Uf5UOpRTUc8Q1sDyXoEUakuJsc9uqkektuzl0mb
- RTDHnz9tSiC1pvy7l0dS/NRlBeEYE/zkUHJZgEC+TEzSaeJstlynnH/yLRulRBeTpjL7
- cQRuoNgpmRovKvEttYNBcsjVgEQVpv8zp9u+8IOELN2yt/O4q8W3HF3LY0SH8EzV5sve
- Jx9bDJL5Vqm1ybyt417Ajqa7iqEqCl/q4wP7TC8WBgsLn7RJl5vtmKAtpyHAJe8PqfAw
- rokg==
+ d=linaro.org; s=google; t=1752830012; x=1753434812; darn=nongnu.org;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=SKF3ehNzKZl68TtQb7ciFFbjhoSNV+hIsBspL//2FtQ=;
+ b=NkCqqtgpquOyb81VaLqwOXxg81S1sEihpTGnbtAYxoELCiCkRbgYdmB8584w9b3OQX
+ ianNIUeq2vVZKQdRK6GkFkJaaHo5J4fA/tJzhwrjR1ufhvN4DXUEtC/S54sCeIB6aDwu
+ C5MqUTAUEVkI7T9YiCv4hwsQr4bUnr/iOZimqwy66UX12ZEhEUArL+sQcH4TWssJ9sN8
+ 7GYGFzT69I5HyI/IXdNVdIg7Z6CELfrJDoRLbcMU/KU4qKWKQKIFckQcD/IGN9jIVmX4
+ iXdwGvJSUuCsKK/KSdF85IXblabmojIfLjmvs9jD7pfaaAqiy/nxZFqQwSE4cjbGOn/O
+ zj1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752830011; x=1753434811;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tMtPjRXELbNHZ/a5argmjfOTYLCyxkCFRhNU2rNrFZg=;
- b=dj+PRz8Y4TXpRUEEEHEcVsKikJhCGToDGhvJ2yeSemJ9amxGCCOyo2cKvBLrkqxdjl
- ZPua4AsOmfbswCECl7wwndH58+CVQGPnJz8eXZ9P3Z7GS0R8LyJc8eIhTVFZ+NYT0bs9
- OMikCtdVrSAtjOs6b7gF+LcAXgql/REBktq3NKMvFw7+HA12KiJsogec6kWNNXoG6KWf
- sC8xRv6m/iIwY+of9MzRRwb39G0Pl5PIOHUdgdi6azlR9bvyPXVbAal4nF/4NrLyF/Vn
- oPEe/6BMO4gtpypqR0wotZUsWvoM1jUeScStDQro4puEFbzezzm6JxNvkeMT9YWs2Fou
- XXLA==
-X-Gm-Message-State: AOJu0YxpZ4oU0R0limchHKsd8YR4FvZM/tI1uBu4pRI6jFHuOUrKC5TS
- KhwC2m7C6PlCMld7KsqH7ad6k3TRWLziMGQMo5l/0sWIfKltmghi/XBebkLWmvRtFfQ=
-X-Gm-Gg: ASbGncsKBqsw4dU87tv2/FqPkQ0kE8wVpot7YXMzrhb48RV63M0CKS+b1bU/sVWQV6U
- IxDwX019+waq0eaqzEPheNHRSkm6HAuKkzpTx/ch6z5lUHrJ5lv85FotH+ut7FgIjRbAK9Vssr8
- 9wjCJyNWIKIB1YHCKGn7T7PqoVGjdXeJprjpixCkno5ytufNowXarI/+nqPxX3DWtdz/UcIy1Z5
- bUCruI3iClnqMsHrIJBHi8PcOVB49gfgNEZfO9PbtspbFm5wer+TzAfOU2OwXfTnonq7RMgwoox
- VehDXPDna5K6yyKGQmYt0a8Wcg43TsHdeYVf700VUm+gZ+679o67jzfN4/fFdrtWh52VC7XVjWO
- mEnnjwPVOoad5YOj8X14lNHKrtaU8u7GJfZQdFrb+k3ZUjuTuL+mPU4h7Zg24gX5eoVo=
-X-Google-Smtp-Source: AGHT+IEB3bYAhATC+t5yBH+3ypAkPzv/kHpVeUsEzz6eTzbNpmDcFFkmzuXT567orfWWmVx+yrRIvg==
-X-Received: by 2002:a05:6000:1a85:b0:3a4:f744:e00e with SMTP id
- ffacd0b85a97d-3b60e4be7aemr7962537f8f.4.1752830011019; 
- Fri, 18 Jul 2025 02:13:31 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1752830012; x=1753434812;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SKF3ehNzKZl68TtQb7ciFFbjhoSNV+hIsBspL//2FtQ=;
+ b=BSC57BO0N8O9EMPQsxWTe3HrCNmHP+WQWaj0VKbnXlk7ly3fhx1Df+JhvyYvKyq4pc
+ mRlVMKIw6UHHu1BgsLoMGvpbT58tbUiVrRmQT+zxWjvv1J+/7qylgXDfmp4/FxQpYW6r
+ BhjyMmGt4y7vCQ9jYeQmN8an7cGEPp2zpk7+CdDRLym03CzTQXSkUbigMiXDlWSHAcaq
+ 5VSNtgy8yjof/9d0fwLFm4diDjb4+56qKvZsQh8N7qQfpI0oCACYdvzujSSRY4iG4GA7
+ ReKO69jfKBgcImHdUtXA6LLmh3vmqjHLKDu5AWcFvxLbxN5RqTw8YzBcIihT68xYX5/+
+ eAlA==
+X-Gm-Message-State: AOJu0YwrwT6V5GxZbSm5izJIfC74JMOPd7X0O35YwkQQuE+st44+qRwf
+ UacNI3mqUQwEh0pr4EjJaN0aS5MDqOGsq6cb7WPNvoFiY1GwzDfZS7s6ivHc86FdE/o=
+X-Gm-Gg: ASbGncv1EtuFEcsEdOVXBV1+eDNGosCn4difOQG2S/YjG8fVzLi7J9I081j9WyUTX0d
+ cDxRuJlEzFpNLN5u9Q2R5YSWxZq232wpTVFP5rdFvBUpqHAIaXa+QpQplDF+ZEau8C6eDxxBTLH
+ OSC+S8QxJxHNGjlVzaexe2rn3c3VTnii7kLaaJ1X9M27z99wCSYEzmkkSUW2w8fh71TT+BpGuJP
+ xeBU+93nXP1ULhC9NbtkKfJRkf5L6rEU0lupbYornFkb0kWnBPX396b+//a+DhiNKccUWUECHZv
+ lgshAcfoR1ZT2u36JFzDrtd9Tx9WQa2WxkfIIvZZoQ92yx0supHXaUK2GDM3ymRlRQ2lILHQPQa
+ LB/PsDOm7YLuQL5v9hT98cydksDiwUxUdxbiReF1Z2i0H2zOvui5S0vlnEpUutL33Kbs=
+X-Google-Smtp-Source: AGHT+IGSTLDDWNho2cSUsFwUTQm9wJm8GdFyiyhOJ/hFnBmZQEM9zGiju1OaUCEI/3tNR9Y9oOdYrg==
+X-Received: by 2002:a05:6000:5c2:b0:3a5:39bb:3d61 with SMTP id
+ ffacd0b85a97d-3b613e982e0mr4489067f8f.27.1752830012170; 
+ Fri, 18 Jul 2025 02:13:32 -0700 (PDT)
 Received: from [127.0.1.1] (ppp-2-86-210-241.home.otenet.gr. [2.86.210.241])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca487fdsm1267145f8f.48.2025.07.18.02.13.29
+ ffacd0b85a97d-3b61ca487fdsm1267145f8f.48.2025.07.18.02.13.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Jul 2025 02:13:30 -0700 (PDT)
+ Fri, 18 Jul 2025 02:13:31 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH 0/3] tests/functional: add more CLI args
-Date: Fri, 18 Jul 2025 12:12:51 +0300
-Message-Id: <20250718-functional_tests_args-v1-0-54d4c6207690@linaro.org>
+Date: Fri, 18 Jul 2025 12:12:52 +0300
+Subject: [PATCH 1/3] tests/functional: add --keep-scratch CLI arg
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIABQQemgC/2WN0QqDIBiFX0W8npA2rfkqI+JX/5qwalOLQfTus
- zXYxS6/wznfWWnE4DFSTVYacPHRT2MGfiLU3mDskXmXmYpCyKLiNevm0aZcgnubMKbYQugj48I
- 6I1EqV59p3j4Cdv718V6bgwM+56xPR/iza/J1q3+3QzP3+wMDKEB2ylzKSupF7B8GIjI7DYNPm
- pRKKqwUN5Y22/YGe2b8itcAAAA=
-X-Change-ID: 20250718-functional_tests_args-12cdb5e56d84
+Message-Id: <20250718-functional_tests_args-v1-1-54d4c6207690@linaro.org>
+References: <20250718-functional_tests_args-v1-0-54d4c6207690@linaro.org>
+In-Reply-To: <20250718-functional_tests_args-v1-0-54d4c6207690@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, 
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -81,30 +78,30 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=978;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2126;
  i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=NFeZ9nZTsB3Yt9P/vIjmwLzRNSsWQUVXyQmpX1/he0Q=;
+ bh=K5a2gnPN4N6QNLdI0OMBeHelXA8feQoDvJsJwXPmMHY=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm9laEE1YmJuUC8wdGRKaDNJTUxZTTB4QndmSXRoClhPS3Q3ZzR5d21Tc0JDRys1
- QVNKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUhvUU9RQUt
- DUkIzS2Nkd2YzNEowUC82RC85RXBsek9udjJITVFsMGdpWVRRM29iZFJFa3gwSU00VTZZNThxcw
- pXbWxLSkRka21GUkdaanU5MDhxRXpPbU9TSDNuUnM1RVQxeVMzWi8wQ1hudXdvbFpKa1lLRjBnc
- UFJOFdGaDdWCktmZWJHSlY1LzQwa1F5MWlKYnh6YVlFeDQrOVliZTdINnhCeUNPZ0Y4YldndU5W
- N00reUlEanl6U1NmV096Z1cKNkZpMW81ZnBaTHZmeEdybUJjQUg4VlpZNXNRNHZKNEJxQklYTmF
- aZjJ0aDYvR2UwMXl3eWdDMDU3SUtGbW1rKwpxYmQ0Q0NNNFMrdTVNVlFNR1RvRGk2dnFCWWtSTS
- tjUFREdmNpSUxCRDZ0U1NzRzZ2cXRlVE4rSGZnRWpkeGNECk5aM2JUSTFKMUZlUWZSd3hvbDNYS
- TNPVnU2SlQzWWlhVzZtdDlka0Q0dWNrbEdWQW9QcGl2TlptVkIvSG5RT0kKbjc0N1B2bk9XUW5p
- MmZpZDB3UE0wemZDSGtQbHk0TTB1cTN3WlhOOGJNamNFbm4xMGIyaU1lMHM2MTA1cFFGZApUQXB
- NVE9HTFN5WVRYMVRKTW0vMFN2S2FSdlZVOTJEdXRXU1V2UHUzWjJxYWRxWThkWkh5UUsvY29kL1
- BGUjhICmJOdVl0WUo3TjN1b1Y4ZXZ6TVJRY2ZCMndSeWZZU1lRcXRxc0pGUlB3c2tzTTV1Ym1Rb
- 2ZybE5Oc2hER2tvZk0KcnRoTDZsTkl4Y3VJMy9FWi8zcUVIRy9ndVNvU3BvN3h5L2dJRm1ubDN2
- SG1Kd2VBcUdSK3EyMjE3NkZNa3VXRQpsY2QwMVF1dldNZWZtOTd3aENZNTl5dTY2ZGJjRlRQTU5
- NcnUycUkwa01XcE5ZMmF5RE1nMGNKSEVaVUFXYnB1CjFIUmx6Zz09Cj05N2wxCi0tLS0tRU5EIF
+ 25RQWNzbVlnQm9laEE1REYzWStyMFVEUTFRYTA0dFlKa0htTzBwCk1kbFNVZmRPdkdONVBpaEJS
+ T21KQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUhvUU9RQUt
+ DUkIzS2Nkd2YzNEowSmtaRUFDQ1ZnbFVUUE5tV1g3WlBNL09LNFNpL2p2N3I0M204TFdGYUt0TQ
+ p1RzVDVFNlV2UyQVYwd21mNnBNTU5IdXBCZmErajg5TW9XMjBQWTFQWnhvWUdOVFdIUVU0VGxJY
+ XB4RVE1RTdlCnErZ0JMdFZrcHFvREVoREExTzFHdFVCVVJsTitHVDZmdENvYXdkTm15YmtpVS9l
+ QTZQVE9NcGlqN2ZjOEdYQ3EKbEtjN01iWXRVdzRIRVNpWGFDelhRUlRGQ2pCeGgvM0xoK2ZKSEx
+ yd0F1dnBmdU1meHNTMmFJWDRPTVNMZHdwSgoyUGFpWnhHVWZ0ZldQN1hxMEk1TkJSUFNNR0tWUD
+ FlU1o2NlJhMmY3dEFFb2pkbUZKaUFaR0M5eTRob1lkWDhGCnJIcU81MFBkNUc0NUh3Y2xtZnkwV
+ ERpcjNyODlzaWpkak1IQkNGS3owa2NXUWF4UEVySDBqWmlLQU9aaklRSDMKYkVhblM2UEtnajJh
+ Yi9kaVFyNzY0TSt0YzhPZFBDV09yNXNPcUtjV3JXdWpOS1R2Y3BOY2ZiMGpSaURKN1QyaQpBOHh
+ CTmNacTFTQ1FmK2dLcWREYi8xQU1JZWdDcFZ2alg3WlJUczJjM2NiWktIQW1SMWtNd250Y3lFQi
+ tXVUo2CitENEJWazdiNDMyekpSTXBEOXZwQWNqWUQvdElwMlVTa1VtQUZpbWRta2tBL0F0clRNd
+ TZOYjVTVGZaeDlMVGEKUzU3TzdmLzV2ZGxMcmNGcUFVWERhalg5dnhEWm9uM3hCdmJVOFExTS9D
+ UmEyTEpJb282aEZ3RHY5eFFsZVNLcQozcHRiendIbFNab2Uzc016OXl3MXdOVDNaS1FJM09Wb0J
+ 4bnUxUXh3WjlIcUlRNWxxandyZnMzZk9NeVpadVNjCnVtY1dyQT09Cj0vU3d4Ci0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
  fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,29 +124,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds extra CLI args for functional tests, useful for
-developers that run test files directly.
+Add CLI arg to keep scratch files after test execution, equivalent to
+setting QEMU_TEST_KEEP_SCRATCH env var.
 
-It depends on a previous patch that adds a --debug CLI arg, and is
-encoded as a b4 change-id dependency, so it should be fetched and
-applied automatically when using b4.
-
+Suggested-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
-Manos Pitsidianakis (3):
-      tests/functional: add --keep-scratch CLI arg
-      tests/functional: add --list-tests CLI arg
-      tests/functional: add -k TEST_NAME_PATTERN CLI arg
+ tests/functional/qemu_test/testcase.py | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
- tests/functional/qemu_test/testcase.py | 45 +++++++++++++++++++++++++++++-----
- 1 file changed, 39 insertions(+), 6 deletions(-)
----
-base-commit: 3656e761bcdd207b7759cdcd608212d2a6f9c12d
-change-id: 20250718-functional_tests_args-12cdb5e56d84
-prerequisite-change-id: 20250716-functional_tests_debug_arg-aa0a5f6b9375:v2
-prerequisite-patch-id: 4ccc8f39ffb382d31c8e6450c43a5f8d177af044
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 3ecaaeffd4df2945fb4c44b4ddef6911527099b9..24f0b452964012532530a92018b2c4367b39fb77 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -43,6 +43,13 @@ def parse_args(test_name: str) -> argparse.Namespace:
+         help="Also print test and console logs on stdout. This will make the"
+         " TAP output invalid and is meant for debugging only.",
+     )
++    parser.add_argument(
++        "--keep-scratch",
++        action="store_true",
++        help="Do not purge any scratch files created during the tests. "
++        "This is equivalent to setting QEMU_TEST_KEEP_SCRATCH=1 in the "
++        "environment.",
++    )
+     return parser.parse_args()
+ 
+ 
+@@ -214,6 +221,10 @@ def setUp(self):
+         path = os.path.basename(sys.argv[0])[:-3]
+         args = parse_args(path)
+         self.stdout_handler = None
++        self.keep_scratch = (
++                "QEMU_TEST_KEEP_SCRATCH" in os.environ
++                or args.keep_scratch
++        )
+         if args.debug:
+             self.stdout_handler = logging.StreamHandler(sys.stdout)
+             self.stdout_handler.setLevel(logging.DEBUG)
+@@ -255,8 +266,10 @@ def setUp(self):
+             self.skipTest('One or more assets is not available')
+ 
+     def tearDown(self):
+-        if "QEMU_TEST_KEEP_SCRATCH" not in os.environ:
++        if not self.keep_scratch:
+             shutil.rmtree(self.workdir)
++        else:
++            self.log.info(f"Kept scratch files in {self.workdir}")
+         if self.socketdir is not None:
+             shutil.rmtree(self.socketdir.name)
+             self.socketdir = None
 
---
-γαῖα πυρί μιχθήτω
+-- 
+2.47.2
 
 
