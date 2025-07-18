@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA394B0A537
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 15:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3274DB0A54C
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 15:37:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uclBQ-0004aJ-4G; Fri, 18 Jul 2025 09:31:28 -0400
+	id 1uclGu-0004xu-1U; Fri, 18 Jul 2025 09:37:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1uclBM-0004X5-Og
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 09:31:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1uclBK-00045N-9I
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 09:31:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752845477;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=mJznBc4LyHw9waGHXIVuhEmA6x0JI1XLV4RQY1csEPk=;
- b=dcdEXMDnSvtHU54VT64cB5t1FISNENgTsAi8bNIUCrKV0sh4zdlBkFFg2IxLl8NvTZBi8i
- iEX7Rz2dw1/o0QFCF2cpB8+Vz3RzJsB59HfpN5O8p/mCSI8qN9+xtvyA0xJ0GYv9y56lmO
- 3i7BgpuKpDJVlO+NVhfW6ysIn40Jx4w=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-498-R6PH1S52O9C_Fmbg2j7p3w-1; Fri,
- 18 Jul 2025 09:31:16 -0400
-X-MC-Unique: R6PH1S52O9C_Fmbg2j7p3w-1
-X-Mimecast-MFC-AGG-ID: R6PH1S52O9C_Fmbg2j7p3w_1752845475
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 221B9195FDD9; Fri, 18 Jul 2025 13:31:15 +0000 (UTC)
-Received: from lenovo-t14s.redhat.com (unknown [10.44.33.65])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7769D1801723; Fri, 18 Jul 2025 13:31:12 +0000 (UTC)
-From: Laurent Vivier <lvivier@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH] net/passt: Fix build failure due to missing GIO dependency
-Date: Fri, 18 Jul 2025 15:31:10 +0200
-Message-ID: <20250718133110.1510978-1-lvivier@redhat.com>
+ (Exim 4.90_1) (envelope-from <engguopeng@buaa.edu.cn>)
+ id 1uclGp-0004u9-NA
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 09:37:03 -0400
+Received: from l-sdnproxy.icoremail.net ([20.188.111.126]
+ helo=azure-sdnproxy.icoremail.net)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <engguopeng@buaa.edu.cn>) id 1uclGl-0004wQ-CU
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 09:37:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=buaa.edu.cn; s=buaa; h=Received:From:To:Cc:Subject:Date:
+ Message-ID:MIME-Version:Content-Transfer-Encoding; bh=XPkEBDNisX
+ Q0AjoTAXlD7TIcavVVweP0kvy5/P95cf4=; b=bL8pMsgQ59jFJCYrtuGBG90ChC
+ z68SS5YDe8So53tW/tym8iQpexsao4GDbjghqk5XoVkMO/2biOWppbf6GIxbKjtS
+ MIAjXJjOB+aojGnelYpoDh83JHF0Ddfo4zoBKk5rkZgJ6sd/5iQkSFoR5B7g6zl/
+ OssH8VH6KvHvxiqjk=
+Received: from gp-VMware-Virtual-Platform.com (unknown [139.227.252.237])
+ by coremail-app2 (Coremail) with SMTP id Nyz+CgAXM5mzTXpoDL2qBQ--.55176S2;
+ Fri, 18 Jul 2025 21:35:47 +0800 (CST)
+To: mst@redhat.com, marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
+ richard.henderson@linaro.org, eduardo@habkost.net, qemu-devel@nongnu.org,
+ linux-cxl@vger.kernel.org
+Cc: wyguopeng@163.com,
+	peng guo <engguopeng@buaa.edu.cn>
+Subject: [PATCH] hw/i386/pc: Avoid overlap between CXL window and PCI 64bit
+ BARs in QEMU
+Date: Fri, 18 Jul 2025 21:35:45 +0800
+Message-ID: <20250718133545.5261-1-engguopeng@buaa.edu.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: Nyz+CgAXM5mzTXpoDL2qBQ--.55176S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXr4xKFW8AF1UXrWrCr1xXwb_yoW5XFW5p3
+ sxtay5GFWFgr13GFZ7Xas5Ca18uFs5u3W7CFs2gwn29rnxKr15ZasFy3yYv340qrn3Jry7
+ XF98JrySqw4DuaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUvY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+ w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+ IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
+ z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
+ Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r10
+ 6r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+ vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVW5GwCF04k20xvY0x0EwIxG
+ rwCF04k20xvE74AGY7Cv6cx26F1DJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
+ 02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_
+ GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
+ CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
+ 6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0J
+ UkHUDUUUUU=
+X-CM-SenderInfo: d2isijirrujqpexdthxhgxhubq/
+Received-SPF: pass client-ip=20.188.111.126;
+ envelope-from=engguopeng@buaa.edu.cn; helo=azure-sdnproxy.icoremail.net
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,52 +79,79 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  peng guo <engguopeng@buaa.edu.cn>
+From:  peng guo via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The passt networking backend uses functions from the GIO library,
-such as g_subprocess_launcher_new(), to manage its daemon process.
-So, building with passt enabled requires GIO to be available.
+When using a CXL Type 3 device together with a virtio 9p device in QEMU, the
+9p device fails to initialize properly. The kernel reports the following:
 
-If we enable passt and disable gio the build fails during linkage with
-undefined reference errors:
+    virtio: device uses modern interface but does not have VIRTIO_F_VERSION_1
+    9pnet_virtio virtio0: probe with driver 9pnet_virtio failed with error -22
 
-  /usr/bin/ld: libsystem.a.p/net_passt.c.o: in function `net_passt_start_daemon':
-  net/passt.c:250: undefined reference to `g_subprocess_launcher_new'
-  /usr/bin/ld: net/passt.c:251: undefined reference to `g_subprocess_launcher_take_fd'
-  /usr/bin/ld: net/passt.c:253: undefined reference to `g_subprocess_launcher_spawnv'
-  /usr/bin/ld: net/passt.c:256: undefined reference to `g_object_unref'
-  /usr/bin/ld: net/passt.c:263: undefined reference to `g_subprocess_wait'
-  /usr/bin/ld: net/passt.c:268: undefined reference to `g_subprocess_get_if_exited'
-  /usr/bin/ld: libsystem.a.p/net_passt.c.o: in function `glib_autoptr_clear_GSubprocess':
-  /usr/include/glib-2.0/gio/gio-autocleanups.h:132: undefined reference to `g_object_unref'
-  /usr/bin/ld: libsystem.a.p/net_passt.c.o: in function `net_passt_start_daemon':
-  net/passt.c:269: undefined reference to `g_subprocess_get_exit_status'
+Further investigation revealed that the 64-bit BAR space assigned to the 9pnet
+device was overlapped by the memory window allocated for the CXL devices. As a
+result, the kernel could not correctly access the BAR region, causing the
+virtio device to malfunction.
 
-Fix this by adding an explicit weson dependency on GIO for the passt
-option.
-The existing dependency on linux is kept because passt is only available
-on this OS.
+An excerpt from /proc/iomem shows:
 
-Reported-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+    480010000-cffffffff : CXL Window 0
+      480010000-4bfffffff : PCI Bus 0000:00
+      4c0000000-4c01fffff : PCI Bus 0000:0c
+        4c0000000-4c01fffff : PCI Bus 0000:0d
+      4c0200000-cffffffff : PCI Bus 0000:00
+        4c0200000-4c0203fff : 0000:00:03.0
+          4c0200000-4c0203fff : virtio-pci-modern
+
+To address this issue, this patch uses the value of `cxl_resv_end` to reserve
+sufficient address space and ensure that CXL memory windows are allocated
+beyond all PCI 64-bit BARs. This prevents overlap with 64-bit BARs regions such 
+as those used by virtio or other pcie devices, resolving the conflict.
+
+QEMU Build Configuration:
+
+    ./configure --prefix=/home/work/qemu_master/build/ \
+                --target-list=x86_64-softmmu \
+                --enable-kvm \
+                --enable-virtfs
+
+QEMU Boot Command:
+
+    sudo /home/work/qemu_master/qemu/build/qemu-system-x86_64 \
+        -nographic -machine q35,cxl=on -enable-kvm -m 16G -smp 8 \
+        -hda /home/work/gp_qemu/rootfs.img \
+        -virtfs local,path=/home/work/gp_qemu/share,mount_tag=host0,security_model=passthrough,id=host0 \
+        -kernel /home/work/linux_output/arch/x86/boot/bzImage \
+        --append "console=ttyS0 crashkernel=256M root=/dev/sda rootfstype=ext4 rw loglevel=8" \
+        -object memory-backend-ram,id=vmem0,share=on,size=4096M \
+        -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
+        -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
+        -device cxl-type3,bus=root_port13,volatile-memdev=vmem0,id=cxl-vmem0,sn=0x123456789 \
+        -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G
+
+Tested in a QEMU setup with a CXL Type 3 device and a 9pnet virtio device.
+
+Signed-off-by: peng guo <engguopeng@buaa.edu.cn>
 ---
- meson.build | 1 +
- 1 file changed, 1 insertion(+)
+ hw/i386/pc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index c2bc3eeedce9..5842dd026a6f 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1287,6 +1287,7 @@ endif
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 2f58e73d3347..180bc615f3f0 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -975,7 +975,7 @@ void pc_memory_init(PCMachineState *pcms,
  
- enable_passt = get_option('passt') \
-   .require(host_os == 'linux', error_message: 'passt is supported only on Linux') \
-+  .require(gio.found(), error_message: 'passt requires gio') \
-   .allowed()
+     rom_set_fw(fw_cfg);
  
- vde = not_found
+-    if (machine->device_memory) {
++    if (machine->device_memory || cxl_resv_end) {
+         uint64_t *val = g_malloc(sizeof(*val));
+         uint64_t res_mem_end;
+ 
 -- 
-2.49.0
+2.43.0
 
 
