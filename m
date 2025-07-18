@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040B6B0AAC5
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 21:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 622B9B0AAF0
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 22:03:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucqvp-0000q3-VX; Fri, 18 Jul 2025 15:39:45 -0400
+	id 1ucrIS-0001mZ-5S; Fri, 18 Jul 2025 16:03:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucqV0-0003KL-Rs
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 15:12:02 -0400
-Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ucqUy-0001Y3-8r
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 15:12:01 -0400
-Received: by mail-yb1-xb2a.google.com with SMTP id
- 3f1490d57ef6-e7d9d480e6cso2043800276.2
- for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 12:11:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1752865918; x=1753470718; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=v4xwvNtll+Pk7RSVpzpPc2Cr5zO+kbm6v/0CLrk5xEM=;
- b=Km3sa2el+zkuQNYcQjq6NDe3S1mbkgXRIMCsvAYTVuWhXYe9wezt7RmOc8i2aTiOAX
- g4JaJcaVXrdxsnO1qjO6ififvMR9fSTU+Uu4RjhOWMgraLM1aABBl9Q3Tfrom8C8uJa+
- CcMNScPuJcmiX9DnV4dhWpGlErdbSO+wS+/1lz21lMCbpefmZ/UVNqQbo6x7kQKfcFW4
- Y0QmgFMb/JWUtxsfc3jSHcjscb+LIpH+e+IFiUzhyG2+xFfrzZ8fE1uZvv9zeoDV8ffu
- g8EqajBLPrJSE6ulsMZ4PpJW2PK0vop/iRKI7ZMMz2lKpGpOVRWfn1m/Qx6VXglQhW1d
- EfIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752865918; x=1753470718;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=v4xwvNtll+Pk7RSVpzpPc2Cr5zO+kbm6v/0CLrk5xEM=;
- b=DAzywKX4aoK7U0b/eZalgn/9FymMAAYchlD1nFuZWPoKxv36EuDJakD4cYMoM/FIum
- 2cO0zOx4lbxfG5S2zl8KlRj2flXtWN/09fDYylyk+uTwB6nLxL7wHbqIyZKKHed1ceBR
- c0sO9iL5BpJz41Da/c/X3VAlVdmsMg7aN5nGQlstlu+9hAyPAgJT5joOR4A5PeFHt3px
- 66egP8vxvhbGW4Hb4gkoU/EcMyjOAEvwX17mejqxEdBu4L52OE+rmYzfZq35o+m49QO8
- dxpkv6gtgAiQU3FThjxVL8GJliJVyH/zFBdzmmKf9Q1L1bgzUoWUUpJ7nHyUoTEsadRM
- l0UA==
-X-Gm-Message-State: AOJu0Yzb/XuhpHMPVKTVYeJn/7VTYRXaPut+DRXE42zOgsuXH2zN8VB9
- PiKuVOpgv5rWcb6RvOzfI5cehmjvZuTu/3NmMd2WkjiGfWJ04ESxsg1IvnonAXZTl8JSrgjb68z
- XCaR2LddPAd1mlBSSjdl0D3IScIvkp65+U8OaEKKhtw==
-X-Gm-Gg: ASbGnctxAXP/MHLXV8ZAi1RN33VgoQxGMxGTK3oNBUo5Q4itgJ2Q12EbDYThzAILQzI
- /yn4rq98REkFiN5xNiyi8HrzIV5wOriG2RKWNr/d5Txc0RnamZNZNi2nNN0s8RYqZJiSj0kKnS9
- rUj4FB/7mWNLVkA3smOfTvxNHEZUSHgEuNcUEI1AqT9slfqgD4Gt1VnlTF6MBW3hnWBqrgRtZYC
- YJp2pUvgg9+DCTKxlc=
-X-Google-Smtp-Source: AGHT+IHEnO196Q40JvjD+4c+YcezdYKcxNXc8bQMu3SkDGYcy0kq0PtvCB5zX831NkbegeuHi0TBMr9j7oBip3xZQsc=
-X-Received: by 2002:a05:690c:6408:b0:70e:2d77:3cfe with SMTP id
- 00721157ae682-71836c6aa9bmr186419967b3.2.1752865918309; Fri, 18 Jul 2025
- 12:11:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1ucqzz-0006Ut-Rt
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 15:44:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1ucqzw-0000Iq-8h
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 15:44:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752867839;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=iZ34fFgdW/kB6BkmBz6HWhxJ/R9s9L86g6Nh3VJWRVw=;
+ b=ABy6ZZWMwnU0cUs78KsCKug+jbdvzEsir9EaXxgYEUXxs+ZINwEpa8idJ3ij/RnUi/1COb
+ 2cP32WL0rLIPZuj8jZQOUXJmtis1PsKz1yEWRzHmmPLtGRw6csT6L06xItih0dL6UAy0tV
+ QZ835klhCd0IvB97Kg34Rhg7Ce59rJs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-AhNIyl43MD6cDbaa5o_poQ-1; Fri,
+ 18 Jul 2025 15:43:55 -0400
+X-MC-Unique: AhNIyl43MD6cDbaa5o_poQ-1
+X-Mimecast-MFC-AGG-ID: AhNIyl43MD6cDbaa5o_poQ_1752867834
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A789518002B1; Fri, 18 Jul 2025 19:43:53 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.44.32.25])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 96BD930001B9; Fri, 18 Jul 2025 19:43:51 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 678391800082; Fri, 18 Jul 2025 21:43:49 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Sergio Lopez <slp@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>
+Subject: [PULL 0/3] Display 20250718 patches
+Date: Fri, 18 Jul 2025 21:43:46 +0200
+Message-ID: <20250718194349.65771-1-kraxel@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20250718173832.47820-1-richard.henderson@linaro.org>
-In-Reply-To: <20250718173832.47820-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 18 Jul 2025 20:11:47 +0100
-X-Gm-Features: Ac12FXzdc0aNY4_eAmrcTGCDdJaJR9F8OObI0O5mBWMPAaoHXTQMafM-LGYr5H8
-Message-ID: <CAFEAcA-nY-2YrZQg6seKzhqYvKc7Adu_xZVsa380KL1XJ4AuJQ@mail.gmail.com>
-Subject: Re: [PATCH for-10.1] tcg/optimize: Don't fold INDEX_op_and_vec to
- extract
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, pierrick.bouvier@linaro.org, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2a.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,37 +89,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 18 Jul 2025 at 18:46, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> There is no such thing as vector extract.
->
-> Fixes: 932522a9ddc1 ("tcg/optimize: Fold and to extract during optimize")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3036
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  tcg/optimize.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tcg/optimize.c b/tcg/optimize.c
-> index 62a128bc9b..3638ab9fea 100644
-> --- a/tcg/optimize.c
-> +++ b/tcg/optimize.c
-> @@ -1454,7 +1454,7 @@ static bool fold_and(OptContext *ctx, TCGOp *op)
->      a_mask = t1->z_mask & ~t2->o_mask;
->
->      if (!fold_masks_zosa_int(ctx, op, z_mask, o_mask, s_mask, a_mask)) {
-> -        if (ti_is_const(t2)) {
-> +        if (op->opc == INDEX_op_and && ti_is_const(t2)) {
->              /*
->               * Canonicalize on extract, if valid.  This aids x86 with its
->               * 2 operand MOVZBL and 2 operand AND, selecting the TCGOpcod
+The following changes since commit c079d3a31e45093286c65f8ca5350beb3a4404a9:
 
+  Merge tag 'pull-10.1-rc0-maintainer-140725-1' of https://gitlab.com/stsquad/qemu into staging (2025-07-15 00:12:07 -0400)
 
-How does the fold_masks_zosa stuff work for vector operations here?
-The masks are only 64 bits but the value we're working with is
-wider than that, right?
+are available in the Git repository at:
 
-thanks
--- PMM
+  https://gitlab.com/kraxel/qemu.git tags/display-20250718-pull-request
+
+for you to fetch changes up to d5fcf0d960d893b1765e6388cefca9c690839267:
+
+  hw/i386: Add the ramfb romfile compatibility (2025-07-18 21:41:57 +0200)
+
+----------------------------------------------------------------
+Load ramfb vgabios on x86 only.
+
+----------------------------------------------------------------
+
+Shaoqin Huang (3):
+  ramfb: Add property to control if load the romfile
+  vfio: Move the TYPE_* to hw/vfio/types.h
+  hw/i386: Add the ramfb romfile compatibility
+
+ hw/vfio/pci.h                 | 11 ++---------
+ hw/vfio/types.h               | 21 +++++++++++++++++++++
+ include/hw/display/ramfb.h    |  2 +-
+ hw/core/machine.c             |  2 ++
+ hw/display/ramfb-standalone.c |  5 ++++-
+ hw/display/ramfb-stubs.c      |  2 +-
+ hw/display/ramfb.c            |  6 ++++--
+ hw/i386/microvm.c             |  3 +++
+ hw/i386/pc_piix.c             | 10 ++++++++++
+ hw/i386/pc_q35.c              |  3 +++
+ hw/vfio/display.c             |  4 ++--
+ hw/vfio/pci.c                 |  2 ++
+ 12 files changed, 55 insertions(+), 16 deletions(-)
+ create mode 100644 hw/vfio/types.h
+
+-- 
+2.50.1
+
 
