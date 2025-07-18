@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D143B0A815
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 18:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14513B0A73F
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 17:28:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucnTa-0002S8-8E; Fri, 18 Jul 2025 11:58:22 -0400
+	id 1ucmzS-0007TS-Qo; Fri, 18 Jul 2025 11:27:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1ucn94-0004vF-N6
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 11:37:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1ucmux-0000IX-AN
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 11:22:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1ucn92-0003jR-7Y
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 11:37:10 -0400
+ id 1ucmuu-0006Xh-NJ
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 11:22:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752853024;
+ s=mimecast20190719; t=1752852148;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=hbwVK1ZEOtAxWPkQqExtSwZSxAD7vRW2wjsrlQHkn1w=;
- b=CQ4DwlBVotCF7ASpsEkevOQMr740kFRQLrQ41yLDKpyIm5glLij91UAKlBOjzI3/lrDp4L
- /4dS6qr94H5kY1lRHVDa9v0wDSolkb+DWsBTNCFlTLqoGm9nPQ9tn1AbN+MzTqfUAfXW8/
- ci/It27y0MKjykDpk828HIAKl9dmBBQ=
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
- [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BZVUwPT9+GyGgvsM9xXHYJpCep8zf44RZQMoR3nCen8=;
+ b=T1VuNo3bn+BBN+rTof2VYkxO28zNutjOxWqrIQyVPUBv96q/KVyMeoeLPqSlKDo7c1H/PT
+ QCqBFrwdIgEuRKNHjBDXG2P+/LtejRcjBOKTn7kBGSwAcbDV+pqJsU3ftbXIMJTPSM4++V
+ UAHigfDLau1N1sjBrsl2SiIkNaY9HOs=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-cRwRuC01PyqfPnwmXyp9kA-1; Fri, 18 Jul 2025 11:37:03 -0400
-X-MC-Unique: cRwRuC01PyqfPnwmXyp9kA-1
-X-Mimecast-MFC-AGG-ID: cRwRuC01PyqfPnwmXyp9kA_1752853023
-Received: by mail-oa1-f69.google.com with SMTP id
- 586e51a60fabf-30179e8d7b9so781121fac.1
- for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 08:37:03 -0700 (PDT)
+ us-mta-486-xNRhBHjLMRONT6cDM2acAw-1; Fri, 18 Jul 2025 11:21:58 -0400
+X-MC-Unique: xNRhBHjLMRONT6cDM2acAw-1
+X-Mimecast-MFC-AGG-ID: xNRhBHjLMRONT6cDM2acAw_1752852118
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6fad8b4c92cso53735246d6.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 08:21:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752853021; x=1753457821;
+ d=1e100.net; s=20230601; t=1752852118; x=1753456918;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hbwVK1ZEOtAxWPkQqExtSwZSxAD7vRW2wjsrlQHkn1w=;
- b=H+zGP46VjfJYp68uPimwivFw5rFxZG7L3jxoRBvofZmWqI89GNhzwpFU6ffUZ2giXM
- zuaikb94en7K7e/q7UEJBljA7CdmgOhZ7JURMNk8Sj2MSR7EVtsiXZVmSjuYfWhkvQ2e
- sDbTjrEnB1uzBagNGsDCqxqFLE8qaBp9fa74Wsb4NmN2+KvEyoSVT4vSfRlcUNfUu39S
- 832GfScgdVjYr5juYEvGbk9zdPfRfb8xM5ng1Ws3MnwVdmyrjxS9eI3mHh26zRPZx9tH
- 5rvhE0+7F/Px6HNm7NWMv+l/3U0wOEy8rOr7L6PGjYeHx3G1deAmC98dz7LDR/NFqDo9
- 0ZVQ==
-X-Gm-Message-State: AOJu0YzgTIkc7EgKpDJ9pwnOxqxQFKviW9BUJemF4TZVIFGjwcEqQj0p
- KDE7/xB0j1s+6R0Jp0RsA8CWSiROLy4brVIkbNWvPvXKd5qyTg0ltLU0h4I9WyBXN/ff8Q5D2eh
- /3fS/zjyk2p/PzFU7YrqcG19zoIuG07z1YceTTuus0/UQTeyVV7FoyUVDzZ39JhNVhNk=
-X-Gm-Gg: ASbGnctNu7tpzNO7EvznVFunOIH90VSXwGAojT2PWL+uY5w39WT3l8xMAY3zDevX7Vc
- 3JpzKS7CkQzH4ScZOtbp0MxkV7Vxa7wwGHbyidX2jRGldbD7qAvhhuHH59CfYY+5Q9iepxPvEh0
- DVVQTwNo4cbadTqfPVM3GdblgKeCoc0aXZhVc7TbxOL1zHWfFUOsgW5vaI5AvZ0CWUWSVNXAXyh
- N+cMKRBamCk1Ej9JQsnMFpcuul4GuoYgds2Orhght95pqW1skfEEhO5oVUp2mzOqkQfq+XeAzSE
- teA3ryqoudbsvhP/7lctfSNxZCsdIIoQtN+vNz9LA3T+uCCeQcqDrSrk5jXz4mapAA37p+TQCAn
- 8I7UEoXDj9WF2+7I=
-X-Received: by 2002:a05:6870:c6a7:b0:2c1:51f7:e648 with SMTP id
- 586e51a60fabf-2ffb25338f5mr9217408fac.35.1752853021411; 
- Fri, 18 Jul 2025 08:37:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHZoBBKbqdhoKUTCwFe/sPXP8xsGznk0gpoBWW8PG91z65X95lBv6Nh9KCAZgXum9GxGJho1A==
-X-Received: by 2002:a05:622a:493:b0:4ab:6a7a:688f with SMTP id
- d75a77b69052e-4ab93d47c69mr155275541cf.25.1752851177248; 
- Fri, 18 Jul 2025 08:06:17 -0700 (PDT)
+ bh=BZVUwPT9+GyGgvsM9xXHYJpCep8zf44RZQMoR3nCen8=;
+ b=Rm/jhK8lZGqflPRXcICVjgY8opYFZ3cOcbiBtagpQA69heJcta4k0KGNfm1ysE1rSA
+ 6y/QUOBRLZrf9y3grHEij8PYmj/NXXjQGbjq9tVNAHHr6V4II17DfixrfJKJqAk4A/+n
+ c+YTNS86+iSRMuQpfg2L60J0nFIk8duvExKcKJIPjDlBXoWl/sx1n/tRaal6oue7ntmY
+ L9auKbmqs7TND60ubIfcAP+f+W/k2rfVqjOe9lIwl8X8X7962nMnauvuQRAG4h1ik48W
+ 83oLKyqfcsZ2WxdEka4ReARSbBwO/SgwXdFLUavOfKYjxYUR9/D68uWOpAv++ofNbwV3
+ jAxA==
+X-Gm-Message-State: AOJu0YwBp4yaLLHM5DgO5ahagsAh8SrIo4XWYjIpH0iiCuA/KxurZ6Gw
+ B/0i3gVgZiS2NfEGiSEjtUHB0zUAcwJgexB8ve3Rt/wQsQeTKIsdFDE0RvL8HBr3IwqTwz/FAeB
+ xxZM0CEFTeOkGOsDEduAoW9SRasCd9F7an6ix4u/esLc7SPlVybW9Wwm0
+X-Gm-Gg: ASbGnctdD0jEGljZ0AGSmF1rdgzJxDOeBqC7p5RXWnNWtVEP0L8GA+H2YkVugVQs8Ec
+ vAxtcHWA+U8zuAUAo5FY7L+jRnVAtGNvZbWtSmm9I75QfVRYataAAc/ZmGNRFjUhBU1O6SArkl4
+ TIpZfVqQIeyn38xIj6CikthWc2CN0aUj3VxEWzgJppz47Dkuh9F8D/ORS0M1cbQrICpgbpNM9z7
+ sc6yOvsPyo6lCuUUvOqMaKBbKYj7jwr6LugjWZ5G9IWAGfO8MF7GcPBNUYb3PtvTAXi7VlvgbXM
+ 1amCHYrwwAKpnTzRHD0XvMe94ETvWnaFFe06ICbSa/p4wPs400v8mt0pHjGPciGm9nr90+5Grma
+ kR9hd885Stg+xkSw=
+X-Received: by 2002:a05:6214:2624:b0:6fa:a0ac:8d57 with SMTP id
+ 6a1803df08f44-7051a012badmr42561446d6.12.1752852117842; 
+ Fri, 18 Jul 2025 08:21:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFCJ28WlNrRbKpzWW1Bf+XDwd3Mp/4O8xny2hhBT0BEE4BY35ZmWy+w5r/aJ546/ZzaVy6g/g==
+X-Received: by 2002:a05:6214:2624:b0:6fa:a0ac:8d57 with SMTP id
+ 6a1803df08f44-7051a012badmr42560166d6.12.1752852115744; 
+ Fri, 18 Jul 2025 08:21:55 -0700 (PDT)
 Received: from sgarzare-redhat (host-79-45-205-118.retail.telecomitalia.it.
  [79.45.205.118]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4abb4aed09dsm8000451cf.36.2025.07.18.08.06.14
+ 6a1803df08f44-7051ba8cac6sm8845656d6.77.2025.07.18.08.21.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Jul 2025 08:06:16 -0700 (PDT)
-Date: Fri, 18 Jul 2025 17:06:08 +0200
+ Fri, 18 Jul 2025 08:21:55 -0700 (PDT)
+Date: Fri, 18 Jul 2025 17:21:46 +0200
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Paolo Abeni <pabeni@redhat.com>
 Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -81,15 +81,15 @@ Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Luigi Rizzo <lrizzo@google.com>, Giuseppe Lettieri <g.lettieri@iet.unipi.it>, 
  Vincenzo Maffione <v.maffione@gmail.com>, Eric Blake <eblake@redhat.com>, 
  Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH RFC v3 04/13] virtio: serialize extended features state
-Message-ID: <lwjxbt5cyuahgykzhhpysae3hlf5yzohj664p5nmvvw7atvuh2@szegzednwyw4>
+Subject: Re: [PATCH RFC v3 13/13] net: implement UDP tunnel features offloading
+Message-ID: <6ze5egria3fy3w2jlr3kc2xtljmgiu7klpkbsgucmrgpuuapav@ibsb6ubimbsi>
 References: <cover.1752828082.git.pabeni@redhat.com>
- <88978e62d3eb7a58d7d647c7ee29f074ccc99bc0.1752828082.git.pabeni@redhat.com>
+ <b59ee8e3eb926dd510a7a0f2de16f3d0380589f0.1752828082.git.pabeni@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <88978e62d3eb7a58d7d647c7ee29f074ccc99bc0.1752828082.git.pabeni@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+In-Reply-To: <b59ee8e3eb926dd510a7a0f2de16f3d0380589f0.1752828082.git.pabeni@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -114,224 +114,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 18, 2025 at 10:52:30AM +0200, Paolo Abeni wrote:
->If the driver uses any of the extended features (i.e. 64 or above),
->store the extended features range (64-127 bits).
+On Fri, Jul 18, 2025 at 10:52:39AM +0200, Paolo Abeni wrote:
+>When any host or guest GSO over UDP tunnel offload is enabled the
+>virtio net header includes the additional tunnel-related fields,
+>update the size accordingly.
 >
->At load time, let legacy features initialize the full features range
->and pass it to the set helper; sub-states loading will have filled-up
->the extended part as needed.
+>Push the GSO over UDP tunnel offloads all the way down to the tap
+>device extending the newly introduced NetFeatures struct, and
+>eventually enable the associated features.
 >
->This is one of the few spots that need explicitly to know and set
->in stone the extended features array size; add a build bug to prevent
->breaking the migration should such size change again in the future:
->more serialization plumbing will be needed.
+>As per virtio specification, to convert features bit to offload bit,
+>map the extended features into the reserved range.
+>
+>Finally, make the vhost backend aware of the exact header layout, to
+>copy it correctly. The tunnel-related field are present if either
+>the guest or the host negotiated any UDP tunnel related feature:
+>add them to the kernel supported features list, to allow qemu
+>transfer to the backend the needed information.
 >
 >Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 >---
 >v2 -> v3:
-> - 128bit_features state load/stores only the high bits
-> - consolidate the load implementation to use a single set
->   helper for 128/64/32 bits features
-> - _array -> _ex
+>  - rebased on top of "net: Consolidate vhost feature bits into vhost_net
+>    structure"
+>  - _array -> _ex
 >
 >v1 -> v2:
-> - uint128_t -> u64[2]
+>  - squashed vhost support into this patch
+>  - dropped tun offload consistency checks; they are implemented in
+>    the kernel side
+>  - virtio_has_tnl_hdr ->virtio_has_tunnel_hdr
 >---
-> hw/virtio/virtio.c | 88 ++++++++++++++++++++++++++++++----------------
-> 1 file changed, 57 insertions(+), 31 deletions(-)
+> hw/net/virtio-net.c | 34 ++++++++++++++++++++++++++--------
+> include/net/net.h   |  2 ++
+> net/net.c           |  3 ++-
+> net/tap-linux.c     |  6 ++++++
+> net/tap.c           |  2 ++
+> 5 files changed, 38 insertions(+), 9 deletions(-)
 >
->diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
->index 2ab1d20769..2817d3a893 100644
->--- a/hw/virtio/virtio.c
->+++ b/hw/virtio/virtio.c
->@@ -2954,6 +2954,24 @@ static const VMStateDescription vmstate_virtio_disabled = {
->     }
-> };
+>diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+>index 70c85f7f77..46f7efac7d 100644
+>--- a/hw/net/virtio-net.c
+>+++ b/hw/net/virtio-net.c
+>@@ -103,6 +103,12 @@
+> #define VIRTIO_NET_F2O_SHIFT          (VIRTIO_NET_OFFLOAD_MAP_MIN - \
+>                                        VIRTIO_NET_FEATURES_MAP_MIN + 64)
 >
->+static bool virtio_128bit_features_needed(void *opaque)
+>+static bool virtio_has_tunnel_hdr(const uint64_t *features)
 >+{
->+    VirtIODevice *vdev = opaque;
->+
->+    return virtio_features_use_extended(vdev->host_features_ex);
+>+    return virtio_has_feature_ex(features, VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO) |
 
-Related to live-migration, IIUC if we disable the new features in the 
-10.0 machine type, this should allow the migration (from a new qemu 
-using the old machine time to an old qemu not supporting extended 
-features), since those features should not be set in 
-vdev->host_features_ex, and this will return `false`.
-
-Right?
+I'd replace | with || since virtio_has_feature_ex() return a `bool`.
 
 Thanks,
 Stefano
 
+>+           virtio_has_feature_ex(features, VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO);
 >+}
 >+
->+static const VMStateDescription vmstate_virtio_128bit_features = {
->+    .name = "virtio/128bit_features",
->+    .version_id = 1,
->+    .minimum_version_id = 1,
->+    .needed = &virtio_128bit_features_needed,
->+    .fields = (const VMStateField[]) {
->+        VMSTATE_UINT64(guest_features_ex[1], VirtIODevice),
->+        VMSTATE_END_OF_LIST()
->+    }
->+};
->+
-> static const VMStateDescription vmstate_virtio = {
->     .name = "virtio",
->     .version_id = 1,
->@@ -2963,6 +2981,7 @@ static const VMStateDescription vmstate_virtio = {
->     },
->     .subsections = (const VMStateDescription * const []) {
->         &vmstate_virtio_device_endian,
->+        &vmstate_virtio_128bit_features,
->         &vmstate_virtio_64bit_features,
->         &vmstate_virtio_virtqueues,
->         &vmstate_virtio_ringsize,
->@@ -3059,23 +3078,28 @@ const VMStateInfo  virtio_vmstate_info = {
->     .put = virtio_device_put,
+> static const VirtIOFeature feature_sizes[] = {
+>     {.flags = 1ULL << VIRTIO_NET_F_MAC,
+>      .end = endof(struct virtio_net_config, mac)},
+>@@ -659,7 +665,8 @@ static bool peer_has_tunnel(VirtIONet *n)
+> }
+>
+> static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, int mergeable_rx_bufs,
+>-                                       int version_1, int hash_report)
+>+                                       int version_1, int hash_report,
+>+                                       int tunnel)
+> {
+>     int i;
+>     NetClientState *nc;
+>@@ -667,9 +674,11 @@ static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, int mergeable_rx_bufs,
+>     n->mergeable_rx_bufs = mergeable_rx_bufs;
+>
+>     if (version_1) {
+>-        n->guest_hdr_len = hash_report ?
+>-            sizeof(struct virtio_net_hdr_v1_hash) :
+>-            sizeof(struct virtio_net_hdr_mrg_rxbuf);
+>+        n->guest_hdr_len = tunnel ?
+>+            sizeof(struct virtio_net_hdr_v1_hash_tunnel) :
+>+            (hash_report ?
+>+             sizeof(struct virtio_net_hdr_v1_hash) :
+>+             sizeof(struct virtio_net_hdr_mrg_rxbuf));
+>         n->rss_data.populate_hash = !!hash_report;
+>     } else {
+>         n->guest_hdr_len = n->mergeable_rx_bufs ?
+>@@ -803,6 +812,10 @@ static void virtio_net_apply_guest_offloads(VirtIONet *n)
+>        .ufo  = !!(n->curr_guest_offloads & (1ULL << VIRTIO_NET_F_GUEST_UFO)),
+>        .uso4 = !!(n->curr_guest_offloads & (1ULL << VIRTIO_NET_F_GUEST_USO4)),
+>        .uso6 = !!(n->curr_guest_offloads & (1ULL << VIRTIO_NET_F_GUEST_USO6)),
+>+       .tnl  = !!(n->curr_guest_offloads &
+>+                  (1ULL << VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_MAPPED)),
+>+       .tnl_csum = !!(n->curr_guest_offloads &
+>+                      (1ULL << VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM_MAPPED)),
+>     };
+>
+>     qemu_set_offload(qemu_get_queue(n->nic)->peer, &ol);
+>@@ -824,7 +837,9 @@ virtio_net_guest_offloads_by_features(const uint64_t *features)
+>         (1ULL << VIRTIO_NET_F_GUEST_ECN)  |
+>         (1ULL << VIRTIO_NET_F_GUEST_UFO)  |
+>         (1ULL << VIRTIO_NET_F_GUEST_USO4) |
+>-        (1ULL << VIRTIO_NET_F_GUEST_USO6);
+>+        (1ULL << VIRTIO_NET_F_GUEST_USO6) |
+>+        (1ULL << VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_MAPPED) |
+>+        (1ULL << VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM_MAPPED);
+>
+>     return guest_offloads_mask & virtio_net_features_to_offload(features);
+> }
+>@@ -937,7 +952,8 @@ static void virtio_net_set_features(VirtIODevice *vdev,
+>                                virtio_has_feature_ex(features,
+>                                                   VIRTIO_F_VERSION_1),
+>                                virtio_has_feature_ex(features,
+>-                                                  VIRTIO_NET_F_HASH_REPORT));
+>+                                                  VIRTIO_NET_F_HASH_REPORT),
+>+                               virtio_has_tunnel_hdr(features));
+>
+>     n->rsc4_enabled = virtio_has_feature_ex(features, VIRTIO_NET_F_RSC_EXT) &&
+>         virtio_has_feature_ex(features, VIRTIO_NET_F_GUEST_TSO4);
+>@@ -3160,13 +3176,15 @@ static int virtio_net_post_load_device(void *opaque, int version_id)
+>     VirtIONet *n = opaque;
+>     VirtIODevice *vdev = VIRTIO_DEVICE(n);
+>     int i, link_down;
+>+    bool has_tunnel_hdr = virtio_has_tunnel_hdr(vdev->guest_features_ex);
+>
+>     trace_virtio_net_post_load_device();
+>     virtio_net_set_mrg_rx_bufs(n, n->mergeable_rx_bufs,
+>                                virtio_vdev_has_feature(vdev,
+>                                                        VIRTIO_F_VERSION_1),
+>                                virtio_vdev_has_feature(vdev,
+>-                                                       VIRTIO_NET_F_HASH_REPORT));
+>+                                                      VIRTIO_NET_F_HASH_REPORT),
+>+                               has_tunnel_hdr);
+>
+>     /* MAC_TABLE_ENTRIES may be different from the saved image */
+>     if (n->mac_table.in_use > MAC_TABLE_ENTRIES) {
+>@@ -3986,7 +4004,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+>
+>     n->vqs[0].tx_waiting = 0;
+>     n->tx_burst = n->net_conf.txburst;
+>-    virtio_net_set_mrg_rx_bufs(n, 0, 0, 0);
+>+    virtio_net_set_mrg_rx_bufs(n, 0, 0, 0, 0);
+>     n->promisc = 1; /* for compatibility */
+>
+>     n->mac_table.macs = g_malloc0(MAC_TABLE_ENTRIES * ETH_ALEN);
+>diff --git a/include/net/net.h b/include/net/net.h
+>index 9a9084690d..72b476ee1d 100644
+>--- a/include/net/net.h
+>+++ b/include/net/net.h
+>@@ -43,6 +43,8 @@ typedef struct NetOffloads {
+>     bool ufo;
+>     bool uso4;
+>     bool uso6;
+>+    bool tnl;
+>+    bool tnl_csum;
+> } NetOffloads;
+>
+> #define DEFINE_NIC_PROPERTIES(_state, _conf)                            \
+>diff --git a/net/net.c b/net/net.c
+>index 9536184a0c..27e0d27807 100644
+>--- a/net/net.c
+>+++ b/net/net.c
+>@@ -575,7 +575,8 @@ void qemu_set_vnet_hdr_len(NetClientState *nc, int len)
+>
+>     assert(len == sizeof(struct virtio_net_hdr_mrg_rxbuf) ||
+>            len == sizeof(struct virtio_net_hdr) ||
+>-           len == sizeof(struct virtio_net_hdr_v1_hash));
+>+           len == sizeof(struct virtio_net_hdr_v1_hash) ||
+>+           len == sizeof(struct virtio_net_hdr_v1_hash_tunnel));
+>
+>     nc->vnet_hdr_len = len;
+>     nc->info->set_vnet_hdr_len(nc, len);
+>diff --git a/net/tap-linux.c b/net/tap-linux.c
+>index e2628be798..8e275d2ea4 100644
+>--- a/net/tap-linux.c
+>+++ b/net/tap-linux.c
+>@@ -279,6 +279,12 @@ void tap_fd_set_offload(int fd, const NetOffloads *ol)
+>         if (ol->uso6) {
+>             offload |= TUN_F_USO6;
+>         }
+>+        if (ol->tnl) {
+>+            offload |= TUN_F_UDP_TUNNEL_GSO;
+>+        }
+>+        if (ol->tnl_csum) {
+>+            offload |= TUN_F_UDP_TUNNEL_GSO_CSUM;
+>+        }
+>     }
+>
+>     if (ioctl(fd, TUNSETOFFLOAD, offload) != 0) {
+>diff --git a/net/tap.c b/net/tap.c
+>index 23c6c118e7..2dfa843547 100644
+>--- a/net/tap.c
+>+++ b/net/tap.c
+>@@ -62,6 +62,8 @@ static const int kernel_feature_bits[] = {
+>     VIRTIO_F_NOTIFICATION_DATA,
+>     VIRTIO_NET_F_RSC_EXT,
+>     VIRTIO_NET_F_HASH_REPORT,
+>+    VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO,
+>+    VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO,
+>     VHOST_INVALID_FEATURE_BIT
 > };
 >
->-static int virtio_set_features_nocheck(VirtIODevice *vdev, uint64_t val)
->+static int virtio_set_features_nocheck(VirtIODevice *vdev, const uint64_t *val)
-> {
->     VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
->-    bool bad = (val & ~(vdev->host_features)) != 0;
->+    uint64_t tmp[VIRTIO_FEATURES_DWORDS];
->+    bool bad;
->+
->+    bad = virtio_features_andnot(tmp, val, vdev->host_features_ex);
->+    virtio_features_and(tmp, val, vdev->host_features_ex);
->
->-    val &= vdev->host_features;
->     if (k->set_features) {
->-        k->set_features(vdev, val);
->+        bad = bad || virtio_features_use_extended(tmp);
->+        k->set_features(vdev, tmp[0]);
->     }
->-    vdev->guest_features = val;
->+
->+    virtio_features_copy(vdev->guest_features_ex, tmp);
->     return bad ? -1 : 0;
-> }
->
-> typedef struct VirtioSetFeaturesNocheckData {
->     Coroutine *co;
->     VirtIODevice *vdev;
->-    uint64_t val;
->+    uint64_t val[VIRTIO_FEATURES_DWORDS];
->     int ret;
-> } VirtioSetFeaturesNocheckData;
->
->@@ -3088,14 +3112,15 @@ static void virtio_set_features_nocheck_bh(void *opaque)
-> }
->
-> static int coroutine_mixed_fn
->-virtio_set_features_nocheck_maybe_co(VirtIODevice *vdev, uint64_t val)
->+virtio_set_features_nocheck_maybe_co(VirtIODevice *vdev,
->+                                     const uint64_t *val)
-> {
->     if (qemu_in_coroutine()) {
->         VirtioSetFeaturesNocheckData data = {
->             .co = qemu_coroutine_self(),
->             .vdev = vdev,
->-            .val = val,
->         };
->+        virtio_features_copy(data.val, val);
->         aio_bh_schedule_oneshot(qemu_get_current_aio_context(),
->                                 virtio_set_features_nocheck_bh, &data);
->         qemu_coroutine_yield();
->@@ -3107,6 +3132,7 @@ virtio_set_features_nocheck_maybe_co(VirtIODevice *vdev, uint64_t val)
->
-> int virtio_set_features(VirtIODevice *vdev, uint64_t val)
-> {
->+    uint64_t features[VIRTIO_FEATURES_DWORDS];
->     int ret;
->     /*
->      * The driver must not attempt to set features after feature negotiation
->@@ -3122,7 +3148,8 @@ int virtio_set_features(VirtIODevice *vdev, uint64_t val)
->                       __func__, vdev->name);
->     }
->
->-    ret = virtio_set_features_nocheck(vdev, val);
->+    virtio_features_from_u64(features, val);
->+    ret = virtio_set_features_nocheck(vdev, features);
->     if (virtio_vdev_has_feature(vdev, VIRTIO_RING_F_EVENT_IDX)) {
->         /* VIRTIO_RING_F_EVENT_IDX changes the size of the caches.  */
->         int i;
->@@ -3145,6 +3172,7 @@ void virtio_reset(void *opaque)
-> {
->     VirtIODevice *vdev = opaque;
->     VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
->+    uint64_t features[VIRTIO_FEATURES_DWORDS];
->     int i;
->
->     virtio_set_status(vdev, 0);
->@@ -3171,7 +3199,8 @@ void virtio_reset(void *opaque)
->     vdev->start_on_kick = false;
->     vdev->started = false;
->     vdev->broken = false;
->-    virtio_set_features_nocheck(vdev, 0);
->+    virtio_features_clear(features);
->+    virtio_set_features_nocheck(vdev, features);
->     vdev->queue_sel = 0;
->     vdev->status = 0;
->     vdev->disabled = false;
->@@ -3254,7 +3283,7 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
->      * Note: devices should always test host features in future - don't create
->      * new dependencies like this.
->      */
->-    vdev->guest_features = features;
->+    virtio_features_from_u64(vdev->guest_features_ex, features);
->
->     config_len = qemu_get_be32(f);
->
->@@ -3333,26 +3362,23 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
->         vdev->device_endian = virtio_default_endian();
->     }
->
->-    if (virtio_64bit_features_needed(vdev)) {
->-        /*
->-         * Subsection load filled vdev->guest_features.  Run them
->-         * through virtio_set_features to sanity-check them against
->-         * host_features.
->-         */
->-        uint64_t features64 = vdev->guest_features;
->-        if (virtio_set_features_nocheck_maybe_co(vdev, features64) < 0) {
->-            error_report("Features 0x%" PRIx64 " unsupported. "
->-                         "Allowed features: 0x%" PRIx64,
->-                         features64, vdev->host_features);
->-            return -1;
->-        }
->-    } else {
->-        if (virtio_set_features_nocheck_maybe_co(vdev, features) < 0) {
->-            error_report("Features 0x%x unsupported. "
->-                         "Allowed features: 0x%" PRIx64,
->-                         features, vdev->host_features);
->-            return -1;
->-        }
->+    /*
->+     * Avoid silently breaking migration should the feature space increase
->+     * even more in the (far away) future
->+     */
->+    QEMU_BUILD_BUG_ON(VIRTIO_FEATURES_DWORDS != 2);
->+
->+    /*
->+     * guest_features_ex is fully initialized with u32 features and upper
->+     * bits have been filled as needed by the later load.
->+     */
->+    if (virtio_set_features_nocheck_maybe_co(vdev,
->+                                             vdev->guest_features_ex) < 0) {
->+        error_report("Features 0x" VIRTIO_FEATURES_FMT " unsupported. "
->+                     "Allowed features: 0x" VIRTIO_FEATURES_FMT,
->+                     VIRTIO_FEATURES_PR(vdev->guest_features_ex),
->+                     VIRTIO_FEATURES_PR(vdev->host_features_ex));
->+        return -1;
->     }
->
->     if (!virtio_device_started(vdev, vdev->status) &&
 >-- 
 >2.50.0
 >
