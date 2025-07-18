@@ -2,52 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D51EB09CDD
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 09:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D1BB09D37
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 09:59:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucfjk-0003SJ-TJ; Fri, 18 Jul 2025 03:42:33 -0400
+	id 1ucfyu-0002U7-VU; Fri, 18 Jul 2025 03:58:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1ucfW4-0002db-6c
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 03:28:25 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1ucfVz-0002jp-2o
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 03:28:23 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8BxrnKO93lo0cksAQ--.27523S3;
- Fri, 18 Jul 2025 15:28:14 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJCxocKI93lo0QwcAA--.17387S11;
- Fri, 18 Jul 2025 15:28:13 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2 9/9] target/loongarch: Use fine-grained tlb flush method
-Date: Fri, 18 Jul 2025 15:28:07 +0800
-Message-Id: <20250718072807.3585466-10-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250718072807.3585466-1-maobibo@loongson.cn>
-References: <20250718072807.3585466-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ucfyi-0002Qh-3y
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 03:58:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ucfyf-0006Ow-U3
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 03:57:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1752825475;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GOn2BSUf8DrlsSe15fpzUBSFAezNelDy/nuMtbmfih8=;
+ b=THaTvHH1jjryczZo2TyxRtbNb7xs5yz2JtELTRVQMVdh8I0w1vSDpE1wVAQW6oDLNZSssC
+ 6scT0wlti/tQWDa/LOFwQkyxdmnfDPzSJZA0dhhVaIp2CeeAgNnW5JtlkITjLqAkVXAGe5
+ 21W2Ew5Xs0CQWnq2wsp5QmKGrQHj/Yo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644-yTseaDRDOiuLLtMxTXRzGw-1; Fri, 18 Jul 2025 03:48:29 -0400
+X-MC-Unique: yTseaDRDOiuLLtMxTXRzGw-1
+X-Mimecast-MFC-AGG-ID: yTseaDRDOiuLLtMxTXRzGw_1752824908
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a6d90929d6so734848f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 00:48:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752824908; x=1753429708;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GOn2BSUf8DrlsSe15fpzUBSFAezNelDy/nuMtbmfih8=;
+ b=wvUd9zovnuV3/2GxaPy7Vn5mbAR9axZML/FV8vAKS8Boxso2OaJZKaSRnmo+sKVs8G
+ b2D4RKDrfW5j5B8MozqVJRJzToMitZPhEn1ALsN9Gd+V4mJI3G5SFAkdPiGr0OJ8A1zT
+ 9fHHJ0xT/YpJMflvrjEDafI2w/Z1T3+RUUdEYLHDm3VwDY2odLbLctz57JFw+2F1oBlM
+ WjLZcXRfZhl2esEnsFOS4CZPB7nr9bNNPLmpvd6bhh1xD+apqeJOQP6nRerkA2QucJel
+ 58DLMab6a8cx8wqzFo2Y1Z55BHYJYqP9+PLGWTur2zbKiRjSYFmzghCFHuHXjoA/a1+q
+ QXxg==
+X-Gm-Message-State: AOJu0YyXnWpUTjplWbZSMOLMq7a/zoIwgSPbeQ81FtWBD8ZLdtlkJOzE
+ aPygQEpUaHMGfNlSXOzCfxyRaBwVkTa3m1vIc7AhNsa/luWuPAVXinkbME8TSNhDUBp7g7W1vSD
+ Z440I42lCU+fQNhjkv72QVpqiwov/7jR43JbDb9Zzo3hN7FbR6xvtnPVx
+X-Gm-Gg: ASbGncvuz1yBeVyynA9dTzLBr28SfJF0inyKciby2dA6r1MYmpKWiN9oq7mDT6hrjuh
+ MkdqRwfQR5g7jnyH5AqXSxFTF75KBTt3w2JRibSfU4VBPHSFcVxr1xY5bmb7n3bGHtVkg4626+f
+ dQ/Ztr4uCP2IOcZImNmxTV+eRqQplYUtlLKVbjcDV7KilSybO3STztSbZJshkcseU3gO3/Nr0au
+ UfEqztyG+SOrQaKeicfjkEz7pA88m2ULLxsfJCRM9gDaSEQQe2aiKaIUHBESWAdaWfL3gI33Cgt
+ cZdBcTGzvTbKbn12kCvIDQrbrWYTWvli1/i5CbhUn8I=
+X-Received: by 2002:a5d:588f:0:b0:3b4:990a:a0d6 with SMTP id
+ ffacd0b85a97d-3b60e4ec65dmr6986258f8f.19.1752824907760; 
+ Fri, 18 Jul 2025 00:48:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFncB2nK/oOUu5mKV2yAN1DW2VPc6AOBqhjl2B/EJa0SyzAtGRhHsWDZ+nN5E/WN2XukIjMvQ==
+X-Received: by 2002:a5d:588f:0:b0:3b4:990a:a0d6 with SMTP id
+ ffacd0b85a97d-3b60e4ec65dmr6986245f8f.19.1752824907395; 
+ Fri, 18 Jul 2025 00:48:27 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.73.155])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4562e7f2bb4sm70232135e9.8.2025.07.18.00.48.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 18 Jul 2025 00:48:26 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>
+Subject: Re: [PATCH] rust/pl011: merge device_class.rs into device.rs
+Date: Fri, 18 Jul 2025 09:47:48 +0200
+Message-ID: <20250718074747.367232-2-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250718-rust-pl011-cleanup-v1-1-c71b1d6a69a5@linaro.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxocKI93lo0QwcAA--.17387S11
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,77 +108,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Qemu TCG provides some tlb flushing API, tlb can be flushed with
-specified mmu idx and virtual address. Here fine-grained tlb flush
-method is used.
+Queued, thanks.  But for 10.2 maybe we could alternate in preparing pull
+requests?  We'll see.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- target/loongarch/tcg/tlb_helper.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
-
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 47eb3ee318..0842b067b1 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -385,7 +385,8 @@ void helper_tlbclr(CPULoongArchState *env)
-         }
-     }
- 
--    tlb_flush(env_cpu(env));
-+    /* Flush all user tlb entries */
-+    tlb_flush_by_mmuidx(env_cpu(env), BIT(MMU_USER_IDX));
- }
- 
- void helper_tlbflush(CPULoongArchState *env)
-@@ -447,7 +448,9 @@ void helper_invtlb_all_asid(CPULoongArchState *env, target_ulong info)
-             tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 0);
-         }
-     }
--    tlb_flush(env_cpu(env));
-+
-+    /* Flush all user tlb entries */
-+    tlb_flush_by_mmuidx(env_cpu(env), BIT(MMU_USER_IDX));
- }
- 
- void helper_invtlb_page_asid(CPULoongArchState *env, target_ulong info,
-@@ -475,15 +478,19 @@ void helper_invtlb_page_asid(CPULoongArchState *env, target_ulong info,
-         if (!tlb_g && (tlb_asid == asid) &&
-            (vpn == (tlb_vppn >> compare_shift))) {
-             tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 0);
-+            tlb_flush_range_by_mmuidx(env_cpu(env), vpn << (tlb_ps + 1),
-+                                      BIT_ULL(tlb_ps + 1),
-+                                      BIT(MMU_USER_IDX), TARGET_LONG_BITS);
-+            break;
-         }
-     }
--    tlb_flush(env_cpu(env));
- }
- 
- void helper_invtlb_page_asid_or_g(CPULoongArchState *env,
-                                   target_ulong info, target_ulong addr)
- {
-     uint16_t asid = info & 0x3ff;
-+    int mmu_idx;
- 
-     for (int i = 0; i < LOONGARCH_TLB_MAX; i++) {
-         LoongArchTLB *tlb = &env->tlb[i];
-@@ -505,9 +512,13 @@ void helper_invtlb_page_asid_or_g(CPULoongArchState *env,
-         if ((tlb_g || (tlb_asid == asid)) &&
-             (vpn == (tlb_vppn >> compare_shift))) {
-             tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 0);
-+            mmu_idx = BIT(FIELD_EX64(tlb->tlb_entry0, TLBENTRY, PLV));
-+            tlb_flush_range_by_mmuidx(env_cpu(env), vpn << (tlb_ps + 1),
-+                                      BIT_ULL(tlb_ps + 1),
-+                                      mmu_idx, TARGET_LONG_BITS);
-+            break;
-         }
-     }
--    tlb_flush(env_cpu(env));
- }
- 
- bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
--- 
-2.39.3
+Paolo
 
 
