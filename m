@@ -2,81 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14CEB0AAE8
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 21:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B72FB0AB28
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 22:37:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucrDp-0004zr-9u; Fri, 18 Jul 2025 15:58:21 -0400
+	id 1ucroR-0004bY-D3; Fri, 18 Jul 2025 16:36:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1ucr01-0006Y0-Mi
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 15:44:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1ucqzx-0000Kw-Jn
- for qemu-devel@nongnu.org; Fri, 18 Jul 2025 15:44:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1752867841;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CUctqlNzUkpeCx7tkKhfVM7ymn6lOPlaPin3xQLDGY4=;
- b=jHHVF7OlwqqeNPyER/O5+EIzm4Croaw5gek0hQ9nF/rNXWyDOIx3YixGTS+60410LnhG/e
- r/ULVIOqBySmF05lUoe+Z2PRMcHzn2iUU78had423+uFTgnZtggaHq16rsTI8Xi2zMLxao
- /oS4MmVXi6D6It25wYLmCrU1+jGXPM8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-398-uNVScfDNOJSXKvDgXOQPEg-1; Fri,
- 18 Jul 2025 15:43:57 -0400
-X-MC-Unique: uNVScfDNOJSXKvDgXOQPEg-1
-X-Mimecast-MFC-AGG-ID: uNVScfDNOJSXKvDgXOQPEg_1752867836
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5CB46195FE11; Fri, 18 Jul 2025 19:43:56 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.44.32.25])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AC85B30001B9; Fri, 18 Jul 2025 19:43:55 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id BC8CA180099D; Fri, 18 Jul 2025 21:43:49 +0200 (CEST)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Sergio Lopez <slp@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>,
- Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eric.auger@redhat.com>
-Subject: [PULL 3/3] hw/i386: Add the ramfb romfile compatibility
-Date: Fri, 18 Jul 2025 21:43:49 +0200
-Message-ID: <20250718194349.65771-4-kraxel@redhat.com>
-In-Reply-To: <20250718194349.65771-1-kraxel@redhat.com>
-References: <20250718194349.65771-1-kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1ucrPe-0003JY-2r
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 16:10:34 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1ucrPc-0007zw-1k
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 16:10:33 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-747fba9f962so2544031b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Jul 2025 13:10:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1752869430; x=1753474230; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aMvBP39AC2o9BS6kOXbkpWCMjeEEdge4IA4jjYzhezw=;
+ b=qrF8sJ2VfWhxOP+GSS9Fyrynevw3FrUB4ZSYlXyqQFyPw+61BZLrO8nWYq9qzFAoUP
+ OwlqMenPO6ISkgyl1b0HV2da77gWqjN9/UZdfieXQ4qhZvRsQUH6sHXbbdQKVYZZGa0n
+ 4c80wgpCbLSpj0fsWFMkNsK6xSkra0fuS1A9HPU61qvsqPk6DcFi8TY4R/cmemVT6bD1
+ H79P9gkc62o3aiIFsK2NYcoZ/jAr+uqWMDKizIvpywJfOQugWDVfiklvsWF3hHL1V95Y
+ UvOq5q5S8hfZpyGV9D5BYC5D/2T2XaVXvJbf+pGH0jLOtFD3oD08OFGi5uYu6AGzT39m
+ Eckw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1752869430; x=1753474230;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aMvBP39AC2o9BS6kOXbkpWCMjeEEdge4IA4jjYzhezw=;
+ b=B5pUMKpC7ykR0I17D+SqpMJb5i7oAig8PIy1w/1F995gh3qvqrf7CSABKKSLjzouoo
+ 0Z259oCBl0R1BTQK5hEWTkRJlrFK38x+IS4MYnFQFLqV2LOH99NZs3d/7AJPoWlo0Xtz
+ BPjFvPMsXUnfiVriV1QrNep14vivcH2/VBKU5ux29UcZQW0sRvmmHeyEUd1rlr8M/fQs
+ 3Mx/pa7uqXnafT5vvWE8tng4XOWkMrfEfbRuYe7WbMnrHBOYA532qAymPqXgnyl85Acy
+ 8FVzrFkrxIOU0at2DZlvxkWDI82X+0ItLyKpAKKZ5tRpq6oUnOeWjJ3hD6aJDKbp+lR2
+ ebiA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXnYbfkddESw2jx3TjWWquEKFsgG7ckGg5SyTJrfalti4TNz3hJEKYz9AgXwTqizBRfk3xamlzBPO6o@nongnu.org
+X-Gm-Message-State: AOJu0YyB3NZ4OVEBVX+1UBt65a4KTBXTQoRz6oCrFalA8XEVhKxig01j
+ fxqjlrRbz3KeHHMzj9v9/OXa5t1hAicxmHwDplLpZAt8BKA8gXqwtKE+1mMCPA+2QeY=
+X-Gm-Gg: ASbGncsK3o5TLBmstOo2zUr6iA8RlOf/9pwxkRNz04U556DNuysCTkDFEpp+bFVv48K
+ 5nLuHUXVqq7uu7JeHX8PTXbxpS24BWi8J++eUTFnpC4so17kxL/D7YVbzJPkwp/K5hKULwDpS9P
+ ABqjW64ajFbzeVAyGZeweqL5Kr1puDK2e6jy1/+6xyivKDtoLitvFDKuuawwNLanQQD4wQ0rYy/
+ bUErzZwKrXxfAC8Ackf0THoXHuWo0hKycwL2zCTC5iBwibQem/EcMlleeVFibW2GiQ5peGkDgEt
+ zOiyzKf0sCzCMqmmZqpiTxAcqsmtIpA1ply8p7IzIwRCNijSdHs5bdyMekQ/dQXLr0iHw6xUhDh
+ dOOaqGhbga7MiNtVAg1UTgTrTPrrkzJ8Op5g=
+X-Google-Smtp-Source: AGHT+IGB996OLW+DI6MRwBYWdjZ5RUVDlN5Nx5khIKl+KeYJDVOyTwnLG1kLRNbkg+gBJdNcnQi0nA==
+X-Received: by 2002:a05:6a00:bd82:b0:755:93be:40fd with SMTP id
+ d2e1a72fcca58-75836faac43mr12327024b3a.2.1752869429561; 
+ Fri, 18 Jul 2025 13:10:29 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-759cb67901csm1707628b3a.100.2025.07.18.13.10.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 18 Jul 2025 13:10:29 -0700 (PDT)
+Message-ID: <269598c8-3ccf-4105-9934-7b8cfec55058@linaro.org>
+Date: Fri, 18 Jul 2025 13:10:28 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-10.1] tcg/optimize: Don't fold INDEX_op_and_vec to
+ extract
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org
+References: <20250718173832.47820-1-richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250718173832.47820-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,173 +102,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shaoqin Huang <shahuang@redhat.com>
+On 7/18/25 10:38 AM, Richard Henderson wrote:
+> There is no such thing as vector extract.
+> 
+> Fixes: 932522a9ddc1 ("tcg/optimize: Fold and to extract during optimize")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3036
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/optimize.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tcg/optimize.c b/tcg/optimize.c
+> index 62a128bc9b..3638ab9fea 100644
+> --- a/tcg/optimize.c
+> +++ b/tcg/optimize.c
+> @@ -1454,7 +1454,7 @@ static bool fold_and(OptContext *ctx, TCGOp *op)
+>       a_mask = t1->z_mask & ~t2->o_mask;
+>   
+>       if (!fold_masks_zosa_int(ctx, op, z_mask, o_mask, s_mask, a_mask)) {
+> -        if (ti_is_const(t2)) {
+> +        if (op->opc == INDEX_op_and && ti_is_const(t2)) {
+>               /*
+>                * Canonicalize on extract, if valid.  This aids x86 with its
+>                * 2 operand MOVZBL and 2 operand AND, selecting the TCGOpcode
 
-ramfb is a sysbus device so it can only used for machine types where it
-is explicitly enabled:
+This solves the failures observed, thanks.
 
-  # git grep machine_class_allow_dynamic_sysbus_dev.*TYPE_RAMFB_DEVICE
-  hw/arm/virt.c:    machine_class_allow_dynamic_sysbus_dev(mc,
-		  TYPE_RAMFB_DEVICE);
-  hw/i386/microvm.c:    machine_class_allow_dynamic_sysbus_dev(mc,
-		  TYPE_RAMFB_DEVICE);
-  hw/i386/pc_piix.c:    machine_class_allow_dynamic_sysbus_dev(m,
-		  TYPE_RAMFB_DEVICE);
-  hw/i386/pc_q35.c:    machine_class_allow_dynamic_sysbus_dev(m,
-		  TYPE_RAMFB_DEVICE);
-  hw/loongarch/virt.c:    machine_class_allow_dynamic_sysbus_dev(mc,
-		  TYPE_RAMFB_DEVICE);
-  hw/riscv/virt.c:    machine_class_allow_dynamic_sysbus_dev(mc,
-		  TYPE_RAMFB_DEVICE);
-
-So these six are the only machine types we have to worry about.
-
-The three x86 machine types (pc, q35, microvm) will actually use the rom
-(when booting with seabios).
-
-For arm/riscv/loongarch virt we want to disable the rom.
-
-This patch sets ramfb romfile option to false by default, except for x86
-machines types (pc, q35, microvm) which need the rom file when booting
-with seabios and machine types <= 10.0 (handling the case of arm virt,
-for compat reasons).
-
-At the same time, set the "use-legacy-x86-rom" property to true on those
-historical versioned machine types in order to avoid the memory layout
-being changed.
-
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
-Message-ID: <20250717100941.2230408-4-shahuang@redhat.com>
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- hw/core/machine.c             |  2 ++
- hw/display/ramfb-standalone.c |  2 +-
- hw/i386/microvm.c             |  3 +++
- hw/i386/pc_piix.c             | 10 ++++++++++
- hw/i386/pc_q35.c              |  3 +++
- hw/vfio/pci.c                 |  2 +-
- 6 files changed, 20 insertions(+), 2 deletions(-)
-
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index e869821b2246..a7043e2a3425 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -39,6 +39,8 @@
- 
- GlobalProperty hw_compat_10_0[] = {
-     { "scsi-hd", "dpofua", "off" },
-+    { "ramfb", "use-legacy-x86-rom", "true"},
-+    { "vfio-pci", "use-legacy-x86-rom", "true" },
- };
- const size_t hw_compat_10_0_len = G_N_ELEMENTS(hw_compat_10_0);
- 
-diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-standalone.c
-index 82d8c69f8903..72b2071aed01 100644
---- a/hw/display/ramfb-standalone.c
-+++ b/hw/display/ramfb-standalone.c
-@@ -64,7 +64,7 @@ static const VMStateDescription ramfb_dev_vmstate = {
- static const Property ramfb_properties[] = {
-     DEFINE_PROP_BOOL("x-migrate", RAMFBStandaloneState, migrate,  true),
-     DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState,
--                     use_legacy_x86_rom, true),
-+                     use_legacy_x86_rom, false),
- };
- 
- static void ramfb_class_initfn(ObjectClass *klass, const void *data)
-diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index e0daf0d4fc30..d90b69a16200 100644
---- a/hw/i386/microvm.c
-+++ b/hw/i386/microvm.c
-@@ -49,6 +49,7 @@
- #include "hw/acpi/generic_event_device.h"
- #include "hw/pci-host/gpex.h"
- #include "hw/usb/xhci.h"
-+#include "hw/vfio/types.h"
- 
- #include "elf.h"
- #include "kvm/kvm_i386.h"
-@@ -633,6 +634,8 @@ GlobalProperty microvm_properties[] = {
-      * so reserving io space is not going to work.  Turn it off.
-      */
-     { "pcie-root-port", "io-reserve", "0" },
-+    { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
-+    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
- };
- 
- static void microvm_class_init(ObjectClass *oc, const void *data)
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index a3285fbc6450..ad5caff3a5d2 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -49,6 +49,7 @@
- #include "hw/i2c/smbus_eeprom.h"
- #include "system/memory.h"
- #include "hw/acpi/acpi.h"
-+#include "hw/vfio/types.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "system/xen.h"
-@@ -77,6 +78,13 @@ static const int ide_iobase2[MAX_IDE_BUS] = { 0x3f6, 0x376 };
- static const int ide_irq[MAX_IDE_BUS] = { 14, 15 };
- #endif
- 
-+static GlobalProperty pc_piix_compat_defaults[] = {
-+    { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
-+    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
-+};
-+static const size_t pc_piix_compat_defaults_len =
-+    G_N_ELEMENTS(pc_piix_compat_defaults);
-+
- /*
-  * Return the global irq number corresponding to a given device irq
-  * pin. We could also use the bus number to have a more precise mapping.
-@@ -492,6 +500,8 @@ static void pc_i440fx_machine_options(MachineClass *m)
-                                    pc_set_south_bridge);
-     object_class_property_set_description(oc, "x-south-bridge",
-                                      "Use a different south bridge than PIIX3");
-+    compat_props_add(m->compat_props,
-+                     pc_piix_compat_defaults, pc_piix_compat_defaults_len);
- }
- 
- static void pc_i440fx_machine_10_1_options(MachineClass *m)
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index cf871cfdad86..9b9519fa02d5 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -45,6 +45,7 @@
- #include "hw/i386/pc.h"
- #include "hw/i386/amd_iommu.h"
- #include "hw/i386/intel_iommu.h"
-+#include "hw/vfio/types.h"
- #include "hw/virtio/virtio-iommu.h"
- #include "hw/display/ramfb.h"
- #include "hw/ide/pci.h"
-@@ -67,6 +68,8 @@
- 
- static GlobalProperty pc_q35_compat_defaults[] = {
-     { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "39" },
-+    { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
-+    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
- };
- static const size_t pc_q35_compat_defaults_len =
-     G_N_ELEMENTS(pc_q35_compat_defaults);
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 0b969b3359db..174499ecec65 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3810,7 +3810,7 @@ static const TypeInfo vfio_pci_dev_info = {
- static const Property vfio_pci_dev_nohotplug_properties[] = {
-     DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
-     DEFINE_PROP_BOOL("use-legacy-x86-rom", VFIOPCIDevice,
--                     use_legacy_x86_rom, true),
-+                     use_legacy_x86_rom, false),
-     DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate,
-                             ON_OFF_AUTO_AUTO),
- };
--- 
-2.50.1
-
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Tested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
