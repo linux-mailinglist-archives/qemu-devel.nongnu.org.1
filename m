@@ -2,87 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88A2B09CCC
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 09:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 683DCB09CD9
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 09:42:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucfgo-00070C-Ou; Fri, 18 Jul 2025 03:39:30 -0400
+	id 1ucfj5-0001dq-Ma; Fri, 18 Jul 2025 03:41:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucfQ1-00025e-Fk; Fri, 18 Jul 2025 03:22:09 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ucfPz-0008Qy-5J; Fri, 18 Jul 2025 03:22:09 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F14A71381DB;
- Fri, 18 Jul 2025 10:21:43 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5E50A249883;
- Fri, 18 Jul 2025 10:21:53 +0300 (MSK)
-Message-ID: <df3745a5-28ab-482c-9fa1-434d2c0327de@tls.msk.ru>
-Date: Fri, 18 Jul 2025 10:21:53 +0300
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1ucfW4-0002dd-83
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 03:28:25 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1ucfVy-0002ik-MU
+ for qemu-devel@nongnu.org; Fri, 18 Jul 2025 03:28:22 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8AxmnGK93lousksAQ--.26689S3;
+ Fri, 18 Jul 2025 15:28:10 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowJCxocKI93lo0QwcAA--.17387S2;
+ Fri, 18 Jul 2025 15:28:09 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH v2 0/9] target/loongarch: Enhancement about tcg mmu
+Date: Fri, 18 Jul 2025 15:27:58 +0800
+Message-Id: <20250718072807.3585466-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 1/6] target/i386: do not expose ARCH_CAPABILITIES on AMD CPU
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Alexandre Chartre <alexandre.chartre@oracle.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, qemu-stable <qemu-stable@nongnu.org>
-References: <20250717152316.353049-1-pbonzini@redhat.com>
- <20250717152316.353049-2-pbonzini@redhat.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20250717152316.353049-2-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
+X-CM-TRANSID: qMiowJCxocKI93lo0QwcAA--.17387S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -104,36 +61,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17.07.2025 18:23, Paolo Bonzini wrote:
-> KVM emulates the ARCH_CAPABILITIES on x86 for both Intel and AMD
-> cpus, although the IA32_ARCH_CAPABILITIES MSR is an Intel-specific
-> MSR and it makes no sense to emulate it on AMD.
-> 
-> As a consequence, VMs created on AMD with qemu -cpu host and using
-> KVM will advertise the ARCH_CAPABILITIES feature and provide the
-> IA32_ARCH_CAPABILITIES MSR. This can cause issues (like Windows BSOD)
-> as the guest OS might not expect this MSR to exist on such cpus (the
-> AMD documentation specifies that ARCH_CAPABILITIES feature and MSR
-> are not defined on the AMD architecture).
-> 
-> A fix was proposed in KVM code, however KVM maintainers don't want to
-> change this behavior that exists for 6+ years and suggest changes to be
-> done in QEMU instead.  Therefore, hide the bit from "-cpu host":
-> migration of -cpu host guests is only possible between identical host
-> kernel and QEMU versions, therefore this is not a problematic breakage.
-> 
-> If a future AMD machine does include the MSR, that would re-expose the
-> Windows guest bug; but it would not be KVM/QEMU's problem at that
-> point, as we'd be following a genuine physical CPU impl.
-> 
-> Reported-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+There is some enhance about LoongArch mmu tcg emulation, add new
+header file cpu-mmu.h and function loongarch_check_pte(). Function
+loongarch_check_pte() can work on both TLB entry and pte entry.
 
-This feels like a qemu-stable material, is it not?
+This patchset mainly is code cleanup and enhancement, its main
+purpose is to work for hardware page table walk emluation in future.
+---
+v1 ... v2:
+  1. Rename structure name pte_context with mmu_context, since it
+     can be extended to get DMW or DA mmu idx and window size
+  2. Add fine-grained tlb flush method
+  3. Fix some issues in function invalidate_tlb_entry() to flush tlb,
+     such as bitmap method with mmu idx, page size and address
+     calculation
+---
+Bibo Mao (9):
+  target/loongarch: Move some function definition to kvm directory
+  target/loongarch: Define function loongarch_cpu_post_init as static
+  target/loongarch: Set page size in TLB misc with STLB
+  target/loongarch: Add header file cpu-mmu.h
+  target/loongarch: Add common function loongarch_check_pte()
+  target/loongarch: Use loongarch_check_pte() with page table walking
+  target/loongarch: Use mmu idx bitmap method when flush tlb
+  target/loongarch: Use correct page size when flush tlb
+  target/loongarch: Use fine-grained tlb flush method
 
-Thanks,
+ hw/loongarch/virt.c                  |   1 +
+ target/loongarch/cpu-mmu.h           |  38 ++++++
+ target/loongarch/cpu.c               | 181 ++++++++++++++-------------
+ target/loongarch/cpu.h               |  11 --
+ target/loongarch/cpu_helper.c        |  98 +++++++++++----
+ target/loongarch/internals.h         |  20 ---
+ target/loongarch/kvm/kvm_loongarch.h |   4 +-
+ target/loongarch/tcg/csr_helper.c    |   1 +
+ target/loongarch/tcg/tlb_helper.c    | 136 ++++++--------------
+ 9 files changed, 247 insertions(+), 243 deletions(-)
+ create mode 100644 target/loongarch/cpu-mmu.h
 
-/mjt
+
+base-commit: c079d3a31e45093286c65f8ca5350beb3a4404a9
+-- 
+2.39.3
+
 
