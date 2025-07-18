@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34EDB0A78D
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 17:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7948EB0A900
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 19:01:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucn6F-0007Sj-8D; Fri, 18 Jul 2025 11:34:16 -0400
+	id 1ucoRw-0008Qw-HW; Fri, 18 Jul 2025 13:00:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1ucmzP-0007Rr-0Q; Fri, 18 Jul 2025 11:27:11 -0400
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+ (Exim 4.90_1) (envelope-from <chichikalyuk@gmail.com>)
+ id 1ucnsx-0007W4-Iv; Fri, 18 Jul 2025 12:24:35 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1ucmzM-0008O8-LK; Fri, 18 Jul 2025 11:27:10 -0400
-Received: by mail-pl1-x643.google.com with SMTP id
- d9443c01a7336-235d6de331fso25153195ad.3; 
- Fri, 18 Jul 2025 08:27:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <chichikalyuk@gmail.com>)
+ id 1ucnsw-000702-0A; Fri, 18 Jul 2025 12:24:35 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-553be4d2fbfso2369854e87.0; 
+ Fri, 18 Jul 2025 09:24:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1752852426; x=1753457226; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zHs/ZpV5VF+uPAwNF4WxC+69ynbzP1chLJuN5FmdjsQ=;
- b=N9C1NcLfJlz09YlihIUVZXQ0wQ/UUl0tN3Dbpw1/tVmHBHw3c8wiNUi+SkZ68nxI8T
- AsRM7OmUREXAm6hLltUy/LI0ta7dBcve8qSl0ckhl3hYCjmtQY8h9OkZARg7HVlz/cSB
- acAw99GK0dWf07RqfyycLBM7lXCO1rSHEtooAUHQRQsTOYMUadYBtFMFSqI2cA6xpdmx
- WBcLiNSfaP51hy/1lcmCZqcJUiZBDeKTeETFqlHf2ovIIzQaFDdSoaJzMcRPnn0CY+Rj
- K3hHO2uegIZC6LFDoLwzgUO4nCBxhN4wrZi4u4ZjfFV9PseWmSw+ohJY0sGWeWOz+HCx
- bgvA==
+ d=gmail.com; s=20230601; t=1752855871; x=1753460671; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0tSNdwHvz7/qWn2NTQ1xPS7vHeWeR1Yks6l86cO/Dqw=;
+ b=fzlWV3hXWR6XIqOdPiGfpxVZTUBjcCmBby554ie01n2PSuhEI+H6xM0vH4uh10WA3c
+ 1itJkTSTE1+Qrh1WRoxGphV5YlvwoKpVPXR5+sCZAOEYh1yWNzDU0LyMXiHPknCkiehl
+ bEI3neyZ8KaDv7mfKzO8vP4IdytlJaZp2LsEiZJjtWP9VpCsEO7SwOPTu79dUNTXnmoR
+ tBz7zIHwobSz3R7P1BzieuMIma7vFRhLBPd4Mesr+L07QvXtx3jCYpKedIoqXxH4HdaD
+ naeKKzNJ/FHC/5L4Sx5XctGdpT0sCgufwUrLwfvJy/9vqCvngKHeypN5VdjeC/asinLh
+ ZUEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752852426; x=1753457226;
- h=content-transfer-encoding:in-reply-to:from:references:to:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=zHs/ZpV5VF+uPAwNF4WxC+69ynbzP1chLJuN5FmdjsQ=;
- b=BtWn9WXhVpxK43kxyUnvyFtv0GLfgQIZGgEfCLGUzZn7Oi/k/e9SaNHAA4LBBbZdcm
- WBWnKv5XH5ZqvBZvp010tc+8YshRURKLfmceQ2YjAPrpFyhF2DF+Ob+fV1cN/mpWOzQI
- 3jZ5vnL84W234GfvcaZcxc9QN8q7n9sIVvnuc9ztzP3XjROxW6qHiMcpNCzNB+XpnXPN
- BtRrEvrsuYTSG4AaPE5sc2gkfmpJxeAi8YAtaIqHJfBri+ZAPFP9+vT0ErenkqQBFuqV
- eAfqpmd6xv19FsRAEc7eU3Y3KRJ9yKBuoJo5VA1LoYj9z9l1VTnro/XdgCUxLDnx3fP0
- 5q+Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVCyf7jbaIcmK0cLzKVsei4dkkFPqwXoW6vepYJ4A2uIipGoCBbX1u286NaVRaTP/L9kvYtlCRjvxADOg==@nongnu.org,
- AJvYcCX59uHGBhhuCLSmZdSyQ3hSg6dMs45lA0Rq+UuewbY1+X7NMRSofMY+qPTsM9eKDeb/GOibqxoQ1q6W@nongnu.org,
- AJvYcCX9zQxbp0qKKz9pd0XuaCE1nKdmIyXIv1Uh5+xD9fjg82B+6b2Zit+K5la+sGzKBEv9LjHhw8Lb/Nc=@nongnu.org
-X-Gm-Message-State: AOJu0YyGYt5kwmI7W8bM4P9ulnlHH2oBaq5eNs0Z+b/aQb3v2qKish2c
- bMQSPcWCgnzXh09x+iiKYVjqf6HAehiqvut4ipLS0r95pTERHUODYuI=
-X-Gm-Gg: ASbGnctfldHTlh9SvWSLqWMXrhjSa1jIEiLIJH+7rRbUMbN7AyzlacPZ+wKOD0cqt23
- /7icqQ1xJtL12UZszjr8HUrJMJGt1k0pkC8u/K9MU9c4r8+HzXWwFDvQwgK1PqCxrEND3LsHz77
- aSOD4qOUPO22TDdT6Fa0ZnxgLjuTeD+wSRWqcYe8S/tQOJV+zAw3qEDmE6FmCKAu1tWT2Z2NYOP
- 0rSRQHRhaOS8X5yocUYOo096H+FyGIqWU1ceo33D1JL7Olsf+BjoI1lUa2mgXXT6osQQRcbXI+4
- bI75Co5ZaFtmUWtyR+vSfriJhDPRqgW5k5mZUZpWGzjCM3GcfbCRNmTrOeaj+gJRAmcvIpAI7TH
- r8z6LTU9ryw9NxlEOYRetO7OBCeO8OTvu8LgRB0xb2Q==
-X-Google-Smtp-Source: AGHT+IHQ7fwE1NbZhxatBQlFWB2Fj1U4buMyEGGA0Le5b+v2JK5U8vqoh0bFWZXpnOLhAtNpVgzmNA==
-X-Received: by 2002:a17:903:1a8d:b0:234:9092:9dda with SMTP id
- d9443c01a7336-23e2572ab0bmr191981545ad.24.1752852425927; 
- Fri, 18 Jul 2025 08:27:05 -0700 (PDT)
-Received: from [192.168.0.113] ([139.227.17.46])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23e3b60f426sm14981165ad.67.2025.07.18.08.26.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 18 Jul 2025 08:27:05 -0700 (PDT)
-Message-ID: <6bb92825-a9f6-4c08-8beb-8af490291378@gmail.com>
-Date: Fri, 18 Jul 2025 23:26:57 +0800
+ d=1e100.net; s=20230601; t=1752855871; x=1753460671;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0tSNdwHvz7/qWn2NTQ1xPS7vHeWeR1Yks6l86cO/Dqw=;
+ b=NK2LzxO1V4UDD/GlwABBUfbz8M37OQ/u/DJJ2WlbrAo1izlJwa5buVt0mdk3bL07yY
+ 0+825MTW8Lp4+hLnURrd2/Nl16mTti/R49MRPF5HR714RBwMmnUFirz16kl1G+AeP+En
+ YoZePO0mOJXcqHvGRqfNvnip26I1qOTSQGKNlyPeaprw2EVIEDaQvIABqDFUebqvwW/A
+ Sj4kPpmqAZWfrhCpsYEewKwpTyAoVTufRaAaNTlEF11YolbA9OyWZ77QBethZYmIUTa2
+ unHdLjkaR9PaDswBDOcY1B1rIK7XqunUDYwjdgW0Vh8PgjILLw1HR7kBpFF/o44GO1kV
+ rdlQ==
+X-Gm-Message-State: AOJu0YxkOia+W57VKV0Jr2mJcm4n8NRdLi0QU/o+vV7Mx56m8s3I3pK6
+ pVsy8JK6LMZRveGKgbTJs96AbXcmMY/Q65f6sqi6amUgYwMiFoHGymkVDlHFWCY4oZBWUQ==
+X-Gm-Gg: ASbGncvj/X/BF7m9NDeogUh3PYytWMcXUKOgkLuG5UUavJQuP0faN05HZIb2LpSzfmp
+ maOauz5wrof5nFZ2MrKnqRn02JCDeHs6c16XXbPbtZs5pVRY2N7vRqj8KdlumqknsjmaKFyj6rJ
+ 0lT5M4PKSg8q2gFcZdO/DVhNu2ioLBpoJgvOwePxz4+nTvXJIus7rTsFZdXqiXhvi3XF8W001R2
+ 4MAla1DNikHvR1G11iElzhOM+avaNYuJX5FwtQGDeQED3DlYE/R+WCC2t/ktY3XWUx3Ms2aeuvb
+ lzyIbePOV3hILV2Fte5Wq4Ek27oHHtFz0maX83iJGbskjrwRS7Mkn44UrP/gWwLeubVEJXhkyGQ
+ dMgfzl2+XkqjwsM+rVggKcb3C6lrTTdFGjLTDou4UWTo2SvGLl7uEar+CKsFy73A5r6RWZdor8O
+ 9k8cg=
+X-Google-Smtp-Source: AGHT+IE5ccMkBF49Qwr3sjez00wAXnqMzLqXkW4m4VtK/6AYMLWVQF4ez2Nk3OmgRdsavEYiPOVQvw==
+X-Received: by 2002:a05:6512:4058:10b0:553:adda:db40 with SMTP id
+ 2adb3069b0e04-55a23f7f73emr2723212e87.44.1752855870623; 
+ Fri, 18 Jul 2025 09:24:30 -0700 (PDT)
+Received: from localhost.localdomain (m91-129-102-83.cust.tele2.ee.
+ [91.129.102.83]) by smtp.googlemail.com with ESMTPSA id
+ 2adb3069b0e04-55a31dacd84sm310615e87.206.2025.07.18.09.24.29
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 18 Jul 2025 09:24:30 -0700 (PDT)
+From: Vadim Chichikalyuk <chichikalyuk@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Vadim Chichikalyuk <chichikalyuk@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH 0/4] hw: acpi: support SPCR rev. 3 & UART clock freq in ARM
+ SPCR
+Date: Fri, 18 Jul 2025 19:20:41 +0300
+Message-Id: <20250718162045.49012-1-chichikalyuk@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 19/22] vfio/igd.c: use QOM casts where appropriate
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
- danielhb413@gmail.com, harshpb@linux.ibm.com, mjrosato@linux.ibm.com,
- farman@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- thuth@redhat.com, richard.henderson@linaro.org, david@redhat.com,
- iii@linux.ibm.com, john.levon@nutanix.com, thanos.makatos@nutanix.com,
- alex.williamson@redhat.com, clg@redhat.com, steven.sistare@oracle.com,
- qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-References: <20250715093110.107317-1-mark.caveayland@nutanix.com>
- <20250715093110.107317-20-mark.caveayland@nutanix.com>
-From: Tomita Moeko <tomitamoeko@gmail.com>
-In-Reply-To: <20250715093110.107317-20-mark.caveayland@nutanix.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::643;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x643.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=chichikalyuk@gmail.com; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,159 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/15/2025 5:25 PM, Mark Cave-Ayland wrote:
-> Use QOM casts to convert between VFIOPCIDevice and PCIDevice instead of
-> accessing pdev directly.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> ---
->  hw/vfio/igd.c | 38 +++++++++++++++++++++-----------------
->  1 file changed, 21 insertions(+), 17 deletions(-)
-> 
-> diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-> index e7a9d1ffc1..d3ffbe7db6 100644
-> --- a/hw/vfio/igd.c
-> +++ b/hw/vfio/igd.c
-> @@ -199,7 +199,7 @@ static bool vfio_pci_igd_opregion_detect(VFIOPCIDevice *vdev,
->      }
->  
->      /* Hotplugging is not supported for opregion access */
-> -    if (vdev->pdev.qdev.hotplugged) {
-> +    if (DEVICE(vdev)->hotplugged) {
->          warn_report("IGD device detected, but OpRegion is not supported "
->                      "on hotplugged device.");
->          return false;
-> @@ -259,11 +259,12 @@ static int vfio_pci_igd_copy(VFIOPCIDevice *vdev, PCIDevice *pdev,
->  static int vfio_pci_igd_host_init(VFIOPCIDevice *vdev,
->                                    struct vfio_region_info *info)
->  {
-> +    PCIDevice *pdev = PCI_DEVICE(vdev);
->      PCIBus *bus;
->      PCIDevice *host_bridge;
->      int ret;
->  
-> -    bus = pci_device_root_bus(&vdev->pdev);
-> +    bus = pci_device_root_bus(pdev);
->      host_bridge = pci_find_device(bus, 0, PCI_DEVFN(0, 0));
->  
->      if (!host_bridge) {
-> @@ -326,13 +327,14 @@ type_init(vfio_pci_igd_register_types)
->  static int vfio_pci_igd_lpc_init(VFIOPCIDevice *vdev,
->                                   struct vfio_region_info *info)
->  {
-> +    PCIDevice *pdev = PCI_DEVICE(vdev);
->      PCIDevice *lpc_bridge;
->      int ret;
->  
-> -    lpc_bridge = pci_find_device(pci_device_root_bus(&vdev->pdev),
-> +    lpc_bridge = pci_find_device(pci_device_root_bus(pdev),
->                                   0, PCI_DEVFN(0x1f, 0));
->      if (!lpc_bridge) {
-> -        lpc_bridge = pci_create_simple(pci_device_root_bus(&vdev->pdev),
-> +        lpc_bridge = pci_create_simple(pci_device_root_bus(pdev),
->                                   PCI_DEVFN(0x1f, 0), "vfio-pci-igd-lpc-bridge");
->      }
->  
-> @@ -349,13 +351,14 @@ static bool vfio_pci_igd_setup_lpc_bridge(VFIOPCIDevice *vdev, Error **errp)
->  {
->      struct vfio_region_info *host = NULL;
->      struct vfio_region_info *lpc = NULL;
-> +    PCIDevice *pdev = PCI_DEVICE(vdev);
->      PCIDevice *lpc_bridge;
->      int ret;
->  
->      /*
->       * Copying IDs or creating new devices are not supported on hotplug
->       */
-> -    if (vdev->pdev.qdev.hotplugged) {
-> +    if (DEVICE(vdev)->hotplugged) {
->          error_setg(errp, "IGD LPC is not supported on hotplugged device");
->          return false;
->      }
-> @@ -365,7 +368,7 @@ static bool vfio_pci_igd_setup_lpc_bridge(VFIOPCIDevice *vdev, Error **errp)
->       * can stuff host values into, so if there's already one there and it's not
->       * one we can hack on, this quirk is no-go.  Sorry Q35.
->       */
-> -    lpc_bridge = pci_find_device(pci_device_root_bus(&vdev->pdev),
-> +    lpc_bridge = pci_find_device(pci_device_root_bus(pdev),
->                                   0, PCI_DEVFN(0x1f, 0));
->      if (lpc_bridge && !object_dynamic_cast(OBJECT(lpc_bridge),
->                                             "vfio-pci-igd-lpc-bridge")) {
-> @@ -509,6 +512,7 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
->  static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
->  {
->      struct vfio_region_info *opregion = NULL;
-> +    PCIDevice *pdev = PCI_DEVICE(vdev);
->      int ret, gen;
->      uint64_t gms_size = 0;
->      uint64_t *bdsm_size;
-> @@ -528,7 +532,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
->      info_report("OpRegion detected on Intel display %x.", vdev->device_id);
->  
->      gen = igd_gen(vdev);
-> -    gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, 4);
-> +    gmch = vfio_pci_read_config(pdev, IGD_GMCH, 4);
->  
->      /*
->       * For backward compatibility, enable legacy mode when
-> @@ -540,7 +544,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
->      if ((vdev->igd_legacy_mode != ON_OFF_AUTO_OFF) &&
->          (gen >= 6 && gen <= 9) &&
->          !strcmp(MACHINE_GET_CLASS(qdev_get_machine())->family, "pc_piix") &&
-> -        (&vdev->pdev == pci_find_device(pci_device_root_bus(&vdev->pdev),
-> +        (pdev == pci_find_device(pci_device_root_bus(pdev),
->          0, PCI_DEVFN(0x2, 0)))) {
->          /*
->           * IGD legacy mode requires:
-> @@ -562,7 +566,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
->           */
->          ret = vfio_device_get_region_info(&vdev->vbasedev,
->                                            VFIO_PCI_ROM_REGION_INDEX, &rom);
-> -        if ((ret || !rom->size) && !vdev->pdev.romfile) {
-> +        if ((ret || !rom->size) && !pdev->romfile) {
->              error_setg(&err, "Device has no ROM");
->              goto error;
->          }
-> @@ -605,8 +609,8 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
->       * ASLS (OpRegion address) is read-only, emulated
->       * It contains HPA, guest firmware need to reprogram it with GPA.
->       */
-> -    pci_set_long(vdev->pdev.config + IGD_ASLS, 0);
-> -    pci_set_long(vdev->pdev.wmask + IGD_ASLS, ~0);
-> +    pci_set_long(pdev->config + IGD_ASLS, 0);
-> +    pci_set_long(pdev->wmask + IGD_ASLS, ~0);
->      pci_set_long(vdev->emulated_config_bits + IGD_ASLS, ~0);
->  
->      /*
-> @@ -620,8 +624,8 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
->          }
->  
->          /* GMCH is read-only, emulated */
-> -        pci_set_long(vdev->pdev.config + IGD_GMCH, gmch);
-> -        pci_set_long(vdev->pdev.wmask + IGD_GMCH, 0);
-> +        pci_set_long(pdev->config + IGD_GMCH, gmch);
-> +        pci_set_long(pdev->wmask + IGD_GMCH, 0);
->          pci_set_long(vdev->emulated_config_bits + IGD_GMCH, ~0);
->      }
->  
-> @@ -630,12 +634,12 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
->  
->          /* BDSM is read-write, emulated. BIOS needs to be able to write it */
->          if (gen < 11) {
-> -            pci_set_long(vdev->pdev.config + IGD_BDSM, 0);
-> -            pci_set_long(vdev->pdev.wmask + IGD_BDSM, ~0);
-> +            pci_set_long(pdev->config + IGD_BDSM, 0);
-> +            pci_set_long(pdev->wmask + IGD_BDSM, ~0);
->              pci_set_long(vdev->emulated_config_bits + IGD_BDSM, ~0);
->          } else {
-> -            pci_set_quad(vdev->pdev.config + IGD_BDSM_GEN11, 0);
-> -            pci_set_quad(vdev->pdev.wmask + IGD_BDSM_GEN11, ~0);
-> +            pci_set_quad(pdev->config + IGD_BDSM_GEN11, 0);
-> +            pci_set_quad(pdev->wmask + IGD_BDSM_GEN11, ~0);
->              pci_set_quad(vdev->emulated_config_bits + IGD_BDSM_GEN11, ~0);
->          }
->      }
+This series fixes erroneous building of ACPI SPCR tables in hw/acpi/aml-build.c, 
+where the UART clock frequency field is omitted in revision 3 tables despite
+being present since revision 3 of the specification.
 
-Reviewed-by: Tomita Moeko <tomitamoeko@gmail.com>
+The last three patches update the SPCR table for the AArch64 virt machine to
+revision 3, exposing the UART clock frequency, which was not previously available
+via ACPI, to the guest.
+
+Thanks,
+Vadim
+
+Signed-off-by: Vadim Chichikalyuk <chichikalyuk@gmail.com>
+
+Vadim Chichikalyuk (4):
+  hw: acpi: add support for SPCR revision 3
+  tests: acpi: whitelist expected blobs
+  hw: arm: acpi: add UART clock frequency to SPCR table
+  tests: acpi: update expected blobs
+
+ hw/acpi/aml-build.c               |  20 +++++++++++---------
+ hw/arm/virt-acpi-build.c          |   5 +++--
+ tests/data/acpi/aarch64/virt/SPCR | Bin 80 -> 80 bytes
+ 3 files changed, 14 insertions(+), 11 deletions(-)
+
+-- 
+2.39.5 (Apple Git-154)
 
 
