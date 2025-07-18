@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D328B09CDF
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 09:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F7AB09CDE
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Jul 2025 09:42:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ucfjV-0002nB-H4; Fri, 18 Jul 2025 03:42:19 -0400
+	id 1ucfj4-0001cF-8b; Fri, 18 Jul 2025 03:41:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1ucfW4-0002dk-Et
+ id 1ucfW4-0002df-B5
  for qemu-devel@nongnu.org; Fri, 18 Jul 2025 03:28:25 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1ucfVz-0002jv-2W
+ (envelope-from <maobibo@loongson.cn>) id 1ucfVz-0002jh-22
  for qemu-devel@nongnu.org; Fri, 18 Jul 2025 03:28:24 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8DxDeOM93loysksAQ--.56481S3;
- Fri, 18 Jul 2025 15:28:12 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxnOKN93lozcksAQ--.56658S3;
+ Fri, 18 Jul 2025 15:28:13 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJCxocKI93lo0QwcAA--.17387S8;
+ by front1 (Coremail) with SMTP id qMiowJCxocKI93lo0QwcAA--.17387S9;
  Fri, 18 Jul 2025 15:28:12 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 6/9] target/loongarch: Use loongarch_check_pte() with page
- table walking
-Date: Fri, 18 Jul 2025 15:28:04 +0800
-Message-Id: <20250718072807.3585466-7-maobibo@loongson.cn>
+Subject: [PATCH v2 7/9] target/loongarch: Use mmu idx bitmap method when flush
+ tlb
+Date: Fri, 18 Jul 2025 15:28:05 +0800
+Message-Id: <20250718072807.3585466-8-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250718072807.3585466-1-maobibo@loongson.cn>
 References: <20250718072807.3585466-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxocKI93lo0QwcAA--.17387S8
+X-CM-TRANSID: qMiowJCxocKI93lo0QwcAA--.17387S9
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,81 +64,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Function loongarch_check_pte() can get physical address and access
-priviledge, it works on both TLB entry and pte entry. It can be used
-at page table walking.
+With API tlb_flush_range_by_mmuidx(), bitmap method of mmu idx should
+be used rather than itself. Also mmu idx comes from page table entry
+information rather current running mode. With page table entry,
+global bit for MMU_KERNEL_IDX, otherwise it is MMU_USER_IDX.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- target/loongarch/cpu_helper.c | 35 ++++++++++-------------------------
- 1 file changed, 10 insertions(+), 25 deletions(-)
+ target/loongarch/tcg/tlb_helper.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
-index c90e260566..84191b5852 100644
---- a/target/loongarch/cpu_helper.c
-+++ b/target/loongarch/cpu_helper.c
-@@ -107,13 +107,15 @@ int loongarch_check_pte(CPULoongArchState *env, hwaddr *physical, int *prot,
- }
+diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+index ca2fabfa6a..76ec469341 100644
+--- a/target/loongarch/tcg/tlb_helper.c
++++ b/target/loongarch/tcg/tlb_helper.c
+@@ -101,8 +101,7 @@ static void invalidate_tlb_entry(CPULoongArchState *env, int index)
+     target_ulong addr, mask, pagesize;
+     uint8_t tlb_ps;
+     LoongArchTLB *tlb = &env->tlb[index];
+-
+-    int mmu_idx = cpu_mmu_index(env_cpu(env), false);
++    int mmu_idx;
+     uint8_t tlb_v0 = FIELD_EX64(tlb->tlb_entry0, TLBENTRY, V);
+     uint8_t tlb_v1 = FIELD_EX64(tlb->tlb_entry1, TLBENTRY, V);
+     uint64_t tlb_vppn = FIELD_EX64(tlb->tlb_misc, TLB_MISC, VPPN);
+@@ -118,12 +117,14 @@ static void invalidate_tlb_entry(CPULoongArchState *env, int index)
  
- static int loongarch_page_table_walker(CPULoongArchState *env, hwaddr *physical,
--                                 int *prot, target_ulong address)
-+                                       int *prot, target_ulong address,
-+                                       int access_type, int mmu_idx)
- {
-     CPUState *cs = env_cpu(env);
-     target_ulong index, phys;
-     uint64_t dir_base, dir_width;
-     uint64_t base;
-     int level;
-+    mmu_context context;
- 
-     if ((address >> 63) & 0x1) {
-         base = env->CSR_PGDH;
-@@ -156,29 +158,11 @@ static int loongarch_page_table_walker(CPULoongArchState *env, hwaddr *physical,
-         base = ldq_phys(cs->as, phys);
+     if (tlb_v0) {
+         addr = (tlb_vppn << R_TLB_MISC_VPPN_SHIFT) & ~mask;    /* even */
++        mmu_idx = BIT(FIELD_EX64(tlb->tlb_entry0, TLBENTRY, PLV));
+         tlb_flush_range_by_mmuidx(env_cpu(env), addr, pagesize,
+                                   mmu_idx, TARGET_LONG_BITS);
      }
  
--    /* TODO: check plv and other bits? */
--
--    /* base is pte, in normal pte format */
--    if (!FIELD_EX64(base, TLBENTRY, V)) {
--        return TLBRET_NOMATCH;
--    }
--
--    if (!FIELD_EX64(base, TLBENTRY, D)) {
--        *prot = PAGE_READ;
--    } else {
--        *prot = PAGE_READ | PAGE_WRITE;
--    }
--
--    /* get TARGET_PAGE_SIZE aligned physical address */
--    base += (address & TARGET_PHYS_MASK) & ((1 << dir_base) - 1);
--    /* mask RPLV, NX, NR bits */
--    base = FIELD_DP64(base, TLBENTRY_64, RPLV, 0);
--    base = FIELD_DP64(base, TLBENTRY_64, NX, 0);
--    base = FIELD_DP64(base, TLBENTRY_64, NR, 0);
--    /* mask other attribute bits */
--    *physical = base & TARGET_PAGE_MASK;
--
--    return 0;
-+    context.vaddr = address;
-+    context.ps = dir_base;
-+    context.pte = base;
-+    return loongarch_check_pte(env, physical, prot, &context, access_type,
-+                               mmu_idx);
- }
- 
- static int loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
-@@ -202,7 +186,8 @@ static int loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
-          * legal mapping, even if the mapping is not yet in TLB. return 0 if
-          * there is a valid map, else none zero.
-          */
--        return loongarch_page_table_walker(env, physical, prot, address);
-+        return loongarch_page_table_walker(env, physical, prot, address,
-+                                           access_type, mmu_idx);
+     if (tlb_v1) {
+         addr = (tlb_vppn << R_TLB_MISC_VPPN_SHIFT) & pagesize;    /* odd */
++        mmu_idx = BIT(FIELD_EX64(tlb->tlb_entry1, TLBENTRY, PLV));
+         tlb_flush_range_by_mmuidx(env_cpu(env), addr, pagesize,
+                                   mmu_idx, TARGET_LONG_BITS);
      }
- 
-     return TLBRET_NOMATCH;
 -- 
 2.39.3
 
