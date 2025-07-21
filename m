@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A42B0BE8E
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 10:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF51CB0BE99
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 10:18:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udlhU-0007q8-AM; Mon, 21 Jul 2025 04:16:46 -0400
+	id 1udlhl-00083P-PM; Mon, 21 Jul 2025 04:17:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1udlhI-0007mI-QN
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 04:16:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1udlhL-0007pz-IV
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 04:16:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1udlhG-0007di-CP
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 04:16:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1udlhJ-0007eG-P3
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 04:16:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753085789;
+ s=mimecast20190719; t=1753085792;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1WCXbVocFzsQVyPGO/ot/WI0OKX4DtJui9aggN6qkPY=;
- b=ArTlaa01g/NlhvkOOMttRaCMKglXgAb/h7N8SnFNYpBoFJL/R3R1GRD8TvZgp+2LANrwrn
- a3AhpFTlQg6LlOA+hBSeMPhSO9JixgM5HXqv+TiIlnu0vL7CEGJLum1xmmdrtutMHS3AT7
- 0p1GxGXZZ5s0oPl2xAvy3oLdoTVNjQM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=BJ6CU4sjeCPOeNC6MabAD9zbnxqnEwRvbvIeZp+xqB4=;
+ b=Lnl1BunPz0G+l8jiaLNlu3L9a15qoeA6JR0OjcQnkU0WMikNB5tlPTKUAwT9/y0/mG75vV
+ n7wF3rC/Rsr0WlwjRAdtqoemrF/CSwc8cwDuohgGDiZuKTgmRaGovpLrijQH9939CuE2Xa
+ vrfa0NEhQnyeMvKxtDWgjTFvQ48/2JM=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-SnB46m2INUWIFtARHn6WPw-1; Mon,
- 21 Jul 2025 04:16:27 -0400
-X-MC-Unique: SnB46m2INUWIFtARHn6WPw-1
-X-Mimecast-MFC-AGG-ID: SnB46m2INUWIFtARHn6WPw_1753085786
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-252-CRp_-xaENwWRYc5A5oWW2Q-1; Mon,
+ 21 Jul 2025 04:16:29 -0400
+X-MC-Unique: CRp_-xaENwWRYc5A5oWW2Q-1
+X-Mimecast-MFC-AGG-ID: CRp_-xaENwWRYc5A5oWW2Q_1753085789
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BE4DB1800365
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 08:16:26 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F3C4B19560A5
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 08:16:28 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.77])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DAF8D19560A3; Mon, 21 Jul 2025 08:16:24 +0000 (UTC)
+ id 7331119560A3; Mon, 21 Jul 2025 08:16:27 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 3/5] functional: ensure sockets and files are closed
-Date: Mon, 21 Jul 2025 10:16:12 +0200
-Message-ID: <20250721081614.262563-4-thuth@redhat.com>
+Subject: [PULL 4/5] functional: always enable all python warnings
+Date: Mon, 21 Jul 2025 10:16:13 +0200
+Message-ID: <20250721081614.262563-5-thuth@redhat.com>
 In-Reply-To: <20250721081614.262563-1-thuth@redhat.com>
 References: <20250721081614.262563-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -84,54 +84,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The multiprocess and virtio_gpu tests open sockets but then forget
-to close them, which triggers resource leak warnings
+Of most importance is that this gives us a heads-up if anything
+we rely on has been deprecated. The default python behaviour
+only emits a warning if triggered from __main__ which is very
+limited.
 
-The virtio_gpu test also fails to close a log file it opens.
+Setting the env variable further ensures that any python child
+processes will also display warnings.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250715143023.1851000-10-berrange@redhat.com>
+Acked-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250715143023.1851000-11-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/test_multiprocess.py | 3 +++
- tests/functional/test_virtio_gpu.py   | 2 ++
- 2 files changed, 5 insertions(+)
+ tests/functional/qemu_test/testcase.py | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/functional/test_multiprocess.py b/tests/functional/test_multiprocess.py
-index 751cf10e635..92d5207b0eb 100755
---- a/tests/functional/test_multiprocess.py
-+++ b/tests/functional/test_multiprocess.py
-@@ -83,6 +83,9 @@ def do_test(self, kernel_asset, initrd_asset,
-                                           'cat /sys/bus/pci/devices/*/uevent',
-                                           'PCI_ID=1000:0012')
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 71c7160adcf..2a78e735f16 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -19,6 +19,7 @@
+ from subprocess import run
+ import sys
+ import tempfile
++import warnings
+ import unittest
+ import uuid
  
-+        proxy_sock.close()
-+        remote_sock.close()
+@@ -235,6 +236,9 @@ def tearDown(self):
+         self._log_fh.close()
+ 
+     def main():
++        warnings.simplefilter("default")
++        os.environ["PYTHONWARNINGS"] = "default"
 +
-     def test_multiprocess(self):
-         kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
-         if self.arch == 'x86_64':
-diff --git a/tests/functional/test_virtio_gpu.py b/tests/functional/test_virtio_gpu.py
-index 81c9156d638..be96de24da2 100755
---- a/tests/functional/test_virtio_gpu.py
-+++ b/tests/functional/test_virtio_gpu.py
-@@ -108,6 +108,7 @@ def test_vhost_user_vga_virgl(self):
-             shell=False,
-             close_fds=False,
-         )
-+        self._vug_log_file.close()
+         path = os.path.basename(sys.argv[0])[:-3]
  
-         self.vm.set_console()
-         self.vm.add_args("-cpu", "host")
-@@ -135,6 +136,7 @@ def test_vhost_user_vga_virgl(self):
-                                           "features: +virgl +edid")
-         self.vm.shutdown()
-         qemu_sock.close()
-+        vug_sock.close()
-         vugp.terminate()
-         vugp.wait()
- 
+         cache = os.environ.get("QEMU_TEST_PRECACHE", None)
 -- 
 2.50.0
 
