@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FC5B0C52E
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D8FB0C548
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:35:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udqYj-0003ua-Az; Mon, 21 Jul 2025 09:28:01 -0400
+	id 1udqYr-0006FG-Af; Mon, 21 Jul 2025 09:28:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYF-0000Bg-PB
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:43 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1udqYI-0000Cs-1j
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:42 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYC-0005IN-Ac
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:31 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3a4fb9c2436so2478750f8f.1
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:27 -0700 (PDT)
+ id 1udqYD-0005Ik-R3
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:32 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4561ca74829so47954895e9.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753104446; x=1753709246; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753104448; x=1753709248; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rMO0z2Dg2xe9/sSr/rgtQPRY3C/mD4AtJBFkheyKZIo=;
- b=A3ATLQA9qQ7rfat6iAjbwseyPA5+4bN9BoTz8w48ApFFj/jh23uWFu5P8R49DYUZ4d
- w8mU+AL1BiMxAxqD+yA0ZptYnmu25rwxh1fjvjYeD4UPs+h5rXbSEkk4jx+b3huR4+iY
- BXf9XhrTL86+O96AdE84Mxejt69VkNCdMm2lh6otqHmZ24rC2Y427FZhEx/FpKK/QniO
- hxuY6E76H9HP73DGz+p9pjlNuDMegpucEVIZgsVzPXLkI/gxiouAYHGeQzFliy3w8IIn
- WDJ2dm+0xMvmvRTDzDV2zEK0JRtpQGc7ctb6SMtv+9iZ6Brfj2QvhIlRAS5+XaEOkNbA
- HT6w==
+ :reply-to; bh=wcyNJdNL/xiLYp3N57lKK8EPw8zPH/26wbvTC0tX4sQ=;
+ b=qFtt/uhCwYta1r6NkBJ9lnwbeyLfnU0M2w+3ieRvQhQCIxZi9PV+MQb8FTkQ9RGE/4
+ 6hlVd2ktD2t9aeA8Kao5+exRtAUkBRSb1Jln20aztrjrVm239k9ESmM9IgK9xmayHpR6
+ +x1GL62ndOegaa3U+FFsBQyKsPxyBGQO1ZrWZMGhOCpGI8ML2Yfgv1bzTOTdcsSj5zN0
+ snCzwBIyQ9IP7j63dRoG7PmWwHWMWDCUtEYC0wP/4D5P8LdebfBATVaQZWtwyG7eHm54
+ nbTyTq4zxoB4foi3ADlINgXgZiikc5dYsXunhio0vIyFbQnrlbQdNezDGmMEPkDbcuoG
+ cLNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753104446; x=1753709246;
+ d=1e100.net; s=20230601; t=1753104448; x=1753709248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rMO0z2Dg2xe9/sSr/rgtQPRY3C/mD4AtJBFkheyKZIo=;
- b=FnFMQg4IaxvMcqtlBJ/uDaljw8wzoivHgVsto1GXqjYYk2OSC16kAe5CpsiL4Ag6Ff
- mharX+010GvjGP0NInKkGAb9J+0xGUc+5gwcnV6SswHbBXEupkwQoKQqz7/gz87ZW7zQ
- aiD2S4TplIn82k3hg64I97P+BcCfy4NoewVUsI3JKWNerD8+JPtsHzEc4QmuzIhWSC89
- Jb3ykVW88H8zLH3vHqZVAVziCxYdJs7cKDAyewWMF+U9IjiPjdRYTpE41VQKjhY5Aooy
- k2YhZjzMHoaMNfzXS32Z7rKcdA7uq/oCRFttMMVcuw+7PoTwWy4puVsRP0jfgY7+dYdc
- /lRg==
-X-Gm-Message-State: AOJu0YyJQeuXJ3ITAvlUcb/xQZP4h38F106Fx5nNbcxsgNzOZSuBwARs
- bl+8NloM+oRCVaznG/4w1vMhEjopMdINfC4R0MH0IQLz5EBFzVXp4xBC+ayG9vXHZ8g8AThNSyp
- N8Ntx
-X-Gm-Gg: ASbGncsD3/lgmPoKfZjuJdcokZL8aWwf+f9vHjYO60Df5/pnHc/tc6pXN4YFcuIXZ0o
- Gfp6Z8wPGEBCDrOK73+gW/v3TjNpJ5tlsLE7z2sw/qjrNTqdjNjn4g7FG7bAuOLowd08ZkxNBp9
- KAf/i16J8jgPmRkCGyB9WCi5567jCT0cxb6KdCHxV8RlI5gJml5BrTORXTxRLQE+1AXDCKQhaKI
- 0bSGJ43cabTuco96/XO/CS8J76OROouc91oVw7ODRPgMltgZmvC/nbjVy7ZSj+qt++5V4tEyy4i
- 1/Qmw2ifp4JlkG1hU6l8QbdrBztdQUnu7kCFGGEQhHfnX5fpHLJ6OvWfMFx2LyU4GekyLPVe+k3
- 3VL5I97JxUM1T3Fu65xMAzMhs6Z+0
-X-Google-Smtp-Source: AGHT+IHEliG8u9hGB5rHKVEqR/80qdXbGH2JsWhYJx98+QmP3vQCw/NPTx04ifCCISyrjd8P82FbRw==
-X-Received: by 2002:a5d:5f55:0:b0:3a4:e841:b236 with SMTP id
- ffacd0b85a97d-3b61b217f68mr9274095f8f.33.1753104446409; 
- Mon, 21 Jul 2025 06:27:26 -0700 (PDT)
+ bh=wcyNJdNL/xiLYp3N57lKK8EPw8zPH/26wbvTC0tX4sQ=;
+ b=pqwrynGn7HTKp+1kUk1psIVMqsZBOLWHec57m/0Zi6hoW/dN+bQe2HH+tcB/zoYU4o
+ Bc28Xo2ED2DptOCcFdpPEBwAFg7H9HbLNUsEiojHvdI0Ykjv5GJ9BTDphtNuP5n9nGCC
+ vTbaxH6yIdN2Oh9oYjpUx9iAif7mRu/gLrQkQ93C/COAPc75W0VQRO592qrOwcUnRPSS
+ rwQYIS2TrxcnMdoXWIlkyN4yXCqh1cVQbE2Ioef1gqbDnSiMdhZgyT9A7SV7lUD1q2Rr
+ gllswtwr0Q8basloXlaziWezU4p4aYB6n52ErCQL4Y+PpjpXsmrPC30pUgNM3x09lETV
+ bq5Q==
+X-Gm-Message-State: AOJu0Yy4ElFaP0LoZNvlFM6RNEXwr1gZdbNMddqMTE6O7n9UX0Gd5fbw
+ bfork7NHijF2th7cM2R9F9Vby7g6Rrb+Mll6MhU0hMLJ/gAIpFEo7zth9cV6eF5Pz5ugptZhbkw
+ bbVqw
+X-Gm-Gg: ASbGncuftkOrGHRiwAJGJhy+LWoPi+pHNNUfuaZwHYYUxwUBDtbAXZ107BRhDENDrw3
+ vtlUI/8fvHG6ToGBni26yxP2WFrZWCVbx2mLfGTG9QuayIV+yvkZI38S2t6nEyiiPZfpHGNX9nt
+ PiVDh8I+N03lgeySbLy9/hmTzmhPmcHEAfXojqs9M4hlnN5dwlmf5uxeNk6vqvlPjLjfqU6lBix
+ pHak1Vqo6wWVJSw+ycYboN2iSuAXGzks/Z/AFACvH+fGaR1a9QTTEQvhvyltzwqk8WM0EpkMq3P
+ sRJ3E3SvY83TCU8wAH5npUHHdtd5Yu1egg6/+ez6n2dbHInXFOLFKzQJWrCmS8dPpo527FmnjXF
+ 6SUbtRIJhI8K2SzTxi7Ms+2vvQSGG
+X-Google-Smtp-Source: AGHT+IHP4VR8Fl9G5OcuoYqYTditu/QIIF+7VYjnigXLB4tyhvo6jQD5bktNDB9047NHPdbV3qX9WA==
+X-Received: by 2002:a05:600d:10f:b0:456:1611:ce85 with SMTP id
+ 5b1f17b1804b1-4562e4f7a45mr98215905e9.21.1753104447721; 
+ Mon, 21 Jul 2025 06:27:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.25
+ ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Jul 2025 06:27:25 -0700 (PDT)
+ Mon, 21 Jul 2025 06:27:26 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/20] docs: Fix Aspeed title
-Date: Mon, 21 Jul 2025 14:27:04 +0100
-Message-ID: <20250721132718.2835729-8-peter.maydell@linaro.org>
+Subject: [PULL 08/20] target/arm: Add BFADD, BFSUB, BFMUL (unpredicated)
+Date: Mon, 21 Jul 2025 14:27:05 +0100
+Message-ID: <20250721132718.2835729-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250721132718.2835729-1-peter.maydell@linaro.org>
 References: <20250721132718.2835729-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,33 +97,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@redhat.com>
+FEAT_SVE_B16B16 adds bfloat16 versions of the SVE floating point
+(unpredicated) instructions, which are encoded via sz==0b00.
 
-commit ad8e0e8a0088 removed the "======" underlining the file title
-which broke documentation rendering. Add it back.
-
-Fixes: ad8e0e8a0088 ("docs: add support for gb200-bmc")
-Cc: Ed Tanous <etanous@nvidia.com>
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Ed Tanous <etanous@nvidia.com>
-Message-id: 20250715061904.97540-1-clg@redhat.com
+Fixes: 7b1613a1020d2942 ("target/arm: Enable FEAT_SME2p1 on -cpu max")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250718173032.2498900-2-peter.maydell@linaro.org
 ---
- docs/system/arm/aspeed.rst | 1 +
- 1 file changed, 1 insertion(+)
+ target/arm/tcg/helper.h        | 3 +++
+ target/arm/tcg/translate-sve.c | 6 +++++-
+ target/arm/tcg/vec_helper.c    | 3 +++
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index bec0a1dfa8b..bf18c563470 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -1,4 +1,5 @@
- Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``gb200nvl-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
-+====================================================================================================================================================================================================================================================================================================================================================================================================================================
+diff --git a/target/arm/tcg/helper.h b/target/arm/tcg/helper.h
+index 0a006d95142..d9ca5b7c56e 100644
+--- a/target/arm/tcg/helper.h
++++ b/target/arm/tcg/helper.h
+@@ -728,16 +728,19 @@ DEF_HELPER_FLAGS_4(gvec_fclt0_h, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(gvec_fclt0_s, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(gvec_fclt0_d, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
  
- The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
- Aspeed evaluation boards. They are based on different releases of the
++DEF_HELPER_FLAGS_5(gvec_fadd_b16, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_fadd_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_fadd_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_fadd_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_bfadd, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ 
++DEF_HELPER_FLAGS_5(gvec_fsub_b16, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_fsub_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_fsub_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_fsub_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_bfsub, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ 
++DEF_HELPER_FLAGS_5(gvec_fmul_b16, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_fmul_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_fmul_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_5(gvec_fmul_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 7b575734fde..f00cccf1548 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -190,6 +190,10 @@ static bool gen_gvec_fpst_zzz(DisasContext *s, gen_helper_gvec_3_ptr *fn,
+ static bool gen_gvec_fpst_arg_zzz(DisasContext *s, gen_helper_gvec_3_ptr *fn,
+                                   arg_rrr_esz *a, int data)
+ {
++    /* These insns use MO_8 to encode BFloat16 */
++    if (a->esz == MO_8 && !dc_isar_feature(aa64_sve_b16b16, s)) {
++        return false;
++    }
+     return gen_gvec_fpst_zzz(s, fn, a->rd, a->rn, a->rm, data,
+                              a->esz == MO_16 ? FPST_A64_F16 : FPST_A64);
+ }
+@@ -4146,7 +4150,7 @@ static bool trans_FADDA(DisasContext *s, arg_rprr_esz *a)
+ 
+ #define DO_FP3(NAME, name) \
+     static gen_helper_gvec_3_ptr * const name##_fns[4] = {          \
+-        NULL, gen_helper_gvec_##name##_h,                           \
++        gen_helper_gvec_##name##_b16, gen_helper_gvec_##name##_h,   \
+         gen_helper_gvec_##name##_s, gen_helper_gvec_##name##_d      \
+     };                                                              \
+     TRANS_FEAT(NAME, aa64_sve, gen_gvec_fpst_arg_zzz, name##_fns[a->esz], a, 0)
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index bae6165b505..76a9ab0da39 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -1467,16 +1467,19 @@ void HELPER(NAME)(void *vd, void *vn, void *vm,                            \
+     clear_tail(d, oprsz, simd_maxsz(desc));                                \
+ }
+ 
++DO_3OP(gvec_fadd_b16, bfloat16_add, float16)
+ DO_3OP(gvec_fadd_h, float16_add, float16)
+ DO_3OP(gvec_fadd_s, float32_add, float32)
+ DO_3OP(gvec_fadd_d, float64_add, float64)
+ DO_3OP(gvec_bfadd, bfloat16_add, bfloat16)
+ 
++DO_3OP(gvec_fsub_b16, bfloat16_sub, float16)
+ DO_3OP(gvec_fsub_h, float16_sub, float16)
+ DO_3OP(gvec_fsub_s, float32_sub, float32)
+ DO_3OP(gvec_fsub_d, float64_sub, float64)
+ DO_3OP(gvec_bfsub, bfloat16_sub, bfloat16)
+ 
++DO_3OP(gvec_fmul_b16, bfloat16_mul, float16)
+ DO_3OP(gvec_fmul_h, float16_mul, float16)
+ DO_3OP(gvec_fmul_s, float32_mul, float32)
+ DO_3OP(gvec_fmul_d, float64_mul, float64)
 -- 
 2.43.0
 
