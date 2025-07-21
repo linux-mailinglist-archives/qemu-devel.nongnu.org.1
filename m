@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B77F3B0C902
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F592B0C903
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:43:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtKq-0002r8-4X; Mon, 21 Jul 2025 12:25:52 -0400
+	id 1udtLN-0003Qm-HE; Mon, 21 Jul 2025 12:26:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJb-0007mm-Hr
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJc-0007pk-Pq
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJZ-0001kW-PC
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:35 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJa-0001kn-KL
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753115072;
+ s=mimecast20190719; t=1753115074;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TCOtOvaTo9mRtczsKrEZhGgH5genHn2pQrBIAPGQpOQ=;
- b=NG06ujp5IH/PalX0rlotBhVQpPZhex6PL6dXWw5wBa+2DYe9dgirzS7hpgZbBDhrWS52JF
- wAjk37W+mPR0E9+5KEoBgUY6U5GRya3fpYxeGHV3p/UGC0Ir4SubgT5wu1H8QYB87U1TOX
- 3VwlLl7MDylnbdu9iYpqnj5iLaBnCLI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=f9zwT7ZGhqGYHNUIdjiGru3IcNqxqD9iWpzeEHAQh+g=;
+ b=NoP9NOooeDULkDhiiAyzSWreb8/WbrkAzEn/dWennvUc3D1tqBWJPLW0FT6oi5m6Z0fl+3
+ EEz42R8lOUVjAUPXEJtAIgYy/v8GOl8rPVRfkFoK2fT8B//DDTVWtzEhZ8x/NvP727+Sh1
+ EccblhsgMszrmjTDSoTg3zSJYiAVLH0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-85-v6mMSM46PUit0EERO7hnLQ-1; Mon,
- 21 Jul 2025 12:24:30 -0400
-X-MC-Unique: v6mMSM46PUit0EERO7hnLQ-1
-X-Mimecast-MFC-AGG-ID: v6mMSM46PUit0EERO7hnLQ_1753115068
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-374-pVO4pux2P6KyUOCu-rD2Lg-1; Mon,
+ 21 Jul 2025 12:24:32 -0400
+X-MC-Unique: pVO4pux2P6KyUOCu-rD2Lg-1
+X-Mimecast-MFC-AGG-ID: pVO4pux2P6KyUOCu-rD2Lg_1753115071
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9BB411956089; Mon, 21 Jul 2025 16:24:28 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4E466180029E; Mon, 21 Jul 2025 16:24:31 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6817F195608D; Mon, 21 Jul 2025 16:24:26 +0000 (UTC)
+ id 1A029195608D; Mon, 21 Jul 2025 16:24:28 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -50,16 +50,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 39/50] ppc/xive: Assert group interrupts were redistributed
-Date: Mon, 21 Jul 2025 18:22:22 +0200
-Message-ID: <20250721162233.686837-40-clg@redhat.com>
+Subject: [PULL 40/50] ppc/xive2: implement NVP context save restore for POOL
+ ring
+Date: Mon, 21 Jul 2025 18:22:23 +0200
+Message-ID: <20250721162233.686837-41-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -86,46 +87,153 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-Add some assertions to try to ensure presented group interrupts do
-not get lost without being redistributed, if they become precluded
-by CPPR or preempted by a higher priority interrupt.
+In preparation to implement POOL context push, add support for POOL
+NVP context save/restore.
+
+The NVP p bit is defined in the spec as follows:
+
+    If TRUE, the CPPR of a Pool VP in the NVP is updated during store of
+    the context with the CPPR of the Hard context it was running under.
+
+It's not clear whether non-pool VPs always or never get CPPR updated.
+Before this patch, OS contexts always save CPPR, so we will assume that
+is the behaviour.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-40-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-41-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/xive.c  | 2 ++
- hw/intc/xive2.c | 1 +
- 2 files changed, 3 insertions(+)
+ include/hw/ppc/xive2_regs.h |  1 +
+ hw/intc/xive2.c             | 51 +++++++++++++++++++++++++------------
+ 2 files changed, 36 insertions(+), 16 deletions(-)
 
-diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 6ad84f93c77a..d609d552e89e 100644
---- a/hw/intc/xive.c
-+++ b/hw/intc/xive.c
-@@ -132,6 +132,8 @@ void xive_tctx_pipr_set(XiveTCTX *tctx, uint8_t ring, uint8_t pipr,
-     uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
-     uint8_t *regs = &tctx->regs[ring];
- 
-+    g_assert(!xive_nsr_indicates_group_exception(ring, sig_regs[TM_NSR]));
-+
-     sig_regs[TM_PIPR] = pipr;
- 
-     if (pipr < sig_regs[TM_CPPR]) {
+diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
+index f82054661bda..2a3e60abadbf 100644
+--- a/include/hw/ppc/xive2_regs.h
++++ b/include/hw/ppc/xive2_regs.h
+@@ -158,6 +158,7 @@ typedef struct Xive2Nvp {
+ #define NVP2_W0_L                  PPC_BIT32(8)
+ #define NVP2_W0_G                  PPC_BIT32(9)
+ #define NVP2_W0_T                  PPC_BIT32(10)
++#define NVP2_W0_P                  PPC_BIT32(11)
+ #define NVP2_W0_ESC_END            PPC_BIT32(25) /* 'N' bit 0:ESB  1:END */
+ #define NVP2_W0_PGOFIRST           PPC_BITMASK32(26, 31)
+         uint32_t       w1;
 diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 531e6517baa2..a0a6b1a88179 100644
+index a0a6b1a88179..7631d4886206 100644
 --- a/hw/intc/xive2.c
 +++ b/hw/intc/xive2.c
-@@ -1089,6 +1089,7 @@ static void xive2_tctx_process_pending(XiveTCTX *tctx, uint8_t sig_ring)
-     int rc;
+@@ -512,12 +512,13 @@ static void xive2_presenter_backlog_decr(XivePresenter *xptr,
+  */
  
-     g_assert(sig_ring == TM_QW3_HV_PHYS || sig_ring == TM_QW1_OS);
-+    g_assert(!xive_nsr_indicates_group_exception(sig_ring, sig_regs[TM_NSR]));
+ static void xive2_tctx_save_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+-                                uint8_t nvp_blk, uint32_t nvp_idx,
+-                                uint8_t ring)
++                                uint8_t ring,
++                                uint8_t nvp_blk, uint32_t nvp_idx)
+ {
+     CPUPPCState *env = &POWERPC_CPU(tctx->cs)->env;
+     uint32_t pir = env->spr_cb[SPR_PIR].default_value;
+     Xive2Nvp nvp;
++    uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
+     uint8_t *regs = &tctx->regs[ring];
+ 
+     if (xive2_router_get_nvp(xrtr, nvp_blk, nvp_idx, &nvp)) {
+@@ -553,7 +554,14 @@ static void xive2_tctx_save_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+     }
+ 
+     nvp.w2 = xive_set_field32(NVP2_W2_IPB, nvp.w2, regs[TM_IPB]);
+-    nvp.w2 = xive_set_field32(NVP2_W2_CPPR, nvp.w2, regs[TM_CPPR]);
++
++    if ((nvp.w0 & NVP2_W0_P) || ring != TM_QW2_HV_POOL) {
++        /*
++         * Non-pool contexts always save CPPR (ignore p bit). XXX: Clarify
++         * whether that is the correct behaviour.
++         */
++        nvp.w2 = xive_set_field32(NVP2_W2_CPPR, nvp.w2, sig_regs[TM_CPPR]);
++    }
+     if (nvp.w0 & NVP2_W0_L) {
+         /*
+          * Typically not used. If LSMFB is restored with 0, it will
+@@ -722,7 +730,7 @@ static uint64_t xive2_tm_pull_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     }
+ 
+     if (xive2_router_get_config(xrtr) & XIVE2_VP_SAVE_RESTORE && do_save) {
+-        xive2_tctx_save_ctx(xrtr, tctx, nvp_blk, nvp_idx, ring);
++        xive2_tctx_save_ctx(xrtr, tctx, ring, nvp_blk, nvp_idx);
+     }
  
      /*
-      * Recompute the PIPR based on local pending interrupts. It will
+@@ -863,12 +871,15 @@ void xive2_tm_pull_phys_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
+     xive2_tm_pull_ctx_ol(xptr, tctx, offset, value, size, TM_QW3_HV_PHYS);
+ }
+ 
+-static uint8_t xive2_tctx_restore_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+-                                        uint8_t nvp_blk, uint32_t nvp_idx,
+-                                        Xive2Nvp *nvp)
++static uint8_t xive2_tctx_restore_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
++                                      uint8_t ring,
++                                      uint8_t nvp_blk, uint32_t nvp_idx,
++                                      Xive2Nvp *nvp)
+ {
+     CPUPPCState *env = &POWERPC_CPU(tctx->cs)->env;
+     uint32_t pir = env->spr_cb[SPR_PIR].default_value;
++    uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
++    uint8_t *regs = &tctx->regs[ring];
+     uint8_t cppr;
+ 
+     if (!xive2_nvp_is_hw(nvp)) {
+@@ -881,10 +892,10 @@ static uint8_t xive2_tctx_restore_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+     nvp->w2 = xive_set_field32(NVP2_W2_CPPR, nvp->w2, 0);
+     xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, nvp, 2);
+ 
+-    tctx->regs[TM_QW1_OS + TM_CPPR] = cppr;
+-    tctx->regs[TM_QW1_OS + TM_LSMFB] = xive_get_field32(NVP2_W2_LSMFB, nvp->w2);
+-    tctx->regs[TM_QW1_OS + TM_LGS] = xive_get_field32(NVP2_W2_LGS, nvp->w2);
+-    tctx->regs[TM_QW1_OS + TM_T] = xive_get_field32(NVP2_W2_T, nvp->w2);
++    sig_regs[TM_CPPR] = cppr;
++    regs[TM_LSMFB] = xive_get_field32(NVP2_W2_LSMFB, nvp->w2);
++    regs[TM_LGS] = xive_get_field32(NVP2_W2_LGS, nvp->w2);
++    regs[TM_T] = xive_get_field32(NVP2_W2_T, nvp->w2);
+ 
+     nvp->w1 = xive_set_field32(NVP2_W1_CO, nvp->w1, 1);
+     nvp->w1 = xive_set_field32(NVP2_W1_CO_THRID_VALID, nvp->w1, 1);
+@@ -893,9 +904,18 @@ static uint8_t xive2_tctx_restore_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+     /*
+      * Checkout privilege: 0:OS, 1:Pool, 2:Hard
+      *
+-     * TODO: we only support OS push/pull
++     * TODO: we don't support hard push/pull
+      */
+-    nvp->w1 = xive_set_field32(NVP2_W1_CO_PRIV, nvp->w1, 0);
++    switch (ring) {
++    case TM_QW1_OS:
++        nvp->w1 = xive_set_field32(NVP2_W1_CO_PRIV, nvp->w1, 0);
++        break;
++    case TM_QW2_HV_POOL:
++        nvp->w1 = xive_set_field32(NVP2_W1_CO_PRIV, nvp->w1, 1);
++        break;
++    default:
++        g_assert_not_reached();
++    }
+ 
+     xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, nvp, 1);
+ 
+@@ -930,9 +950,8 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
+     }
+ 
+     /* Automatically restore thread context registers */
+-    if (xive2_router_get_config(xrtr) & XIVE2_VP_SAVE_RESTORE &&
+-        do_restore) {
+-        xive2_tctx_restore_os_ctx(xrtr, tctx, nvp_blk, nvp_idx, &nvp);
++    if (xive2_router_get_config(xrtr) & XIVE2_VP_SAVE_RESTORE && do_restore) {
++        xive2_tctx_restore_ctx(xrtr, tctx, TM_QW1_OS, nvp_blk, nvp_idx, &nvp);
+     }
+ 
+     ipb = xive_get_field32(NVP2_W2_IPB, nvp.w2);
 -- 
 2.50.1
 
