@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4748B0BC55
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 08:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB28B0BC54
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 08:08:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udjct-0001rh-Oy; Mon, 21 Jul 2025 02:03:56 -0400
+	id 1udjcD-0001AK-6U; Mon, 21 Jul 2025 02:03:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1udjZA-0008IF-B5
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 02:00:07 -0400
+ id 1udjZJ-0008Lh-Sm
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 02:00:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1udjZ8-00069G-GR
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 01:59:59 -0400
+ id 1udjZD-0006AA-UR
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 02:00:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753077597;
+ s=mimecast20190719; t=1753077601;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=r27fFDv0rcrOqMogFBb3ERRL57PzfIvzx8FWyvucAqo=;
- b=XbPxU9rCH3f+R/oiyvPYuBMGnkL2sFALW73M6ZSYqSemraxr80qZU1RCkH5QCZc2h/qxuV
- u97F0N6Qb2mtXkM5ez3jYBOYbxPQa5TwSvLpJ9q7HuXV0BawjOZuUT1++WZ/8F+rbiFTVW
- sNA+UqXG/4F9BKSFNvMh6U3tbRQaE6w=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=cBsUi8XmNS0xKJL2tpo8kexn1NzDc2Oho8vlTV6W80I=;
+ b=UAFZrftFcCVF6aA69428TEyZHF+af+HCFPG5TXp+QifCPIopGoSFMHWhXHEXnn+NbBYjC1
+ zY+AhN13w6XXJZ0Rlh8tJvxRmkyOObDt785Y73Mm9GpCXH1A86A1Sj9jCUMuRR/7wLusnm
+ /j3uTcxtZ1CTdfjSUvoWZYENcnJOCEw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-PxqKhTIlOAyDV9TMgbsUXA-1; Mon,
- 21 Jul 2025 01:59:56 -0400
-X-MC-Unique: PxqKhTIlOAyDV9TMgbsUXA-1
-X-Mimecast-MFC-AGG-ID: PxqKhTIlOAyDV9TMgbsUXA_1753077595
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-163-h027qszGNnaXDoDuqL1fPw-1; Mon,
+ 21 Jul 2025 01:59:59 -0400
+X-MC-Unique: h027qszGNnaXDoDuqL1fPw-1
+X-Mimecast-MFC-AGG-ID: h027qszGNnaXDoDuqL1fPw_1753077598
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 32AE319560AA; Mon, 21 Jul 2025 05:59:55 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 72CDF1800282; Mon, 21 Jul 2025 05:59:58 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.190])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8E55A195608D; Mon, 21 Jul 2025 05:59:52 +0000 (UTC)
+ id 0C3FF195608D; Mon, 21 Jul 2025 05:59:55 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 07/12] net/passt: Remove unused "err" from
- passt_vhost_user_event() (CID 1612375)
-Date: Mon, 21 Jul 2025 13:59:22 +0800
-Message-ID: <20250721055927.75951-8-jasowang@redhat.com>
+Subject: [PULL 08/12] net/vhost-user: Remove unused "err" from
+ net_vhost_user_event() (CID 1612372)
+Date: Mon, 21 Jul 2025 13:59:23 +0800
+Message-ID: <20250721055927.75951-9-jasowang@redhat.com>
 In-Reply-To: <20250721055927.75951-1-jasowang@redhat.com>
 References: <20250721055927.75951-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -87,8 +87,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Laurent Vivier <lvivier@redhat.com>
 
 The "err" variable was declared but never used within the
-passt_vhost_user_event() function. This resulted in a dead code
-warning (CID 1612375) from Coverity.
+net_vhost_user_event() function. This resulted in a dead code
+warning (CID 1612372) from Coverity.
 
 Remove the unused variable and the associated error block
 to resolve the issue.
@@ -97,22 +97,22 @@ Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- net/passt.c | 5 -----
+ net/vhost-user.c | 5 -----
  1 file changed, 5 deletions(-)
 
-diff --git a/net/passt.c b/net/passt.c
-index 6f616ba3c2..9cd5b3e6f2 100644
---- a/net/passt.c
-+++ b/net/passt.c
-@@ -397,7 +397,6 @@ err:
- static void passt_vhost_user_event(void *opaque, QEMUChrEvent event)
- {
-     NetPasstState *s = opaque;
+diff --git a/net/vhost-user.c b/net/vhost-user.c
+index 1c3b8b36f3..cec83e925f 100644
+--- a/net/vhost-user.c
++++ b/net/vhost-user.c
+@@ -329,7 +329,6 @@ static void net_vhost_user_event(void *opaque, QEMUChrEvent event)
+     NetClientState *ncs[MAX_QUEUE_NUM];
+     NetVhostUserState *s;
+     Chardev *chr;
 -    Error *err = NULL;
+     int queues;
  
-     switch (event) {
-     case CHR_EVENT_OPENED:
-@@ -428,10 +427,6 @@ static void passt_vhost_user_event(void *opaque, QEMUChrEvent event)
+     queues = qemu_find_net_clients_except(name, ncs,
+@@ -375,10 +374,6 @@ static void net_vhost_user_event(void *opaque, QEMUChrEvent event)
          /* Ignore */
          break;
      }
@@ -122,7 +122,7 @@ index 6f616ba3c2..9cd5b3e6f2 100644
 -    }
  }
  
- static int net_passt_vhost_user_init(NetPasstState *s, Error **errp)
+ static int net_vhost_user_init(NetClientState *peer, const char *device,
 -- 
 2.42.0
 
