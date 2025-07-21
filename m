@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0ECB0C8E0
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF790B0C89A
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:24:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtIg-0003ov-1s; Mon, 21 Jul 2025 12:23:48 -0400
+	id 1udtJ1-0005Gf-Gg; Mon, 21 Jul 2025 12:23:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtI9-0003NK-6h
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:07 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIC-0003YC-JM
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtI7-0001Pd-0Y
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:04 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtI9-0001Q9-T0
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753114981;
+ s=mimecast20190719; t=1753114984;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Oxjl9Plxfxd+LhAa4iwUt8737MCf+RsKZaagKDT9fCg=;
- b=Rn5pImcLyx3bsZ0bkj3+mDsKj0qJ7OuDZYDxLCJvBxR5seqkGvIIXhF/kRr+3L9De+gEfW
- NV1ENn1hyDDXhqZ1iGjZyARAsnthHYRk53cj+M6VjzEMwUBr7dG/WSWUSORYZh7dvmL4lE
- fNYOGxS1/SN10xNca0GJ+/bIoDxDsnk=
+ bh=PeaxLgyiIYKj0kt5yg0H9AiCj069c/p8og5RfRh37nA=;
+ b=UzqVyQdiLYrZycS71pQuyKhxlbTjK+yrJhaJYRZPpq2y2FLuEOvUmFUDqjBipaCcS3RuQt
+ iCcdkFPJQ9dMWVm6T3UodFZf3PgXkE1SsN2ygUC7H66hp6kJNUbGGXKa8XIpCtN2loVNUU
+ eLqeKFudaNFQmjPeU+yPJc3pZuYHQ8M=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-6nDJDb2UPqio7kv6Qbq2Eg-1; Mon,
- 21 Jul 2025 12:22:59 -0400
-X-MC-Unique: 6nDJDb2UPqio7kv6Qbq2Eg-1
-X-Mimecast-MFC-AGG-ID: 6nDJDb2UPqio7kv6Qbq2Eg_1753114978
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-DI98qf95OJ-sz9uemG2XAw-1; Mon,
+ 21 Jul 2025 12:23:02 -0400
+X-MC-Unique: DI98qf95OJ-sz9uemG2XAw-1
+X-Mimecast-MFC-AGG-ID: DI98qf95OJ-sz9uemG2XAw_1753114981
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0219E18002B1; Mon, 21 Jul 2025 16:22:58 +0000 (UTC)
+ id E46ED18002B6; Mon, 21 Jul 2025 16:23:00 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 880C0195608D; Mon, 21 Jul 2025 16:22:55 +0000 (UTC)
+ id 74FE5195608D; Mon, 21 Jul 2025 16:22:58 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Michael Kowal <kowal@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
+ Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 07/50] ppc/xive2: Reset Generation Flipped bit on END Cache
- Watch
-Date: Mon, 21 Jul 2025 18:21:50 +0200
-Message-ID: <20250721162233.686837-8-clg@redhat.com>
+Subject: [PULL 08/50] ppc/xive2: Use fair irq target search algorithm
+Date: Mon, 21 Jul 2025 18:21:51 +0200
+Message-ID: <20250721162233.686837-9-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,60 +85,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Kowal <kowal@linux.ibm.com>
+From: Glenn Miles <milesg@linux.ibm.com>
 
-When the END Event Queue wraps the END EQ Generation bit is flipped and the
-Generation Flipped bit is set to one.  On a END cache Watch read operation,
-the Generation Flipped bit needs to be reset.
+The current xive algorithm for finding a matching group vCPU
+target always uses the first vCPU found.  And, since it always
+starts the search with thread 0 of a core, thread 0 is almost
+always used to handle group interrupts.  This can lead to additional
+interrupt latency and poor performance for interrupt intensive
+work loads.
 
-While debugging an error modified END not valid error messages to include
-the method since all were the same.
+Changing this to use a simple round-robin algorithm for deciding which
+thread number to use when starting a search, which leads to a more
+distributed use of threads for handling group interrupts.
 
-Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
+[npiggin: Also round-robin among threads, not just cores]
+
+Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-8-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-9-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/pnv_xive2.c | 3 ++-
- hw/intc/xive2.c     | 4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ hw/intc/pnv_xive2.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 6b724fe762f6..ec247ce48ff7 100644
+index ec247ce48ff7..25dc8a372d2f 100644
 --- a/hw/intc/pnv_xive2.c
 +++ b/hw/intc/pnv_xive2.c
-@@ -1325,10 +1325,11 @@ static uint64_t pnv_xive2_ic_vc_read(void *opaque, hwaddr offset,
-     case VC_ENDC_WATCH3_DATA0:
-         /*
-          * Load DATA registers from cache with data requested by the
--         * SPEC register
-+         * SPEC register.  Clear gen_flipped bit in word 1.
-          */
-         watch_engine = (offset - VC_ENDC_WATCH0_DATA0) >> 6;
-         pnv_xive2_end_cache_load(xive, watch_engine);
-+        xive->vc_regs[reg] &= ~(uint64_t)END2_W1_GEN_FLIPPED;
-         val = xive->vc_regs[reg];
-         break;
+@@ -643,13 +643,18 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+     int i, j;
+     bool gen1_tima_os =
+         xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
++    static int next_start_core;
++    static int next_start_thread;
++    int start_core = next_start_core;
++    int start_thread = next_start_thread;
  
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 01cf96a2af65..edf5d9eb94cb 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -374,8 +374,8 @@ static void xive2_end_enqueue(Xive2End *end, uint32_t data)
-         qgen ^= 1;
-         end->w1 = xive_set_field32(END2_W1_GENERATION, end->w1, qgen);
+     for (i = 0; i < chip->nr_cores; i++) {
+-        PnvCore *pc = chip->cores[i];
++        PnvCore *pc = chip->cores[(i + start_core) % chip->nr_cores];
+         CPUCore *cc = CPU_CORE(pc);
  
--        /* TODO(PowerNV): reset GF bit on a cache watch operation */
--        end->w1 = xive_set_field32(END2_W1_GEN_FLIPPED, end->w1, qgen);
-+        /* Set gen flipped to 1, it gets reset on a cache watch operation */
-+        end->w1 = xive_set_field32(END2_W1_GEN_FLIPPED, end->w1, 1);
-     }
-     end->w1 = xive_set_field32(END2_W1_PAGE_OFF, end->w1, qindex);
- }
+         for (j = 0; j < cc->nr_threads; j++) {
+-            PowerPCCPU *cpu = pc->threads[j];
++            /* Start search for match with different thread each call */
++            PowerPCCPU *cpu = pc->threads[(j + start_thread) % cc->nr_threads];
+             XiveTCTX *tctx;
+             int ring;
+ 
+@@ -694,6 +699,15 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+                     if (!match->tctx) {
+                         match->ring = ring;
+                         match->tctx = tctx;
++
++                        next_start_thread = j + start_thread + 1;
++                        if (next_start_thread >= cc->nr_threads) {
++                            next_start_thread = 0;
++                            next_start_core = i + start_core + 1;
++                            if (next_start_core >= chip->nr_cores) {
++                                next_start_core = 0;
++                            }
++                        }
+                     }
+                     count++;
+                 }
 -- 
 2.50.1
 
