@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A4BB0C379
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 13:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC0FB0C363
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 13:42:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udooP-0004ak-8C; Mon, 21 Jul 2025 07:36:05 -0400
+	id 1udonu-0002RO-I8; Mon, 21 Jul 2025 07:35:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1udol8-0003Dz-E5
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 07:32:43 -0400
+ id 1udolG-0003lO-G0
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 07:32:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1udol0-0001CB-Km
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 07:32:41 -0400
+ id 1udol8-0001DT-OA
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 07:32:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753097552;
+ s=mimecast20190719; t=1753097561;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=t3ae3kJExW2Sg5pWJRDVUIOvol+Ctrurv2L52br01Kg=;
- b=N5z0jfcigEsXjJzjwmB3qFuxc8aJg4H9BvkakAOY3PPw98Dt94DiE+JKG8m/TL0VD04T8o
- DuH3jlA510GL37Vm9uRsgWYneW7FYlQ5k9o8BsIYdMAopOkB0+040JcEIcG8iT5YIJYPKt
- tfEFSk0ywDKo+IgrcTkNbt1KKdxWUc4=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hkw007WkL2bTNA6NzrTVjPjzDilf74VZVqgpQUpo1iQ=;
+ b=MQ9ajdbn/BvRabG2AKG0IPE/4yjtjB0DeIVnSK/ILR+K2II2ylzTMnqcxDB3Bf/zYqxPHk
+ fZIVfwUvXC9qkhmr8tte/tqL5TzvtwZoTyHRIDafkj95uI84T9ZdsLAFuJVil3F62gU7/i
+ pOZQeVjzv4ay1RggaDVQ7asuxlyr0IQ=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-KCp5uiZ-NyGfMaanGC_xrg-1; Mon, 21 Jul 2025 07:32:31 -0400
-X-MC-Unique: KCp5uiZ-NyGfMaanGC_xrg-1
-X-Mimecast-MFC-AGG-ID: KCp5uiZ-NyGfMaanGC_xrg_1753097550
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-b3f2e05fb78so2389317a12.1
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 04:32:31 -0700 (PDT)
+ us-mta-659-1Fr0RXw9PFSAAEGEhKLjww-1; Mon, 21 Jul 2025 07:32:39 -0400
+X-MC-Unique: 1Fr0RXw9PFSAAEGEhKLjww-1
+X-Mimecast-MFC-AGG-ID: 1Fr0RXw9PFSAAEGEhKLjww_1753097559
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-23dc7d3e708so29880255ad.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 04:32:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753097550; x=1753702350;
+ d=1e100.net; s=20230601; t=1753097558; x=1753702358;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t3ae3kJExW2Sg5pWJRDVUIOvol+Ctrurv2L52br01Kg=;
- b=hNfFAHtaiDv+RaAtnwDTOGr+K9cgA5JW4uMjmciCpRsEDg/GDX/ySc69IPJ10VGpM6
- bm+1Bd52jdzFifUKqoWNISgQDGX9z52y/h8ZQDt+mQWE3UXuTZuaLaVi1nKq6iOT9G1h
- rHZFnDfH6KS2WcCleoz8B8cSg4+B+N2UjNRltiosmwarQsc8LZtdL5em6ISYCSA82ZHe
- NT2ah8+KqlbbJlDu0/1J4nj08Trll8R/0E3QGRPLWhgyzCnmsQwzcKLTc7E9xkyXyDx/
- xRx8RlMtbTlDtdc1hQc1VDU+Qx0DyM7CP0U6s89UtegzCdHdFkOuKgDZzzQI0iS6AsE5
- lY5g==
-X-Gm-Message-State: AOJu0YxZmwPkG6UegUbLorsM5T7476RvCPlVi5DxjAJ8di+s+EEREirS
- ceVDf2ZqayVkdarQH8VhtB6bCMwhQiWVcgOAGLzEXW9AVCcuLnU07vdmchrug4fKsnQKYwhGMtK
- b1Pv6Xt2cKM1y+XyPR+oQjKiF6kYRtlAxcRHqC2iJsSaweIJujFcSUsEi
-X-Gm-Gg: ASbGncvVS/nTj5rXIHVhdlXifPYQ+TfybPzLfkt0TWDTPq/wmy2mwpME14G4oceZx93
- s2s2IbVeryEGUoVWb6i8B7WTN3Dv+p5vDKTH2ob5vSS2UKfblSRHmVmZtoJ4i1PKodA1E4H5ea/
- zrXHFCdz3mQmSinDxCCjsMv8E41JTO4d8pEMOuDb43KY5ntZ8LGQB0UFLuqtI4hzDTWeKP/SmC3
- Ge35aJWl5+dq8vzz+Pm7cJC/eZJODR2M6dg3T0lAXS5tuYyoPuC4K4rfQ93F05O8IFW3ewJh018
- YZTVIaq0oJFH0TWuWbxPNi6xUk3DYFUDMyLoMjkhjucQuXYfUgkc
-X-Received: by 2002:a17:902:ea04:b0:234:8c64:7885 with SMTP id
- d9443c01a7336-23e2578d9e2mr271660965ad.53.1753097550245; 
- Mon, 21 Jul 2025 04:32:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH006936SOWFLX0KeCHHYnhae+sSKEKnmeFxfNdsSqzcQLtt57uyechRQ3uZA+ymerwRrJ7kQ==
-X-Received: by 2002:a17:902:ea04:b0:234:8c64:7885 with SMTP id
- d9443c01a7336-23e2578d9e2mr271660395ad.53.1753097549783; 
- Mon, 21 Jul 2025 04:32:29 -0700 (PDT)
+ bh=hkw007WkL2bTNA6NzrTVjPjzDilf74VZVqgpQUpo1iQ=;
+ b=v/h7pxCjxpbV2Lpp6GeOSo4+0dElUmu/B7zp+GxQkGSdG3tvynBh0Zrl43q5YZ00d6
+ u0WW8Zg1xGvYj6pc7qtwd5z+qchMXhMI1wGD60jfiKfy0IPWVy7hdk+VK1GkenmNl9K8
+ y2Nvw5X0bj51pdVjfRGiJSf0yqh/0J/HnM8fHYjuRHqbmwH+zbDwef0gyFSTKK3rqoKN
+ 6Nsf5TqawcfaQ4oRON1xzoDjEl65YQGzHSQSOgzDHuwb90ehGOXcBMAB2Eiq52oAnQOU
+ z2O7KZgMtYrod7q/unyOcyUBrxzdwNnLkS2l90qvEzCADkXsKoy2LL4iGEAHMn4eRM2Q
+ Kpjg==
+X-Gm-Message-State: AOJu0YwD9Jn0lHti1Az8im3CAVSHnjPNxma6T+IchrsfdfpKYnJ0fjx6
+ gA8VdOSoSnmjypuRppQePfBTJul9Twg9z8OKjzEHL8LxKe/1ezdo2uYgU6BvqvMo579nkrPiM/6
+ 2hM0/CIexGGLIMXw64Vs5Ao13m08AhS/RFyAczrCph/ZLv/lSJejTKfSf
+X-Gm-Gg: ASbGncvGSHOC8n33NyTmMC3dO5itxW/i+qS7FNnrbZ16Wp5uqUSV21beqh7NxQ/vQfv
+ jyd5zzKYriALsZhkH0IMahcm7fVJuLL+/mpngXACnxtyXgK4EnDUsP9zcIhJeOkH0HvUHyyautC
+ hhMimKxdkBrU9VTC7Lqs45qRouEIMoEbTG/j7fEetIISwsCir+Hy8RIJhRp9kBIJhbqD0CWdpJC
+ RqadUGvXikW4XJ/dZQHmMtIlSnlX5mfxFFKVCcKL7Ae3UGwN02OBXtYrdUwx2NAfl/OTaqPzm/C
+ hcgYOqv+DGx9I0gXeGoVznJ28iqIosgcpFSpoohVf5Eh0AzZJbts
+X-Received: by 2002:a17:903:1c6:b0:234:f182:a734 with SMTP id
+ d9443c01a7336-23e2572fe2cmr266488175ad.31.1753097558410; 
+ Mon, 21 Jul 2025 04:32:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGOcXkvyO/2m94/qNR6kURY/gxJZ6l0VLzmjmmUWOSmET6QivsvVH3zNbalHI8kzy6/xmR/Yw==
+X-Received: by 2002:a17:903:1c6:b0:234:f182:a734 with SMTP id
+ d9443c01a7336-23e2572fe2cmr266487625ad.31.1753097557999; 
+ Mon, 21 Jul 2025 04:32:37 -0700 (PDT)
 Received: from armenon-kvm.bengluru.csb ([49.36.101.21])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23e3b5e3c89sm56150465ad.18.2025.07.21.04.32.22
+ d9443c01a7336-23e3b5e3c89sm56150465ad.18.2025.07.21.04.32.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Jul 2025 04:32:29 -0700 (PDT)
+ Mon, 21 Jul 2025 04:32:37 -0700 (PDT)
 From: Arun Menon <armenon@redhat.com>
-Date: Mon, 21 Jul 2025 16:59:26 +0530
-Subject: [PATCH v6 21/24] migration: push Error **errp into
- qemu_load_device_state()
+Date: Mon, 21 Jul 2025 16:59:27 +0530
+Subject: [PATCH v6 22/24] migration: Capture error in
+ postcopy_ram_listen_thread()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250721-propagate_tpm_error-v6-21-fef740e15e17@redhat.com>
+Message-Id: <20250721-propagate_tpm_error-v6-22-fef740e15e17@redhat.com>
 References: <20250721-propagate_tpm_error-v6-0-fef740e15e17@redhat.com>
 In-Reply-To: <20250721-propagate_tpm_error-v6-0-fef740e15e17@redhat.com>
 To: qemu-devel@nongnu.org
@@ -104,12 +104,12 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
  Matthew Rosato <mjrosato@linux.ibm.com>, Arun Menon <armenon@redhat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2659; i=armenon@redhat.com;
- h=from:subject:message-id; bh=oyukj1JRYKQrUQbIkOMl3uoW1cNIxrsfV12H77J7t0g=;
- b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ0adyqR9N32vHtG6wF/l4lb774vex5W+loIVRpteG7/pb
- z+zLKuwo5SFQYyLQVZMkaXha4BsU0BhRKTty+swc1iZQIYwcHEKwESy/RgZppSbWnxatGLJ242v
- p87rk2LflPRsy7tI/Qf961+rn5GddYvhr5DCgvOPF9nb8L9bGSYlombxuKvwk9Viv476G63HLxn
- VMgEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2961; i=armenon@redhat.com;
+ h=from:subject:message-id; bh=v3kIu8xv5CmXmOovgQtNwiMRjDivOP6smrquljBzKYk=;
+ b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ0adyqT1j7Ui5bnqFsnw/pTx5ss+xqD6snlNr/7PYOME9
+ UOZ26U7SlkYxLgYZMUUWRq+Bsg2BRRGRNq+vA4zh5UJZAgDF6cATERzKsNvlozJKwytysT6Niid
+ tTn8ewvbsV07pttaemZOEDwnt3ffNkaG70trGjq/SJRWB6cud9zibmr0u2ZSd+XmJd+49s6/027
+ DAgA=
 X-Developer-Key: i=armenon@redhat.com; a=openpgp;
  fpr=80F5501D82507158593DE9D76A7A2538D90F328E
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armenon@redhat.com;
@@ -119,9 +119,9 @@ X-Spam_score: -3.0
 X-Spam_bar: ---
 X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.926,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -140,68 +140,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 This is an incremental step in converting vmstate loading
 code to report error via Error objects instead of directly
 printing it to console/monitor.
-It is ensured that qemu_load_device_state() must report an error
-in errp, in case of failure.
+postcopy_ram_listen_thread() calls qemu_loadvm_state_main()
+to load the vm, and in case of a failure, it should set the error
+in the migration object.
+
+When postcopy live migration runs, the device states are loaded by
+both the qemu coroutine process_incoming_migration_co() and the
+postcopy_ram_listen_thread(). Therefore, it is important that the
+coroutine also reports the error in case of failure, with
+error_report_err(). Otherwise, the source qemu will not display
+any errors before going into the postcopy pause state.
 
 Signed-off-by: Arun Menon <armenon@redhat.com>
 ---
- migration/colo.c   | 4 ++--
- migration/savevm.c | 6 +++---
- migration/savevm.h | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ migration/migration.c |  2 +-
+ migration/savevm.c    | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/migration/colo.c b/migration/colo.c
-index 03edf870e2bc9c724fc27e26e7ba54a40c13399e..650f7b61d92693eeace475f221a37cfa81331b97 100644
---- a/migration/colo.c
-+++ b/migration/colo.c
-@@ -729,9 +729,9 @@ static void colo_incoming_process_checkpoint(MigrationIncomingState *mis,
-     bql_lock();
-     vmstate_loading = true;
-     colo_flush_ram_cache();
--    ret = qemu_load_device_state(fb);
-+    ret = qemu_load_device_state(fb, errp);
-     if (ret < 0) {
--        error_setg(errp, "COLO: load device state failed");
-+        error_prepend(errp, "COLO: load device state failed ");
-         vmstate_loading = false;
-         bql_unlock();
-         return;
+diff --git a/migration/migration.c b/migration/migration.c
+index 09fadf36dbbbd2f68df1e4cafbf3a51b18531978..8acbed207440fe4a2dfe303f97cfd83b40457db0 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -925,7 +925,7 @@ fail:
+     migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
+                       MIGRATION_STATUS_FAILED);
+     migrate_set_error(s, local_err);
+-    error_free(local_err);
++    error_report_err(local_err);
+ 
+     migration_incoming_state_destroy();
+ 
 diff --git a/migration/savevm.c b/migration/savevm.c
-index 1261e81c86f836e6b5a155ba1880b5823a779567..b90505595091da27d3cf92984eb256f137fb9d36 100644
+index b90505595091da27d3cf92984eb256f137fb9d36..55cda4566ac2f8c72fe5fa2f8df8475e175ee717 100644
 --- a/migration/savevm.c
 +++ b/migration/savevm.c
-@@ -3236,15 +3236,15 @@ int qemu_loadvm_state(QEMUFile *f, Error **errp)
-     return ret;
- }
+@@ -2092,6 +2092,7 @@ static void *postcopy_ram_listen_thread(void *opaque)
+     QEMUFile *f = mis->from_src_file;
+     int load_res;
+     MigrationState *migr = migrate_get_current();
++    Error *local_err = NULL;
  
--int qemu_load_device_state(QEMUFile *f)
-+int qemu_load_device_state(QEMUFile *f, Error **errp)
- {
-     MigrationIncomingState *mis = migration_incoming_get_current();
-     int ret;
+     object_ref(OBJECT(migr));
  
-     /* Load QEMU_VM_SECTION_FULL section */
--    ret = qemu_loadvm_state_main(f, mis, NULL);
-+    ret = qemu_loadvm_state_main(f, mis, errp);
-     if (ret < 0) {
--        error_report("Failed to load device state: %d", ret);
-+        error_prepend(errp, "Failed to load device state: %d ", ret);
-         return ret;
-     }
+@@ -2108,7 +2109,7 @@ static void *postcopy_ram_listen_thread(void *opaque)
+     qemu_file_set_blocking(f, true);
  
-diff --git a/migration/savevm.h b/migration/savevm.h
-index a6df5198f3fe1a39fc0e6ce3e79cf7a5d8e032db..c337e3e3d111a7f28a57b90f61e8f70b71803d4e 100644
---- a/migration/savevm.h
-+++ b/migration/savevm.h
-@@ -68,7 +68,7 @@ int qemu_loadvm_state(QEMUFile *f, Error **errp);
- void qemu_loadvm_state_cleanup(MigrationIncomingState *mis);
- int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis,
-                            Error **errp);
--int qemu_load_device_state(QEMUFile *f);
-+int qemu_load_device_state(QEMUFile *f, Error **errp);
- int qemu_loadvm_approve_switchover(void);
- int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
-         bool in_postcopy);
+     /* TODO: sanity check that only postcopiable data will be loaded here */
+-    load_res = qemu_loadvm_state_main(f, mis, NULL);
++    load_res = qemu_loadvm_state_main(f, mis, &local_err);
+ 
+     /*
+      * This is tricky, but, mis->from_src_file can change after it
+@@ -2134,7 +2135,12 @@ static void *postcopy_ram_listen_thread(void *opaque)
+                          __func__, load_res);
+             load_res = 0; /* prevent further exit() */
+         } else {
+-            error_report("%s: loadvm failed: %d", __func__, load_res);
++            if (local_err != NULL) {
++                error_prepend(&local_err, "loadvm failed during postcopy: %d",
++                              load_res);
++                migrate_set_error(migr, local_err);
++                error_report_err(local_err);
++            }
+             migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
+                                            MIGRATION_STATUS_FAILED);
+         }
 
 -- 
 2.50.0
