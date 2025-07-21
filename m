@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B211B0C8C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F13B0C89D
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:24:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtKM-0001Qn-0i; Mon, 21 Jul 2025 12:25:22 -0400
+	id 1udtJY-0006y0-21; Mon, 21 Jul 2025 12:24:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIv-0004sQ-5G
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:54 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIs-0004oD-Pz
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIr-0001Wj-KH
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:52 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIp-0001X6-C1
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753115018;
+ s=mimecast20190719; t=1753115021;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fafAR+MZ+XdSYEtCgiGonqqx3/PnRIji9nRwNDPHnq8=;
- b=f0Jb5CiAyAR3gaDSqNYszIR76sCRGg55B1JShpgIJONIr9NUJ3MExDWjIqJIBYD/GUEYA6
- nr/tng5kSIq6g5g9d1u2albA3+ppNL9GCtnGDPRYGPy2cHZtXCmK6AR0UTpLyHR0TAvI+L
- kNPQ9vQz046Wb4ikvelxZbacQZbC6aM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=Ac/QUVQGSJO1a5hZVsjUbANeNkNU/atUCzOkeaMJXV0=;
+ b=THhIW017X5cgvZbo9uoHmouR5MfAzi2hAFm8xxAI/Xas3ZbrdfqSRUTCrszShWGBLqJH7g
+ 2yTWmT3dNtF77wEdIf4dxFgo0M2cWi+odnDYRRYqapUNW+R+YFO//sx5EHdCgF8BLETz/X
+ 86Pnej4I5XgfNW2fKZhP0qM9pN1Ub8c=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-458-z3rEQt5uMJ6FT7ghQ-If-A-1; Mon,
- 21 Jul 2025 12:23:34 -0400
-X-MC-Unique: z3rEQt5uMJ6FT7ghQ-If-A-1
-X-Mimecast-MFC-AGG-ID: z3rEQt5uMJ6FT7ghQ-If-A_1753115013
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-fvGerBM_Orqh30blk3q3zA-1; Mon,
+ 21 Jul 2025 12:23:37 -0400
+X-MC-Unique: fvGerBM_Orqh30blk3q3zA-1
+X-Mimecast-MFC-AGG-ID: fvGerBM_Orqh30blk3q3zA_1753115016
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 503FC195FE1E; Mon, 21 Jul 2025 16:23:33 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3E9F51800D86; Mon, 21 Jul 2025 16:23:36 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CC0AA19560AD; Mon, 21 Jul 2025 16:23:30 +0000 (UTC)
+ id C34C0195608D; Mon, 21 Jul 2025 16:23:33 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
+ Michael Kowal <kowal@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 19/50] pnv/xive2: VC_ENDC_WATCH_SPEC regs should read back
- WATCH_FULL
-Date: Mon, 21 Jul 2025 18:22:02 +0200
-Message-ID: <20250721162233.686837-20-clg@redhat.com>
+Subject: [PULL 20/50] pnv/xive2: Permit valid writes to VC/PC Flush Control
+ registers
+Date: Mon, 21 Jul 2025 18:22:03 +0200
+Message-ID: <20250721162233.686837-21-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,36 +86,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Michael Kowal <kowal@linux.ibm.com>
 
-Firmware expects to read back the WATCH_FULL bit from the VC_ENDC_WATCH_SPEC
-register, so don't clear it on read.
+Writes to the Flush Control registers were logged as invalid
+when they are allowed. Clearing the unsupported want_cache_disable
+feature is supported, so don't log an error in that case.
 
-Don't bother clearing the reads-as-zero CONFLICT bit because it's masked
-at write already.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-20-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-21-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/pnv_xive2.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/intc/pnv_xive2.c | 36 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
 diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 9d53537e3e09..e15f414d0bb3 100644
+index e15f414d0bb3..386175a68b29 100644
 --- a/hw/intc/pnv_xive2.c
 +++ b/hw/intc/pnv_xive2.c
-@@ -1329,7 +1329,6 @@ static uint64_t pnv_xive2_ic_vc_read(void *opaque, hwaddr offset,
-     case VC_ENDC_WATCH2_SPEC:
-     case VC_ENDC_WATCH3_SPEC:
-         watch_engine = (offset - VC_ENDC_WATCH0_SPEC) >> 6;
--        xive->vc_regs[reg] &= ~(VC_ENDC_WATCH_FULL | VC_ENDC_WATCH_CONFLICT);
-         pnv_xive2_endc_cache_watch_release(xive, watch_engine);
-         val = xive->vc_regs[reg];
+@@ -1411,7 +1411,14 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
+     /*
+      * ESB cache updates (not modeled)
+      */
+-    /* case VC_ESBC_FLUSH_CTRL: */
++    case VC_ESBC_FLUSH_CTRL:
++        if (val & VC_ESBC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
++            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
++                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
++                        offset, val);
++            return;
++        }
++        break;
+     case VC_ESBC_FLUSH_POLL:
+         xive->vc_regs[VC_ESBC_FLUSH_CTRL >> 3] |= VC_ESBC_FLUSH_CTRL_POLL_VALID;
+         /* ESB update */
+@@ -1427,7 +1434,14 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
+     /*
+      * EAS cache updates (not modeled)
+      */
+-    /* case VC_EASC_FLUSH_CTRL: */
++    case VC_EASC_FLUSH_CTRL:
++        if (val & VC_EASC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
++            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
++                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
++                        offset, val);
++            return;
++        }
++        break;
+     case VC_EASC_FLUSH_POLL:
+         xive->vc_regs[VC_EASC_FLUSH_CTRL >> 3] |= VC_EASC_FLUSH_CTRL_POLL_VALID;
+         /* EAS update */
+@@ -1466,7 +1480,14 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
+         break;
+ 
+ 
+-    /* case VC_ENDC_FLUSH_CTRL: */
++    case VC_ENDC_FLUSH_CTRL:
++        if (val & VC_ENDC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
++            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
++                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
++                        offset, val);
++            return;
++        }
++        break;
+     case VC_ENDC_FLUSH_POLL:
+         xive->vc_regs[VC_ENDC_FLUSH_CTRL >> 3] |= VC_ENDC_FLUSH_CTRL_POLL_VALID;
+         break;
+@@ -1687,7 +1708,14 @@ static void pnv_xive2_ic_pc_write(void *opaque, hwaddr offset,
+         pnv_xive2_nxc_update(xive, watch_engine);
+         break;
+ 
+-   /* case PC_NXC_FLUSH_CTRL: */
++    case PC_NXC_FLUSH_CTRL:
++        if (val & PC_NXC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
++            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
++                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
++                        offset, val);
++            return;
++        }
++        break;
+     case PC_NXC_FLUSH_POLL:
+         xive->pc_regs[PC_NXC_FLUSH_CTRL >> 3] |= PC_NXC_FLUSH_CTRL_POLL_VALID;
          break;
 -- 
 2.50.1
