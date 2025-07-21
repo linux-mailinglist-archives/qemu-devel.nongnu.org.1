@@ -2,91 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD63B0C4FE
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:17:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BD0B0C541
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:34:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udqNG-0007l1-IF; Mon, 21 Jul 2025 09:16:10 -0400
+	id 1udqYl-0004mv-4v; Mon, 21 Jul 2025 09:28:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1udqM8-0006dQ-6u
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:15:01 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1udqYA-000092-2y
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:40 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1udqM5-0002zm-1T
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:14:59 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4561ca74829so47771305e9.0
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:14:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1udqY6-0005HA-K9
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:25 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4563cfac2d2so29201565e9.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753103690; x=1753708490; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kf+XdG7iIe8+bpTLSlmaVFkSVHrn4uHtx0yDTSte+YA=;
- b=DZl0GtwwOH0Wsqr3hNVesbPHtS5u9icLE7h0MjipXiRTaiJDvJmj/p7kg21g8dj9gr
- JoEQFPlFgV0wL0lhUHFPVRqz3sALV2qx9d+E3c283ZZQ4djEWy64hkWa9ueNL1RxfsxI
- 5UmHiN64M0XgZ8YLHDm2Pvq0JhR5hlH7TN2/xY1aGDue/qGhjmqYUmDQ94mUtf3+4FQ5
- 7T2aXCS/Qu0FHpPFy+P9gpxhqU9Y8UIex/jDaybfpziojtWqHwnAm5uSF8EzW4F70JRm
- HUPxPPyla/akLh6I/yrrBnF5BwhOvOh1vJRT/p/Sv1fxuJi/sHNJ74yWJuDMqJ/ixM7v
- L3TA==
+ d=linaro.org; s=google; t=1753104440; x=1753709240; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=LwC1K9V195wWZjVf3p1nnci+abzEyNkmArVrpz2qbkw=;
+ b=Nulaz7X7/WH+YNzvLaheZRZg1my6QIbPP0DMf4cWBPTR5Kl1ZsZzzJ/jv2AZfXKROs
+ jEsLqHbOhYVOvSsSf+fGtuU0dqW7Iyslh4Bosym5Jq/qO9qhWVxPltAGYei1iqhzy9RI
+ rvKE+WQqgMQjgf239lLpbxufgk2ueVZjWTBgNBd5BipLBRuKkXGXkofpIk2hQKOXSj8f
+ mzJkI8Jz0C9CkEQw5flTgrI1blaOuJbBg6nxlsYCNA3m11uV79tj1F+yjRPYok1U7HzZ
+ xxfhiJ+XXywCWwQt7sh2BRXGFyJi9ZGieEiiHijzw69b/edfqZoQLjTlSUrZquvhxd4q
+ HZGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753103690; x=1753708490;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kf+XdG7iIe8+bpTLSlmaVFkSVHrn4uHtx0yDTSte+YA=;
- b=V9QW3tvWr17X60sqqAf63HwSJNOICqkDZlTvZYXaxrH+iBu8kUCuA08uIm3b3N9Yse
- Go07FhwiI5MdxZ6B9pDv0MLrcy+v5UiIVxdV9vEucIMtKH4mvCH0Nh+vrLP4jpdN0lU0
- LzwoE9hDkf60wL3YAaZQCF5fQAqdWwxa9tGGh36j2ReQkXXaufn9AJ5Ab82ug1uZXmsm
- WZX7YiKS00LXalcQ6//eDTjCOpNbje1i3KxYPZ/e8k17lYzPrC827dxym4btZnXJbifu
- +AYO5AmN7GDpDInJiP53p5TR0kSuSyNAKt52B4CwYKolZN8rDH20gZ5TgCtUOV4mxryu
- +BjA==
-X-Gm-Message-State: AOJu0YxUzVIJwctlOyORfC1sIqP90ho7Gc8Lq7cur8OdqOG6drhD2IUA
- dYrsdHapLgJobgJjyu7QDDA+pVhruAsua8A6wX6KG2wuyI5Z8/7gMC0HnejopGmjSWU=
-X-Gm-Gg: ASbGnctCEQ6r/zov9Gk7okrbvTqG6NP0lVzMnz8WH5a7VwEerEdzxAH75Fn+V2y1fsK
- KQ1jPtaJWQLFWnRswTUdOft1hjobdaxM2MwQi25c8F6g9H8p4vfFyylqdFjJ7fT7x4ExoorxXFh
- 5N7mycTX6d21AyoX3X1ahhqPry86JawEd88VowtCnKN88rcPuMnlsJ/AJOA+B2yr/ra3LQLs3PW
- gKtlWMpDgaYQIjSFQ+AKYnbMTH5ZDN4P2kH4VWyPJjrJVWCMxp++IrgYaOKcBVxZz4U2tie6QJl
- sZ+IzS0cI/9fceQmU7D6WbZBlGJ6zD4Pm5PosLX9kDJBbANrmBrLcoCO87s9ImQJNXJZ6u+Ua/y
- b8DpHb/F6MzmjyTapO2bm6YFdrMKciyOkul34kkUXtmY06yAmTavieKIewhSMo1SosA==
-X-Google-Smtp-Source: AGHT+IGp8cF4Ch+abhZf42ykFePGlBR37Nq0DJxMFf22JspVrjvJ/sNsO47ZExiOTRsZE9f2W8l33g==
-X-Received: by 2002:a05:600c:450f:b0:453:1e14:6387 with SMTP id
- 5b1f17b1804b1-4562e3cad06mr174260075e9.32.1753103689815; 
- Mon, 21 Jul 2025 06:14:49 -0700 (PDT)
-Received: from [192.168.69.239] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45626c7b1a9sm113104455e9.0.2025.07.21.06.14.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Jul 2025 06:14:49 -0700 (PDT)
-Message-ID: <77d32915-e2f4-4dac-be93-626c3748379a@linaro.org>
-Date: Mon, 21 Jul 2025 15:14:48 +0200
+ d=1e100.net; s=20230601; t=1753104440; x=1753709240;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LwC1K9V195wWZjVf3p1nnci+abzEyNkmArVrpz2qbkw=;
+ b=dy59yxEUCnpof8ysp/nnUepdEcemdXQd4+AGA+j2i49TAedu2Tpo+oPhkrxm6PUJOz
+ jsjYjzd5Lb1X3ZkePiuvxLOTCYGL1ZQ5HUxvkxWRX9vBBCrWmDc7xrMj0u3G7b29J2/8
+ c7HhbtRGw72+l3n5hKRu/U5CFzOdNwzqATgJtdXiSE+ah5TTKaNLvkIRuLkcie5vGxnP
+ bXR6juzaTDpXguaNfyPtc2gciNRnEEw1JIKnqu3hSCwhmLjPqZK8M8JRv/JK2DfUaeXR
+ U9MC18HHDXLj3M4L9uEOY4iKZGd4Elo16t+VB+rUSCy1Ju3divnTzWtJLbox3AlgubyA
+ EjSA==
+X-Gm-Message-State: AOJu0YwlQfksEPSbhaM8J+caoyTXnZaUAVMQyP2yk9xD2zomHuhBjFYx
+ dI24tr1sscsejrQCX5wiSCBXhrypxOGXAet/U7LA11Zxd2Yp18K3P9onX3IR3UTUA0RBAJ4j4Tz
+ rpr6/
+X-Gm-Gg: ASbGncsRj81V7njW7EPFMkS+URhz8tK0J5JSfLahahxc3Ftri+6a6htrsJyO0blbqCI
+ VE66StUtTFR+6PxcSu50jICxvcpbwV3mmcVlfZNYvVcq2YH6gEjIrFLLVVG4TyTVWKECOJx7Zw4
+ rGTCmsl8ivRK0yT1TvALeQfjR9LKY4cLz/E6oCPzAeuzV0GlJP1A/U8aVx8HPjxThakdCyEZT+k
+ 6fuiyM9G41T30wdjt8ICZwXIy3L8LRU5PLpNfDuUrWXeI128RswS4Y1KuPg27OdNSPW+xo/aPJf
+ h7KH4OFrtwGp1KeWonfdDVZMpP6iH/+B2kLDmtxlsn88FEV9iFxgDl7REa/uYIRaHLHOmb0xrN/
+ KWe7xr2aD41Par28DFlht9i71QzBX
+X-Google-Smtp-Source: AGHT+IHBTF2K/ozSmQtsMAV8Epwk3G8Ni956C3UZCY4etWEkniOYoAJ8isr9a4y5rClaWjafRNnJJQ==
+X-Received: by 2002:a05:600c:a00c:b0:455:de98:c504 with SMTP id
+ 5b1f17b1804b1-4562e2bd5a8mr223059145e9.0.1753104440033; 
+ Mon, 21 Jul 2025 06:27:20 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.19
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 21 Jul 2025 06:27:19 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/20] target-arm queue
+Date: Mon, 21 Jul 2025 14:26:57 +0100
+Message-ID: <20250721132718.2835729-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 0/3] accel/hvf: Do not abort in
- hvf_arm_get_*_ipa_bit_size()
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Cameron Esfahani <dirty@apple.com>,
- qemu-arm@nongnu.org, Roman Bolshakov <rbolshakov@ddn.com>,
- Mads Ynddal <mads@ynddal.dk>, Phil Dennis-Jordan <phil@philjordan.eu>,
- Alexander Graf <agraf@csgraf.de>
-References: <20250716172813.73405-1-philmd@linaro.org>
- <CAFEAcA-nt-qeP5u=WyKS9pTWrpkDMTBPF241xKVsr+Q-noWtAw@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA-nt-qeP5u=WyKS9pTWrpkDMTBPF241xKVsr+Q-noWtAw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,22 +95,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/7/25 14:40, Peter Maydell wrote:
-> On Wed, 16 Jul 2025 at 18:28, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Have get_physical_address_range() return when HVF is not
->> usable, allowing to try another accelerator if requested
->> with '-accel hvf:tcg', reported here:
->> https://gitlab.com/qemu-project/qemu/-/issues/2981
->>
->> Philippe Mathieu-Daudé (3):
->>    accel/hvf: Display executable bit as 'X'
->>    accel/hvf: Do not abort in hvf_arm_get_*_ipa_bit_size()
->>    hw/arm/virt: Warn when HVF doesn't report IPA bit length
-> 
-> 
-> I've applied patch 1 to target-arm.next, since it's not
-> really related to the patch 2 and 3 bugfix.
+Hi; here is a target-arm pullreq for rc0. It has various bugfixes; the
+biggest bit here is adding a handful of bfloat16 instructions we
+accidentally forgot to implement in the recent SVE2p1 feature.
+I consider those to count under the "bugfix" heading because without
+them we would UNDEF when we should not; plus this is still very early
+in the release cycle.
 
-Thank you.
+thanks
+-- PMM
+
+The following changes since commit e82989544e38062beeeaad88c175afbeed0400f8:
+
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-07-18 14:10:02 -0400)
+
+are available in the Git repository at:
+
+  https://gitlab.com/pm215/qemu.git tags/pull-target-arm-20250721
+
+for you to fetch changes up to 7724ca9a772594b96939ff549c74f46e11d7870b:
+
+  accel/hvf: Display executable bit as 'X' (2025-07-21 13:38:33 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * hvf: arm: Remove $pc from trace_hvf_data_abort()
+ * target/arm: Correct encoding of Debug Communications Channel registers
+ * hw/misc/ivshmem-pci: Improve error handling
+ * target/arm: Provide always-false kvm_arm_*_supported() stubs for usermode
+ * host-utils: Drop workaround for buggy Apple Clang __builtin_subcll()
+ * hw/misc/max78000_aes: Comment Internal Key Storage
+ * docs: Fix Aspeed title
+ * Implement a handful of missing FEAT_SVE_B16_B16 insns
+ * Fix bugs in FMAXQV, FMINQV, etc
+ * Fix assert in LD1Q decode
+ * hvf: arm: Add permission check in GIC sysreg handlers
+ * hvf: arm: Emulate ICC_RPR_EL1 accesses properly
+ * accel/hvf: Display executable bit as 'X'
+
+----------------------------------------------------------------
+Cédric Le Goater (1):
+      docs: Fix Aspeed title
+
+Jackson Donaldson (1):
+      hw/misc/max78000_aes: Comment Internal Key Storage
+
+Peter Maydell (14):
+      target/arm: Correct encoding of Debug Communications Channel registers
+      hw/misc/ivshmem-pci: Improve error handling
+      target/arm: Provide always-false kvm_arm_*_supported() stubs for usermode
+      host-utils: Drop workaround for buggy Apple Clang __builtin_subcll()
+      target/arm: Add BFADD, BFSUB, BFMUL (unpredicated)
+      target/arm: Add BFADD, BFSUB, BFMUL, BFMAXNM, BFMINNM (predicated)
+      target/arm: Add BFMIN, BFMAX (predicated)
+      target/arm: Add BFMUL (indexed)
+      target/arm: Add BFMLA, BFMLS (vectors)
+      target/arm: Add BFMLA, BFMLS (indexed)
+      target/arm: Correct sense of FPCR.AH test for FMAXQV and FMINQV
+      target/arm: Don't nest H() macro calls in SVE DO_REDUCE
+      target/arm: Honour FPCR.AH=1 default NaN value in FMAXNMQV, FMINNMQV
+      target/arm: Make LD1Q decode and trans fn agree about a->u
+
+Philippe Mathieu-Daudé (1):
+      accel/hvf: Display executable bit as 'X'
+
+Zenghui Yu (3):
+      hvf: arm: Remove $pc from trace_hvf_data_abort()
+      hvf: arm: Add permission check in GIC sysreg handlers
+      hvf: arm: Emulate ICC_RPR_EL1 accesses properly
+
+ docs/system/arm/aspeed.rst     |   1 +
+ include/qemu/compiler.h        |  13 -----
+ include/qemu/host-utils.h      |   2 +-
+ target/arm/kvm_arm.h           |  35 +++++++++++++
+ target/arm/tcg/helper-sve.h    |  32 ++++++++++++
+ target/arm/tcg/helper.h        |   5 ++
+ target/arm/tcg/sve.decode      |   5 +-
+ accel/hvf/hvf-all.c            |   2 +-
+ hw/misc/ivshmem-pci.c          |   9 +++-
+ hw/misc/max78000_aes.c         |   6 +++
+ target/arm/debug_helper.c      |  13 ++++-
+ target/arm/hvf/hvf.c           |  10 +++-
+ target/arm/tcg/sve_helper.c    | 109 ++++++++++++++++++++++++++++++++++++-----
+ target/arm/tcg/translate-sve.c |  97 ++++++++++++++++++++++++++----------
+ target/arm/tcg/vec_helper.c    |   4 ++
+ target/arm/hvf/trace-events    |   2 +-
+ 16 files changed, 285 insertions(+), 60 deletions(-)
 
