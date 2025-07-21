@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFCAB0C8F9
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2A2BB0C8BC
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtM3-00055k-KK; Mon, 21 Jul 2025 12:27:28 -0400
+	id 1udtMy-0007vJ-7L; Mon, 21 Jul 2025 12:28:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtK3-0000UJ-0C
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:25:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtK5-0000mX-U8
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:25:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtK0-0001rc-TE
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:25:02 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtK3-0001sd-Nj
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:25:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753115100;
+ s=mimecast20190719; t=1753115103;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w2Ytn8gCoH4cLDg3wEy7JfoNBafewUw23FBIc8zPuso=;
- b=Hbqys87ujBoYUmFBVLAaK8Su8LKXfHo+bndcfrU6GTgQiC8MACUp/ox0s1jnLPHsEuEEtY
- YYkxSLrcFieP+tbpLG6Z8E62FhgPKZGnlBzJnIsCxZREG7HsfHl4W9oo5OO1UCJ1VewPM4
- Rdp13jGygZ52jTZ7M5YB9fL9M4uFv9o=
+ bh=MerIZeYs/yxx3RFuXDtsAm61y3WcL99CR/oPk6azoZ4=;
+ b=AtNCRArk/T8dS0+nWpJnMsZPr6VkCjvXsCNACwctEejyt5QHx87sFEd3ll+d9ZXgUXFALE
+ hyJPwr6qlutujlUa+T+SeIgy5fgJa2UJaOK2WV1L/ysEnBGW2hKbo+xIF21rDMJm7Q6eG1
+ VyDt+qGSFhD2l1DWZtkdxLsyXpFHzRM=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-JJ9-8hoiMAuQyMlU0a8-Uw-1; Mon,
- 21 Jul 2025 12:24:57 -0400
-X-MC-Unique: JJ9-8hoiMAuQyMlU0a8-Uw-1
-X-Mimecast-MFC-AGG-ID: JJ9-8hoiMAuQyMlU0a8-Uw_1753115095
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-jvx65dfHMFqZpJgYhg-YYA-1; Mon,
+ 21 Jul 2025 12:24:59 -0400
+X-MC-Unique: jvx65dfHMFqZpJgYhg-YYA-1
+X-Mimecast-MFC-AGG-ID: jvx65dfHMFqZpJgYhg-YYA_1753115098
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C80C5180028E; Mon, 21 Jul 2025 16:24:55 +0000 (UTC)
+ id 7B0A81800298; Mon, 21 Jul 2025 16:24:58 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 94E5C195608D; Mon, 21 Jul 2025 16:24:53 +0000 (UTC)
+ id 47215195608D; Mon, 21 Jul 2025 16:24:56 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -50,16 +50,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 49/50] ppc/xive: Split need_resend into restore_nvp
-Date: Mon, 21 Jul 2025 18:22:32 +0200
-Message-ID: <20250721162233.686837-50-clg@redhat.com>
+Subject: [PULL 50/50] ppc/xive2: Enable lower level contexts on VP push
+Date: Mon, 21 Jul 2025 18:22:33 +0200
+Message-ID: <20250721162233.686837-51-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -86,128 +86,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-This is needed by the next patch which will re-send on all lower
-rings when pushing a context.
+When pushing a context, the lower-level context becomes valid if it
+had V=1, and so on. Iterate lower level contexts and send them
+pending interrupts if they become enabled.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-50-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-51-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/xive.c  | 24 ++++++++++++------------
- hw/intc/xive2.c | 28 ++++++++++++++++------------
- 2 files changed, 28 insertions(+), 24 deletions(-)
+ hw/intc/xive2.c | 36 ++++++++++++++++++++++++++++--------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 8b7182fbb86c..e0ffcf89ebff 100644
---- a/hw/intc/xive.c
-+++ b/hw/intc/xive.c
-@@ -606,7 +606,7 @@ static uint64_t xive_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-     return qw1w2;
- }
- 
--static void xive_tctx_need_resend(XiveRouter *xrtr, XiveTCTX *tctx,
-+static void xive_tctx_restore_nvp(XiveRouter *xrtr, XiveTCTX *tctx,
-                                   uint8_t nvt_blk, uint32_t nvt_idx)
- {
-     XiveNVT nvt;
-@@ -632,16 +632,6 @@ static void xive_tctx_need_resend(XiveRouter *xrtr, XiveTCTX *tctx,
-         uint8_t *regs = &tctx->regs[TM_QW1_OS];
-         regs[TM_IPB] |= ipb;
-     }
--
--    /*
--     * Always call xive_tctx_recompute_from_ipb(). Even if there were no
--     * escalation triggered, there could be a pending interrupt which
--     * was saved when the context was pulled and that we need to take
--     * into account by recalculating the PIPR (which is not
--     * saved/restored).
--     * It will also raise the External interrupt signal if needed.
--     */
--    xive_tctx_pipr_recompute_from_ipb(tctx, TM_QW1_OS); /* fxb */
- }
- 
- /*
-@@ -663,7 +653,17 @@ static void xive_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
- 
-     /* Check the interrupt pending bits */
-     if (vo) {
--        xive_tctx_need_resend(XIVE_ROUTER(xptr), tctx, nvt_blk, nvt_idx);
-+        xive_tctx_restore_nvp(XIVE_ROUTER(xptr), tctx, nvt_blk, nvt_idx);
-+
-+        /*
-+         * Always call xive_tctx_recompute_from_ipb(). Even if there were no
-+         * escalation triggered, there could be a pending interrupt which
-+         * was saved when the context was pulled and that we need to take
-+         * into account by recalculating the PIPR (which is not
-+         * saved/restored).
-+         * It will also raise the External interrupt signal if needed.
-+         */
-+        xive_tctx_pipr_recompute_from_ipb(tctx, TM_QW1_OS); /* fxb */
-     }
- }
- 
 diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 1b005687961a..c3c6871e91b3 100644
+index c3c6871e91b3..ee5fa2617849 100644
 --- a/hw/intc/xive2.c
 +++ b/hw/intc/xive2.c
-@@ -940,14 +940,14 @@ static uint8_t xive2_tctx_restore_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
-     return cppr;
- }
+@@ -995,6 +995,12 @@ static void xive2_tm_push_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     bool v;
+     bool do_restore;
  
--static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
-+/* Restore TIMA VP context from NVP backlog */
-+static void xive2_tctx_restore_nvp(Xive2Router *xrtr, XiveTCTX *tctx,
-                                    uint8_t ring,
-                                    uint8_t nvp_blk, uint32_t nvp_idx,
-                                    bool do_restore)
- {
--    uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
-     uint8_t *regs = &tctx->regs[ring];
--    uint8_t ipb, nsr = sig_regs[TM_NSR];
-+    uint8_t ipb;
-     Xive2Nvp nvp;
- 
-     /*
-@@ -978,14 +978,6 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
-     }
-     /* IPB bits in the backlog are merged with the TIMA IPB bits */
-     regs[TM_IPB] |= ipb;
--
--    if (xive_nsr_indicates_group_exception(ring, nsr)) {
--        /* redistribute precluded active grp interrupt */
--        g_assert(ring == TM_QW2_HV_POOL); /* PHYS ring has the grp interrupt */
--        xive2_redistribute(xrtr, tctx, xive_nsr_exception_ring(ring, nsr));
--    }
--    xive2_tctx_process_pending(tctx, ring == TM_QW2_HV_POOL ?
--                                         TM_QW3_HV_PHYS : ring);
- }
- 
- /*
-@@ -1028,8 +1020,20 @@ static void xive2_tm_push_ctx(XivePresenter *xptr, XiveTCTX *tctx,
- 
++    if (xive_ring_valid(tctx, ring)) {
++        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Attempt to push VP to enabled"
++                                       " ring 0x%02x\n", ring);
++        return;
++    }
++
+     /* First update the thead context */
+     switch (size) {
+     case 1:
+@@ -1021,19 +1027,32 @@ static void xive2_tm_push_ctx(XivePresenter *xptr, XiveTCTX *tctx,
      /* Check the interrupt pending bits */
      if (v) {
--        xive2_tctx_need_resend(XIVE2_ROUTER(xptr), tctx, ring,
-+        Xive2Router *xrtr = XIVE2_ROUTER(xptr);
-+        uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
-+        uint8_t nsr = sig_regs[TM_NSR];
-+
-+        xive2_tctx_restore_nvp(xrtr, tctx, ring,
+         Xive2Router *xrtr = XIVE2_ROUTER(xptr);
+-        uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
+-        uint8_t nsr = sig_regs[TM_NSR];
++        uint8_t cur_ring;
+ 
+         xive2_tctx_restore_nvp(xrtr, tctx, ring,
                                 nvp_blk, nvp_idx, do_restore);
+ 
+-        if (xive_nsr_indicates_group_exception(ring, nsr)) {
+-            /* redistribute precluded active grp interrupt */
+-            g_assert(ring == TM_QW2_HV_POOL); /* PHYS ring has the interrupt */
+-            xive2_redistribute(xrtr, tctx, xive_nsr_exception_ring(ring, nsr));
++        for (cur_ring = TM_QW1_OS; cur_ring <= ring;
++             cur_ring += XIVE_TM_RING_SIZE) {
++            uint8_t *sig_regs = xive_tctx_signal_regs(tctx, cur_ring);
++            uint8_t nsr = sig_regs[TM_NSR];
 +
-+        if (xive_nsr_indicates_group_exception(ring, nsr)) {
-+            /* redistribute precluded active grp interrupt */
-+            g_assert(ring == TM_QW2_HV_POOL); /* PHYS ring has the interrupt */
-+            xive2_redistribute(xrtr, tctx, xive_nsr_exception_ring(ring, nsr));
-+        }
-+        xive2_tctx_process_pending(tctx, ring == TM_QW2_HV_POOL ?
-+                                                 TM_QW3_HV_PHYS : ring);
++            if (!xive_ring_valid(tctx, cur_ring)) {
++                continue;
++            }
++
++            if (cur_ring == TM_QW2_HV_POOL) {
++                if (xive_nsr_indicates_exception(cur_ring, nsr)) {
++                    g_assert(xive_nsr_exception_ring(cur_ring, nsr) ==
++                                                               TM_QW3_HV_PHYS);
++                    xive2_redistribute(xrtr, tctx,
++                                       xive_nsr_exception_ring(ring, nsr));
++                }
++                xive2_tctx_process_pending(tctx, TM_QW3_HV_PHYS);
++                break;
++            }
++            xive2_tctx_process_pending(tctx, cur_ring);
+         }
+-        xive2_tctx_process_pending(tctx, ring == TM_QW2_HV_POOL ?
+-                                                 TM_QW3_HV_PHYS : ring);
      }
  }
  
+@@ -1159,6 +1178,7 @@ static void xive2_tctx_process_pending(XiveTCTX *tctx, uint8_t sig_ring)
+     int rc;
+ 
+     g_assert(sig_ring == TM_QW3_HV_PHYS || sig_ring == TM_QW1_OS);
++    g_assert(sig_regs[TM_WORD2] & 0x80);
+     g_assert(!xive_nsr_indicates_group_exception(sig_ring, sig_regs[TM_NSR]));
+ 
+     /*
 -- 
 2.50.1
 
