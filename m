@@ -2,49 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE37B0CB54
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 22:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46765B0CBBD
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 22:22:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udwkG-0005XU-S1; Mon, 21 Jul 2025 16:04:21 -0400
+	id 1udx1F-0006AL-Fd; Mon, 21 Jul 2025 16:21:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1udwjC-0004rN-RV; Mon, 21 Jul 2025 16:03:26 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <fanyihao@rt-thread.org>)
+ id 1udwyO-00038V-Aq
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 16:19:02 -0400
+Received: from mail-m8288.xmail.ntesmail.com ([156.224.82.88])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1udwjA-0004ke-NI; Mon, 21 Jul 2025 16:03:14 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1364E139045;
- Mon, 21 Jul 2025 23:02:48 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C546C24BED1;
- Mon, 21 Jul 2025 23:03:03 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <fanyihao@rt-thread.org>)
+ id 1udwyK-0000Xx-RN
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 16:18:55 -0400
+Received: from DESKTOP-FHFCVTH.localdomain (unknown
+ [IPV6:240e:360:9379:c800:30:bacc:21c0:5559])
+ by smtp.qiye.163.com (Hmail) with ESMTP id 1cc453b65;
+ Tue, 22 Jul 2025 04:11:35 +0800 (GMT+08:00)
+From: fanyihao@rt-thread.org
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 68/70] ui: fix setting client_endian field defaults
-Date: Mon, 21 Jul 2025 23:02:55 +0300
-Message-ID: <20250721200302.133559-3-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <qemu-stable-10.0.3-20250721221446@cover.tls.msk.ru>
-References: <qemu-stable-10.0.3-20250721221446@cover.tls.msk.ru>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Yihao Fan <fanyihao@rt-thread.org>
+Subject: [PATCH v2 0/3] Add STM32F4 support and USART device model
+Date: Tue, 22 Jul 2025 04:11:31 +0800
+Message-ID: <20250721201134.13270-1-fanyihao@rt-thread.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+ tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaSB0fVkkYHUIYHkodQxkfHVYVFAkWGhdVEwETFh
+ oSFyQUDg9ZV1kYEgtZQVlJT0seQUhNS0FCSExCQRhDS0tBSEtBGRoYGEFJShhLQU5OTkJZV1kWGg
+ 8SFR0UWUFZS1VLVUtVS1kG
+X-HM-Tid: 0a982e9cf87203a4kunm518c726929260ae
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Kz46Ehw4DzEhEDoRTg0xFTVK
+ CEMaCkpVSlVKTE5ISklDTUJNTEtPVTMWGhIXVR0aFQISExoUOwkPVg8TCR4aH1UUCRxFWVdZEgtZ
+ QVlJT0seQUhNS0FCSExCQRhDS0tBSEtBGRoYGEFJShhLQU5OTkJZV1kIAVlBSkNPSjcG
+DKIM-Signature: a=rsa-sha256;
+ b=WioTTbc0oRPmx7GecNVL5QUULf7YbliJcPuiSesSMZ0pda8GPbyIFp+/TqTFWuQM2vm7ETYpU+KK/G4GWMEnrS9WvNZNfmkmxaRo+ozRyVEUTnGVPVwpwwbsH90eDPHVMkyouNyT9MAm+IatVd0WZ+z3Qt+6Cdb+3pUy+qotou9oFWYmS/OpzFee6i73th5xqyYcNQPt3wzoO8BptPsnA8ocm+KN8ipyhNG5kkmI83o0KFI6xMpPpl53sABe86IzFrxJ1bLCY8UNLJVBBCFSg0i88WpTMvS9CMWsxqovn5wDprL0H+8KEpPMjY7NmudTxRrauGMU7X9WP3d5NY+QcQ==;
+ c=relaxed/relaxed; s=default; d=rt-thread.org; v=1; 
+ bh=zpV62gaFona0W5aWDG4KVdn1LgVeP8AThJsp7DC6jIY=;
+ h=date:mime-version:subject:message-id:from;
+Received-SPF: pass client-ip=156.224.82.88;
+ envelope-from=fanyihao@rt-thread.org; helo=mail-m8288.xmail.ntesmail.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -62,48 +70,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Yihao Fan <fanyihao@rt-thread.org>
 
-When a VNC client sends a "set pixel format" message, the
-'client_endian' field will get initialized, however, it is
-valid to omit this message if the client wants to use the
-server's native pixel format. In the latter scenario nothing
-is initializing the 'client_endian' field, so it remains set
-to 0, matching neither G_LITTLE_ENDIAN nor G_BIG_ENDIAN. This
-then results in pixel format conversion routines taking the
-wrong code paths.
+This patch series introduces basic support for the STM32F407 SoC and
+a new STM32F4spark machine in QEMU, along with a USART device model.
 
-This problem existed before the 'client_be' flag was changed
-into the 'client_endian' value, but the lack of initialization
-meant it semantically defaulted to little endian, so only big
-endian systems would potentially be exposed to incorrect pixel
-translation.
+This series includes:
+- A new SoC model (STM32F407) with initial integration.
+- A board model called STM32F4spark to instantiate and test the SoC.
+- A USART device implementation for STM32F4xx family.
 
-The 'virt-viewer' / 'remote-viewer' apps always send a "set
-pixel format" message so aren't exposed to any problems, but
-the classical 'vncviewer' app will show the problem easily.
+Signed-off-by: Yihao Fan <fanyihao@rt-thread.org>
 
-Fixes: 7ed96710e82c385c6cfc3d064eec7dde20f0f3fd
-Reported-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-(cherry picked from commit 3ac6daa9e1c5d7dae2a3cd1c6a388174b462f3e8)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Yihao Fan (3):
+  Add-the-stm32f407-SoC
+  Add the STM32F4spark Machine
+  Add STM32F4xx USART device model
 
-diff --git a/ui/vnc.c b/ui/vnc.c
-index ca02ff872a..a6bf8442d5 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -2336,6 +2336,7 @@ static void pixel_format_message (VncState *vs) {
-     char pad[3] = { 0, 0, 0 };
- 
-     vs->client_pf = qemu_default_pixelformat(32);
-+    vs->client_endian = G_BYTE_ORDER;
- 
-     vnc_write_u8(vs, vs->client_pf.bits_per_pixel); /* bits-per-pixel */
-     vnc_write_u8(vs, vs->client_pf.depth); /* depth */
+ MAINTAINERS                       |  16 ++
+ hw/arm/Kconfig                    |  13 ++
+ hw/arm/meson.build                |   2 +
+ hw/arm/stm32f407_soc.c            | 154 +++++++++++++++++++
+ hw/arm/stm32f4spark.c             |  48 ++++++
+ hw/char/Kconfig                   |   3 +
+ hw/char/meson.build               |   1 +
+ hw/char/stm32f4xx_usart.c         | 236 ++++++++++++++++++++++++++++++
+ include/hw/arm/stm32f407_soc.h    |  47 ++++++
+ include/hw/char/stm32f4xx_usart.h |  60 ++++++++
+ 10 files changed, 580 insertions(+)
+ create mode 100644 hw/arm/stm32f407_soc.c
+ create mode 100644 hw/arm/stm32f4spark.c
+ create mode 100644 hw/char/stm32f4xx_usart.c
+ create mode 100644 include/hw/arm/stm32f407_soc.h
+ create mode 100644 include/hw/char/stm32f4xx_usart.h
+
 -- 
-2.47.2
+2.43.0
 
 
