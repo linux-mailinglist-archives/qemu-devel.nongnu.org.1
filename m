@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F86BB0C89B
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88409B0C896
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:24:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtIK-0003bE-Mc; Mon, 21 Jul 2025 12:23:17 -0400
+	id 1udtIz-0004qA-FL; Mon, 21 Jul 2025 12:23:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtHz-0003CY-Mx
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:03 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtI3-0003Id-C6
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtHv-0001N3-FS
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:22:53 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtHz-0001O7-Ch
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:22:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753114969;
+ s=mimecast20190719; t=1753114974;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Cn7VHl4DO/rNgK3+mkF6GERVNq6gKa9iNDHFLe9Dwzk=;
- b=L7FBnWY/hqCJi69p+IM0rKKQG6y8al+scJQHIZZwS1Yc6eDsIDvwNzcMupNDZe1IKUdatJ
- mY6tkK1mzrIh0hB/BoIgKD3CYfWFsg2A23LILA5SNEFR5vqz22PDikwQsvKvWS0xKOQtPv
- 9kGjB0BwkgU1E8waXjlMeeP8TmDn6XE=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=LFIA52aLnJLo4iSfDSS+0eck6FoSAwP11FgR2rElbiU=;
+ b=X1NzwxOyV6TGjsDsaekBwbHel+WKdoDqhh71p/19fvzgt5LianNQq2Wr8GHefvZIZuPn/I
+ 4860YjwWM+mCM10WP6LVt9JA/kyPfhzYw1z52U0q0JeiGs6SKtbanb9C7Jh4Lvbwp5RIy+
+ pyYZY+EGPVwY+z5Hwrypc0PQXUCC+Ko=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-ek7-4CstOvmFTvg1osrdtw-1; Mon,
- 21 Jul 2025 12:22:47 -0400
-X-MC-Unique: ek7-4CstOvmFTvg1osrdtw-1
-X-Mimecast-MFC-AGG-ID: ek7-4CstOvmFTvg1osrdtw_1753114966
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-4rRK5E_vPLWASb9WVJNFIA-1; Mon,
+ 21 Jul 2025 12:22:50 -0400
+X-MC-Unique: 4rRK5E_vPLWASb9WVJNFIA-1
+X-Mimecast-MFC-AGG-ID: 4rRK5E_vPLWASb9WVJNFIA_1753114969
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0D78A19560B3; Mon, 21 Jul 2025 16:22:46 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2F47618001DA; Mon, 21 Jul 2025 16:22:49 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 929B4195608D; Mon, 21 Jul 2025 16:22:43 +0000 (UTC)
+ id B3DEE195608D; Mon, 21 Jul 2025 16:22:46 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
+ Michael Kowal <kowal@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 03/50] ppc/xive2: Fix calculation of END queue sizes
-Date: Mon, 21 Jul 2025 18:21:46 +0200
-Message-ID: <20250721162233.686837-4-clg@redhat.com>
+Subject: [PULL 04/50] ppc/xive2: Remote VSDs need to match on forwarding
+ address
+Date: Mon, 21 Jul 2025 18:21:47 +0200
+Message-ID: <20250721162233.686837-5-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,99 +86,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.ibm.com>
+From: Michael Kowal <kowal@linux.ibm.com>
 
-The queue size of an Event Notification Descriptor (END)
-is determined by the 'cl' and QsZ fields of the END.
-If the cl field is 1, then the queue size (in bytes) will
-be the size of a cache line 128B * 2^QsZ and QsZ is limited
-to 4.  Otherwise, it will be 4096B * 2^QsZ with QsZ limited
-to 12.
+In a multi chip environment there will be remote/forwarded VSDs.  The check
+to find a matching INT controller (XIVE) of the remote block number was
+checking the INTs chip number.  Block numbers are not tied to a chip number.
+The matching remote INT is the one that matches the forwarded VSD address
+with VSD types associated MMIO BAR.
 
-Fixes: f8a233dedf2 ("ppc/xive2: Introduce a XIVE2 core framework")
-Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
+Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-4-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-5-npiggin@gmail.com
+[ clg: Fixed log format in pnv_xive2_get_remote() ]
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/ppc/xive2_regs.h |  1 +
- hw/intc/xive2.c             | 25 +++++++++++++++++++------
- 2 files changed, 20 insertions(+), 6 deletions(-)
+ hw/intc/pnv_xive2.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
-index b11395c56350..3c28de8a304d 100644
---- a/include/hw/ppc/xive2_regs.h
-+++ b/include/hw/ppc/xive2_regs.h
-@@ -87,6 +87,7 @@ typedef struct Xive2End {
- #define END2_W2_EQ_ADDR_HI         PPC_BITMASK32(8, 31)
-         uint32_t       w3;
- #define END2_W3_EQ_ADDR_LO         PPC_BITMASK32(0, 24)
-+#define END2_W3_CL                 PPC_BIT32(27)
- #define END2_W3_QSIZE              PPC_BITMASK32(28, 31)
-         uint32_t       w4;
- #define END2_W4_END_BLOCK          PPC_BITMASK32(4, 7)
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index a08cf906d0e6..cb75ca879853 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -188,12 +188,27 @@ void xive2_eas_pic_print_info(Xive2Eas *eas, uint32_t lisn, GString *buf)
-                            (uint32_t) xive_get_field64(EAS2_END_DATA, eas->w));
+diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+index ec8b0c68f1a4..6b724fe762f6 100644
+--- a/hw/intc/pnv_xive2.c
++++ b/hw/intc/pnv_xive2.c
+@@ -101,12 +101,10 @@ static uint32_t pnv_xive2_block_id(PnvXive2 *xive)
  }
  
-+#define XIVE2_QSIZE_CHUNK_CL    128
-+#define XIVE2_QSIZE_CHUNK_4k   4096
-+/* Calculate max number of queue entries for an END */
-+static uint32_t xive2_end_get_qentries(Xive2End *end)
-+{
-+    uint32_t w3 = end->w3;
-+    uint32_t qsize = xive_get_field32(END2_W3_QSIZE, w3);
-+    if (xive_get_field32(END2_W3_CL, w3)) {
-+        g_assert(qsize <= 4);
-+        return (XIVE2_QSIZE_CHUNK_CL << qsize) / sizeof(uint32_t);
-+    } else {
-+        g_assert(qsize <= 12);
-+        return (XIVE2_QSIZE_CHUNK_4k << qsize) / sizeof(uint32_t);
-+    }
-+}
-+
- void xive2_end_queue_pic_print_info(Xive2End *end, uint32_t width, GString *buf)
+ /*
+- * Remote access to controllers. HW uses MMIOs. For now, a simple scan
+- * of the chips is good enough.
+- *
+- * TODO: Block scope support
++ * Remote access to INT controllers. HW uses MMIOs(?). For now, a simple
++ * scan of all the chips INT controller is good enough.
+  */
+-static PnvXive2 *pnv_xive2_get_remote(uint8_t blk)
++static PnvXive2 *pnv_xive2_get_remote(uint32_t vsd_type, hwaddr fwd_addr)
  {
-     uint64_t qaddr_base = xive2_end_qaddr(end);
--    uint32_t qsize = xive_get_field32(END2_W3_QSIZE, end->w3);
-     uint32_t qindex = xive_get_field32(END2_W1_PAGE_OFF, end->w1);
--    uint32_t qentries = 1 << (qsize + 10);
-+    uint32_t qentries = xive2_end_get_qentries(end);
+     PnvMachineState *pnv = PNV_MACHINE(qdev_get_machine());
      int i;
+@@ -115,10 +113,23 @@ static PnvXive2 *pnv_xive2_get_remote(uint8_t blk)
+         Pnv10Chip *chip10 = PNV10_CHIP(pnv->chips[i]);
+         PnvXive2 *xive = &chip10->xive;
  
-     /*
-@@ -223,8 +238,7 @@ void xive2_end_pic_print_info(Xive2End *end, uint32_t end_idx, GString *buf)
-     uint64_t qaddr_base = xive2_end_qaddr(end);
-     uint32_t qindex = xive_get_field32(END2_W1_PAGE_OFF, end->w1);
-     uint32_t qgen = xive_get_field32(END2_W1_GENERATION, end->w1);
--    uint32_t qsize = xive_get_field32(END2_W3_QSIZE, end->w3);
--    uint32_t qentries = 1 << (qsize + 10);
-+    uint32_t qentries = xive2_end_get_qentries(end);
+-        if (pnv_xive2_block_id(xive) == blk) {
++        /*
++         * Is this the XIVE matching the forwarded VSD address is for this
++         * VSD type
++         */
++        if ((vsd_type == VST_ESB   && fwd_addr == xive->esb_base) ||
++            (vsd_type == VST_END   && fwd_addr == xive->end_base)  ||
++            ((vsd_type == VST_NVP ||
++              vsd_type == VST_NVG) && fwd_addr == xive->nvpg_base) ||
++            (vsd_type == VST_NVC   && fwd_addr == xive->nvc_base)) {
+             return xive;
+         }
+     }
++
++    qemu_log_mask(LOG_GUEST_ERROR,
++                 "XIVE: >>>>> %s vsd_type %u  fwd_addr 0x%"HWADDR_PRIx
++                  " NOT FOUND\n",
++                  __func__, vsd_type, fwd_addr);
+     return NULL;
+ }
  
-     uint32_t nvx_blk = xive_get_field32(END2_W6_VP_BLOCK, end->w6);
-     uint32_t nvx_idx = xive_get_field32(END2_W6_VP_OFFSET, end->w6);
-@@ -341,13 +355,12 @@ void xive2_nvgc_pic_print_info(Xive2Nvgc *nvgc, uint32_t nvgc_idx, GString *buf)
- static void xive2_end_enqueue(Xive2End *end, uint32_t data)
- {
-     uint64_t qaddr_base = xive2_end_qaddr(end);
--    uint32_t qsize = xive_get_field32(END2_W3_QSIZE, end->w3);
-     uint32_t qindex = xive_get_field32(END2_W1_PAGE_OFF, end->w1);
-     uint32_t qgen = xive_get_field32(END2_W1_GENERATION, end->w1);
+@@ -251,8 +262,7 @@ static uint64_t pnv_xive2_vst_addr(PnvXive2 *xive, uint32_t type, uint8_t blk,
  
-     uint64_t qaddr = qaddr_base + (qindex << 2);
-     uint32_t qdata = cpu_to_be32((qgen << 31) | (data & 0x7fffffff));
--    uint32_t qentries = 1 << (qsize + 10);
-+    uint32_t qentries = xive2_end_get_qentries(end);
+     /* Remote VST access */
+     if (GETFIELD(VSD_MODE, vsd) == VSD_MODE_FORWARD) {
+-        xive = pnv_xive2_get_remote(blk);
+-
++        xive = pnv_xive2_get_remote(type, (vsd & VSD_ADDRESS_MASK));
+         return xive ? pnv_xive2_vst_addr(xive, type, blk, idx) : 0;
+     }
  
-     if (dma_memory_write(&address_space_memory, qaddr, &qdata, sizeof(qdata),
-                          MEMTXATTRS_UNSPECIFIED)) {
 -- 
 2.50.1
 
