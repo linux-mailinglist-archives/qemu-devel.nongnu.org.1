@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E7FDB0BC50
+	by mail.lfdr.de (Postfix) with ESMTPS id C171BB0BC51
 	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 08:06:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udjb7-0000FW-Az; Mon, 21 Jul 2025 02:02:01 -0400
+	id 1udja7-0008L6-Fy; Mon, 21 Jul 2025 02:01:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1udjYy-0008Ar-5D
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 01:59:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1udjZ4-0008Cl-G9
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 01:59:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1udjYw-00066p-CQ
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 01:59:47 -0400
+ id 1udjZ2-00067s-Rv
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 01:59:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753077585;
+ s=mimecast20190719; t=1753077592;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0JscNhwd78VHvraiWW7XVgG/TrI6DefncU95YkqltVc=;
- b=A+LUO0vbBfvixofotxzTwvjNFVBoOeXfHLRtRmbzo+xjiAOhjYQ3xC/TqOlX+zsS7en9s1
- k6IwVWfA4V2X0nLu5Y0HBKAZuGkzF/QIVSosGMPgaFpuT7HRTUFM5PQ7igcSiYKXlvxFrO
- RazRkoTQCGjoPQJ5ehnCaaONbXTQhxA=
+ bh=5KWT+/o3dTqGxj2GxT8gQwaUixPakGt6yMy2ciNkG3w=;
+ b=hvHFMNZZWq1TVipq4SUE3YDx4GaERhrPVFq9RUQSnsGrat1RgHlaS9xB+BgrQzGdO3CkeL
+ G0cTvYpz6XrGA5a5RkymkvddjSoCSPhC9C4YYUSlQ4/cVePpmxLBZuqs9tsZeHPIUupdG8
+ rEtKUQd9rLdNUrHGjC7q9+Ii7aXbvOc=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-240-2FAKuCOGMC-OjN9ca4i4Yw-1; Mon,
- 21 Jul 2025 01:59:41 -0400
-X-MC-Unique: 2FAKuCOGMC-OjN9ca4i4Yw-1
-X-Mimecast-MFC-AGG-ID: 2FAKuCOGMC-OjN9ca4i4Yw_1753077580
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-JWcRK7uvNIm9-G3zb9D82A-1; Mon,
+ 21 Jul 2025 01:59:50 -0400
+X-MC-Unique: JWcRK7uvNIm9-G3zb9D82A-1
+X-Mimecast-MFC-AGG-ID: JWcRK7uvNIm9-G3zb9D82A_1753077589
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9D7B41800366; Mon, 21 Jul 2025 05:59:40 +0000 (UTC)
+ id 1D9931800C30; Mon, 21 Jul 2025 05:59:49 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.190])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 80C60195608D; Mon, 21 Jul 2025 05:59:38 +0000 (UTC)
+ id 33E59195608D; Mon, 21 Jul 2025 05:59:46 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Steve Sistare <steven.sistare@oracle.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 02/12] tap: fix net_init_tap() return code
-Date: Mon, 21 Jul 2025 13:59:17 +0800
-Message-ID: <20250721055927.75951-3-jasowang@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 05/12] hw/net/npcm_gmac.c: Correct test for when to reallocate
+ packet buffer
+Date: Mon, 21 Jul 2025 13:59:20 +0800
+Message-ID: <20250721055927.75951-6-jasowang@redhat.com>
 In-Reply-To: <20250721055927.75951-1-jasowang@redhat.com>
 References: <20250721055927.75951-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -82,51 +83,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Steve Sistare <steven.sistare@oracle.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-net_init_tap intends to return 0 for success and -1 on error.  However,
-when net_init_tap() succeeds for a multi-queue device, it returns 1,
-because of this code where ret becomes 1 when g_unix_set_fd_nonblocking
-succeeds:
+In gmac_try_send_next_packet() we have code that does "if this block
+of data won't fit in the buffer, reallocate it".  However, the
+condition it uses is
+  if ((prev_buf_size + tx_buf_len) > sizeof(buf))
+where buf is a uint8_t *.
 
-        ret = g_unix_set_fd_nonblocking(fd, true, NULL);
-        if (!ret) {
-            ... error ...
-    free_fail:
-        ...
-        return ret;
+This means that sizeof(buf) is always 8 bytes, and the condition will
+almost always be true, so we will reallocate the buffer more often
+than we need to.
 
-Luckily, the only current call site checks for negative, rather than non-zero:
+Correct the condition to test against tx_buffer_size, which is
+where we track how big the allocated buffer is.
 
-  net_client_init1()
-      if (net_client_init_fun[](...) < 0)
-
-Also, in the unlikely case that g_unix_set_fd_nonblocking fails and returns
-false, ret=0 is returned, and net_client_init1 will use a broken interface.
-
-Fix it to be future proof.
-
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- net/tap.c | 4 ++--
+ hw/net/npcm_gmac.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/tap.c b/net/tap.c
-index 2a85936019..f7df702f97 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -895,8 +895,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
-                 goto free_fail;
-             }
+diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
+index a0050a7725..0c17ae9b2a 100644
+--- a/hw/net/npcm_gmac.c
++++ b/hw/net/npcm_gmac.c
+@@ -569,7 +569,7 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
+         tx_buf_len = TX_DESC_TDES1_BFFR1_SZ_MASK(tx_desc.tdes1);
+         buf = &tx_send_buffer[prev_buf_size];
  
--            ret = g_unix_set_fd_nonblocking(fd, true, NULL);
--            if (!ret) {
-+            if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
-+                ret = -1;
-                 error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
-                                  name, fd);
-                 goto free_fail;
+-        if ((prev_buf_size + tx_buf_len) > sizeof(buf)) {
++        if ((prev_buf_size + tx_buf_len) > tx_buffer_size) {
+             tx_buffer_size = prev_buf_size + tx_buf_len;
+             tx_send_buffer = g_realloc(tx_send_buffer, tx_buffer_size);
+             buf = &tx_send_buffer[prev_buf_size];
+@@ -591,7 +591,7 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
+             tx_buf_len = TX_DESC_TDES1_BFFR2_SZ_MASK(tx_desc.tdes1);
+             buf = &tx_send_buffer[prev_buf_size];
+ 
+-            if ((prev_buf_size + tx_buf_len) > sizeof(buf)) {
++            if ((prev_buf_size + tx_buf_len) > tx_buffer_size) {
+                 tx_buffer_size = prev_buf_size + tx_buf_len;
+                 tx_send_buffer = g_realloc(tx_send_buffer, tx_buffer_size);
+                 buf = &tx_send_buffer[prev_buf_size];
 -- 
 2.42.0
 
