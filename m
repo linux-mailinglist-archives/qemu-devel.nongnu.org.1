@@ -2,64 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4E8B0BC3E
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 08:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E7FDB0BC50
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 08:06:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udjbO-0000xh-Ne; Mon, 21 Jul 2025 02:02:22 -0400
+	id 1udjb7-0000FW-Az; Mon, 21 Jul 2025 02:02:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1udjZR-0008NF-QI
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 02:00:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1udjYy-0008Ar-5D
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 01:59:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1udjZP-0006NC-VO
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 02:00:17 -0400
+ id 1udjYw-00066p-CQ
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 01:59:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753077615;
+ s=mimecast20190719; t=1753077585;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l7K46m3uw7Qx50uzdFY5CTZU3qbwCCpoVk+4+p3b3aI=;
- b=VsQp6n4GxthR8j8aWm4hO2VOMwKW+TgX18gtRFDWGx1hj+Kp3Po5Lp1hG7i9NHTTsjpUio
- Tgzac2AmNhdxYYhVcJygG2kK8dl1lANOXkO4V33XnKGZcIWeH1z+6J1dQIqea+iwnmI1Ug
- 9aplGruD9NBAUs9Yq5e2wObPfWD+hj0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=0JscNhwd78VHvraiWW7XVgG/TrI6DefncU95YkqltVc=;
+ b=A+LUO0vbBfvixofotxzTwvjNFVBoOeXfHLRtRmbzo+xjiAOhjYQ3xC/TqOlX+zsS7en9s1
+ k6IwVWfA4V2X0nLu5Y0HBKAZuGkzF/QIVSosGMPgaFpuT7HRTUFM5PQ7igcSiYKXlvxFrO
+ RazRkoTQCGjoPQJ5ehnCaaONbXTQhxA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-WqZ-NHGuP4iDEJWP7kjE8Q-1; Mon,
- 21 Jul 2025 02:00:11 -0400
-X-MC-Unique: WqZ-NHGuP4iDEJWP7kjE8Q-1
-X-Mimecast-MFC-AGG-ID: WqZ-NHGuP4iDEJWP7kjE8Q_1753077611
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-240-2FAKuCOGMC-OjN9ca4i4Yw-1; Mon,
+ 21 Jul 2025 01:59:41 -0400
+X-MC-Unique: 2FAKuCOGMC-OjN9ca4i4Yw-1
+X-Mimecast-MFC-AGG-ID: 2FAKuCOGMC-OjN9ca4i4Yw_1753077580
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D686119560B6; Mon, 21 Jul 2025 06:00:10 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9D7B41800366; Mon, 21 Jul 2025 05:59:40 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.190])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 79A5C195608D; Mon, 21 Jul 2025 06:00:08 +0000 (UTC)
+ id 80C60195608D; Mon, 21 Jul 2025 05:59:38 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 12/12] net/vhost-user: Remove unused "err" from chr_closed_bh()
- (CID 1612365)
-Date: Mon, 21 Jul 2025 13:59:27 +0800
-Message-ID: <20250721055927.75951-13-jasowang@redhat.com>
+Cc: Steve Sistare <steven.sistare@oracle.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 02/12] tap: fix net_init_tap() return code
+Date: Mon, 21 Jul 2025 13:59:17 +0800
+Message-ID: <20250721055927.75951-3-jasowang@redhat.com>
 In-Reply-To: <20250721055927.75951-1-jasowang@redhat.com>
 References: <20250721055927.75951-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -84,44 +82,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-The "err" variable was declared but never used within the
-chr_closed_bh() function. This resulted in a dead code
-warning (CID 1612365) from Coverity.
+net_init_tap intends to return 0 for success and -1 on error.  However,
+when net_init_tap() succeeds for a multi-queue device, it returns 1,
+because of this code where ret becomes 1 when g_unix_set_fd_nonblocking
+succeeds:
 
-Remove the unused variable and the associated error block
-to resolve the issue.
+        ret = g_unix_set_fd_nonblocking(fd, true, NULL);
+        if (!ret) {
+            ... error ...
+    free_fail:
+        ...
+        return ret;
 
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Luckily, the only current call site checks for negative, rather than non-zero:
+
+  net_client_init1()
+      if (net_client_init_fun[](...) < 0)
+
+Also, in the unlikely case that g_unix_set_fd_nonblocking fails and returns
+false, ret=0 is returned, and net_client_init1 will use a broken interface.
+
+Fix it to be future proof.
+
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- net/vhost-user.c | 4 ----
- 1 file changed, 4 deletions(-)
+ net/tap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/vhost-user.c b/net/vhost-user.c
-index cec83e925f..8b96157145 100644
---- a/net/vhost-user.c
-+++ b/net/vhost-user.c
-@@ -298,7 +298,6 @@ static void chr_closed_bh(void *opaque)
-     const char *name = opaque;
-     NetClientState *ncs[MAX_QUEUE_NUM];
-     NetVhostUserState *s;
--    Error *err = NULL;
-     int queues, i;
+diff --git a/net/tap.c b/net/tap.c
+index 2a85936019..f7df702f97 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -895,8 +895,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
+                 goto free_fail;
+             }
  
-     queues = qemu_find_net_clients_except(name, ncs,
-@@ -317,9 +316,6 @@ static void chr_closed_bh(void *opaque)
-     qemu_chr_fe_set_handlers(&s->chr, NULL, NULL, net_vhost_user_event,
-                              NULL, opaque, NULL, true);
- 
--    if (err) {
--        error_report_err(err);
--    }
-     qapi_event_send_netdev_vhost_user_disconnected(name);
- }
- 
+-            ret = g_unix_set_fd_nonblocking(fd, true, NULL);
+-            if (!ret) {
++            if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
++                ret = -1;
+                 error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
+                                  name, fd);
+                 goto free_fail;
 -- 
 2.42.0
 
