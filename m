@@ -2,59 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88409B0C896
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A84B0C8A9
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:25:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtIz-0004qA-FL; Mon, 21 Jul 2025 12:23:57 -0400
+	id 1udtJ0-00059a-Sy; Mon, 21 Jul 2025 12:23:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtI3-0003Id-C6
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtI3-0003IR-8f
  for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtHz-0001O7-Ch
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:22:59 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtHz-0001OG-Nx
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:22:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1753114974;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LFIA52aLnJLo4iSfDSS+0eck6FoSAwP11FgR2rElbiU=;
- b=X1NzwxOyV6TGjsDsaekBwbHel+WKdoDqhh71p/19fvzgt5LianNQq2Wr8GHefvZIZuPn/I
- 4860YjwWM+mCM10WP6LVt9JA/kyPfhzYw1z52U0q0JeiGs6SKtbanb9C7Jh4Lvbwp5RIy+
- pyYZY+EGPVwY+z5Hwrypc0PQXUCC+Ko=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=nibxoopfG+ra1bTOd7GpQ9uJEvgBpG4MlJh1Ogsz96o=;
+ b=F/hY5Bcwja2awFCsh9M7BywUJ9hOAWuMoSxwvke45ENG2AwCRHWu6zVBnKBuo3uCnvSsNZ
+ C+yKB7IfYt0QcJgKcHd7p/MjEtd07xU3R1ApQgd6WjLtnswmVk+8szHyhJtMiXpgje7LlK
+ 0AbTIiDjzd8/N+IrpyKhddJb5Xdt6o0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-4rRK5E_vPLWASb9WVJNFIA-1; Mon,
- 21 Jul 2025 12:22:50 -0400
-X-MC-Unique: 4rRK5E_vPLWASb9WVJNFIA-1
-X-Mimecast-MFC-AGG-ID: 4rRK5E_vPLWASb9WVJNFIA_1753114969
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-83-XSj0CjW8NcGyIcwBMHCkzQ-1; Mon,
+ 21 Jul 2025 12:22:53 -0400
+X-MC-Unique: XSj0CjW8NcGyIcwBMHCkzQ-1
+X-Mimecast-MFC-AGG-ID: XSj0CjW8NcGyIcwBMHCkzQ_1753114972
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2F47618001DA; Mon, 21 Jul 2025 16:22:49 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EE14A1944D23; Mon, 21 Jul 2025 16:22:51 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B3DEE195608D; Mon, 21 Jul 2025 16:22:46 +0000 (UTC)
+ id BB49C1956050; Mon, 21 Jul 2025 16:22:49 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Michael Kowal <kowal@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
- Caleb Schlossin <calebs@linux.ibm.com>,
+ Glenn Miles <milesg@linux.ibm.com>, Caleb Schlossin <calebs@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 04/50] ppc/xive2: Remote VSDs need to match on forwarding
- address
-Date: Mon, 21 Jul 2025 18:21:47 +0200
-Message-ID: <20250721162233.686837-5-clg@redhat.com>
+Subject: [PULL 05/50] ppc/xive2: fix context push calculation of IPB priority
+Date: Mon, 21 Jul 2025 18:21:48 +0200
+Message-ID: <20250721162233.686837-6-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,82 +84,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Kowal <kowal@linux.ibm.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-In a multi chip environment there will be remote/forwarded VSDs.  The check
-to find a matching INT controller (XIVE) of the remote block number was
-checking the INTs chip number.  Block numbers are not tied to a chip number.
-The matching remote INT is the one that matches the forwarded VSD address
-with VSD types associated MMIO BAR.
+Pushing a context and loading IPB from NVP is defined to merge ('or')
+that IPB into the TIMA IPB register. PIPR should therefore be calculated
+based on the final IPB value, not just the NVP value.
 
-Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Fixes: 9d2b6058c5b ("ppc/xive2: Add grouping level to notification")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
-Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-5-npiggin@gmail.com
-[ clg: Fixed log format in pnv_xive2_get_remote() ]
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-6-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/pnv_xive2.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ hw/intc/xive2.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index ec8b0c68f1a4..6b724fe762f6 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -101,12 +101,10 @@ static uint32_t pnv_xive2_block_id(PnvXive2 *xive)
- }
- 
- /*
-- * Remote access to controllers. HW uses MMIOs. For now, a simple scan
-- * of the chips is good enough.
-- *
-- * TODO: Block scope support
-+ * Remote access to INT controllers. HW uses MMIOs(?). For now, a simple
-+ * scan of all the chips INT controller is good enough.
-  */
--static PnvXive2 *pnv_xive2_get_remote(uint8_t blk)
-+static PnvXive2 *pnv_xive2_get_remote(uint32_t vsd_type, hwaddr fwd_addr)
- {
-     PnvMachineState *pnv = PNV_MACHINE(qdev_get_machine());
-     int i;
-@@ -115,10 +113,23 @@ static PnvXive2 *pnv_xive2_get_remote(uint8_t blk)
-         Pnv10Chip *chip10 = PNV10_CHIP(pnv->chips[i]);
-         PnvXive2 *xive = &chip10->xive;
- 
--        if (pnv_xive2_block_id(xive) == blk) {
-+        /*
-+         * Is this the XIVE matching the forwarded VSD address is for this
-+         * VSD type
-+         */
-+        if ((vsd_type == VST_ESB   && fwd_addr == xive->esb_base) ||
-+            (vsd_type == VST_END   && fwd_addr == xive->end_base)  ||
-+            ((vsd_type == VST_NVP ||
-+              vsd_type == VST_NVG) && fwd_addr == xive->nvpg_base) ||
-+            (vsd_type == VST_NVC   && fwd_addr == xive->nvc_base)) {
-             return xive;
-         }
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index cb75ca879853..01cf96a2af65 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -835,8 +835,9 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
+         nvp.w2 = xive_set_field32(NVP2_W2_IPB, nvp.w2, 0);
+         xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, &nvp, 2);
      }
-+
-+    qemu_log_mask(LOG_GUEST_ERROR,
-+                 "XIVE: >>>>> %s vsd_type %u  fwd_addr 0x%"HWADDR_PRIx
-+                  " NOT FOUND\n",
-+                  __func__, vsd_type, fwd_addr);
-     return NULL;
- }
++    /* IPB bits in the backlog are merged with the TIMA IPB bits */
+     regs[TM_IPB] |= ipb;
+-    backlog_prio = xive_ipb_to_pipr(ipb);
++    backlog_prio = xive_ipb_to_pipr(regs[TM_IPB]);
+     backlog_level = 0;
  
-@@ -251,8 +262,7 @@ static uint64_t pnv_xive2_vst_addr(PnvXive2 *xive, uint32_t type, uint8_t blk,
- 
-     /* Remote VST access */
-     if (GETFIELD(VSD_MODE, vsd) == VSD_MODE_FORWARD) {
--        xive = pnv_xive2_get_remote(blk);
--
-+        xive = pnv_xive2_get_remote(type, (vsd & VSD_ADDRESS_MASK));
-         return xive ? pnv_xive2_vst_addr(xive, type, blk, idx) : 0;
-     }
- 
+     first_group = xive_get_field32(NVP2_W0_PGOFIRST, nvp.w0);
 -- 
 2.50.1
 
