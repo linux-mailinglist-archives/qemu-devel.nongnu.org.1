@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85328B0BC3D
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 08:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0BBB0BC3B
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 08:02:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udjbE-0000pa-5Y; Mon, 21 Jul 2025 02:02:08 -0400
+	id 1udjbA-0000TZ-HG; Mon, 21 Jul 2025 02:02:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1udjZL-0008Ls-OH
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 02:00:28 -0400
+ id 1udjZP-0008MK-BY
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 02:00:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1udjZK-0006Mq-7u
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 02:00:11 -0400
+ id 1udjZL-0006Mx-Qi
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 02:00:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753077609;
+ s=mimecast20190719; t=1753077611;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Azr2cluQxKXYj/39PD27Knk3I9DTPyWGGR88WltCJEM=;
- b=TwakyZ9xXTnIh96XRzuBOd60lDyoOMS0zshD4nOxqpRwjnUzPVUYpk2NrP2tqjrIpZ05qh
- ulvxt2KU67KRYA7QCkHnut75unRrJYKuwMxY9wdOiZtyjFs5++FUvTIeTZHXd2od1z/SbG
- cybUYqBrTyZrc2FKfkIZiE/cSQ5VhzM=
+ bh=IDF+JFdowBa/PmuJ6B7AgL6OhHfe1s9R8UQbM+M3o5c=;
+ b=D5x1rUhcVbnGq0Tsji20nP/LFsW1gyFlcwkjZIG9q234OOx5ONxzZXWwoxLS2XLbeVJh7z
+ mADDhz3vwtWjWozpWHYuIgrjTVvCSq5hc1/93VZa79UM1Anzu2BlThzoiQ8EroGeNlwka4
+ jjVS9GVChljHqsoIaQ4g4GUVJfzpqGc=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-311-fQj9bD1iMYCp0XpErAg2Zg-1; Mon,
- 21 Jul 2025 02:00:05 -0400
-X-MC-Unique: fQj9bD1iMYCp0XpErAg2Zg-1
-X-Mimecast-MFC-AGG-ID: fQj9bD1iMYCp0XpErAg2Zg_1753077604
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-AtgnmKqzNa-THtUEosUU0w-1; Mon,
+ 21 Jul 2025 02:00:08 -0400
+X-MC-Unique: AtgnmKqzNa-THtUEosUU0w-1
+X-Mimecast-MFC-AGG-ID: AtgnmKqzNa-THtUEosUU0w_1753077607
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9F5AA1800368; Mon, 21 Jul 2025 06:00:04 +0000 (UTC)
+ id B98DE1800C38; Mon, 21 Jul 2025 06:00:07 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.190])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 47F781956050; Mon, 21 Jul 2025 06:00:01 +0000 (UTC)
+ id 5EF7419560AD; Mon, 21 Jul 2025 06:00:05 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 10/12] net/passt: Check return value of g_remove() in
- net_passt_cleanup() (CID 1612369)
-Date: Mon, 21 Jul 2025 13:59:25 +0800
-Message-ID: <20250721055927.75951-11-jasowang@redhat.com>
+Subject: [PULL 11/12] net/passt: Initialize "error" variable in
+ net_passt_send() (CID 1612368)
+Date: Mon, 21 Jul 2025 13:59:26 +0800
+Message-ID: <20250721055927.75951-12-jasowang@redhat.com>
 In-Reply-To: <20250721055927.75951-1-jasowang@redhat.com>
 References: <20250721055927.75951-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -86,31 +86,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Laurent Vivier <lvivier@redhat.com>
 
-If g_remove() fails, use warn_report() to log an error.
+This was flagged by Coverity as a memory illegal access.
+
+Initialize the pointer to NULL at declaration.
 
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- net/passt.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/passt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/passt.c b/net/passt.c
-index ef59d0682b..43c336e596 100644
+index 43c336e596..32ecffb763 100644
 --- a/net/passt.c
 +++ b/net/passt.c
-@@ -103,7 +103,10 @@ static void net_passt_cleanup(NetClientState *nc)
- #endif
+@@ -124,7 +124,7 @@ static gboolean net_passt_send(QIOChannel *ioc, GIOCondition condition,
+ {
+     if (net_stream_data_send(ioc, condition, data) == G_SOURCE_REMOVE) {
+         NetPasstState *s = DO_UPCAST(NetPasstState, data, data);
+-        Error *error;
++        Error *error = NULL;
  
-     kill(s->pid, SIGTERM);
--    g_remove(s->pidfile);
-+    if (g_remove(s->pidfile) != 0) {
-+        warn_report("Failed to remove passt pidfile %s: %s",
-+                    s->pidfile, strerror(errno));
-+    }
-     g_free(s->pidfile);
-     g_ptr_array_free(s->args, TRUE);
- }
+         /* we need to restart passt */
+         kill(s->pid, SIGTERM);
 -- 
 2.42.0
 
