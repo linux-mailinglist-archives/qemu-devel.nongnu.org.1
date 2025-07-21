@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237A6B0C53E
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C72B0C52C
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:28:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udqYh-0003Ig-0G; Mon, 21 Jul 2025 09:27:59 -0400
+	id 1udqYx-0007xc-Qp; Mon, 21 Jul 2025 09:28:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYB-00009l-AM
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:40 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1udqYC-0000AD-D2
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:43 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqY9-0005Hd-0k
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:26 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3a4fd1ba177so2782017f8f.0
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:24 -0700 (PDT)
+ id 1udqY9-0005Hl-Gx
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:27 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-456108bf94bso30303195e9.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753104443; x=1753709243; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753104444; x=1753709244; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=TkHO/JBZlINngYKtzqWQqivz7dVd5JZjQfrMD1ZECRc=;
- b=mwf19hHrENdlCdoFnJrF+pfmuIbyjvJxhCG4ZY9sssTk+oTzHMM9slcUAzCVkuXO4/
- 8a4sEkNF0iJzi+tAbOAfVkfznlyfaNhM3xrOTY1agtH3i/eiNiYsOVYP4RrgHFmE2NJ9
- tTDCiyv+u/NEVsFotxS8EUn+PNlgIcI1c5sFCkIiknR+KXfSK62oWcHVwvsCA6xUPmk9
- 26GvIY/f9wjj1xBNRmgNwGYbXS1ev8yHS4D0VUzd8aW7uczL+17v0W6I/x19A0tpPZ/U
- G0fnUuXJ+N6bXl2hT/dlmfsVbGwSISWkOpL1OHDmD8i7Ox8uqOX70omtG8KaDB1cSn+q
- 8u8A==
+ :reply-to; bh=LDSwBUvksbhb5pjoNJUH79KfTb7ObxN8yMeFlhNrxSc=;
+ b=H0RPS6Fn4WyMCgq2qBA3AnvEYVBW1dqdsmX8GZmErFHLXjq7R/tM3MNg/QJ+a5buCN
+ 3yUZ8oFb1py68WCoqO1f40PuqybV80/60UdTJ5k3Ryc31DZY/unBohPu6RzOUxjPwQlR
+ hHCPgZf4OY0uYBnJ+/fDCyO6n7JDc6JJWuaD9F27+IeiAWgNh7+i8oMjDtusIZvk5RdH
+ 3QMxz/8gXI1hc/HWY/UKhJGSNxcw3RaNTwUezdbvPArJa1eNGTi1zv55ZvffHXItAN/s
+ uTlOm4Li0/EVfvXFpzua0SHzk8CIklrLEAuSlZvIRFfXgK0JAwIMc+RyxFccRc+hC4qJ
+ qK9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753104443; x=1753709243;
+ d=1e100.net; s=20230601; t=1753104444; x=1753709244;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TkHO/JBZlINngYKtzqWQqivz7dVd5JZjQfrMD1ZECRc=;
- b=w9ovvX2jXrW9FdZruXPGhyvCGhtKQ05tJvgQoabs8ynn9nogzkHHubkOHNfccGfOv3
- h14/zltmnF8CzvOTZakCIKNCvEPi5uTk3OMt0IMS7BL50os2XbwsDEu9+yzzSCJ3ZDiF
- leOqzx0ELaCcDGNZWk60d8KCJBU+o/8Xuykpji/8/mYUYjUdF8feQVRt3+BqKyZd7clk
- s0Gr5hEgKy0INLmX5pq9yTWYq5XZp/cg60jMPEopQuajb/dS/7CaJxi3XAhH+U/dX13m
- a8Q8hbxaBSFPU2uhg4I9iIPoYdXpW8UxKrvHBvYbLfr0hjMgbVZHRIEoDWz8RKswCarY
- wFvQ==
-X-Gm-Message-State: AOJu0Yw0PXT0MWRXw42DO3t5NZUmx7ux/OPD9SacSv8Vvx8UQJ13tPHC
- V7R3GhAsRagFlLBPAloKHCySBocBzriNsj92lHI20N0Ed0MKcXBsXANnckRt3/3+BSpyA8OusNX
- hYnDB
-X-Gm-Gg: ASbGncs+fLdjosQ7h0JygDE6L5nPnPHVq1LHqUOciRKFrVRdGpQIngaezWHbLuG1iJC
- eU2s3TvZ9pCd4FMbpUINV6ipNk8Y7ut52y0OwVoWWUEinOus6EzGhvYIeWQMwQ+Ug1e67sBupHt
- TS8iCaEckU5itD3NWk4c9KAG5Dn8W97sqP8qMyS+VTnkKG+2hXurKv0w1DORmuNwtBe/v2RVAqT
- yKCkVu2UWyzCUNDa4ZMDzx9AAUWd2MElo894NKRdqyDBaK6yw/KZsmcSzZI6Tf9lDMkiG0+txke
- MRPcz1YPqJT/z2rSiYMLFIXDFDDrrMTYhaN6/fewkoZ62ZIfhI05CU74Zvm2qQ6QJtBCm9Bnc33
- fkTzKxpIwtqkfHHU6Q7e1bWYF8pTu
-X-Google-Smtp-Source: AGHT+IHvY2jLQjjc8824H5hIgCQ1vzw/z1EE94aVJ1qeMet7iDxcen7uMcVKj0+O4KE4gHOMjGE9lA==
-X-Received: by 2002:a05:6000:2881:b0:3b7:590d:ac7d with SMTP id
- ffacd0b85a97d-3b7590dad1fmr4639886f8f.1.1753104442720; 
- Mon, 21 Jul 2025 06:27:22 -0700 (PDT)
+ bh=LDSwBUvksbhb5pjoNJUH79KfTb7ObxN8yMeFlhNrxSc=;
+ b=DAR7gEKwwOafLrdYWcUpu0M+z59pQxNERzPr836DZcMz3moRTXkx+iGia1mvP22AWa
+ CInHzbmX+lNIJyYoJscAEO+02KLQn1R3W++PNS8XkBnsaIikWMS3SLol+wLFuEJeiCzw
+ lOwq69CQLSGL85RU+2cmUmC/mlG5u4EH/1PK37/t2nLxw7o3GkWS9Hb14rCAEICPABy/
+ 4ji52EqdmW/C0Nhc7qdFYw4ziQmRiYbgB7MZjANRmswDVQ8vG+zj3EX38yc8txTjDh1M
+ c8oJkMz1PJAEY0ZPoMNMmNqAKMLeQAwtgv7HCetpApWGmowmanwIVhtqNDse+gLT6Jv7
+ jSLQ==
+X-Gm-Message-State: AOJu0YyPdFg4kB/WkBZcctHcEP8mcxzxE1uUBvUa7n0+VtlOykGZpGiq
+ wHWS50I7c1fBIAr3DQKLTw1hJ0NS3RLzSo277YvYdjXHgDDUsl/uAWMeWDD67fs6bGQwNwxFxYA
+ wRz10
+X-Gm-Gg: ASbGnctRAb9o2Yqom/07a8aAaaOP7OJeM++WLfkh7X7iwYz+4FsdnDScgy4R8wlOgJR
+ Z78OKwVHCWNgPP1Fk1+5nwdzzhdvxkPSiB6WJdBdsPkaRjP/iUr3Pz2GsKX9CdfVBTizVjipH9F
+ TGAQGX0Y5IeUjPh82XDcoEwmsQQz57rFLxuyQpfFaeIjBl6QY9PvpqcgZrVmwL9AHaDta6uZvxp
+ E3sbtWoJ6xO5NO4SOKVwpyHotjNX152mmBA+Nd++ESF8Ba4jwLwhalwwwPGRKSp661WgcbUU1R9
+ GWlts6Gx/umANPiKqQ4ofH52x+A1GlUkrfrUVdp09QpAZEGSOlr0A7ptqjEwk/CjW8P/IFnb8EG
+ p2StrIK4OKhQODxCJf2KeW7gtdy/U
+X-Google-Smtp-Source: AGHT+IHDvFPdSvDPc8eD0Pc/bZi65+z4jukR1ZkCd1UO/Bx9Wu3RiXrRIq7PveoK6Z6w0DWzWks8zw==
+X-Received: by 2002:a05:600c:3b88:b0:456:25aa:e9c0 with SMTP id
+ 5b1f17b1804b1-4562e355c9bmr204683365e9.14.1753104443603; 
+ Mon, 21 Jul 2025 06:27:23 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.21
+ ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Jul 2025 06:27:22 -0700 (PDT)
+ Mon, 21 Jul 2025 06:27:23 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/20] hw/misc/ivshmem-pci: Improve error handling
-Date: Mon, 21 Jul 2025 14:27:00 +0100
-Message-ID: <20250721132718.2835729-4-peter.maydell@linaro.org>
+Subject: [PULL 04/20] target/arm: Provide always-false kvm_arm_*_supported()
+ stubs for usermode
+Date: Mon, 21 Jul 2025 14:27:01 +0100
+Message-ID: <20250721132718.2835729-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250721132718.2835729-1-peter.maydell@linaro.org>
 References: <20250721132718.2835729-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,51 +98,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity points out that the ivshmem-pci code has some error handling
-cases where it incorrectly tries to use an invalid filedescriptor.
-These generally happen because ivshmem_recv_msg() calls
-qemu_chr_fe_get_msgfd(), which might return -1, but the code in
-process_msg() generally assumes that the file descriptor was provided
-when it was supposed to be. In particular:
- * the error case in process_msg() only needs to close the fd
-   if one was provided
- * process_msg_shmem() should fail if no fd was provided
+If you try to build aarch64-linux-user with clang and --enable-debug then it
+fails to compile:
 
-Coverity: CID 1508726
+ ld: libqemu-aarch64-linux-user.a.p/target_arm_cpu64.c.o: in function `cpu_arm_set_sve':
+ ../../target/arm/cpu64.c:321:(.text+0x1254): undefined reference to `kvm_arm_sve_supported'
+
+This is a regression introduced in commit f86d4220, which switched
+the kvm-stub.c file away from being built for all arm targets to only
+being built for system emulation binaries.  It doesn't affect gcc,
+presumably because even at -O0 gcc folds away the always-false
+kvm_enabled() condition but clang does not.
+
+We would prefer not to build kvm-stub.c once for usermode and once
+for system-emulation binaries, and we can't build it just once for
+both because it includes cpu.h.  So instead provide always-false
+versions of the five functions that are valid to call without KVM
+support in kvm_arm.h.
+
+Fixes: f86d42205c2eba ("target/arm/meson: accelerator files are not needed in user mode")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3033
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-id: 20250711145012.1521936-1-peter.maydell@linaro.org
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-id: 20250714135152.1896214-1-peter.maydell@linaro.org
 ---
- hw/misc/ivshmem-pci.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ target/arm/kvm_arm.h | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/hw/misc/ivshmem-pci.c b/hw/misc/ivshmem-pci.c
-index 5a10bca633d..d47ae739d61 100644
---- a/hw/misc/ivshmem-pci.c
-+++ b/hw/misc/ivshmem-pci.c
-@@ -479,6 +479,11 @@ static void process_msg_shmem(IVShmemState *s, int fd, Error **errp)
-     struct stat buf;
-     size_t size;
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index b4cad051551..6a9b6374a6d 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -161,6 +161,14 @@ void kvm_arm_add_vcpu_properties(ARMCPU *cpu);
+  */
+ void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp);
  
-+    if (fd < 0) {
-+        error_setg(errp, "server didn't provide fd with shared memory message");
-+        return;
-+    }
++/*
++ * These "is some KVM subfeature enabled?" functions may be called
++ * when KVM support is not present, including in the user-mode
++ * emulators. The kvm-stub.c file is only built into the system
++ * emulators, so for user-mode emulation we provide "always false"
++ * stubs here.
++ */
++#ifndef CONFIG_USER_ONLY
+ /**
+  * kvm_arm_aarch32_supported:
+  *
+@@ -197,6 +205,33 @@ bool kvm_arm_mte_supported(void);
+  * Returns true if KVM can enable EL2 and false otherwise.
+  */
+ bool kvm_arm_el2_supported(void);
++#else
 +
-     if (s->ivshmem_bar2) {
-         error_setg(errp, "server sent unexpected shared memory message");
-         close(fd);
-@@ -553,7 +558,9 @@ static void process_msg(IVShmemState *s, int64_t msg, int fd, Error **errp)
++static inline bool kvm_arm_aarch32_supported(void)
++{
++    return false;
++}
++
++static inline bool kvm_arm_pmu_supported(void)
++{
++    return false;
++}
++
++static inline bool kvm_arm_sve_supported(void)
++{
++    return false;
++}
++
++static inline bool kvm_arm_mte_supported(void)
++{
++    return false;
++}
++
++static inline bool kvm_arm_el2_supported(void)
++{
++    return false;
++}
++#endif
  
-     if (msg < -1 || msg > IVSHMEM_MAX_PEERS) {
-         error_setg(errp, "server sent invalid message %" PRId64, msg);
--        close(fd);
-+        if (fd >= 0) {
-+            close(fd);
-+        }
-         return;
-     }
- 
+ /**
+  * kvm_arm_get_max_vm_ipa_size:
 -- 
 2.43.0
 
