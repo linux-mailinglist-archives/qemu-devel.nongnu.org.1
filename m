@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D2FB0C8BF
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF571B0C8E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:33:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtMr-0007VD-3J; Mon, 21 Jul 2025 12:27:57 -0400
+	id 1udtMr-0007V4-2h; Mon, 21 Jul 2025 12:27:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJv-0008Sj-8E
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:57 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJy-00006F-9G
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJs-0001oD-Tx
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:54 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJv-0001pZ-Nf
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753115092;
+ s=mimecast20190719; t=1753115095;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UrJGQXX5MFfKsbXmSUtHx7gCvIlhY9yVcEfDM+YXcRQ=;
- b=E48iuL1R5384jMVXk+z8zb9UbaRouxQmGVgZROaTBFK5K/8zqjskc7hi7N6k3FDLw6HrIQ
- vwZBCHBEx+2Gv5aFRQY9nihq0iBkYr3od0TVjiN1YKWYq19cMj/Vy4QmDHCl6FA+UquXnk
- KrqIPfn8hg/6eKmMTwiIeDu1BqI5Was=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=C2ZgW8Ta/jYhhfoxR4Cj+5sB7PkbrWhpyHhu0+VJS0g=;
+ b=R3YxL/Cd605cMTfMN38BEvhQ1KVKbRLeBP1MYZOf9cfPiuu4EmAfvftsB0VNmXfS5DxCuw
+ V01uIU9+4BO0v0QqOtB5VIeBYOjyCG92b2NmS8Zr1PM/V1OaDaHTlPKyBZq6zpCaxHWLsh
+ y6UGPJcovPvBUUCutiqiACpplH4F0a4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-62-Rxf2t915MFaR6vDyy0Z8ig-1; Mon,
- 21 Jul 2025 12:24:48 -0400
-X-MC-Unique: Rxf2t915MFaR6vDyy0Z8ig-1
-X-Mimecast-MFC-AGG-ID: Rxf2t915MFaR6vDyy0Z8ig_1753115087
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-520-yp_m8tYaOFeeQ_oQASwH6Q-1; Mon,
+ 21 Jul 2025 12:24:51 -0400
+X-MC-Unique: yp_m8tYaOFeeQ_oQASwH6Q-1
+X-Mimecast-MFC-AGG-ID: yp_m8tYaOFeeQ_oQASwH6Q_1753115090
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 91BDA1800C32; Mon, 21 Jul 2025 16:24:47 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 417C6195FE1C; Mon, 21 Jul 2025 16:24:50 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5CA12195608D; Mon, 21 Jul 2025 16:24:45 +0000 (UTC)
+ id 0E2D819560AD; Mon, 21 Jul 2025 16:24:47 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -50,9 +50,9 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 46/50] ppc/xive2: Implement set_os_pending TIMA op
-Date: Mon, 21 Jul 2025 18:22:29 +0200
-Message-ID: <20250721162233.686837-47-clg@redhat.com>
+Subject: [PULL 47/50] ppc/xive2: Implement POOL LGS push TIMA op
+Date: Mon, 21 Jul 2025 18:22:30 +0200
+Message-ID: <20250721162233.686837-48-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,88 +86,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-xive2 must take into account redistribution of group interrupts if
-the VP directed priority exceeds the group interrupt priority after
-this operation. The xive1 code is not group aware so implement this
-for xive2.
+Implement set LGS for the POOL ring.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-47-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-48-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/ppc/xive2.h |  2 ++
- hw/intc/xive.c         |  2 ++
- hw/intc/xive2.c        | 28 ++++++++++++++++++++++++++++
- 3 files changed, 32 insertions(+)
+ hw/intc/xive.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
-index c1ab06a55adf..45266c2a8b9e 100644
---- a/include/hw/ppc/xive2.h
-+++ b/include/hw/ppc/xive2.h
-@@ -130,6 +130,8 @@ void xive2_tm_set_hv_cppr(XivePresenter *xptr, XiveTCTX *tctx,
-                           hwaddr offset, uint64_t value, unsigned size);
- void xive2_tm_set_os_cppr(XivePresenter *xptr, XiveTCTX *tctx,
-                           hwaddr offset, uint64_t value, unsigned size);
-+void xive2_tm_set_os_pending(XivePresenter *xptr, XiveTCTX *tctx,
-+                             hwaddr offset, uint64_t value, unsigned size);
- void xive2_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
-                            uint64_t value, unsigned size);
- uint64_t xive2_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
 diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index e7f77be2f711..25cb3877cb15 100644
+index 25cb3877cb15..725ba72b8f7a 100644
 --- a/hw/intc/xive.c
 +++ b/hw/intc/xive.c
-@@ -747,6 +747,8 @@ static const XiveTmOp xive2_tm_operations[] = {
-     /* MMIOs above 2K : special operations with side effects */
-     { XIVE_TM_OS_PAGE, TM_SPC_ACK_OS_REG,         2, true, false,
-       NULL, xive_tm_ack_os_reg },
-+    { XIVE_TM_OS_PAGE, TM_SPC_SET_OS_PENDING,     1, true, false,
-+      xive2_tm_set_os_pending, NULL },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX_G2,     4, true, false,
-       NULL, xive2_tm_pull_os_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,        4, true, false,
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 23eb85bb8669..f9eaea119289 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -1323,6 +1323,34 @@ void xive2_tm_set_os_cppr(XivePresenter *xptr, XiveTCTX *tctx,
-     xive2_tctx_set_cppr(tctx, TM_QW1_OS, value & 0xff);
+@@ -532,6 +532,12 @@ static void xive_tm_set_os_lgs(XivePresenter *xptr, XiveTCTX *tctx,
+     xive_tctx_set_lgs(tctx, TM_QW1_OS, value & 0xff);
  }
  
-+/*
-+ * Adjust the IPB to allow a CPU to process event queues of other
-+ * priorities during one physical interrupt cycle.
-+ */
-+void xive2_tm_set_os_pending(XivePresenter *xptr, XiveTCTX *tctx,
-+                             hwaddr offset, uint64_t value, unsigned size)
++static void xive_tm_set_pool_lgs(XivePresenter *xptr, XiveTCTX *tctx,
++                          hwaddr offset, uint64_t value, unsigned size)
 +{
-+    Xive2Router *xrtr = XIVE2_ROUTER(xptr);
-+    uint8_t ring = TM_QW1_OS;
-+    uint8_t *regs = &tctx->regs[ring];
-+    uint8_t priority = value & 0xff;
-+
-+    /*
-+     * XXX: should this simply set a bit in IPB and wait for it to be picked
-+     * up next cycle, or is it supposed to present it now? We implement the
-+     * latter here.
-+     */
-+    regs[TM_IPB] |= xive_priority_to_ipb(priority);
-+    if (xive_ipb_to_pipr(regs[TM_IPB]) >= regs[TM_PIPR]) {
-+        return;
-+    }
-+    if (xive_nsr_indicates_group_exception(ring, regs[TM_NSR])) {
-+        xive2_redistribute(xrtr, tctx, ring);
-+    }
-+
-+    xive_tctx_pipr_present(tctx, ring, priority, 0);
++    xive_tctx_set_lgs(tctx, TM_QW2_HV_POOL, value & 0xff);
 +}
 +
- static void xive2_tctx_set_target(XiveTCTX *tctx, uint8_t ring, uint8_t target)
- {
-     uint8_t *regs = &tctx->regs[ring];
+ /*
+  * Adjust the PIPR to allow a CPU to process event queues of other
+  * priorities during one physical interrupt cycle.
+@@ -737,6 +743,8 @@ static const XiveTmOp xive2_tm_operations[] = {
+       xive2_tm_push_pool_ctx, NULL },
+     { XIVE_TM_HV_PAGE, TM_QW2_HV_POOL + TM_WORD2, 8, true, true,
+       xive2_tm_push_pool_ctx, NULL },
++    { XIVE_TM_HV_PAGE, TM_QW2_HV_POOL + TM_LGS,   1, true, true,
++      xive_tm_set_pool_lgs, NULL },
+     { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR,  1, true, true,
+       xive2_tm_set_hv_cppr, NULL },
+     { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, true, true,
 -- 
 2.50.1
 
