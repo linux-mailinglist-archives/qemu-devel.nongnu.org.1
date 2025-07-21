@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95B8B0C6F0
+	by mail.lfdr.de (Postfix) with ESMTPS id A370EB0C6EF
 	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 16:53:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udrsS-0004jt-FR; Mon, 21 Jul 2025 10:52:28 -0400
+	id 1udrsh-0004nu-QU; Mon, 21 Jul 2025 10:52:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1udrsL-0004fI-Uj
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 10:52:22 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1udrsT-0004mT-RL
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 10:52:29 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1udrsG-0007zH-6j
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 10:52:21 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1udrsS-00081b-5U
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 10:52:29 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 2314021205;
- Mon, 21 Jul 2025 14:52:14 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id A9E9321253;
+ Mon, 21 Jul 2025 14:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753109534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1753109545; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pp3q88X/8na6jOiUl1esXb+SXsY7K4Cal8mh0Wm9B/g=;
- b=kGtBvW1DtGhpTMvX4BKX6MluWnVKPNRQRbHs7BQgKwLf0ihJ9PbECnY15YR3MxT1E1OZa0
- hQ0EX/04YWFWeYY18i0smlcUqk3c+uhc8SeO9vJTaTEMqfwQdFd2OVXbTmy79rKa/2ChBs
- PaDX4VoZIT7jh6fIt/oAPwR/2ZizPYA=
+ bh=8H+NrAmZg0ToC8JLdELTx+oh4Z1cAWkOJi7DdHik3gE=;
+ b=y9OttTuDLKviuJCViyKLUa/+PJO6J4aI7b5UMRa/aFD7JHZoKROeZCzepgRjqxuwg0ZC0i
+ hUB4q9+MXNxSt74S8rcBPzyRV7cmRcDjTg+idTPTwWBhJFWmyJF/Ndvktlzh6p1QNRB6w1
+ l3CFJQ8DIVKivdBf7bpY7k/g4A0Paf8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753109534;
+ s=susede2_ed25519; t=1753109545;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pp3q88X/8na6jOiUl1esXb+SXsY7K4Cal8mh0Wm9B/g=;
- b=jwkWm9HZ2N5UeTSgT44UImMdCxBISTUWNOQC6z5GXncYS80d6MYUaKUE5PaN8CjufxV+hJ
- 2aUlmaE4DR7b4mBw==
+ bh=8H+NrAmZg0ToC8JLdELTx+oh4Z1cAWkOJi7DdHik3gE=;
+ b=p0Pak2EEPer7pOOW+SrqMXrqEmURcbsWlACO5pwhdPGFhkq2YjK/UTJXa33hNHxBctHSsH
+ m2gEYhQ/nAnS3QDw==
 Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kGtBvW1D;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jwkWm9HZ
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=y9OttTuD;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=p0Pak2EE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753109534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1753109545; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pp3q88X/8na6jOiUl1esXb+SXsY7K4Cal8mh0Wm9B/g=;
- b=kGtBvW1DtGhpTMvX4BKX6MluWnVKPNRQRbHs7BQgKwLf0ihJ9PbECnY15YR3MxT1E1OZa0
- hQ0EX/04YWFWeYY18i0smlcUqk3c+uhc8SeO9vJTaTEMqfwQdFd2OVXbTmy79rKa/2ChBs
- PaDX4VoZIT7jh6fIt/oAPwR/2ZizPYA=
+ bh=8H+NrAmZg0ToC8JLdELTx+oh4Z1cAWkOJi7DdHik3gE=;
+ b=y9OttTuDLKviuJCViyKLUa/+PJO6J4aI7b5UMRa/aFD7JHZoKROeZCzepgRjqxuwg0ZC0i
+ hUB4q9+MXNxSt74S8rcBPzyRV7cmRcDjTg+idTPTwWBhJFWmyJF/Ndvktlzh6p1QNRB6w1
+ l3CFJQ8DIVKivdBf7bpY7k/g4A0Paf8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753109534;
+ s=susede2_ed25519; t=1753109545;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pp3q88X/8na6jOiUl1esXb+SXsY7K4Cal8mh0Wm9B/g=;
- b=jwkWm9HZ2N5UeTSgT44UImMdCxBISTUWNOQC6z5GXncYS80d6MYUaKUE5PaN8CjufxV+hJ
- 2aUlmaE4DR7b4mBw==
+ bh=8H+NrAmZg0ToC8JLdELTx+oh4Z1cAWkOJi7DdHik3gE=;
+ b=p0Pak2EEPer7pOOW+SrqMXrqEmURcbsWlACO5pwhdPGFhkq2YjK/UTJXa33hNHxBctHSsH
+ m2gEYhQ/nAnS3QDw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E9DD136A8;
- Mon, 21 Jul 2025 14:52:13 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 26658136A8;
+ Mon, 21 Jul 2025 14:52:24 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 9BhQEx1UfmjxbQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 21 Jul 2025 14:52:13 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id T3KmNShUfmj+bQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 21 Jul 2025 14:52:24 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
@@ -79,17 +79,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang?=
  <berrange@redhat.com>, Peter Xu <peterx@redhat.com>, Philippe
  =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, =?utf-8?Q?Marc-Andr?=
  =?utf-8?Q?=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH 1/4] crypto: implement workaround for GNUTLS thread
- safety problems
-In-Reply-To: <20250718150514.2635338-2-berrange@redhat.com>
+Subject: Re: [PATCH 2/4] io: add support for activating TLS thread safety
+ workaround
+In-Reply-To: <20250718150514.2635338-3-berrange@redhat.com>
 References: <20250718150514.2635338-1-berrange@redhat.com>
- <20250718150514.2635338-2-berrange@redhat.com>
-Date: Mon, 21 Jul 2025 11:52:10 -0300
-Message-ID: <87cy9tlhph.fsf@suse.de>
+ <20250718150514.2635338-3-berrange@redhat.com>
+Date: Mon, 21 Jul 2025 11:52:22 -0300
+Message-ID: <87a54xlhp5.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.98%];
+X-Spamd-Result: default: False [-3.71 / 50.00]; BAYES_HAM(-2.20)[96.21%];
  NEURAL_HAM_LONG(-1.00)[-1.000];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
@@ -103,21 +103,23 @@ X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.98%];
  RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
  FROM_HAS_DN(0.00)[];
  RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:dkim,suse.de:email];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
  DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Queue-Id: 2314021205
+X-Rspamd-Queue-Id: A9E9321253
 X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
 X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam-Score: -3.71
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -136,31 +138,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> When TLS 1.3 is negotiated on a TLS session, GNUTLS will perform
-> automatic rekeying of the session after 16 million records. This
-> is done for all algorithms except CHACHA20_POLY1305 which does
-> not require rekeying.
+> Add a QIO_CHANNEL_FEATURE_CONCURRENT_IO feature flag.
 >
-> Unfortunately the rekeying breaks GNUTLS' promise that it is safe
-> to use a gnutls_session_t object concurrently from multiple threads
-> if they are exclusively calling gnutls_record_send/recv.
->
-> This patch implements a workaround for QEMU that adds a mutex lock
-> around any gnutls_record_send/recv call to serialize execution
-> within GNUTLS code. When GNUTLS calls into the push/pull functions
-> we can release the lock so the OS level I/O calls can at least
-> have some parallelism.
->
-> The big downside of this is that the actual encryption/decryption
-> code is fully serialized, which will halve performance of that
-> cipher operations if two threads are contending.
->
-> The workaround is not enabled by default, since most use of GNUTLS
-> in QEMU does not tickle the problem, only non-multifd migration
-> with a return path open is affected. Fortunately the migration
-> code also won't trigger the halving of performance, since only
-> the outbound channel diretion needs to sustain high data rates,
-> the inbound direction is low volume.
+> If this is set on a QIOChannelTLS session object, the TLS
+> session will be marked as requiring thread safety, which
+> will activate the workaround for GNUTLS bug 1717 if needed.
 >
 > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 
