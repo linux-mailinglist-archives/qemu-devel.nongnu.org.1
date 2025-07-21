@@ -2,91 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAB3B0CCD5
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 23:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF729B0CC4E
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 23:16:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udyJ2-0007U0-Pd; Mon, 21 Jul 2025 17:44:20 -0400
+	id 1udxpl-0007T2-Op; Mon, 21 Jul 2025 17:14:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chichikalyuk@gmail.com>)
- id 1udyHR-00061K-19; Mon, 21 Jul 2025 17:42:41 -0400
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chichikalyuk@gmail.com>)
- id 1udyHN-00008E-Tj; Mon, 21 Jul 2025 17:42:40 -0400
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-32b7123edb9so50576351fa.2; 
- Mon, 21 Jul 2025 14:42:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1753134156; x=1753738956; darn=nongnu.org;
- h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=7Pi5a7yefMwcMVC85NgeCH42h8Mc4dcn+m0lnzMYwaE=;
- b=OWHuljrkR9Xk+5AnOr/vwEvm1ATX60cJsD6CZDIT8/KCW80/RjvEhuw+HlJe6py43W
- HHPh1zLB8XCQp5DCrMpCqtpEW7cHs/6usaMaIIaBuKn9rcz1ElOdtUodZy+BWxtFQjvF
- GDav2vk3TPb2soDaRM/sJs26x6tGxYtWI7dWMARYh3oCypaE23ZCBp0rj0t4eMZ+pZpZ
- dETeNDFStDZPSIeVfEZXmfUfXqT5ARUuqhk3LTwTMrTGFt8M84xMU2cmGXEJsafP34ZT
- Lm5XJLatFaiAq6zG09piLp07vjM7OOO7H5ug8S9cC+Htk8oe6Fqufl7hf/3yjXY9osrZ
- j/SQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753134156; x=1753738956;
- h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7Pi5a7yefMwcMVC85NgeCH42h8Mc4dcn+m0lnzMYwaE=;
- b=fabWpCA9Whxqe3/tD/XC25hlZ/BSOJdrQciAzGAjmX1KNkS1KI74CxOwPcrnebB7rR
- vH1dvxIKuS+W/hrQyVfFSucGiU0fOQmK2O9Z9Y74X5r2FodKov7BNjx1A/9vOGXiIO2W
- SUKq9aD+EffOSf/ZMgX15gk+Q+XHXbTp2j8vNuCj1NJccZOUroMco1zM38nVMTvHlBUy
- UWPC1SiSYBKhi4yb+VyvA0uMhS8HEnn7q+DrlNC7P/fDWNxKJKLvoo3+/lyly/VAuiZl
- E15R7iOPSsXqAe3nwlaEBrSW+mylYO+x0gzOfrHeCPLzwtYkxx80FMXOK8GQYB2GZqr8
- WSGA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUmoWNsiIZnGP8biaAOPTj9g40U4Bnizjp4QExci6UPLUvIXOk4TG6lzYuQTu3crLVbj/12REXHZg==@nongnu.org
-X-Gm-Message-State: AOJu0Ywab9lsVUeBH8/b1O0e+/98lld6+RlPLkEwsLkjwsVwUQsgDZ9p
- U+mtfuBG8u3I/9NpVDakB7FPcmjKML7oNYONcnEjOYE2Mx6VKK5kfK5u
-X-Gm-Gg: ASbGnctj4aDXnOmlA271FeKvIsWqrL5sWLOV2eB9klIruscoTDhLKJaHGMvEUcm7kEH
- mWTtUzmY58Z53zwGTSTwBFj/BoqskY6hwAlfyS9X8a75Ghz/4oZOYSNzYYW99RaOaKJPgi//Dzz
- RwwwqzXAmyPUcehbiNAL53TldRSEl6RUnwQU21yF7p8m5KEOppAiD52Ur72sKGwwkb3gUg+5ErX
- Nc+gffhIIKXB0DTYsE6ISkWLRayx1xXtrXTj0gW405jmjUETGcxgdsq8uaq4eHw23ARpRLAe98D
- LzVZX3E4h1pdYgzBVJOsLHE0HdOT50c+uvCLkpdQiXtCivJrj2LQ2m7fUz7Sz2loF5Zka9cla5m
- m7sA2sdp1klfhZeS561c6V6WHg1dadlOvYfv4wAjmJw==
-X-Google-Smtp-Source: AGHT+IF5RcNO4blGcmzEtB6kWZ+FNNyfz7EkL+jdGtN1Z7MVV42kX+fJBIxAkFu0UNMQO+SYRsRhgg==
-X-Received: by 2002:a05:651c:1a0c:b0:32b:59d1:7ef3 with SMTP id
- 38308e7fff4ca-3308f64e218mr62852991fa.35.1753134155281; 
- Mon, 21 Jul 2025 14:42:35 -0700 (PDT)
-Received: from smtpclient.apple ([62.183.185.10])
- by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-330a90d56b0sm15796631fa.4.2025.07.21.14.42.33
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 21 Jul 2025 14:42:34 -0700 (PDT)
-From: Vadim Chichikalyuk <chichikalyuk@gmail.com>
-Message-Id: <11C21A37-0225-46DE-84D9-19E12BCEC59B@gmail.com>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_5DE68C0F-2FE8-4B8C-8D7A-4B81F95CE82F"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.71\))
-Subject: Re: [PATCH 3/4] hw: arm: acpi: add UART clock frequency to SPCR table
-Date: Tue, 22 Jul 2025 00:06:20 +0300
-In-Reply-To: <20250721104119.00001882@huawei.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Shannon Zhao <shannon.zhaosl@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Vadim Chichikalyuk <chichikalyuk@gmail.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20250718162045.49012-1-chichikalyuk@gmail.com>
- <20250718162045.49012-4-chichikalyuk@gmail.com>
- <20250721104119.00001882@huawei.com>
-X-Mailer: Apple Mail (2.3826.700.71)
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=chichikalyuk@gmail.com; helo=mail-lj1-x229.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1udxlj-0003vP-Sk
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:10:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1udxlh-0007fA-Qa
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:09:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753132192;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=x/MFmnd618LoAXyWawsdiqwMl1reCHKbKuxFh5MI3Xk=;
+ b=HdSXqRXdzpxvMhtsjDTgvmRHx1i9jTQ36uN1ATQpzoFVfdC5rgigThiKksA0iTskJNEL+M
+ fZntSbhmb9vjDS98f4OTtGdXVZe30dA5mJl4iiw9vJsGnP7F75lH/v8kPXts3/KKYe6Kfm
+ 4DImLdZ2iFP7YK3CFyShmKhBwAZLUiw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-vSgabPxlNyWat3JJyFDvjQ-1; Mon,
+ 21 Jul 2025 17:09:51 -0400
+X-MC-Unique: vSgabPxlNyWat3JJyFDvjQ-1
+X-Mimecast-MFC-AGG-ID: vSgabPxlNyWat3JJyFDvjQ_1753132189
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9BA2B195608B; Mon, 21 Jul 2025 21:09:49 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.31])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D88161956094; Mon, 21 Jul 2025 21:09:48 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Aarushi Mehta <mehta.aaru20@gmail.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, hibriansong@gmail.com, eblake@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>
+Subject: [PATCH v3 00/12] aio: add the aio_add_sqe() io_uring API
+Date: Mon, 21 Jul 2025 17:07:47 -0400
+Message-ID: <20250721210759.179709-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.926,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,107 +84,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v3:
+- Add assertions documenting that ADD and REMOVE flags cannot be present
+  together with DELETE_AIO_HANDLER [Kevin]
 
---Apple-Mail=_5DE68C0F-2FE8-4B8C-8D7A-4B81F95CE82F
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+v2:
+- Performance improvements
+- Fix pre_sqe -> prep_sqe typo [Eric]
+- Add #endif terminator comment [Eric]
+- Fix spacing in aio_ctx_finalize() argument list [Eric]
+- Add new "block/io_uring: use non-vectored read/write when possible" patch [Eric]
+- Drop Patch 1 because multi-shot POLL_ADD has edge-triggered semantics instead
+  of level-triggered semantics required by QEMU's AioContext APIs. The
+  qemu-iotests 308 test case was hanging because block/export/fuse.c relies on
+  level-triggered semantics. Luckily the performance reason for switching from
+  one-shot to multi-shot has been solved by Patch 2 ("aio-posix: keep polling
+  enabled with fdmon-io_uring.c"), so it's okay to use single-shot.
+- Add a new Patch 1. It's a bug fix for a user-after-free in fdmon-io_uring.c
+  triggered by qemu-iotests iothreads-nbd-export.
 
+This patch series contains io_uring improvements:
 
-> On 21 Jul 2025, at 12:41, Jonathan Cameron =
-<Jonathan.Cameron@huawei.com> wrote:
->=20
-> On Fri, 18 Jul 2025 19:20:44 +0300
-> Vadim Chichikalyuk <chichikalyuk@gmail.com> wrote:
->=20
->> On the ARM virt machine, there is currently no way to =
-programmatically
->> discover the frequency of the UART reference clock solely through the =
-use of
->> UEFI/ACPI (without the DTB). The SPCR table can include this =
-information
->> as of revision 3.
->>=20
->> Bump the revision to 3 and add the clock frequency of 24 MHz to the =
-table.
->=20
-> Maybe add something on why you aren't just skipping forwards to 4 and =
-filling
-> in the rest of the stuff?
+1. Support the glib event loop in fdmon-io_uring.
+   - aio-posix: fix race between io_uring CQE and AioHandler deletion
+   - aio-posix: keep polling enabled with fdmon-io_uring.c
+   - tests/unit: skip test-nested-aio-poll with io_uring
+   - aio-posix: integrate fdmon into glib event loop
 
-Haven=E2=80=99t really considered that =E2=80=93 you=E2=80=99re right, =
-might as well upgrade it to revision 4.
+2. Enable fdmon-io_uring on hosts where io_uring is available at runtime.
+   Otherwise continue using ppoll(2) or epoll(7).
+   - aio: remove aio_context_use_g_source()
 
-Based on build_dsdt() and acpi_dsdt_add_uart(), the NamespaceString =
-would be=20
-=E2=80=9C\_SB.COM0=E2=80=9D, right? Although, for some reason, it=E2=80=99=
-s just =E2=80=9C.=E2=80=9D for RISC-V virt (indicating
-that there isn=E2=80=99t a corresponding device in the ACPI namespace), =
-despite there being=20
-entries for the UART in the DSDT, just as for ARM?
+3. Add the new aio_add_sqe() API for submitting io_uring requests in the QEMU
+   event loop.
+   - aio: free AioContext when aio_context_new() fails
+   - aio: add errp argument to aio_context_setup()
+   - aio-posix: gracefully handle io_uring_queue_init() failure
+   - aio-posix: add aio_add_sqe() API for user-defined io_uring requests
+   - aio-posix: avoid EventNotifier for cqe_handler_bh
 
-The relevant lines, for reference (hw/arm/virt-acpi-build.c):
+4. Use aio_add_sqe() in block/io_uring.c instead of creating a dedicated
+   io_uring context for --blockdev aio=io_uring. This simplifies the code,
+   reduces the number of file descriptors, and demonstrates the aio_add_sqe()
+   API.
+   - block/io_uring: use aio_add_sqe()
+   - block/io_uring: use non-vectored read/write when possible
 
-scope =3D aml_scope("\\_SB");
-acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], (irqmap[VIRT_UART0] + =
-ARM_SPI_BASE), 0);
+The highlight is aio_add_sqe(), which is needed for the FUSE-over-io_uring
+Google Summer of Code project and other future QEMU features that natively use
+Linux io_uring functionality.
 
-static void acpi_dsdt_add_uart(Aml *scope, const MemMapEntry =
-*uart_memmap, uint32_t uart_irq) {
-    Aml *dev =3D aml_device("COM%d", uartidx);
-    ...
-}
+rw        bs iodepth aio    iothread before after  diff
+randread  4k       1 native        0  78353  84860 +8.3%
+randread  4k      64 native        0 262370 269823 +2.8%
+randwrite 4k       1 native        0 142703 144348 +1.2%
+randwrite 4k      64 native        0 259947 263895 +1.5%
+randread  4k       1 io_uring      0  76883  78270 +1.8%
+randread  4k      64 io_uring      0 269712 250513 -7.1%
+randwrite 4k       1 io_uring      0 143657 131481 -8.5%
+randwrite 4k      64 io_uring      0 274461 264785 -3.5%
+randread  4k       1 native        1  84080  84097 0.0%
+randread  4k      64 native        1 314650 311193 -1.1%
+randwrite 4k       1 native        1 172463 159993 -7.2%
+randwrite 4k      64 native        1 303091 299726 -1.1%
+randread  4k       1 io_uring      1  83415  84081 +0.8%
+randread  4k      64 io_uring      1 324797 318429 -2.0%
+randwrite 4k       1 io_uring      1 174421 172809 -0.9%
+randwrite 4k      64 io_uring      1 323394 312286 -3.4%
 
+Performance is in the same ballpark as without fdmon-io_uring. Results vary
+from run to run due to the timing/batching of requests (even with iodepth=1 due
+to 8 vCPUs using a single IOThread).
 
-Thanks for the review,
-Vadim=
+Here is the performance from v1 for reference:
+rw        bs iodepth aio    iothread before after  diff
+randread  4k       1 native        0  76281 79707  +4.5%
+randread  4k      64 native        0 255078 247293 -3.1%
+randwrite 4k       1 native        0 132706 123337 -7.1%
+randwrite 4k      64 native        0 275589 245192 -11%
+randread  4k       1 io_uring      0  75284 78023  +3.5%
+randread  4k      64 io_uring      0 254637 248222 -2.5%
+randwrite 4k       1 io_uring      0 126519 128641 +1.7%
+randwrite 4k      64 io_uring      0 258967 249266 -3.7%
+randread  4k       1 native        1  90557 88436  -2.3%
+randread  4k      64 native        1 290673 280456 -3.5%
+randwrite 4k       1 native        1 183015 169106 -7.6%
+randwrite 4k      64 native        1 281316 280078 -0.4%
+randread  4k       1 io_uring      1  92479 86983  -5.9%
+randread  4k      64 io_uring      1 304229 257730 -15.3%
+randwrite 4k       1 io_uring      1 183983 157425 -14.4%
+randwrite 4k      64 io_uring      1 299979 264156 -11.9%
 
---Apple-Mail=_5DE68C0F-2FE8-4B8C-8D7A-4B81F95CE82F
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
+This series replaces the following older series that were held off from merging
+until the QEMU 10.1 development window opened and the performance results were
+collected:
+- "[PATCH 0/3] [RESEND] block: unify block and fdmon io_uring"
+- "[PATCH 0/4] aio-posix: integrate fdmon into glib event loop"
 
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
-charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: =
-after-white-space;"><br><div><blockquote type=3D"cite"><div>On 21 Jul =
-2025, at 12:41, Jonathan Cameron &lt;Jonathan.Cameron@huawei.com&gt; =
-wrote:</div><br class=3D"Apple-interchange-newline"><div><div>On Fri, 18 =
-Jul 2025 19:20:44 +0300<br>Vadim Chichikalyuk =
-&lt;chichikalyuk@gmail.com&gt; wrote:<br><br><blockquote type=3D"cite">On =
-the ARM virt machine, there is currently no way to =
-programmatically<br>discover the frequency of the UART reference clock =
-solely through the use of<br>UEFI/ACPI (without the DTB). The SPCR table =
-can include this information<br>as of revision 3.<br><br>Bump the =
-revision to 3 and add the clock frequency of 24 MHz to the =
-table.<br></blockquote><br>Maybe add something on why you aren't just =
-skipping forwards to 4 and filling<br>in the rest of the =
-stuff?<br></div></div></blockquote><br></div><div>Haven=E2=80=99t really =
-considered that =E2=80=93 you=E2=80=99re right, might as well upgrade it =
-to revision 4.</div><div><br></div><div>Based on&nbsp;build_dsdt() =
-and&nbsp;acpi_dsdt_add_uart(), the&nbsp;<span style=3D"caret-color: =
-rgb(0, 0, 0); color: rgb(0, 0, 0);">NamespaceString&nbsp;</span><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);">would =
-be&nbsp;</span></div><div><font color=3D"#000000">=E2=80=9C\_SB.COM0=E2=80=
-=9D, right? Although, for some reason,&nbsp;</font><span style=3D"color: =
-rgb(0, 0, 0);">it=E2=80=99s just =E2=80=9C.=E2=80=9D for RISC-V virt =
-(indicating</span></div><div><span style=3D"color: rgb(0, 0, 0);">that =
-there isn=E2=80=99t&nbsp;</span><span style=3D"color: rgb(0, 0, 0);">a =
-corresponding device in the ACPI namespace), despite there =
-being&nbsp;</span></div><div><span style=3D"color: rgb(0, 0, =
-0);">entries for&nbsp;</span><span style=3D"color: rgb(0, 0, 0);">the =
-UART in the DSDT, just as for ARM?</span></div><div><br></div><div>The =
-relevant lines, for reference =
-(hw/arm/virt-acpi-build.c):</div><div><br></div><div><div>scope =3D =
-aml_scope("\\_SB");</div><div>acpi_dsdt_add_uart(scope, =
-&amp;memmap[VIRT_UART0], (irqmap[VIRT_UART0] + ARM_SPI_BASE), =
-0);</div><div><br></div><div><div>static void acpi_dsdt_add_uart(Aml =
-*scope, const MemMapEntry *uart_memmap, uint32_t uart_irq) =
-{</div><div><div style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, =
-0);"><div>&nbsp; &nbsp; Aml *dev =3D aml_device("COM%d", =
-uartidx);</div><div>&nbsp; &nbsp; =
-...</div></div></div><div>}</div></div><div><br></div><div><br></div></div=
-><div>Thanks for the review,</div><div>Vadim</div></body></html>=
+Stefan Hajnoczi (12):
+  aio-posix: fix race between io_uring CQE and AioHandler deletion
+  aio-posix: keep polling enabled with fdmon-io_uring.c
+  tests/unit: skip test-nested-aio-poll with io_uring
+  aio-posix: integrate fdmon into glib event loop
+  aio: remove aio_context_use_g_source()
+  aio: free AioContext when aio_context_new() fails
+  aio: add errp argument to aio_context_setup()
+  aio-posix: gracefully handle io_uring_queue_init() failure
+  aio-posix: add aio_add_sqe() API for user-defined io_uring requests
+  aio-posix: avoid EventNotifier for cqe_handler_bh
+  block/io_uring: use aio_add_sqe()
+  block/io_uring: use non-vectored read/write when possible
 
---Apple-Mail=_5DE68C0F-2FE8-4B8C-8D7A-4B81F95CE82F--
+ include/block/aio.h               | 136 +++++++-
+ include/block/raw-aio.h           |   5 -
+ util/aio-posix.h                  |  18 +-
+ block/file-posix.c                |  40 +--
+ block/io_uring.c                  | 508 ++++++++----------------------
+ stubs/io_uring.c                  |  32 --
+ tests/unit/test-aio.c             |   7 +-
+ tests/unit/test-nested-aio-poll.c |  13 +-
+ util/aio-posix.c                  | 143 +++++----
+ util/aio-win32.c                  |   6 +-
+ util/async.c                      |  55 +---
+ util/fdmon-epoll.c                |  52 ++-
+ util/fdmon-io_uring.c             | 226 ++++++++++---
+ util/fdmon-poll.c                 |  88 +++++-
+ block/trace-events                |  12 +-
+ stubs/meson.build                 |   3 -
+ util/trace-events                 |   4 +
+ 17 files changed, 710 insertions(+), 638 deletions(-)
+ delete mode 100644 stubs/io_uring.c
+
+-- 
+2.50.1
+
 
