@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A809FB0C438
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 14:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3480B0C43C
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 14:41:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udpnp-0005EG-18; Mon, 21 Jul 2025 08:39:33 -0400
+	id 1udppO-0004eI-6h; Mon, 21 Jul 2025 08:41:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1udpne-0004Ez-Tt; Mon, 21 Jul 2025 08:39:23 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1udpnb-0004AI-9L; Mon, 21 Jul 2025 08:39:22 -0400
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 56LCcrox050504
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Mon, 21 Jul 2025 21:38:54 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=PSICSBuQB3c7G4s1bZ2sgy16pos0hbf+ihrxiWxeX5A=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1753101534; v=1;
- b=ZmZfZMchXnAs1Gbo3txqx/NUOKHk4jctfZeIZGhHDmlAe8h44+oQQkyeYi5swivm
- /QKmwwzHoFckEoS/0s8q7yEjznKFGIVWy7eA62I8imSyI4qPelXQMp8MeJ9bvI5v
- 3EkzbGB6JEiyznNNJbVx3WqHUgVPslg0OEDfvgQAVmLPjG4fBuUKDTfZTZTCPsn2
- +v8WEmo1Lk/rr0lv5T8JFoqD+Jao/zPNulVzVb4azTBs2qUR3nvIXzqP1GCFCM9n
- UXpYgVKg65gXnjuxP145ZgniAOR9FyuM7YrzBxfVccz3O36jFvzmdhapkjntyWBP
- typ+SvkympxvktImNUu6Zw==
-Message-ID: <6966dd7b-635a-422c-b4ac-584c0c1fce49@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 21 Jul 2025 21:38:53 +0900
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1udpoX-0003jV-9w
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 08:40:18 -0400
+Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1udpoV-0004g8-1w
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 08:40:16 -0400
+Received: by mail-yw1-x1135.google.com with SMTP id
+ 00721157ae682-70f94fe1e40so56450497b3.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 05:40:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753101612; x=1753706412; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Fx+D3l+UaSeLFO1hwQVc7g7MnZhlXcFCOV7Ah1Fo6Rc=;
+ b=RtmAmGUK4c//gLkPv0iQBKPYg/g+1+Tls3ZOmyc12IlvCbx+oJWDcbQE53sO80bVS8
+ diq0yIMR4knQGky1jtMIkmMwqG+aw+aJm+dAtnQ9rKPzaIaEkEmrftZrt69I2Np7RbnC
+ Kt82QNQTeKkPs8FgUWaxwYyCZJci1mbUjXX5hcwriO3uQtES/B5t1oqlfWlD3+ZNs0vE
+ T5BWoylo0YcywxTy9Sm+gNrN0rud/H9Ecu9p60xkl0nG6BReUV8gaHq+vXuYfaaDolRs
+ Mn/uT7xHsdmB+EYbBYvEG78C4oIzNteFHBxRQmnKjmLT0zkrdXvpiHyBTqRGw+Zbh2a7
+ bp0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753101612; x=1753706412;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Fx+D3l+UaSeLFO1hwQVc7g7MnZhlXcFCOV7Ah1Fo6Rc=;
+ b=E6+gnm5pwHCO3e+ytEsiWw2/dDMPxDeWBUjeqsV4DkEp8kP9Bmfr4VGbWrOtDmyqDf
+ dn0ytJnyo6kaAgrtpI3I56SOg3sGh9R7PUmVGwT45/2g8L+2tdzlPHA+fLRDYjiLkjnO
+ n1J0x6oBpWkOnwfIWd+0iXgawTjmM8kHeW1wLOi1rzjK+IFOZssxRMYl10TeUxeKxStI
+ dw6qRVgsJkIzMa+rbF1CVQkH3Z4EYadV4+2Fdqif3fcmkQJU6688c2DSItx0wjGSfWbJ
+ zPXCwUuVTy4zyhtu06/Ux43o0FmL4VYM/m4bz0t2mwyEtR5qRG9srfnsX/Dgg8lQh/rv
+ y7sQ==
+X-Gm-Message-State: AOJu0YwD8ItV46SzPNukyYlInKqmbPwDDra5UW9oa61+BLiylWJ3N3J1
+ JqJWx/ORD2FvYQ7Q2h1ykez3IJyvIVhWQBC98tIcbbAV5uRHaFzsFzLSQNgizIchMag2BGd4Vot
+ bRYqS0uFXIVrlYmMfaATlrdlw+WMPgmcmvl1SSxmBTQ==
+X-Gm-Gg: ASbGncvmZO6Y+9FW1Rg7NAsCuyDhySADiH6innCVlHeoSXGM7Vi2MDB3QqrbM7vpzdr
+ 4+r7TjwN6Zkatk1xNlX9rvCB5eTtJumHHE5/5vr0ZZ+Y6JSqhFR0cI9ELBJrgJTfax8sOzRtXAh
+ jOnAv+xkP6E6hLfTG9yRiPaH3uV8Zxk1rMhJShTIB8h/GKiQSbcQgDWHbuSkKvfq3qtdOUiGDGV
+ 0ne99iI
+X-Google-Smtp-Source: AGHT+IHJevQET7XJXhBkSvLqPk7DyBCQHZYlWaZzer6uYyUr850VWGHJH0TmMWmJliwbfdYc1Yos+OBgOV3nOYY8gN0=
+X-Received: by 2002:a05:690c:4442:b0:70d:fd6f:b151 with SMTP id
+ 00721157ae682-7184f7a071cmr190726317b3.11.1753101611878; Mon, 21 Jul 2025
+ 05:40:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/24] migration: push Error **errp into
- loadvm_process_command()
-To: Arun Menon <armenon@redhat.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20250721-propagate_tpm_error-v6-0-fef740e15e17@redhat.com>
- <20250721-propagate_tpm_error-v6-8-fef740e15e17@redhat.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250721-propagate_tpm_error-v6-8-fef740e15e17@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20250716172813.73405-1-philmd@linaro.org>
+In-Reply-To: <20250716172813.73405-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 21 Jul 2025 13:40:00 +0100
+X-Gm-Features: Ac12FXy0n4FBY3_CuQrcvs6E0l8ly649O1sjKkf_Q5yN2Byv5ZR4iVtMUBt9I-Q
+Message-ID: <CAFEAcA-nt-qeP5u=WyKS9pTWrpkDMTBPF241xKVsr+Q-noWtAw@mail.gmail.com>
+Subject: Re: [PATCH-for-10.1 0/3] accel/hvf: Do not abort in
+ hvf_arm_get_*_ipa_bit_size()
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Cameron Esfahani <dirty@apple.com>,
+ qemu-arm@nongnu.org, 
+ Roman Bolshakov <rbolshakov@ddn.com>, Mads Ynddal <mads@ynddal.dk>, 
+ Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1135.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,186 +96,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/07/21 20:29, Arun Menon wrote:
-> This is an incremental step in converting vmstate loading
-> code to report error via Error objects instead of directly
-> printing it to console/monitor.
-> It is ensured that loadvm_process_command() must report an error
-> in errp, in case of failure.
-> 
-> Signed-off-by: Arun Menon <armenon@redhat.com>
-> ---
->   migration/savevm.c | 87 +++++++++++++++++++++++++++++++++++++++++-------------
->   1 file changed, 66 insertions(+), 21 deletions(-)
-> 
-> diff --git a/migration/savevm.c b/migration/savevm.c
-> index 96af7b412f2ed43468f4bcac8b833cda223f8321..d8feb9e1599d019636cd400ee7ebe594df27bd1d 100644
-> --- a/migration/savevm.c
-> +++ b/migration/savevm.c
-> @@ -2546,12 +2546,13 @@ static int loadvm_postcopy_handle_switchover_start(void)
->    * LOADVM_QUIT All good, but exit the loop
->    * <0          Error
->    */
-> -static int loadvm_process_command(QEMUFile *f)
-> +static int loadvm_process_command(QEMUFile *f, Error **errp)
->   {
->       MigrationIncomingState *mis = migration_incoming_get_current();
->       uint16_t cmd;
->       uint16_t len;
->       uint32_t tmp32;
-> +    int ret;
->   
->       cmd = qemu_get_be16(f);
->       len = qemu_get_be16(f);
-> @@ -2562,16 +2563,16 @@ static int loadvm_process_command(QEMUFile *f)
->       }
->   
->       if (cmd >= MIG_CMD_MAX || cmd == MIG_CMD_INVALID) {
-> -        error_report("MIG_CMD 0x%x unknown (len 0x%x)", cmd, len);
-> +        error_setg(errp, "MIG_CMD 0x%x unknown (len 0x%x)", cmd, len);
->           return -EINVAL;
->       }
->   
->       trace_loadvm_process_command(mig_cmd_args[cmd].name, len);
->   
->       if (mig_cmd_args[cmd].len != -1 && mig_cmd_args[cmd].len != len) {
-> -        error_report("%s received with bad length - expecting %zu, got %d",
-> -                     mig_cmd_args[cmd].name,
-> -                     (size_t)mig_cmd_args[cmd].len, len);
-> +        error_setg(errp, "%s received with bad length - expecting %zu, got %d",
-> +                   mig_cmd_args[cmd].name,
-> +                   (size_t)mig_cmd_args[cmd].len, len);
->           return -ERANGE;
->       }
->   
-> @@ -2590,11 +2591,10 @@ static int loadvm_process_command(QEMUFile *f)
->            * been created.
->            */
->           if (migrate_switchover_ack() && !mis->switchover_ack_pending_num) {
-> -            int ret = migrate_send_rp_switchover_ack(mis);
-> +            ret = migrate_send_rp_switchover_ack(mis);
->               if (ret) {
-> -                error_report(
-> -                    "Could not send switchover ack RP MSG, err %d (%s)", ret,
-> -                    strerror(-ret));
-> +                error_setg(errp, "Could not send switchover ack "
-> +                           "RP MSG, err %d (%s)", ret, strerror(-ret));
->                   return ret;
->               }
->           }
-> @@ -2604,39 +2604,84 @@ static int loadvm_process_command(QEMUFile *f)
->           tmp32 = qemu_get_be32(f);
->           trace_loadvm_process_command_ping(tmp32);
->           if (!mis->to_src_file) {
-> -            error_report("CMD_PING (0x%x) received with no return path",
-> -                         tmp32);
-> +            error_setg(errp, "CMD_PING (0x%x) received with no return path",
-> +                       tmp32);
->               return -1;
->           }
->           migrate_send_rp_pong(mis, tmp32);
->           break;
->   
->       case MIG_CMD_PACKAGED:
-> -        return loadvm_handle_cmd_packaged(mis);
-> +        ret = loadvm_handle_cmd_packaged(mis);
-> +        if (ret < 0) {
-> +            error_setg(errp, "Failed to load device state command: %d", ret);
-> +            return -1;
+On Wed, 16 Jul 2025 at 18:28, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> Have get_physical_address_range() return when HVF is not
+> usable, allowing to try another accelerator if requested
+> with '-accel hvf:tcg', reported here:
+> https://gitlab.com/qemu-project/qemu/-/issues/2981
+>
+> Philippe Mathieu-Daud=C3=A9 (3):
+>   accel/hvf: Display executable bit as 'X'
+>   accel/hvf: Do not abort in hvf_arm_get_*_ipa_bit_size()
+>   hw/arm/virt: Warn when HVF doesn't report IPA bit length
 
-This "return -1" is extraneous.
 
-The error_setg() call is later replaced with "[PATCH v6 09/24] 
-migration: push Error **errp into loadvm_handle_cmd_packaged()", but 
-this "return -1" is simply removed in the patch. There is no need to add 
-it in the first place.
+I've applied patch 1 to target-arm.next, since it's not
+really related to the patch 2 and 3 bugfix.
 
-> +        }
-> +        return ret;
->   
->       case MIG_CMD_POSTCOPY_ADVISE:
-> -        return loadvm_postcopy_handle_advise(mis, len);
-> +        ret = loadvm_postcopy_handle_advise(mis, len);
-> +        if (ret < 0) {
-> +            error_setg(errp, "Failed to load device state command: %d", ret);
-> +            return -1;
-> +        }
-> +        return ret;
->   
->       case MIG_CMD_POSTCOPY_LISTEN:
-> -        return loadvm_postcopy_handle_listen(mis);
-> +        ret = loadvm_postcopy_handle_listen(mis);
-> +        if (ret < 0) {
-> +            error_setg(errp, "Failed to load device state command: %d", ret);
-> +            return -1;
-> +        }
-> +        return ret;
->   
->       case MIG_CMD_POSTCOPY_RUN:
-> -        return loadvm_postcopy_handle_run(mis);
-> +        ret = loadvm_postcopy_handle_run(mis);
-> +        if (ret < 0) {
-> +            error_setg(errp, "Failed to load device state command: %d", ret);
-> +            return -1;
-> +        }
-> +        return ret;
->   
->       case MIG_CMD_POSTCOPY_RAM_DISCARD:
-> -        return loadvm_postcopy_ram_handle_discard(mis, len);
-> +        ret = loadvm_postcopy_ram_handle_discard(mis, len);
-> +        if (ret < 0) {
-> +            error_setg(errp, "Failed to load device state command: %d", ret);
-> +            return -1;
-> +        }
-> +        return ret;
->   
->       case MIG_CMD_POSTCOPY_RESUME:
-> -        return loadvm_postcopy_handle_resume(mis);
-> +        ret = loadvm_postcopy_handle_resume(mis);
-> +        if (ret < 0) {
-> +            error_setg(errp, "Failed to load device state command: %d", ret);
-> +            return -1;
-> +        }
-> +        return ret;
->   
->       case MIG_CMD_RECV_BITMAP:
-> -        return loadvm_handle_recv_bitmap(mis, len);
-> +        ret = loadvm_handle_recv_bitmap(mis, len);
-> +        if (ret < 0) {
-> +            error_setg(errp, "Failed to load device state command: %d", ret);
-> +            return -1;
-> +        }
-> +        return ret;
->   
->       case MIG_CMD_ENABLE_COLO:
-> -        return loadvm_process_enable_colo(mis);
-> +        ret = loadvm_process_enable_colo(mis);
-> +        if (ret < 0) {
-> +            error_setg(errp, "Failed to load device state command: %d", ret);
-> +            return -1;
-> +        }
-> +        return ret;
->   
->       case MIG_CMD_SWITCHOVER_START:
-> -        return loadvm_postcopy_handle_switchover_start();
-> +        ret = loadvm_postcopy_handle_switchover_start();
-> +        if (ret < 0) {
-> +            error_setg(errp, "Failed to load device state command: %d", ret);
-> +            return -1;
-> +        }
-> +        return ret;
->       }
->   
->       return 0;
-> @@ -3074,7 +3119,7 @@ retry:
->               }
->               break;
->           case QEMU_VM_COMMAND:
-> -            ret = loadvm_process_command(f);
-> +            ret = loadvm_process_command(f, NULL);
->               trace_qemu_loadvm_state_section_command(ret);
->               if ((ret < 0) || (ret == LOADVM_QUIT)) {
->                   goto out;
-> 
-
+thanks
+-- PMM
 
