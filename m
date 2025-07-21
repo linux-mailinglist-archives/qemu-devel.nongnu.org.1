@@ -2,97 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22321B0C8CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE39EB0C8E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:33:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtOU-0006Uk-Kp; Mon, 21 Jul 2025 12:29:38 -0400
+	id 1udtQp-0001lu-Al; Mon, 21 Jul 2025 12:32:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1udtOI-0006OZ-Pd
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:29:27 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1udtPl-000114-LV
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:31:03 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1udtOE-0002YX-RH
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:29:26 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-31332cff2d5so3738046a91.1
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 09:29:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1udtPj-00030H-1o
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:30:57 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-60c5b8ee2d9so9301079a12.2
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 09:30:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753115361; x=1753720161; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+b/3FauNZM7qlxnerzBqLP/CVU3vOKsYfTU99eJ1IzQ=;
- b=qgqpd6eGuElIguMnS0RqQWg+m+uWHhqtGtXlt31RwourRRUQUng2V1yj4f8xL6Ghep
- 1Hx1Fd1223i8EyQ+KcnoQqdIlwgh5kk0e0oEiRF5U8T4ZLe9kbmBEm0yPEZwC4CzPjTE
- 6kQMj0W6EIiJDc7I4zw55TXAWgVwRl1Iue+Ua3MpNmrJ1hyVqDgYeCzJbMzUYaat2Djx
- Lw6oiFLgXNawvPdFdqMJw/Z5mua01wkbpoUt0bl4/+w3zey4Pf/22Hmt51aLcQxTInHe
- YZhUmWijtCetrKGe5s0E4iXM4rMV8QNIoETmZC0I0W/WYQfPjGR+UhaJSWnMsx2AExCV
- WiKQ==
+ d=linaro.org; s=google; t=1753115452; x=1753720252; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CAFJoe4zn2cEckNZyJyl4AgIjTyqG38eTlRW/mL3ftk=;
+ b=vZj1HsGRBI6yfULbmFBqXJ/DXkp7xj/1WmRiWe+XZc6kSi5Ine0StE7Kf3pAkDuibD
+ mC+n3rdauGAfO+q+HkUyUkfLVUO/lWTbu0+zZgLV3o7LIg5jYR4NhAbDvQ8MYQaPtDxe
+ +r9owsCaEbp/Xrcq/HsWn28IuP1OtnOZErrBKutV0I7FMe9/+AzRO3UO49D8o1FZV4cs
+ 2F6CQCkfsMC55UnCaArOxh8fkt8R7ZlFbLWCDv0NHwhLH3rB3YAvWM6pNdRb+p+OPRBD
+ 47g/qOc98PkVwr3ZrtIrDr8kbmT1KS9vQhzBJxjKj21+/Wcba026z3E4pbbMYDL6Z5sD
+ 4mCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753115361; x=1753720161;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+b/3FauNZM7qlxnerzBqLP/CVU3vOKsYfTU99eJ1IzQ=;
- b=xPMVYhFGvnvGP7wuKqTcqif/uzWycmWjWK/w3beT6leLV0d55fMxy56iqa5BhPLw5L
- Ddk7Xb2xm2Zf0l2IRI07gN6Ha8NWhk0fioB+2CSHEMPJjOIwb8S5xhRy78QHHK76hKXX
- jwgcfeSigaPeG2VfzbwLr/y8MOKWovEmxFRhnHraEYr8CG6m1MOdFbjHrst5Tnpwftkl
- G5PidsQg0cEq/YZI0sNkAAsdrH9h/IhJxhC+OrzVRhjcwKoJwcUHOKM4wphQDsBhFJoz
- VnpKcqGwJVUwtw1H6zZ3Uy0/SNHClkh+cNqT9RUGb+fG0RYqixnX9yJDsLqwzBJUjOXa
- a8rw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXh8WorHxpjn2SypVeA/1+qxWhi07xnyrIQGMQW2U0vUJHM5/xY/9s4gTxc+V2IGeAwztpfAPj4HrLF@nongnu.org
-X-Gm-Message-State: AOJu0YwSKrzefFdWzRUpoXLXi+48LIHTjYBUWsWPVxiJOZrR2yZolp8i
- EIGUHbv8N47gMABjf7hi+iWz2OVMQvaM4GBUXFXtifYBNOyVXTIvLN2YN796ygsw4As=
-X-Gm-Gg: ASbGncukRMiPlNWC2yYDyMzvuk3mNN9fjQ/dMlLEZfiWbukzVBkiB390UcICEAxzAU3
- V9wK7uFsNrYzYgqmbn9ZvSkyItuk3AzJKbrch8+7gECcD+48U/uarIRgSpxcZ9KyYhKSfB4ALYQ
- FpAWWiFyeTohPcCNMtnm6Sgi91qt1APbho+H7Hnx9OGu2sQRpO2Y4D5M8OfjkrBKqYtMZzf3YJp
- KLraUX5t5KpyH3ISx9U/58npsUSW66asUONSnxrljV/AfFzW10Q5YLQ0SBFxw7/v6B/+tPHliD3
- cntHO+Is6oJlwy9ItGchmRrevJWAMBJ4boEj/4C3SiK4VmbQnymETv5AK9Hb9EoYvEmNpDTfC5a
- 6d75Wx51+eUPzYj7aSH83MiNRaMteRmDxmdw=
-X-Google-Smtp-Source: AGHT+IEuavdq0uTf41adqA+0eejxZ4uIGjes89fmZ2SMKPX6Qx82i6db9p14aygw1M5Tzzcsn5JrQA==
-X-Received: by 2002:a17:90b:278e:b0:311:ea13:2e6a with SMTP id
- 98e67ed59e1d1-31c9e6f78eemr27467207a91.13.1753115360440; 
- Mon, 21 Jul 2025 09:29:20 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31cc3f2e433sm6408988a91.35.2025.07.21.09.29.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Jul 2025 09:29:19 -0700 (PDT)
-Message-ID: <8a50f07d-ef0b-43b1-b49c-335ca6a7ff70@linaro.org>
-Date: Mon, 21 Jul 2025 09:29:19 -0700
+ d=1e100.net; s=20230601; t=1753115452; x=1753720252;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CAFJoe4zn2cEckNZyJyl4AgIjTyqG38eTlRW/mL3ftk=;
+ b=mMvXcFhzp/3aaOjT0JuD/99TaMLVW72ZEXjbJCi1AWt3rvoEWfI7jZes6Ol/AyTbSu
+ oIw285E2sPVZxUpkLr23agGFfp4cuavI3kOmDyoO103GQM09guPRmuexrsmoSzoTTAxa
+ 2tiN9pzABWjS2em1JgZapk5KZ1+qRNBjWoRb1IFSp4or5/R8j27coR7bg5WiTnB40EsJ
+ SnO1ME6tJUJ5QE6o//WVhe3CpXPPDg1WVFoo28qERgZDO/wJo5pODX9xOWXhimDFTbQG
+ TafzxsgFH1PrXXrpD5TnPm1qy9fK8PsqbMgOzAvfL06Q/CAD9thHysa08oUbRed/Edu/
+ Kudg==
+X-Gm-Message-State: AOJu0Yxp2RE/DvwW7mzl0sjQgbfGi2CAmziBwbUuf2/h4EIk7plGfGPL
+ nTA4jQ9XKViVMXK/RNokg0y6KaW3UcyLkgBogmrN0Y8AedOeif0m1FGWZbhgX4Wh98p0U2Y4K+c
+ AYMBUcO7NRayonLuhhfQCpW24BYEB/AW0ETmEBRrn3Q==
+X-Gm-Gg: ASbGncuFhmY/a89wYQ+Ad1kwS+OvwBHqkVB5JTp4DkLdjs4fZrOgjvsl/yTLvOF8Fun
+ 8QdFKZT4e8bM2Cc/4vRS2KWwPtmjkP6z1ILJVGP4kzRQpRsdE8n4bEzdKwqSZfLKnf/miYUejcY
+ sm0e4aMJyrowvYDcOrh7+Y/bKynGfuADeLXu9JH+66hRCDURfY/AvhIPbXTtiQ8lBD0hIy9ka3C
+ DM3rw==
+X-Google-Smtp-Source: AGHT+IF4DqbPUQZgdslFXKkvu4u2DLuNi/MRvp81YTzem9JU3q1Tlpa6Aa2JQf6vyDVPT+1I5LR8FFiwhVjTs3Hp6F4=
+X-Received: by 2002:a05:6402:4314:b0:608:3571:6942 with SMTP id
+ 4fb4d7f45d1cf-61281f1d344mr16911333a12.1.1753115452002; Mon, 21 Jul 2025
+ 09:30:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: apparent race condition in mttcg memory handling
-Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>, QEMU Development <qemu-devel@nongnu.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>
-References: <abe00af4-3af5-4c6b-8443-b7350a4d9349@tls.msk.ru>
- <96201a23-784b-4268-b011-a6912175d237@linaro.org>
- <c0878723-62e3-47cc-810e-6ba8a0bd30cd@linaro.org>
-In-Reply-To: <c0878723-62e3-47cc-810e-6ba8a0bd30cd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102f.google.com
+References: <20250721153326.783646-1-alex.bennee@linaro.org>
+In-Reply-To: <20250721153326.783646-1-alex.bennee@linaro.org>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Mon, 21 Jul 2025 19:30:25 +0300
+X-Gm-Features: Ac12FXxG61FEnHPa7wGVctrh6PUPwGHxcjXl_WYsBokHFpDmOujRioE6bpKFpJk
+Message-ID: <CAAjaMXbzCf69Vt5oKz-wCcmpxETLNg0o37AxX7_WR1AB954Pjw@mail.gmail.com>
+Subject: Re: [RFC PATCH] tests/functional: add hypervisor test for aarch64
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Mark Burton <mburton@qti.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,610 +94,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/21/25 9:23 AM, Pierrick Bouvier wrote:
-> Hi Michael,
-> 
-> On 7/21/25 4:47 AM, Philippe Mathieu-Daudé wrote:
->> (Cc'ing few more developers)
->>
->> On 30/5/25 21:20, Michael Tokarev wrote:
->>> Hi!
->>>
->>> For quite some time (almost whole day yesterday) I'm trying to find out
->>> what's going on with mmtcg in qemu.  There's apparently a race condition
->>> somewhere, like a use-after-free or something.
->>>
->>> It started as an incarnation of
->>> https://gitlab.com/qemu-project/qemu/-/issues/1921 -- the same assertion
->>> failure, but on an x86_64 host this time (it's also mentioned in that
->>> issue).
->>>
->>> However, that particular assertion failure is not the only possible
->>> outcome.  We're hitting multiple assertion failures or SIGSEGVs in
->>> physmem.c and related files, - 4 or 5 different places so far.
->>>
->>> The problem here is that the bug is rather difficult to reproduce.
->>> What I've been using so far was to make most host cores busy, and
->>> specify amount of virtual CPUs close to actual host cores (threads).
->>>
->>> For example, on my 4-core, 8-threads notebook, I used `stress -c 8`
->>> and ran qemu with -smp 10, to trigger this issue. However, on this
->>> very notebook it is really difficult to trigger it, - it happens
->>> every 30..50 runs or so.
->>>
->>> The reproducer I was using - it was just booting kernel, no user-
->>> space is needed. Qemu crashes during kernel init, or it runs fine.
->>>
->>> I used regular kernel from debian sid:
->>>     http://deb.debian.org/debian/pool/main/l/linux-signed-amd64/linux-
->>> image-amd64_6.12.29-1_amd64.deb
->>> Extract vmlinuz-6.12.29-amd64 from there.
->>>
->>> In order to simplify the reproducing, I created a tiny initrd with
->>> just one executable in there, which does a poweroff:
->>>
->>> cat >poweroff.c <<'EOF'
->>> #include <sys/reboot.h>
->>> #include <unistd.h>
->>>
->>> int main(void) {
->>>      reboot(RB_POWER_OFF);
->>>      sleep(5);
->>>      return 0;
->>> }
->>> EOF
->>> diet gcc -static -o init poweroff.c
->>> echo init | cpio -o -H newc > initrd
->>>
->>> (it uses dietlibc, optional, just to make the initrd smaller).
->>>
->>> Now, the qemu invocation I used:
->>>
->>>     qemu-system-x86_64 -kernel vmlinuz -initrd initrd \
->>>       -append "console=ttyS0" \
->>>       -vga none -display none \
->>>       -serial file:/dev/tty \
->>>       -monitor stdio \
->>>       -m 256 \
->>>       -smp 16
->>>
->>> This way, it either succeeds, terminating normally due to
->>> the initrd hating the system, or it will segfault or assert
->>> as per the issue.
->>>
->>> For a 64-core machine, I used -smp 64, and had 16..40 cores
->>> being busy with other stuff.  Also, adding `nice' in front
->>> of that command apparently helps.
->>>
->>> Now, to the various issues/places I've hit.  Here's a typical
->>> output:
->>>
->>> ...
->>> [    3.129806] smpboot: x86: Booting SMP configuration:
->>> [    3.135789] .... node  #0, CPUs:        #1  #2  #3  #4  #5  #6  #7
->>> #8  #9
->>> [    0.000000] calibrate_delay_direct() failed to get a good estimate
->>> for loops_per_jiffy.
->>> [    0.000000] Probably due to long platform interrupts. Consider using
->>> "lpj=" boot option.
->>> [    0.000000] calibrate_delay_direct() failed to get a good estimate
->>> for loops_per_jiffy.
->>> [    0.000000] Probably due to long platform interrupts. Consider using
->>> "lpj=" boot option.
->>> [    0.000000] calibrate_delay_direct() failed to get a good estimate
->>> for loops_per_jiffy.
->>> [    0.000000] Probably due to long platform interrupts. Consider using
->>> "lpj=" boot option.
->>> [    0.000000] calibrate_delay_direct() failed to get a good estimate
->>> for loops_per_jiffy.
->>> [    0.000000] Probably due to long platform interrupts. Consider using
->>> "lpj=" boot option.
->>> [    4.494389] calibrate_delay_direct() failed to get a good estimate
->>> for loops_per_jiffy.
->>> [    4.494389] Probably due to long platform interrupts. Consider using
->>> "lpj=" boot option.
->>> [    4.494396] calibrate_delay_direct() failed to get a good estimate
->>> for loops_per_jiffy.
->>> [    4.494396] Probably due to long platform interrupts. Consider using
->>> "lpj=" boot option.
->>> [    4.494401] calibrate_delay_direct() failed to get a good estimate
->>> for loops_per_jiffy.
->>> [    4.494401] Probably due to long platform interrupts. Consider using
->>> "lpj=" boot option.
->>> [    4.494408] calibrate_delay_direct() failed to get a good estimate
->>> for loops_per_jiffy.
->>> [    4.494408] Probably due to long platform interrupts. Consider using
->>> "lpj=" boot option.
->>> [    4.494415] calibrate_delay_direct() failed to get a good estimate
->>> for loops_per_jiffy.
->>> [    4.494415] Probably due to long platform interrupts. Consider using
->>> "lpj=" boot option.
->>> [    5.864038] smp: Brought up 1 node, 10 CPUs
->>> [    5.865772] smpboot: Total of 10 processors activated (25983.25
->>> BogoMIPS)
->>> [    6.119683] Memory: 200320K/261624K available (16384K kernel code,
->>> 2486K rwdata, 11780K rodata, 4148K init, 4956K bss, 53176K reserved, 0K
->>> cma-reserved)
->>> [    6.591933] devtmpfs: initialized
->>> [    6.635844] x86/mm: Memory block size: 128MB
->>> [    6.756849] clocksource: jiffies: mask: 0xffffffff max_cycles:
->>> 0xffffffff, max_idle_ns: 7645041785100000 ns
->>> [    6.774545] futex hash table entries: 4096 (order: 6, 262144 bytes,
->>> linear)
->>> [    6.840775] pinctrl core: initialized pinctrl subsystem
->>> [    7.117085] NET: Registered PF_NETLINK/PF_ROUTE protocol family
->>> [    7.165883] DMA: preallocated 128 KiB GFP_KERNEL pool for atomic
->>> allocations
->>> [    7.184243] DMA: preallocated 128 KiB GFP_KERNEL|GFP_DMA pool for
->>> atomic allocations
->>> [    7.188322] DMA: preallocated 128 KiB GFP_KERNEL|GFP_DMA32 pool for
->>> atomic allocations
->>> [    7.195902] audit: initializing netlink subsys (disabled)
->>> [    7.223865] audit: type=2000 audit(1748628013.324:1):
->>> state=initialized audit_enabled=0 res=1
->>> [    7.290904] thermal_sys: Registered thermal governor 'fair_share'
->>> [    7.291980] thermal_sys: Registered thermal governor 'bang_bang'
->>> [    7.295875] thermal_sys: Registered thermal governor 'step_wise'
->>> [    7.299817] thermal_sys: Registered thermal governor 'user_space'
->>> [    7.303804] thermal_sys: Registered thermal governor 'power_allocator'
->>> [    7.316281] cpuidle: using governor ladder
->>> [    7.331907] cpuidle: using governor menu
->>> [    7.348199] acpiphp: ACPI Hot Plug PCI Controller Driver version: 0.5
->>> [    7.407802] PCI: Using configuration type 1 for base access
->>> [    7.417386] mtrr: your CPUs had inconsistent fixed MTRR settings
->>> [    7.418244] mtrr: your CPUs had inconsistent variable MTRR settings
->>> [    7.419048] mtrr: your CPUs had inconsistent MTRRdefType settings
->>> [    7.419938] mtrr: probably your BIOS does not setup all CPUs.
->>> [    7.420691] mtrr: corrected configuration.
->>> [    7.461270] kprobes: kprobe jump-optimization is enabled. All kprobes
->>> are optimized if possible.
->>> [    7.591938] HugeTLB: registered 2.00 MiB page size, pre-allocated 0
->>> pages
->>> [    7.595986] HugeTLB: 28 KiB vmemmap can be freed for a 2.00 MiB page
->>> [    7.816900] ACPI: Added _OSI(Module Device)
->>> [    7.819950] ACPI: Added _OSI(Processor Device)
->>> [    7.823873] ACPI: Added _OSI(3.0 _SCP Extensions)
->>> [    7.827683] ACPI: Added _OSI(Processor Aggregator Device)
->>> [    8.000944] ACPI: 1 ACPI AML tables successfully acquired and loaded
->>> [    8.355952] ACPI: Interpreter enabled
->>> [    8.406604] ACPI: PM: (supports S0 S3 S4 S5)
->>> [    8.416143] ACPI: Using IOAPIC for interrupt routing
->>> [    8.448173] PCI: Using host bridge windows from ACPI; if necessary,
->>> use "pci=nocrs" and report a bug
->>> [    8.468051] PCI: Using E820 reservations for host bridge windows
->>> [    8.562534] ACPI: Enabled 2 GPEs in block 00 to 0F
->>> [    9.153432] ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
->>> [    9.166585] acpi PNP0A03:00: _OSC: OS supports [ASPM ClockPM Segments
->>> MSI HPX-Type3]
->>> [    9.168452] acpi PNP0A03:00: _OSC: not requesting OS control; OS
->>> requires [ExtendedConfig ASPM ClockPM MSI]
->>> [    9.181933] acpi PNP0A03:00: fail to add MMCONFIG information, can't
->>> access extended configuration space under this bridge
->>> [    9.297562] acpiphp: Slot [2] registered
->>> ...
->>> [    9.369007] PCI host bridge to bus 0000:00
->>> [    9.376590] pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7
->>> window]
->>> [    9.379987] pci_bus 0000:00: root bus resource [io  0x0d00-0xffff
->>> window]
->>> [    9.383826] pci_bus 0000:00: root bus resource [mem
->>> 0x000a0000-0x000bffff window]
->>> [    9.387818] pci_bus 0000:00: root bus resource [mem
->>> 0x10000000-0xfebfffff window]
->>> [    9.393681] pci_bus 0000:00: root bus resource [mem
->>> 0x100000000-0x17fffffff window]
->>> [    9.396987] pci_bus 0000:00: root bus resource [bus 00-ff]
->>> [    9.414378] pci 0000:00:00.0: [8086:1237] type 00 class 0x060000
->>> conventional PCI endpoint
->>> [    9.477179] pci 0000:00:01.0: [8086:7000] type 00 class 0x060100
->>> conventional PCI endpoint
->>> [    9.494836] pci 0000:00:01.1: [8086:7010] type 00 class 0x010180
->>> conventional PCI endpoint
->>> [    9.527173] pci 0000:00:01.1: BAR 4 [io  0xc040-0xc04f]
->>> Segmentation fault
->>>
->>>
->>> So it breaks somewhere in PCI init, after SMP/CPUs has been inited
->>> by the guest kernel.
->>>
->>> Thread 21 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
->>> 0x0000555555e2e9c0 in section_covers_addr (section=0x7fff58307,
->>> addr=182591488) at ../system/physmem.c:309
->>> 309         return int128_gethi(section->size) ||
->>> (gdb) p *section
->>> Cannot access memory at address 0x7fff58307
->>>
->>> This one has been seen multiple times.
->>>
->>> Thread 53 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
->>> [Switching to Thread 0x7ffe8a7fc6c0 (LWP 104067)]
->>> 0x0000555555e30382 in memory_region_section_get_iotlb
->>> (cpu=0x5555584e0a90, section=0x7fff58c3eac0) at
->>>                 ../system/physmem.c:1002
->>> 1002        return section - d->map.sections;
->>> d is NULL here
->>>
->>>
->>> Thread 22 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
->>> [Switching to Thread 0x7fff0bfff6c0 (LWP 57595)]
->>> 0x0000555555e42c9a in memory_region_get_iommu (mr=0xffffffc1ffffffc1) at
->>> include/exec/memory.h:1756
->>> 1756        if (mr->alias) {
->>> (gdb) p *mr
->>> Cannot access memory at address 0xffffffc1ffffffc1
->>> (gdb) frame 1
->>> #1  0x0000555555e42cb9 in memory_region_get_iommu (mr=0x7fff54239a10) at
->>> include/exec/memory.h:1757
->>> 1757            return memory_region_get_iommu(mr->alias);
->>> (gdb) p mr
->>> $1 = (MemoryRegion *) 0x7fff54239a10
->>>
->>>
->>> [    9.222531] pci 0000:00:02.0: BAR 0 [mem 0xfebc0000-0xfebdffff]
->>> [
->>> Thread 54 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
->>> [Switching to Thread 0x7ffebeffd6c0 (LWP 14977)]
->>>
->>> (gdb) l
->>> 1004    /* Called from RCU critical section */
->>> 1005    hwaddr memory_region_section_get_iotlb(CPUState *cpu,
->>> 1006                                           MemoryRegionSection
->>> *section)
->>> 1007    {
->>> 1008        AddressSpaceDispatch *d = flatview_to_dispatch(section->fv);
->>> 1009        return section - d->map.sections;
->>> 1010    }
->>> 1011
->>> 1012    static int subpage_register(subpage_t *mmio, uint32_t start,
->>> uint32_t end,
->>> 1013                                uint16_t section);
->>>
->>> (gdb) p *section
->>> $1 = {size = 4940204083636081308795136, mr = 0x7fff98739760, fv =
->>> 0x7fff998f6fd0,
->>>      offset_within_region = 0, offset_within_address_space = 0, readonly =
->>> false,
->>>      nonvolatile = false, unmergeable = 12}
->>>
->>> (gdb) p *section->fv
->>> $2 = {rcu = {next = 0x0, func = 0x20281}, ref = 2555275280, ranges =
->>> 0x7fff99486a60, nr = 0,
->>>      nr_allocated = 0, dispatch = 0x0, root = 0xffffffc1ffffffc1}
->>>
->>> (gdb) bt
->>> #0  0x0000555555e5118c in memory_region_section_get_iotlb
->>> (cpu=cpu@entry=0x55555894fdf0,
->>>        section=section@entry=0x7fff984e6810) at system/physmem.c:1009
->>> #1  0x0000555555e6e07a in tlb_set_page_full (cpu=cpu@entry=0x55555894fdf0,
->>>        mmu_idx=mmu_idx@entry=6, addr=addr@entry=151134208,
->>> full=full@entry=0x7ffebeffbd60)
->>>        at accel/tcg/cputlb.c:1088
->>> #2  0x0000555555e70a92 in tlb_set_page_with_attrs
->>> (cpu=cpu@entry=0x55555894fdf0,
->>>        addr=addr@entry=151134208, paddr=paddr@entry=151134208, attrs=...,
->>> prot=<optimized out>,
->>>        mmu_idx=mmu_idx@entry=6, size=4096) at accel/tcg/cputlb.c:1193
->>> #3  0x0000555555d4ae44 in x86_cpu_tlb_fill (cs=0x55555894fdf0,
->>> addr=151138272,
->>>        size=<optimized out>, access_type=MMU_DATA_STORE, mmu_idx=6,
->>> probe=<optimized out>,
->>>        retaddr=0) at target/i386/tcg/system/excp_helper.c:624
->>> #4  0x0000555555e6e8cf in tlb_fill_align (cpu=0x55555894fdf0,
->>> addr=151138272,
->>>        type=MMU_DATA_LOAD, type@entry=MMU_DATA_STORE, mmu_idx=6,
->>> memop=memop@entry=MO_8,
->>>        size=-1739692016, size@entry=151138272, probe=true, ra=0) at accel/
->>> tcg/cputlb.c:1251
->>> #5  0x0000555555e6eb0d in probe_access_internal
->>> (cpu=cpu@entry=0x55555894fdf0,
->>>        addr=addr@entry=151138272, fault_size=fault_size@entry=0,
->>>        access_type=access_type@entry=MMU_DATA_STORE, mmu_idx=<optimized out>,
->>>        nonfault=nonfault@entry=true, phost=0x7ffebeffc0a8,
->>> pfull=0x7ffebeffbfa0, retaddr=0,
->>>        check_mem_cbs=false) at accel/tcg/cputlb.c:1371
->>> #6  0x0000555555e70c84 in probe_access_full_mmu (env=0x5555589529b0,
->>> addr=addr@entry=151138272,
->>>        size=size@entry=0, access_type=access_type@entry=MMU_DATA_STORE,
->>> mmu_idx=<optimized out>,
->>>        phost=phost@entry=0x7ffebeffc0a8, pfull=0x7ffebeffbfa0) at accel/
->>> tcg/cputlb.c:1439
->>> #7  0x0000555555d497c9 in ptw_translate (inout=0x7ffebeffc090,
->>> addr=151138272)
->>>        at target/i386/tcg/system/excp_helper.c:68
->>> #8  0x0000555555d49988 in mmu_translate (env=env@entry=0x5555589529b0,
->>>        in=in@entry=0x7ffebeffc140, out=out@entry=0x7ffebeffc110,
->>> err=err@entry=0x7ffebeffc120,
->>>        ra=ra@entry=0) at target/i386/tcg/system/excp_helper.c:198
->>> #9  0x0000555555d4aece in get_physical_address (env=0x5555589529b0,
->>> addr=18446741874686299840,
->>>        access_type=MMU_DATA_LOAD, mmu_idx=4, out=0x7ffebeffc110,
->>> err=0x7ffebeffc120, ra=0)
->>>        at target/i386/tcg/system/excp_helper.c:597
->>> #10 x86_cpu_tlb_fill (cs=0x55555894fdf0, addr=18446741874686299840,
->>> size=<optimized out>,
->>>        access_type=MMU_DATA_LOAD, mmu_idx=4, probe=<optimized out>,
->>> retaddr=0)
->>>        at target/i386/tcg/system/excp_helper.c:617
->>> #11 0x0000555555e6e8cf in tlb_fill_align (cpu=0x55555894fdf0,
->>> addr=18446741874686299840,
->>>        type=type@entry=MMU_DATA_LOAD, mmu_idx=4, memop=MO_8,
->>> memop@entry=MO_32, size=-1739692016,
->>>        size@entry=3776, probe=false, ra=0) at accel/tcg/cputlb.c:1251
->>> #12 0x0000555555e6ed4d in mmu_lookup1 (cpu=cpu@entry=0x55555894fdf0,
->>>        data=data@entry=0x7ffebeffc310, memop=memop@entry=MO_32,
->>> mmu_idx=mmu_idx@entry=4,
->>>        access_type=access_type@entry=MMU_DATA_LOAD, ra=ra@entry=0) at
->>> accel/tcg/cputlb.c:1652
->>> #13 0x0000555555e6eea5 in mmu_lookup (cpu=cpu@entry=0x55555894fdf0,
->>>        addr=addr@entry=18446741874686299840, oi=oi@entry=36, ra=ra@entry=0,
->>>        type=type@entry=MMU_DATA_LOAD, l=l@entry=0x7ffebeffc310) at accel/
->>> tcg/cputlb.c:1755
->>> #14 0x0000555555e6f2f3 in do_ld4_mmu (cpu=cpu@entry=0x55555894fdf0,
->>>        addr=addr@entry=18446741874686299840, oi=oi@entry=36, ra=ra@entry=0,
->>>        access_type=access_type@entry=MMU_DATA_LOAD) at accel/tcg/
->>> cputlb.c:2364
->>> #15 0x0000555555e71dba in cpu_ldl_mmu (env=0x5555589529b0,
->>> addr=18446741874686299840, oi=36,
->>>        ra=0) at accel/tcg/ldst_common.c.inc:165
->>> #16 cpu_ldl_le_mmuidx_ra (env=env@entry=0x5555589529b0,
->>> addr=addr@entry=18446741874686299840,
->>>        mmu_idx=<optimized out>, ra=ra@entry=0) at accel/tcg/
->>> ldst_common.c.inc:308
->>> #17 0x0000555555db72da in do_interrupt64 (env=0x5555589529b0, intno=236,
->>> is_int=0, error_code=0,
->>>        next_eip=<optimized out>, is_hw=0) at target/i386/tcg/seg_helper.c:954
->>> #18 do_interrupt_all (cpu=cpu@entry=0x55555894fdf0, intno=236,
->>> is_int=is_int@entry=0,
->>>        error_code=error_code@entry=0, next_eip=next_eip@entry=0,
->>> is_hw=is_hw@entry=1)
->>>        at target/i386/tcg/seg_helper.c:1213
->>> #19 0x0000555555db884a in do_interrupt_x86_hardirq
->>> (env=env@entry=0x5555589529b0,
->>>        intno=<optimized out>, is_hw=is_hw@entry=1) at target/i386/tcg/
->>> seg_helper.c:1245
->>> #20 0x0000555555d4f06f in x86_cpu_exec_interrupt (cs=0x55555894fdf0,
->>>        interrupt_request=<optimized out>) at target/i386/tcg/system/
->>> seg_helper.c:209
->>> #21 0x0000555555e660ed in cpu_handle_interrupt (cpu=0x55555894fdf0,
->>> last_tb=<synthetic pointer>)
->>>        at accel/tcg/cpu-exec.c:851
->>> #22 cpu_exec_loop (cpu=cpu@entry=0x55555894fdf0,
->>> sc=sc@entry=0x7ffebeffc580)
->>>        at accel/tcg/cpu-exec.c:955
->>> #23 0x0000555555e663f1 in cpu_exec_setjmp (cpu=cpu@entry=0x55555894fdf0,
->>>        sc=sc@entry=0x7ffebeffc580) at accel/tcg/cpu-exec.c:1033
->>>        type=type@entry=MMU_DATA_LOAD, l=l@entry=0x7ffebeffc310) at accel/
->>> tcg/cputlb.c:1755
->>> #14 0x0000555555e6f2f3 in do_ld4_mmu (cpu=cpu@entry=0x55555894fdf0,
->>>        addr=addr@entry=18446741874686299840, oi=oi@entry=36, ra=ra@entry=0,
->>>        access_type=access_type@entry=MMU_DATA_LOAD) at accel/tcg/
->>> cputlb.c:2364
->>> #15 0x0000555555e71dba in cpu_ldl_mmu (env=0x5555589529b0,
->>> addr=18446741874686299840, oi=36,
->>>        ra=0) at accel/tcg/ldst_common.c.inc:165
->>> #16 cpu_ldl_le_mmuidx_ra (env=env@entry=0x5555589529b0,
->>> addr=addr@entry=18446741874686299840,
->>>        mmu_idx=<optimized out>, ra=ra@entry=0) at accel/tcg/
->>> ldst_common.c.inc:308
->>> #17 0x0000555555db72da in do_interrupt64 (env=0x5555589529b0, intno=236,
->>> is_int=0, error_code=0,
->>>        next_eip=<optimized out>, is_hw=0) at target/i386/tcg/seg_helper.c:954
->>> #18 do_interrupt_all (cpu=cpu@entry=0x55555894fdf0, intno=236,
->>> is_int=is_int@entry=0,
->>>        error_code=error_code@entry=0, next_eip=next_eip@entry=0,
->>> is_hw=is_hw@entry=1)
->>>        at target/i386/tcg/seg_helper.c:1213
->>> #19 0x0000555555db884a in do_interrupt_x86_hardirq
->>> (env=env@entry=0x5555589529b0,
->>>        intno=<optimized out>, is_hw=is_hw@entry=1) at target/i386/tcg/
->>> seg_helper.c:1245
->>> #20 0x0000555555d4f06f in x86_cpu_exec_interrupt (cs=0x55555894fdf0,
->>>        interrupt_request=<optimized out>) at target/i386/tcg/system/
->>> seg_helper.c:209
->>> #21 0x0000555555e660ed in cpu_handle_interrupt (cpu=0x55555894fdf0,
->>> last_tb=<synthetic pointer>)
->>>        at accel/tcg/cpu-exec.c:851
->>> #22 cpu_exec_loop (cpu=cpu@entry=0x55555894fdf0,
->>> sc=sc@entry=0x7ffebeffc580)
->>>        at accel/tcg/cpu-exec.c:955
->>> #23 0x0000555555e663f1 in cpu_exec_setjmp (cpu=cpu@entry=0x55555894fdf0,
->>>        sc=sc@entry=0x7ffebeffc580) at accel/tcg/cpu-exec.c:1033
->>> --Type <RET> for more, q to quit, c to continue without paging--
->>> #24 0x0000555555e66a5d in cpu_exec (cpu=cpu@entry=0x55555894fdf0) at
->>> accel/tcg/cpu-exec.c:1059
->>> #25 0x0000555555d2bdc7 in tcg_cpu_exec (cpu=cpu@entry=0x55555894fdf0)
->>>        at accel/tcg/tcg-accel-ops.c:80
->>> #26 0x0000555555d2c1c3 in mttcg_cpu_thread_fn
->>> (arg=arg@entry=0x55555894fdf0)
->>>        at accel/tcg/tcg-accel-ops-mttcg.c:94
->>> #27 0x0000555556056d90 in qemu_thread_start (args=0x5555589cdba0) at
->>> util/qemu-thread-posix.c:541
->>> #28 0x00007ffff60e0b7b in ?? () from /lib/x86_64-linux-gnu/libc.so.6
->>> #29 0x00007ffff615e7b8 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
->>>
->>>
->>> qemu-system-x86_64: ./include/exec/ram_addr.h:91: ramblock_ptr:
->>> Assertion `offset_in_ramblock(block, offset)' failed.
->>>
->>> (gdb) bt
->>> #0  0x00007ffff6076507 in abort () from /lib/x86_64-linux-gnu/libc.so.6
->>> #1  0x00007ffff6076420 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
->>> #2  0x0000555555a047fa in ramblock_ptr (offset=281471527758833,
->>> block=<optimized out>)
->>>        at ./include/exec/ram_addr.h:91
->>> #3  0x0000555555a04c83 in ramblock_ptr (block=<optimized out>,
->>> offset=<optimized out>)
->>>        at system/physmem.c:2238
->>> #4  qemu_ram_ptr_length (lock=false, is_write=true, block=<optimized
->>> out>, addr=<optimized out>,
->>>        size=0x0) at system/physmem.c:2430
->>> #5  qemu_map_ram_ptr (ram_block=<optimized out>, addr=<optimized out>)
->>> at system/physmem.c:2443
->>> #6  0x0000555555e4af6b in memory_region_get_ram_ptr (mr=<optimized out>)
->>> at system/memory.c:2452
->>> #7  0x0000555555e6e024 in tlb_set_page_full (cpu=cpu@entry=0x5555589f9f50,
->>>        mmu_idx=mmu_idx@entry=4, addr=addr@entry=18446741874686296064,
->>>        full=full@entry=0x7ffebd7f90b0) at accel/tcg/cputlb.c:1065
->>> #8  0x0000555555e70a92 in tlb_set_page_with_attrs
->>> (cpu=cpu@entry=0x5555589f9f50,
->>>        addr=addr@entry=18446741874686296064, paddr=paddr@entry=206749696,
->>> attrs=...,
->>>        prot=<optimized out>, mmu_idx=mmu_idx@entry=4, size=4096) at accel/
->>> tcg/cputlb.c:1193
->>> #9  0x0000555555d4ae44 in x86_cpu_tlb_fill (cs=0x5555589f9f50,
->>> addr=18446741874686299840,
->>>        size=<optimized out>, access_type=MMU_DATA_LOAD, mmu_idx=4,
->>> probe=<optimized out>, retaddr=0)
->>>        at target/i386/tcg/system/excp_helper.c:624
->>> #10 0x0000555555e6e8cf in tlb_fill_align (cpu=0x5555589f9f50,
->>> addr=18446741874686299840,
->>>        type=type@entry=MMU_DATA_LOAD, mmu_idx=4, memop=MO_8,
->>> memop@entry=MO_32, size=-1115714056,
->>>        size@entry=3776, probe=false, ra=0) at accel/tcg/cputlb.c:1251
->>> #11 0x0000555555e6ed4d in mmu_lookup1 (cpu=cpu@entry=0x5555589f9f50,
->>>        data=data@entry=0x7ffebd7f9310, memop=memop@entry=MO_32,
->>> mmu_idx=mmu_idx@entry=4,
->>>        access_type=access_type@entry=MMU_DATA_LOAD, ra=ra@entry=0) at
->>> accel/tcg/cputlb.c:1652
->>> #12 0x0000555555e6eea5 in mmu_lookup (cpu=cpu@entry=0x5555589f9f50,
->>>        addr=addr@entry=18446741874686299840, oi=oi@entry=36, ra=ra@entry=0,
->>>        type=type@entry=MMU_DATA_LOAD, l=l@entry=0x7ffebd7f9310) at accel/
->>> tcg/cputlb.c:1755
->>> #13 0x0000555555e6f2f3 in do_ld4_mmu (cpu=cpu@entry=0x5555589f9f50,
->>>        addr=addr@entry=18446741874686299840, oi=oi@entry=36, ra=ra@entry=0,
->>>        access_type=access_type@entry=MMU_DATA_LOAD) at accel/tcg/
->>> cputlb.c:2364
->>> #14 0x0000555555e71dba in cpu_ldl_mmu (env=0x5555589fcb10,
->>> addr=18446741874686299840, oi=36,
->>>        ra=0) at accel/tcg/ldst_common.c.inc:165
->>> #15 cpu_ldl_le_mmuidx_ra (env=env@entry=0x5555589fcb10,
->>> addr=addr@entry=18446741874686299840,
->>>        mmu_idx=<optimized out>, ra=ra@entry=0) at accel/tcg/
->>> ldst_common.c.inc:308
->>> #16 0x0000555555db72da in do_interrupt64 (env=0x5555589fcb10, intno=236,
->>> is_int=0, error_code=0,
->>>        next_eip=<optimized out>, is_hw=0) at target/i386/tcg/seg_helper.c:954
->>> #17 do_interrupt_all (cpu=cpu@entry=0x5555589f9f50, intno=236,
->>> is_int=is_int@entry=0,
->>>        error_code=error_code@entry=0, next_eip=next_eip@entry=0,
->>> is_hw=is_hw@entry=1)
->>>        at target/i386/tcg/seg_helper.c:1213
->>> #18 0x0000555555db884a in do_interrupt_x86_hardirq
->>> (env=env@entry=0x5555589fcb10,
->>>        intno=<optimized out>, is_hw=is_hw@entry=1) at target/i386/tcg/
->>> seg_helper.c:1245
->>> #19 0x0000555555d4f06f in x86_cpu_exec_interrupt (cs=0x5555589f9f50,
->>>        interrupt_request=<optimized out>) at target/i386/tcg/system/
->>> seg_helper.c:209
->>> #20 0x0000555555e660ed in cpu_handle_interrupt (cpu=0x5555589f9f50,
->>> last_tb=<synthetic pointer>)
->>>        at accel/tcg/cpu-exec.c:851
->>> #21 cpu_exec_loop (cpu=cpu@entry=0x5555589f9f50,
->>> sc=sc@entry=0x7ffebd7f9580)
->>>        at accel/tcg/cpu-exec.c:955
->>> #22 0x0000555555e663f1 in cpu_exec_setjmp (cpu=cpu@entry=0x5555589f9f50,
->>>        sc=sc@entry=0x7ffebd7f9580) at accel/tcg/cpu-exec.c:1033
->>> #23 0x0000555555e66a5d in cpu_exec (cpu=cpu@entry=0x5555589f9f50) at
->>> accel/tcg/cpu-exec.c:1059
->>> #24 0x0000555555d2bdc7 in tcg_cpu_exec (cpu=cpu@entry=0x5555589f9f50)
->>>        at accel/tcg/tcg-accel-ops.c:80
->>> #25 0x0000555555d2c1c3 in mttcg_cpu_thread_fn
->>> (arg=arg@entry=0x5555589f9f50)
->>>        at accel/tcg/tcg-accel-ops-mttcg.c:94
->>> #26 0x0000555556056d90 in qemu_thread_start (args=0x55555856bf60) at
->>> util/qemu-thread-posix.c:541
->>> #27 0x00007ffff60e0b7b in ?? () from /lib/x86_64-linux-gnu/libc.so.6
->>> #28 0x00007ffff615e7b8 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
->>>
->>> (gdb) frame 2
->>> #2  0x0000555555a047fa in ramblock_ptr (offset=281471527758833,
->>> block=<optimized out>)
->>>        at ./include/exec/ram_addr.h:91
->>> 91          assert(offset_in_ramblock(block, offset));
->>>
->>> (gdb) l
->>> 86          return (b && b->host && offset < b->used_length) ? true :
->>> false;
->>> 87      }
->>> 88
->>> 89      static inline void *ramblock_ptr(RAMBlock *block, ram_addr_t
->>> offset)
->>> 90      {
->>> 91          assert(offset_in_ramblock(block, offset));
->>> 92          return (char *)block->host + offset;
->>> 93      }
->>> 94
->>> 95      static inline unsigned long int ramblock_recv_bitmap_offset(void
->>> *host_addr,
->>>
->>>
->>> [    9.439487] pci 0000:00:02.0: BAR 1 [io  0xc000-0xc03f]
->>>
->>> Thread 65 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
->>> [Switching to Thread 0x7ffe9cff96c0 (LWP 15472)]
->>> phys_page_find (d=d@entry=0x7fff905ec880, addr=addr@entry=111288320) at
->>> system/physmem.c:337
->>> 337         if (section_covers_addr(&sections[lp.ptr], addr)) {
->>> (gdb) l
->>> 332             }
->>> 333             p = nodes[lp.ptr];
->>> 334             lp = p[(index >> (i * P_L2_BITS)) & (P_L2_SIZE - 1)];
->>> 335         }
->>> 336
->>> 337         if (section_covers_addr(&sections[lp.ptr], addr)) {
->>> 338             return &sections[lp.ptr];
->>> 339         } else {
->>> 340             return &sections[PHYS_SECTION_UNASSIGNED];
->>> 341         }
->>> (gdb)
->>>
->>>
->>> I was doing a bisection between 9.2.0 and 10.0.0, since we observed
->>> this issue happening wiht 10.0 but not - with 9.2.  So some of the
->>> above failures might be somewhere from the middle between 9.2 and
->>> 10.0.  However, I was able to trigger some of the failures with
->>> 9.2.0, though with much less probability.  And some can be triggered
->>> in current master too, with much better probability.
->>>
->>> On my 4-core notebook, the above command line fails every 20..50 run.
->>>
->>> I was never able to reproduce the assertion failure as shown in !1921.
->>>
->>> As of now, this issue is hitting debian trixie, - in debci, when a
->>> package which creates a guest image tries to run qemu but in the
->>> debci environment there's no kvm available, so it resorts to tcg.
->>>
->>> On IRC, Manos Pitsidianakis noted that he was debugging use-after-free
->>> with MemoryRegion recently, and posted a patch which can help a bit:
->>> https://people.linaro.org/~manos.pitsidianakis/backtrace.diff
->>>
->>> I'm not sure where to go from here.
->>>
->>> Just collecting everything we have now.
->>>
->>> Thanks,
->>>
->>> /mjt
->>>
->>
-> 
-> looks like a good target for TSAN, which might expose the race without
-> really having to trigger it.
-> https://www.qemu.org/docs/master/devel/testing/main.html#building-and-testing-with-tsan
-> 
-> Else, you can reproduce your run using rr record -h (chaos mode) [1],
-> which randomly schedules threads, until it catches the segfault, and
-> then you'll have a reproducible case to debug.
+On Mon, Jul 21, 2025 at 6:34=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
+o.org> wrote:
+>
+> This is a simple test case that runs an image with kvmtool and
+> kvm-unit-tests which can validate virtualisation works. This is useful
+> for exercising TCG but can also be applied to any nested virt setup
+> which is why it doesn't specify an accelerator.
+>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Cc: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Cc: Mark Burton <mburton@qti.qualcomm.com>
+> ---
+>  tests/functional/meson.build         |  1 +
+>  tests/functional/test_aarch64_kvm.py | 83 ++++++++++++++++++++++++++++
+>  2 files changed, 84 insertions(+)
+>  create mode 100755 tests/functional/test_aarch64_kvm.py
+>
+> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+> index 8bebcd4d94e..ecf965adc6c 100644
+> --- a/tests/functional/meson.build
+> +++ b/tests/functional/meson.build
+> @@ -89,6 +89,7 @@ tests_aarch64_system_thorough =3D [
+>    'aarch64_device_passthrough',
+>    'aarch64_hotplug_pci',
+>    'aarch64_imx8mp_evk',
+> +  'aarch64_kvm',
+>    'aarch64_raspi3',
+>    'aarch64_raspi4',
+>    'aarch64_replay',
+> diff --git a/tests/functional/test_aarch64_kvm.py b/tests/functional/test=
+_aarch64_kvm.py
+> new file mode 100755
+> index 00000000000..a42d82872af
+> --- /dev/null
+> +++ b/tests/functional/test_aarch64_kvm.py
+> @@ -0,0 +1,83 @@
+> +#!/usr/bin/env python3
+> +#
+> +# Functional test that runs subsets of kvm-unit-tests on Aarch64.
+> +# These can run on TCG and any accelerator supporting nested
+> +# virtualisation.
+> +#
+> +# Copyright (c) 2025 Linaro
+> +#
+> +# Author:
+> +#  Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> +#
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +from qemu.machine.machine import VMLaunchFailure
+> +
+> +from qemu_test import Asset
+> +from qemu_test import exec_command_and_wait_for_pattern as ec_and_wait
+> +from qemu_test.linuxkernel import LinuxKernelTest
+> +
+> +
+> +class Aarch64VirtKVMTests(LinuxKernelTest):
+> +
+> +    ASSET_KVM_TEST_KERNEL =3D Asset(
+> +        'https://fileserver.linaro.org/s/HmjaxXXYHYSqbes/'
+> +        'download?path=3D%2F&files=3D'
+> +        'image-with-kvm-tool-and-unit-tests.gz',
+> +        '34de4aaea90db5da42729e7d28b77f392c37a2f4da859f889a5234aaf097069=
+6')
+> +
+> +    # make it easier to detect successful return to shell
+> +    PS1 =3D 'RES=3D[$?] # '
+> +    OK_CMD =3D 'RES=3D[0] # '
+> +
+> +    # base of tests
+> +    KUT_BASE =3D "/usr/share/kvm-unit-tests/"
+> +
+> +    def _launch_guest(self, kvm_mode=3D"nvhe"):
+> +
+> +        self.set_machine('virt')
+> +        kernel_path =3D self.ASSET_KVM_TEST_KERNEL.fetch()
+> +
+> +        self.vm.set_console()
+> +        kernel_command_line =3D (self.KERNEL_COMMON_COMMAND_LINE +
+> +                               f"console=3DttyAMA0 kvm-arm.mode=3D{kvm_m=
+ode}")
+> +
+> +        self.vm.add_args("-cpu", "cortex-a72")
+> +        self.vm.add_args("-machine", "virt,gic-version=3D3,virtualizatio=
+n=3Don",
+> +                         '-kernel', kernel_path,
+> +                         '-append', kernel_command_line)
+> +        self.vm.add_args("-smp", "2", "-m", "320")
+> +
+> +        try:
+> +            self.vm.launch()
+> +        except VMLaunchFailure as excp:
+> +            self.log.info("unhandled launch failure: %s", excp.output)
+> +            raise excp
+> +
+> +        self.wait_for_console_pattern('buildroot login:')
+> +        ec_and_wait(self, 'root', '#')
+> +        ec_and_wait(self, f"export PS1=3D'{self.PS1}'", self.OK_CMD)
+> +
+> +
+> +    def test_aarch64_nvhe_selftest(self):
+> +
+> +        self._launch_guest("nvhe")
+> +
+> +        ec_and_wait(self, f"{self.KUT_BASE}/selftest-setup", self.OK_CMD=
+)
+> +        ec_and_wait(self, f"{self.KUT_BASE}/selftest-smp", self.OK_CMD)
+> +        ec_and_wait(self, f"{self.KUT_BASE}/selftest-vectors-kernel", se=
+lf.OK_CMD)
+> +        ec_and_wait(self, f"{self.KUT_BASE}/selftest-vectors-user", self=
+.OK_CMD)
+
+These could probably be merged in _launch_guest() just as well
+
+> +
+> +
+> +    def test_aarch64_vhe_selftest(self):
+> +
+> +        self._launch_guest("vhe")
+> +
+> +        ec_and_wait(self, f"{self.KUT_BASE}/selftest-setup", self.OK_CMD=
+)
+> +        ec_and_wait(self, f"{self.KUT_BASE}/selftest-smp", self.OK_CMD)
+> +        ec_and_wait(self, f"{self.KUT_BASE}/selftest-vectors-kernel", se=
+lf.OK_CMD)
+> +        ec_and_wait(self, f"{self.KUT_BASE}/selftest-vectors-user", self=
+.OK_CMD)
+> +
+> +
+> +if __name__ =3D=3D '__main__':
+> +    LinuxKernelTest.main()
+> --
+> 2.47.2
+>
 >
 
-In case you never had opportunity to use rr, it is quite convenient, 
-because you can set a hardware watchpoint on your faulty pointer (watch 
--l), do a reverse-continue, and in most cases, you'll directly reach 
-where the bug happened. Feels like cheating.
-
-> [1] https://github.com/rr-debugger/rr
-> 
-> Regards,
-> Pierrick
-
+Tested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
