@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E0DB0C8C7
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BEEB0C8A3
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:25:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtLY-0004Rp-Mr; Mon, 21 Jul 2025 12:26:37 -0400
+	id 1udtK0-000870-B4; Mon, 21 Jul 2025 12:25:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIm-0004k1-NZ
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIn-0004kC-1z
  for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIW-0001Tl-2V
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:32 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIY-0001UG-Gb
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753114996;
+ s=mimecast20190719; t=1753115002;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=O6MQGkz4Wgu6/6GQyFnRG9Xy+yrPEm89A5MiJBkiVz4=;
- b=cXMHwIcjPrKZQ6sHrgqlFNR+ZfcRhMGHGdWtFOqDVLd2Sbv2ZVch/VU0M8Ly5fLp0bh6Lk
- 0TGJe5RAdUtXZK7yavA9QS25QJ070bgLLt+nrdlaKcvSBvQq4uOrEQGiPLmXafU7BE4bLI
- GCWfCx96NlEXESK1lXOH86Wg3M7a/8Y=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=jnnN5+GtdpuH7z4EFdFOk5KedjDZ6TIb4J90RWfBUp0=;
+ b=jWEVvqAWW8G4PwLgkszHM3rNJizUHaxr6LTMBL4OgVbRxNVwWmAHTaqoRFECwWCS+mxrnK
+ 0WYfjxWWHt1+pTzES8HM/Xr7f1p08VIzH5RkwQnynqeSdPuMG9A83/bDNTH3NU/SWRTz9D
+ iOc4TTqaItlLvBJ9+W2IMeNdKuHNARY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-375-72NvYdWjM12kdZ4wfhbMHA-1; Mon,
- 21 Jul 2025 12:23:13 -0400
-X-MC-Unique: 72NvYdWjM12kdZ4wfhbMHA-1
-X-Mimecast-MFC-AGG-ID: 72NvYdWjM12kdZ4wfhbMHA_1753114992
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-216--czOhk3vN5-2bbkpgk-row-1; Mon,
+ 21 Jul 2025 12:23:16 -0400
+X-MC-Unique: -czOhk3vN5-2bbkpgk-row-1
+X-Mimecast-MFC-AGG-ID: -czOhk3vN5-2bbkpgk-row_1753114995
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8D57A1800292; Mon, 21 Jul 2025 16:23:12 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 83B631800D88; Mon, 21 Jul 2025 16:23:15 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2B30419560AD; Mon, 21 Jul 2025 16:23:09 +0000 (UTC)
+ id 0A7F1195608D; Mon, 21 Jul 2025 16:23:12 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Michael Kowal <kowal@linux.ibm.com>,
+ Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 12/50] ppc/xive2: Set CPPR delivery should account for group
- priority
-Date: Mon, 21 Jul 2025 18:21:55 +0200
-Message-ID: <20250721162233.686837-13-clg@redhat.com>
+Subject: [PULL 13/50] ppc/xive: tctx_notify should clear the precluded
+ interrupt
+Date: Mon, 21 Jul 2025 18:21:56 +0200
+Message-ID: <20250721162233.686837-14-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -88,102 +88,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-The group interrupt delivery flow selects the group backlog scan if
-LSMFB < IPB, but that scan may find an interrupt with a priority >=
-IPB. In that case, the VP-direct interrupt should be chosen. This
-extends to selecting the lowest prio between POOL and PHYS rings.
-
-Implement this just by re-starting the selection logic if the
-backlog irq was not found or priority did not match LSMFB (LSMFB
-is updated so next time around it would see the right value and
-not loop infinitely).
+If CPPR is lowered to preclude the pending interrupt, NSR should be
+cleared and the qemu_irq should be lowered. This avoids some cases
+of supurious interrupts.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-13-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-14-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/xive2.c | 32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+ hw/intc/xive.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 181d1ae5f940..cca121b5f13c 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -939,7 +939,7 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
- {
-     uint8_t *regs = &tctx->regs[ring];
-     Xive2Router *xrtr = XIVE2_ROUTER(tctx->xptr);
--    uint8_t old_cppr, backlog_prio, first_group, group_level = 0;
-+    uint8_t old_cppr, backlog_prio, first_group, group_level;
-     uint8_t pipr_min, lsmfb_min, ring_min;
-     bool group_enabled;
-     uint32_t nvp_blk, nvp_idx;
-@@ -961,10 +961,12 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
-      * Recompute the PIPR based on local pending interrupts. It will
-      * be adjusted below if needed in case of pending group interrupts.
-      */
-+again:
-     pipr_min = xive_ipb_to_pipr(regs[TM_IPB]);
-     group_enabled = !!regs[TM_LGS];
--    lsmfb_min = (group_enabled) ? regs[TM_LSMFB] : 0xff;
-+    lsmfb_min = group_enabled ? regs[TM_LSMFB] : 0xff;
-     ring_min = ring;
-+    group_level = 0;
- 
-     /* PHYS updates also depend on POOL values */
-     if (ring == TM_QW3_HV_PHYS) {
-@@ -998,9 +1000,6 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
-         }
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index bc829bebe9d0..a0a60a24f510 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -110,6 +110,9 @@ void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level)
+                                regs[TM_IPB], alt_regs[TM_PIPR],
+                                alt_regs[TM_CPPR], alt_regs[TM_NSR]);
+         qemu_irq_raise(xive_tctx_output(tctx, ring));
++    } else {
++        alt_regs[TM_NSR] = 0;
++        qemu_irq_lower(xive_tctx_output(tctx, ring));
      }
- 
--    /* PIPR should not be set to a value greater than CPPR */
--    regs[TM_PIPR] = (pipr_min > cppr) ? cppr : pipr_min;
--
-     rc = xive2_tctx_get_nvp_indexes(tctx, ring_min, &nvp_blk, &nvp_idx);
-     if (rc) {
-         qemu_log_mask(LOG_GUEST_ERROR, "XIVE: set CPPR on invalid context\n");
-@@ -1019,7 +1018,7 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
- 
-     if (group_enabled &&
-         lsmfb_min < cppr &&
--        lsmfb_min < regs[TM_PIPR]) {
-+        lsmfb_min < pipr_min) {
-         /*
-          * Thread has seen a group interrupt with a higher priority
-          * than the new cppr or pending local interrupt. Check the
-@@ -1048,12 +1047,25 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
-                                                     nvp_blk, nvp_idx,
-                                                     first_group, &group_level);
-         tctx->regs[ring_min + TM_LSMFB] = backlog_prio;
--        if (backlog_prio != 0xFF) {
--            xive2_presenter_backlog_decr(tctx->xptr, nvp_blk, nvp_idx,
--                                         backlog_prio, group_level);
--            regs[TM_PIPR] = backlog_prio;
-+        if (backlog_prio != lsmfb_min) {
-+            /*
-+             * If the group backlog scan finds a less favored or no interrupt,
-+             * then re-do the processing which may turn up a more favored
-+             * interrupt from IPB or the other pool. Backlog should not
-+             * find a priority < LSMFB.
-+             */
-+            g_assert(backlog_prio >= lsmfb_min);
-+            goto again;
-         }
-+
-+        xive2_presenter_backlog_decr(tctx->xptr, nvp_blk, nvp_idx,
-+                                     backlog_prio, group_level);
-+        pipr_min = backlog_prio;
-     }
-+
-+    /* PIPR should not be set to a value greater than CPPR */
-+    regs[TM_PIPR] = (pipr_min > cppr) ? cppr : pipr_min;
-+
-     /* CPPR has changed, check if we need to raise a pending exception */
-     xive_tctx_notify(tctx, ring_min, group_level);
  }
+ 
 -- 
 2.50.1
 
