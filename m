@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0B6B0C1AC
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 12:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C169FB0C1AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 12:48:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udo2u-0005Xf-84; Mon, 21 Jul 2025 06:47:03 -0400
+	id 1udo3n-0006am-6E; Mon, 21 Jul 2025 06:47:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1udo1o-0005Iv-8Z
+ id 1udo1q-0005KE-VG
  for qemu-devel@nongnu.org; Mon, 21 Jul 2025 06:45:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1udo1m-0001ee-4q
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 06:45:51 -0400
+ id 1udo1o-0001eu-SR
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 06:45:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753094748;
+ s=mimecast20190719; t=1753094750;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZZNXoUpZojGw4Up14HZf3MJGyeAwQkISGu6kItKqgXk=;
- b=JyvJgJRes+heXDOToOVRM9AzDSYHvxskHK/QbpgzpN/fotd6kmCQ06PoBP3DA8GMOfw5g8
- vL9mbwEOQfYicpEhhrdP5rXwyghJvLGELZr2EGU/GnVm5kkzLfd+u8ihRSQaw7GK/VkBjd
- HN84Vx/a9Ur7i/3sZMdIKFDGM+Rjwso=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=hR5FcqGKar0sSorkgUJRMQcBi1bKI8mVPIX2gZMVqk0=;
+ b=UXmLXvkPhpdACf4XSoNGDZ96BY7PS4dzIwKwnhkXM1xjbB3bcQtoh4cj8EDAeEXVSE7a9S
+ GbvDAxdzIiCYz4zgXlykUUwtnPMgHWQOWgcN95DticnvEFEQ2P4yhtLfvqU88tzZ16Vrq0
+ 7MT0dVFuiRaf/l/ttkHhF4s31E+KR8w=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-269-9xJajp5AP5e7V7YM_9fgog-1; Mon,
- 21 Jul 2025 06:45:45 -0400
-X-MC-Unique: 9xJajp5AP5e7V7YM_9fgog-1
-X-Mimecast-MFC-AGG-ID: 9xJajp5AP5e7V7YM_9fgog_1753094744
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-567-W4tfiXQlM2G2zhcsbhw1mw-1; Mon,
+ 21 Jul 2025 06:45:47 -0400
+X-MC-Unique: W4tfiXQlM2G2zhcsbhw1mw-1
+X-Mimecast-MFC-AGG-ID: W4tfiXQlM2G2zhcsbhw1mw_1753094746
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5797519560B5; Mon, 21 Jul 2025 10:45:44 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 402FB1956088; Mon, 21 Jul 2025 10:45:46 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.213])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 13E651956094; Mon, 21 Jul 2025 10:45:42 +0000 (UTC)
+ id C8C3019560A1; Mon, 21 Jul 2025 10:45:44 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL v2 3/4] crypto/x509-utils: Check for error from
- gnutls_x509_crt_init()
-Date: Mon, 21 Jul 2025 11:45:35 +0100
-Message-ID: <20250721104536.2856423-4-berrange@redhat.com>
+ Henry Kleynhans <hkleynhans@fb.com>
+Subject: [PULL v2 4/4] crypto: load all certificates in X509 CA file
+Date: Mon, 21 Jul 2025 11:45:36 +0100
+Message-ID: <20250721104536.2856423-5-berrange@redhat.com>
 In-Reply-To: <20250721104536.2856423-1-berrange@redhat.com>
 References: <20250721104536.2856423-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -85,38 +84,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Henry Kleynhans <hkleynhans@fb.com>
 
-Coverity notes that in qcrypto_get_x509_cert_fingerprint() we
-call gnutls_x509_crt_init() but don't check for an error return.
-Add the missing check.
+Some CA files may contain multiple intermediaries and roots of trust.
+These may not fit into the hard-coded limit of 16.
 
-Coverity: CID 1593155
-Fixes: 10a1d34fc0d ("crypto: Introduce x509 utils")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Extend the validation code to allocate enough space to load all of the
+certificates present in the CA file and ensure they are cleaned up.
+
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Henry Kleynhans <hkleynhans@fb.com>
+[DB: drop MAX_CERTS constant & whitespace tweaks]
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/x509-utils.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ crypto/tlscredsx509.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/crypto/x509-utils.c b/crypto/x509-utils.c
-index 8bad00a51b..39bb6d4d8c 100644
---- a/crypto/x509-utils.c
-+++ b/crypto/x509-utils.c
-@@ -46,7 +46,11 @@ int qcrypto_get_x509_cert_fingerprint(uint8_t *cert, size_t size,
+diff --git a/crypto/tlscredsx509.c b/crypto/tlscredsx509.c
+index 63a72fe47c..cd1f504471 100644
+--- a/crypto/tlscredsx509.c
++++ b/crypto/tlscredsx509.c
+@@ -426,9 +426,8 @@ qcrypto_tls_creds_load_cert(QCryptoTLSCredsX509 *creds,
+ static int
+ qcrypto_tls_creds_load_ca_cert_list(QCryptoTLSCredsX509 *creds,
+                                     const char *certFile,
+-                                    gnutls_x509_crt_t *certs,
+-                                    unsigned int certMax,
+-                                    size_t *ncerts,
++                                    gnutls_x509_crt_t **certs,
++                                    unsigned int *ncerts,
+                                     Error **errp)
+ {
+     gnutls_datum_t data;
+@@ -449,20 +448,18 @@ qcrypto_tls_creds_load_ca_cert_list(QCryptoTLSCredsX509 *creds,
+     data.data = (unsigned char *)buf;
+     data.size = strlen(buf);
+ 
+-    if (gnutls_x509_crt_list_import(certs, &certMax, &data,
+-                                    GNUTLS_X509_FMT_PEM, 0) < 0) {
++    if (gnutls_x509_crt_list_import2(certs, ncerts, &data,
++                                     GNUTLS_X509_FMT_PEM, 0) < 0) {
+         error_setg(errp,
+                    "Unable to import CA certificate list %s",
+                    certFile);
          return -1;
      }
+-    *ncerts = certMax;
  
--    gnutls_x509_crt_init(&crt);
-+    if (gnutls_x509_crt_init(&crt) < 0) {
-+        error_setg(errp, "Unable to initialize certificate: %s",
-+                   gnutls_strerror(ret));
-+        return -1;
-+    }
+     return 0;
+ }
  
-     if (gnutls_x509_crt_import(crt, &datum, GNUTLS_X509_FMT_PEM) != 0) {
-         error_setg(errp, "Failed to import certificate");
+ 
+-#define MAX_CERTS 16
+ static int
+ qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
+                                     bool isServer,
+@@ -471,12 +468,11 @@ qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
+                                     Error **errp)
+ {
+     gnutls_x509_crt_t cert = NULL;
+-    gnutls_x509_crt_t cacerts[MAX_CERTS];
+-    size_t ncacerts = 0;
++    gnutls_x509_crt_t *cacerts = NULL;
++    unsigned int ncacerts = 0;
+     size_t i;
+     int ret = -1;
+ 
+-    memset(cacerts, 0, sizeof(cacerts));
+     if (certFile &&
+         access(certFile, R_OK) == 0) {
+         cert = qcrypto_tls_creds_load_cert(creds,
+@@ -488,8 +484,9 @@ qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
+     }
+     if (access(cacertFile, R_OK) == 0) {
+         if (qcrypto_tls_creds_load_ca_cert_list(creds,
+-                                                cacertFile, cacerts,
+-                                                MAX_CERTS, &ncacerts,
++                                                cacertFile,
++                                                &cacerts,
++                                                &ncacerts,
+                                                 errp) < 0) {
+             goto cleanup;
+         }
+@@ -526,6 +523,8 @@ qcrypto_tls_creds_x509_sanity_check(QCryptoTLSCredsX509 *creds,
+     for (i = 0; i < ncacerts; i++) {
+         gnutls_x509_crt_deinit(cacerts[i]);
+     }
++    g_free(cacerts);
++
+     return ret;
+ }
+ 
 -- 
 2.50.1
 
