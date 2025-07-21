@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C171BB0BC51
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 08:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E474B0BC4D
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 08:06:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udja7-0008L6-Fy; Mon, 21 Jul 2025 02:01:03 -0400
+	id 1udjd8-0002c6-Kf; Mon, 21 Jul 2025 02:04:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1udjZ4-0008Cl-G9
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 01:59:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1udjZA-0008ID-Ar
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 02:00:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1udjZ2-00067s-Rv
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 01:59:54 -0400
+ id 1udjZ6-000696-Sx
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 01:59:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753077592;
+ s=mimecast20190719; t=1753077596;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5KWT+/o3dTqGxj2GxT8gQwaUixPakGt6yMy2ciNkG3w=;
- b=hvHFMNZZWq1TVipq4SUE3YDx4GaERhrPVFq9RUQSnsGrat1RgHlaS9xB+BgrQzGdO3CkeL
- G0cTvYpz6XrGA5a5RkymkvddjSoCSPhC9C4YYUSlQ4/cVePpmxLBZuqs9tsZeHPIUupdG8
- rEtKUQd9rLdNUrHGjC7q9+Ii7aXbvOc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=xnYOJbXEeP/53KinnYaU63GnFaShL0QvpZTkjzNCw64=;
+ b=MbCCcAhBrGOZdcupWpWL3+sw+yX0O3h8o+wiqUVPI3IrTIBLAWBrM2nqjKezPHbx5Fr4Ay
+ kpp3djWsP5LPYSQtp/YZjAWSqlYflmyN4Y4PWFl6IL0Z+wQYCgyAAsFXw6f1Tqxi6XSEOZ
+ Mp31kGArmrDkExGgKsB0YtT1ueFVqBk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-JWcRK7uvNIm9-G3zb9D82A-1; Mon,
- 21 Jul 2025 01:59:50 -0400
-X-MC-Unique: JWcRK7uvNIm9-G3zb9D82A-1
-X-Mimecast-MFC-AGG-ID: JWcRK7uvNIm9-G3zb9D82A_1753077589
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-jHw9vkwsN4ynLu9qh0-WNw-1; Mon,
+ 21 Jul 2025 01:59:52 -0400
+X-MC-Unique: jHw9vkwsN4ynLu9qh0-WNw-1
+X-Mimecast-MFC-AGG-ID: jHw9vkwsN4ynLu9qh0-WNw_1753077591
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1D9931800C30; Mon, 21 Jul 2025 05:59:49 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CE2C6195FD06; Mon, 21 Jul 2025 05:59:51 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.190])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 33E59195608D; Mon, 21 Jul 2025 05:59:46 +0000 (UTC)
+ id D1642195608D; Mon, 21 Jul 2025 05:59:49 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 05/12] hw/net/npcm_gmac.c: Correct test for when to reallocate
- packet buffer
-Date: Mon, 21 Jul 2025 13:59:20 +0800
-Message-ID: <20250721055927.75951-6-jasowang@redhat.com>
+Subject: [PULL 06/12] hw/net/npcm_gmac.c: Drop 'buf' local variable
+Date: Mon, 21 Jul 2025 13:59:21 +0800
+Message-ID: <20250721055927.75951-7-jasowang@redhat.com>
 In-Reply-To: <20250721055927.75951-1-jasowang@redhat.com>
 References: <20250721055927.75951-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -85,47 +84,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In gmac_try_send_next_packet() we have code that does "if this block
-of data won't fit in the buffer, reallocate it".  However, the
-condition it uses is
-  if ((prev_buf_size + tx_buf_len) > sizeof(buf))
-where buf is a uint8_t *.
+We use the local variable 'buf' only when we call dma_memory_read(),
+and it is always set to &tx_send_buffer[prev_buf_size] immediately
+before both of those calls.  So remove the variable and pass
+tx_send_buffer + prev_buf_size to dma_memory_read().
 
-This means that sizeof(buf) is always 8 bytes, and the condition will
-almost always be true, so we will reallocate the buffer more often
-than we need to.
+This fixes in passing a place where we set buf = tx_send_buffer
+but never used that value because we always updated buf to
+something else later before using it.
 
-Correct the condition to test against tx_buffer_size, which is
-where we track how big the allocated buffer is.
-
+Coverity: CID 1534027
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/npcm_gmac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/net/npcm_gmac.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
 diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
-index a0050a7725..0c17ae9b2a 100644
+index 0c17ae9b2a..5e32cd3edf 100644
 --- a/hw/net/npcm_gmac.c
 +++ b/hw/net/npcm_gmac.c
-@@ -569,7 +569,7 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
-         tx_buf_len = TX_DESC_TDES1_BFFR1_SZ_MASK(tx_desc.tdes1);
-         buf = &tx_send_buffer[prev_buf_size];
+@@ -516,7 +516,6 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
+     uint32_t desc_addr;
+     struct NPCMGMACTxDesc tx_desc;
+     uint32_t tx_buf_addr, tx_buf_len;
+-    uint8_t *buf = tx_send_buffer;
+     uint32_t prev_buf_size = 0;
+     int csum = 0;
  
--        if ((prev_buf_size + tx_buf_len) > sizeof(buf)) {
-+        if ((prev_buf_size + tx_buf_len) > tx_buffer_size) {
+@@ -567,16 +566,15 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
+         tx_buf_addr = tx_desc.tdes2;
+         gmac->regs[R_NPCM_DMA_CUR_TX_BUF_ADDR] = tx_buf_addr;
+         tx_buf_len = TX_DESC_TDES1_BFFR1_SZ_MASK(tx_desc.tdes1);
+-        buf = &tx_send_buffer[prev_buf_size];
+ 
+         if ((prev_buf_size + tx_buf_len) > tx_buffer_size) {
              tx_buffer_size = prev_buf_size + tx_buf_len;
              tx_send_buffer = g_realloc(tx_send_buffer, tx_buffer_size);
-             buf = &tx_send_buffer[prev_buf_size];
-@@ -591,7 +591,7 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
-             tx_buf_len = TX_DESC_TDES1_BFFR2_SZ_MASK(tx_desc.tdes1);
-             buf = &tx_send_buffer[prev_buf_size];
+-            buf = &tx_send_buffer[prev_buf_size];
+         }
  
--            if ((prev_buf_size + tx_buf_len) > sizeof(buf)) {
-+            if ((prev_buf_size + tx_buf_len) > tx_buffer_size) {
+         /* step 5 */
+-        if (dma_memory_read(&address_space_memory, tx_buf_addr, buf,
++        if (dma_memory_read(&address_space_memory, tx_buf_addr,
++                            tx_send_buffer + prev_buf_size,
+                             tx_buf_len, MEMTXATTRS_UNSPECIFIED)) {
+             qemu_log_mask(LOG_GUEST_ERROR, "%s: Failed to read packet @ 0x%x\n",
+                         __func__, tx_buf_addr);
+@@ -589,15 +587,14 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
+             tx_buf_addr = tx_desc.tdes3;
+             gmac->regs[R_NPCM_DMA_CUR_TX_BUF_ADDR] = tx_buf_addr;
+             tx_buf_len = TX_DESC_TDES1_BFFR2_SZ_MASK(tx_desc.tdes1);
+-            buf = &tx_send_buffer[prev_buf_size];
+ 
+             if ((prev_buf_size + tx_buf_len) > tx_buffer_size) {
                  tx_buffer_size = prev_buf_size + tx_buf_len;
                  tx_send_buffer = g_realloc(tx_send_buffer, tx_buffer_size);
-                 buf = &tx_send_buffer[prev_buf_size];
+-                buf = &tx_send_buffer[prev_buf_size];
+             }
+ 
+-            if (dma_memory_read(&address_space_memory, tx_buf_addr, buf,
++            if (dma_memory_read(&address_space_memory, tx_buf_addr,
++                                tx_send_buffer + prev_buf_size,
+                                 tx_buf_len, MEMTXATTRS_UNSPECIFIED)) {
+                 qemu_log_mask(LOG_GUEST_ERROR,
+                               "%s: Failed to read packet @ 0x%x\n",
+@@ -615,7 +612,6 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
+             net_checksum_calculate(tx_send_buffer, length, csum);
+             qemu_send_packet(qemu_get_queue(gmac->nic), tx_send_buffer, length);
+             trace_npcm_gmac_packet_sent(DEVICE(gmac)->canonical_path, length);
+-            buf = tx_send_buffer;
+             prev_buf_size = 0;
+         }
+ 
 -- 
 2.42.0
 
