@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D7EB0C544
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20FDAB0C542
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:34:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udqYo-000537-5g; Mon, 21 Jul 2025 09:28:06 -0400
+	id 1udqYg-0002oh-Es; Mon, 21 Jul 2025 09:27:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYM-0000Kx-O1
+ id 1udqYM-0000M6-Py
  for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:42 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYJ-0005KJ-JR
+ id 1udqYK-0005Kd-5M
  for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:38 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3a6e2d85705so2163797f8f.0
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:34 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3a522224582so2143630f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753104453; x=1753709253; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753104454; x=1753709254; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nIp1SgM0w0YUcpzxsTa6KoX/eMZJ6QjBTnu86Ie5yyQ=;
- b=ID0CBs42M2bJa591kwlwCN3Fb/Gtcalv4G4dYkpJK7Rb5nZK4OBywgrniZV0Jj/ktz
- GAvA7gnY0xjAKzxaRK4db8NfZroHIq260KYxpxfi8vF+l1tz9wnXzTdxJbjIUCW9Wi98
- QCtTk2HFaSbo+gAUqE8ZWDrS5r+uFJIqKRadNcrBKpcOWod2TgSlBWeHWf/1sW3kTMMD
- TJM3kK54hBpSxUA6RiJ0EAiWKNMeH8Kn5BOlvQKu29CYEXFimPzLIErz3FX29wAeQK4u
- pWVJGLPsw/ybP2OMBGWipOxSdeovSqJSI33VfMi7h0YWYQrcl6ugRZDQ5EgVsM5QAUmX
- wS9Q==
+ :reply-to; bh=UY1tdCp4tGowHUgLzuBpKHat0vai5QJSXiFEppO4oFI=;
+ b=FJAIK4EMEZHgjvQYV1XtuAddOGWYHrNFXcHAnz7T9kd7QIft4T9OnCFavrX+p8E5n4
+ F2/LBKus8Ee+YS+mGnRSYEsnzCeYtfhlFS88z4TPRSMykBnHqIMcIGyjSQanZ9bN4jFQ
+ ftZjx9OZgxDN16ocsNbKW3L/Vxxh52ZhPzKSLU57+k0ys9FtfPKnS2XHIp9ALTQjdTi7
+ Vi7BxsmbgWbTuOcZUPGEho5LPiXcGMMr+zq8zdCj2Jfqan9d9duOeYCYTOta8FSH84nk
+ a/+T2o9BXtMIt7Nufsz4nAUcQSJ5tiDNGvVZ6nNb7AEw5oLAhNGI3BxzWMcHZvGA75N/
+ I1BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753104453; x=1753709253;
+ d=1e100.net; s=20230601; t=1753104454; x=1753709254;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nIp1SgM0w0YUcpzxsTa6KoX/eMZJ6QjBTnu86Ie5yyQ=;
- b=s94fSXG6I2UDq/P/wE8O/lCXE3kOvvTNkdaEhp8/JvmFMWWc9AlOJpVyWUiIjvnDWE
- aQ336WttjrhEmr2EnpVy21r3nlTJzizleevpK49Q437YMIIyBc0kDkHkEcQYPENsNi4C
- ONMbQNt3dxCyjcVYV5qns5qpb5T2EfqP4mmgAMQWzFwPBU3BdKkHdhhCN9akGt6rtihA
- M19rRLthITZQ5H6Krq1DTGjxkXMvYQ/K233JEnyZEMxfwthJBKVb+9Ggyz+jRsEUZivI
- QxAwhRZkld5Eqs7SKcDm40Ryil5l1ASrnq1CHfQnmgw4khNADy37SEafszKwKbubYIFw
- G6aw==
-X-Gm-Message-State: AOJu0YxGZYRzUqkwW6PzJj04CRYyfy0sH7uSKj2JNenpKzlGmPqo1ihS
- VcuLTU3GrFrIfg85h25qTc8djthquKIwXlkezVMvmRgZEmVvReH4UyZQVBkIJCY/E3q1Q5k1CL8
- ySSB7
-X-Gm-Gg: ASbGncsQ4YAJu6QL4sR1RWt5yK4lXjDSajjBUndOBoLTxDFlE4xG0gdRtLjc2luwLZ+
- jNx8LNZVVmcrbCwZlsgp3tta2EZll1mDlCHi3VprlwOrL9kWpoh9JsQJDt6foOTIjhppOSCOcie
- A1sFzPOzOEMlyrYS87IhJKKz8er/bDn6glrY4gqPJepYy45Np77oRFDxoR0Kt4HIq5PqDqSLn+U
- Eqtj9tkdd2btmx3VUc6ck3arMh14npAfS1G3ftvsR+RAhDjs6SWU8ZDD+vlZnaajlKPk4JKv5M0
- qt6TayzPr1QV6qZ/PyFJ2aBjsYoHFbG6AVkhNyY22JlAYrEzpVshN8KvRCuXcAv8gkXwhOiq4CI
- /vQRwtEeYYU+f5W3Woj9fe0PnOfjv
-X-Google-Smtp-Source: AGHT+IGAtJjUOryD8JmZZAHOMQyFlsUHbewore71K7Riv8BRKOiXtFmq5ZFf71rThKwLr25ufQrQdA==
-X-Received: by 2002:a5d:5d10:0:b0:3b3:a6c2:1a10 with SMTP id
- ffacd0b85a97d-3b60dd641d0mr19346661f8f.12.1753104453217; 
- Mon, 21 Jul 2025 06:27:33 -0700 (PDT)
+ bh=UY1tdCp4tGowHUgLzuBpKHat0vai5QJSXiFEppO4oFI=;
+ b=BpNKitjdgTYzdxY914FrB0xz1Mwk3ygFxBCIsCvTw1kbd8I/ioMKtCApP/Vg3aHGnN
+ OPEBni33spB+0CrUtyXEczL+RYaUsSsUvtyd2DRfuAPJEYwsU2JjDnWlKPGuwvWWzZ5P
+ S9jz6+fuj+oUlzkNo31J94ERmdGJBQ2/dzjD+yxliRskL/yfGXYKMojkQL/gLfgP7ADA
+ njaPGsiI0ceQwMnbY1qAH+euQ1v4sTxqPxj5WkBtonYOdCbxdOQBqU89zlQ9DS7QC/Z0
+ jP2OtdvUtjr1LEkRXc+mxaRuzVPouxid6oV2DviB3dghMI1Q/hjPk816hnitCvjf2V15
+ LDoA==
+X-Gm-Message-State: AOJu0YxNLC0boiNQCqKUE/0kQUcHL2ZtmgkYdcKOV3rwWr5d/1BfUToC
+ z9tKnccqho7mdGrkppIndz2k1IgGrKCgxgp10z2vLNHWaxBzIqyd7k/B29zTIlUS+G6UkHB/IaW
+ Wqaw6
+X-Gm-Gg: ASbGnctEApB7j/suFsVpgfUDErwfpLlw95tRCM5Uwe3E/zUHn63LKwlkeqTTcC9sH0/
+ hfR70kVtOpeXfV2RZE3nSjLGLuQMoEC0F1TOeaXz9knIQbbFvXPxWpoC4MFx/GZwm4jOjajFD2D
+ ojKrhciZsKmN61PWO/UXsa2ejVVwICIqrBlOYL7Byfz7BwZ1yjhlAjhn70ard7LtFOBfLKTq+xb
+ uhs7RHzldV9ARui9xKrALkOvVBlH3N80MmRZ1Xlut9OY6wVncDeOftrjUN1410DrYZus0cjUbI5
+ 54vUozBB1JtSQjYtiMX7FV86VKXA+xMHjoCo5hv6kiexK49HJtYI3DS7GW2GalyIBOLHCcuYWqH
+ 0QqC4mFhDNV2gQ+R2PNYd7Dd8h0Rw
+X-Google-Smtp-Source: AGHT+IHtuG9a6qR47X/EL5GyALSmpxcz9atnvPL6pDGK5gMnYKSYIaN5pfVveLQf9XSPyT0kmgxz5g==
+X-Received: by 2002:a05:6000:4602:b0:3b5:e6f2:ab4d with SMTP id
+ ffacd0b85a97d-3b60dd997cbmr14880359f8f.42.1753104454091; 
+ Mon, 21 Jul 2025 06:27:34 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.32
+ ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.33
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Jul 2025 06:27:32 -0700 (PDT)
+ Mon, 21 Jul 2025 06:27:33 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/20] target/arm: Correct sense of FPCR.AH test for FMAXQV and
- FMINQV
-Date: Mon, 21 Jul 2025 14:27:11 +0100
-Message-ID: <20250721132718.2835729-15-peter.maydell@linaro.org>
+Subject: [PULL 15/20] target/arm: Don't nest H() macro calls in SVE DO_REDUCE
+Date: Mon, 21 Jul 2025 14:27:12 +0100
+Message-ID: <20250721132718.2835729-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250721132718.2835729-1-peter.maydell@linaro.org>
 References: <20250721132718.2835729-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,42 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we implemented the FMAXQV and FMINQV insns we accidentally
-inverted the sense of the FPCR.AH test, so we gave the AH=1 behaviour
-when FPCR.AH was zero, and vice-versa.  (The difference is limited to
-handling of negative zero and NaN inputs.)
+In the part of the SVE DO_REDUCE macro used by the SVE2p1 FMAXQV,
+FMINQV, etc insns, we incorrectly applied the H() macro twice when
+calculating an offset to add to the vn pointer.  This has no effect
+on little-endian hosts but on big-endian hosts the two invocations
+will cancel each other out and we will access the wrong part of the
+array.
+
+The "s * 16" part of the expression is already aligned, so we only
+need to use the H macro on the "e". Correct the macro usage.
 
 Fixes: 1de7ecfc12d05 ("target/arm: Implement FADDQV, F{MIN, MAX}{NM}QV for SVE2p1")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250718173032.2498900-8-peter.maydell@linaro.org
+Message-id: 20250718173032.2498900-9-peter.maydell@linaro.org
 ---
- target/arm/tcg/translate-sve.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/arm/tcg/sve_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index fc76624b5a1..2ed440aff15 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -4020,7 +4020,7 @@ static gen_helper_gvec_3_ptr * const fmaxqv_ah_fns[4] = {
-     gen_helper_sve2p1_ah_fmaxqv_s, gen_helper_sve2p1_ah_fmaxqv_d,
- };
- TRANS_FEAT(FMAXQV, aa64_sme2p1_or_sve2p1, gen_gvec_fpst_arg_zpz,
--           (s->fpcr_ah ? fmaxqv_fns : fmaxqv_ah_fns)[a->esz], a, 0,
-+           (s->fpcr_ah ? fmaxqv_ah_fns : fmaxqv_fns)[a->esz], a, 0,
-            a->esz == MO_16 ? FPST_A64_F16 : FPST_A64)
- 
- static gen_helper_gvec_3_ptr * const fminqv_fns[4] = {
-@@ -4032,7 +4032,7 @@ static gen_helper_gvec_3_ptr * const fminqv_ah_fns[4] = {
-     gen_helper_sve2p1_ah_fminqv_s, gen_helper_sve2p1_ah_fminqv_d,
- };
- TRANS_FEAT(FMINQV, aa64_sme2p1_or_sve2p1, gen_gvec_fpst_arg_zpz,
--           (s->fpcr_ah ? fminqv_fns : fminqv_ah_fns)[a->esz], a, 0,
-+           (s->fpcr_ah ? fminqv_ah_fns : fminqv_fns)[a->esz], a, 0,
-            a->esz == MO_16 ? FPST_A64_F16 : FPST_A64)
- 
- /*
+diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
+index 105cc5dd122..bf894f0bf13 100644
+--- a/target/arm/tcg/sve_helper.c
++++ b/target/arm/tcg/sve_helper.c
+@@ -4509,7 +4509,7 @@ void helper_sve2p1_##NAME##qv_##SUF(void *vd, void *vn, void *vg,     \
+         TYPE data[ARM_MAX_VQ];                                        \
+         for (unsigned s = 0; s < segments; s++) {                     \
+             uint16_t pg = *(uint16_t *)(vg + H1_2(s * 2));            \
+-            TYPE nn = *(TYPE *)(vn + H(s * 16 + H(e)));               \
++            TYPE nn = *(TYPE *)(vn + (s * 16 + H(e)));                \
+             data[s] = (pg >> e) & 1 ? nn : IDENT;                     \
+         }                                                             \
+         *(TYPE *)(vd + H(e)) = FUNC##_reduce(data, status, segments); \
 -- 
 2.43.0
 
