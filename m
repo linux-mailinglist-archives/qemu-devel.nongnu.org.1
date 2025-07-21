@@ -2,99 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20BB6B0C957
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 19:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E8BB0C99E
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 19:24:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udu6u-00034R-KP; Mon, 21 Jul 2025 13:15:32 -0400
+	id 1uduE9-0006KL-PC; Mon, 21 Jul 2025 13:23:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1udu64-0002Ow-Fn
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 13:14:41 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
+ id 1uduE3-00069t-9o
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 13:22:55 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1udu62-00005w-6x
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 13:14:40 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 34DB0138FC3;
- Mon, 21 Jul 2025 20:14:17 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9C5FF24BD75;
- Mon, 21 Jul 2025 20:14:32 +0300 (MSK)
-Message-ID: <bd3c403c-6aa2-4583-a50a-5cc5fcaca2b8@tls.msk.ru>
-Date: Mon, 21 Jul 2025 20:14:31 +0300
+ (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
+ id 1uduDz-0001K4-OF
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 13:22:54 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bm6cr4XCcz6D9Bg;
+ Tue, 22 Jul 2025 01:21:16 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+ by mail.maildlp.com (Postfix) with ESMTPS id 52D9214033C;
+ Tue, 22 Jul 2025 01:22:39 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.155.20) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 21 Jul 2025 19:22:38 +0200
+To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
+ <jonathan.cameron@huawei.com>, <fan.ni@samsung.com>, <dave@stgolabs.net>
+CC: <linuxarm@huawei.com>, <shiju.jose@huawei.com>
+Subject: [PATCH qemu v4 0/7] hw/cxl: Update CXL events to rev3.2 and add
+ maintenance support for memory repair features 
+Date: Mon, 21 Jul 2025 18:22:21 +0100
+Message-ID: <20250721172228.2118-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: apparent race condition in mttcg memory handling
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- QEMU Development <qemu-devel@nongnu.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>
-References: <abe00af4-3af5-4c6b-8443-b7350a4d9349@tls.msk.ru>
- <96201a23-784b-4268-b011-a6912175d237@linaro.org>
- <c0878723-62e3-47cc-810e-6ba8a0bd30cd@linaro.org>
- <8a50f07d-ef0b-43b1-b49c-335ca6a7ff70@linaro.org>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <8a50f07d-ef0b-43b1-b49c-335ca6a7ff70@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.48.155.20]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ frapeml500007.china.huawei.com (7.182.85.172)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56; envelope-from=shiju.jose@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,35 +65,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  <shiju.jose@huawei.com>
+From: shiju.jose--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21.07.2025 19:29, Pierrick Bouvier wrote:
-> On 7/21/25 9:23 AM, Pierrick Bouvier wrote:
-..
->> looks like a good target for TSAN, which might expose the race without
->> really having to trigger it.
->> https://www.qemu.org/docs/master/devel/testing/main.html#building-and- 
->> testing-with-tsan
+From: Shiju Jose <shiju.jose@huawei.com>
 
-I think I tried with TSAN and it gave something useful even.
-The prob now is to reproduce the thing by someone more familiar
-with this stuff than me :)
+Add updates for the CXL spec rev3.2 changes, in the CXL events reporting
+and QMP command to inject CXL events.
 
->> Else, you can reproduce your run using rr record -h (chaos mode) [1],
->> which randomly schedules threads, until it catches the segfault, and
->> then you'll have a reproducible case to debug.
-> 
-> In case you never had opportunity to use rr, it is quite convenient, 
-> because you can set a hardware watchpoint on your faulty pointer (watch 
-> -l), do a reverse-continue, and in most cases, you'll directly reach 
-> where the bug happened. Feels like cheating.
+Add maintenance support and emulation support for memory Post Package
+Repair(PPR) and memory sparing control features.
 
-rr is the first thing I tried.  Nope, it's absolutely hopeless.   It
-tried to boot just the kernel for over 30 minutes, after which I just
-gave up.
+Add support for reporting the memory sparing event record.
 
-Thanks,
+Changes
+=======
+v3 -> v4:
+1. Took patches applied by Jonathan to recent tag 'cxl-2025-07-03'.
+2. Add few more improvements to maintenance PPR[ patch 6] and sparing
+   [patch 7] feature patches.
 
-/mjt
+v2 -> v3:
+1. Changes for the feedback from Jonathan on v2.
+   https://lore.kernel.org/all/20250619151619.1695-1-shiju.jose@huawei.com/
+  1.1. https://lore.kernel.org/all/20250620150342.000055aa@huawei.com/
+    - Wrap this is sub 70 and should aim for about 75 for commit descriptions.
+    - hdr->ld_id = ld_id; to stw_le_p(&hdr->ld_id, ld_id); in cxl_assign_event_header()
+    - Make maint_class, maint_subclass, ld_id and head_id as optional parameters in QMP for
+      relevant events
+    - In QMP rename maint-class to maint-op-class, maint_subclass to maint-op-subclass
+      In functions, rename parameters, class to maint_op_class, subclass to maint_op_subclass etc.  
+  1.2. https://lore.kernel.org/all/20250620151314.0000535c@huawei.com/ 
+    - Make cme-ev-flags and cme-count for general media events as optional parameters in the QMP.
+    - Make cme-ev-flags and cvme-count for DRAM event as optional parameters in the QMP.
+  1.3. https://lore.kernel.org/all/20250620151655.00001cea@huawei.com/
+    - Add variable declarations at start of the local scope.
+  1.4. https://lore.kernel.org/all/20250620154052.00002a17@huawei.com/
+    - Adjust indent style  in few places.
+    - Add support for produce a Memory Sparing Event Record and enabled for
+      ppr maintenance request.
+    - Replaced hard coded values in few switch-cases with macro definition in few places.
+    - Replaced CXL_MBOX_UNSUPPORTED with CXL_MBOX_INVALID_INPUT.
+  1.5. https://lore.kernel.org/all/20250620154813.00002bbd@huawei.com/
+    - Add support for memory sparing resource availability.
+    - LOG_UNIMP logs for sparing maint op removed.
+    - Replaced CXL_MBOX_UNSUPPORTED with CXL_MBOX_INVALID_INPUT.
+               
+v1 -> v2:
+1. QMP CXL event injection code has updated for the following
+   change in CXL spec r3.2 Table 8-55. Common Event Record Format,
+   field: Event Record Flags. Length of this field has changed
+   from 2 bytes to 3 bytes. 
+2. Rebase to recent tag 'cxl-2025-06-10'.
+
+Davidlohr Bueso (1):
+  hw/cxl: Add Maintenance support
+
+Shiju Jose (6):
+  hw/cxl/events: Update for rev3.2 common event record format
+  hw/cxl/events: Updates for rev3.2 general media event record
+  hw/cxl/events: Updates for rev3.2 DRAM event record
+  hw/cxl/events: Updates for rev3.2 memory module event record
+  hw/cxl/cxl-mailbox-utils: Move declaration of scrub and ECS feature
+    attributes in cmd_features_set_feature()
+  hw/cxl: Add emulation for memory sparing control feature
+
+ hw/cxl/cxl-events.c         |   3 +-
+ hw/cxl/cxl-mailbox-utils.c  | 579 +++++++++++++++++++++++++++++++++++-
+ hw/mem/cxl_type3.c          | 266 ++++++++++++++++-
+ hw/mem/cxl_type3_stubs.c    |  41 ++-
+ include/hw/cxl/cxl_device.h | 142 ++++++++-
+ include/hw/cxl/cxl_events.h |  85 +++++-
+ qapi/cxl.json               | 106 ++++++-
+ 7 files changed, 1180 insertions(+), 42 deletions(-)
+
+-- 
+2.43.0
+
 
