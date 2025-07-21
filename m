@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AEC8B0C6F1
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 16:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 382C3B0C6F3
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 16:53:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udrsl-00054D-Oz; Mon, 21 Jul 2025 10:52:47 -0400
+	id 1udrtC-0005cr-Kv; Mon, 21 Jul 2025 10:53:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1udrsi-00050j-04
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 10:52:44 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1udrss-0005Hf-NV
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 10:52:56 -0400
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1udrsf-00083y-R2
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 10:52:43 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1udrsq-00085s-Jl
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 10:52:54 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 1B5BE1F451;
- Mon, 21 Jul 2025 14:52:40 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 156AE1F451;
+ Mon, 21 Jul 2025 14:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753109560; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1753109571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a5a6SKNRAMD5zv913CihQEEEPbDm5frsENKGt3dH1SM=;
- b=d/zmUJgU4WLT6o9adu93F8MMdplDr7uVgMr3eH/sLPz8SVb+0QfR1so/zlXRG+V/r1MMZd
- cOtvzcjvh3d+iXRycFtKRJZ6CrI/y2PjsvGmR8FqGCQ5Ycfa+xfP0YJYGkAdvExr4z+3NO
- +hiYGzBIYwW6MU0HhMLKANPD3igwd6I=
+ bh=dQgoUKRwyNmoJx8QnQrXOHpFEDBxMGN62+igMcDQTuI=;
+ b=ekYc50jg6jlNeVVigVOtcPpjtCWf6o3sGUo/sjpshN7kMiphitxlygBNL4yDbWMAXEVdPT
+ ZvAMBsGa0+pyb57xLhfIjm53DfO6Qaypj2E0NoB37rU7KFIMO+6ecosw1RwAj7BkzlNkIj
+ 0EWcoNpY1fAq3jzhs4wlcgXFaVLPFKE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753109560;
+ s=susede2_ed25519; t=1753109571;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a5a6SKNRAMD5zv913CihQEEEPbDm5frsENKGt3dH1SM=;
- b=05FjlguOk3+ZsHnQwvr2nhKUzhsmtu3k9HDhVe0Mee0h7kmmcZyyFMF3R9JNQSEM/yN7dB
- 6XxktKZmdJMfwuCg==
+ bh=dQgoUKRwyNmoJx8QnQrXOHpFEDBxMGN62+igMcDQTuI=;
+ b=E3+MIttK+kI/SFIkCCK8GjgizvSnofj01h26vIogEP9U0TO1sre5POqoGUDzOYz1f8P55K
+ EMVe/4UZWJCI+bBQ==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b="d/zmUJgU";
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=05FjlguO
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753109560; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1753109571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a5a6SKNRAMD5zv913CihQEEEPbDm5frsENKGt3dH1SM=;
- b=d/zmUJgU4WLT6o9adu93F8MMdplDr7uVgMr3eH/sLPz8SVb+0QfR1so/zlXRG+V/r1MMZd
- cOtvzcjvh3d+iXRycFtKRJZ6CrI/y2PjsvGmR8FqGCQ5Ycfa+xfP0YJYGkAdvExr4z+3NO
- +hiYGzBIYwW6MU0HhMLKANPD3igwd6I=
+ bh=dQgoUKRwyNmoJx8QnQrXOHpFEDBxMGN62+igMcDQTuI=;
+ b=ekYc50jg6jlNeVVigVOtcPpjtCWf6o3sGUo/sjpshN7kMiphitxlygBNL4yDbWMAXEVdPT
+ ZvAMBsGa0+pyb57xLhfIjm53DfO6Qaypj2E0NoB37rU7KFIMO+6ecosw1RwAj7BkzlNkIj
+ 0EWcoNpY1fAq3jzhs4wlcgXFaVLPFKE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753109560;
+ s=susede2_ed25519; t=1753109571;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a5a6SKNRAMD5zv913CihQEEEPbDm5frsENKGt3dH1SM=;
- b=05FjlguOk3+ZsHnQwvr2nhKUzhsmtu3k9HDhVe0Mee0h7kmmcZyyFMF3R9JNQSEM/yN7dB
- 6XxktKZmdJMfwuCg==
+ bh=dQgoUKRwyNmoJx8QnQrXOHpFEDBxMGN62+igMcDQTuI=;
+ b=E3+MIttK+kI/SFIkCCK8GjgizvSnofj01h26vIogEP9U0TO1sre5POqoGUDzOYz1f8P55K
+ EMVe/4UZWJCI+bBQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 88106136A8;
- Mon, 21 Jul 2025 14:52:39 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 856B9136A8;
+ Mon, 21 Jul 2025 14:52:50 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id vKmZETdUfmgXbgAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 21 Jul 2025 14:52:39 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id YLtsEUJUfmghbgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 21 Jul 2025 14:52:50 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
@@ -79,37 +77,30 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang?=
  <berrange@redhat.com>, Peter Xu <peterx@redhat.com>, Philippe
  =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, =?utf-8?Q?Marc-Andr?=
  =?utf-8?Q?=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH 3/4] migration: activate TLS thread safety workaround
-In-Reply-To: <20250718150514.2635338-4-berrange@redhat.com>
+Subject: Re: [PATCH 4/4] crypto: add tracing & warning about GNUTLS
+ countermeasures
+In-Reply-To: <20250718150514.2635338-5-berrange@redhat.com>
 References: <20250718150514.2635338-1-berrange@redhat.com>
- <20250718150514.2635338-4-berrange@redhat.com>
-Date: Mon, 21 Jul 2025 11:52:36 -0300
-Message-ID: <877c01lhor.fsf@suse.de>
+ <20250718150514.2635338-5-berrange@redhat.com>
+Date: Mon, 21 Jul 2025 11:52:47 -0300
+Message-ID: <874iv5lhog.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1B5BE1F451
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.41 / 50.00]; BAYES_HAM(-2.90)[99.58%];
+X-Spamd-Result: default: False [-4.24 / 50.00]; BAYES_HAM(-2.94)[99.74%];
  NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
- FUZZY_RATELIMITED(0.00)[rspamd.com];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[]; RCVD_TLS_ALL(0.00)[];
- RCPT_COUNT_SEVEN(0.00)[7];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+ NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
+ MIME_TRACE(0.00)[0:+]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Score: -4.41
+ FUZZY_RATELIMITED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[];
+ FROM_HAS_DN(0.00)[]; MISSING_XM_UA(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email, suse.de:mid,
+ imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.24
 Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -137,16 +128,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> When either the postcopy or return path capabilities are
-> enabled, the migration code will use the primary channel
-> for bidirectional I/O.
+> We want some visibility on stderr when the GNUTLS thread
+> safety countermeasures are activated, to encourage people
+> to get the real fix deployed (once it exists). Some trace
+> points will also help if we see any further wierd crash
+> scenario we've not anticipated.
 >
-> If either of those capabilities are enabled, the migration
-> code needs to mark the channel as expecting concurrent I/O
-> in order to activate the thread safety workarounds for
-> GNUTLS bug 1717
->
-> Closes: https://gitlab.com/qemu-project/qemu/-/issues/1937
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
