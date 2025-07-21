@@ -2,91 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 723D8B0CBA8
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 22:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47366B0CBC9
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 22:24:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udwy7-0002oV-IA; Mon, 21 Jul 2025 16:18:39 -0400
+	id 1udx3a-0000R1-UW; Mon, 21 Jul 2025 16:24:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1udwwH-0001LK-R6
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 16:16:53 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1udwwF-0000WP-V3
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 16:16:45 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-6077dea37easo7439300a12.3
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 13:16:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1753129001; x=1753733801; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=E1hFrAOY/afLayIsqHlCuoTIyS4m9SJm/laR3v05IW8=;
- b=BtrqHIRvpcbTn9sQ6VB0VMBk+3MK0/Aid3sYvwBOHUuo8CETV7Lg26U9at7GROXKsw
- WKQbo8+fYsv7BwAFFy3afd9u3oJDZCG8AVhowakw/FHVZ8pPQQJngx9gakpPVPzM08cp
- NjJjvJo0YwqRKctwC4aEDoENxNhiFJIbzgPcGOaCRyDt9B6IhKNTbCrAhw4znjgROdDB
- W0U3D8cpsrhnMihrAF52392q0AZnjj7+6UYYxaePmf83GbfJOwINiAncbNE8nO80Cs3F
- +4lC0dwpWudhli0jF6a4zvmzeyZ980/NlBeKSHdrp2CXEHQI6uvp7a/6HzEF3frYNch3
- C8WQ==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1udx2b-00007d-Tc
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 16:23:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1udx2W-0002VI-PY
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 16:23:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753129390;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SW2YZH8VPu84epFVDwEIGlufhFH/BOapke+MHbnLBRU=;
+ b=W6mAD80LOJHfWliYDg2CPYw5w9betvlW1P6IN10iqx5+dJ/hXlEwF5bn5/VDXByN8aqJQ5
+ agY5BtmJV6wJX2dbVQ99ZbtzzX38hq1lAx3sqAj9vs+uU7gXpwMgn++Vh402o4yHs3tQOE
+ sPjLfqvJMid4UkPUciTYoLZtl/aZCXI=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-101-pv9INo2_P368mkdFWXlDIQ-1; Mon, 21 Jul 2025 16:23:08 -0400
+X-MC-Unique: pv9INo2_P368mkdFWXlDIQ-1
+X-Mimecast-MFC-AGG-ID: pv9INo2_P368mkdFWXlDIQ_1753129388
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-235196dfc50so46286525ad.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 13:23:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753129001; x=1753733801;
+ d=1e100.net; s=20230601; t=1753129387; x=1753734187;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E1hFrAOY/afLayIsqHlCuoTIyS4m9SJm/laR3v05IW8=;
- b=CJRlDs+qlF2dBqEyDLbJuK1afOPYo2PQXgr8zyEliaRYkUp4MyH/Qnv509iJ+85V4P
- 3s7SE+ejWTLZ6/rtEyX0QRgI9hGsgMcSEU63HbWPBdlGGigeNMlTC8XrLUYGnB3dN4Ix
- PRTCPKZANeBPq9fqCj5xh9tKY5KRgC0LDGC/G9yJGIf/o2U6SUGMSQ5hm3OMOxWlZ9NI
- dTchBc9ApiQyC9sBfk9SCAY0y6fMekk8/ohRkakjqKpGR7gnGfTXmWnx4zWgE9ep+uhz
- 1eXopl7okdpcau4vnVQNfAo5vb3yuG782uXzcCn5bh95SebtupYl2viZWiFt8Ssjnp3x
- yoEw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW23RKw2EYnDYcTxha8PUovg+7WuxMWg16bkYpum7+aI3K1Lm/nzUK4a9gJC7ti/2G2L/YSgQYO6bgi@nongnu.org
-X-Gm-Message-State: AOJu0Yz+6t6Fii64Km/KUKyFuL/heIwxQlyLH8fWV2X1ntdAWBPILSvT
- UUUPyRyS1oLIOFuNSDjsprNlGa4uFOoiMr6RJjW9p6zFikpo9Acqypzh93o9UnWatpN6l/Q+rII
- anTDVdMjSiPwvIfXlPIMzPbQOmEqH3Dg=
-X-Gm-Gg: ASbGncua1NPh53fM+zXaOJW9MBAu6go0pN9wvQxmlvc619J6Qb++3E4c18F7gulF7uA
- OaN9+7oYLKwxryP+GjLwr+7dVW6Y/KsVQgcHfM4kpdpM5MNn7sQ78el09s5SNPfvba1u3DO/Nhv
- eukKRG32VLcDJoe4QdHjvxy+a2WbXHLsd2YDIhYpKrvq729oP4+VaNe1gjSMCy+bZYY+AD+A8iG
- H897A==
-X-Google-Smtp-Source: AGHT+IGMcLuEDV08bq6NnW+gI87WuV/LuF6GR5BESOUb0zqsbno7/eKvkflJ2NAG+XwW7hTuGqMLUUmoYDFxUdm4cwk=
-X-Received: by 2002:a05:6402:354a:b0:612:d8b3:a9e7 with SMTP id
- 4fb4d7f45d1cf-612d8b3af64mr10689628a12.5.1753129000560; Mon, 21 Jul 2025
- 13:16:40 -0700 (PDT)
+ bh=SW2YZH8VPu84epFVDwEIGlufhFH/BOapke+MHbnLBRU=;
+ b=RdZCetYWvKBtDGXB4mbf5KeKcvu1joU2urwOVzCHfgIwHZp1UFaLTvIP9vXFhmnUZU
+ pXcEX8fa2zNouqJq8/KpdE/lKG4g8GmOXkKVUCq9M/ICL4hh6CbHpexaIbNfGVK9eh0c
+ XOIbgds+jt0OW43JXnDVyYSpezaP0ZCEHzP6yIhFbNPDCC1DGfJPKtDXJnSCRPrUKI4x
+ 9aDfHG1IdNbqygHGGjXociwyhOlmPCD1plOHMQBmngaGnyaupSY1wsmbjoJiFlArqCvm
+ JmLoKpLjl6ncgBdHqAyb3BxM6GmqOqEWgNV8UxE/wQHEOE1nx2qniAYRkIxUzjHDBPIx
+ rSeg==
+X-Gm-Message-State: AOJu0Yy28a3cqYjPEVosHBOxmrq6YLrEk1rFselj+NdSjs9lIVkxa2BB
+ 2zCxnB2W4L88gcYtzAVoMLT98Wi6ChTIwsdT+IBziEDh+S511PO3uUPeMiim+dcNRE+1FxmCDnC
+ YrhBw7XLLOMDal8sctTBeEKQ7AEU3oIsCCrsBAswr9VklsdsHYR9OE1uj8Ud6bj2TyYHLQwwhwb
+ fcL0dYZCtHU7KUicF7Y1hjsqNfRFOWr40qnj2JtGQ=
+X-Gm-Gg: ASbGncuHV7Pj5/7CuEj++GT13WqBMx4PyMFuNLEYhK5h+pz44IyRxUtK7Xh5qOTi30U
+ NX/I1YkVKf1Z5j+lHeL8Idg2Qmn3GtTeG1QPfqxHvyv/mrzE/qj5fGVfKMskX5b1muUklEcGNRp
+ PW/rLaliSMRBPKkxSCDnpIsZsqWH5QrDVK74fXfsOsewZwmJdtxYeJ
+X-Received: by 2002:a17:903:1446:b0:233:d3e7:6fd6 with SMTP id
+ d9443c01a7336-23f8acccc85mr12172475ad.19.1753129386737; 
+ Mon, 21 Jul 2025 13:23:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVWdrH/XweNOqtMCDsHQ7VRAghnTcZEbI7W6qprYngq4iDLQYZrAjoG4cmYTKXlLY55JV1HOyWj027CYbe0VE=
+X-Received: by 2002:a17:903:1446:b0:233:d3e7:6fd6 with SMTP id
+ d9443c01a7336-23f8acccc85mr12172215ad.19.1753129386242; Mon, 21 Jul 2025
+ 13:23:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250721181051.61143-1-stefanha@redhat.com>
- <20250721181051.61143-2-stefanha@redhat.com>
- <aH6Ngt6dmk56uMEt@redhat.com>
-In-Reply-To: <aH6Ngt6dmk56uMEt@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 21 Jul 2025 16:16:28 -0400
-X-Gm-Features: Ac12FXww2PnFwUlrCmI39lGQgf-CB9dJCfOYsDWTcAPYCclkSKUqG5oJswJ0_tI
-Message-ID: <CAJSP0QUjGRoT6uz7CbVxGH2ySZ4L9J3uukZKN64kRBhhqoK6jQ@mail.gmail.com>
-Subject: Re: [PULL 1/1] trace: log.py: human-readable timestamp
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, 
- Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Mads Ynddal <mads@ynddal.dk>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+References: <20250717115751.3832597-1-armbru@redhat.com>
+In-Reply-To: <20250717115751.3832597-1-armbru@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Mon, 21 Jul 2025 16:22:52 -0400
+X-Gm-Features: Ac12FXwng3wvA5onVCgLLH9bqk3a7qSJ8RO7r4eTeI1Ru6rty1gnGz9rUHaGLNI
+Message-ID: <CAFn=p-ZB5K_++-6SwvoMN59dBdrdCvXaeBPmsUGYQxqToRRpBg@mail.gmail.com>
+Subject: Re: [PATCH] qapi: Add more cross-references
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, eblake@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.926,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,83 +98,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 21, 2025 at 3:04=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com> wrote:
+On Thu, Jul 17, 2025 at 7:57=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 >
-> On Mon, Jul 21, 2025 at 02:10:51PM -0400, Stefan Hajnoczi wrote:
-> > From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> >
-> > So tired to parse all these timestamps, when need to compare them
-> > with other logs.
-> >
-> > Use iso8601 format as in warn_report() (info_report(), error_report())
-> > already used.
-> >
-> > Also, start line with date, to be similar with warn_report() as well.
-> >
-> > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> > Message-id: 20250626195514.366177-1-vsementsov@yandex-team.ru
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > ---
-> >  scripts/tracetool/backend/log.py | 11 ++++++++---
-> >  1 file changed, 8 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backe=
-nd/log.py
-> > index 17ba1cd90e..61118474b1 100644
-> > --- a/scripts/tracetool/backend/log.py
-> > +++ b/scripts/tracetool/backend/log.py
-> > @@ -39,10 +39,15 @@ def generate_h(event, group):
-> >          '        if (message_with_timestamp) {',
-> >          '            struct timeval _now;',
-> >          '            gettimeofday(&_now, NULL);',
-> > +        '            time_t _seconds =3D _now.tv_sec;',
-> > +        '            struct tm _tm;',
-> > +        '            gmtime_r(&_seconds, &_tm);',
-> >          '#line %(event_lineno)d "%(event_filename)s"',
-> > -        '            qemu_log("%%d@%%zu.%%06zu:%(name)s " %(fmt)s "\\n=
-",',
-> > -        '                     qemu_get_thread_id(),',
-> > -        '                     (size_t)_now.tv_sec, (size_t)_now.tv_use=
-c',
-> > +        '            qemu_log("%%04d-%%02d-%%02dT%%02d:%%02d:%%02d.%%0=
-6ldZ'
-> > +        ' (%%d) %(name)s " %(fmt)s "\\n",',
-> > +        '                     _tm.tm_year + 1900, _tm.tm_mon + 1, _tm.=
-tm_mday,',
-> > +        '                     _tm.tm_hour, _tm.tm_min, _tm.tm_sec, _no=
-w.tv_usec,',
-> > +        '                     qemu_get_thread_id()',
-> >          '                     %(argnames)s);',
+> We recently (merge commit 504632dcc631) enclosed command and type
+> names in `backquotes`, so they become links in generated HTML.  Take
+> care of a few we missed.
 >
-> IMHO this is undesirable, as it bloats the QEMU binaries by another 1 MB
-> as we have an excessive amount of code being inlined in every trace call
-> location. I've co-incidentally just sent a patch that would fix the same
-> problem based on a discussion last week about a bug caused by this log
-> backend adding 'error-report.h' into all files:
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>  qapi/dump.json      | 2 +-
+>  qapi/machine.json   | 2 +-
+>  qapi/migration.json | 4 ++--
+>  qapi/misc-i386.json | 2 +-
+>  qapi/run-state.json | 2 +-
+>  qapi/sockets.json   | 2 +-
+>  6 files changed, 7 insertions(+), 7 deletions(-)
 >
->   https://lists.nongnu.org/archive/html/qemu-devel/2025-07/msg04905.html
->
-> >          '#line %(out_next_lineno)d "%(out_filename)s"',
-> >          '        } else {',
+> diff --git a/qapi/dump.json b/qapi/dump.json
+> index 32c8c1f06e..726b520870 100644
+> --- a/qapi/dump.json
+> +++ b/qapi/dump.json
+> @@ -79,7 +79,7 @@
+>  #
+>  # @detach: if true, QMP will return immediately rather than waiting
+>  #     for the dump to finish.  The user can track progress using
+> -#     "query-dump".  (since 2.6).
+> +#     `query-dump`.  (since 2.6).
 
-There is also a format string portability issue that CI has just found:
-https://gitlab.com/qemu-project/qemu/-/jobs/10761777777#L2294
+Funny. Offset and in quotes, so it got missed.
 
-This patch will need to be reworked.
+>  #
+>  # @begin: if specified, the starting physical address.
+>  #
+> diff --git a/qapi/machine.json b/qapi/machine.json
+> index 6f59f70ca6..038eab281c 100644
+> --- a/qapi/machine.json
+> +++ b/qapi/machine.json
+> @@ -2087,7 +2087,7 @@
+>  #
+>  # @deprecated-props: an optional list of properties that are flagged as
+>  #     deprecated by the CPU vendor.  The list depends on the
+> -#     CpuModelExpansionType: "static" properties are a subset of the
+> +#     `CpuModelExpansionType`: "static" properties are a subset of the
 
-Stefan
+"What are the odds that a name we want to turn into a reference will
+be immediately followed by a colon?" 100%, I guess.
 
->
-> With regards,
-> Daniel
+>  #     enabled-properties for the expanded model; "full" properties are
+>  #     a set of properties that are deprecated across all models for
+>  #     the architecture.  (since: 10.1 -- since 9.1 on s390x --).
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index e08a99bb82..2387c21e9c 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -641,7 +641,7 @@
+>  #
+>  #     This mode supports VFIO devices provided the user first puts the
+>  #     guest in the suspended runstate, such as by issuing
+> -#     guest-suspend-ram to the QEMU guest agent.
+> +#     `guest-suspend-ram` to the QEMU guest agent.
+
+Missed because it's indented?
+
+>  #
+>  #     Best performance is achieved when the memory backend is shared
+>  #     and the @x-ignore-shared migration capability is set, but this
+> @@ -1704,7 +1704,7 @@
+>  #
+>  # .. admonition:: Notes
+>  #
+> -#     1. The 'query-migrate' command should be used to check
+> +#     1. The `query-migrate` command should be used to check
+>  #        migration's progress and final result (this information is
+>  #        provided by the 'status' member).
+
+Indent miss.
+
+>  #
+> diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
+> index c8c91a241c..d1ce8caf25 100644
+> --- a/qapi/misc-i386.json
+> +++ b/qapi/misc-i386.json
+> @@ -8,7 +8,7 @@
+>  #
+>  # Reset the RTC interrupt reinjection backlog.  Can be used if another
+>  # mechanism to synchronize guest time is in effect, for example QEMU
+> -# guest agent's guest-set-time command.
+> +# guest agent's `guest-set-time` command.
+
+Why'd I miss this one, I wonder?
+
+>  #
+>  # Use of this command is only applicable for x86 machines with an RTC,
+>  # and on other machines will silently return without performing any
+> diff --git a/qapi/run-state.json b/qapi/run-state.json
+> index 54ba5c9a3f..4757947ca6 100644
+> --- a/qapi/run-state.json
+> +++ b/qapi/run-state.json
+> @@ -20,7 +20,7 @@
+>  # @inmigrate: guest is paused waiting for an incoming migration.  Note
+>  #     that this state does not tell whether the machine will start at
+>  #     the end of the migration.  This depends on the command-line -S
+> -#     option and any invocation of 'stop' or 'cont' that has happened
+> +#     option and any invocation of `stop` or `cont` that has happened
+
+Rare instance of actually *wanting* these to be cross-refs. :)
+
+>  #     since QEMU was started.
+>  #
+>  # @internal-error: An internal error that prevents further guest
+> diff --git a/qapi/sockets.json b/qapi/sockets.json
+> index 82046b0b3a..32fac51728 100644
+> --- a/qapi/sockets.json
+> +++ b/qapi/sockets.json
+> @@ -143,7 +143,7 @@
+>  #
+>  # @str: decimal is for file descriptor number, otherwise it's a file
+>  #     descriptor name.  Named file descriptors are permitted in
+> -#     monitor commands, in combination with the 'getfd' command.
+> +#     monitor commands, in combination with the `getfd` command.
+>  #     Decimal file descriptors are permitted at startup or other
+>  #     contexts where no monitor context is active.
+
+Presumably another indent miss.
+
+>  #
 > --
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
-ge :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
-om :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
-ge :|
->
->
+> 2.49.0
+
+Reviewed-by: John Snow <jsnow@redhat.com>
+
 
