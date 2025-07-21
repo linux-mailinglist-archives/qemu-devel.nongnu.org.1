@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9202EB0C531
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E03AFB0C543
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:34:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udqYh-00031t-1r; Mon, 21 Jul 2025 09:27:59 -0400
+	id 1udqYz-0008Oy-6T; Mon, 21 Jul 2025 09:28:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYQ-0001Eb-3r
+ id 1udqYQ-0001Er-Je
  for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:43 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYN-0005ML-PC
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:41 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-45618ddd62fso44895355e9.3
+ id 1udqYO-0005Mf-Ih
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:42 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3a6e2d85705so2163906f8f.0
  for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753104458; x=1753709258; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753104459; x=1753709259; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MoEzMO5OHtZV2L/g8fzIdtcYLVWoss+DNtjsQiRyRQs=;
- b=Oy20kCdZm8J2YshLQx5v0BMF7ZW2llUXolOskWqhCH82Yw8mn8s4Au111Pr98N+uDC
- O8a6mAiZF8nMWSywD3Eej7KWEM8UYdqQW6VB3n+kpIay21gi7oiZafdeLRMmGyeSqSqv
- 6Lu5494oPeMIiAPy1DJf7IHthsJqPdb4qhratpQqYp/6ytHWyzW6zG+14fgD2T9ZW8Ko
- i7nNIUrmE4Q+5UkLW6HQGOP0wEDJc3viDOWDac8t9DDni3wsWUP2Y8QUcNwObqmFveAz
- cJpvShld+owJWL40e7SL8/rGe60RGp6tLokfO/a/rkoZoYlqOXO4sDILDSyYKcGkw82+
- RINg==
+ :reply-to; bh=USS+LUKtNag6d2eiZksJWjkEukkIMnnF/u6m6cyUqYo=;
+ b=R6u72qwUMv8RihgsQd/qAcnNe79FNnGs8CHgsjBO6ke2hrXyn+Zw8wNjwDKVLFAHGI
+ tk1IL8jNWZ4x04kOYnKKzfZuOZinXQbh+0tklCHsfa1aFzJxU8ThVU1hkSWHe5aX2PuN
+ 3z9KnsSoa5YI2T4c5D/WjNM+lde/1ixCuCK8G6u50OjEGX3JvtWW9gnyD8HauSbHkQy8
+ QLIeHPsSTb12V3juZQIxowCjEcK7hFoRaBtQEferbmYV2TD16z3F+NrtNEs9HDWfMrXr
+ R3lO3mnxR4zEqknscHrvFi84inWWNb2b6bCzQI4XuLQ5f9lLLtTi/T7Lqpj87lfta8ei
+ FF4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753104458; x=1753709258;
+ d=1e100.net; s=20230601; t=1753104459; x=1753709259;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MoEzMO5OHtZV2L/g8fzIdtcYLVWoss+DNtjsQiRyRQs=;
- b=S94GZXKmdSQr6IiAVmHsFo3fQ39nqliJxCT55ASDKTX//bIjDYMGOe35k91tqgGxiH
- d2qsALwuiZAG2jmlUhKQK2aglweXN12cUs/Sih6p55xpXHrUPtIeSZSOUPvRTBnD1Vm6
- Qyxi7SAIe/wIQw5wBJxK2E/nqZ9nKtbGzr3De+/ulOL9NdhbkOOTt4A2O7/Rx/t2GGBC
- XEfbJ+hJ91gr8zXJjZVhC2/p958pUPuimLPYmf0UFXKCjxNQWwh36d3hkGzt2rwPMcD+
- L5k9NmYXBy5Ho1LKzyZB5L7g3pzNd01i+OgTIbRQKF697GCGdp2aZdbx8XARmC2OWIe7
- V93g==
-X-Gm-Message-State: AOJu0YyYsXoGIJPRC6qeQGG5d5c1wMfUEVtayl1bV4I7rvDSsfl2+kML
- iMFpuzYVcpoACoLYiX/5R0jnXEwlL5pgSVCal+ONIOuRbKRk5CLcmt98KvDMXvLujsmpSLhMIZ5
- Q3xg9
-X-Gm-Gg: ASbGncs69l7w3/WAtPJwsK3tZQ7brvEyaV1YyQdv+RDQsstZpVfndW/68Nsk3xaozJq
- BHY6mSCL73XiA8VWNyc6tJ2yodp7ES4YSX2rZBxjTmHgTBH4+VJV2Z27Twu7Zosb+n+8z8/Rd63
- 165mwFq25C/4pOY02X6XdP5vuteohAZMpPKqFMeZzkJqsuh8yklYpD8k7CQqE22MNIAw6wVUEFc
- Tm4kz88DNUy7+9623dwLV4inMitj0L3dAJ1CROowdCz4PBp/74yLfd2teh7F080ZLlTqy5rM7II
- ci0eaOtpO26llsPb2xT0my2E3SzEi4qSprZ5QYEjsnlzwydQEymUk7vFIsmWYtofGoQvxVPzYqx
- tMU5EYPkmdpVgHuxyXNGYKsbqphuP
-X-Google-Smtp-Source: AGHT+IFdX5qa83gHMJcfCjiFYZyaz5s3Z73OVOGGqilYtTbZONjIA+wsh6Z7nZzYIoYgnvscrONAAg==
-X-Received: by 2002:a05:600c:c4a5:b0:456:e1f:4dc4 with SMTP id
- 5b1f17b1804b1-4562e390d79mr209817725e9.15.1753104457889; 
- Mon, 21 Jul 2025 06:27:37 -0700 (PDT)
+ bh=USS+LUKtNag6d2eiZksJWjkEukkIMnnF/u6m6cyUqYo=;
+ b=auviRtJYujfV3V1qLGwIdpD8we0ZYe9cTxPxAwM5S2EvxdhLzh/txRLSUMq9ElAUSQ
+ 1zBINnKHrm76Ssp/mPU9jf03oyPx59Nt2I6GsmDeLULxBE4WUyd5pSdeMss0mpSsA7n7
+ 8t9RYJlVcHGM4Yl4UGW88m8dkLR7ok7JK+Z8wEjBoQQ4Bd7rlgyv9Qo+EqKWPKfzH24w
+ OULHTAdi99+WCd5z36+lagpJrscaESSbYQNfYrS0qwCTxCsCkUWiJOhNLM8Phvc7H/nZ
+ 6GPyeOt5y/a6yLzxBr/oXT5MS9FKMW7cSpfMDMS8w1dTNUEsoxHhFq+3C+89cL9/iR3F
+ LCzA==
+X-Gm-Message-State: AOJu0YzjZ3kOmOT4BCWXlrR8tbNq1ttxE2KXBMHQp7We5L1KE1dLRj/q
+ JrTbpA3NUF7k6dJOg06NN1hE6Cbjzci6TrxeSqnYv8MdNh8ZHmb1tMX85FL+4QQqKVT/o9z5rHC
+ cvEFc
+X-Gm-Gg: ASbGncsAEOzqFTh0F9F2K7LgRmjk3TwfPqzM9/bmQZ3Pt4tBkKueB4ytiJSrPk9FRHB
+ NFZoeXslzzZbFPJKqcKY5Ki3jlbwogr5yXhuX1nLk3rQQOaloToLQILxc2BomawEFRP95EiAI4V
+ 7Us9aprwESiufkBibv3fa0NHar/RNEI6LeUaocjFC1lHIlR5DYpp69AQ5uBLchLqsEgHTZkfmk4
+ jaz50EdxulvhSL7/rQskEQSOcZ8skoI1ZVbnoSrZsUB1fyy4NufBvFU0QWsBkFCsVfd7RdOU/tK
+ Q727juvy9IhSCEiHom0JTfQnZFYWbmLUmcG5vZw4PpeF8TowsS6pBOSaTVbuPiYy1vJpWEBGEvX
+ XOVYQlsnGC2Mt+Ta18Evn1FvtMNQ3
+X-Google-Smtp-Source: AGHT+IE7T+5iw4yqfP1wLfClW2d7hvDfQYf9fXISShDBLngPoDTdEnLrXhO04RJIwLdy6y9oWx/Xag==
+X-Received: by 2002:a05:6000:2002:b0:3a3:7ba5:9618 with SMTP id
+ ffacd0b85a97d-3b60dd95c7dmr13989090f8f.29.1753104458755; 
+ Mon, 21 Jul 2025 06:27:38 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.37
+ ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.38
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Jul 2025 06:27:37 -0700 (PDT)
+ Mon, 21 Jul 2025 06:27:38 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/20] hvf: arm: Emulate ICC_RPR_EL1 accesses properly
-Date: Mon, 21 Jul 2025 14:27:16 +0100
-Message-ID: <20250721132718.2835729-20-peter.maydell@linaro.org>
+Subject: [PULL 20/20] accel/hvf: Display executable bit as 'X'
+Date: Mon, 21 Jul 2025 14:27:17 +0100
+Message-ID: <20250721132718.2835729-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250721132718.2835729-1-peter.maydell@linaro.org>
 References: <20250721132718.2835729-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,43 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zenghui Yu <zenghui.yu@linux.dev>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Commit a2260983c655 ("hvf: arm: Add support for GICv3") added GICv3 support
-by implementing emulation for a few system registers. ICC_RPR_EL1 was
-defined but not plugged in the sysreg handlers (for no good reason).
+Developers are accustomed to read RWX, not RWE.
+Replace E -> X.
 
-Fix it.
-
-Fixes: a2260983c655 ("hvf: arm: Add support for GICv3")
-Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250714160139.10404-3-zenghui.yu@linux.dev
+Reported-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Mads Ynddal <mads@ynddal.dk>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/hvf/hvf.c | 2 ++
- 1 file changed, 2 insertions(+)
+ accel/hvf/hvf-all.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 861657df966..bd6b5d11de8 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -1361,6 +1361,7 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint64_t *val)
-     case SYSREG_ICC_IGRPEN0_EL1:
-     case SYSREG_ICC_IGRPEN1_EL1:
-     case SYSREG_ICC_PMR_EL1:
-+    case SYSREG_ICC_RPR_EL1:
-     case SYSREG_ICC_SGI0R_EL1:
-     case SYSREG_ICC_SGI1R_EL1:
-     case SYSREG_ICC_SRE_EL1:
-@@ -1678,6 +1679,7 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-     case SYSREG_ICC_IGRPEN0_EL1:
-     case SYSREG_ICC_IGRPEN1_EL1:
-     case SYSREG_ICC_PMR_EL1:
-+    case SYSREG_ICC_RPR_EL1:
-     case SYSREG_ICC_SGI0R_EL1:
-     case SYSREG_ICC_SGI1R_EL1:
-     case SYSREG_ICC_SRE_EL1:
+diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+index e67a8105a66..0a4b498e836 100644
+--- a/accel/hvf/hvf-all.c
++++ b/accel/hvf/hvf-all.c
+@@ -84,7 +84,7 @@ static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
+     trace_hvf_vm_map(slot->start, slot->size, slot->mem, flags,
+                      flags & HV_MEMORY_READ ?  'R' : '-',
+                      flags & HV_MEMORY_WRITE ? 'W' : '-',
+-                     flags & HV_MEMORY_EXEC ?  'E' : '-');
++                     flags & HV_MEMORY_EXEC ?  'X' : '-');
+     ret = hv_vm_map(slot->mem, slot->start, slot->size, flags);
+     assert_hvf_ok(ret);
+     return 0;
 -- 
 2.43.0
 
