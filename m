@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579D3B0C8A8
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF6EB0C916
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:48:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtJT-0006Cc-4M; Mon, 21 Jul 2025 12:24:27 -0400
+	id 1udtKN-0001Y1-H8; Mon, 21 Jul 2025 12:25:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIv-0004sK-1t
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:54 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJ0-0005Rx-5t
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIp-0001XX-OE
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:51 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIw-0001Yj-4d
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753115024;
+ s=mimecast20190719; t=1753115029;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qd1iNcZC0N9VKbrwXqHYfPlyCqr8C4u9TzFB9ZV+KSY=;
- b=iR1ZYa8RkBlMt+I9L0a4Gt+U1Qejo8sWXL86WPUFfqe0Dtn2yPSd6aRx1Y2932ijdqO5xh
- ggIZWkJfdCTSs7dZbR4Eir7dJ1ZfYyZ9bXgexRjz56Akux/51n9PYO0L824KGK+xRaV4N5
- J6ziS9fosDQJl+EYQNLWIpJswl5buBI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=wbsatBWGHnXK0ln5RenIDg9eQQYBOHkeiL6Ce6cZ+TY=;
+ b=a1WWEMhvKBioM1btrJrpFAmhGGJY2nqObx0P/DH96R6vJ6joC11OnsbUWM0qT5dU1utTx5
+ 1HB3hLOcPbgriDneVId/+vCqJXHilOh0FqDFO3/FqNQY8cdfLyxHCLQhewkL3qMFLI7HRG
+ jDguevlJHvblq4MEU0H4ROa8S6IItQM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-339-wAz6JxDTM-6YUVFDguNR4A-1; Mon,
- 21 Jul 2025 12:23:40 -0400
-X-MC-Unique: wAz6JxDTM-6YUVFDguNR4A-1
-X-Mimecast-MFC-AGG-ID: wAz6JxDTM-6YUVFDguNR4A_1753115019
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-421-57TcfSAqNRm2W4OOBNdvsg-1; Mon,
+ 21 Jul 2025 12:23:42 -0400
+X-MC-Unique: 57TcfSAqNRm2W4OOBNdvsg-1
+X-Mimecast-MFC-AGG-ID: 57TcfSAqNRm2W4OOBNdvsg_1753115021
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E52531800C2F; Mon, 21 Jul 2025 16:23:38 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 96A1E1956048; Mon, 21 Jul 2025 16:23:41 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B0C3B195608D; Mon, 21 Jul 2025 16:23:36 +0000 (UTC)
+ id 63923195608D; Mon, 21 Jul 2025 16:23:39 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -50,9 +50,9 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 21/50] ppc/xive2: add interrupt priority configuration flags
-Date: Mon, 21 Jul 2025 18:22:04 +0200
-Message-ID: <20250721162233.686837-22-clg@redhat.com>
+Subject: [PULL 22/50] ppc/xive2: Support redistribution of group interrupts
+Date: Mon, 21 Jul 2025 18:22:05 +0200
+Message-ID: <20250721162233.686837-23-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,88 +86,181 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Glenn Miles <milesg@linux.ibm.com>
 
-Adds support for extracting additional configuration flags from
-the XIVE configuration register that are needed for redistribution
-of group interrupts.
+When an XIVE context is pulled while it has an active, unacknowledged
+group interrupt, XIVE will check to see if a context on another thread
+can handle the interrupt and, if so, notify that context.  If there
+are no contexts that can handle the interrupt, then the interrupt is
+added to a backlog and XIVE will attempt to escalate the interrupt,
+if configured to do so, allowing the higher privileged handler to
+activate a context that can handle the original interrupt.
 
 Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-22-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-23-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/pnv_xive2_regs.h |  1 +
- include/hw/ppc/xive2.h   |  8 +++++---
- hw/intc/pnv_xive2.c      | 16 ++++++++++++----
- 3 files changed, 18 insertions(+), 7 deletions(-)
+ include/hw/ppc/xive2_regs.h |  3 ++
+ hw/intc/xive2.c             | 84 +++++++++++++++++++++++++++++++++++--
+ 2 files changed, 83 insertions(+), 4 deletions(-)
 
-diff --git a/hw/intc/pnv_xive2_regs.h b/hw/intc/pnv_xive2_regs.h
-index e8b87b3d2c13..d53300f709b0 100644
---- a/hw/intc/pnv_xive2_regs.h
-+++ b/hw/intc/pnv_xive2_regs.h
-@@ -66,6 +66,7 @@
- #define    CQ_XIVE_CFG_GEN1_TIMA_HYP_BLK0       PPC_BIT(26) /* 0 if bit[25]=0 */
- #define    CQ_XIVE_CFG_GEN1_TIMA_CROWD_DIS      PPC_BIT(27) /* 0 if bit[25]=0 */
- #define    CQ_XIVE_CFG_GEN1_END_ESX             PPC_BIT(28)
-+#define    CQ_XIVE_CFG_EN_VP_GRP_PRIORITY       PPC_BIT(32) /* 0 if bit[25]=1 */
- #define    CQ_XIVE_CFG_EN_VP_SAVE_RESTORE       PPC_BIT(38) /* 0 if bit[25]=1 */
- #define    CQ_XIVE_CFG_EN_VP_SAVE_REST_STRICT   PPC_BIT(39) /* 0 if bit[25]=1 */
+diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
+index 2c535ec0d0f1..e22203814312 100644
+--- a/include/hw/ppc/xive2_regs.h
++++ b/include/hw/ppc/xive2_regs.h
+@@ -224,6 +224,9 @@ typedef struct Xive2Nvgc {
+ #define NVGC2_W0_VALID             PPC_BIT32(0)
+ #define NVGC2_W0_PGONEXT           PPC_BITMASK32(26, 31)
+         uint32_t        w1;
++#define NVGC2_W1_PSIZE             PPC_BITMASK32(0, 1)
++#define NVGC2_W1_END_BLK           PPC_BITMASK32(4, 7)
++#define NVGC2_W1_END_IDX           PPC_BITMASK32(8, 31)
+         uint32_t        w2;
+         uint32_t        w3;
+         uint32_t        w4;
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index 541b05225cd2..9ef372b6d1d9 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -19,6 +19,10 @@
+ #include "hw/ppc/xive2_regs.h"
+ #include "trace.h"
  
-diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
-index 2436ddb5e53c..760b94a962e7 100644
---- a/include/hw/ppc/xive2.h
-+++ b/include/hw/ppc/xive2.h
-@@ -29,9 +29,11 @@ OBJECT_DECLARE_TYPE(Xive2Router, Xive2RouterClass, XIVE2_ROUTER);
-  * Configuration flags
-  */
- 
--#define XIVE2_GEN1_TIMA_OS      0x00000001
--#define XIVE2_VP_SAVE_RESTORE   0x00000002
--#define XIVE2_THREADID_8BITS    0x00000004
-+#define XIVE2_GEN1_TIMA_OS          0x00000001
-+#define XIVE2_VP_SAVE_RESTORE       0x00000002
-+#define XIVE2_THREADID_8BITS        0x00000004
-+#define XIVE2_EN_VP_GRP_PRIORITY    0x00000008
-+#define XIVE2_VP_INT_PRIO           0x00000030
- 
- typedef struct Xive2RouterClass {
-     SysBusDeviceClass parent;
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 386175a68b29..7b4a33228e05 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -605,20 +605,28 @@ static uint32_t pnv_xive2_get_config(Xive2Router *xrtr)
++static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
++                                    uint32_t end_idx, uint32_t end_data,
++                                    bool redistribute);
++
+ uint32_t xive2_router_get_config(Xive2Router *xrtr)
  {
-     PnvXive2 *xive = PNV_XIVE2(xrtr);
-     uint32_t cfg = 0;
-+    uint64_t reg = xive->cq_regs[CQ_XIVE_CFG >> 3];
+     Xive2RouterClass *xrc = XIVE2_ROUTER_GET_CLASS(xrtr);
+@@ -597,6 +601,68 @@ static uint32_t xive2_tctx_hw_cam_line(XivePresenter *xptr, XiveTCTX *tctx)
+     return xive2_nvp_cam_line(blk, 1 << tid_shift | (pir & tid_mask));
+ }
  
--    if (xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS) {
-+    if (reg & CQ_XIVE_CFG_GEN1_TIMA_OS) {
-         cfg |= XIVE2_GEN1_TIMA_OS;
-     }
- 
--    if (xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_EN_VP_SAVE_RESTORE) {
-+    if (reg & CQ_XIVE_CFG_EN_VP_SAVE_RESTORE) {
-         cfg |= XIVE2_VP_SAVE_RESTORE;
-     }
- 
--    if (GETFIELD(CQ_XIVE_CFG_HYP_HARD_RANGE,
--              xive->cq_regs[CQ_XIVE_CFG >> 3]) == CQ_XIVE_CFG_THREADID_8BITS) {
-+    if (GETFIELD(CQ_XIVE_CFG_HYP_HARD_RANGE, reg) ==
-+                      CQ_XIVE_CFG_THREADID_8BITS) {
-         cfg |= XIVE2_THREADID_8BITS;
-     }
- 
-+    if (reg & CQ_XIVE_CFG_EN_VP_GRP_PRIORITY) {
-+        cfg |= XIVE2_EN_VP_GRP_PRIORITY;
++static void xive2_redistribute(Xive2Router *xrtr, XiveTCTX *tctx,
++                               uint8_t nvp_blk, uint32_t nvp_idx, uint8_t ring)
++{
++    uint8_t nsr = tctx->regs[ring + TM_NSR];
++    uint8_t crowd = NVx_CROWD_LVL(nsr);
++    uint8_t group = NVx_GROUP_LVL(nsr);
++    uint8_t nvgc_blk;
++    uint8_t nvgc_idx;
++    uint8_t end_blk;
++    uint32_t end_idx;
++    uint8_t pipr = tctx->regs[ring + TM_PIPR];
++    Xive2Nvgc nvgc;
++    uint8_t prio_limit;
++    uint32_t cfg;
++
++    /* convert crowd/group to blk/idx */
++    if (group > 0) {
++        nvgc_idx = (nvp_idx & (0xffffffff << group)) |
++                   ((1 << (group - 1)) - 1);
++    } else {
++        nvgc_idx = nvp_idx;
 +    }
 +
-+    cfg = SETFIELD(XIVE2_VP_INT_PRIO, cfg,
-+                   GETFIELD(CQ_XIVE_CFG_VP_INT_PRIO, reg));
++    if (crowd > 0) {
++        crowd = (crowd == 3) ? 4 : crowd;
++        nvgc_blk = (nvp_blk & (0xffffffff << crowd)) |
++                   ((1 << (crowd - 1)) - 1);
++    } else {
++        nvgc_blk = nvp_blk;
++    }
 +
-     return cfg;
++    /* Use blk/idx to retrieve the NVGC */
++    if (xive2_router_get_nvgc(xrtr, crowd, nvgc_blk, nvgc_idx, &nvgc)) {
++        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: no %s %x/%x\n",
++                      crowd ? "NVC" : "NVG", nvgc_blk, nvgc_idx);
++        return;
++    }
++
++    /* retrieve the END blk/idx from the NVGC */
++    end_blk = xive_get_field32(NVGC2_W1_END_BLK, nvgc.w1);
++    end_idx = xive_get_field32(NVGC2_W1_END_IDX, nvgc.w1);
++
++    /* determine number of priorities being used */
++    cfg = xive2_router_get_config(xrtr);
++    if (cfg & XIVE2_EN_VP_GRP_PRIORITY) {
++        prio_limit = 1 << GETFIELD(NVGC2_W1_PSIZE, nvgc.w1);
++    } else {
++        prio_limit = 1 << GETFIELD(XIVE2_VP_INT_PRIO, cfg);
++    }
++
++    /* add priority offset to end index */
++    end_idx += pipr % prio_limit;
++
++    /* trigger the group END */
++    xive2_router_end_notify(xrtr, end_blk, end_idx, 0, true);
++
++    /* clear interrupt indication for the context */
++    tctx->regs[ring + TM_NSR] = 0;
++    tctx->regs[ring + TM_PIPR] = tctx->regs[ring + TM_CPPR];
++    xive_tctx_reset_signal(tctx, ring);
++}
++
+ static uint64_t xive2_tm_pull_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+                                   hwaddr offset, unsigned size, uint8_t ring)
+ {
+@@ -608,6 +674,7 @@ static uint64_t xive2_tm_pull_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     uint8_t cur_ring;
+     bool valid;
+     bool do_save;
++    uint8_t nsr;
+ 
+     xive2_cam_decode(cam, &nvp_blk, &nvp_idx, &valid, &do_save);
+ 
+@@ -624,6 +691,12 @@ static uint64_t xive2_tm_pull_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+         memcpy(&tctx->regs[cur_ring + TM_WORD2], &ringw2_new, 4);
+     }
+ 
++    /* Active group/crowd interrupts need to be redistributed */
++    nsr = tctx->regs[ring + TM_NSR];
++    if (xive_nsr_indicates_group_exception(ring, nsr)) {
++        xive2_redistribute(xrtr, tctx, nvp_blk, nvp_idx, ring);
++    }
++
+     if (xive2_router_get_config(xrtr) & XIVE2_VP_SAVE_RESTORE && do_save) {
+         xive2_tctx_save_ctx(xrtr, tctx, nvp_blk, nvp_idx, ring);
+     }
+@@ -1352,7 +1425,8 @@ static bool xive2_router_end_es_notify(Xive2Router *xrtr, uint8_t end_blk,
+  * message has the same parameters than in the function below.
+  */
+ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
+-                                    uint32_t end_idx, uint32_t end_data)
++                                    uint32_t end_idx, uint32_t end_data,
++                                    bool redistribute)
+ {
+     Xive2End end;
+     uint8_t priority;
+@@ -1380,7 +1454,7 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
+         return;
+     }
+ 
+-    if (xive2_end_is_enqueue(&end)) {
++    if (!redistribute && xive2_end_is_enqueue(&end)) {
+         xive2_end_enqueue(&end, end_data);
+         /* Enqueuing event data modifies the EQ toggle and index */
+         xive2_router_write_end(xrtr, end_blk, end_idx, &end, 1);
+@@ -1560,7 +1634,8 @@ do_escalation:
+         xive2_router_end_notify(xrtr,
+                                xive_get_field32(END2_W4_END_BLOCK,     end.w4),
+                                xive_get_field32(END2_W4_ESC_END_INDEX, end.w4),
+-                               xive_get_field32(END2_W5_ESC_END_DATA,  end.w5));
++                               xive_get_field32(END2_W5_ESC_END_DATA,  end.w5),
++                               false);
+     } /* end END adaptive escalation */
+ 
+     else {
+@@ -1641,7 +1716,8 @@ void xive2_notify(Xive2Router *xrtr , uint32_t lisn, bool pq_checked)
+     xive2_router_end_notify(xrtr,
+                             xive_get_field64(EAS2_END_BLOCK, eas.w),
+                             xive_get_field64(EAS2_END_INDEX, eas.w),
+-                            xive_get_field64(EAS2_END_DATA,  eas.w));
++                            xive_get_field64(EAS2_END_DATA,  eas.w),
++                            false);
+     return;
  }
  
 -- 
