@@ -2,87 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EB1B0C2D5
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 13:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24EE7B0C303
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 13:32:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udod6-0004AO-7c; Mon, 21 Jul 2025 07:24:29 -0400
+	id 1udoiX-0007EC-EF; Mon, 21 Jul 2025 07:30:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yvugenfi@redhat.com>)
- id 1udocr-0003xT-Fx
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 07:24:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
+ id 1udoiC-0006yX-Op
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 07:29:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yvugenfi@redhat.com>)
- id 1udoco-0008In-In
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 07:24:09 -0400
+ (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
+ id 1udoi9-0000b4-59
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 07:29:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753097043;
+ s=mimecast20190719; t=1753097375;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zvkTVmkFChgh4Bhw78ggddaNI0LaoG4bVMHNwgm3Tyg=;
- b=I5mrZ1JEG70XjvpMDlZrmYmkJc4IY4okb9XHlfrIf6eY76H4ewoNf+LzWRXxVi0bOpQOJo
- 0YSplaOmNdxuofRsbLXuULIGXWgXGXJyUK3gEIJqTYuE5NNXpQBBBlUeDasNXftfY30ud0
- ANIlVKqV65hMGKuNnQ+bdrgAq7LwXCg=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=r0ZtwJu78fIFKUQVdqfEBLuK8HO1eTvK9U+QyWlvatQ=;
+ b=CxtUtgEOob18D2ryXhmxj2k71FVuvsestWu4Wg73geV2q+Wp43UI37TCYCAsig36dLb6rt
+ /r6t31CuKK0jS1TGMRWmuINDqxPDsQ9CBgfabjxO8NGDGUH1bKzl6l+YpSZI3UXvYm54qz
+ 7fxTWZqIx19+opSD8k3m8o7pKZ1qqNM=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-110-_BPSkXGmPrWH7BIfMElpKw-1; Mon, 21 Jul 2025 07:24:02 -0400
-X-MC-Unique: _BPSkXGmPrWH7BIfMElpKw-1
-X-Mimecast-MFC-AGG-ID: _BPSkXGmPrWH7BIfMElpKw_1753097042
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-7194c6b0892so46257897b3.1
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 04:24:02 -0700 (PDT)
+ us-mta-605-a4NHprjuPkuW5tVqVa4a2w-1; Mon, 21 Jul 2025 07:29:33 -0400
+X-MC-Unique: a4NHprjuPkuW5tVqVa4a2w-1
+X-Mimecast-MFC-AGG-ID: a4NHprjuPkuW5tVqVa4a2w_1753097372
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-313c3915345so6191042a91.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 04:29:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753097042; x=1753701842;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zvkTVmkFChgh4Bhw78ggddaNI0LaoG4bVMHNwgm3Tyg=;
- b=q/68+Pz4LfW9CV8kA0cMyzqK+IC9exxXf+kXSmGhuWRs79i1SdqmxX+Asw2OomoLX+
- g9wVCW2BgK/79jZ85saoZs6+pbk3QTTRiWO2Un0nAtVvhtcdzwHwGC1K+3E4ox4SzSKF
- 0uLZ0FcUCQmMhYVZYZm8SYsoMxA/ZpAnInrs/j9beMbTiR7KwxP9k0SpNtE+WcACWeM3
- nHjHJt67wpT7Ei7yJVvIWIzYyGumYEjx7v/DayNDjxC2dU5rRiz8J2WoxqND/LDTwrL+
- WMLcZnx5sJgDxHZsJn9oTxTacy0uVB+nWv2RdrnV9P6q/tSlVp6bLWIpPyJdOHWemwyd
- AqYA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUhbQNlmcGNr1cQe2hh/c+8V9gQlaDjfH3ptETY96jWOL+srPnZ/zrK8jjSim9ZHNJqBLB4w9sVHauv@nongnu.org
-X-Gm-Message-State: AOJu0YzTlx2Doq05xiqGlPwJAIBQsqwrR1iqsKnTnDCxpz0MEt5/Y5rz
- n5Ma/GaWIPT9xLcnIfGlDIOW89j3zIvW/aheDPWXEn9m4sgiJJbGd39ynN+5UdEG4d4q0WySbRh
- 2AhXdi+Kc3F8FUBuhUqcDgMwewT6sjW6+RqnpCktbzl0doCdboC0bMJTxMqIlTGuGo8vAFN7ALU
- pmvxlB65WWNz4IyNKWdssJGOOLwJqA2po=
-X-Gm-Gg: ASbGncvUH06vDWtxqdy12Icv8q1iXxelvHCX3vNX+mK79yyKZ4aiglYJsRq7FeorFGo
- kGCHr2yEdUBnn/LRU2Vbd3fwXhSrB9BEXxEOM5qpG95kIoQykcpfHnjOPN7DCyaxHLtIUMAEUIe
- /0aT/F8rHchZcefTM0GL3BzFo67LyX8aeQm472y3Uv51bkYOstSy3BDPs=
-X-Received: by 2002:a05:690c:6c09:b0:717:d7d1:4697 with SMTP id
- 00721157ae682-718375174f7mr245794947b3.30.1753097041622; 
- Mon, 21 Jul 2025 04:24:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFrTnY3wwXQ2B4Z4Sei64xK1jU/v0RLq4c60Bk9l5F1I+ysNq3x1m3mfHelifZM30RHkLdGP3PIzfLe+mrr6sA=
-X-Received: by 2002:a05:690c:6c09:b0:717:d7d1:4697 with SMTP id
- 00721157ae682-718375174f7mr245794757b3.30.1753097041246; Mon, 21 Jul 2025
- 04:24:01 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753097372; x=1753702172;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=r0ZtwJu78fIFKUQVdqfEBLuK8HO1eTvK9U+QyWlvatQ=;
+ b=INC2LbCM9pIklWxJd+Pt2XgTRj48kkEaSkFNgq7Cg+sWFHi3E3YxhR+nNYGp37/a7e
+ 6sEzh04brqnEjZbPdahzEhKFfJLkdCV5Khg0LhbYhrut3vYFA2eZaiYst0/ag50bSvk5
+ gGKvmsGpxhhYFTqm7rMMgE/FpU8oyzsKtAbP5NV1VfmWEQN72XMGg4G/XfGo32RyVfdz
+ A4Nf48TZtos4hQpOt0i2Z4DJSTPfYjNtV87sWfj4o8xiFjaOOqtbO5Wbuge9XkJQRXcv
+ H8uiDchhFzVmfcD1Myf92/ynZpM3ArVRgZjq5OQ1uHtPnbwIlHZhQbgKiiaRb8piKWxR
+ m86A==
+X-Gm-Message-State: AOJu0YziUePeyDueMpMm4qBa59EjIh1oFWg4Uo+I14NOS1l3jF5JzDI2
+ VI2OzHLV45j1FxP1FIOtsr4+19c5jPRcTepDpKpSqgEyoVkZsih7cG4SSL+2ep+lZ6t0sQ7VBqc
+ hCm1oY+4F5cLFuNbBc9tD3gSdXloYShuX4u3a1fn4fNjORfyFsJ6A8UC+
+X-Gm-Gg: ASbGncts81e0/SKs51ZWRA4bwHklIOQwTW36rnCoCDSqw08wjanBsDjcgaKQeNrOp7p
+ YYgh86mFvyGslu9ZRAlMYtwS5JvadtOERXkcZrn2JZcLQHY3GPcPSmOp4uuVYAdygEUxKON7OeE
+ tKEFMmXCkvN6dY9xnqO0dLRyJtqymzDYvJXNIo+ABRcQc3EqC2EMjvwN/pnOJ3BPW6wkCEQAwSO
+ 1iuZA5SNQMOUlAG+OXb4rh7EsM8Ft2KZVqb2Xtyk7OTNCygFhBGtuDCbsCFhj49dKYAXuMyHmTi
+ gn4zfHjaCl7iTkUoPBCeEeWAdLef8mOQJsVBZ2ydNn+s4mYCUZqJ
+X-Received: by 2002:a17:90a:e70e:b0:313:279d:665c with SMTP id
+ 98e67ed59e1d1-31caf821883mr20846669a91.7.1753097372167; 
+ Mon, 21 Jul 2025 04:29:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE1HKqCZrzrN6JZN7Exv6ReXoJWDXOJl/80K47oX6KP0w7dmwTErR2CHnPY18g5Vx/xIx8BRQ==
+X-Received: by 2002:a17:90a:e70e:b0:313:279d:665c with SMTP id
+ 98e67ed59e1d1-31caf821883mr20846624a91.7.1753097371672; 
+ Mon, 21 Jul 2025 04:29:31 -0700 (PDT)
+Received: from armenon-kvm.bengluru.csb ([49.36.101.21])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23e3b5e3c89sm56150465ad.18.2025.07.21.04.29.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 21 Jul 2025 04:29:31 -0700 (PDT)
+From: Arun Menon <armenon@redhat.com>
+Subject: [PATCH v6 00/24] migration: propagate vTPM errors using Error objects
+Date: Mon, 21 Jul 2025 16:59:05 +0530
+Message-Id: <20250721-propagate_tpm_error-v6-0-fef740e15e17@redhat.com>
 MIME-Version: 1.0
-References: <20250717145948.77870-1-kkostiuk@redhat.com>
- <87pldwbspt.fsf@pond.sub.org>
- <CAPMcbCp=PBMSxtTxCMkxigdovaY=MTNLRo6f3BBXNRT6vu4wmw@mail.gmail.com>
- <87seipkif5.fsf@pond.sub.org>
- <CAPMcbCrTTkr5sX11wn1WaXOLgqQTAD-1oxUuqOc+oEmUxcotkw@mail.gmail.com>
-In-Reply-To: <CAPMcbCrTTkr5sX11wn1WaXOLgqQTAD-1oxUuqOc+oEmUxcotkw@mail.gmail.com>
-From: Yan Vugenfirer <yvugenfi@redhat.com>
-Date: Mon, 21 Jul 2025 14:23:50 +0300
-X-Gm-Features: Ac12FXw3io3lolAul1U1wtbGZpAYNfiLLf4v9MbwbocBLgD6uSatlA6xzYyZFQc
-Message-ID: <CAGoVJZySZ87UHWJpKTwtNZLvP3ygTxmo6hWEcndhTF5dosBfag@mail.gmail.com>
-Subject: Re: [PATCH] util: win32: Write hex value when can't get error message
-To: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org, 
- =?UTF-8?Q?Daniel_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=yvugenfi@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIIkfmgC/33PTWrDMBAF4KsErasyGv131XuUEFRpHGuRyMjGN
+ ATfvUo2dbHb5RuY7/HubKSaaWRvhzurNOcxl2sL5uXAYh+uZ+I5tcwQUINBxYdahnAOE52m4XK
+ iWkvln50KZCLKJIG1z6FSl7+e6sex5T6PU6m3Z8ksHtf/vVlw4CisUM4G7WV6r5T6ML3GcmEPc
+ MY1YvcRbIjT3kN0PgX0G0T+IBZwH5EN8c4kr7QCjW6DqBUizD6iGtLGCA8I1kbYIHqN/DFHN0R
+ 0CkznHJHRv5BlWb4ByurzLssBAAA=
+X-Change-ID: 20250624-propagate_tpm_error-bf4ae6c23d30
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, 
+ Eric Farman <farman@linux.ibm.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
+ Thomas Huth <thuth@redhat.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Hailiang Zhang <zhanghailiang@xfusion.com>, 
+ Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org, 
+ qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+ Matthew Rosato <mjrosato@linux.ibm.com>, Arun Menon <armenon@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7724; i=armenon@redhat.com;
+ h=from:subject:message-id; bh=7J0znC18jEgkYFfYar9ns8MZ9NX1hrTNXc6koZDxfw4=;
+ b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ0adyoRlqWwzPeZoGj5a4/MwMJ9XnmVzXKDtt+S7Kfsvz
+ Hzdl3Sto5SFQYyLQVZMkaXha4BsU0BhRKTty+swc1iZQIYwcHEKwETMTjAy7Le9uWgDi0jN0XWX
+ t8vtE353bp/u2nOfTa3Yf5oxtOm/9GH4Zz27627M2pMay+1Sjv6cL9+hfZ/v72WFBaxCUh2vbju
+ mMgIA
+X-Developer-Key: i=armenon@redhat.com; a=openpgp;
+ fpr=80F5501D82507158593DE9D76A7A2538D90F328E
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armenon@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -91,7 +125,7 @@ X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.926,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,133 +141,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 21, 2025 at 1:12=E2=80=AFPM Kostiantyn Kostiuk <kkostiuk@redhat=
-.com> wrote:
->
->
->
-> On Mon, Jul 21, 2025 at 12:22=E2=80=AFPM Markus Armbruster <armbru@redhat=
-.com> wrote:
->>
->> Kostiantyn Kostiuk <kkostiuk@redhat.com> writes:
->>
->> > On Sat, Jul 19, 2025 at 9:27=E2=80=AFAM Markus Armbruster <armbru@redh=
-at.com> wrote:
->> >
->> >> Kostiantyn Kostiuk <kkostiuk@redhat.com> writes:
->> >>
->> >> > g_win32_error_message - translate a Win32 error code
->> >> > (as returned by GetLastError()) into the corresponding message.
->> >> >
->> >> > In the same time, we call error_setg_win32_internal with
->> >> > error codes from different Windows componets like VSS or
->> >> > Performance monitor that provides different codes and
->> >> > can't be converted with g_win32_error_message.
->> >>
->> >> Are these error codes from GetLastError()?
->> >>
->> >
->> > No.
->> > VSS functions directly return an error code.
->> > Section: Return value -
->> > https://learn.microsoft.com/en-us/windows/win32/api/vsbackup/nf-vsback=
-up-ivssbackupcomponents-addtosnapshotset
->> >
->> > Performance Counters API can return a system error code or a PDH error=
- code.
->> > Section: Return value -
->> > https://learn.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhopen=
-queryw
->> > System error code =3D GetLastError, PDH error code, something else.
->> >
->> > https://learn.microsoft.com/en-us/windows/win32/perfctrs/pdh-error-cod=
-es
->> > FormatMessage requires LoadLibrary(L"pdh.dll") to work properly.
->>
->> The error code error_setg_win32() takes is passed to
->> g_win32_error_message().  Contract:
->>
->>     g_win32_error_message ()
->>
->>     gchar *
->>     g_win32_error_message (gint error);
->>
->>     Translate a Win32 error code (as returned by GetLastError() or
->>     WSAGetLastError()) into the corresponding message.  The message is
->>     either language neutral, or in the thread's language, or the user's
->>     language, the system's language, or US English (see docs for
->>     FormatMessage()).  The returned string is in UTF-8.  It should be
->>     deallocated with g_free().
->>
->>     Parameters
->>
->>         error error code.
->>
->>     Returns
->>
->>         newly-allocated error message
->>
->> https://www.manpagez.com/html/glib/glib-2.46.0/glib-Windows-Compatibilit=
-y-Functions.php#g-win32-error-message
->>
->> Passing error codes from sources other than GetLastError() or
->> WSAGetLastError() violates this contract.
->>
->> Apparently, g_win32_error_message() returns NULL then.  This is not
->> documented behavior.
+Hello,
 
-If glib wrapper behaviour is undocumented, let's not use it in Windows
-related code and use Win32 API directly.
-We can also fix the documentation.
+Currently, when a migration of a VM with an encrypted vTPM
+fails on the destination host (e.g., due to a mismatch in secret values),
+the error message displayed on the source host is generic and unhelpful.
 
-Also, if we take a look at
-https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errha=
-ndlingapi-getlasterror
-then it looks like GetLastError might return error codes that don't
-have strings in the system, again this is exactly the case were we
-want the numeric value to be propagated and not silently dropped.
+For example, a typical error looks like this:
+"operation failed: job 'migration out' failed: Sibling indicated error 1.
+operation failed: job 'migration in' failed: load of migration failed:
+Input/output error"
+
+This message does not provide any specific indication of a vTPM failure.
+Such generic errors are logged using error_report(), which prints to
+the console/monitor but does not make the detailed error accessible via
+the QMP query-migrate command.
+
+This series addresses the issue, by ensuring that specific TPM error
+messages are propagated via the QEMU Error object.
+To make this possible,
+- A set of functions in the call stack is changed
+  to incorporate an Error object as an additional parameter.
+- Also, the TPM backend makes use of a new hook called post_load_errp()
+  that explicitly passes an Error object.
+
+It is organized as follows,
+ - Patches 1-21 focuses on pushing Error object into the functions
+   that are important in the call stack where TPM errors are observed.
+   We still need to make changes in rest of the functions in savevm.c
+   such that they also incorporate the errp object for propagating errors.
+ - Patch 22 introduces the new variants of the hooks in VMStateDescription
+   structure. These hooks should be used in future implementations.
+ - Patch 23 focuses on changing the TPM backend such that the errors are
+   set in the Error object.
+
+While this series focuses specifically on TPM error reporting during
+live migration, it lays the groundwork for broader improvements.
+A lot of methods in savevm.c that previously returned an integer now capture
+errors in the Error object, enabling other modules to adopt the
+post_load_errp hook in the future.
+
+One such change previously attempted:
+https://lists.gnu.org/archive/html/qemu-devel/2021-02/msg01727.html
+
+Resolves: https://issues.redhat.com/browse/RHEL-82826
+
+Signed-off-by: Arun Menon <armenon@redhat.com>
+---
+Changes in v6:
+- Incorporated review comments from Daniel and Akihiko, related to few
+  semantic errors and improve error logging.
+- Add one more patch that removes NULL checks after calling 
+  qemu_file_get_return_path() because it does not fail.
+- Link to v5: https://lore.kernel.org/qemu-devel/20250717-propagate_tpm_error-v5-0-1f406f88ee65@redhat.com
+
+Changes in v5:
+- Solve a bug that set errp even though it was not NULL, pointed out by Fabiano in v4.
+- Link to v4: https://lore.kernel.org/qemu-devel/20250716-propagate_tpm_error-v4-0-7141902077c0@redhat.com
+
+Changes in v4:
+- Split the patches into smaller ones based on functions. Pass NULL in the
+  caller until errp is made available. Every function that has an
+  Error **errp object passed to it, ensures that it sets the errp object
+  in case of failure.
+- A few more functions within loadvm_process_command() now handle errors using
+  the errp object. I've converted these for consistency, taking Daniel's
+  patches (link above) as a reference.
+- Along with the post_load_errp() hook, other duplicate hooks are also introduced.
+  This will enable us to migrate to the newer versions eventually.
+- Fix some semantic errors, like using error_propagate_prepend() in places where
+  we need to preserve existing behaviour of accumulating the error in local_err
+  and then propagating it to errp. This can be refactored in a later commit.
+- Add more information in commit messages explaining the changes.
+- Link to v3: https://lore.kernel.org/qemu-devel/20250702-propagate_tpm_error-v3-0-986d94540528@redhat.com
+
+Changes in v3:
+- Split the 2nd patch into 2. Introducing post_load_with_error() hook
+  has been separated from using it in the backends TPM module. This is
+  so that it can be acknowledged.
+- Link to v2: https://lore.kernel.org/qemu-devel/20250627-propagate_tpm_error-v2-0-85990c89da29@redhat.com
+
+Changes in v2:
+- Combine the first two changes into one, focusing on passing the
+  Error object (errp) consistently through functions involved in
+  loading the VM's state. Other functions are not yet changed.
+- As suggested in the review comment, add null checks for errp
+  before adding error messages, preventing crashes.
+  We also now correctly set errors when post-copy migration fails.
+- In process_incoming_migration_co(), switch to error_prepend
+  instead of error_setg. This means we now null-check local_err in
+  the "fail" section before using it, preventing dereferencing issues.
+- Link to v1: https://lore.kernel.org/qemu-devel/20250624-propagate_tpm_error-v1-0-2171487a593d@redhat.com
+
+---
+Arun Menon (24):
+      migration: push Error **errp into vmstate_subsection_load()
+      migration: push Error **errp into vmstate_load_state()
+      migration: push Error **errp into qemu_loadvm_state_header()
+      migration: push Error **errp into vmstate_load()
+      migration: push Error **errp into qemu_loadvm_section_start_full()
+      migration: push Error **errp into qemu_loadvm_section_part_end()
+      migration: Update qemu_file_get_return_path() docs and remove dead checks
+      migration: push Error **errp into loadvm_process_command()
+      migration: push Error **errp into loadvm_handle_cmd_packaged()
+      migration: push Error **errp into ram_postcopy_incoming_init()
+      migration: push Error **errp into loadvm_postcopy_handle_advise()
+      migration: push Error **errp into loadvm_postcopy_handle_listen()
+      migration: push Error **errp into loadvm_postcopy_handle_run()
+      migration: push Error **errp into loadvm_postcopy_ram_handle_discard()
+      migration: make loadvm_postcopy_handle_resume() void
+      migration: push Error **errp into loadvm_handle_recv_bitmap()
+      migration: push Error **errp into loadvm_process_enable_colo()
+      migration: push Error **errp into loadvm_postcopy_handle_switchover_start()
+      migration: push Error **errp into qemu_loadvm_state_main()
+      migration: push Error **errp into qemu_loadvm_state()
+      migration: push Error **errp into qemu_load_device_state()
+      migration: Capture error in postcopy_ram_listen_thread()
+      migration: Add error-parameterized function variants in VMSD struct
+      backends/tpm: Propagate vTPM error on migration failure
+
+ backends/tpm/tpm_emulator.c |  39 +++---
+ hw/display/virtio-gpu.c     |   2 +-
+ hw/pci/pci.c                |   2 +-
+ hw/s390x/virtio-ccw.c       |   2 +-
+ hw/scsi/spapr_vscsi.c       |   2 +-
+ hw/vfio/pci.c               |   2 +-
+ hw/virtio/virtio-mmio.c     |   2 +-
+ hw/virtio/virtio-pci.c      |   2 +-
+ hw/virtio/virtio.c          |   4 +-
+ include/migration/colo.h    |   2 +-
+ include/migration/vmstate.h |  13 +-
+ migration/colo.c            |  12 +-
+ migration/cpr.c             |   4 +-
+ migration/migration.c       |  31 ++---
+ migration/postcopy-ram.c    |   9 +-
+ migration/postcopy-ram.h    |   2 +-
+ migration/qemu-file.c       |   1 -
+ migration/ram.c             |  14 +-
+ migration/ram.h             |   4 +-
+ migration/savevm.c          | 309 +++++++++++++++++++++++++-------------------
+ migration/savevm.h          |   7 +-
+ migration/vmstate-types.c   |  10 +-
+ migration/vmstate.c         |  94 ++++++++++----
+ tests/unit/test-vmstate.c   |  18 +--
+ ui/vdagent.c                |   2 +-
+ 25 files changed, 342 insertions(+), 247 deletions(-)
+---
+base-commit: f96b157ebb93f94cd56ebbc99bc20982b8fd86ef
+change-id: 20250624-propagate_tpm_error-bf4ae6c23d30
 
 Best regards,
-Yan.
-
->
->
-> It returns an empty string, not NULL.
-> https://gitlab.gnome.org/GNOME/glib/-/blob/a205d01adc3fbc4f243e0b0fb52a3a=
-0a8a0d9ae7/glib/gwin32.c#L216
->
->>
->> Your fix relies on this undocumented behavior.
->
->
-> As for me, this behaviour is almost expected (I expected NULL instead of =
-an empty string) because
-> g_win32_error_message uses FormatMessage, and FormatMessage returns NULL =
-if an unknown error code
-> is provided. And I know this, because FormatMessage is the only way on Wi=
-ndows to get a human-readable
-> string from the error code.
->
->>
->>
->> I believe we should instead fix the misuses of error_setg_win32().
->
->
-> This will be more complicated.
-> 1. I don't know what code was returned by the Performance Counters API (s=
-ystem or PDH)
-> 2. QGA call error_setg_win32_internal as part of error propagation with d=
-ifferent error codes,
->  fix the misuses in this case means have a different error propagator for=
- different error codes (back to 1)
-> 3. Also, this means that I need to reimplement error_setg_win32_internal =
-for non-system errors with only
-> one difference: "unknown Windows error 0x%x" instead of g_win32_error_mes=
-sage, because anyway
-> I need the full error propagation part.
->
->>
->> [...]
->>
+-- 
+Arun Menon <armenon@redhat.com>
 
 
