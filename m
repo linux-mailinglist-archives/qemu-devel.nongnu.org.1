@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AEEB0C549
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 654B4B0C52F
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:29:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udqYr-0006UL-9m; Mon, 21 Jul 2025 09:28:09 -0400
+	id 1udqYx-0007lp-Pk; Mon, 21 Jul 2025 09:28:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYO-0000oA-1S
+ id 1udqYO-00017M-Vm
  for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:43 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYL-0005La-Sn
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:39 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4561607166aso33175555e9.2
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:37 -0700 (PDT)
+ id 1udqYM-0005Lo-Tk
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:40 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3a52874d593so3302567f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753104456; x=1753709256; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753104457; x=1753709257; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=PJkBRMoOzj+DWFocUGZgXAN9NSStCVAuKc8pVOqbkQ4=;
- b=U33EbtRAWraA5pT55XxcLNlZeA4roVXaEcH/ey6ex45tc36xxeYyRHBozuUJdP43ek
- 1/mQ3fZZpMedG3PTNEwDVLSD1Vlt7ITTV2kKHbAiCHrNizmAxOiYeTQkKRWZNPOhCdMb
- 6PxkZww0G53mT1L6FM0evKscG++ZKLkqujvqIqD5+fTz5QIH/yfcOP9x2ILiOy4JeSyH
- 0LHdn6N+QIjCRt9JH3HCIao0ME3Nbg8n550SvQNJt8AeMO9jRb2upWm1fMwDaUtgGSQJ
- FMvKbvIgyY3/37C2oasLUg1UbFLJwAbwgoO0O0+tQF4HwXa3xT75axfx4EXkrN89OJeV
- C3KA==
+ :reply-to; bh=S8k9vbZWrI9+KrHmalDtLLG34nLTiZteSToHN3jBdkY=;
+ b=cPLhqzBb+KJeTGxhEdhlyDPgIeLerrNOwQl+2KNJSGBEmmXiSB1tgNrlh9Jl+eGOQz
+ LAVXvf8mu1rmF4HWSftc2M+p3QZg2dVzjlDelBCWGc8EIRe2qfalYwDL+kXGu4c+fvx1
+ JjxLWRoAmpSs5bGRwgZrOHcojZxGkRhCntdDgMrLxlYmDzlGkfZAwK3rncm3D2pDCQyr
+ Yzg9sp+YLYbPHossW967DappDqMt7hN8vGR7+GppuqZ1fMXIAHmtG4UDNN6AEpiM6+Fd
+ rH8cztny6FSgXUgomt6eWBK2c1+CBnhLnV234rciJUIpavtiK6iaSsqy5GHhnY7LQYNH
+ Dutg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753104456; x=1753709256;
+ d=1e100.net; s=20230601; t=1753104457; x=1753709257;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PJkBRMoOzj+DWFocUGZgXAN9NSStCVAuKc8pVOqbkQ4=;
- b=xU590/IcAuIKYTLeavFFDmsfVOQJRtTgzV+D3lMUfRB3xYu3S8MztPKBv1uAAwmI6i
- jA6dz5aqbkXjosl28ZBINaAt8SRbF14he4mF4kylBdCNr/bxczJyjDQaCK7JibBV6LTh
- vCzT3RtFoLaRUCkJ7oNsf7/iKsOpuSJfUORBQ+yFyyyAI4ea2RDQdvkRWNOkHaWnncWB
- q/EEqD9DsKP1OaAlGcRZ77dGd9z+Ke6VpldLa1Hd5b7NZVXZLV47FkB1eAaXwLuobFPr
- c53NCOtx/SxZXbQ/CFj4e9y150l6Xhyt/laTK5ODvY0xTGMWlhFIxSjB+UzQBrbGUB+6
- PhjA==
-X-Gm-Message-State: AOJu0Yx+njZa0je1T+UEPW4TF6ySCVIhvXDoMirsnPIXYqrLiGZXhOCG
- TBFnieNSA0eOGXggS56EpvXky3BzYTQ2KZqY5XutJ1PquosNw6kgX7Xelli4XdULp6kSXhgxIQc
- VIMen
-X-Gm-Gg: ASbGncvD9ufzhD9I1rEYjET/gwWrAYc8FfdrxYo7W9JuyapUJc5Pi1BuEkTLshYo+94
- Zk3S3VUOfgC8yD9CCv915e4M+WAy3hUgfZdyvTmC2zhADsCZUNuhI13D7KYq4XaFb8XSLLmADPd
- EMs3Q1vMJ0I2ZdqOjTnGWcuVgl4MfW5bZ8oCm5TaqPIZlt56oobfs5huTh971dHT8fxCBgnfDga
- K+mOCbZVji/RqQwiuElLgglXpKBrSkKqb6fRiTLpT/BX/SUqnNZH71P6XZLNJOH/dA0t3/7c42G
- AdXw8TsGypwsqNsgOd6hupO8Dwm/BDeCju4krokCRGVkGZunloYKcEnKqw0jZfRQJUlB6N7OIPP
- r4JdhcvhNW51zhmxNumCMglJHRkQsqcUt8hOjiAM=
-X-Google-Smtp-Source: AGHT+IFetPnWGzSKV4+iOWwtFyL+4Vp390skbgBi5wB6ETHV9r+7A6TvPRwHWz5S/YdkyA+bVk5ghg==
-X-Received: by 2002:a05:600c:198e:b0:456:fc1:c286 with SMTP id
- 5b1f17b1804b1-4562e031e7amr182363415e9.1.1753104456135; 
- Mon, 21 Jul 2025 06:27:36 -0700 (PDT)
+ bh=S8k9vbZWrI9+KrHmalDtLLG34nLTiZteSToHN3jBdkY=;
+ b=WlP2DBUQ9dHrwLHczO5R6zg/mDHmDp/8qE3WqYVF9Jo8CukpS1usYhv4s4e0tjCadT
+ YUzJi9LK9Sie3PNhSKiL9CHuXE/z8se9DlPmpZ5h3fXmGG/WplNi8vALyNsq0WfofKVv
+ RJCERnocT+uBHW9VOMmIZ6JVaR9zWGr5CpKXBNuTUUd1xGE4o/UE479ZsNNBZl3orwCI
+ cqy82f4G7VaJd1ArwbgeOUVz63dlMIOP7WcajSx/IQ/EvvYy1ecYyg5bq3IoiZLI27Vb
+ 6BcSD/QGwUIKDbCcB2ppzTJqeBgB0rC8lJE/FrMiLqBRMvDweeQp86LbGlYEcq23Guri
+ vJ8g==
+X-Gm-Message-State: AOJu0Yy4b1emI+ZaL7nYMWB3L8tMG9W7cYkQ7IJ2ub8T08sL4bZ637XO
+ atssgFRyOyi9pRprkWsOUHXxRtwmI4CStkvKTWWHx64h76bVeqHXbzdjH6JZ5DDW0GiYP/TqXH0
+ uPFtn
+X-Gm-Gg: ASbGncs7Pt+IJk4lmB4Ih8k4tYy227sBdVdtJ92eL5tuSDaUKzQZzP/SBpxFpJURcwj
+ BNAbXFTL4ErappybLn3JRLy0hRscvk1WEEU/Hkybcbz0daNlV93Q0QTvpu/k90KFuae+hJUbfMe
+ bJHPX4vTJTu0uL1gr7BHl53hEGj6ch4jVHVrvmGZ3RjAWkBZmxp40movQ++BK1QmtCuNwRCzeLM
+ N31QxL0iiMaL3rt0NR+JvJR5AGSOtJTobyOOJNGKwbAe+FvK7vej36uLGcYy4fcx2QBap/6RJcB
+ fCSsmvbpw17SZB2fCmbgMQI59eWW5AXqBuc4CspyQmoQFOG88jx1FsHxSA1mGzOAln+lQjRA5t9
+ f5Lg26BsJ9pAM2TrPNgjuNNjI1pgq
+X-Google-Smtp-Source: AGHT+IEsIYeG3WXdBV7MFXMNhPXH3ATgF1KI5Zxg8d46STSHuIH/BehK5Y90kFQWCSsgkMrfB4ubGA==
+X-Received: by 2002:a5d:588f:0:b0:3a4:e7d3:bd9c with SMTP id
+ ffacd0b85a97d-3b60e4c9102mr14727419f8f.17.1753104457024; 
+ Mon, 21 Jul 2025 06:27:37 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.35
+ ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.36
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Jul 2025 06:27:35 -0700 (PDT)
+ Mon, 21 Jul 2025 06:27:36 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/20] target/arm: Make LD1Q decode and trans fn agree about
- a->u
-Date: Mon, 21 Jul 2025 14:27:14 +0100
-Message-ID: <20250721132718.2835729-18-peter.maydell@linaro.org>
+Subject: [PULL 18/20] hvf: arm: Add permission check in GIC sysreg handlers
+Date: Mon, 21 Jul 2025 14:27:15 +0100
+Message-ID: <20250721132718.2835729-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250721132718.2835729-1-peter.maydell@linaro.org>
 References: <20250721132718.2835729-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,39 +97,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For the LD1Q instruction (gather load of quadwords) we use the
-LD1_zprz pattern with MO_128 elements.  At this element size there is
-no signed vs unsigned distinction, and we only set the 'u' bit in the
-arg_LD1_zprz struct because we share the code and decode struct with
-smaller element sizes.
+From: Zenghui Yu <zenghui.yu@linux.dev>
 
-However, we set u=0 in the decode pattern line but then accidentally
-asserted that it was 1 in the trans function.  Since our usual convention
-is that the "default" is unsigned and we only mark operations as signed
-when they really do need to extend, change the decode pattern line to
-set u=1 to match the assert.
+Quoting Peter Maydell:
 
-Fixes: d2aa9a804ee6 ("target/arm: Implement LD1Q, ST1Q for SVE2p1")
+" hvf_sysreg_read_cp() and hvf_sysreg_write_cp() do not check the .access
+  field of the ARMCPRegInfo to ensure that they forbid writes to registers
+  that are marked with a .access field that says they're read-only (and
+  ditto reads to write-only registers). "
+
+Before we add more registers in GIC sysreg handlers, let's get it correct
+by adding the .access checks to hvf_sysreg_read_cp() and
+hvf_sysreg_write_cp(). With that, a sysreg access with invalid permission
+will result in an UNDEFINED exception.
+
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
+Message-id: 20250714160139.10404-2-zenghui.yu@linux.dev
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250718173032.2498900-11-peter.maydell@linaro.org
 ---
- target/arm/tcg/sve.decode | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/hvf/hvf.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
-index a77b725c876..aea7f519730 100644
---- a/target/arm/tcg/sve.decode
-+++ b/target/arm/tcg/sve.decode
-@@ -1345,7 +1345,7 @@ LD1_zprz        1100010 11 1. ..... 11. ... ..... ..... \
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 8f93e42b34b..861657df966 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -1263,6 +1263,9 @@ static bool hvf_sysreg_read_cp(CPUState *cpu, uint32_t reg, uint64_t *val)
  
- # LD1Q
- LD1_zprz        1100 0100 000 rm:5 101 pg:3 rn:5 rd:5 \
--                &rprr_gather_load u=0 ff=0 xs=2 esz=4 msz=4 scale=0
-+                &rprr_gather_load u=1 ff=0 xs=2 esz=4 msz=4 scale=0
+     ri = get_arm_cp_reginfo(arm_cpu->cp_regs, hvf_reg2cp_reg(reg));
+     if (ri) {
++        if (!cp_access_ok(1, ri, true)) {
++            return false;
++        }
+         if (ri->accessfn) {
+             if (ri->accessfn(env, ri, true) != CP_ACCESS_OK) {
+                 return false;
+@@ -1543,6 +1546,9 @@ static bool hvf_sysreg_write_cp(CPUState *cpu, uint32_t reg, uint64_t val)
+     ri = get_arm_cp_reginfo(arm_cpu->cp_regs, hvf_reg2cp_reg(reg));
  
- # SVE 64-bit gather load (vector plus immediate)
- LD1_zpiz        1100010 .. 01 ..... 1.. ... ..... ..... \
+     if (ri) {
++        if (!cp_access_ok(1, ri, false)) {
++            return false;
++        }
+         if (ri->accessfn) {
+             if (ri->accessfn(env, ri, false) != CP_ACCESS_OK) {
+                 return false;
 -- 
 2.43.0
 
