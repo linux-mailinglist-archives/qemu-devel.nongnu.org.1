@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25AC8B0C900
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D941B0C8E2
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:33:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtMa-0005vg-0T; Mon, 21 Jul 2025 12:27:40 -0400
+	id 1udtKW-0001rY-Qn; Mon, 21 Jul 2025 12:25:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJ5-00062k-Eb
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJ9-000678-LM
  for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJ0-0001bz-Fl
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:02 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtJ6-0001eD-PN
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:24:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753115037;
+ s=mimecast20190719; t=1753115044;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kkRFCiBMKL4MHUQ7Zugvdw1BQnwkezmc+oEfEDLl7GU=;
- b=HEM9nEyOnrmnez8gWWbyTd7pc6hW7RBO5OyJCmv8oR50xDh8DoITbiKpKL3BxN0Fr+BKFL
- ZqaNIQRUyaDuyQABayexYIxWeoP0lYYSax9tBQ09xf25nnpaGYH3jnC6sNfTIrj0z0J2cl
- j3NBQ0BmIjzI+obHMytRyKUG/xJMWPU=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=DxO+MEsa6kAwvFVPm9WTdeaXRowfeF8rs791JdvIT+U=;
+ b=jCVVDilzVcY9OzhzMUm9HYB6ra7PVXE2YVnGyL8HxYsetQdrbowoLXtkCJru6BT1IVyf/G
+ UqUbchbO6waVRhDry731YOS25FrpR8hKRBH5Mx4B43i8n9pmdrUNI2OS2LbY+R5PlgAwfr
+ q+6OOmibMzYPMyGdQRJyxhq3jimfgzs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-646-Ruov8_hNPCqFfL4sVBzZ_A-1; Mon,
- 21 Jul 2025 12:23:56 -0400
-X-MC-Unique: Ruov8_hNPCqFfL4sVBzZ_A-1
-X-Mimecast-MFC-AGG-ID: Ruov8_hNPCqFfL4sVBzZ_A_1753115035
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-186-0SXzTDBnP6Oz78ekTqNkdQ-1; Mon,
+ 21 Jul 2025 12:23:59 -0400
+X-MC-Unique: 0SXzTDBnP6Oz78ekTqNkdQ-1
+X-Mimecast-MFC-AGG-ID: 0SXzTDBnP6Oz78ekTqNkdQ_1753115038
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 389BA18002A7; Mon, 21 Jul 2025 16:23:55 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 23ED11800359; Mon, 21 Jul 2025 16:23:58 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0533C195608D; Mon, 21 Jul 2025 16:23:52 +0000 (UTC)
+ id AB38919560AD; Mon, 21 Jul 2025 16:23:55 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -50,9 +50,10 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 27/50] ppc/xive2: redistribute irqs for pool and phys ctx pull
-Date: Mon, 21 Jul 2025 18:22:10 +0200
-Message-ID: <20250721162233.686837-28-clg@redhat.com>
+Subject: [PULL 28/50] ppc/xive: Change presenter .match_nvt to match not
+ present
+Date: Mon, 21 Jul 2025 18:22:11 +0200
+Message-ID: <20250721162233.686837-29-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,298 +85,526 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.ibm.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-When disabling (pulling) an xive interrupt context, we need
-to redistribute any active group interrupts to other threads
-that can handle the interrupt if possible.  This support had
-already been added for the OS context but had not yet been
-added to the pool or physical context.
+Have the match_nvt method only perform a TCTX match but don't present
+the interrupt, the caller presents. This has no functional change, but
+allows for more complicated presentation logic after matching.
 
-Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-28-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-29-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/ppc/xive2.h      |  4 ++
- include/hw/ppc/xive2_regs.h |  4 +-
- hw/intc/xive.c              | 12 ++---
- hw/intc/xive2.c             | 94 ++++++++++++++++++++++++++-----------
- 4 files changed, 79 insertions(+), 35 deletions(-)
+ include/hw/ppc/xive.h | 27 +++++++++++++----------
+ hw/intc/pnv_xive.c    | 16 +++++++-------
+ hw/intc/pnv_xive2.c   | 16 +++++++-------
+ hw/intc/spapr_xive.c  | 18 +++++++--------
+ hw/intc/xive.c        | 51 +++++++++++++++----------------------------
+ hw/intc/xive2.c       | 31 +++++++++++++-------------
+ hw/ppc/pnv.c          | 48 ++++++++++++++--------------------------
+ hw/ppc/spapr.c        | 21 +++++++-----------
+ 8 files changed, 97 insertions(+), 131 deletions(-)
 
-diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
-index ff02ce254984..a91b99057c2a 100644
---- a/include/hw/ppc/xive2.h
-+++ b/include/hw/ppc/xive2.h
-@@ -140,6 +140,10 @@ bool xive2_tm_irq_precluded(XiveTCTX *tctx, int ring, uint8_t priority);
- void xive2_tm_set_lsmfb(XiveTCTX *tctx, int ring, uint8_t priority);
- void xive2_tm_set_hv_target(XivePresenter *xptr, XiveTCTX *tctx,
-                             hwaddr offset, uint64_t value, unsigned size);
-+uint64_t xive2_tm_pull_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-+                                hwaddr offset, unsigned size);
-+uint64_t xive2_tm_pull_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-+                                hwaddr offset, unsigned size);
- void xive2_tm_pull_phys_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
-                                hwaddr offset, uint64_t value, unsigned size);
- void xive2_tm_ack_os_el(XivePresenter *xptr, XiveTCTX *tctx,
-diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
-index e22203814312..f82054661bda 100644
---- a/include/hw/ppc/xive2_regs.h
-+++ b/include/hw/ppc/xive2_regs.h
-@@ -209,9 +209,9 @@ static inline uint32_t xive2_nvp_idx(uint32_t cam_line)
-     return cam_line & ((1 << XIVE2_NVP_SHIFT) - 1);
+diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+index 46d05d74fbfb..8152a9df3d39 100644
+--- a/include/hw/ppc/xive.h
++++ b/include/hw/ppc/xive.h
+@@ -425,6 +425,7 @@ void xive_router_end_notify(XiveRouter *xrtr, XiveEAS *eas);
+ 
+ typedef struct XiveTCTXMatch {
+     XiveTCTX *tctx;
++    int count;
+     uint8_t ring;
+     bool precluded;
+ } XiveTCTXMatch;
+@@ -440,10 +441,10 @@ DECLARE_CLASS_CHECKERS(XivePresenterClass, XIVE_PRESENTER,
+ 
+ struct XivePresenterClass {
+     InterfaceClass parent;
+-    int (*match_nvt)(XivePresenter *xptr, uint8_t format,
+-                     uint8_t nvt_blk, uint32_t nvt_idx,
+-                     bool crowd, bool cam_ignore, uint8_t priority,
+-                     uint32_t logic_serv, XiveTCTXMatch *match);
++    bool (*match_nvt)(XivePresenter *xptr, uint8_t format,
++                      uint8_t nvt_blk, uint32_t nvt_idx,
++                      bool crowd, bool cam_ignore, uint8_t priority,
++                      uint32_t logic_serv, XiveTCTXMatch *match);
+     bool (*in_kernel)(const XivePresenter *xptr);
+     uint32_t (*get_config)(XivePresenter *xptr);
+     int (*broadcast)(XivePresenter *xptr,
+@@ -455,12 +456,14 @@ int xive_presenter_tctx_match(XivePresenter *xptr, XiveTCTX *tctx,
+                               uint8_t format,
+                               uint8_t nvt_blk, uint32_t nvt_idx,
+                               bool cam_ignore, uint32_t logic_serv);
+-bool xive_presenter_notify(XiveFabric *xfb, uint8_t format,
+-                           uint8_t nvt_blk, uint32_t nvt_idx,
+-                           bool crowd, bool cam_ignore, uint8_t priority,
+-                           uint32_t logic_serv, bool *precluded);
++bool xive_presenter_match(XiveFabric *xfb, uint8_t format,
++                          uint8_t nvt_blk, uint32_t nvt_idx,
++                          bool crowd, bool cam_ignore, uint8_t priority,
++                          uint32_t logic_serv, XiveTCTXMatch *match);
+ 
+ uint32_t xive_get_vpgroup_size(uint32_t nvp_index);
++uint8_t xive_get_group_level(bool crowd, bool ignore,
++                             uint32_t nvp_blk, uint32_t nvp_index);
+ 
+ /*
+  * XIVE Fabric (Interface between Interrupt Controller and Machine)
+@@ -475,10 +478,10 @@ DECLARE_CLASS_CHECKERS(XiveFabricClass, XIVE_FABRIC,
+ 
+ struct XiveFabricClass {
+     InterfaceClass parent;
+-    int (*match_nvt)(XiveFabric *xfb, uint8_t format,
+-                     uint8_t nvt_blk, uint32_t nvt_idx,
+-                     bool crowd, bool cam_ignore, uint8_t priority,
+-                     uint32_t logic_serv, XiveTCTXMatch *match);
++    bool (*match_nvt)(XiveFabric *xfb, uint8_t format,
++                      uint8_t nvt_blk, uint32_t nvt_idx,
++                      bool crowd, bool cam_ignore, uint8_t priority,
++                      uint32_t logic_serv, XiveTCTXMatch *match);
+     int (*broadcast)(XiveFabric *xfb, uint8_t nvt_blk, uint32_t nvt_idx,
+                      bool crowd, bool cam_ignore, uint8_t priority);
+ };
+diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
+index 935c0e4742f5..c2ca40b8be87 100644
+--- a/hw/intc/pnv_xive.c
++++ b/hw/intc/pnv_xive.c
+@@ -470,14 +470,13 @@ static bool pnv_xive_is_cpu_enabled(PnvXive *xive, PowerPCCPU *cpu)
+     return xive->regs[reg >> 3] & PPC_BIT(bit);
  }
  
--static inline uint32_t xive2_nvp_blk(uint32_t cam_line)
-+static inline uint8_t xive2_nvp_blk(uint32_t cam_line)
+-static int pnv_xive_match_nvt(XivePresenter *xptr, uint8_t format,
+-                              uint8_t nvt_blk, uint32_t nvt_idx,
+-                              bool crowd, bool cam_ignore, uint8_t priority,
+-                              uint32_t logic_serv, XiveTCTXMatch *match)
++static bool pnv_xive_match_nvt(XivePresenter *xptr, uint8_t format,
++                               uint8_t nvt_blk, uint32_t nvt_idx,
++                               bool crowd, bool cam_ignore, uint8_t priority,
++                               uint32_t logic_serv, XiveTCTXMatch *match)
  {
--    return (cam_line >> XIVE2_NVP_SHIFT) & 0xf;
-+    return (uint8_t)((cam_line >> XIVE2_NVP_SHIFT) & 0xf);
+     PnvXive *xive = PNV_XIVE(xptr);
+     PnvChip *chip = xive->chip;
+-    int count = 0;
+     int i, j;
+ 
+     for (i = 0; i < chip->nr_cores; i++) {
+@@ -510,17 +509,18 @@ static int pnv_xive_match_nvt(XivePresenter *xptr, uint8_t format,
+                     qemu_log_mask(LOG_GUEST_ERROR, "XIVE: already found a "
+                                   "thread context NVT %x/%x\n",
+                                   nvt_blk, nvt_idx);
+-                    return -1;
++                    match->count++;
++                    continue;
+                 }
+ 
+                 match->ring = ring;
+                 match->tctx = tctx;
+-                count++;
++                match->count++;
+             }
+         }
+     }
+ 
+-    return count;
++    return !!match->count;
  }
  
- void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf);
+ static uint32_t pnv_xive_presenter_get_config(XivePresenter *xptr)
+diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+index 7b4a33228e05..e019cad5c14c 100644
+--- a/hw/intc/pnv_xive2.c
++++ b/hw/intc/pnv_xive2.c
+@@ -640,14 +640,13 @@ static bool pnv_xive2_is_cpu_enabled(PnvXive2 *xive, PowerPCCPU *cpu)
+     return xive->tctxt_regs[reg >> 3] & PPC_BIT(bit);
+ }
+ 
+-static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+-                               uint8_t nvt_blk, uint32_t nvt_idx,
+-                               bool crowd, bool cam_ignore, uint8_t priority,
+-                               uint32_t logic_serv, XiveTCTXMatch *match)
++static bool pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
++                                uint8_t nvt_blk, uint32_t nvt_idx,
++                                bool crowd, bool cam_ignore, uint8_t priority,
++                                uint32_t logic_serv, XiveTCTXMatch *match)
+ {
+     PnvXive2 *xive = PNV_XIVE2(xptr);
+     PnvChip *chip = xive->chip;
+-    int count = 0;
+     int i, j;
+     bool gen1_tima_os =
+         xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+@@ -692,7 +691,8 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+                                   "thread context NVT %x/%x\n",
+                                   nvt_blk, nvt_idx);
+                     /* Should set a FIR if we ever model it */
+-                    return -1;
++                    match->count++;
++                    continue;
+                 }
+                 /*
+                  * For a group notification, we need to know if the
+@@ -717,13 +717,13 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+                             }
+                         }
+                     }
+-                    count++;
++                    match->count++;
+                 }
+             }
+         }
+     }
+ 
+-    return count;
++    return !!match->count;
+ }
+ 
+ static uint32_t pnv_xive2_presenter_get_config(XivePresenter *xptr)
+diff --git a/hw/intc/spapr_xive.c b/hw/intc/spapr_xive.c
+index 440edb97d8d3..e393f5dcdccf 100644
+--- a/hw/intc/spapr_xive.c
++++ b/hw/intc/spapr_xive.c
+@@ -428,14 +428,13 @@ static int spapr_xive_write_nvt(XiveRouter *xrtr, uint8_t nvt_blk,
+     g_assert_not_reached();
+ }
+ 
+-static int spapr_xive_match_nvt(XivePresenter *xptr, uint8_t format,
+-                                uint8_t nvt_blk, uint32_t nvt_idx,
+-                                bool crowd, bool cam_ignore,
+-                                uint8_t priority,
+-                                uint32_t logic_serv, XiveTCTXMatch *match)
++static bool spapr_xive_match_nvt(XivePresenter *xptr, uint8_t format,
++                                 uint8_t nvt_blk, uint32_t nvt_idx,
++                                 bool crowd, bool cam_ignore,
++                                 uint8_t priority,
++                                 uint32_t logic_serv, XiveTCTXMatch *match)
+ {
+     CPUState *cs;
+-    int count = 0;
+ 
+     CPU_FOREACH(cs) {
+         PowerPCCPU *cpu = POWERPC_CPU(cs);
+@@ -463,16 +462,17 @@ static int spapr_xive_match_nvt(XivePresenter *xptr, uint8_t format,
+             if (match->tctx) {
+                 qemu_log_mask(LOG_GUEST_ERROR, "XIVE: already found a thread "
+                               "context NVT %x/%x\n", nvt_blk, nvt_idx);
+-                return -1;
++                match->count++;
++                continue;
+             }
+ 
+             match->ring = ring;
+             match->tctx = tctx;
+-            count++;
++            match->count++;
+         }
+     }
+ 
+-    return count;
++    return !!match->count;
+ }
+ 
+ static uint32_t spapr_xive_presenter_get_config(XivePresenter *xptr)
 diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 8b705727ae2d..2f72d6ecd5a5 100644
+index 2f72d6ecd5a5..c92e819053e8 100644
 --- a/hw/intc/xive.c
 +++ b/hw/intc/xive.c
-@@ -693,7 +693,7 @@ static const XiveTmOp xive2_tm_operations[] = {
+@@ -1762,8 +1762,8 @@ uint32_t xive_get_vpgroup_size(uint32_t nvp_index)
+     return 1U << (first_zero + 1);
+ }
  
-     /* MMIOs above 2K : special operations with side effects */
-     { XIVE_TM_OS_PAGE, TM_SPC_ACK_OS_REG,         2, NULL,
--                                                     xive_tm_ack_os_reg },
-+                                                   xive_tm_ack_os_reg },
-     { XIVE_TM_OS_PAGE, TM_SPC_SET_OS_PENDING,     1, xive_tm_set_os_pending,
-                                                      NULL },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX_G2,     4, NULL,
-@@ -705,17 +705,17 @@ static const XiveTmOp xive2_tm_operations[] = {
-     { XIVE_TM_HV_PAGE, TM_SPC_ACK_HV_REG,         2, NULL,
-                                                      xive_tm_ack_hv_reg },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX_G2,   4, NULL,
--                                                     xive_tm_pull_pool_ctx },
-+                                                     xive2_tm_pull_pool_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,      4, NULL,
--                                                     xive_tm_pull_pool_ctx },
-+                                                     xive2_tm_pull_pool_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,      8, NULL,
--                                                     xive_tm_pull_pool_ctx },
-+                                                     xive2_tm_pull_pool_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX_OL,     1, xive2_tm_pull_os_ctx_ol,
-                                                      NULL },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_PHYS_CTX_G2,   4, NULL,
--                                                     xive_tm_pull_phys_ctx },
-+                                                     xive2_tm_pull_phys_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_PHYS_CTX,      1, NULL,
--                                                     xive_tm_pull_phys_ctx },
-+                                                     xive2_tm_pull_phys_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_PHYS_CTX_OL,   1, xive2_tm_pull_phys_ctx_ol,
-                                                      NULL },
-     { XIVE_TM_OS_PAGE, TM_SPC_ACK_OS_EL,          1, xive2_tm_ack_os_el,
+-static uint8_t xive_get_group_level(bool crowd, bool ignore,
+-                                    uint32_t nvp_blk, uint32_t nvp_index)
++uint8_t xive_get_group_level(bool crowd, bool ignore,
++                             uint32_t nvp_blk, uint32_t nvp_index)
+ {
+     int first_zero;
+     uint8_t level;
+@@ -1881,15 +1881,14 @@ int xive_presenter_tctx_match(XivePresenter *xptr, XiveTCTX *tctx,
+  * This is our simple Xive Presenter Engine model. It is merged in the
+  * Router as it does not require an extra object.
+  */
+-bool xive_presenter_notify(XiveFabric *xfb, uint8_t format,
++bool xive_presenter_match(XiveFabric *xfb, uint8_t format,
+                            uint8_t nvt_blk, uint32_t nvt_idx,
+                            bool crowd, bool cam_ignore, uint8_t priority,
+-                           uint32_t logic_serv, bool *precluded)
++                           uint32_t logic_serv, XiveTCTXMatch *match)
+ {
+     XiveFabricClass *xfc = XIVE_FABRIC_GET_CLASS(xfb);
+-    XiveTCTXMatch match = { .tctx = NULL, .ring = 0, .precluded = false };
+-    uint8_t group_level;
+-    int count;
++
++    memset(match, 0, sizeof(*match));
+ 
+     /*
+      * Ask the machine to scan the interrupt controllers for a match.
+@@ -1914,22 +1913,8 @@ bool xive_presenter_notify(XiveFabric *xfb, uint8_t format,
+      * a new command to the presenters (the equivalent of the "assign"
+      * power bus command in the documented full notify sequence.
+      */
+-    count = xfc->match_nvt(xfb, format, nvt_blk, nvt_idx, crowd, cam_ignore,
+-                           priority, logic_serv, &match);
+-    if (count < 0) {
+-        return false;
+-    }
+-
+-    /* handle CPU exception delivery */
+-    if (count) {
+-        group_level = xive_get_group_level(crowd, cam_ignore, nvt_blk, nvt_idx);
+-        trace_xive_presenter_notify(nvt_blk, nvt_idx, match.ring, group_level);
+-        xive_tctx_pipr_update(match.tctx, match.ring, priority, group_level);
+-    } else {
+-        *precluded = match.precluded;
+-    }
+-
+-    return !!count;
++    return xfc->match_nvt(xfb, format, nvt_blk, nvt_idx, crowd, cam_ignore,
++                          priority, logic_serv, match);
+ }
+ 
+ /*
+@@ -1966,7 +1951,7 @@ void xive_router_end_notify(XiveRouter *xrtr, XiveEAS *eas)
+     uint8_t nvt_blk;
+     uint32_t nvt_idx;
+     XiveNVT nvt;
+-    bool found, precluded;
++    XiveTCTXMatch match;
+ 
+     uint8_t end_blk = xive_get_field64(EAS_END_BLOCK, eas->w);
+     uint32_t end_idx = xive_get_field64(EAS_END_INDEX, eas->w);
+@@ -2046,16 +2031,16 @@ void xive_router_end_notify(XiveRouter *xrtr, XiveEAS *eas)
+         return;
+     }
+ 
+-    found = xive_presenter_notify(xrtr->xfb, format, nvt_blk, nvt_idx,
+-                          false /* crowd */,
+-                          xive_get_field32(END_W7_F0_IGNORE, end.w7),
+-                          priority,
+-                          xive_get_field32(END_W7_F1_LOG_SERVER_ID, end.w7),
+-                          &precluded);
+-    /* we don't support VP-group notification on P9, so precluded is not used */
+     /* TODO: Auto EOI. */
+-
+-    if (found) {
++    /* we don't support VP-group notification on P9, so precluded is not used */
++    if (xive_presenter_match(xrtr->xfb, format, nvt_blk, nvt_idx,
++                             false /* crowd */,
++                             xive_get_field32(END_W7_F0_IGNORE, end.w7),
++                             priority,
++                             xive_get_field32(END_W7_F1_LOG_SERVER_ID, end.w7),
++                             &match)) {
++        trace_xive_presenter_notify(nvt_blk, nvt_idx, match.ring, 0);
++        xive_tctx_pipr_update(match.tctx, match.ring, priority, 0);
+         return;
+     }
+ 
 diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 624620e5b44b..2791985cf29b 100644
+index 2791985cf29b..602b23d06d80 100644
 --- a/hw/intc/xive2.c
 +++ b/hw/intc/xive2.c
-@@ -23,6 +23,9 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
-                                     uint32_t end_idx, uint32_t end_data,
-                                     bool redistribute);
+@@ -1559,7 +1559,8 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
+     Xive2End end;
+     uint8_t priority;
+     uint8_t format;
+-    bool found, precluded;
++    XiveTCTXMatch match;
++    bool crowd, cam_ignore;
+     uint8_t nvx_blk;
+     uint32_t nvx_idx;
  
-+static int xive2_tctx_get_nvp_indexes(XiveTCTX *tctx, uint8_t ring,
-+                                      uint8_t *nvp_blk, uint32_t *nvp_idx);
+@@ -1629,16 +1630,19 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
+      */
+     nvx_blk = xive_get_field32(END2_W6_VP_BLOCK, end.w6);
+     nvx_idx = xive_get_field32(END2_W6_VP_OFFSET, end.w6);
+-
+-    found = xive_presenter_notify(xrtr->xfb, format, nvx_blk, nvx_idx,
+-                          xive2_end_is_crowd(&end), xive2_end_is_ignore(&end),
+-                          priority,
+-                          xive_get_field32(END2_W7_F1_LOG_SERVER_ID, end.w7),
+-                          &precluded);
++    crowd = xive2_end_is_crowd(&end);
++    cam_ignore = xive2_end_is_ignore(&end);
+ 
+     /* TODO: Auto EOI. */
+-
+-    if (found) {
++    if (xive_presenter_match(xrtr->xfb, format, nvx_blk, nvx_idx,
++                             crowd, cam_ignore, priority,
++                             xive_get_field32(END2_W7_F1_LOG_SERVER_ID, end.w7),
++                             &match)) {
++        uint8_t group_level;
 +
- uint32_t xive2_router_get_config(Xive2Router *xrtr)
- {
-     Xive2RouterClass *xrc = XIVE2_ROUTER_GET_CLASS(xrtr);
-@@ -604,8 +607,10 @@ static uint32_t xive2_tctx_hw_cam_line(XivePresenter *xptr, XiveTCTX *tctx)
- static void xive2_redistribute(Xive2Router *xrtr, XiveTCTX *tctx, uint8_t ring)
- {
-     uint8_t *regs = &tctx->regs[ring];
--    uint8_t nsr = regs[TM_NSR];
--    uint8_t pipr = regs[TM_PIPR];
-+    uint8_t *alt_regs = (ring == TM_QW2_HV_POOL) ? &tctx->regs[TM_QW3_HV_PHYS] :
-+                                                   regs;
-+    uint8_t nsr = alt_regs[TM_NSR];
-+    uint8_t pipr = alt_regs[TM_PIPR];
-     uint8_t crowd = NVx_CROWD_LVL(nsr);
-     uint8_t group = NVx_GROUP_LVL(nsr);
-     uint8_t nvgc_blk, end_blk, nvp_blk;
-@@ -614,10 +619,6 @@ static void xive2_redistribute(Xive2Router *xrtr, XiveTCTX *tctx, uint8_t ring)
-     uint8_t prio_limit;
-     uint32_t cfg;
-     uint8_t alt_ring;
--    uint32_t target_ringw2;
--    uint32_t cam;
--    bool valid;
--    bool hw;
- 
-     /* redistribution is only for group/crowd interrupts */
-     if (!xive_nsr_indicates_group_exception(ring, nsr)) {
-@@ -625,11 +626,9 @@ static void xive2_redistribute(Xive2Router *xrtr, XiveTCTX *tctx, uint8_t ring)
++        group_level = xive_get_group_level(crowd, cam_ignore, nvx_blk, nvx_idx);
++        trace_xive_presenter_notify(nvx_blk, nvx_idx, match.ring, group_level);
++        xive_tctx_pipr_update(match.tctx, match.ring, priority, group_level);
+         return;
      }
  
-     alt_ring = xive_nsr_exception_ring(ring, nsr);
--    target_ringw2 = xive_tctx_word2(&tctx->regs[alt_ring]);
--    cam = be32_to_cpu(target_ringw2);
+@@ -1656,7 +1660,7 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
+             return;
+         }
  
--    /* extract nvp block and index from targeted ring's cam */
--    xive2_cam_decode(cam, &nvp_blk, &nvp_idx, &valid, &hw);
-+    /* Don't check return code since ring is expected to be invalidated */
-+    xive2_tctx_get_nvp_indexes(tctx, alt_ring, &nvp_blk, &nvp_idx);
+-        if (!xive2_end_is_ignore(&end)) {
++        if (!cam_ignore) {
+             uint8_t ipb;
+             Xive2Nvp nvp;
  
-     trace_xive_redistribute(tctx->cs->cpu_index, alt_ring, nvp_blk, nvp_idx);
+@@ -1685,9 +1689,6 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
+         } else {
+             Xive2Nvgc nvgc;
+             uint32_t backlog;
+-            bool crowd;
+-
+-            crowd = xive2_end_is_crowd(&end);
  
-@@ -676,11 +675,23 @@ static void xive2_redistribute(Xive2Router *xrtr, XiveTCTX *tctx, uint8_t ring)
-     xive2_router_end_notify(xrtr, end_blk, end_idx, 0, true);
+             /*
+              * For groups and crowds, the per-priority backlog
+@@ -1719,9 +1720,7 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
+             if (backlog == 1) {
+                 XiveFabricClass *xfc = XIVE_FABRIC_GET_CLASS(xrtr->xfb);
+                 xfc->broadcast(xrtr->xfb, nvx_blk, nvx_idx,
+-                               xive2_end_is_crowd(&end),
+-                               xive2_end_is_ignore(&end),
+-                               priority);
++                               crowd, cam_ignore, priority);
  
-     /* clear interrupt indication for the context */
--    regs[TM_NSR] = 0;
--    regs[TM_PIPR] = regs[TM_CPPR];
-+    alt_regs[TM_NSR] = 0;
-+    alt_regs[TM_PIPR] = alt_regs[TM_CPPR];
-     xive_tctx_reset_signal(tctx, ring);
+                 if (!xive2_end_is_precluded_escalation(&end)) {
+                     /*
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 4a49e9d1a865..d84c9067edb3 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -2608,62 +2608,46 @@ static void pnv_pic_print_info(InterruptStatsProvider *obj, GString *buf)
+     }
  }
  
-+static uint8_t xive2_hv_irq_ring(uint8_t nsr)
-+{
-+    switch (nsr >> 6) {
-+    case TM_QW3_NSR_HE_POOL:
-+        return TM_QW2_HV_POOL;
-+    case TM_QW3_NSR_HE_PHYS:
-+        return TM_QW3_HV_PHYS;
-+    default:
-+        return -1;
-+    }
-+}
-+
- static uint64_t xive2_tm_pull_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-                                   hwaddr offset, unsigned size, uint8_t ring)
+-static int pnv_match_nvt(XiveFabric *xfb, uint8_t format,
+-                         uint8_t nvt_blk, uint32_t nvt_idx,
+-                         bool crowd, bool cam_ignore, uint8_t priority,
+-                         uint32_t logic_serv,
+-                         XiveTCTXMatch *match)
++static bool pnv_match_nvt(XiveFabric *xfb, uint8_t format,
++                          uint8_t nvt_blk, uint32_t nvt_idx,
++                          bool crowd, bool cam_ignore, uint8_t priority,
++                          uint32_t logic_serv,
++                          XiveTCTXMatch *match)
  {
-@@ -696,7 +707,7 @@ static uint64_t xive2_tm_pull_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     PnvMachineState *pnv = PNV_MACHINE(xfb);
+-    int total_count = 0;
+     int i;
  
-     xive2_cam_decode(cam, &nvp_blk, &nvp_idx, &valid, &do_save);
+     for (i = 0; i < pnv->num_chips; i++) {
+         Pnv9Chip *chip9 = PNV9_CHIP(pnv->chips[i]);
+         XivePresenter *xptr = XIVE_PRESENTER(&chip9->xive);
+         XivePresenterClass *xpc = XIVE_PRESENTER_GET_CLASS(xptr);
+-        int count;
  
--    if (!valid) {
-+    if (xive2_tctx_get_nvp_indexes(tctx, ring, &nvp_blk, &nvp_idx)) {
-         qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pulling invalid NVP %x/%x !?\n",
-                       nvp_blk, nvp_idx);
+-        count = xpc->match_nvt(xptr, format, nvt_blk, nvt_idx, crowd,
+-                               cam_ignore, priority, logic_serv, match);
+-
+-        if (count < 0) {
+-            return count;
+-        }
+-
+-        total_count += count;
++        xpc->match_nvt(xptr, format, nvt_blk, nvt_idx, crowd,
++                       cam_ignore, priority, logic_serv, match);
      }
-@@ -706,13 +717,25 @@ static uint64_t xive2_tm_pull_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-          cur_ring += XIVE_TM_RING_SIZE) {
-         uint32_t ringw2 = xive_tctx_word2(&tctx->regs[cur_ring]);
-         uint32_t ringw2_new = xive_set_field32(TM2_QW1W2_VO, ringw2, 0);
-+        bool is_valid = !!(xive_get_field32(TM2_QW1W2_VO, ringw2));
-+        uint8_t alt_ring;
-         memcpy(&tctx->regs[cur_ring + TM_WORD2], &ringw2_new, 4);
+ 
+-    return total_count;
++    return !!match->count;
+ }
+ 
+-static int pnv10_xive_match_nvt(XiveFabric *xfb, uint8_t format,
+-                                uint8_t nvt_blk, uint32_t nvt_idx,
+-                                bool crowd, bool cam_ignore, uint8_t priority,
+-                                uint32_t logic_serv,
+-                                XiveTCTXMatch *match)
++static bool pnv10_xive_match_nvt(XiveFabric *xfb, uint8_t format,
++                                 uint8_t nvt_blk, uint32_t nvt_idx,
++                                 bool crowd, bool cam_ignore, uint8_t priority,
++                                 uint32_t logic_serv,
++                                 XiveTCTXMatch *match)
+ {
+     PnvMachineState *pnv = PNV_MACHINE(xfb);
+-    int total_count = 0;
+     int i;
+ 
+     for (i = 0; i < pnv->num_chips; i++) {
+         Pnv10Chip *chip10 = PNV10_CHIP(pnv->chips[i]);
+         XivePresenter *xptr = XIVE_PRESENTER(&chip10->xive);
+         XivePresenterClass *xpc = XIVE_PRESENTER_GET_CLASS(xptr);
+-        int count;
+-
+-        count = xpc->match_nvt(xptr, format, nvt_blk, nvt_idx, crowd,
+-                               cam_ignore, priority, logic_serv, match);
+-
+-        if (count < 0) {
+-            return count;
+-        }
+ 
+-        total_count += count;
++        xpc->match_nvt(xptr, format, nvt_blk, nvt_idx, crowd,
++                       cam_ignore, priority, logic_serv, match);
+     }
+ 
+-    return total_count;
++    return !!match->count;
+ }
+ 
+ static int pnv10_xive_broadcast(XiveFabric *xfb,
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 40f53ad7b344..1855a3cd8d03 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4468,21 +4468,14 @@ static void spapr_pic_print_info(InterruptStatsProvider *obj, GString *buf)
+ /*
+  * This is a XIVE only operation
+  */
+-static int spapr_match_nvt(XiveFabric *xfb, uint8_t format,
+-                           uint8_t nvt_blk, uint32_t nvt_idx,
+-                           bool crowd, bool cam_ignore, uint8_t priority,
+-                           uint32_t logic_serv, XiveTCTXMatch *match)
++static bool spapr_match_nvt(XiveFabric *xfb, uint8_t format,
++                            uint8_t nvt_blk, uint32_t nvt_idx,
++                            bool crowd, bool cam_ignore, uint8_t priority,
++                            uint32_t logic_serv, XiveTCTXMatch *match)
+ {
+     SpaprMachineState *spapr = SPAPR_MACHINE(xfb);
+     XivePresenter *xptr = XIVE_PRESENTER(spapr->active_intc);
+     XivePresenterClass *xpc = XIVE_PRESENTER_GET_CLASS(xptr);
+-    int count;
+-
+-    count = xpc->match_nvt(xptr, format, nvt_blk, nvt_idx, crowd, cam_ignore,
+-                           priority, logic_serv, match);
+-    if (count < 0) {
+-        return count;
 -    }
  
--    /* Active group/crowd interrupts need to be redistributed */
--    nsr = tctx->regs[ring + TM_NSR];
--    if (xive_nsr_indicates_group_exception(ring, nsr)) {
--        xive2_redistribute(xrtr, tctx, ring);
-+        /* Skip the rest for USER or invalid contexts */
-+        if ((cur_ring == TM_QW0_USER) || !is_valid) {
-+            continue;
-+        }
-+
-+        /* Active group/crowd interrupts need to be redistributed */
-+        alt_ring = (cur_ring == TM_QW2_HV_POOL) ? TM_QW3_HV_PHYS : cur_ring;
-+        nsr = tctx->regs[alt_ring + TM_NSR];
-+        if (xive_nsr_indicates_group_exception(alt_ring, nsr)) {
-+            /* For HV rings, only redistribute if cur_ring matches NSR */
-+            if ((cur_ring == TM_QW1_OS) ||
-+                (cur_ring == xive2_hv_irq_ring(nsr))) {
-+                xive2_redistribute(xrtr, tctx, cur_ring);
-+            }
-+        }
+     /*
+      * When we implement the save and restore of the thread interrupt
+@@ -4493,12 +4486,14 @@ static int spapr_match_nvt(XiveFabric *xfb, uint8_t format,
+      * Until this is done, the sPAPR machine should find at least one
+      * matching context always.
+      */
+-    if (count == 0) {
++    if (!xpc->match_nvt(xptr, format, nvt_blk, nvt_idx, crowd, cam_ignore,
++                           priority, logic_serv, match)) {
+         qemu_log_mask(LOG_GUEST_ERROR, "XIVE: NVT %x/%x is not dispatched\n",
+                       nvt_blk, nvt_idx);
++        return false;
      }
  
-     if (xive2_router_get_config(xrtr) & XIVE2_VP_SAVE_RESTORE && do_save) {
-@@ -736,6 +759,18 @@ uint64_t xive2_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-     return xive2_tm_pull_ctx(xptr, tctx, offset, size, TM_QW1_OS);
+-    return count;
++    return true;
  }
  
-+uint64_t xive2_tm_pull_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-+                                hwaddr offset, unsigned size)
-+{
-+    return xive2_tm_pull_ctx(xptr, tctx, offset, size, TM_QW2_HV_POOL);
-+}
-+
-+uint64_t xive2_tm_pull_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-+                                hwaddr offset, unsigned size)
-+{
-+    return xive2_tm_pull_ctx(xptr, tctx, offset, size, TM_QW3_HV_PHYS);
-+}
-+
- #define REPORT_LINE_GEN1_SIZE       16
- 
- static void xive2_tm_report_line_gen1(XiveTCTX *tctx, uint8_t *data,
-@@ -993,37 +1028,40 @@ void xive2_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-     }
- }
- 
-+/* returns -1 if ring is invalid, but still populates block and index */
- static int xive2_tctx_get_nvp_indexes(XiveTCTX *tctx, uint8_t ring,
--                                      uint32_t *nvp_blk, uint32_t *nvp_idx)
-+                                      uint8_t *nvp_blk, uint32_t *nvp_idx)
- {
--    uint32_t w2, cam;
-+    uint32_t w2;
-+    uint32_t cam = 0;
-+    int rc = 0;
- 
-     w2 = xive_tctx_word2(&tctx->regs[ring]);
-     switch (ring) {
-     case TM_QW1_OS:
-         if (!(be32_to_cpu(w2) & TM2_QW1W2_VO)) {
--            return -1;
-+            rc = -1;
-         }
-         cam = xive_get_field32(TM2_QW1W2_OS_CAM, w2);
-         break;
-     case TM_QW2_HV_POOL:
-         if (!(be32_to_cpu(w2) & TM2_QW2W2_VP)) {
--            return -1;
-+            rc = -1;
-         }
-         cam = xive_get_field32(TM2_QW2W2_POOL_CAM, w2);
-         break;
-     case TM_QW3_HV_PHYS:
-         if (!(be32_to_cpu(w2) & TM2_QW3W2_VT)) {
--            return -1;
-+            rc = -1;
-         }
-         cam = xive2_tctx_hw_cam_line(tctx->xptr, tctx);
-         break;
-     default:
--        return -1;
-+        rc = -1;
-     }
-     *nvp_blk = xive2_nvp_blk(cam);
-     *nvp_idx = xive2_nvp_idx(cam);
--    return 0;
-+    return rc;
- }
- 
- static void xive2_tctx_accept_el(XivePresenter *xptr, XiveTCTX *tctx,
-@@ -1031,7 +1069,8 @@ static void xive2_tctx_accept_el(XivePresenter *xptr, XiveTCTX *tctx,
- {
-     uint64_t rd;
-     Xive2Router *xrtr = XIVE2_ROUTER(xptr);
--    uint32_t nvp_blk, nvp_idx, xive2_cfg;
-+    uint32_t nvp_idx, xive2_cfg;
-+    uint8_t nvp_blk;
-     Xive2Nvp nvp;
-     uint64_t phys_addr;
-     uint8_t OGen = 0;
-@@ -1084,7 +1123,8 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
-     uint8_t old_cppr, backlog_prio, first_group, group_level;
-     uint8_t pipr_min, lsmfb_min, ring_min;
-     bool group_enabled;
--    uint32_t nvp_blk, nvp_idx;
-+    uint8_t nvp_blk;
-+    uint32_t nvp_idx;
-     Xive2Nvp nvp;
-     int rc;
-     uint8_t nsr = regs[TM_NSR];
+ int spapr_get_vcpu_id(PowerPCCPU *cpu)
 -- 
 2.50.1
 
