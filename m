@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E645B0C078
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 11:42:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B30B0C08F
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 11:45:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udn21-0004CC-O3; Mon, 21 Jul 2025 05:42:01 -0400
+	id 1udn4N-0007kr-1s; Mon, 21 Jul 2025 05:44:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1udn1W-00044U-Fb; Mon, 21 Jul 2025 05:41:31 -0400
+ id 1udn4J-0007i4-V0; Mon, 21 Jul 2025 05:44:23 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1udn1U-0008P6-91; Mon, 21 Jul 2025 05:41:30 -0400
+ id 1udn4G-0000JS-Il; Mon, 21 Jul 2025 05:44:23 -0400
 Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4blwKp0qpLz6L4tM;
- Mon, 21 Jul 2025 17:37:34 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4blwRx4Jtxz6M4vZ;
+ Mon, 21 Jul 2025 17:42:53 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 13BDE140279;
- Mon, 21 Jul 2025 17:41:21 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id C3D5414044F;
+ Mon, 21 Jul 2025 17:44:15 +0800 (CST)
 Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 21 Jul
- 2025 11:41:20 +0200
-Date: Mon, 21 Jul 2025 10:41:19 +0100
+ 2025 11:44:15 +0200
+Date: Mon, 21 Jul 2025 10:44:13 +0100
 To: Vadim Chichikalyuk <chichikalyuk@gmail.com>
 CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, "Michael S. Tsirkin"
  <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Ani Sinha
  <anisinha@redhat.com>, Shannon Zhao <shannon.zhaosl@gmail.com>, "Peter
  Maydell" <peter.maydell@linaro.org>
-Subject: Re: [PATCH 3/4] hw: arm: acpi: add UART clock frequency to SPCR table
-Message-ID: <20250721104119.00001882@huawei.com>
-In-Reply-To: <20250718162045.49012-4-chichikalyuk@gmail.com>
+Subject: Re: [PATCH 4/4] tests: acpi: update expected blobs
+Message-ID: <20250721104413.00004c54@huawei.com>
+In-Reply-To: <20250718162045.49012-5-chichikalyuk@gmail.com>
 References: <20250718162045.49012-1-chichikalyuk@gmail.com>
- <20250718162045.49012-4-chichikalyuk@gmail.com>
+ <20250718162045.49012-5-chichikalyuk@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -72,47 +72,59 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 18 Jul 2025 19:20:44 +0300
+On Fri, 18 Jul 2025 19:20:45 +0300
 Vadim Chichikalyuk <chichikalyuk@gmail.com> wrote:
 
-> On the ARM virt machine, there is currently no way to programmatically
-> discover the frequency of the UART reference clock solely through the use of
-> UEFI/ACPI (without the DTB). The SPCR table can include this information
-> as of revision 3.
+> Previous patch changed the SPCR ACPI table for AArch64 virt:
+> @@ -15,2 +15,2 @@
+> -[008h 0008 001h]                    Revision : 02
+> -[009h 0009 001h]                    Checksum : B1
+> +[008h 0008 001h]                    Revision : 03
+> +[009h 0009 001h]                    Checksum : 0B
+> @@ -49 +49 @@
+> -[04Ch 0076 004h]                    Reserved : 00000000
+> +[04Ch 0076 004h]                    Reserved : 016E3600
+
+Hmm. No support in acpi-tools?  Old version maybe?
+
+Looks like v4 support was added in this pull request last year
+https://github.com/acpica/acpica/pull/931
+
+Jonathan
+
+
+> @@ -53 +53 @@
+> -0000: 53 50 43 52 50 00 00 00 02 B1 42 4F 43 48 53 20  // SPCRP.....BOCHS
+> +0000: 53 50 43 52 50 00 00 00 03 0B 42 4F 43 48 53 20  // SPCRP.....BOCHS
+> @@ -57 +57 @@
+> -0040: FF FF FF FF 00 00 00 00 00 00 00 00 00 00 00 00  // ................
+> +0040: FF FF FF FF 00 00 00 00 00 00 00 00 00 36 6E 01  // .............6n.
 > 
-> Bump the revision to 3 and add the clock frequency of 24 MHz to the table.
-
-Maybe add something on why you aren't just skipping forwards to 4 and filling
-in the rest of the stuff?
-
+> In a revision 3 SPCR table, the "Reserved" field is the UART clock frequency
+> field.
 > 
 > Signed-off-by: Vadim Chichikalyuk <chichikalyuk@gmail.com>
-
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
 > ---
->  hw/arm/virt-acpi-build.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  tests/data/acpi/aarch64/virt/SPCR           | Bin 80 -> 80 bytes
+>  tests/qtest/bios-tables-test-allowed-diff.h |   1 -
+>  2 files changed, 1 deletion(-)
 > 
-> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-> index b01fc4f8ef..029cbb37f7 100644
-> --- a/hw/arm/virt-acpi-build.c
-> +++ b/hw/arm/virt-acpi-build.c
-> @@ -559,12 +559,13 @@ spcr_setup(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
->          .pci_function = 0,
->          .pci_flags = 0,
->          .pci_segment = 0,
-> +        .uart_clk_freq = 24000000, /* 24MHz */
->      };
->      /*
-> -     * Passing NULL as the SPCR Table for Revision 2 doesn't support
-> +     * Passing NULL as the SPCR Table for Revision 3 doesn't support
->       * NameSpaceString.
->       */
-> -    build_spcr(table_data, linker, &serial, 2, vms->oem_id, vms->oem_table_id,
-> +    build_spcr(table_data, linker, &serial, 3, vms->oem_id, vms->oem_table_id,
->                 NULL);
->  }
->  
+> diff --git a/tests/data/acpi/aarch64/virt/SPCR b/tests/data/acpi/aarch64/virt/SPCR
+> index cf0f2b75226515097c08d2e2016a83a4f08812ba..76ac417fbdc4dc6a473c51b82164f40bc5320c58 100644
+> GIT binary patch
+> delta 20
+> bcmWFt;0g|K4hmpkU|{B+$mPszmd6MHD|7?L
+> 
+> delta 20
+> acmWFt;0g|K4hmpkU|`xfk;|DG$N&H@90SJy
+> 
+> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+> index 2a30472d57..dfb8523c8b 100644
+> --- a/tests/qtest/bios-tables-test-allowed-diff.h
+> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+> @@ -1,2 +1 @@
+>  /* List of comma-separated changed AML files to ignore */
+> -"tests/data/acpi/aarch64/virt/SPCR",
+> \ No newline at end of file
 
 
