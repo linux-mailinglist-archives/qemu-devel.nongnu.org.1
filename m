@@ -2,38 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5CDBB0CB55
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 22:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE37B0CB54
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 22:06:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udwkb-0005py-7Z; Mon, 21 Jul 2025 16:04:41 -0400
+	id 1udwkG-0005XU-S1; Mon, 21 Jul 2025 16:04:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1udwjF-0004rU-8R; Mon, 21 Jul 2025 16:03:26 -0400
+ id 1udwjC-0004rN-RV; Mon, 21 Jul 2025 16:03:26 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1udwjB-0004kc-Fh; Mon, 21 Jul 2025 16:03:15 -0400
+ id 1udwjA-0004ke-NI; Mon, 21 Jul 2025 16:03:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 01474139044;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1364E139045;
  Mon, 21 Jul 2025 23:02:48 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B4CB124BED0;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C546C24BED1;
  Mon, 21 Jul 2025 23:03:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 67/70] hw/net/npcm_gmac.c: Send the right data for
- second packet in a row
-Date: Mon, 21 Jul 2025 23:02:54 +0300
-Message-ID: <20250721200302.133559-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 68/70] ui: fix setting client_endian field defaults
+Date: Mon, 21 Jul 2025 23:02:55 +0300
+Message-ID: <20250721200302.133559-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250721221446@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250721221446@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,55 +62,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-The transmit loop in gmac_try_send_next_packet() is constructed in a
-way that means it will send incorrect data if it it sends more than
-one packet.
+When a VNC client sends a "set pixel format" message, the
+'client_endian' field will get initialized, however, it is
+valid to omit this message if the client wants to use the
+server's native pixel format. In the latter scenario nothing
+is initializing the 'client_endian' field, so it remains set
+to 0, matching neither G_LITTLE_ENDIAN nor G_BIG_ENDIAN. This
+then results in pixel format conversion routines taking the
+wrong code paths.
 
-The function assembles the outbound data in a dynamically allocated
-block of memory which is pointed to by tx_send_buffer.  We track the
-first point in this block of memory which is not yet used with the
-prev_buf_size offset, initially zero.  We track the size of the
-packet we're sending with the length variable, also initially zero.
+This problem existed before the 'client_be' flag was changed
+into the 'client_endian' value, but the lack of initialization
+meant it semantically defaulted to little endian, so only big
+endian systems would potentially be exposed to incorrect pixel
+translation.
 
-As we read chunks of data out of guest memory, we write them to
-tx_send_buffer[prev_buf_size], and then increment both prev_buf_size
-and length.  (We might dynamically reallocate the buffer if needed.)
+The 'virt-viewer' / 'remote-viewer' apps always send a "set
+pixel format" message so aren't exposed to any problems, but
+the classical 'vncviewer' app will show the problem easily.
 
-When we send a packet, we checksum and send length bytes, starting at
-tx_send_buffer, and then we reset length to 0.  This gives the right
-data for the first packet.  But we don't reset prev_buf_size.  This
-means that if we process more descriptors with further data for the
-next packet, that data will continue to accumulate at offset
-prev_buf_size, i.e.  after the data for the first packet.  But when
-we transmit that second packet, we send length bytes from
-tx_send_buffer, so we will send a packet which has the length of the
-second packet but the data of the first one.
-
-The fix for this is to also clear prev_buf_size after the packet has
-been sent -- we never need the data from packet one after we've sent
-it, so we can write packet two's data starting at the beginning of
-the buffer.
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 871a6e5b339f0b5e71925ec7d3f452944a1c82d3)
+Fixes: 7ed96710e82c385c6cfc3d064eec7dde20f0f3fd
+Reported-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+(cherry picked from commit 3ac6daa9e1c5d7dae2a3cd1c6a388174b462f3e8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
-index e1fb383772..d4dba630ac 100644
---- a/hw/net/npcm_gmac.c
-+++ b/hw/net/npcm_gmac.c
-@@ -615,6 +615,7 @@ static void gmac_try_send_next_packet(NPCMGMACState *gmac)
-             trace_npcm_gmac_packet_sent(DEVICE(gmac)->canonical_path, length);
-             buf = tx_send_buffer;
-             length = 0;
-+            prev_buf_size = 0;
-         }
+diff --git a/ui/vnc.c b/ui/vnc.c
+index ca02ff872a..a6bf8442d5 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -2336,6 +2336,7 @@ static void pixel_format_message (VncState *vs) {
+     char pad[3] = { 0, 0, 0 };
  
-         /* step 6 */
+     vs->client_pf = qemu_default_pixelformat(32);
++    vs->client_endian = G_BYTE_ORDER;
+ 
+     vnc_write_u8(vs, vs->client_pf.bits_per_pixel); /* bits-per-pixel */
+     vnc_write_u8(vs, vs->client_pf.depth); /* depth */
 -- 
 2.47.2
 
