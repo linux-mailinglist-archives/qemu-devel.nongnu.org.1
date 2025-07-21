@@ -2,89 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937C9B0CC3D
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 23:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FAB3B0CCD5
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 23:45:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udxik-0000MF-Dc; Mon, 21 Jul 2025 17:06:50 -0400
+	id 1udyJ2-0007U0-Pd; Mon, 21 Jul 2025 17:44:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1udxd1-0003dP-Ea
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:00:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1udxcy-0005sU-Dj
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:00:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753131651;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=O5GE9viBfL/P9tCl9w0OIO2ARHkUFKBGQf09tTRv5aA=;
- b=iiHaknW529KwJzAXtAWNA3bmkaTGvCRoNJTAAm2htpUBiYxuab8HqJjqScvpm4mJD8yIkF
- l8rXomYQ3Oys21Ng2Tf40A8ze+PdFdJa4irqEjDpXTr5dB6k2LKG2fb5+vwDHaEx0Afy1I
- dOiLPPj93Yq9x/eB0PJij3lBZmlJ3SI=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-56-0TaHGrPxNn2SPbqUWTaMcQ-1; Mon, 21 Jul 2025 17:00:49 -0400
-X-MC-Unique: 0TaHGrPxNn2SPbqUWTaMcQ-1
-X-Mimecast-MFC-AGG-ID: 0TaHGrPxNn2SPbqUWTaMcQ_1753131648
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-b26e33ae9d5so4929677a12.1
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 14:00:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <chichikalyuk@gmail.com>)
+ id 1udyHR-00061K-19; Mon, 21 Jul 2025 17:42:41 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chichikalyuk@gmail.com>)
+ id 1udyHN-00008E-Tj; Mon, 21 Jul 2025 17:42:40 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-32b7123edb9so50576351fa.2; 
+ Mon, 21 Jul 2025 14:42:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1753134156; x=1753738956; darn=nongnu.org;
+ h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7Pi5a7yefMwcMVC85NgeCH42h8Mc4dcn+m0lnzMYwaE=;
+ b=OWHuljrkR9Xk+5AnOr/vwEvm1ATX60cJsD6CZDIT8/KCW80/RjvEhuw+HlJe6py43W
+ HHPh1zLB8XCQp5DCrMpCqtpEW7cHs/6usaMaIIaBuKn9rcz1ElOdtUodZy+BWxtFQjvF
+ GDav2vk3TPb2soDaRM/sJs26x6tGxYtWI7dWMARYh3oCypaE23ZCBp0rj0t4eMZ+pZpZ
+ dETeNDFStDZPSIeVfEZXmfUfXqT5ARUuqhk3LTwTMrTGFt8M84xMU2cmGXEJsafP34ZT
+ Lm5XJLatFaiAq6zG09piLp07vjM7OOO7H5ug8S9cC+Htk8oe6Fqufl7hf/3yjXY9osrZ
+ j/SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753131648; x=1753736448;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=O5GE9viBfL/P9tCl9w0OIO2ARHkUFKBGQf09tTRv5aA=;
- b=r02obLG0dmrA7mParQGpEHPADE84ReCgiiwM3kiNAW7l2OeS5ohSbp5aRbSy1Se/rE
- GMee9WLXOTxqVLRAEViv7UufCedx7YUPliegcVPvkBaHAKr1X39f9M4IMhggvOZPfn8S
- HMp+7OqOy/n+dxwyb8Cu2jq5GTkHP0nc9t79AqMk0vkyDwCtdSL3E6MBRGahfY0Wi83+
- bk7/IP8cQoN1EtgSGtAGhCGge7MeM6m2jaR02cGajKNwKkX2WZuiclFWAZoP5H/w5U+g
- Dej+hknYRiquQqX2HKHMQFNY7LnFO14OmvrbLTO/oHNUk1KAf6poOjsCQoNIGzF/IZS6
- 1hdg==
-X-Gm-Message-State: AOJu0YxuDVywJSD9lZcCWobGHvMrwRxIwj2ffsP0bjmyU3IVB0SJuAIq
- A8ux+7FORlJ8DzRaucu6k0cH6ShDgQtAZdiMvs/ezsFKYwkAFwIuEg7fxIE2ftXVFjRKKsYIGcQ
- bSby7yDfPDlQj/23w+/AlJWYz1E5FIGrN1FeW2YkpSAz0m8xSUrhTn/8k9GJheCtMu2ykYCDY9H
- gXhL5Z8i+G6LcGhX10Tw8C6Dub+/3RxPA=
-X-Gm-Gg: ASbGncuRNZTpDn/d5cZCeefsGGnvORenpDWUVWFfFRKoxPaKv42D4KygY5fO8ijaTlf
- nPXmIKlIkukKDEgcFWDxeNCFJRbtzQkCl/1OWvoTS0EiDkvDWVJ0mxhaSW31drFrEU/aEpuGksT
- g3HaRKV1ZP1U2L21/5ORRBsqseSuDhh1/K1tHDc7oc3+JnMm4KaHyh
-X-Received: by 2002:a17:90b:2fcc:b0:31e:3bac:96bc with SMTP id
- 98e67ed59e1d1-31e3bac9951mr3751581a91.33.1753131648011; 
- Mon, 21 Jul 2025 14:00:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGUnK8QQ7Mg1GzwztHX66pIZxdKNpH0eRwJ5G1nQfsIzMtKfe+JkjSM+y3vrebd7ePiywOUr8g8tqnoAXGW0TY=
-X-Received: by 2002:a17:90b:2fcc:b0:31e:3bac:96bc with SMTP id
- 98e67ed59e1d1-31e3bac9951mr3751510a91.33.1753131647317; Mon, 21 Jul 2025
- 14:00:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250717115246.3830007-1-armbru@redhat.com>
- <20250717115246.3830007-5-armbru@redhat.com>
-In-Reply-To: <20250717115246.3830007-5-armbru@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Mon, 21 Jul 2025 17:00:34 -0400
-X-Gm-Features: Ac12FXxBZqWPk0FzT6FP6KjnWmzkacaylp4BQjpD1gc0aPF6_q45gvJj_YPVPww
-Message-ID: <CAFn=p-YPk+9EQozpcRdHEsjN+BgxN9dq_irA0nkU=BDLpUJnjw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] qga: Add cross-references
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, eblake@redhat.com, michael.roth@amd.com, 
- kkostiuk@redhat.com, berrange@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.926,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20230601; t=1753134156; x=1753738956;
+ h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7Pi5a7yefMwcMVC85NgeCH42h8Mc4dcn+m0lnzMYwaE=;
+ b=fabWpCA9Whxqe3/tD/XC25hlZ/BSOJdrQciAzGAjmX1KNkS1KI74CxOwPcrnebB7rR
+ vH1dvxIKuS+W/hrQyVfFSucGiU0fOQmK2O9Z9Y74X5r2FodKov7BNjx1A/9vOGXiIO2W
+ SUKq9aD+EffOSf/ZMgX15gk+Q+XHXbTp2j8vNuCj1NJccZOUroMco1zM38nVMTvHlBUy
+ UWPC1SiSYBKhi4yb+VyvA0uMhS8HEnn7q+DrlNC7P/fDWNxKJKLvoo3+/lyly/VAuiZl
+ E15R7iOPSsXqAe3nwlaEBrSW+mylYO+x0gzOfrHeCPLzwtYkxx80FMXOK8GQYB2GZqr8
+ WSGA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUmoWNsiIZnGP8biaAOPTj9g40U4Bnizjp4QExci6UPLUvIXOk4TG6lzYuQTu3crLVbj/12REXHZg==@nongnu.org
+X-Gm-Message-State: AOJu0Ywab9lsVUeBH8/b1O0e+/98lld6+RlPLkEwsLkjwsVwUQsgDZ9p
+ U+mtfuBG8u3I/9NpVDakB7FPcmjKML7oNYONcnEjOYE2Mx6VKK5kfK5u
+X-Gm-Gg: ASbGnctj4aDXnOmlA271FeKvIsWqrL5sWLOV2eB9klIruscoTDhLKJaHGMvEUcm7kEH
+ mWTtUzmY58Z53zwGTSTwBFj/BoqskY6hwAlfyS9X8a75Ghz/4oZOYSNzYYW99RaOaKJPgi//Dzz
+ RwwwqzXAmyPUcehbiNAL53TldRSEl6RUnwQU21yF7p8m5KEOppAiD52Ur72sKGwwkb3gUg+5ErX
+ Nc+gffhIIKXB0DTYsE6ISkWLRayx1xXtrXTj0gW405jmjUETGcxgdsq8uaq4eHw23ARpRLAe98D
+ LzVZX3E4h1pdYgzBVJOsLHE0HdOT50c+uvCLkpdQiXtCivJrj2LQ2m7fUz7Sz2loF5Zka9cla5m
+ m7sA2sdp1klfhZeS561c6V6WHg1dadlOvYfv4wAjmJw==
+X-Google-Smtp-Source: AGHT+IF5RcNO4blGcmzEtB6kWZ+FNNyfz7EkL+jdGtN1Z7MVV42kX+fJBIxAkFu0UNMQO+SYRsRhgg==
+X-Received: by 2002:a05:651c:1a0c:b0:32b:59d1:7ef3 with SMTP id
+ 38308e7fff4ca-3308f64e218mr62852991fa.35.1753134155281; 
+ Mon, 21 Jul 2025 14:42:35 -0700 (PDT)
+Received: from smtpclient.apple ([62.183.185.10])
+ by smtp.gmail.com with ESMTPSA id
+ 38308e7fff4ca-330a90d56b0sm15796631fa.4.2025.07.21.14.42.33
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 21 Jul 2025 14:42:34 -0700 (PDT)
+From: Vadim Chichikalyuk <chichikalyuk@gmail.com>
+Message-Id: <11C21A37-0225-46DE-84D9-19E12BCEC59B@gmail.com>
+Content-Type: multipart/alternative;
+ boundary="Apple-Mail=_5DE68C0F-2FE8-4B8C-8D7A-4B81F95CE82F"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.71\))
+Subject: Re: [PATCH 3/4] hw: arm: acpi: add UART clock frequency to SPCR table
+Date: Tue, 22 Jul 2025 00:06:20 +0300
+In-Reply-To: <20250721104119.00001882@huawei.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Vadim Chichikalyuk <chichikalyuk@gmail.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250718162045.49012-1-chichikalyuk@gmail.com>
+ <20250718162045.49012-4-chichikalyuk@gmail.com>
+ <20250721104119.00001882@huawei.com>
+X-Mailer: Apple Mail (2.3826.700.71)
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=chichikalyuk@gmail.com; helo=mail-lj1-x229.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,328 +102,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 17, 2025 at 7:52=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
-m> wrote:
->
-> Enclose command and type names in `backquotes`, so they become links
-> in generated HTML.
->
-> We did this for qapi/ in merge commit 504632dcc631.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-Reviewed-by: John Snow <jsnow@redhat.com>
+--Apple-Mail=_5DE68C0F-2FE8-4B8C-8D7A-4B81F95CE82F
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
-> ---
->  qga/qapi-schema.json | 80 ++++++++++++++++++++++----------------------
->  1 file changed, 40 insertions(+), 40 deletions(-)
->
-> diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-> index 6c26ace3c9..8162d888bb 100644
-> --- a/qga/qapi-schema.json
-> +++ b/qga/qapi-schema.json
-> @@ -96,11 +96,11 @@
->  # In cases where a partial stale response was previously received by
->  # the client, this cannot always be done reliably.  One particular
->  # scenario being if qemu-ga responses are fed character-by-character
-> -# into a JSON parser.  In these situations, using guest-sync-delimited
-> +# into a JSON parser.  In these situations, using `guest-sync-delimited`
->  # may be optimal.
->  #
->  # For clients that fetch responses line by line and convert them to
-> -# JSON objects, guest-sync should be sufficient, but note that in
-> +# JSON objects, `guest-sync` should be sufficient, but note that in
->  # cases where the channel is dirty some attempts at parsing the
->  # response may result in a parser error.
->  #
-> @@ -217,7 +217,7 @@
->  #
->  # This command does NOT return a response on success.  Success
->  # condition is indicated by the VM exiting with a zero exit status or,
-> -# when running with --no-shutdown, by issuing the query-status QMP
-> +# when running with --no-shutdown, by issuing the `query-status` QMP
->  # command to confirm the VM status is "shutdown".
->  #
->  # Since: 0.15.0
-> @@ -247,7 +247,7 @@
->  #
->  # Close an open file in the guest
->  #
-> -# @handle: filehandle returned by guest-file-open
-> +# @handle: filehandle returned by `guest-file-open`
->  #
->  # Since: 0.15.0
->  ##
-> @@ -278,7 +278,7 @@
->  # As this command is just for limited, ad-hoc debugging, such as log
->  # file access, the number of bytes to read is limited to 48 MB.
->  #
-> -# @handle: filehandle returned by guest-file-open
-> +# @handle: filehandle returned by `guest-file-open`
->  #
->  # @count: maximum number of bytes to read (default is 4KB, maximum is
->  #     48MB)
-> @@ -309,7 +309,7 @@
->  #
->  # Write to an open file in the guest.
->  #
-> -# @handle: filehandle returned by guest-file-open
-> +# @handle: filehandle returned by `guest-file-open`
->  #
->  # @buf-b64: base64-encoded string representing data to be written
->  #
-> @@ -340,7 +340,7 @@
->  ##
->  # @QGASeek:
->  #
-> -# Symbolic names for use in @guest-file-seek
-> +# Symbolic names for use in `guest-file-seek`
->  #
->  # @set: Set to the specified offset (same effect as 'whence':0)
->  #
-> @@ -355,7 +355,7 @@
->  ##
->  # @GuestFileWhence:
->  #
-> -# Controls the meaning of offset to @guest-file-seek.
-> +# Controls the meaning of offset to `guest-file-seek`.
->  #
->  # @value: Integral value (0 for set, 1 for cur, 2 for end), available
->  #     for historical reasons, and might differ from the host's or
-> @@ -375,7 +375,7 @@
->  # current file position afterward.  Also encapsulates ftell()'s
->  # functionality, with offset=3D0 and whence=3D1.
->  #
-> -# @handle: filehandle returned by guest-file-open
-> +# @handle: filehandle returned by `guest-file-open`
->  #
->  # @offset: bytes to skip over in the file stream
->  #
-> @@ -393,7 +393,7 @@
->  #
->  # Write file changes buffered in userspace to disk/kernel buffers
->  #
-> -# @handle: filehandle returned by guest-file-open
-> +# @handle: filehandle returned by `guest-file-open`
->  #
->  # Since: 0.15.0
->  ##
-> @@ -434,12 +434,12 @@
->  # @guest-fsfreeze-freeze:
->  #
->  # Sync and freeze all freezable, local guest filesystems.  If this
-> -# command succeeded, you may call @guest-fsfreeze-thaw later to
-> +# command succeeded, you may call `guest-fsfreeze-thaw` later to
->  # unfreeze.
->  #
->  # On error, all filesystems will be thawed.  If no filesystems are
-> -# frozen as a result of this call, then @guest-fsfreeze-status will
-> -# remain "thawed" and calling @guest-fsfreeze-thaw is not necessary.
-> +# frozen as a result of this call, then `guest-fsfreeze-status` will
-> +# remain "thawed" and calling `guest-fsfreeze-thaw` is not necessary.
->  #
->  # Returns: Number of file systems currently frozen.
->  #
-> @@ -457,7 +457,7 @@
->  # @guest-fsfreeze-freeze-list:
->  #
->  # Sync and freeze specified guest filesystems.  See also
-> -# @guest-fsfreeze-freeze.
-> +# `guest-fsfreeze-freeze`.
->  #
->  # On error, all filesystems will be thawed.
->  #
-> @@ -482,7 +482,7 @@
->  # Returns: Number of file systems thawed by this call
->  #
->  # .. note:: If the return value does not match the previous call to
-> -#    guest-fsfreeze-freeze, this likely means some freezable filesystems
-> +#    `guest-fsfreeze-freeze`, this likely means some freezable filesyste=
-ms
->  #    were unfrozen before this call, and that the filesystem state may
->  #    have changed before issuing this command.
->  #
-> @@ -513,7 +513,7 @@
->  ##
->  # @GuestFilesystemTrimResponse:
->  #
-> -# @paths: list of @GuestFilesystemTrimResult per path that was trimmed
-> +# @paths: list of `GuestFilesystemTrimResult` per path that was trimmed
->  #
->  # Since: 2.4
->  ##
-> @@ -557,7 +557,7 @@
->  #
->  # This command does NOT return a response on success.  There is a high
->  # chance the command succeeded if the VM exits with a zero exit status
-> -# or, when running with --no-shutdown, by issuing the query-status QMP
-> +# or, when running with --no-shutdown, by issuing the `query-status` QMP
->  # command to to confirm the VM status is "shutdown". However, the VM
->  # could also exit (or set its status to "shutdown") due to other
->  # reasons.
-> @@ -565,7 +565,7 @@
->  # Errors:
->  #     - If suspend to disk is not supported, Unsupported
->  #
-> -# .. note:: It's strongly recommended to issue the guest-sync command
-> +# .. note:: It's strongly recommended to issue the `guest-sync` command
->  #    before sending commands when the guest resumes.
->  #
->  # Since: 1.1
-> @@ -585,8 +585,8 @@
->  # - pm-utils (via pm-hibernate)
->  # - manual write into sysfs
->  #
-> -# IMPORTANT: guest-suspend-ram requires working wakeup support in
-> -# QEMU. You should check QMP command query-current-machine returns
-> +# IMPORTANT: `guest-suspend-ram` requires working wakeup support in
-> +# QEMU. You should check QMP command `query-current-machine` returns
->  # wakeup-suspend-support: true before issuing this command.  Failure
->  # in doing so can result in a suspended guest that QEMU will not be
->  # able to awaken, forcing the user to power cycle the guest to bring
-> @@ -595,14 +595,14 @@
->  # This command does NOT return a response on success.  There are two
->  # options to check for success:
->  #
-> -# 1. Wait for the SUSPEND QMP event from QEMU
-> -# 2. Issue the query-status QMP command to confirm the VM status is
-> +# 1. Wait for the `SUSPEND` QMP event from QEMU
-> +# 2. Issue the `query-status` QMP command to confirm the VM status is
->  #    "suspended"
->  #
->  # Errors:
->  #     - If suspend to ram is not supported, Unsupported
->  #
-> -# .. note:: It's strongly recommended to issue the guest-sync command
-> +# .. note:: It's strongly recommended to issue the `guest-sync` command
->  #    before sending commands when the guest resumes.
->  #
->  # Since: 1.1
-> @@ -621,8 +621,8 @@
->  # - systemd hybrid-sleep
->  # - pm-utils (via pm-suspend-hybrid)
->  #
-> -# IMPORTANT: guest-suspend-hybrid requires working wakeup support in
-> -# QEMU. You should check QMP command query-current-machine returns
-> +# IMPORTANT: `guest-suspend-hybrid` requires working wakeup support in
-> +# QEMU. You should check QMP command `query-current-machine` returns
->  # wakeup-suspend-support: true before issuing this command.  Failure
->  # in doing so can result in a suspended guest that QEMU will not be
->  # able to awaken, forcing the user to power cycle the guest to bring
-> @@ -631,14 +631,14 @@
->  # This command does NOT return a response on success.  There are two
->  # options to check for success:
->  #
-> -# 1. Wait for the SUSPEND QMP event from QEMU
-> -# 2. Issue the query-status QMP command to confirm the VM status is
-> +# 1. Wait for the `SUSPEND` QMP event from QEMU
-> +# 2. Issue the `query-status` QMP command to confirm the VM status is
->  #    "suspended"
->  #
->  # Errors:
->  #     - If hybrid suspend is not supported, Unsupported
->  #
-> -# .. note:: It's strongly recommended to issue the guest-sync command
-> +# .. note:: It's strongly recommended to issue the `guest-sync` command
->  #    before sending commands when the guest resumes.
->  #
->  # Since: 1.1
-> @@ -793,7 +793,7 @@
->  #     There's no restriction on list length or on repeating the same
->  #     @logical-id (with possibly different @online field).  Preferably
->  #     the input list should describe a modified subset of
-> -#     @guest-get-vcpus' return value.
-> +#     `guest-get-vcpus`' return value.
->  #
->  # Returns: The length of the initial sublist that has been
->  #     successfully processed.  The guest agent maximizes this value.
-> @@ -1069,7 +1069,7 @@
->  #
->  # Returns: The list of filesystems information mounted in the guest.
->  #     The returned mountpoints may be specified to
-> -#     @guest-fsfreeze-freeze-list.  Network filesystems (such as CIFS
-> +#     `guest-fsfreeze-freeze-list`.  Network filesystems (such as CIFS
->  #     and NFS) are not listed.
->  #
->  # Since: 2.2
-> @@ -1171,7 +1171,7 @@
->  ##
->  # @GuestMemoryBlockResponse:
->  #
-> -# @phys-index: same with the 'phys-index' member of @GuestMemoryBlock.
-> +# @phys-index: same with the 'phys-index' member of `GuestMemoryBlock`.
->  #
->  # @response: the result of memory block operation.
->  #
-> @@ -1201,11 +1201,11 @@
->  #     guest-supported identifiers.  There's no restriction on list
->  #     length or on repeating the same @phys-index (with possibly
->  #     different @online field).  Preferably the input list should
-> -#     describe a modified subset of @guest-get-memory-blocks' return
-> +#     describe a modified subset of `guest-get-memory-blocks`' return
->  #     value.
->  #
->  # Returns: The operation results, it is a list of
-> -#     @GuestMemoryBlockResponse, which is corresponding to the input
-> +#     `GuestMemoryBlockResponse`, which is corresponding to the input
->  #     list.
->  #
->  #     Note: it will return an empty list if the @mem-blks list was
-> @@ -1258,7 +1258,7 @@
->  #
->  # @err-data: base64-encoded stderr of the process.  Note: @out-data
->  #     and @err-data are present only if 'capture-output' was specified
-> -#     for 'guest-exec'.  This field will only be populated after the
-> +#     for `guest-exec`.  This field will only be populated after the
->  #     process exits.
->  #
->  # @out-truncated: true if stdout was not fully captured due to size
-> @@ -1277,10 +1277,10 @@
->  # @guest-exec-status:
->  #
->  # Check status of process associated with PID retrieved via
-> -# guest-exec.  Reap the process and associated metadata if it has
-> +# `guest-exec`.  Reap the process and associated metadata if it has
->  # exited.
->  #
-> -# @pid: pid returned from guest-exec
-> +# @pid: pid returned from `guest-exec`
->  #
->  # Since: 2.5
->  ##
-> @@ -1301,7 +1301,7 @@
->  ##
->  # @GuestExecCaptureOutputMode:
->  #
-> -# An enumeration of guest-exec capture modes.
-> +# An enumeration of `guest-exec` capture modes.
->  #
->  # @none: do not capture any output
->  #
-> @@ -1310,7 +1310,7 @@
->  # @stderr: only capture stderr
->  #
->  # @separated: capture both stdout and stderr, but separated into
-> -#     GuestExecStatus out-data and err-data, respectively
-> +#     `GuestExecStatus` out-data and err-data, respectively
->  #
->  # @merged: capture both stdout and stderr, but merge together into
->  #     out-data.  Not effective on windows guests.
-> @@ -1324,10 +1324,10 @@
->  ##
->  # @GuestExecCaptureOutput:
->  #
-> -# Controls what guest-exec output gets captures.
-> +# Controls what `guest-exec` output gets captures.
->  #
->  # @flag: captures both stdout and stderr if true.  Equivalent to
-> -#     GuestExecCaptureOutputMode::all.  (since 2.5)
-> +#     `GuestExecCaptureOutputMode`::all.  (since 2.5)
->  #
->  # @mode: capture mode; preferred interface
->  #
-> --
-> 2.49.0
->
 
+> On 21 Jul 2025, at 12:41, Jonathan Cameron =
+<Jonathan.Cameron@huawei.com> wrote:
+>=20
+> On Fri, 18 Jul 2025 19:20:44 +0300
+> Vadim Chichikalyuk <chichikalyuk@gmail.com> wrote:
+>=20
+>> On the ARM virt machine, there is currently no way to =
+programmatically
+>> discover the frequency of the UART reference clock solely through the =
+use of
+>> UEFI/ACPI (without the DTB). The SPCR table can include this =
+information
+>> as of revision 3.
+>>=20
+>> Bump the revision to 3 and add the clock frequency of 24 MHz to the =
+table.
+>=20
+> Maybe add something on why you aren't just skipping forwards to 4 and =
+filling
+> in the rest of the stuff?
+
+Haven=E2=80=99t really considered that =E2=80=93 you=E2=80=99re right, =
+might as well upgrade it to revision 4.
+
+Based on build_dsdt() and acpi_dsdt_add_uart(), the NamespaceString =
+would be=20
+=E2=80=9C\_SB.COM0=E2=80=9D, right? Although, for some reason, it=E2=80=99=
+s just =E2=80=9C.=E2=80=9D for RISC-V virt (indicating
+that there isn=E2=80=99t a corresponding device in the ACPI namespace), =
+despite there being=20
+entries for the UART in the DSDT, just as for ARM?
+
+The relevant lines, for reference (hw/arm/virt-acpi-build.c):
+
+scope =3D aml_scope("\\_SB");
+acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], (irqmap[VIRT_UART0] + =
+ARM_SPI_BASE), 0);
+
+static void acpi_dsdt_add_uart(Aml *scope, const MemMapEntry =
+*uart_memmap, uint32_t uart_irq) {
+    Aml *dev =3D aml_device("COM%d", uartidx);
+    ...
+}
+
+
+Thanks for the review,
+Vadim=
+
+--Apple-Mail=_5DE68C0F-2FE8-4B8C-8D7A-4B81F95CE82F
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
+charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: =
+after-white-space;"><br><div><blockquote type=3D"cite"><div>On 21 Jul =
+2025, at 12:41, Jonathan Cameron &lt;Jonathan.Cameron@huawei.com&gt; =
+wrote:</div><br class=3D"Apple-interchange-newline"><div><div>On Fri, 18 =
+Jul 2025 19:20:44 +0300<br>Vadim Chichikalyuk =
+&lt;chichikalyuk@gmail.com&gt; wrote:<br><br><blockquote type=3D"cite">On =
+the ARM virt machine, there is currently no way to =
+programmatically<br>discover the frequency of the UART reference clock =
+solely through the use of<br>UEFI/ACPI (without the DTB). The SPCR table =
+can include this information<br>as of revision 3.<br><br>Bump the =
+revision to 3 and add the clock frequency of 24 MHz to the =
+table.<br></blockquote><br>Maybe add something on why you aren't just =
+skipping forwards to 4 and filling<br>in the rest of the =
+stuff?<br></div></div></blockquote><br></div><div>Haven=E2=80=99t really =
+considered that =E2=80=93 you=E2=80=99re right, might as well upgrade it =
+to revision 4.</div><div><br></div><div>Based on&nbsp;build_dsdt() =
+and&nbsp;acpi_dsdt_add_uart(), the&nbsp;<span style=3D"caret-color: =
+rgb(0, 0, 0); color: rgb(0, 0, 0);">NamespaceString&nbsp;</span><span =
+style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);">would =
+be&nbsp;</span></div><div><font color=3D"#000000">=E2=80=9C\_SB.COM0=E2=80=
+=9D, right? Although, for some reason,&nbsp;</font><span style=3D"color: =
+rgb(0, 0, 0);">it=E2=80=99s just =E2=80=9C.=E2=80=9D for RISC-V virt =
+(indicating</span></div><div><span style=3D"color: rgb(0, 0, 0);">that =
+there isn=E2=80=99t&nbsp;</span><span style=3D"color: rgb(0, 0, 0);">a =
+corresponding device in the ACPI namespace), despite there =
+being&nbsp;</span></div><div><span style=3D"color: rgb(0, 0, =
+0);">entries for&nbsp;</span><span style=3D"color: rgb(0, 0, 0);">the =
+UART in the DSDT, just as for ARM?</span></div><div><br></div><div>The =
+relevant lines, for reference =
+(hw/arm/virt-acpi-build.c):</div><div><br></div><div><div>scope =3D =
+aml_scope("\\_SB");</div><div>acpi_dsdt_add_uart(scope, =
+&amp;memmap[VIRT_UART0], (irqmap[VIRT_UART0] + ARM_SPI_BASE), =
+0);</div><div><br></div><div><div>static void acpi_dsdt_add_uart(Aml =
+*scope, const MemMapEntry *uart_memmap, uint32_t uart_irq) =
+{</div><div><div style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, =
+0);"><div>&nbsp; &nbsp; Aml *dev =3D aml_device("COM%d", =
+uartidx);</div><div>&nbsp; &nbsp; =
+...</div></div></div><div>}</div></div><div><br></div><div><br></div></div=
+><div>Thanks for the review,</div><div>Vadim</div></body></html>=
+
+--Apple-Mail=_5DE68C0F-2FE8-4B8C-8D7A-4B81F95CE82F--
 
