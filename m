@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A29B0CC46
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 23:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BC4B0CC47
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 23:15:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udxqJ-0007z4-EQ; Mon, 21 Jul 2025 17:14:41 -0400
+	id 1udxqT-0008Hc-7g; Mon, 21 Jul 2025 17:14:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1udxlw-00044q-A5
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:10:09 -0400
+ id 1udxly-00046M-53
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:10:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1udxls-0007ir-Ba
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:10:07 -0400
+ id 1udxls-0007hr-4L
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:10:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753132203;
+ s=mimecast20190719; t=1753132202;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ID1m7IQxwRdDxYCCo2l/zsqfsQ+zvH+CebMBV2ojwZA=;
- b=AkwWDuYLndQM2uW+B81zLSOSrId9bzDnLGVA1O9SqrpN1g4Pkj1Pohc5CsgZi2QRnDQXOs
- jkXslPkB1c6v7XXAu/7MsBuwktCO4gJxfL5etE6GPNkRgpmQ8yo+z6XN+GYeyUEwGOm+Lb
- 7xgtP8sh9gjMvO0mHyCK8VC7G/DdoHw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=/g1/+QUh/Pt7x/vx3FOPvWDG6c3p7EUV7RluKokqDQE=;
+ b=P9DfyIbeDFx0bTjqagOs9jA+9rD9ekvDtYNoc9uY6h8b5YMKhzPJk/5TqktTZfM6uIvsIj
+ QIyj8OfyVzFPGW6GA8UwxCs2CnPDCpRQgBTRQWh6ofJqxj8PKKV1ceBo0ver78RAJC8HbA
+ AUVMC0wxvSslGG31dIoFPWum8h837OM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-224-w9rgN_5-P0qm9KWy757ruQ-1; Mon,
- 21 Jul 2025 17:09:56 -0400
-X-MC-Unique: w9rgN_5-P0qm9KWy757ruQ-1
-X-Mimecast-MFC-AGG-ID: w9rgN_5-P0qm9KWy757ruQ_1753132195
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-LrZP8HTJMw6wfrCSTH2Z9g-1; Mon,
+ 21 Jul 2025 17:09:58 -0400
+X-MC-Unique: LrZP8HTJMw6wfrCSTH2Z9g-1
+X-Mimecast-MFC-AGG-ID: LrZP8HTJMw6wfrCSTH2Z9g_1753132197
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 48E311956089; Mon, 21 Jul 2025 21:09:55 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4B4D01800C32; Mon, 21 Jul 2025 21:09:57 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.31])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D240D18002B6; Mon, 21 Jul 2025 21:09:54 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 84A9B18003FC; Mon, 21 Jul 2025 21:09:56 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
@@ -53,14 +53,14 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, hibriansong@gmail.com, eblake@redhat.com,
  Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
  Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>
-Subject: [PATCH v3 03/12] tests/unit: skip test-nested-aio-poll with io_uring
-Date: Mon, 21 Jul 2025 17:07:50 -0400
-Message-ID: <20250721210759.179709-4-stefanha@redhat.com>
+Subject: [PATCH v3 04/12] aio-posix: integrate fdmon into glib event loop
+Date: Mon, 21 Jul 2025 17:07:51 -0400
+Message-ID: <20250721210759.179709-5-stefanha@redhat.com>
 In-Reply-To: <20250721210759.179709-1-stefanha@redhat.com>
 References: <20250721210759.179709-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
@@ -70,7 +70,7 @@ X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.926,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,44 +86,579 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-test-nested-aio-poll relies on internal details of how fdmon-poll.c
-handles AioContext polling. Skip it when other fdmon implementations are
-in use.
+AioContext's glib integration only supports ppoll(2) file descriptor
+monitoring. epoll(7) and io_uring(7) disable themselves and switch back
+to ppoll(2) when the glib event loop is used. The main loop thread
+cannot use epoll(7) or io_uring(7) because it always uses the glib event
+loop.
 
-Note that this test is only built on POSIX systems so it is safe to
-include "util/aio-posix.h".
+Future QEMU features may require io_uring(7). One example is uring_cmd
+support in FUSE exports. Each feature could create its own io_uring(7)
+context and integrate it into the event loop, but this is inefficient
+due to extra syscalls. It would be more efficient to reuse the
+AioContext's existing fdmon-io_uring.c io_uring(7) context because
+fdmon-io_uring.c will already be active on systems where Linux io_uring
+is available.
+
+In order to keep fdmon-io_uring.c's AioContext operational even when the
+glib event loop is used, extend FDMonOps with an API similar to
+GSourceFuncs so that file descriptor monitoring can integrate into the
+glib event loop.
+
+A quick summary of the GSourceFuncs API:
+- prepare() is called each event loop iteration before waiting for file
+  descriptors and timers.
+- check() is called to determine whether events are ready to be
+  dispatched after waiting.
+- dispatch() is called to process events.
+
+More details here: https://docs.gtk.org/glib/struct.SourceFuncs.html
+
+Move the ppoll(2)-specific code from aio-posix.c into fdmon-poll.c and
+also implement epoll(7)- and io_uring(7)-specific file descriptor
+monitoring code for glib event loops.
+
+Note that it's still faster to use aio_poll() rather than the glib event
+loop since glib waits for file descriptor activity with ppoll(2) and
+does not support adaptive polling. But at least epoll(7) and io_uring(7)
+now work in glib event loops.
+
+Splitting this into multiple commits without temporarily breaking
+AioContext proved difficult so this commit makes all the changes. The
+next commit will remove the aio_context_use_g_source() API because it is
+no longer needed.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- tests/unit/test-nested-aio-poll.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/block/aio.h   | 36 ++++++++++++++++++
+ util/aio-posix.h      |  5 +++
+ tests/unit/test-aio.c |  7 +++-
+ util/aio-posix.c      | 69 ++++++++-------------------------
+ util/fdmon-epoll.c    | 52 ++++++++++++++++++++++---
+ util/fdmon-io_uring.c | 44 +++++++++++++++++++++-
+ util/fdmon-poll.c     | 88 ++++++++++++++++++++++++++++++++++++++++++-
+ 7 files changed, 239 insertions(+), 62 deletions(-)
 
-diff --git a/tests/unit/test-nested-aio-poll.c b/tests/unit/test-nested-aio-poll.c
-index d8fd92c43b..45484e745b 100644
---- a/tests/unit/test-nested-aio-poll.c
-+++ b/tests/unit/test-nested-aio-poll.c
-@@ -15,6 +15,7 @@
- #include "qemu/osdep.h"
- #include "block/aio.h"
- #include "qapi/error.h"
-+#include "util/aio-posix.h"
+diff --git a/include/block/aio.h b/include/block/aio.h
+index 99ff48420b..39ed86d14d 100644
+--- a/include/block/aio.h
++++ b/include/block/aio.h
+@@ -106,6 +106,38 @@ typedef struct {
+      * Returns: true if ->wait() should be called, false otherwise.
+      */
+     bool (*need_wait)(AioContext *ctx);
++
++    /*
++     * gsource_prepare:
++     * @ctx: the AioContext
++     *
++     * Prepare for the glib event loop to wait for events instead of the usual
++     * ->wait() call. See glib's GSourceFuncs->prepare().
++     */
++    void (*gsource_prepare)(AioContext *ctx);
++
++    /*
++     * gsource_check:
++     * @ctx: the AioContext
++     *
++     * Called by the glib event loop from glib's GSourceFuncs->check() after
++     * waiting for events.
++     *
++     * Returns: true when ready to be dispatched.
++     */
++    bool (*gsource_check)(AioContext *ctx);
++
++    /*
++     * gsource_dispatch:
++     * @ctx: the AioContext
++     * @ready_list: list for handlers that become ready
++     *
++     * Place ready AioHandlers on ready_list. Called as part of the glib event
++     * loop from glib's GSourceFuncs->dispatch().
++     *
++     * Called with list_lock incremented.
++     */
++    void (*gsource_dispatch)(AioContext *ctx, AioHandlerList *ready_list);
+ } FDMonOps;
  
- typedef struct {
-     AioContext *ctx;
-@@ -71,6 +72,12 @@ static void test(void)
-         .ctx = aio_context_new(&error_abort),
-     };
+ /*
+@@ -222,6 +254,7 @@ struct AioContext {
+     /* State for file descriptor monitoring using Linux io_uring */
+     struct io_uring fdmon_io_uring;
+     AioHandlerSList submit_list;
++    gpointer io_uring_fd_tag;
+ #endif
  
-+    if (td.ctx->fdmon_ops != &fdmon_poll_ops) {
-+        /* This test is tied to fdmon-poll.c */
-+        g_test_skip("fdmon_poll_ops not in use");
-+        return;
+     /* TimerLists for calling timers - one per clock type.  Has its own
+@@ -254,6 +287,9 @@ struct AioContext {
+     /* epoll(7) state used when built with CONFIG_EPOLL */
+     int epollfd;
+ 
++    /* The GSource unix fd tag for epollfd */
++    gpointer epollfd_tag;
++
+     const FDMonOps *fdmon_ops;
+ };
+ 
+diff --git a/util/aio-posix.h b/util/aio-posix.h
+index 82a0201ea4..f9994ed79e 100644
+--- a/util/aio-posix.h
++++ b/util/aio-posix.h
+@@ -47,9 +47,14 @@ void aio_add_ready_handler(AioHandlerList *ready_list, AioHandler *node,
+ 
+ extern const FDMonOps fdmon_poll_ops;
+ 
++/* Switch back to poll(2). list_lock must be held. */
++void fdmon_poll_downgrade(AioContext *ctx);
++
+ #ifdef CONFIG_EPOLL_CREATE1
+ bool fdmon_epoll_try_upgrade(AioContext *ctx, unsigned npfd);
+ void fdmon_epoll_setup(AioContext *ctx);
++
++/* list_lock must be held */
+ void fdmon_epoll_disable(AioContext *ctx);
+ #else
+ static inline bool fdmon_epoll_try_upgrade(AioContext *ctx, unsigned npfd)
+diff --git a/tests/unit/test-aio.c b/tests/unit/test-aio.c
+index e77d86be87..010d65b79a 100644
+--- a/tests/unit/test-aio.c
++++ b/tests/unit/test-aio.c
+@@ -527,7 +527,12 @@ static void test_source_bh_delete_from_cb(void)
+     g_assert_cmpint(data1.n, ==, data1.max);
+     g_assert(data1.bh == NULL);
+ 
+-    assert(g_main_context_iteration(NULL, false));
++    /*
++     * There may be up to one more iteration due to the aio_notify
++     * EventNotifier.
++     */
++    g_main_context_iteration(NULL, false);
++
+     assert(!g_main_context_iteration(NULL, false));
+ }
+ 
+diff --git a/util/aio-posix.c b/util/aio-posix.c
+index 824fdc34cc..9de05ee7e8 100644
+--- a/util/aio-posix.c
++++ b/util/aio-posix.c
+@@ -70,15 +70,6 @@ static AioHandler *find_aio_handler(AioContext *ctx, int fd)
+ 
+ static bool aio_remove_fd_handler(AioContext *ctx, AioHandler *node)
+ {
+-    /* If the GSource is in the process of being destroyed then
+-     * g_source_remove_poll() causes an assertion failure.  Skip
+-     * removal in that case, because glib cleans up its state during
+-     * destruction anyway.
+-     */
+-    if (!g_source_is_destroyed(&ctx->source)) {
+-        g_source_remove_poll(&ctx->source, &node->pfd);
+-    }
+-
+     node->pfd.revents = 0;
+     node->poll_ready = false;
+ 
+@@ -153,7 +144,6 @@ void aio_set_fd_handler(AioContext *ctx,
+         } else {
+             new_node->pfd = node->pfd;
+         }
+-        g_source_add_poll(&ctx->source, &new_node->pfd);
+ 
+         new_node->pfd.events = (io_read ? G_IO_IN | G_IO_HUP | G_IO_ERR : 0);
+         new_node->pfd.events |= (io_write ? G_IO_OUT | G_IO_ERR : 0);
+@@ -267,37 +257,13 @@ bool aio_prepare(AioContext *ctx)
+     poll_set_started(ctx, &ready_list, false);
+     /* TODO what to do with this list? */
+ 
++    ctx->fdmon_ops->gsource_prepare(ctx);
+     return false;
+ }
+ 
+ bool aio_pending(AioContext *ctx)
+ {
+-    AioHandler *node;
+-    bool result = false;
+-
+-    /*
+-     * We have to walk very carefully in case aio_set_fd_handler is
+-     * called while we're walking.
+-     */
+-    qemu_lockcnt_inc(&ctx->list_lock);
+-
+-    QLIST_FOREACH_RCU(node, &ctx->aio_handlers, node) {
+-        int revents;
+-
+-        /* TODO should this check poll ready? */
+-        revents = node->pfd.revents & node->pfd.events;
+-        if (revents & (G_IO_IN | G_IO_HUP | G_IO_ERR) && node->io_read) {
+-            result = true;
+-            break;
+-        }
+-        if (revents & (G_IO_OUT | G_IO_ERR) && node->io_write) {
+-            result = true;
+-            break;
+-        }
+-    }
+-    qemu_lockcnt_dec(&ctx->list_lock);
+-
+-    return result;
++    return ctx->fdmon_ops->gsource_check(ctx);
+ }
+ 
+ static void aio_free_deleted_handlers(AioContext *ctx)
+@@ -390,10 +356,6 @@ static bool aio_dispatch_handler(AioContext *ctx, AioHandler *node)
+     return progress;
+ }
+ 
+-/*
+- * If we have a list of ready handlers then this is more efficient than
+- * scanning all handlers with aio_dispatch_handlers().
+- */
+ static bool aio_dispatch_ready_handlers(AioContext *ctx,
+                                         AioHandlerList *ready_list,
+                                         int64_t block_ns)
+@@ -417,24 +379,18 @@ static bool aio_dispatch_ready_handlers(AioContext *ctx,
+     return progress;
+ }
+ 
+-/* Slower than aio_dispatch_ready_handlers() but only used via glib */
+-static bool aio_dispatch_handlers(AioContext *ctx)
+-{
+-    AioHandler *node, *tmp;
+-    bool progress = false;
+-
+-    QLIST_FOREACH_SAFE_RCU(node, &ctx->aio_handlers, node, tmp) {
+-        progress = aio_dispatch_handler(ctx, node) || progress;
+-    }
+-
+-    return progress;
+-}
+-
+ void aio_dispatch(AioContext *ctx)
+ {
++    AioHandlerList ready_list = QLIST_HEAD_INITIALIZER(ready_list);
++
+     qemu_lockcnt_inc(&ctx->list_lock);
+     aio_bh_poll(ctx);
+-    aio_dispatch_handlers(ctx);
++
++    ctx->fdmon_ops->gsource_dispatch(ctx, &ready_list);
++
++    /* block_ns is 0 because polling is disabled in the glib event loop */
++    aio_dispatch_ready_handlers(ctx, &ready_list, 0);
++
+     aio_free_deleted_handlers(ctx);
+     qemu_lockcnt_dec(&ctx->list_lock);
+ 
+@@ -766,6 +722,7 @@ void aio_context_setup(AioContext *ctx)
+ {
+     ctx->fdmon_ops = &fdmon_poll_ops;
+     ctx->epollfd = -1;
++    ctx->epollfd_tag = NULL;
+ 
+     /* Use the fastest fd monitoring implementation if available */
+     if (fdmon_io_uring_setup(ctx)) {
+@@ -778,7 +735,11 @@ void aio_context_setup(AioContext *ctx)
+ void aio_context_destroy(AioContext *ctx)
+ {
+     fdmon_io_uring_destroy(ctx);
++
++    qemu_lockcnt_lock(&ctx->list_lock);
+     fdmon_epoll_disable(ctx);
++    qemu_lockcnt_unlock(&ctx->list_lock);
++
+     aio_free_deleted_handlers(ctx);
+ }
+ 
+diff --git a/util/fdmon-epoll.c b/util/fdmon-epoll.c
+index 9fb8800dde..0e78baa634 100644
+--- a/util/fdmon-epoll.c
++++ b/util/fdmon-epoll.c
+@@ -19,8 +19,12 @@ void fdmon_epoll_disable(AioContext *ctx)
+         ctx->epollfd = -1;
+     }
+ 
+-    /* Switch back */
+-    ctx->fdmon_ops = &fdmon_poll_ops;
++    if (ctx->epollfd_tag) {
++        g_source_remove_unix_fd(&ctx->source, ctx->epollfd_tag);
++        ctx->epollfd_tag = NULL;
 +    }
 +
-     qemu_set_current_aio_context(td.ctx);
++    fdmon_poll_downgrade(ctx);
+ }
  
-     /* Enable polling */
+ static inline int epoll_events_from_pfd(int pfd_events)
+@@ -93,10 +97,47 @@ out:
+     return ret;
+ }
+ 
++static void fdmon_epoll_gsource_prepare(AioContext *ctx)
++{
++    /* Do nothing */
++}
++
++static bool fdmon_epoll_gsource_check(AioContext *ctx)
++{
++    return g_source_query_unix_fd(&ctx->source, ctx->epollfd_tag) & G_IO_IN;
++}
++
++static void fdmon_epoll_gsource_dispatch(AioContext *ctx,
++                                         AioHandlerList *ready_list)
++{
++    AioHandler *node;
++    int ret;
++    struct epoll_event events[128];
++
++    /* Collect events and process them */
++    ret = epoll_wait(ctx->epollfd, events, ARRAY_SIZE(events), 0);
++    if (ret <= 0) {
++        return;
++    }
++    for (int i = 0; i < ret; i++) {
++        int ev = events[i].events;
++        int revents = (ev & EPOLLIN ? G_IO_IN : 0) |
++                      (ev & EPOLLOUT ? G_IO_OUT : 0) |
++                      (ev & EPOLLHUP ? G_IO_HUP : 0) |
++                      (ev & EPOLLERR ? G_IO_ERR : 0);
++
++        node = events[i].data.ptr;
++        aio_add_ready_handler(ready_list, node, revents);
++    }
++}
++
+ static const FDMonOps fdmon_epoll_ops = {
+     .update = fdmon_epoll_update,
+     .wait = fdmon_epoll_wait,
+     .need_wait = aio_poll_disabled,
++    .gsource_prepare = fdmon_epoll_gsource_prepare,
++    .gsource_check = fdmon_epoll_gsource_check,
++    .gsource_dispatch = fdmon_epoll_gsource_dispatch,
+ };
+ 
+ static bool fdmon_epoll_try_enable(AioContext *ctx)
+@@ -118,6 +159,8 @@ static bool fdmon_epoll_try_enable(AioContext *ctx)
+     }
+ 
+     ctx->fdmon_ops = &fdmon_epoll_ops;
++    ctx->epollfd_tag = g_source_add_unix_fd(&ctx->source, ctx->epollfd,
++                                            G_IO_IN);
+     return true;
+ }
+ 
+@@ -139,12 +182,11 @@ bool fdmon_epoll_try_upgrade(AioContext *ctx, unsigned npfd)
+     }
+ 
+     ok = fdmon_epoll_try_enable(ctx);
+-
+-    qemu_lockcnt_inc_and_unlock(&ctx->list_lock);
+-
+     if (!ok) {
+         fdmon_epoll_disable(ctx);
+     }
++
++    qemu_lockcnt_inc_and_unlock(&ctx->list_lock);
+     return ok;
+ }
+ 
+diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
+index ad89160f31..4b6dc8903f 100644
+--- a/util/fdmon-io_uring.c
++++ b/util/fdmon-io_uring.c
+@@ -276,6 +276,11 @@ static int process_cq_ring(AioContext *ctx, AioHandlerList *ready_list)
+     unsigned num_ready = 0;
+     unsigned head;
+ 
++    /* If the CQ overflowed then fetch CQEs with a syscall */
++    if (io_uring_cq_has_overflow(ring)) {
++        io_uring_get_events(ring);
++    }
++
+     io_uring_for_each_cqe(ring, head, cqe) {
+         if (process_cqe(ctx, ready_list, cqe)) {
+             num_ready++;
+@@ -288,6 +293,30 @@ static int process_cq_ring(AioContext *ctx, AioHandlerList *ready_list)
+     return num_ready;
+ }
+ 
++/* This is where SQEs are submitted in the glib event loop */
++static void fdmon_io_uring_gsource_prepare(AioContext *ctx)
++{
++    fill_sq_ring(ctx);
++    if (io_uring_sq_ready(&ctx->fdmon_io_uring)) {
++        while (io_uring_submit(&ctx->fdmon_io_uring) == -EINTR) {
++            /* Keep trying if syscall was interrupted */
++        }
++    }
++}
++
++static bool fdmon_io_uring_gsource_check(AioContext *ctx)
++{
++    gpointer tag = ctx->io_uring_fd_tag;
++    return g_source_query_unix_fd(&ctx->source, tag) & G_IO_IN;
++}
++
++/* This is where CQEs are processed in the glib event loop */
++static void fdmon_io_uring_gsource_dispatch(AioContext *ctx,
++                                            AioHandlerList *ready_list)
++{
++    process_cq_ring(ctx, ready_list);
++}
++
+ static int fdmon_io_uring_wait(AioContext *ctx, AioHandlerList *ready_list,
+                                int64_t timeout)
+ {
+@@ -335,12 +364,17 @@ static const FDMonOps fdmon_io_uring_ops = {
+     .update = fdmon_io_uring_update,
+     .wait = fdmon_io_uring_wait,
+     .need_wait = fdmon_io_uring_need_wait,
++    .gsource_prepare = fdmon_io_uring_gsource_prepare,
++    .gsource_check = fdmon_io_uring_gsource_check,
++    .gsource_dispatch = fdmon_io_uring_gsource_dispatch,
+ };
+ 
+ bool fdmon_io_uring_setup(AioContext *ctx)
+ {
+     int ret;
+ 
++    ctx->io_uring_fd_tag = NULL;
++
+     ret = io_uring_queue_init(FDMON_IO_URING_ENTRIES, &ctx->fdmon_io_uring, 0);
+     if (ret != 0) {
+         return false;
+@@ -348,6 +382,9 @@ bool fdmon_io_uring_setup(AioContext *ctx)
+ 
+     QSLIST_INIT(&ctx->submit_list);
+     ctx->fdmon_ops = &fdmon_io_uring_ops;
++    ctx->io_uring_fd_tag = g_source_add_unix_fd(&ctx->source,
++            ctx->fdmon_io_uring.ring_fd, G_IO_IN);
++
+     return true;
+ }
+ 
+@@ -375,6 +412,11 @@ void fdmon_io_uring_destroy(AioContext *ctx)
+             QSLIST_REMOVE_HEAD_RCU(&ctx->submit_list, node_submitted);
+         }
+ 
+-        ctx->fdmon_ops = &fdmon_poll_ops;
++        g_source_remove_unix_fd(&ctx->source, ctx->io_uring_fd_tag);
++        ctx->io_uring_fd_tag = NULL;
++
++        qemu_lockcnt_lock(&ctx->list_lock);
++        fdmon_poll_downgrade(ctx);
++        qemu_lockcnt_unlock(&ctx->list_lock);
+     }
+ }
+diff --git a/util/fdmon-poll.c b/util/fdmon-poll.c
+index 17df917cf9..f91dc54944 100644
+--- a/util/fdmon-poll.c
++++ b/util/fdmon-poll.c
+@@ -72,6 +72,11 @@ static int fdmon_poll_wait(AioContext *ctx, AioHandlerList *ready_list,
+ 
+     /* epoll(7) is faster above a certain number of fds */
+     if (fdmon_epoll_try_upgrade(ctx, npfd)) {
++        QLIST_FOREACH_RCU(node, &ctx->aio_handlers, node) {
++            if (!QLIST_IS_INSERTED(node, node_deleted) && node->pfd.events) {
++                g_source_remove_poll(&ctx->source, &node->pfd);
++            }
++        }
+         npfd = 0; /* we won't need pollfds[], reset npfd */
+         return ctx->fdmon_ops->wait(ctx, ready_list, timeout);
+     }
+@@ -97,11 +102,92 @@ static void fdmon_poll_update(AioContext *ctx,
+                               AioHandler *old_node,
+                               AioHandler *new_node)
+ {
+-    /* Do nothing, AioHandler already contains the state we'll need */
++    if (old_node && !new_node) {
++        /*
++         * If the GSource is in the process of being destroyed then
++         * g_source_remove_poll() causes an assertion failure.  Skip removal in
++         * that case, because glib cleans up its state during destruction
++         * anyway.
++         */
++        if (!g_source_is_destroyed(&ctx->source)) {
++            g_source_remove_poll(&ctx->source, &old_node->pfd);
++        }
++    }
++
++    if (!old_node && new_node) {
++        g_source_add_poll(&ctx->source, &new_node->pfd);
++    }
++}
++
++static void fdmon_poll_gsource_prepare(AioContext *ctx)
++{
++    /* Do nothing */
++}
++
++static bool fdmon_poll_gsource_check(AioContext *ctx)
++{
++    AioHandler *node;
++    bool result = false;
++
++    /*
++     * We have to walk very carefully in case aio_set_fd_handler is
++     * called while we're walking.
++     */
++    qemu_lockcnt_inc(&ctx->list_lock);
++
++    QLIST_FOREACH_RCU(node, &ctx->aio_handlers, node) {
++        int revents = node->pfd.revents & node->pfd.events;
++
++        if (revents & (G_IO_IN | G_IO_HUP | G_IO_ERR) && node->io_read) {
++            result = true;
++            break;
++        }
++        if (revents & (G_IO_OUT | G_IO_ERR) && node->io_write) {
++            result = true;
++            break;
++        }
++    }
++
++    qemu_lockcnt_dec(&ctx->list_lock);
++
++    return result;
++}
++
++static void fdmon_poll_gsource_dispatch(AioContext *ctx,
++                                        AioHandlerList *ready_list)
++{
++    AioHandler *node;
++
++    QLIST_FOREACH_RCU(node, &ctx->aio_handlers, node) {
++        int revents;
++
++        revents = node->pfd.revents & node->pfd.events;
++        if (revents & (G_IO_IN | G_IO_HUP | G_IO_ERR) && node->io_read) {
++            aio_add_ready_handler(ready_list, node, revents);
++        } else if (revents & (G_IO_OUT | G_IO_ERR) && node->io_write) {
++            aio_add_ready_handler(ready_list, node, revents);
++        }
++    }
+ }
+ 
+ const FDMonOps fdmon_poll_ops = {
+     .update = fdmon_poll_update,
+     .wait = fdmon_poll_wait,
+     .need_wait = aio_poll_disabled,
++    .gsource_prepare = fdmon_poll_gsource_prepare,
++    .gsource_check = fdmon_poll_gsource_check,
++    .gsource_dispatch = fdmon_poll_gsource_dispatch,
+ };
++
++void fdmon_poll_downgrade(AioContext *ctx)
++{
++    AioHandler *node;
++
++    ctx->fdmon_ops = &fdmon_poll_ops;
++
++    QLIST_FOREACH_RCU(node, &ctx->aio_handlers, node) {
++        if (!QLIST_IS_INSERTED(node, node_deleted) && node->pfd.events) {
++            g_source_add_poll(&ctx->source, &node->pfd);
++        }
++    }
++}
 -- 
 2.50.1
 
