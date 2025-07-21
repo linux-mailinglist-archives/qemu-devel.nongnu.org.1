@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A84B0C8A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6042FB0C895
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:24:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtJ0-00059a-Sy; Mon, 21 Jul 2025 12:23:58 -0400
+	id 1udtIr-0003wQ-MF; Mon, 21 Jul 2025 12:23:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtI3-0003IR-8f
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtI8-0003Lp-EN
  for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtHz-0001OG-Nx
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:22:58 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtI5-0001PL-B5
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753114974;
+ s=mimecast20190719; t=1753114980;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nibxoopfG+ra1bTOd7GpQ9uJEvgBpG4MlJh1Ogsz96o=;
- b=F/hY5Bcwja2awFCsh9M7BywUJ9hOAWuMoSxwvke45ENG2AwCRHWu6zVBnKBuo3uCnvSsNZ
- C+yKB7IfYt0QcJgKcHd7p/MjEtd07xU3R1ApQgd6WjLtnswmVk+8szHyhJtMiXpgje7LlK
- 0AbTIiDjzd8/N+IrpyKhddJb5Xdt6o0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=G+vpGBIdAyFmIOhIassfZzr92Quav/tsXT1F0h3i0Ho=;
+ b=Sdg8O8GcfIeEZR+jBPROMyYPs/GD8uznkfxwbCZBEa6EcTzx5EJ/i8eNvu1Coo1gZRORb0
+ LfQWE316FG9TzEQUSakLSnQon8I+4xmiheK+ZOBl5t803PZenlbE8Ma8gnJx0k9lWWdLsL
+ 4EgvCjJG0KilCpjpLEq292Y9PHUUCUc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-83-XSj0CjW8NcGyIcwBMHCkzQ-1; Mon,
- 21 Jul 2025 12:22:53 -0400
-X-MC-Unique: XSj0CjW8NcGyIcwBMHCkzQ-1
-X-Mimecast-MFC-AGG-ID: XSj0CjW8NcGyIcwBMHCkzQ_1753114972
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-V34ETTSfMfuFxk_jYGTe2Q-1; Mon,
+ 21 Jul 2025 12:22:56 -0400
+X-MC-Unique: V34ETTSfMfuFxk_jYGTe2Q-1
+X-Mimecast-MFC-AGG-ID: V34ETTSfMfuFxk_jYGTe2Q_1753114975
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EE14A1944D23; Mon, 21 Jul 2025 16:22:51 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 14E8718002B3; Mon, 21 Jul 2025 16:22:55 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BB49C1956050; Mon, 21 Jul 2025 16:22:49 +0000 (UTC)
+ id 6C7AC195608D; Mon, 21 Jul 2025 16:22:52 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Glenn Miles <milesg@linux.ibm.com>, Caleb Schlossin <calebs@linux.ibm.com>,
+ Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
+ Caleb Schlossin <calebs@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 05/50] ppc/xive2: fix context push calculation of IPB priority
-Date: Mon, 21 Jul 2025 18:21:48 +0200
-Message-ID: <20250721162233.686837-6-clg@redhat.com>
+Subject: [PULL 06/50] ppc/xive: Fix PHYS NSR ring matching
+Date: Mon, 21 Jul 2025 18:21:49 +0200
+Message-ID: <20250721162233.686837-7-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -86,36 +87,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-Pushing a context and loading IPB from NVP is defined to merge ('or')
-that IPB into the TIMA IPB register. PIPR should therefore be calculated
-based on the final IPB value, not just the NVP value.
+Test that the NSR exception bit field is equal to the pool ring value,
+rather than any common bits set, which is more correct (although there
+is no practical bug because the LSI NSR type is not implemented and
+POOL/PHYS NSR are encoded with exclusive bits).
 
-Fixes: 9d2b6058c5b ("ppc/xive2: Add grouping level to notification")
+Fixes: 4c3ccac636 ("pnv/xive: Add special handling for pool targets")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-6-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-7-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/xive2.c | 3 ++-
+ hw/intc/xive.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index cb75ca879853..01cf96a2af65 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -835,8 +835,9 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
-         nvp.w2 = xive_set_field32(NVP2_W2_IPB, nvp.w2, 0);
-         xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, &nvp, 2);
-     }
-+    /* IPB bits in the backlog are merged with the TIMA IPB bits */
-     regs[TM_IPB] |= ipb;
--    backlog_prio = xive_ipb_to_pipr(ipb);
-+    backlog_prio = xive_ipb_to_pipr(regs[TM_IPB]);
-     backlog_level = 0;
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index 120376fb6b6d..bc829bebe9d0 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -54,7 +54,8 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
+         uint8_t *alt_regs;
  
-     first_group = xive_get_field32(NVP2_W0_PGOFIRST, nvp.w0);
+         /* POOL interrupt uses IPB in QW2, POOL ring */
+-        if ((ring == TM_QW3_HV_PHYS) && (nsr & (TM_QW3_NSR_HE_POOL << 6))) {
++        if ((ring == TM_QW3_HV_PHYS) &&
++            ((nsr & TM_QW3_NSR_HE) == (TM_QW3_NSR_HE_POOL << 6))) {
+             alt_ring = TM_QW2_HV_POOL;
+         } else {
+             alt_ring = ring;
 -- 
 2.50.1
 
