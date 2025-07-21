@@ -2,112 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56F4B0CAFE
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 21:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 115B8B0CB0D
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 21:37:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udwGd-0002QR-Oi; Mon, 21 Jul 2025 15:33:43 -0400
+	id 1udwJe-0004Zm-Pg; Mon, 21 Jul 2025 15:36:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1udwG3-00028b-GY
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 15:33:08 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1udwGp-0002aX-7D
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 15:33:59 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1udwG1-0003Ji-Lh
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 15:33:07 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 519181F38C;
- Mon, 21 Jul 2025 19:33:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753126382; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=htEh0aMZjPA/Y95zixsVTfgdNvtPHE4IncCG8oH/9W0=;
- b=GpTJSiBUGnQ53D4zKvqXbqI50HBu3HlUMe3b+sI7dEkUKScpAC/VWb86aoe2UkO+dL0XgA
- /s/D2We6IiSzbN6JhCW+Fbkif8Nf27YCDRE8l2I9Fnqkr/ccZ9tMH7TAsYNdbkmcsx86hz
- AtSkntXxSYQ8rWRfveLgm8XkAAR+Iys=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753126382;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=htEh0aMZjPA/Y95zixsVTfgdNvtPHE4IncCG8oH/9W0=;
- b=kf/+Rx59pMo53hSNYGRS4tg7WUT6rZr7FcuFwPIf3sFQhdtvMPRevjY/rPTKx0NorWXZkf
- ahYK/5Hj1AwS+XBA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753126382; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=htEh0aMZjPA/Y95zixsVTfgdNvtPHE4IncCG8oH/9W0=;
- b=GpTJSiBUGnQ53D4zKvqXbqI50HBu3HlUMe3b+sI7dEkUKScpAC/VWb86aoe2UkO+dL0XgA
- /s/D2We6IiSzbN6JhCW+Fbkif8Nf27YCDRE8l2I9Fnqkr/ccZ9tMH7TAsYNdbkmcsx86hz
- AtSkntXxSYQ8rWRfveLgm8XkAAR+Iys=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753126382;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=htEh0aMZjPA/Y95zixsVTfgdNvtPHE4IncCG8oH/9W0=;
- b=kf/+Rx59pMo53hSNYGRS4tg7WUT6rZr7FcuFwPIf3sFQhdtvMPRevjY/rPTKx0NorWXZkf
- ahYK/5Hj1AwS+XBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BB2D5136A8;
- Mon, 21 Jul 2025 19:33:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id KcChHu2VfmiOPwAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 21 Jul 2025 19:33:01 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang?=
- =?utf-8?Q?=C3=A9?=
- <berrange@redhat.com>, Peter Xu <peterx@redhat.com>, Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, =?utf-8?Q?Marc-Andr?=
- =?utf-8?Q?=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH 4/4] crypto: add tracing & warning about GNUTLS
- countermeasures
-In-Reply-To: <20250718150514.2635338-5-berrange@redhat.com>
-References: <20250718150514.2635338-1-berrange@redhat.com>
- <20250718150514.2635338-5-berrange@redhat.com>
-Date: Mon, 21 Jul 2025 16:32:58 -0300
-Message-ID: <87tt35xrth.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1udwGm-0003Tr-5h
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 15:33:53 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2363616a1a6so40877275ad.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 12:33:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753126430; x=1753731230; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fiWneQVRhAt9GEzGA7Cv+Xb1Q7+1U8BEW2cPJ5jb3fw=;
+ b=WBCFju7vmBAeRXhSganE5/WWq0riR0SVW6z4kDRliw7w/AdrnA6jqoZBBNuOwdO1qg
+ 3rJdg40a4JTg4O5A/I8fkN1e3OMvc3C79zVLZjS+aEQWmXWltQeaBt6C+cXs/cV0iyHO
+ Ym3d2AOctzsO4Ez6SV8yFcwzd413cfHGU7mreP9zMfVynXy9XbpHhFgy1lFIoBSWlB1x
+ WdcD6tW1To1DqCbtDP/ldr21QJbNAgEo3gl6FPqVaUn/iNcL+JSVfU/9c8TXdvY8ZAr1
+ puago00w6drjFfQQGPk6oGBuPHBFhMfwKPQNNhAAvPN/neNMU/ZT4zh6Bqc4l9cNLlBr
+ OhYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753126430; x=1753731230;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fiWneQVRhAt9GEzGA7Cv+Xb1Q7+1U8BEW2cPJ5jb3fw=;
+ b=RfSU2ZL2fjYbm6irUzvmTOm1wZ+isksze8HyjNhJKRLpPzUvprvkRbGAFXmKgJ/MHI
+ ookvghQAyumNXkPeOcvVX0uR6cn+8mik7F7B03C7OtkfRS+8I4eCLjt+h3MTkMI3hLdd
+ yyr9d8IAI/VingF1r7NeYa6PsX7K6+uOoa1AhUqjKMPPuEWjR+Xi+h+g5AVGyvwg9ai6
+ e6XC+foRAau9UXWRudlsLCS/116qSOXla/a7Cbldl8wJBw8XSvhvsE0ZSwALP1KcY60S
+ BRDNOXza66zZ2EHMvwnY6X9oO8ASFbYEWY11sw/sBdCpChRbpCMJZQBj0yB4PZEpNctZ
+ A5jw==
+X-Gm-Message-State: AOJu0YwhNjgs4/upE28L+OGriz9Eq66PWBzwgHLMLRdvobFnZE/oSIEr
+ CX0X6iQYoIdIwp9JGlXWuTFwEav+MyhiljNI1xBxQqoDR/b2p9CG40xLTRC0uHi+js1SdbQJXfu
+ VcrSy
+X-Gm-Gg: ASbGncsaWaI0U4kGYRklOiVRUdINvUjfCHr3wm0VtcgfTBxMwt+M2ZWMb9sioDNgThr
+ UCDL8wGdmClINa0jfWYBoy205wRIjCVeK1ZhXXwDOjzNT2OoZT4rPhtOBo8P89JcAYJnFFh8W9C
+ qC8QE32Ct/psvtn8VFsLJgx93OIErTIjLw4mKatVu0E0f6ITT+iM6TVhVbJDCymDAwujmLg5oql
+ vQzOg01e/t1n2Ot5tQz2mFvHaxrj2CG+a7/sJt/HuJ3KYlrIRPTcyZ9MJYIMZJk+z/0CKXJpvEN
+ a3wqDk3vYtMWqIRub88Kai3J4LecuJTQWlbCbuoyPF0+fB7m2pd/Edw7puKmlDrBSnofW6uwZxT
+ syr+g2mzfFHIUvMKhm+tpTg==
+X-Google-Smtp-Source: AGHT+IFbyL0OAOoGP9so17trwCT8rnRpHhg+GBi+OzNe3wKxfNlgG8uZorlV1sGHCmYF1ozGRl0G9Q==
+X-Received: by 2002:a17:903:b90:b0:237:ec18:ead7 with SMTP id
+ d9443c01a7336-23e2572fbd9mr386926285ad.24.1753126430554; 
+ Mon, 21 Jul 2025 12:33:50 -0700 (PDT)
+Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23e3b5e4750sm62238685ad.6.2025.07.21.12.33.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 21 Jul 2025 12:33:50 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, rowan Hart <rowanbhart@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: [PATCH v2 0/6] contrib/plugins: uftrace
+Date: Mon, 21 Jul 2025 12:33:34 -0700
+Message-ID: <20250721193340.1059019-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.47.2
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- RCVD_TLS_ALL(0.00)[]; MISSING_XM_UA(0.00)[];
- FUZZY_RATELIMITED(0.00)[rspamd.com]; MIME_TRACE(0.00)[0:+];
- RCPT_COUNT_SEVEN(0.00)[7]; MID_RHS_MATCH_FROM(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCVD_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -124,70 +103,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+This plugin generates a binary trace compatible with the excellent uftrace:
+https://github.com/namhyung/uftrace
 
-> We want some visibility on stderr when the GNUTLS thread
-> safety countermeasures are activated, to encourage people
-> to get the real fix deployed (once it exists). Some trace
-> points will also help if we see any further wierd crash
-> scenario we've not anticipated.
->
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> ---
->  crypto/tlssession.c | 10 ++++++++++
->  crypto/trace-events |  2 ++
->  2 files changed, 12 insertions(+)
->
-> diff --git a/crypto/tlssession.c b/crypto/tlssession.c
-> index 939f69bdb3..246cd6f7c0 100644
-> --- a/crypto/tlssession.c
-> +++ b/crypto/tlssession.c
-> @@ -615,10 +615,20 @@ qcrypto_tls_session_handshake(QCryptoTLSSession *se=
-ssion,
->           * only have to protect against automatic rekeying
->           * which doesn't trigger with CHACHA20
->           */
-> +        trace_qcrypto_tls_session_parameters(
-> +            session,
-> +            session->requireThreadSafety,
-> +            gnutls_protocol_get_version(session->handle),
-> +            cipher);
-> +
->          if (session->requireThreadSafety &&
->              gnutls_protocol_get_version(session->handle) =3D=3D
->              GNUTLS_TLS1_3 &&
->              cipher !=3D GNUTLS_CIPHER_CHACHA20_POLY1305) {
-> +            warn_report("WARNING: activating thread safety countermeasur=
-es "
+In short, it tracks all function calls performed during execution, based on
+frame pointer analysis. A big advantage over "uftrace record" is that it works
+in system mode, allowing to trace a full system execution, which was the
+original goal. It works as well in user mode, but uftrace itself already does
+this. It's implemented for aarch64 only (with the intent to add x86_64 later).
 
-And this hit the missing error-report.h weirdness.
+Let's start with concrete examples of the result.
 
-> +                        "for potentially broken GNUTLS with TLS1.3 ciphe=
-r=3D%d",
-> +                        cipher);
-> +            trace_qcrypto_tls_session_bug1717_workaround(session);
->              session->lockEnabled =3D true;
->          }
->  #endif
-> diff --git a/crypto/trace-events b/crypto/trace-events
-> index bccd0bbf29..d0e33427fa 100644
-> --- a/crypto/trace-events
-> +++ b/crypto/trace-events
-> @@ -21,6 +21,8 @@ qcrypto_tls_creds_x509_load_cert_list(void *creds, cons=
-t char *file) "TLS creds
->  # tlssession.c
->  qcrypto_tls_session_new(void *session, void *creds, const char *hostname=
-, const char *authzid, int endpoint) "TLS session new session=3D%p creds=3D=
-%p hostname=3D%s authzid=3D%s endpoint=3D%d"
->  qcrypto_tls_session_check_creds(void *session, const char *status) "TLS =
-session check creds session=3D%p status=3D%s"
-> +qcrypto_tls_session_parameters(void *session, int threadSafety, int prot=
-ocol, int cipher) "TLS session parameters session=3D%p threadSafety=3D%d pr=
-otocol=3D%d cipher=3D%d"
-> +qcrypto_tls_session_bug1717_workaround(void *session) "TLS session bug17=
-17 workaround session=3D%p"
->=20=20
->  # tls-cipher-suites.c
->  qcrypto_tls_cipher_suite_priority(const char *name) "priority: %s"
+First, in system mode, booting a stack using TF-A + U-boot + Linux:
+- Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
+https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
+- Stat and open syscalls in kernel
+https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
+- Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
+https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
+
+Full trace is available here:
+https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz
+You can download and open it on https://ui.perfetto.dev/ to explore it.
+
+Second, in user mode, tracing qemu-aarch64 (itself) running git --help:
+- Loading program and its interpreter
+https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
+- TB creation
+https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
+
+Full trace is available here:
+https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz
+
+If you had curiosity and now you're ready to give some attention, most of the
+details you want to read are included in the documentation patch (final one).
+
+Overhead is around x2 (sampling only) to x10-x15 (precise), and long traces can
+be directly filtered with uftrace if needed.
+
+The series is splitted in:
+- implementing the plugin
+- adding useful options (especially sampling and privilege level tracing)
+- add a companion script to symbolize traces generated
+- add documentation with examples
+
+I hope this plugin can help people trying to understand what happens out of the
+user space, and get a better grasp of how firmwares, bootloader, and kernel
+interact behind the curtain.
+
+v2
+--
+
+- trace active stacks on exit
+- do not erase map generated in system_emulation
+- add documentation to generate restricted visual traces around specific events
+  of execution
+
+Pierrick Bouvier (6):
+  contrib/plugins/uftrace: new uftrace plugin
+  contrib/plugins/uftrace: add trace-sample option
+  contrib/plugins/uftrace: add trace-privilege-level option
+  contrib/plugins/uftrace: add timestamp-based-on-real-time option
+  contrib/plugins/uftrace_symbols.py
+  contrib/plugins/uftrace: add documentation
+
+ docs/about/emulation.rst           | 207 +++++++
+ contrib/plugins/uftrace.c          | 919 +++++++++++++++++++++++++++++
+ contrib/plugins/meson.build        |   3 +-
+ contrib/plugins/uftrace_symbols.py | 152 +++++
+ 4 files changed, 1280 insertions(+), 1 deletion(-)
+ create mode 100644 contrib/plugins/uftrace.c
+ create mode 100755 contrib/plugins/uftrace_symbols.py
+
+-- 
+2.47.2
+
 
