@@ -2,93 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9823B0CB2E
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 21:54:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A226B0CB50
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 22:05:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udwZD-0003yi-A3; Mon, 21 Jul 2025 15:52:55 -0400
+	id 1udwkO-0005cR-0L; Mon, 21 Jul 2025 16:04:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1udwYx-0003ew-AT
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 15:52:42 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1udwj9-0004qG-5i; Mon, 21 Jul 2025 16:03:24 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1udwYv-0001Lu-0r
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 15:52:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=2iGQR7h0lZdFAXgBDxFVOEj8OkhY2Co3rK4SkodBdWY=; b=PUIFjV9T4Qkyz35pEH1QbbUD/l
- egXOgIgqDJINYGrW3meH8lUoygoUvh61bj2KGxU1kJRxX0eGiUnkHXyYfntJjVqzO4U8KnxEoOaNe
- +gSRUmILB8x5UiWGA5OS0UwoG1tngfqID/rFFe2qdZRrX3ECwGQZwXwsoDafbTDrp5QzPx7wupLzx
- zV90eEO5MB/VXwIv+CrrllS+5k4eVKiIw6QvVG6umTzeQeulUgYug43fety//EI6aHODLBgbMzaUv
- 0pBrKFOzJIm6Pp+5igi+iD7H8XtyqiYbKZ1OxkpckgEA6mxHJkJSzM/1lNQos7XGHYFJoQS0HA+Kh
- JjnyynUvnb8UpL57kyqKd96pLRQC5DLcnKb/+a47BWCvsj3X7IIFvDKxDV/jCXVrH3wR7Ok5N3Rzl
- 3DpBHfCgD6r0HQOZ4Ns4PjeGppwmLo5VZBVdGuL1m0tohBTFrLckZ+7sbl/43dgfzXKGxbZfKEltn
- WYEaZElZA1OucGu/fdWSgUKeQnbJGIZTuj25y2z1NV/HIvMwhI99xupeZqwRjSIicD7KnYJw3qFFK
- XQJbfzQ3mHrP8bP4Qu0mBfLRW+hg4oSWC+1xSUX02tTlDrldBmrk2iUF7gJrfPMOMsGEK2cbdvDhh
- U5DBzU0rd5U2Mibx0+vaaxwG/4/0mXiYKR8OI2D8E=;
-Received: from [2a02:8012:2f01:0:a5c6:e422:a021:febf]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1udwXC-00017z-Gr; Mon, 21 Jul 2025 20:50:50 +0100
-Message-ID: <f963b054-282c-4f3f-9a28-f0e56e433a1a@ilande.co.uk>
-Date: Mon, 21 Jul 2025 20:52:28 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1udwj6-0004dO-JH; Mon, 21 Jul 2025 16:03:10 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 8C4C1139042;
+ Mon, 21 Jul 2025 23:02:46 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4A13824BECE;
+ Mon, 21 Jul 2025 23:03:02 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 v3 00/70] Patch Round-up for stable 10.0.3,
+ freeze on 2025-07-21 (frozen)
+Date: Mon, 21 Jul 2025 23:02:52 +0300
+Message-ID: <qemu-stable-10.0.3-20250721221446@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20250716105414.2330204-1-alex.bennee@linaro.org>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20250716105414.2330204-1-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:a5c6:e422:a021:febf
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [RFC PATCH 0/6] Fix building of sparc/sparc32plus test cases
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,148 +57,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/07/2025 11:54, Alex Bennée wrote:
+The following patches are queued for QEMU stable v10.0.3:
 
-> We didn't have any reliable way to build sparc test cases. I have
-> found someone who ships a compiler but the binaries still don't run
-> due to the need for CASA.
-> 
-> I'm posting mainly for those who actually care who might want to fix
-> up the remaining cases.
-> 
-> Alex.
-> 
-> Alex Bennée (6):
->    tests/tcg: special case sparc test cases
->    tests/tcg: special case sparc32plus test cases
->    configure: update sparc and sparc32plus target compiler detection
->    tests/docker: add sparc-leon-cross container image
->    configure: enable the container fallbacks for sparc/sparc32plus
->    docs/about: deprecate add sparc/sparc32plus-*-user
-> 
->   docs/about/deprecated.rst                     |  8 ++++
->   configure                                     | 11 ++++-
->   .../dockerfiles/sparc-leon-cross.docker       | 40 +++++++++++++++++
->   tests/tcg/Makefile.target                     |  9 ++--
->   tests/tcg/sparc/Makefile.target               | 45 +++++++++++++++++++
->   tests/tcg/sparc32plus                         |  1 +
->   6 files changed, 108 insertions(+), 6 deletions(-)
->   create mode 100644 tests/docker/dockerfiles/sparc-leon-cross.docker
->   create mode 100644 tests/tcg/sparc/Makefile.target
->   create mode 120000 tests/tcg/sparc32plus
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-10.0
 
-For reference: I did some experiments here to find out what was happening, and the 
-problem is that glibc dropped support for sparcv8 some time ago. This leaves the 
-SPARC 32-bit default implementation being that for the LEON cpu which *does* include 
-the cas instruction and therefore it can appear in the output binary.
+Patch queue is frozen on 2025-07-21, and the release is planned for 2025-07-23:
 
-As an experiment I set up a new repository at 
-https://github.com/mcayland/sparc-linux-cross/ containing a Dockerfile that can build 
-a suitable toolchain using an older glibc, along with the final container at 
-ghcr.io/mcayland/sparc-linux-cross. Using this I can get much further with the tcg tests:
+  https://wiki.qemu.org/Planning/10.0
 
-make -C tests/tcg/sparc-linux-user  SPEED=quick run
-make[2]: Entering directory 
-'/home/mca/src/upstream/qemu/build/tests/tcg/sparc-linux-user'
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  catch-syscalls >  catch-syscalls.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  float_convd >  float_convd.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  float_convs >  float_convs.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  float_madds >  float_madds.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  fnmsub >  fnmsub.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  follow-fork-mode >  follow-fork-mode.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  late-attach >  late-attach.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  munmap-pthread >  munmap-pthread.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  overflow >  overflow.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  prot-none >  prot-none.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  segfault >  segfault.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  sha1 >  sha1.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  sha512 >  sha512.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  sigbus >  sigbus.out
-   SKIPPED signals is broken on sparc because
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  sigreturn-sigmask >  sigreturn-sigmask.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  test-mmap >  test-mmap.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  test-plugin-mem-access > 
-test-plugin-mem-access.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  testthread >  testthread.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  threadcount >  threadcount.out
-   SKIPPED vma-pthread is broken on sparc because
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  linux-madvise >  linux-madvise.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  linux-shmat-maps >  linux-shmat-maps.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  linux-shmat-null >  linux-shmat-null.out
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  linux-sigrtminmax >  linux-sigrtminmax.out
-   SKIPPED linux-test is broken on sparc because
-timeout -s KILL --foreground 120  env 
-QEMU=/home/mca/src/upstream/qemu/build/qemu-sparc 
-/home/mca/src/upstream/qemu/build/qemu-sparc  test-vma >  test-vma.out
-make[2]: Leaving directory '/home/mca/src/upstream/qemu/build/tests/tcg/sparc-linux-user'
-make[1]: Leaving directory '/home/mca/src/upstream/qemu/build'
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
-Using this there are 3 tests that are broken. The signals and vma-pthread tests are 
-caused by the use of -latomic during linking, and closer examination shows that 
-despite using sparcv8, libatomic is still being built as sparcv8plus in the container:
+Thanks!
 
-root@46da5c5071f0:/opt/local/sparc-linux-gnu/lib# file libatomic.so.1.2.0
-libatomic.so.1.2.0: ELF 32-bit MSB shared object, SPARC32PLUS, V8+ Required, total 
-store ordering, version 1 (SYSV), dynamically linked, with debug_info, not stripped
+/mjt
 
-This could also be due to the use of atomic instructions only available on some more 
-modern CPUs.
+--------------------------------------
+01* fb8e59abbe46 Jamin Lin:
+   hw/misc/aspeed_hace: Ensure HASH_IRQ is always set to prevent firmware hang
+02* e6941ac10619 Jamin Lin:
+   hw/arm/aspeed_ast27x0: Fix RAM size detection failure on BE hosts
+03* 9498e2f7e1a2 Weifeng Liu:
+   ui/gtk: Document scale and coordinate handling
+04* 3a6b314409b4 Weifeng Liu:
+   ui/gtk: Use consistent naming for variables in different coordinates
+05* a19665448156 Weifeng Liu:
+   gtk/ui: Introduce helper gd_update_scale
+06* 8fb072472c38 Weifeng Liu:
+   ui/gtk: Update scales in fixed-scale mode when rendering GL area
+07* 30aa105640b0 Weifeng Liu:
+   ui/sdl: Consider scaling in mouse event handling
+08* 7ed96710e82c Daniel P. Berrangé:
+   ui/vnc.c: replace big endian flag with byte order value
+09* 70097442853c Daniel P. Berrangé:
+   ui/vnc: take account of client byte order in pixman format
+10* 63d320909220 Daniel P. Berrangé:
+   ui/vnc: fix tight palette pixel encoding for 8/16-bpp formats
+11* e6bc01777e5a Guenter Roeck:
+   hw/arm: Add missing psci_conduit to NPCM8XX SoC boot info
+12* a9403bfcd930 Huaitong Han:
+   vhost: Don't set vring call if guest notifier is unused
+13* 0b006153b7ec Bernhard Beschow:
+   hw/i386/pc_piix: Fix RTC ISA IRQ wiring of isapc machine
+14* 31753d5a336f Sairaj Kodilkar:
+   hw/i386/amd_iommu: Fix device setup failure when PT is on.
+15* 0f178860df34 Vasant Hegde:
+   hw/i386/amd_iommu: Fix xtsup when vcpus < 255
+16* 5ddd6c8dc849 Volker Rümelin:
+   audio: fix SIGSEGV in AUD_get_buffer_size_out()
+17* ccb4fec0e5f2 Volker Rümelin:
+   audio: fix size calculation in AUD_get_buffer_size_out()
+18* d009f26a54f5 Volker Rümelin:
+   hw/audio/asc: fix SIGSEGV in asc_realize()
+19* 0b901459a87a Xin Li (Intel):
+   target/i386: Remove FRED dependency on WRMSRNS
+20* 2e887187454e Stefan Hajnoczi:
+   iotests: fix 240
+21* eef2dd03f948 Fiona Ebner:
+   hw/core/qdev-properties-system: Add missing return in set_drive_helper()
+22* 9c55c03c05c1 Bibo Mao:
+   hw/loongarch/virt: Fix big endian support with MCFG table
+23* f5ec751ee70d Shameer Kolothum:
+   hw/arm/virt: Check bypass iommu is not set for iommu-map DT property
+24* e372214e663a Ethan Chen:
+   qemu-options.hx: Fix reversed description of icount sleep behavior
+25* cd38e638c43e Peter Maydell:
+   hw/arm/mps2: Configure the AN500 CPU with 16 MPU regions
+26* 5ad2b1f443a9 J. Neuschäfer:
+   linux-user/arm: Fix return value of SYS_cacheflush
+27* e7788da9860c Song Gao:
+   target/loongarch: add check for fcond
+28* c2a2e1ad2a74 Song Gao:
+   target/loongarch: fix vldi/xvldi raise wrong error
+29* 0d0fc3f46589 Richard Henderson:
+   tcg: Fix constant propagation in tcg_reg_alloc_dup
+30* 9a3bf0e0ab62 Solomon Tan:
+   target/arm: Make RETA[AB] UNDEF when pauth is not implemented
+31* a412575837b6 Philippe Mathieu-Daudé:
+   target/arm: Correct KVM & HVF dtb_compatible value
+32* 1fa2ffdbec55 Yiwei Zhang:
+   virtio-gpu: support context init multiple timeline
+33* 78e378154120 Kevin Wolf:
+   hw/s390x/ccw-device: Fix memory leak in loadparm setter
+34* f9b0f6930407 Richard Henderson:
+   target/arm: Fix SME vs AdvSIMD exception priority
+35* b4b2e070f41d Richard Henderson:
+   target/arm: Fix sve_access_check for SME
+36* e6ffd009c771 Richard Henderson:
+   target/arm: Fix 128-bit element ZIP, UZP, TRN
+37* 3801c5b75ffc Richard Henderson:
+   target/arm: Fix PSEL size operands to tcg_gen_gvec_ands
+38* cfc688c00ade Richard Henderson:
+   target/arm: Fix f16_dotadd vs nan selection
+39* bf020eaa6741 Richard Henderson:
+   target/arm: Fix bfdotadd_ebf vs nan selection
+40* 0f1d6606c28d Mark Cave-Ayland:
+   target/i386: fix TB exit logic in gen_movl_seg() when writing to SS
+41* c563cd7e61d0 Peter Maydell:
+   target/arm: Don't enforce NSE,NS check for EL3->EL3 returns
+42* 930180f3b9a2 Bernhard Beschow:
+   hw/arm/fsl-imx8mp: Wire VIRQ and VFIQ
+43* 6a3e132a1be8 Peter Maydell:
+   linux-user: Implement fchmodat2 syscall
+44* c4828cb8502d Peter Maydell:
+   linux-user: Check for EFAULT failure in nanosleep
+45* e4e839b2eeea Geoffrey Thomas:
+   linux-user: Hold the fd-trans lock across fork
+46* 983899eab493 Chaney, Ben:
+   migration: Don't sync volatile memory after migration completes
+47* d6390204c61e Peter Maydell:
+   linux-user: Use qemu_set_cloexec() to mark pidfd as FD_CLOEXEC
+48* f180e367fce4 Thomas Huth:
+   accel/kvm: Adjust the note about the minimum required kernel version
+49* 110d0fa2d4d1 Anastasia Belova:
+   net: fix buffer overflow in af_xdp_umem_create()
+50* adda0ad56bd2 Akihiko Odaki:
+   virtio-net: Add queues for RSS during migration
+51* 091c7d7924f3 Alejandro Jimenez:
+   amd_iommu: Fix Miscellaneous Information Register 0 encoding
+52* c63b8d1425ba Alejandro Jimenez:
+   amd_iommu: Fix Device ID decoding for INVALIDATE_IOTLB_PAGES command
+53* ff3dcb3bf652 Alejandro Jimenez:
+   amd_iommu: Update bitmasks representing DTE reserved fields
+54* 108e10ff6909 Alejandro Jimenez:
+   amd_iommu: Fix masks for various IOMMU MMIO Registers
+55* 123cf4bdd378 Alejandro Jimenez:
+   amd_iommu: Fix mask to retrieve Interrupt Table Root Pointer from DTE
+56* 67d3077ee403 Alejandro Jimenez:
+   amd_iommu: Fix the calculation for Device Table size
+57* 5959b641c98b Alejandro Jimenez:
+   amd_iommu: Remove duplicated definitions
+58* 5788929e05e1 Ethan Milon:
+   amd_iommu: Fix truncation of oldval in amdvi_writeq
+59* d402da1360c2 Kevin Wolf:
+   file-posix: Fix aio=threads performance regression after enablign FUA
+60* a598090ebaeb Cole Robinson:
+   roms: re-remove execute bit from hppa-firmware*
+61* 9f749129e262 David Hildenbrand:
+   vhost: Fix used memslot tracking when destroying a vhost device
+62* aef22331b5a4 Akihiko Odaki:
+   ui/vnc: Do not copy z_stream
+63* a62fef582995 Michael Tokarev:
+   i386/cpu: Fix cpu number overflow in CPUID.01H.EBX[23:16]
+64* 3e86124e7cb9 Qian Wen:
+   i386/cpu: Fix overflow of cache topology fields in CPUID.04H
+65* 5d21ee453ad8 Zhao Liu:
+   i386/cpu: Honor maximum value for CPUID.8000001DH.EAX[25:14]
+66 d3a24134e37d Paolo Bonzini:
+   target/i386: do not expose ARCH_CAPABILITIES on AMD CPU
+67 871a6e5b339f Peter Maydell:
+   hw/net/npcm_gmac.c: Send the right data for second packet in a row
+68 3ac6daa9e1c5 Daniel P. Berrangé:
+   ui: fix setting client_endian field defaults
+69 655659a74a36 Peter Maydell:
+   target/arm: Correct encoding of Debug Communications Channel registers
+70 e6da704b711d Zenghui Yu:
+   hvf: arm: Emulate ICC_RPR_EL1 accesses properly
 
-In summary it seems that things aren't completely broken, but certainly there is some 
-concern that sparcv8 support does not appear to be being actively tested within the 
-current toolchain, and could possibly disappear at some point as it already has done 
-with glibc.
-
-
-ATB,
-
-Mark.
-
+(commit(s) marked with * were in previous series and are not resent)
 
