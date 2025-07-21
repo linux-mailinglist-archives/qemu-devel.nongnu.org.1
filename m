@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E6CB0C53F
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FC5B0C52E
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:28:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udqYo-0005bt-IZ; Mon, 21 Jul 2025 09:28:06 -0400
+	id 1udqYj-0003ua-Az; Mon, 21 Jul 2025 09:28:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYE-0000BC-LO
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:42 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1udqYF-0000Bg-PB
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:43 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYC-0005IE-6D
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:29 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4560d176f97so46908965e9.0
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:26 -0700 (PDT)
+ id 1udqYC-0005IN-Ac
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:31 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3a4fb9c2436so2478750f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753104445; x=1753709245; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753104446; x=1753709246; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KBSm5ugZ/xrMuFfTDLrUi2oSc650VnWgZyUG+JvhWFA=;
- b=eNOQtYNQ2TPmeCWYRDtdqw2ssblrm+P8uI8+C/E2CtoS9lHwSS6zSBXDvSpRo9cbpu
- eQzu1w328EmHXShlTN+XLuLQ/rB1guhYxHl0lcnrwTWQ+0c02gb5A4Y2XweH6GDsxeG9
- K9shmHzP8ezNgG91XJ7roVEvG+SNusxAlRThfZmGQb2wWyLZvdeTCXqhpfOsULAEE9Ls
- XTIUAlmN/uD2TMycJcoMogzZxPfwOXR/k03H1+pfaiIhJd2k1ViTVsgeHQ9XHkK8lXTA
- m0dOft/TF3CMhO6Adz6PjtGTFc5zs1JhI9RL4QL80D53vJ8sPZwDFMvT3qh5j65IGju9
- 9WoQ==
+ :reply-to; bh=rMO0z2Dg2xe9/sSr/rgtQPRY3C/mD4AtJBFkheyKZIo=;
+ b=A3ATLQA9qQ7rfat6iAjbwseyPA5+4bN9BoTz8w48ApFFj/jh23uWFu5P8R49DYUZ4d
+ w8mU+AL1BiMxAxqD+yA0ZptYnmu25rwxh1fjvjYeD4UPs+h5rXbSEkk4jx+b3huR4+iY
+ BXf9XhrTL86+O96AdE84Mxejt69VkNCdMm2lh6otqHmZ24rC2Y427FZhEx/FpKK/QniO
+ hxuY6E76H9HP73DGz+p9pjlNuDMegpucEVIZgsVzPXLkI/gxiouAYHGeQzFliy3w8IIn
+ WDJ2dm+0xMvmvRTDzDV2zEK0JRtpQGc7ctb6SMtv+9iZ6Brfj2QvhIlRAS5+XaEOkNbA
+ HT6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753104445; x=1753709245;
+ d=1e100.net; s=20230601; t=1753104446; x=1753709246;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KBSm5ugZ/xrMuFfTDLrUi2oSc650VnWgZyUG+JvhWFA=;
- b=rYhOjymzoAsvZL/inJnHFzBdF+IWKCCvBy0en5GSECkw8Jej6bEHBncUeXWLzfrMvF
- xHBjKScoPaF3w5Q/RHiiKLcPhIx9poetp9F1jkg9QiGsGP9uvQ1KfdGIbge/nE/EzeQ3
- z8bg/nH20jz5nYKGOfN7UIPBM8JdV7niIp1ac97ZziUedSSr1v0YKQ8A5/PyGaBPyEsR
- 5A4iprNckXcx6XtJKtCN+6gpRRFsNxQieymja9I17p/FCdBbGDqhR1I/SSRWyI7HtPSj
- Zrzgpf9bLjw6ysm2/Npiruj6Y+vhs4ZDxH8wWKumwjIL+p0woi3zqsAEFR7SDlsL9Heb
- Dn8w==
-X-Gm-Message-State: AOJu0YyN4lFEQ6YpsgqPZPC80IcBFvdx5pg/YhB4+zhZTgrYSWYdRwpv
- tifmxyhhnDJMotrqBamoG3fo7ABXMxBI822e2Fd5Z1bZxM5pUZLQyNQ0h3gTTulJBxTE30MRYkK
- bs00N
-X-Gm-Gg: ASbGncsYTL3iUpI+LOTcQ3IwQOldrkKdedjbl0GtXEUOSviJJiMznsCuwp8rc4I5qB+
- rJFbi+YKv8yyPC/DDemfSLw3BCg6y11eOtakMNlYzj7nw8XOYmEM0aTEQypiwlLlae+/4kAqaPV
- cbBIlXUhdswUFIn6QGlpUTPKU1FZcNHnQR85jsZZQz2GonKPxLLm3ym57SMV8P5n/id2uehYdJv
- NIbvQc5Qbjxz73KcRW9EdG0m5nXf7fsm6LfOi6m5GSxjsEYbksd1e0qcCUq972fk8DMzuhzEpt2
- yDUhbdzVCZb5yL8vw41gt+G+q3eHHp1uOJMYhv1QF4M9z/1qZ6dZrKMuY/QbazgRMdI2ILA0nr6
- z5amw2zPJ7rt+xUo7QdrFHI5laeHc
-X-Google-Smtp-Source: AGHT+IHJwPF4ohez1x5yFR1bFWaryY1M7C8ofGioTW/0PVshGhr54naD5p1u1AjswgRkpdRYaMkcFQ==
-X-Received: by 2002:a05:600c:4e8c:b0:456:1fd9:c8f0 with SMTP id
- 5b1f17b1804b1-4562e32e669mr214834575e9.2.1753104445527; 
- Mon, 21 Jul 2025 06:27:25 -0700 (PDT)
+ bh=rMO0z2Dg2xe9/sSr/rgtQPRY3C/mD4AtJBFkheyKZIo=;
+ b=FnFMQg4IaxvMcqtlBJ/uDaljw8wzoivHgVsto1GXqjYYk2OSC16kAe5CpsiL4Ag6Ff
+ mharX+010GvjGP0NInKkGAb9J+0xGUc+5gwcnV6SswHbBXEupkwQoKQqz7/gz87ZW7zQ
+ aiD2S4TplIn82k3hg64I97P+BcCfy4NoewVUsI3JKWNerD8+JPtsHzEc4QmuzIhWSC89
+ Jb3ykVW88H8zLH3vHqZVAVziCxYdJs7cKDAyewWMF+U9IjiPjdRYTpE41VQKjhY5Aooy
+ k2YhZjzMHoaMNfzXS32Z7rKcdA7uq/oCRFttMMVcuw+7PoTwWy4puVsRP0jfgY7+dYdc
+ /lRg==
+X-Gm-Message-State: AOJu0YyJQeuXJ3ITAvlUcb/xQZP4h38F106Fx5nNbcxsgNzOZSuBwARs
+ bl+8NloM+oRCVaznG/4w1vMhEjopMdINfC4R0MH0IQLz5EBFzVXp4xBC+ayG9vXHZ8g8AThNSyp
+ N8Ntx
+X-Gm-Gg: ASbGncsD3/lgmPoKfZjuJdcokZL8aWwf+f9vHjYO60Df5/pnHc/tc6pXN4YFcuIXZ0o
+ Gfp6Z8wPGEBCDrOK73+gW/v3TjNpJ5tlsLE7z2sw/qjrNTqdjNjn4g7FG7bAuOLowd08ZkxNBp9
+ KAf/i16J8jgPmRkCGyB9WCi5567jCT0cxb6KdCHxV8RlI5gJml5BrTORXTxRLQE+1AXDCKQhaKI
+ 0bSGJ43cabTuco96/XO/CS8J76OROouc91oVw7ODRPgMltgZmvC/nbjVy7ZSj+qt++5V4tEyy4i
+ 1/Qmw2ifp4JlkG1hU6l8QbdrBztdQUnu7kCFGGEQhHfnX5fpHLJ6OvWfMFx2LyU4GekyLPVe+k3
+ 3VL5I97JxUM1T3Fu65xMAzMhs6Z+0
+X-Google-Smtp-Source: AGHT+IHEliG8u9hGB5rHKVEqR/80qdXbGH2JsWhYJx98+QmP3vQCw/NPTx04ifCCISyrjd8P82FbRw==
+X-Received: by 2002:a5d:5f55:0:b0:3a4:e841:b236 with SMTP id
+ ffacd0b85a97d-3b61b217f68mr9274095f8f.33.1753104446409; 
+ Mon, 21 Jul 2025 06:27:26 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.24
+ ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Jul 2025 06:27:24 -0700 (PDT)
+ Mon, 21 Jul 2025 06:27:25 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/20] hw/misc/max78000_aes: Comment Internal Key Storage
-Date: Mon, 21 Jul 2025 14:27:03 +0100
-Message-ID: <20250721132718.2835729-7-peter.maydell@linaro.org>
+Subject: [PULL 07/20] docs: Fix Aspeed title
+Date: Mon, 21 Jul 2025 14:27:04 +0100
+Message-ID: <20250721132718.2835729-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250721132718.2835729-1-peter.maydell@linaro.org>
 References: <20250721132718.2835729-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,38 +98,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jackson Donaldson <jackson88044@gmail.com>
+From: Cédric Le Goater <clg@redhat.com>
 
-Coverity Scan noted an unusual pattern in the
-MAX78000 aes device, with duplicated calls to
-set_decrypt. This commit adds a comment noting
-why the implementation is correct.
+commit ad8e0e8a0088 removed the "======" underlining the file title
+which broke documentation rendering. Add it back.
 
-Signed-off-by: Jackson Donaldson <jcksn@duck.com>
-Message-id: 20250716002622.84685-1-jcksn@duck.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: ad8e0e8a0088 ("docs: add support for gb200-bmc")
+Cc: Ed Tanous <etanous@nvidia.com>
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Ed Tanous <etanous@nvidia.com>
+Message-id: 20250715061904.97540-1-clg@redhat.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/misc/max78000_aes.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ docs/system/arm/aspeed.rst | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/misc/max78000_aes.c b/hw/misc/max78000_aes.c
-index 0bfb2f02b5b..d883ddd2b61 100644
---- a/hw/misc/max78000_aes.c
-+++ b/hw/misc/max78000_aes.c
-@@ -79,6 +79,12 @@ static void max78000_aes_do_crypto(Max78000AesState *s)
-         keydata += 8;
-     }
+diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+index bec0a1dfa8b..bf18c563470 100644
+--- a/docs/system/arm/aspeed.rst
++++ b/docs/system/arm/aspeed.rst
+@@ -1,4 +1,5 @@
+ Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``gb200nvl-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
++====================================================================================================================================================================================================================================================================================================================================================================================================================================
  
-+    /*
-+     * The MAX78000 AES engine stores an internal key, which it uses only
-+     * for decryption. This results in the slighly odd looking pairs of
-+     * set_encrypt and set_decrypt calls below; s->internal_key is
-+     * being stored for later use in both cases.
-+     */
-     AES_KEY key;
-     if ((s->ctrl & TYPE) == 0) {
-         AES_set_encrypt_key(keydata, keylen, &key);
+ The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
+ Aspeed evaluation boards. They are based on different releases of the
 -- 
 2.43.0
 
