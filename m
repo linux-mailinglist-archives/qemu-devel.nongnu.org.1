@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20FDAB0C542
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86185B0C54B
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:35:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udqYg-0002oh-Es; Mon, 21 Jul 2025 09:27:58 -0400
+	id 1udqYu-00076B-IG; Mon, 21 Jul 2025 09:28:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYM-0000M6-Py
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:42 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1udqYO-0000on-2L
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:43 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYK-0005Kd-5M
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:38 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3a522224582so2143630f8f.3
- for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:35 -0700 (PDT)
+ id 1udqYL-0005LL-H8
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:39 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3ab112dea41so2543102f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753104454; x=1753709254; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753104455; x=1753709255; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UY1tdCp4tGowHUgLzuBpKHat0vai5QJSXiFEppO4oFI=;
- b=FJAIK4EMEZHgjvQYV1XtuAddOGWYHrNFXcHAnz7T9kd7QIft4T9OnCFavrX+p8E5n4
- F2/LBKus8Ee+YS+mGnRSYEsnzCeYtfhlFS88z4TPRSMykBnHqIMcIGyjSQanZ9bN4jFQ
- ftZjx9OZgxDN16ocsNbKW3L/Vxxh52ZhPzKSLU57+k0ys9FtfPKnS2XHIp9ALTQjdTi7
- Vi7BxsmbgWbTuOcZUPGEho5LPiXcGMMr+zq8zdCj2Jfqan9d9duOeYCYTOta8FSH84nk
- a/+T2o9BXtMIt7Nufsz4nAUcQSJ5tiDNGvVZ6nNb7AEw5oLAhNGI3BxzWMcHZvGA75N/
- I1BQ==
+ :reply-to; bh=EEVcSDg3gALoDZbpqHs85N5oeeT+sebr+UPZ9srLl5s=;
+ b=Lplb+pgu5vvLOvdXOuhvt1NMQlaWVU/IXLbbGNGxZcO9ejV6N/LJwm38WUN4n5izpn
+ EnnPhO9S67NxwfOOLY0P5PPbf9tXo5HS1gFI+iQ8B+0syVRrAG8eg+Ww8C/j3N2HVn1t
+ TI2H4oAdObvUHt7BK8/XtRQI0N5RKMn3nt5iTbwhmE23RH/MYWTDBZspHpq5ars5PXOn
+ jr9wcONuBk8LLr7UCkS7LJljAgktZ4gmCNhezfBPYkiHFCfTT9Pd6Epirf+7hFwjsSU9
+ CCa9KVL9JgrpVRxAyT63sMtWq9esZlQlJaQsoZ2pIXDM1ilcKbqihhJd4zN3QNaBp8CA
+ czjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753104454; x=1753709254;
+ d=1e100.net; s=20230601; t=1753104455; x=1753709255;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UY1tdCp4tGowHUgLzuBpKHat0vai5QJSXiFEppO4oFI=;
- b=BpNKitjdgTYzdxY914FrB0xz1Mwk3ygFxBCIsCvTw1kbd8I/ioMKtCApP/Vg3aHGnN
- OPEBni33spB+0CrUtyXEczL+RYaUsSsUvtyd2DRfuAPJEYwsU2JjDnWlKPGuwvWWzZ5P
- S9jz6+fuj+oUlzkNo31J94ERmdGJBQ2/dzjD+yxliRskL/yfGXYKMojkQL/gLfgP7ADA
- njaPGsiI0ceQwMnbY1qAH+euQ1v4sTxqPxj5WkBtonYOdCbxdOQBqU89zlQ9DS7QC/Z0
- jP2OtdvUtjr1LEkRXc+mxaRuzVPouxid6oV2DviB3dghMI1Q/hjPk816hnitCvjf2V15
- LDoA==
-X-Gm-Message-State: AOJu0YxNLC0boiNQCqKUE/0kQUcHL2ZtmgkYdcKOV3rwWr5d/1BfUToC
- z9tKnccqho7mdGrkppIndz2k1IgGrKCgxgp10z2vLNHWaxBzIqyd7k/B29zTIlUS+G6UkHB/IaW
- Wqaw6
-X-Gm-Gg: ASbGnctEApB7j/suFsVpgfUDErwfpLlw95tRCM5Uwe3E/zUHn63LKwlkeqTTcC9sH0/
- hfR70kVtOpeXfV2RZE3nSjLGLuQMoEC0F1TOeaXz9knIQbbFvXPxWpoC4MFx/GZwm4jOjajFD2D
- ojKrhciZsKmN61PWO/UXsa2ejVVwICIqrBlOYL7Byfz7BwZ1yjhlAjhn70ard7LtFOBfLKTq+xb
- uhs7RHzldV9ARui9xKrALkOvVBlH3N80MmRZ1Xlut9OY6wVncDeOftrjUN1410DrYZus0cjUbI5
- 54vUozBB1JtSQjYtiMX7FV86VKXA+xMHjoCo5hv6kiexK49HJtYI3DS7GW2GalyIBOLHCcuYWqH
- 0QqC4mFhDNV2gQ+R2PNYd7Dd8h0Rw
-X-Google-Smtp-Source: AGHT+IHtuG9a6qR47X/EL5GyALSmpxcz9atnvPL6pDGK5gMnYKSYIaN5pfVveLQf9XSPyT0kmgxz5g==
-X-Received: by 2002:a05:6000:4602:b0:3b5:e6f2:ab4d with SMTP id
- ffacd0b85a97d-3b60dd997cbmr14880359f8f.42.1753104454091; 
+ bh=EEVcSDg3gALoDZbpqHs85N5oeeT+sebr+UPZ9srLl5s=;
+ b=M0aC5hVpdWog6hyJHPXUMi20AxIRfmXhlMgt3uitTv5Qe2eZCWFcwANc6Jrffg5KAM
+ 3XyVry2xtEBxX4GN5Bqv7zkMxEWmPEMrZe7KogIiBNr0n3FNtKcGiuY6yoIhQ+Ml5pwb
+ Y2lqxNYBKstqVA99+nNEVntx3+MMd/kEs/EQGOCyIrCTLWjWOLQuIjyllY7/cS3FOmJU
+ HrUd1n0smeEgjrKxlqX8rNQ+A8aL9fWX3KIQ84JVI3EhlvZC/97vkaLfv2qHOWQ9nn8G
+ 5I1bmij8uC9uMgvfgBHkkPVixe6mQLsFLC4vgSK4Kxe/Cmw2TEy6sihiGe2b+l24sPHB
+ Rcuw==
+X-Gm-Message-State: AOJu0Yy9n1Ruci8gGeMoFpwLSI+v8SpWUhl3vMCwP57UW2AQZyZm4oqt
+ srnfqaNXQOoQLcRp64RvEwos/UnFJcFo/GhAthdaiHaKHDcsKbMtx/N0V2XvKl5mOS2HlY0+Kvm
+ lUy2J
+X-Gm-Gg: ASbGncugTEBF58AXill5GSgrx8GGC4OiKmRHUAlnGPG44/Jsj30QCcUMCPShmmt8PZW
+ wT9bU76DsZzs1E01VUb5j3VQqGRulZg9tbJ/D1AtOvgeov6BS8YAVvw/Yf9eyFqA5roe3oi2YiO
+ I15GlQqDtpvHEN5zY2kdz85KnMWPTHOHKBjQ4U9XF4BrAjis+i0OrHjQvu3PMwvBfjYLwEYIOPF
+ Pm4hjtPznKdnbvonvHCl9JaL0oUCxO7d5h3hamHxmc2paOngHNec9vjirdTawAkrOvuq2eywTLi
+ HNRQG5INbJhjliFnpY6ZtFAAeI3/3fwRRpqJZHEJhM7MteVaMrmLVXSQvBX8sxc7+f9e086eW5Q
+ ZJiGmb47HveuGQATLK/qXldl+TG57
+X-Google-Smtp-Source: AGHT+IGCzeCery40cNPRmpfTPcfHSD/FuOFIHkmpBNvHpXJ2rayez9JcA8c1T3JspIlsnUNO6BIL5A==
+X-Received: by 2002:a5d:64e8:0:b0:3a0:7d27:f076 with SMTP id
+ ffacd0b85a97d-3b60dd651d2mr15633219f8f.2.1753104454942; 
  Mon, 21 Jul 2025 06:27:34 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.33
+ ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.34
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Jul 2025 06:27:33 -0700 (PDT)
+ Mon, 21 Jul 2025 06:27:34 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/20] target/arm: Don't nest H() macro calls in SVE DO_REDUCE
-Date: Mon, 21 Jul 2025 14:27:12 +0100
-Message-ID: <20250721132718.2835729-16-peter.maydell@linaro.org>
+Subject: [PULL 16/20] target/arm: Honour FPCR.AH=1 default NaN value in
+ FMAXNMQV, FMINNMQV
+Date: Mon, 21 Jul 2025 14:27:13 +0100
+Message-ID: <20250721132718.2835729-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250721132718.2835729-1-peter.maydell@linaro.org>
 References: <20250721132718.2835729-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,37 +98,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the part of the SVE DO_REDUCE macro used by the SVE2p1 FMAXQV,
-FMINQV, etc insns, we incorrectly applied the H() macro twice when
-calculating an offset to add to the vn pointer.  This has no effect
-on little-endian hosts but on big-endian hosts the two invocations
-will cancel each other out and we will access the wrong part of the
-array.
-
-The "s * 16" part of the expression is already aligned, so we only
-need to use the H macro on the "e". Correct the macro usage.
+The FMAXNMQV and FMINNMQV insns use the default NaN as their identity
+value for inactive source vector elements. We open-coded this in
+sve_helper.c, hoping to avoid a function call. However, this fails
+to account for FPCR.AH=1 changing the default NaN value to set the
+sign bit. Use a call to floatN_default_nan() to obtain this value.
 
 Fixes: 1de7ecfc12d05 ("target/arm: Implement FADDQV, F{MIN, MAX}{NM}QV for SVE2p1")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250718173032.2498900-9-peter.maydell@linaro.org
+Message-id: 20250718173032.2498900-10-peter.maydell@linaro.org
 ---
- target/arm/tcg/sve_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/tcg/sve_helper.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
 diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 105cc5dd122..bf894f0bf13 100644
+index bf894f0bf13..803f0a094dc 100644
 --- a/target/arm/tcg/sve_helper.c
 +++ b/target/arm/tcg/sve_helper.c
-@@ -4509,7 +4509,7 @@ void helper_sve2p1_##NAME##qv_##SUF(void *vd, void *vn, void *vg,     \
+@@ -4484,33 +4484,35 @@ static TYPE FUNC##_reduce(TYPE *data, float_status *status, uintptr_t n) \
+     }                                                                 \
+ }                                                                     \
+ uint64_t helper_sve_##NAME##v_##SUF(void *vn, void *vg,               \
+-                                    float_status *s, uint32_t desc)   \
++                                    float_status *status, uint32_t desc) \
+ {                                                                     \
+     uintptr_t i, oprsz = simd_oprsz(desc), maxsz = simd_data(desc);   \
+     TYPE data[sizeof(ARMVectorReg) / sizeof(TYPE)];                   \
++    TYPE ident = IDENT;                                               \
+     for (i = 0; i < oprsz; ) {                                        \
+         uint16_t pg = *(uint16_t *)(vg + H1_2(i >> 3));               \
+         do {                                                          \
+             TYPE nn = *(TYPE *)(vn + H(i));                           \
+-            *(TYPE *)((void *)data + i) = (pg & 1 ? nn : IDENT);      \
++            *(TYPE *)((void *)data + i) = (pg & 1 ? nn : ident);      \
+             i += sizeof(TYPE), pg >>= sizeof(TYPE);                   \
+         } while (i & 15);                                             \
+     }                                                                 \
+     for (; i < maxsz; i += sizeof(TYPE)) {                            \
+-        *(TYPE *)((void *)data + i) = IDENT;                          \
++        *(TYPE *)((void *)data + i) = ident;                          \
+     }                                                                 \
+-    return FUNC##_reduce(data, s, maxsz / sizeof(TYPE));              \
++    return FUNC##_reduce(data, status, maxsz / sizeof(TYPE));         \
+ }                                                                     \
+ void helper_sve2p1_##NAME##qv_##SUF(void *vd, void *vn, void *vg,     \
+                                     float_status *status, uint32_t desc) \
+ {                                                                     \
+     unsigned oprsz = simd_oprsz(desc), segments = oprsz / 16;         \
++    TYPE ident = IDENT;                                               \
+     for (unsigned e = 0; e < 16; e += sizeof(TYPE)) {                 \
          TYPE data[ARM_MAX_VQ];                                        \
          for (unsigned s = 0; s < segments; s++) {                     \
              uint16_t pg = *(uint16_t *)(vg + H1_2(s * 2));            \
--            TYPE nn = *(TYPE *)(vn + H(s * 16 + H(e)));               \
-+            TYPE nn = *(TYPE *)(vn + (s * 16 + H(e)));                \
-             data[s] = (pg >> e) & 1 ? nn : IDENT;                     \
+             TYPE nn = *(TYPE *)(vn + (s * 16 + H(e)));                \
+-            data[s] = (pg >> e) & 1 ? nn : IDENT;                     \
++            data[s] = (pg >> e) & 1 ? nn : ident;                     \
          }                                                             \
          *(TYPE *)(vd + H(e)) = FUNC##_reduce(data, status, segments); \
+     }                                                                 \
+@@ -4521,14 +4523,17 @@ DO_REDUCE(fadd,h, float16, H1_2, float16_add, float16_zero)
+ DO_REDUCE(fadd,s, float32, H1_4, float32_add, float32_zero)
+ DO_REDUCE(fadd,d, float64, H1_8, float64_add, float64_zero)
+ 
+-/* Identity is floatN_default_nan, without the function call.  */
+-DO_REDUCE(fminnm,h, float16, H1_2, float16_minnum, 0x7E00)
+-DO_REDUCE(fminnm,s, float32, H1_4, float32_minnum, 0x7FC00000)
+-DO_REDUCE(fminnm,d, float64, H1_8, float64_minnum, 0x7FF8000000000000ULL)
++/*
++ * We can't avoid the function call for the default NaN value, because
++ * it changes when FPCR.AH is set.
++ */
++DO_REDUCE(fminnm,h, float16, H1_2, float16_minnum, float16_default_nan(status))
++DO_REDUCE(fminnm,s, float32, H1_4, float32_minnum, float32_default_nan(status))
++DO_REDUCE(fminnm,d, float64, H1_8, float64_minnum, float64_default_nan(status))
+ 
+-DO_REDUCE(fmaxnm,h, float16, H1_2, float16_maxnum, 0x7E00)
+-DO_REDUCE(fmaxnm,s, float32, H1_4, float32_maxnum, 0x7FC00000)
+-DO_REDUCE(fmaxnm,d, float64, H1_8, float64_maxnum, 0x7FF8000000000000ULL)
++DO_REDUCE(fmaxnm,h, float16, H1_2, float16_maxnum, float16_default_nan(status))
++DO_REDUCE(fmaxnm,s, float32, H1_4, float32_maxnum, float32_default_nan(status))
++DO_REDUCE(fmaxnm,d, float64, H1_8, float64_maxnum, float64_default_nan(status))
+ 
+ DO_REDUCE(fmin,h, float16, H1_2, float16_min, float16_infinity)
+ DO_REDUCE(fmin,s, float32, H1_4, float32_min, float32_infinity)
 -- 
 2.43.0
 
