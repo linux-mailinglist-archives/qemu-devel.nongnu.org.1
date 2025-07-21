@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F81B0C88F
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:23:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47477B0C894
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:24:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtIF-0003VL-8K; Mon, 21 Jul 2025 12:23:11 -0400
+	id 1udtIb-0003hq-Nj; Mon, 21 Jul 2025 12:23:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtHs-00037O-UA
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:22:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtHw-00039j-0s
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:22:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtHp-0001Lj-7e
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:22:47 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtHs-0001M6-HZ
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:22:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753114964;
+ s=mimecast20190719; t=1753114966;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IKlPWOpl+9mEBH6KpFIBAbr5kvTW7uY4p2qdsndGhfo=;
- b=F/HnZY6YXZtfj5VJKBN9G/2peuYVPPx5NI0K7PdKoVopc110XmOpgneu6jhJ1B3ks3Xx2r
- 7IXYiRkvUDLu0no1nbaqZwWzC2ccZBj1puvExe2wEXEmHhDs3poRVGQNVs9lm74C/xd9B4
- UrmayPPh/Ok9MOzDNlc8n7ME6G/xwg0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=5VCJItz73tYeT0KX7Z2+/ORjgJwylt6FqVpui1hOIZY=;
+ b=Tq3sszpOJSzOSq7ICf/wt+zLgRQzgaC5E2kZkR5kJHw5xBuLD8Qgv5gOmoCknsSTp9+K6Y
+ XiXxbcc1gA0f59uABSjYXLhx4jyCdPQ8Z1eMRUAMsJx9w408kH1ZoDMkH1dDVYiiGNj/nW
+ L1bhtBY5p1uKFPcu3XEhTK5DCYWUieI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-299-OCOxaZ7eMNSF81Jnw4tCNQ-1; Mon,
- 21 Jul 2025 12:22:41 -0400
-X-MC-Unique: OCOxaZ7eMNSF81Jnw4tCNQ-1
-X-Mimecast-MFC-AGG-ID: OCOxaZ7eMNSF81Jnw4tCNQ_1753114960
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-66-meKwutT7ORyP2dzbSEmQYA-1; Mon,
+ 21 Jul 2025 12:22:44 -0400
+X-MC-Unique: meKwutT7ORyP2dzbSEmQYA-1
+X-Mimecast-MFC-AGG-ID: meKwutT7ORyP2dzbSEmQYA_1753114963
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3183C180028C; Mon, 21 Jul 2025 16:22:40 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1FFAC195FE1C; Mon, 21 Jul 2025 16:22:43 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AD953195608D; Mon, 21 Jul 2025 16:22:37 +0000 (UTC)
+ id A449019560AD; Mon, 21 Jul 2025 16:22:40 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -51,16 +51,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Caleb Schlossin <calebs@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 01/50] ppc/xive: Fix xive trace event output
-Date: Mon, 21 Jul 2025 18:21:44 +0200
-Message-ID: <20250721162233.686837-2-clg@redhat.com>
+Subject: [PULL 02/50] ppc/xive: Report access size in XIVE TM operation error
+ logs
+Date: Mon, 21 Jul 2025 18:21:45 +0200
+Message-ID: <20250721162233.686837-3-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -87,36 +88,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-Typo, IBP should be IPB.
+Report access size in XIVE TM operation error logs.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-2-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-3-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/trace-events | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/intc/xive.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/intc/trace-events b/hw/intc/trace-events
-index 334aa6a97bad..9ed2616e58fe 100644
---- a/hw/intc/trace-events
-+++ b/hw/intc/trace-events
-@@ -274,9 +274,9 @@ kvm_xive_cpu_connect(uint32_t id) "connect CPU%d to KVM device"
- kvm_xive_source_reset(uint32_t srcno) "IRQ 0x%x"
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index 27b473e4d762..120376fb6b6d 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -326,7 +326,7 @@ static void xive_tm_raw_write(XiveTCTX *tctx, hwaddr offset, uint64_t value,
+      */
+     if (size < 4 || !mask || ring_offset == TM_QW0_USER) {
+         qemu_log_mask(LOG_GUEST_ERROR, "XIVE: invalid write access at TIMA @%"
+-                      HWADDR_PRIx"\n", offset);
++                      HWADDR_PRIx" size %d\n", offset, size);
+         return;
+     }
  
- # xive.c
--xive_tctx_accept(uint32_t index, uint8_t ring, uint8_t ipb, uint8_t pipr, uint8_t cppr, uint8_t nsr) "target=%d ring=0x%x IBP=0x%02x PIPR=0x%02x CPPR=0x%02x NSR=0x%02x ACK"
--xive_tctx_notify(uint32_t index, uint8_t ring, uint8_t ipb, uint8_t pipr, uint8_t cppr, uint8_t nsr) "target=%d ring=0x%x IBP=0x%02x PIPR=0x%02x CPPR=0x%02x NSR=0x%02x raise !"
--xive_tctx_set_cppr(uint32_t index, uint8_t ring, uint8_t ipb, uint8_t pipr, uint8_t cppr, uint8_t nsr) "target=%d ring=0x%x IBP=0x%02x PIPR=0x%02x new CPPR=0x%02x NSR=0x%02x"
-+xive_tctx_accept(uint32_t index, uint8_t ring, uint8_t ipb, uint8_t pipr, uint8_t cppr, uint8_t nsr) "target=%d ring=0x%x IPB=0x%02x PIPR=0x%02x CPPR=0x%02x NSR=0x%02x ACK"
-+xive_tctx_notify(uint32_t index, uint8_t ring, uint8_t ipb, uint8_t pipr, uint8_t cppr, uint8_t nsr) "target=%d ring=0x%x IPB=0x%02x PIPR=0x%02x CPPR=0x%02x NSR=0x%02x raise !"
-+xive_tctx_set_cppr(uint32_t index, uint8_t ring, uint8_t ipb, uint8_t pipr, uint8_t cppr, uint8_t nsr) "target=%d ring=0x%x IPB=0x%02x PIPR=0x%02x new CPPR=0x%02x NSR=0x%02x"
- xive_source_esb_read(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64" IRQ 0x%x val=0x%"PRIx64
- xive_source_esb_write(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64" IRQ 0x%x val=0x%"PRIx64
- xive_router_end_notify(uint8_t end_blk, uint32_t end_idx, uint32_t end_data) "END 0x%02x/0x%04x -> enqueue 0x%08x"
+@@ -357,7 +357,7 @@ static uint64_t xive_tm_raw_read(XiveTCTX *tctx, hwaddr offset, unsigned size)
+      */
+     if (size < 4 || !mask || ring_offset == TM_QW0_USER) {
+         qemu_log_mask(LOG_GUEST_ERROR, "XIVE: invalid read access at TIMA @%"
+-                      HWADDR_PRIx"\n", offset);
++                      HWADDR_PRIx" size %d\n", offset, size);
+         return -1;
+     }
+ 
+@@ -688,7 +688,7 @@ void xive_tctx_tm_write(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
+         xto = xive_tm_find_op(tctx->xptr, offset, size, true);
+         if (!xto) {
+             qemu_log_mask(LOG_GUEST_ERROR, "XIVE: invalid write access at TIMA "
+-                          "@%"HWADDR_PRIx"\n", offset);
++                          "@%"HWADDR_PRIx" size %d\n", offset, size);
+         } else {
+             xto->write_handler(xptr, tctx, offset, value, size);
+         }
+@@ -727,7 +727,7 @@ uint64_t xive_tctx_tm_read(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
+         xto = xive_tm_find_op(tctx->xptr, offset, size, false);
+         if (!xto) {
+             qemu_log_mask(LOG_GUEST_ERROR, "XIVE: invalid read access to TIMA"
+-                          "@%"HWADDR_PRIx"\n", offset);
++                          "@%"HWADDR_PRIx" size %d\n", offset, size);
+             return -1;
+         }
+         ret = xto->read_handler(xptr, tctx, offset, size);
 -- 
 2.50.1
 
