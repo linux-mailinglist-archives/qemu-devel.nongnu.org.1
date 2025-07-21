@@ -2,41 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30766B0CB4B
+	by mail.lfdr.de (Postfix) with ESMTPS id 483D7B0CB4C
 	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 22:05:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udwkC-0005EB-5E; Mon, 21 Jul 2025 16:04:16 -0400
+	id 1udwkI-0005aA-NR; Mon, 21 Jul 2025 16:04:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1udwj9-0004qC-29; Mon, 21 Jul 2025 16:03:24 -0400
+ id 1udwjH-0004ri-6d; Mon, 21 Jul 2025 16:03:29 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1udwj6-0004da-IG; Mon, 21 Jul 2025 16:03:10 -0400
+ id 1udwjE-0004lf-On; Mon, 21 Jul 2025 16:03:18 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E61E5139043;
- Mon, 21 Jul 2025 23:02:47 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2235A139046;
+ Mon, 21 Jul 2025 23:02:48 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A32C724BECF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D638924BED2;
  Mon, 21 Jul 2025 23:03:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Alexandre Chartre <alexandre.chartre@oracle.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.3 66/70] target/i386: do not expose ARCH_CAPABILITIES on
- AMD CPU
-Date: Mon, 21 Jul 2025 23:02:53 +0300
-Message-ID: <20250721200302.133559-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.3 69/70] target/arm: Correct encoding of Debug
+ Communications Channel registers
+Date: Mon, 21 Jul 2025 23:02:56 +0300
+Message-ID: <20250721200302.133559-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.3-20250721221446@cover.tls.msk.ru>
 References: <qemu-stable-10.0.3-20250721221446@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,54 +59,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-KVM emulates the ARCH_CAPABILITIES on x86 for both Intel and AMD
-cpus, although the IA32_ARCH_CAPABILITIES MSR is an Intel-specific
-MSR and it makes no sense to emulate it on AMD.
+We don't implement the Debug Communications Channel (DCC), but
+we do attempt to provide dummy versions of its system registers
+so that software that tries to access them doesn't fall over.
 
-As a consequence, VMs created on AMD with qemu -cpu host and using
-KVM will advertise the ARCH_CAPABILITIES feature and provide the
-IA32_ARCH_CAPABILITIES MSR. This can cause issues (like Windows BSOD)
-as the guest OS might not expect this MSR to exist on such cpus (the
-AMD documentation specifies that ARCH_CAPABILITIES feature and MSR
-are not defined on the AMD architecture).
+However, we got the tx/rx register definitions wrong. These
+should be:
 
-A fix was proposed in KVM code, however KVM maintainers don't want to
-change this behavior that exists for 6+ years and suggest changes to be
-done in QEMU instead.  Therefore, hide the bit from "-cpu host":
-migration of -cpu host guests is only possible between identical host
-kernel and QEMU versions, therefore this is not a problematic breakage.
+AArch32:
+  DBGDTRTX   p14 0 c0 c5 0  (on writes)
+  DBGDTRRX   p14 0 c0 c5 0  (on reads)
 
-If a future AMD machine does include the MSR, that would re-expose the
-Windows guest bug; but it would not be KVM/QEMU's problem at that
-point, as we'd be following a genuine physical CPU impl.
+AArch64:
+  DBGDTRTX_EL0  2 3 0 5 0 (on writes)
+  DBGDTRRX_EL0  2 3 0 5 0 (on reads)
+  DBGDTR_EL0    2 3 0 4 0 (reads and writes)
 
-Reported-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit d3a24134e37d57abd3e7445842cda2717f49e96d)
+where DBGDTRTX and DBGDTRRX are effectively different names for the
+same 32-bit register, which has tx behaviour on writes and rx
+behaviour on reads.  The AArch64-only DBGDTR_EL0 is a 64-bit wide
+register whose top and bottom halves map to the DBGDTRRX and DBGDTRTX
+registers.
+
+Currently we have just one cpreg struct, which:
+ * calls itself DBGDTR_EL0
+ * uses the DBGDTRTX_EL0/DBGDTRRX_EL0 encoding
+ * is marked as ARM_CP_STATE_BOTH but has the wrong opc1
+   value for AArch32
+ * is implemented as RAZ/WI
+
+Correct the encoding so:
+ * we name the DBGDTRTX/DBGDTRRX register correctly
+ * we split it into AA64 and AA32 versions so we can get the
+   AA32 encoding right
+ * we implement DBGDTR_EL0 at its correct encoding
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2986
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250708141049.778361-1-peter.maydell@linaro.org
+(cherry picked from commit 655659a74a36b63e33d2dc969d3c44beb1b008b3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 6c749d4ee8..141694f803 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -500,8 +500,12 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
-          * Linux v4.17-v4.20 incorrectly return ARCH_CAPABILITIES on SVM hosts.
-          * We can detect the bug by checking if MSR_IA32_ARCH_CAPABILITIES is
-          * returned by KVM_GET_MSR_INDEX_LIST.
-+         *
-+         * But also, because Windows does not like ARCH_CAPABILITIES on AMD
-+         * mcahines at all, do not show the fake ARCH_CAPABILITIES MSR that
-+         * KVM sets up.
-          */
--        if (!has_msr_arch_capabs) {
-+        if (!has_msr_arch_capabs || !(edx & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
-             ret &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
-         }
-     } else if (function == 7 && index == 1 && reg == R_EAX) {
+diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
+index a9a619ba6b..79c0e8eaff 100644
+--- a/target/arm/debug_helper.c
++++ b/target/arm/debug_helper.c
+@@ -986,11 +986,20 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
+       .opc0 = 2, .opc1 = 0, .crn = 0, .crm = 3, .opc2 = 2,
+       .access = PL1_RW, .accessfn = access_tdcc,
+       .type = ARM_CP_CONST, .resetvalue = 0 },
+-    /* DBGDTRTX_EL0/DBGDTRRX_EL0 depend on direction */
+-    { .name = "DBGDTR_EL0", .state = ARM_CP_STATE_BOTH, .cp = 14,
++    /* Architecturally DBGDTRTX is named DBGDTRRX when used for reads */
++    { .name = "DBGDTRTX_EL0", .state = ARM_CP_STATE_AA64,
+       .opc0 = 2, .opc1 = 3, .crn = 0, .crm = 5, .opc2 = 0,
+       .access = PL0_RW, .accessfn = access_tdcc,
+       .type = ARM_CP_CONST, .resetvalue = 0 },
++    { .name = "DBGDTRTX", .state = ARM_CP_STATE_AA32, .cp = 14,
++      .opc1 = 0, .crn = 0, .crm = 5, .opc2 = 0,
++      .access = PL0_RW, .accessfn = access_tdcc,
++      .type = ARM_CP_CONST, .resetvalue = 0 },
++    /* This is AArch64-only and is a combination of DBGDTRTX and DBGDTRRX */
++    { .name = "DBGDTR_EL0", .state = ARM_CP_STATE_AA64,
++      .opc0 = 2, .opc1 = 3, .crn = 0, .crm = 4, .opc2 = 0,
++      .access = PL0_RW, .accessfn = access_tdcc,
++      .type = ARM_CP_CONST, .resetvalue = 0 },
+     /*
+      * OSECCR_EL1 provides a mechanism for an operating system
+      * to access the contents of EDECCR. EDECCR is not implemented though,
 -- 
 2.47.2
 
