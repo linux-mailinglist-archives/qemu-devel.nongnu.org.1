@@ -2,76 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AA5B0CC50
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 23:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E90B0CC7C
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 23:21:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udxsC-0001mw-Cn; Mon, 21 Jul 2025 17:16:36 -0400
+	id 1udxws-0003O1-W6; Mon, 21 Jul 2025 17:21:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1udxm8-0004Mh-Vs
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:10:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
+ id 1udxvs-0001rc-0q
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:20:35 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1udxm5-0007yy-Li
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:10:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753132216;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NdvTYJfMOU9XEEw0E8ltL4tlN88e9xfHWpswWO88UGM=;
- b=DX02vpPqqFYE/jQ81t8vYpi6Tf211MrfRfYoJudugbqApft5cuDTgDMI/M0ktD6N+gpZPY
- LViUpJrtmleGGogO6+Ji8JWUSenMN9DoCcs+nNRS+qsL50xGdznJoMX/WTgRJ2Uu7GtU6+
- qzQGaeqK5CS04ZC8gB+l1hTqTa+iuCI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-B1ko-f4GMfS4qbKq4Dj5Iw-1; Mon,
- 21 Jul 2025 17:10:13 -0400
-X-MC-Unique: B1ko-f4GMfS4qbKq4Dj5Iw-1
-X-Mimecast-MFC-AGG-ID: B1ko-f4GMfS4qbKq4Dj5Iw_1753132211
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B5D5A1800284; Mon, 21 Jul 2025 21:10:11 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.31])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4C50618016F9; Mon, 21 Jul 2025 21:10:11 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Aarushi Mehta <mehta.aaru20@gmail.com>,
- Stefano Garzarella <sgarzare@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, hibriansong@gmail.com, eblake@redhat.com,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>
-Subject: [PATCH v3 12/12] block/io_uring: use non-vectored read/write when
- possible
-Date: Mon, 21 Jul 2025 17:07:59 -0400
-Message-ID: <20250721210759.179709-13-stefanha@redhat.com>
-In-Reply-To: <20250721210759.179709-1-stefanha@redhat.com>
-References: <20250721210759.179709-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
+ id 1udxvW-0002mx-8w
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 17:20:05 -0400
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56LGtf1A000926
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 21:20:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+ cc:content-type:date:from:in-reply-to:message-id:mime-version
+ :references:subject:to; s=qcppdkim1; bh=JssYDSr7IY2zcFNDNLBhEx24
+ PNrJgt0ER5Z8R6R1hng=; b=U3gWUv/QGnpCPsuI1lkigCE2FWLwk7L5E4Zx2szK
+ NiDrwDd9P4wz2HJ+RhldGdDE0f3gNID4zfs8XIwR1V7AsxrSTcSlyA0Of3JuN+D/
+ rt7yKxAWfPSnnuzZGfQXVMxtLrS7n3TtrTfU59TVxmI2PLYxbyWX4DoK7rS+VcLb
+ vOCzS5dHudl8+LJEK3rnTcAfFkM68G0V6khVyOJnPIXLSXdOGW4XhobEoHXNVSxn
+ RxkrXq3lGc2c9fWlotnqBXCFvzGvaKaT3XlkuDY1JCneQeYDPWHYvkCwOIHh11Ao
+ uupbsGMFqeKivjj/SAf3x2Kfth3k7MZshbrI+KDqt/TA2w==
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48044df4f7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 21:20:00 +0000 (GMT)
+Received: by mail-yb1-f200.google.com with SMTP id
+ 3f1490d57ef6-e8bb5b1a519so5781962276.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 14:20:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753132799; x=1753737599;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JssYDSr7IY2zcFNDNLBhEx24PNrJgt0ER5Z8R6R1hng=;
+ b=oMLzgMNuONASCLfWqQWqOmrqszCinTc8F+p/zl31QBpNFOTlBq35E/DzKXNDQRGN09
+ b1D3+pg6L5NardERVb3/YQ7AtXnbBmSStdYNZgNeMOTXdcYz1cPWCxFTRsA+0Q+4bFGM
+ hLDdfxnJE5JNFmWQASMT5IPT/RN+083e37Gwm1goUC5ibAFVCtQ3oitrl+n/V8dPVU4r
+ 4SNxQDLsf4AuO0fwqf7IY079LMiq+lN6gcAEl+PhCCNq/TPxjeCWnLIhTaq2nak/j+3x
+ ne6EUtxFLmydGqfVtpH7xpXxzPreXOhNmwQifQ88EnfpSK+MfL8wqKSH8GkXmsGD0AVu
+ 6G0A==
+X-Gm-Message-State: AOJu0YyqQmi6S+6oHQgOaZMFeC6gGpCRtcWazqjFevxnvcIS2ho4j5xD
+ DhEP+JI7ZRdsaVXIE4tTyjKoUa5BD6hFW9S05V31o4j8IdjpJBKcpPJ3HLvM5bG8OsI0+Z7J+Dl
+ Kmb9t+BygwjD+nNdJHB1YA7EBjDTrOy7xHzTMd78vrdF37G01jMl66k3m8fG9waEfSgCsVBHsXP
+ Z5qanyOZrhhW7N3RViitHg5RqKc9OHeJw/
+X-Gm-Gg: ASbGnctSnDmsjyP46DnBgyKM4C58PAcbwnValWFsnuuJL4DkS9skjQu8fPIGIaefclI
+ XewbUh8MzHxHBRmRaqYmcC/sVQfvmkhj/ncAeXJ2y8rSJB2F2CqlFHlV+PkBlrLsF33VNp3bW+x
+ +P8X57ejmlntBT8NlN5/fyknA=
+X-Received: by 2002:a05:6902:220d:b0:e8b:7491:d4e9 with SMTP id
+ 3f1490d57ef6-e8bc24e7a93mr27923061276.26.1753132799549; 
+ Mon, 21 Jul 2025 14:19:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFF23gdmZi5Zt7+chkqHIJQBIt71uoyBg76l3e2VPCDMRnSzms4zs9wgx+O5Y5/Riw4hYk6yTFSRBEz3WlAUk4=
+X-Received: by 2002:a05:6902:220d:b0:e8b:7491:d4e9 with SMTP id
+ 3f1490d57ef6-e8bc24e7a93mr27923036276.26.1753132799192; Mon, 21 Jul 2025
+ 14:19:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.926,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <CAEWVDmuS0RSwZiDGNZg4cT1jXp7Xfu97YZL7hDfTvha2TOgS1g@mail.gmail.com>
+ <CAFEAcA9u2N2GsWZ+eFuqezqCPj9hWGT=qGnwjjG3M5NYO9Jb5A@mail.gmail.com>
+In-Reply-To: <CAFEAcA9u2N2GsWZ+eFuqezqCPj9hWGT=qGnwjjG3M5NYO9Jb5A@mail.gmail.com>
+From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+Date: Mon, 21 Jul 2025 17:19:48 -0400
+X-Gm-Features: Ac12FXyTAnUD5Efo-kAjeKPZdiEPYyAZHV15T0vU0B0oF6X0XD01WyJAFBPAovM
+Message-ID: <CAEWVDmsqjN+KiRp3AC3uht1=xoQDu2+sHVZKVdDyMPBRThZFkg@mail.gmail.com>
+Subject: Re: [RFC] target/arm: Concerns about mixed endian support for remote
+ GDB
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000bd871e063a770921"
+X-Authority-Analysis: v=2.4 cv=BJ6zrEQG c=1 sm=1 tr=0 ts=687eaf00 cx=c_pps
+ a=peiObFy/9J5zY6vzkL/ViA==:117 a=Wb1JkmetP80A:10 a=KKAkSRfTAAAA:8
+ a=EUspDBNiAAAA:8 a=XuKpq1OSl9U7Vqusa7AA:9 a=QEXdDO2ut3YA:10
+ a=G78pyL7yVTk7Gtk_Gy4A:9 a=C5rqynb0f5RdBcmA:21 a=lqcHg5cX4UMA:10
+ a=uSskPZdq7w8du69dlLff:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: yU0PZGYOirAr_B98YowbJ7CQCW6K30MZ
+X-Proofpoint-ORIG-GUID: yU0PZGYOirAr_B98YowbJ7CQCW6K30MZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIxMDE5MCBTYWx0ZWRfX2BBG8JvtOh+d
+ XTcoI6Hpa+PlEpcS4bYtmTqpYzBbgoeoTYgnwxd73XeVM8Js79V4fge6q+YPByL5OGIoPFVnBAB
+ gxAwCfin8T42PJSZFW7FZljBrSclpVxlcywgInFbBPZY15Zgr1YqvTqwMHIpDBPkMD7qQI/qLsC
+ J9lZwVJhsOiPlzuqZnXsIiKnbU6LLlo1a7jzSDYmA4Cru7p1iMZuxSX40bjcrNua0z+ztZrzP/c
+ NTKV70Kivzu55Fy5OFFj4twRKYxoxhJI9jmSmKdiRyoh+IBCgLfmQBsPBpfIFtzokkDgdw7JKgP
+ Paunogch1XjLqInzSa02Q2Bi2MHXaGDETpZSvzFhPwbr9NoBdS+ils0vWsB8nU4Hg/+G7DiTqw2
+ SFIhMhZj6tsy7fZSckygEgoe7gZ9lvSW4MCUpr6iizi5YiDXgpeV+m3x2Cz1t5UGg3vjxIkM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-21_05,2025-07-21_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 spamscore=0
+ mlxlogscore=856 suspectscore=0 impostorscore=0 phishscore=0 adultscore=0
+ mlxscore=0 malwarescore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507210190
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=vacha.bhavsar@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,70 +126,235 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The io_uring_prep_readv2/writev2() man pages recommend using the
-non-vectored read/write operations when possible for performance
-reasons.
+--000000000000bd871e063a770921
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I didn't measure a significant difference but it doesn't hurt to have
-this optimization in place.
+Hi Peter,
 
-Suggested-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- block/io_uring.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+I am using the user mode emulator to test the "target big endian" code path=
+.
 
-diff --git a/block/io_uring.c b/block/io_uring.c
-index dd930ee57e..bbefbddcc0 100644
---- a/block/io_uring.c
-+++ b/block/io_uring.c
-@@ -49,12 +49,24 @@ static void luring_prep_sqe(struct io_uring_sqe *sqe, void *opaque)
- #ifdef HAVE_IO_URING_PREP_WRITEV2
-     {
-         int luring_flags = (flags & BDRV_REQ_FUA) ? RWF_DSYNC : 0;
--        io_uring_prep_writev2(sqe, fd, qiov->iov,
--                              qiov->niov, offset, luring_flags);
-+        if (luring_flags != 0 || qiov->niov > 1) {
-+            io_uring_prep_writev2(sqe, fd, qiov->iov,
-+                                  qiov->niov, offset, luring_flags);
-+        } else {
-+            /* The man page says non-vectored is faster than vectored */
-+            struct iovec *iov = qiov->iov;
-+            io_uring_prep_write(sqe, fd, iov->iov_base, iov->iov_len, offset);
-+        }
-     }
- #else
-         assert(flags == 0);
--        io_uring_prep_writev(sqe, fd, qiov->iov, qiov->niov, offset);
-+        if (qiov->niov > 1) {
-+            io_uring_prep_writev(sqe, fd, qiov->iov, qiov->niov, offset);
-+        } else {
-+            /* The man page says non-vectored is faster than vectored */
-+            struct iovec *iov = qiov->iov;
-+            io_uring_prep_write(sqe, fd, iov->iov_base, iov->iov_len, offset);
-+        }
- #endif
-         break;
-     case QEMU_AIO_ZONE_APPEND:
-@@ -65,8 +77,15 @@ static void luring_prep_sqe(struct io_uring_sqe *sqe, void *opaque)
-         if (req->resubmit_qiov.iov != NULL) {
-             qiov = &req->resubmit_qiov;
-         }
--        io_uring_prep_readv(sqe, fd, qiov->iov, qiov->niov,
--                            offset + req->total_read);
-+        if (qiov->niov > 1) {
-+            io_uring_prep_readv(sqe, fd, qiov->iov, qiov->niov,
-+                                offset + req->total_read);
-+        } else {
-+            /* The man page says non-vectored is faster than vectored */
-+            struct iovec *iov = qiov->iov;
-+            io_uring_prep_read(sqe, fd, iov->iov_base, iov->iov_len,
-+                               offset + req->total_read);
-+        }
-         break;
-     }
-     case QEMU_AIO_FLUSH:
--- 
-2.50.1
+I apologize for the error, I have sent this content as a patch series to
+make it easier to review!
 
+Looking forward to your feedback!
+
+Thanks,
+Vacha
+
+On Mon, Jul 21, 2025 at 10:36=E2=80=AFAM Peter Maydell <peter.maydell@linar=
+o.org>
+wrote:
+
+> On Fri, 18 Jul 2025 at 20:20, Vacha Bhavsar
+> <vacha.bhavsar@oss.qualcomm.com> wrote:
+> >
+> > Upon examining the current implementation for getting/setting SIMD
+> > and SVE registers via remote GDB, there is a concern about mixed
+> > endian support.
+>
+> Yes, we discussed this on a different thread.
+>
+> > The current implementation for the SIMD functionality for getting and
+> setting
+> > registers via the gdbstub is implemented as follows:
+> >
+> > aarch64_gdb_set_fpu_reg:
+> > <omitted code>
+> > uint64_t *q =3D aa64_vfp_qreg(env, reg);
+> > q[0] =3D ldq_le_p(buf);
+> > q[1] =3D ldq_le_p(buf + 8);
+> > return 16;
+> > <omitted code>
+> >
+> > The following code is a suggested fix for the current implementation th=
+at
+> > should allow for mixed endian support for getting/setting SIMD register=
+s
+> > via the remote GDB protocol.
+> >
+> > aarch64_gdb_set_fpu_reg:
+> > <omitted code>
+> > // case 0...31
+>
+> It would be easier to review your proposed changes if you'd
+> sent them in a proper patch format...
+>
+> > uint64_t *q =3D aa64_vfp_qreg(env, reg);
+> > if (target_big_endian()){
+>
+> What config are you using to test this "target big endian"
+> code path? On system emulation target/arm is *always*
+> target_big_endian() =3D=3D false (even if CPSR.E is set).
+> The QEMU "target endianness" is a compile-time property of the
+> system, not a runtime property of the CPU. CPSR.E just causes us to
+> byteswap values as they go out from the CPU to the memory subsystem.
+>
+> I think for the user mode emulator aarch64_be-linux-user
+> we may have target_big_endian() true, but I forget. BE
+> linux-user is pretty unmaintained...
+>
+> > q[1] =3D ldq_p(buf);
+> >         q[0] =3D ldq_p(buf + 8);
+> > }
+> > else{
+> > q[0] =3D ldq_p(buf);
+> >         q[1] =3D ldq_p(buf);
+>
+> (You're loading q[0] and q[1] from the same buffer address here.)
+>
+> > }> return 16;
+> > <omitted code>
+> >
+> > This use of ldq_p rather than ldq_le_p (which the current implementatio=
+n
+> > uses) to load bytes into host endian struct is inspired by the current
+> > implementation for getting/setting general purpose registers via remote
+> > GDB (which works appropriately regardless of target endianness), as wel=
+l
+> > as the current implementation for getting/setting gprs via GDB with ppc
+> > as a target (refer to ppc_cpu_gdb_write_register() for example).
+>
+> Note that for PPC, we build both ppc64-softmmu and ppc64le-softmmu config=
+s,
+> so for PPC target_endianness() really can be either LE or BE even
+> in system emulation mode.
+>
+> > For SVE, the current implementation is as follows for the zregs:
+> >
+> > aarch64_gdb_set_sve_reg:
+> > <omitted code>
+> > // case 0...31
+> > int vq, len =3D 0;
+> > uint64_t *p =3D (uint64_t *) buf;
+> > for (vq =3D 0; vq < cpu->sve_max_vq; vq++) {
+> > env->vfp.zregs[reg].d[vq * 2 + 1] =3D *p++;
+> >         env->vfp.zregs[reg].d[vq * 2] =3D *p++;
+> >         len +=3D 16;
+> > }
+>
+> This code definitely is wrong, because the gdbstub protocol buffer
+> is target-endianness and the env->vfp.zregs values are host-endianness.
+>
+> thanks
+> -- PMM
+>
+
+--000000000000bd871e063a770921
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi Peter,<div><br></div><div>I am using the user mode emul=
+ator to test the &quot;target big endian&quot; code path.</div><div><br></d=
+iv><div>I apologize for the error, I have sent this content=C2=A0as a patch=
+ series to make it easier to review!</div><div><br></div><div>Looking forwa=
+rd to your feedback!</div><div><br></div><div>Thanks,</div><div>Vacha</div>=
+</div><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr"=
+ class=3D"gmail_attr">On Mon, Jul 21, 2025 at 10:36=E2=80=AFAM Peter Maydel=
+l &lt;<a href=3D"mailto:peter.maydell@linaro.org">peter.maydell@linaro.org<=
+/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
+px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">O=
+n Fri, 18 Jul 2025 at 20:20, Vacha Bhavsar<br>
+&lt;<a href=3D"mailto:vacha.bhavsar@oss.qualcomm.com" target=3D"_blank">vac=
+ha.bhavsar@oss.qualcomm.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Upon examining the current implementation for getting/setting SIMD<br>
+&gt; and SVE registers via remote GDB, there is a concern about mixed<br>
+&gt; endian support.<br>
+<br>
+Yes, we discussed this on a different thread.<br>
+<br>
+&gt; The current implementation for the SIMD functionality for getting and =
+setting<br>
+&gt; registers via the gdbstub is implemented as follows:<br>
+&gt;<br>
+&gt; aarch64_gdb_set_fpu_reg:<br>
+&gt; &lt;omitted code&gt;<br>
+&gt; uint64_t *q =3D aa64_vfp_qreg(env, reg);<br>
+&gt; q[0] =3D ldq_le_p(buf);<br>
+&gt; q[1] =3D ldq_le_p(buf + 8);<br>
+&gt; return 16;<br>
+&gt; &lt;omitted code&gt;<br>
+&gt;<br>
+&gt; The following code is a suggested fix for the current implementation t=
+hat<br>
+&gt; should allow for mixed endian support for getting/setting SIMD registe=
+rs<br>
+&gt; via the remote GDB protocol.<br>
+&gt;<br>
+&gt; aarch64_gdb_set_fpu_reg:<br>
+&gt; &lt;omitted code&gt;<br>
+&gt; // case 0...31<br>
+<br>
+It would be easier to review your proposed changes if you&#39;d<br>
+sent them in a proper patch format...<br>
+<br>
+&gt; uint64_t *q =3D aa64_vfp_qreg(env, reg);<br>
+&gt; if (target_big_endian()){<br>
+<br>
+What config are you using to test this &quot;target big endian&quot;<br>
+code path? On system emulation target/arm is *always*<br>
+target_big_endian() =3D=3D false (even if CPSR.E is set).<br>
+The QEMU &quot;target endianness&quot; is a compile-time property of the<br=
+>
+system, not a runtime property of the CPU. CPSR.E just causes us to<br>
+byteswap values as they go out from the CPU to the memory subsystem.<br>
+<br>
+I think for the user mode emulator aarch64_be-linux-user<br>
+we may have target_big_endian() true, but I forget. BE<br>
+linux-user is pretty unmaintained...<br>
+<br>
+&gt; q[1] =3D ldq_p(buf);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0q[0] =3D ldq_p(buf + 8);<br>
+&gt; }<br>
+&gt; else{<br>
+&gt; q[0] =3D ldq_p(buf);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0q[1] =3D ldq_p(buf);<br>
+<br>
+(You&#39;re loading q[0] and q[1] from the same buffer address here.)<br>
+<br>
+&gt; }&gt; return 16;<br>
+&gt; &lt;omitted code&gt;<br>
+&gt;<br>
+&gt; This use of ldq_p rather than ldq_le_p (which the current implementati=
+on<br>
+&gt; uses) to load bytes into host endian struct is inspired by the current=
+<br>
+&gt; implementation for getting/setting general purpose registers via remot=
+e<br>
+&gt; GDB (which works appropriately regardless of target endianness), as we=
+ll<br>
+&gt; as the current implementation for getting/setting gprs via GDB with pp=
+c<br>
+&gt; as a target (refer to ppc_cpu_gdb_write_register() for example).<br>
+<br>
+Note that for PPC, we build both ppc64-softmmu and ppc64le-softmmu configs,=
+<br>
+so for PPC target_endianness() really can be either LE or BE even<br>
+in system emulation mode.<br>
+<br>
+&gt; For SVE, the current implementation is as follows for the zregs:<br>
+&gt;<br>
+&gt; aarch64_gdb_set_sve_reg:<br>
+&gt; &lt;omitted code&gt;<br>
+&gt; // case 0...31<br>
+&gt; int vq, len =3D 0;<br>
+&gt; uint64_t *p =3D (uint64_t *) buf;<br>
+&gt; for (vq =3D 0; vq &lt; cpu-&gt;sve_max_vq; vq++) {<br>
+&gt; env-&gt;vfp.zregs[reg].d[vq * 2 + 1] =3D *p++;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0env-&gt;vfp.zregs[reg].d[vq * 2] =3D =
+*p++;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0len +=3D 16;<br>
+&gt; }<br>
+<br>
+This code definitely is wrong, because the gdbstub protocol buffer<br>
+is target-endianness and the env-&gt;vfp.zregs values are host-endianness.<=
+br>
+<br>
+thanks<br>
+-- PMM<br>
+</blockquote></div>
+
+--000000000000bd871e063a770921--
 
