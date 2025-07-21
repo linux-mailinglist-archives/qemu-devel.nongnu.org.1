@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BEEB0C8A3
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA9FB0C8E8
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 18:37:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udtK0-000870-B4; Mon, 21 Jul 2025 12:25:01 -0400
+	id 1udtJU-0006i3-F4; Mon, 21 Jul 2025 12:24:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIn-0004kC-1z
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIn-0004kE-2x
  for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIY-0001UG-Gb
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:38 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1udtIe-0001Uo-Nv
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 12:23:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753115002;
+ s=mimecast20190719; t=1753115005;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jnnN5+GtdpuH7z4EFdFOk5KedjDZ6TIb4J90RWfBUp0=;
- b=jWEVvqAWW8G4PwLgkszHM3rNJizUHaxr6LTMBL4OgVbRxNVwWmAHTaqoRFECwWCS+mxrnK
- 0WYfjxWWHt1+pTzES8HM/Xr7f1p08VIzH5RkwQnynqeSdPuMG9A83/bDNTH3NU/SWRTz9D
- iOc4TTqaItlLvBJ9+W2IMeNdKuHNARY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=mOnTSLxJi5yj63cfC5aTMnrzLcPnJGX7PJdWzyG0SaU=;
+ b=asfoMaIdOSfXxd16GSKKAaKsyfrxk28MC/Wj5TKWD9uE3uhUtJBBlJ7HEM6w1Ruu5J0HY2
+ AhvSTaIgb4UDTLyVWg5hCB23+7COWDaD9qMqZYhAhYO1KHEGqWT5XID+HkndIYpzllSbcy
+ JB1ejeHC+CdlESSR93wRSY78djReSQk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-216--czOhk3vN5-2bbkpgk-row-1; Mon,
- 21 Jul 2025 12:23:16 -0400
-X-MC-Unique: -czOhk3vN5-2bbkpgk-row-1
-X-Mimecast-MFC-AGG-ID: -czOhk3vN5-2bbkpgk-row_1753114995
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-ODq7BigxPXudfA59YZgs4w-1; Mon,
+ 21 Jul 2025 12:23:19 -0400
+X-MC-Unique: ODq7BigxPXudfA59YZgs4w-1
+X-Mimecast-MFC-AGG-ID: ODq7BigxPXudfA59YZgs4w_1753114998
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 83B631800D88; Mon, 21 Jul 2025 16:23:15 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6EF7A1956089; Mon, 21 Jul 2025 16:23:18 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0A7F1195608D; Mon, 21 Jul 2025 16:23:12 +0000 (UTC)
+ id 0093D195608D; Mon, 21 Jul 2025 16:23:15 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -51,10 +51,9 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Caleb Schlossin <calebs@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 13/50] ppc/xive: tctx_notify should clear the precluded
- interrupt
-Date: Mon, 21 Jul 2025 18:21:56 +0200
-Message-ID: <20250721162233.686837-14-clg@redhat.com>
+Subject: [PULL 14/50] ppc/xive: Explicitly zero NSR after accepting
+Date: Mon, 21 Jul 2025 18:21:57 +0200
+Message-ID: <20250721162233.686837-15-clg@redhat.com>
 In-Reply-To: <20250721162233.686837-1-clg@redhat.com>
 References: <20250721162233.686837-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -88,35 +87,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-If CPPR is lowered to preclude the pending interrupt, NSR should be
-cleared and the qemu_irq should be lowered. This avoids some cases
-of supurious interrupts.
+Have xive_tctx_accept clear NSR in one shot rather than masking out bits
+as they are tested, which makes it clear it's reset to 0, and does not
+have a partial NSR value in the register.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-14-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-15-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/xive.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/intc/xive.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index bc829bebe9d0..a0a60a24f510 100644
+index a0a60a24f510..b35d2ec1793e 100644
 --- a/hw/intc/xive.c
 +++ b/hw/intc/xive.c
-@@ -110,6 +110,9 @@ void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level)
-                                regs[TM_IPB], alt_regs[TM_PIPR],
-                                alt_regs[TM_CPPR], alt_regs[TM_NSR]);
-         qemu_irq_raise(xive_tctx_output(tctx, ring));
-+    } else {
-+        alt_regs[TM_NSR] = 0;
-+        qemu_irq_lower(xive_tctx_output(tctx, ring));
-     }
- }
+@@ -68,13 +68,11 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
+          * If the interrupt was for a specific VP, reset the pending
+          * buffer bit, otherwise clear the logical server indicator
+          */
+-        if (regs[TM_NSR] & TM_NSR_GRP_LVL) {
+-            regs[TM_NSR] &= ~TM_NSR_GRP_LVL;
+-        } else {
++        if (!(regs[TM_NSR] & TM_NSR_GRP_LVL)) {
+             alt_regs[TM_IPB] &= ~xive_priority_to_ipb(cppr);
+         }
  
+-        /* Drop the exception bit and any group/crowd */
++        /* Clear the exception from NSR */
+         regs[TM_NSR] = 0;
+ 
+         trace_xive_tctx_accept(tctx->cs->cpu_index, alt_ring,
 -- 
 2.50.1
 
