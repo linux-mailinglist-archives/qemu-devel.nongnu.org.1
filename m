@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C72B0C52C
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5ACB0C52A
 	for <lists+qemu-devel@lfdr.de>; Mon, 21 Jul 2025 15:28:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1udqYx-0007xc-Qp; Mon, 21 Jul 2025 09:28:15 -0400
+	id 1udqYj-00047H-WD; Mon, 21 Jul 2025 09:28:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqYC-0000AD-D2
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:43 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1udqYE-0000B9-J5
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:42 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1udqY9-0005Hl-Gx
- for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:27 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-456108bf94bso30303195e9.0
+ id 1udqYB-0005I3-2l
+ for qemu-devel@nongnu.org; Mon, 21 Jul 2025 09:27:29 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3b611665b96so2361884f8f.2
  for <qemu-devel@nongnu.org>; Mon, 21 Jul 2025 06:27:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753104444; x=1753709244; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753104445; x=1753709245; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LDSwBUvksbhb5pjoNJUH79KfTb7ObxN8yMeFlhNrxSc=;
- b=H0RPS6Fn4WyMCgq2qBA3AnvEYVBW1dqdsmX8GZmErFHLXjq7R/tM3MNg/QJ+a5buCN
- 3yUZ8oFb1py68WCoqO1f40PuqybV80/60UdTJ5k3Ryc31DZY/unBohPu6RzOUxjPwQlR
- hHCPgZf4OY0uYBnJ+/fDCyO6n7JDc6JJWuaD9F27+IeiAWgNh7+i8oMjDtusIZvk5RdH
- 3QMxz/8gXI1hc/HWY/UKhJGSNxcw3RaNTwUezdbvPArJa1eNGTi1zv55ZvffHXItAN/s
- uTlOm4Li0/EVfvXFpzua0SHzk8CIklrLEAuSlZvIRFfXgK0JAwIMc+RyxFccRc+hC4qJ
- qK9g==
+ :reply-to; bh=CinAv+JmxDGnvNAXVZ6z1/DIxUoQ1w9KIVLUKTNoQi8=;
+ b=JMOoYVhja5E/6Ht8XJhXqu5PZI4D8SZ8QPNpkMFN/tPJwNZHR3DmGFgXO6kjxdHvDn
+ 9KqIMHCNCVU/wjQQDQHJ5Cxs0D2F6cA0JRKVRYXyXnvu0w3cj8J8b0UPSbhaNw42iOjq
+ c8R+n7u7SLN/GRnPWAm/WUSqwVq1+SwY05lB4tDvD7yS+hLML1uYS5kRkn931DWhrffm
+ 9dyxx/1Qr5V+Z8YpN4bh9usJf1V+IexyScUE/IQovcDuZId0dyV/LwDhDuxRka5rIQa5
+ asGWDJuCKst3x+EKRUaMi2B+Td6Zfy9NxcDELHEMXKuPblK7A1mQFMAFd055NHVrbj3m
+ XGow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753104444; x=1753709244;
+ d=1e100.net; s=20230601; t=1753104445; x=1753709245;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LDSwBUvksbhb5pjoNJUH79KfTb7ObxN8yMeFlhNrxSc=;
- b=DAR7gEKwwOafLrdYWcUpu0M+z59pQxNERzPr836DZcMz3moRTXkx+iGia1mvP22AWa
- CInHzbmX+lNIJyYoJscAEO+02KLQn1R3W++PNS8XkBnsaIikWMS3SLol+wLFuEJeiCzw
- lOwq69CQLSGL85RU+2cmUmC/mlG5u4EH/1PK37/t2nLxw7o3GkWS9Hb14rCAEICPABy/
- 4ji52EqdmW/C0Nhc7qdFYw4ziQmRiYbgB7MZjANRmswDVQ8vG+zj3EX38yc8txTjDh1M
- c8oJkMz1PJAEY0ZPoMNMmNqAKMLeQAwtgv7HCetpApWGmowmanwIVhtqNDse+gLT6Jv7
- jSLQ==
-X-Gm-Message-State: AOJu0YyPdFg4kB/WkBZcctHcEP8mcxzxE1uUBvUa7n0+VtlOykGZpGiq
- wHWS50I7c1fBIAr3DQKLTw1hJ0NS3RLzSo277YvYdjXHgDDUsl/uAWMeWDD67fs6bGQwNwxFxYA
- wRz10
-X-Gm-Gg: ASbGnctRAb9o2Yqom/07a8aAaaOP7OJeM++WLfkh7X7iwYz+4FsdnDScgy4R8wlOgJR
- Z78OKwVHCWNgPP1Fk1+5nwdzzhdvxkPSiB6WJdBdsPkaRjP/iUr3Pz2GsKX9CdfVBTizVjipH9F
- TGAQGX0Y5IeUjPh82XDcoEwmsQQz57rFLxuyQpfFaeIjBl6QY9PvpqcgZrVmwL9AHaDta6uZvxp
- E3sbtWoJ6xO5NO4SOKVwpyHotjNX152mmBA+Nd++ESF8Ba4jwLwhalwwwPGRKSp661WgcbUU1R9
- GWlts6Gx/umANPiKqQ4ofH52x+A1GlUkrfrUVdp09QpAZEGSOlr0A7ptqjEwk/CjW8P/IFnb8EG
- p2StrIK4OKhQODxCJf2KeW7gtdy/U
-X-Google-Smtp-Source: AGHT+IHDvFPdSvDPc8eD0Pc/bZi65+z4jukR1ZkCd1UO/Bx9Wu3RiXrRIq7PveoK6Z6w0DWzWks8zw==
-X-Received: by 2002:a05:600c:3b88:b0:456:25aa:e9c0 with SMTP id
- 5b1f17b1804b1-4562e355c9bmr204683365e9.14.1753104443603; 
- Mon, 21 Jul 2025 06:27:23 -0700 (PDT)
+ bh=CinAv+JmxDGnvNAXVZ6z1/DIxUoQ1w9KIVLUKTNoQi8=;
+ b=aSC2+d7Veueeed8Hi2r6lZAqQI/8yrL1XDETg1qWgW+jKj6ZDYmS2zjh9Lwg2htnXJ
+ bZ2cjhyY7X1jPbF/hLAow6+fPqm7WmI7jsPUDaqI9j0V1rq91soAut5sq2JI4/lJlU5N
+ hhkZ8B7+mr1QVu8ZBdOvpT0qLxb7aZiv+gwtUgfZg7gDjYmS+MQDon7HOEaKhJ5XXQ1l
+ GLyWSSkYOSiCpTx/1Xvjl33bAZcfNp/aawvBY+0QQbjJzFj/vlYgogQ48mlgDFWZCoks
+ hgzLAzE+W8vKhzOtCHbp9WRniVsJBHnsCug/+cNuSX6Ux7GvStVy0vHUu8N7H7AaDryb
+ sGLw==
+X-Gm-Message-State: AOJu0YyPPmJRQg6j9Dy0gOll1rPUb6xy61HnR3nPoXLvDGSBOOKJtmQj
+ /OdGpia8nD//Y6EXFifxIam8spbFOs7xjSkvCBbftjn9oK40uLH/Hv1/mS/0E7x6Hb1ynEqm6Kk
+ 2B8xz
+X-Gm-Gg: ASbGncsKzbzre/iWvI9i/KKCHycNYin5WqUzm9aN91iPd7W2HDWoFxgqkN59nxCcE5a
+ wrNYPI599elc4ikeNkhFRiileqQ/V3BZb8mQ+IKoEmdAW8XIwPlRP2aP9WHgqWmfzHvfVpoZGS2
+ XMDL9RFlviy9PZsFdu/17LmAsaXTyCVFca42OI87fXIFU50Pcm4GBbhYtLAeLaMtCxaT3Kp4MOf
+ plYDKlI1vyKe1Frz+0AIeD/muFE0g9c4fQ6o61c40Nuiu6216CNQXvEyLGM0W1iQOQaLk1C1tg3
+ XpqH+jBpqVNbD5I95r424BwekZqESskb4CeqMpETRRPXuDIPSh0NWoM2g49j7T0mTDAcsGeRuth
+ WYndQ2+GgauiCM2IWngZh95I5ehWA
+X-Google-Smtp-Source: AGHT+IHxBPl3UMhXn/3+hE7jpCKZtycpyYitE1pMNT/Eu/C5rfSSkYFrEVXeInNgmZI4M1G47SHSiw==
+X-Received: by 2002:a05:6000:2b04:b0:3a4:ead4:5ea4 with SMTP id
+ ffacd0b85a97d-3b60e4d4da4mr11092479f8f.24.1753104444591; 
+ Mon, 21 Jul 2025 06:27:24 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.22
+ ffacd0b85a97d-3b61ca4c754sm10487946f8f.59.2025.07.21.06.27.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 21 Jul 2025 06:27:23 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/20] target/arm: Provide always-false kvm_arm_*_supported()
- stubs for usermode
-Date: Mon, 21 Jul 2025 14:27:01 +0100
-Message-ID: <20250721132718.2835729-5-peter.maydell@linaro.org>
+Subject: [PULL 05/20] host-utils: Drop workaround for buggy Apple Clang
+ __builtin_subcll()
+Date: Mon, 21 Jul 2025 14:27:02 +0100
+Message-ID: <20250721132718.2835729-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250721132718.2835729-1-peter.maydell@linaro.org>
 References: <20250721132718.2835729-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,86 +99,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If you try to build aarch64-linux-user with clang and --enable-debug then it
-fails to compile:
+In commit b0438861efe ("host-utils: Avoid using __builtin_subcll on
+buggy versions of Apple Clang") we added a workaround for a bug in
+Apple Clang 14 where its __builtin_subcll() implementation was wrong.
+This bug was only present in Apple Clang 14, not in upstream clang,
+and is not present in Apple Clang versions 15 and newer.
 
- ld: libqemu-aarch64-linux-user.a.p/target_arm_cpu64.c.o: in function `cpu_arm_set_sve':
- ../../target/arm/cpu64.c:321:(.text+0x1254): undefined reference to `kvm_arm_sve_supported'
+Since commit 4e035201 we have required at least Apple Clang 15, so we
+no longer build with the buggy versions.  We can therefore drop the
+workaround. This is effectively a revert of b0438861efe.
 
-This is a regression introduced in commit f86d4220, which switched
-the kvm-stub.c file away from being built for all arm targets to only
-being built for system emulation binaries.  It doesn't affect gcc,
-presumably because even at -O0 gcc folds away the always-false
-kvm_enabled() condition but clang does not.
+This should not be backported to stable branches, which may still
+need to support Apple Clang 14.
 
-We would prefer not to build kvm-stub.c once for usermode and once
-for system-emulation binaries, and we can't build it just once for
-both because it includes cpu.h.  So instead provide always-false
-versions of the five functions that are valid to call without KVM
-support in kvm_arm.h.
-
-Fixes: f86d42205c2eba ("target/arm/meson: accelerator files are not needed in user mode")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3033
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3030
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20250714135152.1896214-1-peter.maydell@linaro.org
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20250714145033.1908788-1-peter.maydell@linaro.org
 ---
- target/arm/kvm_arm.h | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ include/qemu/compiler.h   | 13 -------------
+ include/qemu/host-utils.h |  2 +-
+ 2 files changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index b4cad051551..6a9b6374a6d 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -161,6 +161,14 @@ void kvm_arm_add_vcpu_properties(ARMCPU *cpu);
-  */
- void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp);
+diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+index 65b89958d36..1c2b673c058 100644
+--- a/include/qemu/compiler.h
++++ b/include/qemu/compiler.h
+@@ -182,19 +182,6 @@
+ #define QEMU_DISABLE_CFI
+ #endif
  
-+/*
-+ * These "is some KVM subfeature enabled?" functions may be called
-+ * when KVM support is not present, including in the user-mode
-+ * emulators. The kvm-stub.c file is only built into the system
-+ * emulators, so for user-mode emulation we provide "always false"
-+ * stubs here.
-+ */
-+#ifndef CONFIG_USER_ONLY
- /**
-  * kvm_arm_aarch32_supported:
-  *
-@@ -197,6 +205,33 @@ bool kvm_arm_mte_supported(void);
-  * Returns true if KVM can enable EL2 and false otherwise.
+-/*
+- * Apple clang version 14 has a bug in its __builtin_subcll(); define
+- * BUILTIN_SUBCLL_BROKEN for the offending versions so we can avoid it.
+- * When a version of Apple clang which has this bug fixed is released
+- * we can add an upper bound to this check.
+- * See https://gitlab.com/qemu-project/qemu/-/issues/1631
+- * and https://gitlab.com/qemu-project/qemu/-/issues/1659 for details.
+- * The bug never made it into any upstream LLVM releases, only Apple ones.
+- */
+-#if defined(__apple_build_version__) && __clang_major__ >= 14
+-#define BUILTIN_SUBCLL_BROKEN
+-#endif
+-
+ #if __has_attribute(annotate)
+ #define QEMU_ANNOTATE(x) __attribute__((annotate(x)))
+ #else
+diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
+index 4d28fa22cfa..dd558589cb5 100644
+--- a/include/qemu/host-utils.h
++++ b/include/qemu/host-utils.h
+@@ -677,7 +677,7 @@ static inline uint64_t uadd64_carry(uint64_t x, uint64_t y, bool *pcarry)
   */
- bool kvm_arm_el2_supported(void);
-+#else
-+
-+static inline bool kvm_arm_aarch32_supported(void)
-+{
-+    return false;
-+}
-+
-+static inline bool kvm_arm_pmu_supported(void)
-+{
-+    return false;
-+}
-+
-+static inline bool kvm_arm_sve_supported(void)
-+{
-+    return false;
-+}
-+
-+static inline bool kvm_arm_mte_supported(void)
-+{
-+    return false;
-+}
-+
-+static inline bool kvm_arm_el2_supported(void)
-+{
-+    return false;
-+}
-+#endif
- 
- /**
-  * kvm_arm_get_max_vm_ipa_size:
+ static inline uint64_t usub64_borrow(uint64_t x, uint64_t y, bool *pborrow)
+ {
+-#if __has_builtin(__builtin_subcll) && !defined(BUILTIN_SUBCLL_BROKEN)
++#if __has_builtin(__builtin_subcll)
+     unsigned long long b = *pborrow;
+     x = __builtin_subcll(x, y, b, &b);
+     *pborrow = b & 1;
 -- 
 2.43.0
 
