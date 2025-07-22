@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66286B0E743
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 01:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC8DB0E746
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 01:44:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueMdM-0002Xw-SD; Tue, 22 Jul 2025 19:42:56 -0400
+	id 1ueMeY-0002jm-7R; Tue, 22 Jul 2025 19:44:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ueMdK-0002Vv-HB
- for qemu-devel@nongnu.org; Tue, 22 Jul 2025 19:42:54 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ueMdQ-0002aD-Av
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 19:43:02 -0400
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ueMdI-0007sT-KS
- for qemu-devel@nongnu.org; Tue, 22 Jul 2025 19:42:54 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ueMdO-0007t3-J2
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 19:42:59 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 2AEBA1F7B2;
- Tue, 22 Jul 2025 23:42:31 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 045211F7B5;
+ Tue, 22 Jul 2025 23:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753227751; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1753227753; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KPHQdKOsJoUO2aXXmjAa2hdW3VeBDD42pfqDwCgqC8g=;
- b=MTNzmeNmiZ0gtd+9DPTuvFcbUr38sLaiVCzjdkIkZWOtoqNRNUkV7bZo6Tujl9gi40dgFc
- gK3m4JwBYZocZahpLfB0uYnLv1Lq/33nSXgCdNSEBn5zBMKPtssVVeRD68vwQWb6td2Ip2
- tKa6EK70NEO8yX+pPd57n58YIzxn23c=
+ bh=jZZh+ZVa3T5k6vTaImGQ/AbOZe7gkNeo6VdPQTexAdg=;
+ b=c5Sdy7JDGgvNeN+YG3ps+AR/dRQAeultV4WHn/dXRh4mkycGxw847Z9RiHvnr+pqbqfony
+ Aabm2ce8VEmmeFtdZjhESPSt1pMbWNl/i/xIfU4uKG4jNHrnUdVEkkSnXiXK1iafxNXCgH
+ 8kRldLLfniw8prarRd2QTkf/28voigc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753227751;
+ s=susede2_ed25519; t=1753227753;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KPHQdKOsJoUO2aXXmjAa2hdW3VeBDD42pfqDwCgqC8g=;
- b=srA5TPjydkAoJM2pk8ng1qMBPdGKUM41v5VFaFcfx6ivKCEIJZ5RkP8Z/GKNLwO7zQ+yiS
- kdS8UyTgXi/OqFAw==
+ bh=jZZh+ZVa3T5k6vTaImGQ/AbOZe7gkNeo6VdPQTexAdg=;
+ b=0o8t8Fy2vz7w49WsHcC6dB+2J8+iEJVPuiJFrdKPedtdj8twdyO2u4h1jMbMIi7aM0tuSO
+ msdSdmxCkdg7jDBw==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753227751; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1753227753; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KPHQdKOsJoUO2aXXmjAa2hdW3VeBDD42pfqDwCgqC8g=;
- b=MTNzmeNmiZ0gtd+9DPTuvFcbUr38sLaiVCzjdkIkZWOtoqNRNUkV7bZo6Tujl9gi40dgFc
- gK3m4JwBYZocZahpLfB0uYnLv1Lq/33nSXgCdNSEBn5zBMKPtssVVeRD68vwQWb6td2Ip2
- tKa6EK70NEO8yX+pPd57n58YIzxn23c=
+ bh=jZZh+ZVa3T5k6vTaImGQ/AbOZe7gkNeo6VdPQTexAdg=;
+ b=c5Sdy7JDGgvNeN+YG3ps+AR/dRQAeultV4WHn/dXRh4mkycGxw847Z9RiHvnr+pqbqfony
+ Aabm2ce8VEmmeFtdZjhESPSt1pMbWNl/i/xIfU4uKG4jNHrnUdVEkkSnXiXK1iafxNXCgH
+ 8kRldLLfniw8prarRd2QTkf/28voigc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753227751;
+ s=susede2_ed25519; t=1753227753;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KPHQdKOsJoUO2aXXmjAa2hdW3VeBDD42pfqDwCgqC8g=;
- b=srA5TPjydkAoJM2pk8ng1qMBPdGKUM41v5VFaFcfx6ivKCEIJZ5RkP8Z/GKNLwO7zQ+yiS
- kdS8UyTgXi/OqFAw==
+ bh=jZZh+ZVa3T5k6vTaImGQ/AbOZe7gkNeo6VdPQTexAdg=;
+ b=0o8t8Fy2vz7w49WsHcC6dB+2J8+iEJVPuiJFrdKPedtdj8twdyO2u4h1jMbMIi7aM0tuSO
+ msdSdmxCkdg7jDBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD03513A32;
- Tue, 22 Jul 2025 23:42:29 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A6FE013A32;
+ Tue, 22 Jul 2025 23:42:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id AG5vIuUhgGiqOgAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 22 Jul 2025 23:42:29 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id qFgnGechgGiqOgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 22 Jul 2025 23:42:31 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 6/7] migration: activate TLS thread safety workaround
-Date: Tue, 22 Jul 2025 20:42:14 -0300
-Message-Id: <20250722234215.6807-7-farosas@suse.de>
+Subject: [PULL 7/7] crypto: add tracing & warning about GNUTLS countermeasures
+Date: Tue, 22 Jul 2025 20:42:15 -0300
+Message-Id: <20250722234215.6807-8-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250722234215.6807-1-farosas@suse.de>
 References: <20250722234215.6807-1-farosas@suse.de>
@@ -84,7 +84,7 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-0.998]; MIME_GOOD(-0.10)[text/plain];
+ NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
  RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  RCVD_TLS_ALL(0.00)[]; TO_DN_SOME(0.00)[];
  MIME_TRACE(0.00)[0:+]; FUZZY_RATELIMITED(0.00)[rspamd.com];
@@ -92,8 +92,8 @@ X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
  RCPT_COUNT_THREE(0.00)[3]; FROM_EQ_ENVFROM(0.00)[];
  RCVD_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid, suse.de:email,
- imap1.dmz-prg2.suse.org:helo]
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:email,
+ suse.de:mid]
 X-Spam-Score: -3.30
 Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
@@ -122,51 +122,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-When either the postcopy or return path capabilities are
-enabled, the migration code will use the primary channel
-for bidirectional I/O.
+We want some visibility on stderr when the GNUTLS thread
+safety countermeasures are activated, to encourage people
+to get the real fix deployed (once it exists). Some trace
+points will also help if we see any further wierd crash
+scenario we've not anticipated.
 
-If either of those capabilities are enabled, the migration
-code needs to mark the channel as expecting concurrent I/O
-in order to activate the thread safety workarounds for
-GNUTLS bug 1717
-
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/1937
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/qemu-devel/20250718150514.2635338-4-berrange@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250718150514.2635338-5-berrange@redhat.com
+[add missing include]
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/tls.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ crypto/tlssession.c | 11 +++++++++++
+ crypto/trace-events |  2 ++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/migration/tls.c b/migration/tls.c
-index 5cbf952383..284a6194b2 100644
---- a/migration/tls.c
-+++ b/migration/tls.c
-@@ -90,6 +90,10 @@ void migration_tls_channel_process_incoming(MigrationState *s,
+diff --git a/crypto/tlssession.c b/crypto/tlssession.c
+index baef878fa0..86d407a142 100644
+--- a/crypto/tlssession.c
++++ b/crypto/tlssession.c
+@@ -19,6 +19,7 @@
+  */
  
-     trace_migration_tls_incoming_handshake_start();
-     qio_channel_set_name(QIO_CHANNEL(tioc), "migration-tls-incoming");
-+    if (migrate_postcopy_ram() || migrate_return_path()) {
-+        qio_channel_set_feature(QIO_CHANNEL(tioc),
-+                                QIO_CHANNEL_FEATURE_CONCURRENT_IO);
-+    }
-     qio_channel_tls_handshake(tioc,
-                               migration_tls_incoming_handshake,
-                               NULL,
-@@ -149,6 +153,11 @@ void migration_tls_channel_connect(MigrationState *s,
-     s->hostname = g_strdup(hostname);
-     trace_migration_tls_outgoing_handshake_start(hostname);
-     qio_channel_set_name(QIO_CHANNEL(tioc), "migration-tls-outgoing");
+ #include "qemu/osdep.h"
++#include "qemu/error-report.h"
+ #include "qemu/thread.h"
+ #include "crypto/tlssession.h"
+ #include "crypto/tlscredsanon.h"
+@@ -615,10 +616,20 @@ qcrypto_tls_session_handshake(QCryptoTLSSession *session,
+          * only have to protect against automatic rekeying
+          * which doesn't trigger with CHACHA20
+          */
++        trace_qcrypto_tls_session_parameters(
++            session,
++            session->requireThreadSafety,
++            gnutls_protocol_get_version(session->handle),
++            cipher);
 +
-+    if (migrate_postcopy_ram() || migrate_return_path()) {
-+        qio_channel_set_feature(QIO_CHANNEL(tioc),
-+                                QIO_CHANNEL_FEATURE_CONCURRENT_IO);
-+    }
-     qio_channel_tls_handshake(tioc,
-                               migration_tls_outgoing_handshake,
-                               s,
+         if (session->requireThreadSafety &&
+             gnutls_protocol_get_version(session->handle) ==
+             GNUTLS_TLS1_3 &&
+             cipher != GNUTLS_CIPHER_CHACHA20_POLY1305) {
++            warn_report("WARNING: activating thread safety countermeasures "
++                        "for potentially broken GNUTLS with TLS1.3 cipher=%d",
++                        cipher);
++            trace_qcrypto_tls_session_bug1717_workaround(session);
+             session->lockEnabled = true;
+         }
+ #endif
+diff --git a/crypto/trace-events b/crypto/trace-events
+index bccd0bbf29..d0e33427fa 100644
+--- a/crypto/trace-events
++++ b/crypto/trace-events
+@@ -21,6 +21,8 @@ qcrypto_tls_creds_x509_load_cert_list(void *creds, const char *file) "TLS creds
+ # tlssession.c
+ qcrypto_tls_session_new(void *session, void *creds, const char *hostname, const char *authzid, int endpoint) "TLS session new session=%p creds=%p hostname=%s authzid=%s endpoint=%d"
+ qcrypto_tls_session_check_creds(void *session, const char *status) "TLS session check creds session=%p status=%s"
++qcrypto_tls_session_parameters(void *session, int threadSafety, int protocol, int cipher) "TLS session parameters session=%p threadSafety=%d protocol=%d cipher=%d"
++qcrypto_tls_session_bug1717_workaround(void *session) "TLS session bug1717 workaround session=%p"
+ 
+ # tls-cipher-suites.c
+ qcrypto_tls_cipher_suite_priority(const char *name) "priority: %s"
 -- 
 2.35.3
 
