@@ -2,67 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA770B0DE15
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Jul 2025 16:23:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E214B0DF4C
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Jul 2025 16:47:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueDse-0006tp-EE; Tue, 22 Jul 2025 10:22:08 -0400
+	id 1ueEEX-00067P-Ru; Tue, 22 Jul 2025 10:44:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ueDoL-0003Uj-Vj; Tue, 22 Jul 2025 10:17:45 -0400
-Received: from mgamail.intel.com ([192.198.163.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ueDoH-0002vI-WB; Tue, 22 Jul 2025 10:17:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753193858; x=1784729858;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=QpA7Auk83yejgin4enzPJ97PcNK0/rjrjfBAnFYKpGs=;
- b=RyItNvuW4DcGX8FFS+g8bCm00k1RbL3YpLuD6huAIx0sLr6M2wjoRUN7
- W2YieLMOcxSwsB6yH4xJAz97F9bnybxYJCLG+HrA/m+L18haK2Any+vBc
- MnWmiMULZ3QwUImxPl8Rd9f7NHgUTuKkdYVoSewrFtcIvJ8ZLkDWWoq7/
- +Anw/lZ7dHMAAUy8M/BicmZspjYrhhz/3hGmQu2J0prpbpQTxyqmJVh9v
- yL5Ds6cQsva4w5kEOjNkilPJiNjh5mxDtNaXk+BXG8NyTP1h4YMvNVNxn
- UAw4JSxiuNl1d0Q3UJhW+w/kAX6yP9gLIpKmfNA4ca07mGQEtb1xLBKsk A==;
-X-CSE-ConnectionGUID: CUILMJnMQrae05K6bF8GpQ==
-X-CSE-MsgGUID: Lf03q2cJTPSP7Blb4Rxb7w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="54664477"
-X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; d="scan'208";a="54664477"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2025 07:17:32 -0700
-X-CSE-ConnectionGUID: SVRQ4+PJTqyl7YK4D8A+Xw==
-X-CSE-MsgGUID: uyt1hJsfTKuQSjMNzR+bdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; d="scan'208";a="163397282"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 22 Jul 2025 07:17:30 -0700
-Date: Tue, 22 Jul 2025 22:39:03 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH] rust: devices are not staticlibs
-Message-ID: <aH+ih+Nd5yiQH2lr@intel.com>
-References: <20250721105238.461477-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ueEDY-0005lc-11
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 10:43:51 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ueEDW-0003Jn-1d
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 10:43:43 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-235f9ea8d08so47618725ad.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Jul 2025 07:43:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753195419; x=1753800219; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=aQOUnN1xucPPtCCqpuR2gyqjS5+FDrqZMoOVX0YnoYs=;
+ b=oN6cXmouP/xJGrhl6UIZThsBtQy20naPYN2F9NjdDFcN1F7UUt/Nj5fJa5UdePdKlA
+ gvDRi5563n6uJZC1XFpg/qbAnuFQFmLONLN3oHhay2/C6uJZyreyduTQElGM8DN5HI9E
+ fUe7Os7S8krIbsMuUhha5mzU87Tu/mtL+R9ED2tHs7XmGGendX9e/g6fWEGQcrr95SU1
+ R/NLD7qrkaE7aplVWT2sH3P6YfdPBwRJFr4BOL7hj/oPngy2HAG4wClEA16PIybQII/1
+ avOzOWM2t0yKz6kUj7NOj1gF1n+05D/Y0D7rpFBxmaOYyyH3KV5Ibj5cH2NANgcwpsXB
+ qE7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753195419; x=1753800219;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aQOUnN1xucPPtCCqpuR2gyqjS5+FDrqZMoOVX0YnoYs=;
+ b=WS2KdZjw6tfcHL6iZn56hVlBfL6kLx9bWPqvDrihh+nSoN/8byDluvU7G+9TKyHoMy
+ U0XLXlGvEN/awlJ0k7yn8+ULMfo3oJ9JtRf0EJYC8ytFDjm6CNPp2c6CSPet26jICbqV
+ VOCHObEZAzL77fKSifciwrv39EkFrKv08xcJiIMDpp6aeunzUIpKoK4GJh5jmTT4TeVc
+ v4jmmpHRNYvvx2olVliDrYewhD9h5sSG5enUKlr8NfcUOEmqAsMU+4lypkP6KTuvucEk
+ Emp99fWzbAk+K2/3RAlwz2C2qZyB5+cLIv6nFcCTyXFDjaP1QG96YE6MriBIZMO6UDzW
+ kjlQ==
+X-Gm-Message-State: AOJu0YzYs75VrcvyYIUiQ9Y2LtZH0XsRPjp+mUctlXNNVbWofA2Op1Yl
+ xs5sA5/n2ndyaJXLJ2C/5Cuh1bHudUeOeahWiJnOT0Rd2ZNoBj4vWsw5RfvY2hl6nuCer3xB3+6
+ eBJqd
+X-Gm-Gg: ASbGnctByWglFkjQtxdbFobAdbXbgGllwVGIUglESi8grx9+PNLrHkC7vifjjuO7oeQ
+ 4eIpbESFamiORJ1nFQ7c5luLLOL9iFZyYCaAmqGvH2xxVyu4phaKVevgU8fbfwt+XIxZwfqHCuj
+ veVKV29VJ6+nwhBtltuphffytgHwKgFyOxsXA25adoxXTfM2kqPxYAAZOxlGJvgC9NcucFK4WPf
+ Wz8XtjWZJk3B321jG70tItJIxPAhdxVQ6nuF51pmQx7UhONWxUWBJlxTk81cb+O/hL5TohnHHfR
+ dnAoUy388Pg89//umBewgsw70Dyyoi0BdZbml4+dR2oOKNl+7nWCD/hnzN58+THX3uXYI7zE4da
+ 6OSt+orb1D8wag61zPEER6smI53VE7lGmSik6
+X-Google-Smtp-Source: AGHT+IHFGrrIYlQTYMWsNLVtn7ZzrgkVQf9jBt9Z8WU5KYY1v47JgQz6rjjfaEcUNjSkAch0+xWx9w==
+X-Received: by 2002:a17:902:cece:b0:22e:6cc6:cf77 with SMTP id
+ d9443c01a7336-23e24f96140mr382879705ad.53.1753195418980; 
+ Tue, 22 Jul 2025 07:43:38 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.157.132])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23e3b6b55ebsm77976495ad.103.2025.07.22.07.43.38
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Jul 2025 07:43:38 -0700 (PDT)
+Message-ID: <cb7d165e-8500-4833-9fb9-1db509cdf616@linaro.org>
+Date: Tue, 22 Jul 2025 07:43:37 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250721105238.461477-1-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.633,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] linux-user: check for NULL before using
+ interval_tree_iter_first result
+To: qemu-devel@nongnu.org
+References: <20250722101544.16366-1-gerben@altlinux.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250722101544.16366-1-gerben@altlinux.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,22 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 21, 2025 at 12:52:38PM +0200, Paolo Bonzini wrote:
-> Date: Mon, 21 Jul 2025 12:52:38 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH] rust: devices are not staticlibs
-> X-Mailer: git-send-email 2.50.1
+On 7/22/25 03:15, gerben@altlinux.org wrote:
+> From: Denis Rastyogin <gerben@altlinux.org>
 > 
-> This is only cosmetic for now, but hopefully later on Meson will parse more
-> of Cargo.toml.  Devices are linked into a staticlib but are not staticlibs
-> themselves.
+> interval_tree_iter_first() may return NULL if the interval tree is empty or invalid.
+> Add a check for NULL before dereferencing the pointer to avoid potential crashes
+> due to null pointer dereference in open_self_maps_2().
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
 > ---
->  rust/hw/char/pl011/Cargo.toml | 3 ---
->  rust/hw/timer/hpet/Cargo.toml | 3 ---
->  2 files changed, 6 deletions(-)
+>   linux-user/syscall.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 91360a072c..d5d5912c96 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -8172,6 +8172,9 @@ static int open_self_maps_2(void *opaque, vaddr guest_start,
+>       while (1) {
+>           IntervalTreeNode *n =
+>               interval_tree_iter_first(d->host_maps, host_start, host_start);
+> +        if (n == NULL) {
+> +            return -1;
+> +        }
+>           MapInfo *mi = container_of(n, MapInfo, itree);
+>           uintptr_t this_hlast = MIN(host_last, n->last);
+>           target_ulong this_gend = h2g(this_hlast) + 1;
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+This will not return null.  Via our caller, we have already verified that there is guest 
+memory present for the virtual address.  There *must* be host memory present to back it.
 
+
+r~
 
