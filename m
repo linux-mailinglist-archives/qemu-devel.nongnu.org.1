@@ -2,124 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DC8B0E35F
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Jul 2025 20:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 951B4B0E390
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Jul 2025 20:35:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueHaG-0002hh-EI; Tue, 22 Jul 2025 14:19:24 -0400
+	id 1ueHoG-0005XE-Pj; Tue, 22 Jul 2025 14:33:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1ueHM1-0000Ys-6l; Tue, 22 Jul 2025 14:04:41 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1ueHLy-00010H-Lm; Tue, 22 Jul 2025 14:04:40 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56MHsjf5027830;
- Tue, 22 Jul 2025 18:04:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=GTjaky
- eBJqFCYbcSCsNPwr9Goa9gjVpmZei+W2RkmZM=; b=IQV+mi6w2vziNv8J+PN3R2
- XHvSqnQLgSZw18MPkO6RuSJ1+sabTkSVwSuDY8eve/0uw58mTXM7PivsF5DgJPmJ
- ceoKgN9F2nl9YdV9Iz7/HTNT5NLzEgHGGwg2VncT8yE27d7+yQiTjpCdYe8Roatd
- AuVRgi3Yxkr4DaLNozcA+ol6LvEV2V721PbvW4icnV9KIO/ZbLlq1cvmBWzCOz7R
- Uefl5VTVjJiecGx96RLEG6wzX3jiD2Nnju2Vx1xGqjIKbt8p1QGlNsvppCqfreG0
- mJpsvQnig0+sG4W3mppe2HhaMGK2Sz/sYCwu2g6ruKwtr3kfoQHUugzhc4G5SWUQ
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482ff5g2k4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Jul 2025 18:04:35 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56MI4Yep019097;
- Tue, 22 Jul 2025 18:04:34 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482ff5g2k2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Jul 2025 18:04:34 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56MF6LJ3012823;
- Tue, 22 Jul 2025 18:04:34 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 480p3047j2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Jul 2025 18:04:33 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 56MI4UYt20906390
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Jul 2025 18:04:30 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1F20820043;
- Tue, 22 Jul 2025 18:04:30 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D4ED20040;
- Tue, 22 Jul 2025 18:04:26 +0000 (GMT)
-Received: from [9.39.18.220] (unknown [9.39.18.220])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 22 Jul 2025 18:04:26 +0000 (GMT)
-Message-ID: <7a537212-3634-4fe4-b574-b9287c75cb2c@linux.ibm.com>
-Date: Tue, 22 Jul 2025 23:34:22 +0530
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ueHoD-0005VB-3A
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 14:33:49 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ueHoB-0008EB-AC
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 14:33:48 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-748d982e97cso5240204b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Jul 2025 11:33:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753209225; x=1753814025; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Af8w8gVpGTRFsWYjQ9qaY5yWO7L8dh6o2BcO+KrPJCY=;
+ b=zRqP4yrtz34qoO5vTpLRMNDR8jiqDiq88ZuwhSILUhvLylRBOSTRTDFQYlnDZaXJiu
+ ltH6i2HPobcU+VF1dsjcZ98XOEr7ZK7+A7SwOBAP2TCP6PvHJIMQSYsmyOFfY96/jIUG
+ asz8fKSBA5q/LGt4WfoKgcEaQCKnhxwu6UVFvpDmOllMfh5wi35pqwsOl3UYbttPExnY
+ TSh1RXRlk2sBzRiGapI5HEdSk/MlRpgp0QWi5Ua4wm/0ON625fK2ppFP7Ozy0oAqZErA
+ gn0uZMfSx5DjjUMB8iwYqZiFETxKI4B1PBJFIonBpUE7M0CChXnV7o/PObeuijovf+Mn
+ 0fwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753209225; x=1753814025;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Af8w8gVpGTRFsWYjQ9qaY5yWO7L8dh6o2BcO+KrPJCY=;
+ b=kmdiGtJZzoKN4DqdPsVE02PCda1ERTjIZUGySHrKnhx1951a026aC+a54XUaktl3L1
+ rKoHsAsDxRfx2QSj3izHm0pTTFvRExqRGRGXFfm8NXXa5Nf44ZutcTyn6vZcKT5dOlGR
+ 3qQ8VxyYgqxSJB1WKNHTV748S1YfdvknKjTmJy+k0lCjDAlO9HfmDzh7tbbPeEBSrEm6
+ GeEoYKl64fCONjHq5k4NmYN+gHKPmJw+SRKHYzIctAyyV6haBkXB/xS0JQ8K/VoTUkL9
+ Z6W2a4OxrkkTGkiPTgghD1JWyfhkLsVEbADYuskTGlXq37g60HY+TiyTey3lc/p2xOX9
+ KXeA==
+X-Gm-Message-State: AOJu0YxOZBc6pRohcTgfEUTYSTCyops+bnOXKnMRt8VmDOLXJ0pVUP1L
+ uczMGGRBwdv913etWAeiOQj3VFiOMt5cgBbnDlMTTYb4Samyqxq2jShsXEWaXb15L8J6JsM7iMx
+ hnLer
+X-Gm-Gg: ASbGncttz3nSklTNMwuwHJYGTxRPp6aM9JiQmHl351bQY1kuRfR9gdNZs8GriNUuiG7
+ DCZysXt4X9YI11o8wTmjlbBGMTCoXVKcWWGiceLRwNOqc/v5kJXLts/2WIJnSYA62gbDWVm6w0u
+ wA+0B7p+YmwVq721tysxyGumros17FtNv42rLz03vCfCmpi0M91gkOVVrE4KKvdjrtZ3SYcJW+K
+ h1fgr9MPXZSspilrCbdsDgcGNDtnBqBJCplUBqoME/Rdy84CpvTLh9W6EoZy6MmHIEXT1CC0D/X
+ 0sAj6EIUtxd3cSellz1zMIg7+i0/nWmbO/0GQs9+vejLE9mGSnzL7aiqSeYfn0Q4tz+0gyf3LfV
+ DzKZgDjEiKBjTrPs25Qj7XTDtwi54
+X-Google-Smtp-Source: AGHT+IHANaMpF6E/OnHe+11Mwu+5hqh7ja+sM2fMslZpTHqQnnCxQaD501sWUsO1LOR+DtHada29OA==
+X-Received: by 2002:a05:6a00:174a:b0:758:284a:9128 with SMTP id
+ d2e1a72fcca58-760353f4306mr407733b3a.19.1753209224930; 
+ Tue, 22 Jul 2025 11:33:44 -0700 (PDT)
+Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-759cbc68095sm7976395b3a.139.2025.07.22.11.33.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 22 Jul 2025 11:33:44 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PATCH] decodetree: Infer argument set before inferring format
+Date: Tue, 22 Jul 2025 11:33:43 -0700
+Message-ID: <20250722183343.273533-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] hw/ppc: Add stub for pnv_chip_find_core()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
- Ani Sinha <anisinha@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-stable <qemu-stable@nongnu.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20250526112346.48744-1-philmd@linaro.org>
- <20250526112346.48744-4-philmd@linaro.org>
- <eff37ca7-d977-450e-85e0-ca8e4f6f3d5a@redhat.com>
- <ba766eae-e8e0-436a-ad30-625744b872e4@linaro.org>
-Content-Language: en-US
-From: Aditya Gupta <adityag@linux.ibm.com>
-In-Reply-To: <ba766eae-e8e0-436a-ad30-625744b872e4@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDE0OSBTYWx0ZWRfXzt+Azii/PpEZ
- LcBpA5n6d1673OgmvQhOpDByj2zvd1H0gfrjJUR7lzTLXc+Fw/aTxeNaIF0MAt8BMkaNCwJL3a5
- 5P6i+tjVmX3Ezpbrt5y21wQSbOnl5+cZgVtjVG4DBsdJDSRfGvlfhWh8rUUODLoAjeCwqNxzsy1
- Uep47YcH9rOEsX7tKqZVAbYn36rAnuNlskHTmy+ZQfypjm+xTvLs7g1HyxmJf3mKh4QseycZoFK
- mQp4WishQsQoaN7B2M4JMkMAZKzzCArCdaZ5wIxEIHzToy12qheWSu9mALUgt1i+tB7moLx5OLB
- VHFJHgoXjnjCEs64EYM2cIzI1bOClvCfO1eFmpTB3ZEg8uGgSAEgMWBH5/qIE1uJju+uN7NQAP4
- YPTf5vbd0Tt4Jbrqx6lsfrXSDMro/86jqtzkzAbKDyUM2+R1YocDsV5lZ7hJhWnbuxR6yRrb
-X-Authority-Analysis: v=2.4 cv=evLfzppX c=1 sm=1 tr=0 ts=687fd2b3 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=NEAV23lmAAAA:8 a=3k9ylfmYWhEEyks9udkA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 9H9MFCpnfSdSZSaGm24kfj6lsm47zYeZ
-X-Proofpoint-ORIG-GUID: KtwzzJr_OPJtBrv_SMXj2cWTgZkU9wuJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-22_02,2025-07-21_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0 malwarescore=0 spamscore=0 adultscore=0
- lowpriorityscore=0 bulkscore=0 mlxscore=0 suspectscore=0 phishscore=0
- priorityscore=1501 mlxlogscore=940 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507220149
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -135,63 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric and Philippe,
+Failure to confirm an argument set first may result in
+the selection of a format which leaves extra arguments
+to be filled in by the pattern.
 
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ scripts/decodetree.py           | 7 ++++---
+ tests/decode/meson.build        | 1 +
+ tests/decode/succ_infer1.decode | 4 ++++
+ 3 files changed, 9 insertions(+), 3 deletions(-)
+ create mode 100644 tests/decode/succ_infer1.decode
 
-On 26/05/25 17:21, Philippe Mathieu-Daudé wrote:
-> On 26/5/25 13:48, Cédric Le Goater wrote:
->> On 5/26/25 13:23, Philippe Mathieu-Daudé wrote:
->>> Since commit 9808ce6d5cb, building QEMU configured with
->>> '--without-default-devices' fails:
->>>
->>>    Undefined symbols for architecture arm64:
->>>      "_pnv_chip_find_core", referenced from:
->>>          _helper_load_sprd in target_ppc_misc_helper.c.o
->>>          _helper_store_sprd in target_ppc_misc_helper.c.o
->>>    ld: symbol(s) not found for architecture arm64
->>>    clang: error: linker command failed with exit code 1
->>> > Fix by adding a stub when CONFIG_POWERNV is not available.
->>
->> The fix would be to add an abstract handler to implement SPRD accesses
->> on the PowerNV machine.
+diff --git a/scripts/decodetree.py b/scripts/decodetree.py
+index e8b72da3a9..f992472b73 100644
+--- a/scripts/decodetree.py
++++ b/scripts/decodetree.py
+@@ -1016,9 +1016,12 @@ def infer_format(arg, fieldmask, flds, width):
+         else:
+             var_flds[n] = c
+ 
++    if not arg:
++        arg = infer_argument_set(flds)
++
+     # Look for an existing format with the same argument set and fields
+     for fmt in formats.values():
+-        if arg and fmt.base != arg:
++        if fmt.base != arg:
+             continue
+         if fieldmask != fmt.fieldmask:
+             continue
+@@ -1029,8 +1032,6 @@ def infer_format(arg, fieldmask, flds, width):
+         return (fmt, const_flds)
+ 
+     name = decode_function + '_Fmt_' + str(len(formats))
+-    if not arg:
+-        arg = infer_argument_set(flds)
+ 
+     fmt = Format(name, 0, arg, 0, 0, 0, fieldmask, var_flds, width)
+     formats[name] = fmt
+diff --git a/tests/decode/meson.build b/tests/decode/meson.build
+index b13fada980..63405ca08f 100644
+--- a/tests/decode/meson.build
++++ b/tests/decode/meson.build
+@@ -41,6 +41,7 @@ succ_tests = [
+     'succ_argset_type1.decode',
+     'succ_function.decode',
+     'succ_ident1.decode',
++    'succ_infer1.decode',
+     'succ_named_field.decode',
+     'succ_pattern_group_nest1.decode',
+     'succ_pattern_group_nest2.decode',
+diff --git a/tests/decode/succ_infer1.decode b/tests/decode/succ_infer1.decode
+new file mode 100644
+index 0000000000..6fa40bada5
+--- /dev/null
++++ b/tests/decode/succ_infer1.decode
+@@ -0,0 +1,4 @@
++&rprr_load      rd pg rn rm dtype nreg
++@rprr_load      .... .... ... rm:5 ... pg:3 rn:5 rd:5            &rprr_load
++
++LD1Q            1100 0100 000 rm:5 101 pg:3 rn:5 rd:5
+-- 
+2.43.0
 
-
-Is this what you meant by an abstract handler ?
-https://github.com/adi-g15-ibm/qemu/commit/0abac37032a5ef66d64a649ce04f24876bf9007d
-
-
-The thing done, is just to introduce a function pointer in 
-'PowerPCCPUClass',
-namely 'handle_sprd_store' and 'handle_sprd_load'
-
-
-These will be set in the PNV chip realize path, so now the SPRD code in
-target/ppc, will only call this for PowerNV.
-
-Separated the powernv specific code, so target/ppc code doesn't depend
-on pnv calls now.
-
-
-Not well tested, will try somethings.
-
-
-Thanks,
-
-Aditya Gupta
-
-
->
-> I don't know what "SPRD" is so I'll let someone more familiar with
-> this area do the proper cleanup.
->
-> Regards,
->
-> Phil.
->
->>
->> Thanks,
->>
->> C.
->
->
 
