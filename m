@@ -2,96 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383EDB0DE8A
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Jul 2025 16:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A58B0DEC5
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Jul 2025 16:35:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueDxv-0004fp-Lm; Tue, 22 Jul 2025 10:27:35 -0400
+	id 1ueE5Z-0006IR-KY; Tue, 22 Jul 2025 10:35:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ueDvy-00029g-Ag; Tue, 22 Jul 2025 10:25:34 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ueDvw-0004oF-9f; Tue, 22 Jul 2025 10:25:34 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 66AF31395E8;
- Tue, 22 Jul 2025 17:25:11 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4B29524C929;
- Tue, 22 Jul 2025 17:25:28 +0300 (MSK)
-Message-ID: <fe6a0924-aff9-4881-9c2a-5665776d619f@tls.msk.ru>
-Date: Tue, 22 Jul 2025 17:25:27 +0300
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ueE5S-0006FV-Qg
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 10:35:23 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ueE5Q-0008EW-O9
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 10:35:22 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-235e1d710d8so60072365ad.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Jul 2025 07:35:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753194918; x=1753799718; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NE4TtM8k5OYTN+7ssV3Undb4RQNht2hNnEovKw/hVHM=;
+ b=VW+F7fNG5bc8wpFNUtP4UgYaRsw0FPt8TvlrvwamE7Bgvl8eiFKNlb1H2KGhkQUFDh
+ 3EHAYAUCAyt6M05NH8Pth94rFlOTIh6YRGwOsclyc3KflFh1wHbZj8w9pZzF5m7+EqeI
+ ZcJf2WzxLeaPkgKFE8IsIH3hKP1BHwsrnm/svW//GXfzVzQRb7GD4RGbIv9xbqzPcTWk
+ V2S3vBT0hD/RoIRn9KrqZBOgnRrvvDxlYnqENdcoJtK3oYiItQz/yy3ddq5umi/8fehn
+ roHZsdLkaZqKv4qVyrygXh9WbtZaadkedy0sRB0b1tiSllcGQ6kcGzr9dycOjlaX2ixP
+ qyKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753194918; x=1753799718;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NE4TtM8k5OYTN+7ssV3Undb4RQNht2hNnEovKw/hVHM=;
+ b=DVyMbiZhYOzodeySnPnNCMaSI3wfsd1V3rg26DCL3jE7y5b3aAUqpQU+I4RKHoP/5/
+ hO0W9j+f7BXI8vEHe6wSNzBiyYhodNvHdP7dGvPyA6Mh70a9ULQzN8/56SGu2bcRi3Nb
+ StLB+d8Fd1CACJxdrPzhrOglyT5u1ZnpnMSnj1QaFQz4HhTy2OpMnUgxcm/ONYLIijoY
+ HJStYt1mIMKkfEQCSb1rR7c/qMh+0YCwKm1c6npcrIHG1IV5k+9bMWaEfdPMvpvywdad
+ TjKS9XaoBH1DBCqxDg+I15Y89q4xB/dR6J1/hxufvd5hhhdN+NtcjCsJMcqQDZfbjAyv
+ VLSQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUC0utQrbk0nTS6G6pjlpzpHVFsxOp6JkdAe/GYvlhjCuG6x6MZ2GVptPcOYo8gW8ofsyLvmcbF7LBf@nongnu.org
+X-Gm-Message-State: AOJu0YyY0qtozEGx9TXZ88IUxIleOQzmNyfegOgMqod5RjZ70C8cP0d4
+ Eik7wQrmG5c/IqX/8b5LqZ7KA0gJNKQmbHFJY0+3azKR29/dsRALxWv+qbcs/kuyubxSmnFRieL
+ yKJ+1
+X-Gm-Gg: ASbGncu3yJJKmTIgJS74hKz/rrSIquOlJGBV5LoJ2kaLFS40xXhDLVZ6AEGibXDnpXt
+ GJl7V9QcfMWnykY9U4OXcp2/pKs6bR+3VpZTuFrCov6bePUxtifZb8boD+9rAIoaTMqS0DEDDJL
+ FTi5SKL2LQY3BAXDsCndXWPfiKjlTA0hAgJ+Nd6sQYWNhOTOU9wUZrT3fjBwScBzJ0AVWyZnTHg
+ htrGFgH9oiiifbDKpJ9xZZUbV1JQeWes/JoC7rnFG7T63K4PUEe9Rf8tVTcJDH9v9vHJ2PdSBpC
+ q3umFlR0psKkS+S++ys7YNM7p3TKY1efWFMgHeABQd8+NCLwYYehJYhb/t6c0MieAhON5AcZRjx
+ 0zJV+yu9B94zsYxIW/3D/rVXv3vopzgL2gORcZ1tsrpjwEkI=
+X-Google-Smtp-Source: AGHT+IGdj+pK4CucFpob0WjS1bxOdwYcv3zhKjV8+hnBRp4Pao1CggYm1qcXA7447K4Qp3tkPBp/Ig==
+X-Received: by 2002:a17:903:1447:b0:238:120:134a with SMTP id
+ d9443c01a7336-23e302cad77mr331040765ad.22.1753194918236; 
+ Tue, 22 Jul 2025 07:35:18 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.157.132])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23e3b5e2e5csm77496005ad.14.2025.07.22.07.35.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Jul 2025 07:35:17 -0700 (PDT)
+Message-ID: <5ab2be93-2551-4c82-886d-3cdf47360322@linaro.org>
+Date: Tue, 22 Jul 2025 07:35:16 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/50] ppc queue
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
- Caleb Schlossin <calebs@linux.ibm.com>,
- Gautam Menghani <gautam@linux.ibm.com>, qemu-stable <qemu-stable@nongnu.org>
-References: <20250721162233.686837-1-clg@redhat.com>
- <10177005-d549-41bc-b0eb-c98b7e475f97@tls.msk.ru>
- <ce863981-3d5e-4ec4-94ee-e35d773eab78@redhat.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <ce863981-3d5e-4ec4-94ee-e35d773eab78@redhat.com>
+Subject: Re: [PATCH] target/hppa: prevent overflow in BTLB entry size
+ calculation
+To: gerben@altlinux.org, qemu-devel@nongnu.org
+Cc: sdl.qemu@linuxtesting.org
+References: <20250722101902.16613-1-gerben@altlinux.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250722101902.16613-1-gerben@altlinux.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,38 +103,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.07.2025 16:37, Cédric Le Goater wrote:
-> + Glenn, Michael, Caleb, Gautam
+On 7/22/25 03:18, gerben@altlinux.org wrote:
+> From: Denis Rastyogin <gerben@altlinux.org>
 > 
-> On 7/22/25 13:44, Michael Tokarev wrote:
->> 21.07.2025 19:21, Cédric Le Goater wrote:
->>
->>> ----------------------------------------------------------------
->>> ppc/xive queue:
->>>
->>> * Various bug fixes around lost interrupts particularly.
->>> * Major group interrupt work, in particular around redistributing
->>>    interrupts. Upstream group support is not in a complete or usable
->>>    state as it is.
->>> * Significant context push/pull improvements, particularly pool and
->>>    phys context handling was quite incomplete beyond trivial OPAL
->>>    case that pushes at boot.
->>> * Improved tracing and checking for unimp and guest error situations.
->>> * Various other missing feature support.
->>
->> Is there anything in there which should be picked up for
->> stable qemu branches?
+> Cast len to long long before multiplying by TARGET_PAGE_SIZE
+> when calculating btlb->itree.last to ensure 64-bit arithmetic
+> and avoid potential overflow.
 > 
-> May be the IBM simulation team can say ?
-> I think this would also require some testing before applying.
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
 > 
-> Which stable branch are you targeting ? 7.2 to 10.0 ?
+> Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
+> ---
+>   target/hppa/mem_helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+> index 9bdd0a6f23..0c196b5bfc 100644
+> --- a/target/hppa/mem_helper.c
+> +++ b/target/hppa/mem_helper.c
+> @@ -766,7 +766,7 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
+>   
+>               /* Create new BTLB entry */
+>               btlb->itree.start = virt_page << TARGET_PAGE_BITS;
+> -            btlb->itree.last = btlb->itree.start + len * TARGET_PAGE_SIZE - 1;
+> +            btlb->itree.last = btlb->itree.start + (long long) len * TARGET_PAGE_SIZE - 1;
+>               btlb->pa = phys_page << TARGET_PAGE_BITS;
+>               set_access_bits_pa11(env, btlb, env->gr[20]);
+>               btlb->t = 0;
 
-There are currently 2 active stable branches, 7.2 and 10.0.
-Both are supposed to be long-term maintenance.  I think 7.2
-can be left behind already.
+(1) long long is always wrong.
 
-Thanks,
+(2) If there's truncation anywhere, it's in the type of len itself:
 
-/mjt
+       unsigned int len; len = env->gpr[21];
+
+     However, from the comment at the top of the function I deduce
+     this is a parisc-1.1 thing, where gprs are 32 bits, so this is
+     producing the correct result.
+
+
+r~
 
