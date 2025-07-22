@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C23B0D731
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Jul 2025 12:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEBEAB0D732
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Jul 2025 12:19:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueA45-0002Xd-3p; Tue, 22 Jul 2025 06:17:41 -0400
+	id 1ueA4x-0003iZ-Az; Tue, 22 Jul 2025 06:18:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gerben@altlinux.org>)
- id 1ueA3r-0002Qj-FV
- for qemu-devel@nongnu.org; Tue, 22 Jul 2025 06:17:28 -0400
+ id 1ueA4k-0003ai-Le
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 06:18:23 -0400
 Received: from air.basealt.ru ([193.43.8.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gerben@altlinux.org>)
- id 1ueA3p-0000PT-SN
- for qemu-devel@nongnu.org; Tue, 22 Jul 2025 06:17:27 -0400
+ id 1ueA4i-0000U5-9a
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 06:18:21 -0400
 Received: from boringlust.malta.altlinux.ru (obninsk.basealt.ru
  [217.15.195.17]) (Authenticated sender: rastyoginds)
- by air.basealt.ru (Postfix) with ESMTPSA id 3536723392;
- Tue, 22 Jul 2025 13:17:24 +0300 (MSK)
+ by air.basealt.ru (Postfix) with ESMTPSA id 23C8E23394;
+ Tue, 22 Jul 2025 13:18:18 +0300 (MSK)
 From: gerben@altlinux.org
 To: qemu-devel@nongnu.org,
-	richard.henderson@linaro.org
+	philmd@linaro.org
 Cc: sdl.qemu@linuxtesting.org
-Subject: [PATCH] target/ppc: fix potential shift overflow by using 64-bit
- constant
-Date: Tue, 22 Jul 2025 13:16:47 +0300
-Message-ID: <20250722101721.16458-1-gerben@altlinux.org>
+Subject: [PATCH] target/mips: fix TLB huge page check to use 64-bit shift
+Date: Tue, 22 Jul 2025 13:17:53 +0300
+Message-ID: <20250722101816.16528-1-gerben@altlinux.org>
 X-Mailer: git-send-email 2.42.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -58,29 +57,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Denis Rastyogin <gerben@altlinux.org>
 
-Change shift operand from 32-bit literal `1` to 64-bit `1ULL` to avoid undefined behavior
-when shifting bits beyond the width of a 32-bit integer.
+Use 1ULL << psn to ensure the shift is done in 64-bit arithmetic,
+avoiding overflow for large psn values. The 6-bit psn field allows
+values up to 63, so 64-bit shift is required for correctness.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
 Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
 ---
- target/ppc/translate.c | 2 +-
+ target/mips/tcg/system/tlb_helper.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 27f90c3cc5..8e69c4cb48 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -2998,7 +2998,7 @@ static void gen_fetch_inc_conditional(DisasContext *ctx, MemOp memop,
+diff --git a/target/mips/tcg/system/tlb_helper.c b/target/mips/tcg/system/tlb_helper.c
+index eccaf3624c..b8b8747064 100644
+--- a/target/mips/tcg/system/tlb_helper.c
++++ b/target/mips/tcg/system/tlb_helper.c
+@@ -652,7 +652,7 @@ static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
+         return 0;
+     }
  
-     /* RT = (t != t2 ? t : u = 1<<(s*8-1)) */
-     tcg_gen_movcond_tl(cond, cpu_gpr[rD(ctx->opcode)], t, t2, t,
--                       tcg_constant_tl(1 << (memop_size(memop) * 8 - 1)));
-+                       tcg_constant_tl(1ULL << (memop_size(memop) * 8 - 1)));
- }
- 
- static void gen_ld_atomic(DisasContext *ctx, MemOp memop)
+-    if ((entry & (1 << psn)) && hugepg) {
++    if ((entry & (1ULL << psn)) && hugepg) {
+         *huge_page = true;
+         *hgpg_directory_hit = true;
+         entry = get_tlb_entry_layout(env, entry, leaf_mop, pf_ptew);
 -- 
 2.42.2
 
