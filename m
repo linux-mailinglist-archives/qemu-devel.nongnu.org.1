@@ -2,102 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F578B0D9F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Jul 2025 14:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88105B0DAED
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Jul 2025 15:34:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueCKY-000367-Rf; Tue, 22 Jul 2025 08:42:50 -0400
+	id 1ueD7J-0008QF-KU; Tue, 22 Jul 2025 09:33:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1ueCJV-0002P2-Ap
- for qemu-devel@nongnu.org; Tue, 22 Jul 2025 08:41:48 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ueD7A-0008IJ-En
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 09:33:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1ueCJQ-0006Lg-FU
- for qemu-devel@nongnu.org; Tue, 22 Jul 2025 08:41:44 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56M5TAYZ002494;
- Tue, 22 Jul 2025 12:41:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=Rl49k
- rj7ViSaTPPGMRA6RmJFt6EEl+djuAVv29tgwhw=; b=oNz7sp0LQr+4lGlyZeGs3
- o+IF9y+RZ+vQL/6XLMgIr98ORCt7/l2TYEm6LbgU/ifgiMQw8M+I5/fzxPknlotM
- iVcZbrpvVxI8ptLG9kOfdGovCK7LNK7KN7HOshi/RXu8Q6txt6n6LlVzFsV9vFXe
- FmNdJlv14/HpwaGwMG2SP8/RXWQOSxTNMJj18W9adHpk8Eu+N00wZdz3Kx6OQ6YT
- Grwpta1lh4zABundQytBDpLa750cuZ/M8phb9fKIzW7JJVv7Lxgc6X/CHfI5iL5J
- ZZgn5axseqFKtJeQLsrO2DDyLqwLyQV+gPHmfWSUDXhsPd3xqk48vFXQZ9wRYM4u
- g==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4805hpd584-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Jul 2025 12:41:38 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 56MBf90b010337; Tue, 22 Jul 2025 12:41:37 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 4801t99gdk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Jul 2025 12:41:37 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56MCfT41039536;
- Tue, 22 Jul 2025 12:41:37 GMT
-Received: from jonah-amd-ol9-bm.osdevelopmeniad.oraclevcn.com
- (jonah-amd-ol9-bm.allregionaliads.osdevelopmeniad.oraclevcn.com
- [100.100.252.67])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 4801t99g9h-7; Tue, 22 Jul 2025 12:41:37 +0000
-From: Jonah Palmer <jonah.palmer@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com, 
- jasowang@redhat.com, mst@redhat.com, si-wei.liu@oracle.com,
- eperezma@redhat.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Subject: [RFC 6/6] virtio-net: skip vhost_started assertion during iterative
- migration
-Date: Tue, 22 Jul 2025 12:41:27 +0000
-Message-ID: <20250722124127.2497406-7-jonah.palmer@oracle.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250722124127.2497406-1-jonah.palmer@oracle.com>
-References: <20250722124127.2497406-1-jonah.palmer@oracle.com>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ueD76-000596-Rj
+ for qemu-devel@nongnu.org; Tue, 22 Jul 2025 09:33:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753191178;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eJ0Ezi4YBKVxyFKknH8ppZf0265MQWGEcay2zpGL9QA=;
+ b=AUlnpvIxDsaMR9xct3jI23vMJC0hrWeMyDzZKGBlYUpx6uT8epDZDzWqV9bHLtj/gUD3/c
+ JNENJxkUsNflKE575oxFhHtLlghoztP+pA49Y2gaH+tWy0khAsfWragUzxmVyjTheOhoVB
+ +p1/Xn7wr38F3qGofObSrLSOHBGrOsc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-vn80zdX8P8-NKqtOZhcYSg-1; Tue,
+ 22 Jul 2025 09:32:55 -0400
+X-MC-Unique: vn80zdX8P8-NKqtOZhcYSg-1
+X-Mimecast-MFC-AGG-ID: vn80zdX8P8-NKqtOZhcYSg_1753191174
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0205B1800C31; Tue, 22 Jul 2025 13:32:54 +0000 (UTC)
+Received: from redhat.com (unknown [10.44.34.16])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6014B19560AB; Tue, 22 Jul 2025 13:32:50 +0000 (UTC)
+Date: Tue, 22 Jul 2025 15:32:47 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Brian Song <hibriansong@gmail.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, armbru@redhat.com,
+ bschubert@ddn.com, fam@euphon.net, hreitz@redhat.com, stefanha@redhat.com
+Subject: Re: [PATCH RFC 1/1] block/export: FUSE-over-io_uring Support for
+ QEMU FUSE Exports
+Message-ID: <aH-S_31c8RNW3coY@redhat.com>
+References: <20250716183824.216257-1-hibriansong@gmail.com>
+ <20250716183824.216257-2-hibriansong@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-22_02,2025-07-21_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- spamscore=0 phishscore=0
- mlxscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507220104
-X-Proofpoint-ORIG-GUID: NMkobAYHwjzZ4RjayJK_EdtlBXcSPSJh
-X-Authority-Analysis: v=2.4 cv=YY+95xRf c=1 sm=1 tr=0 ts=687f8702 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=9V0WdlfnHfHVK-SkIusA:9
-X-Proofpoint-GUID: NMkobAYHwjzZ4RjayJK_EdtlBXcSPSJh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDEwNCBTYWx0ZWRfX/6SVOmdGDsLQ
- QOBemMUWsXM5ZbIwT/F66I0UMZCLjSd6VY04i0gaij+rLJWmdAyPpdpgijEXnD8nzPj4o3XHcav
- 9Q4fhuXfTmG2YphFYf1zn5vjRAd4fdf4EapRfP983viCM5yYw29judLhUGCRDoKTJI5dgsnWFDE
- u9X6ujA7JFSd52fK4x5ZEuBFozz7TiK9+CwWK/Ffde24Da00MP1k/MEBvzcJVpkJ/FHmNJL5H0y
- 6GowUQN01hq7GH8mG8snlyp537V5QNTlSx7Kpfzia683tNY+g+PNvDCfRcAyqa8nEg1VHaCMjc2
- JIrcsqKoILc4Gj8x95XnWcP9GCjooS2zXVnOpJRrCEUtbQ7nGqNz74v4+Uyblq9/TbZADZFORdN
- DlurALeds5FPR/Mz80wa6xsQz0T6iIU/xUhZ9pefLF+zM3nyJLDVAj6ICnyXqriWAAKjLJIH
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250716183824.216257-2-hibriansong@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.633,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,89 +82,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Initializes vhost-net support for iterative live migration by avoiding
-the assertion that vhost needs to be stopped before proceeding with
-sending the initial VMStateDescription for virtio-net.
+Am 16.07.2025 um 20:38 hat Brian Song geschrieben:
+> This work provides an initial implementation of fuse-over-io_uring
+> support for QEMU export. According to the fuse-over-io_uring protocol
+> specification, the userspace side must create the same number of queues
+> as the number of CPUs (nr_cpu), just like the kernel. Currently, each
+> queue contains only a single SQE entry, which is used to validate the
+> correctness of the fuse-over-io_uring functionality.
+> 
+> All FUSE read and write operations interact with the kernel via io
+> vectors embedded in the SQE entry during submission and CQE fetching.
+> The req_header and op_payload members of each entry are included as
+> parts of the io vector: req_header carries the FUSE operation header,
+> and op_payload carries the data payload, such as file attributes in a
+> getattr reply, file content in a read reply, or file content being
+> written to the FUSE client in a write operation.
+> 
+> At present, multi-threading support is still incomplete. In addition,
+> handling connection termination and managing the "drained" state of a
+> FUSE block export in QEMU remain as pending work.
+> 
+> Suggested-by: Kevin Wolf <kwolf@redhat.com>
+> Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Signed-off-by: Brian Song <hibriansong@gmail.com>
+> 
+> ---
+>  block/export/fuse.c                  | 423 +++++++++++++++++++++++++--
+>  docs/tools/qemu-storage-daemon.rst   |  10 +-
+>  qapi/block-export.json               |   6 +-
+>  storage-daemon/qemu-storage-daemon.c |   1 +
+>  util/fdmon-io_uring.c                |   5 +-
+>  5 files changed, 420 insertions(+), 25 deletions(-)
 
-This should be okay to do since we only care about the static device
-state and not the dynamic ring states for the initial sending of the
-device state.
+You already got a lot of feedback on details. Let me add a more generic
+point that should be addressed for a non-RFC submission: You should try
+to limit each commit to a single logical change. You'll then send a
+patch series instead of just a single patch where each patch works
+incrementally towards the final state.
 
-After the iterative migration portion is finished and the source is
-stopped, we still assert that vhost is also stopped.
+This makes it not only easier to review the changes because there is
+less going on in each individual patch, but it will also be helpful if
+we ever have to debug a problem and can bisect to a smaller change, or
+even just because looking at the commit message in a few years is
+likelier to explain why some specific code was written the way it is.
 
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
----
- hw/net/virtio-net.c        | 23 ++++++++++++++++++++++-
- include/hw/virtio/virtio.h |  1 +
- 2 files changed, 23 insertions(+), 1 deletion(-)
+For example, your change to util/fdmon-io_uring.c could be the first
+patch, enabling IORING_SETUP_SQE128 is a self-contained logical change.
+You can mention in its commit message that it's in preparation for using
+IORING_OP_URING_CMD.
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index b7ac5e8278..07941f991e 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -3753,6 +3753,19 @@ static bool failover_hide_primary_device(DeviceListener *listener,
- static int virtio_net_pre_save(void *opaque)
- {
-     VirtIONet *n = opaque;
-+    VirtIODevice *vdev = VIRTIO_DEVICE(n);
-+
-+    /*
-+     * During iterative migration, vhost will still be active. However,
-+     * this shouldn't be an issue since we don't care about the dynamic
-+     * ring states at this point.
-+     *
-+     * The final migration at the end will still occur with vhost stopped
-+     * and any inconsistencies will be overwritten.
-+     */
-+    if (vdev->migration && !vdev->migration->iterative_vmstate_sent) {
-+        return 0;
-+    }
- 
-     /* At this point, backend must be stopped, otherwise
-      * it might keep writing to memory. */
-@@ -3809,11 +3822,16 @@ static bool virtio_net_is_active(void *opaque)
- static int virtio_net_save_setup(QEMUFile *f, void *opaque, Error **errp)
- {
-     VirtIONet *n = opaque;
-+    VirtIODevice *vdev = VIRTIO_DEVICE(n);
-+    vdev->migration = g_new0(VirtIODevMigration, 1);
-+    vdev->migration->iterative_vmstate_sent = false;
- 
-     qemu_put_be64(f, VNET_MIG_F_INIT_STATE);
-     vmstate_save_state(f, &vmstate_virtio_net, n, NULL);
-     qemu_put_be64(f, VNET_MIG_F_END_DATA);
- 
-+    vdev->migration->iterative_vmstate_sent = true;
-+
-     return 0;
- }
- 
-@@ -3838,7 +3856,10 @@ static int virtio_net_save_live_complete_precopy(QEMUFile *f, void *opaque)
- 
- static void virtio_net_save_cleanup(void *opaque)
- {
--
-+    VirtIONet *n = opaque;
-+    VirtIODevice *vdev = VIRTIO_DEVICE(n);
-+    g_free(vdev->migration);
-+    vdev->migration = NULL;
- }
- 
- static int virtio_net_load_setup(QEMUFile *f, void *opaque, Error **errp)
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 06b6e6ba65..aa3f60cb7b 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -101,6 +101,7 @@ enum virtio_device_endian {
- /* VirtIODevice iterative live migration data structure */
- typedef struct VirtIODevMigration {
-     bool iterative_vmstate_loaded;
-+    bool iterative_vmstate_sent;
- } VirtIODevMigration;
- 
- /**
--- 
-2.47.1
+Another patch could be refactoring fuse_co_process_request() so that it
+works for both /dev/fuse based and io_uring based exports. (I agree with
+Stefan that the code should be shared between both.)
+
+And then you could see if adding io_uring support to the FUSE export
+itself can be broken down into multiple self-contained changes or if
+that part has to stay a single big patch. Maybe you can keep it similar
+to how you're actually developing the code: First a patch with a minimal
+implementation that processes one request per queue, then another one to
+implement parallel I/O, then one for supporting multiple iothreads.
+
+
+Another thing I wondered is if the large #ifdef'ed section with io_uring
+helpers would actually make more sense as a separate source file
+block/export/fuse-io_uring.c that can be linked conditionally if
+io_uring is available. This would help to minimise the number of #ifdefs
+in fuse.c.
+
+Kevin
 
 
