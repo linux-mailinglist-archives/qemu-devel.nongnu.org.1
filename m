@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F4CB0EAAA
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 08:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC915B0EB00
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 08:52:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueSyC-0004dp-DW; Wed, 23 Jul 2025 02:28:56 -0400
+	id 1ueTKx-0007AV-UB; Wed, 23 Jul 2025 02:52:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1ueSf7-00030r-BS
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 02:09:09 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1ueSf3-0007Zm-TA
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 02:09:09 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxrnJ4fIBo0BswAQ--.32962S3;
- Wed, 23 Jul 2025 14:08:56 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJBxzsF1fIBoZswiAA--.23054S3;
- Wed, 23 Jul 2025 14:08:56 +0800 (CST)
-Subject: Re: [PATCH 1/1] hw/intc/loongarch_ipi: use physical CPU ID for
- kvm_ipi_access_regs
-To: Bibo Mao <maobibo@loongson.cn>, lixianglai@loongson.cn
-Cc: qemu-devel@nongnu.org, philmd@linaro.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20250723014054.742353-1-gaosong@loongson.cn>
- <fb9b7c23-d85a-819b-a950-2e57d52caa02@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <edb48440-48d8-5efc-ea26-2f2324b5a84d@loongson.cn>
-Date: Wed, 23 Jul 2025 14:11:54 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ueSwt-0003vY-Dy
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 02:27:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ueSwq-00073O-Nw
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 02:27:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753252043;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=wMOoIandP/04VySVapkvNcCzxicJDgz4h8Dn0YoFxQ0=;
+ b=JHGzuceIcgWnsjngTBRFOPXYr8NlNa1VqxJndXrl/KtE2Y2MEHPYK9jKQlrft+heQHO2+H
+ wvRfJzb/4xITV8TQBUof3WQ2uM5ARwIMM4bzIMuYY2s8jllEb9i2o7hC9xOggZ8gRyTFer
+ /MNCm1dP47ttc6VCvk2ZMsgXzZkbuoI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-31-Tdap5CApM8e9dqTb6WWe4g-1; Wed,
+ 23 Jul 2025 02:27:21 -0400
+X-MC-Unique: Tdap5CApM8e9dqTb6WWe4g-1
+X-Mimecast-MFC-AGG-ID: Tdap5CApM8e9dqTb6WWe4g_1753252040
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7CB8E180028E; Wed, 23 Jul 2025 06:27:20 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.45.224.19])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id C39CD195608D; Wed, 23 Jul 2025 06:27:16 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Shaoqin Huang <shahuang@redhat.com>
+Subject: [PATCH] hw/i386: Fix 'use-legacy-x86-rom' property compatibility
+Date: Wed, 23 Jul 2025 08:27:14 +0200
+Message-ID: <20250723062714.1245826-1-clg@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <fb9b7c23-d85a-819b-a950-2e57d52caa02@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJBxzsF1fIBoZswiAA--.23054S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7uw43Ar45tF1xXF4xtF4fZwc_yoW8XFWxpr
- WkC3W5CrW8ArykJa4qqa4UWFyDXrn7t3W7ua1xKFyUJFnxZr1Fgryq9r90gFyUA3y8tFyj
- vF17tF17ZFWUAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1Ek
- sDUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.517,
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.633,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,48 +82,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2025/7/23 上午11:21, Bibo Mao 写道:
->
->
-> On 2025/7/23 上午9:40, Song Gao wrote:
->> QEMU reboot after inserting no-configuous cpus may start failed
->> becaue the vcpu context may not have created on KVM, On QEMU side use 
->> physical CPU ID
->> for kvm_ipi_access_regs and do some check. On KVM use 
->> kvm_get_vcpu_by_cpuid get vcpu.
->>
->> Signed-off-by: Song Gao <gaosong@loongson.cn>
->> ---
->>   hw/intc/loongarch_ipi_kvm.c | 5 +++++
->>   1 file changed, 5 insertions(+)
->>
->> diff --git a/hw/intc/loongarch_ipi_kvm.c b/hw/intc/loongarch_ipi_kvm.c
->> index 4cb3acc921..1c26fdcb10 100644
->> --- a/hw/intc/loongarch_ipi_kvm.c
->> +++ b/hw/intc/loongarch_ipi_kvm.c
->> @@ -31,6 +31,11 @@ static void kvm_ipi_access_regs(void *opaque, bool 
->> write)
->>         for (cpu = 0; cpu < ipi->num_cpu; cpu++) {
->>           core = &ipi->cpu[cpu];
->> +        if (core == NULL || core->cpu == NULL ) {
->> +            continue;
->> +        }
->> +        cpu = core->cpu->cpu_index;
-> Can we use another variable since cpu is used in loop sentence already?
-yes ,   I will correct on v2.
+Commit 350785d41d8b ("ramfb: Add property to control if load the
+romfile") introduced the `use-legacy-x86-rom` property for the
+`vfio-pci-nohotplug` device, allowing control over VGA BIOS ROM
+loading. However, the property compatibility setting was incorrectly
+applied to the `vfio-pci` device instead, which causes all `vfio-pci`
+devices to fail to load. This change fixes the issue by ensuring the
+property is set on the correct device.
 
-Thanks
-Song Gao.
-> for (cpu = 0; cpu < ipi->num_cpu; cpu++)
-> Here modification with cpu will change loop sentence flow.
->
-> Or direct use attr = (core->cpu->cpu_index << 16) | CORE_STATUS_OFF;
->
-> Regards
-> Bibo Mao
->> +
->>           attr = (cpu << 16) | CORE_STATUS_OFF;
->>           kvm_ipi_access_reg(fd, attr, &core->status, write);
->>
+Fixes: d5fcf0d960d8 ("hw/i386: Add the ramfb romfile compatibility")
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Shaoqin Huang <shahuang@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/vfio/types.h   | 2 ++
+ hw/core/machine.c | 2 +-
+ hw/i386/microvm.c | 2 +-
+ hw/i386/pc_piix.c | 2 +-
+ hw/i386/pc_q35.c  | 2 +-
+ hw/vfio/pci.c     | 2 --
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/hw/vfio/types.h b/hw/vfio/types.h
+index fa20c29b9fbbf51ddad4f6cb0535a70152224a94..c19334ff25ae2f5221f08ed863553ce7f8e3be98 100644
+--- a/hw/vfio/types.h
++++ b/hw/vfio/types.h
+@@ -18,4 +18,6 @@
+ #define TYPE_VFIO_PCI "vfio-pci"
+ /* TYPE_VFIO_PCI shares struct VFIOPCIDevice. */
+ 
++#define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
++
+ #endif /* HW_VFIO_VFIO_TYPES_H */
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index d6b2240fc250d2d1194dee62e5356c0c214f1069..bd47527479a7947ca293a47c9a6f49916d24bad3 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -41,7 +41,7 @@ GlobalProperty hw_compat_10_0[] = {
+     { "scsi-hd", "dpofua", "off" },
+     { "vfio-pci", "x-migration-load-config-after-iter", "off" },
+     { "ramfb", "use-legacy-x86-rom", "true"},
+-    { "vfio-pci", "use-legacy-x86-rom", "true" },
++    { "vfio-pci-nohotplug", "use-legacy-x86-rom", "true" },
+ };
+ const size_t hw_compat_10_0_len = G_N_ELEMENTS(hw_compat_10_0);
+ 
+diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+index d90b69a162007af8af1b8596be590126fb00fb59..94d22a232aca1f82590d80c2ac6cc279bb9ff808 100644
+--- a/hw/i386/microvm.c
++++ b/hw/i386/microvm.c
+@@ -635,7 +635,7 @@ GlobalProperty microvm_properties[] = {
+      */
+     { "pcie-root-port", "io-reserve", "0" },
+     { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
+-    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
++    { TYPE_VFIO_PCI_NOHOTPLUG, "use-legacy-x86-rom", "true" },
+ };
+ 
+ static void microvm_class_init(ObjectClass *oc, const void *data)
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index ad5caff3a5d251671db591c68bed3b69a5e45d17..c03324281bdb356e17d434b156e4080865867f4f 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -80,7 +80,7 @@ static const int ide_irq[MAX_IDE_BUS] = { 14, 15 };
+ 
+ static GlobalProperty pc_piix_compat_defaults[] = {
+     { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
+-    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
++    { TYPE_VFIO_PCI_NOHOTPLUG, "use-legacy-x86-rom", "true" },
+ };
+ static const size_t pc_piix_compat_defaults_len =
+     G_N_ELEMENTS(pc_piix_compat_defaults);
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 9b9519fa02d506393058c085178924156e9e0d10..b309b2b378db4741b72828c1f34d2edc2e057a1d 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -69,7 +69,7 @@
+ static GlobalProperty pc_q35_compat_defaults[] = {
+     { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "39" },
+     { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
+-    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
++    { TYPE_VFIO_PCI_NOHOTPLUG, "use-legacy-x86-rom", "true" },
+ };
+ static const size_t pc_q35_compat_defaults_len =
+     G_N_ELEMENTS(pc_q35_compat_defaults);
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index e72d514a4cb91946f7c79332492bf5d709c308f2..0c4606d9cb5e163b8c533ed9b89d4d73eafaae24 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -49,8 +49,6 @@
+ #include "vfio-migration-internal.h"
+ #include "vfio-helpers.h"
+ 
+-#define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
+-
+ /* Protected by BQL */
+ static KVMRouteChange vfio_route_change;
+ 
+-- 
+2.50.1
 
 
