@@ -2,95 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52D1B0F284
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 14:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F64B0F28E
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 14:51:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueYsi-0004hf-0Y; Wed, 23 Jul 2025 08:47:36 -0400
+	id 1ueYvp-0007bb-MI; Wed, 23 Jul 2025 08:50:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ueYre-0004Bs-B6
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 08:46:30 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ueYra-0008Hv-On
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 08:46:29 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-60700a745e5so12366601a12.3
- for <qemu-devel@nongnu.org>; Wed, 23 Jul 2025 05:46:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753274783; x=1753879583; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xVgQntOgmn0uN4Wrfbn2/3pazcvSzF4L1ECVrBsy8ts=;
- b=zDmemiuD50/6+6WkuhZOl/BDBGJli+pMH18yEsOlBNSHCavimWhl9khBBy/xRvATqr
- qIqUE8gGzHJFe30DnQ1k0JcHQ9YNUe9STLZFS2DHcHV4KoCtLanqF2ajBxCqDdO79An1
- jwPRcvi4s+KrwqmpyXWBAZc44tMkxRNDmMK5Jl9JcNC5KWsOi+jOZmStUJ6DvhFDAbIE
- o2RgbN/DRE8SaV7LUNyOeEy0K/HWdfcrLNHdGA9eRc9CXV3IWyfqk9uY2a14OwrFg5oK
- jeZHRnVONkeibIAZV8Qngc56sDaVP6hEcLtYtnGyO/zWO6kIw7rIHEHvQSX4mESB4qcm
- D/Iw==
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1ueYtV-0005pp-0K
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 08:48:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1ueYtR-0008RL-GN
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 08:48:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753274898;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=z1i5IYAi4xXFAbKLvrwQqGMewRtXbUCz3RUpoxhp2io=;
+ b=Aw3r+MSDgSf9KNaE60eMb+tW1of17C27W0gDyX2VGwAtIUMtjdB4qBcOnJmlfO96tCJhz+
+ UWBrJBsl8e98W4NAlwtjnOG9F5yBYzeioZ6I7YjX8bVi9qJ36mqrLBpHCj2eRZvhV8aCaX
+ K9NQS99M3k8A9K9QEewPqLTlEBjCAus=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-557-entDNuirOTyvAxm-1Wd99Q-1; Wed, 23 Jul 2025 08:48:16 -0400
+X-MC-Unique: entDNuirOTyvAxm-1Wd99Q-1
+X-Mimecast-MFC-AGG-ID: entDNuirOTyvAxm-1Wd99Q_1753274896
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-311a6b43ed7so5152011a91.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Jul 2025 05:48:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753274783; x=1753879583;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=xVgQntOgmn0uN4Wrfbn2/3pazcvSzF4L1ECVrBsy8ts=;
- b=uWS2lWs8q0rCTaFxlgQec5qtUvrw3mhbrKkIOd/GNaacpIVRSBvscXaboL6dMrg3tv
- oPSudb3vy6k23km6QiEPygTmJTi5XbrCZ14lVSKaDxCva/agbioqVKopnHtHR0rqOUpp
- f/vs9xHxRa7YLCqq/EO5r9u4KvLF5tvqxBcx4aOI0LI5YXWA4APvDljmyGjpX8tbjjXC
- YbDROn+2ZQi3nWJfQ8Ruwiqk0YjzdU+GZdPBw1RMrqm8woSJG3HqJZsH39uiSoBdmtZh
- x7JYiP+KSLmLnaugQCLNCY2yGamekUrESSnMVVJFUqeF4Afu8gPNQVxoHCGNgZjbTIAZ
- FQjQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWY2xpCsX8phtXSABaeQOsBeqUGbcaRMdAhEUAfZ4WmJaiL6W7znfHt6IJOde6t5FM3JvGaHqM8iz65@nongnu.org
-X-Gm-Message-State: AOJu0YxNhVgJN1sNM+rOCXVo1NSuzCSSXl8WL/q5Znt8L2ggpxEEKWUo
- zek15svVne91yq3WirDV0VTs7jOdwZ2Yqb0+gEzJDd4kfJKYcjoLbnbFZACsbiwKSuxYvPC6elE
- sIqjD
-X-Gm-Gg: ASbGnctWx5LBKcnA+JhqIoP1UtluLmo2D/+p0hBIGkvzcFC+YGdy+esTBaYHENJs8T3
- YIRoJ4nGtxoQljzMCSu81gljms4ztu9TAKuTzXdePeaaiVXotnP267uiwvaF3smzFka7UOdlFmF
- gHp5+1C0uLdXy7q6tDY1rI4jOfFHjSCs/0JrtE5TYFK2cRxec3cAhhQ87x4w+3pLBHpdkzqYIlE
- y6zmbxJkAIo2FiCM1HlUGWxIBnKYgiMeGnIlVza83uhvt+McaXXL4V4XSfeFuLVKwhR1n5gQMiV
- tf9HRamBSxz7NojZL9s7IapriTQyM8b3M/L/hZ2mJLp0PhUmXRO3yI/4ThbolwYS6Aat48sXl+L
- pyTV36PsarkY2kR0fZda9u3U=
-X-Google-Smtp-Source: AGHT+IEGn+8CVJu9kLZTLUJm+fQxuPUBHQ2r/VwSGJZTE3uJyi27J9gFOblh6eYkRDvSwKWfZsCECA==
-X-Received: by 2002:a17:906:794b:b0:ae6:abe9:4daa with SMTP id
- a640c23a62f3a-af2f717a556mr328898866b.27.1753274782605; 
- Wed, 23 Jul 2025 05:46:22 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aec6cad69basm1053078466b.145.2025.07.23.05.46.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Jul 2025 05:46:21 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D597C5F782;
- Wed, 23 Jul 2025 13:46:20 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Ben Dooks <ben.dooks@codethink.co.uk>
-Cc: qemu-block@nongnu.org,  qemu-devel@nongnu.org, Philippe =?utf-8?Q?Math?=
- =?utf-8?Q?ieu-Daud=C3=A9?=
- <philmd@linaro.org>, Bin Meng <bmeng.cn@gmail.com>
-Subject: Re: [PATCH] hw/sd: print bad s->arglen in unexpected response
-In-Reply-To: <20250722090547.109117-1-ben.dooks@codethink.co.uk> (Ben Dooks's
- message of "Tue, 22 Jul 2025 10:05:47 +0100")
-References: <20250722090547.109117-1-ben.dooks@codethink.co.uk>
-User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Wed, 23 Jul 2025 13:46:20 +0100
-Message-ID: <87seinulb7.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1753274895; x=1753879695;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=z1i5IYAi4xXFAbKLvrwQqGMewRtXbUCz3RUpoxhp2io=;
+ b=EHYsx5G1eBYPtJvSnLu59WWEcUvZH9XBhhdBshM1l8Z6tYu3/JQQU+7XYzkOuqjjs7
+ BHk04N+33hvCitERbnU12hd537fiJHHsvKpGGD5iXSTORbaJ7xxcHShkUUlgslleUwY1
+ XCd2iLMVMvsoQNFoxj60DtSPxRaQnXb2/6369zGetx2OD7n5XHzEhAmXXNuwJ6DEKuI4
+ xWgvw/dLFbvwX3YwVf5xyosIttAGzklG8l4igMZW2ETBG/89L+FL2FsBS8vIpG2FPGMh
+ Vc0qrdxutVm9iztabZAILnDoOdS1cy9nm8FoCcGyhTOniWLHwd1rYnygVkzj4WhX2cAS
+ ix4Q==
+X-Gm-Message-State: AOJu0YzMH74/bZQt5g6uwh6kpZbSORPFh90XsKWBqDe7LeafAD0qK+V4
+ iNsYBjsAu/MPgio+4+batjHNLeABZpDiSYSJMqC9OrdmkTdiAgKBukQ1veHXKu8hntxgaXkAJ44
+ nL+wsxpEUAfSK+sFRhMyCH1LF3l9TYXwMqXEv+saNMeV4Q7/Il2ual2NWIVTtq+wRiHaRvukfuA
+ K0Q3PD6NPJBERFQoXn3/afquBwBUC6Y1X3ztps6rI=
+X-Gm-Gg: ASbGnctLjsg+My676Rs7FnqYm+/AUcfb6+IQQNJ2MzjEvc1gbTMS8cwP/M1aRIRw2ew
+ aewbc8+amvq70wx7Iw86nHloaKPeeM5KAsq0yqqtuqxHeYgBy6CXQUHBP2jmmBmpwgFbjoxurGg
+ 4ZOHQBZrmb/dMqaoFTxHot
+X-Received: by 2002:a17:90b:384c:b0:311:af8c:51cd with SMTP id
+ 98e67ed59e1d1-31e50818ad9mr4793523a91.18.1753274895134; 
+ Wed, 23 Jul 2025 05:48:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvM8rJiO9PBoQqGRrtF3HnuoYwwaI4iuvx0sosSBPx82ARpVrRfpvdNB3XJ27oBQAEYfBgPDbR5IBcA9+aUKU=
+X-Received: by 2002:a17:90b:384c:b0:311:af8c:51cd with SMTP id
+ 98e67ed59e1d1-31e50818ad9mr4793490a91.18.1753274894724; Wed, 23 Jul 2025
+ 05:48:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250723121920.1184928-1-aesteve@redhat.com>
+ <98df482d-c75a-46e7-8c39-5aa26eaf1700@redhat.com>
+In-Reply-To: <98df482d-c75a-46e7-8c39-5aa26eaf1700@redhat.com>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Wed, 23 Jul 2025 14:48:02 +0200
+X-Gm-Features: Ac12FXxtGLKIZrNbPLAJ8nUn1kllGmOuajs_IKzpQD6Fz6qf0BYT5xUsLtYxQQ8
+Message-ID: <CADSE00KkhKKQBSk_iLo4xCkPRcWQqUUumD_xsNDOk_YoSDoNeQ@mail.gmail.com>
+Subject: Re: [RFC] memory.c: improve refcounting for RAM vs MMIO regions
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, stefanha@redhat.com, 
+ Paolo Bonzini <pbonzini@redhat.com>, peterx@redhat.com, 
+ Laurent Vivier <lvivier@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.377,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,60 +104,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ben Dooks <ben.dooks@codethink.co.uk> writes:
+On Wed, Jul 23, 2025 at 2:43=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> On 23.07.25 14:19, Albert Esteve wrote:
+> > In the last version of the SHMEM MAP/UNMAP [1] there was a
+> > comment [2] from Stefan about the lifecycle of the memory
+> > regions.
+> >
+> > After some discussion, David Hildenbrand proposed
+> > to detect RAM regions and handle refcounting differently
+> > to clear the initial concern. This RFC patch is
+> > meant for gathering feedback from others
+> > (i.e., Paolo Bonzini and Peter Xu).
+> >
+> > [1] https://patchwork.ozlabs.org/project/qemu-devel/list/?series=3D4601=
+21
+> > [2] https://patchwork.ozlabs.org/comment/3528600/
+> >
+> > ---
+> >
+> > This patch enhances memory_region_ref() and memory_region_unref()
+> > to handle RAM and MMIO memory regions differently, improving
+> > reference counting semantics.
+> >
+> > RAM regions now reference/unreference the memory region object
+> > itself, while MMIO continue to reference/unreference the owner
+> > device as before.
+> >
+> > An additional qtest has been added to stress the memory
+> > lifecycle. All tests pass as these changes keep backward
+> > compatibility (prior behaviour is kept for MMIO regions).
+> >
+> > Signed-off-by: David Hildenbrand <david@redhat.com >
+> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> > ---
+> >   system/memory.c            | 22 +++++++++++++----
+> >   tests/qtest/ivshmem-test.c | 50 +++++++++++++++++++++++++++++++++++++=
++
+> >   2 files changed, 67 insertions(+), 5 deletions(-)
+>
+> Did we discuss extending the doc as well, to clarify which scenario is
+> now supported?
 
-(Add maintainers to CC)
-
-You should get your patch workflow to use scripts/get_maintainer.pl so
-they get CC'd and reduces the chance of it being missed in the fire-hose
-of qemu-devel.
-
-> If we get "ssi_sd: error: Unexpected response to cmd" then having
-> the bad s->arglen would be useful debug and does not add any complexity
-> to the code.
-
-Generally we should be removing the old-style DPRINTF debug and
-replacing them with tracepoints where they are warranted. The main
-problem with the old style DPRINTF's is the format strings tend to
-bitrot because they are not enabled by default.
+Not that I remember? But it is a good idea. I will update the docs for
+the next version of this patch.
 
 >
-> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-> ---
->  hw/sd/ssi-sd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> --
+> Cheers,
 >
-> diff --git a/hw/sd/ssi-sd.c b/hw/sd/ssi-sd.c
-> index 6c90a86ab4..f1441d2c97 100644
-> --- a/hw/sd/ssi-sd.c
-> +++ b/hw/sd/ssi-sd.c
-> @@ -183,7 +183,7 @@ static uint32_t ssi_sd_transfer(SSIPeripheral *dev, u=
-int32_t val)
->                  s->response[0] =3D 1;
->                  memcpy(&s->response[1], longresp, 4);
->              } else if (s->arglen !=3D 4) {
-> -                BADF("Unexpected response to cmd %d\n", s->cmd);
-> +                BADF("Unexpected response to cmd %d, arglen=3D%d\n", s->=
-cmd, s->arglen);
+> David / dhildenb
+>
 
-That said BADF is defined in both cases (although the exit(1) for the
-debug leg is a bit aggressive). Is this an error of the guest
-miss-programming the device with invalid data?
-
-There could be an argument for using:
-
-  qemu_log_mask(LOG_GUEST_ERROR, "Unexpected response to cmd %d, arglen=3D%=
-d\n", s->cmd, s->arglen);
-
-instead.
-
-Phillipe WDYT?
-
->                  /* Illegal command is about as near as we can get.  */
->                  s->arglen =3D 1;
->                  s->response[0] =3D 4;
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
