@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EA1B0FAF5
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 21:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F41B0FAFA
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 21:36:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uefEz-0004Al-DQ; Wed, 23 Jul 2025 15:35:01 -0400
+	id 1uefF1-0004CB-Eb; Wed, 23 Jul 2025 15:35:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uefCS-0001kY-6E
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 15:32:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uefCX-0001mp-Ga
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 15:32:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uefCP-0005o6-I4
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 15:32:22 -0400
+ (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uefCV-0005p6-Pp
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 15:32:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753299140;
+ s=mimecast20190719; t=1753299145;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nRIiWca6+9PzHHHFFJH01QG1lomZGlMJJWN7/y/1r1I=;
- b=adbOGISm+5TlgX5fLK+x1kAi30HBivFwLyaASAWgOYZltV4dbngar3ufMoDQ0SSMs1shNb
- zi3cKELB4wr/ehk0h2QYOEoCk+6I2xG2U6p7iif8iEp2TqODWXDYfZZWU1IBZJhOEKgNmY
- YCIoXbzIP9B8eYxtlJJ1AGmGY6aeTdA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=gnZ14fOq9hCoD+QYvSQDV8nPeRdIGS28ZH92fl75QJw=;
+ b=DEnMQpfkzvqMLDTJF8FBoKnOOhDwSEqMcNPxbBC3HyVkGKVKRMJLbFuJ3qy2TLidDNKJ/i
+ EqdGKIaZ8HVZXGj0/Jbn9O0xtLT3Pm867Aq3Y60dgE1FjkcT7WwXZ4DMNWs0ENJu/pP3v/
+ 8IlZl5RBcdpjGpGK+Qij7LYYdmoLuoI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-423-fntGsmBjN8udb9g-cZxWfg-1; Wed,
- 23 Jul 2025 15:32:16 -0400
-X-MC-Unique: fntGsmBjN8udb9g-cZxWfg-1
-X-Mimecast-MFC-AGG-ID: fntGsmBjN8udb9g-cZxWfg_1753299135
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-e7Ed1gjbM7K7gNI-8594hQ-1; Wed,
+ 23 Jul 2025 15:32:21 -0400
+X-MC-Unique: e7Ed1gjbM7K7gNI-8594hQ-1
+X-Mimecast-MFC-AGG-ID: e7Ed1gjbM7K7gNI-8594hQ_1753299140
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8B6A018002A2; Wed, 23 Jul 2025 19:32:14 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 46E16195FE16; Wed, 23 Jul 2025 19:32:20 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.44.32.60])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2764618003FC; Wed, 23 Jul 2025 19:32:08 +0000 (UTC)
+ id 1A96F180049D; Wed, 23 Jul 2025 19:32:14 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -56,15 +56,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
  Vincenzo Maffione <v.maffione@gmail.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [RFC PATCH v4 02/14] linux-headers: deal with counted_by annotation
-Date: Wed, 23 Jul 2025 21:31:22 +0200
-Message-ID: <042cefed81bac3a4f4cc52739100654f06ddac2d.1753297661.git.pabeni@redhat.com>
+Subject: [RFC PATCH v4 03/14] linux-headers: Update to Linux ~v6.16-rc7
+ net-next
+Date: Wed, 23 Jul 2025 21:31:23 +0200
+Message-ID: <3ca277e2238d474f1f151a8db61e5998d590ad5b.1753297661.git.pabeni@redhat.com>
 In-Reply-To: <cover.1753297661.git.pabeni@redhat.com>
 References: <cover.1753297661.git.pabeni@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pabeni@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pabeni@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -89,27 +90,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Such annotation is present into the kernel uAPI headers since
-v6.7, and will be used soon by the vhost_type.h. Deal with it
-just stripping it.
+Update headers to include the virtio GSO over UDP tunnel features
 
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+--
+Note: while the relevant change are not into Linus's tree yet, they have
+been merged in the net-next tree and they should land into the vanilla
+tree during the next merge window.
 ---
- scripts/update-linux-headers.sh | 1 +
- 1 file changed, 1 insertion(+)
+ include/standard-headers/linux/ethtool.h     |  4 +--
+ include/standard-headers/linux/vhost_types.h |  5 +++
+ include/standard-headers/linux/virtio_net.h  | 33 ++++++++++++++++++++
+ linux-headers/linux/vhost.h                  |  7 +++++
+ 4 files changed, 47 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
-index b43b8ef75a..aafff9caad 100755
---- a/scripts/update-linux-headers.sh
-+++ b/scripts/update-linux-headers.sh
-@@ -90,6 +90,7 @@ cp_portable() {
-         -e 's/<linux\/\([^>]*\)>/"standard-headers\/linux\/\1"/' \
-         -e "$arch_cmd" \
-         -e 's/__bitwise//' \
-+        -e 's/__counted_by(\w*)//' \
-         -e 's/__attribute__((packed))/QEMU_PACKED/' \
-         -e 's/__inline__/inline/' \
-         -e 's/__BITS_PER_LONG/HOST_LONG_BITS/' \
+diff --git a/include/standard-headers/linux/ethtool.h b/include/standard-headers/linux/ethtool.h
+index cef0d207a6..eb80314028 100644
+--- a/include/standard-headers/linux/ethtool.h
++++ b/include/standard-headers/linux/ethtool.h
+@@ -2314,7 +2314,7 @@ enum {
+ 	IPV6_USER_FLOW	= 0x0e, /* spec only (usr_ip6_spec; nfc only) */
+ 	IPV4_FLOW	= 0x10, /* hash only */
+ 	IPV6_FLOW	= 0x11, /* hash only */
+-	ETHER_FLOW	= 0x12, /* spec only (ether_spec) */
++	ETHER_FLOW	= 0x12, /* hash or spec (ether_spec) */
+ 
+ 	/* Used for GTP-U IPv4 and IPv6.
+ 	 * The format of GTP packets only includes
+@@ -2371,7 +2371,7 @@ enum {
+ /* Flag to enable RSS spreading of traffic matching rule (nfc only) */
+ #define	FLOW_RSS	0x20000000
+ 
+-/* L3-L4 network traffic flow hash options */
++/* L2-L4 network traffic flow hash options */
+ #define	RXH_L2DA	(1 << 1)
+ #define	RXH_VLAN	(1 << 2)
+ #define	RXH_L3_PROTO	(1 << 3)
+diff --git a/include/standard-headers/linux/vhost_types.h b/include/standard-headers/linux/vhost_types.h
+index fd54044936..79b53a931a 100644
+--- a/include/standard-headers/linux/vhost_types.h
++++ b/include/standard-headers/linux/vhost_types.h
+@@ -110,6 +110,11 @@ struct vhost_msg_v2 {
+ 	};
+ };
+ 
++struct vhost_features_array {
++	uint64_t count; /* number of entries present in features array */
++	uint64_t features[] ;
++};
++
+ struct vhost_memory_region {
+ 	uint64_t guest_phys_addr;
+ 	uint64_t memory_size; /* bytes */
+diff --git a/include/standard-headers/linux/virtio_net.h b/include/standard-headers/linux/virtio_net.h
+index 982e854f14..93abaae0b9 100644
+--- a/include/standard-headers/linux/virtio_net.h
++++ b/include/standard-headers/linux/virtio_net.h
+@@ -70,6 +70,28 @@
+ 					 * with the same MAC.
+ 					 */
+ #define VIRTIO_NET_F_SPEED_DUPLEX 63	/* Device set linkspeed and duplex */
++#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO 65 /* Driver can receive
++					      * GSO-over-UDP-tunnel packets
++					      */
++#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM 66 /* Driver handles
++						   * GSO-over-UDP-tunnel
++						   * packets with partial csum
++						   * for the outer header
++						   */
++#define VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO 67 /* Device can receive
++					     * GSO-over-UDP-tunnel packets
++					     */
++#define VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO_CSUM 68 /* Device handles
++						  * GSO-over-UDP-tunnel
++						  * packets with partial csum
++						  * for the outer header
++						  */
++
++/* Offloads bits corresponding to VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO{,_CSUM}
++ * features
++ */
++#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_MAPPED	46
++#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM_MAPPED	47
+ 
+ #ifndef VIRTIO_NET_NO_LEGACY
+ #define VIRTIO_NET_F_GSO	6	/* Host handles pkts w/ any GSO type */
+@@ -131,12 +153,17 @@ struct virtio_net_hdr_v1 {
+ #define VIRTIO_NET_HDR_F_NEEDS_CSUM	1	/* Use csum_start, csum_offset */
+ #define VIRTIO_NET_HDR_F_DATA_VALID	2	/* Csum is valid */
+ #define VIRTIO_NET_HDR_F_RSC_INFO	4	/* rsc info in csum_ fields */
++#define VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM 8	/* UDP tunnel csum offload */
+ 	uint8_t flags;
+ #define VIRTIO_NET_HDR_GSO_NONE		0	/* Not a GSO frame */
+ #define VIRTIO_NET_HDR_GSO_TCPV4	1	/* GSO frame, IPv4 TCP (TSO) */
+ #define VIRTIO_NET_HDR_GSO_UDP		3	/* GSO frame, IPv4 UDP (UFO) */
+ #define VIRTIO_NET_HDR_GSO_TCPV6	4	/* GSO frame, IPv6 TCP */
+ #define VIRTIO_NET_HDR_GSO_UDP_L4	5	/* GSO frame, IPv4& IPv6 UDP (USO) */
++#define VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 0x20 /* UDPv4 tunnel present */
++#define VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6 0x40 /* UDPv6 tunnel present */
++#define VIRTIO_NET_HDR_GSO_UDP_TUNNEL (VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 | \
++				       VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6)
+ #define VIRTIO_NET_HDR_GSO_ECN		0x80	/* TCP has ECN set */
+ 	uint8_t gso_type;
+ 	__virtio16 hdr_len;	/* Ethernet + IP + tcp/udp hdrs */
+@@ -181,6 +208,12 @@ struct virtio_net_hdr_v1_hash {
+ 	uint16_t padding;
+ };
+ 
++struct virtio_net_hdr_v1_hash_tunnel {
++	struct virtio_net_hdr_v1_hash hash_hdr;
++	uint16_t outer_th_offset;
++	uint16_t inner_nh_offset;
++};
++
+ #ifndef VIRTIO_NET_NO_LEGACY
+ /* This header comes first in the scatter-gather list.
+  * For legacy virtio, if VIRTIO_F_ANY_LAYOUT is not negotiated, it must
+diff --git a/linux-headers/linux/vhost.h b/linux-headers/linux/vhost.h
+index d4b3e2ae13..d6ad01fbb8 100644
+--- a/linux-headers/linux/vhost.h
++++ b/linux-headers/linux/vhost.h
+@@ -235,4 +235,11 @@
+  */
+ #define VHOST_VDPA_GET_VRING_SIZE	_IOWR(VHOST_VIRTIO, 0x82,	\
+ 					      struct vhost_vring_state)
++
++/* Extended features manipulation */
++#define VHOST_GET_FEATURES_ARRAY _IOR(VHOST_VIRTIO, 0x83, \
++				       struct vhost_features_array)
++#define VHOST_SET_FEATURES_ARRAY _IOW(VHOST_VIRTIO, 0x83, \
++				       struct vhost_features_array)
++
+ #endif
 -- 
 2.50.0
 
