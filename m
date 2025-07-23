@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE43B0EBC8
+	by mail.lfdr.de (Postfix) with ESMTPS id 0330DB0EBC6
 	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 09:22:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueTnY-00055x-OZ; Wed, 23 Jul 2025 03:21:57 -0400
+	id 1ueTn2-0004qo-CT; Wed, 23 Jul 2025 03:21:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ueTkM-0003Kg-HP
+ id 1ueTkM-0003Kh-Hc
  for qemu-devel@nongnu.org; Wed, 23 Jul 2025 03:18:41 -0400
 Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ueTkD-000462-5E
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 03:18:37 -0400
+ id 1ueTkG-00046A-KL
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 03:18:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753255109; x=1784791109;
+ t=1753255113; x=1784791113;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=RGlSGzGkbqVhDC4KFQQiXuDi9zm1hRpG1NVXQpKek9Q=;
- b=J5GavlPy86R9VVIDACBJ7dq2hLOVfrhABmvAKZZ54fnYcqnVzg7hXmKw
- NoeOSxfRfvjRJ9zlBQCt3vSCMAT3pbJDxq0xcetUoNNA3uGj+eHT7ztBI
- g959MtCbXWkpP6PKsa0yx3TLe8y/R9ZOhLyHaEEAGeftTF9cNBBzrhLfH
- rtIKL9NEMAeUOWOxFOw+n/bslu3kjak7AR2ToxmWTRf4IsOqnLkA++zux
- fn5z625O+UNSoecIWOy3voH83TUmCs/7V/FvyBL01d0XcZyQkY2zcWkic
- t4jMHPfKKdYDdikg1f0i0S5bSMv3e3eaMj66ZJ+cJvvhhXYwDbCUGW+oV g==;
-X-CSE-ConnectionGUID: jE/VpIETTL6EDAwy3q5mgQ==
-X-CSE-MsgGUID: 3ogMPxIoQj6A3ETMTZyr2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="55480927"
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="55480927"
+ bh=qJZpNmIiyzLZ+1AQHuc1dq2zIeu4XixLkbA12OZ7a+k=;
+ b=PRb1drwd3w0XEsSzXHk6m2gjferbhaSKpQT8XABN9VyStaotCHPOhupH
+ 59PyhWUXBodx4UEv+2GBU0JyIDGnhKZUd5CO/O8EtYISY5LazGXfrsZA0
+ efADUSremSv44o8kyqF1J2wAaEp+gJTD3abWWL0HTmMlrTSiAdHeFPCD2
+ fwcx1ZFs65rGra+zcQzATePyN+IbK25TPJy1kbsoU1tbK3tW2nXEB9Wi9
+ nmN0+18LMhR7t+x5PgfAH/O664MRAClNawIjPF7CN+NQUfWkRk2nSU6go
+ M4ssfMW2J5Fz+5/5hNWJXAMtNzo0KC75rdb1vHuEbrTrAZ0qRIdwgBVFk Q==;
+X-CSE-ConnectionGUID: Txvnx8XQSG+oI/MrV0ss1g==
+X-CSE-MsgGUID: JvBZ8XwpR+yNfgh9PNoG1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="55480929"
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="55480929"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jul 2025 00:18:25 -0700
-X-CSE-ConnectionGUID: 4uwKOySYRaemS04dhPyBgQ==
-X-CSE-MsgGUID: rWvhmVwzRNOdFVYyKrTDSA==
+ 23 Jul 2025 00:18:27 -0700
+X-CSE-ConnectionGUID: fJ4CRkcgQTKpSoww9sNvFg==
+X-CSE-MsgGUID: tC4EPSiJR4mPv5b1062cEw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="158662230"
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="158662233"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa010.jf.intel.com with ESMTP; 23 Jul 2025 00:18:24 -0700
+ by orviesa010.jf.intel.com with ESMTP; 23 Jul 2025 00:18:25 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH 1/3] accel/kvm: Switch to check KVM_CAP_GUEST_MEMFD and
- KVM_CAP_USER_MEMORY2 on VM
-Date: Wed, 23 Jul 2025 15:09:49 +0800
-Message-ID: <20250723070951.1134374-2-xiaoyao.li@intel.com>
+Subject: [PATCH 2/3] accel/kvm: Zero out mem explicitly in
+ kvm_set_user_memory_region()
+Date: Wed, 23 Jul 2025 15:09:50 +0800
+Message-ID: <20250723070951.1134374-3-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250723070951.1134374-1-xiaoyao.li@intel.com>
 References: <20250723070951.1134374-1-xiaoyao.li@intel.com>
@@ -81,29 +81,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It returns more accruate result on checking KVM_CAP_GUEST_MEMFD and
-KVM_CAP_USER_MEMORY2 on VM instance instead of on KVM platform.
+Zero out the entire mem explicitly before it's used, to ensure the unused
+feilds (pad1, pad2) are all zeros. Otherwise, it might cause problem when
+the pad fields are extended by future KVM.
 
+Fixes: ce5a983233b4 ("kvm: Enable KVM_SET_USER_MEMORY_REGION2 for memslot")
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- accel/kvm/kvm-all.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ accel/kvm/kvm-all.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 890d5ea9f865..14d47246ca63 100644
+index 14d47246ca63..4f4c30fc84b2 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -2776,8 +2776,8 @@ static int kvm_init(AccelState *as, MachineState *ms)
+@@ -361,6 +361,7 @@ static int kvm_set_user_memory_region(KVMMemoryListener *kml, KVMSlot *slot, boo
+     struct kvm_userspace_memory_region2 mem;
+     int ret;
  
-     kvm_supported_memory_attributes = kvm_vm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
-     kvm_guest_memfd_supported =
--        kvm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
--        kvm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
-+        kvm_vm_check_extension(s, KVM_CAP_GUEST_MEMFD) &&
-+        kvm_vm_check_extension(s, KVM_CAP_USER_MEMORY2) &&
-         (kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE);
-     kvm_pre_fault_memory_supported = kvm_vm_check_extension(s, KVM_CAP_PRE_FAULT_MEMORY);
- 
++    memset(&mem, 0, sizeof(mem));
+     mem.slot = slot->slot | (kml->as_id << 16);
+     mem.guest_phys_addr = slot->start_addr;
+     mem.userspace_addr = (unsigned long)slot->ram;
 -- 
 2.43.0
 
