@@ -2,90 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94CDB0F88D
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 18:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D98B0F8A1
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 19:05:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueckR-0006dq-1h; Wed, 23 Jul 2025 12:55:19 -0400
+	id 1uect6-0003TO-TM; Wed, 23 Jul 2025 13:04:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ueckN-0006ZD-D0
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 12:55:15 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ueckL-0007CY-Al
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 12:55:15 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-451d41e1ad1so293185e9.1
- for <qemu-devel@nongnu.org>; Wed, 23 Jul 2025 09:55:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753289711; x=1753894511; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TSSqnF+/AnLbbiFDbwFnSXG1BHUKqc9hNcz56nYG9RU=;
- b=uWQhX9H7VkG2G5xOCBCwu4x4KBMLwUq9+WSNMqHEfGDHag5tP3vRfQqxlxVF3cYuP1
- ndJ6aH92sItIBYnQwbH7AQMaKrAfyqlyomCTldMmjVy0zvKuRFk3AuFNX+KrDZ6kdSsA
- g7QE4Zwq50TiTOaByIvt0DyMA6rZvbadO7OA3C9niZs9tO8ZhjY3DidT0I4B8Y+OygEo
- 7q8JKthvAjSYCOhB0qYTleKI7WSz+nNSELCSdGp7UJGHAD0NveOETmbO64N3Uxu/YEhI
- sFw7FHeQ+14j2o1Fe2QwTngjElJWLSG59g4hIX+40c1bWM3bJoaLOfXMEJXqnwkVCNay
- B4UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753289711; x=1753894511;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TSSqnF+/AnLbbiFDbwFnSXG1BHUKqc9hNcz56nYG9RU=;
- b=OmDJkH2V+3s9dWuh85sm7Js6MGDKBr7mfesgQyUC0veFovcnqd+qywRAAJfmpCfKpx
- wb/G9OrXapO0DdVwnjEHnteDQqRbyw92+yXDh80KIBSCpeeIQN5VTybnvKmSMWnhIKKh
- luicVCX2vZWJO3Q6vqjME8ZjVlVmWRgdqJ7Tp0Wo+0RpwViDR+bI7Y37qkYtfel4fyF5
- jVr7qe8dwYqsPKk9rZe/zUuF4BPgUH7oh2AgpCH6aBablHUkvfO+5p9gQPnsTae2QLdx
- vR9n9BNcbuiNDAzUsf2kuRq/ocPS+IEfeEpVmFP63FoSo8TEz79IoGWN28DJx/NLzicq
- spAg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW7FuwuUB5pYjDQoYRUKMgK0jtqMnYXKxwL6NsKBlt6ikM8OBmI/04YmZB7IOHQpiKht8FPhXIgbDa/@nongnu.org
-X-Gm-Message-State: AOJu0Ywk3cHNydAgkd/MRlcxw73j7zhyon9DnGz6F1AbbSeFHZQeNI6A
- LciV2g8KUbo5QSIlbafp56Y7vUGMfa5giCiZ3V08BVGcwplLSs+P3DJ9enJsFNF+X1N7KnMM/aD
- yjySj
-X-Gm-Gg: ASbGncsGE7lgwryCPnJWW44zIJHG05l2Ql1ZxFF9umrBTAsuXXrEesr93TfqB3Opdtf
- 2qzWGCji0YzPHAm9FCBVWrxQEJ+amPqR5TEFyXKIgGXlQ5t5ArpXMpQQo6XRuLvlEb4wtsHu2Sh
- G5s0wbThRGAemC3GyEDEW93pdwENagZigZQnD5vhUUOJnTni64pkImClBNqqmnpoVW2+6Z9ljzV
- sYIDgILilRnCmb83X+74PpxF1+IPR5TM9aQAx/V9hS8Qb3PbIJmPDJRK121jQv5i4vUg5LLPvAy
- opWZCG7cBAeurLlDxJZ3j+ztiIvjqldfc8apOzKuWT+BVCmJsgCqORAlYTKR8hkqa1FlWpU0mfK
- kDwRvLR+hvASMYrEt2qcoVpR4Dmkn72I7uENyCTc=
-X-Google-Smtp-Source: AGHT+IGH7cxCrVcNJGmUuVExdHaGCE4xgRpV4YihEuNUy32SEWElQCbzk+28z/NwH/+QLbxcVvAniw==
-X-Received: by 2002:a05:600c:4f05:b0:458:6733:fb59 with SMTP id
- 5b1f17b1804b1-45868d4f124mr31899645e9.19.1753289711496; 
- Wed, 23 Jul 2025 09:55:11 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-458693cd224sm28559825e9.21.2025.07.23.09.55.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Jul 2025 09:55:10 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH for-10.1 6/6] target/arm: Fix LD1W, LD1D to 128-bit elements
-Date: Wed, 23 Jul 2025 17:54:58 +0100
-Message-ID: <20250723165458.3509150-7-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250723165458.3509150-1-peter.maydell@linaro.org>
-References: <20250723165458.3509150-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <nikolai.barybin@virtuozzo.com>)
+ id 1uect4-0003Rp-Ez
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 13:04:14 -0400
+Received: from relay.virtuozzo.com ([130.117.225.111])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nikolai.barybin@virtuozzo.com>)
+ id 1uect2-0001Fb-3T
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 13:04:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+ Content-Type; bh=Vgi0QYHkxzE85VYqe5vF1U31j80Gsh5QtkXPD7VBMv0=; b=abX3SlFxA/bT
+ xEqCf7N1W8hrhWlKnWBWm7Zp8W4t1L8eTHanMiQix2k1Iy1820ofH6deClWQ3fzYWFBtkARpoO83b
+ 3udphXDzfoYBdJUuALf2BrThdEo+y+q2I1Iew9FMaebRrzm5/FMRrr1/lqy7xJ/plm644d0ztyV4D
+ EEXHOkln71TzTb8TtEP1bJR6nyMKGv6DeXg4q6z6BRlW3RlpEm/u+kPkBZDmg4SJ0OcmAVeu2Un09
+ djQV+dSk4vSG1sGZrDRR77QXIeaWOTjvuzgTcRMWy+Nx8SvbVwEaykxNX0KsdbB4sJzcwrAPJHBYy
+ uh4A2lYKkpQsK4ftjtbacg==;
+Received: from [130.117.225.5] (helo=vz9-barybin-2.ch-qa.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <nikolai.barybin@virtuozzo.com>) id 1uecnE-008cGV-1D;
+ Wed, 23 Jul 2025 19:04:01 +0200
+From: Nikolai Barybin <nikolai.barybin@virtuozzo.com>
+To: qemu-devel@nongnu.org
+Cc: den@virtuozzo.com, Ani Sinha <anisinha@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Nikolai Barybin <nikolai.barybin@virtuozzo.com>
+Subject: [PATCH] dump: enhance win_dump_available to report properly
+Date: Wed, 23 Jul 2025 20:04:02 +0300
+Message-ID: <20250723170402.75798-1-nikolai.barybin@virtuozzo.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=130.117.225.111;
+ envelope-from=nikolai.barybin@virtuozzo.com; helo=relay.virtuozzo.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,40 +66,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In our implementation of the SVE2p1 contiguous load to 128-bit
-element insns such as LD1D (scalar plus scalar, single register), we
-got the order of the arguments to the DO_LD1_2() macro wrong.  Here
-the first argument is the element size and the second is the memory
-size, and the element size is always the same size or larger than
-the memory size.
+QMP query-dump-guest-memory-capability reports win dump as available for
+any x86 VM, which is false.
 
-For the 128-bit versions, we want to load either 32-bit or 64-bit
-values from memory and extend them to the 128-bit vector element, but
-were trying to load 128 bit values and then stuff them into 32-bit or
-64-bit vector elements.  Correct the macro ordering.
+This patch implements proper query of vmcoreinfo and calculation of
+guest note size. Based on that we can surely report whether win dump
+available or not.
 
-Fixes: fc5f060bcb7b ("target/arm: Implement {LD1, ST1}{W, D} (128-bit element) for SVE2p1")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+For further reference one may review this libvirt discussion:
+https://lists.libvirt.org/archives/list/devel@lists.libvirt.org/thread/HJ3JRLWLGN3IKIC22OQ3PMZ4J3EFG5XB/#HJ3JRLWLGN3IKIC22OQ3PMZ4J3EFG5XB
+[PATCH 0/4] Allow xml-configured coredump format on VM crash
+
+Signed-off-by: Nikolai Barybin <nikolai.barybin@virtuozzo.com>
 ---
- target/arm/tcg/sve_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ dump/win_dump.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index c4aaf0cc45f..c442fcb540d 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -6439,8 +6439,8 @@ DO_LD1_2(ld1sds, MO_64, MO_32)
+diff --git a/dump/win_dump.c b/dump/win_dump.c
+index 3162e8bd48..4bb1b28e63 100644
+--- a/dump/win_dump.c
++++ b/dump/win_dump.c
+@@ -14,14 +14,74 @@
+ #include "qemu/error-report.h"
+ #include "exec/cpu-defs.h"
+ #include "hw/core/cpu.h"
++#include "hw/misc/vmcoreinfo.h"
+ #include "qemu/win_dump_defs.h"
+ #include "win_dump.h"
+ #include "cpu.h"
++#include "elf.h"
  
- DO_LD1_2(ld1dd,  MO_64, MO_64)
+ #if defined(TARGET_X86_64)
  
--DO_LD1_2(ld1squ, MO_32, MO_128)
--DO_LD1_2(ld1dqu, MO_64, MO_128)
-+DO_LD1_2(ld1squ, MO_128, MO_32)
-+DO_LD1_2(ld1dqu, MO_128, MO_64)
++#define ELF_NOTE_SIZE(hdr_size, name_size, desc_size)   \
++    ((DIV_ROUND_UP((hdr_size), 4) +                     \
++      DIV_ROUND_UP((name_size), 4) +                    \
++      DIV_ROUND_UP((desc_size), 4)) * 4)
++
+ bool win_dump_available(Error **errp)
+ {
++    uint64_t addr, note_head_size, name_size, desc_size;
++    uint32_t size;
++    uint16_t guest_format;
++    uint8_t *guest_note = NULL;
++    size_t guest_note_size = 0;
++    VMCoreInfoState *vmci = vmcoreinfo_find();
++    ArchDumpInfo dump_info = {};
++    GuestPhysBlockList blocks = {};
++    int ret;
++
++    if (!vmci || !vmci->has_vmcoreinfo)
++        return false;
++
++    ret = cpu_get_dump_info(&dump_info, &blocks);
++    if (ret < 0)
++        return false;
++
++    guest_format = le16_to_cpu(vmci->vmcoreinfo.guest_format);
++    if (guest_format != FW_CFG_VMCOREINFO_FORMAT_ELF)
++        return false;
++
++    size = le32_to_cpu(vmci->vmcoreinfo.size);
++    addr = le64_to_cpu(vmci->vmcoreinfo.paddr);
++    note_head_size = dump_info.d_class == ELFCLASS64 ?
++        sizeof(Elf64_Nhdr) : sizeof(Elf32_Nhdr);
++
++    guest_note = g_malloc(size + 1);
++    cpu_physical_memory_read(addr, guest_note, size);
++    if (dump_info.d_class == ELFCLASS64) {
++        const Elf64_Nhdr *hdr = (void *)guest_note;
++        if (dump_info.d_endian == ELFDATA2LSB) {
++            name_size = cpu_to_le64(hdr->n_namesz);
++            desc_size = cpu_to_le64(hdr->n_descsz);
++        } else {
++            name_size = cpu_to_be64(hdr->n_namesz);
++            desc_size = cpu_to_be64(hdr->n_descsz);
++        }
++    } else {
++        const Elf32_Nhdr *hdr = (void *)guest_note;
++        if (dump_info.d_endian == ELFDATA2LSB) {
++            name_size = cpu_to_le32(hdr->n_namesz);
++            desc_size = cpu_to_le32(hdr->n_descsz);
++        } else {
++            name_size = cpu_to_be32(hdr->n_namesz);
++            desc_size = cpu_to_be32(hdr->n_descsz);
++        }
++    }
++
++    guest_note_size = ELF_NOTE_SIZE(note_head_size, name_size, desc_size);
++    if (guest_note_size != VMCOREINFO_WIN_DUMP_NOTE_SIZE64 &&
++        guest_note_size != VMCOREINFO_WIN_DUMP_NOTE_SIZE32)
++        return false;
++
+     return true;
+ }
  
- #undef DO_LD1_1
- #undef DO_LD1_2
 -- 
-2.43.0
+2.47.3
 
 
