@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24021B0F7C8
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 18:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A14B0F7D3
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 18:10:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uebzW-0006cI-5c; Wed, 23 Jul 2025 12:06:52 -0400
+	id 1uec29-00028E-0H; Wed, 23 Jul 2025 12:09:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uebzR-0006Wi-QW
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 12:06:47 -0400
-Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1uec1u-00026m-RB
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 12:09:19 -0400
+Received: from mail-pj1-x1042.google.com ([2607:f8b0:4864:20::1042])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uebzQ-0003un-AA
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 12:06:45 -0400
-Received: by mail-yw1-x1130.google.com with SMTP id
- 00721157ae682-70e4043c5b7so692387b3.1
- for <qemu-devel@nongnu.org>; Wed, 23 Jul 2025 09:06:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1uec1t-00049v-EB
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 12:09:18 -0400
+Received: by mail-pj1-x1042.google.com with SMTP id
+ 98e67ed59e1d1-313bb9b2f5bso1887a91.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Jul 2025 09:09:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753286803; x=1753891603; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FLto7SK0XO/J5wVypbxBAVxI5YgIp6doAk9cyhcunOA=;
- b=d1J3rIhXJtottDG6ZmwkZqTYUwsAqdW9jYnpVqLLa2uw+BcNyMBz1pyD4Mn94+/yG9
- ue/XHH/YSarIrFVSVDC3U3ERHYkFlaMzna9SdbKfH+oUOTNGaQHWrr112ZTF0lRc28mj
- V+tqT/FVOqLOsp5PeFoJB9LimyUvOElehZZAgkDJgSPQGQrjHoyWElvGucJG/k1CN3Xd
- Gipjh4Y6Eucw9qXRwfZL0zcBvDPBsBuDD+knnPoMm5o49y5LdSU5qDNO+LJZVUClfJXe
- hB1N1sjrxKD6lb52sY2b+yPqiq0Ge6n1tYodtkikazpejqLauOYAQMqFujUCrJWBrQAT
- IiBA==
+ d=gmail.com; s=20230601; t=1753286955; x=1753891755; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ryJs4fnsAEOocYYXtesa1hTFW3TNwArTaKjHOpZPxFc=;
+ b=Qit9WxnYBu10uAfXgoIK7w4AQUKNFvtGxpAEOswls0Evo7iYDLw7yBp2xRU5nVtcKx
+ 3FqGic0GoimdRvSltevfesf2pTH1hy5ZGkgzA9X/vKtqKHEZrYcGUliiAu84HnpugviG
+ +wHjHz10yk7J1PA1pSDUJgTJNPHOkxH/aMZ19HU6VRRVBCYxa/yqbKf9W7hxKvn6HS9r
+ sCuLWbw2ELtPRuHifRvnY6aJejw1ynWXGezTz47p5JnAuKJNUqYYxQt+nh5zT59887MW
+ h2TLW0zTOOOlZBpDH3tmPUy1koRMVnwbM91cWj9jUQYxBXHYptu8jhjW0gHmREYvXAd5
+ 28jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753286803; x=1753891603;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FLto7SK0XO/J5wVypbxBAVxI5YgIp6doAk9cyhcunOA=;
- b=iIY0QUtSU2q3VgqaQBcdM/bchLP7GjOX8p8dXmksxS1tXPsP3g6Hoy5jKGpJowDJq4
- qYrbMBxoHtIyoi4KGCJVVkbwEMQJeetKOtb5biGqO3A/n8ngvALGqloym1+TpfbxX0uP
- COMKgU/0cn/Iw5GnzgMeu/UNzLI1MPsIZvCFWa59AcK11vHvBmjy6dTtMpTL7QAylPiW
- eeVWlag/aKfibvZczJ1j6fhiXKQg7JlhUtGfX7gX03sPlSwjeWkZgkdQoMjmQcYyD094
- 3cdNzlk9RktGAwV5zfEgmgU0vG+hOAm/SKTxYYyQo/z8gRlRCC2Fgu5zcyPLx/NUPgFj
- DloQ==
-X-Gm-Message-State: AOJu0YzKCFFppMbl45PV+aTDm10FF81e/o0RqDSy0A+Gbx+I2oIFl7GB
- rvjPUpBnwI+OTJCY6MjbZWFfjxyOCJWX/CJhUHlDXKPlG2RwRe2TIHmII4y2t62ZHfudors/ynN
- LuQ72I4y6XMDexzqxtYbDPY6uBF6fPy+TLIUzjR2j0w==
-X-Gm-Gg: ASbGncvJo+4eE9jboWMomqkKIhW9WdcBtcmA0YaNx+uJQwcDRn01ijYVLtiB0nDJA31
- Cqe+cZSh+/8cVA5rmuY4w5Y5+dPTpNZ1TYFMbjyUUjnBNx/PtdNBo9HPSdcvCDvxR979H5CYu1I
- 9aUW4sUP0cHya9uD9sv/T6XU+HhMM60u7muTsJUSBKw0ckAvJSi/9xjzM2bd5v4P80izLFV9AXy
- Pie3Axp
-X-Google-Smtp-Source: AGHT+IEOuhc1BE6gQ9s6bwKFw6KQXpy1bceg7SKjXt/XvBUW28PlKk6P9yKtfX/PU+Jko7b89UPOVcYxHXwrncfnQyU=
-X-Received: by 2002:a05:690c:3347:b0:717:9ea1:ab2b with SMTP id
- 00721157ae682-719b414701emr49872597b3.9.1753286803089; Wed, 23 Jul 2025
- 09:06:43 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753286955; x=1753891755;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ryJs4fnsAEOocYYXtesa1hTFW3TNwArTaKjHOpZPxFc=;
+ b=f1tjZFh0ZzlhOd79p54QkBg/Ic0DSe8f3frd5fWo3xvf5HMBsukU7AQXtodmvcR3ny
+ 3BVM82xZw3lstnd9rUB791zP0u9XhDwRXXgcay3oDTaFEOJLrIA444O9IDACYzFoD0nA
+ ZXHKchVXTW+E074zgOIfja+05D8+yJB9tIrTVvWKaV/pLPD6tZKNbME8Zegw6TVL3i3C
+ zzAcbHvVFIwQ9nrLjOqP4QcZqeVkUnbQpfvICcR1ncJh3VPkxEViIj5e47wI0ckm8oOl
+ 7Wwg0XOK24JlAhydejbqoY6KHZYSN0x9XSorDIP3U/ptZ6259f6d/DkC+BUCKSJnzBoc
+ 0xNg==
+X-Gm-Message-State: AOJu0YwNTvAbCXj44g9PrUEsQWwjJvbq2FtsE147xh1QVW3YpRkqrt9c
+ 1zRky7RvHXn8CUizdp5kIBe7CVN+UCr9zCkXy7SgwBJSq29XkbScmAc=
+X-Gm-Gg: ASbGncvHL1yAjxR9Z3ktbsjWgUFKcpuspOyUvwZcWN/Tf1hGqIxv0+Ju0FaZaO0ZV3z
+ 9FuYfzyJreP/v4HQqFVQ0gLMA54g3x17LtxJBS4jOmJjA+KH0Cr6FMVfvEjS5jNjKF8zXMogqDF
+ O8KN/723HRAfTgB6Lg0VPzKjdGC0j4U8rLqGy6ZaQiMF6MY7JoEbxZ3xLJY8mciwd0odm15nneh
+ 5k1YlqKzzloqFDQnp38b2+tBGc+lhOnr4/buo4+S2Puu3ZBXJCNhwymIfoMepAmpWBj3c73SFIV
+ KL8FKmRIQs75q2QW1n9iCwSudV+39XGDkfN7xd3HCC356uswSZw5PivWVY18JoLiybATido+aGZ
+ Fb7j664XKWsc6A2i1hlRUjldEuEw27kBjrWY=
+X-Google-Smtp-Source: AGHT+IHaHrHMc3cjQtsJE7erJRTun7smKt8p9riAreEVtH7cW0Vlj0ufLpevHAuxWxiODetbvrpRzQ==
+X-Received: by 2002:a17:90b:1c01:b0:313:d6ce:6c6e with SMTP id
+ 98e67ed59e1d1-31e507a852bmr5353323a91.8.1753286955097; 
+ Wed, 23 Jul 2025 09:09:15 -0700 (PDT)
+Received: from localhost.localdomain ([139.227.17.46])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-31e519f61eesm1968353a91.14.2025.07.23.09.09.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Jul 2025 09:09:14 -0700 (PDT)
+From: Tomita Moeko <tomitamoeko@gmail.com>
+To: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Tomita Moeko <tomitamoeko@gmail.com>
+Subject: [PATCH 0/2] vfio/igd: Legacy mode fixes after introduction of
+Date: Thu, 24 Jul 2025 00:09:04 +0800
+Message-ID: <20250723160906.44941-1-tomitamoeko@gmail.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-References: <20250723135156.85426-1-philmd@linaro.org>
- <20250723135156.85426-3-philmd@linaro.org>
-In-Reply-To: <20250723135156.85426-3-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 23 Jul 2025 17:06:31 +0100
-X-Gm-Features: Ac12FXzFREjEPCxJDBzuh-02hE9eM3aUW8QcbKTHUSherHz15tYMpQoubqGFnnc
-Message-ID: <CAFEAcA8_tBXwV1KVVLUkh9RU=KbusQhi8MKcxUmH1F4wM=HJ4Q@mail.gmail.com>
-Subject: Re: [PATCH-for-10.1 v4 2/4] accel/hvf: Add hvf_arch_cpu_realize()
- stubs
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Phil Dennis-Jordan <phil@philjordan.eu>, 
- Roman Bolshakov <rbolshakov@ddn.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Alexander Graf <agraf@csgraf.de>, Mads Ynddal <mads@ynddal.dk>,
- Cameron Esfahani <dirty@apple.com>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1130.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1042;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pj1-x1042.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,17 +96,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 23 Jul 2025 at 14:52, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Implement HVF AccelOpsClass::cpu_target_realize() hook as
-> empty stubs. Target implementations will come separately.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+This patchset aims to fix 2 bugs on legacy mode brought by commit
+a59d06305fff ("vfio/pci: Introduce x-pci-class-code option").
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+1. QEMU tries to enable VGA access on device emulated to VGA controller.
+2. pci_register_vga() is not called after calling vfio_populate_vga().
 
-thanks
--- PMM
+
+Tomita Moeko (2):
+  vfio/igd: Require host VGA decode for legacy mode
+  vfio/igd: Fix VGA regions are not exposed in legacy mode
+
+ docs/igd-assign.txt |  1 +
+ hw/vfio/igd.c       | 19 ++++++++++++-------
+ hw/vfio/pci.c       | 13 ++++++++++---
+ hw/vfio/pci.h       |  1 +
+ 4 files changed, 24 insertions(+), 10 deletions(-)
+
+-- 
+2.47.2
+
 
