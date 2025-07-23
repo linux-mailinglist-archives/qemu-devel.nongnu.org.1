@@ -2,60 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65032B0F3D1
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 15:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D97C7B0F429
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 15:36:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueZOM-0006bj-02; Wed, 23 Jul 2025 09:20:18 -0400
+	id 1ueZdU-0006mU-UF; Wed, 23 Jul 2025 09:35:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ueZJY-00044g-Nw
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 09:15:31 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ueZan-0005rS-UL
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 09:33:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ueZJS-0002Gi-Vk
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 09:15:17 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ueZaj-0003ZJ-Va
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 09:33:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753276509;
+ s=mimecast20190719; t=1753277583;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding;
- bh=QGoDYhwH7grYDUZs7DTRUsOWhob0TnbUWWOMhLUtrYM=;
- b=H8wz1+RQ6sgxzG1uTnxek4FofubZnwtmq+OZiP+VMkBXMo720NnoX7sJaJEZ6PKvPZ4pHz
- 7MgtuHJpTaYEdC9yniUARCOAqCYT4CVisYrTN6DUF97f1v+o/cMQehQFRW3u1tEtnZhxp3
- H3kKlwXmPbzIbNCKXgqhAersgsfLrLc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=JyJdFmhjA6tFSmnZMfOHLMsD08VHaKsgXBvphvLX+lg=;
+ b=Z99fVbIRIP3xI5dYrcdzEgEOeowIdrDJ6A/Hn6a+x4evnrhq/jlU0l9qmPqK77gQwhxuOi
+ Gv7XF+FbMj1I0+tm0JqL4hxJ84IfIEt8HpyXbGCxCDkPCXL0I9eJnjURcl5azHqQ7udl3Q
+ m+G681zmzm0sPt60bRqfRgftelgHRhI=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-jcl-T2PwPn-imj9QKD7mjA-1; Wed,
- 23 Jul 2025 09:15:08 -0400
-X-MC-Unique: jcl-T2PwPn-imj9QKD7mjA-1
-X-Mimecast-MFC-AGG-ID: jcl-T2PwPn-imj9QKD7mjA_1753276507
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-yS1NGVQMMFSuIcsZ34JIUw-1; Wed,
+ 23 Jul 2025 09:33:02 -0400
+X-MC-Unique: yS1NGVQMMFSuIcsZ34JIUw-1
+X-Mimecast-MFC-AGG-ID: yS1NGVQMMFSuIcsZ34JIUw_1753277581
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5AF551944D01
- for <qemu-devel@nongnu.org>; Wed, 23 Jul 2025 13:15:07 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 39AA719560BE; Wed, 23 Jul 2025 13:33:01 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.2])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 135C119560A0
- for <qemu-devel@nongnu.org>; Wed, 23 Jul 2025 13:15:06 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C613119560A3; Wed, 23 Jul 2025 13:33:00 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 582E321E6A27; Wed, 23 Jul 2025 15:15:04 +0200 (CEST)
+ id 0169C21E6A27; Wed, 23 Jul 2025 15:32:57 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com,
-	kraxel@redhat.com
-Subject: [PATCH] ui/keymaps: Avoid trace crash and improve error messages
-Date: Wed, 23 Jul 2025 15:15:04 +0200
-Message-ID: <20250723131504.1482657-1-armbru@redhat.com>
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, kvm@vger.kernel.org,
+ aharivel@redhat.com
+Subject: [PATCH 0/2] A fix and cleanup around qio_channel_socket_connect_sync()
+Date: Wed, 23 Jul 2025 15:32:55 +0200
+Message-ID: <20250723133257.1497640-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -81,54 +79,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-parse_keyboard_layout() passes a possibly null @filename to
-trace_keymap_parse().  Trace backend log then formats it with %s,
-which crashes on some systems.
+Markus Armbruster (2):
+  i386/kvm/vmsr_energy: Plug memory leak on failure to connect socket
+  vfio scsi ui: Error-check qio_channel_socket_connect_sync() the same
+    way
 
-Fix by moving the null check before the trace_keymap_parse().
+ hw/vfio-user/proxy.c          | 2 +-
+ scsi/pr-manager-helper.c      | 9 ++-------
+ target/i386/kvm/vmsr_energy.c | 6 +-----
+ ui/input-barrier.c            | 5 +----
+ 4 files changed, 5 insertions(+), 17 deletions(-)
 
-While there, improve the error messages a bit.
-
-Fixes: d3b787fa7dde (keymaps: add tracing)
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- ui/keymaps.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/ui/keymaps.c b/ui/keymaps.c
-index 6ceaa97085..2359dbfe7e 100644
---- a/ui/keymaps.c
-+++ b/ui/keymaps.c
-@@ -86,19 +86,25 @@ static int parse_keyboard_layout(kbd_layout_t *k,
-                                  const name2keysym_t *table,
-                                  const char *language, Error **errp)
- {
-+    g_autofree char *filename = NULL;
-     int ret;
-     FILE *f;
--    char * filename;
-     char line[1024];
-     char keyname[64];
-     int len;
- 
-     filename = qemu_find_file(QEMU_FILE_TYPE_KEYMAP, language);
-+    if (!filename) {
-+        error_setg(errp, "could not find keymap file for language '%s'",
-+                   language);
-+        return -1;
-+    }
-+
-     trace_keymap_parse(filename);
--    f = filename ? fopen(filename, "r") : NULL;
--    g_free(filename);
-+
-+    f = fopen(filename, "r");
-     if (!f) {
--        error_setg(errp, "could not read keymap file: '%s'", language);
-+        error_setg_file_open(errp, errno, filename);
-         return -1;
-     }
- 
 -- 
 2.49.0
 
