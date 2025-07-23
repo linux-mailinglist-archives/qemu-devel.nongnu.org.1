@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCDCB0F88C
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 18:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A94CDB0F88D
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 18:56:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueckS-0006ge-Dl; Wed, 23 Jul 2025 12:55:20 -0400
+	id 1ueckR-0006dq-1h; Wed, 23 Jul 2025 12:55:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ueckN-0006Yu-7W
+ id 1ueckN-0006ZD-D0
  for qemu-devel@nongnu.org; Wed, 23 Jul 2025 12:55:15 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ueckK-0007CB-Ci
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 12:55:14 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3a54690d369so52573f8f.3
- for <qemu-devel@nongnu.org>; Wed, 23 Jul 2025 09:55:11 -0700 (PDT)
+ id 1ueckL-0007CY-Al
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 12:55:15 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-451d41e1ad1so293185e9.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Jul 2025 09:55:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753289710; x=1753894510; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753289711; x=1753894511; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xPRVtFyOEs0a/mnfXfxmFYMGExKwtE9UrYxqSOjaOvc=;
- b=pGgmJNTiicDHXT4IL3r+0gAMEYxKemHk8AcUUA/PjQcaJ8kmhiALkqvV+DtN/4rHBA
- MrObCv9BxsLv3sMj8sGTLUeskCbk7ZScvxrj5u7JHgZMDwWhbC9iWCDoAtNokCwDB9QB
- 3VngQDZrMygjD25Qh3l+WZXLO4nPnDGVPvzt1iwNWS6vEtM7bu43Md9C/6dkBdbakKXm
- /T0KquRa6c4ipyAjnu+SGkLZAOpdTAbIcnW+pXhTVFoubJAFxQWxCmuBo0krhM5/OW7m
- XpbMJJU76ikS9sWjktsWnZWav+LWz/EiMD2HwP9g+5DOVxSCjjYD/x/8utejM1DzDlh6
- 6bCQ==
+ bh=TSSqnF+/AnLbbiFDbwFnSXG1BHUKqc9hNcz56nYG9RU=;
+ b=uWQhX9H7VkG2G5xOCBCwu4x4KBMLwUq9+WSNMqHEfGDHag5tP3vRfQqxlxVF3cYuP1
+ ndJ6aH92sItIBYnQwbH7AQMaKrAfyqlyomCTldMmjVy0zvKuRFk3AuFNX+KrDZ6kdSsA
+ g7QE4Zwq50TiTOaByIvt0DyMA6rZvbadO7OA3C9niZs9tO8ZhjY3DidT0I4B8Y+OygEo
+ 7q8JKthvAjSYCOhB0qYTleKI7WSz+nNSELCSdGp7UJGHAD0NveOETmbO64N3Uxu/YEhI
+ sFw7FHeQ+14j2o1Fe2QwTngjElJWLSG59g4hIX+40c1bWM3bJoaLOfXMEJXqnwkVCNay
+ B4UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753289710; x=1753894510;
+ d=1e100.net; s=20230601; t=1753289711; x=1753894511;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xPRVtFyOEs0a/mnfXfxmFYMGExKwtE9UrYxqSOjaOvc=;
- b=fbs7rphk9EeNEsluZpbQTaMR86xXTv6QpYtW+mwe0ka18gfoJp22DGQq7gLCHy4a05
- 94ZgMvNE4OpIbBKTIrtVqMqbewMpBc5A/zQimh1HZP4rsrfMaPkqvhqHStnyTW7jYd64
- MysJFnY9co09b55jyyw8MRJwc0XGq7gQW+0st11RgwVgAsWkHJy58D903N7Mte35nDiq
- USP82FeDOk7iR0wRf80YATVefiBUdhf1BBjoSpn7a8Xssowe6PmojjrkACgu5pJG/rfP
- jn/wfaIqiJQhbacUPhFmmWB+Jt9+MqIlEYVyhBM64lZb9cIIKhhR+iY0v6GgHXyP/SuX
- k3JA==
+ bh=TSSqnF+/AnLbbiFDbwFnSXG1BHUKqc9hNcz56nYG9RU=;
+ b=OmDJkH2V+3s9dWuh85sm7Js6MGDKBr7mfesgQyUC0veFovcnqd+qywRAAJfmpCfKpx
+ wb/G9OrXapO0DdVwnjEHnteDQqRbyw92+yXDh80KIBSCpeeIQN5VTybnvKmSMWnhIKKh
+ luicVCX2vZWJO3Q6vqjME8ZjVlVmWRgdqJ7Tp0Wo+0RpwViDR+bI7Y37qkYtfel4fyF5
+ jVr7qe8dwYqsPKk9rZe/zUuF4BPgUH7oh2AgpCH6aBablHUkvfO+5p9gQPnsTae2QLdx
+ vR9n9BNcbuiNDAzUsf2kuRq/ocPS+IEfeEpVmFP63FoSo8TEz79IoGWN28DJx/NLzicq
+ spAg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWr9Px8QCkJfobmD8vxeSEZrRdCH0pk0k67FQcCdMxURuh4LLNEChFzr/Mv/UR4Q8vAhVR5WGhMZaha@nongnu.org
-X-Gm-Message-State: AOJu0Yx7CixxoMHSwexhrLU9gNPChwo7BAsdQJjWFSy0meK8fQ/7pLHT
- bMCzFOoEtUiQ21s040i+K89wFtFD82NdRZX3vPX7CJJ00Rmn83OXz+xAUJYMm6D6CbtgL1Mue6t
- /4+aM
-X-Gm-Gg: ASbGnctwVKFlGBo/4nSyKL4hHSRSCmq6G6zfKNrdt1763ew6urDs8nt0qQh2tacElVr
- ikF2CDnskXCGc0X8X8El9x+cOUTqKF4ABI+N8BmXiwsbkAy4J51JQuquzQRiJwLlu1Uw3fV7oRT
- uWc2xMKA4xSG6+YQmixaZVYvwF9Xn7ygCH5+TcqDytGGfBtiOGSq1snTHM8lIdTgC+P8ZOEgshx
- w3wtvS2N6MsgNotGqbdrv9UIWpFd6Ihrj6MWS4CEJvMZzOvV1cwLw5OaDnSRATRdmiSC/qY5tOG
- FWMlY2odJC0XpPvqckopUClGIVKt7gxf/Kfj4p02d5an23y4xHGzwg5rUSe2jqS73jv49wJ3xGm
- uI5LIt5z4u0vAPAonNrnl0ByfFLuy
-X-Google-Smtp-Source: AGHT+IFJdjRZrY/S3niiPLVHZKOWDLC/3BuP8ocpwN3JSOYD0JGgcdZwhnpRQi8HuQ+C/2JcNoe/og==
-X-Received: by 2002:a05:6000:401e:b0:3b7:5802:f51d with SMTP id
- ffacd0b85a97d-3b768ef3c11mr2964410f8f.27.1753289710185; 
- Wed, 23 Jul 2025 09:55:10 -0700 (PDT)
+ AJvYcCW7FuwuUB5pYjDQoYRUKMgK0jtqMnYXKxwL6NsKBlt6ikM8OBmI/04YmZB7IOHQpiKht8FPhXIgbDa/@nongnu.org
+X-Gm-Message-State: AOJu0Ywk3cHNydAgkd/MRlcxw73j7zhyon9DnGz6F1AbbSeFHZQeNI6A
+ LciV2g8KUbo5QSIlbafp56Y7vUGMfa5giCiZ3V08BVGcwplLSs+P3DJ9enJsFNF+X1N7KnMM/aD
+ yjySj
+X-Gm-Gg: ASbGncsGE7lgwryCPnJWW44zIJHG05l2Ql1ZxFF9umrBTAsuXXrEesr93TfqB3Opdtf
+ 2qzWGCji0YzPHAm9FCBVWrxQEJ+amPqR5TEFyXKIgGXlQ5t5ArpXMpQQo6XRuLvlEb4wtsHu2Sh
+ G5s0wbThRGAemC3GyEDEW93pdwENagZigZQnD5vhUUOJnTni64pkImClBNqqmnpoVW2+6Z9ljzV
+ sYIDgILilRnCmb83X+74PpxF1+IPR5TM9aQAx/V9hS8Qb3PbIJmPDJRK121jQv5i4vUg5LLPvAy
+ opWZCG7cBAeurLlDxJZ3j+ztiIvjqldfc8apOzKuWT+BVCmJsgCqORAlYTKR8hkqa1FlWpU0mfK
+ kDwRvLR+hvASMYrEt2qcoVpR4Dmkn72I7uENyCTc=
+X-Google-Smtp-Source: AGHT+IGH7cxCrVcNJGmUuVExdHaGCE4xgRpV4YihEuNUy32SEWElQCbzk+28z/NwH/+QLbxcVvAniw==
+X-Received: by 2002:a05:600c:4f05:b0:458:6733:fb59 with SMTP id
+ 5b1f17b1804b1-45868d4f124mr31899645e9.19.1753289711496; 
+ Wed, 23 Jul 2025 09:55:11 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-458693cd224sm28559825e9.21.2025.07.23.09.55.09
+ 5b1f17b1804b1-458693cd224sm28559825e9.21.2025.07.23.09.55.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Jul 2025 09:55:09 -0700 (PDT)
+ Wed, 23 Jul 2025 09:55:10 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH for-10.1 5/6] target/arm: Pass correct esize to sve_st1_z()
- for LD1Q, ST1Q
-Date: Wed, 23 Jul 2025 17:54:57 +0100
-Message-ID: <20250723165458.3509150-6-peter.maydell@linaro.org>
+Subject: [PATCH for-10.1 6/6] target/arm: Fix LD1W, LD1D to 128-bit elements
+Date: Wed, 23 Jul 2025 17:54:58 +0100
+Message-ID: <20250723165458.3509150-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250723165458.3509150-1-peter.maydell@linaro.org>
 References: <20250723165458.3509150-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,87 +101,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Our implementation of the helper functions for the LD1Q and ST1Q
-insns reused the existing DO_LD1_ZPZ_D and DO_ST1_ZPZ_D macros.  This
-passes the wrong esize (8, not 16) to sve_ldl_z().
+In our implementation of the SVE2p1 contiguous load to 128-bit
+element insns such as LD1D (scalar plus scalar, single register), we
+got the order of the arguments to the DO_LD1_2() macro wrong.  Here
+the first argument is the element size and the second is the memory
+size, and the element size is always the same size or larger than
+the memory size.
 
-Create new macros DO_LD1_ZPZ_Q and DO_ST1_ZPZ_Q which pass the
-correct esize, and use them for the LD1Q and ST1Q helpers.
+For the 128-bit versions, we want to load either 32-bit or 64-bit
+values from memory and extend them to the 128-bit vector element, but
+were trying to load 128 bit values and then stuff them into 32-bit or
+64-bit vector elements.  Correct the macro ordering.
 
-Fixes: d2aa9a804ee ("target/arm: Implement LD1Q, ST1Q for SVE2p1")
+Fixes: fc5f060bcb7b ("target/arm: Implement {LD1, ST1}{W, D} (128-bit element) for SVE2p1")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/sve_helper.c | 36 ++++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ target/arm/tcg/sve_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index d0fb4138d21..c4aaf0cc45f 100644
+index c4aaf0cc45f..c442fcb540d 100644
 --- a/target/arm/tcg/sve_helper.c
 +++ b/target/arm/tcg/sve_helper.c
-@@ -7219,6 +7219,20 @@ void HELPER(sve_ld##MEM##_##OFS##_mte)(CPUARMState *env, void *vd, void *vg, \
-                   off_##OFS##_d, sve_ld1##MEM##_host, sve_ld1##MEM##_tlb);   \
- }
+@@ -6439,8 +6439,8 @@ DO_LD1_2(ld1sds, MO_64, MO_32)
  
-+#define DO_LD1_ZPZ_Q(MEM, OFS, MSZ)                                          \
-+void HELPER(sve_ld##MEM##_##OFS)(CPUARMState *env, void *vd, void *vg,       \
-+                                 void *vm, target_ulong base, uint64_t desc) \
-+{                                                                            \
-+    sve_ld1_z(env, vd, vg, vm, base, desc, GETPC(), 0, 16, 1 << MSZ,         \
-+              off_##OFS##_d, sve_ld1##MEM##_host, sve_ld1##MEM##_tlb);       \
-+}                                                                            \
-+void HELPER(sve_ld##MEM##_##OFS##_mte)(CPUARMState *env, void *vd, void *vg, \
-+    void *vm, target_ulong base, uint64_t desc)                              \
-+{                                                                            \
-+    sve_ld1_z_mte(env, vd, vg, vm, base, desc, GETPC(), 16, 1 << MSZ,        \
-+                  off_##OFS##_d, sve_ld1##MEM##_host, sve_ld1##MEM##_tlb);   \
-+}
-+
- DO_LD1_ZPZ_S(bsu, zsu, MO_8)
- DO_LD1_ZPZ_S(bsu, zss, MO_8)
- DO_LD1_ZPZ_D(bdu, zsu, MO_8)
-@@ -7283,8 +7297,8 @@ DO_LD1_ZPZ_D(dd_be, zsu, MO_64)
- DO_LD1_ZPZ_D(dd_be, zss, MO_64)
- DO_LD1_ZPZ_D(dd_be, zd, MO_64)
+ DO_LD1_2(ld1dd,  MO_64, MO_64)
  
--DO_LD1_ZPZ_D(qq_le, zd, MO_128)
--DO_LD1_ZPZ_D(qq_be, zd, MO_128)
-+DO_LD1_ZPZ_Q(qq_le, zd, MO_128)
-+DO_LD1_ZPZ_Q(qq_be, zd, MO_128)
+-DO_LD1_2(ld1squ, MO_32, MO_128)
+-DO_LD1_2(ld1dqu, MO_64, MO_128)
++DO_LD1_2(ld1squ, MO_128, MO_32)
++DO_LD1_2(ld1dqu, MO_128, MO_64)
  
- #undef DO_LD1_ZPZ_S
- #undef DO_LD1_ZPZ_D
-@@ -7632,6 +7646,20 @@ void HELPER(sve_st##MEM##_##OFS##_mte)(CPUARMState *env, void *vd, void *vg, \
-                   off_##OFS##_d, sve_st1##MEM##_host, sve_st1##MEM##_tlb); \
- }
- 
-+#define DO_ST1_ZPZ_Q(MEM, OFS, MSZ)                                     \
-+void HELPER(sve_st##MEM##_##OFS)(CPUARMState *env, void *vd, void *vg,  \
-+                                 void *vm, target_ulong base, uint64_t desc) \
-+{                                                                       \
-+    sve_st1_z(env, vd, vg, vm, base, desc, GETPC(), 0, 16, 1 << MSZ,    \
-+              off_##OFS##_d, sve_st1##MEM##_host, sve_st1##MEM##_tlb);  \
-+}                                                                       \
-+void HELPER(sve_st##MEM##_##OFS##_mte)(CPUARMState *env, void *vd, void *vg, \
-+    void *vm, target_ulong base, uint64_t desc)                         \
-+{                                                                       \
-+    sve_st1_z_mte(env, vd, vg, vm, base, desc, GETPC(), 16, 1 << MSZ,   \
-+                  off_##OFS##_d, sve_st1##MEM##_host, sve_st1##MEM##_tlb); \
-+}
-+
- DO_ST1_ZPZ_S(bs, zsu, MO_8)
- DO_ST1_ZPZ_S(hs_le, zsu, MO_16)
- DO_ST1_ZPZ_S(hs_be, zsu, MO_16)
-@@ -7668,8 +7696,8 @@ DO_ST1_ZPZ_D(sd_be, zd, MO_32)
- DO_ST1_ZPZ_D(dd_le, zd, MO_64)
- DO_ST1_ZPZ_D(dd_be, zd, MO_64)
- 
--DO_ST1_ZPZ_D(qq_le, zd, MO_128)
--DO_ST1_ZPZ_D(qq_be, zd, MO_128)
-+DO_ST1_ZPZ_Q(qq_le, zd, MO_128)
-+DO_ST1_ZPZ_Q(qq_be, zd, MO_128)
- 
- #undef DO_ST1_ZPZ_S
- #undef DO_ST1_ZPZ_D
+ #undef DO_LD1_1
+ #undef DO_LD1_2
 -- 
 2.43.0
 
