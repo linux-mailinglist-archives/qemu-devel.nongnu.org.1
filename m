@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F41B0FAFA
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 21:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23367B0FB00
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 21:37:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uefF1-0004CB-Eb; Wed, 23 Jul 2025 15:35:03 -0400
+	id 1uefF0-0004Bf-59; Wed, 23 Jul 2025 15:35:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uefCX-0001mp-Ga
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 15:32:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uefCa-0001of-Ly
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 15:32:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uefCV-0005p6-Pp
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 15:32:29 -0400
+ (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uefCX-0005q0-VL
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 15:32:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753299145;
+ s=mimecast20190719; t=1753299149;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gnZ14fOq9hCoD+QYvSQDV8nPeRdIGS28ZH92fl75QJw=;
- b=DEnMQpfkzvqMLDTJF8FBoKnOOhDwSEqMcNPxbBC3HyVkGKVKRMJLbFuJ3qy2TLidDNKJ/i
- EqdGKIaZ8HVZXGj0/Jbn9O0xtLT3Pm867Aq3Y60dgE1FjkcT7WwXZ4DMNWs0ENJu/pP3v/
- 8IlZl5RBcdpjGpGK+Qij7LYYdmoLuoI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=5pxF3HYd9SJ4EoC1jXlBJCJZwVE7d+gxY+zfy/hA/EE=;
+ b=BWnROmuEL21ni3UYTzwQZk3QcWoOL+y25TnfLE9RAkrVZ/PVyrVaSjE9mJy+tKVsBIWM7Y
+ 5bftps1C4mLcYfly25Q1vcshwvskNTBOyHavX+QRteafrnD26pPr7zwS+WcOucK2VTGUhY
+ 2d8NcHOhI8Wh8B2pf/hkwBOEANSVKHE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-e7Ed1gjbM7K7gNI-8594hQ-1; Wed,
- 23 Jul 2025 15:32:21 -0400
-X-MC-Unique: e7Ed1gjbM7K7gNI-8594hQ-1
-X-Mimecast-MFC-AGG-ID: e7Ed1gjbM7K7gNI-8594hQ_1753299140
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-oKOXLZ26MTCb_vtSGX6NRQ-1; Wed,
+ 23 Jul 2025 15:32:27 -0400
+X-MC-Unique: oKOXLZ26MTCb_vtSGX6NRQ-1
+X-Mimecast-MFC-AGG-ID: oKOXLZ26MTCb_vtSGX6NRQ_1753299146
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 46E16195FE16; Wed, 23 Jul 2025 19:32:20 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E839319560AE; Wed, 23 Jul 2025 19:32:25 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.44.32.60])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1A96F180049D; Wed, 23 Jul 2025 19:32:14 +0000 (UTC)
+ id EDBEC180045B; Wed, 23 Jul 2025 19:32:20 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -56,16 +56,15 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
  Vincenzo Maffione <v.maffione@gmail.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [RFC PATCH v4 03/14] linux-headers: Update to Linux ~v6.16-rc7
- net-next
-Date: Wed, 23 Jul 2025 21:31:23 +0200
-Message-ID: <3ca277e2238d474f1f151a8db61e5998d590ad5b.1753297661.git.pabeni@redhat.com>
+Subject: [RFC PATCH v4 04/14] virtio: introduce extended features type
+Date: Wed, 23 Jul 2025 21:31:24 +0200
+Message-ID: <5d72c214940943f2863977539e337cc9ec17c8ea.1753297661.git.pabeni@redhat.com>
 In-Reply-To: <cover.1753297661.git.pabeni@redhat.com>
 References: <cover.1753297661.git.pabeni@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pabeni@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pabeni@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -90,138 +89,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update headers to include the virtio GSO over UDP tunnel features
+The virtio specifications allows for up to 128 bits for the
+device features. Soon we are going to use some of the 'extended'
+bits features (bit 64 and above) for the virtio net driver.
+
+Represent the virtio features bitmask with a fixes size array, and
+introduce a few helpers to help manipulate them.
+
+Most drivers will keep using only 64 bits features space: use union
+to allow them access the lower part of the extended space without any
+per driver change.
 
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
---
-Note: while the relevant change are not into Linus's tree yet, they have
-been merged in the net-next tree and they should land into the vanilla
-tree during the next merge window.
 ---
- include/standard-headers/linux/ethtool.h     |  4 +--
- include/standard-headers/linux/vhost_types.h |  5 +++
- include/standard-headers/linux/virtio_net.h  | 33 ++++++++++++++++++++
- linux-headers/linux/vhost.h                  |  7 +++++
- 4 files changed, 47 insertions(+), 2 deletions(-)
+v3 -> v4:
+  - VIRTIO_FEATURES_DWORDS -> VIRTIO_FEATURES_NU64S
+  - VIRTIO_FEATURES_WORDS -> VIRTIO_FEATURES_NU32S
+  - VIRTIO_DWORD ->  VIRTIO_FEATURES_U64
+  - VIRTIO_BIT -> VIRTIO_FEATURES_BIT
+  - virtio_features_use_extended -> virtio_features_use_ex
+  - move DEFINE_PROP_FEATURE definition here
 
-diff --git a/include/standard-headers/linux/ethtool.h b/include/standard-headers/linux/ethtool.h
-index cef0d207a6..eb80314028 100644
---- a/include/standard-headers/linux/ethtool.h
-+++ b/include/standard-headers/linux/ethtool.h
-@@ -2314,7 +2314,7 @@ enum {
- 	IPV6_USER_FLOW	= 0x0e, /* spec only (usr_ip6_spec; nfc only) */
- 	IPV4_FLOW	= 0x10, /* hash only */
- 	IPV6_FLOW	= 0x11, /* hash only */
--	ETHER_FLOW	= 0x12, /* spec only (ether_spec) */
-+	ETHER_FLOW	= 0x12, /* hash or spec (ether_spec) */
- 
- 	/* Used for GTP-U IPv4 and IPv6.
- 	 * The format of GTP packets only includes
-@@ -2371,7 +2371,7 @@ enum {
- /* Flag to enable RSS spreading of traffic matching rule (nfc only) */
- #define	FLOW_RSS	0x20000000
- 
--/* L3-L4 network traffic flow hash options */
-+/* L2-L4 network traffic flow hash options */
- #define	RXH_L2DA	(1 << 1)
- #define	RXH_VLAN	(1 << 2)
- #define	RXH_L3_PROTO	(1 << 3)
-diff --git a/include/standard-headers/linux/vhost_types.h b/include/standard-headers/linux/vhost_types.h
-index fd54044936..79b53a931a 100644
---- a/include/standard-headers/linux/vhost_types.h
-+++ b/include/standard-headers/linux/vhost_types.h
-@@ -110,6 +110,11 @@ struct vhost_msg_v2 {
- 	};
- };
- 
-+struct vhost_features_array {
-+	uint64_t count; /* number of entries present in features array */
-+	uint64_t features[] ;
-+};
-+
- struct vhost_memory_region {
- 	uint64_t guest_phys_addr;
- 	uint64_t memory_size; /* bytes */
-diff --git a/include/standard-headers/linux/virtio_net.h b/include/standard-headers/linux/virtio_net.h
-index 982e854f14..93abaae0b9 100644
---- a/include/standard-headers/linux/virtio_net.h
-+++ b/include/standard-headers/linux/virtio_net.h
-@@ -70,6 +70,28 @@
- 					 * with the same MAC.
- 					 */
- #define VIRTIO_NET_F_SPEED_DUPLEX 63	/* Device set linkspeed and duplex */
-+#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO 65 /* Driver can receive
-+					      * GSO-over-UDP-tunnel packets
-+					      */
-+#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM 66 /* Driver handles
-+						   * GSO-over-UDP-tunnel
-+						   * packets with partial csum
-+						   * for the outer header
-+						   */
-+#define VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO 67 /* Device can receive
-+					     * GSO-over-UDP-tunnel packets
-+					     */
-+#define VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO_CSUM 68 /* Device handles
-+						  * GSO-over-UDP-tunnel
-+						  * packets with partial csum
-+						  * for the outer header
-+						  */
-+
-+/* Offloads bits corresponding to VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO{,_CSUM}
-+ * features
+v2 -> v3:
+  - fix preprocessor guard name
+  - use BIT_ULL
+  - add missing parentheses
+  - use memcmp()
+  - _is_empty() -> _empty()
+  - _andnot() returns a bool, true if dst has any non zero bits
+  - _array -> _ex
+
+v1 -> v2:
+  - use a fixed size array for features instead of uint128
+  - use union with u64 to reduce the needed code churn
+---
+ include/hw/virtio/virtio-features.h | 127 ++++++++++++++++++++++++++++
+ include/hw/virtio/virtio.h          |   7 +-
+ 2 files changed, 131 insertions(+), 3 deletions(-)
+ create mode 100644 include/hw/virtio/virtio-features.h
+
+diff --git a/include/hw/virtio/virtio-features.h b/include/hw/virtio/virtio-features.h
+new file mode 100644
+index 0000000000..7abdf8601a
+--- /dev/null
++++ b/include/hw/virtio/virtio-features.h
+@@ -0,0 +1,127 @@
++/*
++ * Virtio features helpers
++ *
++ * Copyright 2025 Red Hat, Inc.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
 + */
-+#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_MAPPED	46
-+#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM_MAPPED	47
++
++#ifndef QEMU_VIRTIO_FEATURES_H
++#define QEMU_VIRTIO_FEATURES_H
++
++#include "qemu/bitops.h"
++
++#define VIRTIO_FEATURES_FMT        "%016"PRIx64"%016"PRIx64
++#define VIRTIO_FEATURES_PR(f)      (f)[1], (f)[0]
++
++#define VIRTIO_FEATURES_MAX        128
++#define VIRTIO_FEATURES_BIT(b)     BIT_ULL((b) % 64)
++#define VIRTIO_FEATURES_U64(b)     ((b) / 64)
++#define VIRTIO_FEATURES_NU32S      (VIRTIO_FEATURES_MAX / 32)
++#define VIRTIO_FEATURES_NU64S      (VIRTIO_FEATURES_MAX / 64)
++
++#define VIRTIO_DECLARE_FEATURES(name)                        \
++    union {                                                  \
++        uint64_t name;                                       \
++        uint64_t name##_ex[VIRTIO_FEATURES_NU64S];         \
++    }
++
++#define DEFINE_PROP_FEATURE(_name, _state, _field, _bit, _defval)          \
++    DEFINE_PROP_BIT64(_name, _state, _field[VIRTIO_FEATURES_U64(_bit)],    \
++                      (_bit) % 64, _defval)
++
++static inline void virtio_features_clear(uint64_t *features)
++{
++    memset(features, 0, sizeof(features[0]) * VIRTIO_FEATURES_NU64S);
++}
++
++static inline void virtio_features_from_u64(uint64_t *features, uint64_t from)
++{
++    virtio_features_clear(features);
++    features[0] = from;
++}
++
++static inline bool virtio_has_feature_ex(const uint64_t *features,
++                                         unsigned int fbit)
++{
++    assert(fbit < VIRTIO_FEATURES_MAX);
++    return features[VIRTIO_FEATURES_U64(fbit)] & VIRTIO_FEATURES_BIT(fbit);
++}
++
++static inline void virtio_add_feature_ex(uint64_t *features,
++                                         unsigned int fbit)
++{
++    assert(fbit < VIRTIO_FEATURES_MAX);
++    features[VIRTIO_FEATURES_U64(fbit)] |= VIRTIO_FEATURES_BIT(fbit);
++}
++
++static inline void virtio_clear_feature_ex(uint64_t *features,
++                                           unsigned int fbit)
++{
++    assert(fbit < VIRTIO_FEATURES_MAX);
++    features[VIRTIO_FEATURES_U64(fbit)] &= ~VIRTIO_FEATURES_BIT(fbit);
++}
++
++static inline bool virtio_features_equal(const uint64_t *f1,
++                                         const uint64_t *f2)
++{
++    return !memcmp(f1, f2, sizeof(uint64_t) * VIRTIO_FEATURES_NU64S);
++}
++
++static inline bool virtio_features_use_ex(const uint64_t *features)
++{
++    int i;
++
++    for (i = 1; i < VIRTIO_FEATURES_NU64S; ++i) {
++        if (features[i]) {
++            return true;
++        }
++    }
++    return false;
++}
++
++static inline bool virtio_features_empty(const uint64_t *features)
++{
++    return !virtio_features_use_ex(features) && !features[0];
++}
++
++static inline void virtio_features_copy(uint64_t *to, const uint64_t *from)
++{
++    memcpy(to, from, sizeof(to[0]) * VIRTIO_FEATURES_NU64S);
++}
++
++static inline bool virtio_features_andnot(uint64_t *to, const uint64_t *f1,
++                                           const uint64_t *f2)
++{
++    uint64_t diff = 0;
++    int i;
++
++    for (i = 0; i < VIRTIO_FEATURES_NU64S; i++) {
++        to[i] = f1[i] & ~f2[i];
++        diff |= to[i];
++    }
++    return diff;
++}
++
++static inline void virtio_features_and(uint64_t *to, const uint64_t *f1,
++                                       const uint64_t *f2)
++{
++    int i;
++
++    for (i = 0; i < VIRTIO_FEATURES_NU64S; i++) {
++        to[i] = f1[i] & f2[i];
++    }
++}
++
++static inline void virtio_features_or(uint64_t *to, const uint64_t *f1,
++                                       const uint64_t *f2)
++{
++    int i;
++
++    for (i = 0; i < VIRTIO_FEATURES_NU64S; i++) {
++        to[i] = f1[i] | f2[i];
++    }
++}
++
++#endif
++
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index c594764f23..39e4059a66 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -16,6 +16,7 @@
  
- #ifndef VIRTIO_NET_NO_LEGACY
- #define VIRTIO_NET_F_GSO	6	/* Host handles pkts w/ any GSO type */
-@@ -131,12 +153,17 @@ struct virtio_net_hdr_v1 {
- #define VIRTIO_NET_HDR_F_NEEDS_CSUM	1	/* Use csum_start, csum_offset */
- #define VIRTIO_NET_HDR_F_DATA_VALID	2	/* Csum is valid */
- #define VIRTIO_NET_HDR_F_RSC_INFO	4	/* rsc info in csum_ fields */
-+#define VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM 8	/* UDP tunnel csum offload */
- 	uint8_t flags;
- #define VIRTIO_NET_HDR_GSO_NONE		0	/* Not a GSO frame */
- #define VIRTIO_NET_HDR_GSO_TCPV4	1	/* GSO frame, IPv4 TCP (TSO) */
- #define VIRTIO_NET_HDR_GSO_UDP		3	/* GSO frame, IPv4 UDP (UFO) */
- #define VIRTIO_NET_HDR_GSO_TCPV6	4	/* GSO frame, IPv6 TCP */
- #define VIRTIO_NET_HDR_GSO_UDP_L4	5	/* GSO frame, IPv4& IPv6 UDP (USO) */
-+#define VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 0x20 /* UDPv4 tunnel present */
-+#define VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6 0x40 /* UDPv6 tunnel present */
-+#define VIRTIO_NET_HDR_GSO_UDP_TUNNEL (VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 | \
-+				       VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6)
- #define VIRTIO_NET_HDR_GSO_ECN		0x80	/* TCP has ECN set */
- 	uint8_t gso_type;
- 	__virtio16 hdr_len;	/* Ethernet + IP + tcp/udp hdrs */
-@@ -181,6 +208,12 @@ struct virtio_net_hdr_v1_hash {
- 	uint16_t padding;
- };
+ #include "system/memory.h"
+ #include "hw/qdev-core.h"
++#include "hw/virtio/virtio-features.h"
+ #include "net/net.h"
+ #include "migration/vmstate.h"
+ #include "qemu/event_notifier.h"
+@@ -121,9 +122,9 @@ struct VirtIODevice
+      * backend (e.g. vhost) and could potentially be a subset of the
+      * total feature set offered by QEMU.
+      */
+-    uint64_t host_features;
+-    uint64_t guest_features;
+-    uint64_t backend_features;
++    VIRTIO_DECLARE_FEATURES(host_features);
++    VIRTIO_DECLARE_FEATURES(guest_features);
++    VIRTIO_DECLARE_FEATURES(backend_features);
  
-+struct virtio_net_hdr_v1_hash_tunnel {
-+	struct virtio_net_hdr_v1_hash hash_hdr;
-+	uint16_t outer_th_offset;
-+	uint16_t inner_nh_offset;
-+};
-+
- #ifndef VIRTIO_NET_NO_LEGACY
- /* This header comes first in the scatter-gather list.
-  * For legacy virtio, if VIRTIO_F_ANY_LAYOUT is not negotiated, it must
-diff --git a/linux-headers/linux/vhost.h b/linux-headers/linux/vhost.h
-index d4b3e2ae13..d6ad01fbb8 100644
---- a/linux-headers/linux/vhost.h
-+++ b/linux-headers/linux/vhost.h
-@@ -235,4 +235,11 @@
-  */
- #define VHOST_VDPA_GET_VRING_SIZE	_IOWR(VHOST_VIRTIO, 0x82,	\
- 					      struct vhost_vring_state)
-+
-+/* Extended features manipulation */
-+#define VHOST_GET_FEATURES_ARRAY _IOR(VHOST_VIRTIO, 0x83, \
-+				       struct vhost_features_array)
-+#define VHOST_SET_FEATURES_ARRAY _IOW(VHOST_VIRTIO, 0x83, \
-+				       struct vhost_features_array)
-+
- #endif
+     size_t config_len;
+     void *config;
 -- 
 2.50.0
 
