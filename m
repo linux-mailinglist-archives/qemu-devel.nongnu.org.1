@@ -2,72 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1F3B0F428
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 15:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF308B0F442
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Jul 2025 15:41:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueZdO-0006kC-D4; Wed, 23 Jul 2025 09:35:50 -0400
+	id 1ueZgd-00024u-Ov; Wed, 23 Jul 2025 09:39:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ueZao-0005rU-20
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 09:33:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ueZal-0003Zp-On
- for qemu-devel@nongnu.org; Wed, 23 Jul 2025 09:33:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753277586;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4FODRQNCnTMr2DNYg0zQMcKWGKTJnag5io3LmsuPTNg=;
- b=MqA9LuTlr/Z1Guaf0BByylS2ci9XBw2SsxYE6dBnHL4/1GZfgLgkpLzQzKX7EjVIxpGEqE
- K4mgSbXysMiyyP4CozOXSntOfYrQ9//ozmUa6vOixJSuUDnLd1EAm7cIDQUXgv0GynbUFn
- rLzzOfX+F8jIeTKJHh82upAJYR+9Bk4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-137-QfZDVVgkOnKkk2K_SAoO4A-1; Wed,
- 23 Jul 2025 09:33:02 -0400
-X-MC-Unique: QfZDVVgkOnKkk2K_SAoO4A-1
-X-Mimecast-MFC-AGG-ID: QfZDVVgkOnKkk2K_SAoO4A_1753277581
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 253961944D04; Wed, 23 Jul 2025 13:33:01 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.2])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CEC3C19560A0; Wed, 23 Jul 2025 13:33:00 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 079A521E6925; Wed, 23 Jul 2025 15:32:58 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, mtosatti@redhat.com, kvm@vger.kernel.org,
- aharivel@redhat.com
-Subject: [PATCH 2/2] vfio scsi ui: Error-check
- qio_channel_socket_connect_sync() the same way
-Date: Wed, 23 Jul 2025 15:32:57 +0200
-Message-ID: <20250723133257.1497640-3-armbru@redhat.com>
-In-Reply-To: <20250723133257.1497640-1-armbru@redhat.com>
-References: <20250723133257.1497640-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ueZgb-000232-1n
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 09:39:09 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ueZgX-0006Tv-G3
+ for qemu-devel@nongnu.org; Wed, 23 Jul 2025 09:39:08 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-aec46b50f33so1151770966b.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Jul 2025 06:39:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753277943; x=1753882743; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tO7D/HrU1mVkgOY2yanGLpvFsSuau4X76y1xrCDv92U=;
+ b=YTSRdL2i6NtVPEzCe5zi+u1eDTTWryGHx7IThfF8DyBUF3QvKNA+AOFN0F1LKsLxQV
+ /ai5Qe6vFS4fmQ6Gy+SPRhfn4dU9l3kPoE0iKVr1WbQw/ug5CO1mcrrkro4pN1TkR2M8
+ rCNoHN5omezXvwMcsP1l6f0OqXQRx+WCoDDbS57jqfZOJcwoKdxHGPSZdCguW40ilvr+
+ P+22sWczeG2qYK0zrmOQK7Qo9QV5ZdKstHaHijoiBE5iPhIMORNKjYxAiAhBpag8LFpS
+ elZlnAq6MX08NfOvtbb6oM8pu4qW4ghuj2k2NT5hWlkS7KxXdlDhHqqt36HSqIhy26ed
+ HV6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753277943; x=1753882743;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tO7D/HrU1mVkgOY2yanGLpvFsSuau4X76y1xrCDv92U=;
+ b=G2m+MmP/v6sz0u+OBq/exMzRGGI0GGuONX8pqA/Gb6zaCsccIlvhJe6GgDgs0RIIZO
+ VCkM3SCIe3+k5kJD/griStz8ZkRDCKkG6jrR4yZKAJmmGaSAs6kbmi19t5CG3o8INv9j
+ WUZLYauKnTmj70gAURLSO8oaysPvLDZ0l+7ECLBoNTEvelFU7jZ/62/1GLX7WKe2N4J2
+ Fm2eJU3xVL2bP38choju1vDzZU1WM0aWrmU/gzLuJUD0RNgH5TC9RYOfDOjnfs5o7fKT
+ /r/A+3eiLWP4Khec0E/A6BMf4+ypcQpkSBBwp0ibyuXbSovLZIAKSxYhPnfzqqAZMWaM
+ /bOA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXZcarvkAbkVn462UpnQNJ0wSzMeBMpDKKOUXfdUPjyQb55e5Q6RFgwv/Np5CylhVY6nayTpYftpUXw@nongnu.org
+X-Gm-Message-State: AOJu0Yy6eYZgobbfLKIeDc2AtFrckLny2dxNwdm1z6GRhBc+Taz8DZdg
+ 1aWWc66sReiLuz9LmRKu2cXbGeoBTlwxm2JVjkNDozylho5VspXRHvF0JSZP9MwEspkXB2S9qDH
+ RzrIxsEP/rSv/Hrt6y0xBjfAb845+Wkt+Kykkutq4xLGC0ic7rXvU
+X-Gm-Gg: ASbGnct69OBKxfAKZKGMua4qzrzsD3yRWECCKA+eo+x+L3josOk2S2DGhJ63y30bBnu
+ +SdHKzGvEop7zyabUC0rtPU6ckxdq/yGEBicBbFLE9EsPaTE2wS8mpu+P7TfIYvE53gwSHR06T3
+ 2WPFvnoz0LlXFyhl8EaLFcGGtrtH2n8MNiPjKYpN3N4vSHOXWQd6VKk35mOip5As0eGHZ2IYY4v
+ iVvNgf1
+X-Google-Smtp-Source: AGHT+IETH+0m3Bg+1LztvqUvbUUjGefSyXOJTMcfojB0blO+5gPZmtXf65MFN5RDGj+qVGEwpU3Wmebe/voGLyPxK0w=
+X-Received: by 2002:a17:907:60d1:b0:ad8:9a86:cf52 with SMTP id
+ a640c23a62f3a-af2f66c1e43mr326393066b.11.1753277942912; Wed, 23 Jul 2025
+ 06:39:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+References: <20250722090547.109117-1-ben.dooks@codethink.co.uk>
+ <87seinulb7.fsf@draig.linaro.org>
+In-Reply-To: <87seinulb7.fsf@draig.linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 23 Jul 2025 14:38:49 +0100
+X-Gm-Features: Ac12FXyScXWtj_ATb4oUcw7OVjIxlC9qSpbcaPvDnt31goHJ3hUh1SLIqSyRCtk
+Message-ID: <CAFEAcA8c0GRxvXUANBbNvMdTqBwBgCjTZkqc2RNjE8bRQo772w@mail.gmail.com>
+Subject: Re: [PATCH] hw/sd: print bad s->arglen in unexpected response
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: Ben Dooks <ben.dooks@codethink.co.uk>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Bin Meng <bmeng.cn@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.377,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,84 +98,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qio_channel_socket_connect_sync() returns 0 on success, and -1 on
-failure, with errp set.  Some callers check the return value, and some
-check whether errp was set.
+On Wed, 23 Jul 2025 at 13:47, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> Ben Dooks <ben.dooks@codethink.co.uk> writes:
+>
+> (Add maintainers to CC)
+>
+> You should get your patch workflow to use scripts/get_maintainer.pl so
+> they get CC'd and reduces the chance of it being missed in the fire-hose
+> of qemu-devel.
+>
+> > If we get "ssi_sd: error: Unexpected response to cmd" then having
+> > the bad s->arglen would be useful debug and does not add any complexity
+> > to the code.
+>
+> Generally we should be removing the old-style DPRINTF debug and
+> replacing them with tracepoints where they are warranted. The main
+> problem with the old style DPRINTF's is the format strings tend to
+> bitrot because they are not enabled by default.
+>
+> >
+> > Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+> > ---
+> >  hw/sd/ssi-sd.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/hw/sd/ssi-sd.c b/hw/sd/ssi-sd.c
+> > index 6c90a86ab4..f1441d2c97 100644
+> > --- a/hw/sd/ssi-sd.c
+> > +++ b/hw/sd/ssi-sd.c
+> > @@ -183,7 +183,7 @@ static uint32_t ssi_sd_transfer(SSIPeripheral *dev,=
+ uint32_t val)
+> >                  s->response[0] =3D 1;
+> >                  memcpy(&s->response[1], longresp, 4);
+> >              } else if (s->arglen !=3D 4) {
+> > -                BADF("Unexpected response to cmd %d\n", s->cmd);
+> > +                BADF("Unexpected response to cmd %d, arglen=3D%d\n", s=
+->cmd, s->arglen);
+>
+> That said BADF is defined in both cases (although the exit(1) for the
+> debug leg is a bit aggressive). Is this an error of the guest
+> miss-programming the device with invalid data?
+>
+> There could be an argument for using:
+>
+>   qemu_log_mask(LOG_GUEST_ERROR, "Unexpected response to cmd %d, arglen=
+=3D%d\n", s->cmd, s->arglen);
+>
+> instead.
 
-For consistency, always check the return value, and always check it's
-negative.
+This unexpected response comes from QEMU's SD card emulation,
+so I'm not sure to what extent LOG_GUEST_ERROR is appropriate.
+Is this triggered by the guest doing something silly, or by
+a bug in QEMU itself?
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- hw/vfio-user/proxy.c     | 2 +-
- scsi/pr-manager-helper.c | 9 ++-------
- ui/input-barrier.c       | 5 +----
- 3 files changed, 4 insertions(+), 12 deletions(-)
+I agree that the BADF() macro is rather a legacy relic
+(you can see it in a handful of other files too). exit(1)
+seems unlikely to be very useful behaviour even if you are
+trying to debug this code, and we have slowly been weeding
+out places where QEMU just barfs on error cases.
 
-diff --git a/hw/vfio-user/proxy.c b/hw/vfio-user/proxy.c
-index 2275d3fe39..2c03d49f97 100644
---- a/hw/vfio-user/proxy.c
-+++ b/hw/vfio-user/proxy.c
-@@ -885,7 +885,7 @@ VFIOUserProxy *vfio_user_connect_dev(SocketAddress *addr, Error **errp)
- 
-     sioc = qio_channel_socket_new();
-     ioc = QIO_CHANNEL(sioc);
--    if (qio_channel_socket_connect_sync(sioc, addr, errp)) {
-+    if (qio_channel_socket_connect_sync(sioc, addr, errp) < 0) {
-         object_unref(OBJECT(ioc));
-         return NULL;
-     }
-diff --git a/scsi/pr-manager-helper.c b/scsi/pr-manager-helper.c
-index 6b86f01b01..aea751fb04 100644
---- a/scsi/pr-manager-helper.c
-+++ b/scsi/pr-manager-helper.c
-@@ -105,20 +105,15 @@ static int pr_manager_helper_initialize(PRManagerHelper *pr_mgr,
-         .u.q_unix.path = path
-     };
-     QIOChannelSocket *sioc = qio_channel_socket_new();
--    Error *local_err = NULL;
--
-     uint32_t flags;
-     int r;
- 
-     assert(!pr_mgr->ioc);
-     qio_channel_set_name(QIO_CHANNEL(sioc), "pr-manager-helper");
--    qio_channel_socket_connect_sync(sioc,
--                                    &saddr,
--                                    &local_err);
-+    r = qio_channel_socket_connect_sync(sioc, &saddr, errp);
-     g_free(path);
--    if (local_err) {
-+    if (r < 0) {
-         object_unref(OBJECT(sioc));
--        error_propagate(errp, local_err);
-         return -ENOTCONN;
-     }
- 
-diff --git a/ui/input-barrier.c b/ui/input-barrier.c
-index 9793258aac..0a2198ca50 100644
---- a/ui/input-barrier.c
-+++ b/ui/input-barrier.c
-@@ -490,7 +490,6 @@ static gboolean input_barrier_event(QIOChannel *ioc G_GNUC_UNUSED,
- static void input_barrier_complete(UserCreatable *uc, Error **errp)
- {
-     InputBarrier *ib = INPUT_BARRIER(uc);
--    Error *local_err = NULL;
- 
-     if (!ib->name) {
-         error_setg(errp, QERR_MISSING_PARAMETER, "name");
-@@ -506,9 +505,7 @@ static void input_barrier_complete(UserCreatable *uc, Error **errp)
-     ib->sioc = qio_channel_socket_new();
-     qio_channel_set_name(QIO_CHANNEL(ib->sioc), "barrier-client");
- 
--    qio_channel_socket_connect_sync(ib->sioc, &ib->saddr, &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (qio_channel_socket_connect_sync(ib->sioc, &ib->saddr, errp) < 0) {
-         return;
-     }
- 
--- 
-2.49.0
-
+thanks
+-- PMM
 
