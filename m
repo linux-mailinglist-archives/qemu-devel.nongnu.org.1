@@ -2,78 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCF9B10937
+	by mail.lfdr.de (Postfix) with ESMTPS id 42488B10936
 	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:30:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueu9Y-0000BI-3C; Thu, 24 Jul 2025 07:30:24 -0400
+	id 1ueu9T-000826-W7; Thu, 24 Jul 2025 07:30:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ueu9N-00089P-Gg
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 07:30:14 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1ueu9G-0007T4-13
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 07:30:06 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ueu9L-0003MU-7B
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 07:30:13 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-60c4f796446so1511409a12.1
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 04:30:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1ueu9E-000393-15
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 07:30:05 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-23602481460so8379165ad.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 04:30:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753356609; x=1753961409; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XLsNCLAgQY25GsAUu49EVCWatsso57MaoWS8EpJ/U3Y=;
- b=TJI1Au7zO1567gMct1y4s5WFOd/XJvfRFRvBl4SFOUQPCoNv5WguvBQTY3mmUivrJ+
- nRkOOnZP3kSIBLUgxmfvdEpd4/1tMdKEDhfMQYXwkwn6eYbIsFImevRgdMwhXPmZYlg4
- vCP5p+IK3OgFju+of3+bqrtFqAaMh31SBbH49rHYBrCq2EP16kMJzSYMmM4+EdIF83oh
- C1tDnqaZJrWmMtA63Om6dV/qw1eNC417yNdNXGeoQHRC5Zm0vBlWHPLIvJuJgC+2QEV0
- Ivr1ON1gL1rSqBhvGBl+zBEyP7B4VjQ8TsYnu+ecIPotXyXZG3cZSIl9z2+WRzYlkVgd
- uugg==
+ d=ventanamicro.com; s=google; t=1753356601; x=1753961401; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9mScItYN4PjiZN1y3ZL50DBOIN0/0wrBABlORo2JXU8=;
+ b=MZPxmowFGn7SB3VaKwiTf2CpL8XJVXFK2wOM5TgbGerkaS+f0qE9Ot28sbW5IgN3+5
+ U7bita/OPZERUGCQ0ITw+awXskrSOb5rCY6ihXHMfRtAxhkSHz+Z3HzTX8Q6CC2YXC00
+ 4Xuc9WeYyVDZlyv7qiHeVm7ASbc+5fbKpveigX8RuEpwvH26weQ82Z83HilQHh1Zj8hh
+ atuHx1plmOqi3IFg6WYb9+dF4YuYtAQgddI8DMnhyXfMhaXYcrIsAVfRq07jeF8ASVHE
+ krvefbe3z3VwciEtPCIm2NZyo6iZyVT/nxLMVtvZgM1+NMySwFbmAeusc/Hy3ixMz4ED
+ HD7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753356609; x=1753961409;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XLsNCLAgQY25GsAUu49EVCWatsso57MaoWS8EpJ/U3Y=;
- b=gSVi/X8r/AA0JTSKN7Jkf8J0eACLrXpiuHtQsCpJ8xPhANnNBWAsCK/bf2Jc4/96hB
- L0Meqim032N/cRJhVFVMPU0CwWd+nuez87FUKo4CAnnkGQxmgCzCZt8cAQN4bQEdzOj9
- 1wr1TzBAZJcX9ofgqcNlQSP9SftvZ3BnpjveKpnzCDAbsLTcS34LQiWtXqI4e+6ZMiTW
- B0vVL8JgTYfUz3iHJ4QmP9+pOhzMqyZwLjw2u8U2bCKIrvJCTihpA5KaSNKnq0gUHBTk
- zVbGeNR6hp9RsPcN3ccQJqT1YCHJLswIDkasvy7f5ijdtxwQjwy/PF9QpxZ9xEXuBB93
- zWkQ==
-X-Gm-Message-State: AOJu0YxmljNo+1JU/w+YtIGUDJMvhbz762zROF/b4v0FlJ3oKwEP6zDR
- 56SCupFZwZJgbsLhbJ0qopbW7BS2qabKy7ANVACqu5Xow5VWrTwHN+YFDmne43sQfoa7fPDAqZR
- C1aMBUx0NaSFiBuyAhll89gxGgjezuyfU2H+sQHMJGQ==
-X-Gm-Gg: ASbGncuNtmewW66iFM4Rk0c2V+5R0hBxCme9qc5pmlzxyCtB82nauA3NJauV0FsXv9A
- wr9bitIvIn392krUhhwzhKk/4r4BnrNl+t9J0hIlvMZ4TV6yFRmSVOA+yRMWADbDl9WYC1Qr4MW
- 5aPMfwu5n+cNUgZLnOEoELQNF4uEuPVpOca4SjPz4bXs0tM/hSGINBU887eu7dnimn4W1C4RNq4
- 6iAfiEBLocm30MB
-X-Google-Smtp-Source: AGHT+IG9M7JG3+egYJEUNgJnjmD3VnU0cF/HaWeex+0iBmRYnIxgoZD+N7u38A+ut0GSEQdQnY6i7E/fv/B/j0K4REc=
-X-Received: by 2002:a05:6402:90c:b0:612:dff3:2ffb with SMTP id
- 4fb4d7f45d1cf-6149b427029mr5723871a12.11.1753356608758; Thu, 24 Jul 2025
- 04:30:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753356601; x=1753961401;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9mScItYN4PjiZN1y3ZL50DBOIN0/0wrBABlORo2JXU8=;
+ b=c+aA2tx9bCuHI1qWBrKq6/v5d/R7zIvxLWL5injqD+iBPY49Ict/JzQo7l8mcASPfJ
+ ElYVncJa564tpU3TDV+53MftdiKW6bndUgz40NwZEuXxIy3BRw0Lhdfsm2hY0/mbAZe0
+ DSTMZVmXAzqakV/+Fxpz1c/o749XF83oSlvEuLNMEsNKxzj5D2PUA+GPflvxibXin5ex
+ V1f0B0B6316OLnvZKe0B/+Bm0wRhtNcM8Kj1Xl56707/MdDJJ5HN4KPwcAWwQbVQJ9mW
+ LZUUpp6lA8IRpozcwsikJLfILWWWcTmAF6wdytqr7i22vd07cXD9srSLdk3NY9GnEYBl
+ ggqQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWdMAxcMi6cs5qayPDzk9JG3duf7acSxK+7Juh96Givwpp80jRITQ2zGbx69OL/kcHelwKflSNFyaWr@nongnu.org
+X-Gm-Message-State: AOJu0YyRsG967nprU+21S/YW+ftib7w2WejnAoo/ntjiWUETWNE0hzXO
+ vEdUCwaf55l6Iir+fsRIHM0vNi1HcnC3S2cT6T5T98V+HYXB95x3BDaBFGWMD+7gCc5RkPt4zT9
+ slJlO
+X-Gm-Gg: ASbGncuMCdWBt8atCComSJ2hBMNTPCvnsg0mxIQl9O60VhXEgQFxKR046B4YztWkNfs
+ 1C7HkwCN2QMuTt0UTK8E4EmiQnR/JZWnEqpHgnlMnJ3T7njuafzQI9tu3fFwEkJ5Fxq8z6pLpvr
+ u+hCmJCMRomTDmY8mRfIYrK18Vdg6q0pqgg46HcSXuWHE9Vqd8woIVoJIUwgFWdKIxKq5rhxTL6
+ qDwODVBfVLObScbbVm6JlA870GH8A7EivKzpHznhtqEaV3XrpuVJ5z/2FcULZ4m+5MRL29ZKEfR
+ gWbDQs8TvwGAsGde49LKPsbnRVIMcvrdxhh4yCEmCpj9HmcdJ6CM1pxykfxNIxDTOR8ftdHMQsI
+ 6DVuyTJqndpzjlU7tDl3bkeKEVBvnx2yzrm0PWf8hBgBz79QW9LkcVr0YsrCopEuxZv+1kn8xIm
+ cX38XjlqlvZxU=
+X-Google-Smtp-Source: AGHT+IFpJY84uaHysKbaKd8spF5WQ1pCc1Smu4PJ71DHxo1bzUHgQee4LIbyqgFCiFAYqg2ehobAnw==
+X-Received: by 2002:a17:903:41ca:b0:234:ba37:87ae with SMTP id
+ d9443c01a7336-23f98162005mr106464595ad.4.1753356601382; 
+ Thu, 24 Jul 2025 04:30:01 -0700 (PDT)
+Received: from ?IPV6:2804:7f0:bcc0:8924:370b:6e58:6804:59a0?
+ ([2804:7f0:bcc0:8924:370b:6e58:6804:59a0])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23fa48bc7b9sm13486835ad.98.2025.07.24.04.29.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 24 Jul 2025 04:30:00 -0700 (PDT)
+Message-ID: <f55a1514-acc3-4c46-b26e-b6727b38e25c@ventanamicro.com>
+Date: Thu, 24 Jul 2025 08:29:56 -0300
 MIME-Version: 1.0
-References: <20250724105939.2393230-1-alex.bennee@linaro.org>
- <20250724105939.2393230-14-alex.bennee@linaro.org>
-In-Reply-To: <20250724105939.2393230-14-alex.bennee@linaro.org>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 24 Jul 2025 14:29:42 +0300
-X-Gm-Features: Ac12FXz3_xjyMlWLZv1NSiN_dVw_b3zHyllUzeiXq1abD3FpGwkiGCq5bqRfTQU
-Message-ID: <CAAjaMXau4GyWidMNdYXgnMQTrv0mhVuCamDtaMLLJPeEDgyOQQ@mail.gmail.com>
-Subject: Re: [PATCH for 10.1 13/13] tests/docker: handle host-arch selection
- for all-test-cross
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x530.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] bios-tables-test-allowed-diff.h: Allow RISC-V FADT
+ and MADT changes
+To: Sunil V L <sunilvl@ventanamicro.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Anup Patel <anup@brainfault.org>, Atish Kumar Patra <atishp@rivosinc.com>
+References: <20250724110350.452828-1-sunilvl@ventanamicro.com>
+ <20250724110350.452828-2-sunilvl@ventanamicro.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20250724110350.452828-2-sunilvl@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,100 +112,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 24, 2025 at 2:00=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
-o.org> wrote:
->
-> When building on non-x86 we get a bunch but not all of the compilers.
-> Handle this in the Dockerfile by probing the arch and expanding the
-> list available.
->
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+
+On 7/24/25 8:03 AM, Sunil V L wrote:
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
 > ---
->  .../dockerfiles/debian-all-test-cross.docker  | 31 ++++++++++---------
->  1 file changed, 17 insertions(+), 14 deletions(-)
->
-> diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/test=
-s/docker/dockerfiles/debian-all-test-cross.docker
-> index 5aa43749ebe..16a83241270 100644
-> --- a/tests/docker/dockerfiles/debian-all-test-cross.docker
-> +++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
-> @@ -23,7 +23,9 @@ RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
->          bison \
->          ccache \
->          clang  \
-> +        dpkg-dev \
->          flex \
-> +        gcc \
->          git \
->          libclang-rt-dev \
->          ninja-build \
-> @@ -33,16 +35,11 @@ RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
->          python3-venv \
->          python3-wheel
->
-> -RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
-> -        apt install -y --no-install-recommends \
-> -        gcc-aarch64-linux-gnu \
-> +# All the generally available compilers
-> +ENV AVAILABLE_COMPILERS gcc-aarch64-linux-gnu \
->          libc6-dev-arm64-cross \
->          gcc-arm-linux-gnueabihf \
->          libc6-dev-armhf-cross \
-> -        gcc-hppa-linux-gnu \
-> -        libc6-dev-hppa-cross \
-> -        gcc-m68k-linux-gnu \
-> -        libc6-dev-m68k-cross \
->          gcc-mips-linux-gnu \
->          libc6-dev-mips-cross \
->          gcc-mips64-linux-gnuabi64 \
-> @@ -51,18 +48,24 @@ RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
->          libc6-dev-mips64el-cross \
->          gcc-mipsel-linux-gnu \
->          libc6-dev-mipsel-cross \
-> -        gcc-powerpc-linux-gnu \
-> -        libc6-dev-powerpc-cross \
-> -        gcc-powerpc64-linux-gnu \
-> -        libc6-dev-ppc64-cross \
->          gcc-powerpc64le-linux-gnu \
->          libc6-dev-ppc64el-cross \
->          gcc-riscv64-linux-gnu \
->          libc6-dev-riscv64-cross \
->          gcc-s390x-linux-gnu \
-> -        libc6-dev-s390x-cross \
-> -        gcc-sparc64-linux-gnu \
-> -        libc6-dev-sparc64-cross && \
-> +        libc6-dev-s390x-cross
-> +
-> +RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS=3D"${=
-AVAILABLE_COMPILERS} gcc-hppa-linux-gnu libc6-dev-hppa-cross"; fi
-> +RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS=3D"${=
-AVAILABLE_COMPILERS} gcc-m68k-linux-gnu libc6-dev-m68k-cross"; fi
-> +RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS=3D"${=
-AVAILABLE_COMPILERS} gcc-powerpc-linux-gnu libc6-dev-powerpc-cross"; fi
-> +RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS=3D"${=
-AVAILABLE_COMPILERS} gcc-powerpc64-linux-gnu libc6-dev-ppc64-cross"; fi
-> +RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS=3D"${=
-AVAILABLE_COMPILERS} gcc-sparc64-linux-gnu libc6-dev-sparc64-cross"; fi
-> +
-> +RUN echo "compilers: ${AVAILABLE_COMPILERS}"
 
-Nitpick, each `RUN` command will create a new cached layer for the
-container build. It makes more sense to fold them in a single `RUN`
-step to avoid unnecessary layers. Does not make a big difference so
-feel free to ignore.
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>   tests/qtest/bios-tables-test-allowed-diff.h | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+> index dfb8523c8b..0c3f7a6cac 100644
+> --- a/tests/qtest/bios-tables-test-allowed-diff.h
+> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+> @@ -1 +1,3 @@
+>   /* List of comma-separated changed AML files to ignore */
+> +"tests/data/acpi/riscv64/virt/APIC",
+> +"tests/data/acpi/riscv64/virt/FACP",
 
-> +
-> +RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
-> +        apt install -y --no-install-recommends \
-> +        ${AVAILABLE_COMPILERS} && \
->          dpkg-query --showformat '${Package}_${Version}_${Architecture}\n=
-' --show > /packages.txt
->
->
-> --
-> 2.47.2
->
->
 
