@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49253B10B20
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 15:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60196B10B34
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 15:18:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uevlG-00022d-RH; Thu, 24 Jul 2025 09:13:26 -0400
+	id 1uevpX-0007gP-01; Thu, 24 Jul 2025 09:17:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uevlC-00020v-5u
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 09:13:22 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1uevpQ-0007dc-Pr
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 09:17:45 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uevlA-00040h-2m
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 09:13:21 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-6077dea37easo1845580a12.3
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 06:13:18 -0700 (PDT)
+ id 1uevpP-00066n-3D
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 09:17:44 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-ae3a604b43bso153804766b.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 06:17:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753362797; x=1753967597; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753363060; x=1753967860; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xIhXE+3LskBlDP9Giy4jHTvR9om9iXJsO+fQ/F6U8zE=;
- b=Df5fLBUQuxdbGX6rJhcxFSpmF5Fgnl5Fpj21ix5bAiFnMkRX5XUcUjCTOAfldkbYKv
- XK47HwQkQqczdtShmL2JmY0/EYH7913s8iiIsnQnmdn1rWNXi40TuRKoUEy0jgTNpJ+X
- WmsEFQW/j+N082MuCJiCvB5Z/3ngeB/XB7vommjwv7lj4njNAzu/xjq8INbkMrgBgT6I
- ZnFjxPuM0P9QjlQVLrBcK4j9RrF+x31HjBTPgXssKmbS7DXVlcMqV2M3zbN/fNYsBiPT
- 1mQVBETXn1JUcHY0J7ZAD68elOLawwehTElPdPBGvbStp3rCA2JTxwGQIYd5E0gBWxhJ
- a9wg==
+ bh=PKa9Xfs+jC54utoZbp9wWbdGbgaNPTNBJbxU8B9LYEk=;
+ b=edbLXvN5os8yrMXxA8N0ZgmWwXbZJjN+iv5THa1HtoQkeyVVvv0qU25HVHgnWfBezQ
+ 0d4YOtd/7iF8VACQaAp8tq2ax/T923keEvk5NIQyS0tDlZG9pPbqnn2xz3t6OM6Ehc+o
+ Qn3z3JsE9JtRqTd+IvhV4CIXLmg88EmrMOXln/dA8eJoMr6fSeEexcSaVpX8wmdt8rJh
+ 5DNTITO+BC+Ka+tK0BRrutMWzSQeZI4bwQdhuUsVrDKW6HvYwlI4ufe4oHAGU0+FQVZB
+ mugK/0C+Kvk8LvIdF25It8A7/jPU7KzvT+mpLU0I3I6FGZoTkcOpvpR7AoNWa0U1mf2t
+ W58w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753362797; x=1753967597;
+ d=1e100.net; s=20230601; t=1753363060; x=1753967860;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xIhXE+3LskBlDP9Giy4jHTvR9om9iXJsO+fQ/F6U8zE=;
- b=lC4hkIn1vsZZl6rs6thykEpeVx2wdZCR/9tPT7WXNFQo++Lc9JO89NwjKnoFvOxdpQ
- YzNd6fkTw9/8q9RKe9FG1lbz/GEGPYb6DEaHMG/Tt3OIR4v2G8b0y1t8niTu8tKrEA2s
- HZpsoYUm0S4Z6e0xkIRMrPiJfBlDhTylS2wSC/Qp//IpaRGwfE4aXYyKGohaY4TjsMjK
- 2jnsFpkPzlb3HhetRH7zcEheLyuqam8rZPQ20MXYBRE2PdRtG7PPti6pbENCNX1HeqFv
- escGHy3tUL0wTyaBLN1rMyCJXfowCJ+jJ3iPnI53IRGJlAmdJAqlByoon9Kz16vvuFhK
- AzWg==
-X-Gm-Message-State: AOJu0YzdCTPzF6liR/Rf5DFi0nTSAGTdswbgRfByU4r+AxBOCsS0TaJh
- OvTJjT1ThsbMhL6KJ9FEorrl4JSU5bI+REjllvKfBo48iPYY+ebbRZyJxg9ecE89Vy7iSABmN+2
- Ry30M6tvdPO89cb1D4jJwIY0+yC38OefWzCZi8gkuQA==
-X-Gm-Gg: ASbGncuQSvq9qRRfF63mDS9B2tROaInDiGtT48Zx7uyTIXnwaSBt2qK4NUJJ92T57sx
- votZUfegRgGlQ35SvwKFIKaRZqvUEuMwxnaKFkQ6sF9D3G97lJUOu+hYfQ7s0PlKo9n6Kxy4vMy
- Egvd494GE3YRDAptEzxaAJ0ziAfKjPyBIs8y/KLp7Tk7BEI5W5r6RVa+XbEahzm/ByzFnS2GTyQ
- +ZDtg==
-X-Google-Smtp-Source: AGHT+IGLlU+shQNwIbIGbcrAq9IE3B4zWJCLbnQBa2GjM52Azc2qFHwHM0FTkPRn1Jsfwj/bC6AOrKEoQPyHhSXaalM=
-X-Received: by 2002:a05:6402:3591:b0:607:e3ec:f8ea with SMTP id
- 4fb4d7f45d1cf-6149b45d5e9mr5561450a12.6.1753362796884; Thu, 24 Jul 2025
- 06:13:16 -0700 (PDT)
+ bh=PKa9Xfs+jC54utoZbp9wWbdGbgaNPTNBJbxU8B9LYEk=;
+ b=jfWWJeQkWWCc7DQ4nYB6W5zsgA33b/fyzjA/fnW5fcDpUWkSf2J9hrownCiUBmaAMU
+ DyKS8wTfOsi+LTkhTirwxw0u1R4h5nHlWtnxLu4aVg5+i46tARG8FIrbOHlafrjjoT/6
+ 3UlEs/fdbyfb3tC0N02HtEgE70IIx6QM2Xt4Bp9neDGVgCGV7uxdw0hMzxwhbwlSmM17
+ SnDzShvnRFU2Xe/uioaw6UACy4VrmQ/F7aDy7/QgFCXE+truK7JuYSOIJPneYN1ozzlg
+ vh24kpPCyeCM4c4/KFiGjSSd/wpSsUoq9NkLxIB0fthB2I/0E9ugtMXbLTuPQG3RNiP1
+ b9dA==
+X-Gm-Message-State: AOJu0Yw0jnihPCbWw4Zx9lh5Nj0Lq72bvO2dr73GWz/RPojp7lKFjyQd
+ 5q5p5pl8ovIq1JP3vGqmvmqb+tb46bAnWu1wwPe7+6P7EWOaA6YlmsSgzju41WOHss75UiW+rvG
+ ng5YJVCuUjl8Gmr2/h5n+6f7nAsv/4HUWXW4QbnvRvA==
+X-Gm-Gg: ASbGnctmB8625P/8NIDofkTiv9jiFCmPSIVWvcqa6rHwLeIhuapz7lLJWmATbfUiwBi
+ O+9nEleQKTGhxfnorXoQu1azZIjQwPTQRXD1hLynGpRhnByi8XtVK5EGd+Fy4c3+2JjPnjvQMpK
+ 6c6Vu+ec9fLPMUMJWWV2Bch2okrK0YwRczWzwMQbQhEcuEoP4/aCTWgdpWMA6jbxRAOzwqAqMmO
+ 2cDiA==
+X-Google-Smtp-Source: AGHT+IEaM5fGR+ucdMcIE/Zyo2rH+mc8wvrQk14WM0wfEtU/y6romPuYcWCKjx1vH4uoghWVZWhk/2RYA1FVaEpzWPk=
+X-Received: by 2002:a17:906:c14e:b0:ae0:635c:a400 with SMTP id
+ a640c23a62f3a-af2f8d4e87bmr650990266b.51.1753363059961; Thu, 24 Jul 2025
+ 06:17:39 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250724125928.61045-1-hreitz@redhat.com>
- <20250724125928.61045-2-hreitz@redhat.com>
-In-Reply-To: <20250724125928.61045-2-hreitz@redhat.com>
+ <20250724125928.61045-3-hreitz@redhat.com>
+In-Reply-To: <20250724125928.61045-3-hreitz@redhat.com>
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 24 Jul 2025 16:12:50 +0300
-X-Gm-Features: Ac12FXy2upb67-rzohndXkHzOvNU_EDJQfq5vAa6EzjFhAVe3cOvlhhyZl19REk
-Message-ID: <CAAjaMXbBFE5zhwf+JLUG2TZ3GZ2v79rvUoD5KUw9hSrZfHkkfQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] vhost: Do not abort on log-start error
+Date: Thu, 24 Jul 2025 16:17:14 +0300
+X-Gm-Features: Ac12FXwOj1GLQpZBQWGaH2C4gLbt0_D2cd48O4OYBDmTbhwoltKtpmDf-gTfRh4
+Message-ID: <CAAjaMXb7SuHrCh_oCAoVKmfo8eNXoaR=8ay5sDAMrS4Qdtxk6w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] vhost: Do not abort on log-stop error
 To: Hanna Czenczek <hreitz@redhat.com>
 Cc: qemu-devel@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>, 
  "Michael S . Tsirkin" <mst@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,41 +97,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Thu, Jul 24, 2025 at 4:00=E2=80=AFPM Hanna Czenczek <hreitz@redhat.com> =
 wrote:
 >
-> Commit 3688fec8923 ("memory: Add Error** argument to .log_global_start()
-> handler") enabled vhost_log_global_start() to return a proper error, but
-> did not change it to do so; instead, it still aborts the whole process
-> on error.
+> Failing to stop logging in a vhost device is not exactly fatal.  We can
+> log such an error, but there is no need to abort the whole qemu process
+> because of it.
 >
-> This crash can be reproduced by e.g. killing a virtiofsd daemon before
-> initiating migration.  In such a case, qemu should not crash, but just
-> make the attempted migration fail.
->
-> Buglink: https://issues.redhat.com/browse/RHEL-94534
-> Reported-by: Tingting Mao <timao@redhat.com>
 > Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 > ---
 >  hw/virtio/vhost.c | 3 ++-
 >  1 file changed, 2 insertions(+), 1 deletion(-)
 >
 > diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> index c30ea1156e..05ad5de629 100644
+> index 05ad5de629..6557c58d12 100644
 > --- a/hw/virtio/vhost.c
 > +++ b/hw/virtio/vhost.c
-> @@ -1110,7 +1110,8 @@ static bool vhost_log_global_start(MemoryListener *=
-listener, Error **errp)
+> @@ -1122,7 +1122,8 @@ static void vhost_log_global_stop(MemoryListener *l=
+istener)
 >
->      r =3D vhost_migration_log(listener, true);
+>      r =3D vhost_migration_log(listener, false);
 >      if (r < 0) {
 > -        abort();
-> +        error_setg_errno(errp, -r, "vhost: Failed to start logging");
-> +        return false;
+> +        /* Not fatal, so report it, but take no further action */
+> +        warn_report("vhost: Failed to stop logging");
 >      }
->      return true;
 >  }
+>
 > --
 > 2.50.1
 >
 >
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+
+--=20
+Manos Pitsidianakis
+Emulation and Virtualization Engineer at Linaro Ltd
 
