@@ -2,86 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28966B104CE
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 10:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8BDBB10564
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 11:14:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uergB-00025N-Bk; Thu, 24 Jul 2025 04:51:55 -0400
+	id 1ues02-0001V8-UU; Thu, 24 Jul 2025 05:12:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nabelova31@gmail.com>)
- id 1uerg2-0001zG-JA; Thu, 24 Jul 2025 04:51:47 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nabelova31@gmail.com>)
- id 1uerg0-0005g7-HU; Thu, 24 Jul 2025 04:51:46 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-553b3316160so727252e87.2; 
- Thu, 24 Jul 2025 01:51:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1753347101; x=1753951901; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=OPIxdBYnhuclbLht9t6EtWZfDez/9GhRUEOFNKEfVP0=;
- b=TW3H2SY6iIbJHZGXSc2XTS75JjkKbqilwcWcW7wSR49wSHuL8blMhAfVqbLHoE5Ntj
- To7MUV59NeC5VVMy246yWKJPSbzmZ3ebdAa8Co7DKTyI7PM8LhU5w/8lH+7DTMY/m6l8
- ThTV6RR2NNq671Hu+WSK8M5sLvWukaZfL0FHIfGqJj8dvqYO77a1uYdEuFrCJ/ZgABlB
- zjPH9AVie1YCTeGr985qf9tHtukaaUmQkDU8Ci+XeqnEdaz6E2hAHUTrgOSV0A1Q+73e
- spzM2C7o6EowldhX86+BLjtPk/5pQqyBhZGA7yy/OoyFDXSl+Jul3KwOIMnqKMPnRZky
- Y/Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753347101; x=1753951901;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OPIxdBYnhuclbLht9t6EtWZfDez/9GhRUEOFNKEfVP0=;
- b=WoW6cur9C81xey2S+ARsjqTXSVfPYG61GdR1o+SWo1E7GhS43fAIZxjVqyrPQtYumV
- v3kVj6gc7vFGjYxA13x6n87MYr4Ik39txaYkAlM3tkTDd8MW88TBIVkxxIV7b94cTXPh
- vWtv7X3fXKrVpeZGlC2uYF8FgRh1h/o3PolYAGEy8aK9/xVIhw4wL/QYHQyUFganwrbr
- 9ow/dHvVltKvk3DWRPe2kubsGt7+34sRTSLUcjlkq/NyhqhvgfJWDodzO/rIeQtQ7Hnu
- YjFo485VV0v3TowcahTuRbQhtdno+fMuXtSJIbInIpouk/FRvbQbR3VxA7qP0ir7LsEc
- pVTA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWFk7xx0/k8rPZWmlB+MyDgTJdmqEaiSZsZTDmXuD+0L+zijJ98CbzyrFzocOegjVjPLoWym0moeg==@nongnu.org
-X-Gm-Message-State: AOJu0YyRLsYAFxqjT/tW7F1mW1t5t9XrJ+2h2cpfC+tfR/E2mr3XWm2h
- y+4KUsaDKLZzfYakBr6SJ5Th1LI6Ysn01evJercsaUTUEc7BoWWo9wRpxdTtAkfpMgY=
-X-Gm-Gg: ASbGnculhaZI+JVeqj+3AwGC4/VJYmrTiujHgU7hh8A/FEqL3SGu3Oe9Ilb0KXUbt2n
- yVYOA46yxaUvhznk6D/e8rDwQD3+wN8oYUuBGuoNgsdwrv16wexQahG5kVK7ETebxB/e/GG+dJJ
- oBmEgO++7skw/Z2CS5TE/sgdTmKN8xQBHUBzne8stMT0M841Y9ZQPuq/L9WkfaH0yVFKkAveZOe
- SH40UclG+PtQhZXcmTv5wGUSg6mcJZcMjc+18UwakJjbi6tr4A90xqQyMB7zJX/cbYSwS7wSfrJ
- BIvbjf8JxU65jx1ZJyRVnv5Zjc7QHmMrbajWwZrmD5OqINS4GZlb6m+mVOQCjpy5kHavKmZiTS7
- X5B+rRkW6U/eFhufG6xtXBKw2Xjf4Ap6oe8PS2eD2Vxs5
-X-Google-Smtp-Source: AGHT+IEHtrDV3Ln7HGYTOhAmtb1VBCFzgvZ7458RSnL4XMhwe65U/A8oFkSZbNSNqb/Z8c/yEs5s9A==
-X-Received: by 2002:a05:6512:ea9:b0:553:3492:b712 with SMTP id
- 2adb3069b0e04-55a51432ba9mr1781298e87.54.1753347100976; 
- Thu, 24 Jul 2025 01:51:40 -0700 (PDT)
-Received: from rbta-msk-lt-106062.astralinux.ru ([81.9.21.4])
- by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-55b53b21f16sm254940e87.26.2025.07.24.01.51.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Jul 2025 01:51:40 -0700 (PDT)
-From: Anastasia Belova <nabelova31@gmail.com>
-To: qemu-devel@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>
-Cc: Anastasia Belova <nabelova31@gmail.com>, qemu-arm@nongnu.org,
- sdl.qemu@linuxtesting.org, Anastasia Belova <abelova@astralinux.ru>
-Subject: [PATCH] target/arm: add bounding a->imm assertion
-Date: Thu, 24 Jul 2025 11:52:06 +0300
-Message-Id: <20250724085206.22398-1-nabelova31@gmail.com>
-X-Mailer: git-send-email 2.30.2
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1uerzz-0001Tv-Ep; Thu, 24 Jul 2025 05:12:23 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1uerzw-0004c8-QK; Thu, 24 Jul 2025 05:12:23 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56O0QTBp021841;
+ Thu, 24 Jul 2025 09:12:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=YWeN6P
+ 16hM/JJngI1E0NmB+bVhdOesRhZGIy+rGLZho=; b=J2W/hzTYesMig+6j8eySpn
+ oIGE5lJHC/ilBE7osTzh/bYIzWoCt7HYluy0dygPXnQaMGSNhrXZz0sgEx/htLai
+ Ip+Sf+F+dbpKh/DDEXhZisWgDP4Q8+7gu+g8jVsJoYXUWMlYUEd4u71gZU9BW4mf
+ IYGGYly7VPOMBpTkciyJscr+/Dvuf1uz7Y06LIYU9ztCiiBRwUpOi1+WL9mBtVwr
+ iFVgsG5mIvRNwVBgb8lcYQ/xdAntUSHwdU6j8GHpfET0AufagbX79+fao6knp85j
+ yqA7Z1oSa+MDgdTlFCnkKDhGPl33z4reorzXJM8ba9nXBY9C0ewAx981uyHCHGWw
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482ffbhq4t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Jul 2025 09:12:16 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56O9CGFG007628;
+ Thu, 24 Jul 2025 09:12:16 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482ffbhq4r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Jul 2025 09:12:16 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56O6SxnE005457;
+ Thu, 24 Jul 2025 09:12:15 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 480tvr30h8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Jul 2025 09:12:15 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 56O9CDRQ41943318
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 24 Jul 2025 09:12:13 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9DED558061;
+ Thu, 24 Jul 2025 09:12:13 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CA80B58053;
+ Thu, 24 Jul 2025 09:12:10 +0000 (GMT)
+Received: from [9.109.242.24] (unknown [9.109.242.24])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 24 Jul 2025 09:12:10 +0000 (GMT)
+Message-ID: <74e8e729-3bae-4315-9519-5bd0b6f08731@linux.ibm.com>
+Date: Thu, 24 Jul 2025 14:42:09 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] MAINTAINERS updates for ppc/spapr/pnv/xive
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, npiggin@gmail.com
+Cc: danielhb413@gmail.com, fbarrat@linux.ibm.com, rathc@linux.ibm.com,
+ adityag@linux.ibm.com, gautam@linux.ibm.com
+References: <20250724063623.3038984-1-harshpb@linux.ibm.com>
+ <642a5b59-a306-4fbd-a55c-008b9fd8ace0@redhat.com>
+Content-Language: en-US
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <642a5b59-a306-4fbd-a55c-008b9fd8ace0@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=nabelova31@gmail.com; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mzCmtn3EGKUdbjeluSTBeLSHLwvR_Xcz
+X-Authority-Analysis: v=2.4 cv=De8XqutW c=1 sm=1 tr=0 ts=6881f8f0 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=f7IdgyKtn90A:10 a=20KFwNOVAAAA:8
+ a=cwfGbltsdXE1nG5_tOEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: WxzgKJbpzVRh2RF9JKRlF89z4i2rxYoV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDA2NyBTYWx0ZWRfX2F4AKuyXCk4f
+ KCKLT/P1pwvwXEPV/hgxf0aTY2/yfEe86lqmq04kfsfpPBeARXfsPLnhVkcaQmJ9NfiPF0RjRib
+ +QS4cRozqVRz0FgV63vxljny1/VEzrGG0lzHzftZv1hsNGzmNW4qmw5XR2rWNQtotQR/Tg+ildj
+ 1ERA4YKwGd0WGBwOb/Cnw7EEwOEjHT7r8CsLgxDIVDy9bP462tKczGm06l7xKiIPM916DG41rOA
+ ffNGvMXAo/QucSCNWFee6I+Udw+FAuBcRsjcNG+WspnHm49f4pPR++LESJyg8oXK/qTzJh2uGAV
+ sTFAqahLBNqxaRQtFyTQKk9EWILsj68vSnN03ujFhYlV9HiZekz+CNgV1T9y/lzrDnakHb/CU0V
+ 8sfbtF4j3Kjrh4J4BOXA5H3DsW6V6vvX1N7aLbmdWV4bj3PitxVqSa0S718QaHJTdvcVmygY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-24_01,2025-07-23_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=663
+ suspectscore=0 priorityscore=1501 clxscore=1015 phishscore=0 adultscore=0
+ malwarescore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507240067
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,29 +127,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an assertion similar to that in the do_shr_narrow().
-This will make sure that functions from sshll_ops
-have correct arguments.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Anastasia Belova <nabelova31@gmail.com>
----
- target/arm/tcg/translate-sve.c | 1 +
- 1 file changed, 1 insertion(+)
+On 7/24/25 13:10, Cédric Le Goater wrote:
+> On 7/24/25 08:36, Harsh Prateek Bora wrote:
+>> Some of us at IBM have been actively working/contributing in
+>> ppc/spapr/pnv/xive and would like to step up to help with
+>> reviews and co-maintainer activities. I have also included proposal
+>> patches from Chinmay and Aditya in this patchset which had already
+>> been posted to list earlier to request for merge.
+>>
+>> Thanks
+>> Harsh
+>>
+>> Aditya Gupta (1):
+>>    MAINTAINERS: Add myself as a reviewer of PowerNV emulation
+>>
+>> Chinmay Rath (1):
+>>    MAINTAINERS: Add myself as reviewer for PowerPC TCG CPUs
+>>
+>> Gautam Menghani (1):
+>>    MAINTAINERS: Add myself as a reviewer for XIVE
+>>
+>> Harsh Prateek Bora (2):
+>>    MAINTAINERS: Adding myself as a co-maintainer for ppc/spapr
+>>    MAINTAINERS: Adding myself as reviewer for PPC KVM cpus.
+>>
+>>   MAINTAINERS | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+> 
+> I can merge these changes through the vfio queue.
+> 
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index d23be477b4..47ada85c92 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -6250,6 +6250,7 @@ static bool do_shll_tb(DisasContext *s, arg_rri_esz *a,
-     if (a->esz < 0 || a->esz > 2) {
-         return false;
-     }
-+    assert(a->imm > 0 && a->imm <= (8 << a->esz));
-     if (sve_access_check(s)) {
-         unsigned vsz = vec_full_reg_size(s);
-         tcg_gen_gvec_2i(vec_full_reg_offset(s, a->rd),
--- 
-2.47.0
+Thanks Cedric !
+
+regards,
+Harsh
+
+> 
+> Thanks,
+> 
+> C.
+> 
+> 
+> 
 
