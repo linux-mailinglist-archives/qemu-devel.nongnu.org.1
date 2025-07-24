@@ -2,59 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45CBB10852
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFF7B10865
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:02:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uetem-0005Ez-J2; Thu, 24 Jul 2025 06:58:36 -0400
+	id 1uetfu-0007CV-Tf; Thu, 24 Jul 2025 06:59:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1ueteY-00058c-UM; Thu, 24 Jul 2025 06:58:24 -0400
-Received: from imap5.colo.codethink.co.uk ([78.40.148.171])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1ueteW-0007kB-DT; Thu, 24 Jul 2025 06:58:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=n8v6+1Kh5Cy1cMv5Z1SZIgofUDpGyDKxo42xZMiWgQw=; b=LGEN/S9oePV1J8JEpZSmrB7Y9I
- akyh3SPK9zEEwPWwayWf5CmfQA1BnHoJl5qGAAhM7Z02AHuJPqQHgzYGngaFWFAxQjXCH470/8UDZ
- U6U02phPWCiXiOB/CIzwMzGPaugwEOmbs4JUFF3SGxz2P+fHJxkEY5CHA4GrH+lszcFRr/q0P+rIz
- w7TqDBJhoqqgQDj4AbuM9SRjvr3SAC9rd/kJn7BPXRZJ5d1HBJn2HTj4SWwm+JCKFsIhVTZsTk4Dh
- vToA4OPB6YPu0oSzEIhLlxthS5Zfq02kekFUJNIWHImu0hZRBsY6ycI0P68u6CUVRWg9E9hGkRpgW
- 7rAAhkQw==;
-Received: from [167.98.27.226] (helo=rainbowdash)
- by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1ueteM-006uVd-RJ; Thu, 24 Jul 2025 11:58:10 +0100
-Received: from ben by rainbowdash with local (Exim 4.98.2)
- (envelope-from <ben@rainbowdash>) id 1ueteM-00000002vYu-2Cia;
- Thu, 24 Jul 2025 11:58:10 +0100
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-To: qemu-block@nongnu.org,
-	philmd@linaro.org,
-	bmeng.cn@gmail.com
-Cc: qemu-devel@nongnu.org,
-	Ben Dooks <ben.dooks@codethink.co.uk>
-Subject: [PATCH] hw/sd/sdcard: fix spi_cmd_SEND_CSD/CID state check
-Date: Thu, 24 Jul 2025 11:58:07 +0100
-Message-Id: <20250724105807.697915-1-ben.dooks@codethink.co.uk>
-X-Mailer: git-send-email 2.37.2.352.g3c44437643
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uetft-0007AP-7q
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:45 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uetfr-0007x4-Hk
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:45 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-ae3a604b43bso134287066b.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 03:59:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753354781; x=1753959581; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=d37m3MaXFrCwnLFACnbyFONcYZLWLyBitA8HTfc9Io0=;
+ b=ykiA7LUkmOssvaVu/tewMpJaNA95fHvOLysDvxET/NzONxwdH0kvR8317yrBHFxMtz
+ dwPNSsjYc0rtaSu71m65JYh8MQ6M2zOLwqqOHwsvfqnpJB4pe8/HFpZ1i6m6gUYW1lyC
+ ZrWObeQJzm8WV9PFvWvX/t9XrNXkvCKi5gHpoUkZPDfOtvBZHObYzFqSok0qu6+1KbDL
+ XtcqBXwH0esWsLusocInecEKylhxdyjFyYZ3Fusv29Qt5PgkQxyFavD9DkbBEVpypOsy
+ pGgunFJQiHqu1y4gCkPsU31zFHyIJVXNfTOLVdyb3Np6NkzjUTIDziOqMaE1Fnuie9P/
+ l8XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753354781; x=1753959581;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=d37m3MaXFrCwnLFACnbyFONcYZLWLyBitA8HTfc9Io0=;
+ b=iCWtyJsIufW1dqPvU51Bij8Vjkw4Q3Y42IKEv72576b+0TqmHlglt+uJ8M/QYTE8ce
+ cyznsr5UmVgCblkOdDwizpyFC4D4XZjxJIm4GPDfITlNqeGvSHPtLTHxf0oH96/gcXJh
+ om6Rl3K8f7vydAkID109lG9K/mch+TxbeySlXdJWN5iNKHLntXhacGRsiDmcOQLHuhxk
+ vVxm6hfQ48C1BUKlRzUw6hpWCFd4wR+wN2YXym7A1VRpIDuWsE1VbL0qWh9lRySDuwL7
+ DpUZUwvrQkMl1lpnVrJMIMFiYIKH07LEBo11mDxqrwdaBi1QD2W8pz0CYW/+m1/yGc86
+ DIPA==
+X-Gm-Message-State: AOJu0YxsbfHKC5ktk0KF7/kkQu3cP1QaxHeM7FyIGdnKS1kWHtwTquYa
+ C7WJIcby55gEfKrNiajkPyOuKA0teRXimYuFh/dgQQeiWm8X/QPtO+D2zV0FFbnV58w=
+X-Gm-Gg: ASbGnct9wQQu6KhqIBFg/UqBHX8NdwlDM+BpgiehgvJps//P2IaSsru2Dh7uKiHXPtQ
+ sp2IKI82XnNt3UT1MHs9QVRgQ7Bupmwb8/lgHimjZNWGtD69dJAUJQgd8cGrvfge8plw1dQtMUy
+ BLYaj5DaLC8AQ0CJ5Fl5yXS2eW+q5F41TKkjPdTO9XGmKmmcwN0+/qLPggr9Rjm+HNLldq/8MVM
+ CBZRPFaIl1DY9PNtXCcbK2UWR9UJEAAy++Dgwko1Zo96Rn5ZkV5td0xxKpVKq8qKgU8aIvX88gP
+ qdEC0AJgo1Sv+3tlSwHzPYO8jPz1LO7QQNRfIyyHc+wfd0a+mr6HVJCkMoQYqyUCER6qdFR6e1X
+ ocOrZ9QLMuG19/+9y7t6sLJA=
+X-Google-Smtp-Source: AGHT+IFvizPYQty1TRWcRR2yAn0UGidPMH4ULvwmUHheExUQdQsjqrV/3t1jZmP25wB+HGheI8vt8w==
+X-Received: by 2002:a17:906:9f89:b0:ae0:cc5f:88ef with SMTP id
+ a640c23a62f3a-af2f8857bd4mr623064666b.32.1753354781531; 
+ Thu, 24 Jul 2025 03:59:41 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-af47c495ea4sm97361166b.26.2025.07.24.03.59.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Jul 2025 03:59:40 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id E488E5F7B0;
+ Thu, 24 Jul 2025 11:59:39 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: [PATCH for 10.1 00/13] documentation updates and test tweaks
+Date: Thu, 24 Jul 2025 11:59:26 +0100
+Message-ID: <20250724105939.2393230-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=78.40.148.171;
- envelope-from=srv_ts003@codethink.com; helo=imap5.colo.codethink.co.uk
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.158,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,62 +99,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The addition of specific handlers for mmc-spi for SEND_CSD and
-SEND_CID has broken at least Linux and possibly also u-boot's
-mmc-spi code.
+I did a quick pass of some of the documentation bugs and tried to
+clean-up the linux-user documentation some more.
 
-It looks like when adding the code, it is checking for these
-commands to not be in sd_standby_state but the check looks to
-have been accidentally reversed (see below)
+I've also tackled the exploding number of TCG tests by rotating the
+plugin run against test rather than having every combination. We now
+have enough multiarch tests I'm fairly confident this gives good
+enough coverage of the APIs. Some plugins have explicit test programs
+they need to be run against and these are still added manually.
 
-     if (sd->state != sd_standby_state) {
-         return sd_invalid_state_for_cmd(sd, req);
-     }
+The following need review:
 
-Linux shows the following:
+  tests/docker: handle host-arch selection for all-test-cross
+  tests/docker: add --arch-only to qemu deps for all-test-cross
+  tests/tcg: reduce the number of plugin tests combinations
+  configure: expose PYTHON to test/tcg/config-host.mak
+  tests/tcg: don't include multiarch tests if not supported
+  tests/tcg: remove ADDITIONAL_PLUGINS_TESTS
+  tests/tcg: skip libsyscall.so on softmmu tests
+  tests/functional: add hypervisor test for aarch64
+  docs/user: expand section on threading
+  docs/user: slightly reword section on system calls
+  docs/user: clean up headings
+  docs/system: reword the TAP notes to remove tarball ref
+  docs/user: clarify user-mode expects the same OS
 
-[    0.293983] Waiting for root device /dev/mmcblk0...
-[    1.363071] mmc0: error -38 whilst initialising SD card
-[    2.418566] mmc0: error -38 whilst initialising SD card
+Alex.
 
-Fixes: da954d0e32444f122a4 ("hw/sd/sdcard: Add spi_cmd_SEND_CSD/CID handlers (CMD9 & CMD10)")
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
----
- hw/sd/sd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Alex Bennée (13):
+  docs/user: clarify user-mode expects the same OS
+  docs/system: reword the TAP notes to remove tarball ref
+  docs/user: clean up headings
+  docs/user: slightly reword section on system calls
+  docs/user: expand section on threading
+  tests/functional: add hypervisor test for aarch64
+  tests/tcg: skip libsyscall.so on softmmu tests
+  tests/tcg: remove ADDITIONAL_PLUGINS_TESTS
+  tests/tcg: don't include multiarch tests if not supported
+  configure: expose PYTHON to test/tcg/config-host.mak
+  tests/tcg: reduce the number of plugin tests combinations
+  tests/docker: add --arch-only to qemu deps for all-test-cross
+  tests/docker: handle host-arch selection for all-test-cross
 
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 49fc79cf8a..e6c1ba7c5d 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -1317,7 +1317,7 @@ static sd_rsp_type_t sd_cmd_SEND_IF_COND(SDState *sd, SDRequest req)
- /* CMD9 */
- static sd_rsp_type_t spi_cmd_SEND_CSD(SDState *sd, SDRequest req)
- {
--    if (sd->state != sd_standby_state) {
-+    if (sd->state == sd_standby_state) {
-         return sd_invalid_state_for_cmd(sd, req);
-     }
-     return sd_cmd_to_sendingdata(sd, req, sd_req_get_address(sd, req),
-@@ -1336,7 +1336,7 @@ static sd_rsp_type_t sd_cmd_SEND_CSD(SDState *sd, SDRequest req)
- /* CMD10 */
- static sd_rsp_type_t spi_cmd_SEND_CID(SDState *sd, SDRequest req)
- {
--    if (sd->state != sd_standby_state) {
-+    if (sd->state == sd_standby_state) {
-         return sd_invalid_state_for_cmd(sd, req);
-     }
-     return sd_cmd_to_sendingdata(sd, req, sd_req_get_address(sd, req),
-@@ -1345,7 +1345,7 @@ static sd_rsp_type_t spi_cmd_SEND_CID(SDState *sd, SDRequest req)
- 
- static sd_rsp_type_t sd_cmd_SEND_CID(SDState *sd, SDRequest req)
- {
--    if (sd->state != sd_standby_state) {
-+    if (sd->state == sd_standby_state) {
-         return sd_invalid_state_for_cmd(sd, req);
-     }
- 
+ docs/system/devices/net.rst                   | 16 ++--
+ docs/user/index.rst                           |  5 +-
+ docs/user/main.rst                            | 59 ++++++++-----
+ configure                                     |  1 +
+ .../dockerfiles/debian-all-test-cross.docker  | 33 ++++----
+ tests/functional/meson.build                  |  1 +
+ tests/functional/test_aarch64_kvm.py          | 83 +++++++++++++++++++
+ tests/tcg/Makefile.target                     | 36 ++++++--
+ tests/tcg/multiarch/Makefile.target           |  8 +-
+ .../multiarch/system/Makefile.softmmu-target  | 16 +++-
+ 10 files changed, 201 insertions(+), 57 deletions(-)
+ create mode 100755 tests/functional/test_aarch64_kvm.py
+
 -- 
-2.37.2.352.g3c44437643
+2.47.2
 
 
