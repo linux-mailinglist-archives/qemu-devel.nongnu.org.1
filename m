@@ -2,89 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEB6B10ABD
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 14:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9270DB10AD3
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 15:00:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uevSk-0002MJ-OL; Thu, 24 Jul 2025 08:54:18 -0400
+	id 1uevYM-0006sR-6G; Thu, 24 Jul 2025 09:00:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uevSi-0002F8-27
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 08:54:16 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uevSe-0003pX-VA
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 08:54:15 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-60867565fb5so1633671a12.3
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 05:54:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753361651; x=1753966451; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fvxplCFa5R9/SzZVgamnNqrx7Mp6/+jZhwXZrw3E/B4=;
- b=ijdEQVTaeb87Cswt6jSjdA5U48G5DK1Sqd4e39RLKeJY8OhDB9cVR6cr1qr5QMXnrY
- To3m5deotDgCfw6OV5Nasy6eHcXOykLyUf5rio/23kJBO1CnqXn/l+pr0vh2Q2BRqN+d
- UhXY1fh/XqfvHtZE0KmxdCrPoRZdK8HVk4fBqOiPW/AzAd6TDyVFl7DYGKKsfhlMD2vs
- seKUedSSgwdN8UJKQKXfz9GQe79I8+kdMvbwo/+M1WdTuqOdh7Tn1Z3Lh+6k2Z3joLh0
- nuFkQgVdq5iILTIVVFCtUJX8JTaR1VfRxjU3WTwIPOwFwAbgKGm4NAhPUKCQvQpw+hGX
- uT0A==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uevY2-0006g2-09
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 08:59:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uevXz-0005r8-MN
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 08:59:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753361978;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=OVH9YZ+jc5As1n3IEEOLT78x8zZZtwbMUq05rR8eoLo=;
+ b=StphQ0NHk9qpfFD91tldkbO5aJnXMd82BHi4jOhfez2JZNh0oKVxoAnyF0AVXEzHiRSIuE
+ sgjBeLQs3DimmOJEttYt3hPJ/S8XCkqt1a1keAYYqF/Ewy0FGmdFLwrgrjaJ0GFOuGtbbv
+ 2Le6Z5Thi0fVrjx6Is8XUT/ybCXASQo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-212-4LF95m0AO0KmwehVGey6pg-1; Thu, 24 Jul 2025 08:59:37 -0400
+X-MC-Unique: 4LF95m0AO0KmwehVGey6pg-1
+X-Mimecast-MFC-AGG-ID: 4LF95m0AO0KmwehVGey6pg_1753361976
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4586cc8f9f2so2198665e9.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 05:59:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753361651; x=1753966451;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fvxplCFa5R9/SzZVgamnNqrx7Mp6/+jZhwXZrw3E/B4=;
- b=eZT0RCg6MU5c9aYTcWjLfXET7rupqBYa+pKBVPiwnSOogsiZqiGosDahYn98Dwob1D
- +DVZt3o9IDgrujUftTHTPd4/D8U2Lmsc7WUxoP37ERk067YCZL4j6IwyC4C8vilpSRKJ
- BBMrZoPmQqmZowgF2ux4FX7I5n465zX7GriqH4fEfE2OH/ut+lretyZCNHRr0HX35Tqf
- Pt2GR1ePIKf3o5DhZGXWrpeij4NClNxs702SqZyjtm3KH/7QYEzOgg8k3Bbe6az+ka24
- N/4A1HiY5lsV9/1icw1pRTfqXw+STlZDRMT8mmqCAsZSIN/QSs6pMPx91TmCLteyJtjs
- DopQ==
-X-Gm-Message-State: AOJu0Yyu9MswDdX1fZKnKvGaJSdGrf0K1Gq1pDKxdipdFe85cfv4Wf+4
- rLxpHN7c9NgYaVy6xcNJM16x4YWgvPF8LSqwJdYsN2jJR+M4g2FmfWFmyV7XY0ssYuH0cTf9KlB
- pIE2laxEvwM/Gglr/vW1OLJRTkJdUz4Sb84hWG0EiEQ==
-X-Gm-Gg: ASbGnctN4QCi1/XT0IkS2yNGNeGHBp8SwnIuRknWTyPKTeNrWXpTmxAqP3uB7PF1fzc
- 83zBEjtQhz2sMbLsR7BbDjqEODuLr6miD4iy98ffKhqfNr5f8S10J0m6iAxrzM5XEzXNo6nXYTs
- 1FHaryS5BZADlxwkMJhuLQw6Rms5U6a6PfnzIvjnI9Sc9DtRC87vNdzXeq6EK1x2pbIi1RLFRnx
- ZuG8w==
-X-Google-Smtp-Source: AGHT+IEwryNxtOiSpmYavgISW5Vkn6Q/60sx97+7c7tqa9HnIre0bS4vrwJ810mAg3/Jav5142OU2F0rqPa/HTy8fkw=
-X-Received: by 2002:a05:6402:35c2:b0:612:bb19:6d2a with SMTP id
- 4fb4d7f45d1cf-6149b594ef9mr5686306a12.24.1753361650433; Thu, 24 Jul 2025
- 05:54:10 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753361975; x=1753966775;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OVH9YZ+jc5As1n3IEEOLT78x8zZZtwbMUq05rR8eoLo=;
+ b=LVX7M0x91kneiNa/gpkQEw4jlPW8KXclDxKLQGSNMz2iFREnI9Fosty0sEU+KJH/2A
+ Lnx5R3KeEVmGyCU3WSIp29uk4v2tWINWzoHgaKpkCxINW5rfhbBwyPoFBgXW1ywRwRTL
+ FeFnUjcTKiFuF7jwrCrXopan1Kzqlgkw87divuoeCd1xNdc4Y+3u/MLn4vbCg73OrJ8y
+ 9vYFGi5WK3wxWWMh/0cWq4tXrDv5OnRRQe0tnAU9eSwVsDOasXxZX8eKliR+XDwU4ToD
+ IztTU1OdBkXW9vO8mChVAqipNDcxluRD5cumnLqd0yqB3sVpLDqTWGVXEdz2kVA7wE1Y
+ vzzQ==
+X-Gm-Message-State: AOJu0YzPCYj95Ma9kpbEtI7xLZlJLVC9fHrU8gJEopUyWBHpd2p5yZzM
+ DSx9AtZ5HUT8mkde62edqA8eo9zrxq1xB/FbuzBhAeXRcIET93oPVMQQTqd5knEIzQXUJtrbt6T
+ pz4Wptvcm9Mm0DWYKoaEJvTQW0J+nO441knBzuakSVGgTKFb5CpYggw/0kDvjwrRPjOmOGC2gVN
+ YjEEl3zhrq2Qo8sRK8HTYJYIxU1LsuBmuU9sau6w==
+X-Gm-Gg: ASbGncv26ySCy2pJmd7MmC3cuGecnLzigaDwnhbbaQm2du7mSNS11HFxOj74BgHUWPe
+ MFwmt1QI4CJoj4iOkyB2d5s4vCRAi3aWZ51M9PFkr6NYTrRhc7BVlwIL2bVWI8DFZfak34i1rfX
+ HJ2EpQSWSSkLIFUoNsqcOkgFvUC/WILNIzS4XKsK6RZfTZBUEUavyGVIadygq8zGZzUTEkB0/xD
+ Jb9A/WMZwR/rUr8cl1d0F6Q7F1B8g3OmNGyMPJcLoRFQRV0s7ZOaqbkuhirM7FBOFlOiAH1kM8a
+ Ugnb5BDX6brFy0w1CVCM/qX2gIxPy3jDaoWByepapvHIACKaV28UUvuzgXidPuEDRg8O0aOzoWW
+ bqGFJX2AHGIILWR2xmReoww==
+X-Received: by 2002:a05:600c:34c8:b0:450:6b55:cf91 with SMTP id
+ 5b1f17b1804b1-4586e52be2bmr28800915e9.6.1753361974854; 
+ Thu, 24 Jul 2025 05:59:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGK9QJHphKe3DIajBwPEE+j25xkFaAZimXyIxPw4rogIREMzFh1fxINvMnmvvnqbV+vAT+6Ng==
+X-Received: by 2002:a05:600c:34c8:b0:450:6b55:cf91 with SMTP id
+ 5b1f17b1804b1-4586e52be2bmr28800645e9.6.1753361974412; 
+ Thu, 24 Jul 2025 05:59:34 -0700 (PDT)
+Received: from localhost
+ (p200300cfd706376dff28b03aa15f3cdf.dip0.t-ipconnect.de.
+ [2003:cf:d706:376d:ff28:b03a:a15f:3cdf])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-458705c4fa5sm20047085e9.26.2025.07.24.05.59.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Jul 2025 05:59:33 -0700 (PDT)
+From: Hanna Czenczek <hreitz@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Hanna Czenczek <hreitz@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>
+Subject: [PATCH 0/2] Do not abort on log-start/stop errors
+Date: Thu, 24 Jul 2025 14:59:26 +0200
+Message-ID: <20250724125928.61045-1-hreitz@redhat.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-References: <20250724105939.2393230-1-alex.bennee@linaro.org>
- <20250724105939.2393230-12-alex.bennee@linaro.org>
- <CAAjaMXb9-jkDhLA1euY3-90c4q=2my=QuDpJQGGObAZGTy3-xQ@mail.gmail.com>
- <87bjp9vlxd.fsf@draig.linaro.org>
- <CAAjaMXbtw0dw23w2Jx6PmVtZFThj-5w1GzUq0BnzZ7WME-dO6g@mail.gmail.com>
- <87tt31u54d.fsf@draig.linaro.org>
-In-Reply-To: <87tt31u54d.fsf@draig.linaro.org>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 24 Jul 2025 15:53:44 +0300
-X-Gm-Features: Ac12FXzGZ6buAibQP22E87ohCzyY8ZYj44PlExAqpHfSxEjMIt-ngr0FMcbfZ-Y
-Message-ID: <CAAjaMXZXiaBs=9pn-ESxB5MaVum1H-wK4WWLY5+3uvX0p6qCBA@mail.gmail.com>
-Subject: Re: [PATCH for 10.1 11/13] tests/tcg: reduce the number of plugin
- tests combinations
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.45,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,181 +107,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 24, 2025 at 3:48=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
-o.org> wrote:
->
-> Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
->
-> > On Thu, Jul 24, 2025 at 3:00=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@l=
-inaro.org> wrote:
-> >>
-> >> Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
-> >>
-> >> > On Thu, Jul 24, 2025 at 2:00=E2=80=AFPM Alex Benn=C3=A9e <alex.benne=
-e@linaro.org> wrote:
-> >> >>
-> >> >> As our set of multiarch tests has grown the practice of running eve=
-ry
-> >> >> plugin with every test is becoming unsustainable. If we switch to
-> >> >> ensuring every test gets run with at least one plugin we can speed
-> >> >> things up.
-> >> >>
-> >> >> Some plugins do need to be run with specific tests (for example the
-> >> >> memory instrumentation test). We can handle this by manually adding
-> >> >> them to EXTRA_RUNS. We also need to wrap rules in a CONFIG_PLUGIN t=
-est
-> >> >> so we don't enable the runs when plugins are not enabled.
-> >> >>
-> >> >> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> >> >> ---
-> >> >>  tests/tcg/Makefile.target                     | 23 ++++++++++++++-=
-----
-> >> >>  tests/tcg/multiarch/Makefile.target           |  8 +++++--
-> >> >>  .../multiarch/system/Makefile.softmmu-target  | 11 +++++----
-> >> >>  3 files changed, 30 insertions(+), 12 deletions(-)
-> >> >>
-> >> >> diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-> >> >> index a12b15637ea..18afd5be194 100644
-> >> >> --- a/tests/tcg/Makefile.target
-> >> >> +++ b/tests/tcg/Makefile.target
-> >> >> @@ -173,14 +173,25 @@ PLUGINS=3D$(filter-out $(DISABLE_PLUGINS), \
-> >> >>  # We need to ensure expand the run-plugin-TEST-with-PLUGIN
-> >> >>  # pre-requistes manually here as we can't use stems to handle it. =
-We
-> >> >>  # only expand MULTIARCH_TESTS which are common on most of our targ=
-ets
-> >> >> -# to avoid an exponential explosion as new tests are added. We als=
-o
-> >> >> -# add some special helpers the run-plugin- rules can use below.
-> >> >> +# and rotate the plugins so we don't grow too out of control as ne=
-w
-> >> >> +# tests are added. Plugins that need to run with a specific test
-> >> >> +# should ensure they add their combination to EXTRA_RUNS.
-> >> >>
-> >> >>  ifneq ($(MULTIARCH_TESTS),)
-> >> >> -$(foreach p,$(PLUGINS), \
-> >> >> -       $(foreach t,$(MULTIARCH_TESTS),\
-> >> >> -               $(eval run-plugin-$(t)-with-$(p): $t $p) \
-> >> >> -               $(eval RUN_TESTS+=3Drun-plugin-$(t)-with-$(p))))
-> >> >> +
-> >> >> +NUM_PLUGINS :=3D $(words $(PLUGINS))
-> >> >> +NUM_TESTS :=3D $(words $(MULTIARCH_TESTS))
-> >> >> +
-> >> >> +define mod_plus_one
-> >> >> +  $(shell $(PYTHON) -c "print( ($(1) % $(2)) + 1 )")
-> >> >> +endef
-> >> >> +
-> >> >> +$(foreach _idx, $(shell seq 1 $(NUM_TESTS)), \
-> >> >> +       $(eval _test :=3D $(word $(_idx), $(MULTIARCH_TESTS))) \
-> >> >> +       $(eval _plugin :=3D $(word $(call mod_plus_one, $(_idx), $(=
-NUM_PLUGINS)), $(PLUGINS))) \
-> >> >> +       $(eval run-plugin-$(_test)-with-$(_plugin): $(_test) $(_plu=
-gin)) \
-> >> >> +       $(eval RUN_TESTS+=3Drun-plugin-$(_test)-with-$(_plugin)))
-> >> >> +
-> >> >>  endif # MULTIARCH_TESTS
-> >> >>  endif # CONFIG_PLUGIN
-> >> >>
-> >> >> diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multia=
-rch/Makefile.target
-> >> >> index bfdf7197a7b..38345ff8805 100644
-> >> >> --- a/tests/tcg/multiarch/Makefile.target
-> >> >> +++ b/tests/tcg/multiarch/Makefile.target
-> >> >> @@ -189,6 +189,10 @@ run-plugin-semiconsole-with-%:
-> >> >>  TESTS +=3D semihosting semiconsole
-> >> >>  endif
-> >> >>
-> >> >> +test-plugin-mem-access: CFLAGS+=3D-pthread -O0
-> >> >> +test-plugin-mem-access: LDFLAGS+=3D-pthread -O0
-> >> >> +
-> >> >> +ifeq ($(CONFIG_PLUGIN),y)
-> >> >>  # Test plugin memory access instrumentation
-> >> >>  run-plugin-test-plugin-mem-access-with-libmem.so: \
-> >> >>         PLUGIN_ARGS=3D$(COMMA)print-accesses=3Dtrue
-> >> >> @@ -197,8 +201,8 @@ run-plugin-test-plugin-mem-access-with-libmem.s=
-o: \
-> >> >>         $(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
-> >> >>         $(QEMU) $<
-> >> >>
-> >> >> -test-plugin-mem-access: CFLAGS+=3D-pthread -O0
-> >> >> -test-plugin-mem-access: LDFLAGS+=3D-pthread -O0
-> >> >> +EXTRA_RUNS +=3D run-plugin-test-plugin-mem-access-with-libmem.so
-> >> >> +endif
-> >> >>
-> >> >>  # Update TESTS
-> >> >>  TESTS +=3D $(MULTIARCH_TESTS)
-> >> >> diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/t=
-ests/tcg/multiarch/system/Makefile.softmmu-target
-> >> >> index 5acf2700812..4171b4e6aa0 100644
-> >> >> --- a/tests/tcg/multiarch/system/Makefile.softmmu-target
-> >> >> +++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
-> >> >> @@ -71,8 +71,11 @@ endif
-> >> >>  MULTIARCH_RUNS +=3D run-gdbstub-memory run-gdbstub-interrupt \
-> >> >>         run-gdbstub-untimely-packet run-gdbstub-registers
-> >> >>
-> >> >> +ifeq ($(CONFIG_PLUGIN),y)
-> >> >>  # Test plugin memory access instrumentation
-> >> >> -run-plugin-memory-with-libmem.so:              \
-> >> >> -       PLUGIN_ARGS=3D$(COMMA)region-summary=3Dtrue
-> >> >> -run-plugin-memory-with-libmem.so:              \
-> >> >> -       CHECK_PLUGIN_OUTPUT_COMMAND=3D$(MULTIARCH_SYSTEM_SRC)/valid=
-ate-memory-counts.py $@.out
-> >> >> +run-plugin-memory-with-libmem.so: memory libmem.so
-> >> >
-> >> > Hm why wasn't this needed before this change?
-> >> >
-> >> > I see the make `memory` target sets CHECK_UNALIGNED but where is
-> >> > libmem.so target coming from?
-> >> >
-> >> >> +run-plugin-memory-with-libmem.so: PLUGIN_ARGS=3D$(COMMA)region-sum=
-mary=3Dtrue
-> >> >> +run-plugin-memory-with-libmem.so: CHECK_PLUGIN_OUTPUT_COMMAND=3D$(=
-MULTIARCH_SYSTEM_SRC)/validate-memory-counts.py $@.out
-> >> >> +
-> >> >> +EXTRA_RUNS +=3D run-plugin-memory-with-libmem.so
-> >>
-> >> Because we add it to EXTRA_RUNS so we don't want that if plugins won't
-> >> work. We could just wrap EXTRA_RUNS but the rest of the recipe is moot
-> >> at that point anyway.
-> >
-> > I am asking about the line
-> >
-> >> +run-plugin-memory-with-libmem.so: memory libmem.so
-> >
-> > Which adds two make target prerequisites `memory` and `libmem.so`, I
-> > don't see where they came from, or maybe I am not understanding the
-> > makefile logic here correctly.
->
-> Originally we generated the pre-reqs in the:
->
->   $(foreach p,$(PLUGINS), \
->       $(foreach t,$(MULTIARCH_TESTS),\
->
-> loop. Now that doesn't cover every combination we need to add an
-> explicit prereq for the test case we know we will run.
+Hi,
 
-Ah thanks, that clears it up. The equivalent is specifically this
-deleted line: $(eval run-plugin-$(t)-with-$(p): $t $p)
+vhost_log_global_start() and vhost_log_global_stop() abort the whole
+qemu process on error.  Not least because vhost devices are generally
+outside of qemu (i.e. use a foreign code base), that is not great, as we
+can basically be forced to abort because of bugs (or maybe even properly
+behaving, just unexpectedly so) in other code bases.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+In case of vhost_log_global_start(), the solution is simple: Ever since
+commit 3688fec8923 ("memory: Add Error** argument to .log_global_start()
+handler"), it can just return proper errors, so do that instead of
+aborting.
 
-> >
-> >>
-> >> >> +endif
-> >> >> --
-> >> >> 2.47.2
-> >> >>
-> >> >>
-> >>
-> >> --
-> >> Alex Benn=C3=A9e
-> >> Virtualisation Tech Lead @ Linaro
->
-> --
-> Alex Benn=C3=A9e
-> Virtualisation Tech Lead @ Linaro
+In case of vhost_log_global_stop(), we cannot return errors; but we can
+just ignore them.  In the worst case, some other process will keep
+logging into shared memory we have already unmapped.  That's fine.
 
---=20
-Manos Pitsidianakis
-Emulation and Virtualization Engineer at Linaro Ltd
+
+Hanna Czenczek (2):
+  vhost: Do not abort on log-start error
+  vhost: Do not abort on log-stop error
+
+ hw/virtio/vhost.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+-- 
+2.50.1
+
 
