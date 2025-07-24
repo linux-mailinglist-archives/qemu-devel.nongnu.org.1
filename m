@@ -2,107 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13B9B10769
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 12:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C861B10777
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 12:11:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uesqk-0008W0-R6; Thu, 24 Jul 2025 06:06:54 -0400
+	id 1uesuq-0000A2-3q; Thu, 24 Jul 2025 06:11:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1uesqg-0008RK-Pt; Thu, 24 Jul 2025 06:06:50 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1uesun-00008N-Ct; Thu, 24 Jul 2025 06:11:05 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1uesqf-0006eY-1O; Thu, 24 Jul 2025 06:06:50 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56O6XTPb029158;
- Thu, 24 Jul 2025 10:06:46 GMT
+ id 1uesul-00086G-Ap; Thu, 24 Jul 2025 06:11:04 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56O1Faap027672;
+ Thu, 24 Jul 2025 10:11:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=lsECrH
- m0IYwW9jCFAvDJU1viT/Ryo5CysXczVHdxT5Q=; b=UehrmuGOdAfOXKsy1gKPaj
- wktwq5D1Lo0redB3B05VBUoZMpt8aKp5z3SXQRUssfRSmfYN9wQwPUAt2xk31nmH
- RtkVvx4eblcRQSdh5vWGvURmtyt31S0wEVB9vTtgm2F/HJlrA+cWYPwxC8EG0rS5
- qEjl7cqyZCmkfgMPlJ6EkZHHgLQTEqhDLovT7f2v1R0Jmelai9cutmdefg/EokWJ
- VEWdHEbWDpDUCTvOqiKYbV5kQc5HWrGI/y1FpKrUnHCnyTPXUDpLQMWp/RodLYr/
- F8F/Qct0epwKbqAP79BKQh9t6zoNI7jw/Cpp9dfXasHHZOlWu2KfYTrY9PlnDWiA
+ :message-id:mime-version:references:subject:to; s=pp1; bh=AYxf+a
+ IdvNhCXdqGI0fbJffqc90s5vYsWyrTT996rn8=; b=nJM6auTUyEnMilAQkukN7t
+ 1/fgSn94YgdE8N4mEg5nlb11wijlhg+Y3kNr5110euvTEmI1f9sxBCro2Z7tKIZH
+ vHvidfdGskcaxG3yxhu4lvKCgyc5+GKX0/KmmKqqGppICSCWbv3GFk6ODfW36IE4
+ NjiTOsa3hhyMig9yPAHyveyYW/6ra6Q/q7PGPmP/nSLBVZ8zkn5r7Jz/z8D8CFvt
+ f0xkHOAU8wL1J/towbQzNxoP0W8BUB/NDc+MPHesxLkDhtWzMWsEfzIdXUDxgSid
+ iLzxIRG/lfAOPvBS7f+QgkfyobRi+OI4Tnu2D2RekDY+CeS0AJmhypkGpvVgfY2Q
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482kdyrr4d-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482ff5syqh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Jul 2025 10:06:46 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56O9tnfi008915;
- Thu, 24 Jul 2025 10:06:45 GMT
+ Thu, 24 Jul 2025 10:11:00 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56OA6515013232;
+ Thu, 24 Jul 2025 10:11:00 GMT
 Received: from ppma12.dal12v.mail.ibm.com
  (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482kdyrr47-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482ff5syqg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Jul 2025 10:06:45 +0000 (GMT)
+ Thu, 24 Jul 2025 10:11:00 +0000 (GMT)
 Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56O6IOqB025306;
- Thu, 24 Jul 2025 10:06:44 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 480nptv6tv-1
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56O6W2oe025138;
+ Thu, 24 Jul 2025 10:10:59 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 480nptv79n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Jul 2025 10:06:44 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 56OA6fVR57540946
+ Thu, 24 Jul 2025 10:10:59 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 56OAAv0U54198682
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 24 Jul 2025 10:06:41 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 59CD92006E;
- Thu, 24 Jul 2025 10:06:41 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D96B2007A;
- Thu, 24 Jul 2025 10:06:39 +0000 (GMT)
-Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
- [9.109.242.24]) by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 24 Jul 2025 10:06:39 +0000 (GMT)
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, npiggin@gmail.com,
- clg@redhat.com
-Cc: danielhb413@gmail.com, fbarrat@linux.ibm.com, rathc@linux.ibm.com,
- adityag@linux.ibm.com, gautam@linux.ibm.com, philmd@linaro.org
-Subject: [PATCH v2 5/5] MAINTAINERS: Add myself as a reviewer for XIVE
-Date: Thu, 24 Jul 2025 15:36:19 +0530
-Message-ID: <20250724100623.3071131-6-harshpb@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250724100623.3071131-1-harshpb@linux.ibm.com>
-References: <20250724100623.3071131-1-harshpb@linux.ibm.com>
+ Thu, 24 Jul 2025 10:10:58 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DF00358053;
+ Thu, 24 Jul 2025 10:10:57 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C691658043;
+ Thu, 24 Jul 2025 10:10:54 +0000 (GMT)
+Received: from [9.109.242.24] (unknown [9.109.242.24])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 24 Jul 2025 10:10:54 +0000 (GMT)
+Message-ID: <ef797725-b03f-4e40-b31b-877ccb478acb@linux.ibm.com>
+Date: Thu, 24 Jul 2025 15:40:53 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] MAINTAINERS updates for ppc/spapr/pnv/xive
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, npiggin@gmail.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: danielhb413@gmail.com, fbarrat@linux.ibm.com, rathc@linux.ibm.com,
+ adityag@linux.ibm.com, gautam@linux.ibm.com
+References: <20250724063623.3038984-1-harshpb@linux.ibm.com>
+ <642a5b59-a306-4fbd-a55c-008b9fd8ace0@redhat.com>
+ <74e8e729-3bae-4315-9519-5bd0b6f08731@linux.ibm.com>
+ <d14c7e44-14fe-430e-96eb-0d1325953612@redhat.com>
+Content-Language: en-US
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <d14c7e44-14fe-430e-96eb-0d1325953612@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: h7FrJI3wyjMbW2KMNua3q9uK9E336KyX
-X-Authority-Analysis: v=2.4 cv=XP0wSRhE c=1 sm=1 tr=0 ts=688205b6 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDA3NSBTYWx0ZWRfX43I394NRcgqk
+ NWzRebyT6myGgiTFSFyT5VX15aFkG6eL/NyB0sftZbnPP7E5GiAg7sBTxx6+rpGpGfMlJV3qhcd
+ yFI+nzdtObWPlK4j31rJnwG92SybFOW/WCTgJ9FyIZJiDGsOzai7h/8rti/Rkg9fP4H+RA6gIXX
+ jVxjF6hvem9Y/5pWcrtvX40ThwqWWO+dhtgZfC2/sTxqWpuAaD8r6SNaYgtp05DlHHQ6PUJx1gW
+ KukZfyCr7qQAg+f73LLyJjV1azou8OgzAiyVe091ibsqRlJ7xeUzIQj+jVJP+9CpGmrWeSsSmOV
+ 2nZkV5ATu6GMN4Vnxzh1VwiOQPsk0CWRHnObLLAVC15td2YcSXhHjdojrzCTQZC1fzTcrbavpCl
+ ZyVM3i69MFCuSfnptTjJ1vfAXWDQxWzlAfZZf3WhF3PkUR6Qu+EP0/o1z0miQUCZZvfA3gpL
+X-Authority-Analysis: v=2.4 cv=evLfzppX c=1 sm=1 tr=0 ts=688206b4 cx=c_pps
  a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=f7IdgyKtn90A:10 a=NEAV23lmAAAA:8
- a=VnNF1IyMAAAA:8 a=69wJf7TsAAAA:8 a=Ve6bjU1_KzwlgJvHvC4A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=Fg1AiH1G6rFz08G2ETeA:22
-X-Proofpoint-GUID: unfkePcI3T8q475dxyd2uoiOyivCjaXS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDA3MSBTYWx0ZWRfXwivjB5nFs8zO
- OgNh791dkbhglHwhI7Phcz6F/717+SLlzs0i02Gaa8kvA/1sA3d7SxjCMTra4ZuaQKmknbDdIux
- BbLHXJ7BJBdFCOx88mk1Q5bKV/rijDThcsArhFJ8GfaUrl8agnuVQ2TwTOztwivGhkMbN5vNB8B
- wRAiSjdOrMVzZXNoT8tu6aHLS2VGV3ayRH71yxg2vr6y331hiVMUFzezsv6qZNV/ShLhYGcvRz2
- Tw41xkQQhH7k+sO+vH4/fBZjxS5FB3LtNLSVpNhInlQo606dAhNWHhrDiWpXUI0vG4DDcs+akVM
- tHs4QFCkuubvJNELSH257nmkMA4G/UNmMYbOzaOsEmtn7fBBn+r0EBjgBelcN+y6QLFb6J3AWFJ
- A/kjPFoRaqQCDj2VrvIX9OuJewwqYoDi+k2VQd9OmGZbyPfe1y9FbOtLGFkHEvYrXeEOJ+G9
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=f7IdgyKtn90A:10 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=1LzfJVe2DS0ENudrwGMA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 87LlnkHajs9QlR0JmkRoUYnyzvFjSlA3
+X-Proofpoint-ORIG-GUID: 2K6EgGDPE0y0HSwYZIYKoVpLnpt33XUp
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-24_01,2025-07-23_01,2025-03-28_01
+ definitions=2025-07-24_01,2025-07-24_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999 spamscore=0
- suspectscore=0 clxscore=1015 malwarescore=0 impostorscore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507240071
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ clxscore=1015 impostorscore=0 malwarescore=0 spamscore=0 adultscore=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 suspectscore=0 phishscore=0
+ priorityscore=1501 mlxlogscore=637 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507240075
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -126,33 +131,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gautam Menghani <gautam@linux.ibm.com>
 
-Proposing myself as a reviewer for XIVE on PPC.
 
-I have been looking at XIVE in context of KVM internally at IBM for some time
-in addition to testing a few XIVE upstream patches; and I'll be closely looking
-at XIVE going forward.
+On 7/24/25 15:17, Cédric Le Goater wrote:
+> On 7/24/25 11:12, Harsh Prateek Bora wrote:
+>>
+>>
+>> On 7/24/25 13:10, Cédric Le Goater wrote:
+>>> On 7/24/25 08:36, Harsh Prateek Bora wrote:
+>>>> Some of us at IBM have been actively working/contributing in
+>>>> ppc/spapr/pnv/xive and would like to step up to help with
+>>>> reviews and co-maintainer activities. I have also included proposal
+>>>> patches from Chinmay and Aditya in this patchset which had already
+>>>> been posted to list earlier to request for merge.
+>>>>
+>>>> Thanks
+>>>> Harsh
+>>>>
+>>>> Aditya Gupta (1):
+>>>>    MAINTAINERS: Add myself as a reviewer of PowerNV emulation
+>>>>
+>>>> Chinmay Rath (1):
+>>>>    MAINTAINERS: Add myself as reviewer for PowerPC TCG CPUs
+>>>>
+>>>> Gautam Menghani (1):
+>>>>    MAINTAINERS: Add myself as a reviewer for XIVE
+>>>>
+>>>> Harsh Prateek Bora (2):
+>>>>    MAINTAINERS: Adding myself as a co-maintainer for ppc/spapr
+>>>>    MAINTAINERS: Adding myself as reviewer for PPC KVM cpus.
+>>>>
+>>>>   MAINTAINERS | 5 +++++
+>>>>   1 file changed, 5 insertions(+)
+>>>>
+>>>
+>>> I can merge these changes through the vfio queue.
+>>>
+>>> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+>>
+>> Thanks Cedric !
+> Would you mind resending a v2 with all S-o-b fixed please ?
 
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+I have posted v2 with all S-o-b fixed here:
+https://lore.kernel.org/qemu-devel/20250724100623.3071131-1-harshpb@linux.ibm.com/
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1ba161d75b..f3f981f90d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2781,6 +2781,7 @@ T: git https://github.com/philmd/qemu.git fw_cfg-next
- 
- XIVE
- R: Frédéric Barrat <fbarrat@linux.ibm.com>
-+R: Gautam Menghani <gautam@linux.ibm.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: hw/*/*xive*
--- 
-2.43.5
 
+Thanks
+Harsh
+
+> 
+> Thanks,
+> 
+> C.
+> 
+> 
+> 
+> 
 
