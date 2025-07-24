@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570F4B10929
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CCF9B10937
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:30:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ueu5d-0002k4-Jd; Thu, 24 Jul 2025 07:26:21 -0400
+	id 1ueu9Y-0000BI-3C; Thu, 24 Jul 2025 07:30:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ueu5a-0002Xp-K1
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 07:26:18 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1ueu9N-00089P-Gg
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 07:30:14 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ueu5Y-0001in-MV
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 07:26:18 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-606b58241c9so1448419a12.3
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 04:26:15 -0700 (PDT)
+ id 1ueu9L-0003MU-7B
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 07:30:13 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-60c4f796446so1511409a12.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 04:30:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753356375; x=1753961175; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753356609; x=1753961409; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6DKrVKUkyZOaMKtK8sPeIiTjv1xZjPYlZHCmoXM9z/Y=;
- b=R+v3pK5YYkc6/bLriTieiO/COpXsLicCHeiHP3FtTMAT3/4pdxOUxacGxvxCFs6l0M
- uqtb332C6/fYQDh2mhg0y9SOgMSXKiuMYypMVMHoJT2viLh0btuyvHWsuoalg8efEhxI
- pIpQX4OO19p+VwAeSnPPR51i5givAJxXMAwkELfX0y+8rmjCZwhrvIiYPN6ZnRYl/dA3
- 3ZRgNFdZmK5djQ+NmV0iPnNTW7F8Op6khgB0RPO5TabC3XPoyQJ1OHkvC+DcFmq8lqLy
- vfZpY8Xll/1pGdrVRgt+EM8AzULGQ1f6ZFz46yCYmtSL/fwhv5aEDfyeqq3vWiByR/wP
- yl9g==
+ bh=XLsNCLAgQY25GsAUu49EVCWatsso57MaoWS8EpJ/U3Y=;
+ b=TJI1Au7zO1567gMct1y4s5WFOd/XJvfRFRvBl4SFOUQPCoNv5WguvBQTY3mmUivrJ+
+ nRkOOnZP3kSIBLUgxmfvdEpd4/1tMdKEDhfMQYXwkwn6eYbIsFImevRgdMwhXPmZYlg4
+ vCP5p+IK3OgFju+of3+bqrtFqAaMh31SBbH49rHYBrCq2EP16kMJzSYMmM4+EdIF83oh
+ C1tDnqaZJrWmMtA63Om6dV/qw1eNC417yNdNXGeoQHRC5Zm0vBlWHPLIvJuJgC+2QEV0
+ Ivr1ON1gL1rSqBhvGBl+zBEyP7B4VjQ8TsYnu+ecIPotXyXZG3cZSIl9z2+WRzYlkVgd
+ uugg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753356375; x=1753961175;
+ d=1e100.net; s=20230601; t=1753356609; x=1753961409;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6DKrVKUkyZOaMKtK8sPeIiTjv1xZjPYlZHCmoXM9z/Y=;
- b=LSJl+DdRiU6ez65NnfcTc4mdRf+dC2d4nPLGsWbqIjGmEevzGmrGrga84QHaqx7eSO
- T3LCxEB8a4WHXCs1kEWN3P/jgOiegVUYzYiuzSfwE+mpsDAmuTZOhuoB05ZIoPd3YEGF
- +9vw5AXEO55AmpoxV2Pj9nT2J52v9h0OLy/J8+1ZoMRaJ1c7ptfGiscmE97DHYJ/Z+Dj
- W9OAjlKpAoMg+MnpCvsbrWJjiAYeppDVBAKwJiIgj9YvWboeufJ6sr1XXatL4IOdqrBk
- 3aGHQx1+rTcu8AwaFkiJVZvBQK3P6vOpSH5A7YYbx9uO5ycq4Ybiwl223j1Ti7WY7StP
- iniA==
-X-Gm-Message-State: AOJu0YysBcPw2lgZQkYuobIX6kV66gxK6xq7rmPKY6n/yTRMXzUoaQsR
- ilH1YnhpG6bCevEjU8ACfbC5iU5o17buxCyVR/7kRr628PWu9A8NXQdbwjO+7Af9FnWZ28OWvXw
- oIW/vXQ5LtsDNfQoKzliJ2wAzlY3u+VjYY44BuJu6OA==
-X-Gm-Gg: ASbGnctkjG3kdS/voqdhP84s4RVERyOPQ7+D/ISAVmYHUOV1o8K5ykBuCSW/hR5uaGz
- 4xfCltLP/wZVOEtb2gJJCXvo0UuKOHDUslkkxNfR+vQ+svXKdjlIn+xTzSXzGT3xIFWGnL28x7X
- cv2MsQ1XGAmJnezDaFK8lMxnJ5wPSDAGzCNp5aswYrVazuOF45gDp+seSwCXW1mgOvnham71ZvZ
- gmiqw==
-X-Google-Smtp-Source: AGHT+IFOy8mQR0S8OGCRQ7g8HX6+vGFhQdQma3icjVzaHMr16fxv990gQLyBuB9gt6xvVxocEDPtvLsMbR1g+vR4bKo=
-X-Received: by 2002:a05:6402:2706:b0:607:28c9:c3c9 with SMTP id
- 4fb4d7f45d1cf-6149b40d0c2mr5444213a12.6.1753356374498; Thu, 24 Jul 2025
- 04:26:14 -0700 (PDT)
+ bh=XLsNCLAgQY25GsAUu49EVCWatsso57MaoWS8EpJ/U3Y=;
+ b=gSVi/X8r/AA0JTSKN7Jkf8J0eACLrXpiuHtQsCpJ8xPhANnNBWAsCK/bf2Jc4/96hB
+ L0Meqim032N/cRJhVFVMPU0CwWd+nuez87FUKo4CAnnkGQxmgCzCZt8cAQN4bQEdzOj9
+ 1wr1TzBAZJcX9ofgqcNlQSP9SftvZ3BnpjveKpnzCDAbsLTcS34LQiWtXqI4e+6ZMiTW
+ B0vVL8JgTYfUz3iHJ4QmP9+pOhzMqyZwLjw2u8U2bCKIrvJCTihpA5KaSNKnq0gUHBTk
+ zVbGeNR6hp9RsPcN3ccQJqT1YCHJLswIDkasvy7f5ijdtxwQjwy/PF9QpxZ9xEXuBB93
+ zWkQ==
+X-Gm-Message-State: AOJu0YxmljNo+1JU/w+YtIGUDJMvhbz762zROF/b4v0FlJ3oKwEP6zDR
+ 56SCupFZwZJgbsLhbJ0qopbW7BS2qabKy7ANVACqu5Xow5VWrTwHN+YFDmne43sQfoa7fPDAqZR
+ C1aMBUx0NaSFiBuyAhll89gxGgjezuyfU2H+sQHMJGQ==
+X-Gm-Gg: ASbGncuNtmewW66iFM4Rk0c2V+5R0hBxCme9qc5pmlzxyCtB82nauA3NJauV0FsXv9A
+ wr9bitIvIn392krUhhwzhKk/4r4BnrNl+t9J0hIlvMZ4TV6yFRmSVOA+yRMWADbDl9WYC1Qr4MW
+ 5aPMfwu5n+cNUgZLnOEoELQNF4uEuPVpOca4SjPz4bXs0tM/hSGINBU887eu7dnimn4W1C4RNq4
+ 6iAfiEBLocm30MB
+X-Google-Smtp-Source: AGHT+IG9M7JG3+egYJEUNgJnjmD3VnU0cF/HaWeex+0iBmRYnIxgoZD+N7u38A+ut0GSEQdQnY6i7E/fv/B/j0K4REc=
+X-Received: by 2002:a05:6402:90c:b0:612:dff3:2ffb with SMTP id
+ 4fb4d7f45d1cf-6149b427029mr5723871a12.11.1753356608758; Thu, 24 Jul 2025
+ 04:30:08 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250724105939.2393230-1-alex.bennee@linaro.org>
- <20250724105939.2393230-12-alex.bennee@linaro.org>
-In-Reply-To: <20250724105939.2393230-12-alex.bennee@linaro.org>
+ <20250724105939.2393230-14-alex.bennee@linaro.org>
+In-Reply-To: <20250724105939.2393230-14-alex.bennee@linaro.org>
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 24 Jul 2025 14:25:47 +0300
-X-Gm-Features: Ac12FXxtKNi22oqTl9TlXq_ibNJ1g1TrOe0-wlzXdG_N7bp-xLxVXxPbD4JM2WA
-Message-ID: <CAAjaMXb9-jkDhLA1euY3-90c4q=2my=QuDpJQGGObAZGTy3-xQ@mail.gmail.com>
-Subject: Re: [PATCH for 10.1 11/13] tests/tcg: reduce the number of plugin
- tests combinations
+Date: Thu, 24 Jul 2025 14:29:42 +0300
+X-Gm-Features: Ac12FXz3_xjyMlWLZv1NSiN_dVw_b3zHyllUzeiXq1abD3FpGwkiGCq5bqRfTQU
+Message-ID: <CAAjaMXau4GyWidMNdYXgnMQTrv0mhVuCamDtaMLLJPeEDgyOQQ@mail.gmail.com>
+Subject: Re: [PATCH for 10.1 13/13] tests/docker: handle host-arch selection
+ for all-test-cross
 To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,118 +99,95 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Thu, Jul 24, 2025 at 2:00=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
 o.org> wrote:
 >
-> As our set of multiarch tests has grown the practice of running every
-> plugin with every test is becoming unsustainable. If we switch to
-> ensuring every test gets run with at least one plugin we can speed
-> things up.
->
-> Some plugins do need to be run with specific tests (for example the
-> memory instrumentation test). We can handle this by manually adding
-> them to EXTRA_RUNS. We also need to wrap rules in a CONFIG_PLUGIN test
-> so we don't enable the runs when plugins are not enabled.
+> When building on non-x86 we get a bunch but not all of the compilers.
+> Handle this in the Dockerfile by probing the arch and expanding the
+> list available.
 >
 > Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 > ---
->  tests/tcg/Makefile.target                     | 23 ++++++++++++++-----
->  tests/tcg/multiarch/Makefile.target           |  8 +++++--
->  .../multiarch/system/Makefile.softmmu-target  | 11 +++++----
->  3 files changed, 30 insertions(+), 12 deletions(-)
+>  .../dockerfiles/debian-all-test-cross.docker  | 31 ++++++++++---------
+>  1 file changed, 17 insertions(+), 14 deletions(-)
 >
-> diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-> index a12b15637ea..18afd5be194 100644
-> --- a/tests/tcg/Makefile.target
-> +++ b/tests/tcg/Makefile.target
-> @@ -173,14 +173,25 @@ PLUGINS=3D$(filter-out $(DISABLE_PLUGINS), \
->  # We need to ensure expand the run-plugin-TEST-with-PLUGIN
->  # pre-requistes manually here as we can't use stems to handle it. We
->  # only expand MULTIARCH_TESTS which are common on most of our targets
-> -# to avoid an exponential explosion as new tests are added. We also
-> -# add some special helpers the run-plugin- rules can use below.
-> +# and rotate the plugins so we don't grow too out of control as new
-> +# tests are added. Plugins that need to run with a specific test
-> +# should ensure they add their combination to EXTRA_RUNS.
+> diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/test=
+s/docker/dockerfiles/debian-all-test-cross.docker
+> index 5aa43749ebe..16a83241270 100644
+> --- a/tests/docker/dockerfiles/debian-all-test-cross.docker
+> +++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
+> @@ -23,7 +23,9 @@ RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
+>          bison \
+>          ccache \
+>          clang  \
+> +        dpkg-dev \
+>          flex \
+> +        gcc \
+>          git \
+>          libclang-rt-dev \
+>          ninja-build \
+> @@ -33,16 +35,11 @@ RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
+>          python3-venv \
+>          python3-wheel
 >
->  ifneq ($(MULTIARCH_TESTS),)
-> -$(foreach p,$(PLUGINS), \
-> -       $(foreach t,$(MULTIARCH_TESTS),\
-> -               $(eval run-plugin-$(t)-with-$(p): $t $p) \
-> -               $(eval RUN_TESTS+=3Drun-plugin-$(t)-with-$(p))))
+> -RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
+> -        apt install -y --no-install-recommends \
+> -        gcc-aarch64-linux-gnu \
+> +# All the generally available compilers
+> +ENV AVAILABLE_COMPILERS gcc-aarch64-linux-gnu \
+>          libc6-dev-arm64-cross \
+>          gcc-arm-linux-gnueabihf \
+>          libc6-dev-armhf-cross \
+> -        gcc-hppa-linux-gnu \
+> -        libc6-dev-hppa-cross \
+> -        gcc-m68k-linux-gnu \
+> -        libc6-dev-m68k-cross \
+>          gcc-mips-linux-gnu \
+>          libc6-dev-mips-cross \
+>          gcc-mips64-linux-gnuabi64 \
+> @@ -51,18 +48,24 @@ RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
+>          libc6-dev-mips64el-cross \
+>          gcc-mipsel-linux-gnu \
+>          libc6-dev-mipsel-cross \
+> -        gcc-powerpc-linux-gnu \
+> -        libc6-dev-powerpc-cross \
+> -        gcc-powerpc64-linux-gnu \
+> -        libc6-dev-ppc64-cross \
+>          gcc-powerpc64le-linux-gnu \
+>          libc6-dev-ppc64el-cross \
+>          gcc-riscv64-linux-gnu \
+>          libc6-dev-riscv64-cross \
+>          gcc-s390x-linux-gnu \
+> -        libc6-dev-s390x-cross \
+> -        gcc-sparc64-linux-gnu \
+> -        libc6-dev-sparc64-cross && \
+> +        libc6-dev-s390x-cross
 > +
-> +NUM_PLUGINS :=3D $(words $(PLUGINS))
-> +NUM_TESTS :=3D $(words $(MULTIARCH_TESTS))
+> +RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS=3D"${=
+AVAILABLE_COMPILERS} gcc-hppa-linux-gnu libc6-dev-hppa-cross"; fi
+> +RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS=3D"${=
+AVAILABLE_COMPILERS} gcc-m68k-linux-gnu libc6-dev-m68k-cross"; fi
+> +RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS=3D"${=
+AVAILABLE_COMPILERS} gcc-powerpc-linux-gnu libc6-dev-powerpc-cross"; fi
+> +RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS=3D"${=
+AVAILABLE_COMPILERS} gcc-powerpc64-linux-gnu libc6-dev-ppc64-cross"; fi
+> +RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS=3D"${=
+AVAILABLE_COMPILERS} gcc-sparc64-linux-gnu libc6-dev-sparc64-cross"; fi
 > +
-> +define mod_plus_one
-> +  $(shell $(PYTHON) -c "print( ($(1) % $(2)) + 1 )")
-> +endef
-> +
-> +$(foreach _idx, $(shell seq 1 $(NUM_TESTS)), \
-> +       $(eval _test :=3D $(word $(_idx), $(MULTIARCH_TESTS))) \
-> +       $(eval _plugin :=3D $(word $(call mod_plus_one, $(_idx), $(NUM_PL=
-UGINS)), $(PLUGINS))) \
-> +       $(eval run-plugin-$(_test)-with-$(_plugin): $(_test) $(_plugin)) =
-\
-> +       $(eval RUN_TESTS+=3Drun-plugin-$(_test)-with-$(_plugin)))
-> +
->  endif # MULTIARCH_TESTS
->  endif # CONFIG_PLUGIN
->
-> diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Ma=
-kefile.target
-> index bfdf7197a7b..38345ff8805 100644
-> --- a/tests/tcg/multiarch/Makefile.target
-> +++ b/tests/tcg/multiarch/Makefile.target
-> @@ -189,6 +189,10 @@ run-plugin-semiconsole-with-%:
->  TESTS +=3D semihosting semiconsole
->  endif
->
-> +test-plugin-mem-access: CFLAGS+=3D-pthread -O0
-> +test-plugin-mem-access: LDFLAGS+=3D-pthread -O0
-> +
-> +ifeq ($(CONFIG_PLUGIN),y)
->  # Test plugin memory access instrumentation
->  run-plugin-test-plugin-mem-access-with-libmem.so: \
->         PLUGIN_ARGS=3D$(COMMA)print-accesses=3Dtrue
-> @@ -197,8 +201,8 @@ run-plugin-test-plugin-mem-access-with-libmem.so: \
->         $(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
->         $(QEMU) $<
->
-> -test-plugin-mem-access: CFLAGS+=3D-pthread -O0
-> -test-plugin-mem-access: LDFLAGS+=3D-pthread -O0
-> +EXTRA_RUNS +=3D run-plugin-test-plugin-mem-access-with-libmem.so
-> +endif
->
->  # Update TESTS
->  TESTS +=3D $(MULTIARCH_TESTS)
-> diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/t=
-cg/multiarch/system/Makefile.softmmu-target
-> index 5acf2700812..4171b4e6aa0 100644
-> --- a/tests/tcg/multiarch/system/Makefile.softmmu-target
-> +++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
-> @@ -71,8 +71,11 @@ endif
->  MULTIARCH_RUNS +=3D run-gdbstub-memory run-gdbstub-interrupt \
->         run-gdbstub-untimely-packet run-gdbstub-registers
->
-> +ifeq ($(CONFIG_PLUGIN),y)
->  # Test plugin memory access instrumentation
-> -run-plugin-memory-with-libmem.so:              \
-> -       PLUGIN_ARGS=3D$(COMMA)region-summary=3Dtrue
-> -run-plugin-memory-with-libmem.so:              \
-> -       CHECK_PLUGIN_OUTPUT_COMMAND=3D$(MULTIARCH_SYSTEM_SRC)/validate-me=
-mory-counts.py $@.out
-> +run-plugin-memory-with-libmem.so: memory libmem.so
+> +RUN echo "compilers: ${AVAILABLE_COMPILERS}"
 
-Hm why wasn't this needed before this change?
+Nitpick, each `RUN` command will create a new cached layer for the
+container build. It makes more sense to fold them in a single `RUN`
+step to avoid unnecessary layers. Does not make a big difference so
+feel free to ignore.
 
-I see the make `memory` target sets CHECK_UNALIGNED but where is
-libmem.so target coming from?
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-> +run-plugin-memory-with-libmem.so: PLUGIN_ARGS=3D$(COMMA)region-summary=
-=3Dtrue
-> +run-plugin-memory-with-libmem.so: CHECK_PLUGIN_OUTPUT_COMMAND=3D$(MULTIA=
-RCH_SYSTEM_SRC)/validate-memory-counts.py $@.out
 > +
-> +EXTRA_RUNS +=3D run-plugin-memory-with-libmem.so
-> +endif
+> +RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
+> +        apt install -y --no-install-recommends \
+> +        ${AVAILABLE_COMPILERS} && \
+>          dpkg-query --showformat '${Package}_${Version}_${Architecture}\n=
+' --show > /packages.txt
+>
+>
 > --
 > 2.47.2
 >
