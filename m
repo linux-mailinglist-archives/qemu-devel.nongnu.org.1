@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFF7B10865
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19183B1086D
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:03:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uetfu-0007CV-Tf; Thu, 24 Jul 2025 06:59:46 -0400
+	id 1uetfx-0007If-HB; Thu, 24 Jul 2025 06:59:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uetft-0007AP-7q
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:45 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1uetfv-0007Em-7B
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:47 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uetfr-0007x4-Hk
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:45 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-ae3a604b43bso134287066b.0
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 03:59:42 -0700 (PDT)
+ id 1uetft-0007xI-DD
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:46 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-607cf70b00aso1743464a12.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 03:59:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753354781; x=1753959581; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=d37m3MaXFrCwnLFACnbyFONcYZLWLyBitA8HTfc9Io0=;
- b=ykiA7LUkmOssvaVu/tewMpJaNA95fHvOLysDvxET/NzONxwdH0kvR8317yrBHFxMtz
- dwPNSsjYc0rtaSu71m65JYh8MQ6M2zOLwqqOHwsvfqnpJB4pe8/HFpZ1i6m6gUYW1lyC
- ZrWObeQJzm8WV9PFvWvX/t9XrNXkvCKi5gHpoUkZPDfOtvBZHObYzFqSok0qu6+1KbDL
- XtcqBXwH0esWsLusocInecEKylhxdyjFyYZ3Fusv29Qt5PgkQxyFavD9DkbBEVpypOsy
- pGgunFJQiHqu1y4gCkPsU31zFHyIJVXNfTOLVdyb3Np6NkzjUTIDziOqMaE1Fnuie9P/
- l8XA==
+ d=linaro.org; s=google; t=1753354783; x=1753959583; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2j0rreVKxKZW1/bQwPMyAcXvrAutpqYSKulSVnU2qbs=;
+ b=y8RMqOoz8FwxwDV8nkrHaMgAZvDuSEBerdYNw3eKKe4U83QwWm3xo/iv6p/KF7HMJA
+ K/UeXf94e6feBp/v5QifelSwaCXcKHHhViFV9XtEp5EAv3UkOKIIdwIJw3fKEfV3i8iO
+ v1dcw7VWI5zy5Y2KGqTaZZaiSjeQiK5inTtPvjqsIk4pbjpFxNe7o6+DFWEpgt7oiv89
+ dji7l1tMoRcCQ+iJ9+KrBhclfBhr7XWT3G0ceRSR0wtFHFFUFUewGfZLevhmiKIaj0rY
+ bpzWj4nzGVjlyrCRfxPGAuv02fyBHThjsThX6Cr+S/O97bhvBdSTBr0S0nO8SJxgyKFe
+ EG1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753354781; x=1753959581;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=d37m3MaXFrCwnLFACnbyFONcYZLWLyBitA8HTfc9Io0=;
- b=iCWtyJsIufW1dqPvU51Bij8Vjkw4Q3Y42IKEv72576b+0TqmHlglt+uJ8M/QYTE8ce
- cyznsr5UmVgCblkOdDwizpyFC4D4XZjxJIm4GPDfITlNqeGvSHPtLTHxf0oH96/gcXJh
- om6Rl3K8f7vydAkID109lG9K/mch+TxbeySlXdJWN5iNKHLntXhacGRsiDmcOQLHuhxk
- vVxm6hfQ48C1BUKlRzUw6hpWCFd4wR+wN2YXym7A1VRpIDuWsE1VbL0qWh9lRySDuwL7
- DpUZUwvrQkMl1lpnVrJMIMFiYIKH07LEBo11mDxqrwdaBi1QD2W8pz0CYW/+m1/yGc86
- DIPA==
-X-Gm-Message-State: AOJu0YxsbfHKC5ktk0KF7/kkQu3cP1QaxHeM7FyIGdnKS1kWHtwTquYa
- C7WJIcby55gEfKrNiajkPyOuKA0teRXimYuFh/dgQQeiWm8X/QPtO+D2zV0FFbnV58w=
-X-Gm-Gg: ASbGnct9wQQu6KhqIBFg/UqBHX8NdwlDM+BpgiehgvJps//P2IaSsru2Dh7uKiHXPtQ
- sp2IKI82XnNt3UT1MHs9QVRgQ7Bupmwb8/lgHimjZNWGtD69dJAUJQgd8cGrvfge8plw1dQtMUy
- BLYaj5DaLC8AQ0CJ5Fl5yXS2eW+q5F41TKkjPdTO9XGmKmmcwN0+/qLPggr9Rjm+HNLldq/8MVM
- CBZRPFaIl1DY9PNtXCcbK2UWR9UJEAAy++Dgwko1Zo96Rn5ZkV5td0xxKpVKq8qKgU8aIvX88gP
- qdEC0AJgo1Sv+3tlSwHzPYO8jPz1LO7QQNRfIyyHc+wfd0a+mr6HVJCkMoQYqyUCER6qdFR6e1X
- ocOrZ9QLMuG19/+9y7t6sLJA=
-X-Google-Smtp-Source: AGHT+IFvizPYQty1TRWcRR2yAn0UGidPMH4ULvwmUHheExUQdQsjqrV/3t1jZmP25wB+HGheI8vt8w==
-X-Received: by 2002:a17:906:9f89:b0:ae0:cc5f:88ef with SMTP id
- a640c23a62f3a-af2f8857bd4mr623064666b.32.1753354781531; 
- Thu, 24 Jul 2025 03:59:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753354783; x=1753959583;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2j0rreVKxKZW1/bQwPMyAcXvrAutpqYSKulSVnU2qbs=;
+ b=LycK2BDFJke4Il7/SALFY6DfVlxFOfZRpRNZ4MliVt+7Of3ho8IKMkXBUI2i614s9h
+ DgFxg06AkMKzNfua2cb72Gl3jXBjVz19sskKjPm+7DoBUc96Na7uMT++bEQEpAgmpPFN
+ q2q21qKi3PBis8vk/h7XCxsXJM4njIcfyt+3F24gmmiHfDdMxSExOWPBUhfrvVt20oDd
+ D+fQaWYNGkW++dNP+W9supMV+Am7J4ja69Yx1/TxmEl09lcae4xliU13RJoCwaamIIGo
+ McfVCxfJpSZO1brk9GCFUzsdj0l8Hb2x8O4ejQgWKoQ7GJSc9CsR4tdkYvV9w+s+3r3g
+ BOHw==
+X-Gm-Message-State: AOJu0YzUa5onKdvCoCd0xRuEM0C2YdBBUd4gI4vsmMCW2elzZbGkIReK
+ mcTXqy0PEijtNH/M9q0fHWQwYImjuNdTV63yRmmLWLu3+tlpWUhSjnCtYa3eOJ9/IFc=
+X-Gm-Gg: ASbGncs+58wYf7PNgAurWsL3XrqRIH+c7UldZaJoF5FrF5vM2mvYTzeck5Q2B9gaOZb
+ SDEV5U8wSaOLq9VRXidUeC3bUc5zTCoGLalQezp9qQomdNtw5TBRKIIy5gAWgm5BbFxaTVfQSNq
+ 8iUa0MjbvfUv96eOFKI1goB/CCfsG50HkHNR1mqXC1REtlqTfBGZr4Yes8Uniq9Xc1bPnIYNOtE
+ Bv3A82yVXHq70MHG/7UaQlKMqSkHKIknW0QNGL5qfYpBgewCCbwkiAmICCumgRKQsQOxmls2vB1
+ R9AiIyT91/ic6xf5EvzSHkIqza3hqKuIaBphRA5PuY8gaedV816wxBYZUGKbAORmNrPoWos34xG
+ 8T8KbLXMwABy00yFyBdJZp9g=
+X-Google-Smtp-Source: AGHT+IHcBBiwwQJsfX0ylitwjosvDWDU10CvWCfwM+CfOFK0ZjaRU5KtHE/2uRSMCBQeZJA3ubXndg==
+X-Received: by 2002:a05:6402:51cc:b0:614:9439:cdd6 with SMTP id
+ 4fb4d7f45d1cf-6149b417f9cmr5139299a12.1.1753354783105; 
+ Thu, 24 Jul 2025 03:59:43 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-af47c495ea4sm97361166b.26.2025.07.24.03.59.40
+ 4fb4d7f45d1cf-614cd335f7dsm687680a12.61.2025.07.24.03.59.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 24 Jul 2025 03:59:40 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E488E5F7B0;
- Thu, 24 Jul 2025 11:59:39 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 075265F88F;
+ Thu, 24 Jul 2025 11:59:40 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH for 10.1 00/13] documentation updates and test tweaks
-Date: Thu, 24 Jul 2025 11:59:26 +0100
-Message-ID: <20250724105939.2393230-1-alex.bennee@linaro.org>
+Subject: [PATCH for 10.1 01/13] docs/user: clarify user-mode expects the same
+ OS
+Date: Thu, 24 Jul 2025 11:59:27 +0100
+Message-ID: <20250724105939.2393230-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250724105939.2393230-1-alex.bennee@linaro.org>
+References: <20250724105939.2393230-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,61 +103,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I did a quick pass of some of the documentation bugs and tried to
-clean-up the linux-user documentation some more.
+While we somewhat cover this later when we talk about supported
+operating systems make it clear in the front matter.
 
-I've also tackled the exploding number of TCG tests by rotating the
-plugin run against test rather than having every combination. We now
-have enough multiarch tests I'm fairly confident this gives good
-enough coverage of the APIs. Some plugins have explicit test programs
-they need to be run against and these are still added manually.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ docs/user/index.rst | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-The following need review:
-
-  tests/docker: handle host-arch selection for all-test-cross
-  tests/docker: add --arch-only to qemu deps for all-test-cross
-  tests/tcg: reduce the number of plugin tests combinations
-  configure: expose PYTHON to test/tcg/config-host.mak
-  tests/tcg: don't include multiarch tests if not supported
-  tests/tcg: remove ADDITIONAL_PLUGINS_TESTS
-  tests/tcg: skip libsyscall.so on softmmu tests
-  tests/functional: add hypervisor test for aarch64
-  docs/user: expand section on threading
-  docs/user: slightly reword section on system calls
-  docs/user: clean up headings
-  docs/system: reword the TAP notes to remove tarball ref
-  docs/user: clarify user-mode expects the same OS
-
-Alex.
-
-Alex Bennée (13):
-  docs/user: clarify user-mode expects the same OS
-  docs/system: reword the TAP notes to remove tarball ref
-  docs/user: clean up headings
-  docs/user: slightly reword section on system calls
-  docs/user: expand section on threading
-  tests/functional: add hypervisor test for aarch64
-  tests/tcg: skip libsyscall.so on softmmu tests
-  tests/tcg: remove ADDITIONAL_PLUGINS_TESTS
-  tests/tcg: don't include multiarch tests if not supported
-  configure: expose PYTHON to test/tcg/config-host.mak
-  tests/tcg: reduce the number of plugin tests combinations
-  tests/docker: add --arch-only to qemu deps for all-test-cross
-  tests/docker: handle host-arch selection for all-test-cross
-
- docs/system/devices/net.rst                   | 16 ++--
- docs/user/index.rst                           |  5 +-
- docs/user/main.rst                            | 59 ++++++++-----
- configure                                     |  1 +
- .../dockerfiles/debian-all-test-cross.docker  | 33 ++++----
- tests/functional/meson.build                  |  1 +
- tests/functional/test_aarch64_kvm.py          | 83 +++++++++++++++++++
- tests/tcg/Makefile.target                     | 36 ++++++--
- tests/tcg/multiarch/Makefile.target           |  8 +-
- .../multiarch/system/Makefile.softmmu-target  | 16 +++-
- 10 files changed, 201 insertions(+), 57 deletions(-)
- create mode 100755 tests/functional/test_aarch64_kvm.py
-
+diff --git a/docs/user/index.rst b/docs/user/index.rst
+index 782d27cda27..2307580cb97 100644
+--- a/docs/user/index.rst
++++ b/docs/user/index.rst
+@@ -5,8 +5,9 @@ User Mode Emulation
+ -------------------
+ 
+ This section of the manual is the overall guide for users using QEMU
+-for user-mode emulation.  In this mode, QEMU can launch
+-processes compiled for one CPU on another CPU.
++for user-mode emulation. In this mode, QEMU can launch programs
++compiled for one CPU architecture on the same Operating System (OS)
++but running on a different CPU architecture.
+ 
+ .. toctree::
+    :maxdepth: 2
 -- 
 2.47.2
 
