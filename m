@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A80B1086A
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20400B1086F
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:03:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uetg5-0007SZ-JX; Thu, 24 Jul 2025 06:59:57 -0400
+	id 1uetgE-0007b3-PI; Thu, 24 Jul 2025 07:00:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uetfy-0007ME-OI
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:51 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ id 1uetg0-0007Qz-Uu
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:52 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uetfx-0007yU-1g
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:50 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-ae6fa02d8feso127277266b.0
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 03:59:48 -0700 (PDT)
+ id 1uetfz-0007zL-8w
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:52 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-60707b740a6so1344072a12.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 03:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753354787; x=1753959587; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753354790; x=1753959590; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RaXIy0TZF7Lx3BTxPvhSWMcsUAYvvaGRMj44TBqIZqk=;
- b=r3jWisgxjaFMLVX5uBjaAoAKWNlq8N4yb0FHvAws334RtAAiEQIOHC8b5rszlFesdf
- Jo+BL1nU1OfRKKoFuX/qkFZTbNVr1HNuuE5zEgEriB+9nYn0p8/CcHm7w7UFMQxQC6XA
- SBhQTx7RMSd1JvqUAFpAW1+DuXjTjQsjSABxcyRXGwW2o9euS+/lbmdaI2+aShIkJYCj
- QPwysBU3oCdWQpd/yfsnNSQ7voPx33L75TOcDA3doGavTtupk53bV+mkxicQOxlypubk
- dgL0JqrRI21d+zQD4INK6zfTLy0zcvzykwBl0XCLdWFd/lFCnyhbCYutxX627DClJDjP
- 4rdw==
+ bh=dWlT3FmdPmH54t5v80OARO557JNa+kkNhBDoMAfKoW0=;
+ b=qb8VRkJg0YkSQYb0t8mR6VRaloBNBIAClBzOvSRPpW2AvKGmh8332DRJQPKWTGa0ha
+ 0Wf/N3HJOSEUrs3wsk8/k9/lQ0K640oP2o6tTlSx7OWkq1FSx6fm64BKfQFpZsZILMuA
+ lgS3ReWpYlJsmvPu8BpdMsMf+sKRE0tRGdl0BBI7xeWnbw4lNnA0Ffqt5tEXfop4b2kU
+ ukNfyN3vpfbqH0oPbapMUkYSzxZPZLYJuiuw0RUbqD+EwQwY9nPj+J/Puqhgif29wgZq
+ UuBSIIqFx5ch5/Aghy2x/PGxi/AEDSOuxQs0b0jr3lUfDf5hm/3c8PaKCPQ0WCk2xstF
+ pVDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753354787; x=1753959587;
+ d=1e100.net; s=20230601; t=1753354790; x=1753959590;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RaXIy0TZF7Lx3BTxPvhSWMcsUAYvvaGRMj44TBqIZqk=;
- b=FvpZSRvgX5C5Wv6k4h2EoK7ldUOyIJOUSvHXwn/3qrBg14NNvzxfhH7BANbOpfpBY4
- SbHj4gZaIPc0oTW1C2cc6SpYxKP22ZKSgGcJudDhw/Ew/nBG8tx0tOoxU0ACDH+GIWnb
- /UUhuQ3oWboyGDCx8ku312PJb7IT17SxLWOzTauoNH+p9zUPbANq7wSs0kazkj02RXHv
- AjN94NIVS737dcLJTc9K0mghPvmYxCzh5U19FAxNwttKQV+WYVkGjUfGOAbbYrwrY/mj
- 2GFcgCXL3q/BGnQkByz+SpTrUWTvcr0tH+ulboAhOHl7xJWq20VNEwrnSizJpZ1OAPpm
- jMnQ==
-X-Gm-Message-State: AOJu0YxPeQDYB8UEhj75Ar7YpVE+6GjpJZulMbMmhGU0srzVzRPY9Jkz
- YxGpPlYfylOFIGU+imPR2iRf18SjtqM6FPOEHXuQ5/4s8EwMqZFe4dcwpN7d3Z70ZkfrntQbXEw
- FP1yy
-X-Gm-Gg: ASbGncvNFgQiIw9QJ0EUMfuc1ItuEjQlYPRNU+bJP5vX1PSzPCsMziDIlY0ulSjuAeB
- LzJmZMGDm12SQnC4YuGCOwL8ui9ofiXxf1QGHQy+YQOGtampDuvcEfuvYHIEY+5siewW4NPG8bC
- wuHVzT14lSstQNwEGXsb+IAp2Rmjdy826SZw/D6VCBZsbxR1lA5RoFYCl2Qe1dJ8MLG4zn2owOP
- qjsfXj2YVb6R30faxX8I++JorjPALQeAZ6ONGXveNIcpUy1Rl/bd2Rhh5lGpDMEwIR1TwWFXGRv
- uLs3l5EXuMk5s4knCTd+xiBs4oPMzHYKH1DZUXXqNTyDTM1t1PCRTvYKEzdVTOhgnNnN286DVwf
- 7DOAASLF4qf04Cdmz+oFfPcg=
-X-Google-Smtp-Source: AGHT+IHEL/KzwMmfwkKAQYbG52krYzWMVnXqh5z+AKsRTYQ+pRID5BrQvyv65xd+Ac2qUurttMdNxA==
-X-Received: by 2002:a17:906:6a23:b0:ae0:a813:1bc0 with SMTP id
- a640c23a62f3a-af2f9270a5amr598668366b.53.1753354787202; 
- Thu, 24 Jul 2025 03:59:47 -0700 (PDT)
+ bh=dWlT3FmdPmH54t5v80OARO557JNa+kkNhBDoMAfKoW0=;
+ b=S0xmWZgJW+bu8i0oPnCpjZYzAAT1ztUOSUKzStbbCOThthEOyAJWohEbmX+qgp0veZ
+ Tw+RzsaslkuyY0pPj578/Oqf1JtMkqcqf957NB5Xc8qycC5H9V61qu2Lm+IGArkNdP5l
+ ohVLWTP9KI6enaz2TcTYMfIFa//wz4IVm/8SaNmUBGsPA4AMscfnp1W9TLn6NP1jeRT0
+ umwoqFjFNvtD7iogfeAjnHvo0uBDAu5Pyv8PYDxGfFcABpWe58vhiuakFJJhX/jcIqKa
+ ACCviAlMTYqblyN29qMmTE/FEpTSfxHIvvLe61JNURkk7AESZ2nz2ii8vFpqkFItoWZN
+ wVQQ==
+X-Gm-Message-State: AOJu0YyKCnwkpxb8qG2rxc65mZRomSfRJKqmgyWzJe56iPeAG08KdlJX
+ PRKVtzy8NDpCqUDClovCsb6cXUUfd34b2dfIVqC9Kk8Mw/MftxXt63j58tIgTI2qYn4=
+X-Gm-Gg: ASbGncvyI5Ee1u+uydgxg27wqjICPrMg2vs7GH6h/Z6zJa0loiAeSBA3T5XYvPt6Kkj
+ 2byoYqf7R3Uw0QrmoQ8zyvRcTPedCWdseWBGFe7o2gGXg330dt9DuAaUnuF7GYS5jwIC/rzpOrP
+ czKKB21yp//fuVpgJj8orKyk9ZxYo1jrxXeOM5gmNW4zu18WovFNNT+ztbYSSo97rtU6Jwhj3CR
+ vW4jRSyzQbKgILUGnuuSJNAwv/rheCpMsdMLNs/jITZhyN1WEpFsGYLqda6YmZYof5bBa609jM+
+ XIjUQQXBlwnx2J/11411HCX7ynFcetDJymXcO96mBfS8ZlgsWS8DLop0YF9dHIjcGq235huag2Y
+ zIdvw7sbRYSY7q9A37UwcIu0=
+X-Google-Smtp-Source: AGHT+IEUgoSpQUb8WqVztc6pvO2IIdMGYsXgeFVBfbK4tASHfHJfX+AJFeri/gOiAqzJEfv8DCMy7w==
+X-Received: by 2002:a05:6402:42cf:b0:60c:3d54:4d17 with SMTP id
+ 4fb4d7f45d1cf-6149b5b229fmr5184055a12.21.1753354789610; 
+ Thu, 24 Jul 2025 03:59:49 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-af47c58bba3sm97872766b.5.2025.07.24.03.59.42
+ 4fb4d7f45d1cf-614cd3362d6sm694045a12.60.2025.07.24.03.59.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 24 Jul 2025 03:59:44 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9BCCD5F8E1;
+ by draig.lan (Postfix) with ESMTP id B32835F8E7;
  Thu, 24 Jul 2025 11:59:40 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH for 10.1 08/13] tests/tcg: remove ADDITIONAL_PLUGINS_TESTS
-Date: Thu, 24 Jul 2025 11:59:34 +0100
-Message-ID: <20250724105939.2393230-9-alex.bennee@linaro.org>
+Subject: [PATCH for 10.1 09/13] tests/tcg: don't include multiarch tests if
+ not supported
+Date: Thu, 24 Jul 2025 11:59:35 +0100
+Message-ID: <20250724105939.2393230-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250724105939.2393230-1-alex.bennee@linaro.org>
 References: <20250724105939.2393230-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,32 +103,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We never actually used this is the end. Remove it to enable
-re-factoring.
+We are about to change the way the plugin runs are done and having
+this included by default will complicate things.
 
-Fixes: 7cefff22d54 (tests/tcg: add mechanism to run specific tests with plugins)
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/Makefile.target | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/tcg/Makefile.target                          | 6 ++++++
+ tests/tcg/multiarch/system/Makefile.softmmu-target | 5 +++++
+ 2 files changed, 11 insertions(+)
 
 diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-index 3d96182a7b9..97ebe8f9bc9 100644
+index 97ebe8f9bc9..a12b15637ea 100644
 --- a/tests/tcg/Makefile.target
 +++ b/tests/tcg/Makefile.target
-@@ -169,11 +169,10 @@ PLUGINS=$(filter-out $(DISABLE_PLUGINS), \
- # only expand MULTIARCH_TESTS which are common on most of our targets
- # to avoid an exponential explosion as new tests are added. We also
- # add some special helpers the run-plugin- rules can use below.
--# In more, extra tests can be added using ADDITIONAL_PLUGINS_TESTS variable.
+@@ -127,8 +127,14 @@ else
+ # build options for bare programs are usually pretty different. They
+ # are expected to provide their own build recipes.
+ EXTRA_CFLAGS += -ffreestanding -fno-stack-protector
++
++# We skip the multiarch tests if the target hasn't provided a boot.S
++MULTIARCH_SOFTMMU_TARGETS = i386 alpha aarch64 arm loongarch64 s390x x86_64
++
++ifneq ($(filter $(TARGET_NAME),$(MULTIARCH_SOFTMMU_TARGETS)),)
+ -include $(SRC_PATH)/tests/tcg/minilib/Makefile.target
+ -include $(SRC_PATH)/tests/tcg/multiarch/system/Makefile.softmmu-target
++endif
+ -include $(SRC_PATH)/tests/tcg/$(TARGET_NAME)/Makefile.softmmu-target
  
- ifneq ($(MULTIARCH_TESTS),)
- $(foreach p,$(PLUGINS), \
--	$(foreach t,$(MULTIARCH_TESTS) $(ADDITIONAL_PLUGINS_TESTS),\
-+	$(foreach t,$(MULTIARCH_TESTS),\
- 		$(eval run-plugin-$(t)-with-$(p): $t $p) \
- 		$(eval RUN_TESTS+=run-plugin-$(t)-with-$(p))))
- endif # MULTIARCH_TESTS
+ endif
+diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/tcg/multiarch/system/Makefile.softmmu-target
+index 07be001102b..5acf2700812 100644
+--- a/tests/tcg/multiarch/system/Makefile.softmmu-target
++++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
+@@ -6,6 +6,11 @@
+ # architecture to add to the test dependencies and deal with the
+ # complications of building.
+ #
++# To support the multiarch guests the target arch needs to provide a
++# boot.S that jumps to main and provides a __sys_outc functions.
++# Remember to update MULTIARCH_SOFTMMU_TARGETS in the tcg test
++# Makefile.target when this is done.
++#
+ 
+ MULTIARCH_SRC=$(SRC_PATH)/tests/tcg/multiarch
+ MULTIARCH_SYSTEM_SRC=$(MULTIARCH_SRC)/system
 -- 
 2.47.2
 
