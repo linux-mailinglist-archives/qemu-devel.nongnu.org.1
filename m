@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D337B106C0
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 11:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D0EB106BF
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 11:44:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uesUC-0003Yp-Nv; Thu, 24 Jul 2025 05:43:36 -0400
+	id 1uesUh-00045A-CS; Thu, 24 Jul 2025 05:44:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uesU9-0003Uz-TY
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 05:43:34 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uesUI-0003vI-Dz
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 05:43:43 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uesU4-00075G-UZ
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 05:43:33 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4537edf2c3cso7805905e9.3
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 02:43:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uesUG-00077A-E0
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 05:43:42 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-455b00283a5so4683735e9.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 02:43:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753350207; x=1753955007; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753350218; x=1753955018; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=4xEAkKoENW8vDgmahFUrX2zUydTCbclzrikgoLfT95k=;
- b=ZiMv+dWo8DRp0a53yHbU5SsFqdOydTucJ7ObEVLVk4E4/MfZqR11btt7XKZ2H/Y5dt
- wm6VVFAC3KN+D4F5yr+nNC91GiBfJR6UUBkNjlZ9zDl+td4ah9eCbcBDWuWMVKY31Hl/
- kuuBLNjD7d68HjFLjfyI7J7V82jb6U2ZBWyIOxOfoCNqqnkhcGT1EUvSxV1/4fA2BU/2
- bJTuzPOT52arTf/lhXs6QOTB9/dclQPaaNPfRq2ow5qH9LDcgNFNDJeUX5xcmxy9spXd
- hHdQDEWBevZ4DaKbQP5vGX2pz6pHUTaMbk9s13ktJkPRCCl9J81XA71R0SgrJGqW34Oq
- K6EA==
+ bh=FxEe3tvHPZUMb5s9JGfa9aJ4y1IP9SlYvu2YCVJXpeI=;
+ b=mtHA+fxPZAVxeNq0TBpK3WrHT8nr3HwjV5YEt0VZgG3p6R0DijzjCRqKgrvsckAsmX
+ UePUsYBeNOMKdNkSyrMu5hIjBqVJ9W/9vbxPLmoT6imPyvAHyy75xpvXbhmCCIjBmYyK
+ IgIgnKAtml7/DETaxOibfqZcyzrOSJpbtgy+dIiNPkyPf+uLQmgi93AggXgtk9/dR/L+
+ On43/1bL63Kw984kgf9yBBjiajDM8+qLe2fbkbPTbhWB0WU541s85UIYpu5EGEgeSurY
+ jki+z256PoMHxp9GemfErXxo/UNeQD+aIzAeW0VZozZ0/V2xPpZwrpPcRcoRgJjgVwXU
+ KPmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753350207; x=1753955007;
+ d=1e100.net; s=20230601; t=1753350218; x=1753955018;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4xEAkKoENW8vDgmahFUrX2zUydTCbclzrikgoLfT95k=;
- b=U3+l4By2mFZEEqAP+Je+vX9o0P6iVeMj/0b3JfZPBB36p17WITMdhoy0CRD3zt94SY
- llD3EjpPXiGkU2FIckN/OGi07KhJz7/+W0ZT6gndvSXCRPpjRYZXUKjzGEYa/UaSuRqm
- PMnYsYFJIJ9KPFXWtQGZJRERUo2VyghD50Y0BL8z2zKQ8Lpoar/aHlcx2cjEVLmOHRig
- u1zwyiTxEIcwHaDtcLluL/fFxFOUnhuvjVAm72On2GP+68kCFoeJ3fGbpKmSU6kOMWYW
- oX48+M2PwBWDmNxHSpOg+LPa9+O+IUp1R8tJeG9hFvcfERhP5uBxtk/N0wOam7lIiwhR
- Dndw==
+ bh=FxEe3tvHPZUMb5s9JGfa9aJ4y1IP9SlYvu2YCVJXpeI=;
+ b=K8T14u4uhEtXs1skZrgJ78GsLQzLau5GW6fyEeLFrp7wJ60tRp9IdPnlGFeeXEyX6O
+ I4wxr3JMJQDV7ORjAgo2stnNtV1n4SN4cR+rPyGEn62yABeZFE0AAFK4cd33HfISPIBF
+ T2NaGGKE2fqcEcBXeLvawIzx4hvnDgyFVSTSkLa0+b8Z8jHkG3gWIjut79+PCN8pksFW
+ CQz+jJX4loRKvflnRRfXuNiKP6i1no2jRYZWtxMo+PnfJqglbOBCJGRbYjZosnxosfkq
+ 9ktpKw/JZ+toO7/gXbL4fMbfS+f9kVj1x6B3+9IZG82gKuOuxQHtH7fKJxe6MRZeRbAe
+ Ki6g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXsIdQ4X6sqM3faBfdAqPbi9dEz9dOmRiNH8ORxT/R5L47JuwIuBGxc+IMAmL1BgIA9Ft9glcyzVzJP@nongnu.org
-X-Gm-Message-State: AOJu0YyDqMMJ2i5sN6TVWe1PWqDT0mP0wJRo2M1JIy92Tiy+fC0uSUvc
- viBvXQb7yO90mxC6RXt1pEezpdkDTW4i5W8t8fj621+2qw7h03bXcD47LMBkWaCP2c4=
-X-Gm-Gg: ASbGncuG50Ngo8p0QpIyWR9pbQ9D/H4CuJ4bsgtRZc/6TR69Jk7Fd8RW9oSs+Ex8kIU
- Fn9qW3Zn5PuxGuxvR/jPgWHPeM9TrEIl8zh86T78yPCEvNYfbkCFsgyBqzNBYVAzY+TwEyT45If
- v7K8fFnyvM7+jbxeG5wRt/cCZKL6UwrhqHbVJEoyRpnE1KpRPAkqoYjp3ZJfY2JL/eBz232eyfM
- qT0UXre3XpCI0O2Q86W4PdAwaDonHhsnTYgNMK+bNWnSlxKBZkZ1IE6dCX0Ihct0D9OIsFxczwl
- GgesyqvBfXNadHg8OnJMmQl7YVcG+oTHsvHc2ekRNTpsKHFsikpU+KBFkzXWQbZefWAi3Pjn3Q5
- LCkMLabL7b0JusPWS3Oy/t+nAV/L27tjxdx0Qtv2d4Y8xkorDV9Dihb6+3NG3rryXEw==
-X-Google-Smtp-Source: AGHT+IG7HcpyG7lQwwI6di/e1uOPne8y1cCaeWOqAgCOSA56TuIbtzv+yaS+k8EXXmyt7OxJvhsoTQ==
-X-Received: by 2002:a05:600c:c167:b0:456:1c44:441f with SMTP id
- 5b1f17b1804b1-45868d7266fmr52852685e9.31.1753350206702; 
- Thu, 24 Jul 2025 02:43:26 -0700 (PDT)
+ AJvYcCWvESrLIPFX3TLDdqZkYFYtTYk4xbxKZ+gPRSiLQv7JoA0dPC5ZK5Iwu3MwSmuuKXZLjFjHGHvhNdOd@nongnu.org
+X-Gm-Message-State: AOJu0YyIBbr62EkAO9qOInr52KFlAIC0qq+dnxW/bwC7Us7tQT4fGw9l
+ vWt3TettbJCzMk5oWzjLZ8hrvT9lOBUxfFSKzrxC9a00lkroeZnvG9vEsRhADcyUEW4=
+X-Gm-Gg: ASbGnct78lS03Z3bOHpldLiUQQtnE4C7kI48wSgc5+Aocc3855kIkseiPImFEDEBvq4
+ ekgCc4dZ7eIDJ1EBnoUdgh1Y/DaOppSJlHhp0WhIUuO8aRMZr3XfN2K/Nrsqep1lxcYSRJ5XaJe
+ VbYxZERobfuXmk0uWC64dhJTT65DY1WqY1IWMa4a6TRoC97oslzPLrqClol49FilzIUWnFygzSn
+ w4f4vAVJCTl3oq6Ou52M/1L0lQgR5sS8e7gP/GBx8oSXB0xwJtzqQKAa+G7owO1dpjDzrlprdx+
+ LIzkCgZU3D3g9NSPqV999+Jobgu+KBDVpsXGCHpNYoj8zIvU4sNlreDitFZUcKFP7NdLp3gL6/k
+ 2hk4OEfYG7ZUrTnrUW8JVV3WilPrdjO+3+eyOTbdZreJyMLztGjxEWP2Y43ypl6Thqw==
+X-Google-Smtp-Source: AGHT+IGc7IZqq0yUZpfg5J2WUKfe2ZlNiM7+ltDcfuEea1JtZGk9F5vqwX244kfSUDus/dmkgKyChg==
+X-Received: by 2002:a05:600c:524b:b0:456:1d4e:c14f with SMTP id
+ 5b1f17b1804b1-45868d69f9bmr49060855e9.28.1753350218331; 
+ Thu, 24 Jul 2025 02:43:38 -0700 (PDT)
 Received: from [192.168.69.209] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-458705c4dbdsm13875815e9.25.2025.07.24.02.43.25
+ 5b1f17b1804b1-45870532a4csm13625945e9.7.2025.07.24.02.43.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Jul 2025 02:43:26 -0700 (PDT)
-Message-ID: <d7e6838a-1010-4ebf-9d5c-6220802043f6@linaro.org>
-Date: Thu, 24 Jul 2025 11:43:25 +0200
+ Thu, 24 Jul 2025 02:43:37 -0700 (PDT)
+Message-ID: <7b562204-0add-45bb-ba3c-f497dc38464e@linaro.org>
+Date: Thu, 24 Jul 2025 11:43:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] MAINTAINERS: Add myself as a reviewer of PowerNV
- emulation
+Subject: Re: [PATCH 5/5] MAINTAINERS: Add myself as a reviewer for XIVE
 To: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org, npiggin@gmail.com, clg@redhat.com
 Cc: danielhb413@gmail.com, fbarrat@linux.ibm.com, rathc@linux.ibm.com,
  adityag@linux.ibm.com, gautam@linux.ibm.com
 References: <20250724063623.3038984-1-harshpb@linux.ibm.com>
- <20250724063623.3038984-5-harshpb@linux.ibm.com>
+ <20250724063623.3038984-6-harshpb@linux.ibm.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250724063623.3038984-5-harshpb@linux.ibm.com>
+In-Reply-To: <20250724063623.3038984-6-harshpb@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,19 +103,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 24/7/25 08:36, Harsh Prateek Bora wrote:
-> From: Aditya Gupta <adityag@linux.ibm.com>
+> From: Gautam Menghani <gautam@linux.ibm.com>
 > 
-> Proposing myself as a reviewer in the PowerNV emulation in QEMU
+> Proposing myself as a reviewer for XIVE on PPC.
 > 
-> Have been working on PowerNV QEMU for sometime, with contributions in
-> Power11, MPIPL and minor fixes and things such as dtb support
+> I have been looking at XIVE in context of KVM internally at IBM for some time
+> in addition to testing a few XIVE upstream patches; and I'll be closely looking
+> at XIVE going forward.
 > 
-> Cc: Cédric Le Goater <clg@kaod.org>
-> Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
-> Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
 
 Missing:
 
@@ -127,16 +122,16 @@ Missing:
 >   1 file changed, 1 insertion(+)
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 31bcb82e93..1ba161d75b 100644
+> index 1ba161d75b..f3f981f90d 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -1579,6 +1579,7 @@ F: tests/functional/test_ppc64_tuxrun.py
->   PowerNV (Non-Virtualized)
->   M: Nicholas Piggin <npiggin@gmail.com>
+> @@ -2781,6 +2781,7 @@ T: git https://github.com/philmd/qemu.git fw_cfg-next
+>   
+>   XIVE
 >   R: Frédéric Barrat <fbarrat@linux.ibm.com>
-> +R: Aditya Gupta <adityag@linux.ibm.com>
+> +R: Gautam Menghani <gautam@linux.ibm.com>
 >   L: qemu-ppc@nongnu.org
 >   S: Odd Fixes
->   F: docs/system/ppc/powernv.rst
+>   F: hw/*/*xive*
 
 
