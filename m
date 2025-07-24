@@ -2,79 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DE5B1126C
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 22:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E02B11284
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 22:46:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uf2fo-0006pa-EQ; Thu, 24 Jul 2025 16:36:16 -0400
+	id 1uf2p6-000561-Sz; Thu, 24 Jul 2025 16:45:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uf2fm-0006oW-Cp
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:36:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uf2fi-0003r4-SS
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:36:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753389369;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Q9j8tztAk4Xr6RPsbDf10tm+asdf4cqfdJb6PqDBRQE=;
- b=fLnSnjmtPwboxBYyKXn7LqAbAyhMhJuvdEi8C+ZAh1ymPFWogndH2mHunEPs6W43ysmzcJ
- AjrpiyJW7CqWJbYTcAUG7n7YSC55+WxhaPyRZ3ZzkuwKs9PD6j8twzeZJP+MM3qmZa+0mL
- fIUDOtBDTjivyktWkCYvEvIE6QloIjw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-81-dnd1kVRnNVCvHilZ4iu4tg-1; Thu,
- 24 Jul 2025 16:36:07 -0400
-X-MC-Unique: dnd1kVRnNVCvHilZ4iu4tg-1
-X-Mimecast-MFC-AGG-ID: dnd1kVRnNVCvHilZ4iu4tg_1753389366
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4BCD31956087; Thu, 24 Jul 2025 20:36:06 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.247])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 323371956089; Thu, 24 Jul 2025 20:36:04 +0000 (UTC)
-Date: Thu, 24 Jul 2025 16:36:03 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Bernd Schubert <bschubert@ddn.com>
-Cc: Brian Song <hibriansong@gmail.com>,
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "armbru@redhat.com" <armbru@redhat.com>, "fam@euphon.net" <fam@euphon.net>,
- "hreitz@redhat.com" <hreitz@redhat.com>,
- "kwolf@redhat.com" <kwolf@redhat.com>
-Subject: Re: [PATCH RFC 1/1] block/export: FUSE-over-io_uring Support for
- QEMU FUSE Exports
-Message-ID: <20250724203603.GA573965@fedora>
-References: <20250716183824.216257-1-hibriansong@gmail.com>
- <20250716183824.216257-2-hibriansong@gmail.com>
- <e13f8119-7c60-4aa6-91b0-860ac0a462f5@ddn.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uf2p3-00054w-NL
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:45:49 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uf2oz-0007MK-HP
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:45:49 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-234b9dfb842so12801435ad.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 13:45:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753389935; x=1753994735; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=469MTM4WIrhtrSLiP/c8/OPPWqfBZ+xyrCSPKYWK6j8=;
+ b=MOEAD53HEWZ2QQOgQ0vauYB/E5ZJVVWSyatC/Dmx/+oeXthrxYo7ihHjmZtqhSJhiW
+ E/dwt0y0DL86Kcmde2mlRHF3r/dWDYrMeSkV53rilY4fKGxb8IIQVD1ufhx+Dnp/PfFR
+ J5l7iNMUuKwDykUJN2nv9ELas6Hh0RixF65c8cGF8ZLZWxqZ1HD74chPH8tDhx1UkT07
+ PFM1A8TiBLZ9pl4ibysci6krIrs/uob9LDyE7QDe/7HV9Rv6QcaEwR7I2KnOTey+SMjx
+ sHBpuEQAnTLT0rWoqbcb1uzZgsuHEgn9fEF0UJ+vetoaq03zXR9xqoqpDWrebn9dojnr
+ UcZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753389935; x=1753994735;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=469MTM4WIrhtrSLiP/c8/OPPWqfBZ+xyrCSPKYWK6j8=;
+ b=QLaD9mhmyHS+IkegrQUKsNGCtIAWgm03rDV/RZp34m157ZQS5BuL830tGfnlLSEn7o
+ v36+kltR7f0a5Cqh0tSDM/joDE+WwoWVEEBPZnSiHU23kmixaFBpkRCJpkYe4imlVDV/
+ 8q8vl/psgXneSLbuhKbXq8Qml+ZKTrVEW7XN414pYQQzv3yLXSdYYH3zY6nE02fjDWbG
+ wokZ0cMExoYiSZb5j+NG9D/a/bwIjMppIS6GbK7oPeM+xqIE/DO5RQ36lp2I5PW9aQ3C
+ myOYcDTZChBq+TLk8CNfoCg9+stVHdXr2wzEM0J75kskvI168H/gtBT9bkhq8JKle61w
+ XDZA==
+X-Gm-Message-State: AOJu0YwtFI9pgYPATVy1Awfk7IZyVPycMIsyfXd/AWOy82LO2B7OscHS
+ xDwKMznWIABfGfwl+lPg4yXJrjZoitV5j8pLVhA9E7th50J46hF7w5Z63LvcGUympnE4YhsMOfz
+ /AJVg
+X-Gm-Gg: ASbGncudv/5LQt41Ap2HUBV+Sns/6KAYSyDZTnjiVqgbjGuoZ/1CLSU+Q0CUEiCHJ5O
+ LwD7Z4OmGBWFgg7NQe4hD9a+lS/PQSyca1Dvv7m/QySUUfX8jSPeU/aWaXMzx7PVc4fH3Y4T01v
+ VbF4v8YdI06+qYwtpS71Pi0wxA4wulwL7hOwddzuOEJ4oRYGsc2Jr79j7R3A2kJaN5frwe9y0PQ
+ U0HSJAPboEHUZvuNzXZMJ5rRJc2UsrwjpR2tnzmlP4uI1ZSipNvPgf1spI0ItXbF+pCcJD6yEfh
+ 5P33J+dKE6IxZYo4wn6iy007/3MHwUk9GS61dyYkcma33yv8MR4i1FdakaVBKOP43TJNxVcGGIy
+ lcTEQlHGq6D08okIvhd/T1aBMHg0t26pB
+X-Google-Smtp-Source: AGHT+IEF9+E4sV8Xdvz9OXy8B2VB77C2RTE7OWXjGO7gZcIWCcJqnNw+Kr40QxwN3zl7HSTcobe0tQ==
+X-Received: by 2002:a17:902:e887:b0:234:bca7:2920 with SMTP id
+ d9443c01a7336-23f981b42c1mr135002485ad.24.1753389934926; 
+ Thu, 24 Jul 2025 13:45:34 -0700 (PDT)
+Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-31e662f6be0sm2008849a91.35.2025.07.24.13.45.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Jul 2025 13:45:34 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, rowan Hart <rowanbhart@gmail.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 0/7] contrib/plugins: uftrace
+Date: Thu, 24 Jul 2025 13:45:19 -0700
+Message-ID: <20250724204527.3175839-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.47.2
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="CZFVtOZlLmvJyApo"
-Content-Disposition: inline
-In-Reply-To: <e13f8119-7c60-4aa6-91b0-860ac0a462f5@ddn.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.45,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,79 +103,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This plugin generates a binary trace compatible with the excellent uftrace:
+https://github.com/namhyung/uftrace
 
---CZFVtOZlLmvJyApo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In short, it tracks all function calls performed during execution, based on
+frame pointer analysis. A big advantage over "uftrace record" is that it works
+in system mode, allowing to trace a full system execution, which was the
+original goal. It works as well in user mode, but uftrace itself already does
+this. It's implemented for aarch64 only (with the intent to add x86_64 later).
 
-On Mon, Jul 21, 2025 at 01:51:44PM +0000, Bernd Schubert wrote:
-> On 7/16/25 20:38, Brian Song wrote:
-> > -    ret =3D io_uring_queue_init(FDMON_IO_URING_ENTRIES, &ctx->fdmon_io=
-_uring, 0);
-> > +    ret =3D io_uring_queue_init(FDMON_IO_URING_ENTRIES,
-> > +                            &ctx->fdmon_io_uring, flags);
-> >      if (ret !=3D 0) {
-> >          error_setg_errno(errp, -ret, "Failed to initialize io_uring");
-> >          return;
->=20
-> I need test these flags again, might be worthful for qemu as well
->=20
-> 	/* These flags should help to increase performance, but actually
-> 	 * make it a bit slower - reason should get investigated.
-> 	 */
-> 	if (0) {
-> 		/* Has the main slow down effect */
-> 		params.flags |=3D IORING_SETUP_SINGLE_ISSUER;
->=20
-> 		// params.flags |=3D IORING_SETUP_DEFER_TASKRUN;
-> 		params.flags |=3D IORING_SETUP_TASKRUN_FLAG;
->=20
-> 		/* Second main effect to make it slower */
-> 		params.flags |=3D IORING_SETUP_COOP_TASKRUN;
-> 	}
+Let's start with concrete examples of the result.
 
-I measured the following using fio bs=3D4k in a 4 vCPU guest with 1
-IOThread using a virtio-blk disk backed by a local NVMe drive:
+First, in system mode, booting a stack using TF-A + U-boot + Linux:
+- Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
+https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
+- Stat and open syscalls in kernel
+https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
+- Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
+https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
 
-                      IOPS               IOPS
-Benchmark             SINGLE_ISSUER      SINGLE_ISSUER|COOP_TASKRUN|TASKRUN=
-_FLAG
-randread  iodepth=3D1   54,045 (+1.2%)     54,189 (+1.5%)
-randread  iodepth=3D64  318,135 (+0.1%)    315,632 (-0.68%)
-randwrite iodepth=3D1   141,918 (-0.44%)   143,337 (+0.55%)
-randwrite iodepth=3D64  323,948 (-0.015%)  322,755 (-0.38%)
+Full trace is available here:
+https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz
+You can download and open it on https://ui.perfetto.dev/ to explore it.
 
-The differences are so small that I'd rather not merge the code changes.
-I will post an RFC series just to archive the patches in case they are
-needed again in the future.
+Second, in user mode, tracing qemu-aarch64 (itself) running git --help:
+- Loading program and its interpreter
+https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
+- TB creation
+https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
 
-You can find detailed benchmarking results here including the fio
-output, fio command-line, and guest libvirt domain XML:
-https://gitlab.com/stefanha/virt-playbooks/-/tree/io_uring-flags/notebook/f=
-io-output
-https://gitlab.com/stefanha/virt-playbooks/-/blob/io_uring-flags/files/fio.=
-sh
-https://gitlab.com/stefanha/virt-playbooks/-/blob/io_uring-flags/files/test=
-=2Exml.j2
+Full trace is available here:
+https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz
 
-Stefan
+If you had curiosity and now you're ready to give some attention, most of the
+details you want to read are included in the documentation patch (final one).
 
---CZFVtOZlLmvJyApo
-Content-Type: application/pgp-signature; name=signature.asc
+Overhead is around x2 (sampling only) to x10-x15 (precise), and long traces can
+be directly filtered with uftrace if needed.
 
------BEGIN PGP SIGNATURE-----
+The series is splitted in:
+- implementing the plugin
+- adding useful options (especially sampling and privilege level tracing)
+- add a companion script to symbolize traces generated
+- add documentation with examples
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmiCmTMACgkQnKSrs4Gr
-c8i5UAf/cmTZvXwKqKW9K3WDBgvxgjhteqGzKC7HcG6CIDNDHnMrssTlB27fp3om
-buhiwYtpWYgVAxGJbzwa7X5N+i1d2gL92oov7VIYP/gqLtrOwQIdsdt9UVW/le2i
-F4MTUvNXEzvPBp5aRiSrtSrW5boEcijFnkG5jF74o7sAJDmn2UIxkFNLVA5OEjHP
-WZzF4awZDKPPWJAxXTv3EAbgQHAVN0Gydd6aPpjv56AJ6dHgDtRREfuvH6yPUN8l
-55cPf714lGWNGhocNBEPTLxNJcqjwU+AWEiLOzHhBndZMp9Q/PqvX3T34UHiyUNo
-aW053cQMjhsGS5Tnbw6Lcd22IZNqwQ==
-=cmZF
------END PGP SIGNATURE-----
+I hope this plugin can help people trying to understand what happens out of the
+user space, and get a better grasp of how firmwares, bootloader, and kernel
+interact behind the curtain.
 
---CZFVtOZlLmvJyApo--
+v2
+--
+
+- trace active stacks on exit
+- do not erase map generated in system_emulation
+- add documentation to generate restricted visual traces around specific events
+  of execution
+
+v3
+--
+
+- fix missing include unistd.h (build failed on MacOS only)
+
+v4
+--
+
+- add support for x64
+
+Pierrick Bouvier (7):
+  contrib/plugins/uftrace: new uftrace plugin
+  contrib/plugins/uftrace: add trace-sample option
+  contrib/plugins/uftrace: add trace-privilege-level option
+  contrib/plugins/uftrace: add timestamp-based-on-real-time option
+  contrib/plugins/uftrace_symbols.py
+  contrib/plugins/uftrace: add documentation
+  contrib/plugins/uftrace: add support for x64
+
+ docs/about/emulation.rst           |  213 ++++++
+ contrib/plugins/uftrace.c          | 1014 ++++++++++++++++++++++++++++
+ contrib/plugins/meson.build        |    3 +-
+ contrib/plugins/uftrace_symbols.py |  152 +++++
+ 4 files changed, 1381 insertions(+), 1 deletion(-)
+ create mode 100644 contrib/plugins/uftrace.c
+ create mode 100755 contrib/plugins/uftrace_symbols.py
+
+-- 
+2.47.2
 
 
