@@ -2,115 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF71CB100D3
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 08:39:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7117EB10121
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 08:53:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uepaK-0004Il-Gg; Thu, 24 Jul 2025 02:37:44 -0400
+	id 1ueppJ-00045B-SQ; Thu, 24 Jul 2025 02:53:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1uepZX-0003xT-5T; Thu, 24 Jul 2025 02:36:58 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1ueppG-00042t-FB
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 02:53:10 -0400
+Received: from mail-bn8nam11on2044.outbound.protection.outlook.com
+ ([40.107.236.44] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1uepZV-0007P7-2w; Thu, 24 Jul 2025 02:36:54 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56NJpUlo029046;
- Thu, 24 Jul 2025 06:36:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=W6boyc
- NUYmA2yEE7PxXby5qZpPhCzXCZyBhjV5PstYk=; b=p++T3DoCteS5WJ5+oIXyXE
- XMjBiEsVOfqohcFs1jwbdEF6WXdNQXeVbdlC8T7DI79b5s+ogaTIHKTP34lMsjb/
- 5p2ewdxPmU4iiSVlDY3+1vxKYkl3/4RN5Wrcbnz/3KKI2AnmV/52WByS3gpPQoQD
- AlGIwO5ysXZzSSkGcVNX2awT0iCiMbgblzvyzWLwA/0M/WcHvhOmUjhWpE/MUUrz
- 0qv4PQeS1RJFDIuK8ErmS+9JEuj1NBvipEgriKYpTjc4JKirPU4IOAVsfCPG+7Py
- 5dWJ4QQ4WXHW3g2k8wNOIFQ0RkhJr0/fNRvlv1xw5Vz0p6wkFqFr/UhxsfnK3nUQ
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482kdyqrhn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Jul 2025 06:36:51 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56O6ao80008773;
- Thu, 24 Jul 2025 06:36:50 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482kdyqrhc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Jul 2025 06:36:50 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56O29Gk5012827;
- Thu, 24 Jul 2025 06:36:49 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 480p30bcp4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Jul 2025 06:36:49 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 56O6ajkt52494702
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 24 Jul 2025 06:36:45 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 67C0720049;
- Thu, 24 Jul 2025 06:36:45 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 87C3A20040;
- Thu, 24 Jul 2025 06:36:43 +0000 (GMT)
-Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
- [9.109.242.24]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 24 Jul 2025 06:36:43 +0000 (GMT)
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, npiggin@gmail.com,
- clg@redhat.com
-Cc: danielhb413@gmail.com, fbarrat@linux.ibm.com, rathc@linux.ibm.com,
- adityag@linux.ibm.com, gautam@linux.ibm.com
-Subject: [PATCH 5/5] MAINTAINERS: Add myself as a reviewer for XIVE
-Date: Thu, 24 Jul 2025 12:06:10 +0530
-Message-ID: <20250724063623.3038984-6-harshpb@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250724063623.3038984-1-harshpb@linux.ibm.com>
-References: <20250724063623.3038984-1-harshpb@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1ueppE-0005HO-7X
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 02:53:10 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KVw5bvUIU3QFmRyiVtmwdF1xvBWd/yGZlu5JgTG95uuGg6INwYtSsVkYh2HuGf7okas/anpPkC1guXqZTrhEnrADGpcmpanVM6QRqt51LIv2XHH2Oc002elLUhJD9e2Mr9YW/WgQRGPTIb3+C8EhWBhmOX+IKeaTYg88leTkLwRVJxk/ANkziFmfGrCBV65Wt+owCAMEYe3ZDvPHwcMTbg0+y9PwsvAL7xG+qwCMAHO5aZMPzIYmXgCllUk5zgLl5kXGdrfxpIJxhfYe+5dQFhjeLVLDBbWfVGWI4Do5SA4n0nD1/ccIZN7/K+oMU/wZxyLP69mn+ZK+dGTzH96q5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DRkhIy8HMSTJBIFBA+76b4ZhcpYFwxiVCzn4tXdJS4Y=;
+ b=L6EgyuJx62NWv6o84FtIobN/wyrlHAk9mALaew9sfV/LoETHZla/KVZhVgBF3QC976uJg27AJjteAEmWZ5kySVAB3BZFujgkoZH6D1lF8KT2yp5uKvnKqjOtAnXAQXWTPRQ56+HD3bbbj7FohG8GNO5tOp4EQhSqEE9M9OuJdiSp3icYS19VyaAlHI0vE0V6ZHsqrvbAwR9HsqVanUKjIPVcGttvq0OsZXXMHu65a0c3QIa7f5I3TbE9KbesINtrbF2lT2Vh6n2VK35J0Q/3RXI639rsf92YaFOptTNw9pkjs041jUNZ1jBUMsV+0ucB34OMGG26W336AqywOYyYqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DRkhIy8HMSTJBIFBA+76b4ZhcpYFwxiVCzn4tXdJS4Y=;
+ b=usXKlYbWRSQXfaYlJnlCUPb+IvEfJChLHP7/q53mF8VkJsITPG+vIatKGca2qdq8VUVThdVO7Xd/k4P88U+7sRNKmXMjbtvK8/DyWp4FZeuutsMrhd2z6swkdtq9F8sz/6v7LHbaLk0ej1q+wj33n9yV3lY6mwt0a4umls08s8g=
+Received: from SJ0PR05CA0126.namprd05.prod.outlook.com (2603:10b6:a03:33d::11)
+ by IA1PR12MB6484.namprd12.prod.outlook.com (2603:10b6:208:3a7::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.28; Thu, 24 Jul
+ 2025 06:48:00 +0000
+Received: from SJ5PEPF000001CE.namprd05.prod.outlook.com
+ (2603:10b6:a03:33d:cafe::19) by SJ0PR05CA0126.outlook.office365.com
+ (2603:10b6:a03:33d::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8964.21 via Frontend Transport; Thu,
+ 24 Jul 2025 06:47:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ5PEPF000001CE.mail.protection.outlook.com (10.167.242.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8964.20 via Frontend Transport; Thu, 24 Jul 2025 06:47:59 +0000
+Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 24 Jul
+ 2025 01:47:56 -0500
+From: Sairaj Kodilkar <sarunkod@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <pbonzini@redhat.com>,
+ <eduardo@habkost.net>, <richard.henderson@linaro.org>,
+ <alejandro.j.jimenez@oracle.com>, <vasant.hegde@amd.com>,
+ <philmd@linaro.org>, Sairaj Kodilkar <sarunkod@amd.com>
+Subject: [PATCH v2 0/6] hw/i386/amd_iommu: Cleanups and fixes
+Date: Thu, 24 Jul 2025 12:17:39 +0530
+Message-ID: <20250724064745.4091-1-sarunkod@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vQcpmcZgx4TWCQ6q_eF7sju3tGLo8n3y
-X-Authority-Analysis: v=2.4 cv=XP0wSRhE c=1 sm=1 tr=0 ts=6881d483 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=f7IdgyKtn90A:10 a=NEAV23lmAAAA:8
- a=VnNF1IyMAAAA:8 a=69wJf7TsAAAA:8 a=Ve6bjU1_KzwlgJvHvC4A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=Fg1AiH1G6rFz08G2ETeA:22
-X-Proofpoint-GUID: S-Ox5mHiQsXGJu6eWPUccSMaBPZWTaSp
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDA0MCBTYWx0ZWRfX05vxqKCnhqlL
- DleYWor2G+CnXAcQJGnIX0LIk4nd4VDmCH/u3X7aSVUt4C4ucJTDvrJKaxkS/3yGxmr7raLweAU
- rlAWg5LRuApD6W1o9jetCgcY81XqHI6xFyOLQoHWHzIuWvOxWnyblV0hhbvDqJq8uJWheVH4RGW
- VuizxnqFrbV41nF4mxXWDIro3PkioBJ6RlZVgcEU4JMhCNjrANrSaOv/Pdu6HVH0FMJwJtl428X
- 8sTuCez42WHLxGkEZ7/TGVWmjo0D173Z2/4UEG79ozPQVDG5cWzKTH/igPhzBGddO8oAYQbywbu
- BUaz0IpPpgUx96J4mnnTHcV/dL9RmYMVMpUlbVzIz3tvu8XtL9thA+HUbgwxkGIhWw94smwViY+
- hpffcJ6dXC/HEz7pzWka05huTBQzvehPlazBlTUdWbks39xA8Fcs0z9GKabZyDEOg8JJ8wVb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-23_03,2025-07-23_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999 spamscore=0
- suspectscore=0 clxscore=1015 malwarescore=0 impostorscore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507240040
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CE:EE_|IA1PR12MB6484:EE_
+X-MS-Office365-Filtering-Correlation-Id: d43385fa-eda8-4938-3cbd-08ddca7e079e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|376014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?w6zndniNPe5t0FSz2twulOqvL66aaIjjfXx2XfELQw1hRjedPeZ9chIFLb8w?=
+ =?us-ascii?Q?TjQNLzHEQYJvAfov2rD3PPfhiqEj07AoxZsbL5r3fYBCEux5fbSgU3891rYo?=
+ =?us-ascii?Q?SDG+9Sw1FceiTG0ZHwWRjwu1RiAsBudL0JBqG2m/ttPGNhQ8KBAZUsKVjkXh?=
+ =?us-ascii?Q?jAPMNEfq/1sWVIYJIZWnh2gMEs2FCoYiyg3HiIM6+9ssnWXk7ruIyAc8Vx9V?=
+ =?us-ascii?Q?tTOs63U7QU91W1vLdI6XI0HNUAH0lsEJSdl/S1c2oX+UC/w3l1Q8gxV7TUCy?=
+ =?us-ascii?Q?rQ1OzQQCN/sALogEqVPY989GFtSa+I/P6z7+mhvRl31BNOs2qTYSkQZ03ubP?=
+ =?us-ascii?Q?xKNpcizZ2fbwtJDp8j9ZloYGxTIfVVFMy1ikQ8BKAxxoS/AdXdXzE/J6TVQS?=
+ =?us-ascii?Q?VekQyMOgxQrJJzuLa3Jhb4t6Zd5/guN36MJ8gtVJO46pufDLkcnDhnhMGr4e?=
+ =?us-ascii?Q?zzbrrJcqO2K6p0fT9dMj9j3kLO87M+KJsLdHA4MMeAArNteIAUUFmpy4QcKF?=
+ =?us-ascii?Q?iXTyR3uMpvTYcNTnhm8d659v9AysTFCY5FJyXkAerszXlLp2A7zVAvvpGyNe?=
+ =?us-ascii?Q?gLd5ubJfNY0LlGZHas7BYt4v7fh9dMxq1IjSKknptVLZTtDgsrcJxaIlbSi1?=
+ =?us-ascii?Q?mfIHJWe145OvhvsTPqOgcWoD7gqSdrZyDmjU5ahYb6sq/WSAGr9W2ax5cRu2?=
+ =?us-ascii?Q?GlQEoYe+D8Zo2ePsN/QaRHCu8zqAjoKtBXfWFm1dp7C/tfCNwkIu72NWia5y?=
+ =?us-ascii?Q?/Z1EzJA+WCazzD5xvldnItuayXZ6g+XE0B8fdwTW4b5lrnhxOZWnsJSFInu9?=
+ =?us-ascii?Q?RcG3aem/gt1s0p5K9oL3LknRzqetqiXk/i9QSJ/6sKgX0u0kciqMaUTQs2iJ?=
+ =?us-ascii?Q?eLbCHgrJEqXYO4gxBb3y7pregguNjV5484X6QJCon/C5zfzKoOEpuqjf4k77?=
+ =?us-ascii?Q?RyOkcmSpHiKZN7//9iOc7zFhdCLYvl895DGWs3T/g4x0/IuZJZ/hsYjJvwLQ?=
+ =?us-ascii?Q?tqZp2AuNgB1rbZkkIUTySFI9QJ8NhccyOHMUTsjxjixUmJDcgHmH/f1/98Xr?=
+ =?us-ascii?Q?0RNNeVBCLEmOoCqW0g6iaNmOeEsXLuvUeqt6WMV8PIZPZoWk8npnJPrrNA3/?=
+ =?us-ascii?Q?/YKz2KmDGXzUto7wPVPrch7O6V8PjgXaSVFWM6t0nRSam/QZQLzz54U9a64M?=
+ =?us-ascii?Q?CmU8h8cjooeyc3xVAGX4pEgx9eUuhvuBReWEu/uUbROxsLbxsoEgl3vLew2l?=
+ =?us-ascii?Q?QNHMIhseleQiMgbt3udQjL/n+muZcdmnaY6mtINjKNnWtNC2tMs/9XQ/GYbV?=
+ =?us-ascii?Q?xukAXKmMv5bHtrZR2wLUYBvvAtZNJRLDFgdWZcvel+doRiReuHzfye+tj8+L?=
+ =?us-ascii?Q?avCZtBwJTnxuDWOxhRrPZsF9j6e5vT4ibuAyB+yXXYWcuPFTwdl1EkVzKvUW?=
+ =?us-ascii?Q?Gi71DDXIx2XatbcnKTc7dPBQduj4f6w8iB+GMZrazZxvAHr7Pi9OZiVanEY+?=
+ =?us-ascii?Q?2mTyJsYXI3hnnTxMinkmTsObsgSVcV9oVP7Y?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 06:47:59.7631 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d43385fa-eda8-4938-3cbd-08ddca7e079e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF000001CE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6484
+Received-SPF: permerror client-ip=40.107.236.44;
+ envelope-from=Sairaj.ArunKodilkar@amd.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.377,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,32 +148,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+This series provides few cleanups and fixes for the amd iommu
 
-Proposing myself as a reviewer for XIVE on PPC.
+Changes since v1:
+- Dropped top two patches which depend on the Alejandro's changes and rebased
+  remaining patches on top of v10.1.0-rc0 [Phil].
+- Added a patch to fix amdvi_write*() [Ethon].
+- Reset event log head and tail when guest writes to event log base register
+  [Ethon].
+- Considered "evtlog_intr" flag while generating event log interrupt [Ethon].
+- Fixed comment [Ethon].
 
-I have been looking at XIVE in context of KVM internally at IBM for some time
-in addition to testing a few XIVE upstream patches; and I'll be closely looking
-at XIVE going forward.
+Base commit: 9e601684dc24a521bb1d23215a63e5c6e79ea0bb (v10.1.0-rc0)
 
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+Sairaj Kodilkar (6):
+  hw/i386/amd_iommu: Fix MMIO register write tracing
+  hw/i386/amd_iommu: Remove unused and wrongly set ats_enabled field
+  hw/i386/amd_iommu: Move IOAPIC memory region initialization to the end
+  hw/i386/amd_iommu: Fix amdvi_write*()
+  hw/i386/amd_iommu: Support MMIO writes to the status register
+  hw/i386/amd_iommu: Fix event log generation
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1ba161d75b..f3f981f90d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2781,6 +2781,7 @@ T: git https://github.com/philmd/qemu.git fw_cfg-next
- 
- XIVE
- R: Frédéric Barrat <fbarrat@linux.ibm.com>
-+R: Gautam Menghani <gautam@linux.ibm.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: hw/*/*xive*
+ hw/i386/amd_iommu.c | 89 +++++++++++++++++++++++++++++++++------------
+ hw/i386/amd_iommu.h |  2 +-
+ 2 files changed, 67 insertions(+), 24 deletions(-)
+
 -- 
-2.43.5
+2.34.1
 
 
