@@ -2,99 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8375BB10AD4
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 15:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49253B10B20
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 15:14:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uevYE-0006qG-SW; Thu, 24 Jul 2025 08:59:59 -0400
+	id 1uevlG-00022d-RH; Thu, 24 Jul 2025 09:13:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uevY3-0006hX-O7
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 08:59:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uevY2-0005z0-8X
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 08:59:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753361985;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IKMYVgbMM/INns6RRVnU6T93DRZMyNIk0sjsY4fUN4A=;
- b=ShxF7fZa9kIQD9mTILM9WJyQbXhhloWEvh8EJfzULVbvKJiOzGVDi8h/bVwvCivRvjdrZj
- 0cmyrNI/GQ+TQYAXJdyKeM2Xunf8xkDOXKYXGe5oifl41BxycmnPxeQ5GdcZcYAniFEoiC
- DBnLg5lvQdCuOa0a3B6xu8oxDu6y8cg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-184-5z1bQZYANce444zwHs5azA-1; Thu, 24 Jul 2025 08:59:43 -0400
-X-MC-Unique: 5z1bQZYANce444zwHs5azA-1
-X-Mimecast-MFC-AGG-ID: 5z1bQZYANce444zwHs5azA_1753361983
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a4f6ba526eso787493f8f.1
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 05:59:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uevlC-00020v-5u
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 09:13:22 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uevlA-00040h-2m
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 09:13:21 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-6077dea37easo1845580a12.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 06:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753362797; x=1753967597; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xIhXE+3LskBlDP9Giy4jHTvR9om9iXJsO+fQ/F6U8zE=;
+ b=Df5fLBUQuxdbGX6rJhcxFSpmF5Fgnl5Fpj21ix5bAiFnMkRX5XUcUjCTOAfldkbYKv
+ XK47HwQkQqczdtShmL2JmY0/EYH7913s8iiIsnQnmdn1rWNXi40TuRKoUEy0jgTNpJ+X
+ WmsEFQW/j+N082MuCJiCvB5Z/3ngeB/XB7vommjwv7lj4njNAzu/xjq8INbkMrgBgT6I
+ ZnFjxPuM0P9QjlQVLrBcK4j9RrF+x31HjBTPgXssKmbS7DXVlcMqV2M3zbN/fNYsBiPT
+ 1mQVBETXn1JUcHY0J7ZAD68elOLawwehTElPdPBGvbStp3rCA2JTxwGQIYd5E0gBWxhJ
+ a9wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753361981; x=1753966781;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1753362797; x=1753967597;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IKMYVgbMM/INns6RRVnU6T93DRZMyNIk0sjsY4fUN4A=;
- b=H7BHAApXxHqSYH4wCJaeLr+AP5/nspoNBdWolf06oKp7NwhqFybYawZkUGKdThK91c
- zghtW32TaIHns7YtHqsO/odwZ5+x14PPOzpHihDSv06E22Dm0FHSrOV2X1YC2K8C5exP
- Ecj6oyA9qTk1RxJFLjqqVB7OhA8gkEBEk/Wx3Zyox+GpHG5FcWZ6Wu6kHvo71LQIVOYJ
- G3VlvYHFXBjmFpEzW040hNB283qflt8YtRan750st93MRqL/VC3kQycD0+5uj9FzuamP
- IKfAUj6Ynri8ake4e/dFrA6czN72/yhxMtDbZCSTMmBuTSthugHXhUCT3JHzj2pQxugV
- WU8w==
-X-Gm-Message-State: AOJu0YwsxJZ+Gb2Yvky3PJeMpi0ZXn0K3tNP1sJBvasitA5Fo5RgEDqw
- B3yXFcuaQXY/6vljdXEvu8ztBj7O9eLFplXe0+H8AP4u9DT3RZqGO7iaUWWg/btct1owsg6TsHS
- D9SbXwaZ6s2dGKyCS05wPyHq94N9Hr1drc60YBeiH8flXVSR6Od3Dq8/r9JBuORB0dgkNqc5eQr
- 2WH/53kEzjyC27FjW/2DAa71XgZdwfLl/iKtUBPA==
-X-Gm-Gg: ASbGncs8QeQgieu0GyX6GTHW24F6RuISZW4s8DvyKiXciGB0CoiHS+ESsao6OPxtMfP
- y3o6Q6OfdUn2jI9hMDkqRrlMBLf1Nk7lP7XO0zaHR0YjS1nUpYaZpD8r1zuvAgnU/JLQVCeC0kG
- N9mjv0wlF6hntu8w8z1L8eJ103y/nnAUltTAd0YLoH8fWnFH6oDn9hyw+L2a9MhNHHlSDVnJfGx
- waT//JWkwkBU25C3iQmDyO0AW0+ee26Q4bGAxGrJBs49KxO4YdpP9YFlXWd/kKvZtg7vZ5fRyhe
- v/V6uvaSsCOrvfFJ1Cp2sQc3boal31ZeLhNW09RS8uMlUfoypOw4XxvLKglN7+pt6hHe7ap5BoC
- dgMn9gtqKNpjumWiccwS6tQ==
-X-Received: by 2002:a05:6000:2902:b0:3a4:e68e:d33c with SMTP id
- ffacd0b85a97d-3b768f078f4mr5465579f8f.47.1753361981356; 
- Thu, 24 Jul 2025 05:59:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH5nm5U6RCUIZqblpUr2OHWLCcClaLAP17vkS8f4d/FMhrsZbc4cui5RFq4r8PRQnP/ZrFwCw==
-X-Received: by 2002:a05:6000:2902:b0:3a4:e68e:d33c with SMTP id
- ffacd0b85a97d-3b768f078f4mr5465557f8f.47.1753361980905; 
- Thu, 24 Jul 2025 05:59:40 -0700 (PDT)
-Received: from localhost
- (p200300cfd706376dff28b03aa15f3cdf.dip0.t-ipconnect.de.
- [2003:cf:d706:376d:ff28:b03a:a15f:3cdf])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b76fc6050csm2110458f8f.3.2025.07.24.05.59.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Jul 2025 05:59:39 -0700 (PDT)
-From: Hanna Czenczek <hreitz@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Hanna Czenczek <hreitz@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PATCH 2/2] vhost: Do not abort on log-stop error
-Date: Thu, 24 Jul 2025 14:59:28 +0200
-Message-ID: <20250724125928.61045-3-hreitz@redhat.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250724125928.61045-1-hreitz@redhat.com>
-References: <20250724125928.61045-1-hreitz@redhat.com>
+ bh=xIhXE+3LskBlDP9Giy4jHTvR9om9iXJsO+fQ/F6U8zE=;
+ b=lC4hkIn1vsZZl6rs6thykEpeVx2wdZCR/9tPT7WXNFQo++Lc9JO89NwjKnoFvOxdpQ
+ YzNd6fkTw9/8q9RKe9FG1lbz/GEGPYb6DEaHMG/Tt3OIR4v2G8b0y1t8niTu8tKrEA2s
+ HZpsoYUm0S4Z6e0xkIRMrPiJfBlDhTylS2wSC/Qp//IpaRGwfE4aXYyKGohaY4TjsMjK
+ 2jnsFpkPzlb3HhetRH7zcEheLyuqam8rZPQ20MXYBRE2PdRtG7PPti6pbENCNX1HeqFv
+ escGHy3tUL0wTyaBLN1rMyCJXfowCJ+jJ3iPnI53IRGJlAmdJAqlByoon9Kz16vvuFhK
+ AzWg==
+X-Gm-Message-State: AOJu0YzdCTPzF6liR/Rf5DFi0nTSAGTdswbgRfByU4r+AxBOCsS0TaJh
+ OvTJjT1ThsbMhL6KJ9FEorrl4JSU5bI+REjllvKfBo48iPYY+ebbRZyJxg9ecE89Vy7iSABmN+2
+ Ry30M6tvdPO89cb1D4jJwIY0+yC38OefWzCZi8gkuQA==
+X-Gm-Gg: ASbGncuQSvq9qRRfF63mDS9B2tROaInDiGtT48Zx7uyTIXnwaSBt2qK4NUJJ92T57sx
+ votZUfegRgGlQ35SvwKFIKaRZqvUEuMwxnaKFkQ6sF9D3G97lJUOu+hYfQ7s0PlKo9n6Kxy4vMy
+ Egvd494GE3YRDAptEzxaAJ0ziAfKjPyBIs8y/KLp7Tk7BEI5W5r6RVa+XbEahzm/ByzFnS2GTyQ
+ +ZDtg==
+X-Google-Smtp-Source: AGHT+IGLlU+shQNwIbIGbcrAq9IE3B4zWJCLbnQBa2GjM52Azc2qFHwHM0FTkPRn1Jsfwj/bC6AOrKEoQPyHhSXaalM=
+X-Received: by 2002:a05:6402:3591:b0:607:e3ec:f8ea with SMTP id
+ 4fb4d7f45d1cf-6149b45d5e9mr5561450a12.6.1753362796884; Thu, 24 Jul 2025
+ 06:13:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+References: <20250724125928.61045-1-hreitz@redhat.com>
+ <20250724125928.61045-2-hreitz@redhat.com>
+In-Reply-To: <20250724125928.61045-2-hreitz@redhat.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Thu, 24 Jul 2025 16:12:50 +0300
+X-Gm-Features: Ac12FXy2upb67-rzohndXkHzOvNU_EDJQfq5vAa6EzjFhAVe3cOvlhhyZl19REk
+Message-ID: <CAAjaMXbBFE5zhwf+JLUG2TZ3GZ2v79rvUoD5KUw9hSrZfHkkfQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] vhost: Do not abort on log-start error
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.45,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,30 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Failing to stop logging in a vhost device is not exactly fatal.  We can
-log such an error, but there is no need to abort the whole qemu process
-because of it.
+On Thu, Jul 24, 2025 at 4:00=E2=80=AFPM Hanna Czenczek <hreitz@redhat.com> =
+wrote:
+>
+> Commit 3688fec8923 ("memory: Add Error** argument to .log_global_start()
+> handler") enabled vhost_log_global_start() to return a proper error, but
+> did not change it to do so; instead, it still aborts the whole process
+> on error.
+>
+> This crash can be reproduced by e.g. killing a virtiofsd daemon before
+> initiating migration.  In such a case, qemu should not crash, but just
+> make the attempted migration fail.
+>
+> Buglink: https://issues.redhat.com/browse/RHEL-94534
+> Reported-by: Tingting Mao <timao@redhat.com>
+> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> ---
+>  hw/virtio/vhost.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index c30ea1156e..05ad5de629 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -1110,7 +1110,8 @@ static bool vhost_log_global_start(MemoryListener *=
+listener, Error **errp)
+>
+>      r =3D vhost_migration_log(listener, true);
+>      if (r < 0) {
+> -        abort();
+> +        error_setg_errno(errp, -r, "vhost: Failed to start logging");
+> +        return false;
+>      }
+>      return true;
+>  }
+> --
+> 2.50.1
+>
+>
 
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
----
- hw/virtio/vhost.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 05ad5de629..6557c58d12 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1122,7 +1122,8 @@ static void vhost_log_global_stop(MemoryListener *listener)
- 
-     r = vhost_migration_log(listener, false);
-     if (r < 0) {
--        abort();
-+        /* Not fatal, so report it, but take no further action */
-+        warn_report("vhost: Failed to stop logging");
-     }
- }
- 
--- 
-2.50.1
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
