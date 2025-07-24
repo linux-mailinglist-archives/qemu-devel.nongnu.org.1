@@ -2,68 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BF3B10DF9
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 16:47:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE46AB10E2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 17:00:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uexDj-0004k0-6i; Thu, 24 Jul 2025 10:46:55 -0400
+	id 1uexPJ-0000Wc-Fg; Thu, 24 Jul 2025 10:58:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uexDf-0004iC-Mv
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 10:46:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uexP8-0000Qh-Mk
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 10:58:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uexDd-0000vp-1u
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 10:46:51 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uexP6-0005ZL-7v
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 10:58:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753368408;
+ s=mimecast20190719; t=1753369118;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ixVsMPMZyzR/pKXOD06jLvYP0rEnecrsu0z9A4Vrn3s=;
- b=H/MC+jdC3IRKARQHslR4puie0m+czltky26/buRpMRJahi7AYmMjW3oiKeIAyKlgn/ueRn
- cGpSn6zF2XRFHzUrDIpr0v7G177Nd/zRpW6Ni6rfk6+HCjsTVdb/4PS000xpnfUskNo1Uz
- 4yHhKHRW2exyNoHJHvUfoUeHEbSxGTY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-_YlW5EupOaGdN55cYNJ7BQ-1; Thu,
- 24 Jul 2025 10:46:44 -0400
-X-MC-Unique: _YlW5EupOaGdN55cYNJ7BQ-1
-X-Mimecast-MFC-AGG-ID: _YlW5EupOaGdN55cYNJ7BQ_1753368403
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E03B21800772; Thu, 24 Jul 2025 14:46:42 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.91])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 066521956089; Thu, 24 Jul 2025 14:46:41 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Mads Ynddal <mads@ynddal.dk>,
- Alexandre Iooss <erdnaxe@crans.org>, Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PULL 1/1] log: make '-msg timestamp=on' apply to all qemu_log usage
-Date: Thu, 24 Jul 2025 10:46:36 -0400
-Message-ID: <20250724144636.107828-2-stefanha@redhat.com>
-In-Reply-To: <20250724144636.107828-1-stefanha@redhat.com>
-References: <20250724144636.107828-1-stefanha@redhat.com>
+ bh=pEqy0tAc3L+CYRIUpCnvDxZj0h/6TvXwXjuHcM6Lcrc=;
+ b=fQS/p+ADw5De9EXozQQHcgKVJiqBA0lqNnMwpkZVOlQ5Dy2vIBikjqiUuYBOkByvO6+eM9
+ LbVL4JHn6K+H9dXt6/lWVzUK/K8XKEuIQYRMGq6vKep2PZnx44O4bfCSSG2LQabw1UGYAP
+ 9h5c0Auuz6KJIz+AjWpZ6Xl5y2bGXtA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-496-OzmhLDcwNMqWmjdpU4FVUw-1; Thu, 24 Jul 2025 10:58:37 -0400
+X-MC-Unique: OzmhLDcwNMqWmjdpU4FVUw-1
+X-Mimecast-MFC-AGG-ID: OzmhLDcwNMqWmjdpU4FVUw_1753369116
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a50816cc58so563115f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 07:58:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753369116; x=1753973916;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pEqy0tAc3L+CYRIUpCnvDxZj0h/6TvXwXjuHcM6Lcrc=;
+ b=XstQwKGp2oRf1pyv1oAVAb3wSugBPZxyWqTz3wlzlKA/HrE3w5P9HqyqDIdRiHsvas
+ RoH/72+Iq2M2Bnbuk7ySbwn7IDUiyzW8JaKBCu1FJ0NFUSxAYKzxHvXdnPCBTy5SRVN5
+ 2TYpkDPFooKBdKSpmIoCYsdHDQnAWyY2XniVTAQuMXXaPyQNVvSKyf/yIHEADNmdNEe4
+ r5uvSKozbPgtxytgYvrodN3qLhg8EbuZ+qUWO26qkOT17DjX7YfuWwDTZ0ShRW/ceCbk
+ 46ZlzXh8wqG00RPkkDjjjOivdrhBzFe/TeXNCqMwaOMk9u3L0yk7KVWHCPtYzVmDZXeM
+ +90A==
+X-Gm-Message-State: AOJu0YwtpokrsWcPItaO0QDiaJDGvxeLXEA85gaYI+fpnkNU3QTMaatj
+ JDR7Uaq7arH1hdrlCdmoHWw7vw0SfrOAH52Rb1VyhTaDuE60Mv57q2tUV0u07wj9Tn5/0s544PU
+ LpsCRf0ZL1XmqHmDkXXipHB+baQf8IrYsta0Ylvrh0979BWye0hurftwM
+X-Gm-Gg: ASbGnctN5Zl3NPV9z4s7wnaqOZhcx8KPt8bVHjBc9dmkC1Stwe0+1R/R3sDcwReIgmm
+ oJR4NKaFjvJagNgNz5yYhSisCmDaPZLAOAiTIWK8YYaVn8soFFIkFO54YjRQsUq0zZ8jay7hZlN
+ 1yXulQXoI6OsuYdvFDD2iYKD3XIS3JufpYzMss/38Ai7qYxwnfuMxAfTmKpv4jSOHYDhjY5QPDy
+ 7c6EK4MXDY9fRiVRXxRiJkcM1utW5AD+jVtvsdq6tbYqAkGYnTfCZkbhdCxA/G0xiY6wk9HihIo
+ wb3Qio7vC9IvGQd1XC2D0iPeNI9chC1HwDr9ioD4iMx0bS5dU3TDqs7vwX+wVn+gw74Q4IoJmtj
+ 9QmSo/7sqY5hsZfOUqv3S6+JyXf7ZP5n6m3DOCPXdgdRYpYs9ABv3KkZddb75dB8DXEQJ
+X-Received: by 2002:a05:6000:2887:b0:3a1:f5c4:b81b with SMTP id
+ ffacd0b85a97d-3b768edb95amr5688773f8f.23.1753369115621; 
+ Thu, 24 Jul 2025 07:58:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEP2/bM78+AEfjMSPv8fPajTVBgfyz3sll40t8GAP/naK8pYi7f4Ob24k8f+NU/KQG7pgLQaA==
+X-Received: by 2002:a05:6000:2887:b0:3a1:f5c4:b81b with SMTP id
+ ffacd0b85a97d-3b768edb95amr5688752f8f.23.1753369115152; 
+ Thu, 24 Jul 2025 07:58:35 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d706:376d:ff28:b03a:a15f:3cdf?
+ (p200300cfd706376dff28b03aa15f3cdf.dip0.t-ipconnect.de.
+ [2003:cf:d706:376d:ff28:b03a:a15f:3cdf])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b76fc60501sm2464999f8f.2.2025.07.24.07.58.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 24 Jul 2025 07:58:34 -0700 (PDT)
+Message-ID: <e62d351c-0fe7-4987-bbbf-d99704cc3e9b@redhat.com>
+Date: Thu, 24 Jul 2025 16:58:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] vhost: Do not abort on log-start error
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>
+References: <20250724125928.61045-1-hreitz@redhat.com>
+ <20250724125928.61045-2-hreitz@redhat.com>
+ <tjqbvfrpzqgp65ibiasyct7k2ibzkhdrlev4ov45i3xsaxox2g@wwojtijmv6hs>
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <tjqbvfrpzqgp65ibiasyct7k2ibzkhdrlev4ov45i3xsaxox2g@wwojtijmv6hs>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -88,169 +110,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+On 24.07.25 16:24, Stefano Garzarella wrote:
+> On Thu, Jul 24, 2025 at 02:59:27PM +0200, Hanna Czenczek wrote:
+>> Commit 3688fec8923 ("memory: Add Error** argument to .log_global_start()
+>> handler") enabled vhost_log_global_start() to return a proper error, but
+>> did not change it to do so; instead, it still aborts the whole process
+>> on error.
+>>
+>> This crash can be reproduced by e.g. killing a virtiofsd daemon before
+>> initiating migration.  In such a case, qemu should not crash, but just
+>> make the attempted migration fail.
+>>
+>> Buglink: https://issues.redhat.com/browse/RHEL-94534
+>> Reported-by: Tingting Mao <timao@redhat.com>
+>> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+>> ---
+>> hw/virtio/vhost.c | 3 ++-
+>> 1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> IIUC we always had the problem, so it's not a regression, but should 
+> we queue the patch in stable as well?
 
-Currently the tracing 'log' back emits special code to add timestamps
-to trace points sent via qemu_log(). This current impl is a bad design
-for a number of reasons.
+That’s my impression as well.  I think it fits and makes sense for 
+stable, but it isn’t absolutely necessary; it’s not a regression, and 
+abort()-ing is not a critical problem.
 
- * It changes the QEMU headers, such that 'error-report.h' content
-   is visible to all files using tracing, but only when the 'log'
-   backend is enabled. This has led to build failure bugs as devs
-   rarely test without the (default) 'log' backend enabled, and
-   CI can't cover every scenario for every trace backend.
+> Anyway, it LGTM!
+>
+> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
- * It bloats the trace points definitions which are inlined into
-   every probe location due to repeated inlining of timestamp
-   formatting code, adding MBs of overhead to QEMU.
+Thanks!
 
- * The tracing subsystem should not be treated any differently
-   from other users of qemu_log. They all would benefit from
-   having timestamps present.
+Hanna
 
- * The timestamp emitted with the tracepoints is in a needlessly
-   different format to that used by error_report() in response
-   to '-msg timestamp=on'.
-
-This fixes all these issues simply by moving timestamp formatting
-into qemu_log, using the same approach as for error_report.
-
-The code before:
-
-  static inline void _nocheck__trace_qcrypto_tls_creds_get_path(void * creds, const char * filename, const char * path)
-  {
-      if (trace_event_get_state(TRACE_QCRYPTO_TLS_CREDS_GET_PATH) && qemu_loglevel_mask(LOG_TRACE)) {
-          if (message_with_timestamp) {
-              struct timeval _now;
-              gettimeofday(&_now, NULL);
-              qemu_log("%d@%zu.%06zu:qcrypto_tls_creds_get_path " "TLS creds path creds=%p filename=%s path=%s" "\n",
-                       qemu_get_thread_id(),
-                       (size_t)_now.tv_sec, (size_t)_now.tv_usec
-                       , creds, filename, path);
-          } else {
-              qemu_log("qcrypto_tls_creds_get_path " "TLS creds path creds=%p filename=%s path=%s" "\n", creds, filename, path);
-          }
-      }
-  }
-
-and after:
-
-  static inline void _nocheck__trace_qcrypto_tls_creds_get_path(void * creds, const char * filename, const char * path)
-  {
-      if (trace_event_get_state(TRACE_QCRYPTO_TLS_CREDS_GET_PATH) && qemu_loglevel_mask(LOG_TRACE)) {
-          qemu_log("qcrypto_tls_creds_get_path " "TLS creds path creds=%p filename=%s path=%s" "\n", creds, filename, path);
-      }
-  }
-
-The log and error messages before:
-
-  $ qemu-system-x86_64 -trace qcrypto* -object tls-creds-x509,id=tls0,dir=$HOME/tls -msg timestamp=on
-  2986097@1753122905.917608:qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55d925bd9490 dir=/var/home/berrange/tls
-  2986097@1753122905.917621:qcrypto_tls_creds_get_path TLS creds path creds=0x55d925bd9490 filename=ca-cert.pem path=<none>
-  2025-07-21T18:35:05.917626Z qemu-system-x86_64: Unable to access credentials /var/home/berrange/tls/ca-cert.pem: No such file or directory
-
-and after:
-
-  $ qemu-system-x86_64 -trace qcrypto* -object tls-creds-x509,id=tls0,dir=$HOME/tls -msg timestamp=on
-  2025-07-21T18:43:28.089797Z qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55bf5bf12380 dir=/var/home/berrange/tls
-  2025-07-21T18:43:28.089815Z qcrypto_tls_creds_get_path TLS creds path creds=0x55bf5bf12380 filename=ca-cert.pem path=<none>
-  2025-07-21T18:43:28.089819Z qemu-system-x86_64: Unable to access credentials /var/home/berrange/tls/ca-cert.pem: No such file or directory
-
-The binary size before:
-
-  $ ls -alh qemu-system-x86_64
-  -rwxr-xr-x. 1 berrange berrange 87M Jul 21 19:39 qemu-system-x86_64
-  $ strip qemu-system-x86_64
-  $ ls -alh qemu-system-x86_64
-  -rwxr-xr-x. 1 berrange berrange 30M Jul 21 19:39 qemu-system-x86_64
-
-and after:
-
-  $ ls -alh qemu-system-x86_64
-  -rwxr-xr-x. 1 berrange berrange 85M Jul 21 19:41 qemu-system-x86_64
-  $ strip qemu-system-x86_64
-  $ ls -alh qemu-system-x86_64
-  -rwxr-xr-x. 1 berrange berrange 29M Jul 21 19:41 qemu-system-x86_64
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-id: 20250721185452.3016488-1-berrange@redhat.com
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- util/log.c                       | 20 +++++++++++++++++++-
- scripts/tracetool/backend/log.py | 14 +-------------
- 2 files changed, 20 insertions(+), 14 deletions(-)
-
-diff --git a/util/log.c b/util/log.c
-index 58d24de48a..abdcb6b311 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -145,10 +145,28 @@ void qemu_log_unlock(FILE *logfile)
- 
- void qemu_log(const char *fmt, ...)
- {
--    FILE *f = qemu_log_trylock();
-+    FILE *f;
-+    g_autofree const char *timestr = NULL;
-+
-+    /*
-+     * Prepare the timestamp *outside* the logging
-+     * lock so it better reflects when the message
-+     * was emitted if we are delayed acquiring the
-+     * mutex
-+     */
-+    if (message_with_timestamp) {
-+        g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
-+        timestr = g_date_time_format_iso8601(dt);
-+    }
-+
-+    f = qemu_log_trylock();
-     if (f) {
-         va_list ap;
- 
-+        if (timestr) {
-+            fprintf(f, "%s ", timestr);
-+        }
-+
-         va_start(ap, fmt);
-         vfprintf(f, fmt, ap);
-         va_end(ap);
-diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend/log.py
-index 5c9d09dd11..eb50ceea34 100644
---- a/scripts/tracetool/backend/log.py
-+++ b/scripts/tracetool/backend/log.py
-@@ -20,7 +20,6 @@
- 
- def generate_h_begin(events, group):
-     out('#include "qemu/log-for-trace.h"',
--        '#include "qemu/error-report.h"',
-         '')
- 
- 
-@@ -32,20 +31,9 @@ def generate_h(event, group):
-     cond = "trace_event_get_state(%s)" % ("TRACE_" + event.name.upper())
- 
-     out('    if (%(cond)s && qemu_loglevel_mask(LOG_TRACE)) {',
--        '        if (message_with_timestamp) {',
--        '            struct timeval _now;',
--        '            gettimeofday(&_now, NULL);',
-         '#line %(event_lineno)d "%(event_filename)s"',
--        '            qemu_log("%%d@%%zu.%%06zu:%(name)s " %(fmt)s "\\n",',
--        '                     qemu_get_thread_id(),',
--        '                     (size_t)_now.tv_sec, (size_t)_now.tv_usec',
--        '                     %(argnames)s);',
-+        '        qemu_log("%(name)s " %(fmt)s "\\n"%(argnames)s);',
-         '#line %(out_next_lineno)d "%(out_filename)s"',
--        '        } else {',
--        '#line %(event_lineno)d "%(event_filename)s"',
--        '            qemu_log("%(name)s " %(fmt)s "\\n"%(argnames)s);',
--        '#line %(out_next_lineno)d "%(out_filename)s"',
--        '        }',
-         '    }',
-         cond=cond,
-         event_lineno=event.lineno,
--- 
-2.50.1
+>
+>>
+>> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+>> index c30ea1156e..05ad5de629 100644
+>> --- a/hw/virtio/vhost.c
+>> +++ b/hw/virtio/vhost.c
+>> @@ -1110,7 +1110,8 @@ static bool 
+>> vhost_log_global_start(MemoryListener *listener, Error **errp)
+>>
+>>     r = vhost_migration_log(listener, true);
+>>     if (r < 0) {
+>> -        abort();
+>> +        error_setg_errno(errp, -r, "vhost: Failed to start logging");
+>> +        return false;
+>>     }
+>>     return true;
+>> }
+>> -- 
+>> 2.50.1
+>>
+>
 
 
