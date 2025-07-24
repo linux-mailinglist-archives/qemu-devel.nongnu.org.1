@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D32B11287
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 22:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E250B11292
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 22:49:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uf2pB-00059s-IL; Thu, 24 Jul 2025 16:45:57 -0400
+	id 1uf2p8-00057S-H6; Thu, 24 Jul 2025 16:45:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uf2p5-00055j-M5
+ id 1uf2p4-00055B-5l
  for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:45:51 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uf2p2-0007MY-1Y
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:45:51 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-b3bcb168fd5so1426021a12.3
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 13:45:37 -0700 (PDT)
+ id 1uf2p1-0007Mh-P1
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:45:49 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-b39011e5f8eso1389094a12.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 13:45:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753389937; x=1753994737; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753389938; x=1753994738; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aM+LEv7qMdQSxk6AvcKBeuN8XSEE2/g7YYBoLvBkt14=;
- b=MlU2HOTSxYQLjY+b/JfeBqMAWS7fupKfU0PkwVAkdbAZQcl4pwVt+OyZJuQKd0/RWK
- DChoB75+2dIJSfFOtf9bhNVayJ4OU++QS4znJiWyDgfYsWcM0Dybw4OJ21PwvTfjWtIZ
- 1aGs9xPJknVdRWvhmSV186WUEVngM1LNwtm/VPNb8KxbVOVfqvDsPggrfQD7bVXj0VHn
- N90pGC1m16HnbGCxqTH5ysgrQqIq72KgugX1Tx2MBNxURHTRkTCPJf3smqssPe4aXHUr
- 5x5UCN7Q7xKqNopz/79CK6RGu3DHpZZH2dm5/rBJ6+FHPRi0ZFMb7ICHcDjKEmHI+HCY
- /fNA==
+ bh=LHM/wlC23GB8B+z+ofUSGekwvcloMeBSPT2vdT511OU=;
+ b=RILjVQYMk2jF5K+yCHYJGEVYZv0MOm+aSEZUoDcy8LzJ+qIB1vd7+YIrJ7xBnDHN5Z
+ gv6i+EC4f1urCOcErZFisHEkSKPaUrTFyD6vJUgvw7HQjPqVQq2hg8yjUSiFHNFuktxT
+ BSvQoAqeLSs/GmcsalonJvgII7qbZEuXJojGQfdGOno0P6woIXhTNRG4IfQ3V2wrcX9s
+ HQQE7ZccV0J945d6rocAezbAYAzAXED/1k1l+xtqR5gOCdGrkDDQjoM/l085Q35GXulJ
+ x9In+D915YN5cqWTdvSdnQMnwYkIdXz3m0OYCd5Cj3PftXhr9qf/SVCxXhwK4DeOMfvC
+ R2rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753389937; x=1753994737;
+ d=1e100.net; s=20230601; t=1753389938; x=1753994738;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aM+LEv7qMdQSxk6AvcKBeuN8XSEE2/g7YYBoLvBkt14=;
- b=F9DJM+4IdzMt7jjSNW0bLiC+FxVNtS45pH9tDAMNvs6vQmpuGiiAuqvShWcAnAr62j
- b9s/uvCiOojRtBQO/mdqql7+mcmXmoYjSgz/jktdKgz4DsfS14IpGA4Z94CPS8xka9rY
- TBWI2LJwdHH/29N9Jo0dqfTXtd1PS+UV4EVR+dgl4hju+FN/8Ikhk8rZTu5VR3KO7uoB
- h9fLye786llXXDjhWrfgJ8aauf/M8rlZ69yK668LpKv69lPF4U/c24fK5dylNeSdS7zQ
- zMERL7olrDhldpY3AB+hbVvEznOAdGHyELayGP5ICAxJgZmB73zg+2oj2FHvFlMKl8xC
- z8AA==
-X-Gm-Message-State: AOJu0YwBSxHkjfey+Ts8t0AWriQAK+J5i8jVYwwdQQj6PWl8shAeDrXA
- f2c4++FJ4M96D/EhhSUIne5gN3FwM6NztK3etduNryGMHDl1l6TvymW1NfO0BfnKAs282slPHTA
- YeDTY
-X-Gm-Gg: ASbGnctDbdvrfZwZyVzaZ7x657+b1trgxYBEF/a6p0mtQhmxE2JZztd6IcjkB96Af92
- nI1P2aBL84hu8/qjkqy83wOZRI7bKYmSR7PfhpNqJOr2rOOUcig+o9VMenSf8iX7tacGZ3CUuVl
- fEosogkw6SGGZzpp+WRABZ9HMTkON/2zXhek/DEglX4n9lJ4Qe8pdlN5DO0wA3WuvBBkg/oYP/X
- 9ZTrEu3CpB9k40ePRWgZCMe7JqBdFjaF211MB8rmnogQs9FEl23mp45lvE95kdMdDtgxkmIRXFu
- hnAHs8UZtWWVhZDDCa1uSti8dvSNGe6k+deyKXDf0CHkIwzoBHt29k81gw+Yq7l/rWTDxWXcKHB
- apQyJoouXI6pITZKam9VN+A==
-X-Google-Smtp-Source: AGHT+IFwlU2lTF2PjWKRraQv0HeO2Ytpz3zDW5Sv6Z4ZWyDPa84YGOmd19ZvcJ28wSgdO9aiz3e3CQ==
-X-Received: by 2002:a17:903:1b28:b0:235:f70:fd37 with SMTP id
- d9443c01a7336-23f9814b043mr115832965ad.19.1753389936771; 
- Thu, 24 Jul 2025 13:45:36 -0700 (PDT)
+ bh=LHM/wlC23GB8B+z+ofUSGekwvcloMeBSPT2vdT511OU=;
+ b=I3saPdJSXXESmdoAAJKeyS7HKaq5ksgkafrpBYc0yofcDCFV29EvKpNllB1kzAR0nV
+ UE6gTYMYNOvUANeo5U8w2HnzLItaUxjiao6luNUg0XXqJSP04L39Uv8/JweGn1FrtBhh
+ I5cpsSFV7wKS3k0ddSOa/v7wTMP0TF5IMNylCk2So5wMMzPqiLY6I4O0LHj9q3IRww7L
+ RHy4gT8V6RPD1E38Xs2kP0GtcL/rezmdyjxA6VlL6yTrvJ8CDUZNfeZpIRTWgYP5v5E7
+ cRWZucqWYa0YViBkn/HIR57hRRsA9NizrsBEt+zA3OIoVxA1htmZGlPLG34l2ksRKvyr
+ ETIw==
+X-Gm-Message-State: AOJu0YzeQ4Vah8uH4Ozkol2j87ULJkuCCYO/iYqi7Jb+16R9FO2OeAWl
+ zJZ9lKooHMavsya1gR8zu75LNPSKZQ6vCIgTbjx1IR9Dh759pQcqzgDHgbfRkhJ/nHpZ+oESe0a
+ DsH8Z
+X-Gm-Gg: ASbGnctZtbfQond5CYPQaYX5N9cL2Dkr3qaTHBvhNUGvkBw9bCMXCx+cXIyrKhyO5oD
+ X5kjrL7oe+9igUyv+vIuTHImDWTc0wZhy29hLjaShywlGVisk8cEiTID3niMvQGZ7rvsbYRMWBg
+ dTc3XWelIj72L+IsDgX7SN5QGXSM4ZaYy60CxwnMAaqEl9IciFb6542ZeVYOhc5P+oGCURpVLF8
+ wnuxuvydDYTkwo+Xs0Hw5FjDrWJbReKVlLU9UvXvpKwGRPs6otFVZb/ZvLbyuYs8+HQM+ehrmM6
+ a2szk29QR7BZH4TwAHy9zwxHqyA1Pr9naL2qqQusAKVaprCEayE45ibHTeEv0GKHY9AISOOOm4H
+ P5JJF39eYqmHsHsmAhE15FQ==
+X-Google-Smtp-Source: AGHT+IFTGNYN9W6ytkrwjutxatYSjx/LNt2mL0x8ES5EXH/Dzj2ZCkfgrvlpiEOPLEz15JSIhLNxcQ==
+X-Received: by 2002:a17:90b:3b4c:b0:313:352f:6620 with SMTP id
+ 98e67ed59e1d1-31e5079f78bmr10091706a91.4.1753389937719; 
+ Thu, 24 Jul 2025 13:45:37 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-31e662f6be0sm2008849a91.35.2025.07.24.13.45.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Jul 2025 13:45:36 -0700 (PDT)
+ Thu, 24 Jul 2025 13:45:37 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -73,16 +73,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 2/7] contrib/plugins/uftrace: add trace-sample option
-Date: Thu, 24 Jul 2025 13:45:21 -0700
-Message-ID: <20250724204527.3175839-3-pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 3/7] contrib/plugins/uftrace: add trace-privilege-level
+ option
+Date: Thu, 24 Jul 2025 13:45:22 -0700
+Message-ID: <20250724204527.3175839-4-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250724204527.3175839-1-pierrick.bouvier@linaro.org>
 References: <20250724204527.3175839-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,227 +106,309 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-usage: trace-sample=N
+usage: trace-privilege-level=[on|off]
 
-Allow to use sampling (every N instructions) for tracking the stack.
-We implement a fast mode, where instrumentation is only per tb, and
-simply dump current stack, and unwind new one, instead of tracking every
-frame pointer change.
+This option generates different traces (represented as different
+processes in uftrace), allowing to follow privilege level changes.
+
+For aarch64, we track current EL and Security State.
+
+As well, we make sure that sampling works correctly with this option. If
+user requests sampling and privilege-level tracing, we perform an
+accurate callstack tracking (slower), and only sample the information we
+present.
+
+This gives accurate backtraces on all privilege switches, while keeping
+the trace sampled if needed.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- contrib/plugins/uftrace.c | 111 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 105 insertions(+), 6 deletions(-)
+ contrib/plugins/uftrace.c | 182 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 171 insertions(+), 11 deletions(-)
 
 diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
-index 4ca6d3fd68d..a626030b7da 100644
+index a626030b7da..bd4219db693 100644
 --- a/contrib/plugins/uftrace.c
 +++ b/contrib/plugins/uftrace.c
-@@ -44,6 +44,9 @@ typedef struct {
+@@ -39,6 +39,9 @@ typedef struct {
+     void (*init)(Cpu *cpu);
+     void (*end)(Cpu *cpu);
+     uint64_t (*get_frame_pointer)(Cpu *cpu);
++    uint8_t (*get_privilege_level)(Cpu *cpu);
++    uint8_t (*num_privilege_levels)(void);
++    const char *(*get_privilege_level_name)(uint8_t pl);
+     bool (*does_insn_modify_frame_pointer)(const char *disas);
+ } CpuOps;
  
- typedef struct Cpu {
-     uint64_t insn_count;
-+    uint64_t sample_insn_count;
-+    uint64_t sample_timestamp;
-+    callstack *sample_cs;
+@@ -49,6 +52,7 @@ typedef struct Cpu {
+     callstack *sample_cs;
      trace *trace;
      callstack *cs;
++    uint8_t privilege_level;
      GArray *callstacks; /* callstack *callstacks[] */
-@@ -70,6 +73,7 @@ enum uftrace_record_type {
- };
+     GArray *traces; /* trace *traces [] */
+     GByteArray *buf;
+@@ -56,8 +60,23 @@ typedef struct Cpu {
+     void *arch;
+ } Cpu;
+ 
++typedef enum {
++    AARCH64_EL0_SECURE,
++    AARCH64_EL0_NONSECURE,
++    AARCH64_EL0_REALM,
++    AARCH64_EL1_SECURE,
++    AARCH64_EL1_NONSECURE,
++    AARCH64_EL1_REALM,
++    AARCH64_EL2_SECURE,
++    AARCH64_EL2_NONSECURE,
++    AARCH64_EL2_REALM,
++    AARCH64_EL3,
++} Aarch64PrivilegeLevel;
++
+ typedef struct {
+     struct qemu_plugin_register *reg_fp;
++    struct qemu_plugin_register *reg_cpsr;
++    struct qemu_plugin_register *reg_scr_el3;
+ } Aarch64Cpu;
+ 
+ typedef struct {
+@@ -74,6 +93,7 @@ enum uftrace_record_type {
  
  static struct qemu_plugin_scoreboard *score;
-+static uint64_t trace_sample;
+ static uint64_t trace_sample;
++static bool trace_privilege_level;
  static CpuOps arch_ops;
  
  static void uftrace_write_map(bool system_emulation)
-@@ -199,6 +203,13 @@ static callstack *callstack_new(void)
-     return cs;
+@@ -358,6 +378,16 @@ static uint64_t cpu_read_register64(Cpu *cpu, struct qemu_plugin_register *reg)
+     return *((uint64_t *) buf->data);
  }
  
-+static callstack *callstack_clone(const callstack *cs)
++static uint32_t cpu_read_register32(Cpu *cpu, struct qemu_plugin_register *reg)
 +{
-+    callstack *clone = g_malloc0(sizeof(callstack));
-+    clone->s = g_array_copy(cs->s);
-+    return clone;
++    GByteArray *buf = cpu->buf;
++    g_byte_array_set_size(buf, 0);
++    size_t sz = qemu_plugin_read_register(reg, buf);
++    g_assert(sz == 4);
++    g_assert(buf->len == 4);
++    return *((uint32_t *) buf->data);
 +}
 +
- static void callstack_free(callstack *cs)
+ static uint64_t cpu_read_memory64(Cpu *cpu, uint64_t addr)
  {
-     g_array_free(cs->s, true);
-@@ -391,6 +402,26 @@ static void cpu_unwind_stack(Cpu *cpu, uint64_t frame_pointer, uint64_t pc)
-     }
+     g_assert(addr);
+@@ -427,6 +457,68 @@ static uint64_t cpu_get_timestamp(const Cpu *cpu)
+     return cpu->insn_count;
  }
  
-+static void cpu_trace_last_sample(Cpu *cpu, uint64_t timestamp)
++static uint8_t aarch64_num_privilege_levels(void)
 +{
-+    if (!cpu->sample_cs) {
++    return AARCH64_EL3 + 1;
++}
++
++static const char *aarch64_get_privilege_level_name(uint8_t pl)
++{
++    switch (pl) {
++    case AARCH64_EL0_SECURE: return "S-EL0";
++    case AARCH64_EL0_NONSECURE: return "NS-EL0";
++    case AARCH64_EL0_REALM: return "R-EL0";
++    case AARCH64_EL1_SECURE: return "S-EL1";
++    case AARCH64_EL1_NONSECURE: return "NS-EL1";
++    case AARCH64_EL1_REALM: return "R-EL1";
++    case AARCH64_EL2_SECURE: return "S-EL2";
++    case AARCH64_EL2_NONSECURE: return "NS-EL2";
++    case AARCH64_EL2_REALM: return "R-EL2";
++    case AARCH64_EL3: return "EL3";
++    default:
++        g_assert_not_reached();
++    }
++}
++
++static uint8_t aarch64_get_privilege_level(Cpu *cpu_)
++{
++    Aarch64Cpu *cpu = cpu_->arch;
++    /*
++     * QEMU gdbstub does not provide access to CurrentEL,
++     * so we use CPSR instead.
++     */
++    uint8_t el = cpu_read_register32(cpu_, cpu->reg_cpsr) >> 2 & 0b11;
++
++    if (el == 3) {
++        return AARCH64_EL3;
++    }
++
++    uint8_t ss = AARCH64_EL0_SECURE;
++    if (!cpu->reg_scr_el3) {
++        ss = AARCH64_EL0_NONSECURE;
++    }
++    uint64_t scr_el3 = cpu_read_register64(cpu_, cpu->reg_scr_el3);
++    uint64_t ns = (scr_el3 >> 0) & 0b1;
++    uint64_t nse = (scr_el3 >> 62) & 0b1;
++    switch (nse << 1 | ns) {
++    case 0b00:
++        ss = AARCH64_EL0_SECURE;
++        break;
++    case 0b01:
++        ss = AARCH64_EL0_NONSECURE;
++        break;
++    case 0b11:
++        ss = AARCH64_EL0_REALM;
++        break;
++    default:
++        g_assert_not_reached();
++    }
++
++    const uint8_t num_ss = 3;
++    Aarch64PrivilegeLevel pl = el * num_ss + ss;
++    return pl;
++}
++
+ static uint64_t aarch64_get_frame_pointer(Cpu *cpu_)
+ {
+     Aarch64Cpu *cpu = cpu_->arch;
+@@ -443,6 +535,10 @@ static void aarch64_init(Cpu *cpu_)
+         reg = &g_array_index(regs, qemu_plugin_reg_descriptor, i);
+         if (!strcmp(reg->name, "x29")) {
+             cpu->reg_fp = reg->handle;
++        } else if (!strcmp(reg->name, "cpsr")) {
++            cpu->reg_cpsr = reg->handle;
++        } else if (!strcmp(reg->name, "SCR_EL3")) {
++            cpu->reg_scr_el3 = reg->handle;
+         }
+     }
+     if (!cpu->reg_fp) {
+@@ -450,6 +546,8 @@ static void aarch64_init(Cpu *cpu_)
+                         "available. Please use an AArch64 cpu (or -cpu max).\n");
+         g_abort();
+     }
++    g_assert(cpu->reg_cpsr);
++    /* scr_el3 is optional */
+ }
+ 
+ static void aarch64_end(Cpu *cpu)
+@@ -471,9 +569,43 @@ static CpuOps aarch64_ops = {
+     .init = aarch64_init,
+     .end = aarch64_end,
+     .get_frame_pointer = aarch64_get_frame_pointer,
++    .get_privilege_level = aarch64_get_privilege_level,
++    .num_privilege_levels = aarch64_num_privilege_levels,
++    .get_privilege_level_name = aarch64_get_privilege_level_name,
+     .does_insn_modify_frame_pointer = aarch64_does_insn_modify_frame_pointer,
+ };
+ 
++static void track_privilege_change(unsigned int cpu_index, void *udata)
++{
++    Cpu *cpu = qemu_plugin_scoreboard_find(score, cpu_index);
++    uint8_t new_pl = cpu->ops.get_privilege_level(cpu);
++
++    if (new_pl == cpu->privilege_level) {
 +        return;
 +    }
-+    uint64_t elapsed = timestamp - cpu->sample_timestamp;
-+    uint64_t middle_timestamp = cpu->sample_timestamp + (elapsed / 2);
-+    trace_exit_stack(cpu->trace, cpu->sample_cs, middle_timestamp);
-+    callstack_free(cpu->sample_cs);
-+    cpu->sample_cs = NULL;
-+    trace_enter_stack(cpu->trace, cpu->cs, middle_timestamp);
-+}
 +
-+static void cpu_set_new_sample(Cpu *cpu, uint64_t timestamp)
-+{
-+    cpu->sample_insn_count = 0;
-+    cpu->sample_cs = callstack_clone(cpu->cs);
-+    cpu->sample_timestamp = timestamp;
-+}
-+
- static uint64_t cpu_get_timestamp(const Cpu *cpu)
- {
-     return cpu->insn_count;
-@@ -451,6 +482,13 @@ static void track_callstack(unsigned int cpu_index, void *udata)
-     callstack *cs = cpu->cs;
-     trace *t = cpu->trace;
- 
-+    if (trace_sample && cpu->sample_insn_count >= trace_sample) {
-+        cpu_trace_last_sample(cpu, timestamp);
-+        cpu_set_new_sample(cpu, timestamp);
-+    }
-+
-+    bool trace_change = !trace_sample;
-+
-     uint64_t fp = cpu->ops.get_frame_pointer(cpu);
-     if (!fp && callstack_empty(cs)) {
-         /*
-@@ -459,7 +497,9 @@ static void track_callstack(unsigned int cpu_index, void *udata)
-          */
-         callstack_push(cs, (callstack_entry){.frame_pointer = fp,
-                                                .pc = pc});
--        trace_enter_function(t, timestamp, pc, callstack_depth(cs));
-+        if (trace_change) {
-+            trace_enter_function(t, timestamp, pc, callstack_depth(cs));
-+        }
-         return;
-     }
- 
-@@ -473,7 +513,9 @@ static void track_callstack(unsigned int cpu_index, void *udata)
-     if (fp == caller.frame_pointer) {
-         /* return */
-         callstack_entry e = callstack_pop(cs);
--        trace_exit_function(t, timestamp, e.pc, callstack_depth(cs));
-+        if (trace_change) {
-+            trace_exit_function(t, timestamp, e.pc, callstack_depth(cs));
-+        }
-         return;
-     }
- 
-@@ -482,27 +524,65 @@ static void track_callstack(unsigned int cpu_index, void *udata)
-         /* call */
-         callstack_push(cs, (callstack_entry){.frame_pointer = fp,
-                 .pc = pc});
--        trace_enter_function(t, timestamp, pc, callstack_depth(cs));
-+        if (trace_change) {
-+            trace_enter_function(t, timestamp, pc, callstack_depth(cs));
-+        }
-         return;
-     }
- 
-     /* discontinuity, exit current stack and unwind new one */
--    trace_exit_stack(t, cs, timestamp);
-+    if (trace_change) {
-+        trace_exit_stack(t, cs, timestamp);
-+    }
-     callstack_clear(cs);
- 
-     cpu_unwind_stack(cpu, fp, pc);
--    trace_enter_stack(t, cs, timestamp);
-+    if (trace_change) {
-+        trace_enter_stack(t, cs, timestamp);
-+    }
-+}
-+
-+static void sample_callstack(unsigned int cpu_index, void *udata)
-+{
 +    uint64_t pc = (uintptr_t) udata;
-+    Cpu *cpu = qemu_plugin_scoreboard_find(score, cpu_index);
 +    uint64_t timestamp = cpu_get_timestamp(cpu);
++
++    if (trace_sample) {
++        cpu_trace_last_sample(cpu, timestamp);
++    }
 +
 +    trace_exit_stack(cpu->trace, cpu->cs, timestamp);
 +    callstack_clear(cpu->cs);
 +
++    cpu->privilege_level = new_pl;
++    cpu->cs = g_array_index(cpu->callstacks, callstack*, new_pl);
++    cpu->trace = g_array_index(cpu->traces, trace*, new_pl);
++
 +    cpu_unwind_stack(cpu, cpu->ops.get_frame_pointer(cpu), pc);
 +    trace_enter_stack(cpu->trace, cpu->cs, timestamp);
 +
-+    /* reset counter */
-+    cpu->sample_insn_count = 0;
- }
- 
- static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
- {
-     size_t n_insns = qemu_plugin_tb_n_insns(tb);
-+    uintptr_t tb_pc = qemu_plugin_tb_vaddr(tb);
- 
-     qemu_plugin_u64 insn_count = qemu_plugin_scoreboard_u64_in_struct(
-                                       score, Cpu, insn_count);
-+    qemu_plugin_u64 sample_insn_count = qemu_plugin_scoreboard_u64_in_struct(
-+                                            score, Cpu, sample_insn_count);
-+
 +    if (trace_sample) {
-+        /* We can do a light instrumentation, per tb only */
-+        qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu(
-+            tb, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, n_insns);
-+        qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu(
-+            tb, QEMU_PLUGIN_INLINE_ADD_U64, sample_insn_count, n_insns);
-+        qemu_plugin_register_vcpu_tb_exec_cond_cb(
-+            tb, sample_callstack, QEMU_PLUGIN_CB_R_REGS,
-+            QEMU_PLUGIN_COND_GE, sample_insn_count, trace_sample,
-+            (void *) tb_pc);
-+        return;
++        cpu_set_new_sample(cpu, timestamp);
 +    }
++}
++
+ static void track_callstack(unsigned int cpu_index, void *udata)
+ {
+     uint64_t pc = (uintptr_t) udata;
+@@ -568,7 +700,7 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+     qemu_plugin_u64 sample_insn_count = qemu_plugin_scoreboard_u64_in_struct(
+                                             score, Cpu, sample_insn_count);
  
+-    if (trace_sample) {
++    if (trace_sample && !trace_privilege_level) {
+         /* We can do a light instrumentation, per tb only */
+         qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu(
+             tb, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, n_insns);
+@@ -581,6 +713,12 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+         return;
+     }
+ 
++    if (trace_privilege_level) {
++        qemu_plugin_register_vcpu_tb_exec_cb(tb, track_privilege_change,
++                                             QEMU_PLUGIN_CB_R_REGS,
++                                             (void *) tb_pc);
++    }
++
      /*
--     * We instrument all instructions following one that might have updated
-+     * We now instrument all instructions following one that might have updated
+      * We now instrument all instructions following one that might have updated
       * the frame pointer. We always instrument first instruction in block, as
-      * last executed instruction, in previous tb, may have modified it.
-      */
-@@ -511,6 +591,8 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-         struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
-         qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-                 insn, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, 1);
-+        qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-+                insn, QEMU_PLUGIN_INLINE_ADD_U64, sample_insn_count, 1);
- 
-         if (instrument_insn) {
-             uintptr_t pc = qemu_plugin_insn_vaddr(insn);
-@@ -536,6 +618,7 @@ static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
-     cpu->buf = g_byte_array_new();
-     cpu->callstacks = g_array_new(0, 0, sizeof(callstack *));
-     cpu->traces = g_array_new(0, 0, sizeof(trace *));
-+    cpu->sample_timestamp = cpu_get_timestamp(cpu);
- 
+@@ -623,17 +761,33 @@ static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
      g_assert(vcpu_index < 1000);
      uint32_t trace_id = 1000 * 1000 + vcpu_index * 1000;
-@@ -613,6 +696,22 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-                                            const qemu_info_t *info,
-                                            int argc, char **argv)
- {
-+    for (int i = 0; i < argc; i++) {
-+        char *opt = argv[i];
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-+        if (g_strcmp0(tokens[0], "trace-sample") == 0) {
-+            gint64 value = g_ascii_strtoll(tokens[1], NULL, 10);
-+            if (value <= 0) {
-+                fprintf(stderr, "bad trace-sample value: %s\n", tokens[1]);
-+                return -1;
-+            }
-+            trace_sample = value;
-+        } else {
-+            fprintf(stderr, "option parsing failed: %s\n", opt);
-+            return -1;
+ 
+-    g_autoptr(GString) trace_name = g_string_new(NULL);
+-    g_string_append_printf(trace_name, "cpu%u", vcpu_index);
+-    trace *t = trace_new(trace_id, trace_name);
+-    g_array_append_val(cpu->traces, t);
+-    callstack *cs = callstack_new();
+-    g_array_append_val(cpu->callstacks, cs);
+-    /* create/truncate trace file */
+-    trace_flush(t, false);
++    if (trace_privilege_level) {
++        for (uint8_t pl = 0; pl < cpu->ops.num_privilege_levels(); ++pl) {
++            g_autoptr(GString) trace_name = g_string_new(NULL);
++            g_string_append_printf(trace_name, "cpu%u %s", vcpu_index,
++                                   cpu->ops.get_privilege_level_name(pl));
++            trace *t = trace_new(trace_id + pl, trace_name);
++            g_array_append_val(cpu->traces, t);
++            callstack *cs = callstack_new();
++            g_array_append_val(cpu->callstacks, cs);
 +        }
++    } else {
++        g_autoptr(GString) trace_name = g_string_new(NULL);
++        g_string_append_printf(trace_name, "cpu%u", vcpu_index);
++        trace *t = trace_new(trace_id, trace_name);
++        g_array_append_val(cpu->traces, t);
++        callstack *cs = callstack_new();
++        g_array_append_val(cpu->callstacks, cs);
++    }
+ 
+-    cpu->cs = cs;
+-    cpu->trace = t;
++    for (size_t i = 0; i < cpu->traces->len; ++i) {
++        /* create/truncate trace files */
++        trace *t = g_array_index(cpu->traces, trace*, i);
++        trace_flush(t, false);
 +    }
 +
-     if (!strcmp(info->target_name, "aarch64")) {
-         arch_ops = aarch64_ops;
-     } else {
++    cpu->cs = g_array_index(cpu->callstacks, callstack*, cpu->privilege_level);
++    cpu->trace = g_array_index(cpu->traces, trace*, cpu->privilege_level);
+ }
+ 
+ static void vcpu_end(unsigned int vcpu_index)
+@@ -706,6 +860,12 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+                 return -1;
+             }
+             trace_sample = value;
++        } else if (g_strcmp0(tokens[0], "trace-privilege-level") == 0) {
++            if (!qemu_plugin_bool_parse(tokens[0], tokens[1],
++                                        &trace_privilege_level)) {
++                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
++                return -1;
++            }
+         } else {
+             fprintf(stderr, "option parsing failed: %s\n", opt);
+             return -1;
 -- 
 2.47.2
 
