@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD088B10749
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 12:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68842B10750
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 12:03:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uesl4-0007nH-TC; Thu, 24 Jul 2025 06:01:02 -0400
+	id 1ueslI-00082b-FO; Thu, 24 Jul 2025 06:01:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uesks-0007hT-E0
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:00:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uesl7-0007ua-4a
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:01:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uesko-0003ry-Es
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:00:49 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uesl5-00045g-D3
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:01:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753351245;
+ s=mimecast20190719; t=1753351262;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:resent-to:
  resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
  bh=4LhlqHgnWB3M6EYngEIpHcrPp+kxaLVd6UrANoi+/TY=;
- b=HFPuKrbzeqEFpvB0m6qxzBjGgWrBwhhCUE207cVBmkfbdhXOFyD9m3asqTlIcRn0EDIsi+
- kVX6HElYjkb1APEpuogQvtHHL3Iko2EL1bAq3/ziZqqCylutfGRNQ6tywcZPO1JInxDd7Z
- cKMDlwA/HHdKCyAaz/fnPAklC1pGE2s=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ b=FANrl8Zkly1fv8iGirz3llu/taI8K/RSzZt+bdsVXxqlJdTJ9GJ5QGyMqTcAR3UO0ErB4o
+ SS3AxukBrjiTJtkvYVGXSKKQXDURmkBcX8Mbo/s9fDnEWFK6ilXyNbsNTxN6fTUIkTr2d/
+ fFxt5URMyU3jSQRnQBSPfOD0nJSupEo=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-uxEAkPQgP9eIPR1tjDSIrA-1; Thu,
- 24 Jul 2025 06:00:43 -0400
-X-MC-Unique: uxEAkPQgP9eIPR1tjDSIrA-1
-X-Mimecast-MFC-AGG-ID: uxEAkPQgP9eIPR1tjDSIrA_1753351242
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-iHvMONJrN--mgWjnTk1OUA-1; Thu,
+ 24 Jul 2025 06:00:58 -0400
+X-MC-Unique: iHvMONJrN--mgWjnTk1OUA-1
+X-Mimecast-MFC-AGG-ID: iHvMONJrN--mgWjnTk1OUA_1753351258
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ABE8A1944B21; Thu, 24 Jul 2025 10:00:42 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DA2B919560B6; Thu, 24 Jul 2025 10:00:57 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.14])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 28138300018D; Thu, 24 Jul 2025 10:00:42 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8ED571956089; Thu, 24 Jul 2025 10:00:57 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8094D21E6924; Thu, 24 Jul 2025 12:00:39 +0200 (CEST)
-Resent-To: qemu-devel@nongnu.org, philmd@linaro.org
+ id 8D40321E6924; Thu, 24 Jul 2025 12:00:54 +0200 (CEST)
+Resent-To: qemu-devel@nongnu.org, peter.maydell@linaro.org
 Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Thu, 24 Jul 2025 12:00:39 +0200
-Resent-Message-ID: <87cy9poqm0.fsf@pond.sub.org>
+Resent-Date: Thu, 24 Jul 2025 12:00:54 +0200
+Resent-Message-ID: <87zfctnc15.fsf@pond.sub.org>
 X-From-Line: armbru@redhat.com  Thu Jul 24 11:17:42 2025
 X-Original-To: armbru
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
@@ -66,8 +66,8 @@ References: <20250724091742.1950167-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Lines: 31
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -76,7 +76,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.377,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
