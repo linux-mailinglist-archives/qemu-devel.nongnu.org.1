@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019ACB1128B
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 22:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C12A3B1128C
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 22:48:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uf2r2-0007zB-Ao; Thu, 24 Jul 2025 16:47:52 -0400
+	id 1uf2qw-0007JR-JN; Thu, 24 Jul 2025 16:47:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uf2qQ-0006qi-FD
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:47:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uf2qZ-0006vZ-9g
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:47:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uf2qN-0007VG-Ik
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:47:13 -0400
+ id 1uf2qW-0007Vz-LS
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 16:47:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753390030;
+ s=mimecast20190719; t=1753390036;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=SkFmjOKV9wmISoaig+LYSZLCpB7AMOha+uQ9xbBeUyc=;
- b=PqgFZNq1vFcdH2oUOv3hql7N4WQnkLvFjWcPlD/D/zcp5P+0p1XgkilOTv0AygCRLTEnbz
- I/hNcUPx4jRbp+uTqo8s3WEwUFypZ1yA3epPoX3NL94WLACYlQ/7Qpu4cFxXsnJE3BTEzP
- 4OMHn1O9gVDF15IyP2RulyMiZ0MhMwg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rbYs+8k6eVMUp1Wr8L7PFzngQ03/Wf+JnHjPQ19gOec=;
+ b=SjHO0hku3IM7PgAev8ASI+2jI4Cs55o2b/x3rDQzulWlFoTIRi6y1m3LXnrsZTqnAYdqL0
+ zubdTWl0IpvdgRHR6i/FeEFC8mLLmknbk6k5fBKVAqCBg/+nn6ldkdsEWI2Apjqa1Vbm39
+ FBREwQ5bcPrZtqp+FaSitfIhX9VHxW8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-Xj_n1Uv6MpCHAscQTTowqQ-1; Thu,
- 24 Jul 2025 16:47:07 -0400
-X-MC-Unique: Xj_n1Uv6MpCHAscQTTowqQ-1
-X-Mimecast-MFC-AGG-ID: Xj_n1Uv6MpCHAscQTTowqQ_1753390026
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-580-4DwYgUKeNzODL8yqGn8pVw-1; Thu,
+ 24 Jul 2025 16:47:09 -0400
+X-MC-Unique: 4DwYgUKeNzODL8yqGn8pVw-1
+X-Mimecast-MFC-AGG-ID: 4DwYgUKeNzODL8yqGn8pVw_1753390028
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5A08B180034A; Thu, 24 Jul 2025 20:47:05 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E97591956048; Thu, 24 Jul 2025 20:47:07 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.247])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DEF4C19560AA; Thu, 24 Jul 2025 20:47:03 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id EB34D1956089; Thu, 24 Jul 2025 20:47:06 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Brian Song <hibriansong@gmail.com>,
  qemu-block@nongnu.org, Bernd Schubert <bschubert@ddn.com>,
  Kevin Wolf <kwolf@redhat.com>, h0lyalg0rithm@git.sr.ht,
  Fam Zheng <fam@euphon.net>
-Subject: [RFC 0/3] aio-posix: enable io_uring SINGLE_ISSUER and TASKRUN flags
-Date: Thu, 24 Jul 2025 16:46:59 -0400
-Message-ID: <20250724204702.576637-1-stefanha@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [RFC 1/3] iothread: create AioContext in iothread_run()
+Date: Thu, 24 Jul 2025 16:47:00 -0400
+Message-ID: <20250724204702.576637-2-stefanha@redhat.com>
+In-Reply-To: <20250724204702.576637-1-stefanha@redhat.com>
+References: <20250724204702.576637-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -82,49 +84,237 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not merge this series. The performance effects are not significant. I am
-sharing this mainly to archive the patches and in case someone has ideas on how
-to improve this.
+The IOThread's AioContext is currently created in iothread_init() where
+it's easy to propagate errors before spawning the thread that runs
+iothread_run(). However, this means that aio_context_new() is called
+from the main loop thread rather than from the IOThread.
 
-Bernd Schubert mentioned io_uring_setup(2) flags that may improve performance:
-- IORING_SETUP_SINGLE_ISSUER: optimization when only 1 thread uses an io_uring context
-- IORING_SETUP_COOP_TASKRUN: avoids IPIs
-- IORING_SETUP_TASKRUN_FLAG: makes COOP_TASKRUN work with userspace CQ ring polling
+In order to use Linux io_uring's IORING_SETUP_SINGLE_ISSUER feature in
+the next commit, only one thread can use the io_uring context and
+therefore iothread.c must call aio_context_new() from iothread_run()
+instead of iothread_init().
 
-Suraj Shirvankar already started work on SINGLE_ISSUER in the past:
-https://lore.kernel.org/qemu-devel/174293621917.22751.11381319865102029969-0@git.sr.ht/
+Extract the iothread_run() arguments into an IOThreadRunArgs struct
+where an Error *error field can be used to report back initialization
+errors. This works pretty well thanks to the init_done_sem semaphore
+that is already used by iothread_init() to wait for iothread_run() to
+initialize.
 
-Where this differs from Suraj's previous work is that I have worked around the
-need for the main loop AioContext to be shared by multiple threads (vCPU
-threads and the migration thread).
+Move iothread_run() further down for proximity with iothread_init() and
+to avoid adding a function prototype for
+iothread_set_aio_context_params().
 
-Here are the performance numbers for fio bs=4k in a 4 vCPU guest with 1
-IOThread using a virtio-blk disk backed by a local NVMe drive:
-
-                      IOPS               IOPS
-Benchmark             SINGLE_ISSUER      SINGLE_ISSUER|COOP_TASKRUN|TASKRUN_FLAG
-randread  iodepth=1   54,045 (+1.2%)     54,189 (+1.5%)
-randread  iodepth=64  318,135 (+0.1%)    315,632 (-0.68%)
-randwrite iodepth=1   141,918 (-0.44%)   143,337 (+0.55%)
-randwrite iodepth=64  323,948 (-0.015%)  322,755 (-0.38%)
-
-You can find detailed benchmarking results here including the fio
-output, fio command-line, and guest libvirt domain XML:
-https://gitlab.com/stefanha/virt-playbooks/-/tree/io_uring-flags/notebook/fio-output
-https://gitlab.com/stefanha/virt-playbooks/-/blob/io_uring-flags/files/fio.sh
-https://gitlab.com/stefanha/virt-playbooks/-/blob/io_uring-flags/files/test.xml.j2
-
-Stefan Hajnoczi (3):
-  iothread: create AioContext in iothread_run()
-  aio-posix: enable IORING_SETUP_SINGLE_ISSUER
-  aio-posix: enable IORING_SETUP_COOP_TASKRUN |
-    IORING_SETUP_TASKRUN_FLAG
-
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
  include/system/iothread.h |   1 -
  iothread.c                | 140 +++++++++++++++++++++-----------------
- util/fdmon-io_uring.c     |  26 ++++++-
- 3 files changed, 101 insertions(+), 66 deletions(-)
+ 2 files changed, 78 insertions(+), 63 deletions(-)
 
+diff --git a/include/system/iothread.h b/include/system/iothread.h
+index d95c17a645..ec4e798d5e 100644
+--- a/include/system/iothread.h
++++ b/include/system/iothread.h
+@@ -29,7 +29,6 @@ struct IOThread {
+     bool run_gcontext;          /* whether we should run gcontext */
+     GMainContext *worker_context;
+     GMainLoop *main_loop;
+-    QemuSemaphore init_done_sem; /* is thread init done? */
+     bool stopping;              /* has iothread_stop() been called? */
+     bool running;               /* should iothread_run() continue? */
+     int thread_id;
+diff --git a/iothread.c b/iothread.c
+index 8810376dce..c6547779d0 100644
+--- a/iothread.c
++++ b/iothread.c
+@@ -36,46 +36,6 @@
+ #define IOTHREAD_POLL_MAX_NS_DEFAULT 0ULL
+ #endif
+ 
+-static void *iothread_run(void *opaque)
+-{
+-    IOThread *iothread = opaque;
+-
+-    rcu_register_thread();
+-    /*
+-     * g_main_context_push_thread_default() must be called before anything
+-     * in this new thread uses glib.
+-     */
+-    g_main_context_push_thread_default(iothread->worker_context);
+-    qemu_set_current_aio_context(iothread->ctx);
+-    iothread->thread_id = qemu_get_thread_id();
+-    qemu_sem_post(&iothread->init_done_sem);
+-
+-    while (iothread->running) {
+-        /*
+-         * Note: from functional-wise the g_main_loop_run() below can
+-         * already cover the aio_poll() events, but we can't run the
+-         * main loop unconditionally because explicit aio_poll() here
+-         * is faster than g_main_loop_run() when we do not need the
+-         * gcontext at all (e.g., pure block layer iothreads).  In
+-         * other words, when we want to run the gcontext with the
+-         * iothread we need to pay some performance for functionality.
+-         */
+-        aio_poll(iothread->ctx, true);
+-
+-        /*
+-         * We must check the running state again in case it was
+-         * changed in previous aio_poll()
+-         */
+-        if (iothread->running && qatomic_read(&iothread->run_gcontext)) {
+-            g_main_loop_run(iothread->main_loop);
+-        }
+-    }
+-
+-    g_main_context_pop_thread_default(iothread->worker_context);
+-    rcu_unregister_thread();
+-    return NULL;
+-}
+-
+ /* Runs in iothread_run() thread */
+ static void iothread_stop_bh(void *opaque)
+ {
+@@ -104,7 +64,6 @@ static void iothread_instance_init(Object *obj)
+ 
+     iothread->poll_max_ns = IOTHREAD_POLL_MAX_NS_DEFAULT;
+     iothread->thread_id = -1;
+-    qemu_sem_init(&iothread->init_done_sem, 0);
+     /* By default, we don't run gcontext */
+     qatomic_set(&iothread->run_gcontext, 0);
+ }
+@@ -135,7 +94,6 @@ static void iothread_instance_finalize(Object *obj)
+         g_main_loop_unref(iothread->main_loop);
+         iothread->main_loop = NULL;
+     }
+-    qemu_sem_destroy(&iothread->init_done_sem);
+ }
+ 
+ static void iothread_init_gcontext(IOThread *iothread, const char *thread_name)
+@@ -176,47 +134,105 @@ static void iothread_set_aio_context_params(EventLoopBase *base, Error **errp)
+                                        base->thread_pool_max, errp);
+ }
+ 
++typedef struct {
++    IOThread *iothread;
++    const char *thread_name;
++    QemuSemaphore init_done_sem; /* is thread init done? */
++    Error *error; /* filled in before init_done_sem is posted */
++} IOThreadRunArgs;
+ 
+-static void iothread_init(EventLoopBase *base, Error **errp)
++static void *iothread_run(void *opaque)
+ {
+-    Error *local_error = NULL;
+-    IOThread *iothread = IOTHREAD(base);
+-    g_autofree char *thread_name = NULL;
++    IOThreadRunArgs *args = opaque;
++    IOThread *iothread = args->iothread;
+ 
+-    iothread->stopping = false;
+-    iothread->running = true;
+-    iothread->ctx = aio_context_new(errp);
++    rcu_register_thread();
++
++    iothread->ctx = aio_context_new(&args->error);
+     if (!iothread->ctx) {
+-        return;
++        goto out;
+     }
+ 
+-    thread_name = g_strdup_printf("IO %s",
+-                        object_get_canonical_path_component(OBJECT(base)));
++    iothread_set_aio_context_params(EVENT_LOOP_BASE(iothread), &args->error);
++    if (args->error) {
++        aio_context_unref(iothread->ctx);
++        iothread->ctx = NULL;
++        goto out;
++    }
+ 
+     /*
+      * Init one GMainContext for the iothread unconditionally, even if
+      * it's not used
+      */
+-    iothread_init_gcontext(iothread, thread_name);
++    iothread_init_gcontext(iothread, args->thread_name);
+ 
+-    iothread_set_aio_context_params(base, &local_error);
+-    if (local_error) {
+-        error_propagate(errp, local_error);
+-        aio_context_unref(iothread->ctx);
+-        iothread->ctx = NULL;
+-        return;
++    /*
++     * g_main_context_push_thread_default() must be called before anything
++     * in this new thread uses glib.
++     */
++    g_main_context_push_thread_default(iothread->worker_context);
++    qemu_set_current_aio_context(iothread->ctx);
++
++    iothread->stopping = false;
++    iothread->running = true;
++
++    iothread->thread_id = qemu_get_thread_id();
++    qemu_sem_post(&args->init_done_sem);
++
++    while (iothread->running) {
++        /*
++         * Note: from functional-wise the g_main_loop_run() below can
++         * already cover the aio_poll() events, but we can't run the
++         * main loop unconditionally because explicit aio_poll() here
++         * is faster than g_main_loop_run() when we do not need the
++         * gcontext at all (e.g., pure block layer iothreads).  In
++         * other words, when we want to run the gcontext with the
++         * iothread we need to pay some performance for functionality.
++         */
++        aio_poll(iothread->ctx, true);
++
++        /*
++         * We must check the running state again in case it was
++         * changed in previous aio_poll()
++         */
++        if (iothread->running && qatomic_read(&iothread->run_gcontext)) {
++            g_main_loop_run(iothread->main_loop);
++        }
+     }
+ 
++    g_main_context_pop_thread_default(iothread->worker_context);
++out:
++    rcu_unregister_thread();
++    return NULL;
++}
++
++static void iothread_init(EventLoopBase *base, Error **errp)
++{
++    IOThread *iothread = IOTHREAD(base);
++    g_autofree char *thread_name = NULL;
++    IOThreadRunArgs args = {
++        .iothread = iothread,
++    };
++
++    qemu_sem_init(&args.init_done_sem, 0);
++
++    thread_name = g_strdup_printf("IO %s",
++                        object_get_canonical_path_component(OBJECT(base)));
++    args.thread_name = thread_name;
++
+     /* This assumes we are called from a thread with useful CPU affinity for us
+      * to inherit.
+      */
+-    qemu_thread_create(&iothread->thread, thread_name, iothread_run,
+-                       iothread, QEMU_THREAD_JOINABLE);
++    qemu_thread_create(&iothread->thread, thread_name, iothread_run, &args,
++                       QEMU_THREAD_JOINABLE);
+ 
+     /* Wait for initialization to complete */
+     while (iothread->thread_id == -1) {
+-        qemu_sem_wait(&iothread->init_done_sem);
++        qemu_sem_wait(&args.init_done_sem);
+     }
++
++    qemu_sem_destroy(&args.init_done_sem);
++    error_propagate(errp, args.error);
+ }
+ 
+ typedef struct {
 -- 
 2.50.1
 
