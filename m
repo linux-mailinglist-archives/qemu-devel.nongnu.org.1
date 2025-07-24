@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4401DB10869
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4ADB1086E
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Jul 2025 13:03:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uetgZ-0008Fu-21; Thu, 24 Jul 2025 07:00:27 -0400
+	id 1uetiw-0003VW-RK; Thu, 24 Jul 2025 07:02:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uetg4-0007Yn-QL
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:57 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1uetik-0003Hl-Rv
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 07:02:43 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uetg2-00080A-3s
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 06:59:55 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-ae360b6249fso138741766b.1
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 03:59:53 -0700 (PDT)
+ id 1uetii-0000Fr-SD
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 07:02:42 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-611f74c1837so1805103a12.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 04:02:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753354792; x=1753959592; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1753354959; x=1753959759; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iGQBWOlnSO+u36nuiqLHxBfdpHNix5/UwaTMVfh1iWw=;
- b=ip8YSaHfbybaVrAFaFsvkfHO5lb5Qqnqw83WfLBSZ1tMKtDWwjwxqqGdWXnaZNneAj
- gYVnrY73ZSH1biLy5iA+uxNeao3nYdxM2Wu/xZCxG0625EgL+KxwOLOeRUFCLdf+5K38
- sKmGrvo61IvkKjsdoDXtfWfFHI6tTAHetTDVmkJ2VzEAPJuxliYJl1IVij6xi1a4RbYE
- HdZv6Fb3rzzoCwQtMfeY8hA50QbtWhUHMAd75bcK4wsgVVWbY6QWEO1vANNOA/oQXt0Q
- ALG/PuzPL/niLV5GrSduEkQsWlq/2mXGjdhf7sP7b9HHkReHoGWuFipkjLGSlJxCmyPL
- ogEg==
+ bh=ypkjtOv1NF51f15wxpFuussHfewnmWMlMBzhvNzwbwM=;
+ b=T2LokxVYFJFlHHg3uJnlp0fnD2OyaPT41LrsXCfU/tiQKt5E8iIKBu1xz/xPEzHldZ
+ o0wUDDCJ9Zoqph0Dz2AjmJ57HgGaQtUZKkcZTkHpsTGfOiQfENH06KgQiBCm7iZhwIn8
+ B1W1nhHXwRa+nSQJ7wg82UHBp9Jnfap5UjIkSmD/XTGglNLr4TP9q0vhHJETOV2mO63U
+ 0uthmnoAfs6EXs4ycT+ghApgD34RH4afkGsTbP5oFRVLsf55cgA0I/1/W4T2xN9UTOVc
+ mwNH6Ke9hBF4v4Pjp9vMG9MXJd02UiXNUXOqmzASknxnStxb6z77iVMoFE9U1oEbrNu5
+ T1fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753354792; x=1753959592;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iGQBWOlnSO+u36nuiqLHxBfdpHNix5/UwaTMVfh1iWw=;
- b=n+EHXf20g5j11/bWEGzKT7i9+ghz6/cgepm6T31Zpx/PQz1QAT1oRqJrZb9Ad9LKe/
- tvqg4ki3U8ufwAvnO5A6B5yF54R+E+V413f7l3mvTUBbBa0NIc/oGzOJKSXYZ0jojS6S
- kbY3olHJhdRqYkeiklaF6WhDRE6GAOysIQuJBGkeBTOEpoG4DVLh/v0k/D6c1gEN/+Lu
- Rs8ACBNifpqP8Iqu26LocZk5knx0f9Q5f8nFC79ZTzmE9rvH0QgICBD0fcFbULFtH9+F
- lIjBUjkAK9LCKcMcU7H/3YxLnJhEe34vVH4fWqqPtgRuvShzqRVccd5gNYeVSJpLhz1M
- UiHA==
-X-Gm-Message-State: AOJu0YwGVsG8ZU1LU86ovLqDSwfuCI5WOQv3DDOptWwZFoEsM4u5IgdB
- f3qam+PwAcBGbjGhHPRTUAjrPCp5+YViX0jbzQ7m578j37wXVAuNF6fRjPECn7KEvV8=
-X-Gm-Gg: ASbGncvUp2RvKEqYukzm9gMCQJJQtzDqfnAOgvd62xfXMZQVCZs6DK6ww7FWoN6ysiq
- cSyool/9QkrY5OkCO7XoBcvG7h/rIadwWcZ7rnnXqy4fdjBvaUPLbN8W5DLzGK9yREFX1ZMYIRI
- YExm6sh3ZBdnFhKgoL/bw1L4mR5oGukSZpndrS4VqHNoqtt2krffnyRoloYvl+c7hoNHXeiLkSi
- Of0inkPM9NdQ5Od005Hduqra0PliSCG7DvOqN3yLb+GB51N1blPteGCildlq4zpfBYVDlpeqsOZ
- zDfRePsBnGcDRfD4rsh+imvTX0k414oDj8LlPUm8zbUKoGn0bvwRPdevk5JpGxyePIOzPNqlE5A
- EK+wrWpwiJ6t9x9BZb61YjmTU/qN9P89LDQ==
-X-Google-Smtp-Source: AGHT+IF3vw9GpvYsQpQsRJRhA7PWw5t+3YoDXI3ejx2rocRESGQDIe3yd/0baeWO+vf0uBI274oKDQ==
-X-Received: by 2002:a17:906:d542:b0:ad8:9c97:c2e5 with SMTP id
- a640c23a62f3a-af2f30e1192mr647170166b.0.1753354792400; 
- Thu, 24 Jul 2025 03:59:52 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753354959; x=1753959759;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ypkjtOv1NF51f15wxpFuussHfewnmWMlMBzhvNzwbwM=;
+ b=ZeKR8Hhip3btJ6VxO5guOqGXpf1zwXsMYSrgVG4fmtB8TkK2s5rqTFbXDYWxG3/OI7
+ r7YyQL7a/khY166QHSVBpBqbVlLplyUrhHuQfC+6ODtp4Q2eaMqMPmHc5eVly54euxbQ
+ dhmZe3OGYdpqNH9BCS8pbzbTZkmBsiOZNx0XpaPDHqA3Zlij1Z15RhoxWzyeVeWPfL40
+ 1pokMLWhIKj1xBSNzrEEvHQOsi7MRNagBsjEwfbls4D6lTUlJtAtCHnb9jhwOnx4KR6u
+ ApfieJdOy2SYpdzz6R8o7cpVx2ZiZollO0IRZ0b28GEkvNEjGvqYyCoCNJXH+Q6DQOJf
+ uFkg==
+X-Gm-Message-State: AOJu0Yw4Q9N06OQ0hK6SQmTHf+Aod5TgaoEyZSnAtxNbGSOm+Tt7f0bh
+ 0i5wAj8fJLxRD5JUKcVL4iYbY/Ewqi7WE71AoQj/PqDaa6jP3hYHbutA9cZ6vuHhnOc=
+X-Gm-Gg: ASbGnctpnb26cHhoqeMap17IHgG2OSMqyfegjmNF/5mrisnFvc3tLVVhJWHFRjOfjE3
+ ScECj59H8j+CfJA8ZIDJ5UkKcr2AK3NWOzkxhwRUA59zKh6GXZ8YxGfkLy9fj9khITMIe8UYXxS
+ VcoYlxIK8xHKC/i9OI1NkZZFV4ZPX4c4hw8y2kfEyMr3j4J3t22IKdXSvEovE9adPIKK2X4Lcmr
+ /iBpHzgkGyWT3LmpH60O9Dy/51GRFn07Z0bHsZX5EK1wdZdolO05w84+h+IaVYeNGlY6B72MU9h
+ Q2R3HvjkTcajk2EwrQBmPa5jFDORdw6iQ7CVCvNXKxTffHA8T+oMtVI60oagATREnLeqLkIRo6y
+ lrCZIBBl6ufqG+Q7HkE7MCDA=
+X-Google-Smtp-Source: AGHT+IF64qJI06vE8yuKeUfAkHB6qDSWnOPlsVQEERnSxUuyWyqYzlVClGBlkifQb6++cwhG94ZOZg==
+X-Received: by 2002:a05:6402:51c7:b0:612:b67f:d512 with SMTP id
+ 4fb4d7f45d1cf-6149b40cf0cmr5865713a12.4.1753354959070; 
+ Thu, 24 Jul 2025 04:02:39 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-614cd2fd3c7sm707506a12.33.2025.07.24.03.59.45
+ 4fb4d7f45d1cf-614cd1edf10sm678979a12.26.2025.07.24.04.02.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Jul 2025 03:59:51 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1AE965F8F3;
- Thu, 24 Jul 2025 11:59:41 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH for 10.1 13/13] tests/docker: handle host-arch selection for
- all-test-cross
-Date: Thu, 24 Jul 2025 11:59:39 +0100
-Message-ID: <20250724105939.2393230-14-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250724105939.2393230-1-alex.bennee@linaro.org>
-References: <20250724105939.2393230-1-alex.bennee@linaro.org>
+ Thu, 24 Jul 2025 04:02:38 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 7A78B5F7B0;
+ Thu, 24 Jul 2025 12:02:37 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Mark Burton <mburton@qti.qualcomm.com>,  Manos
+ Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH v2] tests/functional: add hypervisor test for aarch64
+In-Reply-To: <20250724094214.93330-1-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 24 Jul 2025 11:42:14
+ +0200")
+References: <20250724094214.93330-1-philmd@linaro.org>
+User-Agent: mu4e 1.12.12; emacs 30.1
+Date: Thu, 24 Jul 2025 12:02:37 +0100
+Message-ID: <87h5z1voky.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,81 +103,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When building on non-x86 we get a bunch but not all of the compilers.
-Handle this in the Dockerfile by probing the arch and expanding the
-list available.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- .../dockerfiles/debian-all-test-cross.docker  | 31 ++++++++++---------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+> From: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>
+> This is a simple test case that runs an image with kvmtool and
+> kvm-unit-tests which can validate virtualisation works. This is useful
+> for exercising TCG but can also be applied to any nested virt setup
+> which is why it doesn't specify an accelerator.
 
-diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
-index 5aa43749ebe..16a83241270 100644
---- a/tests/docker/dockerfiles/debian-all-test-cross.docker
-+++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
-@@ -23,7 +23,9 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-         bison \
-         ccache \
-         clang  \
-+        dpkg-dev \
-         flex \
-+        gcc \
-         git \
-         libclang-rt-dev \
-         ninja-build \
-@@ -33,16 +35,11 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-         python3-venv \
-         python3-wheel
- 
--RUN DEBIAN_FRONTEND=noninteractive eatmydata \
--        apt install -y --no-install-recommends \
--        gcc-aarch64-linux-gnu \
-+# All the generally available compilers
-+ENV AVAILABLE_COMPILERS gcc-aarch64-linux-gnu \
-         libc6-dev-arm64-cross \
-         gcc-arm-linux-gnueabihf \
-         libc6-dev-armhf-cross \
--        gcc-hppa-linux-gnu \
--        libc6-dev-hppa-cross \
--        gcc-m68k-linux-gnu \
--        libc6-dev-m68k-cross \
-         gcc-mips-linux-gnu \
-         libc6-dev-mips-cross \
-         gcc-mips64-linux-gnuabi64 \
-@@ -51,18 +48,24 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-         libc6-dev-mips64el-cross \
-         gcc-mipsel-linux-gnu \
-         libc6-dev-mipsel-cross \
--        gcc-powerpc-linux-gnu \
--        libc6-dev-powerpc-cross \
--        gcc-powerpc64-linux-gnu \
--        libc6-dev-ppc64-cross \
-         gcc-powerpc64le-linux-gnu \
-         libc6-dev-ppc64el-cross \
-         gcc-riscv64-linux-gnu \
-         libc6-dev-riscv64-cross \
-         gcc-s390x-linux-gnu \
--        libc6-dev-s390x-cross \
--        gcc-sparc64-linux-gnu \
--        libc6-dev-sparc64-cross && \
-+        libc6-dev-s390x-cross
-+
-+RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-hppa-linux-gnu libc6-dev-hppa-cross"; fi
-+RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-m68k-linux-gnu libc6-dev-m68k-cross"; fi
-+RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-powerpc-linux-gnu libc6-dev-powerpc-cross"; fi
-+RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-powerpc64-linux-gnu libc6-dev-ppc64-cross"; fi
-+RUN if dpkg-architecture -e amd64; then export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-sparc64-linux-gnu libc6-dev-sparc64-cross"; fi
-+
-+RUN echo "compilers: ${AVAILABLE_COMPILERS}"
-+
-+RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-+        apt install -y --no-install-recommends \
-+        ${AVAILABLE_COMPILERS} && \
-         dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt
- 
- 
--- 
-2.47.2
+You might want to update this text give now...
 
+<snip>
+> +
+> +    def do_test(self, kvm_mode=3D'nvhe', accel=3D'tcg'):
+> +        self.require_accelerator(accel)
+
+You are now forcing tcg. Or are you planning on adding additional tests
+bellow to exercise split and KVM (when we have nested support for
+HVF/KVM)?
+
+> +        self._launch_guest(kvm_mode)
+> +        self._run_kut(kvm_mode)
+> +
+> +    def test_aarch64_vhe_selftest_tcg(self):
+> +        self.do_test('vhe')
+> +
+> +    def test_aarch64_nvhe_selftest_tcg(self):
+> +        self.do_test('nvhe')
+> +
+> +if __name__ =3D=3D '__main__':
+> +    LinuxKernelTest.main()
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
