@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385C5B1205D
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 16:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 695C0B1205F
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 16:52:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufJlB-0005ss-OP; Fri, 25 Jul 2025 10:50:57 -0400
+	id 1ufJlf-00067z-Cf; Fri, 25 Jul 2025 10:51:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ufJiA-0001Uw-J6
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 10:47:52 -0400
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ufJi8-0004kr-RB
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 10:47:50 -0400
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-7115e32802bso18638197b3.1
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 07:47:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753454867; x=1754059667; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CJOhDt3ZNCrxyA9hi2rK/8xUT+/pY7A3sm9i35epeJM=;
- b=WUWUt0fB7jD4UlQYiXjAM2iRvpznuFK/t88hnLYv0i2KE3wnWPO/lp6U+CZEjtGdph
- YsXWh3s4nN0mqxkPlOTOLX5AjWMV+tutXQPLAj5eMr2YbaGtuxJvWVqya5VmypbnNKg7
- FT5NoE9LQXl8fY75fLvVDg8LalYcUKrhVlb3Aila/wGJsYiQDJDhu+6STnDV4laPV4Az
- ySNwktGrqy4Sa7oSNWGox6zlrFiUjmCWjJfopIBiSK4CjVNgvEemHzefdvIVhVZprQzE
- twO/58wqGYoB2DegBk7DjUETIvw+o7ygemf4OGFTkHjbS2FDUkiJbwV7KfU+SRiUR5FD
- pp3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753454867; x=1754059667;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CJOhDt3ZNCrxyA9hi2rK/8xUT+/pY7A3sm9i35epeJM=;
- b=ElaZ32yySia0nBZxIt9IRgwcTTVwgVl6GonBUUNhRNjWgiEPcQwFTLru4hCQjRezPC
- Rr3vicFzJZNfGKP4f3xXnD1beWpwPQaMiHm2xIymeK0G57QX4BKai6sSE6xCvk1ty68g
- d/KgXUDJYd8+DdAL8J8KYd7YBOdaXgF4THlZMmc7am76RLnFtnUCMMz0vpWbrZ/TQKIJ
- hFU1qwMQ4b7pcXh684rqjYA4FbnMLpwVdJdFUEXS9JGvhWvjF/NMQrQq1KFd54VB2gPX
- HAmjtHrlyJq3W4pA4WhaCo6WYjYUm8ZUPg0lJ9bjJdvR8k30HQX1lDswkIZmvcfR/K7n
- IA6w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXLkoQPihASf8il5GeQrrLL3cxv18w7j+fViuprVFaBhYyyzB8l+g1BnlADQQE+ZIFLzmjpLN86ib49@nongnu.org
-X-Gm-Message-State: AOJu0Yz+XYRWwyLDFg6jvK7t3W9P/brWX9zSAx1f3e3qi4hB4J07OoOg
- TE7hOHLbtv+4pda464Mp85auB87KWp2Cpp6bLmQE0hhHcwNzCC1sWEQJCwqKzQJarKRrcqrGVtH
- CoYMvup7NAPUJLV1g85zj76YZXkSw5eiFqaJEbnBE1w==
-X-Gm-Gg: ASbGncuhhvgZwPR0jU7Gei/EdWUyNvEiXbHofacO+z1kdzRm3nOfP6ccubuUYk8aDMR
- FeWJZcxSe9i1tim8RcU73u4fsse2vLR4APPo11VnTH5Lt5pUTsHVYY6UQkDuoPGWfe9z9FMurLu
- WghomROeb2PMQDlgGmJIkZKxCTGsvp+2TJZYg6MNZjDuosOE+B0FiZEoPNvVlE720YaQuiC08wL
- fEHeCHP
-X-Google-Smtp-Source: AGHT+IFTJPVssmf7lYpJt01kNjkpqKW2sadjr4roZgDv9pHYduyLeLDrSwJ2hbNJpuhUJo8EFznmPxHPvNZEheGPmuQ=
-X-Received: by 2002:a05:690c:640e:b0:718:4511:e14e with SMTP id
- 00721157ae682-719e32c00f0mr27910717b3.12.1753454867409; Fri, 25 Jul 2025
- 07:47:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ufJj6-0003mO-T9
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 10:48:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ufJj4-0004w4-Aa
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 10:48:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753454924;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bWaj/c7EiAYirnbBC4sKEVmRLwYV+SoDlK4wOOzB3i0=;
+ b=O0PNcbhjJyuDTAz6WWyR6AJMMuHEGtRgjZvEF2krgE3FRS07v9rnsgjRwHFlhbmE6vPvCJ
+ 3eoeK+GEFX1g0BGJRz/DC/gpLmGaYA6FK1s4aei3Vzdl+/AAS9x6XvwMjg5nuzNRjWE65Z
+ C+U4qg7BLor00t/Z1z+n3YC6EYMVFbg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-s1HIdEwiNM-2HQ0AediB3w-1; Fri,
+ 25 Jul 2025 10:48:41 -0400
+X-MC-Unique: s1HIdEwiNM-2HQ0AediB3w-1
+X-Mimecast-MFC-AGG-ID: s1HIdEwiNM-2HQ0AediB3w_1753454919
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BF7AB19560B6; Fri, 25 Jul 2025 14:48:38 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.162])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8E6D0195608D; Fri, 25 Jul 2025 14:48:36 +0000 (UTC)
+Date: Fri, 25 Jul 2025 15:48:33 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 4/4] tests/functional: add -k TEST_NAME_PATTERN CLI arg
+Message-ID: <aIOZQfMHt-jJUTSH@redhat.com>
+References: <20250725-functional_tests_debug_arg-v3-0-b89921baf810@linaro.org>
+ <20250725-functional_tests_debug_arg-v3-4-b89921baf810@linaro.org>
+ <aIOF2gPa8nbec2qp@redhat.com>
 MIME-Version: 1.0
-References: <20250725014755.2122579-1-gustavo.romero@linaro.org>
- <17254b66-4902-4ee0-8c9a-4082146255e3@linaro.org>
- <aad0c640-b736-4f5a-a6cf-e5459f60630d@linaro.org>
-In-Reply-To: <aad0c640-b736-4f5a-a6cf-e5459f60630d@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 25 Jul 2025 15:47:34 +0100
-X-Gm-Features: Ac12FXzDzGwCFKfwOapwgDTnFLNyyfOJ0D0ud4z9zLTmbjqkf2AbRr-AUSppCOA
-Message-ID: <CAFEAcA8CN2GEGGrPZGweFHffSsBLF5Q-kfHwYhiRXfrgqGJ_Mg@mail.gmail.com>
-Subject: Re: [PATCH] target/arm: Clean up of register field definitions
-To: Gustavo Romero <gustavo.romero@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, alex.bennee@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1134.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aIOF2gPa8nbec2qp@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.175,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,60 +89,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 25 Jul 2025 at 15:38, Gustavo Romero <gustavo.romero@linaro.org> wr=
-ote:
->
-> Hi Phil,
->
-> On 7/25/25 10:18, Philippe Mathieu-Daud=C3=A9 wrote:
-> > Hi Gustavo,
-> >
-> > On 25/7/25 03:47, Gustavo Romero wrote:
-> >>           if (stage2idx =3D=3D ARMMMUIdx_Stage2_S) {
-> >> -            s2walk_secure =3D !(env->cp15.vstcr_el2 & VSTCR_SW);
-> >> +            s2walk_secure =3D !(env->cp15.vstcr_el2 & R_VSTCR_SW_MASK=
-);
-> >
-> > FYI register API provides helper macros:
-> >
-> >              s2walk_secure =3D !FIELD_EX32(env->cp15.vstcr_el2, VSTCR, =
-SW);
-> >
->
-> Do you know which form is currently preferred? I see that R_<REGNAME>_<FI=
-ELD>_MASK is used a lot, .e.g, in helper.c.
+On Fri, Jul 25, 2025 at 02:25:46PM +0100, Daniel P. Berrangé wrote:
+> On Fri, Jul 25, 2025 at 12:41:25PM +0300, Manos Pitsidianakis wrote:
+> > Add a CLI argument that takes fnmatch(3)-style patterns as value and can
+> > be specified many times. Only tests that match the pattern will be
+> > executed. This argument is passed to unittest.main which takes the same
+> > argument.
+> > 
+> > Acked-by: Thomas Huth <thuth@redhat.com>
+> > Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> > ---
+> >  tests/functional/qemu_test/testcase.py | 23 +++++++++++++++++++++--
+> >  1 file changed, 21 insertions(+), 2 deletions(-)
 
-Where a mask is the most simple or useful way to get what
-you want, it's fine to use R_*_MASK directly; for instance
-in this patch
- (env->cp15.vstcr_el2 & (R_VSTCR_SA_MASK | R_VSTCR_SW_MASK)
-is better than
- (FIELD_EX64(env->cp15.vstcr_el2, VSTCR, SA) ||
-  FIELD_EX64(env->cp15.vstcr_el2, VSTCR, SW))
-and
-  value |=3D R_FOO_BAR_MASK;
-seems simpler than
-  value =3D FIELD_DP64(value, FOO, BAR, 1);
 
-I think (though this is to some extent a matter of personal taste).
 
-Where we're using the mask to test whether a single bit field
-is set or not, you could do it either way. I think in new code
-I would probably use the FIELD_EX64 macro, but a test against
-the mask value is fine too.
+> One of the goals with the new functional test system was that we stop trying
+> to (re-)invent a custom test runner harness, as was the case with Avocado,
+> in favour of relying on the pre-existing python infrastructure to the
+> greatest extent possible.
+> 
+> Seeing this, and all the other CLI arg handling added in this series, makes
+> me fairly uncomfortable, as it is effectively inventing a custom test runner
+> once again which is exactly what we wanted to get away from.
+> 
+> At the same time, there are some pieces in this series that do things that
+> unittest.main() can't do on its own.
 
-> Also, even tho the SW field in VSTCR is <=3D 31, VSTCR is a 64-bit regist=
-er, so should I really use FIELD_EX32 (which works) or FIELD_EX64 (my first=
- thought would be to use it, i.e. based on the register size, not the field=
-)?
+So considering the broader picture, we already have a load of tunables
+on the test execution that we control exclusively via envirnoment
+variables, as that gives us independance of the test runner, which
+owns sys.argv processing.
 
-Use FIELD_EX64 for working on 64-bit values, yes.
+So in terms of this series, IMHO, we should just add support for
+QEMU_TEST_DEBUG=1 and QEMU_TEST_KEEP_SCRATCH=1 as two new tunables,
+and not touch sys.argv at all.
 
-Personally I don't feel strongly about any of this, so I
-would be happy taking this patch the way it is.
 
--- PMM
+With that, the only thing we're missing is a way to enumerate the
+test cases, but IMHO that's the job of the test runner and thus
+out of scope for QEMU to solve.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
