@@ -2,70 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35694B118D7
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 09:05:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8751B118F1
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 09:12:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufCSV-0008ST-TD; Fri, 25 Jul 2025 03:03:11 -0400
+	id 1ufCb6-00021R-NM; Fri, 25 Jul 2025 03:12:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1ufCHK-0003aD-T6
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 02:51:38 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
+ id 1ufCZ0-0007Ye-J5
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 03:10:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1ufCHH-0007Qx-WD
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 02:51:38 -0400
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 56P6pGVb000912
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Fri, 25 Jul 2025 15:51:16 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=urVX6VNtr/giG2JufrS3v1GX5MVTsNTLsBLIPmNQ+CE=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1753426276; v=1;
- b=ZsvXKu6syqIfWMYrUbakjBPz6mRzuQGUzKthMHv1AQuDwC+CLSP9tCEVfAgdeuUI
- tey+bFc0DrOa7id7fl6yIGvDyxvE2WtVvtYhKkVeg1hU3smVQK1AJ03jF77CVpGG
- R0YCa5UtsW0xuYASZ/mqnF4vJch4yiETLlJvw7dMk0AEbKSB/RjK90UqS/8GG+q8
- NMnyhyi3v15ca5xL2pnJbDEOANsfToiBfoYE291WDDeZtmO3LysXoqefwsIZ+3ai
- zNA1gZ4fNii9aL83nTT2WwWkT2Jzg1fdTOnpJhn8m6fAk1Oq4PpZkfI7glwsYBBv
- XJ5k9Mnw65DGOjobmKVuVA==
-Message-ID: <85865cbf-cd91-4d43-aab2-0d32188ab96a@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 25 Jul 2025 15:51:15 +0900
+ (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
+ id 1ufCYv-0003Ie-PT
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 03:09:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753427387;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=y0W/PzWHuP0jUfaE5MFTD5SnTMtcqIvZy/uOmivKEQw=;
+ b=MRntsjXFSAtOI5r5HOFccs96ebEOh8Ns93N+C/RZxNy/TYB6H6OBo+4bchSE4sipWUjpIJ
+ Jg4QhVuNBjc8rA8g/1XAFyn8SXrfCdvCO0y1KH2zz8kqJqUI2Rn8nzg5Qx5Sgjc9PkE0xm
+ L7fMjM7urm0lwL3qHHzB/c+cb03fHIk=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-n7vj1YQ3MV2AjO7cfPUIUA-1; Fri, 25 Jul 2025 03:09:45 -0400
+X-MC-Unique: n7vj1YQ3MV2AjO7cfPUIUA-1
+X-Mimecast-MFC-AGG-ID: n7vj1YQ3MV2AjO7cfPUIUA_1753427384
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-75ab147e0a3so3084115b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 00:09:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753427384; x=1754032184;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=y0W/PzWHuP0jUfaE5MFTD5SnTMtcqIvZy/uOmivKEQw=;
+ b=B+C5bO8nKf2eBocPHyiVqOsxVwtIJXjuUu3JJ+dY2GAefxIV+XljkT1c8kQ0gB1rxH
+ 06vttzR++cTRogrO5httgEUgPwPffrueA1bbB0aykZZynpy38tpKyAKHpUubOif3piRn
+ QXydTaNGnslP3PkvBR/9h2YquhHTvsVA8DRayVZkXXQPhgJagRiN2e7XezY0iW0lfJrd
+ l4OighOcDsHiHaCFggNE75Z55Zfqw/HCae8NrbdZqGgjs+9CrxO78TSWNQk5wwJHUZjy
+ C8Uly861klDJax1d5jah3E8mE3I4A43rGZsRzVNlZPGPGhDTg287RFQcbDvEDPLQRSlW
+ mXpw==
+X-Gm-Message-State: AOJu0Yx7o2cwAGADMJ4y0dsO6GszI3NDPyAo/PMO8eL2DvCWAZ8ds0Rv
+ yqIMRYPgubMT08rlK7G4WYcM/WAjhB/mq02AT4voDDA6+pMfn7A8Pcm+88aOEkzySjRdoprCm1K
+ qcDLHeelrX7UusVqB7MujcQYCMm7w//KAbKOYt/IwL4LuKW1Oaqu/Fu02
+X-Gm-Gg: ASbGncs3bSSnpq/K4Ycybq/zsZY3g8eZJnl7fkRTCXqTZTAU+G4THn+b716S7FBjekS
+ pGBEfv8d0EzrrmaHpYZCrQql35r1/FiCXCwL1qak81gldC7yAbHRG+AlZKLfWuQnirRGjfjMOlo
+ xX7adszeMtfnXcnc8vo+x6LqTs0TRbWvvjGKQk9tpiuRtgAKGZ/D00kxo/iNvkqMG/m9mhdq3u8
+ eOMs9sbOt9F+DyXZ133HfJmou00cjE0kkxGFMLMHFnx8bI+62WprCzvuXgxMRVdGqA+INCtglLO
+ +q6+ywYgReX3ObqK9G8JzBVOWzu0RAmrtEU3zjEj1Qmeoyx4N93G
+X-Received: by 2002:a05:6a20:a126:b0:232:fcfc:7209 with SMTP id
+ adf61e73a8af0-23d701a89d9mr1307010637.35.1753427384356; 
+ Fri, 25 Jul 2025 00:09:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFvggfeV4kCsnRvsdb/gjNRtXEfdWGNVK6vD1z/G5+ynMyE16sKd8MEF0ubcggllkcZRQyVyg==
+X-Received: by 2002:a05:6a20:a126:b0:232:fcfc:7209 with SMTP id
+ adf61e73a8af0-23d701a89d9mr1306958637.35.1753427383917; 
+ Fri, 25 Jul 2025 00:09:43 -0700 (PDT)
+Received: from armenon-kvm.bengluru.csb ([49.36.101.73])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7630c947c37sm826136b3a.46.2025.07.25.00.09.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 25 Jul 2025 00:09:43 -0700 (PDT)
+Date: Fri, 25 Jul 2025 12:39:32 +0530
+From: Arun Menon <armenon@redhat.com>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org,
+ qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>
+Subject: Re: [PATCH v6 20/24] migration: push Error **errp into
+ qemu_loadvm_state()
+Message-ID: <aIMtrDeDtALlH4Qf@armenon-kvm.bengluru.csb>
+References: <20250721-propagate_tpm_error-v6-0-fef740e15e17@redhat.com>
+ <20250721-propagate_tpm_error-v6-20-fef740e15e17@redhat.com>
+ <155575ab-29c0-4591-a62a-19a6ae3283a6@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 06/14] virtio: add support for negotiating extended
- features
-To: Paolo Abeni <pabeni@redhat.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang
- <jasowang@redhat.com>, Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Luigi Rizzo <lrizzo@google.com>,
- Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
- Vincenzo Maffione <v.maffione@gmail.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <cover.1753297661.git.pabeni@redhat.com>
- <9c09cad354aaeda4a4925650c782ff7642da593e.1753297661.git.pabeni@redhat.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <9c09cad354aaeda4a4925650c782ff7642da593e.1753297661.git.pabeni@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <155575ab-29c0-4591-a62a-19a6ae3283a6@rsg.ci.i.u-tokyo.ac.jp>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armenon@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.45,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,139 +128,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/07/24 4:31, Paolo Abeni wrote:
-> The virtio specifications allows for up to 128 bits for the
-> device features. Soon we are going to use some of the 'extended'
-> bits features for the virtio net driver.
-> 
-> Add support to allow extended features negotiation on a per
-> devices basis. Devices willing to negotiated extended features
-> need to implemented a new pair of features getter/setter, the
-> core will conditionally use them instead of the basic one.
-> 
-> Note that 'bad_features' don't need to be extended, as they are
-> bound to the 64 bits limit.
-> 
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> ---
-> v3 -> v4:
->    - use new virtio_features macro names
-> 
-> v2 -> v3:
->    - _array -> _ex
-> 
-> v1 -> v2:
->    - uint128_t -> uint64_t[]
-> ---
->   hw/virtio/virtio-bus.c     | 11 ++++++++---
->   hw/virtio/virtio.c         | 18 +++++++++++++-----
->   include/hw/virtio/virtio.h |  4 ++++
->   3 files changed, 25 insertions(+), 8 deletions(-)
-> 
-> diff --git a/hw/virtio/virtio-bus.c b/hw/virtio/virtio-bus.c
-> index 11adfbf3ab..cef944e015 100644
-> --- a/hw/virtio/virtio-bus.c
-> +++ b/hw/virtio/virtio-bus.c
-> @@ -62,9 +62,14 @@ void virtio_bus_device_plugged(VirtIODevice *vdev, Error **errp)
->       }
->   
->       /* Get the features of the plugged device. */
-> -    assert(vdc->get_features != NULL);
-> -    vdev->host_features = vdc->get_features(vdev, vdev->host_features,
-> -                                            &local_err);
-> +    if (vdc->get_features_ex) {
-> +        vdc->get_features_ex(vdev, vdev->host_features_ex, &local_err);
-> +    } else {
-> +        assert(vdc->get_features != NULL);
-> +        virtio_features_from_u64(vdev->host_features_ex,
-> +                                 vdc->get_features(vdev, vdev->host_features,
-> +                                                   &local_err));
-> +    }
->       if (local_err) {
->           error_propagate(errp, local_err);
->           return;
-> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> index c6896e000c..a7c695f633 100644
-> --- a/hw/virtio/virtio.c
-> +++ b/hw/virtio/virtio.c
-> @@ -3093,7 +3093,9 @@ static int virtio_set_features_nocheck(VirtIODevice *vdev, const uint64_t *val)
->       bad = virtio_features_andnot(tmp, val, vdev->host_features_ex);
->       virtio_features_and(tmp, val, vdev->host_features_ex);
->   
-> -    if (k->set_features) {
-> +    if (k->set_features_ex) {
-> +        k->set_features_ex(vdev, val);
-> +    } else if (k->set_features) {
->           bad = bad || virtio_features_use_ex(tmp);
->           k->set_features(vdev, tmp[0]);
->       }
-> @@ -3136,9 +3138,8 @@ virtio_set_features_nocheck_maybe_co(VirtIODevice *vdev,
->       }
->   }
->   
-> -int virtio_set_features(VirtIODevice *vdev, uint64_t val)
-> +int virtio_set_features_ex(VirtIODevice *vdev, const uint64_t *features)
->   {
-> -    uint64_t features[VIRTIO_FEATURES_NU64S];
->       int ret;
->       /*
->        * The driver must not attempt to set features after feature negotiation
-> @@ -3148,13 +3149,12 @@ int virtio_set_features(VirtIODevice *vdev, uint64_t val)
->           return -EINVAL;
->       }
->   
-> -    if (val & (1ull << VIRTIO_F_BAD_FEATURE)) {
-> +    if (features[0] & (1ull << VIRTIO_F_BAD_FEATURE)) {
->           qemu_log_mask(LOG_GUEST_ERROR,
->                         "%s: guest driver for %s has enabled UNUSED(30) feature bit!\n",
->                         __func__, vdev->name);
->       }
->   
-> -    virtio_features_from_u64(features, val);
->       ret = virtio_set_features_nocheck(vdev, features);
->       if (virtio_vdev_has_feature(vdev, VIRTIO_RING_F_EVENT_IDX)) {
->           /* VIRTIO_RING_F_EVENT_IDX changes the size of the caches.  */
-> @@ -3174,6 +3174,14 @@ int virtio_set_features(VirtIODevice *vdev, uint64_t val)
->       return ret;
->   }
->   
-> +int virtio_set_features(VirtIODevice *vdev, uint64_t val)
-> +{
-> +    uint64_t features[VIRTIO_FEATURES_NU64S];
-> +
-> +    virtio_features_from_u64(features, val);
-> +    return virtio_set_features_ex(vdev, features);
-> +}
-> +
+Hi,
+Thanks for the review
 
-Nitpick: this patch will be smaller by a few lines if you move 
-virtio_set_features() before virtio_set_features_ex(). It will also 
-align the order of these functions with the header file.
-
->   void virtio_reset(void *opaque)
->   {
->       VirtIODevice *vdev = opaque;
-> diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-> index 39e4059a66..2aeb021fb3 100644
-> --- a/include/hw/virtio/virtio.h
-> +++ b/include/hw/virtio/virtio.h
-> @@ -178,6 +178,9 @@ struct VirtioDeviceClass {
->       /* This is what a VirtioDevice must implement */
->       DeviceRealize realize;
->       DeviceUnrealize unrealize;
-> +    void (*get_features_ex)(VirtIODevice *vdev, uint64_t *requested_features,
-> +                            Error **errp);
-> +    void (*set_features_ex)(VirtIODevice *vdev, const uint64_t *val);
->       uint64_t (*get_features)(VirtIODevice *vdev,
->                                uint64_t requested_features,
->                                Error **errp);
-> @@ -373,6 +376,7 @@ void virtio_queue_reset(VirtIODevice *vdev, uint32_t queue_index);
->   void virtio_queue_enable(VirtIODevice *vdev, uint32_t queue_index);
->   void virtio_update_irq(VirtIODevice *vdev);
->   int virtio_set_features(VirtIODevice *vdev, uint64_t val);
-> +int virtio_set_features_ex(VirtIODevice *vdev, const uint64_t *val);
->   
->   /* Base devices.  */
->   typedef struct VirtIOBlkConf VirtIOBlkConf;
+On Mon, Jul 21, 2025 at 10:01:24PM +0900, Akihiko Odaki wrote:
+> On 2025/07/21 20:29, Arun Menon wrote:
+> > This is an incremental step in converting vmstate loading
+> > code to report error via Error objects instead of directly
+> > printing it to console/monitor.
+> > It is ensured that qemu_loadvm_state() must report an error
+> > in errp, in case of failure.
+> > 
+> > Signed-off-by: Arun Menon <armenon@redhat.com>
+> > ---
+> >   migration/migration.c |  5 +++--
+> >   migration/savevm.c    | 25 +++++++++++++------------
+> >   migration/savevm.h    |  2 +-
+> >   3 files changed, 17 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/migration/migration.c b/migration/migration.c
+> > index d748a02712dc4ebc2de6b0488fb199c92c4d4079..09fadf36dbbbd2f68df1e4cafbf3a51b18531978 100644
+> > --- a/migration/migration.c
+> > +++ b/migration/migration.c
+> > @@ -881,7 +881,7 @@ process_incoming_migration_co(void *opaque)
+> >                         MIGRATION_STATUS_ACTIVE);
+> >       mis->loadvm_co = qemu_coroutine_self();
+> > -    ret = qemu_loadvm_state(mis->from_src_file);
+> > +    ret = qemu_loadvm_state(mis->from_src_file, &local_err);
+> >       mis->loadvm_co = NULL;
+> >       trace_vmstate_downtime_checkpoint("dst-precopy-loadvm-completed");
+> > @@ -908,7 +908,8 @@ process_incoming_migration_co(void *opaque)
+> >       }
+> >       if (ret < 0) {
+> > -        error_setg(&local_err, "load of migration failed: %s", strerror(-ret));
+> > +        error_prepend(&local_err, "load of migration failed: %s ",
+> > +                      strerror(-ret));
+> >           goto fail;
+> >       }
+> > diff --git a/migration/savevm.c b/migration/savevm.c
+> > index ba146f91427f2a36880aadeb16b11ab2b7df099a..1261e81c86f836e6b5a155ba1880b5823a779567 100644
+> > --- a/migration/savevm.c
+> > +++ b/migration/savevm.c
+> > @@ -3137,27 +3137,24 @@ out:
+> >       return ret;
+> >   }
+> > -int qemu_loadvm_state(QEMUFile *f)
+> > +int qemu_loadvm_state(QEMUFile *f, Error **errp)
+> >   {
+> >       MigrationState *s = migrate_get_current();
+> >       MigrationIncomingState *mis = migration_incoming_get_current();
+> > -    Error *local_err = NULL;
+> >       int ret;
+> > -    if (qemu_savevm_state_blocked(&local_err)) {
+> > -        error_report_err(local_err);
+> > +    if (qemu_savevm_state_blocked(errp)) {
+> >           return -EINVAL;
+> >       }
+> >       qemu_loadvm_thread_pool_create(mis);
+> > -    ret = qemu_loadvm_state_header(f, NULL);
+> > +    ret = qemu_loadvm_state_header(f, errp);
+> >       if (ret) {
+> >           return ret;
+> >       }
+> > -    if (qemu_loadvm_state_setup(f, &local_err) != 0) {
+> > -        error_report_err(local_err);
+> > +    if (qemu_loadvm_state_setup(f, errp) != 0) {
+> >           return -EINVAL;
+> >       }
+> > @@ -3167,7 +3164,7 @@ int qemu_loadvm_state(QEMUFile *f)
+> >       cpu_synchronize_all_pre_loadvm();
+> > -    ret = qemu_loadvm_state_main(f, mis, NULL);
+> > +    ret = qemu_loadvm_state_main(f, mis, errp);
+> >       qemu_event_set(&mis->main_thread_load_event);
+> >       trace_qemu_loadvm_state_post_main(ret);
+> > @@ -3185,8 +3182,12 @@ int qemu_loadvm_state(QEMUFile *f)
+> >           if (migrate_has_error(migrate_get_current()) ||
+> >               !qemu_loadvm_thread_pool_wait(s, mis)) {
+> >               ret = -EINVAL;
+> > +            error_setg(errp, "Error while loading vmstate : %d", ret);
+> 
+> Printing ret here does not help much as ret is always -EINVAL here.
+> 
+> Having an error message different from qemu_file_get_error() will help more
+> as it will allow reliably distinguishing these two error conditions.
+Yes, maybe I can add "Migration stream has error" to the error message.
+> 
+> >           } else {
+> >               ret = qemu_file_get_error(f);
+> > +            if (ret < 0) {
+> > +                error_setg(errp, "Error while loading vmstate : %d", ret);
+> > +            }
+> >           }
+> >       }
+> >       /*
+> > @@ -3472,10 +3473,10 @@ void qmp_xen_load_devices_state(const char *filename, Error **errp)
+> >       f = qemu_file_new_input(QIO_CHANNEL(ioc));
+> >       object_unref(OBJECT(ioc));
+> > -    ret = qemu_loadvm_state(f);
+> > +    ret = qemu_loadvm_state(f, errp);
+> >       qemu_fclose(f);
+> >       if (ret < 0) {
+> > -        error_setg(errp, "loading Xen device state failed");
+> > +        error_prepend(errp, "loading Xen device state failed ");
+> >       }
+> >       migration_incoming_state_destroy();
+> >   }
+> > @@ -3546,13 +3547,13 @@ bool load_snapshot(const char *name, const char *vmstate,
+> >           ret = -EINVAL;
+> >           goto err_drain;
+> >       }
+> > -    ret = qemu_loadvm_state(f);
+> > +    ret = qemu_loadvm_state(f, errp);
+> >       migration_incoming_state_destroy();
+> >       bdrv_drain_all_end();
+> >       if (ret < 0) {
+> > -        error_setg(errp, "Error %d while loading VM state", ret);
+> > +        error_prepend(errp, "Error %d while loading VM state ", ret);
+> >           return false;
+> >       }
+> > diff --git a/migration/savevm.h b/migration/savevm.h
+> > index fd7419e6ff90062970ed246b3ea71e6d49a6e372..a6df5198f3fe1a39fc0e6ce3e79cf7a5d8e032db 100644
+> > --- a/migration/savevm.h
+> > +++ b/migration/savevm.h
+> > @@ -64,7 +64,7 @@ void qemu_savevm_send_colo_enable(QEMUFile *f);
+> >   void qemu_savevm_live_state(QEMUFile *f);
+> >   int qemu_save_device_state(QEMUFile *f);
+> > -int qemu_loadvm_state(QEMUFile *f);
+> > +int qemu_loadvm_state(QEMUFile *f, Error **errp);
+> >   void qemu_loadvm_state_cleanup(MigrationIncomingState *mis);
+> >   int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis,
+> >                              Error **errp);
+> > 
+> 
+Regards,
+Arun
 
 
