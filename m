@@ -2,79 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1101B12277
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 19:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F29B1228A
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 19:05:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufLp7-0004qn-5g; Fri, 25 Jul 2025 13:03:09 -0400
+	id 1ufLqv-0007Ng-Fg; Fri, 25 Jul 2025 13:05:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3e7iDaA4KCkYitm5zqkpizl0wvowwotm.kwuymu2-lm3mtvwvov2.wzo@flex--alexrichardson.bounces.google.com>)
- id 1ufLnr-0002nu-So
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 13:01:52 -0400
-Received: from mail-pf1-x44a.google.com ([2607:f8b0:4864:20::44a])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1ufLqs-0007MK-3n
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 13:04:58 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3e7iDaA4KCkYitm5zqkpizl0wvowwotm.kwuymu2-lm3mtvwvov2.wzo@flex--alexrichardson.bounces.google.com>)
- id 1ufLnq-0002xh-1a
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 13:01:51 -0400
-Received: by mail-pf1-x44a.google.com with SMTP id
- d2e1a72fcca58-748e1e474f8so3778843b3a.2
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 10:01:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1ufLqn-0003kb-Eg
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 13:04:57 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-75ce8f8a3cdso1664228b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 10:04:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1753462907; x=1754067707; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Ev4Mo5hPC03skGFlEQroGFdqhlWLKbqp5bRMUSJzt1I=;
- b=1motN1A3PEviEHQQNvjD7JTohS3RTkqGCIYT/SPW+IkOTmeCalvkr+qdvRmV0tVN6X
- a2t8Y+ynaU0QCTq0am055wTobs5WuR9msm2+H8UW1c3+RSXn2WBrytHROBRr+5tytTTa
- h9Fn8493oDqxKvntXBiCQM/TIh4gK5YYZRbglYkLZWrrKyTCKfvFqqQ5+bAKAa0z404M
- mv8mYknMaR8RVTBnmZd5PiPueLwn4d9KzjIHxMNFb7qA03MvviP6wZIBOnSYbGwvbjF4
- 2DhA9Cx9Jhy8VUC+4AxBV8UuGwngRV4oSOUUE3Y95js+3WYqLvnKprGs7mU+3mUaMA2P
- lk9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753462907; x=1754067707;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ d=linaro.org; s=google; t=1753463092; x=1754067892; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Ev4Mo5hPC03skGFlEQroGFdqhlWLKbqp5bRMUSJzt1I=;
- b=vWK76ZG7hJRe1kGPLOxWK2AUluYrlJIaKRXp/xysLSQ2xafpef1Mx51nykKF3UIvZ2
- Wop8visZRGyM/ekusod4SgidFt3qG/FDimZb18BsisTMKudo6vA6cSdRIqQUGrBiAdGl
- UBrJs8Kz4mNo0PauRwWCuQt4FfU6l/lvUAJ8pN66Lk/HHvRtbQ/QNUCrmPt62jXcmHpS
- liUrCMkIkiYA20RWE5RgA+9sfZXHR2QdXNaZIoAfH7LUmcbcN4r4JtRGju0frw2JZQNV
- L4nOW6VmU/tuvtxksGnpuuI3NrRl1Z5eZEccUDd3CV7NosUkejTcOPYcqJQXHNkgAGER
- p1sA==
-X-Gm-Message-State: AOJu0YwLyd71eD96jhn2HE+MORkwiOz6kMJkO/OOgia5nvr+Y/DdYXLF
- P0Md98zAgjEyXfrvRkJHkYchwilC3fVssJaj8ukMHKOdj9b92pGgYAn3gTf2ibGCL5IaY//Bi/l
- S5/wLJu1sngIFweRskdJUsEfbT+bVdtjysBO/kFNqd0NWFmWAI+i9LxaA0K+2zhdR0j4ThPnWc5
- Yb7uSO/ZscTM9zq/J8HHn0GFgRPgVyqJWgRmKsulYEzRYXGkpO/SXmor5Hw0MunfFY25Reah3aY
- SrxqQ==
-X-Google-Smtp-Source: AGHT+IFTkG77MgtxnoWE9eqBEOdJ+e8DRQgjDtXJ3MVG50PRmCT9qeYZqjuk02bheFy0Gjx1b7BnuOBZU9QEXzzSCY/gzA==
-X-Received: from pfra5.prod.google.com ([2002:aa7:8e85:0:b0:746:2e5d:3e6a])
- (user=alexrichardson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:1a8c:b0:746:24c9:c92e with SMTP id
- d2e1a72fcca58-76332b4ffe8mr5066814b3a.8.1753462907077; 
- Fri, 25 Jul 2025 10:01:47 -0700 (PDT)
-Date: Fri, 25 Jul 2025 10:01:36 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.1.470.g6ba607880d-goog
-Message-ID: <20250725170136.145116-1-alexrichardson@google.com>
-Subject: [PATCH v3] target/arm: add support for 64-bit PMCCNTR in AArch32 mode
-From: Alex Richardson <alexrichardson@google.com>
-To: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: Alex Richardson <alexrichardson@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::44a;
- envelope-from=3e7iDaA4KCkYitm5zqkpizl0wvowwotm.kwuymu2-lm3mtvwvov2.wzo@flex--alexrichardson.bounces.google.com;
- helo=mail-pf1-x44a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ bh=Ql3CqjEktw+CmiUF4vCUrznrOhJeXlMNKa5Yt/1FCsU=;
+ b=H4PCSvWLet5ZuNESktYgtIU0GbuvZqCDQPZQvDC9NngbyrwOvL90OgKDlBOxdfUvjO
+ 6BZuUR0l1F3KAMBj/VNcj83SLatMzHl7BweN8y9hMn5gmqZAooLx4y8OPSMiUVSBg++v
+ uPgqWrbnNqrvE3gfY2OJTSHgv09BZ6pbuyULW3O8IG+0szlP4vE9pf2KsriKXYc/UYXO
+ AHc8RzP1HUuuV+hmlCtpzwlJS6yBreeB3WagSidXt7lXnQLg6S2uvDhW8CvIJ1vRqepT
+ jH6xXC+B9+ZlR3Kb46ERdCGHCpStn6+/J8UnbcQotI20WIQ1ArDkUxlW/BQ6rLVufIaC
+ zs8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753463092; x=1754067892;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ql3CqjEktw+CmiUF4vCUrznrOhJeXlMNKa5Yt/1FCsU=;
+ b=Umqrsw1fU1ja1yJR/goFwL9t6kmHih7R6coV/SyELplwIpuYRWfuDYOaMOSYPK9Z1W
+ +vXrewfs7yBf5ffa4Uy5l6cK5Z065d8/vG9c9Agq92nvz/XbylZS9dJuzW2HMB5Q64k6
+ 16HZobNC0Th1b/QwullsnzDwGY440MwHXA4zgQeOnaFT0/ingyKD7QowpJPWSz3zm+G1
+ JvCWJpl0vm2FXLuX3RESWF75Ns3abv9OhhuVaPvqyhYPLJ9LAqkguKo5gsViGTCFR2L0
+ /0GdPUsQcnxRYJwUUyh74x95hJQuMaZsMyZf4cwDuU1tnCuATx9MBCBkyBWFPUgiWvuQ
+ +lVQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVOa1TZy6lFp/n/rEppxVj60k5baRBzzioCehgE77uaTbHqycyt07wH7JmBYEMwtVId03IpUIPrwEXX@nongnu.org
+X-Gm-Message-State: AOJu0YxEtVU5XhG4fHt3CAHWcwwU2z+n/u/jKsxlqyw/5JbmJC2srBLD
+ 89+mg6+k6mDZiSQD/eEgbNghQXhYOI9lTGtdlUf9r4VYjb08BHrnzdhjWF4I4tdpDGaIaQQa2Nn
+ 5Dmr5
+X-Gm-Gg: ASbGnct0Q9yl2F7HUxmpFBTKYCJcH8JoXaEr2BgjGtbM9pXv8KvRbJTdKAp6jePVKK2
+ 3CiYSvCpYkecOwhe4eAuHfGx+uSeEKbIUWFhADb49FWewqSZAVAVgyJggNMfxWJeFxb5/7qXOPk
+ RufbvtCEME/KdoglnSCljLsbv9HSjQqbZY2JsHkzLUIe40bAOR6Jyoq+RGUl4kB3TGcqctFnLra
+ S2pjw4+10ZP8MGpAoqhnG1mJAQAy8geRHArzck9cwvP3Ki2mTlJB6BIKCCy3NUO54IToBqpWxNo
+ jcHBRmAQOVJIeu5PT9cat0/GVQxc6b2F+yHjG0Wjs6TX0NjJ1esdnmNCcTklFwyPlwxsx217Hjw
+ xo7w7utSyyDsVPqRih+tdvrwK7TkslzmBaM0=
+X-Google-Smtp-Source: AGHT+IFBgvrxn22l1e9gCBPs2dq+IIZ7QTOroG4eCCipE6X3S5SO77+tnehfj/lDsUMkJbHfC023dg==
+X-Received: by 2002:a05:6a00:cc3:b0:75f:8239:5c2b with SMTP id
+ d2e1a72fcca58-76339569eeamr4026811b3a.23.1753463091438; 
+ Fri, 25 Jul 2025 10:04:51 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7640adfbf7asm147103b3a.75.2025.07.25.10.04.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 25 Jul 2025 10:04:50 -0700 (PDT)
+Message-ID: <d0e8ec94-1430-4db3-8c77-9dcdec3e67dc@linaro.org>
+Date: Fri, 25 Jul 2025 10:04:50 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 1/1] log: make '-msg timestamp=on' apply to all qemu_log
+ usage
+Content-Language: en-US
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>, Mads Ynddal <mads@ynddal.dk>,
+ Alexandre Iooss <erdnaxe@crans.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+References: <20250724144636.107828-1-stefanha@redhat.com>
+ <20250724144636.107828-2-stefanha@redhat.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250724144636.107828-2-stefanha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,88 +108,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the PMUv3, a new AArch32 64-bit (MCRR/MRRC) accessor for the
-PMCCNTR was added. In QEMU we forgot to implement this, so only
-provide the 32-bit accessor. Since we have a 64-bit PMCCNTR
-sysreg for AArch64, adding the 64-bit AArch32 version is easy.
+On 7/24/25 7:46 AM, Stefan Hajnoczi wrote:
+> From: Daniel P. Berrangé <berrange@redhat.com>
+> 
+> Currently the tracing 'log' back emits special code to add timestamps
+> to trace points sent via qemu_log(). This current impl is a bad design
+> for a number of reasons.
+> 
+>   * It changes the QEMU headers, such that 'error-report.h' content
+>     is visible to all files using tracing, but only when the 'log'
+>     backend is enabled. This has led to build failure bugs as devs
+>     rarely test without the (default) 'log' backend enabled, and
+>     CI can't cover every scenario for every trace backend.
+> 
+>   * It bloats the trace points definitions which are inlined into
+>     every probe location due to repeated inlining of timestamp
+>     formatting code, adding MBs of overhead to QEMU.
+> 
+>   * The tracing subsystem should not be treated any differently
+>     from other users of qemu_log. They all would benefit from
+>     having timestamps present.
+> 
+>   * The timestamp emitted with the tracepoints is in a needlessly
+>     different format to that used by error_report() in response
+>     to '-msg timestamp=on'.
+> 
+> This fixes all these issues simply by moving timestamp formatting
+> into qemu_log, using the same approach as for error_report.
+> 
+> The code before:
+> 
+>    static inline void _nocheck__trace_qcrypto_tls_creds_get_path(void * creds, const char * filename, const char * path)
+>    {
+>        if (trace_event_get_state(TRACE_QCRYPTO_TLS_CREDS_GET_PATH) && qemu_loglevel_mask(LOG_TRACE)) {
+>            if (message_with_timestamp) {
+>                struct timeval _now;
+>                gettimeofday(&_now, NULL);
+>                qemu_log("%d@%zu.%06zu:qcrypto_tls_creds_get_path " "TLS creds path creds=%p filename=%s path=%s" "\n",
+>                         qemu_get_thread_id(),
+>                         (size_t)_now.tv_sec, (size_t)_now.tv_usec
+>                         , creds, filename, path);
+>            } else {
+>                qemu_log("qcrypto_tls_creds_get_path " "TLS creds path creds=%p filename=%s path=%s" "\n", creds, filename, path);
+>            }
+>        }
+>    }
+> 
+> and after:
+> 
+>    static inline void _nocheck__trace_qcrypto_tls_creds_get_path(void * creds, const char * filename, const char * path)
+>    {
+>        if (trace_event_get_state(TRACE_QCRYPTO_TLS_CREDS_GET_PATH) && qemu_loglevel_mask(LOG_TRACE)) {
+>            qemu_log("qcrypto_tls_creds_get_path " "TLS creds path creds=%p filename=%s path=%s" "\n", creds, filename, path);
+>        }
+>    }
+> 
+> The log and error messages before:
+> 
+>    $ qemu-system-x86_64 -trace qcrypto* -object tls-creds-x509,id=tls0,dir=$HOME/tls -msg timestamp=on
+>    2986097@1753122905.917608:qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55d925bd9490 dir=/var/home/berrange/tls
+>    2986097@1753122905.917621:qcrypto_tls_creds_get_path TLS creds path creds=0x55d925bd9490 filename=ca-cert.pem path=<none>
+>    2025-07-21T18:35:05.917626Z qemu-system-x86_64: Unable to access credentials /var/home/berrange/tls/ca-cert.pem: No such file or directory
+> 
+> and after:
+> 
+>    $ qemu-system-x86_64 -trace qcrypto* -object tls-creds-x509,id=tls0,dir=$HOME/tls -msg timestamp=on
+>    2025-07-21T18:43:28.089797Z qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55bf5bf12380 dir=/var/home/berrange/tls
+>    2025-07-21T18:43:28.089815Z qcrypto_tls_creds_get_path TLS creds path creds=0x55bf5bf12380 filename=ca-cert.pem path=<none>
+>    2025-07-21T18:43:28.089819Z qemu-system-x86_64: Unable to access credentials /var/home/berrange/tls/ca-cert.pem: No such file or directory
+> 
+> The binary size before:
+> 
+>    $ ls -alh qemu-system-x86_64
+>    -rwxr-xr-x. 1 berrange berrange 87M Jul 21 19:39 qemu-system-x86_64
+>    $ strip qemu-system-x86_64
+>    $ ls -alh qemu-system-x86_64
+>    -rwxr-xr-x. 1 berrange berrange 30M Jul 21 19:39 qemu-system-x86_64
+> 
+> and after:
+> 
+>    $ ls -alh qemu-system-x86_64
+>    -rwxr-xr-x. 1 berrange berrange 85M Jul 21 19:41 qemu-system-x86_64
+>    $ strip qemu-system-x86_64
+>    $ ls -alh qemu-system-x86_64
+>    -rwxr-xr-x. 1 berrange berrange 29M Jul 21 19:41 qemu-system-x86_64
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> Message-id: 20250721185452.3016488-1-berrange@redhat.com
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>   util/log.c                       | 20 +++++++++++++++++++-
+>   scripts/tracetool/backend/log.py | 14 +-------------
+>   2 files changed, 20 insertions(+), 14 deletions(-)
+> 
+> diff --git a/util/log.c b/util/log.c
+> index 58d24de48a..abdcb6b311 100644
+> --- a/util/log.c
+> +++ b/util/log.c
+> @@ -145,10 +145,28 @@ void qemu_log_unlock(FILE *logfile)
+>   
+>   void qemu_log(const char *fmt, ...)
+>   {
+> -    FILE *f = qemu_log_trylock();
+> +    FILE *f;
+> +    g_autofree const char *timestr = NULL;
+> +
+> +    /*
+> +     * Prepare the timestamp *outside* the logging
+> +     * lock so it better reflects when the message
+> +     * was emitted if we are delayed acquiring the
+> +     * mutex
+> +     */
+> +    if (message_with_timestamp) {
+> +        g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
+> +        timestr = g_date_time_format_iso8601(dt);
+> +    }
+> +
+> +    f = qemu_log_trylock();
+>       if (f) {
+>           va_list ap;
+>   
+> +        if (timestr) {
+> +            fprintf(f, "%s ", timestr);
+> +        }
+> +
+>           va_start(ap, fmt);
+>           vfprintf(f, fmt, ap);
+>           va_end(ap);
+> diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend/log.py
+> index 5c9d09dd11..eb50ceea34 100644
+> --- a/scripts/tracetool/backend/log.py
+> +++ b/scripts/tracetool/backend/log.py
+> @@ -20,7 +20,6 @@
+>   
+>   def generate_h_begin(events, group):
+>       out('#include "qemu/log-for-trace.h"',
+> -        '#include "qemu/error-report.h"',
+>           '')
+>   
+>   
+> @@ -32,20 +31,9 @@ def generate_h(event, group):
+>       cond = "trace_event_get_state(%s)" % ("TRACE_" + event.name.upper())
+>   
+>       out('    if (%(cond)s && qemu_loglevel_mask(LOG_TRACE)) {',
+> -        '        if (message_with_timestamp) {',
+> -        '            struct timeval _now;',
+> -        '            gettimeofday(&_now, NULL);',
+>           '#line %(event_lineno)d "%(event_filename)s"',
+> -        '            qemu_log("%%d@%%zu.%%06zu:%(name)s " %(fmt)s "\\n",',
+> -        '                     qemu_get_thread_id(),',
+> -        '                     (size_t)_now.tv_sec, (size_t)_now.tv_usec',
+> -        '                     %(argnames)s);',
+> +        '        qemu_log("%(name)s " %(fmt)s "\\n"%(argnames)s);',
+>           '#line %(out_next_lineno)d "%(out_filename)s"',
+> -        '        } else {',
+> -        '#line %(event_lineno)d "%(event_filename)s"',
+> -        '            qemu_log("%(name)s " %(fmt)s "\\n"%(argnames)s);',
+> -        '#line %(out_next_lineno)d "%(out_filename)s"',
+> -        '        }',
+>           '    }',
+>           cond=cond,
+>           event_lineno=event.lineno,
 
-We add the PMCCNTR to the v8_cp_reginfo because PMUv3 was added
-in the ARMv8 architecture. This is consistent with how we
-handle the existing PMCCNTR support, where we always implement
-it for all v7 CPUs. This is arguably something we should
-clean up so it is gated on ARM_FEATURE_PMU and/or an ID
-register check for the relevant PMU version, but we should
-do that as its own tidyup rather than being inconsistent between
-this PMCCNTR accessor and the others.
+This broke compilation in debug on linux with all targets due to missing 
+include. Not a big deal, but it's a bit surprising it passed our CI. Do 
+we sometimes skip it for "simple" patches?
 
-Since the register name is the same as the 32-bit PMCCNTR, we set
-ARM_CP_NO_GDB on the 32-bit one to avoid generating an invalid GDB XML.
+Fix: 
+https://lore.kernel.org/qemu-devel/20250725165749.3893240-1-pierrick.bouvier@linaro.org/T/#u
 
-See https://developer.arm.com/documentation/ddi0601/2024-06/AArch32-Registers/PMCCNTR--Performance-Monitors-Cycle-Count-Register?lang=en
-
-Change v2->v3:
-- Moved ARM_CP_NO_GDB to the 32-bit register if Armv8 is supported
-
-Changes v1->v2:
-- Moved to new file
-- Updated commit message
-- Added ARM_CP_NO_GDB
-
-Signed-off-by: Alex Richardson <alexrichardson@google.com>
----
- target/arm/cpregs-pmu.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
-
-diff --git a/target/arm/cpregs-pmu.c b/target/arm/cpregs-pmu.c
-index 0f295b1376..144e339c76 100644
---- a/target/arm/cpregs-pmu.c
-+++ b/target/arm/cpregs-pmu.c
-@@ -1067,11 +1067,6 @@ static const ARMCPRegInfo v7_pm_reginfo[] = {
-       .fgt = FGT_PMSELR_EL0,
-       .fieldoffset = offsetof(CPUARMState, cp15.c9_pmselr),
-       .writefn = pmselr_write, .raw_writefn = raw_write, },
--    { .name = "PMCCNTR", .cp = 15, .crn = 9, .crm = 13, .opc1 = 0, .opc2 = 0,
--      .access = PL0_RW, .resetvalue = 0, .type = ARM_CP_ALIAS | ARM_CP_IO,
--      .fgt = FGT_PMCCNTR_EL0,
--      .readfn = pmccntr_read, .writefn = pmccntr_write32,
--      .accessfn = pmreg_access_ccntr },
-     { .name = "PMCCNTR_EL0", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 3, .crn = 9, .crm = 13, .opc2 = 0,
-       .access = PL0_RW, .accessfn = pmreg_access_ccntr,
-@@ -1211,6 +1206,19 @@ void define_pm_cpregs(ARMCPU *cpu)
-         define_one_arm_cp_reg(cpu, &pmcr);
-         define_one_arm_cp_reg(cpu, &pmcr64);
-         define_arm_cp_regs(cpu, v7_pm_reginfo);
-+        /* When Armv8 is supported, PMCCNTR aliases the new 64-bit version */
-+        ARMCPRegInfo pmccntr = {
-+            .name = "PMCCNTR",
-+            .cp = 15, .crn = 9, .crm = 13, .opc1 = 0, .opc2 = 0,
-+            .access = PL0_RW, .accessfn = pmreg_access_ccntr,
-+            .resetvalue = 0, .type = ARM_CP_ALIAS | ARM_CP_IO,
-+            .fgt = FGT_PMCCNTR_EL0,
-+            .readfn = pmccntr_read, .writefn = pmccntr_write32,
-+        };
-+        if (arm_feature(env, ARM_FEATURE_V8)) {
-+            pmccntr.type |= ARM_CP_NO_GDB;
-+        }
-+        define_one_arm_cp_reg(cpu, &pmccntr);
- 
-         for (unsigned i = 0, pmcrn = pmu_num_counters(env); i < pmcrn; i++) {
-             g_autofree char *pmevcntr_name = g_strdup_printf("PMEVCNTR%d", i);
-@@ -1276,6 +1284,12 @@ void define_pm_cpregs(ARMCPU *cpu)
-               .access = PL0_R, .accessfn = pmreg_access, .type = ARM_CP_CONST,
-               .fgt = FGT_PMCEIDN_EL0,
-               .resetvalue = cpu->pmceid1 },
-+            { .name = "PMCCNTR", .state = ARM_CP_STATE_AA32,
-+              .cp = 15, .crm = 9, .opc1 = 0,
-+              .access = PL0_RW, .accessfn = pmreg_access_ccntr, .resetvalue = 0,
-+              .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_64BIT,
-+              .fgt = FGT_PMCCNTR_EL0, .readfn = pmccntr_read,
-+              .writefn = pmccntr_write,  },
-         };
-         define_arm_cp_regs(cpu, v8_pm_reginfo);
-     }
--- 
-2.50.1.470.g6ba607880d-goog
-
+Regards,
+Pierrick
 
