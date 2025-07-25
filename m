@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B503B11F99
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBEEB11F9A
 	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 15:53:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufIqy-0003Jh-0H; Fri, 25 Jul 2025 09:52:52 -0400
+	id 1ufIqc-0001i0-Oo; Fri, 25 Jul 2025 09:52:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ufIos-0008PL-Js
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ufIos-0008OA-7e
  for qemu-devel@nongnu.org; Fri, 25 Jul 2025 09:50:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ufIoq-0005Ze-AN
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 09:50:42 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ufIoq-0005Zg-A8
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 09:50:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1753451439;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cvSpiQ1SwZ1haFCTaBCprWzpxf+GZM90JxdKYWEWzrc=;
- b=ENJJ1BDrGqVLSW71ugnI+jXm0i4UFPe2rflHXbVjEazLG49omJ6J1uMbKzrAOLJB2QDiFL
- hgX/o/7UPsg+pv7PzNh+DV3mZys1BPOXdJazNJl2bEfqU/sdYghDWxIL+9CnUtzfWKEnuJ
- EorbWtAyEH9yjIvb8MNM7d/TOxxHaSc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=rnF8HW0U51J9PRsWKZGD7+44XDXZDNKdRUl1c4hdtE4=;
+ b=JB+0+1gRDZnqN/2nQGr6YoxecxEzEI8NYGl69Qonvl/ug4CUpVAL74yuDjB5lw77XDJc02
+ RO/EClU5H7Fs2eLT2LWHlRZE233ic78yDWSzNzTWpjKdKUIrFyVab0l13uYmvZ1nO3sGLd
+ XEdURG+9IstIwghdtjBH0SaE2llmesw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-358-DB_ygEkrMF6zvSxRkm0JyQ-1; Fri,
- 25 Jul 2025 09:50:37 -0400
-X-MC-Unique: DB_ygEkrMF6zvSxRkm0JyQ-1
-X-Mimecast-MFC-AGG-ID: DB_ygEkrMF6zvSxRkm0JyQ_1753451437
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-sGqxE6gGOT2vEk8O0EvbFQ-1; Fri,
+ 25 Jul 2025 09:50:38 -0400
+X-MC-Unique: sGqxE6gGOT2vEk8O0EvbFQ-1
+X-Mimecast-MFC-AGG-ID: sGqxE6gGOT2vEk8O0EvbFQ_1753451437
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DE217195608E; Fri, 25 Jul 2025 13:50:36 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2ABDE1800446; Fri, 25 Jul 2025 13:50:37 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.14])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7F7C618003FC; Fri, 25 Jul 2025 13:50:36 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B290219560AA; Fri, 25 Jul 2025 13:50:36 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1A23121E6924; Fri, 25 Jul 2025 15:50:34 +0200 (CEST)
+ id 1EA1E21E6925; Fri, 25 Jul 2025 15:50:34 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  steven.sistare@oracle.com
-Subject: [PATCH 1/5] qtest/qom-test: Plug memory leak with -p
-Date: Fri, 25 Jul 2025 15:50:30 +0200
-Message-ID: <20250725135034.2280477-2-armbru@redhat.com>
+Subject: [PATCH 2/5] qtest/qom-test: Shallow testing of qom-list / qom-get
+Date: Fri, 25 Jul 2025 15:50:31 +0200
+Message-ID: <20250725135034.2280477-3-armbru@redhat.com>
 In-Reply-To: <20250725135034.2280477-1-armbru@redhat.com>
 References: <20250725135034.2280477-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
@@ -82,38 +82,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The machine name g_strdup()ed by add_machine_test_case() is freed by
-test_machine().  Since the former runs for all machines, whereas the
-latter runs only for the selected test case's machines, this leaks the
-names of machines not selected, if any.  Harmless, but fix it anyway:
-there is no need to dup in the first place, so don't.
+This test traverses the QOM sub-tree rooted at /machine with a
+combination of qom-list and qom-get.  In my x86_64 testing, it runs
+almost 12000 QMP commands in 34 seconds.  With -m slow, we test more
+machines, and it takes almost 84000 commands in almost four minutes.
+
+Since commit 3dd93992ffb (tests/qtest/qom-test: unit test for
+qom-list-get), the test traverses this tree a second time, with
+qom-list-get.  In my x86_64 testing, this takes some 200 QMP commands
+and around two seconds, and some 1100 in just under 12s with -m slow.
+
+Traversing the entire tree is useful, because it exercise the QOM
+property getters.  Traversing it twice not so much.
+
+Make the qom-list / qom-get test shallow unless -m slow is given:
+don't recurse.  Cuts the number of commands to around 600, and run
+time to under 5s for me.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- tests/qtest/qom-test.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/qtest/qom-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/qtest/qom-test.c b/tests/qtest/qom-test.c
-index 4ade1c728c..cb5dbfe329 100644
+index cb5dbfe329..40bdc3639f 100644
 --- a/tests/qtest/qom-test.c
 +++ b/tests/qtest/qom-test.c
-@@ -220,7 +220,6 @@ static void test_machine(gconstpointer data)
-     qobject_unref(response);
- 
-     qtest_quit(qts);
--    g_free((void *)machine);
- }
- 
- static void add_machine_test_case(const char *mname)
-@@ -228,7 +227,7 @@ static void add_machine_test_case(const char *mname)
-     char *path;
- 
-     path = g_strdup_printf("qom/%s", mname);
--    qtest_add_data_func(path, g_strdup(mname), test_machine);
-+    qtest_add_data_func(path, mname, test_machine);
-     g_free(path);
- }
- 
+@@ -180,7 +180,7 @@ static void test_properties(QTestState *qts, const char *path, bool recurse)
+         links = g_slist_delete_link(links, links);
+     }
+     while (children) {
+-        test_properties(qts, children->data, true);
++        test_properties(qts, children->data, g_test_slow());
+         g_free(children->data);
+         children = g_slist_delete_link(children, children);
+     }
 -- 
 2.49.0
 
