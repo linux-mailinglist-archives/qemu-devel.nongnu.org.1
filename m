@@ -2,94 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B355FB12246
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 18:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF92B12253
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 18:52:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufLZN-0001OT-6q; Fri, 25 Jul 2025 12:46:53 -0400
+	id 1ufLdf-00015u-5m; Fri, 25 Jul 2025 12:51:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufLZJ-0001Mu-WD
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 12:46:50 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1ufLdZ-00014P-93
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 12:51:13 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufLZI-0007ma-8v
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 12:46:49 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-74b54cead6cso1656159b3a.1
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 09:46:47 -0700 (PDT)
+ id 1ufLdX-0000JN-JM
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 12:51:12 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-3141b84bf65so2296196a91.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 09:51:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753462006; x=1754066806; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BAxqerVC4EqnCfTP/KWr8tsu58fPn536wCloR/aHCng=;
- b=Ld5cJ4S1ekC08ND3r+xShVFnAdbH00+EzXWK7x2aWzOziUy1aaR8VZ1KXc5ZzYlep8
- JkCoPjVH++IXyNebWLK0Q1N5jIHoJcB/GEKMKC0Bwuesu8v3ebdsD9qd6wnRRGb1rHeE
- 0wrU+IAH+a5veLHIeQXbtSoVGZDio8Rg8FeXqWMZfyVPlv7wk0/6rGqUl9jJmN1fW38s
- cuNrXR+reDDMa4wjNDOJkA7Wa6lYJhPeJ1IeajFy1ImYeBTQftKvChopYh2NVj9K2Nvf
- uDmAth/rxV+M9Sx4YIFT55e0Av4+CPVuwYgFKYuHAOI3hZnoBQXiCqrlbC5Z0WceV9wp
- PG3g==
+ d=linaro.org; s=google; t=1753462270; x=1754067070; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=sc7UIkEgpR8AeMO4NYv303wm6GTONTcLb4gr7qERJ+E=;
+ b=nZ9e7YWqKBxL2uMgAH8WniEuvh3Xt8t20Ek9iS86ge8cnRz/FoB7YmCmezAeHTiFqH
+ yp5JQOBn2sVmXKgZl/87H3gnEJ3XKlkUgH+/6IhJ2kH2dbEfFyAwYslS7L7hU5Xe+Swc
+ uBKnT3wjzQ9nl1nN1TU4DdRMP8+OIOlAilNs6TwgpXXh6LSVNYTOVMxsJDcQz7slJ7wC
+ iCG/DUB0RHF7A1au0G3GjfOGXd5MvQTdqMAcp2Hn5KZNQ3XGT8q96wiPKwlP2Gs0ZffC
+ kvvltFxR0iR7J3ydYOW+JJ97iCDMBCGlVTkXBrRDwe2IX2e7erejisEKx8SCuIKFypbn
+ E//A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753462006; x=1754066806;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BAxqerVC4EqnCfTP/KWr8tsu58fPn536wCloR/aHCng=;
- b=dKQMHgWVJ0G6ERoEtJU5iE9BGPrhjarFaslpu6v9E95u/6Y4icKulfJ/7dn81TdYgf
- uxkSvXwfh3Frnr/q5yYjJZXGenhxEGGziMK6xYK9AGeWDHnNogDsNL65RQ0vZaLuomlz
- RnPEAE4CnzcecCwyEM1aBFEcYBAad1rgCv1dT2V0+neodW8uYdmkIKh8mT12oudd+00g
- V8uJtBrZGJyd2iQmpsrkor13bNR0FKg9Jmdex0O0dIQM1iuQmGPlZIq08uS2zEGCVVRQ
- lmwhE83hW5Et0jMbRlDrg3xNEYld+ESEA1ha+RFAy3akF47l47kvVxhNNacaTkQHku/m
- YgjA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWddrfFmruIE0MtFZv3w38p/uNuFTsKsO1vHS85AP/93CWRatK5vlbgNhItvMBJfobhZyen0Dsq/kpG@nongnu.org
-X-Gm-Message-State: AOJu0Yy4h9s5I+4nCTX1KRQz4Bf09aRRX1s7Fr3ydRBlREFLVlNUj5Dq
- xq/xGTFkcrCTFTPRqf3wJVOpaRtKZU+T2oq4oirOyWrdQh6vFPKODQEzoCSFk9/3l4Y=
-X-Gm-Gg: ASbGncsrAJOGDRRBMj6qpac9/sJvg5na/Hf+TguLIpwPjhf2DsFTteymegLq5OLmMbt
- MhivwJtV3d3yOZ1+3E6+FVnppDha9XjDfjkU6jY9q7G+qJN8VwB6KCYhgr/qUpG0gMUdrFoZCT+
- o0zt/7AapE2BQjX9GNYTzPEgcKhc0xgoPyOQSBBZ4NLmHdSZlx/Tfk+2laycdF+ay3fU1NIh+r2
- LF+as7W1uBQn7c2zAO7NTQkEcTNBko6altl1G8XZNTa7dCtbmss3eBOFGyHzgesFeiJkJZ5p8Cf
- N3ixzzuoToQ3l6UZWn3OckHmzp3BhDAR0n88z7DF6YJqMYf2Z/07Sgse80FQh3h9W1vd4+AIjai
- jagwK1Z49zGAkj4nNXqtFgMxNsUDfn8KJTte4P/iMGQHvqHgL6o4Zu4BdO6mpBjGQZfpufg/17H
- 7f4Q==
-X-Google-Smtp-Source: AGHT+IHsB4gST/hazShvbATqvfVKOxqQO5Sx5qIX2L/eohoa/VwQhtI7CfbhLFedNmFK7n9JpNoXTQ==
-X-Received: by 2002:a05:6a20:7285:b0:215:df90:b298 with SMTP id
- adf61e73a8af0-23d7015a371mr4381918637.26.1753462006465; 
- Fri, 25 Jul 2025 09:46:46 -0700 (PDT)
-Received: from [192.168.4.112] (syn-098-150-199-049.res.spectrum.com.
+ d=1e100.net; s=20230601; t=1753462270; x=1754067070;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sc7UIkEgpR8AeMO4NYv303wm6GTONTcLb4gr7qERJ+E=;
+ b=Jv15zhpgYsVmugZP4mTWhnE6M/eLdfrOEqBPmDNoKWe69bxOysO3Ji/r9qGNHc1Fny
+ enoMzm00i2J65NGAKsZ0tKSLKEI+1e1s4EZgA4sAfRbW0A+Y/PCGLiS/IQOfprQ/b2P0
+ KjERfs9LbfTYuRSVrYvJQ6KCGnttxoR9iEhA9AEpIAiHcMKlbqLif2wPFol96O2q9S5g
+ /8RN+66Vis5ygwGK9BTj4yaIb+1W2cXt3I1TVnvDg4krfG7lTY4XWQWp2JIlMqNAwEv3
+ 3E2VzNQLSu9NuXp8VDh2S0tbfRr9HQLM66hBT+vv80ZsoHq68/42y9T8bocw1nwlaHXT
+ vTag==
+X-Gm-Message-State: AOJu0Yz0KzPa1LRrtHSMVHU06b8uA0vMOMrrLYPfUxoUWWaBfrFxaBgr
+ fevK0uRsQHYZcoIPJdRCfottZLKjsk0HzNOEFHKFgkpT8is/kxZTO7yy5zRBjEbeXxj5Mr1RuEI
+ T7+jZ
+X-Gm-Gg: ASbGncv0KA1nJr8KRA4EEITaX11QAom+v58finWLJI31ow1fksiBRawGwpbkxOEm4mC
+ V1IiMtYm2HpvUu8aaLFmLYrrikeiXynb878Kzt727OZ5EvCzLTlYF/XxRpl8ej2gl2GwREAF/6T
+ stcZy57RWhmIt/WVDH2dHTTRg16XjImdFItxH5/qJFoj+K+e6roMPuJwtsVHci53JPbYUcNf6E1
+ Ub9+A8JYwEFkHtiIOwB3uIwgE4WE6gsWYqGG9Wp7Sg4MY9kQ7V+xVG6lWgoyczwupYdWEg3g23G
+ nMx64qUmOqdB1cHMVbmHADaNlXO1sE9Ee8yKvbRh5YkZR6H/hhD/grCb/KENIMdMtu8ZU0dS05Q
+ l/ksarMjR9vXUeKQiRljVvjB890j5ANfvY2zS5X4t75NY77W93iPRhyVj3A0eaeJXbpl7R77FVe
+ BsW0jZ0QZ5Z72VesNqhazf
+X-Google-Smtp-Source: AGHT+IG6jn5SC/BXPG6R7eXi2pw7BVd+EISuWQ0Akh5IXDB2w7JL8GtzQP3HmOsyEudAtCcYmOYpIw==
+X-Received: by 2002:a17:90b:4d0b:b0:311:df4b:4b81 with SMTP id
+ 98e67ed59e1d1-31e77a02716mr3509384a91.25.1753462269856; 
+ Fri, 25 Jul 2025 09:51:09 -0700 (PDT)
+Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b3f7f67d84esm190985a12.42.2025.07.25.09.46.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Jul 2025 09:46:45 -0700 (PDT)
-Message-ID: <0b0882e6-906e-4a76-98cf-91c9284c4a52@linaro.org>
-Date: Fri, 25 Jul 2025 06:46:42 -1000
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-10.1 1/3] linux-user/aarch64: Clear TPIDR2_EL0 when
- delivering signals
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>
-References: <20250725142240.3760452-1-peter.maydell@linaro.org>
- <20250725142240.3760452-2-peter.maydell@linaro.org>
-Content-Language: en-US
+ 98e67ed59e1d1-31e6635efc3sm3864080a91.22.2025.07.25.09.51.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 25 Jul 2025 09:51:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250725142240.3760452-2-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PATCH 0/2] linux-user/aarch64: Syndrome fixes and enhancements
+Date: Fri, 25 Jul 2025 06:51:03 -1000
+Message-ID: <20250725165106.37105-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,24 +96,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/25/25 04:22, Peter Maydell wrote:
-> A recent change to the kernel (Linux commit b376108e1f88
-> "arm64/fpsimd: signal: Clear TPIDR2 when delivering signals") updated
-> the signal-handler entry code to always clear TPIDR2_EL0.
-
-Ah, I missed seeing that.
-
->       /* Invoke the signal handler with both SM and ZA disabled. */
->       aarch64_set_svcr(env, 0, R_SVCR_SM_MASK | R_SVCR_ZA_MASK);
-> +    if (cpu_isar_feature(aa64_sme, env_archcpu(env))) {
-> +        env->cp15.tpidr2_el0 = 0;
-> +    }
-
-You can omit the IF and unconditionally clear the memory.
-
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+The first patch is a true bug fix versus the si_code of some SIGILL.
+The second patch is new feature, adding the ESR record to the frame.
 
 
 r~
+
+
+Richard Henderson (2):
+  linux-user/aarch64: Check syndrome for EXCP_UDEF
+  linux-user/aarch64: Generate ESR signal records
+
+ linux-user/aarch64/cpu_loop.c | 20 +++++++++++++++++---
+ linux-user/aarch64/signal.c   | 34 +++++++++++++++++++++++++++++++++-
+ 2 files changed, 50 insertions(+), 4 deletions(-)
+
+-- 
+2.43.0
+
 
