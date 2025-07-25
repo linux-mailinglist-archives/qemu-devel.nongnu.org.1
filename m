@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5D9B12544
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 22:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 636D4B1254A
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 22:26:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufOzH-00065n-QN; Fri, 25 Jul 2025 16:25:51 -0400
+	id 1ufOz5-0005iX-W0; Fri, 25 Jul 2025 16:25:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ufOu1-0007c4-9F
+ id 1ufOu2-0007dM-Nv
  for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:20:26 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ufOtz-0001EE-OZ
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:20:25 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-748feca4a61so1640178b3a.3
+ id 1ufOu0-0001EI-Ac
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:20:26 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-748e378ba4fso3307888b3a.1
  for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 13:20:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753474822; x=1754079622; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=hOER9uQB2Y/m84Ohnetnwb9O8q4b7cP6gnngP22thpE=;
- b=WrOqKEQsoUV1ju7MdP81P5T0JvY5hyPRwmbixeAAzA3oigqNLnsVUOjI8SFFfNGnaG
- 96Q4wu5imZxVkv8O81p6UWApPakI+lWnbYDKfZKvplRnS/9J+TZ6LJ2XG3jFHNjF7HVN
- qdpfYR4UVYSsS3jRLZ3s4WWFZ+7f6xtJjYhSGgKmzf7z2f1Qrv2WCmKzjQCU5z87bxhh
- dk33wPrJgxMdZ4NcLdX3QhO2QRKkFE+aQm6+FcxnbswQdIRJ0FNm4K9zfF8aReogOoou
- 2CjKJAE44ngEntaepKNik/6dhP35mnblhOfTh9QxMhHU1sd2a3zPQZzpoXyU/u8CwT61
- vQzg==
+ d=linaro.org; s=google; t=1753474823; x=1754079623; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Uein3BAt/0r6KhDw4Uu8oyUNGF88ULTG7TVz9l6UE94=;
+ b=khRbfvQTWswY64Q1GqkrRXu9fc+8JS2x1nNeJUX91nJMNSljlnW0JfGDaz2xxIH9+6
+ fcqILY2otHTeKffcMGvSKTKkA2+jImHhq0IpQZ+O5NaJt0/mlG+rDmQ5p1aWIMxO8oVL
+ QT8WnDw+B7z9XIDJz8QyvhcfXt3pv8NtqcTGmvAA7OFGK1mK3ZSt2CT+MJnAcI8zmjwu
+ OuOZDcUcgje8O0nazBg9oocSZqsO1LjWpJ68hRz+WvXK2UuuxHQ8V8JYc4JRYzfjeNRW
+ UTKLUHLZFgkGIkb3ECfbY8DHWLuakXdVxvzth7qWDfQJIykwIK6+4jWAIsvQ2nSY5DRA
+ Q6PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753474822; x=1754079622;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hOER9uQB2Y/m84Ohnetnwb9O8q4b7cP6gnngP22thpE=;
- b=ZJIV3GptGBm9BwstCXh29Lx6CKdPRIl2Z7NUQVa/7fXERnLDObz+E1mSg6g6yzV7qB
- FER4kuyzwmS10gxhuB35tBsFx2N8kQqtd+pf+nNWbcJa1zXThNTkh8liytKOsBAb71mS
- GQBwwne8r10QaCh9oBgc/OkHzjHXM0qJPms1X5nJKFk0wWrIopp3yOAlFmA09Uujmp0v
- 0/W2U1cHt7p/M0kkFJoWA/gkNmBw9AkjTbXym5llF5xs1SQX4owjHUKR4Q5R1WtFBbLL
- QZNQV05tU5l/wKy45I8Ej61vmnuu8ffHQ8W27owglu6AuKe3bATGOekYE06PGVsM8aB9
- R32Q==
-X-Gm-Message-State: AOJu0YzOKGm+s5kXIG0RtFniwq3FUPxWgBmedZruyLOVvA1t2jqfC8u/
- X4fqzfzYJkuhzYHoeRTRe1Oa7IAcZbk8ba/7nf2fy/TclVpOwsJF/CwGT6teUNydrX8hVCUPNlc
- EAokq
-X-Gm-Gg: ASbGncutmw+ZA4O16E3+TEdnjpwhx9I+kXWAhizUM7KsZ5obhqD20D/jebyw9adgTIl
- l25NIvb5QRi64xyE/HSwN/ki6H4/Q86DyTJy0C4iCDUAe8j1J5fx1BgCK1rP7MF/S53pse+6FRP
- Kp+8qCmEUFhhLwjoNiFL8PXqORR3Iitl489a6AJ2F9panR86EHV8lVVkGB4mARSBOkUS6pXb23C
- GUkV8mwuTg/J7gUP0guQ7VADMNva+3HhcbDqFlb6p8UZXmY98tTWtdZaV5msELca6xyJz/DI7eN
- 4E0j+J639sLENB5lUZFCDDOgP/Fcf0Ow6lRrP7nzXhbBodGQrOHXPw3rFJHynGlQY2nCSwZZxRt
- waMTjgkSHMHjrutBaN4MeSKtA+AL4i6Fn
-X-Google-Smtp-Source: AGHT+IG7erzKRzzM8iGbSNEmGRixz2X+JA84NDND9NupgR6d6laIB5ANa1J3p/92pcCLy65jzYFaqQ==
-X-Received: by 2002:a05:6a00:92a8:b0:748:f1ba:9b0d with SMTP id
- d2e1a72fcca58-7633582ff95mr4534504b3a.11.1753474822170; 
- Fri, 25 Jul 2025 13:20:22 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753474823; x=1754079623;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Uein3BAt/0r6KhDw4Uu8oyUNGF88ULTG7TVz9l6UE94=;
+ b=cYSHglctu7+sDrbeGwgHRA9MHYW8hltzstaQhlRa8dL87dzlbUmWYH9CsV8SfPWTJY
+ Edh1g6p/GrcXF6OqXeyxwujvZpMVYwCTsG3BqpPg+6jbJ3RIbctstR1/JWpq1ZX1wlsn
+ pYEneq6bPN6f66T2GgVrgtiPIRbCxthTOAPZo3rYykj0oiy2gGlAbE001m+xfszRYQIL
+ 6UJfeOEIvrC1dECvzg9h6UGUuTnrm7qsWDnzvd3DHw6+TTD8WeL0i6QgDo/wQp1Pvued
+ InMeB9WGOjMUWfqgZujBG7qai9pmx9s4pPch7c9WB3q80xo/lY9T+vjwHTI/HaabZixg
+ UqhQ==
+X-Gm-Message-State: AOJu0YwTW9/eEsV3oZZmmFtWETwdZ31/xlGXKPIOf5XZwxCgT8FENV9e
+ RZWookMAXkWjqa784vA0EaFbpVTxIhfE5Qqo+4DHrgHl0NBvUv7oLsu4hnQpjs5DtJzPITRz3WW
+ BE1bD
+X-Gm-Gg: ASbGncuL+QkDavxLqbyI+6n00ns99ajnupzMZiWDmtIY+XFpXAkZLMMU7EZybjW9oFt
+ 4sPrm7bb0uEtJk3QQH4EWQacn7/RCkDgDhMmsMzjGyk0xFBqcdZSo4VQrfPo6Y/+T7DE3z5DcrL
+ 7R4t1g+FJ5Y7vCGGhHd87B3LvMwOJKtr+UXD1XE+YwtWtPha7VjRKdm3pxhTzgAgDEJZ3bKnQSj
+ 5lSH4f4BkyEBRZRWiXUtXwE9l6gz0KVNAja0/QTpgMwveD1mVZMz9tBlEa81WJA0heQx3D8aaPK
+ 3zcTpsTIBzM+G1+m30b4YP/lsoCpmswpPHOIbreEpOMhw3RewFMe3d9P8z0w0EjZMDWJ+eK1M02
+ 3+a77sV9rK/WjQnLRovbDareLGBuHKtuR
+X-Google-Smtp-Source: AGHT+IEMwUdL5WGM92wUBgg5/ZyJAC6gSIVz7/melNzVeiF1NvCX9/RxUFQBKckzw6LRUgGuta8MOQ==
+X-Received: by 2002:a05:6a00:1410:b0:748:34a4:ab13 with SMTP id
+ d2e1a72fcca58-76332c46a56mr4910184b3a.6.1753474823028; 
+ Fri, 25 Jul 2025 13:20:23 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7640882071dsm360925b3a.16.2025.07.25.13.20.21
+ d2e1a72fcca58-7640882071dsm360925b3a.16.2025.07.25.13.20.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Jul 2025 13:20:21 -0700 (PDT)
+ Fri, 25 Jul 2025 13:20:22 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -69,15 +70,16 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 0/3] single-binary: compile some top level files once
-Date: Fri, 25 Jul 2025 13:20:13 -0700
-Message-ID: <20250725202016.21325-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH 1/3] cpu-target: build compilation unit once for user/system
+Date: Fri, 25 Jul 2025 13:20:14 -0700
+Message-ID: <20250725202016.21325-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250725202016.21325-1-pierrick.bouvier@linaro.org>
+References: <20250725202016.21325-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,22 +102,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We still have some files left on top files that are compiled per target. Start
-with the ones included in this series.
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ meson.build        | 3 ++-
+ cpu-target.c       | 5 -----
+ target-info-stub.c | 4 ++++
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-Pierrick Bouvier (3):
-  cpu-target: build compilation unit once for user/system
-  include/exec/target_page.h: move page-target.c to header
-  system/main.c: compile only once
-
- meson.build                | 10 +++++-----
- include/exec/target_page.h | 11 ++++++++++-
- cpu-target.c               |  5 -----
- page-target.c              | 10 ----------
- target-info-stub.c         |  4 ++++
- system/meson.build         |  1 +
- 6 files changed, 20 insertions(+), 21 deletions(-)
-
+diff --git a/meson.build b/meson.build
+index 6a471a27dee..d0ae602c2ee 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3887,7 +3887,8 @@ endif
+ 
+ common_ss.add(files('cpu-common.c'))
+ common_ss.add(files('sanitizer.c'))
+-specific_ss.add(files('cpu-target.c'))
++user_ss.add(files('cpu-target.c'))
++system_ss.add(files('cpu-target.c'))
+ 
+ subdir('system')
+ 
+diff --git a/cpu-target.c b/cpu-target.c
+index 772e35495b8..f030e2c642e 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -18,7 +18,6 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "cpu.h"
+ #include "accel/accel-cpu-ops.h"
+ #include "system/cpus.h"
+ #include "exec/cpu-common.h"
+@@ -27,10 +26,6 @@
+ #include "hw/core/cpu.h"
+ #include "trace/trace-root.h"
+ 
+-/* Validate correct placement of CPUArchState. */
+-QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
+-QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
+-
+ /* enable or disable single step mode. EXCP_DEBUG is returned by the
+    CPU loop after each instruction */
+ void cpu_single_step(CPUState *cpu, int enabled)
+diff --git a/target-info-stub.c b/target-info-stub.c
+index ca0caa3686c..d96d8249c1d 100644
+--- a/target-info-stub.c
++++ b/target-info-stub.c
+@@ -12,6 +12,10 @@
+ #include "hw/boards.h"
+ #include "cpu.h"
+ 
++/* Validate correct placement of CPUArchState. */
++QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
++QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
++
+ static const TargetInfo target_info_stub = {
+     .target_name = TARGET_NAME,
+     .target_arch = SYS_EMU_TARGET__MAX,
 -- 
 2.47.2
 
