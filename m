@@ -2,80 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B8AB11ABD
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 11:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F216B11ACA
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 11:25:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufEa3-0007Yb-Be; Fri, 25 Jul 2025 05:19:07 -0400
+	id 1ufEgB-0008JD-2R; Fri, 25 Jul 2025 05:25:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ufEa0-0007Um-1k
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 05:19:04 -0400
-Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ufEZy-0000Vm-7O
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 05:19:03 -0400
-Received: by mail-yb1-xb2c.google.com with SMTP id
- 3f1490d57ef6-e8dbdb68923so1328004276.1
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 02:19:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753435140; x=1754039940; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=J9nFLBb7yNtVSXyuiWlQpZx4fdmgsTg2BI1WsQru/4k=;
- b=V5GkcfWZL6UCEkF3PwD8++jGVRuzIR1aU+0sgeoCBhpjdM+Iz/8xvoA1QhTK7kDkbE
- nnV07keR6Ucsn04gYAWD3TW2Nnw2aS3HU2j8VA3+z1YQh7+/6Oz2pOaXXzXn14Dso2VI
- QtXUgzBa6McbhNuIQ2rISAVnYwcK0Xv3do2Z0T6FUEMIyqKTBsR8fPxiH9ivCF26u30j
- vVirx9Dh7FLXv+pLL+pTVgT+xCG2DFDmqnzjn4XrhZ26AMNl8mWaqR0oMKBDJzGi9KwI
- AbnfbSuqWI/a+XUx/hzyGNoQf0xwDlSgI7joybG4+2NfKW0rWj97S/BT+Uz1Nq6SMZd8
- +KZw==
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1ufEg6-0008GI-Tn
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 05:25:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1ufEg3-0002Ap-Rn
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 05:25:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753435518;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NRkxf0Co3kE3u/wpZULXKwkvWTQBZftXMbsqImP+Q3I=;
+ b=QQJtfeQdGhmw0FjrHhQmjcGTGmY5g+oSPyNNq7uPaRsbNChYG80WKuZ7L5ePEF+6r/cxAP
+ y2H3qM8cNXcvao32RWeavMyb15H1dtf6VgJ0K513sqS37o6hLq7cAyVXpj9dqUkPB/IiDJ
+ V2nhT4TlPx0SBTsS4n84SPinP9MBPpo=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-aeV_j7ZcOGCiG-XmZU0JYA-1; Fri, 25 Jul 2025 05:25:16 -0400
+X-MC-Unique: aeV_j7ZcOGCiG-XmZU0JYA-1
+X-Mimecast-MFC-AGG-ID: aeV_j7ZcOGCiG-XmZU0JYA_1753435515
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-ae401eba66aso126077266b.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 02:25:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753435140; x=1754039940;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=J9nFLBb7yNtVSXyuiWlQpZx4fdmgsTg2BI1WsQru/4k=;
- b=rqHvegwn8pvHV12oLYngHQsOmwQcDZ69op+ImuDm4d0MRIOhpsTI1jdgta0EsWKYKT
- Vf2KDUYtVDkhpAjCZdY9JqH05ennFAojaCtlDmjw0A40XV4nyqMgq0vYaqSI7fDmfC0+
- mZLFxmVnfyGUMj6aiQGhev072Qa8DaH6NHSX79Jneov1eiliK8hfg26mg6+Tv/JntumD
- UEGLFfWsvDtmR6WyFqXdSNvADoXMQNzzxDwFuQ6LE0vzpDBaAzQ9evGlaM9VUFhdfA6p
- 7SeWg6R4+Q/XqIb/VNBFXixcpChFRNROb17zrF7SjSlO1lcbqX1AqI5HzYmD/XzTNt9H
- FdhA==
-X-Gm-Message-State: AOJu0YyMXsFWti85/bc1kMx+2b/CRvNINwpWv/clpkMtLzyAyFsyjqQc
- GUeJRGR2/mVoMciMTvGaSZ9jvYkRUxKXAJB96pQMzDq23DWA5+u5XylZJqMslGGaUxFoJGEX/J5
- QasQyIDmCNSHjMGckV08xTs8f0Lf5jVMltcv/BC8DBA==
-X-Gm-Gg: ASbGncvIg728wHBX1MyU9HDJPnyntM9/WgC59KREdkQWyzPtnWzXjZL4n79Jq0OjJM+
- QPVwkFlAFqxqMdgdGqVBdJlBqmhO/V5ZjmajCZTmJvN3AU5WOt6akDT1jWSW18zgWbRxlXS/RFZ
- X/4jMUOMufIr0kCU8OnEm7Msnz7ZwDnQwLoesKsUL/+FeooO2QroFcoMExF8bOSvXC2KI2DvC+Q
- XizbmEM
-X-Google-Smtp-Source: AGHT+IG0vTEzifkHK+90bRvTaTQr4aa2jfdS5nKO71C15Pgp+bVY7N+7jL39J6TOOnfYpH//T2EDmuwA3uuo0o7xkbw=
-X-Received: by 2002:a05:690c:9a09:b0:719:e179:b508 with SMTP id
- 00721157ae682-719e39a0ec9mr14025287b3.39.1753435140148; Fri, 25 Jul 2025
- 02:19:00 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753435515; x=1754040315;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NRkxf0Co3kE3u/wpZULXKwkvWTQBZftXMbsqImP+Q3I=;
+ b=o2eZneqpZMKhZgYEnzlAEuxcAuSSzPsVp0xIHtF93EhGHW0Mn8Ys1DGDg1u2laQOGQ
+ W7XYUUTjWU2S8N6bAb6NSykvlxM553Vsh1DiTXmgSyGY8CPsxQGIZNiUIK+adgWXH7sS
+ 77tLGrMGPls37ahKfx5QSAq5Im2RA2GFHzhPqUNalFOoetzxcnaet/wm7DI7CNmj9CaD
+ MfU29F+mjazlHDOJWmiiFR9bxXLuPkrqd97hYaWL8hI5tkMWGbKsj9PVWn/727Rc1ogT
+ +IcalmuiMcpN6TTqa8l+TH3u76Cn+NRg39/6D+8RE0XEjBaMOM+rIfgdjcUUO5pGgg7A
+ GfoQ==
+X-Gm-Message-State: AOJu0YyuRuMyESMaDFGE6nIGe3havbP4lTcK1nal+8H4DMtEBVx5VYDb
+ 2BFuCURL3MVxvildVnGJ8gqyN5YhVWtokquZ54qLIh04gest6Gzw9X+kEeRw+ICMpJu47cxygSh
+ 52/dX8P+Jk0NmvD+668ze5i+7rasZfZOu7OXyYucJWy1Y3puUXGeIQ5VwjQWYiQAV10MguFqph3
+ JlSBFF+dtFJ5oFidD8saAlFUISWQX7qZw=
+X-Gm-Gg: ASbGnctufol0ba+pO13uuFdR4p4uyZMVNn/aDXUYlEl1oYOpoXtzleWUYMH65GDBAKP
+ SYqqyrgEE4CDfyb/8bOnovX4zIRQjezetBxMDCFlwEacFALywQHgc4mph2tL4JurXEx06unDoWW
+ Hl6ZcdNhaaIz9rqk8DoclfbA==
+X-Received: by 2002:a17:907:a088:b0:ae6:d94f:4326 with SMTP id
+ a640c23a62f3a-af61e922340mr180660666b.57.1753435515220; 
+ Fri, 25 Jul 2025 02:25:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUjdFwywN1/0Zo0IMG8xLmYMMhI7inplJ7T1c/JwRCgnv1I4L0cxrd0BUl7BiSiAyyNtKsauPo8dpMuVyeSFw=
+X-Received: by 2002:a17:907:a088:b0:ae6:d94f:4326 with SMTP id
+ a640c23a62f3a-af61e922340mr180656566b.57.1753435514805; Fri, 25 Jul 2025
+ 02:25:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250725000901.1204536-1-alexrichardson@google.com>
-In-Reply-To: <20250725000901.1204536-1-alexrichardson@google.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 25 Jul 2025 10:18:48 +0100
-X-Gm-Features: Ac12FXyylrH9mZJmkGth1DcptNKIDXxKPzb_XcRylv7XT0k5ZJXc3hacGL1Bahw
-Message-ID: <CAFEAcA-T+fBvN=jZS7C3H7feD4N8uufy98_PhdS=eA9EHw8CRg@mail.gmail.com>
-Subject: Re: [PATCH v2] target/arm: add support for 64-bit PMCCNTR in AArch32
- mode
-To: Alex Richardson <alexrichardson@google.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <cover.1753297661.git.pabeni@redhat.com>
+In-Reply-To: <cover.1753297661.git.pabeni@redhat.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Fri, 25 Jul 2025 17:24:37 +0800
+X-Gm-Features: Ac12FXwet-qMRB90hWKFN5OEtYP4Bm8PCWfwVSb7olzrhLWFwV56Yo1M3Nwj14A
+Message-ID: <CAPpAL=yYgqQk572yaRkNaKnoBbw7OcBGZ0HdXAJXz9mo5F6W5A@mail.gmail.com>
+Subject: Re: [RFC PATCH v4 00/14] virtio: introduce support for GSO over UDP
+ tunnel
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
+ Jason Wang <jasowang@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, 
+ Luigi Rizzo <lrizzo@google.com>, Giuseppe Lettieri <g.lettieri@iet.unipi.it>, 
+ Vincenzo Maffione <v.maffione@gmail.com>, Eric Blake <eblake@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.45,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,63 +110,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 25 Jul 2025 at 01:10, Alex Richardson <alexrichardson@google.com> wrote:
->
-> In the PMUv3, a new AArch32 64-bit (MCRR/MRRC) accessor for the
-> PMCCNTR was added. In QEMU we forgot to implement this, so only
-> provide the 32-bit accessor. Since we have a 64-bit PMCCNTR
-> sysreg for AArch64, adding the 64-bit AArch32 version is easy.
->
-> We add the PMCCNTR to the v8_cp_reginfo because PMUv3 was added
-> in the ARMv8 architecture. This is consistent with how we
-> handle the existing PMCCNTR support, where we always implement
-> it for all v7 CPUs. This is arguably something we should
-> clean up so it is gated on ARM_FEATURE_PMU and/or an ID
-> register check for the relevant PMU version, but we should
-> do that as its own tidyup rather than being inconsistent between
-> this PMCCNTR accessor and the others.
->
-> Since the register name is the same as the 32-bit PMCCNTR, we set
-> ARM_CP_NO_GDB to avoid generating an invalid GDB XML.
+Tested this series of patches V4 with virtio-net regression tests,
+everything works fine.
 
-This is the wrong way around, I think. We should prefer to expose
-to GDB the 64-bit view of it, not the 32-bit view, because
-it's more comprehensive. Compare handling of the "PAR" definition
-in target/arm/helper.c.
+Tested-by: Lei Yang <leiyang@redhat.com>
 
+On Thu, Jul 24, 2025 at 3:34=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
 >
-> See https://developer.arm.com/documentation/ddi0601/2024-06/AArch32-Registers/PMCCNTR--Performance-Monitors-Cycle-Count-Register?lang=en
+> Some virtualized deployments use UDP tunnel pervasively and are impacted
+> negatively by the lack of GSO support for such kind of traffic in the
+> virtual NIC driver.
 >
-> Signed-off-by: Alex Richardson <alexrichardson@google.com>
+> The virtio_net specification recently introduced support for GSO over
+> UDP tunnel, and the kernel side of the implementation has been merged
+> into the net-next tree; this series updates the virtio implementation to
+> support such a feature.
+>
+> Currently the qemu virtio support limits the feature space to 64 bits,
+> while the virtio specification allows for a larger number of features.
+> Specifically the GSO-over-UDP-tunnel-related virtio features use bits
+> 65-69; the larger part of this series (patches 4-12) actually deals with
+> extending the features space.
+>
+> The extended features are carried by fixed size uint64_t arrays,
+> bringing the current maximum features number to 128.
+>
+> The patches use some syntactic sugar to try to minimize the otherwise
+> very large code churn. Specifically the extended features are boundled
+> in an union with 'legacy' features definition, allowing no changes in
+> the virtio devices not needing the extended features set.
+>
+> The actual offload implementation is in patches 13 and 14 and boils down
+> to propagating the new offload to the tun devices and the vhost backend.
+>
+> Patch 1 is a small pre-req refactor that ideally could enter the
+> tree separately; it's presented here in the same series to help
+> reviewers more easily getting the full picture, patch 2 updates to
+> linux headers update script to deal with annotations recently introduce
+> in the kernel and patch 3 is a needed linux headers update.
+>
+> Tested with basic stream transfer with all the possible permutations of
+> host kernel/qemu/guest kernel with/without GSO over UDP tunnel support,
+> vs snapshots creation and restore and vs migration.
+>
+> Sharing again as RFC as the kernel bits have not entered the Linus tree
+> yet - but they should on next merge window.
+>
 > ---
-
-It would have been helpful to mention here what the changes
-from v1 were -- I had to go and look up the list archives to
-remind myself of why we had to drop v1.
-
->  target/arm/cpregs-pmu.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> Note: next revision will be after the Linux merge window to allow
+> dropping the 'RFC' tag and also due to myself being off-the-grid
+> meanwhile.
 >
-> diff --git a/target/arm/cpregs-pmu.c b/target/arm/cpregs-pmu.c
-> index 0f295b1376..ef176e4045 100644
-> --- a/target/arm/cpregs-pmu.c
-> +++ b/target/arm/cpregs-pmu.c
-> @@ -1276,6 +1276,12 @@ void define_pm_cpregs(ARMCPU *cpu)
->                .access = PL0_R, .accessfn = pmreg_access, .type = ARM_CP_CONST,
->                .fgt = FGT_PMCEIDN_EL0,
->                .resetvalue = cpu->pmceid1 },
-> +            { .name = "PMCCNTR", .state = ARM_CP_STATE_AA32,
-> +              .cp = 15, .crm = 9, .opc1 = 0,
-> +              .access = PL0_RW, .accessfn = pmreg_access_ccntr, .resetvalue = 0,
-> +              .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_64BIT | ARM_CP_NO_GDB,
-> +              .fgt = FGT_PMCCNTR_EL0, .readfn = pmccntr_read,
-> +              .writefn = pmccntr_write,  },
->          };
->          define_arm_cp_regs(cpu, v8_pm_reginfo);
->      }
+> v3 -> v4:
+>   - more sparse cleanups
+>   - fix build failures on a couple of targets
+>
+> v2 -> v3:
+>   - consolidated suffixes for new fields to '_ex'
+>   - avoid pre/post load trickery and relay on reset zeroing the features
+>   - cleaned-up virtio store implementation deduplicating a bit of code
+>   - many more cleanups, see the individual patches changelog for the
+>     details
+>   - I left patch 1 unmodified, still some hope we could live with that;)
+>
+> Paolo Abeni (14):
+>   net: bundle all offloads in a single struct
+>   linux-headers: deal with counted_by annotation
+>   linux-headers: Update to Linux ~v6.16-rc7 net-next
+>   virtio: introduce extended features type
+>   virtio: serialize extended features state
+>   virtio: add support for negotiating extended features
+>   virtio-pci: implement support for extended features
+>   vhost: add support for negotiating extended features
+>   qmp: update virtio features map to support extended features
+>   vhost-backend: implement extended features support
+>   vhost-net: implement extended features support
+>   virtio-net: implement extended features support
+>   net: implement tunnel probing
+>   net: implement UDP tunnel features offloading
+>
+>  hw/net/e1000e_core.c                         |   5 +-
+>  hw/net/igb_core.c                            |   5 +-
+>  hw/net/vhost_net-stub.c                      |   8 +-
+>  hw/net/vhost_net.c                           |  45 ++--
+>  hw/net/virtio-net.c                          | 222 +++++++++++++------
+>  hw/net/vmxnet3.c                             |  13 +-
+>  hw/virtio/vhost-backend.c                    |  62 +++++-
+>  hw/virtio/vhost.c                            |  68 ++++--
+>  hw/virtio/virtio-bus.c                       |  11 +-
+>  hw/virtio/virtio-hmp-cmds.c                  |   3 +-
+>  hw/virtio/virtio-pci.c                       |  69 +++++-
+>  hw/virtio/virtio-qmp.c                       |  91 +++++---
+>  hw/virtio/virtio-qmp.h                       |   3 +-
+>  hw/virtio/virtio.c                           | 102 ++++++---
+>  include/hw/virtio/vhost-backend.h            |   6 +
+>  include/hw/virtio/vhost.h                    |  56 ++++-
+>  include/hw/virtio/virtio-features.h          | 127 +++++++++++
+>  include/hw/virtio/virtio-net.h               |   2 +-
+>  include/hw/virtio/virtio-pci.h               |   2 +-
+>  include/hw/virtio/virtio.h                   |  11 +-
+>  include/net/net.h                            |  20 +-
+>  include/net/vhost_net.h                      |  33 ++-
+>  include/standard-headers/linux/ethtool.h     |   4 +-
+>  include/standard-headers/linux/vhost_types.h |   5 +
+>  include/standard-headers/linux/virtio_net.h  |  33 +++
+>  linux-headers/linux/vhost.h                  |   7 +
+>  net/net.c                                    |  17 +-
+>  net/netmap.c                                 |   3 +-
+>  net/tap-bsd.c                                |   8 +-
+>  net/tap-linux.c                              |  38 +++-
+>  net/tap-linux.h                              |   9 +
+>  net/tap-solaris.c                            |   9 +-
+>  net/tap-stub.c                               |   8 +-
+>  net/tap.c                                    |  21 +-
+>  net/tap_int.h                                |   5 +-
+>  qapi/virtio.json                             |   9 +-
+>  scripts/update-linux-headers.sh              |   1 +
+>  37 files changed, 875 insertions(+), 266 deletions(-)
+>  create mode 100644 include/hw/virtio/virtio-features.h
+>
 > --
-> 2.50.1.470.g6ba607880d-goog
+> 2.50.0
+>
+>
 
-thanks
--- PMM
 
