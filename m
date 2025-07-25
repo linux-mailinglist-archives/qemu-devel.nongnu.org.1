@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B79C5B1213B
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 17:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32BE4B12146
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 17:48:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufKcN-0003au-8L; Fri, 25 Jul 2025 11:45:55 -0400
+	id 1ufKce-0003m8-5a; Fri, 25 Jul 2025 11:46:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ufKbu-0002nY-RI
+ id 1ufKbz-00035w-9I
  for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:45:34 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ufKbs-0002Qz-Vt
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:45:26 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-ae9c2754a00so392184266b.2
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 08:45:24 -0700 (PDT)
+ id 1ufKbw-0002SO-I3
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:45:30 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-ae3b336e936so442300066b.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 08:45:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753458322; x=1754063122; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753458326; x=1754063126; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XnSza4lTBhV6Q/kwVg/CCfLpPpYvuTirTlEa76oijPQ=;
- b=SfVYize7HKcIfsxmhquLd4rkiRSiaEQ4gG3o0DG1PnouZY0tRedsFooJB7OdeJ7WzF
- 5vq3M2eqGCZiqRE46ZLVCQ9PuNmEk+S+eZHMS32FlOrRTCVWJxWaKE6M9wNQvXOQdCfe
- J8ho9wktrIa2cfuAy+clyp/rsQqMu03WIOi+TLxT4msNrQQmZVCZenkIftpN1zM6s7f2
- Mk07Cr6WTgn8Vrp7v2TbNHDe9+nz/os7ThVsA3ttoPSlm9DuRTWad7jCEZSkcZ7ce02x
- 4E8mHSDVtOIUvW/dmAiC47dapLSncJbk5U7dH4WxrLNDmBS2rcpGerc/qZL1bcssy6IP
- oJkg==
+ bh=DY/auZzeGDfY2FoWi/fBd8zngCsKbjYbcPImiiCVnS4=;
+ b=R2BktGZwjrtXv175L04n8Ti3sGLymv1azhU1zAXl17pKmq0Zq4scAlSf9rtvUwIqRv
+ bCO8zhPM5qYSJPCefQA6sKRVAk4uRDICNkdbjw1/bbUYVAdWwaUFSGVjPsWkJQc6/4h/
+ DioZvKtdhiKb+dKkzGO5F/MpIKQYws+AUNaizI6AdEc2KL6HNd6LWG0U5JmfOUnQMbZM
+ OajTsUz29I2gkfesVj28T9wTEjHhz5aj+TvQDlAlokqA3kCJhcq8w90qQ0YgwisEmD9w
+ MaNYJrVnU3bMauptE55Wqu59/sV+P9Ulazo5UPNc0V9eES7ih4dtPuYGDQJIELcFaEbF
+ bd8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753458322; x=1754063122;
+ d=1e100.net; s=20230601; t=1753458326; x=1754063126;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XnSza4lTBhV6Q/kwVg/CCfLpPpYvuTirTlEa76oijPQ=;
- b=ugWfNlCNm7RR9uit67oCnAAwM6EhlbfmZw1OFsjRxRH6MEL7aHNPcRFmzXIg0ZLAQg
- 0afMMKbZH0AR12se5Cd5KalBXrvQXduBe37EMv5mD23+HBuVutPVjgO5v6HxuoXr/cbP
- +6yF5Yq8qWWsbQmpVI9f+wKS/ZOmRLr4lOTE6zeJoOF/gSFDWzEP5MljtEHvN5ApLgof
- eNNPC3BCgUe4I7ANoQ+pwFwe22WkDRPyI49VlFXKqNtahoPA5sJRjLadqjoSIKLDM9iE
- A8HkgqlUYd0UO0qhsszwxoiLO0wmrhCMdT/58PDeEvCWfcWlw73WzdHJ1/TKv//oAsgs
- Ku3g==
-X-Gm-Message-State: AOJu0Yx0hfAk2VdCUA2IsAJ5SfXJkP6w+CZoJCeukv/OyqLQVD2PNmRe
- 7vQGZ28Hhqvbklcye27ejpfMX5aH833qJA+ZbUVLdz7dNiytgOQghyU+ndmxnn1iCdM=
-X-Gm-Gg: ASbGncsszjCWQCqw5gRCrOF3rqKeb8MXvEYHsD9378oIxbWLq+NAiknD8efM1UatBRO
- +VbjH3PTnvYhGIeHRJr01uh5/8xQK1icebi0s4/68TSMm4ujoWTXALXV1opvAgSHhuW9BeGKFVQ
- RjNvuacwWTl0E1tTGHYpl+UHt573+eIR1hOgweTEQiOZmPVcAmqaQqJ90nZ6MXJvMU6aQueuFEJ
- sp/Yz3PmIuhF9+BmOChIDcbOZZ3GpC+VIlCa1mZqnmhk8KxZ5gjKWjQaTELyPRKVhm0MQCmoQYV
- +DOFwnLQhCJwqqtro9nutD9eLBXiVfb0W7oQhPl3+Ps+1KtVpzQoPI4pxkmYSpxsIBfPtAuXjti
- hwQgIsFyOs87jdezFqM9rS4c=
-X-Google-Smtp-Source: AGHT+IEwL92+C60pzCCLSdE9B99WZrLxD7f3VT8aXHl85p64E1Yv5nqhdukC4adqO1nesInb+/7NQQ==
-X-Received: by 2002:a17:907:60cd:b0:af2:4257:fa1e with SMTP id
- a640c23a62f3a-af617d00e58mr336283966b.25.1753458322456; 
- Fri, 25 Jul 2025 08:45:22 -0700 (PDT)
+ bh=DY/auZzeGDfY2FoWi/fBd8zngCsKbjYbcPImiiCVnS4=;
+ b=UTJ4hoDpssw7h+ui+fjHMxpXZtAYt6tSnqqWITe5SCNfcGYMKKCOY/P4hYTizEduGN
+ O88CG3gBzQD2qVfWqOPUAeSBpmZLsdebYwXoEiLTfJQEIILl69rrLpPZJiEU5Zl0gJx2
+ ViEDRkjTJ9tCnW7km6lA36xyx/lGJ6jqI6okDLXUVlh52GrBrx0RtOe3nJvowmnKjMyT
+ XbuILiOCAAeS5r+1km7i1zkQWH1PpYVN6v1wRdxKhHOjBMtpSv7AjzHgfIvNGtERFDxE
+ i8tKZdYqPvQvrCefn7WnxpP+Y1EvTQmnZw712unYByK265IctQHgvVA/wiOsp3WrMohg
+ PUJQ==
+X-Gm-Message-State: AOJu0Yy+dwCKkKcAmBhEOYrlvGQ6zIjJoSCXrSc0d+XZrefo8hHEFL71
+ +H2TCiZuvLVLtCqVHQx16KRNHvlTXhffBoQ7lB0fHmMeNO8fr8v1bcLpjv4yZWWOmoQ=
+X-Gm-Gg: ASbGncsQQHlbAbmDxK1i/sY+NgFvQ20BlPXqMnPROLNQZNvWfuMjCXahCiz/u/v5umC
+ 7OTw/SZUWjvGxa5jUBpOL7Bfx/+52e9Q3mG/L9p3BZxu1dvWB1KmafyreU0EdE6idRwG0Y2Q5iY
+ A2Vra8D9b7bzzSO44LKc93SB12OffDK/NXXPFhn+ii7PC+IRmvMCfgqR8JBVC2VzQaOtbeUdb1T
+ SuXuT9Z2mXd/8IcA2yZjYabXoOUviLW3ftD5169amKTsIkEbkMfjVsD7SfwwJgdjDSzmn5JVqWg
+ GraLJJujroWZHI6iL8UAG/WH/QmIHqX7NVwlmg9ltCqfJklU8BYDCrNbhmXzQfUPNSGTv5eOnqh
+ G0Hkknbb0csES7SorDA4f4qY=
+X-Google-Smtp-Source: AGHT+IGhc+DzzG5zkKzznMyj991NDTVBbFEorG7dAAYJ+rsir0JUM9PSs+wbQ2lt8kx0dGHofqv1+g==
+X-Received: by 2002:a17:907:3e9f:b0:ae6:ddc2:f9f4 with SMTP id
+ a640c23a62f3a-af61c2b4194mr296809766b.6.1753458326075; 
+ Fri, 25 Jul 2025 08:45:26 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-af635aa68e7sm8411166b.110.2025.07.25.08.45.18
+ a640c23a62f3a-af635b08846sm8320166b.140.2025.07.25.08.45.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Jul 2025 08:45:18 -0700 (PDT)
+ Fri, 25 Jul 2025 08:45:23 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 331CB5F8B5;
+ by draig.lan (Postfix) with ESMTP id 46D415F8BD;
  Fri, 25 Jul 2025 16:45:18 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -70,20 +70,18 @@ Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH for 10.1 v2 04/14] docs/user: slightly reword section on
- system calls
-Date: Fri, 25 Jul 2025 16:45:07 +0100
-Message-ID: <20250725154517.3523095-5-alex.bennee@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH for 10.1 v2 05/14] docs/user: expand section on threading
+Date: Fri, 25 Jul 2025 16:45:08 +0100
+Message-ID: <20250725154517.3523095-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250725154517.3523095-1-alex.bennee@linaro.org>
 References: <20250725154517.3523095-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,39 +104,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expand the description slightly and quote ioctl(). I did ponder
-mentioning something about why DRM ioctls are often missing but I see
-we have the I915 ones so I guess its just no one has done them.
+Potentially too many weasel words when describing atomic and memory
+order issues.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+
 ---
- docs/user/main.rst | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+v2
+  - /we are limit/we limit/
+  - use QEMU -user-mode process instead of guest
+---
+ docs/user/main.rst | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/docs/user/main.rst b/docs/user/main.rst
-index b8ff203c212..05de904225c 100644
+index 05de904225c..347bdfabf8c 100644
 --- a/docs/user/main.rst
 +++ b/docs/user/main.rst
-@@ -20,10 +20,14 @@ QEMU user space emulation has the following notable features:
- System call translation
- ~~~~~~~~~~~~~~~~~~~~~~~
+@@ -46,9 +46,15 @@ Threading
  
--QEMU includes a generic system call translator. This means that the
--parameters of the system calls can be converted to fix endianness
--and 32/64-bit mismatches between hosts and targets. IOCTLs can be
--converted too.
-+System calls are the principle interface between user-space and the
-+kernel. Generally the same system calls exist on all versions of the
-+kernel so QEMU includes a generic system call translator. The
-+translator takes care of adjusting endianess, 32/64 bit parameter size
-+and then calling the equivalent host system call.
+ On Linux, QEMU can emulate the ``clone`` syscall and create a real
+ host thread (with a separate virtual CPU) for each emulated thread.
+-Note that not all targets currently emulate atomic operations
+-correctly. x86 and Arm use a global lock in order to preserve their
+-semantics.
++However as QEMU relies on the system libc to call ``clone`` on its
++behalf we limit the flags accepted to those it uses. Specifically this
++means flags affecting namespaces (e.g. container runtimes) are not
++supported. QEMU user-mode processes can still be run inside containers
++though.
 +
-+QEMU can also adjust device specific ``ioctl()`` calls in a similar
-+fashion.
++While QEMU does its best to emulate atomic operations properly
++differences between the host and guest memory models can cause issues
++for software that makes assumptions about the memory model.
  
- POSIX signal handling
- ~~~~~~~~~~~~~~~~~~~~~
+ QEMU was conceived so that ultimately it can emulate itself. Although it
+ is not very useful, it is an important test to show the power of the
 -- 
 2.47.2
 
