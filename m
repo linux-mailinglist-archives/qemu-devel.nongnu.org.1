@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773AAB12139
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C85BB1213A
 	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 17:47:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufKcY-0003bm-OB; Fri, 25 Jul 2025 11:46:07 -0400
+	id 1ufKck-0003qC-89; Fri, 25 Jul 2025 11:46:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ufKc4-0003O9-ET
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:45:42 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1ufKcL-0003aY-2K
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:45:53 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ufKc1-0002U3-K6
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:45:35 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-60700a745e5so4816165a12.3
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 08:45:32 -0700 (PDT)
+ id 1ufKcI-0002at-5E
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:45:52 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-5550dca1241so2036040e87.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 08:45:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753458330; x=1754063130; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753458347; x=1754063147; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7g+EQl4FO2y9seoDYtW7fldlHVS7rtc0zlRHDP7pw3A=;
- b=QWU3yvlUZc38sqUvVp3K1sFOC/IFtG+UKxgQGf0bqZ+fAftF+8b0zeulO76mjsZSVg
- K4W0p/H9mWrrOoHhRiDup2FaUC6VPo+08aZDjFK7djBFgO9kn1vJcqV4BefA2HmHQUGa
- GQVOWlRB/vFNn7H2ZeHjyGw8gEgoM40HlIH57tO7OOcrKlbaENDRCkqGdjaSY88y9j/i
- +zNb1gea/DqX0YLIi7UXkEGmDgXLNh8/STcUO9fWzeOKbFVSSFt+94XO/caqDHJVRewG
- lvzNAIaQP8ylW92n6qGJZRDR8bw8G4DH4Iwc5jLjB/64HBDzcOAlRjx8d74nFhlV2eBI
- yg9A==
+ bh=16xfUtbC6UzI1u4ODCUmMfcCCqi0akC8LfMOrHCPnys=;
+ b=jBOcKR6PsOLuO2WACTkjRCBEUXa6O8JuvXAtWeNeL6/g6WjH59fD5YrvHhA3YfJoq0
+ 9oarqdzW3F/fSEYKgE+LuHDHsy7bCHiZQoR3clBr9sc3OmcGBvSrIebJd6F3QBHxkUn4
+ rQ9neK/Ya6E/APtQKlgx84RDaZkv14bdmzyIUiklTmI9nmzGbk15QJH5EgzVGUc6Ox/L
+ xxoJZSEsoqaDYEJU7eVOkGqUmP0cYEhYTC5rb05zugxdMtPVlEAU8Vw5lAdcEyDWlcjC
+ pCcNvEKV57ozUU+kPXxwCFl0t47ww9SuVx0prR8vYWXd5U1RLdJl79N7VV417xJHt/Kt
+ fICg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753458330; x=1754063130;
+ d=1e100.net; s=20230601; t=1753458347; x=1754063147;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7g+EQl4FO2y9seoDYtW7fldlHVS7rtc0zlRHDP7pw3A=;
- b=nGrpBod+BQc8iPjUfxeTn3JGUUDR25A9S5sc4bY4nj7ju4RXlQTHI0MaQBp5PGTcrC
- hH0XnZFlwuWccG2RPCc7Ii1wRuD6LxlKWCE3n/xtWmET3WXFp7TTHDoNZVLSGsryZpU+
- tWWTv8OVxB6DUWFwSFTuXflNgf0T4lSsS5ShNg5F5YfPaO5InISlzW4EVKbt19M00H8v
- nffqXNNvdcjLoyku023be6qV4dNIz7vr7JR05tOfndDuEH79wW1WCU6V5rAi6u2MMY3X
- XqJhItOeV01m46lTja9kFX3oDx1fGKfajzcfCdF8xbPL+v0iGCsFqCWsWZ+dy88iXyNR
- Ucvg==
-X-Gm-Message-State: AOJu0YxO8ybF7oesK3Pa6H0MZ5coV5q62Nn/pn3e9l3lQkjUI416olXI
- uZJfXYnnbqMYjYpASZwpd0I1BxPnaVhRLLyCZ/oqwMBY11UjMJnDiiyp6Yy9itn4+TU=
-X-Gm-Gg: ASbGncvHLCAqiTtAfgnMv9i5SiCeNV7j49V1qMd+twB7CY8jgIHp0WLztvGLTI8Fufk
- GN3qeGCjnTQPlzRQOixITHAjvXRkAlJDoQW2a3KC7O3VlSJRPpe/lm7gnsT3UKcJCqSUkKoWo9p
- KQK5NMEAi7Z65BuKAmKI9/LuMSTd3r975tsol1FzVsOqIBIhdv5hgCHjQ/bsWb5c2zOKr6I3GiW
- l8RYv/quwWCRCTcL0LSZ6j+OaJZBkSDX8l55iRYQOlPCHxpPBHiQffQREJUNcK1zy2VO97CQZjL
- S3At0X2kVSJHAl4FNdAHZRgu0QJsH7j21Hyt1X0yCothjmqGIJfVwSHMeJfPJRnpw2llmuytLd6
- enR3jqAa5A0vOQ2XPdGdJ4A4=
-X-Google-Smtp-Source: AGHT+IFN2pqk8ejQbfoRSTG+yahE5WGO13sjEFuibdnT1MdF0LGYtgsOYS2eVTnaMU9rfBMeAu4dgw==
-X-Received: by 2002:a05:6402:50cc:b0:602:1b8b:2925 with SMTP id
- 4fb4d7f45d1cf-614f1dfab00mr1986895a12.29.1753458330238; 
- Fri, 25 Jul 2025 08:45:30 -0700 (PDT)
+ bh=16xfUtbC6UzI1u4ODCUmMfcCCqi0akC8LfMOrHCPnys=;
+ b=hbxnKhJVZNCd/PYTfYU3NgdExxGvGilreKrkPOp9wHCBHOF941KCoLP6dOcUdWUYAH
+ iVF/MKPC+2pcz9FtoxlimkF6jdrGKqliaFLEUmfOQbABTv1NyPbX4lSi7JXBWsGOCJQL
+ +RHtASMBII7FU1whfpn2iVsQ0vcA7XPMXdeuGOxZ43SFHsNMI+rjoaeYmwt6pHQ4T1d4
+ 9illcll/HUdlmSsibPP9QZWuYDNdX7hkrx+MbA55p9xY/4XIFKOq4Df1jjDT1/u6Lgdb
+ 0XGyV9csHnoYkv4fdklH8rBLE4ih7Pn85gXDH+UYiudqy2GARPfs+UjV3eFB8pSOxDCI
+ zR6A==
+X-Gm-Message-State: AOJu0YwOkbUs8/5aXxfJ2T/dfChCGNHXOCW8lgzYolEfUQEf5XSGTivr
+ HmNh3/Ysk7I5sq39TPJdlpPV1NhorWN9oJewKZp31ZA2SsleNSjm373A1tW2z43kX+jgkZapz9n
+ 8zfUx
+X-Gm-Gg: ASbGncuGIOOc/bEGjFvMhUVkaawgY5l+zs+3xZI6JFsKVSY0uV9Ldw6TkT3wfBxIljj
+ IqhHKVO9viNZqed7g3ZXrvLqmPX1fD9pw0xBQpJ90qpCcKE4hNEH3+43NRw7Hq6doupejyN5bAT
+ h8eOsSd9A0sxzxQv9jfsx/YyAmfTn+maTY4WaSenLUcBB8FU/vfenVdO1UBXbLkTQGIaylnEHjU
+ Ho/zb5it2rHrZX9wC4IQ254cultBGB+6UzC8M0EevbXLTpcoA4QyQfqD4BLwRHGCycxDuoemuCU
+ sz/QkCP7t669x2jHaSvven/g0IHFhiQZlSxFRbJCLAgioPsMs8CBIBKVS6J01c1zJI489uQ5iFm
+ Am1X3I8nZKAwFXlngz3hds/o=
+X-Google-Smtp-Source: AGHT+IG9HAC5+3xvsSdgH7ALQJn52Q2ZEznMpmcmtBfv4SAzRmtVNp0mY12l8JpU6BhvbjFIVNHytA==
+X-Received: by 2002:a05:6402:13d3:b0:5ff:ef06:1c52 with SMTP id
+ 4fb4d7f45d1cf-614f1bd8c22mr2536819a12.3.1753458333402; 
+ Fri, 25 Jul 2025 08:45:33 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-61500ad286esm7112a12.35.2025.07.25.08.45.23
+ 4fb4d7f45d1cf-61500add92dsm6710a12.52.2025.07.25.08.45.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Jul 2025 08:45:25 -0700 (PDT)
+ Fri, 25 Jul 2025 08:45:27 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BC7DA5F8ED;
+ by draig.lan (Postfix) with ESMTP id D5ACD5F8F1;
  Fri, 25 Jul 2025 16:45:18 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,18 +73,18 @@ Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH for 10.1 v2 10/14] configure: expose PYTHON to
- test/tcg/config-host.mak
-Date: Fri, 25 Jul 2025 16:45:13 +0100
-Message-ID: <20250725154517.3523095-11-alex.bennee@linaro.org>
+Subject: [PATCH for 10.1 v2 11/14] tests/tcg: reduce the number of plugin
+ tests combinations
+Date: Fri, 25 Jul 2025 16:45:14 +0100
+Message-ID: <20250725154517.3523095-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250725154517.3523095-1-alex.bennee@linaro.org>
 References: <20250725154517.3523095-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,27 +107,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will be useful for making $shell calls to something more flexible
-than the shell builtins.
+As our set of multiarch tests has grown the practice of running every
+plugin with every test is becoming unsustainable. If we switch to
+ensuring every test gets run with at least one plugin we can speed
+things up.
+
+Some plugins do need to be run with specific tests (for example the
+memory instrumentation test). We can handle this by manually adding
+them to EXTRA_RUNS. We also need to wrap rules in a CONFIG_PLUGIN test
+so we don't enable the runs when plugins are not enabled.
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configure | 1 +
- 1 file changed, 1 insertion(+)
+ tests/tcg/Makefile.target                     | 23 ++++++++++++++-----
+ tests/tcg/multiarch/Makefile.target           |  8 +++++--
+ .../multiarch/system/Makefile.softmmu-target  | 11 +++++----
+ 3 files changed, 30 insertions(+), 12 deletions(-)
 
-diff --git a/configure b/configure
-index 95f67c1a827..825057ebf15 100755
---- a/configure
-+++ b/configure
-@@ -1800,6 +1800,7 @@ echo "SRC_PATH=$source_path" >> tests/tcg/$config_host_mak
- if test "$plugins" = "yes" ; then
-     echo "CONFIG_PLUGIN=y" >> tests/tcg/$config_host_mak
- fi
-+echo "PYTHON=$python" >> tests/tcg/$config_host_mak
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index a12b15637ea..18afd5be194 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -173,14 +173,25 @@ PLUGINS=$(filter-out $(DISABLE_PLUGINS), \
+ # We need to ensure expand the run-plugin-TEST-with-PLUGIN
+ # pre-requistes manually here as we can't use stems to handle it. We
+ # only expand MULTIARCH_TESTS which are common on most of our targets
+-# to avoid an exponential explosion as new tests are added. We also
+-# add some special helpers the run-plugin- rules can use below.
++# and rotate the plugins so we don't grow too out of control as new
++# tests are added. Plugins that need to run with a specific test
++# should ensure they add their combination to EXTRA_RUNS.
  
- tcg_tests_targets=
- for target in $target_list; do
+ ifneq ($(MULTIARCH_TESTS),)
+-$(foreach p,$(PLUGINS), \
+-	$(foreach t,$(MULTIARCH_TESTS),\
+-		$(eval run-plugin-$(t)-with-$(p): $t $p) \
+-		$(eval RUN_TESTS+=run-plugin-$(t)-with-$(p))))
++
++NUM_PLUGINS := $(words $(PLUGINS))
++NUM_TESTS := $(words $(MULTIARCH_TESTS))
++
++define mod_plus_one
++  $(shell $(PYTHON) -c "print( ($(1) % $(2)) + 1 )")
++endef
++
++$(foreach _idx, $(shell seq 1 $(NUM_TESTS)), \
++	$(eval _test := $(word $(_idx), $(MULTIARCH_TESTS))) \
++	$(eval _plugin := $(word $(call mod_plus_one, $(_idx), $(NUM_PLUGINS)), $(PLUGINS))) \
++	$(eval run-plugin-$(_test)-with-$(_plugin): $(_test) $(_plugin)) \
++	$(eval RUN_TESTS+=run-plugin-$(_test)-with-$(_plugin)))
++
+ endif # MULTIARCH_TESTS
+ endif # CONFIG_PLUGIN
+ 
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index bfdf7197a7b..38345ff8805 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -189,6 +189,10 @@ run-plugin-semiconsole-with-%:
+ TESTS += semihosting semiconsole
+ endif
+ 
++test-plugin-mem-access: CFLAGS+=-pthread -O0
++test-plugin-mem-access: LDFLAGS+=-pthread -O0
++
++ifeq ($(CONFIG_PLUGIN),y)
+ # Test plugin memory access instrumentation
+ run-plugin-test-plugin-mem-access-with-libmem.so: \
+ 	PLUGIN_ARGS=$(COMMA)print-accesses=true
+@@ -197,8 +201,8 @@ run-plugin-test-plugin-mem-access-with-libmem.so: \
+ 	$(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
+ 	$(QEMU) $<
+ 
+-test-plugin-mem-access: CFLAGS+=-pthread -O0
+-test-plugin-mem-access: LDFLAGS+=-pthread -O0
++EXTRA_RUNS += run-plugin-test-plugin-mem-access-with-libmem.so
++endif
+ 
+ # Update TESTS
+ TESTS += $(MULTIARCH_TESTS)
+diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/tcg/multiarch/system/Makefile.softmmu-target
+index 5acf2700812..4171b4e6aa0 100644
+--- a/tests/tcg/multiarch/system/Makefile.softmmu-target
++++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
+@@ -71,8 +71,11 @@ endif
+ MULTIARCH_RUNS += run-gdbstub-memory run-gdbstub-interrupt \
+ 	run-gdbstub-untimely-packet run-gdbstub-registers
+ 
++ifeq ($(CONFIG_PLUGIN),y)
+ # Test plugin memory access instrumentation
+-run-plugin-memory-with-libmem.so: 		\
+-	PLUGIN_ARGS=$(COMMA)region-summary=true
+-run-plugin-memory-with-libmem.so: 		\
+-	CHECK_PLUGIN_OUTPUT_COMMAND=$(MULTIARCH_SYSTEM_SRC)/validate-memory-counts.py $@.out
++run-plugin-memory-with-libmem.so: memory libmem.so
++run-plugin-memory-with-libmem.so: PLUGIN_ARGS=$(COMMA)region-summary=true
++run-plugin-memory-with-libmem.so: CHECK_PLUGIN_OUTPUT_COMMAND=$(MULTIARCH_SYSTEM_SRC)/validate-memory-counts.py $@.out
++
++EXTRA_RUNS += run-plugin-memory-with-libmem.so
++endif
 -- 
 2.47.2
 
