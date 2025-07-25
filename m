@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16779B122F0
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 19:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F99B12317
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 19:42:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufM7r-00061y-KC; Fri, 25 Jul 2025 13:22:31 -0400
+	id 1ufMPw-0000RJ-Kx; Fri, 25 Jul 2025 13:41:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ufM7o-0005xo-UC
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 13:22:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ufM7m-0007fR-NQ
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 13:22:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753464145;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xPxf2cZIeWCLSjErJImlBKjAAW42Zr4+chQG4iQSQds=;
- b=aOOtQd/KCXIbdtFm60eSAeuuJHeemsBbkdzcDsahIz3/TBxCFElb9RBHwtknE60JxQSqUD
- MMxkkzkW+aOmdJF1td6hNEZxyJarQLBDIaAHn5FodkhkLm1AgKeHWNX4DIdbjgiq0mw62B
- WA5fRVXkm5HB96UwL+Nl7on0pwKEqeM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-8W4TE_iqNQuHCZ3laLMhRA-1; Fri,
- 25 Jul 2025 13:22:23 -0400
-X-MC-Unique: 8W4TE_iqNQuHCZ3laLMhRA-1
-X-Mimecast-MFC-AGG-ID: 8W4TE_iqNQuHCZ3laLMhRA_1753464142
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DE2D0180044F; Fri, 25 Jul 2025 17:22:21 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.162])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 56D9B30001B0; Fri, 25 Jul 2025 17:22:19 +0000 (UTC)
-Date: Fri, 25 Jul 2025 18:22:16 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paul Durrant <paul@xen.org>, xen-devel@lists.xenproject.org,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH] hw/xen/xen_pt: fix missing include
-Message-ID: <aIO9SHJkDPnrfAHf@redhat.com>
-References: <20250725165749.3893240-1-pierrick.bouvier@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ufMPp-0000Nt-Tq
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 13:41:06 -0400
+Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ufMPm-0005cK-JM
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 13:41:05 -0400
+Received: by mail-yw1-x1131.google.com with SMTP id
+ 00721157ae682-70e75f30452so17088437b3.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 10:41:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753465260; x=1754070060; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=6ptGeKefNfVsGvOWbsC6afkNZAVEXj4XDKjGFCrdbOI=;
+ b=mXdeAOt68U4lrpbqzEHWDel/YQ/Oudud9FN87XVngWDuVIk41sRs44SdnqbJ+mgBYi
+ 9KHFVYFNUb4Pq/5uGsIJKN9usxJFxs/dbJ3Z+tOv5pb+VWtvQSII0aTyfIHkx9bkF82n
+ Am0itTrTizDDFlvdmx9bTq4fmjQaNDfQRXPKwax6cLQ/iLKSvAwEHh86cjNXbbU0rg8d
+ VX2ME4xrmgV8ROmRBZZVrFfuUTXZc9l0ksvAQFTLXJgq6Ymx6jeHxoO0CEtwc4wIUN32
+ jGARXzGi/vTtEjGllfApUkob0SoVEKLMwMnfXEv9h4AQZGqGFwhBjmr3nbUZyi9HFwtX
+ hOeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753465260; x=1754070060;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6ptGeKefNfVsGvOWbsC6afkNZAVEXj4XDKjGFCrdbOI=;
+ b=PLPS0Pap1NEQK3TRsMwifRSeZrQBjjy5K+uy4ZMPmUrN3dM7TLvRaz6w/agTYvyJ6C
+ 6AN5FkpXccaubKb4RSCGOYbCR50E5EVLXsS+uuPRSx6EoFM2IrQIAD3e3ORglOWBZiCQ
+ /kgkSKUjXSIolBwwzEkdhk4+BneXfvqyg+XJzq3lOdifahWwuVe59IAqOsu3p41nIYv7
+ vZJDb9I2R0tTuxZql0rVou+mflo4GdApZn1LO4cLYb2pgY4PGAOFr9bEjLy+3jIt5U4q
+ F+1pdaWjSVSLbJWVBX+AoXHZbdr74r2QAzZSf/MUAer6FRgIVRSqqK+yX7MV+fGH8Gv2
+ sfwA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXYHdt/XviBVg/xWoFgxOQBoGdmI6dxJ573HJ0qCVqHtbQhUi28a1beX/nUl2iiYxuoRjVfbqmkXLt2@nongnu.org
+X-Gm-Message-State: AOJu0YwBOr2ijFyZQs6lAtM9W4uPWYexUu2S8neq542yEAvaOgPfX6si
+ oZbbGeEMboLQaP+sUkqXrmcevfyvPwxfslcJxgsrqsWFMM8Hm6OqLrzB4u2NOFWtJO/JWuQRXYV
+ pv4tUG3aXbBO9t+QZOA8tPJ9ov70IaG7cY13+J+0TGg==
+X-Gm-Gg: ASbGncvtteij7GxytCp06fybrOXYWDIpm/5PTTdf7fMPs3R16jzni6ArDI7gm/fMX0i
+ 2LasvsX5nVl2YxRjpJcerHMaZBFRuIw9oU+LGkrEA1bnHp2OyT7lzhQXEPD2o1eHrbGqLf4sXWs
+ E21Ky0HEkOYDur8M5IPW/nzZu2qnyEvh1ZJwmxQaq48j9RiVN5Amf7ybi5xtTtwhcmLNhVXCI7x
+ zasRJSx
+X-Google-Smtp-Source: AGHT+IHESCqJn1NoZf6mIydjYRdyvvCbq6mHxkbsJ6RuQt3AbFAtMuX3hjsjmeHAYS8azB/BqiJ0uPalEl3lwwndAls=
+X-Received: by 2002:a05:690c:688e:b0:70e:7503:1180 with SMTP id
+ 00721157ae682-719e329b188mr34111057b3.1.1753465260377; Fri, 25 Jul 2025
+ 10:41:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250725165749.3893240-1-pierrick.bouvier@linaro.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+References: <20250725142240.3760452-1-peter.maydell@linaro.org>
+ <20250725142240.3760452-2-peter.maydell@linaro.org>
+ <0b0882e6-906e-4a76-98cf-91c9284c4a52@linaro.org>
+In-Reply-To: <0b0882e6-906e-4a76-98cf-91c9284c4a52@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 25 Jul 2025 18:40:48 +0100
+X-Gm-Features: Ac12FXyVw8GKj3FuuJbg2CNAIghMs0ewFNXOhAsFMRQ9FjKUq8LonAj-_NUMKzM
+Message-ID: <CAFEAcA9eH=n+uR2EupfUFNa5TacMHL=8XdSPdQ1nGw5ctuFaQA@mail.gmail.com>
+Subject: Re: [PATCH for-10.1 1/3] linux-user/aarch64: Clear TPIDR2_EL0 when
+ delivering signals
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Laurent Vivier <laurent@vivier.eu>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1131.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.175,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,57 +93,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 25, 2025 at 09:57:49AM -0700, Pierrick Bouvier wrote:
-> FAILED: libqemu-i386-softmmu.a.p/hw_xen_xen_pt.c.o
-> ...
-> /home/user/.work/qemu/hw/xen/xen_pt.c: In function ‘xen_pt_need_gsi’:
-> /home/user/.work/qemu/hw/xen/xen_pt.c:783:9: error: implicit declaration of function ‘error_report’; did you mean ‘error_report_err’? [-Wimplicit-function-declaration]
->   783 |         error_report("Cannot open %s: %s", guest_type, strerror(errno));
->       |         ^~~~~~~~~~~~
->       |         error_report_err
-> /home/user/.work/qemu/hw/xen/xen_pt.c:783:9: error: nested extern declaration of ‘error_report’ [-Werror=nested-externs]
-> cc1: all warnings being treated as errors
-> 
-> Fixes: 012842c ("log: make '-msg timestamp=on' apply to all qemu_log usage")
+On Fri, 25 Jul 2025 at 17:46, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 7/25/25 04:22, Peter Maydell wrote:
+> > A recent change to the kernel (Linux commit b376108e1f88
+> > "arm64/fpsimd: signal: Clear TPIDR2 when delivering signals") updated
+> > the signal-handler entry code to always clear TPIDR2_EL0.
+>
+> Ah, I missed seeing that.
+>
+> >       /* Invoke the signal handler with both SM and ZA disabled. */
+> >       aarch64_set_svcr(env, 0, R_SVCR_SM_MASK | R_SVCR_ZA_MASK);
+> > +    if (cpu_isar_feature(aa64_sme, env_archcpu(env))) {
+> > +        env->cp15.tpidr2_el0 = 0;
+> > +    }
+>
+> You can omit the IF and unconditionally clear the memory.
+>
+>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-The problem pre-dated this, so this should be
+Thanks -- just noticed also that it would be reasonable to
+update the comment:
 
- Fixes: cfcacbab38e (xen/passthrough: use gsi to map pirq when dom0 is PVH)
++    /*
++     * Invoke the signal handler with a clean SME state: both SM and ZA
++     * disabled and TPIDR2_EL0 cleared.
++     */
 
-See the prior posting of this fix last week:
+since all three things are SME related.
 
-  https://lists.nongnu.org/archive/html/qemu-devel/2025-07/msg04831.html
-
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->  hw/xen/xen_pt.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
-> index 9d16644d82e..006b5b55f24 100644
-> --- a/hw/xen/xen_pt.c
-> +++ b/hw/xen/xen_pt.c
-> @@ -54,6 +54,7 @@
->  
->  #include "qemu/osdep.h"
->  #include "qapi/error.h"
-> +#include "qemu/error-report.h"
->  #include <sys/ioctl.h>
->  
->  #include "hw/pci/pci.h"
-> -- 
-> 2.47.2
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+-- PMM
 
