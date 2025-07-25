@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D644B12719
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAB2B1271B
 	for <lists+qemu-devel@lfdr.de>; Sat, 26 Jul 2025 01:10:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufRXC-0002r4-Cr; Fri, 25 Jul 2025 19:09:02 -0400
+	id 1ufRXE-0002sg-GU; Fri, 25 Jul 2025 19:09:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufRXA-0002qU-CG
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 19:09:00 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1ufRXB-0002rE-QJ
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 19:09:01 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufRX8-0001of-Np
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 19:09:00 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-23694cec0feso24954045ad.2
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 16:08:58 -0700 (PDT)
+ id 1ufRXA-0001pC-3R
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 19:09:01 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-237311f5a54so22137875ad.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 16:08:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753484937; x=1754089737; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753484939; x=1754089739; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WwS5enWBqWLAF6dbF1XYZSIiH0+6jDOiUSGG3x6eJCk=;
- b=XYLhxozxxLd8x9uj0fLeLfKfoUtc8dtxgGRgdIFMhsZ3J/xtAy/SQBVeiCQKn+s+HG
- sfjaKxRHeKGKY570hacUzhej/sLgRyVlLOEyE5m/rRJ6nSuCNqK4+z4g7WIDkep+Mbe7
- 3vsXnYjyMQFaoU8+iQzYfoeG6DlUxtjLx16EzJ9WJ2iZs/bbQcmhJLxhWHQ4jQ/0gTvr
- lHYbf3Tsm7bz6rl8fhSvmvFwLG+gCjjdbXCIClvtbLoFkRAGQ+dAFoc7ToN2DJR2eixP
- 0tomgKbJMjUfj8rWVnFU1TXNatlbY3KrYwCnjWuAQWv+syfqCHsOYhl3fkWQk3EV8re3
- ciCw==
+ bh=xv/DPsQ51oL4gzkHoBA4GyM8WSLp/SLOF+zyYz+j7XU=;
+ b=Jj1uBQLtwEnJNDfxt26YZEp/17H/qBH/VGxShOboSzq/Ddai5CqxqRfsVNNbFKj4N8
+ ME5t4oeEhku3qAhQD1Daz3OTJkwOM4AW0K2dool9w6pfggK6ZaS5KIDnknQGBPyGMdT1
+ HmBCitxuNytdptzkM51+t6YMOxXSbtwrQ7SzgbCLPjWd5Vljz/2jCU2P+/6KiyZItnBB
+ 0c0SeGPBhl1hoxck0y5LB5OypA0oR2FsSrMoeZ9oVsmtUyiSL6BZFjd7uS4uO7wHFbLS
+ CKnCHvAtXm0g7ZzrdH+QwKZBqkA8tArDwhPI9df5xb+UAxxZnzM+QUq4e1P2/5WmXTv/
+ iafg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753484937; x=1754089737;
+ d=1e100.net; s=20230601; t=1753484939; x=1754089739;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WwS5enWBqWLAF6dbF1XYZSIiH0+6jDOiUSGG3x6eJCk=;
- b=edjaPlTmA6CBGDyQyJOw4BPjDR1chTnTXj1kaZXLLSZXXe9ABa2v/IIchrZx6wvY3V
- t0ow5wLkgoTuiS+0lPuWa+LrnxqKiRSVyIjbZck3qCtzWFoZ1R7gyCTqYyQ0tW8IkPkt
- ZqjH6qTKYhiQH4Pf11BGjO3qi3Rb4wcDLi52sh9Fqi2uUWKHIEKgjxzW3Qg0jNGBvGcH
- xCYxDzWhsAtA/F3setA0BFx7k1U+iVqHarNkfIpQ7zbWKT5HR1nr+DyA3MlAp7VNuPW4
- LFdRnHsf9kWdbLzLApPzgx8aCTgGlmVWf6AYsbWW0Qj8KdZxdYLLBqddJTVDjqxMU9xE
- lgKw==
-X-Gm-Message-State: AOJu0YyZpCR+ieBu9eiER6mA5vnqQDqltd2iAgSMOzAbCKV7thgY0Ucj
- dAhaAMjTxOz02rJlB09Roc6G6M2PgMCJO/xzbsyAqz4dmUNPLKh5vYZu1Kkoqc9gFVVd41nBVVR
- rhkDl
-X-Gm-Gg: ASbGnctZNZQZ0WlAlsaho2rfT5Hk/V25jHi2mNnBHQv87Gi0sLU545/gbtjZ/BgnIiX
- LxzGjDRav0cZqdoonPXVC055grsajW+h1ip+kE1wiNRAGbUAAm6H520uDIYFfL8PiWLFWtKId0J
- 3GNJ6TReWMenz6GMb1OraL+AxiAWiGZOjpaTjnbpDzcjyFlvsci5MCkvU8n9dLvDsI+bURWBheT
- 56eWfJwUF2t9RSG0xVxS8/qUQnWrFmX3v/tGgyZKfMb5sI+50yAPds+AP21o8eiEaDpWdMUqzdV
- cxrZahD36+9ssIGKF3qSShHJLka0k1fIoKn1Nei4HYYL/vGqRO8u4tsNsc8D0uCs9pcK0a+tiCP
- 7fsHAg+SvwSmOBFNAiQupfepF72VuNdaHa4EW4P1kk9ENw+iq/0SSSezGhOUgFx06hBH7p5Wfto
- LZGfy250feF4WphPpKSmAo
-X-Google-Smtp-Source: AGHT+IHzZg9Xatj5BxMqVD8nP1xF0HLa6TbnWyPZ+sAPC9nIj89ZWnTgMagW9M8kslh8ptHKwaLmAQ==
-X-Received: by 2002:a17:902:f252:b0:234:ed31:fc94 with SMTP id
- d9443c01a7336-23fb30bb5edmr26394585ad.26.1753484937073; 
- Fri, 25 Jul 2025 16:08:57 -0700 (PDT)
+ bh=xv/DPsQ51oL4gzkHoBA4GyM8WSLp/SLOF+zyYz+j7XU=;
+ b=W1p3OvBs653v5/PlYki0ksprQ9Jaj0Ra6R9Z/ksKk2mRhp48YRQyoWCC854ZPj4E7e
+ 7qXIC0W9P1dfilRPMyEnxDREbmNqg4xmdf/DT9Apn7WOgzmaxDqbzF2L9uIQB70LFmNl
+ hUEgvtj9n4jdRRmhn7GPbyAu+WecmIB1US0oCGkCyIQIcPbhHDNjnSj4uIQe2u+3MBSs
+ bJoP1yEPNW5RpWymqbYsShFhOMY3p0EGR3Gg2gVpF9DXU1sYCrudypsqIEwJP14HALJI
+ fqvt5TCUmVMe+BiIRtZNu4CakRwo8vgehOxtATxPwagRpZAuA9EwrjC0BYjgxuoYlwT4
+ yeTw==
+X-Gm-Message-State: AOJu0YxTat0XUfVXtlTFoHL+TEqNPGxIz25+YXaGaJIB9SbsBQPHsXnE
+ b/8XleWZ7eX6jACR/CfAoK0Ied0+kuSTYuJV02QoHPPDZkcBqJ7jzA0gRarw0mFm2aKrLORbnoA
+ 7rf00
+X-Gm-Gg: ASbGncvA5wsem7G/WyU1/cBVgSD5U9eChZOwYIP8Ru2oMu2bgd1OKyVdStcKU5S/Iwj
+ djz4OO//p4J/g/zMxKt4cXoy7c2IOmDJ8VXI7azDqxkGuIKutjewRojTqwuBA1D0xjbxdCVnUQg
+ daZkIg0rSRqbat1YOpG+JlmiPBDCIeHdn2ydVXLAP9bl3o98iW2MlNVdZ1HbprbrgFZSXiSzSwZ
+ uhk0tSm95dayJbmkhdulDgnU3ei+4pjorBBhaHkN3eRwysncKjt+Co383rkNZxxMdnOGWzLHCxO
+ WJkCyaykZ64A6oxqPWcpP0XWYIBO3kogmiZPyZYmGYVzCfgcgkp3t9SKWJZ6ZsuETowJ5sHgJjz
+ FwRUFzo8X5cMMKKI4PslyIY4MNecr51H4RiV0DLA4BAVWgNja+egNuJ9MqyDspQaM071Xt3Ebgw
+ HbnO8jFHYSiA==
+X-Google-Smtp-Source: AGHT+IEJjLnnVOewzzW2PGDnxN7J2Nh7+K87fX74F4Ot2wTT5tBmnNTmoSXssQHepU3bqt7f7JghZg==
+X-Received: by 2002:a17:903:252:b0:234:a139:1215 with SMTP id
+ d9443c01a7336-23fb3178ce5mr53731385ad.35.1753484938609; 
+ Fri, 25 Jul 2025 16:08:58 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23fbe545368sm5033375ad.172.2025.07.25.16.08.55
+ d9443c01a7336-23fbe545368sm5033375ad.172.2025.07.25.16.08.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Jul 2025 16:08:56 -0700 (PDT)
+ Fri, 25 Jul 2025 16:08:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 1/3] linux-user/aarch64: Split out signal_for_exception
-Date: Fri, 25 Jul 2025 13:08:47 -1000
-Message-ID: <20250725230849.13026-2-richard.henderson@linaro.org>
+Subject: [PATCH v2 2/3] linux-user/aarch64: Check syndrome for EXCP_UDEF
+Date: Fri, 25 Jul 2025 13:08:48 -1000
+Message-ID: <20250725230849.13026-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250725230849.13026-1-richard.henderson@linaro.org>
 References: <20250725230849.13026-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,117 +99,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Note that we have been passing the incorrect code for most
+exception codes: uncategorized (do_el0_undef),
+systemregistertrap (do_el0_sys), smetrap (do_sme_acc),
+btitrap (do_el0_bti) and illegalstate (bad_el0_sync).
+Only pacfail uses ILL_ILLOPN (do_el0_fpac).
+
+Note that EC_MOP (do_el0_mops) ought not signal at all.
+For now, preserve existing behavior signalling ILL_ILLOPN.
+
+List all other exception codes and document why they do
+not apply to user-only.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/aarch64/cpu_loop.c | 84 ++++++++++++++++++++---------------
- 1 file changed, 47 insertions(+), 37 deletions(-)
+ linux-user/aarch64/cpu_loop.c | 66 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 65 insertions(+), 1 deletion(-)
 
 diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
-index fea43cefa6..85d455d018 100644
+index 85d455d018..098578978e 100644
 --- a/linux-user/aarch64/cpu_loop.c
 +++ b/linux-user/aarch64/cpu_loop.c
-@@ -27,11 +27,56 @@
- #include "target/arm/syndrome.h"
- #include "target/arm/cpu-features.h"
+@@ -65,6 +65,70 @@ static void signal_for_exception(CPUARMState *env, vaddr addr)
+         si_code = TARGET_BUS_ADRALN;
+         break;
  
-+/* Use the exception syndrome to map a cpu exception to a signal. */
-+static void signal_for_exception(CPUARMState *env, vaddr addr)
-+{
-+    uint32_t syn = env->exception.syndrome;
-+    int si_code, si_signo;
-+
-+    switch (syn_get_ec(syn)) {
-+    case EC_DATAABORT:
-+    case EC_INSNABORT:
-+        /* Both EC have the same format for FSC, or close enough. */
-+        switch (extract32(syn, 0, 6)) {
-+        case 0x04 ... 0x07: /* Translation fault, level {0-3} */
-+            si_signo = TARGET_SIGSEGV;
-+            si_code = TARGET_SEGV_MAPERR;
-+            break;
-+        case 0x09 ... 0x0b: /* Access flag fault, level {1-3} */
-+        case 0x0d ... 0x0f: /* Permission fault, level {1-3} */
-+            si_signo = TARGET_SIGSEGV;
-+            si_code = TARGET_SEGV_ACCERR;
-+            break;
-+        case 0x11: /* Synchronous Tag Check Fault */
-+            si_signo = TARGET_SIGSEGV;
-+            si_code = TARGET_SEGV_MTESERR;
-+            break;
-+        case 0x21: /* Alignment fault */
-+            si_signo = TARGET_SIGBUS;
-+            si_code = TARGET_BUS_ADRALN;
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
++    case EC_UNCATEGORIZED:         /* E.g. undefined instruction */
++    case EC_SYSTEMREGISTERTRAP:    /* E.g. inaccessible register */
++    case EC_SMETRAP:               /* E.g. invalid insn in streaming state */
++    case EC_BTITRAP:               /* E.g. invalid guarded branch target */
++    case EC_ILLEGALSTATE:
++        /*
++         * Illegal state happens via an ERET from a privileged mode,
++         * so is not normally possible from user-only.  However, gdbstub
++         * is not prevented from writing CPSR_IL, aka PSTATE.IL, which
++         * would generate a trap from the next translated block.
++         * In the kernel, default case -> el0_inv -> bad_el0_sync.
++         */
++        si_signo = TARGET_SIGILL;
++        si_code = TARGET_ILL_ILLOPC;
 +        break;
 +
-+    case EC_PCALIGNMENT:
-+        si_signo = TARGET_SIGBUS;
-+        si_code = TARGET_BUS_ADRALN;
++    case EC_PACFAIL:
++        si_signo = TARGET_SIGILL;
++        si_code = TARGET_ILL_ILLOPN;
 +        break;
 +
-+    default:
-+        g_assert_not_reached();
-+    }
++    case EC_MOP:
++        /*
++         * FIXME: The kernel fixes up wrong-option exceptions.
++         * In the meantime, preserve previous qemu behavior.
++         */
++        si_signo = TARGET_SIGILL;
++        si_code = TARGET_ILL_ILLOPN;
++        break;
 +
-+    force_sig_fault(si_signo, si_code, addr);
-+}
-+
- /* AArch64 main loop */
- void cpu_loop(CPUARMState *env)
- {
-     CPUState *cs = env_cpu(env);
--    int trapnr, ec, fsc, si_code, si_signo;
-+    int trapnr;
-     abi_long ret;
- 
-     for (;;) {
-@@ -67,42 +112,7 @@ void cpu_loop(CPUARMState *env)
++    case EC_WFX_TRAP:              /* user-only WFI implemented as NOP */
++    case EC_CP15RTTRAP:            /* AArch32 */
++    case EC_CP15RRTTRAP:           /* AArch32 */
++    case EC_CP14RTTRAP:            /* AArch32 */
++    case EC_CP14DTTRAP:            /* AArch32 */
++    case EC_ADVSIMDFPACCESSTRAP:   /* user-only does not disable fpu */
++    case EC_FPIDTRAP:              /* AArch32 */
++    case EC_PACTRAP:               /* user-only does not disable pac regs */
++    case EC_BXJTRAP:               /* AArch32 */
++    case EC_CP14RRTTRAP:           /* AArch32 */
++    case EC_AA32_SVC:              /* AArch32 */
++    case EC_AA32_HVC:              /* AArch32 */
++    case EC_AA32_SMC:              /* AArch32 */
++    case EC_AA64_SVC:              /* generates EXCP_SWI */
++    case EC_AA64_HVC:              /* user-only generates EC_UNCATEGORIZED */
++    case EC_AA64_SMC:              /* user-only generates EC_UNCATEGORIZED */
++    case EC_SVEACCESSTRAP:         /* user-only does not disable sve */
++    case EC_ERETTRAP:              /* user-only generates EC_UNCATEGORIZED */
++    case EC_GPC:                   /* user-only has no EL3 gpc tables */
++    case EC_INSNABORT_SAME_EL:     /* el0 cannot trap to el0 */
++    case EC_DATAABORT_SAME_EL:     /* el0 cannot trap to el0 */
++    case EC_SPALIGNMENT:           /* sp alignment checks not implemented */
++    case EC_AA32_FPTRAP:           /* fp exceptions not implemented */
++    case EC_AA64_FPTRAP:           /* fp exceptions not implemented */
++    case EC_SERROR:                /* user-only does not have hw faults */
++    case EC_BREAKPOINT:            /* user-only does not have hw debug */
++    case EC_BREAKPOINT_SAME_EL:    /* user-only does not have hw debug */
++    case EC_SOFTWARESTEP:          /* user-only does not have hw debug */
++    case EC_SOFTWARESTEP_SAME_EL:  /* user-only does not have hw debug */
++    case EC_WATCHPOINT:            /* user-only does not have hw debug */
++    case EC_WATCHPOINT_SAME_EL:    /* user-only does not have hw debug */
++    case EC_AA32_BKPT:             /* AArch32 */
++    case EC_VECTORCATCH:           /* AArch32 */
++    case EC_AA64_BKPT:             /* generates EXCP_BKPT */
+     default:
+         g_assert_not_reached();
+     }
+@@ -108,7 +172,7 @@ void cpu_loop(CPUARMState *env)
+             /* just indicate that signals should be handled asap */
+             break;
+         case EXCP_UDEF:
+-            force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPN, env->pc);
++            signal_for_exception(env, env->pc);
              break;
          case EXCP_PREFETCH_ABORT:
          case EXCP_DATA_ABORT:
--            ec = syn_get_ec(env->exception.syndrome);
--            switch (ec) {
--            case EC_DATAABORT:
--            case EC_INSNABORT:
--                /* Both EC have the same format for FSC, or close enough. */
--                fsc = extract32(env->exception.syndrome, 0, 6);
--                switch (fsc) {
--                case 0x04 ... 0x07: /* Translation fault, level {0-3} */
--                    si_signo = TARGET_SIGSEGV;
--                    si_code = TARGET_SEGV_MAPERR;
--                    break;
--                case 0x09 ... 0x0b: /* Access flag fault, level {1-3} */
--                case 0x0d ... 0x0f: /* Permission fault, level {1-3} */
--                    si_signo = TARGET_SIGSEGV;
--                    si_code = TARGET_SEGV_ACCERR;
--                    break;
--                case 0x11: /* Synchronous Tag Check Fault */
--                    si_signo = TARGET_SIGSEGV;
--                    si_code = TARGET_SEGV_MTESERR;
--                    break;
--                case 0x21: /* Alignment fault */
--                    si_signo = TARGET_SIGBUS;
--                    si_code = TARGET_BUS_ADRALN;
--                    break;
--                default:
--                    g_assert_not_reached();
--                }
--                break;
--            case EC_PCALIGNMENT:
--                si_signo = TARGET_SIGBUS;
--                si_code = TARGET_BUS_ADRALN;
--                break;
--            default:
--                g_assert_not_reached();
--            }
--            force_sig_fault(si_signo, si_code, env->exception.vaddress);
-+            signal_for_exception(env, env->exception.vaddress);
-             break;
-         case EXCP_DEBUG:
-         case EXCP_BKPT:
 -- 
 2.43.0
 
