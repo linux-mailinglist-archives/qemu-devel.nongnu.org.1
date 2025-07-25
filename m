@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCA9B12546
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 22:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD121B12540
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 22:23:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufOyo-00053K-8W; Fri, 25 Jul 2025 16:25:22 -0400
+	id 1ufOwO-0000xi-So; Fri, 25 Jul 2025 16:22:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ufOsu-0006gO-7l
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:19:16 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1ufOsv-0006ho-Oo
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:19:17 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ufOss-0000vY-HP
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:19:15 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-af51596da56so2119826a12.0
+ id 1ufOst-0000vb-2h
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:19:17 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-311d5fdf1f0so2143725a91.1
  for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 13:19:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1753474753; x=1754079553; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=5K1qtAriFHoDI4vOaduYpqQ8oUEBiN45bpDENPmumJY=;
- b=SwxqZTJ08jpc/Eqg5qVNU4WZMuFFJeUqCJQxSOY3KCREmRRAdj82CPqhvVQNte5i9Z
- wJxWUMg3Mk4N+hm3JQMPewSHteXEboab1/7IAABvYMBQP/WFs39DOGi0MVo9ZxcStVDr
- ivrd/G/Ebq5wx4Ev/wNQBBCuoEwwI4oorT9Ozb4QuSfjbBrhffLx/pIGPPq2BTwnGJYl
- /HwZuN5bWSn5wLkJmXE8DGcusTfRHFwzdnfm3JRyCqMKNnyr7sbpDwckT/j5l8dBAAaf
- Gf0sKaFuBJYMfCaZaQaBhAChgF+EScY07EZeyfLD0FZA3VEpqOGtkdw12d/EXeROOd/n
- 7kfQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ofwkNnvRpeUxFMMP1/NYCTaWcBPocFs20uPPW+a4FKw=;
+ b=LYCCgIaG7IkDyAhbYQV4+wCwxn74aJZh2sLA2j5xZJs1IL0Pcm1hU+DtkA+Co0hImr
+ GLKJViU8ivIKDcp7ZRiSnYiGfYX2Y0boSfSPmhUzC7EHfVRlRwFU4DTeZl6aJpd15qJp
+ lZ7JKONj6bK1e3fVGdnbX8mGUiJAxnSoBhxZvDPcEbpF8D9qH9QFh8AaKHT41SZczCTd
+ bHTRQYdPMPI8Gj2nhYPSf1lPzziEYrbNv+GDHQUtcVO6kBglgSZ0vUSoZV9bU3jaM+z1
+ 0jalX39Ci+/mfOWo3tBsWrkZzNb9sZRBVx1bX1IdA/X2ky8gFyzYgeRABzXym6D/g/jK
+ iCig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1753474753; x=1754079553;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5K1qtAriFHoDI4vOaduYpqQ8oUEBiN45bpDENPmumJY=;
- b=rhSHU6Jhw5IBoEoOifaeCumLPkzaEDKpUqATHtDQUFdB6B+uSMo12wl/8OBQtC/oKu
- 3LDy0bh4sQgGIcnOSPowOA4hweYlpcN9V1tqr3YlLowIeZ0/f+/tN3JNtLrc4gFC8vs1
- Zr71ENJ3SZ2p3IGAqXjzyWkbStFeUnIkfsdv8ji2YIYBQ79Saj9cJm7sfZLfGquvWkCQ
- vxN5roE83BFz0ewy+gXh6MI6jQ1jvcimSBjXQijMzTPA8JUazqJEkgS6a/QNB194kjcM
- HVtL2+dnrYYMNnc5vebLwFZlCNPdd25F/fvU4WPhyhc4PupIv7AIRFqu0+PQcfKLDAIH
- /1QA==
-X-Gm-Message-State: AOJu0YyDfRCel1nAoDL4RX5Q9nI8e1rFV/WV8GqGpw1+155yWqqlA2vv
- 8PpTHiwka45xQae1R68Zy0AhiNuXaJ0oqFcRCSfXQwCYp9Lin7PQenDZm2W23fQuAe19a2sNLG7
- uClf6
-X-Gm-Gg: ASbGnctYZGBrAV0LdKPuDCRpZCeKrP8ZT5cizWoBCICMAexbQEfb2BLON7cZ9lMpNvh
- lhvZTceBEjaLo7saCnZ3NvaiGKb5FHcKMSEppATWaIvgwZeO1Ko75S6lnH4vAIPsgA1zDdR3xZX
- PGGxXJmS/SxK/HCCnDVgkzKuBqWwg/Z8QgTbtRJIBrKvBAHGFFbeUgS9Qs4MPS4wVTiloLTq9ZO
- g5H3wRrK/lGpP7NTICuWhgroXaO2lj5CkH3uJfXxgFGQ3LBW+VrjTjWvp4QShNw8gjDT6z5g+iQ
- IwXBsbkOASqvkAbQwiGMSGfvkkvoKY+zS0x1e4a1Gd/6jytyhzNaudU07A9k1r/Y10Ck/C3B++G
- NAuVHOqfsdpoLgTchCThzhiVAl7iShl+w
-X-Google-Smtp-Source: AGHT+IFUxwD/snBE4ljS+0QN/557jbRNFw2KOEoNBB2wTCbbuq+V+o1vyzhWlugVy8o0+7ckdQojXA==
-X-Received: by 2002:a17:903:41d1:b0:234:b735:dca8 with SMTP id
- d9443c01a7336-23fb307afd9mr40344335ad.6.1753474752771; 
- Fri, 25 Jul 2025 13:19:12 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ofwkNnvRpeUxFMMP1/NYCTaWcBPocFs20uPPW+a4FKw=;
+ b=DWZWt7sOnzd0bbBuEyGZFmacXaMuRFgVZ6YEKhDRYR0xfZIwFmK/0Hce7tRSgP2npk
+ 2UNhYNaUp++W1It8NgyKJq/3OVIMr7lr5E77E7YZP1q2rs0qhU2qqVwmmp2Aaty/V9Xd
+ aM6xwZuJ1EcxTD1FetNe1mRKAgMFisrIF41BYkdR/t/I6Rbz2F29cnUJMgus/cQfqqXN
+ I19YcEw8cToUe2+wv7uK49X4icOqaL6ICM+4Xscle8KhBXbEmQ8aIqZjk3PdmDESd2vh
+ k9m2pNfmU5VMTZ3A5g7Wxlq1Rv/UjvalVWNWHp08wXWM22m8CIKYSe1fWGR+pvLqYa1c
+ bTgQ==
+X-Gm-Message-State: AOJu0Yz4vN7vF/akHWejqGDGgiXk+4RuYf5ZCJbluwGhilx80Y4ExRdF
+ qZwC2ye5UGEllBPfg/LU2qcMeqE4fbSWh9TRdWVR/4ibuZwkJiyaw8nQbU+JSxOMXoLJO5PVDPW
+ wupGq
+X-Gm-Gg: ASbGncvFc3lZu3dUADbeExb+8Uue61Pt298CDtfKhs39hhqz047N/uoZ+QQbTaA5SVF
+ qvwF02BkAJXWLvvyBFeMgaoMUDGLYwLOCQOxsnvYFJE/GY/gupQMtwG4kDCIcnhF+TSdC2pY8pb
+ 9sPf7oCF6WW1Wi21gRWVz/GFKcZiRNvXlSNrdqxd689wzBk5OIcWV+Ajtflkt6OW7wj8AT5vexT
+ Zi1IY9Xy6loO2ZvoJ/fhX8mCGncHeG7Q3t6DJ9WGUU7yT3bRotLcqPBxflqC/pkXN50StG3+uCX
+ /BMwWXISeWX4qQxQVvwBGPFdYZB/hlef8RvbheGoxso07XerxezR0mqIySsAHbd9iwgx2a77t02
+ TgZ2+N1U129gSjkmoxm4arA==
+X-Google-Smtp-Source: AGHT+IHTXB0ys/xuQAFJVf4KiPKIa6ZzRQ2UfzgOsXLnLMZ0Fc6wz3VPehKgngaZqQpSOeQpH60pKA==
+X-Received: by 2002:a17:90a:8c15:b0:313:33ca:3b8b with SMTP id
+ 98e67ed59e1d1-31e7785de0amr3698668a91.9.1753474753569; 
+ Fri, 25 Jul 2025 13:19:13 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-31e6635f0a0sm4143309a91.24.2025.07.25.13.19.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Jul 2025 13:19:12 -0700 (PDT)
+ Fri, 25 Jul 2025 13:19:13 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 0/3] single-binary: compile hw/intc/arm* files once
-Date: Fri, 25 Jul 2025 13:19:03 -0700
-Message-ID: <20250725201906.19533-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH 1/3] hw/arm/arm_gicv3_cpuif_common: move to hw/arm and compile
+ only once
+Date: Fri, 25 Jul 2025 13:19:04 -0700
+Message-ID: <20250725201906.19533-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250725201906.19533-1-pierrick.bouvier@linaro.org>
+References: <20250725201906.19533-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,25 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move those files to hw/arm, as they depend on arm target code.
+This file needs definition of ARMCPU, and thus, belongs to hw/arm.
 
-Pierrick Bouvier (3):
-  hw/arm/arm_gicv3_cpuif_common: move to hw/arm and compile only once
-  hw/arm/arm_gicv3_cpuif: move to hw/arm and compile only once
-  hw/arm/armv7m_nvic: move to hw/arm and compile only once
-
- hw/{intc => arm}/arm_gicv3_cpuif.c        |  2 +-
- hw/{intc => arm}/arm_gicv3_cpuif_common.c |  2 +-
- hw/{intc => arm}/armv7m_nvic.c            |  0
- hw/arm/meson.build                        |  3 +
- hw/arm/trace-events                       | 79 +++++++++++++++++++++++
- hw/intc/meson.build                       |  3 -
- hw/intc/trace-events                      | 79 -----------------------
- 7 files changed, 84 insertions(+), 84 deletions(-)
- rename hw/{intc => arm}/arm_gicv3_cpuif.c (99%)
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ hw/{intc => arm}/arm_gicv3_cpuif_common.c | 2 +-
+ hw/arm/meson.build                        | 1 +
+ hw/intc/meson.build                       | 1 -
+ 3 files changed, 2 insertions(+), 2 deletions(-)
  rename hw/{intc => arm}/arm_gicv3_cpuif_common.c (92%)
- rename hw/{intc => arm}/armv7m_nvic.c (100%)
 
+diff --git a/hw/intc/arm_gicv3_cpuif_common.c b/hw/arm/arm_gicv3_cpuif_common.c
+similarity index 92%
+rename from hw/intc/arm_gicv3_cpuif_common.c
+rename to hw/arm/arm_gicv3_cpuif_common.c
+index ff1239f65db..8435ef8cf0d 100644
+--- a/hw/intc/arm_gicv3_cpuif_common.c
++++ b/hw/arm/arm_gicv3_cpuif_common.c
+@@ -10,7 +10,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "gicv3_internal.h"
++#include "hw/intc/gicv3_internal.h"
+ #include "cpu.h"
+ 
+ void gicv3_set_gicv3state(CPUState *cpu, GICv3CPUState *s)
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index dc68391305f..9f2eea474b4 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -82,6 +82,7 @@ arm_common_ss.add(when: 'CONFIG_VERSATILE', if_true: files('versatilepb.c'))
+ arm_common_ss.add(when: 'CONFIG_VEXPRESS', if_true: files('vexpress.c'))
+ 
+ arm_common_ss.add(files('boot.c'))
++arm_common_ss.add(when: 'CONFIG_ARM_GIC', if_true: files('arm_gicv3_cpuif_common.c'))
+ 
+ hw_arch += {'arm': arm_ss}
+ hw_common_arch += {'arm': arm_common_ss}
+diff --git a/hw/intc/meson.build b/hw/intc/meson.build
+index 3137521a4ad..4578c70dc45 100644
+--- a/hw/intc/meson.build
++++ b/hw/intc/meson.build
+@@ -38,7 +38,6 @@ if config_all_devices.has_key('CONFIG_APIC') or \
+ endif
+ 
+ specific_ss.add(when: 'CONFIG_APIC', if_true: files('apic.c', 'apic_common.c'))
+-specific_ss.add(when: 'CONFIG_ARM_GIC', if_true: files('arm_gicv3_cpuif_common.c'))
+ specific_ss.add(when: 'CONFIG_ARM_GICV3', if_true: files('arm_gicv3_cpuif.c'))
+ specific_ss.add(when: 'CONFIG_ARM_GIC_KVM', if_true: files('arm_gic_kvm.c'))
+ specific_ss.add(when: ['CONFIG_ARM_GIC_KVM', 'TARGET_AARCH64'], if_true: files('arm_gicv3_kvm.c', 'arm_gicv3_its_kvm.c'))
 -- 
 2.47.2
 
