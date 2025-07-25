@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D0AB11F0E
+	by mail.lfdr.de (Postfix) with ESMTPS id 283A5B11F0D
 	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 14:56:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufHwl-0006gQ-KT; Fri, 25 Jul 2025 08:54:47 -0400
+	id 1ufHwp-0006lR-83; Fri, 25 Jul 2025 08:54:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ufHwQ-0006Kq-0Z
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 08:54:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1ufHwO-0006IF-P9
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 08:54:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ufHwL-0007vk-Kn
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 08:54:25 -0400
+ id 1ufHwN-0007w4-1X
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 08:54:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753448058;
+ s=mimecast20190719; t=1753448061;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=HcsP+DKAx+d2yZXMZFx93ydecLEnUazc4oLS6lFAV8Q=;
- b=YVWG3yjPoReIceNLsd94tVKoF4WWLra9UW6xoFfv/kQwk34yzc7G1W0jo3wwlZUZYHi5pk
- iTCayURRb26zyA/i/O9v7ZKlFGMH12UPFTge29IAbYHpZmd51TTXT53Vnij31REyfXduoy
- X/1tY0pG9dVvbyWovcLQjUZ/ZqEZkhY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SKZhYrhLklT7wy5r7XGVHBie6wvhRMRWF/tewAfL1Jk=;
+ b=N+vuv0nl0uvwMJJA+R7MbDx9EPx36Ncqjgq1yJnIi31bUOWf/7QeAlu4tDRPt9gMQW/kCB
+ cr8Rd6q52D1aSe1B32Ggg5gudpxIOA2lcoQ2EKwL2pQRZl86kEKiymR4dtnRjAK3o/Hgv/
+ 0Y7kI5oh99IohnVD7Qc8VvSZbmedVuM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-XSEEDmYoN1em8UzGYOtdPw-1; Fri, 25 Jul 2025 08:54:16 -0400
-X-MC-Unique: XSEEDmYoN1em8UzGYOtdPw-1
-X-Mimecast-MFC-AGG-ID: XSEEDmYoN1em8UzGYOtdPw_1753448056
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4561611dc2aso16842835e9.0
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 05:54:16 -0700 (PDT)
+ us-mta-140-d3CVZcplOK-8Hp3hU_6giw-1; Fri, 25 Jul 2025 08:54:19 -0400
+X-MC-Unique: d3CVZcplOK-8Hp3hU_6giw-1
+X-Mimecast-MFC-AGG-ID: d3CVZcplOK-8Hp3hU_6giw_1753448058
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-451d2037f1eso12768305e9.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 05:54:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753448054; x=1754052854;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HcsP+DKAx+d2yZXMZFx93ydecLEnUazc4oLS6lFAV8Q=;
- b=A4fSc+m+68QLZO5T9a9z5/RfJvI9i/oKtyfZLcTa4FFC6krHYpxldCFR4sJ00LA0qs
- yv8QUn25gnrUzhNO+m7SD8ra/vbd1IVlbL3EFpRDf2lKsJVQW2Cdr0huTQFTIfEYYIse
- RjmuRB8SG7Zbv4pxtVpOFR1mkihv9hha5FcnzikCnNohZGrM0UGcxbTrju+TehGgrRNJ
- dMaVo/UCz50cfEF3OcnZE5CpVee4PIraQAhAcJPFSa8Fwre6XIr2V4UyPi0M2kb2kbOG
- qP7Hb9JRFqDGfpJpRYA7URlYWithw27u9AK1f5e0GlkoiYon6zSpecrUNFf8CTab4TXG
- uNtg==
-X-Gm-Message-State: AOJu0Yz7ST4LrOd1pO2BLyw7lY0zQ1z3oYoRkt0vpB7fORp0XmDnIQLV
- 2//sQi0LfT7eTl3V/+csAKatEe7zJ3R8+dErdaFO0a0EEPi2kPoR6KCw9XAmtsRGdiegJ5buljv
- BK7dc6Ue0yGno9bkihSBtg50zoYbaS66TN6nyaxVLiwRP4+zssis44VEFkrE3kkkKyqljyCAApG
- kgmhRnbfUDSoWuQbggRqWwPU1F9EP2Y75P7Bd6xlpP
-X-Gm-Gg: ASbGncuPFDAOyUfvHun1isVqE0M+Y+TlNGDnHNYn8EoGWzBolzd9xRwLpcVq/20fGLO
- NPHDyhT1+zSjqa4TVq/Z4qG+Hxwy+ZsffN+iL2FWaBleKgMfnC8i9x/jeFeTH2XDd6zSgnamEX0
- oB+pS0ROnTGqxjpmo0bbf7OcGOVNmypIA9Lv4Zex13tpgK5VhNWMqZihTEnuTI8NcjF0bTEn1/A
- z7R+q7VzPdep2E8ULxg8kZNLuJ+ccprhRVBynLFniFsc3paE0MBC936/cT934+Q3ZLnrPFwpeS2
- C85UfSKKjaV5Ky2Rsfvxsfx7H4g00zV753u+KeAkRM17
-X-Received: by 2002:a05:600c:35cc:b0:442:e9eb:cba2 with SMTP id
- 5b1f17b1804b1-45875f73f0amr16698095e9.0.1753448054389; 
- Fri, 25 Jul 2025 05:54:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHaTPGogp+fW/mHLsZ5dEdd9d/dGzglCtiwidTgamvgSrKQHkzGwxiqqyspxCXgc3mPdX6OQ==
-X-Received: by 2002:a05:600c:35cc:b0:442:e9eb:cba2 with SMTP id
- 5b1f17b1804b1-45875f73f0amr16697815e9.0.1753448053826; 
- Fri, 25 Jul 2025 05:54:13 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753448056; x=1754052856;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SKZhYrhLklT7wy5r7XGVHBie6wvhRMRWF/tewAfL1Jk=;
+ b=kR1HnbjfMhRUCyegoliBtr3BY4V4pdh9UPWOmQeZQoIOSGtGvCYk4Z31pbYmtr9YdN
+ VW3zVN5oKpLbgPrU/4gmMsSF5E0CViz8zoGfnlp2AFqVISbQP5SW0BZPUy4wa9x13nR0
+ 8KjLhx59dHnbSdJkl09WFULQxaBp5YF88rhgLecRwnUcxQS0mND3Lnv7RJN/DthKoLQs
+ /TgriruxKRJZQD4vKNsoeN54GMCdUj0k8bEGNroH7v0j4J8oo/tCXjcgXKlN/C2kd2+X
+ Y5gdLgo9CxZ9eUHGFHyVVdLcjVEp21fwsB5LRkBhl7egKjYssn6vyWALVpHLYVWMsSZ7
+ /oMg==
+X-Gm-Message-State: AOJu0Yyp3I5OfhvIKrSGgjY05/fuw+8qlhcAOuS/dvk5t0eeCs4bKRqK
+ gOTC89q6VtmvRReC6YyKAfwsCv7H0vLJMfNgNSEHuL+LXIpA7bPbeGDHe+cHVi/Z9kNu6Qt/Aab
+ z/L0DHSQ0qXZHvSJBPAaSjnRT8wiaHKy9Dh6GuRCFr0oTbFjpCnr7N69ETSaR08hxPUrlfH7iQu
+ PpAnglyqUlsUVbPyyrRg1yOvwKGcx4NlLTDbU8kgi/
+X-Gm-Gg: ASbGncvt10Xd/OzxGb13gNHhbm+BEBdG6AttdAZUVlwW3bwUYQSacO67YzbxjlSAMSU
+ 865NxdMLaZxDpuNUO8RlaixkA9//y4akf04pRazi3WMv+iaGnE4gReIQ/heqpITwDjpv1+rgSgo
+ Zp/V0SZowOY8TBeNqwi07BzMPc+psOId+ry/u+JECMmoWqZUqcYsMIb5eUx86JIxfS8Unen0g3m
+ yHKKZBoBmE7kt8g5iMTvE1/oi6fPSoo5RxLvX3WuSHr62bva4LqUDKEr58TtWDG7KS8AXSv8wTM
+ Jbmi8u3uFUt8lH3E2Afdpk6kdDNsxrZ9sQ2b5093PIjs
+X-Received: by 2002:a05:600c:529a:b0:456:c48:491f with SMTP id
+ 5b1f17b1804b1-458763117f3mr20134055e9.10.1753448055736; 
+ Fri, 25 Jul 2025 05:54:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrkZVgPj7areL+BjU/gsayfQGBhJmb4UEYKxaDz/IBcyEC8ujD8THpECqG8T2sHGP49H3xAg==
+X-Received: by 2002:a05:600c:529a:b0:456:c48:491f with SMTP id
+ 5b1f17b1804b1-458763117f3mr20133725e9.10.1753448055225; 
+ Fri, 25 Jul 2025 05:54:15 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.154.122])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b76fcc3c4csm5108091f8f.76.2025.07.25.05.54.13
+ 5b1f17b1804b1-45870532baesm53712305e9.1.2025.07.25.05.54.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Jul 2025 05:54:13 -0700 (PDT)
+ Fri, 25 Jul 2025 05:54:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/4] Rust, target/i386 patches for 10.1-rc1
-Date: Fri, 25 Jul 2025 14:53:59 +0200
-Message-ID: <20250725125412.1128617-1-pbonzini@redhat.com>
+Subject: [PULL 1/4] rust: devices are not staticlibs
+Date: Fri, 25 Jul 2025 14:54:00 +0200
+Message-ID: <20250725125412.1128617-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250725125412.1128617-1-pbonzini@redhat.com>
+References: <20250725125412.1128617-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -102,49 +106,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 56a3033abcfcf72a2f4f1376a605a0b1ad526b67:
+This is only cosmetic for now, but hopefully later on Meson will parse more
+of Cargo.toml.  Devices are linked into a staticlib but are not staticlibs
+themselves.
 
-  Merge tag 'pull-request-2025-07-21' of https://gitlab.com/thuth/qemu into staging (2025-07-21 06:34:56 -0400)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ rust/hw/char/pl011/Cargo.toml | 3 ---
+ rust/hw/timer/hpet/Cargo.toml | 3 ---
+ 2 files changed, 6 deletions(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
-
-for you to fetch changes up to feea87cd6b645d5166bdd304aac88f47f63dc2ef:
-
-  target/i386: fix width of third operand of VINSERTx128 (2025-07-25 14:51:11 +0200)
-
-I would like to include this script in QEMU 10.1, after talking to members of
-the Fedora Rust SIG, in order to experiment with RPM packaging and be ready
-for possible enabling of Rust in QEMU 10.2.
-
-Paolo
-
-----------------------------------------------------------------
-* rust: small cleanups + script to update packages
-* target/i386: AVX bugfix
-
-----------------------------------------------------------------
-Manos Pitsidianakis (1):
-      rust/pl011: merge device_class.rs into device.rs
-
-Paolo Bonzini (3):
-      rust: devices are not staticlibs
-      scripts: add script to help distros use global Rust packages
-      target/i386: fix width of third operand of VINSERTx128
-
- MAINTAINERS                              |   1 +
- docs/about/build-platforms.rst           |   8 ++
- target/i386/tcg/decode-new.c.inc         |   4 +-
- rust/hw/char/pl011/Cargo.toml            |   3 -
- rust/hw/char/pl011/src/device.rs         | 103 +++++++++++++++--
- rust/hw/char/pl011/src/device_class.rs   | 103 -----------------
- rust/hw/char/pl011/src/lib.rs            |   1 -
- rust/hw/timer/hpet/Cargo.toml            |   3 -
- scripts/get-wraps-from-cargo-registry.py | 190 +++++++++++++++++++++++++++++++
- 9 files changed, 297 insertions(+), 119 deletions(-)
- delete mode 100644 rust/hw/char/pl011/src/device_class.rs
- create mode 100755 scripts/get-wraps-from-cargo-registry.py
+diff --git a/rust/hw/char/pl011/Cargo.toml b/rust/hw/char/pl011/Cargo.toml
+index 003ef9613d4..88ef110507d 100644
+--- a/rust/hw/char/pl011/Cargo.toml
++++ b/rust/hw/char/pl011/Cargo.toml
+@@ -12,9 +12,6 @@ license.workspace = true
+ repository.workspace = true
+ rust-version.workspace = true
+ 
+-[lib]
+-crate-type = ["staticlib"]
+-
+ [dependencies]
+ bilge = { version = "0.2.0" }
+ bilge-impl = { version = "0.2.0" }
+diff --git a/rust/hw/timer/hpet/Cargo.toml b/rust/hw/timer/hpet/Cargo.toml
+index 6f075027843..ac5df23c1d0 100644
+--- a/rust/hw/timer/hpet/Cargo.toml
++++ b/rust/hw/timer/hpet/Cargo.toml
+@@ -10,9 +10,6 @@ license.workspace = true
+ repository.workspace = true
+ rust-version.workspace = true
+ 
+-[lib]
+-crate-type = ["staticlib"]
+-
+ [dependencies]
+ qemu_api = { path = "../../../qemu-api" }
+ qemu_api_macros = { path = "../../../qemu-api-macros" }
 -- 
 2.50.1
 
