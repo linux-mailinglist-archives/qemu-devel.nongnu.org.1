@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FFE8B1271A
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D644B12719
 	for <lists+qemu-devel@lfdr.de>; Sat, 26 Jul 2025 01:10:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufRXA-0002qA-GA; Fri, 25 Jul 2025 19:09:00 -0400
+	id 1ufRXC-0002r4-Cr; Fri, 25 Jul 2025 19:09:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufRX8-0002oe-8f
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 19:08:58 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1ufRXA-0002qU-CG
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 19:09:00 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufRX6-0001oS-Kg
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 19:08:58 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-23f8df98e41so23106025ad.0
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 16:08:56 -0700 (PDT)
+ id 1ufRX8-0001of-Np
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 19:09:00 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-23694cec0feso24954045ad.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 16:08:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753484935; x=1754089735; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rJjiNpYq8k65ULjdI+KSiLvLZ8E6sNk39U16k7ksgyI=;
- b=yzoFoXS4nmpOL1Zlus7gsXJXKxeMO6dI8e5xnFmBDXw1iIA2ebOeRlt7nMGM81t9dK
- sWOJz17UXWmA/vnbirmi0GkhtEK2O85yBSyFx1Tgd0Htqf5kxcy+Uy3Q5f/ZsMLTSrYF
- XtdCLBXz2GrTMO/b+pXXtiEMpAhB+8a3a1yxi6Y2UtptZ0nRxeEkwEUuJ3qpB0iHusbB
- pURI/H7BbL1Hok+dZulzVxSlOabeCHIgGF36J2fTMs2c7SBfXPEGB6exbBmD7NCANTFw
- GrmEcMNlII/RWC/k3NeeVYZDo/L8KrSxqmqwXcunTgQnJKS66V5WaYeWPbkV73jbtZKY
- paMw==
+ d=linaro.org; s=google; t=1753484937; x=1754089737; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WwS5enWBqWLAF6dbF1XYZSIiH0+6jDOiUSGG3x6eJCk=;
+ b=XYLhxozxxLd8x9uj0fLeLfKfoUtc8dtxgGRgdIFMhsZ3J/xtAy/SQBVeiCQKn+s+HG
+ sfjaKxRHeKGKY570hacUzhej/sLgRyVlLOEyE5m/rRJ6nSuCNqK4+z4g7WIDkep+Mbe7
+ 3vsXnYjyMQFaoU8+iQzYfoeG6DlUxtjLx16EzJ9WJ2iZs/bbQcmhJLxhWHQ4jQ/0gTvr
+ lHYbf3Tsm7bz6rl8fhSvmvFwLG+gCjjdbXCIClvtbLoFkRAGQ+dAFoc7ToN2DJR2eixP
+ 0tomgKbJMjUfj8rWVnFU1TXNatlbY3KrYwCnjWuAQWv+syfqCHsOYhl3fkWQk3EV8re3
+ ciCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753484935; x=1754089735;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rJjiNpYq8k65ULjdI+KSiLvLZ8E6sNk39U16k7ksgyI=;
- b=sUma4EUyQhzAkoL9bl+HqL39YlWm2Brc7wfmol76f/k8qmFoEvH9TmH6nhxyxwhg53
- oBCj0qfVLdY31xhOjChXtAbiVeMx3rcdu4g/QseuufB+rquE8a0r4RfiwZvFk3zMQ9Yw
- AothGjNReRlHHQelCQr5GQUv9qJ33KTw5vIFicMdQiHICR0lIswLJE9id9zVIbvlqBg6
- vDenpDQIJo0Jx/GIHb3iSCp4WcNiwCUKlNei/bsCU6r7m4UMx11f3KOrhIj5NNoQZtrm
- hqiKT3cpBrF8F2G+hIKRLA4j22di1UQ9i9Los3Dv2xsT+nXNRSpIpPq5E8LSol7FGoou
- MeUg==
-X-Gm-Message-State: AOJu0Yzm5PrlhbOrMH+/ir0oUYHgr7ZTA3WXTRyVNl8FIcs7hj+jg55z
- EK8OaqKm1qqnQoXT7N39pXLMLKHjPzP/f6aUQxNpa/wKC8S6aRoThY4WUBpL+9817aiYa+v06VC
- ZyiIC
-X-Gm-Gg: ASbGnctBGE7kezqjjHoJDlhGv64KQQyyAuzgr8qAyXGh/v3krNojG6bJkS62dmeqxkY
- VD4ERMXdABh0ojypnboh/mCiHwuUpUkdCxbdC7S3g7uLTtfSjNlwXo+quH1gYDRSF+VQDFD2Wgh
- jPXnDBUJl06vX2/zQ0M31+Jcu1Q0bBgHj+DJrVFG2O7e0B02m+UPSzKbjfH7wWgQCNxZUoTiLsO
- L4ohM0vohM1Y+yxb4yVA8Mda8mPhN5xoBMnfzACjpRr+htyLZCT4kZN37CYYG+ALSYG/hURg29s
- zJInXWDxTUbjeAFcf1aTOLm0cAg+INLY472OE/LKrPO2tWM1w6Db4U0+N0BUT18XUKfzHtRPZX4
- 1mNgtMSrS6DaEK6JUvhEP75JXyb79sGy8ylVc6xEzUyoMozRRFYbVUdJdINP15cgyfXrkWQ3Vk3
- rBdTlVBPi2kw==
-X-Google-Smtp-Source: AGHT+IHUEBrbl3psdfb+myW3R4/QoFWBrmQbFt1jEQMS9VoeCCfzNhtZqJajGeAkWnotcQSdAfrf+Q==
-X-Received: by 2002:a17:903:1b05:b0:234:b743:c7a4 with SMTP id
- d9443c01a7336-23fb30e42a3mr62942525ad.38.1753484934859; 
- Fri, 25 Jul 2025 16:08:54 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753484937; x=1754089737;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WwS5enWBqWLAF6dbF1XYZSIiH0+6jDOiUSGG3x6eJCk=;
+ b=edjaPlTmA6CBGDyQyJOw4BPjDR1chTnTXj1kaZXLLSZXXe9ABa2v/IIchrZx6wvY3V
+ t0ow5wLkgoTuiS+0lPuWa+LrnxqKiRSVyIjbZck3qCtzWFoZ1R7gyCTqYyQ0tW8IkPkt
+ ZqjH6qTKYhiQH4Pf11BGjO3qi3Rb4wcDLi52sh9Fqi2uUWKHIEKgjxzW3Qg0jNGBvGcH
+ xCYxDzWhsAtA/F3setA0BFx7k1U+iVqHarNkfIpQ7zbWKT5HR1nr+DyA3MlAp7VNuPW4
+ LFdRnHsf9kWdbLzLApPzgx8aCTgGlmVWf6AYsbWW0Qj8KdZxdYLLBqddJTVDjqxMU9xE
+ lgKw==
+X-Gm-Message-State: AOJu0YyZpCR+ieBu9eiER6mA5vnqQDqltd2iAgSMOzAbCKV7thgY0Ucj
+ dAhaAMjTxOz02rJlB09Roc6G6M2PgMCJO/xzbsyAqz4dmUNPLKh5vYZu1Kkoqc9gFVVd41nBVVR
+ rhkDl
+X-Gm-Gg: ASbGnctZNZQZ0WlAlsaho2rfT5Hk/V25jHi2mNnBHQv87Gi0sLU545/gbtjZ/BgnIiX
+ LxzGjDRav0cZqdoonPXVC055grsajW+h1ip+kE1wiNRAGbUAAm6H520uDIYFfL8PiWLFWtKId0J
+ 3GNJ6TReWMenz6GMb1OraL+AxiAWiGZOjpaTjnbpDzcjyFlvsci5MCkvU8n9dLvDsI+bURWBheT
+ 56eWfJwUF2t9RSG0xVxS8/qUQnWrFmX3v/tGgyZKfMb5sI+50yAPds+AP21o8eiEaDpWdMUqzdV
+ cxrZahD36+9ssIGKF3qSShHJLka0k1fIoKn1Nei4HYYL/vGqRO8u4tsNsc8D0uCs9pcK0a+tiCP
+ 7fsHAg+SvwSmOBFNAiQupfepF72VuNdaHa4EW4P1kk9ENw+iq/0SSSezGhOUgFx06hBH7p5Wfto
+ LZGfy250feF4WphPpKSmAo
+X-Google-Smtp-Source: AGHT+IHzZg9Xatj5BxMqVD8nP1xF0HLa6TbnWyPZ+sAPC9nIj89ZWnTgMagW9M8kslh8ptHKwaLmAQ==
+X-Received: by 2002:a17:902:f252:b0:234:ed31:fc94 with SMTP id
+ d9443c01a7336-23fb30bb5edmr26394585ad.26.1753484937073; 
+ Fri, 25 Jul 2025 16:08:57 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23fbe545368sm5033375ad.172.2025.07.25.16.08.52
+ d9443c01a7336-23fbe545368sm5033375ad.172.2025.07.25.16.08.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Jul 2025 16:08:53 -0700 (PDT)
+ Fri, 25 Jul 2025 16:08:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH for-10.2 v2 0/3] linux-user/aarch64: Syndrome fixes and
- enhancements
-Date: Fri, 25 Jul 2025 13:08:46 -1000
-Message-ID: <20250725230849.13026-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 1/3] linux-user/aarch64: Split out signal_for_exception
+Date: Fri, 25 Jul 2025 13:08:47 -1000
+Message-ID: <20250725230849.13026-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250725230849.13026-1-richard.henderson@linaro.org>
+References: <20250725230849.13026-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,29 +99,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: 20250725175510.3864231-1-peter.maydell@linaro.org
-("[PATCH v2 for-10.1 0/3] linux-user/aarch64: Fix SME/SME2 signal frame handling")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/aarch64/cpu_loop.c | 84 ++++++++++++++++++++---------------
+ 1 file changed, 47 insertions(+), 37 deletions(-)
 
-Changes for v2:
-  - Split out syndrome handling from cpu_loop (pbo)
-  - Enumerate all exception codes and document them.
-    Include code for several cases missed by v1.
-
-The FIXME in patch 2 suggests the whole patch set wait for 10.2.
-
-
-r~
-
-
-Richard Henderson (3):
-  linux-user/aarch64: Split out signal_for_exception
-  linux-user/aarch64: Check syndrome for EXCP_UDEF
-  linux-user/aarch64: Generate ESR signal records
-
- linux-user/aarch64/cpu_loop.c | 153 +++++++++++++++++++++++++---------
- linux-user/aarch64/signal.c   |  34 +++++++-
- 2 files changed, 148 insertions(+), 39 deletions(-)
-
+diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
+index fea43cefa6..85d455d018 100644
+--- a/linux-user/aarch64/cpu_loop.c
++++ b/linux-user/aarch64/cpu_loop.c
+@@ -27,11 +27,56 @@
+ #include "target/arm/syndrome.h"
+ #include "target/arm/cpu-features.h"
+ 
++/* Use the exception syndrome to map a cpu exception to a signal. */
++static void signal_for_exception(CPUARMState *env, vaddr addr)
++{
++    uint32_t syn = env->exception.syndrome;
++    int si_code, si_signo;
++
++    switch (syn_get_ec(syn)) {
++    case EC_DATAABORT:
++    case EC_INSNABORT:
++        /* Both EC have the same format for FSC, or close enough. */
++        switch (extract32(syn, 0, 6)) {
++        case 0x04 ... 0x07: /* Translation fault, level {0-3} */
++            si_signo = TARGET_SIGSEGV;
++            si_code = TARGET_SEGV_MAPERR;
++            break;
++        case 0x09 ... 0x0b: /* Access flag fault, level {1-3} */
++        case 0x0d ... 0x0f: /* Permission fault, level {1-3} */
++            si_signo = TARGET_SIGSEGV;
++            si_code = TARGET_SEGV_ACCERR;
++            break;
++        case 0x11: /* Synchronous Tag Check Fault */
++            si_signo = TARGET_SIGSEGV;
++            si_code = TARGET_SEGV_MTESERR;
++            break;
++        case 0x21: /* Alignment fault */
++            si_signo = TARGET_SIGBUS;
++            si_code = TARGET_BUS_ADRALN;
++            break;
++        default:
++            g_assert_not_reached();
++        }
++        break;
++
++    case EC_PCALIGNMENT:
++        si_signo = TARGET_SIGBUS;
++        si_code = TARGET_BUS_ADRALN;
++        break;
++
++    default:
++        g_assert_not_reached();
++    }
++
++    force_sig_fault(si_signo, si_code, addr);
++}
++
+ /* AArch64 main loop */
+ void cpu_loop(CPUARMState *env)
+ {
+     CPUState *cs = env_cpu(env);
+-    int trapnr, ec, fsc, si_code, si_signo;
++    int trapnr;
+     abi_long ret;
+ 
+     for (;;) {
+@@ -67,42 +112,7 @@ void cpu_loop(CPUARMState *env)
+             break;
+         case EXCP_PREFETCH_ABORT:
+         case EXCP_DATA_ABORT:
+-            ec = syn_get_ec(env->exception.syndrome);
+-            switch (ec) {
+-            case EC_DATAABORT:
+-            case EC_INSNABORT:
+-                /* Both EC have the same format for FSC, or close enough. */
+-                fsc = extract32(env->exception.syndrome, 0, 6);
+-                switch (fsc) {
+-                case 0x04 ... 0x07: /* Translation fault, level {0-3} */
+-                    si_signo = TARGET_SIGSEGV;
+-                    si_code = TARGET_SEGV_MAPERR;
+-                    break;
+-                case 0x09 ... 0x0b: /* Access flag fault, level {1-3} */
+-                case 0x0d ... 0x0f: /* Permission fault, level {1-3} */
+-                    si_signo = TARGET_SIGSEGV;
+-                    si_code = TARGET_SEGV_ACCERR;
+-                    break;
+-                case 0x11: /* Synchronous Tag Check Fault */
+-                    si_signo = TARGET_SIGSEGV;
+-                    si_code = TARGET_SEGV_MTESERR;
+-                    break;
+-                case 0x21: /* Alignment fault */
+-                    si_signo = TARGET_SIGBUS;
+-                    si_code = TARGET_BUS_ADRALN;
+-                    break;
+-                default:
+-                    g_assert_not_reached();
+-                }
+-                break;
+-            case EC_PCALIGNMENT:
+-                si_signo = TARGET_SIGBUS;
+-                si_code = TARGET_BUS_ADRALN;
+-                break;
+-            default:
+-                g_assert_not_reached();
+-            }
+-            force_sig_fault(si_signo, si_code, env->exception.vaddress);
++            signal_for_exception(env, env->exception.vaddress);
+             break;
+         case EXCP_DEBUG:
+         case EXCP_BKPT:
 -- 
 2.43.0
 
