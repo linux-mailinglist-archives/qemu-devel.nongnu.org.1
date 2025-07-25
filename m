@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF361B11F0F
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 14:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A23B11F1A
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 14:59:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufHwo-0006j0-2m; Fri, 25 Jul 2025 08:54:50 -0400
+	id 1ufI0i-0002P1-Dt; Fri, 25 Jul 2025 08:58:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ufHwT-0006TT-08
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 08:54:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1ufHwZ-0006Xe-CG
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 08:54:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ufHwO-0007wc-GC
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 08:54:27 -0400
+ id 1ufHwS-0007xi-R1
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 08:54:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753448063;
+ s=mimecast20190719; t=1753448068;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2jO7BQduqFPUM/wSkRuI1L6TOFWqvNqtxtv6cfTXpJM=;
- b=Rag5OP4SyE4nFORtEgng2QQfqviktTlUMoFYoJ5f234Gm5Hx266feePPS1tR52QAv8KlDC
- v7fvWqiJtXKuNq00Ao2lTFBiXKyHoEJRj6g59vB8GCn95PztmqUFjB3IDXyn29jL90LFEJ
- vysYP01SWds3b3Ngel0RpnqMvAqWC0o=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dnLgfod2RcfwvaSBs3sSVuBsFw0Zk9c9E3+FLy9lX7I=;
+ b=SNS42DXV+VNO542klNGKAr4OGeu2MasH1xfBMbr9UES5ZZzKEDu+KoIhuzIgouujbekkDM
+ YkYqXgngHCjBr92OiEwG3mukM0c5MglyqWVcRoVjlEi3SPu19V8oOlzRb8pbzp8cNexPFP
+ lgJ59Xx+goWA7sVXDdLx4nu12Cf12mQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-384-WqdRHMXAM--9Fu2AqWZBSQ-1; Fri, 25 Jul 2025 08:54:22 -0400
-X-MC-Unique: WqdRHMXAM--9Fu2AqWZBSQ-1
-X-Mimecast-MFC-AGG-ID: WqdRHMXAM--9Fu2AqWZBSQ_1753448061
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a6d1394b07so1262779f8f.3
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 05:54:21 -0700 (PDT)
+ us-mta-213-YY9bCL0uPWy1x5uZdAOxoQ-1; Fri, 25 Jul 2025 08:54:23 -0400
+X-MC-Unique: YY9bCL0uPWy1x5uZdAOxoQ-1
+X-Mimecast-MFC-AGG-ID: YY9bCL0uPWy1x5uZdAOxoQ_1753448062
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45359bfe631so11516405e9.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 05:54:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753448060; x=1754052860;
+ d=1e100.net; s=20230601; t=1753448061; x=1754052861;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2jO7BQduqFPUM/wSkRuI1L6TOFWqvNqtxtv6cfTXpJM=;
- b=EWki3YzZ+SfRu3R0UonsyL7o8pQW6PeWRmVAGZx1p4sY9K15hXa1+IK+zmT9VwQd8J
- 158iwaFxIEhZJ2J80KtMlSy/WIXWQefY4efkbHHbzwvbkhcfszbshMgGhMQV+w/bhyaE
- wJRiz0hjIVAr1Ov3B6w33nxjIOv68B9NMmmV92VxYFbJ0V5zzkXrsu9hFhrYUwIT89Tm
- dlijjOPpjvShxkmBUyPe1JyJVduXtH7DVU8HYMYml5yV2zVOTW0bluYt6HLYozh225SY
- X6XjbuXXGcahNnPF3C9z99l9LzdoZ0zW4kE4JtiYEM19gvkOVjswLqFqwNoT+JuVpwnn
- YnBg==
-X-Gm-Message-State: AOJu0Yx2uR1ltLDhRtLpu8h98bGfL9Zxll9Et18xERQFsu3iPHxmM9ox
- Pq7DK4PQcdKNMC2kSWbRWvSQ+MYNnH99NuWApqBmndu3slRhjPZ9X7xnoE25onjYIkBXu/kKFqA
- LlPm5BPPah0etLbwcgYEPwqq+RwExQ4mQZTgh+Jsde/FNYrFjIJsgPOVpBW4tGEvvBBKUtmTWwX
- 5KsIBZKcTGG+PSTkUWY940z50zVsfwN1LIAQTHMRXN
-X-Gm-Gg: ASbGncsiH2PxOUXDk/EP0ppxFtOj668uQk4jZvtMipC3Waq8Id+8cN8jpPrik69W4oZ
- fjoexOQDO9JLjXSkSdbPKIa9HCUAJQoCrKDdDyTrXB3wt/qy2MkdgQGbT5POpn1Vp22XOFyrutq
- ySKMqAGllGijzVEptyl6VT+u5dhLviJk6+2owKPWtvzZ0KsU6V9t+DmEtXeWowFG8Yxk06iY0rK
- gTyOewPRVC/ag1jcdMBv1EbQrxWZnHg3GtT4Fa4+8xGBYkjP3Td6mJjdITg2MUvKrnBOw6+idnF
- rio9lbAiEvvelPlZD8fajVsPiYDXbKoee6Qz5BfZyMrn
-X-Received: by 2002:a05:6000:4a1b:b0:3b7:78c8:9392 with SMTP id
- ffacd0b85a97d-3b778c89859mr70183f8f.19.1753448059576; 
- Fri, 25 Jul 2025 05:54:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHPNZ8V2vpphxMjHeheOcBuLzg2WmLEqab90Oj5UDaO09V3wh2/jJweBJ2Tm6zrUcprUTLM+g==
-X-Received: by 2002:a05:6000:4a1b:b0:3b7:78c8:9392 with SMTP id
- ffacd0b85a97d-3b778c89859mr70149f8f.19.1753448058887; 
- Fri, 25 Jul 2025 05:54:18 -0700 (PDT)
+ bh=dnLgfod2RcfwvaSBs3sSVuBsFw0Zk9c9E3+FLy9lX7I=;
+ b=ctM0ggLtJBlVj2y4m3UQCB09UDVsAFnhZisQn9SJMFr8jowEiGMB69MForLPHCL8+s
+ 3uA031wBsrN4eg78PW4SaivUkOkZ9rZs9UncitHInn4KL7Z13Nnpv1bm7HFUIrTRryHG
+ LhEFwnQM1xDJTYlYU/nOUGbcK/8xhmKxEdOckO759abrMyc76rTrkAGcS17Sek6QqErS
+ rpJOYH7ENuAVxROXpe1Vp+tAKO+KEGzWoARILPiYpB/lfogGoJl9VWI4IrBfWSGdj5di
+ 7h/MHIHCEbrJFImMHh1PNy5GTpdTbnR6QMj2uYOgCUijdBDShscClrjrIMqEJ9MN+AHs
+ HCyQ==
+X-Gm-Message-State: AOJu0YwpyAXB5XuOlaf1n4QOFZu0zvTGkkuGRc0sPWKkndQ5KL45+IXQ
+ 1iX+pviL4nNbaKWv/BpoOzAuGwAUJy1mFFcZwDR25QjwEg5KrPF4hGkXC75EPZrXXdGIqpHgeZT
+ aGyr7yn8KDTZ+EZGv8UEUm5ojAjgXT2VuwrTcgiLOvrOMTs3X6ETBx/ZfJRoMDFd4Vg54rETsL5
+ +zP40GWNUjLXbDKNbQT5lb+ZMa/8uFGjcM0j7skLjn
+X-Gm-Gg: ASbGncvsWQrF7YWMDBfzL5PSv6vIXimbrtfkksbwf+eE+W2hHLG2eAWYkgDrOfbsPig
+ O7WOoU5lOBFhg0C4cotDdGSURPYlwNIkMQxx5AMJQDC1R4ZNmfzw/lMToY/jrelk17op1CyDzhy
+ ZyWmgzr++AJk4EJezsyY+lIvlR/05zBRHo+qiZ8mcP1nWRM1mXb1TxgmA7qqn13Dwsip/z39C0y
+ Ep2l6Owk1xOVAODk4XIrXRZE3UvNNVJlQbRI/MWffh1qHfa+C0UN63GJITHu8Z6I7ykY9ixY8ll
+ 8oTtJD4Sk+YwAy5QAXuBqdX0atF36pqF5Ykd5IrD3toH
+X-Received: by 2002:a05:6000:2083:b0:3b7:662a:b835 with SMTP id
+ ffacd0b85a97d-3b77671d144mr1603008f8f.6.1753448060871; 
+ Fri, 25 Jul 2025 05:54:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEu1tEYGgIJvte3P8x/Ilps16IgoP6s93rQaBSQI+7qtcyU8zNvRPFh0Qmjc0MrXrE7SGuyBQ==
+X-Received: by 2002:a05:6000:2083:b0:3b7:662a:b835 with SMTP id
+ ffacd0b85a97d-3b77671d144mr1602978f8f.6.1753448060144; 
+ Fri, 25 Jul 2025 05:54:20 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.154.122])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-458705bcbe8sm56044665e9.17.2025.07.25.05.54.15
+ ffacd0b85a97d-3b76fcad301sm5037758f8f.51.2025.07.25.05.54.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Jul 2025 05:54:15 -0700 (PDT)
+ Fri, 25 Jul 2025 05:54:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 2/4] rust/pl011: merge device_class.rs into device.rs
-Date: Fri, 25 Jul 2025 14:54:01 +0200
-Message-ID: <20250725125412.1128617-3-pbonzini@redhat.com>
+Cc: Neal Gompa <ngompa@fedoraproject.org>
+Subject: [PULL 3/4] scripts: add script to help distros use global Rust
+ packages
+Date: Fri, 25 Jul 2025 14:54:02 +0200
+Message-ID: <20250725125412.1128617-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250725125412.1128617-1-pbonzini@redhat.com>
 References: <20250725125412.1128617-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -106,279 +108,256 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Some distros prefer to avoid vendored crate sources, and instead use
+local sources from e.g. ``/usr/share/cargo/registry``.  Add a
+script, inspired by the Mesa spec file(*), that automatically
+performs this task.  The script is meant to be invoked after unpacking
+the QEMU tarball.
 
-The split was a relic of early development and is not necessary.
+(*) This is the hack that Mesa uses:
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Link: https://lore.kernel.org/r/20250718-rust-pl011-cleanup-v1-1-c71b1d6a69a5@linaro.org
+    export MESON_PACKAGE_CACHE_DIR="%{cargo_registry}/"
+    %define inst_crate_nameversion() %(basename %{cargo_registry}/%{1}-*)
+    %define rewrite_wrap_file() sed -e "/source.*/d" -e "s/%{1}-.*/%{inst_crate_nameversion %{1}}/" -i subprojects/%{1}.wrap
+    %rewrite_wrap_file proc-macro2
+    ... more %rewrite_wrap_file invocations follow ...
+
+Reviewed-by: Neal Gompa <ngompa@fedoraproject.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs       | 103 +++++++++++++++++++++++--
- rust/hw/char/pl011/src/device_class.rs | 103 -------------------------
- rust/hw/char/pl011/src/lib.rs          |   1 -
- 3 files changed, 96 insertions(+), 111 deletions(-)
- delete mode 100644 rust/hw/char/pl011/src/device_class.rs
+ MAINTAINERS                              |   1 +
+ docs/about/build-platforms.rst           |   8 +
+ scripts/get-wraps-from-cargo-registry.py | 190 +++++++++++++++++++++++
+ 3 files changed, 199 insertions(+)
+ create mode 100755 scripts/get-wraps-from-cargo-registry.py
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 5b53f2649f1..ceb71dd99b6 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -2,9 +2,14 @@
- // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
- // SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a4623456183..1604f3dfc1f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3511,6 +3511,7 @@ S: Maintained
+ F: rust/qemu-api
+ F: rust/qemu-api-macros
+ F: rust/rustfmt.toml
++F: scripts/get-wraps-from-cargo-registry.py
  
--use std::{ffi::CStr, mem::size_of};
-+use std::{
-+    ffi::{c_int, c_void, CStr},
-+    mem::size_of,
-+    ptr::NonNull,
-+};
+ Rust-related patches CC here
+ L: qemu-rust@nongnu.org
+diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
+index 8ecbd6b26f7..8671c3be9cd 100644
+--- a/docs/about/build-platforms.rst
++++ b/docs/about/build-platforms.rst
+@@ -127,6 +127,14 @@ Rust build dependencies
+   (or newer) package.  The path to ``rustc`` and ``rustdoc`` must be
+   provided manually to the configure script.
  
- use qemu_api::{
-+    bindings::{qdev_prop_bool, qdev_prop_chr},
-     chardev::{CharBackend, Chardev, Event},
-     impl_vmstate_forward,
-     irq::{IRQState, InterruptSource},
-@@ -18,12 +23,11 @@
-     sysbus::{SysBusDevice, SysBusDeviceImpl},
-     uninit_field_mut,
-     vmstate::VMStateDescription,
-+    vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct, vmstate_subsections, vmstate_unused,
-+    zeroable::Zeroable,
- };
- 
--use crate::{
--    device_class,
--    registers::{self, Interrupt, RegisterOffset},
--};
-+use crate::registers::{self, Interrupt, RegisterOffset};
- 
- // TODO: You must disable the UART before any of the control registers are
- // reprogrammed. When the UART is disabled in the middle of transmission or
-@@ -173,10 +177,10 @@ impl ObjectImpl for PL011State {
- 
- impl DeviceImpl for PL011State {
-     fn properties() -> &'static [Property] {
--        &device_class::PL011_PROPERTIES
-+        &PL011_PROPERTIES
-     }
-     fn vmsd() -> Option<&'static VMStateDescription> {
--        Some(&device_class::VMSTATE_PL011)
-+        Some(&VMSTATE_PL011)
-     }
-     const REALIZE: Option<fn(&Self) -> qemu_api::Result<()>> = Some(Self::realize);
- }
-@@ -712,3 +716,88 @@ impl PL011Impl for PL011Luminary {
- impl DeviceImpl for PL011Luminary {}
- impl ResettablePhasesImpl for PL011Luminary {}
- impl SysBusDeviceImpl for PL011Luminary {}
++  Some distros prefer to avoid vendored crate sources, and instead use
++  local sources from e.g. ``/usr/share/cargo/registry``.  QEMU includes a
++  script, ``scripts/get-wraps-from-cargo-registry.py``, that automatically
++  performs this task.  The script is meant to be invoked after unpacking
++  the QEMU tarball.  QEMU also includes ``rust/Cargo.toml`` and
++  ``rust/Cargo.lock`` files that can be used to compute QEMU's build
++  dependencies, e.g. using ``cargo2rpm -p rust/Cargo.toml buildrequires``.
 +
-+extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
-+    let state = NonNull::new(opaque).unwrap().cast::<PL011State>();
-+    unsafe { state.as_ref().migrate_clock }
-+}
+ Optional build dependencies
+   Build components whose absence does not affect the ability to build QEMU
+   may not be available in distros, or may be too old for our requirements.
+diff --git a/scripts/get-wraps-from-cargo-registry.py b/scripts/get-wraps-from-cargo-registry.py
+new file mode 100755
+index 00000000000..31eed5c2dd4
+--- /dev/null
++++ b/scripts/get-wraps-from-cargo-registry.py
+@@ -0,0 +1,190 @@
++#!/usr/bin/env python3
 +
-+/// Migration subsection for [`PL011State`] clock.
-+static VMSTATE_PL011_CLOCK: VMStateDescription = VMStateDescription {
-+    name: c"pl011/clock".as_ptr(),
-+    version_id: 1,
-+    minimum_version_id: 1,
-+    needed: Some(pl011_clock_needed),
-+    fields: vmstate_fields! {
-+        vmstate_clock!(PL011State, clock),
-+    },
-+    ..Zeroable::ZERO
-+};
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
-+    let state = NonNull::new(opaque).unwrap().cast::<PL011State>();
-+    let result = unsafe { state.as_ref().post_load(version_id as u32) };
-+    if result.is_err() {
-+        -1
-+    } else {
-+        0
-+    }
-+}
++"""
++get-wraps-from-cargo-registry.py - Update Meson subprojects from a global registry
++"""
 +
-+static VMSTATE_PL011_REGS: VMStateDescription = VMStateDescription {
-+    name: c"pl011/regs".as_ptr(),
-+    version_id: 2,
-+    minimum_version_id: 2,
-+    fields: vmstate_fields! {
-+        vmstate_of!(PL011Registers, flags),
-+        vmstate_of!(PL011Registers, line_control),
-+        vmstate_of!(PL011Registers, receive_status_error_clear),
-+        vmstate_of!(PL011Registers, control),
-+        vmstate_of!(PL011Registers, dmacr),
-+        vmstate_of!(PL011Registers, int_enabled),
-+        vmstate_of!(PL011Registers, int_level),
-+        vmstate_of!(PL011Registers, read_fifo),
-+        vmstate_of!(PL011Registers, ilpr),
-+        vmstate_of!(PL011Registers, ibrd),
-+        vmstate_of!(PL011Registers, fbrd),
-+        vmstate_of!(PL011Registers, ifl),
-+        vmstate_of!(PL011Registers, read_pos),
-+        vmstate_of!(PL011Registers, read_count),
-+        vmstate_of!(PL011Registers, read_trigger),
-+    },
-+    ..Zeroable::ZERO
-+};
++# Copyright (C) 2025 Red Hat, Inc.
++#
++# Author: Paolo Bonzini <pbonzini@redhat.com>
 +
-+pub static VMSTATE_PL011: VMStateDescription = VMStateDescription {
-+    name: c"pl011".as_ptr(),
-+    version_id: 2,
-+    minimum_version_id: 2,
-+    post_load: Some(pl011_post_load),
-+    fields: vmstate_fields! {
-+        vmstate_unused!(core::mem::size_of::<u32>()),
-+        vmstate_struct!(PL011State, regs, &VMSTATE_PL011_REGS, BqlRefCell<PL011Registers>),
-+    },
-+    subsections: vmstate_subsections! {
-+        VMSTATE_PL011_CLOCK
-+    },
-+    ..Zeroable::ZERO
-+};
++import argparse
++import configparser
++import filecmp
++import glob
++import os
++import subprocess
++import sys
 +
-+qemu_api::declare_properties! {
-+    PL011_PROPERTIES,
-+    qemu_api::define_property!(
-+        c"chardev",
-+        PL011State,
-+        char_backend,
-+        unsafe { &qdev_prop_chr },
-+        CharBackend
-+    ),
-+    qemu_api::define_property!(
-+        c"migrate-clk",
-+        PL011State,
-+        migrate_clock,
-+        unsafe { &qdev_prop_bool },
-+        bool,
-+        default = true
-+    ),
-+}
-diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
-deleted file mode 100644
-index d328d846323..00000000000
---- a/rust/hw/char/pl011/src/device_class.rs
-+++ /dev/null
-@@ -1,103 +0,0 @@
--// Copyright 2024, Linaro Limited
--// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
--// SPDX-License-Identifier: GPL-2.0-or-later
--
--use std::{
--    ffi::{c_int, c_void},
--    ptr::NonNull,
--};
--
--use qemu_api::{
--    bindings::{qdev_prop_bool, qdev_prop_chr},
--    prelude::*,
--    vmstate::VMStateDescription,
--    vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct, vmstate_subsections, vmstate_unused,
--    zeroable::Zeroable,
--};
--
--use crate::device::{PL011Registers, PL011State};
--
--extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
--    let state = NonNull::new(opaque).unwrap().cast::<PL011State>();
--    unsafe { state.as_ref().migrate_clock }
--}
--
--/// Migration subsection for [`PL011State`] clock.
--static VMSTATE_PL011_CLOCK: VMStateDescription = VMStateDescription {
--    name: c"pl011/clock".as_ptr(),
--    version_id: 1,
--    minimum_version_id: 1,
--    needed: Some(pl011_clock_needed),
--    fields: vmstate_fields! {
--        vmstate_clock!(PL011State, clock),
--    },
--    ..Zeroable::ZERO
--};
--
--extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
--    let state = NonNull::new(opaque).unwrap().cast::<PL011State>();
--    let result = unsafe { state.as_ref().post_load(version_id as u32) };
--    if result.is_err() {
--        -1
--    } else {
--        0
--    }
--}
--
--static VMSTATE_PL011_REGS: VMStateDescription = VMStateDescription {
--    name: c"pl011/regs".as_ptr(),
--    version_id: 2,
--    minimum_version_id: 2,
--    fields: vmstate_fields! {
--        vmstate_of!(PL011Registers, flags),
--        vmstate_of!(PL011Registers, line_control),
--        vmstate_of!(PL011Registers, receive_status_error_clear),
--        vmstate_of!(PL011Registers, control),
--        vmstate_of!(PL011Registers, dmacr),
--        vmstate_of!(PL011Registers, int_enabled),
--        vmstate_of!(PL011Registers, int_level),
--        vmstate_of!(PL011Registers, read_fifo),
--        vmstate_of!(PL011Registers, ilpr),
--        vmstate_of!(PL011Registers, ibrd),
--        vmstate_of!(PL011Registers, fbrd),
--        vmstate_of!(PL011Registers, ifl),
--        vmstate_of!(PL011Registers, read_pos),
--        vmstate_of!(PL011Registers, read_count),
--        vmstate_of!(PL011Registers, read_trigger),
--    },
--    ..Zeroable::ZERO
--};
--
--pub static VMSTATE_PL011: VMStateDescription = VMStateDescription {
--    name: c"pl011".as_ptr(),
--    version_id: 2,
--    minimum_version_id: 2,
--    post_load: Some(pl011_post_load),
--    fields: vmstate_fields! {
--        vmstate_unused!(core::mem::size_of::<u32>()),
--        vmstate_struct!(PL011State, regs, &VMSTATE_PL011_REGS, BqlRefCell<PL011Registers>),
--    },
--    subsections: vmstate_subsections! {
--        VMSTATE_PL011_CLOCK
--    },
--    ..Zeroable::ZERO
--};
--
--qemu_api::declare_properties! {
--    PL011_PROPERTIES,
--    qemu_api::define_property!(
--        c"chardev",
--        PL011State,
--        char_backend,
--        unsafe { &qdev_prop_chr },
--        CharBackend
--    ),
--    qemu_api::define_property!(
--        c"migrate-clk",
--        PL011State,
--        migrate_clock,
--        unsafe { &qdev_prop_bool },
--        bool,
--        default = true
--    ),
--}
-diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
-index 5c4fbc9d148..2b70d2ff560 100644
---- a/rust/hw/char/pl011/src/lib.rs
-+++ b/rust/hw/char/pl011/src/lib.rs
-@@ -13,7 +13,6 @@
- //! the [`registers`] module for register types.
- 
- mod device;
--mod device_class;
- mod registers;
- 
- pub use device::pl011_create;
++
++def get_name_and_semver(namever: str) -> tuple[str, str]:
++    """Split a subproject name into its name and semantic version parts"""
++    parts = namever.rsplit("-", 1)
++    if len(parts) != 2:
++        return namever, ""
++
++    return parts[0], parts[1]
++
++
++class UpdateSubprojects:
++    cargo_registry: str
++    top_srcdir: str
++    dry_run: bool
++    changes: int = 0
++
++    def find_installed_crate(self, namever: str) -> str | None:
++        """Find installed crate matching name and semver prefix"""
++        name, semver = get_name_and_semver(namever)
++
++        # exact version match
++        path = os.path.join(self.cargo_registry, f"{name}-{semver}")
++        if os.path.exists(path):
++            return f"{name}-{semver}"
++
++        # semver match
++        matches = sorted(glob.glob(f"{path}.*"))
++        return os.path.basename(matches[0]) if matches else None
++
++    def compare_build_rs(self, orig_dir: str, registry_namever: str) -> None:
++        """Warn if the build.rs in the original directory differs from the registry version."""
++        orig_build_rs = os.path.join(orig_dir, "build.rs")
++        new_build_rs = os.path.join(self.cargo_registry, registry_namever, "build.rs")
++
++        msg = None
++        if os.path.isfile(orig_build_rs) != os.path.isfile(new_build_rs):
++            if os.path.isfile(orig_build_rs):
++                msg = f"build.rs removed in {registry_namever}"
++            if os.path.isfile(new_build_rs):
++                msg = f"build.rs added in {registry_namever}"
++
++        elif os.path.isfile(orig_build_rs) and not filecmp.cmp(orig_build_rs, new_build_rs):
++            msg = f"build.rs changed from {orig_dir} to {registry_namever}"
++
++        if msg:
++            print(f"⚠️  Warning: {msg}")
++            print("   This may affect the build process - please review the differences.")
++
++    def update_subproject(self, wrap_file: str, registry_namever: str) -> None:
++        """Modify [wrap-file] section to point to self.cargo_registry."""
++        assert wrap_file.endswith("-rs.wrap")
++        wrap_name = wrap_file[:-5]
++
++        env = os.environ.copy()
++        env["MESON_PACKAGE_CACHE_DIR"] = self.cargo_registry
++
++        config = configparser.ConfigParser()
++        config.read(wrap_file)
++        if "wrap-file" not in config:
++            return
++
++        # do not download the wrap, always use the local copy
++        orig_dir = config["wrap-file"]["directory"]
++        if os.path.exists(orig_dir) and orig_dir != registry_namever:
++            self.compare_build_rs(orig_dir, registry_namever)
++
++        if self.dry_run:
++            if orig_dir == registry_namever:
++                print(f"Will install {orig_dir} from registry.")
++            else:
++                print(f"Will replace {orig_dir} with {registry_namever}.")
++            self.changes += 1
++            return
++
++        config["wrap-file"]["directory"] = registry_namever
++        for key in list(config["wrap-file"].keys()):
++            if key.startswith("source"):
++                del config["wrap-file"][key]
++
++        # replace existing directory with installed version
++        if os.path.exists(orig_dir):
++            subprocess.run(
++                ["meson", "subprojects", "purge", "--confirm", wrap_name],
++                cwd=self.top_srcdir,
++                env=env,
++                check=True,
++            )
++
++        with open(wrap_file, "w") as f:
++            config.write(f)
++
++        if orig_dir == registry_namever:
++            print(f"Installing {orig_dir} from registry.")
++        else:
++            print(f"Replacing {orig_dir} with {registry_namever}.")
++            patch_dir = config["wrap-file"]["patch_directory"]
++            patch_dir = os.path.join("packagefiles", patch_dir)
++            _, ver = registry_namever.rsplit("-", 1)
++            subprocess.run(
++                ["meson", "rewrite", "kwargs", "set", "project", "/", "version", ver],
++                cwd=patch_dir,
++                env=env,
++                check=True,
++            )
++
++        subprocess.run(
++            ["meson", "subprojects", "download", wrap_name],
++            cwd=self.top_srcdir,
++            env=env,
++            check=True,
++        )
++        self.changes += 1
++
++    @staticmethod
++    def parse_cmdline() -> argparse.Namespace:
++        parser = argparse.ArgumentParser(
++            description="Replace Meson subprojects with packages in a Cargo registry"
++        )
++        parser.add_argument(
++            "--cargo-registry",
++            default=os.environ.get("CARGO_REGISTRY"),
++            help="Path to Cargo registry (default: CARGO_REGISTRY env var)",
++        )
++        parser.add_argument(
++            "--dry-run",
++            action="store_true",
++            default=False,
++            help="Do not actually replace anything",
++        )
++
++        args = parser.parse_args()
++        if not args.cargo_registry:
++            print("error: CARGO_REGISTRY environment variable not set and --cargo-registry not provided")
++            sys.exit(1)
++
++        return args
++
++    def __init__(self, args: argparse.Namespace):
++        self.cargo_registry = args.cargo_registry
++        self.dry_run = args.dry_run
++        self.top_srcdir = os.getcwd()
++
++    def main(self) -> None:
++        if not os.path.exists("subprojects"):
++            print("'subprojects' directory not found, nothing to do.")
++            return
++
++        os.chdir("subprojects")
++        for wrap_file in sorted(glob.glob("*-rs.wrap")):
++            namever = wrap_file[:-8]  # Remove '-rs.wrap'
++
++            registry_namever = self.find_installed_crate(namever)
++            if not registry_namever:
++                print(f"No installed crate found for {wrap_file}")
++                continue
++
++            self.update_subproject(wrap_file, registry_namever)
++
++        if self.changes:
++            if self.dry_run:
++                print("Rerun without --dry-run to apply changes.")
++            else:
++                print(f"✨ {self.changes} subproject(s) updated!")
++        else:
++            print("No changes.")
++
++
++if __name__ == "__main__":
++    args = UpdateSubprojects.parse_cmdline()
++    UpdateSubprojects(args).main()
 -- 
 2.50.1
 
