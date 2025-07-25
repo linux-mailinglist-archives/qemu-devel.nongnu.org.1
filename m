@@ -2,67 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88FD2B11465
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 01:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 417F5B11507
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 02:11:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uf5BP-0002iR-F3; Thu, 24 Jul 2025 19:17:03 -0400
+	id 1uf60U-00066X-An; Thu, 24 Jul 2025 20:09:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uf5BK-0002gR-Fn
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 19:16:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uf5BH-0006yX-N1
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 19:16:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753399012;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=TkyBv1MpbJDZgBO9SChPj8lFjZ+sxQq6VnJGF/7U1ys=;
- b=gxDzW1ybLFI7fsY4mgVGmDWTgHjjjmpTXzEi8rkO9uGMNGAM3id9JRghBpz9hCRw0oWKrv
- yl76hSUV22l5ug1XGiZIAlbc8L2JlvIeFfHDQhenNyGg12kQXpCTyom80VSCJHCmlxa41R
- 71rof1HyttlttM5CokawQpT9av7E1fw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-LWNXuWbkPNijx9BMzx0AHQ-1; Thu,
- 24 Jul 2025 19:16:49 -0400
-X-MC-Unique: LWNXuWbkPNijx9BMzx0AHQ-1
-X-Mimecast-MFC-AGG-ID: LWNXuWbkPNijx9BMzx0AHQ_1753399009
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CA54A195608F; Thu, 24 Jul 2025 23:16:48 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.88.38])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A19861800242; Thu, 24 Jul 2025 23:16:47 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- John Snow <jsnow@redhat.com>
-Subject: [PATCH] docs/qapi-code-gen: change recommendations for
- cross-reference syntax
-Date: Thu, 24 Jul 2025 19:16:46 -0400
-Message-ID: <20250724231646.390181-1-jsnow@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.45,
+ (Exim 4.90_1) (envelope-from
+ <3LsuCaA4KChs1C5OI9381I4JFE7FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--alexrichardson.bounces.google.com>)
+ id 1uf603-00061C-6g
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 20:09:23 -0400
+Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3LsuCaA4KChs1C5OI9381I4JFE7FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--alexrichardson.bounces.google.com>)
+ id 1uf601-0004SC-Cm
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 20:09:22 -0400
+Received: by mail-pl1-x649.google.com with SMTP id
+ d9443c01a7336-23fae3a808bso1628355ad.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 17:09:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1753402158; x=1754006958; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=xeTKs6Akw7bNbP9o2V9XNUY70Fjt6JXSC9NzDIMyQ08=;
+ b=o+yB0WINm8+cV5fJ21dpTBH/YIn80cMNKsuLQ1IhWZz5Her9kn9NmKkphPmxKcCOgP
+ kQqtdrX062r5rpHqp6DkiksxOdVJrY2y1TEv/eFxJh1ZaH3b4NKyQNTayrJzSMRb6seb
+ 7uJyTLDoLRXePTFYM+z6WKQ5eU7E7CkKEWD/r0cnMYWbK8jhaJEhQdGQSRkMR2NC1wSJ
+ vhXzB44YUrCtQ57BCKOYF7zGEe92vG3dHkhyRiASI0VLO21npzpNpcXWpRDyuplVmoYy
+ +QMdtO663CN6/z7kLkvimQCVqRxW6hbCQvYQwC6tL83n9CZF4Cv8D9+wRPTQCCEoYoZM
+ A2xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753402158; x=1754006958;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xeTKs6Akw7bNbP9o2V9XNUY70Fjt6JXSC9NzDIMyQ08=;
+ b=Ld3d99hi3MMbhbgzPZRVUDJ7dcGrvKSsBVkoHtsMODESwaYvr2TOEE7fGfwnHunfps
+ p2OYfMfPIEDeqoxLXMFtn27SwnsDrQXL+J9LOr//jMMtahes1glvkVbVJwemZJObNAXh
+ itz6IrdN7TsXRImNUDaZlyT4Bbhov+pNhUnqVBxvQEgqcs6q/h5cewWdZcI5OaNC+wyT
+ AzVImidNA0/oT1UoQ0WeBHF8C4ii2c3vV6N91XHoeOscUW0NKcpBRre+E2AbiPGaP44w
+ WNNFMz9iEv8apdj5sn337QzeT8Ul98/OOL60U2ErZetrgg4cJYNLG1FC/WSzr5kIKdDo
+ 229A==
+X-Gm-Message-State: AOJu0Yxd5Gt/uVX9SaTCiOeHAQF+RFnH81FK63WqiHQuNhsv4ClqYkAc
+ S+shhJEB2hn4BeNQkOrq88yppntjB4BJXHdaL0oMJMye1YR0Lrxq5TC2mm7isegjtd1OTJ7djtK
+ +6HBM5xLt9dhzOwhMwQHK7KD13DtY+w+E7VaY7kewjaiBCmLmYxwJ0i8yBUo+QEEd+aJHZYEig9
+ Z6RqjfzQhjj0pW/oCOI/En0kCW8swd2i6Jo+aN6UhFXA/OQyAQ134ujhFtcw61dzI+YHTtr/EVZ
+ cBP6A==
+X-Google-Smtp-Source: AGHT+IFAqppbpPB5ofki4xRY8Z1XFXJIf0rWhTkJoX4YHi6ECIy4dOTHH5KSbOCNN/bpOvVxxZFV1ulo0CCFvim6IclZQQ==
+X-Received: from plhd15.prod.google.com ([2002:a17:903:230f:b0:234:a0aa:5b34])
+ (user=alexrichardson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:b87:b0:235:f45f:ed2b with SMTP id
+ d9443c01a7336-23f981619c9mr118846055ad.1.1753402158302; 
+ Thu, 24 Jul 2025 17:09:18 -0700 (PDT)
+Date: Thu, 24 Jul 2025 17:09:01 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.470.g6ba607880d-goog
+Message-ID: <20250725000901.1204536-1-alexrichardson@google.com>
+Subject: [PATCH v2] target/arm: add support for 64-bit PMCCNTR in AArch32 mode
+From: Alex Richardson <alexrichardson@google.com>
+To: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: Alex Richardson <alexrichardson@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
+ envelope-from=3LsuCaA4KChs1C5OI9381I4JFE7FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--alexrichardson.bounces.google.com;
+ helo=mail-pl1-x649.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,50 +90,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The blurb about @foo style references in qapi-code-gen.rst is out of
-date now, update it.
+In the PMUv3, a new AArch32 64-bit (MCRR/MRRC) accessor for the
+PMCCNTR was added. In QEMU we forgot to implement this, so only
+provide the 32-bit accessor. Since we have a 64-bit PMCCNTR
+sysreg for AArch64, adding the 64-bit AArch32 version is easy.
 
-Signed-off-by: John Snow <jsnow@redhat.com>
+We add the PMCCNTR to the v8_cp_reginfo because PMUv3 was added
+in the ARMv8 architecture. This is consistent with how we
+handle the existing PMCCNTR support, where we always implement
+it for all v7 CPUs. This is arguably something we should
+clean up so it is gated on ARM_FEATURE_PMU and/or an ID
+register check for the relevant PMU version, but we should
+do that as its own tidyup rather than being inconsistent between
+this PMCCNTR accessor and the others.
+
+Since the register name is the same as the 32-bit PMCCNTR, we set
+ARM_CP_NO_GDB to avoid generating an invalid GDB XML.
+
+See https://developer.arm.com/documentation/ddi0601/2024-06/AArch32-Registers/PMCCNTR--Performance-Monitors-Cycle-Count-Register?lang=en
+
+Signed-off-by: Alex Richardson <alexrichardson@google.com>
 ---
- docs/devel/qapi-code-gen.rst | 11 ++++++++---
- docs/devel/qapi-domain.rst   |  1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ target/arm/cpregs-pmu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
-index dfdbeac5a5a..51993a6eb0c 100644
---- a/docs/devel/qapi-code-gen.rst
-+++ b/docs/devel/qapi-code-gen.rst
-@@ -943,9 +943,14 @@ The usual ****strong****, *\*emphasized\** and ````literal```` markup
- should be used.  If you need a single literal ``*``, you will need to
- backslash-escape it.
- 
--Use ``@foo`` to reference a name in the schema.  This is an rST
--extension.  It is rendered the same way as ````foo````, but carries
--additional meaning.
-+Use ```foo``` to reference a name in the schema and generate a
-+cross-reference link. In the event that a cross-reference is ambiguous
-+and the manual compilation fails, `QAPI cross-reference roles
-+<QAPI-XREF>` can be used to narrow the cross-reference results.
-+
-+Use ``@foo`` to reference members, which do not currently have a
-+cross-reference target. This is an rST extension.  It is rendered the
-+same way as ````foo````, but carries additional meaning.
- 
- Example::
- 
-diff --git a/docs/devel/qapi-domain.rst b/docs/devel/qapi-domain.rst
-index b71890f6609..8d9fc866bc3 100644
---- a/docs/devel/qapi-domain.rst
-+++ b/docs/devel/qapi-domain.rst
-@@ -375,6 +375,7 @@ Will allow you to add arbitrary field lists in QAPI directives::
- 
-       :see also: Lorem ipsum, dolor sit amet ...
- 
-+.. _QAPI-XREF:
- 
- Cross-references
- ================
+diff --git a/target/arm/cpregs-pmu.c b/target/arm/cpregs-pmu.c
+index 0f295b1376..ef176e4045 100644
+--- a/target/arm/cpregs-pmu.c
++++ b/target/arm/cpregs-pmu.c
+@@ -1276,6 +1276,12 @@ void define_pm_cpregs(ARMCPU *cpu)
+               .access = PL0_R, .accessfn = pmreg_access, .type = ARM_CP_CONST,
+               .fgt = FGT_PMCEIDN_EL0,
+               .resetvalue = cpu->pmceid1 },
++            { .name = "PMCCNTR", .state = ARM_CP_STATE_AA32,
++              .cp = 15, .crm = 9, .opc1 = 0,
++              .access = PL0_RW, .accessfn = pmreg_access_ccntr, .resetvalue = 0,
++              .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_64BIT | ARM_CP_NO_GDB,
++              .fgt = FGT_PMCCNTR_EL0, .readfn = pmccntr_read,
++              .writefn = pmccntr_write,  },
+         };
+         define_arm_cp_regs(cpu, v8_pm_reginfo);
+     }
 -- 
-2.50.1
+2.50.1.470.g6ba607880d-goog
 
 
