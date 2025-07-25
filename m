@@ -2,52 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D963B1160A
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 03:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4871DB11639
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 04:11:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uf7YE-0000eK-Jf; Thu, 24 Jul 2025 21:48:46 -0400
+	id 1uf7sq-0005Ei-OU; Thu, 24 Jul 2025 22:10:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1uf7Xh-0008KE-Dj
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 21:48:16 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1uf7Xd-0005CC-FJ
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 21:48:12 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxlnBU4oJoBJIxAQ--.34120S3;
- Fri, 25 Jul 2025 09:48:04 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJAxQMJR4oJo958lAA--.56842S2;
- Fri, 25 Jul 2025 09:48:02 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v3 17/17] target/loongarch: Update TLB index selection method
-Date: Fri, 25 Jul 2025 09:48:00 +0800
-Message-Id: <20250725014800.1034372-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250725013739.994437-1-maobibo@loongson.cn>
-References: <20250725013739.994437-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <z_bajeer@yeah.net>)
+ id 1uf7rz-0004Kp-BA; Thu, 24 Jul 2025 22:09:12 -0400
+Received: from mail-m16.yeah.net ([220.197.32.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <z_bajeer@yeah.net>)
+ id 1uf7ru-0002Us-9c; Thu, 24 Jul 2025 22:09:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+ s=s110527; h=From:To:Subject:Date:Message-ID:Content-Type:
+ MIME-Version; bh=BeOyYMZK3vF3A36IALcn58yWpRIK9tgxHRU/4T7Up0E=;
+ b=Mh5AkzCukuhtZMqCccK6jzRVo76I2NaziqxtnDTqEtXZPJM8xGQstf/GBx+Vkp
+ +gNQ9ZYoU9WV5U15yDWQbKJr71aLMWubupICsC85BwjBQWed6MDnSVAMpe9zbQXd
+ 5YzSgTj86d41LPFLxePYAmOB+E8wTfcbYktuTNSHnPEvU=
+Received: from OS3PR01MB7756.jpnprd01.prod.outlook.com (unknown [])
+ by gzsmtp3 (Coremail) with SMTP id M88vCgD39pAt54Jof1pXAQ--.50184S2;
+ Fri, 25 Jul 2025 10:08:46 +0800 (CST)
+From: "z_bajeer@yeah.net" <z_bajeer@yeah.net>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+CC: "yangjialong@rvcore.com" <yangjialong@rvcore.com>, "qemu-riscv@nongnu.org"
+ <qemu-riscv@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: =?utf-8?B?5Zue5aSNOiBbUEFUQ0ggdjFdIGludGMvcmlzY3ZfYXBsaWM6IEZpeCB0YXJn?=
+ =?utf-8?Q?et_register_read_when_source_is_inactive?=
+Thread-Topic: [PATCH v1] intc/riscv_aplic: Fix target register read when
+ source is inactive
+Thread-Index: AXJfMS4wACQBZRBl1eFvSrISyBaTozE1YzRk0bIEWpg=
+X-MS-Exchange-MessageSentRepresentingType: 1
+Date: Fri, 25 Jul 2025 02:08:39 +0000
+Message-ID: <OS3PR01MB77568C8FEA443592D17CED54F559A@OS3PR01MB7756.jpnprd01.prod.outlook.com>
+References: <20250724093426.4179617-1-z_bajeer@yeah.net>
+ <a779c4ed-913e-4886-a2c6-7d3b505077c1@ventanamicro.com>
+In-Reply-To: <a779c4ed-913e-4886-a2c6-7d3b505077c1@ventanamicro.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-Exchange-Organization-SCL: -1
+X-MS-TNEF-Correlator: 
+X-MS-Exchange-Organization-RecordReviewCfmType: 0
+msip_labels: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJAxQMJR4oJo958lAA--.56842S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: M88vCgD39pAt54Jof1pXAQ--.50184S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw4xXr47Zr1kZw1kWr4Uurg_yoW8Zw1Upr
+ s5GFZ8ArW5KF1kGa1xGr1UXFW8Grn8W3Z8ur1UZFy8CwsxJw4Ygryqgr909r1UGr48Cr1Y
+ yF4UZr13ZF47ArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U8wIDUUUUU=
+X-Originating-IP: [2603:1046:c0a:2099::5]
+X-CM-SenderInfo: p2betyxhhuq5hhdkh0dhw/1tbiCQKVI2iC1jxAYAAAsd
+Received-SPF: pass client-ip=220.197.32.18; envelope-from=z_bajeer@yeah.net;
+ helo=mail-m16.yeah.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,97 +84,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With function helper_tlbfill(), since there is no suitable TLB entry,
-new TLB will be added and invalid one old TLB entry. The old TLB
-entry index is selected randomly.
-
-Firstly all TLB entries can be searched with such method:
-  1. invalid TLB entry can be selected at firstly.
-  2. TLB entry with other ASID can be selected secondly
-  3. random method is used by last.
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- target/loongarch/tcg/tlb_helper.c | 50 ++++++++++++++++++++++++++-----
- 1 file changed, 42 insertions(+), 8 deletions(-)
-
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 6ac102862b..99b04550b5 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -368,8 +368,11 @@ void helper_tlbwr(CPULoongArchState *env)
- void helper_tlbfill(CPULoongArchState *env)
- {
-     uint64_t address, entryhi;
--    int index, set, stlb_idx;
-+    int index, i, stlb_idx;
-     uint16_t pagesize, stlb_ps;
-+    uint16_t asid, tlb_asid;
-+    LoongArchTLB *tlb;
-+    uint8_t tlb_e;
- 
-     if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
-         entryhi = env->CSR_TLBREHI;
-@@ -383,20 +386,51 @@ void helper_tlbfill(CPULoongArchState *env)
- 
-     /* Validity of stlb_ps is checked in helper_csrwr_stlbps() */
-     stlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
-+    asid = FIELD_EX64(env->CSR_ASID, CSR_ASID, ASID);
-+    index = -1;
-     if (pagesize == stlb_ps) {
-         /* Only write into STLB bits [47:13] */
-         address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
--
--        /* Choose one set ramdomly */
--        set = get_random_tlb(0, 7);
--
--        /* Index in one set */
-         stlb_idx = (address >> (stlb_ps + 1)) & 0xff; /* [0,255] */
-+        for (i = 0; i < 8; ++i) {
-+            tlb = &env->tlb[i * 256 + stlb_idx];
-+            tlb_e = FIELD_EX64(tlb->tlb_misc, TLB_MISC, E);
-+            if (!tlb_e) {
-+                index = i;
-+                break;
-+            }
-+
-+            tlb_asid = FIELD_EX64(tlb->tlb_misc, TLB_MISC, ASID);
-+            if (asid != tlb_asid) {
-+                index = i;
-+            }
-+        }
- 
--        index = set * 256 + stlb_idx;
-+        /* Choose one set randomly */
-+        if (index < 0) {
-+            index = get_random_tlb(0, 7);
-+        }
-+        index = index * 256 + stlb_idx;
-     } else {
-         /* Only write into MTLB */
--        index = get_random_tlb(LOONGARCH_STLB, LOONGARCH_TLB_MAX - 1);
-+        for (i = LOONGARCH_STLB; i < LOONGARCH_TLB_MAX; i++) {
-+            tlb = &env->tlb[i];
-+            tlb_e = FIELD_EX64(tlb->tlb_misc, TLB_MISC, E);
-+
-+            if (!tlb_e) {
-+                index = i;
-+                break;
-+            }
-+
-+            tlb_asid = FIELD_EX64(tlb->tlb_misc, TLB_MISC, ASID);
-+            if (asid != tlb_asid) {
-+                index = i;
-+            }
-+        }
-+
-+        if (index < 0) {
-+            index = get_random_tlb(LOONGARCH_STLB, LOONGARCH_TLB_MAX - 1);
-+        }
-     }
- 
-     invalidate_tlb(env, index);
--- 
-2.39.3
+PiBPbiA3LzI0LzI1IDY6MzQgQU0sIFlhbmcgSmlhbG9uZyB3cm90ZToKPiA+IFRoZSBSSVNDLVYg
+QWR2YW5jZWQgaW50ZXJydXB0IEFyY2hpdGVjdHVyZToKPiA+IDQuNS4xNi4gSW50ZXJydXB0IHRh
+cmdldHM6Cj4gPiBJZiBpbnRlcnJ1cHQgc291cmNlIGkgaXMgaW5hY3RpdmUgaW4gdGhpcyBkb21h
+aW4sIHJlZ2lzdGVyIHRhcmdldFtpXSBpcwo+ID4gcmVhZC1vbmx5IHplcm8uCj4gPiAKPiA+IFNp
+Z25lZC1vZmYtYnk6IFlhbmcgSmlhbG9uZyA8el9iYWplZXJAeWVhaC5uZXQ+Cj4gPiAtLS0KPiA+
+wqDCoCBody9pbnRjL3Jpc2N2X2FwbGljLmMgfCA2ICsrKysrLQo+ID7CoMKgIDEgZmlsZSBjaGFu
+Z2VkLCA1IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiA+IAo+ID4gZGlmZiAtLWdpdCBh
+L2h3L2ludGMvcmlzY3ZfYXBsaWMuYyBiL2h3L2ludGMvcmlzY3ZfYXBsaWMuYwo+ID4gaW5kZXgg
+NGZhNWY3NS4uY2ZlZjY5ZiAxMDA2NDQKPiA+IC0tLSBhL2h3L2ludGMvcmlzY3ZfYXBsaWMuYwo+
+ID4gKysrIGIvaHcvaW50Yy9yaXNjdl9hcGxpYy5jCj4gPiBAQCAtNjI4LDcgKzYyOCw3IEBAIHN0
+YXRpYyB2b2lkIHJpc2N2X2FwbGljX3JlcXVlc3Qodm9pZCAqb3BhcXVlLCBpbnQgaXJxLCBpbnQg
+bGV2ZWwpCj4gPsKgwqAgCj4gPsKgwqAgc3RhdGljIHVpbnQ2NF90IHJpc2N2X2FwbGljX3JlYWQo
+dm9pZCAqb3BhcXVlLCBod2FkZHIgYWRkciwgdW5zaWduZWQgc2l6ZSkKPiA+wqDCoCB7Cj4gPiAt
+wqDCoMKgIHVpbnQzMl90IGlycSwgd29yZCwgaWRjOwo+ID4gK8KgwqDCoCB1aW50MzJfdCBpcnEs
+IHdvcmQsIGlkYywgc207Cj4gPsKgwqDCoMKgwqDCoCBSSVNDVkFQTElDU3RhdGUgKmFwbGljID0g
+b3BhcXVlOwo+ID7CoMKgIAo+ID7CoMKgwqDCoMKgwqAgLyogUmVhZHMgbXVzdCBiZSA0IGJ5dGUg
+d29yZHMgKi8KPiA+IEBAIC02OTYsNiArNjk2LDEwIEBAIHN0YXRpYyB1aW50NjRfdCByaXNjdl9h
+cGxpY19yZWFkKHZvaWQgKm9wYXF1ZSwgaHdhZGRyIGFkZHIsIHVuc2lnbmVkIHNpemUpCj4gPsKg
+wqDCoMKgwqDCoCB9IGVsc2UgaWYgKChBUExJQ19UQVJHRVRfQkFTRSA8PSBhZGRyKSAmJgo+ID7C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIChhZGRyIDwgKEFQTElDX1RBUkdFVF9CQVNFICsg
+KGFwbGljLT5udW1faXJxcyAtIDEpICogNCkpKSB7Cj4gPsKgwqDCoMKgwqDCoMKgwqDCoMKgIGly
+cSA9ICgoYWRkciAtIEFQTElDX1RBUkdFVF9CQVNFKSA+PiAyKSArIDE7Cj4gPiArwqDCoMKgwqDC
+oMKgwqAgc20gPSBhcGxpYy0+c291cmNlY2ZnW2lycV0gKiBBUExJQ19TT1VSQ0VDRkdfU01fTUFT
+SzsKPiAKPiBJIGJlbGlldmUgeW91IHdhbnQgJyYnIGhlcmU6Cj4gCgouLi4gWWVzLiBUaGFua3Mu
+IEkgd2lsbCBzdWJtaXQgYSBuZXdlciBvbmUuCgo+IAo+IHNtID0gYXBsaWMtPnNvdXJjZWNmZ1tp
+cnFdICYgQVBMSUNfU09VUkNFQ0ZHX1NNX01BU0s7Cj4gCj4gT3RoZXJ3aXNlLCBnaXZlbiB0aGF0
+IEFQTElDX1NPVVJDRUNGR19TTV9JTkFDVElWRSBpcyAweDAsIHRoZSBvbmx5IHdheQo+IAo+IHNt
+ID09IEFQTElDX1NPVVJDRUNGR19TTV9JTkFDVElWRQo+IAo+IHdpbGwgaGFwcGVuIGlzIGFwbGlj
+LT5zb3VyY2VjZmdbaXJxXSBiZWluZyAwLgo+IAo+IAo+IFRoYW5rcywKPiAKPiBEYW5pZWwKPiAK
+PiA+ICvCoMKgwqDCoMKgwqDCoCBpZiAoc20gPT0gQVBMSUNfU09VUkNFQ0ZHX1NNX0lOQUNUSVZF
+KSB7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gMDsKPiA+ICvCoMKgwqDCoMKg
+wqDCoCB9Cj4gPsKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiBhcGxpYy0+dGFyZ2V0W2lycV07
+Cj4gPsKgwqDCoMKgwqDCoCB9IGVsc2UgaWYgKCFhcGxpYy0+bXNpbW9kZSAmJiAoQVBMSUNfSURD
+X0JBU0UgPD0gYWRkcikgJiYKPiA+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAoYWRkciA8
+IChBUExJQ19JRENfQkFTRSArIGFwbGljLT5udW1faGFydHMgKiBBUExJQ19JRENfU0laRSkpKSB7
+Cg==
 
 
