@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4162AB115F6
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 03:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCC3B115FB
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 03:42:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uf7Pe-00028i-MA; Thu, 24 Jul 2025 21:39:54 -0400
+	id 1uf7Q4-00032D-Gl; Thu, 24 Jul 2025 21:40:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1uf7Nq-0000rG-HB
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 21:38:09 -0400
+ id 1uf7Ov-0001bg-PI
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 21:39:09 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1uf7Nm-0002bV-3Q
- for qemu-devel@nongnu.org; Thu, 24 Jul 2025 21:38:01 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1uf7Ot-0002qw-E8
+ for qemu-devel@nongnu.org; Thu, 24 Jul 2025 21:39:09 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8DxbKzq34JomJAxAQ--.35109S3;
+ by gateway (Coremail) with SMTP id _____8AxDGvq34JooJAxAQ--.34903S3;
  Fri, 25 Jul 2025 09:37:46 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJCxdOTk34Joz5wlAA--.62171S15;
+ by front1 (Coremail) with SMTP id qMiowJCxdOTk34Joz5wlAA--.62171S16;
  Fri, 25 Jul 2025 09:37:45 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v3 13/17] target/loongarch: Use correct address when flush tlb
-Date: Fri, 25 Jul 2025 09:37:35 +0800
-Message-Id: <20250725013739.994437-14-maobibo@loongson.cn>
+Subject: [PATCH v3 14/17] target/loongarch: Use mmu idx bitmap method when
+ flush tlb
+Date: Fri, 25 Jul 2025 09:37:36 +0800
+Message-Id: <20250725013739.994437-15-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250725013739.994437-1-maobibo@loongson.cn>
 References: <20250725013739.994437-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxdOTk34Joz5wlAA--.62171S15
+X-CM-TRANSID: qMiowJCxdOTk34Joz5wlAA--.62171S16
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,55 +64,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With tlb_flush_range_by_mmuidx(), the virtual address is 64 bit.
-However on LoongArch TLB emulation system, virtual address is
-48 bit. It is necessary to convert 48 bit address to 64 bit when
-flush tlb, also fix address calculation issue with odd page.
+With API tlb_flush_range_by_mmuidx(), bitmap method of mmu idx should
+be used rather than itself. And mmu idx comes from page table entry
+information rather current running mode.
+
+Also field KM in TLB misc records bitmap mask of TLB entry which
+is access in kernel mode. If set, MMU_KERNEL_IDX should be added
+to flush tlb.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- target/loongarch/tcg/tlb_helper.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ target/loongarch/tcg/tlb_helper.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 715c5a20da..61cc19610e 100644
+index 61cc19610e..d18b382e56 100644
 --- a/target/loongarch/tcg/tlb_helper.c
 +++ b/target/loongarch/tcg/tlb_helper.c
-@@ -96,6 +96,15 @@ static void raise_mmu_exception(CPULoongArchState *env, target_ulong address,
-    }
- }
- 
-+/* Convert 48 bit virtual address from LoongArch TLB to 64 bit VA */
-+static inline target_ulong __vaddr(target_ulong addr)
-+{
-+    target_ulong high;
-+
-+    high = -(addr >> (TARGET_VIRT_ADDR_SPACE_BITS - 1));
-+    return addr + (high << TARGET_VIRT_ADDR_SPACE_BITS);
-+}
-+
- static void invalidate_tlb_entry(CPULoongArchState *env, int index)
- {
+@@ -110,12 +110,12 @@ static void invalidate_tlb_entry(CPULoongArchState *env, int index)
      target_ulong addr, mask, pagesize;
-@@ -115,16 +124,15 @@ static void invalidate_tlb_entry(CPULoongArchState *env, int index)
-     tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
+     uint8_t tlb_ps;
+     LoongArchTLB *tlb = &env->tlb[index];
+-
+-    int mmu_idx = cpu_mmu_index(env_cpu(env), false);
++    int mmu_idx;
+     uint8_t tlb_v0 = FIELD_EX64(tlb->tlb_entry0, TLBENTRY, V);
+     uint8_t tlb_v1 = FIELD_EX64(tlb->tlb_entry1, TLBENTRY, V);
+     uint64_t tlb_vppn = FIELD_EX64(tlb->tlb_misc, TLB_MISC, VPPN);
+     uint8_t tlb_e = FIELD_EX64(tlb->tlb_misc, TLB_MISC, E);
++    uint16_t tlb_g, tlb_km;
+ 
+     if (!tlb_e) {
+         return;
+@@ -125,13 +125,28 @@ static void invalidate_tlb_entry(CPULoongArchState *env, int index)
      pagesize = MAKE_64BIT_MASK(tlb_ps, 1);
      mask = MAKE_64BIT_MASK(0, tlb_ps + 1);
-+    addr = __vaddr((tlb_vppn << R_TLB_MISC_VPPN_SHIFT) & ~mask);
+     addr = __vaddr((tlb_vppn << R_TLB_MISC_VPPN_SHIFT) & ~mask);
++    tlb_g = FIELD_EX64(tlb->tlb_entry0, TLBENTRY, G);
++    tlb_km = FIELD_EX64(tlb->tlb_misc, TLB_MISC, KM);
++    if (tlb_g) {
++        mmu_idx = BIT(MMU_KERNEL_IDX);
++    } else {
++        mmu_idx = BIT(MMU_USER_IDX);
++    }
  
      if (tlb_v0) {
--        addr = (tlb_vppn << R_TLB_MISC_VPPN_SHIFT) & ~mask;    /* even */
++        /* Even page is accessed in kernel mode */
++        if (tlb_km & 0x1) {
++            mmu_idx |= BIT(MMU_KERNEL_IDX);
++        }
          tlb_flush_range_by_mmuidx(env_cpu(env), addr, pagesize,
                                    mmu_idx, TARGET_LONG_BITS);
      }
  
      if (tlb_v1) {
--        addr = (tlb_vppn << R_TLB_MISC_VPPN_SHIFT) & pagesize;    /* odd */
--        tlb_flush_range_by_mmuidx(env_cpu(env), addr, pagesize,
-+        tlb_flush_range_by_mmuidx(env_cpu(env), addr + pagesize, pagesize,
++        /* Odd page is accessed in kernel mode */
++        if (tlb_km & 0x2) {
++            mmu_idx |= BIT(MMU_KERNEL_IDX);
++        }
+         tlb_flush_range_by_mmuidx(env_cpu(env), addr + pagesize, pagesize,
                                    mmu_idx, TARGET_LONG_BITS);
      }
- }
 -- 
 2.39.3
 
