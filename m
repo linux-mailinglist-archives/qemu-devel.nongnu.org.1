@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F73B12547
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 22:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F28ACB12541
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 22:24:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufOzA-0005lT-Ek; Fri, 25 Jul 2025 16:25:45 -0400
+	id 1ufOyC-0003oA-P2; Fri, 25 Jul 2025 16:24:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ufOu3-0007e5-5t
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:20:27 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1ufOu3-0007eR-Q9
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:20:28 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ufOu1-0001EM-7i
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:20:26 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-7426c44e014so2190137b3a.3
- for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 13:20:24 -0700 (PDT)
+ id 1ufOu2-0001EZ-5e
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 16:20:27 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-74ce477af25so1830054b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 13:20:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753474824; x=1754079624; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753474825; x=1754079625; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aZA+eshzNfdTnar9wMQ/m2mWJrbR0690fXWrDb+QztY=;
- b=fAOsrfGtBr4EKpfvv2ZXeSl1kBL7Ta3B8+Lsg0BqNQoCbzA88TWoWgsHRPcmw/WVLG
- RQetd8FPgTplRil9u3hsz+d+ffXxWTR5j3nt76IELn04IVwGYLDrXz1KMuqcPmHWzFl4
- XbE43iNYVtYP3TP6yYLgIxoNoWqMogVLpfpMTuce+HRLS3nrkqn4f+Y6l5REmgj1f77N
- dKpDVyu53SnRKpwuLYAv8I5uxkyaT+eE9AYB/lbZ6F0PqQWZLIFDU70p97ZZLfxSS4ZG
- aLeW1ZxqEERv21+2JIC7OAJEdhCxqe/taJG0DQreMPEQFNUAjSBmWV6W7fPH6ubVGPCr
- +6MA==
+ bh=c48HtYt5SZHZ65RgJpJ7TFDt711IMXEInKjXtQ8WpUs=;
+ b=PTWDY5ns3o/GmRs3Rre/lfm54opJx7XV8xb9fxiComHL1DjpMGU9RQRm0NIWXQjZw7
+ QV9bUTkhwKl3MXRG7Q3tVUHepMufS3a7nKLfaJEWg0u4n73+7LVDKCsUt4CglJ8AhC4S
+ r84YQfE7ICCdN2TKGXS2S06PeGWu1xc1u9ZzF7FQahDRPg62plKlV1deFL1zygrAvQlZ
+ 1oFk9qZNa4AIMqFZaYtiKpV7zZOFtAZdJzpopEcDH3Rn2McN9eZfcGhGFlx2B5fh6+/E
+ qHfud2j7pcWCoRRDMFBSObgyJxaDqzWoS56eevEgo2pgHHqOj+DLEgFDDj3SqLKmakNL
+ 8IBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753474824; x=1754079624;
+ d=1e100.net; s=20230601; t=1753474825; x=1754079625;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aZA+eshzNfdTnar9wMQ/m2mWJrbR0690fXWrDb+QztY=;
- b=RYREcXVKhiATlEEzmaJwG8MiFnFFdsQH6C7dcA9NLcmLzFvmc2YJno0ZpXEa4/GxP3
- 9stLYg1I23BO5KGp/p+xkkKRNn+IYqz295Zx2ytJPMVCsKcaf1MjerNsKnsIb27LPi+R
- 4Gc0Cc1JHcqIHlgjKGmMTf544YsYkDCUGL1PttrM2M6FBaG7ILevJ9Irle0jtheWYRP+
- leMZxyPOAwW4zSH/tStNvS4OIR7MtT2Cq2FDPIxHzCbmv/L9Yogb8HtuDZA0t0Q+5WeO
- lRsMbbgDd17JhshcFK3VLpWWsWhort0iNnh9uk7HsX+WrFT2F5WLoc4vtE1PAP0XlutX
- 3/1A==
-X-Gm-Message-State: AOJu0Yxqir2hn0L5CWBc1XdNkzyaxVXg6zvfsoIEnyquqD8BtNET7GFQ
- +nzg40Y3nuOu2bxX5CEUa2d04NqV05Le0z6js5LLb4W+P1ATnT7S/u9vbxRV2rwsQ9KyUR3GO6p
- hgq/b
-X-Gm-Gg: ASbGnct4KCdobKyWEP8GbIS8ZuZhnSZMJBkncyB/kiilAhztYA5OHWgbmS3izAx667o
- Cg7i5iis5Atvj/Kh2Bf0BSEczOwsXb+ku76xtzt6vVQYlpzwCpc/2vabeqzLgI5Iwq7i6OwkQcE
- OMjtuF6Xd1AkGEFZEC2ycFfiJIitlPLiNXdm4l+pulrgdw41sIFAGsOmiM1jZ0n5sUuP+HQGp9w
- hyVabTB7YV3CiNMY1LfKz3tFcH50/VDEwaJiD+jirjvvIkP8j184PasI9keGkUZXNaAxIpK/Eh8
- UoJp2KOOxRIGulWZDVL8QRK7gTqbNRufBQWF7cv6ZpGixZkJK/iWC7L5gidLQ22r60Ac+8bsjjh
- 9VB5V4dAi81K5MEExS3HAhQ==
-X-Google-Smtp-Source: AGHT+IEhVZ0eMbnHWvlrlCsnt4SOiSnV7Bq59sUJtgi9+ChiOpaCVUoyVk4c8m86n5/nKozqpvA++g==
-X-Received: by 2002:a05:6a00:a85:b0:740:b394:3ebd with SMTP id
- d2e1a72fcca58-7633276c2b6mr5135968b3a.7.1753474823844; 
- Fri, 25 Jul 2025 13:20:23 -0700 (PDT)
+ bh=c48HtYt5SZHZ65RgJpJ7TFDt711IMXEInKjXtQ8WpUs=;
+ b=IMHRZdEx+k3COmXkt8EUmiIDQVTtF3osYotJ8t4vGFmsV+hS01mIgFsAquv3LzIsIB
+ nFSfBc9fFLJ9uT3tZ60Wvys3hecCcXxtQYHhtpN9IwoJgekun2gYEjZG2h2zDeu9f7Io
+ r3fJipQao6T57nDUIy4DtJlwx9DP4Wvz0J9ZW0wAO4aQr+qA50P1GOhsccmh9sE6CxIP
+ fQMzy/z6VZP/uXu81nUZANyTX+lFw21WYWeUk5Iq1qCbZ4vQyUYXAYqkCGd3Jc74PW69
+ ge4q8M5kzN5tUzzQhDegl0OvFDLQIfQGNki9Mjm2IDdV6iJb67wIuR8YOY8KOtvrSfG0
+ f1ew==
+X-Gm-Message-State: AOJu0YxF7lo/ajPAj9hw6jcPoa65Qulrmd1sGRE+KVxNMptRBGQe2Cte
+ vrW4GEI/yVDBagUxkoEGdutgcQEhGjq0aJBkqN0xJmykYOdUg3IYwMQfgTH7kuuR5nFfHqQ2M3s
+ iCcFt
+X-Gm-Gg: ASbGncs3MIEu6Gvshxv60MhDbukUhCzTLa7L2prl3Gul3OUdAzsS5t45RKTflq8pujV
+ u9SwRwh4ReCkE6vrplCIHPf7XZjofox3jCC5tHJ9Y6U20n3lcLFyl3FVnqWHCsBCh2EcHvcjqwu
+ ekvFXjfdjG1e3ZjOjyprKQF2g2nPzuMf3glhtY6d7VpLmsTwtGsQaLm9NA6Gfl3x6JeAtDuf7xF
+ XJfSZfrh4PWO5RLh3fcmKnYcAXW22gxfr3bpkqI0Tb9YqBDRzQLZyi7xMvvGizwouFdepsh47lz
+ tPPeAYIS4tQI6HDFtHpqL8nWFkmPqybYr4RTsEW2pM7JYspD0wQDS2b8uEPUPrJA4TYLn64yHYb
+ jnlxJcpzvog0qXrJjQJi2v8tKj/UNtAFj
+X-Google-Smtp-Source: AGHT+IG6LgCHPmqslxZONZpgYLY2+4Ri9+zUaDAJt4X/R89/24ZLv/iZbQrWCj6Eg8Mx8L4vfUJscg==
+X-Received: by 2002:a05:6a20:7486:b0:23d:4777:49ca with SMTP id
+ adf61e73a8af0-23d70191082mr4906128637.34.1753474824662; 
+ Fri, 25 Jul 2025 13:20:24 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7640882071dsm360925b3a.16.2025.07.25.13.20.23
+ d2e1a72fcca58-7640882071dsm360925b3a.16.2025.07.25.13.20.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Jul 2025 13:20:23 -0700 (PDT)
+ Fri, 25 Jul 2025 13:20:24 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -70,16 +70,16 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 2/3] include/exec/target_page.h: move page-target.c to header
-Date: Fri, 25 Jul 2025 13:20:15 -0700
-Message-ID: <20250725202016.21325-3-pierrick.bouvier@linaro.org>
+Subject: [PATCH 3/3] system/main.c: compile only once
+Date: Fri, 25 Jul 2025 13:20:16 -0700
+Message-ID: <20250725202016.21325-4-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250725202016.21325-1-pierrick.bouvier@linaro.org>
 References: <20250725202016.21325-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,63 +104,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- meson.build                |  2 +-
- include/exec/target_page.h | 11 ++++++++++-
- page-target.c              | 10 ----------
- 3 files changed, 11 insertions(+), 12 deletions(-)
+ meson.build        | 5 ++---
+ system/meson.build | 1 +
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index d0ae602c2ee..71c253ba135 100644
+index 71c253ba135..7718983951e 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -3910,7 +3910,7 @@ if get_option('b_lto')
-   pagevary = declare_dependency(link_with: pagevary)
- endif
- common_ss.add(pagevary)
--specific_ss.add(files('page-target.c', 'page-vary-target.c'))
-+specific_ss.add(files('page-vary-target.c'))
- 
- common_ss.add(files('target-info.c'))
- specific_ss.add(files('target-info-stub.c'))
-diff --git a/include/exec/target_page.h b/include/exec/target_page.h
-index ca0ebbc8bbd..813591c9b51 100644
---- a/include/exec/target_page.h
-+++ b/include/exec/target_page.h
-@@ -62,6 +62,15 @@ static inline int qemu_target_page_bits(void)
-     return TARGET_PAGE_BITS;
- }
- 
--size_t qemu_target_pages_to_MiB(size_t pages);
-+/* Convert target pages to MiB (2**20). */
-+static inline size_t qemu_target_pages_to_MiB(size_t pages)
-+{
-+    int page_bits = TARGET_PAGE_BITS;
-+
-+    /* So far, the largest (non-huge) page size is 64k, i.e. 16 bits. */
-+    g_assert(page_bits < 20);
-+
-+    return pages >> (20 - page_bits);
-+}
- 
- #endif
-diff --git a/page-target.c b/page-target.c
-index 8fcd5443b52..66f03c61cd4 100644
---- a/page-target.c
-+++ b/page-target.c
-@@ -9,13 +9,3 @@
- #include "qemu/osdep.h"
- #include "exec/target_page.h"
- 
--/* Convert target pages to MiB (2**20). */
--size_t qemu_target_pages_to_MiB(size_t pages)
--{
--    int page_bits = TARGET_PAGE_BITS;
--
--    /* So far, the largest (non-huge) page size is 64k, i.e. 16 bits. */
--    g_assert(page_bits < 20);
--
--    return pages >> (20 - page_bits);
--}
+@@ -4437,14 +4437,14 @@ foreach target : target_dirs
+     execs = [{
+       'name': 'qemu-system-' + target_name,
+       'win_subsystem': 'console',
+-      'sources': files('system/main.c'),
++      'sources': [],
+       'dependencies': [sdl]
+     }]
+     if host_os == 'windows' and (sdl.found() or gtk.found())
+       execs += [{
+         'name': 'qemu-system-' + target_name + 'w',
+         'win_subsystem': 'windows',
+-        'sources': files('system/main.c'),
++        'sources': [],
+         'dependencies': [sdl]
+       }]
+     endif
+@@ -4519,7 +4519,6 @@ foreach lib: single_binary_libs
+   single_binary_objects += lib.extract_all_objects(recursive: true)
+ endforeach
+ executable('qemu-system',
+-            sources: files('system/main.c'),
+             objects: single_binary_objects,
+             dependencies: single_binary_deps,
+             link_depends: [block_syms, qemu_syms],
+diff --git a/system/meson.build b/system/meson.build
+index 6d21ff9faa7..f358c2c446d 100644
+--- a/system/meson.build
++++ b/system/meson.build
+@@ -18,6 +18,7 @@ system_ss.add(files(
+   'globals.c',
+   'ioport.c',
+   'ram-block-attributes.c',
++  'main.c',
+   'memory_mapping.c',
+   'memory.c',
+   'physmem.c',
 -- 
 2.47.2
 
