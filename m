@@ -2,59 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D5FB120B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 17:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5C5B120D8
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 17:27:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufK9t-0007rP-01; Fri, 25 Jul 2025 11:16:29 -0400
+	id 1ufKIj-0007KB-Va; Fri, 25 Jul 2025 11:25:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1ufK9n-0007bx-8K
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:16:25 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1ufKIC-0006iK-4O
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:25:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1ufK9l-0003pg-H5
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:16:22 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bpWct5J7Fz6L5G3;
- Fri, 25 Jul 2025 23:14:38 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 93AF01400C8;
- Fri, 25 Jul 2025 23:16:18 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 25 Jul
- 2025 17:16:18 +0200
-Date: Fri, 25 Jul 2025 16:16:16 +0100
-To: wangyuquan <wangyuquan1236@phytium.com.cn>
-CC: <fan.ni@samsung.com>, <mst@redhat.com>, <marcel.apfelbaum@gmail.com>,
- <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>
-Subject: Re: [RFC PATCH v3 1/2] hw/pxb-cxl: Rename the pxb cxl host bridge
-Message-ID: <20250725161616.00007f09@huawei.com>
-In-Reply-To: <20250617040649.81303-2-wangyuquan1236@phytium.com.cn>
-References: <20250617040649.81303-1-wangyuquan1236@phytium.com.cn>
- <20250617040649.81303-2-wangyuquan1236@phytium.com.cn>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1ufKI8-0005XJ-8y
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:25:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753457095;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=tkBOOJtduUiB9TfvrVi+7aC3ICYbpVR/s41PFX+ahcg=;
+ b=aeHv/v7vQyFQ9GH7cAklKHg7QJspLhOnt5SEu9VHLfRxd6j6K638nmtyskFw24/ZP++304
+ Cj8714NCw5bMNBesmBns1QJuQsjuOh7cum+8LL5S0GV2UXQPR8UaBPflWXZ0X1kU5ekyTa
+ 7WzM13jRVHLnqkZkER4UeKs4btzhAK8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-382-acOJa7n6PIeY95c6YiAP4A-1; Fri,
+ 25 Jul 2025 11:24:51 -0400
+X-MC-Unique: acOJa7n6PIeY95c6YiAP4A-1
+X-Mimecast-MFC-AGG-ID: acOJa7n6PIeY95c6YiAP4A_1753457091
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C523E1955F25; Fri, 25 Jul 2025 15:24:50 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.248])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id F37F21956096; Fri, 25 Jul 2025 15:24:49 +0000 (UTC)
+Date: Fri, 25 Jul 2025 11:24:48 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>
+Subject: Re: [PULL 0/7] Migration patches for 2025-07-22
+Message-ID: <20250725152448.GA603918@fedora>
+References: <20250722234215.6807-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="RJdPqnBuhQIbcvJb"
+Content-Disposition: inline
+In-Reply-To: <20250722234215.6807-1-farosas@suse.de>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.175,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,64 +79,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 17 Jun 2025 12:06:48 +0800
-wangyuquan <wangyuquan1236@phytium.com.cn> wrote:
 
-> This renames some descriptions and definitions of pxb cxl host
-> bridge, since the original names can be confusing.
-> 
-> Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Fair enough.
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+--RJdPqnBuhQIbcvJb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> ---
->  hw/pci-bridge/pci_expander_bridge.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
-> index 3a29dfefc2..bd637786d0 100644
-> --- a/hw/pci-bridge/pci_expander_bridge.c
-> +++ b/hw/pci-bridge/pci_expander_bridge.c
-> @@ -201,7 +201,7 @@ static void pxb_cxl_realize(DeviceState *dev, Error **errp)
->  }
->  
->  /*
-> - * Host bridge realization has no means of knowning state associated
-> + * PXB Host bridge realization has no means of knowning state associated
->   * with a particular machine. As such, it is nececssary to delay
->   * final setup of the host bridge register space until later in the
->   * machine bring up.
-> @@ -240,7 +240,7 @@ static void pxb_cxl_host_class_init(ObjectClass *class, const void *data)
->   * This is a device to handle the MMIO for a CXL host bridge. It does nothing
->   * else.
->   */
-> -static const TypeInfo cxl_host_info = {
-> +static const TypeInfo pxb_cxl_host_info = {
->      .name          = TYPE_PXB_CXL_HOST,
->      .parent        = TYPE_PCI_HOST_BRIDGE,
->      .instance_size = sizeof(CXLHost),
-> @@ -522,7 +522,7 @@ static void pxb_cxl_dev_class_init(ObjectClass *klass, const void *data)
->       * vendor, device, class, etc. ids are intentionally left out.
->       */
->  
-> -    dc->desc = "CXL Host Bridge";
-> +    dc->desc = "PXB CXL Host Bridge";
->      device_class_set_props(dc, pxb_cxl_dev_properties);
->      set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
->  
-> @@ -549,7 +549,7 @@ static void pxb_register_types(void)
->      type_register_static(&pxb_pcie_bus_info);
->      type_register_static(&pxb_cxl_bus_info);
->      type_register_static(&pxb_host_info);
-> -    type_register_static(&cxl_host_info);
-> +    type_register_static(&pxb_cxl_host_info);
->      type_register_static(&pxb_dev_info);
->      type_register_static(&pxb_pcie_dev_info);
->      type_register_static(&pxb_cxl_dev_info);
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
+
+--RJdPqnBuhQIbcvJb
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmiDocAACgkQnKSrs4Gr
+c8hoQgf/bZvmhfQvB0xbfO/wRUlc47SJNiuAlaw+kotIFwB6vTx7r5eQhrgSZuj2
+yIGSDuVqn1cJk1rNhU6duqtKQINuPnzykPkGPNDW2MXABJkiKnpn1i00BbRJtoaV
+kZLQX5siL97Fzmn7yoMowUQ6nyszYrlk6kYtvJbKUiVyUVgfa+r7w41NpxSMfmhY
+R/ELSOHxL5Iq+5Ikgp8CTPXqoTBKbDpVz4WQvWPfBsN9+fSVR365Wn6V+uyCukDD
+cjvqAz6knJ8ooQcxgiPrDjniu7tSSF4b0dXsgqT5yCR2pSkOzGyBCceb/E+AcLLL
+4NZPnEPguv9dQZ+STr9IBzKQQYAenQ==
+=n5q5
+-----END PGP SIGNATURE-----
+
+--RJdPqnBuhQIbcvJb--
 
 
