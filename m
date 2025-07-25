@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6AEAB11F97
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 15:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF68AB11FA2
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 15:54:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufIr9-0003Za-Bq; Fri, 25 Jul 2025 09:53:04 -0400
+	id 1ufIsW-0006p5-Rg; Fri, 25 Jul 2025 09:54:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ufIou-0008VO-BD
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 09:50:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ufIov-00009B-QE
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 09:50:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ufIos-0005aS-BN
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 09:50:43 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ufIos-0005ao-Uu
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 09:50:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753451441;
+ s=mimecast20190719; t=1753451442;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=v1ERknPPuuJzDCkGJmDYDBxQ/sRl4VUUqp0yRv05pbQ=;
- b=WxX/+kKzT2rR+0PNcZngIwAiiw/ZFCLGKB+wZ2osGTIzWv66o/umaV3Rxt/A3OuQpbmm/V
- zTlE0ey7MjC5BIQpQQRKpu+0NyyKTslMraEkXMI9caeF2o2CL/gRvDZhWwL+lWVDfg/8sr
- Z4ai+YR+FyDBaj0BQMcSenJvgeBilNk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=cYxXA5AaNzNygIUKDlww9nHpcZNyTTM820pmiVa4GrA=;
+ b=DqcatrZsxWR9ME8pIdfH4rECzShTHcFLgeE9U1IYv6121FSZMHnxfT4FuFuI0PMl2D8L8o
+ lPT4W6clFXazEIZKOw4SpGqBHo9DgEvExivgMKI7SZW5i/1XgeCRAsULbi4iluNEj80V5r
+ nK06IJPjVQ8wnBVz0m7scI506S9N9HM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-LfUICDWvNM-5RlXLA4XwKQ-1; Fri,
- 25 Jul 2025 09:50:37 -0400
-X-MC-Unique: LfUICDWvNM-5RlXLA4XwKQ-1
-X-Mimecast-MFC-AGG-ID: LfUICDWvNM-5RlXLA4XwKQ_1753451437
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-88-D2vk2cL1NCS7vN5NSo0CCA-1; Fri,
+ 25 Jul 2025 09:50:40 -0400
+X-MC-Unique: D2vk2cL1NCS7vN5NSo0CCA-1
+X-Mimecast-MFC-AGG-ID: D2vk2cL1NCS7vN5NSo0CCA_1753451440
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E27AE1800374; Fri, 25 Jul 2025 13:50:36 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E752A195FDF2; Fri, 25 Jul 2025 13:50:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.14])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9083F180035E; Fri, 25 Jul 2025 13:50:36 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7E20419560AA; Fri, 25 Jul 2025 13:50:39 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2681E21E6741; Fri, 25 Jul 2025 15:50:34 +0200 (CEST)
+ id 2A85421E6775; Fri, 25 Jul 2025 15:50:34 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  steven.sistare@oracle.com
-Subject: [PATCH 4/5] qtest/qom-test: Don't bother to execute QMP command quit
-Date: Fri, 25 Jul 2025 15:50:33 +0200
-Message-ID: <20250725135034.2280477-5-armbru@redhat.com>
+Subject: [PATCH 5/5] MAINTAINERS: Cover tests/qtest/qom-test.c
+Date: Fri, 25 Jul 2025 15:50:34 +0200
+Message-ID: <20250725135034.2280477-6-armbru@redhat.com>
 In-Reply-To: <20250725135034.2280477-1-armbru@redhat.com>
 References: <20250725135034.2280477-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -84,24 +84,21 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- tests/qtest/qom-test.c | 4 ----
- 1 file changed, 4 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qtest/qom-test.c b/tests/qtest/qom-test.c
-index d358b69c7e..6421f2d9d9 100644
---- a/tests/qtest/qom-test.c
-+++ b/tests/qtest/qom-test.c
-@@ -215,10 +215,6 @@ static void test_machine(gconstpointer data)
-     test_list_get(qts, paths);
-     test_list_get_value(qts);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a462345618..12e7767909 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3445,6 +3445,7 @@ F: qom/
+ F: tests/unit/check-qom-interface.c
+ F: tests/unit/check-qom-proplist.c
+ F: tests/unit/test-qdev-global-props.c
++F: tests/qtest/qom-test.c
  
--    response = qtest_qmp(qts, "{ 'execute': 'quit' }");
--    g_assert(qdict_haskey(response, "return"));
--    qobject_unref(response);
--
-     qtest_quit(qts);
- }
- 
+ QOM boilerplate conversion script
+ M: Eduardo Habkost <eduardo@habkost.net>
 -- 
 2.49.0
 
