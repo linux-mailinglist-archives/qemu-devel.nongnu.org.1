@@ -2,97 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C24BB12600
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 23:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D41C4B1260F
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 23:12:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufPdQ-0002zm-3m; Fri, 25 Jul 2025 17:07:20 -0400
+	id 1ufPi9-0006GB-1J; Fri, 25 Jul 2025 17:12:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ufPdA-0002sL-VX
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 17:07:08 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ufPhc-0006Fm-Sr
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 17:11:40 -0400
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ufPd3-0007i7-TQ
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 17:07:04 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ufPhb-0008SD-5W
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 17:11:40 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 78B4F1F387;
- Fri, 25 Jul 2025 21:06:53 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 06A941F387;
+ Fri, 25 Jul 2025 21:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753477613; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1753477897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ETkwh/0BiOYIq+YeFKlZ0fSlceL4X9mMrsOM3M0SnuY=;
- b=VZ/A9qH2j/SurDS74X6aBkaPlLaIOhrntfr18TtTsHOusYQUqMg7hjD/132MXWcZneI5rl
- N73QCZOC3oICDhIbDc+XZ39HCAqnthjdmz+CJVQI9nV/4xJA/Oko15uqvhs/ZiZUbZEcJm
- 9JW32FGd81w06c4Py9V41woi/Njm1OI=
+ bh=BtujC/o0vQWg2MMv6eRfGTXljzWfxisL7BNnXKAfP/Q=;
+ b=keIxCikWixpL79RPrIX4PYrX9VcpReEfX77Z51+V3ocziR4BiRYhmr2LTL6ZVfNWSqCaLU
+ THus8lHoZUdR3+qN4ZdV0H5nw4CPuFFxMTSrElYAEAvSJZ41cuAPXr8MdJBpIVwKcKdkMn
+ mMiOLREfd57aDyiCTFpHSuSYN7S03h8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753477613;
+ s=susede2_ed25519; t=1753477897;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ETkwh/0BiOYIq+YeFKlZ0fSlceL4X9mMrsOM3M0SnuY=;
- b=hjJFwa/1R+4l8XESbGueH53e0p2+Jer05s273Q9V+ziQrGjqLSJAsqCaNcZ/4iiAy/uVcR
- hKjJCiSyPtprRHDA==
+ bh=BtujC/o0vQWg2MMv6eRfGTXljzWfxisL7BNnXKAfP/Q=;
+ b=74HDniRGsfrzhg2Avo+wr9+zBrtEsMgHPp9k9VYLT0M9B+UY3HtjOpGpsUztoKCAg9Wr4A
+ Zjo5GbsbUsaw+cDg==
 Authentication-Results: smtp-out2.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=keIxCikW;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=74HDniRG
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753477613; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1753477897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ETkwh/0BiOYIq+YeFKlZ0fSlceL4X9mMrsOM3M0SnuY=;
- b=VZ/A9qH2j/SurDS74X6aBkaPlLaIOhrntfr18TtTsHOusYQUqMg7hjD/132MXWcZneI5rl
- N73QCZOC3oICDhIbDc+XZ39HCAqnthjdmz+CJVQI9nV/4xJA/Oko15uqvhs/ZiZUbZEcJm
- 9JW32FGd81w06c4Py9V41woi/Njm1OI=
+ bh=BtujC/o0vQWg2MMv6eRfGTXljzWfxisL7BNnXKAfP/Q=;
+ b=keIxCikWixpL79RPrIX4PYrX9VcpReEfX77Z51+V3ocziR4BiRYhmr2LTL6ZVfNWSqCaLU
+ THus8lHoZUdR3+qN4ZdV0H5nw4CPuFFxMTSrElYAEAvSJZ41cuAPXr8MdJBpIVwKcKdkMn
+ mMiOLREfd57aDyiCTFpHSuSYN7S03h8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753477613;
+ s=susede2_ed25519; t=1753477897;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ETkwh/0BiOYIq+YeFKlZ0fSlceL4X9mMrsOM3M0SnuY=;
- b=hjJFwa/1R+4l8XESbGueH53e0p2+Jer05s273Q9V+ziQrGjqLSJAsqCaNcZ/4iiAy/uVcR
- hKjJCiSyPtprRHDA==
+ bh=BtujC/o0vQWg2MMv6eRfGTXljzWfxisL7BNnXKAfP/Q=;
+ b=74HDniRGsfrzhg2Avo+wr9+zBrtEsMgHPp9k9VYLT0M9B+UY3HtjOpGpsUztoKCAg9Wr4A
+ Zjo5GbsbUsaw+cDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E5250134E8;
- Fri, 25 Jul 2025 21:06:52 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 74F14134E8;
+ Fri, 25 Jul 2025 21:11:36 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id WtVhKOzxg2ilQwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 25 Jul 2025 21:06:52 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id vNEqDQjzg2jqRAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 25 Jul 2025 21:11:36 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Peter Xu
- <peterx@redhat.com>, qemu-arm <qemu-arm@nongnu.org>
-Subject: Re: [PULL 02/20] target/arm: Correct encoding of Debug
- Communications Channel registers
-In-Reply-To: <87pldo3x3y.fsf@suse.de>
-References: <20250721132718.2835729-1-peter.maydell@linaro.org>
- <20250721132718.2835729-3-peter.maydell@linaro.org>
- <87ms8uh7ln.fsf@suse.de>
- <CAFEAcA9kxDdkEyLguTsEV_nDX9L5mAT+Rw_4Rmk68YQq50ee-A@mail.gmail.com>
- <87pldo3x3y.fsf@suse.de>
-Date: Fri, 25 Jul 2025 18:06:50 -0300
-Message-ID: <87ms8s3rpx.fsf@suse.de>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Peter Xu
+ <peterx@redhat.com>, Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH 0/3] single-binary: compile once migration files
+In-Reply-To: <20250725201729.17100-1-pierrick.bouvier@linaro.org>
+References: <20250725201729.17100-1-pierrick.bouvier@linaro.org>
+Date: Fri, 25 Jul 2025 18:11:33 -0300
+Message-ID: <87jz3w3ri2.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
- FUZZY_RATELIMITED(0.00)[rspamd.com];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; TO_DN_SOME(0.00)[];
+ MISSING_XM_UA(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; RCPT_COUNT_FIVE(0.00)[5]
-X-Spam-Score: -4.30
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Queue-Id: 06A941F387
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -101,7 +102,7 @@ X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,131 +118,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 
-> Peter Maydell <peter.maydell@linaro.org> writes:
+> This series removes target dependencies in migration code.
 >
->> On Wed, 23 Jul 2025 at 23:20, Fabiano Rosas <farosas@suse.de> wrote:
->>>
->>> Peter Maydell <peter.maydell@linaro.org> writes:
->>>
->>> > We don't implement the Debug Communications Channel (DCC), but
->>> > we do attempt to provide dummy versions of its system registers
->>> > so that software that tries to access them doesn't fall over.
->>> >
->>> > However, we got the tx/rx register definitions wrong. These
->>> > should be:
->>> >
->>> > AArch32:
->>> >   DBGDTRTX   p14 0 c0 c5 0  (on writes)
->>> >   DBGDTRRX   p14 0 c0 c5 0  (on reads)
->>> >
->>> > AArch64:
->>> >   DBGDTRTX_EL0  2 3 0 5 0 (on writes)
->>> >   DBGDTRRX_EL0  2 3 0 5 0 (on reads)
->>> >   DBGDTR_EL0    2 3 0 4 0 (reads and writes)
->>> >
->>> > where DBGDTRTX and DBGDTRRX are effectively different names for the
->>> > same 32-bit register, which has tx behaviour on writes and rx
->>> > behaviour on reads.  The AArch64-only DBGDTR_EL0 is a 64-bit wide
->>> > register whose top and bottom halves map to the DBGDTRRX and DBGDTRTX
->>> > registers.
->>> >
->>> > Currently we have just one cpreg struct, which:
->>> >  * calls itself DBGDTR_EL0
->>> >  * uses the DBGDTRTX_EL0/DBGDTRRX_EL0 encoding
->>> >  * is marked as ARM_CP_STATE_BOTH but has the wrong opc1
->>> >    value for AArch32
->>> >  * is implemented as RAZ/WI
->>> >
->>> > Correct the encoding so:
->>> >  * we name the DBGDTRTX/DBGDTRRX register correctly
->>> >  * we split it into AA64 and AA32 versions so we can get the
->>> >    AA32 encoding right
->>> >  * we implement DBGDTR_EL0 at its correct encoding
->>> >
->>> > Cc: qemu-stable@nongnu.org
->>> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2986
->>> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->>> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->>> > Message-id: 20250708141049.778361-1-peter.maydell@linaro.org
->>> > ---
->>> >  target/arm/debug_helper.c | 13 +++++++++++--
->>> >  1 file changed, 11 insertions(+), 2 deletions(-)
->>> >
->>> > diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
->>> > index 69fb1d0d9ff..aee06d4d426 100644
->>> > --- a/target/arm/debug_helper.c
->>> > +++ b/target/arm/debug_helper.c
->>> > @@ -988,11 +988,20 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
->>> >        .opc0 = 2, .opc1 = 0, .crn = 0, .crm = 3, .opc2 = 2,
->>> >        .access = PL1_RW, .accessfn = access_tdcc,
->>> >        .type = ARM_CP_CONST, .resetvalue = 0 },
->>> > -    /* DBGDTRTX_EL0/DBGDTRRX_EL0 depend on direction */
->>> > -    { .name = "DBGDTR_EL0", .state = ARM_CP_STATE_BOTH, .cp = 14,
->>> > +    /* Architecturally DBGDTRTX is named DBGDTRRX when used for reads */
->>> > +    { .name = "DBGDTRTX_EL0", .state = ARM_CP_STATE_AA64,
->>> >        .opc0 = 2, .opc1 = 3, .crn = 0, .crm = 5, .opc2 = 0,
->>> >        .access = PL0_RW, .accessfn = access_tdcc,
->>> >        .type = ARM_CP_CONST, .resetvalue = 0 },
->>> > +    { .name = "DBGDTRTX", .state = ARM_CP_STATE_AA32, .cp = 14,
->>> > +      .opc1 = 0, .crn = 0, .crm = 5, .opc2 = 0,
->>> > +      .access = PL0_RW, .accessfn = access_tdcc,
->>> > +      .type = ARM_CP_CONST, .resetvalue = 0 },
->>> > +    /* This is AArch64-only and is a combination of DBGDTRTX and DBGDTRRX */
->>> > +    { .name = "DBGDTR_EL0", .state = ARM_CP_STATE_AA64,
->>> > +      .opc0 = 2, .opc1 = 3, .crn = 0, .crm = 4, .opc2 = 0,
->>> > +      .access = PL0_RW, .accessfn = access_tdcc,
->>> > +      .type = ARM_CP_CONST, .resetvalue = 0 },
->>> >      /*
->>> >       * OSECCR_EL1 provides a mechanism for an operating system
->>> >       * to access the contents of EDECCR. EDECCR is not implemented though,
->>>
->>> Hi, this patch breaks migration. I'm leaving for the day and will take a
->>> closer look in the morning. But since we have timezones, here it is:
->>
->> Thanks for the report; I can repro this. It happens because
->> the loop in cpu_post_load hits the "register in their list but
->> not ours" check, because the source VM has the AArch32
->> {.cp = 14, .opc0 = 2, .opc1 = 3, .crn = 0, .crm = 5, .opc2 = 0}
->> register which should never have existed.
->>
+> Pierrick Bouvier (3):
+>   migration: compile migration/ram.c once
+>   migration: rename target.c to vfio.c
+>   migration/vfio: compile only once
 >
-> My debugging (in dst) shows:
->
-> (gdb) x/16x 0x555557ad5d20 //cpu->cpreg_vmstate_indexes[0x18 to 0x1c]
-> 0x555557ad5d20: 0x200e0205      0x40200000      0x200e0284<     0x40200000
-> 0x555557ad5d30: 0x200e0285      0x40200000      0x200e0298      0x40200000
-> 0x555557ad5d40: 0x200e0302      0x40200000      0x200e0380      0x40200000
-> 0x555557ad5d50: 0x200e0800      0x40200000      0x200e0838      0x40200000
->
-> (gdb) x/16x 0x555557ad4ac0 //cpu->cpreg_indexes[0x18 to 0x1c]
-> p0x555557ad4ac0: 0x200e0205      0x40200000      0x200e0280<     0x40200000
-> 0x555557ad4ad0: 0x200e0284      0x40200000      0x200e0285      0x40200000
-> 0x555557ad4ae0: 0x200e0302      0x40200000      0x200e0380      0x40200000
-> 0x555557ad4af0: 0x200e0800      0x40200000      0x200e0838      0x40200000
->
->
->> I'm not sure how to handle this, as we have no mechanism for
->> "ignore this incoming register value, it is bogus". I'm surprised
->> we've never run into this before...
->>
->
-> I was thinking the same.
->
-> I actually don't understand what the encoding in cpu->cpreg_indexes is
-> supposed to represent. How does comparing the indexes implies "in our
-> list"/"in their list"? Is there some sort of ISA level assumption?
->
->        if (cpu->cpreg_vmstate_indexes[v] > cpu->cpreg_indexes[i]) {
->             /* register in our list but not incoming : skip it */
->             continue;
->         }
->         if (cpu->cpreg_vmstate_indexes[v] < cpu->cpreg_indexes[i]) {
->             /* register in their list but not ours: fail migration */
->             return -1;
->         }
->  
+>  migration/vfio-stub.c          | 16 ++++++++++++++++
+>  migration/{target.c => vfio.c} | 16 +---------------
+>  migration/meson.build          |  8 ++++----
+>  3 files changed, 21 insertions(+), 19 deletions(-)
+>  create mode 100644 migration/vfio-stub.c
+>  rename migration/{target.c => vfio.c} (67%)
 
-Ok, I spotted the sorting now. 
+Series:
+
+Acked-by: Fabiano Rosas <farosas@suse.de>
 
