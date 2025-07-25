@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643E6B115F4
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 03:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0002B115F9
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 03:42:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uf7PT-00020p-Uz; Thu, 24 Jul 2025 21:39:44 -0400
+	id 1uf7PT-0001zz-32; Thu, 24 Jul 2025 21:39:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1uf7Nf-0000gw-BQ
+ id 1uf7Nf-0000gy-Dh
  for qemu-devel@nongnu.org; Thu, 24 Jul 2025 21:37:51 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1uf7Nc-0002Z5-B2
+ (envelope-from <maobibo@loongson.cn>) id 1uf7Nc-0002Z6-B2
  for qemu-devel@nongnu.org; Thu, 24 Jul 2025 21:37:51 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8DxC3Lk34JofpAxAQ--.34226S3;
- Fri, 25 Jul 2025 09:37:40 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Axz3Pl34Jof5AxAQ--.34148S3;
+ Fri, 25 Jul 2025 09:37:41 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJCxdOTk34Joz5wlAA--.62171S2;
+ by front1 (Coremail) with SMTP id qMiowJCxdOTk34Joz5wlAA--.62171S3;
  Fri, 25 Jul 2025 09:37:40 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v3 00/17] target/loongarch: Enhancement about tcg mmu
-Date: Fri, 25 Jul 2025 09:37:22 +0800
-Message-Id: <20250725013739.994437-1-maobibo@loongson.cn>
+Subject: [PATCH v3 01/17] target/loongarch: Move some function definition to
+ kvm directory
+Date: Fri, 25 Jul 2025 09:37:23 +0800
+Message-Id: <20250725013739.994437-2-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250725013739.994437-1-maobibo@loongson.cn>
+References: <20250725013739.994437-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxdOTk34Joz5wlAA--.62171S2
+X-CM-TRANSID: qMiowJCxdOTk34Joz5wlAA--.62171S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -61,67 +64,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is some enhance about LoongArch mmu tcg emulation, add new
-header file cpu-mmu.h and function loongarch_check_pte(). Function
-loongarch_check_pte() can work on both TLB entry and pte entry.
+Move function definition specified with kvm to the corresponding
+directory. Also remove header file "cpu.h" including outside of
+macro QEMU_KVM_LOONGARCH_H.
 
-This patchset mainly is code cleanup and enhancement, its main
-purpose is to work for hardware page table walk emluation in future.
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
-v2 ... v3:
-  1. Track user space page accessed in kernel mode, since mmu idx usage
-     is different between QEMU TLB and LoongArch TLB emulation.
-  2. Add 48 bit to 64 bit signed extension conversion with virtual address,
-     since QEMU TLB use 64 bit address, LoongArch TLB is 48 bit.
-  3. Optimization with LoongArch TLB update, do not flush QEMU TLB if
-     updated TLB entry is the same or invalid.
-  4. Optimization with new LoongArch TLB entry selection, invalid entry
-     or different ASID with higher priority than the random method.
-v1 ... v2:
-  1. Rename structure name pte_context with mmu_context, since it
-     can be extended to get DMW or DA mmu idx and window size
-  2. Add fine-grained tlb flush method
-  3. Fix some issues in function invalidate_tlb_entry() to flush tlb,
-     such as bitmap method with mmu idx, page size and address
-     calculation
----
-Bibo Mao (17):
-  target/loongarch: Move some function definition to kvm directory
-  target/loongarch: Define function loongarch_cpu_post_init as static
-  target/loongarch: Set page size in TLB misc with STLB
-  target/loongarch: Add header file cpu-mmu.h
-  target/loongarch: Add common function loongarch_check_pte()
-  target/loongarch: Use loongarch_check_pte() with page table walking
-  target/loongarch: Add parameter mmu_context with
-    loongarch_page_table_walker
-  target/loongarch: Add parameter mmu_context with
-    loongarch_map_tlb_entry
-  target/loongarch: Add parameter mmu_context with
-    loongarch_get_addr_from_tlb
-  target/loongarch: Add parameter mmu_context with loongarch_map_address
-  target/loongarch: Add parameter mmu_context with get_physical_address
-  target/loongarch: Track user mode address accessed in kernel mode
-  target/loongarch: Use correct address when flush tlb
-  target/loongarch: Use mmu idx bitmap method when flush tlb
-  target/loongarch: Add parameter tlb pointer with fill_tlb_entry
-  target/loongarch: Reduce TLB flush with helper_tlbwr
-  target/loongarch: Update TLB index selection method
+ hw/loongarch/virt.c                  | 1 +
+ target/loongarch/cpu.h               | 9 ---------
+ target/loongarch/kvm/kvm_loongarch.h | 4 ++--
+ 3 files changed, 3 insertions(+), 11 deletions(-)
 
- hw/loongarch/virt.c                  |   1 +
- target/loongarch/cpu-mmu.h           |  41 ++++
- target/loongarch/cpu.c               | 181 +++++++++---------
- target/loongarch/cpu.h               |  22 +--
- target/loongarch/cpu_helper.c        | 131 ++++++++-----
- target/loongarch/internals.h         |  20 --
- target/loongarch/kvm/kvm_loongarch.h |   4 +-
- target/loongarch/tcg/csr_helper.c    |   1 +
- target/loongarch/tcg/tcg_loongarch.h |   4 +-
- target/loongarch/tcg/tlb_helper.c    | 272 ++++++++++++++++-----------
- 10 files changed, 395 insertions(+), 282 deletions(-)
- create mode 100644 target/loongarch/cpu-mmu.h
-
-
-base-commit: 9e601684dc24a521bb1d23215a63e5c6e79ea0bb
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index b15ada2078..31215b7785 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -46,6 +46,7 @@
+ #include "hw/block/flash.h"
+ #include "hw/virtio/virtio-iommu.h"
+ #include "qemu/error-report.h"
++#include "kvm/kvm_loongarch.h"
+ 
+ static void virt_get_veiointc(Object *obj, Visitor *v, const char *name,
+                               void *opaque, Error **errp)
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 9538e8d61d..bbe6db33f1 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -496,13 +496,4 @@ static inline void set_pc(CPULoongArchState *env, uint64_t value)
+ 
+ void loongarch_cpu_post_init(Object *obj);
+ 
+-#ifdef CONFIG_KVM
+-void kvm_loongarch_cpu_post_init(LoongArchCPU *cpu);
+-#else
+-static inline void kvm_loongarch_cpu_post_init(LoongArchCPU *cpu)
+-{
+-}
+-#endif
+-void kvm_loongarch_init_irq_routing(void);
+-
+ #endif /* LOONGARCH_CPU_H */
+diff --git a/target/loongarch/kvm/kvm_loongarch.h b/target/loongarch/kvm/kvm_loongarch.h
+index 1051a341ec..51475675d6 100644
+--- a/target/loongarch/kvm/kvm_loongarch.h
++++ b/target/loongarch/kvm/kvm_loongarch.h
+@@ -5,11 +5,11 @@
+  * Copyright (c) 2023 Loongson Technology Corporation Limited
+  */
+ 
+-#include "cpu.h"
+-
+ #ifndef QEMU_KVM_LOONGARCH_H
+ #define QEMU_KVM_LOONGARCH_H
+ 
++void kvm_loongarch_cpu_post_init(LoongArchCPU *cpu);
++void kvm_loongarch_init_irq_routing(void);
+ int  kvm_loongarch_set_interrupt(LoongArchCPU *cpu, int irq, int level);
+ void kvm_arch_reset_vcpu(CPUState *cs);
+ 
 -- 
 2.39.3
 
