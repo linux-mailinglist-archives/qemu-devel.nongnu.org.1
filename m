@@ -2,124 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E21B1189B
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 08:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B86B118B5
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 08:52:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufCAX-0005JM-4Q; Fri, 25 Jul 2025 02:44:37 -0400
+	id 1ufCGw-000353-Ss; Fri, 25 Jul 2025 02:51:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1ufC63-0008Kt-2o
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 02:40:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1ufCB0-0005rJ-4R
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 02:45:08 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1ufC5x-0003cl-OM
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 02:39:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753425591;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Aw18Ri+vRPMoJlw3PDD35p9YtRVqu7F/ClYIxAYbxuo=;
- b=jLt4ah3UJfEL7O3lPMXglHITtNvcXVSBoN04/1nLN0SBI+Fv43Z39pLHbuYf1yLMTv/LGf
- yLa/i3nEoTNSC52Qe8hZgQL5m/vbH56enyJg1IkYHo5hnjaljc4cZmscY7AqnC7OITGVXb
- f4q0wqtxwLlq7O7zeN2hzEWe4AFK33o=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-35-iBNuXjfoNt-ovjCafunR4g-1; Fri, 25 Jul 2025 02:39:49 -0400
-X-MC-Unique: iBNuXjfoNt-ovjCafunR4g-1
-X-Mimecast-MFC-AGG-ID: iBNuXjfoNt-ovjCafunR4g_1753425588
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-b38ec062983so1262034a12.3
- for <qemu-devel@nongnu.org>; Thu, 24 Jul 2025 23:39:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753425588; x=1754030388;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:reply-to:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Aw18Ri+vRPMoJlw3PDD35p9YtRVqu7F/ClYIxAYbxuo=;
- b=Qv0rPJKoibYKyXOI4Y22mz5NxwrUIApy2FmGqkqqNzl2QNk+l5y/gHqfWhpd1XxYT6
- gY9gSXQq1HmYTWi/27CgCUvXb/dRDQNG/bu36XMZBumtU0c1PL1njBxSQiJsjqqmOHlI
- 15e+Fbzth3czVj6kvC1qTZDfXl0GIbV8/PNOcH/7X2sTbPfxPr+pned0yFR7JLqx2MmG
- 6DBJTTwkGYsVAFF5MNj+g1XEdvYuzNrlJvoZleWMHR320pDH+KCl2SJr+WrAUHWSlV6A
- 2fZjGoIuflAlrSm2Z9qvvnXnGmwvUqU2ETPm4EZUNoZDfzltjvodA5p2QIy3CcCEOcF+
- rqIA==
-X-Gm-Message-State: AOJu0YyknMnS65G2pYqTif4YrcS5Mk8PKlEXPc+vNpccuprnABQau8wF
- 2UJOhZoGsi6YIT3qNr1DWZNyOOG5/ERfTp+A/4M+3ijXWtlrov5CItou348aeCj+WVLE+yYY2Cm
- sqVeBqJjw5TWFcXUkZTbkxsoCJB64HYQnlqbG1XlS3WeiBaIYy0ph42zw
-X-Gm-Gg: ASbGncvhlBAwnkKjeIYBnsH9Va2r1YcS6hD12mrXxMQc1Jxei/dzqVj9iYr8iCRb93j
- kQJUsrLzZV1+WGmrBrnJCUU2nA+SZFlkIjvHNDUvb6zTc5Rn5V0huddDtV5kl5wC9G7og666Rlu
- qQDdqG37kn/D4+OWkm1ObsdeFyjnyTAnBZ8SAMeeDuxcxO7KFu9ivLpN+2N4L1VYQ8RtyLSIdCS
- jUQIJhmQLs2Z/msUri9pFOazz+0bCXVxpoJX9DnKa7LYETeUSn9VjUWwtErG+H1MvFdbj375Tpf
- l6aJyXZgevlco/DHuxqjIt5rzFt/KwYFlSRmGQiK87oaKi5LLtCc
-X-Received: by 2002:a05:6a20:12ca:b0:220:842f:2760 with SMTP id
- adf61e73a8af0-23d6ffd1231mr1308439637.4.1753425587778; 
- Thu, 24 Jul 2025 23:39:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExRJaEPRx7+8V2ZeoA8Mlbv3FlMpzjOHvN/T9ZLOiv/zgcXLgouNZprOq5bMWHkLXSmkh5og==
-X-Received: by 2002:a05:6a20:12ca:b0:220:842f:2760 with SMTP id
- adf61e73a8af0-23d6ffd1231mr1308391637.4.1753425587290; 
- Thu, 24 Jul 2025 23:39:47 -0700 (PDT)
-Received: from armenon-kvm.bengluru.csb ([49.36.101.73])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-761ae158001sm3107551b3a.31.2025.07.24.23.39.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Jul 2025 23:39:46 -0700 (PDT)
-Date: Fri, 25 Jul 2025 12:09:35 +0530
-From: Arun Menon <armenon@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>
-Subject: Re: [PATCH v6 23/24] migration: Add error-parameterized function
- variants in VMSD struct
-Message-ID: <aIMmp1G6l4BtKmq3@armenon-kvm.bengluru.csb>
-References: <20250721-propagate_tpm_error-v6-0-fef740e15e17@redhat.com>
- <20250721-propagate_tpm_error-v6-23-fef740e15e17@redhat.com>
- <aH5BgAVc2x_tjsHJ@redhat.com>
- <aH5Gj61ZmtZ0NzEv@armenon-kvm.bengluru.csb>
- <aH5JR-58iMk0ArSl@redhat.com>
- <aH5YUmz5pAdxznAI@armenon-kvm.bengluru.csb>
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1ufCAw-0004hs-DV
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 02:45:05 -0400
+Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 56P6iVIu098608
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Fri, 25 Jul 2025 15:44:31 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=4/SDYGRX5WDjO0jRkqHLU3J4ndKvJa3D56GFRJ2nNn8=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1753425871; v=1;
+ b=VNBnv0iGm1SXMm9VprK65A1O+OCpeQwJxn+ou7V/y4vkMGmHKcqpjGnGplZPMwXL
+ zIpU45rf0yrMakmK+aXVGqVhbrouk8myG8XmtiIpeU7/J6GxmG9KavLVj0wazGL2
+ nBILNdg+PNdtkXXxzw5RPLtK34qFblk+scggjoGRq0zrKl9aQ3aDtHLXBQIOTDhI
+ S5S7dNm1J7QxAOkZiNEnpFF/eV5NJ44pznbwmY0z/DXbilSN7FPYOfXxXLbuKk93
+ MIeCcFi7wH6itk5LzZYRHEWHnFsdlGAaWmmbHIPiKFhsu8ct2mSXkSsbpQd1pS6l
+ NM1eD5NxR5zYiH2Z18UMdg==
+Message-ID: <b536f95c-a1e2-4ab5-9c58-d66c61110c8d@rsg.ci.i.u-tokyo.ac.jp>
+Date: Fri, 25 Jul 2025 15:44:30 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aH5YUmz5pAdxznAI@armenon-kvm.bengluru.csb>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armenon@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.45,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 04/14] virtio: introduce extended features type
+To: Paolo Abeni <pabeni@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang
+ <jasowang@redhat.com>, Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Luigi Rizzo <lrizzo@google.com>,
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
+ Vincenzo Maffione <v.maffione@gmail.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <cover.1753297661.git.pabeni@redhat.com>
+ <5d72c214940943f2863977539e337cc9ec17c8ea.1753297661.git.pabeni@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <5d72c214940943f2863977539e337cc9ec17c8ea.1753297661.git.pabeni@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,160 +77,210 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: armenon@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
-
-On Mon, Jul 21, 2025 at 08:40:10PM +0530, Arun Menon wrote:
-> On Mon, Jul 21, 2025 at 03:05:59PM +0100, Daniel P. Berrangé wrote:
-> > On Mon, Jul 21, 2025 at 07:24:23PM +0530, Arun Menon wrote:
-> > > Hi,
-> > > Thank you for the review.
-> > > 
-> > > On Mon, Jul 21, 2025 at 02:32:48PM +0100, Daniel P. Berrangé wrote:
-> > > > On Mon, Jul 21, 2025 at 04:59:28PM +0530, Arun Menon wrote:
-> > > > > - We need to have good error reporting in the callbacks in
-> > > > >   VMStateDescription struct. Specifically pre_save, post_save,
-> > > > >   pre_load and post_load callbacks.
-> > > > > - It is not possible to change these functions everywhere in one
-> > > > >   patch, therefore, we introduce a duplicate set of callbacks
-> > > > >   with Error object passed to them.
-> > > > > - So, in this commit, we implement 'errp' variants of these callbacks,
-> > > > >   introducing an explicit Error object parameter.
-> > > > > - This is a functional step towards transitioning the entire codebase
-> > > > >   to the new error-parameterized functions.
-> > > > > - Deliberately called in mutual exclusion from their counterparts,
-> > > > >   to prevent conflicts during the transition.
-> > > > > - New impls should preferentally use 'errp' variants of
-> > > > >   these methods, and existing impls incrementally converted.
-> > > > >   The variants without 'errp' are intended to be removed
-> > > > >   once all usage is converted.
-> > > > > 
-> > > > > Signed-off-by: Arun Menon <armenon@redhat.com>
-> > > > > ---
-> > > > >  include/migration/vmstate.h | 11 +++++++++++
-> > > > >  migration/vmstate.c         | 47 +++++++++++++++++++++++++++++++++++++++------
-> > > > >  2 files changed, 52 insertions(+), 6 deletions(-)
-> > > > > 
-> > > > 
-> > > > > diff --git a/migration/vmstate.c b/migration/vmstate.c
-> > > > > index 288b57e1ed778cce21247b64d5e97dfef41ad586..d96908d12ccffaef421e5d399a48e26cada2cb77 100644
-> > > > > --- a/migration/vmstate.c
-> > > > > +++ b/migration/vmstate.c
-> > > > 
-> > > > > @@ -524,7 +548,12 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-> > > > >                  if (ret) {
-> > > > >                      error_setg(errp, "Save of field %s/%s failed",
-> > > > >                                  vmsd->name, field->name);
-> > > > > -                    if (vmsd->post_save) {
-> > > > > +                    if (vmsd->post_save_errp) {
-> > > > > +                        ret = vmsd->post_save_errp(opaque, &local_err);
-> > > > > +                        if (ret < 0) {
-> > > > > +                            error_propagate(errp, local_err);
-> > > > > +                        }
-> > > > 
-> > > > This is still broken. 'errp' is already set a few lines earlier, so you
-> > > > can't propagate a new error over the top
-> > > 
-> > > I was wondering that we should preserve the first error that was encountered.
-> > > So even if local_err was set, and in case errp already has an error, then it will
-> > > be a no-op and local_err will be freed.
-> > 
-> > We know that 'local_err' is definitely set when 'post_save_errp' is called,
-> > because there's a call to 'error_setg' right above it.
+On 2025/07/24 4:31, Paolo Abeni wrote:
+> The virtio specifications allows for up to 128 bits for the
+> device features. Soon we are going to use some of the 'extended'
+> bits features (bit 64 and above) for the virtio net driver.
 > 
-> mmm, error_setg() above that sets errp, local_err is set only of post_save_errp() has
-> errors. Do we want both the erros to be propagated? or is it okay to propagate the first
-> error that was encountered.
-
-I see your point. If we set errp, then there is no point in writing error_propagate()
-because that will never allow local_err to be propagated because the first param is set.
-
-I am intending to catch both the errors,
-a. from vmstate_save_state_v() or explicitly set by us using error_setg(), in errp
-b. from calling post_save_errp() , in local_err
-and then, if we have both a and b, then we propagate  b.
-and if we only have a, then a will be propagated.
-
-I think this will be consistent with the original logic of setting the error using 
-error_setg() and calling vmsd->post_save() only in the failure path. Please correct me
-if I am wrong.
-
-> > 
-> > 
-> > 
-> > > > > +                    } else if (vmsd->post_save) {
-> > > > >                          vmsd->post_save(opaque);
-> > > > >                      }
-> > 
-> > ... pre-existing mistake not checking return value of
-> > post_save.
-> > 
-> > > > >                      return ret;
-> > > > > @@ -552,7 +581,13 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-> > > > >  
-> > > > >      ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
-> > > > >  
-> > > > > -    if (vmsd->post_save) {
-> > > > > +    if (vmsd->post_save_errp) {
-> > > > > +        int ps_ret = vmsd->post_save_errp(opaque, &local_err);
-> > > > > +        if (!ret && ps_ret) {
-> > > > > +            ret = ps_ret;
-> > > > > +            error_propagate(errp, local_err);
-> > > > > +        }
-> > > > 
-> > > > Again, propagating over the top of an existing error
-> > > 
-> > > Sorry, correct me if I am wrong.
-> > > Since we have 'if (!ret && ps_ret)' ,
-> > > if vmstate_subsection_save() fails, the above condition will not hold true.
-> > > Only if the first function call vmstate_subsection_save() is successful and the second one
-> > > post_save_errp() fails then we try to propagate, again hoping to preserve the first error.
-> > 
-> > Opps, yes, you're right - I missed the 'ps_ret' check. That means this
-> > code is a memory leak when 'ret' is non-zero, as nothing frees 'local_err'
-> > in that case.
+> Represent the virtio features bitmask with a fixes size array, and
+> introduce a few helpers to help manipulate them.
 > 
-> Yes, maybe I can null check local_err and error_free() it.
+> Most drivers will keep using only 64 bits features space: use union
+> to allow them access the lower part of the extended space without any
+> per driver change.
 > 
-> > 
-> > > 
-> > > > 
-> > > > > +    } else if (vmsd->post_save) {
-> > > > >          int ps_ret = vmsd->post_save(opaque);
-> > > > >          if (!ret && ps_ret) {
-> > > > >              ret = ps_ret;
-> > > > > 
-> > > > > -- 
-> > > > > 2.50.0
-> > > > > 
-> > > > > 
-> > > > 
-> > > > With regards,
-> > > > Daniel
-> > > > -- 
-> > > > |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-> > > > |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-> > > > |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-> > > > 
-> > > 
-> > > Regards,
-> > > Arun Menon
-> > > 
-> > 
-> > With regards,
-> > Daniel
-> > -- 
-> > |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-> > |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-> > |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-> > 
-> Regards,
-> Arun
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> ---
+> v3 -> v4:
+>    - VIRTIO_FEATURES_DWORDS -> VIRTIO_FEATURES_NU64S
+>    - VIRTIO_FEATURES_WORDS -> VIRTIO_FEATURES_NU32S
+>    - VIRTIO_DWORD ->  VIRTIO_FEATURES_U64
+>    - VIRTIO_BIT -> VIRTIO_FEATURES_BIT
+>    - virtio_features_use_extended -> virtio_features_use_ex
+>    - move DEFINE_PROP_FEATURE definition here
+> 
+> v2 -> v3:
+>    - fix preprocessor guard name
+>    - use BIT_ULL
+>    - add missing parentheses
+>    - use memcmp()
+>    - _is_empty() -> _empty()
+>    - _andnot() returns a bool, true if dst has any non zero bits
+>    - _array -> _ex
+> 
+> v1 -> v2:
+>    - use a fixed size array for features instead of uint128
+>    - use union with u64 to reduce the needed code churn
+> ---
+>   include/hw/virtio/virtio-features.h | 127 ++++++++++++++++++++++++++++
+>   include/hw/virtio/virtio.h          |   7 +-
+>   2 files changed, 131 insertions(+), 3 deletions(-)
+>   create mode 100644 include/hw/virtio/virtio-features.h
+> 
+> diff --git a/include/hw/virtio/virtio-features.h b/include/hw/virtio/virtio-features.h
+> new file mode 100644
+> index 0000000000..7abdf8601a
+> --- /dev/null
+> +++ b/include/hw/virtio/virtio-features.h
+> @@ -0,0 +1,127 @@
+> +/*
+> + * Virtio features helpers
+> + *
+> + * Copyright 2025 Red Hat, Inc.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#ifndef QEMU_VIRTIO_FEATURES_H
+> +#define QEMU_VIRTIO_FEATURES_H
+> +
+> +#include "qemu/bitops.h"
+> +
+> +#define VIRTIO_FEATURES_FMT        "%016"PRIx64"%016"PRIx64
+> +#define VIRTIO_FEATURES_PR(f)      (f)[1], (f)[0]
+> +
+> +#define VIRTIO_FEATURES_MAX        128
+> +#define VIRTIO_FEATURES_BIT(b)     BIT_ULL((b) % 64)
+> +#define VIRTIO_FEATURES_U64(b)     ((b) / 64)
+> +#define VIRTIO_FEATURES_NU32S      (VIRTIO_FEATURES_MAX / 32)
+> +#define VIRTIO_FEATURES_NU64S      (VIRTIO_FEATURES_MAX / 64)
+> +
+> +#define VIRTIO_DECLARE_FEATURES(name)                        \
+> +    union {                                                  \
+> +        uint64_t name;                                       \
+> +        uint64_t name##_ex[VIRTIO_FEATURES_NU64S];         \
+> +    }
+> +
+> +#define DEFINE_PROP_FEATURE(_name, _state, _field, _bit, _defval)          \
 
-Regards,
-Arun
+This should contain "VIRTIO" in its name just like other identifiers in 
+this file.
+
+> +    DEFINE_PROP_BIT64(_name, _state, _field[VIRTIO_FEATURES_U64(_bit)],    \
+> +                      (_bit) % 64, _defval)
+> +
+> +static inline void virtio_features_clear(uint64_t *features)
+> +{
+> +    memset(features, 0, sizeof(features[0]) * VIRTIO_FEATURES_NU64S);
+> +}
+> +
+> +static inline void virtio_features_from_u64(uint64_t *features, uint64_t from)
+> +{
+> +    virtio_features_clear(features);
+> +    features[0] = from;
+> +}
+> +
+> +static inline bool virtio_has_feature_ex(const uint64_t *features,
+> +                                         unsigned int fbit)
+> +{
+> +    assert(fbit < VIRTIO_FEATURES_MAX);
+> +    return features[VIRTIO_FEATURES_U64(fbit)] & VIRTIO_FEATURES_BIT(fbit);
+> +}
+> +
+> +static inline void virtio_add_feature_ex(uint64_t *features,
+> +                                         unsigned int fbit)
+> +{
+> +    assert(fbit < VIRTIO_FEATURES_MAX);
+> +    features[VIRTIO_FEATURES_U64(fbit)] |= VIRTIO_FEATURES_BIT(fbit);
+> +}
+> +
+> +static inline void virtio_clear_feature_ex(uint64_t *features,
+> +                                           unsigned int fbit)
+> +{
+> +    assert(fbit < VIRTIO_FEATURES_MAX);
+> +    features[VIRTIO_FEATURES_U64(fbit)] &= ~VIRTIO_FEATURES_BIT(fbit);
+> +}
+> +
+> +static inline bool virtio_features_equal(const uint64_t *f1,
+> +                                         const uint64_t *f2)
+> +{
+> +    return !memcmp(f1, f2, sizeof(uint64_t) * VIRTIO_FEATURES_NU64S);
+> +}
+> +
+> +static inline bool virtio_features_use_ex(const uint64_t *features)
+> +{
+> +    int i;
+> +
+> +    for (i = 1; i < VIRTIO_FEATURES_NU64S; ++i) {
+> +        if (features[i]) {
+> +            return true;
+> +        }
+> +    }
+> +    return false;
+> +}
+> +
+> +static inline bool virtio_features_empty(const uint64_t *features)
+> +{
+> +    return !virtio_features_use_ex(features) && !features[0];
+> +}
+> +
+> +static inline void virtio_features_copy(uint64_t *to, const uint64_t *from)
+> +{
+> +    memcpy(to, from, sizeof(to[0]) * VIRTIO_FEATURES_NU64S);
+> +}
+> +
+> +static inline bool virtio_features_andnot(uint64_t *to, const uint64_t *f1,
+> +                                           const uint64_t *f2)
+> +{
+> +    uint64_t diff = 0;
+> +    int i;
+> +
+> +    for (i = 0; i < VIRTIO_FEATURES_NU64S; i++) {
+> +        to[i] = f1[i] & ~f2[i];
+> +        diff |= to[i];
+> +    }
+> +    return diff;
+> +}
+> +
+> +static inline void virtio_features_and(uint64_t *to, const uint64_t *f1,
+> +                                       const uint64_t *f2)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < VIRTIO_FEATURES_NU64S; i++) {
+> +        to[i] = f1[i] & f2[i];
+> +    }
+> +}
+> +
+> +static inline void virtio_features_or(uint64_t *to, const uint64_t *f1,
+> +                                       const uint64_t *f2)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < VIRTIO_FEATURES_NU64S; i++) {
+> +        to[i] = f1[i] | f2[i];
+> +    }
+> +}
+> +
+> +#endif
+> +
+> diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+> index c594764f23..39e4059a66 100644
+> --- a/include/hw/virtio/virtio.h
+> +++ b/include/hw/virtio/virtio.h
+> @@ -16,6 +16,7 @@
+>   
+>   #include "system/memory.h"
+>   #include "hw/qdev-core.h"
+> +#include "hw/virtio/virtio-features.h"
+>   #include "net/net.h"
+>   #include "migration/vmstate.h"
+>   #include "qemu/event_notifier.h"
+> @@ -121,9 +122,9 @@ struct VirtIODevice
+>        * backend (e.g. vhost) and could potentially be a subset of the
+>        * total feature set offered by QEMU.
+>        */
+> -    uint64_t host_features;
+> -    uint64_t guest_features;
+> -    uint64_t backend_features;
+> +    VIRTIO_DECLARE_FEATURES(host_features);
+> +    VIRTIO_DECLARE_FEATURES(guest_features);
+> +    VIRTIO_DECLARE_FEATURES(backend_features);
+>   
+>       size_t config_len;
+>       void *config;
 
 
