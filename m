@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29D3B12140
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 17:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C1FB12141
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Jul 2025 17:47:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufKcc-0003kh-DS; Fri, 25 Jul 2025 11:46:10 -0400
+	id 1ufKcL-0003Vc-2d; Fri, 25 Jul 2025 11:45:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ufKby-00032O-Jm
+ id 1ufKbx-0002xa-CM
  for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:45:34 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ufKbv-0002Rw-GS
- for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:45:30 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-ae361e8ec32so374364266b.3
+ id 1ufKbv-0002Rp-5w
+ for qemu-devel@nongnu.org; Fri, 25 Jul 2025 11:45:29 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-af2a2a54a95so359666166b.0
  for <qemu-devel@nongnu.org>; Fri, 25 Jul 2025 08:45:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753458325; x=1754063125; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753458324; x=1754063124; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bIabl8p/7XQ226I10wjA7oVAu+HYDoNW8uJ8FZl1Lqc=;
- b=Q6Xfvra23FueRnXMvnjvuPgpwoyRObRBMgv1XBaM3YXNwlD3azzjJcWBGbYTK7GLX2
- zCJJtLzRHmG8EWiK5Nh8lab4MUf1FMVcBUa8b8dFhkfRNeg0/mGCyBOLGLxbG2Xv96Fj
- DlES/2M0CDqcAJvy2MDVw9mcBzInHZZhTuFHCBH1TRsMBAXTGn9LxvuoF7iCCKC5hqM6
- F0VEirZYVq5N5iOo3u33Cf9I6oOPZPJsZbmZel/BS+y6vLhgcWeHYQ8FwxNJ+6Z4kiIZ
- tEN0kzfJKqXOhEyTKS/b4HV2YgukBmsiOHSOaoqX+9OyA9/oHAN/AzI/0lUJCOFi6exZ
- UhUg==
+ bh=Ci13zANRlMXshyqaJ0Y9zNXzi7dZMXO5ioaNjRJV8Ak=;
+ b=O8RYw6w5vIIKJaQJQyQxU58f8yxPBbpBzN7igHc0/S+WXYX6Ky4Or0nsYuk9RVC9yT
+ ojMsWfB1hnZ5YXXG9UdjdEj+qsgQwWX1i5Ya4dT5/Iv9iDD8WNqL1Wzv6bcx+NYZWvXA
+ KHSzVJbRrKUxFrTsebZiN9FIfTzQF11Z1hYouDlWYjfmVtZcyiwH/RSKOlhb5nkMZdT0
+ UEnV2RR9RV7q/mKv30EWHsH/UXQfB2hDty7EezLfk7d1wmaqCm9p8cvQSmhxprncKxjp
+ Y6II+qD+S2WuEMPK83BqKbRjus7nYDHVrKmBjCBE+u0le5FrgRQ+GXjXGDGvEovTh94c
+ 7vgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753458325; x=1754063125;
+ d=1e100.net; s=20230601; t=1753458324; x=1754063124;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bIabl8p/7XQ226I10wjA7oVAu+HYDoNW8uJ8FZl1Lqc=;
- b=tzecT+iwHUhtZ/SVj4canqN2XTrcfpAcNAI0/YsRTlNqKp5FXu4YXXCCEEyxUkM4/F
- 4tAK6kqk1P9AHe+bz3v83aXoGBx1Z8g6mhYsJ3Q3KkOMdPi+xFomAKu0wNpav+ZtY902
- bSFLOCtntnYtIKMsNZ5ev9vFoQi1EqElV/fmnRJbiYVgfWFDNoq5kA4tEZyzdR1SJPgj
- 49lmIs9i2IkUjuuLVOKhOfq9ApUFZpUbkFmtS0czELKUb1HtvZiyjfJt5Wvq5ZEQV2WJ
- So2S+nTy2D0uS7hvasXg+cr+me8OGKEJovZIzRRQDZGVV8szqMrx3XFv3tbTapoGf4cZ
- DdYA==
-X-Gm-Message-State: AOJu0Yy0ep0JXQaqS0Mn1fBcCD0aIHswPKWn/nUsimkuDVwbQ6qxsgHb
- irQG0SU7vTYw7xjXag1MTcNskPWi6vZAv86YBCyNCgUm4fDYDY0sPXGwMbsZaa2dlWc=
-X-Gm-Gg: ASbGncvX5bAt993JMLXN5lXX8VxZAKJPvPH7qwuIGGSU9T9YVDeVsdymZ0mcFzXYSrF
- LwCaaBX+rKTO+J4MMrIimeYSlHn7P58CRhuOh0sDC3L6TjNMgIDZiryQYp3kPs2ymJ0YvrtXcPM
- /c1PfnOSusu9HtExKL/SzDYvTwteZIy5NHedaVHZpLJWHconKRBjfkBDRbD/VWLmB1SI5+l87xl
- q4LMgjxKzxCxLEZwUsb72+UmzhbFgdRK0PC7QAfd9c/8wGRfbQvVmPMAlL/hm0PNoY5Bqo3M80U
- qH3F+dSuY6yQbSNYTNJf0xY+XzeRCE17iVkXeiPN85ZwBZ6ctURTW2psz8aKo6TNANtbMaBVBPG
- oRq/oz5WiSG11wUgEvDYNPrU=
-X-Google-Smtp-Source: AGHT+IGUHgGU9K5KfE7qyK/BSFlnnFrvzH/XwqMn0NT9jZ7X9voCtyepF8BDOavjc7QbDmzXrrJSTg==
-X-Received: by 2002:a17:907:5c7:b0:ad5:7bc4:84be with SMTP id
- a640c23a62f3a-af619dffbc2mr324176966b.52.1753458325085; 
- Fri, 25 Jul 2025 08:45:25 -0700 (PDT)
+ bh=Ci13zANRlMXshyqaJ0Y9zNXzi7dZMXO5ioaNjRJV8Ak=;
+ b=Z/b75uBuYYvBxb2sP5RNvWxydKqqsr37ZzWvSdjxgqXanXJIYkMFf11W1/e0Fmw+vb
+ HMNRokPzNbU5Flgj9KUCPqIqAceZmpg3vDhV9LHBmuuyCL3m3y1Eq+nN1jRnrB2rjJd3
+ CYPWrw36tVhCRTGXeMSELOHIWx40SK1tXVtgjYbRRlMkVQ9/b0WOUbPWMmsDHvU/8zK2
+ TM2UNa/gW+0cs8B/HvNNbYDQGwJfg8kdRCEcehbgt7UmPc6NYmP2H7xgnYbaYD2nU5+d
+ 1cPrRf4wLLqUO5WTxMWnymTDQ3/PFlKZmev8nGSFxkFYfx4k4DJWehrbLLzqgpQjFQHf
+ LSWw==
+X-Gm-Message-State: AOJu0YyyDL2xOvjocDDGdPqn+uDau+Vymfowqrsos5o1OnmnSrlaZyDz
+ 1FbaUTkfnqW1an5uAwGo3k286oq8+PuUpu7tACgzYR+Q2W+gPuIQr2tfLrCGf40aGpc=
+X-Gm-Gg: ASbGncvfopi+rqsRvIprYfg87rv+v1B3eup4sKlk9QFSdEvoq1iVoq6Mb04jj3dnWHQ
+ H72JJP31M0U8yKEjkNmsDPLx/+M8Cur1Z4WTO63staQvRwvwzGRzvDa2j9nQwAKjIO2OwwcQoFx
+ im882BSOUW8VxA2jlnWsSS5431dkkd/l7K1XxROsRPzvqJswCdSrZGFk6FEmW4zT8hmu85Jlf48
+ jAeFKQ1OPXt4FFOXE8iX+Nv5R7cYlR6g0ixwdPyLHt8e3L95g6q8ovFjzp7RvympZ81LR6TsXja
+ 8/Z58cY6PDM8UfdQz2okgytyZbK7/7zVp07piE4l5c9j9SbNhFSPY6dmCnvKEK7N22snFG3dBTA
+ O/Q7hxAff50IhI7HAwOdQ9II=
+X-Google-Smtp-Source: AGHT+IGp8bL3b8uksvPgT262raT3NeWQnxuSjlqBF49tMYii/WVpozUG0lb5UOekE6qE4bxkPqv/7w==
+X-Received: by 2002:a17:906:6a21:b0:af5:3172:ca80 with SMTP id
+ a640c23a62f3a-af61dd649e5mr317347966b.38.1753458323531; 
+ Fri, 25 Jul 2025 08:45:23 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-af635860003sm10452266b.10.2025.07.25.08.45.18
+ a640c23a62f3a-af6358a1dbasm10020666b.53.2025.07.25.08.45.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Jul 2025 08:45:20 -0700 (PDT)
+ Fri, 25 Jul 2025 08:45:18 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0B4455F876;
+ by draig.lan (Postfix) with ESMTP id 1E13B5F89B;
  Fri, 25 Jul 2025 16:45:18 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -71,19 +71,19 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH for 10.1 v2 02/14] docs/system: reword the TAP notes to remove
- tarball ref
-Date: Fri, 25 Jul 2025 16:45:05 +0100
-Message-ID: <20250725154517.3523095-3-alex.bennee@linaro.org>
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH for 10.1 v2 03/14] docs/user: clean up headings
+Date: Fri, 25 Jul 2025 16:45:06 +0100
+Message-ID: <20250725154517.3523095-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250725154517.3523095-1-alex.bennee@linaro.org>
 References: <20250725154517.3523095-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,43 +106,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't ship the tarball and users should generally look to the
-distribution specific packaging.
+This was a slightly duff format for rst, make it use proper headings.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/560
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/system/devices/net.rst | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ docs/user/main.rst | 50 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 22 deletions(-)
 
-diff --git a/docs/system/devices/net.rst b/docs/system/devices/net.rst
-index 4d787c3aeb0..7d76fe88c45 100644
---- a/docs/system/devices/net.rst
-+++ b/docs/system/devices/net.rst
-@@ -21,11 +21,17 @@ configure it as if it was a real ethernet card.
- Linux host
- ^^^^^^^^^^
+diff --git a/docs/user/main.rst b/docs/user/main.rst
+index 9a1c60448c5..b8ff203c212 100644
+--- a/docs/user/main.rst
++++ b/docs/user/main.rst
+@@ -17,28 +17,34 @@ Features
  
--As an example, you can download the ``linux-test-xxx.tar.gz`` archive
--and copy the script ``qemu-ifup`` in ``/etc`` and configure properly
--``sudo`` so that the command ``ifconfig`` contained in ``qemu-ifup`` can
--be executed as root. You must verify that your host kernel supports the
--TAP network interfaces: the device ``/dev/net/tun`` must be present.
-+A distribution will generally provide specific helper scripts when it
-+packages QEMU. By default these are found at ``/etc/qemu-ifup`` and
-+``/etc/qemu-ifdown`` and are called appropriately when QEMU wants to
-+change the network state.
-+
-+If QEMU is being run as a non-privileged user you may need properly
-+configure ``sudo`` so that network commands in the scripts can be
-+executed as root.
-+
-+You must verify that your host kernel supports the TAP network
-+interfaces: the device ``/dev/net/tun`` must be present.
+ QEMU user space emulation has the following notable features:
  
- See :ref:`sec_005finvocation` to have examples of command
- lines using the TAP network interfaces.
+-**System call translation:**
+-   QEMU includes a generic system call translator. This means that the
+-   parameters of the system calls can be converted to fix endianness and
+-   32/64-bit mismatches between hosts and targets. IOCTLs can be
+-   converted too.
+-
+-**POSIX signal handling:**
+-   QEMU can redirect to the running program all signals coming from the
+-   host (such as ``SIGALRM``), as well as synthesize signals from
+-   virtual CPU exceptions (for example ``SIGFPE`` when the program
+-   executes a division by zero).
+-
+-   QEMU relies on the host kernel to emulate most signal system calls,
+-   for example to emulate the signal mask. On Linux, QEMU supports both
+-   normal and real-time signals.
+-
+-**Threading:**
+-   On Linux, QEMU can emulate the ``clone`` syscall and create a real
+-   host thread (with a separate virtual CPU) for each emulated thread.
+-   Note that not all targets currently emulate atomic operations
+-   correctly. x86 and Arm use a global lock in order to preserve their
+-   semantics.
++System call translation
++~~~~~~~~~~~~~~~~~~~~~~~
++
++QEMU includes a generic system call translator. This means that the
++parameters of the system calls can be converted to fix endianness
++and 32/64-bit mismatches between hosts and targets. IOCTLs can be
++converted too.
++
++POSIX signal handling
++~~~~~~~~~~~~~~~~~~~~~
++
++QEMU can redirect to the running program all signals coming from the
++host (such as ``SIGALRM``), as well as synthesize signals from
++virtual CPU exceptions (for example ``SIGFPE`` when the program
++executes a division by zero).
++
++QEMU relies on the host kernel to emulate most signal system calls,
++for example to emulate the signal mask. On Linux, QEMU supports both
++normal and real-time signals.
++
++Threading
++~~~~~~~~~
++
++On Linux, QEMU can emulate the ``clone`` syscall and create a real
++host thread (with a separate virtual CPU) for each emulated thread.
++Note that not all targets currently emulate atomic operations
++correctly. x86 and Arm use a global lock in order to preserve their
++semantics.
+ 
+ QEMU was conceived so that ultimately it can emulate itself. Although it
+ is not very useful, it is an important test to show the power of the
 -- 
 2.47.2
 
