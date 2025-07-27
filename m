@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE9EB12EA7
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Jul 2025 10:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C65B12EB1
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Jul 2025 10:36:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufwoe-0001Hi-96; Sun, 27 Jul 2025 04:33:08 -0400
+	id 1ufwov-0001qH-2t; Sun, 27 Jul 2025 04:33:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ufwoY-00016V-Cz
- for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:33:02 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1ufwoZ-0001G7-Qj
+ for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:33:04 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ufwoW-0000An-Rs
- for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:33:02 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-6097d144923so7568862a12.1
+ id 1ufwoW-0000B1-Rp
+ for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:33:03 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-ae0dd7ac1f5so675881166b.2
  for <qemu-devel@nongnu.org>; Sun, 27 Jul 2025 01:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753605176; x=1754209976; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753605179; x=1754209979; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7iCEyg3QtmaVOQTKiwCx605AuN4cfCmZflK0AhNrDjw=;
- b=DI48LvQxVwkMTcD5ak9+P8YyqPhUQPYhQVefInAlsDeo2FBj1aQMCKF8rIUYdDxVNs
- 4ZJybKfucZ+5dQ5E/9wXhpaxTYTWKaYEZoNiiqTnr/eIVNKVprFfFohdxeq27w6oQSVF
- BMIYa2+vJO7YlGSWea9czBlsRycT3NO1Q/o2WSlH64j/EQ01YhK5DkFQcmd/LKQFxYBJ
- e0Jb3hNxQB0b7A9JYLUCACWYUFvfPi/2dYAV5z6LWSkub1aU+PVZoCc+7XLMegQOrkhn
- plVy1M5IJafAialOz3z69cGcBZaF1d+VbPehYu00vJAhpHyXLtm27L3IU+PGDdg5TpmO
- +qHA==
+ bh=YwfzgUA5DnLjY6SQjt9FXqBLKfUf1HAmMnkrm1jg7bQ=;
+ b=unJJWfIkoFPnNJeHau2lVifdx6mBsmZPfXDpoAMlAd/S6pW9bN1gzI4XEJB/VLLOUX
+ 9Dqanulz6ooAbO6DSh9nTDk2Efwxo+eTXIPR8e8UbRYec5n0AhM3BrAhLeHcPDx3kpQu
+ C+jli6MUCUGPz0pe1ID27RAW4TeK1tzFuptku9IQjeUgYYN1ezCOxFRIb5VZXMacnCOX
+ 9qz5thlZ2HAHb/5lXllnqwZVgk7LaMN+Ym1SMNXdAngTrAu9XnXuBEwDyw1Ch3f9Eujy
+ Jftmz8SCOBsp0kUgRuxAUeokBF34SsLVfdl3glEeBglxl38qAzUtxuwJ1yRw7FLW0vk7
+ 8SoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753605176; x=1754209976;
+ d=1e100.net; s=20230601; t=1753605179; x=1754209979;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7iCEyg3QtmaVOQTKiwCx605AuN4cfCmZflK0AhNrDjw=;
- b=CSQMprw8MMU/TuuVog2uBJpjknnxXjLNhxCE4FK/TA/bQo0DvyHffC4wgH4LY9IXth
- 1K2d8bwGXWTAh+9d5dMy+wJ9IOrTMUDAvvieykRuzeKbIersQCBZDWuBFXaHTD15zn07
- SmmU3vF1UBgEQH9qAPRMAq750rZUmEceolE2eNkLpNfQpx8CqTabm5dUq3Vi1uHbt6hg
- XtjK3WvsXa0IuhA9Ea8xesXwggtAVyleTfTNgXaakHtzcpl3wLSsY6VTzHbn/R0/S82O
- EfhTyTod8jz9p2ERtliy9XnzxLzHerq219Rgr5vB0+iTCOohrJQfhJPaJiwH1RBiCRRN
- 3EqQ==
-X-Gm-Message-State: AOJu0Yx8w17xJbvHRLnSdR9ad1xsB8MIbvRUOyUMh0WKE3k/M1DKGs/d
- lvC42bz6BKtVIZVnTJ63xD5qqWcjRQr/1N7bKKU/gTZos6vIpkbAvr+avRqy5v3VnQE=
-X-Gm-Gg: ASbGncuw88VtipAM6kYB1O4FMuYWP7xezg/LcAbNZP0d0+xkYfOVonxtHPuFh1t2xHh
- IgZHn9iI3ZUW9RzaakrSYfOYP6Y5hNDHIGTiY36pr2T6EUhwcRadqnI0EeUUGf7gSGjQ/jYXtL0
- 3pocC6niAJ22HsAo2j4GoqNSMUWA+T/denw1c/cqrKfHPXLzIwNrHYus91fN8lRb8A/FxVTVmva
- bw9P2Fw/SOtEKZMJXw6IY15rKd5MxK/5bcjsGmh5z3bR5eHhtoUEhyYaSXdiCpN/mvnVPDBXEcl
- FZUnNGmtZ8yfmxYSqytIpg+FFKSIxt4SEUGlfEuVfDivqsIaU9KO2ziCpzzg0gDWqNhqNTHgtc7
- OdbsnqAdUUHXqMZcD+9s+Tyw=
-X-Google-Smtp-Source: AGHT+IHaLqRHbk/3yNycK0qL3RcGkc505tSdIVezGRkMyzLs110VUOoB6j8Rtv2qQo1elBJhqpssQw==
-X-Received: by 2002:a05:6402:31a1:b0:60c:5853:5b54 with SMTP id
- 4fb4d7f45d1cf-614d1c06a2fmr8936646a12.14.1753605175923; 
- Sun, 27 Jul 2025 01:32:55 -0700 (PDT)
+ bh=YwfzgUA5DnLjY6SQjt9FXqBLKfUf1HAmMnkrm1jg7bQ=;
+ b=j6kWmEyLo0vTqZRGzYuU7YXPuiQKtFxFAClyq/dI+0qIQnJb7ppmUC5+ofI0L/fSQQ
+ bsfBNJ/sJe8dgzVnavgPujENFi6hZAPxODewjjvHPL1V1ke+n9fPWPNeuvHqg/kkzCyW
+ Dv3fmHtaVkRvS4gavXRDNfeTUMEDAObGDIeDGLMfglHzNpEISa3h+nPWf0mcHTsR86hl
+ Ml3PR1bYicAHVU+bnTpAkEin+Zt4mK6FVUkoJQa0zmAS6Vy/Wqp9gz+f5xEkaEMCnQ9t
+ SC7S2E55zXWkq0hl5hW3VfgwRQzT8szzy6QlUp0BiMLmtZXN9T0FAHiIX6koKbElkBB9
+ 8F/g==
+X-Gm-Message-State: AOJu0YyXKxu/AHylwoQhyTwu7oB4mA26hmBJydrkJ3kcLa7e5bSaJCU/
+ G3p7z02McDbxwGcfB9OTTYeYJ7/P7QTIWcrsGIzj7knCNBt6Sj2aeFKTgdgiicewNypLsLbEQGx
+ 1kBrL
+X-Gm-Gg: ASbGncsfFY7VYyErYUwCdrPfLpjk2bEnmBa3U1SFDLCIsmugvy6ktDaIOrFWe9noEFf
+ pVFApo6lfYvCN53ziT04Cew3X89T7ddl1iw1nFVJQEwk4UUCAuAL8gRk1WLORSLhZ+lVk8gZxPr
+ K+4LxSs5UbpasWz5mdZf0lz+TsgCfFi+Zb103TRQCz0nc3jqYGTlN7nlDePBw/n57/4JarqT3hU
+ 2wEqKwqyBdrMaTkFKLW5NGQl+dEnnBlU31Lz/ZXOG6mvL6zHgM4IPhokgAGq11sAnE7yVPffYlQ
+ WAq+W+Cqn1pn3GZ8hshtqCtohPH6aEMyxRih3lCvYupKwC9QGGOlP3uNOoQoXZiUYyJIswzCIeB
+ xHXN0u09Aw44fU4B65hKfeDM=
+X-Google-Smtp-Source: AGHT+IGwBEz0mwJQ/BrW7++YmEaeawbhQYEP3P3iqkHvco1wv2eZrnIYEjJSexF5QCIlGEjX6LTStg==
+X-Received: by 2002:a17:907:3e23:b0:ae7:cb7:9005 with SMTP id
+ a640c23a62f3a-af618f0346dmr747917066b.35.1753605177712; 
+ Sun, 27 Jul 2025 01:32:57 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-61500aedabfsm1775300a12.60.2025.07.27.01.32.54
+ a640c23a62f3a-af635aa42cfsm257450166b.103.2025.07.27.01.32.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 27 Jul 2025 01:32:54 -0700 (PDT)
+ Sun, 27 Jul 2025 01:32:55 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 30FD95F876;
+ by draig.lan (Postfix) with ESMTP id 43CED5F878;
  Sun, 27 Jul 2025 09:32:54 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 01/14] docs/user: clarify user-mode expects the same OS
-Date: Sun, 27 Jul 2025 09:32:40 +0100
-Message-ID: <20250727083254.3826585-2-alex.bennee@linaro.org>
+Subject: [PULL 02/14] docs/system: reword the TAP notes to remove tarball ref
+Date: Sun, 27 Jul 2025 09:32:41 +0100
+Message-ID: <20250727083254.3826585-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250727083254.3826585-1-alex.bennee@linaro.org>
 References: <20250727083254.3826585-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,29 +102,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While we somewhat cover this later when we talk about supported
-operating systems make it clear in the front matter.
+We don't ship the tarball and users should generally look to the
+distribution specific packaging.
 
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/560
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250725154517.3523095-2-alex.bennee@linaro.org>
+Message-ID: <20250725154517.3523095-3-alex.bennee@linaro.org>
 
-diff --git a/docs/user/index.rst b/docs/user/index.rst
-index 782d27cda27..2307580cb97 100644
---- a/docs/user/index.rst
-+++ b/docs/user/index.rst
-@@ -5,8 +5,9 @@ User Mode Emulation
- -------------------
+diff --git a/docs/system/devices/net.rst b/docs/system/devices/net.rst
+index 4d787c3aeb0..7d76fe88c45 100644
+--- a/docs/system/devices/net.rst
++++ b/docs/system/devices/net.rst
+@@ -21,11 +21,17 @@ configure it as if it was a real ethernet card.
+ Linux host
+ ^^^^^^^^^^
  
- This section of the manual is the overall guide for users using QEMU
--for user-mode emulation.  In this mode, QEMU can launch
--processes compiled for one CPU on another CPU.
-+for user-mode emulation. In this mode, QEMU can launch programs
-+compiled for one CPU architecture on the same Operating System (OS)
-+but running on a different CPU architecture.
+-As an example, you can download the ``linux-test-xxx.tar.gz`` archive
+-and copy the script ``qemu-ifup`` in ``/etc`` and configure properly
+-``sudo`` so that the command ``ifconfig`` contained in ``qemu-ifup`` can
+-be executed as root. You must verify that your host kernel supports the
+-TAP network interfaces: the device ``/dev/net/tun`` must be present.
++A distribution will generally provide specific helper scripts when it
++packages QEMU. By default these are found at ``/etc/qemu-ifup`` and
++``/etc/qemu-ifdown`` and are called appropriately when QEMU wants to
++change the network state.
++
++If QEMU is being run as a non-privileged user you may need properly
++configure ``sudo`` so that network commands in the scripts can be
++executed as root.
++
++You must verify that your host kernel supports the TAP network
++interfaces: the device ``/dev/net/tun`` must be present.
  
- .. toctree::
-    :maxdepth: 2
+ See :ref:`sec_005finvocation` to have examples of command
+ lines using the TAP network interfaces.
 -- 
 2.47.2
 
