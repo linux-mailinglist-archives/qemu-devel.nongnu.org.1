@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA57B12E69
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Jul 2025 10:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1650DB12E7A
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Jul 2025 10:21:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufwQP-0005LZ-Vs; Sun, 27 Jul 2025 04:08:06 -0400
+	id 1ufwQX-00064e-R0; Sun, 27 Jul 2025 04:08:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufwPI-0000yf-Sr
- for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:06:57 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1ufwPK-0001HJ-RI
+ for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:06:59 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufwPG-0004it-S0
- for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:06:56 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-23dc5bcf49eso46938105ad.2
- for <qemu-devel@nongnu.org>; Sun, 27 Jul 2025 01:06:54 -0700 (PDT)
+ id 1ufwPI-0004jH-6c
+ for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:06:58 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2400f746440so1203245ad.2
+ for <qemu-devel@nongnu.org>; Sun, 27 Jul 2025 01:06:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753603613; x=1754208413; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753603615; x=1754208415; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=++Cy69LINFZDrXdrTLqtc7wtmB6LxpThVdWCRFE8Wj0=;
- b=HZjf8yH04XHIprUoWm2eHUSbVHSyWZEsyEfmQri/eyKhvG+QYgctKQaT/1EpDohbAr
- Y/TmlrQ9ro25aYy+xmXSIoZH0KVUY3a2yuVrkb7TR5GvLl1LZsdGBG7FpG/b0+JzS6Z1
- 27RQsk/l+npvG5pAJgApKkoAUIoU4Ut2k9C95CtvhrdncTraFAg4uzFJ7yEFEoLKKeWR
- 62KQP2fmeo8SpN8aUYie//RiOOSepWvCSElO8BOmXFPb6U/t3hNEsWTQnquX1h97ra3H
- NaVZGKrBD99jFdZTtNpyCkVSseC+Ir7vUXmMa8fb03exv9oMKMg0hmEaJ8U+MsDlIP7L
- MlKQ==
+ bh=sxBCi6sSWmDnM4iJ4ormMiI3d1NPG8eHi+yGWtcyMy8=;
+ b=TfrPpl1JwGA+1W55c6Q3Qay7ZmAGRiOxwbbrSqhCxvFCXKk4YR94LPuHrsOcemr6j1
+ dsSVgCF32Lj/+nkEtyWLvSaTKI8JNFYoxjUwCFwCSe4u9iEUV2jZhDco/42YridlR2n4
+ IAqvBdwzhwYePU1DarMLgkr3XONs9C/Zy94HqUGp/KYCe0dAxwaNN18UNMArqQ7U41zC
+ w+Ew2RriXyJxrv01TSNM2zflyzTb6iN5PUnrRmiABWrxC4fq2iXGcBkRxbVrcpLSo7DA
+ VAoTSlvwyarWh8gcwQVimsZawEjZ4jBvNHun168rn4p1/5E2XVqW7xNCg71dF/9poqu+
+ 6p6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753603613; x=1754208413;
+ d=1e100.net; s=20230601; t=1753603615; x=1754208415;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=++Cy69LINFZDrXdrTLqtc7wtmB6LxpThVdWCRFE8Wj0=;
- b=FVqIcraiJguTFclIeswIk+aGslWAu/pug7xWKuURQU+AQRkGAsWie2/ClG2yV3a1BX
- 5UI5dP4SZNULCPNSQRXyc1QfGHTClxtlKJiM0HfOjVHI7LOlaa+VbxJP9dojKXjTNYG8
- NH+RDR4pwD1gI0CXw3cadOx83vB95wf59dgX9yjc/f6kzxB9DRiIjkfL4Eh6DgNKABwp
- t47rBmyNtxFZALcBRnurHaaX3DH2MLpTLaWu+vJLT6ruGXLRvIOU4sHLo3xtM99Af1Vt
- EmR2Zw7f9V86/CvHZu0SfrS8cMFhDAatpXDEsAXSlu0ElSaZryxiexhQWQ24Yq3ARrlT
- n/zQ==
-X-Gm-Message-State: AOJu0YyL1QMXMTZlOtjrMrzqBfTtjzjO1AGa6wRjJoOO1yInCqy8kwtz
- a+cG2LtF3YvZ1htcZGDQIsxzYWd6+qxxSgFnXYI1E7Dt8K7SFcPv9nK6Yx3gIOkWDpRBQXtLfVL
- MkVd0
-X-Gm-Gg: ASbGnctIiTMM7nf4fFGaoiyGKzUI7dzSHB168eWDYnonN6fquqh56edT+w56IbhBRw4
- Ovhslikzpw60dbFWE8Lu3DfBtevdmb20YU+J+i5MMmV0rJLmqKiSXAR0U/x/rXd08XZbMjFeSwH
- 8qriVR34fb5xC2qcaaMItRUa70MttJ2ZdXu2nQZNEkfPevr9PZ5Qnsa6rSoxzfo8ZcVYOVtLqFT
- UEZ23k5itZWRqvImKaK8t8NJddiFV76scxEcB6YenA4PH9L1kOMFMwKf55slRJQ8RQ9jV0k2DkX
- YyZZx4aRh3H/bk/4dGwlE7Goebgp7yswHuPo6yaUYf/Wjl43OVvsC2/2gg8QCMytFYpnWZk8PI6
- pQH2Dxh1gA9d7IYQeBaTSBRkFGbotnAw9nA1fJ6hTm+781mixM+WTM/sn49DmcLNyuDtAu97lrZ
- HbsC2lYz32hg==
-X-Google-Smtp-Source: AGHT+IHOUX/HL/pMvbV6Y1ALjFzm1L/dAQ3ppwp7NGAFiIn0x2lHOWBsR9QoqSka7Zymiw9EuHTslw==
-X-Received: by 2002:a17:903:3c26:b0:237:f76f:ce34 with SMTP id
- d9443c01a7336-23fb3082c1bmr121104465ad.15.1753603613488; 
- Sun, 27 Jul 2025 01:06:53 -0700 (PDT)
+ bh=sxBCi6sSWmDnM4iJ4ormMiI3d1NPG8eHi+yGWtcyMy8=;
+ b=WneviyKgR7awA6CirxG8YyA718Gj0X9cYhm3YpUCQDHAfoVftX1+iFu3TCOlUFkGUQ
+ MWR8XBHRZeAz5QOr5hOIVvu91R1vH4UoM8x76lhYrzwLPjZf8IG6EWKcpFjOv4qOIAS+
+ 4NF0nlZkAQBVLk4eWfYrGukf7JdSiE4DXLOn8ZykDtOhCFMZkRFmvxY/rtjFmb2iRhNX
+ Yj52FBySk/hi2dpatAOc/nOZMKSDQRKbdBIf+FmZ+o2XHOOqcLcm/eoe3FiZAUf/UFUT
+ AUxB2YTmc4PUdQcM3DB9lo1/nmMpRbj/kOM7bhbOg8Fay19t5WyCoEs/oWjUuYNFEoBU
+ My8A==
+X-Gm-Message-State: AOJu0YwihHuO91OrnFD82awMKsXTYl7Q+mNWePR0D+zZaLyJ602HheWx
+ SZjYfdTNVTHxz9yrC+Cc9+p2YFq6A+AA9TiBrMtZIsvz5PAR7BJ3/Q+/SlJDx60xTG1W9luti7B
+ cq+Zu
+X-Gm-Gg: ASbGncsYehDAUlBTCeytVfjxmUnrJKRmc6T4XqH/NXWOl1gnFopr0gcsYJH8IjM9n2O
+ ETTcKuHPdNSQeOBoIDY5GOKAkc8rdrRm8B//evE303NtK6uPbPk70RStPjTIh/QNkDyF88ynR6R
+ 3eU6qU+60NCwLGjR2K3FFaA18yJTQqAVGU5KOsEJ3yp56ZKOmpKHimk971zEKJnRotUJEzc+B6N
+ OTwOL0ebfq8qQ/Iy1Hh8aZS4h/992ifArjWRsD56l0L1eMG8xRorBCNiFfcOUWGqTJXHCfAMkjF
+ TXRe4q/l2LSN+egUsaRyUxO+PVCxfknyNd1ZUVQeUMjf9MkKkiPyx9LieiiC87+RV8+wfRgBF3i
+ yv4ov3HB5nUFc5CIMgjeaS321Rsy9EyXGii9e7dmJEF/tLeHUxF4TnnAiDA2koeUs3/yXT4VMNF
+ IORiUfM4To8bthWYdi3Sru
+X-Google-Smtp-Source: AGHT+IHHJXTt10nz7F3w65yOPRkbceLMtVqmREy5ERgr/fyCAtvA772otsplnIfyqy0BXYS0riKUDg==
+X-Received: by 2002:a17:903:1b05:b0:234:b743:c7a4 with SMTP id
+ d9443c01a7336-23fb30e42a3mr127813815ad.38.1753603614630; 
+ Sun, 27 Jul 2025 01:06:54 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24011d5bcbesm3908065ad.10.2025.07.27.01.06.52
+ d9443c01a7336-24011d5bcbesm3908065ad.10.2025.07.27.01.06.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 27 Jul 2025 01:06:53 -0700 (PDT)
+ Sun, 27 Jul 2025 01:06:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 46/82] target/arm: Implement FEAT_CHK
-Date: Sat, 26 Jul 2025 22:02:18 -1000
-Message-ID: <20250727080254.83840-47-richard.henderson@linaro.org>
+Subject: [PATCH 47/82] target/arm: Expand pstate to 64 bits
+Date: Sat, 26 Jul 2025 22:02:19 -1000
+Message-ID: <20250727080254.83840-48-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250727080254.83840-1-richard.henderson@linaro.org>
 References: <20250727080254.83840-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,65 +99,283 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This feature contains only the CHKFEAT instruction.  It has
-no ID enable, being back-allocated into the hint nop space.
+The ARM now defines 36 bits in SPSR_ELx in aarch64 mode, so
+it's time to bite the bullet and extend PSTATE to match.
+
+Most changes are straightforward, adjusting printf formats,
+changing local variable types.  More complex is migration,
+where to maintain backward compatibility a new pstate64
+record is introduced, and only when one of the extensions
+that sets bits 32-35 are active.
+
+The fate of gdbstub is left undecided for the moment.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 14 ++++++++++++++
- docs/system/arm/emulation.rst  |  1 +
- target/arm/tcg/a64.decode      |  1 +
- 3 files changed, 16 insertions(+)
+ target/arm/cpu.h            |  8 +++---
+ target/arm/tcg/translate.h  | 20 ++++++-------
+ target/arm/cpu.c            |  6 ++--
+ target/arm/gdbstub64.c      |  1 +
+ target/arm/helper.c         | 11 ++++----
+ target/arm/machine.c        | 56 +++++++++++++++++++++++++++++++++++++
+ target/arm/tcg/helper-a64.c |  2 +-
+ 7 files changed, 81 insertions(+), 23 deletions(-)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 7831b3dab3..34d22cac8a 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -2124,6 +2124,20 @@ static bool trans_AUTIBSP(DisasContext *s, arg_AUTIBSP *a)
-     return true;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 98360b70b8..7769c4ae3c 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -268,7 +268,7 @@ typedef struct CPUArchState {
+     uint64_t xregs[32];
+     uint64_t pc;
+     /* PSTATE isn't an architectural register for ARMv8. However, it is
+-     * convenient for us to assemble the underlying state into a 32 bit format
++     * convenient for us to assemble the underlying state into a 64 bit format
+      * identical to the architectural format used for the SPSR. (This is also
+      * what the Linux kernel's 'pstate' field in signal handlers and KVM's
+      * 'pstate' register are.) Of the PSTATE bits:
+@@ -280,7 +280,7 @@ typedef struct CPUArchState {
+      *  SM and ZA are kept in env->svcr
+      *  all other bits are stored in their correct places in env->pstate
+      */
+-    uint32_t pstate;
++    uint64_t pstate;
+     bool aarch64; /* True if CPU is in aarch64 state; inverse of PSTATE.nRW */
+     bool thumb;   /* True if CPU is in thumb mode; cpsr[5] */
+ 
+@@ -1556,7 +1556,7 @@ static inline unsigned int aarch64_pstate_mode(unsigned int el, bool handler)
+  * interprocessing, so we don't attempt to sync with the cpsr state used by
+  * the 32 bit decoder.
+  */
+-static inline uint32_t pstate_read(CPUARMState *env)
++static inline uint64_t pstate_read(CPUARMState *env)
+ {
+     int ZF;
+ 
+@@ -1566,7 +1566,7 @@ static inline uint32_t pstate_read(CPUARMState *env)
+         | env->pstate | env->daif | (env->btype << 10);
  }
  
-+static bool trans_CHKFEAT(DisasContext *s, arg_CHKFEAT *a)
+-static inline void pstate_write(CPUARMState *env, uint32_t val)
++static inline void pstate_write(CPUARMState *env, uint64_t val)
+ {
+     env->ZF = (~val) & PSTATE_Z;
+     env->NF = val;
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 3e63dad2b6..1479f5bf74 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -378,27 +378,27 @@ static inline TCGv_i32 get_ahp_flag(void)
+ }
+ 
+ /* Set bits within PSTATE.  */
+-static inline void set_pstate_bits(uint32_t bits)
++static inline void set_pstate_bits(uint64_t bits)
+ {
+-    TCGv_i32 p = tcg_temp_new_i32();
++    TCGv_i64 p = tcg_temp_new_i64();
+ 
+     tcg_debug_assert(!(bits & CACHED_PSTATE_BITS));
+ 
+-    tcg_gen_ld_i32(p, tcg_env, offsetof(CPUARMState, pstate));
+-    tcg_gen_ori_i32(p, p, bits);
+-    tcg_gen_st_i32(p, tcg_env, offsetof(CPUARMState, pstate));
++    tcg_gen_ld_i64(p, tcg_env, offsetof(CPUARMState, pstate));
++    tcg_gen_ori_i64(p, p, bits);
++    tcg_gen_st_i64(p, tcg_env, offsetof(CPUARMState, pstate));
+ }
+ 
+ /* Clear bits within PSTATE.  */
+-static inline void clear_pstate_bits(uint32_t bits)
++static inline void clear_pstate_bits(uint64_t bits)
+ {
+-    TCGv_i32 p = tcg_temp_new_i32();
++    TCGv_i64 p = tcg_temp_new_i64();
+ 
+     tcg_debug_assert(!(bits & CACHED_PSTATE_BITS));
+ 
+-    tcg_gen_ld_i32(p, tcg_env, offsetof(CPUARMState, pstate));
+-    tcg_gen_andi_i32(p, p, ~bits);
+-    tcg_gen_st_i32(p, tcg_env, offsetof(CPUARMState, pstate));
++    tcg_gen_ld_i64(p, tcg_env, offsetof(CPUARMState, pstate));
++    tcg_gen_andi_i64(p, p, ~bits);
++    tcg_gen_st_i64(p, tcg_env, offsetof(CPUARMState, pstate));
+ }
+ 
+ /* If the singlestep state is Active-not-pending, advance to Active-pending. */
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index d9318c5325..ec63297165 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1208,7 +1208,7 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
+-    uint32_t psr = pstate_read(env);
++    uint64_t psr = pstate_read(env);
+     int i, j;
+     int el = arm_current_el(env);
+     uint64_t hcr = arm_hcr_el2_eff(env);
+@@ -1230,7 +1230,7 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+     } else {
+         ns_status = "";
+     }
+-    qemu_fprintf(f, "PSTATE=%08x %c%c%c%c %sEL%d%c",
++    qemu_fprintf(f, "PSTATE=%016" PRIx64 " %c%c%c%c %sEL%d%c",
+                  psr,
+                  psr & PSTATE_N ? 'N' : '-',
+                  psr & PSTATE_Z ? 'Z' : '-',
+@@ -1247,7 +1247,7 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+                      (FIELD_EX64(env->svcr, SVCR, SM) ? 'S' : '-'));
+     }
+     if (cpu_isar_feature(aa64_bti, cpu)) {
+-        qemu_fprintf(f, "  BTYPE=%d", (psr & PSTATE_BTYPE) >> 10);
++        qemu_fprintf(f, "  BTYPE=%d", (int)(psr & PSTATE_BTYPE) >> 10);
+     }
+     qemu_fprintf(f, "%s%s%s",
+                  (hcr & HCR_NV) ? " NV" : "",
+diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+index 64ee9b3b56..3cef47281a 100644
+--- a/target/arm/gdbstub64.c
++++ b/target/arm/gdbstub64.c
+@@ -47,6 +47,7 @@ int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+     case 32:
+         return gdb_get_reg64(mem_buf, env->pc);
+     case 33:
++        /* pstate is now a 64-bit value; can we simply adjust the xml? */
+         return gdb_get_reg32(mem_buf, pstate_read(env));
+     }
+     /* Unknown register.  */
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index f006ecabf3..e404ba0f71 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -9185,8 +9185,8 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+     CPUARMState *env = &cpu->env;
+     unsigned int new_el = env->exception.target_el;
+     vaddr addr = env->cp15.vbar_el[new_el];
+-    unsigned int new_mode = aarch64_pstate_mode(new_el, true);
+-    unsigned int old_mode;
++    uint64_t new_mode = aarch64_pstate_mode(new_el, true);
++    uint64_t old_mode;
+     unsigned int cur_el = arm_current_el(env);
+     int rt;
+ 
+@@ -9334,7 +9334,7 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+                  * If NV2 is disabled, change SPSR when NV,NV1 == 1,0 (I_ZJRNN)
+                  * If NV2 is enabled, change SPSR when NV is 1 (I_DBTLM)
+                  */
+-                old_mode = deposit32(old_mode, 2, 2, 2);
++                old_mode = deposit64(old_mode, 2, 2, 2);
+             }
+         }
+     } else {
+@@ -9347,7 +9347,7 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+     }
+     env->banked_spsr[aarch64_banked_spsr_index(new_el)] = old_mode;
+ 
+-    qemu_log_mask(CPU_LOG_INT, "...with SPSR 0x%x\n", old_mode);
++    qemu_log_mask(CPU_LOG_INT, "...with SPSR 0x%" PRIx64 "\n", old_mode);
+     qemu_log_mask(CPU_LOG_INT, "...with ELR 0x%" PRIx64 "\n",
+                   env->elr_el[new_el]);
+ 
+@@ -9401,7 +9401,8 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+ 
+     env->pc = addr;
+ 
+-    qemu_log_mask(CPU_LOG_INT, "...to EL%d PC 0x%" PRIx64 " PSTATE 0x%x\n",
++    qemu_log_mask(CPU_LOG_INT, "...to EL%d PC 0x%" PRIx64
++                  " PSTATE 0x%" PRIx64 "\n",
+                   new_el, env->pc, pstate_read(env));
+ }
+ 
+diff --git a/target/arm/machine.c b/target/arm/machine.c
+index 8dbeca2867..9b00c14b4a 100644
+--- a/target/arm/machine.c
++++ b/target/arm/machine.c
+@@ -836,6 +836,61 @@ static const VMStateInfo vmstate_cpsr = {
+     .put = put_cpsr,
+ };
+ 
++static int get_pstate64_1(QEMUFile *f, void *opaque, size_t size,
++                          const VMStateField *field)
 +{
-+    uint64_t feat_en = 0;
++    ARMCPU *cpu = opaque;
++    CPUARMState *env = &cpu->env;
++    uint64_t val = qemu_get_be64(f);
 +
-+    if (s->gcs_en) {
-+        feat_en |= 1 << 0;
-+    }
-+    if (feat_en) {
-+        TCGv_i64 x16 = cpu_reg(s, 16);
-+        tcg_gen_andi_i64(x16, x16, ~feat_en);
-+    }
-+    return true;
++    env->aarch64 = ((val & PSTATE_nRW) == 0);
++    pstate_write(env, val);
++    return 0;
 +}
 +
- static bool trans_CLREX(DisasContext *s, arg_CLREX *a)
++static int put_pstate64_1(QEMUFile *f, void *opaque, size_t size,
++                          const VMStateField *field, JSONWriter *vmdesc)
++{
++    ARMCPU *cpu = opaque;
++    CPUARMState *env = &cpu->env;
++    uint64_t val = pstate_read(env);
++
++    qemu_put_be64(f, val);
++    return 0;
++}
++
++static const VMStateInfo vmstate_pstate64_1 = {
++    .name = "pstate64",
++    .get = get_pstate64_1,
++    .put = put_pstate64_1,
++};
++
++static bool pstate64_needed(void *opaque)
++{
++    ARMCPU *cpu = opaque;
++    CPUARMState *env = &cpu->env;
++
++    return is_a64(env) && pstate_read(env) > UINT32_MAX;
++}
++
++static const VMStateDescription vmstate_pstate64 = {
++    .name = "cpu/pstate64",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = pstate64_needed,
++    .fields = (const VMStateField[]) {
++        {
++            .name = "pstate64",
++            .version_id = 0,
++            .size = sizeof(uint64_t),
++            .info = &vmstate_pstate64_1,
++            .flags = VMS_SINGLE,
++            .offset = 0,
++        },
++        VMSTATE_END_OF_LIST()
++    },
++};
++
+ static int get_power(QEMUFile *f, void *opaque, size_t size,
+                     const VMStateField *field)
  {
-     tcg_gen_movi_i64(cpu_exclusive_addr, -1);
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 6ebf9c9ce9..b894aced89 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -28,6 +28,7 @@ the following architecture extensions:
- - FEAT_BF16 (AArch64 BFloat16 instructions)
- - FEAT_BTI (Branch Target Identification)
- - FEAT_CCIDX (Extended cache index)
-+- FEAT_CHK (Check Feature Status)
- - FEAT_CMOW (Control for cache maintenance permission)
- - FEAT_CRC32 (CRC32 instructions)
- - FEAT_Crypto (Cryptographic Extension)
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 8c798cde2b..4315ed8dab 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -246,6 +246,7 @@ ERETA           1101011 0100 11111 00001 m:1 11111 11111 &reta  # ERETAA, ERETAB
-     AUTIASP     1101 0101 0000 0011 0010 0011 101 11111
-     AUTIBZ      1101 0101 0000 0011 0010 0011 110 11111
-     AUTIBSP     1101 0101 0000 0011 0010 0011 111 11111
-+    CHKFEAT     1101 0101 0000 0011 0010 0101 000 11111
-   ]
-   # The canonical NOP has CRm == op2 == 0, but all of the space
-   # that isn't specifically allocated to an instruction must NOP
+@@ -1119,6 +1174,7 @@ const VMStateDescription vmstate_arm_cpu = {
+         &vmstate_serror,
+         &vmstate_irq_line_state,
+         &vmstate_wfxt_timer,
++        &vmstate_pstate64,
+         NULL
+     }
+ };
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index 71c6c44ee8..f61adf1f80 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -639,7 +639,7 @@ void HELPER(exception_return)(CPUARMState *env, uint64_t new_pc)
+     ARMCPU *cpu = env_archcpu(env);
+     int cur_el = arm_current_el(env);
+     unsigned int spsr_idx = aarch64_banked_spsr_index(cur_el);
+-    uint32_t spsr = env->banked_spsr[spsr_idx];
++    uint64_t spsr = env->banked_spsr[spsr_idx];
+     int new_el;
+     bool return_to_aa64 = (spsr & PSTATE_nRW) == 0;
+ 
 -- 
 2.43.0
 
