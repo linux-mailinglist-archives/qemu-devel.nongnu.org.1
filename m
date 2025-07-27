@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68771B12E58
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Jul 2025 10:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 118DFB12E84
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Jul 2025 10:22:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufwQI-0004DX-5b; Sun, 27 Jul 2025 04:07:59 -0400
+	id 1ufwQO-00057r-FA; Sun, 27 Jul 2025 04:08:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufwPL-0001Nv-Hb
- for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:06:59 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1ufwPM-0001Yi-Uo
+ for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:07:01 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufwPJ-0004je-Jt
- for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:06:59 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-313bb9b2f5bso3156519a91.3
- for <qemu-devel@nongnu.org>; Sun, 27 Jul 2025 01:06:57 -0700 (PDT)
+ id 1ufwPK-0004k2-Hx
+ for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:07:00 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-234bfe37cccso28438025ad.0
+ for <qemu-devel@nongnu.org>; Sun, 27 Jul 2025 01:06:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753603616; x=1754208416; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753603617; x=1754208417; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aph0ZkYCjiTweukUbhlaS2yrRTHeOV9Z1zDO+YdfHoU=;
- b=BFCO8noJ4CwkJvMxwu/GP0B4Lmym+xhCe08Ak0NfH0j9pz8Dsk2qTyYuylvzqvMwtj
- Ed2i0XHdldpN3v1HQdH2Fgm/pEVs3y4Lyn4ofOAyUntsYouYWPTY7yElHZakfY0UlMsO
- zAegL0PWcTbwz8caiIdAwwvGPS3deVGfV0ZE8tPf6BVkB/xtBMBllDoB+6NetgHIKVoK
- koOD3iVpGc1+9wSdYYREPAr+Bhh/jIQC1gBcUNipuNTeztCXqld9JeQ22A44kLfzfaRe
- kXtqCvR2Jt++al4jilkgyAA7tCcky1t6USVD2AO3ssOQ6yOPaHXYFPkwsYCg8iGlS/iU
- GSjg==
+ bh=oAmWUG1RCHR1wBPHXNwosNOvy6qQDPfTqzqzFrLqHas=;
+ b=WN9QlvB6idXj/5YWH8S02Uqc5ZNatnL7wQR+tvw0ntnQAQ5FIezgZqNqp+umu12xL/
+ WB8cWHMuj6sXAA/tlQicyXyasYOSAn4427FvUAB99xqckDdo/qpC8pYplkU2G0PxZmbx
+ DMCE3+HomfPZTaVw+fmKkQK0YcaWVnGAHFf5tBLnvw0fC06m4rHqhCjtdNXj68tVu+eV
+ 4gcwMrRfsasuG7a0kdmhb7CljWziIIlIy3X0iDyfZoWbcKfrdQxgAY7Ar6QMN1zjZ1tb
+ Ps9X5qRnYNAe98Pgc15W0/5XDsqRmqROccYpU03o2MGmHqr1zQercxBZ5KOK6TAxm+RJ
+ BFLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753603616; x=1754208416;
+ d=1e100.net; s=20230601; t=1753603617; x=1754208417;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aph0ZkYCjiTweukUbhlaS2yrRTHeOV9Z1zDO+YdfHoU=;
- b=Ujd4xrucQcKg6NROP04iBWAYywWwzxqS44DmXIEgHcStmNLTYiyiWkeVd9q4t7HQpw
- QXL2/0ubTjfnfPdSSXFWJQWEOn6W6xkcRfujd8iXUyxYLBxcEaHTx4ZfoLyioPfPk0Td
- zMCkodBYPeR1prZqLUW4IAFC4F/nQncyeq8R1+8GKYDuozJKsFungjA7IGr+kKYQxIe/
- zPAsZcp5qcpm3toOmBwR7miFdTgyuKuXA2G00KPCdnTy17S9T4wPCxS+sbRgdZ8kkJFk
- gBJlYmsiRtZxR9ICMazPih6BX6Yj5i6E4z4+ToFZqpNNk1GV4glpC9WXC+fcvp/gIxvy
- XPfQ==
-X-Gm-Message-State: AOJu0YzpqIqD1DnMKm7cxSKqQ8qPZdDTKWQfL6ZT83cpdNd4Yy7+BzGu
- E7Pz69NyOCYwAmmE1wz5J98Qp9DXf2oPpvZMmd0KsjhdOTsOzg0YtlHYXRbPT6+KV84BMavhNqo
- tmC0i
-X-Gm-Gg: ASbGncs+ZeS/CIRV8w9opPYHNl+Og7QuqcsxNDRoZwhH3jflIXPukMs1PQfIKjtv22J
- pxxCcVpdmS7ZrCLVh2ovZASgJVxJxC0zHCXoXIsNSuNnmNv72XInzcSgp/v0v1F4f2sfCk5nYB8
- 3BeCp140qMFCxgxAhlvtvsruxJGkAeliv7LJnP/QqbV/TjcSDGKYauApHQzbK/0uepfh4gW8PH9
- njMI4g4g2XxGDgJh3ve00ek7qwu4lctf90g8MLhDgqzpfo1SGTy0UXg3vSG0cQGl7o3InNTIruF
- JCvk0jEGM0yk7AbtjlVsTnUWRKSf8sNsjrVvSiOmcikR47TA0U838ZgBPgO0rT1xYhH2zuiiQPZ
- 2C6aJYthIh3qGsjauPzDLNGPHlUV0TmvWP4Py92N9y/uRtJnKTTwyplE3+JdQPAFPvTMg21W2pa
- iJdWsnABjm3Q==
-X-Google-Smtp-Source: AGHT+IF4jJzoNuOyW8ulnmLiKYz/LJK+i9Ip9ny6z5DTY/riG2Jv1c1+UFMaXIyIhtjobnSOAgEyTg==
-X-Received: by 2002:a17:90a:c888:b0:311:9c1f:8516 with SMTP id
- 98e67ed59e1d1-31e77879820mr10750158a91.15.1753603615935; 
- Sun, 27 Jul 2025 01:06:55 -0700 (PDT)
+ bh=oAmWUG1RCHR1wBPHXNwosNOvy6qQDPfTqzqzFrLqHas=;
+ b=qJXLCczoAooTgZKD8faEjY5L0eYV2q+x4boDeNej3v01QoJO2FnfITgGicG8fSnt26
+ pmqbRKxoJLbRbPraYQm1dKI6y9haCwp+hUDLPXNcVA210wrtIOLQo9HaR+58Ce/ekRO6
+ d/0pSn3Bs+HbGgypoKV0kAvNKljNSRwbeGmTMjj4nnrlAdHQPBTCLFz7bpXg05CX9eNj
+ cKRP6IRv6MDJASIN0EjJ37rQvT9WGn4oH7feDfZKl1YmgzHgFo62+xthEJM1RyopW/XU
+ O2cyB+Ik8hGDTrXB8fsrO5qQ1X6rIilpZKXv6Z14YojV7BBbIV6SHuMq4S4LOJ2CX5Ql
+ 7b1Q==
+X-Gm-Message-State: AOJu0YyxoKiJknvk9Y3Mrqm1qzgOEpg2RhVDut6L4OmoJnjcWgA1Z426
+ CWIzdTXPxBhpLtvy7XR0igQ8MTVKfQ7NEkg2kUl+WM38F5qK49owoX+MPSseT4M/TXQBc3CVHEi
+ TUBRP
+X-Gm-Gg: ASbGncsRP8nnMvrY3+QneeSBerpXRUhlatKzhonegmWcI85XdYHOYMVPGDRkWnWLqeB
+ LLUtsMbsR/OzKJh8hQaYz+oq5d+Mi7ikHlm/15gZ3ymRrwzWNNQqi+QjnYx++wUAsWDylpXj/BQ
+ B0BiZvNhwASHJs1PYO6dLIqPvE7+UnxChHs3ugnpY4YtEVWs3pmbg0eFK2tgVxnpF1klVIzqDQ0
+ 8cMsTFxs0Pt/tgXgPca4q2fUtVt9Mejkkhyh6SGLQFT5Prtv1wTjJKWsSL/p/XrMEieXoPArrr0
+ la25lqgUxKmzLhzM1yuHC5WnlZuort+AOPoyUiomeSvqVpvC2aY3wxzXo99IxYboh0UCA7lcW0P
+ zOsR+Gh9ij2HTmJLJI+a3lza3hywsJv6N25GcArz6PS5lHdpTbbiS9xrfWaX4sqyh3DXr7Ie9/z
+ uALzrK0tFNjg==
+X-Google-Smtp-Source: AGHT+IHuNkOu00Nar9cfOXak0qgpjdu+yHE8bl8psmZx7AJj/VK3tYntnqLLutsJ2jLBpdNsNmPNDA==
+X-Received: by 2002:a17:902:f612:b0:240:e9d:6c43 with SMTP id
+ d9443c01a7336-2400e9d6f7emr12389695ad.51.1753603617060; 
+ Sun, 27 Jul 2025 01:06:57 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24011d5bcbesm3908065ad.10.2025.07.27.01.06.54
+ d9443c01a7336-24011d5bcbesm3908065ad.10.2025.07.27.01.06.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 27 Jul 2025 01:06:55 -0700 (PDT)
+ Sun, 27 Jul 2025 01:06:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 48/82] target/arm: Add syndrome data for EC_GCS
-Date: Sat, 26 Jul 2025 22:02:20 -1000
-Message-ID: <20250727080254.83840-49-richard.henderson@linaro.org>
+Subject: [PATCH 49/82] target/arm: Implement EXLOCKException for ELR_ELx and
+ SPSR_ELx
+Date: Sat, 26 Jul 2025 22:02:21 -1000
+Message-ID: <20250727080254.83840-50-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250727080254.83840-1-richard.henderson@linaro.org>
 References: <20250727080254.83840-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,71 +100,196 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+If PSTATE.EXLOCK is set, and the GCS EXLOCK enable bit is set,
+and nested virt is in the appropriate state, then we need to
+raise an EXLOCK exception.
+
+Since PSTATE.EXLOCK cannot be set without GCS being present
+and enabled, no explicit check for GCS is required.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/syndrome.h | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ target/arm/cpregs.h        |  3 ++
+ target/arm/cpu.h           |  1 +
+ target/arm/helper.c        | 83 +++++++++++++++++++++++++++++++++++---
+ target/arm/tcg/op_helper.c |  4 ++
+ 4 files changed, 85 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index c48d3b8587..bff61f052c 100644
---- a/target/arm/syndrome.h
-+++ b/target/arm/syndrome.h
-@@ -63,6 +63,7 @@ enum arm_exception_class {
-     EC_MOP                    = 0x27,
-     EC_AA32_FPTRAP            = 0x28,
-     EC_AA64_FPTRAP            = 0x2c,
-+    EC_GCS                    = 0x2d,
-     EC_SERROR                 = 0x2f,
-     EC_BREAKPOINT             = 0x30,
-     EC_BREAKPOINT_SAME_EL     = 0x31,
-@@ -83,6 +84,23 @@ typedef enum {
-     SME_ET_InaccessibleZT0,
- } SMEExceptionType;
+diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
+index bc6adf5956..15894332b2 100644
+--- a/target/arm/cpregs.h
++++ b/target/arm/cpregs.h
+@@ -346,6 +346,9 @@ typedef enum CPAccessResult {
+      * specified target EL.
+      */
+     CP_ACCESS_UNDEFINED = (2 << 2),
++
++    /* Access fails with EXLOCK, a GCS exception syndrome. */
++    CP_ACCESS_EXLOCK = (3 << 2),
+ } CPAccessResult;
  
-+typedef enum {
-+    GCS_ET_DataCheck,
-+    GCS_ET_EXLOCK,
-+    GCS_ET_GCSSTR_GCSSTTR,
-+} GCSExceptionType;
-+
-+typedef enum {
-+    GCS_IT_RET_nPauth = 0,
-+    GCS_IT_GCSPOPM = 1,
-+    GCS_IT_RET_PauthA = 2,
-+    GCS_IT_RET_PauthB = 3,
-+    GCS_IT_GCSSS1 = 4,
-+    GCS_IT_GCSSS2 = 5,
-+    GCS_IT_GCSPOPCX = 8,
-+    GCS_IT_GCSPOPX = 9,
-+} GCSInstructionType;
-+
- #define ARM_EL_EC_LENGTH 6
- #define ARM_EL_EC_SHIFT 26
- #define ARM_EL_IL_SHIFT 25
-@@ -351,6 +369,23 @@ static inline uint32_t syn_pcalignment(void)
-     return (EC_PCALIGNMENT << ARM_EL_EC_SHIFT) | ARM_EL_IL;
+ /* Indexes into fgt_read[] */
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 7769c4ae3c..8eee722a9e 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1520,6 +1520,7 @@ void pmu_init(ARMCPU *cpu);
+ #define PSTATE_C (1U << 29)
+ #define PSTATE_Z (1U << 30)
+ #define PSTATE_N (1U << 31)
++#define PSTATE_EXLOCK (1ULL << 34)
+ #define PSTATE_NZCV (PSTATE_N | PSTATE_Z | PSTATE_C | PSTATE_V)
+ #define PSTATE_DAIF (PSTATE_D | PSTATE_A | PSTATE_I | PSTATE_F)
+ #define CACHED_PSTATE_BITS (PSTATE_NZCV | PSTATE_DAIF | PSTATE_BTYPE)
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index e404ba0f71..2514a03c0e 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -3435,6 +3435,77 @@ static CPAccessResult access_nv1(CPUARMState *env, const ARMCPRegInfo *ri,
+     return CP_ACCESS_OK;
  }
  
-+static inline uint32_t syn_gcs_data_check(GCSInstructionType it, int rn)
++static CPAccessResult access_exlock_el1(CPUARMState *env,
++                                        const ARMCPRegInfo *ri, bool isread)
 +{
-+    return ((EC_GCS << ARM_EL_EC_SHIFT) | ARM_EL_IL |
-+            (GCS_ET_DataCheck << 20) | (rn << 5) | it);
++    int el = arm_current_el(env);
++
++    if (el == 1) {
++        uint64_t hcr = arm_hcr_el2_eff(env);
++
++        /*
++         * EXLOCK check is disabled for NVx in 'x11'.
++         * Since we have to diagnose that, dispatch NV1 trap too.
++         */
++        if ((hcr & HCR_NV) && (hcr & HCR_NV1)) {
++            if (hcr & HCR_NV2) {
++                return CP_ACCESS_OK;
++            }
++            return CP_ACCESS_TRAP_EL2;
++        }
++    }
++
++    if (!isread &&
++        (env->pstate & PSTATE_EXLOCK) &&
++        (el_is_in_host(env, el) ? el == 2 : el == 1) &&
++        (env->cp15.gcscr_el[el] & GCSCR_EXLOCKEN)) {
++        return CP_ACCESS_EXLOCK;
++    }
++    return CP_ACCESS_OK;
 +}
 +
-+static inline uint32_t syn_gcs_exlock(void)
++static CPAccessResult access_exlock_el2(CPUARMState *env,
++                                        const ARMCPRegInfo *ri, bool isread)
 +{
-+    return (EC_GCS << ARM_EL_EC_SHIFT) | ARM_EL_IL | (GCS_ET_EXLOCK << 20);
++    int el = arm_current_el(env);
++
++    if (el == 3) {
++        return CP_ACCESS_OK;
++    }
++    if (el == 1) {
++        uint64_t hcr = arm_hcr_el2_eff(env);
++
++        /*
++         * EXLOCK check is disabled for NVx in 'xx1'.
++         * Since we have to diagnose that, dispatch NV1 trap too.
++         */
++        if (hcr & HCR_NV) {
++            if (hcr & HCR_NV2) {
++                return CP_ACCESS_OK;
++            }
++            return CP_ACCESS_TRAP_EL2;
++        }
++    }
++
++    if (!isread &&
++        (env->pstate & PSTATE_EXLOCK) &&
++        (env->cp15.gcscr_el[el] & GCSCR_EXLOCKEN)) {
++        return CP_ACCESS_EXLOCK;
++    }
++    return CP_ACCESS_OK;
 +}
 +
-+static inline uint32_t syn_gcs_gcsstr(int ra, int rn)
++static CPAccessResult access_exlock_el3(CPUARMState *env,
++                                        const ARMCPRegInfo *ri, bool isread)
 +{
-+    return ((EC_GCS << ARM_EL_EC_SHIFT) | ARM_EL_IL |
-+            (GCS_ET_GCSSTR_GCSSTTR << 20) | (ra << 10) | (rn << 5));
++    if (!isread &&
++        (env->pstate & PSTATE_EXLOCK) &&
++        (env->cp15.gcscr_el[3] & GCSCR_EXLOCKEN)) {
++        return CP_ACCESS_EXLOCK;
++    }
++    return CP_ACCESS_OK;
 +}
 +
- static inline uint32_t syn_serror(uint32_t extra)
- {
-     return (EC_SERROR << ARM_EL_EC_SHIFT) | ARM_EL_IL | extra;
+ #ifdef CONFIG_USER_ONLY
+ /*
+  * `IC IVAU` is handled to improve compatibility with JITs that dual-map their
+@@ -3606,13 +3677,13 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
+     { .name = "ELR_EL1", .state = ARM_CP_STATE_AA64,
+       .type = ARM_CP_ALIAS,
+       .opc0 = 3, .opc1 = 0, .crn = 4, .crm = 0, .opc2 = 1,
+-      .access = PL1_RW, .accessfn = access_nv1,
++      .access = PL1_RW, .accessfn = access_exlock_el1,
+       .nv2_redirect_offset = 0x230 | NV2_REDIR_NV1,
+       .fieldoffset = offsetof(CPUARMState, elr_el[1]) },
+     { .name = "SPSR_EL1", .state = ARM_CP_STATE_AA64,
+       .type = ARM_CP_ALIAS,
+       .opc0 = 3, .opc1 = 0, .crn = 4, .crm = 0, .opc2 = 0,
+-      .access = PL1_RW, .accessfn = access_nv1,
++      .access = PL1_RW, .accessfn = access_exlock_el1,
+       .nv2_redirect_offset = 0x160 | NV2_REDIR_NV1,
+       .fieldoffset = offsetof(CPUARMState, banked_spsr[BANK_SVC]) },
+     /*
+@@ -4083,7 +4154,7 @@ static const ARMCPRegInfo el2_cp_reginfo[] = {
+     { .name = "ELR_EL2", .state = ARM_CP_STATE_AA64,
+       .type = ARM_CP_ALIAS | ARM_CP_NV2_REDIRECT,
+       .opc0 = 3, .opc1 = 4, .crn = 4, .crm = 0, .opc2 = 1,
+-      .access = PL2_RW,
++      .access = PL2_RW, .accessfn = access_exlock_el2,
+       .fieldoffset = offsetof(CPUARMState, elr_el[2]) },
+     { .name = "ESR_EL2", .state = ARM_CP_STATE_BOTH,
+       .type = ARM_CP_NV2_REDIRECT,
+@@ -4101,7 +4172,7 @@ static const ARMCPRegInfo el2_cp_reginfo[] = {
+     { .name = "SPSR_EL2", .state = ARM_CP_STATE_AA64,
+       .type = ARM_CP_ALIAS | ARM_CP_NV2_REDIRECT,
+       .opc0 = 3, .opc1 = 4, .crn = 4, .crm = 0, .opc2 = 0,
+-      .access = PL2_RW,
++      .access = PL2_RW, .accessfn = access_exlock_el2,
+       .fieldoffset = offsetof(CPUARMState, banked_spsr[BANK_HYP]) },
+     { .name = "VBAR_EL2", .state = ARM_CP_STATE_BOTH,
+       .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 0, .opc2 = 0,
+@@ -4383,7 +4454,7 @@ static const ARMCPRegInfo el3_cp_reginfo[] = {
+     { .name = "ELR_EL3", .state = ARM_CP_STATE_AA64,
+       .type = ARM_CP_ALIAS,
+       .opc0 = 3, .opc1 = 6, .crn = 4, .crm = 0, .opc2 = 1,
+-      .access = PL3_RW,
++      .access = PL3_RW, .accessfn = access_exlock_el3,
+       .fieldoffset = offsetof(CPUARMState, elr_el[3]) },
+     { .name = "ESR_EL3", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 6, .crn = 5, .crm = 2, .opc2 = 0,
+@@ -4394,7 +4465,7 @@ static const ARMCPRegInfo el3_cp_reginfo[] = {
+     { .name = "SPSR_EL3", .state = ARM_CP_STATE_AA64,
+       .type = ARM_CP_ALIAS,
+       .opc0 = 3, .opc1 = 6, .crn = 4, .crm = 0, .opc2 = 0,
+-      .access = PL3_RW,
++      .access = PL3_RW, .accessfn = access_exlock_el3,
+       .fieldoffset = offsetof(CPUARMState, banked_spsr[BANK_MON]) },
+     { .name = "VBAR_EL3", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 6, .crn = 12, .crm = 0, .opc2 = 0,
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index 46a3b911ec..56e117c01e 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -887,6 +887,10 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
+         }
+         syndrome = syn_uncategorized();
+         break;
++    case CP_ACCESS_EXLOCK:
++        /* CP_ACCESS_EXLOCK is always directed to the current EL */
++        syndrome = syn_gcs_exlock();
++        break;
+     default:
+         g_assert_not_reached();
+     }
 -- 
 2.43.0
 
