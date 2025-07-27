@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525A2B12E59
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Jul 2025 10:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C9EB12E86
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Jul 2025 10:22:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufwSC-0005X2-Vn; Sun, 27 Jul 2025 04:09:58 -0400
+	id 1ufwSK-00067l-Uz; Sun, 27 Jul 2025 04:10:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufwPj-0003g0-6u
- for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:07:23 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1ufwPk-0003o6-KA
+ for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:07:24 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufwPh-0004rn-EA
- for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:07:22 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-23602481460so35115405ad.0
- for <qemu-devel@nongnu.org>; Sun, 27 Jul 2025 01:07:20 -0700 (PDT)
+ id 1ufwPi-0004sJ-Qt
+ for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:07:24 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-23c8f179e1bso39877395ad.1
+ for <qemu-devel@nongnu.org>; Sun, 27 Jul 2025 01:07:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753603640; x=1754208440; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753603641; x=1754208441; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3aRYtrkrc/9kZo8KuhActa/u/OWLIUyr4LApQE/Ub6k=;
- b=tTSUMHAl/7n/nH2wIloQhShbcZqDasJIFXLLJdgUJib8Y+TSrSJGRbEYvw6iSc+xfF
- niTxMWBkoqCZqKl3MdOgO2BSJUGowBxqXF7ARGZ1NOzq27O1fR3d7h+27jSKBt8bvxux
- YYGsZJpiB4HSMVj1ktnILZrgY+j4JYM60pFNYXiZntmgUD97azgA0vO1a9ENnlbnbQw8
- gOQE3OHHRmi/g+2Xbcqj7w9uoXMuKaAmDXfUZjr8pu6zQyPpQ2iuraLrt5iG3pi8yeSs
- 2tP8i/BOSWEeHvIxfDyly9HXnSy7SGmMhOifATPuhcplPtNsB8gCBNK13Iza40Q2VOWo
- faBg==
+ bh=SDylAKOmltNGyLx2E37xE3a+pc0ueuM8z50fDJMoOME=;
+ b=XM65+nOcE2uHXZ2YH/JN3giI5/9zZvvLPqigF0PO/ZBv39oVXVhfQ0TBrpqufUYHGb
+ BgxRfuT1hySZmwoK/nMZe6sw1XHPYtWRn9wqaYKSlG/G6KBBXLSVOlNxt2ZamT56zUlZ
+ Tw0Dzr+VLSYXs0jxNW5CW3rZkHcHXZdIj3/aeXgMsDuwVODZCrfXTCHweAKR97dU+/NW
+ 6ilYMiRBl13JVKqEG+3L83S245RjMWUNsLP5KvfTVEBg2JNqLTZ3w1b73Qi/DUIy1opU
+ Bu7ehQ2yyzVwJY43fEKfuc9ptpVtMFcT2BG64uMysIdt2oSEGj99vP64SM+tdNNTE6wl
+ BdaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753603640; x=1754208440;
+ d=1e100.net; s=20230601; t=1753603641; x=1754208441;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3aRYtrkrc/9kZo8KuhActa/u/OWLIUyr4LApQE/Ub6k=;
- b=dZhWxQsQ7NhblL+Epft0kyWFyug5XtHUMs1vmiRvvB5tmwP6Rd23KYUGM+UmOLPa/X
- Z/jumzjBtkMaQqfsUROgvta3qM268PBu2ZD8MSgeHAd5QKPtZIHB3rJPohad5lGdhxaq
- daC1ed9CaOX86IHXCxq2qy5W9iVqgN9AziHbBMTGDYfY6lQ+SCaFWYnYadDUK0pq/iGu
- BD6VGsT/zMq3DD2O3BEfeZKjr/e+1s0sTOkfB2n4L+oew4PzIUQiW+I5WPCBaoYdkucX
- eOk3jApX1lLkDw6iPUObXSzoBGomSSq1fS/qR8Wgpof91ht7/I9M5ihXYFHz/nAQGuxz
- CJPA==
-X-Gm-Message-State: AOJu0YwWXX7QWGBTwwfkM5+qAkzcWdbl7iZ/1ZUiwt55UoJTT/71k14V
- Y8O3ovCPZoTz0dJYd0l+O4flkP/HJCZBQCoYRx2jvfluhkD2SJ3WfFtTcKJjSh03+Ue3ro52hS2
- h/SRX
-X-Gm-Gg: ASbGncuLoODA3H7OQRrS7C6mDTO3WRfWR8QkhPudIkf+EmOVdRmYB3/0PWzocm1JtN/
- Dk0gdJDzAKAawjjiadgkvV5vDGgK9c2VNyASHYuwupH40jdgU5I7YqBiTBD3l8U1BJbuJ+Dh9S6
- 2PGsLAEeV7+1VzX4bZnNuJTwWqmKr8B/DirlDKigK9HcuO2bSUOVOtZXhzMz2z6tS1HWVjfsbUZ
- /gp6gdoCIs+RefB1cT934UY/olU2GavUm+CO4ribMxTsv0cfa3NYbX35cS0nShp0Wm8reiRh/T5
- /4r4AZ+eMnRqM7p23J3wmt/8XmtVFdptnH2c2QPIpqV/9ELSQ+VbCy5jCa1Gghl8T+M16vgFIhY
- +EBVdWEzECgLSzSq6Y/zP83NpZ/FO0rCiZ9Otyee9zsv2y+mppZWcTGyZyKgVHeaZLZZ0JlLTNj
- F1gffDYC5wbg==
-X-Google-Smtp-Source: AGHT+IEeP+A39mBZ6PlXL8UX44ZOiw0oYRQFS/jwuY/iWxLsPsXXx4nHwqubE7GS+C2auFS9DgJPlA==
-X-Received: by 2002:a17:902:f607:b0:240:9f9:46a0 with SMTP id
- d9443c01a7336-24009f948aamr17984795ad.38.1753603640071; 
- Sun, 27 Jul 2025 01:07:20 -0700 (PDT)
+ bh=SDylAKOmltNGyLx2E37xE3a+pc0ueuM8z50fDJMoOME=;
+ b=SM2fuv3vQDSXgkJGsqmghRfS27PoeT1NPlb/HiUZBzQcc80SZNCJ1jXVc/l5ZS2EIY
+ y8hOwvwTihIdedj3lBJP/izLpwNpeVW+3NOU9mkb58pVcG0wCgbZ4FZ/snIq37ClvNfz
+ PwtHD6XJhbVp7A1YmwEdwsQhgSvyfTYvZVwC3mwyhLrQZAx9urmAKnAD+3GSV4Nyv2AS
+ h5xqA8gPKDenoUstYqi8KNi4xMhXKowdQjpO0uWyHUSNYzCzB3wrXajCwHyTJfFp3ero
+ T8WQFYbHpDzT2RLhlS658SLSRPMqP6sxqYm0jJFidEgXIuY/aVWcgMxCj2DfzP5Z8/BU
+ zVIQ==
+X-Gm-Message-State: AOJu0YzNa5E8mLA2HZH38p4SqFZDVMvAEp4me7nKLF9dYxSfkHlpw2Eu
+ VYWQCWE8306VTl0KCtuRTO4ZYq/+WDc1AEGp42gz6PHz8NeHMTEd4VYNFhJwqWIbRpbsh1pZxBD
+ 1f2QQ
+X-Gm-Gg: ASbGnctrly6FjDI846/MDTCcBW0yTpGiDrdXca52hXCdryS1JLAVrTYzbSvTumBqtgB
+ exLj/PgbMasHiUgpTIriDISrVp0vjcbTHJkrUKxGGkj74G2KRz0U02/Jxm4co6WLDTLdipRjchl
+ j+3dFparA4qGYf1f9caC627Tz3Hcm5zvUMAoKJP9MT3GIXjdpkmJULJcfTK+TiuWuxcjRLMoUTb
+ IYMQzEVt+C8fsCZfYaOSEEuP7YjJFwEBr/kfqnrmPs4a45t4w3cfLMijuIRVaRlzorOUbC7O3Pb
+ EGVYXXIM8tzXLjtZ4n8eGt1q5mduBSE4sI+5usthj+Rp/9NqH0Vt2RHT9llfBzwwRUulcgaewh+
+ 8r4RDhCzUXsq/E9XFiwK4NglxjAAKimGdmQT0dGIVriYQWOCGbbmw0oZzjVohWnRvpUl8W/9lIJ
+ r7sJ62bSwkng==
+X-Google-Smtp-Source: AGHT+IFR4QduveMs1gQmtG9cAKimd6lBjoMXSGruNmr8p5HBIBpWWCixESy6Hd0da+mAMQa3UGhSig==
+X-Received: by 2002:a17:902:c7cd:b0:23f:e869:9a25 with SMTP id
+ d9443c01a7336-23fe8699c24mr27485075ad.44.1753603641234; 
+ Sun, 27 Jul 2025 01:07:21 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24011d5bcbesm3908065ad.10.2025.07.27.01.07.19
+ d9443c01a7336-24011d5bcbesm3908065ad.10.2025.07.27.01.07.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 27 Jul 2025 01:07:19 -0700 (PDT)
+ Sun, 27 Jul 2025 01:07:20 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 69/82] target/arm: Implement EXLOCK check during exception
- return
-Date: Sat, 26 Jul 2025 22:02:41 -1000
-Message-ID: <20250727080254.83840-70-richard.henderson@linaro.org>
+Subject: [PATCH 70/82] target/arm: Enable FEAT_GCS with -cpu max
+Date: Sat, 26 Jul 2025 22:02:42 -1000
+Message-ID: <20250727080254.83840-71-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250727080254.83840-1-richard.henderson@linaro.org>
 References: <20250727080254.83840-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,31 +101,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper-a64.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ target/arm/tcg/cpu64.c        | 1 +
+ docs/system/arm/emulation.rst | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index f61adf1f80..7ab7ddf7c4 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -694,6 +694,17 @@ void HELPER(exception_return)(CPUARMState *env, uint64_t new_pc)
-         goto illegal_return;
-     }
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index f4a41c854f..0c3408c0a0 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1205,6 +1205,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64PFR1, SME, 2);       /* FEAT_SME2 */
+     t = FIELD_DP64(t, ID_AA64PFR1, CSV2_FRAC, 0); /* FEAT_CSV2_3 */
+     t = FIELD_DP64(t, ID_AA64PFR1, NMI, 1);       /* FEAT_NMI */
++    t = FIELD_DP64(t, ID_AA64PFR1, GCS, 1);       /* FEAT_GCS */
+     SET_IDREG(isar, ID_AA64PFR1, t);
  
-+    /*
-+     * If GetCurrentEXLOCKEN, the exception return path must use GCSPOPCX,
-+     * which will set PSTATE.EXLOCK.  We need not explicitly check FEAT_GCS,
-+     * because GCSCR_ELx cannot be set without it.
-+     */
-+    if (new_el == cur_el &&
-+        (env->cp15.gcscr_el[cur_el] & GCSCR_EXLOCKEN) &&
-+        !(env->pstate & PSTATE_EXLOCK)) {
-+        goto illegal_return;
-+    }
-+
-     bql_lock();
-     arm_call_pre_el_change_hook(cpu);
-     bql_unlock();
+     t = GET_IDREG(isar, ID_AA64MMFR0);
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index b894aced89..9e3df48e00 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -72,6 +72,7 @@ the following architecture extensions:
+ - FEAT_FRINTTS (Floating-point to integer instructions)
+ - FEAT_FlagM (Flag manipulation instructions v2)
+ - FEAT_FlagM2 (Enhancements to flag manipulation instructions)
++- FEAT_GCS (Guarded Control Stack Extension)
+ - FEAT_GTG (Guest translation granule size)
+ - FEAT_HAFDBS (Hardware management of the access flag and dirty bit state)
+ - FEAT_HBC (Hinted conditional branches)
 -- 
 2.43.0
 
