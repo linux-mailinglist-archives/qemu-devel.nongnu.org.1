@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D45B12E7E
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Jul 2025 10:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9585AB12E3D
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Jul 2025 10:06:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ufwMc-0000xu-6X; Sun, 27 Jul 2025 04:04:10 -0400
+	id 1ufwMl-0001Za-2M; Sun, 27 Jul 2025 04:04:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufwLx-0005fK-4Y
+ id 1ufwLx-0005pv-Oq
  for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:03:29 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ufwLv-00048d-3p
- for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:03:28 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-b391ca6146eso3084847a12.3
- for <qemu-devel@nongnu.org>; Sun, 27 Jul 2025 01:03:26 -0700 (PDT)
+ id 1ufwLw-000497-2b
+ for qemu-devel@nongnu.org; Sun, 27 Jul 2025 04:03:29 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-23ffdea3575so2211865ad.2
+ for <qemu-devel@nongnu.org>; Sun, 27 Jul 2025 01:03:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753603406; x=1754208206; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753603407; x=1754208207; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jlJ6FDp1q2NQgZlTviuGz87rhz20dNXg1agPJ/fUdpY=;
- b=lj/uK+J9yJUhcrvtcr46OcwAIm4K63erUNWGUN5FWl9Jtxi/AVp+JEik/OvuiAOBGC
- WURn2/EkVor6nS2xKUoccvYhwqse+JiaEifMyMQqgrCzbmKmN0dBNv9lJMDN0Gi2K95I
- RlINsOw9Otxh6DMNSBCi1BjUxDfcb0cIay+yu/PvS516OM1JWguRvLXOD2wa2OfYnqK7
- XJpiH0+fp16YQWXr1QYtgHeRYEtMpte7/RDtLX3U4F8/fr4YI7A7eOsa5mcFza0LBWii
- 5bO4tuNAE4WfKigsd4pVFgrZP1MFqE7ZXV9vAxRtISykmtyla1Usk2d6czfhjsr+JI3e
- Zk3A==
+ bh=6Lmoqg22csYQ2DFF2//zFesjPFppxznMHPDSWw6zVyE=;
+ b=NNYt6gFzmDaVWv/n0u2egiGs1nnemCD7e1260T51ikjdR99RvdK1QhoHrIRqhOiu3Y
+ TLn6drCZ701WW/hjroofzW0U60pp0HImU5OLBIabltc8652Z+zGrQlLSqDriEXNEUalt
+ JSFc+mz3VOpuevOXy92BjBB7hk8mTETat+zx+PkSgYZco+XLTZIQxNn7IZFIKSFwZ8WF
+ y3pJoy1e54g2MIqqKVymjZ8/kspmfC2NyyyjIy0Knv6c4N0GFA6cpVg1sAaIk/8C5cRT
+ lHODeKNhWQhzI2h0X9jLijVr5Zy/bJcZwVCFMG+Y0xLlNXRYM2TNSwNfvi5J9TKM/SiE
+ H6Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753603406; x=1754208206;
+ d=1e100.net; s=20230601; t=1753603407; x=1754208207;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jlJ6FDp1q2NQgZlTviuGz87rhz20dNXg1agPJ/fUdpY=;
- b=QEEU5yWPTZrpoUx6sBin3OC8IE2gSdLh/1N5TYvFV4/EqC39SmUKV7Dg6/JF6kyW9T
- wjjd7d6AeZILDZoDU1y+l9e6J5f10kJK0w2nCBfVtsGtUmvNVwYqXWRwyhSNB06N3gzm
- ZaNd52VhyZk1e9K4d7aGs6NK8whvcJrtnlHDxmaVHmujco/gjGb/8wQTphp9QRAZ4rM8
- dQcSF/GUC4GtapXsiyuwB9YanjCswDBVPFT8wrCq4xj6Mp6WRuJ/qEaSyfNxtN0Swh4i
- tSFyaiTTE9ZCL7Axe84/UdJW6yc8KL/P0z9PJkhEWG3X4xoUvZK6fn8YXyiLbcDfGTiK
- gcRA==
-X-Gm-Message-State: AOJu0YzyTe/KdoImWb4L9jgh/7DUqnrQiwvftBgglNdyY1JdfqshjJlp
- o8GRvIpsQNRpOJylX9EoK1pO0zy6cExf54UdU6mJhmuMS/h1v/bX/fAX9OmQekkL/AjEjycv4+Z
- gHqMM
-X-Gm-Gg: ASbGncsyHUd3j1ca0qWHx3uTfN6Cxm5BJx7RiTy6okGePmZ2oyp80w5WnI0LGvtj29E
- xv/XaUUiW0/GYA89fW9wIVbEbqcMNfnBMZDHyyGlqMwVucrL2spnIVd4iAF3NSlr+DBwJ1rz81t
- TjCDhz4DzOBWSz5dcF+KDJQXYhq7FnrufIeeE4GOGxVSYjOK4imMMqMZRCKY6CerB+abEOAurEE
- 3wBBt1dxNUGXV0AYOerXNy3Jl8s/JVMHf0UgRDWCQFtYXfse8rA5+KeV7t1/BLXXvb+5Qb9p96l
- 2KZH7gCZWOnD+9Knu7nA5xBi7IBqujSwADcDEgn7uIb3cj04xhwMDqNNKkF9h5cuMGoe8+guO5N
- qaLbUNR5M6TUfo0Gy9AY16sdLJZTSyhKccpqbHYxlt3iY7Ywor+YWAxedcCUfMW5jLSqsvqS5FG
- ijuD+8eYT3DQ==
-X-Google-Smtp-Source: AGHT+IFwnlPl9ex85Y1qAQIlHahJ5Um2Cb1c1wxF89A5WEIwgxzqx4+rwrcpDIfiHpSVHCTt4AfPIg==
-X-Received: by 2002:a17:903:3c26:b0:237:f76f:ce34 with SMTP id
- d9443c01a7336-23fb3082c1bmr120976475ad.15.1753603405649; 
- Sun, 27 Jul 2025 01:03:25 -0700 (PDT)
+ bh=6Lmoqg22csYQ2DFF2//zFesjPFppxznMHPDSWw6zVyE=;
+ b=bicNTG5FFGnYfq4JS354vujOPm+731u3LsyW7/fEqTLo0HcpXvAxNWYddx0HEUAmAd
+ PyhGm4oaHd8CMC6PbcIqcS8vwODbqa3HWetCVuYKMtIRVCRlJnRvDvy08jqJCmRspSdi
+ khE4Neo9tu1ugJHdFL4iTK9AjZgLJhMKdM6e/y8E7rN2E4llciOjPCcIAtqNMwWm+Xsq
+ p3MsWmtXT7148u7aDbVNlW+ZWm/SFB7dfpEfMhO8bP7mRFYKnxiioZdt5CnHNnAvgWad
+ MwjFUt/aCUxlrWhQ96bUg9qB/DsYnPyYDZNn9aVzUpokqKKF6A3IdpFeUHFzAZbn7C+n
+ eBuw==
+X-Gm-Message-State: AOJu0Yyqkfi+aUiyMRAXszDkGgZicf0ht4LKcY9DXXXaFQf7VUPq7rNL
+ RZWQcXnWcdEJOha/yxpYaG81YGbUuPdJAkE4UCQDjM1of2BU8rERVs+jWVaaSgVSHZIwmB+MqMG
+ /VVIt
+X-Gm-Gg: ASbGncvIiAlKKs1psAEWF6K6APRUpsvxXAN1DU/rsYhOycvSCCGPC7Wr/aqNgE6hiA8
+ m3+kHpRYrUHUPbkgxQrxYEUSbQQS1Is1L8/Uq/6QqPnXzASEuCvM6Wr4uTCCEjq+jxVvcmS0G/h
+ xkpy74uPJxAZb9jAaqsNwnZceTMMiCgWfBkvsr22Cv+idbkPK+jfvfk/fU1PHXERKoDZj4Ss9tW
+ 0UcTOOfqrz38dn+D7/rO1lWCWBiXlb1qkSgJ8uy/Og7HvistOlisjvlorcj5OrEdrKlgd2nzbMU
+ j+rkmcnQ2L6XJUKxmAZETCuYaHinLtsejcV6sn2bA2tteD/D67eytiiZR9dRa9CsR/qiXQ74FMX
+ e1SlVmi8g/Wf6Xek9NSswxI3JeMNkGfLm+f6e4CUfk0c4IIGhcc+Kx42xxIP8l7EDvnUss2zuLV
+ /AtvYszzElrg==
+X-Google-Smtp-Source: AGHT+IEQPP1SILRmrPIfyCrWl9l2RoJ8pQ4La73nEkl3hpCZCtnjXihtfwdGY+gzUg8Q1Alc+HiPxQ==
+X-Received: by 2002:a17:902:fc4b:b0:23e:1a6e:171e with SMTP id
+ d9443c01a7336-23fb3184928mr116965895ad.51.1753603406771; 
+ Sun, 27 Jul 2025 01:03:26 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23fbe333efesm30016415ad.65.2025.07.27.01.03.24
+ d9443c01a7336-23fbe333efesm30016415ad.65.2025.07.27.01.03.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 27 Jul 2025 01:03:25 -0700 (PDT)
+ Sun, 27 Jul 2025 01:03:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 24/82] include/hw/core/cpu: Introduce cpu_tlb_fast
-Date: Sat, 26 Jul 2025 22:01:56 -1000
-Message-ID: <20250727080254.83840-25-richard.henderson@linaro.org>
+Subject: [PATCH 25/82] include/hw/core/cpu: Invert the indexing into
+ CPUTLBDescFast
+Date: Sat, 26 Jul 2025 22:01:57 -1000
+Message-ID: <20250727080254.83840-26-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250727080254.83840-1-richard.henderson@linaro.org>
 References: <20250727080254.83840-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,108 +100,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Encapsulate access to cpu->neg.tlb.f[] in a function.
+This array is within CPUNegativeOffsetState, which means the
+last element of the array has an offset from env with the
+smallest magnitude.  This can be encoded into fewer bits
+when generating TCG fast path memory references.
+
+When we changed the NB_MMU_MODES to be a global constant,
+rather than a per-target value, we pessimized the code
+generated for targets which use only a few mmu indexes.
+By inverting the array index, we counteract that.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h |  7 +++++++
- accel/tcg/cputlb.c    | 16 ++++++++--------
- 2 files changed, 15 insertions(+), 8 deletions(-)
+ include/hw/core/cpu.h | 6 +++++-
+ tcg/tcg.c             | 3 ++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 1153cadb70..bd835b07d5 100644
+index bd835b07d5..85b1ab4022 100644
 --- a/include/hw/core/cpu.h
 +++ b/include/hw/core/cpu.h
-@@ -593,6 +593,13 @@ static inline CPUArchState *cpu_env(CPUState *cpu)
-     return (CPUArchState *)(cpu + 1);
+@@ -596,7 +596,11 @@ static inline CPUArchState *cpu_env(CPUState *cpu)
+ #ifdef CONFIG_TCG
+ static inline CPUTLBDescFast *cpu_tlb_fast(CPUState *cpu, int mmu_idx)
+ {
+-    return &cpu->neg.tlb.f[mmu_idx];
++    /*
++     * Invert the index order of the CPUTLBDescFast array so that lower
++     * mmu_idx have negative offsets from env with smaller absolute values.
++     */
++    return &cpu->neg.tlb.f[NB_MMU_MODES - 1 - mmu_idx];
+ }
+ #endif
+ 
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index afac55a203..615675d185 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -425,7 +425,8 @@ static uintptr_t G_GNUC_UNUSED get_jmp_target_addr(TCGContext *s, int which)
+ static int __attribute__((unused))
+ tlb_mask_table_ofs(TCGContext *s, int which)
+ {
+-    return (offsetof(CPUNegativeOffsetState, tlb.f[which]) -
++    /* Invert the index order -- see cpu_tlb_fast. */
++    return (offsetof(CPUNegativeOffsetState, tlb.f[NB_MMU_MODES - 1 - which]) -
+             sizeof(CPUNegativeOffsetState));
  }
  
-+#ifdef CONFIG_TCG
-+static inline CPUTLBDescFast *cpu_tlb_fast(CPUState *cpu, int mmu_idx)
-+{
-+    return &cpu->neg.tlb.f[mmu_idx];
-+}
-+#endif
-+
- typedef QTAILQ_HEAD(CPUTailQ, CPUState) CPUTailQ;
- extern CPUTailQ cpus_queue;
- 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index d324f33339..2a6aa01c57 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -129,7 +129,7 @@ static inline uint64_t tlb_addr_write(const CPUTLBEntry *entry)
- static inline uintptr_t tlb_index(CPUState *cpu, uintptr_t mmu_idx,
-                                   vaddr addr)
- {
--    uintptr_t size_mask = cpu->neg.tlb.f[mmu_idx].mask >> CPU_TLB_ENTRY_BITS;
-+    uintptr_t size_mask = cpu_tlb_fast(cpu, mmu_idx)->mask >> CPU_TLB_ENTRY_BITS;
- 
-     return (addr >> TARGET_PAGE_BITS) & size_mask;
- }
-@@ -138,7 +138,7 @@ static inline uintptr_t tlb_index(CPUState *cpu, uintptr_t mmu_idx,
- static inline CPUTLBEntry *tlb_entry(CPUState *cpu, uintptr_t mmu_idx,
-                                      vaddr addr)
- {
--    return &cpu->neg.tlb.f[mmu_idx].table[tlb_index(cpu, mmu_idx, addr)];
-+    return &cpu_tlb_fast(cpu, mmu_idx)->table[tlb_index(cpu, mmu_idx, addr)];
- }
- 
- static void tlb_window_reset(CPUTLBDesc *desc, int64_t ns,
-@@ -292,7 +292,7 @@ static void tlb_flush_one_mmuidx_locked(CPUState *cpu, int mmu_idx,
-                                         int64_t now)
- {
-     CPUTLBDesc *desc = &cpu->neg.tlb.d[mmu_idx];
--    CPUTLBDescFast *fast = &cpu->neg.tlb.f[mmu_idx];
-+    CPUTLBDescFast *fast = cpu_tlb_fast(cpu, mmu_idx);
- 
-     tlb_mmu_resize_locked(desc, fast, now);
-     tlb_mmu_flush_locked(desc, fast);
-@@ -331,7 +331,7 @@ void tlb_init(CPUState *cpu)
-     cpu->neg.tlb.c.dirty = 0;
- 
-     for (i = 0; i < NB_MMU_MODES; i++) {
--        tlb_mmu_init(&cpu->neg.tlb.d[i], &cpu->neg.tlb.f[i], now);
-+        tlb_mmu_init(&cpu->neg.tlb.d[i], cpu_tlb_fast(cpu, i), now);
-     }
- }
- 
-@@ -342,7 +342,7 @@ void tlb_destroy(CPUState *cpu)
-     qemu_spin_destroy(&cpu->neg.tlb.c.lock);
-     for (i = 0; i < NB_MMU_MODES; i++) {
-         CPUTLBDesc *desc = &cpu->neg.tlb.d[i];
--        CPUTLBDescFast *fast = &cpu->neg.tlb.f[i];
-+        CPUTLBDescFast *fast = cpu_tlb_fast(cpu, i);
- 
-         g_free(fast->table);
-         g_free(desc->fulltlb);
-@@ -667,7 +667,7 @@ static void tlb_flush_range_locked(CPUState *cpu, int midx,
-                                    unsigned bits)
- {
-     CPUTLBDesc *d = &cpu->neg.tlb.d[midx];
--    CPUTLBDescFast *f = &cpu->neg.tlb.f[midx];
-+    CPUTLBDescFast *f = cpu_tlb_fast(cpu, midx);
-     vaddr mask = MAKE_64BIT_MASK(0, bits);
- 
-     /*
-@@ -923,7 +923,7 @@ void tlb_reset_dirty(CPUState *cpu, uintptr_t start, uintptr_t length)
-     qemu_spin_lock(&cpu->neg.tlb.c.lock);
-     for (mmu_idx = 0; mmu_idx < NB_MMU_MODES; mmu_idx++) {
-         CPUTLBDesc *desc = &cpu->neg.tlb.d[mmu_idx];
--        CPUTLBDescFast *fast = &cpu->neg.tlb.f[mmu_idx];
-+        CPUTLBDescFast *fast = cpu_tlb_fast(cpu, mmu_idx);
-         unsigned int n = tlb_n_entries(fast);
-         unsigned int i;
- 
-@@ -1316,7 +1316,7 @@ static bool victim_tlb_hit(CPUState *cpu, size_t mmu_idx, size_t index,
- 
-         if (cmp == page) {
-             /* Found entry in victim tlb, swap tlb and iotlb.  */
--            CPUTLBEntry tmptlb, *tlb = &cpu->neg.tlb.f[mmu_idx].table[index];
-+            CPUTLBEntry tmptlb, *tlb = &cpu_tlb_fast(cpu, mmu_idx)->table[index];
- 
-             qemu_spin_lock(&cpu->neg.tlb.c.lock);
-             copy_tlb_helper_locked(&tmptlb, tlb);
 -- 
 2.43.0
 
