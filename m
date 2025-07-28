@@ -2,94 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E202EB1340E
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 07:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFA8B134B7
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 08:09:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugGCY-0006QF-US; Mon, 28 Jul 2025 01:15:06 -0400
+	id 1ugH2z-0006WI-Ig; Mon, 28 Jul 2025 02:09:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ugG7N-0000Ks-Nn
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:09:45 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ugG7J-0006Vs-2E
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:09:44 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-74b56b1d301so2607818b3a.1
- for <qemu-devel@nongnu.org>; Sun, 27 Jul 2025 22:09:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753679379; x=1754284179; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=aH6A2kTeYPvKdTkIYNNw9CSsZNO6eEDLWYB7qWhai7w=;
- b=rCB43CqscbdQVGWCn25T0ChwlqS6SwM5MWzeFnlyAAasHdf+KdcbP1vC+gJEUWO9cr
- ingY/SDa30Gf5oSbOJAFQQOLd7BecFbR10WVHLXnjYuvYSrwdcGQC6q2Yx+l9jGAZ93I
- GbLtSLCI8PKgXtcq2cXJJ1885HvER1XIjGFA+HhOd/Yn7aIOnEbFwaaCZweKXzUViXaT
- lQRrTwg7QzDXKUWRZe3VlFvfqEs6kxXox044O5JMqbibzwAQuhgwi0GltrQfpxfGi/4u
- ioxzvaQOQK94fsjR8GrH8K6PswZu/S8ULv49AKJpqDzyP3ZT4ianBd4BL2m0LUsMM7Ju
- 4jMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753679379; x=1754284179;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aH6A2kTeYPvKdTkIYNNw9CSsZNO6eEDLWYB7qWhai7w=;
- b=IPsLaPhiGOjGF1Z0NmPdcr92uIRrt3y9YwpLmUZAXsxzpA1SavYkZBUiRHIk6lFTkq
- 6h+qufZN6dUyPjabgow/vsGCGnjSR42/5yAor3IlWw1R+NpeESH8lhJoaiYvRP9n7dYQ
- Ze3F910X1IhLMtWrQrX2pQ63SFGkRL2OIBq3UW6d18uQPhldHPV281jTQbYs7Ibms5Sb
- AhR/tbcDJ0Ha9Cke4nW6XpWd9faaNa4YeAVPB1Kez6FJNMH8AZRw42i0Tt2AOr6K+zAM
- esfJtnK4adq08G0zr+YNgl+l1vMqXgWCxOVy63r++Wixib6LSGAWn4C9u9HKoz69mGOJ
- hCeg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUUj/Yl9qprvV8Y75xk0GnkutcVdZGvlI8J9zxM9bo3v4f42wPoUrPiigjRvgtsYsBf6NBg8r+ImOuH@nongnu.org
-X-Gm-Message-State: AOJu0Yy6LjOzwf/El2SFONX8g/AOj+yJKrQxo7Zc0nY9+VauwSR6TwSM
- IIY07KLmIp+/nefO+nUI6FpPOVeXscFJ5WUo/AivoLkiSAB8fqzFgCtyier7MgKzSJ8=
-X-Gm-Gg: ASbGncvVC6T1/hg2LruVFegMA0+/arukWZ3o4CiStE7afcpvX6BlBgg4X5UG0mAR/na
- X/in0XMKgSn7ZDNcE3lft2J1cA7ZAVt/uBP+CSUj+x6Q4A3XAPklmqDqce5DercKS1CTNddgccq
- YxHHcud8zhvYsHraAs4CLQM6NMZDeIW/LN039Xq4TEz2Vtc0oIZifW6M9OasUJu0+tWyKjc4Z7K
- npAKaxJ+wOe1unn6OP7OtEFMu9BC6FPXb73Q7MZqzGBUGS1QrGnODXxn9AV22AM7gURLipq9cCI
- z7grNe/l639Ht2IAENeZamod3dOXirWg5w5cq4GyM2rY1dbF+IYsIGAI9PWH9pFY4+GFQh12kZU
- aVZYrcVkAbpHfJ6rtiIiHyO/cJnxMWADmcNmAxy8frRoyHJLtxPw0wpG+csiKSKkp3X3m80TQE4
- GB2mIPILKtzWGf
-X-Google-Smtp-Source: AGHT+IH2fnVxJ/qWeSxd4JzYlaePI3dtAfHjavK+vBJkqOEyZ1EDW954IUjiS8dCd5vk6P4pRdy5mw==
-X-Received: by 2002:a05:6a00:2d83:b0:742:a02e:dd8d with SMTP id
- d2e1a72fcca58-763348bbde2mr14728537b3a.20.1753679379076; 
- Sun, 27 Jul 2025 22:09:39 -0700 (PDT)
-Received: from [192.168.4.112] (syn-098-150-199-049.res.spectrum.com.
- [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76419d84234sm4431864b3a.57.2025.07.27.22.09.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 27 Jul 2025 22:09:38 -0700 (PDT)
-Message-ID: <7e06bf78-e9a5-47da-b0d6-7b1af5b20a10@linaro.org>
-Date: Sun, 27 Jul 2025 19:09:35 -1000
+ (Exim 4.90_1) (envelope-from <z_bajeer@yeah.net>)
+ id 1ugGy3-0008Ob-Mo; Mon, 28 Jul 2025 02:04:13 -0400
+Received: from mail-m16.yeah.net ([1.95.21.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <z_bajeer@yeah.net>)
+ id 1ugGxy-0008LO-TN; Mon, 28 Jul 2025 02:04:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+ s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=XE
+ 47keZ2BqznQXDv9U1SHEM4o3k2Y3zH2e+VYsKpem8=; b=KgIYHbCvTBYY1ZGuqR
+ ilGBVFZYMPSTgFNp9TZbwSMrwldhICE0rKfiHl/Gy+JOXZkFH7/BGcLIezxsLbhB
+ 1evQSWUlP9Hpzuc6GM4x30+vDUp3MoF+0X8c0ASlrB/2zuUDyDfRnLCJGT9Sus5a
+ 0ltE2ac+oaE2OJplSZPbzFWRY=
+Received: from vcore-181.. (unknown [])
+ by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3786iEodocEGHAQ--.62790S2;
+ Mon, 28 Jul 2025 14:03:16 +0800 (CST)
+From: Yang Jialong <z_bajeer@yeah.net>
+To: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: yangjialong@rvcore.com, Yang Jialong <z_bajeer@yeah.net>,
+ qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH v2] intc/riscv_aplic: Fix target register read when source is
+ inactive
+Date: Mon, 28 Jul 2025 13:51:14 +0800
+Message-Id: <20250728055114.252024-1-z_bajeer@yeah.net>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/17] target/loongarch: Use correct address when flush
- tlb
-To: Bibo Mao <maobibo@loongson.cn>, qemu-devel@nongnu.org
-References: <20250725013739.994437-1-maobibo@loongson.cn>
- <20250725013739.994437-14-maobibo@loongson.cn>
- <c75d79ab-97b8-464b-9774-a51de03a8e31@linaro.org>
- <b6d7747c-c37c-206e-6f44-535e5410ec14@loongson.cn>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <b6d7747c-c37c-206e-6f44-535e5410ec14@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+X-CM-TRANSID: Mc8vCgD3786iEodocEGHAQ--.62790S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr4UAFy3ZFW5CryDtrWfGrg_yoW8Gr45pr
+ 4fGFsIvFs8tF1UWa1kGr1UXF43GrZ8Wry5ur1DuryIkwsIyw4Fgryqk345Zr4ruFy3Cr1Y
+ vFZ0kr1fCF42v3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziKii3UUUUU=
+X-Originating-IP: [49.7.252.142]
+X-CM-SenderInfo: p2betyxhhuq5hhdkh0dhw/1tbiNgSpzGiHEqQuMwAA3T
+Received-SPF: pass client-ip=1.95.21.16; envelope-from=z_bajeer@yeah.net;
+ helo=mail-m16.yeah.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,25 +72,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/27/25 17:22, Bibo Mao wrote:
->>> +static inline target_ulong __vaddr(target_ulong addr)
->>> +{
->>> +    target_ulong high;
->>> +
->>> +    high = -(addr >> (TARGET_VIRT_ADDR_SPACE_BITS - 1));
->>> +    return addr + (high << TARGET_VIRT_ADDR_SPACE_BITS);
->>> +}
->>
->> Don't use __ symbols.
->> Also, this function is
->>
->>      sextract64(addr, 0, TARGET_VIRT_ADDR_SPACE_BITS - 1)
-> yeap, sextract64 is simpler and effective. How about loongarch_vppn_to_vaddr compared with 
-> __vaddr about function name?
+The RISC-V Advanced interrupt Architecture:
+4.5.16. Interrupt targets:
+If interrupt source i is inactive in this domain, register target[i] is
+read-only zero.
 
-There was one use of __vaddr in this patch.  Do you need a separate helper function at 
-all?  Just use sextract64 directly within invalidate_tlb_entry.
+Signed-off-by: Yang Jialong <z_bajeer@yeah.net>
+---
+ hw/intc/riscv_aplic.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
+v1 --> v2:
+- Use '&' replace the error '*'.
 
-r~
+diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+index 4fa5f7597b..a1d9fa5085 100644
+--- a/hw/intc/riscv_aplic.c
++++ b/hw/intc/riscv_aplic.c
+@@ -628,7 +628,7 @@ static void riscv_aplic_request(void *opaque, int irq, int level)
+ 
+ static uint64_t riscv_aplic_read(void *opaque, hwaddr addr, unsigned size)
+ {
+-    uint32_t irq, word, idc;
++    uint32_t irq, word, idc, sm;
+     RISCVAPLICState *aplic = opaque;
+ 
+     /* Reads must be 4 byte words */
+@@ -696,6 +696,10 @@ static uint64_t riscv_aplic_read(void *opaque, hwaddr addr, unsigned size)
+     } else if ((APLIC_TARGET_BASE <= addr) &&
+             (addr < (APLIC_TARGET_BASE + (aplic->num_irqs - 1) * 4))) {
+         irq = ((addr - APLIC_TARGET_BASE) >> 2) + 1;
++        sm = aplic->sourcecfg[irq] & APLIC_SOURCECFG_SM_MASK;
++        if (sm == APLIC_SOURCECFG_SM_INACTIVE) {
++            return 0;
++        }
+         return aplic->target[irq];
+     } else if (!aplic->msimode && (APLIC_IDC_BASE <= addr) &&
+             (addr < (APLIC_IDC_BASE + aplic->num_harts * APLIC_IDC_SIZE))) {
+-- 
+2.34.1
+
 
