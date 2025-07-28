@@ -2,83 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BEEB14129
+	by mail.lfdr.de (Postfix) with ESMTPS id 28198B1412A
 	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 19:26:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugRb0-0006bI-T0; Mon, 28 Jul 2025 13:25:06 -0400
+	id 1ugRbB-00072n-2m; Mon, 28 Jul 2025 13:25:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugRaw-0006U0-Mj
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 13:25:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugRb8-00071E-9C
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 13:25:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugRau-0005Af-JF
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 13:25:02 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugRb6-0005Rz-62
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 13:25:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753723497;
+ s=mimecast20190719; t=1753723511;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=az3ovlNWBrkf8NYq8FR7+1CbInHCd/lH6Z+vEzwNNP8=;
- b=P3lU8s/P1Lph25FjtVnpth/p8E6b+OyctbSSVeNax2+sSqqHAJKwG/zD4WDcHyN0GQZAbt
- S24Uhxg1LpiT5IyNG0TayaDR8KfW3i1jb6B9QJ+hRRnSBl1e3OA3PLA9T0y0cUcujuPB0U
- ZS/Mt2/mbjr5ykAUJw6rKR9h1vpbgsE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kOsFhZht9N5PriZgwbWc9LHi2hqexjmgjVmfQBGWcuk=;
+ b=Hf7HS9q6q2eV3IvdeSW49AV2Sx8o05ZYaenRBoMhbgZhd+mjEfrNk3vcXqfDtxJjILKoHU
+ qB90EMrHUp1O360r2PaLjel3FRKfORVFdqoDdHg03me/FuVdA784KErfluI2As2DjC+nuP
+ sKl8zt44TNKaJC0NzmQ5TXpjfUleF6Y=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-253-cG7k_wkrOiKnlBCU1Jt0kQ-1; Mon, 28 Jul 2025 13:24:56 -0400
-X-MC-Unique: cG7k_wkrOiKnlBCU1Jt0kQ-1
-X-Mimecast-MFC-AGG-ID: cG7k_wkrOiKnlBCU1Jt0kQ_1753723495
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-455e918d690so713315e9.1
- for <qemu-devel@nongnu.org>; Mon, 28 Jul 2025 10:24:55 -0700 (PDT)
+ us-mta-482-3-ennhVgOWmh5LGFZ1imNQ-1; Mon, 28 Jul 2025 13:25:09 -0400
+X-MC-Unique: 3-ennhVgOWmh5LGFZ1imNQ-1
+X-Mimecast-MFC-AGG-ID: 3-ennhVgOWmh5LGFZ1imNQ_1753723508
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3b78329f180so1530942f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Jul 2025 10:25:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753723495; x=1754328295;
+ d=1e100.net; s=20230601; t=1753723508; x=1754328308;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=az3ovlNWBrkf8NYq8FR7+1CbInHCd/lH6Z+vEzwNNP8=;
- b=GabSHn9a0tAQs/nIEUPUlEYUA6G1rQg3sebR+/PyjfwZEqXt48TOqI2RWlgZD2K8dm
- CVXIoZ6FvPQyrnCmdgMMIQFlapFASFwvMfHIuuWGXIP66/P/2e+NZWXRbOvuS6EQHbVB
- tb8sG3qLt2hus5ZcZ5sVE1DyZcNb0Zj1QgEAGpSUINP8V/kC/hYX0B6MeWuMR0fxkxsF
- 51u7p+2DN/IGN3A3/p6K/iOJjF1UHCZYm8/v85CjQTIEWk2kZqVlKyzqoix/EZcq7mov
- kbUrG9MyVhIjrXN6uZEnx15uwSWuc/JY5DwiryakONZZ3oIMndov+TEqOsVNujDssN3X
- S/xw==
-X-Gm-Message-State: AOJu0YzGHBDegCmudg1bFVdywhkGp5OlvlQYd8IeStMYC22QkXNxXMxj
- echKzPZHwlmY15bSQ8qMLMNPwTblr1bKjXQ+F7I9t6mOMEyBock0+qN1j4M0FSpCgFMrrgT1PIc
- dLsaeKyKA50/NoCrilbYRR9HCWr1Os50O9/YepXjc/MNK1RglZitM7KVU
-X-Gm-Gg: ASbGncvzqHBK/SNqT/T7IDRxIPcAqjC0E3BbPqy4okz1sxTOhXomRWOOGApMh1dP+wt
- KlibV268quONiTULMB8Zdp81hLYKP5JdQNTkoMwsCNHmnFMpD0wm380VOLn20tbVQBzFtPvByGx
- o7OCtg6uVMjLl65PZzZFXotjSFYh+FvbH1CORMlEbTcy+9oZegDxq/O3Welvn/WOvhtXVvxpf8y
- chu76RJRAbEetiWPN3VB4cmsxdkplhFi+sZzY9GBsodVHb5mcmduTYTOZUEoe+pHPVssuqy8xtY
- S1gfnTiH96q6sL/SLu76td9h9FtTUkM8n6PhnNqKg6/DnsFcKpqTY/no0i54YPPprS3MhL0bA5v
- 7pA==
-X-Received: by 2002:a05:6000:2890:b0:3a4:cec5:b59c with SMTP id
- ffacd0b85a97d-3b78e7258d4mr269830f8f.25.1753723494576; 
- Mon, 28 Jul 2025 10:24:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEGrm4A/71ajZYwmTK6NcLRbXl+SUEp9ps5tPUTBLfbZ8neq7pGynWk0uyXFUCsJyhSemFoHA==
-X-Received: by 2002:a05:6000:2890:b0:3a4:cec5:b59c with SMTP id
- ffacd0b85a97d-3b78e7258d4mr269811f8f.25.1753723494087; 
- Mon, 28 Jul 2025 10:24:54 -0700 (PDT)
+ bh=kOsFhZht9N5PriZgwbWc9LHi2hqexjmgjVmfQBGWcuk=;
+ b=pqRKSp82f1yryEaYdjgMS64Gf5s8p82heBRz/zUiJsjsp01e5f//hGR/JbdgibPBVW
+ hxNS687d3HHaIZexKViQp5Jr4pd+1FSMnbDWf1JvvYHyf6on0NjKZQ0VijroX5Bv7pLa
+ hvSJPql8p1fGs1LWxbWH0Ca0wcNco8pxiVjd+5yly4ePok5PXh/d6usQQxYqpOMfv4vN
+ 1eamNqwQ9xKYgRDLsgKHhKsEP6gTnX/Xf2kv2WXZmgkMYWanqYQmiaOuaNQPwC8Wipcp
+ I8ZH95zcYBeiywum6bYNJG+uE3Ii9mSZR9Wg+vuHPXvCaVcRtrzMwPXed9PnlN9Ds1XS
+ jzeQ==
+X-Gm-Message-State: AOJu0Yy+81fUCOXwK+tct9mshF+OobVMu6U0y7AzM+P8qZxtqcOsIo+Y
+ eRPHZjgxar8Rd4mqzWrMWom801pDk1Y82byEFhuLohbuXv9SAzq7BGhQK6kC4yXTptZr2HvxVrk
+ /fe1IEj8AUBe7oHdHnoeZ+FskFIQvp0w/JAPD8nXz7w7zHnFICEACgitrZiT2k1B+i7AlcsHPcv
+ JbvzeaQBZ00SrdaLSYnLrh1CiwuhojKoE1Tg==
+X-Gm-Gg: ASbGncuYZVzwAvxjJL4B6MwUG1bjV2oPpN69wJnID1M3os/gWybzC5Y7Uqp/7717Hzr
+ CNbuLBJ8cmvteIk1mVfyOAQgRlW1pkzD109eyFjc8O6S9xLvuSKbs+J2JeGsw3GyxZ5soP5/49N
+ 4V1ikU/5bKyolp5PB7fYSaG9X7yI4q4ZSX43t5oy/iEAipB6wr6oRU7j18BYrIr/1m8Ll+HaEUA
+ D4sgD0v0UWyVo87nMDD2L9nmsds2z7GifwvNXgvDW6iEzld1VlZDJL7yXCLWXOOaOuUBStHwbEc
+ s+KDHbaK2jkyxZQETJedOjAlj1DmD4R7klAd1N8tI4rKX7h57XllnmrLXbOBvxQoIlPI5dluvm1
+ jNg==
+X-Received: by 2002:a05:6000:103:b0:3b7:8c83:db1e with SMTP id
+ ffacd0b85a97d-3b78c83df34mr1318142f8f.33.1753723507649; 
+ Mon, 28 Jul 2025 10:25:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEQi1WVBKrikroWlcSB8e3VdENwkApfWNSVi+HPjl96wz86B/XLNsdF2XP4jfF/emeDCKUhWw==
+X-Received: by 2002:a05:6000:103:b0:3b7:8c83:db1e with SMTP id
+ ffacd0b85a97d-3b78c83df34mr1318116f8f.33.1753723507067; 
+ Mon, 28 Jul 2025 10:25:07 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
  ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4587272b405sm140700385e9.19.2025.07.28.10.24.53
+ 5b1f17b1804b1-4587abc2798sm106433215e9.7.2025.07.28.10.25.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Jul 2025 10:24:53 -0700 (PDT)
-Message-ID: <b22dd3bd-b377-407b-b68f-4f3476cca737@redhat.com>
-Date: Mon, 28 Jul 2025 19:24:52 +0200
+ Mon, 28 Jul 2025 10:25:06 -0700 (PDT)
+Message-ID: <ac0efa36-222c-4563-8bcb-0b07af2e5f33@redhat.com>
+Date: Mon, 28 Jul 2025 19:25:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] vfio/igd: Legacy mode fixes after introduction of
-To: Tomita Moeko <tomitamoeko@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <20250723160906.44941-1-tomitamoeko@gmail.com>
+Subject: Re: [PATCH] hw/i386: Fix 'use-legacy-x86-rom' property compatibility
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Shaoqin Huang <shahuang@redhat.com>
+References: <20250723062714.1245826-1-clg@redhat.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -124,10 +128,10 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250723160906.44941-1-tomitamoeko@gmail.com>
+In-Reply-To: <20250723062714.1245826-1-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -152,24 +156,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/23/25 18:09, Tomita Moeko wrote:
-> This patchset aims to fix 2 bugs on legacy mode brought by commit
-> a59d06305fff ("vfio/pci: Introduce x-pci-class-code option").
+On 7/23/25 08:27, Cédric Le Goater wrote:
+> Commit 350785d41d8b ("ramfb: Add property to control if load the
+> romfile") introduced the `use-legacy-x86-rom` property for the
+> `vfio-pci-nohotplug` device, allowing control over VGA BIOS ROM
+> loading. However, the property compatibility setting was incorrectly
+> applied to the `vfio-pci` device instead, which causes all `vfio-pci`
+> devices to fail to load. This change fixes the issue by ensuring the
+> property is set on the correct device.
 > 
-> 1. QEMU tries to enable VGA access on device emulated to VGA controller.
-> 2. pci_register_vga() is not called after calling vfio_populate_vga().
+> Fixes: d5fcf0d960d8 ("hw/i386: Add the ramfb romfile compatibility")
+> Cc: Gerd Hoffmann <kraxel@redhat.com>
+> Cc: Shaoqin Huang <shahuang@redhat.com>
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   hw/vfio/types.h   | 2 ++
+>   hw/core/machine.c | 2 +-
+>   hw/i386/microvm.c | 2 +-
+>   hw/i386/pc_piix.c | 2 +-
+>   hw/i386/pc_q35.c  | 2 +-
+>   hw/vfio/pci.c     | 2 --
+>   6 files changed, 6 insertions(+), 6 deletions(-)
 > 
-> 
-> Tomita Moeko (2):
->    vfio/igd: Require host VGA decode for legacy mode
->    vfio/igd: Fix VGA regions are not exposed in legacy mode
-> 
->   docs/igd-assign.txt |  1 +
->   hw/vfio/igd.c       | 19 ++++++++++++-------
->   hw/vfio/pci.c       | 13 ++++++++++---
->   hw/vfio/pci.h       |  1 +
->   4 files changed, 24 insertions(+), 10 deletions(-)
-> 
+> diff --git a/hw/vfio/types.h b/hw/vfio/types.h
+> index fa20c29b9fbbf51ddad4f6cb0535a70152224a94..c19334ff25ae2f5221f08ed863553ce7f8e3be98 100644
+> --- a/hw/vfio/types.h
+> +++ b/hw/vfio/types.h
+> @@ -18,4 +18,6 @@
+>   #define TYPE_VFIO_PCI "vfio-pci"
+>   /* TYPE_VFIO_PCI shares struct VFIOPCIDevice. */
+>   
+> +#define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
+> +
+>   #endif /* HW_VFIO_VFIO_TYPES_H */
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index d6b2240fc250d2d1194dee62e5356c0c214f1069..bd47527479a7947ca293a47c9a6f49916d24bad3 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -41,7 +41,7 @@ GlobalProperty hw_compat_10_0[] = {
+>       { "scsi-hd", "dpofua", "off" },
+>       { "vfio-pci", "x-migration-load-config-after-iter", "off" },
+>       { "ramfb", "use-legacy-x86-rom", "true"},
+> -    { "vfio-pci", "use-legacy-x86-rom", "true" },
+> +    { "vfio-pci-nohotplug", "use-legacy-x86-rom", "true" },
+>   };
+>   const size_t hw_compat_10_0_len = G_N_ELEMENTS(hw_compat_10_0);
+>   
+> diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+> index d90b69a162007af8af1b8596be590126fb00fb59..94d22a232aca1f82590d80c2ac6cc279bb9ff808 100644
+> --- a/hw/i386/microvm.c
+> +++ b/hw/i386/microvm.c
+> @@ -635,7 +635,7 @@ GlobalProperty microvm_properties[] = {
+>        */
+>       { "pcie-root-port", "io-reserve", "0" },
+>       { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
+> -    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
+> +    { TYPE_VFIO_PCI_NOHOTPLUG, "use-legacy-x86-rom", "true" },
+>   };
+>   
+>   static void microvm_class_init(ObjectClass *oc, const void *data)
+> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> index ad5caff3a5d251671db591c68bed3b69a5e45d17..c03324281bdb356e17d434b156e4080865867f4f 100644
+> --- a/hw/i386/pc_piix.c
+> +++ b/hw/i386/pc_piix.c
+> @@ -80,7 +80,7 @@ static const int ide_irq[MAX_IDE_BUS] = { 14, 15 };
+>   
+>   static GlobalProperty pc_piix_compat_defaults[] = {
+>       { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
+> -    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
+> +    { TYPE_VFIO_PCI_NOHOTPLUG, "use-legacy-x86-rom", "true" },
+>   };
+>   static const size_t pc_piix_compat_defaults_len =
+>       G_N_ELEMENTS(pc_piix_compat_defaults);
+> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> index 9b9519fa02d506393058c085178924156e9e0d10..b309b2b378db4741b72828c1f34d2edc2e057a1d 100644
+> --- a/hw/i386/pc_q35.c
+> +++ b/hw/i386/pc_q35.c
+> @@ -69,7 +69,7 @@
+>   static GlobalProperty pc_q35_compat_defaults[] = {
+>       { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "39" },
+>       { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
+> -    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
+> +    { TYPE_VFIO_PCI_NOHOTPLUG, "use-legacy-x86-rom", "true" },
+>   };
+>   static const size_t pc_q35_compat_defaults_len =
+>       G_N_ELEMENTS(pc_q35_compat_defaults);
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index e72d514a4cb91946f7c79332492bf5d709c308f2..0c4606d9cb5e163b8c533ed9b89d4d73eafaae24 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -49,8 +49,6 @@
+>   #include "vfio-migration-internal.h"
+>   #include "vfio-helpers.h"
+>   
+> -#define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
+> -
+>   /* Protected by BQL */
+>   static KVMRouteChange vfio_route_change;
+>   
+
 
 
 Applied to vfio-next.
