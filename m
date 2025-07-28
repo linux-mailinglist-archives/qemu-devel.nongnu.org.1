@@ -2,77 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACB5B13491
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 08:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3316DB134B8
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 08:09:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugGtL-0001Bc-0B; Mon, 28 Jul 2025 01:59:19 -0400
+	id 1ugH3D-0007j7-FS; Mon, 28 Jul 2025 02:09:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ugGri-0007P3-Fc
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:57:41 -0400
-Received: from p-east3-cluster3-host6-snip4-10.eps.apple.com ([57.103.86.63]
- helo=outbound.qs.icloud.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ugGrf-0007HP-8T
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:57:36 -0400
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-east-2d-100-percent-7 (Postfix) with ESMTPS id
- DBEDC180009A; Mon, 28 Jul 2025 05:57:33 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=+KR+AMbaWt7Dx4BYurEMHPtPRCgp9lEz5QbIz2+1RBM=;
- h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
- b=ciLaMX871hDh2TTvWEayGPvLmpH9HCIbP7O5wEvp2PKPnrnX+h+dykKJdQwXG/qi9Z3ShFPGkPekXOatpBtD4Ncj/mgVJomlx4mRFt04ISNFd6LlFMi09nWVyTeNodKkM9peSBGP7eEQaERKxMcdHuxVYWEzL8g0WTtUZqfd0IODikS38rxm8W7jpS4iNntV0wqnM4d+3SNxtTr3PjyIF7eYrn/HUIbIX+jbjhYFBUqSoozhqG4s/9NP5JEVXRGMFUr1+viYyCJ7l1L7WeBaMo0bT30HDAnI/mFmEI/yuU7PmNFadoQl4ebQqPz0dEU2o5Bh1n0YQ7dJXcj0MrqwUw==
-X-Client-IP: 46.189.47.18
-Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
- [17.57.155.37])
- by p00-icloudmta-asmtp-us-east-2d-100-percent-7 (Postfix) with ESMTPSA id
- 01EC31800139; Mon, 28 Jul 2025 05:57:31 +0000 (UTC)
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-To: qemu-devel@nongnu.org
-Cc: Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
- Mads Ynddal <mads@ynddal.dk>, "Michael S. Tsirkin" <mst@redhat.com>,
- Cameron Esfahani <dirty@apple.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
- Mohamed Mediouni <mohamed@unpredictable.fr>
-Subject: [PATCH v4 15/15] hw/intc: hvf: add migration blocker when using
- multiple vCPUs with the Apple GIC
-Date: Mon, 28 Jul 2025 07:57:01 +0200
-Message-Id: <20250728055701.38975-16-mohamed@unpredictable.fr>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250728055701.38975-1-mohamed@unpredictable.fr>
-References: <20250728055701.38975-1-mohamed@unpredictable.fr>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1ugH1I-0005GV-OD
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 02:07:39 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1ugH1B-0000oi-Sp
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 02:07:28 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8AxnOKSE4dovjYzAQ--.1838S3;
+ Mon, 28 Jul 2025 14:07:15 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowJAxT+aPE4do2I4pAA--.14133S3;
+ Mon, 28 Jul 2025 14:07:13 +0800 (CST)
+Subject: Re: [PATCH v3 13/17] target/loongarch: Use correct address when flush
+ tlb
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20250725013739.994437-1-maobibo@loongson.cn>
+ <20250725013739.994437-14-maobibo@loongson.cn>
+ <c75d79ab-97b8-464b-9774-a51de03a8e31@linaro.org>
+ <b6d7747c-c37c-206e-6f44-535e5410ec14@loongson.cn>
+ <7e06bf78-e9a5-47da-b0d6-7b1af5b20a10@linaro.org>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <52129508-496e-58c8-2f05-35d7c1a816e6@loongson.cn>
+Date: Mon, 28 Jul 2025 14:05:30 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <7e06bf78-e9a5-47da-b0d6-7b1af5b20a10@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI4MDA0MyBTYWx0ZWRfXza1e44twkMYv
- 0FkTlbOr46B6dC+zyRCroqHHkJA3kCPmFa6lowguCYpS+MD8dYQSA+jCVJwwPkHYgdCXLP7HTj9
- rl4xBRYOoOWA42PHdCrI05t4qQ4n7WkQrLZyOD26RZTV2D38QLfxAu/fPo42AC8Bizm+v2atiaE
- N/lLLk2UbDQ9m5KSqjl6klbj8Etpmu2M0c0XxkUFUoKlMiyF+3FOWG5LRR0cI14UzGb2Sk6CSIZ
- dwwe2hSkoLmWu1FmeZB17HKUF7YQVtJ4inOlQQ4kJISn5qcqGb9AP5Ih28z0/B+oGNIz7/Tdo=
-X-Proofpoint-GUID: hPGQXMacA3npR4211D55ZO7dYyxNLADF
-X-Proofpoint-ORIG-GUID: hPGQXMacA3npR4211D55ZO7dYyxNLADF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-28_02,2025-07-24_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- suspectscore=0 phishscore=0 clxscore=1030
- malwarescore=0 spamscore=0
- adultscore=0 mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506270000 definitions=main-2507280043
-Received-SPF: pass client-ip=57.103.86.63;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
+X-CM-TRANSID: qMiowJAxT+aPE4do2I4pAA--.14133S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrKFy8uF18Gw17Cry8KF1kXrc_yoWfXrb_Zw
+ srCr1xZFnrGrWFqrnakw48Z3ZrGr40yr13J3W8Xrsak3s3AFs3JF9xWr97Ga1UGFWrW3ZI
+ k3sF9a47Ca43uosvyTuYvTs0mTUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvT
+ s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+ cSsGvfJTRUUUbIxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+ vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+ w2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+ W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
+ 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
+ 0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1MK
+ ZJUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -29
+X-Spam_score: -3.0
 X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.134,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,44 +83,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current state known to be broken, still figuring things out...
 
-Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
----
- hw/intc/arm_gicv3_hvf.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
 
-diff --git a/hw/intc/arm_gicv3_hvf.c b/hw/intc/arm_gicv3_hvf.c
-index 30362540f2..151020edd6 100644
---- a/hw/intc/arm_gicv3_hvf.c
-+++ b/hw/intc/arm_gicv3_hvf.c
-@@ -18,6 +18,7 @@
- #include "hvf_arm.h"
- #include "gicv3_internal.h"
- #include "vgic_common.h"
-+#include "migration/blocker.h"
- #include "qom/object.h"
- #include "target/arm/cpregs.h"
- #include <Hypervisor/Hypervisor.h>
-@@ -703,6 +704,17 @@ static void hvf_gicv3_realize(DeviceState *dev, Error **errp)
-         error_setg(errp, "vGIC maintenance IRQ mismatch with the hardcoded one in HVF.");
-         return;
-     }
-+
-+    /* Temporary: current state known to be incomplete. */
-+    if (s->num_cpu > 1) {
-+        Error *hvf_mcpu_migration_blocker = NULL;
-+        error_setg(&hvf_mcpu_migration_blocker,
-+           "Live migration disabled because multiple CPUs are exposed.");
-+        if (migrate_add_blocker(&hvf_mcpu_migration_blocker, errp)) {
-+            error_free(hvf_mcpu_migration_blocker);
-+            return;
-+        }
-+    }
- }
- 
- static void hvf_gicv3_class_init(ObjectClass *klass, const void *data)
--- 
-2.39.5 (Apple Git-154)
+On 2025/7/28 下午1:09, Richard Henderson wrote:
+> On 7/27/25 17:22, Bibo Mao wrote:
+>>>> +static inline target_ulong __vaddr(target_ulong addr)
+>>>> +{
+>>>> +    target_ulong high;
+>>>> +
+>>>> +    high = -(addr >> (TARGET_VIRT_ADDR_SPACE_BITS - 1));
+>>>> +    return addr + (high << TARGET_VIRT_ADDR_SPACE_BITS);
+>>>> +}
+>>>
+>>> Don't use __ symbols.
+>>> Also, this function is
+>>>
+>>>      sextract64(addr, 0, TARGET_VIRT_ADDR_SPACE_BITS - 1)
+>> yeap, sextract64 is simpler and effective. How about 
+>> loongarch_vppn_to_vaddr compared with __vaddr about function name?
+> 
+> There was one use of __vaddr in this patch.  Do you need a separate 
+> helper function at all?  Just use sextract64 directly within 
+> invalidate_tlb_entry.
+ok, will remove it directly.
+And thanks for your kindly guidance.
+
+Regards
+Bibo Mao
+> 
+> 
+> r~
 
 
