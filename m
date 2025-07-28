@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F530B141EF
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 20:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E727FB141F1
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 20:25:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugSV9-0004nA-UW; Mon, 28 Jul 2025 14:23:24 -0400
+	id 1ugSTv-00028V-0u; Mon, 28 Jul 2025 14:21:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ugSPQ-0004ro-5z
+ id 1ugSPQ-0004rp-IP
  for qemu-devel@nongnu.org; Mon, 28 Jul 2025 14:17:28 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ugSPI-0002oL-Js
+ id 1ugSPI-0002oX-OT
  for qemu-devel@nongnu.org; Mon, 28 Jul 2025 14:17:07 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-b420b87cb04so381284a12.0
- for <qemu-devel@nongnu.org>; Mon, 28 Jul 2025 11:17:02 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-7425bd5a83aso4491142b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Jul 2025 11:17:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753726621; x=1754331421; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753726622; x=1754331422; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cK/l0R+IQu4PJARiJoF6ivzv5QfPnUn4zekRDzw57vM=;
- b=oFKqQXCSJQB2nNQYjwrbPbVH4xbJbnZDLCedgMHyTt7KF7yiSK3g9CgbobOZ1uVohR
- btrcRgSmGmj0in4fEByt5y+gDNFqZKGSTM8LmN0tRfKQTgsppZNGIvrSeJfV45My5+DI
- gIc9jf1dxMbg13M3q9APCTX7bjSYrJcPYZl1xuBiN8k8A6DM3tTdZqM5OV7ICk4lXtNt
- Vu88SBRTGFiZrt4yfc57LBh58sqgmDsrRqRGW0QU2qOFP+DzfL8rc60ueG+hSIpOO1AZ
- oPz+bdvUM8szSjnJlM9zGDoYBMNOgVZQlRp3Wi89+3R24dlVBTwhO5IDtRNEURXSSRqW
- MH4w==
+ bh=c4+S7J9BtCEfIMC9GTPfnu5U0/LIAxmsC+ABvyfodl8=;
+ b=bFFpRuYW1cDzJf7Bxji24WnHq/VcbjpxjFI5CLRynSlJXpAnJldASlC7+GyIxHk6kM
+ y+YRGmNSkhXNhtCWX19fVIcbqBY+koG/An8gzG3pKpp8JqZ/QY24+pWl31dTqm9LOCKs
+ Mn6ynFTkWgvb5iuUq8sFB4DZUFuHSeeCWWZcYCr3YRe+stl0UAB5Aq5Ir0bBU1A1sudk
+ BerwMIpcpPIprcUwReRGpqcY7VDR0qRXA3Q9Vd0FwGIQmYopjd4e9k4W+dz0pT6Wjntv
+ IRNmBL3SWg1kf2LxyHNhBDXZgYEBtMxmr1rI3mWswUGDexKvN0ibtkU/frWuFa5Zryfq
+ I6dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753726621; x=1754331421;
+ d=1e100.net; s=20230601; t=1753726622; x=1754331422;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cK/l0R+IQu4PJARiJoF6ivzv5QfPnUn4zekRDzw57vM=;
- b=b8PaRqqf6TKbMHfLqAdmmtaV/vch2c7uquEootHIV4dGosmZwFGnxQUw4K/Hx9YJ92
- 1kkFC+zXUGciGpnwosw3WHVg425hG5TZDRgw0UBcypwalKceoEm33hyH+pTj30RfAYRE
- 4fFzJ0qUMHzUEdymqdp7T/rffCsfWGBOLkpKQgSTkO5z41Csep+wUi0zRAXFBppXKBKP
- dv1SwcD9FzfG53xKXvnFO6wJaEdpzj8hE/lYR9el9yZJB31PuuioB6Ga5Za7zm7eIdGq
- OBl/wYTT6nSDKwnda/mUJTcrOOcjQXHzFvb71aJvd2iKZXAG7T4LGO7iAM9RFETqp2Q2
- sg3Q==
-X-Gm-Message-State: AOJu0YwSagJl1MHUJwpbabWsadrQXaUzPzS2WCuZ/O4TrBxbCzO41Tt+
- FzIYnvuorV3ysOd44JiW2eXkObsFzXUqn0rxFInuG42rfJbaJjg1SbI890xh6j+Q+hJ+kQGjrGJ
- hFQxN
-X-Gm-Gg: ASbGnct0/DGLpdMT6L0GljAnagUNjQmuR1C6UKE9DEEW6AR1UcBSQNtjOLQhhvBQiMA
- 9xYcmG30H915d+v+BCgI4r7Dp5f/1riCNv8ascFhxB7VHIX2yEMUX1zoINabx094xeSq60ZPGt5
- tRrnJG0HZOJ6CcH0V82YcSaOytkSC+IONj2kHK5PBbi3CU2xuT2iEdiJzmyZ6nkaR+nCZsDYBmj
- okdpnWKXiQRbQ9RYUE8hkmZw3UOMVMRYlv4Q5Lp357zkOkxsFaQ2GT9eRLE2bJF/dYrfhulE9VI
- ds2FqL+NMFDCj8XDAOkJ+5uGdeqBt7vO6poiK3EvdfCyD58cFfoHcMvxqk4GcP5E/UcbKwG3Tis
- KP1XpM+ouY7tCi1LR5TGRkIjWtW5yApkQ6HtuvVHmpO71MxHnEihk5/BTf4UV2qKqBPC0BCaZhk
- v/4UA6uXQetA==
-X-Google-Smtp-Source: AGHT+IGJyI+r7XO61hMCtEXbjek3vbkRi2ba0/SllpB7ys/0M4xowAQKa2UQrO+4ig90mDO5tzyfJA==
-X-Received: by 2002:a05:6a20:6a23:b0:233:f0c6:a8a4 with SMTP id
- adf61e73a8af0-23d701a8a06mr24320561637.31.1753726620691; 
- Mon, 28 Jul 2025 11:17:00 -0700 (PDT)
+ bh=c4+S7J9BtCEfIMC9GTPfnu5U0/LIAxmsC+ABvyfodl8=;
+ b=XW+ueVBwvNjZeneQaQBZsfwDEQ8Lq7+95PMnNFT7A82NpJQ3aDktiQJIlZhu2bfoEd
+ Pxiy2zHmWQTcuNynTX5G07dSl9CSvj/SdPwhjhYvVblb4kbTgs3dpPm0J788Yzq6oWhu
+ 2WDwpCbeJHSqX9GSMgH2XMYUfuazs3Fjbhz47X8MCA4nRyoprzst0coANJsc4uGGcVV7
+ osPqJ2Ztmz3EOE6j3tAce6D78nKU+qHfuz0BpwqeHjemy/aOV8E5Gnes3P7KbaItuNf+
+ Px5VHSaixh0xXTey6LB8CfOWxmmSSbeaZUyRaQ74nl4imYO6CXa06TQlEUO+cvQrkC0F
+ gN0Q==
+X-Gm-Message-State: AOJu0Yz6YsQ40JQAtxD4MB5DQw6vHRoLUReeW9+WimkshZNsI5Vo7oVP
+ cCCC+M7m7RwvHs/mE6pGFJjCWxmsaJBHFqPQ/X+0WPeR7HSCXTaJp2cadv3ghQZzn323IwNClNN
+ 2hjEc
+X-Gm-Gg: ASbGncuGAAxPnNM6wmb+ZFDFitqPxr1ayGcDeqNWvl7VSeUW1t7gpYkF2UIpWFKOe20
+ 4Yt/TvqRaRuG0fPVs0piw72kdOf+aYKuCTpjuuGW81Skmf4EbB9fFa4JyvAgwGPLgrtk+1b7DA0
+ 9LdxTqrFUfMF5q1aBR8cjaKGwpiBBxGuM8RFxXRqhwA+GyVpee4G4Tuw+MhWbMS6LqZVDWogiSu
+ +WhaGuTa2xEKFJCt/v+23snHDNRMeKNBVSTOiojFfhfTua/dKYjJD4Udxmrt4wGsrUZ4qf9sEU6
+ w96Vcf8fIa7LbwsOauxT2LUms9KgoLRpyj//yJn8OgGWFKL1AOZgqOpd9nomalsdUlg+cjt/u27
+ PilAEQ1fU42WdJp5ZglJqQlvptgzs3xCSLSItvKjX7kqLmdSt4/eB3zyLtun5Gjw6P7ML8EAihl
+ ZSJll/tQ2OGQ==
+X-Google-Smtp-Source: AGHT+IE1iamK9hanr2gzNZ/XgRJoYLLP1hd5RL9dc/4z4U3v3xIwxHOCFCTJ6bFzJcG6EcAID0beew==
+X-Received: by 2002:a05:6a00:1953:b0:748:2cbb:be45 with SMTP id
+ d2e1a72fcca58-7633583028dmr15638923b3a.15.1753726622365; 
+ Mon, 28 Jul 2025 11:17:02 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7640adfeb83sm5985103b3a.66.2025.07.28.11.16.59
+ d2e1a72fcca58-7640adfeb83sm5985103b3a.66.2025.07.28.11.17.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Jul 2025 11:17:00 -0700 (PDT)
+ Mon, 28 Jul 2025 11:17:02 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mjt@tls.msk.ru, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 5/9] target/arm/sme: Reset ZA state in aarch64_set_svcr()
-Date: Mon, 28 Jul 2025 08:16:46 -1000
-Message-ID: <20250728181650.165114-6-richard.henderson@linaro.org>
+Subject: [PATCH 6/9] target/arm/sme: Rebuild hflags in aarch64_set_svcr()
+Date: Mon, 28 Jul 2025 08:16:47 -1000
+Message-ID: <20250728181650.165114-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250728181650.165114-1-richard.henderson@linaro.org>
 References: <20250728181650.165114-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,63 +105,109 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230112102436.1913-6-philmd@linaro.org
+Message-id: 20230112102436.1913-7-philmd@linaro.org
 Message-Id: <20230112004322.161330-1-richard.henderson@linaro.org>
 [PMD: Split patch in multiple tiny steps]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit fccb49182e23bd359092f7ab09bc7e60a0fff71a)
+(cherry picked from commit f4318557149184d6dac99e561acabcb602a84ee1)
 ---
- target/arm/helper.c     | 12 ++++++++++++
- target/arm/sme_helper.c | 12 ------------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ linux-user/aarch64/cpu_loop.c | 8 +-------
+ linux-user/aarch64/signal.c   | 3 ---
+ target/arm/helper.c           | 6 +++++-
+ target/arm/sme_helper.c       | 8 --------
+ 4 files changed, 6 insertions(+), 19 deletions(-)
 
+diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
+index 5e93d27d8f..2e2f7cf218 100644
+--- a/linux-user/aarch64/cpu_loop.c
++++ b/linux-user/aarch64/cpu_loop.c
+@@ -89,14 +89,8 @@ void cpu_loop(CPUARMState *env)
+ 
+         switch (trapnr) {
+         case EXCP_SWI:
+-            /*
+-             * On syscall, PSTATE.ZA is preserved, along with the ZA matrix.
+-             * PSTATE.SM is cleared, per SMSTOP, which does ResetSVEState.
+-             */
++            /* On syscall, PSTATE.ZA is preserved, PSTATE.SM is cleared. */
+             aarch64_set_svcr(env, 0, R_SVCR_SM_MASK);
+-            if (FIELD_EX64(env->svcr, SVCR, SM)) {
+-                arm_rebuild_hflags(env);
+-            }
+             ret = do_syscall(env,
+                              env->xregs[8],
+                              env->xregs[0],
+diff --git a/linux-user/aarch64/signal.c b/linux-user/aarch64/signal.c
+index a326a6def5..b265cfd470 100644
+--- a/linux-user/aarch64/signal.c
++++ b/linux-user/aarch64/signal.c
+@@ -667,9 +667,6 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
+ 
+     /* Invoke the signal handler with both SM and ZA disabled. */
+     aarch64_set_svcr(env, 0, R_SVCR_SM_MASK | R_SVCR_ZA_MASK);
+-    if (env->svcr) {
+-        arm_rebuild_hflags(env);
+-    }
+ 
+     if (info) {
+         tswap_siginfo(&frame->info, info);
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 94a6f431a9..37e018e765 100644
+index 37e018e765..bc1c5a1f17 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -6447,6 +6447,18 @@ void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask)
+@@ -6442,6 +6442,9 @@ void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask)
+ {
+     uint64_t change = (env->svcr ^ new) & mask;
+ 
++    if (change == 0) {
++        return;
++    }
+     env->svcr ^= change;
+ 
      if (change & R_SVCR_SM_MASK) {
-         arm_reset_sve_state(env);
+@@ -6459,6 +6462,8 @@ void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask)
+     if (change & new & R_SVCR_ZA_MASK) {
+         memset(env->zarray, 0, sizeof(env->zarray));
      }
 +
-+    /*
-+     * ResetSMEState.
-+     *
-+     * SetPSTATE_ZA zeros on enable and disable.  We can zero this only
-+     * on enable: while disabled, the storage is inaccessible and the
-+     * value does not matter.  We're not saving the storage in vmstate
-+     * when disabled either.
-+     */
-+    if (change & new & R_SVCR_ZA_MASK) {
-+        memset(env->zarray, 0, sizeof(env->zarray));
-+    }
++    arm_rebuild_hflags(env);
  }
  
  static void svcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
-diff --git a/target/arm/sme_helper.c b/target/arm/sme_helper.c
-index 56a8fbe691..247c2823ac 100644
---- a/target/arm/sme_helper.c
-+++ b/target/arm/sme_helper.c
-@@ -44,18 +44,6 @@ void helper_set_pstate_za(CPUARMState *env, uint32_t i)
-         return;
-     }
-     aarch64_set_svcr(env, 0, R_SVCR_ZA_MASK);
--
--    /*
--     * ResetSMEState.
--     *
--     * SetPSTATE_ZA zeros on enable and disable.  We can zero this only
--     * on enable: while disabled, the storage is inaccessible and the
--     * value does not matter.  We're not saving the storage in vmstate
--     * when disabled either.
--     */
--    if (i) {
--        memset(env->zarray, 0, sizeof(env->zarray));
--    }
-     arm_rebuild_hflags(env);
+@@ -6467,7 +6472,6 @@ static void svcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     helper_set_pstate_sm(env, FIELD_EX64(value, SVCR, SM));
+     helper_set_pstate_za(env, FIELD_EX64(value, SVCR, ZA));
+     aarch64_set_svcr(env, value, -1);
+-    arm_rebuild_hflags(env);
  }
  
+ static void smcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
+diff --git a/target/arm/sme_helper.c b/target/arm/sme_helper.c
+index 247c2823ac..bbda651974 100644
+--- a/target/arm/sme_helper.c
++++ b/target/arm/sme_helper.c
+@@ -31,20 +31,12 @@
+ 
+ void helper_set_pstate_sm(CPUARMState *env, uint32_t i)
+ {
+-    if (i == FIELD_EX64(env->svcr, SVCR, SM)) {
+-        return;
+-    }
+     aarch64_set_svcr(env, 0, R_SVCR_SM_MASK);
+-    arm_rebuild_hflags(env);
+ }
+ 
+ void helper_set_pstate_za(CPUARMState *env, uint32_t i)
+ {
+-    if (i == FIELD_EX64(env->svcr, SVCR, ZA)) {
+-        return;
+-    }
+     aarch64_set_svcr(env, 0, R_SVCR_ZA_MASK);
+-    arm_rebuild_hflags(env);
+ }
+ 
+ void helper_sme_zero(CPUARMState *env, uint32_t imm, uint32_t svl)
 -- 
 2.43.0
 
