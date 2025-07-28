@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A533B13AD3
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 14:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08101B13B00
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 15:08:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugNMa-00029j-JH; Mon, 28 Jul 2025 08:53:56 -0400
+	id 1ugNYk-0006kf-VA; Mon, 28 Jul 2025 09:06:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ugMlx-0005D5-OM
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 08:16:14 -0400
-Received: from p-east1-cluster3-host2-snip4-9.eps.apple.com ([57.103.91.150]
- helo=outbound.ci.icloud.com)
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1ugMsl-0007Jg-Oi
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 08:23:11 -0400
+Received: from p-east3-cluster1-host4-snip4-9.eps.apple.com ([57.103.87.42]
+ helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ugMlq-0008BC-C6
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 08:16:01 -0400
-Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-central-1k-100-percent-11 (Postfix) with ESMTPS id
- 87AE01805908; Mon, 28 Jul 2025 12:15:47 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- bh=dx9iNuCXde9aI1tiGl0SdyHKxu//3jAepAe8xuGXnJU=;
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1ugMsi-0001GT-Q6
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 08:23:07 -0400
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-east-2d-60-percent-9 (Postfix) with ESMTPS id
+ 771F6180012A; Mon, 28 Jul 2025 12:22:59 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
+ s=sig1; bh=iRSBJ3+YFY5bpcRbO8wn3QXXOuEey9I9ax0VsvWdEuo=;
  h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
- b=yAHi2+WugsgkHUZHNi3aYi/OWR5zfqg1t92wrMteDBpO+RpaxGgS6X8OWnruRj5EXkI31DtzRxkPiVNWoZfU62OFuKNu6ODS6mxbMIRuBVz0T/anfXofNyb5jy79JRnMXUeqWoPxfDO/E16GEJwkOjApAnONYVbDYyJlVwypHvyQuD0Qrh2LZMoOQvZq4lYdUR8KRqDxpnaVK2o8d60Q/YGT5rTFfNGAGD6prqx2rNZek0xoUMrp9DNhfHBr4UtDQW76qAZoaF4glpqPykQr5Wqx0x6YtCqhnEl4EmTX9P0UrBP8XJYLmo4EHEQMHgdqhXql5LHOjxa9uRZEEWG0iA==
-X-Client-IP: 212.60.126.184
-Received: from smtpclient.apple (ci-asmtp-me-k8s.p00.prod.me.com
- [17.57.156.36])
- by p00-icloudmta-asmtp-us-central-1k-100-percent-11 (Postfix) with ESMTPSA id
- 7CED4180591F; Mon, 28 Jul 2025 12:15:45 +0000 (UTC)
+ b=PeTz0KezFKxZkmjdfNNfTfggAZ/4sVLW9UyS2i1B9/CoV4SHHCT+ruS0kerB8x1YGC4JhlY5+GT4vGaDIyGaLBNoZRelj0RsyfLZS6z4ZL64CyP9TrwpoRcOuhDfh+msCVz2Ax1U9+DzTvt22uw1i7R8kdDKofgqr89MV7wUVfnevLyb+/AWiKbIeuz8gPx0MAltcKL5LepWdEf8YBAfFYwZitQqGr9Q/uLAQp1WcWvJkSliffmyqttR5aSG4Z2iESdAYWpnlFlZ6kJpTLB87kHJOjYzqJj2iR5Y7QNf7cZcdvms3HE2omMSGcFKBjVn9I+3QDh1ypk5whYheT827A==
+X-Client-IP: 46.189.47.18
+Received: from smtpclient.apple (qs-asmtp-me-k8s.p00.prod.me.com
+ [17.57.155.37])
+ by p00-icloudmta-asmtp-us-east-2d-60-percent-9 (Postfix) with ESMTPSA id
+ 936BA1800153; Mon, 28 Jul 2025 12:22:57 +0000 (UTC)
 Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3860.100.5.1.1\))
 Subject: Re: [PATCH v4 04/15] hw/intc: Add hvf vGIC interrupt controller
  support
-From: Mads Ynddal <mads@ynddal.dk>
-In-Reply-To: <20250728055701.38975-5-mohamed@unpredictable.fr>
-Date: Mon, 28 Jul 2025 14:15:33 +0200
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+In-Reply-To: <1F4C322B-8D95-43D0-96EF-66B0C4C5E55E@ynddal.dk>
+Date: Mon, 28 Jul 2025 14:22:45 +0200
 Cc: qemu-devel@nongnu.org, Alexander Graf <agraf@csgraf.de>,
  Peter Maydell <peter.maydell@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Cameron Esfahani <dirty@apple.com>,
@@ -46,27 +48,29 @@ Cc: qemu-devel@nongnu.org, Alexander Graf <agraf@csgraf.de>,
  Phil Dennis-Jordan <phil@philjordan.eu>,
  Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <1F4C322B-8D95-43D0-96EF-66B0C4C5E55E@ynddal.dk>
+Message-Id: <AB956BCB-3A16-4129-86D6-E16CDDE07EE9@unpredictable.fr>
 References: <20250728055701.38975-1-mohamed@unpredictable.fr>
  <20250728055701.38975-5-mohamed@unpredictable.fr>
-To: Mohamed Mediouni <mohamed@unpredictable.fr>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI4MDA5MCBTYWx0ZWRfXxTc3XBufyFSn
- jvbhnz8olQNMEfa9gE3okmIg24GwXmctbhworkzsxQgYQHRB+8oT2Lh1JNfQvC6ubdxHTJARcwf
- Pnf8Z9H1vMjAK25l2rLZV1ekCLXzIrhL06VGf1/7g/KRnH2WOoqCB5Q5rQQVISDQWdRI0fBn0NT
- uI9j0teb4pQP6MX/0dM8dE3LFHyZ7pQIyaAlWWKKgAk3+1ClhqIC4LjeQtFgCDhZwu8X5a1p7zB
- 52KONrpipzNKdSGib+Zd3dx2+c7gZBjhwX43T6IRcXBwBU7o68vwpSpcJU/v/P09tZeLnEk+0=
-X-Proofpoint-GUID: tNSVMNe2o3ZpgqID28LlT5lGvDL_m3CL
-X-Proofpoint-ORIG-GUID: tNSVMNe2o3ZpgqID28LlT5lGvDL_m3CL
+ <1F4C322B-8D95-43D0-96EF-66B0C4C5E55E@ynddal.dk>
+To: Mads Ynddal <mads@ynddal.dk>
+X-Mailer: Apple Mail (2.3860.100.5.1.1)
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI4MDA5MSBTYWx0ZWRfX4GimhmplMfXw
+ T3UIcLJS83DhhTil3svyL+KfZM16wWK80Y+MZwvct8zfn9R79ednaZXrwMqBFuyeDCfR5SCIfVg
+ XgA14ZZScdNhIVEgpRb0XKbo8x+sqViUOxTJs8ajPV9RFiGZwkzMmWVdF/8Sl5JNTKyA0ymq3Oi
+ BGQ7kdZHxxz0Cu4w0qnY+HkiFSv+XnOWq/l9RvI8yj/pBEdc+n7u9lSwGnqRCqHky4wQ5lREOYV
+ YkJG9fMhm4Z84dmpVSRFOoIYsxELapUBRN9jCuPE039HeGa1pjjeOJAgnkTWrtf3hZ8DmstF0=
+X-Proofpoint-GUID: RxYsj6R2EDwegrKlOP9R6pxLS7KWEhtH
+X-Proofpoint-ORIG-GUID: RxYsj6R2EDwegrKlOP9R6pxLS7KWEhtH
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-28_03,2025-07-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- adultscore=0 clxscore=1030 mlxlogscore=999 malwarescore=0 mlxscore=0
- suspectscore=0 spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506270000 definitions=main-2507280090
-Received-SPF: pass client-ip=57.103.91.150; envelope-from=mads@ynddal.dk;
- helo=outbound.ci.icloud.com
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ suspectscore=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 adultscore=0
+ spamscore=0 bulkscore=0 clxscore=1030 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506270000 definitions=main-2507280091
+Received-SPF: pass client-ip=57.103.87.42;
+ envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,25 +94,34 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-> +    /* Redistributor state (one per CPU) */
-> +
-> +    for (ncpu =3D 0; ncpu < s->num_cpu; ncpu++) {
-> +        GICv3CPUState *c =3D &s->cpu[ncpu];
-> +        hv_vcpu_t vcpu =3D c->cpu->accel->fd;
-> +
-> +        reg =3D c->gicr_waker;
-> +        hv_gic_set_redistributor_reg(vcpu, =
+> On 28. Jul 2025, at 14:15, Mads Ynddal <mads@ynddal.dk> wrote:
+>=20
+>=20
+>> +    /* Redistributor state (one per CPU) */
+>> +
+>> +    for (ncpu =3D 0; ncpu < s->num_cpu; ncpu++) {
+>> +        GICv3CPUState *c =3D &s->cpu[ncpu];
+>> +        hv_vcpu_t vcpu =3D c->cpu->accel->fd;
+>> +
+>> +        reg =3D c->gicr_waker;
+>> +        hv_gic_set_redistributor_reg(vcpu, =
 HV_GIC_REDISTRIBUTOR_REG_GICR_IGROUPR0, reg);
-> +
+>> +
+>=20
+> Sorry if I'm belaboring the obvious, but I think you need to call =
+these
+> from the owning thread of the CPU. This is also stated in Apple's docs
+> (some are documented; some are not!).
+>=20
+> I had to do that in the branch I was working on. You should check the
+> return of the functions 'hv_gic_...'. They give an error when called
+> from the wrong thread.
+>=20
+> Could this be related to commit "hw/intc: hvf: add migration blocker
+> when using multiple vCPUs with the Apple GIC=E2=80=9D?
+Oh that makes quite some sense=E2=80=A6 thanks for the hint :)
 
-Sorry if I'm belaboring the obvious, but I think you need to call these
-from the owning thread of the CPU. This is also stated in Apple's docs
-(some are documented; some are not!).
+Will fix this and see what happens...
 
-I had to do that in the branch I was working on. You should check the
-return of the functions 'hv_gic_...'. They give an error when called
-from the wrong thread.
 
-Could this be related to commit "hw/intc: hvf: add migration blocker
-when using multiple vCPUs with the Apple GIC"?=
 
