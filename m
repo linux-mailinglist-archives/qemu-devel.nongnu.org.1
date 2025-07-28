@@ -2,222 +2,212 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40658B13B86
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 15:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50879B13B72
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 15:26:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugNvH-0004W3-0h; Mon, 28 Jul 2025 09:29:47 -0400
+	id 1ugNpr-00037P-3C; Mon, 28 Jul 2025 09:24:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1ugNBB-00013t-4G
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 08:42:10 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1ugNMD-0001L5-Ga
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 08:53:33 -0400
+Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1ugNB4-0004Ob-Al
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 08:42:08 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56SC8J2i030423;
- Mon, 28 Jul 2025 12:41:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=OHJweR0dpYM7NbvLLM+UyipX2riFHWoV6Le1Q5eBDZ0=; b=
- Gd0ED5/25DFrI7Bp6Ji8L1DImCZIguLysOaizX6ibXJwp2GoeQX7y8dnQ6YRkp05
- beitRISdNbFSnMDqYCzF5zogjun/qQhLHsawbbJFwFSAoZAaUXqS86y7jfsKH6kd
- mG1veeZ52OMYaYi/EoqLUL8XiqqUGW/NG5BppzFMjFMOWIvNp7O6mZllrNRCrAHj
- fb8YQ/SpoQYIKo/0ivB7UhQhDz9yFiXrUw+efjkk8qGD8XEpZOD92gR2kgbrSHEK
- LcbrPG5ZQkwq1HiLlV1K77dWc/FMXLx/L6yukg0gxPkNyIoxJSBQF1Kr1CPtmv3/
- r1NKNfHCredqiSNALnR0FQ==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484q5wu6y0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Jul 2025 12:41:58 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 56SCFDqM003171; Mon, 28 Jul 2025 12:41:58 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2065.outbound.protection.outlook.com [40.107.220.65])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 484nf8g4tt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Jul 2025 12:41:57 +0000
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1ugNMA-00069X-OV
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 08:53:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1753707210; x=1785243210;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=BZdkH0SVynynS/zDSI8M53/ADvybXiQfX9K4N0JJIqw=;
+ b=DNZibo24kP8aWpOpnccyiDWisv+rOPIhWollCa+dhjjylZA8oR9EWBKb
+ 1iHOSsWmUb87g740ia1kgPsBHel+taZCKtXD+FAUv6ubc9/9OuN6Lw1X7
+ z+BX39Y1p7GvGvcV4T9yyepTHHPw4TYoAPeDON5m5eC2I95jgHM7ng64s
+ Pyx0pO5v+rxKJI+hx6gz15DU8uKtSaVQg1RYKsoD4osFGB8oWdGTwtcvD
+ PbhNLPcnZhNG5Rn7/cN0YSl5H6wC3l6RdOTBI+8eTHO8SvgGc7EoyaRrN
+ 1CLy4g1CIObRoj5Wd9S82//L8h2Mor2KtJ7oIZ2rEPlxcvzaHb9MqU6DP g==;
+X-CSE-ConnectionGUID: 5R9t9Nv3TVKcPFZY5/uifQ==
+X-CSE-MsgGUID: DAwC2KqoRza96xsleQEiXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55921363"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208";a="55921363"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jul 2025 05:53:27 -0700
+X-CSE-ConnectionGUID: YdMEskicTiSSUUYRtWENBQ==
+X-CSE-MsgGUID: oy41zAZuSqKabgiLgRCFRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208";a="166884715"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jul 2025 05:53:28 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Mon, 28 Jul 2025 05:53:26 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Mon, 28 Jul 2025 05:53:26 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.49)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Mon, 28 Jul 2025 05:53:25 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bL0bSdhdMmW8jHnGecZrSxR1tC7Zd5SC85xKrAydBaY+gdGNfia9QLqGMHMnDyUSoGY4ZQVd7AoAEUrXHIhbWUiZxK194izCGbxR0BrICLOxU7TZKmAF/nHA8XLJfTC2ieP6edgwm80C13i+VS9gT7lcIF2hLh4InsufNFRbEdg+++yHKY3gMAK8mceZe19Auspo5RbYbXxVmxG9Wu5Edgv2uLiXChA3T6kZ2wDY4rfSY/fdJhx8E0ISy6jnG8cdV7rnkglERRXiYv9TUxIbrgQ1DzPp2yjzdqdCY6tCZ6jCtaMqYzAnBR8poS4WXFZK261rK/5wvwQx/Em96vvW1w==
+ b=HEiJkt7FwjcCCE1CLUVYF6tI4CBYayayHMzZegwc1aXL8T2l0rOdZDHstEwy9Pg8CrL82w/KN5PgIJ9DF+nax5g8/4/e+M0Vt5nPKr2znKIyfiYqPPiGSrs1Aq8a8AlFI9vPY33Ftk5gJ3Omq5GYfxKOYYgA3ciUpjaTAaUDqQz/pvfWr7LK4B4K2nSXSkw+ORkL4BdNJG/pFUgEPYONxk2DZ237YdeVcPUZphIfn5RKZ3IL9K0y5pNSnqCI0AeeagCZauLkUkY/S1YutfOsIWcTquFNssqPuSt6e+8EzF0wRSyIKGS3goA4ePLmJZ/xLi1PzBg/QUdZuwmbh2sHKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OHJweR0dpYM7NbvLLM+UyipX2riFHWoV6Le1Q5eBDZ0=;
- b=oinG/rpP/zGShrPr/AHzkNB5rNf2C0m6eEGvPzoFXQoH7D3lTOkee40UsJzz4u+S5bFInuHpT1TOqLZU+BQfdfzlaPHvID4WtISgJpUbLcQexkjnLSWxjTOF36iCSUSAmPHiAXL28ngTyZXyA9AijD2P8maRUVCmza4mjCH7JVaA3Oo8V8Qqjhewsvj2D1SjdzqymwnN6C+sZ9GgmnNMRzRqlPg7BEiaf9lz8WYgUifal2G9B5zb51D41OTE5oXMkql6lIVbbFcn/piCzcY6bMJVvU/KHiRcvH3Dg0Y0QdSc9P3BMwtLgqFqWCQegWnGkxuxEu6gchz30+UhriCF8w==
+ bh=BZdkH0SVynynS/zDSI8M53/ADvybXiQfX9K4N0JJIqw=;
+ b=uq2cbXA2IJmpq5q3b+yTVe+B4TH5FUtgBEMq2eHml/Od6YqgOfEeowgcCQXyqVpqlWjzqOUy0CA5oZO+J/UfAkYX0Wg8ku60aDNz2PpwRwS+BLRZP217tO2P4P5gq1Y5yZen2CE6xmhx/xpXCirhGS53RZt6sbGRyp3khNQtP/hYKZCc9q2V9TFGMTrurUDME736ohiJYgu6HFDeuQC++aDJTdq/UKDYj2311GCKYWByyC54E/g+1BAci+L1RnLJtxf37tC27d9R4YWaqrqiv2Bh4qE6fjQpbsCsWR2ycSoTPtCcqOFbypmjBJH6voKCkivQiq3V2YGV4kKlF/8dMA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OHJweR0dpYM7NbvLLM+UyipX2riFHWoV6Le1Q5eBDZ0=;
- b=A8JdLtZkHvAthk11Q7Jg4JWltzFh9tcNeCs5Jcet536OijaTNjPY1Q4qfZp6f4MOXdmSTHeL4Q9KVEB+LpRHyfXrCMAastreDOkOKjGbDX3ACgGKq9/AocS8OFyDMZrOjF4cBzDk5u4tfiE1VYXoc4ZmLdaRglGFaL07qmbuXLU=
-Received: from DM6PR10MB4363.namprd10.prod.outlook.com (2603:10b6:5:21e::21)
- by SJ2PR10MB7600.namprd10.prod.outlook.com (2603:10b6:a03:543::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.26; Mon, 28 Jul
- 2025 12:41:55 +0000
-Received: from DM6PR10MB4363.namprd10.prod.outlook.com
- ([fe80::999b:18e4:cc6a:7cc6]) by DM6PR10MB4363.namprd10.prod.outlook.com
- ([fe80::999b:18e4:cc6a:7cc6%7]) with mapi id 15.20.8964.023; Mon, 28 Jul 2025
- 12:41:55 +0000
-Message-ID: <77967b1f-a4f6-44da-a981-2add2fb451f8@oracle.com>
-Date: Mon, 28 Jul 2025 08:41:51 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/6] virtio-net: initial iterative live migration support
-To: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, farosas@suse.de,
- eblake@redhat.com, armbru@redhat.com, si-wei.liu@oracle.com,
- eperezma@redhat.com, boris.ostrovsky@oracle.com
-References: <20250722124127.2497406-1-jonah.palmer@oracle.com>
- <CACGkMEvrgAqSr9sgvq6F4oKBitZncqhsB_MEsbaNB7p0ZN5fEA@mail.gmail.com>
- <0f5b804d-3852-4159-b151-308a57f1ec74@oracle.com>
- <20250725053122-mutt-send-email-mst@kernel.org>
- <CACGkMEvTgCAbBG20iLB1m_WfYzMZA7FYZ2FuL6To4EV86PXZbA@mail.gmail.com>
- <CACGkMEtCiqq0P_7aB-d5CrQraHL2xky5Qa+9LyZce4hk+wvvYQ@mail.gmail.com>
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB9136.namprd11.prod.outlook.com (2603:10b6:208:574::12)
+ by MW5PR11MB5762.namprd11.prod.outlook.com (2603:10b6:303:196::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.27; Mon, 28 Jul
+ 2025 12:53:17 +0000
+Received: from IA3PR11MB9136.namprd11.prod.outlook.com
+ ([fe80::604b:77a4:b1be:3f13]) by IA3PR11MB9136.namprd11.prod.outlook.com
+ ([fe80::604b:77a4:b1be:3f13%4]) with mapi id 15.20.8943.028; Mon, 28 Jul 2025
+ 12:53:17 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "philmd@linaro.org" <philmd@linaro.org>, "wangyanan55@huawei.com"
+ <wangyanan55@huawei.com>, "Liu, Zhao1" <zhao1.liu@intel.com>,
+ "slp@redhat.com" <slp@redhat.com>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "mst@redhat.com" <mst@redhat.com>,
+ "eduardo@habkost.net" <eduardo@habkost.net>, "marcel.apfelbaum@gmail.com"
+ <marcel.apfelbaum@gmail.com>, "shahuang@redhat.com" <shahuang@redhat.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>
+Subject: RE: [PATCH] vfio/pci: Fix regression due to unexisting property
+ use-legacy-x86-rom
+Thread-Topic: [PATCH] vfio/pci: Fix regression due to unexisting property
+ use-legacy-x86-rom
+Thread-Index: AQHb/7tH928wmNXXCEGFpAckeAJjwLRHd+cAgAAE1FA=
+Date: Mon, 28 Jul 2025 12:53:17 +0000
+Message-ID: <IA3PR11MB9136873A48AC915500934D20925AA@IA3PR11MB9136.namprd11.prod.outlook.com>
+References: <20250728122906.39703-1-zhenzhong.duan@intel.com>
+ <424a42b6-5013-4b95-9d85-37d99ebdfe93@redhat.com>
+In-Reply-To: <424a42b6-5013-4b95-9d85-37d99ebdfe93@redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Jonah Palmer <jonah.palmer@oracle.com>
-In-Reply-To: <CACGkMEtCiqq0P_7aB-d5CrQraHL2xky5Qa+9LyZce4hk+wvvYQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PH8P223CA0025.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:510:2db::13) To DM6PR10MB4363.namprd10.prod.outlook.com
- (2603:10b6:5:21e::21)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB9136:EE_|MW5PR11MB5762:EE_
+x-ms-office365-filtering-correlation-id: f642434e-99b0-41c9-aa21-08ddcdd5b947
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|7416014|376014|38070700018; 
+x-microsoft-antispam-message-info: =?utf-8?B?V2dXTmhOYUFrVHcvbGQwRDFZbjhpcTIrcWNGc1VwS2MwWWxzUG9ZSmxmYzVP?=
+ =?utf-8?B?akNRUjZGRG5nbUVjN0ZlcFpNejluTGo1ZUpvMXg4M0xvS2RyK2wzUTFJVVRl?=
+ =?utf-8?B?V1l2TmZkNGtqNFJQK0laQnR1S090N0tpeWJ6UGhxMkI5UEI0YnBHclZWcWZs?=
+ =?utf-8?B?OWdVdGV0V09SQmFBL2RRRFp0T1BvVHVzS0YxRTJDcVhDcVFYSzZvWE9vcWJu?=
+ =?utf-8?B?MUF3c2FNYjB2VFBCS2JGSHRMN0ltaFppL2cvc3A5dEFrSnlBNVRhMUE1VEV4?=
+ =?utf-8?B?UDlWSEJ4T1luTnNEbitsWFM2V0RkdklUZlgyRkpBRFhhWFRkYWlqOGVMeGFU?=
+ =?utf-8?B?V0EybVNsZDl5TktLa1dBaDF2ZnhiOU0weE82VWFxYnNkOW5xSWRHZDh4UVFq?=
+ =?utf-8?B?cEEwRVRCeXQ4ZDBwOGxsQmsvRGZVenduWWV4QnYvaVVpRFB5NGVSVy9kb2Rt?=
+ =?utf-8?B?QjNrS0cwSkkwZVRZU1oyZTVyT2pHOUZhZlNzSVpWd0svOUI2NkNaeUhwbGFs?=
+ =?utf-8?B?NWhxR1ZzQkJpTU9vd1NDc1RSUm5VaDJrdm5BOFgwRzY5bnd5L3lZYStLUitU?=
+ =?utf-8?B?ejJsUm52WGNSL1piTnU1RGFGT2tHNC9GbitVV0pzM2tlQTlmNVdtVmJZVDlR?=
+ =?utf-8?B?QjVnUFVjR2ZuU1phUEpYNkFnOXN2a1lKcU5aM2Zkd1liYlcvU1pyQXhnSUNY?=
+ =?utf-8?B?NG9reUI4RTVQUDE5VUhnT2ROWFkvRCtubDJKNFcvRHdWN3VMUGtWeWRRNFU0?=
+ =?utf-8?B?cU1SaS9XVUtmMVd2TGRHemhJYTZGdG93UGpjRnZ6REZVL0FMbDJMQnQ2VU9O?=
+ =?utf-8?B?SUJFN3RiVXh0M3E0Vmt1TlhtTW8yRi82RU9Od2NJcCtlMlBBOVl6MnlEUlNq?=
+ =?utf-8?B?VU1QaEtZRmJMdTNFQnZSUDUvY2pQdHZuMjVsS1VjMk56MGhmTGNqdjdKTzh2?=
+ =?utf-8?B?VElGZXF2TGx6NzZ3TGRrNFcyMEVBL0crZDdldmZ4R3BLdUFHaUNZTHQ3VWVL?=
+ =?utf-8?B?ZCs3S0N2eTgwbTE3NnFCWUpVOEJUM2s5eEVkUEwyZHdCUU1IY2I0S3c0REhy?=
+ =?utf-8?B?dmVzNU5rS3ZJdi9YRnh1ekU5eVZOSUJkSXAxNTlkaUNzREU5OEtudE16dWpz?=
+ =?utf-8?B?dFlyMFAvYXBNb0JJTElJMEpiTzBwRXpGNUJleVhGeUZVRysvaFRraVVQOE56?=
+ =?utf-8?B?YUpReFp4NUpvVW4wMjA3MDJmcHpjMFhZV0pzSlhUWDRKeTkraGZCQXNYdkE2?=
+ =?utf-8?B?aTdNd0lmeEVSb1NaOWpieE1sSDl6VE5MSzV2enlibGN4N0lNV0F3OHJsejNw?=
+ =?utf-8?B?b3haTUdBNE5lRC85QmxVaHZOUkJsd0lwNXNpVmRlWWtTSG1kSndPRDBtNFhR?=
+ =?utf-8?B?cHkvTFNFN2t6a1MwY2I5aXFlcmtFWVAxY1pFYkxEQUo4dG1vamJQZ0pzWkNz?=
+ =?utf-8?B?S0tIN3l4c1g1Rk1tOWFVMGFJQXVQeWpqUjFxd3hnZWVFdXJZOVpNUllzd2dM?=
+ =?utf-8?B?MTBuV01qSnlFdXZ3NklRQmpzN3ZOaittNThWVVdIMmVGTys4T3dOYjFmVEZr?=
+ =?utf-8?B?OEFRL2pxWDhSelZrVkhjOXZkcndLc1J5OGlHV01yZ25RODhHYU1xR2FkdjNp?=
+ =?utf-8?B?UGx4M0J0d1cvc2x3YjRQVXlDcGxkOWNKWDk2SVRDZm5kK0swZHRhRFZIMjlH?=
+ =?utf-8?B?V1FUVllzN1lzSFIrTU1XeC96ckdnUk1Md0txaE5Ld0xpczZleGt0NzFiYjVK?=
+ =?utf-8?B?ZXprb253aDd0bkJCckdVV2RaTXl2KzM2b3Q1YlNtMVVOSUduNSs1RXZ5R2sx?=
+ =?utf-8?B?Yk4xUmVNS21QN1Y2QUhWSEJWVWtXUEx3RVA3QWd5QkY3NmZ6cXZEYVpmUk5G?=
+ =?utf-8?B?RXp3ZDdhWjJZbDhjK0o0ZUIyNUdHWkdYelZOY1kvbVpzbVBhNzZFRlJwSUs1?=
+ =?utf-8?B?ZXRITVBnbGNQczNrcXlRakhtcHZVbkY2UDYrT2x5Q21hWDF2VDNPdzkzMDhm?=
+ =?utf-8?Q?OHEEErMU+gtTzdLeBeTA+CIDqlCw60=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA3PR11MB9136.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Q1Y1bWFPRnovSVJVS3Y5eU44QUJOMXdOSW43NjByNEUwS2NuOFBZS1FKRW8r?=
+ =?utf-8?B?TWJJcmNrR2s4b1AzU2NVNjNyT3hQUkFKNXNXUGp5Vm5TUzJsYi8zS1g5eDd2?=
+ =?utf-8?B?RGxiajViVjdmazMxYllHUzRoaWY3OGJqNUFxd0ZTWjlTVGJOTWZ4VGNxaTdu?=
+ =?utf-8?B?bmFYUUpjR2RqeXhTSEFwSG5lMHRyb1Y3dEFQVHJacy9ORjQwOXRpNTVFc2xv?=
+ =?utf-8?B?TXRKVXdGdGw4cktQMEh3MWdpRld2L1JYeVZHQU1BaUhuVmQ3T1JsN0FzbWtn?=
+ =?utf-8?B?aTgvZ2xXYzdPRW9ZZURKYmgxaWRWYjgybW9qcXplY3ZOUzN5d2ErMDlDSzY3?=
+ =?utf-8?B?aWJsVzBYbUtsWW0ydXQ4anBsa25QV2xvNzZVQllEOVdQNjNoSkJ4cFBzSlZV?=
+ =?utf-8?B?QTV1L0FBcWlESXpvN3lNWDNxYTUyT21XV0dPVDVkZHhBRWJ0eVVaTFFZaHFl?=
+ =?utf-8?B?NU1GeVBuTGIwMEdHSXI4TnY0bkg5cXl6NUxDTko3NTBrbkFSUUcyQm5CT1hW?=
+ =?utf-8?B?Ri80QnZSV0hOOFZ0RWVad0hHRDltQ2R6UnhibThSck9oNTRYZXRlSWxpcUpm?=
+ =?utf-8?B?UHhuWU1xVyt1ZVZxQ1RHMk5MWFdUb3QvREpaUjB1c25aR3AwbXpuTVQ4d2lQ?=
+ =?utf-8?B?S2lPdDJ6R1ZXZ1JZd0h1ak9aL2hZL3M1QXN3WkdIeWhqVFZFM04wN1Fnb1A4?=
+ =?utf-8?B?ZGpqZm1EdmdiWUJzTlJTNkFWQTNPbkQ3OXNVTjVSYTBsUi9YblV2VWUyMSt6?=
+ =?utf-8?B?MTNlNWg3ZURWb2JsYXVsODJIN2MrMzVCVmZ6TFBtMGZnUk5McjJTbG1nS0la?=
+ =?utf-8?B?K2F0QldYWm0zanRhQkJGVHZqQ3VIQXl2YnB2OURQQmxJcDJyNkdkVkVWZnhy?=
+ =?utf-8?B?eHo1K1VQbEJKSEt1amdjUEtCcUVIdFp5MzAxNm5pV2hXdFJLUDN3V1VmRC9r?=
+ =?utf-8?B?K1psK0JvZGs0blAzWEYvYzF2cjBJNTRTNU1qc3FySzd5dTNWSDA3aUY0UW1s?=
+ =?utf-8?B?ajRtdWpCZjcvK295ZnAzbGdtdEJEdVM2QzNuYlZWbkFSUzVhLzY0b0lDMDQ1?=
+ =?utf-8?B?Sko1Vkc0UGJvZnl6RXloUmNUUnloS1U3TEtiR0RReit4QlAwQzNrY1VCa1dB?=
+ =?utf-8?B?c1lYRzZMV0YzdHNid1ViaVZMeG9pL1JNTUx4S3o4ZnN6Sk8zQ2pJTDIxOWtR?=
+ =?utf-8?B?Y3ViZWxXNWpaRWwwaVVZUUZieGdvN3ZKY2R1OW9XRFBWK0tSanBGb0ZUdEJu?=
+ =?utf-8?B?TEhYNzFvTWcxZ2FpK3V6NEJOZDdWT3VuWlMzYm9sYkQzdnc3RzlMMHlaTVU2?=
+ =?utf-8?B?aWtGT29KQmNjdWtZWGx5VFRnZkdwY2RnZi93WnIwanpRMURUOW1NbUJWQktv?=
+ =?utf-8?B?dmhWMGR0bHkzUzdwQzNreWdmMUhMUWhEZ3Q4dDhySzU4TDBOeDR3UEwzTVR4?=
+ =?utf-8?B?aGZ3THdPUGZoUmF3WS96aTFmcFFRL0FYa0FYaitPY0VYUUFEUFpZdjVVQzhw?=
+ =?utf-8?B?UjJVckJWY2d5OUp6QXJzWGhDWDd4TjRaWUpFMGZ0UE4rRkhLdjR5N1RmSUN4?=
+ =?utf-8?B?aDI0c0VyT1B0YmxUSHlyS2FiQVYxdjJaTXNteFV2SVZPeWNQWG9Ra3E3TWkv?=
+ =?utf-8?B?YjRFcmF6OVpLV2dVUjdjUmdUdElHVEhMK3FYV2FYM01qWlQ5TlUyaENwd3lJ?=
+ =?utf-8?B?N3NLZDdXSVRpWHUxU3h3TEtSMDRJZTgwMDV3d1U2T1Q3OFNDMWR4NWp1K3BS?=
+ =?utf-8?B?VTFmaHhYK0FYVDVRUFFyWEJIZE5JZm1VYkVZR0QraE5zSnVHRkV3V2JOZTJh?=
+ =?utf-8?B?L1lzVTR6dTk0RWhRbU9LZUp3YWxvN2V4NEFRU0RHZnpQdnR1NEVzamNyS1ZS?=
+ =?utf-8?B?ekN4blBKRjh2ZUlWWENOTTdjYVJFempBeUZMTzVDR25sRmlpUTR3ZnNxTFhh?=
+ =?utf-8?B?SjBKbS82dlcxdWpsaW9xeGlsSFpBNlY4cDk5MHZjQjdPKzYySHZVM2F1T1NS?=
+ =?utf-8?B?WTdoOUdlcEk3TEh6d3hnSkdGSi9nYlFEeG9wY2xXQUxjL2tsZ0hZWW54Qnd4?=
+ =?utf-8?B?L0hVaFNac2RJYVZ5MEtpK3JNL2pOd0ZzZllGeEcwL1NTWVA2VFlEejBYbjhj?=
+ =?utf-8?Q?4NR/xU5KXvaLO0BSXuM9TgNzh?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR10MB4363:EE_|SJ2PR10MB7600:EE_
-X-MS-Office365-Filtering-Correlation-Id: 641f3d60-fd8e-4e08-6903-08ddcdd42271
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WEhWa0JSbnM2dzVjanNXWDlIbHhBTWdnbnFWczhjVEh5WnZhZTdQR0NzQzNj?=
- =?utf-8?B?TmwzdnhpZll3eE83S2NPK0dVTEhzaEFzL21FUXZOVm42cFUyelRwYnJGZzEw?=
- =?utf-8?B?VHJKNUpIYkJqbEhPaTlyaHBqZS9ydG03Mk81WWF3Q2dvWkVHcFU3Ri9LWFNu?=
- =?utf-8?B?dEZjSE10ZzVsVkQ2UFBobmtneTRNUG5HeTVJUjFBUjN1NHpmR3RjL0FMNXNW?=
- =?utf-8?B?bHViRXdzZHhnY3gySVdrQlhtYlVRMlVvY3FKUGEvK21SUkU5dWpLZmkrMjJw?=
- =?utf-8?B?RWpJQTEwbEhibnlkSHRHOERPL1luWG1FUkFYMFBYZ0ZKTll6QnMzN3I1aWx3?=
- =?utf-8?B?RmVSamNLL0t4VUtaYmNSQjZvTmNicG1wOUJFQ2dHYi82d01JcU94UFllWUpQ?=
- =?utf-8?B?SGU0dXROR24zcVRDV2pWZkVkM1ExUCtXWnRUcTZZSFBiUVBnVW1zb3lCZ3dq?=
- =?utf-8?B?Z1hhZHY1bFQ0MUg1WFhhdVkxZkJmM2NIVXpoOUREbHc1YVkxRkE5dys4MEdD?=
- =?utf-8?B?b3ZTcEZpYjNtcVZKcTRublpnVFhIL1Fud3c4S3RFZnRBQVRndlBuRjJ6YzUz?=
- =?utf-8?B?TFVSLzJVdzRqZ0VYTTRLb1pkRFI2UlR1UnFJVWcvWVFmYjg3WldkaXdINzQ2?=
- =?utf-8?B?RFN5MFlGS1A0MVVjUlA1RTZwR3lGaWZlTWk2SUNCYVZBOXo2U3lmd0ZONXh5?=
- =?utf-8?B?MnhRSGdZcVNwdlJyY3JJNEpINElyY0wvbEJCR2ZZSjdRdS9SMjZaZThpT1NT?=
- =?utf-8?B?QUttcGFXUGpjVi9sYnJab21HNzMxSHJkVitWWlBZTituMmEzYlVFdnNQRmNq?=
- =?utf-8?B?MHU3b2Y1NjZuU3ZTRnF1OUlLQjdmVUE2VzlScUJwTVRXNVJyWXo5UlBiZ0RK?=
- =?utf-8?B?UXdtMzY4aHdmRDg4T0lhRUtzL2U3WEZDTWFaVU1yNDJrMlFpYmk0a09tdFZu?=
- =?utf-8?B?OUFZM1Y3WHNTNEZsWnZOc0FMOTJBaW9qNmgxTWhncFBJVXJxeCtkc2tsUThC?=
- =?utf-8?B?NHBGZTdVOS9TNXBDNWE5NzBnQUU3OXovTC82b0Y1R2pnUUxPS3pQNmc3M3lG?=
- =?utf-8?B?d3BtTWZ4c0t4QnAwTnh3andNc1lXQlgzRUx4UFRSRkJQdVo5YUdUczdscXFn?=
- =?utf-8?B?VEFyUFRGZ2ZBNlRVRkpTdXBQN3hyNzl4dDVha3NxcHE3VGdCVDBVZjdtT2Nx?=
- =?utf-8?B?QmF6Y0dSdSsyUWZuakxhMEtreW53VmFiaVZJd0NzbUlZN05wYW16cU1kaHQ0?=
- =?utf-8?B?c25IWTZsNzJwZTZvRnFsSFpMZjlsRWVUa3d1Y3E1UzNMQ1J4UitjVGp6VmNB?=
- =?utf-8?B?WmhjaG9PbnZLMXowa05abWQ0c2FoRkZvejcwTEQ1RkNkSERhbWNFSFhjMmVY?=
- =?utf-8?B?d0xkOXc1VUNLNWc5UUZlUmJEbVN3RGdGb1RhMGkrelI1aVF0algzVWpjMTNv?=
- =?utf-8?B?SFRCTkpPUm1lTW80TmFreUxMcDhKRGYwVlZYOXd3Mkd6VjBJcTRHbmt2dmt5?=
- =?utf-8?B?TWVocitHbkFLclB1WktxRFQvSXA4MnJTSy93NXk2Yng0eHkwWHcxQ1pLeUQv?=
- =?utf-8?B?eVNuQVZhTWNpalN5WE9aT2NYWjk0OEJnY3dIa01GbVQ1cTdxT1VQYkpTTXNi?=
- =?utf-8?B?aEVZc2VMN3VRSkUrVDMzTWdaN0dJZTQ0VndjblFBM1hvR1N0RTJBOGY0bk5S?=
- =?utf-8?B?bUJpdzhqTWJIajFaR0JkMkNlQ3dkbzU1NWxRcjQ2ZkUxblBGamFWZlhxZDV0?=
- =?utf-8?B?T0hhYkt2c0NBbXBkajhVQzBWNUh6YW94MDlQc2Y5M2FmajVGSXhNT3UvSHZu?=
- =?utf-8?B?Sm5PVnBrSEMzQ0ZyeTZDa0J1TGdxaFVmb0d0eDZJaHp3cGNKdmo5WkRVUlBV?=
- =?utf-8?B?dWMydUY2L0VQdHhxRElqWk16d3Zid0NDcUc5dXVEOXdtbDlMY2p6Y3M0M0cr?=
- =?utf-8?Q?xbDPSl2I0y0=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR10MB4363.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(7053199007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aW94L3FzUEd6YzRKQmNqdHc0bGZLWXFHUTd2RS83WU05OTI5U2RGS3FqODFG?=
- =?utf-8?B?NFF6VGY1cnc2cUdHWmxDaWlSd0w5S1BOQVNGeGJmR3BTN0Y3TGNUTVV1dlRa?=
- =?utf-8?B?bnFkT2E5S0xNUVRoQ3AxbmxsS1EvNUw2RkY0YWp0blU4VkwrcW1IYks5ZXFz?=
- =?utf-8?B?Rit1dVMvaXF1SGRnR2tVM0NEMmcySFhCcldtK1NmNzUrSkRhMnBlcExmS1hS?=
- =?utf-8?B?dlUyNXFrVWl3VVg5NVJZUFB1a0wzelYxd0lMWHp5ZkhCckhYSmlndlVqR3l6?=
- =?utf-8?B?SUMyUWlxbTdHdGdWaGYrUU92Tk1VeGZueXVoYUdPcHBMbzFQZk0rc2dMRHVW?=
- =?utf-8?B?ZSt6V1F3THVsc3Z4Zk8wVHhOUGN1VE4zcFFYWXhyclNKZ3dScDB5d3ppaEtW?=
- =?utf-8?B?bmFJbkJ2SUhFTjd6Y3hFbXpXY3ZiRks4SCtoaWZWdkhxWG10YlJyQ3B5bk5W?=
- =?utf-8?B?NmV0UjRBeE1KZUpXR3NGSFB1OFkvRjdxTi91ejYzRERuT2kyaFZaYkVWOVNh?=
- =?utf-8?B?TlFWT1FlNWh2S1dJZGNMZmYzNFRoRmswa0N6dHJtVkZ0RUw0R3kyT1NaV3NB?=
- =?utf-8?B?YnFuOEFIYXI4SEUyM2l5NHJzTWFGR2JLWHlMTFBLbHBGb3pSRnpaeDdYUGo0?=
- =?utf-8?B?bEl6MTQxUU1ZWHVwZnFGODA1akpDQWdBRnJ5aERKSXg1bmNQRWZxU2ZyUmM2?=
- =?utf-8?B?THUrY3dsRzRsS3JreGpEUk54OHNkU05GVjh6N2o3czZ0SjJWWkRqUXFJcG5q?=
- =?utf-8?B?Vzc5Mnh0V21LREpGL3VzN1JGd0Fjakt2QWd2YXVWTGFkYVR6MW5lVG5oUWx5?=
- =?utf-8?B?dERPWStTdlZnSnZuOTBaTzJnYU9NNnAyWlFicUpkNjZTeWNMRG5pUVJKU0V4?=
- =?utf-8?B?TTVqV1VqVi9yVWF5Wm1GMzR1RmttbzJGQTJLeUhFVXpIWFVKQjZJY25vQjdq?=
- =?utf-8?B?SjlLSFZONWc4bXdQYkNpMjdsR29TWWZhN1AwYTl6dkZsendoZGxmemNYa2RS?=
- =?utf-8?B?R2gwendlWnJZdVJwWWplUDR5djA1VGtlS0tpVUdzWFUrbVJTbTgvZ3B3UFI3?=
- =?utf-8?B?bGdsTWpiblBLc3Rsd0Y2UXlvQWxLMFFlTm03VmkwUkVtbjRpaTROWk1OWVpG?=
- =?utf-8?B?WjlNbEVLazRPN2x5eS9YK2piemRNaFlyYlJyM2gwc0pTL0FLa3FMNHdMa0JI?=
- =?utf-8?B?d1gvb2p4ejNZZU83N1c5OVRGenMrbURBNzUzQ0RRNWpuNXUraWlhcjIweWJo?=
- =?utf-8?B?WEQrNHJTWUNXM1RuZnBVQ0hSOVdpOTVBdm5tTGhscWxtUVhMK2t1Q1dBZUw5?=
- =?utf-8?B?bXAyd1dsV1JyQlp0YWNKRzFhdWNiMXlJY1RRRXF1d21Oc1dyaHlYVG5razlq?=
- =?utf-8?B?OVVwK2dhYzdjU1lzMXpJOUdIMXNPRnpZNkpUUTVFbXlkRzVMWk5HUlRRMjhL?=
- =?utf-8?B?OTVtbDM0ajM4aE1XK1I2NnQwTmRzTHVBYXF4cEZkdmZLbytCWk14Nmc3ay9Z?=
- =?utf-8?B?QWQrK0liRzRuTnVrVmFhSXhuNWVrSk1MQjQ1UTB6YWM2emthY0ZZS3k5bXgv?=
- =?utf-8?B?RndpSXJGT3ZaMGFsUmFydmd6M3hDWmh1a3NYTHlvQnVsdWJadFh4V0RhWkFM?=
- =?utf-8?B?eUNUUTNCUlJydHIyYkdBSmNEUHlYUkd4NGtyTXR0cEJDZHFSeGpJdmcwaXM5?=
- =?utf-8?B?TVFxYTNremVmM1N6UHlld2hFMFBnUzFhRElqYStsTzNYczdBU1BQNWZhR0Ux?=
- =?utf-8?B?aDFUbUp3bTRHVDZOVldtd0l2OFBrT2Q0R0hqTERpNk51NzFZQTE0YmJSSUFN?=
- =?utf-8?B?ZzBtR2tMeHdCYlA1N012TnN3YVZLSGhtR2JoZzhJODhURC9YYi9lUzBhT25T?=
- =?utf-8?B?Vjd1bTBMNThNV0Zrcnh6VTBSZzRxZVNrR3ZseG9ualB3bVpiWW9wdzA1elhj?=
- =?utf-8?B?dXBwTzN5bDJ0cGE2aVo5aDEyTXJPOER2VEN0Tmg0dDRjRWQ4a1g1RU5iV29L?=
- =?utf-8?B?dTFZNkNSNS9pcHNWQUNzTVNiMzNFYUVRWWRBVjNOUW13OFNwYUR4QXpobHV2?=
- =?utf-8?B?UHBhOTJXQ29HSE9iMGNqVExaYTlLQ1B3Q3lqQzNIbVBhL3QyQmtuRlFNRGFr?=
- =?utf-8?Q?Shp10lQb2CoonwXy6nN0VXMBv?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: NbeBVSLgBYv7PLn8lEDoBvEx3iJXsziw/XTfKEQWNzBzHLViYn7iHNiHTbz7lg8DuhH5wCQbeYO3kt1Csh1i/A87wsW7aJ0VfmwRtPFs2FqLR5Nx7C9eMEZ5cW1zSDcc4YQWWNMGgLzkzyauw7hSjCqVeBnr1ObxfUrCM6Hghw4eBDpHus0CbYFjYUaXJdd6OE2F9/Qk9EVMb87p/+B0UUHdhyglAIvB/ZSiAlJX5ihvbkZisiKLXsCX6PVQvFiFGpnSzyoU3rLl62PQP9hLRtxqROQy4j+va7PSqPqDG2kZlVUAj7cWAXFQmp7cd3u6drKw/T58B2HlLPyUaCky7Y68Zpl9vwfGmIvlsSq3x1pw7NNdx1k1OVsHm18UIPxohEVrmmZhRCkfIxy6Fdlp+GBGiNwErUhbIuEOVn8R6GQ5YbUk0wDX5eUNyJOI7sRoBWwqqZDOSBR1WgCbIx3x/io9T4DSF97gpxPzTAaxYKxtZnKituHgFbWgEt4z2vZZcaIsITZDMKpGsIt+GXBdglGiCDYGcTGpcPQQf5C89w9B4Vr3l+1xYFdnxEvgw2Wt6CyesaN+QIYITnjSxHpTuZ9f1dLR8CpeeX5dIFMPQ6Y=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 641f3d60-fd8e-4e08-6903-08ddcdd42271
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB4363.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2025 12:41:55.3078 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ELdoaY4CQdVJ8TJlZ30UKegllJwWcGSRDTahoruF/FmVhZa6Gblx+Jz/P03iVeSzWexYmttdhdvVJEPPWc3CzA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7600
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-28_03,2025-07-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- bulkscore=0 spamscore=0
- mlxscore=0 phishscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507280093
-X-Authority-Analysis: v=2.4 cv=X+lSKHTe c=1 sm=1 tr=0 ts=68877016 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
- a=ySjbdQRUVj7h-4mhXxUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: oOBIF2cSzAfwMaqSHEnKXYUBk95CiPM9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI4MDA5MyBTYWx0ZWRfX+biEuhKZLTTo
- V1H0TLYglB1NW8DMysuDb7+oU4lWSFUx11xiATKRpWzQnI+XgtCLTCpLk1F4K1kq/9cYZMiCrY4
- bWBLY181um/emiEI0itGXuJThu126z2NLWgcVOzmY96/24IJUQgmyJ6zA7dskDZhzKpcwUNwjPF
- FnruLkKlur5UsfxH+53SMQjdDh1mm44IfutHNfPLEcCDgfeoo33xjIC4WkJUPiFpuZxzuOfpPn4
- pIUA3KcbjFMspBHrLGeznindW8zC0ua9dUgjDBKQjFpKUx8ertURlfU2eJySYVS2PNbPp2Ow/gv
- FJdxh1IsQGFXedn6KS0y80PwX9egF5FAwj7gDAzcsyWrlN3CeTGbDuGwpXISoO46bu8G+anexR+
- wVheUMyBo5PziiNnOnlSm0fy6hbynHZzZcwaGOBtqfq2TQlrJplgrDVHuxMPrE4nNKvmHTsX
-X-Proofpoint-ORIG-GUID: oOBIF2cSzAfwMaqSHEnKXYUBk95CiPM9
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9136.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f642434e-99b0-41c9-aa21-08ddcdd5b947
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jul 2025 12:53:17.6211 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: BUIjZo6ysJAPfINkPJA5qi8FdE8UPvkx/Pj06+h2Rh2clKdLtJpokHhdSFbo2aO7GqoxIkOyfz0ZUA+W+JAXzxM0q3rqTBfmWqea3gLT3xA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5762
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=198.175.65.17;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -233,291 +223,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 7/28/25 3:35 AM, Jason Wang wrote:
-> On Mon, Jul 28, 2025 at 3:09 PM Jason Wang <jasowang@redhat.com> wrote:
->>
->> On Fri, Jul 25, 2025 at 5:33 PM Michael S. Tsirkin <mst@redhat.com> wrote:
->>>
->>> On Thu, Jul 24, 2025 at 05:59:20PM -0400, Jonah Palmer wrote:
->>>>
->>>>
->>>> On 7/23/25 1:51 AM, Jason Wang wrote:
->>>>> On Tue, Jul 22, 2025 at 8:41 PM Jonah Palmer <jonah.palmer@oracle.com> wrote:
->>>>>>
->>>>>> This series is an RFC initial implementation of iterative live
->>>>>> migration for virtio-net devices.
->>>>>>
->>>>>> The main motivation behind implementing iterative migration for
->>>>>> virtio-net devices is to start on heavy, time-consuming operations
->>>>>> for the destination while the source is still active (i.e. before
->>>>>> the stop-and-copy phase).
->>>>>
->>>>> It would be better to explain which kind of operations were heavy and
->>>>> time-consuming and how iterative migration help.
->>>>>
->>>>
->>>> You're right. Apologies for being vague here.
->>>>
->>>> I did do some profiling of the virtio_load call for virtio-net to try and
->>>> narrow down where exactly most of the downtime is coming from during the
->>>> stop-and-copy phase.
->>>>
->>>> Pretty much the entirety of the downtime comes from the vmstate_load_state
->>>> call for the vmstate_virtio's subsections:
->>>>
->>>> /* Subsections */
->>>> ret = vmstate_load_state(f, &vmstate_virtio, vdev, 1);
->>>> if (ret) {
->>>>      return ret;
->>>> }
->>>>
->>>> More specifically, the vmstate_virtio_virtqueues and
->>>> vmstate_virtio_extra_state subsections.
->>>>
->>>> For example, currently (with no iterative migration), for a virtio-net
->>>> device, the virtio_load call took 13.29ms to finish. 13.20ms of that time
->>>> was spent in vmstate_load_state(f, &vmstate_virtio, vdev, 1).
->>>>
->>>> Of that 13.21ms, ~6.83ms was spent migrating vmstate_virtio_virtqueues and
->>>> ~6.33ms was spent migrating the vmstate_virtio_extra_state subsections. And
->>>> I believe this is from walking VIRTIO_QUEUE_MAX virtqueues, twice.
->>>
->>> Can we optimize it simply by sending a bitmap of used vqs?
->>
->> +1.
->>
->> For example devices like virtio-net may know exactly the number of
->> virtqueues that will be used.
-> 
-> Ok, I think it comes from the following subsections:
-> 
-> static const VMStateDescription vmstate_virtio_virtqueues = {
->      .name = "virtio/virtqueues",
->      .version_id = 1,
->      .minimum_version_id = 1,
->      .needed = &virtio_virtqueue_needed,
->      .fields = (const VMStateField[]) {
->          VMSTATE_STRUCT_VARRAY_POINTER_KNOWN(vq, struct VirtIODevice,
->                        VIRTIO_QUEUE_MAX, 0, vmstate_virtqueue, VirtQueue),
->          VMSTATE_END_OF_LIST()
->      }
-> };
-> 
-> static const VMStateDescription vmstate_virtio_packed_virtqueues = {
->      .name = "virtio/packed_virtqueues",
->      .version_id = 1,
->      .minimum_version_id = 1,
->      .needed = &virtio_packed_virtqueue_needed,
->      .fields = (const VMStateField[]) {
->          VMSTATE_STRUCT_VARRAY_POINTER_KNOWN(vq, struct VirtIODevice,
->                        VIRTIO_QUEUE_MAX, 0, vmstate_packed_virtqueue, VirtQueue),
->          VMSTATE_END_OF_LIST()
->      }
-> };
-> 
-> A rough idea is to disable those subsections and use new subsections
-> instead (and do the compatibility work) like virtio_save():
-> 
->      for (i = 0; i < VIRTIO_QUEUE_MAX; i++) {
->          if (vdev->vq[i].vring.num == 0)
->              break;
->      }
-> 
->      qemu_put_be32(f, i);
->      ....
-> 
-> Thanks
-> 
-
-Right. There's this for split/packed VQs and then there's also the 
-vmstate_virtio_extra_state which ends up loading this 
-virtio-pci/modern-state:
-
-static const VMStateDescription vmstate_virtio_pci_modern_state_sub = {
-     .name = "virtio_pci/modern_state",
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = &virtio_pci_modern_state_needed,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(dfselect, VirtIOPCIProxy),
-         VMSTATE_UINT32(gfselect, VirtIOPCIProxy),
-         VMSTATE_UINT32_ARRAY(guest_features, VirtIOPCIProxy, 2),
-         VMSTATE_STRUCT_ARRAY(vqs, VirtIOPCIProxy, VIRTIO_QUEUE_MAX, 0,
-                              vmstate_virtio_pci_modern_queue_state,
-                              VirtIOPCIQueue),
-         VMSTATE_END_OF_LIST()
-     }
-};
-
-...
-vmstate_load_state_end virtio/virtqueues end/0
-vmstate_load_state virtio/extra_state v1
-vmstate_load_state virtio_pci v1
-vmstate_load_state virtio_pci/modern_state v1
-vmstate_load_state virtio_pci/modern_queue_state v1
-...
-
-I'll take a look at what could be done here and try and get it into the 
-next series.
-
->>
->>>
->>>> vmstate_load_state virtio-net v11
->>>> vmstate_load_state PCIDevice v2
->>>> vmstate_load_state_end PCIDevice end/0
->>>> vmstate_load_state virtio-net-device v11
->>>> vmstate_load_state virtio-net-queue-tx_waiting v0
->>>> vmstate_load_state_end virtio-net-queue-tx_waiting end/0
->>>> vmstate_load_state virtio-net-vnet v0
->>>> vmstate_load_state_end virtio-net-vnet end/0
->>>> vmstate_load_state virtio-net-ufo v0
->>>> vmstate_load_state_end virtio-net-ufo end/0
->>>> vmstate_load_state virtio-net-tx_waiting v0
->>>> vmstate_load_state virtio-net-queue-tx_waiting v0
->>>> vmstate_load_state_end virtio-net-queue-tx_waiting end/0
->>>> vmstate_load_state virtio-net-queue-tx_waiting v0
->>>> vmstate_load_state_end virtio-net-queue-tx_waiting end/0
->>>> vmstate_load_state virtio-net-queue-tx_waiting v0
->>>> vmstate_load_state_end virtio-net-queue-tx_waiting end/0
->>>> vmstate_load_state_end virtio-net-tx_waiting end/0
->>>> vmstate_load_state_end virtio-net-device end/0
->>>> vmstate_load_state virtio v1
->>>> vmstate_load_state virtio/64bit_features v1
->>>> vmstate_load_state_end virtio/64bit_features end/0
->>>> vmstate_load_state virtio/virtqueues v1
->>>> vmstate_load_state virtqueue_state v1  <--- Queue idx 0
->>>> ...
->>>> vmstate_load_state_end virtqueue_state end/0
->>>> vmstate_load_state virtqueue_state v1  <--- Queue idx 1023
->>>> vmstate_load_state_end virtqueue_state end/0
->>>> vmstate_load_state_end virtio/virtqueues end/0
->>>> vmstate_load_state virtio/extra_state v1
->>>> vmstate_load_state virtio_pci v1
->>>> vmstate_load_state virtio_pci/modern_state v1
->>>> vmstate_load_state virtio_pci/modern_queue_state v1  <--- Queue idx 0
->>>> vmstate_load_state_end virtio_pci/modern_queue_state end/0
->>>> ...
->>>> vmstate_load_state virtio_pci/modern_queue_state v1  <--- Queue idx 1023
->>>> vmstate_load_state_end virtio_pci/modern_queue_state end/0
->>>> vmstate_load_state_end virtio_pci/modern_state end/0
->>>> vmstate_load_state_end virtio_pci end/0
->>>> vmstate_load_state_end virtio/extra_state end/0
->>>> vmstate_load_state virtio/started v1
->>>> vmstate_load_state_end virtio/started end/0
->>>> vmstate_load_state_end virtio end/0
->>>> vmstate_load_state_end virtio-net end/0
->>>> vmstate_downtime_load type=non-iterable idstr=0000:00:03.0/virtio-net
->>>> instance_id=0 downtime=13260
->>>>
->>>> With iterative migration for virtio-net (maybe all virtio devices?), we can
->>>> send this early while the source is still running and then only send the
->>>> deltas during the stop-and-copy phase. It's likely that the source wont be
->>>> using all VIRTIO_QUEUE_MAX virtqueues during the migration period, so this
->>>> could really minimize a large majority of the downtime contributed by
->>>> virtio-net.
->>>>
->>>> This could be one example.
->>
->> Or if the system call is expensive, could we try io_uring to mitigate it.
->>
->>>>
->>>>>>
->>>>>> The motivation behind this RFC series specifically is to provide an
->>>>>> initial framework for such an implementation and get feedback on the
->>>>>> design and direction.
->>>>>> -------
->>>>>>
->>>>>> This implementation of iterative live migration for a virtio-net device
->>>>>> is enabled via setting the migration capability 'virtio-iterative' to
->>>>>> on for both the source & destination, e.g. (HMP):
->>>>>>
->>>>>> (qemu) migrate_set_capability virtio-iterative on
->>>>>>
->>>>>> The virtio-net device's SaveVMHandlers hooks are registered/unregistered
->>>>>> during the device's realize/unrealize phase.
->>>>>
->>>>> I wonder about the plan for libvirt support.
->>>>>
->>>>
->>>> Could you elaborate on this a bit?
->>
->> I meant how this feature will be supported by the libvirt.
->>
->>>>
->>>>>>
->>>>>> Currently, this series only sends and loads the vmstate at the start of
->>>>>> migration. The vmstate is still sent (again) during the stop-and-copy
->>>>>> phase, as it is today, to handle any deltas in the state since it was
->>>>>> initially sent. A future patch in this series could avoid having to
->>>>>> re-send and re-load the entire state again and instead focus only on the
->>>>>> deltas.
->>>>>>
->>>>>> There is a slight, modest improvement in guest-visible downtime from
->>>>>> this series. More specifically, when using iterative live migration with
->>>>>> a virtio-net device, the downtime contributed by migrating a virtio-net
->>>>>> device decreased from ~3.2ms to ~1.4ms on average:
->>>>>
->>>>> Are you testing this via a software virtio device or hardware one?
->>>>>
->>>>
->>>> Just software (virtio-device, vhost-net) with these numbers. I can run some
->>>> tests with vDPA hardware though.
->>
->> I see. Considering you see great improvement with software devices. It
->> should be sufficient.
->>
->>>>
->>>> Those numbers were from a simple, 1 queue-pair virtio-net device.
->>
->> Thanks
->>
->>>>
->>>>>>
->>>>>> Before:
->>>>>> -------
->>>>>> vmstate_downtime_load type=non-iterable idstr=0000:00:03.0/virtio-net
->>>>>>     instance_id=0 downtime=3594
->>>>>>
->>>>>> After:
->>>>>> ------
->>>>>> vmstate_downtime_load type=non-iterable idstr=0000:00:03.0/virtio-net
->>>>>>     instance_id=0 downtime=1607
->>>>>>
->>>>>> This slight improvement is likely due to the initial vmstate_load_state
->>>>>> call "warming up" pages in memory such that, when it's called a second
->>>>>> time during the stop-and-copy phase, allocation and page-fault latencies
->>>>>> are reduced.
->>>>>> -------
->>>>>>
->>>>>> Comments, suggestions, etc. are welcome here.
->>>>>>
->>>>>> Jonah Palmer (6):
->>>>>>     migration: Add virtio-iterative capability
->>>>>>     virtio-net: Reorder vmstate_virtio_net and helpers
->>>>>>     virtio-net: Add SaveVMHandlers for iterative migration
->>>>>>     virtio-net: iter live migration - migrate vmstate
->>>>>>     virtio,virtio-net: skip consistency check in virtio_load for iterative
->>>>>>       migration
->>>>>>     virtio-net: skip vhost_started assertion during iterative migration
->>>>>>
->>>>>>    hw/net/virtio-net.c            | 246 +++++++++++++++++++++++++++------
->>>>>>    hw/virtio/virtio.c             |  32 +++--
->>>>>>    include/hw/virtio/virtio-net.h |   8 ++
->>>>>>    include/hw/virtio/virtio.h     |   7 +
->>>>>>    migration/savevm.c             |   1 +
->>>>>>    qapi/migration.json            |   7 +-
->>>>>>    6 files changed, 247 insertions(+), 54 deletions(-)
->>>>>>
->>>>>> --
->>>>>> 2.47.1
->>>>>
->>>>> Thanks
->>>>>
->>>>>>
->>>>>
->>>
-> 
-
+DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
+IDxjbGdAcmVkaGF0LmNvbT4NCj5TdWJqZWN0OiBSZTogW1BBVENIXSB2ZmlvL3BjaTogRml4IHJl
+Z3Jlc3Npb24gZHVlIHRvIHVuZXhpc3RpbmcgcHJvcGVydHkNCj51c2UtbGVnYWN5LXg4Ni1yb20N
+Cj4NCj5IZWxsbyBaaGVuemhvbmcsDQo+DQo+T24gNy8yOC8yNSAxNDoyOSwgWmhlbnpob25nIER1
+YW4gd3JvdGU6DQo+PiBUWVBFX1ZGSU9fUENJIGRvZXNuJ3QgaGF2ZSBwcm9wZXJ0eSB1c2UtbGVn
+YWN5LXg4Ni1yb20sIGJ1dA0KPj4gVFlQRV9WRklPX1BDSV9OT0hPVFBMVUcgaGFzLiBUaGUgY29t
+cGF0aWJpbGl0eSBjb25maWcgbGVhZHMgdG8NCj4+IFNJR0FCUlQgb24gbmV3IFFFTVUuDQo+Pg0K
+Pj4gVGhlIGRlZmF1bHQgdmFsdWUgb2YgZWxlbWVudCB1c2VfbGVnYWN5X3g4Nl9yb20gZm9yIFRZ
+UEVfVkZJT19QQ0kgaXMNCj4+IGFscmVhZHkgZmFsc2UsIHNvIG5vIG5lZWQgZXh0cmEgcHJvY2Vz
+c2luZy4NCj4+DQo+PiBGaXhlczogZDVmY2YwZDk2MGQ4ICgiaHcvaTM4NjogQWRkIHRoZSByYW1m
+YiByb21maWxlIGNvbXBhdGliaWxpdHkiKQ0KPj4gU2lnbmVkLW9mZi1ieTogWmhlbnpob25nIER1
+YW4gPHpoZW56aG9uZy5kdWFuQGludGVsLmNvbT4NCj4NCj4NCj5GaXggaXMgaGVyZSA6DQo+DQo+
+DQo+aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcWVtdS1kZXZlbC8yMDI1MDcyMzA2MjcxNC4xMjQ1
+ODI2LTEtY2xnQHJlZGhhdA0KPi5jb20vDQoNCkFoLCB0aGFua3MgQ8OpZHJpYywgZ29vZCB0byBz
+ZWUgdGhpcywgSSBzaG91bGQgaGF2ZSBjaGVja2VkIHZmaW8tbmV4dCBmaXJzdC4NCg0KQlJzLA0K
+Wmhlbnpob25nDQo=
 
