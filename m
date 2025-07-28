@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 093CAB1348F
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 08:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1D3B134A4
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 08:06:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugGtF-000133-75; Mon, 28 Jul 2025 01:59:13 -0400
+	id 1ugGtM-0001DQ-AH; Mon, 28 Jul 2025 01:59:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ugGrg-0007MP-1V
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:57:41 -0400
-Received: from p-east3-cluster3-host2-snip4-6.eps.apple.com ([57.103.86.19]
+ id 1ugGrj-0007Pq-Uf
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:57:42 -0400
+Received: from p-east3-cluster1-host3-snip4-4.eps.apple.com ([57.103.87.27]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ugGre-0007Gy-98
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:57:35 -0400
+ id 1ugGri-0007Hs-6Z
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:57:39 -0400
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-7 (Postfix) with ESMTPS id
- A66AC18000AA; Mon, 28 Jul 2025 05:57:30 +0000 (UTC)
+ EC1D71800140; Mon, 28 Jul 2025 05:57:32 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=y6mI8AmJ1dWdgen3Y4HML2fQWE3KY+VD1EyD//Qc2Zo=;
+ s=sig1; bh=CWqVxbeEcnfUpWv5PldRNEbRzXHeupRGUWtyqMuUirM=;
  h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
- b=bPar//4VQb8tPifxBJ6DFGXXmdw2AMFIC9kJAU/0JP5g8DTGTFqJHUV95D+QtqhjBISTLsuGdhXFLNgC/+rmK5lh1vCtwKnFjBcgkG+7x5uNzoecMB75hRgnbtlZzSinJE6k06OBckbgQho85XNyvUzArnK1Qti0NCURTk6prhmfxlts6mlvJke9XOmqaZRv2UKQ4LsdFC4T7aFb26HUrJtWkSN77TxeIxWrpxfzmApb6hojWSVMqMuD5cV5i8HGnUTsAzSc2vkX99u3uc7inZWUuiVn66uWdu+j4BIyxYfFtCWbL8KfmG7jNMDFxWN0uDDcwPtZpK0oLVWGSh7V/w==
+ b=f3pDV/6xTbAv3HHbEs/4jdp/gXnnxkljn1C5PXV7xS0rsuLrshFqkZkSeEbmI9J15eT0rZ2pJamkIwd32IZabt/wYnAwwhTn4jzeRYfqUwblaZmvbtxML9bTCvkro2b0vldKATv3gwY6h6NFsJNg0klhs87B1d3Um+PimgjFaGnFI5fr8eGQ+K+mhyafLYquJQ/2A/3aIV/f1DM/CAC0ZpLhI2koJOBywf9PJUG5vzD27OpFc/f0eWSDg5/r5PiAuCUVceS2XHypeZyLdL44UalIfacNh7znRe/2wz1vLva8kK2jMAjnfZzL+Sy8qtn/7Cqlu8+BPlud1YvSE9oK/w==
 X-Client-IP: 46.189.47.18
 Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
  [17.57.155.37])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-7 (Postfix) with ESMTPSA id
- 64038180009A; Mon, 28 Jul 2025 05:57:28 +0000 (UTC)
+ 3350C1800135; Mon, 28 Jul 2025 05:57:30 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
@@ -41,30 +41,30 @@ Cc: Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
  Phil Dennis-Jordan <phil@philjordan.eu>,
  Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
  Mohamed Mediouni <mohamed@unpredictable.fr>
-Subject: [PATCH v4 13/15] hw/intc: hvf: sync state in c->ich* registers when
- virt on
-Date: Mon, 28 Jul 2025 07:56:59 +0200
-Message-Id: <20250728055701.38975-14-mohamed@unpredictable.fr>
+Subject: [PATCH v4 14/15] hvf: sync registers used at EL2
+Date: Mon, 28 Jul 2025 07:57:00 +0200
+Message-Id: <20250728055701.38975-15-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250728055701.38975-1-mohamed@unpredictable.fr>
 References: <20250728055701.38975-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: 9TPXBQzbmoXtYz68X5g5VPWXWVWc7f-j
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI4MDA0MyBTYWx0ZWRfX6qTXyYh7iTmm
- l2J51eimKbaGReSTF7ikrIXBTyVyO2aki5Yx2pEFrUQdSOR5UcqqZMdsyu2Fkl1dSfDm8bFouNj
- H4eNz230fAZGhsc8YRLCPMsHcTPhlhbmGhQ3uMOg7qCrNOZgaTMGHEgRwKtQ6H/DLBc7sB9Vvrx
- dpq+2GzwXfUXAAHC7ytxTaw2tVJC7t5CAwZliPmxXWIZF2zly+VOZjWTHS7PjKAv/17cBnzU1Ia
- UGFmvCGp6e6IG1IfZOZ8Xwnz+lvAI2Oyd+4WHJ15eVtyY2Cvo5lK4FA9oDV3dtloc7MRnRY+4=
-X-Proofpoint-GUID: 9TPXBQzbmoXtYz68X5g5VPWXWVWc7f-j
+X-Proofpoint-GUID: e_tlGfHcTSHBOT9iIJ4lR05UCTVD-jhM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI4MDA0MyBTYWx0ZWRfXzLiQVsLh8B5i
+ qU2DXNtD1pU7ARJpcMEsA5Prj7dkt+AUCBLmi9p0WAb+9Xc/Kjk8mXQ0RThAiM9D5t7lOOab/wz
+ eCo4KCBmnKbk4keEOx/oYjdCt0xAmDNifUZ7THAnNu+QS4Yvqsjozs4CmIHHcPU4znfQfiG85X9
+ VnUTo1TD2YyXhFVecics8uDrqsjenuTKBp6rJQO2CQLmasGTkKbDtSgHxKjoHjF3GEfZmhy5RWt
+ TL8iZw1NfDzuzUK7ETHU4acgJEgXRhCAWlK3ezG6M1wQJqMv5+4wgSjR/LODvg3nE09Cw3Tjo=
+X-Proofpoint-ORIG-GUID: e_tlGfHcTSHBOT9iIJ4lR05UCTVD-jhM
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-28_02,2025-07-24_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
- mlxlogscore=884 malwarescore=0 mlxscore=0 phishscore=0 spamscore=0
- suspectscore=0 bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=887
+ phishscore=0 clxscore=1030 spamscore=0 bulkscore=0
+ suspectscore=0
+ malwarescore=0 mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.22.0-2506270000 definitions=main-2507280043
-Received-SPF: pass client-ip=57.103.86.19;
+Received-SPF: pass client-ip=57.103.87.27;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,151 +88,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Part of vGIC state to save/restore.
+When starting up the VM at EL2, more sysregs are available. Sync the state of those.
+
+In addition, sync the state of the EL1 physical timer when the vGIC is used, even
+if running at EL1. However, no OS running at EL1 is expected to use those registers.
 
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 ---
- hw/intc/arm_gicv3_hvf.c | 113 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 113 insertions(+)
+ target/arm/hvf/hvf.c | 53 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/hw/intc/arm_gicv3_hvf.c b/hw/intc/arm_gicv3_hvf.c
-index a154b27318..30362540f2 100644
---- a/hw/intc/arm_gicv3_hvf.c
-+++ b/hw/intc/arm_gicv3_hvf.c
-@@ -15,6 +15,7 @@
- #include "system/runstate.h"
- #include "system/hvf.h"
- #include "system/hvf_int.h"
-+#include "hvf_arm.h"
- #include "gicv3_internal.h"
- #include "vgic_common.h"
- #include "qom/object.h"
-@@ -315,6 +316,62 @@ static void hvf_gicv3_put(GICv3State *s)
-             hv_gic_set_icc_reg(vcpu, HV_GIC_ICC_REG_AP1R0_EL1, reg64);
-         }
-     }
-+
-+    /* Registers beyond this are with nested virt only */
-+    if (!hvf_arm_el2_enabled()) {
-+        return;
-+    }
-+
-+    /* ICH */
-+    for (ncpu = 0; ncpu < s->num_cpu; ncpu++) {
-+        GICv3CPUState *c = &s->cpu[ncpu];
-+        hv_vcpu_t vcpu = c->cpu->accel->fd;
-+        int num_pri_bits;
-+
-+        hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_VMCR_EL2,
-+                    c->ich_vmcr_el2);
-+        hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_HCR_EL2,
-+                    c->ich_hcr_el2);
-+
-+        for (int i = 0; i < GICV3_LR_MAX; i++) {
-+            hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_LR0_EL2,
-+                c->ich_lr_el2[i]);
-+        }
-+
-+        num_pri_bits = c->vpribits;
-+
-+        switch (num_pri_bits) {
-+        case 7:
-+            hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_AP0R0_EL2 + 3
-+                , c->ich_apr[GICV3_G0][3]);
-+            hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_AP0R0_EL2 + 2
-+                , c->ich_apr[GICV3_G0][2]);
-+            /* fall through */
-+        case 6:
-+            hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_AP0R0_EL2 + 1
-+                , c->ich_apr[GICV3_G0][1]);
-+            /* fall through */
-+        default:
-+            hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_AP0R0_EL2
-+                , c->ich_apr[GICV3_G0][0]);
-+        }
-+
-+        switch (num_pri_bits) {
-+        case 7:
-+            hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_AP1R0_EL2 + 3
-+                , c->ich_apr[GICV3_G1NS][3]);
-+            hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_AP1R0_EL2 + 2
-+                , c->ich_apr[GICV3_G1NS][2]);
-+            /* fall through */
-+        case 6:
-+            hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_AP1R0_EL2 + 1
-+                , c->ich_apr[GICV3_G1NS][1]);
-+            /* fall through */
-+        default:
-+            hv_gic_set_ich_reg(vcpu, HV_GIC_ICH_REG_AP1R0_EL2
-+                , c->ich_apr[GICV3_G1NS][0]);
-+        }
-+    }
- }
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 64cca9aa18..af9bbe44ed 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -407,6 +407,8 @@ static const struct hvf_reg_match hvf_fpreg_match[] = {
+ struct hvf_sreg_match {
+     int reg;
+     uint32_t key;
++    bool vgic;
++    bool el2;
+     uint32_t cp_idx;
+ };
  
- static void hvf_gicv3_get(GICv3State *s)
-@@ -452,6 +509,62 @@ static void hvf_gicv3_get(GICv3State *s)
-                 , &c->icc_apr[GICV3_G1NS][0]);
-         }
-     }
-+
-+    /* Registers beyond this are with nested virt only */
-+    if (!hvf_arm_el2_enabled()) {
-+        return;
-+    }
-+
-+    /* ICH */
-+    for (ncpu = 0; ncpu < s->num_cpu; ncpu++) {
-+        GICv3CPUState *c = &s->cpu[ncpu];
-+        hv_vcpu_t vcpu = c->cpu->accel->fd;
-+        int num_pri_bits;
-+
-+        hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_VMCR_EL2,
-+                        &c->ich_vmcr_el2);
-+        hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_HCR_EL2,
-+                        &c->ich_hcr_el2);
-+
-+        for (int i = 0; i < GICV3_LR_MAX; i++) {
-+            hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_LR0_EL2,
-+                &c->ich_lr_el2[i]);
-+        }
-+
-+        num_pri_bits = c->vpribits;
-+
-+        switch (num_pri_bits) {
-+        case 7:
-+            hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_AP0R0_EL2 + 3
-+                , &c->ich_apr[GICV3_G0][3]);
-+            hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_AP0R0_EL2 + 2
-+                , &c->ich_apr[GICV3_G0][2]);
-+            /* fall through */
-+        case 6:
-+            hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_AP0R0_EL2 + 1
-+                , &c->ich_apr[GICV3_G0][1]);
-+            /* fall through */
-+        default:
-+            hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_AP0R0_EL2
-+                , &c->ich_apr[GICV3_G0][0]);
-+        }
-+
-+        switch (num_pri_bits) {
-+        case 7:
-+            hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_AP1R0_EL2 + 3
-+                , &c->ich_apr[GICV3_G1NS][3]);
-+            hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_AP1R0_EL2 + 2
-+                , &c->ich_apr[GICV3_G1NS][2]);
-+            /* fall through */
-+        case 6:
-+            hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_AP1R0_EL2 + 1
-+                , &c->ich_apr[GICV3_G1NS][1]);
-+            /* fall through */
-+        default:
-+            hv_gic_get_ich_reg(vcpu, HV_GIC_ICH_REG_AP1R0_EL2
-+                , &c->ich_apr[GICV3_G1NS][0]);
-+        }
-+    }
- }
+@@ -552,6 +554,41 @@ static struct hvf_sreg_match hvf_sreg_match[] = {
+     { HV_SYS_REG_CNTV_CTL_EL0, HVF_SYSREG(14, 3, 3, 3, 1) },
+     { HV_SYS_REG_CNTV_CVAL_EL0, HVF_SYSREG(14, 3, 3, 3, 2) },
+     { HV_SYS_REG_SP_EL1, HVF_SYSREG(4, 1, 3, 4, 0) },
++    /* vGIC */
++    { HV_SYS_REG_CNTP_CTL_EL0, HVF_SYSREG(14, 2, 3, 3, 1), true },
++    { HV_SYS_REG_CNTP_CVAL_EL0, HVF_SYSREG(14, 2, 3, 3, 2), true },
++#ifdef SYNC_NO_RAW_REGS
++    { HV_SYS_REG_CNTP_TVAL_EL0, HVF_SYSREG(14, 2, 3, 3, 0), true},
++#endif
++    /* vGIC + EL2 */
++    { HV_SYS_REG_CNTHCTL_EL2, HVF_SYSREG(14, 1, 3, 4, 0), true, true },
++    { HV_SYS_REG_CNTHP_CVAL_EL2, HVF_SYSREG(14, 2, 3, 4, 2), true, true },
++    { HV_SYS_REG_CNTHP_CTL_EL2, HVF_SYSREG(14, 2, 3, 4, 1), true, true },
++#ifdef SYNC_NO_RAW_REGS
++    { HV_SYS_REG_CNTHP_TVAL_EL2, HVF_SYSREG(14, 2, 3, 4, 0), true, true },
++#endif
++    { HV_SYS_REG_CNTVOFF_EL2, HVF_SYSREG(14, 0, 3, 4, 3), true, true },
++    /* EL2 */
++    { HV_SYS_REG_CPTR_EL2, HVF_SYSREG(1, 1, 3, 4, 2), .el2 = true },
++    { HV_SYS_REG_ELR_EL2, HVF_SYSREG(4, 0, 3, 4, 1), .el2 = true },
++    { HV_SYS_REG_ESR_EL2, HVF_SYSREG(5, 2, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_FAR_EL2, HVF_SYSREG(6, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_HCR_EL2, HVF_SYSREG(1, 1, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_HPFAR_EL2, HVF_SYSREG(6, 0, 3, 4, 4), .el2 = true },
++    { HV_SYS_REG_MAIR_EL2, HVF_SYSREG(10, 2, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_MDCR_EL2, HVF_SYSREG(1, 1, 3, 4, 1), .el2 = true },
++    { HV_SYS_REG_SCTLR_EL2, HVF_SYSREG(1, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_SPSR_EL2, HVF_SYSREG(4, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_SP_EL2, HVF_SYSREG(4, 1, 3, 6, 0), .el2 = true},
++    { HV_SYS_REG_TCR_EL2, HVF_SYSREG(2, 0, 3, 4, 2), .el2 = true },
++    { HV_SYS_REG_TPIDR_EL2, HVF_SYSREG(13, 0, 3, 4, 2), .el2 = true },
++    { HV_SYS_REG_TTBR0_EL2, HVF_SYSREG(2, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_TTBR1_EL2, HVF_SYSREG(2, 0, 3, 4, 1), .el2 = true },
++    { HV_SYS_REG_VBAR_EL2, HVF_SYSREG(12, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_VMPIDR_EL2, HVF_SYSREG(0, 0, 3, 4, 5), .el2 = true },
++    { HV_SYS_REG_VPIDR_EL2, HVF_SYSREG(0, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_VTCR_EL2, HVF_SYSREG(2, 1, 3, 4, 2), .el2 = true },
++    { HV_SYS_REG_VTTBR_EL2, HVF_SYSREG(2, 1, 3, 4, 0), .el2 = true },
+ };
  
- static void hvf_gicv3_set_irq(void *opaque, int irq, int level)
+ int hvf_get_registers(CPUState *cpu)
+@@ -595,6 +632,14 @@ int hvf_get_registers(CPUState *cpu)
+             continue;
+         }
+ 
++        if (hvf_sreg_match[i].vgic && !hvf_irqchip_in_kernel()) {
++            continue;
++        }
++
++        if (hvf_sreg_match[i].el2 && !hvf_arm_el2_enabled()) {
++            continue;
++        }
++
+         if (cpu->accel->guest_debug_enabled) {
+             /* Handle debug registers */
+             switch (hvf_sreg_match[i].reg) {
+@@ -732,6 +777,14 @@ int hvf_put_registers(CPUState *cpu)
+             continue;
+         }
+ 
++        if (hvf_sreg_match[i].vgic && !hvf_irqchip_in_kernel()) {
++            continue;
++        }
++
++        if (hvf_sreg_match[i].el2 && !hvf_arm_el2_enabled()) {
++            continue;
++        }
++
+         if (cpu->accel->guest_debug_enabled) {
+             /* Handle debug registers */
+             switch (hvf_sreg_match[i].reg) {
 -- 
 2.39.5 (Apple Git-154)
 
