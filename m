@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71639B141ED
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 20:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24308B141EA
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 20:22:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugSTq-0001DZ-LK; Mon, 28 Jul 2025 14:21:47 -0400
+	id 1ugSTq-0000Dm-2b; Mon, 28 Jul 2025 14:21:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ugSPQ-0004rn-Gg
+ id 1ugSPT-0004tH-2T
  for qemu-devel@nongnu.org; Mon, 28 Jul 2025 14:17:28 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ugSPJ-0002oq-Q3
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 14:17:07 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-af51596da56so3408221a12.0
- for <qemu-devel@nongnu.org>; Mon, 28 Jul 2025 11:17:05 -0700 (PDT)
+ id 1ugSPL-0002p9-8N
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 14:17:13 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-7426c44e014so3969436b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Jul 2025 11:17:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753726624; x=1754331424; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753726626; x=1754331426; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nr+K2+F1aavaDbM6++RkYv5Mwqi57uFiJLafqJkzES0=;
- b=Nx6rB6E75v5GzD9EKPl9TB513gz2eRRTR2trhe6PGaBC7iufLyMVzaFkXiT/pcAQJQ
- OgX8u3i6PjHBmvZt3kzX9BBbYFrI7ZLjqYENua30iWFKmiM+4kLVNCTMUP3CYkcFfnLF
- /hx9D53e7gvP01UPUEaXEz4z3StBgO6e7SMONh3LuRa07Al5L6XS0INNkTD/OxZF6+gQ
- t31IxJwt23jJ0wEjFSa9D6iOby7IuIPUmNNAIiXPPxKoSwWfaTlEfX1sOUrbksgaGpll
- G2KILveMdN9USDPhfp7bJJmDGtkzpJDDARcH3fmXdpy/OCIJ8Eq7gEMPu5ygyIF5Ossl
- XhtA==
+ bh=c9TCFAgVKBzK90J2gsyNT7SK5mNcifsRduRa1q59NyE=;
+ b=vXMDAIodXWz+S1xPScC2wnzwDl3J8ib7xMyZ6r4Zf4HRTgjxrO7XImrRb3A+7SnB3y
+ KHquJvIbxdOj9bt47PPH52Rv5TjZaGC5ju9/2zlJY6JmTHrAGcWXj33xUfBdXnXRQQyd
+ w+GNipdMrsFgJShDYNwNNmoE3H0UhmhnZ9JSJvSKGqqgybwR2Ejkgp07Hv2DClGnFrgH
+ hKiCz4OuTjzEoq/GuugVZOWp9H0ySua7SsLJTYQcdNTH98GDbye3XdLVGr21H2jVSF8C
+ lGHXlecvRK6bR9/eR+ChJq10h0LrJay+o8K8aer+S9lEgzEULfpZLp5gbFran+UENq6F
+ I5zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753726624; x=1754331424;
+ d=1e100.net; s=20230601; t=1753726626; x=1754331426;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nr+K2+F1aavaDbM6++RkYv5Mwqi57uFiJLafqJkzES0=;
- b=kKkkZ/+ncb5MMYaC6PTqNqcFRkwU1tcwQHhlLwgfQ+XnQho6VHt0j5cUAqtWD2HT9h
- VEkS7Qzoh3cgc+L36Ib1/+oox2ZIOp6+qIHAEPnO3hFS6ux/uJx3rq7kVXDWEs+UwDWw
- ETy1n7K69TrPCXeqXXmNuN4y65S4/L9dhJeN2+ouOZGB2kK5leecNTvAgxKcpz8rVqQE
- BDwUrITlujjxCGTqP30hSVlstTlDKcOnvJJyBQ7L5ZwV7FG0Q+/4XqpQcsbt7BAEAAa+
- nhkTrfq+b7xa8E8ikdMf05oXpbvBjUEYNJ87TI90egXaTHIF/Ucz+2Tj4nx5On257/55
- 2vew==
-X-Gm-Message-State: AOJu0YwTYc9SzDoYJ4hitk22p8v/GtsgssUi8qrioKZ963CRtAxYVfBK
- bgzLiKa6FcVHJUVez5/B5BTlopYN/8lqCpEFChxhjegtNT0pi5ktGOq6kPAR8xwBNzh9Fn1upAT
- WEnJw
-X-Gm-Gg: ASbGncsENitXF4NTsy/irWXlWdRRtvO+ZVBJmrgctBSdjmFddcKJaIVOqjxii4C02I4
- WsmxK5zfWkdVltWOetZ1D8LtKtzjl7Bu2f5kYbFK2MzJxUiwPZKQudviexPJNKFd1h2VTNnCiSP
- ailu6jByNoQSgjaA4OqmRGLfTELEz5RVYTJVUKdyGT6ZV8LtxznmLC9+PD/opgbDKYL8i/MFP+Q
- 12nDeQwCh4vG5NPr3xTr1JT2dHCqLqEtSYB0xbnoZfUg6LamtCCI+4sBAlKxk0yla5FVFG9q40H
- SdDOGsfSbpuY7fXc/obZnkl1E7VzIaIVMFQSUOat79tIwMxRgW3HXqt7UGvGG0Vcs0J7aFEANHV
- uZP0bbVY0yoaFingFxYXilIu3g2iN+dyHQlqNJ5YvUdjVMLTwEXR3T4v5y1S3oC5nAGi3U5ns3d
- zR0rO9De44jA==
-X-Google-Smtp-Source: AGHT+IFy/UFTiN+jriuQqkC7rXA7gRp26m5ppAA+bmGT18lgeD09Mzl2XeRRVwl/jHUO4PnyP7MFJw==
-X-Received: by 2002:a05:6a20:6a09:b0:234:cd25:735 with SMTP id
- adf61e73a8af0-23d701d6270mr20307773637.38.1753726624023; 
- Mon, 28 Jul 2025 11:17:04 -0700 (PDT)
+ bh=c9TCFAgVKBzK90J2gsyNT7SK5mNcifsRduRa1q59NyE=;
+ b=cOuAiFJTW76GfuCM2G19AL9N8miVn+ZL3ui0rhhqIYQVnfxE3YFmpPcsS7D1rTnJES
+ 0IVEAy1WEm6T1Hd6yGYEakymNnZVXj33rmc53tY2KcObVawLjWdxF0fCjCOCBkCqog9s
+ IA33fjk2NSRN0nhwCrhrct4yvySRqp123DEDrrBLpoNiRe0wyQqgft/CXh8UomzNqpbm
+ Ev67R8b1KU6gM9AhIYXPatUmj8RnAjOApH/AWY2mf041vpmXRHvCAY+uuaHXLmkOR8CP
+ OZTDjQhPu4tAsBFwSYlsTIsSs4AGyEBA1n/yjvMjeU5w5qsodpnXMNyVuBSpgokAKCzx
+ h0gg==
+X-Gm-Message-State: AOJu0Yw6m57WsoYhQq9Y3vhJDNOH//DNMlezPNLysX84NxD7AsSyRFYY
+ AqT4ftOoy8KnMHms98Etm1y8X3cduQZkwGqKlKThbJxLrAam0fjWP3gt83de4k8top0xeVgTesl
+ ZqZkS
+X-Gm-Gg: ASbGncu7ftyliVjTSLQrFpa6gqOifJBoOpu11XT4gKrw/VQ98d+VRiqTwT7SFcwISnE
+ fK2ieVooOUHIOKZFIdkzcnbc6vjJYl4V+IN0my7t5fx7qe63XDdvrY2Mtn4gfGyQHyScqECEtlC
+ jpPEgMBfRjaGv1XO2dGPvEM8E9SEVrn6h6Ay42V35vsYEKy2wMb/TXLVq6RsFsM9bsBnnL34Xtk
+ ZBNSFiVQ6Mq8axT2/ISvO/7VwJ9KgzKJ+KoL9I3reyO+owRy4HNUamLuvZaabhN0G++ywEBQJKv
+ 22uUq8tB8aDN/q22QOGPLPR413gLZ9pssTqFXsFCQiElUQWtgUWCFnNYrfPt9UQPkuckJp5R/j1
+ pb0wBzcvnoT9Uab3Up9vb9HCQX5g+kQFiJBpXb+BlxOF5KZ6vlS7lHuysRmYOOrzXh8bCCRylEU
+ KSwcZkOKWwQw==
+X-Google-Smtp-Source: AGHT+IESpIDTtiJ0awHkuF39x7aQEdyGyCmSfKY7kHtnv3xDDkDwdq4kfPJ42BsdWx1uSXFVO+CqwQ==
+X-Received: by 2002:a05:6a00:148b:b0:74d:247f:faf1 with SMTP id
+ d2e1a72fcca58-76332861265mr17466403b3a.6.1753726625613; 
+ Mon, 28 Jul 2025 11:17:05 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7640adfeb83sm5985103b3a.66.2025.07.28.11.17.02
+ d2e1a72fcca58-7640adfeb83sm5985103b3a.66.2025.07.28.11.17.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Jul 2025 11:17:03 -0700 (PDT)
+ Mon, 28 Jul 2025 11:17:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mjt@tls.msk.ru, Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 7/9] target/arm/sme: Unify set_pstate() SM/ZA helpers as
- set_svcr()
-Date: Mon, 28 Jul 2025 08:16:48 -1000
-Message-ID: <20250728181650.165114-8-richard.henderson@linaro.org>
+Cc: mjt@tls.msk.ru, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-stable@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 8/9] linux-user/aarch64: Clear TPIDR2_EL0 when delivering
+ signals
+Date: Mon, 28 Jul 2025 08:16:49 -1000
+Message-ID: <20250728181650.165114-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250728181650.165114-1-richard.henderson@linaro.org>
 References: <20250728181650.165114-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,94 +101,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unify the two helper_set_pstate_{sm,za} in this function.
-Do not call helper_* functions from svcr_write.
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230112102436.1913-8-philmd@linaro.org
-Message-Id: <20230112004322.161330-1-richard.henderson@linaro.org>
-[PMD: Split patch in multiple tiny steps]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+A recent change to the kernel (Linux commit b376108e1f88
+"arm64/fpsimd: signal: Clear TPIDR2 when delivering signals") updated
+the signal-handler entry code to always clear TPIDR2_EL0.
+
+This is necessary for the userspace ZA lazy saving scheme to work
+correctly when unwinding exceptions across a signal boundary.
+(For the essay-length description of the incorrect behaviour and
+why this is the correct fix, see the commit message for the
+kernel commit.)
+
+Make QEMU also clear TPIDR2_EL0 on signal entry, applying the
+equivalent bugfix to our implementation.
+
+Note that getting this unwinding to work correctly also requires
+changes to the userspace code, e.g.  as implemented in gcc in
+https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b5ffc8e75a8
+
+This change is technically an ABI change; from the kernel's
+point of view SME was never enabled (it was hidden behind
+CONFIG_BROKEN) before the change. From QEMU's point of view
+our SME-related signal handling was broken anyway as we weren't
+saving and restoring TPIDR2_EL0.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 78011586b90d1 ("target/arm: Enable SME for user-only")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 5c922ec5b136b452fe9d21e7581c99554ce650ed)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250725175510.3864231-2-peter.maydell@linaro.org>
+(cherry picked from commit 3cdd990aa920ec8f2994b634f758dab4a86ac167)
 ---
- target/arm/helper-sme.h    |  3 +--
- target/arm/helper.c        |  2 --
- target/arm/sme_helper.c    |  9 ++-------
- target/arm/translate-a64.c | 10 ++--------
- 4 files changed, 5 insertions(+), 19 deletions(-)
+ linux-user/aarch64/signal.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/helper-sme.h b/target/arm/helper-sme.h
-index d33fbcd8fd..d22bf9d21b 100644
---- a/target/arm/helper-sme.h
-+++ b/target/arm/helper-sme.h
-@@ -17,8 +17,7 @@
-  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-  */
+diff --git a/linux-user/aarch64/signal.c b/linux-user/aarch64/signal.c
+index b265cfd470..85cb25ae91 100644
+--- a/linux-user/aarch64/signal.c
++++ b/linux-user/aarch64/signal.c
+@@ -665,8 +665,12 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
+         env->btype = 2;
+     }
  
--DEF_HELPER_FLAGS_2(set_pstate_sm, TCG_CALL_NO_RWG, void, env, i32)
--DEF_HELPER_FLAGS_2(set_pstate_za, TCG_CALL_NO_RWG, void, env, i32)
-+DEF_HELPER_FLAGS_3(set_svcr, TCG_CALL_NO_RWG, void, env, i32, i32)
+-    /* Invoke the signal handler with both SM and ZA disabled. */
++    /*
++     * Invoke the signal handler with a clean SME state: both SM and ZA
++     * disabled and TPIDR2_EL0 cleared.
++     */
+     aarch64_set_svcr(env, 0, R_SVCR_SM_MASK | R_SVCR_ZA_MASK);
++    env->cp15.tpidr2_el0 = 0;
  
- DEF_HELPER_FLAGS_3(sme_zero, TCG_CALL_NO_RWG, void, env, i32, i32)
- 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index bc1c5a1f17..cd501929d7 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -6469,8 +6469,6 @@ void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask)
- static void svcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
-                        uint64_t value)
- {
--    helper_set_pstate_sm(env, FIELD_EX64(value, SVCR, SM));
--    helper_set_pstate_za(env, FIELD_EX64(value, SVCR, ZA));
-     aarch64_set_svcr(env, value, -1);
- }
- 
-diff --git a/target/arm/sme_helper.c b/target/arm/sme_helper.c
-index bbda651974..3b7c6cd317 100644
---- a/target/arm/sme_helper.c
-+++ b/target/arm/sme_helper.c
-@@ -29,14 +29,9 @@
- #include "vec_internal.h"
- #include "sve_ldst_internal.h"
- 
--void helper_set_pstate_sm(CPUARMState *env, uint32_t i)
-+void helper_set_svcr(CPUARMState *env, uint32_t val, uint32_t mask)
- {
--    aarch64_set_svcr(env, 0, R_SVCR_SM_MASK);
--}
--
--void helper_set_pstate_za(CPUARMState *env, uint32_t i)
--{
--    aarch64_set_svcr(env, 0, R_SVCR_ZA_MASK);
-+    aarch64_set_svcr(env, val, mask);
- }
- 
- void helper_sme_zero(CPUARMState *env, uint32_t imm, uint32_t svl)
-diff --git a/target/arm/translate-a64.c b/target/arm/translate-a64.c
-index fa568aa647..9830fe70cf 100644
---- a/target/arm/translate-a64.c
-+++ b/target/arm/translate-a64.c
-@@ -1861,14 +1861,8 @@ static void handle_msr_i(DisasContext *s, uint32_t insn,
- 
-             if ((old ^ new) & msk) {
-                 /* At least one bit changes. */
--                bool i = crm & 1;
--
--                if ((crm & 2) && i != s->pstate_sm) {
--                    gen_helper_set_pstate_sm(cpu_env, tcg_constant_i32(i));
--                }
--                if ((crm & 4) && i != s->pstate_za) {
--                    gen_helper_set_pstate_za(cpu_env, tcg_constant_i32(i));
--                }
-+                gen_helper_set_svcr(cpu_env, tcg_constant_i32(new),
-+                                    tcg_constant_i32(msk));
-             } else {
-                 s->base.is_jmp = DISAS_NEXT;
-             }
+     if (info) {
+         tswap_siginfo(&frame->info, info);
 -- 
 2.43.0
 
