@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821BBB13485
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCCCB13484
 	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 07:59:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugGsl-00005Q-4L; Mon, 28 Jul 2025 01:58:43 -0400
+	id 1ugGtJ-00018k-Dv; Mon, 28 Jul 2025 01:59:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ugGrV-0007Gp-Ih
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:57:28 -0400
-Received: from p-east3-cluster5-host2-snip4-1.eps.apple.com ([57.103.86.142]
+ id 1ugGrZ-0007J9-LK
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:57:30 -0400
+Received: from p-east3-cluster6-host2-snip4-3.eps.apple.com ([57.103.85.144]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ugGrS-0007E0-VS
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:57:24 -0400
+ id 1ugGrX-0007FO-LF
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 01:57:29 -0400
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-7 (Postfix) with ESMTPS id
- 36BDE180014C; Mon, 28 Jul 2025 05:57:21 +0000 (UTC)
+ 9D02B1800150; Mon, 28 Jul 2025 05:57:23 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=q7xD0GY8k1Hk4vFR23J6NN3+mR0YZXy/rA40WkfECXE=;
+ s=sig1; bh=UIKXY0OqrEJuez3FKmGasWYdj1FQIGCZkH6aUeSzLCA=;
  h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
- b=J0O0aj9WRyuZ1wty2i0pJi8av1bdM10jCnhEMUBR0qeRQm5kTKoclDZj75PTK0W1F1HK+/wqzl4J21dNNF1O7ifvmJfsdrZPpd/PVulP2FCBGEsBDCTZ+b5HEJ9bJkc9/4l3ZKW4LCCynSkxYq0+hX4XEK01YWqFpexORJsHCAU3YPFozC1iShP2dZ7i4oDQOhfNiXwalzJg7AUrEfyoZ+kp0dlJkaJeUq7GkNlKCzWUIu9i4IjpTlbNOxTRgQp/MXFHGcktokzj1sTC8WnIKcG3hMsZdf5sJUivZFWQlmCPRLXSQvO5SBPqL70VTVLxPCVJhb9sASFgtIuLXvHTEg==
+ b=Z64tlAby16YhfaiVy+Ysc+/iy8Nty/W7emt0bdtR+sYdD3ewMMUZr/IhclkYqe29xHcSUG8UEYdKg8t3bbk7Dlp21HPgI85O02l5aEaJ/QCgXkWbn1/oK9RDTkHEyAG923+NUxhCLilm/VssqoF7gfh5gl3WG69mtxYrLuQxCyaI/jW+8PBG72gBMAIQAasj82dXnmJZ3TSCbsPW9LjoP7WnD2Cr/omeMB01fpM2K8H2TzCZapVpqPk7D/0CkV/XQ/tb16Jg+15Tz4NA2k5ZxP0qRGrkUX8G/XZqjX/ajl6Ahz3qw/gM+KkO586pT1W2BdDLTHNHiQchpucSOon4bw==
 X-Client-IP: 46.189.47.18
 Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
  [17.57.155.37])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-7 (Postfix) with ESMTPSA id
- 4AA4B1800107; Mon, 28 Jul 2025 05:57:19 +0000 (UTC)
+ 18F301800135; Mon, 28 Jul 2025 05:57:21 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
@@ -41,30 +41,30 @@ Cc: Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
  Phil Dennis-Jordan <phil@philjordan.eu>,
  Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
  Mohamed Mediouni <mohamed@unpredictable.fr>
-Subject: [PATCH v4 08/15] hw/arm: virt: add GICv2m for the case when ITS is
- not available
-Date: Mon, 28 Jul 2025 07:56:54 +0200
-Message-Id: <20250728055701.38975-9-mohamed@unpredictable.fr>
+Subject: [PATCH v4 09/15] target/arm: hvf: use LOG_UNIMP for
+ CNTP_CVAL_EL0/SYSREG_CNTP_CTL_EL0
+Date: Mon, 28 Jul 2025 07:56:55 +0200
+Message-Id: <20250728055701.38975-10-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250728055701.38975-1-mohamed@unpredictable.fr>
 References: <20250728055701.38975-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: WmP-4RsTOlDqrSZzI1WqltD8Sb_6DMh0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI4MDA0MyBTYWx0ZWRfX4eGybyWPzh4n
- aOW505ZrogNq49/hLxrF0/eYvMZ+NIp04YJvFtWN6U5MchnwfqDuETF++BfEviiknt47eiHqRBG
- t39cUhU5ULnJiemTAmXtaRBS8zVC4pvTwBghBMr7/tMlw/lxJTw36DT3jW0/2GtEuEhHecoM+R0
- Sy8XcI2praX1cOq/fJ/1nm1uS242gscK2bj6IT4VdlRwkly4HCErylAKnsZL628guCx5MmEHnyA
- XMTd/2vpCYaCgvqAQ6Tkhhjb7B9li0kw2PxG+1korkrC2Dmkk6Jo61t7g0EBuD3KwG+a5/xmc=
-X-Proofpoint-GUID: WmP-4RsTOlDqrSZzI1WqltD8Sb_6DMh0
+X-Proofpoint-ORIG-GUID: 7AWGEd_kSgvYu7mHfxrrph9dNdbn2vvq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI4MDA0MyBTYWx0ZWRfX07q5cpUqu9bp
+ 3uvHUx+ZJf976VXZ9oZVB/bc2RtQFWsUlP6xD9ZuecwaWEbDJgYb8thaIaHwRyBFDr08RNB9sbK
+ vMtJeBtPtzX6MROshVuaP7AZoP4Lnqn9ZI0SRVWgiW+jUhOAc/32yIFfl22N1CtaB/FvBL4pIoM
+ dCSm3zvJgHz1H9pRiJu8ELKPpInXFqVCvWaGpg0L2DTwqCDmk4JNnEnsbC0zRdNrJi77WjUhb6k
+ pDIHVEak3yfyMvFtAs0j1xlKuGDQgBfe4nr4pzmDdvAzDoPr46GOTQYOKbPoiCkZ/CharEvMg=
+X-Proofpoint-GUID: 7AWGEd_kSgvYu7mHfxrrph9dNdbn2vvq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-28_02,2025-07-24_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
- mlxlogscore=999 malwarescore=0 mlxscore=0 phishscore=0 spamscore=0
- suspectscore=0 bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ mlxlogscore=617 phishscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ clxscore=1030 spamscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.22.0-2506270000 definitions=main-2507280043
-Received-SPF: pass client-ip=57.103.86.142;
+Received-SPF: pass client-ip=57.103.85.144;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,94 +88,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Hypervisor.framework for macOS and WHPX for Windows, the provided environment is a GICv3 without ITS.
+Instead of considering reads there to be fatal, mark it as unimplemented.
 
-As such, support a GICv3 w/ GICv2m for that scenario.
+This is to allow experimentation on using configurations other than the Apple vGIC.
 
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 ---
- hw/arm/virt-acpi-build.c | 4 +++-
- hw/arm/virt.c            | 8 ++++++++
- include/hw/arm/virt.h    | 2 ++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+ target/arm/hvf/hvf.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index b01fc4f8ef..969fa3f686 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -848,7 +848,9 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-             build_append_int_noprefix(table_data, memmap[VIRT_GIC_ITS].base, 8);
-             build_append_int_noprefix(table_data, 0, 4);    /* Reserved */
-         }
--    } else {
-+    }
-+
-+    if (!vms->its && !vms->no_gicv3_with_gicv2m) {
-         const uint16_t spi_base = vms->irqmap[VIRT_GIC_V2M] + ARM_SPI_BASE;
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 63b7967053..f17fb0695a 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -300,6 +300,7 @@ void hvf_arm_init_debug(void)
+ /* EL2 registers */
+ #define SYSREG_CNTHCTL_EL2    SYSREG(3, 4, 14, 1, 0)
+ #define SYSREG_MDCCINT_EL1    SYSREG(2, 0, 0, 2, 0)
++#define SYSREG_CNTP_CVAL_EL0   SYSREG(3, 3, 14, 2, 2)
  
-         /* 5.2.12.16 GIC MSI Frame Structure */
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 7348d55104..91d8cd9363 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -953,6 +953,8 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+ #define WFX_IS_WFE (1 << 0)
  
-     if (vms->gic_version != VIRT_GIC_VERSION_2 && vms->its) {
-         create_its(vms);
-+    } else if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->no_gicv3_with_gicv2m) {
-+        create_v2m(vms);
-     } else if (vms->gic_version == VIRT_GIC_VERSION_2) {
-         create_v2m(vms);
-     }
-@@ -2408,6 +2410,8 @@ static void machvirt_init(MachineState *machine)
-     vms->ns_el2_virt_timer_irq = ns_el2_virt_timer_present() &&
-         !vmc->no_ns_el2_virt_timer_irq;
- 
-+    vms->no_gicv3_with_gicv2m = vmc->no_gicv3_with_gicv2m;
-+
-     fdt_add_timer_nodes(vms);
-     fdt_add_cpu_nodes(vms);
- 
-@@ -3419,6 +3423,7 @@ static void virt_instance_init(Object *obj)
-     vms->its = true;
-     /* Allow ITS emulation if the machine version supports it */
-     vms->tcg_its = !vmc->no_tcg_its;
-+    vms->no_gicv3_with_gicv2m = false;
- 
-     /* Default disallows iommu instantiation */
-     vms->iommu = VIRT_IOMMU_NONE;
-@@ -3471,8 +3476,11 @@ DEFINE_VIRT_MACHINE_AS_LATEST(10, 1)
- 
- static void virt_machine_10_0_options(MachineClass *mc)
- {
-+    VirtMachineClass *vmc = VIRT_MACHINE_CLASS(OBJECT_CLASS(mc));
-+
-     virt_machine_10_1_options(mc);
-     compat_props_add(mc->compat_props, hw_compat_10_0, hw_compat_10_0_len);
-+    vmc->no_gicv3_with_gicv2m = true;
- }
- DEFINE_VIRT_MACHINE(10, 0)
- 
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 365a28b082..725ec18fd2 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -131,6 +131,7 @@ struct VirtMachineClass {
-     bool no_cpu_topology;
-     bool no_tcg_lpa2;
-     bool no_ns_el2_virt_timer_irq;
-+    bool no_gicv3_with_gicv2m;
-     bool no_nested_smmu;
- };
- 
-@@ -178,6 +179,7 @@ struct VirtMachineState {
-     char *oem_id;
-     char *oem_table_id;
-     bool ns_el2_virt_timer_irq;
-+    bool no_gicv3_with_gicv2m;
-     CXLState cxl_devices_state;
- };
- 
+@@ -1399,6 +1400,12 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint64_t *val)
+     case SYSREG_CNTHCTL_EL2:
+         assert_hvf_ok(hv_vcpu_get_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTHCTL_EL2, val));
+         return 0;
++    case SYSREG_CNTP_CTL_EL0:
++        qemu_log_mask(LOG_UNIMP, "Unsupported read from CNTP_CTL_EL0\n");
++        return 0;
++    case SYSREG_CNTP_CVAL_EL0:
++        qemu_log_mask(LOG_UNIMP, "Unsupported read from CNTP_CVAL_EL0\n");
++        return 0;
+     case SYSREG_MDCCINT_EL1:
+         assert_hvf_ok(hv_vcpu_get_sys_reg(cpu->accel->fd, HV_SYS_REG_MDCCINT_EL1, val));
+         return 0;
+@@ -1719,6 +1726,9 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
+          */
+         qemu_log_mask(LOG_UNIMP, "Unsupported write to CNTP_CTL_EL0\n");
+         return 0;
++    case SYSREG_CNTP_CVAL_EL0:
++        qemu_log_mask(LOG_UNIMP, "Unsupported write to CNTP_CVAL_EL0\n");
++        return 0;
+     case SYSREG_OSDLR_EL1:
+         /* Dummy register */
+         return 0;
 -- 
 2.39.5 (Apple Git-154)
 
