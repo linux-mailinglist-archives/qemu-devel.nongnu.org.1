@@ -2,72 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FE4B139DD
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 13:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7CBB139EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 13:34:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugM2Y-0001ot-Dl; Mon, 28 Jul 2025 07:29:10 -0400
+	id 1ugM6W-00036J-SK; Mon, 28 Jul 2025 07:33:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ugLtU-0000PN-Sz
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 07:20:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1ugM0a-0005Ds-W9
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 07:27:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ugLtS-00071N-So
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 07:19:48 -0400
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1ugM0Y-0003Id-LL
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 07:27:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753701584;
+ s=mimecast20190719; t=1753702024;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=USRSq3N/CkvgGl3qoOHGGocwrBUctZpXbah6DW1Cubk=;
- b=dyT0xzbaz/Fr9DC3A1UVQnERQYGswEEa9XRtyVTW19BaBW6s5jwbe0qppcT3X3T2S24zM/
- 8M50rKNVNXIL5+/rRfG2PDP2Oo1kNOn99Qw2F7AXM/ZK5G8DCvg8oLPcEy10E4JAFfaKet
- mWXO2H3I0sf2ldYxwODGhB2a0b6qiX8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-ZJkVYezwN8-jYxa8UoHCAA-1; Mon,
- 28 Jul 2025 07:19:41 -0400
-X-MC-Unique: ZJkVYezwN8-jYxa8UoHCAA-1
-X-Mimecast-MFC-AGG-ID: ZJkVYezwN8-jYxa8UoHCAA_1753701580
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 59DDE180045B; Mon, 28 Jul 2025 11:19:40 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.14])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EF4381800B6B; Mon, 28 Jul 2025 11:19:39 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6828121E6A27; Mon, 28 Jul 2025 13:19:37 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: michael.roth@amd.com,  kkostiuk@redhat.com
-Cc: qemu-devel@nongnu.org,  eblake@redhat.com,  jsnow@redhat.com,
- berrange@redhat.com
-Subject: Re: [PATCH v2 0/4] qga: Doc fixes and improvements
-In-Reply-To: <20250717115246.3830007-1-armbru@redhat.com> (Markus Armbruster's
- message of "Thu, 17 Jul 2025 13:52:42 +0200")
-References: <20250717115246.3830007-1-armbru@redhat.com>
-Date: Mon, 28 Jul 2025 13:19:37 +0200
-Message-ID: <87a54or29i.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ bh=rwlUW9ghW8nYUIBQlv0/85ewNY2p6mT0yGrKFV+xEmI=;
+ b=RukQznrd4zR9Wmvt8IIyxy3cUU+tJbvUxZLuePuSnWHaKbIxRKS488hLxVnihDk6C4U8NO
+ bTKWONHH2kWqKupawAIEhaInE1OuJIAcwWvM5nw46899O1Ct+tBrNKKuCVWu1/K5xIYL/7
+ PlPDHRs4ERCnHBcN7+GbNF4OFuzWmOA=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-392-xcFXUE-TOOqAMr4SlppgsA-1; Mon, 28 Jul 2025 07:27:01 -0400
+X-MC-Unique: xcFXUE-TOOqAMr4SlppgsA-1
+X-Mimecast-MFC-AGG-ID: xcFXUE-TOOqAMr4SlppgsA_1753702021
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-7073b4fb53eso21416726d6.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Jul 2025 04:27:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753702021; x=1754306821;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rwlUW9ghW8nYUIBQlv0/85ewNY2p6mT0yGrKFV+xEmI=;
+ b=L8OjFC2d8v3jl5wgdacmacmnZ5E4mIRG++z0podJo3qQQq8VAxRmQNlhYcCWVVvfJa
+ pCsBkUo+7vnhk9XepakrBQkz8GhEtQn70d5FlWW+Q8ng/k0yHxCYM8CaJm3E9xzE0234
+ FjQU+H6xNVvxBl0Xz+n9LkRMiwF+QWjNPu59IvNCTgdXrmh/0FjsFZD4YZ4RkUCvcQLA
+ 2z22FZZ8S9U7uBiehHEZZUkR9+HyFo5oLL3s4DUCF/fMcMB3D9nwfAvU2xfvbTYr0zBp
+ hkSReZs/U2p1bXCdKt47WpxfwSiIB3KNQH/JujRm8daFReLbnHt6BKJ25Y6jdBKTYLrI
+ 5tCw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVegBA9WobQjy/+9Y9fM+HT5ppN8NonVxAAukBLYuGd2iCEWyg0iAQIbSnieHLUV56DlkpeCuk5sToU@nongnu.org
+X-Gm-Message-State: AOJu0YxeIWN4rRfSWIhH4+/+gGKkXdFU33T/uY0BHh2fojwdRMTCptKu
+ KlDjCvbDKfnuZ4YriNPnX3nZ+MTQquAsDn1xAx8oOSx/DcK7hhGGFzsDE/MgskPVaXNI6SYWp9X
+ jCRqZqLLnYM+Pknj0c0Jr3TLwuXzurTsUOYjC/VZtpUrOS0F5TXgG9o7/nWmOiWS/Tv4ZKOiaLU
+ 3fWgcnz6I4ppoz2qalORoA60MQF9P4L3I=
+X-Gm-Gg: ASbGncsXZst+psnyuCNj6Djtxn3d88c9TbSK6FCU4q+eh9zgg+Zm+oUjuD96nT30bYc
+ gtmuJL3352NrDwPZ690jQepZqbsKFyIpUBeL36pUy5Yt2veVcWrZ0NbQ8SukpFaQqfPe5pATduC
+ tyAUXx64iJaKl4VEP0JWXR6oQ=
+X-Received: by 2002:ad4:574c:0:b0:707:4668:3314 with SMTP id
+ 6a1803df08f44-707466835a7mr39277066d6.1.1753702020724; 
+ Mon, 28 Jul 2025 04:27:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHHWmPW1x0f5ZXVOwoewoMiOqBrQb7mKuRoZ+/sjs6npSaLIw5VYykHidwr4xY19ew8tDrk8VzS6dIKHUEHJPc=
+X-Received: by 2002:ad4:574c:0:b0:707:4668:3314 with SMTP id
+ 6a1803df08f44-707466835a7mr39276786d6.1.1753702020261; Mon, 28 Jul 2025
+ 04:27:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+References: <20250717115246.3830007-1-armbru@redhat.com>
+ <87a54or29i.fsf@pond.sub.org>
+In-Reply-To: <87a54or29i.fsf@pond.sub.org>
+From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Date: Mon, 28 Jul 2025 14:26:49 +0300
+X-Gm-Features: Ac12FXwMLehkJX_nNKcKXfg2dtuwuAarCsXSGw5M7vn6noB3W1yjv92TtgKJako
+Message-ID: <CAPMcbCo44oAMKMFMvnLtOWKdL+E9kJmkOnFP_i1-iZn1JnVrtg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] qga: Doc fixes and improvements
+To: Markus Armbruster <armbru@redhat.com>
+Cc: michael.roth@amd.com, qemu-devel@nongnu.org, eblake@redhat.com, 
+ jsnow@redhat.com, berrange@redhat.com
+Content-Type: multipart/alternative; boundary="000000000000f5d597063afb9142"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,10 +103,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+--000000000000f5d597063afb9142
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> This series touches only doc comments.  I'd like to get it into 10.1.
+Markus, feel free to do PR with this
 
-Kostiantyn, Michael, would you like me to do the PR for this?
+Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+
+Best Regards,
+Konstantin Kostiuk.
+
+
+On Mon, Jul 28, 2025 at 2:19=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+
+> Markus Armbruster <armbru@redhat.com> writes:
+>
+> > This series touches only doc comments.  I'd like to get it into 10.1.
+>
+> Kostiantyn, Michael, would you like me to do the PR for this?
+>
+>
+
+--000000000000f5d597063afb9142
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Markus, feel free to do PR with this<br></div><div><b=
+r></div><div>Reviewed-by: Kostiantyn Kostiuk &lt;<a href=3D"mailto:kkostiuk=
+@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><div><br></=
+div><div><div dir=3D"ltr" class=3D"gmail_signature" data-smartmail=3D"gmail=
+_signature"><div dir=3D"ltr"><div>Best Regards,</div><div>Konstantin Kostiu=
+k.</div></div></div></div><br></div><br><div class=3D"gmail_quote gmail_quo=
+te_container"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 28, 2025 at=
+ 2:19=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com"=
+>armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote=
+" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
+padding-left:1ex">Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com=
+" target=3D"_blank">armbru@redhat.com</a>&gt; writes:<br>
+<br>
+&gt; This series touches only doc comments.=C2=A0 I&#39;d like to get it in=
+to 10.1.<br>
+<br>
+Kostiantyn, Michael, would you like me to do the PR for this?<br>
+<br>
+</blockquote></div>
+
+--000000000000f5d597063afb9142--
 
 
