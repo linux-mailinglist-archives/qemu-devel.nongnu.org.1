@@ -2,79 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1E3B1372F
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 11:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DAF3B13732
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 11:06:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugJmy-0007iX-MA; Mon, 28 Jul 2025 05:04:56 -0400
+	id 1ugJoP-0000hy-1w; Mon, 28 Jul 2025 05:06:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ugJmv-0007f9-CE
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 05:04:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ugJmt-0007YG-0J
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 05:04:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753693489;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=V5vcxWTU4e+4T7st/JfhiKpTGDipixuS68Sm21F5p/c=;
- b=dh07J5mWlwTkS7B/xMH9cN2mAzEUlVnbgZy9TMAN7MI6lrnVDfaZf7evFM7s/QZFh1pYFB
- rX0PxnEZ4N7a/KjYjXhDGHUGXzmZfThwMVndcTChyD/B36Fkj+c9le2hyihN7pmRxCPmiC
- 4mOAIG2ubhwdvHiLRAk9n7eILvC33EE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-587-BAS_26nMNNm0JEMKBCjGtA-1; Mon,
- 28 Jul 2025 05:04:45 -0400
-X-MC-Unique: BAS_26nMNNm0JEMKBCjGtA-1
-X-Mimecast-MFC-AGG-ID: BAS_26nMNNm0JEMKBCjGtA_1753693484
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2B1211956095; Mon, 28 Jul 2025 09:04:43 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.32])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A0FA51800242; Mon, 28 Jul 2025 09:04:39 +0000 (UTC)
-Date: Mon, 28 Jul 2025 10:04:36 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 0/4] migration: workaround GNUTLS live migration crashes
-Message-ID: <aIc9JFGwmv75qV36@redhat.com>
-References: <20250718150514.2635338-1-berrange@redhat.com>
- <9b37d573-1783-4b0e-9b16-e08a10824aa9@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1ugJne-0000I6-51
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 05:05:54 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1ugJnY-0007oB-Ix
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 05:05:37 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4563cfac19cso44700235e9.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Jul 2025 02:05:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=adacore.com; s=google; t=1753693526; x=1754298326; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=CERVx5n1WuMT+Yyn+vw4Z4kl+8Rb0pEvu3c7ANOUOlg=;
+ b=d0atF5uVIylAQgoZpZdkWXGoxTTjGOi8o+g2Nc2MS5N4n4PiLAC5MR3U3C4I5jj+zz
+ 7RlqjMRKf40xzUae1O9KpjUdPZC5Yuh++wfqfL2/ggObTugejEtdKuHqI/GxbbaHvaVW
+ 6k5i+x0K6Etu4TtZq1/3imwu7MOaZbFFBniBEZGGb8aTxYHY+O9/5VSy4yKSkvoNeqGo
+ nu/o2E3B9frqHOVP4jQTKX7HTfWNr1CmJxNpUDTQaGBPXvcBX3lQRe9yOuMQDlG6Qnxj
+ DchQ/qYeicyTtljNbVRH+301FxqkA5YIuP316DimT+e+xSKAICe7A3IUzbVNEIHHlEog
+ PPvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753693526; x=1754298326;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CERVx5n1WuMT+Yyn+vw4Z4kl+8Rb0pEvu3c7ANOUOlg=;
+ b=Nc0mNiMAAZ9xeJPCHlBBZZ2ffW0zwhCJV9Q46AbOuK7vWHHmSiE/skGyU9qAgXX9gL
+ NwBkabhX+KgdEvtYv7ou59NyqpWEzeWyGmQV/wsCwba3XxufNKzUyrbQBZBEsw9L+uSC
+ raqFCDsRJuUUTvZtY+Ttg9kIn6tH/5TFXsBw4hfX8Scb+6RJVhmWyk70LQon54drguRc
+ ogGvWIXHeviIEIGkvSuIaRHL5U5M7FrmzoTc4W6mRmXYL2VMFs7P8aJpRdo72wEbYj17
+ 9PWG6VbUWIwtluOsn6beQgYxJyyvo0SVLOu5/KHKtunW14GsgyAu+NWBvi7JB1JNluOF
+ dy+g==
+X-Gm-Message-State: AOJu0Yy7IWFo5jeDnjF5ddwScXwTOsTvzjqIWDGWFDtt/Ug62aUna3Dr
+ 3pBZGJSvLjgzEitjDZHyRXnYUH8oWLF7bl3sphDxQvUwgys9zRZz8qmf5IFJW4q8k39Dz4ZfA9S
+ 5ei0=
+X-Gm-Gg: ASbGncvKA38bWJoavcnX/XA3XQx79RoK/4oo+881H1YCbYZSf3Kv/ycYd6TQOV2tqgh
+ J8pW/AVBo15K+5ablmLaqOdQajBnYXJ5TRXcj4cXaP6ECblLo50virD2jvbLfBnmsqXqTu8Fo4c
+ 6kvnW0tvLACa+K8yGLcTK0gYXWKEnjbMX6vPCAaA0MIyj+/285F88wlhw6iz7xx/f7QvK96gNzK
+ K49rKHQFrPYoSjw9sBpjI62Xo+GKWQIRFv+GQ1CCzCbJSPjFDzjiu4I4oz9we4hsNXVLVs29bYW
+ hciUv0M34vcWo6hioJK8PZh37Y5z2gXQEYTNvH2bP73Lm3HZLOwsQJu9kZHz4jLV+RN50aVw+mx
+ FNRa0Y02P258XNnowxqAotRZV8kp/Z6eHG2f6+KH9fD7unH7dfj2UWvTL1gtgeS7OCbQo38aJ+Y
+ A5+jLy+pASrnGWwPsgM2g=
+X-Google-Smtp-Source: AGHT+IH9qakOqF2uZEDMg6ob2ol7iXoXxZhRPHRI8cuIsDQ/VSbsblF1h8UzmP8wr8TrP+ugZO6oNA==
+X-Received: by 2002:a05:600c:3484:b0:43d:fa59:af97 with SMTP id
+ 5b1f17b1804b1-4587666ae80mr78850895e9.32.1753693525721; 
+ Mon, 28 Jul 2025 02:05:25 -0700 (PDT)
+Received: from chigot-Dell.telnowedge.local
+ (lmontsouris-659-1-24-67.w81-250.abo.wanadoo.fr. [81.250.175.67])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4587ac662b2sm89192275e9.26.2025.07.28.02.05.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 28 Jul 2025 02:05:25 -0700 (PDT)
+From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+To: qemu-devel@nongnu.org
+Cc: balaton@eik.bme.hu, qemu-ppc@nongnu.org, marcandre.lureau@redhat.com,
+ berrange@redhat.com, =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+Subject: [PATCH] hw/display/sm501: fix missing error-report.h
+Date: Mon, 28 Jul 2025 11:05:18 +0200
+Message-Id: <20250728090518.963573-1-chigot@adacore.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9b37d573-1783-4b0e-9b16-e08a10824aa9@tls.msk.ru>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=chigot@adacore.com; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,83 +96,34 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jul 26, 2025 at 09:24:10AM +0300, Michael Tokarev wrote:
-> On 18.07.2025 18:05, Daniel P. Berrangé wrote:
-> > TL:DR: GNUTLS is liable to crash QEMU when live migration is run
-> > with TLS enabled and a return path channel is present, if approx
-> > 64 GB of data is transferred. This is easily triggered in a 16 GB
-> > VM with 4 CPUs, by running 'stress-ng --vm 4 --vm-bytes 80%' to
-> > prevent convergance until 64 GB of RAM has been copied. Then
-> > triggering post-copy switchover, or removing the stress workload
-> > to allow completion, will crash it.
-> > 
-> > The only live migration scenario that should avoid this danger
-> > is multifd, since the high volume data transfers are handled in
-> > dedicated TCP connections which are unidirectional. The main
-> > bi-directionl TCP connection is only for co-ordination purposes
-> > 
-> > This patch implements a workaround that will prevent future QEMU
-> > versions from triggering the crash.
-> > 
-> > The only way to avoid the crash with *existing* running QEMU
-> > processes is to change the TLS cipher priority string to avoid
-> > use of AES with TLS 1.3. This can be done with the 'priority'
-> > field in the 'tls-creds-x509' object.eg
-> > 
-> >    -object tls-creds-x509,id=tls0,priority=NORMAL:-AES-256-GCM:-AES-128-GCM:-AES-128-CCM
-> > 
-> > which should force the use of CHACHA20-POLY1305 which does not
-> > require TLS re-keying after 16 million sent records (64 GB of
-> > migration data).
-> > 
-> >    https://gitlab.com/qemu-project/qemu/-/issues/1937
-> > 
-> > On RHEL/Fedora distros you can also use the system wide crypto
-> > priorities to override this from the migration *target* host
-> > by creating /etc/crypto-policies/local.d/gnutls-qemu.config
-> > containing
-> > 
-> >    QEMU=NONE:+ECDHE-RSA:+ECDHE-ECDSA:+RSA:+DHE-RSA:+GROUP-X25519:+GROUP-X448:+GROUP-SECP256R1:+GROUP-SECP384R1:+GROUP-SECP521R1:+GROUP-FF
-> > 
-> > and running 'update-crypto-policies'. I recommend the QEMU
-> > level 'tls-creds-x509' workaround though, which new libvirt
-> > patches can soon do:
-> > 
-> >    https://lists.libvirt.org/archives/list/devel@lists.libvirt.org/thread/LX5KMIUFZSP5DPUXKJDFYBZI5TIE3E5N/
-> > 
-> > Daniel P. Berrangé (4):
-> >    crypto: implement workaround for GNUTLS thread safety problems
-> >    io: add support for activating TLS thread safety workaround
-> >    migration: activate TLS thread safety workaround
-> >    crypto: add tracing & warning about GNUTLS countermeasures
-> > 
-> >   crypto/tlssession.c           | 99 +++++++++++++++++++++++++++++++++--
-> >   crypto/trace-events           |  2 +
-> >   include/crypto/tlssession.h   | 14 +++++
-> >   include/io/channel.h          |  1 +
-> >   io/channel-tls.c              |  5 ++
-> >   meson.build                   |  9 ++++
-> >   meson_options.txt             |  2 +
-> >   migration/tls.c               |  9 ++++
-> >   scripts/meson-buildoptions.sh |  5 ++
-> >   9 files changed, 143 insertions(+), 3 deletions(-)
-> 
-> Being a large(ish) change, but it looks like this patch set is a good
-> candidate for qemu-stable series, at least for 10.0.x.  What do you
-> think?
+"qemu/error-report.h" was previously implicitly included. This is no
+longer the case following 012842c075520dbe1bd96a2fdcf4e218874ba443.
 
-Yeah, given broken gnutls is everywhere, I'd take it to any stable tree
-where it is reasonably easy to do a clean backport.
+However, the issue predates this change as `error-report.h` should have
+been included when the `warn_report` call was introduced.
 
-With regards,
-Daniel
+Fixes: fa140b9562 ("hw/sm501: allow compiling without PIXMAN")
+Signed-off-by: Clément Chigot <chigot@adacore.com>
+---
+ hw/display/sm501.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hw/display/sm501.c b/hw/display/sm501.c
+index 6d2f18684c..bc091b3c9f 100644
+--- a/hw/display/sm501.c
++++ b/hw/display/sm501.c
+@@ -26,6 +26,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
+ #include "qapi/error.h"
++#include "qemu/error-report.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+ #include "hw/usb/hcd-ohci.h"
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
