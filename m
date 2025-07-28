@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4093FB141F3
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 20:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F530B141EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 20:24:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugSTr-0001jl-DM; Mon, 28 Jul 2025 14:21:47 -0400
+	id 1ugSV9-0004nA-UW; Mon, 28 Jul 2025 14:23:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ugSPK-0004q3-E4
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 14:17:16 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1ugSPQ-0004ro-5z
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 14:17:28 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ugSPG-0002o2-AW
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 14:17:06 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-74b54af901bso3095747b3a.2
- for <qemu-devel@nongnu.org>; Mon, 28 Jul 2025 11:17:00 -0700 (PDT)
+ id 1ugSPI-0002oL-Js
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 14:17:07 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-b420b87cb04so381284a12.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Jul 2025 11:17:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753726619; x=1754331419; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753726621; x=1754331421; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hfGX3eeD+sHdn1VkUERVdzReu/X7JSfH2n6SpQNFaMI=;
- b=k5tNAe50nqq25UDxU+/jhZG1Z/Xp3ViMwd3rbiv1HeyXF83//yqGOALiEXbdptPiCR
- Q+BXLu/rU/i5tNPIw6gF1JJ1a2PoT/0/CcZ0zxptnguezRChBZzu9PF8S7oTxik9xpJt
- mziCh5+6AGr4hEO3ooC6Dny8TGWfl0Y60rX02j6vvT5qRDo6FzSMqnUjvO57go9fx1P1
- PKt5THK7RyPjhlrvisOUG2RUGY+IwmJtVfXdqt1yoBc/rP82cyMAa4D3GKoxIFDnE6dO
- /GtYEuq47JXOCHbeuMsuuqtRPK9fhJCKPburr8v0SvQNDzDavNwtp8ESgWKZkItqiesx
- Xvbg==
+ bh=cK/l0R+IQu4PJARiJoF6ivzv5QfPnUn4zekRDzw57vM=;
+ b=oFKqQXCSJQB2nNQYjwrbPbVH4xbJbnZDLCedgMHyTt7KF7yiSK3g9CgbobOZ1uVohR
+ btrcRgSmGmj0in4fEByt5y+gDNFqZKGSTM8LmN0tRfKQTgsppZNGIvrSeJfV45My5+DI
+ gIc9jf1dxMbg13M3q9APCTX7bjSYrJcPYZl1xuBiN8k8A6DM3tTdZqM5OV7ICk4lXtNt
+ Vu88SBRTGFiZrt4yfc57LBh58sqgmDsrRqRGW0QU2qOFP+DzfL8rc60ueG+hSIpOO1AZ
+ oPz+bdvUM8szSjnJlM9zGDoYBMNOgVZQlRp3Wi89+3R24dlVBTwhO5IDtRNEURXSSRqW
+ MH4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753726619; x=1754331419;
+ d=1e100.net; s=20230601; t=1753726621; x=1754331421;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hfGX3eeD+sHdn1VkUERVdzReu/X7JSfH2n6SpQNFaMI=;
- b=rYRHfGPwvHNOGXevKRaQyq5hPNb2Itcp+JZuF8mmxmhObLIfen5751o/T6pvjJygl9
- qEG3H/hP2GAxsqGi6EtaNIaJXJ5kR0X4NsvPgl5HpLfk7lbUAstR+kN0o6TX+LfL4ukv
- iqL3NVCObVwzatB7ZXG4unw7h6bxlXgU2a1rHyJhEANibfnpVILFNklUJNYgtH9TEsIy
- 2UT1iJhHAh8xd3bU8NtAug5lrxoMc9q2HPlGkNRw3QA5CG38JthGxW+o7tgeDl/OaBIs
- sh7CJZIK+SNu3dBOvYwE8XVAOV3ChGzoGz7gvh6D4MksNGoIEBtELtyYVWEtQbV13Tqq
- vyLQ==
-X-Gm-Message-State: AOJu0YzI38WUOIpiwMmFjg6NSq/2sJ9rEMSZThraoHi/WpkZ/tCZp544
- jlSWzcpEfEUz7bKxRBWsSxAvGufi9PXXjwmK8ZIlGnxOD5UviPNJMnYxD0rQsfu45SHdUFiYhnV
- mXFDo
-X-Gm-Gg: ASbGncv79x8EJ05CE5eorRqHKKmISUdP3yWj2I9BPiI5bGbteue/22IXnseZnGOUDU8
- pscvh+55Prf1cegYsYgOoSVxfUrEtSePCLwmDWqd2IQLfuyKS5l2SuP794mju1XVq0ES+SepbuP
- 3/SNkUJzaOSnH88SIfbXGI3f5FkNNDzf0VGb4u3cTO3zj6ocDqgOkFybIZCX8bvs/+H8KsOwnT7
- sWVtvafWSAdI+iw1QXugiX2rDo8exsX1Y/IzWcza/kQsMTK5Tj+jrJEAt4X3BQ4nGxTTDFSx90X
- GBYwxYYQneXAm+e77z8olq8zHwMIl0gidGLIttrstfAfAO/DTyQok+B1QHUYHTnv6IYs+hGHJmY
- pF4sGgUMH+VJSQNf3B3D60BVuOTuWk3LRsEr3ANkWWy73kYPkBPgOxYQlV5umT1WtfmN94Xm1Cu
- P+bkWWlaphLA==
-X-Google-Smtp-Source: AGHT+IFGsipwBhHXzC1vrqpj+DjfYa44HqBE4MA0F9Uxs11Sm7FoThCtaLAF6/w+XzXdlXcuc8vz2g==
-X-Received: by 2002:a05:6a00:1305:b0:748:fb7c:bbe0 with SMTP id
- d2e1a72fcca58-7633965f00emr18858010b3a.24.1753726619259; 
- Mon, 28 Jul 2025 11:16:59 -0700 (PDT)
+ bh=cK/l0R+IQu4PJARiJoF6ivzv5QfPnUn4zekRDzw57vM=;
+ b=b8PaRqqf6TKbMHfLqAdmmtaV/vch2c7uquEootHIV4dGosmZwFGnxQUw4K/Hx9YJ92
+ 1kkFC+zXUGciGpnwosw3WHVg425hG5TZDRgw0UBcypwalKceoEm33hyH+pTj30RfAYRE
+ 4fFzJ0qUMHzUEdymqdp7T/rffCsfWGBOLkpKQgSTkO5z41Csep+wUi0zRAXFBppXKBKP
+ dv1SwcD9FzfG53xKXvnFO6wJaEdpzj8hE/lYR9el9yZJB31PuuioB6Ga5Za7zm7eIdGq
+ OBl/wYTT6nSDKwnda/mUJTcrOOcjQXHzFvb71aJvd2iKZXAG7T4LGO7iAM9RFETqp2Q2
+ sg3Q==
+X-Gm-Message-State: AOJu0YwSagJl1MHUJwpbabWsadrQXaUzPzS2WCuZ/O4TrBxbCzO41Tt+
+ FzIYnvuorV3ysOd44JiW2eXkObsFzXUqn0rxFInuG42rfJbaJjg1SbI890xh6j+Q+hJ+kQGjrGJ
+ hFQxN
+X-Gm-Gg: ASbGnct0/DGLpdMT6L0GljAnagUNjQmuR1C6UKE9DEEW6AR1UcBSQNtjOLQhhvBQiMA
+ 9xYcmG30H915d+v+BCgI4r7Dp5f/1riCNv8ascFhxB7VHIX2yEMUX1zoINabx094xeSq60ZPGt5
+ tRrnJG0HZOJ6CcH0V82YcSaOytkSC+IONj2kHK5PBbi3CU2xuT2iEdiJzmyZ6nkaR+nCZsDYBmj
+ okdpnWKXiQRbQ9RYUE8hkmZw3UOMVMRYlv4Q5Lp357zkOkxsFaQ2GT9eRLE2bJF/dYrfhulE9VI
+ ds2FqL+NMFDCj8XDAOkJ+5uGdeqBt7vO6poiK3EvdfCyD58cFfoHcMvxqk4GcP5E/UcbKwG3Tis
+ KP1XpM+ouY7tCi1LR5TGRkIjWtW5yApkQ6HtuvVHmpO71MxHnEihk5/BTf4UV2qKqBPC0BCaZhk
+ v/4UA6uXQetA==
+X-Google-Smtp-Source: AGHT+IGJyI+r7XO61hMCtEXbjek3vbkRi2ba0/SllpB7ys/0M4xowAQKa2UQrO+4ig90mDO5tzyfJA==
+X-Received: by 2002:a05:6a20:6a23:b0:233:f0c6:a8a4 with SMTP id
+ adf61e73a8af0-23d701a8a06mr24320561637.31.1753726620691; 
+ Mon, 28 Jul 2025 11:17:00 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7640adfeb83sm5985103b3a.66.2025.07.28.11.16.58
+ d2e1a72fcca58-7640adfeb83sm5985103b3a.66.2025.07.28.11.16.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Jul 2025 11:16:58 -0700 (PDT)
+ Mon, 28 Jul 2025 11:17:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mjt@tls.msk.ru, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 4/9] target/arm/sme: Reset SVE state in aarch64_set_svcr()
-Date: Mon, 28 Jul 2025 08:16:45 -1000
-Message-ID: <20250728181650.165114-5-richard.henderson@linaro.org>
+Subject: [PATCH 5/9] target/arm/sme: Reset ZA state in aarch64_set_svcr()
+Date: Mon, 28 Jul 2025 08:16:46 -1000
+Message-ID: <20250728181650.165114-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250728181650.165114-1-richard.henderson@linaro.org>
 References: <20250728181650.165114-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,122 +102,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move arm_reset_sve_state() calls to aarch64_set_svcr().
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230112102436.1913-5-philmd@linaro.org
+Message-id: 20230112102436.1913-6-philmd@linaro.org
 Message-Id: <20230112004322.161330-1-richard.henderson@linaro.org>
 [PMD: Split patch in multiple tiny steps]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 7f2a01e7368f960fadea38f437d0f6de7f249686)
+(cherry picked from commit fccb49182e23bd359092f7ab09bc7e60a0fff71a)
 ---
- target/arm/cpu.h              |  1 -
- linux-user/aarch64/cpu_loop.c |  1 -
- linux-user/aarch64/signal.c   |  8 +-------
- target/arm/helper.c           | 13 +++++++++++++
- target/arm/sme_helper.c       | 10 ----------
- 5 files changed, 14 insertions(+), 19 deletions(-)
+ target/arm/helper.c     | 12 ++++++++++++
+ target/arm/sme_helper.c | 12 ------------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 8acfd3af4c..02a084c962 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1119,7 +1119,6 @@ void aarch64_sve_narrow_vq(CPUARMState *env, unsigned vq);
- void aarch64_sve_change_el(CPUARMState *env, int old_el,
-                            int new_el, bool el0_a64);
- void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask);
--void arm_reset_sve_state(CPUARMState *env);
- 
- /*
-  * SVE registers are encoded in KVM's memory in an endianness-invariant format.
-diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
-index d53742e10b..5e93d27d8f 100644
---- a/linux-user/aarch64/cpu_loop.c
-+++ b/linux-user/aarch64/cpu_loop.c
-@@ -96,7 +96,6 @@ void cpu_loop(CPUARMState *env)
-             aarch64_set_svcr(env, 0, R_SVCR_SM_MASK);
-             if (FIELD_EX64(env->svcr, SVCR, SM)) {
-                 arm_rebuild_hflags(env);
--                arm_reset_sve_state(env);
-             }
-             ret = do_syscall(env,
-                              env->xregs[8],
-diff --git a/linux-user/aarch64/signal.c b/linux-user/aarch64/signal.c
-index b6e4dcb494..a326a6def5 100644
---- a/linux-user/aarch64/signal.c
-+++ b/linux-user/aarch64/signal.c
-@@ -665,14 +665,8 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
-         env->btype = 2;
-     }
- 
--    /*
--     * Invoke the signal handler with both SM and ZA disabled.
--     * When clearing SM, ResetSVEState, per SMSTOP.
--     */
-+    /* Invoke the signal handler with both SM and ZA disabled. */
-     aarch64_set_svcr(env, 0, R_SVCR_SM_MASK | R_SVCR_ZA_MASK);
--    if (FIELD_EX64(env->svcr, SVCR, SM)) {
--        arm_reset_sve_state(env);
--    }
-     if (env->svcr) {
-         arm_rebuild_hflags(env);
-     }
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 86b97daf7e..94a6f431a9 100644
+index 94a6f431a9..37e018e765 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -6429,11 +6429,24 @@ static CPAccessResult access_esm(CPUARMState *env, const ARMCPRegInfo *ri,
-     return CP_ACCESS_OK;
- }
- 
-+/* ResetSVEState */
-+static void arm_reset_sve_state(CPUARMState *env)
-+{
-+    memset(env->vfp.zregs, 0, sizeof(env->vfp.zregs));
-+    /* Recall that FFR is stored as pregs[16]. */
-+    memset(env->vfp.pregs, 0, sizeof(env->vfp.pregs));
-+    vfp_set_fpcr(env, 0x0800009f);
-+}
+@@ -6447,6 +6447,18 @@ void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask)
+     if (change & R_SVCR_SM_MASK) {
+         arm_reset_sve_state(env);
+     }
 +
- void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask)
- {
-     uint64_t change = (env->svcr ^ new) & mask;
- 
-     env->svcr ^= change;
-+
-+    if (change & R_SVCR_SM_MASK) {
-+        arm_reset_sve_state(env);
++    /*
++     * ResetSMEState.
++     *
++     * SetPSTATE_ZA zeros on enable and disable.  We can zero this only
++     * on enable: while disabled, the storage is inaccessible and the
++     * value does not matter.  We're not saving the storage in vmstate
++     * when disabled either.
++     */
++    if (change & new & R_SVCR_ZA_MASK) {
++        memset(env->zarray, 0, sizeof(env->zarray));
 +    }
  }
  
  static void svcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
 diff --git a/target/arm/sme_helper.c b/target/arm/sme_helper.c
-index 7717dab64f..56a8fbe691 100644
+index 56a8fbe691..247c2823ac 100644
 --- a/target/arm/sme_helper.c
 +++ b/target/arm/sme_helper.c
-@@ -29,22 +29,12 @@
- #include "vec_internal.h"
- #include "sve_ldst_internal.h"
- 
--/* ResetSVEState */
--void arm_reset_sve_state(CPUARMState *env)
--{
--    memset(env->vfp.zregs, 0, sizeof(env->vfp.zregs));
--    /* Recall that FFR is stored as pregs[16]. */
--    memset(env->vfp.pregs, 0, sizeof(env->vfp.pregs));
--    vfp_set_fpsr(env, 0x0800009f);
--}
--
- void helper_set_pstate_sm(CPUARMState *env, uint32_t i)
- {
-     if (i == FIELD_EX64(env->svcr, SVCR, SM)) {
+@@ -44,18 +44,6 @@ void helper_set_pstate_za(CPUARMState *env, uint32_t i)
          return;
      }
-     aarch64_set_svcr(env, 0, R_SVCR_SM_MASK);
--    arm_reset_sve_state(env);
+     aarch64_set_svcr(env, 0, R_SVCR_ZA_MASK);
+-
+-    /*
+-     * ResetSMEState.
+-     *
+-     * SetPSTATE_ZA zeros on enable and disable.  We can zero this only
+-     * on enable: while disabled, the storage is inaccessible and the
+-     * value does not matter.  We're not saving the storage in vmstate
+-     * when disabled either.
+-     */
+-    if (i) {
+-        memset(env->zarray, 0, sizeof(env->zarray));
+-    }
      arm_rebuild_hflags(env);
  }
  
