@@ -2,71 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6007B139D6
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 13:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FE4B139DD
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Jul 2025 13:29:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugLzD-0002dg-MY; Mon, 28 Jul 2025 07:25:44 -0400
+	id 1ugM2Y-0001ot-Dl; Mon, 28 Jul 2025 07:29:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ugLmu-0005j5-SF
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 07:13:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ugLtU-0000PN-Sz
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 07:20:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ugLmr-0003oz-T2
- for qemu-devel@nongnu.org; Mon, 28 Jul 2025 07:13:00 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ugLtS-00071N-So
+ for qemu-devel@nongnu.org; Mon, 28 Jul 2025 07:19:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753701175;
+ s=mimecast20190719; t=1753701584;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=lCBkbt9Bt5a8/WEwDE6+o6sBDNtWzq2jPvybl068pRs=;
- b=VGbLPORVRU2BHmS/hlQqMPz1RPJcXBjUdtcp4y/MluHoxR9yAtBefCiocacjJypq3jRQL2
- vi4Q7m70CMOFjG16N4/XFgEaBp4HofY1ZY4gJQ+7haHD0jx5TDPTHpPu/InU0chL1s0hAo
- oLk3eMdJqDanjjx6fZ4N1MZCRl4mH/8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=USRSq3N/CkvgGl3qoOHGGocwrBUctZpXbah6DW1Cubk=;
+ b=dyT0xzbaz/Fr9DC3A1UVQnERQYGswEEa9XRtyVTW19BaBW6s5jwbe0qppcT3X3T2S24zM/
+ 8M50rKNVNXIL5+/rRfG2PDP2Oo1kNOn99Qw2F7AXM/ZK5G8DCvg8oLPcEy10E4JAFfaKet
+ mWXO2H3I0sf2ldYxwODGhB2a0b6qiX8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-148-I5bhsrZQMgahyIfJb8D3Ng-1; Mon,
- 28 Jul 2025 07:12:52 -0400
-X-MC-Unique: I5bhsrZQMgahyIfJb8D3Ng-1
-X-Mimecast-MFC-AGG-ID: I5bhsrZQMgahyIfJb8D3Ng_1753701171
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-ZJkVYezwN8-jYxa8UoHCAA-1; Mon,
+ 28 Jul 2025 07:19:41 -0400
+X-MC-Unique: ZJkVYezwN8-jYxa8UoHCAA-1
+X-Mimecast-MFC-AGG-ID: ZJkVYezwN8-jYxa8UoHCAA_1753701580
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 184F8195608B; Mon, 28 Jul 2025 11:12:51 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 59DDE180045B; Mon, 28 Jul 2025 11:19:40 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.14])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A967419560A2; Mon, 28 Jul 2025 11:12:50 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EF4381800B6B; Mon, 28 Jul 2025 11:19:39 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0144F21E6A27; Mon, 28 Jul 2025 13:12:47 +0200 (CEST)
+ id 6828121E6A27; Mon, 28 Jul 2025 13:19:37 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,  Yan
- Vugenfirer <yvugenfi@redhat.com>,  Daniel =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>
-Subject: Re: [PATCH] util: win32: Write hex value when can't get error message
-In-Reply-To: <CAPMcbCp5BuLADQoDijw811G4-u-ssBJ+eFrzyiU8_G9Tr7uLHA@mail.gmail.com>
- (Kostiantyn Kostiuk's message of "Fri, 25 Jul 2025 12:59:00 +0300")
-References: <20250717145948.77870-1-kkostiuk@redhat.com>
- <87pldwbspt.fsf@pond.sub.org>
- <CAPMcbCp=PBMSxtTxCMkxigdovaY=MTNLRo6f3BBXNRT6vu4wmw@mail.gmail.com>
- <87seipkif5.fsf@pond.sub.org>
- <CAPMcbCrTTkr5sX11wn1WaXOLgqQTAD-1oxUuqOc+oEmUxcotkw@mail.gmail.com>
- <c3afe3f5-962d-40ba-a778-716ef9929053@linaro.org>
- <CAPMcbCp5BuLADQoDijw811G4-u-ssBJ+eFrzyiU8_G9Tr7uLHA@mail.gmail.com>
-Date: Mon, 28 Jul 2025 13:12:47 +0200
-Message-ID: <87ecu0r2kw.fsf@pond.sub.org>
+To: michael.roth@amd.com,  kkostiuk@redhat.com
+Cc: qemu-devel@nongnu.org,  eblake@redhat.com,  jsnow@redhat.com,
+ berrange@redhat.com
+Subject: Re: [PATCH v2 0/4] qga: Doc fixes and improvements
+In-Reply-To: <20250717115246.3830007-1-armbru@redhat.com> (Markus Armbruster's
+ message of "Thu, 17 Jul 2025 13:52:42 +0200")
+References: <20250717115246.3830007-1-armbru@redhat.com>
+Date: Mon, 28 Jul 2025 13:19:37 +0200
+Message-ID: <87a54or29i.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -91,41 +83,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Kostiantyn Kostiuk <kkostiuk@redhat.com> writes:
+Markus Armbruster <armbru@redhat.com> writes:
 
-> Issue reported to GLib https://gitlab.gnome.org/GNOME/glib/-/issues/3740
-> PR with fix https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4716
->
-> @Markus Armbruster <armbru@redhat.com>
-> Based on the documentation from this PR, do you have any other objections
-> to this patch?
+> This series touches only doc comments.  I'd like to get it into 10.1.
 
-I can't see that the commit invalidates my objection.
-
-The revised contract still specifies the error code comes from
-GetLastError() or WSAGetLastError().  Passing anything else still
-violates it.
-
-What can go wrong when we pass some other integer?
-
-Say we pass EINVAL.  It's 22 on Linux.  Interpreted as Windows system
-error code (the thing GetLastError() returns), that's ERROR_BAD_COMMAND,
-documented as "The device does not recognize the command."[*].
-g_win32_error_message() and thus error_setg_win32() will report
-confusing nonsense.
-
-Another common integer error code is -1.  This isn't a valid Windows
-system error code, so we can expect to hit the "unknown Windows error"
-branch.
-
-Perhaps the code is so confused about error codes that passing them to
-an appropriate function is impractical, and taking our chances with
-g_win32_error_message() is the best we can do.  Wouldn't exactly inspire
-confidence in the soundness of QEMU's Windows code.
-
-
-
-
-[*] https://learn.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-
+Kostiantyn, Michael, would you like me to do the PR for this?
 
 
