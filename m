@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAC2B156A5
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C180DB156A7
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:39:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugupE-000300-J9; Tue, 29 Jul 2025 20:37:44 -0400
+	id 1ugufM-0004cE-50; Tue, 29 Jul 2025 20:27:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguMX-0006oy-Ah
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:08:05 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1uguMY-0006ps-Cm
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:08:06 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguMV-00057v-BR
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:08:04 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-31f3b54da19so240222a91.1
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:08:02 -0700 (PDT)
+ id 1uguMW-00058B-7h
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:08:06 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-b34a71d9208so4702955a12.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:08:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753834082; x=1754438882; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753834083; x=1754438883; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=h3mKJMqydLY1W9tyxTMyrwndX6R0yQFewWeiuoVpWn4=;
- b=fflX9kun3DC20O5AczpSznhGF42/h+C4v9MOcTb6WQhgTRB1FSmtw0Fn5S83lmzAjT
- 7kc3XdRkSZQuhnRhy389PK/f5B/qpXbxmFT3oM812rS5HcvH9GkzbymbFWe5+qzNTC7w
- WFizfr1OipplWVU4cm4wO3TnG6V8BHKQOLUaVfOo1Y3q6tdE0NBXBDhYwZyg19jzco/D
- 4EBVfifxtpQHIGJ9Y/JKj/AkjDTX/XXmLfp/Jtk7RpkD7sCLLcnlGf5gTo52mZ3TcdLx
- JwSQd1XmPlz+IOhVAkxsOyjOE0lXzv2D2/dpLnh6kYCdPPzQbSQC27/qrEiB+TkLRMZT
- BoyA==
+ :reply-to; bh=qSjnwPeDWDBrNlNB24iCT3wnvDV5JdCbq4vVQKGP1nQ=;
+ b=WPRE2JwNUSYKkOUnquoGjlsncD7f4SDcyJJojEE7EKTbgqwNlfB5e1GJoBac9AuGB0
+ 06lYuKAGEE1CHI9fB2zyeuniD51Xn+NRQewH9WmrUpI3H1KIaVPUTKEiqeFNXbM0I2bI
+ nja9yWYThMBEHEzcbxSgoy4nLAXMGNuFdxWbItpmPP2Kw+r5qjOEHtNMXwS9FEAmpXmg
+ VXZR+pnQT5KgWpq7/F0imgOC+5d2cprfC/jW134SDIYgobm48O/FWQNPKK25HGloxp4E
+ 9psCoB46pjFjNtjoYBwSuOBLsOMdwj0YunDf2XtCMuqeMkfcwve7uFcb4k0gdB7jnY5h
+ E1cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753834082; x=1754438882;
+ d=1e100.net; s=20230601; t=1753834083; x=1754438883;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h3mKJMqydLY1W9tyxTMyrwndX6R0yQFewWeiuoVpWn4=;
- b=tSURQBJOtF/ocdtD/rFmcWlBrZq/M1Fjv9dI6b3uRqMMBb77hB7havSxI0A9pFhSOH
- 1znGNPyv6gxZixU+dK8cMAK8wBrLqsx6dqcBqPQ+0l20isHtRWVJrWHdiRJhcNENgFos
- jEASuWbnIQg078r/Jj2pGBlKZI0ykN+EUINRO07/q0bVZYROqd0+mADuAGC3phvlsfQZ
- S7fWRRgRZp9q/iuD/vTdbXFzM8eHgp+Ktp+SFpzrnfqmLCEURehyXjeOF4Un/Kuq3ryD
- MHWXoK9OKJ1YVlPMpSxIaOhJwSwujO11DDp78alJe04gxmQW7CtHDnF+9P8BAnFdz8B+
- u5zg==
-X-Gm-Message-State: AOJu0YzALnptgy1WjvJrAyiSanfgGzokMgUbxL/cxDQ33Wdb2MGElI3z
- oC6Q2wUmR1+fZ8al0TGi8MKok8aNZ+QnqUVFgo45TThraVsqEXVLzIfn9jwoVYxv9jmodW5H0kI
- h5Bel
-X-Gm-Gg: ASbGncvi5l1UXACXjHGOo857g/8Zw38z8Gw5gGAQGDf+SeAXQYrZ0Nwt9ixuXun5gB2
- 1GoBaRxguobvWiMK/zjJO+hn7FeDBTWDTTMcFYCdEzU1mk4qhOAuzRMdh5/oEAwRxwaX26Zt5Io
- F9fFUFxsRGpus7omjYH1uwK+ttXZKKj5FbBwiACMiVx7rbwjl3bpwE4fHNEIkeGPm0AUX1imEdB
- JcfZ8A3SuaAQee3HVMlHHxm0mcdLBUb4N/qxrHqeKWKK8CZFIoH5n9sSH4bumiL0P1wzhwVhln3
- E1yYOj2Xtz1lRv6uZ+N6kFtlb9Qj3d4wCpCE5gQtO/1IdHTY5OuT5gBM15y5TxCXU+wy4rFB9Jb
- 17V8wwdfxcy9OBBdR7zFFCEoMHsxL3ejHJGDkYdp3odV/RZhcNUPVxlSrW0hlnnXctbB5FFIZxP
- tJ6IaJ5WZbjA==
-X-Google-Smtp-Source: AGHT+IGns91RM/ual+Mb5+t2Q5mLPpmKA9IhlA7e+rG8zjK3wN1UlxnfVW0/mO8ALwl3T2QIpFHPIg==
-X-Received: by 2002:a17:90b:2683:b0:313:1c7b:fc62 with SMTP id
- 98e67ed59e1d1-31f5de4bffamr1472573a91.22.1753834081591; 
- Tue, 29 Jul 2025 17:08:01 -0700 (PDT)
+ bh=qSjnwPeDWDBrNlNB24iCT3wnvDV5JdCbq4vVQKGP1nQ=;
+ b=RPPVCkID62K4E4JuVkMkVVjpOpIHuTzSTp/YxoM3ZSmG1ix2uWWfkWdxQYH+PMSskE
+ 61pr+wxYSG8Ugq+T3z01jwFaOgInF38TNRXQnA554nIAxdLNBQR6tqmGPeqSxo22FaQY
+ 0DHbarTzyKHNbMc49pvoxWFm5C4SNZi3Nlc8y5oN9EQSB+jJtLNa97xSresjY+viLukH
+ GpAd87Xu3xHIUSH5Or8MEXDVN5EY7LV0YvLCgnA5J2mR2Q0b+jo2fEX7ipgtKsiczRgQ
+ DNbhswOWcyZ8zLSndBGYpI53IWX0HJiMg/O3faNlhY+Oq9afrH5KocTTbhViA345kdJu
+ XrIA==
+X-Gm-Message-State: AOJu0Yz6s8XKNJvkwBNJCOTqMhhkdfJbItdv7CM+68XcF+AJJVxMBl8N
+ ZfsK5Lxf2WGSMcRDMgmewGesyKa6KUK9LpxNRC/uZyhBXsvBe6jLSQhmO8p+FOTXyAFYHvmcRqZ
+ uzMbm
+X-Gm-Gg: ASbGncvu3FMgPK9o1DU82xB6FVk1yMZpx7t5CQTuvWYMPsRZUxY0mkXjDqBVMpvwCge
+ oUNYz1mAJhl+sgx/esGe98FweNi+Tf9TdYG7rI1UKjI8oYen88agnLBhfdAu5BHEBtNGihRxVK7
+ J7I4P46Ic584glmtpPWo9afhy4pG9rbAvUjkb/rtbvlvFgxpztA/WSG+Akz9AR/I1Q3k/x5bgD1
+ +Tg7S30MtNoqILxZC9aAzmIgHdE517CKzu+W7yCZZeXo8knylPicu/uzbHP21BOynZdAvAIobS8
+ ZAsxRLUcyeU4phIUDHK6LfOmEXzgtAEjoNTFL7NoDUqX9FYPWmzWsyAfUik990EunI7/2q4V5JG
+ +ZRMtT339z2cOaviTA9JFw3wD9DGngnl8U1jqWrMBnjZxT0zZYLACckgbiUvjZVDjsc1xme+91Y
+ /CcVSU8NrtCg==
+X-Google-Smtp-Source: AGHT+IFc3p1IG1BerogQy/5kybjqgSGeyUfWId8O0KmNGxi3y6/fcvreXHJXQvuNUPx4MDHLRkpR4A==
+X-Received: by 2002:a17:90b:5103:b0:312:f0d0:bb0 with SMTP id
+ 98e67ed59e1d1-31f5dd9bc9amr1749078a91.12.1753834082651; 
+ Tue, 29 Jul 2025 17:08:02 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31f63ddfb2asm281868a91.22.2025.07.29.17.08.00
+ 98e67ed59e1d1-31f63ddfb2asm281868a91.22.2025.07.29.17.08.01
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 17:08:01 -0700 (PDT)
+ Tue, 29 Jul 2025 17:08:02 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 82/89] linux-user: Remove MAP_DENYWRITE from elfload.c
-Date: Tue, 29 Jul 2025 13:59:55 -1000
-Message-ID: <20250730000003.599084-83-richard.henderson@linaro.org>
+Subject: [PATCH 83/89] linux-user: Move arch_parse_elf_property to
+ aarch64/elfload.c
+Date: Tue, 29 Jul 2025 13:59:56 -1000
+Message-ID: <20250730000003.599084-84-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250730000003.599084-1-richard.henderson@linaro.org>
 References: <20250730000003.599084-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,29 +99,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The last use of this fallback was removed in bf858897b769.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 5 -----
- 1 file changed, 5 deletions(-)
+ linux-user/aarch64/target_elf.h |  1 +
+ linux-user/loader.h             |  5 +++++
+ linux-user/aarch64/elfload.c    | 18 +++++++++++++++++
+ linux-user/elfload.c            | 35 ++++++---------------------------
+ 4 files changed, 30 insertions(+), 29 deletions(-)
 
+diff --git a/linux-user/aarch64/target_elf.h b/linux-user/aarch64/target_elf.h
+index 16acf6d47f..2d396ad11a 100644
+--- a/linux-user/aarch64/target_elf.h
++++ b/linux-user/aarch64/target_elf.h
+@@ -11,6 +11,7 @@
+ #define ELF_MACHINE             EM_AARCH64
+ #define ELF_CLASS               ELFCLASS64
+ #define USE_ELF_CORE_DUMP
++#define ARCH_USE_GNU_PROPERTY   1
+ 
+ #if TARGET_BIG_ENDIAN
+ # define VDSO_HEADER            "vdso-be.c.inc"
+diff --git a/linux-user/loader.h b/linux-user/loader.h
+index a4178ce2c1..95cbeed5d4 100644
+--- a/linux-user/loader.h
++++ b/linux-user/loader.h
+@@ -117,4 +117,9 @@ typedef struct {
+ /* Note that both Elf32_Word and Elf64_Word are uint32_t. */
+ const VdsoImageInfo *get_vdso_image_info(uint32_t elf_flags);
+ 
++bool arch_parse_elf_property(uint32_t pr_type, uint32_t pr_datasz,
++                             const uint32_t *data,
++                             struct image_info *info,
++                             Error **errp);
++
+ #endif /* LINUX_USER_LOADER_H */
+diff --git a/linux-user/aarch64/elfload.c b/linux-user/aarch64/elfload.c
+index 1030cb8094..d186b4685c 100644
+--- a/linux-user/aarch64/elfload.c
++++ b/linux-user/aarch64/elfload.c
+@@ -1,9 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+ 
+ #include "qemu/osdep.h"
++#include "qapi/error.h"
+ #include "qemu.h"
+ #include "loader.h"
+ #include "target/arm/cpu-features.h"
++#include "elf.h"
+ 
+ 
+ const char *get_elf_cpu_model(uint32_t eflags)
+@@ -347,3 +349,19 @@ const char *get_elf_platform(CPUState *cs)
+ {
+     return TARGET_BIG_ENDIAN ? "aarch64_be" : "aarch64";
+ }
++
++bool arch_parse_elf_property(uint32_t pr_type, uint32_t pr_datasz,
++                             const uint32_t *data,
++                             struct image_info *info,
++                             Error **errp)
++{
++    if (pr_type == GNU_PROPERTY_AARCH64_FEATURE_1_AND) {
++        if (pr_datasz != sizeof(uint32_t)) {
++            error_setg(errp, "Ill-formed GNU_PROPERTY_AARCH64_FEATURE_1_AND");
++            return false;
++        }
++        /* We will extract GNU_PROPERTY_AARCH64_FEATURE_1_BTI later. */
++        info->note_flags = *data;
++    }
++    return true;
++}
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 6eb4e31bdb..14d4502b3c 100644
+index 14d4502b3c..54ea9221d9 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -105,11 +105,6 @@ int info_is_fdpic(struct image_info *info)
-     return info->personality == PER_LINUX_FDPIC;
+@@ -184,41 +184,18 @@ const char * __attribute__((weak)) get_elf_base_platform(CPUState *cs)
+     return NULL;
  }
  
--/* this flag is uneffective under linux too, should be deleted */
--#ifndef MAP_DENYWRITE
--#define MAP_DENYWRITE 0
--#endif
+-#include "elf.h"
 -
- #if TARGET_BIG_ENDIAN
- #define ELF_DATA        ELFDATA2MSB
- #else
+-/* We must delay the following stanzas until after "elf.h". */
+-#if defined(TARGET_AARCH64)
+-
+-static bool arch_parse_elf_property(uint32_t pr_type, uint32_t pr_datasz,
+-                                    const uint32_t *data,
+-                                    struct image_info *info,
+-                                    Error **errp)
+-{
+-    if (pr_type == GNU_PROPERTY_AARCH64_FEATURE_1_AND) {
+-        if (pr_datasz != sizeof(uint32_t)) {
+-            error_setg(errp, "Ill-formed GNU_PROPERTY_AARCH64_FEATURE_1_AND");
+-            return false;
+-        }
+-        /* We will extract GNU_PROPERTY_AARCH64_FEATURE_1_BTI later. */
+-        info->note_flags = *data;
+-    }
+-    return true;
+-}
+-#define ARCH_USE_GNU_PROPERTY 1
+-
+-#else
+-
+-static bool arch_parse_elf_property(uint32_t pr_type, uint32_t pr_datasz,
+-                                    const uint32_t *data,
+-                                    struct image_info *info,
+-                                    Error **errp)
++#ifndef ARCH_USE_GNU_PROPERTY
++bool arch_parse_elf_property(uint32_t pr_type, uint32_t pr_datasz,
++                             const uint32_t *data, struct image_info *info,
++                             Error **errp)
+ {
+     g_assert_not_reached();
+ }
+ #define ARCH_USE_GNU_PROPERTY 0
+-
+ #endif
+ 
++#include "elf.h"
++
+ struct exec
+ {
+     unsigned int a_info;   /* Use macros N_MAGIC, etc for access */
 -- 
 2.43.0
 
