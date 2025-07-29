@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B2DB14831
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 08:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5113B1482D
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 08:27:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugdny-00080I-Ug; Tue, 29 Jul 2025 02:27:19 -0400
+	id 1ugdo1-00086J-4B; Tue, 29 Jul 2025 02:27:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugdne-0007gS-Un
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 02:27:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugdng-0007h3-HA
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 02:27:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugdnc-0007Rz-2V
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 02:26:57 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugdne-0007SC-Ne
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 02:27:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753770415;
+ s=mimecast20190719; t=1753770416;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=j4glDHNCgMVTJXjLWuuYQ37MfDHpaGRYZ9//wvL9EKI=;
- b=J33JA/wy9hCb3VSgKQIhM9Z+Ai5FncJJE5ViayA8jGTmkNPiZPIrcJGdKijb3tkbfAcL+Z
- YCuxY+wD7ZSevGgexoFuDfOTRhPIZm+WhIa0qBX95lDqbK3okX0eMNTa0uLxSkotNdQHNc
- TSD6DZ3mZImZ42rKsZ9GWBkdSGzPAEU=
+ bh=ViewocIKxdPQ6hSzn6y+Sev0VKSo11zY1FkphSN2lMM=;
+ b=fIDB4iLFKPEZPd11yq1gJFk6L+LgvYi+aa6VtpXMz1ROVRCAn+JZRsYvf9aqHOdCq4yu0c
+ XPdOZlz9Rjhb/SucXRrwQoMRoM/LQsiBeEWRev5+T2/IoyVxfYLInI0kLverO6R6RCY/Za
+ usORaXyjFJpRCnjny4bdzEocjA/+l1g=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-471-vFyUNemxMYChm3-dHF5TfQ-1; Tue,
- 29 Jul 2025 02:26:52 -0400
-X-MC-Unique: vFyUNemxMYChm3-dHF5TfQ-1
-X-Mimecast-MFC-AGG-ID: vFyUNemxMYChm3-dHF5TfQ_1753770411
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-492-TEv8NrSOMQye99DwxZBpbA-1; Tue,
+ 29 Jul 2025 02:26:54 -0400
+X-MC-Unique: TEv8NrSOMQye99DwxZBpbA-1
+X-Mimecast-MFC-AGG-ID: TEv8NrSOMQye99DwxZBpbA_1753770413
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 66C20180045B; Tue, 29 Jul 2025 06:26:51 +0000 (UTC)
+ id 4D54D1800366; Tue, 29 Jul 2025 06:26:53 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.29])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8A6E91955F16; Tue, 29 Jul 2025 06:26:49 +0000 (UTC)
+ id A9C841955F16; Tue, 29 Jul 2025 06:26:51 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Tomita Moeko <tomitamoeko@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 4/5] vfio/igd: Require host VGA decode for legacy mode
-Date: Tue, 29 Jul 2025 08:26:32 +0200
-Message-ID: <20250729062633.452522-5-clg@redhat.com>
+Subject: [PULL 5/5] vfio/igd: Fix VGA regions are not exposed in legacy mode
+Date: Tue, 29 Jul 2025 08:26:33 +0200
+Message-ID: <20250729062633.452522-6-clg@redhat.com>
 In-Reply-To: <20250729062633.452522-1-clg@redhat.com>
 References: <20250729062633.452522-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,76 +84,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tomita Moeko <tomitamoeko@gmail.com>
 
-Commit a59d06305fff ("vfio/pci: Introduce x-pci-class-code option")
-allows user to expose non-VGA IGD device as VGA controller to the
-guest. However, legacy mode requires host VGA range access. Check
-that GGC.IVD == 0 before enabling legacy mode to ensure IGD is a real
-VGA device claiming host VGA ranges.
+In commit a59d06305fff ("vfio/pci: Introduce x-pci-class-code option"),
+pci_register_vga() has been moved ouside of vfio_populate_vga(). As a
+result, IGD VGA ranges are no longer properly exposed to guest.
 
+To fix this, call pci_register_vga() after vfio_populate_vga() legacy
+mode. A wrapper function vfio_pci_config_register_vga() is introduced
+to handle it.
+
+Fixes: a59d06305fff ("vfio/pci: Introduce x-pci-class-code option")
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250723160906.44941-2-tomitamoeko@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250723160906.44941-3-tomitamoeko@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- docs/igd-assign.txt |  1 +
- hw/vfio/igd.c       | 11 ++++++-----
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ hw/vfio/pci.h |  1 +
+ hw/vfio/igd.c | 10 +++++++---
+ hw/vfio/pci.c | 13 ++++++++++---
+ 3 files changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/docs/igd-assign.txt b/docs/igd-assign.txt
-index af4e8391fc25898906b0b8bf123e1ec44e45efc0..e54040335ba72dc971babb4d776e46d94f342f70 100644
---- a/docs/igd-assign.txt
-+++ b/docs/igd-assign.txt
-@@ -48,6 +48,7 @@ Intel document [1] shows how to dump VBIOS to file. For UEFI Option ROM, see
- QEMU also provides a "Legacy" mode that implicitly enables full functionality
- on IGD, it is automatically enabled when
- * IGD generation is 6 to 9 (Sandy Bridge to Comet Lake)
-+* IGD claims VGA cycles on host (IGD is VGA controller on host)
- * Machine type is i440fx
- * IGD is assigned to guest BDF 00:02.0
- * ROM BAR or romfile is present
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index bca289035aaebb6c4422b31e26bb1dd76ab5ae72..81465a8214a4008716806ae85c7f320f6b198bb2 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -253,6 +253,7 @@ extern const VMStateDescription vfio_display_vmstate;
+ 
+ void vfio_pci_bars_exit(VFIOPCIDevice *vdev);
+ bool vfio_pci_add_capabilities(VFIOPCIDevice *vdev, Error **errp);
++void vfio_pci_config_register_vga(VFIOPCIDevice *vdev);
+ bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp);
+ bool vfio_pci_interrupt_setup(VFIOPCIDevice *vdev, Error **errp);
+ void vfio_pci_intx_eoi(VFIODevice *vbasedev);
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index e7a9d1ffc13044dd01ba83b88b2b3a1c24cfbf98..5b1ad1a8048b8753f524059810b1b17015704ac9 100644
+index 5b1ad1a8048b8753f524059810b1b17015704ac9..ee0767b0b89c085a5147369dd6fcbd3ff21f8927 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -113,6 +113,7 @@ static int igd_gen(VFIOPCIDevice *vdev)
- #define IGD_BDSM 0x5c /* Base Data of Stolen Memory */
- #define IGD_BDSM_GEN11 0xc0 /* Base Data of Stolen Memory of gen 11 and later */
- 
-+#define IGD_GMCH_VGA_DISABLE        BIT(1)
- #define IGD_GMCH_GEN6_GMS_SHIFT     3       /* SNB_GMCH in i915 */
- #define IGD_GMCH_GEN6_GMS_MASK      0x1f
- #define IGD_GMCH_GEN8_GMS_SHIFT     8       /* BDW_GMCH in i915 */
-@@ -533,12 +534,14 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
-     /*
-      * For backward compatibility, enable legacy mode when
-      * - Device geneation is 6 to 9 (including both)
-+     * - IGD claims VGA cycles on host
-      * - Machine type is i440fx (pc_piix)
-      * - IGD device is at guest BDF 00:02.0
-      * - Not manually disabled by x-igd-legacy-mode=off
-      */
-     if ((vdev->igd_legacy_mode != ON_OFF_AUTO_OFF) &&
-         (gen >= 6 && gen <= 9) &&
-+        !(gmch & IGD_GMCH_VGA_DISABLE) &&
-         !strcmp(MACHINE_GET_CLASS(qdev_get_machine())->family, "pc_piix") &&
-         (&vdev->pdev == pci_find_device(pci_device_root_bus(&vdev->pdev),
-         0, PCI_DEVFN(0x2, 0)))) {
-@@ -568,12 +571,10 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
-         }
- 
-         /*
--         * If IGD VGA Disable is clear (expected) and VGA is not already
--         * enabled, try to enable it. Probably shouldn't be using legacy mode
--         * without VGA, but also no point in us enabling VGA if disabled in
--         * hardware.
-+         * If VGA is not already enabled, try to enable it. We shouldn't be
-+         * using legacy mode without VGA.
+@@ -574,9 +574,13 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+          * If VGA is not already enabled, try to enable it. We shouldn't be
+          * using legacy mode without VGA.
           */
--        if (!(gmch & 0x2) && !vdev->vga && !vfio_populate_vga(vdev, &err)) {
-+        if (!vdev->vga && !vfio_populate_vga(vdev, &err)) {
-             error_setg(&err, "Unable to enable VGA access");
-             goto error;
+-        if (!vdev->vga && !vfio_populate_vga(vdev, &err)) {
+-            error_setg(&err, "Unable to enable VGA access");
+-            goto error;
++        if (!vdev->vga) {
++            if (vfio_populate_vga(vdev, &err)) {
++                vfio_pci_config_register_vga(vdev);
++            } else {
++                error_setg(&err, "Unable to enable VGA access");
++                goto error;
++            }
          }
+ 
+         /* Enable OpRegion and LPC bridge quirk */
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index f5bc5359eb8bdb8ddfa5f2b50d7387f2638bbeb4..4fa692c1a32bcfa4e4939e5fcb64f2bf19905b3b 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3162,6 +3162,15 @@ static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
+     vdev->req_enabled = false;
+ }
+ 
++void vfio_pci_config_register_vga(VFIOPCIDevice *vdev)
++{
++    assert(vdev->vga != NULL);
++
++    pci_register_vga(&vdev->pdev, &vdev->vga->region[QEMU_PCI_VGA_MEM].mem,
++                     &vdev->vga->region[QEMU_PCI_VGA_IO_LO].mem,
++                     &vdev->vga->region[QEMU_PCI_VGA_IO_HI].mem);
++}
++
+ bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp)
+ {
+     PCIDevice *pdev = &vdev->pdev;
+@@ -3283,9 +3292,7 @@ bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp)
+     vfio_bars_register(vdev);
+ 
+     if (vdev->vga && vfio_is_vga(vdev)) {
+-        pci_register_vga(&vdev->pdev, &vdev->vga->region[QEMU_PCI_VGA_MEM].mem,
+-                         &vdev->vga->region[QEMU_PCI_VGA_IO_LO].mem,
+-                         &vdev->vga->region[QEMU_PCI_VGA_IO_HI].mem);
++        vfio_pci_config_register_vga(vdev);
+     }
+ 
+     return true;
 -- 
 2.50.1
 
