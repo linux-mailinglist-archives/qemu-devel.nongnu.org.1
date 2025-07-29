@@ -2,75 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447E8B14B36
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AEF6B14CD2
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 13:14:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uggXt-000896-Hh; Tue, 29 Jul 2025 05:22:53 -0400
+	id 1ugiGb-0007yj-Kf; Tue, 29 Jul 2025 07:13:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggXi-0006mz-JY
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:22:42 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
+ (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1ugiG5-0007ab-U7
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:12:41 -0400
+Received: from mx.swemel.ru ([95.143.211.150])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggXg-0002j5-Er
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:22:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753780960; x=1785316960;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Gz/u3+22VbTDgEyWUGqcjsM9wDdU3F5dLTJqShryqcE=;
- b=fWYI/k2THjL/8eL7MTTUaLmpIHffw+LDPCiqQ5XfZROl2r0B4wr5KO1M
- TTDcS3DtCIzAqVkwalymEKuDglSnuVLEVdDmyndZ40IQEoQYeuFd3tp9H
- BUxNpO5crEWEcbCddDQSZ5HigaK2em9kbSq0JgxSCmZeS9ISSysmptLkA
- r/zSyCl7rmA7rElweqHVeDd1C/eyzHXqK6WNUp2UHarDJJXPEvdD2qXqx
- 4LQTz8DHSyZK0Q2BD4xiXwtNbAa9cAuvw6yKDE8Y/bfEMd37sPEyv8Tcl
- LajoJVEjCOrZ7tbIWa4suE/v1oBUlpf9qXOXsJddt4oX70o4cGfim8eqw A==;
-X-CSE-ConnectionGUID: JwTqZZEUSRy0buz+8d4gyw==
-X-CSE-MsgGUID: Xm1QGBZSRXyy5aeVolLeog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55982063"
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55982063"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:22:28 -0700
-X-CSE-ConnectionGUID: cuw9jsrBTIugrbznclSESQ==
-X-CSE-MsgGUID: GJ1XwN3tTliRHhsotVGUbw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691538"
-Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:22:25 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- mst@redhat.com, jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com,
- jgg@nvidia.com, nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
- joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
- kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v4 20/20] intel_iommu: Enable host device when x-flts=on in
- scalable mode
-Date: Tue, 29 Jul 2025 05:20:42 -0400
-Message-ID: <20250729092043.785836-21-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250729092043.785836-1-zhenzhong.duan@intel.com>
-References: <20250729092043.785836-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1ugiG2-0001Ch-3j
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:12:37 -0400
+From: Dmitry Frolov <frolov@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+ t=1753787546;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=edsxOrqqYmpU8NByxdSolBv/sKb7nScwnimoebbFkfQ=;
+ b=C/I787wv7V7pduEtFZPQ72Ase0OPJ3C1gPmwlofwn+a9KYLl1/7BwwsRiytDMrlTB6kE85
+ /o/DxeiX1nUdRAUiJut0RQDI0zscsbfczdOqbHiPfWYiNK+9zvX5EP5F+vakQSwqaCe8nH
+ Hk834ShhDJZHa50ezHqrBd64flzgT2s=
+To: jcmvbkbc@gmail.com
+Cc: sdl.qemu@linuxtesting.org, qemu-devel@nongnu.org,
+ Dmitry Frolov <frolov@swemel.ru>
+Subject: [PATCH] target/xtensa: Replace malloc() with g_strdup_printf()
+Date: Tue, 29 Jul 2025 14:11:44 +0300
+Message-Id: <20250729111143.1011889-1-frolov@swemel.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.17;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=95.143.211.150; envelope-from=frolov@swemel.ru;
+ helo=mx.swemel.ru
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,28 +58,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all infrastructures of supporting passthrough device running
-with stage-1 translation are there, enable it now.
+malloc() return value is used without a check.
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
 ---
- hw/i386/intel_iommu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/xtensa/translate.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index d2442ff28d..c8375c33f2 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -5219,6 +5219,8 @@ static bool vtd_check_hiod(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
-                    "when x-flts=on");
-         return false;
-     }
-+
-+    return true;
- #endif
+diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
+index 34ae2f4e16..42ef8d3eb9 100644
+--- a/target/xtensa/translate.c
++++ b/target/xtensa/translate.c
+@@ -112,13 +112,8 @@ void xtensa_collect_sr_names(const XtensaConfig *config)
  
-     error_setg(errp, "host IOMMU is incompatible with stage-1 translation");
+             if (*pname) {
+                 if (strstr(*pname, name) == NULL) {
+-                    char *new_name =
+-                        malloc(strlen(*pname) + strlen(name) + 2);
+-
+-                    strcpy(new_name, *pname);
+-                    strcat(new_name, "/");
+-                    strcat(new_name, name);
+-                    free(*pname);
++                    char *new_name = g_strdup_printf("%s/%s", *pname, name);
++                    g_free(*pname);
+                     *pname = new_name;
+                 }
+             } else {
 -- 
-2.47.1
+2.34.1
 
 
