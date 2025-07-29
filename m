@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD93B1569C
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8A1B15685
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:31:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugucu-0000dQ-N2; Tue, 29 Jul 2025 20:25:01 -0400
+	id 1ugueJ-0002TZ-0g; Tue, 29 Jul 2025 20:26:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguJK-0004sK-Ln
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:04:47 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1uguJK-0004sQ-RF
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:04:48 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguJJ-0004ge-2k
+ id 1uguJJ-0004gq-97
  for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:04:46 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-769a9c3bbc4so1412321b3a.3
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:04:43 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-7425bd5a83aso5934235b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:04:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753833883; x=1754438683; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753833884; x=1754438684; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bmVBB02WViRDaWegeK7GjXuBg4XFIgnlwIeIpu6pXNg=;
- b=ZC3GBIqDEKFqajLtiYsc86MpjSNXwXA13u1KqGf+Np59NSASzqm7Oc/F7gZ/V7v121
- dGH8QH6Weg3B/isGQnXsc2NV0RLnfTcKvgocqAUp8fNrDmV/TMx4RoYMfarl16U/id7k
- vGx+EgIStKYE3YGL9YBVLaULsb9e4OFaw7l96Gkaxaajs5S+kt6y8cLnHw+2Bd731l8G
- iDhYNZbrPWlDD04KF58RLo6UC6whdiWeY3QQ5oMd+uZnW7dYcmMUVUKXNutqGy5aeay8
- WcgiOAfSLuGVfBBtp5YEuoTtheSctR4iKGIeOunoNisZh3LefYE/rPn1241bR7FkAtRI
- 6HVA==
+ :reply-to; bh=ACTPDzjgFM8M0mjF0F8qeqd+i/BH+25wG7KoNivcYas=;
+ b=lBBqK7t3rtpDmX3+wZoXjW5Vuxi/3EgfdXYwVxxu0uwA/A5EKnT43bAQAkbhNr/EPm
+ 7US/81ucXpADhsiqV4WJAHUr9hp7xgocLvfCtYO8lqAP4/9f1C3IV40+5cA1y8YlMJxq
+ gBoLq5a9ItqL+WopZiLyqWKRn16DEM3EDks7f0DUIynSyROMS+H3AWM6MsY4PremuZAR
+ VMSmPOpYovUz7dXUcR+gJ5kFmRwYq61xJMMWltLHC53xAnUjHzEQZlhKmgnh/OS3+e6t
+ 232C/8aR+QhScATUh+IeT7lAGQ5EpLKlp7mKwq94dwpJU49bSLEpKjMJmc3Gz6gnmHX1
+ +4Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753833883; x=1754438683;
+ d=1e100.net; s=20230601; t=1753833884; x=1754438684;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bmVBB02WViRDaWegeK7GjXuBg4XFIgnlwIeIpu6pXNg=;
- b=nPwzIQc72YiU509yQtrOgSmJ31kdj0gz2XxpZU1KrteGuCD1KNzzDGzZrZrzGRCYa9
- mpRZ6RZyTnkelaroIIGJvpm3D39s350xI08Pdnu7HSStC3V1m0lVkOgK1pcLeG/dASRa
- Dr8+URqIC04+bPJTsTFKjZtlTvtXSAqUl6aV0ok5yLxDgcfwC8oHkf8VAu/K+eVQkNxa
- 1zWIkC9xmg+l8p3lddl4+iQIwT48QNIQvEnztrCZtcla/MhvsAhKIBk1EbEfQfeCKqA8
- hhFlko69ZPdERpj6XebIPnROSrIbcSg3j9+Hh8846SJDYUz6kIv8tRiNrc3bwnc3a8vl
- LYtA==
-X-Gm-Message-State: AOJu0YyHR3RI43Iz+TCb++RGxr4yahaBCwsIhpzscGwIAgjqwlAz2i2t
- QVtHIk7CErEIxznsSUUwLGePZ9B0k2ma9H/8SJ0iHZo3cwkOzaJA//sbH4wlaAWG+IGnaqg4PM7
- +MefH
-X-Gm-Gg: ASbGncuiiX4QCofa2+SGdHGh119VVHt0dmXwzubbtlYMA00cJjod82KsHypBlay4ehe
- BxloNFyqdRFA7/jboq0KedwCssSqenEqBhhrCcv8oNnIBJZFiPlVTi7ns7DXhkVvsriyUFep99G
- aweJBSJL53CzEBpOXeGj1EhEVrqV1tdnDz02aHPwa88/QwqePuDUypJIEjJWSqo5kc3EsyDSAdC
- Y+wWJTs1fe0gOxIuwtSngPMMHSm/j9WwGBRWTTPr0frfIU8ZCr/xlPQdF+JEaQH914kXoB62OIb
- 7gE3c5TbX4IagLOmKy5ats7u8soZJCZYMTgar+UNa8F7tIrDI8t9mvQMMkvhITLFg/e8exJG55k
- LYtBqUzy0ZjjTl2BKMp4NG+qPhhit3BHL8KCL1ROTEqldqTyRKyaUzP/J8lcV463QEzahrg84Yb
- Qk/EZQKSrOBQ==
-X-Google-Smtp-Source: AGHT+IEDnRyANtaHKh8jPNevtAf6a59mF2pXBS8id5HAcuPpgh0biXkmSiMh3o4ABDiRm7S3OkPziw==
-X-Received: by 2002:a05:6a20:4309:b0:237:90ae:82de with SMTP id
- adf61e73a8af0-23dc0ecda2emr1775262637.16.1753833882712; 
- Tue, 29 Jul 2025 17:04:42 -0700 (PDT)
+ bh=ACTPDzjgFM8M0mjF0F8qeqd+i/BH+25wG7KoNivcYas=;
+ b=Q12CaI0d1Mh+caxuwyZHRFmY0EVM10D43d9JiaV6Hg4vRP3DDsBdLxdez7r4S4RpNM
+ zqep0xiVebiKM1tNa6/ugBa9WovGje3U7bn5plkQ5/QQKRbgTtiINkKvCTMjRpQfkHGg
+ tnWKdwmaxTY7a9AKIZcGNo+tw8GJHXJrWb1HvXp0Ol3OdS5dkk3iwB/Qv2UlvQzGAIhw
+ uxsKH6i9cC8tK0qLziqNXeOWGSR1fyb7oXXae2PWTcQQzhObi8UWp1IOZL+G69cjC9V2
+ QkAR7DALJxp3Cjcm8f7rxA7du2Ivxtg20+X1nmjGsw0zQJiAdf5a3yOgQJurLaeYUP7L
+ nXvA==
+X-Gm-Message-State: AOJu0YzJ9EYDrjBWnYYe4aF+4HP8Qsf8uRqOuvOqSjTJkagB1AS4NAx+
+ VFAMrGnjqXdgbLxTq3LhuBnD8Q4N+rkD964Tj3/OC32ZE2Q+oNa8wP3huseAhgGYQ62wVTGof/x
+ RZ+3k
+X-Gm-Gg: ASbGncvjJzcjsdni5hWT7ctghS5rpCvi+mrIqkxUKWW4t0LxPSkx6qhg7PfHNBrDkm0
+ I54eggyEp+f/t9Vypk8gMKZfRZfo7RSWMVO/elYoeYmLuZL5ISpmRloiC1+aNN0ujTcCzjgsX1E
+ RmDkEXya1QHIaiTc8iCpvO3J9Q6i9RzZPNWRGfd/BuLwHJv1a/kE95CzdCuSddgSFD/B7sPk14F
+ Jib8YuZmIDlNR9wd2CfE+sKtYCRAlHnspz2oBXjabkg1n6J4Kz9s36785dc5d0E7tArIB8q3tSC
+ rrzv3JYZM3vz5wdDPE+8u361NWqj+FxsHTBmUuqywdcUDpUQH+0W4aZoI+mbG3/VfjxFE+QH6dH
+ O0E281Ine+QH+LEDrW5O9QdZ+VXplK8pCuqjZJYw0sciZemAhDwWOjlf4/9FwUQ1rq4UGTtK4Hf
+ PXM1GQm1mi0Zek5WCUKgx3
+X-Google-Smtp-Source: AGHT+IGeOFqIN593tLV9TZbcSlmvPYEFcZjQsrFlGGqoL8ingwzSvbhK6Q0Ao79OF5mARyfVY0ER5g==
+X-Received: by 2002:a05:6a00:2347:b0:74e:a560:dd23 with SMTP id
+ d2e1a72fcca58-76ab30c553dmr2238588b3a.21.1753833883869; 
+ Tue, 29 Jul 2025 17:04:43 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7640ad06762sm9101302b3a.80.2025.07.29.17.04.41
+ d2e1a72fcca58-7640ad06762sm9101302b3a.80.2025.07.29.17.04.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 17:04:42 -0700 (PDT)
+ Tue, 29 Jul 2025 17:04:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 67/89] linux-user: Move elf parameters to
- loongarch64/target_elf.h
-Date: Tue, 29 Jul 2025 13:59:40 -1000
-Message-ID: <20250730000003.599084-68-richard.henderson@linaro.org>
+Subject: [PATCH 68/89] linux-user: Move elf parameters to {mips,
+ mips64}/target_elf.h
+Date: Tue, 29 Jul 2025 13:59:41 -1000
+Message-ID: <20250730000003.599084-69-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250730000003.599084-1-richard.henderson@linaro.org>
 References: <20250730000003.599084-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,51 +101,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/loongarch64/target_elf.h |  7 +++++++
- linux-user/elfload.c                | 14 --------------
- 2 files changed, 7 insertions(+), 14 deletions(-)
+ linux-user/mips/target_elf.h   |  5 +++++
+ linux-user/mips64/target_elf.h | 12 ++++++++++++
+ linux-user/elfload.c           | 20 --------------------
+ 3 files changed, 17 insertions(+), 20 deletions(-)
 
-diff --git a/linux-user/loongarch64/target_elf.h b/linux-user/loongarch64/target_elf.h
-index 39a08d35d9..e99aa3df4c 100644
---- a/linux-user/loongarch64/target_elf.h
-+++ b/linux-user/loongarch64/target_elf.h
-@@ -6,4 +6,11 @@
- #ifndef LOONGARCH_TARGET_ELF_H
- #define LOONGARCH_TARGET_ELF_H
+diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
+index febf710c7a..850a6d83cc 100644
+--- a/linux-user/mips/target_elf.h
++++ b/linux-user/mips/target_elf.h
+@@ -8,4 +8,9 @@
+ #ifndef MIPS_TARGET_ELF_H
+ #define MIPS_TARGET_ELF_H
+ 
++#define ELF_CLASS               ELFCLASS32
++#define ELF_ARCH                EM_MIPS
++#define EXSTACK_DEFAULT         true
++#define USE_ELF_CORE_DUMP
++
+ #endif
+diff --git a/linux-user/mips64/target_elf.h b/linux-user/mips64/target_elf.h
+index 02e6d14840..77f3b4685a 100644
+--- a/linux-user/mips64/target_elf.h
++++ b/linux-user/mips64/target_elf.h
+@@ -8,4 +8,16 @@
+ #ifndef MIPS64_TARGET_ELF_H
+ #define MIPS64_TARGET_ELF_H
  
 +#define ELF_CLASS               ELFCLASS64
-+#define ELF_ARCH                EM_LOONGARCH
++#define ELF_ARCH                EM_MIPS
 +#define EXSTACK_DEFAULT         true
-+#define elf_check_arch(x)       ((x) == EM_LOONGARCH)
-+#define VDSO_HEADER             "vdso.c.inc"
++
++#ifdef TARGET_ABI_MIPSN32
++#define elf_check_abi(x)        ((x) & EF_MIPS_ABI2)
++#else
++#define elf_check_abi(x)        (!((x) & EF_MIPS_ABI2))
++#endif
++
 +#define USE_ELF_CORE_DUMP
 +
  #endif
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index eae3260c9e..49fd098067 100644
+index 49fd098067..609e9b99b5 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -138,20 +138,6 @@ typedef abi_uint        target_gid_t;
+@@ -138,26 +138,6 @@ typedef abi_uint        target_gid_t;
  #endif
  typedef abi_int         target_pid_t;
  
--#ifdef TARGET_LOONGARCH64
+-#ifdef TARGET_MIPS
 -
+-#ifdef TARGET_MIPS64
 -#define ELF_CLASS   ELFCLASS64
--#define ELF_ARCH    EM_LOONGARCH
+-#else
+-#define ELF_CLASS   ELFCLASS32
+-#endif
+-#define ELF_ARCH    EM_MIPS
 -#define EXSTACK_DEFAULT true
 -
--#define elf_check_arch(x) ((x) == EM_LOONGARCH)
--
--#define VDSO_HEADER "vdso.c.inc"
+-#ifdef TARGET_ABI_MIPSN32
+-#define elf_check_abi(x) ((x) & EF_MIPS_ABI2)
+-#else
+-#define elf_check_abi(x) (!((x) & EF_MIPS_ABI2))
+-#endif
 -
 -#define USE_ELF_CORE_DUMP
 -
--#endif /* TARGET_LOONGARCH64 */
+-#endif /* TARGET_MIPS */
 -
- #ifdef TARGET_MIPS
+ #ifdef TARGET_MICROBLAZE
  
- #ifdef TARGET_MIPS64
+ #define elf_check_arch(x) ( (x) == EM_MICROBLAZE || (x) == EM_MICROBLAZE_OLD)
 -- 
 2.43.0
 
