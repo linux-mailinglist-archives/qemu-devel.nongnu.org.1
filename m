@@ -2,91 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2320EB14D52
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 14:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62CF2B14D49
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 13:59:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugixx-0002Kk-Hg; Tue, 29 Jul 2025 07:57:57 -0400
+	id 1ugixw-0002Ii-4J; Tue, 29 Jul 2025 07:57:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugixt-00028U-Er
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugixt-00028z-Jc
  for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:57:53 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugixm-0006CZ-3K
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugixo-0006Cr-Lv
  for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:57:53 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-45618ddd62fso54610465e9.3
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 04:57:43 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3b78b2c6ecfso1117501f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 04:57:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753790262; x=1754395062; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753790266; x=1754395066; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qlMPsFcRkecAJn4sG0LZ+bCyhxVU/WClwqhj9h0KqLU=;
- b=nc2OrzsiuOcAp2UDvWG68LZ0MYbtJGgGABaNEH245pnnsfE2A16WJdK4X/eMghxOqx
- g2f6QnSBNTkms+Z9Hedvk7MpQgTbhJj3FcFxujPW8xWchY8/xNxDxTiIaO7kAxA1ZSg9
- cN67lRoYF4ufSzQfs5iUBQ4hU1hrr9ghE4iUlhv+BM6wCUZlzBndnTImxOqOBSfI9n5h
- BZzFZKwgSbkNujkvmHFAEJSTNXBZj2IKgJeWUq1Ejrjurgc+od5vL73EiEJ9ibB+HTU3
- QUXAI2WvzzaLjNyJvtHAb+B8Sn7eolcnL4Mlxqm0XMjaUEg/WtMqIw1eQV4uaI5pOYQt
- 2n7A==
+ bh=jGU6a5L962cXOl9z6iat7nkHOVFeV0lVntYAA1OoA9c=;
+ b=FSKyX+1UDbeCJT9Q/WHq8o87dKbBVqSUNM4gP2ylgKGCz1pyaj1315sYoqvweX1pbH
+ RFFHkLXy0Ld6qE1N5I5UnvO/0lLkiMKN6bSh/9+HYkEJ6F0GZIrbzjl+YtgGwObKWBjX
+ WNjAc5G31CtSdnwvb2NKnYIRR+oM1AmlBUNTY0mZ51FlkqtE8dUQxrk7lk8d1U9/F1/6
+ 0Bu3lmpKHa8pjUfn1r/LQ+bM/QaL6qsMw0QvzsdeNToiERqyUFaAmnW6AHZUaHXX1XY0
+ gNFsJccdIKIvkxCJ1pGbUWqXAil7Z9MRh6DVHT+6tIdwWqiX4545H9NnxT+pkVl0T3De
+ mK4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753790262; x=1754395062;
+ d=1e100.net; s=20230601; t=1753790266; x=1754395066;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qlMPsFcRkecAJn4sG0LZ+bCyhxVU/WClwqhj9h0KqLU=;
- b=Bs5qX0UJHflqEXCjvkybmnW7sjl9HjBNHA1KGXkWySJQjwgA+vabIQXE6oRIM+4rdH
- Cpd1Y/lK6Y/wuYI4LwyCGwU/G4w0AkXjHnbQe9TBFsCnMD+4e5giXtydUi1s4kJr1x6i
- IgNSpLTKrbkBH1gScXsxufkNz3mXYnSpOjeW5iXuUYkIs5LlMhEczyabjKdoTk8ady7U
- ksg18N/mtX0tAL1iMJVdXwaA6RRDoSAM1/UTiBzZkm+r5U7nbHXEpCP8zFYkj9tUbGuS
- 7DJLfqo3ZnoBgrUBwEYSN3pZNcv2AmqdnabFzxAKlKEapOYlpIEMSzLhUUGKvvvM+FT7
- dnlQ==
-X-Gm-Message-State: AOJu0YwH3tDxDAegEsu1X7Ahs7yVViTcjl+r0oqEIektDuArMw81CcxI
- fV8gvbCpIz4FCf7tOlZOIxgAY2Ji5Xx1jWJHYZ0VTzO4BtmIYjBNj9UkuP55jaOK10DOQqgXxPo
- pe4Gw
-X-Gm-Gg: ASbGnct6KFxGDmSxSLXRK/SzS0f02pXRrz07qn4BfiPveEvnYQgtRWX07yNhEVagzo6
- SbN7uKMhXtTZ0NsnqU2aBbKJBuh0MBzxSaeZr+0eLfSssfz9vjpfhgfNQI/vldAQ4JD5I+/7atR
- zjYJ7gwBZu8KNHf/GX4cBOtmotzLCN1NBdNl3XZw6bOkQSySu+jbA577GtMIBM6A/uvV2Po3nLk
- 58nE5MPKh/eg9Om2j1zrW2lBNxoyQTRUoQRQ8219cjhKtYVrG1ylJCmi8d7wswoLvxlaPmoksdz
- 9b1OIalN8woiLR8vDpYnPTdVCmflwd8Gm27Rt2Jp/GLnstIGFavwEmGYm8dHj1rpkxPvwil1o3V
- F8EWBWOYnSMZnkL2r/HsGv3F327wR1NkT7//51JJr5fkTCcvCA8hRi+OvsgQEnuewScOgH/dU
-X-Google-Smtp-Source: AGHT+IHaLH4m3hWKP+mnTa4+aJppGB3FqFEQNseWODpswY5ubtPIlj3Y23GMTmWKAH57lkvxrmRTjA==
-X-Received: by 2002:a05:600c:3ace:b0:456:25aa:e9b0 with SMTP id
- 5b1f17b1804b1-4587654b626mr154620205e9.16.1753790261828; 
- Tue, 29 Jul 2025 04:57:41 -0700 (PDT)
+ bh=jGU6a5L962cXOl9z6iat7nkHOVFeV0lVntYAA1OoA9c=;
+ b=TH8TxrO9DcXlALuWcaWYJyaLGXsda6v9TVN3I4CtUNUUw2ESOzlRdYE3KS5EYesLcN
+ fjEdukMgSkCusaM6/FGXdVDIzu7KlOM+EdjMzUUtx5dhw1VtPq+5qaNNPq+9gxJqCHCy
+ x5gr1urDFRO3LNy0EMQXVMIv6qRqa3ebfWbzpUZbxJyx/h20y3ZrUftv7SdjyZa3v3bS
+ m9JvTXTgBls2OLYu8hMJ92QFrsM1NlqeFUNpwaL9zWSa+HqURRqiNwpf0o11uAz6y7BN
+ xBDUFIyWkq6KjfTl0UnEYqQyZcJ5f/5QTLNx/cuXW8djBuArIfDSEFXrj5zuAxai2DHi
+ DweA==
+X-Gm-Message-State: AOJu0Yww8hJMczy9F4ulQ8nQgRyrYIs8smxJNydIantOVitx0qfanQV1
+ Zf2vBXIFYdyX6+sohQNMc/CMNoNLXdnlLpv2y1YP0ywMslS/LL/o9QInorl8NnvxodIKOq0cAT5
+ hFZui
+X-Gm-Gg: ASbGncva3zJtaV/tgmktLzP9KD796ENzp9X9L/M1yzQaWhhgraLoLW6br50yFjOgvRZ
+ VFqMdLlODfIRt2LjnJPRj/CQuDekP8I/xQvcPbiLsw+dOzaushrQvZOj/6QOC9tFJ98MTJYEX1u
+ XnXrfeKiJORE1xv9xcTMe4IDfn573RneHgiE3K+P8uOFRu+LcgSyx3imNnCKIoUrTJCkIhLqs2d
+ t5XCeiVD05Yz7Lxfe8wgWjfR1S1/b0el0GCEVWLAqrRRiu4t66GWempP5xkWycs/iiHytm2mD5s
+ MVFRAbm/Z270eLAucd2sf+MbHIrxmaBWYgtRzSMCPvDvokqb8OoEwT/yPfYfLhXvAxWJX9iYssv
+ tmTeGbFfaTrJTnBywoXfliOyDwrWz/MALHhkvXDRsiCNcx5OYB/MDrXLJrdLgSySE3o6koRwm
+X-Google-Smtp-Source: AGHT+IGaUxUieApgTi5kqO6K6S0Ni/KFXUn6oguOcYa0zF8XTiYVC1AMPEjqsTEY7f0iVnu1k3AhuA==
+X-Received: by 2002:a05:6000:40c9:b0:3b7:879c:c15c with SMTP id
+ ffacd0b85a97d-3b7879cca06mr5994638f8f.47.1753790266442; 
+ Tue, 29 Jul 2025 04:57:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-458705bcb61sm191001725e9.20.2025.07.29.04.57.40
+ ffacd0b85a97d-3b7842a3e59sm8582557f8f.44.2025.07.29.04.57.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 29 Jul 2025 04:57:41 -0700 (PDT)
+ Tue, 29 Jul 2025 04:57:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
- qemu-stable@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PULL 1/9] target/mips: Only update MVPControl.EVP bit if executed by
- master VPE
-Date: Tue, 29 Jul 2025 13:57:26 +0200
-Message-ID: <20250729115735.33619-2-philmd@linaro.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Thaddeus Hogan <thaddeus@thogan.com>,
+ Vadim Zeitlin <vadim@wxwidgets.org>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 2/9] hw/display/qxl-render: fix qxl_unpack_chunks() chunk size
+ calculation
+Date: Tue, 29 Jul 2025 13:57:27 +0200
+Message-ID: <20250729115735.33619-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250729115735.33619-1-philmd@linaro.org>
 References: <20250729115735.33619-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,80 +100,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <f4bug@amsat.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
 
-According to the 'MIPS MT Application-Speciﬁc Extension' manual:
+In case of multiple chunks, code in qxl_unpack_chunks() takes size of the
+wrong (next in the chain) chunk, instead of using current chunk size.
+This leads to wrong number of bytes being copied, and to crashes if next
+chunk size is larger than the current one.
 
-  If the VPE executing the instruction is not a Master VPE,
-  with the MVP bit of the VPEConf0 register set, the EVP bit
-  is unchanged by the instruction.
+Based on the code by Gao Yong.
 
-Modify the DVPE/EVPE opcodes to only update the MVPControl.EVP bit
-if executed on a master VPE.
-
-Cc: qemu-stable@nongnu.org
-Reported-by: Hansni Bu
-Buglink: https://bugs.launchpad.net/qemu/+bug/1926277
-Fixes: f249412c749 ("mips: Add MT halting and waking of VPEs")
-Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Message-ID: <20210427133343.159718-1-f4bug@amsat.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1628
+Tested-by: Thaddeus Hogan <thaddeus@thogan.com>
+Tested-by: Vadim Zeitlin <vadim@wxwidgets.org>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250221134856.478806-1-mjt@tls.msk.ru>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/system/cp0_helper.c | 32 ++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 14 deletions(-)
+ hw/display/qxl-render.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/target/mips/tcg/system/cp0_helper.c b/target/mips/tcg/system/cp0_helper.c
-index 101b1e65fdd..b69e70d7fcf 100644
---- a/target/mips/tcg/system/cp0_helper.c
-+++ b/target/mips/tcg/system/cp0_helper.c
-@@ -1562,12 +1562,14 @@ target_ulong helper_dvpe(CPUMIPSState *env)
-     CPUState *other_cs = first_cpu;
-     target_ulong prev = env->mvp->CP0_MVPControl;
+diff --git a/hw/display/qxl-render.c b/hw/display/qxl-render.c
+index eda6d3de37c..c6a9ac1da10 100644
+--- a/hw/display/qxl-render.c
++++ b/hw/display/qxl-render.c
+@@ -222,6 +222,7 @@ static void qxl_unpack_chunks(void *dest, size_t size, PCIQXLDevice *qxl,
+     uint32_t max_chunks = 32;
+     size_t offset = 0;
+     size_t bytes;
++    QXLPHYSICAL next_chunk_phys = 0;
  
--    CPU_FOREACH(other_cs) {
--        MIPSCPU *other_cpu = MIPS_CPU(other_cs);
--        /* Turn off all VPEs except the one executing the dvpe.  */
--        if (&other_cpu->env != env) {
--            other_cpu->env.mvp->CP0_MVPControl &= ~(1 << CP0MVPCo_EVP);
--            mips_vpe_sleep(other_cpu);
-+    if (env->CP0_VPEConf0 & (1 << CP0VPEC0_MVP)) {
-+        CPU_FOREACH(other_cs) {
-+            MIPSCPU *other_cpu = MIPS_CPU(other_cs);
-+            /* Turn off all VPEs except the one executing the dvpe.  */
-+            if (&other_cpu->env != env) {
-+                other_cpu->env.mvp->CP0_MVPControl &= ~(1 << CP0MVPCo_EVP);
-+                mips_vpe_sleep(other_cpu);
-+            }
+     for (;;) {
+         bytes = MIN(size - offset, chunk->data_size);
+@@ -230,7 +231,15 @@ static void qxl_unpack_chunks(void *dest, size_t size, PCIQXLDevice *qxl,
+         if (offset == size) {
+             return;
          }
-     }
-     return prev;
-@@ -1578,15 +1580,17 @@ target_ulong helper_evpe(CPUMIPSState *env)
-     CPUState *other_cs = first_cpu;
-     target_ulong prev = env->mvp->CP0_MVPControl;
- 
--    CPU_FOREACH(other_cs) {
--        MIPSCPU *other_cpu = MIPS_CPU(other_cs);
-+    if (env->CP0_VPEConf0 & (1 << CP0VPEC0_MVP)) {
-+        CPU_FOREACH(other_cs) {
-+            MIPSCPU *other_cpu = MIPS_CPU(other_cs);
- 
--        if (&other_cpu->env != env
--            /* If the VPE is WFI, don't disturb its sleep.  */
--            && !mips_vpe_is_wfi(other_cpu)) {
--            /* Enable the VPE.  */
--            other_cpu->env.mvp->CP0_MVPControl |= (1 << CP0MVPCo_EVP);
--            mips_vpe_wake(other_cpu); /* And wake it up.  */
-+            if (&other_cpu->env != env
-+                /* If the VPE is WFI, don't disturb its sleep.  */
-+                && !mips_vpe_is_wfi(other_cpu)) {
-+                /* Enable the VPE.  */
-+                other_cpu->env.mvp->CP0_MVPControl |= (1 << CP0MVPCo_EVP);
-+                mips_vpe_wake(other_cpu); /* And wake it up.  */
-+            }
-         }
-     }
-     return prev;
+-        chunk = qxl_phys2virt(qxl, chunk->next_chunk, group_id,
++        next_chunk_phys = chunk->next_chunk;
++        /* fist time, only get the next chunk's data size */
++        chunk = qxl_phys2virt(qxl, next_chunk_phys, group_id,
++                              sizeof(QXLDataChunk));
++        if (!chunk) {
++            return;
++        }
++        /* second time, check data size and get data */
++        chunk = qxl_phys2virt(qxl, next_chunk_phys, group_id,
+                               sizeof(QXLDataChunk) + chunk->data_size);
+         if (!chunk) {
+             return;
 -- 
 2.49.0
 
