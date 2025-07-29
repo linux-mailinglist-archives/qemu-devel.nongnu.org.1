@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC824B14B2D
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 447E8B14B36
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:24:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uggXp-0007Nv-C7; Tue, 29 Jul 2025 05:22:49 -0400
+	id 1uggXt-000896-Hh; Tue, 29 Jul 2025 05:22:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggXT-0005qs-BK
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:22:30 -0400
+ id 1uggXi-0006mz-JY
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:22:42 -0400
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggXR-0002ij-34
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:22:27 -0400
+ id 1uggXg-0002j5-Er
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:22:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753780945; x=1785316945;
+ t=1753780960; x=1785316960;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=AXrmHYltQ+34KQEUFHllopSmBCHR1BuTVqiDdFY5CWw=;
- b=KCa09p4RxBmrvUBun9akdVWjAACYivSHfFykI2uISH4VSgRBMoSXCjmy
- IspQrSx9HwI1u44f+NaYNPtD7tNnbsDuObBVqKNkJbL3bBK0WXeS7FQQq
- gPv2oo1XUhNpoIlmY9YnMziK8rbTPOhqznHuzG29kjS+pW8eZDzo3zN4W
- 6f+oezn1lDVdXDRG/jLOSPR+thj9RJeB2bpvpTOC/U/ibVzBb4nHMkoyZ
- 2ApQ2Cbb1jqv7DWO7DD8G4Oydtrlt3XxQYvgjuzF6Ow4EmDtcDNdniTaw
- fHstr+htxMPUmIUVCOuasiYMx+0riIesUIICVThhwBwCuytXhrlLnGdnN g==;
-X-CSE-ConnectionGUID: h61G+FmcSa+hMKvonYXz8g==
-X-CSE-MsgGUID: FG7JusIqQtyrAd4pN39Mpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55982028"
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55982028"
+ bh=Gz/u3+22VbTDgEyWUGqcjsM9wDdU3F5dLTJqShryqcE=;
+ b=fWYI/k2THjL/8eL7MTTUaLmpIHffw+LDPCiqQ5XfZROl2r0B4wr5KO1M
+ TTDcS3DtCIzAqVkwalymEKuDglSnuVLEVdDmyndZ40IQEoQYeuFd3tp9H
+ BUxNpO5crEWEcbCddDQSZ5HigaK2em9kbSq0JgxSCmZeS9ISSysmptLkA
+ r/zSyCl7rmA7rElweqHVeDd1C/eyzHXqK6WNUp2UHarDJJXPEvdD2qXqx
+ 4LQTz8DHSyZK0Q2BD4xiXwtNbAa9cAuvw6yKDE8Y/bfEMd37sPEyv8Tcl
+ LajoJVEjCOrZ7tbIWa4suE/v1oBUlpf9qXOXsJddt4oX70o4cGfim8eqw A==;
+X-CSE-ConnectionGUID: JwTqZZEUSRy0buz+8d4gyw==
+X-CSE-MsgGUID: Xm1QGBZSRXyy5aeVolLeog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55982063"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55982063"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:22:24 -0700
-X-CSE-ConnectionGUID: 8OUcVe9ZSH2fv2UwEXwWiw==
-X-CSE-MsgGUID: DWEdWEtNRsqzNiTWeiKQzA==
+ 29 Jul 2025 02:22:28 -0700
+X-CSE-ConnectionGUID: cuw9jsrBTIugrbznclSESQ==
+X-CSE-MsgGUID: GJ1XwN3tTliRHhsotVGUbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691485"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691538"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:22:20 -0700
+ 29 Jul 2025 02:22:25 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,9 +52,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v4 19/20] Workaround for ERRATA_772415_SPR17
-Date: Tue, 29 Jul 2025 05:20:41 -0400
-Message-ID: <20250729092043.785836-20-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 20/20] intel_iommu: Enable host device when x-flts=on in
+ scalable mode
+Date: Tue, 29 Jul 2025 05:20:42 -0400
+Message-ID: <20250729092043.785836-21-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250729092043.785836-1-zhenzhong.duan@intel.com>
 References: <20250729092043.785836-1-zhenzhong.duan@intel.com>
@@ -85,63 +86,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On a system influenced by ERRATA_772415, IOMMU_HW_INFO_VTD_ERRATA_772415_SPR17
-is repored by IOMMU_DEVICE_GET_HW_INFO. Due to this errata, even the readonly
-range mapped on stage-2 page table could still be written.
-
-Reference from 4th Gen Intel Xeon Processor Scalable Family Specification
-Update, Errata Details, SPR17.
-https://edc.intel.com/content/www/us/en/design/products-and-solutions/processors-and-chipsets/eagle-stream/sapphire-rapids-specification-update/
-
-Also copied the SPR17 details from above link:
-"Problem: When remapping hardware is configured by system software in
-scalable mode as Nested (PGTT=011b) and with PWSNP field Set in the
-PASID-table-entry, it may Set Accessed bit and Dirty bit (and Extended
-Access bit if enabled) in first-stage page-table entries even when
-second-stage mappings indicate that corresponding first-stage page-table
-is Read-Only.
-
-Implication: Due to this erratum, pages mapped as Read-only in second-stage
-page-tables may be modified by remapping hardware Access/Dirty bit updates.
-
-Workaround: None identified. System software enabling nested translations
-for a VM should ensure that there are no read-only pages in the
-corresponding second-stage mappings."
+Now that all infrastructures of supporting passthrough device running
+with stage-1 translation are there, enable it now.
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/iommufd.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ hw/i386/intel_iommu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 61a548f13f..8156d81488 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -325,6 +325,7 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
- {
-     ERRP_GUARD();
-     IOMMUFDBackend *iommufd = vbasedev->iommufd;
-+    struct iommu_hw_info_vtd vtd;
-     uint32_t type, flags = 0;
-     uint64_t hw_caps;
-     VFIOIOASHwpt *hwpt;
-@@ -372,10 +373,15 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-      * instead.
-      */
-     if (!iommufd_backend_get_device_info(vbasedev->iommufd, vbasedev->devid,
--                                         &type, NULL, 0, &hw_caps, errp)) {
-+                                         &type, &vtd, sizeof(vtd), &hw_caps,
-+                                         errp)) {
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index d2442ff28d..c8375c33f2 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -5219,6 +5219,8 @@ static bool vtd_check_hiod(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
+                    "when x-flts=on");
          return false;
      }
- 
-+    if (vtd.flags & IOMMU_HW_INFO_VTD_ERRATA_772415_SPR17) {
-+        container->bcontainer.bypass_ro = true;
-+    }
 +
-     if (hw_caps & IOMMU_HW_CAP_DIRTY_TRACKING) {
-         flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
-     }
++    return true;
+ #endif
+ 
+     error_setg(errp, "host IOMMU is incompatible with stage-1 translation");
 -- 
 2.47.1
 
