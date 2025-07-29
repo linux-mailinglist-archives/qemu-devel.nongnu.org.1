@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4769B15649
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23BD1B1565C
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:23:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uguVk-0002ua-EO; Tue, 29 Jul 2025 20:17:36 -0400
+	id 1uguVg-0002cD-Q9; Tue, 29 Jul 2025 20:17:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguFm-00028m-CI
+ id 1uguFo-00029Q-2p
  for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:01:10 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguFk-00048s-5W
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:01:05 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-76b0724d64bso90621b3a.1
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:01:03 -0700 (PDT)
+ id 1uguFm-000494-5P
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:01:07 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-76a3818eb9bso858218b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:01:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753833663; x=1754438463; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753833664; x=1754438464; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=I9fFn3MTAeeWjS0HLCyZy5t4uqOdGjI4wSstVmtHm08=;
- b=a4pHPM5XcPsaQzAJtW5JD0vaMsIgwefB37cq5l1vi5GOWtr4KJcxKF2yN/AQLCNICj
- N14rlRXrFmnfF/vad9fVS8qObTnzQl5FliIvmn4k3xR9ErCLfkbh3EkxW+1htJayuBjp
- T7lLX/aTKlD6rxfzKV6mG92C8KgIqBjbS59G1NqoG1mbKkkt+PQ/flUgZrBl9huwv/52
- hp43mIsHxzG+dpYALA8Nr8chls0a1Qvtt1V8u74J43iNA08BkCk7+QNVJEeIJ9GzMVg8
- CM0Zw08BHpwN3i7NT2mdOdDeJCrHMCYaVap0wlQt7HDGP46HU3e8omDfklyX+TZfZTa1
- QIPA==
+ :reply-to; bh=1qA7VhXCQSEj2ysCTHwwEzXNPecwlWbXtt2zgXbWExA=;
+ b=t5rj9zTUTJSJQ/mOhNI6vBUWaWqaOsxF9pEkDbLifWu/+WBj4Fhbgq3l0KOYlDACeU
+ fHnn0LA/nT40yYdq5t/OEYCglXB1VLhw+9FTYUB21mw1Maqt5fFtd0nORbIIf4l5DChZ
+ xjoyZzPlnRmIq4kr5ZwML+Kc6ka3MXKdag5WznGGRc89o0YVupEXrKSShh9O3KSV52R9
+ r6zvcJIu9bTn338VPtVnYA9hBnRfMyP/qGFOWSZ+8Nlc0pzVaXK2OYx2wWgQD/PHvyaC
+ xxINELWXQncoD75fR8Cu5WbPvjUuIvTtkJihHasbZ2kRAlvIvGDhGhNLXz0BhcaefeLd
+ yVeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753833663; x=1754438463;
+ d=1e100.net; s=20230601; t=1753833664; x=1754438464;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I9fFn3MTAeeWjS0HLCyZy5t4uqOdGjI4wSstVmtHm08=;
- b=NdI8QWnPBb0/aP8SN1S8o0KlggxyatFu8oGjrxN/2OMhwSU9JZh8pV9LN/20cFIgrx
- CqyJHPQCjo5qR+5LmovsTM6k/0uYr/bZWOvyo4z5UL6mTjF4Hb3LDGBjuPI8zDl3KAr5
- YRZdWuofb75curDgzI6dDctszkVr2u4syC7gzSniP1Jfe9+441DpC6QTgcEdaD8axeG8
- X6afwQ39C2kdRVnQtHyisftXxugvkW/bHiwBk222ctnipKHSKtpojNKQ/XiF7QyqIxGw
- suOrf240qNSCrp0nXzqBVdnX8d+oNVwg3fAHL8+jZv5RCq2mxSuC/N2bhuxSHdiF6qHx
- 7jIA==
-X-Gm-Message-State: AOJu0Yzv1+/XUpo3xxP3J9Zhcc+NG27Lk2Gv2BsQ2IUr7zLR3ig1Mydq
- b6PWV3mMU9ldKDuluR8yeUsVjKuT+ghWhpmaYivve3FyzCiwOtlyuFA5TJg/h1Ps52gveSzQYWR
- Wut1+
-X-Gm-Gg: ASbGncsYlBrRsm1bQYuCsmP7Vbqs2192ivfC/mHPl7OlhWdIphvrZLXKE+yBNr9JuhB
- BZza2gLrMjLYlS6wTehbIlKTuVMfDIadb2PW9mBNTTTZnGiDc+wQbzft/wN6aD7s7IObn0/vmWm
- tf2WLozQFSodIn4lV6HMq2tsdoE7VuAesNgqY4fXIvhxeQ+/9sghZ6iNp1vVkkiYOhdhihFrk+J
- M6e5H+IsIk0XfTFOZzP6yFIEwsva58PrXUUicgkfALWqNe2K5bEfBTY+mrDTJCT+yBADaiMPj1N
- 6+OTmDMVWafNfGjTDOMJloogWxnDLPdxTSF2UjUPTfll/Zw9ScenJVJCtmP2+Ovu5JdaGp5myFr
- 1S8jB3LX+nLr3R1flkEf7xBByS5yp7ZQg7YFW+a57MNteoID3SaVJKjwr4AOxuvtyivCJAA5gwy
- FJ7mkjxr1n/w==
-X-Google-Smtp-Source: AGHT+IHxRXDoYoB7R0oG1qRC1Se/hiBqxljSsCy6IJFYlOMwu3SwwvjPIxl770Q58cnVkFuQqV/rsg==
-X-Received: by 2002:a05:6a00:9285:b0:76a:e87a:998b with SMTP id
- d2e1a72fcca58-76ae87a9c36mr855490b3a.12.1753833662560; 
- Tue, 29 Jul 2025 17:01:02 -0700 (PDT)
+ bh=1qA7VhXCQSEj2ysCTHwwEzXNPecwlWbXtt2zgXbWExA=;
+ b=po6tEuSPWX+v063z2hTfFrRcqGugP4R1WHSUtz55PONlctFcnS1++eY6EOHQcdlSNs
+ tT0BJzJoqkoheyMGASi7utSwiewF4lECA4PW4/fPzJv08A/QSFvriGeJALw5eAxf1DjS
+ hZCzczlyE0VI9UVxNEh8wdHnl/Jsi8Lo/pXeb8AIiWk0BunraVDuKEIYHdUDHdnLqgMd
+ qlMdKRwueEDzDgeYYW4bJxU5ulhk7fxLyUm36g7HJXDHeZ0PWPeikWknIzZAN3YRCsyC
+ rLRGvB0GoJxgc9+tBKGcoBCuPsARcu7f0KsRNsmcqRx169quiG7GmAZCcq9wr0ckpb3o
+ dMiQ==
+X-Gm-Message-State: AOJu0YyxdbG6SWF616M6J8549AuaZjNZ4WCCaFtUGnxMD9PBuGK8rBor
+ YUFymvvTwekHviqVosThuWIBGwMkitPutYkgtue8XczP8Nv2BZ/6agda9v19XtgzX02OD51UhhT
+ 0oawp
+X-Gm-Gg: ASbGncuh/ZZwWk0aOfIheEBH0zHVJ9Ok4pt5VASRdYL+bqD/BuyPsv47jh9U2FVX9WC
+ AJ/XikYp0dv+zTMgVUSujPUv8lzbbxHjfGr1tEP7wjUZ2dICG75NPfQV6FG4ftC7b9Px8bDaGQj
+ vJcfYcdc1EW0eyy/C3ifBextUtjqxbKKs41YSwI4e/bqmpvprTqEzHl1t4TIrXC+F2mycsKIzjJ
+ YAu9XO2WwI61XeK4eODElNdDpZH3sJOgDVUl8NPYT7/Wy9wbiFHi8XFhyeZyxB791hBiqovcXR3
+ DThtjXyWprbI8IkcOzza0b3Zpkjs1fhOwPS/jjKqZ3hYTygxjcpuq76EOkCy+aKEwYhaVgZlaHz
+ fQPYZnjGDwnoEDDsXne3ooccai24DCW/FlIgGi7YEm/HYQT9v2YH9N9HY48YFfOakUQNs3DkH09
+ xw65dJhKqn0A==
+X-Google-Smtp-Source: AGHT+IHhkF4DqfoWy8+e7xJtR1+1mgymUmUubmygp+H8Avm3P6zf1SPavhJVuFWpwfX83TlQ7g6ZQQ==
+X-Received: by 2002:a05:6a00:2443:b0:73d:fa54:afb9 with SMTP id
+ d2e1a72fcca58-76ab1414873mr2018191b3a.7.1753833663762; 
+ Tue, 29 Jul 2025 17:01:03 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-764090e178bsm9026087b3a.62.2025.07.29.17.01.01
+ d2e1a72fcca58-764090e178bsm9026087b3a.62.2025.07.29.17.01.02
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 17:01:02 -0700 (PDT)
+ Tue, 29 Jul 2025 17:01:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 38/89] linux-user/xtensa: Create init_main_thread
-Date: Tue, 29 Jul 2025 13:59:11 -1000
-Message-ID: <20250730000003.599084-39-richard.henderson@linaro.org>
+Subject: [PATCH 39/89] linux-user/hexagon: Create init_main_thread
+Date: Tue, 29 Jul 2025 13:59:12 -1000
+Message-ID: <20250730000003.599084-40-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250730000003.599084-1-richard.henderson@linaro.org>
 References: <20250730000003.599084-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,71 +103,46 @@ There's no point going through a target_pt_regs intermediate.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c         | 18 +-----------------
- linux-user/xtensa/cpu_loop.c | 22 ++++++++++++++++------
- 2 files changed, 17 insertions(+), 23 deletions(-)
+ linux-user/elfload.c          | 7 +------
+ linux-user/hexagon/cpu_loop.c | 8 +++++---
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 48c04f9f33..4a58811f4f 100644
+index 4a58811f4f..1276b57f0d 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -911,23 +911,7 @@ static bool init_guest_commpage(void)
+@@ -960,12 +960,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
  #define ELF_CLASS       ELFCLASS32
- #define ELF_ARCH        EM_XTENSA
+ #define ELF_ARCH        EM_HEXAGON
  
 -static inline void init_thread(struct target_pt_regs *regs,
 -                               struct image_info *infop)
 -{
--    regs->windowbase = 0;
--    regs->windowstart = 1;
--    regs->areg[1] = infop->start_stack;
--    regs->pc = infop->entry;
--    if (info_is_fdpic(infop)) {
--        regs->areg[4] = infop->loadmap_addr;
--        regs->areg[5] = infop->interpreter_loadmap_addr;
--        if (infop->interpreter_loadmap_addr) {
--            regs->areg[6] = infop->interpreter_pt_dynamic_addr;
--        } else {
--            regs->areg[6] = infop->pt_dynamic_addr;
--        }
--    }
+-    regs->sepc = infop->entry;
+-    regs->sp = infop->start_stack;
 -}
 +#define HAVE_INIT_MAIN_THREAD
  
- /* See linux kernel: arch/xtensa/include/asm/elf.h.  */
- #define ELF_NREG 128
-diff --git a/linux-user/xtensa/cpu_loop.c b/linux-user/xtensa/cpu_loop.c
-index c0fcf743e7..43a194fc4a 100644
---- a/linux-user/xtensa/cpu_loop.c
-+++ b/linux-user/xtensa/cpu_loop.c
-@@ -238,12 +238,22 @@ void cpu_loop(CPUXtensaState *env)
+ #endif /* TARGET_HEXAGON */
+ 
+diff --git a/linux-user/hexagon/cpu_loop.c b/linux-user/hexagon/cpu_loop.c
+index e18a0183b5..25c97edcae 100644
+--- a/linux-user/hexagon/cpu_loop.c
++++ b/linux-user/hexagon/cpu_loop.c
+@@ -79,9 +79,11 @@ void cpu_loop(CPUHexagonState *env)
      }
  }
  
 -void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
 +void init_main_thread(CPUState *cs, struct image_info *info)
  {
--    int i;
--    for (i = 0; i < 16; ++i) {
--        env->regs[i] = regs->areg[i];
+-    env->gpr[HEX_REG_PC] = regs->sepc;
+-    env->gpr[HEX_REG_SP] = regs->sp;
 +    CPUArchState *env = cpu_env(cs);
 +
-+    env->sregs[WINDOW_BASE] = 0;
-+    env->sregs[WINDOW_START] = 1;
-+    env->regs[1] = info->start_stack;
-+    env->pc = info->entry;
-+
-+    if (info_is_fdpic(info)) {
-+        env->regs[4] = info->loadmap_addr;
-+        env->regs[5] = info->interpreter_loadmap_addr;
-+        if (info->interpreter_loadmap_addr) {
-+            env->regs[6] = info->interpreter_pt_dynamic_addr;
-+        } else {
-+            env->regs[6] = info->pt_dynamic_addr;
-+        }
-     }
--    env->sregs[WINDOW_START] = regs->windowstart;
--    env->pc = regs->pc;
++    env->gpr[HEX_REG_PC] = info->entry;
++    env->gpr[HEX_REG_SP] = info->start_stack;
+     env->gpr[HEX_REG_USR] = 0x56000;
  }
 -- 
 2.43.0
