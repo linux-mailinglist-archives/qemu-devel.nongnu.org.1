@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D123BB14D16
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 13:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3954B14D48
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 13:59:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugidS-0006H4-CD; Tue, 29 Jul 2025 07:36:50 -0400
+	id 1ugixr-0001qR-1L; Tue, 29 Jul 2025 07:57:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugicm-0005wA-Kr
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:36:04 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugixo-0001jG-Er
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:57:48 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugicj-0003tN-5H
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:36:03 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4537edf2c3cso56413375e9.3
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 04:36:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugixk-0006CP-22
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:57:48 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3a4ef2c2ef3so4525826f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 04:57:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753788959; x=1754393759; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=WN5tZ1EymSZJjLNnM9AjMTtwS9C4dyCtem5Rpbudups=;
- b=gUm0UMjJj4k+1g5lJyCCeaqe1YT1tB57d0SVeeHm6XljGwUq5uiQBBpBOfoybV6ih/
- ZOtob+NbOBDath/INgOamcmb//elcJZuGyJvNwyK1AUdKKz2mwrZe330YUUiFTBAVKtW
- DwXsALq7YG1m1O0eMy8ca4REHCOP1u5FCO6C/jBnj0wcuGkXwldU4VnOo23lJLs4GjLI
- Tim24RDf5LgayjYdUy8EmsUAs7FvvUn/eoXybqeWolu5H+o/y+16FsmBBPkBWjlFl7ir
- Bz76J53j8QVNkFO9WVfShLoGT7d6L7wZaA9hkwkwx9jMqSpy/nvqfyFISG7WH8AYmbmD
- 9G1A==
+ d=linaro.org; s=google; t=1753790257; x=1754395057; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SZSODHS5E6m6BD865ahUYVN2+26qppC1UXbBufFAE50=;
+ b=lJF6KTR2t+Qsa79zIk4KPI+z++TQHAWQbTpg/anthh/YnpiD9gTk1/OKXPt/Gax0Ul
+ V8XVF7z/s1xruWPNYNlg8HCtsVr6LhtNMz+WfPtuS4jZnVEp5Mi70AJLWMyoXyki4qse
+ zhVEG8AhPwo1ZKDhQR+tXvPR4iyjiXiyNOVARXZLWVhHzDp42rqxI2UaMsZD+gi1a8F6
+ hLnjU135IqdPGeA4xeV7SAiudpXvJtoA3ZOUT5FD5owW273j/SNIg7H6uVn0pXuNr439
+ QQ0Rwq1BgtKCMuCbXFsk60k2b0gTuE2g6nQiyNX1ppUVCC2/Ye7hW7J08sAz7kdJr/Hr
+ yHGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753788959; x=1754393759;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WN5tZ1EymSZJjLNnM9AjMTtwS9C4dyCtem5Rpbudups=;
- b=wOY2L9+unfdh35QYKDXNCWqUpb4wB7nvFMXXGF6E7kQte1nXq6XmGetjZdKirlprpS
- LwjWsDInjxM2dFR3fh7zwDGwXxm+BEfxUOI9gBK9hPauLKPE+pQdxWj9isJibktdszjY
- J+acmB2iD8oU/N7uWPORFQW/VFUvLge0jgYWDQfaHfcE/JAIY3PbhHTIWBTmUL8/RAsU
- 4hi9GVZu2wKV5wt6AL7C67g0rQNHp4ZERfLBW7+S9zfZiv2BnrDW6QR5lDEKldAB01um
- jS5tB7uZUzpWIafj4I1CDr1VNGy/KL5A+G+XRPc/C8SXZcw5HlZa+0HcyTIieRdj2Xiy
- 2q3A==
-X-Gm-Message-State: AOJu0YyhYclPJ68acdIqelyaoxoB1+PnQA9Dc4Ou7zdsX2vUWRCLECmP
- ouCfev9oRbvxQi/xhPLWfbtFnBfuAkxpI9WqLm45Ml1cdB5lXJQXH58gr7jt/53J4L4=
-X-Gm-Gg: ASbGncsXmIeyYdYN2XBxeNcZrXTvtSaAashuYPySe1sVQbGFLihWEdnuDRcp/vf5c7X
- QgevGSCMxVX//kj6D8bWbIU457Ok3L2a7lk37ZA2MMcM/4HaHDjQWpio5fvIazwdYdaSKB0QW56
- cgDJfJKxAfu9j+0q8Fndt0nvGwz52uObkUv8OGRa+mDOJidurukKn62qxIVVQkvAFzfOhuCuh0o
- ZsCJYsPlHNlIrn1NNmNDYxZiRGo1J5086pxQ8cBeMHoJI3IlpHQGW+POBTvmGkLQ1kFNT/Y4vCG
- l6g7fTW/CX4OI04TMcHEwVZwp8m8BM46KFxgttbJhCQctmSpNtGgvnZx0Rz6dxFhI1odihPYoXw
- 7IN1/oGXgzwx2IBxiZnXzx2iTB8NgVk6PIMNJyzWu/4FRLNKOqJyGwnrmYFuJkmopl5d5aOm6wK
- nF
-X-Google-Smtp-Source: AGHT+IFNC5Gt7aWnj9UHH4h8KHg4j/9sFqqZ7quQnp9FiLAR/Q940pxuO2HPgPlkFBa7HaaH1G4YeA==
-X-Received: by 2002:a05:600c:1552:b0:450:b240:aaab with SMTP id
- 5b1f17b1804b1-45876314354mr129432315e9.8.1753788958579; 
- Tue, 29 Jul 2025 04:35:58 -0700 (PDT)
-Received: from [192.168.69.209] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1753790257; x=1754395057;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SZSODHS5E6m6BD865ahUYVN2+26qppC1UXbBufFAE50=;
+ b=eNV6QpaiFiFjmIeIMozKbgslWU3QWyosUolkcnltTjfUXzQ2U6FoeQMi6x8bwVZ1Z9
+ 5EhtcQikpLWqLCaXF6FJ7qr1H82Tmdx7kRoYAIXcLd7gw70xnGinijV32vCcR+OwIAFb
+ vhP2IGXeHNDjKQ32yxNQ6sznRlGTc1EG7FquYm3hrY45oCzAkB+rnkwqU6F59OfyuXLZ
+ gQcWJ1/a3NuSVh210byIMoTQtOuvSBzo0TePd+/9/mW1BkplCSTDfIxkOMRtCYSVqktZ
+ keY5lWvdSKXcOyHpzkCUXi+o0uC+cUDpW6c0ARvdwQ5IVeGrg5nVi8S83qrPe5Jmi6dV
+ Pgqg==
+X-Gm-Message-State: AOJu0Yx+NE2/+w2V/POMYLpTM2SSoveu+71nsxh7cEW/JhwiHL+o6RQa
+ ev4rMXYTE0SPuhMVuPtuVWUrN+E/Xg2W6LiG069bVB7zT92XmslRZHxFcPF15vzZ5dp5fQ0KeJs
+ Vx493
+X-Gm-Gg: ASbGncuJlzfXRdBW0PDty3V+rwzmCiaGVxiQA7a+r2MaX9HZl07OYk50HAHE8zoS+fD
+ xpu8M6JZQToesBiGha3AfJVCz0DQEPa1kSuNq19jtz8xuoZ+B18We4NafUVVBRp/7vHTRXc0TNM
+ 9MKxqAD5Rtfzs3J4Ls0wo4f92Z+Oj1yxbGrsT8Ae0Nuyl8NGMhXV52r44Vb0irSd5DOubNr5/Jk
+ MZ4mcRnleZ3iUeRP2p6WGjFSHsCf3GHizgAe7NT2QgZHEj5HHPI6cocxJUryRrVHB6wB/tD1dgC
+ 5y83gq4gtSQfJE9vnIZk9ST4Kqru6SpFfdkPRTfn1KMzZ6mn/tuLrxTIlkY13m8ycJWILYMUoVJ
+ rsksJJ6j6cXXP8wZjYE44LyCFyoQIi3pq6MKwQstCRY/31Lns5tQz73wcZ/t+u0mYiK5smMc2H8
+ KZmhJBpDE=
+X-Google-Smtp-Source: AGHT+IGxL/hVMxdniwy3OVLc3vXXtfaeZvA02syxnLLFnpEu9NCuVgpPqpu52kI7OIaH6UZhKPXHPQ==
+X-Received: by 2002:a05:6000:40cc:b0:3b7:8b1b:a9d5 with SMTP id
+ ffacd0b85a97d-3b78b1baf11mr3724364f8f.51.1753790257172; 
+ Tue, 29 Jul 2025 04:57:37 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4588e5b7692sm24147955e9.2.2025.07.29.04.35.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Jul 2025 04:35:58 -0700 (PDT)
-Message-ID: <ec9da35b-fe83-43d4-ba6e-d0d09f425ec7@linaro.org>
-Date: Tue, 29 Jul 2025 13:35:57 +0200
+ ffacd0b85a97d-3b7842a3e59sm8582019f8f.44.2025.07.29.04.57.36
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 29 Jul 2025 04:57:36 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 0/9] Misc HW patches for 2025-07-29
+Date: Tue, 29 Jul 2025 13:57:25 +0200
+Message-ID: <20250729115735.33619-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/sd/sdcard: fix SEND_STATUS for SPI cards
-To: Ben Dooks <ben.dooks@codethink.co.uk>, qemu-block@nongnu.org,
- bmeng.cn@gmail.com
-Cc: qemu-devel@nongnu.org, Guenter Roeck <linux@roeck-us.net>
-References: <20250724133830.869623-1-ben.dooks@codethink.co.uk>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250724133830.869623-1-ben.dooks@codethink.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,38 +95,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/7/25 15:38, Ben Dooks wrote:
-> When the code re-organisation for the SEND_STATUS command
-> was done it broke the ssi-sd code which is now throwing the
-> error "ssi_sd: error: Unexpected response to cmd 13" or a
-> similar one in newer code.
-> 
-> Fix this by returning sd_r1 instead of sd_r2_s
-> 
-> Fixes: 807f6adac3773c18772bf ("hw/sd/sdcard: Add sd_cmd_SEND_STATUS handler (CMD13)")
-> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-> ---
->   hw/sd/sd.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-> index 80b59c8ff9..4472d101f2 100644
-> --- a/hw/sd/sd.c
-> +++ b/hw/sd/sd.c
-> @@ -1388,7 +1388,7 @@ static sd_rsp_type_t sd_cmd_SEND_STATUS(SDState *sd, SDRequest req)
->       }
->   
->       if (sd_is_spi(sd)) {
-> -        return sd_r2_s;
-> +        return sd_r1;
+The following changes since commit c017386f28c03a03b8f14444f8671d3d8f7180fe:
 
-Yeah this is what was suggested to Guenter previously:
-https://lore.kernel.org/qemu-devel/e52b231d-f23e-4772-bfb2-08ddcc3e7ad0@linaro.org/
+  Merge tag 'pull-target-arm-20250725' of https://gitlab.com/pm215/qemu into staging (2025-07-25 08:24:52 -0400)
 
-hw/sd/sd.c looks correct w.r.t. the spec; the issue seems to come
-from hw/sd/ssi-sd.c "implementation". I'll post a fix, let's see
-if it is acceptable for the next release.
+are available in the Git repository at:
 
->       }
+  https://github.com/philmd/qemu.git tags/hw-misc-20250729
+
+for you to fetch changes up to 67e4808403471427b73c8d2c3f4273d64908f480:
+
+  hw/display/sm501: fix missing error-report.h (2025-07-29 13:56:39 +0200)
+
+----------------------------------------------------------------
+Misc HW patches
+
+- Fix MIPS MVPControl.EVP update
+- Fix qxl_unpack_chunks() chunk size calculation
+- Fix Cadence GEM register mask initialization
+- Fix AddressSpaceDispatch use after free
+- Fix building npcm7xx/npcm8xx bootroms
+- Include missing headers
+
+----------------------------------------------------------------
+
+Adam Williamson (1):
+  hw/xen/passthrough: add missing error-report include
+
+Clément Chigot (1):
+  hw/display/sm501: fix missing error-report.h
+
+Luc Michel (1):
+  hw/net/cadence_gem: fix register mask initialization
+
+Michael Tokarev (2):
+  hw/display/qxl-render: fix qxl_unpack_chunks() chunk size calculation
+  roms/Makefile: fix npcmNxx_bootrom build rules
+
+Philippe Mathieu-Daudé (2):
+  target/mips: Only update MVPControl.EVP bit if executed by master VPE
+  hw/vfio/vfio-migration: Remove unnecessary 'qemu/typedefs.h' include
+
+Pierrick Bouvier (2):
+  migration: rename target.c to vfio.c
+  system/physmem: fix use-after-free with dispatch
+
+ hw/vfio/vfio-migration-internal.h   |  1 -
+ hw/display/qxl-render.c             | 11 +++++++++-
+ hw/display/sm501.c                  |  1 +
+ hw/net/cadence_gem.c                |  2 +-
+ hw/xen/xen_pt.c                     |  1 +
+ migration/{target.c => vfio.c}      |  2 +-
+ system/physmem.c                    | 15 +++-----------
+ target/mips/tcg/system/cp0_helper.c | 32 ++++++++++++++++-------------
+ migration/meson.build               |  2 +-
+ roms/Makefile                       |  8 ++++----
+ 10 files changed, 40 insertions(+), 35 deletions(-)
+ rename migration/{target.c => vfio.c} (90%)
+
+-- 
+2.49.0
 
 
