@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E4AB15652
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:21:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B3CB1562E
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:13:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uguRM-0001kz-5V; Tue, 29 Jul 2025 20:13:04 -0400
+	id 1uguR6-0001Qi-EG; Tue, 29 Jul 2025 20:12:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguEu-0001Gc-GV
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:00:15 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1uguEw-0001HS-8f
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:00:16 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguEr-0003yh-7g
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:00:11 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-76a3818eb9bso857402b3a.3
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:00:08 -0700 (PDT)
+ id 1uguEs-0003yv-Ni
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:00:12 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-75ce780af03so5457455b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:00:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753833607; x=1754438407; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=+x/nOpNVKdVVT2nnS9KFrbW2gm/f5lb53oKqHtPCQ9I=;
- b=lz8YVZgnRlGMgjkQU+of0CNuYIxHLqlp55Lxie2pzOhbTQPrhdxCFztAd03IhLcNfs
- 2cT18ReFuT6btfbBdOBc1UDfdbNaCCTTkWsHk3DSHWtxuFWSUxv/49u4jtx0bV4QTZ8T
- 25oK4ylALya92F7cUc9HMrzWMTfxHYAsBZwZBUxmdfDQy/x9AHx3f3ZXe/ItoAVb/NmF
- JoUerbXr76uQHbO5GAB+8LVvROfsGvv92CT53TMNjio0+QlbsUIv9+10jffQ0cLFo4kA
- jOpH+6fOgpajR4BOlUgyJrnb1eR77cKeOxtBimLaZey2dJZWvtpo+0W9aDcOC3kKd+qJ
- NzMQ==
+ d=linaro.org; s=google; t=1753833609; x=1754438409; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=k+/UhXm/gWEv2l8V5Fg2cCxbxcPKP5GDojGjN4Gy2Hg=;
+ b=xVfX+S6PHFyeM4Iuvt/zZPLb2V2RbSSFjNSzpN4DP12J1HFIfc2V4vursmocm21MR3
+ WBhmRZW5VtP0S9klLcrcOi4IN6CDZN2GUHZT2noJiSZv+JzPAYAXxgeC4SRiU1MRkgtz
+ 8IQfHX3xz93+ctwYBdjmjVa+//+JpyP7gxOEYerZDtrnHO3A/4wfQ/A2EffdfRCcpadi
+ 1AK/eBmrZQPRkaQYRq+PkTpkK/FsU2xtAQSoVoExgmKOpLD4nzx1BFj5xniaty4Xnxfn
+ QikCUlQKSt4qxwO+jJF7ueU+TRTE0n8lJx/ne2BFNGI1NgvVbkTjJUsa9KtBmN8Lwh0v
+ NChA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753833607; x=1754438407;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+x/nOpNVKdVVT2nnS9KFrbW2gm/f5lb53oKqHtPCQ9I=;
- b=drbJ5VfHL0i7GUW6eu+kUYrUsvHROZeFPSkHmHqV4j8PQx1IG4W0uJMW9DQ4O2GQqE
- uPzu1XWdorIh3uTb1PkFjPsJvc6x7tv3Ca683QlgU6Z7SGvvsuvDysWFksGLA9YeOk+D
- BMlrwQ8i2UTHcZo5DZNzxUIR/5I+ugGAau4K3WgEqxSW+lYMs2f640aMnGXLgDJFXUKJ
- vmmC7RmkCctSxM66n3Wi0sEqL3Mb2ygOZoqd/roumPgrbRc4tWFSnuTaxUjaCTD69AzE
- 4Js2LnZQ0zZJ1YFmHSyz9Z8/Zb4I4mYN+7BclL5W/wBDN1Jlde5QKroj8k1yllTPkNfM
- GgiQ==
-X-Gm-Message-State: AOJu0YxcLYlnR7z/70CJRhbxJc0igomGySWRL5Lyfb+ZxMqQ5JiB/GDS
- 2oyMFOed0I3iovvFtT8CukteMolvxj0bLh+bdtbWFB925MxywpJ5wLkMAZTvaDGCCtWAsKCp/qk
- I8Xo1
-X-Gm-Gg: ASbGncsajEWivSJTf5sqmo81VPg42dS10G7z3Uewpoizg3K9VgsITJK08iR5vyuUUh/
- jhUwmPZru/AqzcR3dl6sQJ3CsfHTULpIzzrjZm/CXOPnf48GhK+r2ZnYloZKcUn6UV8p6o9G7yC
- KWUzyfwGdQ5kSxp/pmLRRRSCAmMOwoL1MBsQHQfepB9tjcH10i1uue17NU/lcCARxtYD4ubR2D0
- DWqws9/MFAUrX7AxYpDZRXAffU3nYm06d7PPSpTdGy3JkvmkiNixqeY4BA2+YSgskp14u6ueYQw
- 3fukJZCaObhVLUcWt/f6XHpy3ZBH4lcrmX1T6+tnX/WXTYRnfhl8agDGUNhOh8kxA5I/0SEZIyE
- oJPHbv1UYYOtvTxqU0HYZIG/rs8eJHnP35I/EcfEU8Nf5SEoOGQCn7u6m4VgFcQUqJunIMKUUrb
- sINNDNOucYDQ==
-X-Google-Smtp-Source: AGHT+IHn0lM0Wzb2gqsGIdYbEei+vQnNO7qxSCdKrIqG8XC05JsEXX3vX99mPvyp10xJ7UPFlUckjQ==
-X-Received: by 2002:a05:6a20:5483:b0:232:1d30:cd6e with SMTP id
- adf61e73a8af0-23dc0eba2c0mr1938750637.41.1753833607038; 
- Tue, 29 Jul 2025 17:00:07 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753833609; x=1754438409;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=k+/UhXm/gWEv2l8V5Fg2cCxbxcPKP5GDojGjN4Gy2Hg=;
+ b=DD0uOLt5RvW0x0r6kj6malXm2e3r4HITbCkmtlBjEf9dsWddhvafHLbR8FTJ9iJ43O
+ pKKxp/P20YCv3NHYUe6Lpzf1tp4aS50zRfNcia1/yO+zOMY4z9pEY3xBXlHt3S2HMmSE
+ H/5A1UVPtFcBYB3PSww0zFM1nyOauqrbxw+8S2K8dhwtBZc2nwcSi4BEH8E7CH7yCN0j
+ G3Ykd1pv5pjT+J/JblJd1mRreNKIF+4UwgE+660r4KP/BHVUUORCbag1WONd7SCLPdyL
+ 5NOGnuVijuEowoOYjitYpO/paxeCV9wsogXxODI9XfJ+NGv3JCvZAOYeM0neegy3GxV9
+ 44ng==
+X-Gm-Message-State: AOJu0YyyAfX4GlaQhC6mEeWtT9zvfJNU4ariMv9u04gsksoCJoKjeRt5
+ E3bPBN+IboxRyz8Y+3wDlwZrS+lYFyFbOixW8BeWRYdnX6+dmKqb0M1uAsVGvifL3/KMQO5ezXI
+ I7Plb
+X-Gm-Gg: ASbGncvNQQPVLGsMd/kV0QVFXZo1c2PRrU2QoyXNpM3cnwEpPYD5V0uFIJg6W/5v37r
+ IUY4gB4VjafGf3RCC+ida3M0aHMyBcIWUTVs8+yuSjkFEjhdqAvGAI/Wm3DPuHZ95RovTt3XD+G
+ T9KXAEPHDcoYvG7I55wmXpYY5XXs3f8oBu3cZFdh53nSRYwrhS93zxhCWNrAzJhfAsEaWflN5GP
+ /Eqjz6QseM2oTSVUMJymMMSgfOPmniZm404JfYmBhTmVrcUvloyQkPOyLUSQGaEQMyTTcBsySX8
+ rAHVhnHTGj4dl4+TaS58IXMLGRhUU+oCVlJrXAjMetS2cqYUkJ3yMoTo/urrDIQ0/KQUWU7sFwj
+ iOGiboPwPM+mcsRdjTyMRjqs3ZhTQaMOSppREsYSWk+eNvSFP3KUhdvn7etfIQiiGMkk57N75Nh
+ nmwxJD/+IRdw==
+X-Google-Smtp-Source: AGHT+IFCBQYFTmAflbiYeCWO3j1Hu9Refh2NAcTy6oxxLpYTfuv0UVbxvY9IM7EkG4LzPT0od0wGzA==
+X-Received: by 2002:a05:6a00:ac8:b0:746:24c9:c92e with SMTP id
+ d2e1a72fcca58-76ab1614553mr2318474b3a.8.1753833608414; 
+ Tue, 29 Jul 2025 17:00:08 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-764090e178bsm9026087b3a.62.2025.07.29.17.00.05
+ d2e1a72fcca58-764090e178bsm9026087b3a.62.2025.07.29.17.00.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 17:00:05 -0700 (PDT)
+ Tue, 29 Jul 2025 17:00:07 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH for-10.2 00/89] linux-user: Split up elfload.c
-Date: Tue, 29 Jul 2025 13:58:33 -1000
-Message-ID: <20250730000003.599084-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/89] linux-user: Create target/elfload.c files
+Date: Tue, 29 Jul 2025 13:58:34 -1000
+Message-ID: <20250730000003.599084-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250730000003.599084-1-richard.henderson@linaro.org>
+References: <20250730000003.599084-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,224 +98,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The goal is to kill the massive target ifdef ladder in elfload.c.
+Prepare to split the main linux-user/elfload.c.
+Create empty files for each target, and add the
+common build rule.
 
-The functions get moved to linux-user/target/elfload.c.
-Define weak functions to provide a default value, or a
-weak reference to determine if the function is provided.
-
-The core dump types and functions are moved to
-linux-user/target/target_coredump.h.
-
-The macros get moved to linux-user/target/target_elf.h.
-These are mostly use to parameterize include/elf.h, but
-there are some other outliers.
-
-The init_thread functions, storing into target_pt_regs, have been
-merged with target_cpu_copy_regs, copying out of target_pt_regs
-into CPUArchState.  Merging these found a few bits of silliness
-where pt_regs fields were initialized but not used.  To encourage
-this never to return, remove most target_pt_regs and hide the rest
-within the relevant signal.c.
-
-
-r~
-
-
-Richard Henderson (89):
-  linux-user: Create target/elfload.c files
-  linux-user: Move get_elf_hwcap to {i386,x86_64}/elfload.c
-  linux-user: Move hwcap functions to {arm,aarch64}/elfload.c
-  linux-user: Move get_elf_hwcap to sparc/elfload.c
-  linux-user: Move hwcap functions to ppc/elfload.c
-  linux-user: Move get_elf_hwcap to loongarch64/elfload.c
-  linux-user: Move get_elf_hwcap to mips/elfload.c
-  linux-user: Move get_elf_hwcap to sh4/elfload.c
-  linux-user: Move hwcap functions to s390x/elfload.c
-  linux-user: Move get_elf_hwcap to riscv/elfload.c
-  linux-user: Remove ELF_HWCAP
-  linux-user: Remove ELF_HWCAP2
-  linux-user: Move get_elf_platform to {i386,x86_64}/elfload.c
-  linux-user/i386: Return const data from get_elf_platform
-  linux-user: Move get_elf_platform to arm/elfload.c
-  linux-user/loongarch64: Create get_elf_platform
-  linux-user/hppa: Create get_elf_platform
-  linux-user: Remove ELF_PLATFORM
-  linux-user: Move get_elf_base_platform to mips/elfload.c
-  linux-user: Move target_cpu_copy_regs decl to qemu.h
-  linux-user: Unify init of semihosting fields in TaskState
-  linux-user: Create do_init_main_thread
-  linux-user/i386: Create init_main_thread
-  linux-user/arm: Create init_main_thread
-  linux-user/aarch64: Create init_main_thread
-  linux-user/sparc: Create init_main_thread
-  linux-user/ppc: Create init_main_thread
-  linux-user/loongarch64: Create init_main_thread
-  linux-user/mips: Create init_main_thread
-  linux-user/microblaze: Create init_main_thread
-  linux-user/openrisc: Create init_main_thread
-  linux-user/sh4: Create init_main_thread
-  linux-user/m68k: Create init_main_thread
-  linux-user/alpha: Create init_main_thread
-  linux-user/s390x: Create init_main_thread
-  linux-user/riscv: Create init_main_thread
-  linux-user/hppa: Create init_main_thread
-  linux-user/xtensa: Create init_main_thread
-  linux-user/hexagon: Create init_main_thread
-  linux-user: Remove do_init_main_thread
-  linux-user/x86_64: Split out target_coredump.c.inc
-  linux-user/i386: Split out target_coredump.c.inc
-  linux-user/arm: Split out target_coredump.c.inc
-  linux-user/aarch64: Split out target_coredump.c.inc
-  linux-user/ppc: Split out target_coredump.c.inc
-  linux-user/loongarch64: Split out target_coredump.c.inc
-  linux-user/mips: Split out target_coredump.c.inc
-  linux-user/microblaze: Split out target_coredump.c.inc
-  target/openrisc: Split out target_coredump.c.inc
-  target/sh4: Split out target_coredump.c.inc
-  linux-user/m68k: Split out target_coredump.c.inc
-  linux-user/s390x: Split out target_coredump.c.inc
-  linux-user/xtensa: Split out target_coredump.c.inc
-  linux-user: Unify the include of target_coredump.c.inc
-  linux-user: Move init_guest_commpage to x86_64/elfload.c
-  linux-user: Move init_guest_commpage to arm/elfload.c
-  linux-user: Move init_guest_commpage to hppa/elfload.c
-  linux-user: Remove INIT_GUEST_COMMPAGE
-  linux-user: Move get_vdso_image_info to arm/elfload.c
-  linux-user: Remove ELF_EXEC_PAGESIZE
-  linux-user: Move get_elf_cpu_model to target/elfload.c
-  linux-user: Move ppc uabi/asm/elf.h workaround to osdep.h
-  linux-user: Move elf parameters to {i386,x86_64}/target_elf.h
-  linux-user: Move elf parameters to {arm,aarch64}/target_elf.h
-  linux-user: Move elf parameters to sparc/target_elf.h
-  linux-user: Move elf parameters to ppc/target_elf.h
-  linux-user: Move elf parameters to loongarch64/target_elf.h
-  linux-user: Move elf parameters to {mips,mips64}/target_elf.h
-  linux-user: Move elf parameters to microblaze/target_elf.h
-  linux-user: Move elf parameters to openrisc/target_elf.h
-  linux-user: Move elf parameters to sh4/target_elf.h
-  linux-user: Move elf parameters to m68k/target_elf.h
-  linux-user: Move elf parameters to alpha/target_elf.h
-  linux-user: Move elf parameters to s390x/target_elf.h
-  linux-user: Move elf parameters to riscv/target_elf.h
-  linux-user: Move elf parameters to hppa/target_elf.h
-  linux-user: Move elf parameters to xtensa/target_elf.h
-  linux-user: Move elf parameters to hexagon/target_elf.h
-  linux-user: Standardize on ELF_MACHINE not ELF_ARCH
-  linux-user: Rename elf_check_arch
-  linux-user: Remove ELIBBAD from elfload.c
-  linux-user: Remove MAP_DENYWRITE from elfload.c
-  linux-user: Move arch_parse_elf_property to aarch64/elfload.c
-  linux-user: Remove a.out declarations from elfload.c
-  linux-user/sparc: Move target_pt_regs to signal.c
-  linux-user/microblaze: Move target_pt_regs to signal.c
-  linux-user/openrisc: Move target_pt_regs to signal.c
-  linux-user/s390x: Move target_psw_t to signal.c
-  linux-user: Remove struct target_pt_regs from target_syscall.h
-
- include/qemu/osdep.h                         |    8 +
- include/user/cpu_loop.h                      |    4 -
- linux-user/aarch64/target_elf.h              |   16 +-
- linux-user/aarch64/target_syscall.h          |    7 -
- linux-user/alpha/target_elf.h                |    8 +-
- linux-user/alpha/target_syscall.h            |   40 -
- linux-user/arm/target_elf.h                  |   12 +-
- linux-user/arm/target_proc.h                 |    4 +-
- linux-user/arm/target_syscall.h              |    8 -
- linux-user/hexagon/target_elf.h              |   30 +-
- linux-user/hexagon/target_syscall.h          |    5 -
- linux-user/hppa/target_elf.h                 |   13 +-
- linux-user/hppa/target_syscall.h             |   18 -
- linux-user/i386/target_elf.h                 |   28 +-
- linux-user/i386/target_syscall.h             |   18 -
- linux-user/loader.h                          |   33 +-
- linux-user/loongarch64/target_elf.h          |   11 +-
- linux-user/loongarch64/target_syscall.h      |   23 -
- linux-user/m68k/target_elf.h                 |   13 +-
- linux-user/m68k/target_syscall.h             |   16 -
- linux-user/microblaze/target_elf.h           |   10 +-
- linux-user/microblaze/target_syscall.h       |   44 -
- linux-user/mips/target_elf.h                 |   16 +-
- linux-user/mips/target_syscall.h             |   19 -
- linux-user/mips64/target_elf.h               |   39 +-
- linux-user/mips64/target_syscall.h           |   16 -
- linux-user/openrisc/target_elf.h             |    9 +-
- linux-user/openrisc/target_syscall.h         |   11 -
- linux-user/ppc/target_elf.h                  |   45 +-
- linux-user/ppc/target_syscall.h              |   28 -
- linux-user/qemu.h                            |    6 +-
- linux-user/riscv/target_elf.h                |   15 +-
- linux-user/riscv/target_syscall.h            |   35 -
- linux-user/s390x/target_elf.h                |   11 +-
- linux-user/s390x/target_proc.h               |    2 +-
- linux-user/s390x/target_syscall.h            |   22 -
- linux-user/sh4/target_elf.h                  |    9 +-
- linux-user/sh4/target_syscall.h              |   11 -
- linux-user/sparc/target_elf.h                |   16 +-
- linux-user/sparc/target_syscall.h            |   19 -
- linux-user/x86_64/target_elf.h               |   10 +-
- linux-user/x86_64/target_syscall.h           |   28 -
- linux-user/xtensa/target_elf.h               |    7 +-
- linux-user/xtensa/target_syscall.h           |   35 -
- linux-user/aarch64/cpu_loop.c                |   22 +-
- linux-user/aarch64/elfload.c                 |  367 +++
- linux-user/alpha/cpu_loop.c                  |   11 +-
- linux-user/alpha/elfload.c                   |   11 +
- linux-user/arm/cpu_loop.c                    |   80 +-
- linux-user/arm/elfload.c                     |  267 +++
- linux-user/elfload.c                         | 2116 +-----------------
- linux-user/hexagon/cpu_loop.c                |    8 +-
- linux-user/hexagon/elfload.c                 |   35 +
- linux-user/hppa/cpu_loop.c                   |   18 +-
- linux-user/hppa/elfload.c                    |   47 +
- linux-user/i386/cpu_loop.c                   |   31 +-
- linux-user/i386/elfload.c                    |   25 +
- linux-user/linuxload.c                       |    6 +-
- linux-user/loongarch64/cpu_loop.c            |   11 +-
- linux-user/loongarch64/elfload.c             |   63 +
- linux-user/m68k/cpu_loop.c                   |   32 +-
- linux-user/m68k/elfload.c                    |   18 +
- linux-user/main.c                            |   18 +-
- linux-user/microblaze/cpu_loop.c             |   39 +-
- linux-user/microblaze/elfload.c              |   11 +
- linux-user/microblaze/signal.c               |   44 +
- linux-user/mips/cpu_loop.c                   |   16 +-
- linux-user/mips/elfload.c                    |  124 +
- linux-user/mips64/elfload.c                  |    1 +
- linux-user/openrisc/cpu_loop.c               |   11 +-
- linux-user/openrisc/elfload.c                |   11 +
- linux-user/openrisc/signal.c                 |   12 +
- linux-user/ppc/cpu_loop.c                    |   26 +-
- linux-user/ppc/elfload.c                     |  131 ++
- linux-user/riscv/cpu_loop.c                  |   15 +-
- linux-user/riscv/elfload.c                   |   23 +
- linux-user/s390x/cpu_loop.c                  |   15 +-
- linux-user/s390x/elfload.c                   |   68 +
- linux-user/s390x/signal.c                    |    5 +
- linux-user/sh4/cpu_loop.c                    |   10 +-
- linux-user/sh4/elfload.c                     |   38 +
- linux-user/sparc/cpu_loop.c                  |   16 +-
- linux-user/sparc/elfload.c                   |   42 +
- linux-user/sparc/signal.c                    |   20 +
- linux-user/x86_64/elfload.c                  |   41 +
- linux-user/xtensa/cpu_loop.c                 |   22 +-
- linux-user/xtensa/elfload.c                  |   11 +
- linux-user/aarch64/target_coredump.c.inc     |   14 +
- linux-user/arm/target_coredump.c.inc         |   28 +
- linux-user/i386/target_coredump.c.inc        |   32 +
- linux-user/loongarch64/target_coredump.c.inc |   24 +
- linux-user/m68k/target_coredump.c.inc        |   30 +
- linux-user/microblaze/target_coredump.c.inc  |   21 +
- linux-user/mips/target_coredump.c.inc        |   46 +
- linux-user/mips64/target_coredump.c.inc      |    1 +
- linux-user/openrisc/target_coredump.c.inc    |   15 +
- linux-user/ppc/target_coredump.c.inc         |   24 +
- linux-user/s390x/target_coredump.c.inc       |   31 +
- linux-user/sh4/target_coredump.c.inc         |   32 +
- linux-user/x86_64/target_coredump.c.inc      |   42 +
- linux-user/xtensa/target_coredump.c.inc      |   38 +
- meson.build                                  |    6 +-
- 102 files changed, 2259 insertions(+), 2841 deletions(-)
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/aarch64/elfload.c     | 1 +
+ linux-user/alpha/elfload.c       | 1 +
+ linux-user/arm/elfload.c         | 1 +
+ linux-user/hexagon/elfload.c     | 1 +
+ linux-user/hppa/elfload.c        | 1 +
+ linux-user/i386/elfload.c        | 1 +
+ linux-user/loongarch64/elfload.c | 1 +
+ linux-user/m68k/elfload.c        | 1 +
+ linux-user/microblaze/elfload.c  | 1 +
+ linux-user/mips/elfload.c        | 1 +
+ linux-user/mips64/elfload.c      | 1 +
+ linux-user/openrisc/elfload.c    | 1 +
+ linux-user/ppc/elfload.c         | 1 +
+ linux-user/riscv/elfload.c       | 1 +
+ linux-user/s390x/elfload.c       | 1 +
+ linux-user/sh4/elfload.c         | 1 +
+ linux-user/sparc/elfload.c       | 1 +
+ linux-user/x86_64/elfload.c      | 1 +
+ linux-user/xtensa/elfload.c      | 1 +
+ meson.build                      | 6 +++++-
+ 20 files changed, 24 insertions(+), 1 deletion(-)
  create mode 100644 linux-user/aarch64/elfload.c
  create mode 100644 linux-user/alpha/elfload.c
  create mode 100644 linux-user/arm/elfload.c
@@ -332,21 +144,157 @@ Richard Henderson (89):
  create mode 100644 linux-user/sparc/elfload.c
  create mode 100644 linux-user/x86_64/elfload.c
  create mode 100644 linux-user/xtensa/elfload.c
- create mode 100644 linux-user/aarch64/target_coredump.c.inc
- create mode 100644 linux-user/arm/target_coredump.c.inc
- create mode 100644 linux-user/i386/target_coredump.c.inc
- create mode 100644 linux-user/loongarch64/target_coredump.c.inc
- create mode 100644 linux-user/m68k/target_coredump.c.inc
- create mode 100644 linux-user/microblaze/target_coredump.c.inc
- create mode 100644 linux-user/mips/target_coredump.c.inc
- create mode 100644 linux-user/mips64/target_coredump.c.inc
- create mode 100644 linux-user/openrisc/target_coredump.c.inc
- create mode 100644 linux-user/ppc/target_coredump.c.inc
- create mode 100644 linux-user/s390x/target_coredump.c.inc
- create mode 100644 linux-user/sh4/target_coredump.c.inc
- create mode 100644 linux-user/x86_64/target_coredump.c.inc
- create mode 100644 linux-user/xtensa/target_coredump.c.inc
 
+diff --git a/linux-user/aarch64/elfload.c b/linux-user/aarch64/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/aarch64/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/alpha/elfload.c b/linux-user/alpha/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/alpha/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/arm/elfload.c b/linux-user/arm/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/arm/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/hexagon/elfload.c b/linux-user/hexagon/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/hexagon/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/hppa/elfload.c b/linux-user/hppa/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/hppa/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/i386/elfload.c b/linux-user/i386/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/i386/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/loongarch64/elfload.c b/linux-user/loongarch64/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/loongarch64/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/m68k/elfload.c b/linux-user/m68k/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/m68k/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/microblaze/elfload.c b/linux-user/microblaze/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/microblaze/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/mips/elfload.c b/linux-user/mips/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/mips/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/mips64/elfload.c b/linux-user/mips64/elfload.c
+new file mode 100644
+index 0000000000..b719555e65
+--- /dev/null
++++ b/linux-user/mips64/elfload.c
+@@ -0,0 +1 @@
++#include "../mips/elfload.c"
+diff --git a/linux-user/openrisc/elfload.c b/linux-user/openrisc/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/openrisc/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/ppc/elfload.c b/linux-user/ppc/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/ppc/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/riscv/elfload.c b/linux-user/riscv/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/riscv/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/s390x/elfload.c b/linux-user/s390x/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/s390x/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/sh4/elfload.c b/linux-user/sh4/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/sh4/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/sparc/elfload.c b/linux-user/sparc/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/sparc/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/x86_64/elfload.c b/linux-user/x86_64/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/x86_64/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/linux-user/xtensa/elfload.c b/linux-user/xtensa/elfload.c
+new file mode 100644
+index 0000000000..73fa78ef14
+--- /dev/null
++++ b/linux-user/xtensa/elfload.c
+@@ -0,0 +1 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+diff --git a/meson.build b/meson.build
+index e53cd5b413..516b1a43c3 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4325,7 +4325,11 @@ foreach target : target_dirs
+     )
+     if 'CONFIG_LINUX_USER' in config_target
+       dir = base_dir / abi
+-      arch_srcs += files(dir / 'signal.c', dir / 'cpu_loop.c')
++      arch_srcs += files(
++        dir / 'cpu_loop.c',
++        dir / 'elfload.c',
++        dir / 'signal.c',
++      )
+       if config_target.has_key('TARGET_SYSTBL_ABI')
+         arch_srcs += \
+           syscall_nr_generators[abi].process(base_dir / abi / config_target['TARGET_SYSTBL'],
 -- 
 2.43.0
 
