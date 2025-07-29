@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFCC0B14B1C
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3FE1B14B1B
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:22:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uggXE-00051f-Rp; Tue, 29 Jul 2025 05:22:15 -0400
+	id 1uggXE-00058s-Sq; Tue, 29 Jul 2025 05:22:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggWK-0004dX-Vt
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:20 -0400
+ id 1uggWR-0004iS-SI
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:24 -0400
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggWI-0002av-TI
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:16 -0400
+ id 1uggWL-0002ac-0l
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753780875; x=1785316875;
+ t=1753780877; x=1785316877;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=H90IjbHFk/C0B72MY53kb+vMeadxug3mnzm1G5/mZdM=;
- b=W0+C6UOzsxQeQjpJiKjGIIPg0wiJfNOyJli8bAq7fvKB0xIyfLcl/RKH
- Qz90siFB7vhqu+ZKgG2r6bn7gKVVvKgmGKNXNYvvGAmzniVBdP3dncH8b
- 4Ll44hv11xRTgoJtopwGkdYv2x0zIy+J+7uloKdG8Anjql0vVXVa1IXjH
- BV323mEa55U59G7LkBZNPHGiCRhatg/ZLMn+ddmO/O7Cy4Cs5aCSVWzZB
- ftRCo0uWxDYyxHCZEdCg8hUePlVBHPnWOBoJWse0XW0sFPWSv4yFzofwZ
- pFzUnMFGN5jODoS4eMEUxULAOaKqys28nBTPDp9R1S2O8MLHYUXadjTtl Q==;
-X-CSE-ConnectionGUID: DGxCXqoGRxC7/mb62Owi/Q==
-X-CSE-MsgGUID: hAbUzuIiQTygs/rN1Ab/rQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55981863"
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55981863"
+ bh=UWpd/VRWPG7FVB4+KQGN73R7irDtEtxt5kp80om8+L0=;
+ b=PxrjLN7Va6M5eIfj1VOFhdbwcxb/S0tO3QGfixLGrgM0TdyfjIIGS+Sl
+ rlKvnDMtOk71LUB5WR2R1HPSZSxJRLirQptbU4ZxzuI5Yypw7XZy0MYbX
+ aua2AqGUg4N8N5qQe+UUJz9cE20gloggDzsaQzcKfevuWvnY0dyVUTMc3
+ NOYCDbHEl0IV2ERfuaCGdD+2oYX/M01RtjkS6PONJ/avjWHeqnl+EmNkf
+ lgYguffwoPeozLxIbz5n8+62YidGGxA7HyUw4nloAojufX85QqiUWwvvI
+ Z0OSZuUlPDZcZqN8hc0xn0+yfulGjowuPwRq6V6MkQgjvNxIymqAJ0Fev w==;
+X-CSE-ConnectionGUID: uHCk/aueS7y2KrGIBYzpAA==
+X-CSE-MsgGUID: Dh7GtUGdSfKFzgQmjOzQgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55981877"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55981877"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:21:12 -0700
-X-CSE-ConnectionGUID: mFMAsr4KSTqxGDXwzpKcpg==
-X-CSE-MsgGUID: qBRVDKr+RRCvZoULea4QLg==
+ 29 Jul 2025 02:21:16 -0700
+X-CSE-ConnectionGUID: f3/AOldyTL2kbSKUUcsjAQ==
+X-CSE-MsgGUID: 4SPOzT1kT4CtWmu1o5hmQQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691120"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691130"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:21:09 -0700
+ 29 Jul 2025 02:21:13 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,9 +52,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v4 03/20] intel_iommu: Implement get_viommu_cap() callback
-Date: Tue, 29 Jul 2025 05:20:25 -0400
-Message-ID: <20250729092043.785836-4-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 04/20] vfio/iommufd: Force creating nested parent domain
+Date: Tue, 29 Jul 2025 05:20:26 -0400
+Message-ID: <20250729092043.785836-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250729092043.785836-1-zhenzhong.duan@intel.com>
 References: <20250729092043.785836-1-zhenzhong.duan@intel.com>
@@ -85,55 +85,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement get_viommu_cap() callback and expose stage-1 capability for now.
+Call pci_device_get_viommu_cap() to get if vIOMMU supports VIOMMU_CAP_HW_NESTED,
+if yes, create nested parent domain which could be reused by vIOMMU to create
+nested domain.
 
-VFIO uses it to create nested parent domain which is further used to create
-nested domain in vIOMMU. All these will be implemented in following patches.
+It is safe because hw_caps & VIOMMU_CAP_HW_NESTED cannot be set yet because
+s->flts is forbidden until we support passthrough device with x-flts=on.
 
+Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
 Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/i386/intel_iommu.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ hw/vfio/iommufd.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index c97953d7a1..178c15e31c 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -24,6 +24,7 @@
- #include "qemu/main-loop.h"
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 48c590b6a9..61a548f13f 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -20,6 +20,7 @@
+ #include "trace.h"
  #include "qapi/error.h"
- #include "hw/sysbus.h"
+ #include "system/iommufd.h"
 +#include "hw/iommu.h"
- #include "intel_iommu_internal.h"
- #include "hw/pci/pci.h"
- #include "hw/pci/pci_bus.h"
-@@ -4420,6 +4421,16 @@ static void vtd_dev_unset_iommu_device(PCIBus *bus, void *opaque, int devfn)
-     vtd_iommu_unlock(s);
- }
+ #include "hw/qdev-core.h"
+ #include "hw/vfio/vfio-cpr.h"
+ #include "system/reset.h"
+@@ -379,6 +380,19 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+         flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
+     }
  
-+static uint64_t vtd_get_viommu_cap(void *opaque)
-+{
-+    IntelIOMMUState *s = opaque;
-+    uint64_t caps;
++    /*
++     * If vIOMMU supports stage-1 translation, force to create nested parent
++     * domain which could be reused by vIOMMU to create nested domain.
++     */
++    if (vbasedev->type == VFIO_DEVICE_TYPE_PCI) {
++        VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
 +
-+    caps = s->flts ? VIOMMU_CAP_HW_NESTED : 0;
++        hw_caps = pci_device_get_viommu_cap(&vdev->pdev);
++        if (hw_caps & VIOMMU_CAP_HW_NESTED) {
++            flags |= IOMMU_HWPT_ALLOC_NEST_PARENT;
++        }
++    }
 +
-+    return caps;
-+}
-+
- /* Unmap the whole range in the notifier's scope. */
- static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
- {
-@@ -4850,6 +4861,7 @@ static PCIIOMMUOps vtd_iommu_ops = {
-     .register_iotlb_notifier = vtd_register_iotlb_notifier,
-     .unregister_iotlb_notifier = vtd_unregister_iotlb_notifier,
-     .ats_request_translation = vtd_ats_request_translation,
-+    .get_viommu_cap = vtd_get_viommu_cap,
- };
- 
- static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
+     if (cpr_is_incoming()) {
+         hwpt_id = vbasedev->cpr.hwpt_id;
+         goto skip_alloc;
 -- 
 2.47.1
 
