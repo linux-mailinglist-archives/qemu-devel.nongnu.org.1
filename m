@@ -2,146 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EC0B1553F
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 00:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E4AB15652
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:21:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugskL-0003Z5-Ss; Tue, 29 Jul 2025 18:24:36 -0400
+	id 1uguRM-0001kz-5V; Tue, 29 Jul 2025 20:13:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugrTJ-0000jp-OP
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 17:02:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugrTH-0000Zq-9v
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 17:02:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753822969;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vLMqbvdMqm2GL/a5o2vv6X1USR9YF5Us2TibJQKzcrE=;
- b=UHmjYQ7u1RxHIvyZSghsKqqvAzyzVVdR8wjSe5XUmdfoFQ47G9G9wvJsqlJsZADubMo8JA
- csFql5hoZXFMbrHzVPtmxpc/1y+pKOxK7kmFhZ+OZ8vz5UprcJFuOLeOkBM2SOX7+VntlX
- IX14iUWZWbS7JYXADMgv/RIVQiVcxys=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-EgeGkgGeMAe5t99iATj5SA-1; Tue, 29 Jul 2025 17:02:47 -0400
-X-MC-Unique: EgeGkgGeMAe5t99iATj5SA-1
-X-Mimecast-MFC-AGG-ID: EgeGkgGeMAe5t99iATj5SA_1753822966
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45600d19a2aso46518755e9.1
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 14:02:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uguEu-0001Gc-GV
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:00:15 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uguEr-0003yh-7g
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:00:11 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-76a3818eb9bso857402b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:00:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753833607; x=1754438407; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+x/nOpNVKdVVT2nnS9KFrbW2gm/f5lb53oKqHtPCQ9I=;
+ b=lz8YVZgnRlGMgjkQU+of0CNuYIxHLqlp55Lxie2pzOhbTQPrhdxCFztAd03IhLcNfs
+ 2cT18ReFuT6btfbBdOBc1UDfdbNaCCTTkWsHk3DSHWtxuFWSUxv/49u4jtx0bV4QTZ8T
+ 25oK4ylALya92F7cUc9HMrzWMTfxHYAsBZwZBUxmdfDQy/x9AHx3f3ZXe/ItoAVb/NmF
+ JoUerbXr76uQHbO5GAB+8LVvROfsGvv92CT53TMNjio0+QlbsUIv9+10jffQ0cLFo4kA
+ jOpH+6fOgpajR4BOlUgyJrnb1eR77cKeOxtBimLaZey2dJZWvtpo+0W9aDcOC3kKd+qJ
+ NzMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753822966; x=1754427766;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vLMqbvdMqm2GL/a5o2vv6X1USR9YF5Us2TibJQKzcrE=;
- b=kMRFuIX59Yjzwgx3D1yYg0AGbONRxNBxl3ZhNMVL7kttvz1hBQkLOYKpZgqg4mHSgf
- cY6/DbEgwSCLtU9DFeDaIRlAf3c5RQuK+CEiXcBpes4kSmihwC0cgLXqs6zZT4nLX+VL
- jJiMWljiDVS/P2+xm+7+KgN9AFeIcPGB2JzaAfJAEqcb7i25NQZL5PjVD954cCwJX4FN
- NOboUEUvp7qKvYQsXSByEMtyWfMTe/dXnRQO6LNu9M+aQtsOJzgmPL98V2ah/RvoQsGm
- wu0J5ooLowufUx1v5/2dACq37e9aJRP72fQzGcReqG4/mgcK53cKOC9XQUyKukSew7VV
- YRSQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWz389qCR6aytpqaPqr+1L6nFVI8HfOpwWawjpG6ZMUtnHKe+1rkNzw94JAtpBruhOza4WA+NviQRkL@nongnu.org
-X-Gm-Message-State: AOJu0YxJAGX0izGXBuOfDFei19vDyg3a+uoaC79QtNiyzmzVrL1x5ABw
- N6AzXrOTtj0WDkUNmmEDW09zaEGMS/Bg3BakNQa9AZvGfFsmCtJPhnOr522vTMuUUYyNAvhUuUV
- AvAHMc3+b7qa8zcFnuenZtvE49WvNQ4TrthyCOaHZFgDd4oGG0G1a6mVA
-X-Gm-Gg: ASbGncvn+eSWGqS3hvXXqIgPRyJIIzFpG4/PU+NxmylBWYZkFJRBjULD3zj51WuC9I9
- /6vqfpmiinyMcQTn7GZlDkZnH/lUxoTYiDCNcldplPpkpvA4ZnOHsAvtXWy8su6i/s3X0AbYls/
- bFgoOG93zhhH3O/LM4LFLZrUaFgEr+qmInmVMlLONdjn4dU9K1cve+D5kLNjyAjSEZX5sL+m7xA
- SF0sNtUNvod6+UvlZVCWcXuarqC2S1wPAt8xUtxNnoXfFv0Ld08cVg24OpMH9k5t7XN5aOY7lkB
- Ff5K6ccGIIxujfIB4RwLMizhsxG1zMfK/vq7K7bm5R7XWoyio4A0pvE5YgGkCh61K4Rx1f8M0QQ
- 6Nw==
-X-Received: by 2002:a05:600c:4752:b0:456:1a87:a6ba with SMTP id
- 5b1f17b1804b1-45892ce74edmr8709215e9.33.1753822966287; 
- Tue, 29 Jul 2025 14:02:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFn5xzy1ymhvyQFvl2mBw0ggWEjnJXo00dO+gR8QShXASPMFWIB7pynia8SsmciiR0WDu2u0g==
-X-Received: by 2002:a05:600c:4752:b0:456:1a87:a6ba with SMTP id
- 5b1f17b1804b1-45892ce74edmr8709105e9.33.1753822965852; 
- Tue, 29 Jul 2025 14:02:45 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b78d45d010sm4761564f8f.8.2025.07.29.14.02.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Jul 2025 14:02:44 -0700 (PDT)
-Message-ID: <f3563da5-a8ab-4bd0-a7f6-cef0d1f9df32@redhat.com>
-Date: Tue, 29 Jul 2025 23:02:43 +0200
+ d=1e100.net; s=20230601; t=1753833607; x=1754438407;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+x/nOpNVKdVVT2nnS9KFrbW2gm/f5lb53oKqHtPCQ9I=;
+ b=drbJ5VfHL0i7GUW6eu+kUYrUsvHROZeFPSkHmHqV4j8PQx1IG4W0uJMW9DQ4O2GQqE
+ uPzu1XWdorIh3uTb1PkFjPsJvc6x7tv3Ca683QlgU6Z7SGvvsuvDysWFksGLA9YeOk+D
+ BMlrwQ8i2UTHcZo5DZNzxUIR/5I+ugGAau4K3WgEqxSW+lYMs2f640aMnGXLgDJFXUKJ
+ vmmC7RmkCctSxM66n3Wi0sEqL3Mb2ygOZoqd/roumPgrbRc4tWFSnuTaxUjaCTD69AzE
+ 4Js2LnZQ0zZJ1YFmHSyz9Z8/Zb4I4mYN+7BclL5W/wBDN1Jlde5QKroj8k1yllTPkNfM
+ GgiQ==
+X-Gm-Message-State: AOJu0YxcLYlnR7z/70CJRhbxJc0igomGySWRL5Lyfb+ZxMqQ5JiB/GDS
+ 2oyMFOed0I3iovvFtT8CukteMolvxj0bLh+bdtbWFB925MxywpJ5wLkMAZTvaDGCCtWAsKCp/qk
+ I8Xo1
+X-Gm-Gg: ASbGncsajEWivSJTf5sqmo81VPg42dS10G7z3Uewpoizg3K9VgsITJK08iR5vyuUUh/
+ jhUwmPZru/AqzcR3dl6sQJ3CsfHTULpIzzrjZm/CXOPnf48GhK+r2ZnYloZKcUn6UV8p6o9G7yC
+ KWUzyfwGdQ5kSxp/pmLRRRSCAmMOwoL1MBsQHQfepB9tjcH10i1uue17NU/lcCARxtYD4ubR2D0
+ DWqws9/MFAUrX7AxYpDZRXAffU3nYm06d7PPSpTdGy3JkvmkiNixqeY4BA2+YSgskp14u6ueYQw
+ 3fukJZCaObhVLUcWt/f6XHpy3ZBH4lcrmX1T6+tnX/WXTYRnfhl8agDGUNhOh8kxA5I/0SEZIyE
+ oJPHbv1UYYOtvTxqU0HYZIG/rs8eJHnP35I/EcfEU8Nf5SEoOGQCn7u6m4VgFcQUqJunIMKUUrb
+ sINNDNOucYDQ==
+X-Google-Smtp-Source: AGHT+IHn0lM0Wzb2gqsGIdYbEei+vQnNO7qxSCdKrIqG8XC05JsEXX3vX99mPvyp10xJ7UPFlUckjQ==
+X-Received: by 2002:a05:6a20:5483:b0:232:1d30:cd6e with SMTP id
+ adf61e73a8af0-23dc0eba2c0mr1938750637.41.1753833607038; 
+ Tue, 29 Jul 2025 17:00:07 -0700 (PDT)
+Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
+ [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-764090e178bsm9026087b3a.62.2025.07.29.17.00.05
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 29 Jul 2025 17:00:05 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH for-10.2 00/89] linux-user: Split up elfload.c
+Date: Tue, 29 Jul 2025 13:58:33 -1000
+Message-ID: <20250730000003.599084-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] pc-bios: Update vbootrom image to commit
- 183c9ff8056b
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>
-References: <20250729174259.697405-1-clg@redhat.com>
- <20250729174259.697405-4-clg@redhat.com>
- <45b7f093-4f84-4c42-93f7-22f539d7f0d2@tls.msk.ru>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <45b7f093-4f84-4c42-93f7-22f539d7f0d2@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,48 +95,259 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/29/25 20:04, Michael Tokarev wrote:
-> On 29.07.2025 20:42, Cédric Le Goater wrote:
->> Full changelog since last update (d6e3386709b3) :
->>
->> Jamin Lin (3):
->>        ast27x0: Initialize and enable SSP/TSP using SCU with reserved-memory from DTB
->>        ast27x0: Fix missing SCU module reset for SSP and TSP initialization
->>        ast27x0: Fix Makefile to unconditionally set CC to support correct cross-compilation
-> 
-> Please include the complete changelog here, with npcm changes too :)
+The goal is to kill the massive target ifdef ladder in elfload.c.
 
-ok. This is a shortlog for d6e3386709b3..HEAD but we should be
-using commit 1287b6e42e83. so :
+The functions get moved to linux-user/target/elfload.c.
+Define weak functions to provide a default value, or a
+weak reference to determine if the function is provided.
 
-$ git shortlog  1287b6e42e83..HEAD --no-merges
-Hao Wu (2):
-       Automatically search for UBOOT location for NPCM8xx images.
-       Dynamically detects NPCM8XX UBOOT destination and size.
+The core dump types and functions are moved to
+linux-user/target/target_coredump.h.
 
-Jamin Lin (5):
-       Add initial support for AST27x0
-       ast27x0: Show build date and git version
-       ast27x0: Initialize and enable SSP/TSP using SCU with reserved-memory from DTB
-       ast27x0: Fix missing SCU module reset for SSP and TSP initialization
-       ast27x0: Fix Makefile to unconditionally set CC to support correct cross-compilation
+The macros get moved to linux-user/target/target_elf.h.
+These are mostly use to parameterize include/elf.h, but
+there are some other outliers.
 
-Will update tomorrow.
+The init_thread functions, storing into target_pt_regs, have been
+merged with target_cpu_copy_regs, copying out of target_pt_regs
+into CPUArchState.  Merging these found a few bits of silliness
+where pt_regs fields were initialized but not used.  To encourage
+this never to return, remove most target_pt_regs and hide the rest
+within the relevant signal.c.
 
->> Compiled with gcc version 13.3.0
->>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
->>   pc-bios/ast27x0_bootrom.bin | Bin 15552 -> 16408 bytes
->>   pc-bios/npcm7xx_bootrom.bin | Bin 768 -> 672 bytes
->>   pc-bios/npcm8xx_bootrom.bin | Bin 608 -> 672 bytes
-> 
-> I wonder why the two are of the same size..
 
-This is the result of :
+r~
 
-   make -C roms npcm7xx_bootrom npcm8xx_bootrom ast27x0_bootrom
 
-C.
+Richard Henderson (89):
+  linux-user: Create target/elfload.c files
+  linux-user: Move get_elf_hwcap to {i386,x86_64}/elfload.c
+  linux-user: Move hwcap functions to {arm,aarch64}/elfload.c
+  linux-user: Move get_elf_hwcap to sparc/elfload.c
+  linux-user: Move hwcap functions to ppc/elfload.c
+  linux-user: Move get_elf_hwcap to loongarch64/elfload.c
+  linux-user: Move get_elf_hwcap to mips/elfload.c
+  linux-user: Move get_elf_hwcap to sh4/elfload.c
+  linux-user: Move hwcap functions to s390x/elfload.c
+  linux-user: Move get_elf_hwcap to riscv/elfload.c
+  linux-user: Remove ELF_HWCAP
+  linux-user: Remove ELF_HWCAP2
+  linux-user: Move get_elf_platform to {i386,x86_64}/elfload.c
+  linux-user/i386: Return const data from get_elf_platform
+  linux-user: Move get_elf_platform to arm/elfload.c
+  linux-user/loongarch64: Create get_elf_platform
+  linux-user/hppa: Create get_elf_platform
+  linux-user: Remove ELF_PLATFORM
+  linux-user: Move get_elf_base_platform to mips/elfload.c
+  linux-user: Move target_cpu_copy_regs decl to qemu.h
+  linux-user: Unify init of semihosting fields in TaskState
+  linux-user: Create do_init_main_thread
+  linux-user/i386: Create init_main_thread
+  linux-user/arm: Create init_main_thread
+  linux-user/aarch64: Create init_main_thread
+  linux-user/sparc: Create init_main_thread
+  linux-user/ppc: Create init_main_thread
+  linux-user/loongarch64: Create init_main_thread
+  linux-user/mips: Create init_main_thread
+  linux-user/microblaze: Create init_main_thread
+  linux-user/openrisc: Create init_main_thread
+  linux-user/sh4: Create init_main_thread
+  linux-user/m68k: Create init_main_thread
+  linux-user/alpha: Create init_main_thread
+  linux-user/s390x: Create init_main_thread
+  linux-user/riscv: Create init_main_thread
+  linux-user/hppa: Create init_main_thread
+  linux-user/xtensa: Create init_main_thread
+  linux-user/hexagon: Create init_main_thread
+  linux-user: Remove do_init_main_thread
+  linux-user/x86_64: Split out target_coredump.c.inc
+  linux-user/i386: Split out target_coredump.c.inc
+  linux-user/arm: Split out target_coredump.c.inc
+  linux-user/aarch64: Split out target_coredump.c.inc
+  linux-user/ppc: Split out target_coredump.c.inc
+  linux-user/loongarch64: Split out target_coredump.c.inc
+  linux-user/mips: Split out target_coredump.c.inc
+  linux-user/microblaze: Split out target_coredump.c.inc
+  target/openrisc: Split out target_coredump.c.inc
+  target/sh4: Split out target_coredump.c.inc
+  linux-user/m68k: Split out target_coredump.c.inc
+  linux-user/s390x: Split out target_coredump.c.inc
+  linux-user/xtensa: Split out target_coredump.c.inc
+  linux-user: Unify the include of target_coredump.c.inc
+  linux-user: Move init_guest_commpage to x86_64/elfload.c
+  linux-user: Move init_guest_commpage to arm/elfload.c
+  linux-user: Move init_guest_commpage to hppa/elfload.c
+  linux-user: Remove INIT_GUEST_COMMPAGE
+  linux-user: Move get_vdso_image_info to arm/elfload.c
+  linux-user: Remove ELF_EXEC_PAGESIZE
+  linux-user: Move get_elf_cpu_model to target/elfload.c
+  linux-user: Move ppc uabi/asm/elf.h workaround to osdep.h
+  linux-user: Move elf parameters to {i386,x86_64}/target_elf.h
+  linux-user: Move elf parameters to {arm,aarch64}/target_elf.h
+  linux-user: Move elf parameters to sparc/target_elf.h
+  linux-user: Move elf parameters to ppc/target_elf.h
+  linux-user: Move elf parameters to loongarch64/target_elf.h
+  linux-user: Move elf parameters to {mips,mips64}/target_elf.h
+  linux-user: Move elf parameters to microblaze/target_elf.h
+  linux-user: Move elf parameters to openrisc/target_elf.h
+  linux-user: Move elf parameters to sh4/target_elf.h
+  linux-user: Move elf parameters to m68k/target_elf.h
+  linux-user: Move elf parameters to alpha/target_elf.h
+  linux-user: Move elf parameters to s390x/target_elf.h
+  linux-user: Move elf parameters to riscv/target_elf.h
+  linux-user: Move elf parameters to hppa/target_elf.h
+  linux-user: Move elf parameters to xtensa/target_elf.h
+  linux-user: Move elf parameters to hexagon/target_elf.h
+  linux-user: Standardize on ELF_MACHINE not ELF_ARCH
+  linux-user: Rename elf_check_arch
+  linux-user: Remove ELIBBAD from elfload.c
+  linux-user: Remove MAP_DENYWRITE from elfload.c
+  linux-user: Move arch_parse_elf_property to aarch64/elfload.c
+  linux-user: Remove a.out declarations from elfload.c
+  linux-user/sparc: Move target_pt_regs to signal.c
+  linux-user/microblaze: Move target_pt_regs to signal.c
+  linux-user/openrisc: Move target_pt_regs to signal.c
+  linux-user/s390x: Move target_psw_t to signal.c
+  linux-user: Remove struct target_pt_regs from target_syscall.h
+
+ include/qemu/osdep.h                         |    8 +
+ include/user/cpu_loop.h                      |    4 -
+ linux-user/aarch64/target_elf.h              |   16 +-
+ linux-user/aarch64/target_syscall.h          |    7 -
+ linux-user/alpha/target_elf.h                |    8 +-
+ linux-user/alpha/target_syscall.h            |   40 -
+ linux-user/arm/target_elf.h                  |   12 +-
+ linux-user/arm/target_proc.h                 |    4 +-
+ linux-user/arm/target_syscall.h              |    8 -
+ linux-user/hexagon/target_elf.h              |   30 +-
+ linux-user/hexagon/target_syscall.h          |    5 -
+ linux-user/hppa/target_elf.h                 |   13 +-
+ linux-user/hppa/target_syscall.h             |   18 -
+ linux-user/i386/target_elf.h                 |   28 +-
+ linux-user/i386/target_syscall.h             |   18 -
+ linux-user/loader.h                          |   33 +-
+ linux-user/loongarch64/target_elf.h          |   11 +-
+ linux-user/loongarch64/target_syscall.h      |   23 -
+ linux-user/m68k/target_elf.h                 |   13 +-
+ linux-user/m68k/target_syscall.h             |   16 -
+ linux-user/microblaze/target_elf.h           |   10 +-
+ linux-user/microblaze/target_syscall.h       |   44 -
+ linux-user/mips/target_elf.h                 |   16 +-
+ linux-user/mips/target_syscall.h             |   19 -
+ linux-user/mips64/target_elf.h               |   39 +-
+ linux-user/mips64/target_syscall.h           |   16 -
+ linux-user/openrisc/target_elf.h             |    9 +-
+ linux-user/openrisc/target_syscall.h         |   11 -
+ linux-user/ppc/target_elf.h                  |   45 +-
+ linux-user/ppc/target_syscall.h              |   28 -
+ linux-user/qemu.h                            |    6 +-
+ linux-user/riscv/target_elf.h                |   15 +-
+ linux-user/riscv/target_syscall.h            |   35 -
+ linux-user/s390x/target_elf.h                |   11 +-
+ linux-user/s390x/target_proc.h               |    2 +-
+ linux-user/s390x/target_syscall.h            |   22 -
+ linux-user/sh4/target_elf.h                  |    9 +-
+ linux-user/sh4/target_syscall.h              |   11 -
+ linux-user/sparc/target_elf.h                |   16 +-
+ linux-user/sparc/target_syscall.h            |   19 -
+ linux-user/x86_64/target_elf.h               |   10 +-
+ linux-user/x86_64/target_syscall.h           |   28 -
+ linux-user/xtensa/target_elf.h               |    7 +-
+ linux-user/xtensa/target_syscall.h           |   35 -
+ linux-user/aarch64/cpu_loop.c                |   22 +-
+ linux-user/aarch64/elfload.c                 |  367 +++
+ linux-user/alpha/cpu_loop.c                  |   11 +-
+ linux-user/alpha/elfload.c                   |   11 +
+ linux-user/arm/cpu_loop.c                    |   80 +-
+ linux-user/arm/elfload.c                     |  267 +++
+ linux-user/elfload.c                         | 2116 +-----------------
+ linux-user/hexagon/cpu_loop.c                |    8 +-
+ linux-user/hexagon/elfload.c                 |   35 +
+ linux-user/hppa/cpu_loop.c                   |   18 +-
+ linux-user/hppa/elfload.c                    |   47 +
+ linux-user/i386/cpu_loop.c                   |   31 +-
+ linux-user/i386/elfload.c                    |   25 +
+ linux-user/linuxload.c                       |    6 +-
+ linux-user/loongarch64/cpu_loop.c            |   11 +-
+ linux-user/loongarch64/elfload.c             |   63 +
+ linux-user/m68k/cpu_loop.c                   |   32 +-
+ linux-user/m68k/elfload.c                    |   18 +
+ linux-user/main.c                            |   18 +-
+ linux-user/microblaze/cpu_loop.c             |   39 +-
+ linux-user/microblaze/elfload.c              |   11 +
+ linux-user/microblaze/signal.c               |   44 +
+ linux-user/mips/cpu_loop.c                   |   16 +-
+ linux-user/mips/elfload.c                    |  124 +
+ linux-user/mips64/elfload.c                  |    1 +
+ linux-user/openrisc/cpu_loop.c               |   11 +-
+ linux-user/openrisc/elfload.c                |   11 +
+ linux-user/openrisc/signal.c                 |   12 +
+ linux-user/ppc/cpu_loop.c                    |   26 +-
+ linux-user/ppc/elfload.c                     |  131 ++
+ linux-user/riscv/cpu_loop.c                  |   15 +-
+ linux-user/riscv/elfload.c                   |   23 +
+ linux-user/s390x/cpu_loop.c                  |   15 +-
+ linux-user/s390x/elfload.c                   |   68 +
+ linux-user/s390x/signal.c                    |    5 +
+ linux-user/sh4/cpu_loop.c                    |   10 +-
+ linux-user/sh4/elfload.c                     |   38 +
+ linux-user/sparc/cpu_loop.c                  |   16 +-
+ linux-user/sparc/elfload.c                   |   42 +
+ linux-user/sparc/signal.c                    |   20 +
+ linux-user/x86_64/elfload.c                  |   41 +
+ linux-user/xtensa/cpu_loop.c                 |   22 +-
+ linux-user/xtensa/elfload.c                  |   11 +
+ linux-user/aarch64/target_coredump.c.inc     |   14 +
+ linux-user/arm/target_coredump.c.inc         |   28 +
+ linux-user/i386/target_coredump.c.inc        |   32 +
+ linux-user/loongarch64/target_coredump.c.inc |   24 +
+ linux-user/m68k/target_coredump.c.inc        |   30 +
+ linux-user/microblaze/target_coredump.c.inc  |   21 +
+ linux-user/mips/target_coredump.c.inc        |   46 +
+ linux-user/mips64/target_coredump.c.inc      |    1 +
+ linux-user/openrisc/target_coredump.c.inc    |   15 +
+ linux-user/ppc/target_coredump.c.inc         |   24 +
+ linux-user/s390x/target_coredump.c.inc       |   31 +
+ linux-user/sh4/target_coredump.c.inc         |   32 +
+ linux-user/x86_64/target_coredump.c.inc      |   42 +
+ linux-user/xtensa/target_coredump.c.inc      |   38 +
+ meson.build                                  |    6 +-
+ 102 files changed, 2259 insertions(+), 2841 deletions(-)
+ create mode 100644 linux-user/aarch64/elfload.c
+ create mode 100644 linux-user/alpha/elfload.c
+ create mode 100644 linux-user/arm/elfload.c
+ create mode 100644 linux-user/hexagon/elfload.c
+ create mode 100644 linux-user/hppa/elfload.c
+ create mode 100644 linux-user/i386/elfload.c
+ create mode 100644 linux-user/loongarch64/elfload.c
+ create mode 100644 linux-user/m68k/elfload.c
+ create mode 100644 linux-user/microblaze/elfload.c
+ create mode 100644 linux-user/mips/elfload.c
+ create mode 100644 linux-user/mips64/elfload.c
+ create mode 100644 linux-user/openrisc/elfload.c
+ create mode 100644 linux-user/ppc/elfload.c
+ create mode 100644 linux-user/riscv/elfload.c
+ create mode 100644 linux-user/s390x/elfload.c
+ create mode 100644 linux-user/sh4/elfload.c
+ create mode 100644 linux-user/sparc/elfload.c
+ create mode 100644 linux-user/x86_64/elfload.c
+ create mode 100644 linux-user/xtensa/elfload.c
+ create mode 100644 linux-user/aarch64/target_coredump.c.inc
+ create mode 100644 linux-user/arm/target_coredump.c.inc
+ create mode 100644 linux-user/i386/target_coredump.c.inc
+ create mode 100644 linux-user/loongarch64/target_coredump.c.inc
+ create mode 100644 linux-user/m68k/target_coredump.c.inc
+ create mode 100644 linux-user/microblaze/target_coredump.c.inc
+ create mode 100644 linux-user/mips/target_coredump.c.inc
+ create mode 100644 linux-user/mips64/target_coredump.c.inc
+ create mode 100644 linux-user/openrisc/target_coredump.c.inc
+ create mode 100644 linux-user/ppc/target_coredump.c.inc
+ create mode 100644 linux-user/s390x/target_coredump.c.inc
+ create mode 100644 linux-user/sh4/target_coredump.c.inc
+ create mode 100644 linux-user/x86_64/target_coredump.c.inc
+ create mode 100644 linux-user/xtensa/target_coredump.c.inc
+
+-- 
+2.43.0
 
 
