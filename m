@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C272BB1544B
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 22:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D0CB15420
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 22:12:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugqpc-0004XG-Gf; Tue, 29 Jul 2025 16:21:56 -0400
+	id 1ugqf4-0001cc-6W; Tue, 29 Jul 2025 16:10:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugoM9-0007CY-N2
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 13:43:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugoMC-0007Fk-Uy
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 13:43:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugoM7-0004T7-Qk
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 13:43:17 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugoMA-0004TX-QH
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 13:43:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753810995;
+ s=mimecast20190719; t=1753810997;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BgflgkX9VKtHHMFIygeASyiUZqCh7ZdB7fPKCeSw0rM=;
- b=WRgCm4cN0iSeQ7ulS/YcjjCwofdKdcqE8CNdhFV/t+549qLC+4VB1M+Ow43/wu7EKHwDY4
- c53Vb81pfLHtlUo9FsWZmxv6gyIvvrXikxRUJPJ2s8sYDogpMlyeYwUUtJnlZHeSyXW2Rr
- 3pBWihL3/a9kRYPhQkExnkfLliUNkoI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=LVsTL8c/Zy1jiu7dZzMiPv8OokP+7Lkgukc+5rOJh+Q=;
+ b=Ux7iHQ3xOx5Bf0mMo2iJGnicq/oS80jPEbuU65d4YWbzzdZ0DsuyxuM4Z/2r2QdyxlFnWr
+ KZh/CcmQUOYQ332K76wmFYUQ874xySWk5uT4hyGvJXkQteLqOs7brbKExiwSLbayd5Bpfc
+ FGeIeBhbj0d0pN92V8lgk3EwDrHmeT4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-578-HdQhI2xgMYaaw1pTvFI5ug-1; Tue,
- 29 Jul 2025 13:43:11 -0400
-X-MC-Unique: HdQhI2xgMYaaw1pTvFI5ug-1
-X-Mimecast-MFC-AGG-ID: HdQhI2xgMYaaw1pTvFI5ug_1753810990
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-217-l0V0GKGXPGGa1YvMswhWsw-1; Tue,
+ 29 Jul 2025 13:43:13 -0400
+X-MC-Unique: l0V0GKGXPGGa1YvMswhWsw-1
+X-Mimecast-MFC-AGG-ID: l0V0GKGXPGGa1YvMswhWsw_1753810992
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1D5BB1956095; Tue, 29 Jul 2025 17:43:09 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E4A781955F2C; Tue, 29 Jul 2025 17:43:11 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.29])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D3D0D18003FC; Tue, 29 Jul 2025 17:43:05 +0000 (UTC)
+ id 9C84F1800285; Tue, 29 Jul 2025 17:43:09 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>, Peter Maydell <peter.maydell@linaro.org>,
  Hao Wu <wuhaotsh@google.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 1/3] roms/vbootrom: update to 7b1eb5f7fe6a
-Date: Tue, 29 Jul 2025 19:42:57 +0200
-Message-ID: <20250729174259.697405-2-clg@redhat.com>
+Subject: [PATCH v2 2/3] roms/Makefile: build ast27x0_bootrom
+Date: Tue, 29 Jul 2025 19:42:58 +0200
+Message-ID: <20250729174259.697405-3-clg@redhat.com>
 In-Reply-To: <20250729174259.697405-1-clg@redhat.com>
 References: <20250729174259.697405-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
@@ -86,33 +86,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Tokarev <mjt@tls.msk.ru>
 
-Changes:
-
-7b1eb5f ast27x0: Fix Makefile to unconditionally set CC to support correct cross-compilation
-601d410 ast27x0: Fix missing SCU module reset for SSP and TSP initialization
-80768e4 ast27x0: Initialize and enable SSP/TSP using SCU with reserved-memory from DTB
-f8ab635 ast27x0: Show build date and git version
-53294f5 Add initial support for AST27x0
-b1c2803 Dynamically detects NPCM8XX UBOOT destination and size.
-4f54dfc Automatically search for UBOOT location for NPCM8xx images.
-
-The actual bootroms are not updated yet.
-
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3052
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Link: https://lore.kernel.org/qemu-devel/2a89ad4c8f5665d07952a4f1749caa6ec0cd3d9c.1753654515.git.mjt@tls.msk.ru
-[ clg: Update to latest vbootrom ]
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lore.kernel.org/qemu-devel/607a943a587248fbe0ff0897de80aee98a093caa.1753654515.git.mjt@tls.msk.ru
+[ clg: Removed make CC= workaround ]
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- roms/vbootrom | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ roms/Makefile | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/roms/vbootrom b/roms/vbootrom
-index 1287b6e42e83..183c9ff8056b 160000
---- a/roms/vbootrom
-+++ b/roms/vbootrom
-@@ -1 +1 @@
--Subproject commit 1287b6e42e839ba2ab0f06268c5b53ae60df3537
-+Subproject commit 183c9ff8056b7946db1ae49cc23e8980ac413174
+diff --git a/roms/Makefile b/roms/Makefile
+index 6af68a922f30..4c8793c5bd45 100644
+--- a/roms/Makefile
++++ b/roms/Makefile
+@@ -68,6 +68,7 @@ default help:
+ 	@echo "  u-boot.sam460      -- update u-boot.sam460"
+ 	@echo "  npcm7xx_bootrom    -- update vbootrom for npcm7xx"
+ 	@echo "  npcm8xx_bootrom    -- update vbootrom for npcm8xx"
++	@echo "  ast27x0_bootrom    -- update vbootrom for ast27x0"
+ 	@echo "  efi                -- update UEFI (edk2) platform firmware"
+ 	@echo "  opensbi32-generic  -- update OpenSBI for 32-bit generic machine"
+ 	@echo "  opensbi64-generic  -- update OpenSBI for 64-bit generic machine"
+@@ -200,6 +201,10 @@ npcm8xx_bootrom:
+ 	$(MAKE) -C vbootrom/npcm8xx CROSS_COMPILE=$(aarch64_cross_prefix)
+ 	cp vbootrom/npcm8xx/npcm8xx_bootrom.bin ../pc-bios/npcm8xx_bootrom.bin
+ 
++ast27x0_bootrom:
++	$(MAKE) -C vbootrom/ast27x0 CROSS_COMPILE=$(aarch64_cross_prefix)
++	cp vbootrom/ast27x0/ast27x0_bootrom.bin ../pc-bios/ast27x0_bootrom.bin
++
+ hppa-firmware:
+ 	$(MAKE) -C seabios-hppa parisc
+ 	cp seabios-hppa/out/hppa-firmware.img      ../pc-bios/
 -- 
 2.50.1
 
