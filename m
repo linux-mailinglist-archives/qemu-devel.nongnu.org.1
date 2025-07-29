@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307E2B156B4
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA78B1566F
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:26:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugud2-000173-6z; Tue, 29 Jul 2025 20:25:08 -0400
+	id 1ugudP-0001LB-1Z; Tue, 29 Jul 2025 20:25:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguJC-0004oX-Q5
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:04:41 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1uguJF-0004p2-Au
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:04:42 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguJB-0004fh-2y
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:04:38 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7425bd5a83aso5934165b3a.0
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:04:36 -0700 (PDT)
+ id 1uguJC-0004fu-K0
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:04:40 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-769a21bd4d5so1284548b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:04:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753833875; x=1754438675; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753833877; x=1754438677; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DZ//QELelSxw3zEngsoJMwE8i1iZC2E4gBdrBvf657A=;
- b=M1kfCaP/wNKnmc8eHwgpS4A1dsPO4tfCKMMRtUp7SiNp5r3ZI0ARbts51oy3sd6xll
- 123f4HN5KYgDiUsmXOPvIkzB1yWhULNGMf5XrGTygBhzOTavvL/SpIaH+5380lwEH2zK
- nRpY+Z1vBk6Erj8EF29MX9QSaIskfzbkv3JljgRefOm042FUr4vjE1Lj29lvAg8/cK/u
- SFR04/MY4yG0j3tfGrE2SgmIzVrUchS554li0HAJlVjzvV8ZFtMQLzDFAjXrllmaEvA8
- DcAiLDdXAjZGwoUNPuU7y4DpzM3I7QH5KdzPGnpPCWPcoDvIIr1JsRN8v+wbDerN4nAR
- IITw==
+ :reply-to; bh=YZoq+hHfPevFxCSDdOA+glZMG/9hobef5ggmN7qr+g0=;
+ b=g5lYZWMpud47Ax/oeSfAOFn2iI7zPyWyQIJvhRAyFn7cvrpo27Ftrma3Awn583j1oJ
+ pv8VJi7HTVaXvKDakKBcGlw3n92e8t/rm1gBel9jBxliVP+J2gQBYNKhNOdyoVCZikuG
+ OipqjqncQrvbBUQoxRzS+6763tGtFh0BSjIt4mvl1UxVq/PvWAZJAa77nq7vnoiGmHim
+ AJfKr9SFX1tWymTPeWKfddxJl3thFjg/bDmbnVsjsjBVHQKJ/WcI+fWIXHl8wZWzDbWh
+ UbMEUPSPI5/x/uvVe2OrCNyviB44ghIZTeb7Ay6lCePZ1aJTzTlDOkoB5aVsmsTM/8+c
+ rlRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753833875; x=1754438675;
+ d=1e100.net; s=20230601; t=1753833877; x=1754438677;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DZ//QELelSxw3zEngsoJMwE8i1iZC2E4gBdrBvf657A=;
- b=LF5zZ7NufrKKoyMYm5RAXYqVzdvs5wM4BgJx6KlHPswSJUNyVBtDuv6hdW3Jk0qKUn
- YFtrS41Mob376CFBxSslKw2ViOeLGeouNts+8ClqO3Zz2HTTBayrz33rNpDVAFF3JPan
- gTdhEaMhh4LZZp8SSDk86vMXyX/sg4MbMBh4BCBvG71tfJgQ6cMYdUGg69H8+VhDM5aU
- JUgOg0sKj7fgXyeYET5g+67NfC5PltxB4CEa+x/zyRdCOLiUfCehJHnHBfdiPOUggmnC
- 5R9qE2d/Mz2u6FaNEZXRlt53x9Iq32fGkD5xZcj+op6mLJtt+wOyYppifpyr7dw3LVhA
- B88Q==
-X-Gm-Message-State: AOJu0YxT1GnAju/S3DOrTKVtnbu84AIPW1F8YC/J3nwPFEtchEnNYCiZ
- 1XXPlpg69c9gwm2a30cK0ivYJx58vSutJ64I7u9eg0ebbwt2EW2laHAS0/p4oNK94ZdNKnG9to8
- Zp90n
-X-Gm-Gg: ASbGncvK3qWKTwfpmcXwUgPeE6wgdrLN3g7hFhBlPBHj6J9ve12IsCOSosC9NWHSZj1
- Z2WavK8bNQEGBBRq+Kc3nWzc4PQvtAnqE8JPhBcWNVyLRcsoTW4LPy6AwLJ85vJNLyFtA4qN9qB
- 5BRP6NAc6wIhvcdAHUFYzMgtI/Hz5Ne2SW5eQjy7CHpFiQVqUO1kLoLZV3f0f9lDhdB8sECRBMA
- YAileCZ6G7WkHOnN60XVmw2I4sI/kJ6f6eU5pZ3d48bLlA53nJQpL/FhvVOFQoTJ54zEBj/P/PE
- uPoQ/IZPzXRWoIgs9V0rTFblPK0WnT0QVjClru9CGFtj8+qgsR5P6f1KbS6CaA5SU7hvXNZ0/mA
- jkSojFCof8ef8vISfkcLMJ6gyd0mqYcQZhRKoNrYWh9aJ61qvYVJsnQCJnF6j9vwcRww/AnVacE
- Kfc/7VRERa3A==
-X-Google-Smtp-Source: AGHT+IHSkRztpI8MUWq/IsDuH6ZZnMufVS3CSnDseqiL7aKoVHBY/UxZIYk12GtJPv6IO/XNnPj8Sw==
-X-Received: by 2002:a05:6a00:2347:b0:74e:a560:dd23 with SMTP id
- d2e1a72fcca58-76ab30c553dmr2237845b3a.21.1753833875451; 
- Tue, 29 Jul 2025 17:04:35 -0700 (PDT)
+ bh=YZoq+hHfPevFxCSDdOA+glZMG/9hobef5ggmN7qr+g0=;
+ b=f8WLRshFqqVDpRBxZ+wNu6w9tpJ7wrba2Cv8/UnjDjK8BNkllBId21QH2TMH8GLpoV
+ psqDVMuCzzbUr/k02bInevUBQozjk/hgQiE++/9aEMrDY3S1YD9LSEN8/+vLqXJj1mKp
+ 55klbfMOvARWA3QYlnBTQkAzNl9Mf4texj+p5bqfPyz/Epv7f/ZlKVHmlE3TGZExGV0x
+ cPpmhHaOdOroj0PLUg2W8qCF0eoobGXEfmiB0yqhPkkQh7YOpr1UV8ieldulREju+izg
+ q5zBG0SYiyDgNbuailgNCjNTNp9kFx6nD1yK0CovuSELfMM/MqXoBjLvgethQGuHi56u
+ +/bQ==
+X-Gm-Message-State: AOJu0YwywqWCY2r89ih8qKlkr+twnmTFVBFU2QQtKddMcoF3KlNM9VOB
+ 7gV3KTGBujrszlkjQDBKAH9BXftzs090wIcpztgD4Kxhsy0U6Oj/tMC0nIKVETtwk/lf66YJflS
+ WmR4r
+X-Gm-Gg: ASbGncs9NYCavfxcVzHkL6MC02Y9NVFeJBqtmF2gkoE7KIfZBq1VjpXGIJFVLm+l5jW
+ oFb8b9P0vir2PyC48OnKQFFlZZpksZy8MgjkiAIEZpS9CC0OS8p8Vn1OQ2gA7Att+XsAj4Q6q7U
+ QKC0aBn2caMrR88d7EWhS7Ri4m281CrKtqQYzI1BtoffMOG6b3bd/dEigY21Pj9VSCcZ+n/F0Kl
+ lB7Qa6ZEV6fZQ0oSnUDxdxCjadPnTbWyteX97axCL2AHbUmMK3JtgCALu7ExwEtsJ9jvrENsSoW
+ dzI1Mv8vOIueH3on4JFS2UvSrSGKPHrfQx2OoExgRlvBCkYofjHQSNn/LfIMxzQ3angmINJBjkB
+ dBhbGPOY7TEilzK3s10ZW0Sy9zOdTeSMVtId84rh2TvKVg2XqvxnC38nRsOxuHG2kAwuUv9Fxr3
+ Inr8H2K+5GUg==
+X-Google-Smtp-Source: AGHT+IGoiE3ynd5lFvhbbq8vh9IePg+V5TJ/kHISWgVu9kw9tyniczkzXdDPJux1phOUiQ207Gu3oA==
+X-Received: by 2002:a05:6a20:7283:b0:233:d150:77b0 with SMTP id
+ adf61e73a8af0-23dc0ed4106mr1817001637.28.1753833877086; 
+ Tue, 29 Jul 2025 17:04:37 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7640ad06762sm9101302b3a.80.2025.07.29.17.04.34
+ d2e1a72fcca58-7640ad06762sm9101302b3a.80.2025.07.29.17.04.35
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 17:04:35 -0700 (PDT)
+ Tue, 29 Jul 2025 17:04:36 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 62/89] linux-user: Move ppc uabi/asm/elf.h workaround to
- osdep.h
-Date: Tue, 29 Jul 2025 13:59:35 -1000
-Message-ID: <20250730000003.599084-63-richard.henderson@linaro.org>
+Subject: [PATCH 63/89] linux-user: Move elf parameters to {i386,
+ x86_64}/target_elf.h
+Date: Tue, 29 Jul 2025 13:59:36 -1000
+Message-ID: <20250730000003.599084-64-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250730000003.599084-1-richard.henderson@linaro.org>
 References: <20250730000003.599084-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,54 +99,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the workaround out of linux-user/elfload.c, so that
-we don't have to replicate it in many places.  Place it
-immediately after the include of <signal.h>, which draws
-in the relevant symbols.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/osdep.h | 8 ++++++++
- linux-user/elfload.c | 7 -------
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ linux-user/i386/target_elf.h   | 23 +++++++++++++++++++
+ linux-user/x86_64/target_elf.h |  5 +++++
+ linux-user/elfload.c           | 41 +---------------------------------
+ 3 files changed, 29 insertions(+), 40 deletions(-)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 96fe51bc39..be3460b32f 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -133,6 +133,14 @@ QEMU_EXTERN_C int daemon(int, int);
- #include <setjmp.h>
- #include <signal.h>
+diff --git a/linux-user/i386/target_elf.h b/linux-user/i386/target_elf.h
+index e6f0d8fa4e..032abe5d24 100644
+--- a/linux-user/i386/target_elf.h
++++ b/linux-user/i386/target_elf.h
+@@ -8,4 +8,27 @@
+ #ifndef I386_TARGET_ELF_H
+ #define I386_TARGET_ELF_H
  
-+/*
-+ * Avoid conflict with linux/arch/powerpc/include/uapi/asm/elf.h, included
-+ * from <asm/sigcontext.h>, but we might as well do this unconditionally.
-+ */
-+#undef ELF_CLASS
-+#undef ELF_DATA
-+#undef ELF_ARCH
++#define ELF_CLASS               ELFCLASS32
++#define ELF_ARCH                EM_386
++#define EXSTACK_DEFAULT         true
++#define VDSO_HEADER             "vdso.c.inc"
++#define USE_ELF_CORE_DUMP
 +
- #ifdef CONFIG_IOVEC
- #include <sys/uio.h>
++/*
++ * This is used to ensure we don't load something for the wrong architecture.
++ */
++#define elf_check_arch(x) ( ((x) == EM_386) || ((x) == EM_486) )
++
++/*
++ * i386 is the only target which supplies AT_SYSINFO for the vdso.
++ * All others only supply AT_SYSINFO_EHDR.
++ */
++#define DLINFO_ARCH_ITEMS (vdso_info != NULL)
++#define ARCH_DLINFO                                     \
++    do {                                                \
++        if (vdso_info) {                                \
++            NEW_AUX_ENT(AT_SYSINFO, vdso_info->entry);  \
++        }                                               \
++    } while (0)
++
+ #endif
+diff --git a/linux-user/x86_64/target_elf.h b/linux-user/x86_64/target_elf.h
+index 5849f96350..7eac11e338 100644
+--- a/linux-user/x86_64/target_elf.h
++++ b/linux-user/x86_64/target_elf.h
+@@ -8,4 +8,9 @@
+ #ifndef X86_64_TARGET_ELF_H
+ #define X86_64_TARGET_ELF_H
+ 
++#define ELF_CLASS               ELFCLASS64
++#define ELF_ARCH                EM_X86_64
++#define VDSO_HEADER             "vdso.c.inc"
++#define USE_ELF_CORE_DUMP
++
  #endif
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 1ac3a20813..70bfd18de6 100644
+index 70bfd18de6..d071bca660 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -35,13 +35,6 @@
- #include "target/arm/cpu-features.h"
- #endif
+@@ -28,6 +28,7 @@
+ #include "qemu/lockable.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
++#include "target_elf.h"
+ #include "target_signal.h"
+ #include "tcg/debuginfo.h"
  
--#ifdef _ARCH_PPC64
--#undef ARCH_DLINFO
--#undef ELF_CLASS
--#undef ELF_DATA
--#undef ELF_ARCH
--#endif
--
- #ifndef TARGET_ARCH_HAS_SIGTRAMP_PAGE
- #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 0
+@@ -137,46 +138,6 @@ typedef abi_uint        target_gid_t;
  #endif
+ typedef abi_int         target_pid_t;
+ 
+-#ifdef TARGET_I386
+-
+-#ifdef TARGET_X86_64
+-#define ELF_CLASS      ELFCLASS64
+-#define ELF_ARCH       EM_X86_64
+-#else
+-
+-/*
+- * This is used to ensure we don't load something for the wrong architecture.
+- */
+-#define elf_check_arch(x) ( ((x) == EM_386) || ((x) == EM_486) )
+-
+-/*
+- * These are used to set parameters in the core dumps.
+- */
+-#define ELF_CLASS       ELFCLASS32
+-#define ELF_ARCH        EM_386
+-
+-#define EXSTACK_DEFAULT true
+-
+-/*
+- * i386 is the only target which supplies AT_SYSINFO for the vdso.
+- * All others only supply AT_SYSINFO_EHDR.
+- */
+-#define DLINFO_ARCH_ITEMS (vdso_info != NULL)
+-#define ARCH_DLINFO                                     \
+-    do {                                                \
+-        if (vdso_info) {                                \
+-            NEW_AUX_ENT(AT_SYSINFO, vdso_info->entry);  \
+-        }                                               \
+-    } while (0)
+-
+-#endif /* TARGET_X86_64 */
+-
+-#define VDSO_HEADER "vdso.c.inc"
+-
+-#define USE_ELF_CORE_DUMP
+-
+-#endif /* TARGET_I386 */
+-
+ #ifdef TARGET_ARM
+ 
+ #ifndef TARGET_AARCH64
 -- 
 2.43.0
 
