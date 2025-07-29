@@ -2,63 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1E1B152B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 20:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D1CB1534F
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 21:16:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugp0R-0004u4-Um; Tue, 29 Jul 2025 14:24:55 -0400
+	id 1ugpm4-0005JO-Bl; Tue, 29 Jul 2025 15:14:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1ugngK-0002ZU-PJ
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 13:00:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugnoQ-0005vG-7w
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 13:08:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1ugngI-0006p6-Ua
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 13:00:04 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugnoO-0008IW-3r
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 13:08:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753808401;
+ s=mimecast20190719; t=1753808902;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4+1RPGctOOZUfWhIt8aYTWYEYzCeXsM1Npmm4KZF9dA=;
- b=PobFryMnyLbmBTwv767WSxJN/dOK58N4zw3Y7OCG8msMeTdvO52Q76exBVflwJsHeulRuz
- aiPFnbZDh/BicDK75f2AhQJdyF+K/t1a0VnEw8gryBhncpn34q+u7mNAPoV9ZIOcxD8BVJ
- KB4oJvgeAU62nVDDCTKpzL08TEBHea4=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6JhyUj9fCXNk4/S50myjMuDB10iGQVWrB+81eqq01EM=;
+ b=a2EJZUW29BTbP9yUVskkxpUY0ACgjTRZ2BBJKtPcODMFfmupeM6Ahq+pwKEzs6AsQw6NCv
+ 3PbAjGrZjBXOb20QPcXyrAqbISMPrzJ82CnF3jTG8O5hasdkosaepNNcFcyvfNcobalulS
+ u1GLPTIA4Moo/eB9wgAhBu2Eir3c9UM=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-475-aSClao3KODS2NjYy99QDTg-1; Tue,
- 29 Jul 2025 12:59:57 -0400
-X-MC-Unique: aSClao3KODS2NjYy99QDTg-1
-X-Mimecast-MFC-AGG-ID: aSClao3KODS2NjYy99QDTg_1753808397
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-QUb_Ik18Pw2_-qKOOGnf4w-1; Tue,
+ 29 Jul 2025 13:08:17 -0400
+X-MC-Unique: QUb_Ik18Pw2_-qKOOGnf4w-1
+X-Mimecast-MFC-AGG-ID: QUb_Ik18Pw2_-qKOOGnf4w_1753808896
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CB9F319560A2
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 16:59:56 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.185])
+ id 4B2F81956089; Tue, 29 Jul 2025 17:08:15 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.44.32.29])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BA710180035E; Tue, 29 Jul 2025 16:59:55 +0000 (UTC)
-Date: Tue, 29 Jul 2025 12:59:54 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, stefanha@redhat.com
-Subject: Re: [PULL 0/5] QAPI patches for 2025-07-29
-Message-ID: <20250729165954.GA21690@fedora>
-References: <20250729131148.3777401-1-armbru@redhat.com>
+ id D26DC1800242; Tue, 29 Jul 2025 17:08:11 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>, Peter Maydell <peter.maydell@linaro.org>,
+ Hao Wu <wuhaotsh@google.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH 0/3] aspeed: Update vbootrom image
+Date: Tue, 29 Jul 2025 19:07:57 +0200
+Message-ID: <20250729170800.678363-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="z8hQdmdwN20uWSqt"
-Content-Disposition: inline
-In-Reply-To: <20250729131148.3777401-1-armbru@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
@@ -84,30 +81,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hello !
 
---z8hQdmdwN20uWSqt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Michael provided changes to fix the build of the vbootrom image of the
+AST2700 SoC machine in [1]. However, a workaound in roms/Makefile was
+still necessary to build ast27x0_bootrom.bin correctly. This was later
+fixed in [2].
 
-Applied, thanks.
+This series is an update of [1] including a vbootrom image matching
+the new commits.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
+Thanks,
+C.
 
---z8hQdmdwN20uWSqt
-Content-Type: application/pgp-signature; name=signature.asc
+[1] https://lore.kernel.org/qemu-devel/2a89ad4c8f5665d07952a4f1749caa6ec0cd3d9c.1753654515.git.mjt@tls.msk.ru/
+[2] https://github.com/google/vbootrom/commit/7b1eb5f7fe6a85a03a1e40aa703a6ebbdb644e31
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmiI/goACgkQnKSrs4Gr
-c8i8PQf/Yu+IbBrc+PnOHuM32tdlIz3zjb9fA/gMJr0J59NmhgOyHbhZTGlYWKbo
-6Y7g1iYPtZ3aJJMzlizfyDeD/r2qne7xfy2GP7gV49htIh5640qiIyBSZhPDQ2tL
-UisQChf2bdryTdxsmOksFkGlouDctQXJZwvGcUJLFqx8AjPXRLMJ0Uotj064Ey6O
-QYOUh6+9uS8+TWS36jnk4lIIU5UE1MNinHjRryubqqRnivbHSFPlNrRPVV+JjYbM
-5ZpMrunJe9JdtbaVMiJ2t8m2i//2S+IEiaLXnC843ckVyGBRSqAwk/P2HyaP/p0e
-OOyKEDwuJ2FkdKsv2Haks8H7dVlpEw==
-=4MmO
------END PGP SIGNATURE-----
+Cédric Le Goater (1):
+  aspeed: Update vbootrom image to commit 183c9ff8056b
 
---z8hQdmdwN20uWSqt--
+Michael Tokarev (2):
+  roms/vbootrom: update to 7b1eb5f7fe6a
+  roms/Makefile: build ast27x0_bootrom
+
+ pc-bios/ast27x0_bootrom.bin | Bin 15552 -> 16408 bytes
+ roms/Makefile               |   5 +++++
+ roms/vbootrom               |   2 +-
+ 3 files changed, 6 insertions(+), 1 deletion(-)
+
+-- 
+2.50.1
 
 
