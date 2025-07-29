@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573B8B14B25
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C63B14B2B
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:23:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uggXr-0007pp-Te; Tue, 29 Jul 2025 05:22:51 -0400
+	id 1uggXm-0006ug-Tp; Tue, 29 Jul 2025 05:22:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggXi-0006lg-AZ
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:22:42 -0400
+ id 1uggXP-0005lb-G7
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:22:27 -0400
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggXg-0002jL-3q
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:22:42 -0400
+ id 1uggXN-0002ij-BB
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:22:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753780960; x=1785316960;
+ t=1753780941; x=1785316941;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=I2dMBqxtdpWeHT9/kcjBI8D+yW8p0bL704f9n7JQzqk=;
- b=HF1VsYoDvFZ/oPlsF5FCfLBUwIGceDMxBPzai3ojVeofF6fAY5QU7Psf
- UirTpzZ1OMkPHtMRoP3B5ykMv6fKaeGjiqnErfPcjeFlODxOQikWIctXE
- ZwuPVR5tGkvITPhFHrRUcKeqZh+yZPf/YUF/ahMoxmw5uWkjQDXJ4QmYl
- 6Lz6oTd9iDF0U+dnLAFVydBh/JFmxCiOjlkoBNTMXA23yRZ9RdLX5VLCS
- P/+VGPThBEWV08+d/wpCB5JggQ90qSejp99yROaXe2bwRLXmAPNza6Rh+
- lbiLI5ZUzB4wRWZVz7DbkkQ+3qId/AKtUmHR4NfpUd5HnWZuBsb6K/igS w==;
-X-CSE-ConnectionGUID: cfXT4kjmQRWui9g1QdcUlg==
-X-CSE-MsgGUID: eVHDSpwxSxyzpBeHFmY2xQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55982055"
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55982055"
+ bh=ZqNaiLy9WtG90PgSDVLRtT098jvrHMbsvoVUz3oH3/w=;
+ b=jiFcnb1nJrNMVcq89sBVY9JLBjdO4rUuqHY6Obe2iEjiCNpNOnQ1JqTi
+ LTfd0t4ZVvVpTtLl56FCRPqVIJfMoa8DwV0P11DFgKrwYkgj2awRmNtSS
+ l13yklpdd2zLoE06my57UbqzTpdGr6FlceWwNUmyD4akMqmx7H/JDaLJ5
+ NkPUcxlcMAj7MxyT4XV1Z1P/x5hxwdX1XwYYBJEpgfaLG5RuUsc7Pyoqn
+ 3aXMMc9O4t0LYg9eylIWmO9815koFuoHBxub8mFJ8Mg1+q66CEyKFGOOw
+ yMP2UsK4yDytk1cr/Pf9IwyquD7MKTjNz0U8cXP1pbgOxZiuHGR4t18jc w==;
+X-CSE-ConnectionGUID: Sh6tHOK/SpiQcSwdi7b54A==
+X-CSE-MsgGUID: hdP9fpw+TXeg5g1zPQFdSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55982015"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55982015"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:22:26 -0700
-X-CSE-ConnectionGUID: jMJk6o9MQ/23XJxrXZ8vQg==
-X-CSE-MsgGUID: VK1a+vq5QBqE3Lys3Ih1LA==
+ 29 Jul 2025 02:22:19 -0700
+X-CSE-ConnectionGUID: tBWBUycPRuWYUo+8AqbhHQ==
+X-CSE-MsgGUID: M88HKf4hTZev0SkFLqkcew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691451"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691463"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:22:11 -0700
+ 29 Jul 2025 02:22:16 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,10 +52,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v4 17/20] intel_iommu: Replay all pasid bindings when either
- SRTP or TE bit is changed
-Date: Tue, 29 Jul 2025 05:20:39 -0400
-Message-ID: <20250729092043.785836-18-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 18/20] vfio: Add a new element bypass_ro in
+ VFIOContainerBase
+Date: Tue, 29 Jul 2025 05:20:40 -0400
+Message-ID: <20250729092043.785836-19-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250729092043.785836-1-zhenzhong.duan@intel.com>
 References: <20250729092043.785836-1-zhenzhong.duan@intel.com>
@@ -86,66 +86,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yi Liu <yi.l.liu@intel.com>
+When bypass_ro is true, read only memory section is bypassed from
+mapping in the container.
 
-When either 'Set Root Table Pointer' or 'Translation Enable' bit is changed,
-all pasid bindings on host side become stale and need to be updated.
+This is a preparing patch to workaround Intel ERRATA_772415.
 
-Introduce a helper function vtd_replay_pasid_bindings_all() to go through all
-pasid entries in all passthrough devices to update host side bindings.
-
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/i386/intel_iommu.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ include/hw/vfio/vfio-container-base.h |  1 +
+ hw/vfio/listener.c                    | 13 +++++++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 27bd8c4c89..d2442ff28d 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -89,6 +89,7 @@ struct vtd_iotlb_key {
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index bded6e993f..31fd784d76 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -51,6 +51,7 @@ typedef struct VFIOContainerBase {
+     QLIST_HEAD(, VFIODevice) device_list;
+     GList *iova_ranges;
+     NotifierWithReturn cpr_reboot_notifier;
++    bool bypass_ro;
+ } VFIOContainerBase;
  
- static void vtd_address_space_refresh_all(IntelIOMMUState *s);
- static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n);
-+static void vtd_replay_pasid_bindings_all(IntelIOMMUState *s);
- 
- static void vtd_pasid_cache_reset_locked(IntelIOMMUState *s);
- static void vtd_pasid_cache_sync(IntelIOMMUState *s,
-@@ -3050,6 +3051,7 @@ static void vtd_handle_gcmd_srtp(IntelIOMMUState *s)
-     vtd_set_clear_mask_long(s, DMAR_GSTS_REG, 0, VTD_GSTS_RTPS);
-     vtd_reset_caches(s);
-     vtd_address_space_refresh_all(s);
-+    vtd_replay_pasid_bindings_all(s);
+ typedef struct VFIOGuestIOMMU {
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index f498e23a93..c64aa4539e 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -364,7 +364,8 @@ static bool vfio_known_safe_misalignment(MemoryRegionSection *section)
+     return true;
  }
  
- /* Set Interrupt Remap Table Pointer */
-@@ -3084,6 +3086,7 @@ static void vtd_handle_gcmd_te(IntelIOMMUState *s, bool en)
- 
-     vtd_reset_caches(s);
-     vtd_address_space_refresh_all(s);
-+    vtd_replay_pasid_bindings_all(s);
- }
- 
- /* Handle Interrupt Remap Enable/Disable */
-@@ -3774,6 +3777,17 @@ static void vtd_replay_guest_pasid_bindings(IntelIOMMUState *s,
+-static bool vfio_listener_valid_section(MemoryRegionSection *section,
++static bool vfio_listener_valid_section(VFIOContainerBase *bcontainer,
++                                        MemoryRegionSection *section,
+                                         const char *name)
+ {
+     if (vfio_listener_skipped_section(section)) {
+@@ -375,6 +376,10 @@ static bool vfio_listener_valid_section(MemoryRegionSection *section,
+         return false;
      }
- }
  
-+static void vtd_replay_pasid_bindings_all(IntelIOMMUState *s)
-+{
-+    VTDPASIDCacheInfo pc_info = { .type = VTD_PASID_CACHE_GLOBAL_INV };
-+
-+    if (!s->flts || !s->root_scalable || !s->dmar_enabled) {
-+        return;
++    if (bcontainer && bcontainer->bypass_ro && section->readonly) {
++        return false;
 +    }
 +
-+    vtd_replay_guest_pasid_bindings(s, &pc_info);
-+}
-+
- /*
-  * For a PASID cache invalidation, this function handles below scenarios:
-  * a) a present cached pasid entry needs to be removed
+     if (unlikely((section->offset_within_address_space &
+                   ~qemu_real_host_page_mask()) !=
+                  (section->offset_within_region & ~qemu_real_host_page_mask()))) {
+@@ -494,7 +499,7 @@ void vfio_container_region_add(VFIOContainerBase *bcontainer,
+     int ret;
+     Error *err = NULL;
+ 
+-    if (!vfio_listener_valid_section(section, "region_add")) {
++    if (!vfio_listener_valid_section(bcontainer, section, "region_add")) {
+         return;
+     }
+ 
+@@ -655,7 +660,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
+     int ret;
+     bool try_unmap = true;
+ 
+-    if (!vfio_listener_valid_section(section, "region_del")) {
++    if (!vfio_listener_valid_section(bcontainer, section, "region_del")) {
+         return;
+     }
+ 
+@@ -812,7 +817,7 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
+         container_of(listener, VFIODirtyRangesListener, listener);
+     hwaddr iova, end;
+ 
+-    if (!vfio_listener_valid_section(section, "tracking_update") ||
++    if (!vfio_listener_valid_section(NULL, section, "tracking_update") ||
+         !vfio_get_section_iova_range(dirty->bcontainer, section,
+                                      &iova, &end, NULL)) {
+         return;
 -- 
 2.47.1
 
