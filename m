@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C0AB156AB
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 684B6B156AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:44:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugupM-0003Kz-9y; Tue, 29 Jul 2025 20:37:52 -0400
+	id 1ugulj-0007r3-Ps; Tue, 29 Jul 2025 20:34:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguMa-0006rU-EU
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:08:09 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1uguMb-0006rr-6M
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:08:10 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uguMY-00058m-GH
+ id 1uguMZ-00058y-BU
  for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:08:08 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2403df11a2aso20536505ad.0
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-b31e0ead80eso5065708a12.0
  for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:08:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753834085; x=1754438885; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753834086; x=1754438886; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vKU7aau6wblJ2iE6GxOueIIcL13PuWGFXXZqmIS92ng=;
- b=hVgdObqO5vUNEjJKuSH84D2XP6tWgaYMC5T4eJH9eZTrV524rw9frB6DwPJDzkUiGe
- 7Pz50qHreY7kArL1kPA7o1Ui0XPIJqrH51vBBjhu3/6scLVk5QVDHFON44VtKAC+/UjC
- /dwCcir9LJiLjZOjkhIu+dUwvCJL8xsNs5BWC5yQ0ng5A8qOqERIq0hf7Pt0LaR0L1B0
- ztsfJIkh3Db3HmABpuLWMGCMS/lsl1idiOjcY/9EkYrdMNnvRrYzlIP8wDR02MiUoN0Y
- X6aFYmkmvURHIv4gXZWKUupu6h6p3ARXjurlSjovqOF3fqXU/AtxRrCXIeCJ04E8XkOG
- Mxpw==
+ :reply-to; bh=j71IaTtPMXoz6fbGb+M6MA3PKEcR2w4MIFOEVOFwAB0=;
+ b=l7E/6kSkMtkGj6BYiADO2nc4+Inuq4/2XrtnfoNKE5b7hQkVNxU95viLyl8IG7Zex/
+ stDfh3wJ4LX/h29sqz6CaUBunPXJvrR4u0VDHGZoY994EsjxfT3egej6qgkOeiSZ55z0
+ C/nQ0yRziKxPRO/lBlLbR5RAGLpByDsUu98KF9+/qR8Td833KlYkKAIixRp1ynRoyWrm
+ iysUvvpWQzjg5y5A3W+Ql+SO6xoIR9K6v3ZagQEGb5bbjINZDb4qJiz+RnWKzUrjI8n/
+ ciNuYZILdlesggcTn4KvDfI80qOtrucaDZxZwFHp/xUJUFCguT0j9vDcFh0yebIqqdVZ
+ J9iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753834085; x=1754438885;
+ d=1e100.net; s=20230601; t=1753834086; x=1754438886;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vKU7aau6wblJ2iE6GxOueIIcL13PuWGFXXZqmIS92ng=;
- b=CZOt/g//ASC+N7AHBiWVsMX5yoBICJRZUL6lnUsBQt0r5TswPkp2M1Gvv1zF2l8EBE
- qmqSdmxmilccuAz4QJPPFE5WEMpAAD/P8LCb1LIQ7UiKE7+NO6X3+TPotl/0PzeXH4xi
- pWg07ZCUB4C/lSIon5TBRFV/6RV0ZDsaFvjg/A5M7nvAmfULKqIZD60U3Nawqg253N4v
- 0YrPTYM2FEojSz1Rye93Qf/ZNlDDIAw1W4ptMtCniWjBhYHMzYjvLwai/i2qOwCzRIP0
- E4n7Gr8rrCoQIY5ZtI9l0g1PVhQ1CpR3h2F77eZoZh4PQiuTSc2GKFoixA9H4TyrRD8t
- 6Pvw==
-X-Gm-Message-State: AOJu0YwD5MiF+HdkiHqO0CfgSwUbEWGaeVudnafvUI4mpji91bxemaB1
- gewcbPuhFWdpdt3P4woCzw7PRUI3EPGUmAZCTjX5JU2IwjpEm2cWyJFwvVk9DmyREkfXlBao2ri
- XhB6N
-X-Gm-Gg: ASbGncteYTbmkPtdbb3r4S7fyfQCogYWSkAamSq6RFuSdB5ulxqIzxvX+tEUPbSPd+/
- GS2s44WxFyNFgE+2d1K78Ab4odcw3xoJObt8HJ1PxR0BCXEVt1VEYKSW4iTeYP4k8B+MANYPvLY
- skTAVgJ+NY7qqC8Vf20E7NjnvC4PQzXt+npaN/1tp6r4cSFgrJiyol17cVy8zWdaXiNb90ZzXYE
- 86NikDetW3OsueRdVtW5nBfYqimq+qfPznlUWk4ctLd3/zM5u31RWftfyoIoMdAzoPDB3gTL1c5
- gwjZepj2rxK5QWatqXKw+mSmnuh5SB0XJM+uN78NJq+SlLanYyWmESWyzKalU0EJKH1qPLQRpBf
- iJsof8Lj0gg9LIwW0/LIhZ1omPGftqpemzQCTJ7lIEeKKPd891V8Et6NuNhDROjQNtEhWEkOi37
- 0eZjMj4tFNgg==
-X-Google-Smtp-Source: AGHT+IG9Yj3xADeedzWGWjMIL8LGuiAWbcKLusqtdvJlrWktvj3i2NcsOQd0irz+yh10C8xswMphyg==
-X-Received: by 2002:a17:903:291:b0:240:14c:c648 with SMTP id
- d9443c01a7336-24096b1c548mr17695875ad.25.1753834084816; 
- Tue, 29 Jul 2025 17:08:04 -0700 (PDT)
+ bh=j71IaTtPMXoz6fbGb+M6MA3PKEcR2w4MIFOEVOFwAB0=;
+ b=ki3KLxeB8xVIvNPm92dH7vrI5QLb0gg3zzEVkWK7ogD3o8GLHlxsZk6LcZJURkPzPj
+ o+Hb7FKcW/TuuTKw7gIoQHrdS9KAnwpRUvN9mmLIXcuesCd/G6DzLu9OamfVA/aNcG5R
+ 1RIwWBuXqtuAwc/8JYFb3bf8A293fngoNstHmDElSIqUB17IQcHEk4o0vd1u/NWt0tzN
+ hE1Uw3jH5EjigyD/9l7gByk+ED05SKaz/wfCtpQ2Tlit6PdgjtqjjqRODh8OtnDac3oL
+ wnltYIwz4h7hCoHt0Ntn9Bwel7jDZdeYJgYwaPtd/y4DZS/yDoZJ/BIxdnrc9yrOWQeq
+ ifnQ==
+X-Gm-Message-State: AOJu0YzsbdPJvoGZon7UTRpjj6uUj26Ind2hjBr2b2j/ZVsvCPdj2nDn
+ xv5cVFYU1IvhVT6BIg0kC/wdTqslO2qRwa7ynQkwtF7wLDeEumjnL7twMsyAlPu/g0uLHzrHQyg
+ E9HDQ
+X-Gm-Gg: ASbGnctoS7UqkCNN4vROAhp1r8BIhjzUYGzd/JDlZwfEqhP2ARc42su3ivVB5egUtYD
+ CkktlkkHesDyRaR+/yCQwAoP8CGg3suyOe63N12IUHyisD+tNv/fw7BbnmCQAZgQ7udo313g0Rj
+ pUI2HpqNz+i/C4mCO/8v+Drv+LcXF6ckcqJ+0m7/K3wE5OhGbggaNlzJsC5kRU08p0Xnnn0wcQv
+ +ke0DiJH5iI/lQ90+/PDbEtMmaYBPKgrm2wonXxn10l3NNAct1QcPyV3fBXGgCJ6TNPKapzbXU0
+ YJaqoaQL+oFBDx3NKP07USxgCZkyQYcYxleIJvQtUuIapkT0TYS2iNn7s5y8xtjK/ewOY90+qwm
+ VJfwz2TNl04EpbFd3nK7K8zIImRRN2TG3rPnfdLSRb6wPmhLerKWnhsbkBIEkdVa0yNyFtHrhUb
+ j5E/TR5iJliQ==
+X-Google-Smtp-Source: AGHT+IEODpb0grAO/RVAJJNADrhHHjwPktJLRY3O6QAkjZiiTLkunFgZdfv2vk0XW6OHCQPsR58mfQ==
+X-Received: by 2002:a17:90b:1d05:b0:312:639:a06a with SMTP id
+ 98e67ed59e1d1-31f5de656edmr1696735a91.31.1753834085786; 
+ Tue, 29 Jul 2025 17:08:05 -0700 (PDT)
 Received: from localhost.localdomain (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31f63ddfb2asm281868a91.22.2025.07.29.17.08.04
+ 98e67ed59e1d1-31f63ddfb2asm281868a91.22.2025.07.29.17.08.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 17:08:04 -0700 (PDT)
+ Tue, 29 Jul 2025 17:08:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 85/89] linux-user/sparc: Move target_pt_regs to signal.c
-Date: Tue, 29 Jul 2025 13:59:58 -1000
-Message-ID: <20250730000003.599084-86-richard.henderson@linaro.org>
+Subject: [PATCH 86/89] linux-user/microblaze: Move target_pt_regs to signal.c
+Date: Tue, 29 Jul 2025 13:59:59 -1000
+Message-ID: <20250730000003.599084-87-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250730000003.599084-1-richard.henderson@linaro.org>
 References: <20250730000003.599084-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,75 +98,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This structure is part of the sparc signal frame.
+This structure is part of the microblaze signal frame.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/sparc/target_syscall.h | 19 -------------------
- linux-user/sparc/signal.c         | 20 ++++++++++++++++++++
- 2 files changed, 20 insertions(+), 19 deletions(-)
+ linux-user/microblaze/target_syscall.h | 44 --------------------------
+ linux-user/microblaze/signal.c         | 44 ++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+), 44 deletions(-)
 
-diff --git a/linux-user/sparc/target_syscall.h b/linux-user/sparc/target_syscall.h
-index e421165357..a90ed2983a 100644
---- a/linux-user/sparc/target_syscall.h
-+++ b/linux-user/sparc/target_syscall.h
-@@ -1,25 +1,6 @@
- #ifndef SPARC_TARGET_SYSCALL_H
- #define SPARC_TARGET_SYSCALL_H
+diff --git a/linux-user/microblaze/target_syscall.h b/linux-user/microblaze/target_syscall.h
+index 43362a1664..66f5a9ebe2 100644
+--- a/linux-user/microblaze/target_syscall.h
++++ b/linux-user/microblaze/target_syscall.h
+@@ -4,50 +4,6 @@
+ #define UNAME_MACHINE "microblaze"
+ #define UNAME_MINIMUM_RELEASE "2.6.32"
  
--#if defined(TARGET_SPARC64) && !defined(TARGET_ABI32)
--struct target_pt_regs {
--    abi_ulong u_regs[16];
--    abi_ulong tstate;
--    abi_ulong pc;
--    abi_ulong npc;
--    uint32_t y;
--    uint32_t magic;
--};
--#else
--struct target_pt_regs {
--    abi_ulong psr;
--    abi_ulong pc;
--    abi_ulong npc;
--    abi_ulong y;
--    abi_ulong u_regs[16];
--};
--#endif
+-/* We use microblaze_reg_t to keep things similar to the kernel sources.  */
+-typedef uint32_t microblaze_reg_t;
 -
- #ifdef TARGET_SPARC64
- # define UNAME_MACHINE "sparc64"
- #else
-diff --git a/linux-user/sparc/signal.c b/linux-user/sparc/signal.c
-index 8181b8b92c..944769a8de 100644
---- a/linux-user/sparc/signal.c
-+++ b/linux-user/sparc/signal.c
-@@ -22,6 +22,26 @@
+-struct target_pt_regs {
+-        microblaze_reg_t r0;
+-        microblaze_reg_t r1;
+-        microblaze_reg_t r2;
+-        microblaze_reg_t r3;
+-        microblaze_reg_t r4;
+-        microblaze_reg_t r5;
+-        microblaze_reg_t r6;
+-        microblaze_reg_t r7;
+-        microblaze_reg_t r8;
+-        microblaze_reg_t r9;
+-        microblaze_reg_t r10;
+-        microblaze_reg_t r11;
+-        microblaze_reg_t r12;
+-        microblaze_reg_t r13;
+-        microblaze_reg_t r14;
+-        microblaze_reg_t r15;
+-        microblaze_reg_t r16;
+-        microblaze_reg_t r17;
+-        microblaze_reg_t r18;
+-        microblaze_reg_t r19;
+-        microblaze_reg_t r20;
+-        microblaze_reg_t r21;
+-        microblaze_reg_t r22;
+-        microblaze_reg_t r23;
+-        microblaze_reg_t r24;
+-        microblaze_reg_t r25;
+-        microblaze_reg_t r26;
+-        microblaze_reg_t r27;
+-        microblaze_reg_t r28;
+-        microblaze_reg_t r29;
+-        microblaze_reg_t r30;
+-        microblaze_reg_t r31;
+-        microblaze_reg_t pc;
+-        microblaze_reg_t msr;
+-        microblaze_reg_t ear;
+-        microblaze_reg_t esr;
+-        microblaze_reg_t fsr;
+-        uint32_t kernel_mode;
+-};
+-
+ #define TARGET_CLONE_BACKWARDS
+ #define TARGET_MCL_CURRENT 1
+ #define TARGET_MCL_FUTURE  2
+diff --git a/linux-user/microblaze/signal.c b/linux-user/microblaze/signal.c
+index f6d47d76ff..add814acd6 100644
+--- a/linux-user/microblaze/signal.c
++++ b/linux-user/microblaze/signal.c
+@@ -22,6 +22,50 @@
  #include "signal-common.h"
  #include "linux-user/trace.h"
  
++/* We use microblaze_reg_t to keep things similar to the kernel sources.  */
++typedef uint32_t microblaze_reg_t;
 +
-+#if defined(TARGET_SPARC64) && !defined(TARGET_ABI32)
 +struct target_pt_regs {
-+    abi_ulong u_regs[16];
-+    abi_ulong tstate;
-+    abi_ulong pc;
-+    abi_ulong npc;
-+    uint32_t y;
-+    uint32_t magic;
++    microblaze_reg_t r0;
++    microblaze_reg_t r1;
++    microblaze_reg_t r2;
++    microblaze_reg_t r3;
++    microblaze_reg_t r4;
++    microblaze_reg_t r5;
++    microblaze_reg_t r6;
++    microblaze_reg_t r7;
++    microblaze_reg_t r8;
++    microblaze_reg_t r9;
++    microblaze_reg_t r10;
++    microblaze_reg_t r11;
++    microblaze_reg_t r12;
++    microblaze_reg_t r13;
++    microblaze_reg_t r14;
++    microblaze_reg_t r15;
++    microblaze_reg_t r16;
++    microblaze_reg_t r17;
++    microblaze_reg_t r18;
++    microblaze_reg_t r19;
++    microblaze_reg_t r20;
++    microblaze_reg_t r21;
++    microblaze_reg_t r22;
++    microblaze_reg_t r23;
++    microblaze_reg_t r24;
++    microblaze_reg_t r25;
++    microblaze_reg_t r26;
++    microblaze_reg_t r27;
++    microblaze_reg_t r28;
++    microblaze_reg_t r29;
++    microblaze_reg_t r30;
++    microblaze_reg_t r31;
++    microblaze_reg_t pc;
++    microblaze_reg_t msr;
++    microblaze_reg_t ear;
++    microblaze_reg_t esr;
++    microblaze_reg_t fsr;
++    uint32_t kernel_mode;
 +};
-+#else
-+struct target_pt_regs {
-+    abi_ulong psr;
-+    abi_ulong pc;
-+    abi_ulong npc;
-+    abi_ulong y;
-+    abi_ulong u_regs[16];
-+};
-+#endif
 +
- /* A Sparc register window */
- struct target_reg_window {
-     abi_ulong locals[8];
+ struct target_sigcontext {
+     struct target_pt_regs regs;  /* needs to be first */
+     uint32_t oldmask;
 -- 
 2.43.0
 
