@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FE1B14B1B
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:22:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3997AB14B23
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:23:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uggXE-00058s-Sq; Tue, 29 Jul 2025 05:22:15 -0400
+	id 1uggXc-0005hB-FQ; Tue, 29 Jul 2025 05:22:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggWR-0004iS-SI
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:24 -0400
+ id 1uggWQ-0004hg-SU
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:23 -0400
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggWL-0002ac-0l
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:23 -0400
+ id 1uggWO-0002av-Oo
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753780877; x=1785316877;
+ t=1753780881; x=1785316881;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=UWpd/VRWPG7FVB4+KQGN73R7irDtEtxt5kp80om8+L0=;
- b=PxrjLN7Va6M5eIfj1VOFhdbwcxb/S0tO3QGfixLGrgM0TdyfjIIGS+Sl
- rlKvnDMtOk71LUB5WR2R1HPSZSxJRLirQptbU4ZxzuI5Yypw7XZy0MYbX
- aua2AqGUg4N8N5qQe+UUJz9cE20gloggDzsaQzcKfevuWvnY0dyVUTMc3
- NOYCDbHEl0IV2ERfuaCGdD+2oYX/M01RtjkS6PONJ/avjWHeqnl+EmNkf
- lgYguffwoPeozLxIbz5n8+62YidGGxA7HyUw4nloAojufX85QqiUWwvvI
- Z0OSZuUlPDZcZqN8hc0xn0+yfulGjowuPwRq6V6MkQgjvNxIymqAJ0Fev w==;
-X-CSE-ConnectionGUID: uHCk/aueS7y2KrGIBYzpAA==
-X-CSE-MsgGUID: Dh7GtUGdSfKFzgQmjOzQgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55981877"
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55981877"
+ bh=psoZJC1XmeFJqf+JJube64hkXwNpYqrNYYLrT0vTZls=;
+ b=bvwYauigCPwkWsy4wGejb8PZrctx50bayp314rWNe8jUjo56uBLvo/QN
+ 8umqRzrKtbfyopIhUu5H+ys/zFcqca7BRndHKQTyftyZ3XjDrL0PK+4jr
+ blJ7lMdr4bOXhHuqTQEVq18w4Gp9fHLtDzWl5/wqYiUfwPl/txWFIP5Ss
+ Ns7CMBxf1geXy3N1DrqVMMcXrt6R4JuTATd6KOofLhXR+dYVmDqqxUlbJ
+ 0IHhwTcn6trfp5XF64fVUQVvWpWIrGHsIQoXrE8+e3MkfVWPOJqh+cghD
+ ffxAhB+jiHFppu2VsVqtmupNhdc2XZXC61yD9pXFT+WGaRjsWxgaFB8rx A==;
+X-CSE-ConnectionGUID: 8IM8JuzzQKysUG8N4IB5cg==
+X-CSE-MsgGUID: yF5aJbNtRRWClFUodwHrzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55981894"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55981894"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:21:16 -0700
-X-CSE-ConnectionGUID: f3/AOldyTL2kbSKUUcsjAQ==
-X-CSE-MsgGUID: 4SPOzT1kT4CtWmu1o5hmQQ==
+ 29 Jul 2025 02:21:20 -0700
+X-CSE-ConnectionGUID: cKYXOIfGTd+R+qDsRWc+Pw==
+X-CSE-MsgGUID: YdEww6UrRlmINGMJfvmAcQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691130"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691153"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:21:13 -0700
+ 29 Jul 2025 02:21:17 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,9 +52,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v4 04/20] vfio/iommufd: Force creating nested parent domain
-Date: Tue, 29 Jul 2025 05:20:26 -0400
-Message-ID: <20250729092043.785836-5-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 05/20] hw/pci: Export pci_device_get_iommu_bus_devfn() and
+ return bool
+Date: Tue, 29 Jul 2025 05:20:27 -0400
+Message-ID: <20250729092043.785836-6-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250729092043.785836-1-zhenzhong.duan@intel.com>
 References: <20250729092043.785836-1-zhenzhong.duan@intel.com>
@@ -85,53 +86,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Call pci_device_get_viommu_cap() to get if vIOMMU supports VIOMMU_CAP_HW_NESTED,
-if yes, create nested parent domain which could be reused by vIOMMU to create
-nested domain.
+Returns true if PCI device is aliased or false otherwise. This will be
+used in following patch to determine if a PCI device is under a PCI
+bridge.
 
-It is safe because hw_caps & VIOMMU_CAP_HW_NESTED cannot be set yet because
-s->flts is forbidden until we support passthrough device with x-flts=on.
-
-Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
-Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/vfio/iommufd.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ include/hw/pci/pci.h |  2 ++
+ hw/pci/pci.c         | 12 ++++++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 48c590b6a9..61a548f13f 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -20,6 +20,7 @@
- #include "trace.h"
- #include "qapi/error.h"
- #include "system/iommufd.h"
-+#include "hw/iommu.h"
- #include "hw/qdev-core.h"
- #include "hw/vfio/vfio-cpr.h"
- #include "system/reset.h"
-@@ -379,6 +380,19 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-         flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
-     }
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index d89aefc030..f2df5c85d5 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -652,6 +652,8 @@ typedef struct PCIIOMMUOps {
+                             bool is_write);
+ } PCIIOMMUOps;
  
-+    /*
-+     * If vIOMMU supports stage-1 translation, force to create nested parent
-+     * domain which could be reused by vIOMMU to create nested domain.
-+     */
-+    if (vbasedev->type == VFIO_DEVICE_TYPE_PCI) {
-+        VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
++bool pci_device_get_iommu_bus_devfn(PCIDevice *dev, PCIBus **piommu_bus,
++                                    PCIBus **aliased_bus, int *aliased_devfn);
+ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
+ bool pci_device_set_iommu_device(PCIDevice *dev, HostIOMMUDevice *hiod,
+                                  Error **errp);
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index df1fb615a8..151c27088b 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -2857,20 +2857,21 @@ static void pci_device_class_base_init(ObjectClass *klass, const void *data)
+  * For call sites which don't need aliased BDF, passing NULL to
+  * aliased_[bus|devfn] is allowed.
+  *
++ * Returns true if PCI device RID is aliased or false otherwise.
++ *
+  * @piommu_bus: return root #PCIBus backed by an IOMMU for the PCI device.
+  *
+  * @aliased_bus: return aliased #PCIBus of the PCI device, optional.
+  *
+  * @aliased_devfn: return aliased devfn of the PCI device, optional.
+  */
+-static void pci_device_get_iommu_bus_devfn(PCIDevice *dev,
+-                                           PCIBus **piommu_bus,
+-                                           PCIBus **aliased_bus,
+-                                           int *aliased_devfn)
++bool pci_device_get_iommu_bus_devfn(PCIDevice *dev, PCIBus **piommu_bus,
++                                    PCIBus **aliased_bus, int *aliased_devfn)
+ {
+     PCIBus *bus = pci_get_bus(dev);
+     PCIBus *iommu_bus = bus;
+     int devfn = dev->devfn;
++    bool aliased = false;
+ 
+     while (iommu_bus && !iommu_bus->iommu_ops && iommu_bus->parent_dev) {
+         PCIBus *parent_bus = pci_get_bus(iommu_bus->parent_dev);
+@@ -2907,6 +2908,7 @@ static void pci_device_get_iommu_bus_devfn(PCIDevice *dev,
+                 devfn = parent->devfn;
+                 bus = parent_bus;
+             }
++            aliased = true;
+         }
+ 
+         iommu_bus = parent_bus;
+@@ -2928,6 +2930,8 @@ static void pci_device_get_iommu_bus_devfn(PCIDevice *dev,
+     if (aliased_devfn) {
+         *aliased_devfn = devfn;
+     }
 +
-+        hw_caps = pci_device_get_viommu_cap(&vdev->pdev);
-+        if (hw_caps & VIOMMU_CAP_HW_NESTED) {
-+            flags |= IOMMU_HWPT_ALLOC_NEST_PARENT;
-+        }
-+    }
-+
-     if (cpr_is_incoming()) {
-         hwpt_id = vbasedev->cpr.hwpt_id;
-         goto skip_alloc;
++    return aliased;
+ }
+ 
+ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
 -- 
 2.47.1
 
