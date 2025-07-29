@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1EAB14B1A
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCC0B14B1C
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 11:22:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uggWm-0004jE-KX; Tue, 29 Jul 2025 05:21:45 -0400
+	id 1uggXE-00051f-Rp; Tue, 29 Jul 2025 05:22:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggWI-0004cR-Sq
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:16 -0400
+ id 1uggWK-0004dX-Vt
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:20 -0400
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uggWE-0002ac-Sg
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:12 -0400
+ id 1uggWI-0002av-TI
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 05:21:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753780871; x=1785316871;
+ t=1753780875; x=1785316875;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=YrMUOAbaPySq5rNWcT8o3Mzs/Ye4hYTT3J/w1kcD3tw=;
- b=L7EORSwX1y+eSfoTXPZwYRis0Y5UvI8u8kUE/PJKNmQkEs7OlRdeFimD
- mdnynNnYCkOPAMFDIvAhI1JGH36ZmOzrk7yhSpiCJO7R6kZrb4mSnwTAg
- HqujUhPU1J2MSjU6cEBM9uI9gw0Ab1p3Rh/boPNTfw/Yo3//ek5ss+qmD
- E2s/AoPFtqBfhdm+gJaA3F0XAiPEP2O/n6EtLkLB0UJZXRhzBC9bpJulI
- gtMW6UD66lLhSpWHRHq8uriAgMv1W1eBzHV3UvvbX5qTOyzYVbQa3W0KX
- 6meEOdFojdCTsfYxFE7Ka/xp+a9YPdXAOJCcHMlV18mJRfN5M7N/Vhzma Q==;
-X-CSE-ConnectionGUID: qbkNNuBMTse86/b7FG1k2A==
-X-CSE-MsgGUID: DPY+cr7iTEiB2cDYPAA+PQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55981846"
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55981846"
+ bh=H90IjbHFk/C0B72MY53kb+vMeadxug3mnzm1G5/mZdM=;
+ b=W0+C6UOzsxQeQjpJiKjGIIPg0wiJfNOyJli8bAq7fvKB0xIyfLcl/RKH
+ Qz90siFB7vhqu+ZKgG2r6bn7gKVVvKgmGKNXNYvvGAmzniVBdP3dncH8b
+ 4Ll44hv11xRTgoJtopwGkdYv2x0zIy+J+7uloKdG8Anjql0vVXVa1IXjH
+ BV323mEa55U59G7LkBZNPHGiCRhatg/ZLMn+ddmO/O7Cy4Cs5aCSVWzZB
+ ftRCo0uWxDYyxHCZEdCg8hUePlVBHPnWOBoJWse0XW0sFPWSv4yFzofwZ
+ pFzUnMFGN5jODoS4eMEUxULAOaKqys28nBTPDp9R1S2O8MLHYUXadjTtl Q==;
+X-CSE-ConnectionGUID: DGxCXqoGRxC7/mb62Owi/Q==
+X-CSE-MsgGUID: hAbUzuIiQTygs/rN1Ab/rQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55981863"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55981863"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:21:09 -0700
-X-CSE-ConnectionGUID: 3XaEHYvUQWerjmacVzTxeA==
-X-CSE-MsgGUID: fpq1/bVATa6KA/zvxQjzlg==
+ 29 Jul 2025 02:21:12 -0700
+X-CSE-ConnectionGUID: mFMAsr4KSTqxGDXwzpKcpg==
+X-CSE-MsgGUID: qBRVDKr+RRCvZoULea4QLg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691098"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162691120"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 02:21:03 -0700
+ 29 Jul 2025 02:21:09 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,9 +52,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v4 02/20] hw/pci: Introduce pci_device_get_viommu_cap()
-Date: Tue, 29 Jul 2025 05:20:24 -0400
-Message-ID: <20250729092043.785836-3-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 03/20] intel_iommu: Implement get_viommu_cap() callback
+Date: Tue, 29 Jul 2025 05:20:25 -0400
+Message-ID: <20250729092043.785836-4-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250729092043.785836-1-zhenzhong.duan@intel.com>
 References: <20250729092043.785836-1-zhenzhong.duan@intel.com>
@@ -85,144 +85,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new PCIIOMMUOps optional callback, get_viommu_cap() which
-allows to retrieve capabilities exposed by a vIOMMU. The first planned
-capability is VIOMMU_CAP_HW_NESTED that advertises the support of HW
-nested stage translation scheme. pci_device_get_viommu_cap is a wrapper
-that can be called on a PCI device potentially protected by a vIOMMU.
+Implement get_viommu_cap() callback and expose stage-1 capability for now.
 
-get_viommu_cap() is designed to return 64bit bitmap of purely emulated
-capabilities which are only derermined by user's configuration, no host
-capabilities involved. Reasons are:
-
-1. there can be more than one host IOMMUs with different capabilities
-2. there can also be more than one vIOMMUs with different user
-   configuration, e.g., arm smmuv3.
-3. This is migration friendly, return value is consistent between source
-   and target.
-4. It's too late for VFIO to call get_viommu_cap() after set_iommu_device()
-   because we need get_viommu_cap() to determine if creating nested parent
-   hwpt or not at attaching stage, meanwhile hiod realize needs iommufd,
-   devid and hwpt_id which are ready after attach_device().
-   See below sequence:
-
-     attach_device()
-       get_viommu_cap()
-       create hwpt
-     ...
-     create hiod
-     set_iommu_device(hiod)
+VFIO uses it to create nested parent domain which is further used to create
+nested domain in vIOMMU. All these will be implemented in following patches.
 
 Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- MAINTAINERS          |  1 +
- include/hw/iommu.h   | 17 +++++++++++++++++
- include/hw/pci/pci.h | 25 +++++++++++++++++++++++++
- hw/pci/pci.c         | 11 +++++++++++
- 4 files changed, 54 insertions(+)
- create mode 100644 include/hw/iommu.h
+ hw/i386/intel_iommu.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 37879ab64e..840cb1e604 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2304,6 +2304,7 @@ F: include/system/iommufd.h
- F: backends/host_iommu_device.c
- F: include/system/host_iommu_device.h
- F: include/qemu/chardev_open.h
-+F: include/hw/iommu.h
- F: util/chardev_open.c
- F: docs/devel/vfio-iommufd.rst
- 
-diff --git a/include/hw/iommu.h b/include/hw/iommu.h
-new file mode 100644
-index 0000000000..021db50db5
---- /dev/null
-+++ b/include/hw/iommu.h
-@@ -0,0 +1,17 @@
-+/*
-+ * General vIOMMU capabilities, flags, etc
-+ *
-+ * Copyright (C) 2025 Intel Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HW_IOMMU_H
-+#define HW_IOMMU_H
-+
-+enum {
-+    /* hardware nested stage-1 page table support */
-+    VIOMMU_CAP_HW_NESTED = BIT_ULL(0),
-+};
-+
-+#endif /* HW_IOMMU_H */
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index 6b7d3ac8a3..d89aefc030 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -462,6 +462,21 @@ typedef struct PCIIOMMUOps {
-      * @devfn: device and function number of the PCI device.
-      */
-     void (*unset_iommu_device)(PCIBus *bus, void *opaque, int devfn);
-+    /**
-+     * @get_viommu_cap: get vIOMMU capabilities
-+     *
-+     * Optional callback, if not implemented, then vIOMMU doesn't
-+     * support exposing capabilities to other subsystem, e.g., VFIO.
-+     * vIOMMU can choose which capabilities to expose.
-+     *
-+     * @opaque: the data passed to pci_setup_iommu().
-+     *
-+     * Returns: 64bit bitmap with each bit represents a capability emulated by
-+     * VIOMMU_CAP_* in include/hw/iommu.h, these capabilities are theoretical
-+     * which are only determined by user's configuration and independent on the
-+     * actual host capabilities they may depend on.
-+     */
-+    uint64_t (*get_viommu_cap)(void *opaque);
-     /**
-      * @get_iotlb_info: get properties required to initialize a device IOTLB.
-      *
-@@ -642,6 +657,16 @@ bool pci_device_set_iommu_device(PCIDevice *dev, HostIOMMUDevice *hiod,
-                                  Error **errp);
- void pci_device_unset_iommu_device(PCIDevice *dev);
- 
-+/**
-+ * pci_device_get_viommu_cap: get vIOMMU capabilities.
-+ *
-+ * Returns a 64bit bitmap with each bit represents a vIOMMU exposed
-+ * capability, 0 if vIOMMU doesn't support esposing capabilities.
-+ *
-+ * @dev: PCI device pointer.
-+ */
-+uint64_t pci_device_get_viommu_cap(PCIDevice *dev);
-+
- /**
-  * pci_iommu_get_iotlb_info: get properties required to initialize a
-  * device IOTLB.
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index c70b5ceeba..df1fb615a8 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2992,6 +2992,17 @@ void pci_device_unset_iommu_device(PCIDevice *dev)
-     }
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index c97953d7a1..178c15e31c 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -24,6 +24,7 @@
+ #include "qemu/main-loop.h"
+ #include "qapi/error.h"
+ #include "hw/sysbus.h"
++#include "hw/iommu.h"
+ #include "intel_iommu_internal.h"
+ #include "hw/pci/pci.h"
+ #include "hw/pci/pci_bus.h"
+@@ -4420,6 +4421,16 @@ static void vtd_dev_unset_iommu_device(PCIBus *bus, void *opaque, int devfn)
+     vtd_iommu_unlock(s);
  }
  
-+uint64_t pci_device_get_viommu_cap(PCIDevice *dev)
++static uint64_t vtd_get_viommu_cap(void *opaque)
 +{
-+    PCIBus *iommu_bus;
++    IntelIOMMUState *s = opaque;
++    uint64_t caps;
 +
-+    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, NULL, NULL);
-+    if (iommu_bus && iommu_bus->iommu_ops->get_viommu_cap) {
-+        return iommu_bus->iommu_ops->get_viommu_cap(iommu_bus->iommu_opaque);
-+    }
-+    return 0;
++    caps = s->flts ? VIOMMU_CAP_HW_NESTED : 0;
++
++    return caps;
 +}
 +
- int pci_pri_request_page(PCIDevice *dev, uint32_t pasid, bool priv_req,
-                          bool exec_req, hwaddr addr, bool lpig,
-                          uint16_t prgi, bool is_read, bool is_write)
+ /* Unmap the whole range in the notifier's scope. */
+ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
+ {
+@@ -4850,6 +4861,7 @@ static PCIIOMMUOps vtd_iommu_ops = {
+     .register_iotlb_notifier = vtd_register_iotlb_notifier,
+     .unregister_iotlb_notifier = vtd_unregister_iotlb_notifier,
+     .ats_request_translation = vtd_ats_request_translation,
++    .get_viommu_cap = vtd_get_viommu_cap,
+ };
+ 
+ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
 -- 
 2.47.1
 
