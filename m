@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D54B14D51
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 14:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29225B14D4E
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Jul 2025 14:00:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugizC-0005eK-26; Tue, 29 Jul 2025 07:59:14 -0400
+	id 1ugizA-0005Lt-R8; Tue, 29 Jul 2025 07:59:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugiyV-0004TD-0D
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugiyV-0004U2-KI
  for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:58:32 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugiyM-0006Ht-EP
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:58:29 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4563cfac2d2so56897535e9.3
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 04:58:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ugiyN-0006II-NI
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 07:58:31 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4563cfac2d2so56898195e9.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 04:58:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753790296; x=1754395096; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753790300; x=1754395100; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8k1VWDR5NkXCZxjy6qK+jjWf6Lwqctes1t+lFXTWiY0=;
- b=gVLGqHaJcTEztHGuLL7UdyPCWQTVvMq1u7sVZJuSEfSDYxwsoWkd8IKx57mqi0gR/z
- W0u/DXAcx3VlN32KIDIvKEhGM3x4mKCaCZLMg/hnl1VnepLI4F26/jVu5AGCeU5C/UGN
- UshwkUkNi4jowmBmgfgOYWzWe7hDaIu3KHzoKamdTsO7jCqukri7+OERkJaI/1Kzs1rQ
- 0V4ls6G1dH059aGy+snXume1yX4gnGUTfaK9vVrOoqX25T7l6f8RmGEF6Ft422qdi7NU
- Gnd6V9ja1rICrwQG9IBfbYYGwhhEgZ9PEm94+WQJQCeGVW1tt+m+f83lQ28QY3Xjta4H
- 0kXQ==
+ bh=vwDXkIv74V96n3Lc/dGOrgAXOY9PemtQuzZoNiGgaBI=;
+ b=SkGyAivLZNX2XdYTjb/wGzPxwGZUpA4sf8l6VNirhm1JUOl3Cr5q5d4FBIIohQLcox
+ b6euOQRSRVJiHVfiXZH2pBY4p5Y4lYYCuXvjf9OmHWZcFoCaQOidsbKhzkL386+iUH8l
+ pDpx3vw3WTlnDVA1Gdqip7LIyxEZVG/mGgnCA1gNUAd6QCecQ7SlnNpyifSgaPPM3qF1
+ gsRG56gucCa4wPK5+XgEWxrNqD9/ylRh8zbt38HqgWmp5o7SELvyfxeutix68F+sBh1f
+ hDXkZY7Dah32q2jn8I/Q8hE2M5sEnZtPmzv+rzpAS5Q0ALFF1/auIsDyj0o9CEzYPkpn
+ TVHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753790296; x=1754395096;
+ d=1e100.net; s=20230601; t=1753790300; x=1754395100;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8k1VWDR5NkXCZxjy6qK+jjWf6Lwqctes1t+lFXTWiY0=;
- b=d1bNUX5t9O+hqsmFtykxNL9ZcwCMdialo47eby0Kpf6hPiYhaFdAlVi1m5JxZCzDmp
- 92Sh+Dsh8f+NrrhaG3AH54wQl/YNENlzTMOprGltqj8CMHjWigzgzqkH5FjjnupfAz7y
- 3RENuwcNdRD9ZbDmAEjrkeXqaBKU9FLmMCOEZkL1q4UuLDJHOUGeK39JWgv1BHd5Tvja
- TqeJAfxdBWRK14beTl37YaOj7Wj/mYjpwELendi/9HPF5ltWLiqFiL9nSIk+OS6GVsaF
- 7RI5CDC2GCW0HhCahjpLy4HBxB2dFNUluQB8ZO0LQO9I6B9bkcDqu6lLP7oyR85PnZ6K
- dzfQ==
-X-Gm-Message-State: AOJu0YzVM6YRK9WAL9QaIp6ULyn8OdG31lK+F0/mnVMIwZ7xeMPn/+PU
- h6JlagK/czFyO07B4rY1nxmD3qcCVr/yU55qkuOGIQeF8misbg4fsmIZwn3PWIGWns0zcODMdw8
- St2ii
-X-Gm-Gg: ASbGncs3UTBbNyOMfwKIqgE7b0pYMHbkY+kvmiKB8jnDj6Zq0vOQ+J35rdjeFxlIX+6
- WJHAFILlMOzxQjrt6TpyonK/3+bg9MEPCPsybu2WwxJHOgMeHXkERKYPdnNUo3WrxODxhZ+1mAa
- KA+rVcPpL+4jdLJaGGtKs93TIXMX+93/ytcO2Hwq+AL/IAYGdCz3w2cWaZbhIH8HYYo/hE3xtV2
- ozMzlE6ex80DptbGPWTqXH7aDmuwCWYOcyqtGDmTYwS8hSUOa7rYnfLRPhu5b4wQg17f5zOn2o8
- uVXLAlmpdO5c2vBqDh0lvSJcLMouX0OjX5NwdPjceqmTVWBjFaGO3/DSRZG4F8ZCz1f8yX/Y1Ke
- uY248jl7LT0G+Z4WPLVtBM7Gf2xZZpq22fRv2kPewyOBmR3dakMd1ARY8EjEA/MbmH/wv0dKxoE
- B3JB+XDPo=
-X-Google-Smtp-Source: AGHT+IHra7rFXFucz6wq1J1jpzusPCMuSvwop5muRiCJ1KmnClcXLn84E4A26jZE4H5OckCn6Cv1Gg==
-X-Received: by 2002:a5d:584e:0:b0:3b5:e084:283b with SMTP id
- ffacd0b85a97d-3b776726b06mr10991742f8f.17.1753790295764; 
- Tue, 29 Jul 2025 04:58:15 -0700 (PDT)
+ bh=vwDXkIv74V96n3Lc/dGOrgAXOY9PemtQuzZoNiGgaBI=;
+ b=tGYW+IJOlMdxSp3CD5C9zfKH9oAiABPc2gduCjSa7A4s+ILjcmIqXa97M+Dvi0ehkM
+ 16b3CzaRJ+aX/1c/j63T/ZrTlTCOO/qRhUzKor+/naGrJ5RNNyrdbygbamUxPdICV0W7
+ 77MwuC4aJIobBIKha+QHCpvAufVeloZ58R0KxatoHR0eSCc/YeVoRVN5pby2Z2RZtv/t
+ wP9l6NPfjaYnZZ5HBdlrYLayUa9BJexRIwjbN6wy1w4nHGAmxj31BGhG4d0lC9ai2ivb
+ 1ga3KhArke4qQrbLXuzAJxKyDpCgrnPxqlOH6DRzcPcNVSPaaxwy9YBLZG5GEeE/+L2+
+ Ip/Q==
+X-Gm-Message-State: AOJu0Yxm0PTYfmT5wI5cgSzpNFfFzAyE7yPAb2Dso6l34SOy/7yI708D
+ dCMXKDPlls5AvzCyU0Me/1VOGQFBlVsS5YnNApz8XJ7CMtYIBzuyfuqAk7Ca+ftO9aF+8cSoW/i
+ 8E01Q
+X-Gm-Gg: ASbGnctuRJXl4D2n64DnqpQlF1pq3rBhRl5hpSP8A2phWa0E6H5FAIlF3CT039Wp70o
+ hisQaAxQpvk+EOoBKLeSUKYlv/pN12sgWvMa487SmOGYDz/0GZ0BMZkX/Z7aNTxMQ0p+4OaWS/F
+ Qq78BWY8pKmfZnMcxoduqXYbf5f4aDAEhavDa3F3p8mopGXM7v/BsWVWOCUvf/+RSOcxLeqrNtK
+ kk8r4IEn/eRXwWYmdYxVudEfqJL758Q7/oTlPIdNhxc8XMr1P2ZpporfLezF+MLfNtggOryzlAI
+ FINYEDeWFwzUB15RGHmOOhcE/woSukb9HTmH4tx8hBFfsWnffaUXBuEual8GUG2Dd4Cq+fZzutF
+ XGHlbo/lFZFOHWr8G9dpswAnBVmfua2zXRGh5iTkP1gszJ45YY4qah83dimwORp5wqUdTGCKt
+X-Google-Smtp-Source: AGHT+IGniukk98M8qeG65Usji04kNtGx4KC85FQxDN8Cytq5sGnqUBZ0pXLyNs7vyuIGXeiJT0O19g==
+X-Received: by 2002:a05:600c:1da8:b0:456:1bca:7faf with SMTP id
+ 5b1f17b1804b1-4587db2afc2mr110017375e9.16.1753790300337; 
+ Tue, 29 Jul 2025 04:58:20 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4587272b405sm172160525e9.19.2025.07.29.04.58.15
+ 5b1f17b1804b1-4587054f338sm189376535e9.13.2025.07.29.04.58.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 29 Jul 2025 04:58:15 -0700 (PDT)
+ Tue, 29 Jul 2025 04:58:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 8/9] roms/Makefile: fix npcmNxx_bootrom build rules
-Date: Tue, 29 Jul 2025 13:57:33 +0200
-Message-ID: <20250729115735.33619-9-philmd@linaro.org>
+Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, qemu-ppc@nongnu.org
+Subject: [PULL 9/9] hw/display/sm501: fix missing error-report.h
+Date: Tue, 29 Jul 2025 13:57:34 +0200
+Message-ID: <20250729115735.33619-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250729115735.33619-1-philmd@linaro.org>
 References: <20250729115735.33619-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,45 +100,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Tokarev <mjt@tls.msk.ru>
+From: Clément Chigot <chigot@adacore.com>
 
-Since commit 70ce076fa6dff60, the actual rom source dirs
-are subdirs of vbootrom/ submodule, not in top-level of it.
+"qemu/error-report.h" was previously implicitly included. This is no
+longer the case following 012842c075520dbe1bd96a2fdcf4e218874ba443.
 
-Fixes: 70ce076fa6dff60 "roms: Update vbootrom to 1287b6e"
-Fixes: 269b7effd90 ("pc-bios: Add NPCM8XX vBootrom")
+However, the issue predates this change as `error-report.h` should have
+been included when the `warn_report` call was introduced.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Fixes: fa140b9562 ("hw/sm501: allow compiling without PIXMAN")
+Signed-off-by: Clément Chigot <chigot@adacore.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250727215511.807880-1-mjt@tls.msk.ru>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20250728090518.963573-1-chigot@adacore.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- roms/Makefile | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/display/sm501.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/roms/Makefile b/roms/Makefile
-index beff58d9d50..6af68a922f3 100644
---- a/roms/Makefile
-+++ b/roms/Makefile
-@@ -193,12 +193,12 @@ qboot:
- 	cp qboot/build/bios.bin ../pc-bios/qboot.rom
- 
- npcm7xx_bootrom:
--	$(MAKE) -C vbootrom CROSS_COMPILE=$(arm_cross_prefix)
--	cp vbootrom/npcm7xx_bootrom.bin ../pc-bios/npcm7xx_bootrom.bin
-+	$(MAKE) -C vbootrom/npcm7xx CROSS_COMPILE=$(arm_cross_prefix)
-+	cp vbootrom/npcm7xx/npcm7xx_bootrom.bin ../pc-bios/npcm7xx_bootrom.bin
- 
- npcm8xx_bootrom:
--	$(MAKE) -C vbootrom CROSS_COMPILE=$(aarch64_cross_prefix)
--	cp vbootrom/npcm8xx_bootrom.bin ../pc-bios/npcm8xx_bootrom.bin
-+	$(MAKE) -C vbootrom/npcm8xx CROSS_COMPILE=$(aarch64_cross_prefix)
-+	cp vbootrom/npcm8xx/npcm8xx_bootrom.bin ../pc-bios/npcm8xx_bootrom.bin
- 
- hppa-firmware:
- 	$(MAKE) -C seabios-hppa parisc
+diff --git a/hw/display/sm501.c b/hw/display/sm501.c
+index 6d2f18684c3..bc091b3c9fb 100644
+--- a/hw/display/sm501.c
++++ b/hw/display/sm501.c
+@@ -26,6 +26,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
+ #include "qapi/error.h"
++#include "qemu/error-report.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+ #include "hw/usb/hcd-ohci.h"
 -- 
 2.49.0
 
