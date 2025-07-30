@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE17FB1680C
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 23:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B72BB16838
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 23:18:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhE4C-0004P2-GO; Wed, 30 Jul 2025 17:10:30 -0400
+	id 1uhEC2-0006eJ-AN; Wed, 30 Jul 2025 17:18:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhE3z-00049C-25
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:10:15 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1uhE5r-0000x9-JY
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:12:12 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhE3w-0006Z6-85
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:10:14 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-769a9c3bbc4so246140b3a.3
- for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 14:10:11 -0700 (PDT)
+ id 1uhE5p-0006z5-Mj
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:12:11 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-b31e0ead80eso194099a12.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 14:12:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753909810; x=1754514610; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1753909928; x=1754514728; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UGppI92iHV8vjys/mQ6Zs0MlEcFqJGFo85JuuOCHjL0=;
- b=sMx67uuRLP0sdmHSFldvAoIyK4epax/t2TpfACIBGM9cvbJd5fl4DmIGPXiTiEUC94
- RDE1H8WDEHWzcF5Hm8aBxA1JID5YeH7eK4fbMd+qDFIV2LzK3d/U1cEk44QszGDc66Tc
- dpWQmuGToCkja+ySMZMi5jHSPks8axj/LLj1/GyTt9fsAVOk9NyPGJtrPBjoGu5cIkjk
- ictNmy23vSrnpipYzB+Gys5aupxS5gZPRot88OSil6zwLOKzsPvtPxdlYsfqURA6wLRS
- rMWQV21o+HZNAyaALskxpLRjcLQuyAuxjE6XqnIZdHvHMqWfBXUznR5++J6XJAUACv/4
- qTAw==
+ bh=2RkIaqBSYYgRdTLzLl+pwOejxVGip6U34l7rGXnPENk=;
+ b=L5Svvb/lbuQputgSi5pPItcCRXHRvXioPuaweNGye1xlPZXqh+M37dEzADa7fzqXjS
+ O//vd0NVqrkcIQ1HcowPdZMl8880dSCMlMeXkWH9X3u+sM61GxaXSUSuRJnlHLsFqH9x
+ m7eol1SU8bHgUVhaF19dzvJNnfBHhp2pAA1HmW+0a2KApsXYgBlbfTrKV0xKeskLzpCc
+ dXdz5xeFQzeGxaH4rVDTsZOUpDXWRlWjrM7BunKqKaIqZpmNI8G2O7cnnbN+l/ovQxsl
+ 4NR7lnAs9BVtHRFPq32KeZKVOCYTq6drLpy/KWDB6584Q01yOkMzW/B3prJujWzcrSqQ
+ 0Nfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753909810; x=1754514610;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1753909928; x=1754514728;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UGppI92iHV8vjys/mQ6Zs0MlEcFqJGFo85JuuOCHjL0=;
- b=JFUEi6pYN+fqjXW0/S2Hn0ABDIcnxdQGz6UfM5C1RZQ1OfSxuadYmyhOW3bE32ptii
- XPtp+3GvAj4qLHsd4KKQZZQ7snoAPCu+mnyKX3AwfUsb7kfxNLoqtNaYB4Oh9157fQbX
- U8boJPlQaauUW4AJUCBcpqoc0ruXbSYUIpsAuDAzQu2NiX8MfifcQrjOA1XQs+rxWc4s
- pUm5qqlYVORVCrAQsg+u5e+bXh0wSBK8t8bcJuPF/m7GZTOXEgegeBSufgo/7KKngOC6
- dpZSWsVR7wmPeZM+KO0Odm9rT3HvScvlzV8AyRbfeykPReGeRPEnYTbLZjgJhnDrtSV1
- hJQg==
+ bh=2RkIaqBSYYgRdTLzLl+pwOejxVGip6U34l7rGXnPENk=;
+ b=NrZkpSqyafLg3qYWf2tOtDINR1NI66DAJVEB0amusCxciW07Ms3xH+70p3iHMnrqDe
+ Q4SIQc0tKQpeEEynlmt/xwvQpmxBZr1WKzkfoq4IYnt4G0P5IW7ugmJEsJKMttA+dmSp
+ VsJG8Iatx5JO9UcY7MNfWUmG2k/7r7NNzWhmmcc65L3QE/I8VMYD/xoU1sXi0teGIEZR
+ lmaQmJGNZvWrm3TnmJfJEPj7uo/YX4Ftl1WWlbunczMvdGZdRzvGw8FJ97X6ZTe3A0xE
+ fZuG1T9jvdSTZrb0Xe2SLErGbWr5vcas8Xm1RTbUNQPXF8GFuZ0g0luK7nVGUyvfuNA+
+ rKNw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU3+DDAYsRjhqpQJ8b537XmrkJ8lT0tYs6s/sMls4mjjsywdOiA46zblafoh+D+IhOzzWk0op6mNIWz@nongnu.org
-X-Gm-Message-State: AOJu0YxDXmAjdooVncHNESMS4/9Jamf/QgQqrmteTLn2GD4XNuto1riq
- Oh0NvBljXrwUwFMCEYPpaG74pXoPjUiGcRlPKEmpYgfGWs6x11LRSaQOJ5Cd0FPNtnk=
-X-Gm-Gg: ASbGncuhkD7mIMq0oxBPda7W5N1XXmFGow5c9sNiIBbERpM6d0Chw/LVitoowYPMUwj
- Obmuj6NaBR7j9q7AhlJTPlSjYlovpMJsAMtHSqRmpj8cJ3IVXVfEVav/MyumRrdAXiwXcBX58uX
- +N5ek7iOoLcKYiBUgPgsw0ILxMx2Esz90qtAPCHgsD9UnkFTY3At9UiOqCPHrfhOKGPeJaD6+3V
- eEOZSUJPOzILlboVzriNKdH6DU1XevugZovaqwDOTU10Oa2LnBKIMGgr1NRrHLSA5hP/IdeM+hH
- +vMqcJS4CYpblqofVWHJh7RcyK4/EloVOLgrMVDPTv6bjpwbQbz0DAgzPY07SIEl5gJDwjiH3lC
- rmSgQIm+AuAsysP+IA+M2yeBAKWXU/83t5W0=
-X-Google-Smtp-Source: AGHT+IHq+oZLzGG/nNvzINB/nFM4w7y3skDNpUoPg81fOq+MRB/e4qcsVyOBp25byx49SEITrLH/RA==
-X-Received: by 2002:a17:903:1b43:b0:23f:8d03:c4ac with SMTP id
- d9443c01a7336-24096a68567mr59562265ad.2.1753909810428; 
- Wed, 30 Jul 2025 14:10:10 -0700 (PDT)
+ AJvYcCU/F+OQfHWhtZ71nZ+Q8I83k1B8Ay0GcYSR5bLwMP/eUYnigt4Ww/t4cC7WfkMrvzsP7bU51P4yVy6k@nongnu.org
+X-Gm-Message-State: AOJu0YxD9jmQCYncO/omfH3JLLh57S/DDvnKe3999rn38RhzlqAE32FW
+ V+qHg45qFP9k/InCwppfipZaZ5T2KpdTLjNSO6ZWRcQBj78AjUGdmR48UpTi4l1ilIjVSvjPxEs
+ 7QV/H
+X-Gm-Gg: ASbGncvaH7ke66NW1WdmkZXNvXbwkwji+U4aCjgdVO/x62/jYZwXCQhri0QgxJP+kGC
+ SVp8wzHS0EAuJzOvFRQVoGvKOd/XfP1RN1Zptw+jeyCbeYgyKD/Dqf/8xOfmUj4buBxeZpWihyB
+ /38Pp+JtdT2Zm5/chDtcQ9LpcRC0sdxovLDMlmIzKYerFxcLQbnnkvLid2rhEMt4x/wD8fynDtN
+ Xukmw0KtR3oLGwVXLC6PwB/wsv+qns2+LQMHKoTvIBQJ8O8GAsy44J0VdwtQb43auOUEg/ObuI0
+ m/3/ngArjdXuwO4Rtr4j6LGhG9ztW2jXSSsPX6CfsSL13qswbiIRcMZJhkB0MefATQ6wl7k28Ed
+ R6IJrud+xV+aEi3AojZCOu6OLpSjQNZgp5qM=
+X-Google-Smtp-Source: AGHT+IGveFdUw2wzwMDL0ZoumG/EYgGSb9QU6lASk3mDVF1CNQCR9wncNSfTDSKlyAEAAgCKDRAtZw==
+X-Received: by 2002:a17:90b:47:b0:31f:42cd:690d with SMTP id
+ 98e67ed59e1d1-31f5dd9e0d8mr6985765a91.13.1753909927999; 
+ Wed, 30 Jul 2025 14:12:07 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241d1ef67a3sm502015ad.15.2025.07.30.14.10.09
+ 98e67ed59e1d1-3207eca6feasm86092a91.21.2025.07.30.14.12.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Jul 2025 14:10:10 -0700 (PDT)
-Message-ID: <6963c11f-ed15-42f5-9110-9516ceb64662@linaro.org>
-Date: Wed, 30 Jul 2025 14:10:09 -0700
+ Wed, 30 Jul 2025 14:12:07 -0700 (PDT)
+Message-ID: <ee5e730f-9bda-4d66-a055-9346e5a18ecd@linaro.org>
+Date: Wed, 30 Jul 2025 14:12:07 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 30/82] target/arm: Convert arm_mmu_idx_to_el from switch
  to table
 Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
 References: <20250727080254.83840-1-richard.henderson@linaro.org>
  <20250727080254.83840-31-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250727080254.83840-31-richard.henderson@linaro.org>
+ <6963c11f-ed15-42f5-9110-9516ceb64662@linaro.org>
+In-Reply-To: <6963c11f-ed15-42f5-9110-9516ceb64662@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,25 +105,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/27/25 1:02 AM, Richard Henderson wrote:
-> In an effort to keep all ARMMMUIdx data in one place, begin construction
-> of an info table describing all of the properties of the mmu_idx.  Begin
-> with the access EL.
+On 7/30/25 2:10 PM, Pierrick Bouvier wrote:
+> On 7/27/25 1:02 AM, Richard Henderson wrote:
+>> In an effort to keep all ARMMMUIdx data in one place, begin construction
+>> of an info table describing all of the properties of the mmu_idx.  Begin
+>> with the access EL.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>    target/arm/internals.h       |  3 +--
+>>    target/arm/mmuidx-internal.h | 27 ++++++++++++++++++++++++
+>>    target/arm/helper.c          | 27 ------------------------
+>>    target/arm/mmuidx.c          | 41 ++++++++++++++++++++++++++++++++++++
+>>    target/arm/meson.build       |  7 +++++-
+>>    5 files changed, 75 insertions(+), 30 deletions(-)
+>>    create mode 100644 target/arm/mmuidx-internal.h
+>>    create mode 100644 target/arm/mmuidx.c
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/internals.h       |  3 +--
->   target/arm/mmuidx-internal.h | 27 ++++++++++++++++++++++++
->   target/arm/helper.c          | 27 ------------------------
->   target/arm/mmuidx.c          | 41 ++++++++++++++++++++++++++++++++++++
->   target/arm/meson.build       |  7 +++++-
->   5 files changed, 75 insertions(+), 30 deletions(-)
->   create mode 100644 target/arm/mmuidx-internal.h
->   create mode 100644 target/arm/mmuidx.c
+> What's the benefit to explicitely size arm_mmuidx_table on declaration
+> and definition?
+>
 
-What's the benefit to explicitely size arm_mmuidx_table on declaration 
-and definition?
+I missed the:
+tcg_debug_assert((unsigned)idx < ARRAY_SIZE(arm_mmuidx_table)), which 
+does not see definition of the table.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Maybe it would be easier to declare size in the header, and reuse it on 
+both sides (declaration, definition instead of ARM_MMU_IDX_M + 8).
+
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> 
 
 
