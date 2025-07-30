@@ -2,61 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF90B16194
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 15:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A29B1598A
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 09:27:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh6sf-0007yK-Jf; Wed, 30 Jul 2025 09:30:05 -0400
+	id 1uh1C4-0002QK-Qq; Wed, 30 Jul 2025 03:25:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1uh0We-0002ik-6U
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 02:42:56 -0400
-Received: from fanzine2.igalia.com ([213.97.179.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1uh0Wb-00043E-AP
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 02:42:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=VBV50KAekGTBs5evzva+q0zkom0tIRNQMNKutedB2iI=; b=cCXUvimgrlXR97JBREe49148/d
- 0XBVX0MQ1fpO7ILEHasMcyNWNAmUEhpj+FSEVAAFVRKWrv7ogOcmDSm+P3HRRmmhXCR+UNjcTT4KU
- UWlp6tQ96SnkANG5dI7ZF8PnNk5k3I3N2PGcNJMd1e77E59FMcDD305WrXBI/9g30BPm3Ex4ob7Pw
- WI5IGALVQWia+GOsKZ4LZFemw/HU8XNHNaQ5bbzuw3EyCT7Z8xx3K7AGx9LwcDpmF2/SXkyrddvCZ
- jz0+dYTqvsCi4NmP55syqquc5rbLPWEV8NTeqYfmHW/p6fMcOWWsK/MmR5TV/ykRJrM0ltPO/kHSM
- myGAGU3Q==;
-Received: from 82-69-92-151.dsl.in-addr.zen.co.uk ([82.69.92.151]
- helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1uh0WQ-005nOk-HS; Wed, 30 Jul 2025 08:42:42 +0200
-From: Alex Bradbury <asb@igalia.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Bradbury <asb@igalia.com>, alex.bennee@linaro.org, erdnaxe@crans.org,
- ma.mandourr@gmail.com, pierrick.bouvier@linaro.org
-Subject: [PATCH 5/5] contrib/plugins/hotblocks: Allow limit to be set as a
- command line argument
-Date: Wed, 30 Jul 2025 07:41:43 +0100
-Message-ID: <58281d6e54bcad1802e8d3dc8d8501d54c2a971e.1753857212.git.asb@igalia.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1753857212.git.asb@igalia.com>
-References: <cover.1753857212.git.asb@igalia.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uh1BU-0002Ea-3d
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 03:25:09 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uh1BR-0002Fj-EU
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 03:25:07 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-76b6422756fso202429b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 00:25:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753860302; x=1754465102; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=OU0KPj52IbZRi7ayQO65ZGfCSPjVv14ZEBpEoP4GkeM=;
+ b=xJPn8/nRqJBOuvImbCqz0hl57syncghFQHiByGOGgFKNp/lcjfO8ZdopL7he9E75v3
+ mzP4GZXMPJcelvE9T63yHIaOKyXA3pGFPUWCmZP0Q6AnSA8m03Mz6qPNBcFpAlsp7Die
+ bOo8GUolm69WxZxZbFGVk+lgmSLRdaAAW6XI9qKibSfJwkwDc06dJ/Zb7GniT/fyH1Dm
+ iBrQH+HtgNBQZmQ7mKuFdbA9HuPkBcJCrPD247zfIi/+IDJmLJHFb7/svM21YmpfGyT5
+ F+Nu+dnqkOWgPgAnq4tUWdSnTSBYhTxDqBDaTZnKFIzD5GOluVfzIdHOmMgOxz3yhzuD
+ l+ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753860302; x=1754465102;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OU0KPj52IbZRi7ayQO65ZGfCSPjVv14ZEBpEoP4GkeM=;
+ b=Xi1BMLJv8oc2XQbC9Qcmd84I7l3fOxk7SUrFcBhn/nIug2xC9b7tbS56SyhrneXm3j
+ sXoYRaPVDBwQK9nhA2i/AbWBHez2lh7DkAJEKHo73K4EoahPNfD/w2T3a9D6RLBBfPvc
+ bMLHsjhQi0FV4RoJ/AvoWlRzgVUGMF8pym2aAInGJ7rcsxRqdYDJnWhC6KJGKf980SqW
+ RtLtFYVvM9u4+FnMHHXf5j7TE5uRxnmHdS8jhaW4Mlaw7tH4X1WVLSFjABRPhSVV8u35
+ kafndM6uh+X/eLioVWlzS91CB5G260aQLPyzls96cGvR7oabplebw9x26VCbEURKpUAE
+ CU6A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVLSazVa5CwWDUDH4cSgxem74lThYvoX9F7vjdpBcUA6UlcpIgQnVwXWJCGAc1AMnnql0zubFQhRhwz@nongnu.org
+X-Gm-Message-State: AOJu0YzknA9bXtnHMMNFpe37B0r2YqdeXF9n3peDd5faJRKGbpYvVnio
+ mwF0UlpcXJ4xFp3RzbWZj5bq5glCKrGeCr0SD8jtluMukZwZo6ppOZv3HaEe8XQVgGM=
+X-Gm-Gg: ASbGncuSvAkCWVHFtWGOoD0Tr6WMQdXBB35bHmC19ew/6VtDY0g4PqGZZjFuu+dwHZQ
+ h5yQBhsisjyNY2LNuk/0WGHMYoqvvyYDhZzmlNq4wYup4+qWdY3EeEYT9uk8BGOccdCfFZbAYv/
+ cT9aMfZ3ntlBpCm7UJV3/hY/xbIok3l7RMy2VPPblSgJ56Rw03aQ17kOn8bxIfBcm+zIC4PRYou
+ zoVREfDsbMHgp4dYk1PNLtT3fzBuvUFvgUej9IzjhFykgxvuKUW5yzsPaRQqriP+RCSkZlh5pyr
+ kB0uDOg7GRett4lcuKoQESInX5uCft2dJEpmRqHO5RPI5ZSH4VQUIb7M6UT47ZGEJgPs7Cyk/cX
+ hiCOojCI57jcB0NyNYzPJOa8c+vWF2JW4EpU=
+X-Google-Smtp-Source: AGHT+IFzFVsjbQ/RZeePeggmEXhWoJTd53D5RMJ1mZTOBi+ZnHkCHkln3Gbm8CqChznJcVfStvD4IA==
+X-Received: by 2002:a05:6a20:938c:b0:231:acae:1983 with SMTP id
+ adf61e73a8af0-23dc0d59618mr4260908637.3.1753860302092; 
+ Wed, 30 Jul 2025 00:25:02 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7640b1e5c94sm9864393b3a.94.2025.07.30.00.25.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Jul 2025 00:25:01 -0700 (PDT)
+Message-ID: <d1fc8730-19c5-4ee3-a37d-2ce9c6fe4b9b@linaro.org>
+Date: Wed, 30 Jul 2025 00:25:00 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 11/14] tests/tcg: reduce the number of plugin tests
+ combinations
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20250727083254.3826585-1-alex.bennee@linaro.org>
+ <20250727083254.3826585-12-alex.bennee@linaro.org>
+ <eee5b640-6c65-4796-9b36-ca324f08c07c@linaro.org>
+Content-Language: en-US
+In-Reply-To: <eee5b640-6c65-4796-9b36-ca324f08c07c@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=213.97.179.56; envelope-from=asb@igalia.com;
- helo=fanzine2.igalia.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 30 Jul 2025 09:05:40 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,59 +106,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Also add documentation for this argument. This allows the default of 20
-to be overridden, and is helpful for using the hotblocks plugin for
-analysis scripts that require collecting data on a larger number of
-blocks (e.g. setting limit=0 to dump information on all blocks).
+On 7/28/25 12:03 PM, Pierrick Bouvier wrote:
+> Hi Alex,
+> 
+> On 7/27/25 1:32 AM, Alex Bennée wrote:
+>> As our set of multiarch tests has grown the practice of running every
+>> plugin with every test is becoming unsustainable. If we switch to
+>> ensuring every test gets run with at least one plugin we can speed
+>> things up.
+>>
+>> Some plugins do need to be run with specific tests (for example the
+>> memory instrumentation test). We can handle this by manually adding
+>> them to EXTRA_RUNS. We also need to wrap rules in a CONFIG_PLUGIN test
+>> so we don't enable the runs when plugins are not enabled.
+>>
+>> Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>> Message-ID: <20250725154517.3523095-12-alex.bennee@linaro.org>
+>>
+>> diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+>> index a12b15637ea..18afd5be194 100644
+>> --- a/tests/tcg/Makefile.target
+>> +++ b/tests/tcg/Makefile.target
+>> @@ -173,14 +173,25 @@ PLUGINS=$(filter-out $(DISABLE_PLUGINS), \
+>>    # We need to ensure expand the run-plugin-TEST-with-PLUGIN
+>>    # pre-requistes manually here as we can't use stems to handle it. We
+>>    # only expand MULTIARCH_TESTS which are common on most of our targets
+>> -# to avoid an exponential explosion as new tests are added. We also
+>> -# add some special helpers the run-plugin- rules can use below.
+>> +# and rotate the plugins so we don't grow too out of control as new
+>> +# tests are added. Plugins that need to run with a specific test
+>> +# should ensure they add their combination to EXTRA_RUNS.
+>>    
+>>    ifneq ($(MULTIARCH_TESTS),)
+>> -$(foreach p,$(PLUGINS), \
+>> -	$(foreach t,$(MULTIARCH_TESTS),\
+>> -		$(eval run-plugin-$(t)-with-$(p): $t $p) \
+>> -		$(eval RUN_TESTS+=run-plugin-$(t)-with-$(p))))
+>> +
+>> +NUM_PLUGINS := $(words $(PLUGINS))
+>> +NUM_TESTS := $(words $(MULTIARCH_TESTS))
+>> +
+>> +define mod_plus_one
+>> +  $(shell $(PYTHON) -c "print( ($(1) % $(2)) + 1 )")
+>> +endef
+>> +
+>> +$(foreach _idx, $(shell seq 1 $(NUM_TESTS)), \
+>> +	$(eval _test := $(word $(_idx), $(MULTIARCH_TESTS))) \
+>> +	$(eval _plugin := $(word $(call mod_plus_one, $(_idx), $(NUM_PLUGINS)), $(PLUGINS))) \
+>> +	$(eval run-plugin-$(_test)-with-$(_plugin): $(_test) $(_plugin)) \
+>> +	$(eval RUN_TESTS+=run-plugin-$(_test)-with-$(_plugin)))
+>> +
+>>    endif # MULTIARCH_TESTS
+>>    endif # CONFIG_PLUGIN
+>>    
+>> diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+>> index bfdf7197a7b..38345ff8805 100644
+>> --- a/tests/tcg/multiarch/Makefile.target
+>> +++ b/tests/tcg/multiarch/Makefile.target
+>> @@ -189,6 +189,10 @@ run-plugin-semiconsole-with-%:
+>>    TESTS += semihosting semiconsole
+>>    endif
+>>    
+>> +test-plugin-mem-access: CFLAGS+=-pthread -O0
+>> +test-plugin-mem-access: LDFLAGS+=-pthread -O0
+>> +
+>> +ifeq ($(CONFIG_PLUGIN),y)
+>>    # Test plugin memory access instrumentation
+>>    run-plugin-test-plugin-mem-access-with-libmem.so: \
+>>    	PLUGIN_ARGS=$(COMMA)print-accesses=true
+>> @@ -197,8 +201,8 @@ run-plugin-test-plugin-mem-access-with-libmem.so: \
+>>    	$(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
+>>    	$(QEMU) $<
+>>    
+>> -test-plugin-mem-access: CFLAGS+=-pthread -O0
+>> -test-plugin-mem-access: LDFLAGS+=-pthread -O0
+>> +EXTRA_RUNS += run-plugin-test-plugin-mem-access-with-libmem.so
+>> +endif
+>>    
+>>    # Update TESTS
+>>    TESTS += $(MULTIARCH_TESTS)
+>> diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/tcg/multiarch/system/Makefile.softmmu-target
+>> index 5acf2700812..4171b4e6aa0 100644
+>> --- a/tests/tcg/multiarch/system/Makefile.softmmu-target
+>> +++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
+>> @@ -71,8 +71,11 @@ endif
+>>    MULTIARCH_RUNS += run-gdbstub-memory run-gdbstub-interrupt \
+>>    	run-gdbstub-untimely-packet run-gdbstub-registers
+>>    
+>> +ifeq ($(CONFIG_PLUGIN),y)
+>>    # Test plugin memory access instrumentation
+>> -run-plugin-memory-with-libmem.so: 		\
+>> -	PLUGIN_ARGS=$(COMMA)region-summary=true
+>> -run-plugin-memory-with-libmem.so: 		\
+>> -	CHECK_PLUGIN_OUTPUT_COMMAND=$(MULTIARCH_SYSTEM_SRC)/validate-memory-counts.py $@.out
+>> +run-plugin-memory-with-libmem.so: memory libmem.so
+>> +run-plugin-memory-with-libmem.so: PLUGIN_ARGS=$(COMMA)region-summary=true
+>> +run-plugin-memory-with-libmem.so: CHECK_PLUGIN_OUTPUT_COMMAND=$(MULTIARCH_SYSTEM_SRC)/validate-memory-counts.py $@.out
+>> +
+>> +EXTRA_RUNS += run-plugin-memory-with-libmem.so
+>> +endif
+> 
+> I'm not sure how it's related, but check-tcg on aarch64 host now fails
+> [1] since this series was merged, and I suspect it may be related to
+> this patch. I didn't spend time to reproduce and investigate it.
+>
 
-Signed-off-by: Alex Bradbury <asb@igalia.com>
----
- contrib/plugins/hotblocks.c | 10 +++++++++-
- docs/about/emulation.rst    |  2 ++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+Reverting this patch solved the problem on my side. As well, I'm not 
+sure if it's a real problem to run all plugins for all tests. At the 
+moment, it takes 5 min on a slow machine with 4 cpus and a sanitized 
+build, something we can probably live with for now.
 
-diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
-index 40d8dae1cd..8ecf033997 100644
---- a/contrib/plugins/hotblocks.c
-+++ b/contrib/plugins/hotblocks.c
-@@ -84,7 +84,8 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-     if (sorted_counts) {
-         g_string_append_printf(report, "pc, tcount, icount, ecount\n");
- 
--        for (i = 0, it = sorted_counts; i < limit && it; i++, it = it->next) {
-+        for (i = 0, it = sorted_counts; (limit == 0 || i < limit) && it;
-+             i++, it = it->next) {
-             ExecCount *rec = (ExecCount *) it->data;
-             g_string_append_printf(
-                 report, "0x%016"PRIx64", %d, %ld, %"PRIu64"\n",
-@@ -170,6 +171,13 @@ int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
-                 fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-                 return -1;
-             }
-+        } else if (g_strcmp0(tokens[0], "limit") == 0) {
-+            char *endptr = NULL;
-+            limit = g_ascii_strtoull(tokens[1], &endptr, 10);
-+            if (endptr == tokens[1] || *endptr != '\0') {
-+                fprintf(stderr, "unsigned integer parsing failed: %s\n", opt);
-+                return -1;
-+            }
-         } else {
-             fprintf(stderr, "option parsing failed: %s\n", opt);
-             return -1;
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index 9c963f4705..185edb8ad7 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -473,6 +473,8 @@ Behaviour can be tweaked with the following arguments:
-     - Description
-   * - inline=true|false
-     - Use faster inline addition of a single counter.
-+  * - limit=N
-+    - The number of blocks to be printed. (Default: N = 20, use 0 for no limit).
- 
- Hot Pages
- .........
--- 
-2.50.1
+Unfortunately Alex is out this week, but it would be nice if another 
+maintainer could make a PR reverting this patch.
+
+Regards,
+Pierrick
+
+> [1]
+> https://github.com/pbo-linaro/qemu-ci/actions/runs/16575679153/job/46879690693
 
 
