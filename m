@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4902CB16298
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 16:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA43EB1625F
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 16:11:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh7gf-00081c-96; Wed, 30 Jul 2025 10:21:45 -0400
+	id 1uh7Wo-00082i-4I; Wed, 30 Jul 2025 10:11:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1uh66D-0005ho-Ed
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 08:40:02 -0400
+ id 1uh66J-0005kf-3O
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 08:40:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1uh669-0006vs-Ar
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 08:40:00 -0400
+ id 1uh66D-0006wZ-Fs
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 08:40:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753879196;
+ s=mimecast20190719; t=1753879199;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1zd1FxBLQ4yxr7ES3QONl2dWq+/99FTSEpJQKAVkOJI=;
- b=e9ubpT/Blui4Bd49W2VuWPXNw9X79x5S+Ox+FWwlLAJyVyYbUh06Jhkr32T2p4/B9gijqM
- dw7YcQfpnpfBydimgzowVYGgkSXEDLdOiGEVHQr5Cegak+KsX7GSH94sboIcW7OaHxfrAt
- sEffTsT1YQ2z62/g1TmYsBPVpzf7rk0=
+ bh=vnkKV/qN9hIacD0TfY2P1fY0zKaP/nMy687lfMn0F8c=;
+ b=NvFGKUQDnCOTOYCFbvXfgRqOLKDvSj1Ld2VZrpNDvRzAGC2jWj3kbPRjpTg5+BgYyMaxmB
+ cZbz+7zRGYRb+PQRw3kFDUNRvduGp/48PNix7T0Exoeqvx1SzrpxqLSKG97dZqxzOADFoq
+ grB6mVJepjeurSSowQU2PEgEsLPvCkc=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-101-5mN1s-vyNlCk89WZ9v0Hmg-1; Wed,
- 30 Jul 2025 08:39:53 -0400
-X-MC-Unique: 5mN1s-vyNlCk89WZ9v0Hmg-1
-X-Mimecast-MFC-AGG-ID: 5mN1s-vyNlCk89WZ9v0Hmg_1753879192
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-339-JPex7cTPPh6wE-oUrm9VtQ-1; Wed,
+ 30 Jul 2025 08:39:56 -0400
+X-MC-Unique: JPex7cTPPh6wE-oUrm9VtQ-1
+X-Mimecast-MFC-AGG-ID: JPex7cTPPh6wE-oUrm9VtQ_1753879195
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7C8D119560B5; Wed, 30 Jul 2025 12:39:52 +0000 (UTC)
+ id 8453F1956088; Wed, 30 Jul 2025 12:39:55 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 75A2B30001B1; Wed, 30 Jul 2025 12:39:50 +0000 (UTC)
+ id 1D8C930001BE; Wed, 30 Jul 2025 12:39:52 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, peterx@redhat.com, mst@redhat.com,
  mtosatti@redhat.com, kraxel@redhat.com, peter.maydell@linaro.org
-Subject: [PATCH v2 5/6] hpet: make main counter read lock-less
-Date: Wed, 30 Jul 2025 14:39:33 +0200
-Message-ID: <20250730123934.1787379-6-imammedo@redhat.com>
+Subject: [PATCH v2 6/6] kvm: i386: irqchip: take BQL only if there is an
+ interrupt
+Date: Wed, 30 Jul 2025 14:39:34 +0200
+Message-ID: <20250730123934.1787379-7-imammedo@redhat.com>
 In-Reply-To: <20250730123934.1787379-1-imammedo@redhat.com>
 References: <20250730123934.1787379-1-imammedo@redhat.com>
 MIME-Version: 1.0
@@ -68,8 +69,8 @@ X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,112 +86,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make access to main HPET counter lock-less when enable/disable
-state isn't changing (which is the most of the time).
+when kernel-irqchip=split is used, QEMU still hits BQL
+contention issue when reading ACPI PM/HPET timers
+(despite of timer[s] access being lock-less).
 
-A read will fallback to locked access if the state change happens
-in the middle of read or read happens in the middle of the state
-change.
+So Windows with more than 255 cpus is still not able to
+boot (since it requires iommu -> split irqchip).
 
-This basically uses the same approach as cpu_get_clock(),
-modulo instead of busy wait it piggibacks to taking device lock
-to wait until HPET reaches consistent state.
+Problematic path is in kvm_arch_pre_run() where BQL is taken
+unconditionally when split irqchip is in use.
 
-As result micro benchmark of concurrent reading of HPET counter
-with large number of vCPU shows over 80% better (less) latency.
+There are a few parts tha BQL protects there:
+  1. interrupt check and injecting
+
+    however we do not take BQL when checking for pending
+    interrupt (even within the same function), so the patch
+    takes the same approach for cpu->interrupt_request checks
+    and takes BQL only if there is a job to do.
+
+  2. request_interrupt_window access
+      CPUState::kvm_run::request_interrupt_window doesn't need BQL
+      as it's accessed on side QEMU only by its own vCPU thread.
+      The only thing that BQL provides there is implict barrier.
+      Which can be done by using cheaper explicit barrier there.
+
+  3. cr8/cpu_get_apic_tpr access
+      the same (as #2) applies to CPUState::kvm_run::cr8 write,
+      and APIC registers are also cached/synced (get/put) within
+      the vCPU thread it belongs to.
+
+Taking BQL only when is necessary, eleminates BQL bottleneck on
+IO/MMIO only exit path, improoving latency by 80% on HPET micro
+benchmark.
+
+This lets Windows to boot succesfully (in case hv-time isn't used)
+when more than 255 vCPUs are in use.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/timer/hpet.c | 48 ++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 44 insertions(+), 4 deletions(-)
+ target/i386/kvm/kvm.c | 58 +++++++++++++++++++++++++++----------------
+ 1 file changed, 37 insertions(+), 21 deletions(-)
 
-diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index 97687697c9..d822ca1cd0 100644
---- a/hw/timer/hpet.c
-+++ b/hw/timer/hpet.c
-@@ -74,6 +74,7 @@ struct HPETState {
-     MemoryRegion iomem;
-     uint64_t hpet_offset;
-     bool hpet_offset_saved;
-+    unsigned state_version;
-     qemu_irq irqs[HPET_NUM_IRQ_ROUTES];
-     uint32_t flags;
-     uint8_t rtc_irq_level;
-@@ -430,17 +431,44 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
-     trace_hpet_ram_read(addr);
-     addr &= ~4;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 369626f8c8..32024d50f5 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5450,6 +5450,7 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+ {
+     X86CPU *x86_cpu = X86_CPU(cpu);
+     CPUX86State *env = &x86_cpu->env;
++    bool release_bql = 0;
+     int ret;
  
--    QEMU_LOCK_GUARD(&s->lock);
-     if ((addr <= 0xff) && (addr == HPET_COUNTER)) {
--        if (hpet_enabled(s)) {
--            cur_tick = hpet_get_ticks(s);
--        } else {
-+        unsigned version;
-+        bool release_lock = false;
-+redo:
-+        version = qatomic_load_acquire(&s->state_version);
-+        if (unlikely(version & 1)) {
-+                /*
-+                 * Updater is running, state can be inconsistent
-+                 * wait till it's done before reading counter
-+                 */
-+                release_lock = true;
-+                qemu_mutex_lock(&s->lock);
-+        }
-+
-+        if (unlikely(!hpet_enabled(s))) {
-             cur_tick = s->hpet_counter;
-+        } else {
-+            cur_tick = hpet_get_ticks(s);
-+        }
-+
-+        /*
-+         * ensure counter math happens before we check version again
-+         */
-+        smp_rmb();
-+        if (unlikely(version != qatomic_load_acquire(&s->state_version))) {
-+            /*
-+             * counter state has changed, re-read counter again
-+             */
-+            goto redo;
-+        }
-+        if (unlikely(release_lock)) {
-+            qemu_mutex_unlock(&s->lock);
+     /* Inject NMI */
+@@ -5478,15 +5479,16 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
          }
-         trace_hpet_ram_read_reading_counter(addr & 4, cur_tick);
-         return cur_tick >> shift;
      }
  
-+    QEMU_LOCK_GUARD(&s->lock);
-     /*address range of all global regs*/
-     if (addr <= 0xff) {
-         switch (addr) {
-@@ -500,6 +528,11 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-             old_val = s->config;
-             new_val = deposit64(old_val, shift, len, value);
-             new_val = hpet_fixup_reg(new_val, old_val, HPET_CFG_WRITE_MASK);
-+            /*
-+             * Odd versions mark the critical section, any readers will be
-+             * forced into lock protected read if they come in the middle of it
-+             */
-+            qatomic_inc(&s->state_version);
-             s->config = new_val;
-             if (activating_bit(old_val, new_val, HPET_CFG_ENABLE)) {
-                 /* Enable main counter and interrupt generation. */
-@@ -518,6 +551,13 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-                     hpet_del_timer(&s->timer[i]);
+-    if (!kvm_pic_in_kernel()) {
+-        bql_lock();
+-    }
+ 
+     /* Force the VCPU out of its inner loop to process any INIT requests
+      * or (for userspace APIC, but it is cheap to combine the checks here)
+      * pending TPR access reports.
+      */
+     if (cpu->interrupt_request & (CPU_INTERRUPT_INIT | CPU_INTERRUPT_TPR)) {
++        if (!kvm_pic_in_kernel()) {
++            bql_lock();
++            release_bql = true;
++        }
+         if ((cpu->interrupt_request & CPU_INTERRUPT_INIT) &&
+             !(env->hflags & HF_SMM_MASK)) {
+             cpu->exit_request = 1;
+@@ -5497,24 +5499,31 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+     }
+ 
+     if (!kvm_pic_in_kernel()) {
+-        /* Try to inject an interrupt if the guest can accept it */
+-        if (run->ready_for_interrupt_injection &&
+-            (cpu->interrupt_request & CPU_INTERRUPT_HARD) &&
+-            (env->eflags & IF_MASK)) {
+-            int irq;
+-
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_HARD;
+-            irq = cpu_get_pic_interrupt(env);
+-            if (irq >= 0) {
+-                struct kvm_interrupt intr;
+-
+-                intr.irq = irq;
+-                DPRINTF("injected interrupt %d\n", irq);
+-                ret = kvm_vcpu_ioctl(cpu, KVM_INTERRUPT, &intr);
+-                if (ret < 0) {
+-                    fprintf(stderr,
+-                            "KVM: injection failed, interrupt lost (%s)\n",
+-                            strerror(-ret));
++        if (cpu->interrupt_request & CPU_INTERRUPT_HARD) {
++            if (!release_bql) {
++                bql_lock();
++                release_bql = true;
++            }
++
++            /* Try to inject an interrupt if the guest can accept it */
++            if (run->ready_for_interrupt_injection &&
++                (cpu->interrupt_request & CPU_INTERRUPT_HARD) &&
++                (env->eflags & IF_MASK)) {
++                int irq;
++
++                cpu->interrupt_request &= ~CPU_INTERRUPT_HARD;
++                irq = cpu_get_pic_interrupt(env);
++                if (irq >= 0) {
++                    struct kvm_interrupt intr;
++
++                    intr.irq = irq;
++                    DPRINTF("injected interrupt %d\n", irq);
++                    ret = kvm_vcpu_ioctl(cpu, KVM_INTERRUPT, &intr);
++                    if (ret < 0) {
++                        fprintf(stderr,
++                                "KVM: injection failed, interrupt lost (%s)\n",
++                                strerror(-ret));
++                    }
                  }
              }
-+            /*
-+             * even versions mark the end of critical section,
-+             * any readers started before config change, but were still executed
-+             * during the change, will be forced to re-read counter state
-+             */
-+            qatomic_inc(&s->state_version);
-+
-             /* i8254 and RTC output pins are disabled
-              * when HPET is in legacy mode */
-             if (activating_bit(old_val, new_val, HPET_CFG_LEGACY)) {
+         }
+@@ -5531,7 +5540,14 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+ 
+         DPRINTF("setting tpr\n");
+         run->cr8 = cpu_get_apic_tpr(x86_cpu->apic_state);
++        /*
++         * make sure that request_interrupt_window/cr8 are set
++         * before KVM_RUN might read them
++         */
++        smp_mb();
++    }
+ 
++    if (release_bql) {
+         bql_unlock();
+     }
+ }
 -- 
 2.47.1
 
