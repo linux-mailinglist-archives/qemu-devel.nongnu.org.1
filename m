@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F58B158A4
+	by mail.lfdr.de (Postfix) with ESMTPS id B10F3B158A5
 	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 07:56:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugzlk-00069p-Nd; Wed, 30 Jul 2025 01:54:29 -0400
+	id 1ugzm7-0006Mp-Mo; Wed, 30 Jul 2025 01:54:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ugzlY-000672-IA
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 01:54:17 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1ugzls-0006Iw-CN
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 01:54:36 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ugzlW-0005fp-Tw
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 01:54:16 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2401248e4aaso37355705ad.0
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 22:54:14 -0700 (PDT)
+ id 1ugzlp-0005i3-Ht
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 01:54:35 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-74b27c1481bso331464b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 22:54:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753854853; x=1754459653; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753854872; x=1754459672; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lWNN9WB1syoEngVmG1Zfdqg2oERvJW9qUBgkf8NcAy8=;
- b=yLEJjh/MoP+Nv9tsExuCs83FdsL7T0IPI/Xz8y9OyRnOu2BAD97fe99FejGP1RqENX
- ZIODs7khhOR91/tYiWxrVWAD4NtY9EgK++G6HrQnoqwY85iHq/BoVc8dyk3LzJlkHnx+
- GeAMY23+DlRsl/Kjxz9cXzmJ7EedkRLhPZM25wfnalHdsrhil/ixo8uqvvbZ+Q5+zmrv
- BQ/azenPoLoXxvlttApzVETfdur82debMhwbaYwPpZFV4DOic16AXN6G2JvQPckmyyVL
- p940t+uhKMwoIGs4QrZe5aolNlo+I2bCy4aMfqwEKvOptbcVmwnjYrkNmEUaG9/EEcx7
- Wzkw==
+ bh=GhWcelKHFcFIW7nydpsEUwcO0pd8gUHpkm2J9XecMxQ=;
+ b=vwyALeNu2mc2/6WshFnFzjUEts9GLPCRbMaU/XtOWh4kyj+zZACPt4aBnAamEHftuA
+ chJyRqPF8xsYAijq1qq2k9HIaqvjQIsatwnXBZ5v0Rp3VVuRz1l4ppZDMRB6Nr0t4jsk
+ nthhw9Q5xxKQ6v07yaLiwe+K2epqncOOaM80SiZ8ECCenzmy4lV0C9flsnIrVwBPFOIO
+ W1PdGSqb+7kLgUs/0Cp5SOrnYCxHXqBwb7zdkD4H4TwmV4Zx6M7/k4Uj1sx840xcYgrp
+ BTmqXi278ftzW58g3EPC5iv7wGH0NcNwMFSP1laOJ6HJw4tX9k/LTfuz1Jpo8DbIHv1G
+ mZ6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753854853; x=1754459653;
+ d=1e100.net; s=20230601; t=1753854872; x=1754459672;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lWNN9WB1syoEngVmG1Zfdqg2oERvJW9qUBgkf8NcAy8=;
- b=bFz8I92amAmy65Cpo3PavyCw8TzdDLptlrzf+ebJ+wQ/cpQaJag8KrZjKOoF6MTSeQ
- GjqltNVGJaDEJTTK1A500RoqZCuAXCJyNyKG+YqLx8J5N61JgumJQzF5aoB9hLlBmpzK
- yNQxyorvtUJEfvYqu6Pmu/IRduTI45+q0EUlsXN4DTnCjDEF5tYuVGS0sL/A9bdp/c6d
- TmVN9GwkgeLRb2Fx/N6jCmQuiciV6jD+sfzJna96Y6kmGq+PSytbm8DNwh5LgAgL8q1Q
- LXNE7DrPG+Cagx6tSZFbnQPnZFLBEo9yBLMevTuDYRLcVMRrT4EA1tnEkzPbGyOrv+SV
- bwjQ==
+ bh=GhWcelKHFcFIW7nydpsEUwcO0pd8gUHpkm2J9XecMxQ=;
+ b=stC31es/lfNfBi3KSRS4UcTOG3/0K+3gWbF1/+GRXTlDuyocqL58tyN7jNa06F1ckp
+ frcabtr0ZzQSR5Oeon8zKudHGuljffYZVfN5JoKjx2c1bS4XQMHsKIKnsSalr9xh+eI0
+ 1gJsq81NPJxtvBKw4r5Vogv7gX9B0Ie53f6K5ZIYwACre5i2vTcdlcpeaJAb9550a0wn
+ 8OEsXwxArVKH5MmPBodIjzdF5J7nzaCoNv3rIUmjtjBgWkL64rwBg8sBbop+R4G2V91E
+ rqGQok07gMQoCO/bXdY/Gcxf/lOdUV7VZn/sIZoIBXYPZpR8ZYyA7pVSLE/7vLYL7Lck
+ et4A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVFw+xMZl83oc4PyWtfZkfBvN9UDB+dHGvT1iH0JHENwPE4RPwXNsMtLC0fjcXhE1ZJNjrFhI3/y11/@nongnu.org
-X-Gm-Message-State: AOJu0YyNQ66fHCLrBkjotZXqQe2UjzkVGrYFittOm4YjyiCvsVKZ6THl
- yniiEpeK9YLDcG96IzhGYfuz4lPH1FPoA6CfvHmdTPjgHeUSYv/xhI2k2+Ki+TdliMUP1fNZur+
- zt7NV
-X-Gm-Gg: ASbGncu4H8ZNoMCoQOPbEsZMCl2YjPrEvI3Jc5UKLTvWWrwaAvlg0mcnkwLPf6ix8Hc
- 62IIBAF8Kzqwy0E2njLL3uUpcayjYe99SchvtdC9i1YDPBpLODkOe73Kfq/OYaUE0ZbfyiFFgcb
- cT5okPD+bAPqkB6lun97IOaMwJkoNcvJq2Ee0v40W9nNjJT0b/LjjlxbJwH2G2k4aGlXS5Fhag6
- ykCwF8peeNzf29tw00umyzWwMNeQYDlrZBtgWjh8onSUgd55vC4dz81YRA5Zl7WH+Y8JugOvZlr
- CCbrCjVucDenJev+UPTzZhZQRIAZ9X0Plh++Mp+fgJ1iFqW+eEcjj4QS3kRwKLE8f/D2itW8OV7
- L3PE/Lca/z/I3+Hj5j68iR1hQBgkZPrYAcn5WV+z5BZhOFvEgPQiDNQADZcZuqj0oQSx1VH0yOH
- 1CUzP8nZXp/WxY
-X-Google-Smtp-Source: AGHT+IFa1TwruvCjWfyjyZlJjszeMBo7EmvjLmHAmuw9HV/lS0eOYb7S4mdzkEuF5+aAqVTovYD9gQ==
-X-Received: by 2002:a17:902:d505:b0:240:6740:6b11 with SMTP id
- d9443c01a7336-24096b0faa3mr28572085ad.40.1753854852854; 
- Tue, 29 Jul 2025 22:54:12 -0700 (PDT)
+ AJvYcCWk1NJOcx3XWjuQ0pKcBO9xmwOIGLU1QRiYKB5dA/kE3UU03ErrUOAffytgMsIQWEngce4xwyGMIx5R@nongnu.org
+X-Gm-Message-State: AOJu0YxMEpKaP6hYP8yxzresbm9KB7HX6TavqURJHt5HGDjvQjF/uk1O
+ lXUaMl9+YeOuJ0RmYB6w8fMGIOtk9HVx/ce6HiInpMRRNYGtiC67JG4p72rpvTDukTw=
+X-Gm-Gg: ASbGnctc2D7Tiv/haYrz6RuOHEMiByIII+IGiF4pPfR0q3meiFR9Ae8n5RGtLtO7wF5
+ kaiyoCe/ndB02TySOaqlqElNoP+dhB9xwshf2VGDCcb4qLbcWH2vqH4DfJhhqv7e1ulpL312wQH
+ C2GCp4SZ//88hcPgX8U1yHKLhUZz6B6XHM75nli9X7RPfN2BDqzhYveQbVSLNz3W9y/QCiuV025
+ wcSVd0Ma/Kr6OmDbam3jm+kEz6vYFxh18tE+JC+lBgMC6q0TOSU99nqfSezroUz9/LHm8/Zv8gc
+ wloEJfsHXAcvgtrRDKwimVUAifo7qteC0VwkFMNKxz0Rz1cAUJtqVKKxey7sumd3ChzGkKZq2Fa
+ yOU3atsm9xOjtCC1PvoypGdWSk2/pXNTIVgKFU08XIhJFMMD4x/XUBzpG/RfKAAHFzCoeo7QCA6
+ Y9FQ==
+X-Google-Smtp-Source: AGHT+IFiNetCn2bH/t10PZngwTpkTJAiG97WzJyM6vCYkQqXcl+h/R4yKeCysJcwYIWPIDLaBgUO+Q==
+X-Received: by 2002:a05:6a20:12d1:b0:21f:a6c9:34d with SMTP id
+ adf61e73a8af0-23dc0cf620fmr3101206637.1.1753854871451; 
+ Tue, 29 Jul 2025 22:54:31 -0700 (PDT)
 Received: from [192.168.4.112] (syn-098-150-199-049.res.spectrum.com.
  [98.150.199.49]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23ff3893975sm76189365ad.183.2025.07.29.22.54.11
+ d2e1a72fcca58-7640adfe5f3sm9629002b3a.78.2025.07.29.22.54.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Jul 2025 22:54:12 -0700 (PDT)
-Message-ID: <9295a3e5-7477-4abb-8275-831307c76f01@linaro.org>
-Date: Tue, 29 Jul 2025 19:54:09 -1000
+ Tue, 29 Jul 2025 22:54:30 -0700 (PDT)
+Message-ID: <dcb76043-a59a-4e2b-b960-2c0541241bfe@linaro.org>
+Date: Tue, 29 Jul 2025 19:54:28 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/19] target/loongarch: Use vaddr in
- get_physical_address()
+Subject: Re: [PATCH v4 07/19] target/loongarch: Use MMUAccessType in
+ loongarch_map_tlb_entry()
 To: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
 References: <20250730030202.3425934-1-maobibo@loongson.cn>
- <20250730030202.3425934-7-maobibo@loongson.cn>
+ <20250730030202.3425934-8-maobibo@loongson.cn>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20250730030202.3425934-7-maobibo@loongson.cn>
+In-Reply-To: <20250730030202.3425934-8-maobibo@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,15 +105,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/29/25 17:01, Bibo Mao wrote:
-> Replace target_ulong type with vaddr in function get_physical_address()
-> and the same with its calling functions.
+> Enum type MMUAccessType is used in function loongarch_map_tlb_entry()
+> rather than int type, and keep consistent with its caller function.
 > 
 > Signed-off-by: Bibo Mao<maobibo@loongson.cn>
 > ---
->   target/loongarch/cpu-mmu.h        |  2 +-
->   target/loongarch/cpu_helper.c     |  9 ++++-----
->   target/loongarch/tcg/tlb_helper.c | 11 ++++++-----
->   3 files changed, 11 insertions(+), 11 deletions(-)
+>   target/loongarch/tcg/tlb_helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
