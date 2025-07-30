@@ -2,53 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06913B157C3
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 05:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F24B15834
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 07:00:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugxGM-0005F3-2F; Tue, 29 Jul 2025 23:13:54 -0400
+	id 1ugytZ-0005fP-Ua; Wed, 30 Jul 2025 00:58:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1ugxFc-0004MO-HW
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 23:13:10 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1ugxFZ-0000N5-RA
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 23:13:07 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8Bxnmu+jYloKb00AQ--.64725S3;
- Wed, 30 Jul 2025 11:13:02 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJDx_8O+jYlomvMsAA--.29680S2;
- Wed, 30 Jul 2025 11:13:02 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v4 19/19] target/loongarch: Update TLB index selection method
-Date: Wed, 30 Jul 2025 11:13:01 +0800
-Message-Id: <20250730031301.3426334-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250730030202.3425934-1-maobibo@loongson.cn>
-References: <20250730030202.3425934-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugytX-0005c9-PG
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 00:58:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ugytV-0006LS-IH
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 00:58:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753851504;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ZIe205c6TGnEEucQcycpjMHGPXQHZjYssRLjgv3loPA=;
+ b=bQUhRqIa6oaqAIYqWuc4EmtIDZzN3VP1E5O+qpA/EL4qcsqvXV4sdmEZxGKHdvWdx6oBtk
+ oQycLJNOkO2YuBUetjc30dohZjnVZ4pmnS/aqxxB2AAIqOWTAwEOVucIHqwtj6lgNW5EQF
+ u5t2rBsk3njrXILGUs/yZ62mKI4DG64=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-168-UPaOA4J-MMGM6ODhXbP2ZA-1; Wed,
+ 30 Jul 2025 00:58:20 -0400
+X-MC-Unique: UPaOA4J-MMGM6ODhXbP2ZA-1
+X-Mimecast-MFC-AGG-ID: UPaOA4J-MMGM6ODhXbP2ZA_1753851499
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D5D3319560B2; Wed, 30 Jul 2025 04:58:18 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.44.32.29])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id EF2871800285; Wed, 30 Jul 2025 04:58:15 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>, Peter Maydell <peter.maydell@linaro.org>,
+ Hao Wu <wuhaotsh@google.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v3 0/3] pc-bios: Update vbootrom images
+Date: Wed, 30 Jul 2025 06:58:10 +0200
+Message-ID: <20250730045813.822132-1-clg@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDx_8O+jYlomvMsAA--.29680S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,96 +81,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With function helper_tlbfill(), since there is no suitable TLB entry,
-new TLB will be added and invalidate one old TLB entry. The old TLB
-entry index is selected randomly, instead it can be optimized as
-following:
-  1. invalid TLB entry can be selected at first.
-  2. TLB entry with other ASID can be selected secondly
-  3. random method is used by last.
+Hello !
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- target/loongarch/tcg/tlb_helper.c | 49 ++++++++++++++++++++++++++-----
- 1 file changed, 42 insertions(+), 7 deletions(-)
+Michael provided changes to fix the build of the vbootrom image of the
+AST2700 SoC machine in [1]. However, a workaound in roms/Makefile was
+still necessary to build ast27x0_bootrom.bin correctly. This was later
+fixed in [2].
 
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 0013810c50..0a86040c41 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -351,8 +351,11 @@ void helper_tlbwr(CPULoongArchState *env)
- void helper_tlbfill(CPULoongArchState *env)
- {
-     uint64_t address, entryhi;
--    int index, set, stlb_idx;
-+    int index, set, i, stlb_idx;
-     uint16_t pagesize, stlb_ps;
-+    uint16_t asid, tlb_asid;
-+    LoongArchTLB *tlb;
-+    uint8_t tlb_e;
- 
-     if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
-         entryhi = env->CSR_TLBREHI;
-@@ -366,20 +369,52 @@ void helper_tlbfill(CPULoongArchState *env)
- 
-     /* Validity of stlb_ps is checked in helper_csrwr_stlbps() */
-     stlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
-+    asid = FIELD_EX64(env->CSR_ASID, CSR_ASID, ASID);
-     if (pagesize == stlb_ps) {
-         /* Only write into STLB bits [47:13] */
-         address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
--
--        /* Choose one set ramdomly */
--        set = get_random_tlb(0, 7);
--
--        /* Index in one set */
-+        set = -1;
-         stlb_idx = (address >> (stlb_ps + 1)) & 0xff; /* [0,255] */
-+        for (i = 0; i < 8; ++i) {
-+            tlb = &env->tlb[i * 256 + stlb_idx];
-+            tlb_e = FIELD_EX64(tlb->tlb_misc, TLB_MISC, E);
-+            if (!tlb_e) {
-+                set = i;
-+                break;
-+            }
-+
-+            tlb_asid = FIELD_EX64(tlb->tlb_misc, TLB_MISC, ASID);
-+            if (asid != tlb_asid) {
-+                set = i;
-+            }
-+        }
- 
-+        /* Choose one set randomly */
-+        if (set < 0) {
-+            set = get_random_tlb(0, 7);
-+        }
-         index = set * 256 + stlb_idx;
-     } else {
-         /* Only write into MTLB */
--        index = get_random_tlb(LOONGARCH_STLB, LOONGARCH_TLB_MAX - 1);
-+        index = -1;
-+        for (i = LOONGARCH_STLB; i < LOONGARCH_TLB_MAX; i++) {
-+            tlb = &env->tlb[i];
-+            tlb_e = FIELD_EX64(tlb->tlb_misc, TLB_MISC, E);
-+
-+            if (!tlb_e) {
-+                index = i;
-+                break;
-+            }
-+
-+            tlb_asid = FIELD_EX64(tlb->tlb_misc, TLB_MISC, ASID);
-+            if (asid != tlb_asid) {
-+                index = i;
-+            }
-+        }
-+
-+        if (index < 0) {
-+            index = get_random_tlb(LOONGARCH_STLB, LOONGARCH_TLB_MAX - 1);
-+        }
-     }
- 
-     invalidate_tlb(env, index);
+This series is an update of [1] including a vbootrom image matching
+the new commits.
+
+Thanks,
+C.
+
+[1] https://lore.kernel.org/qemu-devel/2a89ad4c8f5665d07952a4f1749caa6ec0cd3d9c.1753654515.git.mjt@tls.msk.ru/
+[2] https://github.com/google/vbootrom/commit/7b1eb5f7fe6a85a03a1e40aa703a6ebbdb644e31
+
+
+Changes in v3:
+
+ - Updated commit log in patch 3/3
+
+Changes in v2:
+
+ - Updated all vbootrom images
+
+Cédric Le Goater (1):
+  pc-bios: Update vbootrom image to commit 183c9ff8056b
+
+Michael Tokarev (2):
+  roms/vbootrom: update to 7b1eb5f7fe6a
+  roms/Makefile: build ast27x0_bootrom
+
+ pc-bios/ast27x0_bootrom.bin | Bin 15552 -> 16408 bytes
+ pc-bios/npcm7xx_bootrom.bin | Bin 768 -> 672 bytes
+ pc-bios/npcm8xx_bootrom.bin | Bin 608 -> 672 bytes
+ roms/Makefile               |   5 +++++
+ roms/vbootrom               |   2 +-
+ 5 files changed, 6 insertions(+), 1 deletion(-)
+
 -- 
-2.39.3
+2.50.1
 
 
