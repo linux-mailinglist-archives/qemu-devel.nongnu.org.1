@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AEFB156DA
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFD4B156E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:08:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugvDy-0005L4-MU; Tue, 29 Jul 2025 21:03:18 -0400
+	id 1ugvIW-00066q-6f; Tue, 29 Jul 2025 21:08:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ugvCO-0002vy-2q
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:40 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1ugvCS-00033M-Qi
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:44 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ugvCM-0004hk-7n
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:39 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-315f6b20cf9so6775258a91.2
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 18:01:37 -0700 (PDT)
+ id 1ugvCQ-0004iV-Q2
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:44 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-7494999de5cso4359896b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 18:01:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1753837296; x=1754442096; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1753837301; x=1754442101; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aCYPR2FiJ1QAY3BBIXtKExP1YeShrtPgpJYXL8zq0L0=;
- b=PSn13BwEVf4X8fMKDoyle71WhTLY18XUqnAmLbcjuj+F/uUg0/lYDwp46QNFDVtdCU
- 7uwIpQikATaFzX9N82wXiXZNtRhCH532e8jMmeu1jNl3mxwtR8aDEbUQu9Poe9kAx259
- y+4yc3VAGxk4VORQmUOf1VXdAJVfNtYYfp37patvX+WGEF3uo8yB2b5i8lMqSGh9yrGb
- vCSyndTeQko2i6wzmYuQ/v8tQCGZkFwH9bmJmA5sR/p+dJNb/ktMzkoEtdo4OdOF8Vhu
- nqNMLutYseRFMwcuGR8FS07t+1xno/GpO/jzcU5Ej4ZDZ8xw6mLJIFvxuyZv7qzKGJBv
- u2fQ==
+ bh=4aIWN5OnX9/GMC6APQFtk8p77iCVg7Chzcce/9d2M6A=;
+ b=SvkLI1gmqZyyofKjkPZ9SOw8QmGLRrdQofHeYO5WLgLIi4tyOCZTEIckSJ56E+W456
+ b1zQS4OkAJiL47OunYe6rOm52/FVg1UBoe0czOlwuctY05VAl0SB34m/68H/nYGxiXDm
+ utQ3ulEecRQURgYNyyYU18xkk9SMYPWTPQEr+Lal+5FQYbqVTWLtSd+3vw6yh2iURbko
+ IP5p3pbaxi60uh0L0DRR1cfVQmKcAQIyRIy7MJB2GCByoU5qiOoRkW550S20W35emTLo
+ z+NRwYdkhB6SqKP2I4H1maOdoaqZipBRI8gbZFImH9h4q5YF64/j6XzYGcD3Ul0/GMZH
+ MpUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753837296; x=1754442096;
+ d=1e100.net; s=20230601; t=1753837301; x=1754442101;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aCYPR2FiJ1QAY3BBIXtKExP1YeShrtPgpJYXL8zq0L0=;
- b=fN31iX5aQtKOYhlyuhDSusmFv0pMmoja2X8mkjZKFJMMKzDcpu7XuvbXmrYcZvsVIc
- ZcJ1i0YTtH4UY5w4sbiZLnplseorLwc2y5B+JR28HTqZTa205+koF2VHivCP/TNueLMG
- 9/RrKwva2+nGC/qerHFG54Yxuc9yVxr4VwKbVegVTTYmTKJDdqIzPdLnsCaACJmUWwE6
- l4pEdLWtHxeaDSBNAXSvYJTnDIkKb8V9OqjG7+jemOxY9Mx4iuXtYehgksuaeZxdTZqB
- 87zXfLl4Zd6Viu1wSYT2fUyw6gvwHWYrfHzUr+xlyze7v6H1P+OiiW9eKGJWHfWrBnHD
- /jJA==
-X-Gm-Message-State: AOJu0Yy5kI/8qnE6N5/lwpS59GSLfFqNS2BsywkoS11yOBB95P4quhCc
- tC7A3T2mPxUZR1cQ8/F/heD2HbxHjdVu+Gq1O3huduFqoP5JadeJx9BtYeqAcQ==
-X-Gm-Gg: ASbGnctUOabJKlQubCPTewPtAEMZrAHc1Pm1qil9oXoA5Nv6mUlQeZdc6CRZnPCqLzo
- GIrJ7txsHqyq+ggS+Un7VU1nXh3ll7jWsKA+2khPNnml271IjRy8X6tv46LSEEV76/U6l6pKOCB
- BmhVCtSmb8vTOQg3I8y0Afb0DFkl35CdjcDBtcdxxZAGe9FZqvGD6WVk0dKrzvhXalEgxLK/l4G
- cedMdGLwaDfPLb+hQEa5lvSnJXf8AuP1eRyLVtzgsASGtynlfXnsFrMIEJCdMlBCVSFdhpzy3M8
- kKWCcP7pXtZ3alE7h3oPt1xxJW+h8V6HJuY2WyHZVMf9ofqUQCmn4j5nNqaTXd5rSCF76VxSkGO
- fN5G457FaxVHx1MNOBfFgig5TbLV1hq3/W9Z7u7HwbjO65S0RBzFZjwamX1v8uM9cBW3qJWq4YW
- 5D9r9PKoEXaSwgh54hV97xYFiLNTg=
-X-Google-Smtp-Source: AGHT+IFlQlGf3DIp9bOWYiGllUc9T8tEATH2DhGIJGkCizb41uBhgPYHijpEzP4g430cdlil5jJlfg==
-X-Received: by 2002:a17:90b:1ccc:b0:31e:d2a5:c099 with SMTP id
- 98e67ed59e1d1-31f5ea4a331mr1886794a91.30.1753837296190; 
- Tue, 29 Jul 2025 18:01:36 -0700 (PDT)
+ bh=4aIWN5OnX9/GMC6APQFtk8p77iCVg7Chzcce/9d2M6A=;
+ b=JAVFl8ke41AA+G/s4wdqKvvZ3r42L20zMIXwWUsxc/c43qFkUljWevSXst11ht/+P3
+ PqegzxF9HGnEpvo6MFml0jBcfiK87ac+3bvS1VfyKsD/t86JOS4RF9gvm/1OY2fY1SSV
+ JAQvPEJQzg33tfn7yOvh/CnXWkczB6M4T9o4T73VDk4iu27t+8nGBfPJQbzjzWWQxgZl
+ HEh2b7sjvWJCTr0jDxB/nUma7IDRYrUBeDEW5JldGQmXtM8oz+ysmeGbMjYLQneCWJs7
+ P8tfZ056OWw5LegZZB/KwbC4s8dHylFX1e8vrfC+w871EQeI3vu3D3yTHuxcuqKMsjsP
+ Stbw==
+X-Gm-Message-State: AOJu0YzUSZ6EcPyAirvszwMX8LJggAQ4Nr0d92oz83qC+ZpCqyG/CrhO
+ 40PrRapa0U84Znt7y8NreB1wXxlAxMTWvCuGNfZQFEV8v1IcIy12xL80d/bjfQ==
+X-Gm-Gg: ASbGncvog/h6o+JzI/diQIskyK4/aDhrnehdvS+XhJSPcYkUZJv4HWjdwYr+qg3K/N4
+ 5TbGsyNfagVMD30m5reBRL8lcDzpKjDfFR3ptqyLmqaC8hhS4YCRlxKb9m7MVV2vWqhjE6N8Fzj
+ X3ypiqg/wUQ9iFIbNDxzk6o8PISVbKpRJOAMgw2h7C5vuu0Od8pmdmnWzmRgmazkHC2hvzv3XV7
+ 8U9G9LNwRWWVjRrjFfsBmubYm2RIvqem58keAu8anFTp7+Y6aQPVkMfjuxqfJ5AXVAWiU9l8ZVN
+ wKN73t7aDnp+rDbkjzLjkf9GrXklzfepL0PK1XvRq5p/nzrUA0+mD93Ipxt9n7kbNI3tlQOoRLx
+ Hu8m6lt/UfMBLKZf5GDF7V6B6MiWeCPHKu9ox9tRstM8CVc7HTw4365RgAKhbgvTTs+ME7t7y6P
+ LZfQPaIJLkyZjqYv6ODT8B4BBjPyI=
+X-Google-Smtp-Source: AGHT+IGO5+dWwvxKlGWZjHjzWJbplJrycQOQWKLE673qmnxy3f79EGF0fqMSgITxrplJXNK3GaVR7Q==
+X-Received: by 2002:a05:6a20:3d06:b0:22b:8f7f:5cb2 with SMTP id
+ adf61e73a8af0-23dc0cf7867mr2163901637.8.1753837299835; 
+ Tue, 29 Jul 2025 18:01:39 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31f63df5adfsm343253a91.25.2025.07.29.18.01.33
+ 98e67ed59e1d1-31f63df5adfsm343253a91.25.2025.07.29.18.01.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 18:01:35 -0700 (PDT)
+ Tue, 29 Jul 2025 18:01:39 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
@@ -73,17 +73,16 @@ Cc: alistair23@gmail.com, Sunil V L <sunilvl@ventanamicro.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Nutty Liu <liujingqi@lanxincomputing.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 02/11] bios-tables-test-allowed-diff.h: Allow RISC-V FADT and
- MADT changes
-Date: Wed, 30 Jul 2025 11:01:13 +1000
-Message-ID: <20250730010122.4193496-3-alistair.francis@wdc.com>
+Subject: [PULL 03/11] hw/riscv/virt-acpi-build.c: Update FADT and MADT versions
+Date: Wed, 30 Jul 2025 11:01:14 +1000
+Message-ID: <20250730010122.4193496-4-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250730010122.4193496-1-alistair.francis@wdc.com>
 References: <20250730010122.4193496-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -109,24 +108,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sunil V L <sunilvl@ventanamicro.com>
 
+RISC-V support is added only in ACPI 6.6. According to the ACPI 6.6
+specification, the minor version of the Fixed ACPI Description Table
+(FADT) should be 6, and the Multiple APIC Description Table (MADT)
+should use revision 7. So, update the RISC-V FADT and MADT to reflect
+correct versions.
+
+Update the code comments to reflect ACPI 6.6 version details.
+
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Nutty Liu <liujingqi@lanxincomputing.com>
-Message-ID: <20250724110350.452828-2-sunilvl@ventanamicro.com>
+Message-ID: <20250724110350.452828-3-sunilvl@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/riscv/virt-acpi-build.c | 25 ++++++++++---------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..0c3f7a6cac 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,3 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/riscv64/virt/APIC",
-+"tests/data/acpi/riscv64/virt/FACP",
+diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+index ee1416d264..f1406cb683 100644
+--- a/hw/riscv/virt-acpi-build.c
++++ b/hw/riscv/virt-acpi-build.c
+@@ -270,11 +270,8 @@ spcr_setup(GArray *table_data, BIOSLinker *linker, RISCVVirtState *s)
+ #define RHCT_NODE_ARRAY_OFFSET 56
+ 
+ /*
+- * ACPI spec, Revision 6.5+
+- * 5.2.36 RISC-V Hart Capabilities Table (RHCT)
+- * REF: https://github.com/riscv-non-isa/riscv-acpi/issues/16
+- *      https://drive.google.com/file/d/1nP3nFiH4jkPMp6COOxP6123DCZKR-tia/view
+- *      https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view
++ * ACPI spec, Revision 6.6
++ * 5.2.37 RISC-V Hart Capabilities Table (RHCT)
+  */
+ static void build_rhct(GArray *table_data,
+                        BIOSLinker *linker,
+@@ -421,7 +418,10 @@ static void build_rhct(GArray *table_data,
+     acpi_table_end(linker, &table);
+ }
+ 
+-/* FADT */
++/*
++ * ACPI spec, Revision 6.6
++ * 5.2.9 Fixed ACPI Description Table (MADT)
++ */
+ static void build_fadt_rev6(GArray *table_data,
+                             BIOSLinker *linker,
+                             RISCVVirtState *s,
+@@ -429,7 +429,7 @@ static void build_fadt_rev6(GArray *table_data,
+ {
+     AcpiFadtData fadt = {
+         .rev = 6,
+-        .minor_ver = 5,
++        .minor_ver = 6,
+         .flags = 1 << ACPI_FADT_F_HW_REDUCED_ACPI,
+         .xdsdt_tbl_offset = &dsdt_tbl_offset,
+     };
+@@ -508,11 +508,8 @@ static void build_dsdt(GArray *table_data,
+ }
+ 
+ /*
+- * ACPI spec, Revision 6.5+
++ * ACPI spec, Revision 6.6
+  * 5.2.12 Multiple APIC Description Table (MADT)
+- * REF: https://github.com/riscv-non-isa/riscv-acpi/issues/15
+- *      https://drive.google.com/file/d/1R6k4MshhN3WTT-hwqAquu5nX6xSEqK2l/view
+- *      https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view
+  */
+ static void build_madt(GArray *table_data,
+                        BIOSLinker *linker,
+@@ -537,7 +534,7 @@ static void build_madt(GArray *table_data,
+ 
+     hart_index_bits = imsic_num_bits(imsic_max_hart_per_socket);
+ 
+-    AcpiTable table = { .sig = "APIC", .rev = 6, .oem_id = s->oem_id,
++    AcpiTable table = { .sig = "APIC", .rev = 7, .oem_id = s->oem_id,
+                         .oem_table_id = s->oem_table_id };
+ 
+     acpi_table_begin(&table, table_data);
+@@ -812,10 +809,8 @@ static void build_rimt(GArray *table_data, BIOSLinker *linker,
+ }
+ 
+ /*
+- * ACPI spec, Revision 6.5+
++ * ACPI spec, Revision 6.6
+  * 5.2.16 System Resource Affinity Table (SRAT)
+- * REF: https://github.com/riscv-non-isa/riscv-acpi/issues/25
+- *      https://drive.google.com/file/d/1YTdDx2IPm5IeZjAW932EYU-tUtgS08tX/view
+  */
+ static void
+ build_srat(GArray *table_data, BIOSLinker *linker, RISCVVirtState *vms)
 -- 
 2.50.0
 
