@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71B7B1670B
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 21:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB872B16710
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 21:48:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhCkp-0005ox-Kt; Wed, 30 Jul 2025 15:46:23 -0400
+	id 1uhCmJ-00067l-Nm; Wed, 30 Jul 2025 15:47:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhAsr-0004S8-Jr
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 13:46:34 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1uhAtA-0004yW-Ne
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 13:47:12 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhAsp-0008RF-Na
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 13:46:33 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-7698e914cd2so80355b3a.3
- for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 10:46:31 -0700 (PDT)
+ id 1uhAt9-0008Sq-5J
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 13:46:52 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-76bc55f6612so24378b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 10:46:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753897590; x=1754502390; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753897609; x=1754502409; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=z1tdg/d08QzhkT2bfQRh+cZppFogE73Ky3vRpYTZgzU=;
- b=r3mYf7BRFlSG3pParJPDm22OsKHA6cHWC76BCPBkutlb8Athui6KQwMzfScVgHcRI/
- vyy9K0qEstRdbF/mEEADozXFDwslyqtsVOB6wTU6rJiygme8KKLSj61UyhscQHM957Uk
- srZWcl75WyRYroYqqN0HgKp7QuuR8ZNuZUpN2wlDUR6OH15HXUkouTAtmUhvmPb1fxKa
- hpRJLn/lFmfD1ytc7S2m55hBzIWSeIKUi8L6oCWrP9g6Xd0TwcHpt0vITFHhqXWDlKFm
- TwTsrNU24SVxU2ufzucyN+ZCsLJrxJ+zRxg1I+b8MSRSmCx8EetuVcrqeMU6IkeO5oDx
- CwXQ==
+ bh=f6WZAn6VaKN07tv/UW7+TzF+vCV8/Zhf6mhs9CL9uFs=;
+ b=wv+ZLcdUaLUpFGbHr+mgAAI5plD8ds1+D4iLDqYKp8SUh0ga2EUGD9bOF7ZwN1YI3D
+ kY9VSBNoeMjTO68297N7k4hGtqz6SWu2BmGjn/GxZF8ga1wQMgd6dfPIanaVw18o0ZhL
+ 0A1j6OpH2h1Ro4ZoouUdj6s2U3FhfU3l+TirzfANA5lcwxEmputlzHhctsXAuIMFjC+/
+ 7rPu2PVm9ggkaEA4OCm0WYNWPvCxanVi7ptzCqFuHCGpDdVWIFA5FBRxA7n8xMhHXJr2
+ /nmtjj2laVh8FwBcAi0iCk1AmX5LzzUiIs1lfrUOznXwLT8iISY336Y+4pFd4bh02rk3
+ IvIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753897590; x=1754502390;
+ d=1e100.net; s=20230601; t=1753897609; x=1754502409;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z1tdg/d08QzhkT2bfQRh+cZppFogE73Ky3vRpYTZgzU=;
- b=Qgq7pOh3lTeoJlHsAJKW1Cbn6EXEpKhaZo8hLvowMsv8VMmaHekX3B8BOuxrzKw8rP
- z+TP/2ABvo8S3WJuPGXmn/6MUtDQWfXKsxQ9HmV6EFfJUCjjHG1Tb1YjTzS7OsRvCV0j
- sS0UWytALcc0tvQUQvn67D8R3s3MbkjU5abirKXHhVzCaUTcuum4rR/JVz4epL54cmoz
- e4LrkNqYM9sCd4dmyM+sVtG2Wm/MYuQQvkTY5Fq5pJHjA8IWCrgJXiSd6v5rvQLXsxdA
- 2WXM5U2roXwTZtrOZS+JbRpv+xvWXFaq8jnfvldTlQLLu7kLPnMJTriw1Hf8apjflwOj
- Cu/w==
+ bh=f6WZAn6VaKN07tv/UW7+TzF+vCV8/Zhf6mhs9CL9uFs=;
+ b=hao+IMyTQwnKBY7cLOREfEwUCew1e7PI5mc7niEYWCHfYQhMvtPLgOpqhpHM+UMpv1
+ qOqTlu5ITZPydNcJvqDGSYrhTa227H8wkQa6YP3iR3ltNig/7TH1fk5yQafrZgb/0nEG
+ 0pX2RnRu522KzoUq3Tk5+EddI+nK+GFKi+AmfEdgZSHL3/DGYg00rT0fMPQBDprOl6Nx
+ 6QVdpeNtsX0a8p4MNXNSnnTh9wmS+MF8YBxO1c1zVkqvdLYmO4GFRlrVuxp2iTNe4bAg
+ Q7X5m+m5O4GN3ojpi944ofV+Jmnu2FGiDUwftTOeANAHNDFd4hQLg9438wF8d97l4I7X
+ AKiA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWpPdaTUr1XzZapWcT1ISSdUZrH76FC8MG8X/psu6b7KQiVtd8qju70VnQF0CG7xg/XywwcUdrOL655@nongnu.org
-X-Gm-Message-State: AOJu0YxQo5TmyG/Pt2E6uVlsg/keC9CciBOJmScAxlbU0rIUgCVOXZMb
- ERt/fssgWLv0yICmJsZt9wBzRwitlxsuak3WEaBYWhqYtciKoy2k1qydqyvVNkBGbmg=
-X-Gm-Gg: ASbGncsyHJmrnDqyu/UpmsC3TDjd58jv/glVXrhvMZ6mRYMRBndMN6KR0X8TNk/xWcy
- e+v3dsyCjlRRuqu1otFZTHR62msam1X2nmUEUXfpdEAVhSMULax2GiGWbnbzsms1fVVvxxW33OM
- oyUP+atSGu9V/PA2wtc+Mll545EvcW20vWo8P2cc7piVmYfY+LC11UFqZvdDYpy/IU0XPSTPn3S
- LxeuSbhJkVCMz9NIpWYk61Clc2+2jFAYsnCGxFxkmPZYRAJsweZoqSuJRbkSz95HL4KD1jgaUuh
- vTNr7keAsUTyW8V5ANcLlVS/fXTad0u7fYN423eaW8ahCa9srmE34CmK48pMJq48nPhfGzEyYK1
- 85wMEjVe/fMk6R1zhQ0hjInIRG50e3UTL8pw=
-X-Google-Smtp-Source: AGHT+IEmL+Ew2foSmVtFJD39m997U7VhLkJBpwFNvj2o49jnA5jVFn7CLzqiziCyTZmgMni+u+2m0g==
-X-Received: by 2002:a05:6a00:4b05:b0:749:bb6:3a8e with SMTP id
- d2e1a72fcca58-76ab1021233mr5268371b3a.1.1753897590261; 
- Wed, 30 Jul 2025 10:46:30 -0700 (PDT)
+ AJvYcCWb/ozSfnHDVpiobkKvT30kXjA7OOXbianDQfQ8o0Gke6sPQAOjHTaDbjEDQ4bWoODyTh29c6dUJP6A@nongnu.org
+X-Gm-Message-State: AOJu0Yy4JARFMA6oeHlAO/WRO7Dz9GoCC3RKCUlDtgEQKwRGxBJSgZ0s
+ JinuL80yc8aQb7VfU/MmdpEdjJyrZW3EM74uQPaNBxvfQd/dKF0BCxJt8YkHyel/v3M=
+X-Gm-Gg: ASbGncuBOf04IgW1PqdYRnXeqMPgnNHslcOSbp/CGTXsyEB/NTyZqoGypyRCi9YcoL6
+ XKdCwxW122EAvMSsnxGwZwQ6CrmGPnEcbYV3Ka4nwtpn5Ss6+gi8Hb9Rqtu/a4VcFPdb40i+jLS
+ AgF2aBVaxZuXs6xcq/irkVAocUX5sBmEdP9mHoQc/3e25vh+hOc/CVn9ewW+43rSQIbSyhcFYVX
+ M/0gTPj71YAki4Zl6sNgSqbK+BnC82SvmX/jZytyxpNsWZx0jokJnFqdFSy+I18KVrP4BqIjbXs
+ QEharMY0inIS26jbGSeGiC2c6/i1Bp/JR4w0Uup6IhfQAitidzcq353MigtzZpXwGULuD4TODuV
+ K9gTLAyFayFNBKa2hCizaJvUHuRgKnJQN7S8=
+X-Google-Smtp-Source: AGHT+IHQwNPjmuL6lAseQr1e687/5JXOgBFzYa/AGFOQO92YZ/JO/bR0SFcp7CdxsF0fCKHKZB7ASw==
+X-Received: by 2002:a05:6a00:4a81:b0:746:1d29:5892 with SMTP id
+ d2e1a72fcca58-769656fc218mr8605420b3a.4.1753897609146; 
+ Wed, 30 Jul 2025 10:46:49 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bc889f6eesm113487b3a.98.2025.07.30.10.46.29
+ d2e1a72fcca58-764087294fasm10535473b3a.9.2025.07.30.10.46.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Jul 2025 10:46:29 -0700 (PDT)
-Message-ID: <b728df0f-13a3-400b-ba01-9b87dcb5f893@linaro.org>
-Date: Wed, 30 Jul 2025 10:46:29 -0700
+ Wed, 30 Jul 2025 10:46:48 -0700 (PDT)
+Message-ID: <ea55952c-ce00-4d3a-bde0-257b5c6967df@linaro.org>
+Date: Wed, 30 Jul 2025 10:46:47 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] contrib/plugins/hotblocks: Print uint64_t with PRIu64
- rather than PRId64
+Subject: Re: [PATCH 4/5] docs/about/emulation: Add documentation for hotblocks
+ plugin arguments
 Content-Language: en-US
 To: Alex Bradbury <asb@igalia.com>, qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, erdnaxe@crans.org, ma.mandourr@gmail.com
 References: <cover.1753857212.git.asb@igalia.com>
- <5d26c9d99ee87ac4a4034ff64e3d8881253eedf3.1753857212.git.asb@igalia.com>
+ <35128cc5a86a0c18418f9d3150fb8771c54ef7d8.1753857212.git.asb@igalia.com>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <5d26c9d99ee87ac4a4034ff64e3d8881253eedf3.1753857212.git.asb@igalia.com>
+In-Reply-To: <35128cc5a86a0c18418f9d3150fb8771c54ef7d8.1753857212.git.asb@igalia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,13 +104,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/29/25 11:41 PM, Alex Bradbury wrote:
-> qemu_plugin_u64_sum returns a uint64_t, so PRIu64 is the correct format
-> specifier.
+> Currently just 'inline'.
 > 
 > Signed-off-by: Alex Bradbury <asb@igalia.com>
 > ---
->   contrib/plugins/hotblocks.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   docs/about/emulation.rst | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
