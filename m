@@ -2,108 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F79B156CD
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 02:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5CEB156DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:05:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugv8B-0007SD-56; Tue, 29 Jul 2025 20:57:19 -0400
+	id 1ugvEL-0005wv-73; Tue, 29 Jul 2025 21:03:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ugujt-0004CB-Jb
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:32:13 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1ugv3D-00034S-5u
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:52:11 -0400
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1ugujr-00088k-5A
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:32:13 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id B00761F393;
- Wed, 30 Jul 2025 00:32:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753835526; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0a2hBXo0Sl+Hepc3L6RRPEIwR3QTf50yjh8d/Tigbnk=;
- b=P0Ev/jpcuRFS9hlcYHWM6rpWSJx2mtIdx7ML+ZO0fbqWOG5w+Cfe4pT5RPEXlygvd2gnDt
- hj7SR04Qu4N8iAo0tCkH6pXXH2+rlwL4/ThmNLfKVSCkE3w5PR++vsrG6ASVBLMbc5iSfJ
- Xl04kJXk6MaIve7UdxvUsztb6MsMTT0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753835526;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0a2hBXo0Sl+Hepc3L6RRPEIwR3QTf50yjh8d/Tigbnk=;
- b=ckzlv7NUaWtMMeOlWFlr8wDY0dL4Iklof4rsvzt7imrY3kYzgZkv2FvCtRHuZoEDW5/Uus
- x+CsfNEng3YUpkDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753835526; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0a2hBXo0Sl+Hepc3L6RRPEIwR3QTf50yjh8d/Tigbnk=;
- b=P0Ev/jpcuRFS9hlcYHWM6rpWSJx2mtIdx7ML+ZO0fbqWOG5w+Cfe4pT5RPEXlygvd2gnDt
- hj7SR04Qu4N8iAo0tCkH6pXXH2+rlwL4/ThmNLfKVSCkE3w5PR++vsrG6ASVBLMbc5iSfJ
- Xl04kJXk6MaIve7UdxvUsztb6MsMTT0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753835526;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0a2hBXo0Sl+Hepc3L6RRPEIwR3QTf50yjh8d/Tigbnk=;
- b=ckzlv7NUaWtMMeOlWFlr8wDY0dL4Iklof4rsvzt7imrY3kYzgZkv2FvCtRHuZoEDW5/Uus
- x+CsfNEng3YUpkDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 228451388B;
- Wed, 30 Jul 2025 00:32:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id T0xgNQVoiWgAWwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 30 Jul 2025 00:32:05 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Peter Xu
- <peterx@redhat.com>, qemu-arm <qemu-arm@nongnu.org>
-Subject: Re: [PULL 02/20] target/arm: Correct encoding of Debug
- Communications Channel registers
-In-Reply-To: <87ms8s3rpx.fsf@suse.de>
-References: <20250721132718.2835729-1-peter.maydell@linaro.org>
- <20250721132718.2835729-3-peter.maydell@linaro.org>
- <87ms8uh7ln.fsf@suse.de>
- <CAFEAcA9kxDdkEyLguTsEV_nDX9L5mAT+Rw_4Rmk68YQq50ee-A@mail.gmail.com>
- <87pldo3x3y.fsf@suse.de> <87ms8s3rpx.fsf@suse.de>
-Date: Tue, 29 Jul 2025 21:32:03 -0300
-Message-ID: <87bjp24iyk.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1ugv3B-0003MY-Li
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:52:10 -0400
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-3138b2f0249so321228a91.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:52:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1753836727; x=1754441527; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=d7UmGBf5vh/Q/wne8pry56sgUlYe0f0m3Fibfm33iR4=;
+ b=dQsl09Oe1RjMxs24V7/0EgoSuxKc9gX9dLCnWOAIx2MMEx9FAgGVrUOE/BxnVS4sYD
+ 5g5DZ8RmG8ESRPnZFfg5jKADeC8qBplf1IpaCItOq+fb8W24yMUArzny/I30MHHwkDi7
+ 2eheJvxHVHM/Ln08/TlSPQVUWWsiVyWpT3ZQJw1mhzSSOauhDoKJmyDWOLbPDywai2KI
+ xJyjZcENS1v7NOWoxbm32CeJhF16smYhFWIye/a785Ju7kmprp74jhH+cXxwhWepP/Ox
+ W+GdBbruFOq0Jx0+9VKZI3MNxzXsiy+qT/ZAVeGkH9bFodrz3PwtkEF9ksnoTNcNK9P2
+ z/og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753836727; x=1754441527;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=d7UmGBf5vh/Q/wne8pry56sgUlYe0f0m3Fibfm33iR4=;
+ b=q0HkevGHhhjNCkO9dbe26Ght9TX6+lgvn5mVOw+yTkU7af4OGQJCPBq9pON9cCFPL0
+ /rafAYQA+tm0AIyvdfY9zdFT9kSTpXq1J+vr5zzBcBpcKORRjrvMG3vH70U7kNkW2Fi3
+ 6beJ6NndQPDbNggUaXMDLwpICsGhFjEvJnFd0fAYelYVqwHlMjz6RpNoQDD2IKlxlNYi
+ 3xcT31fJugaS9Ya11JqXh1c1yrVxwdo8A6P19hVd0eAbInYvrE3WuaMkBWgY6XklwveB
+ DqO3FTrwwR3qQJQwWH7xL3pqh+X8MAGK6hSK15OjN78bOoi537B6EYE7kn64scrO65c0
+ 0VgA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXmsqAY/QRv635GWzeQqUAK48r9IvhrgJkZ65Dwh9uX+mZp/DaOr8qSwIiQkxBObVg2pySRSCbl6DiW@nongnu.org
+X-Gm-Message-State: AOJu0YzxtcFCa53rjaeu5tw0LERzJhY671OqWttyuZlmGxE9iwghHnsx
+ 8GgOAUdVxd5q6+lENKAqFyIQkj6ika6fKR0tJD9Sh9N2Yz1qFEzRkWlbcKV27wz30J4+GLQ3z0f
+ /cPUm1sUXKCoFWrUz2LG2y65u8UadvE274W1QyVE=
+X-Gm-Gg: ASbGncuKxxzKAubU7qth6lLOXFwV9/kvsLt03KdoBE0fLX5csOa1RDh52frkn1r6mqO
+ 7I4bio9yJEsRjiOlCd6H9/tAyRaw51jzR2uYx5D2GW5FRqjRWLHsLb6VUp2By/U8hTlCkIM5pJ+
+ FGNv+XC93KJjp8xCmJxXZIwWbylVUTowvORcM5Il4FDWtqg7/IRbyeMzaa5qMBzS4CfWX9+zaWi
+ vK/Yg==
+X-Google-Smtp-Source: AGHT+IH6UydLmP/44NCz7jv0df8THGV3svsKqG6+rJIZ8YHkccQ2Ejca4qY3k8VToc0/hsikAXxt39+qqhfDrQu1+uw=
+X-Received: by 2002:a17:90b:35d1:b0:312:e6f1:c05d with SMTP id
+ 98e67ed59e1d1-31f5dd891dcmr1837425a91.2.1753836727286; Tue, 29 Jul 2025
+ 17:52:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; MISSING_XM_UA(0.00)[]; RCVD_TLS_ALL(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TO_DN_SOME(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
- MID_RHS_MATCH_FROM(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCVD_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email, suse.de:mid, suse.de:email,
- imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20250729111143.1011889-1-frolov@swemel.ru>
+In-Reply-To: <20250729111143.1011889-1-frolov@swemel.ru>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Tue, 29 Jul 2025 17:51:56 -0700
+X-Gm-Features: Ac12FXw5SG6436Vaii8XB4dS79jNp-46ZHE0ok2ThLDcRcNMSp5xoCHGpGkO8VU
+Message-ID: <CAMo8BfJw_EUUuGT0qVwhfgEi_tLzSmrOdwAip1E08XNZ4XF=6Q@mail.gmail.com>
+Subject: Re: [PATCH] target/xtensa: Replace malloc() with g_strdup_printf()
+To: Dmitry Frolov <frolov@swemel.ru>
+Cc: sdl.qemu@linuxtesting.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-pj1-x1034.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.244,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,273 +95,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
-
-> Fabiano Rosas <farosas@suse.de> writes:
+On Tue, Jul 29, 2025 at 4:12=E2=80=AFAM Dmitry Frolov <frolov@swemel.ru> wr=
+ote:
 >
->> Peter Maydell <peter.maydell@linaro.org> writes:
->>
->>> On Wed, 23 Jul 2025 at 23:20, Fabiano Rosas <farosas@suse.de> wrote:
->>>>
->>>> Peter Maydell <peter.maydell@linaro.org> writes:
->>>>
->>>> > We don't implement the Debug Communications Channel (DCC), but
->>>> > we do attempt to provide dummy versions of its system registers
->>>> > so that software that tries to access them doesn't fall over.
->>>> >
->>>> > However, we got the tx/rx register definitions wrong. These
->>>> > should be:
->>>> >
->>>> > AArch32:
->>>> >   DBGDTRTX   p14 0 c0 c5 0  (on writes)
->>>> >   DBGDTRRX   p14 0 c0 c5 0  (on reads)
->>>> >
->>>> > AArch64:
->>>> >   DBGDTRTX_EL0  2 3 0 5 0 (on writes)
->>>> >   DBGDTRRX_EL0  2 3 0 5 0 (on reads)
->>>> >   DBGDTR_EL0    2 3 0 4 0 (reads and writes)
->>>> >
->>>> > where DBGDTRTX and DBGDTRRX are effectively different names for the
->>>> > same 32-bit register, which has tx behaviour on writes and rx
->>>> > behaviour on reads.  The AArch64-only DBGDTR_EL0 is a 64-bit wide
->>>> > register whose top and bottom halves map to the DBGDTRRX and DBGDTRTX
->>>> > registers.
->>>> >
->>>> > Currently we have just one cpreg struct, which:
->>>> >  * calls itself DBGDTR_EL0
->>>> >  * uses the DBGDTRTX_EL0/DBGDTRRX_EL0 encoding
->>>> >  * is marked as ARM_CP_STATE_BOTH but has the wrong opc1
->>>> >    value for AArch32
->>>> >  * is implemented as RAZ/WI
->>>> >
->>>> > Correct the encoding so:
->>>> >  * we name the DBGDTRTX/DBGDTRRX register correctly
->>>> >  * we split it into AA64 and AA32 versions so we can get the
->>>> >    AA32 encoding right
->>>> >  * we implement DBGDTR_EL0 at its correct encoding
->>>> >
->>>> > Cc: qemu-stable@nongnu.org
->>>> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2986
->>>> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->>>> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->>>> > Message-id: 20250708141049.778361-1-peter.maydell@linaro.org
->>>> > ---
->>>> >  target/arm/debug_helper.c | 13 +++++++++++--
->>>> >  1 file changed, 11 insertions(+), 2 deletions(-)
->>>> >
->>>> > diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
->>>> > index 69fb1d0d9ff..aee06d4d426 100644
->>>> > --- a/target/arm/debug_helper.c
->>>> > +++ b/target/arm/debug_helper.c
->>>> > @@ -988,11 +988,20 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
->>>> >        .opc0 = 2, .opc1 = 0, .crn = 0, .crm = 3, .opc2 = 2,
->>>> >        .access = PL1_RW, .accessfn = access_tdcc,
->>>> >        .type = ARM_CP_CONST, .resetvalue = 0 },
->>>> > -    /* DBGDTRTX_EL0/DBGDTRRX_EL0 depend on direction */
->>>> > -    { .name = "DBGDTR_EL0", .state = ARM_CP_STATE_BOTH, .cp = 14,
->>>> > +    /* Architecturally DBGDTRTX is named DBGDTRRX when used for reads */
->>>> > +    { .name = "DBGDTRTX_EL0", .state = ARM_CP_STATE_AA64,
->>>> >        .opc0 = 2, .opc1 = 3, .crn = 0, .crm = 5, .opc2 = 0,
->>>> >        .access = PL0_RW, .accessfn = access_tdcc,
->>>> >        .type = ARM_CP_CONST, .resetvalue = 0 },
->>>> > +    { .name = "DBGDTRTX", .state = ARM_CP_STATE_AA32, .cp = 14,
->>>> > +      .opc1 = 0, .crn = 0, .crm = 5, .opc2 = 0,
->>>> > +      .access = PL0_RW, .accessfn = access_tdcc,
->>>> > +      .type = ARM_CP_CONST, .resetvalue = 0 },
->>>> > +    /* This is AArch64-only and is a combination of DBGDTRTX and DBGDTRRX */
->>>> > +    { .name = "DBGDTR_EL0", .state = ARM_CP_STATE_AA64,
->>>> > +      .opc0 = 2, .opc1 = 3, .crn = 0, .crm = 4, .opc2 = 0,
->>>> > +      .access = PL0_RW, .accessfn = access_tdcc,
->>>> > +      .type = ARM_CP_CONST, .resetvalue = 0 },
->>>> >      /*
->>>> >       * OSECCR_EL1 provides a mechanism for an operating system
->>>> >       * to access the contents of EDECCR. EDECCR is not implemented though,
->>>>
->>>> Hi, this patch breaks migration. I'm leaving for the day and will take a
->>>> closer look in the morning. But since we have timezones, here it is:
->>>
->>> Thanks for the report; I can repro this. It happens because
->>> the loop in cpu_post_load hits the "register in their list but
->>> not ours" check, because the source VM has the AArch32
->>> {.cp = 14, .opc0 = 2, .opc1 = 3, .crn = 0, .crm = 5, .opc2 = 0}
->>> register which should never have existed.
->>>
->>
->> My debugging (in dst) shows:
->>
->> (gdb) x/16x 0x555557ad5d20 //cpu->cpreg_vmstate_indexes[0x18 to 0x1c]
->> 0x555557ad5d20: 0x200e0205      0x40200000      0x200e0284<     0x40200000
->> 0x555557ad5d30: 0x200e0285      0x40200000      0x200e0298      0x40200000
->> 0x555557ad5d40: 0x200e0302      0x40200000      0x200e0380      0x40200000
->> 0x555557ad5d50: 0x200e0800      0x40200000      0x200e0838      0x40200000
->>
->> (gdb) x/16x 0x555557ad4ac0 //cpu->cpreg_indexes[0x18 to 0x1c]
->> p0x555557ad4ac0: 0x200e0205      0x40200000      0x200e0280<     0x40200000
->> 0x555557ad4ad0: 0x200e0284      0x40200000      0x200e0285      0x40200000
->> 0x555557ad4ae0: 0x200e0302      0x40200000      0x200e0380      0x40200000
->> 0x555557ad4af0: 0x200e0800      0x40200000      0x200e0838      0x40200000
->>
->>
->>> I'm not sure how to handle this, as we have no mechanism for
->>> "ignore this incoming register value, it is bogus". I'm surprised
->>> we've never run into this before...
->>>
->>
->> I was thinking the same.
->>
->> I actually don't understand what the encoding in cpu->cpreg_indexes is
->> supposed to represent. How does comparing the indexes implies "in our
->> list"/"in their list"? Is there some sort of ISA level assumption?
->>
->>        if (cpu->cpreg_vmstate_indexes[v] > cpu->cpreg_indexes[i]) {
->>             /* register in our list but not incoming : skip it */
->>             continue;
->>         }
->>         if (cpu->cpreg_vmstate_indexes[v] < cpu->cpreg_indexes[i]) {
->>             /* register in their list but not ours: fail migration */
->>             return -1;
->>         }
->>  
+> malloc() return value is used without a check.
 >
-> Ok, I spotted the sorting now. 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+> ---
+>  target/xtensa/translate.c | 9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
+>
+> diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
+> index 34ae2f4e16..42ef8d3eb9 100644
+> --- a/target/xtensa/translate.c
+> +++ b/target/xtensa/translate.c
+> @@ -112,13 +112,8 @@ void xtensa_collect_sr_names(const XtensaConfig *con=
+fig)
+>
+>              if (*pname) {
+>                  if (strstr(*pname, name) =3D=3D NULL) {
+> -                    char *new_name =3D
+> -                        malloc(strlen(*pname) + strlen(name) + 2);
+> -
+> -                    strcpy(new_name, *pname);
+> -                    strcat(new_name, "/");
+> -                    strcat(new_name, name);
+> -                    free(*pname);
+> +                    char *new_name =3D g_strdup_printf("%s/%s", *pname, =
+name);
+> +                    g_free(*pname);
+>                      *pname =3D new_name;
+>                  }
+>              } else {
 
-Turns out the backward migration is also broken because this patch adds
-an extra register:
+I believe that
+  *pname =3D strdup(name);
+in the `else` clause should also be changed to
+  *pname =3D g_strdup(name);
+to maintain coupling between allocation and deallocation functions.
 
-  qemu-system-aarch64: Invalid value 292 expecting positive value <= 291
-  qemu-system-aarch64: Failed to load cpu:cpreg_vmstate_array_len
-
-We'll need to develop some proper compat machinery that takes the
-machine version in consideration. For the 10.0 -> 10.1 migration,
-something like (messy code, just a PoC):
-
--->8--
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index e2b2337399..8eba2d178c 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1453,6 +1453,9 @@ static void arm_cpu_initfn(Object *obj)
-     cpu->cp_regs = g_hash_table_new_full(g_direct_hash, g_direct_equal,
-                                          NULL, g_free);
- 
-+    cpu->compat_regs = g_hash_table_new_full(g_direct_hash, g_direct_equal,
-+                                             NULL, g_free);
-+
-     QLIST_INIT(&cpu->pre_el_change_hooks);
-     QLIST_INIT(&cpu->el_change_hooks);
- 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index dc9b6dce4c..463ef686e1 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -911,6 +911,7 @@ struct ArchCPU {
- 
-     /* Coprocessor information */
-     GHashTable *cp_regs;
-+    GHashTable *compat_regs;
-     /* For marshalling (mostly coprocessor) register state between the
-      * kernel and QEMU (for KVM) and between two QEMUs (for migration),
-      * we use these arrays.
-diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
-index aee06d4d42..05607fc082 100644
---- a/target/arm/debug_helper.c
-+++ b/target/arm/debug_helper.c
-@@ -17,6 +17,8 @@
- #define HELPER_H "tcg/helper.h"
- #include "exec/helper-proto.h.inc"
- 
-+#include "hw/boards.h"
-+
- #ifdef CONFIG_TCG
- /* Return the Exception Level targeted by debug exceptions. */
- static int arm_debug_target_el(CPUARMState *env)
-@@ -1077,6 +1079,14 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
-       .fieldoffset = offsetof(CPUARMState, cp15.dbgclaim) },
- };
- 
-+static uint64_t compat_cp_reginfo_virt_10_0[] = {
-+    /*
-+     * { .name = "DBGDTRTX", .state = ARM_CP_STATE_AA32,
-+     * .cp = 14, .crn = 0, .crm = 5, .opc1 = 3, .opc2 = 0 }
-+     */
-+    ENCODE_CP_REG(14, 0, 1, 0, 5, 3, 0),
-+};
-+
- /* These are present only when EL1 supports AArch32 */
- static const ARMCPRegInfo debug_aa32_el1_reginfo[] = {
-     /*
-@@ -1235,6 +1245,15 @@ void define_debug_regs(ARMCPU *cpu)
-     assert(ctx_cmps <= brps);
- 
-     define_arm_cp_regs(cpu, debug_cp_reginfo);
-+
-+    {
-+        MachineState *machine = MACHINE(qdev_get_machine());
-+        MachineClass *mc = MACHINE_GET_CLASS(machine);
-+
-+        g_hash_table_insert(cpu->compat_regs, mc->name,
-+                            (gpointer)compat_cp_reginfo_virt_10_0);
-+    }
-+
-     if (cpu_isar_feature(aa64_aa32_el1, cpu)) {
-         define_arm_cp_regs(cpu, debug_aa32_el1_reginfo);
-     }
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index 6986915bee..e8b83b62e8 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -10,6 +10,9 @@
- #include "migration/vmstate.h"
- #include "target/arm/gtimer.h"
- 
-+#include "target/arm/cpregs.h"
-+#include "hw/boards.h"
-+
- static bool vfp_needed(void *opaque)
- {
-     ARMCPU *cpu = opaque;
-@@ -987,10 +990,27 @@ static int cpu_post_load(void *opaque, int version_id)
-         }
-         if (cpu->cpreg_vmstate_indexes[v] < cpu->cpreg_indexes[i]) {
-             /* register in their list but not ours: fail migration */
-+
-+            MachineState *machine = MACHINE(qdev_get_machine());
-+            MachineClass *mc = MACHINE_GET_CLASS(machine);
-+            uint64_t *compat_regs = g_hash_table_lookup(cpu->compat_regs,
-+                                                        mc->name);
-+
-+            for (int j = 0; j < G_N_ELEMENTS(compat_regs); j++) {
-+                if (cpu->cpreg_vmstate_indexes[v] == cpreg_to_kvm_id(compat_regs[j])) {
-+                    /*
-+                     * ...unless the extra register is being explicitly
-+                     * ignored for migration compatibility purposes.
-+                     */
-+                    i--;
-+                    goto next;
-+                }
-+            }
-             return -1;
-         }
-         /* matching register, copy the value over */
-         cpu->cpreg_values[i] = cpu->cpreg_vmstate_values[v];
-+    next:
-         v++;
-     }
- 
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 407c9023c0..0ccb4a6c67 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -317,7 +317,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-         memory_size = "150M";
-         machine_alias = "virt";
-         machine_opts = "gic-version=3";
--        arch_opts = g_strdup_printf("-cpu max -kernel %s", bootpath);
-+        arch_opts = g_strdup_printf("-cpu neoverse-n1 -kernel %s", bootpath);
-         start_address = ARM_TEST_MEM_START;
-         end_address = ARM_TEST_MEM_END;
-     } else {
--- 
-2.35.3
-
+--=20
+Thanks.
+-- Max
 
