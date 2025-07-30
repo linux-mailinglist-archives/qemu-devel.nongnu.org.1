@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76042B156DD
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FB0B156D7
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:04:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugvFh-0000VN-Jl; Tue, 29 Jul 2025 21:05:07 -0400
+	id 1ugvE2-0005St-R6; Tue, 29 Jul 2025 21:03:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ugvCY-0003Fq-Jj
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:50 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1ugvCb-0003M2-MJ
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:54 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ugvCW-0004jm-IX
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:50 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-b3bdab4bf19so323122a12.2
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 18:01:48 -0700 (PDT)
+ id 1ugvCZ-0004l6-Vu
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:53 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-31329098ae8so417736a91.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 18:01:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1753837307; x=1754442107; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1753837310; x=1754442110; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=43YL6LeHtMqajzX1/nmmW+RggwtVTRuMuUjwY036hyw=;
- b=L5aD0G/9r9PBakSsOxWpBdHL8AxuGsJ9zEFW8HMZedSdUzrb0dVf9aIJWC7HeKnohA
- MDc3J1ylRueTBWYZAlt8LGQ02h0nEfDc5vDKk5n6Kx8wDMazSCErq6SzkVazlo8HDSIW
- FNHZIcE+TZba1XRJq4uNjmNEqaW5NDz5411S0o7ICdaNVNb6SQ3DZskt8huNq+bN+4jC
- O+zqB3/eBIgeGjfW4rbV+EXzTKDTKMLPexUDks4W4sidP/+4lqrAQ0HqBRHlfccXvsl0
- HgKKVgH0994KofWaQL/wLTpYNRw4XxADQGronSJTCFGj0aFAOuh7420GMSFsfkCNU1AO
- ihtg==
+ bh=lMd8J0/RUWfhwFpStoHOnaEZ6YL81TnlupHumGV85nQ=;
+ b=a3k2m/n4x1VG3HDio/pmlU6NKqTf2T9sZpNrLbnSK2gE91evaAHqQVAulhYz/n8sOG
+ uv3t2kzjE++of5s+ihXtOQqOnaLF3uze6z0ShOaqTpS4C9N3p2Ewrmix+Y3NnffaddRP
+ 33N71QHeJ4f7qjwdnTEgj4nMSpGe06omTPIlHUJXgiD0gMrxHSRDEYCYpHLUR5Wv51Zx
+ cGw9pyfPOQaDX4nIZpV+44rE+K23RjmnsdVgFk3jSfg0oQy1TVJKUc+mrtyraXk030A4
+ GAFq2lOIN7W1/DRd3I9zDAMFlaGBC6YMeVWCOjRFpfp+PdGQH8uFN2ua5MYi8bf59Ip1
+ UFZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753837307; x=1754442107;
+ d=1e100.net; s=20230601; t=1753837310; x=1754442110;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=43YL6LeHtMqajzX1/nmmW+RggwtVTRuMuUjwY036hyw=;
- b=lnN7eK+8ikWQoaU311xJhIHS4uqovdRUAMvEMFPuBd1E/QV5qlHzJKKVkHVZZdO4Po
- EQgkjoPgsQ/5tFRok04OZILmL0YvugggAhAGiFTJiKfSkRNXq8LvlqccLK+gxUD7QDrL
- 3wmm5+cYKETiuAMzrtEJ3LlnuQ43/YUDdJzqnk6fHb0FdJj8fsDHERz5EICulg6MLptb
- gLRE907EXy5GIGzWtFUw/CULEc521GrrikCs1dBNqbKQz84aUrSVM5M4uik/OCRROAyK
- /FPnzIPlzkzGKcTqI42kzesdtOps4eFHtqr0EfeM00bWVi4SGqTtE8YTh5zlwtxX3iLc
- bqsQ==
-X-Gm-Message-State: AOJu0Ywn1ghPlEkxt0YbxasJQDVGA/GIpXtn0CSl1n9NXqCpFYCKeOEV
- CBrZq5crJfxo3E6de7I6v69UOeSForpHWFhvT1+HzTDFS/F41NbU+O7l+anShw==
-X-Gm-Gg: ASbGnctI8ngPRrI4qmtZHQqYo3h2PdRIeCtvWEipuFiHCr+FcheU4r1t3oV2ZfhjSZt
- DIbIeldB0+mRrG3eNqFapWwGNdcNMK36xANa8fMWKE985QCox52JNNy5h+/6DtM2V2OJzdw/qUW
- Q6deagQk3UsEujYr2zF6J0K8SlRFTaJXHdpgu06SWm3vEPMgJHEb6hENmz4HCbwSHSk96dAwcSD
- jMNBCL7C7h86HOIZ+rnyUa2OrFpzF5pY00XWPakUn8WUXsYvr89UdO14FFXmBz8YSRxxQEi60VL
- CZu6ljPRi/T6ACjWzpkqx3OgvwZDKHAgP9m1oxuO3uEnBxZyp7+nE8QlB4cie40OJHKQMJEo4ba
- Voq+XBxLdykqNI8dNRWFmTsEN+9Z71Y5rRzGeD2x9S6+Styh2PauiopNpc+f50ZfUlYSrx/FKKw
- k/DjFUpBuTp6638bQkX7CRTEgy5Zg=
-X-Google-Smtp-Source: AGHT+IEI3I4Il2xuj62KHbRQG9fdomHh71xX5e4C21oq9svbfkQV2Ms7qbhtAy/GUyTL/cW9dgih1A==
-X-Received: by 2002:a17:90b:57c5:b0:31f:12d:ee4f with SMTP id
- 98e67ed59e1d1-31f5de6b9b2mr2015554a91.23.1753837306655; 
- Tue, 29 Jul 2025 18:01:46 -0700 (PDT)
+ bh=lMd8J0/RUWfhwFpStoHOnaEZ6YL81TnlupHumGV85nQ=;
+ b=BGx/jSVf6P2N4bx6/wLhyXR86e0o/uKspyiO6yBv+QlftAm3kJ73Dn8vOuD9B0ZIHn
+ Vt6+eiV8Vbw8M31YcjpORa+2YSePuE/MFNGmp+t16jO3Sbqfm5tYDxl4RNLQfvdArHHh
+ Ybid7yOlLPf1YY+eAFGBB9UBP/XojxhXBTD0wCVLJQaJ79wuv+C9ly0oA3ChMB91PSZd
+ 9rZmvkiJXQxD1YQoX5TjNNMKtSwCCPi8iwMwWZHwSVm3qm1f7Q6QoKayNQsmyaRcSlY3
+ n/tHaqBYRvIqr+8KnjJ8j1rS0/vY0xzsO8ptXWVFtR0mCm0c1ZeJ4edw4qVfr+IHdO6W
+ KQNQ==
+X-Gm-Message-State: AOJu0YwR6VQNBPxZARGUVa+jtphySUB4ANPtOmJDJ2rGqVauBVAPFgLc
+ DFxR9feZraC/N9brwp4iqn/2SxK9sEGXFuujqr8qzSKlarzaEe50VkywNl12Qw==
+X-Gm-Gg: ASbGnct7E9tJfhzvdQZj4GzM6kIYLGMUNoPEryATx/5rF+7lLb7VHg/qT7k5untuHVD
+ widWF3EfD8Mb8CRXSyWELTdlqnMlvtSaKzaIAiNowelBxVCG7JXp8DlT9PL/7QBCzb+SgyGfbZ9
+ ILi4Mg45lBuxBm3XL3o8HG/MWnWTlrovGfxgtNW0XVldxGbwR9uZznqwOsb5ZAN+cwtRI0sNnh8
+ ujb4WXK1jVF3b5wukHkJHLDmcgpWagSej3/xuctvkDKhe3VkONot3ZminiFql+/o5fk69MSon/R
+ FQehU8M2dQ45anIi5Ga8zDByqJ9NzPXig9llMIku77GRzIReRMj7VFq8jhdvKmUrLxKfGrnQtWT
+ KeFOZiGVQCWAjT38jweDA7l69Z1CmGJF3npNaerAeqkb2lpLkqEXlRvDWrlk0KhEKHZJhiQoOi8
+ 35a0s4/VYsOPJmLCVL8YRbEA8eYHQmATykx2h+SQ==
+X-Google-Smtp-Source: AGHT+IE8u5vWLhLuW7MX+gfr02O/JuxKnUCPM1DfJTHjW3o05TOlZPNTXrJLBr5Y4sSuOgGlJpMUaw==
+X-Received: by 2002:a17:90b:4cc1:b0:30e:6a9d:d78b with SMTP id
+ 98e67ed59e1d1-31f5dd1f551mr1857328a91.12.1753837309760; 
+ Tue, 29 Jul 2025 18:01:49 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31f63df5adfsm343253a91.25.2025.07.29.18.01.43
+ 98e67ed59e1d1-31f63df5adfsm343253a91.25.2025.07.29.18.01.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 18:01:46 -0700 (PDT)
+ Tue, 29 Jul 2025 18:01:49 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Yang Jialong <z_bajeer@yeah.net>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 05/11] intc/riscv_aplic: Fix target register read when source
- is inactive
-Date: Wed, 30 Jul 2025 11:01:16 +1000
-Message-ID: <20250730010122.4193496-6-alistair.francis@wdc.com>
+Subject: [PULL 06/11] linux-user/strace.list: add riscv_hwprobe entry
+Date: Wed, 30 Jul 2025 11:01:17 +1000
+Message-ID: <20250730010122.4193496-7-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250730010122.4193496-1-alistair.francis@wdc.com>
 References: <20250730010122.4193496-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,45 +104,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yang Jialong <z_bajeer@yeah.net>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-The RISC-V Advanced interrupt Architecture:
-4.5.16. Interrupt targets:
-If interrupt source i is inactive in this domain, register target[i] is
-read-only zero.
+We're missing a strace entry for riscv_hwprobe, and using -strace will
+report it as "Unknown syscall 258".
 
-Signed-off-by: Yang Jialong <z_bajeer@yeah.net>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20250728055114.252024-1-z_bajeer@yeah.net>
+After this patch we'll have:
+
+$ ./build/qemu-riscv64 -strace test_mutex_riscv
+110182 riscv_hwprobe(0x7f207efdc700,1,0,0,0,0) = 0
+110182 brk(NULL) = 0x0000000000082000
+(...)
+
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250728170633.113384-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/intc/riscv_aplic.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ linux-user/strace.list | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-index 4fa5f7597b..a1d9fa5085 100644
---- a/hw/intc/riscv_aplic.c
-+++ b/hw/intc/riscv_aplic.c
-@@ -628,7 +628,7 @@ static void riscv_aplic_request(void *opaque, int irq, int level)
- 
- static uint64_t riscv_aplic_read(void *opaque, hwaddr addr, unsigned size)
- {
--    uint32_t irq, word, idc;
-+    uint32_t irq, word, idc, sm;
-     RISCVAPLICState *aplic = opaque;
- 
-     /* Reads must be 4 byte words */
-@@ -696,6 +696,10 @@ static uint64_t riscv_aplic_read(void *opaque, hwaddr addr, unsigned size)
-     } else if ((APLIC_TARGET_BASE <= addr) &&
-             (addr < (APLIC_TARGET_BASE + (aplic->num_irqs - 1) * 4))) {
-         irq = ((addr - APLIC_TARGET_BASE) >> 2) + 1;
-+        sm = aplic->sourcecfg[irq] & APLIC_SOURCECFG_SM_MASK;
-+        if (sm == APLIC_SOURCECFG_SM_INACTIVE) {
-+            return 0;
-+        }
-         return aplic->target[irq];
-     } else if (!aplic->msimode && (APLIC_IDC_BASE <= addr) &&
-             (addr < (APLIC_IDC_BASE + aplic->num_harts * APLIC_IDC_SIZE))) {
+diff --git a/linux-user/strace.list b/linux-user/strace.list
+index fdf94ef32a..ab818352a9 100644
+--- a/linux-user/strace.list
++++ b/linux-user/strace.list
+@@ -1716,3 +1716,6 @@
+ { TARGET_NR_clock_gettime64, "clock_gettime64" , NULL, print_clock_gettime64,
+                            print_syscall_ret_clock_gettime64 },
+ #endif
++#ifdef TARGET_NR_riscv_hwprobe
++{ TARGET_NR_riscv_hwprobe, "riscv_hwprobe" , "%s(%p,%d,%d,%d,%d,%d)", NULL, NULL },
++#endif
 -- 
 2.50.0
 
