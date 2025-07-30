@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABC6B1681C
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 23:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 239D8B167FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 23:04:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhE7G-0004QT-Jo; Wed, 30 Jul 2025 17:13:38 -0400
+	id 1uhDy5-0003KO-LD; Wed, 30 Jul 2025 17:04:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhDuZ-0001dK-Qm
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:00:31 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1uhDxD-0001IP-FN
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:03:15 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhDuX-00042p-Rc
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:00:31 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-748e378ba4fso359668b3a.1
- for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 14:00:28 -0700 (PDT)
+ id 1uhDxB-0004lZ-SJ
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:03:15 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-23ffdea3575so2287335ad.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 14:03:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753909227; x=1754514027; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753909392; x=1754514192; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=KRb8qNQ8g3APMYQr/mIoQAVqJELnOfZrY6AAqel+j5Y=;
- b=yFWon/eOBTFLwLLKNjump+8OdQg3GWBdfPonBgnMJzIhcL/2SRmXBBoFjaK33rhfjO
- h0TdEz9RRmcXNSsPlRJBMyfP+eaz4NQ2aOa/VEp+80zjhqKEZA4TxduYuc3Zw5uJZaHB
- jkYda1U5Ks3vO0pUCj2Qji/nbsDSVLqv/maRiX9oDoZv3UVaaCZMr30TzJOQKNqlA2cZ
- ZrlyatnpgfMp0VqjRoblQxnQCKTylX79UKNuOI3nvVgNCpsGG2780OIMxRVTsZA1m9sa
- ybJlhs87wA/I72p9iOomg10jdMfjC+Rzp1u8MBIqoFmrVoD23BsPPDup0gVDByOPG0Fg
- xbQw==
+ bh=EcsBdj3tkVX3+/fASzXAnChM5KU5p4IRaqA05bkeAbM=;
+ b=K6plQpP9nY/Leimi+aOOUTl+NYpypqXhTQspDkIK2grXQeV1/I7qTvE2Urw39nQE9J
+ RixfsHIjDyUU1Gpj5gZdeWWZ3g5ahvaqr2JIgibmq7oJSdyxiG9O2uk7+06A05Hbn+jr
+ 4v7PYAj6/mbcOqjFdZ21gmyJ2wdUCVDYM0NMm6OPyqJN1z7yyebGZ22Rtu5hu2Num9Xz
+ 9KVXOKbWDBqRpwO7p3tVSrK3TOGRfCEQU+oXOodJmg4OM3l5X075/uV3sRDeHE5NrSNm
+ oyrEqVUfPefocl98vDxgHdql+vLfsSF/uXsOcMBPSerhhY/AF9NCXI95Xz/2aY6wJX+3
+ 3LJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753909227; x=1754514027;
+ d=1e100.net; s=20230601; t=1753909392; x=1754514192;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KRb8qNQ8g3APMYQr/mIoQAVqJELnOfZrY6AAqel+j5Y=;
- b=RSk7jnskqrGB9elMlMybzOmmE955AST0taFgrTE3MOW/c+MRlCNILJ5Yknfb4Gik1o
- itTVIfl/2YvoFP9nKtXutcfaGnZ+f8Fg3d80NQqO9zMbE6ZaE/1WO0/4kHvuXRtgcJZk
- j54pJ3eOLnqNjBW7m4wyDlXzsZPFaSgCclBcRdYlTdyX8A8nCqiRmHvTKqwqZdRgKT9u
- Jv6zB2eoTw9XSCa17phOoa05Qx/j4Adr2s64jUCqafuUPIhy8+Uiagzk4ZXvlxTA4tXA
- 0Rhn4tqNZw2dznNisgizU1Q4IDrRGNcwXpnVMFsd15V5ioid9MOZ76Wxw28yKdsiaUcV
- NZiw==
+ bh=EcsBdj3tkVX3+/fASzXAnChM5KU5p4IRaqA05bkeAbM=;
+ b=G73MHiWKhnHndsUo0XDDR2F0n9b85PiZNIs0FPuJQEvWrXNuh//w1GVFW/7dVFFPG0
+ EKm/xjoavRAnvtUkC0+i5Di0i9soHlWMjwHktBGfFYjMjJwYnyaqzSp8wtySSTmuQLB4
+ NN0HPlxRAPxn++RX8T/0WD0Qa5BWdV6jxnR/Vjsjdqs2tSpt6i1/DPZWrS6SaW1aJJDC
+ FxgVlbRQBCRALfavkyXdikAs0kd7EgzPuMFj1HPGqTT4M69VmJlhUtuz27iYVYM/8FJq
+ g1UIBvNQqFyoQGOOx/Ypr+hVqyuqvn+VAS5xJHi2nSis3BMFm2ABEgD+QdllTVx2UbEF
+ /t6g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUtXo4klL01b01MTya8RIyTYIC8sXZHmBW9oZfIxMHjos+WTWSaeNEtn/XFIPOPzwiCXrLdMa/43B7C@nongnu.org
-X-Gm-Message-State: AOJu0YyhImy20GrIcSw4BKWKxAsVRunLxPf3cvxfYNVxMTvD4GXPnQPi
- pGnfsmO/+Fc8woku37AzAS9Kc4oeSMqKFvYsh0zS5J/VrZxgpPW+Zl2jOQqGesGEr1o=
-X-Gm-Gg: ASbGncsnYrvZYbk1v38wwK4dBm5hkANIJ3CV8qISUd+wMHHkCaT/zYH/cwgvTkl32Ve
- InpjXM1WxYgVVZxGiGBvPxfUjRMliyR1+jAJejRFSf83vSzjiLdotf7B5klfXKBuBgXbeWD+sBt
- eI4Hr0mb2hQEeGS8X+CJlr5O1K+U1ajonjuD5lwewVuwpKLozC3Neq7GJJi46fAqd/HEbbtL/wn
- eCyWS9s6MH4r48SAkFMAaPEzrjvX/pPka175pT6G6fYwhmfI6vwb3Q+0KTenzdqcsNFKkVrctY6
- iV+eTtFCH7gSfuTcE/o9zoI8wB6bVy2TIETC50dVzwGNid++VSD5NJMJab/rYe9xgpHvGrCbiIl
- WYnpVVBfED8Ry02pfwxAEOiOnANkSORe69+M=
-X-Google-Smtp-Source: AGHT+IFmXAgs4aWfA+TTL7UUvBpHPwTn1yYuqvraSqbDyJPfqy/7/EaYRjnl8+1yXsPrbM0lMLs0Xw==
-X-Received: by 2002:a05:6a00:2e1c:b0:748:ff39:a0ed with SMTP id
- d2e1a72fcca58-76ab30f5299mr6857813b3a.20.1753909226538; 
- Wed, 30 Jul 2025 14:00:26 -0700 (PDT)
+ AJvYcCVCNMxjjXcMvuKRSrKHDULpa3IrIOflYKTaqmqK5xBp7tnJ/TyGyOPg3k83r6l6M53+PuoUwtXzCskM@nongnu.org
+X-Gm-Message-State: AOJu0YzTRoz6dHiOa5QW77by5Bobwb2rHGEYFzzuKFXKzbGlqU3Eh6jM
+ 9rVnQkSv0ja6Uj7VgpCfUQzAe1XVPXls8VQ2zMajceatxkWfaK2hVc/wL3JspEIYvSptJK4oDmZ
+ K9HqR
+X-Gm-Gg: ASbGncsrqu3IzNp6QJXilM9EQt1BsDNRIxVIoiLZctqUBLdp6rCLfmkaeDesoUA5C90
+ Pl8Y9PLYkyFCWLgeLc7FYv8ZvxpCi80inzhsVs1r3vudWUOzLTmWJZ7+gGtSAvTZImT7uf5ovJj
+ bbwhPkSeWoIUOnIxCGFY2jneSkZZ7YPYz8hzuIzVsMTz/MEyJ0H00YHJX8gg4Khh1V3KopBSO2j
+ pj+aUMytNcSLxu4iA1MeWm+G16xft4HbjMh3uxzz0w29qIlo/poIKF62nUGF0850xsAHvftxxMT
+ JYbAs1eUomv6Tc4mQLy+LUrIPN5+QwgQ7c8THDnfnKoE/hfhT+bPhA8mGk6fiL5SnYYWPKEf8si
+ 9aL7OGTWgWA5TNhScUEbdw3C1pn89ZqdEaQqRGJZLgdufDA==
+X-Google-Smtp-Source: AGHT+IG5y3pRGnuBBX0McZwLU/u/fC2BlfEVB2pyKObzJAmU17HSOPiO6l7NAIfJ8ArX4mwKrTOjWw==
+X-Received: by 2002:a17:902:e845:b0:23f:f6df:dd2b with SMTP id
+ d9443c01a7336-240969a85b4mr61883955ad.0.1753909392326; 
+ Wed, 30 Jul 2025 14:03:12 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bc6e5c741sm716898b3a.33.2025.07.30.14.00.25
+ d9443c01a7336-241e899b43dsm282555ad.136.2025.07.30.14.03.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Jul 2025 14:00:25 -0700 (PDT)
-Message-ID: <5391401d-8d58-4f33-be8e-c3901553dfcc@linaro.org>
-Date: Wed, 30 Jul 2025 14:00:25 -0700
+ Wed, 30 Jul 2025 14:03:11 -0700 (PDT)
+Message-ID: <17ebcdb4-c86d-4f4a-b0bb-230631daebf8@linaro.org>
+Date: Wed, 30 Jul 2025 14:03:11 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 25/82] include/hw/core/cpu: Invert the indexing into
- CPUTLBDescFast
+Subject: Re: [PATCH 26/82] target/hppa: Adjust mmu indexes to begin with 0
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
 References: <20250727080254.83840-1-richard.henderson@linaro.org>
- <20250727080254.83840-26-richard.henderson@linaro.org>
+ <20250727080254.83840-27-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250727080254.83840-26-richard.henderson@linaro.org>
+In-Reply-To: <20250727080254.83840-27-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,66 +104,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/27/25 1:01 AM, Richard Henderson wrote:
-> This array is within CPUNegativeOffsetState, which means the
-> last element of the array has an offset from env with the
-> smallest magnitude.  This can be encoded into fewer bits
-> when generating TCG fast path memory references.
-> 
-> When we changed the NB_MMU_MODES to be a global constant,
-> rather than a per-target value, we pessimized the code
-> generated for targets which use only a few mmu indexes.
-> By inverting the array index, we counteract that.
+> This is a logical reversion of 2ad04500543, though
+> there have been additions to the set of mmu indexes
+> since then.  The impetus to that original patch,
+> "9-15 will use shorter assembler instructions when
+> run on a x86-64 host" is now handled generically.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   include/hw/core/cpu.h | 6 +++++-
->   tcg/tcg.c             | 3 ++-
->   2 files changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> index bd835b07d5..85b1ab4022 100644
-> --- a/include/hw/core/cpu.h
-> +++ b/include/hw/core/cpu.h
-> @@ -596,7 +596,11 @@ static inline CPUArchState *cpu_env(CPUState *cpu)
->   #ifdef CONFIG_TCG
->   static inline CPUTLBDescFast *cpu_tlb_fast(CPUState *cpu, int mmu_idx)
->   {
-> -    return &cpu->neg.tlb.f[mmu_idx];
-> +    /*
-> +     * Invert the index order of the CPUTLBDescFast array so that lower
-> +     * mmu_idx have negative offsets from env with smaller absolute values.
-> +     */
-> +    return &cpu->neg.tlb.f[NB_MMU_MODES - 1 - mmu_idx];
->   }
->   #endif
->   
-> diff --git a/tcg/tcg.c b/tcg/tcg.c
-> index afac55a203..615675d185 100644
-> --- a/tcg/tcg.c
-> +++ b/tcg/tcg.c
-> @@ -425,7 +425,8 @@ static uintptr_t G_GNUC_UNUSED get_jmp_target_addr(TCGContext *s, int which)
->   static int __attribute__((unused))
->   tlb_mask_table_ofs(TCGContext *s, int which)
->   {
-> -    return (offsetof(CPUNegativeOffsetState, tlb.f[which]) -
-> +    /* Invert the index order -- see cpu_tlb_fast. */
-> +    return (offsetof(CPUNegativeOffsetState, tlb.f[NB_MMU_MODES - 1 - which]) -
->               sizeof(CPUNegativeOffsetState));
->   }
->   
+>   target/hppa/cpu.h | 28 ++++++++++++++--------------
+>   1 file changed, 14 insertions(+), 14 deletions(-)
 
-There are some comments left behind that can become confusing with this 
-change. Could be changed with previous commit.
-
-tcg/aarch64/tcg-target.c.inc:
-/* Load cpu->neg.tlb.f[mmu_idx].{mask,table} into {tmp0,tmp1}. */
-tcg/arm/tcg-target.c.inc:
-/* Load cpu->neg.tlb.f[mmu_idx].{mask,table} into {r0,r1}.  */
-
-As a proposal, it could be worth to add a small function
-mmuidx_to_entry() which does the inversion. This way, we save the 
-comment in tlb_mask_table_ofs.
-
-Else,
+Thanks for mentioning the original commit, else it would be hard to follow.
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+
 
