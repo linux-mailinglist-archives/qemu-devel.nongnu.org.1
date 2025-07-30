@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB872B16710
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 21:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C45B1670A
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 21:46:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhCmJ-00067l-Nm; Wed, 30 Jul 2025 15:47:55 -0400
+	id 1uhCjQ-0001uE-JM; Wed, 30 Jul 2025 15:44:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhAtA-0004yW-Ne
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 13:47:12 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1uhAvB-0000Nw-7W
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 13:48:57 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhAt9-0008Sq-5J
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 13:46:52 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-76bc55f6612so24378b3a.0
- for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 10:46:50 -0700 (PDT)
+ id 1uhAv9-0000D4-2E
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 13:48:56 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-23aeac7d77aso1189895ad.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 10:48:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753897609; x=1754502409; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753897733; x=1754502533; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=f6WZAn6VaKN07tv/UW7+TzF+vCV8/Zhf6mhs9CL9uFs=;
- b=wv+ZLcdUaLUpFGbHr+mgAAI5plD8ds1+D4iLDqYKp8SUh0ga2EUGD9bOF7ZwN1YI3D
- kY9VSBNoeMjTO68297N7k4hGtqz6SWu2BmGjn/GxZF8ga1wQMgd6dfPIanaVw18o0ZhL
- 0A1j6OpH2h1Ro4ZoouUdj6s2U3FhfU3l+TirzfANA5lcwxEmputlzHhctsXAuIMFjC+/
- 7rPu2PVm9ggkaEA4OCm0WYNWPvCxanVi7ptzCqFuHCGpDdVWIFA5FBRxA7n8xMhHXJr2
- /nmtjj2laVh8FwBcAi0iCk1AmX5LzzUiIs1lfrUOznXwLT8iISY336Y+4pFd4bh02rk3
- IvIw==
+ bh=13QXE/ZfO1Nn8URO78dJAYiXd+Clbs8PJ2mL3Fmhypk=;
+ b=dC3HbhiVO/2TMYIYvHVq2HXO4sVl/cGSnKqSQ+JiBlHN2rMAEQIk3s6DtvllbGe3XR
+ M7o1uDECsmiOBMD35I3e+u+2kfebxaEDCVJXpa2KOx6As8042sweBJgxfUuyxfp9X3qq
+ 5a4aqQRl03QZ+IjfYIYIP20OnW5MSYKvyQvIJvowQ8cJwyc+hMvzzaUhnMYXF7ANN8xq
+ qT8m1YcCcIx/XiyPixkC3eRewyM2Ztdbnd9NaiZnQEu3zIPDBq+n8L0Sz9QjQBhT3yTm
+ MKozjIKOiE1HfZawmRZGaO8HgCjceqqNkbn0mUDi54K0KHU6Gf7cDU5LnW3HQ2+BMfa5
+ C6sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753897609; x=1754502409;
+ d=1e100.net; s=20230601; t=1753897733; x=1754502533;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f6WZAn6VaKN07tv/UW7+TzF+vCV8/Zhf6mhs9CL9uFs=;
- b=hao+IMyTQwnKBY7cLOREfEwUCew1e7PI5mc7niEYWCHfYQhMvtPLgOpqhpHM+UMpv1
- qOqTlu5ITZPydNcJvqDGSYrhTa227H8wkQa6YP3iR3ltNig/7TH1fk5yQafrZgb/0nEG
- 0pX2RnRu522KzoUq3Tk5+EddI+nK+GFKi+AmfEdgZSHL3/DGYg00rT0fMPQBDprOl6Nx
- 6QVdpeNtsX0a8p4MNXNSnnTh9wmS+MF8YBxO1c1zVkqvdLYmO4GFRlrVuxp2iTNe4bAg
- Q7X5m+m5O4GN3ojpi944ofV+Jmnu2FGiDUwftTOeANAHNDFd4hQLg9438wF8d97l4I7X
- AKiA==
+ bh=13QXE/ZfO1Nn8URO78dJAYiXd+Clbs8PJ2mL3Fmhypk=;
+ b=ckAeEgKC8FBFfTmxgtDCojNR72TNTWYYmgJy8cMuonu+Vw42Ho0UMxC97qSC5ePefZ
+ nOsvi9Ddj+f52/1zQOxOMhA+ddDxD3skOzlzR4CbAlGwOmxsXjEzNIDTW3HNKuZRjv03
+ sVb3nZdgSUcHQKOcAdqOW/dECx+xZGZyhWTtNpvV8LsyT4GE0IzA5jSt9UsEPCjg5ByO
+ 0be//RTPCMnRenz5XsKw/NpkJKFTpxl+K0ZrDlB2CD0woMO3WNCkXeCM+0BAMxVVM/N7
+ Xha8AZpm11zfHgbxuuKGsFe1l8lkyoRNqpGemQovERu3rLB5dV1P6d01d40wK//8WU39
+ 6G2A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWb/ozSfnHDVpiobkKvT30kXjA7OOXbianDQfQ8o0Gke6sPQAOjHTaDbjEDQ4bWoODyTh29c6dUJP6A@nongnu.org
-X-Gm-Message-State: AOJu0Yy4JARFMA6oeHlAO/WRO7Dz9GoCC3RKCUlDtgEQKwRGxBJSgZ0s
- JinuL80yc8aQb7VfU/MmdpEdjJyrZW3EM74uQPaNBxvfQd/dKF0BCxJt8YkHyel/v3M=
-X-Gm-Gg: ASbGncuBOf04IgW1PqdYRnXeqMPgnNHslcOSbp/CGTXsyEB/NTyZqoGypyRCi9YcoL6
- XKdCwxW122EAvMSsnxGwZwQ6CrmGPnEcbYV3Ka4nwtpn5Ss6+gi8Hb9Rqtu/a4VcFPdb40i+jLS
- AgF2aBVaxZuXs6xcq/irkVAocUX5sBmEdP9mHoQc/3e25vh+hOc/CVn9ewW+43rSQIbSyhcFYVX
- M/0gTPj71YAki4Zl6sNgSqbK+BnC82SvmX/jZytyxpNsWZx0jokJnFqdFSy+I18KVrP4BqIjbXs
- QEharMY0inIS26jbGSeGiC2c6/i1Bp/JR4w0Uup6IhfQAitidzcq353MigtzZpXwGULuD4TODuV
- K9gTLAyFayFNBKa2hCizaJvUHuRgKnJQN7S8=
-X-Google-Smtp-Source: AGHT+IHQwNPjmuL6lAseQr1e687/5JXOgBFzYa/AGFOQO92YZ/JO/bR0SFcp7CdxsF0fCKHKZB7ASw==
-X-Received: by 2002:a05:6a00:4a81:b0:746:1d29:5892 with SMTP id
- d2e1a72fcca58-769656fc218mr8605420b3a.4.1753897609146; 
- Wed, 30 Jul 2025 10:46:49 -0700 (PDT)
+ AJvYcCVgJkNla4yYPoPoNUIdbzd1gasnzbxYPvQd9i77ly92vS3crNYEMLGNu15qdc9afDD39i6Gr9H6AH7A@nongnu.org
+X-Gm-Message-State: AOJu0YxYQCI1RCdL4fwGKcdrphBURhogZ7K4L08yk+2Im7dS+MkCN1ti
+ tOBYUQaLKTueo1wVpuN1MT/bx+etEvvHE8fVm3du/iHGABespC9pxnCb4syseq7IVfg=
+X-Gm-Gg: ASbGnct/k9douDWGPHGA4BDlBuXaXavqbt/PKaA6yxpWvY6jBh9Gw7be8ivq4tkgKiq
+ CkM2OSPiYyYTLSuYTU2w7RXJhIYoyRlN8ZAyVQrEVglYZGXHdPcMIDxZism223Nl4zoiLvzQoY+
+ +iaZz47g8Q2d/gyOpRy7V69gtQam5WtSzZQuO+j5mkbDIv3F1k36T+8jkTCNZ6gGcI8m1Az7xYG
+ HVmInR/IU4Ln0SFMAVt5QZ4Mqc3ZnPQj2pvCIxdGTRc+YaqR4cBTWFaJdkaGgPl/qnbWhDSOG+y
+ IoO4C9NnjhnqRquo/LOGhMg6CcApFCjqdzEq1ZWMQzpf5ptoI76aatr/IieytIqbNf+RhSZzVec
+ nBJEnZGhFKxbeptqisj5IMlOlserEyvPQvms=
+X-Google-Smtp-Source: AGHT+IEmaoyHGcEFH6UnyCb5DAEM/OVWG5qUI0UuB2/yRIMnsJbwTEatXQ4DOv6rWpZ5eal820pgiw==
+X-Received: by 2002:a17:902:d503:b0:240:2774:8372 with SMTP id
+ d9443c01a7336-24096b06d61mr62926575ad.36.1753897732820; 
+ Wed, 30 Jul 2025 10:48:52 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-764087294fasm10535473b3a.9.2025.07.30.10.46.48
+ d9443c01a7336-23fdf168907sm98677085ad.90.2025.07.30.10.48.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Jul 2025 10:46:48 -0700 (PDT)
-Message-ID: <ea55952c-ce00-4d3a-bde0-257b5c6967df@linaro.org>
-Date: Wed, 30 Jul 2025 10:46:47 -0700
+ Wed, 30 Jul 2025 10:48:52 -0700 (PDT)
+Message-ID: <aa061a96-8552-45e6-b5a5-af12d35332ba@linaro.org>
+Date: Wed, 30 Jul 2025 10:48:51 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] docs/about/emulation: Add documentation for hotblocks
- plugin arguments
+Subject: Re: [PATCH 0/5] contrib/plugins/hotblocks: Minor bug fixes and add
+ limit argument
 Content-Language: en-US
 To: Alex Bradbury <asb@igalia.com>, qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, erdnaxe@crans.org, ma.mandourr@gmail.com
 References: <cover.1753857212.git.asb@igalia.com>
- <35128cc5a86a0c18418f9d3150fb8771c54ef7d8.1753857212.git.asb@igalia.com>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <35128cc5a86a0c18418f9d3150fb8771c54ef7d8.1753857212.git.asb@igalia.com>
+In-Reply-To: <cover.1753857212.git.asb@igalia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,13 +103,42 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/29/25 11:41 PM, Alex Bradbury wrote:
-> Currently just 'inline'.
+> This series contains one minor feature addition and a series of small
+> bugfixes/improvements. The addition that motivates the submission is to add a
+> limit argument for the hotblocks plugin, allowing you to control how many
+> blocks are printed rather than being hardcoded to the 20 most executed.
+> Setting limit=0 and dumping information about all executed blocks is
+> incredibly helpful for an analysis script I have downstream.
 > 
-> Signed-off-by: Alex Bradbury <asb@igalia.com>
-> ---
->   docs/about/emulation.rst | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+> This is my first contribution to QEMU. I've attempted to follow all of the
+> guidance in the "Submitting a Patch" guide, but apologies if I missed
+> anything.
+>
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Thanks for contributing Alex.
+
+As you probably read, in case a v2 is expected (the plugins maintainer 
+Alex will be back next week, he might have additional comments), you can 
+add the "Reviewed-by" tags you already collected to your commits by 
+ammending their messages.
+For the rest, your series looks good to me.
+
+Regards,
+Pierrick
+
+> Alex Bradbury (5):
+>    contrib/plugins/hotblocks: Correctly free sorted counts list
+>    contrib/plugins/hotblocks: Fix off by one error in iteration of sorted
+>      blocks
+>    contrib/plugins/hotblocks: Print uint64_t with PRIu64 rather than
+>      PRId64
+>    docs/about/emulation: Add documentation for hotblocks plugin arguments
+>    contrib/plugins/hotblocks: Allow limit to be set as a command line
+>      argument
+> 
+>   contrib/plugins/hotblocks.c | 20 ++++++++++++++------
+>   docs/about/emulation.rst    | 12 ++++++++++++
+>   2 files changed, 26 insertions(+), 6 deletions(-)
+> 
 
 
