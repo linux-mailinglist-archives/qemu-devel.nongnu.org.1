@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1C2B15A35
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 10:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE14B15A90
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 10:29:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh1s7-0004fp-W3; Wed, 30 Jul 2025 04:09:12 -0400
+	id 1uh29a-000753-Qy; Wed, 30 Jul 2025 04:27:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uh1Zo-0006Wi-QS
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 03:50:30 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ id 1uh1lD-0007TE-By
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:02:07 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uh1Zi-000632-1d
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 03:50:12 -0400
+ id 1uh1lA-0007iK-ER
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:02:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753861811; x=1785397811;
+ t=1753862521; x=1785398521;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Hy5yGYlKFNhPLaGusC7T4ybhSpH28mkF5JMzPVdav9I=;
- b=ZyLm070xRZ/OLxBvyW59dyuS2SHVoNrhYz8rphsiv9zFMg1A0HtvxI6/
- DTD8IaPXJcDRwiDWmemRVDlM0sHD6uLQengDvchjUFoaO1RmnF1u22cty
- DpOiVIx33VYFWbQovmy8KLBDv4cuCqfxIn1aum/HDpAS2vrxYx5yPFQPc
- ly7ZTAWtXtGNxDPsYQrGsynH0tG7uZLShb2hFS1Aaar6OZY8jC56UuTTK
- 7O9mJEw9TBehHi+jUkr2Y34Nnip6nojkPJM7kEV5WNCOGzSQNkWFtHSwO
- 7rubLH1U7S/ZlbY4NaQ+NDzFXHkgqIpU1xbmbbA1XyHKjv9qh0Pmh7k5c g==;
-X-CSE-ConnectionGUID: tbJnozgHRGyamPsuZEgemQ==
-X-CSE-MsgGUID: uzeZ+FBCRjiUIErG+saEgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11506"; a="55852567"
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="55852567"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2025 00:50:05 -0700
-X-CSE-ConnectionGUID: eNJhPzgHTZS4bLNmD18eNA==
-X-CSE-MsgGUID: djthuoOaSBaZ4bq+YiQ7jg==
+ bh=JhkWE40o8mOT9s2n7Qia38qVjpnJXcDvaHGS4W9+3qw=;
+ b=f2LtKU071AgZEqYO1SkJjdlqxaXrr7j5+T7Dle4fJ6OYxvuKEJsMr+j2
+ WaLX4dIYami61PI4E6iD2ZosIOowHcpxQO3z+XoIJkT5kQ5VqEVVFel2T
+ 8en9kubVrlK29qIWKA/GpetOW1H6ZUh/bxzmGdy1xMxtjYU5kouL1rOTd
+ chqHsRFWqYlmx+7vBfW+ja4dF+hCHq+bORnSx4gZgIZKdXIweyWkXfVxl
+ 1v638Y3eViwx6vSzGu1WNH9jISMGdliLvQ6q7HDepiTzU7ca4AFnQ/9s4
+ 539XIJSfyjlIMnjcO10FW29AY/gkExs4nZZtyBCBg+GtnSkA/Z8bkA8oc w==;
+X-CSE-ConnectionGUID: fIUnW6dzSuyv/vmatOb3rQ==
+X-CSE-MsgGUID: GBblvXRdSZyT7fU67nn1Yw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11506"; a="66853563"
+X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="66853563"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jul 2025 01:01:57 -0700
+X-CSE-ConnectionGUID: Hrk1GSQGRbCEn30WaSVKTw==
+X-CSE-MsgGUID: nGE5DVCeTCOc5KYlFW/1KA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="162193164"
+X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="193767668"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 30 Jul 2025 00:50:03 -0700
-Date: Wed, 30 Jul 2025 16:11:38 +0800
+ by fmviesa001.fm.intel.com with ESMTP; 30 Jul 2025 01:01:55 -0700
+Date: Wed, 30 Jul 2025 16:23:31 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -52,15 +52,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Kirill Martynov <stdcalllevi@yandex-team.ru>,
  Marcelo Tosatti <mtosatti@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/2] i386/cpu: Enable SMM cpu addressspace
-Message-ID: <aInTujVM5hr6/cJw@intel.com>
+Subject: Re: [PATCH 2/2] target/i386: Define enum X86ASIdx for x86's address
+ spaces
+Message-ID: <aInWgzo0yJH1QRbS@intel.com>
 References: <20250729054023.1668443-1-xiaoyao.li@intel.com>
- <20250729054023.1668443-2-xiaoyao.li@intel.com>
+ <20250729054023.1668443-3-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250729054023.1668443-2-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250729054023.1668443-3-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -85,57 +86,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> @@ -91,6 +92,15 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
->          kvm_set_guest_phys_bits(cs);
->      }
->  
-> +    /*
-> +     * When SMM is enabled, there is 2 address spaces. Otherwise only 1.
-> +     *
-> +     * Only init address space 0 here, the second one for SMM is initialized at
-               ^^^^
-	       initialize
+On Tue, Jul 29, 2025 at 01:40:23PM +0800, Xiaoyao Li wrote:
+> Date: Tue, 29 Jul 2025 13:40:23 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH 2/2] target/i386: Define enum X86ASIdx for x86's address
+>  spaces
+> X-Mailer: git-send-email 2.43.0
+> 
+> Like ARM defines ARMASIdx, do the same to define X86ASIdx as enum. So
+> that it's more clear what index 0 is for memory and index 1 is for SMM.
 
-> +     * register_smram_listener() after machine init done.
-> +     */
-> +    cs->num_ases = x86_machine_is_smm_enabled(X86_MACHINE(current_machine)) ? 2 : 1;
-> +    cpu_address_space_init(cs, 0, "cpu-mmeory", cs->memory);
-> +
->      return true;
->  }
->  
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index 369626f8c8d7..47fb5c673c8e 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -2704,6 +2704,7 @@ static MemoryRegion smram_as_mem;
->  
->  static void register_smram_listener(Notifier *n, void *unused)
->  {
-> +    CPUState *cpu;
->      MemoryRegion *smram =
->          (MemoryRegion *) object_resolve_path("/machine/smram", NULL);
->  
-> @@ -2728,6 +2729,10 @@ static void register_smram_listener(Notifier *n, void *unused)
->      address_space_init(&smram_address_space, &smram_as_root, "KVM-SMRAM");
->      kvm_memory_listener_register(kvm_state, &smram_listener,
->                                   &smram_address_space, 1, "kvm-smram");
-> +
-> +    CPU_FOREACH(cpu) {
-> +        cpu_address_space_init(cpu, 1, "cpu-smm", &smram_as_root);
+Maybe:
 
-It is worth mentioning in the commit message that directly sharing
-MemoryRegion in CPUAddressSpace is safe.
+Define X86ASIdx as the enum, like ARM's ARMASIdx, so that index 0 is
+clearly for memory and index 1 for SMM.
 
-> +    }
-
-I still think such CPU_FOREACH in machine_done callback is not the
-best approach - it's better to initialize all the address spaces in
-kvm_cpu_realizefn(), and not to go far away from cs->num_ases, as I
-said in the previous discussion.
-
-But it's still good to fix this bug. So, with other comments
-addressed,
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  accel/kvm/kvm-all.c              | 2 +-
+>  target/i386/cpu.h                | 5 +++++
+>  target/i386/kvm/kvm-cpu.c        | 2 +-
+>  target/i386/kvm/kvm.c            | 4 ++--
+>  target/i386/tcg/system/tcg-cpu.c | 4 ++--
+>  5 files changed, 11 insertions(+), 6 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
