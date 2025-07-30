@@ -2,67 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6C6B15AA0
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 10:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFEAAB15B26
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 11:02:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh2E1-0001ng-P6; Wed, 30 Jul 2025 04:31:49 -0400
+	id 1uh2gC-00018X-0z; Wed, 30 Jul 2025 05:00:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uh1qW-0003Aq-Dv; Wed, 30 Jul 2025 04:07:32 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uh2QW-0003NV-LV
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:44:45 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uh1qU-0008Qm-Ed; Wed, 30 Jul 2025 04:07:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753862851; x=1785398851;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=/B21S4ncBoB5+WmK3DLxCfYKt3FEo1x8DXT3apgobf0=;
- b=ItQtz0jq+sI0grXiWYkJDInrG/IIDL9TDRxx3dsvEh6rUYsZagFATDI4
- 9NmGPHUBqhzYUoziBH4EcSR8lAKOsGAID5YeJHGViiADeAryoLGSXE1cA
- M+P/VNnT1obn1YA/4f0w0DD6KipV18Ka6/czTrGTaCGMCizwd8R3dHAn9
- sDcuiASVdNc+1rK9q7g2JOqJsb7XfjrVJH/UFo7F6ahq4Hd/hQ3zqXPM6
- 0tF2Knpx/V7QBwdKHqflvDKY4SqQSPNG9N9RI+EmUGL42Yf7w9PD4B6F3
- oSI1/vogqKwvvG8oAnnQ43ixK2qA9RBbGoZ3oVe5OLK7HoomxMECf4ld8 w==;
-X-CSE-ConnectionGUID: ZTI/1zGhTVac2XsfSa8R0w==
-X-CSE-MsgGUID: 3OtUcW9GQ8uVy2hIQgA+qg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11506"; a="66721522"
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="66721522"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2025 01:07:27 -0700
-X-CSE-ConnectionGUID: hDcRCRqSS+u3LzNLKJjF4A==
-X-CSE-MsgGUID: vtCC4fUcQzKZicpdNM8ZRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="186600364"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 30 Jul 2025 01:07:25 -0700
-Date: Wed, 30 Jul 2025 16:29:01 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH] rust: declare self as qemu_api for proc-macros
-Message-ID: <aInXzUamULqelELf@intel.com>
-References: <20250728-self-as-qemu_api-v1-1-001c339cccc8@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uh2QU-0005Rz-1L
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:44:44 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id C813113BD23;
+ Wed, 30 Jul 2025 11:44:24 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id E7A47252CB9;
+ Wed, 30 Jul 2025 11:44:34 +0300 (MSK)
+Message-ID: <2314f24f-f90e-4de7-8887-bb04f8c2b099@tls.msk.ru>
+Date: Wed, 30 Jul 2025 11:44:34 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250728-self-as-qemu_api-v1-1-001c339cccc8@linaro.org>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] pc-bios: Update vbootrom image to commit
+ 183c9ff8056b
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>
+References: <20250730045813.822132-1-clg@redhat.com>
+ <20250730045813.822132-4-clg@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20250730045813.822132-4-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,23 +105,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
-> index 86dcd8ef17a9ecd040742a99e4b0421e19ec88f6..44d995cfdb990e0d17e7216cf4d1f04a5a980a1f 100644
-> --- a/rust/qemu-api/src/lib.rs
-> +++ b/rust/qemu-api/src/lib.rs
-> @@ -32,6 +32,9 @@
->  pub mod vmstate;
->  pub mod zeroable;
->  
-> +// Allow proc-macros to refer to `::qemu_api` inside the `qemu_api` crate (this crate).
-> +extern crate self as qemu_api;
-> +
->  use std::{
->      alloc::{GlobalAlloc, Layout},
->      ffi::c_void,
+On 30.07.2025 07:58, Cédric Le Goater wrote:
+> Full changelog since last update (1287b6e42e83) :
+> 
+> Hao Wu (2):
+>        Automatically search for UBOOT location for NPCM8xx images.
+>        Dynamically detects NPCM8XX UBOOT destination and size.
+> 
+> Jamin Lin (5):
+>        Add initial support for AST27x0
+>        ast27x0: Show build date and git version
+>        ast27x0: Initialize and enable SSP/TSP using SCU with reserved-memory from DTB
+>        ast27x0: Fix missing SCU module reset for SSP and TSP initialization
+>        ast27x0: Fix Makefile to unconditionally set CC to support correct cross-compilation
+> 
+> Compiled with gcc version 13.3.0
+> 
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   pc-bios/ast27x0_bootrom.bin | Bin 15552 -> 16408 bytes
+>   pc-bios/npcm7xx_bootrom.bin | Bin 768 -> 672 bytes
+>   pc-bios/npcm8xx_bootrom.bin | Bin 608 -> 672 bytes
+>   3 files changed, 0 insertions(+), 0 deletions(-)
 
-I've learned something new as well. Though late,
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Thank you!
 
+It'd be very nice to get an ACK from Hao Wu too.
+
+/mjt
 
