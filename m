@@ -2,65 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A795B15A79
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 10:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5151DB15A9E
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 10:32:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh24h-00019A-L8; Wed, 30 Jul 2025 04:22:13 -0400
+	id 1uh2Db-0001I3-Rf; Wed, 30 Jul 2025 04:31:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stdcalllevi@yandex-team.ru>)
- id 1uh1fJ-0002lr-RH
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 03:55:58 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stdcalllevi@yandex-team.ru>)
- id 1uh1fG-0006dv-Fv
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 03:55:57 -0400
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c1c:2f40:0:640:b89a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 394E380813;
- Wed, 30 Jul 2025 10:55:46 +0300 (MSK)
-Received: from smtpclient.apple (unknown
- [2a02:6bf:8005:f00:fcc5:df31:e94a:2d2a])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id itU3941GomI0-AqcUnhBt; Wed, 30 Jul 2025 10:55:45 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1753862145;
- bh=BU9VsS15mRLapPhf4tEJbRYgQX9JhJUPV25K5FD3wi0=;
- h=References:To:Cc:In-Reply-To:Date:From:Message-Id:Subject;
- b=L9VsXe3JRf9w+X+CAw3jHCWOkqZVTjuO6bzuwM87yXTuvA1S/MwQHaXIkxTeAlrMN
- S5rlZMezlhSbjJT5AuceAn9nkt0Sk0FRPJig7mpYTMd78Gupau8UuZl/karv2Unj6Z
- 8uSujQCkjy2xer/vehy0u8aVoJJA2Nh0KYqIM+iY=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Kirill Martynov <stdcalllevi@yandex-team.ru>
-Message-Id: <400CF1E2-6551-4426-8CA4-FCA4A47E25CA@yandex-team.ru>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_4C7F47D6-E202-466E-8E1F-1DAD5E09F5E9"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH 1/2] i386/cpu: Enable SMM cpu addressspace
-Date: Wed, 30 Jul 2025 10:55:34 +0300
-In-Reply-To: <aInTujVM5hr6/cJw@intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-To: Zhao Liu <zhao1.liu@intel.com>
-References: <20250729054023.1668443-1-xiaoyao.li@intel.com>
- <20250729054023.1668443-2-xiaoyao.li@intel.com> <aInTujVM5hr6/cJw@intel.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=stdcalllevi@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1uh1pY-000276-9s
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:06:36 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1uh1pP-0008Jk-Nc
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:06:28 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-31ef50d8d57so2170005a91.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 01:06:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1753862780; x=1754467580; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ge6L4oGfLaHpfj3uC/1S5EHUWvHgeakjeQxfeFcNz5U=;
+ b=RiXe00mmlkxIULCRh1Qb4e0/8gNo/vaboNXiPcn0oY5Y5LEVSrDhwCK0lhuM0oyahA
+ jdG1x7hOCsYJjV3gCaL/l6jMTEeqJxZNgNaZZwSIPTKyJ8WgXyAdBgfJtFIAs6iXEyT5
+ u5ExFIrY4qSYzYOlEGRRTiAPu7xt5PLWkOTL8prTif9JERs6jMzRqu9xqSy68lWWklmh
+ Wp4P6oxmNd1IUeviE3s0sZA/A1lMdjt3+/3eerxwDGcPgZQTk34R0o9YRsPom8GZJ1+w
+ XJRJDRxoICoMlY3DW/BPjseIbSaiEi+cfokbiKYp7M8qZsstqyT8anXmpTZAaAJtkOB2
+ d9Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753862780; x=1754467580;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ge6L4oGfLaHpfj3uC/1S5EHUWvHgeakjeQxfeFcNz5U=;
+ b=nXEetFyt+ly1PErFnV258d/I1LZlo2L1jKy+twT4UpeviVtZvxQMHQgMZxK+SyU1un
+ G91tWqaNMfpdzFXwjS4imQkn7+fDA7ZlanofidPFkGtW6FhT628hQpIdBdnjyInEwUqB
+ liFOGqqgO49BNCQmdHf/1wAvlOiQtzRGzHsYeYnRrsucCsHp3Xoh9Z2iUEma4v2xkxli
+ yFGg0KknUr42ToS7AuQwQALNWBwmqljXBTClyhmCllVSZ8BUbY8nPZnbeUzy1F69rulE
+ B7meeVbK0kIrSKy2I/2KjBUfdS9o/MyGIEDd6Ehtyu6KFubpi5uCytCULgIQD90Gs4WZ
+ /20g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVnqmbT2XFTVK6MrGQ35BHmk92QlhpZZj+wihA6DL/0zTu87jMs/yULyizXTPz+HA0HYZHJ/t81Ctvm@nongnu.org
+X-Gm-Message-State: AOJu0Yw8Ux1aTMIHFFe9+81W2vvHVDpMvfA/Rl9bMBubB6HEPmQ91LqQ
+ 1lXywLZdc03/25XG6UbjiGyDKj8eF36tG9HHZUTX9SM/uakHXX0PZO+5sByIUKs2NeYin4QbpvC
+ YKWUt/EEpjdU2VaybopjRtSGV1Wcwf1A=
+X-Gm-Gg: ASbGncuRzr4CSRSwyZSr18tzpSLiEaGM9WXqNPsQy2ngLkHuXbQzakFDTBDAIiXuSEY
+ VUUSeXcP7FjoV1kfK0brQzzXdTu92UShcBOlztejhpvGR4XzJiOR7+Lj8TqkFd3odklnu1gGhbP
+ 8wN6tApsaXFvE+UxFH+0Slp29uce3e6lR/orczEHz+dwrVV9gmg720HFdumVSsKU7DB7GuX42ej
+ SefwziQcg==
+X-Google-Smtp-Source: AGHT+IH+bQ/wIaV6yMmRXYLmT3u+7TyZ7z/lC/GoLCPYCgxpS+Gwdx7PjEUQK8w2OLbNLEaKMfF8bwSOB573JDIZbqk=
+X-Received: by 2002:a17:90b:1dc1:b0:31e:e3e1:3686 with SMTP id
+ 98e67ed59e1d1-31f5de31435mr3399477a91.19.1753862780478; Wed, 30 Jul 2025
+ 01:06:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAMo8BfJw_EUUuGT0qVwhfgEi_tLzSmrOdwAip1E08XNZ4XF=6Q@mail.gmail.com>
+ <20250730062142.1665980-1-frolov@swemel.ru>
+In-Reply-To: <20250730062142.1665980-1-frolov@swemel.ru>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Wed, 30 Jul 2025 01:06:09 -0700
+X-Gm-Features: Ac12FXxoVh5UEKZxDQvSqJLK2wivtcvq3KUxF8Hm1wf_2Clnv_AROJjVkRXYzsk
+Message-ID: <CAMo8BfKtZPqP0VjNQJmKD7e9J-ZvscFM0ws_GMX3vEbt_B7=gQ@mail.gmail.com>
+Subject: Re: [PATCH v2] target/xtensa: Replace malloc() with g_strdup_printf()
+To: Dmitry Frolov <frolov@swemel.ru>
+Cc: sdl.qemu@linuxtesting.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-pj1-x1032.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.244,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,143 +95,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Jul 29, 2025 at 11:22=E2=80=AFPM Dmitry Frolov <frolov@swemel.ru> w=
+rote:
+>
+> malloc() return value is used without a check.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> v2: Also replaced strdup() with g_strdup()
+>
+> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+> ---
+>  target/xtensa/translate.c | 11 +++--------
+>  1 file changed, 3 insertions(+), 8 deletions(-)
 
---Apple-Mail=_4C7F47D6-E202-466E-8E1F-1DAD5E09F5E9
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
+Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
 
-
-
-> On 30 Jul 2025, at 11:11, Zhao Liu <zhao1.liu@intel.com> wrote:
->=20
->> @@ -91,6 +92,15 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error =
-**errp)
->>         kvm_set_guest_phys_bits(cs);
->>     }
->>=20
->> +    /*
->> +     * When SMM is enabled, there is 2 address spaces. Otherwise =
-only 1.
->> +     *
->> +     * Only init address space 0 here, the second one for SMM is =
-initialized at
->               ^^^^
-> 	       initialize
->=20
->> +     * register_smram_listener() after machine init done.
->> +     */
->> +    cs->num_ases =3D =
-x86_machine_is_smm_enabled(X86_MACHINE(current_machine)) ? 2 : 1;
->> +    cpu_address_space_init(cs, 0, "cpu-mmeory", cs->memory);
->> +
->>     return true;
->> }
->>=20
->> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
->> index 369626f8c8d7..47fb5c673c8e 100644
->> --- a/target/i386/kvm/kvm.c
->> +++ b/target/i386/kvm/kvm.c
->> @@ -2704,6 +2704,7 @@ static MemoryRegion smram_as_mem;
->>=20
->> static void register_smram_listener(Notifier *n, void *unused)
->> {
->> +    CPUState *cpu;
->>     MemoryRegion *smram =3D
->>         (MemoryRegion *) object_resolve_path("/machine/smram", NULL);
->>=20
->> @@ -2728,6 +2729,10 @@ static void register_smram_listener(Notifier =
-*n, void *unused)
->>     address_space_init(&smram_address_space, &smram_as_root, =
-"KVM-SMRAM");
->>     kvm_memory_listener_register(kvm_state, &smram_listener,
->>                                  &smram_address_space, 1, =
-"kvm-smram");
->> +
->> +    CPU_FOREACH(cpu) {
->> +        cpu_address_space_init(cpu, 1, "cpu-smm", &smram_as_root);
->=20
-> It is worth mentioning in the commit message that directly sharing
-> MemoryRegion in CPUAddressSpace is safe.
->=20
->> +    }
->=20
-> I still think such CPU_FOREACH in machine_done callback is not the
-> best approach - it's better to initialize all the address spaces in
-> kvm_cpu_realizefn(), and not to go far away from cs->num_ases, as I
-> said in the previous discussion.
->=20
-> But it's still good to fix this bug. So, with other comments
-> addressed,
->=20
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
->=20
-
-Tested-by: Kirill Martynov <stdcalllevi@yandex-team.ru =
-<mailto:stdcalllevi@yandex-team.ru>>=
-
---Apple-Mail=_4C7F47D6-E202-466E-8E1F-1DAD5E09F5E9
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=us-ascii
-
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
-charset=3Dus-ascii"></head><body style=3D"overflow-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;"><br =
-id=3D"lineBreakAtBeginningOfMessage"><div><br><blockquote =
-type=3D"cite"><div>On 30 Jul 2025, at 11:11, Zhao Liu =
-&lt;zhao1.liu@intel.com&gt; wrote:</div><br =
-class=3D"Apple-interchange-newline"><div><div><blockquote type=3D"cite">@@=
- -91,6 +92,15 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error =
-**errp)<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kvm_set_guest_phys_bits(cs=
-);<br> &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>+ &nbsp;&nbsp;&nbsp;/*<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;* When SMM is enabled, there is 2 address =
-spaces. Otherwise only 1.<br>+ &nbsp;&nbsp;&nbsp;&nbsp;*<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;* Only init address space 0 here, the second one =
-for SMM is initialized at<br></blockquote> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;^^^^<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initialize<br><br><blockquote =
-type=3D"cite">+ &nbsp;&nbsp;&nbsp;&nbsp;* register_smram_listener() =
-after machine init done.<br>+ &nbsp;&nbsp;&nbsp;&nbsp;*/<br>+ =
-&nbsp;&nbsp;&nbsp;cs-&gt;num_ases =3D =
-x86_machine_is_smm_enabled(X86_MACHINE(current_machine)) ? 2 : 1;<br>+ =
-&nbsp;&nbsp;&nbsp;cpu_address_space_init(cs, 0, "cpu-mmeory", =
-cs-&gt;memory);<br>+<br> &nbsp;&nbsp;&nbsp;&nbsp;return true;<br> =
-}<br><br>diff --git a/target/i386/kvm/kvm.c =
-b/target/i386/kvm/kvm.c<br>index 369626f8c8d7..47fb5c673c8e =
-100644<br>--- a/target/i386/kvm/kvm.c<br>+++ =
-b/target/i386/kvm/kvm.c<br>@@ -2704,6 +2704,7 @@ static MemoryRegion =
-smram_as_mem;<br><br> static void register_smram_listener(Notifier *n, =
-void *unused)<br> {<br>+ &nbsp;&nbsp;&nbsp;CPUState *cpu;<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;MemoryRegion *smram =3D<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(MemoryRegion *) =
-object_resolve_path("/machine/smram", NULL);<br><br>@@ -2728,6 +2729,10 =
-@@ static void register_smram_listener(Notifier *n, void *unused)<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;address_space_init(&amp;smram_address_space, =
-&amp;smram_as_root, "KVM-SMRAM");<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;kvm_memory_listener_register(kvm_state, =
-&amp;smram_listener,<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;smram_address_space=
-, 1, "kvm-smram");<br>+<br>+ &nbsp;&nbsp;&nbsp;CPU_FOREACH(cpu) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu_address_space_init(cpu, 1, =
-"cpu-smm", &amp;smram_as_root);<br></blockquote><br>It is worth =
-mentioning in the commit message that directly sharing<br>MemoryRegion =
-in CPUAddressSpace is safe.<br><br><blockquote type=3D"cite">+ =
-&nbsp;&nbsp;&nbsp;}<br></blockquote><br>I still think such CPU_FOREACH =
-in machine_done callback is not the<br>best approach - it's better to =
-initialize all the address spaces in<br>kvm_cpu_realizefn(), and not to =
-go far away from cs-&gt;num_ases, as I<br>said in the previous =
-discussion.<br><br>But it's still good to fix this bug. So, with other =
-comments<br>addressed,<br><br>Reviewed-by: Zhao Liu =
-&lt;zhao1.liu@intel.com&gt;<br><br></div></div></blockquote></div><br><div=
->Tested-by: Kirill Martynov &lt;<a =
-href=3D"mailto:stdcalllevi@yandex-team.ru">stdcalllevi@yandex-team.ru</a>&=
-gt;</div></body></html>=
-
---Apple-Mail=_4C7F47D6-E202-466E-8E1F-1DAD5E09F5E9--
+--=20
+Thanks.
+-- Max
 
