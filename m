@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A34B167F6
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 23:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2421AB167D8
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 22:55:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhDvD-0003Ls-2D; Wed, 30 Jul 2025 17:01:11 -0400
+	id 1uhDpa-0002Ib-4I; Wed, 30 Jul 2025 16:55:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhDed-00047A-Q1
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 16:44:04 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1uhDg6-0008K8-JM
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 16:45:39 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhDec-0000Ns-3V
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 16:44:03 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-31eb40b050bso277505a91.0
- for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 13:44:01 -0700 (PDT)
+ id 1uhDg4-0000lq-Uf
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 16:45:34 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-76bc5e68d96so242183b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 13:45:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753908241; x=1754513041; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753908330; x=1754513130; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=t6DcCQMFfcE2XiBGouBemSe1qWTN8iZLRtU+CEFVJRA=;
- b=ulRvrbxIQ1g8K/CsaLxR1UZheH+RDEQL7glFDpI3Rtn+4nKn9Zj6wbZOqE1RkRphcg
- uv7MIU34E4e4H0Vw1KjNXs4SeOUhOhq8LAMU2LlxdCNtgPLpBzAKVKcWo1gMMOZt2ZTn
- EGfnomX+0aiggGjYyeyJmdGmI3boB95KryGu9/GrJjLp9k8nF2ndBvIaIM94o4fmqUlG
- 58GRK4vGXTWBHvVSmqtgqO4DMmMtJ/hy7cfBU2oniAKiW/kVaiAtDnDk6rCPZoJNcf98
- pKDo9zoZHddWhRhAKHGF95SnbJSHCCdJazHyPR2bn6S3PIdUyLtkCVA46CIOIO4iHZVo
- +VBA==
+ bh=gSQwQrazVrb7QrEaMK2OF+bb6EdKxid2Sc4F6hTjS+E=;
+ b=t0QE+UVcQeplvaV4Y5KZJ4U+KgzXf1mUsOU4W/rUiRra4eq36zSk2wggS5tN8P3KOv
+ IpvNgeimKeXrRfDRj/CIsDqPhOSkgZ2mytTh19eFQm3EKGRvyFzZb1RnQ2MA0bhceejB
+ z4urBtLUDbsxjKS1wITtuT3SyqAyxtEneyjpp3mept3J1wA17K0mDEyefdGcPcopkQm2
+ Aa9SyxTYrsacW+VnLBxnyvM+Dfuhl4AOuNrV8BqK4gJT8HcQ36UboWZN7af2iCeoeMyf
+ OMHMv4P+TaJmLt0fbrFwxxZCNGy6nifoo0QfCF/9MtqeXh21fJCqolhW5F7M14m+dEVT
+ hLaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753908241; x=1754513041;
+ d=1e100.net; s=20230601; t=1753908330; x=1754513130;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t6DcCQMFfcE2XiBGouBemSe1qWTN8iZLRtU+CEFVJRA=;
- b=McesuBUzb8UKsVSXZK4loWr3fduqhKBjKSDmfwRaIHWTCBQzKiMhed/c/UETZhHFEo
- KPfpCiO1mcdYenvCCmnafsjGw4cPPKtYV9Ev+uIdND1EEAXWGdf/DC7iW+v+DmMAtCWA
- AeRvysTrMhNKSh+C3nV9rrDOqz46dMJH+FVi901ldW2fw4m8gqz/jjcVFrmtz+J0/br9
- 9sECUnkddmerKbLH4jfkSvp82qF4DPn1GpSH6rvjj5oX8tb1gea67bgpjtzxmd+fxsEz
- IAu366LC6DtQ4BMm4l4Ioe9UHm9Lj38WTeGkgTv3oqOscSx/Dhh4d8tjkTa/kCw+bfsZ
- jx7Q==
+ bh=gSQwQrazVrb7QrEaMK2OF+bb6EdKxid2Sc4F6hTjS+E=;
+ b=eaAJR+EfaSmcs+1cxo8ixHEL+nFmWy2S0sQOurEXxyzzSZlsGC4kjU6hchIqgdh1AM
+ uZr8QHk70x8XR+6rncfmF3a2j0TO+FdkbWZzCY7PTA02dq4m6jU5bL9tkIf6DpZZe6xK
+ DWBJU1M/J8zduhspr16yuCtBNkMFJiP7mPF8/5vkszMELwBZp6h6skpMxFJuwc3oqmUp
+ eDaqqZweeaMCNzGAwLJzYcz7MGwSolWV3Di7AqrW/I+asn9+iKvw9MkRjtmBcq9IqUWK
+ fWklM+ZVuJ1iIw9zZAz+056F1fdU/Jlxsl0WDg4FhMK0/R0GBUIMBcwcuQ5pOYeIAmiU
+ YeUA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUuJHkZuYeE8ZZuehMI4cV7SqWApuM5roFI/NueaTjhI2Q7Gf3ENBJXmooVNqwO2H4KKLv57Ay+z8l8@nongnu.org
-X-Gm-Message-State: AOJu0YzZlAt3mAtUhPAzhQCsLuu7+DnINDYJ8WhZekj1v1XLIF3S+0qj
- uyyo9wbES4AI3ZhvomtdF6Xu3jcr1wNzkPnM8n6e4C+VnIFTEREdol5ho1dUwnxGRKM=
-X-Gm-Gg: ASbGncvI0R+PN1ITZF4kbXCKmKvoODJ+a3CNjOQshpdJ+z8HfLYlQIHW46OJCs4wY/N
- 5Z+BfkkW873t8jLn4iNnS43Oh0SbdoEKmgwMfSN9skHwFC/93egsr5a+A6YagEuPgsrQSFhtIp4
- 3eS7XXWI88AQNkg37gZqHM3RWfnMt9PP0LYXd/esvxNV5m7guJnUbeOZzDz+/2YTm22ih8xo+QN
- 6GO+/HrYBEs4N9A+3U5MXsnHu7qSNJfqI8DqsDkB3J421JgQmE6RBgofucdqTACSiYTlCheIkLh
- ABRAMDh/QdkUPlWtyOxMJVZwkWS5nCjMtSR1LhAeTwk8H1jUkzrSe+2p+5xj8uCIhQMAmkJPMmB
- cE4Q8RnWQi2PaDALu1l7nB7Yef4ySYHkPQJE=
-X-Google-Smtp-Source: AGHT+IGHLE6B6BZ6ZsfXKBfrs3zvkxdfZAZOA3U75CBiP/rrF5BL5bD742KqjcV4oY5Sw6W7qXU1pQ==
-X-Received: by 2002:a17:90b:3a08:b0:31e:8203:4b9d with SMTP id
- 98e67ed59e1d1-31f5ea4cc0cmr6322365a91.29.1753908240604; 
- Wed, 30 Jul 2025 13:44:00 -0700 (PDT)
+ AJvYcCXKEzhJygI0/AaJMt9SUIp6ismw8gwc6wICv7XpC9paWAi2FEJ/esxEI/4RczmsI8Vd4F5y5boxKLfA@nongnu.org
+X-Gm-Message-State: AOJu0Yyrr1QJpEYKgQZ7xC+a0gbPurPOz2W4VoQbKcqzw2kyUvqL/Mu8
+ 0pz3B//J1tWBW3kvY/T2xqCgQ/fSfUUJDIWzuIajTBkZ2eKFze2lrBtp4aONd+kqR7w=
+X-Gm-Gg: ASbGncvDcg+R/UhlBmnh8bVXvzhIOBF7+N+eqTtxUYhpLGmjv3lKX7ATYVAj1GJuUWs
+ hp7UHqLzBAFLPwBoU8xBZbVvrD68p/NEDrgAPJup1JffeavMPpXNu3+wga9cLrKVLQMbMGefRrb
+ /6xSibTty8lkPYLl5458kvnZqcuJIwh2MvwABgsU+s0u3pQJbEKJ2zWSpHEuwuljH+73kvnYrkq
+ oWEKLhLls9622lhB6R1wdqwYnUy8uSdc6AaqctQTJxcELvr9Yt7rKrgrbAQQyrZwBv9kkIpyk9T
+ CQ4+vZh/DtLu6nVFc/dbVFKomymtOGf/ggYPlyTUgk9VnrGHpTPY5wbecY+CHgBaczXerTFk+7+
+ HqFc6Xg5R6EYYxkk+QpWhe6XrlcPsC7+G3u0=
+X-Google-Smtp-Source: AGHT+IF3RCoD/7Tj65zBjNe5TftCcxtDadzd2LI8BrT6bWFDJHCaEDtXB6bafW+bOzkLy5FSE8BVyQ==
+X-Received: by 2002:a05:6a20:7d9a:b0:238:3f54:78ec with SMTP id
+ adf61e73a8af0-23dc0f6348emr7623892637.46.1753908330401; 
+ Wed, 30 Jul 2025 13:45:30 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-32084298fc3sm46474a91.31.2025.07.30.13.43.59
+ d2e1a72fcca58-7640872a180sm11396410b3a.29.2025.07.30.13.45.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Jul 2025 13:44:00 -0700 (PDT)
-Message-ID: <8b66b866-eadc-4fef-bb2f-0af4e2300b5c@linaro.org>
-Date: Wed, 30 Jul 2025 13:43:59 -0700
+ Wed, 30 Jul 2025 13:45:30 -0700 (PDT)
+Message-ID: <4ae46690-34d2-4d89-8394-160ff215ada0@linaro.org>
+Date: Wed, 30 Jul 2025 13:45:29 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/82] target/arm: Cache NV1 early in get_phys_addr_lpae
+Subject: Re: [PATCH 15/82] target/arm: Populate PIE in aa64_va_parameters
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
 References: <20250727080254.83840-1-richard.henderson@linaro.org>
- <20250727080254.83840-15-richard.henderson@linaro.org>
+ <20250727080254.83840-16-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250727080254.83840-15-richard.henderson@linaro.org>
+In-Reply-To: <20250727080254.83840-16-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,15 +103,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/27/25 1:01 AM, Richard Henderson wrote:
-> We were not using the correct security space in the existing call
-> to nv_nv1_enabled, because it may have been modified for NSTable.
-> 
-> Cache it early, as we will shortly need it elsewhere as well.
+> Select the PIE bit for the translation regime.
+> With PIE, the PTE layout changes, forcing HPD.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/arm/ptw.c | 14 +++++++-------
->   1 file changed, 7 insertions(+), 7 deletions(-)
+>   target/arm/internals.h |  3 ++-
+>   target/arm/helper.c    | 19 ++++++++++++++++++-
+>   2 files changed, 20 insertions(+), 2 deletions(-)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
