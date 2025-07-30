@@ -2,86 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73836B156E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84326B156E7
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:09:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugvHQ-0003Jo-Kr; Tue, 29 Jul 2025 21:06:52 -0400
+	id 1ugvJa-0008Fo-Gd; Tue, 29 Jul 2025 21:09:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ugvCs-0003vO-4k
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:02:10 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1ugvFP-00006S-QT
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:04:47 -0400
+Received: from mail-ua1-x92e.google.com ([2607:f8b0:4864:20::92e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ugvCq-0004qi-7z
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:02:09 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-31ec651c2a1so2498420a91.0
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 18:02:07 -0700 (PDT)
+ id 1ugvFN-0005NF-Ro
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:04:47 -0400
+Received: by mail-ua1-x92e.google.com with SMTP id
+ a1e0cc1a2514c-88bb3eebeacso134657241.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 18:04:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1753837326; x=1754442126; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1753837484; x=1754442284; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZpAThyHK47BS0F9JHZzT8Mn9PhBJDT2KUOQzUhgdcXI=;
- b=IvkFazdJ8+WOyZf4/p3KH4aujmOHwrmaenEYz6/13UH8/fCyVRDoM9ZTBuiFaUY3dV
- G2DQeePm7VmvF45glNxDqdqupJycWnReITWjyjZWPiCrA+dtDonAI2p6PIAGvDgSQNHq
- P5Uuck4nNG7gks4E44fZiAPzN6zXiu8xIEPLsDot3cva9lpgp5R77WwNus6lmapCVzYJ
- pxL2NpPWe3sdZ3QZr/jByPtzW2+Yt3/1xbX7uWqQOoGwTquPgJTci0ENH7ihYxeoBUyY
- 15c5LACOYSRrncdyRz9YVlhvk1TF7eF0LmEFhV1S7AznNYkjjS2eVOyrdotwoCR5Rt3h
- /awQ==
+ bh=Ao6PmA4EQzR3LhIP12OV6ExGOV3d7KaSEKdW0e0eKL4=;
+ b=d1DydbzAeX8AtMbq8AALHXcOEQo+RPOIC47VawpAbWhcWbL9nKaZvcNmNWFy12pISO
+ aEvm3wARiZi0Xny76BJi6+glURjLPHCbZ7Zlv6rXJTvbmyN80SoGIowpk0yBZP1prtuG
+ mUowq9Delb5nFC/R6gjdDuPHqI4GSFmkvaze8bAoHQuZeoHyWceBVNUS++NhHytYpBaE
+ z8HCrcYPjFUNYm+50xo93uRHwFcsolS6qUcznrk8GOKKpa2gnZWMHgWLarrYP1kzrqXl
+ 104HA7fJpdTnDvoCJxRK51zSWgMaLhC617u08i1G0TpQlJx09z4jyr+T4uNwPrrnkdgt
+ ZySw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753837326; x=1754442126;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1753837484; x=1754442284;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZpAThyHK47BS0F9JHZzT8Mn9PhBJDT2KUOQzUhgdcXI=;
- b=pLdiyxID73JsNaXxTr4DP3UIMTD1GH9Cf2kDtF92XiYeqjdHFu+9Y4t0BfB5pFeULt
- hGLzlkqZZtqbLSr9wvcj8NhszSxVxMlmY7x1IeArAMXdR07xxazlgHQsMnzbIyAHUlGF
- s75Vo1V0Zy7WPvG9S2BdjSVGViJGrVLxlUd8g7QGnz0mcXpa2vs47OuUwl0tnFG1MRLD
- lWS1e+/YUhjVWSbvRt+HGrpHV9s1SB+ry8MSXR1G2V4IHUe92SqYOcLr6InhWyZkin+t
- omwCddg+tMnZPbs36twu81k3MhFSZChag8sEahVhNb7nbHhIh5PXA4zlIziX8HXZhbbd
- rd5A==
-X-Gm-Message-State: AOJu0YyuKYUNWBwMZxwUxTpcPX1/d6nutxLW/gAOHEUwIFx8dnNuwj+U
- sYXWkfupVDKdVcfXKRBgxtOWkxcdar4dFGe5M4R4myD6vmkWIEMsrAG+/t6XfQ==
-X-Gm-Gg: ASbGnctD3pGWM+XmS30OHjFeK8CwkfrMrBKvK/h1Yj0UR0hAnNytT7LN7BfV5IEKCDw
- ZxoqJLNH1nekkkbHFQo25UumGHnI+P1le9AKhO+JwZREXjl2O5YF+Ahfg8TRgoleiDc0d/vZNz6
- 2TWWvKl/GoZZ/6GhdL9c8HZq0OMCZnWC/ULleEwLOAqWNUZl5tJw1Fn7Dcv/U4LEd4439GqFCVi
- ZQGGjEXLYvIiLlwXnaYBPr4sPvbB+CRMTahZrxA1EOfLbLSUq4qjueC67TqSsGVKK/pFsW2SjnH
- BgamlsiIkv3R4sz2dH+hI38MWAyI4hI6bgvoKBaHEZHxcpUr/5eFzHJM89WYgTmbs9lrlYLPBjx
- SDY9AiNB4dUPdvoFoNkWp3Ajm7D7X95NDTQ4xY6CqNOw9SgRLHXT6Zubw6HkXn9RyHu67rx27Oo
- hREj7Bh277SZ2wPeVE5izBh5ZN4fM=
-X-Google-Smtp-Source: AGHT+IEF6i0qGHgQAxVYEwys1JdlPxgSffrKxmVR4aN1G2KNdnzVTgf8A0NVUYAAk3Pdzc3bTvPsyw==
-X-Received: by 2002:a17:90b:3c04:b0:31f:253e:d34f with SMTP id
- 98e67ed59e1d1-31f5de54a53mr1965162a91.19.1753837326397; 
- Tue, 29 Jul 2025 18:02:06 -0700 (PDT)
-Received: from toolbx.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31f63df5adfsm343253a91.25.2025.07.29.18.02.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 18:02:05 -0700 (PDT)
-From: alistair23@gmail.com
-X-Google-Original-From: alistair.francis@wdc.com
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Jay Chang <jay.chang@sifive.com>,
- Frank Chang <frank.chang@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Nutty Liu <liujingqi@lanxincomputing.com>
-Subject: [PULL 11/11] target/riscv: Restrict midelegh access to S-mode harts
-Date: Wed, 30 Jul 2025 11:01:22 +1000
-Message-ID: <20250730010122.4193496-12-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250730010122.4193496-1-alistair.francis@wdc.com>
-References: <20250730010122.4193496-1-alistair.francis@wdc.com>
+ bh=Ao6PmA4EQzR3LhIP12OV6ExGOV3d7KaSEKdW0e0eKL4=;
+ b=UybrWlPRGZ65dbMu+rLp80YifvSlpMPu7VmEu8fkKnjq3j8nw+PALZ2bKeljwMLSiQ
+ 0plfrILkIa+eLqA21ldmN5vlR/xD1EICHTe7vpRpauKDvJKaR9epiiChR8YKtWc29uMt
+ +iMSYHyrRh5UVue88MzoS/Px6PZjNfoFAZeygGSbyk2JdFGooSoGyBSNvxginCDN7yy8
+ MCNnlhnmE3O3PsJwg0BCmrrnZ2UbCRA5PCZsSbzYBqw/sYG1ToUToGJaJgdCMoH5TyhS
+ Nyh6bhgd6GS8jTcZilBuDo9EsXFYOSxvD8EUbGG1yDHQV5LJY09mG7liioeqJ71fFakI
+ I19Q==
+X-Gm-Message-State: AOJu0YxDH9TJnDhO7HqFha5WxA6JWTkVkZiC+MAL1+akfP1C7LBfeukZ
+ m92aXPxCZt8bKJvUpkaXyLrnlyHFYgirZAvhPCOThnkC/73Z4BVpxwlvhOVbCjG/z0WI0MZj2cc
+ zGqXPk1N6JP1OM6zQTjv64R/SkUFZm1RM0g==
+X-Gm-Gg: ASbGncubsgCFN7NG4kzyh+AsGYqBqZdYaIXEvG/KDRCqX3Udrb8VdmQQQgmkNyLSIt2
+ OkRLTDtQ4Qww+Z1sNj4srgrlcjsdVwLNFJ+86tlWiKtyHEcHQHTYY384mhah5iUhhn2udX6RbzL
+ Rih+B40B9gtZhb47ChaIvMuliaTZBU+pW9QqExFE+13Pw9WC3I4o/L81s5YQQxMqqWWYL1Yt0PW
+ bwhyJ8+5Oq/C3dCqAXtFhsSxSvon+4ZE4ztLg==
+X-Google-Smtp-Source: AGHT+IHc8ATjxTNubHWjDwLT2bozWlwqbJB8s+S8b7IBcnqa5bWrkA2UCkHxOKnMLtblJmKqi9DCCfL5AvElfAkF2Zs=
+X-Received: by 2002:a05:6102:32c8:b0:4e7:dbd2:4604 with SMTP id
+ ada2fe7eead31-4fbe8772709mr1196381137.17.1753837484371; Tue, 29 Jul 2025
+ 18:04:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x102a.google.com
+References: <20250730010122.4193496-1-alistair.francis@wdc.com>
+In-Reply-To: <20250730010122.4193496-1-alistair.francis@wdc.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 30 Jul 2025 11:04:18 +1000
+X-Gm-Features: Ac12FXw3GeJ6zgjuW_EJBORodS397exrjmkAU7AFO_b0kzeMjSUXX-N0kn1FrvE
+Message-ID: <CAKmqyKP+tHtyx2ZDyRE70kgyWTZDFGaq=ZhKgAo5H_O8H0MZvg@mail.gmail.com>
+Subject: Re: [PULL 00/11] riscv-to-apply queue
+To: qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92e;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,56 +93,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jay Chang <jay.chang@sifive.com>
+On Wed, Jul 30, 2025 at 11:01=E2=80=AFAM <alistair23@gmail.com> wrote:
+>
+> From: Alistair Francis <alistair.francis@wdc.com>
+>
+> The following changes since commit 9b80226ece693197af8a981b424391b68b5bc3=
+8e:
+>
+>   Update version for the v10.1.0-rc1 release (2025-07-29 13:00:41 -0400)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-2025073=
+0-2
+>
+> for you to fetch changes up to 86bc3a0abf10072081cddd8dff25aa72c60e67b8:
+>
+>   target/riscv: Restrict midelegh access to S-mode harts (2025-07-30 10:5=
+9:26 +1000)
+>
+> ----------------------------------------------------------------
+> Third RISC-V PR for 10.1
+>
+> * Fix pmp range wraparound on zero
+> * Update FADT and MADT versions in ACPI tables
+> * Fix target register read when source is inactive
+> * Add riscv_hwprobe entry to linux-user strace list
+> * Do not call GETPC() in check_ret_from_m_mode()
+> * Revert "Generate strided vector loads/stores with tcg nodes."
+> * Fix exception type when VU accesses supervisor CSRs
+> * Restrict mideleg/medeleg/medelegh access to S-mode harts
+> * Restrict midelegh access to S-mode harts
 
-RISC-V AIA Spec states:
-"For a machine-level environment, extension Smaia encompasses all added
-CSRs and all modifications to interrupt response behavior that the AIA
-specifies for a hart, over all privilege levels. For a supervisor-level
-environment, extension Ssaia is essentially the same as Smaia except
-excluding the machine-level CSRs and behavior not directly visible to
-supervisor level."
+Sorry about this being so large and late in the cycle. I just got back
+from parental leave and wanted to get these fixes in for 10.1
 
-Since midelegh is an AIA machine-mode CSR, add Smaia extension check in
-aia_smode32 predicate.
-
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Jay Chang <jay.chang@sifive.com>
-Reviewed-by: Nutty Liu<liujingqi@lanxincomputing.com>
-Message-ID: <20250701030021.99218-3-jay.chang@sifive.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/csr.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 5a6de07486..8842e07a73 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -374,8 +374,11 @@ static RISCVException aia_smode(CPURISCVState *env, int csrno)
- static RISCVException aia_smode32(CPURISCVState *env, int csrno)
- {
-     int ret;
-+    int csr_priv = get_field(csrno, 0x300);
- 
--    if (!riscv_cpu_cfg(env)->ext_ssaia) {
-+    if (csr_priv == PRV_M && !riscv_cpu_cfg(env)->ext_smaia) {
-+        return RISCV_EXCP_ILLEGAL_INST;
-+    } else if (!riscv_cpu_cfg(env)->ext_ssaia) {
-         return RISCV_EXCP_ILLEGAL_INST;
-     }
- 
-@@ -5911,7 +5914,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
-     [CSR_MVIP]     = { "mvip",     aia_any, NULL, NULL, rmw_mvip    },
- 
-     /* Machine-Level High-Half CSRs (AIA) */
--    [CSR_MIDELEGH] = { "midelegh", aia_any32, NULL, NULL, rmw_midelegh },
-+    [CSR_MIDELEGH] = { "midelegh", aia_smode32, NULL, NULL, rmw_midelegh },
-     [CSR_MIEH]     = { "mieh",     aia_any32, NULL, NULL, rmw_mieh     },
-     [CSR_MVIENH]   = { "mvienh",   aia_any32, NULL, NULL, rmw_mvienh   },
-     [CSR_MVIPH]    = { "mviph",    aia_any32, NULL, NULL, rmw_mviph    },
--- 
-2.50.0
-
+Alistair
 
