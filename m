@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85A4B161D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 15:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC13B1614B
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 15:19:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh7Bq-0003B3-Qv; Wed, 30 Jul 2025 09:49:54 -0400
+	id 1uh6gl-0006k4-LR; Wed, 30 Jul 2025 09:17:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1uh0We-0002ia-1u
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 02:42:56 -0400
+ (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1uh0Wg-0002oe-Lw
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 02:42:58 -0400
 Received: from fanzine2.igalia.com ([213.97.179.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1uh0Wb-00042O-AV
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 02:42:55 -0400
+ (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1uh0Wa-00042R-Dr
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 02:42:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -23,24 +23,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=UPQiuW0X1x7ANTdAEuVpyPUsgJsVJbvUUNndNxwA91o=; b=VCmdIQ0Gp21iapOvNmP/7wn6Vk
- Kb2sDLgpqFAeRjFWCUrqO4grUxn5QgY0Zup5sZLiOZ1lPGroslDPUiSXkeELp8I3W2DOlYWqqeEXo
- mK466eFksHnuyv/V4yEN6aMhxoaqnuElscyvO0IIkE6Bropdxebfdfym98Y00X60oYXnohQkwObtF
- LtZhGaztECJx8cTKTOy0feiNIcbLJK1nH9G6ae3USte7se8JVGOEYFIDFIARDM0Js9BIccJEhVOyL
- PWNW5lNdecDfCCR2E4lCP6SorBAC4VOQFhhCUZWCofEBvJM+A0NZmNxd95E0tfOJt6z1/bpWgpwaN
- 5r+c0GSA==;
+ bh=Cep95guF6DgPHYn2zaD4r61sdfV8V0YvXqvCO8iC+44=; b=IBQjRkQ8F9zZW5wNAAeladNoxS
+ j8FhqHLsOm7QtvW2jv7W94Rh6k7/oz3hyFtPffkprk9ZE63XiGAb8O9CPs/Q9yInqTy9QIQ8Qpqji
+ IH5hAIuaeMlmeGcpC1wAs6Dca5KYyzV0Z/Cu8XSNSM/CPd8Q7YYM9PGCP84Gym0uiir5WsDnXBjq4
+ zYjQJuezNHHDhruDyB8C+JnX0hnFpdbLK5MGDRmaVXB8ZxvLtFmG+f5W+PlX8w/qiwCDPdLuzomkI
+ 5WNu0CqGZWLimuSccZKTkC8mIM4NUOPHw0OiVZ12cyoR5+yN4DkLATdXIi6oHZ83T66LIMs9KWb+T
+ WX0tdL+g==;
 Received: from 82-69-92-151.dsl.in-addr.zen.co.uk ([82.69.92.151]
  helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1uh0WO-005nOk-HC; Wed, 30 Jul 2025 08:42:40 +0200
+ id 1uh0WP-005nOk-1F; Wed, 30 Jul 2025 08:42:41 +0200
 From: Alex Bradbury <asb@igalia.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Bradbury <asb@igalia.com>, alex.bennee@linaro.org, erdnaxe@crans.org,
  ma.mandourr@gmail.com, pierrick.bouvier@linaro.org
-Subject: [PATCH 1/5] contrib/plugins/hotblocks: Correctly free sorted counts
- list
-Date: Wed, 30 Jul 2025 07:41:39 +0100
-Message-ID: <cf5a00136738b981a12270b76572e8d502daf208.1753857212.git.asb@igalia.com>
+Subject: [PATCH 2/5] contrib/plugins/hotblocks: Fix off by one error in
+ iteration of sorted blocks
+Date: Wed, 30 Jul 2025 07:41:40 +0100
+Message-ID: <f1ba2e57c6126472c0c8310774009f2455efc370.1753857212.git.asb@igalia.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1753857212.git.asb@igalia.com>
 References: <cover.1753857212.git.asb@igalia.com>
@@ -56,7 +56,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 30 Jul 2025 09:05:37 -0400
+X-Mailman-Approved-At: Wed, 30 Jul 2025 09:05:40 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,46 +71,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-g_list_free should be passed the head of the list.
+The logic to iterate over the hottest blocks will never reach the last
+item in the list, as it checks `it->next != NULL` before entering the
+loop. It's hard to trigger this off-by-one error with the default
+limit=20, but it is a bug and is problematic if that default is changed
+to something larger.
 
 Signed-off-by: Alex Bradbury <asb@igalia.com>
 ---
- contrib/plugins/hotblocks.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ contrib/plugins/hotblocks.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
-index 98404b6885..d3dd23ed9f 100644
+index d3dd23ed9f..cf4d6b8c36 100644
 --- a/contrib/plugins/hotblocks.c
 +++ b/contrib/plugins/hotblocks.c
-@@ -73,15 +73,16 @@ static void exec_count_free(gpointer key, gpointer value, gpointer user_data)
- static void plugin_exit(qemu_plugin_id_t id, void *p)
- {
-     g_autoptr(GString) report = g_string_new("collected ");
--    GList *counts, *it;
-+    GList *counts, *sorted_counts, *it;
-     int i;
+@@ -82,10 +82,9 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+     sorted_counts = g_list_sort_with_data(counts, cmp_exec_count, NULL);
  
-     g_string_append_printf(report, "%d entries in the hash table\n",
-                            g_hash_table_size(hotblocks));
-     counts = g_hash_table_get_values(hotblocks);
--    it = g_list_sort_with_data(counts, cmp_exec_count, NULL);
-+    sorted_counts = g_list_sort_with_data(counts, cmp_exec_count, NULL);
- 
--    if (it) {
-+    if (sorted_counts) {
-+        it = sorted_counts;
+     if (sorted_counts) {
+-        it = sorted_counts;
          g_string_append_printf(report, "pc, tcount, icount, ecount\n");
  
-         for (i = 0; i < limit && it->next; i++, it = it->next) {
-@@ -94,7 +95,7 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-                     qemu_plugin_scoreboard_u64(rec->exec_count)));
-         }
- 
--        g_list_free(it);
-+        g_list_free(sorted_counts);
-     }
- 
-     qemu_plugin_outs(report->str);
+-        for (i = 0; i < limit && it->next; i++, it = it->next) {
++        for (i = 0, it = sorted_counts; i < limit && it; i++, it = it->next) {
+             ExecCount *rec = (ExecCount *) it->data;
+             g_string_append_printf(
+                 report, "0x%016"PRIx64", %d, %ld, %"PRId64"\n",
 -- 
 2.50.1
 
