@@ -2,94 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFEAAB15B26
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 11:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA3CB15B4E
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 11:16:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh2gC-00018X-0z; Wed, 30 Jul 2025 05:00:56 -0400
+	id 1uh2tn-0007XZ-Ov; Wed, 30 Jul 2025 05:14:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uh2QW-0003NV-LV
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:44:45 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uh2dd-0007Lc-Hh
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:58:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uh2QU-0005Rz-1L
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:44:44 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C813113BD23;
- Wed, 30 Jul 2025 11:44:24 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E7A47252CB9;
- Wed, 30 Jul 2025 11:44:34 +0300 (MSK)
-Message-ID: <2314f24f-f90e-4de7-8887-bb04f8c2b099@tls.msk.ru>
-Date: Wed, 30 Jul 2025 11:44:34 +0300
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uh2da-0007c6-Gb
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:58:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753865891;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=Y6B7r/L+AgEdRwJmEfe8LfiGeIspLhpnXLX0QLwDVHo=;
+ b=RiTQt6BIZgg4OmjBiZXCpHXk0mo6n+P0vIvhDLUn9avh67H7mMsUC1NxpJ7PO3liLSBmvn
+ z1LCOhwtkmLOKl/CHiqylaolLPZVHlUF+uPxk4Q5slM+CQ/jVJgwIfP0zCDOjMN52GhfDd
+ TYjF/1o8ZaLNfP4jBLWJTnlpkCNwgOU=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-2SSn5OY5NdGwaIPjxovHgA-1; Wed, 30 Jul 2025 04:58:09 -0400
+X-MC-Unique: 2SSn5OY5NdGwaIPjxovHgA-1
+X-Mimecast-MFC-AGG-ID: 2SSn5OY5NdGwaIPjxovHgA_1753865889
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-45600d19a2aso50290425e9.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 01:58:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753865888; x=1754470688;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Y6B7r/L+AgEdRwJmEfe8LfiGeIspLhpnXLX0QLwDVHo=;
+ b=eXF58014eNlL8wMrBwE+elPxeyz/xInd78+f8Kopa7YDL87/7Y1aAbT0MtcTOFFtWT
+ 834roe4lrz2bsEm/QUhsPC4a274x+W+LCNFWGFKf0FX+2ohNjhqriw0TLJ4P1Bl1hwZf
+ jX7/r8lSx6IRokWu7eWSSVtb8dVL87ymbtM8inS296mPTA7UQA7BKswCO9Z5UH4NkESG
+ 8j8Vj0czX+8D87t+AMFqGhon//Yxc6jfJGU/Dvkr38tE+LFRGuBe9CBEC2sotSUJYaYR
+ mlVBVhfPzjrsovUoRMtHhuTd9Sbx6rQYDFfvNdLbT2VJi3ui/ZeansJlm9wKRBkABI1d
+ GKbw==
+X-Gm-Message-State: AOJu0YyfCk3fQMqG5HA1uEswq0OEFwYkeSD7oIaWvhiWuRz0wTo13iUq
+ WqWfUDZbK1PEjf1Tu5X/r0a6V45Z/grZ6LcxmJRkdL/5LIFncz0BHYwzOCkkT/FbI7cBRQu6DHO
+ ppIZyZ0w21ZtdLzofoU2ObZVKXDYAKGM//AmyaEgmPYG/iNQEeaiTKYew
+X-Gm-Gg: ASbGncvcLFnnloTS4IqSCgRhr2fGvRAY8UG6k5NvN+yBticrCmtJrIS9jd4KdqieRQ+
+ w0Q4EH6VpMxeL7YIlQe+wlk3hpuHNL8gBnRGaGIlgGyDaN3JSJGuf+8fgrr4Xxd+BkIUg61QFAa
+ /kfs65fjPa6vFPaODstlyYrVz3fFqYHl7GkWSwDJZ4WTVwRjm2dqK9H8FIAMOZje4R9+oAs++s7
+ YJahLaU2wbb0fbOCAFGmwBupsOG6bCl250bgjBpCvCu7VTpD8HQaCJ6kZi/o96Nb7WynBiKDFwN
+ HLgDiAaebYqgU0VnoHcsfzBgs9iNV6NASHhStX/2hBrWIm61FamDrkw/5HGll/h0pJzUFSIAs8r
+ w76A=
+X-Received: by 2002:a05:600c:8b2a:b0:456:f1e:205c with SMTP id
+ 5b1f17b1804b1-45892b947e6mr23724835e9.4.1753865888441; 
+ Wed, 30 Jul 2025 01:58:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFAOuM1PkgsFCskTPBdPFJ5pJh+Xe7lBFBZA/QZYKw8vB6LL3+K0Bycg+K0A+WBA4uIUiwtmw==
+X-Received: by 2002:a05:600c:8b2a:b0:456:f1e:205c with SMTP id
+ 5b1f17b1804b1-45892b947e6mr23724585e9.4.1753865888022; 
+ Wed, 30 Jul 2025 01:58:08 -0700 (PDT)
+Received: from [192.168.0.6] (ltea-047-064-115-093.pools.arcor-ip.net.
+ [47.64.115.93]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4589539de63sm18271415e9.23.2025.07.30.01.58.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Jul 2025 01:58:07 -0700 (PDT)
+Message-ID: <8f0c1352-6dba-4b44-bbb2-f2ab83458058@redhat.com>
+Date: Wed, 30 Jul 2025 10:58:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] pc-bios: Update vbootrom image to commit
- 183c9ff8056b
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>
-References: <20250730045813.822132-1-clg@redhat.com>
- <20250730045813.822132-4-clg@redhat.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20250730045813.822132-4-clg@redhat.com>
+Subject: Re: [PATCH v2] qga: Fix ubsan warning
+To: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ qemu-trivial@nongnu.org, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+References: <20250730072709.27077-1-thuth@redhat.com>
+ <CAPMcbCp6cDWnV4PLnyYO5+rGoSeFEPSvGAOyJjK4N8r5Zkdv_w@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CAPMcbCp6cDWnV4PLnyYO5+rGoSeFEPSvGAOyJjK4N8r5Zkdv_w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,34 +152,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.07.2025 07:58, Cédric Le Goater wrote:
-> Full changelog since last update (1287b6e42e83) :
+On 30/07/2025 10.28, Kostiantyn Kostiuk wrote:
+> Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com 
+> <mailto:kkostiuk@redhat.com>>
 > 
-> Hao Wu (2):
->        Automatically search for UBOOT location for NPCM8xx images.
->        Dynamically detects NPCM8XX UBOOT destination and size.
+> @Thomas Huth Is this fix critical to merge during 
+> code freeze?
+
+I don't think so, the problem only occurs when compiling with 
+--enable-ubsan, so normal users should not be affected by this.
+
+  Thomas
+
+
+> On Wed, Jul 30, 2025 at 10:27 AM Thomas Huth <thuth@redhat.com 
+> <mailto:thuth@redhat.com>> wrote:
 > 
-> Jamin Lin (5):
->        Add initial support for AST27x0
->        ast27x0: Show build date and git version
->        ast27x0: Initialize and enable SSP/TSP using SCU with reserved-memory from DTB
->        ast27x0: Fix missing SCU module reset for SSP and TSP initialization
->        ast27x0: Fix Makefile to unconditionally set CC to support correct cross-compilation
+>     From: Thomas Huth <thuth@redhat.com <mailto:thuth@redhat.com>>
 > 
-> Compiled with gcc version 13.3.0
+>     When compiling QEMU with --enable-ubsan there is a undefined behavior
+>     warning when running "make check":
 > 
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
->   pc-bios/ast27x0_bootrom.bin | Bin 15552 -> 16408 bytes
->   pc-bios/npcm7xx_bootrom.bin | Bin 768 -> 672 bytes
->   pc-bios/npcm8xx_bootrom.bin | Bin 608 -> 672 bytes
->   3 files changed, 0 insertions(+), 0 deletions(-)
+>       .../qga/commands-linux.c:452:15: runtime error: applying non-zero
+>     offset 5 to null pointer
+>       #0 0x55ea7b89450c in build_guest_fsinfo_for_pci_dev ..../qga/commands-
+>     linux.c:452:15
+> 
+>     Fix it by avoiding the additional pointer variable here and use an
+>     "offset" integer variable instead.
+> 
+>     Signed-off-by: Thomas Huth <thuth@redhat.com <mailto:thuth@redhat.com>>
+>     ---
+>       v2: Use an integer offset variable instead for checking for a NULL pointer
+> 
+>       qga/commands-linux.c | 10 +++++-----
+>       1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+>     diff --git a/qga/commands-linux.c b/qga/commands-linux.c
+>     index 9e8a934b9a6..0c41eb97190 100644
+>     --- a/qga/commands-linux.c
+>     +++ b/qga/commands-linux.c
+>     @@ -400,10 +400,10 @@ static bool build_guest_fsinfo_for_pci_dev(char
+>     const *syspath,
+>                                                  Error **errp)
+>       {
+>           unsigned int pci[4], host, hosts[8], tgt[3];
+>     -    int i, nhosts = 0, pcilen;
+>     +    int i, offset, nhosts = 0, pcilen;
+>           GuestPCIAddress *pciaddr = disk->pci_controller;
+>           bool has_ata = false, has_host = false, has_tgt = false;
+>     -    char *p, *q, *driver = NULL;
+>     +    char *p, *driver = NULL;
+>           bool ret = false;
+> 
+>           p = strstr(syspath, "/devices/pci");
+>     @@ -445,13 +445,13 @@ static bool build_guest_fsinfo_for_pci_dev(char
+>     const *syspath,
+> 
+>           p = strstr(syspath, "/ata");
+>           if (p) {
+>     -        q = p + 4;
+>     +        offset = 4;
+>               has_ata = true;
+>           } else {
+>               p = strstr(syspath, "/host");
+>     -        q = p + 5;
+>     +        offset = 5;
+>           }
+>     -    if (p && sscanf(q, "%u", &host) == 1) {
+>     +    if (p && sscanf(p + offset, "%u", &host) == 1) {
+>               has_host = true;
+>               nhosts = build_hosts(syspath, p, has_ata, hosts,
+>                                    ARRAY_SIZE(hosts), errp);
+>     -- 
+>     2.50.1
+> 
 
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-
-Thank you!
-
-It'd be very nice to get an ACK from Hao Wu too.
-
-/mjt
 
