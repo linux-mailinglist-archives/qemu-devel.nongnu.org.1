@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4250B168D1
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 00:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 480B5B168D3
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 00:06:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhEvG-0007NT-Ey; Wed, 30 Jul 2025 18:05:18 -0400
+	id 1uhEvF-0007U3-TC; Wed, 30 Jul 2025 18:05:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhEup-0007IK-2i
+ id 1uhEup-0007IH-1y
  for qemu-devel@nongnu.org; Wed, 30 Jul 2025 18:04:51 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhEun-00020O-B8
+ id 1uhEun-00020P-8z
  for qemu-devel@nongnu.org; Wed, 30 Jul 2025 18:04:50 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-7426c44e014so303858b3a.3
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-23ffa7b3b30so3926485ad.1
  for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 15:04:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753913086; x=1754517886; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=pg5UGZMexlPnob+VnCajULOONFAP8RYXT5SgpFgIkU8=;
- b=cPvByzEWL5059aMdYos9b5WJnTFO7qgLTQgGFMXcp9o9qCVCuC8iL8R0tA1gicBiUm
- fRcyZyVl2BRwOrFrwb/ybbM6BoWZ935ZJzLEuJOr/sZCYmaIOWXOYvR4/zKozuqHJlGd
- 9rYIXWVMP3w7NHQqh+Q2DfZRhoSfkGdiVEL1+WLlazK6Hy46PzAl60K02RW7wR+10vCK
- wWWZHCPpA1kH77ZGx/+JlOfXSjGC2UUyiqvvITVKy/KVl2GDK3/RZdv/gK2zUwDUEfhg
- peVfCSPR01MkXxpo3WeQcJwFhYPDaOU9Po4GhIsF5XVG5YSjfJwgYEAhoOUikaCfPb6w
- 4bkw==
+ d=linaro.org; s=google; t=1753913087; x=1754517887; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RdL6k55SoWveZonLf24zRcrVCA47JiVVO5GLV1IfSFg=;
+ b=F/56mBx4yGM1reWzr0I1aX1OPx0p4O/VmKRXW+/1Zp9Al1FprAG17T44b9nb6mNwEt
+ GcpQecI338n1Kun6arlhKw1Z4/wQryp8lnsPaxv/FhFwIumw4z15beoRED0F3bX+/WIp
+ qPUqc6KdOwgsJGdfDvt0H2i/TaL7XAW4KAczrOgqhFoL2j2c91P8AZGjNanxJ2ZBsfRt
+ fCEgFFMTgaD7rHOZmxPLHddJegwZOexTSXGx9lWPK2ZLsmPSyUzzOLv6vyt/U6HkuMnD
+ 0Ya1frgh0FwhZ1snzcus88ZRTBERKYRrgBRzOtIO1hrkAhuYwo+uTGx3sruqqsmXHoCM
+ DG9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753913086; x=1754517886;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pg5UGZMexlPnob+VnCajULOONFAP8RYXT5SgpFgIkU8=;
- b=GrB1vI8j/cK8/rBSvPsP60orC0p0rSHa5L8b2ookCsvD+X0Q0PqzLLeYtaNxTKU499
- 1pwgm5LHFbk6sk3SydrxChvEBUvV8M1x0gJdYl9657ldveRBNue6BrKVVZGQyOfnMbqe
- 1KYCn8AvBAKD/oKaKENUHdDUwKPOS5ptUHekpJ7wVLBcnUh2d2MqKc2dAappdnv3/EQH
- V6YccZgAjBOgMPyEyhMw7kznV8XWjwU4e+umikakSpYeg8Cv8jBgd2Ig8by2euFU7Bmn
- POKcA6xz3G/DGQ47gMS4HTAs4yAYqqTI+xPle6konvEdSUjpSZRXNJB+VGs/cqlQ8jid
- 4pSg==
-X-Gm-Message-State: AOJu0Yx1aDIQlDQLplNOQzX+reH3AljgCRGdy4nic1Dt7KFLgnD8H79O
- AQpd3OoA6h7UbC2Caje8C0dVmMm8gE5MXVZY2Zwv8uNe6ue081ZHaSOpVPw/tlxxNShza7Yf806
- vuY14
-X-Gm-Gg: ASbGncvIn5l7VKp2flGgN8XrFyWozP3RWHby3sDC7liHaWpnztA5Q0e24iEJ+uDgAdy
- 59hbXsU47ZHJXozuWw9Z8KNhZA0Tr6OsLN5k4x/cyfp3O9WVOZT/jK6vlZJcwx3ZL/DCnGaJnmF
- 9DE/KMNOMXwJOh+YpyDAOM2j7wNC6wN4cGpYb/uFTZIvnPZkm+lM/QsVuR/1r7ejhww36Ti5ZvI
- r+mAXUnDECQDEb/iXemYBN/obg8MpuVZpmU8sRqa53m9zw0CWTynaqQ1To4x4kySros423VvG6d
- IIbq/F+YDFymRiiXmiofoaDqB+JxY1kzdYJA7QIANusjBKgLfFMsSs89oi9RRHhLQnOO0oQGtHm
- WdY9j/ZoRYLOxGXqXVSfYxg==
-X-Google-Smtp-Source: AGHT+IFigaQibQTnemsDJ//A9QLKyD7OqluljmrroNY3hHLseJ5gN4metgRgfFOtYwd3sIzRmqZaQg==
-X-Received: by 2002:a17:903:291:b0:23f:f68b:fa0b with SMTP id
- d9443c01a7336-24096b05b02mr52752245ad.37.1753913086520; 
- Wed, 30 Jul 2025 15:04:46 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753913087; x=1754517887;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=RdL6k55SoWveZonLf24zRcrVCA47JiVVO5GLV1IfSFg=;
+ b=Auy91M31/ftieR6e9qZihA44ilPM3K8V2lY4hseT6o56L8EYr6jW5pUzmHd8QHtlgu
+ Ai2RRnFWrqLfD6brRpTRgzy1xKdmXMpfR28j28jDbHbEdbnjVvYFCeEmJVylT+DZAq9C
+ 40fLUwttExAySAySIa6hMZGJB1xjpXCqpGpr7YzYM5W5VkYLXwAmqguxaAOYlgjfl3Kz
+ pvaVjylGM8jYm8OkEU+Jb4Ti6RVeuAJ7reV+6t8ePnWl4fWA3oeBSbA7gnRDzsJbUKnt
+ S+nPf2gGhmgCARS12L1dOYmvD98m69VrewxCfxo7Bdz6WsmuivBC2ZbeXnO5Z7cZaKZl
+ Ai4w==
+X-Gm-Message-State: AOJu0YzdvZeaKYleqmNPoKRJBpchWSd5LhIsOzNYUHhR0K1N+CPb9ncV
+ rcfmnKBNgpMLcDwOmXsqi+JUps82jwO+7VoYs3k7DA3TdWmHlN+ZAyIoFaURkmrVpJeojN/998a
+ eRwpF
+X-Gm-Gg: ASbGncsJ3b8O6Sigy++JIm2w7fEPlRt+479QcdJfGx36UUKAS0F8FK5yXHxpz7kqWJt
+ WazRsF/lvtbjCO7YRmEGq63r/cU6ii/bD6fJot2+CUEc6iJT3dmyalSaEekxdfF4kVAXvqN/9zO
+ gGH737xlioBOVQlOOPvmXyZACgsA26zHnkrNg+fnR+1lTmYN6rFEfTHvF5lv5/SbxV2jGu0erdg
+ MajETEd2lNoxThZ3Ai0IgXehv3RmBpLgJ945D/HTOKyUKMXHnujJ63lBnvO17J0nngey3ku/EaA
+ oBu+88ShSAsMtMY/Kep8aQRqNy2EwFWC4cb9hElaC/HQwhsozhecmcIfoaemS8onEwn5eJDU2KF
+ lEJFStd2Lxdej927bn+ARUodeteC+qoPJ
+X-Google-Smtp-Source: AGHT+IHaO2zchrNrjLawYAfnAt+w3/KvHgsmhkNd0gOoFQHzYRdaoagOyknHv8x8g4kLjwQ4nrTxYw==
+X-Received: by 2002:a17:903:228b:b0:240:7753:3bff with SMTP id
+ d9443c01a7336-24096afe547mr72641595ad.30.1753913087372; 
+ Wed, 30 Jul 2025 15:04:47 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241d1f0e757sm1095645ad.55.2025.07.30.15.04.45
+ d9443c01a7336-241d1f0e757sm1095645ad.55.2025.07.30.15.04.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Jul 2025 15:04:45 -0700 (PDT)
+ Wed, 30 Jul 2025 15:04:46 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, philmd@linaro.org,
  Fabiano Rosas <farosas@suse.de>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 0/2] single-binary: compile once migration files
-Date: Wed, 30 Jul 2025 15:04:33 -0700
-Message-ID: <20250730220435.1139101-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 1/2] migration: compile migration/ram.c once
+Date: Wed, 30 Jul 2025 15:04:34 -0700
+Message-ID: <20250730220435.1139101-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250730220435.1139101-1-pierrick.bouvier@linaro.org>
+References: <20250730220435.1139101-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,23 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series removes target dependencies in migration code.
+Acked-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ migration/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-v2
---
-
-- rebase on top of master (one patch was already merged)
-
-Pierrick Bouvier (2):
-  migration: compile migration/ram.c once
-  migration/vfio: compile only once
-
- migration/vfio-stub.c | 16 ++++++++++++++++
- migration/vfio.c      | 14 --------------
- migration/meson.build |  8 ++++----
- 3 files changed, 20 insertions(+), 18 deletions(-)
- create mode 100644 migration/vfio-stub.c
-
+diff --git a/migration/meson.build b/migration/meson.build
+index 276da3be5a3..45e9445f97d 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -31,6 +31,7 @@ system_ss.add(files(
+   'multifd-zero-page.c',
+   'options.c',
+   'postcopy-ram.c',
++  'ram.c',
+   'savevm.c',
+   'socket.c',
+   'tls.c',
+@@ -50,5 +51,4 @@ system_ss.add(when: uadk, if_true: files('multifd-uadk.c'))
+ system_ss.add(when: qatzip, if_true: files('multifd-qatzip.c'))
+ 
+ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
+-                if_true: files('ram.c',
+-                               'vfio.c'))
++                if_true: files('vfio.c'))
 -- 
 2.47.2
 
