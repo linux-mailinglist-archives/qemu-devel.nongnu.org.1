@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514E7B1681D
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 23:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E73B16807
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 23:08:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhE87-0006EN-Hj; Wed, 30 Jul 2025 17:14:31 -0400
+	id 1uhE1l-0007Bf-Ee; Wed, 30 Jul 2025 17:07:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhDxX-0001yr-EZ
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:03:35 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1uhE16-0005wu-6P
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:07:20 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhDxV-0004pw-TC
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:03:35 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-2402774851fso2919895ad.1
- for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 14:03:33 -0700 (PDT)
+ id 1uhE13-0005kW-4X
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 17:07:15 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-7682560a2f2so213077b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 14:07:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753909412; x=1754514212; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753909623; x=1754514423; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=mLqkvMWORNfVerEKRdyrpJ4UAqvOqoRlGSAv+02Qx4o=;
- b=Vk0JoepHARv2FPmhO4F2kQEqeMzqIdzxU+0GgekBv5mkNwgzjXXLfBpCHX/C9WyfYZ
- Naz1ECLLJaXeWsyS09oaZFYK9E+dVvRaSTZ8IQuddnHh+lEtdL4H8mwfmmqeU05oRgwH
- im3nXjmM3ybJyhJME1zQroM7BtQYjYKAmF44d4KY9ir9T69un51EYNQc0MGDc/1FqPdH
- JCw7Oq4dHo9VXuW1+OP9+j1VRnLSiLk14JxW++Vq8eEZE/8Dh6RbrS0dDQWMw04LYX4d
- FgDshyRU/o9zK2QVaFL+J8pEl9USseoHW4nkOJU6iy+XPJ/pXu1qlm9x+FMw8xmx3Nst
- 2xLA==
+ bh=RumQlkc7hEzWm9lGIcgWyhIVpphtcbkJHVovvoUjnZ4=;
+ b=h0WLpiAQrRt8Z/vaHeVsenrokvDMMZV9F7PGhgCvQREccPvQNb2VILIUKPAvVaiICe
+ t1cRhkKemqT8JNC6zAuIMTn5JUKhfbVkyC1pnWpRS7BHGArRO0mdGL8IOyPvrx7zhR0h
+ 7X1o9N44W1ZJ/7+QlWWAKZAJXpV/jjb4ygRj4rnZF5SNAze/Ati9szxEuSat7fIk9/aI
+ aLLOnUK8gnrPWaoCU2KGyLPRCTE54X6D74UW/ueAAJdq80n8HRaMx7UweSG1MyWLAacR
+ SfPI9K2sWWgM/3X9hPtG3lMYuwZNv58S+YjbvkkW5DHPmBt68/QPzF8ieWKueaCJmbTH
+ yvrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753909412; x=1754514212;
+ d=1e100.net; s=20230601; t=1753909623; x=1754514423;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mLqkvMWORNfVerEKRdyrpJ4UAqvOqoRlGSAv+02Qx4o=;
- b=meQJHlYOpFXShkXR5A3q82ia3/R9ha/lmXkgN/zL16IGl4wJQADHtFcShXuzEk/R+V
- iThbnpMvdKM0E2+Ffp4czFpOJnbVgs/ny68DZDiWWpMB6M8Oh/U5C7TK7IIat9iM2icS
- j6kVetsXLreZuFQCAsUTDgOnX4yQE+E3axBqgBjznquw9YshJJgCHMGdfW/zzFshKYa8
- 0CSK1qQ0dr4XrdPA2HZtTStyHsjAAIAEa0nM6/pWuAhpis9gXksn9qjb73iMVgQ1Yp5i
- SVnqX+r1jMYL5T4z+1dm5nTvzW/MK+6HDZfc5mSS2OarHHn1/c/mqteF+yETloVhMQO4
- liNg==
+ bh=RumQlkc7hEzWm9lGIcgWyhIVpphtcbkJHVovvoUjnZ4=;
+ b=HhbRZ/DyMbH3W+eqZ5axjuE2m/fmBR+Qjn/yp+CzqcBVYGLaX2HXG0+GlWh/HkcJnY
+ uMtzKlD+fyey/wD+oqW4F0nGo2GaoLrESGaOKJ76jwKkWf2OxYSWI+2oxLe16CRsGI+5
+ AwpKZk/FK6Y9i20SkuATsnwW9WoPuEnQi8M5mKixfsaNINjdHLBgjjxkhE+3E2M6NFXu
+ /rksJhIdOnf8hhU/HfjSBpphkeJIsvcRS+KxS/66kVT38UNNdfoylOH/0C1GhuVZTML0
+ Slnj5WnITuGIeWeWrS3e4MWqZ1wc8kB4iPyiQ8yjc/4Ju1N/N5oaP26xuc3RMokBaS2W
+ 7fug==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUmFfhuo8A0p4T5PPdEvzQyyCFNrWv8IVoaaze5A3N5IYd1vaIrKadaoVNdvu4yEnZS/2sLNXuqpdeZ@nongnu.org
-X-Gm-Message-State: AOJu0Yx+AZN7B2MXkXoHLcxQzcO8UnQIU4RBVjfpdjOwBh+TwCr01tnP
- HrsziT/EseCVCwvtcqbMpHoAVcpWgxANWrZMcL7fsonqaW+HfjIJJgphtDlaYt3qM1o=
-X-Gm-Gg: ASbGncvzzbykkDm++4AmA2QITwMlHwIvBzwFyLoyHCEyAyEssbUDITJnBs6cVwxDAmR
- PBRdisON3F19GZjlRHyncEZDY5xsn7U04ofsYgFpG1300PldiR9zeasb+zwrHC62yPqEXNKumtd
- eqcWT+CDE48kiAP0ylF0ZLTGCrX/KBlD1iiCGa+o+mGyMi1Uk3sOc1v9hbwCTfLB03Kc2KaRuwU
- dL/bQIRoIX9UrI264VD961WTv78hLQUccjgUfDGN7cNMtYfcuS8KsYOxK7gJ7VOEjafGRNzNyfF
- yQ59Odg3qKk+XnVZMxc5NHK6yr0LO/Bb09NoTK6hQGY5/M1cLREd7g8BSobEbvLv8gdf1rY2OeC
- 8dIcJqlKD3TNJJY0s446LJP9c4GKp5yAS3zM=
-X-Google-Smtp-Source: AGHT+IFaJ8RtOl/HPrOIRWcU6E18dFhsE8sOkM8Ov8Lq/YnZJb8Fe5iy8+W3YwdKoJLAruoEdXZu4w==
-X-Received: by 2002:a17:902:ef0c:b0:234:9092:9dda with SMTP id
- d9443c01a7336-24096b23907mr87757425ad.24.1753909412108; 
- Wed, 30 Jul 2025 14:03:32 -0700 (PDT)
+ AJvYcCVgYukLy0XK9B4v7lnIV5AqPnxhHANJTX7EwGM+F+ju5soGI/eAc0/LDQYpRE18L9Nq17KEpDTPvKLc@nongnu.org
+X-Gm-Message-State: AOJu0YwPQpMRpepfipLLYldXvzccfAfs7hG4wCrkZrn7cTVTPLlKsXyd
+ 3AaR0KyYnjtLtwWHjYCqdP2Rz6Z8rxYHWz3VrOR3EOT36PzZdHKm9p8NzhHqmJCN/YY=
+X-Gm-Gg: ASbGnctIBzi/Z6lHJHyz1IFtjQVkhxyuklYMxf5rkq1BtEXUrOK0T0phXnKDMFWRx4R
+ /15Na8gZLMWcM8SWF7OLvwdmoHcYMjJtOnH+Qs+YC2OdOnIQPNgB9myIA+JCdskFLNSXNei5w5+
+ +1JMOm2aISprv0zMsxt6+ZtikvFIQQ52BIg9lQpPxgcd4cbCw0Rk60/g3YA3OCVoP9s7FWNmvbV
+ ORPNrvnIWg/Co2xL4ee7cdz/HPZPbOWyhYtHmlenXBlos+49WZypuG16RaokTQyO51c3ZmJ8wa8
+ oG/Pm5Maq4fMjXb/71m7gA19jZON/Lrf07KCPL8UqA/KTsSsacPBr0t30GCInQAG6xLS9K7y8qP
+ GYXhNkJZLUDLjWy7Rgts/OQ4pBdsC3AoKXfA=
+X-Google-Smtp-Source: AGHT+IGcO0/vnDKPMu+1eGlWGp84zkP86iEjhCMKq9XAXdj58hAdUB7o/hLD1rIHCnGLyQfVupJQNA==
+X-Received: by 2002:a05:6a20:7490:b0:220:88f2:51a5 with SMTP id
+ adf61e73a8af0-23dadca295bmr13671500637.18.1753909622737; 
+ Wed, 30 Jul 2025 14:07:02 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241d1ef47f5sm422205ad.10.2025.07.30.14.03.30
+ 41be03b00d2f7-b3f7f6b0817sm9859096a12.54.2025.07.30.14.07.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Jul 2025 14:03:31 -0700 (PDT)
-Message-ID: <271f1334-48bf-4467-9449-2268657ddbae@linaro.org>
-Date: Wed, 30 Jul 2025 14:03:30 -0700
+ Wed, 30 Jul 2025 14:07:02 -0700 (PDT)
+Message-ID: <b9cc7220-c3c7-4954-a8dd-996cbccd52a0@linaro.org>
+Date: Wed, 30 Jul 2025 14:07:01 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 27/82] include/exec/memopidx: Adjust for 32 mmu indexes
+Subject: Re: [PATCH 28/82] include/hw/core/cpu: Widen MMUIdxMap
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
 References: <20250727080254.83840-1-richard.henderson@linaro.org>
- <20250727080254.83840-28-richard.henderson@linaro.org>
+ <20250727080254.83840-29-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250727080254.83840-28-richard.henderson@linaro.org>
+In-Reply-To: <20250727080254.83840-29-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,11 +102,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/27/25 1:01 AM, Richard Henderson wrote:
+On 7/27/25 1:02 AM, Richard Henderson wrote:
+> Widen MMUIdxMap to 32 bits.  Do not yet expand NB_MMU_MODES,
+> but widen the map type in preparation.
+> 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   include/exec/memopidx.h | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
+>   include/hw/core/cpu.h | 2 +-
+>   accel/tcg/cputlb.c    | 3 ---
+>   2 files changed, 1 insertion(+), 4 deletions(-)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
