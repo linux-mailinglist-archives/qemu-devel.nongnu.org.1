@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69715B1614A
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 15:19:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF90B16194
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 15:31:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh6gZ-0006iK-GZ; Wed, 30 Jul 2025 09:17:35 -0400
+	id 1uh6sf-0007yK-Jf; Wed, 30 Jul 2025 09:30:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1uh0Wd-0002iY-VS
+ (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1uh0We-0002ik-6U
  for qemu-devel@nongnu.org; Wed, 30 Jul 2025 02:42:56 -0400
 Received: from fanzine2.igalia.com ([213.97.179.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1uh0Wa-00042p-FZ
+ (Exim 4.90_1) (envelope-from <asb@igalia.com>) id 1uh0Wb-00043E-AP
  for qemu-devel@nongnu.org; Wed, 30 Jul 2025 02:42:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
@@ -23,24 +23,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=2TAQ452hADL4KZO9AV0cQRaqxgV6RuvFxhbslKH2018=; b=MzJ6ClwcVvX2L1c2DCDqFHbPZ9
- qlOZ35wGCn7bvILpUSx8XiG9DMnbuaojH9BFn/bWuhGIuvMtbCmN1kuL3TuOZ63dlMo/Kc7KL8YAu
- 3AyadBnPsoHnC+idzoYLxEDZ97DX0GDFVAP0xLCwrRux8Iu0ZpSWOOYMcXaz5CKZwyV1Q+gbKBEX0
- 1XvVGz+B9rIk5WDtJsfAWax0asr2biP5MVGB3G4kW/Foy9xwYut5qMGcOYHrSTP8uIsWr3bt7mkJ6
- ePEEg0lg+G3X9H9FgWQ/2hEVAt7od8BO0hiGlAISdVzWY+nKwQPIyYgjPy5+oPTNVUnzmNvS1U83L
- FfO4Y4lw==;
+ bh=VBV50KAekGTBs5evzva+q0zkom0tIRNQMNKutedB2iI=; b=cCXUvimgrlXR97JBREe49148/d
+ 0XBVX0MQ1fpO7ILEHasMcyNWNAmUEhpj+FSEVAAFVRKWrv7ogOcmDSm+P3HRRmmhXCR+UNjcTT4KU
+ UWlp6tQ96SnkANG5dI7ZF8PnNk5k3I3N2PGcNJMd1e77E59FMcDD305WrXBI/9g30BPm3Ex4ob7Pw
+ WI5IGALVQWia+GOsKZ4LZFemw/HU8XNHNaQ5bbzuw3EyCT7Z8xx3K7AGx9LwcDpmF2/SXkyrddvCZ
+ jz0+dYTqvsCi4NmP55syqquc5rbLPWEV8NTeqYfmHW/p6fMcOWWsK/MmR5TV/ykRJrM0ltPO/kHSM
+ myGAGU3Q==;
 Received: from 82-69-92-151.dsl.in-addr.zen.co.uk ([82.69.92.151]
  helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1uh0WQ-005nOk-1C; Wed, 30 Jul 2025 08:42:42 +0200
+ id 1uh0WQ-005nOk-HS; Wed, 30 Jul 2025 08:42:42 +0200
 From: Alex Bradbury <asb@igalia.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Bradbury <asb@igalia.com>, alex.bennee@linaro.org, erdnaxe@crans.org,
  ma.mandourr@gmail.com, pierrick.bouvier@linaro.org
-Subject: [PATCH 4/5] docs/about/emulation: Add documentation for hotblocks
- plugin arguments
-Date: Wed, 30 Jul 2025 07:41:42 +0100
-Message-ID: <35128cc5a86a0c18418f9d3150fb8771c54ef7d8.1753857212.git.asb@igalia.com>
+Subject: [PATCH 5/5] contrib/plugins/hotblocks: Allow limit to be set as a
+ command line argument
+Date: Wed, 30 Jul 2025 07:41:43 +0100
+Message-ID: <58281d6e54bcad1802e8d3dc8d8501d54c2a971e.1753857212.git.asb@igalia.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1753857212.git.asb@igalia.com>
 References: <cover.1753857212.git.asb@igalia.com>
@@ -71,31 +71,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently just 'inline'.
+Also add documentation for this argument. This allows the default of 20
+to be overridden, and is helpful for using the hotblocks plugin for
+analysis scripts that require collecting data on a larger number of
+blocks (e.g. setting limit=0 to dump information on all blocks).
 
 Signed-off-by: Alex Bradbury <asb@igalia.com>
 ---
- docs/about/emulation.rst | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ contrib/plugins/hotblocks.c | 10 +++++++++-
+ docs/about/emulation.rst    |  2 ++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
+diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
+index 40d8dae1cd..8ecf033997 100644
+--- a/contrib/plugins/hotblocks.c
++++ b/contrib/plugins/hotblocks.c
+@@ -84,7 +84,8 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+     if (sorted_counts) {
+         g_string_append_printf(report, "pc, tcount, icount, ecount\n");
+ 
+-        for (i = 0, it = sorted_counts; i < limit && it; i++, it = it->next) {
++        for (i = 0, it = sorted_counts; (limit == 0 || i < limit) && it;
++             i++, it = it->next) {
+             ExecCount *rec = (ExecCount *) it->data;
+             g_string_append_printf(
+                 report, "0x%016"PRIx64", %d, %ld, %"PRIu64"\n",
+@@ -170,6 +171,13 @@ int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
+                 fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
+                 return -1;
+             }
++        } else if (g_strcmp0(tokens[0], "limit") == 0) {
++            char *endptr = NULL;
++            limit = g_ascii_strtoull(tokens[1], &endptr, 10);
++            if (endptr == tokens[1] || *endptr != '\0') {
++                fprintf(stderr, "unsigned integer parsing failed: %s\n", opt);
++                return -1;
++            }
+         } else {
+             fprintf(stderr, "option parsing failed: %s\n", opt);
+             return -1;
 diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index 456d01d5b0..9c963f4705 100644
+index 9c963f4705..185edb8ad7 100644
 --- a/docs/about/emulation.rst
 +++ b/docs/about/emulation.rst
-@@ -463,6 +463,16 @@ Example::
-   0x000000004002b0, 1, 4, 66087
-   ...
- 
-+Behaviour can be tweaked with the following arguments:
-+
-+.. list-table:: Hot Blocks plugin arguments
-+  :widths: 20 80
-+  :header-rows: 1
-+
-+  * - Option
-+    - Description
-+  * - inline=true|false
-+    - Use faster inline addition of a single counter.
+@@ -473,6 +473,8 @@ Behaviour can be tweaked with the following arguments:
+     - Description
+   * - inline=true|false
+     - Use faster inline addition of a single counter.
++  * - limit=N
++    - The number of blocks to be printed. (Default: N = 20, use 0 for no limit).
  
  Hot Pages
  .........
