@@ -2,58 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334AEB1598E
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 09:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB653B15A60
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 10:19:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh1Dt-0003hF-JG; Wed, 30 Jul 2025 03:27:37 -0400
+	id 1uh20Y-0004nT-R0; Wed, 30 Jul 2025 04:17:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uh1Dm-0003d2-Cw
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 03:27:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uh1dS-0000uc-HU
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 03:54:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uh1Dg-0002tR-1C
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 03:27:30 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uh1dQ-0006LO-Em
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 03:54:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753860442;
+ s=mimecast20190719; t=1753862037;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=nPI7pdlOcMz7QrP0SBU39anyG80W4Kt/XP9FRi6Jd1I=;
- b=ZzO1wK4n83GK3DgKWAKJqvhiARLFnUK4gikwjiu998/8UZtdK220LbXRaPPYJLpeZ1X/QY
- 9FSWQB+RpWEkQC5kE07Tg4q+qLu5TF2m1QYFMvRInHERz6mpJls//P9obeap4edMdoJFS0
- j5R0SKubTDoM+y5prhAIh1DCYRjKzrQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Op0C7zEpAY7sq+Ou+7Gh6PvPmY2b4ImMr6JcjkWA4eQ=;
+ b=ayAGpLF2itm6uRP18SbQ+h/RwTf9rVKAxq27CqensgPw7RT8km43z6vSlt0yBX4mEwH6IZ
+ HkbLuN7zuQybuP0QH4igJYVGcKJFlB0uTHam4kMDLnQHaiOnne2/OjaUG/OuR6DT9z1Vhe
+ BGTgoGS4xbvM9ujeLcPUji/P0onHxHU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-207-BR3DqirsPLGnywzHHvm0vg-1; Wed,
- 30 Jul 2025 03:27:15 -0400
-X-MC-Unique: BR3DqirsPLGnywzHHvm0vg-1
-X-Mimecast-MFC-AGG-ID: BR3DqirsPLGnywzHHvm0vg_1753860435
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-692-kseDsczfPbe6qDo1H1qz0Q-1; Wed,
+ 30 Jul 2025 03:53:56 -0400
+X-MC-Unique: kseDsczfPbe6qDo1H1qz0Q-1
+X-Mimecast-MFC-AGG-ID: kseDsczfPbe6qDo1H1qz0Q_1753862035
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A19F819560B2; Wed, 30 Jul 2025 07:27:14 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.45.224.104])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8235F18003FC; Wed, 30 Jul 2025 07:27:11 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Cc: qemu-trivial@nongnu.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2] qga: Fix ubsan warning
-Date: Wed, 30 Jul 2025 09:27:09 +0200
-Message-ID: <20250730072709.27077-1-thuth@redhat.com>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 78683195608F
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 07:53:55 +0000 (UTC)
+Received: from localhost (pixel-6a.str.redhat.com [10.33.192.205])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 86CDF1955F21; Wed, 30 Jul 2025 07:53:54 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Andrea Bolognani <abologna@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH 2/2] watchdog: generic name for i6300esb
+In-Reply-To: <aIjyJVKZff5MAnkt@redhat.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Avril Crosse O'Flaherty"
+References: <20250610143259.1056400-3-cohuck@redhat.com>
+ <aEhnbN1pSYgdi4EZ@redhat.com>
+ <CABJz62O3FKYfUOyCLMotgYgckWV1frSUb=MtTW2J4fDTEg_==g@mail.gmail.com>
+ <877c09792e.fsf@redhat.com> <aHZ7rpYFMWai-7RL@redhat.com>
+ <CABJz62P+p_uYiatXroauLkG2AH2TnjS8drbHxLPsgY+=QSB8Lw@mail.gmail.com>
+ <aHaC6_2vdXJqdxLo@redhat.com> <874iva7so9.fsf@redhat.com>
+ <aHkboV03D6lSzpgK@redhat.com> <87tt2v3s16.fsf@redhat.com>
+ <aIjyJVKZff5MAnkt@redhat.com>
+User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
+Date: Wed, 30 Jul 2025 09:53:52 +0200
+Message-ID: <87qzxy3yi7.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
@@ -79,59 +97,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+On Tue, Jul 29 2025, Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
 
-When compiling QEMU with --enable-ubsan there is a undefined behavior
-warning when running "make check":
+> On Tue, Jul 29, 2025 at 06:01:25PM +0200, Cornelia Huck wrote:
+>> On Thu, Jul 17 2025, Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
+>>=20
+>> > On Thu, Jul 17, 2025 at 05:17:42PM +0200, Cornelia Huck wrote:
+>> >> On Tue, Jul 15 2025, Daniel P. Berrang=C3=A9 <berrange@redhat.com> wr=
+ote:
+>> >>=20
+>> >> > On Tue, Jul 15, 2025 at 09:16:24AM -0700, Andrea Bolognani wrote:
+>> >> >> You can point them to documentation over and over again, or you can
+>> >> >> work to prevent the confusion/annoyance from showing up in the fir=
+st
+>> >> >> place. Which of the two approaches is a better use of anyone's time
+>> >> >> is up for debate.
+>> >> >>=20
+>> >> >> I for one am grateful that someone put the time in all those years
+>> >> >> ago and, as a result, PCI and USB controllers don't suffer from the
+>> >> >> problem today. Ultimately it's up to Connie though.
+>> >> >
+>> >> > The PCI/USB controller situation is not the same tradeoff though.
+>> >> > Those guest kernel drivers will identify and attach to these two
+>> >> > controllers regardless of their PCI vendor/product, via the PCI
+>> >> > class property. In that case changing the PCI ID and other device
+>> >> > metadata in QEMU is cheap as it has no negative impact on guest OS
+>> >> > driver compibility.
+>> >> >
+>> >> > In the case of 6300ESB though the guest driver is tied directly to
+>> >> > the currently used PCI device product/vendor ID.
+>> >> >
+>> >> > If we change this then we have actually created new functional
+>> >> > problems with guest/QEMU compatibility, in order to placate a
+>> >> > non-functional problem. That is not a good thing.
+>> >>=20
+>> >> I don't think the suggestion was to disable the existing driver on
+>> >> non-Intel setups, but to add a more generic one. Still, more work to =
+get
+>> >> this actually propagated into guests than doing the change in
+>> >> QEMU. Before I start down that route, I'd like to know whether the is=
+sue
+>> >> is actually big enough to make investing time there worth it.
+>> >
+>> > If we're a mmgmt app provisioning a guest, we have to choose what
+>> > watchdog to create - either the old one which works everywhere
+>> > that currently has a driver, or the new one will will work in
+>> > far fewer places. We'll have to wire up guest OS info about
+>> > watchdogs into osinfo, and then wire up all the mgmt apps to
+>> > query this and take action based off it. All possible, but it
+>> > still feels like a huge waste of time to me.
+>>=20
+>> The fact that the device is something emulated and not the Intel
+>> hardware device is actually visible to the guest:
+>>=20
+>> 00:02.0 System peripheral: Intel Corporation 6300ESB Watchdog Timer
+>> 	Subsystem: Red Hat, Inc. QEMU Virtual Machine
+>> 	Flags: fast devsel
+>> 	Memory at 10804000 (32-bit, non-prefetchable) [size=3D16]
+>> 	Kernel driver in use: i6300ESB timer
+>> 	Kernel modules: i6300esb
+>>=20
+>> (lspci -v so unfortunately not immediately obvious, but still)
+>>=20
+>> AFAIK the BSDs do not have a driver for this device at the moment -- and
+>> given what turns up when searching for i6300ESB, someone implementing a
+>> driver is far more likely to pick the exising PCI ID.
+>
+> I see vague references (with unfortunately 404 links) to FreeBSD
+> supporting some ICH watchdogs, which might mean it is compatible
+> with the q35 built-in watchdog that all x86 q35 machines get by
+> default. That wouldn't help non-x86 BSD though.
 
- .../qga/commands-linux.c:452:15: runtime error: applying non-zero offset 5 to null pointer
- #0 0x55ea7b89450c in build_guest_fsinfo_for_pci_dev ..../qga/commands-linux.c:452:15
+I found https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=3D259673 -- I'm
+not sure if anyone has tried to implement something cross-arch.
 
-Fix it by avoiding the additional pointer variable here and use an
-"offset" integer variable instead.
+>
+>> Windows would also need some dance according to Yan's mail, for unclear
+>> benefits.
+>
+> Off-list, Richard Jones pointed to the ACPI Watchdog WADT specification
+> from Microsoft which appears to the most viable solution for Windows
+> guests - at least from x86 POV, but hopefully any future Wndows aarch64
+> too:
+>
+>   https://download.microsoft.com/download/a/f/7/af7777e5-7dcd-4800-8a0a-b=
+18336565f5b/HardwareWDTSpec.doc
+>
+> The ACPI watchdog sounds like potentially the best bet for a working
+> solution across Linux and Windows, on any arch that does ACPI.... if
+> we can just find someone to write a QEMU driver for it....
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- v2: Use an integer offset variable instead for checking for a NULL pointer
+Yes, if someone(tm) wrote a QEMU device for that, we'd have something
+that should be quite useful across archs (well, excluding s390, which
+has its own watchdog anyway.)
 
- qga/commands-linux.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index 9e8a934b9a6..0c41eb97190 100644
---- a/qga/commands-linux.c
-+++ b/qga/commands-linux.c
-@@ -400,10 +400,10 @@ static bool build_guest_fsinfo_for_pci_dev(char const *syspath,
-                                            Error **errp)
- {
-     unsigned int pci[4], host, hosts[8], tgt[3];
--    int i, nhosts = 0, pcilen;
-+    int i, offset, nhosts = 0, pcilen;
-     GuestPCIAddress *pciaddr = disk->pci_controller;
-     bool has_ata = false, has_host = false, has_tgt = false;
--    char *p, *q, *driver = NULL;
-+    char *p, *driver = NULL;
-     bool ret = false;
- 
-     p = strstr(syspath, "/devices/pci");
-@@ -445,13 +445,13 @@ static bool build_guest_fsinfo_for_pci_dev(char const *syspath,
- 
-     p = strstr(syspath, "/ata");
-     if (p) {
--        q = p + 4;
-+        offset = 4;
-         has_ata = true;
-     } else {
-         p = strstr(syspath, "/host");
--        q = p + 5;
-+        offset = 5;
-     }
--    if (p && sscanf(q, "%u", &host) == 1) {
-+    if (p && sscanf(p + offset, "%u", &host) == 1) {
-         has_host = true;
-         nhosts = build_hosts(syspath, p, has_ata, hosts,
-                              ARRAY_SIZE(hosts), errp);
--- 
-2.50.1
+Given all of that, I still think that leaving i6300ESB as-is is the
+right thing, with a possible option of implementing the WADT watchdog.
 
 
