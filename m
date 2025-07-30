@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57974B156D9
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76042B156DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:06:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugvE1-0005OR-KK; Tue, 29 Jul 2025 21:03:21 -0400
+	id 1ugvFh-0000VN-Jl; Tue, 29 Jul 2025 21:05:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ugvCV-0003AO-Vz
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:48 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1ugvCY-0003Fq-Jj
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:50 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ugvCT-0004is-VR
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:47 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-7494999de5cso4359933b3a.3
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 18:01:45 -0700 (PDT)
+ id 1ugvCW-0004jm-IX
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:50 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-b3bdab4bf19so323122a12.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 18:01:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1753837304; x=1754442104; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1753837307; x=1754442107; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ifEoAXRng5a+xRiHUCEEy4t4IHwKmHWTZK+mMwPSJPw=;
- b=YfGPu5OAh8edeohXSCV2jIBNuIoYg6ztP6E/7GLPqmPpNeZgePaMUBhPzzNoMHRut8
- OtbrLA7v5lljTByelYU/mn4LcNp1dfrdZeZueb7lc4CuLEgbFa7CYLi7FwQ/JGTKY0Q8
- piGZwFR6JkVqDqwUNeGoKGqEe4AY0R/1+MGnj/26OoPgeF8Jm+JePffhL9WR9+PZNt2p
- rn0Wq9Pc8S3JtKEAfFN4Nr/QBWFYtPPr0eWx7O5PyoJfE55EOgMWqrUyL6cZW/jyjSYE
- 45T3x1sOr+PG8AYirUAd5k9RlTtI4V/EqaZnNvI6uFqZeeB+g152v4b6wZY4DWYeYxgf
- nVcQ==
+ bh=43YL6LeHtMqajzX1/nmmW+RggwtVTRuMuUjwY036hyw=;
+ b=L5aD0G/9r9PBakSsOxWpBdHL8AxuGsJ9zEFW8HMZedSdUzrb0dVf9aIJWC7HeKnohA
+ MDc3J1ylRueTBWYZAlt8LGQ02h0nEfDc5vDKk5n6Kx8wDMazSCErq6SzkVazlo8HDSIW
+ FNHZIcE+TZba1XRJq4uNjmNEqaW5NDz5411S0o7ICdaNVNb6SQ3DZskt8huNq+bN+4jC
+ O+zqB3/eBIgeGjfW4rbV+EXzTKDTKMLPexUDks4W4sidP/+4lqrAQ0HqBRHlfccXvsl0
+ HgKKVgH0994KofWaQL/wLTpYNRw4XxADQGronSJTCFGj0aFAOuh7420GMSFsfkCNU1AO
+ ihtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753837304; x=1754442104;
+ d=1e100.net; s=20230601; t=1753837307; x=1754442107;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ifEoAXRng5a+xRiHUCEEy4t4IHwKmHWTZK+mMwPSJPw=;
- b=BpqkgrGEKxJxcz5rvuuIpt2bOH8K9Sggs3ck1O6cStzYKruur6KCPmXwrsIkxiKpRp
- iIegXUEXZ1sb/GL644ID9nSm4DZMjhLzA4l3oM1jQKS9YYP/tKoW5P7bS6YnqtRVAfU3
- f3L9mWrqMTZmx6gD6IlRyKNhUdawZfQK2GxnD6Qta5bFoqoVCcO3tFpdXLIG6ThYVfTA
- aMCQZXQJ0ynhsYY+bQ8bQHlcVBJvXdIl0X/Hn5aPLzO4jzbdRdnFKIUxveMzI7DLTZa4
- XyKd7WXb9aOEtJly+tdU7jVAZa3hg+qtytVFyNYjqJ8NkjeigDpI3/oqutC1nzv4rHrA
- ZdZw==
-X-Gm-Message-State: AOJu0YyKz1QKq0ZSUQUUWs/6pqOYiRg4KfmuXpovfSYi9sNRX6UiLqi4
- OnKvTJCTz6ievK+SvOAR9lGnMUe+ynO2zPPv2AVCjEqbzF8wTuXhCntd5Xzq3A==
-X-Gm-Gg: ASbGncujJwTLMsC+MqxJKldhzuovUidQ8bIbtmDHShatzSapF9f7tnCp1ms1bDkTaAY
- YRnIQ70yggBYngq5EIHXbQAMEFX6qoupjWJIYQbQXEnmgw42SVteHUxrCy9TOa6D2ehy8+vN1OR
- dCaYFS2nxSokyVLEzDkrrXWv9YFwACvHegy/YgF1QEaZIE0LeW9B1AyBlo/hbL9wB0P35beD0E6
- PypdOXkDTWA/W2/VioQnGx0Mqh4GUW7aSxMLzGEkjB7r1h6mhQHBkyeIXH43vq/8ktKQMADhC40
- xzVuMpjth9+NVKxiq0YUcyXCOfuZYm11mF139juOfQlNRkKmlvGg0E+X7P4XMjdJt62McIExza/
- iE3y+Oy1ihgGC5rn6OR70/pYnpeLAaTWSA7FftCquLiU8wfIOa+vxBZIAalNfbcSCzXTV97nj8y
- U66Ves+TC7TMvnSg/DkmhFcRhcD34=
-X-Google-Smtp-Source: AGHT+IFqpEwXvArcCmWQqfDv3uLCvp39+9Zo1F+yEWcjKR8TAMVeXRXjSOEYA2qU6kF8IGiZHmLw6Q==
-X-Received: by 2002:a05:6a21:339d:b0:218:96ad:720d with SMTP id
- adf61e73a8af0-23dc0cf784dmr1748861637.1.1753837303601; 
- Tue, 29 Jul 2025 18:01:43 -0700 (PDT)
+ bh=43YL6LeHtMqajzX1/nmmW+RggwtVTRuMuUjwY036hyw=;
+ b=lnN7eK+8ikWQoaU311xJhIHS4uqovdRUAMvEMFPuBd1E/QV5qlHzJKKVkHVZZdO4Po
+ EQgkjoPgsQ/5tFRok04OZILmL0YvugggAhAGiFTJiKfSkRNXq8LvlqccLK+gxUD7QDrL
+ 3wmm5+cYKETiuAMzrtEJ3LlnuQ43/YUDdJzqnk6fHb0FdJj8fsDHERz5EICulg6MLptb
+ gLRE907EXy5GIGzWtFUw/CULEc521GrrikCs1dBNqbKQz84aUrSVM5M4uik/OCRROAyK
+ /FPnzIPlzkzGKcTqI42kzesdtOps4eFHtqr0EfeM00bWVi4SGqTtE8YTh5zlwtxX3iLc
+ bqsQ==
+X-Gm-Message-State: AOJu0Ywn1ghPlEkxt0YbxasJQDVGA/GIpXtn0CSl1n9NXqCpFYCKeOEV
+ CBrZq5crJfxo3E6de7I6v69UOeSForpHWFhvT1+HzTDFS/F41NbU+O7l+anShw==
+X-Gm-Gg: ASbGnctI8ngPRrI4qmtZHQqYo3h2PdRIeCtvWEipuFiHCr+FcheU4r1t3oV2ZfhjSZt
+ DIbIeldB0+mRrG3eNqFapWwGNdcNMK36xANa8fMWKE985QCox52JNNy5h+/6DtM2V2OJzdw/qUW
+ Q6deagQk3UsEujYr2zF6J0K8SlRFTaJXHdpgu06SWm3vEPMgJHEb6hENmz4HCbwSHSk96dAwcSD
+ jMNBCL7C7h86HOIZ+rnyUa2OrFpzF5pY00XWPakUn8WUXsYvr89UdO14FFXmBz8YSRxxQEi60VL
+ CZu6ljPRi/T6ACjWzpkqx3OgvwZDKHAgP9m1oxuO3uEnBxZyp7+nE8QlB4cie40OJHKQMJEo4ba
+ Voq+XBxLdykqNI8dNRWFmTsEN+9Z71Y5rRzGeD2x9S6+Styh2PauiopNpc+f50ZfUlYSrx/FKKw
+ k/DjFUpBuTp6638bQkX7CRTEgy5Zg=
+X-Google-Smtp-Source: AGHT+IEI3I4Il2xuj62KHbRQG9fdomHh71xX5e4C21oq9svbfkQV2Ms7qbhtAy/GUyTL/cW9dgih1A==
+X-Received: by 2002:a17:90b:57c5:b0:31f:12d:ee4f with SMTP id
+ 98e67ed59e1d1-31f5de6b9b2mr2015554a91.23.1753837306655; 
+ Tue, 29 Jul 2025 18:01:46 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31f63df5adfsm343253a91.25.2025.07.29.18.01.40
+ 98e67ed59e1d1-31f63df5adfsm343253a91.25.2025.07.29.18.01.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 18:01:43 -0700 (PDT)
+ Tue, 29 Jul 2025 18:01:46 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Sunil V L <sunilvl@ventanamicro.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
+Cc: alistair23@gmail.com, Yang Jialong <z_bajeer@yeah.net>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Nutty Liu <liujingqi@lanxincomputing.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 04/11] tests/data/acpi/riscv64: Update expected FADT and MADT
-Date: Wed, 30 Jul 2025 11:01:15 +1000
-Message-ID: <20250730010122.4193496-5-alistair.francis@wdc.com>
+Subject: [PULL 05/11] intc/riscv_aplic: Fix target register read when source
+ is inactive
+Date: Wed, 30 Jul 2025 11:01:16 +1000
+Message-ID: <20250730010122.4193496-6-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250730010122.4193496-1-alistair.francis@wdc.com>
 References: <20250730010122.4193496-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -106,102 +105,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sunil V L <sunilvl@ventanamicro.com>
+From: Yang Jialong <z_bajeer@yeah.net>
 
-Update the expected tables for the version change.
- /*
-  *
-  * ACPI Data Table [FACP]
-  *
-  * Format: [HexOffset DecimalOffset ByteLength]  FieldName : FieldValue (in hex)
-  */
+The RISC-V Advanced interrupt Architecture:
+4.5.16. Interrupt targets:
+If interrupt source i is inactive in this domain, register target[i] is
+read-only zero.
 
- [000h 0000 004h]                   Signature : "FACP"    [Fixed ACPI Description Table (FADT)]
- [004h 0004 004h]                Table Length : 00000114
- [008h 0008 001h]                    Revision : 06
--[009h 0009 001h]                    Checksum : 13
-+[009h 0009 001h]                    Checksum : 12
- [00Ah 0010 006h]                      Oem ID : "BOCHS "
- [010h 0016 008h]                Oem Table ID : "BXPC    "
- [018h 0024 004h]                Oem Revision : 00000001
- [01Ch 0028 004h]             Asl Compiler ID : "BXPC"
- [020h 0032 004h]       Asl Compiler Revision : 00000001
-
- [024h 0036 004h]                FACS Address : 00000000
- [028h 0040 004h]                DSDT Address : 00000000
- [02Ch 0044 001h]                       Model : 00
- [02Dh 0045 001h]                  PM Profile : 00 [Unspecified]
- [02Eh 0046 002h]               SCI Interrupt : 0000
- [030h 0048 004h]            SMI Command Port : 00000000
- [034h 0052 001h]           ACPI Enable Value : 00
- [035h 0053 001h]          ACPI Disable Value : 00
- [036h 0054 001h]              S4BIOS Command : 00
- [037h 0055 001h]             P-State Control : 00
-@@ -86,33 +86,33 @@
-      Use APIC Physical Destination Mode (V4) : 0
-                        Hardware Reduced (V5) : 1
-                       Low Power S0 Idle (V5) : 0
-
- [074h 0116 00Ch]              Reset Register : [Generic Address Structure]
- [074h 0116 001h]                    Space ID : 00 [SystemMemory]
- [075h 0117 001h]                   Bit Width : 00
- [076h 0118 001h]                  Bit Offset : 00
- [077h 0119 001h]        Encoded Access Width : 00 [Undefined/Legacy]
- [078h 0120 008h]                     Address : 0000000000000000
-
- [080h 0128 001h]        Value to cause reset : 00
- [081h 0129 002h]   ARM Flags (decoded below) : 0000
-                               PSCI Compliant : 0
-                        Must use HVC for PSCI : 0
-
--[083h 0131 001h]         FADT Minor Revision : 05
-+[083h 0131 001h]         FADT Minor Revision : 06
- [084h 0132 008h]                FACS Address : 0000000000000000
-[...]
-
- /*
-  *
-  * ACPI Data Table [APIC]
-  *
-  * Format: [HexOffset DecimalOffset ByteLength]  FieldName : FieldValue (in hex)
-  */
-
- [000h 0000 004h]                   Signature : "APIC"    [Multiple APIC Description Table (MADT)]
- [004h 0004 004h]                Table Length : 00000074
--[008h 0008 001h]                    Revision : 06
--[009h 0009 001h]                    Checksum : B4
-+[008h 0008 001h]                    Revision : 07
-+[009h 0009 001h]                    Checksum : B3
- [00Ah 0010 006h]                      Oem ID : "BOCHS "
- [010h 0016 008h]                Oem Table ID : "BXPC    "
-[...]
-
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Yang Jialong <z_bajeer@yeah.net>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Nutty Liu <liujingqi@lanxincomputing.com>
-Message-ID: <20250724110350.452828-4-sunilvl@ventanamicro.com>
+Message-ID: <20250728055114.252024-1-z_bajeer@yeah.net>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h |   2 --
- tests/data/acpi/riscv64/virt/APIC           | Bin 116 -> 116 bytes
- tests/data/acpi/riscv64/virt/FACP           | Bin 276 -> 276 bytes
- 3 files changed, 2 deletions(-)
+ hw/intc/riscv_aplic.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 0c3f7a6cac..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,3 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/riscv64/virt/APIC",
--"tests/data/acpi/riscv64/virt/FACP",
-diff --git a/tests/data/acpi/riscv64/virt/APIC b/tests/data/acpi/riscv64/virt/APIC
-index 66a25dfd2d..3fb5b75359 100644
-Binary files a/tests/data/acpi/riscv64/virt/APIC and b/tests/data/acpi/riscv64/virt/APIC differ
-diff --git a/tests/data/acpi/riscv64/virt/FACP b/tests/data/acpi/riscv64/virt/FACP
-index a5276b65ea..78e1b14b1d 100644
-Binary files a/tests/data/acpi/riscv64/virt/FACP and b/tests/data/acpi/riscv64/virt/FACP differ
+diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+index 4fa5f7597b..a1d9fa5085 100644
+--- a/hw/intc/riscv_aplic.c
++++ b/hw/intc/riscv_aplic.c
+@@ -628,7 +628,7 @@ static void riscv_aplic_request(void *opaque, int irq, int level)
+ 
+ static uint64_t riscv_aplic_read(void *opaque, hwaddr addr, unsigned size)
+ {
+-    uint32_t irq, word, idc;
++    uint32_t irq, word, idc, sm;
+     RISCVAPLICState *aplic = opaque;
+ 
+     /* Reads must be 4 byte words */
+@@ -696,6 +696,10 @@ static uint64_t riscv_aplic_read(void *opaque, hwaddr addr, unsigned size)
+     } else if ((APLIC_TARGET_BASE <= addr) &&
+             (addr < (APLIC_TARGET_BASE + (aplic->num_irqs - 1) * 4))) {
+         irq = ((addr - APLIC_TARGET_BASE) >> 2) + 1;
++        sm = aplic->sourcecfg[irq] & APLIC_SOURCECFG_SM_MASK;
++        if (sm == APLIC_SOURCECFG_SM_INACTIVE) {
++            return 0;
++        }
+         return aplic->target[irq];
+     } else if (!aplic->msimode && (APLIC_IDC_BASE <= addr) &&
+             (addr < (APLIC_IDC_BASE + aplic->num_harts * APLIC_IDC_SIZE))) {
 -- 
 2.50.0
 
