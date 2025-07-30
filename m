@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A35B1670F
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 21:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF6EB16777
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 22:12:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhClw-0002sJ-0I; Wed, 30 Jul 2025 15:47:32 -0400
+	id 1uhD8b-0002EP-82; Wed, 30 Jul 2025 16:10:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhAz5-0007IE-CQ
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 13:53:09 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhAz3-00014w-Fb
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 13:52:59 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-769a9c3bbc4so71248b3a.3
- for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 10:52:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753897975; x=1754502775; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=H/HNB00dfQ9wLf8TymI9m6Ih+uoWFLD+8JcesjrnQLQ=;
- b=NcYP2Um2pC/Xw0PtNrHAqBGLMfGh1t8aI10PmfXXJqLOebTslrT3PLVn0DlTFxMSrM
- 6kGr+xwiMyz17K/GdyltfnvaVSmiSm10LZ/EWnvrTdnOUxASqUf9Sf3L3dVDlfI+QxnB
- 5fWVg0v3t9BnEwUjDRTuIyCdaX1JZ2LX+jF5tDVX82L/BYPlMX9SQbvlDtvA8V5aaGDG
- E5FNhtattEcgXqEf1Juc8MV3FocwXTaesmlbgghQ+1wjL8Fzm8bzKxCYO8Ga39Ks+uYH
- dlp/ujKZOK4FY59j8LQBXzsMnax2VyfP7DnuWOQZeKoqpyGgdkgkI9TYL6Ca0e1d/NUo
- W1Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753897975; x=1754502775;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=H/HNB00dfQ9wLf8TymI9m6Ih+uoWFLD+8JcesjrnQLQ=;
- b=rLJ24ga1uFRm+8Sei0NxcjyvvnezuNf1qWUH04KG3UTscmBiWwjJ6rJjlpdXmnwF+g
- arpvUO041cYiRM6aG2eXS1rt66BSLHi/rGCAXcOgXc+LLBsA3Uv0QZqTOQkQEWXuxkQD
- n46Mj/19vmgM0DNp2xdaIWJ7yT4iYdzMJddBABtFq14DIoGzgmh8wmllrHm2xuippOKD
- YLuRD6e0O9/SvU6g0XnhFxGSFdHpJf/3iinMinfYNxuDBY4f8gQAB+61Qq9IZWBQZuLC
- IkoYm9wxREYdW42/aC3CNCuJ8GOoAQbmMyr805dDIPsMXKJThUKdiOG9Iz+tFYwbB9Jk
- VqnA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUhXSzljIO4EIdINzFHt92N/oPQkNMC2hmNmlNCI5+iTj0CdSkqa01D9bEk9kZ/B7rBRT6sFxMmGY2V@nongnu.org
-X-Gm-Message-State: AOJu0YwA8iplsk7G4DIY+0hZfL0sVvjI2vt4enw0e1wEh1cS4NZ1CBpC
- Q73CB97qyi3ySWApshXxTV7pOyKImcDgLDMHlHJSRhFGJmpfYFxJPzfaUJgruSRNcgQ=
-X-Gm-Gg: ASbGncvgL59OmVRGN05iElhy8f7XZrNkH4OLOf8xHa5c4ZjDRZXEioFGdf5JZ6h/N//
- PXGk+HtKYd3adVL80luo2vgGSgWCUB7wI5gxp44vKYCv4oHPQzqP5v2acTDwb4G5Ff6a0kYYoOe
- 7DHvszmWpqYi/NGUWcsNXUaM4eiw42A6eCi4dT23rwOdNKAsl64xRIwXSMPo+CjdgZvEdRP3S9J
- bvYMpSr40tYNMuZqM2/QXRYs1JczvGQmNa3ChrWcq/4AIaFzc4BGynBPVfaNfcKyYNAWEVE5Yz7
- R9t7GNLIdkUy3Cdr/U/qqup7729UUxGq2uiAG0hXK7zAuy1T/3wKpxAkNFG+EMh0T6x01ZbInQr
- /uHt8ct9cnCBMbygMwMFm7Z0zyjdv2v8ajBJ5IiK8d+YFNw==
-X-Google-Smtp-Source: AGHT+IEum9S03eoIYPiZWNbDeVKz+k/iAro7TQVOYo5jo1DhqCaddFjxEFKDnx5OfhJVkJ5rvNk9ng==
-X-Received: by 2002:a05:6a21:482:b0:220:96:11f6 with SMTP id
- adf61e73a8af0-23dc1091a3amr6814106637.37.1753897975033; 
- Wed, 30 Jul 2025 10:52:55 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b3f7f567d1fsm9781772a12.14.2025.07.30.10.52.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Jul 2025 10:52:54 -0700 (PDT)
-Message-ID: <db3ba3fa-1460-4ac0-9054-7c466f98ac6c@linaro.org>
-Date: Wed, 30 Jul 2025 10:52:53 -0700
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uhBQ5-0007JU-Gy
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 14:20:53 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uhBQ2-0006El-4r
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 14:20:53 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 7CAD213BFD4;
+ Wed, 30 Jul 2025 21:20:22 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6575425356A;
+ Wed, 30 Jul 2025 21:19:59 +0300 (MSK)
+Message-ID: <e4578b16-a23e-4e56-ac72-3e65b8fbae53@tls.msk.ru>
+Date: Wed, 30 Jul 2025 21:19:42 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] contrib/plugins/hotblocks: Allow limit to be set as a
- command line argument
-Content-Language: en-US
-To: Alex Bradbury <asb@igalia.com>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, erdnaxe@crans.org, ma.mandourr@gmail.com
-References: <cover.1753857212.git.asb@igalia.com>
- <58281d6e54bcad1802e8d3dc8d8501d54c2a971e.1753857212.git.asb@igalia.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <58281d6e54bcad1802e8d3dc8d8501d54c2a971e.1753857212.git.asb@igalia.com>
+Subject: Re: [PULL 00/11] riscv-to-apply queue
+To: alistair23@gmail.com, qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair.francis@wdc.com>
+References: <20250730010122.4193496-1-alistair.francis@wdc.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20250730010122.4193496-1-alistair.francis@wdc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,19 +101,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/29/25 11:41 PM, Alex Bradbury wrote:
-> Also add documentation for this argument. This allows the default of 20
-> to be overridden, and is helpful for using the hotblocks plugin for
-> analysis scripts that require collecting data on a larger number of
-> blocks (e.g. setting limit=0 to dump information on all blocks).
+On 30.07.2025 04:01, alistair23@gmail.com wrote:
+> From: Alistair Francis <alistair.francis@wdc.com>
 > 
-> Signed-off-by: Alex Bradbury <asb@igalia.com>
-> ---
->   contrib/plugins/hotblocks.c | 10 +++++++++-
->   docs/about/emulation.rst    |  2 ++
->   2 files changed, 11 insertions(+), 1 deletion(-)
+> The following changes since commit 9b80226ece693197af8a981b424391b68b5bc38e:
+> 
+>    Update version for the v10.1.0-rc1 release (2025-07-29 13:00:41 -0400)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20250730-2
+> 
+> for you to fetch changes up to 86bc3a0abf10072081cddd8dff25aa72c60e67b8:
+> 
+>    target/riscv: Restrict midelegh access to S-mode harts (2025-07-30 10:59:26 +1000)
+> 
+> ----------------------------------------------------------------
+> Third RISC-V PR for 10.1
+> 
+> * Fix pmp range wraparound on zero
+> * Update FADT and MADT versions in ACPI tables
+> * Fix target register read when source is inactive
+> * Add riscv_hwprobe entry to linux-user strace list
+> * Do not call GETPC() in check_ret_from_m_mode()
+> * Revert "Generate strided vector loads/stores with tcg nodes."
+> * Fix exception type when VU accesses supervisor CSRs
+> * Restrict mideleg/medeleg/medelegh access to S-mode harts
+> * Restrict midelegh access to S-mode harts
+> 
+> ----------------------------------------------------------------
+> Daniel Henrique Barboza (3):
+>        linux-user/strace.list: add riscv_hwprobe entry
+>        target/riscv: do not call GETPC() in check_ret_from_m_mode()
+>        riscv: Revert "Generate strided vector loads/stores with tcg nodes."
+> 
+> Jay Chang (2):
+>        target/riscv: Restrict mideleg/medeleg/medelegh access to S-mode harts
+>        target/riscv: Restrict midelegh access to S-mode harts
+> 
+> Sunil V L (3):
+>        bios-tables-test-allowed-diff.h: Allow RISC-V FADT and MADT changes
+>        hw/riscv/virt-acpi-build.c: Update FADT and MADT versions
+>        tests/data/acpi/riscv64: Update expected FADT and MADT
+> 
+> Vac Chen (1):
+>        target/riscv: Fix pmp range wraparound on zero
+> 
+> Xu Lu (1):
+>        target/riscv: Fix exception type when VU accesses supervisor CSRs
+> 
+> Yang Jialong (1):
+>        intc/riscv_aplic: Fix target register read when source is inactive
 
-That's a good idea, thanks!
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Is there anything there for qemu-stable?
 
+It looks like "Fix exception type when VU accesses supervisor CSRs" is a
+good candidate, maybe "Fix pmp range wraparound on zero" too.  Something
+else? "Fix target register read when source is inactive"?  The "S-mode
+harts" ones?
+
+I already picked up "do not call GETPC()" as it's been Cc'd qemu-stable
+before, and I'm picking up riscv_hwprobe too, as it's trivial and fixes
+a trivial omission which might be useful.  Should I pick up others I
+mentioned?
+
+Thanks,
+
+/mjt
 
