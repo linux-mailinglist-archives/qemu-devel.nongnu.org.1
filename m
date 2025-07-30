@@ -2,75 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE14B15A90
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 10:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B398B15AE5
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 10:47:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh29a-000753-Qy; Wed, 30 Jul 2025 04:27:14 -0400
+	id 1uh2RT-0003hd-LP; Wed, 30 Jul 2025 04:45:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uh1lD-0007TE-By
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:02:07 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1uh2BZ-0000Nq-2m
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:29:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uh1lA-0007iK-ER
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:02:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753862521; x=1785398521;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=JhkWE40o8mOT9s2n7Qia38qVjpnJXcDvaHGS4W9+3qw=;
- b=f2LtKU071AgZEqYO1SkJjdlqxaXrr7j5+T7Dle4fJ6OYxvuKEJsMr+j2
- WaLX4dIYami61PI4E6iD2ZosIOowHcpxQO3z+XoIJkT5kQ5VqEVVFel2T
- 8en9kubVrlK29qIWKA/GpetOW1H6ZUh/bxzmGdy1xMxtjYU5kouL1rOTd
- chqHsRFWqYlmx+7vBfW+ja4dF+hCHq+bORnSx4gZgIZKdXIweyWkXfVxl
- 1v638Y3eViwx6vSzGu1WNH9jISMGdliLvQ6q7HDepiTzU7ca4AFnQ/9s4
- 539XIJSfyjlIMnjcO10FW29AY/gkExs4nZZtyBCBg+GtnSkA/Z8bkA8oc w==;
-X-CSE-ConnectionGUID: fIUnW6dzSuyv/vmatOb3rQ==
-X-CSE-MsgGUID: GBblvXRdSZyT7fU67nn1Yw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11506"; a="66853563"
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="66853563"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2025 01:01:57 -0700
-X-CSE-ConnectionGUID: Hrk1GSQGRbCEn30WaSVKTw==
-X-CSE-MsgGUID: nGE5DVCeTCOc5KYlFW/1KA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="193767668"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 30 Jul 2025 01:01:55 -0700
-Date: Wed, 30 Jul 2025 16:23:31 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Kirill Martynov <stdcalllevi@yandex-team.ru>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/2] target/i386: Define enum X86ASIdx for x86's address
- spaces
-Message-ID: <aInWgzo0yJH1QRbS@intel.com>
-References: <20250729054023.1668443-1-xiaoyao.li@intel.com>
- <20250729054023.1668443-3-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1uh2BV-0003Tg-GL
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 04:29:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753864150;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qIAubJ+4pPZeiAxAjWYWB86w9h0bBF5mRzq+ysHiklU=;
+ b=S8Bc9tsTaJ50q5ANY8CGScB7GKPQKqedV/S0WT0zr5NYdOwKxbbMrTu/rUdhg6VeEaSbNx
+ wBK39xYhAZjSSmNtY5J/7i3OXbQUseQ/ntSJFOATSkY/r0NwtKEWBxAQXDaQsyrQ84Lss3
+ 3+JV0rBTkDbvCSEIgCgK8jMWv17fi30=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-341-sKZ6RXfnPqG-HIs56ITCjQ-1; Wed, 30 Jul 2025 04:29:08 -0400
+X-MC-Unique: sKZ6RXfnPqG-HIs56ITCjQ-1
+X-Mimecast-MFC-AGG-ID: sKZ6RXfnPqG-HIs56ITCjQ_1753864148
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7e33af599bcso1093139485a.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 01:29:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753864148; x=1754468948;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qIAubJ+4pPZeiAxAjWYWB86w9h0bBF5mRzq+ysHiklU=;
+ b=vGSTzKW4iNsCZB80HSK7XCEd3DrYrmt/SrPTG5Il8zEIBy/JxzLApxUT9JlWNeal6n
+ Gq4CoGe4dupcXjdwfsJD1SLCzETbnkjWl5/XtOeT0+UzVZG7+mqPNzG930yZTlx9Yc44
+ glZHBlAJa9J8K2OfqxqdDA/Lx6uEPdIXPtCa4hoSsCKeCOyKycO6tgg2gie8oiz+VvZi
+ yHpynph0iOieJaMoPthcRevaYtskofINteZnSGBTCsvCbWi0wc51OqPEeOJqfKiq97Pu
+ A2s3rQQU4cRwv/iZ5KyTMkWmy+GgQvsm46rbi6KJUl6jMLwGcPl4Gjc8ZDLSHeHX10Gt
+ q4qw==
+X-Gm-Message-State: AOJu0YyRthQnH7OCgTj6DWA55SX4RMAZKruA2PNs2OUtIF1ysqPzGxu6
+ 8WFjb+Le0zLzxTDd5loYIymE/O9SoDG1ulA8XE21cg0U17dqZiR/b/rOvAfBUprOD7hbnYmRufW
+ F5M5aoo27FY1M0rjrQnDKRo5uXgWro5G/riDeQnZZ4XOrXhCj4QD4hv1OW0+D9VvwPl+ZnMSKQU
+ rVXjpp8v8iIjCvHLqbYMe+VmGZDLWvYsk=
+X-Gm-Gg: ASbGncui82CqqhkoSjQmJKaOrgaQvJdGv6SHwD+vugdZTSKjqFAF7PZaMA6Aqo9Gols
+ nNXPhS1MAiTlSYmSkU1wAcUMmX0RnDTfjPQ+G+ljQOUtgC883Sqg/NcUz3fszkRfksMK3fuqyiS
+ ZslFqlI0okIRPsBuijhl0UBJs=
+X-Received: by 2002:a05:6214:20e7:b0:6f8:f1a5:e6a4 with SMTP id
+ 6a1803df08f44-70767064db1mr34810026d6.22.1753864147682; 
+ Wed, 30 Jul 2025 01:29:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHdJjUSog9tvk/u1A25W9ION3C12Ab3GNRfcPjfEgU6u3wMpqmDf8ao1RMsB1p35ynVMLXHHH2bxu+gdCnjiS0=
+X-Received: by 2002:a05:6214:20e7:b0:6f8:f1a5:e6a4 with SMTP id
+ 6a1803df08f44-70767064db1mr34809796d6.22.1753864147157; Wed, 30 Jul 2025
+ 01:29:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250729054023.1668443-3-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20250730072709.27077-1-thuth@redhat.com>
+In-Reply-To: <20250730072709.27077-1-thuth@redhat.com>
+From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Date: Wed, 30 Jul 2025 11:28:55 +0300
+X-Gm-Features: Ac12FXwfkBYmPuO3D7qRrKPxMyT-IRyIgCNKMyAva0RdMk_tYAeYXzNiRSxbZ3g
+Message-ID: <CAPMcbCp6cDWnV4PLnyYO5+rGoSeFEPSvGAOyJjK4N8r5Zkdv_w@mail.gmail.com>
+Subject: Re: [PATCH v2] qga: Fix ubsan warning
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ qemu-trivial@nongnu.org, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: multipart/alternative; boundary="00000000000079dcc1063b21510e"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,30 +101,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 29, 2025 at 01:40:23PM +0800, Xiaoyao Li wrote:
-> Date: Tue, 29 Jul 2025 13:40:23 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH 2/2] target/i386: Define enum X86ASIdx for x86's address
->  spaces
-> X-Mailer: git-send-email 2.43.0
-> 
-> Like ARM defines ARMASIdx, do the same to define X86ASIdx as enum. So
-> that it's more clear what index 0 is for memory and index 1 is for SMM.
+--00000000000079dcc1063b21510e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Maybe:
+Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 
-Define X86ASIdx as the enum, like ARM's ARMASIdx, so that index 0 is
-clearly for memory and index 1 for SMM.
+@Thomas Huth <thuth@redhat.com> Is this fix critical to merge during code
+freeze?
 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+On Wed, Jul 30, 2025 at 10:27=E2=80=AFAM Thomas Huth <thuth@redhat.com> wro=
+te:
+
+> From: Thomas Huth <thuth@redhat.com>
+>
+> When compiling QEMU with --enable-ubsan there is a undefined behavior
+> warning when running "make check":
+>
+>  .../qga/commands-linux.c:452:15: runtime error: applying non-zero offset
+> 5 to null pointer
+>  #0 0x55ea7b89450c in build_guest_fsinfo_for_pci_dev
+> ..../qga/commands-linux.c:452:15
+>
+> Fix it by avoiding the additional pointer variable here and use an
+> "offset" integer variable instead.
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  accel/kvm/kvm-all.c              | 2 +-
->  target/i386/cpu.h                | 5 +++++
->  target/i386/kvm/kvm-cpu.c        | 2 +-
->  target/i386/kvm/kvm.c            | 4 ++--
->  target/i386/tcg/system/tcg-cpu.c | 4 ++--
->  5 files changed, 11 insertions(+), 6 deletions(-)
+>  v2: Use an integer offset variable instead for checking for a NULL point=
+er
+>
+>  qga/commands-linux.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/qga/commands-linux.c b/qga/commands-linux.c
+> index 9e8a934b9a6..0c41eb97190 100644
+> --- a/qga/commands-linux.c
+> +++ b/qga/commands-linux.c
+> @@ -400,10 +400,10 @@ static bool build_guest_fsinfo_for_pci_dev(char
+> const *syspath,
+>                                             Error **errp)
+>  {
+>      unsigned int pci[4], host, hosts[8], tgt[3];
+> -    int i, nhosts =3D 0, pcilen;
+> +    int i, offset, nhosts =3D 0, pcilen;
+>      GuestPCIAddress *pciaddr =3D disk->pci_controller;
+>      bool has_ata =3D false, has_host =3D false, has_tgt =3D false;
+> -    char *p, *q, *driver =3D NULL;
+> +    char *p, *driver =3D NULL;
+>      bool ret =3D false;
+>
+>      p =3D strstr(syspath, "/devices/pci");
+> @@ -445,13 +445,13 @@ static bool build_guest_fsinfo_for_pci_dev(char
+> const *syspath,
+>
+>      p =3D strstr(syspath, "/ata");
+>      if (p) {
+> -        q =3D p + 4;
+> +        offset =3D 4;
+>          has_ata =3D true;
+>      } else {
+>          p =3D strstr(syspath, "/host");
+> -        q =3D p + 5;
+> +        offset =3D 5;
+>      }
+> -    if (p && sscanf(q, "%u", &host) =3D=3D 1) {
+> +    if (p && sscanf(p + offset, "%u", &host) =3D=3D 1) {
+>          has_host =3D true;
+>          nhosts =3D build_hosts(syspath, p, has_ata, hosts,
+>                               ARRAY_SIZE(hosts), errp);
+> --
+> 2.50.1
+>
+>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+--00000000000079dcc1063b21510e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Reviewed-by: Kostiantyn Kostiuk &lt;<a href=3D"mailto=
+:kkostiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><d=
+iv><br></div><div><a class=3D"gmail_plusreply" id=3D"plusReplyChip-0" href=
+=3D"mailto:thuth@redhat.com" tabindex=3D"-1">@Thomas Huth</a> Is this fix c=
+ritical to merge during code freeze? <br></div></div><br><div class=3D"gmai=
+l_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Wed=
+, Jul 30, 2025 at 10:27=E2=80=AFAM Thomas Huth &lt;<a href=3D"mailto:thuth@=
+redhat.com">thuth@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex">From: Thomas Huth &lt;<a href=3D"mailto:thuth@r=
+edhat.com" target=3D"_blank">thuth@redhat.com</a>&gt;<br>
+<br>
+When compiling QEMU with --enable-ubsan there is a undefined behavior<br>
+warning when running &quot;make check&quot;:<br>
+<br>
+=C2=A0.../qga/commands-linux.c:452:15: runtime error: applying non-zero off=
+set 5 to null pointer<br>
+=C2=A0#0 0x55ea7b89450c in build_guest_fsinfo_for_pci_dev ..../qga/commands=
+-linux.c:452:15<br>
+<br>
+Fix it by avoiding the additional pointer variable here and use an<br>
+&quot;offset&quot; integer variable instead.<br>
+<br>
+Signed-off-by: Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.com" target=
+=3D"_blank">thuth@redhat.com</a>&gt;<br>
+---<br>
+=C2=A0v2: Use an integer offset variable instead for checking for a NULL po=
+inter<br>
+<br>
+=C2=A0qga/commands-linux.c | 10 +++++-----<br>
+=C2=A01 file changed, 5 insertions(+), 5 deletions(-)<br>
+<br>
+diff --git a/qga/commands-linux.c b/qga/commands-linux.c<br>
+index 9e8a934b9a6..0c41eb97190 100644<br>
+--- a/qga/commands-linux.c<br>
++++ b/qga/commands-linux.c<br>
+@@ -400,10 +400,10 @@ static bool build_guest_fsinfo_for_pci_dev(char const=
+ *syspath,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 Error **errp)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0unsigned int pci[4], host, hosts[8], tgt[3];<br>
+-=C2=A0 =C2=A0 int i, nhosts =3D 0, pcilen;<br>
++=C2=A0 =C2=A0 int i, offset, nhosts =3D 0, pcilen;<br>
+=C2=A0 =C2=A0 =C2=A0GuestPCIAddress *pciaddr =3D disk-&gt;pci_controller;<b=
+r>
+=C2=A0 =C2=A0 =C2=A0bool has_ata =3D false, has_host =3D false, has_tgt =3D=
+ false;<br>
+-=C2=A0 =C2=A0 char *p, *q, *driver =3D NULL;<br>
++=C2=A0 =C2=A0 char *p, *driver =3D NULL;<br>
+=C2=A0 =C2=A0 =C2=A0bool ret =3D false;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0p =3D strstr(syspath, &quot;/devices/pci&quot;);<br>
+@@ -445,13 +445,13 @@ static bool build_guest_fsinfo_for_pci_dev(char const=
+ *syspath,<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0p =3D strstr(syspath, &quot;/ata&quot;);<br>
+=C2=A0 =C2=A0 =C2=A0if (p) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 q =3D p + 4;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 offset =3D 4;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0has_ata =3D true;<br>
+=C2=A0 =C2=A0 =C2=A0} else {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0p =3D strstr(syspath, &quot;/host&quot;);=
+<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 q =3D p + 5;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 offset =3D 5;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+-=C2=A0 =C2=A0 if (p &amp;&amp; sscanf(q, &quot;%u&quot;, &amp;host) =3D=3D=
+ 1) {<br>
++=C2=A0 =C2=A0 if (p &amp;&amp; sscanf(p + offset, &quot;%u&quot;, &amp;hos=
+t) =3D=3D 1) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0has_host =3D true;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0nhosts =3D build_hosts(syspath, p, has_at=
+a, hosts,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ARRAY_SIZE(hosts), errp);<br>
+-- <br>
+2.50.1<br>
+<br>
+</blockquote></div>
+
+--00000000000079dcc1063b21510e--
 
 
