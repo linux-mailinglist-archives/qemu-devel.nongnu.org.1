@@ -2,96 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C347FB1680B
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 23:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C2CB16809
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 23:09:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhE3P-00029V-U4; Wed, 30 Jul 2025 17:09:39 -0400
+	id 1uhE3U-0002MK-1K; Wed, 30 Jul 2025 17:09:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uhDnD-0004PZ-KW
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 16:52:55 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uhDnK-0005DX-K5
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 16:53:02 -0400
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uhDnB-0002Iw-L1
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 16:52:55 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uhDnH-0002L5-Tc
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 16:53:02 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 4B1591F76C;
- Wed, 30 Jul 2025 20:52:51 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 874A11F7B6;
+ Wed, 30 Jul 2025 20:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753908771; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1753908773; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GaZ+Yz+zcCEr2tVtA+J5m5quEPo6bIi7orrs7mVcXNo=;
- b=XPniET5MoLUt+5GlUWuJnU09nHdPIs+J8gMzVFMn1I8XiVoqh0P7ETn7AZ40xo5hN32NNj
- vLxhNVgA+v3H2pAYTG8fXWPcfPvFn/ourd6JZ2Gal4vl6lybRuyFtRESgIl+46rYdU+S2m
- pk01MjWUUMK2agXlQcUX+GCllrZ51k4=
+ bh=N/koInHJHB0Tawbx0b6/y9YWT+/bGQdyeF0S1AcZL7Y=;
+ b=KJTag24rdrpL+ljSM2CUMW5auXH/8bvNzr+voa7d2uHE3iwlTvELIvN2wn6GpAKkrFubZP
+ 7RTCj2eIZx/R3+48lgwUJTjSTJ0rOifNAcx05OeuCtAIVzkaiF2/JoedoTjxAOZ8s+rh4L
+ 8ivr68u0s3Uu3I6QoVp70szZr1VyLwk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753908771;
+ s=susede2_ed25519; t=1753908773;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GaZ+Yz+zcCEr2tVtA+J5m5quEPo6bIi7orrs7mVcXNo=;
- b=3Nk1oLIRKcNGV/RNIranxFQxfnDIeomnKZGzhqQu1fCiWv90xFbSjW+EbKL15tGuT/34su
- GzFsogC9vodsQYDQ==
+ bh=N/koInHJHB0Tawbx0b6/y9YWT+/bGQdyeF0S1AcZL7Y=;
+ b=ZNlUpHuZX5siscSvdi+WsdvSIxux1N40zvfPhpgQcNd1ru8Kv8oYWqxmwKypDIz7D17tsN
+ OTAgVaIfX88WOKCQ==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1753908771; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1753908773; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GaZ+Yz+zcCEr2tVtA+J5m5quEPo6bIi7orrs7mVcXNo=;
- b=XPniET5MoLUt+5GlUWuJnU09nHdPIs+J8gMzVFMn1I8XiVoqh0P7ETn7AZ40xo5hN32NNj
- vLxhNVgA+v3H2pAYTG8fXWPcfPvFn/ourd6JZ2Gal4vl6lybRuyFtRESgIl+46rYdU+S2m
- pk01MjWUUMK2agXlQcUX+GCllrZ51k4=
+ bh=N/koInHJHB0Tawbx0b6/y9YWT+/bGQdyeF0S1AcZL7Y=;
+ b=KJTag24rdrpL+ljSM2CUMW5auXH/8bvNzr+voa7d2uHE3iwlTvELIvN2wn6GpAKkrFubZP
+ 7RTCj2eIZx/R3+48lgwUJTjSTJ0rOifNAcx05OeuCtAIVzkaiF2/JoedoTjxAOZ8s+rh4L
+ 8ivr68u0s3Uu3I6QoVp70szZr1VyLwk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1753908771;
+ s=susede2_ed25519; t=1753908773;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GaZ+Yz+zcCEr2tVtA+J5m5quEPo6bIi7orrs7mVcXNo=;
- b=3Nk1oLIRKcNGV/RNIranxFQxfnDIeomnKZGzhqQu1fCiWv90xFbSjW+EbKL15tGuT/34su
- GzFsogC9vodsQYDQ==
+ bh=N/koInHJHB0Tawbx0b6/y9YWT+/bGQdyeF0S1AcZL7Y=;
+ b=ZNlUpHuZX5siscSvdi+WsdvSIxux1N40zvfPhpgQcNd1ru8Kv8oYWqxmwKypDIz7D17tsN
+ OTAgVaIfX88WOKCQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0734313A50;
- Wed, 30 Jul 2025 20:52:49 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C317B1388B;
+ Wed, 30 Jul 2025 20:52:51 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id YEynLiGGimjhPwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 30 Jul 2025 20:52:49 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id EB/iICOGimjhPwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 30 Jul 2025 20:52:51 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: [RFC PATCH 1/3] target/arm: Fix migration to QEMU 10.1
-Date: Wed, 30 Jul 2025 17:52:43 -0300
-Message-Id: <20250730205245.2118-2-farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [RFC PATCH 2/3] tests/qtest/migration: Only test aarch64 on TCG
+Date: Wed, 30 Jul 2025 17:52:44 -0300
+Message-Id: <20250730205245.2118-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250730205245.2118-1-farosas@suse.de>
 References: <20250730205245.2118-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.999];
  MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
  TO_DN_SOME(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,linaro.org:email]; 
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
  RCVD_COUNT_TWO(0.00)[2]; FUZZY_RATELIMITED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_THREE(0.00)[3]; RCVD_TLS_ALL(0.00)[]
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_TLS_ALL(0.00)[]
 X-Spam-Score: -2.80
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
@@ -117,94 +117,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The DBGDTRTX register definition was removed from cpu->cp_regs in the
-10.1 cycle. This breaks migration from QEMU versions < 10.1 due to the
-present of an extra, unknown (to 10.1) register in the migration
-stream.
+Currently our aarch64 tests are only being run using identical QEMU
+versions. When running the tests with different QEMU versions, which
+is a common use-case for migration, the tests are broken due to the
+current choice of the 'max' cpu, which is not stable and is prone to
+breaking migration.
 
-Change the cpu_post_load validation code to recognise that the
-register has been removed and ignore it when present in the stream.
+This means aarch64 tests are currently only testing about the same
+situations as any other arch, i.e. no arm-specific testing is being
+done.
 
-Keep a compatibility list with the registers that should be ignored
-when sent from versions older than 10.1. The value of the cpregs
-hashtable key is used because it can be derived on the destination
-(where this patch applies) from the cpreg_vmstate_indexes array.
+To make the aarch64 tests more useful, -cpu max will be changed to
+-cpu neoverse-n1 in the next patch. Before doing that, make sure
+aarch64 tests only run with TCG, since KVM testing depends on usage of
+the -cpu host and we currently don't have code to switch between cpus
+according to test runtime environment.
 
-Note that this solution is *not* generic for other QEMU versions
-moving forward, this is a stop gap to avoid machines being stuck in
-QEMU < 10.1 without a migration path. A proper solution would include
-versioning of the register list and recognizing any registers
-removed/changed.
+Also, TCG alone should allow us to catch most issues with migration,
+since there is no guarantee of a uniform environment as there is with
+KVM.
 
-Fixes: 655659a74a ("target/arm: Correct encoding of Debug Communications Channel registers")
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
-Will an older guest using the register have issues after migration
-once the register gets set to its default value?
----
- target/arm/machine.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ tests/qtest/migration/framework.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index 6986915bee..2d4df53817 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -8,6 +8,7 @@
- #include "cpu-features.h"
- #include "migration/qemu-file-types.h"
- #include "migration/vmstate.h"
-+#include "target/arm/cpregs.h"
- #include "target/arm/gtimer.h"
- 
- static bool vfp_needed(void *opaque)
-@@ -868,6 +869,14 @@ static const VMStateInfo vmstate_powered_off = {
-     .put = put_power,
- };
- 
-+static uint64_t compat_cpreg_keys_virt_10_0[] = {
-+    /*
-+     * { .name = "DBGDTRTX", .state = ARM_CP_STATE_AA32,
-+     * .cp = 14, .crn = 0, .crm = 5, .opc1 = 3, .opc2 = 0 }
-+     */
-+    ENCODE_CP_REG(14, 0, 1, 0, 5, 3, 0),
-+};
-+
- static int cpu_pre_save(void *opaque)
- {
-     ARMCPU *cpu = opaque;
-@@ -951,7 +960,7 @@ static int cpu_post_load(void *opaque, int version_id)
- {
-     ARMCPU *cpu = opaque;
-     CPUARMState *env = &cpu->env;
--    int i, v;
-+    int i, j, v;
- 
-     /*
-      * Handle migration compatibility from old QEMU which didn't
-@@ -987,10 +996,23 @@ static int cpu_post_load(void *opaque, int version_id)
-         }
-         if (cpu->cpreg_vmstate_indexes[v] < cpu->cpreg_indexes[i]) {
-             /* register in their list but not ours: fail migration */
-+
-+            for (j = 0; j < ARRAY_SIZE(compat_cpreg_keys_virt_10_0); j++) {
-+                if (cpu->cpreg_vmstate_indexes[v] ==
-+                    cpreg_to_kvm_id(compat_cpreg_keys_virt_10_0[j])) {
-+                    /*
-+                     * ...unless the extra register is being explicitly
-+                     * ignored for migration compatibility purposes.
-+                     */
-+                    i--;
-+                    goto next;
-+                }
-+            }
-             return -1;
-         }
-         /* matching register, copy the value over */
-         cpu->cpreg_values[i] = cpu->cpreg_vmstate_values[v];
-+    next:
-         v++;
+diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
+index 407c9023c0..f09365d122 100644
+--- a/tests/qtest/migration/framework.c
++++ b/tests/qtest/migration/framework.c
+@@ -353,8 +353,17 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
+         memory_backend = g_strdup_printf("-m %s ", memory_size);
      }
  
+-    if (args->use_dirty_ring) {
+-        kvm_opts = ",dirty-ring-size=4096";
++
++    if (g_str_equal(arch, "aarch64")) {
++        /*
++         * aarch64 is only tested with TCG because there is no single
++         * cpu that can be used for both KVM and TCG.
++         */
++        kvm_opts = NULL;
++    } else if (args->use_dirty_ring) {
++        kvm_opts = "-accel kvm,dirty-ring-size=4096";
++    } else {
++        kvm_opts = "-accel kvm";
+     }
+ 
+     if (!qtest_has_machine(machine_alias)) {
+@@ -368,7 +377,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
+ 
+     g_test_message("Using machine type: %s", machine);
+ 
+-    cmd_source = g_strdup_printf("-accel kvm%s -accel tcg "
++    cmd_source = g_strdup_printf("%s -accel tcg "
+                                  "-machine %s,%s "
+                                  "-name source,debug-threads=on "
+                                  "%s "
+@@ -395,7 +404,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
+      */
+     events = args->defer_target_connect ? "-global migration.x-events=on" : "";
+ 
+-    cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
++    cmd_target = g_strdup_printf("%s -accel tcg "
+                                  "-machine %s,%s "
+                                  "-name target,debug-threads=on "
+                                  "%s "
 -- 
 2.35.3
 
