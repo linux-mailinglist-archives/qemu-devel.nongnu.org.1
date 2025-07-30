@@ -2,82 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5CEB156DC
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56086B156D8
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:04:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugvEL-0005wv-73; Tue, 29 Jul 2025 21:03:41 -0400
+	id 1ugvDx-0005Gd-4g; Tue, 29 Jul 2025 21:03:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1ugv3D-00034S-5u
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:52:11 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1ugvCI-0002rl-IS
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:38 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1ugv3B-0003MY-Li
- for qemu-devel@nongnu.org; Tue, 29 Jul 2025 20:52:10 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-3138b2f0249so321228a91.2
- for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 17:52:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1ugvCG-0004eF-Nt
+ for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:34 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-7682560a2f2so469130b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 18:01:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1753836727; x=1754441527; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=d7UmGBf5vh/Q/wne8pry56sgUlYe0f0m3Fibfm33iR4=;
- b=dQsl09Oe1RjMxs24V7/0EgoSuxKc9gX9dLCnWOAIx2MMEx9FAgGVrUOE/BxnVS4sYD
- 5g5DZ8RmG8ESRPnZFfg5jKADeC8qBplf1IpaCItOq+fb8W24yMUArzny/I30MHHwkDi7
- 2eheJvxHVHM/Ln08/TlSPQVUWWsiVyWpT3ZQJw1mhzSSOauhDoKJmyDWOLbPDywai2KI
- xJyjZcENS1v7NOWoxbm32CeJhF16smYhFWIye/a785Ju7kmprp74jhH+cXxwhWepP/Ox
- W+GdBbruFOq0Jx0+9VKZI3MNxzXsiy+qT/ZAVeGkH9bFodrz3PwtkEF9ksnoTNcNK9P2
- z/og==
+ d=gmail.com; s=20230601; t=1753837290; x=1754442090; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WNm5Zweq7hS6FeLo8CjSOxwcXou65pxZxkillcjgC54=;
+ b=nYaX3Xkm+i36ylTrSV2k4HPnEEbzqWdFpkmY2urV/SCYwIKvgg1wMrUrC8PQA3aYvq
+ 5Xgh2nFXxKYCHbyZHZuzotWYwJ4B7WcPxgt5DnCLgy7o0p1/AnYzuVcQSMVVdC/kMGnh
+ 9ljlbQ5PN8EhNtlh4tQBMZh54FEIfpcqh+Hnyd7XfHI6q9F2bEKBDffdQzqBWAxbJKRy
+ SN8z3WyDtq91RfQvjXPTNSp7Gp+dfQdMNDpns437OmC+oVrDokoR8yT6MDsTM/ilX7Id
+ 7T63adoIVXci7LrzkrecqFWFxjO2nyC/yJ/+3wPN49EdKcCu5HaWAIID4e4rkREESkna
+ uncA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753836727; x=1754441527;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=d7UmGBf5vh/Q/wne8pry56sgUlYe0f0m3Fibfm33iR4=;
- b=q0HkevGHhhjNCkO9dbe26Ght9TX6+lgvn5mVOw+yTkU7af4OGQJCPBq9pON9cCFPL0
- /rafAYQA+tm0AIyvdfY9zdFT9kSTpXq1J+vr5zzBcBpcKORRjrvMG3vH70U7kNkW2Fi3
- 6beJ6NndQPDbNggUaXMDLwpICsGhFjEvJnFd0fAYelYVqwHlMjz6RpNoQDD2IKlxlNYi
- 3xcT31fJugaS9Ya11JqXh1c1yrVxwdo8A6P19hVd0eAbInYvrE3WuaMkBWgY6XklwveB
- DqO3FTrwwR3qQJQwWH7xL3pqh+X8MAGK6hSK15OjN78bOoi537B6EYE7kn64scrO65c0
- 0VgA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXmsqAY/QRv635GWzeQqUAK48r9IvhrgJkZ65Dwh9uX+mZp/DaOr8qSwIiQkxBObVg2pySRSCbl6DiW@nongnu.org
-X-Gm-Message-State: AOJu0YzxtcFCa53rjaeu5tw0LERzJhY671OqWttyuZlmGxE9iwghHnsx
- 8GgOAUdVxd5q6+lENKAqFyIQkj6ika6fKR0tJD9Sh9N2Yz1qFEzRkWlbcKV27wz30J4+GLQ3z0f
- /cPUm1sUXKCoFWrUz2LG2y65u8UadvE274W1QyVE=
-X-Gm-Gg: ASbGncuKxxzKAubU7qth6lLOXFwV9/kvsLt03KdoBE0fLX5csOa1RDh52frkn1r6mqO
- 7I4bio9yJEsRjiOlCd6H9/tAyRaw51jzR2uYx5D2GW5FRqjRWLHsLb6VUp2By/U8hTlCkIM5pJ+
- FGNv+XC93KJjp8xCmJxXZIwWbylVUTowvORcM5Il4FDWtqg7/IRbyeMzaa5qMBzS4CfWX9+zaWi
- vK/Yg==
-X-Google-Smtp-Source: AGHT+IH6UydLmP/44NCz7jv0df8THGV3svsKqG6+rJIZ8YHkccQ2Ejca4qY3k8VToc0/hsikAXxt39+qqhfDrQu1+uw=
-X-Received: by 2002:a17:90b:35d1:b0:312:e6f1:c05d with SMTP id
- 98e67ed59e1d1-31f5dd891dcmr1837425a91.2.1753836727286; Tue, 29 Jul 2025
- 17:52:07 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1753837290; x=1754442090;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WNm5Zweq7hS6FeLo8CjSOxwcXou65pxZxkillcjgC54=;
+ b=ivG3Yc2UubyJFvwA6f0GHC3WVbbcdRjl4MUwsGna0yHJJIKDmlQACIDfVkpQoq2S2c
+ yTlrEGkdN+JX1WtXeDadxS1MVuuqW+YwuHjtId0cC1KJQZZtBXfwiygKCmf0dbysOlAP
+ KTOr3kUtwX497/lI2yNe6for2hqqH7TL1CTj7BJQGrL5OSwUuieoCTUoDysInP2oo5Tx
+ FkFoK2Xnb7FdHzGiK825pBBDSXIn8vUSijzoJXQyzHgSEnMG1QwuvK1uM8TPTLTBwEBU
+ omKqP9dTF6+7Vx69OIPuZWngZ51mCi/hQ35GEbxP/7dGOF80qE+QVBHiO1jugK5G2mAu
+ MaeQ==
+X-Gm-Message-State: AOJu0YzIqdNhwjc4W6n4bJcVEBccx1hAyIKunHLb/c9peMiqvYaWmmT2
+ ShbiqmM0GVP0Kkq88pAHIKrgVn8fzUF6KCbCtwFknS4nl6HhkEUyStBlS5zo6Q==
+X-Gm-Gg: ASbGnctZBYitWIo6tWXzWkrK7yK5tQz8hKtKbhZP/wJ/7SDriqKUjL5PXtK87LYcTUx
+ kLoK7+qqHoJuEvBB/exxctsaIUVON+MLsuK/N6iTvkeTTp1Zn+CsXduLcPuTiPn9PNlY/8YDDK+
+ b/8ETtfhQzc6kNfHNAaIIKW0RjGXbSwujDGZjf+obe/itesx0GgfGJ+xTA9+2+/lpvw8DjVATmk
+ b8a6BglN6f3F7DFUk5QXkoaQefv5F6jJwq7xu3Cf49tQ1h7yvlaya/b9Vm6zDrdT0qlm+DFO8iC
+ ZQLutnAZMrIywRSVaCsk/TCGQERXiEHnigRMG8g7S+T4mjrO1XHZPIkKZ6t7rDw4P5ahcP9NgZ2
+ DPlwLOKrWeiL/Wy2ABwZ3lCv5OLw1qBIgUUoX/1o/Meq2m9eTtu90C4gfpPUhnFJxcUeOWGBzkk
+ ZLyGG4Q3fQpdsBK/kHW2nWXmowA3M=
+X-Google-Smtp-Source: AGHT+IEWcvi55ymxoF5c+hxd+17NJuGX64X8Mw4SptWlpAPpYkSSMRG/lR3jED7+7VPDepK4/otUvg==
+X-Received: by 2002:a05:6a21:6da8:b0:233:ab19:794e with SMTP id
+ adf61e73a8af0-23dc05227edmr2308832637.8.1753837289937; 
+ Tue, 29 Jul 2025 18:01:29 -0700 (PDT)
+Received: from toolbx.alistair23.me
+ (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
+ [2403:580b:97e8:0:82ce:f179:8a79:69f4])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-31f63df5adfsm343253a91.25.2025.07.29.18.01.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 29 Jul 2025 18:01:29 -0700 (PDT)
+From: alistair23@gmail.com
+X-Google-Original-From: alistair.francis@wdc.com
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 00/11] riscv-to-apply queue
+Date: Wed, 30 Jul 2025 11:01:11 +1000
+Message-ID: <20250730010122.4193496-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.50.0
 MIME-Version: 1.0
-References: <20250729111143.1011889-1-frolov@swemel.ru>
-In-Reply-To: <20250729111143.1011889-1-frolov@swemel.ru>
-From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Tue, 29 Jul 2025 17:51:56 -0700
-X-Gm-Features: Ac12FXw5SG6436Vaii8XB4dS79jNp-46ZHE0ok2ThLDcRcNMSp5xoCHGpGkO8VU
-Message-ID: <CAMo8BfJw_EUUuGT0qVwhfgEi_tLzSmrOdwAip1E08XNZ4XF=6Q@mail.gmail.com>
-Subject: Re: [PATCH] target/xtensa: Replace malloc() with g_strdup_printf()
-To: Dmitry Frolov <frolov@swemel.ru>
-Cc: sdl.qemu@linuxtesting.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.244,
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,48 +101,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 29, 2025 at 4:12=E2=80=AFAM Dmitry Frolov <frolov@swemel.ru> wr=
-ote:
->
-> malloc() return value is used without a check.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
-> ---
->  target/xtensa/translate.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
->
-> diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
-> index 34ae2f4e16..42ef8d3eb9 100644
-> --- a/target/xtensa/translate.c
-> +++ b/target/xtensa/translate.c
-> @@ -112,13 +112,8 @@ void xtensa_collect_sr_names(const XtensaConfig *con=
-fig)
->
->              if (*pname) {
->                  if (strstr(*pname, name) =3D=3D NULL) {
-> -                    char *new_name =3D
-> -                        malloc(strlen(*pname) + strlen(name) + 2);
-> -
-> -                    strcpy(new_name, *pname);
-> -                    strcat(new_name, "/");
-> -                    strcat(new_name, name);
-> -                    free(*pname);
-> +                    char *new_name =3D g_strdup_printf("%s/%s", *pname, =
-name);
-> +                    g_free(*pname);
->                      *pname =3D new_name;
->                  }
->              } else {
+From: Alistair Francis <alistair.francis@wdc.com>
 
-I believe that
-  *pname =3D strdup(name);
-in the `else` clause should also be changed to
-  *pname =3D g_strdup(name);
-to maintain coupling between allocation and deallocation functions.
+The following changes since commit 9b80226ece693197af8a981b424391b68b5bc38e:
 
---=20
-Thanks.
--- Max
+  Update version for the v10.1.0-rc1 release (2025-07-29 13:00:41 -0400)
+
+are available in the Git repository at:
+
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20250730-2
+
+for you to fetch changes up to 86bc3a0abf10072081cddd8dff25aa72c60e67b8:
+
+  target/riscv: Restrict midelegh access to S-mode harts (2025-07-30 10:59:26 +1000)
+
+----------------------------------------------------------------
+Third RISC-V PR for 10.1
+
+* Fix pmp range wraparound on zero
+* Update FADT and MADT versions in ACPI tables
+* Fix target register read when source is inactive
+* Add riscv_hwprobe entry to linux-user strace list
+* Do not call GETPC() in check_ret_from_m_mode()
+* Revert "Generate strided vector loads/stores with tcg nodes."
+* Fix exception type when VU accesses supervisor CSRs
+* Restrict mideleg/medeleg/medelegh access to S-mode harts
+* Restrict midelegh access to S-mode harts
+
+----------------------------------------------------------------
+Daniel Henrique Barboza (3):
+      linux-user/strace.list: add riscv_hwprobe entry
+      target/riscv: do not call GETPC() in check_ret_from_m_mode()
+      riscv: Revert "Generate strided vector loads/stores with tcg nodes."
+
+Jay Chang (2):
+      target/riscv: Restrict mideleg/medeleg/medelegh access to S-mode harts
+      target/riscv: Restrict midelegh access to S-mode harts
+
+Sunil V L (3):
+      bios-tables-test-allowed-diff.h: Allow RISC-V FADT and MADT changes
+      hw/riscv/virt-acpi-build.c: Update FADT and MADT versions
+      tests/data/acpi/riscv64: Update expected FADT and MADT
+
+Vac Chen (1):
+      target/riscv: Fix pmp range wraparound on zero
+
+Xu Lu (1):
+      target/riscv: Fix exception type when VU accesses supervisor CSRs
+
+Yang Jialong (1):
+      intc/riscv_aplic: Fix target register read when source is inactive
+
+ hw/intc/riscv_aplic.c                   |   6 +-
+ hw/riscv/virt-acpi-build.c              |  25 +--
+ target/riscv/csr.c                      |  15 +-
+ target/riscv/op_helper.c                |  15 +-
+ target/riscv/pmp.c                      |   7 +-
+ target/riscv/insn_trans/trans_rvv.c.inc | 323 +++++---------------------------
+ linux-user/strace.list                  |   3 +
+ tests/data/acpi/riscv64/virt/APIC       | Bin 116 -> 116 bytes
+ tests/data/acpi/riscv64/virt/FACP       | Bin 276 -> 276 bytes
+ 9 files changed, 90 insertions(+), 304 deletions(-)
 
