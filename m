@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17E5B156E6
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61AEFB156DA
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 03:04:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ugvIO-00060O-2n; Tue, 29 Jul 2025 21:07:52 -0400
+	id 1ugvDy-0005L4-MU; Tue, 29 Jul 2025 21:03:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ugvCO-0002vw-2L
+ id 1ugvCO-0002vy-2q
  for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:40 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ugvCM-0004hg-7l
+ id 1ugvCM-0004hk-7n
  for qemu-devel@nongnu.org; Tue, 29 Jul 2025 21:01:39 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-3190fbe8536so5893164a91.3
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-315f6b20cf9so6775258a91.2
  for <qemu-devel@nongnu.org>; Tue, 29 Jul 2025 18:01:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1753837295; x=1754442095; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1753837296; x=1754442096; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=z9Rc+6thE21wnYNbJPK/4zcbD+cK53gSa/IlvV/VG5A=;
- b=dXAoqA81Tv/davqpYXNZrAJRQvsae/K2VUYN8wk1/eSoVUmJ8oxkxdYMRcbFvZsoOG
- KRyKwCSbHLKUWCAWKQclA+Lw56wBR596F4/StoQhuZucIUjP33gE85RDUemfkUab4LPb
- MEFl5RmdSYAWQPXUqa8uQAk3QFwSP3Y20H8JeKCS1OrAE5N6K7BrFG1QHJoHCbWUvSyG
- bmA/ipUhfN2RagJIL4JoFwd7fHZxQNN1sGyUE2jAghbFC1CLBEpmmevySBXzORjybW0g
- g1hhLko1TdO6oM+uWwSEeozgua/DESnniqwTKmXI+9RV+iyve0mtnk1iGlcnxHKwnZ7K
- wtiw==
+ bh=aCYPR2FiJ1QAY3BBIXtKExP1YeShrtPgpJYXL8zq0L0=;
+ b=PSn13BwEVf4X8fMKDoyle71WhTLY18XUqnAmLbcjuj+F/uUg0/lYDwp46QNFDVtdCU
+ 7uwIpQikATaFzX9N82wXiXZNtRhCH532e8jMmeu1jNl3mxwtR8aDEbUQu9Poe9kAx259
+ y+4yc3VAGxk4VORQmUOf1VXdAJVfNtYYfp37patvX+WGEF3uo8yB2b5i8lMqSGh9yrGb
+ vCSyndTeQko2i6wzmYuQ/v8tQCGZkFwH9bmJmA5sR/p+dJNb/ktMzkoEtdo4OdOF8Vhu
+ nqNMLutYseRFMwcuGR8FS07t+1xno/GpO/jzcU5Ej4ZDZ8xw6mLJIFvxuyZv7qzKGJBv
+ u2fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753837295; x=1754442095;
+ d=1e100.net; s=20230601; t=1753837296; x=1754442096;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z9Rc+6thE21wnYNbJPK/4zcbD+cK53gSa/IlvV/VG5A=;
- b=PYlQ/3zBuLNsmSolzPUT+vBqBaTSeMPoKFeoAvyihv34ewdA/ujWi9dxPoscOSVYAG
- 997XyC+Udvrds00YQKJoAF+IUcGOLMZMMcn5i3TRMQ/mJHPtFyrEMLGWo/iwZuMqkcQs
- er10BB+igGv2zWmBCnmNfTbZya/M65WdSFPBotd3HjqR72MFs5c/67r+xiEXhwaW8Fqn
- 7v23+vUpoUrtPHeemsoVjo8Ix3MgkvIng7azKbqNhU0aW5pDark4KOlO0c0O+jaI2TpW
- LiVynE9rlM2JsdO9EmjM0wRtii0U2S3GoOOMR0JsoaHk4w29ngOss/bkYWx3qhV3viIW
- VPDA==
-X-Gm-Message-State: AOJu0YyftgxfM4Vcz8XYnLRh4KS9u1nvr8JExup3ns2MsaET3/AenfXn
- ThhpwvsidSvGMP2hIH5Z11hIT5A25QAwtOF5zVQUK8xpmFnjhRmtkPB+3tkQ6g==
-X-Gm-Gg: ASbGncuUZkjbvKpmPgesBfMEk4BfdB7gLuQvzqsNI+qBbcSOS3MFvgx0KNaYpiuMhBr
- sVPDU3J5Ib/79KpmOVtEEWQNUK41fq6DBAvuB8Hd0IuUvYiPeZvx6nhYeGHDMK9yGFggDWPFdDW
- UnspgW+IvbRPG7Fhw3kSQAhHoGjllt8ejgANvfDzQdyRpb47GXZY2gsGbF61YjLtLGxrzPtnLjz
- e9TMi4mOaGHH3fKge2UhaYpHHSOmQU8/PPjLufj0SO6vMUGWIhjwarpBBpKSLOEFgCHrY4PZPCy
- 7TuTfFBTukAYXSvTfLHuJF/9FA39SaNf2YSQqBH4rzoUzIBrodUojlCRhXNI17FAM8Hb8dCLb28
- 1p84y3iNZAk0IGZ2MBfPtlBO7PD/QTbiYJzhPZQXxuf8jyXW2jWy3bb+pStgYvlmgTflLP1HFmf
- 8+7LyQFjJbJ5kHnD4Pm9GCgCQICuf1we1+oQRH6A==
-X-Google-Smtp-Source: AGHT+IEKA8otmbwQfeZzBZtkDd7RSqjQDp8+hFYv6Cks9s2r8mPGtP/hv++itdLJkyHDBSPZuB3Kkw==
-X-Received: by 2002:a17:90b:562b:b0:31f:336a:f0e1 with SMTP id
- 98e67ed59e1d1-31f5de315a9mr2065504a91.17.1753837292676; 
- Tue, 29 Jul 2025 18:01:32 -0700 (PDT)
+ bh=aCYPR2FiJ1QAY3BBIXtKExP1YeShrtPgpJYXL8zq0L0=;
+ b=fN31iX5aQtKOYhlyuhDSusmFv0pMmoja2X8mkjZKFJMMKzDcpu7XuvbXmrYcZvsVIc
+ ZcJ1i0YTtH4UY5w4sbiZLnplseorLwc2y5B+JR28HTqZTa205+koF2VHivCP/TNueLMG
+ 9/RrKwva2+nGC/qerHFG54Yxuc9yVxr4VwKbVegVTTYmTKJDdqIzPdLnsCaACJmUWwE6
+ l4pEdLWtHxeaDSBNAXSvYJTnDIkKb8V9OqjG7+jemOxY9Mx4iuXtYehgksuaeZxdTZqB
+ 87zXfLl4Zd6Viu1wSYT2fUyw6gvwHWYrfHzUr+xlyze7v6H1P+OiiW9eKGJWHfWrBnHD
+ /jJA==
+X-Gm-Message-State: AOJu0Yy5kI/8qnE6N5/lwpS59GSLfFqNS2BsywkoS11yOBB95P4quhCc
+ tC7A3T2mPxUZR1cQ8/F/heD2HbxHjdVu+Gq1O3huduFqoP5JadeJx9BtYeqAcQ==
+X-Gm-Gg: ASbGnctUOabJKlQubCPTewPtAEMZrAHc1Pm1qil9oXoA5Nv6mUlQeZdc6CRZnPCqLzo
+ GIrJ7txsHqyq+ggS+Un7VU1nXh3ll7jWsKA+2khPNnml271IjRy8X6tv46LSEEV76/U6l6pKOCB
+ BmhVCtSmb8vTOQg3I8y0Afb0DFkl35CdjcDBtcdxxZAGe9FZqvGD6WVk0dKrzvhXalEgxLK/l4G
+ cedMdGLwaDfPLb+hQEa5lvSnJXf8AuP1eRyLVtzgsASGtynlfXnsFrMIEJCdMlBCVSFdhpzy3M8
+ kKWCcP7pXtZ3alE7h3oPt1xxJW+h8V6HJuY2WyHZVMf9ofqUQCmn4j5nNqaTXd5rSCF76VxSkGO
+ fN5G457FaxVHx1MNOBfFgig5TbLV1hq3/W9Z7u7HwbjO65S0RBzFZjwamX1v8uM9cBW3qJWq4YW
+ 5D9r9PKoEXaSwgh54hV97xYFiLNTg=
+X-Google-Smtp-Source: AGHT+IFlQlGf3DIp9bOWYiGllUc9T8tEATH2DhGIJGkCizb41uBhgPYHijpEzP4g430cdlil5jJlfg==
+X-Received: by 2002:a17:90b:1ccc:b0:31e:d2a5:c099 with SMTP id
+ 98e67ed59e1d1-31f5ea4a331mr1886794a91.30.1753837296190; 
+ Tue, 29 Jul 2025 18:01:36 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31f63df5adfsm343253a91.25.2025.07.29.18.01.30
+ 98e67ed59e1d1-31f63df5adfsm343253a91.25.2025.07.29.18.01.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Jul 2025 18:01:32 -0700 (PDT)
+ Tue, 29 Jul 2025 18:01:35 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Vac Chen <vacantron@gmail.com>,
+Cc: alistair23@gmail.com, Sunil V L <sunilvl@ventanamicro.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Nutty Liu <liujingqi@lanxincomputing.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 01/11] target/riscv: Fix pmp range wraparound on zero
-Date: Wed, 30 Jul 2025 11:01:12 +1000
-Message-ID: <20250730010122.4193496-2-alistair.francis@wdc.com>
+Subject: [PULL 02/11] bios-tables-test-allowed-diff.h: Allow RISC-V FADT and
+ MADT changes
+Date: Wed, 30 Jul 2025 11:01:13 +1000
+Message-ID: <20250730010122.4193496-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250730010122.4193496-1-alistair.francis@wdc.com>
 References: <20250730010122.4193496-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,50 +107,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vac Chen <vacantron@gmail.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-pmp_is_in_range() prefers to match addresses within the interval
-[start, end]. To archieve this, pmpaddrX is decremented during the end
-address update.
-
-In TOR mode, a rule is ignored if its start address is greater than or
-equal to its end address.
-
-However, if pmpaddrX is set to 0, this decrement operation causes the
-calulated end address to wrap around to UINT_MAX. In this scenario, the
-address guard for this PMP entry would become ineffective.
-
-This patch addresses the issue by moving the guard check earlier,
-preventing the problematic wraparound when pmpaddrX is zero.
-
-Signed-off-by: Vac Chen <vacantron@gmail.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250706065554.42953-1-vacantron@gmail.com>
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Nutty Liu <liujingqi@lanxincomputing.com>
+Message-ID: <20250724110350.452828-2-sunilvl@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/pmp.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 3540327c9a..72f1372a49 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -211,11 +211,12 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index)
-         break;
- 
-     case PMP_AMATCH_TOR:
--        sa = prev_addr << 2; /* shift up from [xx:0] to [xx+2:2] */
--        ea = (this_addr << 2) - 1u;
--        if (sa > ea) {
-+        if (prev_addr >= this_addr) {
-             sa = ea = 0u;
-+            break;
-         }
-+        sa = prev_addr << 2; /* shift up from [xx:0] to [xx+2:2] */
-+        ea = (this_addr << 2) - 1u;
-         break;
- 
-     case PMP_AMATCH_NA4:
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..0c3f7a6cac 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,3 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/riscv64/virt/APIC",
++"tests/data/acpi/riscv64/virt/FACP",
 -- 
 2.50.0
 
