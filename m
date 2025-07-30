@@ -2,88 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592C9B163D0
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 17:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0495B163E1
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Jul 2025 17:48:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uh8vN-0005r2-SK; Wed, 30 Jul 2025 11:41:01 -0400
+	id 1uh91V-0005l5-Ec; Wed, 30 Jul 2025 11:47:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <markjdb@gmail.com>) id 1uh7rS-0008FU-5y
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 10:33:08 -0400
-Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1uh7rs-0000Jh-D5
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 10:33:26 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <markjdb@gmail.com>) id 1uh7r7-0002Dh-Ko
- for qemu-devel@nongnu.org; Wed, 30 Jul 2025 10:32:37 -0400
-Received: by mail-qk1-x731.google.com with SMTP id
- af79cd13be357-7e34399cdb2so102876085a.3
- for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 07:32:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1uh7rp-0002Gh-Sm
+ for qemu-devel@nongnu.org; Wed, 30 Jul 2025 10:33:20 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2401b855980so8928835ad.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Jul 2025 07:33:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1753885950; x=1754490750; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
- :reply-to; bh=rYaxV6sR4AnfpiTciIK6IJ2f9DYk2cU2wj1ihtWsWaQ=;
- b=MSwEhEISiVYs3FVdPnH3DvSkWYsau653e2iYfuD8Ov8U0x1kwliKvyc8aee5h7gisU
- saQ+EZLBwHtuY68nRs6ZPKStgpU9j5/WFyLoMWCxgbTg/dmgPZFqJYZiIXUl0a9Bse/Y
- vpFoiv9IoVxXVPTcRzcgJ02YIlPNHQEn8EjTeiTHdcr3wtpX6qN60L3F7S3uIrEate+/
- S/FB5rqjjCPADkfACGxW7DHOk2UuobS9xapZyWC6g/1azZVkq08hfBvJWY/67Qmn4Vbl
- 57DQAYhk47Oeq/JLKkTlLvHbmbkoptgljm0IhIOrLDw0HedmHGS6LGiEpMl34y3xAXHH
- Acyw==
+ d=gmail.com; s=20230601; t=1753885995; x=1754490795; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :references:cc:to:subject:from:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=m3WWiHrCZp2ljVmM8XOUbZqNjGd/jByLjWkPv+bq7To=;
+ b=ebcDbgvhKzHu4+Rc5r6kD07UHsWXiBOTPwIe4NBP8Fyf9tdrCj4e+z6MoG++kXjUEP
+ sfa3xa8CtS0EXaKTgEAaJYSwhC8or02zMVb+C9K5EjdbaTPh25xtIeGygCIHyovpGf4C
+ 38V+VJxyFI3nKdN8LtfsF51gLhYy8EGjk83OLZvthwshUivl3mKlpyimewP2OyhNgQfA
+ a8FeHn1nVp9X4DBgS/vBlGHPd9dqRgckc5BNopaP0pI57ruruLhfcfm5sV/j2yRaoeRh
+ nSXunVDpsxutODDBIHxiQl6/RiM16yBWl+HIa/5pZfVhLZ8YxyBYg7KRPQ88iR2bI6Og
+ D1mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753885950; x=1754490750;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rYaxV6sR4AnfpiTciIK6IJ2f9DYk2cU2wj1ihtWsWaQ=;
- b=ldVNDNNXu5pgNcJZhAvisgR3FxpYtssGd1eSn6HVAKVge9U6HLg3neEYeXlPb4HaHo
- e4zgSvJzOWoDWNTjFPdCwpgBwV0sShGqt8flDfOwvnIVRK2K5jr2oyBcMXnWY6fQkkDY
- jTRlnTbJ/FJvXXhPxrmYx4lVTjMnT7LA7kaHGk8jA6AqVIIJDJeUGLKSQVqbVKksJj+o
- H+wV651te9KhvOKLuhkXr3y88o3FnWGpnNEJS3p8Ei3vVwFuH0hB+SrJPRb5B9M8xp5b
- Ixby8HxRwDe2e5HBGmTOkV95BD5j5UQ/VZfF1c0sl9vwvJaQQRWeaEhdWn09rf0arlKv
- fSWA==
-X-Gm-Message-State: AOJu0YyLxfAWzcvYJUC16hl0sYC896ir/1eig3QkIsCVFF5+XggIrvzC
- +ceZQgze3QQhyZSAMwb9OyAEsuv9tjT4m7DUtixwOqZmArxNHW3/zw0E
-X-Gm-Gg: ASbGnctD8J1Uoh+0az7qqwy2LLPL4kALVRNvHLzjALOnY93Be9bzM8EhillneyZyUaw
- aFbCrV2Kwr2Q0vA3K9b7cALXkFaf54n292OKM0UvUwMihJhRi3Ddmb+N4GFo1SmA6+o8xkE0AzL
- 4/OPcYSxsInBjfp2iOvS01uowTEHeP/iq/rJhVdytddEvy8b94+XCAteXUfq+ZoEfSbHY/Z0YhQ
- fLC9zFC9bSYCAajIBBk2NwLVzKcYiaxwuQBUv3K78g+3NjQlKtwl1jTjdGANd+gCixEtzVO9i1t
- UVjgvH904ewdlwMeLmGGjJHJKOQzN1byDvfPh4ydvbHY+VeKQ7SHeRdX4eH6FW+YhbZNppejBXi
- xUNforf13BAgBs6avU75tHVpH6q8ArFst5+xq
-X-Google-Smtp-Source: AGHT+IFaY+q+ikejM2dIPN9+AydZv1jwtLRgw8yDb7vJdtn8idheBGa/pLZgq8RFMabVw72FAVO/BQ==
-X-Received: by 2002:a05:620a:a802:b0:7e6:3023:6ea1 with SMTP id
- af79cd13be357-7e66ef948bdmr483893185a.8.1753885949317; 
- Wed, 30 Jul 2025 07:32:29 -0700 (PDT)
-Received: from nuc (192-0-220-237.cpe.teksavvy.com. [192.0.220.237])
+ d=1e100.net; s=20230601; t=1753885995; x=1754490795;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :references:cc:to:subject:from:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=m3WWiHrCZp2ljVmM8XOUbZqNjGd/jByLjWkPv+bq7To=;
+ b=qotwdXnP+u9shZr2ZoYvhV/wfr5K7tbQxyzdTECcHCOHe3/dERZqMaSqv9bGXt89oS
+ /rqBvpDXCh2bfBGb7NYlarS9ClISOf0O74Xbdc4qESKryceW3094DicvK+XwnqEN7uFF
+ ZwiAbOy/km91AmYp1RdPfeBMbDrIOoGCwwMzZQ7jhYsYeHghbLdlBnSq7mZB1/O9Dq8+
+ O2KGyafqrsH2T2VSZiKQr0N1xMEzBp3l9yggEVFFt8kNfaSSt0koCgS8KLe6z0LIMBJs
+ MmU3vjtWrIEz/irvs4twXIMNnmYfqxQhASaehKDDM8XUXJQr4TwO+s7Kr4pmxqo2dysK
+ ZMPQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXFgee1HyaWn7RSVAzqwHzvLJ0WWMyMNjFZfkO+dHN3CbHGkB618dBJ+EC7/dc90Tql0hFqvY1UedA3@nongnu.org
+X-Gm-Message-State: AOJu0YyZtzHGySa4PoV4eFSZ0UxyIwVs7YLIlaDLG165wR5Wj7G/Gw4y
+ 9SK5oKqvtcxN3BVqEWtbb6F+L2wzkn15/34WVe0q/3uZkSt+AjEVTuuh
+X-Gm-Gg: ASbGncvwmVvlFSQ/UQAG78tBCWgi6f5281R3R4kxrd2SFKHMTayC4+uj2AGCno3TMih
+ PComturODAkMcAzQl8gLXhJwl5v6D6snqna1VZErqG18kBtBkyz/q0//yxK+fPDT88QmfkkmcaQ
+ 4PNC780Vke+L5kW/sFJ5ZnGD9PbWrP3y9FgHb2vXFLcEic5Pu7gfCLn51yxQ71OUjVMoBXS/vT9
+ yNhbdV4Yft1lieI9lsynVWvjOjl3ER4RBFHkVCaqqrVfAX9otI/LxdtEWueZkwsdmJ7ctjJ0w0h
+ sxUnndiwrRFOKyj+isD+WtSMVgkQ4cIcEMW4nPL8fbRtb+5LBABfSCiGTfxo/4r0AkjvjIcKsCL
+ FPnZtOBkJq3zcYJdQ2C26F5+y6+Za6Z1JSATJVArXexrez+e3GQ0urwJJJbCPiUs0qMGGny9mzb
+ 4w
+X-Google-Smtp-Source: AGHT+IGJdxRmzJqxi/C4lICNZgZ6/STRft55f8FQuJL7F1+pa4X7b+wvmscF3RVAUf/OFWg33L3ZZA==
+X-Received: by 2002:a17:903:1967:b0:23d:dd04:28e5 with SMTP id
+ d9443c01a7336-24096af6b3amr45125195ad.34.1753885995072; 
+ Wed, 30 Jul 2025 07:33:15 -0700 (PDT)
+Received: from ?IPV6:2401:4900:1c7e:3276:1bfa:40c6:8594:9193?
+ ([2401:4900:1c7e:3276:1bfa:40c6:8594:9193])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7e64387c0ecsm588211185a.50.2025.07.30.07.32.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Jul 2025 07:32:25 -0700 (PDT)
-Date: Wed, 30 Jul 2025 10:32:22 -0400
-From: Mark Johnston <markj@freebsd.org>
-To: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Cc: qemu-devel@nongnu.org, Greg Kurz <groug@kaod.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH] 9pfs: Add FreeBSD support
-Message-ID: <aIos9lb1dBuDBq2E@nuc>
-References: <aIEGDjMex-DG-pmr@nuc>
- <1989897.fkXqvmx5VE@silver>
+ d9443c01a7336-2401e95208bsm75888905ad.112.2025.07.30.07.32.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Jul 2025 07:33:14 -0700 (PDT)
+Message-ID: <68e7a854-f7d3-4d21-87b0-3a23f4341493@gmail.com>
+Date: Wed, 30 Jul 2025 20:02:47 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1989897.fkXqvmx5VE@silver>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
- envelope-from=markjdb@gmail.com; helo=mail-qk1-x731.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
- HK_RANDOM_ENVFROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+From: Sahil Siddiq <icegambit91@gmail.com>
+Subject: Re: [RFC v5 0/7] Add packed format to shadow virtqueue
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org,
+ sahilcdq@proton.me
+References: <20250324135929.74945-1-sahilcdq@proton.me>
+ <CAJaqyWdXat-ugJHEcZyB5dbTuwGgvrO2+DdDd9YneS0=j-99NA@mail.gmail.com>
+ <f1354888-74fb-44d8-8b48-c6a6a13db1a7@gmail.com>
+ <CAJaqyWd=ssa5fkmV7Z=tzJvFeciC1P2U2pYheaSrZ2PZCaejHg@mail.gmail.com>
+ <9a7c409f-cd7e-4906-812b-c8a4d77cfc4d@gmail.com>
+ <CAJaqyWdme4GSTQr-mbGiWvV5Wu0Mnjc467ptWFoX2i3zHygf3g@mail.gmail.com>
+ <97eafb50-492a-4571-92de-503fbc0d06fd@gmail.com>
+ <CAJaqyWeG2n=BhjNhQzMagjh5t-dgno6q-esVjzqrw8z3_sUrHA@mail.gmail.com>
+Content-Language: en-US
+Autocrypt: addr=icegambit91@gmail.com; keydata=
+ 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
+ rPgMe6IIvn24UuW2f6fIt0AaqOWq
+In-Reply-To: <CAJaqyWeG2n=BhjNhQzMagjh5t-dgno6q-esVjzqrw8z3_sUrHA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=icegambit91@gmail.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,472 +147,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 29, 2025 at 06:09:35PM +0200, Christian Schoenebeck wrote:
-> On Wednesday, July 23, 2025 5:55:58 PM CEST Mark Johnston wrote:
-> > This is largely derived from existing Darwin support.  FreeBSD
-> > apparently has better support for *at() system calls so doesn't require
-> > workarounds for a missing mknodat().  The implementation has a couple of
-> > warts however:
-> > - The extattr(2) system calls don't support anything akin to
-> >   XATTR_CREATE or XATTR_REPLACE, so a racy workaround is implemented.
-> > - Attribute names cannot begin with "user." on ZFS, so the prefix is
-> >   trimmed off.  FreeBSD's extattr system calls sport an extra
-> >   "namespace" identifier, and attributes created by the 9pfs backend
-> >   live in the universal user namespace, so this seems innocent enough.
-> > 
-> > The 9pfs tests were verified to pass on the UFS, ZFS and tmpfs
-> > filesystems.
-> > 
-> > Signed-off-by: Mark Johnston <markj@FreeBSD.org>
-> 
-> Hi Mark,
-> 
-> first off, the problem is I currently don't have a FreeBSD host to test and
-> won't have the time in near future neither.
-> 
-> So what was your general intention regarding this patch, fire and forget, or
-> would you be around for issues/patches regarding 9pfs FreeBSD support?
+Hi,
 
-Thank you for taking a look.
+I think I have finally found the reason behind this issue.
 
-I'll certainly be around to help deal with issues and patches relating
-to 9pfs+FreeBSD hosts.  It's hard to prove that, but for what it's worth
-I use QEMU fairly extensively for FreeBSD development when I can't use
-the native hypervisor, and that's not likely to change anytime soon.
+The order in which "add_packed" and "get_buf_packed" are performed in the
+nested guest kernel (L2 kernel) and QEMU are a little different. Due to
+this, the values in free_head and svq->desc_next[] differ and the guest
+crashes at some point. More below.
 
-Would adding myself to MAINTAINERS for virtio-9pfs (or a new
-virtio-9pfs-freebsd category) be appropriate in that case?
+On 6/26/25 1:07 PM, Eugenio Perez Martin wrote:
+> On Thu, Jun 26, 2025 at 7:16 AM Sahil Siddiq <icegambit91@gmail.com> wrote:
+>> I think there's something off in the way "free_head", "last_used_idx" and
+>> "desc_next" values are calculated in vhost_svq_get_buf_packed() [1].
+>>
+>> In the latest test run, QEMU sent ids 0 through 28 to L2. L2 started receiving
+>> them in order till id 8. At this point it received id 7 again for some reason
+>> and then crashed.
+>>
+>> L2:
+>>
+>> [ 1641.129218] (prepare_packed) output.0 -> needs_kick: 1
+>> [ 1641.130621] (notify) output.0 -> function will return true
+>> [ 1641.132022] output.0 -> id: 0
+>> [ 1739.502358] input.0 -> id: 0
+>> [ 1739.503003] input.0 -> id: 1
+>> [ 1739.562024] input.0 -> id: 2
+>> [ 1739.578682] input.0 -> id: 3
+>> [ 1739.661913] input.0 -> id: 4
+>> [ 1739.828796] input.0 -> id: 5
+>> [ 1739.829789] input.0 -> id: 6
+>> [ 1740.078757] input.0 -> id: 7
+>> [ 1740.079749] input.0 -> id: 8
+>> [ 1740.080382] input.0 -> id: 7    <----Received 7 again
+>> [ 1740.081614] virtio_net virtio1: input.0:id 7 is not a head!
+>>
+>> QEMU logs (vhost_svq_get_buf_packed):
+>> ------
+>> size              : svq->vring.num
+>> len               : svq->vring_packed.vring.desc[last_used].len
+>> id                : svq->vring_packed.vring.desc[last_used].id
+>> num               : svq->desc_state[id].ndescs
+>> last_used_chain   : Result of vhost_svq_last_desc_of_chain(svq, num, id) [2]
+>> free_head         : svq->free_head
+>> last_used         : (last_used_idx & ~(1 << VRING_PACKED_EVENT_F_WRAP_CTR)) + num
+>> used_wrap_counter : !!(last_used_idx & (1 << VRING_PACKED_EVENT_F_WRAP_CTR))
+>> ------
+>> size: 256, len: 82, id: 7, vq idx: 0
+>> id: 7, last_used_chain: 7, free_head: 6, vq idx: 0
+>> num: 1, free_head: 7, id: 7, last_used: 8, used_wrap_counter: 1, vq idx: 0
+>> ------
+>> size: 256, len: 104, id: 8, vq idx: 0
+>> id: 8, last_used_chain: 8, free_head: 7, vq idx: 0
+>> num: 1, free_head: 8, id: 8, last_used: 9, used_wrap_counter: 1, vq idx: 0
+>> ------
+>> size: 256, len: 98, id: 9, vq idx: 0
+>> id: 9, last_used_chain: 9, free_head: 8, vq idx: 0
+>> num: 1, free_head: 9, id: 9, last_used: 10, used_wrap_counter: 1, vq idx: 0
+>> ------
+>> size: 256, len: 104, id: 10, vq idx: 0
+>> id: 10, last_used_chain: 10, free_head: 9, vq idx: 0
+>> num: 1, free_head: 10, id: 10, last_used: 11, used_wrap_counter: 1, vq idx: 0
+>>
+>> I have a few more ideas of what to do. I'll let you know if I find something
+>> else.
+>>
+> I cannot find anything just by inspection. What about printing all the
+> desc_state and all desc_next to check for incoherencies in each
+> svq_add and get_buf?
+In this test, all 256 descriptors were filled in the RX vq.
 
-> > ---
-> >  fsdev/file-op-9p.h        |   6 +-
-> >  fsdev/meson.build         |   2 +-
-> >  hw/9pfs/9p-synth.c        |   2 +-
-> >  hw/9pfs/9p-util-freebsd.c | 124 ++++++++++++++++++++++++++++++++++++++
-> >  hw/9pfs/9p-util.h         |  19 ++++--
-> >  hw/9pfs/9p.c              |  16 ++++-
-> >  hw/9pfs/meson.build       |   2 +
-> >  include/qemu/xattr.h      |   6 +-
-> >  meson.build               |   8 +--
-> >  9 files changed, 170 insertions(+), 15 deletions(-)
-> >  create mode 100644 hw/9pfs/9p-util-freebsd.c
-> > 
-> > diff --git a/fsdev/file-op-9p.h b/fsdev/file-op-9p.h
-> > index b9dae8c84c..b85c9934de 100644
-> > --- a/fsdev/file-op-9p.h
-> > +++ b/fsdev/file-op-9p.h
-> > @@ -21,9 +21,11 @@
-> >  
-> >  #ifdef CONFIG_LINUX
-> >  # include <sys/vfs.h>
-> > -#endif
-> > -#ifdef CONFIG_DARWIN
-> > +#elif defined(CONFIG_DARWIN) || defined(CONFIG_FREEBSD)
-> >  # include <sys/param.h>
-> > +# ifdef CONFIG_FREEBSD
-> > +#  undef MACHINE /* work around some unfortunate namespace pollution */
-> > +# endif
-> 
-> Details? :)
+In the TX queue, L2 kernel would add one descriptor at a time and notify
+QEMU. QEMU would then register it in its SVQ and mark it as "available".
+After processing the descriptor, QEMU would mark it as "used" and flush it
+back to L2. L2, in turn, would mark this descriptor as "used". After this
+process, L2 would add the next descriptor in the TX vq while reusing this
+ID. This was observed from idx 0 till idx 7.
 
-We need sys/mount.h for struct statfs.  sys/mount.h implicitly includes
-sys/param.h, which is really sloppy about polluting the namespace with
-identifiers that only the kernel cares about 99% of the time.  In
-particular, it includes a platform-specific param.h which defines
+L2's debug logs:
 
-#define MACHINE "amd64"
-#define MACHINE_ARCH "amd64"
+[   18.379112] (use_indirect?) output.0 -> verdict: 0                <----- Begin adding descriptor in idx 6
+[   18.387134] (add_packed) output.0 -> idx: 6
+[   18.389897] (add_packed) output.0 -> id: 0
+[   18.392290] (add_packed) output.0 -> len: 74
+[   18.394606] (add_packed) output.0 -> addr: 5012315726
+[   18.397043] (add_packed) output.0 -> next id: 1
+[   18.399861] Entering prepare_packed: output.0
+[   18.402478] (prepare_packed) output.0 -> needs_kick: 1
+[   18.404998] (notify) output.0 -> function will return true        <----- Notify QEMU
+[   18.406349] output.0 -> id: 0, idx: 6                             <----- Mark ID 0 in idx 6 as used
+[   18.409482] output.0 -> old free_head: 1, new free_head: 0        <----- ID 0 can be reused
+[   18.410919] (after get_buf processed) output.0 -> id: 0, idx: 7   <----- Next slot is idx 7
+[   18.921895] (use_indirect?) output.0 -> verdict: 0                <----- Begin adding descriptor with ID = 0 in idx 7
+[   18.930093] (add_packed) output.0 -> idx: 7
+[   18.935715] (add_packed) output.0 -> id: 0
+[   18.937609] (add_packed) output.0 -> len: 122
+[   18.939614] (add_packed) output.0 -> addr: 4925868038
+[   18.941710] (add_packed) output.0 -> next id: 1
+[   18.944032] Entering prepare_packed: output.0
+[   18.946148] (prepare_packed) output.0 -> needs_kick: 1
+[   18.948234] (notify) output.0 -> function will return true        <----- Notify QEMU
+[   18.949606] output.0 -> id: 0, idx: 7                             <----- Mark ID 0 in idx 7 as used
+[   18.952756] output.0 -> old free_head: 1, new free_head: 0        <----- ID 0 can be reused
+[   18.955154] (after get_buf processed) output.0 -> id: 0, idx: 8   <----- Next slot is idx 8
 
-among other things.  This conflicts with QEMU's MACHINE macro.
+There was no issue in QEMU till this point.
 
-It's a mess.  I have some local FreeBSD patches to avoid including
-param.h from sys/mount.h, but of course a number of applications have
-come to rely on the pollution, so they all need to be fixed first.
+[   19.177536] (use_indirect?) output.0 -> verdict: 0                <----- Begin adding descriptor with ID = 0 in idx 8
+[   19.182415] (add_packed) output.0 -> idx: 8
+[   19.187257] (add_packed) output.0 -> id: 0
+[   19.191355] (add_packed) output.0 -> len: 102
+[   19.195131] (add_packed) output.0 -> addr: 4370702342
+[   19.199224] (add_packed) output.0 -> next id: 1
+[   19.204929] Entering prepare_packed: output.0
+[   19.209505] (prepare_packed) output.0 -> needs_kick: 1
+[   19.213820] (notify) output.0 -> function will return true       <----- Notify QEMU
+[   19.218792] (use_indirect?) output.0 -> verdict: 0               <----- Next slot is idx 9
+[   19.224730] (add_packed) output.0 -> idx: 9
+[   19.227067] (add_packed) output.0 -> id: 1                       <----- ID 0 can't be reused yet, so use ID = 1
+[   19.229090] (add_packed) output.0 -> len: 330
+[   19.231182] (add_packed) output.0 -> addr: 4311020614
+[   19.233302] (add_packed) output.0 -> next id: 2
+[   19.235620] Entering prepare_packed: output.0
+[   19.237781] (prepare_packed) output.0 -> needs_kick: 1
+[   19.239958] (notify) output.0 -> function will return true       <----- Notify QEMU
+[   19.237780] output.0 -> id: 0, idx: 8                            <----- Mark ID 0 in idx 8 as used
+[   19.243676] output.0 -> old free_head: 2, new free_head: 0       <----- ID 0 can now be reused
+[   19.245214] (after get_buf processed) output.0 -> id: 0, idx: 9  <----- Next slot is idx 9
+[   19.247097] output.0 -> id: 1, idx: 9                            <----- Mark ID 1 in idx 9 as used
+[   19.249612] output.0 -> old free_head: 0, new free_head: 1       <----- ID 1 can now be reused
+[   19.252266] (after get_buf processed) output.0 -> id: 1, idx: 10 <----- Next slot is idx 10
 
-At some point, I think the block above can become something like
+ID 0 and ID 1 in idx 8 and idx 9 respectively are pushed to QEMU
+before either of them are marked as used.
 
-  #elif defined(CONFIG_DARWIN) || defined(CONFIG_FREEBSD)
-  # ifndef CONFIG_FREEBSD
-  #  include <sys/param.h>
-  # endif
-  # include <sys/mount.h>
+But in QEMU, the order is slightly different.
 
-but for now I need this workaround.
+num: 1, init_flags: 128                                                        <----- vhost_svq_add_packed()
+idx: 8, id: 0, len: 0, flags: 0, vq idx: 1                                     <----- Before adding descriptor
+idx: 8, id: 0, len: 102, flags: 128, vq idx: 1                                 <----- After adding descriptor
+Finally: new_idx: 9, head_idx: 8, id: 0, len: 102, flags: 128, vq idx: 1
+svq->vring.num: 256                                                            <----- Begin vhost_svq_get_buf_packed()
+descriptor_len: 0
+descriptor_id: 0                                                               <----- Mark ID = 0 as used
+last_used: 8                                                                   <----- Processing idx 8
+used_wrap_counter: 1
+svq->desc_state[id].ndescs: 1
+free_head: 0                                                                   <----- Update free_head to 0.
+last_used: 9                                                                   <----- Update last_used to 9.
+vq idx: 1                                                                      <----- End vhost_svq_get_buf_packed()
+i: 0                                                                           <----- vhost_svq_flush()
+descriptor_len: 0
+elem->len: 22086
+i: 1
+elem_is_null: 1
+vq idx: 1                                                                      <----- End vhost_svq_flush()
+num: 1, init_flags: 128                                                        <----- vhost_svq_add_packed()
+idx: 9, id: 0, len: 0, flags: 0, curr: 0, vq idx: 1                            <----- Before adding descriptor
+idx: 9, id: 0, len: 330, flags: 128, curr: 1, vq idx: 1                        <----- After adding descriptor
+Finally: new_idx: 10, head_idx: 9, id: 0, len: 330, flags: 128, vq idx: 1      <----- ID 0 has been reused (versus ID 1 in L2)
+svq->vring.num: 256                                                            <----- Begin vhost_svq_get_buf_packed()
+descriptor_len: 0
+descriptor_id: 0                                                               <----- Mark ID = 0 as used
+last_used: 9                                                                   <----- Processing idx 9
+used_wrap_counter: 1
+svq->desc_state[id].ndescs: 1
+free_head: 0                                                                   <----- Update free_head to 0.
+last_used: 10                                                                  <----- Update last_used to 10.
+vq idx: 1                                                                      <----- End vhost_svq_get_buf_packed()
+i: 0                                                                           <----- vhost_svq_flush()
+descriptor_len: 0
+elem->len: 22086
+i: 1
+elem_is_null: 1
+vq idx: 1                                                                      <----- End vhost_svq_flush()
 
-> >  # include <sys/mount.h>
-> >  #endif
-> >  
-> > diff --git a/fsdev/meson.build b/fsdev/meson.build
-> > index c751d8cb62..95fe816604 100644
-> > --- a/fsdev/meson.build
-> > +++ b/fsdev/meson.build
-> > @@ -5,6 +5,6 @@ fsdev_ss.add(when: ['CONFIG_FSDEV_9P'], if_true: files(
-> >    '9p-marshal.c',
-> >    'qemu-fsdev.c',
-> >  ), if_false: files('qemu-fsdev-dummy.c'))
-> > -if host_os in ['linux', 'darwin']
-> > +if host_os in ['linux', 'darwin', 'freebsd']
-> >    system_ss.add_all(fsdev_ss)
-> >  endif
-> > diff --git a/hw/9pfs/9p-synth.c b/hw/9pfs/9p-synth.c
-> > index 9cd1884224..b3743f6169 100644
-> > --- a/hw/9pfs/9p-synth.c
-> > +++ b/hw/9pfs/9p-synth.c
-> > @@ -451,7 +451,7 @@ static int synth_statfs(FsContext *s, V9fsPath *fs_path,
-> >      stbuf->f_bsize = 512;
-> >      stbuf->f_blocks = 0;
-> >      stbuf->f_files = synth_node_count;
-> > -#ifndef CONFIG_DARWIN
-> > +#if !defined(CONFIG_DARWIN) && !defined(CONFIG_FREEBSD)
-> >      stbuf->f_namelen = NAME_MAX;
-> >  #endif
-> >      return 0;
-> > diff --git a/hw/9pfs/9p-util-freebsd.c b/hw/9pfs/9p-util-freebsd.c
-> > new file mode 100644
-> > index 0000000000..e649f79d4b
-> > --- /dev/null
-> > +++ b/hw/9pfs/9p-util-freebsd.c
-> > @@ -0,0 +1,124 @@
-> > +/*
-> > + * 9p utilities (FreeBSD Implementation)
-> > + *
-> > + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> > + * See the COPYING file in the top-level directory.
-> > + */
-> 
-> I think for new source files in QEMU the policy is to use
-> SPDX-License-Identifier: ... now?
+In QEMU, id 0 is added in idx 8. But it's marked as used before a
+descriptor can be added in idx 9. Because of this there's a discrepancy
+in the value of free_head and in svq->desc_next.
 
-checkpatch.pl does complain about that, yes, but it also qualifies the
-warning with, "unless this file was copied from existing code already
-having such text."  I used 9p-util-darwin.c as a starting point for this
-file, so kept the existing license text.  I can certainly change it
-though.
+In the current implementation, the values of ID are generated, maintained
+and processed by QEMU instead of reading from the guest's memory. I think
+reading the value of ID from the guest memory (similar to reading the
+descriptor length from guest memory) should resolve this issue.
 
-> Is this source file really specific to exactly FreeBSD? From the name it
-> suggests that potential future support for other BSD flavours would need their
-> own source file.
+The alternative would be to ensure that "add_packed" and "get_buf_packed"
+are synchronized between the guest and QEMU.
 
-Hmm, not really.  Other BSDs seem to implement a compatible syscall
-interface when they implement it at all.  (NetBSD's interface seems to
-be compatible; OpenBSD doesn't appear to implement extattrs at all, and
-DragonflyBSD is missing the extattr_*_fd() variants.)
+What are your thoughts on this?
 
-FreeBSD appears to be the only one that implements O_PATH, but that
-seems to be optional if I'm reading correctly.
+Thanks,
+Sahil
 
-So, I could preemptively change it to 9p-util-bsd.c, or wait for someone
-to come along and add support for another BSD.
 
-> > +
-> > +/*
-> > + * Not so fast! You might want to read the 9p developer docs first:
-> > + * https://wiki.qemu.org/Documentation/9p
-> > + */
-> > +
-> > +#include "qemu/osdep.h"
-> > +#include "qemu/xattr.h"
-> > +#include "9p-util.h"
-> > +
-> > +static const char *mangle_xattr_name(const char *name)
-> > +{
-> > +    /*
-> > +     * ZFS forbits attributes in the user namespace starting with "user.".
-> > +     */
-> > +    if (strncmp(name, "user.", 5) == 0) {
-> > +        return name + 5;
-> > +    }
-> > +    return name;
-> > +}
-> 
-> "ZFS forbids ..."
 
-Fixed, thanks.
-
-> 
-> > +
-> > +ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
-> > +{
-> > +    name = mangle_xattr_name(name);
-> > +    return extattr_get_fd(fd, EXTATTR_NAMESPACE_USER, name, value, size);
-> > +}
-> 
-> I assume if "user." prefix isn't accepted, then "system." is neither, right?
-
-That's right.
-
-> Because "system." prefix is used by 9pfs server as well.
->
-> Probably the right extattr namespace should be diverted here according to the
-> prefix being passed.
-> 
-> I see there is a conversion function in FreeBSD for this called
-> extattr_string_to_namespace(). But given that the only ones supported are
-> either EXTATTR_NAMESPACE_USER or EXTATTR_NAMESPACE_SYSTEM and since the prefix
-> has to be extracted from the string by own code anway, I guess a simple
-> inliner would do as well.
-
-Yes, I think that's not too fragile.  I implemented that in my local
-version.
-
-> > +
-> > +ssize_t fgetxattrat_nofollow(int dirfd, const char *filename, const char *name,
-> > +                             void *value, size_t size)
-> > +{
-> > +    ssize_t ret;
-> > +    int fd;
-> > +
-> > +    fd = openat_file(dirfd, filename,
-> > +                     O_RDONLY | O_PATH_9P_UTIL | O_NOFOLLOW, 0);
-> > +    if (fd == -1) {
-> > +        return -1;
-> > +    }
-> > +    name = mangle_xattr_name(name);
-> > +    ret = extattr_get_fd(fd, EXTATTR_NAMESPACE_USER, name, value, size);
-> > +    close_preserve_errno(fd);
-> > +    return ret;
-> > +}
-> > +
-> > +ssize_t flistxattrat_nofollow(int dirfd, const char *filename,
-> > +                              char *list, size_t size)
-> > +{
-> > +    ssize_t ret;
-> > +    int fd;
-> > +
-> > +    fd = openat_file(dirfd, filename,
-> > +                     O_RDONLY | O_PATH_9P_UTIL | O_NOFOLLOW, 0);
-> > +    if (fd == -1) {
-> > +        return -1;
-> > +    }
-> > +    ret = extattr_list_fd(fd, EXTATTR_NAMESPACE_USER, list, size);
-> > +    close_preserve_errno(fd);
-> > +    return ret;
-> > +}
-> > +
-> > +ssize_t fremovexattrat_nofollow(int dirfd, const char *filename,
-> > +                                const char *name)
-> > +{
-> > +    int fd, ret;
-> > +
-> > +    fd = openat_file(dirfd, filename,
-> > +                     O_RDONLY | O_PATH_9P_UTIL | O_NOFOLLOW, 0);
-> > +    if (fd == -1) {
-> > +        return -1;
-> > +    }
-> > +    name = mangle_xattr_name(name);
-> > +    ret = extattr_delete_fd(fd, EXTATTR_NAMESPACE_USER, name);
-> > +    close_preserve_errno(fd);
-> > +    return ret;
-> > +}
-> > +
-> > +int fsetxattrat_nofollow(int dirfd, const char *filename, const char *name,
-> > +                         void *value, size_t size, int flags)
-> > +{
-> > +    ssize_t ret;
-> > +    int fd;
-> > +
-> > +    name = mangle_xattr_name(name);
-> > +    if (flags == (XATTR_CREATE | XATTR_REPLACE)) {
-> > +        errno = EINVAL;
-> > +        return -1;
-> > +    }
-> > +    fd = openat_file(dirfd, filename,
-> > +                     O_RDONLY | O_PATH_9P_UTIL | O_NOFOLLOW, 0);
-> > +    if (fd == -1) {
-> > +        return -1;
-> > +    }
-> > +    if (flags & (XATTR_CREATE | XATTR_REPLACE)) {
-> > +        ret = extattr_get_fd(fd, EXTATTR_NAMESPACE_USER, name, NULL, 0);
-> > +        if (ret == -1 && errno != ENOATTR) {
-> > +            close_preserve_errno(fd);
-> > +            return -1;
-> > +        }
-> > +        if (ret >= 0 && (flags & XATTR_CREATE)) {
-> > +            errno = EEXIST;
-> > +            close_preserve_errno(fd);
-> > +            return -1;
-> > +        }
-> > +        if (ret == -1 && (flags & XATTR_REPLACE)) {
-> > +            errno = ENOATTR;
-> > +            close_preserve_errno(fd);
-> > +            return -1;
-> > +        }
-> > +    }
-> > +    ret = extattr_set_fd(fd, EXTATTR_NAMESPACE_USER, name, value, size);
-> > +    close_preserve_errno(fd);
-> > +    return ret;
-> > +}
-> > +
-> > +int qemu_mknodat(int dirfd, const char *filename, mode_t mode, dev_t dev)
-> > +{
-> > +    return mknodat(dirfd, filename, mode, dev);
-> > +}
-> > diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
-> > index a1924fe3f0..7315b32591 100644
-> > --- a/hw/9pfs/9p-util.h
-> > +++ b/hw/9pfs/9p-util.h
-> > @@ -21,6 +21,14 @@
-> >  #define O_PATH_9P_UTIL 0
-> >  #endif
-> >  
-> > +#ifdef CONFIG_FREEBSD
-> > +/*
-> > + * FreeBSD does not have these flags, so we can only emulate them (racily).
-> > + */
-> > +#define XATTR_CREATE    0x1
-> > +#define XATTR_REPLACE   0x2
-> > +#endif
-> > +
-> 
-> What do you mean with "racily" here?
-
-FreeBSD cannot atomically check for the existence of and set an extattr,
-the system call interface simply doesn't support it today.  This means
-that fsetxattrat_nofollow() needs back-to-back system calls to check for
-the existence of an attribute and then potentially set it.
-
-> >  #if !defined(CONFIG_LINUX)
-> >  
-> >  /*
-> > @@ -64,9 +72,9 @@ static inline uint64_t host_dev_to_dotl_dev(dev_t dev)
-> >  static inline int errno_to_dotl(int err) {
-> >  #if defined(CONFIG_LINUX)
-> >      /* nothing to translate (Linux -> Linux) */
-> > -#elif defined(CONFIG_DARWIN)
-> > +#elif defined(CONFIG_DARWIN) || defined(CONFIG_FREEBSD)
-> >      /*
-> > -     * translation mandatory for macOS hosts
-> > +     * translation mandatory for non-Linux hosts
-> >       *
-> >       * FIXME: Only most important errnos translated here yet, this should be
-> >       * extended to as many errnos being translated as possible in future.
-> > @@ -155,13 +163,13 @@ static inline int openat_file(int dirfd, const char *name, int flags,
-> >  {
-> >      int fd, serrno, ret;
-> >  
-> > -#ifndef CONFIG_DARWIN
-> > +#if !defined(CONFIG_DARWIN) && !defined(CONFIG_FREEBSD)
-> >  again:
-> >  #endif
-> >      fd = qemu_openat(dirfd, name, flags | O_NOFOLLOW | O_NOCTTY | O_NONBLOCK,
-> >                       mode);
-> >      if (fd == -1) {
-> > -#ifndef CONFIG_DARWIN
-> > +#if !defined(CONFIG_DARWIN) && !defined(CONFIG_FREEBSD)
-> >          if (errno == EPERM && (flags & O_NOATIME)) {
-> >              /*
-> >               * The client passed O_NOATIME but we lack permissions to honor it.
-> > @@ -202,6 +210,9 @@ again:
-> >      return fd;
-> >  }
-> >  
-> > +#ifdef CONFIG_FREEBSD
-> > +ssize_t fgetxattr(int dirfd, const char *name, void *value, size_t size);
-> > +#endif
-> >  ssize_t fgetxattrat_nofollow(int dirfd, const char *path, const char *name,
-> >                               void *value, size_t size);
-> >  int fsetxattrat_nofollow(int dirfd, const char *path, const char *name,
-> > diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-> > index acfa7db4e1..bc4a016ee3 100644
-> > --- a/hw/9pfs/9p.c
-> > +++ b/hw/9pfs/9p.c
-> > @@ -136,8 +136,10 @@ static int dotl_to_open_flags(int flags)
-> >          { P9_DOTL_NONBLOCK, O_NONBLOCK } ,
-> >          { P9_DOTL_DSYNC, O_DSYNC },
-> >          { P9_DOTL_FASYNC, FASYNC },
-> > -#ifndef CONFIG_DARWIN
-> > +#if !defined(CONFIG_DARWIN) && !defined(CONFIG_FREEBSD)
-> >          { P9_DOTL_NOATIME, O_NOATIME },
-> > +#endif
-> > +#ifndef CONFIG_DARWIN
-> >          /*
-> >           *  On Darwin, we could map to F_NOCACHE, which is
-> >           *  similar, but doesn't quite have the same
-> > @@ -3658,7 +3660,7 @@ static int v9fs_fill_statfs(V9fsState *s, V9fsPDU *pdu, struct statfs *stbuf)
-> >      f_bavail = stbuf->f_bavail / bsize_factor;
-> >      f_files  = stbuf->f_files;
-> >      f_ffree  = stbuf->f_ffree;
-> > -#ifdef CONFIG_DARWIN
-> > +#if defined(CONFIG_DARWIN) || defined(CONFIG_FREEBSD)
-> >      fsid_val = (unsigned int)stbuf->f_fsid.val[0] |
-> >                 (unsigned long long)stbuf->f_fsid.val[1] << 32;
-> >      f_namelen = NAME_MAX;
-> > @@ -4050,6 +4052,16 @@ out_nofid:
-> >   * Linux guests.
-> >   */
-> >  #define P9_XATTR_SIZE_MAX 65536
-> > +#elif defined(CONFIG_FREEBSD)
-> > +/*
-> > + * FreeBSD similarly doesn't define a maximum xattr size, the limit is
-> > + * filesystem dependent.  On UFS filesystems it's 2 times the filesystem block
-> > + * size, typically 32KB.  On ZFS it depends on the value of the xattr property;
-> > + * with the default value there is no limit, and with xattr=sa it is 64KB.
-> > + *
-> > + * So, a limit of 64k seems reasonable here too.
-> > + */
-> > +#define P9_XATTR_SIZE_MAX 65536
-> 
-> Yeah, even though the limit with UFS being lower, 64k should be fine. This
-> macro is just to prevent a guest to shoot down the QEMU process by requesting
-> a ridiculous large xattr (RAM) buffer that would exceed host's RAM quota for
-> the process. If the underlying fs supports less, its syscall would still
-> return an appropriate error which is eventually returned to 9p client.
-> 
-> /Christian
-> 
-> >  #else
-> >  #error Missing definition for P9_XATTR_SIZE_MAX for this host system
-> >  #endif
-> > diff --git a/hw/9pfs/meson.build b/hw/9pfs/meson.build
-> > index d35d4f44ff..7f4d6e3a45 100644
-> > --- a/hw/9pfs/meson.build
-> > +++ b/hw/9pfs/meson.build
-> > @@ -15,6 +15,8 @@ fs_ss.add(files(
-> >  ))
-> >  if host_os == 'darwin'
-> >    fs_ss.add(files('9p-util-darwin.c'))
-> > +elif host_os == 'freebsd'
-> > +  fs_ss.add(files('9p-util-freebsd.c'))
-> >  elif host_os == 'linux'
-> >    fs_ss.add(files('9p-util-linux.c'))
-> >  endif
-> > diff --git a/include/qemu/xattr.h b/include/qemu/xattr.h
-> > index b08a934acc..224ba1276e 100644
-> > --- a/include/qemu/xattr.h
-> > +++ b/include/qemu/xattr.h
-> > @@ -26,7 +26,11 @@
-> >  #    define ENOATTR ENODATA
-> >  #  endif
-> >  #  ifndef CONFIG_WIN32
-> > -#    include <sys/xattr.h>
-> > +#    ifdef CONFIG_FREEBSD
-> > +#      include <sys/extattr.h>
-> > +#    else
-> > +#      include <sys/xattr.h>
-> > +#    endif
-> >  #  endif
-> >  #endif
-> >  
-> > diff --git a/meson.build b/meson.build
-> > index c2bc3eeedc..4c681bd2e8 100644
-> > --- a/meson.build
-> > +++ b/meson.build
-> > @@ -2382,11 +2382,11 @@ dbus_display = get_option('dbus_display') \
-> >    .allowed()
-> >  
-> >  have_virtfs = get_option('virtfs') \
-> > -    .require(host_os == 'linux' or host_os == 'darwin',
-> > -             error_message: 'virtio-9p (virtfs) requires Linux or macOS') \
-> > -    .require(host_os == 'linux' or cc.has_function('pthread_fchdir_np'),
-> > +    .require(host_os == 'linux' or host_os == 'darwin' or host_os == 'freebsd',
-> > +             error_message: 'virtio-9p (virtfs) requires Linux or macOS or FreeBSD') \
-> > +    .require(host_os != 'darwin' or cc.has_function('pthread_fchdir_np'),
-> >               error_message: 'virtio-9p (virtfs) on macOS requires the presence of pthread_fchdir_np') \
-> > -    .require(host_os == 'darwin' or libattr.found(),
-> > +    .require(host_os != 'linux' or libattr.found(),
-> >               error_message: 'virtio-9p (virtfs) on Linux requires libattr-devel') \
-> >      .disable_auto_if(not have_tools and not have_system) \
-> >      .allowed()
-> > 
-> 
-> 
 
