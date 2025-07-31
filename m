@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA5BB17307
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 16:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBDABB1733F
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 16:27:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhU2I-0000PU-Nn; Thu, 31 Jul 2025 10:13:34 -0400
+	id 1uhUDj-00057l-NO; Thu, 31 Jul 2025 10:25:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1uhTIB-0003MH-Cu
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 09:25:57 -0400
+ id 1uhTI6-00031t-Ps
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 09:25:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1uhTI5-0000Rp-UX
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 09:25:54 -0400
+ id 1uhTI3-0000Rc-Hf
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 09:25:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753968346;
+ s=mimecast20190719; t=1753968345;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ie03UL/e0zjWpu2wXMCsfga71bFRAfQb7J1DQVdmwYw=;
- b=WE01v8HIEiYk91Ie44CkivP89tfU9AaKVBFRM3xhvCZrR61WR1QWbXmUmbEn/F2os4GpyF
- MmkrDa689H72c7pL3tHI7iIzoKGBZ8WAimSdLJolMe+y5boWjYIFb8QsYuVxG8mgvW0tix
- sj/KT2VFtTBVqgvfixeNRUgoCvfcGLA=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2OrRpnTKSAzXf76/A6MXcginXwGhQ0toXTEhBlZCIns=;
+ b=I9znyoVqXIrx33WyzFizVxGoN21d7QNEmp6B/UmXGgaJxhekmhAX0GvlodpNohngtN2adI
+ 3DeG/V5Vi6voTjYlftdj3Kryh3zGD6qyn2KKQc2zDXclmW1mPwNOXyfv/cvxoT/m3EdM55
+ /YEWVBHAorjKR3nY+NFkekauX0/I7Hw=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-xFxDXk7eNCqxAXbAKLDIZQ-1; Thu, 31 Jul 2025 09:25:45 -0400
-X-MC-Unique: xFxDXk7eNCqxAXbAKLDIZQ-1
-X-Mimecast-MFC-AGG-ID: xFxDXk7eNCqxAXbAKLDIZQ_1753968344
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-b42249503c4so1192521a12.0
+ us-mta-599-HIBBmfgRMIW1QGmaMtZpkg-1; Thu, 31 Jul 2025 09:25:44 -0400
+X-MC-Unique: HIBBmfgRMIW1QGmaMtZpkg-1
+X-Mimecast-MFC-AGG-ID: HIBBmfgRMIW1QGmaMtZpkg_1753968344
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-31f65d519d3so726033a91.2
  for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 06:25:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753968344; x=1754573144;
+ d=1e100.net; s=20230601; t=1753968343; x=1754573143;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ie03UL/e0zjWpu2wXMCsfga71bFRAfQb7J1DQVdmwYw=;
- b=TWk6akJBcCBJ5h5PqWlyY+NC7KLs+cqPK1q6Pdpw6l7s69Kzdd0vlPO/AaGtw1Z/vj
- TPVYGNmnZuUT6SEHkE2EVPg2u7tyFatooJ9xuSTO0sHfRPNnbQoaKo3KXFJcrtI4yyvi
- leD3ZGKr18aCTKvGvmiNKO0x2wATbEsqmi0v1/Xsu90cFtD1JOBaaaSx20qGD/Fb/k4O
- R/nM42B8kv4Drvcs9K+VmG/bMTPT4Df4TW5l/w+0vVr7ShmftJajk+F9UsJHgCYn4OsG
- XMMHRY4vv2j/3K/25bycO8vrvxEnhqEk2RF1y05pU4DlLvVU2EYUI3EvcpduyJXRZtTR
- DX/Q==
-X-Gm-Message-State: AOJu0YxROaztSkXXDnacJqws0AgwTPyciFiqz2DPGKRU6TlEg9OigdwQ
- rnx0g+PRNgj6f2baR6hau7+8+GFsm31tiszWvukkkpu5gcydX1BU6agZ+s3jXX0zWOrfWT9c1RA
- PWXdrjcn/toaGVzozOEsv7YYPxkkoCfRpihTLWZ+Av1mnlefzzmV9+lRSThl/4/gkJtHn5B8IUs
- vWzDcfNUqcvW2PYIXI6mvfmgstlJO7iC4iFa3k1s0GGg==
-X-Gm-Gg: ASbGncvwNzg2QZFRRxCasaen/7iHbU8H/U/QHX7FFjlItmZVCwYJMztP+9g723Vkk28
- FqTDgTIeUAfwFxU9WvVhRJbsJrPMiL2LhmmJGINGnr2yxaayfs5azDM2K++xQWCG3oYSXIhTzy4
- Siy7E5up8aaFEptCIVoZ1GuI5Mhl4Yb95DkWkbfplYR8SIUeAedLcF0+CfWc/cRDERLfGrVa1tX
- SGI6AjaDpvMCx9AQCOTAT6Jr2YMxbqeb/u+WcqfydOhEDz8MwUdTZZCprkfPk5YuceyMe1Srkc+
- fBauOfiWwV1DVLf3nEzuCkJkoH02gI1JudJ3GyQTpDBoFvNSKmb2
-X-Received: by 2002:a17:90b:1e08:b0:312:dbcd:b94f with SMTP id
- 98e67ed59e1d1-320da5db33bmr3026332a91.11.1753968343463; 
+ bh=2OrRpnTKSAzXf76/A6MXcginXwGhQ0toXTEhBlZCIns=;
+ b=aa0skoeR5eplOKtyyJ4SnP6M8unP/Si3Vpsqzesaw3lElMCiTlIvUbE0QkZkaI8KFA
+ 9uEXsxu/qCoKmLGNyEuUFjOkoguSpUMceQZt96E6o3ZHQskg3gj1LSNF0zgyjtZFFVWD
+ oPZs3UefvhxdOIUcH5G5KCYlBb8dltZgVXHrUJn0kiaoaoU6w8sm6iml09yQODpWzpWG
+ 3e1H6UTUrrnzLj8V+uGVYKz16O4X1Z4RZSfQ/KBhDZ4/Ugdy2O6+452QI+UEeBgpNZH2
+ 6PPqOM3ujS3QLIO3YpcMEPqIP3jurf1wGwSf0WHtXbqUb7BCiuwnT+VsseZ0Th0fA51j
+ bccQ==
+X-Gm-Message-State: AOJu0YyzxLWbvoygTp0Jr+nLV9LEeo1lhxHynuXp1P3zsVHlH5SMGREJ
+ HbFSKKoIkC9v7jSMJ1qokukE0Sq4DRUH9xxJgYAVTDJjZFuWAMZFTu4eMJ94eYqYmbpvbuHKEgh
+ WjvnC77XA8idv4DZCgyld+FXb4OIy/oYHWo90wddQc1GkRMj6mUA+62muZMmrApjA/ilewcVGdY
+ Uc8C+NJz8JJJ3NY7XHrkeGY5R2Vt6Ff1GY3f+UnEq+Lw==
+X-Gm-Gg: ASbGncvtKftzFHP3AWypMyVjZwlBw6iZ9itKxLVrRNW5KHngDXAz6GlMi+jJk1TrUdY
+ 8jf8oofb7IrSQkR88/UNADfpN+dUaiasUit6kKFuD9l3kGqTv9knzvcBBWNRw8dJTCr7lftS2p6
+ MIOSmwwHq2bzViphaiQ9ZZrERnFnLax4m+IEwDG/eM04w7Vk89VMmFV18dogQuRiP2K6G76nkxt
+ DqsL8mDoV/NeYmrpKcH9jCOpZwDnirZD7+VnAf5yizWtZVCHXzS/fOVtLrhxZppER66ikMP6qLE
+ Ig/dM7+jrCLW02uLZMciU49tBFckqqvVk30Qharbtvcks1yn7Vme
+X-Received: by 2002:a17:90b:2b4c:b0:312:e9d:3ffa with SMTP id
+ 98e67ed59e1d1-31f5de95105mr9782283a91.31.1753968343159; 
  Thu, 31 Jul 2025 06:25:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFs2qA7ABmrPDlwEuQddok3IMT6nI/WDNfoR5Z1lOvMTTx++entz+1uUqebihTBWx0QRWDazg==
-X-Received: by 2002:a17:90b:1e08:b0:312:dbcd:b94f with SMTP id
- 98e67ed59e1d1-320da5db33bmr3025736a91.11.1753968333496; 
- Thu, 31 Jul 2025 06:25:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyjxGDiHFSfuB+nPBAd3w21H/IaYZYPlJ/7woa/uq8nbwIo3cP+cY/SCIwIVcr33aD6nd+pA==
+X-Received: by 2002:a17:90b:2b4c:b0:312:e9d:3ffa with SMTP id
+ 98e67ed59e1d1-31f5de95105mr9782213a91.31.1753968342644; 
+ Thu, 31 Jul 2025 06:25:42 -0700 (PDT)
 Received: from armenon-kvm.bengluru.csb ([49.36.99.139])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3209a84d115sm2007034a91.36.2025.07.31.06.25.24
+ 98e67ed59e1d1-3209a84d115sm2007034a91.36.2025.07.31.06.25.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Jul 2025 06:25:32 -0700 (PDT)
+ Thu, 31 Jul 2025 06:25:42 -0700 (PDT)
 From: Arun Menon <armenon@redhat.com>
-Date: Thu, 31 Jul 2025 18:51:03 +0530
-Subject: [PATCH v8 23/27] migration: Propagate last encountered error in
- vmstate_save_state_v() function
+Date: Thu, 31 Jul 2025 18:51:04 +0530
+Subject: [PATCH v8 24/27] migration: Refactor vmstate_save_state_v() function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250731-propagate_tpm_error-v8-23-28fd82fdfdb2@redhat.com>
+Message-Id: <20250731-propagate_tpm_error-v8-24-28fd82fdfdb2@redhat.com>
 References: <20250731-propagate_tpm_error-v8-0-28fd82fdfdb2@redhat.com>
 In-Reply-To: <20250731-propagate_tpm_error-v8-0-28fd82fdfdb2@redhat.com>
 To: qemu-devel@nongnu.org
@@ -105,12 +104,12 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
  Matthew Rosato <mjrosato@linux.ibm.com>, Arun Menon <armenon@redhat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2534; i=armenon@redhat.com;
- h=from:subject:message-id; bh=oA7/haUdk80U620L61W03FFxXXZTo082B5XNVpXtEvg=;
- b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ0Z37nMlyaQM25cZ19e57TT8+lo0NeR8/t6VGyaveDyNQ
- 04ryyqxo5SFQYyLQVZMkaXha4BsU0BhRKTty+swc1iZQIYwcHEKwERuHGT4K6hybW/Oi0BZxWZ+
- 1e4v67I+bi4PjZy+/wHPRYtZDqlPIhgZnm2+vyRRWcxjk5DbfhP7O0/d6x2ehASJlc/a22lwPuo
- PIwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5112; i=armenon@redhat.com;
+ h=from:subject:message-id; bh=jVkG3CMlD4VGW1wmUquk34ldSco5mD63TT/CrbF8g5g=;
+ b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ0Z37vM1Oebvzt33dprEq7qx300scwvHFbOT3zXFVNawy
+ 4owpR3qKGVhEONikBVTZGn4GiDbFFAYEWn78jrMHFYmkCEMXJwCMBGefkaGhX+PeR5k3yFTZ1/E
+ wbE9IKFRbcbUsyXigYK77CyEXzi/ZGRYl5O3Zl3KepWJMrIyh21s7LJO2Nv+W7pxrugmzfDsrCo
+ 2AA==
 X-Developer-Key: i=armenon@redhat.com; a=openpgp;
  fpr=80F5501D82507158593DE9D76A7A2538D90F328E
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armenon@redhat.com;
@@ -138,64 +137,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently post_save hook is called without checking its return. If post_save
-fails, we need to set an error and propagate it to the caller.
+The original vmstate_save_state_v() function combined multiple
+responsibilities like calling pre-save hooks, saving the state of
+the device, handling subsection saves and invoking post-save hooks.
+This led to a lengthy and less readable function.
 
-Since post_save hook is called regardless of whether there is a preceeding error,
-it is possible that we have 2 distict errors, one from the preceeding function
-call, and the other from the post_save call.
-
-Return the latest error to the caller.
+To address this, introduce wrapper functions for pre-save,
+post-save and the device-state save functionalities.
 
 Signed-off-by: Arun Menon <armenon@redhat.com>
 ---
- migration/vmstate.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ migration/vmstate.c | 89 ++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 64 insertions(+), 25 deletions(-)
 
 diff --git a/migration/vmstate.c b/migration/vmstate.c
-index b725202bfcf69c3c81338f1f5479aa2ddc5db86f..25a819da069b982d4043f287b4562ea402d9eb0e 100644
+index 25a819da069b982d4043f287b4562ea402d9eb0e..cec1ee2f30d6f0270ee1fd30d29f6f0f5d20bdb0 100644
 --- a/migration/vmstate.c
 +++ b/migration/vmstate.c
-@@ -418,6 +418,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                          void *opaque, JSONWriter *vmdesc, int version_id, Error **errp)
+@@ -414,23 +414,43 @@ int vmstate_save_state_with_err(QEMUFile *f, const VMStateDescription *vmsd,
+     return vmstate_save_state_v(f, vmsd, opaque, vmdesc_id, vmsd->version_id, errp);
+ }
+ 
+-int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+-                         void *opaque, JSONWriter *vmdesc, int version_id, Error **errp)
++static int pre_save_dispatch(const VMStateDescription *vmsd, void *opaque,
++                             Error **errp)
  {
      int ret = 0;
-+    int ps_ret = 0;
-     const VMStateField *field = vmsd->fields;
- 
-     trace_vmstate_save_state_top(vmsd->name);
-@@ -533,7 +534,14 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                     error_setg(errp, "Save of field %s/%s failed",
-                                 vmsd->name, field->name);
-                     if (vmsd->post_save) {
--                        vmsd->post_save(opaque);
-+                        ps_ret = vmsd->post_save(opaque);
-+                        if (ps_ret) {
-+                            ret = ps_ret;
-+                            error_free_or_abort(errp);
-+                            error_setg(errp,
-+                                       "post-save for %s failed, ret: '%d'",
-+                                       vmsd->name, ret);
-+                        }
-                     }
-                     return ret;
-                 }
-@@ -561,10 +569,12 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-     ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
- 
-     if (vmsd->post_save) {
--        int ps_ret = vmsd->post_save(opaque);
--        if (!ret && ps_ret) {
-+        ps_ret = vmsd->post_save(opaque);
-+        if (ps_ret) {
-             ret = ps_ret;
--            error_setg(errp, "post-save failed: %s", vmsd->name);
-+            error_free_or_abort(errp);
-+            error_setg(errp, "post-save for %s failed, ret: '%d'",
+-    int ps_ret = 0;
+-    const VMStateField *field = vmsd->fields;
+-
+-    trace_vmstate_save_state_top(vmsd->name);
+-
+     if (vmsd->pre_save) {
+         ret = vmsd->pre_save(opaque);
+         trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
+         if (ret) {
+-            error_setg(errp, "pre-save failed: %s", vmsd->name);
+-            return ret;
++            error_setg(errp, "pre-save for %s failed, ret: '%d'",
 +                       vmsd->name, ret);
          }
      }
++    return ret;
++}
++
++static int post_save_dispatch(const VMStateDescription *vmsd, void *opaque,
++                              Error **errp)
++{
++    int ret = 0;
++    if (vmsd->post_save) {
++        ret = vmsd->post_save(opaque);
++        error_setg(errp, "post-save for %s failed, ret: '%d'",
++                   vmsd->name, ret);
++    }
++    return ret;
++}
++
++static int vmstate_save_dispatch(QEMUFile *f,
++                                 const VMStateDescription *vmsd,
++                                 void *opaque, JSONWriter *vmdesc,
++                                 int version_id, Error **errp)
++{
++    ERRP_GUARD();
++    int ret = 0;
++    int ps_ret = 0;
++    Error *local_err = NULL;
++    const VMStateField *field = vmsd->fields;
+ 
+     if (vmdesc) {
+         json_writer_str(vmdesc, "vmsd_name", vmsd->name);
+@@ -533,15 +553,11 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+                 if (ret) {
+                     error_setg(errp, "Save of field %s/%s failed",
+                                 vmsd->name, field->name);
+-                    if (vmsd->post_save) {
+-                        ps_ret = vmsd->post_save(opaque);
+-                        if (ps_ret) {
+-                            ret = ps_ret;
+-                            error_free_or_abort(errp);
+-                            error_setg(errp,
+-                                       "post-save for %s failed, ret: '%d'",
+-                                       vmsd->name, ret);
+-                        }
++                    ps_ret = post_save_dispatch(vmsd, opaque, &local_err);
++                    if (ps_ret) {
++                        ret = ps_ret;
++                        error_free_or_abort(errp);
++                        error_propagate(errp, local_err);
+                     }
+                     return ret;
+                 }
+@@ -565,17 +581,40 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+     if (vmdesc) {
+         json_writer_end_array(vmdesc);
+     }
++    return ret;
++}
+ 
+-    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
+ 
+-    if (vmsd->post_save) {
+-        ps_ret = vmsd->post_save(opaque);
+-        if (ps_ret) {
+-            ret = ps_ret;
++int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
++                         void *opaque, JSONWriter *vmdesc, int version_id,
++                         Error **errp)
++{
++    ERRP_GUARD();
++    int ret = 0;
++    Error *local_err = NULL;
++    int ps_ret = 0;
++
++    trace_vmstate_save_state_top(vmsd->name);
++
++    ret = pre_save_dispatch(vmsd, opaque, errp);
++    if (ret) {
++        return ret;
++    }
++
++    ret = vmstate_save_dispatch(f, vmsd, opaque, vmdesc,
++                                version_id, errp);
++    if (ret) {
++        return ret;
++    }
++
++    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
++    ps_ret = post_save_dispatch(vmsd, opaque, &local_err);
++    if (ps_ret) {
++        if (ret) {
+             error_free_or_abort(errp);
+-            error_setg(errp, "post-save for %s failed, ret: '%d'",
+-                       vmsd->name, ret);
+         }
++        ret = ps_ret;
++        error_propagate(errp, local_err);
+     }
      return ret;
+ }
 
 -- 
 2.50.0
