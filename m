@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74F0B178DB
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 00:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6882AB178DD
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 00:03:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhbMR-0000kC-NE; Thu, 31 Jul 2025 18:02:52 -0400
+	id 1uhbN5-0001KC-EZ; Thu, 31 Jul 2025 18:03:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhbDV-0000Ve-Sh
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:53:38 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1uhbEP-0002Yv-Q4
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:54:33 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhbDU-0003Ny-6L
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:53:37 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-31f28d0495fso1533030a91.1
- for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 14:53:31 -0700 (PDT)
+ id 1uhbEO-0003TS-0L
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:54:33 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-24031a3e05cso11639345ad.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 14:54:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753998810; x=1754603610; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753998870; x=1754603670; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=DHXRyKMnzxg/6ggWhbwy4YLfYFbHnA7EuTegUc83CZA=;
- b=V2J3qZdLZVwLgTScZN/lR8Qxmq1Ueo5ZZnVliydSqjLLX/Zn4WP5Tki3XDR5p14/M3
- ko/NgjV689npEd48qWs6dEnm5CJ1Cmfrb0hAbtPR3GAE3fLOf66by+jxN7hNEGqm3s4f
- 10/FbNWb160xk/5tZhO5HlWg4DxJ36i3Pss3X5iUZw1KQQxnESXfAYjnBrLVKHTCIrEk
- H9ON12KaJACTEXSRElJUaiYqPm16e2bbsa8fVzKHrNZX3xE/yEJLRlF1IZph3rRYf/Nz
- R5gjXo6MKkORARyYe15Tc0lO6ARvGI/7MqI8B2oSgQnqy9qJzAP66kSePfVbXYLCastx
- sqiA==
+ bh=hRKZoqz8YUdjNU1GmsXYmXPiJbwUm3MiMGA9p34WREs=;
+ b=boc3vwnVRcvHUD/bPJ9aSt1Wo1zzy3e9V1tDVQQAT+ypaE82xp3wbtSB1MylAkD9ZN
+ Xz/tG0LOGK6QrxDu2IP5ajCLYUXAhaxTG+wFjm60Ah6ZK3VBsRHY1pNY6mxP3DyXda3v
+ brLM2PcxUYnL+1sivhogT9JQfOzjPgo97J4EUB71CUG4ve6RxB5QQLUiogrp0FSSZdC+
+ GRDYMW0o+R5bTXQ3TdQymnnIrQCmAdTqy40nQSJEV520J1bJeWq3p0fqc87qjOaQhg2d
+ 9eGPZZ6CAwbBtSsOWgG4bd11kpAyAAmXJojQx0YInE0sUsMrfzMxv5aRfcNBAOVadh24
+ 5Nsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753998810; x=1754603610;
+ d=1e100.net; s=20230601; t=1753998870; x=1754603670;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DHXRyKMnzxg/6ggWhbwy4YLfYFbHnA7EuTegUc83CZA=;
- b=E7OqKQNlVd5SnB+ZgjgbdLfPdxwV9uKKsAHcryNJU8CRxFef3ILuQFPRvBVndkAp0r
- zWNTIU8XIMNNHz0boiQA/ITgr21rGIGVKCKg1xPHrPveuS55aiLrBYjBvjxlB8rPUBtk
- /zJGkMBBq/7B375bkl/vJ2kSzibvBS9SUvnNf+AKyxf+6p0wQU6/VL0F2mf/2OuqmeCj
- GQQb1uphxhZ4TGmW42nTCr9l4XVBX8KsQ8Z4V04XQwFMQXfNDWbdNwM42b76U0vT3npA
- kTfMdNP1ANAOKXCVBlvytgd3nuOltWVRkOcN+/LeDJPyNUP7QNBLw2IrlUh+g+uwfqpS
- NnWg==
+ bh=hRKZoqz8YUdjNU1GmsXYmXPiJbwUm3MiMGA9p34WREs=;
+ b=IBl8T7s0LFwttFzqd0phT7mLfyk84e7C/BFQx96JQLCqDFWEHMLdC7ws0QT/Iw+BEA
+ EIDBzj5mYGB71GlFV/Fl/ocin4VVG2kvedsl+u4ER+cGhCWbXGdUVt9T0djDsiB40uaR
+ cEfcXGhFmskzQ8XDmE9VjVFlpllBrxRTBUAOrTDLM5QoJ/ioOkcgfrbPrapLz5paahxB
+ Nhu9zenPB2IHBpuq9hasGSSuBbN5C59t5PeATeJzhH+V0YUYPPElpNmPt+4Pa2TTasDW
+ VjDS5eUFaQHQlZjBJwEPdAWo7muNktN8TfzoBhPoM8qjpu7p30LCk05Bc25ElY/Ie4xe
+ fqUg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUkuPeP2e9uAMnDArZg+Awzkd3kRSmWMNKD+V6gqENrur2AClw0ECVkNCW3AeuWKp/TW7FQr7MNRHle@nongnu.org
-X-Gm-Message-State: AOJu0YwPSGaKTQlOI5XmlefvM/4JVbu8Po+BsgA6PNkVxAlhKbTkOPhP
- ZmDKtqOmSAUdOA+z/pXDJW73MZShYD8jXnE75y/tLGtz0r3cLugaCfq9FVSCKzua7g7q3OCyJXq
- zcERa
-X-Gm-Gg: ASbGncuU7STYMcTAkripbNaxrYEoQLAPnm+o/C5awRWdJwts1gelYovw8qwh/FBBtkq
- YlGhANI0WifMKH2CknS/otyI20AhO0qI9eDZum0iF3QYofsz5S2gvPRpxdn3YHbGcRGFxrswJgq
- h4B9H54YVZRgYpGU4Bi9zrBtmSRKJAgdcL23zw0iyww8cbiNkpzhR+WXQStpqyj5YDnx1G1b691
- EwWC/ZqAzH5ai5IyKr6sUq0SbgplurSeWupUJzmD757mZd4HYUuL4AfccR6ihoBoF2gN6YYJ1r8
- aRyeNS3BCnP6L8TI59F5PQjc+7fcZaOXO7iFWR85tgWo06QvMMTEix7OwoqGZiqXTEXO+tbfygv
- MSwNKmxlSww6V1dQ0mNOOEoRCPCQ899UPbbg=
-X-Google-Smtp-Source: AGHT+IHSf110swpQwpS5WzSpWbG7QFH3WHiWTmnyuSNRf8/OnqRfzvo5+FUIFrfdnVcH3dp1VUCQtA==
-X-Received: by 2002:a17:90a:d604:b0:31f:3029:8854 with SMTP id
- 98e67ed59e1d1-31f5de5561dmr13010042a91.27.1753998810353; 
- Thu, 31 Jul 2025 14:53:30 -0700 (PDT)
+ AJvYcCWl6vVYmlL+tdB52Dkyd9sjChg9dGaqdOCz/NBYuxhJLFH7Mft1vtXfvNVlV/KXPldkoVTD2ZAXz0Lg@nongnu.org
+X-Gm-Message-State: AOJu0YyXVRou581EXmxbntvFRlvk5wb6Y6ZrU5uWuMBGyLcWi5W+k81y
+ 8tKvHpJk2kUOS8ePuZIlc9b1QTh1E4k7xQ3A0l0ecpFnkyLgdWUtYko30ErsIsJ9aT0=
+X-Gm-Gg: ASbGncszhm7U1tL/4IXH6YyosbsbrIsbTdsprpVg1K0W0SlBOmKjOsblv4d/hU88uoi
+ PRtMuh40rjFhJ42skLs3IzYSDQpxH7Q8sDSpipjhDHkLDUfrvNNPocpLB9NRjXWvFPsC0NM0eBH
+ QtVSC2kqJcS+40gEjdBEu3S5n4H/R4Z56Ewf2duIfnKzkfVBpgYnp/m1eOIaAKbo2kk9rYAVPcr
+ Pbk7n0fOzTj6bVZhLKOk4k3AjJ307+UhoEiHTReRafliocMeTXuysJSbOqlONltP8H7hS6utLnL
+ IUGD4r3dCdwbzs/41NnIyaAo4vj//fliGkGXOHoLjJzAMkTClldYLwcG3gSqKjE6t+Rxtxau8OH
+ a2KaNRz/1P+I7XH1CTvRFNwtah167a4dtcVY=
+X-Google-Smtp-Source: AGHT+IFJe7dsBOyPmrCuFVuMtqHrGDWLj6r8RrIe82ayEhIRx2n9VAEen7o+xqk3BQbSkkx1/EqsrA==
+X-Received: by 2002:a17:902:d484:b0:234:1e11:95a3 with SMTP id
+ d9443c01a7336-24200b07794mr70348815ad.13.1753998870368; 
+ Thu, 31 Jul 2025 14:54:30 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-320806818b0sm2848350a91.25.2025.07.31.14.53.29
+ 98e67ed59e1d1-31f63dc1880sm5578712a91.13.2025.07.31.14.54.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Jul 2025 14:53:29 -0700 (PDT)
-Message-ID: <da506bc4-d07b-455b-8acf-d96b4fdca6e6@linaro.org>
-Date: Thu, 31 Jul 2025 14:53:28 -0700
+ Thu, 31 Jul 2025 14:54:29 -0700 (PDT)
+Message-ID: <df8e1f72-a8fc-47ac-aa48-5cc78de041e1@linaro.org>
+Date: Thu, 31 Jul 2025 14:54:29 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 71/82] linux-user/aarch64: Implement prctls for GCS
+Subject: Re: [PATCH 72/82] linux-user/aarch64: Allocate new gcs stack on clone
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
 References: <20250727080254.83840-1-richard.henderson@linaro.org>
- <20250727080254.83840-72-richard.henderson@linaro.org>
+ <20250727080254.83840-73-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250727080254.83840-72-richard.henderson@linaro.org>
+In-Reply-To: <20250727080254.83840-73-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,17 +103,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/27/25 1:02 AM, Richard Henderson wrote:
-> This is PR_GET_SHADOW_STACK_STATUS, PR_SET_SHADOW_STACK_STATUS,
-> and PR_LOCK_SHADOW_STACK_STATUS.
+> Allocate the new stack early, so that error reporting need
+> not clean up other objects.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   linux-user/aarch64/gcs-internal.h | 38 ++++++++++++
->   linux-user/aarch64/target_prctl.h | 96 +++++++++++++++++++++++++++++++
->   linux-user/qemu.h                 |  5 ++
->   linux-user/syscall.c              | 29 ++++++++++
->   4 files changed, 168 insertions(+)
->   create mode 100644 linux-user/aarch64/gcs-internal.h
+>   linux-user/syscall.c | 20 ++++++++++++++++++++
+>   1 file changed, 20 insertions(+)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
