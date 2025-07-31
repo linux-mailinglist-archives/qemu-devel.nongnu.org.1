@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEF6B17359
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 16:41:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75353B1736D
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 16:50:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhURW-0005py-20; Thu, 31 Jul 2025 10:39:38 -0400
+	id 1uhUbH-00026N-CK; Thu, 31 Jul 2025 10:49:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhTTP-0003GH-5K
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 09:37:31 -0400
-Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
+ id 1uhTZS-0007CS-4F
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 09:43:46 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhTTN-0003RY-4Y
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 09:37:30 -0400
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-71a44abb9f2so10274487b3.3
- for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 06:37:27 -0700 (PDT)
+ id 1uhTZP-0004OP-DL
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 09:43:45 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3b77673fd78so319243f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 06:43:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753969046; x=1754573846; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2Oi7PkPZ+tDYah0ej3ajtphfDogqIjO/uBiU3ZIiFvw=;
- b=L2+dVNUGKlllp7j3VJAynG+LyPFFRRfNg1CLdc6q4tM4p62SpZWscjYdGCQgg/ulFB
- tv/XDM8lp9AmXk0fNb3vfSIfGpChrGa/VuTX11ssT5bes3DxVYZTSH59Xyi0G94e1qRA
- QKwzvBfXlexifklXzkflGBOi1LgDQ0GwLMwfdALPzEyxrl4F6SzO5lIzt7krI5RjX3cl
- 1aIWgmAzmhnFh9zpH6s5H28GQTMZYdgXoW620BdKL/L+6zWTqhhhZTpQtgKJvGUthA5K
- xlhim6au0dyADbXvfm9iqCtH2p+utv5yAVHT/CI7o5O37BytFRcStGsXLvVVW94s0WRg
- sJwg==
+ d=linaro.org; s=google; t=1753969421; x=1754574221; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gC/sYbZmuKXxQePBVZ1P3dDnE7e4TeVo5Iiow384Kq4=;
+ b=Q6vqknAYGjAF0LJPVi7uGkiSubkoaDLwvEOnLpO+NBw+o/sCA6iYPQwuSCk0puXc4b
+ 8YUaqsQOZelQ/rlH1iKrj3l0NgMYcbDUax7PPxkULcrSrfq13IRr5CeJwpmn2794BHnn
+ IRPFfsegJYcxuWnYf0o9thV7DJ0BsX2nfBeEOgx5Of8v/OB8yTZBro3Gv/v0wtGtyyAq
+ LJ4RfOgjSkpuKbH9JdaUuGxOQMRhBiJvzyL1IA8oJ8y6AMDZv//13KVZiqcQQ2PUbmNK
+ A+N0S1wSyPJj012R3fON2XPzOp8JIX+AHT20cWf3LNZ4SBKp5qt09WLQmDrEv5gCcL8t
+ 2snw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753969046; x=1754573846;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1753969421; x=1754574221;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=2Oi7PkPZ+tDYah0ej3ajtphfDogqIjO/uBiU3ZIiFvw=;
- b=DMheASMSPsr1VWe/jPMJ6mJ5Fwi5Ka6lj1OTvFi2AvQYohhNDEabIWVDmNvBXkG2aK
- +NVDxvh4mmbIZ5QLsuiGxJl6qAcZy+r6J8YpopNbZEcSz8OeeTcJOEKZKXYaiork/uUu
- HIMIs9bhBlCXuKq19xvXkqztcAjov34Y7HC5z/n+FoS33KCL0Vp+H6hy93SDxA2bY8EU
- U8bLKoW/1y00A/CK6e3P8/aznpuKYzF5He66PuFp3AP6LaIKimWx7poIkJXRn6iGzBhk
- of1+lsskQDqc9fxLBMZfxahJHi+xDw9Pzxo/HYK4NgT0VZUFv8Ib8pNRajIS5YCl7uMC
- 9yVA==
-X-Gm-Message-State: AOJu0Yx+sZDkk5dyiPUNK+iq7CjlxfL4ucVs5RZXccvMwXRMOsc09QDk
- YkRDdQXLFt5XDwgbCmxU670EUYXTsOyrNdz6XVBsB9WHkH2/hz3MDHOhJbkZBv+C0mzqNzey5v9
- mzuMGQ2zZmr2g/shVgw6pWzRF4S+UUgLDqJkFNrSzPg==
-X-Gm-Gg: ASbGnctB0Couv5SbxU2Ruz2S+TGAtCpHOwT0Ne52j9wDmR4vAHE0cXff/aq0/S2gMv5
- CCBZZtvtuQv2ig8/YHHvP+raAd+PsGahLQHvz9f7COsX0hugcSu1Ae1ZGmYHExwzfzpAcfFNv0o
- 8X9E9/46r7mKH/XKF+AgtiGagQHHb7qvUm/2G4l3oXbD3nlCXH38zftKFzEXVPzrb1T5gKg17q8
- 9jLAXgi
-X-Google-Smtp-Source: AGHT+IHQd1t5rAkF95s6dSCpjc4y4Y76sx97lO/v3/4hy49nnVAX/GduTaixKfxmV4WWELGl5dCUxujXgMx3HrMxGJI=
-X-Received: by 2002:a05:690c:650f:b0:6fb:1c5a:80ea with SMTP id
- 00721157ae682-71a466bf02cmr100615197b3.32.1753969046179; Thu, 31 Jul 2025
- 06:37:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250730205245.2118-1-farosas@suse.de>
- <20250730205245.2118-3-farosas@suse.de>
-In-Reply-To: <20250730205245.2118-3-farosas@suse.de>
+ bh=gC/sYbZmuKXxQePBVZ1P3dDnE7e4TeVo5Iiow384Kq4=;
+ b=CXk5VQ5TbtVUtfg7/awRUOszNZu6M9IKF8EAH8HNldbsIPGztbjFpxGAe1Ll0QXTYx
+ Ki5D1thQyN/xKARZJLwKnk1Yf1wMxNUnX+YLvT7gX/HQYrKGyDH7c5vMwqNHxFhUbYuQ
+ jPwqmlv9ung0CWwoH+92LZIlbEF5BuKTLCbWF7kxXOivEt/ibey6Ubxwzd/2ZUl1lXEg
+ UCNly3jZPnNV9XV2g4wCurzaTRUNDRwQyMhsuPAu011P3Uazv02C+REXEuRSo0KfE8S8
+ SSBjctAZDU014/SuV2mpIRrKn/9HK8TeM/8IdECKkJfuQmK9+mT5+LuWy9FbQ91MN3s+
+ LRLA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXNRRUszo7GIfD/S/7y6ZbCRMp0gT+bMi4fdXoRogZH2e2rzoP78lmZL6xCn0XKFayJvOYmJITU3bxh@nongnu.org
+X-Gm-Message-State: AOJu0Yycdr9mnX/76zHcInMB26J+2A3UtdfEsnZufvZaJVbY1CmCUP2v
+ No2KwEO26YRMrf+nL8DOc3SRc4wg8mpGlyGfMM+jywgEpqs+fSYjhHMUkM6wL20boKs=
+X-Gm-Gg: ASbGnctM74VLF18vAIqr08GbriH8qSLoLmQdMxIvn/Vuu5hKONTjR5A1cbC+PPHTq/O
+ 7Y8IXq4PdsJtGmQL1+6ggkgykj2snDd0wkGVPP5NdkxHVnRFn9fzQuA3BfO0NrOSRPFhahYh1bZ
+ H/w19tvGJgtHuzVrSEZndq+8C/vHsHSsydOdSmd5rEAgNJIPFrXMJi4jIUUZPDIfRHP7p3Xr93f
+ tF25LRNeDfO5Tafzs58V40DWX4dqijRoIEUO4AFUyP9z0cIkpmpqO91r7QwESVCUs8WWIOJ1YOd
+ BAGExXCBU2fZ1+YrQcneWhbIOgKCp1GuzicraLXFz3i8F/BC6Cwam10FhT9qZ5yAa7Yvkge+6+0
+ zDzDH0006pA9hUCACH7XTRwkMulJgspqURTpUDBA=
+X-Google-Smtp-Source: AGHT+IEqZg4cs9sTLJ3JYU9PNQwQr9qbByszo2WLdtkf6M+3NQ3GNWNWiqetuVRL637LMprd0afG9Q==
+X-Received: by 2002:a05:6000:26ca:b0:3b7:76ac:8b72 with SMTP id
+ ffacd0b85a97d-3b794fb5719mr5905784f8f.12.1753969420910; 
+ Thu, 31 Jul 2025 06:43:40 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b79c3ac115sm2486249f8f.12.2025.07.31.06.43.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Jul 2025 06:43:40 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 31 Jul 2025 14:37:14 +0100
-X-Gm-Features: Ac12FXzuWSWn5QKMrxs3p954Cy2DMS86j5WcywvTE4U31v-dpsb9KVW6evi-KHA
-Message-ID: <CAFEAcA-acYCCXNy-udHTeL3zUFxonh4k6JwTJyxzHTMWTDN2NQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/3] tests/qtest/migration: Only test aarch64 on TCG
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH for-10.1] target/arm: Reinstate bogus AArch32 DBGDTRTX
+ register for migration compat
+Date: Thu, 31 Jul 2025 14:43:38 +0100
+Message-ID: <20250731134338.250203-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,46 +98,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 30 Jul 2025 at 21:52, Fabiano Rosas <farosas@suse.de> wrote:
->
-> Currently our aarch64 tests are only being run using identical QEMU
-> versions. When running the tests with different QEMU versions, which
-> is a common use-case for migration, the tests are broken due to the
-> current choice of the 'max' cpu, which is not stable and is prone to
-> breaking migration.
->
-> This means aarch64 tests are currently only testing about the same
-> situations as any other arch, i.e. no arm-specific testing is being
-> done.
->
-> To make the aarch64 tests more useful, -cpu max will be changed to
-> -cpu neoverse-n1 in the next patch. Before doing that, make sure
-> aarch64 tests only run with TCG, since KVM testing depends on usage of
-> the -cpu host and we currently don't have code to switch between cpus
-> according to test runtime environment.
->
-> Also, TCG alone should allow us to catch most issues with migration,
-> since there is no guarantee of a uniform environment as there is with
-> KVM.
+In commit 655659a74a we fixed some bugs in the encoding of the
+Debug Communications Channel registers, including that we were
+incorrectly exposing an AArch32 register at p14, 3, c0, c5, 0.
 
-The difficulty with only testing TCG migration is that now
-we're testing the setup that most cross-versions migration users
-don't care about. At least my assumption is that it's KVM
-cross-version migration that is the real use case here.
+Unfortunately removing a register is a break of forwards migration
+compatibility for TCG, because we will fail the migration if the
+source QEMU passes us a cpreg which the destination QEMU does not
+have.  We don't have a mechanism for saying "it's OK to ignore this
+sysreg in the inbound data", so for the 10.1 release reinstate the
+incorrect AArch32 register.
 
-For instance, this migration bug with the DBGDTR register
-isn't a problem for KVM, because with KVM we use the kernel
-to tell us what system registers are present, and whether
-a register is defined with a cpreg in QEMU or not doesn't
-affect what we put on the wire for migration. Conversely
-there might be migration compat issues that show up only
-with KVM and not TCG (though the most obvious source of those
-would be host kernel changes, which is kind of out of scope
-for us).
+(We probably have had other cases in the past of breaking migration
+compatibility like this, but we didn't notice because we didn't test
+and in any case not that many people care about TCG migration
+compatibility.  KVM migration compat is not affected because for KVM
+we treat the kernel as the source of truth for what system registers
+are present.)
 
-Though of course with our CI jobs we're probably not
-doing AArch64 KVM cross-version testing anyway...
+Fixes: 655659a74a36b ("target/arm: Correct encoding of Debug Communications Channel registers")
+Reported-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+Fabiano's suggestion for a migration compat mechanism is
+https://patchew.org/QEMU/20250730205245.2118-1-farosas@suse.de/20250730205245.2118-2-farosas@suse.de/
+---
+ target/arm/debug_helper.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-thanks
--- PMM
+diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
+index aee06d4d426..579516e1541 100644
+--- a/target/arm/debug_helper.c
++++ b/target/arm/debug_helper.c
+@@ -940,6 +940,13 @@ static void dbgclaimclr_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     env->cp15.dbgclaim &= ~(value & 0xFF);
+ }
+ 
++static CPAccessResult access_bogus(CPUARMState *env, const ARMCPRegInfo *ri,
++                                   bool isread)
++{
++    /* Always UNDEF, as if this cpreg didn't exist */
++    return CP_ACCESS_UNDEFINED;
++}
++
+ static const ARMCPRegInfo debug_cp_reginfo[] = {
+     /*
+      * DBGDRAR, DBGDSAR: always RAZ since we don't implement memory mapped
+@@ -1002,6 +1009,28 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
+       .opc0 = 2, .opc1 = 3, .crn = 0, .crm = 4, .opc2 = 0,
+       .access = PL0_RW, .accessfn = access_tdcc,
+       .type = ARM_CP_CONST, .resetvalue = 0 },
++    /*
++     * This is not a real AArch32 register. We used to incorrectly expose
++     * this due to a QEMU bug; to avoid breaking migration compatibility we
++     * need to continue to provide it so that we don't fail the inbound
++     * migration when it tells us about a sysreg that we don't have.
++     * We set an always-fails .accessfn, which means that the guest doesn't
++     * actually see this register (it will always UNDEF, identically to if
++     * there were no cpreg definition for it other than that we won't print
++     * a LOG_UNIMP message about it), and we set the ARM_CP_NO_GDB flag so the
++     * gdbstub won't see it either.
++     * (We can't just set .access = 0, because add_cpreg_to_hashtable()
++     * helpfully ignores cpregs which aren't accessible to the highest
++     * implemented EL.)
++     *
++     * TODO: implement a system for being able to describe "this register
++     * can be ignored if it appears in the inbound stream"; then we can
++     * remove this temporary hack.
++     */
++    { .name = "BOGUS_DBGDTR_EL0", .state = ARM_CP_STATE_AA32,
++      .cp = 14, .opc1 = 3, .crn = 0, .crm = 5, .opc2 = 0,
++      .access = PL0_RW, .accessfn = access_bogus,
++      .type = ARM_CP_CONST | ARM_CP_NO_GDB, .resetvalue = 0 },
+     /*
+      * OSECCR_EL1 provides a mechanism for an operating system
+      * to access the contents of EDECCR. EDECCR is not implemented though,
+-- 
+2.43.0
+
 
