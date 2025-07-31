@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E57B1719C
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 14:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58F03B17187
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 14:51:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhSoe-00051F-Mm; Thu, 31 Jul 2025 08:55:24 -0400
+	id 1uhSjG-0003r4-9U; Thu, 31 Jul 2025 08:49:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uhSGX-0000eE-K3
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 08:20:09 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uhSGd-00010z-Ac
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 08:20:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uhSGS-0007Y3-9S
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 08:20:08 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uhSGW-0007jq-Az
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 08:20:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1753964402;
+ s=mimecast20190719; t=1753964405;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cbUdBt5SPqSgzzBb4HJpRI7tj9Z+sPVwVfzX8Py1CWI=;
- b=Xd/QG7svVYXpA2FWNzCkdV38TTen+uwGWqFwr/3Qlp+Gb/I8/MnToeerFKVVVnJ4GG8jbU
- 5VOoSIgYE8tM+aybdNzM/oDc36CjeZZFH+3PfK+zEop8WEShvKXxNEMGSy1KUjDFl66OrS
- 2/6Hjqt+BN78oklx9X6kTSC6wQJ0Yyk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=CowaRqTFgGAHJ/avtGZ06G9yUrSYqiWym64a+FiAUag=;
+ b=Kld0zUpo12UTIhK3G9sINiuQGtQ8lPyA8Idcn191SsgwfX+4dLgoayJh2FZ/0wPQ5cX7K2
+ y2doj/lWgtWIJueJCoNigSyHXCralrJGKjdV0CFyow4Lwjafi/jS1hHX8GGS6LmGRRs57U
+ HUR5n+X5jN71SZmRiA4sVHLoyEn+oPo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-472-EBd3LhUfPgybRB5mOwQicg-1; Thu,
- 31 Jul 2025 08:19:59 -0400
-X-MC-Unique: EBd3LhUfPgybRB5mOwQicg-1
-X-Mimecast-MFC-AGG-ID: EBd3LhUfPgybRB5mOwQicg_1753964398
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-278-TQEeSQOTPO65pQlQcGQtlA-1; Thu,
+ 31 Jul 2025 08:20:02 -0400
+X-MC-Unique: TQEeSQOTPO65pQlQcGQtlA-1
+X-Mimecast-MFC-AGG-ID: TQEeSQOTPO65pQlQcGQtlA_1753964401
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ED2791800365; Thu, 31 Jul 2025 12:19:57 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 14F851800875; Thu, 31 Jul 2025 12:20:01 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.123])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7A72A19373D9; Thu, 31 Jul 2025 12:19:54 +0000 (UTC)
+ id 9508C196B088; Thu, 31 Jul 2025 12:19:58 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Eric Auger <eric.auger@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH for-10.2 1/4] vfio: Remove 'vfio-amd-xgbe' device
-Date: Thu, 31 Jul 2025 14:19:44 +0200
-Message-ID: <20250731121947.1346927-2-clg@redhat.com>
+Subject: [PATCH for-10.2 2/4] vfio: Remove 'vfio-calxeda-xgmac' device
+Date: Thu, 31 Jul 2025 14:19:45 +0200
+Message-ID: <20250731121947.1346927-3-clg@redhat.com>
 In-Reply-To: <20250731121947.1346927-1-clg@redhat.com>
 References: <20250731121947.1346927-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -67,7 +67,8 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,84 +84,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VFIO_AMD_XGBE device type has been deprecated in the QEMU 10.0
-timeframe. The AMD "Seattle" device is not supported anymore. Remove it.
+The VFIO_XGMAC device type has been deprecated in the QEMU 10.0
+timeframe. Remove it.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- docs/about/deprecated.rst       |   6 -
- docs/about/removed-features.rst |   9 +
- docs/devel/kconfig.rst          |   1 -
- include/hw/vfio/vfio-amd-xgbe.h |  46 -----
- hw/arm/virt.c                   |   2 -
- hw/core/sysbus-fdt.c            | 316 --------------------------------
- hw/vfio/amd-xgbe.c              |  61 ------
- hw/arm/Kconfig                  |   1 -
- hw/vfio/Kconfig                 |   5 -
- hw/vfio/meson.build             |   1 -
- 10 files changed, 9 insertions(+), 439 deletions(-)
- delete mode 100644 include/hw/vfio/vfio-amd-xgbe.h
- delete mode 100644 hw/vfio/amd-xgbe.c
+ docs/about/deprecated.rst            |  7 ---
+ docs/about/removed-features.rst      |  7 +++
+ docs/devel/kconfig.rst               |  1 -
+ include/hw/vfio/vfio-calxeda-xgmac.h | 43 ------------------
+ hw/arm/virt.c                        |  3 +-
+ hw/core/sysbus-fdt.c                 | 67 ----------------------------
+ hw/vfio/calxeda-xgmac.c              | 61 -------------------------
+ hw/arm/Kconfig                       |  1 -
+ hw/vfio/Kconfig                      |  5 ---
+ hw/vfio/meson.build                  |  1 -
+ 10 files changed, 8 insertions(+), 188 deletions(-)
+ delete mode 100644 include/hw/vfio/vfio-calxeda-xgmac.h
+ delete mode 100644 hw/vfio/calxeda-xgmac.c
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index d50645a07117b60e90cecc9df4f9a1de9fb78eb1..631871ffc80ba0ebb7c8dbba5cc59fc56e331f49 100644
+index 631871ffc80ba0ebb7c8dbba5cc59fc56e331f49..0df97eb2b72cb1e851fc47a0059d49cdbbc0a407 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -526,12 +526,6 @@ The vfio-calxeda-xgmac device allows to assign a host Calxeda Highbank
- string) to a guest. Calxeda HW has been ewasted now and there is no point
- keeping that device.
+@@ -519,13 +519,6 @@ which is not enough for all types of use cases, use ``reconnect-ms`` instead.
+ VFIO device options
+ '''''''''''''''''''
  
--``-device vfio-amd-xgbe`` (since 10.0)
--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
--The vfio-amd-xgbe device allows to assign a host AMD 10GbE controller
--to a guest ("amd,xgbe-seattle-v1a" compatibility string). AMD "Seattle"
--is not supported anymore and there is no point keeping that device.
+-``-device vfio-calxeda-xgmac`` (since 10.0)
+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-The vfio-calxeda-xgmac device allows to assign a host Calxeda Highbank
+-10Gb XGMAC Ethernet controller device ("calxeda,hb-xgmac" compatibility
+-string) to a guest. Calxeda HW has been ewasted now and there is no point
+-keeping that device.
 -
  ``-device vfio-platform`` (since 10.0)
  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  The vfio-platform device allows to assign a host platform device
 diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index d7c2113fc3eb2d79addbad49f4c5e81c2ec645ed..759c067412ffa669829c06c22ab3749ecb673318 100644
+index 759c067412ffa669829c06c22ab3749ecb673318..47e632b4ac1db9267f8ad7fe97e1fc66beeff298 100644
 --- a/docs/about/removed-features.rst
 +++ b/docs/about/removed-features.rst
-@@ -1262,6 +1262,15 @@ The corresponding upstream server project is no longer maintained.
- Users are recommended to switch to an alternative distributed block
- device driver such as RBD.
+@@ -1265,6 +1265,13 @@ device driver such as RBD.
+ VFIO devices
+ ------------
  
-+VFIO devices
-+------------
++``-device vfio-calxeda-xgmac`` (since 10.2)
++'''''''''''''''''''''''''''''''''''''''''''
++The vfio-calxeda-xgmac device allows to assign a host Calxeda Highbank
++10Gb XGMAC Ethernet controller device ("calxeda,hb-xgmac" compatibility
++string) to a guest. Calxeda HW has been ewasted now and there is no point
++keeping that device.
 +
-+``-device vfio-amd-xgbe`` (since 10.2)
-+''''''''''''''''''''''''''''''''''''''
-+The vfio-amd-xgbe device allows to assign a host AMD 10GbE controller
-+to a guest ("amd,xgbe-seattle-v1a" compatibility string). AMD "Seattle"
-+is not supported anymore and there is no point keeping that device.
-+
- Tools
- -----
- 
+ ``-device vfio-amd-xgbe`` (since 10.2)
+ ''''''''''''''''''''''''''''''''''''''
+ The vfio-amd-xgbe device allows to assign a host AMD 10GbE controller
 diff --git a/docs/devel/kconfig.rst b/docs/devel/kconfig.rst
-index 493b76c4fbf70dc4f2943e23704d1246e324f4cb..9fdf5015298ea2d19b97857c212ab38dca9ab85f 100644
+index 9fdf5015298ea2d19b97857c212ab38dca9ab85f..1d4a114a022af99a5a652da08034f2c1f3617bb0 100644
 --- a/docs/devel/kconfig.rst
 +++ b/docs/devel/kconfig.rst
 @@ -59,7 +59,6 @@ stanza like the following::
        config ARM_VIRT
           bool
           imply PCI_DEVICES
--         imply VFIO_AMD_XGBE
-          imply VFIO_XGMAC
+-         imply VFIO_XGMAC
           select A15MPCORE
           select ACPI
-diff --git a/include/hw/vfio/vfio-amd-xgbe.h b/include/hw/vfio/vfio-amd-xgbe.h
+          select ARM_SMMUV3
+diff --git a/include/hw/vfio/vfio-calxeda-xgmac.h b/include/hw/vfio/vfio-calxeda-xgmac.h
 deleted file mode 100644
-index a894546c02d140d2b689f09ace733c4d43019371..0000000000000000000000000000000000000000
---- a/include/hw/vfio/vfio-amd-xgbe.h
+index 8482f151dd5ab8ca5f7e8f4300e67314604a68e3..0000000000000000000000000000000000000000
+--- a/include/hw/vfio/vfio-calxeda-xgmac.h
 +++ /dev/null
-@@ -1,46 +0,0 @@
+@@ -1,43 +0,0 @@
 -/*
-- * VFIO AMD XGBE device
+- * VFIO calxeda xgmac device
 - *
-- * Copyright Linaro Limited, 2015
+- * Copyright Linaro Limited, 2014
 - *
 - * Authors:
 - *  Eric Auger <eric.auger@linaro.org>
@@ -170,330 +170,108 @@ index a894546c02d140d2b689f09ace733c4d43019371..00000000000000000000000000000000
 - *
 - */
 -
--#ifndef HW_VFIO_VFIO_AMD_XGBE_H
--#define HW_VFIO_VFIO_AMD_XGBE_H
+-#ifndef HW_VFIO_VFIO_CALXEDA_XGMAC_H
+-#define HW_VFIO_VFIO_CALXEDA_XGMAC_H
 -
 -#include "hw/vfio/vfio-platform.h"
 -#include "qom/object.h"
 -
--#define TYPE_VFIO_AMD_XGBE "vfio-amd-xgbe"
+-#define TYPE_VFIO_CALXEDA_XGMAC "vfio-calxeda-xgmac"
 -
 -/**
 - * This device exposes:
-- * - 5 MMIO regions: MAC, PCS, SerDes Rx/Tx regs,
--     SerDes Integration Registers 1/2 & 2/2
-- * - 2 level sensitive IRQs and optional DMA channel IRQs
+- * - a single MMIO region corresponding to its register space
+- * - 3 IRQS (main and 2 power related IRQs)
 - */
--struct VFIOAmdXgbeDevice {
+-struct VFIOCalxedaXgmacDevice {
 -    VFIOPlatformDevice vdev;
 -};
+-typedef struct VFIOCalxedaXgmacDevice VFIOCalxedaXgmacDevice;
 -
--typedef struct VFIOAmdXgbeDevice VFIOAmdXgbeDevice;
--
--struct VFIOAmdXgbeDeviceClass {
+-struct VFIOCalxedaXgmacDeviceClass {
 -    /*< private >*/
 -    VFIOPlatformDeviceClass parent_class;
 -    /*< public >*/
 -    DeviceRealize parent_realize;
 -};
+-typedef struct VFIOCalxedaXgmacDeviceClass VFIOCalxedaXgmacDeviceClass;
 -
--typedef struct VFIOAmdXgbeDeviceClass VFIOAmdXgbeDeviceClass;
--
--DECLARE_OBJ_CHECKERS(VFIOAmdXgbeDevice, VFIOAmdXgbeDeviceClass,
--                     VFIO_AMD_XGBE_DEVICE, TYPE_VFIO_AMD_XGBE)
+-DECLARE_OBJ_CHECKERS(VFIOCalxedaXgmacDevice, VFIOCalxedaXgmacDeviceClass,
+-                     VFIO_CALXEDA_XGMAC_DEVICE, TYPE_VFIO_CALXEDA_XGMAC)
 -
 -#endif
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index e1b6241f7bee4c2fddde31c512561e87229cebc2..d419ac49c69c28c178f1120afd631ee9cb4c5760 100644
+index d419ac49c69c28c178f1120afd631ee9cb4c5760..48a561202d7c9817e8b33491dd6810bc7d51f893 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -39,7 +39,6 @@
+@@ -38,7 +38,7 @@
+ #include "hw/arm/primecell.h"
  #include "hw/arm/virt.h"
  #include "hw/block/flash.h"
- #include "hw/vfio/vfio-calxeda-xgmac.h"
--#include "hw/vfio/vfio-amd-xgbe.h"
+-#include "hw/vfio/vfio-calxeda-xgmac.h"
++#include "hw/vfio/vfio-platform.h"
  #include "hw/display/ramfb.h"
  #include "net/net.h"
  #include "system/device_tree.h"
-@@ -3217,7 +3216,6 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
+@@ -3215,7 +3215,6 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
+      * configuration of the particular instance.
       */
      mc->max_cpus = 512;
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_VFIO_CALXEDA_XGMAC);
--    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_VFIO_AMD_XGBE);
+-    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_VFIO_CALXEDA_XGMAC);
      machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RAMFB_DEVICE);
      machine_class_allow_dynamic_sysbus_dev(mc, TYPE_VFIO_PLATFORM);
      machine_class_allow_dynamic_sysbus_dev(mc, TYPE_UEFI_VARS_SYSBUS);
 diff --git a/hw/core/sysbus-fdt.c b/hw/core/sysbus-fdt.c
-index c339a27875cbee8131b064674aa09adf4b9efa25..d3649d5367e7294cd7a269a7b08e56d8cbd5021a 100644
+index d3649d5367e7294cd7a269a7b08e56d8cbd5021a..07117363a6f27ec9128d8732a87eaed3f054ef55 100644
 --- a/hw/core/sysbus-fdt.c
 +++ b/hw/core/sysbus-fdt.c
-@@ -34,7 +34,6 @@
+@@ -32,9 +32,6 @@
+ #include "system/device_tree.h"
+ #include "system/tpm.h"
  #include "hw/platform-bus.h"
- #include "hw/vfio/vfio-platform.h"
- #include "hw/vfio/vfio-calxeda-xgmac.h"
--#include "hw/vfio/vfio-amd-xgbe.h"
- #include "hw/vfio/vfio-region.h"
+-#include "hw/vfio/vfio-platform.h"
+-#include "hw/vfio/vfio-calxeda-xgmac.h"
+-#include "hw/vfio/vfio-region.h"
  #include "hw/display/ramfb.h"
  #include "hw/uefi/var-service-api.h"
-@@ -68,142 +67,6 @@ typedef struct HostProperty {
+ #include "hw/arm/fdt.h"
+@@ -65,67 +62,6 @@ typedef struct HostProperty {
+     bool optional;
+ } HostProperty;
  
- #ifdef CONFIG_LINUX
- 
--/**
-- * copy_properties_from_host
-- *
-- * copies properties listed in an array from host device tree to
-- * guest device tree. If a non optional property is not found, the
-- * function asserts. An optional property is ignored if not found
-- * in the host device tree.
-- * @props: array of HostProperty to copy
-- * @nb_props: number of properties in the array
-- * @host_dt: host device tree blob
-- * @guest_dt: guest device tree blob
-- * @node_path: host dt node path where the property is supposed to be
--              found
-- * @nodename: guest node name the properties should be added to
-- */
--static void copy_properties_from_host(HostProperty *props, int nb_props,
--                                      void *host_fdt, void *guest_fdt,
--                                      char *node_path, char *nodename)
--{
--    int i, prop_len;
--    const void *r;
--    Error *err = NULL;
+-#ifdef CONFIG_LINUX
 -
--    for (i = 0; i < nb_props; i++) {
--        r = qemu_fdt_getprop(host_fdt, node_path,
--                             props[i].name,
--                             &prop_len,
--                             &err);
--        if (r) {
--            qemu_fdt_setprop(guest_fdt, nodename,
--                             props[i].name, r, prop_len);
--        } else {
--            if (props[i].optional && prop_len == -FDT_ERR_NOTFOUND) {
--                /* optional property does not exist */
--                error_free(err);
--            } else {
--                error_report_err(err);
--            }
--            if (!props[i].optional) {
--                /* mandatory property not found: bail out */
--                exit(1);
--            }
--            err = NULL;
--        }
--    }
--}
--
--/* clock properties whose values are copied/pasted from host */
--static HostProperty clock_copied_properties[] = {
--    {"compatible", false},
--    {"#clock-cells", false},
--    {"clock-frequency", true},
--    {"clock-output-names", true},
--};
+-/* Device Specific Code */
 -
 -/**
-- * fdt_build_clock_node
+- * add_calxeda_midway_xgmac_fdt_node
 - *
-- * Build a guest clock node, used as a dependency from a passthrough'ed
-- * device. Most information are retrieved from the host clock node.
-- * Also check the host clock is a fixed one.
-- *
-- * @host_fdt: host device tree blob from which info are retrieved
-- * @guest_fdt: guest device tree blob where the clock node is added
-- * @host_phandle: phandle of the clock in host device tree
-- * @guest_phandle: phandle to assign to the guest node
+- * Generates a simple node with following properties:
+- * compatible string, regs, interrupts, dma-coherent
 - */
--static void fdt_build_clock_node(void *host_fdt, void *guest_fdt,
--                                uint32_t host_phandle,
--                                uint32_t guest_phandle)
--{
--    char *node_path = NULL;
--    char *nodename;
--    const void *r;
--    int ret, node_offset, prop_len, path_len = 16;
--
--    node_offset = fdt_node_offset_by_phandle(host_fdt, host_phandle);
--    if (node_offset <= 0) {
--        error_report("not able to locate clock handle %d in host device tree",
--                     host_phandle);
--        exit(1);
--    }
--    node_path = g_malloc(path_len);
--    while ((ret = fdt_get_path(host_fdt, node_offset, node_path, path_len))
--            == -FDT_ERR_NOSPACE) {
--        path_len += 16;
--        node_path = g_realloc(node_path, path_len);
--    }
--    if (ret < 0) {
--        error_report("not able to retrieve node path for clock handle %d",
--                     host_phandle);
--        exit(1);
--    }
--
--    r = qemu_fdt_getprop(host_fdt, node_path, "compatible", &prop_len,
--                         &error_fatal);
--    if (strcmp(r, "fixed-clock")) {
--        error_report("clock handle %d is not a fixed clock", host_phandle);
--        exit(1);
--    }
--
--    nodename = strrchr(node_path, '/');
--    qemu_fdt_add_subnode(guest_fdt, nodename);
--
--    copy_properties_from_host(clock_copied_properties,
--                              ARRAY_SIZE(clock_copied_properties),
--                              host_fdt, guest_fdt,
--                              node_path, nodename);
--
--    qemu_fdt_setprop_cell(guest_fdt, nodename, "phandle", guest_phandle);
--
--    g_free(node_path);
--}
--
--/**
-- * sysfs_to_dt_name: convert the name found in sysfs into the node name
-- * for instance e0900000.xgmac is converted into xgmac@e0900000
-- * @sysfs_name: directory name in sysfs
-- *
-- * returns the device tree name upon success or NULL in case the sysfs name
-- * does not match the expected format
-- */
--static char *sysfs_to_dt_name(const char *sysfs_name)
--{
--    gchar **substrings =  g_strsplit(sysfs_name, ".", 2);
--    char *dt_name = NULL;
--
--    if (!substrings || !substrings[0] || !substrings[1]) {
--        goto out;
--    }
--    dt_name = g_strdup_printf("%s@%s", substrings[1], substrings[0]);
--out:
--    g_strfreev(substrings);
--    return dt_name;
--}
--
- /* Device Specific Code */
- 
- /**
-@@ -261,183 +124,6 @@ static int add_calxeda_midway_xgmac_fdt_node(SysBusDevice *sbdev, void *opaque)
-     g_free(nodename);
-     return 0;
- }
--
--/* AMD xgbe properties whose values are copied/pasted from host */
--static HostProperty amd_xgbe_copied_properties[] = {
--    {"compatible", false},
--    {"dma-coherent", true},
--    {"amd,per-channel-interrupt", true},
--    {"phy-mode", false},
--    {"mac-address", true},
--    {"amd,speed-set", false},
--    {"amd,serdes-blwc", true},
--    {"amd,serdes-cdr-rate", true},
--    {"amd,serdes-pq-skew", true},
--    {"amd,serdes-tx-amp", true},
--    {"amd,serdes-dfe-tap-config", true},
--    {"amd,serdes-dfe-tap-enable", true},
--    {"clock-names", false},
--};
--
--/**
-- * add_amd_xgbe_fdt_node
-- *
-- * Generates the combined xgbe/phy node following kernel >=4.2
-- * binding documentation:
-- * Documentation/devicetree/bindings/net/amd-xgbe.txt:
-- * Also 2 clock nodes are created (dma and ptp)
-- *
-- * Asserts in case of error
-- */
--static int add_amd_xgbe_fdt_node(SysBusDevice *sbdev, void *opaque)
+-static int add_calxeda_midway_xgmac_fdt_node(SysBusDevice *sbdev, void *opaque)
 -{
 -    PlatformBusFDTData *data = opaque;
 -    PlatformBusDevice *pbus = data->pbus;
+-    void *fdt = data->fdt;
+-    const char *parent_node = data->pbus_node_name;
+-    int compat_str_len, i;
+-    char *nodename;
+-    uint32_t *irq_attr, *reg_attr;
+-    uint64_t mmio_base, irq_number;
 -    VFIOPlatformDevice *vdev = VFIO_PLATFORM_DEVICE(sbdev);
 -    VFIODevice *vbasedev = &vdev->vbasedev;
--    VFIOINTp *intp;
--    const char *parent_node = data->pbus_node_name;
--    char **node_path, *nodename, *dt_name;
--    void *guest_fdt = data->fdt, *host_fdt;
--    const void *r;
--    int i, prop_len;
--    uint32_t *irq_attr, *reg_attr;
--    const uint32_t *host_clock_phandles;
--    uint64_t mmio_base, irq_number;
--    uint32_t guest_clock_phandles[2];
 -
--    host_fdt = load_device_tree_from_sysfs();
--
--    dt_name = sysfs_to_dt_name(vbasedev->name);
--    if (!dt_name) {
--        error_report("%s incorrect sysfs device name %s",
--                     __func__, vbasedev->name);
--        exit(1);
--    }
--    node_path = qemu_fdt_node_path(host_fdt, dt_name, vdev->compat,
--                                   &error_fatal);
--    if (!node_path || !node_path[0]) {
--        error_report("%s unable to retrieve node path for %s/%s",
--                     __func__, dt_name, vdev->compat);
--        exit(1);
--    }
--
--    if (node_path[1]) {
--        error_report("%s more than one node matching %s/%s!",
--                     __func__, dt_name, vdev->compat);
--        exit(1);
--    }
--
--    g_free(dt_name);
--
--    if (vbasedev->num_regions != 5) {
--        error_report("%s Does the host dt node combine XGBE/PHY?", __func__);
--        exit(1);
--    }
--
--    /* generate nodes for DMA_CLK and PTP_CLK */
--    r = qemu_fdt_getprop(host_fdt, node_path[0], "clocks",
--                         &prop_len, &error_fatal);
--    if (prop_len != 8) {
--        error_report("%s clocks property should contain 2 handles", __func__);
--        exit(1);
--    }
--    host_clock_phandles = r;
--    guest_clock_phandles[0] = qemu_fdt_alloc_phandle(guest_fdt);
--    guest_clock_phandles[1] = qemu_fdt_alloc_phandle(guest_fdt);
--
--    /**
--     * clock handles fetched from host dt are in be32 layout whereas
--     * rest of the code uses cpu layout. Also guest clock handles are
--     * in cpu layout.
--     */
--    fdt_build_clock_node(host_fdt, guest_fdt,
--                         be32_to_cpu(host_clock_phandles[0]),
--                         guest_clock_phandles[0]);
--
--    fdt_build_clock_node(host_fdt, guest_fdt,
--                         be32_to_cpu(host_clock_phandles[1]),
--                         guest_clock_phandles[1]);
--
--    /* combined XGBE/PHY node */
 -    mmio_base = platform_bus_get_mmio_addr(pbus, sbdev, 0);
 -    nodename = g_strdup_printf("%s/%s@%" PRIx64, parent_node,
 -                               vbasedev->name, mmio_base);
--    qemu_fdt_add_subnode(guest_fdt, nodename);
+-    qemu_fdt_add_subnode(fdt, nodename);
 -
--    copy_properties_from_host(amd_xgbe_copied_properties,
--                       ARRAY_SIZE(amd_xgbe_copied_properties),
--                       host_fdt, guest_fdt,
--                       node_path[0], nodename);
+-    compat_str_len = strlen(vdev->compat) + 1;
+-    qemu_fdt_setprop(fdt, nodename, "compatible",
+-                          vdev->compat, compat_str_len);
 -
--    qemu_fdt_setprop_cells(guest_fdt, nodename, "clocks",
--                           guest_clock_phandles[0],
--                           guest_clock_phandles[1]);
+-    qemu_fdt_setprop(fdt, nodename, "dma-coherent", "", 0);
 -
 -    reg_attr = g_new(uint32_t, vbasedev->num_regions * 2);
 -    for (i = 0; i < vbasedev->num_regions; i++) {
@@ -502,7 +280,7 @@ index c339a27875cbee8131b064674aa09adf4b9efa25..d3649d5367e7294cd7a269a7b08e56d8
 -        reg_attr[2 * i + 1] = cpu_to_be32(
 -                                memory_region_size(vdev->regions[i]->mem));
 -    }
--    qemu_fdt_setprop(guest_fdt, nodename, "reg", reg_attr,
+-    qemu_fdt_setprop(fdt, nodename, "reg", reg_attr,
 -                     vbasedev->num_regions * 2 * sizeof(uint32_t));
 -
 -    irq_attr = g_new(uint32_t, vbasedev->num_irqs * 3);
@@ -511,76 +289,40 @@ index c339a27875cbee8131b064674aa09adf4b9efa25..d3649d5367e7294cd7a269a7b08e56d8
 -                         + data->irq_start;
 -        irq_attr[3 * i] = cpu_to_be32(GIC_FDT_IRQ_TYPE_SPI);
 -        irq_attr[3 * i + 1] = cpu_to_be32(irq_number);
--        /*
--          * General device interrupt and PCS auto-negotiation interrupts are
--          * level-sensitive while the 4 per-channel interrupts are edge
--          * sensitive
--          */
--        QLIST_FOREACH(intp, &vdev->intp_list, next) {
--            if (intp->pin == i) {
--                break;
--            }
--        }
--        if (intp->flags & VFIO_IRQ_INFO_AUTOMASKED) {
--            irq_attr[3 * i + 2] = cpu_to_be32(GIC_FDT_IRQ_FLAGS_LEVEL_HI);
--        } else {
--            irq_attr[3 * i + 2] = cpu_to_be32(GIC_FDT_IRQ_FLAGS_EDGE_LO_HI);
--        }
+-        irq_attr[3 * i + 2] = cpu_to_be32(GIC_FDT_IRQ_FLAGS_LEVEL_HI);
 -    }
--    qemu_fdt_setprop(guest_fdt, nodename, "interrupts",
+-    qemu_fdt_setprop(fdt, nodename, "interrupts",
 -                     irq_attr, vbasedev->num_irqs * 3 * sizeof(uint32_t));
--
--    g_free(host_fdt);
--    g_strfreev(node_path);
 -    g_free(irq_attr);
 -    g_free(reg_attr);
 -    g_free(nodename);
 -    return 0;
 -}
+-#endif /* CONFIG_LINUX */
 -
--/* DT compatible matching */
--static bool vfio_platform_match(SysBusDevice *sbdev,
--                                const BindingEntry *entry)
--{
--    VFIOPlatformDevice *vdev = VFIO_PLATFORM_DEVICE(sbdev);
--    const char *compat;
--    unsigned int n;
--
--    for (n = vdev->num_compat, compat = vdev->compat; n > 0;
--         n--, compat += strlen(compat) + 1) {
--        if (!strcmp(entry->compat, compat)) {
--            return true;
--        }
--    }
--
--    return false;
--}
--
--#define VFIO_PLATFORM_BINDING(compat, add_fn) \
--    {TYPE_VFIO_PLATFORM, (compat), (add_fn), vfio_platform_match}
--
- #endif /* CONFIG_LINUX */
- 
  #ifdef CONFIG_TPM
-@@ -512,8 +198,6 @@ static bool type_match(SysBusDevice *sbdev, const BindingEntry *entry)
+ /*
+  * add_tpm_tis_fdt_node: Create a DT node for TPM TIS
+@@ -196,9 +132,6 @@ static bool type_match(SysBusDevice *sbdev, const BindingEntry *entry)
+ 
+ /* list of supported dynamic sysbus bindings */
  static const BindingEntry bindings[] = {
- #ifdef CONFIG_LINUX
-     TYPE_BINDING(TYPE_VFIO_CALXEDA_XGMAC, add_calxeda_midway_xgmac_fdt_node),
--    TYPE_BINDING(TYPE_VFIO_AMD_XGBE, add_amd_xgbe_fdt_node),
--    VFIO_PLATFORM_BINDING("amd,xgbe-seattle-v1a", add_amd_xgbe_fdt_node),
- #endif
+-#ifdef CONFIG_LINUX
+-    TYPE_BINDING(TYPE_VFIO_CALXEDA_XGMAC, add_calxeda_midway_xgmac_fdt_node),
+-#endif
  #ifdef CONFIG_TPM
      TYPE_BINDING(TYPE_TPM_TIS_SYSBUS, add_tpm_tis_fdt_node),
-diff --git a/hw/vfio/amd-xgbe.c b/hw/vfio/amd-xgbe.c
+ #endif
+diff --git a/hw/vfio/calxeda-xgmac.c b/hw/vfio/calxeda-xgmac.c
 deleted file mode 100644
-index 58f590e385b90ac39464f96b7b896e7f845e5271..0000000000000000000000000000000000000000
---- a/hw/vfio/amd-xgbe.c
+index 03f2ff57630b557dfbd5bde03544f5b6395c29c4..0000000000000000000000000000000000000000
+--- a/hw/vfio/calxeda-xgmac.c
 +++ /dev/null
 @@ -1,61 +0,0 @@
 -/*
-- * AMD XGBE VFIO device
+- * calxeda xgmac VFIO device
 - *
-- * Copyright Linaro Limited, 2015
+- * Copyright Linaro Limited, 2014
 - *
 - * Authors:
 - *  Eric Auger <eric.auger@linaro.org>
@@ -591,74 +333,74 @@ index 58f590e385b90ac39464f96b7b896e7f845e5271..00000000000000000000000000000000
 - */
 -
 -#include "qemu/osdep.h"
--#include "hw/vfio/vfio-amd-xgbe.h"
+-#include "hw/vfio/vfio-calxeda-xgmac.h"
 -#include "migration/vmstate.h"
 -#include "qemu/module.h"
 -#include "qemu/error-report.h"
 -
--static void amd_xgbe_realize(DeviceState *dev, Error **errp)
+-static void calxeda_xgmac_realize(DeviceState *dev, Error **errp)
 -{
 -    VFIOPlatformDevice *vdev = VFIO_PLATFORM_DEVICE(dev);
--    VFIOAmdXgbeDeviceClass *k = VFIO_AMD_XGBE_DEVICE_GET_CLASS(dev);
+-    VFIOCalxedaXgmacDeviceClass *k = VFIO_CALXEDA_XGMAC_DEVICE_GET_CLASS(dev);
 -
--    warn_report("-device vfio-amd-xgbe is deprecated");
--    vdev->compat = g_strdup("amd,xgbe-seattle-v1a");
+-    warn_report("-device vfio-calxeda-xgmac is deprecated");
+-    vdev->compat = g_strdup("calxeda,hb-xgmac");
 -    vdev->num_compat = 1;
 -
 -    k->parent_realize(dev, errp);
 -}
 -
--static const VMStateDescription vfio_platform_amd_xgbe_vmstate = {
--    .name = "vfio-amd-xgbe",
+-static const VMStateDescription vfio_platform_calxeda_xgmac_vmstate = {
+-    .name = "vfio-calxeda-xgmac",
 -    .unmigratable = 1,
 -};
 -
--static void vfio_amd_xgbe_class_init(ObjectClass *klass, const void *data)
+-static void vfio_calxeda_xgmac_class_init(ObjectClass *klass, const void *data)
 -{
 -    DeviceClass *dc = DEVICE_CLASS(klass);
--    VFIOAmdXgbeDeviceClass *vcxc =
--        VFIO_AMD_XGBE_DEVICE_CLASS(klass);
--    device_class_set_parent_realize(dc, amd_xgbe_realize,
+-    VFIOCalxedaXgmacDeviceClass *vcxc =
+-        VFIO_CALXEDA_XGMAC_DEVICE_CLASS(klass);
+-    device_class_set_parent_realize(dc, calxeda_xgmac_realize,
 -                                    &vcxc->parent_realize);
--    dc->desc = "VFIO AMD XGBE";
--    dc->vmsd = &vfio_platform_amd_xgbe_vmstate;
+-    dc->desc = "VFIO Calxeda XGMAC";
+-    dc->vmsd = &vfio_platform_calxeda_xgmac_vmstate;
 -}
 -
--static const TypeInfo vfio_amd_xgbe_dev_info = {
--    .name = TYPE_VFIO_AMD_XGBE,
+-static const TypeInfo vfio_calxeda_xgmac_dev_info = {
+-    .name = TYPE_VFIO_CALXEDA_XGMAC,
 -    .parent = TYPE_VFIO_PLATFORM,
--    .instance_size = sizeof(VFIOAmdXgbeDevice),
--    .class_init = vfio_amd_xgbe_class_init,
--    .class_size = sizeof(VFIOAmdXgbeDeviceClass),
+-    .instance_size = sizeof(VFIOCalxedaXgmacDevice),
+-    .class_init = vfio_calxeda_xgmac_class_init,
+-    .class_size = sizeof(VFIOCalxedaXgmacDeviceClass),
 -};
 -
--static void register_amd_xgbe_dev_type(void)
+-static void register_calxeda_xgmac_dev_type(void)
 -{
--    type_register_static(&vfio_amd_xgbe_dev_info);
+-    type_register_static(&vfio_calxeda_xgmac_dev_info);
 -}
 -
--type_init(register_amd_xgbe_dev_type)
+-type_init(register_calxeda_xgmac_dev_type)
 diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 2aa4b5d77864ff01e69650711e7d914f351e9966..64b2ec87b59b12601e28023cd8a5ae925f101a77 100644
+index 64b2ec87b59b12601e28023cd8a5ae925f101a77..3fca48349ade97002597c866fa6457a784c3219d 100644
 --- a/hw/arm/Kconfig
 +++ b/hw/arm/Kconfig
-@@ -5,7 +5,6 @@ config ARM_VIRT
-     depends on TCG || KVM || HVF
+@@ -6,7 +6,6 @@ config ARM_VIRT
      imply PCI_DEVICES
      imply TEST_DEVICES
--    imply VFIO_AMD_XGBE
      imply VFIO_PLATFORM
-     imply VFIO_XGMAC
+-    imply VFIO_XGMAC
      imply TPM_TIS_SYSBUS
+     imply TPM_TIS_I2C
+     imply NVDIMM
 diff --git a/hw/vfio/Kconfig b/hw/vfio/Kconfig
-index 91d9023b79b594975c6c5f65273011b89240691c..bc984f198639627043a88ecab95da4e927355e5a 100644
+index bc984f198639627043a88ecab95da4e927355e5a..9a1dbe29267ea61709c3e28e4f8c25be01c3aa33 100644
 --- a/hw/vfio/Kconfig
 +++ b/hw/vfio/Kconfig
-@@ -28,11 +28,6 @@ config VFIO_XGMAC
-     default y
-     depends on VFIO_PLATFORM
+@@ -23,11 +23,6 @@ config VFIO_PLATFORM
+     select VFIO
+     depends on LINUX && PLATFORM_BUS
  
--config VFIO_AMD_XGBE
+-config VFIO_XGMAC
 -    bool
 -    default y
 -    depends on VFIO_PLATFORM
@@ -667,14 +409,14 @@ index 91d9023b79b594975c6c5f65273011b89240691c..bc984f198639627043a88ecab95da4e9
      bool
      default y
 diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-index bfaf6be805483d46190232bd6805a7a042380a0d..0edcaf5155c8853d165d03e4a3ae514f77ca5e8c 100644
+index 0edcaf5155c8853d165d03e4a3ae514f77ca5e8c..06473a078990eab9ec5ce76a6d9897326280dc03 100644
 --- a/hw/vfio/meson.build
 +++ b/hw/vfio/meson.build
-@@ -20,7 +20,6 @@ vfio_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files('igd.c'))
+@@ -19,7 +19,6 @@ vfio_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files('igd.c'))
+ 
  specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
  
- system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
--system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
+-system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
  system_ss.add(when: 'CONFIG_VFIO', if_true: files(
    'cpr.c',
    'cpr-legacy.c',
