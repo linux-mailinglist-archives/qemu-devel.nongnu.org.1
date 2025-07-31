@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D3BB1785C
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 23:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9D5B1785D
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 23:43:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhb2S-0007B5-Ow; Thu, 31 Jul 2025 17:42:12 -0400
+	id 1uhb2D-0006ci-VO; Thu, 31 Jul 2025 17:41:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uhapO-0001H7-LO
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:28:42 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uhapT-0001cg-QC
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:28:47 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uhapL-0007vh-UK
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:28:42 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-45619d70c72so19151295e9.0
- for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 14:28:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uhapR-0007wd-UZ
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:28:47 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3b78a034f17so130766f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 14:28:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753997317; x=1754602117; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753997324; x=1754602124; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oWBEps/IHV7G68SkGN78QP86K/TyIINFKInszR+1c2o=;
- b=ebP6tiO3DCPWhK3zfDIkjAx1NVyv/gK+Kr/A6bHbsG1pQbshgbKkN7e1KDaI9657IE
- Bf2L9Gb5//z2LgBv5RgAGBYWlbPOgYdwgHUiQyFq0c2BalSuMHc5wIRiNPXcZCyH6Yc3
- 7XH670+7oVrxA4KmEACxd9viJ/b0jWlhL36q46Mxd72KzVYsmnyP/QTo75rmZ9jhkX+l
- 84gTdAoavOEJw1i7IIICXu0xiY5R2X3SeqULydLX3XCIp34awFIGVb+MVJ+7oJa01gQX
- u2fpU47MT5lEkZAjqvw4EzkQRW4Yks9w273B4I26+t6TfXuAVBn6R3dEOmcI5c9hP2PR
- Xbqw==
+ bh=Pz9zKdw2mAwFUG5tOQkJs8yneXKkyowJKPF8euu8n00=;
+ b=EV9gm93jUFHfcb3/gr62rvYL656pVoqwvyWbRYy0XoShF95fyeAvNYQaexhY+z6LWq
+ 9MhNRSv53jn98jG14MSOaZuFmgrOUBKHibnz6VVU6WSMLLRbQvDTyh3jem481dWD5snT
+ ZYv8id9c0v5CvgIPTU8UVBBj0+u2Ld6FSnvEewChId2mJ8pjg+rAWUZNFDJA0wcKHL/u
+ Xmf6rsA+Ox3d4jIVw5GHPoRdkFIP+FhWPtaHAzJZsQ3aV4+4AaoVM71wtVA5iI2vnRz+
+ QEKoguo1AV6RXEocTtVBMJs4geK1FRF+md/2rcrHQhV5YSACZb3DMoQZpnIdcPgAiAyS
+ 74Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753997317; x=1754602117;
+ d=1e100.net; s=20230601; t=1753997324; x=1754602124;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oWBEps/IHV7G68SkGN78QP86K/TyIINFKInszR+1c2o=;
- b=BegbiHPceob0/6D74+DwI2xRpt3wZ+7t1jmQyrGaaya9SXprLIO746Op/UMtlxs0f6
- TmBQj+pcIMBz+lrVSieuAR+Xn50VmihV1oyhOFGC5sypBwY8WvQvmznk2dFabI3UIvzE
- WZy5qTXdUCHf/eB52nl3IMW/zLiX9EwLNC+NMGF6/pHP5vqlTLANLJM5gJf/5msAbLlt
- CjV5XV/bkvnfBt6lumFJsvNttzpvhvvne6uwRH6cphyWWBktavQfoeJbMOdQPHNcKahR
- CxSNCgpFgvFNV6fkStASgKVqVGpJm/Y51X4BCruN+vlWFwTPhlj6dzAwKUOIEXwxQraS
- fQxg==
-X-Gm-Message-State: AOJu0YyaARkqmiX+WBIb7OBKqkERg63tfQ+K1H9cJW76/02OGe42vB5X
- mS6sFs3vCk7qNaCB6RYWnZkWPvsxsxk9eCuxWd44tk0Iyh59NBYn4N98cyR9P4rnAAKfbG4HgOt
- nSUph
-X-Gm-Gg: ASbGncu5W1qmprKRcz5hx91V1XhXZ7rfKbUMP1TLN4sfKAjq1138nOcjdX1zdkxi+mU
- gg1V9E0HC6Nw6+9zOZuBlSYirHk/EHMV/3Wa0DWb9l19C0812g+qP5aPzIlMG1RHNSLkxFM5yvA
- attxjqumBiHTn706lacNvpalZJgGJXbR3l1Cp/yTiq+NCIKRjtqnhRZvScZv57lzIkYOxDxgtW5
- 6R6Cy6OMKYfWmjhZzyNHN6UvebEsAp+0xng+M+9hXJp3lOJQWLqDQQ9KW6RIqFkV0kXpp1URj3D
- kFmWckFNxC7uv/2zCSHysYcRuCK6NyZDIJiqYZpJWRB16ZAr9JxZT3wEWBIjODqtAx3E0iO636f
- XGjyTuvWPwv2I0SXckxrKbtu+wsu+jVLQhowcmpRiWTq0e7lUfq3YHgR/2aKoFeHRs28gaEWd
-X-Google-Smtp-Source: AGHT+IFjFXvvqb59RVjZVs8PSLccxOE6ccsUXrudgefeE44V5UyNFjtIJexdbtBY1GGye27mxbtnug==
-X-Received: by 2002:a05:6000:2004:b0:3b7:882c:778 with SMTP id
- ffacd0b85a97d-3b79d4e38b5mr2767800f8f.17.1753997317444; 
- Thu, 31 Jul 2025 14:28:37 -0700 (PDT)
+ bh=Pz9zKdw2mAwFUG5tOQkJs8yneXKkyowJKPF8euu8n00=;
+ b=XOXbOuIF64hNKthQ4c1TEisn5qYa9epePNnCxgyIfnpSf9DgmhI2ec9x9BVARr1V+V
+ 85d5DKqcCu8rf8IOGLxPdYms+gdZmRql6BCCwLp9zaH30yYoT7lNZHUUsr1GeZ8Njyv7
+ qf5jSJxEtdenqVhFyzHjiTGA5wLyoxZwN1skc0HBUNJkw3e6IoHcrFuge7mdUL77KI12
+ TTZkVDZywxzfibwOW/gfw4KIDhK3FALZ+3Sr3Zo9omOS/m8D3bQd2HDirS9oIteW5Hax
+ NrmizEhMle9haskNHfLmGdaM7iwkcxXAwqWp2YRn13USdG+H+rxdpGD1ST250iSK2Jw/
+ gQ3g==
+X-Gm-Message-State: AOJu0YyOdpD+QXZWUPRVPxd4AlvU7NmoUe+sowb/SS79QGY7wR0Y+mus
+ i2z4BCaq69VGCIjP8S1iaXlKOUBbJZUsrvOxphrX59be+bXIQYm4Ku1e6RLNZBgkh6UHk5IU4D5
+ fqo23
+X-Gm-Gg: ASbGncveBGp/96fFvjxuo3QdNvy4heDKcAf443zZZAXp3Lp/h3Pq8Z0YJOWav5PDioZ
+ W7Of0G0/97vYCceKd6GQGWheKNugsyEpgAdZ2F3RkaJu/SvWNubpZMhn5d+zDgsY6HzsciDdmzF
+ XCMKCdbn/iAzr1T0WfRuLPIT7KZH7w23GKA7CSWFiXKFvQywIf9+EsCA7q1Bka71VoU1OPW+6TV
+ 5NrViNHSbeVafOgj6EPVlEOtZ+cJ6O6gjuHIkOfl+hwxevhUyjTgURoLHCn8owver2RpLZOjsBY
+ /T88v+GFglZ94T5iT0qfpp6nTA4ETlV9obLtL2IXEfNM/ROhczXO570z2gelbObCc/8074x3ry1
+ Y1UEPFe+q8XdX4ayo5hVVJnCivorMc3pfIknU8isMDxwdTxtNLehDLN9W563pIiWMO//cb7Bc
+X-Google-Smtp-Source: AGHT+IEf9L3k7mfDKxCRxFGVv3T8l+t3zTYDAGh09vGam0zAIiUHP2i3KvQ/qNWaJmBtAOVyMC+K1w==
+X-Received: by 2002:a05:6000:4310:b0:3b7:8914:cd95 with SMTP id
+ ffacd0b85a97d-3b794fc2b55mr8104682f8f.7.1753997323705; 
+ Thu, 31 Jul 2025 14:28:43 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c467994sm3569009f8f.50.2025.07.31.14.28.36
+ 5b1f17b1804b1-4589ee628fcsm40155635e9.31.2025.07.31.14.28.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 31 Jul 2025 14:28:36 -0700 (PDT)
+ Thu, 31 Jul 2025 14:28:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
@@ -74,17 +74,18 @@ Cc: Guenter Roeck <linux@roeck-us.net>, Palmer Dabbelt <palmer@dabbelt.com>,
  Ben Dooks <ben.dooks@codethink.co.uk>, Weiwei Li <liwei1518@gmail.com>,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 05/11] hw/sd/sdcard: Implement SPI R2 return value
-Date: Thu, 31 Jul 2025 23:28:00 +0200
-Message-ID: <20250731212807.2706-6-philmd@linaro.org>
+Subject: [PATCH-for-10.1 06/11] hw/sd/sdcard: Use complete SEND_OP_COND
+ implementation in SPI mode
+Date: Thu, 31 Jul 2025 23:28:01 +0200
+Message-ID: <20250731212807.2706-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250731212807.2706-1-philmd@linaro.org>
 References: <20250731212807.2706-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,114 +108,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In SPI mode, R2 is a 2-byte value.
-Implement in spi_response_r2_make() and
-return SPI R2 in the SEND_STATUS commands.
+While spi_cmd_SEND_OP_COND() is incomplete, sd_cmd_SEND_OP_COND()
+is, except it doesn't return the correct value in SPI mode.
+Correct and use, removing the need for spi_cmd_SEND_OP_COND().
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
 Fixes: 775616c3ae8 ("Partial SD card SPI mode support")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sd.c     | 36 +++++++++++++++++++++++++++++++++---
- hw/sd/ssi-sd.c |  3 ---
- 2 files changed, 33 insertions(+), 6 deletions(-)
+ hw/sd/sd.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index f7c231d9f30..078bc5ef091 100644
+index 078bc5ef091..d6493d44734 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -61,6 +61,7 @@
- typedef enum {
-     sd_r0 = 0,    /* no response */
-     sd_r1,        /* normal response command */
-+    spi_r2,       /* STATUS */
-     sd_r2_i,      /* CID register */
-     sd_r2_s,      /* CSD register */
-     sd_r3,        /* OCR register */
-@@ -247,6 +248,7 @@ static const char *sd_response_name(sd_rsp_type_t rsp)
-     static const char *response_name[] = {
-         [sd_r0]     = "RESP#0 (no response)",
-         [sd_r1]     = "RESP#1 (normal cmd)",
-+        [spi_r2]    = "RESP#2 (STATUS reg)",
-         [sd_r2_i]   = "RESP#2 (CID reg)",
-         [sd_r2_s]   = "RESP#2 (CSD reg)",
-         [sd_r3]     = "RESP#3 (OCR reg)",
-@@ -757,6 +759,24 @@ static size_t sd_response_r1_make(SDState *sd, uint8_t *response, size_t respsz)
-     return rsplen;
+@@ -1402,14 +1402,6 @@ static sd_rsp_type_t sd_cmd_GO_IDLE_STATE(SDState *sd, SDRequest req)
+     return sd_is_spi(sd) ? sd_r1 : sd_r0;
  }
  
-+static size_t spi_response_r2_make(SDState *sd, uint8_t *resp, size_t respsz)
-+{
-+    sd_response_r1_make(sd, resp, respsz);
-+
-+    assert(respsz >= 2);
-+    resp[1]  = FIELD_EX32(sd->card_status, CSR, CARD_IS_LOCKED) << 0;
-+    resp[1] |= (FIELD_EX32(sd->card_status, CSR, LOCK_UNLOCK_FAILED)
-+                || FIELD_EX32(sd->card_status, CSR, WP_ERASE_SKIP)) << 1;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, ERROR) << 2;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, CC_ERROR) << 3;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, CARD_ECC_FAILED) << 4;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, WP_VIOLATION) << 5;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, ERASE_PARAM) << 6;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, OUT_OF_RANGE) << 7;
-+
-+    return 2;
-+}
-+
- static size_t sd_response_r3_make(SDState *sd, uint8_t *response, size_t respsz)
+-/* CMD1 */
+-static sd_rsp_type_t spi_cmd_SEND_OP_COND(SDState *sd, SDRequest req)
+-{
+-    sd->state = sd_transfer_state;
+-
+-    return sd_r1;
+-}
+-
+ /* CMD2 */
+ static sd_rsp_type_t sd_cmd_ALL_SEND_CID(SDState *sd, SDRequest req)
  {
-     size_t rsplen = 4;
-@@ -1633,7 +1653,7 @@ static sd_rsp_type_t sd_cmd_SEND_STATUS(SDState *sd, SDRequest req)
+@@ -2034,6 +2026,9 @@ static sd_rsp_type_t sd_cmd_SEND_OP_COND(SDState *sd, SDRequest req)
+         sd->state = sd_ready_state;
      }
  
-     if (sd_is_spi(sd)) {
--        return sd_r2_s;
-+        return spi_r2;
-     }
- 
-     return sd_req_rca_same(sd, req) ? sd_r1 : sd_r0;
-@@ -1947,8 +1967,14 @@ static sd_rsp_type_t sd_acmd_SET_BUS_WIDTH(SDState *sd, SDRequest req)
- /* ACMD13 */
- static sd_rsp_type_t sd_acmd_SD_STATUS(SDState *sd, SDRequest req)
- {
--    return sd_cmd_to_sendingdata(sd, req, 0,
--                                 sd->sd_status, sizeof(sd->sd_status));
-+    sd_rsp_type_t rsp;
-+
-+    rsp = sd_cmd_to_sendingdata(sd, req, 0,
-+                                sd->sd_status, sizeof(sd->sd_status));
-+    if (sd_is_spi(sd) && rsp != sd_illegal) {
-+        return spi_r2;
++    if (sd_is_spi(sd)) {
++        return sd_r1;
 +    }
-+    return rsp;
+     return sd_r3;
  }
  
- /* ACMD22 */
-@@ -2251,6 +2277,10 @@ send_response:
-         rsplen = sd_response_r1_make(sd, response, respsz);
-         break;
- 
-+    case spi_r2:
-+        rsplen = spi_response_r2_make(sd, response, respsz);
-+        break;
-+
-     case sd_r2_i:
-         assert(respsz >= 16);
-         memcpy(response, sd->cid, sizeof(sd->cid));
-diff --git a/hw/sd/ssi-sd.c b/hw/sd/ssi-sd.c
-index 79b6d34a489..ace155186cf 100644
---- a/hw/sd/ssi-sd.c
-+++ b/hw/sd/ssi-sd.c
-@@ -158,9 +158,6 @@ static uint32_t ssi_sd_transfer(SSIPeripheral *dev, uint32_t val)
-                                          longresp, sizeof(longresp));
-             DPRINTF("CMD%d arg 0x%08x = %d\n", s->cmd, request.arg, s->arglen);
-             assert(s->arglen > 0);
--                /* CMD13 returns a 2-byte statuse work. Other commands
--                   only return the first byte.  */
--                s->arglen = (s->cmd == 13) ? 2 : 1;
-             memcpy(s->response, longresp, s->arglen);
- 
-             /* handle R1b (busy signal) */
+@@ -2580,7 +2575,7 @@ static const SDProto sd_proto_spi = {
+     .name = "SPI",
+     .cmd = {
+         [0]  = {0,  sd_spi, "GO_IDLE_STATE", sd_cmd_GO_IDLE_STATE},
+-        [1]  = {0,  sd_spi, "SEND_OP_COND", spi_cmd_SEND_OP_COND},
++        [1]  = {0,  sd_spi, "SEND_OP_COND", sd_cmd_SEND_OP_COND},
+         [5]  = {9,  sd_spi, "IO_SEND_OP_COND", sd_cmd_optional},
+         [6]  = {10, sd_spi, "SWITCH_FUNCTION", sd_cmd_SWITCH_FUNCTION},
+         [8]  = {0,  sd_spi, "SEND_IF_COND", sd_cmd_SEND_IF_COND},
+@@ -2616,7 +2611,7 @@ static const SDProto sd_proto_spi = {
+         [13] = {8,  sd_spi, "SD_STATUS", sd_acmd_SD_STATUS},
+         [22] = {8,  sd_spi, "SEND_NUM_WR_BLOCKS", sd_acmd_SEND_NUM_WR_BLOCKS},
+         [23] = {8,  sd_spi, "SET_WR_BLK_ERASE_COUNT", sd_acmd_SET_WR_BLK_ERASE_COUNT},
+-        [41] = {8,  sd_spi, "SEND_OP_COND", spi_cmd_SEND_OP_COND},
++        [41] = {8,  sd_spi, "SEND_OP_COND", sd_cmd_SEND_OP_COND},
+         [42] = {8,  sd_spi, "SET_CLR_CARD_DETECT", sd_acmd_SET_CLR_CARD_DETECT},
+         [51] = {8,  sd_spi, "SEND_SCR", sd_acmd_SEND_SCR},
+     },
 -- 
 2.49.0
 
