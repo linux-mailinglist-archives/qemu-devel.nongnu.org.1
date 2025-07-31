@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061EEB1784D
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 23:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 420BAB17848
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 23:39:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhb0R-0002Lu-Qg; Thu, 31 Jul 2025 17:40:08 -0400
+	id 1uhazO-0000LY-6A; Thu, 31 Jul 2025 17:39:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhaiu-0006OA-Lk
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:22:00 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1uhalu-0002dw-Rm
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:25:11 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhair-0006eV-UN
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:21:59 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-748feca4a61so146594b3a.3
- for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 14:21:57 -0700 (PDT)
+ id 1uhalq-00070h-Bd
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 17:25:04 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-76bdc73f363so127895b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 14:24:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753996916; x=1754601716; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1753997093; x=1754601893; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=RFA6186/i4KLp1+T6vxVdoG2ALb/XuPkvZRmSKuCI0o=;
- b=hIm668WA4UoaBPLh0wnonb0K8jNcyww+vaFaf/P3BtRJK8gvLdn6I8Gb05llbTUeW0
- PsPISVDB67MrbOiwVMTp3fk2ueQo/OR4iHlo6n8RFyeuLJw2/qyJA/UHYyrKKNF+Nlef
- 4WK0lW9Q8mgjPOvY2SZNtFHpAsjp6scw184nKm3ycN0TxsnRdd8lhcP4Yf7YQgeOPyEZ
- bM6Pt30pymTH0YPIYPBIaRV1Dm4ZxmgqxTAAMkm5Og5GW1q/TTqQHhkvX7crL2cUNWgY
- 7TIIJXmIeMNcrqGG5lkBXI815bUelVizZ6oBybjPGREQ5sWxiRl1TXYDK37S/pi/uH9q
- HQMw==
+ bh=Suv6Uzvt+6KqjJHdtQGzIvFcCvmXjx4lEi0/gTE00+g=;
+ b=OBbBPHCEGEeazUi+ytrHdhm3jwWmLdZ8+8UBvnUVm3vSCHxA+yvgxPXITVMTKGIEMl
+ HjRQ+5s1lgXwh4+5gLUkJ9spNGt6UIRMEvFmvqdxB+eke8FN11pOxct0sz8k+IhNzhEu
+ 3yjb42y8FjMtjAn7gjECHy5V3Djh/ZDtaFbPYV2IUaGJeTryUWSPgdO1pYGAvKHX44HM
+ Bv8x0TwQlYPv2QEx9zrNebJjHi+so4Z5Rifu4x+bBDRYJTMQAqbizeVOWnZsftgyTBaO
+ bQWCA4E4lwILPSLy85V2CVHSlphNi0bDt3g2lF4HukNW1nbxbflY7u3knrZ2k8BmLJ6r
+ TOTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753996916; x=1754601716;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1753997093; x=1754601893;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RFA6186/i4KLp1+T6vxVdoG2ALb/XuPkvZRmSKuCI0o=;
- b=D5KdxPpscfLJEbpI4C0Pcwq8fdern1wZoIE5UTGL4/JPDTu/j9LAkinXfEqF8kvbC7
- DGkcO8+plqH+k4CQXzSJ/mr0SHwD5Vp14VMi95mQQAazaxdjmUGdZPmScSe9MdNUvw5V
- rwPk1frADx3+6MquMkc7zVMAmSKRK1exwTb8dcmKaeCyIYMWOvlK75rAXckJxDRkgVtd
- I0yHROpNhi1ClPHx4qvgSftRbC+Nkk2t1F/YoZC6X9oknZoBTCd8OgKwiReiNlGlN19s
- ANj4Xte/b2D1N10PhJ2k1Q66uL9FbP6NrXWNRMnEYF/sgxlc1od96Gd2MwI/YnApsw/s
- DyEg==
+ bh=Suv6Uzvt+6KqjJHdtQGzIvFcCvmXjx4lEi0/gTE00+g=;
+ b=mkyOzfSTjCPaC8RREFtNiVT87Y7OuiaNC6OWFU9bB58u9cMy7Mr2FThc+mi1Kp8mub
+ f7M4yTfLo1uoqLa9REy8nzes444+Z6D5fHY+Ic6ISp5CjIQWapGBUXOg/dE2pLRpnsCB
+ k4WDKT1Euielv0IFSmML0xhHm5U/teVO/eF0eBDm2KjSWenlRIiHmJ4zXqW4y1egJ/6k
+ i70sPLtj/xCfHG8AXqhiGwTvieVL2G2QD3QThAneMzK9B3PiAV7Df10HV+LybbTXy/yc
+ H/cBbcTvOQQ9+bS4atCMRVYa3n7O4jGuaZGvO5FwZb7sfp6sidorAjKWD3bUotN229gg
+ f6lw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUgKkjYwsSXbAvdqTopxDSYyb5k6BqxpKfTbVwUjtsb6/G7SS904+UqkZDEud0q2VWIMlDRCTkaGGZZ@nongnu.org
-X-Gm-Message-State: AOJu0YyrffAs6j8hA7po6jBa3iyv2lW8W2fecbGi23K73kvB/K50QOio
- FyX1kIzeyGYhmbBnVWS3dTT1XpYI8AqUitwjS0GKmDgzDxE/MOZJan4E+tzJkzWFuDQ=
-X-Gm-Gg: ASbGncsJkke9AyMaUOdQegTIagq0fS3lfjtcqTF3XwipM5y3Z6BkHz+6UFunhV8lNRz
- KgF9H1bYH33Di1lqT4+oXwbj/6NrDO5UDG3rPXpTWQ1G7xtOMDMdCJMSefMEsxt9ym/Xds23STs
- XF8qV8JfKwGDipcvY/Y2DzqHel0DGfHZUqsSCBA3/MvpmtGCfp+Qz3YUHMl+SSjOFvvGLe18zPk
- YcRMwmiUXY9jV8m/MszcoxKegFvqfk37KT3J4yPWWMDYfunpnieC4V0JNfIYlQd6/F4yafwF3hv
- Kn/nipDLJ5t2Jy39ltsCbP0P1PFVcSi/3SYQEjSoFAAnafqYPbPOASrlyPEQtMiAnkr19atPIPk
- Fmy67H92bwRFL2J9AiS2LQ7GIs9cR2kW4EKQ=
-X-Google-Smtp-Source: AGHT+IFbqQtjcRDPShJi+eUr3eRfdEYo/RZeMmll0w5f/mQToK34K/bd6E8E/Orns/unyli65sRXtA==
-X-Received: by 2002:a05:6a21:338a:b0:239:2bcd:a08c with SMTP id
- adf61e73a8af0-23dc0e1efafmr14811880637.28.1753996916210; 
- Thu, 31 Jul 2025 14:21:56 -0700 (PDT)
+ AJvYcCVDN+tKJnPS+5JGjHe9QeP4eISWNk5pYomBOLbUi0TAupMY4pd5w9bQ/AOFBL2nI7mg7WMD/9FFocAs@nongnu.org
+X-Gm-Message-State: AOJu0Yw90wGtMBxFSjIE7TUGdgAJEplSE9/5cyLgZiJOhyvuL5PKSvu6
+ m7LQzfQZybo0kSxC7ZtHgAlHkv+/Cau4zzLNIMGgAZJl8pfSQbmABXxdpeFUXR/3D4M=
+X-Gm-Gg: ASbGncuF9TvEZnhu1AObQt8ET8HGQsgDFigvu043gYSKaGx0w0oJPL5oLpb2dvexvQA
+ iR7yCecEXb32psBWM9AFu9SGilXunTscv2nHnO2QTxvFe7yBAARZiSzvWlliBAOrmapluPZ5rKt
+ 3GDscKy4QbcSzoj++TA7+TWdnyCOhQV6PbV937f3AkV+2Cq4CSdW3VNkqD1zjKPLR5CL/R02bk+
+ tEYMAoXnhZidvrzgq/oKUxqVDN/s+xUqoEhw8HViLgzImNKRRhvUgTfdBkOopO13jooLc9KN/TS
+ JZOyhwLaVVxg+jfh9qBzD5k+OzMyY7lPDKoYNKftA0/X+IZxP/cxv/Vu9/JJfmHClVbnNVxX/Vc
+ BMba1hOMnyWrwkGusUieBzLdBrqvPCDDJ8M4=
+X-Google-Smtp-Source: AGHT+IHwgBiHDB9tLO3aFYxd9+BXzRTGfbM773O6s/OK+tSo7qzSnpTq5IPYo4jHueFpeUbmto7WoQ==
+X-Received: by 2002:a05:6a20:734b:b0:232:a762:def with SMTP id
+ adf61e73a8af0-23dc0e585c5mr14713607637.30.1753997092740; 
+ Thu, 31 Jul 2025 14:24:52 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bcce6f6d8sm2468307b3a.2.2025.07.31.14.21.55
+ 41be03b00d2f7-b422b7b9377sm2261626a12.16.2025.07.31.14.24.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Jul 2025 14:21:55 -0700 (PDT)
-Message-ID: <006a95c0-7a44-43db-96f8-271e5dcd7523@linaro.org>
-Date: Thu, 31 Jul 2025 14:21:55 -0700
+ Thu, 31 Jul 2025 14:24:52 -0700 (PDT)
+Message-ID: <a8cab893-4859-483a-9b63-e42992ab0c0c@linaro.org>
+Date: Thu, 31 Jul 2025 14:24:51 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-10.1] target/arm: Reinstate bogus AArch32 DBGDTRTX
- register for migration compat
+Subject: Re: [PATCH 50/82] target/arm: Split {arm,core}_user_mem_index
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>
-References: <20250731134338.250203-1-peter.maydell@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250731134338.250203-1-peter.maydell@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+References: <20250727080254.83840-1-richard.henderson@linaro.org>
+ <20250727080254.83840-51-richard.henderson@linaro.org>
+ <7ffd2eeb-ae68-43a7-a45a-ec05ece0b71b@linaro.org>
+In-Reply-To: <7ffd2eeb-ae68-43a7-a45a-ec05ece0b71b@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,35 +103,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/31/25 6:43 AM, Peter Maydell wrote:
-> In commit 655659a74a we fixed some bugs in the encoding of the
-> Debug Communications Channel registers, including that we were
-> incorrectly exposing an AArch32 register at p14, 3, c0, c5, 0.
+On 7/31/25 2:06 PM, Pierrick Bouvier wrote:
+> On 7/27/25 1:02 AM, Richard Henderson wrote:
+>> Separate current to unpriv and arm to core mmu conversions
+>> into two separate functions.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>    target/arm/tcg/translate-a64.c | 24 +++++++++++++++---------
+>>    1 file changed, 15 insertions(+), 9 deletions(-)
 > 
-> Unfortunately removing a register is a break of forwards migration
-> compatibility for TCG, because we will fail the migration if the
-> source QEMU passes us a cpreg which the destination QEMU does not
-> have.  We don't have a mechanism for saying "it's OK to ignore this
-> sysreg in the inbound data", so for the 10.1 release reinstate the
-> incorrect AArch32 register.
+> If I followed correctly, we replaced all calls to get_a64_user_mem_index
+> by core_user_mem_index. Thus, why not rename directly the function
+> get_a64_user_mem_index in core_user_mem_index?
 > 
-> (We probably have had other cases in the past of breaking migration
-> compatibility like this, but we didn't notice because we didn't test
-> and in any case not that many people care about TCG migration
-> compatibility.  KVM migration compat is not affected because for KVM
-> we treat the kernel as the source of truth for what system registers
-> are present.)
-> 
-> Fixes: 655659a74a36b ("target/arm: Correct encoding of Debug Communications Channel registers")
-> Reported-by: Fabiano Rosas <farosas@suse.de>
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> Fabiano's suggestion for a migration compat mechanism is
-> https://patchew.org/QEMU/20250730205245.2118-1-farosas@suse.de/20250730205245.2118-2-farosas@suse.de/
-> ---
->   target/arm/debug_helper.c | 29 +++++++++++++++++++++++++++++
->   1 file changed, 29 insertions(+)
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Patch 54 uses arm_user_mem_index.
+
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> 
 
 
