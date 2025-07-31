@@ -2,51 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7D3B1B4F1
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 15:33:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4348B17711
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 22:20:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujHmN-00087v-Qy; Tue, 05 Aug 2025 09:32:37 -0400
+	id 1uhZkM-0005dn-Q4; Thu, 31 Jul 2025 16:19:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <macbookpro@macbookpros-MacBook-Pro.local>)
- id 1ujHmF-00080u-FR
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 09:32:27 -0400
-Received: from [205.220.128.102] (helo=macbookpros-MacBook-Pro.local)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <macbookpro@macbookpros-MacBook-Pro.local>)
- id 1ujHmA-0007xj-PN
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 09:32:27 -0400
-Received: by macbookpros-MacBook-Pro.local (Postfix, from userid 501)
- id 16B14B3D8ACF; Thu, 31 Jul 2025 20:42:42 +0300 (EEST)
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- startergo <startergo@protonmail.com>, Kamay Xutax <admin@xutaxkamay.com>
-Subject: [PATCH] ui/sdl2: Add SDL clipboard support
-Date: Thu, 31 Jul 2025 20:42:42 +0300
-Message-ID: <20250731174242.65816-1-startergo@protonmail.com>
-X-Mailer: git-send-email 2.50.1
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uhY2s-00080p-M9
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 14:30:26 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uhY2q-0004KU-24
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 14:30:26 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-76bc55f6612so1241650b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 11:30:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1753986621; x=1754591421; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=B+t1EESDFAbGOqAdEQWLaXG6wL7K4P09+fmZeZbGBSg=;
+ b=rldRbzaDQHeX+3JsJjilsIvaE80iw9aDHyK9lsh04RIBwGVz8jbH9DlkhRDFMiqvUq
+ gyF9Ae4E1jqt4xNF/A0/mjDrSq+A2XEUF5SbOnfEZU8qbgG1+UEAl5iEDR3Fr/HscNDd
+ MgOzqtVnPSa3eRQjK2SwucEroL+a3ZE5YA2d1+9TbWHrvHTZhEE9+TnukUrZtjlQIo0N
+ 7JE69GcpkGaCnmntOzViVmA+KpgvIGBoczSTLL1a+dK7u6BP51OvAEtsgSTE46Uh+HKK
+ stUqFdPL7wytPa8x2q8veHckpiDx7sZKdAYKR5D6e94kbvu+5XEmEk7b44y8bEXnA8EB
+ owhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753986621; x=1754591421;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=B+t1EESDFAbGOqAdEQWLaXG6wL7K4P09+fmZeZbGBSg=;
+ b=prUYAQnOy4bAh7D+0C+PZhqejZUydph5+7V1swjuLPNrujQzgnl82to9nwhuZpyHwz
+ ciP24epyXFlrgrm6i2wIjcnCilVfXc7PEJXj8devjCV+Ept3TaSmRhfR0FpjbZFZf0cG
+ uaoeaMRLsuD5o+t80Q+bLPZMIj9zQMBI6b3xy8SK3HrTXILZM3OXgnoVnJNMFfNh/QVX
+ zJiahZFpun/oYdEIVORGtO8tBZCo1mUO+mU07LVlaeVS5zX3G1zcitl7uO1KxZ9PgEkA
+ sfSX1Rc/Vjx9y+4NH+ZakE0OGExeHD0IEwukk5+5FqsT2Q/1U2NW86C0Aq5ylMEqEgio
+ yBHg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWAQ0N82HbRJhtp7zVE98oGWV9eEZGjYk/iKZRxQvs3Gg32URPh30iGqH8dTkRx1w7LXHLyqwgXx7YR@nongnu.org
+X-Gm-Message-State: AOJu0YzD0nWZqBFDQzD8LTfjEy9HmBtE4zfjHXYBafPbDpCyyYjlk/Ng
+ 72tvmGsXrsVnEiIk3KYtT5U9JeIzDSc7/wc4q7XvdzopXOWFFunWnxrGqG+Gc/8u11o=
+X-Gm-Gg: ASbGncvcXFlOUjU6iqNIUu1d5loWdCRR5IcmY9VBwJS7xRcp7Mub+FShzwgIO+pa8H5
+ mMrRckqPPDx2s2pcnRZEZWeqlB5WhSlZ4SxsI3Stl9GzM8X1NhnK5JLUW42g+q4/QP4r4yu2UyT
+ fhsuO7zhCkzGfv4HRE3IDk1QY69nfqXO0qItHtdbCUy9SNLaF3V6GKmKAkt1Bv7n3s5S8xiNtgy
+ 0wicYr20qZg2Qpk7ed7eqrx1apI0tpYlrAhd22cWLIdKBvvoaPeunV/ZndZ7ej4Sj9G/FI2r80z
+ CYBmPWRXQEEZkAG3UzxCt2CDz0+junBYPKM8nK0wzqwZxRz5PCFkF6JZ9x6V2vpypJhg1uEl+C0
+ 2BjPlUDa4FOfc67XSPXDyLo5htnbSgmi+VEw=
+X-Google-Smtp-Source: AGHT+IFRNdkBVeQRtr/IbDbG8Y6h9rmkiWtkGEkY3lZz9y2BXurDo+SC2a9hE+V2Ahu9VWIAVap5OQ==
+X-Received: by 2002:a05:6a00:2382:b0:736:4e14:8ec5 with SMTP id
+ d2e1a72fcca58-76bcd398e77mr3946064b3a.11.1753986620990; 
+ Thu, 31 Jul 2025 11:30:20 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-76bccfea38csm2203147b3a.128.2025.07.31.11.30.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Jul 2025 11:30:20 -0700 (PDT)
+Message-ID: <25fe9c70-be00-4884-8d91-53dfff745cb6@linaro.org>
+Date: Thu, 31 Jul 2025 11:30:19 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 205.220.128.102 (deferred)
-Received-SPF: none client-ip=205.220.128.102;
- envelope-from=macbookpro@macbookpros-MacBook-Pro.local;
- helo=macbookpros-MacBook-Pro.local
-X-Spam_score_int: 23
-X-Spam_score: 2.3
-X-Spam_bar: ++
-X-Spam_report: (2.3 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, NO_DNS_FOR_FROM=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_NONE=0.001, SPOOFED_FREEMAIL=0.001,
- SPOOFED_FREEMAIL_NO_RDNS=0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] single-binary: compile hw/intc/arm* files once
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20250725201906.19533-1-pierrick.bouvier@linaro.org>
+ <bfdd8821-a7f7-4648-a389-124426da6d15@linaro.org>
+ <144f0930-af30-42b0-849c-99242d3f09ee@linaro.org>
+ <CAFEAcA-ycO=AO8UO+X3f6pw34J=iFwW3dpPyMXKm5BzJ11dt5Q@mail.gmail.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <CAFEAcA-ycO=AO8UO+X3f6pw34J=iFwW3dpPyMXKm5BzJ11dt5Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,312 +102,124 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  startergo <startergo@protonmail.com>
-From:  startergo via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement bidirectional clipboard integration between QEMU and host
-system when using the SDL display backend. This allows seamless
-copy-paste operations between the guest and host environments.
+On 7/31/25 9:23 AM, Peter Maydell wrote:
+> On Mon, 28 Jul 2025 at 20:34, Pierrick Bouvier
+> <pierrick.bouvier@linaro.org> wrote:
+>> This old commit (7702e47c2) was the origin of having interrupt related
+>> code in a generic folder, but I don't really understand the rationale
+>> behind it to be honest. It seems to be an exception regarding all the
+>> rest of the codebase, thus the idea to bring back things where they belong.
+> 
+> Most devices are both (a) architecture specific and (b) a particular
+> kind of device (UART, ethernet controller, interrupt controller, etc).
+> The nature of a filesystem hierarchy is that we can't file them
+> in both ways at once. We picked "sort them by kind", which is why
+> all the interrupt controllers live in hw/intc, all the UARTS in
+> hw/char, ethernet controllers in hw/net, and so on. In this
+> breakdown of the world, hw/$ARCH is supposed to be for board models
+> and SoC models only.
+> 
+> The GICv3 and the NVIC are odd, because they are very closely
+> coupled to the CPU. (A few other interrupt controllers are also
+> like this, but many are not: for instance the GICv2 is a distinct
+> bit of hardware that communicates with the CPU over the IRQ and
+> FIQ lines only.)
+> 
+> One of my post-implementation regrets about GICv3 is that we
+> didn't really get the split between the GICv3 proper and its
+> CPU interface right. In hardware the GICv3 is an external device
+> and the CPU interface is part of the CPU, with a defined
+> protocol for talking between them. In QEMU we put all the
+> implementation of this in hw/intc/, and the code in arm_gicv3_cpuif.c
+> does some ad-hoc installing of hooks into the CPU.
+> 
+> For the GICv5 I'm trying to structure this in a cleaner way that
+> is closer to the hardware structure, so the CPU interface
+> will be code in target/arm/, with a clearly defined set of
+> functions that it calls to talk to the rest of the GIC that
+> lives in hw/intc/. (This would be too much upheaval to
+> retrofit to GICv3 though, I think.)
+> 
+> In a green-field design of M-profile we might have made
+> the NVIC be code in target/arm, and instead of a separate
+> device have the CPU object itself do this code. But at the
+> time it was written we didn't have the same QOM device
+> class setup we did at the time, and IIRC CPU objects
+> weren't a subclass of device.
+> 
 
-Features:
-- Bidirectional clipboard sync (guest ↔ host)
-- Async clipboard request handling to prevent blocking
-- Self-update detection to avoid clipboard manager conflicts
-- Configurable via --enable-sdl-clipboard build option
-- Text-only clipboard support (following existing QEMU patterns)
+Thanks for your answer Peter, it makes more clear for me what is the 
+rationale between sorting the devices this way. It seems the root issue 
+is the lack of proper interfacing between target cpu, and devices 
+relying on it.
 
-The implementation follows the same patterns used by the existing
-GTK and VNC clipboard implementations, integrating with QEMU's
-clipboard subsystem through QemuClipboardPeer.
+I don't expect any silver bullet to solve this, but we still need to 
+move forward, so I'll share some options below.
 
-Tested on macOS with successful build and runtime clipboard
-functionality verification.
+>> As well, I would prefer having a clean build system more than a clear
+>> filesystem structure, considering it's quite easy to jump into any
+>> definition automatically with your work editor nowadays, vs understand a
+>> meson.build file full of tricks and implicit dependencies where no tool
+>> can help you.
+> 
+> On the other hand, I prefer to have the source files in
+> a clear structure, because then you know where to find
+> things, and command line tools like grep etc are easier
+> to use. (I don't use editor jump-to-definition: I've never
+> felt the need to try to set it up.) Build system files on the
+> other hand are things that most people don't need to look at
+> or do more than very simple "add another file in the same pattern
+> as the existing ones", so it's not too bad if they accumulate
+> a little complexity.
+>
 
-Co-authored-by: Kamay Xutax <admin@xutaxkamay.com>
-Signed-off-by: startergo <startergo@protonmail.com>
----
- include/ui/sdl2.h   |  12 ++++
- meson.build         |   3 +
- meson_options.txt   |   2 +
- ui/meson.build      |   3 +
- ui/sdl2-clipboard.c | 154 ++++++++++++++++++++++++++++++++++++++++++++
- ui/sdl2.c           |   9 +++
- 6 files changed, 183 insertions(+)
- create mode 100644 ui/sdl2-clipboard.c
+This maybe explains why QEMU is a bit messy regarding its build system 
+architecture, because people are not interested into it. IMHO it's a 
+mistake, because a clean build system architecture will usually force a 
+clean software architecture, at least in terms of components and 
+interfacing. This is what we see right now, with some of the fixes from 
+the single binary being to extract proper API with fixed types, that 
+allow components to communicate in a proper way.
+Complexity does not help neither, because it makes meson build files 
+hard to understand, and probably push back a lot of people from looking 
+at this. It's sad considering meson first objective is precisely to 
+limit the complexity of build systems.
 
-diff --git a/include/ui/sdl2.h b/include/ui/sdl2.h
-index dbe6e3d973..0cadbe8c1c 100644
---- a/include/ui/sdl2.h
-+++ b/include/ui/sdl2.h
-@@ -21,6 +21,10 @@
- # include <SDL_image.h>
- #endif
- 
-+#ifdef CONFIG_SDL_CLIPBOARD
-+#include "ui/clipboard.h"
-+#endif
-+
- #include "ui/kbd-state.h"
- #ifdef CONFIG_OPENGL
- # include "ui/egl-helpers.h"
-@@ -45,6 +49,9 @@ struct sdl2_console {
-     bool gui_keysym;
-     SDL_GLContext winctx;
-     QKbdState *kbd;
-+#ifdef CONFIG_SDL_CLIPBOARD
-+    QemuClipboardPeer cbpeer;
-+#endif
- #ifdef CONFIG_OPENGL
-     QemuGLShader *gls;
-     egl_fb guest_fb;
-@@ -97,4 +104,9 @@ void sdl2_gl_scanout_texture(DisplayChangeListener *dcl,
- void sdl2_gl_scanout_flush(DisplayChangeListener *dcl,
-                            uint32_t x, uint32_t y, uint32_t w, uint32_t h);
- 
-+#ifdef CONFIG_SDL_CLIPBOARD
-+void sdl2_clipboard_init(struct sdl2_console *scon);
-+void sdl2_clipboard_handle_request(struct sdl2_console *scon);
-+#endif
-+
- #endif /* SDL2_H */
-diff --git a/meson.build b/meson.build
-index 41f68d3806..4a37df9669 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1596,6 +1596,8 @@ else
-   sdl_image = not_found
- endif
- 
-+have_sdl_clipboard = sdl.found() and get_option('sdl_clipboard')
-+
- rbd = not_found
- if not get_option('rbd').auto() or have_block
-   librados = cc.find_library('rados', required: get_option('rbd'))
-@@ -2511,6 +2513,7 @@ config_host_data.set('CONFIG_RELOCATABLE', get_option('relocatable'))
- config_host_data.set('CONFIG_SAFESTACK', get_option('safe_stack'))
- config_host_data.set('CONFIG_SDL', sdl.found())
- config_host_data.set('CONFIG_SDL_IMAGE', sdl_image.found())
-+config_host_data.set('CONFIG_SDL_CLIPBOARD', have_sdl_clipboard)
- config_host_data.set('CONFIG_SECCOMP', seccomp.found())
- if seccomp.found()
-   config_host_data.set('CONFIG_SECCOMP_SYSRAWRC', seccomp_has_sysrawrc)
-diff --git a/meson_options.txt b/meson_options.txt
-index 59d973bca0..be2cba3a30 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -212,6 +212,8 @@ option('sdl', type : 'feature', value : 'auto',
-        description: 'SDL user interface')
- option('sdl_image', type : 'feature', value : 'auto',
-        description: 'SDL Image support for icons')
-+option('sdl_clipboard', type : 'boolean', value : true,
-+       description: 'SDL clipboard support')
- option('seccomp', type : 'feature', value : 'auto',
-        description: 'seccomp support')
- option('smartcard', type : 'feature', value : 'auto',
-diff --git a/ui/meson.build b/ui/meson.build
-index 35fb04cadf..6d1bf3477e 100644
---- a/ui/meson.build
-+++ b/ui/meson.build
-@@ -126,6 +126,9 @@ if sdl.found()
-     'sdl2-input.c',
-     'sdl2.c',
-   ))
-+  if have_sdl_clipboard
-+    sdl_ss.add(files('sdl2-clipboard.c'))
-+  endif
-   sdl_ss.add(when: opengl, if_true: files('sdl2-gl.c'))
-   sdl_ss.add(when: x11, if_true: files('x_keymap.c'))
-   ui_modules += {'sdl' : sdl_ss}
-diff --git a/ui/sdl2-clipboard.c b/ui/sdl2-clipboard.c
-new file mode 100644
-index 0000000000..e50ff11d5a
---- /dev/null
-+++ b/ui/sdl2-clipboard.c
-@@ -0,0 +1,154 @@
-+/*
-+ * SDL UI -- clipboard support (improved async version)
-+ *
-+ * Copyright (C) 2023 Kamay Xutax <admin@xutaxkamay.com>
-+ * Copyright (C) 2025 startergo <startergo@protonmail.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "ui/console.h"
-+#include "ui/clipboard.h"
-+#include "ui/sdl2.h"
-+#include "qemu/log.h"
-+
-+#ifdef CONFIG_SDL_CLIPBOARD
-+
-+/* Track pending clipboard requests to handle async data */
-+typedef struct {
-+    struct sdl2_console *scon;
-+    QemuClipboardInfo *info;
-+    QemuClipboardType type;
-+} SDLClipboardRequest;
-+
-+static SDLClipboardRequest *pending_request = NULL;
-+
-+static void sdl2_clipboard_clear_pending(void)
-+{
-+    if (pending_request) {
-+        if (pending_request->info) {
-+            qemu_clipboard_info_unref(pending_request->info);
-+        }
-+        g_free(pending_request);
-+        pending_request = NULL;
-+    }
-+}
-+
-+static void sdl2_clipboard_notify(Notifier *notifier, void *data)
-+{
-+    QemuClipboardNotify *notify = data;
-+    struct sdl2_console *scon =
-+        container_of(notifier, struct sdl2_console, cbpeer.notifier);
-+    bool self_update = notify->info->owner == &scon->cbpeer;
-+    const char *text_data;
-+    size_t text_size;
-+
-+    switch (notify->type) {
-+    case QEMU_CLIPBOARD_UPDATE_INFO:
-+        {
-+            /* Skip self-updates to avoid clipboard manager conflicts */
-+            if (self_update) {
-+                return;
-+            }
-+
-+            if (!notify->info->types[QEMU_CLIPBOARD_TYPE_TEXT].available) {
-+                return;
-+            }
-+
-+            /* Check if this is completion of our pending request */
-+            if (pending_request && pending_request->info == notify->info && 
-+                pending_request->type == QEMU_CLIPBOARD_TYPE_TEXT) {
-+                sdl2_clipboard_clear_pending();
-+            }
-+
-+            /* Check if data is available, request asynchronously if not */
-+            if (!notify->info->types[QEMU_CLIPBOARD_TYPE_TEXT].data) {
-+                if (!pending_request) {
-+                    pending_request = g_new0(SDLClipboardRequest, 1);
-+                    pending_request->scon = scon;
-+                    pending_request->info = qemu_clipboard_info_ref(notify->info);
-+                    pending_request->type = QEMU_CLIPBOARD_TYPE_TEXT;
-+                    qemu_clipboard_request(notify->info, QEMU_CLIPBOARD_TYPE_TEXT);
-+                }
-+                return;
-+            }
-+
-+            /* Process available data */
-+            text_size = notify->info->types[QEMU_CLIPBOARD_TYPE_TEXT].size;
-+            if (text_size == 0) {
-+                return;
-+            }
-+
-+            text_data = (const char *)notify->info->types[QEMU_CLIPBOARD_TYPE_TEXT].data;
-+            
-+            /* Ensure null termination for SDL clipboard */
-+            g_autofree char *text = g_strndup(text_data, text_size);
-+            if (text && text[0] != '\0') {
-+                SDL_SetClipboardText(text);
-+            } else if (!text) {
-+                qemu_log_mask(LOG_GUEST_ERROR, 
-+                              "SDL clipboard: Failed to allocate memory for clipboard text\n");
-+            }
-+            break;
-+        }
-+    case QEMU_CLIPBOARD_RESET_SERIAL:
-+        sdl2_clipboard_clear_pending();
-+        break;
-+    }
-+}
-+
-+static void sdl2_clipboard_request(QemuClipboardInfo *info,
-+                                   QemuClipboardType type)
-+{
-+    g_autofree char *text = NULL;
-+
-+    if (type != QEMU_CLIPBOARD_TYPE_TEXT) {
-+        return;
-+    }
-+
-+    text = SDL_GetClipboardText();
-+    if (!text) {
-+        qemu_log_mask(LOG_GUEST_ERROR, 
-+                      "SDL clipboard: Failed to get clipboard text: %s\n", 
-+                      SDL_GetError());
-+        return;
-+    }
-+
-+    qemu_clipboard_set_data(info->owner, info, type,
-+                            strlen(text), text, true);
-+}
-+
-+void sdl2_clipboard_init(struct sdl2_console *scon)
-+{
-+    scon->cbpeer.name = "sdl2-clipboard";
-+    scon->cbpeer.notifier.notify = sdl2_clipboard_notify;
-+    scon->cbpeer.request = sdl2_clipboard_request;
-+
-+    qemu_clipboard_peer_register(&scon->cbpeer);
-+}
-+
-+void sdl2_clipboard_handle_request(struct sdl2_console *scon)
-+{
-+    g_autofree char *text = NULL;
-+    QemuClipboardInfo *info;
-+
-+    text = SDL_GetClipboardText();
-+    if (!text) {
-+        qemu_log_mask(LOG_GUEST_ERROR, 
-+                      "SDL clipboard: Failed to get clipboard text: %s\n", 
-+                      SDL_GetError());
-+        return;
-+    }
-+
-+    if (text[0] == '\0') {
-+        return; /* Ignore empty clipboard */
-+    }
-+
-+    info = qemu_clipboard_info_new(&scon->cbpeer, QEMU_CLIPBOARD_SELECTION_CLIPBOARD);
-+    qemu_clipboard_set_data(&scon->cbpeer, info, QEMU_CLIPBOARD_TYPE_TEXT,
-+                            strlen(text), text, true);
-+    qemu_clipboard_info_unref(info);
-+}
-+
-+#endif /* CONFIG_SDL_CLIPBOARD */
-diff --git a/ui/sdl2.c b/ui/sdl2.c
-index cda4293a53..00a17b68a7 100644
---- a/ui/sdl2.c
-+++ b/ui/sdl2.c
-@@ -691,6 +691,11 @@ void sdl2_poll_events(struct sdl2_console *scon)
-         case SDL_WINDOWEVENT:
-             handle_windowevent(ev);
-             break;
-+#ifdef CONFIG_SDL_CLIPBOARD
-+        case SDL_CLIPBOARDUPDATE:
-+            sdl2_clipboard_handle_request(scon);
-+            break;
-+#endif
-         default:
-             break;
-         }
-@@ -901,6 +906,10 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
-         }
-         register_displaychangelistener(&sdl2_console[i].dcl);
- 
-+#ifdef CONFIG_SDL_CLIPBOARD
-+        sdl2_clipboard_init(&sdl2_console[i]);
-+#endif
-+
- #if defined(SDL_VIDEO_DRIVER_WINDOWS) || defined(SDL_VIDEO_DRIVER_X11)
-         if (SDL_GetWindowWMInfo(sdl2_console[i].real_window, &info)) {
- #if defined(SDL_VIDEO_DRIVER_WINDOWS)
--- 
-2.50.1
+Regarding the "modern" completion support, I recommend you take a look 
+at it. Even though you wrote or reviewed most of the code you navigate 
+in everyday, and thus don't need it, it has become a standard tool for 
+any developer, like sanitizers or omniscient debugging. It's especially 
+interesting since those tools are based on compilers (clangd is the 
+standard for C/C++ nowadays) and not a bunch of clunky regexps.
+It's even more interesting when you learn a new language, like Rust.
+
+> Looking at hw/intc, there is a lot of use of specific_ss
+> here, so I suspect that these Arm interrupt controllers are
+> not going to be the only ones that are using target-dependent
+> code (there are 25 files which use CPUState, for instance).
+> So I think it's worth figuring out how to build these in
+> the right way where they are rather than saying that
+> various interrupt controller models should move to
+> a place where they don't logically belong because that happens
+> to be a folder where we have the build machinery for it.
+> 
+
+Coming back to our issue, I can see two ways to solve it in a short term:
+- On build system: define target hw before generic ones, so we can reuse 
+all the source sets defined there. This has the advantage to be usable 
+by all others architectures.
+- Move gic related fields to a substructure in arm cpu, and provide a 
+simple accessor to it, like "cpu_gicv3(cpu)", breaking the dependency to 
+cpu.h. Concerned fields would be: gic_num_lrs, gic_vpribits, 
+gic_vprebits, gic_pribits.
+
+As you'll be the one having the final word and merging this, which 
+option would you prefer to see?
+
+> thanks
+> -- PMM
 
 
