@@ -2,68 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9652AB16CEC
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 09:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D84B16D15
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 10:02:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhO4i-0003n1-Ea; Thu, 31 Jul 2025 03:51:40 -0400
+	id 1uhOEQ-0008U3-Hm; Thu, 31 Jul 2025 04:01:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uhO4V-0003hB-Gh; Thu, 31 Jul 2025 03:51:28 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>)
- id 1uhO4S-00085v-JY; Thu, 31 Jul 2025 03:51:26 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxnmttIItoaM81AQ--.997S3;
- Thu, 31 Jul 2025 15:51:10 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJDxQ+RqIItoQiMvAA--.39260S3;
- Thu, 31 Jul 2025 15:51:09 +0800 (CST)
-Subject: Re: [PATCH] target/loongarch: Fix valid virtual address checking
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-References: <20250714015446.746163-1-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <0db6b22f-bf92-1ce8-573b-b9a2891214d4@loongson.cn>
-Date: Thu, 31 Jul 2025 15:54:05 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uhOEL-0008Mu-BK
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 04:01:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uhOEA-0001gT-OW
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 04:01:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753948884;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=kMdnvU8rkCpBSXtYVaRbQtouIpqoqN/PbuODwPebmRI=;
+ b=YGb92QjoHad97OUN0js3J/oL9fEBYgZw/d6a2wK4LoaQHaDVlUarGmtNyinvxYGklLbt3s
+ Uhh/HJSN8f6nb4/Pf9HaW2pr0iX7sgd+BIIa/P2PsMND4wPajw5g7Qyt7+oq/DHv0RgNQD
+ iyMB5jEU0WorwUHXtXFxsjwuXoie6O8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-442-o-rT7DNOO3WTEejwJpDDCA-1; Thu, 31 Jul 2025 04:01:22 -0400
+X-MC-Unique: o-rT7DNOO3WTEejwJpDDCA-1
+X-Mimecast-MFC-AGG-ID: o-rT7DNOO3WTEejwJpDDCA_1753948881
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-45624f0be48so2787055e9.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 01:01:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753948881; x=1754553681;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kMdnvU8rkCpBSXtYVaRbQtouIpqoqN/PbuODwPebmRI=;
+ b=nwBgg8hgWjTKuALXadiu8V6gi70wtbMnAUHpz9Bm+Ej1gtNxqNsXSAd0mxaZSlIGbT
+ 8sSPXA5LIcG4glQ/fSj84ktnShOc3PAy0yzOuzLdxDLTW8zeqElyfvbAKCUke0iHrOx6
+ pDfhAroRcOrnLkVVVVW3g99XergEcITtRTd+Ghnzr4QlSvY/8mKnnCNthZbRJFzMiDLX
+ CL+8NNj1TmjAkUE3zOUrx1Hq4/qY3yf4nsjJLhlN09LzpLGFLjfL5R6WRfR2PY3SVDLs
+ p7t2N77FzWcCz0SXnXAOmJje0RatcB/9HRenSDkPuuN55hOuMyP09hQGssv4pXklnjK8
+ +1qQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXBUQaydumSBkz5NnjEQ24UqWRh+xfmzlQr1JCCl+Bu6UVW/em7r8ww4U+JEsS0R3oSrj9nDGQQlnms@nongnu.org
+X-Gm-Message-State: AOJu0Yzj0wLOsAhRVWYEETV6cXn3cR00O+MKkBnORez14Ku6VBQviVgp
+ V0f4lXVuiwOxwSxVPM77bvfECEDeXU1BNzIeITus/iryzpEDdMw9xCzTAL5q7BGpTBp3dBif9ak
+ zB+tpOrSCbbH3eT1ezxg4pcHkgusx5xsueLToz1wC8xQxTM9v9PXD0dqV
+X-Gm-Gg: ASbGncuGWeo+Hpy9il0WN3Jd4hQbR0/tG7Ny24DhWZKjC1oBfJa5/uVZkU6r/70u4HG
+ GYXTohX62A0qS/OVf0MtkO8Sw+TkrBB4UQ4LXXj+Hn6z7RkO6ekO1WcANqae3kdQdS5UXQ37fqd
+ /xVL+vLnigmaptWiN4KjwGkOQ8rytuIt9eD1lzX7PUC4nGM8fPry+St4wNwls6KdmF2VS8X7F9L
+ kMYiiSeNeUri0tMDU44TxsxKjlpiNjU4FS3vK/byPFv7xLJs2s9pm1K6Tlkdld/n82aWYCLLU7m
+ 97J/i1fuZvD+KSK8P1d4W+GgryZpQwGl/CTXaU2P04NHAmbSMjpq37bsJle32AGr7t2gYI70qUf
+ 2Q4jvtAA=
+X-Received: by 2002:a05:600c:8b81:b0:456:eb9:5236 with SMTP id
+ 5b1f17b1804b1-45892ba3686mr62976725e9.15.1753948881194; 
+ Thu, 31 Jul 2025 01:01:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHKEw1/H2NqXxnz2uGJH1kLQhQRvIT7Vhiv3xj7pxNLuR9oJXFQikp5MHzLYlqQxDv+X95EDg==
+X-Received: by 2002:a05:600c:8b81:b0:456:eb9:5236 with SMTP id
+ 5b1f17b1804b1-45892ba3686mr62976275e9.15.1753948880803; 
+ Thu, 31 Jul 2025 01:01:20 -0700 (PDT)
+Received: from ?IPV6:2a01:cb19:9004:d500:837f:93fd:c85e:5b97?
+ ([2a01:cb19:9004:d500:837f:93fd:c85e:5b97])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-458953cff16sm54874425e9.19.2025.07.31.01.01.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Jul 2025 01:01:20 -0700 (PDT)
+Message-ID: <630947b5-c94a-4f87-82e1-efc6b2e63aa5@redhat.com>
+Date: Thu, 31 Jul 2025 10:01:19 +0200
 MIME-Version: 1.0
-In-Reply-To: <20250714015446.746163-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vfio: Introduce helper vfio_device_to_vfio_pci()
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, eric.auger@redhat.com, chao.p.peng@intel.com
+References: <20250731033123.1093663-1-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250731033123.1093663-1-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJDxQ+RqIItoQiMvAA--.39260S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Zw48KF18JrykZFyUZr1rKrX_yoW8Aryfpr
- 93Ar1rKF4kGFZrJa1jvayYgrW5tr1DC3W7Xanrtryjkan8Xr1xuFWjkw4jgFsrZ3y8Cr4I
- qa4IkFW2vF15XagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UE-erU
- UUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.629, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,55 +153,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2025/7/14 ÉÏÎç9:54, Bibo Mao Ð´µÀ:
-> On LoongArch64 system, the high 32 bit of 64 bit virtual address should be
-> 0x00000[0-7]yyy or 0xffff8yyy. The bit from 47 to 63 should be all 0 or
-> all 1.
->
-> Function get_physical_address() only checks bit 48 to 63, there will be
-> problem with the following test case. On physical machine, there is bus
-> error report and program exits abnormally. However on qemu TCG system
-> emulation mode, the program runs normally. The virtual address
-> 0xffff000000000000ULL + addr and addr are treated the same on TLB entry
-> checking. This patch fixes this issue.
->
-> void main()
-> {
->          void *addr, *addr1;
->          int val;
->
->          addr = malloc(100);
->          *(int *)addr = 1;
->          addr1 = 0xffff000000000000ULL + addr;
->          val = *(int *)addr1;
->          printf("val %d \n", val);
-> }
->
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   target/loongarch/cpu_helper.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+On 7/31/25 05:31, Zhenzhong Duan wrote:
+> Introduce helper vfio_device_to_vfio_pci() to transform from VFIODevice to
+> VFIOPCIDevice, also to hide low level VFIO_DEVICE_TYPE_PCI type check.
+> 
+> Suggested-by: CÃ©dric Le Goater <clg@redhat.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Thanks.
-Song Gao
-> diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
-> index e172b11ce1..b5f732f15b 100644
-> --- a/target/loongarch/cpu_helper.c
-> +++ b/target/loongarch/cpu_helper.c
-> @@ -196,8 +196,8 @@ int get_physical_address(CPULoongArchState *env, hwaddr *physical,
->       }
->   
->       /* Check valid extension */
-> -    addr_high = sextract64(address, TARGET_VIRT_ADDR_SPACE_BITS, 16);
-> -    if (!(addr_high == 0 || addr_high == -1)) {
-> +    addr_high = (int64_t)address >> (TARGET_VIRT_ADDR_SPACE_BITS - 1);
-> +    if (!(addr_high == 0 || addr_high == -1ULL)) {
->           return TLBRET_BADADDR;
->       }
->   
->
-> base-commit: 9a4e273ddec3927920c5958d2226c6b38b543336
+
+Reviewed-by: CÃ©dric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
 
 
