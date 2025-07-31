@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17225B17710
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 22:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CCA0B17724
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 22:28:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhZkq-0006GH-QE; Thu, 31 Jul 2025 16:19:56 -0400
+	id 1uhZsb-0008HA-4z; Thu, 31 Jul 2025 16:27:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhYDO-0001cJ-5X
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 14:41:23 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1uhYHI-0006gh-Fp
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 14:45:21 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhYDM-00061i-Gz
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 14:41:17 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-23636167afeso673235ad.3
- for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 11:41:16 -0700 (PDT)
+ id 1uhYHG-0006ai-KF
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 14:45:20 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-31eb744f568so674519a91.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 11:45:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753987275; x=1754592075; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753987517; x=1754592317; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=doMUWIgRUCZHu0ghlXWubeQ3uFyDpsT9R6VbfkdNNYw=;
- b=YxlmUSp+Caynb06i35vHo1il0YLpgX3pU5auDSQUgRsSVpnf8nLQn0GcgKnCd1GMdC
- IifYNp8KMivlBDwI/OIfq5EDPKlVemgafgZjTQKsF36cUodR2l/F351my7It5pXZMzDj
- Jk2Dq5aW9TP8wlpGp3DBDBzD9TJuIoox1m3/Bj4AI/8wnKC9lPucy0PgbvQhYCZkp4Ol
- pCE7r73ONlVsoGu+1TEx7R039cPm6e+gjq3k8ihd+MqBsnWwQ2lp9jucK06OHV/NB/UG
- G8wdU3/va0mzAKMGsgd1BiSX87cJ2jSCzJ79dKfY8VYtUHXpygZdLNgpil5anDtwcETS
- ghhA==
+ bh=pvy5z+5j/jMqX6Zslu0wVy82+5aTyBNotJkzDRoVQ34=;
+ b=ZJOd5NJbXTmx3weDuXRJU0qcpTDI4IaxryjuhhY/K8m09hxXDnBwSXZ2AWqEn2b0dq
+ av+9pDbDfkCYNqiDL/te5Lhkk+Q7N+wViLt1a2l37uVCBagPGLjaaTEKrZD/Z1wVc2QL
+ Je9VWcAhMTm7rbEcJig/0hbx9FH75lxxOc3gdtkaUMgjIpy4VYY7HLGanY1FcFd/Bmvv
+ ZUcZ2YfPaLnc3NnthnTe5Qpb4hIckLNPpBhRnOd65o5ZQq5RXiE3PH8vm06zrqfcjKMy
+ BHjfqFRlPyjcKhTf1SMQxbVdRaxgLIPjpzai7lldV073V44dJfe8VoMoDxBdfCmEhV+/
+ XeMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753987275; x=1754592075;
+ d=1e100.net; s=20230601; t=1753987517; x=1754592317;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=doMUWIgRUCZHu0ghlXWubeQ3uFyDpsT9R6VbfkdNNYw=;
- b=ubR4PAGLYK1Wq51humAlh/ZJwXFVI1TdZyMVoHTi4X8388HEdF916cjo1c+U7vOUm6
- JHplWH25404+D9XYOsPA3Kg48DwavuAu4bDqlQpE1TcPwR05SScCi4Hg7ALVhwEziL9I
- pfA4GZDui+vmpAD4Bn5YW9v6Edr2Wo1leEhGQNWQrrSo0plNjnbylwmfNUEMIW2LZ/ir
- 1Yig0xQDkYAlIpz7zPKUsBQoWwWtd8Bh+XUAsMEcw9wOeCi1oI1sg8BTkKtduEj6pXJs
- p99ILDnHeOeWSVMRpxjVxHABKNhWmrHbJuQNooJs/q5dC4qpVVdvGje2aS/WkFRDEsIF
- o6XA==
+ bh=pvy5z+5j/jMqX6Zslu0wVy82+5aTyBNotJkzDRoVQ34=;
+ b=HbHd6l99l9x9sGZbfDM2QSUUFCgqMCjZKARIulN89xlXtEK25yzecXU3zmGpIxynP5
+ 4I1UqEPnxMzHMdG5WbJbq+D9NvzPWjhyQQkJWwoeXMCub/qCb4QOkua6GDAsBT+XuxEW
+ /Mq1JQAc67oqltXMuOx8b6g45Grn1/7L6GvQ6l/cH8yiamwd+G/t1+wXE+m4oL+htPh3
+ udiKzwbmri/pUNBcUmYDS/tGDvCpfdKuwVSBtCFqYmszX9ooxR3Z/37X4Gtw8rVnNqdl
+ /mnlzgyxz3b+/kq3esjV72mmBPDMMnrPgu5isfE4tPJ0IDbnnME003mB3Dv6owBRXsmg
+ 5VAg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW1ur4daz52HYro9c1NoQuqcWrkLdcTmOHte0hcSUympMjvI344epo/SmqoleBsxMg3h77QdvaEJdR5@nongnu.org
-X-Gm-Message-State: AOJu0YxqjbWP2iP3ub5ZDJ3Y9RmGvktag53xK12EBE84OAnYjWOiifGl
- MKLzLrlp3bCT8n37/1Ebq9WhdnN1XOhlHXTEnVJL1ZR3/uyoFgNT6uQ3YSc745B+HKvRt96S/DU
- jM9Xv
-X-Gm-Gg: ASbGncsyeVruLPfh6goDTG4RBZ7Z0GhQHPpul5AANo8MVQiQ5/46UTXfhHEWF1oJXmZ
- fOX7XRF5TYAxIVAUzz5jKnjz2FtMY5DDBaRMuSXpY6naln09/bWjukU5+4Fuj4FCvmRc/zbSX3Z
- VXa+ZK/DYoiERZ0UPz3bJjmdQ8+ReEITj9I+XyMo0CW4/BUTQITFss67T54H4LmT2DMDqTYoN9a
- qlOU0rvtxT/zBQJjRJRvmVnIlzABDRTN90+UZD624LbLfhjNZkox9lJcxCyUiP3bQl7kmCBCf8o
- sziJ61dTTE1jSQEZJLO8SGSqDa7Z1zM/CoNicYs17WizKAaeUySfR13RpFxF4MFmi7kcmet0TMf
- EOoqzQCjZZnGnFo4Q39L2166aFwOIJcA2Znk=
-X-Google-Smtp-Source: AGHT+IGIe1JF9t+qwn6YNTd2ykkMeSeEAL0V+RpvprdX/1+HVeKkDNpYVCwPHMForeUeJgTquEtn9g==
-X-Received: by 2002:a17:902:ef46:b0:23f:c945:6067 with SMTP id
- d9443c01a7336-24096bcd286mr124177685ad.41.1753987275032; 
- Thu, 31 Jul 2025 11:41:15 -0700 (PDT)
+ AJvYcCU2qxzDSmJRuSJTpApRx42cA7vDZtrBp/L5PFfhx4gsNcM/B50jlBb3RKCui5Nl55qNKs20ihPE6NDp@nongnu.org
+X-Gm-Message-State: AOJu0YzysIpjLVK8OHUrv1F5sjZhvyHmkrrJ+hjirMGB9C7hLPggnH39
+ Bgzf2j+ElU5Ui1Wtnh+BWxfdYfFwisY/Jt/enZEJ6Lgrt62B5wJhRzoLDNwb5ffCx1w=
+X-Gm-Gg: ASbGncshplW/bnCVROBo4dUqChrG5BDhHw1h1mJjClXN1YIBhTcuI3tOlOldbO5oOnG
+ uhdxIAAq0C4X2h72kv1C+ac9LdbiCMfg6f6t/lMLz+QwCI22U5OCeB3YEoKj5qBIXaYaN1YMNpC
+ Bl7UEAKDzuyMuPiGZeZS793LnG07MrspbVKuG8Gz/rsjS276+UeUDweTI07QnNDAFFm5gMTqThJ
+ nQOMRzAwrxyYWcOZHv08Pk2/pXaKL6bZYx93pGmZDhDL2aDn05yroYoiuwNwdYk36IJocquN1Yz
+ BzZobrUzeu8KLT6kM7MTyPE3bPz7O6W/b/I7CqW445+fwFtFAmJdq+3/to7XZXx38sGczKcmnDI
+ pO9bTdUpvDQAoOcnvTPQFOo8FTTROOr9W3hscyFH+uNfugw==
+X-Google-Smtp-Source: AGHT+IEoTMM1C3WJ3WXJtYLga664fFOucPQuDYZiEUyJBEUGakmTng/CMVW1g1mZumradOuGkeiP4A==
+X-Received: by 2002:a17:90b:57e6:b0:31f:313b:4d23 with SMTP id
+ 98e67ed59e1d1-31f5e3809e4mr12308335a91.20.1753987516840; 
+ Thu, 31 Jul 2025 11:45:16 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241e8977345sm23710695ad.108.2025.07.31.11.41.14
+ 98e67ed59e1d1-31f30fd6dc1sm3671198a91.3.2025.07.31.11.45.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Jul 2025 11:41:14 -0700 (PDT)
-Message-ID: <e72bfc26-ec05-4cb3-a8c8-de5731ec8483@linaro.org>
-Date: Thu, 31 Jul 2025 11:41:13 -0700
+ Thu, 31 Jul 2025 11:45:16 -0700 (PDT)
+Message-ID: <e88e893a-8274-4e37-b282-c7315eff0307@linaro.org>
+Date: Thu, 31 Jul 2025 11:45:15 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 43/82] target/arm: Implement gcs bit for data abort
+Subject: Re: [PATCH 44/82] target/arm: Add GCS cpregs
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
 References: <20250727080254.83840-1-richard.henderson@linaro.org>
- <20250727080254.83840-44-richard.henderson@linaro.org>
+ <20250727080254.83840-45-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250727080254.83840-44-richard.henderson@linaro.org>
+In-Reply-To: <20250727080254.83840-45-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,12 +103,24 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/27/25 1:02 AM, Richard Henderson wrote:
+> Add isar_feature_aa64_gcs.
+> Enable SCR_GCSEN in scr_write.
+> Enable HCRX_GCSEN in hcrx_write.
+> Default HCRX_GCSEN on if EL2 disabled.
+> Add the GCSCR* and GCSPR* registers.
+> 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/arm/internals.h      | 1 +
->   target/arm/ptw.c            | 1 +
->   target/arm/tcg/tlb_helper.c | 1 +
->   3 files changed, 3 insertions(+)
+>   target/arm/cpregs.h       |  2 +
+>   target/arm/cpu-features.h |  5 +++
+>   target/arm/cpu.h          | 12 ++++++
+>   target/arm/internals.h    |  3 ++
+>   target/arm/cpregs-gcs.c   | 79 +++++++++++++++++++++++++++++++++++++++
+>   target/arm/cpu.c          |  3 ++
+>   target/arm/helper.c       | 10 +++++
+>   target/arm/meson.build    |  2 +
+>   8 files changed, 116 insertions(+)
+>   create mode 100644 target/arm/cpregs-gcs.c
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
