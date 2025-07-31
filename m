@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC22B17626
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 20:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09FDFB1764E
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 20:58:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhYBg-0000Op-9K; Thu, 31 Jul 2025 14:39:32 -0400
+	id 1uhYTl-0000z8-Q8; Thu, 31 Jul 2025 14:58:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhWMq-0003uh-7Y
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 12:42:56 -0400
-Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
+ id 1uhWdP-0003Wz-Hd
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 13:00:03 -0400
+Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhWMo-0003XI-Gw
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 12:42:55 -0400
-Received: by mail-yb1-xb2c.google.com with SMTP id
- 3f1490d57ef6-e8e0aa2e3f9so693676276.1
- for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 09:42:53 -0700 (PDT)
+ id 1uhWdN-000848-2Z
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 13:00:02 -0400
+Received: by mail-yw1-x1131.google.com with SMTP id
+ 00721157ae682-718409593b9so7273527b3.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 10:00:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1753980173; x=1754584973; darn=nongnu.org;
+ d=linaro.org; s=google; t=1753981200; x=1754586000; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=qi0c6cRVTk5kpKlIOxo9TZgeuUqi6ecgK1FBpxmZQdQ=;
- b=uIW/K3SjXloXc9cfSqCSy37CG/+/Gli8bShDOfrn93LqcT7ii+aWmVHmDO+/uHUysP
- xVhTwhjdWSy4Ok8GCIss1946MwQ1plMzuiaHiCagdNq1LhJwkAK354APc20a53fA4j4j
- p0EUgKf78gMwUi8isVmBBaH065OYmE11w68BzgIgPkPmy7zzvhGEBJvz81ZZ+E16+R0+
- Rnm1CvB1r/J82p4fKObJANEl1gXf3TyjWds1x765Ye2QDwBTd5Q1+juUTP1f8HGujc1T
- FtbaJZsySv2L1m9BhAANKKGlwnB01OeUv0mwyTLYuqvZ2mQ1WfZvtfqG83pQN7tUD8AJ
- P74g==
+ bh=I/QdUExyxeoIn3Ie7jtOvGkz9OaEB1WD4HVsvBIJL6c=;
+ b=vKmOvicfqemAiuGchsqTJlDntB6+6KNZuw6J1/R6oFKabzK44W/IcCbEu4+b5MQQJi
+ bmgfVy95tk+sWOti75MiqaZlMov/vBMzqhjFuNkUWZ7wiW+FUHgmSXg+y/+RwPgE43y8
+ dDDJLbmGa65+uluTcOxrOt31KCNZhgVIDA8BiahPFn/R0VkIIs+uZPl1LmkQqyxh0GYZ
+ VQBOENLcqtUBOtu3txPMVOFg4k5LWdjRAL8nnyYfaNorkGGWJOw/uSzTAqLSDUEdJz1o
+ SA4P/BIyj9J8Ecw4HMp+MrxHnqSj7jmcjI/L0GK1eXqdHSBfOoCbUX4hX7Wo2CIGTZVz
+ oliw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1753980173; x=1754584973;
+ d=1e100.net; s=20230601; t=1753981200; x=1754586000;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=qi0c6cRVTk5kpKlIOxo9TZgeuUqi6ecgK1FBpxmZQdQ=;
- b=kDUIMQ8y/cs8NFxnqqojIz33BwSGZykEqNHZ3DtHe8/sOSqVciJ9/dbwkhDCiHkOGo
- rZeQwgR61F4dJCQ9etBMMQtZiw4UES4/d/Q4f1exMJJd3ntnOH3017mByF+4QaetMKLX
- fGBuL2MVxq1Ml2uCRMgD4hc2u+tBY6OczSqFMQ0tu6FLWUGZH/UaE8pvsKdIo1NXL7Qm
- ZfcnjId2hrJxNMB2qSaWjzs/Xi2WllRJbIviUUPW8oC82Qjb/fobB6ftWzYVSRYK8sXf
- Fx2Lx0DRAnr7IhO2AN54mIP+0Dj/1wenanjhW/mll1/YSboxoLilNZjbuYHr4/mvSEo6
- x+6g==
+ bh=I/QdUExyxeoIn3Ie7jtOvGkz9OaEB1WD4HVsvBIJL6c=;
+ b=lPKV0XXY+UNDuw507W6GKL14QfHjqVbKsjyfHEznodmCGqIk34NNeyuUS2z0q91kjd
+ vLrYNm/WhXaBNLPTwYTxbkmCTwsHhat5WGxHTzWrW54+yBFN1/t/R1F0Zgz2kJRglHLk
+ wIPiFk0CGfru8XJ9p24XsD0mOpKy5njvkak80a1Jel+siS1noJ6sC57AyQpv+H9ACi2E
+ wjPLzRh4iUAZ+3DP7Qg14vdOXo/O8wPM/xvKoAxsgQkjdW5QK5VX+YULsjCduT9cjvMj
+ N9awv6kvJmgN6dX8Ujj+HJY3a3rSuuji355n1cCsqmNDrHHa+kW386JT9hv0H5K9JDOV
+ J1IQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWmeuHBGj6miH2257YC+uwti+4fLUiNlHWcIBbdymYr1qwAS5XgHJKSYOQuKb8CjqOfIuaxiVCQIGny@nongnu.org
-X-Gm-Message-State: AOJu0YyEgjWAFZyBsmnDLZW6iCcbjrotkSKgUokaAp++uOSyNMTNnrxa
- fh07PzIF/+z2Q70J9oIAHNXIpPEFpLQIJK7K9xrAzmGtm78kKnzW7QyMgQjOgBTjMoycir8KD7b
- ipZi0NrI8LRzbn8k9jMSRVSRR9555qFd3tpr+2LqxhBY2wR2a4kAF
-X-Gm-Gg: ASbGncsJ8bL+UZQTgwS8OQGZEogadOJjHqV6PJozpTFuJWhrAygYA2uJBm9J1wroLOv
- 79VSxeyGf9sGk/oR0V5svnGiyBrqs6Y89siNYDM2i2KSKX0UM8hLb2SOT8ZwYeExSQNgpwHTOlj
- NpS+ae3k1S2tllmoon9XgaGbMWRnl861P5jOanxcn73bdZbfLp+EtcCG2ynbSmMQMwRaBwwQWr4
- /11b5UjHl+SX8rvnXM=
-X-Google-Smtp-Source: AGHT+IH/A+Y4E1zBqX0wLau/1TfHFp55le/lmc7dKisliTmrMC+eXmk3qSCW9vOOP/X+8araS1IWGK7WjwmHT6SlzeE=
-X-Received: by 2002:a05:690c:338c:b0:719:5664:87fd with SMTP id
- 00721157ae682-71a4696d7b9mr115868877b3.37.1753980173073; Thu, 31 Jul 2025
- 09:42:53 -0700 (PDT)
+ AJvYcCWU7YKFUJnihFL5IcA+/yO7X/6tS8I361Iu60Ps5ZRk696+ne93qCITABAVUoDwuR3acOop3Eh9s/aS@nongnu.org
+X-Gm-Message-State: AOJu0Yxl5a8DPuvAs69CH7fYkM8mfBuokLl+Ymqb3XlOEaz8ROMNx9MB
+ NA47VG2JOSKTqoqeDQy3RDoF57PnVPsDjWu4j52WbMpFcVV+hm/HnfQ1CWauEjzG/YoX4mtTYEb
+ lFpuseRhNg8I3mh/iSvmBzZqOxLOIixQQRCwogMHXHQ==
+X-Gm-Gg: ASbGncuVx0F0LOAexO/8lrt+O2ginMdUC68U6Mq/6rNaUv9G9+ODmTQmNHXdAZTKTrl
+ rovPTAqkHmfZrRYzEbIrAsaL7WingJV9ZgOR1Mcd9+izU4bUv5e6ZCH7kT4N4L9wOPumX4kWhFt
+ HMA5akhKaPPXZ9N3Jojx3VxoKEUcZk6qJg7VI0v05PYgwCFBFGk0HQxTbEjiko1RzcRw8RHCr3J
+ cI44lQZe4rJQzw4kC0=
+X-Google-Smtp-Source: AGHT+IEHeCi154ufw8n/JziqK5XigPSaPokLE2oYkC8ZJofg5wIbQm/SV2srA35RF+QA0lLRVyK5gHjMT5bMIMuN+Rg=
+X-Received: by 2002:a05:690c:6e04:b0:712:d54e:2209 with SMTP id
+ 00721157ae682-71a46574fe7mr106734067b3.14.1753981199605; Thu, 31 Jul 2025
+ 09:59:59 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250729161650.43758-1-zenghui.yu@linux.dev>
- <20250729161650.43758-2-zenghui.yu@linux.dev>
-In-Reply-To: <20250729161650.43758-2-zenghui.yu@linux.dev>
+ <20250729161650.43758-3-zenghui.yu@linux.dev>
+In-Reply-To: <20250729161650.43758-3-zenghui.yu@linux.dev>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 31 Jul 2025 17:42:41 +0100
-X-Gm-Features: Ac12FXzWisjJdV4iwLO0FJcR6gcIQwSjS4vLO9j561HKx_iU42KQuntvtrKAYWA
-Message-ID: <CAFEAcA-hOWhKKhWLjD1pWyb+V8SPdOOuW0jWKN=wmn+mo=SBPw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] hw/intc/arm_gicv3_kvm: Remove writes to ICPENDR
- registers
+Date: Thu, 31 Jul 2025 17:59:48 +0100
+X-Gm-Features: Ac12FXzfWvpsNFEbAGpVtqbT0mFTyZWcgVM6W8aO7oR0WgJBzaM2UJx7cYzV5WE
+Message-ID: <CAFEAcA_xS6fy+rWt5g_uAgG0nBwEGFts1GZfqSLF0T668WLuiw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] hw/intc/arm_gicv3_kvm: Write all 1's to clear
+ enable/active
 To: Zenghui Yu <zenghui.yu@linux.dev>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,23 +96,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Tue, 29 Jul 2025 at 17:17, Zenghui Yu <zenghui.yu@linux.dev> wrote:
 >
-> As per the arm-vgic-v3 kernel doc [1]:
+> Writing 0 to GICD_IC{ENABLE,ACTIVE}R architecturally has no effect on
+> interrupt status (all writes are simply ignored by KVM) and doesn't comply
+> with the intention of "first write to the clear-reg to clear all bits".
 >
->     Accesses to GICD_ICPENDR register region and GICR_ICPENDR0 registers
->     have RAZ/WI semantics, meaning that reads always return 0 and writes
->     are always ignored.
+> Write all 1's to actually clear the enable/active status.
 >
-> Remove the useless writes to ICPENDR registers in kvm_arm_gicv3_put().
+> Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
+> ---
+>  hw/intc/arm_gicv3_kvm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> [1] https://docs.kernel.org/virt/kvm/devices/arm-vgic-v3.html
+> diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+> index f798a6e28c..6166283cd1 100644
+> --- a/hw/intc/arm_gicv3_kvm.c
+> +++ b/hw/intc/arm_gicv3_kvm.c
+> @@ -295,7 +295,7 @@ static void kvm_dist_putbmp(GICv3State *s, uint32_t offset,
+>           * the 1 bits.
+>           */
+>          if (clroffset != 0) {
+> -            reg = 0;
+> +            reg = ~0;
+>              kvm_gicd_access(s, clroffset, &reg, true);
+>              clroffset += 4;
+>          }
 
-The kernel doesn't implement any state behind these
-registers today, but that doesn't inherently mean it
-will never do so or that it never did do so.
-Since we have the state fields in the GICv3State struct (for the
-benefit of TCG) and the kernel defines the accessors for it,
-I prefer to leave this code in QEMU, and leave it up to the
-kernel whether it provides any state behind them.
+I guess given what the kernel has implemented that this
+is the correct change, so on that basis
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+I don't understand what the kernel ABI is trying to do here,
+though...
+
+My expectation for user access for all these registers
+where there's a "set" and a "clear" register pair would
+be that they behave the same way. But looking at the
+implementation, GICD_ICPENDR seems to be implemented
+as "reads zero, writes ignored", whereas GICD_ICACTIVER
+implements the "write-1-to-clear" semantics.
+
+This seems to match what is documented, but I don't
+understand why we implemented and documented that:
+https://docs.kernel.org/virt/kvm/devices/arm-vgic-v3.html
+rather than a more straightforward "for userspace, you
+can just read and write the state".
 
 thanks
 -- PMM
