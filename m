@@ -2,72 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8390B16D16
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 10:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE76FB16D4F
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Jul 2025 10:17:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhOEN-0008EH-6P; Thu, 31 Jul 2025 04:01:39 -0400
+	id 1uhOSa-0002vj-NV; Thu, 31 Jul 2025 04:16:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uhODZ-000874-Rq
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 04:00:50 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uhODW-0001VX-5f
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 04:00:49 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Bx22qmIotondA1AQ--.6744S3;
- Thu, 31 Jul 2025 16:00:38 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJAxT+ajIotoKSYvAA--.38450S3;
- Thu, 31 Jul 2025 16:00:37 +0800 (CST)
-Subject: Re: [PATCH v6] target/loongarch: Guard 64-bit-only insn translation
- with TRANS64 macro
-To: WANG Rui <wangrui@loongson.cn>
-Cc: Bibo Mao <maobibo@loongson.cn>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- richard.henderson@linaro.org, qemu@hev.cc
-References: <20250725031232.1297227-1-wangrui@loongson.cn>
- <75142ac3-5e18-5abf-11b5-6ea183ec78c3@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <75d3e6fe-180c-b092-9e83-ed3d55a3f28c@loongson.cn>
-Date: Thu, 31 Jul 2025 16:03:33 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1uhOSD-0002oK-Tu
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 04:15:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1uhOSB-0004iU-AC
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 04:15:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1753949752;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Gx7B1p3Aou5VOYXUQHBOLvehoQePrRkboYdN16EZLOs=;
+ b=giaaL8FRNsZCJ/AYxmL6Mf2ssAaHxthQRl7LnOsPyT28T5OGUTHAB2NudqFSB9DXz+8t0x
+ IOuVMZ29vTyhiVggKcUVs1o0nadQ2bdau5Yy6qgQbPC1XadfTe7QVhwH+6HB4+Wv2e5llJ
+ Z0o0YDxWygV2wVYMY+SuDjKr2tRi1go=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-55-MiqGL2P_NISvcVov5GYigA-1; Thu, 31 Jul 2025 04:15:49 -0400
+X-MC-Unique: MiqGL2P_NISvcVov5GYigA-1
+X-Mimecast-MFC-AGG-ID: MiqGL2P_NISvcVov5GYigA_1753949749
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3b7931d3d76so478583f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 01:15:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1753949748; x=1754554548;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Gx7B1p3Aou5VOYXUQHBOLvehoQePrRkboYdN16EZLOs=;
+ b=R9fxStLJBxll/WUMm/Nz32ltra99xbRg55ooAEbUSkBM63fxLeSNOVF15UCtLTRMFJ
+ 3404TwAv8xhSZyOUY5EaBMBmjsIAvBR4NDNvM6QENWlbK9o3a3yaU5UnxdGbbSEWSVyE
+ Znk9v7637NVwj9tIoyOedl2n5XmTGo5NehYAeBEiZw3xcFFP9aENSYA+wJfroJQ6Gyjk
+ TrC50umO2ceRqodGaSKYu0dGzBrS58Acdbb7GxkbUzMmMJKtmI6Pd2tAlkTLfU7owtgp
+ GGn936OXFTKRJEyQDz6SdxhMhR8bWseEk0m9M4ae2o0533qmJ+gbWFlA5hk2bedzcQrf
+ e6dg==
+X-Gm-Message-State: AOJu0YxNItVjqLKgeerGSJ8prKEqlkyI2Jogwtx/bLO6d5acX0oef3h3
+ L6Ylad4bpSqEKOyeb0v7xUKWECQSwBJcEX7rfwhN9cXNCiGuT0t+t4rEltVIiGU+JAPOB6vST39
+ EyuYDNp49cnSSg4+H6R6/fh3np0VYCrusTtsjV4mdRKj0C4X/aFJgqRa8
+X-Gm-Gg: ASbGnctoSv/sVp4jQpMs5qKnF56OY+oGq2pFCd5SnpjdDQDeAS6UAbkTjyPhqu9aMC2
+ HAP66eADoP6eq4ngKs8Gbt4vqtmIrTVxuIXfZESA/vT5TaW39XwqRxND62yptYz4ip+sYqQddWL
+ uK3gAH80j7oc5slsmZKVHyxmso9sfIJdyxYICTLIBIfGpz+MsQJEtmpeQmLIk4SdUL02ZgFC43y
+ qL/Lz6gBMSQphmfm9CbqsM/BJhzoNy55VDOWFr0ibBduHusQJzoBxDCHLXA7n8xWJX510rGDGOX
+ Jb/zhNCjDPAXKQIDYp6VdUUu/kQdpQ==
+X-Received: by 2002:a05:6000:4304:b0:3b7:9d87:97ad with SMTP id
+ ffacd0b85a97d-3b79d879f3cmr898119f8f.37.1753949748027; 
+ Thu, 31 Jul 2025 01:15:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkn3J078b4bU0DjYqQv33UUlNv/Q4pL9pg7gPcFgCRvVtwTXq3KCjFCNySIBxD/kit0nJp5A==
+X-Received: by 2002:a05:6000:4304:b0:3b7:9d87:97ad with SMTP id
+ ffacd0b85a97d-3b79d879f3cmr898071f8f.37.1753949747210; 
+ Thu, 31 Jul 2025 01:15:47 -0700 (PDT)
+Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-458953eb7acsm53821015e9.28.2025.07.31.01.15.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Jul 2025 01:15:46 -0700 (PDT)
+Date: Thu, 31 Jul 2025 10:15:45 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mst@redhat.com,
+ mtosatti@redhat.com, kraxel@redhat.com, peter.maydell@linaro.org
+Subject: Re: [PATCH v2 1/6] memory: reintroduce BQL-free fine-grained PIO/MMIO
+Message-ID: <20250731101545.5b5ff8c2@fedora>
+In-Reply-To: <aIqTCITI84BNtWnp@x1.local>
+References: <20250730123934.1787379-1-imammedo@redhat.com>
+ <20250730123934.1787379-2-imammedo@redhat.com>
+ <aIqTCITI84BNtWnp@x1.local>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <75142ac3-5e18-5abf-11b5-6ea183ec78c3@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJAxT+ajIotoKSYvAA--.38450S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9fXoW3KrWDZrW3Aw1kurWfXFyrGrX_yoW8XFy5Zo
- W8XF48Jr1xJ3ZIgrZ0kryktr9xZryIva98A3y7Cw1UuF95Zr4j934fCw1vv3y3ZrWkGrWU
- Wr4xua98Ja43Xrnxl-sFpf9Il3svdjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8wcxFpf
- 9Il3svdxBIdaVrn0xqx4xG64xvF2IEw4CE5I8CrVC2j2Jv73VFW2AGmfu7bjvjm3AaLaJ3
- UjIYCTnIWjp_UUUYc7kC6x804xWl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI
- 8IcIk0rVWrJVCq3wAFIxvE14AKwVWUXVWUAwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
- Y2AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14
- v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AK
- xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE
- 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
- rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
- CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
- 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
- 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7_Ma
- UUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.629,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,253 +108,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2025/7/25 上午11:40, Bibo Mao 写道:
->
->
-> On 2025/7/25 上午11:12, WANG Rui wrote:
->> This patch replaces uses of the generic TRANS macro with TRANS64 for
->> instructions that are only valid when 64-bit support is available.
->>
->> This improves correctness and avoids potential assertion failures or
->> undefined behavior during translation on 32-bit-only configurations.
->>
->> Signed-off-by: WANG Rui <wangrui@loongson.cn>
->> ---
->> v5 -> v6:
->> - Remove the vector part.
->> ---
->>   .../tcg/insn_trans/trans_atomic.c.inc         | 36 +++++++++----------
->>   .../tcg/insn_trans/trans_extra.c.inc          |  8 +++--
->>   .../tcg/insn_trans/trans_farith.c.inc         |  8 ++---
->>   .../loongarch/tcg/insn_trans/trans_fcnv.c.inc |  4 +--
->>   .../tcg/insn_trans/trans_fmemory.c.inc        | 16 ++++-----
->>   .../tcg/insn_trans/trans_privileged.c.inc     |  4 +--
->>   .../tcg/insn_trans/trans_shift.c.inc          |  4 +--
->>   target/loongarch/translate.h                  |  4 +++
->>   8 files changed, 46 insertions(+), 38 deletions(-)
->>
-Hi,
+On Wed, 30 Jul 2025 17:47:52 -0400
+Peter Xu <peterx@redhat.com> wrote:
 
-This patch will be accepted in the next cycle.
+> On Wed, Jul 30, 2025 at 02:39:29PM +0200, Igor Mammedov wrote:
+> > diff --git a/system/memory.c b/system/memory.c
+> > index 5646547940..9a5a262112 100644
+> > --- a/system/memory.c
+> > +++ b/system/memory.c
+> > @@ -2546,6 +2546,12 @@ void memory_region_clear_flush_coalesced(MemoryRegion *mr)
+> >      }
+> >  }
+> >  
+> > +void memory_region_enable_lockless_io(MemoryRegion *mr)
+> > +{
+> > +    mr->lockless_io = true;
+> > +    mr->disable_reentrancy_guard = true;  
+> 
+> IIUC this is needed only because the re-entrancy guard is not
+> per-transaction but per-device, am I right?
 
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+As far as I understood, it was per memory region (device in this case).
+ 
+> Maybe some comment would be nice here to explain how mmio concurrency could
+> affect this.  If my above comment is correct, it could also be a TODO so we
+> could re-enable this when it is per-transaction (even though I don't know
+> whether it's easy / useful to do..).
 
-Thanks.
-Song Gao
-
->> diff --git a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc 
->> b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
->> index 3d70d75941..77eeedbc42 100644
->> --- a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
->> +++ b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
->> @@ -74,38 +74,38 @@ TRANS(sc_w, ALL, gen_sc, MO_TESL)
->>   TRANS(ll_d, 64, gen_ll, MO_TEUQ)
->>   TRANS(sc_d, 64, gen_sc, MO_TEUQ)
->>   TRANS(amswap_w, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
->> -TRANS(amswap_d, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
->> +TRANS64(amswap_d, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
->>   TRANS(amadd_w, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
->> -TRANS(amadd_d, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
->> +TRANS64(amadd_d, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
->>   TRANS(amand_w, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
->> -TRANS(amand_d, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
->> +TRANS64(amand_d, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
->>   TRANS(amor_w, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
->> -TRANS(amor_d, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
->> +TRANS64(amor_d, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
->>   TRANS(amxor_w, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
->> -TRANS(amxor_d, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
->> +TRANS64(amxor_d, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
->>   TRANS(ammax_w, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
->> -TRANS(ammax_d, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
->> +TRANS64(ammax_d, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
->>   TRANS(ammin_w, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
->> -TRANS(ammin_d, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
->> +TRANS64(ammin_d, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
->>   TRANS(ammax_wu, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
->> -TRANS(ammax_du, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
->> +TRANS64(ammax_du, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
->>   TRANS(ammin_wu, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
->> -TRANS(ammin_du, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
->> +TRANS64(ammin_du, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
->>   TRANS(amswap_db_w, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
->> -TRANS(amswap_db_d, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
->> +TRANS64(amswap_db_d, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
->>   TRANS(amadd_db_w, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
->> -TRANS(amadd_db_d, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
->> +TRANS64(amadd_db_d, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
->>   TRANS(amand_db_w, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
->> -TRANS(amand_db_d, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
->> +TRANS64(amand_db_d, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
->>   TRANS(amor_db_w, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
->> -TRANS(amor_db_d, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
->> +TRANS64(amor_db_d, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
->>   TRANS(amxor_db_w, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
->> -TRANS(amxor_db_d, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
->> +TRANS64(amxor_db_d, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
->>   TRANS(ammax_db_w, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
->> -TRANS(ammax_db_d, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
->> +TRANS64(ammax_db_d, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
->>   TRANS(ammin_db_w, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
->> -TRANS(ammin_db_d, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
->> +TRANS64(ammin_db_d, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
->>   TRANS(ammax_db_wu, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
->> -TRANS(ammax_db_du, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
->> +TRANS64(ammax_db_du, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, 
->> MO_TEUQ)
->>   TRANS(ammin_db_wu, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
->> -TRANS(ammin_db_du, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
->> +TRANS64(ammin_db_du, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, 
->> MO_TEUQ)
->> diff --git a/target/loongarch/tcg/insn_trans/trans_extra.c.inc 
->> b/target/loongarch/tcg/insn_trans/trans_extra.c.inc
->> index eda3d6e561..298a80cff5 100644
->> --- a/target/loongarch/tcg/insn_trans/trans_extra.c.inc
->> +++ b/target/loongarch/tcg/insn_trans/trans_extra.c.inc
->> @@ -69,6 +69,10 @@ static bool trans_rdtimeh_w(DisasContext *ctx, 
->> arg_rdtimeh_w *a)
->>     static bool trans_rdtime_d(DisasContext *ctx, arg_rdtime_d *a)
->>   {
->> +    if (!avail_64(ctx)) {
->> +        return false;
->> +    }
->> +
->>       return gen_rdtime(ctx, a, 0, 0);
->>   }
->>   @@ -100,8 +104,8 @@ static bool gen_crc(DisasContext *ctx, arg_rrr *a,
->>   TRANS(crc_w_b_w, CRC, gen_crc, gen_helper_crc32, tcg_constant_tl(1))
->>   TRANS(crc_w_h_w, CRC, gen_crc, gen_helper_crc32, tcg_constant_tl(2))
->>   TRANS(crc_w_w_w, CRC, gen_crc, gen_helper_crc32, tcg_constant_tl(4))
->> -TRANS(crc_w_d_w, CRC, gen_crc, gen_helper_crc32, tcg_constant_tl(8))
->> +TRANS64(crc_w_d_w, CRC, gen_crc, gen_helper_crc32, tcg_constant_tl(8))
->>   TRANS(crcc_w_b_w, CRC, gen_crc, gen_helper_crc32c, tcg_constant_tl(1))
->>   TRANS(crcc_w_h_w, CRC, gen_crc, gen_helper_crc32c, tcg_constant_tl(2))
->>   TRANS(crcc_w_w_w, CRC, gen_crc, gen_helper_crc32c, tcg_constant_tl(4))
->> -TRANS(crcc_w_d_w, CRC, gen_crc, gen_helper_crc32c, tcg_constant_tl(8))
->> +TRANS64(crcc_w_d_w, CRC, gen_crc, gen_helper_crc32c, 
->> tcg_constant_tl(8))
->> diff --git a/target/loongarch/tcg/insn_trans/trans_farith.c.inc 
->> b/target/loongarch/tcg/insn_trans/trans_farith.c.inc
->> index f4a0dea727..ff6cf3448e 100644
->> --- a/target/loongarch/tcg/insn_trans/trans_farith.c.inc
->> +++ b/target/loongarch/tcg/insn_trans/trans_farith.c.inc
->> @@ -183,16 +183,16 @@ TRANS(fmaxa_s, FP_SP, gen_fff, gen_helper_fmaxa_s)
->>   TRANS(fmaxa_d, FP_DP, gen_fff, gen_helper_fmaxa_d)
->>   TRANS(fmina_s, FP_SP, gen_fff, gen_helper_fmina_s)
->>   TRANS(fmina_d, FP_DP, gen_fff, gen_helper_fmina_d)
->> -TRANS(fscaleb_s, FP_SP, gen_fff, gen_helper_fscaleb_s)
->> -TRANS(fscaleb_d, FP_DP, gen_fff, gen_helper_fscaleb_d)
->> +TRANS64(fscaleb_s, FP_SP, gen_fff, gen_helper_fscaleb_s)
->> +TRANS64(fscaleb_d, FP_DP, gen_fff, gen_helper_fscaleb_d)
->>   TRANS(fsqrt_s, FP_SP, gen_ff, gen_helper_fsqrt_s)
->>   TRANS(fsqrt_d, FP_DP, gen_ff, gen_helper_fsqrt_d)
->>   TRANS(frecip_s, FP_SP, gen_ff, gen_helper_frecip_s)
->>   TRANS(frecip_d, FP_DP, gen_ff, gen_helper_frecip_d)
->>   TRANS(frsqrt_s, FP_SP, gen_ff, gen_helper_frsqrt_s)
->>   TRANS(frsqrt_d, FP_DP, gen_ff, gen_helper_frsqrt_d)
->> -TRANS(flogb_s, FP_SP, gen_ff, gen_helper_flogb_s)
->> -TRANS(flogb_d, FP_DP, gen_ff, gen_helper_flogb_d)
->> +TRANS64(flogb_s, FP_SP, gen_ff, gen_helper_flogb_s)
->> +TRANS64(flogb_d, FP_DP, gen_ff, gen_helper_flogb_d)
->>   TRANS(fclass_s, FP_SP, gen_ff, gen_helper_fclass_s)
->>   TRANS(fclass_d, FP_DP, gen_ff, gen_helper_fclass_d)
->>   TRANS(fmadd_s, FP_SP, gen_muladd, gen_helper_fmuladd_s, 0)
->> diff --git a/target/loongarch/tcg/insn_trans/trans_fcnv.c.inc 
->> b/target/loongarch/tcg/insn_trans/trans_fcnv.c.inc
->> index 833c059d6d..ca1d76a366 100644
->> --- a/target/loongarch/tcg/insn_trans/trans_fcnv.c.inc
->> +++ b/target/loongarch/tcg/insn_trans/trans_fcnv.c.inc
->> @@ -29,5 +29,5 @@ TRANS(ffint_s_w, FP_SP, gen_ff, gen_helper_ffint_s_w)
->>   TRANS(ffint_s_l, FP_SP, gen_ff, gen_helper_ffint_s_l)
->>   TRANS(ffint_d_w, FP_DP, gen_ff, gen_helper_ffint_d_w)
->>   TRANS(ffint_d_l, FP_DP, gen_ff, gen_helper_ffint_d_l)
->> -TRANS(frint_s, FP_SP, gen_ff, gen_helper_frint_s)
->> -TRANS(frint_d, FP_DP, gen_ff, gen_helper_frint_d)
->> +TRANS64(frint_s, FP_SP, gen_ff, gen_helper_frint_s)
->> +TRANS64(frint_d, FP_DP, gen_ff, gen_helper_frint_d)
->> diff --git a/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc 
->> b/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
->> index 13452bc7e5..79da4718a5 100644
->> --- a/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
->> +++ b/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
->> @@ -148,11 +148,11 @@ TRANS(fldx_s, FP_SP, gen_floadx, MO_TEUL)
->>   TRANS(fldx_d, FP_DP, gen_floadx, MO_TEUQ)
->>   TRANS(fstx_s, FP_SP, gen_fstorex, MO_TEUL)
->>   TRANS(fstx_d, FP_DP, gen_fstorex, MO_TEUQ)
->> -TRANS(fldgt_s, FP_SP, gen_fload_gt, MO_TEUL)
->> -TRANS(fldgt_d, FP_DP, gen_fload_gt, MO_TEUQ)
->> -TRANS(fldle_s, FP_SP, gen_fload_le, MO_TEUL)
->> -TRANS(fldle_d, FP_DP, gen_fload_le, MO_TEUQ)
->> -TRANS(fstgt_s, FP_SP, gen_fstore_gt, MO_TEUL)
->> -TRANS(fstgt_d, FP_DP, gen_fstore_gt, MO_TEUQ)
->> -TRANS(fstle_s, FP_SP, gen_fstore_le, MO_TEUL)
->> -TRANS(fstle_d, FP_DP, gen_fstore_le, MO_TEUQ)
->> +TRANS64(fldgt_s, FP_SP, gen_fload_gt, MO_TEUL)
->> +TRANS64(fldgt_d, FP_DP, gen_fload_gt, MO_TEUQ)
->> +TRANS64(fldle_s, FP_SP, gen_fload_le, MO_TEUL)
->> +TRANS64(fldle_d, FP_DP, gen_fload_le, MO_TEUQ)
->> +TRANS64(fstgt_s, FP_SP, gen_fstore_gt, MO_TEUL)
->> +TRANS64(fstgt_d, FP_DP, gen_fstore_gt, MO_TEUQ)
->> +TRANS64(fstle_s, FP_SP, gen_fstore_le, MO_TEUL)
->> +TRANS64(fstle_d, FP_DP, gen_fstore_le, MO_TEUQ)
->> diff --git a/target/loongarch/tcg/insn_trans/trans_privileged.c.inc 
->> b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
->> index ecbfe23b63..34cfab8879 100644
->> --- a/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
->> +++ b/target/loongarch/tcg/insn_trans/trans_privileged.c.inc
->> @@ -233,11 +233,11 @@ static bool gen_iocsrwr(DisasContext *ctx, 
->> arg_rr *a,
->>   TRANS(iocsrrd_b, IOCSR, gen_iocsrrd, gen_helper_iocsrrd_b)
->>   TRANS(iocsrrd_h, IOCSR, gen_iocsrrd, gen_helper_iocsrrd_h)
->>   TRANS(iocsrrd_w, IOCSR, gen_iocsrrd, gen_helper_iocsrrd_w)
->> -TRANS(iocsrrd_d, IOCSR, gen_iocsrrd, gen_helper_iocsrrd_d)
->> +TRANS64(iocsrrd_d, IOCSR, gen_iocsrrd, gen_helper_iocsrrd_d)
->>   TRANS(iocsrwr_b, IOCSR, gen_iocsrwr, gen_helper_iocsrwr_b)
->>   TRANS(iocsrwr_h, IOCSR, gen_iocsrwr, gen_helper_iocsrwr_h)
->>   TRANS(iocsrwr_w, IOCSR, gen_iocsrwr, gen_helper_iocsrwr_w)
->> -TRANS(iocsrwr_d, IOCSR, gen_iocsrwr, gen_helper_iocsrwr_d)
->> +TRANS64(iocsrwr_d, IOCSR, gen_iocsrwr, gen_helper_iocsrwr_d)
->>     static void check_mmu_idx(DisasContext *ctx)
->>   {
->> diff --git a/target/loongarch/tcg/insn_trans/trans_shift.c.inc 
->> b/target/loongarch/tcg/insn_trans/trans_shift.c.inc
->> index 377307785a..136c4c8455 100644
->> --- a/target/loongarch/tcg/insn_trans/trans_shift.c.inc
->> +++ b/target/loongarch/tcg/insn_trans/trans_shift.c.inc
->> @@ -78,7 +78,7 @@ TRANS(sra_w, ALL, gen_rrr, EXT_SIGN, EXT_NONE, 
->> EXT_SIGN, gen_sra_w)
->>   TRANS(sll_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sll_d)
->>   TRANS(srl_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_srl_d)
->>   TRANS(sra_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sra_d)
->> -TRANS(rotr_w, 64, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_rotr_w)
->> +TRANS(rotr_w, ALL, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_rotr_w)
->>   TRANS(rotr_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_rotr_d)
->>   TRANS(slli_w, ALL, gen_rri_c, EXT_NONE, EXT_SIGN, tcg_gen_shli_tl)
->>   TRANS(slli_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_shli_tl)
->> @@ -86,5 +86,5 @@ TRANS(srli_w, ALL, gen_rri_c, EXT_ZERO, EXT_SIGN, 
->> tcg_gen_shri_tl)
->>   TRANS(srli_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_shri_tl)
->>   TRANS(srai_w, ALL, gen_rri_c, EXT_NONE, EXT_NONE, gen_sari_w)
->>   TRANS(srai_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_sari_tl)
->> -TRANS(rotri_w, 64, gen_rri_v, EXT_NONE, EXT_NONE, gen_rotr_w)
->> +TRANS(rotri_w, ALL, gen_rri_v, EXT_NONE, EXT_NONE, gen_rotr_w)
->>   TRANS(rotri_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_rotri_tl)
->> diff --git a/target/loongarch/translate.h b/target/loongarch/translate.h
->> index 018dc5eb17..bbe015ba57 100644
->> --- a/target/loongarch/translate.h
->> +++ b/target/loongarch/translate.h
->> @@ -14,6 +14,10 @@
->>       static bool trans_##NAME(DisasContext *ctx, arg_##NAME * a) \
->>       { return avail_##AVAIL(ctx) && FUNC(ctx, a, __VA_ARGS__); }
->>   +#define TRANS64(NAME, AVAIL, FUNC, ...) \
->> +    static bool trans_##NAME(DisasContext *ctx, arg_##NAME * a) \
->> +    { return avail_64(ctx) && avail_##AVAIL(ctx) && FUNC(ctx, a, 
->> __VA_ARGS__); }
->> +
->>   #define avail_ALL(C)   true
->>   #define avail_64(C)    (FIELD_EX32((C)->cpucfg1, CPUCFG1, ARCH) == \
->>                           CPUCFG1_ARCH_LA64)
->>
-> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+I can add a comment on repin.
+> 
+> Thanks,
+> 
 
 
