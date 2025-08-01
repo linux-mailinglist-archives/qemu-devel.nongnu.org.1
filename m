@@ -2,82 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A292B17DC5
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 09:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A57B18299
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 15:37:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhkPy-00088a-Kj; Fri, 01 Aug 2025 03:43:06 -0400
+	id 1uhpvZ-0004ZG-T1; Fri, 01 Aug 2025 09:36:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uhkPH-0007g7-H6; Fri, 01 Aug 2025 03:42:25 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uhkPE-000725-VU; Fri, 01 Aug 2025 03:42:23 -0400
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5717fxm5051855
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Fri, 1 Aug 2025 16:41:59 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=7SPKL5BkhzKgejz7RpKPIEs2jgqhWHBCK/ROTIhEEno=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1754034119; v=1;
- b=Zrcea/10T073jjIsiSvcqWkEDKtfec4gfstWuo8UhVSYkem5zjzAd8hurQYnr0Zs
- 0Z9oijl7/cZjEwsRrp/jRfrHGZqKtAzWwFW0Blmzw1xUfF3hCeh8xe0NL1fOj+wV
- 8uRC807J3tSyIZl/g+DA40LiHmpx+vVGZmNwnYlLs0Z4stnMW2uiftb9trYFcrFD
- U2827qcpFyMHJDRcVxuKE1711nyEId6+Z9K7njfoUpzDALYQ0PGYe8OZjVzwF9Ed
- ckUHcPWXcmJzdbS1c+lRiIV1fOjsPKvkwqpReo1D9MEjtOgtbxU58TJOrnYRYwBA
- xzwbSnFDuT1MOI3FHl9EYQ==
-Message-ID: <ddedd582-0a2e-4870-a2e4-b939e61febad@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 1 Aug 2025 16:41:59 +0900
+ (Exim 4.90_1) (envelope-from <shameerkolothum@gmail.com>)
+ id 1uhkUT-0004vf-2K; Fri, 01 Aug 2025 03:47:45 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shameerkolothum@gmail.com>)
+ id 1uhkUP-0007lg-Fi; Fri, 01 Aug 2025 03:47:44 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3b7862bd22bso1684153f8f.1; 
+ Fri, 01 Aug 2025 00:47:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1754034458; x=1754639258; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/hhgrDa3Rfp7nxsDDwMm7UkPb2uIpO76oF4YUs3G79I=;
+ b=lje7Pk+JehsxrXGVh60mpCV8OXNpIA8Fnzp//YMnfwQBkqWU9TPo8zwEi8Weo14V/E
+ sUhIzVR68q/GB/u+9s+wgoHyKhaD7aWKV3GfQ2B6uhxihtXg4fuYu7csJnn6grzI7MlW
+ r9didVd2cGeP47P25Zwirx0hlUAHqhrgda8pOSZzdFIo68VXeCl3oYBX9HnugQuC4SC4
+ C6m16KUzXLtje0i+TRvyci4M979gSndCLoq4RHcvwJuaA3YgC4Mp/VdUqeVyF4kkKPzL
+ tBlnFRJnAlWavhMPZVd4hhSJEoqSp4UcTceno2ZUaWdfTxjPQhgwoAEz6H2XWV3CrgAq
+ 3P6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754034458; x=1754639258;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/hhgrDa3Rfp7nxsDDwMm7UkPb2uIpO76oF4YUs3G79I=;
+ b=AiyPxs2HaVj1N18IS8lzLIDX/2Uml6X5liQEUG6ew7tObB1I2LYgkyRQTRQSRmmzJQ
+ 6xnGo7187Mo/3ThBX6s4Dcd3k6m6CzMLtfQP4RgMnFz2zyHfvrOR/LdBOuWa7bU8n6qr
+ /2ASFylBErlv9R2ZMIhV+8zhOtInYPgvlUoZAsSb2XQ7dsq2xcFXDC3HhFNPtZzu/+B9
+ KOonOkWfP2yy4XERehgDT4D4qXM+RLFV66FoDCQTaVwJ8wBOKqOuTNrpq7CAGZoP/CgI
+ GEMBjd6KgvhAvzKWva1mquJc9mRretbAwvcT32q54pp3B/F9qxFOnth4N4h1xN8LjDKw
+ ULrQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUobab8t0f14d89xCftkGiUnnRuBMbS+aygb7/4wKBVPlJWvL6RrKGdmwns485XXqusN9r2iR+kj+CL@nongnu.org
+X-Gm-Message-State: AOJu0YwOdRcIunkdwlZiu312/hCC7xwJcgefKPhoy7jyWYS1M1HsTWaj
+ ajfiaVaBvhfB97F3bI7cdG+X5kFkoRe8nYMj2yEV/+AnGRhJyk4Byh5R4XQIaw==
+X-Gm-Gg: ASbGncv3tzp0iXZJvgUIquhAEFMFwKRLk8oqKkCAFqe3jMZQBKuvwGw2NSb4hRXUbWT
+ vFRTZ/cv0gE8dJi21B2IYJgWZAQ0CTQ4cAVjGBgLeV0wO+RCprke6e/rZlCt12BEH5Rm/wNgWCX
+ UBXIoq23OO+SaVgZzGITvjb9s557nOWDF21/DJNee9hBcE+XnU+nmg0+0MuNuzP/IFVhwDGTMLA
+ N56ErdYVXiYA8DioDtjIUCaKDoWesdeVTRaPqgBmWDdnNFwplWN2r7Z2WHrUNpecT3tdSI1viAW
+ wtfz5RXJzJbrskwLdmrId7+QiHA/kXq/6ee8Zn750NuPC/ELZzhNUQuKAzNvnKvabiFfxydADCj
+ nlRpjIdKAvAT7QZLnNyac4iuR6a4kLvYXsw==
+X-Google-Smtp-Source: AGHT+IH4owOernztOALW2vGnR2uBjlB5NUtvfmEK2cLbZZTXzsyXnd4c0ODp4eQ236UnpBmvW+Xp9g==
+X-Received: by 2002:a05:6000:220d:b0:3b7:8ba2:9818 with SMTP id
+ ffacd0b85a97d-3b79d4e3419mr4732121f8f.22.1754034458044; 
+ Fri, 01 Aug 2025 00:47:38 -0700 (PDT)
+Received: from shameer-ubuntu ([195.11.233.227])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-3b79c453ab0sm5049185f8f.44.2025.08.01.00.47.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 01 Aug 2025 00:47:37 -0700 (PDT)
+From: Shameer Kolothum <shameerkolothum@gmail.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: eric.auger@redhat.com, peter.maydell@linaro.org, cohuck@redhat.com,
+ sebott@redhat.com, berrange@redhat.com, maz@kernel.org,
+ oliver.upton@linux.dev, armbru@redhat.com, linuxarm@huawei.com,
+ wangzhou1@hisilicon.com, jiangkunkun@huawei.com,
+ jonathan.cameron@huawei.com, salil.mehta@huawei.com,
+ yangjinqian1@huawei.com, shameerkolothum@gmail.com,
+ shameerali.kolothum.thodi@huawei.com
+Subject: [RFC PATCH RESEND 0/4] hw/arm/virt: Add support for Target
+ Implementation CPUs
+Date: Fri,  1 Aug 2025 08:47:26 +0100
+Message-ID: <20250801074730.28329-1-shameerkolothum@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 24/27] migration: Refactor vmstate_save_state_v()
- function
-To: Arun Menon <armenon@redhat.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20250731-propagate_tpm_error-v8-0-28fd82fdfdb2@redhat.com>
- <20250731-propagate_tpm_error-v8-24-28fd82fdfdb2@redhat.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250731-propagate_tpm_error-v8-24-28fd82fdfdb2@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=shameerkolothum@gmail.com; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 01 Aug 2025 09:35:50 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,150 +104,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/07/31 22:21, Arun Menon wrote:
-> The original vmstate_save_state_v() function combined multiple
-> responsibilities like calling pre-save hooks, saving the state of
-> the device, handling subsection saves and invoking post-save hooks.
-> This led to a lengthy and less readable function.
-> 
-> To address this, introduce wrapper functions for pre-save,
-> post-save and the device-state save functionalities.
-> 
-> Signed-off-by: Arun Menon <armenon@redhat.com>
-> ---
->   migration/vmstate.c | 89 ++++++++++++++++++++++++++++++++++++++---------------
->   1 file changed, 64 insertions(+), 25 deletions(-)
-> 
-> diff --git a/migration/vmstate.c b/migration/vmstate.c
-> index 25a819da069b982d4043f287b4562ea402d9eb0e..cec1ee2f30d6f0270ee1fd30d29f6f0f5d20bdb0 100644
-> --- a/migration/vmstate.c
-> +++ b/migration/vmstate.c
-> @@ -414,23 +414,43 @@ int vmstate_save_state_with_err(QEMUFile *f, const VMStateDescription *vmsd,
->       return vmstate_save_state_v(f, vmsd, opaque, vmdesc_id, vmsd->version_id, errp);
->   }
->   
-> -int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-> -                         void *opaque, JSONWriter *vmdesc, int version_id, Error **errp)
-> +static int pre_save_dispatch(const VMStateDescription *vmsd, void *opaque,
-> +                             Error **errp)
->   {
->       int ret = 0;
-> -    int ps_ret = 0;
-> -    const VMStateField *field = vmsd->fields;
-> -
-> -    trace_vmstate_save_state_top(vmsd->name);
-> -
->       if (vmsd->pre_save) {
->           ret = vmsd->pre_save(opaque);
->           trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
->           if (ret) {
-> -            error_setg(errp, "pre-save failed: %s", vmsd->name);
-> -            return ret;
-> +            error_setg(errp, "pre-save for %s failed, ret: '%d'",
-> +                       vmsd->name, ret);
->           }
->       }
-> +    return ret;
-> +}
-> +
-> +static int post_save_dispatch(const VMStateDescription *vmsd, void *opaque,
-> +                              Error **errp)
-> +{
-> +    int ret = 0;
-> +    if (vmsd->post_save) {
-> +        ret = vmsd->post_save(opaque);
-> +        error_setg(errp, "post-save for %s failed, ret: '%d'",
-> +                   vmsd->name, ret);
-> +    }
-> +    return ret;
-> +}
-> +
-> +static int vmstate_save_dispatch(QEMUFile *f,
-> +                                 const VMStateDescription *vmsd,
-> +                                 void *opaque, JSONWriter *vmdesc,
-> +                                 int version_id, Error **errp)
-> +{
-> +    ERRP_GUARD();
-> +    int ret = 0;
-> +    int ps_ret = 0;
-> +    Error *local_err = NULL;
-> +    const VMStateField *field = vmsd->fields;
->   
->       if (vmdesc) {
->           json_writer_str(vmdesc, "vmsd_name", vmsd->name);
-> @@ -533,15 +553,11 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
->                   if (ret) {
->                       error_setg(errp, "Save of field %s/%s failed",
->                                   vmsd->name, field->name);
-> -                    if (vmsd->post_save) {
-> -                        ps_ret = vmsd->post_save(opaque);
-> -                        if (ps_ret) {
-> -                            ret = ps_ret;
-> -                            error_free_or_abort(errp);
-> -                            error_setg(errp,
-> -                                       "post-save for %s failed, ret: '%d'",
-> -                                       vmsd->name, ret);
+From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 
-Putting this patch before the last one will make the addition and 
-removal of this error_setg() unnecessary and make the patches smaller.
+(This is my third attempt to send this series to qemu-devel / qemu-arm.
+Previous attempts failed with the following errors:
 
-> -                        }
-> +                    ps_ret = post_save_dispatch(vmsd, opaque, &local_err);
-> +                    if (ps_ret) {
-> +                        ret = ps_ret;
-> +                        error_free_or_abort(errp);
-> +                        error_propagate(errp, local_err);
->                       }
->                       return ret;
->                   }
-> @@ -565,17 +581,40 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
->       if (vmdesc) {
->           json_writer_end_array(vmdesc);
->       }
-> +    return ret;
-> +}
->   
-> -    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
->   
-> -    if (vmsd->post_save) {
-> -        ps_ret = vmsd->post_save(opaque);
-> -        if (ps_ret) {
-> -            ret = ps_ret;
-> +int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-> +                         void *opaque, JSONWriter *vmdesc, int version_id,
-> +                         Error **errp)
-> +{
-> +    ERRP_GUARD();
-> +    int ret = 0;
-> +    Error *local_err = NULL;
-> +    int ps_ret = 0;
-> +
-> +    trace_vmstate_save_state_top(vmsd->name);
-> +
-> +    ret = pre_save_dispatch(vmsd, opaque, errp);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
-> +    ret = vmstate_save_dispatch(f, vmsd, opaque, vmdesc,
-> +                                version_id, errp);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
-> +    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
-> +    ps_ret = post_save_dispatch(vmsd, opaque, &local_err);
-> +    if (ps_ret) {
-> +        if (ret) {
->               error_free_or_abort(errp);
-> -            error_setg(errp, "post-save for %s failed, ret: '%d'",
-> -                       vmsd->name, ret);
->           }
-> +        ret = ps_ret;
-> +        error_propagate(errp, local_err);
->       }
->       return ret;
->   }
-> 
+qemu-arm@nongnu.org: connect to eggs.gnu.org[209.51.188.92]:25: Connection timed out  
+qemu-devel@nongnu.org: connect to eggs.gnu.org[209.51.188.92]:25: Connection timed out  
+
+I'm not sure if the issue is related to my setup, so I'm now trying to send the
+patches via my Gmail account.
+
+Apologies if you’ve already received this series individually, and thank you
+for your patience.)
+
+Hi,
+
+On ARM64 platforms, many errata workarounds are based on CPU identification
+registers, particularly MIDR_EL1 and REVIDR_EL1. Some of these errata
+require corresponding fixes in the guest kernel as well. This becomes a
+challenge during guest migration between hosts with different MIDR/REVIDR
+values, even when the VMM provides a common baseline feature set using
+the recently introduced writable ID register support.
+
+To address this, the Linux kernel now provides:
+
+ -A mechanism to expose implementation CPU data to guests via KVM
+  hypercalls [0]:
+
+  ARM_SMCCC_VENDOR_HYP_KVM_DISCOVER_IMPL_VER_FUNC_ID
+  ARM_SMCCC_VENDOR_HYP_KVM_DISCOVER_IMPL_CPUS_FUNC_ID
+
+ -A way to override implementation ID registers (MIDR, REVIDR, AIDR),
+  which were previously treated as invariant [1].
+
+What this RFC does:
+
+This RFC enables the virt machine to specify Target Implementation CPUs
+via QEMU command-line, exposing them to the guest via KVM hypercalls.
+
+Example use case (hosts with differing MIDRs):
+
+./qemu-system-aarch64 -machine virt,gic-version=3 \
+  -enable-kvm \
+  -bios QEMU_EFI.fd \
+  -m 1G -smp cpus=4,maxcpus=4 \
+  -cpu host \
+  -M impl-cpu.0.midr=0x481fd010,impl-cpu.0.revidr=0,impl-cpu.0.aidr=0x551,\
+   impl-cpu.1.midr=0x481fd011,impl-cpu.1.revidr=0,impl-cpu.1.aidr=0x551 \
+  -kernel Image-6.16-rc2 \
+  -initrd rootfs-iperf.cpio \
+  -append "rdinit=init console=ttyAMA0 root=/dev/vda rw earlycon=pl011,0x9000000 kpti=off" \
+  -net none \
+  -nographic
+
+Highlights and Notes:
+
+ -This is based on Connie’s series[2] “kvm/arm: Introduce a customizable
+  aarch64 KVM host model”.
+  
+ -Currently, no validation is performed on user-specified implementation CPU
+  data. It’s assumed that one of the entries reflects the actual host CPU.
+  If needed, a check can be added to enforce this. All other target CPU
+  definitions are treated as user-driven with no internal verification.
+
+ -For now, only the DISCOVER_IMPL_* hypercalls are supported on the QEMU side.
+  See patches 1 and 3 for implementation details. These are loosely inspired
+  by Salil's vCPU hotplug series patch here [3]. This may require a more
+  generic approach if we have to support other SMCCC hyper calls.
+
+ -This series uses macros and definitions from the kernel's
+  include/linux/arm-smccc.h. I am not sure whether these should be duplicated 
+  in QEMU or moved to a UAPI header in the kernel. For now I am carrying
+  it in the test branch here,
+  https://github.com/hisilicon/qemu/commit/8f583c76a2a5f60cf0f9616d61d0863e524ef388
+
+This is lightly tested on HiSilicon ARM platforms. A complete test branch
+can be found here,
+https://github.com/hisilicon/qemu/tree/arm-cpu-model-rfcv3-tgt-impl-cpu-rfcv1
+
+Please take a look and let me know.
+
+Thanks,
+Shameer
+
+[0] https://lore.kernel.org/all/20250221140229.12588-1-shameerali.kolothum.thodi@huawei.com/
+[1] https://lore.kernel.org/all/20250225005401.679536-1-oliver.upton@linux.dev/
+[2] https://lore.kernel.org/qemu-devel/20250414163849.321857-1-cohuck@redhat.com/
+[3] https://lore.kernel.org/qemu-devel/20240614001510.202991-1-salil.mehta@huawei.com/
+
+Shameer Kolothum (4):
+  target/arm/kvm: Introduce helper to check target impl CPU support
+  target/arm/kvm: Add QAPI struct ArmTargetImplCPU
+  target/arm/kvm: Handle KVM Target Imp CPU hypercalls
+  hw/arm/virt: Add Target Implementation CPU support
+
+ hw/arm/virt.c         |  66 +++++++++++++++
+ include/hw/arm/virt.h |   3 +
+ qapi/machine.json     |  34 ++++++++
+ target/arm/kvm.c      | 187 ++++++++++++++++++++++++++++++++++++++++++
+ target/arm/kvm_arm.h  |  20 +++++
+ 5 files changed, 310 insertions(+)
+
+-- 
+2.34.1
 
 
