@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91843B18691
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D7CB18692
 	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 19:23:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhtSU-0003RI-OB; Fri, 01 Aug 2025 13:22:19 -0400
+	id 1uhtSw-0006QL-0o; Fri, 01 Aug 2025 13:22:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhs3G-0002fg-H1
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:11 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1uhs3M-00037b-CY
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:16 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhs3E-0000yM-Bn
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:09 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3b7834f2e72so1518156f8f.2
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 08:52:07 -0700 (PDT)
+ id 1uhs3G-0000yX-0r
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:16 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3b7823559a5so1335117f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 08:52:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754063526; x=1754668326; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754063527; x=1754668327; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=qJIK23UyAslwl363cABUZ9a0g5viH1x6Yzu8I+xd/oI=;
- b=RmTozoFBthS1UQZY6b1mi1hv8hxswGUxWr64cfG0ef7IrPXlBiNZBcG+SDl+54F0cM
- Svfl5GlAMmDdD4AUpsZMxPUMNZ3JxEFPfXfRKevKPg7wp0Yr48mkaWOFdBPWEJfOkGfa
- 0auivpZnmLbhkbPancUjwZJaWU/dszr7V+PQ+uQSU4BFxfggBJ1xmtNMBpL/CQdSXsAL
- dJBbY2OigFfeC3ipTVGqhvt4GU1QR8jYgcF6NrgD4xBRuqt5ehfAlbxvDPe9I3Vk8gmi
- hlCZsr8cATuOxINZHLiPn1fk0rxfRkHHEzwzy2anJjFOkvwxyF1YFwtJtXlPZJoza3Lh
- 0qvg==
+ :reply-to; bh=oirmS+SjrCLZzQhC+0iWfATmWhPBgexkPGpM/2V1o2c=;
+ b=J6GSg2E6hpmAFIHuqS17d1eilb3THXxgYSNkT/N0jUUkhKAwHgFkhuGwmHbUb2MGyn
+ GFer1Fi1vhTTuJBaUUVjKGxXkTmgzXORmeQgQ1xo+46Q6VNVZMlGD6/YvvMcIVGHS7w5
+ G+BMLE9MbciWR/01vVPWyg4Csv+VKWDT0UqZpLwHLmIkLqmPmj1nU8SJb32ByjNWgDO8
+ uGoBjut0FUAGsvijsZy8pLtwkv5t3agvRii1zp8VggAsNSEp5XQvFAWHqY/342kh+Vt8
+ NPmZB6si2oDA1wn63FNcRKp1FjF9L0LmliVxrARH4oG9AagNUHJx09LwLsiOAazWnYoa
+ 09OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754063526; x=1754668326;
+ d=1e100.net; s=20230601; t=1754063527; x=1754668327;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qJIK23UyAslwl363cABUZ9a0g5viH1x6Yzu8I+xd/oI=;
- b=YMhbcFNCfq5n1wSgBzy/j7uGyS2pEtrlYc/HKOT0Q43jPLKBc4f4tpJ2B3zLWxsw4M
- zoT4an563qFSuxux2hOrISK2UdIGDQxKxdMd+MJizYszE/dYE9o11vF+zBQyGDCo6S4P
- HcMMhbebhTDTjnhFX8dqJzRoZog4sitDgHt3CZpiO1UmLe3AoJzUW4JgXdCKewT/8Ymc
- eSCYH6rS5JGbsxJxTc6XjGSnbDZo6vnncbn2LoPMSE/GU0zd6kfe8lJfglSx94PQS8RO
- iqbiUKhSzFlD3wEGLU1ibuZgAP2Va5TS2Ar7ElcMuq5tgVvyAttmQZTPioRu1UuZvNJq
- YRDQ==
-X-Gm-Message-State: AOJu0Yy/K6NZDsjBrfh+4Mnw7VVU17zqzvOEfUnN01bmVZUU9mPau3pq
- 9dW80WymPpiS5AyyZptM7NhFnKGyIA4rGHBLP427AFQWTkjnGKHRi7stBtMHkV//1tOupxFbWi1
- yXR+5
-X-Gm-Gg: ASbGnct960/Fr/xdasaXW7Roe21m3n4zqJ2tbC9htT25Oa9wxm/CmFt8bpml/vQJyKr
- Jroa+FwW8GZsaK+jKyTksv/eymls3Y9SHglrB/2A13qSeviT6581zdXCApWNwiIBZHAKEKkxDoS
- VtmjHK7RtiLYhMR6Nflm5jN893hIj5t8uy8NQ9GqtHd8B+5CDLlfq0z4bFFRHwJsKM7mgxx2GNv
- /VU/p1ygrec/QaIZr/JS1XDUXWGlv7XwGGF+wglrVuLONU930j69vAq0wOCVtwXwAY7McJ5zQ5O
- Jsag1XRwrSiV3TyB4DUZGDMNX9MkEW/05OcC7geyu3B6Z4sQzlbVmG+9YQQYOWG07YV1JejE+mb
- kfE2/gd6OIw6pGh13E5Pwfu0/NTd4
-X-Google-Smtp-Source: AGHT+IE9WJkfGLuKzSwUs7GEoGGcxBSukD8rND1tTuXsnr3iMXPOWiVEoqqzft1J1OCf1Gn/64Iazg==
-X-Received: by 2002:a5d:64cb:0:b0:3b7:761a:95d9 with SMTP id
- ffacd0b85a97d-3b8d94ce478mr211244f8f.59.1754063526483; 
- Fri, 01 Aug 2025 08:52:06 -0700 (PDT)
+ bh=oirmS+SjrCLZzQhC+0iWfATmWhPBgexkPGpM/2V1o2c=;
+ b=kFWOYhBRLZ+8jhqHCuKs+OlwwCc/Q7fSkDWL45ZcMKaEqM5P2Kyv2AkdXkGJxkA3zl
+ 7xBU/UwoHzPYKvJ6PGNv0NBUOXcw0GDhpmeHpO1kSw7UKBjUDKmuxRWDqKfuCNE6e5QO
+ JYBAWXTdH7bgR47vhqX+mIEJ/UF4hDrrQc+7itlFuY2RDgZDl+omnNPtm9hqimAh3vNh
+ l+yE4Sqzvv552ugFR42QtM0HmaPbJfWIKwhxUZifUKnZufIqzre4aJvrSYEeQ35huptC
+ 2ItWKUBFrQr8YAceNqbBjlejp7xV5GcmZ5gl6km6HTyGo1MIvVCjNXUQNHsbxUD+n1Am
+ CCjg==
+X-Gm-Message-State: AOJu0YyMEcFn41da8DmshkbKJHJJgNHUTcoiGM9A5JM7odoYi8ndvWFc
+ U6vXEYSErRtL4lKeTcXlq4AhtU7VtYpzfVDhRWTmiXgshxI+AFNti3jlCk4AP1hhNewzKZsZ2+8
+ 2SN0N
+X-Gm-Gg: ASbGnctjuHEVuG1Bp2O1Tyeefo9D3PKDRYDgtvuKC5gyXNMrbeM6sePMscfKYIHTfVI
+ 2eeWTNXhDBPuBXTmTjPug00WgzIHPiJCWOUlnRWOslO+HOuA9oSQj7daAfc0JkfYzAbRRfRlRK1
+ UTC80DyH1pbTzYWh2kv3ZapksYMSM1JQunGx+05mmoBPg1NGxxkXjy5wazdonGN1QF0f5taLmdF
+ jyBTEButKXZ6hjVCpnJpEdIvFRHI8GoTPueqjdFWqTWuA1v+OQVcHhUhtLaJH7olEkICOb3+rsC
+ J+OFg7MAYAhKi5vM0WbOSPvNM8dz3yRALjYnbiznNA8VSDZe7cBohQ2tgF1czYMnx5Jag+eYsG5
+ U+caob8Tv163In3ZYoPCPHNCj/3J+vCTYCGw+tpg=
+X-Google-Smtp-Source: AGHT+IHW0vOblllVcKa68jQyOFI0cWRD1HmFFx/yH7oYznBv22D84R7ZXbC5UXHLoXzELcANtSUfow==
+X-Received: by 2002:a05:6000:2584:b0:3b8:893f:a17d with SMTP id
+ ffacd0b85a97d-3b8d94d35d6mr178504f8f.49.1754063527452; 
+ Fri, 01 Aug 2025 08:52:07 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c4a2f03sm6176670f8f.72.2025.08.01.08.52.05
+ ffacd0b85a97d-3b79c4a2f03sm6176670f8f.72.2025.08.01.08.52.06
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 08:52:05 -0700 (PDT)
+ Fri, 01 Aug 2025 08:52:06 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 2/8] hw/intc/arm_gicv3_kvm: Remove writes to ICPENDR registers
-Date: Fri,  1 Aug 2025 16:51:53 +0100
-Message-ID: <20250801155159.400947-3-peter.maydell@linaro.org>
+Subject: [PULL 3/8] hw/intc/arm_gicv3_kvm: Write all 1's to clear enable/active
+Date: Fri,  1 Aug 2025 16:51:54 +0100
+Message-ID: <20250801155159.400947-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250801155159.400947-1-peter.maydell@linaro.org>
 References: <20250801155159.400947-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,50 +99,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zenghui Yu <zenghui.yu@linux.dev>
 
-As per the arm-vgic-v3 kernel doc [1]:
+KVM's userspace access interface to the GICD enable and active bits
+is via set/clear register pairs which implement the hardware's "write
+1s to the clear register to clear the 0 bits, and write 1s to the set
+register to set the 1 bits" semantics.  We didn't get this right,
+because we were writing 0 to the clear register.
 
-    Accesses to GICD_ICPENDR register region and GICR_ICPENDR0 registers
-    have RAZ/WI semantics, meaning that reads always return 0 and writes
-    are always ignored.
+Writing 0 to GICD_IC{ENABLE,ACTIVE}R architecturally has no effect on
+interrupt status (all writes are simply ignored by KVM) and doesn't
+comply with the intention of "first write to the clear-reg to clear
+all bits".
 
-The state behind these registers (both 0 and 1 bits) is written by
-writing to the GICD_ISPENDR and GICR_ISPENDR0 registers, unlike
-some of the other set/clear register pairs.
+Write all 1's to actually clear the enable/active status.
 
-Remove the useless writes to ICPENDR registers in kvm_arm_gicv3_put().
+This didn't have any adverse effects on migration because there
+we start with a clean VM state; it would be guest-visible when
+doing a system reset, but since Linux always cleans up the
+register state of the GIC during bootup before it enables it
+most users won't have run into a problem here.
 
-[1] https://docs.kernel.org/virt/kvm/devices/arm-vgic-v3.html
-
+Cc: qemu-stable@nongnu.org
+Fixes: 367b9f527bec ("hw/intc/arm_gicv3_kvm: Implement get/put functions")
 Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
-Message-id: 20250729161650.43758-2-zenghui.yu@linux.dev
+Message-id: 20250729161650.43758-3-zenghui.yu@linux.dev
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/intc/arm_gicv3_kvm.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/intc/arm_gicv3_kvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
-index 8ed88e74299..f798a6e28ca 100644
+index f798a6e28ca..6166283cd1a 100644
 --- a/hw/intc/arm_gicv3_kvm.c
 +++ b/hw/intc/arm_gicv3_kvm.c
-@@ -387,8 +387,6 @@ static void kvm_arm_gicv3_put(GICv3State *s)
-         reg = c->level;
-         kvm_gic_line_level_access(s, 0, ncpu, &reg, true);
- 
--        reg = ~0;
--        kvm_gicr_access(s, GICR_ICPENDR0, ncpu, &reg, true);
-         reg = c->gicr_ipendr0;
-         kvm_gicr_access(s, GICR_ISPENDR0, ncpu, &reg, true);
- 
-@@ -445,7 +443,7 @@ static void kvm_arm_gicv3_put(GICv3State *s)
-     kvm_gic_put_line_level_bmp(s, s->level);
- 
-     /* s->pending bitmap -> GICD_ISPENDRn */
--    kvm_dist_putbmp(s, GICD_ISPENDR, GICD_ICPENDR, s->pending);
-+    kvm_dist_putbmp(s, GICD_ISPENDR, 0, s->pending);
- 
-     /* s->active bitmap -> GICD_ISACTIVERn */
-     kvm_dist_putbmp(s, GICD_ISACTIVER, GICD_ICACTIVER, s->active);
+@@ -295,7 +295,7 @@ static void kvm_dist_putbmp(GICv3State *s, uint32_t offset,
+          * the 1 bits.
+          */
+         if (clroffset != 0) {
+-            reg = 0;
++            reg = ~0;
+             kvm_gicd_access(s, clroffset, &reg, true);
+             clroffset += 4;
+         }
 -- 
 2.43.0
 
