@@ -2,90 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A793CB183D0
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A32BB18417
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:41:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhqnR-0006Zp-MX; Fri, 01 Aug 2025 10:31:45 -0400
+	id 1uhqnb-0007JH-0r; Fri, 01 Aug 2025 10:31:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhP-0005Rc-Pn
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhO-0005RQ-I4
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhM-0002hg-Ph
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhK-0002iA-V1
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754058322;
+ s=mimecast20190719; t=1754058325;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Le6Lc/zgcKxFCuW53MWLO1Ha7klLf+FruZHCeB1RbYs=;
- b=WIDTRQAAXP+08gWdapMmO9XbLwv47jb/0kZj7qS8JDPoRJm2YKSbu5RaIQNW8EuYywqY13
- VtmcPBhUk/fhZ/IF2qCFLjHfvTRsPRX1sfmEFsr5H9T8p7u7qOwk/Mnk91KLn4TDUtkljp
- 3cNAca675QVG4fKeF6wZkUFxQQQYN+w=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=skaRuHczCVKfOwEwu0xPYWoe46Si7UXt2McCcCPTErQ=;
+ b=bQFgdzAaQgxTa27eY1c3p5ekSoZiQNRLD5niHzYrsfpbkzVUkGQMMSFqD1zIqLRNlToJZs
+ CxCSHjk1X6vpJecq7Gm80WXy+pOmiQyRyqP+7/rzDwRBW+1SattjBcWU2CObDcXipVFJ/2
+ OJgcuZbKbf0XjrT8m7UFQF9VUL6pyy4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-221-Zt9SDS73OcKVXl5egUa3ZA-1; Fri, 01 Aug 2025 10:25:21 -0400
-X-MC-Unique: Zt9SDS73OcKVXl5egUa3ZA-1
-X-Mimecast-MFC-AGG-ID: Zt9SDS73OcKVXl5egUa3ZA_1754058320
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45896cf24fbso8840905e9.2
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:21 -0700 (PDT)
+ us-mta-367-tu4jVcxYPf6HC6GjGpujYw-1; Fri, 01 Aug 2025 10:25:24 -0400
+X-MC-Unique: tu4jVcxYPf6HC6GjGpujYw-1
+X-Mimecast-MFC-AGG-ID: tu4jVcxYPf6HC6GjGpujYw_1754058323
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4560a30a793so3202195e9.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754058320; x=1754663120;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Le6Lc/zgcKxFCuW53MWLO1Ha7klLf+FruZHCeB1RbYs=;
- b=NA8E3yurOKjyokiBDyl5tkFpk+oik/8HuxK3aKT4FUCAf5Rkbix3Tb3yovgKxdFdYC
- VuZ119G8vV058UvHacOXl/ooIqaR/YlY1cxRYIXo9j1ILTwmnLQFOYIYa//hUsetIaA/
- lu2DTodJOEuteB9nwqlpNaS13OqcGe7gVvYElnBpB002GLQHAl3IhskNvxs3F5Z03QIl
- EVuKYkD4QXGLbpV/hMQ6wVzxJD9iniIQHYfIX4oI1/cWenzVFSG1JQubG8RDFH/WS6l7
- n8k++CcG/cnCQPlu5OGKQeUCOIhhL4m3EVjLgfIzlKiv2WdtcbydVIeSJ2gHuoxbLy01
- XLNQ==
-X-Gm-Message-State: AOJu0YzHuqRyJKyAN3DuIIhC3FHHF/rl9kuecHVoIYBi6ru+UV/NAXP9
- SMUoNxOL72WkfUelIKKetvu59BU5a1hAxMdzuOPJlKKuWcCQU2f0rh9ZJiHZXWCNkO4FDmZcNtW
- s+IuKDQT6WzugUtyIb9l1BCk7vb5Oin+USTgrfqhz8+Opgq2T/qeuY+fvNuJjyV5J2nNtvX2Swy
- KjY7BUIxovuN1Twa6SXB3F84O/mGKmyx8HQg==
-X-Gm-Gg: ASbGncuiTPGmpWkiMv9vhfgm/DuCF3mzQ3PGM+tFXONHOLs4X7ez0+LPV4QqNTeNSjl
- ChDFNG4xwMDIUX4DJHwK2QsU9AaFtd5QtLHiRnhr5kJ44EBR5hXZgztr2nXyTg+AC61DWAiofpc
- 6LE6NrCOYT9XIxEyaKYESbG49Jy1UEw2ZXJux9dgf1/an59atZOCdR027z/imv7OtEAwtu/JTgk
- swVAuZi2fiMCT3ikSNnoWKCilXYMLk+MB07Cj58OLJLaUgJSbEwXb1LiLqCMN8bsGWx5jUhMtL4
- RENeaXVGO7KKhV1MOeDV708Dw5RRm+ok
-X-Received: by 2002:a05:600c:83cc:b0:450:d37d:7c with SMTP id
- 5b1f17b1804b1-45894ca4e1cmr93284345e9.21.1754058319707; 
- Fri, 01 Aug 2025 07:25:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEnAa0qxkeCi/LltrEUId9RU19B+2oEdn/a0TcTBb1Jck+i8wy+8TWvlTodEgjov54muF7PBw==
-X-Received: by 2002:a05:600c:83cc:b0:450:d37d:7c with SMTP id
- 5b1f17b1804b1-45894ca4e1cmr93283995e9.21.1754058319196; 
- Fri, 01 Aug 2025 07:25:19 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1754058322; x=1754663122;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=skaRuHczCVKfOwEwu0xPYWoe46Si7UXt2McCcCPTErQ=;
+ b=hZzci7Vm2d8r/Z+Xz1X4PFp2ekCHJIbaMQ9RcjFqQTdKsGzVuzIA5+2hxL53V6w8om
+ phreh3Vrk1eqpass6u7maGiCeP3uX1goZAq+I/7hDFrjohgsd1dijLzXPbgFs94a9q5U
+ 3oudDzIBgv1D02SxmlHT2DowResP3ShgZjagaDVnTnDPWYshyCGE4m4yYZkyaqXY5HDX
+ O5l9tUP3gc09I/7zBmXhhUdYKvIfsE7ocEM2kM/HaMOd/F2O4yizGRJ/inxBPuQXdHHF
+ pcp+zPBkzcDJcpRApAeGFrptUKpCRCpbW6f1OkAI0iefJ5nHQkwXl2UWETixPp5LBQQf
+ GBXQ==
+X-Gm-Message-State: AOJu0YzPm9FU40WhlEVAOK0TWNlK9+l4qRZgftn9OaPxXGlZAhWKFrtv
+ Zryy9+cnzeVU93ZcE7/ewstIhjYU9uPksM2PcCgNPWbO9p8zWAg2rrQUpZfmxxByEmfoaQcOEKv
+ NLBMxtFkfh9Uxwh3gQr+/4LxkCBUOHPflgMr50x2DHFHbMsMOdTzLobfMtBRpeZEAgvdeGwVGax
+ NX16VguZ7FVsyrSZYyKN23Pp4K010jEOD0vw==
+X-Gm-Gg: ASbGnct5LWJm1FFJmwXFiYFy1ZgSGlYJ990vEfD/cgthYCSo6B/FEMihgnVxTJqycEF
+ 7cDq3A1LThmVdFUkiB/qlCKKTjzUH4KRvweK37KjavjcK03+NGDrWLyRrX5Irr2ffUKpNkW1M0/
+ +/5W+Ah/wG+LDt/f5UL0qBj3hubX5MYZ4FD6LUR3TdPyoKXXkm2ey1JZ7QXbUwJ4t22GDeUAI0k
+ 9ZGJcPMob6dVS+9GUrMulPMH6kU0m5BB132kXNs2oHQhAXMsJ5OajaxAJlRlfAEF9DfdVLJp4A8
+ U46Qn6TO714QCoZ50rwT8hrAUhpABDHn
+X-Received: by 2002:a05:600c:1994:b0:445:1984:247d with SMTP id
+ 5b1f17b1804b1-45892b9530amr98227555e9.7.1754058322244; 
+ Fri, 01 Aug 2025 07:25:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFIGEyaBIvTZG0korKrC2t8k4QdI9uBOjsgVFbrFH20LswoJgbVsAqIWBcfeMfqwjaEa7o5cg==
+X-Received: by 2002:a05:600c:1994:b0:445:1984:247d with SMTP id
+ 5b1f17b1804b1-45892b9530amr98227225e9.7.1754058321647; 
+ Fri, 01 Aug 2025 07:25:21 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c4a6ff7sm6154540f8f.75.2025.08.01.07.25.17
+ 5b1f17b1804b1-458953e9b1csm102063335e9.22.2025.08.01.07.25.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 07:25:18 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:25:16 -0400
+ Fri, 01 Aug 2025 07:25:21 -0700 (PDT)
+Date: Fri, 1 Aug 2025 10:25:19 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Sairaj Kodilkar <sarunkod@amd.com>, Vasant Hegde <vasant.hegde@amd.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 07/17] hw/i386/amd_iommu: Remove unused and wrongly set
- ats_enabled field
-Message-ID: <47d50cc421b832650822d73431d920bb8a80bc38.1754058276.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 08/17] hw/i386/amd_iommu: Move IOAPIC memory region
+ initialization to the end
+Message-ID: <a7842d94067cddc80b47ac42fb6e49e2fc02a3c5.1754058276.git.mst@redhat.com>
 References: <cover.1754058276.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1754058276.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -116,66 +113,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sairaj Kodilkar <sarunkod@amd.com>
 
-The ats_enabled field is set using HTTUNEN, which is wrong.
-Fix this by removing the field as it is never used.
+Setting up IOAPIC memory region requires mr_sys and mr_ir. Currently
+these two memory regions are setup after the initializing the IOAPIC
+memory region, which cause `amdvi_host_dma_iommu()` to use unitialized
+mr_sys and mr_ir.
 
-MST: includes a tweak suggested by Philippe
+Move the IOAPIC memory region initialization to the end in order to use
+the mr_sys and mr_ir regions after they are fully initialized.
 
-Fixes: d29a09ca68428 ("hw/i386: Introduce AMD IOMMU")
+Fixes: 577c470f4326 ("x86_iommu/amd: Prepare for interrupt remap support")
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250801060507.3382-3-sarunkod@amd.com>
-Message-ID: <948a6ac3-ded9-475b-8c45-9d36220b442b@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20250801060507.3382-4-sarunkod@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.h | 1 -
- hw/i386/amd_iommu.c | 5 ++---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ hw/i386/amd_iommu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 8b42913ed8..67078c6f1e 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -322,7 +322,6 @@ struct AMDVIState {
-     uint64_t mmio_addr;
- 
-     bool enabled;                /* IOMMU enabled                */
--    bool ats_enabled;            /* address translation enabled  */
-     bool cmdbuf_enabled;         /* command buffer enabled       */
-     bool evtlog_enabled;         /* event log enabled            */
-     bool excl_enabled;
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 7fb0bb68f0..037e78056d 100644
+index 037e78056d..7308611bf1 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -646,7 +646,6 @@ static void amdvi_handle_control_write(AMDVIState *s)
-     unsigned long control = amdvi_readq(s, AMDVI_MMIO_CONTROL);
-     s->enabled = !!(control & AMDVI_MMIO_CONTROL_AMDVIEN);
+@@ -1698,9 +1698,6 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+     s->iotlb = g_hash_table_new_full(amdvi_uint64_hash,
+                                      amdvi_uint64_equal, g_free, g_free);
  
--    s->ats_enabled = !!(control & AMDVI_MMIO_CONTROL_HTTUNEN);
-     s->evtlog_enabled = s->enabled && !!(control &
-                         AMDVI_MMIO_CONTROL_EVENTLOGEN);
+-    /* Pseudo address space under root PCI bus. */
+-    x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
+-
+     /* set up MMIO */
+     memory_region_init_io(&s->mr_mmio, OBJECT(s), &mmio_mem_ops, s,
+                           "amdvi-mmio", AMDVI_MMIO_SIZE);
+@@ -1723,6 +1720,9 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+     memory_region_add_subregion_overlap(&s->mr_sys, AMDVI_INT_ADDR_FIRST,
+                                         &s->mr_ir, 1);
  
-@@ -1555,7 +1554,6 @@ static void amdvi_init(AMDVIState *s)
-     s->excl_allow = false;
-     s->mmio_enabled = false;
-     s->enabled = false;
--    s->ats_enabled = false;
-     s->cmdbuf_enabled = false;
- 
-     /* reset MMIO */
-@@ -1626,7 +1624,8 @@ static const VMStateDescription vmstate_amdvi_sysbus_migratable = {
-       /* Updated in  amdvi_handle_control_write() */
-       VMSTATE_BOOL(enabled, AMDVIState),
-       VMSTATE_BOOL(ga_enabled, AMDVIState),
--      VMSTATE_BOOL(ats_enabled, AMDVIState),
-+      /* bool ats_enabled is obsolete */
-+      VMSTATE_UNUSED(1), /* was ats_enabled */
-       VMSTATE_BOOL(cmdbuf_enabled, AMDVIState),
-       VMSTATE_BOOL(completion_wait_intr, AMDVIState),
-       VMSTATE_BOOL(evtlog_enabled, AMDVIState),
++    /* Pseudo address space under root PCI bus. */
++    x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
++
+     if (kvm_enabled() && x86ms->apic_id_limit > 255 && !s->xtsup) {
+         error_report("AMD IOMMU with x2APIC configuration requires xtsup=on");
+         exit(EXIT_FAILURE);
 -- 
 MST
 
