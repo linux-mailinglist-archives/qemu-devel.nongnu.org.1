@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC56B18696
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 19:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91843B18691
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 19:23:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhtSr-0005bO-4g; Fri, 01 Aug 2025 13:22:41 -0400
+	id 1uhtSU-0003RI-OB; Fri, 01 Aug 2025 13:22:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhs3G-0002fh-IN
+ id 1uhs3G-0002fg-H1
  for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:11 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhs3D-0000yF-Gs
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:10 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3b7961cf660so945536f8f.1
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 08:52:06 -0700 (PDT)
+ id 1uhs3E-0000yM-Bn
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:09 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3b7834f2e72so1518156f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 08:52:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754063525; x=1754668325; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754063526; x=1754668326; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MFU7cdermEBfIRmFJJXvXqdeDCykmx7B9ltL/jtSxbA=;
- b=Dn8Uz44xfOIag/zdF51esOD8GPY2uHznBMA7N3VZxSXzG/oaZJaBRW5rXIEBt272jf
- mAa3Y8oFto0Tps5dusiMYQHNSnnDcnrpXlc9a4Gm08YIBEb8c8TFca8mnU6+uKP3mVTY
- qolSAMIrr1NkS68tCSdpq/DMdg3iSQhG0GH81/ES6UYwr3bKNpHmsjF9kH6ismG/YevI
- ByTxWWey4qcTtBRxwgf+302dChglRHtvYqTynKQEM0/OPmlNXMx7Mf7YlWlEppe9d3pt
- XS8Rrm3mmbU8z75xc1DrI+itEK4c8QSljndKbIUChZ/GwIPkDGDNQoSKtqq7yxtIaR2N
- QVmA==
+ :reply-to; bh=qJIK23UyAslwl363cABUZ9a0g5viH1x6Yzu8I+xd/oI=;
+ b=RmTozoFBthS1UQZY6b1mi1hv8hxswGUxWr64cfG0ef7IrPXlBiNZBcG+SDl+54F0cM
+ Svfl5GlAMmDdD4AUpsZMxPUMNZ3JxEFPfXfRKevKPg7wp0Yr48mkaWOFdBPWEJfOkGfa
+ 0auivpZnmLbhkbPancUjwZJaWU/dszr7V+PQ+uQSU4BFxfggBJ1xmtNMBpL/CQdSXsAL
+ dJBbY2OigFfeC3ipTVGqhvt4GU1QR8jYgcF6NrgD4xBRuqt5ehfAlbxvDPe9I3Vk8gmi
+ hlCZsr8cATuOxINZHLiPn1fk0rxfRkHHEzwzy2anJjFOkvwxyF1YFwtJtXlPZJoza3Lh
+ 0qvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754063525; x=1754668325;
+ d=1e100.net; s=20230601; t=1754063526; x=1754668326;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MFU7cdermEBfIRmFJJXvXqdeDCykmx7B9ltL/jtSxbA=;
- b=I5XuVZ2Ow8ta/0sBlPEW91MbbHuQ673OnJo8RbgRYi2xKJIDHRlkvUnVJT2Ep0Twnt
- z17mCE+iGIK/ig+eLPD05V+4jOcfI+NrRQQQZenXBJjLaLjNTAXlPqE8YQUnq6B4HGKd
- KJxk7tCxo75gzC4eFTc7FDK0WkS4PoRTm+MEG34SJ2zd+a4WCeTnojH2J+9GKrr8nsUL
- cln/KzqHEpuSR5cNAeGe3BApVqkZLPdxF7DAtpx8g2E5ORF7/mQQEHiXZQ80gWdRITjD
- 4o38QmvA/FCvFiRe/MiW9Y5WRX58b9lS3owFzgfiJZ2R/1nlvuQJmuxRyaHQzJQZuyH8
- v8Ug==
-X-Gm-Message-State: AOJu0YxCXP24Y/huFfYjIp8UVqccmog+oaS7gDO3GJ16MG2tHhbP/JG/
- 3M55eKWAf1bDns4PK3Nw98q+i/x5SQxb7B3wXlapQBPspiVvN/TXlUry16Y7dXVGw+0mIte9LwS
- eNcfr
-X-Gm-Gg: ASbGnctkgCJRlfm2fyZvLj+A3N1YmMwzej+eKy0levywncVw7jFe4n2ioss/e26+DK1
- JRwzAzWDofmHoqUpJvOWEXU0WkY+z4rgrPkT+szfVfxV3unaQyGMM+44GdtL2ngANfBdnPr9s/H
- TtFpYk024Cpos6gjA6wWAWmcl//z4g4EydSpTiJk9wqvqrCN8dB0jfz5hztvNhMvZUvajvdF69W
- LU2WFkRfKg6E8r9aXqZn4D9j+SX4vaoY0DlWwYqU1UbeMFOvHh8XP+NO0gpWIIelOzamGpl6vuX
- 8rzktc+ZS/MFnkAIWwtaJdGoN+wYOYIPbKXASmxDB7n4d60TxNoB+hUBq25LAfCNW7JnrSIdM2j
- 2/TcLkIO/SanMK7CWd+d1TAHhTdNEW0jHZ2j379k=
-X-Google-Smtp-Source: AGHT+IE06JguCyTKTyKVaW5yE0VjvWfMOvfZ8F4AR9cwKd1ZrLGsjqDXEumtQqaUquLK2gfS5Y6LIQ==
-X-Received: by 2002:a5d:5850:0:b0:3b8:d79a:6a53 with SMTP id
- ffacd0b85a97d-3b8d94708dfmr251589f8f.23.1754063525343; 
- Fri, 01 Aug 2025 08:52:05 -0700 (PDT)
+ bh=qJIK23UyAslwl363cABUZ9a0g5viH1x6Yzu8I+xd/oI=;
+ b=YMhbcFNCfq5n1wSgBzy/j7uGyS2pEtrlYc/HKOT0Q43jPLKBc4f4tpJ2B3zLWxsw4M
+ zoT4an563qFSuxux2hOrISK2UdIGDQxKxdMd+MJizYszE/dYE9o11vF+zBQyGDCo6S4P
+ HcMMhbebhTDTjnhFX8dqJzRoZog4sitDgHt3CZpiO1UmLe3AoJzUW4JgXdCKewT/8Ymc
+ eSCYH6rS5JGbsxJxTc6XjGSnbDZo6vnncbn2LoPMSE/GU0zd6kfe8lJfglSx94PQS8RO
+ iqbiUKhSzFlD3wEGLU1ibuZgAP2Va5TS2Ar7ElcMuq5tgVvyAttmQZTPioRu1UuZvNJq
+ YRDQ==
+X-Gm-Message-State: AOJu0Yy/K6NZDsjBrfh+4Mnw7VVU17zqzvOEfUnN01bmVZUU9mPau3pq
+ 9dW80WymPpiS5AyyZptM7NhFnKGyIA4rGHBLP427AFQWTkjnGKHRi7stBtMHkV//1tOupxFbWi1
+ yXR+5
+X-Gm-Gg: ASbGnct960/Fr/xdasaXW7Roe21m3n4zqJ2tbC9htT25Oa9wxm/CmFt8bpml/vQJyKr
+ Jroa+FwW8GZsaK+jKyTksv/eymls3Y9SHglrB/2A13qSeviT6581zdXCApWNwiIBZHAKEKkxDoS
+ VtmjHK7RtiLYhMR6Nflm5jN893hIj5t8uy8NQ9GqtHd8B+5CDLlfq0z4bFFRHwJsKM7mgxx2GNv
+ /VU/p1ygrec/QaIZr/JS1XDUXWGlv7XwGGF+wglrVuLONU930j69vAq0wOCVtwXwAY7McJ5zQ5O
+ Jsag1XRwrSiV3TyB4DUZGDMNX9MkEW/05OcC7geyu3B6Z4sQzlbVmG+9YQQYOWG07YV1JejE+mb
+ kfE2/gd6OIw6pGh13E5Pwfu0/NTd4
+X-Google-Smtp-Source: AGHT+IE9WJkfGLuKzSwUs7GEoGGcxBSukD8rND1tTuXsnr3iMXPOWiVEoqqzft1J1OCf1Gn/64Iazg==
+X-Received: by 2002:a5d:64cb:0:b0:3b7:761a:95d9 with SMTP id
+ ffacd0b85a97d-3b8d94ce478mr211244f8f.59.1754063526483; 
+ Fri, 01 Aug 2025 08:52:06 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c4a2f03sm6176670f8f.72.2025.08.01.08.52.03
+ ffacd0b85a97d-3b79c4a2f03sm6176670f8f.72.2025.08.01.08.52.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 08:52:03 -0700 (PDT)
+ Fri, 01 Aug 2025 08:52:05 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 1/8] target/arm: add support for 64-bit PMCCNTR in AArch32 mode
-Date: Fri,  1 Aug 2025 16:51:52 +0100
-Message-ID: <20250801155159.400947-2-peter.maydell@linaro.org>
+Subject: [PULL 2/8] hw/intc/arm_gicv3_kvm: Remove writes to ICPENDR registers
+Date: Fri,  1 Aug 2025 16:51:53 +0100
+Message-ID: <20250801155159.400947-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250801155159.400947-1-peter.maydell@linaro.org>
 References: <20250801155159.400947-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,94 +97,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Richardson <alexrichardson@google.com>
+From: Zenghui Yu <zenghui.yu@linux.dev>
 
-In the PMUv3, a new AArch32 64-bit (MCRR/MRRC) accessor for the
-PMCCNTR was added. In QEMU we forgot to implement this, so only
-provide the 32-bit accessor. Since we have a 64-bit PMCCNTR
-sysreg for AArch64, adding the 64-bit AArch32 version is easy.
+As per the arm-vgic-v3 kernel doc [1]:
 
-We add the PMCCNTR to the v8_cp_reginfo because PMUv3 was added
-in the ARMv8 architecture. This is consistent with how we
-handle the existing PMCCNTR support, where we always implement
-it for all v7 CPUs. This is arguably something we should
-clean up so it is gated on ARM_FEATURE_PMU and/or an ID
-register check for the relevant PMU version, but we should
-do that as its own tidyup rather than being inconsistent between
-this PMCCNTR accessor and the others.
+    Accesses to GICD_ICPENDR register region and GICR_ICPENDR0 registers
+    have RAZ/WI semantics, meaning that reads always return 0 and writes
+    are always ignored.
 
-Since the register name is the same as the 32-bit PMCCNTR, we set
-ARM_CP_NO_GDB on the 32-bit one to avoid generating an invalid GDB XML.
+The state behind these registers (both 0 and 1 bits) is written by
+writing to the GICD_ISPENDR and GICR_ISPENDR0 registers, unlike
+some of the other set/clear register pairs.
 
-See https://developer.arm.com/documentation/ddi0601/2024-06/AArch32-Registers/PMCCNTR--Performance-Monitors-Cycle-Count-Register?lang=en
+Remove the useless writes to ICPENDR registers in kvm_arm_gicv3_put().
 
-Note for potential backporting:
- * this code in cpregs-pmu.c will be in helper.c on stable
-   branches that don't have commit ae2086426d37
+[1] https://docs.kernel.org/virt/kvm/devices/arm-vgic-v3.html
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Alex Richardson <alexrichardson@google.com>
-Message-id: 20250725170136.145116-1-alexrichardson@google.com
+Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
+Message-id: 20250729161650.43758-2-zenghui.yu@linux.dev
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpregs-pmu.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ hw/intc/arm_gicv3_kvm.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/target/arm/cpregs-pmu.c b/target/arm/cpregs-pmu.c
-index 0f295b1376c..9c4431c18ba 100644
---- a/target/arm/cpregs-pmu.c
-+++ b/target/arm/cpregs-pmu.c
-@@ -1067,11 +1067,6 @@ static const ARMCPRegInfo v7_pm_reginfo[] = {
-       .fgt = FGT_PMSELR_EL0,
-       .fieldoffset = offsetof(CPUARMState, cp15.c9_pmselr),
-       .writefn = pmselr_write, .raw_writefn = raw_write, },
--    { .name = "PMCCNTR", .cp = 15, .crn = 9, .crm = 13, .opc1 = 0, .opc2 = 0,
--      .access = PL0_RW, .resetvalue = 0, .type = ARM_CP_ALIAS | ARM_CP_IO,
--      .fgt = FGT_PMCCNTR_EL0,
--      .readfn = pmccntr_read, .writefn = pmccntr_write32,
--      .accessfn = pmreg_access_ccntr },
-     { .name = "PMCCNTR_EL0", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 3, .crn = 9, .crm = 13, .opc2 = 0,
-       .access = PL0_RW, .accessfn = pmreg_access_ccntr,
-@@ -1211,6 +1206,23 @@ void define_pm_cpregs(ARMCPU *cpu)
-         define_one_arm_cp_reg(cpu, &pmcr);
-         define_one_arm_cp_reg(cpu, &pmcr64);
-         define_arm_cp_regs(cpu, v7_pm_reginfo);
-+        /*
-+         * 32-bit AArch32 PMCCNTR. We don't expose this to GDB if the
-+         * new-in-v8 PMUv3 64-bit AArch32 PMCCNTR register is implemented
-+         * (as that will provide the GDB user's view of "PMCCNTR").
-+         */
-+        ARMCPRegInfo pmccntr = {
-+            .name = "PMCCNTR",
-+            .cp = 15, .crn = 9, .crm = 13, .opc1 = 0, .opc2 = 0,
-+            .access = PL0_RW, .accessfn = pmreg_access_ccntr,
-+            .resetvalue = 0, .type = ARM_CP_ALIAS | ARM_CP_IO,
-+            .fgt = FGT_PMCCNTR_EL0,
-+            .readfn = pmccntr_read, .writefn = pmccntr_write32,
-+        };
-+        if (arm_feature(env, ARM_FEATURE_V8)) {
-+            pmccntr.type |= ARM_CP_NO_GDB;
-+        }
-+        define_one_arm_cp_reg(cpu, &pmccntr);
+diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+index 8ed88e74299..f798a6e28ca 100644
+--- a/hw/intc/arm_gicv3_kvm.c
++++ b/hw/intc/arm_gicv3_kvm.c
+@@ -387,8 +387,6 @@ static void kvm_arm_gicv3_put(GICv3State *s)
+         reg = c->level;
+         kvm_gic_line_level_access(s, 0, ncpu, &reg, true);
  
-         for (unsigned i = 0, pmcrn = pmu_num_counters(env); i < pmcrn; i++) {
-             g_autofree char *pmevcntr_name = g_strdup_printf("PMEVCNTR%d", i);
-@@ -1276,6 +1288,13 @@ void define_pm_cpregs(ARMCPU *cpu)
-               .access = PL0_R, .accessfn = pmreg_access, .type = ARM_CP_CONST,
-               .fgt = FGT_PMCEIDN_EL0,
-               .resetvalue = cpu->pmceid1 },
-+            /* AArch32 64-bit PMCCNTR view: added in PMUv3 with Armv8 */
-+            { .name = "PMCCNTR", .state = ARM_CP_STATE_AA32,
-+              .cp = 15, .crm = 9, .opc1 = 0,
-+              .access = PL0_RW, .accessfn = pmreg_access_ccntr, .resetvalue = 0,
-+              .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_64BIT,
-+              .fgt = FGT_PMCCNTR_EL0, .readfn = pmccntr_read,
-+              .writefn = pmccntr_write,  },
-         };
-         define_arm_cp_regs(cpu, v8_pm_reginfo);
-     }
+-        reg = ~0;
+-        kvm_gicr_access(s, GICR_ICPENDR0, ncpu, &reg, true);
+         reg = c->gicr_ipendr0;
+         kvm_gicr_access(s, GICR_ISPENDR0, ncpu, &reg, true);
+ 
+@@ -445,7 +443,7 @@ static void kvm_arm_gicv3_put(GICv3State *s)
+     kvm_gic_put_line_level_bmp(s, s->level);
+ 
+     /* s->pending bitmap -> GICD_ISPENDRn */
+-    kvm_dist_putbmp(s, GICD_ISPENDR, GICD_ICPENDR, s->pending);
++    kvm_dist_putbmp(s, GICD_ISPENDR, 0, s->pending);
+ 
+     /* s->active bitmap -> GICD_ISACTIVERn */
+     kvm_dist_putbmp(s, GICD_ISACTIVER, GICD_ICACTIVER, s->active);
 -- 
 2.43.0
 
