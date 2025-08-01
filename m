@@ -2,82 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2E2B17D17
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 09:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D0C3B18298
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 15:36:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhjqU-0002jk-4F; Fri, 01 Aug 2025 03:06:29 -0400
+	id 1uhpvk-0004jX-4i; Fri, 01 Aug 2025 09:36:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uhjYi-00036S-Di; Fri, 01 Aug 2025 02:48:04 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <hsiangkao@linux.alibaba.com>)
+ id 1uhjog-0001MA-BC; Fri, 01 Aug 2025 03:04:34 -0400
+Received: from [115.124.30.132] (helo=out30-132.freemail.mail.aliyun.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uhjYe-0004XQ-Qg; Fri, 01 Aug 2025 02:48:04 -0400
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5716kPJa031405
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Fri, 1 Aug 2025 15:46:25 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=hZDgdrHajaEfybOJBy89rhjgeSDYeEP0LA1w65q8SQk=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1754030786; v=1;
- b=aieCmlQlTHQRgR9sc1uA9YZp74UNCeOpkU6D18JKg2uEjrgDXQ2IPqZfXnmSMmGg
- 4kpx8w+HSSHQcsMIb+eC9wKGbnYkzhSjj1oSE2zMCq1Aez+8ZRNrjeFPh6EMXsta
- 0BxP2piCpLbmCllaNZBEMzzPVONR9W9yGPrDcTdT5F+WaaKtCax0vLxuUg2RI4S6
- DocffVrhcT+zOzj9NHWH5PAbdRMg2nv2WAPU9yZzpGpkMMtfdcHbLc/7ebqbWS38
- BBiyu/QjJHWiohaoxs4oatTE2PT/b6Wuh6g8i/SCD7i+sRd0FPLyv1L2HpHleA6a
- SeyASf3tF8xkradnUWrH/w==
-Message-ID: <f35f70b9-5f15-42db-bb73-db09ef0d6ad1@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 1 Aug 2025 15:46:25 +0900
+ (Exim 4.90_1) (envelope-from <hsiangkao@linux.alibaba.com>)
+ id 1uhjoc-0007A4-4k; Fri, 01 Aug 2025 03:04:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1754031853; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+ bh=fDfFJ1fFDeQcGk1MtzyoBt7qqCdc5Nzmffg9FTcOGdA=;
+ b=kLROwh9qPmAn0YvMZiFlqU08+0P2KOpRf0RdHoigcOkV06MLNedDwV5ZZNmQUaLamgLKzzxHiQDpm8sL9QA4wpxLXmVCXjuHVEfCDaj2ypco0vyw2tVy2k2ovW+iBMs7cwl+AkJUop/pu00p4ncea2WrDMteBRdewIIp0pS9bXk=
+Received: from 30.221.131.201(mailfrom:hsiangkao@linux.alibaba.com
+ fp:SMTPD_---0WkcxLJW_1754031535 cluster:ay36) by smtp.aliyun-inc.com;
+ Fri, 01 Aug 2025 14:58:55 +0800
+Message-ID: <db65aa49-7323-49f4-8531-7c617e9d8a1b@linux.alibaba.com>
+Date: Fri, 1 Aug 2025 14:58:53 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 03/27] migration: push Error **errp into
- qemu_loadvm_state_header()
-To: Arun Menon <armenon@redhat.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20250731-propagate_tpm_error-v8-0-28fd82fdfdb2@redhat.com>
- <20250731-propagate_tpm_error-v8-3-28fd82fdfdb2@redhat.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250731-propagate_tpm_error-v8-3-28fd82fdfdb2@redhat.com>
+Subject: Re: RE: [PATCH] hw/arm: add static NVDIMMs in device tree
+To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ "imammedo@redhat.com" <imammedo@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>
+References: <20250730-nvdimm_arm64_virt-v1-1-f843596ab995@linaro.org>
+ <20250731110036.00003a0a@huawei.com>
+ <e8203af151ea4f9696b809dd5de6b155@huawei.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <e8203af151ea4f9696b809dd5de6b155@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 7bit
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.30.132 (deferred)
+Received-SPF: pass client-ip=115.124.30.132;
+ envelope-from=hsiangkao@linux.alibaba.com;
+ helo=out30-132.freemail.mail.aliyun.com
+X-Spam_score_int: -166
+X-Spam_score: -16.7
+X-Spam_bar: ----------------
+X-Spam_report: (-16.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 01 Aug 2025 09:35:51 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,94 +74,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/07/31 22:20, Arun Menon wrote:
-> This is an incremental step in converting vmstate loading
-> code to report error via Error objects instead of directly
-> printing it to console/monitor.
-> It is ensured that qemu_loadvm_state_header() must report an error
-> in errp, in case of failure.
+Hi folks,
+
+On 2025/7/31 19:14, Shameerali Kolothum Thodi via wrote:
 > 
-> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Signed-off-by: Arun Menon <armenon@redhat.com>
-> ---
->   migration/savevm.c | 27 ++++++++++++++++++---------
->   1 file changed, 18 insertions(+), 9 deletions(-)
 > 
-> diff --git a/migration/savevm.c b/migration/savevm.c
-> index ab947620f724874f325fb9fb59bef50b7c16fb51..842ff3dc6d5ccb05f7d33cef9f7319b141419501 100644
-> --- a/migration/savevm.c
-> +++ b/migration/savevm.c
-> @@ -2814,35 +2814,44 @@ qemu_loadvm_section_part_end(QEMUFile *f, uint8_t type)
->       return 0;
->   }
->   
-> -static int qemu_loadvm_state_header(QEMUFile *f)
-> +static int qemu_loadvm_state_header(QEMUFile *f, Error **errp)
->   {
->       unsigned int v;
->       int ret;
->   
->       v = qemu_get_be32(f);
->       if (v != QEMU_VM_FILE_MAGIC) {
-> -        error_report("Not a migration stream");
-> +        error_setg(errp, "Not a migration stream, magic: %x != %x",
-> +                   v, QEMU_VM_FILE_MAGIC);
->           return -EINVAL;
->       }
->   
->       v = qemu_get_be32(f);
->       if (v == QEMU_VM_FILE_VERSION_COMPAT) {
-> -        error_report("SaveVM v2 format is obsolete and don't work anymore");
-> +        error_setg(errp,
-> +                   "SaveVM v2 format is obsolete and no longer supported, "
-> +                   "file version %x != %x",
-> +                   v, QEMU_VM_FILE_VERSION_COMPAT);
-> +
->           return -ENOTSUP;
->       }
->       if (v != QEMU_VM_FILE_VERSION) {
-> -        error_report("Unsupported migration stream version");
-> +        error_setg(errp, "Unsupported migration stream version, "
-> +                   "file version %x != %x",
-> +                   v, QEMU_VM_FILE_VERSION);
->           return -ENOTSUP;
->       }
->   
->       if (migrate_get_current()->send_configuration) {
-> -        if (qemu_get_byte(f) != QEMU_VM_CONFIGURATION) {
-> -            error_report("Configuration section missing");
-> +        v = qemu_get_byte(f);
-> +        if (v != QEMU_VM_CONFIGURATION) {
-> +            error_setg(errp, "Configuration section missing, %x != %x",
-> +                       v, QEMU_VM_CONFIGURATION);
->               return -EINVAL;
->           }
-> -        ret = vmstate_load_state(f, &vmstate_configuration, &savevm_state, 0,
-> -                                 NULL);
->   
-> +        ret = vmstate_load_state(f, &vmstate_configuration, &savevm_state, 0,
-> +                                 errp);
->           if (ret) {
->               return ret;
->           }
-> @@ -3119,7 +3128,7 @@ int qemu_loadvm_state(QEMUFile *f)
->   
->       qemu_loadvm_thread_pool_create(mis);
->   
-> -    ret = qemu_loadvm_state_header(f);
-> +    ret = qemu_loadvm_state_header(f, NULL);
->       if (ret) {
+>> -----Original Message-----
+>> From: Jonathan Cameron <jonathan.cameron@huawei.com>
+>> Sent: Thursday, July 31, 2025 11:01 AM
+>> To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>> Cc: qemu-devel@nongnu.org; Peter Maydell <peter.maydell@linaro.org>;
+>> qemu-arm@nongnu.org; Gustavo Romero <gustavo.romero@linaro.org>;
+>> Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+>> Subject: Re: [PATCH] hw/arm: add static NVDIMMs in device tree
+>>
+>> On Wed, 30 Jul 2025 15:21:41 +0300
+>> Manos Pitsidianakis <manos.pitsidianakis@linaro.org> wrote:
+>>
+>>> NVDIMM is used for fast rootfs with EROFS, for example by kata
+>>> containers. To allow booting with static NVDIMM memory, add them to
+>>> the device tree in arm virt machine.
 
-I have another comment: the error should be reported with 
-error_report_err() or the messages converted from error_report() to 
-error_setg() will be temporarily gone.
+Just another question about the image passthrough via pmem,
+I wonder if it's possible for QEMU to support one nvdimm,
+virtio-pmem device with multiple memory backend files rather
+than just one single file?
 
-I'm sorry that I missed this in the last email (this and the problem I 
-mentioned in the last email was there since v4 [the first version I got 
-CCed] and I failed to notice them until now...)
+Because EROFS can use this way to support multi-layer images,
+for example:
 
->           return ret;
->       }
-> 
+  filesystem1:  metadatafile + layerfile1 + layerfile2
+  filesystem2:  metadatafile + layerfile1 + layerfile3
 
+so that multiple pmem devices can share the same layer1 page
+cache on the host.
+
+More details also see:
+  https://erofs.docs.kernel.org/en/latest/merging.html
+
+
+Many thanks!
+Gao Xiang
 
