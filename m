@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D7CB18692
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 19:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FAAB186A5
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 19:27:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhtSw-0006QL-0o; Fri, 01 Aug 2025 13:22:46 -0400
+	id 1uhtWq-0005ft-3x; Fri, 01 Aug 2025 13:26:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhs3M-00037b-CY
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:16 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1uhs3H-0002ha-W3
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:12 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhs3G-0000yX-0r
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:16 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3b7823559a5so1335117f8f.0
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 08:52:08 -0700 (PDT)
+ id 1uhs3G-0000yf-9W
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:11 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-45629702e52so4359035e9.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 08:52:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754063527; x=1754668327; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754063528; x=1754668328; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=oirmS+SjrCLZzQhC+0iWfATmWhPBgexkPGpM/2V1o2c=;
- b=J6GSg2E6hpmAFIHuqS17d1eilb3THXxgYSNkT/N0jUUkhKAwHgFkhuGwmHbUb2MGyn
- GFer1Fi1vhTTuJBaUUVjKGxXkTmgzXORmeQgQ1xo+46Q6VNVZMlGD6/YvvMcIVGHS7w5
- G+BMLE9MbciWR/01vVPWyg4Csv+VKWDT0UqZpLwHLmIkLqmPmj1nU8SJb32ByjNWgDO8
- uGoBjut0FUAGsvijsZy8pLtwkv5t3agvRii1zp8VggAsNSEp5XQvFAWHqY/342kh+Vt8
- NPmZB6si2oDA1wn63FNcRKp1FjF9L0LmliVxrARH4oG9AagNUHJx09LwLsiOAazWnYoa
- 09OQ==
+ :reply-to; bh=VA9zLG3hIwrKZfYHg8vSBI/hR1razhF0Nu/W6W/sq9U=;
+ b=OKpm7Dezbi8Ey8zWiGRnfASzz+lap2Az7cgkDfvtCZc1Cr9w7x8kvoMnddxIUCpwHP
+ tiGcSQrLNGKpBm1TXNEfEiBMPETvsj3yja+GXoNp5mNnOPkZMgRIMGNUlIr8fgWwXTiL
+ GCFgAYEdr8kUKbvR17j4KopQNAsEck7K1YXL4GhhHDVoY3L0nNO2jvKdtYIqEMm2Cxie
+ 9gBry/hrJEWeVDrRjSbDr2ZEfNxJOUBzH+V1uR5x2aZbzRvAXYE+LPyO1iKlh995O664
+ H+l787JjKqUcJgqsWLyl+S1uEF8u+c6ZrP07YhvI9Tx/uJrZDglwutg0wIcTXGK0UnYv
+ 35pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754063527; x=1754668327;
+ d=1e100.net; s=20230601; t=1754063528; x=1754668328;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oirmS+SjrCLZzQhC+0iWfATmWhPBgexkPGpM/2V1o2c=;
- b=kFWOYhBRLZ+8jhqHCuKs+OlwwCc/Q7fSkDWL45ZcMKaEqM5P2Kyv2AkdXkGJxkA3zl
- 7xBU/UwoHzPYKvJ6PGNv0NBUOXcw0GDhpmeHpO1kSw7UKBjUDKmuxRWDqKfuCNE6e5QO
- JYBAWXTdH7bgR47vhqX+mIEJ/UF4hDrrQc+7itlFuY2RDgZDl+omnNPtm9hqimAh3vNh
- l+yE4Sqzvv552ugFR42QtM0HmaPbJfWIKwhxUZifUKnZufIqzre4aJvrSYEeQ35huptC
- 2ItWKUBFrQr8YAceNqbBjlejp7xV5GcmZ5gl6km6HTyGo1MIvVCjNXUQNHsbxUD+n1Am
- CCjg==
-X-Gm-Message-State: AOJu0YyMEcFn41da8DmshkbKJHJJgNHUTcoiGM9A5JM7odoYi8ndvWFc
- U6vXEYSErRtL4lKeTcXlq4AhtU7VtYpzfVDhRWTmiXgshxI+AFNti3jlCk4AP1hhNewzKZsZ2+8
- 2SN0N
-X-Gm-Gg: ASbGnctjuHEVuG1Bp2O1Tyeefo9D3PKDRYDgtvuKC5gyXNMrbeM6sePMscfKYIHTfVI
- 2eeWTNXhDBPuBXTmTjPug00WgzIHPiJCWOUlnRWOslO+HOuA9oSQj7daAfc0JkfYzAbRRfRlRK1
- UTC80DyH1pbTzYWh2kv3ZapksYMSM1JQunGx+05mmoBPg1NGxxkXjy5wazdonGN1QF0f5taLmdF
- jyBTEButKXZ6hjVCpnJpEdIvFRHI8GoTPueqjdFWqTWuA1v+OQVcHhUhtLaJH7olEkICOb3+rsC
- J+OFg7MAYAhKi5vM0WbOSPvNM8dz3yRALjYnbiznNA8VSDZe7cBohQ2tgF1czYMnx5Jag+eYsG5
- U+caob8Tv163In3ZYoPCPHNCj/3J+vCTYCGw+tpg=
-X-Google-Smtp-Source: AGHT+IHW0vOblllVcKa68jQyOFI0cWRD1HmFFx/yH7oYznBv22D84R7ZXbC5UXHLoXzELcANtSUfow==
-X-Received: by 2002:a05:6000:2584:b0:3b8:893f:a17d with SMTP id
- ffacd0b85a97d-3b8d94d35d6mr178504f8f.49.1754063527452; 
- Fri, 01 Aug 2025 08:52:07 -0700 (PDT)
+ bh=VA9zLG3hIwrKZfYHg8vSBI/hR1razhF0Nu/W6W/sq9U=;
+ b=mwH4gW9KP+Q2sKriENVhhW/uri/t64iTJ5a+2JbYUJABrzDGnyEuuRwPS8BUqOd/f9
+ Q0mWEB2iF0WD4jITPVIMg7OiF3KV+o4Xu9B4qUw0tOPWshk+DwQ3zKrAyQ8jMLhi3U83
+ HpDnbD76U1xEbcrjpAAJkXNKM84AQWciTU7K6AdTOOrIp0A9wsEidXrFPtTvcW5EFQzM
+ g5qMgDe8wfVXdeyP67x5QA0+cVeJCWn/crNfm7XZzfGH1+mBBMD80PZSd9F8FQo2WbTL
+ pQf5fwoah68wI4u4AD1yaHGaj3iHzvNt43z/7Vw7+GgPUPN/NMrgWkeShuiomR18ysGL
+ 8znA==
+X-Gm-Message-State: AOJu0Yxhd9+tl8qJZl5I8EhaDq7N8VepvUqaZH9p2FQRSIbrjo+Ql5FY
+ +XVh92WSVgRvuvanELrY+ED7VOSPvkRubVPDN8lSMV66C6j5fIusIIf7Y2Su37sHOyH36XTzje4
+ BqNwp
+X-Gm-Gg: ASbGncvouQXcWfGK/MNPTNdaJc9pFnvj0qxLq9Wki5itpcz8+uVIKt6QSUdE4YZjD4J
+ b0kmBwOnzhyjm//WtRFnQl9/56VTPmIhbRq2pKrVdW/tHqZeRUHGSzc3j3+px+T1vFsWANWBooW
+ 4zo5nCfLRFfCE9bS6VWk+sYVSIvgDnY1aekWEgii3ib5kmfAVHaK16VZpO321PDRYISbELae9Vy
+ A5ySLSFYsaecW5TOKGA/yMM2NAj+juKSvGJxbGD0w3cPDGNjHiulWSWTLjENS02Xd1AKN5U+jFN
+ vryfg/S5whsvO6+PvWXp4iRsO0LF6Jgt51QzAZIKKkTuqx2+xW2ZMkufvrUS1Yx9GLVsTX3Qj76
+ b8ev6RjuTLjgKfcBhkI/rxnRNNthUXJr4WbBKvHw=
+X-Google-Smtp-Source: AGHT+IE2aMGX0ZZVL2udJYMuwCPwJC29lrNO+BJWY0e33zLCxbyA95h5aNcLqaZ28oLmfNkTthzE8w==
+X-Received: by 2002:a05:6000:40c9:b0:3b8:d138:41d3 with SMTP id
+ ffacd0b85a97d-3b8d94d01c0mr241931f8f.56.1754063528459; 
+ Fri, 01 Aug 2025 08:52:08 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c4a2f03sm6176670f8f.72.2025.08.01.08.52.06
+ ffacd0b85a97d-3b79c4a2f03sm6176670f8f.72.2025.08.01.08.52.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 08:52:06 -0700 (PDT)
+ Fri, 01 Aug 2025 08:52:07 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 3/8] hw/intc/arm_gicv3_kvm: Write all 1's to clear enable/active
-Date: Fri,  1 Aug 2025 16:51:54 +0100
-Message-ID: <20250801155159.400947-4-peter.maydell@linaro.org>
+Subject: [PULL 4/8] hw/display/framebuffer: Add cast to force 64x64 multiply
+Date: Fri,  1 Aug 2025 16:51:55 +0100
+Message-ID: <20250801155159.400947-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250801155159.400947-1-peter.maydell@linaro.org>
 References: <20250801155159.400947-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,50 +97,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zenghui Yu <zenghui.yu@linux.dev>
+In framebuffer_update_display(), Coverity complains because we
+multiply two values of type 'int' (which will be done as a 32x32
+multiply and so in theory might overflow) and then add the result to
+a ram_addr_t, which can be 64 bits.
 
-KVM's userspace access interface to the GICD enable and active bits
-is via set/clear register pairs which implement the hardware's "write
-1s to the clear register to clear the 0 bits, and write 1s to the set
-register to set the 1 bits" semantics.  We didn't get this right,
-because we were writing 0 to the clear register.
+4GB framebuffers are not plausible anyway, but keep Coverity happy
+by adding casts which force these multiplies to be done as 64x64.
 
-Writing 0 to GICD_IC{ENABLE,ACTIVE}R architecturally has no effect on
-interrupt status (all writes are simply ignored by KVM) and doesn't
-comply with the intention of "first write to the clear-reg to clear
-all bits".
-
-Write all 1's to actually clear the enable/active status.
-
-This didn't have any adverse effects on migration because there
-we start with a clean VM state; it would be guest-visible when
-doing a system reset, but since Linux always cleans up the
-register state of the GIC during bootup before it enables it
-most users won't have run into a problem here.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 367b9f527bec ("hw/intc/arm_gicv3_kvm: Implement get/put functions")
-Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
-Message-id: 20250729161650.43758-3-zenghui.yu@linux.dev
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Coverity: CID 1487248
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-id: 20250710174312.1313177-1-peter.maydell@linaro.org
 ---
- hw/intc/arm_gicv3_kvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/display/framebuffer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
-index f798a6e28ca..6166283cd1a 100644
---- a/hw/intc/arm_gicv3_kvm.c
-+++ b/hw/intc/arm_gicv3_kvm.c
-@@ -295,7 +295,7 @@ static void kvm_dist_putbmp(GICv3State *s, uint32_t offset,
-          * the 1 bits.
-          */
-         if (clroffset != 0) {
--            reg = 0;
-+            reg = ~0;
-             kvm_gicd_access(s, clroffset, &reg, true);
-             clroffset += 4;
-         }
+diff --git a/hw/display/framebuffer.c b/hw/display/framebuffer.c
+index 4485aa335bb..b4296e8a33e 100644
+--- a/hw/display/framebuffer.c
++++ b/hw/display/framebuffer.c
+@@ -95,9 +95,9 @@ void framebuffer_update_display(
+     }
+     first = -1;
+ 
+-    addr += i * src_width;
+-    src += i * src_width;
+-    dest += i * dest_row_pitch;
++    addr += (uint64_t)i * src_width;
++    src += (uint64_t)i * src_width;
++    dest += (uint64_t)i * dest_row_pitch;
+ 
+     snap = memory_region_snapshot_and_clear_dirty(mem, addr, src_width * rows,
+                                                   DIRTY_MEMORY_VGA);
 -- 
 2.43.0
 
