@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8008BB185A1
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 18:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AADAEB1859F
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 18:21:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhsUi-0004YE-IQ; Fri, 01 Aug 2025 12:20:32 -0400
+	id 1uhsUp-0005NA-Rf; Fri, 01 Aug 2025 12:20:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrS4-0003Oo-M0
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:44 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrS5-0003YZ-Vg
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrS3-0002iM-3h
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:44 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrS4-0002ih-9E
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754061222;
+ s=mimecast20190719; t=1754061223;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wQ7KrqKEGTDzG09G0HKW/4auocwmvv+XXAEfZJUK+Ew=;
- b=FdC0HcvE0a9ezsHQCzBFyxK0gtQfEHfkIQCLcUC8cAvWAZ6QRC/3DTMldG5Vq96tEm5tK4
- xdUQEqGZfo9vP/LlsjOZ/iz3ZKlmTWTF246aSAKBUJY+7Pd/HhcxrGOYtM7zN2wuqMjS6o
- N4ohzfCKV/MNzpCPP1C9AaYXJDr8oe8=
+ bh=xPyLRCEchZuKSQe9gBn+rCXPcOdsz5BV7rzrR2JevRc=;
+ b=UGYgxpUA3VWhKYAYqzGSRwjuOXafG8wNcUXmZmAV7RwAjg9VjprEPygsTcko/JfmIIkHNQ
+ xBeTQ9mMqlg84+gzXOfo75gRHqTJgDN770pD7c+mypmn1pHj/Dfi9PA2+Pa85+xVm+WZMv
+ OrLBuh78edjcRyPVqndifp8X74Z6bE0=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-365-1u0nn6M9N1aVTEXRr4KWNQ-1; Fri,
- 01 Aug 2025 11:13:39 -0400
-X-MC-Unique: 1u0nn6M9N1aVTEXRr4KWNQ-1
-X-Mimecast-MFC-AGG-ID: 1u0nn6M9N1aVTEXRr4KWNQ_1754061215
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-399-31w5tGUGNiiIJfkpWeANOQ-1; Fri,
+ 01 Aug 2025 11:13:37 -0400
+X-MC-Unique: 31w5tGUGNiiIJfkpWeANOQ-1
+X-Mimecast-MFC-AGG-ID: 31w5tGUGNiiIJfkpWeANOQ_1754061216
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 24C6018015E7; Fri,  1 Aug 2025 15:13:27 +0000 (UTC)
+ id 040221800373; Fri,  1 Aug 2025 15:13:30 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.225.137])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0AD68180035E; Fri,  1 Aug 2025 15:13:24 +0000 (UTC)
+ id D61061800D85; Fri,  1 Aug 2025 15:13:27 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 09/24] tests/functional: Move hppa tests into architecture
+Subject: [PATCH 10/24] tests/functional: Move i386 tests into architecture
  specific folder
-Date: Fri,  1 Aug 2025 17:12:34 +0200
-Message-ID: <20250801151251.751368-10-thuth@redhat.com>
+Date: Fri,  1 Aug 2025 17:12:35 +0200
+Message-ID: <20250801151251.751368-11-thuth@redhat.com>
 In-Reply-To: <20250801151251.751368-1-thuth@redhat.com>
 References: <20250801151251.751368-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,68 +86,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Thomas Huth <thuth@redhat.com>
 
 The tests/functional folder has become quite crowded, thus move the
-avr tests into a target-specific subfolder.
+i386 tests into a target-specific subfolder.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                                                  | 2 +-
- tests/functional/hppa/meson.build                            | 5 +++++
- .../{test_hppa_seabios.py => hppa/test_seabios.py}           | 0
- tests/functional/meson.build                                 | 5 +----
- 4 files changed, 7 insertions(+), 5 deletions(-)
- create mode 100644 tests/functional/hppa/meson.build
- rename tests/functional/{test_hppa_seabios.py => hppa/test_seabios.py} (100%)
+ MAINTAINERS                                            |  2 +-
+ tests/functional/i386/meson.build                      | 10 ++++++++++
+ .../{test_i386_migration.py => i386/test_migration.py} |  0
+ .../{test_i386_replay.py => i386/test_replay.py}       |  0
+ .../{test_i386_tuxrun.py => i386/test_tuxrun.py}       |  0
+ tests/functional/meson.build                           | 10 +---------
+ 6 files changed, 12 insertions(+), 10 deletions(-)
+ create mode 100644 tests/functional/i386/meson.build
+ rename tests/functional/{test_i386_migration.py => i386/test_migration.py} (100%)
+ rename tests/functional/{test_i386_replay.py => i386/test_replay.py} (100%)
+ rename tests/functional/{test_i386_tuxrun.py => i386/test_tuxrun.py} (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 0cfd12ec77e..8d4881947ca 100644
+index 8d4881947ca..db89dd830b4 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1271,7 +1271,7 @@ F: include/hw/pci-host/astro.h
- F: include/hw/pci-host/dino.h
- F: pc-bios/hppa-firmware.img
- F: roms/seabios-hppa/
--F: tests/functional/test_hppa_seabios.py
-+F: tests/functional/hppa/test_seabios.py
- 
- LoongArch Machines
- ------------------
-diff --git a/tests/functional/hppa/meson.build b/tests/functional/hppa/meson.build
+@@ -1888,7 +1888,7 @@ F: hw/isa/apm.c
+ F: include/hw/isa/apm.h
+ F: tests/unit/test-x86-topo.c
+ F: tests/qtest/test-x86-cpuid-compat.c
+-F: tests/functional/test_i386_tuxrun.py
++F: tests/functional/i386/test_tuxrun.py
+ F: tests/functional/test_linux_initrd.py
+ F: tests/functional/test_mem_addr_space.py
+ F: tests/functional/test_pc_cpu_hotplug_props.py
+diff --git a/tests/functional/i386/meson.build b/tests/functional/i386/meson.build
 new file mode 100644
-index 00000000000..a3348370884
+index 00000000000..23d8c216be7
 --- /dev/null
-+++ b/tests/functional/hppa/meson.build
-@@ -0,0 +1,5 @@
++++ b/tests/functional/i386/meson.build
+@@ -0,0 +1,10 @@
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+tests_hppa_system_quick = [
-+  'seabios',
++tests_i386_system_quick = [
++  'migration',
 +]
-diff --git a/tests/functional/test_hppa_seabios.py b/tests/functional/hppa/test_seabios.py
++
++tests_i386_system_thorough = [
++  'replay',
++  'tuxrun',
++]
+diff --git a/tests/functional/test_i386_migration.py b/tests/functional/i386/test_migration.py
 similarity index 100%
-rename from tests/functional/test_hppa_seabios.py
-rename to tests/functional/hppa/test_seabios.py
+rename from tests/functional/test_i386_migration.py
+rename to tests/functional/i386/test_migration.py
+diff --git a/tests/functional/test_i386_replay.py b/tests/functional/i386/test_replay.py
+similarity index 100%
+rename from tests/functional/test_i386_replay.py
+rename to tests/functional/i386/test_replay.py
+diff --git a/tests/functional/test_i386_tuxrun.py b/tests/functional/i386/test_tuxrun.py
+similarity index 100%
+rename from tests/functional/test_i386_tuxrun.py
+rename to tests/functional/i386/test_tuxrun.py
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 8b7b962d4d6..99ffb1b0348 100644
+index 99ffb1b0348..c72b17df1dd 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -13,6 +13,7 @@ subdir('aarch64')
- subdir('alpha')
+@@ -14,6 +14,7 @@ subdir('alpha')
  subdir('arm')
  subdir('avr')
-+subdir('hppa')
+ subdir('hppa')
++subdir('i386')
  
  test_mips_timeouts = {
    'mips_malta' : 480,
-@@ -78,10 +79,6 @@ tests_generic_linuxuser = [
+@@ -79,15 +80,6 @@ tests_generic_linuxuser = [
  tests_generic_bsduser = [
  ]
  
--tests_hppa_system_quick = [
--  'hppa_seabios',
+-tests_i386_system_quick = [
+-  'i386_migration',
 -]
 -
- tests_i386_system_quick = [
-   'i386_migration',
+-tests_i386_system_thorough = [
+-  'i386_replay',
+-  'i386_tuxrun',
+-]
+-
+ tests_loongarch64_system_thorough = [
+   'loongarch64_virt',
  ]
 -- 
 2.50.1
