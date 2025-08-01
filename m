@@ -2,90 +2,147 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A066B17CBF
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 08:05:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE403B17CD0
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 08:13:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhisd-0000NH-SZ; Fri, 01 Aug 2025 02:04:35 -0400
+	id 1uhj0Q-0000nd-4N; Fri, 01 Aug 2025 02:12:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uhisS-0000GZ-Uw
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 02:04:25 -0400
-Received: from mail-vs1-xe2d.google.com ([2607:f8b0:4864:20::e2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uhisQ-0004XY-Um
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 02:04:24 -0400
-Received: by mail-vs1-xe2d.google.com with SMTP id
- ada2fe7eead31-4fc10abc179so306008137.3
- for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 23:04:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754028260; x=1754633060; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=uwPHnK9kmcEFBe8yOrl3dcV7vgNIhM7UpxHqndW0cps=;
- b=LTnZCCoyMBudyGf/mnkwwoqu6l5W06jywLtFuEOel4jMoNs/YHw6A68N4mGWsJ3Xy6
- fhRMf52XW2yDBeHZLI0pucWpoh2xxkWOVStuiv2TTYL655prbozfraXh+SLdO5fw57oI
- PvBsxieO+nzSuAUYTp2ROxkC6997auYPGYI2/RRfauVfnwKQgkIrJzbj9JK2HtCYCrOB
- KFTHVS3EaJlbTQVYK8D1Tsit7hBTXPR7j4iCe7PvbfXwmK4t5fcdFwmra37ZgJ4qHbF7
- Nv27jfEvxbikGRW9aXe5GM8G3YkBnBawn87ig7R4GtqXM2om/I9R/jt4RM6b0OA1Wbsc
- 0iDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754028260; x=1754633060;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uwPHnK9kmcEFBe8yOrl3dcV7vgNIhM7UpxHqndW0cps=;
- b=IWubEVtHPiHzMK6SPAAIklP+65oxO0gQzcRAP183sLpws3ZdBloF5kqJNO/nELu+9y
- bOoTCdT9PjKdgbsl20GK0kHKWCqOhMTOL58Bmu/E404hhXXHXoM3NIkziZjaY8Xz6uiZ
- goAnBLX2NripTXKmaheLyjT0hFEq/cTIc6fCZjymszBxYtHWSn5h8UqZEQBXLkZQwrsu
- 7Vah6XyZtrqYRZFE2QADOj5EnmDl7ecMSzuacUesmFIJTPbW3IsPGXlVL624K87L86/i
- tmI6xQwwV/6Ue2FqjXo+A+y8ABTl9SzMYpedsYoqBmOC/o3zBqPgQjOUvJ0QYZCVjOaB
- S2fA==
-X-Gm-Message-State: AOJu0YzNTXWyOR2M0aZfM1MkY+aeoBEgOHUvvR5J89KSsJ1rye5NlHZ0
- yaGlj1Z7e1/exKZgC5OmizffEO54KcBQBEk6qna1yZn4Tf+kI/jFi4Jp+XDfW/FfBlQjF5yUKb6
- xCLOryaM=
-X-Gm-Gg: ASbGncvQAaIBU3JzMfkuPJecz/f46YMwOPuby3PU+fcH98swc/OKE1KPiCAOpFygvTN
- YTUrcicFDigTZ0FFWD9ftku5VunU4ZPp38KmFRqdVlPqZwiFKv0gROmJcidLLLJ6NE0oefTsTRB
- /hHvH/DMX9TB6MtP3CXE9ULVYhQmgx12/W9HdCAg6/FG1pVt4uqIkAdUuG+d9rjiKx5tsWB3KBq
- 7m2vvR+f9d6X54KJLK2quMvUx+Fk67rslHf9m3a3zua77bgVf3Ywgbcx0UlxDLaauO+z8qP6p7g
- a0zWJZ9O5vvKGgn5kj3v5bmq/RnMgtileEDkK9Z/mAWGijr9wrBB+6dqZ2gmz2Vw4YE9mSe9Q4U
- 5vmQ2jtCKFBytkJBRWbTL3ond2ZvNJl3wkYuXFwYT
-X-Google-Smtp-Source: AGHT+IGi1QKhTXh1F4XfHXe0+WCaOCdh2VlcdWdTsnHJ+wAdT2gaa6ThCmjFpYFWjhLdCbJd2AA/rA==
-X-Received: by 2002:a17:902:dacf:b0:240:5523:6658 with SMTP id
- d9443c01a7336-24096b687bemr166595055ad.29.1754028241824; 
- Thu, 31 Jul 2025 23:04:01 -0700 (PDT)
-Received: from [192.168.4.112] ([180.233.125.160])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241e89a3ae8sm33452645ad.144.2025.07.31.23.03.56
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Jul 2025 23:04:00 -0700 (PDT)
-Message-ID: <f97a606a-6f63-4266-9b66-be60d9243099@linaro.org>
-Date: Fri, 1 Aug 2025 16:03:52 +1000
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1uhiyP-0007V5-2i
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 02:10:33 -0400
+Received: from mail-co1nam11on2047.outbound.protection.outlook.com
+ ([40.107.220.47] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1uhiyN-0005gp-69
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 02:10:32 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LfVQaJjOEB4ciizwoKLgItbRIkQxvS4WvRYp7lHJUNiVVYesVy6Ln7YyOJ4KV+4y+b3WGW3hFIMB8L4kojTxpouQ/WOZ82TiQvY/kK9QnCW0v2zFfX3PSNkhmlNv0GOnjDYyVXcJO3Ky1mA2SjXWhwwgrly0vGYEP3301RKfY1GxWhp4iHWL9qZQrwTrPs1V/5Z0mytvaEABkf4FD1GnMXb/pKVGSM7BohnIcXg8WJdp0waBnSw8CqZ8Xm7rqoLYUoiK7cFczLdJmXCA21R4Ol5sNCeEFcdqGjGl+V0itPWbnHxEz5naBhOdn9tF9yw6LeeL5gEo177T519AWi2mfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BfuAe1I55mMvKw1p7u09JXtxwTeC49uZovBiihpDlGQ=;
+ b=R/IVN4GyXrOjyfOZBaDDb3+qlJX5YybohnzbeFV48khpkdnOZeGI+quf0v4A7E6BhHqp0Pp9RcOVCFCpcpXKaRQ5IgDLSMhjMEt9q1hJlXXh9SSz4l1GL7Ay31VGqFkhUYvtJXO85W8FuEVYLT0/RKUWmUv3unjnf0mkfw+Jq7g7dNcxuVx+Fq75SF8qbJQn1Q+71mPpwZjjcWJ5+daF51E8pzdEvZl128O2wKVErJN0emZU9z4R7z8GgYnh2f7OU1gZUzJEEtR1G1ewjcxumliAfljjy+zilIb6Gfslu8bKn7r9YePfZaxAUL88uh8ssHlUFj0fWCi1rKMCEyxG7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BfuAe1I55mMvKw1p7u09JXtxwTeC49uZovBiihpDlGQ=;
+ b=mbfx6AyNt3rBvaonKdMJmY/o5kfhmhxGwxtRe+x8I5Ot56XQmj8wDNrGJHyYFJj1WGnFh+uL7qktx2yPsfxFCLpivaDftKTc54c7+vTMdqU8zsOtqrq7Eg4Op4U0GFM95LWwDz8ekpdJJM1vD2Z30Qp+hHVzDpRAPzXhKD9HcAg=
+Received: from BN9P222CA0020.NAMP222.PROD.OUTLOOK.COM (2603:10b6:408:10c::25)
+ by SA1PR12MB6677.namprd12.prod.outlook.com (2603:10b6:806:250::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.14; Fri, 1 Aug
+ 2025 06:05:23 +0000
+Received: from MN1PEPF0000ECDA.namprd02.prod.outlook.com
+ (2603:10b6:408:10c:cafe::de) by BN9P222CA0020.outlook.office365.com
+ (2603:10b6:408:10c::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.14 via Frontend Transport; Fri,
+ 1 Aug 2025 06:05:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MN1PEPF0000ECDA.mail.protection.outlook.com (10.167.242.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9009.8 via Frontend Transport; Fri, 1 Aug 2025 06:05:23 +0000
+Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 1 Aug
+ 2025 01:05:20 -0500
+From: Sairaj Kodilkar <sarunkod@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <pbonzini@redhat.com>,
+ <eduardo@habkost.net>, <richard.henderson@linaro.org>,
+ <alejandro.j.jimenez@oracle.com>, <vasant.hegde@amd.com>,
+ <philmd@linaro.org>, <Suravee.Suthikulpanit@amd.com>, Sairaj Kodilkar
+ <sarunkod@amd.com>
+Subject: [PATCH v3 0/6] hw/i386/amd_iommu: Cleanups and fixes
+Date: Fri, 1 Aug 2025 11:35:01 +0530
+Message-ID: <20250801060507.3382-1-sarunkod@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 7/9] whpx: add arm64 support
-To: qemu-devel@nongnu.org
-References: <20250731052753.93255-1-mohamed@unpredictable.fr>
- <20250731052753.93255-8-mohamed@unpredictable.fr>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250731052753.93255-8-mohamed@unpredictable.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2d;
- envelope-from=richard.henderson@linaro.org; helo=mail-vs1-xe2d.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECDA:EE_|SA1PR12MB6677:EE_
+X-MS-Office365-Filtering-Correlation-Id: 568cbef7-3a21-4863-e6ca-08ddd0c16745
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|36860700013|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bXBsdi9zU1JpUmZ6SFNvWlZzbVdJcW9jM2pxTVFxcUQyM1ZGZ2N1bGFTbDJl?=
+ =?utf-8?B?RWg4aEZSUStTdnpFQXZ3RlVlK2pldjYxUURtOUpiczE4S2l5aFJqM0pUdnUw?=
+ =?utf-8?B?OTFxbG54UVJFZEpiWkVRdkg4QVN5WXRYRDRrN2ttN1NRV3Q5eGwyVEZ4OXEr?=
+ =?utf-8?B?d0M3S0RyZG1XeHBVeWljcHZXZ3I1Sm9ONm9WNGN2TXdyYll1R0UzcHhIYzBJ?=
+ =?utf-8?B?MWFBL0wzV3E3R2RBVVQ2eDNjamxiVllIWEt2YVloNzh2MFMwdkF4VHdTMEtP?=
+ =?utf-8?B?eFJOWlE1T2c0andYK1ZqME5pVnFFak5DVC9IdWhGU1lDQkZXSUpVRDhJREdZ?=
+ =?utf-8?B?akdRUFY5WEhFY2pYaHl6WWYxRjhOdzBmeG1EaWFhWXNIeUhDSXFDektjRmFn?=
+ =?utf-8?B?UENaaitnOVdsOWN5WThDZlFBNm91R29XK0VsbjQ2VXd2dDR0bm1IZkhFWEMr?=
+ =?utf-8?B?ZG9GSHhsNDVNeG8zeElWUUtqUVp4NDZYL1NYc3VCYVhrNWVRQ01VOGlQL1FN?=
+ =?utf-8?B?R1RrRFBwSk1EWW9rajVMTW9uWFVCT1IwMkp3UnVCcHFSV2RBSjBZZ1FKVkRy?=
+ =?utf-8?B?TW5NMUR6NDFzMTRPaGpmNFAwdWMxamNUdEZ2bmhERWx5aVVFU3g4VVFzTmNj?=
+ =?utf-8?B?MGxKYVpmOHVxNEhMUlE2MEdySkFmTmJEcFNKelpwNXRudVhnU0Nqc1lqMWVl?=
+ =?utf-8?B?Vjl3TFZ5ZGFockkvY0NnMVhDMDJzZ0NtZzFIZ0ZSQ3E5TWFQS3RycVZ2Y08v?=
+ =?utf-8?B?TVBDckJ6WWI2a1VhbUJ0T29WVExwSUdlMHpPYmJwbzQrZXVVemcyTGdYNEFO?=
+ =?utf-8?B?NzlHc2lMY3VjKzJYSi9hL0FDZUwzQkc5RDY4OTA1NVRZVm5sR3hhUFVhNCtV?=
+ =?utf-8?B?N3laKzF5NU9FQzYveEROY0hVN0xIamF3cysrR3o0WnJVYmhTemRoanEzdWZE?=
+ =?utf-8?B?bHlRdHZ6elR4QkhSeko0dnZ2RktCQ3AycVpFM3FWeUh6ZDBwTnFRZU1YTzVt?=
+ =?utf-8?B?TjAwNktPTTBmencwOHpiL2hlUlRybVl0aEFjeklURFBxczRSa3Z0ZzlmMndJ?=
+ =?utf-8?B?Vk40c3ZjZDBaTGNNOHpoR0ppbTV2Q1lFVHJiUjlCMEZFU0dNSTA5djNrYzM5?=
+ =?utf-8?B?bStjVXlpWVhXMnVMbUdSK3Z4dnlDTDVMMjBhOUd0MlZTNTdSajJ6VGRYZms2?=
+ =?utf-8?B?NS85RWNZTm1ZczB4N3IvWlRvdDdTbmRYYTBlUk1zK3NxdWlNdjdjY3NNVmly?=
+ =?utf-8?B?WE5rdUNtQ0swRVlsNjZhNW9lU2FWcHZ0RERXVWpKWHpUQkFsOW9jM0NaNWdQ?=
+ =?utf-8?B?Rks0Q2JGNGpOVmpzcERheW93b2t0YnBON25ERnl2RGVyZE9uQXF2NXVITTM3?=
+ =?utf-8?B?R2pvRmI3bFR2UnFQdkxsaTcwNGQwK3dNNXBFeUE2bm5HUDV6bEgvcDZ5a0t4?=
+ =?utf-8?B?clQxeGJnSnQwOUV5Q3VnVUx4cVoyblQyS3hRV1VEMmczK1FodldRZERRd0Vp?=
+ =?utf-8?B?dmhMa1BKa2N1Mzlxd210OVY0ZnM0Qm1PS2huVTEyNHVuSEN6TEJzV0J1TzFN?=
+ =?utf-8?B?WGZnQkUvaVRTR3FDME5JYnliTDlFcWM1RVBkckVoVXBCR211dE5sK0h2TWMx?=
+ =?utf-8?B?N1pMdjgzMmlWTUc1Ym5hWmwwT2JpMi9TNlNqbFY1cjFHOEYyUFFtdmxwNGtR?=
+ =?utf-8?B?aThFdjkzMHlhN0pPT3kvOWdJblFqQWhkOWNDZER1UkU4V1gvM0ppazljV0wy?=
+ =?utf-8?B?RXpXajg1bG5pZEZWd1Jya3RLdXdCS2R6b1VlUE5tR0w5OFB5d2lRcXRiMzZh?=
+ =?utf-8?B?L0tWcUpwbEdWeHpKWThDaWZkQ0xnejFZZ1dVejdDNXVqckZlN3V5aWtocjhD?=
+ =?utf-8?B?M3lpVFlpdlplWHRSdlpaNDFOMUtkby9CZXQrZE1BcEhtSXFsL3JtS2FLbzFw?=
+ =?utf-8?B?QnhKMk05aEVINUtrUFJHMmRaSXVIM1Z0R0ZpT0U0QWlnMWxmZDE2dEkvcTZy?=
+ =?utf-8?B?RHRMOXlBY1ZKZ3g2M2NpVUJuZ3hGSUd0VkErNFFDMnJXcHR6TlovSDZ3OU5l?=
+ =?utf-8?B?d3FKNEdvRnhpNVI0R09TN3V1NjZjZDFPQkNpdz09?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 06:05:23.5960 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 568cbef7-3a21-4863-e6ca-08ddd0c16745
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: MN1PEPF0000ECDA.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6677
+Received-SPF: permerror client-ip=40.107.220.47;
+ envelope-from=Sairaj.ArunKodilkar@amd.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,40 +158,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/31/25 15:27, Mohamed Mediouni wrote:
-> @@ -885,7 +886,7 @@ if get_option('kvm').allowed() and host_os == 'linux'
->     accelerators += 'CONFIG_KVM'
->   endif
->   if get_option('whpx').allowed() and host_os == 'windows'
-> -  if get_option('whpx').enabled() and host_machine.cpu() != 'x86_64'
-> +  if get_option('whpx').enabled() and host_machine.cpu() in ['x86_64', 'aarch64']
->       error('WHPX requires 64-bit host')
+This series provides few cleanups and fixes for the amd iommu
 
-This is wrong, since the sense of "in" is incorrect.
+Changes since v2:
+- Used VMSTATE_UNUSED() to maintain migration compatibility when ats_enabled
+  flag is removed [Phil].
+- Simplified the amdvi_writew [Phil].
+v2: https://lore.kernel.org/qemu-devel/2e8f2b72-8fb5-474f-9844-61f306efeb2b@amd.com/
 
-But I think this really should be
+Changes since v1:
+- Dropped top two patches which depend on the Alejandro's changes and rebased
+  remaining patches on top of v10.1.0-rc0 [Phil].
+- Added a patch to fix amdvi_write*() [Ethon].
+- Reset event log head and tail when guest writes to event log base register
+  [Ethon].
+- Considered "evtlog_intr" flag while generating event log interrupt [Ethon].
+- Fixed comment [Ethon].
+v1: https://lore.kernel.org/qemu-devel/20250716073145.915-1-sarunkod@amd.com/
 
-   if cpu == 'i386'
-     if get_option('whpx').enabled()
-       error('WHPX requires 64-bit host')
-     endif
-     # Leave CONFIG_WHPX disabled
-   else
-     if cc.has_header('winhvplatform.h', required: get_option('whpx')) and \
-        cc.has_header('winhvemulation.h', required: get_option('whpx'))
-       accelerators += 'CONFIG_WHPX'
-     endif
-   endif
+Base commit: 9e601684dc24a521bb1d23215a63e5c6e79ea0bb (v10.1.0-rc0)
 
-because that's the only way that the error message makes sense.
+Sairaj Kodilkar (6):
+  hw/i386/amd_iommu: Fix MMIO register write tracing
+  hw/i386/amd_iommu: Remove unused and wrongly set ats_enabled field
+  hw/i386/amd_iommu: Move IOAPIC memory region initialization to the end
+  hw/i386/amd_iommu: Fix amdvi_write*()
+  hw/i386/amd_iommu: Support MMIO writes to the status register
+  hw/i386/amd_iommu: Fix event log generation
 
-General reject of --enable-whpx on unsupported host will be handled later with
+ hw/i386/amd_iommu.c | 102 ++++++++++++++++++++++++++++++++++----------
+ hw/i386/amd_iommu.h |   2 +-
+ 2 files changed, 80 insertions(+), 24 deletions(-)
 
-> if 'CONFIG_WHPX' not in accelerators and get_option('whpx').enabled()
->   error('WHPX not available on this platform')
-> endif
+-- 
+2.34.1
 
-
-
-r~
 
