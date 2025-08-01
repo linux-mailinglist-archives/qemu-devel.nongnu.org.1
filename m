@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA21B18693
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 19:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C5CB186A8
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 19:27:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhtSu-00064j-JA; Fri, 01 Aug 2025 13:22:44 -0400
+	id 1uhtX7-0007XJ-CK; Fri, 01 Aug 2025 13:27:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhs3L-00032F-GT
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:16 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1uhs3M-0003AN-Rd
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:17 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhs3J-0000zI-Ik
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:15 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-454f428038eso16240295e9.2
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 08:52:13 -0700 (PDT)
+ id 1uhs3K-0000zW-Da
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:52:16 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3b78d337dd9so677790f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 08:52:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754063532; x=1754668332; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754063533; x=1754668333; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=pWii0yPY0huQAno9LKhz1KUD4m589jyklRR5CQS9UWE=;
- b=MG48ncrhyDBdAa0E4jyYilWv0Kyou769ZzNa1cKHa4M76UXGyZ+bgdRSMwLHX8w/UN
- KYQ+YWvtPv2o60HwDc9bfxSv00Ix/TyKvQ+F4XeUtSlPjig2gUJprKzZNkqj4Zg9ehQ+
- PcsC65gd02cY8cfHXr9K9SWXvBbHzCn7TNJIOeQmezWGnka5IkxOd8NoSzmQRXfinxXv
- dEh66rd9P7jg9koFAYSoPDE/PNn0dSzflck1OBB28drjQcOK/D+DcTVzqoW4whMt9t1E
- GjgG+9sfPxKsxENVKxv4V7GL5GvU2pS+iNdLVK+m4qHd0YnQhFY4h0F4lwflasDDJ8qu
- t8Qg==
+ :reply-to; bh=QTe4QCluDBY66ITB8Ceh5te2MGHPGvOu4G1EJ1VCMyQ=;
+ b=zu+WCGsw9dJyr1BUcfundb8h69jGTDoRrJ0Bh2x9LOmX6w68ww9FNpMw9GtJaVmeWA
+ PMzq0B7h1mdTNa2AJGWCh7JISJ6ELVqyJBJj65A/lTiZ5Zylqf5iREjjIyyZm+vkjWw6
+ 9cELgXYi6Fu9CX+02ZSevQoxZXxUN8rxXJhnTWZ05QtxeSilYzJnruZduUxk7Vl47BBA
+ vnUXJaSf1qMaYntlhsHf3tqOPwuYAdSKDoRX2M7a6hm0My1kA2+cb3ZKEKGcqU7LBrAX
+ zvByA9OhDlUgvH4Np6zoqsNdPAwIKZhY3JG25g32AxQxzMDU3SDemL5ZGC5odTHtq6n6
+ hAUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754063532; x=1754668332;
+ d=1e100.net; s=20230601; t=1754063533; x=1754668333;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pWii0yPY0huQAno9LKhz1KUD4m589jyklRR5CQS9UWE=;
- b=WJiwG3RaOD6XHvQ2v8lElEnmtF0zp6u3bZ/YDsGuC+957Su5OG7I3qefzyMcIBUr1S
- ao7v6H/ljFlucCcghFl5FYbMNuKging0njMJYEVSVH08ok8YCm/2755qNwX42U69SAxw
- Cn3bUE8Vp7LkrKow585bqSqTDZUQUKIvWlLXYr0evv/P3jwPplHuHSyrV6q7oKU/HuRB
- qxuJmzu60iQUsGLeNwbjDEkWrJSKRsOZcqa5P23olW0y/4bMhAHJcswd/2+x95of048/
- pvQnM5bKQnSyKzP+LzcMbBpKbOsHyvMoJRC/Q4cW/lQxG3aiLKIr+V/YG+/wESmAaWS0
- 8Ofw==
-X-Gm-Message-State: AOJu0YxgThgvxUObQK3ZTti4KxrRhHAcjUqXwlI6hRSI8w3AI+bRMXcu
- XEdVr2LwTpnEmGkTzGs3P2hU6BkPMq5mQUpPb5lnEOPV/X5WaqERX2PXV/aXMNjwV0ywO5T9oZQ
- URJab
-X-Gm-Gg: ASbGncuZeaJRwYs9mczmyZWjLzAQQhdCwfnj0azmEHhUP2zhlV3cCeihadbgZckIOj8
- x1lUoWpfGnTXtVZBLOztRrnt9FIIjdzE6yYB9asZX+Hf2FgcJHopsV808mcWGcZg6Gf3YicMLU1
- EUbkQFEoUE8D69CaGxQFCuz0whPYpoZJwFizCnNoI5MOzU3Le7wzH7NWIpq4x8TW7kv2c3MjIWf
- G3V0zE6oOC6/cVd21N7fUziwfs8vsSMTHW1rAhDS9aMgEhzUk6tlr9n4ekfBPZ/jtzbOaJruUIl
- O0zDDIyU4viiN8zFoQ7eRPz23GpANwwLSBwX94aIYV1rH43w4Zu05tCAijf562XQ0s/mUmXHvyx
- JmQGUdK1Sdq8ojwNHvyxH2teUwhz0
-X-Google-Smtp-Source: AGHT+IFNFjYx4BQXPe0yiDVfPUqgQVuxHNBB9Po8++yPvyPWJJ0qteUYenm3j3l3tsLol/ejnsRIxg==
-X-Received: by 2002:a05:600c:35c8:b0:456:1dd9:943 with SMTP id
- 5b1f17b1804b1-458aa31a884mr32099905e9.3.1754063531786; 
- Fri, 01 Aug 2025 08:52:11 -0700 (PDT)
+ bh=QTe4QCluDBY66ITB8Ceh5te2MGHPGvOu4G1EJ1VCMyQ=;
+ b=HkaUSkpjz+L8NqWefzzLRKLUBjDsffyJ5Ls640fVitrYKUvSFqrYRU4+GlOqns4Lvn
+ M7+0Lb/WGdEu3FCTj4gpWBOs79JP4Ay1OM7dTx++MxSrzmUcaHu/M3tJn1pxg23peqUk
+ QA6ughLbEDpQ1IhYydz9CzWtXK0BoPcO0+BLXv9sWmgx2a8WGKriXhY3MWJ4E9JqRzf5
+ xurt6S4N9hMSkZfGBASWebpIReB6v3Y87/W2eQ89PEaPfovwgv/bKZWrjzpjo1J4Z1p1
+ BcVPXlnwJMvizWksxDuQ/uANRV+EbAXidQoOlAFb9o8Lacspb0m1lHao/93be7xTQmBM
+ mJ6Q==
+X-Gm-Message-State: AOJu0YxGY1t61K8cKG8Mg+Dthssm+p8PZR01WM2/bFGJPSYScHm1tsq4
+ hNh/w/86M1tYzJorrl4NuPQe6YRDABrK/600mnf/R/EKyHVoKJ1D+Tjmd/FQQglswliOZNLQRjS
+ 4Qaxp
+X-Gm-Gg: ASbGncsF3Wp1auNqy7cJiue3mkXY0hV+byFJENSotmbQ/Xzudcp+jynObKtQJ5pD/IW
+ rjXgrfeUA1dwc5jKQpgNSiFpqj1SlA6CAyddLnbntUmYJ8+8vJ17rVK3JvjHS2PhUiTA9liVRtU
+ HGigbnri7t3O1+XCpeVyPvoPutWHIjghfM68tDg6yAxm82JaQWAttfHn8mO7+KEP7y7FngAUnGQ
+ SEEuDEo2d9WnBMBYajCwM3Zdvx2znQ9k3UD9U3CUmFn6HbD2gSl+g5frqvO8lWtTvX1u9lBoGmc
+ sQ2TMyuhx6GYkAN1HPmQCNEpzGbIPSNJmFXk/sujVask+uRI0vLQogbgTP9gxEQQISiVwR+dysX
+ ST3WmQm1jvVBlUvW5DJWg7j9BVbxA
+X-Google-Smtp-Source: AGHT+IE78s51t+IF69k2YwEn2RBc3Giz5wEvJ2Fnn55VR8fEaas5wSbkiCTjRm9YAlK36HF9c7iYFA==
+X-Received: by 2002:a05:6000:1a86:b0:3b7:c703:ce4 with SMTP id
+ ffacd0b85a97d-3b8d94c4d87mr235462f8f.59.1754063532686; 
+ Fri, 01 Aug 2025 08:52:12 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c4a2f03sm6176670f8f.72.2025.08.01.08.52.10
+ ffacd0b85a97d-3b79c4a2f03sm6176670f8f.72.2025.08.01.08.52.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 08:52:11 -0700 (PDT)
+ Fri, 01 Aug 2025 08:52:12 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 7/8] target/arm: Fix handling of setting SVE registers from gdb
-Date: Fri,  1 Aug 2025 16:51:58 +0100
-Message-ID: <20250801155159.400947-8-peter.maydell@linaro.org>
+Subject: [PULL 8/8] tests/tcg: Fix run for tests with specific plugin
+Date: Fri,  1 Aug 2025 16:51:59 +0100
+Message-ID: <20250801155159.400947-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250801155159.400947-1-peter.maydell@linaro.org>
 References: <20250801155159.400947-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,69 +98,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-The code to handle setting SVE registers via the gdbstub is broken:
- * it sets each pair of elements in the zregs[].d[] array in the
-   wrong order for the most common (little endian) case: the least
-   significant 64-bit value comes first
- * it makes no attempt to handle target_endian()
- * it does a simple copy out of the (target endian) gdbstub buffer
-   into the (host endan) zregs data structure, which is wrong on
-   big endian hosts
+Commit 25aaf0cb7f (“tests/tcg: reduce the number of plugin test
+combinations”) added support for running tests with specific plugins
+passed via the EXTRA_RUNS variable.
 
-Fix all these problems:
- * use ldq_p() to read from the gdbstub buffer
- * check target_big_endian() to see if we need to handle the
-   128-bit values the opposite way around
+However, due to the optimization, the rules generated as a shuffled
+combination of tests and plugins might not cover the rules required to
+run the tests with a specific plugin passed via EXTRA_RUNS.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Message-id: 20250722173736.2332529-3-vacha.bhavsar@oss.qualcomm.com
-[PMM: adjusted commit message, fixed spacing]
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+This commit fixes it by correctly generating the rules for the tests
+that require a specific plugin to run, which are now passed via the
+EXTRA_RUNS_WITH_PLUGIN instead of via the EXTRA_RUNS variable.
+
+The fix essentially excludes the tests passed via EXTRA_RUNS_WITH_PLUGIN
+from the rules created by the shuffled combination of tests and plugins,
+to avoid running the tests twice, and generates the rules for the
+test/plugin combinations listed in the EXTRA_RUNS_WITH_PLUGIN variable.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Tested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-id: 20250801001305.2352554-1-gustavo.romero@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/gdbstub64.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ tests/tcg/Makefile.target                     | 20 ++++++++++++++++---
+ tests/tcg/multiarch/Makefile.target           |  2 +-
+ .../multiarch/system/Makefile.softmmu-target  |  2 +-
+ tests/tcg/x86_64/Makefile.softmmu-target      |  2 +-
+ 4 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-index 4fce58d895e..08e28585396 100644
---- a/target/arm/gdbstub64.c
-+++ b/target/arm/gdbstub64.c
-@@ -206,10 +206,17 @@ int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg)
-     case 0 ... 31:
-     {
-         int vq, len = 0;
--        uint64_t *p = (uint64_t *) buf;
-         for (vq = 0; vq < cpu->sve_max_vq; vq++) {
--            env->vfp.zregs[reg].d[vq * 2 + 1] = *p++;
--            env->vfp.zregs[reg].d[vq * 2] = *p++;
-+            if (target_big_endian()) {
-+                env->vfp.zregs[reg].d[vq * 2 + 1] = ldq_p(buf);
-+                buf += 8;
-+                env->vfp.zregs[reg].d[vq * 2] = ldq_p(buf);
-+            } else{
-+                env->vfp.zregs[reg].d[vq * 2] = ldq_p(buf);
-+                buf += 8;
-+                env->vfp.zregs[reg].d[vq * 2 + 1] = ldq_p(buf);
-+            }
-+            buf += 8;
-             len += 16;
-         }
-         return len;
-@@ -224,9 +231,9 @@ int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg)
-     {
-         int preg = reg - 34;
-         int vq, len = 0;
--        uint64_t *p = (uint64_t *) buf;
-         for (vq = 0; vq < cpu->sve_max_vq; vq = vq + 4) {
--            env->vfp.pregs[preg].p[vq / 4] = *p++;
-+            env->vfp.pregs[preg].p[vq / 4] = ldq_p(buf);
-+            buf += 8;
-             len += 8;
-         }
-         return len;
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index 18afd5be194..af72903f898 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -170,6 +170,10 @@ endif
+ PLUGINS=$(filter-out $(DISABLE_PLUGINS), \
+ 	$(patsubst %.c, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.c))))
+ 
++strip-plugin = $(wordlist 1, 1, $(subst -with-, ,$1))
++extract-plugin = $(wordlist 2, 2, $(subst -with-, ,$1))
++extract-test = $(subst run-plugin-,,$(wordlist 1, 1, $(subst -with-, ,$1)))
++
+ # We need to ensure expand the run-plugin-TEST-with-PLUGIN
+ # pre-requistes manually here as we can't use stems to handle it. We
+ # only expand MULTIARCH_TESTS which are common on most of our targets
+@@ -179,6 +183,13 @@ PLUGINS=$(filter-out $(DISABLE_PLUGINS), \
+ 
+ ifneq ($(MULTIARCH_TESTS),)
+ 
++# Extract extra tests from the extra test+plugin combination.
++EXTRA_TESTS_WITH_PLUGIN=$(foreach test, \
++                        $(EXTRA_RUNS_WITH_PLUGIN),$(call extract-test,$(test)))
++# Exclude tests that were specified to run with specific plugins from the tests
++# which can run with any plugin combination, so we don't run it twice.
++MULTIARCH_TESTS:=$(filter-out $(EXTRA_TESTS_WITH_PLUGIN), $(MULTIARCH_TESTS))
++
+ NUM_PLUGINS := $(words $(PLUGINS))
+ NUM_TESTS := $(words $(MULTIARCH_TESTS))
+ 
+@@ -186,19 +197,22 @@ define mod_plus_one
+   $(shell $(PYTHON) -c "print( ($(1) % $(2)) + 1 )")
+ endef
+ 
++# Rules for running tests with any plugin combination, i.e., no specific plugin.
+ $(foreach _idx, $(shell seq 1 $(NUM_TESTS)), \
+ 	$(eval _test := $(word $(_idx), $(MULTIARCH_TESTS))) \
+ 	$(eval _plugin := $(word $(call mod_plus_one, $(_idx), $(NUM_PLUGINS)), $(PLUGINS))) \
+ 	$(eval run-plugin-$(_test)-with-$(_plugin): $(_test) $(_plugin)) \
+ 	$(eval RUN_TESTS+=run-plugin-$(_test)-with-$(_plugin)))
+ 
++# Rules for running extra tests with specific plugins.
++$(foreach f,$(EXTRA_RUNS_WITH_PLUGIN), \
++    $(eval $(f): $(call extract-test,$(f)) $(call extract-plugin,$(f))))
++
+ endif # MULTIARCH_TESTS
+ endif # CONFIG_PLUGIN
+ 
+-strip-plugin = $(wordlist 1, 1, $(subst -with-, ,$1))
+-extract-plugin = $(wordlist 2, 2, $(subst -with-, ,$1))
+-
+ RUN_TESTS+=$(EXTRA_RUNS)
++RUN_TESTS+=$(EXTRA_RUNS_WITH_PLUGIN)
+ 
+ # Some plugins need additional arguments above the default to fully
+ # exercise things. We can define them on a per-test basis here.
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index 38345ff8805..8dc65d7a064 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -201,7 +201,7 @@ run-plugin-test-plugin-mem-access-with-libmem.so: \
+ 	$(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
+ 	$(QEMU) $<
+ 
+-EXTRA_RUNS += run-plugin-test-plugin-mem-access-with-libmem.so
++EXTRA_RUNS_WITH_PLUGIN += run-plugin-test-plugin-mem-access-with-libmem.so
+ endif
+ 
+ # Update TESTS
+diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/tcg/multiarch/system/Makefile.softmmu-target
+index 4171b4e6aa0..98c4eda5e00 100644
+--- a/tests/tcg/multiarch/system/Makefile.softmmu-target
++++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
+@@ -77,5 +77,5 @@ run-plugin-memory-with-libmem.so: memory libmem.so
+ run-plugin-memory-with-libmem.so: PLUGIN_ARGS=$(COMMA)region-summary=true
+ run-plugin-memory-with-libmem.so: CHECK_PLUGIN_OUTPUT_COMMAND=$(MULTIARCH_SYSTEM_SRC)/validate-memory-counts.py $@.out
+ 
+-EXTRA_RUNS += run-plugin-memory-with-libmem.so
++EXTRA_RUNS_WITH_PLUGIN += run-plugin-memory-with-libmem.so
+ endif
+diff --git a/tests/tcg/x86_64/Makefile.softmmu-target b/tests/tcg/x86_64/Makefile.softmmu-target
+index 3e30ca93074..4e65f58b570 100644
+--- a/tests/tcg/x86_64/Makefile.softmmu-target
++++ b/tests/tcg/x86_64/Makefile.softmmu-target
+@@ -40,5 +40,5 @@ run-plugin-patch-target-with-libpatch.so:		\
+ run-plugin-patch-target-with-libpatch.so:		\
+ 	CHECK_PLUGIN_OUTPUT_COMMAND=$(X64_SYSTEM_SRC)/validate-patch.py $@.out
+ run-plugin-patch-target-with-libpatch.so: patch-target libpatch.so
+-EXTRA_RUNS+=run-plugin-patch-target-with-libpatch.so
++EXTRA_RUNS_WITH_PLUGIN+=run-plugin-patch-target-with-libpatch.so
+ endif
 -- 
 2.43.0
 
