@@ -2,98 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5402EB18761
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 20:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BDD4B18767
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 20:37:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhuYr-0007HE-DB; Fri, 01 Aug 2025 14:32:57 -0400
+	id 1uhubx-0006JY-Bo; Fri, 01 Aug 2025 14:36:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uht6p-0001zc-MX
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 12:59:55 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uht6m-0006rL-8E
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 12:59:54 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-b3f80661991so2519904a12.0
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 09:59:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754067590; x=1754672390; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5VAZ4XoaTRapKmm6L4RCNYvG/OA4d9eoLUWvP4rbKHc=;
- b=Wuq+xss+QLsFo8QBzlzpBsYY3D9P0+KtExoIuqz10Dx3Xto3LUDjetM9bA1tEDRPdG
- c++70CdAJo7v7EfKwwpdwN8H2FSGD1r+11+i0JiphfcZH+a7awbwN4p6Snofa3unYsEX
- h/43MU3E78xTq1+yiol8kHjW9yCDzly99qMTIvlaiy6Sx5KJzW6qaQXZVpkQOktImU0N
- XaulGXaIIGfHUMklVfIOQ661xFlZrgOvzOKoynJgJV2n1ylKJsnGzas8t653gdwyJlpc
- yUjg5rh3A8p3pPdMI4YInup1vSkuFC5LvhZeq0bEI/gNIfdQ7T0OwDfOl3dDV1XxdMkW
- rLrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754067590; x=1754672390;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5VAZ4XoaTRapKmm6L4RCNYvG/OA4d9eoLUWvP4rbKHc=;
- b=trcywMpu9cgI36gCw9wHPLROSDiO3o5CgFZQ2oSbEzLOyHMj4+JjM8ydwXw4y1d6HG
- h+n+C8zkbsP0SVdC68PYggsWgdbW8uoP95lxVMmqQEbtW7g4Tqw5tx8mAUYmProPi3lo
- JoE7WjDLmkQEleExp/676LWjLq87TK3DbaC3BU/QPBc/E0qpuSzmxDrdTP1IGWiAQqAz
- QNiLQi2Mm7VmCo0pWtyWUIcU4zyNUGIl6SCto4Uf2XaNjHg3e9eBZ8Ybj4wvqJ4c715R
- ektSWX+YZHH2dCmSTC+n40Tgq61mnFQPZ1QNMCRfqq0WEp33OiYw7ZoU71iRx77frh82
- xlfw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV1Mc9FD+kH3OrPYE5fvg/Vw2x2//G/yKOcTFDc6MR6mKjbNSjkToHPwPxvKWkO3Nf3qZAGig1dv12M@nongnu.org
-X-Gm-Message-State: AOJu0YzZNgDaE24v5HX9mvAbMBpMY1sYy5u+hNEGajrNmXIvjNA/Dnz0
- auzr2ZGR0lBuV3OInKqQdiMftfqIRIEpzuP2pW2j0WkMqV9iPbPZsFtHf6+SUWlxPNw=
-X-Gm-Gg: ASbGncs/SfV29lzC0+g2c4zd6Bz09/mci3+y0+hsY3QxU/D6YFHzn7luhE1AcvxHG7v
- Yqjs5v1qQqul3K95LyH8QazsLhRiV4I+E1fgoxwH1jPtt3zZKl65krHKMAUWPitEBNGRLZ65s44
- Oxd3L+lha70hxDFY1gcc2lp2o/LKYg8nN0tY1WbJf1FWgPPBIBmF2P8iARhKPZKggdEnQY1oxKZ
- 4QpOdDdrrlDmb2IQqc8ZRgwLsyzzy3L6p58lLOXm68kd4SdWoYKpYHP0kyNYZSoU93VGt9WbaxX
- Ou7eSlDMI1yUXpXCS5DlEO9rK409HtdT1lHUyPw++YpmhxVKh2hlEf3R62ukB75OKdpllbLNuPc
- ZxjGCkg4rvHhCD0ZLihaeyuIZckooGrHCNUvqCC9t+mGJSA==
-X-Google-Smtp-Source: AGHT+IFa1zmKmt/7JQvvBQhtm+VAozO4d4iAODHIhqKjwxec5hT/Rr/eWGKQ50uofO/uji9ylyCKrg==
-X-Received: by 2002:a17:90b:1645:b0:30e:e9f1:8447 with SMTP id
- 98e67ed59e1d1-320da596a1fmr8856493a91.4.1754067590475; 
- Fri, 01 Aug 2025 09:59:50 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-32102a77576sm1346454a91.2.2025.08.01.09.59.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Aug 2025 09:59:50 -0700 (PDT)
-Message-ID: <9790a6fe-1f5b-4d4c-a40f-6188b17d05c5@linaro.org>
-Date: Fri, 1 Aug 2025 09:59:49 -0700
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uht9C-0006KZ-HQ
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 13:02:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uht9A-0007W1-K5
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 13:02:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754067738;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=QR/zfn70pNd8Am33F2sjXHoBypOvQWsyn13KHEIIfSM=;
+ b=MVyNBsTLzF89P3PUPCI/Si3a6+2rQt8tKNtXLdu2NyqNbSdYE1I/KQjONz4dlsrKLLfreQ
+ NJFb85U94zVQVLGJ8JmTM9UQSpJQr9XOa8GrZjFcj2kTVgwlTxLwhhb/cJx0ZrsXPU54yw
+ ZZlIZSfOzCjLn92dMmB6cOgmrTVrF6M=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-jkL0UvOVM_mjBiiNEz7bJQ-1; Fri,
+ 01 Aug 2025 13:02:17 -0400
+X-MC-Unique: jkL0UvOVM_mjBiiNEz7bJQ-1
+X-Mimecast-MFC-AGG-ID: jkL0UvOVM_mjBiiNEz7bJQ_1754067736
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 679B1195608F; Fri,  1 Aug 2025 17:02:16 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.64])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7EEAF1800D8C; Fri,  1 Aug 2025 17:02:14 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Juraj Marcin <jmarcin@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH for-10.1 0/2] migration: actually make gnutls workaround
+ functional
+Date: Fri,  1 Aug 2025 18:02:10 +0100
+Message-ID: <20250801170212.54409-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] single-binary: compile hw/intc/arm* files once
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org
-References: <20250725201906.19533-1-pierrick.bouvier@linaro.org>
- <bfdd8821-a7f7-4648-a389-124426da6d15@linaro.org>
- <144f0930-af30-42b0-849c-99242d3f09ee@linaro.org>
- <CAFEAcA-ycO=AO8UO+X3f6pw34J=iFwW3dpPyMXKm5BzJ11dt5Q@mail.gmail.com>
- <25fe9c70-be00-4884-8d91-53dfff745cb6@linaro.org>
- <CAFEAcA8qHUT-0k6chAFZ61J=YZ7xLvhYgqsgtQiCgkfaxfFRxg@mail.gmail.com>
- <034c953f-dce6-4068-8f93-05e758e67703@linaro.org>
- <CAFEAcA9H4WtVUuEX8kf8LiHQ3Z421Fq3ukbLnCRRfUKLyRF6QA@mail.gmail.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <CAFEAcA9H4WtVUuEX8kf8LiHQ3Z421Fq3ukbLnCRRfUKLyRF6QA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x534.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,47 +82,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/1/25 9:38 AM, Peter Maydell wrote:
-> On Fri, 1 Aug 2025 at 17:31, Pierrick Bouvier
-> <pierrick.bouvier@linaro.org> wrote:
->>
->> On 8/1/25 1:34 AM, Peter Maydell wrote:
->>> On Thu, 31 Jul 2025 at 19:30, Pierrick Bouvier
->>> <pierrick.bouvier@linaro.org> wrote:
->>>> Regarding the "modern" completion support, I recommend you take a look
->>>> at it. Even though you wrote or reviewed most of the code you navigate
->>>> in everyday, and thus don't need it, it has become a standard tool for
->>>> any developer, like sanitizers or omniscient debugging. It's especially
->>>> interesting since those tools are based on compilers (clangd is the
->>>> standard for C/C++ nowadays) and not a bunch of clunky regexps.
->>>> It's even more interesting when you learn a new language, like Rust.
->>>
->>> I do actually have clangd enabled at the moment in emacs:
->>> but my experience is not good, because typically what happens
->>> is that clangd runs itself out of memory and falls over
->>> fairly frequently, or it produces obscure error messages like
->>> "LSP :: Error from the Language Server: trying to get AST for
->>> non-added document (Invalid Parameter)"...
->>>
->>> So I mostly continue to investigate code the way I always have
->>> done, with grep.
->>>
->>
->> By any chance, are you using an old version of clangd (or an old
->> distro)? It has been a few years since I didn't run into any issue with
->> it, and it's quite easy to update it using llvm apt repositories without
->> updating your whole system [1].
-> 
-> I use the Ubuntu 24.04 version. In general I try to avoid
-> using tooling that isn't packaged by the distro: it
-> tends to result in headaches later on.
->
+This is a followup to previously merged patches that claimed to
+workaround the gnutls bug impacting migration, but in fact were
+essentially non-functional. Juraj Marcin pointed this out, and
+this new patch tweaks the workaround to make it actually do
+something useful.
 
-You should be good with it I think.
-Maybe you can try to delete clangd caches, in case there is a problem there:
-- ~/.cache/clangd/index/
-- (in qemu build folder): build/.cache/clangd/index
+Daniel P. Berrangé (2):
+  migration: simplify error reporting after channel read
+  migration: fix workaround for gnutls thread safety
 
-> -- PMM
+ crypto/tlssession.c   | 16 ----------------
+ migration/qemu-file.c | 22 +++++++++++++++++-----
+ 2 files changed, 17 insertions(+), 21 deletions(-)
+
+-- 
+2.50.1
 
 
