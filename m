@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57F3B187AF
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 21:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61719B187B0
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 21:24:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhvMq-00065W-K1; Fri, 01 Aug 2025 15:24:36 -0400
+	id 1uhvMu-0006J5-Uo; Fri, 01 Aug 2025 15:24:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhtju-0006rr-4j
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 13:40:18 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1uhtjv-00073k-W2
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 13:40:20 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uhtjs-0005lZ-7S
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 13:40:17 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-b26f7d2c1f1so2034425a12.0
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 10:40:15 -0700 (PDT)
+ id 1uhtjs-0005lx-Un
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 13:40:19 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-31ee880f7d2so2482093a91.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 10:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754070014; x=1754674814; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Y7ndOCk5hpDppQ64y8s+jnXZvyQJzUmSdKKeyb2BrMQ=;
- b=c8QeLmHiBF8jU6G+xNxH8cXs3h4ttT0ZkTK9eJrx7CjfEnhZF/lBbwMUrLExkSHyFd
- R7KaPKP4k6SwWlqjRZwrQVBLTB8SsW4UTkQQ73D1zy+PDe/HTr9Zo7/gpwGBApuQQVp3
- cQXuT1W5ctDV5BZDf+rxyPevIx2F5nBWa+rb4JxR7TFoQ16dsZXPUd+CtY+Lm5n93uNA
- sFMZMzNGUM0UDvs6fxxnAn18ueDjicfg4Wkn+fRedIPH8Op1KmVaC/+AAZR/wI40HGGe
- LvzY5m0IIjiphC+oSJV03BrcAOm2lMGiGEv17G4X0k7H0OHj3ZdgViuKdZRNS86GFFGh
- FNSA==
+ d=linaro.org; s=google; t=1754070015; x=1754674815; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bO5ExTpEhSZOxWRSLEY4QbbnlYxukZDB01i45ppfzLM=;
+ b=ojmpmSw0LAxpJT8V8cW8a07MY8E9Vj8LIc5ZreOPYqlXIjLbTp1FrdVLPwIY47QH5H
+ 7AXdj51I/TJQJp1IOiHA3PtmJu/37QTWojn9jOiAZEdM9D6sPpOeHOO2Vm9EM+hm3rP3
+ i0lyVQ0V/WmoCD7AfOSg+Yuw9XY2ABKVPs1EcmRgZ9SyH++sc9IBR3D8OQJXxPanyTdB
+ XPJkvE3I6c60PIEDPLFoJ02g+Ve7ZPrNdKANDLooXUDenUktcdzaAa32j6dK8JvYURrC
+ SCngcNyc4YvmRWzi8XFaVjEUqb4QtmKJsWkpBl/qNQH0a2NY9lc1a17arup7YOu0iLX/
+ arBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754070014; x=1754674814;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Y7ndOCk5hpDppQ64y8s+jnXZvyQJzUmSdKKeyb2BrMQ=;
- b=GnL6W+XSEveT5X9y0JC5JNkzs6DZrcJUTQJ2prA1nf9MVOPQMP6kjNwlp97bHBmSku
- I1qYyHlKuS9OyQDPom78ekyhq2y32kSP3igF7LUQm0356BwJUbY0Mciw0Er8qzJGhwv5
- XVeKxY64Ep/A6rzE0vvXaQU9COWYvHGFu1osurTCp4e8DNqdfT8QIrgGzjijlpAnf4gt
- v/FnGujwkJ70m6zo1u+IT0LDsEU3mPOzdjHSYctl3vzhu5n6Pn/zAXeAR1Gpw/bY5f6O
- UkfcWjCoCry47VZjtDapAjeVJBV9g47smPitBNB88gk4//+fPOXbrT0twgxDWqWqZ5tx
- 5nNA==
-X-Gm-Message-State: AOJu0YzqgHnlcioyZ8W8L9bK7xzO35+CP6nPxeo42hyZBjwr1l/Y+53L
- vLyFatQILakZKOPAsAyx66qmmWr/qCCuqfal6r14ZIz795KAP/2FOpQ79dzWYl4UsufZTVn5Vgq
- xqdsILqA=
-X-Gm-Gg: ASbGncv0wul1wC8XcPZCvXUrkdJJJY3BweKNkHUJbflda/b9LSWxRBOLxDrx8Q0+L48
- PeoCRBBYaTTuxWoS/JTCWwe7qobXEzNhwic0qSJqDwtjBqG4ihfkez4eUatJWeFYpwOvic4LdRy
- EZmMOlB61CpUkhJJh7ZxypB82ajLgWwZT3vPAOfJc7h9dP3k+Q3IiCMsUq9UA6gtImgUYxfCZs7
- yuPYQlH1FKHS9ZvkPwbt/3e51eDikeOpT8Mz57swzfjKZOfl4RuuBpTulwvQfPW0WSWT8tNTiNx
- 8BvvRDWHIhTolbNFlNG/Lz9mFEKGV+e8FeidlzuZ2eegj5Z5GbUh0ZCuW9CCKCORPrleyCjBHL/
- x8yddgFg18/hTytly9vbkA45Th2Xhi0tQ
-X-Google-Smtp-Source: AGHT+IHTb8UgbLZ/Xnk1urV6PNhew3ZNopBBNBKjnVo1MWgwaJgCs0LoIcaYsGPJ+xLfbLjzpsi68Q==
-X-Received: by 2002:a17:90b:3c07:b0:31f:7c9:2e66 with SMTP id
- 98e67ed59e1d1-321162b517bmr698977a91.28.1754070014032; 
- Fri, 01 Aug 2025 10:40:14 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1754070015; x=1754674815;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bO5ExTpEhSZOxWRSLEY4QbbnlYxukZDB01i45ppfzLM=;
+ b=ByCj5/p9qSscyQjFiwfx8skGY/iHmfdwGzVQiMiEboCgUp/XODQ1ajzIC/pz3UcCbM
+ UIRaxBAkdBoQUPLdsokBURNY+msLXgv+0l+JI5mF1HL9XUVuFSDR+jL6fcg5ipOMX4nR
+ 1h/NhOtYfhuS82bEjsRWtFntoSawOr7YE32PVO9e6KM5+eqdteAki+GdZ2aywwLpy0sF
+ igljQT3BlzuYPAA+CaPJL/WeKXAJJKx8RM+zFo09qnIbTQEwBPBrkZnhwDOyLYTYCh04
+ Wj5eUPQHFSVdLCiTeef/v7E8Dr5hMVJppYi8E/q36bRc0UbdoYcOM+bgYtFmD4R+KOxT
+ 8UKg==
+X-Gm-Message-State: AOJu0YxdO4UN6WW+GIZoPVG9p/FihiU6/n5Zmh0ZiaNGIxsSlv1s0qqo
+ ML5M0ScXHg1z2WyRhm5TaZcJFZ6/zueu6nvTNCD+P4GDjSeGju8Y0mwaoE6E/ChxgXKWa+CujdP
+ 4fyWtOFg=
+X-Gm-Gg: ASbGncupeoFVtAmuWx7u5Oqzb/LwJElIEaNSTnHNEeYjBXPnI+yb0R3wSvBlHk0I5mK
+ Kw6RWMgwas9LGNVvfVylp9IvbAeixsOAN8fwxMHGg+chPUiTHFqyadIPajkXHczH1MJUEBtlBFn
+ 5e3QbRHQDzFXlXT0oHnmvMvLhKNkWPOtxLm9jbFCPAzrskC8FF7UY5vVZO0e073WC+Y7ZUY3v4K
+ PMX+b++CcsYejeWMp0IJFNv94WR9F+IHHGibSErjsTtqeDKcAb5Z9IDTX/IRAvPNNrs/SALs1ke
+ bXX+wR4yR1UfEjpUEviHKxfFQRNrD2gOzEaSxCsPeREA/XVIrW8xxbxrf1yXFNbvYPb3L4zccMa
+ gg0KdG3fYvC3aKTuJVmYpRQ==
+X-Google-Smtp-Source: AGHT+IF2yx4ht9Zp907EoFeU/IVyZ58Oid51x1Hiq1N6zN3kP652BIEQv2O1TZzc7ptcK8fHWsIdZQ==
+X-Received: by 2002:a17:90a:e7d2:b0:31f:485f:fab6 with SMTP id
+ 98e67ed59e1d1-321161ec318mr846231a91.4.1754070015065; 
+ Fri, 01 Aug 2025 10:40:15 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31f63da6141sm7972925a91.1.2025.08.01.10.40.13
+ 98e67ed59e1d1-31f63da6141sm7972925a91.1.2025.08.01.10.40.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 10:40:13 -0700 (PDT)
+ Fri, 01 Aug 2025 10:40:14 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, peter.maydell@linaro.org, philmd@linaro.org,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 0/2] single-binary: compile hw/intc/arm* files once
-Date: Fri,  1 Aug 2025 10:40:04 -0700
-Message-ID: <20250801174006.2466508-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 1/2] hw/meson: enter target hw first
+Date: Fri,  1 Aug 2025 10:40:05 -0700
+Message-ID: <20250801174006.2466508-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250801174006.2466508-1-pierrick.bouvier@linaro.org>
+References: <20250801174006.2466508-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,16 +98,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We simply compile them as target common code, without moving them to hw/arm.
+We can reuse target source sets for "generic" devices that are related
+to a single architecture (like interrupt controllers).
 
-Pierrick Bouvier (2):
-  hw/meson: enter target hw first
-  hw/intc: compile some arm related source once
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ hw/meson.build | 45 +++++++++++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
- hw/intc/meson.build |  6 +++---
- hw/meson.build      | 45 +++++++++++++++++++++++----------------------
- 2 files changed, 26 insertions(+), 25 deletions(-)
-
+diff --git a/hw/meson.build b/hw/meson.build
+index 791ce21ab42..1022bdb8069 100644
+--- a/hw/meson.build
++++ b/hw/meson.build
+@@ -1,3 +1,26 @@
++# Enter target code first to reuse variables associated
++subdir('alpha')
++subdir('arm')
++subdir('avr')
++subdir('hppa')
++subdir('xenpv') # i386 uses it
++subdir('i386')
++subdir('loongarch')
++subdir('m68k')
++subdir('microblaze')
++subdir('mips')
++subdir('openrisc')
++subdir('ppc')
++subdir('remote')
++subdir('riscv')
++subdir('rx')
++subdir('s390x')
++subdir('sh4')
++subdir('sparc')
++subdir('sparc64')
++subdir('tricore')
++subdir('xtensa')
++
+ subdir('9pfs')
+ subdir('acpi')
+ subdir('adc')
+@@ -44,26 +67,4 @@ subdir('virtio')
+ subdir('vmapple')
+ subdir('watchdog')
+ subdir('xen')
+-subdir('xenpv')
+ subdir('fsi')
+-
+-subdir('alpha')
+-subdir('arm')
+-subdir('avr')
+-subdir('hppa')
+-subdir('i386')
+-subdir('loongarch')
+-subdir('m68k')
+-subdir('microblaze')
+-subdir('mips')
+-subdir('openrisc')
+-subdir('ppc')
+-subdir('remote')
+-subdir('riscv')
+-subdir('rx')
+-subdir('s390x')
+-subdir('sh4')
+-subdir('sparc')
+-subdir('sparc64')
+-subdir('tricore')
+-subdir('xtensa')
 -- 
 2.47.2
 
