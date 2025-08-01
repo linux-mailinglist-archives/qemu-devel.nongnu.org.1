@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78D6B18407
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E715B183FC
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:36:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhqnK-000665-TX; Fri, 01 Aug 2025 10:31:38 -0400
+	id 1uhqnw-000072-Ba; Fri, 01 Aug 2025 10:32:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhK-0005Q1-8n
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhM-0005Qa-Qo
  for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhA-0002eR-UD
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:19 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhF-0002eq-1k
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754058312;
+ s=mimecast20190719; t=1754058315;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=CmCUy7VMYdhhfAJ9rVBdHUNMEi7jQwBEVAggBejnK4M=;
- b=M4Qv0lKZqDTSfSyrHNbvGkDb7rIuczoN9K4AJs5WEOAnnV31825B9atyfxRAPoMoooOEqy
- 5VQrhOrLfPzQ0QE0ORAy+0r7J61W+nq10jE3KPviakhuEz9uApOX6D7WQF8zMLTDSA45rk
- AQyB3smuqP/mWjGMKHv6Ix9Qu0ODS2k=
+ bh=Q969NkzaQmllQbxw1VC2F9uXj/0NwIk7LvKmAGmz3/o=;
+ b=a284dMfnClrTOjDECFKTGImnakOBDJUKQcOLCXs2xWtI4YFQ9FFwOrAi/T5CCJctPWXPvm
+ WreqAZHvkxEpiDZpSnWSEcGJsyMQSpsiY+ZQP8ip1GGi62GsxCDEaP4UwinzvaZ6cvtMy1
+ Dd1sWnhkig4U4hMJgw9FJ9uAvCNnDcA=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-tyaQVJzoPuKyW8rDQYRP0g-1; Fri, 01 Aug 2025 10:25:11 -0400
-X-MC-Unique: tyaQVJzoPuKyW8rDQYRP0g-1
-X-Mimecast-MFC-AGG-ID: tyaQVJzoPuKyW8rDQYRP0g_1754058310
+ us-mta-346-d5zIqHKhOS67unlgG0DIxg-1; Fri, 01 Aug 2025 10:25:14 -0400
+X-MC-Unique: d5zIqHKhOS67unlgG0DIxg-1
+X-Mimecast-MFC-AGG-ID: d5zIqHKhOS67unlgG0DIxg_1754058313
 Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3b79629bd88so823750f8f.0
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:11 -0700 (PDT)
+ ffacd0b85a97d-3b785d52c19so470178f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754058310; x=1754663110;
+ d=1e100.net; s=20230601; t=1754058313; x=1754663113;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CmCUy7VMYdhhfAJ9rVBdHUNMEi7jQwBEVAggBejnK4M=;
- b=vtuLo7Uw1Nrqt4Bd1X53+CADQ7II1mV5XShD98FxJ4wm7ltgozX4fMlfiNd4c69iJR
- hfyVW1Tc4cIgOkXvon9seYDi+/8KpCK8BX9GiLJA1z/sBC71+uXRDYTdXlihAkZ708EP
- uhGVvZ+33mkbAO80lv0Uy3UKSxdDzZtAnU899icFCrjfqwjFwkcBqJnx0HBcsqU5tEqu
- K60lKfDdDwGrMJ9bAlW+ElptZJ1idboA3HeQI9LlVUVhaQZ13MuVnDSySnGdVjPm3noj
- 8krAfxTzd4JMOpLl/osE2xZ7c5hxcy5FVwEilJQZt17uXtZRoovKVe+FVfMWvcycu7er
- AdHQ==
-X-Gm-Message-State: AOJu0YzlQ0tzbybfvnehuJcxNI9YptffY6Gqg6Gi+IuOZxMwDt1fDyVJ
- V36p+7bEhQUG4IY1cV1Yzru26RzT8/zZCtwaie+JveMGP/QtXplzTnHm+ZV8NUKAHLbDE2zSPRf
- M0+wdHOWQ99LdHVLRq9nGGdrwBOIyTJBYtvAepA+rzLXBcKsSEFr4zzfYHN9A2r3Sm273DBMaDz
- LACbrypPQ3O6QmZ61lt7vKRdqroJHbYx48Ng==
-X-Gm-Gg: ASbGncum2GQx8avW/LXykB3pBt6DY0rbDTd/qC0GL+t4JqXFiIVl9DmRJ8Bi4O9oYBW
- DYPEhQ7ZjDitToYIb2z5zQ43ldAnOTUYHmLS0aOszDBcdum/jRHGK7fA8+1KcJNW9auDpAhL1RQ
- 4dIe0hYMgf7ca1W2O9/p8ja2dHEKGIiuAxo3BkyRx/FL4zWp5j+L+8XoJ2KPAj2fQOsKa/Sf3ws
- vBZnBhOkTP8MZBN+VVTfgEs5VhHoxJq50QOcS/riYUyJaNRLARsHVeld/isM6o8b7A2CHfSToV9
- /lXBu1kcsvbBeSWS589KkWySdhpyVvxA
-X-Received: by 2002:a5d:64c4:0:b0:3b7:9af4:9c75 with SMTP id
- ffacd0b85a97d-3b8d348e398mr2227507f8f.30.1754058310223; 
- Fri, 01 Aug 2025 07:25:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDYhSYUP2yuvx0PWjg60xUssHxKkda4QqYk9jHuLD8qTU5IhqQAzK+PmAxA6f2Ek1FmQdFXQ==
-X-Received: by 2002:a5d:64c4:0:b0:3b7:9af4:9c75 with SMTP id
- ffacd0b85a97d-3b8d348e398mr2227477f8f.30.1754058309663; 
- Fri, 01 Aug 2025 07:25:09 -0700 (PDT)
+ bh=Q969NkzaQmllQbxw1VC2F9uXj/0NwIk7LvKmAGmz3/o=;
+ b=nbwx1UhBtw5yJYr+gsQ8yr3eYUzrkaR5Ot0AbqD5Z/1KpBpaZ8I2VUU5aJgNHntMIY
+ 4igWCuHoHaOZhBI7DYAJzxZrbMCBFxXJM/tEtxnzjSWiZOIfEPRvFcHSFcRRa2+yzM2h
+ aiB88h9RESPB8pAqjmWjz3hF7mS27llhZ6AcENbvvMFNg9XBHhbPyKTW8lFetMR2XJJx
+ xtEMyQQLm2fqslKg7GkZkvZgpG6HDJ959OuxuqU1rTTtXs0zM0RKVmFIIGU7XOvZARbD
+ x9zT2hLcnCB1LvQCqyx1MG6Rcjx4iofM7WmueQYnAUCssrn7Y9dzXc7noSK9Uq/ZRpRg
+ tKKw==
+X-Gm-Message-State: AOJu0YyvZZM0L8vE05hfC3c22Le6vkcEEwAFWePgqs/Q+xX1AJ/1Z5qc
+ ZNNqbPaEpLrU3dJXPbFRcN7EcLT/S2CP6t5Fvj+nUX57zI6bbsUDW/go00h4nmPKkK/EaqSw7se
+ HPqHHTCzu32bfYDOGdl53LiPGIhSNKO6P6Pl/PqeKXUMJaA2Pzp5Ztbdic/PukCbWvDJevOpkyI
+ pcfEXlNfTZChoz8+SkkSZ8hAhhOBW1v506wQ==
+X-Gm-Gg: ASbGncvu8pidTfv4lPvzfL8yAYfit4zim3vLXGPKgouwVLFbNqSOANGfGDYnfE6RZe7
+ GK+YqrZ+v+H0If6RRPezwjInrzoGDfqkXAU8PqvrTEhkEICPHrnFHRw89IgaREAa1mBM9DhKBGn
+ 3KBWwHRL/bA0GpAYxSb/sgmIRAxHiPRcaa+czAzlRfx8L92fahqbzfQCRJCTyXtMUusY3XkJMgC
+ 0z08HnUyEuEIX9HGPFkdZQkP2mCmucxnTTv6BOB3sIago5+EMTLZtgmRcehrbVhgxv/TnCrDhca
+ h8k236sF9T9r879cP/CoATj1Gva9nBiX
+X-Received: by 2002:a5d:64e5:0:b0:3a4:eda1:6c39 with SMTP id
+ ffacd0b85a97d-3b794fd57f8mr9473823f8f.13.1754058312620; 
+ Fri, 01 Aug 2025 07:25:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2h8ZAWovBjWNmgt9YLv6mW5oh5cIoqRXN20jp3dfuH+kf3W5ViTdkZ8ajjOiYRNvkX4FskA==
+X-Received: by 2002:a5d:64e5:0:b0:3a4:eda1:6c39 with SMTP id
+ ffacd0b85a97d-3b794fd57f8mr9473786f8f.13.1754058312077; 
+ Fri, 01 Aug 2025 07:25:12 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c475067sm5997972f8f.58.2025.08.01.07.25.08
+ ffacd0b85a97d-3b79c3abf33sm6065349f8f.7.2025.08.01.07.25.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 07:25:09 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:25:07 -0400
+ Fri, 01 Aug 2025 07:25:11 -0700 (PDT)
+Date: Fri, 1 Aug 2025 10:25:09 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hanna Czenczek <hreitz@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>, Lei Yang <leiyang@redhat.com>
-Subject: [PULL 03/17] vhost: Do not abort on log-stop error
-Message-ID: <d63c388dadb7717f6391e1bb7f11728c0c1a3e36.1754058276.git.mst@redhat.com>
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ qemu-stable@nongnu.org, Konstantin Shkolnyy <kshk@linux.ibm.com>,
+ Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 04/17] virtio-net: Fix VLAN filter table reset timing
+Message-ID: <6071d13c6a37493a6b26e1609b09a98aa058038a.1754058276.git.mst@redhat.com>
 References: <cover.1754058276.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -92,7 +92,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,37 +108,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hanna Czenczek <hreitz@redhat.com>
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
-Failing to stop logging in a vhost device is not exactly fatal.  We can
-log such an error, but there is no need to abort the whole qemu process
-because of it.
+Problem
+-------
 
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Message-Id: <20250724125928.61045-3-hreitz@redhat.com>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+The expected initial state of the table depends on feature negotiation:
+
+With VIRTIO_NET_F_CTRL_VLAN:
+  The table must be empty in accordance with the specification.
+Without VIRTIO_NET_F_CTRL_VLAN:
+  The table must be filled to permit all VLAN traffic.
+
+Prior to commit 06b636a1e2ad ("virtio-net: do not reset vlan filtering
+at set_features"), virtio_net_set_features() always reset the VLAN
+table. That commit changed the behavior to skip table reset when
+VIRTIO_NET_F_CTRL_VLAN was negotiated, assuming the table would be
+properly cleared during device reset and remain stable.
+
+However, this assumption breaks when a driver renegotiates features:
+1. Initial negotiation without VIRTIO_NET_F_CTRL_VLAN (table filled)
+2. Renegotiation with VIRTIO_NET_F_CTRL_VLAN (table will not be cleared)
+
+The problem was exacerbated by commit 0caed25cd171 ("virtio: Call
+set_features during reset"), which triggered virtio_net_set_features()
+during device reset, exposing the bug whenever VIRTIO_NET_F_CTRL_VLAN
+was negotiated after a device reset.
+
+Solution
+--------
+
+Fix the issue by initializing the table when virtio_net_set_features()
+is called to change the VIRTIO_NET_F_CTRL_VLAN bit of
+vdev->guest_features.
+
+This approach ensures the correct table state regardless of feature
+negotiation sequence by performing initialization in
+virtio_net_set_features() as QEMU did prior to commit 06b636a1e2ad
+("virtio-net: do not reset vlan filtering at set_features").
+
+This change still preserves the goal of the commit, which was to avoid
+resetting the table during migration, by checking whether the
+VIRTIO_NET_F_CTRL_VLAN bit of vdev->guest_features is being changed;
+vdev->guest_features is set before virtio_net_set_features() gets called
+during migration.
+
+It also avoids resetting the table when the driver sets a feature
+bitmask with no change for the VIRTIO_NET_F_CTRL_VLAN bit, which makes
+the operation idempotent and its semantics cleaner.
+
+Additionally, this change ensures the table is initialized after
+feature negotiation and before the DRIVER_OK status bit being set for
+compatibility with the Linux driver before commit 50c0ada627f5
+("virtio-net: fix race between ndo_open() and virtio_device_ready()"),
+which did not ensure to set the DRIVER_OK status bit before modifying
+the table.
+
+Fixes: 06b636a1e2ad ("virtio-net: do not reset vlan filtering at set_features")
+Cc: qemu-stable@nongnu.org
+Reported-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Tested-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
 Tested-by: Lei Yang <leiyang@redhat.com>
+Message-Id: <20250727-vlan-v3-1-bbee738619b1@rsg.ci.i.u-tokyo.ac.jp>
+Tested-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/net/virtio-net.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 05ad5de629..6557c58d12 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1122,7 +1122,8 @@ static void vhost_log_global_stop(MemoryListener *listener)
- 
-     r = vhost_migration_log(listener, false);
-     if (r < 0) {
--        abort();
-+        /* Not fatal, so report it, but take no further action */
-+        warn_report("vhost: Failed to stop logging");
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index c4c49b0f9c..6b5b5dace3 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -929,8 +929,9 @@ static void virtio_net_set_features(VirtIODevice *vdev, uint64_t features)
+         vhost_net_save_acked_features(nc->peer);
      }
- }
  
+-    if (!virtio_has_feature(features, VIRTIO_NET_F_CTRL_VLAN)) {
+-        memset(n->vlans, 0xff, MAX_VLAN >> 3);
++    if (virtio_has_feature(vdev->guest_features ^ features, VIRTIO_NET_F_CTRL_VLAN)) {
++        bool vlan = virtio_has_feature(features, VIRTIO_NET_F_CTRL_VLAN);
++        memset(n->vlans, vlan ? 0 : 0xff, MAX_VLAN >> 3);
+     }
+ 
+     if (virtio_has_feature(features, VIRTIO_NET_F_STANDBY)) {
+@@ -3942,6 +3943,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+     n->mac_table.macs = g_malloc0(MAC_TABLE_ENTRIES * ETH_ALEN);
+ 
+     n->vlans = g_malloc0(MAX_VLAN >> 3);
++    memset(n->vlans, 0xff, MAX_VLAN >> 3);
+ 
+     nc = qemu_get_queue(n->nic);
+     nc->rxfilter_notify_enabled = 1;
+@@ -4041,7 +4043,6 @@ static void virtio_net_reset(VirtIODevice *vdev)
+     memset(n->mac_table.macs, 0, MAC_TABLE_ENTRIES * ETH_ALEN);
+     memcpy(&n->mac[0], &n->nic->conf->macaddr, sizeof(n->mac));
+     qemu_format_nic_info_str(qemu_get_queue(n->nic), n->mac);
+-    memset(n->vlans, 0, MAX_VLAN >> 3);
+ 
+     /* Flush any async TX */
+     for (i = 0;  i < n->max_queue_pairs; i++) {
 -- 
 MST
 
