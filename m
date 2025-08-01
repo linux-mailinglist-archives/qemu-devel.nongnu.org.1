@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3DC1B183D7
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:33:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A793CB183D0
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:33:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhqnO-0006Nz-MK; Fri, 01 Aug 2025 10:31:42 -0400
+	id 1uhqnR-0006Zp-MX; Fri, 01 Aug 2025 10:31:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhO-0005RR-Is
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhP-0005Rc-Pn
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhL-0002hL-1g
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:29 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhM-0002hg-Ph
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754058321;
+ s=mimecast20190719; t=1754058322;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=juJQ/hFTjs1a2j/Tj1r7rgVJhv27n25AWpAqA5inFBY=;
- b=TPtxExSqWA01ZWlJiPoQeq04jegnh57KVLtL+WgtNlKPnyxIdQ+t+Tkz/2tAMX9yKsay1h
- e9hqgbLaKzoqQnDh38iQrifC1/MrZCh0Wja73JoilVP+p4O2V0zBhYUvhlLpda0JAEaxvz
- Gz3TQ4ZsXx7HmO6LxJRsyXCKtqxXyxw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Le6Lc/zgcKxFCuW53MWLO1Ha7klLf+FruZHCeB1RbYs=;
+ b=WIDTRQAAXP+08gWdapMmO9XbLwv47jb/0kZj7qS8JDPoRJm2YKSbu5RaIQNW8EuYywqY13
+ VtmcPBhUk/fhZ/IF2qCFLjHfvTRsPRX1sfmEFsr5H9T8p7u7qOwk/Mnk91KLn4TDUtkljp
+ 3cNAca675QVG4fKeF6wZkUFxQQQYN+w=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-Ufuzzuw1MPqapSP9IVe1cA-1; Fri, 01 Aug 2025 10:25:19 -0400
-X-MC-Unique: Ufuzzuw1MPqapSP9IVe1cA-1
-X-Mimecast-MFC-AGG-ID: Ufuzzuw1MPqapSP9IVe1cA_1754058318
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3b793f76a46so1916137f8f.2
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:18 -0700 (PDT)
+ us-mta-221-Zt9SDS73OcKVXl5egUa3ZA-1; Fri, 01 Aug 2025 10:25:21 -0400
+X-MC-Unique: Zt9SDS73OcKVXl5egUa3ZA-1
+X-Mimecast-MFC-AGG-ID: Zt9SDS73OcKVXl5egUa3ZA_1754058320
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-45896cf24fbso8840905e9.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754058317; x=1754663117;
+ d=1e100.net; s=20230601; t=1754058320; x=1754663120;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=juJQ/hFTjs1a2j/Tj1r7rgVJhv27n25AWpAqA5inFBY=;
- b=h6ZzVX8euVVPWziYinaUW3raCFrUrlvve9RorXXbdW2GOgE2Wg6JZ5vs8o4J1rWuMb
- PpzbDkUr/kU549XhyPnvcwVmjR7PIvNjXZbfjpdRjk/+lVNZRJRsW5bJXWlhfI57T1Bf
- pmqKiOG/Kzh/raONRf4F/6yZv7cu5XKTMKlH27uQUMiPPOB2kubtc9O78rrQK0sbCpdY
- YV5B24WH/D+98XIFqykFwGyzTpDCUamJBMYxooCrUWD8UltZ+IdWHQ6mo7TEkrkezzhw
- /oy32zmd3XzY8sCAiR0v+QYoair+RWSBcxYyZsEOXVZrcaIPmou5+zHPrkwgjCEGroNy
- fpzw==
-X-Gm-Message-State: AOJu0Yx9B6D6ADdNw4S48bC2R2dqslNnDJwvifPltJ+pkq8/GvLoi1hF
- JcgGIiJ77seqWtBednNQuA8/wz4X+GH2t5hQhntXqbiwjeTqwvNh1XzNwr/5mN/5Z5qWNmOwRwi
- nv0grTPqVgOL4RydhzxbAOYLS4kt5Swz/gT/vstH48vbKRdOAQJKKDctKvl5XiXtIFL+TTwDkG4
- EkcBDvL+Vn5n82OeC8jdWl6UXtHjIeNoJ9sQ==
-X-Gm-Gg: ASbGncvKZ+HfpOPl3zlIgdM/P36APsyJlpFm3hhMkF84+k+1wzgsAdug1eFvK12VUHy
- m9QLznW8WQWvembGhc2Rmn/RdrtK4NF7HqWHjrWgUQMkOrKTW2/4ML2cTpV4bFl9rI8YVbhMxyZ
- SI/EWMM+6hb0gj3oT+adXP9MpQ0JG/uwurq3PUtJRSW81t9n+NiXDuNRLRdrZeUW2eTLytjj9Wf
- gqyGaZe46yxfU79wMj7rduwF6YeonW2aypN8c84jnBjmFXbWFAT7TlmRNiUpDaFivP7/Y99nI5u
- pFf43dC6aKqARE9dqU340AqHy3i39axw
-X-Received: by 2002:a05:6000:1785:b0:3b7:83c0:a9ab with SMTP id
- ffacd0b85a97d-3b795035de2mr10720803f8f.55.1754058317310; 
- Fri, 01 Aug 2025 07:25:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEhlTFUnKF0XKj5YBims/YinJb+/4Rl9uNaLsdQeT+jTp1rJ4aLnqloSBATDBoFdUN49XyqBA==
-X-Received: by 2002:a05:6000:1785:b0:3b7:83c0:a9ab with SMTP id
- ffacd0b85a97d-3b795035de2mr10720766f8f.55.1754058316691; 
- Fri, 01 Aug 2025 07:25:16 -0700 (PDT)
+ bh=Le6Lc/zgcKxFCuW53MWLO1Ha7klLf+FruZHCeB1RbYs=;
+ b=NA8E3yurOKjyokiBDyl5tkFpk+oik/8HuxK3aKT4FUCAf5Rkbix3Tb3yovgKxdFdYC
+ VuZ119G8vV058UvHacOXl/ooIqaR/YlY1cxRYIXo9j1ILTwmnLQFOYIYa//hUsetIaA/
+ lu2DTodJOEuteB9nwqlpNaS13OqcGe7gVvYElnBpB002GLQHAl3IhskNvxs3F5Z03QIl
+ EVuKYkD4QXGLbpV/hMQ6wVzxJD9iniIQHYfIX4oI1/cWenzVFSG1JQubG8RDFH/WS6l7
+ n8k++CcG/cnCQPlu5OGKQeUCOIhhL4m3EVjLgfIzlKiv2WdtcbydVIeSJ2gHuoxbLy01
+ XLNQ==
+X-Gm-Message-State: AOJu0YzHuqRyJKyAN3DuIIhC3FHHF/rl9kuecHVoIYBi6ru+UV/NAXP9
+ SMUoNxOL72WkfUelIKKetvu59BU5a1hAxMdzuOPJlKKuWcCQU2f0rh9ZJiHZXWCNkO4FDmZcNtW
+ s+IuKDQT6WzugUtyIb9l1BCk7vb5Oin+USTgrfqhz8+Opgq2T/qeuY+fvNuJjyV5J2nNtvX2Swy
+ KjY7BUIxovuN1Twa6SXB3F84O/mGKmyx8HQg==
+X-Gm-Gg: ASbGncuiTPGmpWkiMv9vhfgm/DuCF3mzQ3PGM+tFXONHOLs4X7ez0+LPV4QqNTeNSjl
+ ChDFNG4xwMDIUX4DJHwK2QsU9AaFtd5QtLHiRnhr5kJ44EBR5hXZgztr2nXyTg+AC61DWAiofpc
+ 6LE6NrCOYT9XIxEyaKYESbG49Jy1UEw2ZXJux9dgf1/an59atZOCdR027z/imv7OtEAwtu/JTgk
+ swVAuZi2fiMCT3ikSNnoWKCilXYMLk+MB07Cj58OLJLaUgJSbEwXb1LiLqCMN8bsGWx5jUhMtL4
+ RENeaXVGO7KKhV1MOeDV708Dw5RRm+ok
+X-Received: by 2002:a05:600c:83cc:b0:450:d37d:7c with SMTP id
+ 5b1f17b1804b1-45894ca4e1cmr93284345e9.21.1754058319707; 
+ Fri, 01 Aug 2025 07:25:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnAa0qxkeCi/LltrEUId9RU19B+2oEdn/a0TcTBb1Jck+i8wy+8TWvlTodEgjov54muF7PBw==
+X-Received: by 2002:a05:600c:83cc:b0:450:d37d:7c with SMTP id
+ 5b1f17b1804b1-45894ca4e1cmr93283995e9.21.1754058319196; 
+ Fri, 01 Aug 2025 07:25:19 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c3abed3sm6042326f8f.10.2025.08.01.07.25.15
+ ffacd0b85a97d-3b79c4a6ff7sm6154540f8f.75.2025.08.01.07.25.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 07:25:16 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:25:14 -0400
+ Fri, 01 Aug 2025 07:25:18 -0700 (PDT)
+Date: Fri, 1 Aug 2025 10:25:16 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Sairaj Kodilkar <sarunkod@amd.com>, Vasant Hegde <vasant.hegde@amd.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 06/17] hw/i386/amd_iommu: Fix MMIO register write tracing
-Message-ID: <96c75abc872c1a90c8e1f4a4d2ed35e89a1befe9.1754058276.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 07/17] hw/i386/amd_iommu: Remove unused and wrongly set
+ ats_enabled field
+Message-ID: <47d50cc421b832650822d73431d920bb8a80bc38.1754058276.git.mst@redhat.com>
 References: <cover.1754058276.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -88,7 +89,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1754058276.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -115,76 +116,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sairaj Kodilkar <sarunkod@amd.com>
 
-Define separate functions to trace MMIO write accesses instead of using
-`trace_amdvi_mmio_read()` for both read and write.
+The ats_enabled field is set using HTTUNEN, which is wrong.
+Fix this by removing the field as it is never used.
 
+MST: includes a tweak suggested by Philippe
+
+Fixes: d29a09ca68428 ("hw/i386: Introduce AMD IOMMU")
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Message-Id: <20250801060507.3382-3-sarunkod@amd.com>
+Message-ID: <948a6ac3-ded9-475b-8c45-9d36220b442b@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20250801060507.3382-2-sarunkod@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ hw/i386/amd_iommu.h | 1 -
+ hw/i386/amd_iommu.c | 5 ++---
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 8b42913ed8..67078c6f1e 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -322,7 +322,6 @@ struct AMDVIState {
+     uint64_t mmio_addr;
+ 
+     bool enabled;                /* IOMMU enabled                */
+-    bool ats_enabled;            /* address translation enabled  */
+     bool cmdbuf_enabled;         /* command buffer enabled       */
+     bool evtlog_enabled;         /* event log enabled            */
+     bool excl_enabled;
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 5a24c17548..7fb0bb68f0 100644
+index 7fb0bb68f0..037e78056d 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -592,18 +592,31 @@ static void amdvi_cmdbuf_run(AMDVIState *s)
-     }
- }
+@@ -646,7 +646,6 @@ static void amdvi_handle_control_write(AMDVIState *s)
+     unsigned long control = amdvi_readq(s, AMDVI_MMIO_CONTROL);
+     s->enabled = !!(control & AMDVI_MMIO_CONTROL_AMDVIEN);
  
--static void amdvi_mmio_trace(hwaddr addr, unsigned size)
-+static inline uint8_t amdvi_mmio_get_index(hwaddr addr)
- {
-     uint8_t index = (addr & ~0x2000) / 8;
+-    s->ats_enabled = !!(control & AMDVI_MMIO_CONTROL_HTTUNEN);
+     s->evtlog_enabled = s->enabled && !!(control &
+                         AMDVI_MMIO_CONTROL_EVENTLOGEN);
  
-     if ((addr & 0x2000)) {
-         /* high table */
-         index = index >= AMDVI_MMIO_REGS_HIGH ? AMDVI_MMIO_REGS_HIGH : index;
--        trace_amdvi_mmio_read(amdvi_mmio_high[index], addr, size, addr & ~0x07);
-     } else {
-         index = index >= AMDVI_MMIO_REGS_LOW ? AMDVI_MMIO_REGS_LOW : index;
--        trace_amdvi_mmio_read(amdvi_mmio_low[index], addr, size, addr & ~0x07);
-     }
-+
-+    return index;
-+}
-+
-+static void amdvi_mmio_trace_read(hwaddr addr, unsigned size)
-+{
-+    uint8_t index = amdvi_mmio_get_index(addr);
-+    trace_amdvi_mmio_read(amdvi_mmio_low[index], addr, size, addr & ~0x07);
-+}
-+
-+static void amdvi_mmio_trace_write(hwaddr addr, unsigned size, uint64_t val)
-+{
-+    uint8_t index = amdvi_mmio_get_index(addr);
-+    trace_amdvi_mmio_write(amdvi_mmio_low[index], addr, size, val,
-+                           addr & ~0x07);
- }
+@@ -1555,7 +1554,6 @@ static void amdvi_init(AMDVIState *s)
+     s->excl_allow = false;
+     s->mmio_enabled = false;
+     s->enabled = false;
+-    s->ats_enabled = false;
+     s->cmdbuf_enabled = false;
  
- static uint64_t amdvi_mmio_read(void *opaque, hwaddr addr, unsigned size)
-@@ -623,7 +636,7 @@ static uint64_t amdvi_mmio_read(void *opaque, hwaddr addr, unsigned size)
-     } else if (size == 8) {
-         val = amdvi_readq(s, addr);
-     }
--    amdvi_mmio_trace(addr, size);
-+    amdvi_mmio_trace_read(addr, size);
- 
-     return val;
- }
-@@ -770,7 +783,7 @@ static void amdvi_mmio_write(void *opaque, hwaddr addr, uint64_t val,
-         return;
-     }
- 
--    amdvi_mmio_trace(addr, size);
-+    amdvi_mmio_trace_write(addr, size, val);
-     switch (addr & ~0x07) {
-     case AMDVI_MMIO_CONTROL:
-         amdvi_mmio_reg_write(s, size, val, addr);
+     /* reset MMIO */
+@@ -1626,7 +1624,8 @@ static const VMStateDescription vmstate_amdvi_sysbus_migratable = {
+       /* Updated in  amdvi_handle_control_write() */
+       VMSTATE_BOOL(enabled, AMDVIState),
+       VMSTATE_BOOL(ga_enabled, AMDVIState),
+-      VMSTATE_BOOL(ats_enabled, AMDVIState),
++      /* bool ats_enabled is obsolete */
++      VMSTATE_UNUSED(1), /* was ats_enabled */
+       VMSTATE_BOOL(cmdbuf_enabled, AMDVIState),
+       VMSTATE_BOOL(completion_wait_intr, AMDVIState),
+       VMSTATE_BOOL(evtlog_enabled, AMDVIState),
 -- 
 MST
 
