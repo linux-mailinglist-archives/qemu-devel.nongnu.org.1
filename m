@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5E3B18408
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE7AB183EC
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:34:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhqni-0007nQ-0i; Fri, 01 Aug 2025 10:32:02 -0400
+	id 1uhqnT-0006iI-Ca; Fri, 01 Aug 2025 10:31:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhh-0005nI-Iq
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:53 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhi-0005nd-LX
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhc-0002sA-Gl
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:46 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhe-0002sS-JN
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754058342;
+ s=mimecast20190719; t=1754058345;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MLPixtjK29bcXJWoF2tbZlGmeP/UpkFHfHcFk7aYjP8=;
- b=KeVHrHA0XKZePqv0kGHlWoPvNELW1HgpOlCRzk0V8eoOA4Ftf9jn4pVEAxlXJh0PJZx2Qn
- ff9MmrsSGe9YtpLztxweErLti0t9/x5Xod6AAm8UWB/rqcwRum++g6YjcKKQGe4p314lys
- UwrNRtRbzaKaoypcQrr1jkto9ZkFLWM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dGbO7vd636Hu1LhHD46O82pGLm04aUgQk2cK4yysdEk=;
+ b=XBw4PrWAKx+osTq3jm+kLiH3p1C1BZrrEGCbvvxVYjh+l3JP+S8V9ri0NYrVtcSfaNgGE7
+ Q2Y3LHMDQtEfG6+SaPV11bUvuTrlkMncXzNrYNnEyETg34NpILE+6nXmlh/2Yb7yvh9/5I
+ /DeeuSSclebxiXeFCofI5Ta25lSgB/U=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-5QFrZUfRNp6h24pl4WyP0A-1; Fri, 01 Aug 2025 10:25:41 -0400
-X-MC-Unique: 5QFrZUfRNp6h24pl4WyP0A-1
-X-Mimecast-MFC-AGG-ID: 5QFrZUfRNp6h24pl4WyP0A_1754058340
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4560a30a793so3202925e9.3
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:41 -0700 (PDT)
+ us-mta-622-x7koJ-GgOe2MQ0tETarNJA-1; Fri, 01 Aug 2025 10:25:44 -0400
+X-MC-Unique: x7koJ-GgOe2MQ0tETarNJA-1
+X-Mimecast-MFC-AGG-ID: x7koJ-GgOe2MQ0tETarNJA_1754058343
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3b7825a2ca5so1586772f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754058340; x=1754663140;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MLPixtjK29bcXJWoF2tbZlGmeP/UpkFHfHcFk7aYjP8=;
- b=UxCr1MObOd1wkbY3IKMGBm1efD1+YAl/Pq1WZ/4lhBmb6usL2Bi4CQigeKhVfYEQu8
- mguHQowezjCtcOSCdU7L7OEEjCSN3HIaQ2YVdJLBKoyPnmzmtSpyWApwuAN2w+GFI5a4
- 7by8sgiVcBV7foZSZ9plk+RhwQmPDf/xVurYCRYEC00TGmTE53jxXLYGMgKGHYzIDnBy
- UdnpOixmUJXxSXp8Eodkx7MSAho97XEOocUTH2kcFFNjnjToqL25nXMgmPspbKfJgKHr
- wdpaZMdBewU6VFmTq+y37zJ/dCFQh6ZEIeGeKTIMp3SGrxho3DVL2p0PVCXT7g/fxs7J
- b1Sw==
-X-Gm-Message-State: AOJu0YzHFVooJgXB2XtWk6Klaob2VcZqIJpD0ci+RbAT9sLfOCiTzxPA
- gasRsbPgFDWRdCG/35wAmjWT/VC2Y7OXxa/OcoQXdK/VBuaFX/I1Bfpicwkb4svnspv2A0Osx9a
- PVEycKyXrCHq4ebkbKGBWUS6/rv8/OwgYwpQSmk4hPAMRPoqLIRipC/QSsHxaykzjvahfuE5FFW
- 4vj2AhXPyHjOShICpDi/nagUpijFm9OeLceQ==
-X-Gm-Gg: ASbGncucoZmo0BThAXPBB82SnD6bBi5vCi64OzovjtLwcpra0J+oJD5gOINz4jQAiXq
- BPoPVPclw7lKqlBZtWKQnFD85JONJ5fA9dW6OCNKmA6vF/sTkTvRNQkWVv6fOuVcbB1QZFK2S3M
- GDicqvEh7BVJ9wKXXp8TGj/xTtw5GH19b87Iu4StWfa6Mkpfx7mlI7rZ/gRZ4G5RfMm6Wxv1N/6
- 67eEF9PTgb3YZwChuqICgVWlXkEaS6pk4Ml2WHoVQIMBIEAJ67cDD78VVcYU7nMwfGJmLHVVze7
- 7w9SPyaiES58jg7E4FHd0bCg6TxeD/1J
-X-Received: by 2002:a05:600c:c0d1:20b0:456:161c:3d77 with SMTP id
- 5b1f17b1804b1-4589301f9famr80232915e9.16.1754058339984; 
- Fri, 01 Aug 2025 07:25:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHC8/Dfw+kQSVwFEgr1jSxtfOH0jvtrc6GBpwprP+AFUE9ifcVddq2sWhwfuZTL3IiUsJ+tyQ==
-X-Received: by 2002:a05:600c:c0d1:20b0:456:161c:3d77 with SMTP id
- 5b1f17b1804b1-4589301f9famr80232705e9.16.1754058339485; 
- Fri, 01 Aug 2025 07:25:39 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1754058342; x=1754663142;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dGbO7vd636Hu1LhHD46O82pGLm04aUgQk2cK4yysdEk=;
+ b=nBmv3MXjg3QNSSLQwQeCPFi7iZM3Zzilxt5bnvvh+1bSpX0UKaShI8OF128lPIYTO6
+ Hx0qeK1tu/yJ7BV82ldaktA7jWnjd5WwZKo2diU9XuFNIHVGeQe3tQWya49k0sbpbaUR
+ TJi8fh8N4k8r4rlUBxk4SGqz5ZJmGITgRW/fVSSfwnTVR24Jk00i/PM7bzCax4tRew8O
+ g4gc+5/Xzx7dqvEP3S+9kvxYtlL3X4a8rVY5UxWMaOQHoXF2HcsdK4qJNhp9q29pK8mG
+ R9WQBFHPkuB2TDbszf+TyydqMIDOZdJlMr3LVgh8xJzxX5MkcCMrCUGcHyzXWgboMX3z
+ EIKQ==
+X-Gm-Message-State: AOJu0Yw4y60aP3yHT9y2XkUDYt95QafGYO4sOMti2qndJQQLOYffKt16
+ EQmEJFuqPV5oVl2MV31vI1eaMrTUePUb1rir3T3yBp1pZG2O7KZ0sS8H1d8IB20aZ6/MhoraxUl
+ 3kcfmkBHcO/jywbaHNZJCdBVh1PriOvQcZEBPkC6QFICquObCnBVui07ZJFwRXbwtdiUPr01E1D
+ 8FGr1rJMGzOrS0PGgAOasYahHA9HMXfWlfNg==
+X-Gm-Gg: ASbGnctGUXBNgHnqEbqhplPKUazUYYm7UlNudL/OpsY/fbyrfvfGwaPGikmBZgVipap
+ HMwncvmJSwTphzpkvoWJjyMzFUbtgQwU6Kdl0vqKGRdA827tzmwlEJepi0wrS8KKzqCvl/cw9yk
+ R7RPJEeaatPRcEPj1TF3hcebH0K8oWVdOVrkpuYi28McQpuHqmp6jp5yKugqVz7EpuANYhSIFJ6
+ TH9cvq8Kque9PJMKyDAtCHA+4Fq+GZAQsqA6LX83aETRP1SqzJThHos6nyu4lcCOlwQ2OdupAli
+ kNCztP6c6NsrymFYA+Ni8Uonnt0D9fs5
+X-Received: by 2002:a05:6000:430b:b0:3b4:9ade:4e8a with SMTP id
+ ffacd0b85a97d-3b79d4e0b4bmr5800464f8f.21.1754058342389; 
+ Fri, 01 Aug 2025 07:25:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGl0is/rcqzTgv6qbWMWQ2gfImg3xA4GSo3aSk4vVpb8eS24zyZ7S2sUmRqUIE5D10RcbTsuQ==
+X-Received: by 2002:a05:6000:430b:b0:3b4:9ade:4e8a with SMTP id
+ ffacd0b85a97d-3b79d4e0b4bmr5800435f8f.21.1754058341889; 
+ Fri, 01 Aug 2025 07:25:41 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4589edfc930sm67169475e9.8.2025.08.01.07.25.38
+ ffacd0b85a97d-3b79c3abec8sm6360138f8f.8.2025.08.01.07.25.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 07:25:38 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:25:37 -0400
+ Fri, 01 Aug 2025 07:25:41 -0700 (PDT)
+Date: Fri, 1 Aug 2025 10:25:39 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Subject: [PULL 16/17] MAINTAINERS: add net/vhost* files under `vhost`
-Message-ID: <4164adc476d85d46ef4901c05a9807b24473b00d.1754058276.git.mst@redhat.com>
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 17/17] net/vdpa: fix potential fd leak in net_init_vhost_vdpa()
+Message-ID: <4caf74916d09019e61c91f8cb1166510836d35e8.1754058276.git.mst@redhat.com>
 References: <cover.1754058276.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1754058276.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -115,30 +110,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefano Garzarella <sgarzare@redhat.com>
 
-net/vhost* files should be interesting for vhost maintainers/reviewers.
+Coverity reported a file descriptor leak (CID 1490785) that happens if
+`vhost_vdpa_get_max_queue_pairs()` returns 0, since in that case
+net_host_vdpa_init(), which should take ownership of the fd, is never
+called.
 
+vhost_vdpa_get_max_queue_pairs() returns 1 if VIRTIO_NET_F_MQ is not
+negotiated, or a negative error if the ioctl() fails, or the maximum
+number of queue pairs exposed by the device in the config space in the
+`max_virtqueue_pairs` field. In the VIRTIO spec we have:
+     The device MUST set max_virtqueue_pairs to between 1 and 0x8000
+     inclusive, if it offers VIRTIO_NET_F_MQ.
+
+So, if `vhost_vdpa_get_max_queue_pairs()` returns 0, it's really an
+error since the device is violating the VIRTIO spec.
+
+Treat also `queue_pairs == 0` as an error, and jump to the `err` label,
+to return a negative value to the caller in any case.
+
+Coverity: CID 1490785
 Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20250714102626.34431-1-sgarzare@redhat.com>
+Message-Id: <20250714101156.30024-1-sgarzare@redhat.com>
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ net/vhost-vdpa.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 069d77f2f8..28cea34271 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2322,6 +2322,7 @@ F: include/*/vhost*
- F: subprojects/libvhost-user/
- F: block/export/vhost-user*
- F: util/vhost-user-server.c
-+F: net/vhost*
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 6a30a44d2b..74d26a9497 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -1840,9 +1840,8 @@ int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
  
- vhost-shadow-virtqueue
- R: Eugenio Pérez <eperezma@redhat.com>
+     queue_pairs = vhost_vdpa_get_max_queue_pairs(vdpa_device_fd, features,
+                                                  &has_cvq, errp);
+-    if (queue_pairs < 0) {
+-        qemu_close(vdpa_device_fd);
+-        return queue_pairs;
++    if (queue_pairs <= 0) {
++        goto err;
+     }
+ 
+     r = vhost_vdpa_get_iova_range(vdpa_device_fd, &iova_range);
 -- 
 MST
 
