@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB56B183FA
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CCDFB18412
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:39:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhqne-0007d3-Lb; Fri, 01 Aug 2025 10:31:58 -0400
+	id 1uhqpz-0003b4-FK; Fri, 01 Aug 2025 10:34:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhV-0005aU-S3
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhX-0005ah-3J
  for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhU-0002oD-4w
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:37 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhV-0002pB-DJ
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754058335;
+ s=mimecast20190719; t=1754058336;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gUOuxsFcKExXqP/V7LZEk0bWxeYWJUworvF5GqipL/Q=;
- b=HfMBku3n/f9bP1zUpeVeiUxuOD0+x35nQuOR14EMvoQqheSQNg9foVtYjQONrUKO4oHySx
- hWKKnoPUXmyr6IgcKtqjNUrV+6Z+IZHhmHlyro2Xy/68OhtXNIuItu0Ple/FN8sN6zZk4h
- 3gcwavYVMEmxs+LjGOzbxJDSi/eKwgM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=IL9+A2pIj1svEtoSCipjyGY+zemWuaFe+SiKFMe1fHI=;
+ b=QZ1MrVDcELObq4s+/kTgZoQBtTy1P6mVMcBjuLyz9xuhN4GryatX8z3nAukDtKcFCtymwE
+ nmeTF3yHGzQqB7QCpa6BhOpoUXd0AwkgLzSCBqb7nhJgyjQ9mqwNN2zrxK4CfK+YqNoRe/
+ Nc0NOcmp6DsgOh1c+mE+Bie1smAOBUc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-BAeRgtRnPy-0MSNiHL0knQ-1; Fri, 01 Aug 2025 10:25:32 -0400
-X-MC-Unique: BAeRgtRnPy-0MSNiHL0knQ-1
-X-Mimecast-MFC-AGG-ID: BAeRgtRnPy-0MSNiHL0knQ_1754058332
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-455e918d690so15301905e9.1
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:32 -0700 (PDT)
+ us-mta-44-mO4hzbMLPdKttM8DZIMqog-1; Fri, 01 Aug 2025 10:25:34 -0400
+X-MC-Unique: mO4hzbMLPdKttM8DZIMqog-1
+X-Mimecast-MFC-AGG-ID: mO4hzbMLPdKttM8DZIMqog_1754058333
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-458a533c069so6680795e9.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754058331; x=1754663131;
+ d=1e100.net; s=20230601; t=1754058333; x=1754663133;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gUOuxsFcKExXqP/V7LZEk0bWxeYWJUworvF5GqipL/Q=;
- b=fMven84KneBcXsW/PqLaNeEp1mJGsLm4m6rNS0gLv4QWVdWs/LPp9WZpyIgqyDhLiM
- dPgMQPmss63hvXsKhSxPIZambk0agiHuLEElZC97Mjm1dhmBQLFlKsS5L2Bx6HwrBalL
- cqmH21G7Xr3l9AI7zRKPAtICuEOIczI9+G8nR4hS6w4cNWY5AM6+bVuOyvTKeXYJGjqs
- Ys1vtpXd7B/eBK3kPfJ6rXjVyfBMEcSR8cbNi+/c/9nVd65P0Z6iAkbIL9yq7Q0lX7Xn
- o0o0Kzy4EnGVoVH0CSz1YymTjB4F+zuoLRJ+kM7JAG7wCHQFiZl5+olZcLp66kigM+Ut
- xANA==
-X-Gm-Message-State: AOJu0YwogsU6+3fy0y3GEytrSJ/vslr0v/zKQPBMM60Wny4irk1vHXB5
- FqMSG8tN+wBT57iv3WEC8oN+vlbVxldlmvuhegrXxu3L3JzOZzbAc9CTRE9Lmj+5EDLUQFMnZb0
- LYD8GG3qpq6OJgpdlmydmOyYFx0QoQfy1U3ma08MPypuPpLZnrGVYc/vMFsCqaYz/r5gKiVnTji
- EeKBGJbogCqtXK+Kkm+VLVx8ZpryWd/3Aimw==
-X-Gm-Gg: ASbGnctx6qOHN76XatC24qGhRN3cPOxffyPfAUb1WfUemiquXyv5+4Wj6HqMZEQaovC
- 1FKLl0zOCdRzGt9jEEKcZn7ILIVoXMYDStkPvVtfBH3nhYHiU8zvWdPsW5TmHrLm9/c4o2fW+Ul
- Af0QZxKlS49dby7t1FspbLzSipm3f8XcXgggaIQp+280D60PPwwPILgupVqEngCOXFLLIw5IKKN
- gkVEV5VoxwP3K5i+VgSx8MW6boCm8mX8eJRSHgJ84JiOkwVJt86YhaEyQN57YE3zmU4CsvHqegy
- RBWQVgF29t8zgesqIoO4epyroqDuY5Y8
-X-Received: by 2002:a05:600c:3d8d:b0:456:f22:ca49 with SMTP id
- 5b1f17b1804b1-458a17e6e41mr60183125e9.0.1754058330914; 
- Fri, 01 Aug 2025 07:25:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHrBGKjIoyHawiA1OZmeeyJE46mA4tkAg1c216rHjJOdUx5wWs8ZJXB8JcgPwvMPPtp9CesYQ==
-X-Received: by 2002:a05:600c:3d8d:b0:456:f22:ca49 with SMTP id
- 5b1f17b1804b1-458a17e6e41mr60182845e9.0.1754058330488; 
- Fri, 01 Aug 2025 07:25:30 -0700 (PDT)
+ bh=IL9+A2pIj1svEtoSCipjyGY+zemWuaFe+SiKFMe1fHI=;
+ b=wjL5aI2go3BxMo7AgPlS2Nlp0k98OYqXoomUuRKRSRSZshrFvRLhwgtptF1llJ1L26
+ 2c7zzG1BP+XoxkZhmCIf6yqfWSpERXBvkcPQFR4XeHovWqMvG1dPQ9KrPgWdv0bYZzik
+ 2XizUsHjhlcHB6GzFT5kXcnwenf0rXLsGU7thl37NHjHKc6F7cUuISBSr2ebs62KinCj
+ w/0IadhBMUpKDoFuTIXMCb8Jk8NKQcZ/P/TuAiOQsXGciCs6zpOknTxXjz/Rqe3leG8X
+ iIDqe+E2/qTIwVlSfnQw48gMwKQZ/wGHT77it6nTGVC9JAuEbetHk+7ZaJ9XQ9BoFSEz
+ A4Pw==
+X-Gm-Message-State: AOJu0YzsSt5AR8LjlQaDT7jntL7S4QTSUDQCqKtoG2/Hxh2RoURse8nX
+ LOWWRpfmHEbea9IjIwg/bsGQ8hq0M6VGRn4AKXAplZJnt8pcK+8sGIpuZMWT5GTtNO3mTmSSaXq
+ cfId2t2QaMR/2A63zDMvvpt9tbbNX7+bP33lJjMswJC8it7j3wFrqEvzIedfoZuXXHKGcCQnP9H
+ 8gYxqsgxUWhgAWsh3qKuJ2kqqVTojr+DhGPg==
+X-Gm-Gg: ASbGncsqmZ0BkI6fcxUC3y+Mvq4QnX9wcRM8kveO8Mfeqnoy6qITmxSQ1fYpR9DWW3t
+ ufVU4xSlVK+unxTKUNdzysmJQivDOQ7L/0nJzv3WbkHXAuEhJjZTmQbAZxkBHFZpqQB+KtAL+rn
+ N7YwAJPV8T+dmoVpMBMMeRHupMMbOnMTS84vWQgUkC3XZNr44RtZYfvzVdiRmAbyPQVgYurmXX/
+ up01p6as615mzynM6wPFjGSinRuXGT45B8GHVXVvOAxa3SlmhFUYkTgbXi7T7+IMq0xiwEB+Tpl
+ BqQ/fer4szyHM6pfyG07aDYBtOZxCUjo
+X-Received: by 2002:a05:600c:4ecc:b0:456:e39:ec1a with SMTP id
+ 5b1f17b1804b1-45892ba272cmr117865945e9.14.1754058332910; 
+ Fri, 01 Aug 2025 07:25:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF65kXBkLk75B+1vmQcp7lIPRgHiznzOTqOqwyfRCF5KbOK+NMbKxZ5d+iDfWzJ1uk0ojI4pg==
+X-Received: by 2002:a05:600c:4ecc:b0:456:e39:ec1a with SMTP id
+ 5b1f17b1804b1-45892ba272cmr117865495e9.14.1754058332450; 
+ Fri, 01 Aug 2025 07:25:32 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c4a6f6fsm6306298f8f.74.2025.08.01.07.25.29
+ ffacd0b85a97d-3b79c453aeasm6285769f8f.40.2025.08.01.07.25.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 07:25:30 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:25:28 -0400
+ Fri, 01 Aug 2025 07:25:32 -0700 (PDT)
+Date: Fri, 1 Aug 2025 10:25:30 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -75,8 +75,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 12/17] tests/acpi: virt: add an empty HEST file
-Message-ID: <8d5613d2eefa6ca94b3c642583488e20915c48f7.1754058276.git.mst@redhat.com>
+Subject: [PULL 13/17] tests/qtest/bios-tables-test: extend to also check HEST
+ table
+Message-ID: <5088651138b94542807414eb841363b16d6aa535.1754058276.git.mst@redhat.com>
 References: <cover.1754058276.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -111,31 +112,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Such file will be used to track HEST table changes.
-
-For now, disallow HEST table check until we update it to the
-current data.
+Currently, aarch64 can generate a HEST table when loaded with
+-machine ras=on. Add support for it.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <e25ea751a23c7d8da812233c83ce943efbeaaf91.1749741085.git.mchehab+huawei@kernel.org>
+Message-Id: <9ce77140500ef68cc939d63952c25579f711ea52.1749741085.git.mchehab+huawei@kernel.org>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 1 +
- tests/data/acpi/aarch64/virt/HEST           | 0
- 2 files changed, 1 insertion(+)
- create mode 100644 tests/data/acpi/aarch64/virt/HEST
+ tests/qtest/bios-tables-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..39901c58d6 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,2 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/aarch64/virt/HEST",
-diff --git a/tests/data/acpi/aarch64/virt/HEST b/tests/data/acpi/aarch64/virt/HEST
-new file mode 100644
-index 0000000000..e69de29bb2
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 6aec68decc..e7e6926c81 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -2208,7 +2208,7 @@ static void test_acpi_aarch64_virt_tcg(void)
+ 
+     data.smbios_cpu_max_speed = 2900;
+     data.smbios_cpu_curr_speed = 2700;
+-    test_acpi_one("-cpu cortex-a57 "
++    test_acpi_one("-cpu cortex-a57 -machine ras=on "
+                   "-smbios type=4,max-speed=2900,current-speed=2700", &data);
+     free_test_data(&data);
+ }
 -- 
 MST
 
