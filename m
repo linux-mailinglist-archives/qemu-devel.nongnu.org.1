@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFCEB185A4
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 18:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14970B185D1
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 18:31:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhsVU-0006lY-1l; Fri, 01 Aug 2025 12:21:26 -0400
+	id 1uhsYr-0005r3-G6; Fri, 01 Aug 2025 12:24:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrSG-00058P-4u
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrSJ-0005FO-F0
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrSD-0002kT-K7
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:55 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrSH-0002lI-PE
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754061232;
+ s=mimecast20190719; t=1754061237;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KWa/jRwvlQMtpKGYMonPBuwG3wZ2fEIL8batErtgn0M=;
- b=Tz3DUTcfHYuZvjBz0ALPZWmr9/2TEIrs6qWjn/AtAQUpNdbvASfJ9VPDxu427D4Dwck8k1
- Xt+E4GAbL22mXZIGRcqKkrNkhXRvjN6jKQlOLFQz3i8I5Y/GR3DpEWShSQ/tHrxcNSm+uV
- bhPmkUW4vcSosouaVqSOl3AaQMSsbVg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=zOsXLkgQwvhCL0FcIEPwutsM9p8/52O1BwSSCAb0Msk=;
+ b=YBxpTSVFR7I4V0gybgKR+WeylEnMqwdaU5vDTDwmPlaz1It6k/0O0BF5Bmq5A8+Xh83vro
+ Xj/vFK1fFty/qGDYduHGuArpWFJQV4IVH5lpRZEO833uKTgzqVGrAyt4nHAKsUn825HgBu
+ tlKsmiP0VKNGEPott4XCXvWwkiwToAE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-Rl21HIGJNuiDLUEcPPK9Gw-1; Fri,
- 01 Aug 2025 11:13:51 -0400
-X-MC-Unique: Rl21HIGJNuiDLUEcPPK9Gw-1
-X-Mimecast-MFC-AGG-ID: Rl21HIGJNuiDLUEcPPK9Gw_1754061229
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-338-3HEg6e0NOKajPoxoK02g1Q-1; Fri,
+ 01 Aug 2025 11:13:53 -0400
+X-MC-Unique: 3HEg6e0NOKajPoxoK02g1Q-1
+X-Mimecast-MFC-AGG-ID: 3HEg6e0NOKajPoxoK02g1Q_1754061232
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 763EF180028F; Fri,  1 Aug 2025 15:13:49 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 768161956046; Fri,  1 Aug 2025 15:13:52 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.225.137])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 20D811800B4F; Fri,  1 Aug 2025 15:13:46 +0000 (UTC)
+ id 107801800B7F; Fri,  1 Aug 2025 15:13:49 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 16/24] tests/functional: Move ppc/ppc64 tests into
+Subject: [PATCH 17/24] tests/functional: Move riscv32/riscv64 tests into
  target-specific folders
-Date: Fri,  1 Aug 2025 17:12:41 +0200
-Message-ID: <20250801151251.751368-17-thuth@redhat.com>
+Date: Fri,  1 Aug 2025 17:12:42 +0200
+Message-ID: <20250801151251.751368-18-thuth@redhat.com>
 In-Reply-To: <20250801151251.751368-1-thuth@redhat.com>
 References: <20250801151251.751368-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,386 +86,160 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The tests/functional folder has become quite crowded, thus move the
-ppc and ppc64 tests into a target-specific subfolder.
+The opensbi test is used for both, riscv32 and riscv64. Copy the main
+test to the riscv64 folder and add a simple wrapper to the riscv32
+folder to be able to run it for that target, too.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                                   | 32 ++++++-------
- tests/functional/meson.build                  | 47 +------------------
- tests/functional/ppc/meson.build              | 22 +++++++++
- .../{test_ppc_40p.py => ppc/test_40p.py}      |  0
- .../{test_ppc_74xx.py => ppc/test_74xx.py}    |  0
- .../{test_ppc_amiga.py => ppc/test_amiga.py}  |  0
- .../test_bamboo.py}                           |  0
- .../{test_ppc_mac.py => ppc/test_mac.py}      |  0
+ MAINTAINERS                                   |  3 ++-
+ tests/functional/meson.build                  | 24 ++-----------------
+ tests/functional/riscv32/meson.build          | 10 ++++++++
  .../test_migration.py}                        |  0
- .../test_mpc8544ds.py}                        |  0
- .../test_replay.py}                           |  0
- .../test_sam460ex.py}                         |  0
+ tests/functional/riscv32/test_opensbi.py      | 10 ++++++++
  .../test_tuxrun.py}                           |  0
- .../test_virtex_ml507.py}                     |  0
- tests/functional/ppc64/meson.build            | 25 ++++++++++
- .../test_e500.py}                             |  0
- .../{test_ppc64_hv.py => ppc64/test_hv.py}    |  0
- .../test_mac99.py}                            |  0
+ tests/functional/riscv64/meson.build          | 14 +++++++++++
  .../test_migration.py}                        |  0
- .../test_powernv.py}                          |  0
- .../test_pseries.py}                          |  0
- .../test_replay.py}                           |  0
- .../test_reverse_debug.py}                    |  0
+ .../test_opensbi.py}                          |  0
  .../test_tuxrun.py}                           |  0
- 24 files changed, 65 insertions(+), 61 deletions(-)
- create mode 100644 tests/functional/ppc/meson.build
- rename tests/functional/{test_ppc_40p.py => ppc/test_40p.py} (100%)
- rename tests/functional/{test_ppc_74xx.py => ppc/test_74xx.py} (100%)
- rename tests/functional/{test_ppc_amiga.py => ppc/test_amiga.py} (100%)
- rename tests/functional/{test_ppc_bamboo.py => ppc/test_bamboo.py} (100%)
- rename tests/functional/{test_ppc_mac.py => ppc/test_mac.py} (100%)
- rename tests/functional/{test_ppc_migration.py => ppc/test_migration.py} (100%)
- rename tests/functional/{test_ppc_mpc8544ds.py => ppc/test_mpc8544ds.py} (100%)
- rename tests/functional/{test_ppc_replay.py => ppc/test_replay.py} (100%)
- rename tests/functional/{test_ppc_sam460ex.py => ppc/test_sam460ex.py} (100%)
- mode change 100644 => 100755
- rename tests/functional/{test_ppc_tuxrun.py => ppc/test_tuxrun.py} (100%)
- rename tests/functional/{test_ppc_virtex_ml507.py => ppc/test_virtex_ml507.py} (100%)
- create mode 100644 tests/functional/ppc64/meson.build
- rename tests/functional/{test_ppc64_e500.py => ppc64/test_e500.py} (100%)
- rename tests/functional/{test_ppc64_hv.py => ppc64/test_hv.py} (100%)
- rename tests/functional/{test_ppc64_mac99.py => ppc64/test_mac99.py} (100%)
- rename tests/functional/{test_ppc64_migration.py => ppc64/test_migration.py} (100%)
- rename tests/functional/{test_ppc64_powernv.py => ppc64/test_powernv.py} (100%)
- rename tests/functional/{test_ppc64_pseries.py => ppc64/test_pseries.py} (100%)
- rename tests/functional/{test_ppc64_replay.py => ppc64/test_replay.py} (100%)
- rename tests/functional/{test_ppc64_reverse_debug.py => ppc64/test_reverse_debug.py} (100%)
- rename tests/functional/{test_ppc64_tuxrun.py => ppc64/test_tuxrun.py} (100%)
+ 10 files changed, 38 insertions(+), 23 deletions(-)
+ create mode 100644 tests/functional/riscv32/meson.build
+ rename tests/functional/{test_riscv32_migration.py => riscv32/test_migration.py} (100%)
+ create mode 100755 tests/functional/riscv32/test_opensbi.py
+ rename tests/functional/{test_riscv32_tuxrun.py => riscv32/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/riscv64/meson.build
+ rename tests/functional/{test_riscv64_migration.py => riscv64/test_migration.py} (100%)
+ rename tests/functional/{test_riscv_opensbi.py => riscv64/test_opensbi.py} (100%)
+ rename tests/functional/{test_riscv64_tuxrun.py => riscv64/test_tuxrun.py} (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index db0cc7de6cb..09e31ca1af8 100644
+index 09e31ca1af8..ee26bb82b58 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -309,7 +309,7 @@ F: configs/devices/ppc*
- F: docs/system/ppc/embedded.rst
- F: docs/system/target-ppc.rst
- F: tests/tcg/ppc*/*
--F: tests/functional/test_ppc_74xx.py
-+F: tests/functional/ppc/test_74xx.py
+@@ -331,7 +331,8 @@ F: include/hw/riscv/
+ F: linux-user/host/riscv32/
+ F: linux-user/host/riscv64/
+ F: common-user/host/riscv*
+-F: tests/functional/test_riscv*
++F: tests/functional/riscv32
++F: tests/functional/riscv64
+ F: tests/tcg/riscv64/
  
- RISC-V TCG CPUs
- M: Palmer Dabbelt <palmer@dabbelt.com>
-@@ -1463,7 +1463,7 @@ L: qemu-ppc@nongnu.org
- S: Orphan
- F: hw/ppc/ppc440_bamboo.c
- F: hw/pci-host/ppc4xx_pci.c
--F: tests/functional/test_ppc_bamboo.py
-+F: tests/functional/ppc/test_bamboo.py
- 
- e500
- M: Bernhard Beschow <shentey@gmail.com>
-@@ -1481,8 +1481,8 @@ F: pc-bios/u-boot.e500
- F: hw/intc/openpic_kvm.c
- F: include/hw/ppc/openpic_kvm.h
- F: docs/system/ppc/ppce500.rst
--F: tests/functional/test_ppc64_e500.py
--F: tests/functional/test_ppc_tuxrun.py
-+F: tests/functional/ppc64/test_e500.py
-+F: tests/functional/ppc/test_tuxrun.py
- 
- mpc8544ds
- M: Bernhard Beschow <shentey@gmail.com>
-@@ -1490,7 +1490,7 @@ L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: hw/ppc/mpc8544ds.c
- F: hw/ppc/mpc8544_guts.c
--F: tests/functional/test_ppc_mpc8544ds.py
-+F: tests/functional/ppc/test_mpc8544ds.py
- 
- New World (mac99)
- M: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-@@ -1512,8 +1512,8 @@ F: include/hw/ppc/mac_dbdma.h
- F: include/hw/pci-host/uninorth.h
- F: include/hw/input/adb*
- F: pc-bios/qemu_vga.ndrv
--F: tests/functional/test_ppc_mac.py
--F: tests/functional/test_ppc64_mac99.py
-+F: tests/functional/ppc/test_mac.py
-+F: tests/functional/ppc64/test_mac99.py
- 
- Old World (g3beige)
- M: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-@@ -1529,7 +1529,7 @@ F: include/hw/intc/heathrow_pic.h
- F: include/hw/input/adb*
- F: include/hw/pci-host/grackle.h
- F: pc-bios/qemu_vga.ndrv
--F: tests/functional/test_ppc_mac.py
-+F: tests/functional/ppc/test_mac.py
- 
- PReP
- M: Hervé Poussineau <hpoussin@reactos.org>
-@@ -1546,7 +1546,7 @@ F: hw/dma/i82374.c
- F: hw/rtc/m48t59-isa.c
- F: include/hw/isa/pc87312.h
- F: include/hw/rtc/m48t59.h
--F: tests/functional/test_ppc_40p.py
-+F: tests/functional/ppc/test_40p.py
- 
- sPAPR (pseries)
- M: Nicholas Piggin <npiggin@gmail.com>
-@@ -1569,9 +1569,9 @@ F: tests/qtest/spapr*
- F: tests/qtest/libqos/*spapr*
- F: tests/qtest/rtas*
- F: tests/qtest/libqos/rtas*
--F: tests/functional/test_ppc64_pseries.py
--F: tests/functional/test_ppc64_hv.py
--F: tests/functional/test_ppc64_tuxrun.py
-+F: tests/functional/ppc64/test_pseries.py
-+F: tests/functional/ppc64/test_hv.py
-+F: tests/functional/ppc64/test_tuxrun.py
- 
- PowerNV (Non-Virtualized)
- M: Nicholas Piggin <npiggin@gmail.com>
-@@ -1590,7 +1590,7 @@ F: include/hw/ssi/pnv_spi*
- F: pc-bios/skiboot.lid
- F: pc-bios/pnv-pnor.bin
- F: tests/qtest/pnv*
--F: tests/functional/test_ppc64_powernv.py
-+F: tests/functional/ppc64/test_powernv.py
- 
- pca955x
- M: Glenn Miles <milesg@linux.ibm.com>
-@@ -1605,7 +1605,7 @@ M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: hw/ppc/virtex_ml507.c
--F: tests/functional/test_ppc_virtex_ml507.py
-+F: tests/functional/ppc/test_virtex_ml507.py
- 
- sam460ex
- M: BALATON Zoltan <balaton@eik.bme.hu>
-@@ -1621,7 +1621,7 @@ F: pc-bios/dtb/canyonlands.dt[sb]
- F: pc-bios/u-boot-sam460ex-20100605.bin
- F: roms/u-boot-sam460ex
- F: docs/system/ppc/amigang.rst
--F: tests/functional/test_ppc_sam460ex.py
-+F: tests/functional/ppc/test_sam460ex.py
- 
- pegasos2
- M: BALATON Zoltan <balaton@eik.bme.hu>
-@@ -1639,7 +1639,7 @@ S: Maintained
- F: hw/ppc/amigaone.c
- F: hw/pci-host/articia.c
- F: include/hw/pci-host/articia.h
--F: tests/functional/test_ppc_amiga.py
-+F: tests/functional/ppc/test_amiga.py
- 
- Virtual Open Firmware (VOF)
- M: Alexey Kardashevskiy <aik@ozlabs.ru>
+ RISC-V XThead* extensions
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index e5e3d1667b8..cc0e0bc6e0c 100644
+index cc0e0bc6e0c..2d8f67fd94f 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -24,19 +24,8 @@ subdir('mipsel')
- subdir('mips64')
- subdir('mips64el')
+@@ -26,10 +26,8 @@ subdir('mips64el')
  subdir('or1k')
+ subdir('ppc')
+ subdir('ppc64')
 -
--test_ppc_timeouts = {
--  'ppc_40p' : 240,
+-test_riscv64_timeouts = {
+-  'riscv64_tuxrun' : 120,
 -}
--
--test_ppc64_timeouts = {
--  'ppc64_hv' : 1000,
--  'ppc64_powernv' : 480,
--  'ppc64_pseries' : 480,
--  'ppc64_replay' : 210,
--  'ppc64_tuxrun' : 420,
--  'ppc64_mac99' : 120,
--}
-+subdir('ppc')
-+subdir('ppc64')
++subdir('riscv32')
++subdir('riscv64')
  
- test_riscv64_timeouts = {
-   'riscv64_tuxrun' : 120,
-@@ -71,38 +60,6 @@ tests_generic_linuxuser = [
+ test_s390x_timeouts = {
+   's390x_ccw_virtio' : 420,
+@@ -60,24 +58,6 @@ tests_generic_linuxuser = [
  tests_generic_bsduser = [
  ]
  
--tests_ppc_system_quick = [
--  'ppc_migration',
--  'ppc_74xx',
+-tests_riscv32_system_quick = [
+-  'riscv32_migration',
+-  'riscv_opensbi',
 -]
 -
--tests_ppc_system_thorough = [
--  'ppc_40p',
--  'ppc_amiga',
--  'ppc_bamboo',
--  'ppc_mac',
--  'ppc_mpc8544ds',
--  'ppc_replay',
--  'ppc_sam460ex',
--  'ppc_tuxrun',
--  'ppc_virtex_ml507',
+-tests_riscv32_system_thorough = [
+-  'riscv32_tuxrun',
 -]
 -
--tests_ppc64_system_quick = [
--  'ppc64_migration',
+-tests_riscv64_system_quick = [
+-  'riscv64_migration',
+-  'riscv_opensbi',
 -]
 -
--tests_ppc64_system_thorough = [
--  'ppc64_e500',
--  'ppc64_hv',
--  'ppc64_powernv',
--  'ppc64_pseries',
--  'ppc64_replay',
--  'ppc64_reverse_debug',
--  'ppc64_tuxrun',
--  'ppc64_mac99',
+-tests_riscv64_system_thorough = [
+-  'riscv64_tuxrun',
 -]
 -
- tests_riscv32_system_quick = [
-   'riscv32_migration',
-   'riscv_opensbi',
-diff --git a/tests/functional/ppc/meson.build b/tests/functional/ppc/meson.build
+ tests_rx_system_thorough = [
+   'rx_gdbsim',
+ ]
+diff --git a/tests/functional/riscv32/meson.build b/tests/functional/riscv32/meson.build
 new file mode 100644
-index 00000000000..3d562010d8c
+index 00000000000..f3ebbb8db5d
 --- /dev/null
-+++ b/tests/functional/ppc/meson.build
-@@ -0,0 +1,22 @@
++++ b/tests/functional/riscv32/meson.build
+@@ -0,0 +1,10 @@
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+test_ppc_timeouts = {
-+  '40p' : 240,
-+}
-+
-+tests_ppc_system_quick = [
++tests_riscv32_system_quick = [
 +  'migration',
-+  '74xx',
++  'opensbi',
 +]
 +
-+tests_ppc_system_thorough = [
-+  '40p',
-+  'amiga',
-+  'bamboo',
-+  'mac',
-+  'mpc8544ds',
-+  'replay',
-+  'sam460ex',
++tests_riscv32_system_thorough = [
 +  'tuxrun',
-+  'virtex_ml507',
 +]
-diff --git a/tests/functional/test_ppc_40p.py b/tests/functional/ppc/test_40p.py
+diff --git a/tests/functional/test_riscv32_migration.py b/tests/functional/riscv32/test_migration.py
 similarity index 100%
-rename from tests/functional/test_ppc_40p.py
-rename to tests/functional/ppc/test_40p.py
-diff --git a/tests/functional/test_ppc_74xx.py b/tests/functional/ppc/test_74xx.py
-similarity index 100%
-rename from tests/functional/test_ppc_74xx.py
-rename to tests/functional/ppc/test_74xx.py
-diff --git a/tests/functional/test_ppc_amiga.py b/tests/functional/ppc/test_amiga.py
-similarity index 100%
-rename from tests/functional/test_ppc_amiga.py
-rename to tests/functional/ppc/test_amiga.py
-diff --git a/tests/functional/test_ppc_bamboo.py b/tests/functional/ppc/test_bamboo.py
-similarity index 100%
-rename from tests/functional/test_ppc_bamboo.py
-rename to tests/functional/ppc/test_bamboo.py
-diff --git a/tests/functional/test_ppc_mac.py b/tests/functional/ppc/test_mac.py
-similarity index 100%
-rename from tests/functional/test_ppc_mac.py
-rename to tests/functional/ppc/test_mac.py
-diff --git a/tests/functional/test_ppc_migration.py b/tests/functional/ppc/test_migration.py
-similarity index 100%
-rename from tests/functional/test_ppc_migration.py
-rename to tests/functional/ppc/test_migration.py
-diff --git a/tests/functional/test_ppc_mpc8544ds.py b/tests/functional/ppc/test_mpc8544ds.py
-similarity index 100%
-rename from tests/functional/test_ppc_mpc8544ds.py
-rename to tests/functional/ppc/test_mpc8544ds.py
-diff --git a/tests/functional/test_ppc_replay.py b/tests/functional/ppc/test_replay.py
-similarity index 100%
-rename from tests/functional/test_ppc_replay.py
-rename to tests/functional/ppc/test_replay.py
-diff --git a/tests/functional/test_ppc_sam460ex.py b/tests/functional/ppc/test_sam460ex.py
-old mode 100644
-new mode 100755
-similarity index 100%
-rename from tests/functional/test_ppc_sam460ex.py
-rename to tests/functional/ppc/test_sam460ex.py
-diff --git a/tests/functional/test_ppc_tuxrun.py b/tests/functional/ppc/test_tuxrun.py
-similarity index 100%
-rename from tests/functional/test_ppc_tuxrun.py
-rename to tests/functional/ppc/test_tuxrun.py
-diff --git a/tests/functional/test_ppc_virtex_ml507.py b/tests/functional/ppc/test_virtex_ml507.py
-similarity index 100%
-rename from tests/functional/test_ppc_virtex_ml507.py
-rename to tests/functional/ppc/test_virtex_ml507.py
-diff --git a/tests/functional/ppc64/meson.build b/tests/functional/ppc64/meson.build
-new file mode 100644
-index 00000000000..842fe0fc715
+rename from tests/functional/test_riscv32_migration.py
+rename to tests/functional/riscv32/test_migration.py
+diff --git a/tests/functional/riscv32/test_opensbi.py b/tests/functional/riscv32/test_opensbi.py
+new file mode 100755
+index 00000000000..d1ac706f0bb
 --- /dev/null
-+++ b/tests/functional/ppc64/meson.build
-@@ -0,0 +1,25 @@
++++ b/tests/functional/riscv32/test_opensbi.py
+@@ -0,0 +1,10 @@
++#!/usr/bin/env python3
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# Reuse the 64-bit OpenSBI test for RISC-V 32-bit machines
++
++from riscv64.test_opensbi import RiscvOpenSBI
++
++if __name__ == '__main__':
++    RiscvOpenSBI.main()
+diff --git a/tests/functional/test_riscv32_tuxrun.py b/tests/functional/riscv32/test_tuxrun.py
+similarity index 100%
+rename from tests/functional/test_riscv32_tuxrun.py
+rename to tests/functional/riscv32/test_tuxrun.py
+diff --git a/tests/functional/riscv64/meson.build b/tests/functional/riscv64/meson.build
+new file mode 100644
+index 00000000000..2bdd6b408e8
+--- /dev/null
++++ b/tests/functional/riscv64/meson.build
+@@ -0,0 +1,14 @@
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+test_ppc64_timeouts = {
-+  'hv' : 1000,
-+  'mac99' : 120,
-+  'powernv' : 480,
-+  'pseries' : 480,
-+  'replay' : 210,
-+  'tuxrun' : 420,
++test_riscv64_timeouts = {
++  'tuxrun' : 120,
 +}
 +
-+tests_ppc64_system_quick = [
++tests_riscv64_system_quick = [
 +  'migration',
++  'opensbi',
 +]
 +
-+tests_ppc64_system_thorough = [
-+  'e500',
-+  'hv',
-+  'mac99',
-+  'powernv',
-+  'pseries',
-+  'replay',
-+  'reverse_debug',
++tests_riscv64_system_thorough = [
 +  'tuxrun',
 +]
-diff --git a/tests/functional/test_ppc64_e500.py b/tests/functional/ppc64/test_e500.py
+diff --git a/tests/functional/test_riscv64_migration.py b/tests/functional/riscv64/test_migration.py
 similarity index 100%
-rename from tests/functional/test_ppc64_e500.py
-rename to tests/functional/ppc64/test_e500.py
-diff --git a/tests/functional/test_ppc64_hv.py b/tests/functional/ppc64/test_hv.py
+rename from tests/functional/test_riscv64_migration.py
+rename to tests/functional/riscv64/test_migration.py
+diff --git a/tests/functional/test_riscv_opensbi.py b/tests/functional/riscv64/test_opensbi.py
 similarity index 100%
-rename from tests/functional/test_ppc64_hv.py
-rename to tests/functional/ppc64/test_hv.py
-diff --git a/tests/functional/test_ppc64_mac99.py b/tests/functional/ppc64/test_mac99.py
+rename from tests/functional/test_riscv_opensbi.py
+rename to tests/functional/riscv64/test_opensbi.py
+diff --git a/tests/functional/test_riscv64_tuxrun.py b/tests/functional/riscv64/test_tuxrun.py
 similarity index 100%
-rename from tests/functional/test_ppc64_mac99.py
-rename to tests/functional/ppc64/test_mac99.py
-diff --git a/tests/functional/test_ppc64_migration.py b/tests/functional/ppc64/test_migration.py
-similarity index 100%
-rename from tests/functional/test_ppc64_migration.py
-rename to tests/functional/ppc64/test_migration.py
-diff --git a/tests/functional/test_ppc64_powernv.py b/tests/functional/ppc64/test_powernv.py
-similarity index 100%
-rename from tests/functional/test_ppc64_powernv.py
-rename to tests/functional/ppc64/test_powernv.py
-diff --git a/tests/functional/test_ppc64_pseries.py b/tests/functional/ppc64/test_pseries.py
-similarity index 100%
-rename from tests/functional/test_ppc64_pseries.py
-rename to tests/functional/ppc64/test_pseries.py
-diff --git a/tests/functional/test_ppc64_replay.py b/tests/functional/ppc64/test_replay.py
-similarity index 100%
-rename from tests/functional/test_ppc64_replay.py
-rename to tests/functional/ppc64/test_replay.py
-diff --git a/tests/functional/test_ppc64_reverse_debug.py b/tests/functional/ppc64/test_reverse_debug.py
-similarity index 100%
-rename from tests/functional/test_ppc64_reverse_debug.py
-rename to tests/functional/ppc64/test_reverse_debug.py
-diff --git a/tests/functional/test_ppc64_tuxrun.py b/tests/functional/ppc64/test_tuxrun.py
-similarity index 100%
-rename from tests/functional/test_ppc64_tuxrun.py
-rename to tests/functional/ppc64/test_tuxrun.py
+rename from tests/functional/test_riscv64_tuxrun.py
+rename to tests/functional/riscv64/test_tuxrun.py
 -- 
 2.50.1
 
