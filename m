@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A32BB18417
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B78B18419
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:42:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhqnb-0007JH-0r; Fri, 01 Aug 2025 10:31:55 -0400
+	id 1uhqpV-0001zS-Ja; Fri, 01 Aug 2025 10:33:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhO-0005RQ-I4
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhP-0005RZ-Fx
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhK-0002iA-V1
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:29 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhM-0002j3-HR
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754058325;
+ s=mimecast20190719; t=1754058326;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=skaRuHczCVKfOwEwu0xPYWoe46Si7UXt2McCcCPTErQ=;
- b=bQFgdzAaQgxTa27eY1c3p5ekSoZiQNRLD5niHzYrsfpbkzVUkGQMMSFqD1zIqLRNlToJZs
- CxCSHjk1X6vpJecq7Gm80WXy+pOmiQyRyqP+7/rzDwRBW+1SattjBcWU2CObDcXipVFJ/2
- OJgcuZbKbf0XjrT8m7UFQF9VUL6pyy4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=AigbT03t6Dx2Zi4WTEKRTIlUrva/CR4VU0he0l7c2Hw=;
+ b=ANpNuXGEraHzHJsL/mzk0EYT/7QA0Kvm5OcAY63QmXAnSaKo9T8kkmtoby7ShjLYSoHitg
+ TLqz6MKIp22BAIucFsBmOMmBC3qKv1JeyEJgMc7HLRX0FKxhwBNqIrIsFD1+v+83zFaIwA
+ 8GmbbIkPPUTwejfd6xN33N5h1BgfRi8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-367-tu4jVcxYPf6HC6GjGpujYw-1; Fri, 01 Aug 2025 10:25:24 -0400
-X-MC-Unique: tu4jVcxYPf6HC6GjGpujYw-1
-X-Mimecast-MFC-AGG-ID: tu4jVcxYPf6HC6GjGpujYw_1754058323
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4560a30a793so3202195e9.3
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:23 -0700 (PDT)
+ us-mta-672-pMLr5UUhNdK5jMRewsX2rQ-1; Fri, 01 Aug 2025 10:25:25 -0400
+X-MC-Unique: pMLr5UUhNdK5jMRewsX2rQ-1
+X-Mimecast-MFC-AGG-ID: pMLr5UUhNdK5jMRewsX2rQ_1754058325
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3b78c983014so127258f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754058322; x=1754663122;
+ d=1e100.net; s=20230601; t=1754058324; x=1754663124;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=skaRuHczCVKfOwEwu0xPYWoe46Si7UXt2McCcCPTErQ=;
- b=hZzci7Vm2d8r/Z+Xz1X4PFp2ekCHJIbaMQ9RcjFqQTdKsGzVuzIA5+2hxL53V6w8om
- phreh3Vrk1eqpass6u7maGiCeP3uX1goZAq+I/7hDFrjohgsd1dijLzXPbgFs94a9q5U
- 3oudDzIBgv1D02SxmlHT2DowResP3ShgZjagaDVnTnDPWYshyCGE4m4yYZkyaqXY5HDX
- O5l9tUP3gc09I/7zBmXhhUdYKvIfsE7ocEM2kM/HaMOd/F2O4yizGRJ/inxBPuQXdHHF
- pcp+zPBkzcDJcpRApAeGFrptUKpCRCpbW6f1OkAI0iefJ5nHQkwXl2UWETixPp5LBQQf
- GBXQ==
-X-Gm-Message-State: AOJu0YzPm9FU40WhlEVAOK0TWNlK9+l4qRZgftn9OaPxXGlZAhWKFrtv
- Zryy9+cnzeVU93ZcE7/ewstIhjYU9uPksM2PcCgNPWbO9p8zWAg2rrQUpZfmxxByEmfoaQcOEKv
- NLBMxtFkfh9Uxwh3gQr+/4LxkCBUOHPflgMr50x2DHFHbMsMOdTzLobfMtBRpeZEAgvdeGwVGax
- NX16VguZ7FVsyrSZYyKN23Pp4K010jEOD0vw==
-X-Gm-Gg: ASbGnct5LWJm1FFJmwXFiYFy1ZgSGlYJ990vEfD/cgthYCSo6B/FEMihgnVxTJqycEF
- 7cDq3A1LThmVdFUkiB/qlCKKTjzUH4KRvweK37KjavjcK03+NGDrWLyRrX5Irr2ffUKpNkW1M0/
- +/5W+Ah/wG+LDt/f5UL0qBj3hubX5MYZ4FD6LUR3TdPyoKXXkm2ey1JZ7QXbUwJ4t22GDeUAI0k
- 9ZGJcPMob6dVS+9GUrMulPMH6kU0m5BB132kXNs2oHQhAXMsJ5OajaxAJlRlfAEF9DfdVLJp4A8
- U46Qn6TO714QCoZ50rwT8hrAUhpABDHn
-X-Received: by 2002:a05:600c:1994:b0:445:1984:247d with SMTP id
- 5b1f17b1804b1-45892b9530amr98227555e9.7.1754058322244; 
- Fri, 01 Aug 2025 07:25:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIGEyaBIvTZG0korKrC2t8k4QdI9uBOjsgVFbrFH20LswoJgbVsAqIWBcfeMfqwjaEa7o5cg==
-X-Received: by 2002:a05:600c:1994:b0:445:1984:247d with SMTP id
- 5b1f17b1804b1-45892b9530amr98227225e9.7.1754058321647; 
- Fri, 01 Aug 2025 07:25:21 -0700 (PDT)
+ bh=AigbT03t6Dx2Zi4WTEKRTIlUrva/CR4VU0he0l7c2Hw=;
+ b=aTuCx2em8+a7OBeCqpatDA+ADbo2xlipwyWCjpD30D/3DSmm0rpADixhFILA9LgfjF
+ JAYFrfa1VGC9Y38iACpszNAH6o/Rqy8Jr6+sDwCBtS2/wmNdCnRtAAzrZLCTJL9wwlQu
+ xya2W7fV945iOZzmH4O2h+ECSDFebmtwjz721j166KdH4XUyTX5/VYxMHh29bWlxeXuK
+ NksgB6mUMzVH8ITbzcwhKOk9pp5hjQuGgv1e1+qppdb72C0KUwK1jUPgrj+h9iYxC6qT
+ NqB6hEqVPKLkHEghzwPDNqlJH6F+FL3hnl75bldkLSmr8dVKnHk2H6ZoRk87bCVCSwGM
+ 9fJw==
+X-Gm-Message-State: AOJu0YyBSrISqAM2onqXugcjXgtq3dLFz6en9RSHDifcdWFOitbzrjy4
+ /vW1gCQcityezujLOfPnSMF0nlqFbTuK4JPZoYQGCkt1pJEFrjDWHy3XBiNv9zHkvzkMHbKi2sv
+ RCppH/9JYivg926Dv9aKYsd0FfeRb92lHIvNTHL0ulQYXh3xtdUKuVROTQ0CMuOOlhnuvcXbt+O
+ CvMTeWOYe1mMvp2KVPeYMvUAAtwN3Gm6Nbig==
+X-Gm-Gg: ASbGncv8s9H9sC8dGm/xTLy0w/961NAb+mduPljAAjy/2FEu+qRxc3OzFOGeBLI7NZf
+ skAv2+FJh/D3GUWGFQpThAeZNcYc5W3l8LhRK2012SBo3gVSR6wRuhWDmrbiOvnzJRXya9Ku3Ap
+ M23VYg2tgC5/DLO9tH7uoIn7+lVhL4J+F7NfVa5+5XnU5y0Tp4u7NrP8FbpU8IEl249C5COy2Bn
+ pc2HsckVuEJ5v3p6uB7rQPlNNMCGfE6mfqaOBQDntUfy+zRmefJKoH5HK522LamYCRKYo1nCZYW
+ E9RghA46bLs7l0wQzbqOQdz8Y7+nX4ZU
+X-Received: by 2002:a05:6000:26ca:b0:3b7:7c18:c72d with SMTP id
+ ffacd0b85a97d-3b794fc1a99mr9201036f8f.4.1754058324296; 
+ Fri, 01 Aug 2025 07:25:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHffW4HPsaBKkwpjr+ZDkjzYe2KdD7t2nb4I6qbz0fn1/eJQ3uKpuOIvJ0eTdJ9Nczgdw799A==
+X-Received: by 2002:a05:6000:26ca:b0:3b7:7c18:c72d with SMTP id
+ ffacd0b85a97d-3b794fc1a99mr9201007f8f.4.1754058323862; 
+ Fri, 01 Aug 2025 07:25:23 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-458953e9b1csm102063335e9.22.2025.08.01.07.25.20
+ ffacd0b85a97d-3b79c3ad803sm6017813f8f.6.2025.08.01.07.25.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 07:25:21 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:25:19 -0400
+ Fri, 01 Aug 2025 07:25:23 -0700 (PDT)
+Date: Fri, 1 Aug 2025 10:25:21 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Sairaj Kodilkar <sarunkod@amd.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Sairaj Kodilkar <sarunkod@amd.com>, Ethan MILON <ethan.milon@eviden.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 08/17] hw/i386/amd_iommu: Move IOAPIC memory region
- initialization to the end
-Message-ID: <a7842d94067cddc80b47ac42fb6e49e2fc02a3c5.1754058276.git.mst@redhat.com>
+Subject: [PULL 09/17] hw/i386/amd_iommu: Fix amdvi_write*()
+Message-ID: <47d3b32d6fb1c6ec8afb78d12d2420dbbb4c3499.1754058276.git.mst@redhat.com>
 References: <cover.1754058276.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -86,7 +85,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1754058276.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -113,48 +112,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sairaj Kodilkar <sarunkod@amd.com>
 
-Setting up IOAPIC memory region requires mr_sys and mr_ir. Currently
-these two memory regions are setup after the initializing the IOAPIC
-memory region, which cause `amdvi_host_dma_iommu()` to use unitialized
-mr_sys and mr_ir.
+amdvi_write*() function do not preserve the older values of W1C bits in
+the MMIO register. This results in all W1C bits set to 0, when guest
+tries to reset a single bit by writing 1 to it. Fix this by preserving
+W1C bits in the old value of the MMIO register.
 
-Move the IOAPIC memory region initialization to the end in order to use
-the mr_sys and mr_ir regions after they are fully initialized.
-
-Fixes: 577c470f4326 ("x86_iommu/amd: Prepare for interrupt remap support")
+Fixes: d29a09ca68428 ("hw/i386: Introduce AMD IOMMU")
+Suggested-by: Ethan MILON <ethan.milon@eviden.com>
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250801060507.3382-4-sarunkod@amd.com>
+Message-Id: <20250801060507.3382-5-sarunkod@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/i386/amd_iommu.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 037e78056d..7308611bf1 100644
+index 7308611bf1..c9c32cf7b0 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -1698,9 +1698,6 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-     s->iotlb = g_hash_table_new_full(amdvi_uint64_hash,
-                                      amdvi_uint64_equal, g_free, g_free);
- 
--    /* Pseudo address space under root PCI bus. */
--    x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
--
-     /* set up MMIO */
-     memory_region_init_io(&s->mr_mmio, OBJECT(s), &mmio_mem_ops, s,
-                           "amdvi-mmio", AMDVI_MMIO_SIZE);
-@@ -1723,6 +1720,9 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion_overlap(&s->mr_sys, AMDVI_INT_ADDR_FIRST,
-                                         &s->mr_ir, 1);
- 
-+    /* Pseudo address space under root PCI bus. */
-+    x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
+@@ -123,8 +123,13 @@ static void amdvi_writew(AMDVIState *s, hwaddr addr, uint16_t val)
+     uint16_t romask = lduw_le_p(&s->romask[addr]);
+     uint16_t w1cmask = lduw_le_p(&s->w1cmask[addr]);
+     uint16_t oldval = lduw_le_p(&s->mmior[addr]);
 +
-     if (kvm_enabled() && x86ms->apic_id_limit > 255 && !s->xtsup) {
-         error_report("AMD IOMMU with x2APIC configuration requires xtsup=on");
-         exit(EXIT_FAILURE);
++    uint16_t oldval_preserved = oldval & (romask | w1cmask);
++    uint16_t newval_write = val & ~romask;
++    uint16_t newval_w1c_set = val & w1cmask;
++
+     stw_le_p(&s->mmior[addr],
+-            ((oldval & romask) | (val & ~romask)) & ~(val & w1cmask));
++             (oldval_preserved | newval_write) & ~newval_w1c_set);
+ }
+ 
+ static void amdvi_writel(AMDVIState *s, hwaddr addr, uint32_t val)
+@@ -132,8 +137,13 @@ static void amdvi_writel(AMDVIState *s, hwaddr addr, uint32_t val)
+     uint32_t romask = ldl_le_p(&s->romask[addr]);
+     uint32_t w1cmask = ldl_le_p(&s->w1cmask[addr]);
+     uint32_t oldval = ldl_le_p(&s->mmior[addr]);
++
++    uint32_t oldval_preserved = oldval & (romask | w1cmask);
++    uint32_t newval_write = val & ~romask;
++    uint32_t newval_w1c_set = val & w1cmask;
++
+     stl_le_p(&s->mmior[addr],
+-            ((oldval & romask) | (val & ~romask)) & ~(val & w1cmask));
++             (oldval_preserved | newval_write) & ~newval_w1c_set);
+ }
+ 
+ static void amdvi_writeq(AMDVIState *s, hwaddr addr, uint64_t val)
+@@ -141,8 +151,13 @@ static void amdvi_writeq(AMDVIState *s, hwaddr addr, uint64_t val)
+     uint64_t romask = ldq_le_p(&s->romask[addr]);
+     uint64_t w1cmask = ldq_le_p(&s->w1cmask[addr]);
+     uint64_t oldval = ldq_le_p(&s->mmior[addr]);
++
++    uint64_t oldval_preserved = oldval & (romask | w1cmask);
++    uint64_t newval_write = val & ~romask;
++    uint64_t newval_w1c_set = val & w1cmask;
++
+     stq_le_p(&s->mmior[addr],
+-            ((oldval & romask) | (val & ~romask)) & ~(val & w1cmask));
++             (oldval_preserved | newval_write) & ~newval_w1c_set);
+ }
+ 
+ /* OR a 64-bit register with a 64-bit value */
 -- 
 MST
 
