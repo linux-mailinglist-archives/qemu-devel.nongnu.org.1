@@ -2,95 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AC2B17AE0
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 03:38:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F35F8B17AE1
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 03:38:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhehu-0006GP-0z; Thu, 31 Jul 2025 21:37:14 -0400
+	id 1uheiB-0006dp-Q7; Thu, 31 Jul 2025 21:37:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uheMz-0000cv-Dq
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 21:15:38 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uheWk-00073d-MM
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 21:25:43 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uheMv-0004XB-4Q
- for qemu-devel@nongnu.org; Thu, 31 Jul 2025 21:15:37 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-769a21bd4d5so1053852b3a.0
- for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 18:15:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uheWj-0006LN-6K
+ for qemu-devel@nongnu.org; Thu, 31 Jul 2025 21:25:42 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-31f3fe66ebaso2239390a91.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Jul 2025 18:25:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754010929; x=1754615729; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
+ d=linaro.org; s=google; t=1754011539; x=1754616339; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=dh04ml9rlrb9ljaYwQCAx0luLtw8VFRFFkhR8CbzSaA=;
- b=jVfBIhciDcCqyyUCdrp0znIKzCtHdYj8GqmidQsSfZlcLY+5w+Vw39+vJX8bD5Hi/k
- Ab4R7kBtA7iAHlF8NMJ284QPm1Nk6h2eV4BPpMz9T89gjpYvy/1aHH9zQUlJcsfheb1C
- lquSxDi6AobeWcM1pvCeySKCFqmFlHWRJ9tzz01LaI9QHoM1+EEknyA1zxkF6U8QQ4Tz
- KPUog0Tnuzz4ZVo4y8d93jI0YCHoZ8sU+P19CyPNMbcjFDPJfII9SegZaq0kKn+niOL5
- l1K7lLqVNZ18TvV+U6RK2I+8dY793PF0XBSNMFRA+bJCM2O4Tr6t2qiOVvmTSsbb8jvM
- DulQ==
+ bh=4PkS6NJWZlEvIkgId2xY2csCYbG80mFPQANLk+r2zgI=;
+ b=ziJpfYl9b6qIfVGgal4+6m+YfJU1nZAz/7F3qvWPQC1qgC0pOK/qLxKt8tck6dBnv9
+ ZKl6LY+db5im8IZcpkgXxtG5Lr2wBkSIXkOrOG5t7lqEKhp01get8kppNqheLiqBqROL
+ EQmUZw7swh0E/WBFBIyFlxD79Yg8SoXEiiZni1yuiKm6T1hxllSeIAu/NaD6kzO0TQuh
+ A+06vOtRo9fiQpqzQOGgXsGYogN1LNako0CGImegG2oQ9wA1PMzG+NanIHaG/Y/wLc1+
+ 7DeUYueoXtOIyhRLyhokGmfJE6KEJ/sbkZ5XwAEFmz938xcsTLr3B7WkMcgVn9Dlcl2C
+ wtlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754010929; x=1754615729;
- h=content-transfer-encoding:in-reply-to:from:content-language
+ d=1e100.net; s=20230601; t=1754011539; x=1754616339;
+ h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dh04ml9rlrb9ljaYwQCAx0luLtw8VFRFFkhR8CbzSaA=;
- b=mQOxdWXN97591S8M+9LpGTI0zU5JWAeS7ABxYlmqoASvTtyqo2y6RdCyvgy7zjGDf0
- 0sFubmDiK+mJOLb+YCQsF//jgXo/l18OUAukgsLmKGkVuRzzTfxG5/XiYVn2pnEGMITH
- 9HJ0dfxUZPur1uUip9Xxav0Fb1eyy6q2y0wEX/LuWgioFGkbjg/H74HlekLSGa59TfQh
- hnLe+nRx/IhXj6gBX9K9sRAQ3MxBuUrzALwmJqgfBH/cMMmtyuWdTZBcqfREFivhYmTs
- 0qbmIaFIT9BppOGAziOVLKNCexZ3zSODwUjc8tl8p1YPZQ1FkH0d5MvzwvH5vhjLuVdU
- GFsg==
+ bh=4PkS6NJWZlEvIkgId2xY2csCYbG80mFPQANLk+r2zgI=;
+ b=ZkrZuofMgQePjqs0VH3oKkpzeA9Av7B/gY4l3QAv+w3in/TTTM7f/SFBaByLHOyUC3
+ rtEcYXl8lDUtF+mWV/ZjFzQF+AFUAgDEbrJ2GtFMLxAR6zvXzmAwul2o9x0tqoPalXUX
+ tm1efPOFw1eqoLYS5C0c+LCRTKFMSH1j4Sg7GX1bT70nAh1cZk6CmLJAD0WvgpvhXD45
+ azRlZWH/MXH64Mxe0qATrQAvy3D7JRA9oZOeJMW69MDg41gh0UWNCPI4BuCNEtsMzDr/
+ tCaw10gompWvBSlm+KPJGsT96T8n0dQS+Y9TQKGM2cvNFUEfLspdwVXvCBMFqu8BXq5r
+ jn2A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVHX8cTwXiRf3TRAxNMoC4dcIZOW0D+dWJrhmWXcBOIZtZEusBg5T+efKCQ7A5gTwnrS+NM9ZAJ8EH2@nongnu.org
-X-Gm-Message-State: AOJu0YxasB0U8yGi4WoetrzCSziPapD0H2ly8zNj23vqDwDPMf/j/CC2
- KiR3zddOwTqXhw3LI/o18MmX35732zD4WsoHTucFq7XzhYEuC1ba6N4o6DKN/rvEGH0=
-X-Gm-Gg: ASbGncvoKmPaMQiy/GxXyaIG7fN4OueoaKGHJlhhKicoHIqoJCj7v8Gu7oCLdw2yJ4T
- h9O4XJEMZMnZDCVCreUii7KVrwjlynO61CJ9OsxgdXhN/Wibh2UvSvHnA4JhJ5GsZlVGMAwm/N4
- Ih9w8wsfyu+U9d5XH3OOK7ya2tv39rbB1dslsntZ9ssMEHLJ3NJJqwFzE/r2jmHisikYg25X0Ae
- wDIw7EcAaf1MWqgnYhBKaoiZY4ScSStuVnHxWjMhXC1x/rECbPNk1Ff27Hu1Fcc1pDFr/T3d2zc
- 6m2bfZyPm8WFoGGlA8UZES0Mp7Ddjr1S+1srgDW6q8ci9ep7vZ7CustlkYDMhMOoOGYcJpjvC5M
- PDwbkN4s6mjGO1gOIYzAernR6pH49+5g/t+QoP8OOkfkE4g==
-X-Google-Smtp-Source: AGHT+IFBXpHhrIgSeI/1Ay/Q1R13VFRqiM34av93T3lmZ+mfQjL+m4mfyYOoX0TXUusLdsLuYYZgzQ==
-X-Received: by 2002:a05:6a20:431a:b0:220:af86:7e01 with SMTP id
- adf61e73a8af0-23dc0ed6b8emr16076923637.29.1754010929239; 
- Thu, 31 Jul 2025 18:15:29 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
+ AJvYcCUT1LE+P+STveM4LDhMsZorP9kCjTg7iGCPmvGiZAspM8gPc5EQj1QbaFbwGJlp0UMWvqx1IiKC4PUV@nongnu.org
+X-Gm-Message-State: AOJu0Yy8ZnZXN7pEa+j7kUNK8I1I2Z0vzH1ZkE9nowV1LHcEYVk7zDld
+ X8sAzSQkaHOZFDK38lZQtbEx1OwcAviN4nyOWs9MFYjknXgpSrSs2qtReW9+HcogrYk=
+X-Gm-Gg: ASbGncvj8G+3+axCTg2ap+OgKBRr/31sC0wiV9zamCDJ/2laABSN/2NmvruWPMFPPLn
+ b/xHq4nj5iHPs1GoabnDJc8wPIajLfUrMZm87QlPnoNuJQPxlTHh91EJi28UJ6IsckYj0xgX6s3
+ wpRIHpCSVSHldcu8tW6O6+zIaKlOKvUhw5wVcskOmbftK+6GsmYntIKz+j7e6/Ik/o8Da8z4W1y
+ 1b5c3NhlTJEv+TGygBrQ/tDapXLq3P7XJ1SYAQIESxc2aMeII1wl0zTe4hB5JweOFLu9AKVBQ0A
+ UgnwP4QkKPk5sDDMWm74Jk0cZwGr/hQrrvZpkcTGkVR4ArU9+3yaI0qo29jGDKECJgz/x0fnvRl
+ dzmBT/r7x/vO5YMOqViJ0dx1fsa2iFjSwgwi5peaO
+X-Google-Smtp-Source: AGHT+IEqzMwfSW69NBLAK9pMQKegBcPHAYyFTfJHUaz1tnLGrxUK1T8HSKLoxzoj/zLV9lfDq+eWJQ==
+X-Received: by 2002:a17:90b:4c0e:b0:31e:b772:dfcb with SMTP id
+ 98e67ed59e1d1-320da604471mr6543903a91.10.1754011539505; 
+ Thu, 31 Jul 2025 18:25:39 -0700 (PDT)
+Received: from [192.168.4.112] ([180.233.125.160])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bccfcf5f7sm2717118b3a.88.2025.07.31.18.15.28
+ 98e67ed59e1d1-3207eba6f4csm3128282a91.5.2025.07.31.18.25.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Jul 2025 18:15:28 -0700 (PDT)
-Message-ID: <8af5e691-da19-4141-8874-51ca685288ac@linaro.org>
-Date: Thu, 31 Jul 2025 18:15:27 -0700
+ Thu, 31 Jul 2025 18:25:38 -0700 (PDT)
+Message-ID: <8658920e-34ff-4aba-b412-92d06b29fe5b@linaro.org>
+Date: Fri, 1 Aug 2025 11:25:31 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/9] WHPX support for Arm
-To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Sunil Muthuswamy <sunilmut@microsoft.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-References: <20250731052753.93255-1-mohamed@unpredictable.fr>
+Subject: Re: [PATCH 08/10] semihosting/arm-compat-semi: replace target_long
+ with int64_t
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Weiwei Li <liwei1518@gmail.com>, philmd@linaro.org,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>
+References: <20250730220621.1142496-1-pierrick.bouvier@linaro.org>
+ <20250730220621.1142496-9-pierrick.bouvier@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250731052753.93255-1-mohamed@unpredictable.fr>
+In-Reply-To: <20250730220621.1142496-9-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,101 +109,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Mohamed,
-
-On 7/30/25 10:27 PM, Mohamed Mediouni wrote:
-> This one took way longer for me to publish than I should have.
+On 7/31/25 08:06, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   semihosting/arm-compat-semi.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> There are a number of lingering bugs in this one including u-boot not working.
-> 
-> Interrupt controller save/restore is entirely missing in this RFC, and some other state
-> bits are likely still missing too.
-> 
-> ITS not blocked by default yet, remember to use its=off when testing this series.
-> You might also want the GICv3 + GICv2m support patch as part of the HVF vGIC patch series, which
-> is not duplicated here.
-> 
-> PS: on both this and HVF, interrupt controller initialisation needs to be done early so I ended
-> up with hardcoded addresses. Wonder if the right way to go might be to defer virt and vCPU initialisation
-> until late in the process post-gic_realize...
-> 
-> Other than that, this boots both EDK2 and Linux in SMP, when using devicetree or ACPI.
-> 
+> diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
+> index e3b520631b3..715a22528ab 100644
+> --- a/semihosting/arm-compat-semi.c
+> +++ b/semihosting/arm-compat-semi.c
+> @@ -502,7 +502,7 @@ void do_common_semihosting(CPUState *cs)
+>   
+>       case TARGET_SYS_ISERROR:
+>           GET_ARG(0);
+> -        common_semi_set_ret(cs, (target_long)arg0 < 0);
+> +        common_semi_set_ret(cs, (int64_t)arg0 < 0);
+>           break;
+>   
+>       case TARGET_SYS_ISTTY:
 
-thanks for posting this, that's an exciting series!
+Here we have a semantic change.  For 32-bit, we used get_user_u32, so this will always 
+return false.
 
-I applied it on top of your other series 
-(20250728134114.77545-1-mohamed@unpredictable.fr) and solved the conflicts.
-However, it would really help if you could push that exact branch 
-somewhere, so people can easily pull it and try.
-I'm fine if you want to duplicate gic patches in this series as well.
 
-I tried to direct boot a kernel (6.15 defconfig) and ran into this error 
-[1]:
-$ ./build/qemu-system-aarch64.exe -M virt,its=off -cpu cortex-a76 -m 2G 
--nographic -accel whpx -kernel out/Image.gz out/host.ext4
-
-Could you please share your exact command line?
-Does it work with direct kernel boot also?
-
-Kind Regards,
-Pierrick
-
-[1] Error when booting:
-[    1.381525] Internal error: Oops: 0000000096000002 [#1]  SMP
-[    1.458060] Modules linked in:
-[    1.461172] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 
-6.15.0-00001-g7797e43a2520 #1 PREEMPT
-[    1.470502] Hardware name: linux,dummy-virt (DT)
-[    1.475102] pstate: 204000c5 (nzCv daIF +PAN -UAO -TCO -DIT -SSBS 
-BTYPE=--)
-[    1.482023] pc : pci_generic_config_read+0x38/0xb8
-[    1.486970] lr : pci_generic_config_read+0x24/0xb8
-[    1.491734] sp : ffff80008000b940
-[    1.495079] x29: ffff80008000b940 x28: 0000000000000000 x27: 
-ffffbb8fe13f00ec
-[    1.502473] x26: ffffbb8fe14f9060 x25: ffffbb8fe14f9078 x24: 
-ffffbb8fe1c99990
-[    1.509564] x23: 0000000000000000 x22: ffff80008000b9f4 x21: 
-ffff574c83b7c000
-[    1.516636] x20: ffff80008000b964 x19: 0000000000000004 x18: 
-0000000000000006
-[    1.523722] x17: 6666666666666666 x16: 6678302d30303030 x15: 
-0720072007200720
-[    1.531583] x14: 0720072007200720 x13: 0720072007200720 x12: 
-ffffbb8fe1736838
-[    1.539094] x11: 0000000000000058 x10: 0000000000000018 x9 : 
-ffffbb8fe1736838
-[    1.546212] x8 : 00000000000000c5 x7 : ffffbb8fe187ff40 x6 : 
-00000000000000ff
-[    1.553370] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 
-ffff800090000000
-[    1.560676] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 
-ffff800090000000
-[    1.567890] Call trace:
-[    1.570509]  pci_generic_config_read+0x38/0xb8 (P)
-[    1.575362]  pci_bus_read_config_dword+0x80/0xe4
-[    1.580231]  pci_bus_generic_read_dev_vendor_id+0x30/0x164
-[    1.586164]  pci_scan_single_device+0x118/0x18c
-[    1.590912]  pci_scan_slot+0x58/0x214
-[    1.594782]  pci_scan_child_bus_extend+0x40/0x234
-[    1.599606]  pci_scan_root_bus_bridge+0x64/0xd8
-[    1.604194]  pci_host_probe+0x30/0xec
-[    1.607972]  pci_host_common_probe+0x128/0x1c0
-[    1.612430]  platform_probe+0x68/0xdc
-[    1.616220]  really_probe+0xbc/0x2c0
-[    1.619814]  __driver_probe_device+0x78/0x120
-[    1.624435]  driver_probe_device+0x3c/0x154
-[    1.628620]  __driver_attach+0x90/0x1a0
-[    1.632509]  bus_for_each_dev+0x7c/0xdc
-[    1.636449]  driver_attach+0x24/0x30
-[    1.640067]  bus_add_driver+0xe4/0x208
-[    1.643774]  driver_register+0x68/0x130
-[    1.647667]  __platform_driver_register+0x24/0x30
-[    1.652704]  gen_pci_driver_init+0x1c/0x28
-[    1.657181]  do_one_initcall+0x60/0x1d4
-[    1.661172]  kernel_init_freeable+0x210/0x274
-[    1.665749]  kernel_init+0x20/0x140
-[    1.669341]  ret_from_fork+0x10/0x20
-[    1.673034] Code: 7100067f 540002c0 71000a7f 54000180 (b9400000)
+r~
 
