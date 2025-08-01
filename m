@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCDFB18412
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E68B183F7
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:36:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhqpz-0003b4-FK; Fri, 01 Aug 2025 10:34:23 -0400
+	id 1uhqq4-0004Mw-7v; Fri, 01 Aug 2025 10:34:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhX-0005ah-3J
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhY-0005ds-Sr
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhV-0002pB-DJ
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:38 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhX-0002q4-DJ
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754058336;
+ s=mimecast20190719; t=1754058338;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=IL9+A2pIj1svEtoSCipjyGY+zemWuaFe+SiKFMe1fHI=;
- b=QZ1MrVDcELObq4s+/kTgZoQBtTy1P6mVMcBjuLyz9xuhN4GryatX8z3nAukDtKcFCtymwE
- nmeTF3yHGzQqB7QCpa6BhOpoUXd0AwkgLzSCBqb7nhJgyjQ9mqwNN2zrxK4CfK+YqNoRe/
- Nc0NOcmp6DsgOh1c+mE+Bie1smAOBUc=
+ bh=Rt7GnWAbSGWYSqFzaw9x7Xx2rUyY6tFH8mQrAe3XeS0=;
+ b=gRYhPi8/BguUXFV6KuGEZEO3A8r6RmyN7DBQ+3adyHvhNDXVblsegjRIvLNA3CZRQEZpCg
+ WgalzjddXbkezYuF4GISqwbb5btmGm1ExlkKTUqemD5XSJmk0AiMIf930GtU4r4XQvJDJ5
+ LVYbSn5B3MY+2YFWJkurwn6yC2HnWCU=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-44-mO4hzbMLPdKttM8DZIMqog-1; Fri, 01 Aug 2025 10:25:34 -0400
-X-MC-Unique: mO4hzbMLPdKttM8DZIMqog-1
-X-Mimecast-MFC-AGG-ID: mO4hzbMLPdKttM8DZIMqog_1754058333
+ us-mta-515-icYRlWGiMTGYOjKPTGDYZw-1; Fri, 01 Aug 2025 10:25:36 -0400
+X-MC-Unique: icYRlWGiMTGYOjKPTGDYZw-1
+X-Mimecast-MFC-AGG-ID: icYRlWGiMTGYOjKPTGDYZw_1754058336
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-458a533c069so6680795e9.0
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:34 -0700 (PDT)
+ 5b1f17b1804b1-45626532e27so11965445e9.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754058333; x=1754663133;
+ d=1e100.net; s=20230601; t=1754058335; x=1754663135;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IL9+A2pIj1svEtoSCipjyGY+zemWuaFe+SiKFMe1fHI=;
- b=wjL5aI2go3BxMo7AgPlS2Nlp0k98OYqXoomUuRKRSRSZshrFvRLhwgtptF1llJ1L26
- 2c7zzG1BP+XoxkZhmCIf6yqfWSpERXBvkcPQFR4XeHovWqMvG1dPQ9KrPgWdv0bYZzik
- 2XizUsHjhlcHB6GzFT5kXcnwenf0rXLsGU7thl37NHjHKc6F7cUuISBSr2ebs62KinCj
- w/0IadhBMUpKDoFuTIXMCb8Jk8NKQcZ/P/TuAiOQsXGciCs6zpOknTxXjz/Rqe3leG8X
- iIDqe+E2/qTIwVlSfnQw48gMwKQZ/wGHT77it6nTGVC9JAuEbetHk+7ZaJ9XQ9BoFSEz
- A4Pw==
-X-Gm-Message-State: AOJu0YzsSt5AR8LjlQaDT7jntL7S4QTSUDQCqKtoG2/Hxh2RoURse8nX
- LOWWRpfmHEbea9IjIwg/bsGQ8hq0M6VGRn4AKXAplZJnt8pcK+8sGIpuZMWT5GTtNO3mTmSSaXq
- cfId2t2QaMR/2A63zDMvvpt9tbbNX7+bP33lJjMswJC8it7j3wFrqEvzIedfoZuXXHKGcCQnP9H
- 8gYxqsgxUWhgAWsh3qKuJ2kqqVTojr+DhGPg==
-X-Gm-Gg: ASbGncsqmZ0BkI6fcxUC3y+Mvq4QnX9wcRM8kveO8Mfeqnoy6qITmxSQ1fYpR9DWW3t
- ufVU4xSlVK+unxTKUNdzysmJQivDOQ7L/0nJzv3WbkHXAuEhJjZTmQbAZxkBHFZpqQB+KtAL+rn
- N7YwAJPV8T+dmoVpMBMMeRHupMMbOnMTS84vWQgUkC3XZNr44RtZYfvzVdiRmAbyPQVgYurmXX/
- up01p6as615mzynM6wPFjGSinRuXGT45B8GHVXVvOAxa3SlmhFUYkTgbXi7T7+IMq0xiwEB+Tpl
- BqQ/fer4szyHM6pfyG07aDYBtOZxCUjo
-X-Received: by 2002:a05:600c:4ecc:b0:456:e39:ec1a with SMTP id
- 5b1f17b1804b1-45892ba272cmr117865945e9.14.1754058332910; 
- Fri, 01 Aug 2025 07:25:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF65kXBkLk75B+1vmQcp7lIPRgHiznzOTqOqwyfRCF5KbOK+NMbKxZ5d+iDfWzJ1uk0ojI4pg==
-X-Received: by 2002:a05:600c:4ecc:b0:456:e39:ec1a with SMTP id
- 5b1f17b1804b1-45892ba272cmr117865495e9.14.1754058332450; 
- Fri, 01 Aug 2025 07:25:32 -0700 (PDT)
+ bh=Rt7GnWAbSGWYSqFzaw9x7Xx2rUyY6tFH8mQrAe3XeS0=;
+ b=LcYg9iszza8/XAuuL2wXLyTIyNC7Kti06fkS3FQ/ogcv44r8Vnn70a/INcNzhEGKZD
+ OGTBrzgv9EgNNEGgdRfavXhGpSvUUWGvfWCmoUtK0W9mZFZVxuEuxXGtsp7ujq5snyeT
+ zzpnaucrvTYLtmIcee80/bMd+a1c+FscKrCd5h3zkZSCmrtCin9NA7W06SYcZcl/fntP
+ QJxHgZxUlFIxZg2XJL1Jt0k1X7Fmd1ZyZTcMIA0uWJKUgdyjt+klkowPHjjm/G3uvLkl
+ 9xhT6FUxYUto/5ZKxd3F+7trlCYobQgLIiNT1HV+ecUKABlb3XONsPUpf8mRVu5u0swu
+ hEYw==
+X-Gm-Message-State: AOJu0YxINd1HeWIvcnJ0wqpLFfy5vKSZPc4gM04RGquI8AY+cqQy4Rz/
+ F1D6HsqwE027BFtZcx45Z0xUO4wY6cFC8n5djzB/r1sQQN1HwDDw9VODGtFEuLXP92exRU9OAAV
+ uPlbW9YrWsZnQz57VkB/Eko9HxcIkAlPnpdSbbUCVi9nfgDrHi7fAkUNlzhibFcyJCI1d/SvTG3
+ WNopgZoYqp6XOmV5gP+BAACspKN2uvCYTEJw==
+X-Gm-Gg: ASbGnctxPK83ipldKMrKrLQridJJoiz7oTh02Vn8Vi//ce2FG+UfxEhtDMoTKwuRcGm
+ 7/H+fJz5pS6zLnEILpds0TnyYQGdlW/n9F6lweyUJGdX5PaDd/FMvt8B5zdLWVrG01LsQJKfurt
+ unXep4tRAuEJoMTBpVP9WCUzjfUldUreYNt2TackBGTHQlswf9U1I+Zrx6lXOqZisHD30qUHi5W
+ lJPRjxbTR2R5e3b6CsJq5Fb5bi5A0My40bofn+J4Z5JN+63DnHepCZRktKKZ2mP6N9eH4dxhoJp
+ X9cTgkNy4DED8gI8RGx7qzVFMT/NVyHz
+X-Received: by 2002:a05:600c:3d8a:b0:458:6733:fb59 with SMTP id
+ 5b1f17b1804b1-45892bc5895mr101354295e9.19.1754058335326; 
+ Fri, 01 Aug 2025 07:25:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHSi8ANASNa7VNsN4h6CNiy6Tfq9yTG3B7TxBZIkH0u1iAiQ/9J3DXhfiwcBg0L9INCwvboaQ==
+X-Received: by 2002:a05:600c:3d8a:b0:458:6733:fb59 with SMTP id
+ 5b1f17b1804b1-45892bc5895mr101353785e9.19.1754058334505; 
+ Fri, 01 Aug 2025 07:25:34 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c453aeasm6285769f8f.40.2025.08.01.07.25.31
+ 5b1f17b1804b1-458953cfcadsm112316235e9.18.2025.08.01.07.25.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 07:25:32 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:25:30 -0400
+ Fri, 01 Aug 2025 07:25:34 -0700 (PDT)
+Date: Fri, 1 Aug 2025 10:25:32 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -75,9 +75,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 13/17] tests/qtest/bios-tables-test: extend to also check HEST
- table
-Message-ID: <5088651138b94542807414eb841363b16d6aa535.1754058276.git.mst@redhat.com>
+Subject: [PULL 14/17] tests/acpi: virt: update HEST file with its current data
+Message-ID: <cd16f08ad4bda8191e4de986d17184c9da5466cd.1754058276.git.mst@redhat.com>
 References: <cover.1754058276.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -85,7 +84,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1754058276.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -112,30 +111,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Currently, aarch64 can generate a HEST table when loaded with
--machine ras=on. Add support for it.
+Now that HEST table is checked for aarch64, add the current
+firmware file.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <9ce77140500ef68cc939d63952c25579f711ea52.1749741085.git.mchehab+huawei@kernel.org>
+Message-Id: <e3527be1610b2ef6b20ca2efa025de91a1f1e0a6.1749741085.git.mchehab+huawei@kernel.org>
 ---
- tests/qtest/bios-tables-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/bios-tables-test-allowed-diff.h |   1 -
+ tests/data/acpi/aarch64/virt/HEST           | Bin 0 -> 132 bytes
+ 2 files changed, 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index 6aec68decc..e7e6926c81 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -2208,7 +2208,7 @@ static void test_acpi_aarch64_virt_tcg(void)
- 
-     data.smbios_cpu_max_speed = 2900;
-     data.smbios_cpu_curr_speed = 2700;
--    test_acpi_one("-cpu cortex-a57 "
-+    test_acpi_one("-cpu cortex-a57 -machine ras=on "
-                   "-smbios type=4,max-speed=2900,current-speed=2700", &data);
-     free_test_data(&data);
- }
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 39901c58d6..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,2 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/aarch64/virt/HEST",
+diff --git a/tests/data/acpi/aarch64/virt/HEST b/tests/data/acpi/aarch64/virt/HEST
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..4c5d8c5b5da5b3241f93cd0839e94272bf6b1486 100644
+GIT binary patch
+literal 132
+zcmeZp4Gw8xU|?W;<mB({5v<@85#X$#prF9Wz`y`vgJ=-uVqjqS|DS;o#%Ew*U|?_n
+dk++-~7#J8hWI!Yi09DHYRr~Kh1c1x}0RY>66afGL
+
+literal 0
+HcmV?d00001
+
 -- 
 MST
 
