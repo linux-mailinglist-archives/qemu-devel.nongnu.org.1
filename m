@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99B4B186ED
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 19:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34CFCB186F0
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 19:57:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhtx4-0005D2-Se; Fri, 01 Aug 2025 13:53:54 -0400
+	id 1uhu04-0001b8-Nx; Fri, 01 Aug 2025 13:57:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhsOK-0001yf-Fu
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 12:14:02 -0400
-Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
+ id 1uhsSV-0005aw-Nm
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 12:18:19 -0400
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhsOI-0005Wb-Vk
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 12:13:56 -0400
-Received: by mail-yw1-x112c.google.com with SMTP id
- 00721157ae682-71b4677044bso25645817b3.2
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 09:13:54 -0700 (PDT)
+ id 1uhsSS-0006XH-VX
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 12:18:15 -0400
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-71b71a8d5f0so9271427b3.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 09:18:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754064833; x=1754669633; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754065089; x=1754669889; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=s2eMPv4bjefmAPx4xnBQU/9C1mT4bgVxWaDZhzFcywI=;
- b=E130QkHf4moKE4yMVd3OG9geX1vrRkK+3O3cHP98mYfQ5b8T+rV7a5MF/4bPE/bdBs
- vUE7lD4miHr72qZsVwjbCN0ij7qQowJteDU8FVgOCxVhxkcJZbadqEWL0hb1ZsNzRfQp
- wggQK0ekjKB24XebMOFZT5wZCMRxGzQI+SrrhZylmp5+Zr14QA6mPA+YtQ0DAfaHWsNc
- V/9hf03/zu/4DNfb6sh745sM6cmflHCIU9EBogSrfdqXM8X3usTRkM2M0880k3kkqrbv
- cVGKUaz0EjuiGU23m14tAtD7gBABE66LOp6ovJuUdzIZ3y90VpsqCEU8yaPlarrtCch0
- 6pTg==
+ bh=sqBi0kmcxA97evFpfHFevkQBfDph/n7SVFyF5HSfI3A=;
+ b=tCQPiEtcZXCLRX+BLJ0AUJ6Icl5ZZqW2TtkRNYDxOI31Wq96nGCRADegHUsfnY053N
+ PxE5xJssxzq1v+4eTwxB/cLAHCSbRDwGpdud/Xxxi5ysRnfyFq+FiFXy9DtNpjujm02x
+ SFiINuO8N8AUFk0c7+sikChOqrjTs/aMGVPjjE8qNQIwM/Kq3v0qkvwauJUnuTHvU+fS
+ SHDR2tEEwBh14fJ4+v/HVZghgNSgxxAn3Mge5FwrNBjtCqCN2XsBSVfwdAQ4uxfhsrYT
+ 7E3fPXdIr4cfk3N7eeeQ92URcb6UcvX9O15+hHd0fSo+oOiz7MhHMH9zz4F+R7UyjmNh
+ 4rew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754064833; x=1754669633;
+ d=1e100.net; s=20230601; t=1754065089; x=1754669889;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=s2eMPv4bjefmAPx4xnBQU/9C1mT4bgVxWaDZhzFcywI=;
- b=jTZU7NxckkjJ8hDyETrP2FLLcEXsGoggZevFbVzTKJM9f0KXNi8pgjQNphoCg2VYD+
- epVWUIy27NdqDsx1R2PZaa0cbgbBc8yYgSOXcCLtx7wGObBNoJpLJplEqeSYFe69seEq
- 0hHZKIqgB0Bn3g5WPLPbw43w4gO7x4dgsmA1avN1Xl1dePRtOqIAHCDMF1XpeTiSokuH
- ng76vuXHj2KvR6ParRpOix9FaFPcoKC3sN/2PAjRugjruwTLkP0q4tYDQwVOuWSFyCJm
- bZPGRwcszUMXI/5tbSj+ksMUJFwXns0HXoD1otscQT/m931Vm6hcqLbNHuEK7I/hcc7R
- CXKQ==
-X-Gm-Message-State: AOJu0YyIEs6o1dTcO8dotredm2Zr4vsr+zj/sWV71X+BDsaxzp4Zx2Vn
- RK7GRhP2MDOZR1ZcTN4O3wMuLlT1qbzkQs9XQ5LmU7Z7IzCfYwtgXEdcD9ebg6gRm/j8Y4PjM4I
- KzSfdUqYwq9dG9eV8sgqNp8KqljavJUOaHUqJB6L3SQ==
-X-Gm-Gg: ASbGncswF0RZhiHSKB+u03WpgipSKEsImtBli7g/MdTjIQiMpwP8HwMnwpyESIwWId4
- eb/cBLmjCSdxZrIlwRW0MxbN2X3lH3SZrrugh/PV4OVF9rSwPOytQgSLt4blvUTrADtdHXZP+eW
- 6YBUhyyIc3lq8T1RR/kCJxpuAcpVP2Fs1VFg36xAx6K1QziIO440UXZ3e/q6bVQa2xK7lv6twxZ
- p+jBrg+
-X-Google-Smtp-Source: AGHT+IHlnbl7PtL4xinAj+dwDMMbEjvMUZpJD334kYs6txhQ2mDRl/s3o0lCSTp4viJgFzr4bVBwOSZla7XHF8ZR+zs=
-X-Received: by 2002:a05:690c:f15:b0:710:e4c4:a92f with SMTP id
- 00721157ae682-71b7ed12e19mr3339647b3.5.1754064833341; Fri, 01 Aug 2025
- 09:13:53 -0700 (PDT)
+ bh=sqBi0kmcxA97evFpfHFevkQBfDph/n7SVFyF5HSfI3A=;
+ b=h6y/sqFeM3jHhXgiwJKvlX+lNfFNKedmiI7WFDClH+wvmlK0vRXB1wurx+e1/CHM84
+ WBO9/WoHXpoj2nVyYT2yamX0WvLsQMP/RhQWCcTpb6B1IrURnhe1SGXDWEHErZlHJyhj
+ jg6Sg3kE+X9vHmNkvRWCfoiVPnXYooQnlRwYlfvemoox6aJYT1slfyxHODgvY/3mgS4o
+ HMrlV2vWHDr94Njg4HzXFvGvdaWfjYZtlgd6yIzZRq+hDRkaLGMvmjG/HBH3mUVI6vW9
+ Qj5kXw9HVOTza67xl92fhTkwP5PnPTRWBcBVdBoXmRsuC+uttDfbY/STOzn1zBS2zp/q
+ XnTw==
+X-Gm-Message-State: AOJu0Yz4QpZFlYs4P/5MA6VOGN7JmJOpFzaxxDe8tWBr+ffrRLGoDHWW
+ 4rIyVuzDtB6vXvl7mlS/uVNY+9MnedZIrRpOd9QbJXhkZJNgzYAdI9Z2Kc53h6EJ01l25u3p60B
+ pgAh8QtdzN5mrDe1O40v7yKfjfq6vnewbgmT3osNLRkuUDfI4cmto
+X-Gm-Gg: ASbGnctA+upgK932X81ZTaBwFUen+URbkGsAfKmpl1bmTzJSwv1eo5FnB9r8GV/jYqc
+ hF81hLMnwOTVF5aHXwaSTNhipZ7hx//WHDBUtihRWryITmZAlDie7vlephzWGsH/upPRUxrzhEJ
+ 4MTUmORgoNRXUHhuvX8ONIYWkY+D037KNP0WcbkeGY6Tpuws+dxzSWCE4BR8TszrcAPlqL8sfAZ
+ ASwKjLj
+X-Google-Smtp-Source: AGHT+IF0yBt3Q7sn5wIjzlY4mm10COuiGK+cqQ2m8WJn2yhOQT3eYRkiK3AaMwoWrK0OlQEQ6aVGHhXhDbbx2l5wdW8=
+X-Received: by 2002:a05:690c:6f02:b0:71a:3849:f88e with SMTP id
+ 00721157ae682-71b7ef6f9b4mr3536277b3.17.1754065089453; Fri, 01 Aug 2025
+ 09:18:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250730000003.599084-1-richard.henderson@linaro.org>
- <20250730000003.599084-23-richard.henderson@linaro.org>
-In-Reply-To: <20250730000003.599084-23-richard.henderson@linaro.org>
+ <20250730000003.599084-24-richard.henderson@linaro.org>
+In-Reply-To: <20250730000003.599084-24-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 1 Aug 2025 17:13:41 +0100
-X-Gm-Features: Ac12FXw9xgiShMDhMWnzZfeCse9-prdaLcgDAQ1A-hVu5kgwJHpSj9FEzdZggok
-Message-ID: <CAFEAcA-5r9ha6MUgk5jAP7ggAGB+UZTpKj7X4Z4EtunBdJbHzQ@mail.gmail.com>
-Subject: Re: [PATCH 22/89] linux-user: Create do_init_main_thread
+Date: Fri, 1 Aug 2025 17:17:58 +0100
+X-Gm-Features: Ac12FXy97XYxZ6tbdlmzbsqfLHDh0yViYvsCpE9h-6Q2JYw-HwWwwcor6FUfpBA
+Message-ID: <CAFEAcA_bRSRDxxj-OpDRYSh+P_BwO2iMLqqHPUerma69Lhxw7w@mail.gmail.com>
+Subject: Re: [PATCH 23/89] linux-user/i386: Create init_main_thread
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,11 +94,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Wed, 30 Jul 2025 at 01:19, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> Provide a unified function to initialize the main thread.
-> Keep target_pt_regs isolated to this function.
+> Merge init_thread and target_cpu_copy_regs.
+> There's no point going through a target_pt_regs intermediate.
+> Temporarily introduce HAVE_INIT_MAIN_THREAD during conversion.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  linux-user/qemu.h          |  1 +
+>  linux-user/elfload.c       | 29 ++++++-----------------------
+>  linux-user/i386/cpu_loop.c | 31 ++++++-------------------------
+>  3 files changed, 13 insertions(+), 48 deletions(-)
 
+> -static inline void init_thread(struct target_pt_regs *regs,
+> -                               struct image_info *infop)
+> -{
+> -    regs->esp = infop->start_stack;
+> -    regs->eip = infop->entry;
+> -
+> -    /* SVR4/i386 ABI (pages 3-31, 3-32) says that when the program
+> -       starts %edx contains a pointer to a function which might be
+> -       registered using `atexit'.  This provides a mean for the
+> -       dynamic linker to call DT_FINI functions for shared libraries
+> -       that have been loaded before the code runs.
+> -
+> -       A value of 0 tells we have no such handler.  */
+
+This seems like a useful comment to retain -- it's nice
+to know whether we're zeroing a register as an ABI requirement
+versus just being tidy.
+
+> -    regs->edx = 0;
+> -}
+
+> +    memset(env->regs, 0, sizeof(env->regs));
+
+Are we not allowed to assume the regs are zero out of reset ?
+
+> +    env->regs[R_ESP] = info->start_stack;
+> +    env->eip = info->entry;
+
+Otherwise
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
