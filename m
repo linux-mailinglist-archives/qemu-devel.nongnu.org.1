@@ -2,111 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA8AB182A4
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 15:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5820EB182A8
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 15:44:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhq17-0008W3-La; Fri, 01 Aug 2025 09:41:49 -0400
+	id 1uhq3S-0003DD-Aa; Fri, 01 Aug 2025 09:44:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1uhpxs-0003gA-4V
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 09:38:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1uhpxq-0003fi-KQ
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 09:38:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1uhpxp-0001YS-Ss
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 09:38:27 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1uhpxo-0001YD-4W
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 09:38:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754055505;
+ s=mimecast20190719; t=1754055502;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ltONUDdtmUm8NwD+BDdGB9o7iB3/5H+hF1zrIjbsDKQ=;
- b=SCecXMY7aFE2n4rnTSeze8GqN9aH2gJ+E02AoxZzSM+AtXpHZzmRV4F+buGgIXI7S8V0Sn
- LUhEhfWv3oaZzkFgc6WGvxPMeT+Q4OZWAyTltPrUN9iSdyRjxcymjfLCM0MVUY5QE1pjk3
- 08Vx8/4Ny0IsE6uEIvfsV5xWRl7s750=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EGDSxAVxB79dNxsEJv9pLleaEdknWXN/zQye7ch6PnU=;
+ b=MDFLQTto0TsTJIMHI00pFFJMKve62zPxIEiV+OqimtARAXukHwqcBdka3fuRysHZMDCsz0
+ 42M2dLfreSPXmE6+534TZXBXGxNqNQ8aNO2gYgx0zrFr8rDNAG4E05s/FK23UcHd5kOKp2
+ 5QNG4CgxBR5hF+LFRy+4Gwp0Le4XhEY=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-127-G_czyGWMOvOjUdFnn0c5rA-1; Fri, 01 Aug 2025 09:38:20 -0400
-X-MC-Unique: G_czyGWMOvOjUdFnn0c5rA-1
-X-Mimecast-MFC-AGG-ID: G_czyGWMOvOjUdFnn0c5rA_1754055500
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-b3f76a5ba7fso701040a12.1
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 06:38:20 -0700 (PDT)
+ us-mta-488-LRlznFpnOpqb_svbuSXccQ-1; Fri, 01 Aug 2025 09:38:21 -0400
+X-MC-Unique: LRlznFpnOpqb_svbuSXccQ-1
+X-Mimecast-MFC-AGG-ID: LRlznFpnOpqb_svbuSXccQ_1754055501
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-7074bad051fso28779606d6.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 06:38:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754055500; x=1754660300;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ltONUDdtmUm8NwD+BDdGB9o7iB3/5H+hF1zrIjbsDKQ=;
- b=njXb7WEXWc8Z1WNnrN3QyOiwys3lQWm/u0lF/ko4bmYIciKpfYQlq5Vlnm56S2glaM
- G5j/gk8D8Fmk5ah02jq3OJoPClSTZAyzl3uM20+G2EUUkLqO0CS1ONS6sJfKZR/FWkjN
- Y/98Yhek6UuUEiPyyTNcLsoVETSN3aBlYXc4seDP9YOuFBSGbljtoNFMUoDS4WLMxO2h
- /Uw5TRFf7L5+0ffyPUZpYegZLPPS6CznSbi+iOTJZW2KRbmXa41gkn+SzBNoEqFDnPIx
- YAq7hSBHIXNJ7BqkLNy1DOCQpt6Xv0f1UHebqqsK1c1zQ+YpdJdBR4nbd9pXu0Icg/2Z
- Rc9w==
-X-Gm-Message-State: AOJu0YyA48EBqod2TQ165yLXbsAVR63qzILH+yh0cdzLtdLYIZodqCD7
- 2PCF7pswNktsXZKpcCfZvDvY4MSto4qw1LRlS/59zdeBTOfcpg3gmSDW1r33OTLoR74dwBer0Rp
- EXay9EerSG9Qi+1jVg9bCvd5fNxHT/t9sOOr1J1zdweA23kt/thzdS1Nz
-X-Gm-Gg: ASbGncu0HaF0fs9rJEe+4JH5+fj6I6rA8f20dJo1dH9h2FaseZDxv1+w+sfyYXkOXeQ
- bHEZyK7Z8ELvCxO8gPBW7UfR9NIyR3sPPhTBg5upBAwDhuIw/QsCHz+AbfyifO2j1cSI0HPSARO
- JCALE5VoaLkeS3iN6Ihib/nVcqPaAZEMaR/aFa5RPBWgUnWXxQqj1CdmZ+AEOnd4GQ7v/93NdXP
- bQWZuDRsHBqJC+uaoNdN5w5k0lVe1fmtHh/psDfu6zic2op5NXuwiDc3gl3I73PtLnBD5LHpddI
- ptaCq8gwnOqzaj0MbsoCbrkIkIivJ7ej69zPcsO5ysceY9VGXUSNsw==
-X-Received: by 2002:a17:903:291:b0:240:58a7:8938 with SMTP id
- d9443c01a7336-24096ac598fmr137160855ad.7.1754055499566; 
+ d=1e100.net; s=20230601; t=1754055501; x=1754660301;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EGDSxAVxB79dNxsEJv9pLleaEdknWXN/zQye7ch6PnU=;
+ b=c7ZFiwBp985ms8mDlz71GkhUHQhKygxauyKVtfAKP3fax53HhP9YKUSwqV8kpRF5rl
+ t21MKf0OBW3duXLIzgBAuHBT4kzG/Gc18HzJUMVoFHN9xZMIX1Xrh/A+07pc4lyoaV9x
+ VYLMReY0Gc3k2bIQd56m6SxeMuO1UU9e1ro5c2IFZ0IrF2mVUn2BZdi2LNHXfGHt2mWS
+ g8gHWAO1CMltx3jRV7akFqLkfSwxCK4u969B9x2BgJ/6YrF45eSqUZVN3leCS9kWGevo
+ WvdIRcn3r1vxW9kx2VGdX2Ak6IO36N8JsLMKHPHPNmsozMQNqn2fwKpDTKUhdo/CyuSc
+ OWBA==
+X-Gm-Message-State: AOJu0Yz9mHlDwcTPsWkfXl+UXt9vfrZIbn/fPje9OvGb3DonUA90wieC
+ QT7zdE4IzCLkChBSwwjklfALuvWxjhyw70befS6hbyco4keomNGR8k5OCvwmuoiyBPhMAYLG+iO
+ pv2pJ0LfbfBBKBmTmKZOGJdzmt20+tzRqY2xm5MYvOnZP/zIvu708aJA1
+X-Gm-Gg: ASbGncuwGuDO6Q0J+pdeYvRzC9hCvFpN0u//pZv8nM8PSETEy6MGWqCCEG099HCLi5j
+ oUCI2H8KwrGnYwtio3NRJHcxPttWTtGiTwiLEOJKll5CoL+j71np53Ex6/R855c6KAMAE+Hoz1y
+ xO6nAbXvifSOzFzSEGLXNoKztXqyf9MJY/qnwNqg2RN6b07/JiBl5/zRiuqbu75Fq8RAr9qAkcu
+ iufuL/Sub7CEoIWnoVGMRQF+JQQJpT7jYaZurkuJLVuLyT+v4fXjC95DayzDgEdyB9f6mIfTsys
+ f9S29qptOsd7mJnbnRgRYwUm8tKRmC+twYAyEkjQsf5pXpS/Q36Rj0bnzxtgogpE/0wcADPVpy8
+ 5FKB2SIpOKbRtfRg=
+X-Received: by 2002:ad4:5ce6:0:b0:705:1647:6dfa with SMTP id
+ 6a1803df08f44-7092658f805mr39993036d6.17.1754055500485; 
+ Fri, 01 Aug 2025 06:38:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0REkdrqN/t2nj33tJ240I9NzqELKbvtEVgSpUudMQoDn4QfA3wLBuCvAz+lecsAO9HMpMPA==
+X-Received: by 2002:ad4:5ce6:0:b0:705:1647:6dfa with SMTP id
+ 6a1803df08f44-7092658f805mr39992476d6.17.1754055499853; 
  Fri, 01 Aug 2025 06:38:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFSGuylcFssDqnYrWdzpaD0XdCwncf4kIneLrY8e7WV2SyQ5ankllAIChXqXFom8+qe76Mxtw==
-X-Received: by 2002:a17:903:291:b0:240:58a7:8938 with SMTP id
- d9443c01a7336-24096ac598fmr137160335ad.7.1754055499035; 
- Fri, 01 Aug 2025 06:38:19 -0700 (PDT)
-Received: from armenon-kvm.bengluru.csb ([49.36.103.171])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241e899b4adsm43871995ad.132.2025.08.01.06.38.09
+Received: from sgarzare-redhat (host-79-45-205-118.retail.telecomitalia.it.
+ [79.45.205.118]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-7077cd5a438sm21689176d6.48.2025.08.01.06.38.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 06:38:18 -0700 (PDT)
-Date: Fri, 1 Aug 2025 19:08:06 +0530
-From: Arun Menon <armenon@redhat.com>
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [PATCH v8 19/27] migration: push Error **errp into
- qemu_loadvm_state_main()
-Message-ID: <aIzDPr0iQAbB0VSE@armenon-kvm.bengluru.csb>
-References: <20250731-propagate_tpm_error-v8-0-28fd82fdfdb2@redhat.com>
- <20250731-propagate_tpm_error-v8-19-28fd82fdfdb2@redhat.com>
- <91c9a8ab-6fdb-4945-8e7d-da60cd037116@rsg.ci.i.u-tokyo.ac.jp>
+ Fri, 01 Aug 2025 06:38:19 -0700 (PDT)
+Date: Fri, 1 Aug 2025 15:38:13 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Oliver Steffen <osteffen@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Joerg Roedel <joerg.roedel@amd.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>, berrange@redhat.com
+Subject: Re: [RFC 2/2] q35: add virtio-mmio slots
+Message-ID: <vwghqjigkdbdfqdcq5drh7apgtm2ghw6jx7jrqa7gjiwzcaqbe@i27sy3m2rmie>
+References: <20250701121815.523896-1-osteffen@redhat.com>
+ <20250701121815.523896-3-osteffen@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <91c9a8ab-6fdb-4945-8e7d-da60cd037116@rsg.ci.i.u-tokyo.ac.jp>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armenon@redhat.com;
+In-Reply-To: <20250701121815.523896-3-osteffen@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -115,7 +95,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,172 +111,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Akihiko, 
+On Tue, Jul 01, 2025 at 02:18:15PM +0200, Oliver Steffen wrote:
+>From: Gerd Hoffmann <kraxel@redhat.com>
 
-Thanks for the review.
+I would mention SVSM in the commit title.
 
-On Fri, Aug 01, 2025 at 04:17:04PM +0900, Akihiko Odaki wrote:
-> On 2025/07/31 22:20, Arun Menon wrote:
-> > This is an incremental step in converting vmstate loading
-> > code to report error via Error objects instead of directly
-> > printing it to console/monitor.
-> > It is ensured that qemu_loadvm_state_main() must report an error
-> > in errp, in case of failure.
-> > loadvm_process_command also sets the errp object explicitly.
-> > 
-> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> > Signed-off-by: Arun Menon <armenon@redhat.com>
-> > ---
-> >   migration/colo.c   |  5 +++--
-> >   migration/savevm.c | 27 ++++++++++++++++-----------
-> >   migration/savevm.h |  3 ++-
-> >   3 files changed, 21 insertions(+), 14 deletions(-)
-> > 
-> > diff --git a/migration/colo.c b/migration/colo.c
-> > index 981bd4bf9ced8b45b4c5d494acae119a174ee974..529794dfc8d943b8ba3a25391ee2132c0c3f312e 100644
-> > --- a/migration/colo.c
-> > +++ b/migration/colo.c
-> > @@ -659,6 +659,7 @@ void migrate_start_colo_process(MigrationState *s)
-> >   static void colo_incoming_process_checkpoint(MigrationIncomingState *mis,
-> >                         QEMUFile *fb, QIOChannelBuffer *bioc, Error **errp)
-> >   {
-> > +    ERRP_GUARD();
-> >       uint64_t total_size;
-> >       uint64_t value;
-> >       Error *local_err = NULL;
-> > @@ -686,11 +687,11 @@ static void colo_incoming_process_checkpoint(MigrationIncomingState *mis,
-> >       bql_lock();
-> >       cpu_synchronize_all_states();
-> > -    ret = qemu_loadvm_state_main(mis->from_src_file, mis);
-> > +    ret = qemu_loadvm_state_main(mis->from_src_file, mis, errp);
-> >       bql_unlock();
-> >       if (ret < 0) {
-> > -        error_setg(errp, "Load VM's live state (ram) error");
-> > +        error_prepend(errp, "Load VM's live state (ram) error: ");
-> >           return;
-> >       }
-> > diff --git a/migration/savevm.c b/migration/savevm.c
-> > index e885f1724f223771d60081fea199320abc549d2f..f5903995edd2b4c4f6c1a214c7126d831f10c9f1 100644
-> > --- a/migration/savevm.c
-> > +++ b/migration/savevm.c
-> > @@ -2111,7 +2111,7 @@ static void *postcopy_ram_listen_thread(void *opaque)
-> >       qemu_file_set_blocking(f, true);
-> >       /* TODO: sanity check that only postcopiable data will be loaded here */
-> > -    load_res = qemu_loadvm_state_main(f, mis);
-> > +    load_res = qemu_loadvm_state_main(f, mis, NULL);
-> >       /*
-> >        * This is tricky, but, mis->from_src_file can change after it
-> > @@ -2412,6 +2412,7 @@ static void loadvm_postcopy_handle_resume(MigrationIncomingState *mis)
-> >    */
-> >   static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis, Error **errp)
-> >   {
-> > +    ERRP_GUARD();
-> >       int ret;
-> >       size_t length;
-> >       QIOChannelBuffer *bioc;
-> > @@ -2461,9 +2462,9 @@ static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis, Error **errp)
-> >           qemu_coroutine_yield();
-> >       } while (1);
-> > -    ret = qemu_loadvm_state_main(packf, mis);
-> > +    ret = qemu_loadvm_state_main(packf, mis, errp);
-> >       if (ret < 0) {
-> > -        error_setg(errp, "VM state load failed: %d", ret);
-> > +        error_prepend(errp, "Loading VM state failed: %d: ", ret);
-> >       }
-> >       trace_loadvm_handle_cmd_packaged_main(ret);
-> >       qemu_fclose(packf);
-> > @@ -3066,8 +3067,10 @@ static bool postcopy_pause_incoming(MigrationIncomingState *mis)
-> >       return true;
-> >   }
-> > -int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis)
-> > +int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis,
-> > +                           Error **errp)
-> >   {
-> > +    ERRP_GUARD();
-> >       uint8_t section_type;
-> >       int ret = 0;
-> > @@ -3075,8 +3078,10 @@ retry:
-> >       while (true) {
-> >           section_type = qemu_get_byte(f);
-> > -        ret = qemu_file_get_error_obj_any(f, mis->postcopy_qemufile_dst, NULL);
-> > +        ret = qemu_file_get_error_obj_any(f, mis->postcopy_qemufile_dst, errp);
-> >           if (ret) {
-> > +            error_prepend(errp, "Failed to load device state section ID: %d: ",
-> > +                          ret);
-> 
-> I noticed this is after the "retry" label; errp already contains an error
-> when retried so the error needs to be properly reported and freed.
+>
+>Add virtio-mmio slots to the q35 machine model, intended to be used by
+>an SVSM.
+>
+>Disabled by default, enable using '-machine q35,x-svsm-virtio-mmio=on'.
 
-Yes, I shall check how to report error, because there is an error_report() in the
-default case. And yes, errp needs to be freed and set to NULL before retry.
+I guess we should remove the `x-` after the RFC, right?
+And add some documentation.
 
+In the future, we may have several things to configure for SVSM. Should 
+we think of some specific object (e.g., svsm-cfg), or rather add 
+properties to the machine type as in this case?
 
-> 
-> >               break;
-> >           }
-> > @@ -3084,20 +3089,20 @@ retry:
-> >           switch (section_type) {
-> >           case QEMU_VM_SECTION_START:
-> >           case QEMU_VM_SECTION_FULL:
-> > -            ret = qemu_loadvm_section_start_full(f, section_type, NULL);
-> > +            ret = qemu_loadvm_section_start_full(f, section_type, errp);
-> >               if (ret < 0) {
-> >                   goto out;
-> >               }
-> >               break;
-> >           case QEMU_VM_SECTION_PART:
-> >           case QEMU_VM_SECTION_END:
-> > -            ret = qemu_loadvm_section_part_end(f, section_type, NULL);
-> > +            ret = qemu_loadvm_section_part_end(f, section_type, errp);
-> >               if (ret < 0) {
-> >                   goto out;
-> >               }
-> >               break;
-> >           case QEMU_VM_COMMAND:
-> > -            ret = loadvm_process_command(f, NULL);
-> > +            ret = loadvm_process_command(f, errp);
-> >               trace_qemu_loadvm_state_section_command(ret);
-> >               if ((ret < 0) || (ret == LOADVM_QUIT)) {
-> >                   goto out;
-> > @@ -3107,7 +3112,7 @@ retry:
-> >               /* This is the end of migration */
-> >               goto out;
-> >           default:
-> > -            error_report("Unknown savevm section type %d", section_type);
-> > +            error_setg(errp, "Unknown savevm section type %d", section_type);
-> >               ret = -EINVAL;
-> >               goto out;
-> >           }
-> > @@ -3171,7 +3176,7 @@ int qemu_loadvm_state(QEMUFile *f)
-> >       cpu_synchronize_all_pre_loadvm();
-> > -    ret = qemu_loadvm_state_main(f, mis);
-> > +    ret = qemu_loadvm_state_main(f, mis, NULL);
-> >       qemu_event_set(&mis->main_thread_load_event);
-> >       trace_qemu_loadvm_state_post_main(ret);
-> > @@ -3245,7 +3250,7 @@ int qemu_load_device_state(QEMUFile *f)
-> >       int ret;
-> >       /* Load QEMU_VM_SECTION_FULL section */
-> > -    ret = qemu_loadvm_state_main(f, mis);
-> > +    ret = qemu_loadvm_state_main(f, mis, NULL);
-> >       if (ret < 0) {
-> >           error_report("Failed to load device state: %d", ret);
-> >           return ret;
-> > diff --git a/migration/savevm.h b/migration/savevm.h
-> > index 2d5e9c716686f06720325e82fe90c75335ced1de..fd7419e6ff90062970ed246b3ea71e6d49a6e372 100644
-> > --- a/migration/savevm.h
-> > +++ b/migration/savevm.h
-> > @@ -66,7 +66,8 @@ int qemu_save_device_state(QEMUFile *f);
-> >   int qemu_loadvm_state(QEMUFile *f);
-> >   void qemu_loadvm_state_cleanup(MigrationIncomingState *mis);
-> > -int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis);
-> > +int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis,
-> > +                           Error **errp);
-> >   int qemu_load_device_state(QEMUFile *f);
-> >   int qemu_loadvm_approve_switchover(void);
-> >   int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
-> > 
-> 
-Regards,
-Arun
+>
+>When enabled it is possible to plug up to 4 virtio devices into the
+>slots virtio-mmio using '-device virtio-${kind}-device'.
+>
+>The devices can be found at base address 0xfef00000, each slot on a
+
+Disclaimer: I don't have much experience in allocating mmio addresses, 
+but why that address?
+
+Should we make it configurable/dynamic?
+
+Thanks,
+Stefano
+
+>separate page.  No IRQ is wired up, the SVSM has to drive the devices
+>in polling mode.
+>
+>The base addresses are communicated to the SVSM via the etc/hardware-info
+>fw_cfg file.
+>
+>Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+>Signed-off-by: Oliver Steffen <osteffen@redhat.com>
+>---
+> hw/i386/pc.c         | 18 +++++++++++++++++-
+> hw/i386/pc_q35.c     | 15 +++++++++++++++
+> include/hw/i386/pc.h |  1 +
+> 3 files changed, 33 insertions(+), 1 deletion(-)
+>
+>diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+>index 432ab288a8..e1dbf8846d 100644
+>--- a/hw/i386/pc.c
+>+++ b/hw/i386/pc.c
+>@@ -1584,6 +1584,21 @@ static void pc_machine_set_smbios_ep(Object *obj, Visitor *v, const char *name,
+>     visit_type_SmbiosEntryPointType(v, name, &pcms->smbios_entry_point_type, errp);
+> }
+>
+>+static bool pc_machine_get_svsm_virtio_mmio(Object *obj, Error **errp)
+>+{
+>+    PCMachineState *pcms = PC_MACHINE(obj);
+>+
+>+    return pcms->svsm_virtio_mmio;
+>+}
+>+
+>+static void pc_machine_set_svsm_virtio_mmio(Object *obj, bool value,
+>+                                            Error **errp)
+>+{
+>+    PCMachineState *pcms = PC_MACHINE(obj);
+>+
+>+    pcms->svsm_virtio_mmio = value;
+>+}
+>+
+> static void pc_machine_get_max_ram_below_4g(Object *obj, Visitor *v,
+>                                             const char *name, void *opaque,
+>                                             Error **errp)
+>@@ -1844,7 +1859,8 @@ static void pc_machine_class_init(ObjectClass *oc, const void *data)
+>                                           "Set IGVM configuration");
+> #endif
+>
+>-
+>+    object_class_property_add_bool(oc, "x-svsm-virtio-mmio",
+>+        pc_machine_get_svsm_virtio_mmio, pc_machine_set_svsm_virtio_mmio);
+> }
+>
+> static const TypeInfo pc_machine_info = {
+>diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+>index cf871cfdad..b8511ae52a 100644
+>--- a/hw/i386/pc_q35.c
+>+++ b/hw/i386/pc_q35.c
+>@@ -60,7 +60,9 @@
+> #include "hw/mem/nvdimm.h"
+> #include "hw/uefi/var-service-api.h"
+> #include "hw/i386/acpi-build.h"
+>+#include "hw/uefi/hardware-info.h"
+> #include "target/i386/cpu.h"
+>+#include "exec/target_page.h"
+>
+> /* ICH9 AHCI has 6 ports */
+> #define MAX_SATA_PORTS     6
+>@@ -335,6 +337,19 @@ static void pc_q35_init(MachineState *machine)
+>         }
+>     }
+> #endif
+>+
+>+    if (pcms->svsm_virtio_mmio) {
+>+        for (int dev = 0; dev < 4; dev++) {
+>+            HARDWARE_INFO_SIMPLE_DEVICE hwinfo = {
+>+                .mmio_address = cpu_to_le64(0xfef00000 + dev * TARGET_PAGE_SIZE),
+>+            };
+>+            sysbus_create_simple("virtio-mmio", hwinfo.mmio_address,
+>+                                 /* no irq */ NULL);
+>+            hardware_info_register(HardwareInfoVirtioMmioSvsm,
+>+                                   &hwinfo, sizeof(hwinfo));
+>+        }
+>+    }
+>+
+> }
+>
+> #define DEFINE_Q35_MACHINE(major, minor) \
+>diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+>index 79b72c54dd..9c9f947087 100644
+>--- a/include/hw/i386/pc.h
+>+++ b/include/hw/i386/pc.h
+>@@ -51,6 +51,7 @@ typedef struct PCMachineState {
+>     bool i8042_enabled;
+>     bool default_bus_bypass_iommu;
+>     bool fd_bootchk;
+>+    bool svsm_virtio_mmio;
+>     uint64_t max_fw_size;
+>
+>     /* ACPI Memory hotplug IO base address */
+>-- 
+>2.50.0
+>
 
 
