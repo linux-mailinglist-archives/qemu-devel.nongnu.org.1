@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E68B183F7
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0642DB183DA
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:33:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhqq4-0004Mw-7v; Fri, 01 Aug 2025 10:34:28 -0400
+	id 1uhqng-0007hX-JV; Fri, 01 Aug 2025 10:32:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhY-0005ds-Sr
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhf-0005lv-2b
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhX-0002q4-DJ
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:40 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhZ-0002rj-Ne
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754058338;
+ s=mimecast20190719; t=1754058340;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Rt7GnWAbSGWYSqFzaw9x7Xx2rUyY6tFH8mQrAe3XeS0=;
- b=gRYhPi8/BguUXFV6KuGEZEO3A8r6RmyN7DBQ+3adyHvhNDXVblsegjRIvLNA3CZRQEZpCg
- WgalzjddXbkezYuF4GISqwbb5btmGm1ExlkKTUqemD5XSJmk0AiMIf930GtU4r4XQvJDJ5
- LVYbSn5B3MY+2YFWJkurwn6yC2HnWCU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vgmFtDgTAmGls1KrsF1UJKp0mhRKj20ErXb4GvRJyH4=;
+ b=NXIY2Bt8cPCMwie1SBAaV+W342vam5lek6DyDLhfJqYeujcqQraEqRjja/v1ZP5QIDn8+m
+ sno5LNWC4i/0chwecAoWSUAXb3aK5xzaUIgjfeGmx0a7t1pHiBJ5kdq+GvDDb2GxzOlBtq
+ 7GgIA+5BAdQ5dCDXoAKGn4T8aNkI/CA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-icYRlWGiMTGYOjKPTGDYZw-1; Fri, 01 Aug 2025 10:25:36 -0400
-X-MC-Unique: icYRlWGiMTGYOjKPTGDYZw-1
-X-Mimecast-MFC-AGG-ID: icYRlWGiMTGYOjKPTGDYZw_1754058336
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45626532e27so11965445e9.1
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:36 -0700 (PDT)
+ us-mta-502-l1aZ-_vcM1mlv7HeJcMdhg-1; Fri, 01 Aug 2025 10:25:39 -0400
+X-MC-Unique: l1aZ-_vcM1mlv7HeJcMdhg-1
+X-Mimecast-MFC-AGG-ID: l1aZ-_vcM1mlv7HeJcMdhg_1754058338
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4588fb6854cso9271815e9.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754058335; x=1754663135;
+ d=1e100.net; s=20230601; t=1754058338; x=1754663138;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rt7GnWAbSGWYSqFzaw9x7Xx2rUyY6tFH8mQrAe3XeS0=;
- b=LcYg9iszza8/XAuuL2wXLyTIyNC7Kti06fkS3FQ/ogcv44r8Vnn70a/INcNzhEGKZD
- OGTBrzgv9EgNNEGgdRfavXhGpSvUUWGvfWCmoUtK0W9mZFZVxuEuxXGtsp7ujq5snyeT
- zzpnaucrvTYLtmIcee80/bMd+a1c+FscKrCd5h3zkZSCmrtCin9NA7W06SYcZcl/fntP
- QJxHgZxUlFIxZg2XJL1Jt0k1X7Fmd1ZyZTcMIA0uWJKUgdyjt+klkowPHjjm/G3uvLkl
- 9xhT6FUxYUto/5ZKxd3F+7trlCYobQgLIiNT1HV+ecUKABlb3XONsPUpf8mRVu5u0swu
- hEYw==
-X-Gm-Message-State: AOJu0YxINd1HeWIvcnJ0wqpLFfy5vKSZPc4gM04RGquI8AY+cqQy4Rz/
- F1D6HsqwE027BFtZcx45Z0xUO4wY6cFC8n5djzB/r1sQQN1HwDDw9VODGtFEuLXP92exRU9OAAV
- uPlbW9YrWsZnQz57VkB/Eko9HxcIkAlPnpdSbbUCVi9nfgDrHi7fAkUNlzhibFcyJCI1d/SvTG3
- WNopgZoYqp6XOmV5gP+BAACspKN2uvCYTEJw==
-X-Gm-Gg: ASbGnctxPK83ipldKMrKrLQridJJoiz7oTh02Vn8Vi//ce2FG+UfxEhtDMoTKwuRcGm
- 7/H+fJz5pS6zLnEILpds0TnyYQGdlW/n9F6lweyUJGdX5PaDd/FMvt8B5zdLWVrG01LsQJKfurt
- unXep4tRAuEJoMTBpVP9WCUzjfUldUreYNt2TackBGTHQlswf9U1I+Zrx6lXOqZisHD30qUHi5W
- lJPRjxbTR2R5e3b6CsJq5Fb5bi5A0My40bofn+J4Z5JN+63DnHepCZRktKKZ2mP6N9eH4dxhoJp
- X9cTgkNy4DED8gI8RGx7qzVFMT/NVyHz
-X-Received: by 2002:a05:600c:3d8a:b0:458:6733:fb59 with SMTP id
- 5b1f17b1804b1-45892bc5895mr101354295e9.19.1754058335326; 
- Fri, 01 Aug 2025 07:25:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSi8ANASNa7VNsN4h6CNiy6Tfq9yTG3B7TxBZIkH0u1iAiQ/9J3DXhfiwcBg0L9INCwvboaQ==
-X-Received: by 2002:a05:600c:3d8a:b0:458:6733:fb59 with SMTP id
- 5b1f17b1804b1-45892bc5895mr101353785e9.19.1754058334505; 
- Fri, 01 Aug 2025 07:25:34 -0700 (PDT)
+ bh=vgmFtDgTAmGls1KrsF1UJKp0mhRKj20ErXb4GvRJyH4=;
+ b=HsfJiLZpEuNuPf5FW4CaXAx4cnodMzFoPT6KbKLIxq9vgl879GCVUG3me6/BXy1V1g
+ 5wM3D2q/kql4mPyfLrckYLBmI77zRgPWpF6HxAWZ5e20r4qRyKByv/CCycRD1VnBNr0X
+ decEQFh/7qXFanTB9/QFLBd2K4Jl5unXbaLP7+orZnbYuKMEpAo4HpanpYFCHtqOquaR
+ IHcvsF7aay93SYcmAHG2q6QUKXlbFsqVRlF3aViCDhPi4TLdrqCdvoujSfNMRHApTQt2
+ visG3ebUtbRSAmTdMecC47XjiGFGt1YZWLM3BWC8AOz/7RoI28kcHP28zDNslwJf+4ZC
+ 8g8A==
+X-Gm-Message-State: AOJu0YxEHUrndJNAewkPtEEyJ+5yPmleodORVh+2vGptLy38IOwcMZxW
+ JP3pwsSiBXxBHJZPKr+MlPngbmicI3YQmFfdZJMLyR4u8WZJXcgtVcOLeyBx9S5pAD290zmoFP6
+ lP3TIA1mDl0mKJH4+/kQCbh9iqDn+PTp/3glYTdWWHzR81IHTnPkIR/qIlbsN+Mel9LgUh7Id1V
+ 56r6FarhdcTTtCc61qNvHEgirLGBFfDE1c9w==
+X-Gm-Gg: ASbGncs0qVh7ZOTwQbr+LtwsnKyBxo63gt7prh8NXg2vt7GH9oPuq/8WiAluE0OOQl+
+ 4+xP/LSDLbB8VYlhV12iwqMNo14MUO3Vet2NTA4x5uuNnNfEk2C0S3coINT4jnLhwm10YvMTJLJ
+ etDtY711WQ9/kEsmSuaLasVJYNVieFLTQRRKrHCITuVvARcL6t4romGXXO6/XJSwjbY7EoDCujm
+ AsBo6q+pSlImyW+dGkMtkMWy89+YOb/nVnIoxz1yQEK6YTKXgp7XuqlI497oRdWWXB+xO1nXuIQ
+ Ekh7HbPFwSYuwjdeUnL4JHMEujzcZysn
+X-Received: by 2002:a05:600c:1da8:b0:456:1006:5415 with SMTP id
+ 5b1f17b1804b1-45892b92eb2mr101941035e9.6.1754058337608; 
+ Fri, 01 Aug 2025 07:25:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEl0NeQa4oobAXZ1gqHmJj27ixyO2S+aobjlaO9fdfdKRxhWHZg95Kc9OXyJpN1+EvwMq47qQ==
+X-Received: by 2002:a05:600c:1da8:b0:456:1006:5415 with SMTP id
+ 5b1f17b1804b1-45892b92eb2mr101940645e9.6.1754058337116; 
+ Fri, 01 Aug 2025 07:25:37 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-458953cfcadsm112316235e9.18.2025.08.01.07.25.33
+ 5b1f17b1804b1-458af77e7d5sm12689775e9.0.2025.08.01.07.25.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 07:25:34 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:25:32 -0400
+ Fri, 01 Aug 2025 07:25:36 -0700 (PDT)
+Date: Fri, 1 Aug 2025 10:25:34 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 14/17] tests/acpi: virt: update HEST file with its current data
-Message-ID: <cd16f08ad4bda8191e4de986d17184c9da5466cd.1754058276.git.mst@redhat.com>
+ David Woodhouse <dwmw@amazon.co.uk>,
+ Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 15/17] intel_iommu: Allow both Status Write and Interrupt Flag
+ in QI wait
+Message-ID: <e8145dcd311b58921f3a45121792cbfab38fd2f6.1754058276.git.mst@redhat.com>
 References: <cover.1754058276.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -84,7 +88,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1754058276.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,37 +113,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Now that HEST table is checked for aarch64, add the current
-firmware file.
+FreeBSD does both, and this appears to be perfectly valid. The VT-d
+spec even talks about the ordering (the status write should be done
+first, unsurprisingly).
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <e3527be1610b2ef6b20ca2efa025de91a1f1e0a6.1749741085.git.mchehab+huawei@kernel.org>
+We certainly shouldn't assert() and abort QEMU if the guest asks for
+both.
+
+Fixes: ed7b8fbcfb88 ("intel-iommu: add supports for queued invalidation interface")
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/3028
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Message-Id: <0122cbabc0adcc3cf878f5fd7834d8f258c7a2f2.camel@infradead.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- tests/data/acpi/aarch64/virt/HEST           | Bin 0 -> 132 bytes
- 2 files changed, 1 deletion(-)
+ hw/i386/intel_iommu.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 39901c58d6..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/aarch64/virt/HEST",
-diff --git a/tests/data/acpi/aarch64/virt/HEST b/tests/data/acpi/aarch64/virt/HEST
-index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..4c5d8c5b5da5b3241f93cd0839e94272bf6b1486 100644
-GIT binary patch
-literal 132
-zcmeZp4Gw8xU|?W;<mB({5v<@85#X$#prF9Wz`y`vgJ=-uVqjqS|DS;o#%Ew*U|?_n
-dk++-~7#J8hWI!Yi09DHYRr~Kh1c1x}0RY>66afGL
-
-literal 0
-HcmV?d00001
-
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index fe9a5f2872..83c5e44413 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -2828,6 +2828,7 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+ {
+     uint64_t mask[4] = {VTD_INV_DESC_WAIT_RSVD_LO, VTD_INV_DESC_WAIT_RSVD_HI,
+                         VTD_INV_DESC_ALL_ONE, VTD_INV_DESC_ALL_ONE};
++    bool ret = true;
+ 
+     if (!vtd_inv_desc_reserved_check(s, inv_desc, mask, false,
+                                      __func__, "wait")) {
+@@ -2839,8 +2840,6 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+         uint32_t status_data = (uint32_t)(inv_desc->lo >>
+                                VTD_INV_DESC_WAIT_DATA_SHIFT);
+ 
+-        assert(!(inv_desc->lo & VTD_INV_DESC_WAIT_IF));
+-
+         /* FIXME: need to be masked with HAW? */
+         dma_addr_t status_addr = inv_desc->hi;
+         trace_vtd_inv_desc_wait_sw(status_addr, status_data);
+@@ -2849,18 +2848,22 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+                              &status_data, sizeof(status_data),
+                              MEMTXATTRS_UNSPECIFIED)) {
+             trace_vtd_inv_desc_wait_write_fail(inv_desc->hi, inv_desc->lo);
+-            return false;
++            ret = false;
+         }
+-    } else if (inv_desc->lo & VTD_INV_DESC_WAIT_IF) {
++    }
++
++    if (inv_desc->lo & VTD_INV_DESC_WAIT_IF) {
+         /* Interrupt flag */
+         vtd_generate_completion_event(s);
+-    } else {
++    }
++
++    if (!(inv_desc->lo & (VTD_INV_DESC_WAIT_IF | VTD_INV_DESC_WAIT_SW))) {
+         error_report_once("%s: invalid wait desc: hi=%"PRIx64", lo=%"PRIx64
+                           " (unknown type)", __func__, inv_desc->hi,
+                           inv_desc->lo);
+         return false;
+     }
+-    return true;
++    return ret;
+ }
+ 
+ static bool vtd_process_context_cache_desc(IntelIOMMUState *s,
 -- 
 MST
 
