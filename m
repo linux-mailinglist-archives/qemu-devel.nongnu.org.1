@@ -2,88 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF8CB18211
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 15:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE96B182A6
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 15:44:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhpNh-0004fr-Ib; Fri, 01 Aug 2025 09:01:05 -0400
+	id 1uhq2p-0001RE-Ji; Fri, 01 Aug 2025 09:43:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uhozB-00086h-2r
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 08:35:45 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uhoz7-0006DN-Px
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 08:35:44 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-af913d9d2a1so316060566b.3
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 05:35:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754051738; x=1754656538; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CT1PMrz4B6Io7IHxrrXB1D/jUOE0VZNJTRC4BpMLJfQ=;
- b=p41XfD9Bg2oAG/n1Ykb2z3AFexeJW6p4i1l6z8b39EYzx/mQkRcCXDNRiMt3UBsBGK
- qvpAu4Rk2VaUIFkQ2f+WSlMBx8Wk9S1j4uD8llQnnxEImCCzykWel04ySZ7teTBFNRKV
- yfxMLogLPwg2w5bmisEPg1sqWeLK0LRyNrcr2quDmZ2TNREVNe5JurtL6xsSS9w2n77s
- u6UMYKpEwgKeP6br7bwsrb5hDW3uJzKvlK3EJWGLYcAXxlQ/HnNmrzJol7MCf6LHlRJu
- otuUU3gx4wRenkiK8QOt6g3kB+bzCf51EmxzYLsuDW1myxW2ULMhPrpBBeKSIXhZhVc4
- l+Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754051738; x=1754656538;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CT1PMrz4B6Io7IHxrrXB1D/jUOE0VZNJTRC4BpMLJfQ=;
- b=LGwlYlixzQJGfEg2szPZLDnuN7QPzLVQzgBLB95gneCFze4977dOTK7d4y+zqcGjb/
- gKZ/ktA9gDeRsvlXav8RIPi2Azs+9cQz5bssAEGnOyjnJjU+10a1p+dY3gf5wovTr5iE
- X9aCrM96hFoVjIEFZ8IrziPuJAXUVkaCCNe7Xu4/v9dPCFAdiKlFQYCyq7J5+EIeX4aF
- l+RERfwpHDXvVoZ0Y4qyOrMcT8ts6KJAKGv0tGJlQROrXWrw4c62d/MPbvjcgbqyStL4
- 2APhOZli1l/tREKBK6EbalRufFYeHM9GWPURmsbUy1yR7X48Q4LsRafYcfeiD6VWtj+x
- wmig==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVXTu+DTn0octV3l8xZnPXAa6BTKaEKLNK1IFRbue0qiW055hsqnuWjlL4HqEs5HEYOexxw7h9E5noQ@nongnu.org
-X-Gm-Message-State: AOJu0YxcxXOs5qx19s1ZzstwxzLY14rM0dZeLKz90KmJf3OrCH/Qt9QR
- c45AgFvmmJs9ysx/ppds02otTL7UkgNN4h3cuD+s13KA//Ce2IcLkhCr11wqGY3NwAANoV4bfu+
- qSCraDnP/iw6yGlKVF3JNjGcBA7GRb+1SnTd/J3G2PQ==
-X-Gm-Gg: ASbGnctftmaYNAVYUyCmIOlE1881tblvNz4uppw3ohCU8j5HBkN+o+Fr+qONkaq8v7L
- eQlIZm7NBaZVI0hRKpVSz1WSz67+KBu7J1QNiIoc+n3KtUhJJCn6vkuTYDYv6zS6Ta2bfJBGtG3
- XeKErdMm2lRlUsd/e2K+X8XMWpDKXSzik66W1C41ziMx0J6SQa4azuGr9jOvurcEWIZxGPQq/qh
- eIGdrMecEbGy9Fc1Q==
-X-Google-Smtp-Source: AGHT+IFqRa6oJ+pwx3XYtHNNxqPfFmo41SZ0yGU3QmyWAVaenGaFm9TL8p7SS0BHsMQbyK4fArHiMNZ/FhDODDubd7Y=
-X-Received: by 2002:a17:906:ef0b:b0:ade:409c:2cb6 with SMTP id
- a640c23a62f3a-af93196cf84mr302253966b.59.1754051738096; Fri, 01 Aug 2025
- 05:35:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <meowilson@icloud.com>)
+ id 1uhp1f-0006TQ-Vx
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 08:38:25 -0400
+Received: from p-east3-cluster6-host10-snip4-7.eps.apple.com ([57.103.85.228]
+ helo=outbound.qs.icloud.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <meowilson@icloud.com>)
+ id 1uhp1b-0006df-P1
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 08:38:18 -0400
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-east-2d-100-percent-7 (Postfix) with ESMTPS id
+ C24A518000B7; Fri,  1 Aug 2025 12:38:07 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai;
+ bh=+vvs9FwD0ZTtH3bkG5n9Zc4quPC1Nz6buDZiyyW22K4=;
+ h=Date:Subject:Message-ID:From:To:MIME-Version:Content-Type:x-icloud-hme;
+ b=chozetKUcnxjkWudWZzzrQ9io+HaaJXV0R3p13ZNXSYmYP9z9aRofxAMSGSOmEmsko8vnooM6VA7TuzzMvM+S/yydZ3Cun+eydDDhc+GWc5XqMb8Xbfu3P1t+DPdGWN4BKh20jNW5c4S09xEIgG4w2ckO5NY2NCpKCUWeodYn/S7IG80oAL3ciZuy6hWhS2M+eVQZ3eg/Tj9EfVD1Ig9svxNnZYqK4GQcDqLEfthv7c3PlIyBglIZaIWU9m6/Db7GmSjXpbv3M3a4yeRrHd0GNikUR+RhgZlDt7RCKbqB7788mww5/qonpX9jNTRsVJvubpYgt/CvGkLJRzNL1BtPg==
+Received: from [100.74.2.175] (qs-asmtp-me-k8s.p00.prod.me.com [17.57.155.37])
+ by p00-icloudmta-asmtp-us-east-2d-100-percent-7 (Postfix) with
+ ESMTPSA id B53FE18002AA; Fri,  1 Aug 2025 12:38:05 +0000 (UTC)
+Date: Fri, 01 Aug 2025 14:37:55 +0200
+Subject: Re: [RFC 0/9] WHPX support for Arm
+Message-ID: <84b42816-aacf-4782-a902-2706ed84eb51@email.android.com>
+X-Android-Message-ID: <84b42816-aacf-4782-a902-2706ed84eb51@email.android.com>
+In-Reply-To: <8af5e691-da19-4141-8874-51ca685288ac@linaro.org>
+From: Mohamed Mediouni <meowilson@icloud.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org,
+ =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Sunil Muthuswamy <sunilmut@microsoft.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, Peter
+ Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
+Importance: Normal
+X-Priority: 3
+X-MSMail-Priority: Normal
 MIME-Version: 1.0
-References: <20250727080254.83840-1-richard.henderson@linaro.org>
- <20250727080254.83840-48-richard.henderson@linaro.org>
- <b2e40787-6043-4d4c-9cbb-731d0e92e25c@linaro.org>
- <f198153f-088c-4196-9ee2-ed1e8e4fc92f@linaro.org>
-In-Reply-To: <f198153f-088c-4196-9ee2-ed1e8e4fc92f@linaro.org>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Fri, 1 Aug 2025 15:35:11 +0300
-X-Gm-Features: Ac12FXxO5CfGPBoAxm3AyJ38bWWFz7PMPhG6csPzhc5qFaePF48uMXRC8i2QldI
-Message-ID: <CAAjaMXZvwq=gikvqrEQCZWFnU9mt5cYn84uxuLyCAbQqEEnXag@mail.gmail.com>
-Subject: Re: [PATCH 47/82] target/arm: Expand pstate to 64 bits
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: base64
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAxMDA5NSBTYWx0ZWRfX+MZfoZlgJTuF
+ wBhwKn0y9kB3VgAqkhD2GVggHS43eAL3B9113+kpdnlR6iZPHCATpIBWm9RQropFn0bNNb/mBYX
+ 8szeO/xJz7i3td1UnM63digo0FXTdbbB4kihT0K+fKnjRWuRUHI5mQAbXOsW7d0qWjkJyGWjVXT
+ 7NfvXhv0BYiPiA6r9iMiQ9E/b4E1bebrEx6hIzN/V4XZmtZBh5jlrRMd6UfygitM6nfUmilRvlh
+ lbro2OMzGoN3Vz8rleaviUS1UOtIYXsCbHErqVw+FX/iaRl0hGssiFVYdkiuhrCUOxS0q2rUg=
+X-Proofpoint-GUID: yvljv1unkfBvRnQVG-ghlYtP5EwPZuui
+X-Proofpoint-ORIG-GUID: yvljv1unkfBvRnQVG-ghlYtP5EwPZuui
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-01_04,2025-07-31_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ phishscore=0 spamscore=0 suspectscore=0 mlxscore=0 bulkscore=0 malwarescore=0
+ mlxlogscore=999 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.22.0-2506270000 definitions=main-2508010095
+Received-SPF: pass client-ip=57.103.85.228; envelope-from=meowilson@icloud.com;
+ helo=outbound.qs.icloud.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, HTML_MIME_NO_HTML_TAG=0.377, MIME_HTML_ONLY=0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 01 Aug 2025 09:35:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,75 +88,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 1, 2025 at 7:25=E2=80=AFAM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 8/1/25 05:13, Pierrick Bouvier wrote:
-> > On 7/27/25 1:02 AM, Richard Henderson wrote:
-> >> The ARM now defines 36 bits in SPSR_ELx in aarch64 mode, so
-> >> it's time to bite the bullet and extend PSTATE to match.
-> >>
-> >> Most changes are straightforward, adjusting printf formats,
-> >> changing local variable types.  More complex is migration,
-> >> where to maintain backward compatibility a new pstate64
-> >> record is introduced, and only when one of the extensions
-> >> that sets bits 32-35 are active.
-> >>
-> >> The fate of gdbstub is left undecided for the moment.
-> ...
-> >> diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-> >> index 64ee9b3b56..3cef47281a 100644
-> >> --- a/target/arm/gdbstub64.c
-> >> +++ b/target/arm/gdbstub64.c
-> >> @@ -47,6 +47,7 @@ int aarch64_cpu_gdb_read_register(CPUState *cs, GByt=
-eArray *mem_buf,
-> >> int n)
-> >>       case 32:
-> >>           return gdb_get_reg64(mem_buf, env->pc);
-> >>       case 33:
-> >> +        /* pstate is now a 64-bit value; can we simply adjust the xml=
-? */
-> >>           return gdb_get_reg32(mem_buf, pstate_read(env));
-> >>       }
-> >
-> > If I'm correct, we currently don't expose PSTATE through gdbstub, but o=
-nly CPSR. This was
-> > a bit confusing for me, considering that CPSR is not even supposed to e=
-xist in Aarch64.
->
-> Correct.  An old error, for sure.
->
->
-> > Maybe it's a good opportunity to expose PSTATE instead, which could hav=
-e a 64 bits size.
-> > This way, we don't break any workflow.
->
-> Hmm, perhaps adding a "org.gnu.gdb.aarch64.pstate" xml with just one 64-b=
-it value is the
-> best solution.  Thiago?
+PGRpdiBkaXI9J2F1dG8nPjxkaXY+PGJyPjwvZGl2PjxkaXYgZGlyPSJhdXRvIj48ZGl2IGNsYXNz
+PSJnbWFpbF9leHRyYSIgZGlyPSJhdXRvIj48YnI+PGRpdiBjbGFzcz0iZ21haWxfcXVvdGUiPk9u
+IDEgQXVnIDIwMjUgMDM6MTUsIFBpZXJyaWNrIEJvdXZpZXIgJmx0O3BpZXJyaWNrLmJvdXZpZXJA
+bGluYXJvLm9yZyZndDsgd3JvdGU6PGJyIHR5cGU9ImF0dHJpYnV0aW9uIj48YmxvY2txdW90ZSBj
+bGFzcz0icXVvdGUiIHN0eWxlPSJtYXJnaW46MCAwIDAgLjhleDtib3JkZXItbGVmdDoxcHggI2Nj
+YyBzb2xpZDtwYWRkaW5nLWxlZnQ6MWV4Ij48cCBkaXI9Imx0ciI+SGkgTW9oYW1lZCwKPGJyPgoK
+PGJyPgpPbiA3LzMwLzI1IDEwOjI3IFBNLCBNb2hhbWVkIE1lZGlvdW5pIHdyb3RlOgo8YnI+CiZn
+dDsgVGhpcyBvbmUgdG9vayB3YXkgbG9uZ2VyIGZvciBtZSB0byBwdWJsaXNoIHRoYW4gSSBzaG91
+bGQgaGF2ZS4KPGJyPgomZ3Q7IAo8YnI+CiZndDsgVGhlcmUgYXJlIGEgbnVtYmVyIG9mIGxpbmdl
+cmluZyBidWdzIGluIHRoaXMgb25lIGluY2x1ZGluZyB1LWJvb3Qgbm90IHdvcmtpbmcuCjxicj4K
+Jmd0OyAKPGJyPgomZ3Q7IEludGVycnVwdCBjb250cm9sbGVyIHNhdmUvcmVzdG9yZSBpcyBlbnRp
+cmVseSBtaXNzaW5nIGluIHRoaXMgUkZDLCBhbmQgc29tZSBvdGhlciBzdGF0ZQo8YnI+CiZndDsg
+Yml0cyBhcmUgbGlrZWx5IHN0aWxsIG1pc3NpbmcgdG9vLgo8YnI+CiZndDsgCjxicj4KJmd0OyBJ
+VFMgbm90IGJsb2NrZWQgYnkgZGVmYXVsdCB5ZXQsIHJlbWVtYmVyIHRvIHVzZSBpdHM9b2ZmIHdo
+ZW4gdGVzdGluZyB0aGlzIHNlcmllcy4KPGJyPgomZ3Q7IFlvdSBtaWdodCBhbHNvIHdhbnQgdGhl
+IEdJQ3YzICsgR0lDdjJtIHN1cHBvcnQgcGF0Y2ggYXMgcGFydCBvZiB0aGUgSFZGIHZHSUMgcGF0
+Y2ggc2VyaWVzLCB3aGljaAo8YnI+CiZndDsgaXMgbm90IGR1cGxpY2F0ZWQgaGVyZS4KPGJyPgom
+Z3Q7IAo8YnI+CiZndDsgUFM6IG9uIGJvdGggdGhpcyBhbmQgSFZGLCBpbnRlcnJ1cHQgY29udHJv
+bGxlciBpbml0aWFsaXNhdGlvbiBuZWVkcyB0byBiZSBkb25lIGVhcmx5IHNvIEkgZW5kZWQKPGJy
+PgomZ3Q7IHVwIHdpdGggaGFyZGNvZGVkIGFkZHJlc3Nlcy4gV29uZGVyIGlmIHRoZSByaWdodCB3
+YXkgdG8gZ28gbWlnaHQgYmUgdG8gZGVmZXIgdmlydCBhbmQgdkNQVSBpbml0aWFsaXNhdGlvbgo8
+YnI+CiZndDsgdW50aWwgbGF0ZSBpbiB0aGUgcHJvY2VzcyBwb3N0LWdpY19yZWFsaXplLi4uCjxi
+cj4KJmd0OyAKPGJyPgomZ3Q7IE90aGVyIHRoYW4gdGhhdCwgdGhpcyBib290cyBib3RoIEVESzIg
+YW5kIExpbnV4IGluIFNNUCwgd2hlbiB1c2luZyBkZXZpY2V0cmVlIG9yIEFDUEkuCjxicj4KJmd0
+OyAKPGJyPgoKPGJyPgp0aGFua3MgZm9yIHBvc3RpbmcgdGhpcywgdGhhdCdzIGFuIGV4Y2l0aW5n
+IHNlcmllcyEKPGJyPgoKPGJyPgpJIGFwcGxpZWQgaXQgb24gdG9wIG9mIHlvdXIgb3RoZXIgc2Vy
+aWVzIAo8YnI+CigyMDI1MDcyODEzNDExNC43NzU0NS0xLW1vaGFtZWRAdW5wcmVkaWN0YWJsZS5m
+cikgYW5kIHNvbHZlZCB0aGUgY29uZmxpY3RzLgo8YnI+Ckhvd2V2ZXIsIGl0IHdvdWxkIHJlYWxs
+eSBoZWxwIGlmIHlvdSBjb3VsZCBwdXNoIHRoYXQgZXhhY3QgYnJhbmNoIAo8YnI+CnNvbWV3aGVy
+ZSwgc28gcGVvcGxlIGNhbiBlYXNpbHkgcHVsbCBpdCBhbmQgdHJ5Lgo8YnI+CkknbSBmaW5lIGlm
+IHlvdSB3YW50IHRvIGR1cGxpY2F0ZSBnaWMgcGF0Y2hlcyBpbiB0aGlzIHNlcmllcyBhcyB3ZWxs
+Lgo8YnI+Cgo8YnI+CkkgdHJpZWQgdG8gZGlyZWN0IGJvb3QgYSBrZXJuZWwgKDYuMTUgZGVmY29u
+ZmlnKSBhbmQgcmFuIGludG8gdGhpcyBlcnJvciAKPGJyPgpbMV06Cjxicj4KJCAuL2J1aWxkL3Fl
+bXUtc3lzdGVtLWFhcmNoNjQuZXhlIC1NIHZpcnQsaXRzPW9mZiAtY3B1IGNvcnRleC1hNzYgLW0g
+MkcgCjxicj4KLW5vZ3JhcGhpYyAtYWNjZWwgd2hweCAta2VybmVsIG91dC9JbWFnZS5neiBvdXQv
+aG9zdC5leHQ0Cjxicj4KCjxicj4KQ291bGQgeW91IHBsZWFzZSBzaGFyZSB5b3VyIGV4YWN0IGNv
+bW1hbmQgbGluZT8KPGJyPgpEb2VzIGl0IHdvcmsgd2l0aCBkaXJlY3Qga2VybmVsIGJvb3QgYWxz
+bz8KPGJyPgoKPGJyPgpLaW5kIFJlZ2FyZHMsCjxicj4KUGllcnJpY2sKPGJyPgoKPC9wPjwvYmxv
+Y2txdW90ZT48L2Rpdj48L2Rpdj48L2Rpdj48ZGl2IGRpcj0iYXV0byI+PGRpdiBkaXI9ImF1dG8i
+PkhlbGxvLDwvZGl2PjxkaXYgZGlyPSJhdXRvIj48YnI+PC9kaXY+PGRpdiBkaXI9ImF1dG8iPk15
+IGJyYW5jaGVzIGFyZSBhdCBodHRwczovL2dpdGh1Yi5jb20vbWVkaW91bmktbS9xZW11PC9kaXY+
+PGRpdiBkaXI9ImF1dG8iPjxicj48L2Rpdj48ZGl2IGRpcj0iYXV0byI+d2hweC12MSBjb3JyZXNw
+b25kaW5nIHRvIHRoaXMgUkZDLCBidXQgbGF0ZXN0IHJldiBvZiB0aGUgd2hweCBicmFuY2ggaGFz
+IHNvbWUgZml4ZXM8L2Rpdj48ZGl2IGRpcj0iYXV0byI+PGJyPjwvZGl2PjxkaXYgZGlyPSJhdXRv
+Ij5IYXZlIHNvbWUgYWRkaXRpb25hbCBub3RlcyBhbmQgYmluYXJpZXMgaGVyZSB0b286IGh0dHBz
+Oi8vZ2l0aHViLmNvbS9tZWRpb3VuaS1tL3FlbXUvcmVsZWFzZXMvdGFnL3docHgtdjEuMTwvZGl2
+PjxkaXYgZGlyPSJhdXRvIj48YnI+PC9kaXY+PGRpdiBkaXI9ImF1dG8iPlRoYW5rIHlvdSw8L2Rp
+dj48ZGl2IGRpcj0iYXV0byI+LU1vaGFtZWQ8L2Rpdj48L2Rpdj48ZGl2IGRpcj0iYXV0byI+PGRp
+diBjbGFzcz0iZ21haWxfZXh0cmEiIGRpcj0iYXV0byI+PGRpdiBjbGFzcz0iZ21haWxfcXVvdGUi
+PjxibG9ja3F1b3RlIGNsYXNzPSJxdW90ZSIgc3R5bGU9Im1hcmdpbjowIDAgMCAuOGV4O2JvcmRl
+ci1sZWZ0OjFweCAjY2NjIHNvbGlkO3BhZGRpbmctbGVmdDoxZXgiPjxwIGRpcj0ibHRyIj48YnI+
+ClsxXSBFcnJvciB3aGVuIGJvb3Rpbmc6Cjxicj4KWyZuYnNwOyZuYnNwOyZuYnNwOyAxLjM4MTUy
+NV0gSW50ZXJuYWwgZXJyb3I6IE9vcHM6IDAwMDAwMDAwOTYwMDAwMDIgWyMxXSZuYnNwOyBTTVAK
+PGJyPgpbJm5ic3A7Jm5ic3A7Jm5ic3A7IDEuNDU4MDYwXSBNb2R1bGVzIGxpbmtlZCBpbjoKPGJy
+PgpbJm5ic3A7Jm5ic3A7Jm5ic3A7IDEuNDYxMTcyXSBDUFU6IDAgVUlEOiAwIFBJRDogMSBDb21t
+OiBzd2FwcGVyLzAgTm90IHRhaW50ZWQgCjxicj4KNi4xNS4wLTAwMDAxLWc3Nzk3ZTQzYTI1MjAg
+IzEgUFJFRU1QVAo8YnI+ClsmbmJzcDsmbmJzcDsmbmJzcDsgMS40NzA1MDJdIEhhcmR3YXJlIG5h
+bWU6IGxpbnV4LGR1bW15LXZpcnQgKERUKQo8YnI+ClsmbmJzcDsmbmJzcDsmbmJzcDsgMS40NzUx
+MDJdIHBzdGF0ZTogMjA0MDAwYzUgKG56Q3YgZGFJRiArUEFOIC1VQU8gLVRDTyAtRElUIC1TU0JT
+IAo8YnI+CkJUWVBFPS0tKQo8YnI+ClsmbmJzcDsmbmJzcDsmbmJzcDsgMS40ODIwMjNdIHBjIDog
+cGNpX2dlbmVyaWNfY29uZmlnX3JlYWQrMHgzOC8weGI4Cjxicj4KWyZuYnNwOyZuYnNwOyZuYnNw
+OyAxLjQ4Njk3MF0gbHIgOiBwY2lfZ2VuZXJpY19jb25maWdfcmVhZCsweDI0LzB4YjgKPGJyPgpb
+Jm5ic3A7Jm5ic3A7Jm5ic3A7IDEuNDkxNzM0XSBzcCA6IGZmZmY4MDAwODAwMGI5NDAKPGJyPgpb
+Jm5ic3A7Jm5ic3A7Jm5ic3A7IDEuNDk1MDc5XSB4Mjk6IGZmZmY4MDAwODAwMGI5NDAgeDI4OiAw
+MDAwMDAwMDAwMDAwMDAwIHgyNzogCjxicj4KZmZmZmJiOGZlMTNmMDBlYwo8YnI+ClsmbmJzcDsm
+bmJzcDsmbmJzcDsgMS41MDI0NzNdIHgyNjogZmZmZmJiOGZlMTRmOTA2MCB4MjU6IGZmZmZiYjhm
+ZTE0ZjkwNzggeDI0OiAKPGJyPgpmZmZmYmI4ZmUxYzk5OTkwCjxicj4KWyZuYnNwOyZuYnNwOyZu
+YnNwOyAxLjUwOTU2NF0geDIzOiAwMDAwMDAwMDAwMDAwMDAwIHgyMjogZmZmZjgwMDA4MDAwYjlm
+NCB4MjE6IAo8YnI+CmZmZmY1NzRjODNiN2MwMDAKPGJyPgpbJm5ic3A7Jm5ic3A7Jm5ic3A7IDEu
+NTE2NjM2XSB4MjA6IGZmZmY4MDAwODAwMGI5NjQgeDE5OiAwMDAwMDAwMDAwMDAwMDA0IHgxODog
+Cjxicj4KMDAwMDAwMDAwMDAwMDAwNgo8YnI+ClsmbmJzcDsmbmJzcDsmbmJzcDsgMS41MjM3MjJd
+IHgxNzogNjY2NjY2NjY2NjY2NjY2NiB4MTY6IDY2NzgzMDJkMzAzMDMwMzAgeDE1OiAKPGJyPgow
+NzIwMDcyMDA3MjAwNzIwCjxicj4KWyZuYnNwOyZuYnNwOyZuYnNwOyAxLjUzMTU4M10geDE0OiAw
+NzIwMDcyMDA3MjAwNzIwIHgxMzogMDcyMDA3MjAwNzIwMDcyMCB4MTI6IAo8YnI+CmZmZmZiYjhm
+ZTE3MzY4MzgKPGJyPgpbJm5ic3A7Jm5ic3A7Jm5ic3A7IDEuNTM5MDk0XSB4MTE6IDAwMDAwMDAw
+MDAwMDAwNTggeDEwOiAwMDAwMDAwMDAwMDAwMDE4IHg5IDogCjxicj4KZmZmZmJiOGZlMTczNjgz
+OAo8YnI+ClsmbmJzcDsmbmJzcDsmbmJzcDsgMS41NDYyMTJdIHg4IDogMDAwMDAwMDAwMDAwMDBj
+NSB4NyA6IGZmZmZiYjhmZTE4N2ZmNDAgeDYgOiAKPGJyPgowMDAwMDAwMDAwMDAwMGZmCjxicj4K
+WyZuYnNwOyZuYnNwOyZuYnNwOyAxLjU1MzM3MF0geDUgOiAwMDAwMDAwMDAwMDAwMDAwIHg0IDog
+MDAwMDAwMDAwMDAwMDAwMCB4MyA6IAo8YnI+CmZmZmY4MDAwOTAwMDAwMDAKPGJyPgpbJm5ic3A7
+Jm5ic3A7Jm5ic3A7IDEuNTYwNjc2XSB4MiA6IDAwMDAwMDAwMDAwMDAwMDAgeDEgOiAwMDAwMDAw
+MDAwMDAwMDAwIHgwIDogCjxicj4KZmZmZjgwMDA5MDAwMDAwMAo8YnI+ClsmbmJzcDsmbmJzcDsm
+bmJzcDsgMS41Njc4OTBdIENhbGwgdHJhY2U6Cjxicj4KWyZuYnNwOyZuYnNwOyZuYnNwOyAxLjU3
+MDUwOV0mbmJzcDsgcGNpX2dlbmVyaWNfY29uZmlnX3JlYWQrMHgzOC8weGI4IChQKQo8YnI+Clsm
+bmJzcDsmbmJzcDsmbmJzcDsgMS41NzUzNjJdJm5ic3A7IHBjaV9idXNfcmVhZF9jb25maWdfZHdv
+cmQrMHg4MC8weGU0Cjxicj4KWyZuYnNwOyZuYnNwOyZuYnNwOyAxLjU4MDIzMV0mbmJzcDsgcGNp
+X2J1c19nZW5lcmljX3JlYWRfZGV2X3ZlbmRvcl9pZCsweDMwLzB4MTY0Cjxicj4KWyZuYnNwOyZu
+YnNwOyZuYnNwOyAxLjU4NjE2NF0mbmJzcDsgcGNpX3NjYW5fc2luZ2xlX2RldmljZSsweDExOC8w
+eDE4Ywo8YnI+ClsmbmJzcDsmbmJzcDsmbmJzcDsgMS41OTA5MTJdJm5ic3A7IHBjaV9zY2FuX3Ns
+b3QrMHg1OC8weDIxNAo8YnI+ClsmbmJzcDsmbmJzcDsmbmJzcDsgMS41OTQ3ODJdJm5ic3A7IHBj
+aV9zY2FuX2NoaWxkX2J1c19leHRlbmQrMHg0MC8weDIzNAo8YnI+ClsmbmJzcDsmbmJzcDsmbmJz
+cDsgMS41OTk2MDZdJm5ic3A7IHBjaV9zY2FuX3Jvb3RfYnVzX2JyaWRnZSsweDY0LzB4ZDgKPGJy
+PgpbJm5ic3A7Jm5ic3A7Jm5ic3A7IDEuNjA0MTk0XSZuYnNwOyBwY2lfaG9zdF9wcm9iZSsweDMw
+LzB4ZWMKPGJyPgpbJm5ic3A7Jm5ic3A7Jm5ic3A7IDEuNjA3OTcyXSZuYnNwOyBwY2lfaG9zdF9j
+b21tb25fcHJvYmUrMHgxMjgvMHgxYzAKPGJyPgpbJm5ic3A7Jm5ic3A7Jm5ic3A7IDEuNjEyNDMw
+XSZuYnNwOyBwbGF0Zm9ybV9wcm9iZSsweDY4LzB4ZGMKPGJyPgpbJm5ic3A7Jm5ic3A7Jm5ic3A7
+IDEuNjE2MjIwXSZuYnNwOyByZWFsbHlfcHJvYmUrMHhiYy8weDJjMAo8YnI+ClsmbmJzcDsmbmJz
+cDsmbmJzcDsgMS42MTk4MTRdJm5ic3A7IF9fZHJpdmVyX3Byb2JlX2RldmljZSsweDc4LzB4MTIw
+Cjxicj4KWyZuYnNwOyZuYnNwOyZuYnNwOyAxLjYyNDQzNV0mbmJzcDsgZHJpdmVyX3Byb2JlX2Rl
+dmljZSsweDNjLzB4MTU0Cjxicj4KWyZuYnNwOyZuYnNwOyZuYnNwOyAxLjYyODYyMF0mbmJzcDsg
+X19kcml2ZXJfYXR0YWNoKzB4OTAvMHgxYTAKPGJyPgpbJm5ic3A7Jm5ic3A7Jm5ic3A7IDEuNjMy
+NTA5XSZuYnNwOyBidXNfZm9yX2VhY2hfZGV2KzB4N2MvMHhkYwo8YnI+ClsmbmJzcDsmbmJzcDsm
+bmJzcDsgMS42MzY0NDldJm5ic3A7IGRyaXZlcl9hdHRhY2grMHgyNC8weDMwCjxicj4KWyZuYnNw
+OyZuYnNwOyZuYnNwOyAxLjY0MDA2N10mbmJzcDsgYnVzX2FkZF9kcml2ZXIrMHhlNC8weDIwOAo8
+YnI+ClsmbmJzcDsmbmJzcDsmbmJzcDsgMS42NDM3NzRdJm5ic3A7IGRyaXZlcl9yZWdpc3Rlcisw
+eDY4LzB4MTMwCjxicj4KWyZuYnNwOyZuYnNwOyZuYnNwOyAxLjY0NzY2N10mbmJzcDsgX19wbGF0
+Zm9ybV9kcml2ZXJfcmVnaXN0ZXIrMHgyNC8weDMwCjxicj4KWyZuYnNwOyZuYnNwOyZuYnNwOyAx
+LjY1MjcwNF0mbmJzcDsgZ2VuX3BjaV9kcml2ZXJfaW5pdCsweDFjLzB4MjgKPGJyPgpbJm5ic3A7
+Jm5ic3A7Jm5ic3A7IDEuNjU3MTgxXSZuYnNwOyBkb19vbmVfaW5pdGNhbGwrMHg2MC8weDFkNAo8
+YnI+ClsmbmJzcDsmbmJzcDsmbmJzcDsgMS42NjExNzJdJm5ic3A7IGtlcm5lbF9pbml0X2ZyZWVh
+YmxlKzB4MjEwLzB4Mjc0Cjxicj4KWyZuYnNwOyZuYnNwOyZuYnNwOyAxLjY2NTc0OV0mbmJzcDsg
+a2VybmVsX2luaXQrMHgyMC8weDE0MAo8YnI+ClsmbmJzcDsmbmJzcDsmbmJzcDsgMS42NjkzNDFd
+Jm5ic3A7IHJldF9mcm9tX2ZvcmsrMHgxMC8weDIwCjxicj4KWyZuYnNwOyZuYnNwOyZuYnNwOyAx
+LjY3MzAzNF0gQ29kZTogNzEwMDA2N2YgNTQwMDAyYzAgNzEwMDBhN2YgNTQwMDAxODAgKGI5NDAw
+MDAwKQo8YnI+Cgo8YnI+CjwvcD4KPC9ibG9ja3F1b3RlPjwvZGl2Pjxicj48L2Rpdj48L2Rpdj48
+L2Rpdj4=
 
-A single line in gdb-xml/aarch64-core.xml should be enough:
-
-  <reg name=3D"PSTATE" bitsize=3D"64" />
-
-I'd keep cpsr even if it's now effectively duplicated. It comes from
-gdb's upstream aarch64 schema so it's deeply ingrained by now.
-
-Then you can do `info registers $PSTATE` in gdb after adding the reg
-getter in gdbstub.
-
-I think it could be possible to define a
-
-<flags id=3D"pstate_flags" size=3D"8">
- ...
-</flags>
-
-type that re-uses the cpsr_flags type definition by setting a field
-<field start=3D"0" end=3D"31" type =3D "cpsr_flags" /> but I haven't tried
-it.
-
->
->
-> r~
->
 
