@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834F9B18402
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B78D6B18407
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:38:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhqnu-0008Ma-Ow; Fri, 01 Aug 2025 10:32:14 -0400
+	id 1uhqnK-000665-TX; Fri, 01 Aug 2025 10:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqh7-0005It-4T
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhK-0005Q1-8n
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqh5-0002ce-Bz
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:12 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhA-0002eR-UD
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754058310;
+ s=mimecast20190719; t=1754058312;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=n9aTAKqxtf2LCN/h984DXmZDHWbf6WVTqmImDbPWZ5I=;
- b=dAQ9fqDWbMkmqvTGak6bzQeeIJIE0WeAge24AuCIvdOQfTu1qnRTTA3kJ0Tj/egBaISn4G
- PrHw1OzM74rpr2EU4zWzC5MlaFPXFJVTM2wBtK3mZTrr6jBwLZ/wi3fi3aA0Uz/OkG1GMl
- oMr/5UFVOgBPLQ5xgOVdm6kiS3hjgSo=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CmCUy7VMYdhhfAJ9rVBdHUNMEi7jQwBEVAggBejnK4M=;
+ b=M4Qv0lKZqDTSfSyrHNbvGkDb7rIuczoN9K4AJs5WEOAnnV31825B9atyfxRAPoMoooOEqy
+ 5VQrhOrLfPzQ0QE0ORAy+0r7J61W+nq10jE3KPviakhuEz9uApOX6D7WQF8zMLTDSA45rk
+ AQyB3smuqP/mWjGMKHv6Ix9Qu0ODS2k=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-WD3fqu2fNfOJTjXT9zD0Hw-1; Fri, 01 Aug 2025 10:25:09 -0400
-X-MC-Unique: WD3fqu2fNfOJTjXT9zD0Hw-1
-X-Mimecast-MFC-AGG-ID: WD3fqu2fNfOJTjXT9zD0Hw_1754058308
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3b836f17b50so818582f8f.1
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:09 -0700 (PDT)
+ us-mta-136-tyaQVJzoPuKyW8rDQYRP0g-1; Fri, 01 Aug 2025 10:25:11 -0400
+X-MC-Unique: tyaQVJzoPuKyW8rDQYRP0g-1
+X-Mimecast-MFC-AGG-ID: tyaQVJzoPuKyW8rDQYRP0g_1754058310
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3b79629bd88so823750f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754058308; x=1754663108;
+ d=1e100.net; s=20230601; t=1754058310; x=1754663110;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=n9aTAKqxtf2LCN/h984DXmZDHWbf6WVTqmImDbPWZ5I=;
- b=eAV8/s+Srf5pep80spqLVI6xvVKaoq6NDu7f8qK43U7tynbvEgamXA2C+BEgkpA4rT
- MMzV7Jf/KYxdWGLWd6fZxDq7Z5nevgi0M7gPx7LwRE+L22rAB72orZR9zCGr5OXPZ0TL
- RHii/k0WXbtaziBFGdyMkcWq8QybKIpQp/cpTG7uZkLXfYLnbdHB16VHrMUFCD+nH0rM
- IjVkDIxb/UvmMPuupgHDB9iWntUll2w2We5eeZm3/fcySV+RPVGiIZe8PrbFwgsXZUfB
- nSIp/XsEBdmKNKgtvpI8zq3lksv2el4Q9WBeKexAWgEO4V2cde0QcoF+kmL8ycpo17gP
- qkAQ==
-X-Gm-Message-State: AOJu0YxhOkM3hG0WcZ0m8U6E1SobM2OrttgvWu1QnLY0r1uTWF8uyhfD
- S4dqncmUhXlf+jhhNbRtJW84DcCB6ypBm8J1K2DU9t4772ColipnJ1RGt3wYUmygUz+5FI9gpqF
- 5nTITrX9ZQU1v0aDeHDHwAzmx/c06afDdcvuj8vNHjjNEU6Y/ffPDUJ3JpZqT69eNDd56xH/mhv
- O1Owe9rFLYAyFPMwIwZW3gpSQwriFwzSN4Bw==
-X-Gm-Gg: ASbGnctEQAZXd82EfhtB6eyP0us8fkTmQd15fepwNw1aq4mhoWrTc1CtVao8M5InXWQ
- GGgTm3ktS1iC+feZIqcg6zX7Bz5pIHv/gKv5la0L9Br9k8ebjf1+eUSQAXxyPgF1g6o2+4oqzP1
- bVy89wlyeowacbBdCX2Wv8WLFQhGiitYU8jJXLG6w0k0zA0zMaS7FVshgfH3LkJu5FswWZbVoJ/
- ZlsllV38JVZrX5yaHiLYPq0D2oRCXEZ/fGKaJY6rndzRqoAyQ/Ik83lwAd/GdhmKldc9w7W2AGF
- B7h1Wkg3GkgNS8NnoXX0xjbeBK/Ut7/z
-X-Received: by 2002:a05:6000:410a:b0:3b7:999b:1194 with SMTP id
- ffacd0b85a97d-3b7999b1552mr6748727f8f.50.1754058308017; 
- Fri, 01 Aug 2025 07:25:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkhnUrfb69HxGRtmi1oofHD0UWmChSkXqelfoMQEUfW3VJt1/0c5e5pFWlEuOEuktauPE/OQ==
-X-Received: by 2002:a05:6000:410a:b0:3b7:999b:1194 with SMTP id
- ffacd0b85a97d-3b7999b1552mr6748701f8f.50.1754058307482; 
- Fri, 01 Aug 2025 07:25:07 -0700 (PDT)
+ bh=CmCUy7VMYdhhfAJ9rVBdHUNMEi7jQwBEVAggBejnK4M=;
+ b=vtuLo7Uw1Nrqt4Bd1X53+CADQ7II1mV5XShD98FxJ4wm7ltgozX4fMlfiNd4c69iJR
+ hfyVW1Tc4cIgOkXvon9seYDi+/8KpCK8BX9GiLJA1z/sBC71+uXRDYTdXlihAkZ708EP
+ uhGVvZ+33mkbAO80lv0Uy3UKSxdDzZtAnU899icFCrjfqwjFwkcBqJnx0HBcsqU5tEqu
+ K60lKfDdDwGrMJ9bAlW+ElptZJ1idboA3HeQI9LlVUVhaQZ13MuVnDSySnGdVjPm3noj
+ 8krAfxTzd4JMOpLl/osE2xZ7c5hxcy5FVwEilJQZt17uXtZRoovKVe+FVfMWvcycu7er
+ AdHQ==
+X-Gm-Message-State: AOJu0YzlQ0tzbybfvnehuJcxNI9YptffY6Gqg6Gi+IuOZxMwDt1fDyVJ
+ V36p+7bEhQUG4IY1cV1Yzru26RzT8/zZCtwaie+JveMGP/QtXplzTnHm+ZV8NUKAHLbDE2zSPRf
+ M0+wdHOWQ99LdHVLRq9nGGdrwBOIyTJBYtvAepA+rzLXBcKsSEFr4zzfYHN9A2r3Sm273DBMaDz
+ LACbrypPQ3O6QmZ61lt7vKRdqroJHbYx48Ng==
+X-Gm-Gg: ASbGncum2GQx8avW/LXykB3pBt6DY0rbDTd/qC0GL+t4JqXFiIVl9DmRJ8Bi4O9oYBW
+ DYPEhQ7ZjDitToYIb2z5zQ43ldAnOTUYHmLS0aOszDBcdum/jRHGK7fA8+1KcJNW9auDpAhL1RQ
+ 4dIe0hYMgf7ca1W2O9/p8ja2dHEKGIiuAxo3BkyRx/FL4zWp5j+L+8XoJ2KPAj2fQOsKa/Sf3ws
+ vBZnBhOkTP8MZBN+VVTfgEs5VhHoxJq50QOcS/riYUyJaNRLARsHVeld/isM6o8b7A2CHfSToV9
+ /lXBu1kcsvbBeSWS589KkWySdhpyVvxA
+X-Received: by 2002:a5d:64c4:0:b0:3b7:9af4:9c75 with SMTP id
+ ffacd0b85a97d-3b8d348e398mr2227507f8f.30.1754058310223; 
+ Fri, 01 Aug 2025 07:25:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDYhSYUP2yuvx0PWjg60xUssHxKkda4QqYk9jHuLD8qTU5IhqQAzK+PmAxA6f2Ek1FmQdFXQ==
+X-Received: by 2002:a5d:64c4:0:b0:3b7:9af4:9c75 with SMTP id
+ ffacd0b85a97d-3b8d348e398mr2227477f8f.30.1754058309663; 
+ Fri, 01 Aug 2025 07:25:09 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c453c75sm6126809f8f.41.2025.08.01.07.25.06
+ ffacd0b85a97d-3b79c475067sm5997972f8f.58.2025.08.01.07.25.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 07:25:06 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:25:05 -0400
+ Fri, 01 Aug 2025 07:25:09 -0700 (PDT)
+Date: Fri, 1 Aug 2025 10:25:07 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hanna Czenczek <hreitz@redhat.com>, Tingting Mao <timao@redhat.com>,
+ Hanna Czenczek <hreitz@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Stefano Garzarella <sgarzare@redhat.com>, Lei Yang <leiyang@redhat.com>
-Subject: [PULL 02/17] vhost: Do not abort on log-start error
-Message-ID: <c1997099dc26d95eb9f2249f2894aabf4cf0bf8b.1754058276.git.mst@redhat.com>
+Subject: [PULL 03/17] vhost: Do not abort on log-stop error
+Message-ID: <d63c388dadb7717f6391e1bb7f11728c0c1a3e36.1754058276.git.mst@redhat.com>
 References: <cover.1754058276.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -110,19 +110,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hanna Czenczek <hreitz@redhat.com>
 
-Commit 3688fec8923 ("memory: Add Error** argument to .log_global_start()
-handler") enabled vhost_log_global_start() to return a proper error, but
-did not change it to do so; instead, it still aborts the whole process
-on error.
+Failing to stop logging in a vhost device is not exactly fatal.  We can
+log such an error, but there is no need to abort the whole qemu process
+because of it.
 
-This crash can be reproduced by e.g. killing a virtiofsd daemon before
-initiating migration.  In such a case, qemu should not crash, but just
-make the attempted migration fail.
-
-Buglink: https://issues.redhat.com/browse/RHEL-94534
-Reported-by: Tingting Mao <timao@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Message-Id: <20250724125928.61045-2-hreitz@redhat.com>
+Message-Id: <20250724125928.61045-3-hreitz@redhat.com>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Tested-by: Lei Yang <leiyang@redhat.com>
@@ -133,19 +126,19 @@ Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index c30ea1156e..05ad5de629 100644
+index 05ad5de629..6557c58d12 100644
 --- a/hw/virtio/vhost.c
 +++ b/hw/virtio/vhost.c
-@@ -1110,7 +1110,8 @@ static bool vhost_log_global_start(MemoryListener *listener, Error **errp)
+@@ -1122,7 +1122,8 @@ static void vhost_log_global_stop(MemoryListener *listener)
  
-     r = vhost_migration_log(listener, true);
+     r = vhost_migration_log(listener, false);
      if (r < 0) {
 -        abort();
-+        error_setg_errno(errp, -r, "vhost: Failed to start logging");
-+        return false;
++        /* Not fatal, so report it, but take no further action */
++        warn_report("vhost: Failed to stop logging");
      }
-     return true;
  }
+ 
 -- 
 MST
 
