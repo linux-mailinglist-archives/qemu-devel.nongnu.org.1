@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7669B18732
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 20:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7CDB1874E
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 20:24:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhuEc-0002YZ-5W; Fri, 01 Aug 2025 14:12:02 -0400
+	id 1uhuP8-0008Uf-HU; Fri, 01 Aug 2025 14:22:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhslO-0002yd-VH
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 12:37:52 -0400
-Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
+ id 1uhsml-0006lQ-Oy
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 12:39:32 -0400
+Received: from mail-yb1-xb33.google.com ([2607:f8b0:4864:20::b33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uhslM-0002cT-6d
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 12:37:45 -0400
-Received: by mail-yb1-xb36.google.com with SMTP id
- 3f1490d57ef6-e8e14cf9e2aso1911371276.0
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 09:37:43 -0700 (PDT)
+ id 1uhsmk-0002kz-11
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 12:39:11 -0400
+Received: by mail-yb1-xb33.google.com with SMTP id
+ 3f1490d57ef6-e8d96ff2dfaso2214824276.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 09:39:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754066263; x=1754671063; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754066348; x=1754671148; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=o6wvhG3N+qc0vNBp7kVbyWSWqk/t57hJQAjtDWhWDwU=;
- b=fNtmJuvangrq9tICIHWAUQ6gm8yJl38jgsHMxzjBwiZHzQCVZlrRcCf5WYfJ+1cr7d
- YoaK9u9GwpoYCpBcNjcWyaNVccHiYKKcc9dyp30jXw1gGWIl3ttZ3d6okjY201L9JxI8
- r9VA+Od7jL0VWSMo/Oa5/0Q9uUGHgBEgc9JFu9JvlhdijnB9YZH9Zm14w86ccAiDyLLm
- ChhuFxmsVgQKOF4J5SXOH89IQm6EBcIpxTdS9T2NtfPi0lZZujLs8DNaWTWpSHZcraXs
- gBaAN3QPYKz+CJQZ7HOpKfIuUmI3RRTsrWfEmIP/2VfmbZT9PMTJzlwx1vaohVJ1GOk6
- ulKg==
+ bh=3jwB5SndLxSLn3CLa2Zip2Nya51ZQdcQ0VG/1UijsEc=;
+ b=tbcGf8x3cpei563iriQbOQng+9XGViv5qTf0zvoeKle3+hDkGVvcWqUnDszqJcBchx
+ NXrG+qAshjXV2VEfyFTIzONbtv+TPHQHcuLcjECUHUCb4H8wz2hVXktWRwS+4BUjpQ3W
+ urd0mtPs6kpXwQEFOjbQ5IkZGxXicjGTfsurpFYJBlVoByt6BK68QmXoL1ApHesLn84j
+ CCO6kzLrNOfJcM4RibhCwpO39YCq8ev2bkNh5PfqxCPwWvBAge0iHiPjmVSTzkCVvfrS
+ sOlY4HS2zDb46PPo22XL0DETFrrXsvd+gOIlqV3Dnvoxt3yP4wutJN+2CzDoC6W1w+S5
+ P/TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754066263; x=1754671063;
+ d=1e100.net; s=20230601; t=1754066348; x=1754671148;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=o6wvhG3N+qc0vNBp7kVbyWSWqk/t57hJQAjtDWhWDwU=;
- b=kucNoiIQwHYE6rS6XCx8yeDFlq/OoxEpTNYjAToiLopAKkqec2OKHTeMaslvcsyrMG
- 1tDTg4Fq85KMs2DZoSg41+hY7P6qWUHa6EiDY7GDdiixDjEqjLVmpRI1WdM61IdXFsyD
- 5rHd9ei5+HMGhrtP+hjzwMpHXZdg9ANobtZRn5cE8Oqg/bEoeg5oll3qNLyNzHkA0kV7
- tMC5tVD4OIGYW0KgSlXma8mqGc2jDFEcuaFuPCUkwCg0GrGh/L1kbqV8o1pksImdu5hd
- UgGZVm1G4hDPyEzLN0UuvklZfIaqLuWjA9ErQkizoUWRPTdiOu5B6PoVpXnq4DuDfq+L
- eBAQ==
+ bh=3jwB5SndLxSLn3CLa2Zip2Nya51ZQdcQ0VG/1UijsEc=;
+ b=DuomwOMjIoCm0xt9+AG9c0Yl3n5oTfw/kLcY7lNd3TZCYXbitL97ZXwTw4oSTGQPSD
+ XCvfd1sgNGeSZcVwf8QnXfZgmvsbIkAGA555NaqF2MT0ruvXWNNFaBN5HRD33IZKiPI7
+ cOLva1vlQV/XzPO4jxZnqW32qL9zWsMnUF0Ml+RN5CURWguY0M4zDfOnJa+MuX87/QNM
+ 3m6+P84e0y556gY57xlgpNN4Wrx6RJEnmEDTit3dxtOJGCsxLDutYeIrOTHUCo3zBnHi
+ cdU9BB2kE69jFwyfqCZcB1wmv1Iy8kqN8N/zXksQhQe4ZehRqP9zXfjSmVI4oxi0XWpL
+ szrw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVoImeAwbK2PuAAqoOd6uYZ6VYze4AblctW+eLBVBELqmO3aun5MnFM7si7oMc5iG0u+XWimItoI/zw@nongnu.org
-X-Gm-Message-State: AOJu0YyGr1ZZy9T0RJ+QNjQsLQnDYV2LwpwczNezZIH6EYGO5tUx8qHQ
- 0WjZ+YVHorEf2DtTSD5ngQOUK7YKPCrE6mcNLBfWrwtmfoDBz9yMNGczpkFcOE5WjSrG2u4Q3nM
- AFIXY4Y948PrY0Evqsm9wrdiIwshJKz49ulnKHklj7A==
-X-Gm-Gg: ASbGncvVA2A6nURVYzrP8tsXJx7AqDT6iM/t+Umsgp+5KkU+l8oIKwqSVO/siA3xp7M
- prtuZwP5a5cTG8e20O/ooRgNVed/jjkZFSNGfMLqcVPfDTjhQsWqdYPBaRbFjfuaFfHWEYUj9aD
- vQHErQzp2+zgoynNtk2h3aAumyEPdQ1o8v26Xu2WZfHloKYdWAd3STvB4nBaf3j9CoGJPcy6t1b
- M42yob6
-X-Google-Smtp-Source: AGHT+IG9mY2aGPSxyivwuDVY8viMx/RoSGqYncyUm6TzvVuWeQGcMmHKoWBdpmKJ3vm6GtKElWERe+x3apJoZqJW+KY=
-X-Received: by 2002:a05:690c:d96:b0:71a:1e72:84c6 with SMTP id
- 00721157ae682-71b7f5e133emr3841217b3.1.1754066262739; Fri, 01 Aug 2025
- 09:37:42 -0700 (PDT)
+ AJvYcCX9N0iA7Emt2W7w5UdZ7H5dy+e56MI+7IXimpf5F98v9IE4QURjA+LFo9IET5fj85sSqLk7kttcHzWl@nongnu.org
+X-Gm-Message-State: AOJu0YyAAgi8y4SlkPXgF45Kqsu/BZc49aR0u/9JdV2PmuBLVCLt2vkM
+ D+0LtRGewCXguZpR6/2yaxSLP4rekf8oPu1Jpkln44OdorwA+BKDJjsRVRKJIzzHzYo43TyDNCo
+ FUieziKjOr8MoaBnZaKxyTaz134aZg/dsrIdTboYa4w==
+X-Gm-Gg: ASbGncv0mcpcAGbvAA+ObmM+jl1FTlpyDU8qQ0DLPbkxLrTEJw8SJanAfkycSkylx/p
+ qlkiv67+Gc4qj/+B3dlEnHpmTku7ERAinDcPmXwgj84jtGeR9Dg1lDp+FeKN05MS2bVO5lp8C+H
+ xs4XvQgxpWi1jD3t2zxNTlvg4xBZM1jVbVHT57IdZGiv3xRtAu7w65Di15tFnvs9lSmOnCNONv0
+ FgYzM2H71oQf9z3Hks=
+X-Google-Smtp-Source: AGHT+IHPmiIPWJavlcndnHVMaLRgwax8Bwr0A9pnQsMWSTfQB8X+Jlek3dkVq9+4ljBrBDOrq7o6kdd7Wr94S2KErJc=
+X-Received: by 2002:a05:690c:2783:b0:71a:3c89:d132 with SMTP id
+ 00721157ae682-71b7f5f35c8mr4036697b3.37.1754066348358; Fri, 01 Aug 2025
+ 09:39:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250727080254.83840-1-richard.henderson@linaro.org>
- <20250727080254.83840-48-richard.henderson@linaro.org>
- <b2e40787-6043-4d4c-9cbb-731d0e92e25c@linaro.org>
- <CAFEAcA_9tkv1EoM33=G=zW6Pw0gBirvjs-SsDaC8ar8feyH_8g@mail.gmail.com>
- <2c337408-5caa-4e24-a8dd-d947203a1dc3@linaro.org>
-In-Reply-To: <2c337408-5caa-4e24-a8dd-d947203a1dc3@linaro.org>
+References: <20250725201906.19533-1-pierrick.bouvier@linaro.org>
+ <bfdd8821-a7f7-4648-a389-124426da6d15@linaro.org>
+ <144f0930-af30-42b0-849c-99242d3f09ee@linaro.org>
+ <CAFEAcA-ycO=AO8UO+X3f6pw34J=iFwW3dpPyMXKm5BzJ11dt5Q@mail.gmail.com>
+ <25fe9c70-be00-4884-8d91-53dfff745cb6@linaro.org>
+ <CAFEAcA8qHUT-0k6chAFZ61J=YZ7xLvhYgqsgtQiCgkfaxfFRxg@mail.gmail.com>
+ <034c953f-dce6-4068-8f93-05e758e67703@linaro.org>
+In-Reply-To: <034c953f-dce6-4068-8f93-05e758e67703@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 1 Aug 2025 17:37:31 +0100
-X-Gm-Features: Ac12FXzdJcNwN20FjQK44CG3SDhOjse_9wCuWeFpv3ANO9STSycHhTWBwR5LZyg
-Message-ID: <CAFEAcA-LmS0dus5ZW6P+-VXkw=m4K3MaE6O+Qtj5i3H7ULJFFQ@mail.gmail.com>
-Subject: Re: [PATCH 47/82] target/arm: Expand pstate to 64 bits
+Date: Fri, 1 Aug 2025 17:38:56 +0100
+X-Gm-Features: Ac12FXwzMw2UMBpy09nEG-t1hw2KeO_0GDieial8QRGc_voE-8FInLNSetqqNpw
+Message-ID: <CAFEAcA9H4WtVUuEX8kf8LiHQ3Z421Fq3ukbLnCRRfUKLyRF6QA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] single-binary: compile hw/intc/arm* files once
 To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
- qemu-arm@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b33;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,77 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 1 Aug 2025 at 17:26, Pierrick Bouvier
+On Fri, 1 Aug 2025 at 17:31, Pierrick Bouvier
 <pierrick.bouvier@linaro.org> wrote:
 >
-> On 8/1/25 6:22 AM, Peter Maydell wrote:
-> > On Thu, 31 Jul 2025 at 21:34, Pierrick Bouvier
+> On 8/1/25 1:34 AM, Peter Maydell wrote:
+> > On Thu, 31 Jul 2025 at 19:30, Pierrick Bouvier
 > > <pierrick.bouvier@linaro.org> wrote:
-> >>
-> >> On 7/27/25 1:02 AM, Richard Henderson wrote:
-> >>> diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-> >>> index 64ee9b3b56..3cef47281a 100644
-> >>> --- a/target/arm/gdbstub64.c
-> >>> +++ b/target/arm/gdbstub64.c
-> >>> @@ -47,6 +47,7 @@ int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-> >>>        case 32:
-> >>>            return gdb_get_reg64(mem_buf, env->pc);
-> >>>        case 33:
-> >>> +        /* pstate is now a 64-bit value; can we simply adjust the xml? */
-> >>>            return gdb_get_reg32(mem_buf, pstate_read(env));
-> >>>        }
-> >>
-> >> If I'm correct, we currently don't expose PSTATE through gdbstub, but
-> >> only CPSR. This was a bit confusing for me, considering that CPSR is not
-> >> even supposed to exist in Aarch64.
-> >> Maybe it's a good opportunity to expose PSTATE instead, which could have
-> >> a 64 bits size. This way, we don't break any workflow.
+> >> Regarding the "modern" completion support, I recommend you take a look
+> >> at it. Even though you wrote or reviewed most of the code you navigate
+> >> in everyday, and thus don't need it, it has become a standard tool for
+> >> any developer, like sanitizers or omniscient debugging. It's especially
+> >> interesting since those tools are based on compilers (clangd is the
+> >> standard for C/C++ nowadays) and not a bunch of clunky regexps.
+> >> It's even more interesting when you learn a new language, like Rust.
 > >
-> > Architecturally, PSTATE is simply an abstract bundling together of
-> > different information: it is not a particular format of a value,
-> > whether 32 or 64 bit or otherwise. (This makes it different to
-> > AArch32 CPSR, which really is a guest-visible register.)
+> > I do actually have clangd enabled at the moment in emacs:
+> > but my experience is not good, because typically what happens
+> > is that clangd runs itself out of memory and falls over
+> > fairly frequently, or it produces obscure error messages like
+> > "LSP :: Error from the Language Server: trying to get AST for
+> > non-added document (Invalid Parameter)"...
+> >
+> > So I mostly continue to investigate code the way I always have
+> > done, with grep.
 > >
 >
-> I see.
-> Then maybe what we really miss are the special registers associated to
-> PSTATE (CurrentEL, DAIF, NZCV, ...) which are defined architecturally.
-> When I tried to read EL for the first time using gdbstub, I was looking
-> for CurrentEL, and finally found it accidently under CPSR.
-> Would that make more sense?
+> By any chance, are you using an old version of clangd (or an old
+> distro)? It has been a few years since I didn't run into any issue with
+> it, and it's quite easy to update it using llvm apt repositories without
+> updating your whole system [1].
 
-I think for backwards-compatibility reasons we should stick
-with the current cpsr format for the information that is in it.
-We do at least define the fields so you get a nice view of it:
-
-(gdb) print $cpsr
-$4 = [ EL=0 BTYPE=0 Z ]
-
-> > The thing that *is* defined architecturally is the SPSR_ELx format, which
-> > is where various bits of PSTATE get saved when reporting an exception up
-> > to a higher exception level (and which is pretty much the AArch32 CPSR
-> > format when the lower EL is AArch32). (Note that not *all* of PSTATE
-> > appears in the SPSR_ELx: for example the SME SM and ZA bits are
-> > considered part of PSTATE but they aren't saved into SPSR_ELx.)
-> >
-> > For convenience, various pieces of software pass around information
-> > in that SPSR_ELx format. Calling this either "CPSR" or "PSTATE"
-> > is not really correct, but either is perhaps less confusing than
-> > calling it SPSR when the context is that of the code running at the
-> > lower EL rather than the higher.
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/include/asm/kgdb.h#n41
-> > suggests that expanding the existing pstate to 64 bits is probably
-> > likely to produce problems. Perhaps we should define a pstate_high
-> > or something for the top 32 bits?
-> >
->
-> It seems we don't expose pstate at all now, and from your answer above,
-> it would not make sense to expose it directly, as it's not formally
-> defined. What is exposed by kgdb?
-
-kgdb currently does the same thing we do, and exposes a 32-bit
-"cpsr" value.
+I use the Ubuntu 24.04 version. In general I try to avoid
+using tooling that isn't packaged by the distro: it
+tends to result in headaches later on.
 
 -- PMM
 
