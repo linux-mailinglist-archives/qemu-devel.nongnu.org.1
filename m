@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 250F7B18595
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F145B18597
 	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 18:19:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhsT4-0007x0-Q9; Fri, 01 Aug 2025 12:18:50 -0400
+	id 1uhsSu-0006Ih-Fe; Fri, 01 Aug 2025 12:18:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrRa-0000k4-Eu
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrRb-0000mc-6X
  for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrRY-0002dl-5X
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:13 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uhrRZ-0002e5-4Z
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 11:13:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754061189;
+ s=mimecast20190719; t=1754061192;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ibm3kgce5FekFo1WNXT0w96YzFVkoA7AKH6q7v2gODw=;
- b=RkSt+gzG5Qaz6FfSkzKxm5BHNsoyk1XeUcvvdrN7yn+ZhHN+SNzIgqWwP1jSiJFzM7xlrp
- 0IVCZNahfFbZoIBmVt20xcGdABE/naBr7s7qFV9eWJ80SSJpoUhKLPKiwnZeV3iTATU+P3
- tynk1jNP3rQJXV5aSELfOb5NKUACE0Y=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=7Rd5KdS4DlTjqASzfCYwNUaZl+0aufFass/Sy/6SrgY=;
+ b=Bj+kq0y1bHkL+zRV6R+qZSjiqHjqHTmzdePTiGd6CGPFRoUDVfis3EHugpVy5lIV06OztG
+ sy2gwWkSfyCAMZbAMm1hm33801DNwPiA3IoDueh5Q4d5Ys93iDvN/rWf7UTuaeIft/orny
+ Od0Ah77Kzrt/9MGOpYJmXE4g8fnzH6Q=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-ZqZZOCIlNQevAPSmKt52Jw-1; Fri,
- 01 Aug 2025 11:13:06 -0400
-X-MC-Unique: ZqZZOCIlNQevAPSmKt52Jw-1
-X-Mimecast-MFC-AGG-ID: ZqZZOCIlNQevAPSmKt52Jw_1754061185
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-xWNgNvwiM5WWfBiUrA6v0g-1; Fri,
+ 01 Aug 2025 11:13:09 -0400
+X-MC-Unique: xWNgNvwiM5WWfBiUrA6v0g-1
+X-Mimecast-MFC-AGG-ID: xWNgNvwiM5WWfBiUrA6v0g_1754061188
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 30286195608F; Fri,  1 Aug 2025 15:13:05 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F1A1D180087E; Fri,  1 Aug 2025 15:13:07 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.225.137])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E54171800B4F; Fri,  1 Aug 2025 15:13:00 +0000 (UTC)
+ id BABEB180035E; Fri,  1 Aug 2025 15:13:05 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 02/24] tests/functional: Rework the multiprocess test to have
- target-specific files
-Date: Fri,  1 Aug 2025 17:12:27 +0200
-Message-ID: <20250801151251.751368-3-thuth@redhat.com>
+Subject: [PATCH 03/24] tests/functional/meson.build: Split timeout settings by
+ target
+Date: Fri,  1 Aug 2025 17:12:28 +0200
+Message-ID: <20250801151251.751368-4-thuth@redhat.com>
 In-Reply-To: <20250801151251.751368-1-thuth@redhat.com>
 References: <20250801151251.751368-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -60,15 +60,14 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,211 +85,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-We are going to move the tests for each target into separate subdirectories.
-The multiprocess test currently contains code for both, x86 and aarch64,
-so it does not quite fit into this scheme. Rework the test to have a common
-test class, and target specific files with a target specific class, so
-that this will fit better into the new scheme.
+We are going to move these settings into target-specific subfolders.
+As a first step, split the big test_timeouts array up into individual
+ones.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                                   |  2 +-
- tests/functional/meson.build                  |  4 +-
- .../{test_multiprocess.py => multiprocess.py} | 40 +------------------
- tests/functional/test_aarch64_multiprocess.py | 31 ++++++++++++++
- tests/functional/test_x86_64_multiprocess.py  | 31 ++++++++++++++
- 5 files changed, 67 insertions(+), 41 deletions(-)
- rename tests/functional/{test_multiprocess.py => multiprocess.py} (58%)
- mode change 100755 => 100644
- create mode 100755 tests/functional/test_aarch64_multiprocess.py
- create mode 100755 tests/functional/test_x86_64_multiprocess.py
+ tests/functional/meson.build | 50 +++++++++++++++++++++++++++++++-----
+ 1 file changed, 44 insertions(+), 6 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 97f491b083c..f2164c2b155 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4284,7 +4284,7 @@ F: hw/remote/vfio-user-obj.c
- F: include/hw/remote/vfio-user-obj.h
- F: hw/remote/iommu.c
- F: include/hw/remote/iommu.h
--F: tests/functional/test_multiprocess.py
-+F: tests/functional/*multiprocess.py
- 
- VFIO-USER:
- M: John Levon <john.levon@nutanix.com>
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 5fb13928b9e..19ea85a6361 100644
+index 19ea85a6361..d0c01303654 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -90,6 +90,7 @@ tests_aarch64_system_thorough = [
-   'aarch64_hotplug_pci',
-   'aarch64_imx8mp_evk',
-   'aarch64_kvm',
-+  'aarch64_multiprocess',
-   'aarch64_raspi3',
-   'aarch64_raspi4',
-   'aarch64_replay',
-@@ -106,7 +107,6 @@ tests_aarch64_system_thorough = [
-   'aarch64_virt_gpu',
-   'aarch64_xen',
-   'aarch64_xlnx_versal',
--  'multiprocess',
- ]
+@@ -10,7 +10,7 @@ if get_option('tcg_interpreter')
+ endif
  
- tests_alpha_system_quick = [
-@@ -331,7 +331,7 @@ tests_x86_64_system_thorough = [
-   'acpi_bits',
-   'intel_iommu',
-   'linux_initrd',
--  'multiprocess',
-+  'x86_64_multiprocess',
-   'netdev_ethtool',
-   'virtio_balloon',
-   'virtio_gpu',
-diff --git a/tests/functional/test_multiprocess.py b/tests/functional/multiprocess.py
-old mode 100755
-new mode 100644
-similarity index 58%
-rename from tests/functional/test_multiprocess.py
-rename to tests/functional/multiprocess.py
-index 92d5207b0eb..6a06c1eda19
---- a/tests/functional/test_multiprocess.py
-+++ b/tests/functional/multiprocess.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0-or-later
- #
- # Test for multiprocess qemu
- #
-@@ -9,33 +9,13 @@
- import os
- import socket
+ # Timeouts for individual tests that can be slow e.g. with debugging enabled
+-test_timeouts = {
++test_aarch64_timeouts = {
+   'aarch64_aspeed_ast2700' : 600,
+   'aarch64_aspeed_ast2700fc' : 600,
+   'aarch64_device_passthrough' : 720,
+@@ -25,7 +25,9 @@ test_timeouts = {
+   'aarch64_tuxrun' : 240,
+   'aarch64_virt' : 360,
+   'aarch64_virt_gpu' : 480,
+-  'acpi_bits' : 420,
++}
++
++test_arm_timeouts = {
+   'arm_aspeed_palmetto' : 120,
+   'arm_aspeed_romulus' : 120,
+   'arm_aspeed_witherspoon' : 120,
+@@ -44,24 +46,55 @@ test_timeouts = {
+   'arm_replay' : 240,
+   'arm_tuxrun' : 240,
+   'arm_sx1' : 360,
+-  'intel_iommu': 300,
++}
++
++test_mips_timeouts = {
+   'mips_malta' : 480,
++}
++
++test_mipsel_timeouts = {
+   'mipsel_malta' : 420,
+   'mipsel_replay' : 480,
++}
++
++test_mips64_timeouts = {
+   'mips64_malta' : 240,
++}
++
++test_mips64el_timeouts = {
+   'mips64el_malta' : 420,
+   'mips64el_replay' : 180,
+-  'netdev_ethtool' : 180,
++}
++
++test_ppc_timeouts = {
+   'ppc_40p' : 240,
++}
++
++test_ppc64_timeouts = {
+   'ppc64_hv' : 1000,
+   'ppc64_powernv' : 480,
+   'ppc64_pseries' : 480,
+   'ppc64_replay' : 210,
+   'ppc64_tuxrun' : 420,
+   'ppc64_mac99' : 120,
++}
++
++test_riscv64_timeouts = {
+   'riscv64_tuxrun' : 120,
++}
++
++test_s390x_timeouts = {
+   's390x_ccw_virtio' : 420,
++}
++
++test_sh4_timeouts = {
+   'sh4_tuxrun' : 240,
++}
++
++test_x86_64_timeouts = {
++  'acpi_bits' : 420,
++  'intel_iommu': 300,
++  'netdev_ethtool' : 180,
+   'virtio_balloon': 120,
+   'x86_64_kvm_xen' : 180,
+   'x86_64_replay' : 480,
+@@ -403,6 +436,11 @@ foreach speed : ['quick', 'thorough']
+                                build_by_default: false,
+                                env: test_precache_env)
+       precache_all += precache
++      if is_variable('test_' + target_base + '_timeouts')
++        time_out = get_variable('test_' + target_base + '_timeouts').get(test, 90)
++      else
++        time_out = 90
++      endif
  
--from qemu_test import QemuSystemTest, Asset, wait_for_console_pattern
-+from qemu_test import QemuSystemTest, wait_for_console_pattern
- from qemu_test import exec_command, exec_command_and_wait_for_pattern
- 
- class Multiprocess(QemuSystemTest):
- 
-     KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
- 
--    ASSET_KERNEL_X86 = Asset(
--        ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
--         '/releases/31/Everything/x86_64/os/images/pxeboot/vmlinuz'),
--        'd4738d03dbbe083ca610d0821d0a8f1488bebbdccef54ce33e3adb35fda00129')
--
--    ASSET_INITRD_X86 = Asset(
--        ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
--         '/releases/31/Everything/x86_64/os/images/pxeboot/initrd.img'),
--        '3b6cb5c91a14c42e2f61520f1689264d865e772a1f0069e660a800d31dd61fb9')
--
--    ASSET_KERNEL_AARCH64 = Asset(
--        ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
--         '/releases/31/Everything/aarch64/os/images/pxeboot/vmlinuz'),
--        '3ae07fcafbfc8e4abeb693035a74fe10698faae15e9ccd48882a9167800c1527')
--
--    ASSET_INITRD_AARCH64 = Asset(
--        ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
--         '/releases/31/Everything/aarch64/os/images/pxeboot/initrd.img'),
--        '9fd230cab10b1dafea41cf00150e6669d37051fad133bd618d2130284e16d526')
--
-     def do_test(self, kernel_asset, initrd_asset,
-                 kernel_command_line, machine_type):
-         """Main test method"""
-@@ -85,19 +65,3 @@ def do_test(self, kernel_asset, initrd_asset,
- 
-         proxy_sock.close()
-         remote_sock.close()
--
--    def test_multiprocess(self):
--        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
--        if self.arch == 'x86_64':
--            kernel_command_line += 'console=ttyS0 rdinit=/bin/bash'
--            self.do_test(self.ASSET_KERNEL_X86, self.ASSET_INITRD_X86,
--                         kernel_command_line, 'pc')
--        elif self.arch == 'aarch64':
--            kernel_command_line += 'rdinit=/bin/bash console=ttyAMA0'
--            self.do_test(self.ASSET_KERNEL_AARCH64, self.ASSET_INITRD_AARCH64,
--                         kernel_command_line, 'virt,gic-version=3')
--        else:
--            assert False
--
--if __name__ == '__main__':
--    QemuSystemTest.main()
-diff --git a/tests/functional/test_aarch64_multiprocess.py b/tests/functional/test_aarch64_multiprocess.py
-new file mode 100755
-index 00000000000..1c6e45ecb67
---- /dev/null
-+++ b/tests/functional/test_aarch64_multiprocess.py
-@@ -0,0 +1,31 @@
-+#!/usr/bin/env python3
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+# Test for multiprocess qemu on aarch64
-+
-+from multiprocess import Multiprocess
-+from qemu_test import Asset
-+
-+
-+class Aarch64Multiprocess(Multiprocess):
-+
-+    ASSET_KERNEL_AARCH64 = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
-+         '/releases/31/Everything/aarch64/os/images/pxeboot/vmlinuz'),
-+        '3ae07fcafbfc8e4abeb693035a74fe10698faae15e9ccd48882a9167800c1527')
-+
-+    ASSET_INITRD_AARCH64 = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
-+         '/releases/31/Everything/aarch64/os/images/pxeboot/initrd.img'),
-+        '9fd230cab10b1dafea41cf00150e6669d37051fad133bd618d2130284e16d526')
-+
-+    def test_multiprocess(self):
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'rdinit=/bin/bash console=ttyAMA0')
-+        self.do_test(self.ASSET_KERNEL_AARCH64, self.ASSET_INITRD_AARCH64,
-+                     kernel_command_line, 'virt,gic-version=3')
-+
-+
-+if __name__ == '__main__':
-+    Multiprocess.main()
-diff --git a/tests/functional/test_x86_64_multiprocess.py b/tests/functional/test_x86_64_multiprocess.py
-new file mode 100755
-index 00000000000..756629dd446
---- /dev/null
-+++ b/tests/functional/test_x86_64_multiprocess.py
-@@ -0,0 +1,31 @@
-+#!/usr/bin/env python3
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+# Test for multiprocess qemu on x86
-+
-+from multiprocess import Multiprocess
-+from qemu_test import Asset
-+
-+
-+class X86Multiprocess(Multiprocess):
-+
-+    ASSET_KERNEL_X86 = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
-+         '/releases/31/Everything/x86_64/os/images/pxeboot/vmlinuz'),
-+        'd4738d03dbbe083ca610d0821d0a8f1488bebbdccef54ce33e3adb35fda00129')
-+
-+    ASSET_INITRD_X86 = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
-+         '/releases/31/Everything/x86_64/os/images/pxeboot/initrd.img'),
-+        '3b6cb5c91a14c42e2f61520f1689264d865e772a1f0069e660a800d31dd61fb9')
-+
-+    def test_multiprocess(self):
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'console=ttyS0 rdinit=/bin/bash')
-+        self.do_test(self.ASSET_KERNEL_X86, self.ASSET_INITRD_X86,
-+                     kernel_command_line, 'pc')
-+
-+
-+if __name__ == '__main__':
-+    Multiprocess.main()
+       # Ideally we would add 'precache' to 'depends' here, such that
+       # 'build_by_default: false' lets the pre-caching automatically
+@@ -418,8 +456,8 @@ foreach speed : ['quick', 'thorough']
+            env: test_env,
+            args: [testpath],
+            protocol: 'tap',
+-           timeout: test_timeouts.get(test, 90),
+-           priority: test_timeouts.get(test, 90),
++           timeout: time_out,
++           priority: time_out,
+            suite: suites)
+     endforeach
+   endforeach
 -- 
 2.50.1
 
