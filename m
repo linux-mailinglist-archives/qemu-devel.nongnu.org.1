@@ -2,97 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861C3B1829E
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 15:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D01B17DD7
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 09:57:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhpw4-0005VR-Q1; Fri, 01 Aug 2025 09:36:37 -0400
+	id 1uhkbu-0002SQ-FV; Fri, 01 Aug 2025 03:55:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerkolothum@gmail.com>)
- id 1uhkUc-00051W-Oy; Fri, 01 Aug 2025 03:47:55 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shameerkolothum@gmail.com>)
- id 1uhkUa-0007nu-QK; Fri, 01 Aug 2025 03:47:54 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4560cdf235cso9388605e9.1; 
- Fri, 01 Aug 2025 00:47:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1754034470; x=1754639270; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ov0CnZ6hllKCqiijw1Ug4lyN3JdBE3w2Bo15YiF82ag=;
- b=Iv/JO4yda5/XDvw/zVbC/X9JYvXyAfzu+qc5MTdjEJxrmvlzSCCTn9MGbbyvlCKB+M
- hMmkRISV3/63v0DTwwkZi4NJaWlP2HpFxC627gLDBDYIlzJ9QY6AJt9y3NS1iQS4SzBx
- FmOMVUeX6yctlC6Z9gMeqgy7mRAr9DAyn6lVRWdh6UdHd5kR6FYq1T4kDs/MoZF9YraY
- Q4cJzTULqm19pMl2JPoeMezmpJGmpybPIIjiQHQmlKhQZAR6Wfhko1OnBO/kWyPZ+aNr
- D38A3i3au344UVCKA3h8U5Wf8yj4AbwM8OclsblDpPO3oWpT6vYJnLDjz6UaYQRIbqjh
- 14wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754034470; x=1754639270;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ov0CnZ6hllKCqiijw1Ug4lyN3JdBE3w2Bo15YiF82ag=;
- b=sP7xM5+7doS4vbLRMI0jfOHUF5VWOCHswvX7JNY8a//rnuUmRSGcgBDM6b6/mjEe8O
- 2UNv32J+2WbsMqYV6PK5LrfrBqliY1iDXEj3Yrj+gF4H38V49Wa2mA3X++TSkkCUM+Es
- zKVyGYzv9WSRpDtFFidcfJJoMzVO1FQajEqllzL7PJstCLg27D7UZxZ4/DXUC7GBtttH
- fr7zvhhH/2wyPg+SjXQ8+HRnQ0WANSoVSGKuYnSG7oIz24gKAaoEpPuHQU3VuzE3pSLa
- Yv3UDnRMm3jUzmfx851v0kSJ3wYG0WYZ813hPXnkdpsr2fNx4uWHJ25ZHt5pPvL7zOv4
- 5s8w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWivgs0LrxMTRB3N8KE0gcdV9XTND76Qhc5w7BveKSL//BV8/AGhBR8cBBbNty138zOX06RNkI5twx+@nongnu.org
-X-Gm-Message-State: AOJu0YwKtnQa8kuf5VQg6v0h8P3DdYAZyD+YfNagTW04gkjVXfRwAhQl
- 0P/YjL0Xvca0McqxY/d5pgbVaLc6hIon4puAbPljqitZ2ozH0gMvrwPDziMVug==
-X-Gm-Gg: ASbGncsQFEU/OGYdtj+WcrEb4cAY4jcSCUaoo9tSYhju12pA8GBpPoJ5gMBvb81nSZJ
- svOc9sI8nrP1ATRZqacw+Y3asADpzvtwuE89da2SrIwLJnBZsxU5pAHmnzVC0AYbwo+SQJlVZQ8
- +6Fhe7lOyQ/mpEggsZyKxp4bPXUJsma46yq3H7ny5IS6a7854NNrPW+KWIUqpHOBjEMGankXS27
- VonYfkuWYdOfI14Y7NIbSMmqLz3Vgo9I3jQgeD1FSE6DBDBwoSn6Z8lOpnLM4gNG97DufXrukCA
- /k4z0Lkq7VQU+eM0RAnQqhf89p8N+mv+izd3VYxLN+37DMOt/cLq+jBG+/tg9tqilr48iOzHkZD
- gP0x3A2NrMy/8nEfjCRc/38rqEyIxI2Fn/A==
-X-Google-Smtp-Source: AGHT+IHw0s5vRX9hiKIGqaNMqYOSZM+3EhnTkDB3mYJdCHKjAgVdM5kXkCqL09KKppw3GKkpwu2k8g==
-X-Received: by 2002:a05:600c:1c92:b0:458:a5f9:aa68 with SMTP id
- 5b1f17b1804b1-458a9aff5a8mr14716955e9.2.1754034469906; 
- Fri, 01 Aug 2025 00:47:49 -0700 (PDT)
-Received: from shameer-ubuntu ([195.11.233.227])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-3b79c453ab0sm5049185f8f.44.2025.08.01.00.47.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 00:47:49 -0700 (PDT)
-From: Shameer Kolothum <shameerkolothum@gmail.com>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: eric.auger@redhat.com, peter.maydell@linaro.org, cohuck@redhat.com,
- sebott@redhat.com, berrange@redhat.com, maz@kernel.org,
- oliver.upton@linux.dev, armbru@redhat.com, linuxarm@huawei.com,
- wangzhou1@hisilicon.com, jiangkunkun@huawei.com,
- jonathan.cameron@huawei.com, salil.mehta@huawei.com,
- yangjinqian1@huawei.com, shameerkolothum@gmail.com,
- shameerali.kolothum.thodi@huawei.com
-Subject: [RFC PATCH RESEND 4/4] hw/arm/virt: Add Target Implementation CPU
- support
-Date: Fri,  1 Aug 2025 08:47:30 +0100
-Message-ID: <20250801074730.28329-5-shameerkolothum@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250801074730.28329-1-shameerkolothum@gmail.com>
-References: <20250801074730.28329-1-shameerkolothum@gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uhkbc-0002Nv-36; Fri, 01 Aug 2025 03:55:08 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uhkbZ-0000TN-PA; Fri, 01 Aug 2025 03:55:07 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 0D05613C97B;
+ Fri, 01 Aug 2025 10:54:28 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 40D022546C6;
+ Fri,  1 Aug 2025 10:54:41 +0300 (MSK)
+Message-ID: <0b9cecd3-9493-492f-8130-30e0809010f7@tls.msk.ru>
+Date: Fri, 1 Aug 2025 10:54:40 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=shameerkolothum@gmail.com; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 10/11] tests: Add iotest mirror-sparse for recent
+ patches
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, vsementsov@yandex-team.ru, stefanha@redhat.com,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20250425005439.2252467-13-eblake@redhat.com>
+ <20250425005439.2252467-23-eblake@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+In-Reply-To: <20250425005439.2252467-23-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 01 Aug 2025 09:35:51 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,138 +105,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+On 25.04.2025 03:52, Eric Blake wrote:
+> Prove that blockdev-mirror can now result in sparse raw destination
+> files, regardless of whether the source is raw or qcow2.  By making
+> this a separate test, it was possible to test effects of individual
+> patches for the various pieces that all have to work together for a
+> sparse mirror to be successful.
+> 
+> Note that ./check -file produces different job lengths than ./check
+> -qcow2 (the test uses a filter to normalize); that's because when
+> deciding how much of the image to be mirrored, the code looks at how
+> much of the source image was allocated (for qcow2, this is only the
+> written clusters; for raw, it is the entire file).  But the important
+> part is that the destination file ends up smaller than 3M, rather than
+> the 20M it used to be before this patch series.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
 
-Add the impl-cpu property to virt machine. This will enable
-user to specify the target implementation CPUs as the example
-below:
+Hi!
 
+This test requires O_DIRECT to be available on the underlying filesystem
+
+Without O_DIRECT support, the test fails with:
+
+Listing only the last 100 lines from a long log.
+-{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, 
+"event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job2"}}
 ...
--M impl-cpu.0.midr=1,impl-cpu.0.revidr=1,impl-cpu.0.aidr=1,\
-impl-cpu.1.midr=2,impl-cpu.1.revidr=2,impl-cpu.1.aidr=2 \
+-*** done
++Timeout waiting for capabilities on handle 0
 
-Make use of helper functions to check the KVM support for target
-Impl CPUs and if supported set the user specified target CPUs.
+which is not helping at all.
 
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
----
- hw/arm/virt.c         | 66 +++++++++++++++++++++++++++++++++++++++++++
- include/hw/arm/virt.h |  3 ++
- 2 files changed, 69 insertions(+)
+This hit me on debian, where automatic buildds run everything on
+a tmpfs which does not support O_DIRECT, and the test failed this
+way, without a way to tell what's wrong.
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index a96452f17a..72a0cd3ea8 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -71,6 +71,7 @@
- #include "hw/firmware/smbios.h"
- #include "qapi/visitor.h"
- #include "qapi/qapi-visit-common.h"
-+#include "qapi/qapi-visit-machine.h"
- #include "qobject/qlist.h"
- #include "standard-headers/linux/input.h"
- #include "hw/arm/smmuv3.h"
-@@ -2232,6 +2233,20 @@ static void machvirt_init(MachineState *machine)
-         exit(1);
-     }
- 
-+    if (vms->target_cpus_num) {
-+        if (!kvm_enabled()) {
-+            error_report("Target Impl CPU requested, but not supported "
-+                         "without  KVM");
-+            exit(1);
-+        }
-+
-+        if (!kvm_arm_target_impl_cpus_supported()) {
-+            error_report("Target Impl CPU requested, but not supported by KVM");
-+            exit(1);
-+        }
-+        kvm_arm_set_target_impl_cpus(vms->target_cpus_num, vms->target_cpus);
-+    }
-+
-     create_fdt(vms);
- 
-     assert(possible_cpus->len == max_cpus);
-@@ -2666,6 +2681,45 @@ static void virt_set_oem_table_id(Object *obj, const char *value,
-     strncpy(vms->oem_table_id, value, 8);
- }
- 
-+static void virt_set_target_impl_cpus(Object *obj, Visitor *v,
-+                                       const char *name, void *opaque,
-+                                       Error **errp)
-+{
-+    VirtMachineState *vms = VIRT_MACHINE(obj);
-+    ArmTargetImplCPUList *list = NULL;
-+    ArmTargetImplCPUList *iter = NULL;
-+    ArmTargetImplCPU *target_cpus;
-+    uint64_t target_num = 0;
-+    int i;
-+
-+    visit_type_ArmTargetImplCPUList(v, name, &list, errp);
-+    if (!list) {
-+        return;
-+    }
-+
-+    for (iter = list; iter; iter = iter->next) {
-+        target_num++;
-+    }
-+
-+    target_cpus = g_new0(ArmTargetImplCPU, target_num);
-+    for (i = 0, iter = list; iter; iter = iter->next, i++) {
-+        target_cpus[i].midr = iter->value->midr;
-+        target_cpus[i].revidr = iter->value->revidr;
-+        target_cpus[i].aidr = iter->value->aidr;
-+    }
-+    vms->target_cpus_num = target_num;
-+    vms->target_cpus = target_cpus;
-+    vms->target_cpus_list = list;
-+}
-+
-+static void virt_get_target_impl_cpus(Object *obj, Visitor *v, const char *name,
-+                             void *opaque, Error **errp)
-+{
-+    VirtMachineState *vms = VIRT_MACHINE(obj);
-+    ArmTargetImplCPUList **list = &vms->target_cpus_list;
-+
-+    visit_type_ArmTargetImplCPUList(v, name, list, errp);
-+}
- 
- bool virt_is_acpi_enabled(VirtMachineState *vms)
- {
-@@ -3326,6 +3380,18 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-                                           "Override the default value of field OEM Table ID "
-                                           "in ACPI table header."
-                                           "The string may be up to 8 bytes in size");
-+    object_class_property_add(oc, "impl-cpu", "ArmTargetImplCPU",
-+                              virt_get_target_impl_cpus,
-+                              virt_set_target_impl_cpus,
-+                              NULL, NULL);
-+    object_class_property_set_description(oc, "impl-cpu",
-+                                          "Describe target implementation CPU in the format: "
-+                                          "impl-cpu.0.midr=1,"
-+                                          "impl-cpu.0.revidr=1,"
-+                                          "impl-cpu.0.aidr=1,"
-+                                          "impl-cpu.1.midr=2,"
-+                                          "impl-cpu.1.revidr=2,"
-+                                          "impl-cpu.1.aidr=2");
- 
- }
- 
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index c8e94e6aed..cf462fcb37 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -180,6 +180,9 @@ struct VirtMachineState {
-     char *oem_id;
-     char *oem_table_id;
-     bool ns_el2_virt_timer_irq;
-+    uint64_t target_cpus_num;
-+    ArmTargetImplCPU *target_cpus;
-+    ArmTargetImplCPUList *target_cpus_list;
- };
- 
- #define VIRT_ECAM_ID(high) (high ? VIRT_HIGH_PCIE_ECAM : VIRT_PCIE_ECAM)
--- 
-2.34.1
+After adding save_stderr=y to the test, I finally were able to see
+what's going on:
 
++qemu-system-x86_64: -blockdev {"driver":"file", "cache":{"direct":true, 
+"no-flush":false},
++ 
+"filename":"/build/reproducible-path/qemu-10.1.0~rc1+ds/scratch/qcow2-file-mirror-sparse/t.qcow2.base", 
+"node-name":"src-file"}: Could not open 
+'/build/reproducible-path/qemu-10.1.0~rc1+ds/scratch/qcow2-file-mirror-sparse/t.qcow2.base': 
+filesystem does not support O_DIRECT
++Timeout waiting for capabilities on handle 0
+make: *** [debian/rules:188: b/qemu/tested] Error 1
+
+
+but it took me multiple rather painful iterations because each time
+I had to upload new version of the source package to debian for the
+builddds to pick it up (similar to what we have in the CI but without
+saving the build artifacts).
+
+This test should somehow depend on O_DIRECT availability - we already
+had something similar with 9pfs which also required O_DIRECT and
+failed when /tmp was on a tmpfs.
+
+And I think generally stderr should always be visible, at least when
+the test failed, - where it is especially needed to diagnose the issue.
+
+In debian I disabled mirror-sparse test entirely (also had to do a few
+iterations, because it turned out removing the test files has to be
+done before ./configure run).
+
+Thanks,
+
+/mjt
 
