@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E39B183ED
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7377CB183F9
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 16:36:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhqpq-0002fm-KW; Fri, 01 Aug 2025 10:34:16 -0400
+	id 1uhqnd-0007aP-G9; Fri, 01 Aug 2025 10:31:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhQ-0005Um-RZ
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhS-0005VV-Bl
  for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhO-0002kt-7a
- for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:32 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uhqhQ-0002n4-HE
+ for qemu-devel@nongnu.org; Fri, 01 Aug 2025 10:25:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754058329;
+ s=mimecast20190719; t=1754058331;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Vse0o5M8ShmOPdFHjK0g7J6ivikmqeKjL1uql6xTckA=;
- b=Df8a6FN0+6qYE3Ee6XPDjIfbGrWDWMiyfF6dKVt1pmVB1tQXPeSEc62EnouEhk8t4GFDBQ
- a9/PbHr+wGyqH23pO05AzEt1jUSMalGLxDFds7qL/dIuCHMYEEVgph3+1Tlh5Lm7MVZ7kz
- /TRqxPUtOZHxhFzZSHq8FjXXzto3EMI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XA9J84IWz65/jFGEF4PHg1aGXOZdSUvhbvxiqHCyUZw=;
+ b=M0AA6d/FovoeRlY0ZUbxqevcyZmC21aSfqBTa74H7jR7Po3UKCHsmbgEeFFqV+F2qmcxuA
+ 1lQLqxgr0HD5Cwf3vrIp5dyU4LdIdRBATXt9U0C3Tmr6OG6dEwXGdAz8tR3afmby0Qv00W
+ IRQ3V5SOm1nKBuKbWvrgmyhTU1yxJQY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-WiVmFxOvO0GzlibPAMmrgQ-1; Fri, 01 Aug 2025 10:25:28 -0400
-X-MC-Unique: WiVmFxOvO0GzlibPAMmrgQ-1
-X-Mimecast-MFC-AGG-ID: WiVmFxOvO0GzlibPAMmrgQ_1754058327
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3b79ad7b8a5so1475590f8f.3
- for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:27 -0700 (PDT)
+ us-mta-179--xl1FdWtPei5eWUysydeBg-1; Fri, 01 Aug 2025 10:25:30 -0400
+X-MC-Unique: -xl1FdWtPei5eWUysydeBg-1
+X-Mimecast-MFC-AGG-ID: -xl1FdWtPei5eWUysydeBg_1754058329
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4560f28b2b1so6780045e9.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Aug 2025 07:25:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754058327; x=1754663127;
+ d=1e100.net; s=20230601; t=1754058329; x=1754663129;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Vse0o5M8ShmOPdFHjK0g7J6ivikmqeKjL1uql6xTckA=;
- b=YXephtW+WtrB0XZyRNigOP6TNI3IBUiVgCdcn/adPj6GcyIahiFlp//YdujeeTQpC1
- rf59mTEGgtersZSN3E+kTgrmH+0oB9f5Hp0CiEjDevrBEDOuoGV+Zwgq4YsgKChZlh/s
- nMglwx4sh2+Lv2fi0CKpSeZOaT11ctIxovAtTNVH3zqh4HQ6RE9Bb+3eHAjoGXu5nKYA
- 5nqMHv1HXoQWb6npAq9h5ZnYwM0pEXbDx26RY41qSThDo3o3z+1ZpI4SLxmogUt20Q0p
- oJloWf1UBYjWQeW4GDxaa9CrNlFGUlmOraPdE//fqC1a/xsCrVANFu6KvC+Ees2VvYfD
- 1BmQ==
-X-Gm-Message-State: AOJu0YxumlmCY6dJhtMR8na4VPEAkDHg+ZQj/MqC5tEi14/66mNlo3Sx
- svyzfSqR4ky+8UA6zFzZqzZsXpQl8xo6HyQEQWkkLzcQd9r3+gnG3WC3TO+vB07Vexm//Xmt+U1
- YHeisNGoP5Vvgf7YMvOyXzjKA/IZubXOZtB7l9NUhGk/4HyV3IMZPkMvfIyjyjKdC4i3seJA7vM
- fPFcw7XpKL5+Gb2R5bTSUlS8zZ842waTjGiw==
-X-Gm-Gg: ASbGnctGjNpVitjsq97FRiDhDs9jPraHNGhHX88Ypw+bXBZQd9oxxQW+aUtIjw6vvCI
- C65Q5RzVnovgJEgiSEeaFHXI6jLLr3bEok/J5t5T+5hV7j1hN/YLeTxN11gWkp9zVjSAQ1xEnI9
- MtN0gYsajlE27c0+9zx5HaAbGT/Rg09DL61vVUZSITRmRXPk5f/Jtr2mUSrUYsxagiT959xmTR9
- ihBDfHJLGCj8rfJbB0sYIP5uZaf1OLy3LzRC9U/Wg1gbSuUY8h5OvJaMDE0tiELrsd5gIGhnBKp
- 0JFyA4/AJ/LxfOKtOhGvfa/B0g7cvNcf
-X-Received: by 2002:a05:6000:4014:b0:3b7:95ae:2b10 with SMTP id
- ffacd0b85a97d-3b8d3448293mr2280766f8f.23.1754058326584; 
- Fri, 01 Aug 2025 07:25:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE+T6+HlyFxrAUqsjsKOEhSJpRCl30Ujxs9mziIdTPh0nHTmK7tgZhq8subY3rLFVfuuJYNHw==
-X-Received: by 2002:a05:6000:4014:b0:3b7:95ae:2b10 with SMTP id
- ffacd0b85a97d-3b8d3448293mr2280738f8f.23.1754058326089; 
- Fri, 01 Aug 2025 07:25:26 -0700 (PDT)
+ bh=XA9J84IWz65/jFGEF4PHg1aGXOZdSUvhbvxiqHCyUZw=;
+ b=WVms4Q+C/KptirinTi2hWAg05OhLheagb82SD0ySg0cToRn4vCJR28uMVxUBLkT+7A
+ SHXZKRmWtyGLuiVIOhNRXCQayRxCwmRGoeVdl5UaupmkFv+aSXlBxF/+LkD0LVUYBhrv
+ 1IF+9MVrJEb4vEk/4NeJmSvVIsIk5eyWjoLgYM8eBf42kmIRa+aVjBzb3Eljh1Q0yxcp
+ SBJGTf3rOSMQFgis1txlxfoKcJP2YykSPqvR5dprGUAWKtRWeE+rDNnxP/mfb4nWtpfC
+ jCuBDxE4AR/tmq4GokeUxz49h+1RD+4ev+b8X9aZWCCJVAP0+ByyA7QDIpr+o5PP+I6a
+ 430g==
+X-Gm-Message-State: AOJu0YwIYYr3zIKjdn1fuollE/W4tNaX1HicQZ7x/OLPmQrQIEpUK4e4
+ 1o30Zv9vhRlXku31c9PU5Tjf2PYokq8Tvmw11L4QL/xZW8KtrSc+SDoqSriK4myJbYs7L+Nxcmg
+ liGBv/i6rt3WZkBXbHdsmQ2jIGBHjGBuweUzxFhYoRkpFopup+QZJd4I/w8dWZSdj9EBXsaIr9D
+ +Pj2B7j0/vhHxGJowOwM7sGh0KWPKKuzgitQ==
+X-Gm-Gg: ASbGncsB9BxSkuHte8eWlGAJaUGDQd3KEgOufOKK9lsDMZLFHCeb8lmXZQLJvjqT3Iw
+ 5FzK+txJWzDfbFQUmx0e9Hbdw1XzJSwW9FKTdwQJhTO26cU/I1j1YiXKFwFKg/qHsyCqqgKhpjM
+ tZoT3c2nvo+JLWnAJfmfSCpajnyevQhKJh53bZWSgg6jWGzTevFz4LoVPEM+swxeAYS5QZEyg03
+ c9ydiw+9oAo/k8GFmLK8iYaJsnuxBwasGO1hClIk0FcxbqPgoZqVGMtXNyXfp8vh1rHj6wvoGjt
+ iWzsSUV3FsZxFEP5xPd9fFxg+VirCXzA
+X-Received: by 2002:a05:600c:c059:20b0:44b:eb56:1d48 with SMTP id
+ 5b1f17b1804b1-458930a2ea5mr72424285e9.4.1754058328945; 
+ Fri, 01 Aug 2025 07:25:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGgFsLBip16NgLIYRqdPDAuPi03g4j+/ctXE9W03ABHfPZZlwshXYt704MMRORcjGcfvL40Fg==
+X-Received: by 2002:a05:600c:c059:20b0:44b:eb56:1d48 with SMTP id
+ 5b1f17b1804b1-458930a2ea5mr72424015e9.4.1754058328447; 
+ Fri, 01 Aug 2025 07:25:28 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c467994sm6003722f8f.50.2025.08.01.07.25.24
+ 5b1f17b1804b1-4589536bc34sm106134815e9.2.2025.08.01.07.25.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 07:25:25 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:25:24 -0400
+ Fri, 01 Aug 2025 07:25:28 -0700 (PDT)
+Date: Fri, 1 Aug 2025 10:25:26 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -76,9 +76,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 10/17] hw/i386/amd_iommu: Support MMIO writes to the status
- register
-Message-ID: <10690920b0efb3ed8b166443bae8077104bb129d.1754058276.git.mst@redhat.com>
+Subject: [PULL 11/17] hw/i386/amd_iommu: Fix event log generation
+Message-ID: <c0ef803a879b97f3d269348c968fb3874c2761f6.1754058276.git.mst@redhat.com>
 References: <cover.1754058276.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -86,7 +85,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1754058276.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -113,33 +112,139 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sairaj Kodilkar <sarunkod@amd.com>
 
-Support the writes to the status register so that guest can reset the
-EventOverflow, EventLogInt, ComWaitIntr, etc bits after servicing the
-respective interrupt.
+Current event logging code is broken, because of following issues
 
+1. The code uses '|' instead of '&' to test the bit field, which causes
+   vIOMMU to generate overflow interrupt for every log entry.
+2. Code does not update the eventlog tail MMIO register after adding an
+   entry to the buffer, because of which guest cannot process new
+   entries (as head == tail means buffer is empty).
+3. Compares eventlog tail (which is byte offset in the buffer) to
+   eventlog length (which is number of maximum entries in the buffer).
+   This causes vIOMMU to generate only fix number of event logs, after
+   which it keeps on generating overflow interrupts, without
+   actually resetting the log buffer.
+4. Updates ComWaitInt instead of EventLogInt bitfield in Status
+   register. Guest checks this field to see if there are new event log
+   entries in the buffer.
+5. Does not reset event log head and tail pointers when guest writes to
+   eventlog base register.
+
+Fix above issues, so that guest can process event log entries.
+
+Fixes: d29a09ca68428 ("hw/i386: Introduce AMD IOMMU")
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250801060507.3382-6-sarunkod@amd.com>
+Message-Id: <20250801060507.3382-7-sarunkod@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/amd_iommu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/i386/amd_iommu.h |  1 +
+ hw/i386/amd_iommu.c | 44 +++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 36 insertions(+), 9 deletions(-)
 
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 67078c6f1e..2476296c49 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -111,6 +111,7 @@
+ #define AMDVI_MMIO_STATUS_CMDBUF_RUN  (1 << 4)
+ #define AMDVI_MMIO_STATUS_EVT_RUN     (1 << 3)
+ #define AMDVI_MMIO_STATUS_COMP_INT    (1 << 2)
++#define AMDVI_MMIO_STATUS_EVENT_INT   (1 << 1)
+ #define AMDVI_MMIO_STATUS_EVT_OVF     (1 << 0)
+ 
+ #define AMDVI_CMDBUF_ID_BYTE              0x07
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index c9c32cf7b0..6925085d29 100644
+index 6925085d29..26be69bec8 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -862,6 +862,9 @@ static void amdvi_mmio_write(void *opaque, hwaddr addr, uint64_t val,
-         amdvi_mmio_reg_write(s, size, val, addr);
-         amdvi_handle_pprtail_write(s);
-         break;
-+    case AMDVI_MMIO_STATUS:
-+        amdvi_mmio_reg_write(s, size, val, addr);
-+        break;
+@@ -160,10 +160,10 @@ static void amdvi_writeq(AMDVIState *s, hwaddr addr, uint64_t val)
+              (oldval_preserved | newval_write) & ~newval_w1c_set);
+ }
+ 
+-/* OR a 64-bit register with a 64-bit value */
++/* AND a 64-bit register with a 64-bit value */
+ static bool amdvi_test_mask(AMDVIState *s, hwaddr addr, uint64_t val)
+ {
+-    return amdvi_readq(s, addr) | val;
++    return amdvi_readq(s, addr) & val;
+ }
+ 
+ /* OR a 64-bit register with a 64-bit value storing result in the register */
+@@ -192,19 +192,31 @@ static void amdvi_generate_msi_interrupt(AMDVIState *s)
      }
  }
  
++static uint32_t get_next_eventlog_entry(AMDVIState *s)
++{
++    uint32_t evtlog_size = s->evtlog_len * AMDVI_EVENT_LEN;
++    return (s->evtlog_tail + AMDVI_EVENT_LEN) % evtlog_size;
++}
++
+ static void amdvi_log_event(AMDVIState *s, uint64_t *evt)
+ {
++    uint32_t evtlog_tail_next;
++
+     /* event logging not enabled */
+     if (!s->evtlog_enabled || amdvi_test_mask(s, AMDVI_MMIO_STATUS,
+         AMDVI_MMIO_STATUS_EVT_OVF)) {
+         return;
+     }
+ 
++    evtlog_tail_next = get_next_eventlog_entry(s);
++
+     /* event log buffer full */
+-    if (s->evtlog_tail >= s->evtlog_len) {
+-        amdvi_assign_orq(s, AMDVI_MMIO_STATUS, AMDVI_MMIO_STATUS_EVT_OVF);
+-        /* generate interrupt */
+-        amdvi_generate_msi_interrupt(s);
++    if (evtlog_tail_next == s->evtlog_head) {
++        /* generate overflow interrupt */
++        if (s->evtlog_intr) {
++            amdvi_assign_orq(s, AMDVI_MMIO_STATUS, AMDVI_MMIO_STATUS_EVT_OVF);
++            amdvi_generate_msi_interrupt(s);
++        }
+         return;
+     }
+ 
+@@ -213,9 +225,13 @@ static void amdvi_log_event(AMDVIState *s, uint64_t *evt)
+         trace_amdvi_evntlog_fail(s->evtlog, s->evtlog_tail);
+     }
+ 
+-    s->evtlog_tail += AMDVI_EVENT_LEN;
+-    amdvi_assign_orq(s, AMDVI_MMIO_STATUS, AMDVI_MMIO_STATUS_COMP_INT);
+-    amdvi_generate_msi_interrupt(s);
++    s->evtlog_tail = evtlog_tail_next;
++    amdvi_writeq_raw(s, AMDVI_MMIO_EVENT_TAIL, s->evtlog_tail);
++
++    if (s->evtlog_intr) {
++        amdvi_assign_orq(s, AMDVI_MMIO_STATUS, AMDVI_MMIO_STATUS_EVENT_INT);
++        amdvi_generate_msi_interrupt(s);
++    }
+ }
+ 
+ static void amdvi_setevent_bits(uint64_t *buffer, uint64_t value, int start,
+@@ -731,9 +747,19 @@ static inline void amdvi_handle_excllim_write(AMDVIState *s)
+ static inline void amdvi_handle_evtbase_write(AMDVIState *s)
+ {
+     uint64_t val = amdvi_readq(s, AMDVI_MMIO_EVENT_BASE);
++
++    if (amdvi_readq(s, AMDVI_MMIO_STATUS) & AMDVI_MMIO_STATUS_EVENT_INT)
++        /* Do not reset if eventlog interrupt bit is set*/
++        return;
++
+     s->evtlog = val & AMDVI_MMIO_EVTLOG_BASE_MASK;
+     s->evtlog_len = 1UL << (amdvi_readq(s, AMDVI_MMIO_EVTLOG_SIZE_BYTE)
+                     & AMDVI_MMIO_EVTLOG_SIZE_MASK);
++
++    /* clear tail and head pointer to 0 when event base is updated */
++    s->evtlog_tail = s->evtlog_head = 0;
++    amdvi_writeq_raw(s, AMDVI_MMIO_EVENT_HEAD, s->evtlog_head);
++    amdvi_writeq_raw(s, AMDVI_MMIO_EVENT_TAIL, s->evtlog_tail);
+ }
+ 
+ static inline void amdvi_handle_evttail_write(AMDVIState *s)
 -- 
 MST
 
