@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2467B1829B
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 15:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F8CB1829A
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Aug 2025 15:37:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uhpwU-0006rm-SH; Fri, 01 Aug 2025 09:37:03 -0400
+	id 1uhpwZ-0007pe-Ri; Fri, 01 Aug 2025 09:37:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerkolothum@gmail.com>)
- id 1uhkUU-0004x2-0i; Fri, 01 Aug 2025 03:47:46 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1uhkUW-0004zU-WF; Fri, 01 Aug 2025 03:47:49 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shameerkolothum@gmail.com>)
- id 1uhkUS-0007mD-1r; Fri, 01 Aug 2025 03:47:45 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3b785a69454so282335f8f.2; 
- Fri, 01 Aug 2025 00:47:43 -0700 (PDT)
+ id 1uhkUU-0007mb-SI; Fri, 01 Aug 2025 03:47:48 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3b783d851e6so649086f8f.0; 
+ Fri, 01 Aug 2025 00:47:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1754034462; x=1754639262; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1754034464; x=1754639264; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=McuX8ddB1qy3M8rDtLBmAXapnNFyt1WXwwwCGHWX4bI=;
- b=faIvZt14Z+CmHUqjTbCK96J2UrQtXzQe4VsfffcuEBKVs3nGBXT+yJAHmuMgo2YXc3
- Mxm9XxMogz4speJziNiAZQWBkNPGVTCzddR8/O/TgrxdWlGGFhq9whsjC/LMiE+wvp7j
- ZdukxBY+urhzaa4et8yYctjxD8Ua88cHlxplf3EVg+1bpXcgoUACjfy9TZgeU+NTwxWd
- H+2aPoh1X4i7EGtwgOox/EvDRUzn9JZs4xLpj9mCA9qTGohYlSoBARgqi+wb/vOhRjR2
- lJBW/Z0+Qcz3WPUhPeUyY6/6RRZuHYUeTtsqQt0IdcYU92PZ35BiS4VbfwwaHoAFlX1i
- KGlQ==
+ bh=gOwwy3GLPQ6ST7xJTOCyOyJnsV2gNoteuopM4onEoIE=;
+ b=DF7erN5HQ1s6TYlMk6uSUrN6GYri7XrgiLPQbJLaIT+roRPvgjiiCv6EsdOc9tLkSn
+ gUYnLD02lG6fQoYXx2SGyq8bZH4I//4BdaahbedrXsOPdTpfTawtW9FDPLdSgyL6E/9y
+ R6KIGEvCtcgaANtoEfQuzmg6twwc3THpi73bCkiMT92WimvLdyqI548/5MYpTHDNK22F
+ KlKwtPHeiMR5SYiIC7BOz+kOsWxLmDOTfHM29/mfJsTHXYR8J3WunyGERYW0S0c58/qa
+ HtXzjm+c5i8VRuxt+p6sH2XEFZVuTMF1HK3BfUT6njX6Ta+TVSDyzaY+sBjEMq2on0in
+ nEjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754034462; x=1754639262;
+ d=1e100.net; s=20230601; t=1754034464; x=1754639264;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=McuX8ddB1qy3M8rDtLBmAXapnNFyt1WXwwwCGHWX4bI=;
- b=fqbk0K/HReaU8MoABpKV6Ga2KFsNDQIeJFzTxsZhwlNiRXTOr7TdBLroc6d490/1eB
- zPTBGhPf1lLaoSjveoO4J0b8ugwhuBpGQOf/lrO2m28OHJwt9s8+HqzH7JLdkPVOWtQM
- 22r/SkLU1IY/WxMN70FUmqJpxkZKlKoanj+a1i9mq7zEKGbhKswKHuNxVFbtHcx6kn+J
- xtKVs+C3TDu0Z8+Rxp0fw5aw9vHBItdoYuhDja/u0clQsSATzYG7/bNe/a2mBydk84o6
- XtX5cMudd3JQ0O6saMpoIJu3KXaGsly23JxZKAD4z5VWs812mWcECXqbpIFM6NXiLG7T
- GMtg==
+ bh=gOwwy3GLPQ6ST7xJTOCyOyJnsV2gNoteuopM4onEoIE=;
+ b=biUYbbM7LSP+4qJo/BwG6PDe4me855fXQjg0MGoqm0srL5ciYJ0Izp69tBbaoXAOqp
+ uNzE8W3cnKc7lbSzFpc8wirNzfzkyw3HCOSgdNajCgSxYyaP1D6ylnAqFREe3gynd6O/
+ MpFfLczDb4GPVh8/JMSdYaAQngFM/bqmF7Elw5nGk8cM1VfA6l0IqUoNA2IRaA/z7mO3
+ qwFO23fAosX6sFn2yignLj+YtfFqCs1rE7xgA5rxUiL9hJfztlPpKBxbqxzCO4xCDIOY
+ h6gkt0KgKe8peIiEcS2YHujbUD5TfQls0kGV98bIbBrEPfnR2PIBfG6ZSPaEE/fKvELe
+ HBDQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVqYLTvjZ7LfgujPdMWcVrc6CExDk758ocd/glPv8g84RCra+Cs9OX4/xT8WKgoghEfJjGCGlhah/Nv@nongnu.org
-X-Gm-Message-State: AOJu0Yx26MuP76qX7E2pCZ2nOhdWQ1YSQ7RRJ1u5U/YshC8CsQjkJNWX
- xjo0FLCbiobzklz9Q7p5LXFBftMVkoUbPVQ/SH7a+WxiPWxRwCaFwF3c/T5Rug==
-X-Gm-Gg: ASbGncvSQeJlxytWzBmA8SBqu+W89xb5FaeH99NxvomQ7CQRRx2eqWDPY1wvR2vP/D3
- Bm4UHL7paJBD+O40BdeP7Q1A7vdujODgqnMv6azvQ3PoO7AeeVCptzp2tVaw6NMmaDZUruXNGeq
- E8i/jRnNmNf2DcoTxu04CCBy1p7s0dURIcKpFzivp6+swBxdoK64NLI8h96VpQt/xQhZCzWFbPD
- opRlfYDMRIzBoqtSJJMVejt5pJD3myYsbUL2v+71IRvUg9cPNVr5wRcecwF+IjCkpx3zSwncaqt
- PboRQL5DirCZKZIAfBX1r5Lg4opW/5JXMTy6xcYjBiO/byyUWMh5U3e0qK4yIlVJM8tfS6imI2x
- qN3ryzPuabpoWLQLEfe4n1fY+hnbXl8Z8dA==
-X-Google-Smtp-Source: AGHT+IEBuNTbMQISMk/N4fyUKZXFcqvac6MHhDlVk8lfoOD/EB+WgDT2kLJ8nLpzu3Bnv9gJd84LOQ==
-X-Received: by 2002:a05:6000:3108:b0:3b8:d115:e6c7 with SMTP id
- ffacd0b85a97d-3b8d115e95amr2686077f8f.33.1754034461570; 
- Fri, 01 Aug 2025 00:47:41 -0700 (PDT)
+ AJvYcCWGdbnRhrLzqL/1IAcvuxKjqmyeSECE5NMdId14TATPzevSJF+p84pSIAx2pJQWEOYoHxfqhZy6ELVq@nongnu.org
+X-Gm-Message-State: AOJu0Ywv4SgGLwVKlqYY/kAzosd6KkPsdDGwnasVyQuPAvNtDppIuUbz
+ Jnzp91JkRfgk308L/k7pKh3NjE77CHUtlNWo9fDICWMMsKKIGDIb85+VLWnWLg==
+X-Gm-Gg: ASbGncvz3djQped6tOzXBtJGajs//K0TVCKrr7DdJxnTyU2yI3fjuuX7zhw2sjRgG6/
+ GcFwG/H56W93odOREHwzPjsNPZVba9Rcg8/JgwV0Y09ZmLm/5aR4mnchvS/96Y533I2OnV6dIRJ
+ QcGpO4wONQmzVrPKG6mal/ytH7XCkA7mGtpyeAFhzQWANTlIGEb9VxhF9VAKF4Q48ikhksUj9AN
+ eTPpAzwAhAP/p1xB6ajsjazhMihpYT+Hx8/+E7brij9JgBYKief9Me5Fl6JDs3sVc2Y8GB0s/LM
+ 9IJrYsWlLo0S/WDj/wp+nKDUeaiD1PLSl0BR/zwfMg+902Vl6pMPbrrzAreDINUJQolK1QtGJvF
+ Dxkzb7FFMU7A+UGhxcW8y4aGatDonC2C5gw==
+X-Google-Smtp-Source: AGHT+IE543fvfeJI9GhypQTiBCwSXnt7jJx8MHoitAqUiMxp4JU0t74VjvCQZ6I7aX3quxRWjJBDGg==
+X-Received: by 2002:a05:6000:144b:b0:3b8:d32e:9231 with SMTP id
+ ffacd0b85a97d-3b8d32e9730mr1358500f8f.29.1754034464033; 
+ Fri, 01 Aug 2025 00:47:44 -0700 (PDT)
 Received: from shameer-ubuntu ([195.11.233.227])
  by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-3b79c453ab0sm5049185f8f.44.2025.08.01.00.47.40
+ ffacd0b85a97d-3b79c453ab0sm5049185f8f.44.2025.08.01.00.47.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Aug 2025 00:47:41 -0700 (PDT)
+ Fri, 01 Aug 2025 00:47:43 -0700 (PDT)
 From: Shameer Kolothum <shameerkolothum@gmail.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -72,18 +72,18 @@ Cc: eric.auger@redhat.com, peter.maydell@linaro.org, cohuck@redhat.com,
  jonathan.cameron@huawei.com, salil.mehta@huawei.com,
  yangjinqian1@huawei.com, shameerkolothum@gmail.com,
  shameerali.kolothum.thodi@huawei.com
-Subject: [RFC PATCH RESEND 1/4] target/arm/kvm: Introduce helper to check
- target impl CPU support
-Date: Fri,  1 Aug 2025 08:47:27 +0100
-Message-ID: <20250801074730.28329-2-shameerkolothum@gmail.com>
+Subject: [RFC PATCH RESEND 2/4] target/arm/kvm: Add QAPI struct
+ ArmTargetImplCPU
+Date: Fri,  1 Aug 2025 08:47:28 +0100
+Message-ID: <20250801074730.28329-3-shameerkolothum@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250801074730.28329-1-shameerkolothum@gmail.com>
 References: <20250801074730.28329-1-shameerkolothum@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=shameerkolothum@gmail.com; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=shameerkolothum@gmail.com; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,133 +109,126 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 
-The helper function will try to set the SMCCC filters for KVM vendor
-hypercalls related to target implementation CPU support. It also
-checks the kernel support for writable implementation ID registers
-(MIDR/REVIDR/AIDR) and enables it.
+Introduce a QAPI‐defined struct (and its array) for target implementation
+CPUs. This enables specifying target implementation CPU parameters
+via -machine, for example:
 
-Subsequent patches for Target Impl CPU support will make use of this
-helper.
+-M virt, \
+  impl-cpu.0.midr=1,impl-cpu.0.revidr=1,impl-cpu.0.aidr=1, \
+  impl-cpu.1.midr=2,impl-cpu.1.revidr=2,impl-cpu.1.aidr=0
+
+Subsequent patch will make use of this by using object_property_add(),
+allowing users to configure each target CPU’s midr, revidr, and aidr
+fields directly from the command line.
+
+While at it, also provide a helper function to set the target CPUs.
 
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- target/arm/kvm.c     | 72 ++++++++++++++++++++++++++++++++++++++++++++
- target/arm/kvm_arm.h | 12 ++++++++
- 2 files changed, 84 insertions(+)
+ qapi/machine.json    | 34 ++++++++++++++++++++++++++++++++++
+ target/arm/kvm.c     | 16 ++++++++++++++++
+ target/arm/kvm_arm.h |  8 ++++++++
+ 3 files changed, 58 insertions(+)
 
+diff --git a/qapi/machine.json b/qapi/machine.json
+index a6b8795b09..d6e0e3b2e3 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1898,3 +1898,37 @@
+ { 'command': 'x-query-interrupt-controllers',
+   'returns': 'HumanReadableText',
+   'features': [ 'unstable' ]}
++
++##
++# @ArmTargetImplCPU:
++#
++# Info for a single target implementation CPU.
++#
++# @midr: MIDR value
++# @revidr: REVIDR value
++# @aidr: AIDR value
++#
++# Since: 10.2
++##
++{ 'struct': 'ArmTargetImplCPU',
++  'data': {
++    'midr': 'uint64',
++    'revidr': 'uint64',
++    'aidr': 'uint64'
++  }
++}
++
++##
++# @ArmTargetImplCPUs:
++#
++# List of target implementation CPUs.
++#
++# @target-cpus: List of ArmTargetImplCPU entries.
++#
++# Since: 10.2
++##
++{ 'struct': 'ArmTargetImplCPUs',
++  'data': {
++    'target-cpus': ['ArmTargetImplCPU']
++  }
++}
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 3f41f99e23..eb04640b50 100644
+index eb04640b50..8f325c4ca4 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -2072,6 +2072,78 @@ bool kvm_arm_mte_supported(void)
-     return kvm_check_extension(kvm_state, KVM_CAP_ARM_MTE);
- }
+@@ -66,6 +66,9 @@ typedef struct ARMHostCPUFeatures {
  
-+static bool kvm_arm_set_vm_attr(struct kvm_device_attr *attr, const char *name)
-+{
-+    int err;
-+
-+    err = kvm_vm_ioctl(kvm_state, KVM_HAS_DEVICE_ATTR, attr);
-+    if (err != 0) {
-+        error_report("%s: KVM_HAS_DEVICE_ATTR: %s", name, strerror(-err));
-+        return false;
-+    }
-+
-+    err = kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, attr);
-+    if (err != 0) {
-+        error_report("%s: KVM_SET_DEVICE_ATTR: %s", name, strerror(-err));
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+static bool kvm_arm_set_smccc_filter(uint64_t func, uint8_t faction)
-+{
-+    struct kvm_smccc_filter filter = {
-+        .base = func,
-+        .nr_functions = 1,
-+        .action = faction,
-+    };
-+    struct kvm_device_attr attr = {
-+        .group = KVM_ARM_VM_SMCCC_CTRL,
-+        .attr = KVM_ARM_VM_SMCCC_FILTER,
-+        .flags = 0,
-+        .addr = (uintptr_t)&filter,
-+    };
-+
-+    if (!kvm_arm_set_vm_attr(&attr, "SMCCC Filter")) {
-+        error_report("failed to set SMCCC filter in KVM Host");
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+bool kvm_arm_target_impl_cpus_supported(void)
-+{
-+    if (!kvm_arm_set_smccc_filter(
-+        ARM_SMCCC_VENDOR_HYP_KVM_DISCOVER_IMPL_VER_FUNC_ID,
-+        KVM_SMCCC_FILTER_FWD_TO_USER)) {
-+        error_report("ARM_SMCCC_KVM_FUNC_DISCOVER_IMPL_VER fwd filter "
-+                     "install failed");
-+        return false;
-+    }
-+
-+    if (!kvm_arm_set_smccc_filter(
-+        ARM_SMCCC_VENDOR_HYP_KVM_DISCOVER_IMPL_CPUS_FUNC_ID,
-+        KVM_SMCCC_FILTER_FWD_TO_USER)) {
-+        error_report("ARM_SMCCC_KVM_FUNC_DISCOVER_IMPL_CPUS fwd filter "
-+                     "install failed");
-+        return false;
-+    }
-+
-+    if (!kvm_check_extension(kvm_state, KVM_CAP_ARM_WRITABLE_IMP_ID_REGS)) {
-+        error_report("KVM_CAP_ARM_WRITABLE_IMP_ID_REGS not supported");
-+        return false;
-+    }
-+
-+    if (kvm_vm_enable_cap(kvm_state, KVM_CAP_ARM_WRITABLE_IMP_ID_REGS, 0)) {
-+        error_report("Failed to enable KVM_CAP_ARM_WRITABLE_IMP_ID_REGS cap");
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
- QEMU_BUILD_BUG_ON(KVM_ARM64_SVE_VQ_MIN != 1);
+ static ARMHostCPUFeatures arm_host_cpu_features;
  
- uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index ba5de45f86..3cd6447901 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -207,6 +207,13 @@ bool kvm_arm_sve_supported(void);
-  */
- bool kvm_arm_mte_supported(void);
- 
-+/**
-+ * kvm_arm_target_impl_cpus_supported:
-+ *
-+ * Returns: true if KVM can enable target impl CPUs, and false otherwise.
-+ */
-+bool kvm_arm_target_impl_cpus_supported(void);
++static uint64_t target_impl_cpus_num;
++static ArmTargetImplCPU *target_impl_cpus;
 +
  /**
-  * kvm_arm_get_max_vm_ipa_size:
-  * @ms: Machine state handle
-@@ -263,6 +270,11 @@ static inline bool kvm_arm_mte_supported(void)
-     return false;
+  * kvm_arm_vcpu_init:
+  * @cpu: ARMCPU
+@@ -2816,3 +2819,16 @@ void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
+         cpu->kvm_mte = true;
+     }
+ }
++
++bool kvm_arm_set_target_impl_cpus(uint64_t num, ArmTargetImplCPU *cpus)
++{
++
++    if (target_impl_cpus_num) {
++        return false;
++    }
++
++    target_impl_cpus_num = num;
++    target_impl_cpus = cpus;
++
++    return true;
++}
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 3cd6447901..8754302333 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -244,6 +244,8 @@ void kvm_arm_enable_mte(Object *cpuobj, Error **errp);
+ 
+ int kvm_arm_get_writable_id_regs(ARMCPU *cpu, IdRegMap *idregmap);
+ 
++bool kvm_arm_set_target_impl_cpus(uint64_t num, ArmTargetImplCPU *cpus);
++
+ #else
+ 
+ /*
+@@ -280,6 +282,12 @@ static inline int kvm_arm_get_writable_id_regs(ARMCPU *cpu, IdRegMap *idregmap)
+     return -ENOSYS;
  }
  
-+static inline bool kvm_arm_target_impl_cpus_supported(void)
++static inline
++bool kvm_arm_set_target_impl_cpus(uint64_t num, ArmTargetImplCPU *cpus)
 +{
 +    return false;
 +}
 +
- static inline int kvm_arm_get_writable_id_regs(ARMCPU *cpu, IdRegMap *idregmap)
- {
-     return -ENOSYS;
+ /*
+  * These functions should never actually be called without KVM support.
+  */
 -- 
 2.34.1
 
