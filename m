@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F61B19091
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AABBB19084
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:11:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLNl-0000fs-DI; Sat, 02 Aug 2025 19:11:17 -0400
+	id 1uiLNk-0000Yy-VZ; Sat, 02 Aug 2025 19:11:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLNQ-0008BA-4e
+ id 1uiLNT-0008FD-S6
  for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:11:01 -0400
-Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
+Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLNO-0001eO-7v
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:10:55 -0400
-Received: by mail-ot1-x335.google.com with SMTP id
- 46e09a7af769-741b1fe0d43so13009a34.1
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:10:53 -0700 (PDT)
+ id 1uiLNR-0001eo-7k
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:10:58 -0400
+Received: by mail-oi1-x232.google.com with SMTP id
+ 5614622812f47-433f3bc84e0so624016b6e.3
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:10:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754176253; x=1754781053; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754176256; x=1754781056; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=H2ibNlDU/It0+v2WxVACXlLnTyz0/s7ExcXTNLC1sCA=;
- b=JPexPOMAb7KVDONjQ2vxxY/kL/WLn29PUGWnkdNJqZHa1yMcJusyhbVzMapObDO07f
- XJNni+gZPIQOTMuKhcd6Q/cHOLsFqpYuHmboaNkwqRvesnW8Oj/ADO7pOsagTlaI/oYp
- zaNaWq9Vrx0Yd13ZSH4jqDFmz0XVwqo+aZFPusQXgl0wQv5n7pAefv+vHXe557GmhU6K
- syy/dCluJrdMMgEWQ1oqeK/mqbZiRjkf/XjLVPDnKML75SbmbZCOBJbJCl+COULszGbK
- XBi/XFJkSMLsTZbRuAdN7H5hYKhVdXPlr3pSo4oIxip2/qj7S39Om0HSonZHi2zDrl90
- pfSA==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=O7dWmvmY3TGPS29fFTMACdsuEioHhfDQLXwYkGyXN3U=;
+ b=z7j6T4v5BsXdP0aJSJ7g4wOkjgdckw5Bg+Zn7dSG9xj0Re7nU8qyUxD8yKROSf7OZa
+ B4beu8Scmu1ZcZHzIqGlS59gQCdersI89BJzu+COtbrlWwyeM/euisF6H1oXoExFgbQA
+ XYO/EKgaLDjGXh05ME+IeEaB40ILdAdlJuzj4EBoZCDhTVKPQE6OzkR7mQ3D68spjSJq
+ Tu+w3SZyy83sDJnVL9LiujX1BwwMQhOBRyME5D92MAsysNOvsDWY/sQKKTARoUUIgbOz
+ AjgsuDjEFbqXeI0Ja1VZCNgXZE2pX8eFKoyp6dXMRK6+5FFalL94HdED8EiA2Kr+o0uN
+ WszA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754176253; x=1754781053;
+ d=1e100.net; s=20230601; t=1754176256; x=1754781056;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H2ibNlDU/It0+v2WxVACXlLnTyz0/s7ExcXTNLC1sCA=;
- b=KCLZCkFPU86hA7uxx6TTBOOJzBoh2JiK9pNYvEkA6LQDw33DvRI9CB4n81SDsgNam9
- m61AjyTsRErBZbGwsFvPx2pb7sLQ4+14Xt95qYq4NmD5coUaVnKqbNIcpNc0vGFGNh8W
- Elcd6xNyIvJms5mRF0BihFQArp6VD95RY9OSwIAXmORqTH8vqqTVgS5gO1GllJsdYtHO
- hxO+S1lS9yX9rq6WwahOmuowZGgx8nxGueIDYRV3xSVyvb3f8Oq2lRU/2u+1ZUJE8ps2
- NBsLKN0JqXwZEJH0hbjBPhe4lPg3VJ14HZ0KvZexSB9ZP82T0fSaVPxfjxN47TlHM/v6
- PNrw==
-X-Gm-Message-State: AOJu0YwzbG+GxfeL7hcz/mFickxwvgS79+I5Wp/lu2I2FzLSfISeI8+o
- kMUsfrZ8d9ybICxAgN+PIHRUNNwouyezxcx6Mf2B3duqn8IcHoqTZcCajtkQ31XorHrLlExQfE9
- ueMaKSC8=
-X-Gm-Gg: ASbGncuSdx1XVi/2C+vv78OcdB0CYf5ghYXDQK95rtTAnFT2kjCbFTBH6kTBrhBZ85N
- vW6tuJOE/WVUJ6JfUmXx457A7nswsG5uT3fZEF8xc8z2OT4Uw2HkfuP43oGM+Qhnv/BO5WU8xbh
- Yo6ip8/PDU2Iae16Pq4hftSypYg7Xr2FjKtQhJUyAVHfOt7ulEl9HqBOhLZEZG/o9KfZfj0lrwW
- XTtwQZyVB4KaYGgKhfaoCA+8JUh2RG55H7VL0SHdYtLQSml2ttk1UIWGNx9LeDZIeoq/66Vqfhb
- C9SHsLbb+KKAsQ4B6LfsDWCK4lwni+lWe4MsZQNkVXNv2j489+wc8NnW4XccHuDzoldzd99bHBu
- RmrfHuLEH9UngfIQEB470tnA0BKeCQTFUd3ySEdHu40L6YehFnsPD
-X-Google-Smtp-Source: AGHT+IFBzuIE8skU/1YNu0hA19H1PklZOmDZq3YUg9J62cbqMS2UC0kzcQGwRrgZoOfjPfOYRq8xxw==
-X-Received: by 2002:a05:6808:68cb:10b0:433:fd5b:ca8b with SMTP id
- 5614622812f47-433fd5be091mr692799b6e.2.1754176252968; 
- Sat, 02 Aug 2025 16:10:52 -0700 (PDT)
+ bh=O7dWmvmY3TGPS29fFTMACdsuEioHhfDQLXwYkGyXN3U=;
+ b=V74UUPYyywNlabbBRfJqiWPmLVoSXh1fP2FrPIgSwWx+MIzgSvyyu0EtBYcDCHi6FP
+ pmLYCnhh8lhNjn1E4XdVnPQpvLpwZOuYX8cSvmqMcRXNJLJoXprtPZsS6f59Eihu83Jr
+ J13L6Dv0i/LkYIqtAIVvCEGEvMGdmpo42i22vQ6/kjGtvGmIxaX3xE0dYW1cfRnG4ctj
+ bcbunFX3xf9toNu8TYCfuCjidCQvpGGO0cns+YkP5ov8n7mUUsuCBFV/kIIP1CLxiKXr
+ 65OSwBpNCa/5q9CHOSwC9THeJpnFkqoCs3q8lnZ++9Sanq4zhvptu5LSRVGb4u9ugkJQ
+ V33w==
+X-Gm-Message-State: AOJu0Yx1bRrvHcDph136Mr482qKnRshGugNUrq0FOu4XH4SZWsUZpiFq
+ pAyvRHWbHM+2nU18qL4xB23B8Yw2Hn8aqdyAB61eIfRUFBV7WyoZqRiBdw0QctX3k/c8PWyvbM4
+ 9ueHpDa8=
+X-Gm-Gg: ASbGncuC+cMwl4PYiw8N8e3Y7HVfg5/f7gvmSSJQ38sN8vba5GpnMjBsDZMQCnQTUgJ
+ kd1ek1KT+1HoE/YoP6/BZz1O1LpEmGfqSMYUS1IQXNT64RVz94iUfDpZ/zLWt4xWDIJpMA7ZyjI
+ 8+nSotelsHEBMe7IyzpZP4KAkErvpH2N+CFj8wBbvI2EN3OHubK2JHJFAKVzqcFnXyrJHxD0j6f
+ cJ0WmaHzRjQ7W9d7C3/nh9epCjE5D/4hfUkT/wSaOi4xlBehHOwpyUcbEA8QocxQDh5zVIY8M9N
+ 0lbujo2ginG9vPDb5bbVkmuwJ1sUo3XAe2a2h1j7lWTwfmRWaejh6pc3rH7pDmNRjQT8TgBNtcP
+ o7IhSSR3oI5lUjqJzV4aOx2YSdVwvcp5/cUMm2feo4KokO2usJU+qYDjC4+NZZzbuAUsQytXzvA
+ ==
+X-Google-Smtp-Source: AGHT+IFeBB+9xftPX+JihRK6cStIYBQwYQ1El2WMmxXKnNBFMA4sHYnsumfxtyAoGTlKcN+cwZDJaA==
+X-Received: by 2002:a05:6808:508f:b0:406:2bb4:cd77 with SMTP id
+ 5614622812f47-433f021238fmr2735372b6e.5.1754176255927; 
+ Sat, 02 Aug 2025 16:10:55 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-61970693ed9sm1084454eaf.20.2025.08.02.16.10.49
+ 006d021491bc7-61970693ed9sm1084454eaf.20.2025.08.02.16.10.53
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:10:52 -0700 (PDT)
+ Sat, 02 Aug 2025 16:10:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 44/95] linux-user: Remove do_init_main_thread
-Date: Sun,  3 Aug 2025 09:04:08 +1000
-Message-ID: <20250802230459.412251-45-richard.henderson@linaro.org>
+Subject: [PATCH v2 45/95] linux-user: Remove target_elf_greg_t
+Date: Sun,  3 Aug 2025 09:04:09 +1000
+Message-ID: <20250802230459.412251-46-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802230459.412251-1-richard.henderson@linaro.org>
 References: <20250802230459.412251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,229 +97,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All targets have been converted, so we can call init_main_thread
-directly.  Remove do_init_main_thread and HAVE_INIT_MAIN_THREAD.
+This typedef is synonymous with target_ulong.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/loader.h  |  1 -
- linux-user/qemu.h    |  2 --
- linux-user/elfload.c | 46 --------------------------------------------
- linux-user/main.c    |  2 +-
- 4 files changed, 1 insertion(+), 50 deletions(-)
+ linux-user/elfload.c | 29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/linux-user/loader.h b/linux-user/loader.h
-index e0291cc3b0..6482c7c90c 100644
---- a/linux-user/loader.h
-+++ b/linux-user/loader.h
-@@ -82,7 +82,6 @@ struct linux_binprm {
-     int (*core_dump)(int, const CPUArchState *); /* coredump routine */
- };
- 
--void do_init_main_thread(CPUState *cs, struct image_info *infop);
- abi_ulong loader_build_argptr(int envc, int argc, abi_ulong sp,
-                               abi_ulong stringp, int push_ptr);
- int loader_exec(int fdexec, const char *filename, char **argv, char **envp,
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 8a9500d4f4..e4dca0c20f 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -359,8 +359,6 @@ void *lock_user_string(abi_ulong guest_addr);
- /* Clone cpu state */
- CPUArchState *cpu_copy(CPUArchState *env);
- 
--typedef struct target_pt_regs target_pt_regs;
--void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs);
- void init_main_thread(CPUState *cs, struct image_info *info);
- 
- #endif /* QEMU_H */
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 4417c2d99a..fce4c05674 100644
+index fce4c05674..70a1e402d3 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -149,8 +149,6 @@ typedef abi_int         target_pid_t;
+@@ -131,10 +131,8 @@ int info_is_fdpic(struct image_info *info)
+ #endif
  
- #ifdef TARGET_I386
+ #ifdef TARGET_ABI_MIPSN32
+-typedef abi_ullong      target_elf_greg_t;
+ #define tswapreg(ptr)   tswap64(ptr)
+ #else
+-typedef abi_ulong       target_elf_greg_t;
+ #define tswapreg(ptr)   tswapal(ptr)
+ #endif
  
--#define HAVE_INIT_MAIN_THREAD
--
- #ifdef TARGET_X86_64
- #define ELF_CLASS      ELFCLASS64
+@@ -154,7 +152,7 @@ typedef abi_int         target_pid_t;
  #define ELF_ARCH       EM_X86_64
-@@ -293,8 +291,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
- #define ELF_CLASS       ELFCLASS32
+ 
+ #define ELF_NREG    27
+-typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
+ 
+ /*
+  * Note that ELF_NREG should be 29 as there should be place for
+@@ -231,7 +229,7 @@ static bool init_guest_commpage(void)
  #define EXSTACK_DEFAULT true
  
--#define HAVE_INIT_MAIN_THREAD
--
- #define ELF_NREG    18
- typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
+ #define ELF_NREG    17
+-typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
-@@ -395,8 +391,6 @@ static const VdsoImageInfo *vdso_image_info(uint32_t elf_flags)
- #define ELF_ARCH        EM_AARCH64
+ /*
+  * Note that ELF_NREG should be 19 as there should be place for
+@@ -292,7 +290,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
+ #define EXSTACK_DEFAULT true
+ 
+ #define ELF_NREG    18
+-typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
+ 
+ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUARMState *env)
+ {
+@@ -392,7 +390,7 @@ static const VdsoImageInfo *vdso_image_info(uint32_t elf_flags)
  #define ELF_CLASS       ELFCLASS64
  
--#define HAVE_INIT_MAIN_THREAD
--
  #define ELF_NREG    34
- typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
+-typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
-@@ -438,8 +432,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
- # define ELF_ARCH   EM_SPARCV9
- #endif
+ static void elf_core_copy_regs(target_elf_gregset_t *regs,
+                                const CPUARMState *env)
+@@ -479,7 +477,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
  
--#define HAVE_INIT_MAIN_THREAD
--
- #endif /* TARGET_SPARC */
- 
- #ifdef TARGET_PPC
-@@ -485,8 +477,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
-         NEW_AUX_ENT(AT_UCACHEBSIZE, 0);                 \
-     } while (0)
- 
--#define HAVE_INIT_MAIN_THREAD
--
  /* See linux kernel: arch/powerpc/include/asm/elf.h.  */
  #define ELF_NREG 48
- typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
-@@ -533,8 +523,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUPPCState *en
+-typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
- #define VDSO_HEADER "vdso.c.inc"
+ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUPPCState *env)
+ {
+@@ -525,7 +523,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUPPCState *en
  
--#define HAVE_INIT_MAIN_THREAD
--
  /* See linux kernel: arch/loongarch/include/asm/elf.h */
  #define ELF_NREG 45
- typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
-@@ -581,8 +569,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
- #define elf_check_abi(x) (!((x) & EF_MIPS_ABI2))
- #endif
+-typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
--#define HAVE_INIT_MAIN_THREAD
--
+ enum {
+     TARGET_EF_R0 = 0,
+@@ -571,7 +569,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
+ 
  /* See linux kernel: arch/mips/include/asm/elf.h.  */
  #define ELF_NREG 45
- typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
-@@ -640,8 +626,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUMIPSState *e
- #define ELF_CLASS   ELFCLASS32
- #define ELF_ARCH    EM_MICROBLAZE
+-typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
--#define HAVE_INIT_MAIN_THREAD
--
- #define ELF_EXEC_PAGESIZE        4096
+ /* See linux kernel: arch/mips/include/asm/reg.h.  */
+ enum {
+@@ -630,7 +628,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUMIPSState *e
  
  #define USE_ELF_CORE_DUMP
-@@ -673,8 +657,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUMBState *env
- #define ELF_CLASS ELFCLASS32
- #define ELF_DATA  ELFDATA2MSB
+ #define ELF_NREG 38
+-typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
--#define HAVE_INIT_MAIN_THREAD
--
- #define USE_ELF_CORE_DUMP
- #define ELF_EXEC_PAGESIZE 8192
+ /* See linux kernel: arch/mips/kernel/process.c:elf_dump_regs.  */
+ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUMBState *env)
+@@ -662,7 +660,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUMBState *env
  
-@@ -701,8 +683,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
- #define ELF_CLASS ELFCLASS32
- #define ELF_ARCH  EM_SH
+ /* See linux kernel arch/openrisc/include/asm/elf.h.  */
+ #define ELF_NREG 34 /* gprs and pc, sr */
+-typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
--#define HAVE_INIT_MAIN_THREAD
--
+ static void elf_core_copy_regs(target_elf_gregset_t *regs,
+                                const CPUOpenRISCState *env)
+@@ -685,7 +683,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
+ 
  /* See linux kernel: arch/sh/include/asm/elf.h.  */
  #define ELF_NREG 23
- typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
-@@ -746,8 +726,6 @@ static inline void elf_core_copy_regs(target_elf_gregset_t *regs,
- #define ELF_CLASS       ELFCLASS32
- #define ELF_ARCH        EM_68K
+-typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
--#define HAVE_INIT_MAIN_THREAD
--
+ /* See linux kernel: arch/sh/include/asm/ptrace.h.  */
+ enum {
+@@ -728,7 +726,7 @@ static inline void elf_core_copy_regs(target_elf_gregset_t *regs,
+ 
  /* See linux kernel: arch/m68k/include/asm/elf.h.  */
  #define ELF_NREG 20
- typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
-@@ -786,8 +764,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUM68KState *e
- #define ELF_CLASS      ELFCLASS64
- #define ELF_ARCH       EM_ALPHA
+-typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
--#define HAVE_INIT_MAIN_THREAD
--
- #define ELF_EXEC_PAGESIZE        8192
+ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUM68KState *env)
+ {
+@@ -776,7 +774,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUM68KState *e
  
- #endif /* TARGET_ALPHA */
-@@ -798,8 +774,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUM68KState *e
- #define ELF_DATA	ELFDATA2MSB
- #define ELF_ARCH	EM_S390
- 
--#define HAVE_INIT_MAIN_THREAD
--
  /* See linux kernel: arch/s390/include/uapi/asm/ptrace.h (s390_regs).  */
  #define ELF_NREG 27
- typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
-@@ -849,8 +823,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
- #define VDSO_HEADER "vdso-64.c.inc"
- #endif
+-typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
--#define HAVE_INIT_MAIN_THREAD
--
- #define ELF_EXEC_PAGESIZE 4096
+ enum {
+     TARGET_REG_PSWM = 0,
+@@ -877,7 +875,7 @@ static bool init_guest_commpage(void)
  
- #endif /* TARGET_RISCV */
-@@ -864,8 +836,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
- 
- #define VDSO_HEADER "vdso.c.inc"
- 
--#define HAVE_INIT_MAIN_THREAD
--
- #define LO_COMMPAGE  0
- 
- static bool init_guest_commpage(void)
-@@ -905,8 +875,6 @@ static bool init_guest_commpage(void)
- #define ELF_CLASS       ELFCLASS32
- #define ELF_ARCH        EM_XTENSA
- 
--#define HAVE_INIT_MAIN_THREAD
--
  /* See linux kernel: arch/xtensa/include/asm/elf.h.  */
  #define ELF_NREG 128
- typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
-@@ -954,8 +922,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
- #define ELF_CLASS       ELFCLASS32
- #define ELF_ARCH        EM_HEXAGON
+-typedef target_elf_greg_t target_elf_gregset_t[ELF_NREG];
++typedef target_ulong target_elf_gregset_t[ELF_NREG];
  
--#define HAVE_INIT_MAIN_THREAD
--
- #endif /* TARGET_HEXAGON */
- 
- #ifndef ELF_MACHINE
-@@ -3438,15 +3404,3 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-     return ret;
- }
- #endif /* USE_ELF_CORE_DUMP */
--
--void do_init_main_thread(CPUState *cs, struct image_info *infop)
--{
--#ifdef HAVE_INIT_MAIN_THREAD
--    init_main_thread(cs, infop);
--#else
--    target_pt_regs regs = { };
--
--    init_thread(&regs, infop);
--    target_cpu_copy_regs(cpu_env(cs), &regs);
--#endif
--}
-diff --git a/linux-user/main.c b/linux-user/main.c
-index e21842bde9..6edeeecef3 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -1037,7 +1037,7 @@ int main(int argc, char **argv, char **envp)
-        the real value of GUEST_BASE into account.  */
-     tcg_prologue_init();
- 
--    do_init_main_thread(cpu, info);
-+    init_main_thread(cpu, info);
- 
-     if (gdbstub) {
-         gdbserver_start(gdbstub, &error_fatal);
+ enum {
+     TARGET_REG_PC,
+@@ -2864,7 +2862,6 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
+  * Next you define type of register set used for dumping.  ELF specification
+  * says that it needs to be array of elf_greg_t that has size of ELF_NREG.
+  *
+- * typedef <target_regtype> target_elf_greg_t;
+  * #define ELF_NREG <number of registers>
+  * typedef taret_elf_greg_t target_elf_gregset_t[ELF_NREG];
+  *
 -- 
 2.43.0
 
