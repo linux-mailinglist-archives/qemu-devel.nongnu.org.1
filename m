@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38277B190F9
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22542B1911F
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:54:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLq8-0001Fc-24; Sat, 02 Aug 2025 19:40:38 -0400
+	id 1uiLqn-0002Ks-Ew; Sat, 02 Aug 2025 19:41:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLnG-0004Rx-MU
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:37:40 -0400
-Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
+ id 1uiLnO-0004eu-9m
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:37:52 -0400
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLnE-0005vx-Ec
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:37:37 -0400
-Received: by mail-oa1-x2f.google.com with SMTP id
- 586e51a60fabf-2ff9b45aec2so1830276fac.2
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:37:35 -0700 (PDT)
+ id 1uiLnK-0005zM-6L
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:37:45 -0400
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-301a83477e5so2808814fac.1
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:37:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754177854; x=1754782654; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754177860; x=1754782660; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NHjAyHFO49Xnsrf4XYBbOWKhIj7dGvot2d9bfnaFFuQ=;
- b=fsbsQFxQlCuTgx7ql4nXivXeEXhxnXXDgx6w4lTmIDXgG921JGeJSFwYa+UkDzjZsx
- 6nri7E6zzalb9VhpftvYJ8fGW998es25jVyVQf4ynlStEGj+krC/pd67/6oRodEBwa0o
- ThS0WdxsVzrJo9roNVA9rCxwtKEjuIxCrxiD6XHMeyECLq3bkpgvFowyQgJPUXalAplk
- wCH3kcY5SpBxrzB5TJt35hWV0QKCD4YDpJBJS9PEZ6ZAyDPlhQSBNLDFwkV51drOh9k7
- O3H9Ft8SP59xjzlXS2GEz6m1Alx5fitmzE/qZ+ErzIr+7pmaKuA1yekvO+8nRK5SqXN1
- BV7Q==
+ bh=xwpjIKFwZpPOs1MrHyzWBavKC4efZpu/4iinDNh8yuo=;
+ b=rXIm+/0r3ubRRQUiBCA7hbOb6f9URQQ9Pw0fNK3VtcfkbqU+iBsr7uWl7Gpj4+Qy4o
+ Sj6R6GksV7PA0vnIkke39NVCLcWeFmZfLpMgO7N904ybMrXdOKIdSf4XppQ2QMyFBFXs
+ N00OD5U+7R85XaLrfKDaDQToykh/hyQZQy3KwoivP9q5WanetZPBzdesMqwOP2SkZ/Eu
+ dcrra41SfxnCM6uoXnEplj3cmFI6yho1eJiqrS2xeEhhGGM8ze1C8d4Mw8KyiJFhiaGu
+ JCOo3/nI585TRDqPVIBi5UlH6glrI2dMR+5yr5HHe2jQv1iHXMA97SuL+HFXYxwVLZix
+ F4LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754177854; x=1754782654;
+ d=1e100.net; s=20230601; t=1754177860; x=1754782660;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NHjAyHFO49Xnsrf4XYBbOWKhIj7dGvot2d9bfnaFFuQ=;
- b=Xlur2FIhp+ZAASMGivAdrYVhj3gzPn0Nql4mPijqrj8a30AGdiO4QIUSU3Pr4NgkE5
- I+o2zw3pLKZRwGot/tCFdZDj7uzHMWm4xxGMhE8epVEDCbyjFfiuqQK7ZfiAxtddPP2/
- v8isafuRu05i51VJSuR9W9LLiWMw2kQndveA2aSu4YPCNN/jP/32S44qwGztbN+hCtQc
- 2B1EFbSrgwPmCWT96uGfQXphGVIbxDT0o0wcyoPewV2hrhmgR/kOYo6x49nD6h9tOIpd
- m7D9Ti0HkAguNZCWJwtbfKPAAG4/yXeu2KfxVuT7C0UYB50mbZ369RyadZNO7oLu6AW7
- oJnA==
-X-Gm-Message-State: AOJu0Ywe+/Dplfboa6gGZwpi45WZBCZvyOLYnp1PQqrMXeimE0GRB0Rx
- TBbYmApwPSM/ebz7P8GbGLx1RmpKT+eIZ/3OZ5sZnKUocA6LLBU2RN1xdq+nldHMTTrxOjUXrEj
- S+yfDzyI=
-X-Gm-Gg: ASbGnctyA/pRSLriPJeY3ct99vDCYZ91wKPYp/xgIhbVKUGMxBo2VxYCM6FT5GC6XXE
- MyJkIAsQRX4nMTbaqyc48MXB0tKSsIGvtKEFCPFH1MBZxfYdKingHf+CX18R9H6sRXElN3SBrok
- rBWTOQ2rEfkJA1QO1Xiry2WVDI76ojS1JK3o5vIYBcaKduroKxMVNvo8Lej9kgivkvY3FnmmxFz
- z1HAuWnHvVu9cfBP1B8BDkYkSekiiILtftQXyEExzmeosPOr5LUER7GWp/RsewOV940Ey+CxaNG
- Xj7jTZSZ9wD7cLROH3Z7QuC1kfdTivBpluJ240NZsdLeIQGnTpSXwV4gNJp/kSoedLRByrQSRwA
- 6tuzf+mfbqQGNekIiTqWq4dF2v9M/rdchejF4CsOdqphdPVwW0TKR
-X-Google-Smtp-Source: AGHT+IF6DdBYDKadFZwvjh9hfAMUww+WfpFdDzFVvLzL40PrhzE93bF0/DnfvmnJr2WZbf2weTYPcg==
-X-Received: by 2002:a05:6870:e393:b0:2d4:ce45:6987 with SMTP id
- 586e51a60fabf-30b67730912mr2401969fac.9.1754177854545; 
- Sat, 02 Aug 2025 16:37:34 -0700 (PDT)
+ bh=xwpjIKFwZpPOs1MrHyzWBavKC4efZpu/4iinDNh8yuo=;
+ b=FsrXvzXHXXwdy7wP0JB+P76ZfKrcruut04tAkdgsEGrCxdnCy0GKkrj0abNWBmhVCZ
+ F2fEwaYweqqrftYK997If2kAXYn5fB2nYEzitHxuhdSKLoB04BidCD5+mK2p+3M+UPS7
+ izaHKZTMMQ4wBUGZuSx6FmVycXdgnMcv4Wtadz5HffZOEgyBgNyejqr5tjxirhxx1qeO
+ jUuXpuFjwg3Lfpll1rrxCndFlVuFDonZ7tMdGfTIq4SWtOBdtpgOclAD0D87QMOzE+fn
+ q99v9nOgtC3bjT0hIzSZwe8yLkNu1YEK9YZyTQQgBy+RdWDr/R+aKoT44dAAwIxlFYtJ
+ Az3A==
+X-Gm-Message-State: AOJu0YzN4HGihAwJt9n3VlujY7iukl/vvRqX9tE3AbtcdSneholZtWXL
+ yq44/v5o3sVmzOCQYFFuJEexOiGXxB+Zc/yeQGiRdyNHF4ugou/IKqxU4gtQVOoybzQtHh5fHdY
+ QwTTVrMI=
+X-Gm-Gg: ASbGncsJn0L1h5Yn4btaImTh2c8cSZFrdpBj3t21fHZ0/Bf0Lj6tyyut+ng5Z1upgGU
+ lTwjiKXoBE9iPilOzovCgjDHjnXxCj9tzI4eVmHxCOdPpNCmCpq4uGXAUqS3u3lRiJ9yIYc13ua
+ P5mL7l8XgzDbziwHh0LrYvByUJavXlYEzdGZLTRvWVmp1M6ubDMdHwAbzzP5QuNo8otev737/08
+ U7gJjRtLBgQVlZ7sCRVF7OPNw4banmwD6eKhp/HpO8NgQMiP5N5J/wsA3GD15Z7u0pKuMMOh4rb
+ 7AvtCrW5Ij31MgdNGnEOcrxNPgQDTYrwSQtfJNukRcVaWnWK5Cm8aWn9OK5IdnshU2SY8JA2AZr
+ i4AgN04fURoyIiVBAbp2diOGTNaMaNCkhk5iwxItM40K74gciM8UW
+X-Google-Smtp-Source: AGHT+IEKH/KntxcCjvRSkAjlK8IZVrRHAV4Zkn0dscop5y38l99zhU4CyVGurC2n/eEMoUsim5N3uA==
+X-Received: by 2002:a05:6871:6a0b:b0:30b:8821:aba4 with SMTP id
+ 586e51a60fabf-30b8821b1a0mr305076fac.20.1754177860403; 
+ Sat, 02 Aug 2025 16:37:40 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-741a71dc78asm380409a34.30.2025.08.02.16.37.30
+ 46e09a7af769-741a71dc78asm380409a34.30.2025.08.02.16.37.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:37:33 -0700 (PDT)
+ Sat, 02 Aug 2025 16:37:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 57/85] target/arm: Implement GCSSTR, GCSSTTR
-Date: Sun,  3 Aug 2025 09:29:25 +1000
-Message-ID: <20250802232953.413294-58-richard.henderson@linaro.org>
+Subject: [PATCH v2 58/85] target/arm: Implement GCSB
+Date: Sun,  3 Aug 2025 09:29:26 +1000
+Message-ID: <20250802232953.413294-59-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802232953.413294-1-richard.henderson@linaro.org>
 References: <20250802232953.413294-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2f.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,90 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Note that CreateAccDescGCS() does not enable tagchecked,
-and Data Aborts from GCS instructions do not set iss.isv.
-
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 42 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/a64.decode      |  3 +++
- 2 files changed, 45 insertions(+)
+ target/arm/tcg/translate-a64.c | 8 ++++++++
+ target/arm/tcg/a64.decode      | 1 +
+ 2 files changed, 9 insertions(+)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index d803c10ac7..e0548f7180 100644
+index e0548f7180..45ff7bb0b2 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -139,6 +139,12 @@ static int core_user_mem_index(DisasContext *s, bool unpriv)
-     return arm_to_core_mmu_idx(arm_user_mem_index(s, unpriv));
- }
- 
-+/* For a given translation regime, return the core mmu_idx for gcs access. */
-+static int core_gcs_mem_index(ARMMMUIdx armidx)
-+{
-+    return arm_to_core_mmu_idx(regime_to_gcs(armidx));
-+}
-+
- static void set_btype_raw(int val)
- {
-     tcg_gen_st_i32(tcg_constant_i32(val), tcg_env,
-@@ -3902,6 +3908,42 @@ static bool trans_STLR_i(DisasContext *s, arg_ldapr_stlr_i *a)
+@@ -2072,6 +2072,14 @@ static bool trans_ESB(DisasContext *s, arg_ESB *a)
      return true;
  }
  
-+static bool trans_GCSSTR(DisasContext *s, arg_GCSSTR *a)
++static bool trans_GCSB(DisasContext *s, arg_GCSB *a)
 +{
-+    ARMMMUIdx armidx;
-+
-+    if (!dc_isar_feature(aa64_gcs, s)) {
-+        return false;
++    if (dc_isar_feature(aa64_gcs, s)) {
++        tcg_gen_mb(TCG_BAR_SC | TCG_MO_ALL);
 +    }
-+
-+    /*
-+     * The pseudocode for GCSSTTR is
-+     *
-+     *   effective_el = AArch64.IsUnprivAccessPriv() ? PSTATE.EL : EL0;
-+     *   if (effective_el == PSTATE.EL) CheckGCSSTREnabled();
-+     *
-+     * We have cached the result of IsUnprivAccessPriv in DisasContext,
-+     * but since we need the result of arm_user_mem_index anyway, use
-+     * the mmu_idx test as a proxy for the effective_el test.
-+     */
-+    armidx = arm_user_mem_index(s, a->unpriv);
-+    if (armidx == s->mmu_idx && s->gcsstr_el != 0) {
-+        gen_exception_insn_el(s, 0, EXCP_UDEF,
-+                              syn_gcs_gcsstr(a->rn, a->rt),
-+                              s->gcsstr_el);
-+        return true;
-+    }
-+
-+    if (a->rn == 31) {
-+        gen_check_sp_alignment(s);
-+    }
-+    tcg_gen_qemu_st_i64(cpu_reg(s, a->rt),
-+                        clean_data_tbi(s, cpu_reg_sp(s, a->rn)),
-+                        core_gcs_mem_index(armidx),
-+                        finalize_memop(s, MO_64 | MO_ALIGN));
 +    return true;
 +}
 +
- static bool trans_LD_mult(DisasContext *s, arg_ldst_mult *a)
+ static bool trans_PACIAZ(DisasContext *s, arg_PACIAZ *a)
  {
-     TCGv_i64 clean_addr, tcg_rn, tcg_ebytes;
+     if (s->pauth_active) {
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 4315ed8dab..d034d96b37 100644
+index d034d96b37..e8b0ef07eb 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -554,6 +554,9 @@ LDAPR_i         10 011001 10 0 ......... 00 ..... ..... @ldapr_stlr_i sign=1 ext
- LDAPR_i         00 011001 11 0 ......... 00 ..... ..... @ldapr_stlr_i sign=1 ext=1 sz=0
- LDAPR_i         01 011001 11 0 ......... 00 ..... ..... @ldapr_stlr_i sign=1 ext=1 sz=1
- 
-+# GCSSTR, GCSSTTR
-+GCSSTR          11011001 000 11111 000 unpriv:1 11 rn:5 rt:5
-+
- # Load/store multiple structures
- # The 4-bit opcode in [15:12] encodes repeat count and structure elements
- &ldst_mult      rm rn rt sz q p rpt selem
+@@ -238,6 +238,7 @@ ERETA           1101011 0100 11111 00001 m:1 11111 11111 &reta  # ERETAA, ERETAB
+     AUTIA1716   1101 0101 0000 0011 0010 0001 100 11111
+     AUTIB1716   1101 0101 0000 0011 0010 0001 110 11111
+     ESB         1101 0101 0000 0011 0010 0010 000 11111
++    GCSB        1101 0101 0000 0011 0010 0010 011 11111
+     PACIAZ      1101 0101 0000 0011 0010 0011 000 11111
+     PACIASP     1101 0101 0000 0011 0010 0011 001 11111
+     PACIBZ      1101 0101 0000 0011 0010 0011 010 11111
 -- 
 2.43.0
 
