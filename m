@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3420B190B3
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D805B190BA
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:24:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLTn-0005e3-Rb; Sat, 02 Aug 2025 19:17:37 -0400
+	id 1uiLTX-0004uC-3t; Sat, 02 Aug 2025 19:17:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLSs-0003kj-N3
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:16:35 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
+ id 1uiLSv-0003lb-1t
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:16:37 -0400
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLSn-0002aJ-Vp
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:16:31 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-741a8bb8aa4so158601a34.1
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:16:29 -0700 (PDT)
+ id 1uiLSt-0002du-1g
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:16:36 -0400
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-741b1fe0d4fso49725a34.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:16:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754176589; x=1754781389; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754176594; x=1754781394; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6v7h38Ym+Ui66y9qX3SHeDcnGzU28Qfcg8CwHunalrk=;
- b=bI/dmQ6mRCCD7GizaXlY0NUkPSzV0o1Xo3T1+i4u6YzXkpzlGkyqc/DL3nvgXFQbMc
- X3XZG09tvp1Qj/UNUxFLC4vguCYtr+V4bpnzqJ2iU6l5dGQBOeEKPQp6yrwzWPiZRuGF
- IGm3NsZFqnbXLDqyoOU8pSdcJGpDOZQ3yJnP6BDbdLcI9XTgpmtNHxBcC65MFAM6JuXt
- WRPUkCn7eb4r2uxMfeKtYRg3KokeT/X1khcSgBtdgiALbt1odpFDuiIbtBhYrMxO30EK
- ZkWGQ2p8HNK6cLmlpzW74AwZQIfkxKnP2wXYeTghPuQyJsX2qFID8edPfdka4G/ojt43
- LQ1A==
+ bh=ZIYNBYdbbedxMEELb3vRrPziRZG0SvFOYG6yaXQaCQ8=;
+ b=bd9FNbDjPEPwkPpKMs0ioxAw4hLkGoAzWgNx02JLFQ3c2OGqh8WEf3IRO1jEyv0Eo5
+ Njo7/Pz7EVzpHUv07t50GNP0p5gE5F8zk3kmtUqWyvqFa06NwlStETzryT7xc44t0hv8
+ kx4xGZjk/AGBlFNBhH9brVSWSRzwvUCY0YIlGxSYZc72PC03zBWvVd1wSsxWYWlLgt2E
+ 2/yqnyQcYQlarhSl9lNO/sIzWiMvIw0bxqugG9WiNtr2d+wVl6qZHCA+5T+XN7O4sVqL
+ JWZHMDJNUYEIDxp9nE1BhJn6o7a2QZHPdM/YZN47HB1millJSPRbYnYOT830VSFacF+h
+ gl7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754176589; x=1754781389;
+ d=1e100.net; s=20230601; t=1754176594; x=1754781394;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6v7h38Ym+Ui66y9qX3SHeDcnGzU28Qfcg8CwHunalrk=;
- b=dwHIuejH3O80cse/fMgENUW2iFkO6MEoVhSr5hiVpXz+S9we1rn3I4ilplbFVeGB6v
- 8aS1V6I70yvqjr7f8eHAhJAreDsT9Do4as+Thkvo5kYuRXwuzBubGUF6VK9pR/rLnSoy
- LGO9Cxs56AdCQlgCdGE8U17Q+i0K+45lbBSQpeu9TYCPxx+YYsdCVh0LrMvhulVO/f8o
- ERGOfV4bygKAXYopw/KdU2EF48gyPfF0HCaL8N/hCAQ2YVwSY8otODpVnznpKggpOkVl
- 4GTnOiIGX8nkAp93Nbr2xdoJAQWU0cWVHaGIMv6l0tDnUjHbKJiDcy1CsomyTYnKRlJF
- 2A4g==
-X-Gm-Message-State: AOJu0YxdoGzmdeS9nNqHzxowKDPlLtpY8JMSHgtW8tF4ZUHZn1Kr7ktL
- u4X4x/XVU2qAy41rHCGk9hezxxZKMFJbs9RFBpvps9HTgpJh3Nkt8dK4qLFQ5UwKlWolUQDz0Mx
- aWPHy3KE=
-X-Gm-Gg: ASbGnctyaSQJVMMeleO1MZbj8GtXcKwaOSFN1IA31wdvxBdInAlDAmE6W6e+EX9MVhz
- rB6i+L2oWfnrsj/N63fotYhUOS/nOKETxdET5gQ75MGUyZFrdTU4D1SGd00i8JJOlKFzfINQu+c
- 3q0RVlIHuII/oWW7RW5voHFmv4xsJHxwpTNf7/D9V+uG4M0YSm2rbLu63ZUA3zAPwG0jQfFlyqZ
- mjqTMxyF/+ZF6UiNgBiYhgZYtfiGnK+KAjaTARDnhS8X2Z6dQBLkEZbieHobECg0MQH4clB3l5F
- 4XBDb7v0rCqw8uOCxYtsAOgUB2RObqjijGtnq3maLi++apqawGmsABjMNR2/S8SDYBrhx+iHBoq
- awV1Mi7XptRgFAm+u4nyP0EJe2lo+QQ1V4N9pdVig297FCj59b+3mMe2Mlt5+3CA=
-X-Google-Smtp-Source: AGHT+IH8bueZZ2XmgU66EKyprSlXwSSONhv1eaknaIMjMCH+oSwIsBKYkpxYT3PtulXspXPdHCOCkw==
-X-Received: by 2002:a05:6808:2508:b0:408:f80a:bab9 with SMTP id
- 5614622812f47-433f0239a78mr3396293b6e.11.1754176588602; 
- Sat, 02 Aug 2025 16:16:28 -0700 (PDT)
+ bh=ZIYNBYdbbedxMEELb3vRrPziRZG0SvFOYG6yaXQaCQ8=;
+ b=c6z10pVGaZc6ckjVN5vZFLKuNa8u1QOzJBpVudkBld5HaDmQzfrSjz4aqzFIWKHT+D
+ OHxiadEhUECcSINbKD1xvj+ihKLFUKrV2y3xbokTLjXodvWmLKiCnWtEZrGMyh10wn9S
+ fQOXU82S5ndnpEWgt7CALuiVScsctZY+BcMBtwvzBWgsufcvQErXEEx6JiA7nuC6C9SL
+ O/6Gg5Q7dRFvIprBzT8GSvatmBr2igPJzbc5MqsDpSadxITE2k5lcvkVHRp/ycvtA7r0
+ +g7MBPjJ31sx+Hs3ggz8aJqA1OCvlktjbCORsoJtkSrgrFZeCskCHlX4/c3Hwzzedtp9
+ SPgg==
+X-Gm-Message-State: AOJu0YzBJWj1U40nxEfJWmDIaM2DTGPt+zXa9sjgogE9m1Fscs3vWO/O
+ A/kU3sPphbMBN8fw/IC2CPnKXbIk/dNZ1t4n5QOpKxk5HBtqySvrPydNnhj2guR1LWTwZlzN9J5
+ doh4kuPM=
+X-Gm-Gg: ASbGncuOJvAEgBhFXZROorG/8DQ4zrKJau7AKLm/6L0YtRKZcJ4gduBbI9SgYt/I0MB
+ VNYp1MxU2IwMS8W6Z75BjxKlthPiHTgUm7pGtNCFCDO+P91YezF1Tlfu50Q1KH6nRzpIVki+Vh5
+ cQbYcUQCwVWNXb4zDJ9ZDGONYhZWPlheuRuSwgLHtOuMYcVBxXZcY9YxlQdsrmju6NdTj9YTCcQ
+ hi43KyGzlVa0wLM/2lDQs0qKouehiox1+X8e+2JNfibntqkIg9oVNK9CPNY+ljJ4z10U1ou8w4o
+ Ljtv+PuKmF6OtA5ohUajsnpZIEwclwg3y3shFUTmBONHoF1+0RmEZGAQPjmkntRqlrzNnJqr3rA
+ SzCIjl5xiusa7xdHybpTFbncNAaQHRUcqtYvzoRgStIq+jEzQHs+a
+X-Google-Smtp-Source: AGHT+IG43/ubnsljGqTdlGNkpg7QQ7bWJJlgWneJXeeE6rBQ1ylauSB/XBZ4yfrUk9bPSSEkhacjpA==
+X-Received: by 2002:a05:6830:dc4:b0:741:a36f:7a2f with SMTP id
+ 46e09a7af769-741a36f7bf4mr1943014a34.5.1754176593915; 
+ Sat, 02 Aug 2025 16:16:33 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-741930994e2sm1081608a34.1.2025.08.02.16.16.25
+ 46e09a7af769-741930994e2sm1081608a34.1.2025.08.02.16.16.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:16:28 -0700 (PDT)
+ Sat, 02 Aug 2025 16:16:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 87/95] linux-user: Remove ELIBBAD from elfload.c
-Date: Sun,  3 Aug 2025 09:04:51 +1000
-Message-ID: <20250802230459.412251-88-richard.henderson@linaro.org>
+Subject: [PATCH v2 88/95] linux-user: Remove MAP_DENYWRITE from elfload.c
+Date: Sun,  3 Aug 2025 09:04:52 +1000
+Message-ID: <20250802230459.412251-89-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802230459.412251-1-richard.henderson@linaro.org>
 References: <20250802230459.412251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x329.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,7 +97,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The last use of this fallback was removed in 8e62a71738bc.
+The last use of this fallback was removed in bf858897b769.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
@@ -106,16 +106,16 @@ Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
  1 file changed, 5 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 135c4f319d..c45724b33e 100644
+index c45724b33e..ade72c7624 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -110,11 +110,6 @@ int info_is_fdpic(struct image_info *info)
- #define MAP_DENYWRITE 0
- #endif
+@@ -105,11 +105,6 @@ int info_is_fdpic(struct image_info *info)
+     return info->personality == PER_LINUX_FDPIC;
+ }
  
--/* should probably go in elf.h */
--#ifndef ELIBBAD
--#define ELIBBAD 80
+-/* this flag is uneffective under linux too, should be deleted */
+-#ifndef MAP_DENYWRITE
+-#define MAP_DENYWRITE 0
 -#endif
 -
  #if TARGET_BIG_ENDIAN
