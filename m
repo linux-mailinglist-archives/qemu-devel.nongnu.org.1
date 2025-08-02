@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F5DB190BD
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 155F9B190C1
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:25:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLPD-0005kx-2g; Sat, 02 Aug 2025 19:12:47 -0400
+	id 1uiLPA-0005c0-VJ; Sat, 02 Aug 2025 19:12:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLOu-0004Pl-Nu
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:12:29 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ id 1uiLOy-0004bj-03
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:12:32 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLOt-0001tN-12
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:12:28 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-6159466e80aso1095009eaf.1
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:12:26 -0700 (PDT)
+ id 1uiLOw-0001tp-BY
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:12:31 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-615ee07353bso1761478eaf.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:12:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754176346; x=1754781146; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754176349; x=1754781149; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Uo8CXh3J3Cwo6Fet/c+x+mJdmco4tOEU2Zf5zDWJDa8=;
- b=o52N1N0CeLmqZQHFVLd3N8KI4MM8cBZgr4x5unnzfPzO51A6tZ9pqyBLkBGwn7d10z
- iySW2ONjGGD5gupwhX5YimrQ6DH+Tkl39InRJlaYVpKk79edgN7pMK3KdkpuCgwO2mQ0
- d+vofBZlXgY2RxrX29EiWzzvvlXoH4SGPKbPRnO3WPYC4Ekz7YzwecRU5I7ZRVvSY7ZT
- 6/MYcKTsUEt3uhVBjbLz4fHEiATaZSlXN+OhG0MewJZ8QWH5xgNoo3E8g6NY+P4EeoRn
- aiFwsSL9Rx+73ghvpbXfsWlyXJSqvoQXsFuLZ15hQMSTSHJYS7uXOkuXS0A+sILR7Kt0
- MwOQ==
+ bh=LKnoobLYhlsWNDmOql8BCDTejxT7XKGUYJKu9t1JMBs=;
+ b=rsWPSNv2lnQn5sLg4iNBzG4Dx8qUlr7r9iiLTrCG5PQ4n1Zg2X6lmQrAKworRg2KGM
+ Ae1kmHMmsjKxhqFPP1SCAauM9HBYmH5DaI9Q4tvfpTeT4A7ba02/mmUg1gmWX+OqsVkf
+ pMF0ZBczNc6Nn9MEraQtGEBfGOjyza/BMBiYQQe7wo5VagmJqx6vPpqmT+vdYKkvCPTv
+ mmN04aIPL2oy+pdsNsfl4QkF4+TXdVIZ3cqKyJux0giMxJsMW/y/XZAG26PYoYrwTCSS
+ 9vt+NS6KkDFTrrxvqtbNLYcP75pljkLnOy0DCuRE0FD+527HjX7cc0X4pM+5Su5qg4Oi
+ xHfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754176346; x=1754781146;
+ d=1e100.net; s=20230601; t=1754176349; x=1754781149;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Uo8CXh3J3Cwo6Fet/c+x+mJdmco4tOEU2Zf5zDWJDa8=;
- b=KW/luOd7VIej/7ZniolmIe5kxw4I/EjHeyH04YxEaLqbkvLVDFQIUavGnoQfVOGmo/
- 1k+Qsu0v9bmBb+t0Eo+bs5dQLkC8yhvmWV3/6uJkUwgbUVH0J2wTdcqEcHAoNnBzn7+N
- /plGMeeLrSXunNqJwY/pv7Txit9gxRkrlEI/y+1yV2aQ++hqufiCbNeyt/7svcH7oU2j
- PiFzOGFzHZpAkVvhr0HFB1UyOcy6shEC5AVhJMqmzKZXp8eYalIKSRpqpZZOK9vNP9mm
- XT+pEPWgtQUedKysv2XGCFdXieLFdg54wBGVHUTJQhG9UE4sNS/0UkcVrWK7RcZvjmxB
- LtkA==
-X-Gm-Message-State: AOJu0YwaHZg41ZknlmtfGwOPtYL+B2CJ31A6NhzKuK0F7xpxFTf+ejgb
- PXCAK0lKJYuwLG93+GynrkWoVwDHlYqXTjv1M1buU9CWZTNodeetsBcQb4+p110bq4vQ4YAnbq8
- ys+nm3tE=
-X-Gm-Gg: ASbGncvlz9wfksYTp/WveXd9rrb8XkcuMHf+ywEZknTibyYf53EbSGAU+pEvRZoE+oz
- oN9V82/8icUhvLeuViZ1sGy5ekH4cLI9NthHPdDnnlIXXS9BqpPug10VDvWm+gZwtgg929WqVzd
- 8ju37R/TKj/t+bdSyCGGpNW12Yf5IcU04eo/wTOm6wMzY3RLEFM7QWJC4sEPHh+LybrVVD5i0ho
- TCjYPPKfNt5DRApTquWWUxED72OyAeCEjGpekuW7e3LYBgVBtRYqrUnkCvUt9H2GqXcXZoTHDIN
- o/jfUCyJjDbPTKkFSS8UtKykSmr0s0yjY0vPiyMnzXMeunCfsSck8R1EMWSqPfLVHYziHnqBScd
- CnOrpwYZU4XYsvQk00WpRAcTYeed4BCVq5XNHzs80VYaCN2SZrah1
-X-Google-Smtp-Source: AGHT+IEPwNHjXD+aau9Sq0h0hC2bU/ZpJJ4JpoeOC4RWnpKNF41uwCWgT2ULmjTJIJ8AzQRLQWeXPw==
-X-Received: by 2002:a05:6820:f02:b0:619:bc8:d858 with SMTP id
- 006d021491bc7-6198ef5f235mr3001948eaf.0.1754176345859; 
- Sat, 02 Aug 2025 16:12:25 -0700 (PDT)
+ bh=LKnoobLYhlsWNDmOql8BCDTejxT7XKGUYJKu9t1JMBs=;
+ b=D8+TGzNtPNRxnkaFdU6e8MyWiC2NO+IutcH0zXZIFNBG3EUkbyA0RMIq/oY9Qgr/1V
+ pqSCctifTroicPUKXo7cck6hVKQDcbRw3w0DeziNRKwa1SSC5cYlgXeW7nWHd91PJ00m
+ dOy3mkNU49Htx4v7ufg1Px+GmsGBF+TInbfr5kxClNnGHp4wMTwwoGu8okYtOORLNIV/
+ l2yeu2sza5G3tB/j+44uQ3VtJfB2aMywJOSgwS1dhau2/53cGCP37Tv4SjBRG+wvZkpU
+ B4bffY7QubTXFVml6WhGGeWhXn3pXfctscj2SSJittJoLd4huXVzNOJuanhRZsZ6Y8C/
+ rWmQ==
+X-Gm-Message-State: AOJu0YzkDIs6gE9tWuoahHwFufIy/3S1fLwm/CJp3EvSujctjWWpW2KO
+ u+4xmNmymTAbtAogS/xqJ3xpGsIIY1PaufzKr1yTgETV5+leKoYYD5aziGrlPIgbacVS4GVUKoc
+ 2zsYqCrw=
+X-Gm-Gg: ASbGnctqUsfOc/LJuLS3NSQ3TDKK5lg+txHAMSanCkeIV/FqaqzzbSKLcf33tVneti8
+ HDlSCF7wNOrLid8g6hj3wnuVuqaHL2xoy9YojN+z/XQP8ejDGoajxfQmfE3DRAUsWr6mg+RgvhI
+ rlHcJxMUF4xYtfWZy3aMAhZFUvOQIrsSM9LSQ5e2gU6Bi+pFToEbCeEmFSZlLWVwfq/3oWXprL7
+ ol57XJrG4YGKaRqZ7yVLu84pNzroXyQJ+XuBCjnHNwV5p5eYGz5Ony7ImFyWx5oCPF6bmiRKVEy
+ eED5VggyJAjd+HrP6a0oCBmg9AbhSvmOKWe6kHvcGq2MKuCRQRu9xz9r0Hh3yQIwthAO4iKdqMA
+ vilJigEGUX5iIWlyxaEl4KHXaXwfR2hTko0mZoVZ0k2PFNycht6aWwobKJudTPvA=
+X-Google-Smtp-Source: AGHT+IG6SUw0hQR/eRE14mCd0ZgFlV4XdWsRDoVzu2mk/2hHKUAhGmTdgHk1jPhCBCZSeOINw8jY2w==
+X-Received: by 2002:a05:6820:1b18:b0:615:b6df:4faf with SMTP id
+ 006d021491bc7-6198f2556b4mr2887837eaf.6.1754176349148; 
+ Sat, 02 Aug 2025 16:12:29 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-61970693ed9sm1084454eaf.20.2025.08.02.16.12.22
+ 006d021491bc7-61970693ed9sm1084454eaf.20.2025.08.02.16.12.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:12:25 -0700 (PDT)
+ Sat, 02 Aug 2025 16:12:28 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 72/95] linux-user: Move elf parameters to ppc/target_elf.h
-Date: Sun,  3 Aug 2025 09:04:36 +1000
-Message-ID: <20250802230459.412251-73-richard.henderson@linaro.org>
+Subject: [PATCH v2 73/95] linux-user: Move elf parameters to
+ loongarch64/target_elf.h
+Date: Sun,  3 Aug 2025 09:04:37 +1000
+Message-ID: <20250802230459.412251-74-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802230459.412251-1-richard.henderson@linaro.org>
 References: <20250802230459.412251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,132 +101,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/ppc/target_elf.h | 43 ++++++++++++++++++++++++++++++
- linux-user/elfload.c        | 53 -------------------------------------
- 2 files changed, 43 insertions(+), 53 deletions(-)
+ linux-user/loongarch64/target_elf.h |  6 ++++++
+ linux-user/elfload.c                | 12 ------------
+ 2 files changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/linux-user/ppc/target_elf.h b/linux-user/ppc/target_elf.h
-index dd8a65b1fa..6bfe27fc45 100644
---- a/linux-user/ppc/target_elf.h
-+++ b/linux-user/ppc/target_elf.h
-@@ -8,10 +8,53 @@
- #ifndef PPC_TARGET_ELF_H
- #define PPC_TARGET_ELF_H
+diff --git a/linux-user/loongarch64/target_elf.h b/linux-user/loongarch64/target_elf.h
+index f2d00c9232..e121e409d7 100644
+--- a/linux-user/loongarch64/target_elf.h
++++ b/linux-user/loongarch64/target_elf.h
+@@ -6,6 +6,12 @@
+ #ifndef LOONGARCH_TARGET_ELF_H
+ #define LOONGARCH_TARGET_ELF_H
  
-+#define ELF_MACHINE             PPC_ELF_MACHINE
-+
-+#ifdef TARGET_PPC64
-+# define elf_check_arch(x)      ((x) == EM_PPC64)
-+# define ELF_CLASS              ELFCLASS64
-+#else
-+# define ELF_CLASS              ELFCLASS32
-+# define EXSTACK_DEFAULT        true
-+#endif
-+#define ELF_ARCH                EM_PPC
++#define ELF_CLASS               ELFCLASS64
++#define ELF_ARCH                EM_LOONGARCH
++#define EXSTACK_DEFAULT         true
++#define elf_check_arch(x)       ((x) == EM_LOONGARCH)
++#define VDSO_HEADER             "vdso.c.inc"
 +
  #define HAVE_ELF_HWCAP          1
- #define HAVE_ELF_HWCAP2         1
+ #define HAVE_ELF_PLATFORM       1
  
- /* See linux kernel: arch/powerpc/include/asm/elf.h.  */
- #define ELF_NREG                48
- 
-+#ifndef TARGET_PPC64
-+# define VDSO_HEADER  "vdso-32.c.inc"
-+#elif TARGET_BIG_ENDIAN
-+# define VDSO_HEADER  "vdso-64.c.inc"
-+#else
-+# define VDSO_HEADER  "vdso-64le.c.inc"
-+#endif
-+
-+/*
-+ * The requirements here are:
-+ * - keep the final alignment of sp (sp & 0xf)
-+ * - make sure the 32-bit value at the first 16 byte aligned position of
-+ *   AUXV is greater than 16 for glibc compatibility.
-+ *   AT_IGNOREPPC is used for that.
-+ * - for compatibility with glibc ARCH_DLINFO must always be defined on PPC,
-+ *   even if DLINFO_ARCH_ITEMS goes to zero or is undefined.
-+ */
-+#define DLINFO_ARCH_ITEMS       5
-+#define ARCH_DLINFO                                     \
-+    do {                                                \
-+        PowerPCCPU *cpu = POWERPC_CPU(thread_cpu);              \
-+        /*                                              \
-+         * Handle glibc compatibility: these magic entries must \
-+         * be at the lowest addresses in the final auxv.        \
-+         */                                             \
-+        NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);        \
-+        NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);        \
-+        NEW_AUX_ENT(AT_DCACHEBSIZE, cpu->env.dcache_line_size); \
-+        NEW_AUX_ENT(AT_ICACHEBSIZE, cpu->env.icache_line_size); \
-+        NEW_AUX_ENT(AT_UCACHEBSIZE, 0);                 \
-+    } while (0)
-+
- #endif
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index e321ff3d14..1a24dfee7a 100644
+index 1a24dfee7a..6b0d73a6f7 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -130,59 +130,6 @@ typedef abi_uint        target_gid_t;
+@@ -130,18 +130,6 @@ typedef abi_uint        target_gid_t;
  #endif
  typedef abi_int         target_pid_t;
  
--#ifdef TARGET_PPC
+-#ifdef TARGET_LOONGARCH64
 -
--#define ELF_MACHINE    PPC_ELF_MACHINE
--
--#if defined(TARGET_PPC64)
--
--#define elf_check_arch(x) ( (x) == EM_PPC64 )
--
--#define ELF_CLASS       ELFCLASS64
--
--#else
--
--#define ELF_CLASS       ELFCLASS32
+-#define ELF_CLASS   ELFCLASS64
+-#define ELF_ARCH    EM_LOONGARCH
 -#define EXSTACK_DEFAULT true
 -
--#endif
+-#define elf_check_arch(x) ((x) == EM_LOONGARCH)
 -
--#define ELF_ARCH        EM_PPC
+-#define VDSO_HEADER "vdso.c.inc"
 -
--/*
-- * The requirements here are:
-- * - keep the final alignment of sp (sp & 0xf)
-- * - make sure the 32-bit value at the first 16 byte aligned position of
-- *   AUXV is greater than 16 for glibc compatibility.
-- *   AT_IGNOREPPC is used for that.
-- * - for compatibility with glibc ARCH_DLINFO must always be defined on PPC,
-- *   even if DLINFO_ARCH_ITEMS goes to zero or is undefined.
-- */
--#define DLINFO_ARCH_ITEMS       5
--#define ARCH_DLINFO                                     \
--    do {                                                \
--        PowerPCCPU *cpu = POWERPC_CPU(thread_cpu);              \
--        /*                                              \
--         * Handle glibc compatibility: these magic entries must \
--         * be at the lowest addresses in the final auxv.        \
--         */                                             \
--        NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);        \
--        NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);        \
--        NEW_AUX_ENT(AT_DCACHEBSIZE, cpu->env.dcache_line_size); \
--        NEW_AUX_ENT(AT_ICACHEBSIZE, cpu->env.icache_line_size); \
--        NEW_AUX_ENT(AT_UCACHEBSIZE, 0);                 \
--    } while (0)
+-#endif /* TARGET_LOONGARCH64 */
 -
--#ifndef TARGET_PPC64
--# define VDSO_HEADER  "vdso-32.c.inc"
--#elif TARGET_BIG_ENDIAN
--# define VDSO_HEADER  "vdso-64.c.inc"
--#else
--# define VDSO_HEADER  "vdso-64le.c.inc"
--#endif
--
--#endif
--
- #ifdef TARGET_LOONGARCH64
+ #ifdef TARGET_MIPS
  
- #define ELF_CLASS   ELFCLASS64
+ #ifdef TARGET_MIPS64
 -- 
 2.43.0
 
