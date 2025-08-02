@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88478B19135
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 02:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0974FB190EA
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:37:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLjw-0005lp-Sg; Sat, 02 Aug 2025 19:34:12 -0400
+	id 1uiLlC-00081N-4e; Sat, 02 Aug 2025 19:35:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLiA-000121-K9
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:32:23 -0400
-Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
+ id 1uiLiE-00018Y-JP
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:32:27 -0400
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLi8-0005An-UT
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:32:22 -0400
-Received: by mail-oa1-x2f.google.com with SMTP id
- 586e51a60fabf-2eb5cbe41e1so2561997fac.0
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:32:20 -0700 (PDT)
+ id 1uiLiD-0005Bu-25
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:32:26 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-306ab1b63fdso1327284fac.1
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:32:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754177540; x=1754782340; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754177544; x=1754782344; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UkNyZZYFhHeil9ygYrAE1UXkAwT1+GtqIOD2Xj8zAVs=;
- b=x0p+trCfWcYmIO4CP4dG9LkdZbI9U7lpxJBe905Xywe9k7ztAVQBNrutuSme5CQ2tj
- miYMa8N/7PD3S8Ll0Piu0fwQLUxGy1QMF6D/E98MSPQR9mgCiBeFk/i6oeZSJUONQI+5
- 1gU/6NxGxVb0kI1krl5P0wimyoONZvMDilR6PGi5rX+PUhr4DkGAzs/rjokv8msBA9vI
- YHMLVRV5rmMQhHAP0XyCzBPP1dH9qR91SEToh0y+nhzP2gTaXrDZummytNmBColzfNBZ
- qCYMw2DykH+hZVWoKW2WLcr8bbuxF7rMpJO4umjJHvtbw4HjpFIEYzxezqhP0UG7TEsA
- ljwA==
+ bh=jHDom8RqSvFBhHj/9Q/rXAoVV+sGpC/X8GRYrjCGKNI=;
+ b=T79WVbvjSXh/SjbwdAiVUeSldUv9m4NG40O3SOuzsaD1Gu34MpMR8dQRALBt7R0r5e
+ mpPFOQm4eG0cmNFXaBel8NWytpIYBUMEHkKhg6q3NN62te+Zydg4DEkno3aXSjQyABf+
+ NGIzTFNOBLeZ7P9ci0hW6tzll8n+mnd0uEzr9++YrSePkkvt1/1k+Q9IitURrSUNQYDM
+ 9K2R7/G6r1hPIelw7qNwvxITIY6WFSU+4awe78ftGSZAsKFOS4obCC3Aly2j7KqhFGa7
+ gM1ULP8ctm8xrgf0CZZC4gKv6Z9u2HwbF0pxEXJwoLdrGT370tmIn9mncsIVxDSuzqzw
+ 8CEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754177540; x=1754782340;
+ d=1e100.net; s=20230601; t=1754177544; x=1754782344;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UkNyZZYFhHeil9ygYrAE1UXkAwT1+GtqIOD2Xj8zAVs=;
- b=gY/uRWrfFlhXrb5LtOMm2HAW7MCKCYgt/oZ6v2ebJpJwzeK3k1oVIK6sisoycfGfLz
- hqPJ2C1t3USGxzec+AbDb8Ig+/cbDIJ/kZpSldfN+nYFEXO8dQsul/VhP7/lGFSheiII
- ggiljgI3ypuQSdfXvd2P2B558G1H4V1Wx2vX1WONcj6WZIu4Ds5a6+8z9/4I7cTYEuu+
- Mbb2EPKiA4RLnGTTNM2G5jRwGrVXyOE7bZZU9epY8OU5/IDFqgMAZHNcoKjoqH2bgsKp
- vKzI0RzsHft+zyGbXI2+mG5InXjdaRZdUkJ9dIpmkC5g9eqMBjKBQLdE9HDMxD7zlnje
- pc1g==
-X-Gm-Message-State: AOJu0YwH8v1rJYjk2LhaanzAJvGQVVs7/0NtLQ2KH3wxSJ9tRNQmyJq+
- uoEStgmLuRXFYLG3AtH/eGB7S9s2VDSPMnABeZc3u8JGoMJA2LUQOBNbi8UNAToZv3zWzjCynC5
- b5NAzYRg=
-X-Gm-Gg: ASbGncubb5Tfq16+Aog90TwoxxRIiVht7wSTwYZZhqX1nYomnrn0c6xAe9KHGSy+/5i
- UVyyqqEp5VGG7ts+GJ1OQgK0RA7xM+04OOaeRCqX596AKDNUwbPzUO6cwi16bhJol8fsepSf8YY
- dDBXO7nWZC8SdyD29OaubBmyVeFlItDvQjxGtn5LXcHUI43oD253ZjBn0mS/UkoBuqom3Go/6MT
- HUGlVMXAo+RXI0R15rhmYOWUw4AzkM8YdPuQg3OQsxTVr6lghnWSuNJd6UvYGcCprfPDq9r1oGR
- SUHgiOPzuUsWP1slrVAnw5WGeRFQllI/vTo++4Sda5lmCGD6fxzN/z9/ko9uOLsXZtuDsJquR/S
- Z3Qpojr1KThk+QXd0iAtahM+eYWqCAqtds/BFrN4onvRkn/Vv34OH4QjNYrIKVMw=
-X-Google-Smtp-Source: AGHT+IFaZzmK5IYUTuJNQzaACtC5hO+K31zKKWlBkqoFSys/khbeKudzmVw91FuYj9atNyCYvwbvbw==
-X-Received: by 2002:a05:6871:5889:b0:306:c0b8:49f1 with SMTP id
- 586e51a60fabf-30b6796f2b8mr2705043fac.19.1754177539760; 
- Sat, 02 Aug 2025 16:32:19 -0700 (PDT)
+ bh=jHDom8RqSvFBhHj/9Q/rXAoVV+sGpC/X8GRYrjCGKNI=;
+ b=iEGt8LERLGkFqqe1aHBu2a/qHfjl3qNNP0+K6DHRD7um8S8SNkRs9UcXNsLiyOUs6k
+ NG6X4dVE7nVUfVb4BTAKLOJplB8Rl5XiBnr2nCBxky0a8vBa4AYz7rMAkI//QsSidxoL
+ hJY8YO2RNAcIPx4Y5xJzxN0x6SshF7qjwwQBH5Hurtb1+7V5dAbVLIKhxBvenflssyQ4
+ 3SC2AYDgAuNnhs8LXF7SayCEq0MDeKPpMkqDqIys0AvddLKXWGnPvRvrPe06edR27vvD
+ 7qB5fGKCRpUuJ2vtf+XgRJYX5hWIdTsbMR3o+cm+tD2I5djpNXk5COKDof6On5N4LftK
+ Up4w==
+X-Gm-Message-State: AOJu0YxbVjvpvrZP3eaWNkbvlm3pBjWTT86XEVQ/hqzXaU2ZOIFWBR2K
+ ygRYovENDAWZljazUyxW+GMPwExXN+4JejtGFclFgqe+S/ZTLq5/qei7Cdq5YE3IpZ3RMeDOs+V
+ Z108gleA=
+X-Gm-Gg: ASbGncupEGUyAcYkqjenbIoREP5YCYhO8xsPMqYHMTjq6gb+g85QcV4v5hJRf49QOCE
+ bpSofzTqGWo3BoK1nzariRATx6Zvoa+1NxwW3LU1AdNV8GFgSDLj9NiCh7VMUf7OpJyDHLgd/Tj
+ f3Vwm9fByfm79Yub0rd46GL1eQWCQPrTlq8bbNf89C6x+rE8AcxKkiPe+oIIc/K9FRqW3JdCStH
+ q6KV2dsYdVoaLGtWjvJ41mIt9gpvviSlPoyIFT+kTTMA4MldlDYaSKeAlj3ENFFCmnHlYzdBQSk
+ gjhlv5RNVOhEFxObNFa4juiW5Mak0Qln1uMfpNAvharSVm45Js1TYRi30tGm8QVQlR8IqQovULu
+ pi7JxO9VXeckYCjzK1Bgis3LwPWQ1onmL2RytfSFFg7xafgsVuZJy
+X-Google-Smtp-Source: AGHT+IG6NWPotY80eQ3XZ5CSOfebqtBbgd0mWrQ1Oh+Mcabdpqtc8IW9VQ9VTzpJULz3LNRCVcIYQA==
+X-Received: by 2002:a05:6871:2318:b0:2ef:98fc:6f59 with SMTP id
+ 586e51a60fabf-30b67bc7100mr3265862fac.35.1754177543907; 
+ Sat, 02 Aug 2025 16:32:23 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-30b8e3c9b32sm71031fac.24.2025.08.02.16.32.15
+ 586e51a60fabf-30b8e3c9b32sm71031fac.24.2025.08.02.16.32.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:32:19 -0700 (PDT)
+ Sat, 02 Aug 2025 16:32:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 29/85] target/hppa: Adjust mmu indexes to begin with 0
-Date: Sun,  3 Aug 2025 09:28:57 +1000
-Message-ID: <20250802232953.413294-30-richard.henderson@linaro.org>
+Subject: [PATCH v2 30/85] include/exec/memopidx: Adjust for 32 mmu indexes
+Date: Sun,  3 Aug 2025 09:28:58 +1000
+Message-ID: <20250802232953.413294-31-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802232953.413294-1-richard.henderson@linaro.org>
 References: <20250802232953.413294-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2f.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,58 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a logical reversion of 2ad04500543, though
-there have been additions to the set of mmu indexes
-since then.  The impetus to that original patch,
-"9-15 will use shorter assembler instructions when
-run on a x86-64 host" is now handled generically.
-
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ include/exec/memopidx.h | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 11d59d11ca..672ab3750c 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -29,21 +29,21 @@
- #include "qemu/interval-tree.h"
- #include "hw/registerfields.h"
+diff --git a/include/exec/memopidx.h b/include/exec/memopidx.h
+index eb7f1591a3..66d9c58b3a 100644
+--- a/include/exec/memopidx.h
++++ b/include/exec/memopidx.h
+@@ -25,9 +25,10 @@ typedef uint32_t MemOpIdx;
+ static inline MemOpIdx make_memop_idx(MemOp op, unsigned idx)
+ {
+ #ifdef CONFIG_DEBUG_TCG
+-    assert(idx <= 15);
++    assert(idx <= 31);
++    assert(clz32(op) >= 5);
+ #endif
+-    return (op << 4) | idx;
++    return (op << 5) | idx;
+ }
  
--#define MMU_ABS_W_IDX     6
--#define MMU_ABS_IDX       7
--#define MMU_KERNEL_IDX    8
--#define MMU_KERNEL_P_IDX  9
--#define MMU_PL1_IDX       10
--#define MMU_PL1_P_IDX     11
--#define MMU_PL2_IDX       12
--#define MMU_PL2_P_IDX     13
--#define MMU_USER_IDX      14
--#define MMU_USER_P_IDX    15
-+#define MMU_KERNEL_IDX    0
-+#define MMU_KERNEL_P_IDX  1
-+#define MMU_PL1_IDX       2
-+#define MMU_PL1_P_IDX     3
-+#define MMU_PL2_IDX       4
-+#define MMU_PL2_P_IDX     5
-+#define MMU_USER_IDX      6
-+#define MMU_USER_P_IDX    7
-+#define MMU_ABS_IDX       8
-+#define MMU_ABS_W_IDX     9
+ /**
+@@ -38,7 +39,7 @@ static inline MemOpIdx make_memop_idx(MemOp op, unsigned idx)
+  */
+ static inline MemOp get_memop(MemOpIdx oi)
+ {
+-    return oi >> 4;
++    return oi >> 5;
+ }
  
--#define MMU_IDX_MMU_DISABLED(MIDX)  ((MIDX) < MMU_KERNEL_IDX)
--#define MMU_IDX_TO_PRIV(MIDX)       (((MIDX) - MMU_KERNEL_IDX) / 2)
--#define MMU_IDX_TO_P(MIDX)          (((MIDX) - MMU_KERNEL_IDX) & 1)
--#define PRIV_P_TO_MMU_IDX(PRIV, P)  ((PRIV) * 2 + !!(P) + MMU_KERNEL_IDX)
-+#define MMU_IDX_MMU_DISABLED(MIDX)  ((MIDX) >= MMU_ABS_IDX)
-+#define MMU_IDX_TO_PRIV(MIDX)       ((MIDX) / 2)
-+#define MMU_IDX_TO_P(MIDX)          ((MIDX) & 1)
-+#define PRIV_P_TO_MMU_IDX(PRIV, P)  ((PRIV) * 2 + !!(P))
+ /**
+@@ -49,7 +50,7 @@ static inline MemOp get_memop(MemOpIdx oi)
+  */
+ static inline unsigned get_mmuidx(MemOpIdx oi)
+ {
+-    return oi & 15;
++    return oi & 31;
+ }
  
- #define PRIV_KERNEL       0
- #define PRIV_USER         3
+ #endif
 -- 
 2.43.0
 
