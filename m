@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E318B18FE4
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Aug 2025 22:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C9CB18FE7
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Aug 2025 22:28:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiIhB-00016E-7D; Sat, 02 Aug 2025 16:19:09 -0400
+	id 1uiIpe-00012k-Fs; Sat, 02 Aug 2025 16:27:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uiIct-0006CR-6Q
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 16:14:43 -0400
-Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
+ id 1uiIku-0005Dk-8X
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 16:23:00 -0400
+Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uiIcr-00025m-4Z
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 16:14:42 -0400
-Received: by mail-yb1-xb30.google.com with SMTP id
- 3f1490d57ef6-e8e014c1d19so1591678276.3
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 13:14:40 -0700 (PDT)
+ id 1uiIks-00036q-P2
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 16:22:59 -0400
+Received: by mail-yw1-x112d.google.com with SMTP id
+ 00721157ae682-708d90aa8f9so34728317b3.3
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 13:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754165679; x=1754770479; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754166177; x=1754770977; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=rjbXbAyuKLaEofKyKoOMeUrPxubelBMgbQd2XMVAI+0=;
- b=zZAl3/10VUUDtB2N4edAId/F1PH6Be6WUjvIh4RU+xu3Grp7NHh0AeZjuIljYR0lE/
- wCQY+Nk1iR8keKWxyzqBF6JliMaIxJiSQtcALQJxIqaG72ih/lp6smeUtyq8qoBhGD3E
- DIdoFnEDhoMFA5/j6cF4tWNzOFnttaI39Cd2EMVLsRWj7e0NTBI1jkl4wz8RONtgxtoi
- nIBiHF4F4oEs8qC9wpcksvlUfvOpKrNS8K3hntO+sydT4Ie3IWOnNxwVULs4jCi/2M+0
- bExfbJZB0dFiU6yoEkPw7vxtn+a0yFWwCAn4ZG5Vz4CJLWl5IcUXG+aMsuJfhGMoPTsL
- W5fQ==
+ bh=ItcsfCMRmBEWwhaHgua3JBaJlAop+gkvTw3ke8Ybe50=;
+ b=gWMsf8bvjpeh8h2ryh6PLe5duHY6WSPLP092JyKqo9yhQMfpE/MAEPUXrI26DMVZKH
+ pv/nkRatK2mnemuc2Po+2MZLMgZnpY32koJZzmS3QnbgrUKJuIW0D5c63oIU/Uf2Ox7B
+ p/Z3I3AFQh1SWV4YxPPdJm479wbJMvkRBR5KVJIVP5+teXWVtv1v8wd32NzR/lvbwP8p
+ irVuYo8ZaGewlsXFr+2YjgEBpii1dXrMyZvNCV32mlnWlEO6DfYxLuex0MVfO4Bn17cS
+ FgG74Wdxl43nqW41rrSTONo61g7ZFqh8XZxW2VMj9XQz1u8uoPx3b/Ob6PBO591da/lV
+ KfzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754165679; x=1754770479;
+ d=1e100.net; s=20230601; t=1754166177; x=1754770977;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=rjbXbAyuKLaEofKyKoOMeUrPxubelBMgbQd2XMVAI+0=;
- b=NK9P0ZBHtfRINTlPmDwyhmlmd6+WtKOisu+Tzv3dD5Gu+3M1Pf4puZtbkXtAD30xzo
- pcIzPgcrpgxZQv/Q1/JcB/jaK0zqx1RadM0hicDAosZDdRM23t3XyIf7Efy4bt5eJGrz
- v1kakS8bwdAVE05kaErvgyY+QVUcapw+iSr2StX/aQEpkK340FtWy0B11RRL+01J4BDc
- C/gSEZrTKdvhWSH59meTSei/u6OnS7DLihKTwmlC7FCtk6ifBbFJ4MaHC8rPUHZtGMM3
- kVPd3kwD50h4SVUkMrqAXJLyiTWtyrioi4zSdLYtzmzy6l903hXnFJBtB0D/qskBk8kJ
- /g3Q==
-X-Gm-Message-State: AOJu0YzFYcbHV5po4FOPa0ptWUMYMkMJ5Bf09L5oBFyLYOQWVMhNeCUJ
- s5RHJNyhLO4LbRUvsre2X0fAA9KcsmTxEn82UxNbS7YWllVhc5/fu5ftBwSs9vrtv0x2RHH28Um
- GnBlq5PkkDiv5NeuBob+J9K/hYdr/nFHOm7KII4thY12ITO4SSTb7
-X-Gm-Gg: ASbGnct1kj73U0j2OEjnd2sm8L16fJA8DcFpL0ayz5o5AKYeKwH634Kr4vA0Gg2+D2o
- 4v5xF8ZAmE9ga62SlgIFq6F21DQXw4iBWixGD2ar1jd49siaWJ5cnH5QUYmDItbPP0vkYYFYVAL
- 4cKJPGvHrNconpWA8Lh1868rYBB//VgdhTFdPochsL/vMg3ME84lRDPAlG5ZxHHe2I3rJDTocwB
- rT4giroYO2KzfdDsJ0=
-X-Google-Smtp-Source: AGHT+IHraeP6oAIoC8Ljl6qPBBROGC3vh6qFatHW6J7BDD8N2jbTYfJzz/g/eJ+Katzz8drf9WR7u1ZsEn+goX4dRB4=
-X-Received: by 2002:a05:690c:17:b0:71a:1f26:5d1a with SMTP id
- 00721157ae682-71b7ed84355mr45697247b3.11.1754165679502; Sat, 02 Aug 2025
- 13:14:39 -0700 (PDT)
+ bh=ItcsfCMRmBEWwhaHgua3JBaJlAop+gkvTw3ke8Ybe50=;
+ b=k0COYePZNZHCAr0spb9WIWi8KDFGkFz6fFm1hdTZAn7VtMmWUA+xs6gSjCnwew5C2O
+ FkYtOuf47FMRz/b6FR4hcIdYhRYID4945lTRAIb0TVjU6sg3fwnYl4/nCOPYo+ygW7rn
+ p0CvbSg++9IgW0cTTsUBy92T4L1sGMWPZfSOkELrr77dDTUQVHXr0EtaC6nslxtTxvtb
+ mxR/GrYyVdTEPk0mZCRpAl0AcZ+WZ+9UBr26VxbVOwhsvOZuVX/EdKsjc9endVDY5J/r
+ Xj/rxS2RHDD7P3hsPq/7pJ2n3uwjNCriFKHcGoL9fGauPsRBybo/gpQzJoCBi1A+tO7N
+ UdGA==
+X-Gm-Message-State: AOJu0YwepcBRlHLitfz4duIYLK7aaWovJ+i/lyNcR8Hr15iv+wrwFPoI
+ dSAhT10eA3SqyqByuXta7nWL8tv3gLSFzMyWyPkhOxh+R+UjX9979yvmEfmGJmG1rF9BM27t9mA
+ 23Laa4niBpHhRP3C+w0Jwb6ot6qIuFmkW/U1Sb2I4w3PrmG5A3GHoLtk=
+X-Gm-Gg: ASbGnctVrXDAEj8taJYf3wm0DX9dRrj3ptEhnqLUq0SlbB4v9eqT2bkZ6w132HN2bEU
+ LTOPWUxxKVaEMpafK19PouW8eQ4GDu8NDcH6YLoap4/qj5E+e8AKk70EC/p5xA2/mPbqWLzhlcl
+ tUFtLJ14jBplT8ivo6Sm7faEA/Z1mw7150QaBRWlZXu8N4wCWna4OGyQsaXS8gxq7q1IZqEoDsQ
+ scwNGLeXiXTRc6qElY=
+X-Google-Smtp-Source: AGHT+IHiXTBdmVt7s4iQRS6K7yvsjtdjpD84bfO6wtKpKCVgZF1LOmhQRNbOzWY5PpZSw8Vqp7EOO/ec6z+DeIw2NzY=
+X-Received: by 2002:a05:690c:f15:b0:710:e4c4:a92f with SMTP id
+ 00721157ae682-71b7ed12e19mr49972027b3.5.1754166177569; Sat, 02 Aug 2025
+ 13:22:57 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250730000003.599084-1-richard.henderson@linaro.org>
- <20250730000003.599084-62-richard.henderson@linaro.org>
-In-Reply-To: <20250730000003.599084-62-richard.henderson@linaro.org>
+ <20250730000003.599084-63-richard.henderson@linaro.org>
+In-Reply-To: <20250730000003.599084-63-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 2 Aug 2025 21:14:28 +0100
-X-Gm-Features: Ac12FXxzGxFSMyFcQfbJNMkdqeXpCewfNtGnLyP9eHGaWsZxbMmZB3UYG6Ww_-k
-Message-ID: <CAFEAcA_wfr5rTAFv-yJyHqSmiYRVrPgDHyzhZFkFLn0gZmuUmw@mail.gmail.com>
-Subject: Re: [PATCH 61/89] linux-user: Move get_elf_cpu_model to
- target/elfload.c
+Date: Sat, 2 Aug 2025 21:22:46 +0100
+X-Gm-Features: Ac12FXxgu0OJyFTP3dDiYhUYo5nrsOlsdvjR23BRnbVSHWeJxXrJxdwpcjOJZRU
+Message-ID: <CAFEAcA9hXSfzRMuU=9qKC=rb53qtTTRZy1yxZQ=aHs6J1-mWhQ@mail.gmail.com>
+Subject: Re: [PATCH 62/89] linux-user: Move ppc uabi/asm/elf.h workaround to
+ osdep.h
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,41 +92,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 30 Jul 2025 at 01:38, Richard Henderson
+On Wed, 30 Jul 2025 at 01:42, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> Rename from cpu_get_model to emphasize that this is
-> an elf-specific function.  Declare the function once
-> in loader.h.
->
-> This frees up target_elf.h for other uses.
+> Move the workaround out of linux-user/elfload.c, so that
+> we don't have to replicate it in many places.  Place it
+> immediately after the include of <signal.h>, which draws
+> in the relevant symbols.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-> @@ -805,7 +804,7 @@ int main(int argc, char **argv, char **envp)
->      }
+> ---
+>  include/qemu/osdep.h | 8 ++++++++
+>  linux-user/elfload.c | 7 -------
+>  2 files changed, 8 insertions(+), 7 deletions(-)
 >
->      if (cpu_model == NULL) {
-> -        cpu_model = cpu_get_model(get_elf_eflags(execfd));
-> +        cpu_model = get_elf_cpu_model(get_elf_eflags(execfd));
->      }
->      cpu_type = parse_cpu_option(cpu_model);
+> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+> index 96fe51bc39..be3460b32f 100644
+> --- a/include/qemu/osdep.h
+> +++ b/include/qemu/osdep.h
+> @@ -133,6 +133,14 @@ QEMU_EXTERN_C int daemon(int, int);
+>  #include <setjmp.h>
+>  #include <signal.h>
+>
+> +/*
+> + * Avoid conflict with linux/arch/powerpc/include/uapi/asm/elf.h, included
+> + * from <asm/sigcontext.h>, but we might as well do this unconditionally.
+> + */
+> +#undef ELF_CLASS
+> +#undef ELF_DATA
+> +#undef ELF_ARCH
+> +
 
-Since this patch is just moving stuff around
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+This should allow us also to remove the hw/core/loader.c
 
-but this got me wondering how the bflt loader works -- it
-looks like get_elf_eflags() will always return 0 for a
-bflt executable, and because most of the cpu_get_model()
-functions for bflt architectures[*] return a fixed string
-it all works out, but this seems more like we get lucky
-than we actually intended this.
+#ifdef ELF_CLASS
+#undef ELF_CLASS
+#endif
 
-[*] arm, aarch64, m68k, microblaze, sh4, xtensa:
-all except m68k return a fixed string; m68k handles
-eflags == 0 as "m68040", which may or may not be the
-best choice.
+(added in commit 3efa9a672e4a in 2009 with a commit message
+and other PPC related changes suggesting it was for the same
+ppc include problem).
+
+
+> -#ifdef _ARCH_PPC64
+> -#undef ARCH_DLINFO
+> -#undef ELF_CLASS
+> -#undef ELF_DATA
+> -#undef ELF_ARCH
+> -#endif
+
+Your osdep.h change is missing ARCH_DLINFO -- did our uses of
+that symbol get renamed to something else in an earlier patch?
 
 thanks
 -- PMM
