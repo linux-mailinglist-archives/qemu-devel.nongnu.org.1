@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F0AB190DB
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A114BB1910F
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:48:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLk8-0006Q7-9L; Sat, 02 Aug 2025 19:34:26 -0400
+	id 1uiLjl-0005HD-TK; Sat, 02 Aug 2025 19:34:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLhb-0008L1-29
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:48 -0400
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ id 1uiLhe-0008OW-8a
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:54 -0400
+Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLhZ-00055h-Ai
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:46 -0400
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-61585dfc8f8so1030171eaf.0
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:31:44 -0700 (PDT)
+ id 1uiLhc-000569-TJ
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:50 -0400
+Received: by mail-oa1-x2a.google.com with SMTP id
+ 586e51a60fabf-30174a93186so2672590fac.3
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:31:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754177504; x=1754782304; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754177507; x=1754782307; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BgqEOYuQ75vNcJCSdrIzICkpbTEEoH2jCjP3tSq0CeU=;
- b=vYEPDy8ymaISDKW/roe8jb9kHAWtBxutjcnXWm9DklnZmPc52jEhhYxJT64nCvhV1e
- MWjzmAzRbb+IgiQR2OlKOXBdGC7PlofElNIRkO1IGUgOpfYwLQwTeal4remoDEh03b29
- dHuBEF6JGphffKfLr4ck0BflZQ8Jhl8RYrywx3Lja1oDd9ida4BJNXlFkPUdtBu3YWdc
- 3ERrEPVCPjUOcmTSPhEQTfytOG/hBfIHTaBGp9RJTf/zY+YRd8edABml2pBGovilu59S
- HBvfA7jhgh6o11uXOceY6eQvXcFgDofztVCbgGC1xzMYglf1ojs83CTbls6NheDXaV+U
- RTbQ==
+ bh=NR3W5du9ZFi4qPy6YJwkknWURFd+s6CJ6eRMr5OXqWE=;
+ b=NT9xT0zncpoYCgpt+cP0ZCPct1QsOXG0V3zbxmzV5L0zbmiooomVF3SaFrnawA7KDg
+ 8pIGxWqNFuynYffQWogifF3QanXKmfVCwZ1DY55bDEZpHmoblIFK41+/p76N8S2+elen
+ uvKJopGRnTxpqzuOaAfEVuC0CedJFgQZuRAJHIhPERZDhPy8bB6qaUkVHB8zQJD9s5Xj
+ DPCGl2BB0R8ARd+g+lzWdY3YyLPW6nMyJJ+jy9PscnGjRXZWDu3URVYlTzfNZGaYTdeM
+ DnkAkFfT4MLlQjDA40be4vZ4o51K2gVXcNbU2npmOljhR384GDdaiWc2ZwklsGb7uX80
+ x6mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754177504; x=1754782304;
+ d=1e100.net; s=20230601; t=1754177507; x=1754782307;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BgqEOYuQ75vNcJCSdrIzICkpbTEEoH2jCjP3tSq0CeU=;
- b=ab1O6EkyhTEu7mpn50ZqXgZNislUILVBnvwPcOxZJa0TSiSIc05Y2Zg63GNR1/WzUP
- QRjf79G2HzYNO6OPWe6jB62n7tqEJF1N4qh/3csmmPBK24fPJ4kFz0Yh0JDegZ4Qy0vR
- lipDzAZwpuYTFncP+vKL84S7fyJ4xAX80e5EsZrmLo0YFfu/uUEueCI48IzWVY8jWlrU
- vMSGgGEktbrVM9G/zuQisO3Y2NN8WtZEjNh5DPQRh+QhgZdVP5qTtaDb065+f0K/N4lf
- n7jw/3gYDFKAPsKWojblf+7M2BwjnRIX7GQCTlMR8yQDFxGor0XJEoLsg9P/7ixSwJj/
- evPA==
-X-Gm-Message-State: AOJu0YwugcmB23KAvvz5Z3oWxOycAYObnSXz1Fgc5leTAW+GDAiGZN+7
- eP5SrGBR5yePGpm/tiom40NOAN2FwxdFjPEsuPnLFADor+QY4IQ6BLpEsgYW10An9C8il/fm3S8
- RiiJXI4U=
-X-Gm-Gg: ASbGnctBGqSKni4e8rPHPwuxN+/DHfY9mgpdXTk9Gn5p8eNSwPQdBRbjTp2B0aexKSS
- sv0BNCX35o9fjd5BBzba5na/YcGK7pobS/NTPuZIOoQ60mHWd4z2g+JHgwKJpR6ZpZ4q5TQNBgZ
- u+0kQ9jfmIJg94ryxkqm+rSGKklWjpJtlDS4lJnXGoicchGhhjfUcLvOc2b3PdLTasiUcoeVpEP
- EKBXAXRE8tuEkfWEsSEtAbM+/8wH0JCIbcINgVWe5a93FapWmz3OetaXUXmucaVcdz2rV98roMZ
- eV9sSILouLTrVAa3kja5VhZgkZ39jgNWr3LlX0WtvF33SMZxxjzGQt/gfUY0gXGHubmlqXL+5I5
- 5jHcPiIkou5gV54FWGMf76lP2yq+h1t+9EMd9RxqltlStEGHGLq/o
-X-Google-Smtp-Source: AGHT+IHtEOUAuUbj++75YcgF7NQQy2YnkbT0alq4xC5LV8Vs6/iw7qXg1Z2gSOyFd7RPZl8FM8oeAQ==
-X-Received: by 2002:a05:6870:b027:b0:307:b2c9:9f99 with SMTP id
- 586e51a60fabf-30b679b882fmr2242587fac.39.1754177503826; 
- Sat, 02 Aug 2025 16:31:43 -0700 (PDT)
+ bh=NR3W5du9ZFi4qPy6YJwkknWURFd+s6CJ6eRMr5OXqWE=;
+ b=mbWqD8J4LBYOV3NstoLC/Bmu3T0xhArIML8blv95dmgK+YGohViiVORf4h8Xcx/1MZ
+ p8hwWJcd+V2i5fmnQdtFTGgc+rCHZ/Q02ikwb9E+gQ6+FlLGqGCl9Flp9I3iXFS7BGg3
+ qJpBjuxAuq7jb+6sx3Xu2ey365MZfi8Yde8y46uBwrSasCDjznnwIYKUNLeIARPA4hIi
+ h49mXVg+PD7mgtV18juTMKriqtqFTZ//dRFwhzRAXf4tbkp3eJUU9uv1oGvywBQaXSKn
+ 4fW/U/DlXl7CE+wIBDXmw8QMI3jByGnTCqafgLPR59CeL/V9iKCXEONqlPuUPOCyMamM
+ 6Epw==
+X-Gm-Message-State: AOJu0YzMLwjfoDOUBuY+REaCTcyqa5l/h7mG/eQBPD4IGkqeNLKRhOhl
+ JEQNcUm/uPoAMQCvNdF7TusYir4EoFZ9uP5QAO2sDPwa7rdBHaqI0oNSxjKja+SyX3jOqS6eIzI
+ fglLRkVc=
+X-Gm-Gg: ASbGnctdTg7Thhs9TnB8MeLMNZKEuBoRLJtHklYqZXwblPsGn9DhYxtVOKFAsq3/lU/
+ 0yjPSKqYcwGUQn/+73oQHKkrO/fq2U092KsiwlDxBBbKPyO7irRCPJT2z+E5H8qkgd2W4iSlopX
+ /U9CI8FsypjtHIL6cf/Pfr7kLfrX5vpxtjLGrdAk/5e9St8WAr51fodYQ6P2BCA35cct4LGKVYU
+ g/Dzta2sZsA8rJcQUh5MJ3OJmHIQbunFarZJwhLpWRZmeWxz5l8CztwQNnto9ZA58+a7LX3Di3J
+ vDSWUOJwkski3QskTTHS7OvYHlZVQdNKQRdhUCoGpF6UY2CYdJiNvZi3oFYPZtnji4GBgzUQGHg
+ NuiQhMNDIADicE5RYeQ2tuGj1A+feZhBzntDtimxrO01EFJh4NZDK
+X-Google-Smtp-Source: AGHT+IGJMnEvtsvIBqloejw81L8/1dMitVLEcq4M/I1eq0MXKlQ4VMhdYJBeYpOUnEQZvfKa8Of4dA==
+X-Received: by 2002:a05:6870:d32f:b0:307:bba1:d09f with SMTP id
+ 586e51a60fabf-30b6768a30dmr2446653fac.15.1754177507685; 
+ Sat, 02 Aug 2025 16:31:47 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-30b8e3c9b32sm71031fac.24.2025.08.02.16.31.40
+ 586e51a60fabf-30b8e3c9b32sm71031fac.24.2025.08.02.16.31.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:31:43 -0700 (PDT)
+ Sat, 02 Aug 2025 16:31:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 21/85] target/arm: Do not migrate env->exception
-Date: Sun,  3 Aug 2025 09:28:49 +1000
-Message-ID: <20250802232953.413294-22-richard.henderson@linaro.org>
+Subject: [PATCH v2 22/85] target/arm: Expand CPUARMState.exception.syndrome to
+ 64 bits
+Date: Sun,  3 Aug 2025 09:28:50 +1000
+Message-ID: <20250802232953.413294-23-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802232953.413294-1-richard.henderson@linaro.org>
 References: <20250802232953.413294-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc33.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,32 +99,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are not architectural state, only placeholders
-between identifying the exception and delivering it.
+This will be used for storing the ISS2 portion of the
+ESR_ELx registers in aarch64 state.  Re-order the fsr
+member to eliminate two structure holes.
+
+Drop the comment about "if we implement EL2" since we
+have already done so.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/machine.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/arm/cpu.h    | 7 ++-----
+ target/arm/helper.c | 2 +-
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index 6986915bee..8dbeca2867 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -1085,9 +1085,9 @@ const VMStateDescription vmstate_arm_cpu = {
-         VMSTATE_UINT64(env.exclusive_val, ARMCPU),
-         VMSTATE_UINT64(env.exclusive_high, ARMCPU),
-         VMSTATE_UNUSED(sizeof(uint64_t)),
--        VMSTATE_UINT32(env.exception.syndrome, ARMCPU),
--        VMSTATE_UINT32(env.exception.fsr, ARMCPU),
--        VMSTATE_UINT64(env.exception.vaddress, ARMCPU),
-+        VMSTATE_UNUSED(sizeof(uint32_t)),
-+        VMSTATE_UNUSED(sizeof(uint32_t)),
-+        VMSTATE_UNUSED(sizeof(uint64_t)),
-         VMSTATE_TIMER_PTR(gt_timer[GTIMER_PHYS], ARMCPU),
-         VMSTATE_TIMER_PTR(gt_timer[GTIMER_VIRT], ARMCPU),
-         {
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index fb87fcc3e6..4940bd6a45 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -644,13 +644,10 @@ typedef struct CPUArchState {
+      * entry process.
+      */
+     struct {
+-        uint32_t syndrome; /* AArch64 format syndrome register */
+-        uint32_t fsr; /* AArch32 format fault status register info */
++        uint64_t syndrome; /* AArch64 format syndrome register */
+         uint64_t vaddress; /* virtual addr associated with exception, if any */
++        uint32_t fsr; /* AArch32 format fault status register info */
+         uint32_t target_el; /* EL the exception should be targeted for */
+-        /* If we implement EL2 we will also need to store information
+-         * about the intermediate physical address for stage 2 faults.
+-         */
+     } exception;
+ 
+     /* Information associated with an SError */
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 168557b08f..9447d7ba59 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -9438,7 +9438,7 @@ void arm_cpu_do_interrupt(CPUState *cs)
+                   new_el);
+     if (qemu_loglevel_mask(CPU_LOG_INT)
+         && !excp_is_internal(cs->exception_index)) {
+-        qemu_log_mask(CPU_LOG_INT, "...with ESR 0x%x/0x%" PRIx32 "\n",
++        qemu_log_mask(CPU_LOG_INT, "...with ESR 0x%x/0x%" PRIx64 "\n",
+                       syn_get_ec(env->exception.syndrome),
+                       env->exception.syndrome);
+     }
 -- 
 2.43.0
 
