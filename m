@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135EEB190B5
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68EAAB190A8
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:21:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLNo-0000sY-VZ; Sat, 02 Aug 2025 19:11:21 -0400
+	id 1uiLNu-0001G3-3P; Sat, 02 Aug 2025 19:11:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLNf-0000Q4-0X
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:11:11 -0400
-Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ id 1uiLNi-0000cz-7y
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:11:14 -0400
+Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLNc-0001gV-S6
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:11:10 -0400
-Received: by mail-ot1-x32d.google.com with SMTP id
- 46e09a7af769-741b1fe0d48so53977a34.3
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:11:08 -0700 (PDT)
+ id 1uiLNg-0001hG-7G
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:11:13 -0400
+Received: by mail-oo1-xc34.google.com with SMTP id
+ 006d021491bc7-615ee07353bso1761233eaf.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:11:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754176267; x=1754781067; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754176271; x=1754781071; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tl4Y/fGNJblvvmq3B2ou0KAzvAx2tU4UlLl5v489TQo=;
- b=k48GQTBwdzJ1SUD0lkhfqE4DKhZYpD7usPd47VOpQUWRbWdInbpDStyJRvcOIOQrRW
- 3okoemzviifJ5ke+TEIReEnmlqeFe8Thw6wTMDBiH+XwOi+HNDOmJKdvwyNhPtPR6xmO
- Zz1qJu13qS3QSOFllqT9fSdEeW+OT1e2C4JISNns0I5330bhhO1/QNfSr0W+6sLbIc/p
- 5DC4r+EFTtxZA0SdZ+vmwcGFtqkx7OgoBzbbiy2REeewl52OKbu8iKzql5T2QLPK7Z7r
- pBfHHU8JFtduLrP8yc+dJ02d0CrlRV0SZPSXA8IfdqDgZ0/zT9Suwl2X3IP39QgJ9T6h
- WT2w==
+ :reply-to; bh=iw+J85S+/WOIJoq0a6UuRf83h3sfoLJC1A6vmK+E5uM=;
+ b=uDA3FiyJjJ3JIBqFyRcx2WChdhdG9LRoWyzN+I1gBlmS4EU5cXWjUA5EEmhUB8nfvJ
+ tHmUdwI0qMvCeqiXHZHM9rTN2AujFyt8LNZVvKNeOEonIMo+brwtgOC/4moqawdtEzGn
+ I+Xa58N8hQiUmjVBzD5GtOsAdxbLVNWe1SccDx2WbxZ4KOACj7gjeJEMzrM8WDIAudQG
+ LcHux1oeIsOH41+sL5Mg1cnGhzbi74uo9anguRHdk0Rm/CVm363ddIz+rEXZ2hoM/lGQ
+ qmwzMDy01N3YBjKvBZ4ImJgHjCPOIOuojXhIJ3dOjcwbeKp5DIFrWu9alkczod6iTRWi
+ aFng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754176267; x=1754781067;
+ d=1e100.net; s=20230601; t=1754176271; x=1754781071;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tl4Y/fGNJblvvmq3B2ou0KAzvAx2tU4UlLl5v489TQo=;
- b=g6fNz4aMqgbHNiX79t2thYFyh/9WA+39QDdtdVeuD8kmIQcxUodR1do4+HrAE679/i
- 4I8dIXxA2v4TruQIqsMUSFemn6P2+ng+GGHdInlVjPBE7XhwScRYtDA1kzR/kFq3cQtc
- T7mzIG6J9uJJxTZUwjobPK8BmOU5f1VSe52wlIoveeFmQqLC4xcmsaxgpqDNIb89oOZy
- tff+pD+pu/8gyemMkBUzctAyNMeXuZdhwGYitzlVQLSbK+vqhwwet6QY/aXqOO/APmEt
- HUARGODwHLjp5/4WiCXQMCnI6hKIq3t20H0B0OEFJooF2x5rClBL8KMm2KWXUttGQDMf
- kUrQ==
-X-Gm-Message-State: AOJu0Yx55ChyYABvjCRDZiq16xgSDE80vqj51olrtJs+y6NQZpYb9dVD
- kijAOils3/84/GGUCSDXBLAFyfpo8vOKMTrIhCRuqMbGsz1n0wNfCMu4msuIt6zJNe60XzaG/aN
- clc0JfbQ=
-X-Gm-Gg: ASbGnctpYlOBhrWWFEd7AZD/Jqm19GfA35lnFc2+LB5Bam0u4f9Bz2Z/erGxYBTjf3Q
- NlyCcPEO/Q2kryM3VtJkRjaJB4p0rF8cZmG8qf0DCkzKkFcIdPXUQ59XipuSTahCtoBrJsbgTR+
- HWMNLA4M3NOvQMyvL1UkdtruXyTcsfGIRA0kIx2LOXsWpCiarxs5iBjHscVGtLVysr+UiyvNxpx
- YqI5zhDwrTcDAMMVZ17vvFGgj4Pvzh/AAB88feA4z2JuaB3rQge03OvFRaLhSrX019tYcYW6buQ
- AQvl1EqnCmD5fINvuKa9hrr3FWrf2zxeGxUff98Of0FY69ne26GAjCgKl4y8vhxMfe8kPllnf1c
- dFTNsvfiR2fydEV2eWaeO6wt+EwF6kwUo2itJOhe5mXiGtce8WtygcBh5jikFMTA=
-X-Google-Smtp-Source: AGHT+IFRDjzx8CQAETR9FABPCHS2UZlSWhPawBupfdlaAHj8dujDIkyGrzmZxisfexQfxLZHSywNuA==
-X-Received: by 2002:a05:6808:2001:b0:40b:4208:7fc0 with SMTP id
- 5614622812f47-433f034a598mr2747465b6e.30.1754176267591; 
- Sat, 02 Aug 2025 16:11:07 -0700 (PDT)
+ bh=iw+J85S+/WOIJoq0a6UuRf83h3sfoLJC1A6vmK+E5uM=;
+ b=C09yddq6kABc4U1tVSBULKVmsukzL+OsQVeMQkkiINrrrsbXnqsOBUi/HjTSTLVWIj
+ h62TifrDmXA3IIWXsFCWSK+bVQsU64KiLbcEoh70URzp/PHRh55ErlTLf8EFKMuyBg6N
+ DqfUwuxvVRX8XWZT3ZryKbpo4ImReZ+gJfB1H2xOHwfqZZVv2sCDOYHJFMZrSRoykIhG
+ vU0XfoDNY3hJOILuQxGXJUE8mWaHeUCbN+TE6eoHIPji5fu9syUDuZ1Pxj7/ETF2B5F3
+ 4hH5do9W5G6cSgK91xebIdoLYAApblulxEkuPQee6K83WbThR50UjG3B/lHiwG0+cTQ5
+ Xe2Q==
+X-Gm-Message-State: AOJu0YwP2JDVTL3fSXrAWN9tix/397Dv7E4IiUYhV28vkjkiGOj2jZw/
+ k8v//9WQ/AkDOee02Wl9siNKiMKOzQWkAn7M72zNvG/eg0e6rPmuvUfohGNzA6ZFivAHIdJpUEY
+ d/C+5xeA=
+X-Gm-Gg: ASbGncvRYVcA0/anHB8Cx6F1fadRC2KjrCntLLkhpOmz1G1mQPqracTVvil+QUXiBnp
+ LhNE4Hc5SBE88XuDjxKt0ktrc9F7YOiuA6FRig9yAtCmTDDDKzFDLr4I9ORvli3DioEW35hK3hR
+ qCrvTPcGYwb46vbnqN16HVi3el31Pl+Dl2ccxzmnPptQsHAFIU9C4UOCl3PR+kdQRE+kn6G6Kcd
+ YxbJb8YF870+UGAOX3xPUO4IFKJGGFsgw7kcAs7DGTpkerdbfkEVKdfLDShTS4rx75sO9s0wpjP
+ 5SG5TqIGmHVs/LcGD50zjZ7SUoDZbmGxGneHh8757uAQF4nlvxW8lONdQHtBVgZLUFOGnuJ2ERI
+ 7e8yqmH+ozNfnSCVJ43jNmqWei2sjGH2yDdKvU6GDXAGItz/3fE2t
+X-Google-Smtp-Source: AGHT+IG2jfHm6wKdiTTlNmqP9v7fNGXwgq5toXsSySEn7F+0t9ARJKKqgQsY+aL0sqGnnUCnh7WHMQ==
+X-Received: by 2002:a4a:ee83:0:b0:615:9430:f01f with SMTP id
+ 006d021491bc7-6198f101b68mr2465757eaf.2.1754176270745; 
+ Sat, 02 Aug 2025 16:11:10 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-61970693ed9sm1084454eaf.20.2025.08.02.16.11.05
+ 006d021491bc7-61970693ed9sm1084454eaf.20.2025.08.02.16.11.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:11:07 -0700 (PDT)
+ Sat, 02 Aug 2025 16:11:10 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 48/95] linux-user: Declare elf_core_copy_regs in loader.h
-Date: Sun,  3 Aug 2025 09:04:12 +1000
-Message-ID: <20250802230459.412251-49-richard.henderson@linaro.org>
+Subject: [PATCH v2 49/95] linux-user: Remove USE_ELF_CORE_DUMP
+Date: Sun,  3 Aug 2025 09:04:13 +1000
+Message-ID: <20250802230459.412251-50-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802230459.412251-1-richard.henderson@linaro.org>
 References: <20250802230459.412251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,155 +96,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Drop the static from all implementations.
+Since ELF_NREG is defined if and only if USE_ELF_CORE_DUMP is
+also defined, and since ELF_NREG carries useful information,
+remove USE_ELF_CORE_DUMP and instead use ELF_NREG as a signal
+that core dumps are supported.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/loader.h  |  1 +
- linux-user/elfload.c | 28 ++++++++++++++--------------
- 2 files changed, 15 insertions(+), 14 deletions(-)
+ linux-user/elfload.c | 44 +++++---------------------------------------
+ 1 file changed, 5 insertions(+), 39 deletions(-)
 
-diff --git a/linux-user/loader.h b/linux-user/loader.h
-index 6482c7c90c..84bb04f9fd 100644
---- a/linux-user/loader.h
-+++ b/linux-user/loader.h
-@@ -105,5 +105,6 @@ const char *elf_hwcap_str(uint32_t bit);
- const char *elf_hwcap2_str(uint32_t bit);
- const char *get_elf_platform(CPUState *cs);
- const char *get_elf_base_platform(CPUState *cs);
-+void elf_core_copy_regs(target_ulong *regs, const CPUArchState *env);
- 
- #endif /* LINUX_USER_LOADER_H */
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 147c309057..0e02e8541b 100644
+index 0e02e8541b..4e0d52f1f6 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -154,7 +154,7 @@ typedef abi_int         target_pid_t;
-  *
-  * See linux kernel: arch/x86/include/asm/elf.h
-  */
--static void elf_core_copy_regs(target_ulong *regs, const CPUX86State *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUX86State *env)
- {
-     regs[0] = tswapl(env->regs[15]);
-     regs[1] = tswapl(env->regs[14]);
-@@ -230,7 +230,7 @@ static bool init_guest_commpage(void)
-  *
-  * See linux kernel: arch/x86/include/asm/elf.h
-  */
--static void elf_core_copy_regs(target_ulong *regs, const CPUX86State *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUX86State *env)
- {
-     regs[0] = tswapl(env->regs[R_EBX]);
-     regs[1] = tswapl(env->regs[R_ECX]);
-@@ -283,7 +283,7 @@ static void elf_core_copy_regs(target_ulong *regs, const CPUX86State *env)
+@@ -267,7 +267,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUX86State *env)
  
- #define ELF_NREG    18
+ #define VDSO_HEADER "vdso.c.inc"
  
--static void elf_core_copy_regs(target_ulong *regs, const CPUARMState *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUARMState *env)
- {
-     for (int i = 0; i < 16; i++) {
-         regs[i] = tswapl(env->regs[i]);
-@@ -368,7 +368,7 @@ static const VdsoImageInfo *vdso_image_info(uint32_t elf_flags)
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE       4096
  
- #define ELF_NREG    34
+ #endif /* TARGET_I386 */
+@@ -292,7 +291,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUARMState *env)
+     regs[17] = tswapl(env->regs[0]); /* XXX */
+ }
  
--static void elf_core_copy_regs(target_ulong *regs, const CPUARMState *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUARMState *env)
- {
-     int i;
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE       4096
  
-@@ -453,7 +453,7 @@ static void elf_core_copy_regs(target_ulong *regs, const CPUARMState *env)
- /* See linux kernel: arch/powerpc/include/asm/elf.h.  */
- #define ELF_NREG 48
+ /* The commpage only exists for 32 bit kernels */
+@@ -379,7 +377,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUARMState *env)
+     regs[33] = tswapl(pstate_read((CPUARMState *)env));
+ }
  
--static void elf_core_copy_regs(target_ulong *regs, const CPUPPCState *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUPPCState *env)
- {
-     int i;
-     target_ulong ccr = 0;
-@@ -504,7 +504,7 @@ enum {
-     TARGET_EF_CSR_BADV = TARGET_EF_R0 + 34,
- };
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE       4096
  
--static void elf_core_copy_regs(target_ulong *regs, const CPULoongArchState *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPULoongArchState *env)
- {
-     int i;
+ #if TARGET_BIG_ENDIAN
+@@ -472,7 +469,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUPPCState *env)
+     regs[38] = tswapl(ccr);
+ }
  
-@@ -560,7 +560,7 @@ enum {
- };
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE       4096
  
- /* See linux kernel: arch/mips/kernel/process.c:elf_dump_regs.  */
--static void elf_core_copy_regs(target_ulong *regs, const CPUMIPSState *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUMIPSState *env)
- {
-     int i;
+ #ifndef TARGET_PPC64
+@@ -518,7 +514,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPULoongArchState *env)
+     regs[TARGET_EF_CSR_BADV] = tswapl(env->CSR_BADV);
+ }
  
-@@ -601,7 +601,7 @@ static void elf_core_copy_regs(target_ulong *regs, const CPUMIPSState *env)
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE        4096
+ 
+ #endif /* TARGET_LOONGARCH64 */
+@@ -583,7 +578,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUMIPSState *env)
+     regs[TARGET_EF_CP0_CAUSE] = tswapl(env->CP0_Cause);
+ }
+ 
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE        4096
+ 
+ #endif /* TARGET_MIPS */
+@@ -597,7 +591,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUMIPSState *env)
+ 
+ #define ELF_EXEC_PAGESIZE        4096
+ 
+-#define USE_ELF_CORE_DUMP
  #define ELF_NREG 38
  
  /* See linux kernel: arch/mips/kernel/process.c:elf_dump_regs.  */
--static void elf_core_copy_regs(target_ulong *regs, const CPUMBState *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUMBState *env)
- {
-     int i, pos = 0;
+@@ -625,7 +618,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUMBState *env)
+ #define ELF_CLASS ELFCLASS32
+ #define ELF_DATA  ELFDATA2MSB
  
-@@ -631,7 +631,7 @@ static void elf_core_copy_regs(target_ulong *regs, const CPUMBState *env)
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE 8192
+ 
  /* See linux kernel arch/openrisc/include/asm/elf.h.  */
- #define ELF_NREG 34 /* gprs and pc, sr */
+@@ -680,7 +672,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUSH4State *env)
+     regs[TARGET_REG_SYSCALL] = 0; /* FIXME */
+ }
  
--static void elf_core_copy_regs(target_ulong *regs, const CPUOpenRISCState *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUOpenRISCState *env)
- {
-     int i;
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE        4096
  
-@@ -663,7 +663,7 @@ enum {
-     TARGET_REG_SYSCALL = 22
- };
+ #endif
+@@ -717,7 +708,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUM68KState *env)
+     regs[19] = 0;  /* FIXME: regs->format | regs->vector */
+ }
  
--static void elf_core_copy_regs(target_ulong *regs, const CPUSH4State *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUSH4State *env)
- {
-     int i;
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE       8192
  
-@@ -693,7 +693,7 @@ static void elf_core_copy_regs(target_ulong *regs, const CPUSH4State *env)
- /* See linux kernel: arch/m68k/include/asm/elf.h.  */
- #define ELF_NREG 20
+ #endif
+@@ -765,7 +755,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUS390XState *env)
+     regs[TARGET_REG_ORIG_R2] = 0;
+ }
  
--static void elf_core_copy_regs(target_ulong *regs, const CPUM68KState *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUM68KState *env)
- {
-     regs[0] = tswapl(env->dregs[1]);
-     regs[1] = tswapl(env->dregs[2]);
-@@ -748,7 +748,7 @@ enum {
-     TARGET_REG_ORIG_R2 = 26,
- };
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE 4096
  
--static void elf_core_copy_regs(target_ulong *regs, const CPUS390XState *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUS390XState *env)
- {
-     int i;
-     uint32_t *aregs;
-@@ -852,7 +852,7 @@ enum {
-     TARGET_REG_AR0 = 64,
- };
+ #define VDSO_HEADER "vdso.c.inc"
+@@ -871,7 +860,6 @@ void elf_core_copy_regs(target_ulong *regs, const CPUXtensaState *env)
+     }
+ }
  
--static void elf_core_copy_regs(target_ulong *regs, const CPUXtensaState *env)
-+void elf_core_copy_regs(target_ulong *regs, const CPUXtensaState *env)
- {
-     unsigned i;
+-#define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE       4096
  
-@@ -2828,7 +2828,7 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
-  * Last step is to implement target specific function that copies registers
-  * from given cpu into just specified register set.  Prototype is:
+ #endif /* TARGET_XTENSA */
+@@ -1080,9 +1068,9 @@ static void bswap_mips_abiflags(Mips_elf_abiflags_v0 *abiflags)
+ }
+ #endif
+ 
+-#ifdef USE_ELF_CORE_DUMP
++#ifdef ELF_NREG
+ static int elf_core_dump(int, const CPUArchState *);
+-#endif /* USE_ELF_CORE_DUMP */
++#endif
+ static void load_symbols(struct elfhdr *hdr, const ImageSource *src,
+                          abi_ulong load_bias);
+ 
+@@ -2792,14 +2780,14 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
+         g_free(elf_interpreter);
+     }
+ 
+-#ifdef USE_ELF_CORE_DUMP
++#ifdef ELF_NREG
+     bprm->core_dump = &elf_core_dump;
+ #endif
+ 
+     return 0;
+ }
+ 
+-#ifdef USE_ELF_CORE_DUMP
++#ifdef ELF_NREG
+ 
+ /*
+  * Definitions to generate Intel SVR4-like core files.
+@@ -2813,28 +2801,6 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
+  * are marked with XXX.
   *
-- * static void elf_core_copy_regs(target_ulong *regs, const CPUArchState *env);
-+ * void elf_core_copy_regs(target_ulong *regs, const CPUArchState *env);
-  *
-  * Parameters:
-  *     regs - copy register values into here (allocated and zeroed by caller)
+  * Core dump code is copied from linux kernel (fs/binfmt_elf.c).
+- *
+- * Porting ELF coredump for target is (quite) simple process.  First you
+- * define USE_ELF_CORE_DUMP in target ELF code (where init_thread() for
+- * the target resides):
+- *
+- * #define USE_ELF_CORE_DUMP
+- *
+- * Next you define type of register set used for dumping.  ELF specification
+- * says that it needs to be array of elf_greg_t that has size of ELF_NREG.
+- *
+- * #define ELF_NREG <number of registers>
+- *
+- * Last step is to implement target specific function that copies registers
+- * from given cpu into just specified register set.  Prototype is:
+- *
+- * void elf_core_copy_regs(target_ulong *regs, const CPUArchState *env);
+- *
+- * Parameters:
+- *     regs - copy register values into here (allocated and zeroed by caller)
+- *     env - copy registers from here
+- *
+- * Example for ARM target is provided in this file.
+  */
+ 
+ struct target_elf_siginfo {
+@@ -3359,4 +3325,4 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     }
+     return ret;
+ }
+-#endif /* USE_ELF_CORE_DUMP */
++#endif /* ELF_NREG */
 -- 
 2.43.0
 
