@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB3DB190AD
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0C5B190A9
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:21:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLPE-0005mo-CZ; Sat, 02 Aug 2025 19:12:49 -0400
+	id 1uiLPG-0005wj-Jj; Sat, 02 Aug 2025 19:12:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLP1-00050f-OD
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:12:35 -0400
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ id 1uiLP4-00059i-K3
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:12:38 -0400
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLOz-0001uF-LI
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:12:35 -0400
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-61585dfc8f8so1028124eaf.0
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:12:33 -0700 (PDT)
+ id 1uiLP2-0001uc-Vc
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:12:38 -0400
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-433f1f97199so593173b6e.1
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:12:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754176352; x=1754781152; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754176356; x=1754781156; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bKhldYKs1QSuxD/L/nGAckx4xf1pBRHHNxpQtiRND84=;
- b=uuL3Z8pw6vIcWTxllj1NADBH2cPgLVFgqJSykp1G/2YUs2wYOV51B7pua1mrypYiYW
- vo9oyWqKb0h9V4QcaRppP2M7Ku9Dn56tGLmDzf3BC/94yO6pYlKHFvv49YaPCCmsdkLv
- W3XEhtrmNc9Ynh0alRCqF7XjWWo3kYs/PJWl7bFNIXe5kCjFt76DqO1hjgpPOXAjoNHv
- 9r7jEZQdW7qJzU8zF/YtvhUKExvx69ga2cggf6oU4BGh78yHkrWra1sFA8larJZHQ+Cu
- S8OufyNxufpS3omaXNsF8rPOH/nkrylCMTNkGiEthmLf3IGr5GfsjA6kQdJXVKghXN0D
- Rl4w==
+ bh=QP61lQW9RuzWvrPNmZmEKa6PBqjBLfDxLSYJ7A/0qbE=;
+ b=K7wRL8VJpvnDm3W7LxVeVZXHfBVMS3nAnZM8RDq8KaN19fOYsj1nNBG+LoF+WKt3cH
+ 5YBu84NGg5vas3scHZruttba8mOdsusGrCnqJxb83RyYeRve0KEjrEtiCedtxtO/jUuY
+ mGAMZoM3f4Fy63rSbGm5OefwgzWzLJIpa77moLE1tffWh8LY26XfTmYnDyci9sRUiqv3
+ B6aVZVhIVc+wc0My5A2cAYDTj3YyslUu3lf1MZFgzibABeaf67saANMM/cn4O0Rnwk9y
+ CEJLPkVfVfO35UA5kX93EvOAJAVird2QOqamDdFErAeC2vT63zSKhsWzEnICC0i9Rxci
+ anxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754176352; x=1754781152;
+ d=1e100.net; s=20230601; t=1754176356; x=1754781156;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bKhldYKs1QSuxD/L/nGAckx4xf1pBRHHNxpQtiRND84=;
- b=PdBfPQEta/6EQqYM1tl5yRfIlig+FSDQjDihmnw1nLjSiE/o3+CGdYfpJYK75yNAL+
- nBorfjGlMu2OD6W1b09RJSAcWW4P7eS+trL0uFTVOa+NPZNUEVn3SErJCglRv0yRBaHC
- b2h+NpnYgZP2oZeaoKXwLpwZYGWyFlK+Bwk4Bpkj1xAMmHhNqXgu2W7WbFS17XDJDMoG
- r7cedCAmb2J/KUpHWmXR4SMCVOXstq2NGQyTzyQKV/4KsinbobzWCdLyapQYuyAAWb57
- PHHmGWGh1KIKPQ4QNtJ2swL1pOcQppB9iuRdoHINmGiQoKnsjGxjRTlZgj6yCu8SXye0
- nzTg==
-X-Gm-Message-State: AOJu0Yw8S63eQO/SNA5W8S40pC8J9jYwqdhYUQqtL27npoVCX3Ab3ZYQ
- 0eta+48AxW3IXNy8UIQ6NbGku4I5znhFOtfeCAy6RpzKDDvBbU5/htwtNSIxAHCgAhyTiUQblpv
- ix5kM5hg=
-X-Gm-Gg: ASbGncvEORWRNJJEYhV4N+Fi2WpTce3+/5mt2p/qFp51t9+enc5RQxAs3Rwg63nz/Eb
- 1p+Yt1wlDM/sL8zcFX2+VO+7k9p+ASqCGWyaMw3w4YPXr1/IVkkoTPeNfUls99dJOItlB3OQSAi
- 7SJTL5QEGjG6jeXc380g0ffIR6qe5FuQ8XLRV1XseLYkP3VbnvCQSZrya8HeqnBQSMWoFWw0Vs3
- MMwKfBrXqgVNwKWLLcDFdK6PDaksPWXsjB3W8UXvveEqDeDnukFIMUDQyXw9oW6hLCXSkjS0Y9w
- KmKMy164Xqvs86z1aqDuGW58E+mEqvItfvcF8T+/0JsoLGrtxY4qd5TWCW/cu8OxKzoo+s1IgN/
- QC21C2CCfyPlsc5K3yTfV1b7NnDivBSuWSoGqf57Kg2+5Oh2SwVW9
-X-Google-Smtp-Source: AGHT+IGaiPwR84YarFsF8mTRwWpak7D12KdyeVtvDD/5RqSqRy0fcZhBLvuBV6EV4p0tsnnhjSJimA==
-X-Received: by 2002:a05:6820:1e10:b0:619:a8f7:dfa6 with SMTP id
- 006d021491bc7-619a8f7e0b7mr82595eaf.0.1754176352489; 
- Sat, 02 Aug 2025 16:12:32 -0700 (PDT)
+ bh=QP61lQW9RuzWvrPNmZmEKa6PBqjBLfDxLSYJ7A/0qbE=;
+ b=lRp5ZxF/fVMt2bfP9Buflk+HadAaC4ZunhrAwKln+3QQi4VwtbtgAmYv5YLL9CAuvZ
+ cr+oQQp7Le8IsXroWi5ejUttofugbdFOs7wu5ORwX5Jl2WARjzQPzfLTrMiP7FQYicqB
+ MWI0LxTBCq0RN/lPbcTJiqveu5nSoG0mexIuVopJTckRbSNaAEAD80psPSTBjQeiirxq
+ AMlrBBf7ohMXCpzfKK2kdcgsYBbXpID6lRftvwaqE7sfdMNNGcVPGJoSxgsp06haQ0Ks
+ 70Ul0hLfUrrMfihl8cfexKCbdJ9KEI/JbXZofqOtLpMyvxQ7BB+MGeDfp0W5mFQq9wQd
+ fL+Q==
+X-Gm-Message-State: AOJu0YwZVY1U9kd4LhT1rp4IQZ0JlJaAn86uOGqmdRxIPistJCRb3C4p
+ BkQeBg6Z5bmOU+xMNjSz+tBdCmG8tsEFumKo5bpJA0iEQa5h5xdQjgCiMkZqAU5BXRli3OrWCV/
+ Hze3+cWM=
+X-Gm-Gg: ASbGncuRwZYnuNIJySOvC8CzhHZxysKx7yIN7cyeP5826nJq6Mwc2ITOBXfjaHkhMmQ
+ 5akDhelvdpZwmsn2F5LBWwA4Dd4OndBiUWLkBU3H3UDCT13h+thH5JNINZaOyqZ859VE6/Jr6eX
+ dM5GwTAQTfpkHbzqwgxrLTtkDUHNPNDaHx3fJ6g4FoSvCHaOCg9czpNH5jBESksp3z7PNqsfY89
+ HGECXAdb1dsJqBkdd1hIHnsPigEJu98dhRIHX0PgPYemr3Fa9t09MFeireD9PD2KanewG8oIhRL
+ Yt3mREEDmzdJXFVnuHrx6fw2NivolTbhZK4m6oZBZIt8T1Koi9Rt++J77Te6+JqJs6vMVkDlS7b
+ R5ptLPA1yJj+qEQrBHGq37G7MDJPo6qzVQNUc9Ie/8huLG5nxO/AA
+X-Google-Smtp-Source: AGHT+IFpFymIFV5w67zLoYYOGw+GKjECn0rEbtW5dR1HN7on0vhIX3Wb+0CKGBl1pUD+QDRG/FinAQ==
+X-Received: by 2002:a05:6808:199b:b0:434:487:320e with SMTP id
+ 5614622812f47-43404873ad1mr26721b6e.29.1754176355728; 
+ Sat, 02 Aug 2025 16:12:35 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-61970693ed9sm1084454eaf.20.2025.08.02.16.12.29
+ 006d021491bc7-61970693ed9sm1084454eaf.20.2025.08.02.16.12.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:12:32 -0700 (PDT)
+ Sat, 02 Aug 2025 16:12:35 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 74/95] linux-user: Move elf parameters to {mips,
- mips64}/target_elf.h
-Date: Sun,  3 Aug 2025 09:04:38 +1000
-Message-ID: <20250802230459.412251-75-richard.henderson@linaro.org>
+Subject: [PATCH v2 75/95] linux-user: Move elf parameters to
+ microblaze/target_elf.h
+Date: Sun,  3 Aug 2025 09:04:39 +1000
+Message-ID: <20250802230459.412251-76-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802230459.412251-1-richard.henderson@linaro.org>
 References: <20250802230459.412251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,76 +101,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/mips/target_elf.h   |  4 ++++
- linux-user/mips64/target_elf.h | 10 ++++++++++
- linux-user/elfload.c           | 18 ------------------
- 3 files changed, 14 insertions(+), 18 deletions(-)
+ linux-user/microblaze/target_elf.h | 5 +++++
+ linux-user/elfload.c               | 9 ---------
+ 2 files changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
-index a36ca5a83f..0433de4529 100644
---- a/linux-user/mips/target_elf.h
-+++ b/linux-user/mips/target_elf.h
-@@ -8,6 +8,10 @@
- #ifndef MIPS_TARGET_ELF_H
- #define MIPS_TARGET_ELF_H
+diff --git a/linux-user/microblaze/target_elf.h b/linux-user/microblaze/target_elf.h
+index 2d83fdaf6d..7ce4c10d00 100644
+--- a/linux-user/microblaze/target_elf.h
++++ b/linux-user/microblaze/target_elf.h
+@@ -8,6 +8,11 @@
+ #ifndef MICROBLAZE_TARGET_ELF_H
+ #define MICROBLAZE_TARGET_ELF_H
  
 +#define ELF_CLASS               ELFCLASS32
-+#define ELF_ARCH                EM_MIPS
-+#define EXSTACK_DEFAULT         true
++#define ELF_ARCH                EM_MICROBLAZE
 +
- #define HAVE_ELF_HWCAP          1
- #define HAVE_ELF_BASE_PLATFORM  1
+ #define ELF_NREG                38
  
-diff --git a/linux-user/mips64/target_elf.h b/linux-user/mips64/target_elf.h
-index ebfd62348f..60ecb4d0ae 100644
---- a/linux-user/mips64/target_elf.h
-+++ b/linux-user/mips64/target_elf.h
-@@ -8,6 +8,16 @@
- #ifndef MIPS64_TARGET_ELF_H
- #define MIPS64_TARGET_ELF_H
- 
-+#define ELF_CLASS               ELFCLASS64
-+#define ELF_ARCH                EM_MIPS
-+#define EXSTACK_DEFAULT         true
++#define elf_check_arch(x)   ((x) == EM_MICROBLAZE || (x) == EM_MICROBLAZE_OLD)
 +
-+#ifdef TARGET_ABI_MIPSN32
-+#define elf_check_abi(x)        ((x) & EF_MIPS_ABI2)
-+#else
-+#define elf_check_abi(x)        (!((x) & EF_MIPS_ABI2))
-+#endif
-+
- #define HAVE_ELF_HWCAP          1
- #define HAVE_ELF_BASE_PLATFORM  1
- 
+ #endif
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 6b0d73a6f7..4173a8d619 100644
+index 4173a8d619..34a2639d85 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -130,24 +130,6 @@ typedef abi_uint        target_gid_t;
+@@ -130,15 +130,6 @@ typedef abi_uint        target_gid_t;
  #endif
  typedef abi_int         target_pid_t;
  
--#ifdef TARGET_MIPS
+-#ifdef TARGET_MICROBLAZE
 -
--#ifdef TARGET_MIPS64
--#define ELF_CLASS   ELFCLASS64
--#else
+-#define elf_check_arch(x) ( (x) == EM_MICROBLAZE || (x) == EM_MICROBLAZE_OLD)
+-
 -#define ELF_CLASS   ELFCLASS32
--#endif
--#define ELF_ARCH    EM_MIPS
--#define EXSTACK_DEFAULT true
+-#define ELF_ARCH    EM_MICROBLAZE
 -
--#ifdef TARGET_ABI_MIPSN32
--#define elf_check_abi(x) ((x) & EF_MIPS_ABI2)
--#else
--#define elf_check_abi(x) (!((x) & EF_MIPS_ABI2))
--#endif
+-#endif /* TARGET_MICROBLAZE */
 -
--#endif /* TARGET_MIPS */
--
- #ifdef TARGET_MICROBLAZE
+ #ifdef TARGET_OPENRISC
  
- #define elf_check_arch(x) ( (x) == EM_MICROBLAZE || (x) == EM_MICROBLAZE_OLD)
+ #define ELF_ARCH EM_OPENRISC
 -- 
 2.43.0
 
