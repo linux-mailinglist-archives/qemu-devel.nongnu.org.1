@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC25B19068
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B00B19070
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:08:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLJW-0003QP-Ek; Sat, 02 Aug 2025 19:06:54 -0400
+	id 1uiLJZ-0003gM-Du; Sat, 02 Aug 2025 19:06:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLJP-00037J-BE
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:06:47 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1uiLJS-0003KT-El
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:06:51 -0400
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLJN-0001BR-9P
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:06:46 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-433f43f0012so260181b6e.2
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:06:44 -0700 (PDT)
+ id 1uiLJQ-0001Bg-0w
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:06:49 -0400
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-610cbca60cdso1073571eaf.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:06:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754176004; x=1754780804; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754176007; x=1754780807; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wzCvIZrc8oCNQOp0LEKf8glJh+GHBNdljJm8N5U6qvw=;
- b=I4PVeEHoDGySDb/093LxvnsxJLHjqYhYvihk9kko+iFfbbIa3JnRIKg3VmKOFsJr95
- m7MYa0HvmrcXfPtjQplN43MQ65xUFtLDamPPrFE8fH/4pZAqKbr0envjtnCbK/Rw8FE/
- 5AgG2mkSQ1r4+3/i/sOmswY6YSWgc/NDnac0MnB8rrXgoYWiT0GpthLrHWau8347RKVM
- sumG1p6jq8nmXIU97CELgKUh690nLvkg8zyZohyb70Cc4yCQzpP2/f6CZP6WuqPRzcWM
- WMNzjtVLwSptEeiHWa8o+LafzkZHgkyB2kNyZg5b7jiqfMUVHrsf+Z40gpJr+NQvts2z
- HR2w==
+ :reply-to; bh=nDJp7tSOiwR5n19lwWeP5HE0v4ZTZzAZzXnPUcAToWY=;
+ b=eXHkLm9WYqOO3ooJ4imsaYYkrxIG4hxSJObI3gRqsHkscwHV+iUuJWx7hFlcRXJcRh
+ AwU3T8dn5eBCLR+zAPigOEHse4pQmsijT1F/kmd1vfC/aT4531kXGByPkAZrNgbXXa6m
+ 8xTh5fNuIIzyuNg4QsKZGc3kq8kBlcY91gOQWubj4m2EksqqUxel4/fyqWje0POuOUAx
+ kNXwaE8lE14Rx4GihnckFyVlDBt0KSqMnix2mx6wS/o3QQfcLE4HvJJyS17Wv8M1nHtz
+ /wAcXagzflod6cfo95gfYJ+Xl11WOKsATk/qYS2/DjH/qaE5H76XPJ2tcH6cyVQowB1q
+ RPag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754176004; x=1754780804;
+ d=1e100.net; s=20230601; t=1754176007; x=1754780807;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wzCvIZrc8oCNQOp0LEKf8glJh+GHBNdljJm8N5U6qvw=;
- b=CCB2KxH5qIuxzP5il81aAP76yJ+SyVyrn3TInb8CUgfcuijXetDxvn2XnENgH3DSOU
- tyEgKl8WLPQzXrDzgESzC8tc48+KcpzG3TdL711lZjqVnhRo/RLefEdPTN412IJmnNUa
- nHPitjL/fMkrMd7o1NnjE6S/uPQT/S2Ea8dq1bsDSvOpdOAdFesnx82O870GvO6c3MtP
- b+q1dpHIKlpQlhZLDEE89L3KCGQtNuXMUkzcgUyWMWBwKdPHn09UoqwQUlINgcLfFQVI
- otIGpe27yDcvKk5c/NcaYkZ8X5wciGVfpjYBHXPDxTmTZSWrr1WonmUwz3blIgfXnoym
- 3Tlg==
-X-Gm-Message-State: AOJu0YzYD9zENhqGpuNG/htunY8ZlbHQDoLvNAmZYA4n4tjXOEft37hf
- UuUf1TJIuF7dISA6GwvsDVl5olqjZheBbp76OprMPnSERVUqxFhCq7dI6FfqXJbEAb0O7nVM114
- wgZqkO0A=
-X-Gm-Gg: ASbGncsJEQcZO6c0Z8NzclRwLxlMQlRabHBdqCxnjr9tZwN1CXJchtlSAuhf69fvZrz
- 3Ec5OsObZGDAMUTVY7xCoT1mwQIqD93w7sSUwxyMUwn+SNvuJhplS8m9sSKPFM4gwYRuBoSvNwf
- pNWIMycuiDj52OxsVX9SUhuYzxEfZ1DEkYQ/LO7GCaTBYme25OiUCBcCqhQR8OYdra3eH78yDTG
- lTA4ZVCnGC9jb8CDJZO3g1BZYjaTYPNM+PbF5NvBcOZYQqbg9s+p7qz6paICYP99qNnC4He5oMc
- 1mddSPp1pj4fx7hVi6iCdcGe4LKnqvH7QdZ/S0VUL23cPkfiBFg+7aAiVHL7TlutugHxEp3r60k
- dBQoMZbNxkf5dLfX3Yoo6jmd7I1VWFrUjgtRaVz7V1u2fyH8lNw8xj9X0F46QDuQ=
-X-Google-Smtp-Source: AGHT+IE6bmudApkMwXRm9ryQIDblB1/xahcPM/XUEMeHRZMIOF5SSnXP8+KpEMM9etSB5c6OK9vH2w==
-X-Received: by 2002:a05:6808:1782:b0:41c:9345:3ab9 with SMTP id
- 5614622812f47-433f0238b05mr3180518b6e.15.1754176004086; 
- Sat, 02 Aug 2025 16:06:44 -0700 (PDT)
+ bh=nDJp7tSOiwR5n19lwWeP5HE0v4ZTZzAZzXnPUcAToWY=;
+ b=GCfRKJtK6VbJTr5SlTTxPEmLzVNQcQdO76xLgQu83XO5MpFS0rK0xQZSrfrafLUryZ
+ txUR/gn2SIkrgfGdqKNHuOcKBUDKuAxyCE/b//8ZmD8Xabk/q9wnT8niVkqHAEejEVsn
+ KPLcUeEyTLG4fXm8Ppt8djJkiX2U5EvGrkXV8QvQz3Tffa+PJrWwjct2r8qv9UgtEtZu
+ cEIRURxVlrTwRblehcfM0ZwdcC7A6XMniRsrBC6+q2aWlXbZj0rNECmhcV2tRdjGd5pj
+ TUnbur8u/Exwr4FgaiM4Xfk+EXzuqDWrNi1yndEmdCE6uH0Hjj4ogSJqbTD/8BRaC0kc
+ TmQw==
+X-Gm-Message-State: AOJu0YxR2dXuYmPhiUTiX6n+wCY2EGR08sc+ApjeU7TLxSGweYSUKwjB
+ Bv7Zcrx1vu57bza8ra1jyMtGfSyBitMc1BY5HFVq74vJuLihLLE4dhPHrBuwaQuR6LZxRqp27Sx
+ Lz/57Nok=
+X-Gm-Gg: ASbGncuIkp84wp1GdYjecmKHyw206yCh5mXAttPmxKf3F7MtFNMyaIGL2cG60vo00ec
+ 7YeLqIH0Np0ubh3WAygdLfyZIPjhiAVNLEoZaF47R441KGKx6C3TLztJ10/FM0arWuasI4iw+4p
+ 3e07G0pctWJ29U09Ffacit+mjDwA5tN+gFM9K7WgILcJyIk5BdXhMX8+emNV7j7gupx1/3ZRam5
+ YJgyh/I+J1quOCU+Bpb1MvoWSHvrSA7S/TpkL/lNWHoVW++fjuZ815FrBpj6cNBw040lzuWoa2E
+ cKHBU56IGitUKgR2P1dXuIlL1JKxCgJzw2U7Emo7tx/jgacRqk72MFjjT0NHTHwZFswtJyP1N8P
+ 6xWsgOQlWXftmhd0SdAsYP8wWvLoZUuMiCacjeVu5gp3CLIu092kq
+X-Google-Smtp-Source: AGHT+IE7ytutZWV9wx/shKQ2Hu9j1bSGR0SGaW5uu5Mfm+Maeyd48bEN2wdCJnL5Z6y3A4YrdkzEKA==
+X-Received: by 2002:a05:6820:1e10:b0:619:a6c0:b30 with SMTP id
+ 006d021491bc7-619a6c012e1mr277704eaf.6.1754176006763; 
+ Sat, 02 Aug 2025 16:06:46 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-61970693b48sm1093401eaf.19.2025.08.02.16.06.41
+ 006d021491bc7-61970693b48sm1093401eaf.19.2025.08.02.16.06.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:06:43 -0700 (PDT)
+ Sat, 02 Aug 2025 16:06:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 26/95] linux-user/i386: Create init_main_thread
-Date: Sun,  3 Aug 2025 09:03:50 +1000
-Message-ID: <20250802230459.412251-27-richard.henderson@linaro.org>
+Subject: [PATCH v2 27/95] linux-user/arm: Create init_main_thread
+Date: Sun,  3 Aug 2025 09:03:51 +1000
+Message-ID: <20250802230459.412251-28-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802230459.412251-1-richard.henderson@linaro.org>
 References: <20250802230459.412251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,161 +98,133 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Merge init_thread and target_cpu_copy_regs.
 There's no point going through a target_pt_regs intermediate.
-Temporarily introduce HAVE_INIT_MAIN_THREAD during conversion.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/qemu.h          |  1 +
- linux-user/elfload.c       | 29 +++++------------------
- linux-user/i386/cpu_loop.c | 48 +++++++++++++++++---------------------
- 3 files changed, 29 insertions(+), 49 deletions(-)
+ linux-user/arm/cpu_loop.c | 52 +++++++++++++++++++++++++++++++--------
+ linux-user/elfload.c      | 41 +-----------------------------
+ 2 files changed, 43 insertions(+), 50 deletions(-)
 
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 0c3cfe93a1..8a9500d4f4 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -361,5 +361,6 @@ CPUArchState *cpu_copy(CPUArchState *env);
+diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
+index e2b4099aa4..739e1607e3 100644
+--- a/linux-user/arm/cpu_loop.c
++++ b/linux-user/arm/cpu_loop.c
+@@ -480,21 +480,53 @@ void cpu_loop(CPUARMState *env)
+     }
+ }
  
- typedef struct target_pt_regs target_pt_regs;
- void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs);
-+void init_main_thread(CPUState *cs, struct image_info *info);
+-void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
++void init_main_thread(CPUState *cs, struct image_info *info)
+ {
+-    int i;
++    CPUARMState *env = cpu_env(cs);
++    abi_ptr stack = info->start_stack;
++    abi_ptr entry = info->entry;
  
- #endif /* QEMU_H */
+-    cpsr_write(env, regs->uregs[16], CPSR_USER | CPSR_EXEC,
+-               CPSRWriteByInstr);
+-    for(i = 0; i < 16; i++) {
+-        env->regs[i] = regs->uregs[i];
++    cpsr_write(env, ARM_CPU_MODE_USR | (entry & 1 ? CPSR_T : 0),
++               CPSR_USER | CPSR_EXEC, CPSRWriteByInstr);
++
++    env->regs[15] = entry & 0xfffffffe;
++    env->regs[13] = stack;
++
++    /* FIXME - what to for failure of get_user()? */
++    get_user_ual(env->regs[2], stack + 8); /* envp */
++    get_user_ual(env->regs[1], stack + 4); /* envp */
++
++    /*
++     * Per the SVR4 ABI, r0 contains a pointer to a function to be
++     * registered with atexit.  A value of 0 means we have no such handler.
++     */
++    env->regs[0] = 0;
++
++    /* For uClinux PIC binaries.  */
++    /* XXX: Linux does this only on ARM with no MMU (do we care?) */
++    env->regs[10] = info->start_data;
++
++    /* Support ARM FDPIC.  */
++    if (info_is_fdpic(info)) {
++        /*
++         * As described in the ABI document, r7 points to the loadmap info
++         * prepared by the kernel. If an interpreter is needed, r8 points
++         * to the interpreter loadmap and r9 points to the interpreter
++         * PT_DYNAMIC info. If no interpreter is needed, r8 is zero, and
++         * r9 points to the main program PT_DYNAMIC info.
++         */
++        env->regs[7] = info->loadmap_addr;
++        if (info->interpreter_loadmap_addr) {
++            /* Executable is dynamically loaded.  */
++            env->regs[8] = info->interpreter_loadmap_addr;
++            env->regs[9] = info->interpreter_pt_dynamic_addr;
++        } else {
++            env->regs[8] = 0;
++            env->regs[9] = info->pt_dynamic_addr;
++        }
+     }
+ 
+     if (TARGET_BIG_ENDIAN) {
+-        CPUState *cpu = env_cpu(env);
+-        TaskState *ts = get_task_state(cpu);
+-        struct image_info *info = ts->info;
+-
+         /* Enable BE8.  */
+         if (EF_ARM_EABI_VERSION(info->elf_flags) >= EF_ARM_EABI_VER4
+             && (info->elf_flags & EF_ARM_BE8)) {
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 6fce74f45a..89f3972253 100644
+index 89f3972253..9586873954 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -149,17 +149,12 @@ typedef abi_int         target_pid_t;
- 
- #ifdef TARGET_I386
- 
-+#define HAVE_INIT_MAIN_THREAD
-+
- #ifdef TARGET_X86_64
- #define ELF_CLASS      ELFCLASS64
- #define ELF_ARCH       EM_X86_64
- 
--static inline void init_thread(struct target_pt_regs *regs, struct image_info *infop)
--{
--    regs->rax = 0;
--    regs->rsp = infop->start_stack;
--    regs->rip = infop->entry;
--}
--
- #define ELF_NREG    27
- typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
- 
-@@ -237,22 +232,6 @@ static bool init_guest_commpage(void)
- 
+@@ -293,46 +293,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
+ #define ELF_CLASS       ELFCLASS32
  #define EXSTACK_DEFAULT true
  
 -static inline void init_thread(struct target_pt_regs *regs,
 -                               struct image_info *infop)
 -{
--    regs->esp = infop->start_stack;
--    regs->eip = infop->entry;
+-    abi_long stack = infop->start_stack;
+-    memset(regs, 0, sizeof(*regs));
 -
--    /* SVR4/i386 ABI (pages 3-31, 3-32) says that when the program
--       starts %edx contains a pointer to a function which might be
--       registered using `atexit'.  This provides a mean for the
--       dynamic linker to call DT_FINI functions for shared libraries
--       that have been loaded before the code runs.
+-    regs->uregs[16] = ARM_CPU_MODE_USR;
+-    if (infop->entry & 1) {
+-        regs->uregs[16] |= CPSR_T;
+-    }
+-    regs->uregs[15] = infop->entry & 0xfffffffe;
+-    regs->uregs[13] = infop->start_stack;
+-    /* FIXME - what to for failure of get_user()? */
+-    get_user_ual(regs->uregs[2], stack + 8); /* envp */
+-    get_user_ual(regs->uregs[1], stack + 4); /* envp */
+-    /* XXX: it seems that r0 is zeroed after ! */
+-    regs->uregs[0] = 0;
+-    /* For uClinux PIC binaries.  */
+-    /* XXX: Linux does this only on ARM with no MMU (do we care ?) */
+-    regs->uregs[10] = infop->start_data;
 -
--       A value of 0 tells we have no such handler.  */
--    regs->edx = 0;
+-    /* Support ARM FDPIC.  */
+-    if (info_is_fdpic(infop)) {
+-        /* As described in the ABI document, r7 points to the loadmap info
+-         * prepared by the kernel. If an interpreter is needed, r8 points
+-         * to the interpreter loadmap and r9 points to the interpreter
+-         * PT_DYNAMIC info. If no interpreter is needed, r8 is zero, and
+-         * r9 points to the main program PT_DYNAMIC info.
+-         */
+-        regs->uregs[7] = infop->loadmap_addr;
+-        if (infop->interpreter_loadmap_addr) {
+-            /* Executable is dynamically loaded.  */
+-            regs->uregs[8] = infop->interpreter_loadmap_addr;
+-            regs->uregs[9] = infop->interpreter_pt_dynamic_addr;
+-        } else {
+-            regs->uregs[8] = 0;
+-            regs->uregs[9] = infop->pt_dynamic_addr;
+-        }
+-    }
 -}
--
- #define ELF_NREG    17
++#define HAVE_INIT_MAIN_THREAD
+ 
+ #define ELF_NREG    18
  typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
- 
-@@ -3621,8 +3600,12 @@ static int elf_core_dump(int signr, const CPUArchState *env)
- 
- void do_init_main_thread(CPUState *cs, struct image_info *infop)
- {
-+#ifdef HAVE_INIT_MAIN_THREAD
-+    init_main_thread(cs, infop);
-+#else
-     target_pt_regs regs = { };
- 
-     init_thread(&regs, infop);
-     target_cpu_copy_regs(cpu_env(cs), &regs);
-+#endif
- }
-diff --git a/linux-user/i386/cpu_loop.c b/linux-user/i386/cpu_loop.c
-index d96d5553fa..7b2d8b03d8 100644
---- a/linux-user/i386/cpu_loop.c
-+++ b/linux-user/i386/cpu_loop.c
-@@ -331,11 +331,10 @@ static void target_cpu_free(void *obj)
-     g_free(obj);
- }
- 
--void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-+void init_main_thread(CPUState *cpu, struct image_info *info)
- {
--    CPUState *cpu = env_cpu(env);
-+    CPUArchState *env = cpu_env(cpu);
-     bool is64 = (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) != 0;
--    int i;
- 
-     OBJECT(cpu)->free = target_cpu_free;
-     env->cr[0] = CR0_PG_MASK | CR0_WP_MASK | CR0_PE_MASK;
-@@ -361,28 +360,25 @@ void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-     /* flags setup : we activate the IRQs by default as in user mode */
-     env->eflags |= IF_MASK;
- 
--    /* linux register setup */
--#ifndef TARGET_ABI32
--    env->regs[R_EAX] = regs->rax;
--    env->regs[R_EBX] = regs->rbx;
--    env->regs[R_ECX] = regs->rcx;
--    env->regs[R_EDX] = regs->rdx;
--    env->regs[R_ESI] = regs->rsi;
--    env->regs[R_EDI] = regs->rdi;
--    env->regs[R_EBP] = regs->rbp;
--    env->regs[R_ESP] = regs->rsp;
--    env->eip = regs->rip;
--#else
--    env->regs[R_EAX] = regs->eax;
--    env->regs[R_EBX] = regs->ebx;
--    env->regs[R_ECX] = regs->ecx;
--    env->regs[R_EDX] = regs->edx;
--    env->regs[R_ESI] = regs->esi;
--    env->regs[R_EDI] = regs->edi;
--    env->regs[R_EBP] = regs->ebp;
--    env->regs[R_ESP] = regs->esp;
--    env->eip = regs->eip;
--#endif
-+    /*
-+     * Linux register setup.
-+     *
-+     * SVR4/i386 ABI (pages 3-31, 3-32) says that when the program
-+     * starts %edx contains a pointer to a function which might be
-+     * registered using `atexit'.  This provides a mean for the
-+     * dynamic linker to call DT_FINI functions for shared libraries
-+     * that have been loaded before the code runs.
-+     * A value of 0 tells we have no such handler.
-+     *
-+     * This applies to x86_64 as well as i386.
-+     *
-+     * That said, the kernel's ELF_PLAT_INIT simply zeros all of the general
-+     * registers.  Note that x86_cpu_reset_hold will set %edx to cpuid_version;
-+     * clear all general registers defensively.
-+     */
-+    memset(env->regs, 0, sizeof(env->regs));
-+    env->regs[R_ESP] = info->start_stack;
-+    env->eip = info->entry;
- 
-     /* linux interrupt setup */
- #ifndef TARGET_ABI32
-@@ -394,7 +390,7 @@ void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-                                 PROT_READ|PROT_WRITE,
-                                 MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-     idt_table = g2h_untagged(env->idt.base);
--    for (i = 0; i < 20; i++) {
-+    for (int i = 0; i < 20; i++) {
-         set_idt(i, 0, is64);
-     }
-     set_idt(3, 3, is64);
 -- 
 2.43.0
 
