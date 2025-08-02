@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BA8B19067
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBF5B19077
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:08:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLJ9-0001dq-KG; Sat, 02 Aug 2025 19:06:32 -0400
+	id 1uiLJ5-0001RT-9s; Sat, 02 Aug 2025 19:06:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLIt-0001B4-4X
+ id 1uiLIx-0001Cz-T9
  for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:06:20 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLIr-00018Q-HH
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:06:14 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-6199e7dea32so180531eaf.2
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:06:12 -0700 (PDT)
+ id 1uiLIw-00018q-Il
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:06:19 -0400
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-433f3bc84e0so622930b6e.3
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:06:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754175972; x=1754780772; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754175976; x=1754780776; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+yEeq0RZk/l844ggMKjsps45XK8zy1/6p2Ssn5uBtVg=;
- b=AoYRrYPRZNspzlYDI0tbFfbuIC9Ws1Lcrv3zaeEpL4hZfngFdqIqjnB9WDf/hCxZGe
- 5CLLWG1ZAb1kTx4jiddsfkzed3aO8Qzf5DpVxAzJV7JJ+/M7k1vhR7VEeyVrsryety92
- P7RljgOr21AbacTaVp/V33LmWfmU5ClS6mcc7fy814qE+EUE6UCtriDWgBPyIdXKNQXc
- g3UJWKfg9RvUTiW/47AQmEi3D705pIkny03LMHKWDhKe5UdI2vzro1FRNDqlQJEQteIg
- A2+I3zcEzDn7BMOm+cn9pz0zTnmYcfAvNNbcQk1I6s6jBnrKpz7d0f+xl/d03qkzYaBm
- Amag==
+ bh=tBti5m0dF6b3Sc0I6qGteHg5X6Zr9g2kU2k58zFoTUk=;
+ b=w93Mrk6z18yaO9Tbhd+rYbMB1HLdf3p+k9G1flZHgaOZPu1/vwUYx5B4Mqtqt3q0DL
+ f6jonUrYFIIfEjGNIXi4dAfNlpZaPkF8+fRBAfDDCE8FNE0iHtLt6uRvmT1mhUvFm6v3
+ ArFxfkRyc31wi2B+SZiTdXjvA8O84mVbO7mBPAxRqarocjmEiev6EwTOe4T/iRid4PRr
+ XWBJ/gsfnqUsVIHcLqobgoGLiHpmW+ZPxq2BHpGHCJPvT7QbfVXvHR0pelEP/RBUt4mE
+ SF+PVcYm2yD031+rQRZoo6ijfAWtwfw6OAuDTWpPCSaD5Jljk8K2JksX3B6AUo867ZcM
+ bPGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754175972; x=1754780772;
+ d=1e100.net; s=20230601; t=1754175976; x=1754780776;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+yEeq0RZk/l844ggMKjsps45XK8zy1/6p2Ssn5uBtVg=;
- b=SOqyCBiN8BPdDie49vED5+DSBIIaVsM8OsoCWUfKKmpx2WCWRrByIbDc06UxfGNJ1r
- nKuUMxeut6lfJ5EpBhBLtXS/V4my+oQ8RQRhGYRxYGCj6zGdb0u+HaojOIdwanqZkV6N
- tB5xHzzX69PdYwyym5se+jXMu1FuiJLvkqPFXhu+9tkIrBIyvuUvQMuBtIsIux441Jzt
- tkrGM0DDnG+Au2qnM/o7XavUv+uZmSX3Hg61uXTinqU2w4rhiSoFwEuLnS9kp821insP
- b6DPSG2fyKhKeLmf2YlvwGGuJGK0JJkjBHwb5E9fcQiw0J/kxrCUfHEki3kzFW9ulNJ4
- 4EQA==
-X-Gm-Message-State: AOJu0Yz4dOsTWFnF3WJmYZGJBMAZnzO8UmJrTsEXdWckUcGIYC0Tammn
- sAxgigvxGcGL8Dv0cS07ZLIis7pYu22fsS1JKL9/7FgGRSNLXZZX9iMj+eSV3aN3JGz0vTAhr26
- yeU4T72U=
-X-Gm-Gg: ASbGnctc48AVc1JM1QAEvavtWuadu36dUooMUp8YmA1ZnSCV7Re26oi8nDk/s/KGNtT
- mHgXv02fOGs1UfqnzW725CsuBUW54pfxkSRinyhW4/z0AA9K3oqfVKKmRYLjQB49/kAqyp+FNqM
- h6tuu2PHH3FfAq23aDNcIvlpTw2lVDLRxjq93RO25spDEZMPCyNvodWfrP3DpTc4uJhjW90qlxk
- z92Pd1nlmdqqcR7Q0bJzzrm+jpA38oJdyWODV5qBzYKE+b177bZrSucWEBigeQNaz4fm01LWgCO
- zWXJ+T/aKRRMoEc4ZwPAJtOTId+kYRfiHGKmQqnUhGWgoT32rK/wRZByixP2DjbUdtmu8+hLgRh
- 92jdpaNAjGIOy4kjxfgHlQhd1CMWTzca/DNiQwzigCiwNf7u/am6V
-X-Google-Smtp-Source: AGHT+IF3yLGtmHyFMHDgtNzv86s+58ilmyXpPpHZsnGtG0KwDBu/SyJ3BS2qtJJkyO3Aqb5o3SWONA==
-X-Received: by 2002:a05:6820:992:b0:619:950f:2413 with SMTP id
- 006d021491bc7-619950f26a5mr1587641eaf.2.1754175971869; 
- Sat, 02 Aug 2025 16:06:11 -0700 (PDT)
+ bh=tBti5m0dF6b3Sc0I6qGteHg5X6Zr9g2kU2k58zFoTUk=;
+ b=luCVhBjBpHCb4BH6nFtwe18q7zm9CgmbuBWXuZZIt0zt0N122YAfzdUSw99wJIqPRR
+ bCEhx54bNzNia677o/jfE9E+B3QfFH0G+8TbXA9LrvOVseDupb51SF5VdisTsqc+OLIN
+ 5jV1MuNuXwG9eML8Yatd/UQt+bE++tZZstVGCwPVonStFQzIHOOREpPLrX27Fv24Te+k
+ 9FCiDt4I/rtsGfUfRiztY5k0k2AIbJ41ur2SU8mZYGE5nofzFRmAagdIpLh4HAIx5dK9
+ FDqhciA54Lh51BZSgDrY/NwrWVAuyOmfLbQZvoVABoY5SmOnSfVkfXLo5bODQAWpgWgg
+ DzoA==
+X-Gm-Message-State: AOJu0YwHGzJwPn1l0ORNbBdgEholypFGxECs5t7q5aqeCsuPRcqoBiTO
+ A8f40iEULRwgjBL1QpTs7HDeoz4K3hQPvO6dSeAaemA9VxsZ9IqnNakpwLpeDiAAweqLAq1iRul
+ 0IE0Qcf4=
+X-Gm-Gg: ASbGncvAuQB2g/QAHApSNguOuo0/naLLfAs0XZ3OCtwg9QcVJRG8DQOd3MJovCpDYmE
+ HcTvn/Mqx/gwk4G9J/kDagJf3IQPamCZZtIbfXVm1O2BIW6Dl5Tqz6LtlfchKpzDxqEe+PCaAso
+ PoQbG/ovLKOiqbkUOs5Cwns3LpvhV/kbv1kD8Rfz4TLJFjxsU9McshRhqBB9rumYF8oB09T1EGp
+ keJYBDsCNWqbnIkv85/CZABjHKd2f08ktOyjCy/TIxAhBPhv1NX9N7h/M9RmudreSK9axRZeGcr
+ zHpa8C9BZOErecKaZuig6DPcjXQbQzG8KI9f8VwOH6b+T/ekKHG+7G5DHepX1Q/jYhTytyL39c+
+ HFEjov61dU4YP4rJ250OC0Mb8dGEGHOvhzwpXDRQceeus1vVe3Q6d
+X-Google-Smtp-Source: AGHT+IHq+ePnkF8GgdCHBYdg9+lh7StxwqnlFTbwRY77KlN61qrZpA5j5bw84jpHw66n+WchrLfwUQ==
+X-Received: by 2002:a05:6808:2104:b0:433:ee48:cb9d with SMTP id
+ 5614622812f47-433f023c4a4mr2543423b6e.15.1754175975991; 
+ Sat, 02 Aug 2025 16:06:15 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-61970693b48sm1093401eaf.19.2025.08.02.16.06.08
+ 006d021491bc7-61970693b48sm1093401eaf.19.2025.08.02.16.06.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:06:11 -0700 (PDT)
+ Sat, 02 Aug 2025 16:06:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 17/95] linux-user: Move get_elf_platform to {i386,
- x86_64}/elfload.c
-Date: Sun,  3 Aug 2025 09:03:41 +1000
-Message-ID: <20250802230459.412251-18-richard.henderson@linaro.org>
+Subject: [PATCH v2 18/95] linux-user/i386: Return const data from
+ get_elf_platform
+Date: Sun,  3 Aug 2025 09:03:42 +1000
+Message-ID: <20250802230459.412251-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802230459.412251-1-richard.henderson@linaro.org>
 References: <20250802230459.412251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,86 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move get_elf_platform to i386/elfload.c; pass in CPUState.
-Create a simple get_elf_platform for x86_64.
-Introduce HAVE_ELF_PLATFORM.
+Rather than modify a static buffer, index into an array of const data.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/i386/target_elf.h   |  1 +
- linux-user/loader.h            |  3 +++
- linux-user/x86_64/target_elf.h |  1 +
- linux-user/elfload.c           | 18 ++----------------
- linux-user/i386/elfload.c      | 13 +++++++++++++
- linux-user/x86_64/elfload.c    |  5 +++++
- 6 files changed, 25 insertions(+), 16 deletions(-)
+ linux-user/i386/elfload.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/linux-user/i386/target_elf.h b/linux-user/i386/target_elf.h
-index 802395af3a..44dde1ac4a 100644
---- a/linux-user/i386/target_elf.h
-+++ b/linux-user/i386/target_elf.h
-@@ -9,5 +9,6 @@
- #define I386_TARGET_ELF_H
+diff --git a/linux-user/i386/elfload.c b/linux-user/i386/elfload.c
+index 1b759098ca..ef3a6c35d2 100644
+--- a/linux-user/i386/elfload.c
++++ b/linux-user/i386/elfload.c
+@@ -17,13 +17,9 @@ abi_ulong get_elf_hwcap(CPUState *cs)
  
- #define HAVE_ELF_HWCAP          1
-+#define HAVE_ELF_PLATFORM       1
- 
- #endif
-diff --git a/linux-user/loader.h b/linux-user/loader.h
-index 729723cc06..44bb4cbfd3 100644
---- a/linux-user/loader.h
-+++ b/linux-user/loader.h
-@@ -105,5 +105,8 @@ abi_ulong get_elf_hwcap(CPUState *cs);
- abi_ulong get_elf_hwcap2(CPUState *cs);
- const char *elf_hwcap_str(uint32_t bit);
- const char *elf_hwcap2_str(uint32_t bit);
-+#if defined(TARGET_I386)
-+const char *get_elf_platform(CPUState *cs);
-+#endif
- 
- #endif /* LINUX_USER_LOADER_H */
-diff --git a/linux-user/x86_64/target_elf.h b/linux-user/x86_64/target_elf.h
-index 03483bad57..498c3f7e4e 100644
---- a/linux-user/x86_64/target_elf.h
-+++ b/linux-user/x86_64/target_elf.h
-@@ -9,5 +9,6 @@
- #define X86_64_TARGET_ELF_H
- 
- #define HAVE_ELF_HWCAP          1
-+#define HAVE_ELF_PLATFORM       1
- 
- #endif
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 7a41917b49..e6e509c0a6 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -149,12 +149,12 @@ typedef abi_int         target_pid_t;
- 
- #ifdef TARGET_I386
- 
-+#define ELF_PLATFORM get_elf_platform(thread_cpu)
-+
- #ifdef TARGET_X86_64
- #define ELF_CLASS      ELFCLASS64
- #define ELF_ARCH       EM_X86_64
- 
--#define ELF_PLATFORM   "x86_64"
--
- static inline void init_thread(struct target_pt_regs *regs, struct image_info *infop)
+ const char *get_elf_platform(CPUState *cs)
  {
-     regs->rax = 0;
-@@ -237,22 +237,8 @@ static bool init_guest_commpage(void)
- #define ELF_CLASS       ELFCLASS32
- #define ELF_ARCH        EM_386
- 
--#define ELF_PLATFORM get_elf_platform()
- #define EXSTACK_DEFAULT true
- 
--static const char *get_elf_platform(void)
--{
 -    static char elf_platform[] = "i386";
--    int family = object_property_get_int(OBJECT(thread_cpu), "family", NULL);
++    static const char elf_platform[4][5] = { "i386", "i486", "i586", "i686" };
+     int family = object_property_get_int(OBJECT(cs), "family", NULL);
 -    if (family > 6) {
 -        family = 6;
 -    }
@@ -185,45 +124,10 @@ index 7a41917b49..e6e509c0a6 100644
 -        elf_platform[1] = '0' + family;
 -    }
 -    return elf_platform;
--}
--
- static inline void init_thread(struct target_pt_regs *regs,
-                                struct image_info *infop)
- {
-diff --git a/linux-user/i386/elfload.c b/linux-user/i386/elfload.c
-index f99336e73c..1b759098ca 100644
---- a/linux-user/i386/elfload.c
-+++ b/linux-user/i386/elfload.c
-@@ -14,3 +14,16 @@ abi_ulong get_elf_hwcap(CPUState *cs)
- {
-     return cpu_env(cs)->features[FEAT_1_EDX];
- }
 +
-+const char *get_elf_platform(CPUState *cs)
-+{
-+    static char elf_platform[] = "i386";
-+    int family = object_property_get_int(OBJECT(cs), "family", NULL);
-+    if (family > 6) {
-+        family = 6;
-+    }
-+    if (family >= 3) {
-+        elf_platform[1] = '0' + family;
-+    }
-+    return elf_platform;
-+}
-diff --git a/linux-user/x86_64/elfload.c b/linux-user/x86_64/elfload.c
-index f99336e73c..88541ea45e 100644
---- a/linux-user/x86_64/elfload.c
-+++ b/linux-user/x86_64/elfload.c
-@@ -14,3 +14,8 @@ abi_ulong get_elf_hwcap(CPUState *cs)
- {
-     return cpu_env(cs)->features[FEAT_1_EDX];
++    family = MAX(MIN(family, 6), 3);
++    return elf_platform[family - 3];
  }
-+
-+const char *get_elf_platform(CPUState *cs)
-+{
-+    return "x86_64";
-+}
 -- 
 2.43.0
 
