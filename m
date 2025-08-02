@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C355B190F6
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67ADCB190E5
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:36:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLkR-0006pp-B8; Sat, 02 Aug 2025 19:34:44 -0400
+	id 1uiLjq-0005Oi-52; Sat, 02 Aug 2025 19:34:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLhi-0008R2-QN
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:55 -0400
-Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
+ id 1uiLho-0000AJ-54
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:32:01 -0400
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLhh-00056f-20
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:54 -0400
-Received: by mail-oo1-xc36.google.com with SMTP id
- 006d021491bc7-61585dfc8f8so1030194eaf.0
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:31:52 -0700 (PDT)
+ id 1uiLhm-00057c-EZ
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:59 -0400
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-2ffaa884a44so2080930fac.1
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:31:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754177512; x=1754782312; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754177517; x=1754782317; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zGaWh6qB/XNYeP5vG0YKYiWrjkJVNrqnpJ3x4KugETg=;
- b=JL23AYsHSmpbzDwC6HBVTjOfyy6MP6m3D9GVtsBTYUUBPZrfGU/8VD7yD4MtXc14zB
- emVQysWGrVQ87DQ2uaZS54YZ0gSQY96lBgeJ/WoKwMM3aPU7xVvDZl9uancIHIYKyq8Z
- RZKS6vVAVs02QCX/2Po8dNVjbNuHOPv3e/OduU2jH99IBZHNk/XO+OpUbN+R/jrylj0c
- cGqoL4XWui0+tGMuVv2vVZQZ/h0QQ8pZnK2UL2P7BuN5HWPTSlZNR8mV6Vlv7P7r4D3H
- jaPvpO0Hk/vGeYG0LoDXS9OkDixrlKiNAOebaarAczg+pBlaExfc2ilaYtxzUA6th8cQ
- xMnA==
+ bh=TtfdJAKHkhBXVVur9KnTeJdEj0NKkUPLOFyccsCQyeU=;
+ b=ja5tKzs6yXhp3ae36h5mQaZxwfZZJEfoxY1ZsAiosr0FKRKaFf6ZulY97coYxv6nN+
+ jYmaeoVulsbej6EqlD/o2by0sE7oeUKXAWOmPaWsWo3SCWl0/47svLjTtab6xdEHZo+l
+ 8I08MGjnQUuXldGFQ7YH01UuL10tVWZQC8d/JKGqaJZMGNnnpwP4KYUj/aZQf9NlE1xf
+ Otuit4h316JqEmGxIJ7bb/OeAOrOIJj2eB5ZPKQdpJDyYGX6bz2RTriJ/FtMc56yWN60
+ wZmM2DcxoKV2I7cIwwFV+bmkHYOkJ+fplAXGwAbem0jOHwy62sYQjwjuUruga0VK/JeH
+ DYmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754177512; x=1754782312;
+ d=1e100.net; s=20230601; t=1754177517; x=1754782317;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zGaWh6qB/XNYeP5vG0YKYiWrjkJVNrqnpJ3x4KugETg=;
- b=otJxYmKlNWqGIzqSraCy9KmUHQBiname2TFSx0kdOC2yv+7vY+GyDpJ2VRhEJMozWQ
- zi/LtYsX78dX9BxwV/VkVf62HK83aj09S4E1qK1BjxPTf5Nz/3VX238xH0ue3nBPf6du
- 0O5lslnStxqEbjH+UQnHPsiPVAgMrmkSB5Q9hs2xqnAxiyZg3CmrvpFkKVFHBQs03V/6
- XsfJg9LqXU0+bOm4r4F3rEv+3IKbAAae2zAjbs4BJioa66Bp9ug//xlBSf01tQmg8Viy
- +9+mQBez1NtP3ENyPVtvzJKSIOJ58SXzeJ8+B2Wt5q+EoMDbb0kGvjkJXMOqSxxtlzeI
- tMDQ==
-X-Gm-Message-State: AOJu0YwIeHnuCNGBtMMAKuNG3K1Qu/6IczzgzJfHZEW+CPQy9D0OkMX5
- QOiEFpmaKBWy05F93DE4RKob7xFauUm+Tk6O5w0b/3TIcw3aCsB8gAoIWPFbFMXhZ9vpdNIfX2a
- sZNVWnFA=
-X-Gm-Gg: ASbGncuT+XQ5Fo0jcl5DjD+PpPIgU5Go3LAiw+eh25huj4SY0qTs47wqNquCFyoz3iz
- lmU4QXyfAsqi9pnR0YE85G/WhGjagzH4hhGs+01u/1fr1KXsEQuscgfmTu1kOcd+VkV4Bik+L2E
- Bv5jNr/ROCNfJQVdTOiw8X7/uaoaP6OCjPErsq7tc/FVBvTGepKGCf4sr6uB9fwtmaQDQPLtkej
- EaLoAQOAyYHFcJr4QuqOsTTFNItLFmocAkxhtotArY4ScLegBZU/+RWXHba2w/sTPmDvImVftek
- T/xHPA92OYedzSad1ZeI9Wm42TbySedSNh6mcZ0fiWROKtgQcGCU6GEMFocQM3d5gNVPoAAh7BD
- CBCnTHgU/yKGcj/zye3/g3DJXdDQcDdMkiNfJMsfegQtMgOaRBtW1
-X-Google-Smtp-Source: AGHT+IEYragkG9sFyeueBHpelys0pg8+Y6YrfUjagcM1Me2m42UOdmWOFIzaoKnmJ7tpZtd4lURflw==
-X-Received: by 2002:a05:6871:2881:b0:301:1218:60a0 with SMTP id
- 586e51a60fabf-30b679a5575mr2751857fac.34.1754177511972; 
- Sat, 02 Aug 2025 16:31:51 -0700 (PDT)
+ bh=TtfdJAKHkhBXVVur9KnTeJdEj0NKkUPLOFyccsCQyeU=;
+ b=w0A74bNyjnUJczKj+Hjb4J50TaJnDt+iQUg9aM70HK1CXTBI55x/hvzN2kx9XO0BcI
+ AvrYhRprcCWUl2mywSlrZFV6jwsVQusrBEnPR+f8IdFB5+8Wz/9l9Uj0goKdowQc9sQ3
+ KXauaRfO3bsnMivOe/WVUXN9PHnp1kc1n8Esfo/4LX/w/tUpyHV6BJ9P7opWF6vP0n1j
+ iCH8dLPC1YI3RDFAcjbX71Zrny6YX4ODUWykw4xEQ7ebTHmlQtFRb+f1F8kU3xhbzVY4
+ aSIfGvAyskuwr6k9AjRNEBmu5p5jBdQ8Tsjq+YTWhIeT/rOn4lD7C7+Qu78iKr6mM2qT
+ IklQ==
+X-Gm-Message-State: AOJu0Yyh06ablgIInl4Zv1CSCaE+uvQ05Hkgz6vNAcmhX84PnKchRUcx
+ 4cpLVbVWVsqQvl3PXmfZM7rJ3JSZIlKWnXqHnHlsWMoH0TZ0uQpHpF2+1kpwOaz42zywlXcc2M8
+ GpMxzH6w=
+X-Gm-Gg: ASbGncsCAcuXTO4UNybrrFQHkluwWiQWrr3M9DZyUnVf4hXOtIAh+Np46xYJKDiT9/e
+ vtS3UL0Ze/GxRBKmg6/KN2JVCVwSyWHd5NfVaWFhvJIeTzOYiocr9vmZyf3m8RyCWXTFINrIzrt
+ 4Eex2VrkUtqIPx089qlA8UXx80ERurbSZ6H6QJ7PzNcfKjf/hbpXWbTydGLf3WN6UARALc+GUOH
+ u2nJjRwwQqgly/NipCh3LuAEUgPtpYSXk7jluwc3MWJZjk/kgKwuzOmoHm+hs7/PjLF3T5ZumW/
+ bvbWb2DcoJN67XG6COtnls7JdutrJ9JuZrbE78j0znH34ttnu+02LZlEnWP7rFlL0nryYowcFfA
+ oJKyxwYZngpZGDJ0kaElISx/aIGwYQYyTw8g+c+mOjZn1R1Hpm5Ka
+X-Google-Smtp-Source: AGHT+IGazccfX3NI/VYEnzo4AbEkGmch1ZTBvtJ6fLmfxKA3gMvnFQLPP+p/a9QEWaUbsXUWnGziEg==
+X-Received: by 2002:a05:6870:a44a:b0:2eb:9fe5:d06c with SMTP id
+ 586e51a60fabf-30b6685b897mr2728877fac.3.1754177516873; 
+ Sat, 02 Aug 2025 16:31:56 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-30b8e3c9b32sm71031fac.24.2025.08.02.16.31.48
+ 586e51a60fabf-30b8e3c9b32sm71031fac.24.2025.08.02.16.31.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:31:51 -0700 (PDT)
+ Sat, 02 Aug 2025 16:31:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 23/85] target/arm: Expand syndrome parameter to
- raise_exception*
-Date: Sun,  3 Aug 2025 09:28:51 +1000
-Message-ID: <20250802232953.413294-24-richard.henderson@linaro.org>
+Subject: [PATCH v2 24/85] target/arm: Implement dirtybit check for PIE
+Date: Sun,  3 Aug 2025 09:28:52 +1000
+Message-ID: <20250802232953.413294-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802232953.413294-1-richard.henderson@linaro.org>
 References: <20250802232953.413294-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc36.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,73 +98,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prepare for raising exceptions with 64-bit syndromes.
+Both S1PIE and S2PIE have a bit to make software tracking
+of dirty pages easier.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/internals.h     | 6 +++---
- target/arm/tcg-stubs.c     | 2 +-
- target/arm/tcg/op_helper.c | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ target/arm/internals.h      |  1 +
+ target/arm/ptw.c            | 16 ++++++++++++++++
+ target/arm/tcg/tlb_helper.c | 12 +++++++++---
+ 3 files changed, 26 insertions(+), 3 deletions(-)
 
 diff --git a/target/arm/internals.h b/target/arm/internals.h
-index f0e888ff93..fc82dd65e8 100644
+index fc82dd65e8..b6499683cc 100644
 --- a/target/arm/internals.h
 +++ b/target/arm/internals.h
-@@ -306,14 +306,14 @@ FIELD(CNTHCTL, CNTPMASK, 19, 1)
-  * and never returns because we will longjump back up to the CPU main loop.
-  */
- G_NORETURN void raise_exception(CPUARMState *env, uint32_t excp,
--                                uint32_t syndrome, uint32_t target_el);
-+                                uint64_t syndrome, uint32_t target_el);
+@@ -754,6 +754,7 @@ struct ARMMMUFaultInfo {
+     bool s1ptw;
+     bool s1ns;
+     bool ea;
++    bool dirtybit;  /* FEAT_S1PIE, FEAT_S2PIE */
+ };
  
- /*
-  * Similarly, but also use unwinding to restore cpu state.
-  */
- G_NORETURN void raise_exception_ra(CPUARMState *env, uint32_t excp,
--                                      uint32_t syndrome, uint32_t target_el,
--                                      uintptr_t ra);
-+                                   uint64_t syndrome, uint32_t target_el,
-+                                   uintptr_t ra);
+ /**
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 323fc8052d..820d5e65a0 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -2306,6 +2306,22 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+         goto do_fault;
+     }
  
- /*
-  * For AArch64, map a given EL to an index in the banked_spsr array.
-diff --git a/target/arm/tcg-stubs.c b/target/arm/tcg-stubs.c
-index aac99b2672..aeeede8066 100644
---- a/target/arm/tcg-stubs.c
-+++ b/target/arm/tcg-stubs.c
-@@ -16,7 +16,7 @@ void write_v7m_exception(CPUARMState *env, uint32_t new_exc)
-     g_assert_not_reached();
++    /* S1PIE and S2PIE both have a bit for software dirty page tracking. */
++    if (access_type == MMU_DATA_STORE && param.pie) {
++        /*
++         * For S1PIE, bit 7 is nDirty and both HA and HD are checked.
++         * For S2PIE, bit 7 is Dirty and only HD is checked.
++         */
++        bool bit7 = extract64(attrs, 7, 1);
++        if (regime_is_stage2(mmu_idx)
++            ? !bit7 && !param.hd
++            : bit7 && !(param.ha && param.hd)) {
++            fi->type = ARMFault_Permission;
++            fi->dirtybit = true;
++            goto do_fault;
++        }
++    }
++
+     /* If FEAT_HAFDBS has made changes, update the PTE. */
+     if (new_descriptor != descriptor) {
+         new_descriptor = arm_casq_ptw(env, descriptor, new_descriptor, ptw, fi);
+diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
+index 23c72a99f5..ae2acd6727 100644
+--- a/target/arm/tcg/tlb_helper.c
++++ b/target/arm/tcg/tlb_helper.c
+@@ -24,13 +24,13 @@ bool arm_s1_regime_using_lpae_format(CPUARMState *env, ARMMMUIdx mmu_idx)
+     return regime_using_lpae_format(env, mmu_idx);
  }
  
--void raise_exception_ra(CPUARMState *env, uint32_t excp, uint32_t syndrome,
-+void raise_exception_ra(CPUARMState *env, uint32_t excp, uint64_t syndrome,
-                         uint32_t target_el, uintptr_t ra)
+-static inline uint32_t merge_syn_data_abort(uint32_t template_syn,
++static inline uint64_t merge_syn_data_abort(uint32_t template_syn,
+                                             ARMMMUFaultInfo *fi,
+                                             unsigned int target_el,
+                                             bool same_el, bool is_write,
+                                             int fsc)
  {
-     g_assert_not_reached();
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index 575e566280..46a3b911ec 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -46,7 +46,7 @@ int exception_target_el(CPUARMState *env)
+-    uint32_t syn;
++    uint64_t syn;
+ 
+     /*
+      * ISV is only set for stage-2 data aborts routed to EL2 and
+@@ -75,6 +75,10 @@ static inline uint32_t merge_syn_data_abort(uint32_t template_syn,
+         /* Merge the runtime syndrome with the template syndrome.  */
+         syn |= template_syn;
+     }
++
++    /* Form ISS2 at the top of the syndrome. */
++    syn |= (uint64_t)fi->dirtybit << 37;
++
+     return syn;
  }
  
- void raise_exception(CPUARMState *env, uint32_t excp,
--                     uint32_t syndrome, uint32_t target_el)
-+                     uint64_t syndrome, uint32_t target_el)
- {
-     CPUState *cs = env_cpu(env);
- 
-@@ -70,7 +70,7 @@ void raise_exception(CPUARMState *env, uint32_t excp,
-     cpu_loop_exit(cs);
- }
- 
--void raise_exception_ra(CPUARMState *env, uint32_t excp, uint32_t syndrome,
-+void raise_exception_ra(CPUARMState *env, uint32_t excp, uint64_t syndrome,
-                         uint32_t target_el, uintptr_t ra)
- {
-     CPUState *cs = env_cpu(env);
+@@ -176,7 +180,9 @@ void arm_deliver_fault(ARMCPU *cpu, vaddr addr,
+     int target_el = exception_target_el(env);
+     int current_el = arm_current_el(env);
+     bool same_el;
+-    uint32_t syn, exc, fsr, fsc;
++    uint32_t exc, fsr, fsc;
++    uint64_t syn;
++
+     /*
+      * We know this must be a data or insn abort, and that
+      * env->exception.syndrome contains the template syndrome set
 -- 
 2.43.0
 
