@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018C1B190AE
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3926B19087
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:11:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLNh-0000Gs-Pk; Sat, 02 Aug 2025 19:11:14 -0400
+	id 1uiLNd-0008Nw-86; Sat, 02 Aug 2025 19:11:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLNH-0007y2-TV
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:10:52 -0400
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ id 1uiLNM-00085L-0q
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:10:54 -0400
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLNG-0001dH-9b
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:10:47 -0400
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-741af48e9e7so58970a34.3
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:10:45 -0700 (PDT)
+ id 1uiLNK-0001di-D9
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:10:51 -0400
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-306e88f0b0aso891873fac.3
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:10:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754176245; x=1754781045; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754176248; x=1754781048; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Tz5VaXvtV93wHMZKr+baduksZM5BuR3kgES/WJ5tu1M=;
- b=oNBdXsheG4fnBaHB6pl4cGUK/Glq34v2kk3loF2KpKJ3QVFHE1eLqVRyzVHdtpzG0P
- FQ5KReQeaQHDD29X1M6X2F+chMa2go2kAGjMg+mM7E7opUuGs8ZraT5DvBSz0ZklisMh
- +Iz/srG9RF6unezj8nZjAGCKC7wDt0EK519IWzLPjAY1YqI+xfCcAPC1GB1TNiPmmUE9
- b+urA9aNeDMQXYCCl/XynzhFtGvGf3DMmRKOAhF0wvbZz5KkGEGphxD9Y92qHlEZiZYG
- xubpASRNCSyVr1ovFXUtTrxZ8MAiv9F0QdhNUVZzxNne5/syTxBG93+k5iK7TLrKZ8Yu
- a8Gw==
+ bh=LrimBB+faaHzZ0a+sOK+yKBp8vwT8/efwhqeBA5wVfA=;
+ b=VoXaAbixrlrqIsplJ0Bc1JKMfIRVJR+Kv84vg5x+IWTdElFUo2cSnBWx867U+QGNJD
+ ApN34LW4156hzxJsMsS6KtlKU8Tj/keLRs9e3gJKpigtcH/rOm9TKCINdoqnQJMJYc/+
+ C8XOXBeH/IDkoCzwuF7kSMkVHO9b3hlTnvxjxsmI6dSsWRRZgyD6iPGXn/mFv2ReZCVn
+ EBk6JF18Rd9R8tKy0uEj35YXGwPbCvuJiUZBdin16cVsoi8o8QQeNkxmc64q1whFWHRd
+ u+vwhbAFWzIZI8zKU8gBBb6xjENtYktIslTSxCpqhoKJmizx3RXmAIlla2epM3pBQczT
+ ij/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754176245; x=1754781045;
+ d=1e100.net; s=20230601; t=1754176248; x=1754781048;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Tz5VaXvtV93wHMZKr+baduksZM5BuR3kgES/WJ5tu1M=;
- b=qv7PwbcdJkV20SUz057Afr7JZDaKijxmuTKlCKiyZtB2AKKkfeb9leKq1jZ++O0Y+L
- /GMN5uLUwsNhCPS+mI7/2FtA4sYchA5jnukNI8sqgPpaPDRr8yArCfv2wkA8UcZzYIr7
- 7p3WE154vhQ2osiJJDttXeJUqkK/9httnJdxwBlJhYbwmnAnMPeX/pcArsaKID5Rgg01
- k/mHK9J4MpTX/eAem72ngVQ2w04PL0HC+fntFI6XaAwWyGUgyaA7sHvmL8BO+U8vxEE1
- oCES9DabrNMw3RVqIdJ8Z8X9xjtIOe8MVzS6NCV95RfTq2B+no94KZruwoLPzGBGkqWf
- 7t/Q==
-X-Gm-Message-State: AOJu0YxveJo7JKc6lpVFQZVRrpB0qVd/L5+K8+L1wWtqF/NLNxw10IwH
- mA/zE10T0Osqm5VfNA0iknxy7/aEzvSZtGT4NWVyLMuiP2HfrlcFEiolYLJdms99bHQJVvH9LIm
- yPTtDieo=
-X-Gm-Gg: ASbGnct8YUhI0s+WIvc/BXCTAU0jPP7BoT3bxBeVydJMUKt+uZSygLga2FKwsX5+45t
- 8KwRCroDazDpQ5yvz/POkRdNvF04krXB30s4u7mRhJPsasEzKnGT+taD0RWCy6kyFieRlKTw7wD
- +oSfumoxqoqMDf8iLqaTQo9zy4lXqtvY2AObLtJpIQiGlM5qgR9DM+bu52BXRMNJu+IECbuV7gd
- jHpAveSS+/pxOC5zvAzbcM2UQja4mMoph6Aqzlet1mGs240xNKveZ7tF8en75gPNUGR26O9+rqZ
- mvqQxBbY2GQAgogodLogibG+EX4yDqhWzwtPAXALL6jnOfR8Bagxt1Fz0aG3ot3unFKQWPpdHjj
- o3ivv+nGTFMAa8j/iwuEXaUhVUH0wa9XW+jXpN9WAWYfYdoBmDeQ43Yv31n09uv4=
-X-Google-Smtp-Source: AGHT+IGku7YWDTortG0RZhkgYw3le5gi5UT7Rdsvu5r/J0ZbZKVpaUJBGP5A4q90DG22Op5hRAxOuA==
-X-Received: by 2002:a05:6808:124e:b0:433:e660:16b6 with SMTP id
- 5614622812f47-433f034a6c5mr2446849b6e.30.1754176244974; 
- Sat, 02 Aug 2025 16:10:44 -0700 (PDT)
+ bh=LrimBB+faaHzZ0a+sOK+yKBp8vwT8/efwhqeBA5wVfA=;
+ b=pCRLNHVHlxbf5R8BHURLgjW16m17e+tylrGK/+OLrzD8NnwaHHlXiAWvMtAAZDMKYN
+ pO+EYdqolU3jzM1nvlPirpTOc9XBS4agGSiCI/QJHyrEvB0rED3ATBvwoojXUbJ1qfxV
+ W/F9JxWpJaQw6rZKicz1P+bGHufFDi2gMIX6dF5rSrqNRwMISC4SbGR9gbgcS81vkZzt
+ /OZYYsj/Kb3o4vYXRB4smJ/AuO//YLF7iCKaYvqSXfQbdJbt8DHkh7QT0w3C6fsMJu58
+ HwiDSWrD2wtQt9lszuqQCwDGYM3kHI2QrovX32YQxe7eO9uWeSyOjaP8N+Y8JNttTLWT
+ 2eBA==
+X-Gm-Message-State: AOJu0YxLRIz9Kg/b8uI5y3sp73uNuFLhMuiaOF429MVgQPSJD2kFhWRM
+ 77YjOrDXNihzOWACIHcPy4Atv4/ll2e6mxg5WJ2hihBHqEJ+urF7nvuGMHCTj0z4lVx3s1l6oX4
+ f4uHhpDw=
+X-Gm-Gg: ASbGncs63Apn+OmZN4IVwYgir68Z51OGdx6sqD6wxtzx1oyr3Zxqy9gegYxc7I1MXEs
+ JAgu5Yf/C1NcKzoKp2EthpUBUtMRlEhYlEmAbjugFPkPYci64BJlB8oqxO54n8uDEcHvcf+/sh6
+ PLVUCpt2Uim0VNBP3kMuEX0biNjr+nMsQ+BM0nT0qAVtr88njBj5XbRjcOsJMbcqjn8pgQ4WAgb
+ W65MO/HQhhUD+vnBBfJPpNxTGBfohD0wrwP4R6dm/wK/k7+bZVrOWavg/XHtBsccmbKXAidEBsg
+ mGDTfanrcwlO6M0sI1AEyMQUe66XG3NYD+vNbtRgCpdwrC7WwLpFajmbPJAgbO1AZw3tmqKRisw
+ AtDfK+x6QXCCImwCP9jkUiLX3VZoncNvPH+Bbytcn9cF8OJrOybVW
+X-Google-Smtp-Source: AGHT+IHXrL0Nu6una+z3n+HdSAnEMZHdayXxyc4SUELtYSROBXFuUQuf/NJbNLzmYrAhHrKrDdj6/w==
+X-Received: by 2002:a05:6820:a082:b0:619:932b:3db9 with SMTP id
+ 006d021491bc7-619932b3eebmr1419748eaf.3.1754176248524; 
+ Sat, 02 Aug 2025 16:10:48 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-61970693ed9sm1084454eaf.20.2025.08.02.16.10.41
+ 006d021491bc7-61970693ed9sm1084454eaf.20.2025.08.02.16.10.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:10:44 -0700 (PDT)
+ Sat, 02 Aug 2025 16:10:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 42/95] linux-user/xtensa: Create init_main_thread
-Date: Sun,  3 Aug 2025 09:04:06 +1000
-Message-ID: <20250802230459.412251-43-richard.henderson@linaro.org>
+Subject: [PATCH v2 43/95] linux-user/hexagon: Create init_main_thread
+Date: Sun,  3 Aug 2025 09:04:07 +1000
+Message-ID: <20250802230459.412251-44-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802230459.412251-1-richard.henderson@linaro.org>
 References: <20250802230459.412251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x332.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,71 +103,46 @@ There's no point going through a target_pt_regs intermediate.
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c         | 18 +-----------------
- linux-user/xtensa/cpu_loop.c | 22 ++++++++++++++++------
- 2 files changed, 17 insertions(+), 23 deletions(-)
+ linux-user/elfload.c          | 7 +------
+ linux-user/hexagon/cpu_loop.c | 8 +++++---
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 4876e4b0a8..447a9be11d 100644
+index 447a9be11d..4417c2d99a 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -905,23 +905,7 @@ static bool init_guest_commpage(void)
+@@ -954,12 +954,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
  #define ELF_CLASS       ELFCLASS32
- #define ELF_ARCH        EM_XTENSA
+ #define ELF_ARCH        EM_HEXAGON
  
 -static inline void init_thread(struct target_pt_regs *regs,
 -                               struct image_info *infop)
 -{
--    regs->windowbase = 0;
--    regs->windowstart = 1;
--    regs->areg[1] = infop->start_stack;
--    regs->pc = infop->entry;
--    if (info_is_fdpic(infop)) {
--        regs->areg[4] = infop->loadmap_addr;
--        regs->areg[5] = infop->interpreter_loadmap_addr;
--        if (infop->interpreter_loadmap_addr) {
--            regs->areg[6] = infop->interpreter_pt_dynamic_addr;
--        } else {
--            regs->areg[6] = infop->pt_dynamic_addr;
--        }
--    }
+-    regs->sepc = infop->entry;
+-    regs->sp = infop->start_stack;
 -}
 +#define HAVE_INIT_MAIN_THREAD
  
- /* See linux kernel: arch/xtensa/include/asm/elf.h.  */
- #define ELF_NREG 128
-diff --git a/linux-user/xtensa/cpu_loop.c b/linux-user/xtensa/cpu_loop.c
-index c0fcf743e7..43a194fc4a 100644
---- a/linux-user/xtensa/cpu_loop.c
-+++ b/linux-user/xtensa/cpu_loop.c
-@@ -238,12 +238,22 @@ void cpu_loop(CPUXtensaState *env)
+ #endif /* TARGET_HEXAGON */
+ 
+diff --git a/linux-user/hexagon/cpu_loop.c b/linux-user/hexagon/cpu_loop.c
+index e18a0183b5..25c97edcae 100644
+--- a/linux-user/hexagon/cpu_loop.c
++++ b/linux-user/hexagon/cpu_loop.c
+@@ -79,9 +79,11 @@ void cpu_loop(CPUHexagonState *env)
      }
  }
  
 -void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
 +void init_main_thread(CPUState *cs, struct image_info *info)
  {
--    int i;
--    for (i = 0; i < 16; ++i) {
--        env->regs[i] = regs->areg[i];
+-    env->gpr[HEX_REG_PC] = regs->sepc;
+-    env->gpr[HEX_REG_SP] = regs->sp;
 +    CPUArchState *env = cpu_env(cs);
 +
-+    env->sregs[WINDOW_BASE] = 0;
-+    env->sregs[WINDOW_START] = 1;
-+    env->regs[1] = info->start_stack;
-+    env->pc = info->entry;
-+
-+    if (info_is_fdpic(info)) {
-+        env->regs[4] = info->loadmap_addr;
-+        env->regs[5] = info->interpreter_loadmap_addr;
-+        if (info->interpreter_loadmap_addr) {
-+            env->regs[6] = info->interpreter_pt_dynamic_addr;
-+        } else {
-+            env->regs[6] = info->pt_dynamic_addr;
-+        }
-     }
--    env->sregs[WINDOW_START] = regs->windowstart;
--    env->pc = regs->pc;
++    env->gpr[HEX_REG_PC] = info->entry;
++    env->gpr[HEX_REG_SP] = info->start_stack;
+     env->gpr[HEX_REG_USR] = 0x56000;
  }
 -- 
 2.43.0
