@@ -2,81 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08BDB18ACF
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Aug 2025 07:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D96BB18AC3
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Aug 2025 07:42:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ui504-0000T8-CD; Sat, 02 Aug 2025 01:41:44 -0400
+	id 1ui508-0000bN-Kv; Sat, 02 Aug 2025 01:41:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ui500-0000OK-DY
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 01:41:40 -0400
-Received: from p-east3-cluster5-host12-snip4-1.eps.apple.com ([57.103.86.242]
- helo=outbound.qs.icloud.com)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1ui501-0000RH-VJ; Sat, 02 Aug 2025 01:41:42 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ui4zy-00069D-TJ
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 01:41:40 -0400
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-east-2d-60-percent-0 (Postfix) with ESMTPS id
- 28B1618008A5; Sat,  2 Aug 2025 05:41:34 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=OlK4R47u4AAAXgW6XizaUWynoJylvp0tNc9/rAb2RFQ=;
- h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
- b=cJtzdTQ9RlHyS59N/p6no7n8ojftiq0J7Aahrh++32OrxXo7Fl4KcYwx/2uCfchrPYPdRqBqnMuyca4f2mRbh3LoIfLh2M5Uk7PnmEOlxVfOU3hxt+uideXpXCo4ObYwTNtJ9KHpbnOOgA9rqPMzH5bjuQxINpvGLst6oyN+hcRwctFyu6EKbSkhgGViWgU2tOydaC8j/wVP5hCJ/E5YhnayU+Td8A2s7Gs9QvBa+/pcVwZCWRVq8PG1/Yg9pAvpD/KI+QAsJ+cYvFLmhcwaiy/ExfI1nIRaPTMDKYnxDMm9Ke3GCemMecDcX+7CBnOn/mjZ+WL22Kn2xEZxKkBH+A==
-X-Client-IP: 46.189.47.18
-Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
- [17.57.155.37])
- by p00-icloudmta-asmtp-us-east-2d-60-percent-0 (Postfix) with ESMTPSA id
- 3A22B18008BD; Sat,  2 Aug 2025 05:41:32 +0000 (UTC)
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, Shannon Zhao <shannon.zhaosl@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Sunil Muthuswamy <sunilmut@microsoft.com>,
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v2 14/14] MAINTAINERS: Add myself as a maintainer for WHPX
-Date: Sat,  2 Aug 2025 07:40:55 +0200
-Message-Id: <20250802054055.74013-15-mohamed@unpredictable.fr>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250802054055.74013-1-mohamed@unpredictable.fr>
-References: <20250802054055.74013-1-mohamed@unpredictable.fr>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1ui4zz-00068w-W7; Sat, 02 Aug 2025 01:41:41 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 655B713CE9C;
+ Sat, 02 Aug 2025 08:41:21 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1566E254FBB;
+ Sat,  2 Aug 2025 08:41:37 +0300 (MSK)
+Message-ID: <703d1159-7bdc-47b7-be08-64d7b000e45b@tls.msk.ru>
+Date: Sat, 2 Aug 2025 08:41:36 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: DIUX5jX5GcP1QDONlCnlAESN9aTqPJly
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAyMDA0NyBTYWx0ZWRfX4W7Rs1ysc/CP
- z5jjgbI+8yahAGOgMhKjV4WweNPHObC1zp9mLBTXvqNLKXvHvyxe7Iq8yv9U2VPWGaOZM2iRL0H
- vhMMjVDNCy5zBRXHG3yD7jGAbG+xC/9NbgOtKy+8JsO88V8JUkceVfe5k4itU+9tqM/EtCI0IH5
- V6/j8Nr+OAnnoP4AShmOpY/PGEbbTZ6IZy+U1q1ZhqJijD4kt6bqxcQKOw5DTBXgu0lo1bJPyIa
- kZ9ezovyxMuWgVDThOvsEf42002XaNUATLwGP8OArGev2kpWFaw3GmxyH7zzub8z0WE7VxS5s=
-X-Proofpoint-GUID: DIUX5jX5GcP1QDONlCnlAESN9aTqPJly
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-01_08,2025-08-01_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- spamscore=0 suspectscore=0 mlxlogscore=914 mlxscore=0 adultscore=0
- malwarescore=0 clxscore=1030 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506270000 definitions=main-2508020047
-Received-SPF: pass client-ip=57.103.86.242;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/6] hw/i386/amd_iommu: Cleanups and fixes
+To: Sairaj Kodilkar <sarunkod@amd.com>, qemu-devel@nongnu.org
+Cc: mst@redhat.com, marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
+ eduardo@habkost.net, richard.henderson@linaro.org,
+ alejandro.j.jimenez@oracle.com, vasant.hegde@amd.com, philmd@linaro.org,
+ Suravee.Suthikulpanit@amd.com, qemu-stable <qemu-stable@nongnu.org>
+References: <20250801060507.3382-1-sarunkod@amd.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20250801060507.3382-1-sarunkod@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,34 +104,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-And add arm64 files.
+On 01.08.2025 09:05, Sairaj Kodilkar wrote:
+> This series provides few cleanups and fixes for the amd iommu
+> 
+> Changes since v2:
+> - Used VMSTATE_UNUSED() to maintain migration compatibility when ats_enabled
+>    flag is removed [Phil].
+> - Simplified the amdvi_writew [Phil].
+> v2: https://lore.kernel.org/qemu-devel/2e8f2b72-8fb5-474f-9844-61f306efeb2b@amd.com/
+> 
+> Changes since v1:
+> - Dropped top two patches which depend on the Alejandro's changes and rebased
+>    remaining patches on top of v10.1.0-rc0 [Phil].
+> - Added a patch to fix amdvi_write*() [Ethon].
+> - Reset event log head and tail when guest writes to event log base register
+>    [Ethon].
+> - Considered "evtlog_intr" flag while generating event log interrupt [Ethon].
+> - Fixed comment [Ethon].
+> v1: https://lore.kernel.org/qemu-devel/20250716073145.915-1-sarunkod@amd.com/
+> 
+> Base commit: 9e601684dc24a521bb1d23215a63e5c6e79ea0bb (v10.1.0-rc0)
+> 
+> Sairaj Kodilkar (6):
+>    hw/i386/amd_iommu: Fix MMIO register write tracing
+>    hw/i386/amd_iommu: Remove unused and wrongly set ats_enabled field
+>    hw/i386/amd_iommu: Move IOAPIC memory region initialization to the end
+>    hw/i386/amd_iommu: Fix amdvi_write*()
+>    hw/i386/amd_iommu: Support MMIO writes to the status register
+>    hw/i386/amd_iommu: Fix event log generation
+> 
+>   hw/i386/amd_iommu.c | 102 ++++++++++++++++++++++++++++++++++----------
+>   hw/i386/amd_iommu.h |   2 +-
+>   2 files changed, 80 insertions(+), 24 deletions(-)
 
-Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
----
- MAINTAINERS | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Hi!
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 259b010f55..9397e55c4a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -539,11 +539,14 @@ F: accel/stubs/hvf-stub.c
- F: include/system/hvf.h
- F: include/system/hvf_int.h
- 
--WHPX CPUs
-+WHPX
- M: Sunil Muthuswamy <sunilmut@microsoft.com>
-+M: Mohamed Mediouni <mohamed@unpredictable.fr>
- S: Supported
- F: accel/whpx/
- F: target/i386/whpx/
-+F: target/arm/whpx_arm.h
-+F: target/arm/whpx/
- F: accel/stubs/whpx-stub.c
- F: include/system/whpx.h
- F: include/system/whpx-accel-ops.h
--- 
-2.39.5 (Apple Git-154)
+Is there anything there worth to pick up for qemu 10.0.x stable series?
+(the "Move IOAPIC memory init" does not apply to 10.0 already).
+
+Thanks,
+
+/mjt
 
 
