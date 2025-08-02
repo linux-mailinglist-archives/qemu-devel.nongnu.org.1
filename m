@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A114BB1910F
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C355B190F6
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 01:43:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiLjl-0005HD-TK; Sat, 02 Aug 2025 19:34:02 -0400
+	id 1uiLkR-0006pp-B8; Sat, 02 Aug 2025 19:34:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLhe-0008OW-8a
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:54 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ id 1uiLhi-0008R2-QN
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:55 -0400
+Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiLhc-000569-TJ
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:50 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-30174a93186so2672590fac.3
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:31:48 -0700 (PDT)
+ id 1uiLhh-00056f-20
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 19:31:54 -0400
+Received: by mail-oo1-xc36.google.com with SMTP id
+ 006d021491bc7-61585dfc8f8so1030194eaf.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 16:31:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754177507; x=1754782307; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754177512; x=1754782312; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NR3W5du9ZFi4qPy6YJwkknWURFd+s6CJ6eRMr5OXqWE=;
- b=NT9xT0zncpoYCgpt+cP0ZCPct1QsOXG0V3zbxmzV5L0zbmiooomVF3SaFrnawA7KDg
- 8pIGxWqNFuynYffQWogifF3QanXKmfVCwZ1DY55bDEZpHmoblIFK41+/p76N8S2+elen
- uvKJopGRnTxpqzuOaAfEVuC0CedJFgQZuRAJHIhPERZDhPy8bB6qaUkVHB8zQJD9s5Xj
- DPCGl2BB0R8ARd+g+lzWdY3YyLPW6nMyJJ+jy9PscnGjRXZWDu3URVYlTzfNZGaYTdeM
- DnkAkFfT4MLlQjDA40be4vZ4o51K2gVXcNbU2npmOljhR384GDdaiWc2ZwklsGb7uX80
- x6mw==
+ bh=zGaWh6qB/XNYeP5vG0YKYiWrjkJVNrqnpJ3x4KugETg=;
+ b=JL23AYsHSmpbzDwC6HBVTjOfyy6MP6m3D9GVtsBTYUUBPZrfGU/8VD7yD4MtXc14zB
+ emVQysWGrVQ87DQ2uaZS54YZ0gSQY96lBgeJ/WoKwMM3aPU7xVvDZl9uancIHIYKyq8Z
+ RZKS6vVAVs02QCX/2Po8dNVjbNuHOPv3e/OduU2jH99IBZHNk/XO+OpUbN+R/jrylj0c
+ cGqoL4XWui0+tGMuVv2vVZQZ/h0QQ8pZnK2UL2P7BuN5HWPTSlZNR8mV6Vlv7P7r4D3H
+ jaPvpO0Hk/vGeYG0LoDXS9OkDixrlKiNAOebaarAczg+pBlaExfc2ilaYtxzUA6th8cQ
+ xMnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754177507; x=1754782307;
+ d=1e100.net; s=20230601; t=1754177512; x=1754782312;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NR3W5du9ZFi4qPy6YJwkknWURFd+s6CJ6eRMr5OXqWE=;
- b=mbWqD8J4LBYOV3NstoLC/Bmu3T0xhArIML8blv95dmgK+YGohViiVORf4h8Xcx/1MZ
- p8hwWJcd+V2i5fmnQdtFTGgc+rCHZ/Q02ikwb9E+gQ6+FlLGqGCl9Flp9I3iXFS7BGg3
- qJpBjuxAuq7jb+6sx3Xu2ey365MZfi8Yde8y46uBwrSasCDjznnwIYKUNLeIARPA4hIi
- h49mXVg+PD7mgtV18juTMKriqtqFTZ//dRFwhzRAXf4tbkp3eJUU9uv1oGvywBQaXSKn
- 4fW/U/DlXl7CE+wIBDXmw8QMI3jByGnTCqafgLPR59CeL/V9iKCXEONqlPuUPOCyMamM
- 6Epw==
-X-Gm-Message-State: AOJu0YzMLwjfoDOUBuY+REaCTcyqa5l/h7mG/eQBPD4IGkqeNLKRhOhl
- JEQNcUm/uPoAMQCvNdF7TusYir4EoFZ9uP5QAO2sDPwa7rdBHaqI0oNSxjKja+SyX3jOqS6eIzI
- fglLRkVc=
-X-Gm-Gg: ASbGnctdTg7Thhs9TnB8MeLMNZKEuBoRLJtHklYqZXwblPsGn9DhYxtVOKFAsq3/lU/
- 0yjPSKqYcwGUQn/+73oQHKkrO/fq2U092KsiwlDxBBbKPyO7irRCPJT2z+E5H8qkgd2W4iSlopX
- /U9CI8FsypjtHIL6cf/Pfr7kLfrX5vpxtjLGrdAk/5e9St8WAr51fodYQ6P2BCA35cct4LGKVYU
- g/Dzta2sZsA8rJcQUh5MJ3OJmHIQbunFarZJwhLpWRZmeWxz5l8CztwQNnto9ZA58+a7LX3Di3J
- vDSWUOJwkski3QskTTHS7OvYHlZVQdNKQRdhUCoGpF6UY2CYdJiNvZi3oFYPZtnji4GBgzUQGHg
- NuiQhMNDIADicE5RYeQ2tuGj1A+feZhBzntDtimxrO01EFJh4NZDK
-X-Google-Smtp-Source: AGHT+IGJMnEvtsvIBqloejw81L8/1dMitVLEcq4M/I1eq0MXKlQ4VMhdYJBeYpOUnEQZvfKa8Of4dA==
-X-Received: by 2002:a05:6870:d32f:b0:307:bba1:d09f with SMTP id
- 586e51a60fabf-30b6768a30dmr2446653fac.15.1754177507685; 
- Sat, 02 Aug 2025 16:31:47 -0700 (PDT)
+ bh=zGaWh6qB/XNYeP5vG0YKYiWrjkJVNrqnpJ3x4KugETg=;
+ b=otJxYmKlNWqGIzqSraCy9KmUHQBiname2TFSx0kdOC2yv+7vY+GyDpJ2VRhEJMozWQ
+ zi/LtYsX78dX9BxwV/VkVf62HK83aj09S4E1qK1BjxPTf5Nz/3VX238xH0ue3nBPf6du
+ 0O5lslnStxqEbjH+UQnHPsiPVAgMrmkSB5Q9hs2xqnAxiyZg3CmrvpFkKVFHBQs03V/6
+ XsfJg9LqXU0+bOm4r4F3rEv+3IKbAAae2zAjbs4BJioa66Bp9ug//xlBSf01tQmg8Viy
+ +9+mQBez1NtP3ENyPVtvzJKSIOJ58SXzeJ8+B2Wt5q+EoMDbb0kGvjkJXMOqSxxtlzeI
+ tMDQ==
+X-Gm-Message-State: AOJu0YwIeHnuCNGBtMMAKuNG3K1Qu/6IczzgzJfHZEW+CPQy9D0OkMX5
+ QOiEFpmaKBWy05F93DE4RKob7xFauUm+Tk6O5w0b/3TIcw3aCsB8gAoIWPFbFMXhZ9vpdNIfX2a
+ sZNVWnFA=
+X-Gm-Gg: ASbGncuT+XQ5Fo0jcl5DjD+PpPIgU5Go3LAiw+eh25huj4SY0qTs47wqNquCFyoz3iz
+ lmU4QXyfAsqi9pnR0YE85G/WhGjagzH4hhGs+01u/1fr1KXsEQuscgfmTu1kOcd+VkV4Bik+L2E
+ Bv5jNr/ROCNfJQVdTOiw8X7/uaoaP6OCjPErsq7tc/FVBvTGepKGCf4sr6uB9fwtmaQDQPLtkej
+ EaLoAQOAyYHFcJr4QuqOsTTFNItLFmocAkxhtotArY4ScLegBZU/+RWXHba2w/sTPmDvImVftek
+ T/xHPA92OYedzSad1ZeI9Wm42TbySedSNh6mcZ0fiWROKtgQcGCU6GEMFocQM3d5gNVPoAAh7BD
+ CBCnTHgU/yKGcj/zye3/g3DJXdDQcDdMkiNfJMsfegQtMgOaRBtW1
+X-Google-Smtp-Source: AGHT+IEYragkG9sFyeueBHpelys0pg8+Y6YrfUjagcM1Me2m42UOdmWOFIzaoKnmJ7tpZtd4lURflw==
+X-Received: by 2002:a05:6871:2881:b0:301:1218:60a0 with SMTP id
+ 586e51a60fabf-30b679a5575mr2751857fac.34.1754177511972; 
+ Sat, 02 Aug 2025 16:31:51 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-30b8e3c9b32sm71031fac.24.2025.08.02.16.31.44
+ 586e51a60fabf-30b8e3c9b32sm71031fac.24.2025.08.02.16.31.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 16:31:47 -0700 (PDT)
+ Sat, 02 Aug 2025 16:31:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 22/85] target/arm: Expand CPUARMState.exception.syndrome to
- 64 bits
-Date: Sun,  3 Aug 2025 09:28:50 +1000
-Message-ID: <20250802232953.413294-23-richard.henderson@linaro.org>
+Subject: [PATCH v2 23/85] target/arm: Expand syndrome parameter to
+ raise_exception*
+Date: Sun,  3 Aug 2025 09:28:51 +1000
+Message-ID: <20250802232953.413294-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250802232953.413294-1-richard.henderson@linaro.org>
 References: <20250802232953.413294-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,53 +99,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will be used for storing the ISS2 portion of the
-ESR_ELx registers in aarch64 state.  Re-order the fsr
-member to eliminate two structure holes.
-
-Drop the comment about "if we implement EL2" since we
-have already done so.
+Prepare for raising exceptions with 64-bit syndromes.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h    | 7 ++-----
- target/arm/helper.c | 2 +-
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ target/arm/internals.h     | 6 +++---
+ target/arm/tcg-stubs.c     | 2 +-
+ target/arm/tcg/op_helper.c | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index fb87fcc3e6..4940bd6a45 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -644,13 +644,10 @@ typedef struct CPUArchState {
-      * entry process.
-      */
-     struct {
--        uint32_t syndrome; /* AArch64 format syndrome register */
--        uint32_t fsr; /* AArch32 format fault status register info */
-+        uint64_t syndrome; /* AArch64 format syndrome register */
-         uint64_t vaddress; /* virtual addr associated with exception, if any */
-+        uint32_t fsr; /* AArch32 format fault status register info */
-         uint32_t target_el; /* EL the exception should be targeted for */
--        /* If we implement EL2 we will also need to store information
--         * about the intermediate physical address for stage 2 faults.
--         */
-     } exception;
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index f0e888ff93..fc82dd65e8 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -306,14 +306,14 @@ FIELD(CNTHCTL, CNTPMASK, 19, 1)
+  * and never returns because we will longjump back up to the CPU main loop.
+  */
+ G_NORETURN void raise_exception(CPUARMState *env, uint32_t excp,
+-                                uint32_t syndrome, uint32_t target_el);
++                                uint64_t syndrome, uint32_t target_el);
  
-     /* Information associated with an SError */
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 168557b08f..9447d7ba59 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -9438,7 +9438,7 @@ void arm_cpu_do_interrupt(CPUState *cs)
-                   new_el);
-     if (qemu_loglevel_mask(CPU_LOG_INT)
-         && !excp_is_internal(cs->exception_index)) {
--        qemu_log_mask(CPU_LOG_INT, "...with ESR 0x%x/0x%" PRIx32 "\n",
-+        qemu_log_mask(CPU_LOG_INT, "...with ESR 0x%x/0x%" PRIx64 "\n",
-                       syn_get_ec(env->exception.syndrome),
-                       env->exception.syndrome);
-     }
+ /*
+  * Similarly, but also use unwinding to restore cpu state.
+  */
+ G_NORETURN void raise_exception_ra(CPUARMState *env, uint32_t excp,
+-                                      uint32_t syndrome, uint32_t target_el,
+-                                      uintptr_t ra);
++                                   uint64_t syndrome, uint32_t target_el,
++                                   uintptr_t ra);
+ 
+ /*
+  * For AArch64, map a given EL to an index in the banked_spsr array.
+diff --git a/target/arm/tcg-stubs.c b/target/arm/tcg-stubs.c
+index aac99b2672..aeeede8066 100644
+--- a/target/arm/tcg-stubs.c
++++ b/target/arm/tcg-stubs.c
+@@ -16,7 +16,7 @@ void write_v7m_exception(CPUARMState *env, uint32_t new_exc)
+     g_assert_not_reached();
+ }
+ 
+-void raise_exception_ra(CPUARMState *env, uint32_t excp, uint32_t syndrome,
++void raise_exception_ra(CPUARMState *env, uint32_t excp, uint64_t syndrome,
+                         uint32_t target_el, uintptr_t ra)
+ {
+     g_assert_not_reached();
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index 575e566280..46a3b911ec 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -46,7 +46,7 @@ int exception_target_el(CPUARMState *env)
+ }
+ 
+ void raise_exception(CPUARMState *env, uint32_t excp,
+-                     uint32_t syndrome, uint32_t target_el)
++                     uint64_t syndrome, uint32_t target_el)
+ {
+     CPUState *cs = env_cpu(env);
+ 
+@@ -70,7 +70,7 @@ void raise_exception(CPUARMState *env, uint32_t excp,
+     cpu_loop_exit(cs);
+ }
+ 
+-void raise_exception_ra(CPUARMState *env, uint32_t excp, uint32_t syndrome,
++void raise_exception_ra(CPUARMState *env, uint32_t excp, uint64_t syndrome,
+                         uint32_t target_el, uintptr_t ra)
+ {
+     CPUState *cs = env_cpu(env);
 -- 
 2.43.0
 
