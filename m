@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAF05B18AC5
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Aug 2025 07:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08327B18AC6
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Aug 2025 07:42:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ui4zn-0008JV-R4; Sat, 02 Aug 2025 01:41:28 -0400
+	id 1ui4zl-0008Cf-CA; Sat, 02 Aug 2025 01:41:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ui4zc-00086l-Uo
+ id 1ui4zc-00086k-V4
  for qemu-devel@nongnu.org; Sat, 02 Aug 2025 01:41:19 -0400
-Received: from p-east3-cluster6-host11-snip4-6.eps.apple.com ([57.103.85.237]
+Received: from p-east3-cluster1-host3-snip4-7.eps.apple.com ([57.103.87.30]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ui4zY-00062X-EL
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 01:41:13 -0400
+ id 1ui4zY-00062d-FA
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 01:41:15 -0400
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-east-2d-60-percent-0 (Postfix) with ESMTPS id
- 7B78D18008B2; Sat,  2 Aug 2025 05:41:06 +0000 (UTC)
+ 00AF818008A7; Sat,  2 Aug 2025 05:41:05 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=d/z0LdtJsZ0X4SZniRSWzKSzcqx6k2mthXNU/xLsNUA=;
- h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
- b=B3x9usH49jMh8XB6WiiE/YfY1Pll2leMmzclJg2c0jnXYqIuk4QrDW9Ol/xoeyS1yfhXlk9gY/oI7zPTsEgyK6qWCq/A6IJfyq+5nm8UjMOTUGTDwuDxAc3IGObYfoAQTWtSwYHOFbNa4NaNuFNsevFoviaOmuiDBEezn1ol84wGdFUv9GK96AiA6PzYWX2uUlKOz1twXwu43AXryrniijrqwvLxkOBX/zwzBGMzaiat2QeeQmhwHcnhB++jYzHmUI49YDF1JmrNQTX9UW/SlmG/xlIV7bVS1U8YwhwE0/CU9U5cYcHe/vHvSLvHYoiZuv5yUB7Cp//nYzYr6rV5pw==
+ s=sig1; bh=9iTF2if2/m0cyl+nDOn7dg4Hrcpub8X7jpX8N8be3Wk=;
+ h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type:x-icloud-hme;
+ b=ZsLN5KS/XR7shM/5VWQiPTBR8nZF/j9hWxsJz4b9BqHBgDNMzupvQaG6+Z27jAtdTW1gO8Qbk63NBxODN9fWE3wkX7vFYderyictef71yfI4su2ofgx1nPZ9WSQqi+2d6yPV611A2/JmqvayVyETWYLjLBdjNNuClnT7dZm8HWMPu+o+cbOiNPJppcye/Qhgs+rdDJoZ8j4L1PEozJ0p8t6JYGYBdbD5UGLkTzuO8mLgu4L8UyzXcg3aiBrrymo9g6C+jpWXQKC40mU7S9hnnTYFp0M7Am4enKyHjLI7igBKsF9YwzFTLeGTfLWDbW6jWihROPEr6DCw5tKBtCAuGQ==
 X-Client-IP: 46.189.47.18
 Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
  [17.57.155.37])
  by p00-icloudmta-asmtp-us-east-2d-60-percent-0 (Postfix) with ESMTPSA id
- 8ED7018008A2; Sat,  2 Aug 2025 05:41:00 +0000 (UTC)
+ CCA5A1800880; Sat,  2 Aug 2025 05:41:02 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -48,30 +48,31 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Mohamed Mediouni <mohamed@unpredictable.fr>,
  Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v2 01/14] hw/arm: virt: add GICv2m for the case when ITS is
- not available
-Date: Sat,  2 Aug 2025 07:40:42 +0200
-Message-Id: <20250802054055.74013-2-mohamed@unpredictable.fr>
+Subject: [PATCH v2 02/14] whpx: Move around files before introducing AArch64
+ support
+Date: Sat,  2 Aug 2025 07:40:43 +0200
+Message-Id: <20250802054055.74013-3-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250802054055.74013-1-mohamed@unpredictable.fr>
 References: <20250802054055.74013-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAyMDA0NyBTYWx0ZWRfX9dLjm5NPKKL2
- jd+PtYEAqnmb4JsM7s/gLROkRB2FZ3ZUdduLcR5KLa1LbpUK/ZvPrVVoYF+/ThwSViJZqZDMftR
- gTXrssZ//rGJXW9ABBcn0snbu3yAWOU3HlJZp5xcqNjr+1mhVzcSzetLd1Rx+7KsxjQnXa7/jcB
- 8QRM1fDO6+E7Eyrf3sfAtfDGvVMuWc/nWuF/VbuT9wS6TOZDk1X/ulSaQI0wIOfokp6fzhbypjt
- yioCZSGqTbRw6frNagMqcxHiRdbCG0cVNo2WEr/MV/0ZTnPzVp8F1DIW8R5F8K+aKSqmnZ8pE=
-X-Proofpoint-GUID: phnmYDUk4ePHPgAg00sTZ0AkaZtii9TH
-X-Proofpoint-ORIG-GUID: phnmYDUk4ePHPgAg00sTZ0AkaZtii9TH
+X-Proofpoint-GUID: _9RofRby3u42P0UhQyyefR-58KRoFRLg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAyMDA0NyBTYWx0ZWRfX+rKiQ2yxF33g
+ hMQykKRBvKqwrl9Kq90FmK+Yt4aYxMRvC6xV3qGbaxFi5PlD7w7r29RuaC1BuFhZGIjIO429ZTd
+ GCVDZmwDwfrEfPnD8b+RV74WcoOajDbVTKY6jGIbjTYnQe2PuXLDzqULpaGlYqZ+eaYWNQEqz7a
+ S6KdqcIEBkrFhPWDjM36ekEd2vYeKDm4nDdwGVQG5rDu+YTndADriTGhvhfbDkBTSJbeTzK6w8u
+ YEiv30rWb2kfuM9/20OKxHK78fj8M0ByZD2fXzT/bHV+8p8cSz+4z0h7pVsFfnpv6yPx8dWeI=
+X-Proofpoint-ORIG-GUID: _9RofRby3u42P0UhQyyefR-58KRoFRLg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-01_08,2025-08-01_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxlogscore=999 malwarescore=0 mlxscore=0 suspectscore=0 phishscore=0
- bulkscore=0 adultscore=0 clxscore=1030 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
+ bulkscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 spamscore=0
+ adultscore=0 phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.22.0-2506270000 definitions=main-2508020047
-Received-SPF: pass client-ip=57.103.85.237;
+Received-SPF: pass client-ip=57.103.87.30;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -79,7 +80,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,94 +96,238 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Hypervisor.framework for macOS and WHPX for Windows, the provided environment is a GICv3 without ITS.
-
-As such, support a GICv3 w/ GICv2m for that scenario.
+Switch to a design where we can share whpx code between x86 and AArch64 when it makes sense to do so.
 
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
----
- hw/arm/virt-acpi-build.c | 4 +++-
- hw/arm/virt.c            | 8 ++++++++
- include/hw/arm/virt.h    | 2 ++
- 3 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index b01fc4f8ef..969fa3f686 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -848,7 +848,9 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-             build_append_int_noprefix(table_data, memmap[VIRT_GIC_ITS].base, 8);
-             build_append_int_noprefix(table_data, 0, 4);    /* Reserved */
-         }
--    } else {
-+    }
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ MAINTAINERS                                   |   2 +
+ accel/meson.build                             |   1 +
+ accel/whpx/meson.build                        |   6 +
+ {target/i386 => accel}/whpx/whpx-accel-ops.c  |   4 +-
+ .../whpx => include/system}/whpx-accel-ops.h  |   0
+ target/i386/whpx/meson.build                  |   1 -
+ target/i386/whpx/whpx-all.c                   |   4 +-
+ target/i386/whpx/whpx-internal.h              | 119 ------------------
+ 8 files changed, 13 insertions(+), 124 deletions(-)
+ create mode 100644 accel/whpx/meson.build
+ rename {target/i386 => accel}/whpx/whpx-accel-ops.c (97%)
+ rename {target/i386/whpx => include/system}/whpx-accel-ops.h (100%)
+ delete mode 100644 target/i386/whpx/whpx-internal.h
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 28cea34271..238065e1c9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -542,9 +542,11 @@ F: include/system/hvf_int.h
+ WHPX CPUs
+ M: Sunil Muthuswamy <sunilmut@microsoft.com>
+ S: Supported
++F: accel/whpx/
+ F: target/i386/whpx/
+ F: accel/stubs/whpx-stub.c
+ F: include/system/whpx.h
++F: include/system/whpx-accel-ops.h
+ 
+ X86 Instruction Emulator
+ M: Cameron Esfahani <dirty@apple.com>
+diff --git a/accel/meson.build b/accel/meson.build
+index 25b0f100b5..de927a3b37 100644
+--- a/accel/meson.build
++++ b/accel/meson.build
+@@ -6,6 +6,7 @@ user_ss.add(files('accel-user.c'))
+ subdir('tcg')
+ if have_system
+   subdir('hvf')
++  subdir('whpx')
+   subdir('qtest')
+   subdir('kvm')
+   subdir('xen')
+diff --git a/accel/whpx/meson.build b/accel/whpx/meson.build
+new file mode 100644
+index 0000000000..7b3d6f1c1c
+--- /dev/null
++++ b/accel/whpx/meson.build
+@@ -0,0 +1,6 @@
++whpx_ss = ss.source_set()
++whpx_ss.add(files(
++  'whpx-accel-ops.c',
++))
 +
-+    if (!vms->its && !vms->no_gicv3_with_gicv2m) {
-         const uint16_t spi_base = vms->irqmap[VIRT_GIC_V2M] + ARM_SPI_BASE;
++specific_ss.add_all(when: 'CONFIG_WHPX', if_true: whpx_ss)
+diff --git a/target/i386/whpx/whpx-accel-ops.c b/accel/whpx/whpx-accel-ops.c
+similarity index 97%
+rename from target/i386/whpx/whpx-accel-ops.c
+rename to accel/whpx/whpx-accel-ops.c
+index da58805b1a..18488421bc 100644
+--- a/target/i386/whpx/whpx-accel-ops.c
++++ b/accel/whpx/whpx-accel-ops.c
+@@ -16,8 +16,8 @@
+ #include "qemu/guest-random.h"
  
-         /* 5.2.12.16 GIC MSI Frame Structure */
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index ef6be3660f..5951b331f3 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -953,6 +953,8 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+ #include "system/whpx.h"
+-#include "whpx-internal.h"
+-#include "whpx-accel-ops.h"
++#include "system/whpx-internal.h"
++#include "system/whpx-accel-ops.h"
  
-     if (vms->gic_version != VIRT_GIC_VERSION_2 && vms->its) {
-         create_its(vms);
-+    } else if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->no_gicv3_with_gicv2m) {
-+        create_v2m(vms);
-     } else if (vms->gic_version == VIRT_GIC_VERSION_2) {
-         create_v2m(vms);
-     }
-@@ -2402,6 +2404,8 @@ static void machvirt_init(MachineState *machine)
-     vms->ns_el2_virt_timer_irq = ns_el2_virt_timer_present() &&
-         !vmc->no_ns_el2_virt_timer_irq;
- 
-+    vms->no_gicv3_with_gicv2m = vmc->no_gicv3_with_gicv2m;
-+
-     fdt_add_timer_nodes(vms);
-     fdt_add_cpu_nodes(vms);
- 
-@@ -3410,6 +3414,7 @@ static void virt_instance_init(Object *obj)
-     vms->its = true;
-     /* Allow ITS emulation if the machine version supports it */
-     vms->tcg_its = !vmc->no_tcg_its;
-+    vms->no_gicv3_with_gicv2m = false;
- 
-     /* Default disallows iommu instantiation */
-     vms->iommu = VIRT_IOMMU_NONE;
-@@ -3462,8 +3467,11 @@ DEFINE_VIRT_MACHINE_AS_LATEST(10, 1)
- 
- static void virt_machine_10_0_options(MachineClass *mc)
+ static void *whpx_cpu_thread_fn(void *arg)
  {
-+    VirtMachineClass *vmc = VIRT_MACHINE_CLASS(OBJECT_CLASS(mc));
-+
-     virt_machine_10_1_options(mc);
-     compat_props_add(mc->compat_props, hw_compat_10_0, hw_compat_10_0_len);
-+    vmc->no_gicv3_with_gicv2m = true;
- }
- DEFINE_VIRT_MACHINE(10, 0)
+diff --git a/target/i386/whpx/whpx-accel-ops.h b/include/system/whpx-accel-ops.h
+similarity index 100%
+rename from target/i386/whpx/whpx-accel-ops.h
+rename to include/system/whpx-accel-ops.h
+diff --git a/target/i386/whpx/meson.build b/target/i386/whpx/meson.build
+index 9c54aaad39..c3aaaff9fd 100644
+--- a/target/i386/whpx/meson.build
++++ b/target/i386/whpx/meson.build
+@@ -1,5 +1,4 @@
+ i386_system_ss.add(when: 'CONFIG_WHPX', if_true: files(
+   'whpx-all.c',
+   'whpx-apic.c',
+-  'whpx-accel-ops.c',
+ ))
+diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
+index b72dcff3c8..5a431fc3c7 100644
+--- a/target/i386/whpx/whpx-all.c
++++ b/target/i386/whpx/whpx-all.c
+@@ -31,8 +31,8 @@
+ #include "accel/accel-cpu-target.h"
+ #include <winerror.h>
  
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 365a28b082..725ec18fd2 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -131,6 +131,7 @@ struct VirtMachineClass {
-     bool no_cpu_topology;
-     bool no_tcg_lpa2;
-     bool no_ns_el2_virt_timer_irq;
-+    bool no_gicv3_with_gicv2m;
-     bool no_nested_smmu;
- };
+-#include "whpx-internal.h"
+-#include "whpx-accel-ops.h"
++#include "system/whpx-internal.h"
++#include "system/whpx-accel-ops.h"
  
-@@ -178,6 +179,7 @@ struct VirtMachineState {
-     char *oem_id;
-     char *oem_table_id;
-     bool ns_el2_virt_timer_irq;
-+    bool no_gicv3_with_gicv2m;
-     CXLState cxl_devices_state;
- };
- 
+ #include <winhvplatform.h>
+ #include <winhvemulation.h>
+diff --git a/target/i386/whpx/whpx-internal.h b/target/i386/whpx/whpx-internal.h
+deleted file mode 100644
+index 6633e9c4ca..0000000000
+--- a/target/i386/whpx/whpx-internal.h
++++ /dev/null
+@@ -1,119 +0,0 @@
+-#ifndef TARGET_I386_WHPX_INTERNAL_H
+-#define TARGET_I386_WHPX_INTERNAL_H
+-
+-#include <windows.h>
+-#include <winhvplatform.h>
+-#include <winhvemulation.h>
+-
+-typedef enum WhpxBreakpointState {
+-    WHPX_BP_CLEARED = 0,
+-    WHPX_BP_SET_PENDING,
+-    WHPX_BP_SET,
+-    WHPX_BP_CLEAR_PENDING,
+-} WhpxBreakpointState;
+-
+-struct whpx_breakpoint {
+-    vaddr address;
+-    WhpxBreakpointState state;
+-    uint8_t original_instruction;
+-};
+-
+-struct whpx_breakpoint_collection {
+-    int allocated, used;
+-    struct whpx_breakpoint data[0];
+-};
+-
+-struct whpx_breakpoints {
+-    int original_address_count;
+-    vaddr *original_addresses;
+-
+-    struct whpx_breakpoint_collection *breakpoints;
+-};
+-
+-struct whpx_state {
+-    uint64_t mem_quota;
+-    WHV_PARTITION_HANDLE partition;
+-    uint64_t exception_exit_bitmap;
+-    int32_t running_cpus;
+-    struct whpx_breakpoints breakpoints;
+-    bool step_pending;
+-
+-    bool kernel_irqchip_allowed;
+-    bool kernel_irqchip_required;
+-    bool apic_in_platform;
+-};
+-
+-extern struct whpx_state whpx_global;
+-void whpx_apic_get(DeviceState *s);
+-
+-#define WHV_E_UNKNOWN_CAPABILITY 0x80370300L
+-
+-/* This should eventually come from the Windows SDK */
+-#define WHV_E_UNKNOWN_PROPERTY 0x80370302
+-
+-#define LIST_WINHVPLATFORM_FUNCTIONS(X) \
+-  X(HRESULT, WHvGetCapability, (WHV_CAPABILITY_CODE CapabilityCode, VOID* CapabilityBuffer, UINT32 CapabilityBufferSizeInBytes, UINT32* WrittenSizeInBytes)) \
+-  X(HRESULT, WHvCreatePartition, (WHV_PARTITION_HANDLE* Partition)) \
+-  X(HRESULT, WHvSetupPartition, (WHV_PARTITION_HANDLE Partition)) \
+-  X(HRESULT, WHvDeletePartition, (WHV_PARTITION_HANDLE Partition)) \
+-  X(HRESULT, WHvGetPartitionProperty, (WHV_PARTITION_HANDLE Partition, WHV_PARTITION_PROPERTY_CODE PropertyCode, VOID* PropertyBuffer, UINT32 PropertyBufferSizeInBytes, UINT32* WrittenSizeInBytes)) \
+-  X(HRESULT, WHvSetPartitionProperty, (WHV_PARTITION_HANDLE Partition, WHV_PARTITION_PROPERTY_CODE PropertyCode, const VOID* PropertyBuffer, UINT32 PropertyBufferSizeInBytes)) \
+-  X(HRESULT, WHvMapGpaRange, (WHV_PARTITION_HANDLE Partition, VOID* SourceAddress, WHV_GUEST_PHYSICAL_ADDRESS GuestAddress, UINT64 SizeInBytes, WHV_MAP_GPA_RANGE_FLAGS Flags)) \
+-  X(HRESULT, WHvUnmapGpaRange, (WHV_PARTITION_HANDLE Partition, WHV_GUEST_PHYSICAL_ADDRESS GuestAddress, UINT64 SizeInBytes)) \
+-  X(HRESULT, WHvTranslateGva, (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, WHV_GUEST_VIRTUAL_ADDRESS Gva, WHV_TRANSLATE_GVA_FLAGS TranslateFlags, WHV_TRANSLATE_GVA_RESULT* TranslationResult, WHV_GUEST_PHYSICAL_ADDRESS* Gpa)) \
+-  X(HRESULT, WHvCreateVirtualProcessor, (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, UINT32 Flags)) \
+-  X(HRESULT, WHvDeleteVirtualProcessor, (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex)) \
+-  X(HRESULT, WHvRunVirtualProcessor, (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, VOID* ExitContext, UINT32 ExitContextSizeInBytes)) \
+-  X(HRESULT, WHvCancelRunVirtualProcessor, (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, UINT32 Flags)) \
+-  X(HRESULT, WHvGetVirtualProcessorRegisters, (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, const WHV_REGISTER_NAME* RegisterNames, UINT32 RegisterCount, WHV_REGISTER_VALUE* RegisterValues)) \
+-  X(HRESULT, WHvSetVirtualProcessorRegisters, (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, const WHV_REGISTER_NAME* RegisterNames, UINT32 RegisterCount, const WHV_REGISTER_VALUE* RegisterValues)) \
+-
+-/*
+- * These are supplemental functions that may not be present
+- * on all versions and are not critical for basic functionality.
+- */
+-#define LIST_WINHVPLATFORM_FUNCTIONS_SUPPLEMENTAL(X) \
+-  X(HRESULT, WHvSuspendPartitionTime, (WHV_PARTITION_HANDLE Partition)) \
+-  X(HRESULT, WHvRequestInterrupt, (WHV_PARTITION_HANDLE Partition, \
+-        WHV_INTERRUPT_CONTROL* Interrupt, UINT32 InterruptControlSize)) \
+-  X(HRESULT, WHvGetVirtualProcessorInterruptControllerState2, \
+-        (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, PVOID State, \
+-         UINT32 StateSize, UINT32* WrittenSize)) \
+-  X(HRESULT, WHvSetVirtualProcessorInterruptControllerState2, \
+-        (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, PVOID State, \
+-         UINT32 StateSize)) \
+-
+-#define LIST_WINHVEMULATION_FUNCTIONS(X) \
+-  X(HRESULT, WHvEmulatorCreateEmulator, (const WHV_EMULATOR_CALLBACKS* Callbacks, WHV_EMULATOR_HANDLE* Emulator)) \
+-  X(HRESULT, WHvEmulatorDestroyEmulator, (WHV_EMULATOR_HANDLE Emulator)) \
+-  X(HRESULT, WHvEmulatorTryIoEmulation, (WHV_EMULATOR_HANDLE Emulator, VOID* Context, const WHV_VP_EXIT_CONTEXT* VpContext, const WHV_X64_IO_PORT_ACCESS_CONTEXT* IoInstructionContext, WHV_EMULATOR_STATUS* EmulatorReturnStatus)) \
+-  X(HRESULT, WHvEmulatorTryMmioEmulation, (WHV_EMULATOR_HANDLE Emulator, VOID* Context, const WHV_VP_EXIT_CONTEXT* VpContext, const WHV_MEMORY_ACCESS_CONTEXT* MmioInstructionContext, WHV_EMULATOR_STATUS* EmulatorReturnStatus)) \
+-
+-#define WHP_DEFINE_TYPE(return_type, function_name, signature) \
+-    typedef return_type (WINAPI *function_name ## _t) signature;
+-
+-#define WHP_DECLARE_MEMBER(return_type, function_name, signature) \
+-    function_name ## _t function_name;
+-
+-/* Define function typedef */
+-LIST_WINHVPLATFORM_FUNCTIONS(WHP_DEFINE_TYPE)
+-LIST_WINHVEMULATION_FUNCTIONS(WHP_DEFINE_TYPE)
+-LIST_WINHVPLATFORM_FUNCTIONS_SUPPLEMENTAL(WHP_DEFINE_TYPE)
+-
+-struct WHPDispatch {
+-    LIST_WINHVPLATFORM_FUNCTIONS(WHP_DECLARE_MEMBER)
+-    LIST_WINHVEMULATION_FUNCTIONS(WHP_DECLARE_MEMBER)
+-    LIST_WINHVPLATFORM_FUNCTIONS_SUPPLEMENTAL(WHP_DECLARE_MEMBER)
+-};
+-
+-extern struct WHPDispatch whp_dispatch;
+-
+-bool init_whp_dispatch(void);
+-
+-typedef enum WHPFunctionList {
+-    WINHV_PLATFORM_FNS_DEFAULT,
+-    WINHV_EMULATION_FNS_DEFAULT,
+-    WINHV_PLATFORM_FNS_SUPPLEMENTAL
+-} WHPFunctionList;
+-
+-#endif /* TARGET_I386_WHPX_INTERNAL_H */
 -- 
 2.39.5 (Apple Git-154)
 
