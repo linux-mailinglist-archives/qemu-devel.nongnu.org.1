@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6C1B1917E
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 03:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BFAB19181
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 03:44:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiNis-0007Sl-UW; Sat, 02 Aug 2025 21:41:15 -0400
+	id 1uiNiu-0007U4-K1; Sat, 02 Aug 2025 21:41:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiNim-0007MP-Ag
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 21:41:08 -0400
-Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
+ id 1uiNiq-0007Qr-RG
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 21:41:13 -0400
+Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiNik-0004g6-Sf
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 21:41:08 -0400
-Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-71b5381f21aso26909357b3.1
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 18:41:06 -0700 (PDT)
+ id 1uiNip-0004gm-C7
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 21:41:12 -0400
+Received: by mail-yw1-x1134.google.com with SMTP id
+ 00721157ae682-71b691a40a8so21544687b3.2
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 18:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754185266; x=1754790066; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754185270; x=1754790070; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bVijz1T025lZJ/0hSUgdbY6zZhdSlCvkQ88R5dahVgQ=;
- b=iN4zf7bkrJW/UTac4RH0Mb6v2sk4g4YEo+ttCfP+kX2sGl7Pt42Zypiiofjx0Cvgla
- ZfPCcLKjJId7DWHjqK0NPaeCt21UEmV1KFAEqCTYWf0T+gDYz3vu+kE4Id+lx0lGHrJO
- kHyji1lzaYfqxChHgf/vKSeewi5MdbvKocNkUcoU8W/4Z1XMbWNN+SqiWywgskhLBmuz
- B2En9yRWHogMii0Ry/e19rmzqrnLwsheHotDnfT1vzWp6UEvlgylpBSwFv029mdUY6Ad
- BSSkWdgHB8aJTaxwj7B4ouPywYzPrAfjaxOLQYvFr8NOxccOnl3xoSkzk42P41FE888A
- WnRA==
+ bh=tUId5F6z2x4/S6lLBlgo51rNHngTmeRrnS/Doi1yk0A=;
+ b=sdnJQf6CZWwbbjELZeotEPvL4YA0/uzbjAo+Rdy6o9pUKHTGL3aM9CehfGSPqWiD21
+ dpCQKhofeEIGXbdiFmJzYnv+HVi63p35bnELB00tF5OB3u5eLN7E7oPtzCRpxg6ovM62
+ PyKyohAgPWlj6oJzd3vadvaMgg0Era1BVDmzusT6HOD716kQ3fZ/QkwMdf+i7+yjrATc
+ Fe3cDNXeyr5rvIfcsXTmPjvfqLegzEl3Lq1zk+1r0PP0d6xASUeQAFdZBfIeMKI2mVsB
+ jVpRtg718XV/Zs7afxndAzzBJ39w5uga5BBDbUkLXiQnedvBOKXubnPkidV+w2zIZu9m
+ FSZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754185266; x=1754790066;
+ d=1e100.net; s=20230601; t=1754185270; x=1754790070;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bVijz1T025lZJ/0hSUgdbY6zZhdSlCvkQ88R5dahVgQ=;
- b=GqF6zARMoQQOahwz1fQieFCKudfERvR8qYVIahZMhRpMZ5F/WMVyFiEp9FVOEUqqcL
- fHwfS8WG7XRjMri+eC7wAJFhjsQQTRoPt6y53nMb2fFWMUoRPdBVI0Qb5L+8Vegn7QI2
- 9kFgAeTG4mJ2v9jop0k0IgJxiru4ltfgfu/2M92KPeRElpqABv2IsphZE7HJ3c4SWFhi
- 9P0RU5y3lIPBlul3u1nNCtYGPFS3ZcjYo5DRtZXKLNnhGCb/R5DK7EQSx4diNdP526gm
- XU3WA+HtZmJyJxvWT0cAkeMZMSz1nJ/VEdPt86Ydvzt1kBRx4OMMRXTeYnzfTxyi2A8K
- 1EWQ==
-X-Gm-Message-State: AOJu0YzFbI3sxXApjG676SqMdeLQu3NrMcgQ6Yel8p997IMKqiTEGSB1
- ONiUkGMRNrYU4Bu7tsUtmrbAJQE67jPOHOFHVoMzgbcQEeKBa7oPNRNaW3j1rCO3bRbcCXiGlzP
- wsVqntp0=
-X-Gm-Gg: ASbGnct5c0eLef0pXI4GgqXmc/788gJVbFdotnGodT41AHnnt8obmP3JeEMj6ADaRzZ
- UltsuwBBe2apGfbB70aT14lIdJrOwlTurXi33D+eJLp96D4+Sp54Tun5o6u4LCJM/knpHjNaak+
- sCI5wpEmQH/pMD5FNY/lsUTdG4BS2m0G4FJ4q11cQliECSCeH3c7CqQ5YtKUIlMd2Ex16TWfO4r
- SQMPlW9PPGw+j6jYR5zREN/RSbIgeWHlQzHQJO0OBAzSv6+FS7sEEloOu6CrpaO5GLrRkcdTIqz
- K07T2/FMwVrzRn0AyUchG2lRgclM0fI2r9Atyi1/DNAEsOQn2ZMeBrTc1YR/Rx0kr3Wdf9xR8Nd
- baW6GMje4ZNxGOyoECU2SMofkQQZw3Hht+FuBiqyQtRLR3RpEgagfA1snFarw1Sg=
-X-Google-Smtp-Source: AGHT+IHYOxrli1+B327BispI/154hb0g20GLFZl4GQAb2zXK0zlHyZMfErHuA7xH34NfC39v+ErcLA==
-X-Received: by 2002:a05:690c:d8c:b0:71a:27d2:2bdd with SMTP id
- 00721157ae682-71b7f62d7famr69968637b3.13.1754185265918; 
- Sat, 02 Aug 2025 18:41:05 -0700 (PDT)
+ bh=tUId5F6z2x4/S6lLBlgo51rNHngTmeRrnS/Doi1yk0A=;
+ b=nXaWY8ATgWgePIhQB6j9HxWWxWI5anZ8vTCLnXmBXW/bOSTSAIkfP+Sph8XuJjhJiH
+ KRUH6kQZqD0GuVDkTVqh3Ecft0mfCLdQX+6xteWZeJldWCOU5ilTIvk49kHDr5NPKFBu
+ ru20r5lVp9mVu0Qyn60GReraOxZb7A8124KfzH0UNmccy6M/rhmxQ4Ec95aQ9IIy8vGm
+ lLv43VJm0rzMSC+xk5dyz3vCpbSlBxq4hjk2+9izPpftYewZ5cjodCa/RvbNPUqdkU8y
+ Ql2huSVzM8vZU9LBNWj7dabpHs2TtJbvWcOmdBH8k6fsodFWH0dfRa0Er5JZ4E7EBVeN
+ gpTQ==
+X-Gm-Message-State: AOJu0YxNMsEHlHELX2dR4tMqjVrLxchZ/1UcWNhPLw4ajJh940Ry6kEl
+ E97sRGX3leW8M1/RKZUOfOZ2VNDWIRHhpD2Z/u6iP5PTCgcsgiO1gYD92E5+Jj7Pu4fi7ugg+XB
+ diAZny5E=
+X-Gm-Gg: ASbGncteZojhpPhnE+tyAG3jqdjsuiNb6jY3PolXxyoDfFgPNupj5UukHPAMs1Odgbd
+ S+edUuBBu+ckV+9tcmKqiV53dEqefrT12WcsIxjQLr+23Ay1YUsuqO8ZCx4kF8G1RIlMGT1bx48
+ vOzyLz+CIyxbtj/Kt1umcYjhAJVc2SraAnKjhTM+WGQ+y3raDSPa77xHB3pqMfyCeY6vqnRdukz
+ +qdD45oYCHk0w1lc5Z2lex0wspvfvc3C903litsXoFJyboqzDHiTqa4zeR9k7Yyh7qkz6vQLTkJ
+ /EhZblEWR1M25fhdRphkCmNaLunoYyK2ZAb+Js/vozNHD+Z4QkSSgsW2Nx1ZkUNEYuuOA/ASVGI
+ J1U838vLxs7A+R89UErmTKN9C6+akCorsqUcp8nSk3Le5k/oidUPKOP0/SNUK+Og=
+X-Google-Smtp-Source: AGHT+IHc5sazqexzGqAAVCEhhqq1068iphfmrDRigV+yvwhxVwmBYnu5Lbn6yAHDG6dEwpoMOuzkBw==
+X-Received: by 2002:a05:690c:3382:b0:719:edff:65a3 with SMTP id
+ 00721157ae682-71b7ef6d3efmr63890327b3.29.1754185270289; 
+ Sat, 02 Aug 2025 18:41:10 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 00721157ae682-71b5a6031a1sm18753227b3.86.2025.08.02.18.41.02
+ 00721157ae682-71b5a6031a1sm18753227b3.86.2025.08.02.18.41.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 18:41:05 -0700 (PDT)
+ Sat, 02 Aug 2025 18:41:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 09/11] target/arm: Implement CB (immediate)
-Date: Sun,  3 Aug 2025 11:40:17 +1000
-Message-ID: <20250803014019.416797-10-richard.henderson@linaro.org>
+Subject: [PATCH 10/11] linux-user: Change exported get_elf_hwcap to abi_ulong
+Date: Sun,  3 Aug 2025 11:40:18 +1000
+Message-ID: <20250803014019.416797-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250803014019.416797-1-richard.henderson@linaro.org>
 References: <20250803014019.416797-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
- envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x1134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,77 +97,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+AArch64 is about to add the first 64-bit hwcap bit, so we
+have to expand the return type.  Since the only user
+assigns this to a abi_ulong, match that type.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 41 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/a64.decode      |  2 ++
- 2 files changed, 43 insertions(+)
+ linux-user/loader.h  |  2 +-
+ linux-user/elfload.c | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index f3970ac599..c47d4d0a0b 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1766,6 +1766,47 @@ static bool trans_CBH_cond(DisasContext *s, arg_CBH_cond *a)
-     return do_cb_cond(s, a->cc, a->imm, 16, a->rt, a->rm);
- }
+diff --git a/linux-user/loader.h b/linux-user/loader.h
+index e102e6f410..e1badd4393 100644
+--- a/linux-user/loader.h
++++ b/linux-user/loader.h
+@@ -99,7 +99,7 @@ abi_long memcpy_to_target(abi_ulong dest, const void *src,
+ extern unsigned long guest_stack_size;
  
-+static bool trans_CB_cond_imm(DisasContext *s, arg_CB_cond_imm *a)
-+{
-+    static const TCGCond cb_cond[8] = {
-+        [0] = TCG_COND_GT,
-+        [1] = TCG_COND_LT,
-+        [2] = TCG_COND_GTU,
-+        [3] = TCG_COND_LTU,
-+        [4] = TCG_COND_NEVER,  /* reserved */
-+        [5] = TCG_COND_NEVER,  /* reserved */
-+        [6] = TCG_COND_EQ,
-+        [7] = TCG_COND_NE,
-+    };
-+    TCGCond cond = cb_cond[a->cc];
-+    TCGv_i64 t;
-+
-+    if (!dc_isar_feature(aa64_cmpbr, s) || cond == TCG_COND_NEVER) {
-+        return false;
-+    }
-+
-+    t = cpu_reg(s, a->rt);
-+    if (!a->sf) {
-+        TCGv_i64 tt = tcg_temp_new_i64();
-+
-+        if (is_signed_cond(cond)) {
-+            tcg_gen_ext32s_i64(tt, t);
-+        } else {
-+            tcg_gen_ext32u_i64(tt, t);
-+        }
-+        t = tt;
-+    }
-+
-+    reset_btype(s);
-+    DisasLabel match = gen_disas_label(s);
-+
-+    tcg_gen_brcondi_i64(cond, t, a->imm6, match.label);
-+    gen_goto_tb(s, 0, 4);
-+    set_disas_label(s, match);
-+    gen_goto_tb(s, 1, a->imm9);
-+    return true;
-+}
-+
- static void set_btype_for_br(DisasContext *s, int rn)
+ #if defined(TARGET_S390X) || defined(TARGET_AARCH64) || defined(TARGET_ARM)
+-uint32_t get_elf_hwcap(void);
++abi_ulong get_elf_hwcap(void);
+ const char *elf_hwcap_str(uint32_t bit);
+ #endif
+ #if defined(TARGET_AARCH64) || defined(TARGET_ARM)
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index baa618d6c2..4ab6bcd50d 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -511,10 +511,10 @@ static bool init_guest_commpage(void)
+ #define ELF_HWCAP get_elf_hwcap()
+ #define ELF_HWCAP2 get_elf_hwcap2()
+ 
+-uint32_t get_elf_hwcap(void)
++abi_ulong get_elf_hwcap(void)
  {
-     if (dc_isar_feature(aa64_bti, s)) {
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index fa94631123..02e0aa1fe4 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -213,6 +213,8 @@ CB_cond         sf:1 1110100 cc:3 rm:5 00 ......... rt:5    imm=%imm9
- CBB_cond        0    1110100 cc:3 rm:5 10 ......... rt:5    imm=%imm9
- CBH_cond        0    1110100 cc:3 rm:5 11 ......... rt:5    imm=%imm9
+     ARMCPU *cpu = ARM_CPU(thread_cpu);
+-    uint32_t hwcaps = 0;
++    abi_ulong hwcaps = 0;
  
-+CB_cond_imm     sf:1 1110101 cc:3 imm6:6 0 ......... rt:5   %imm9
-+
- BR              1101011 0000 11111 000000 rn:5 00000 &r
- BLR             1101011 0001 11111 000000 rn:5 00000 &r
- RET             1101011 0010 11111 000000 rn:5 00000 &r
+     hwcaps |= ARM_HWCAP_ARM_SWP;
+     hwcaps |= ARM_HWCAP_ARM_HALF;
+@@ -841,10 +841,10 @@ enum {
+ #define GET_FEATURE_ID(feat, hwcap) \
+     do { if (cpu_isar_feature(feat, cpu)) { hwcaps |= hwcap; } } while (0)
+ 
+-uint32_t get_elf_hwcap(void)
++abi_ulong get_elf_hwcap(void)
+ {
+     ARMCPU *cpu = ARM_CPU(thread_cpu);
+-    uint32_t hwcaps = 0;
++    abi_ulong hwcaps = 0;
+ 
+     hwcaps |= ARM_HWCAP_A64_FP;
+     hwcaps |= ARM_HWCAP_A64_ASIMD;
+@@ -1825,7 +1825,7 @@ static inline void init_thread(struct target_pt_regs *regs,
+ #define GET_FEATURE(_feat, _hwcap) \
+     do { if (s390_has_feat(_feat)) { hwcap |= _hwcap; } } while (0)
+ 
+-uint32_t get_elf_hwcap(void)
++abi_ulong get_elf_hwcap(void)
+ {
+     /*
+      * Let's assume we always have esan3 and zarch.
 -- 
 2.43.0
 
