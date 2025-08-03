@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE33AB19155
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 03:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D94B19157
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 03:01:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiN51-0004bJ-Bu; Sat, 02 Aug 2025 21:00:03 -0400
+	id 1uiN67-0005rL-1B; Sat, 02 Aug 2025 21:01:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiN33-0002tR-4H
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 20:58:01 -0400
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ id 1uiN60-0005kS-2B
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 21:01:04 -0400
+Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiN31-0007jP-Fa
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 20:58:00 -0400
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-301fb587dfeso1062725fac.3
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 17:57:58 -0700 (PDT)
+ id 1uiN5x-00082C-8J
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 21:01:03 -0400
+Received: by mail-ot1-x32d.google.com with SMTP id
+ 46e09a7af769-741ad8d0c15so216621a34.1
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 18:01:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754182677; x=1754787477; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754182859; x=1754787659; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=cKEK/kE04Ik0XwVvN6TXPO+uWgbMVnMKI4k5LH4SCPw=;
- b=epHVBwarqMz/Zyo7JsF0gzhNbOrWvyZYQeWuA0W3LPuSSsp7NR0HE4V4KsNZtDShz4
- cs6m6ZoU73ZnfYbnwpOKa/YncLgRzmmrY/+onqjXHbRSX9lXPdzndhyq9vT2JQjN+IjH
- 6re+HaZYzu57IaXP1C620KPdSpkFx2H572pp5IlWZNXDR0sjrI1BJpts8+QaXxdvyfq9
- 2bZtazh3Ce3O06ha+2XO6SzH2CA9N2ltFhJwcKwVCmk/qEGxFrbqLziKybF+uXGIba3P
- gqNi2t9bPKVCf5cTVF0R2x8AVL05dXgkDRbmRR88zVIu0jXmXCWJv6eengBfVlsgkptX
- 7NLg==
+ bh=SQ5GLEVb3TgfrxH1moI6F4NRxqoWMHrn2u0F7wxROh0=;
+ b=Su4QJV3BM7qJfpGT4Wm+N6SH5q2f650kdCH6ouYtnW1SjgyhYEh6mNbBCPnUS/nzWh
+ siaVH7mvGb6+XtMEdrVRadOeisIndJqM+zuWfLXaXBSac7zDpGwH60xO7cuXpJwcKRtb
+ wyUkIm1m+TYsVagRTZtjcZpehA+CxsZGYQKwm+VPxjGfnTa7vWHHirHtVPyIBmkXZj4w
+ BdLBzapq2DDqmFqHMCw3i/2tsDugrIXWzG2hZXtGj+jUD+ZjF4sDTUgvKp+Sf46NLM9U
+ B+kYvTxSoPmKcqBTNw6mBBlYYi8dS+KvkzZLCUUzlkcaU268ltZ2qKv94UEIZJmEeDeq
+ OWJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754182677; x=1754787477;
+ d=1e100.net; s=20230601; t=1754182859; x=1754787659;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cKEK/kE04Ik0XwVvN6TXPO+uWgbMVnMKI4k5LH4SCPw=;
- b=opVG7Wc2LC2p+HG+pprQ8XU0d1a9fdVuq7OuWBmGzR8QqYjuMtKRgEE/Lay7586JAZ
- VfOO1kWw69kjTuQ3Rckcf5INuNOVcnREqREvwzt8dONXDR3AWNLHm13/gnr911Le3ZNi
- JYQYh7KtTnN0xnA2+r78Nak82j4aPw2XRL0pZ91AlEBFK8XgHb2zsRuB1zCvcWcTiSUU
- 9j4vpASCCp+1fvvGsBTZtDf10EFh431/VFWTN+3vXibgkBarfLFpr1yrQX5SC4oeBawA
- KXuI2OJM/s+ayohs3X1JBgpN7qH43KF2NGnhponDY5w1jFb8RIsrMBNl6JNARCjrDWLk
- yEhQ==
+ bh=SQ5GLEVb3TgfrxH1moI6F4NRxqoWMHrn2u0F7wxROh0=;
+ b=vjEnbSXikziyqQmr97c8SPyi4bEMUdEDNpJhkPBTv2OenlsWSQA1FAFaK1p2feFi4d
+ VO3ZrQ1cSrKjXnvL8kiqsYjRuqvopddx0EQtPNh5sIDb8RchVpfyXGGCZ4rAPA36HI5i
+ mqcxgXN/JcxROr7dIa0uPM2hG3m9XIzYpjpJdSU/uYNF7SnuWp2flhckgpxeDieZzAab
+ kPUGf/DYEXAPapcBrLjBB6HTq4dq6l4pKo7KksE4dZ1QwWW6j7wT7T/dupIRknp0TeDR
+ yWBYB/+uH55RsytICzRmzSXyrSN4Dj/MMYOFvDbWuYx2/Pn9HPlQ0nHohTaAqA44s55d
+ Llug==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXbVtG68+6NIKtBcETfpRaUcL+wfWJLOCWNZvaXJBmCk4P8xBkirxwyUkgE1+6YP3Mgb5x2MRVpx4cI@nongnu.org
-X-Gm-Message-State: AOJu0YzE4kFlYqKTQIzAhExGfDcviZJfbk1t+HvyCq3MqyMDFQ2s3lcs
- hvlRuYDQYxijnH0umy65pToLZ/DsUh181giv4ZCImpXFrUMsHOSjYk+XJ0uODInUauInFsz/h3y
- 9qgG2jCA=
-X-Gm-Gg: ASbGncvfLaILjN2HAorGhku+3xDfQd7W75Zub1Re6xygnMuvL+unXkhmQHAukQ3n8nh
- yy1oIOqTbYRWqS7xoVXf/87FEhKdFe4PZvaIFyPk4JsX0lihDgUVD7DtERpa7Le1yWqBDEYwzIV
- 0R9oFumUvsy51BhiTLl7BSKhO075WMpYrNtJQqKd5YQ4eD5b6UbLETQsyg6+u/gbo4JG99YyPf9
- +eDMo8uhCgh72VK/M2n+OBCM41zTbswynznDbat0r8jvja5YMoWjBieOr1UI1v3SN0RrTWVWGNM
- NSmSHYZGb1QjPoc4y+C/Y9CEqy9+2VZfwJh+XK4jSWFTgNXhHdkRdMno5QhEvDaka4aFGzKZ+Vq
- c1isE0Caj1GiJPvUAD8wO9CwXJnQgym1HvQrZxuFVsQKb31Xg5U8V70Fflsli4FZj
-X-Google-Smtp-Source: AGHT+IGbflpv2/DBeapCKeZWk/NC73M0axzUzWZT1hl/12kVGBxxtFksedXRtJxLvMN97YQSjj+TSw==
-X-Received: by 2002:a05:6870:c08f:b0:306:e3a8:a97b with SMTP id
- 586e51a60fabf-30b678de3dfmr2523531fac.21.1754182677621; 
- Sat, 02 Aug 2025 17:57:57 -0700 (PDT)
+ AJvYcCXO1ukwUM+ZOd0yTUZnZIjMw/Vb+IiGvAJtPTPzHGcdm56/BgeXiwPeBOw+5JcQieWEPo8GbQpdXW49@nongnu.org
+X-Gm-Message-State: AOJu0YxCff+q+d2ULLr8rolR8o2Q3scDjrirK7pRkFbpdiL1jHEvJ/Cp
+ 4wDVDdHYN8wXLGvLflI43kxW7hJHVAqyfuvitWcfo/+yrGdsTW3qkkdYhj8fahEG29w=
+X-Gm-Gg: ASbGnctXUW9uzI7CiS6HFExGuPhFMSkTlOsXEUYl638doxnQj6F9tvrg47T04FcTJXo
+ LRU6LLWqySPKtEQB43PPGP7frXFF9NekeScBvw8XcH2BKkynsOniI+QmNkzaOLp/MSWt6RhORTi
+ l4pdtpdkn8f9POn1LITOLwNIKWX8Xgzcm3YVHx1K6JeEjmN1MyEf9Do+Aw7x06caEMoOJVaevp8
+ zTvYj2jBu53JXojP2mEtktM7gnRbYw8xB2we+ORtyfLvU3B2i1pa/7Q7sVk5Z7e02GefNPvs1pn
+ 0ZSPX11GZvRWyjYFbHGgc+UPoZHI8D3gyRh7zxRMzJ4HbMcaaBpTUC+PKWZMG21Cf1NRR5TaMpS
+ UIaxL522mJaDWiYDkos7rbo4oeu+Z2ZngdeV4hdZtZ3z1x7ytQcaIw55JsneqOPN1
+X-Google-Smtp-Source: AGHT+IEkZtR0FVqIeuW0Qe64iVPXc0oX04axWYZiql329KxZJeQPYqaxKHEp0UHKI9YNXlbZZ4hTAw==
+X-Received: by 2002:a05:6830:7188:b0:73e:643f:5b29 with SMTP id
+ 46e09a7af769-7419d0bab27mr2611174a34.3.1754182859351; 
+ Sat, 02 Aug 2025 18:00:59 -0700 (PDT)
 Received: from [10.153.194.227] ([172.58.111.133])
  by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-307a717f0c9sm1803373fac.13.2025.08.02.17.57.55
+ 46e09a7af769-74186dace17sm1511622a34.38.2025.08.02.18.00.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 02 Aug 2025 17:57:57 -0700 (PDT)
-Message-ID: <ca04f8f6-2735-464b-ad65-59d7487ec788@linaro.org>
-Date: Sun, 3 Aug 2025 10:57:51 +1000
+ Sat, 02 Aug 2025 18:00:59 -0700 (PDT)
+Message-ID: <db6c8b4f-027a-460d-902a-33536b1123cc@linaro.org>
+Date: Sun, 3 Aug 2025 11:00:52 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/14] hw/arm: virt: cleanly fail on attempt to use the
- platform vGIC together with ITS
+Subject: Re: [PATCH v3 11/14] whpx: arm64: clamp down IPA size
 To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
 References: <20250802081800.76030-1-mohamed@unpredictable.fr>
- <20250802081800.76030-11-mohamed@unpredictable.fr>
+ <20250802081800.76030-12-mohamed@unpredictable.fr>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20250802081800.76030-11-mohamed@unpredictable.fr>
+In-Reply-To: <20250802081800.76030-12-mohamed@unpredictable.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,27 +102,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/2/25 18:17, Mohamed Mediouni wrote:
-> Windows Hypervisor Platform's vGIC doesn't support ITS.
-> Deal with this by reporting to the user and not creating the ITS device.
-> 
-> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
-> ---
->   hw/arm/virt.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 98a1c74c42..1c695c0642 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -741,6 +741,16 @@ static void create_its(VirtMachineState *vms)
->           return;
->       }
->   
-> +    if (whpx_enabled() && vms->tcg_its) {
-> +        /*
-> +         * In the HVF case, inform the user that they can use the
+> +++ b/include/hw/boards.h
+> @@ -276,6 +276,7 @@ struct MachineClass {
+>       void (*wakeup)(MachineState *state);
+>       int (*kvm_type)(MachineState *machine, const char *arg);
+>       int (*hvf_get_physical_address_range)(MachineState *machine);
+> +    int (*whpx_get_physical_address_range)(MachineState *machine);
 
-Watch out for the cut-and-paste of HVF.
+We need to generalize this to an accelerator hook, so that there's one code path for both 
+hvf and whpx.  And kvm, for that matter, though it's less obvious how that's handled.
+
 
 r~
 
