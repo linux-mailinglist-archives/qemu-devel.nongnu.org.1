@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE5BB19176
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 03:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D235FB19178
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Aug 2025 03:42:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiNiG-0006i7-4G; Sat, 02 Aug 2025 21:40:36 -0400
+	id 1uiNiJ-0006nX-EW; Sat, 02 Aug 2025 21:40:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiNiC-0006eL-VN
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 21:40:33 -0400
-Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
+ id 1uiNiG-0006kn-S8
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 21:40:36 -0400
+Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uiNiB-0004az-4a
- for qemu-devel@nongnu.org; Sat, 02 Aug 2025 21:40:32 -0400
-Received: by mail-yb1-xb36.google.com with SMTP id
- 3f1490d57ef6-e8fe929b147so1346352276.2
- for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 18:40:30 -0700 (PDT)
+ id 1uiNiF-0004bZ-AA
+ for qemu-devel@nongnu.org; Sat, 02 Aug 2025 21:40:36 -0400
+Received: by mail-yw1-x112a.google.com with SMTP id
+ 00721157ae682-71840959355so33813597b3.1
+ for <qemu-devel@nongnu.org>; Sat, 02 Aug 2025 18:40:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754185229; x=1754790029; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=4MW07FbLyT0yKho5UYediTDDFwRORlQQBlI1MJIT9Pk=;
- b=IX/dxSl+6PnEtF5ouxvNjlg12OIY8qCNdTNckbYI8fm89sA0Vj41P3PuyYZQmuUzuF
- qeheNJcx8qVGf30xCChQnBiro9n8+3b1PlUvGrg7GD6Mrj9iNkJ3HGhtcXLhfCqZIAjt
- VStLnW/pezP+M4FmzkxT4cCNb+A/cOnWgbCXLbWuzlCrV20UtLbDTgOvI3u+3tIKcyD1
- 3RTNoBcsXz5EwxV9Ik6aAIC0VeyZ49P/W3W80TsqiOKc5iuYfkLJnGJYtmSuodfvo8Ly
- NQxOYGXzKT+IjXAM+5uuYo1u0zFCnoFxVtvc2oUIBPJSWMUCj3UN4g3+XEVuiL7t3IOE
- 0zdQ==
+ d=linaro.org; s=google; t=1754185234; x=1754790034; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cbRbPDY2xoRqId21bMDT0xVX8cUKze6JV5vAtkR4wEg=;
+ b=lIu4ktoLzY1A3dpgzysRMo7Gv+2CPJC32JQYzM2SWoSLP//fBP/FV/YTVY55I45QGc
+ S/i1Ll1oOQuCG/izhhNAOINiQNPRrNEvFdYCHP/YTwthB1ljf7zAN2ZG0IplFv7aiW9D
+ 0wAdhv0pqozwoh626izRq94FcTWpRCqPXtFnGDKBI1ndj/zBDmlJXp7au0rgQUR6PuKj
+ Hko5BDxzCZvTYdJi5bGqNLwu1oK+E+JTrCxMXVxaz2JO//0uWzQnfbd+EaSTI3boADpL
+ hxg0WJj6r/DuEAjZli8ugqBvm/1B8f1b0GGML7XxVEdGP+4F2uChvBtOmt+64idLyp35
+ G0tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754185229; x=1754790029;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4MW07FbLyT0yKho5UYediTDDFwRORlQQBlI1MJIT9Pk=;
- b=BKR5p1nNeu7GqdR/ACLsa2Y8TtfwsfAwwF4E7UfNvgtyvAhhFiKoBxd6xfJbDHF6T4
- gOo/j8lCeRcWNMjuWCOZB+3MyNlQbv3iOTC2cM1JKxxyaR6uz4si18DkXAOU3ZxNgXj3
- ISNHTRUcvbtN1yyYqtMgutJ0fgaZh6v+6EubVIyTGuWbCnAfA+uN0S+MJ9k5DY+ZcmIi
- h+Ge3zUXtL/DmCG4mE4rffbvFmxcu/zG8HkwDEnZpqvGRf/lgLunEQ+sMvXaY0M7cBT3
- ElBSF3SVGHdBQASYbm5OFMqNuNTy7asmTLzwJA6vbZx+yagF/A0rCD6JS7MbpJvX7pjy
- d0Vw==
-X-Gm-Message-State: AOJu0YwzGr1UUuxLmJldmIITMGxO7gqZMz3w9oSjr0pF0JVZH4niQRWP
- jIGWgvRYW7kaPEs82L8lc/VfY1UEXGFaSnMlNF0QaFUMKp0JYeathO0iIWpSR97ZN3EEluG5Y3Y
- 1KkEPaQQ=
-X-Gm-Gg: ASbGncuUXy3pYWgKFvnIi/fRjCDB0VlpLr42XhtxkWHGjGdvxcZ++07egTOCZ7WPsyk
- oBrNMSE+ooUlkXkmgmL9Nuv/h2B2Pg4wJQY6xgl9jF8FmLX1n86AyjEiDZj5WY8uwhyWVQM/obq
- r9vitqiXANOImhDYQqpR4S5B4bkTiHqJOgrMxThaFZFJrB9eCgFE/uRtu/siICQOKp295BxnVnl
- t2ByMe3V7IyQ300ShFuF1SbFfo9eW+pxDQQygKhUfsl3pOHew94FBtfKdOxKwXcVFuOvWbHtIle
- dlAtJSUpYL9HXPKohx1+qBZ5J/QsnsgbzXfIse4YeCIP+86pOYf4IDMQPvwtc09Qa06qpHAYuol
- Rz5NaiacJoj5wsDNpYDTuWE1hAh68Q2DW+5BsJg2jo6WrHc7ROPJm
-X-Google-Smtp-Source: AGHT+IEhJpvQcJBqv014DezRMUs1ohrVQsCmLneqU9HYm0ZVYJZlNzswadH3tfOyhhqhBck5+aVLzQ==
-X-Received: by 2002:a05:690c:660c:b0:710:e81b:f7cf with SMTP id
- 00721157ae682-71b7ed716bbmr64534277b3.13.1754185229481; 
- Sat, 02 Aug 2025 18:40:29 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1754185234; x=1754790034;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cbRbPDY2xoRqId21bMDT0xVX8cUKze6JV5vAtkR4wEg=;
+ b=UEL5yRrE5Cme1U+Feu5z8LWEnCfh1cK60St3RQx7TOsgfJcsgwYf6psudDftb7VNdy
+ cGmQXEAifHiZed2sLYgZ8kfD9R1oPQ9tuDdsaH7ijfT9iv58tGgJO3zIEq5YvLWykzGT
+ jy/fAJODJ5JyBJwEKURFgNQSHPvzSe3htMT6u/r8ziD5EJZ9meW/HReOIviFb7l0nDME
+ JQ6+Y3C2GF3S/aDeTmPybvouExRnH17wMljnEjA/x5qi0eU8N2G1UTbNUWSJop5UaTYm
+ 5dl1uRGB5Z1XLn2MuHotgC6re+U+YDluFELEMSDXy20Ej3qJNFZIIfxEfcPr5iigXG4i
+ +f2w==
+X-Gm-Message-State: AOJu0YzAUWz+gMj5rHtpP7zIFS9NgZ6dEInSsIMzvDYdgQfjSjBPv3Ge
+ bdDFK7aT6+JV1YOlG1jih0jxaQD+nvSmJS2x8kAbjCFWyFqbhc5qHyLh8RCFfEVaRFx/F4rzKPn
+ gzyCjbS0=
+X-Gm-Gg: ASbGncs922MNq88ejIv+LPBleGeZwm2qXddkXqLD78bggb4zg3rU6xc7FixsmpxBQM1
+ 9ZQTL1PF8Lycced9ko4gbrOy4H1kalfRgY5J7FzwYJFLjU7ptd2pVA13NTSs+gWUEOZSykVnWCp
+ jiRZlyUp+3dyRO+bO5xhkDICZivoEU03rVRPYIFGxFZwaJKf57WJEIpltHsbR/hDvFjMwgGxx4M
+ gGHqId8Jp4HXKU9GFsM2qoqrjBebQ5JrX4oU2pG0AOSBKF24QaFLHnA7uj4SdU1gMRenk84Z44v
+ uNRF08m4JGGPnCS7sjhP3dc8emmYA//9s6AISPM/zrhBI2QoRzyKp7IMmIz/dFzqQDlyQJsqcYs
+ YAcmLkfAIC6Rb0ecJAGHTgN/rfC/gqf3h5loBwHSctW3bZAVYBSn2
+X-Google-Smtp-Source: AGHT+IEtSRn8NUbqRKE920EBw5ICwQKkp+/tuDUaqcl3spANNJHnAZzM0NEf5/jRgSPq4ZjsFWqifQ==
+X-Received: by 2002:a05:690c:fd6:b0:71b:69b6:9438 with SMTP id
+ 00721157ae682-71b69b6a1a3mr112635847b3.0.1754185234082; 
+ Sat, 02 Aug 2025 18:40:34 -0700 (PDT)
 Received: from stoup.. ([172.58.111.133]) by smtp.gmail.com with ESMTPSA id
- 00721157ae682-71b5a6031a1sm18753227b3.86.2025.08.02.18.40.26
+ 00721157ae682-71b5a6031a1sm18753227b3.86.2025.08.02.18.40.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Aug 2025 18:40:29 -0700 (PDT)
+ Sat, 02 Aug 2025 18:40:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 00/11] target/arm: Implement FEAT_CSSC, FEAT_CMPBR
-Date: Sun,  3 Aug 2025 11:40:08 +1000
-Message-ID: <20250803014019.416797-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/11] target/arm: Add feature predicate for FEAT_CSSC
+Date: Sun,  3 Aug 2025 11:40:09 +1000
+Message-ID: <20250803014019.416797-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250803014019.416797-1-richard.henderson@linaro.org>
+References: <20250803014019.416797-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
- envelope-from=richard.henderson@linaro.org; helo=mail-yb1-xb36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,40 +97,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These two extensions are related due to sharing ID_AA64ISAR2.CSSC.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/cpu-features.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-I had intended to test by bootstrapping gcc under emulation with
--march=native (that seemed the easiest way to test the short
-range branches), but that failed for unrelated reasons.
-
-I'll try again next week.
-
-
-r~
-
-
-Richard Henderson (11):
-  target/arm: Add feature predicate for FEAT_CSSC
-  target/arm: Implement MIN/MAX (immediate)
-  target/arm: Implement MIN/MAX (register)
-  target/arm: Split out gen_wrap2_i32 helper
-  target/arm: Implement CTZ, CNT, ABS
-  target/arm: Enable FEAT_CSSC for -cpu max
-  target/arm: Add feature predicate for FEAT_CMPBR
-  target/arm: Implement CB, CBB, CBH
-  target/arm: Implement CB (immediate)
-  linux-user: Change exported get_elf_hwcap to abi_ulong
-  target/arm: Enable FEAT_CMPBR for -cpu max
-
- linux-user/loader.h            |   2 +-
- target/arm/cpu-features.h      |  10 ++
- linux-user/elfload.c           |  12 +-
- target/arm/tcg/cpu64.c         |   1 +
- target/arm/tcg/translate-a64.c | 219 +++++++++++++++++++++++++++++++--
- docs/system/arm/emulation.rst  |   2 +
- target/arm/tcg/a64.decode      |  26 ++++
- 7 files changed, 256 insertions(+), 16 deletions(-)
-
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 5876162428..f12c5c8be7 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -604,6 +604,11 @@ static inline bool isar_feature_aa64_rpres(const ARMISARegisters *id)
+     return FIELD_EX64_IDREG(id, ID_AA64ISAR2, RPRES);
+ }
+ 
++static inline bool isar_feature_aa64_cssc(const ARMISARegisters *id)
++{
++    return FIELD_EX64_IDREG(id, ID_AA64ISAR2, CSSC) != 0;
++}
++
+ static inline bool isar_feature_aa64_lut(const ARMISARegisters *id)
+ {
+     return FIELD_EX64_IDREG(id, ID_AA64ISAR2, LUT);
 -- 
 2.43.0
 
