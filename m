@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796AAB1A069
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 13:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F03B1A065
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 13:18:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uitEh-0000Lp-1M; Mon, 04 Aug 2025 07:20:23 -0400
+	id 1uitCg-0005cD-91; Mon, 04 Aug 2025 07:18:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uiswl-0007PN-DN
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 07:01:59 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uisxE-0007Wq-4F
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 07:02:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uiswh-0008Il-Fd
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 07:01:38 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uisxC-0008TD-2t
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 07:02:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754305291;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Uh4Pu4qORzVpObvVonRmF6kJnPZFMmhhlUmq5DIoVtU=;
- b=OVpW2hkbjIsQmO7uALIUhcCV2Aluk7Q/KCi1VW9y0hRYkZLOOSwVU2lMaoNwrRGqknlPq5
- h4ogfLMfFjIanVvxgEg2En/I2xrS2wZUmG//Il9KaMiPT+NYnX5vSVhekXg7rluDx9vX3k
- cebVDdJFGqcXN2E+RDG7vQjk19zVVG8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ s=mimecast20190719; t=1754305325;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=Ns9E6VWM1rFhp1mW7TRpd0Wuk3KuLwCvfnTdGm2t3lA=;
+ b=LqIC8H3TmyPi0zJbNP3uD5oqYGSZbcoe/8lAFU4d34tMqi7LWPyO0NRxgV+2DP/uBHM/Qr
+ ijAnBVAVJptddtNr8vYd0KwKqjgHOfcgPT+febrYgcjXRGVuuZj7qtS/At0PiFwDIh5K0+
+ JlQXopU1AfNWb+gwAiv3b3Ms1aJSu/A=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-306-6s_TaA_oMT2cTAeZoUzKGw-1; Mon,
- 04 Aug 2025 07:01:28 -0400
-X-MC-Unique: 6s_TaA_oMT2cTAeZoUzKGw-1
-X-Mimecast-MFC-AGG-ID: 6s_TaA_oMT2cTAeZoUzKGw_1754305287
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-310-G1WIJxVTO5yC7PxaHRG_RQ-1; Mon,
+ 04 Aug 2025 07:02:04 -0400
+X-MC-Unique: G1WIJxVTO5yC7PxaHRG_RQ-1
+X-Mimecast-MFC-AGG-ID: G1WIJxVTO5yC7PxaHRG_RQ_1754305323
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 60D2519373DF; Mon,  4 Aug 2025 11:01:27 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.44.32.225])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 986EA1800359; Mon,  4 Aug 2025 11:01:25 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 4/4] hw/ssi/aspeed_smc: Fix incorrect FMC_WDT2 register read on
- AST1030
-Date: Mon,  4 Aug 2025 13:01:08 +0200
-Message-ID: <20250804110108.2414355-5-clg@redhat.com>
-In-Reply-To: <20250804110108.2414355-1-clg@redhat.com>
-References: <20250804110108.2414355-1-clg@redhat.com>
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 23C27195D027
+ for <qemu-devel@nongnu.org>; Mon,  4 Aug 2025 11:02:03 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.62])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EBFF418003FC; Mon,  4 Aug 2025 11:02:00 +0000 (UTC)
+Date: Mon, 4 Aug 2025 12:01:57 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Cc: Michal Privoznik <mprivozn@redhat.com>, Jan Tomko <jtomko@redhat.com>,
+ Yan Vugenfirer <yvugenfi@redhat.com>, QEMU <qemu-devel@nongnu.org>
+Subject: Re: QGA installation issue on Windows
+Message-ID: <aJCTJf67oTZseYUr@redhat.com>
+References: <CAPMcbCpSQS5yWUCcGum6nWq=+HTaxFmJjm57_cgmJp+fMtC1JQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAPMcbCpSQS5yWUCcGum6nWq=+HTaxFmJjm57_cgmJp+fMtC1JQ@mail.gmail.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,43 +81,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jamin Lin <jamin_lin@aspeedtech.com>
+On Mon, Aug 04, 2025 at 01:54:09PM +0300, Kostiantyn Kostiuk wrote:
+> Hi Michal,
+> 
+> I want to discuss your patch
+> https://gitlab.com/qemu-project/qemu/-/commit/c6f5dd7ac8ef62dcdec4cdeda1467c658161afff
+> 
+> Unfortunately, we found bad behaviour on Windows. On Windows, we run QGA
+> with `-d --retry-path` options by default, so we expect that QGA will start
+> even without the vioserial driver and will wait for communication
+> forever.
+> 
+> This worked previously, but after your patch QGA service fails if the
+> vioserial communication channel is missing. This behavior is totally
+> unacceptable for us.
+> 
+> You send this patch to fix a Linux problem, but it causes a Windows problem.
+> So, what we need on Windows, if --retry-path specified, we should ignore
+> any channel error and retry the connection. If -d and --retry-path are
+> specified, it should become a daemon first to make Windows Service Manager
+> happy.
 
-On AST1030, reading the FMC_WDT2 register always returns 0xFFFFFFFF.
-This issue is due to the aspeed_smc_read function, which checks for the
-ASPEED_SMC_FEATURE_WDT_CONTROL feature. Since AST1030 was missing this
-feature flag, the read operation fails and returns -1.
+This looks pretty simple to fix - in the initialize_agent() method, if
+channel_init() fails, then simply ignore the failure if 'retry_path'
+is set, because the later code in run_agent() will already correctly
+retry the connection.
 
-To resolve this, add the WDT_CONTROL feature to AST1030's feature set
-so that FMC_WDT2 can be correctly accessed by firmware.
-
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Fixes: 2850df6a81bcdc2e063dfdd56751ee2d11c58030 ("aspeed/smc: Add AST1030 support ")
-Link: https://lore.kernel.org/qemu-devel/20250804014633.512737-1-jamin_lin@aspeedtech.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/ssi/aspeed_smc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
-index 614528b8ef65..e33496f50298 100644
---- a/hw/ssi/aspeed_smc.c
-+++ b/hw/ssi/aspeed_smc.c
-@@ -1857,7 +1857,8 @@ static void aspeed_1030_fmc_class_init(ObjectClass *klass, const void *data)
-     asc->resets            = aspeed_1030_fmc_resets;
-     asc->flash_window_base = 0x80000000;
-     asc->flash_window_size = 0x10000000;
--    asc->features          = ASPEED_SMC_FEATURE_DMA;
-+    asc->features          = ASPEED_SMC_FEATURE_DMA |
-+                             ASPEED_SMC_FEATURE_WDT_CONTROL;
-     asc->dma_flash_mask    = 0x0FFFFFFC;
-     asc->dma_dram_mask     = 0x000BFFFC;
-     asc->dma_start_length  = 1;
+With regards,
+Daniel
 -- 
-2.50.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
