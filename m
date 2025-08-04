@@ -2,69 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CF0B1A954
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 21:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 270B0B1A94F
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:54:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uj0Op-00033L-Lu; Mon, 04 Aug 2025 14:59:07 -0400
+	id 1uj0Ix-0005T3-SE; Mon, 04 Aug 2025 14:53:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <guoren@kernel.org>)
- id 1uiyru-0006Ki-2H; Mon, 04 Aug 2025 13:21:10 -0400
-Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uiz78-0008Cg-5F
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 13:36:48 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <guoren@kernel.org>)
- id 1uiyrr-0002zd-Or; Mon, 04 Aug 2025 13:21:01 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id CE381A55AC0;
- Mon,  4 Aug 2025 17:20:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD25C4CEF0;
- Mon,  4 Aug 2025 17:20:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1754328057;
- bh=/O94JxY0PWBN10GfLeccl4/F0n+V5sp/rtGnumMSR8w=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=DiW7wr8XwdtJyK/6/dp3KtVv3n5FkkVaRwHHV4i3Njf7ffKiRG8Jht2qA1cAZjHh6
- pKbdah/NLSOPT+GLP94JRrDNWKkI6I6ZhJZBoO1ZfcVkY51vvjy9D57FqsDpQlQ8US
- SR4HwhBSxBEmJLgf+tOGY2X4UPgT1o3vSMvkZlEAifOnQKwIQFSsg7ndw6R5+XwYLn
- cbRlluChytZI8WZ4oruxZ7iVUEw+sUyaofIIwvob2o7LokPZjAgcXc5VqGyh59wwQJ
- tU7IIjYkIFswURMmvryKyn0IktoogXOUb2EA+U3Xrs6Xy7ANUOf5dJCu50eZmdGpzH
- JcfY6xxJ5y1PA==
-Received: by mail-wm1-f50.google.com with SMTP id
- 5b1f17b1804b1-459d7726ee6so9413225e9.2; 
- Mon, 04 Aug 2025 10:20:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCVtT0fihQQDqy8WuWAkZL5fm0HGLre09Xvja+kOrV456gT4WJ5hHjHXmzwRV3QEAZ+SSZycy6v3aGjVCJY=@nongnu.org,
- AJvYcCW3iGnQ3qUrNbF87gB0UIEY670XpgqbGRywaH+OtLwqffXJivmhBeXBsJhihbuUzjqLO1YHibTZDsUi@nongnu.org
-X-Gm-Message-State: AOJu0Ywsr40O9kFdy49WjcYIgArAdX9i94Z/TwbYyJggdh/EU76ff1+5
- oyVbVhPaXN+8gdrJz2CKe5FrVvaNpMIp30kH54piFjbKdpZCMVczCHef2Grzvzfl8X3bdbdy6hc
- jeh49iZDdn6Jab4Mpf8FNX/VN9bgFqAk=
-X-Google-Smtp-Source: AGHT+IEj9VpRULkoKJD8J7ftFr6vjet+abO2j4+ipUhwuvRstLUuaMF06JX8nPMWzSimX+VV6apGd66FUPk+VJ+pGvI=
-X-Received: by 2002:a05:600c:4445:b0:456:29ae:3dbe with SMTP id
- 5b1f17b1804b1-458b6b421efmr68825025e9.24.1754328055956; Mon, 04 Aug 2025
- 10:20:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uiz75-0005Yd-Si
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 13:36:45 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id BAFA613E517;
+ Mon, 04 Aug 2025 20:36:19 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D5B49256AB6;
+ Mon,  4 Aug 2025 20:36:39 +0300 (MSK)
+Message-ID: <bc948c43-972e-4d09-98b9-59425a94f381@tls.msk.ru>
+Date: Mon, 4 Aug 2025 20:36:39 +0300
 MIME-Version: 1.0
-References: <20250803044338.4098505-1-guoren@kernel.org>
-In-Reply-To: <20250803044338.4098505-1-guoren@kernel.org>
-From: Guo Ren <guoren@kernel.org>
-Date: Tue, 5 Aug 2025 01:20:44 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTR5rOgt-4F0hF3R0yxQ9BUsLUH2wYkV36zEnXTVs8af=g@mail.gmail.com>
-X-Gm-Features: Ac12FXyGlP3YtH2uZ5MRl_v2B-OYfl7bX1VHzi0tauDvOavxdrLKBdRmu4oLMr0
-Message-ID: <CAJF2gTR5rOgt-4F0hF3R0yxQ9BUsLUH2wYkV36zEnXTVs8af=g@mail.gmail.com>
-Subject: Re: [PATCH] hw/riscv/riscv-iommu: Fixup PDT Nested Walk
-To: zhiwei_liu@linux.alibaba.com, liwei1518@gmail.com, 
- alistair.francis@wdc.com, seb@rivosinc.com, tjeznach@rivosinc.com
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
- envelope-from=guoren@kernel.org; helo=nyc.source.kernel.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for 10.1] microvm: Explicitly select ACPI_PCI
+To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, pbonzini@redhat.com, richard.henderson@linaro.org,
+ mst@redhat.com, kraxel@redhat.com
+References: <20250804152008.247673-1-eric.auger@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+In-Reply-To: <20250804152008.247673-1-eric.auger@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,232 +102,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update V2 for cleaner modification, less code influence:
-https://lists.nongnu.org/archive/html/qemu-devel/2025-08/msg00738.html
+On 04.08.2025 18:20, Eric Auger wrote:
+> With a microvm-only build based on a custom device config,
+> we get a link failure due to undefined reference to
+> build_pci_host_bridge_osc_method() which is defined in hw/acpi/pci.c and
+> whose compilation depends on CONFIG_ACPI_PCI. Although CONFIG_ACPI
+> and CONFIG_PCI are set with such configuration, implied CONFIG_ACPI_PCI
+> in config PCI_EXPRESS_GENERIC_BRIDGE is not selected as expected.
+> 
+> It Looks like CONFIG_ACPI_PCI must be enforced and this patch selects
+> CONFIG_ACPI_PCI in MICROVM config directly as done for PC config.
+> 
+> Reproducer:
+> 
+> ../configure \
+>   --without-default-features \
+>   --target-list=x86_64-softmmu \
+>   --enable-kvm --disable-tcg \
+>   --enable-pixman \
+>   --enable-vnc \
+>   --audio-drv-list="" \
+>   --without-default-devices \
+>   --with-devices-x86_64=microvm \
+>   --enable-vhost-user
+> 
+> with configs/devices/x86_64-softmmu/microvm.mak:
+> CONFIG_PCI_DEVICES=n
+> 
+> CONFIG_MICROVM=y
+> 
+> CONFIG_VIRTIO_BLK=y
+> CONFIG_VIRTIO_SERIAL=y
+> CONFIG_VIRTIO_INPUT=y
+> CONFIG_VIRTIO_INPUT_HOST=y
+> CONFIG_VHOST_USER_INPUT=y
+> CONFIG_VIRTIO_NET=y
+> CONFIG_VIRTIO_SCSI=y
+> CONFIG_VIRTIO_RNG=y
+> CONFIG_VIRTIO_CRYPTO=y
+> CONFIG_VIRTIO_BALLOON=y
+> CONFIG_VIRTIO_GPU=y
+> CONFIG_VHOST_USER_GPU=y
+> 
+> FAILED: qemu-system-x86_64
+> cc -m64 @qemu-system-x86_64.rsp
+> /usr/bin/ld: libsystem.a.p/hw_pci-host_gpex-acpi.c.o: in function `acpi_dsdt_add_host_bridge_methods':
+> hw/pci-host/gpex-acpi.c:83:(.text+0x274): undefined reference to `build_pci_host_bridge_osc_method'
+> collect2: error: ld returned 1 exit status
+> 
+> Fixes: af151d50eac24 "hw/pci-host/gpex-acpi: Use build_pci_host_bridge_osc_method"
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Reported-by: Michael Tokarev <mjt@tls.msk.ru>
 
-On Sun, Aug 3, 2025 at 12:47=E2=80=AFPM <guoren@kernel.org> wrote:
->
-> From: "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
->
-> Current implementation is wrong when iohgatp !=3D bare. The RISC-V
-> IOMMU specification has defined that the PDT is based on GPA, not
-> SPA. So this patch fixes the problem, making PDT walk correctly
-> when the G-stage table walk is enabled.
->
-> Fixes: 0c54acb8243d ("hw/riscv: add RISC-V IOMMU base emulation")
-> Cc: qemu-stable@nongnu.org
-> Cc: Sebastien Boeuf <seb@rivosinc.com>
-> Cc: Tomasz Jeznach <tjeznach@rivosinc.com>
-> Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+This seems to be a better fix than I proposed.
+
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+
+Thanks,
+
+/mjt
+
 > ---
->  hw/riscv/riscv-iommu.c | 148 ++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 146 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-> index 96a7fbdefcf3..c4dccc9e5c5d 100644
-> --- a/hw/riscv/riscv-iommu.c
-> +++ b/hw/riscv/riscv-iommu.c
-> @@ -866,6 +866,145 @@ static bool riscv_iommu_validate_process_ctx(RISCVI=
-OMMUState *s,
->      return true;
->  }
->
-> +/**
-> + * pdt_memory_read: PDT wrapper of dma_memory_read.
-> + *
-> + * @s: IOMMU Device State
-> + * @ctx: Device Translation Context with devid and pasid set
-> + * nested: Add G-stage translation or not
-> + * @addr: address within that address space
-> + * @buf: buffer with the data transferred
-> + * @len: length of the data transferred
-> + * @attrs: memory transaction attributes
-> + */
-> +static MemTxResult pdt_memory_read(RISCVIOMMUState *s,
-> +                                   RISCVIOMMUContext *ctx, bool nested,
-> +                                   dma_addr_t addr,
-> +                                   void *buf, dma_addr_t len,
-> +                                   MemTxAttrs attrs)
-> +{
-> +    uint64_t gatp_mode, pte;
-> +    struct {
-> +        unsigned char step;
-> +        unsigned char levels;
-> +        unsigned char ptidxbits;
-> +        unsigned char ptesize;
-> +    } sc;
-> +    MemTxResult ret;
-> +    dma_addr_t base =3D addr;
-> +
-> +    if (!nested)
-> +        goto out;
-> +
-> +    /* G stages translation mode */
-> +    gatp_mode =3D get_field(ctx->gatp, RISCV_IOMMU_ATP_MODE_FIELD);
-> +
-> +    /* G stages translation tables root pointer */
-> +    base =3D PPN_PHYS(get_field(ctx->gatp, RISCV_IOMMU_ATP_PPN_FIELD));
-> +
-> +    /* Start at step 0 */
-> +    sc.step =3D 0;
-> +
-> +    if (s->fctl & RISCV_IOMMU_FCTL_GXL) {
-> +        /* 32bit mode for GXL =3D=3D 1 */
-> +        switch (gatp_mode) {
-> +        case RISCV_IOMMU_DC_IOHGATP_MODE_SV32X4:
-> +            if (!(s->cap & RISCV_IOMMU_CAP_SV32X4)) {
-> +                return MEMTX_ACCESS_ERROR;
-> +            }
-> +            sc.levels    =3D 2;
-> +            sc.ptidxbits =3D 10;
-> +            sc.ptesize   =3D 4;
-> +            break;
-> +        default:
-> +            return MEMTX_ACCESS_ERROR;
-> +        }
-> +    } else {
-> +        /* 64bit mode for GXL =3D=3D 0 */
-> +        switch (gatp_mode) {
-> +        case RISCV_IOMMU_DC_IOHGATP_MODE_SV39X4:
-> +            if (!(s->cap & RISCV_IOMMU_CAP_SV39X4)) {
-> +                return MEMTX_ACCESS_ERROR;
-> +            }
-> +            sc.levels    =3D 3;
-> +            sc.ptidxbits =3D 9;
-> +            sc.ptesize   =3D 8;
-> +            break;
-> +        case RISCV_IOMMU_DC_IOHGATP_MODE_SV48X4:
-> +            if (!(s->cap & RISCV_IOMMU_CAP_SV48X4)) {
-> +                return MEMTX_ACCESS_ERROR;
-> +            }
-> +            sc.levels    =3D 4;
-> +            sc.ptidxbits =3D 9;
-> +            sc.ptesize   =3D 8;
-> +            break;
-> +        case RISCV_IOMMU_DC_IOHGATP_MODE_SV57X4:
-> +            if (!(s->cap & RISCV_IOMMU_CAP_SV57X4)) {
-> +                return MEMTX_ACCESS_ERROR;
-> +            }
-> +            sc.levels    =3D 5;
-> +            sc.ptidxbits =3D 9;
-> +            sc.ptesize   =3D 8;
-> +            break;
-> +        default:
-> +            return MEMTX_ACCESS_ERROR;
-> +        }
-> +    }
-> +
-> +    do {
-> +        const unsigned va_bits =3D (sc.step ? 0 : 2) + sc.ptidxbits;
-> +        const unsigned va_skip =3D TARGET_PAGE_BITS + sc.ptidxbits *
-> +                                 (sc.levels - 1 - sc.step);
-> +        const unsigned idx =3D (addr >> va_skip) & ((1 << va_bits) - 1);
-> +        const dma_addr_t pte_addr =3D base + idx * sc.ptesize;
-> +
-> +        /* Address range check before first level lookup */
-> +        if (!sc.step) {
-> +            const uint64_t va_mask =3D (1ULL << (va_skip + va_bits)) - 1=
-;
-> +            if ((addr & va_mask) !=3D addr) {
-> +                return MEMTX_ACCESS_ERROR;
-> +            }
-> +        }
-> +
-> +        /* Read page table entry */
-> +        if (sc.ptesize =3D=3D 4) {
-> +            uint32_t pte32 =3D 0;
-> +            ret =3D ldl_le_dma(s->target_as, pte_addr, &pte32, attrs);
-> +            pte =3D pte32;
-> +        } else {
-> +            ret =3D ldq_le_dma(s->target_as, pte_addr, &pte, attrs);
-> +        }
-> +        if (ret !=3D MEMTX_OK)
-> +            return ret;
-> +
-> +        sc.step++;
-> +        hwaddr ppn =3D pte >> PTE_PPN_SHIFT;
-> +
-> +        if (!(pte & PTE_V)) {
-> +            return MEMTX_ACCESS_ERROR; /* Invalid PTE */
-> +        } else if ((pte & (PTE_R | PTE_W | PTE_X)) =3D=3D PTE_W) {
-> +            return MEMTX_ACCESS_ERROR; /* Reserved leaf PTE flags: PTE_W=
- */
-> +        } else if ((pte & (PTE_R | PTE_W | PTE_X)) =3D=3D (PTE_W | PTE_X=
-)) {
-> +            return MEMTX_ACCESS_ERROR; /* Reserved leaf PTE flags: PTE_W=
- + PTE_X */
-> +        } else if (ppn & ((1ULL << (va_skip - TARGET_PAGE_BITS)) - 1)) {
-> +            return MEMTX_ACCESS_ERROR; /* Misaligned PPN */
-> +        } else if (!(pte & (PTE_R | PTE_W | PTE_X))) {
-> +            base =3D PPN_PHYS(ppn); /* Inner PTE, continue walking */
-> +        } else {
-> +            /* Leaf PTE, translation completed. */
-> +            base =3D PPN_PHYS(ppn) | (addr & ((1ULL << va_skip) - 1));
-> +            break;
-> +        }
-> +
-> +        if (sc.step =3D=3D sc.levels) {
-> +            return MEMTX_ACCESS_ERROR; /* Can't find leaf PTE */
-> +        }
-> +    } while (1);
-> +
-> +out:
-> +    return dma_memory_read(s->target_as, base, buf, len, attrs);
-> +}
-> +
->  /*
->   * RISC-V IOMMU Device Context Loopkup - Device Directory Tree Walk
->   *
-> @@ -884,6 +1023,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s,=
- RISCVIOMMUContext *ctx)
->      const size_t dc_len =3D sizeof(dc) >> dc_fmt;
->      int depth;
->      uint64_t de;
-> +    bool pdt_nested =3D false;
->
->      switch (mode) {
->      case RISCV_IOMMU_DDTP_MODE_OFF:
-> @@ -1029,6 +1169,10 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *=
-s, RISCVIOMMUContext *ctx)
->          return RISCV_IOMMU_FQ_CAUSE_PDT_MISCONFIGURED;
->      }
->
-> +    /* Detect nested PDT walk */
-> +    pdt_nested =3D get_field(ctx->gatp, RISCV_IOMMU_ATP_MODE_FIELD) !=3D
-> +                 RISCV_IOMMU_DC_IOHGATP_MODE_BARE;
-> +
->      for (depth =3D mode - RISCV_IOMMU_DC_FSC_PDTP_MODE_PD8; depth-- > 0;=
- ) {
->          riscv_iommu_hpm_incr_ctr(s, ctx, RISCV_IOMMU_HPMEVENT_PD_WALK);
->
-> @@ -1038,7 +1182,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s=
-, RISCVIOMMUContext *ctx)
->           */
->          const int split =3D depth * 9 + 8;
->          addr |=3D ((ctx->process_id >> split) << 3) & ~TARGET_PAGE_MASK;
-> -        if (dma_memory_read(s->target_as, addr, &de, sizeof(de),
-> +        if (pdt_memory_read(s, ctx, pdt_nested, addr, &de, sizeof(de),
->                              MEMTXATTRS_UNSPECIFIED) !=3D MEMTX_OK) {
->              return RISCV_IOMMU_FQ_CAUSE_PDT_LOAD_FAULT;
->          }
-> @@ -1053,7 +1197,7 @@ static int riscv_iommu_ctx_fetch(RISCVIOMMUState *s=
-, RISCVIOMMUContext *ctx)
->
->      /* Leaf entry in PDT */
->      addr |=3D (ctx->process_id << 4) & ~TARGET_PAGE_MASK;
-> -    if (dma_memory_read(s->target_as, addr, &dc.ta, sizeof(uint64_t) * 2=
-,
-> +    if (pdt_memory_read(s, ctx, pdt_nested, addr, &dc.ta, sizeof(uint64_=
-t) * 2,
->                          MEMTXATTRS_UNSPECIFIED) !=3D MEMTX_OK) {
->          return RISCV_IOMMU_FQ_CAUSE_PDT_LOAD_FAULT;
->      }
-> --
-> 2.40.1
->
+>   hw/i386/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+> index 5139d23087..3a0e2b8ebb 100644
+> --- a/hw/i386/Kconfig
+> +++ b/hw/i386/Kconfig
+> @@ -131,6 +131,7 @@ config MICROVM
+>       select I8259
+>       select MC146818RTC
+>       select VIRTIO_MMIO
+> +    select ACPI_PCI
+>       select ACPI_HW_REDUCED
+>       select PCI_EXPRESS_GENERIC_BRIDGE
+>       select USB_XHCI_SYSBUS
 
-
---=20
-Best Regards
- Guo Ren
 
