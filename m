@@ -2,92 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40DD7B1A956
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 21:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F06B1A95C
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 21:08:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uj0Pu-0005Ew-5O; Mon, 04 Aug 2025 15:00:14 -0400
+	id 1uj0Wg-00083Q-Ol; Mon, 04 Aug 2025 15:07:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uizFi-0003HD-W0
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 13:45:39 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uizFf-00078v-2d
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 13:45:37 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-b42099901baso3701426a12.2
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 10:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754329533; x=1754934333; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QULKk5VRg6vYTt6QR41gbigymrUk/XulFP8x2GxxytU=;
- b=EBVx4TDCeyPvOzna+38Pa0NFftdahe3PopCQnxwMoXR2nPM7gXHqK2GhCyKp6lQI3T
- yz01/KxOwixop4KPe0JU9F+ZS3X9NINoEmBoG82iMlOYIxrLCMQ42kvyMEAASJmjldFc
- klzriPDfiU4AR+Ne5JvFVwnc0Zk2uTYXflrped9J6Z0TleTAvX/Ka06glAkVaqNLUewQ
- GGO8xBuhit3PhFp6Vei8BynoufsBbuouveJFvXYsi2F1efxu4KRxFd1eA5pIS0kWLsbq
- O8j3Y6DAZ2QCMVHa4BVDqPAT2JnP7GUSAYPOk+aslVj+wDTufEvkYdU2vtijt1uk5+Mc
- o7Qg==
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1uizNP-0005vN-Fz
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 13:53:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1uizNL-0000Bz-MB
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 13:53:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754330009;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2J1JyXGekEZnF2fndvV/WBY/5TS58cH/Qmi/AGAC8S0=;
+ b=iGH4GDbgyNhkj5iEYTSIDRtVshNk2acynVKxVC/PuvNlojZZEt6o0LY5qJrYxWiF6Bytzq
+ 3VOanlE86oH4xJNe1Xj1EyTzqVsNHdd8Cl+ARf62hu4+bs/lh8iF2Y6mJksXDtNbHk0P8q
+ hOxfFHf31I2VaQ6tgpRBaCi1uYJCN4w=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-341-A3YfDSFaNMKJaLLX-ojnEg-1; Mon, 04 Aug 2025 13:53:28 -0400
+X-MC-Unique: A3YfDSFaNMKJaLLX-ojnEg-1
+X-Mimecast-MFC-AGG-ID: A3YfDSFaNMKJaLLX-ojnEg_1754330007
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7e7ffe84278so206795085a.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 10:53:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754329533; x=1754934333;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1754330007; x=1754934807;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QULKk5VRg6vYTt6QR41gbigymrUk/XulFP8x2GxxytU=;
- b=Lr5Vco2TWkNEOGtIwisGAc+UVfz+jSe4RhSakzFBrdaAQbDu0uO5R3VdviorJi0gnZ
- hMyVAKs7nqKQYyXQuiLB2MB4ACuP5JQoxVzmDyWLtGWqJ6Ia+BJbpoRNGpZNLoUKGVtM
- SAXouz0rAQ3A53pwe5FEt2TfztSVkpTDNW2glkeX+3wcIETg738Ns1Cl3CIr0ytH0c9B
- 4p0YTypjc4PmS581lGzOSvXdVHfMGvMvVAA/21uXAEiX2dQFzPJLW7bhd1rORkLWN+Pc
- 1Gs4vbJ72R7DeMN9yJS34/lTLUuWWQzN5Iun8CooFC4zQJxEuAuCfR/ejssZSctu2Lst
- zqKA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCULigQaDSf0a3Ja7aA22TfjdIjqAekT9cjtsxuIJ89UChXFHt+DIjv8Q2b7UFc+QQQqqlDHM5uSAAiV@nongnu.org
-X-Gm-Message-State: AOJu0Yx3APu8Ktm0VBZaGvzXCMP32ofBafROuzqJIXgbxRxorReDWNJ5
- z+to1ke8QTeUQ/Cawd5SwIvVLb2RUc2lgtKRsSLrz79FIJ0yoMQ4CCLonht7nY1ozro=
-X-Gm-Gg: ASbGnctxeIq2rFgzff1LD3qK1tHdQiSbZSBJ+t/ezDO5EfFCrRkBQgMQhMHKIXueQjS
- aKFwlpZvsYs2f1Yoo4Vl84rJneNXRfeksaMD6gjdHvgGtFaUsEnvMC3sjcohq7D5/4I9Gzx+EzD
- iFnWwQZsn0PymiLpnvC7bhtpsVhRuxaclhQxgi56IuwlApPQ+a3IkP7SE9EW6YA2g64MwJQGoBG
- 6LY2EByPoYI+9NWR+bev97VqFYuXnjFZd4w7oFSJST3XnuDO761L2pFN7Y+yQO+5/MKOhjx34SP
- Ho4IDlkQnX9N6XLh74Mv2FVuyz1dDtQYYkKT2uA0owiZ8yZQiMP30aukj/A0JVIwS68K8plCHaG
- I3AbvSgtHhyWwAhsb1FFpoj+2mO+M04x+Llw=
-X-Google-Smtp-Source: AGHT+IEcsjx3vy6mOGfSElPa84rxzX0M8DU56PbwvGi/iNOJPbGOsWy3SWYLXmEOTNll0dPbm4zPyw==
-X-Received: by 2002:a17:902:f612:b0:240:92f9:7b85 with SMTP id
- d9443c01a7336-24246e5fb31mr124019635ad.0.1754329533106; 
- Mon, 04 Aug 2025 10:45:33 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b422bac16c9sm9499161a12.36.2025.08.04.10.45.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Aug 2025 10:45:32 -0700 (PDT)
-Message-ID: <c69d2467-01fa-45d0-8d12-5dbbf2d4e793@linaro.org>
-Date: Mon, 4 Aug 2025 10:45:31 -0700
+ bh=2J1JyXGekEZnF2fndvV/WBY/5TS58cH/Qmi/AGAC8S0=;
+ b=pHYFfDGesLvYWIJFnFTU+oVZlQcVjLsdQ555Goki+nZYcsKL3dne+ZEKngZajQzlT+
+ cNeEviOSDLNdkbDhnAsFiqEZvCnyj2MBDfysCU0eN164Z8YRK93spuWxOec5TzlYa32x
+ 2qWsGldMnw28wzUAjdKctpHTVouIC5OT6toun5NsqGNvU+B8QQHmP3Dkfa4g69YJEI3O
+ MLyZ/46XXAR0G4iM8rWsNIGRknNtlyMue0P0aJBfV1e5I3MQ+pPYgTjsG4wsylo602lR
+ KJtpr0A6r6CcAG9fHJRO+7Wi4cDP6/yQMWhIjHlGNnBIXiaolVb+CewHP8955MzigrE7
+ p55g==
+X-Gm-Message-State: AOJu0Yy6uYOiavHdJuTgy8dBtcdD+N/oEPLZKsY9WjsvrYxFlEk3YVQw
+ iu1ADxMciKmNkQGrGSrP/eP7stJhiprOeYsSh7Ik/rrpYvxSsTcX2PrqozgcL8WER6STg961dzA
+ z9XDljopDxf1+n2oNBV2c8mOnlMi7LFVIlwH234ZG5T6WTNWv0njbSS4w
+X-Gm-Gg: ASbGncttEs/w+/ZPRp3g0pzAZPiRVyQK0Zf+2bFgpCsGdzF8t0rpJjQelApXvYf38iu
+ 1N0yfKMAWeJDEW2mxRRS0PYPTJAvY21rYSX2Q4rOPWsFzBKW6QIgYJcGOaO3gqng2tVIyfhdtdO
+ sT05R/DCJDe/x2mEQzeqnQPrd9ynJ804tpS+Nz2D680+qi+g4biQW7au2u3R9AqtSYLZswLmQD3
+ 2DHd7l8BeQwxOiwBFRIqCrw3aQNrVJdB5zzwNgxioh/g5gmzoUWPxPv6/UXT8WTHRKsfxWRc1hT
+ aAr1Ge2bT1LQ4Ti53XcZEzb5ST2q
+X-Received: by 2002:a05:620a:254b:b0:7e8:89f:9101 with SMTP id
+ af79cd13be357-7e8089f9c2amr200991485a.39.1754330007391; 
+ Mon, 04 Aug 2025 10:53:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFejt3MBpurJjDBEG5ol0FzPErW7/S0Sts02+/8T+umGpAzACXQTNqIZLo2r7rd/6owB3bM1Q==
+X-Received: by 2002:a05:620a:254b:b0:7e8:89f:9101 with SMTP id
+ af79cd13be357-7e8089f9c2amr200988485a.39.1754330006853; 
+ Mon, 04 Aug 2025 10:53:26 -0700 (PDT)
+Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7e806ad969dsm71881985a.78.2025.08.04.10.53.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Aug 2025 10:53:26 -0700 (PDT)
+Date: Mon, 4 Aug 2025 19:53:22 +0200
+From: Juraj Marcin <jmarcin@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Prasad Pandit <ppandit@redhat.com>
+Subject: Re: [PATCH for-10.1 0/2] migration: actually make gnutls workaround
+ functional
+Message-ID: <d5xctfzcrtbanvkndamonxgqo3tc5nejhyrvh54m3y5bhg4cms@ue7siue2yw7o>
+References: <20250801170212.54409-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 33/85] target/arm: Convert arm_mmu_idx_to_el from
- switch to table
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20250802232953.413294-1-richard.henderson@linaro.org>
- <20250802232953.413294-34-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250802232953.413294-34-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x533.google.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250801170212.54409-1-berrange@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,22 +107,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/2/25 4:29 PM, Richard Henderson wrote:
-> In an effort to keep all ARMMMUIdx data in one place, begin construction
-> of an info table describing all of the properties of the mmu_idx.  Begin
-> with the access EL.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/internals.h       |  3 +--
->   target/arm/mmuidx-internal.h | 29 +++++++++++++++++++++++++
->   target/arm/helper.c          | 27 ------------------------
->   target/arm/mmuidx.c          | 41 ++++++++++++++++++++++++++++++++++++
->   target/arm/meson.build       |  7 +++++-
->   5 files changed, 77 insertions(+), 30 deletions(-)
->   create mode 100644 target/arm/mmuidx-internal.h
->   create mode 100644 target/arm/mmuidx.c
+Hi Daniel,
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+On 2025-08-01 18:02, Daniel P. Berrangé wrote:
+> This is a followup to previously merged patches that claimed to
+> workaround the gnutls bug impacting migration, but in fact were
+> essentially non-functional. Juraj Marcin pointed this out, and
+> this new patch tweaks the workaround to make it actually do
+> something useful.
+> 
+> Daniel P. Berrangé (2):
+>   migration: simplify error reporting after channel read
+>   migration: fix workaround for gnutls thread safety
+> 
+>  crypto/tlssession.c   | 16 ----------------
+>  migration/qemu-file.c | 22 +++++++++++++++++-----
+>  2 files changed, 17 insertions(+), 21 deletions(-)
+> 
+
+thanks for finding a fix for the workaround. I have tested it and it
+resolves the issue.
+
+However, it significantly slows down migration, even with the workaround
+disabled (and thus no locking). When benchmarking, I used the fixed
+version of GNUTLS, VM with 20GB of RAM which were fully written to
+before starting a normal migration with no workload during the
+migration.
+
+Test cases:
+[1]: before this patchset
+[2]: with this patchset applied and GNUTLS workaround enabled
+[2]: with this patchset applied and GNUTLS workaround disabled
+
+  | Total time | Throughput | Transfered bytes |
+--+------------+------------+------------------+
+1 |  31 192 ms |  5450 mpbs |   21 230 973 763 |
+2 |  74 147 ms |  2291 mbps |   21 232 849 066 |
+3 |  72 426 ms |  2343 mbps |   21 215 009 392 |
+
+(data reported by query-migrate QMP command after migration completion)
+
+
+Therefore, this workaround can be used in environments where we cannot
+use the fixed version of GNUTLS library, but I think it would be better
+use polling only if locking is actually used, so the performance with
+the proper GNUTLS fix is not hindered. Maybe yielding/waiting inside
+tlssession.c before actually locking?
+
+
+Best regards,
+
+Juraj Marcin
 
 
