@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3EFB1A91C
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5A3B1A933
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:29:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uizlg-0007rZ-NF; Mon, 04 Aug 2025 14:18:41 -0400
+	id 1uizvv-0004Ej-N4; Mon, 04 Aug 2025 14:29:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uiyFA-0007NK-PS
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:41:04 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uiyNJ-0006Yt-W1
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:49:26 -0400
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uiyF8-0005VJ-LH
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:41:00 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-76bd7676e60so2486902b3a.0
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:40:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uiyNG-0006bL-Q2
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:49:24 -0400
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-71a27d982f1so41412307b3.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:49:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754325657; x=1754930457; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=g8d/CzNHs0G9ASNJxC2oXrgkO/yfXUAC6Fskpz1lSXA=;
- b=mwVRqNJBrPegR/i8L+dBiUdhRBt1TvYHO1FQZfjWhkKoqpB1s38/rZrfj8SrBAa29u
- ccouj1/t6vVWpgTQIWsI/ZmM4ShIvzEXdmF6GjIQdNJ6cZye3J+SlKOE+ozilnApucqT
- BBSps/ADIgQkV2U/y+IZkYRlrDSt/UGF4aYOZad9DSXi4mFRsRdggNzB9uOYXoh1Md5F
- XDDUCW6Fk+WJmzYw4Z+bzdkYEXCUgKksBPRWVAQHgLepjU3Ln4bttu8Z4u6D5No4ywHz
- d469dCnlvQLK23KsHPiJSISmnn0Tcfm28mPphHoPoP0lP5r+uCjxFwu9/AFGx7c7Tm7E
- J+4Q==
+ d=linaro.org; s=google; t=1754326160; x=1754930960; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LHMbwbeqIzxTyN7shnF13cJi5T+fpLlIgLnsBA8bwtw=;
+ b=epzH7tG0rkXW25Fdl4/X14DB6Xwo5yJiTSyQ2IwCc0wxkIAzVqa+1LXJZOMUwEBP1Y
+ Q7L5wgwY6pnsRvnfCvpw3OVMTIwZFNmabnN0kZLrubCDStgF7kPUU/3BLl0xOtdJJ9bG
+ B1k9xAJUQ3i59Zvy4PyNVFZW7C8AFNp/sG27eNUaiOGWl2wpOUTPsmRs9Ek6ygrdq49b
+ 45AYkfZs4TW/qcBnVBrMQoyTTq5dxdHIN5uiWuz9VMOn1K4ls94WPEHolWQEIXdD9rfF
+ RWbOGXqRMOJmhlmZcTl2RP2GZLtqtVsnPnthCtJe/uNsnnY2r6FuB8HXSJWM9mxx+wMA
+ Sf/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754325657; x=1754930457;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=g8d/CzNHs0G9ASNJxC2oXrgkO/yfXUAC6Fskpz1lSXA=;
- b=lk0A7gkeyaD6KYF4LRUvnDGxSq3VMCf2X7ANugpfmDDlk509xnamRs/hhWIH+M/y9V
- chLtQcEwss4/TYFShWfTv6OshmBaIAy1t1Uug8L9pYzzdBj3FXYDdn0EipWj2gjZbpx1
- cU+9fdiRd/aHP0hor54BoBkCIEJODJHwh9Q658+2bkFyehFCGx0if4VrybMNcj0kseI5
- q3+zO0+Vj/HYFaMZsQtvhkwO8SLL8WXN6utMr3JWQrCmz1+k2BkjFx/sciJIWDYG4oH9
- +GDxq+b4PA22a09C0rJi1oSKl/voC85rEizUj1jkKY8dk3O9Xk5+ZgYex5KqMZu6fhcI
- 0iEA==
+ d=1e100.net; s=20230601; t=1754326160; x=1754930960;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LHMbwbeqIzxTyN7shnF13cJi5T+fpLlIgLnsBA8bwtw=;
+ b=SOducJMOnLI+dTdlYSbUtzMrRXcLT2Sc4aF4YJ9ZThCgQlhwFyv6emVCi6c6Med+vo
+ 4epTTEkHUTqGfg1CB5zftxH0Yfp6VqMubwdf9SwAF1gSU/eseyBAOGjWvmFOti3UUSHa
+ XIv6olJZ7cnCZIyuoLOxefcpoguFEgMWGTO6FKJ0gwbUnitk1wyI2jMonLro6Og6oarM
+ eQvzN7lluwHhWr9qgSjD+XFKah7QYSgBXXt6L9nTuop0vuN3RaOFsA1f359xi82Wn+GG
+ Asq1bXfzaIbjJCnoerJlITFIS4jp46h/mINT/TqJ/+gPYm3baWHKYF/4vlhTCnPfxbNk
+ WrNw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXw9/r/iJWUF37VrfnvxxsPfdqAnEA3OH9UDfAQe6p/oYle8csO4W4L0OWH9/LLusViZswid8qJEY71@nongnu.org
-X-Gm-Message-State: AOJu0YyXUrBH7o1HdaQ+a9jinn360yoU0IaDq0ijcpkRXzc2BEzCVilY
- JiTTBQepQ0gl7uLMJQCrrhzgx3JMC/8/z0MJaEEt1p1fnd2UinJIMdFZR+vdeg1gwt4=
-X-Gm-Gg: ASbGncuvWurX7Jko2uQSR3+jmxz2OwqvK+K7nRgzciRM6fxdfkAXWTeIjpOv+rBqYB2
- 6z00a9f1ceJMSDvhhms+oTXRNIc/dd4WJdywBk3L2fzjpOoQbrPLNPkQFDsrMuAmMneub3PpIqx
- j+RS7kVPQ0D6d3C+DqAcj7aRf2fjC/dD6djTmnSgukK8MQcJHtmh042dp+y9+2XiMGfTPMbTUs2
- 3AVyYEdjswiZ0t9j7Il7xWlHU96lmHlRuyQiIhCm0IWunPKYn3Tc4cbuYNxn6et1J5HPk3or/if
- hvlUiYkd0z9xEYwWSGllJEC7o9msgoiqZfN2NkuVteAznU3lX2bU/1/mLARQmbxqLgdpOz2VAfP
- l6aX0jaWLTJOoS0T4yi3SVlLt77y+E1N7z/4=
-X-Google-Smtp-Source: AGHT+IF/0EyAGmzC7c/AyRWIm9NMZQ+uO/p43AvudX0xpI7Qimn7xsG6N4Sb1b1+GhWeTrdSdin7zA==
-X-Received: by 2002:a05:6a20:12c9:b0:240:356:f06e with SMTP id
- adf61e73a8af0-2400356f28fmr8309480637.0.1754325656773; 
- Mon, 04 Aug 2025 09:40:56 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bccead744sm10788651b3a.57.2025.08.04.09.40.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Aug 2025 09:40:56 -0700 (PDT)
-Message-ID: <f870c073-61f3-4693-90cf-e75372047c84@linaro.org>
-Date: Mon, 4 Aug 2025 09:40:55 -0700
+ AJvYcCUnwQTABufhbKG9EWURhyQ2c38dX67+3sNC7KeaIP//hgbxNyo7/qYEY/RFIrlAJ+Ki/xuiqphP6gia@nongnu.org
+X-Gm-Message-State: AOJu0YxtkCkbARgANq69Pav/ujtqwyj4y6+iluZL+zRkob/kS8y9Uzgc
+ qeyQc1xTH9femjwmjuOQH1jRbZ9cdkGhqkAD8qNRY3kvr8WM1iUCUJMr92Tq5zvgbMoGFFDWZMm
+ HTus9rkmEx6kp1VeKOuROOKe1iNEwM/FoNnPo1oqPuQ==
+X-Gm-Gg: ASbGncvmLrCC7b5PG28PAcr7PEJlf/KULoyCXA5ipUCe/lqfUQD3C5oZ68WX2g9KLSl
+ myWjXt/RQLBlEbukCFYbo07fY3LeekUV0Wrkiw7mAxfWkOzFvRLz58jB1c5M9iU2BFQBHvmibGt
+ E+61r78WEf0/l1UFkQ9upnc7Ad35Du+WPvRjSD57ShjarOmf+8EySlaUFT3XSvNNxf3hOQnjhLy
+ RUOI9Ut
+X-Google-Smtp-Source: AGHT+IEytZrLcNOb629dFgWQFPhTpDboow//5emefKHC9esAVBQKb9nj54USy/fb8uEX0f5NCsBKIzzY0mA4g+rQ6fs=
+X-Received: by 2002:a05:690c:6085:b0:712:d54e:2209 with SMTP id
+ 00721157ae682-71b7f5f743fmr126036997b3.14.1754326160642; Mon, 04 Aug 2025
+ 09:49:20 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] wasm: Enable 64bit guests on TCI using wasm64
-Content-Language: en-US
-To: Kohei Tokunaga <ktokunaga.mail@gmail.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-References: <cover.1754310749.git.ktokunaga.mail@gmail.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <cover.1754310749.git.ktokunaga.mail@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
+References: <20250722201404.2368507-1-vacha.bhavsar@oss.qualcomm.com>
+ <20250722201404.2368507-2-vacha.bhavsar@oss.qualcomm.com>
+ <875xf36qyk.fsf@draig.linaro.org>
+In-Reply-To: <875xf36qyk.fsf@draig.linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 4 Aug 2025 17:49:09 +0100
+X-Gm-Features: Ac12FXxLH5JBEv4mi3jhv3N-qKFHNnhDB6EHmh_9YCNACtpaF8Y4Q-e_FdO_qIU
+Message-ID: <CAFEAcA8o4wEHHDXVj0Fcc3i8g+49psY7YSf1AqGiGe9vNuXiQA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] target/arm: Increase MAX_PACKET_LENGTH for SME ZA
+ remote gdb debugging
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>, qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,122 +98,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/4/25 5:57 AM, Kohei Tokunaga wrote:
-> This patch series enables the TCI of the Wasm build to run 64bit
-> guests. Unlike the previous series[1], this patch series is implemented by
-> adding support for WebAssembly's "wasm64" target which enables 64bit
-> pointers.
-> 
-> In the previous discussion[2], the main challenge of using wasm64 was its
-> limited adoption, particularly the lack of support in our dependency
-> (libffi) and some engines such as Safari.
-> 
-> For libffi, I've completed the addition of wasm64 support upstream[3] so it
-> can be used.
-> 
-> To support wasm32 engines, this patch uses Emscripten's compatibility
-> feature, -sMEMORY64=2 flag[4]. This flag still enables 64bit pointers in the
-> C code while Emscripten lowers the output binary to wasm32 and limits the
-> maximum memory size to 4GB. As a result, QEMU can run on wasm32 engiens
-> while still supporting 64bit guests.
-> 
-> # Overview of the build process
-> 
-> To compile QEMU with Emscripten, the following dependencies are required.
-> The emsdk-wasm-cross.docker environment includes all necessary components
-> and can be used as the build environment:
-> 
-> - Emscripten SDK (emsdk) v4.0.10
-> - Libraries cross-compiled with Emscripten (please see also
->    emsdk-wasm-cross.docker for build steps)
->    - GLib v2.84.0
->    - zlib v1.3.1
->    - libffi v3.5.2
->    - Pixman v0.44.2
-> 
-> The configure script supports --cpu=wasm64 flag to compile QEMU with 64bit
-> pointer support.
-> 
-> emconfigure ./configure --cpu=wasm64 \
->                          --static --disable-tools \
->                          --target-list=x86_64-softmmu \
->                          --enable-tcg-interpreter
-> emmake make -j$(nproc)
-> 
-> If the output needs to run on wasm32 engines, use --wasm64-memory64=2
-> flag. This flag propagates the value to Emscripten's -sMEMORY64 flag[4].
-> 
-> emconfigure ./configure --cpu=wasm64 --wasm64-memory64=2 \
->                          --static --disable-tools \
->                          --target-list=x86_64-softmmu \
->                          --enable-tcg-interpreter
-> emmake make -j$(nproc)
-> 
-> Either of the above commands generates the following files:
-> 
-> - qemu-system-x86_64.js
-> - qemu-system-x86_64.wasm
-> 
-> Guest images can be packaged using Emscripten's file_packager.py tool.
-> For example, if the images are stored in a directory named "pack", the
-> following command packages them, allowing QEMU to access them through
-> Emscripten's virtual filesystem:
-> 
-> /path/to/file_packager.py qemu-system-x86_64.data --preload pack > load.js
-> 
-> This process generates the following files:
-> 
-> - qemu-system-x86_64.data
-> - load.js
-> 
-> Emscripten allows passing arguments to the QEMU command via the Module
-> object in JavaScript:
-> 
-> Module['arguments'] = [
->      '-nographic', '-m', '512M',
->      '-L', 'pack/',
->      '-drive', 'if=virtio,format=raw,file=pack/rootfs.bin',
->      '-kernel', 'pack/bzImage',
->      '-append', 'earlyprintk=ttyS0 console=ttyS0 root=/dev/vda loglevel=7',
-> ];
-> 
-> The sample repository[5] (tcidev64 branch) provides a complete setup,
-> including an HTML file that implements a terminal UI.
-> 
-> [1] https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg05376.html
-> [2] https://lists.nongnu.org/archive/html/qemu-devel/2025-04/msg01795.html
-> [3] https://github.com/libffi/libffi/pull/927
-> [4] https://emscripten.org/docs/tools_reference/settings_reference.html#memory64
-> [5] https://github.com/ktock/qemu-wasm-sample/tree/tcidev64
-> 
-> Kohei Tokunaga (4):
->    meson: Add wasm64 support to the --cpu flag
->    configure: Enable to propagate -sMEMORY64 flag to Emscripten
->    dockerfiles: Add support for wasm64 to the wasm Dockerfile
->    .gitlab-ci.d: Add build tests for wasm64
-> 
->   .gitlab-ci.d/buildtest.yml                    | 24 +++++++++++++--
->   .gitlab-ci.d/container-cross.yml              | 18 +++++++++++-
->   .gitlab-ci.d/container-template.yml           |  4 ++-
->   MAINTAINERS                                   |  2 +-
->   configure                                     | 14 ++++++++-
->   meson.build                                   |  4 +--
->   ...2-cross.docker => emsdk-wasm-cross.docker} | 29 ++++++++++++++-----
->   7 files changed, 79 insertions(+), 16 deletions(-)
->   rename tests/docker/dockerfiles/{emsdk-wasm32-cross.docker => emsdk-wasm-cross.docker} (85%)
-> 
+On Mon, 4 Aug 2025 at 16:34, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
+e:
+>
+> Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com> writes:
+>
+> > This patch increases the value of the MAX_PACKET_LEGNTH to
+> > 131100 from 4096 to allow the GDBState.line_buf to be large enough
+> > to accommodate the full contents of the SME ZA storage when the
+> > vector length is maximal. This is in preparation for a related
+> > patch that allows SME register visibility through remote GDB
+> > debugging.
+> >
+> > Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+> > ---
+> > Changes since v3:
+> > - this patch was not present in version 3
+> >
+> >  gdbstub/internals.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+> > index bf5a5c6302..b58a66c201 100644
+> > --- a/gdbstub/internals.h
+> > +++ b/gdbstub/internals.h
+> > @@ -11,7 +11,7 @@
+> >
+> >  #include "exec/cpu-common.h"
+> >
+> > -#define MAX_PACKET_LENGTH 4096
+> > +#define MAX_PACKET_LENGTH 131100
+>
+> This is a rather large expansion for something that ends up in a static a=
+t:
+>
+>     char line_buf[MAX_PACKET_LENGTH];
+>
+> I think maybe its time to get rid of this hardcoded define and make line_=
+buf a
+> dynamically re-sizeable buffer along the lines of str_buf and mem_buf.
+> In fact make it a GString and we can get rid of line_buf_index as well.
 
-Excellent, thanks for adding this.
+What exactly is the packet/response where MAX_PACKET_LENGTH is
+causing problems? The commit message doesn't say.
 
-Out of curiosity, and out of the scope of this PR, would that be 
-possible to make a "universal" build, which can selectively select the 
-appropriate wasm64 support at runtime, so a single build works on all 
-browsers out of the box?
+In general I thought the gdbstub protocol was supposed to handle a
+fixed packet length (e.g. in handle_query_xfer_features() the response
+packet indicates truncation via "l" vs "m" so the gdb end knows it needs
+to send another request to get the rest of the data). So if we run
+into something which seems to be fixed by raising MAX_PACKET_LENGTH
+I would first want to look at whether the underlying problem is
+that we're not indicating to gdb "this data is incomplete, you'll
+need to ask for more of it" or something of that nature.
 
-As well, what are the limitations of -sMEMORY64 regarding limited 
-address space? Is it just the maximum size of memory a guest can have, 
-or does it limit the VA that can be accessed also?
-
-Thanks,
-Pierrick
+thanks
+-- PMM
 
