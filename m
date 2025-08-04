@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4471FB1A54B
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 16:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58BD0B1A566
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 16:59:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiwXl-0002nP-Rc; Mon, 04 Aug 2025 10:52:10 -0400
+	id 1uiwf9-00072Z-Ur; Mon, 04 Aug 2025 10:59:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uivBU-0004Oh-KL
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:25:00 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uivKP-0008Fl-T4
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:34:18 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uivBS-0006id-Ds
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:25:00 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3b7848df30cso3330529f8f.0
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 06:24:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uivKM-0008RJ-E5
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:34:12 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4563cfac2d2so30997735e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 06:34:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754313896; x=1754918696; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=97dFiWkFWB/i0zL6QqfC8T9NssPBUxEbXa4b51KzaVI=;
- b=iuOjXDLXCKR86K9D4gon8uEHwTLLlIY9QiBewOZeTaOPcAr2553cezVdH6cVK4T/J1
- XD0iDi7lPLTxKtjaiTPGrpdDArA+0L4SZAchKiPoSfHcNeUZ0kswJzvY+ElkEDX/1nFO
- dsfqR2Br+yuSpuviFegYCtYGM726d2VOKxDi4EP+ucvF7urEhouQLDtmfJU4pdYRAwNb
- PhGtZ0roKbxTfn7i3E6rbAsdJiUTzpZh3j5LAwhAn6aEBMzyMilZ97fvL0IxeLF64kas
- 9jzgD9Aznvy8IWOrUP+o/h/vI/YLg+A5lwucT/RmyjdJQwbLS35K5Uil2M0SBdkupHor
- nnbg==
+ d=linaro.org; s=google; t=1754314448; x=1754919248; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=71w1yPowl9RTO7KXVQBpxY+KjMD4LfNAuPnGUS2NDmc=;
+ b=QzGPIriIqe0tXAXXFnBE4lNL2OMBGoTOkqmwK6+a2xd4bsZV+rVbM1tp9ANFhtKBqd
+ 05LXmBB9HSJxHdTAI9mOO2h/f6KC4eESi+IodonNs4ns2SBAvOSsw7BNTsCxI7EOYFUM
+ rk5p3RAAN6UKl9plNwlaL17xJnImg8S7oKlq5+QlQm7u3M0V1TzcLfeq7Idofy/UXoDg
+ ybWJYAQ9kiaFTxA7H131Kh1tKJUedTUjuClZDNgmRO0DCWBgl3xCkE1bonPvtFd0ph9W
+ PVKDjyO0KSFAObwGEM8A61q1Trc0tzL06yN3APs7xja2KIfKWpHiMHUBA9339+EfJcky
+ 9LAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754313896; x=1754918696;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=97dFiWkFWB/i0zL6QqfC8T9NssPBUxEbXa4b51KzaVI=;
- b=BIKrLFf34wyOoW7rosQXaRRZzvuyMLB6bbbFvqVkSVzb4cBMeXCHEqndpHXlAemynA
- 8KwMDlI+lvAmS1sTTfGyC6C81DuUScSN4XNxk81SA7VksjuNrO5M/1+Y6vDCczQ8jr9x
- 7qR5bhJQOPUvc7HlXeAb032IOmYbKWQucFWPRVukP0NAM2h7AdlO2irxBYKn1tn1Hhn/
- kr5sbYhCs2/7pkXgfrcF9/DFlHQUgCkToatqZpENVYobJ1uc7tEFSvYWeco4A9+RcNa+
- YRy1G3uvonEjAUqNkeg7mKI4LUO2nhHX6xNBxkaZ6664od7zdMDi+lbzxImY0uDNtqqg
- glUg==
+ d=1e100.net; s=20230601; t=1754314448; x=1754919248;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=71w1yPowl9RTO7KXVQBpxY+KjMD4LfNAuPnGUS2NDmc=;
+ b=hd7cqteyuOAseDSzANPzWVW2nlp4zSYMCw+5u7+qnKUU2AGHZroSvU8G/9KNu5xk/D
+ AF2V5pbNffNMPIJrFIxgp5Lhre16TL+JDmIGM8sN0/hksH976IjK+OwdZlGHmksQ6OeM
+ 103pu6vJxd6r9boLM3hOTonhZhcHynNhoprSUtPMDSR8LoWUb94AZWUfg4+Ul7pkB5TV
+ 2ublTCh5XXgDrQ0dTla1Vq6pXmrfnSjffPOgVq3C4PjBbNQ/nnxHbt1v71weWkwxiup+
+ OWFUoqx/S7O27yzQB8G8Wt6VZOu3n5DF0CXUuSwLJjHkOC39yuhblIXd0DyfWwPNjJEM
+ 6ZWw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWGwy0FxlD5hYScw/gEhazcvS/3bI459WQ1uC9/0vyNisAHG2M1TskJFrvcXzziciVZuXN0r9B0wTFR@nongnu.org
-X-Gm-Message-State: AOJu0YzBy5U7W3qOKkxUgx/ege+Nj43gtlDP9+HEQFpQpECCQ0KfVh1i
- AwBNTmhIa+CfB2OK8J1ouHv1OMIUUHY9PhdzjxDWNDy+59XB8DH9U7smVAiFsuh6UrI=
-X-Gm-Gg: ASbGnctrU6585zdPJWCHXr1P1DFlKvKo3oe7ovGbKoF3uXbtoyp5mZFvkC2YV5B7LxN
- WkS3xGKWHP8S92wu4wTW0aqeob0TnH3P43IBABoREOEPLNZSFU5Sl0irBDt94tlheiSOCGI4WUI
- YKDRoA2KxMStFA2xylhTK6Maf5nN17jnb5I806o5czFf1d3/ly/ZZ7Si6VyFgUj6thPKOKNQgEA
- ryCM8SWf5KUKSJld/AhvmG38PTX3XUiZwhumj3YC6/t69MokIoIT0Q9Fwj50BPeLknGraydvsa0
- C3UW2zrVCcJpoP/XKDkFZPz90ReSSMbS27+w5N0O3X3VHAnb6MTSmUiYzDut1pyRjOBOk2nZz4T
- 6O9qEhMXIo3gvz4gZTVWYaY4ps31/gDEHm8x9erQQmY+cK0MOSn/IYD6ijZ9HBIHcyQ==
-X-Google-Smtp-Source: AGHT+IHXCrZrByL0ogMB3u04EAeRRWQw6uZPVU2k+HY09TlP41owUy96djoWbsOI+7BiGvMrBMncsg==
-X-Received: by 2002:a5d:5f4c:0:b0:3b7:8acf:1887 with SMTP id
- ffacd0b85a97d-3b79d4e387emr10775962f8f.13.1754313896393; 
- Mon, 04 Aug 2025 06:24:56 -0700 (PDT)
-Received: from [192.168.69.201] (88-187-86-199.subs.proxad.net.
+ AJvYcCUitXc/xg+LKxRPU0cI3d9Ug7I8hky0iANhYecX0h+NRGSt4S4FpM+WBEv+BmnP4UqBNNzJad3lhDkX@nongnu.org
+X-Gm-Message-State: AOJu0YxQ2j8Y5t+xNS9pOuIsaRTBxgTTIUneBcvGKAH03dwgnM8XTKMA
+ RgLmHiC0ckLA5BaCfPBnHNHZVpqF2QEda5SYLrDO+nO7fYy4qVEOC8xyDqxMaHDgzSY=
+X-Gm-Gg: ASbGnctrsFQSMWXb3A9POlyeauyZkrhrKZGLxY1/lcHHzzW5L2VrjgEI8NF0G1+87bI
+ dFDsdGuNEoNW1rKYm6GB9AGaifiCSh7e82EpVdluSTfJV3kRDaNxo/PKVXS/3pgRF87kThvoBiH
+ mbtWkEu3nX9k2FJqu959oXaT1ArPRhXRgc5gY037S6L7aMKnyDg1I74fhEL+EQEdzh86Gg9YRTW
+ JZ1shdZ+Qqv79VV47v16sHgAiLILmgz1X3Avmm2MGV5/E4CgSG2Zv3K/Cm1xxXhwaEIUQM3/VLF
+ +F82/UkEIW1FDM6eZoZcmtqKfJMM152tgFxp56nTXngd5p0pOVqZBLiCoV0iZMiJmFovU2oDkeY
+ PaNupH2veh3ChBS2oabRhTKwHti/R5fogSFpEoU462AuppHzOvlQGCAKAsS0w6yR/NcTHBulg
+X-Google-Smtp-Source: AGHT+IGbVe31gT//v4a6/azroTh7Glf6nat9vb1d57UA4WFAUaQNKmwJd3Tn0DGKUg0tri+n8dAMsg==
+X-Received: by 2002:a05:600c:1e8c:b0:456:11cc:360d with SMTP id
+ 5b1f17b1804b1-458b69de114mr73176085e9.9.1754314448442; 
+ Mon, 04 Aug 2025 06:34:08 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-458f713eb44sm69011535e9.14.2025.08.04.06.24.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Aug 2025 06:24:55 -0700 (PDT)
-Message-ID: <3a0626c4-a2e9-44dc-8437-271adddd0499@linaro.org>
-Date: Mon, 4 Aug 2025 15:24:54 +0200
+ 5b1f17b1804b1-459dfa64da0sm12464425e9.3.2025.08.04.06.34.07
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 04 Aug 2025 06:34:07 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ben Dooks <ben.dooks@codethink.co.uk>, qemu-riscv@nongnu.org,
+ qemu-block@nongnu.org, qemu-arm@nongnu.org,
+ Guenter Roeck <linux@roeck-us.net>, Bin Meng <bmeng.cn@gmail.com>
+Subject: [PATCH-for-10.1 v2 00/11] hw/sd: Fix SD cards in SPI mode
+Date: Mon,  4 Aug 2025 15:33:54 +0200
+Message-ID: <20250804133406.17456-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qapi/command: Avoid generating unused
- qmp_marshal_output_T()
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: michael.roth@amd.com, jsnow@redhat.com, berrange@redhat.com
-References: <20250804130602.903904-1-armbru@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250804130602.903904-1-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,64 +99,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/8/25 15:06, Markus Armbruster wrote:
-> qmp_marshal_output_T() is only ever called by qmp_marshal_C() for a
-> command C that returns type T.
-> 
-> We've always generated it as a static function on demand, i.e. when we
-> generate a call.
-> 
-> Since we split up monolithic generated code into modules (commit
-> 252dc3105fc "qapi: Generate separate .h, .c for each module"), we do
-> this per module.  As noted in the commit message, this can result in
-> identical (static) qmp_marshal_output_T() in several modules.  Was
-> deemed not worth avoiding.
-> 
-> A bit later, we added 'if' conditionals to the schema language (merge
-> commit 5dafaf4fbce).
-> 
-> When a conditional definition uses a type, then its condition must
-> imply the type's condition.  We made this the user's responsibility.
-> Hasn't been an issue in practice.
-> 
-> However, the sharing of qmp_marshal_output_T() among commands
-> complicates matters.  To avoid both undefined function errors and
-> unused function warnings, qmp_marshal_output_T() must be defined
-> exactly when it's used.  It is used when any of the qmp_marshal_C()
-> calling it is defined, i.e. when any C's condition holds.
-> 
-> The generator uses T's condition instead.  To avoid both error and
-> warning, T's condition must be the conjunction of all C's conditions.
-> 
-> Unfortunately, this can be impossible:
-> 
-> * Conditional command returning a builtin type
-> 
->    A builtin type cannot be conditional.  This is noted in a FIXME
->    comment.
-> 
-> * Commands in multiple modules where the conjunction differs between
->    modules
-> 
->    An instance of this came up recenrly.  we have unconditional
->    commands returning HumanReadableText.  If we add a conditional one
->    to a module that does not have unconditional ones, compilation fails
->    with "defined but not used".  If we make HumanReadableText
->    conditional to fix this module, we break the others.
-> 
-> Instead of complicating the code to compute the conjunction, simplify
-> it: generate the output marshalling code right into qmp_marshal_C().
-> 
-> This duplicates it when multiple commands return the same type.  The
-> impact on code size is negligible: qemu-system-x86_64's text segment
-> grows by 1448 bytes.
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   docs/devel/qapi-code-gen.rst | 25 ++++++++------------
->   scripts/qapi/commands.py     | 44 ++++++++----------------------------
->   2 files changed, 19 insertions(+), 50 deletions(-)
+Since v1:
+- new patch factoring sd_response_size() out (Richard)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This series fix a pair of issues with SD cards used wired
+via a SPI link / controller.
+
+Such mode implementation was minimal. I was testing it with
+the ARM Gumstix machines, but we remove them in the v9.2.0
+release (commit a2ccff4d2bc ), so they bit-rotted.
+
+Although the series looks big, I shrinked it a lot to have
+the minimum amount of meaningful changes. Other changes
+added during debugging will be shared later, as I believe
+they will still be useful to debug other future issues.
+
+The last patch add testing coverage, to avoid further bitrot.
+
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (11):
+  hw/sd/sdcard: Do not ignore errors in sd_cmd_to_sendingdata()
+  hw/sd/sdcard: Factor sd_response_size() out
+  hw/sd/sdbus: Provide buffer size to sdbus_do_command()
+  hw/sd/sdcard: Fill SPI response bits in card code
+  hw/sd/sdcard: Implement SPI R2 return value
+  hw/sd/sdcard: Use complete SEND_OP_COND implementation in SPI mode
+  hw/sd/sdcard: Allow using SWITCH_FUNCTION in more SPI states
+  hw/sd/sdcard: Factor spi_cmd_SEND_CxD() out
+  hw/sd/sdcard: Disable checking STBY mode in SPI SEND_CSD/CID
+  hw/sd/sdcard: Remove SDState::mode field
+  tests/functional: Test SD cards in SPI mode (using sifive_u machine)
+
+ MAINTAINERS                               |   1 +
+ include/hw/sd/sd.h                        |  23 ++-
+ hw/sd/allwinner-sdhost.c                  |   7 +-
+ hw/sd/bcm2835_sdhost.c                    |   7 +-
+ hw/sd/core.c                              |   5 +-
+ hw/sd/omap_mmc.c                          |   5 +-
+ hw/sd/pl181.c                             |   6 +-
+ hw/sd/sd.c                                | 198 ++++++++++++++++------
+ hw/sd/sdhci.c                             |   6 +-
+ hw/sd/ssi-sd.c                            | 100 ++---------
+ hw/sd/trace-events                        |   4 +-
+ tests/functional/meson.build              |   1 +
+ tests/functional/test_riscv64_sifive_u.py |  51 ++++++
+ 13 files changed, 249 insertions(+), 165 deletions(-)
+ create mode 100755 tests/functional/test_riscv64_sifive_u.py
+
+-- 
+2.49.0
 
 
