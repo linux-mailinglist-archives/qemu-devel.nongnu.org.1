@@ -2,79 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6511BB1A930
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D534B1A91A
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:19:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uizwD-0005Dk-AG; Mon, 04 Aug 2025 14:29:33 -0400
+	id 1uizlJ-0006Ff-JB; Mon, 04 Aug 2025 14:18:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uiy4g-0002Xu-06
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:30:10 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uiy8H-0006Ut-8R
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:33:54 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uiy4e-0003ro-7K
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:30:09 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4561ed868b5so30682675e9.0
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:30:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uiy8B-0004Fi-Gv
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:33:50 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-76c18568e5eso305027b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:33:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754325006; x=1754929806; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=fyg4V/BJb4Yh/ywk/gyoQ4LrFvtg7mzAwCBuzyAs9Es=;
- b=kbHLRPNh7lFerpF6WIuM1btsWPctdmd87Uf4k9d3t4FVXtwWrE4FIMYxq0g7B4NlRH
- D2egsBgSnhE/WxMhuwgQlqZZixYDBapLQ1P2/Uo0S8vsTwJtSrjMC57tt+N9NvQ3U9/N
- 4tYnfZvGQDmpxHxmoHK9sH8TnUaPTcQKnNbtuMnAXKKmCHCR1kziKsxUtJgkbEIkp2Qw
- KytVCLad4Gf/4SQyPlNswyp7TGO/vfC9S/N0qtODXcDeFqcUrihWAxhH4Ug2y7P+6kSa
- QgTHGdQZU9HTdZrRRQY3kEqDKW3OK/e4IDUlkcu1Ia06Wc3uGQrQ6OY9ze/NEPWVuWI8
- hGoQ==
+ d=linaro.org; s=google; t=1754325226; x=1754930026; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NplfqzSq6BSIdF30eaVRfkDHWiEc+GlcOceHc23ZxuA=;
+ b=RUcOeSYYYJsTOhnZxTBpdjNw1qdbEzK92hHaahwPin3uv4HFZNiIckKjxqR2Eh8PiY
+ izY1PF3ap5UfcEE36wFXw2wRxSk75MokbgxkfDNAnkQVZJT7Jvuf/5YQgr1hovFRbgtA
+ NFTgwVD0JsaC72ZI08Lohc6XrQZm6R5bqC1zY3qCu4GMFsa6rk233mGoUfMvRMDOH/gl
+ ipNpyr5UbAYx7hLycps/IalwHR8RWExU/w4MeJrMRUCHxqGC1wcn5f+KQ7CXfz40QGR+
+ N/goBDcZmgzwq31R0PFPK1YbVVLBISca+ZgGlkE+zieT9aPm7tKeXU0/MngxuvISOwap
+ Kq+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754325006; x=1754929806;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=fyg4V/BJb4Yh/ywk/gyoQ4LrFvtg7mzAwCBuzyAs9Es=;
- b=oFB5btvuGAl5M2x1TGx48Q5cUGDSgerx5stajrsR07hNr0dW5hhBL7Y2SQXCj3fqjZ
- Iej54qQbfAf5L5g3xdwvUwVtIcg+TdPwFvl06RZz3GVIT2BaLWzIGdY2LOEtpaySmd8/
- F6+yCgR4D3xqwIghMz0Eh3LJ8Ruf7LT8HpUtHY2MgDfY8SYoV4DJNUICyFbEmcIAPgA+
- qard2GKcBTO/v6TINGvtwIwLilOaVe19+FEHCv/yRP+VPCl0oxJMsR+NbtoEDcwaKiTH
- 3oCZ9/6OLT9DR9/Hm0m22+VEqLxtuFI/FFG3bD8ISCFRp6R93B85PMKe0g9gaS/6LuWb
- sOBA==
-X-Gm-Message-State: AOJu0Yz1s0EfosXAYFCnYrshnZcQ7GljhNeW+ko6rjdLn6GiKSOK9k5w
- BA7fSYpp+a0rikOPJrnahphZu7bvwpHEsB/yI/dV8bQn5Z2mTNL7XSEjedfiYfcVSP8=
-X-Gm-Gg: ASbGnctTH3HBeLclSCVqtt2+FRhprvRVyee8Z+j8QApjcgAn/dEahHiALLGctqtc1qS
- He+zaMMRCPG5sGeMPs40k41BMdPSZENjL2mFqIulZ2YERSkH0K5Xs4D9ey3UAqXbeMNFlwR7vZy
- p1p4XNdRdZ8V2VgezzxEls9iS6uYJsjxmDEIm0DlvOa2Lo030fG/5yelBgny0h5CurzqFIjZsLT
- 4bi7344om+2hoPjpczgnRfxNmAazDo+In/zWqFsuqlAz/rNcKzohUBIXjs3QUh7EFPy1Y3d7CJ8
- 6sgjTMB4nLXYOFEB2Ixxm2WRmXNPlhVKPhp+jxTlbOuBX6ACFCsy4F68FGJdqYke8uSDVs3nX1H
- Tj12lg69nxz2QgeUsU379XbE=
-X-Google-Smtp-Source: AGHT+IFl35QlWoTZEF5QnpmNbQhT3S66Ro/0jHeqz8w+EbKbgiYPd+A+TjsWzNtPjgFLob/EW009rA==
-X-Received: by 2002:a05:600c:4445:b0:456:29ae:3dbe with SMTP id
- 5b1f17b1804b1-458b6b421efmr67474115e9.24.1754325006192; 
- Mon, 04 Aug 2025 09:30:06 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c453328sm16807907f8f.46.2025.08.04.09.30.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Aug 2025 09:30:05 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 64E525F76F;
- Mon, 04 Aug 2025 17:30:04 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH] readthedocs: don't build extra formats
-Date: Mon,  4 Aug 2025 17:29:59 +0100
-Message-ID: <20250804162959.330060-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.2
+ d=1e100.net; s=20230601; t=1754325226; x=1754930026;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NplfqzSq6BSIdF30eaVRfkDHWiEc+GlcOceHc23ZxuA=;
+ b=KqiV5ksjOX8P/QDKDr+9P4ndILwIOGh/we+hBQHszS1xk1yjLMjpeaNKkPAymv03fH
+ 4hbwI+etPgMw7Kz/feEO9dC4/o6sDejEvvfr0+NW0CYfN13SGWf2gdz4Xww2w2sGbBdf
+ OaVH6kpuc/+Y27Bw1xw9XBoW1QxNwz0T3ZT1hEphgXs1/HQqixklAOspjZCAWN8fXhO6
+ rKzl3WZFyhd57yfaVL73IGLr5PfAupZl4Z0dL7ta1q5WRFiWUTmPw3mjR2lSZGD4R6vT
+ 8uhxhTcEoAtVfoJHZwSwwLwqxkzs/YEwLnQOSbMEoCa9UO9iTmKgfsLip2Di8i7QhbF8
+ C8kw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXs74dMYLVavtjBQTX/See6xs7sCtJgSCF7qqyDyJKubB+zwcB7ETwbTScuLpCds+bSWah5wkeEy7QP@nongnu.org
+X-Gm-Message-State: AOJu0YxqImRYYOwIiX9bebXVSQoyX7bRQvY6mR2FxKqFsCHjjbSVkM+x
+ SrydKtvzrP7Upj4jd1TZApwjZaBcB9evi+9OYNQgHxaS0KzRsCLWWlZ3lfer2ESWPR4=
+X-Gm-Gg: ASbGncstt1e6MzY4sNxzDOU9XbElwogM4HoLxD+/qMcuw73maN3w3qCJj7UYfkyifBE
+ RCjc4EJmIB7CBhLkiKgzUboa06c5y0XgoAcJCPB/4Ry2sP9FCpqKiqXvUiIlBbSbGAxarL9MaPj
+ Ytg6D4Dpg8quSxrciLKb15d1P2+JiKGKA/CxzW2A2BFnMrXacoIo3uE4K+BzRya8zxISig2Yn2t
+ oXEus2IPAmPxc6qBbqunyvuOIUWvlb6898eKd4q26PsF5uS1aZ97GkFMKen1ZxBzRzHvY91rxmt
+ XQ/iOrYejKV/4B9Nq7YPAwcGmQlyi7bl0gCkBi6yrK81311O+MPGd7ZrI/CBIgOc/Qo313fREuC
+ 3Vg7DimtyCNXwkpWNthURNjY1OP1/c4PESXM=
+X-Google-Smtp-Source: AGHT+IEorxrCHHTdXY8qTxK+1WxRBaDrIn91gd/Zg4gL1wMO35PBi1de3nGcG5OOfRUHjvnQh5niwA==
+X-Received: by 2002:a05:6a20:1596:b0:233:3036:6fae with SMTP id
+ adf61e73a8af0-23df9082f78mr15693407637.27.1754325226127; 
+ Mon, 04 Aug 2025 09:33:46 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-31f63da602asm14807713a91.2.2025.08.04.09.33.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Aug 2025 09:33:45 -0700 (PDT)
+Message-ID: <0b632b70-c79e-40c6-badd-50a4b3f61d53@linaro.org>
+Date: Mon, 4 Aug 2025 09:33:45 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] meson: Add wasm64 support to the --cpu flag
+Content-Language: en-US
+To: Kohei Tokunaga <ktokunaga.mail@gmail.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+References: <cover.1754310749.git.ktokunaga.mail@gmail.com>
+ <ac10a681d44665df56bf7f35660719b29654119d.1754310749.git.ktokunaga.mail@gmail.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <ac10a681d44665df56bf7f35660719b29654119d.1754310749.git.ktokunaga.mail@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,27 +107,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't build the PDFs ourselves for the hosted docs and it looks
-like rtd can't manage building PDFs now they have gone over a certain
-size. Disable the extra formats so we can at least have the online
-stuff again.
+On 8/4/25 5:57 AM, Kohei Tokunaga wrote:
+> wasm64 target enables 64bit pointers using Emscripten's -sMEMORY64=1
+> flag[1]. This enables QEMU to run 64bit guests.
+> 
+> Although the configure script uses "uname -m" as the fallback value when
+> "cpu" is empty, this can't be used for Emscripten which targets to Wasm.
+> So, in wasm build, this commit fixes configure to require --cpu flag to be
+> explicitly specified by the user.
+> 
+> [1] https://emscripten.org/docs/tools_reference/settings_reference.html#memory64
+> 
+> Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+> ---
+>   configure   | 6 +++++-
+>   meson.build | 4 ++--
+>   2 files changed, 7 insertions(+), 3 deletions(-)
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- .readthedocs.yml | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/.readthedocs.yml b/.readthedocs.yml
-index 0b262469ce6..639f628612c 100644
---- a/.readthedocs.yml
-+++ b/.readthedocs.yml
-@@ -21,5 +21,3 @@ python:
-   install:
-     - requirements: docs/requirements.txt
- 
--# We want all the document formats
--formats: all
--- 
-2.47.2
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 
