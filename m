@@ -2,89 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB701B1A5BF
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 17:21:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EA3B1A5AA
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 17:18:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiwzw-00071N-M3; Mon, 04 Aug 2025 11:21:13 -0400
+	id 1uiwvl-0003TX-QY; Mon, 04 Aug 2025 11:16:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uivWy-0004Tn-7o
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:15 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uivXM-0005Xy-Tw
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:37 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uivWv-0002UI-Gr
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:11 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-b3507b63c6fso3204785a12.2
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 06:47:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uivXL-0002Y0-0I
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:36 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-61589705b08so9610734a12.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 06:47:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754315226; x=1754920026; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=FMRBnB2Qdvymd2OVLcmIiwPYyAa//gUJuXtuwL+CVeQ=;
- b=Y9T+OI17o9GLf4EqACQ4LyhompT4DoUrT5RBvws+Ob3V57M/lv1ozsrhW00zuaoR0J
- dTs/9ef9KT5hcFP169z5htIYJPGlWkWTSJS2R7yAfXp1aAbwo5yJ5FNgYfnrfwrm8WdR
- ltpe7jMs5vmjJOo1swC+Pp0VEZYSjCbFwx/Y1gwSO+LjdU5GGzOX9oiUMwTWEUrpD/Jk
- PTRzrtl9cm2K5hTGIG7sKiCSrS3qJcESaBcmf4rK3OD2p+G0vlO8jA+AugiL0uchAihm
- lavDwrW5TJXyCWnMlkAazDc9bmEpltY2D2WoRr0iz0g7kXZvHtv5NewYhnvC08pksY1i
- /O3w==
+ d=linaro.org; s=google; t=1754315253; x=1754920053; darn=nongnu.org;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=5dEWt1nkV51ylczEHQGWDauwKjNPPbnNW27Ct1uuvE4=;
+ b=ZrDPGkR/YK7W9FzNhHfRQUJmvwAviMvm0b3aZVGtccaXYLdSszwExxm/sx+0T2PCVF
+ K5TUI8YqRPr0jukTv/HDaUT3TMxWYdwWlcdzFSidtX7XikWRjeA6xB6fjw7TwEGKn7KH
+ +/yIzNq0TN94PC0fEBP6qmtn6UzZggM+/c5Zk8+cFVXOvFFECPooceBV/li1dEE7VXjm
+ F/060uUqIMDBBw3SynwzuoTXm0w80wS9Y5sV/mlOyMoRyptJDo2nfCP3RtP19Kh5Qr/I
+ MF+oH65kc6RW7BuniJBlwyfe/opHWQLJS1gTb0yWAhDyAgOYq0epllAhORhYl7hy2rFr
+ dr2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754315226; x=1754920026;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FMRBnB2Qdvymd2OVLcmIiwPYyAa//gUJuXtuwL+CVeQ=;
- b=EjMLsAA6Sx8rcCIinQNzdqlTGepwL2nPm229+yLtQ+u/U4wkeN5H+ILA8SNt1WY55W
- QN6wfD8CBWqRjBtDkvs3AEN4Q13BhzD4nkcx3LUmviTrmETplNDL1dhvWKVtc4WmFf56
- OZwn2lkyZx+LV29pweIQvcsYRH5k6MNJYBMyi7vk+7wtNV5Hc4qPPSGKzq1i34Pc3ipX
- 5KEch5xwhLFdGaz+F831u10XPWMVeaRsPPvuPh4j/hfawFKU2tAX1PsQH14IA8LKY47c
- wraRMU0OtgK/2x6X3my/35jvF4Y4gX12dbn5/R4tv6zGBGq7a4HwekJ9ifiSviQ/nd2I
- 0KYw==
-X-Gm-Message-State: AOJu0YzHh7nrCBXYR4LI4bg/xPF0GoYLwYf4JPWs8leskCxpAWAWfHlX
- knDxYts7hLFlmMNZuYHmyPeVJolsoiaigukcgt50/1qtKNYTRcOkLp+wt+yZ5xqcAdy2amD31GO
- 2A4TO
-X-Gm-Gg: ASbGncsbYTv5WbIRKG7h9O5ul6Q4/TVnHelZqsbtHBfeo9l2sMKfwqHOh28J15RLUdz
- o05TFwZfZ4eTmFuPKKVtuCNQdyULIbz4HkmejsAOyoHj1ho4IyJ5d369QnOO3HyQrblpEazQtJl
- XMvZ9w9N4I8Q5IVrBjK2ZyAMEGRbNEArz3I3Dh5LnM+6yXYHf6uWZpuxkWdCZbnlUQHHcyOdBwg
- 0OkmknsgmRZbcdRgXhh8GHe87mtKSFKOg1EdWkYtIUWcoh3UoOmua63rXzEQTUjWmaJeJ4Fte1o
- MRkNBMLMBdd2lz5/mj2mxMOa4DGnOKatGCs7+anttV3J2yYD2PeAD0w9i9OOGlMkyfuqvSSgJJj
- yRGkyOz+MTNtFfDSkqZdFnphD9RlxGvrJG5HLmn7E
-X-Google-Smtp-Source: AGHT+IFeFYVN2wHlio62+arBpZrJG1D5aJHuJFDhlu1zdgMzpV0vvnp2zazxxQ+/0RUwWazjQulq5A==
-X-Received: by 2002:a17:902:d2d1:b0:240:52d7:e890 with SMTP id
- d9443c01a7336-24247058a6fmr126978055ad.47.1754315226331; 
- Mon, 04 Aug 2025 06:47:06 -0700 (PDT)
-Received: from [192.168.4.112] ([180.233.125.160])
+ d=1e100.net; s=20230601; t=1754315253; x=1754920053;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5dEWt1nkV51ylczEHQGWDauwKjNPPbnNW27Ct1uuvE4=;
+ b=S9myrtDEDC3NdOftVmZtv3EzbUhj3didrY0KmocuEH5s6c13kn/R2rIchlZnOlCPBe
+ ur6pneV1lSaAakGhgxdR22koFKF5yu3d+LVlwUSrQSNQFmdKabPvIazAeq3AFxAN8mck
+ NTFwvTa8ex+yBsAsY96ST9/LCOMdPPzxPQqWVCW65U2hcj6hgVjLfVnWsPFO1IJdOdxT
+ vpgLtwx5Ek2TQ92Bi0o5gugAnxAC5qIHAKCzRncCh0mntxKKRZi91H5/qH0+hEO4EB2d
+ nICUFk3c4qUjj2sXOReHmk5vtjIg1kn/wYJ4F/bNMu4CXOxagT0duUVSWkwUFJ2J+THG
+ oOcg==
+X-Gm-Message-State: AOJu0YwCofE7Bhf4FT55NsAmpCGDafFqDg94oFJtzVIsSdD74CmXlKLU
+ aE46IxbIlloQwyWWe3GgMJgKrAMSE+FFoyqErpHi4AnEznsxhzbxy5nHGVQ3mDetBEU=
+X-Gm-Gg: ASbGnctF8RVV67kxHlPAnyBlgP8UfSIdcq40ElkTjHefj/9CEEKjHUEgR/NgE+nZXHa
+ xGLEWOl01iyGwBfmRdcykpHmQ69Gy9IShpRMDR9zIoRmo4Nd73F2+M+89Lb4neyMdEvCrMWLIpy
+ 7aA342GeeqqpI1oulaglTpPBiz2T4B7ttUjfzc8kjSVS47YinROORB/9+yMEFf3oFX4Z2vwpG5G
+ NrT16GNZcR9OhfCEl7kt0ZkxlNuj+Ka0U+UnxL6EsQsOQ/cukx09f7Tbu7pWHZk4giy96F+IoHw
+ RokELWGyipnr7a1ay1asI+KGBjRGBQaSox3aygZ2JKokJGMVecpEfNJgcu56WTs1hGykd1AvWIz
+ loexm8oPx6trcbMlqnlCAeFpJZOj61IITw3Qcr3HXVq8ZIL85qrDOVCahWwk7h07OKT8=
+X-Google-Smtp-Source: AGHT+IHIAVRmRNYSEeQR9vCfOtwn6iiIu5jXVCX7qQiVYRmoFEBxrI2dNTqMje109n7u8YmXG/hxGw==
+X-Received: by 2002:a05:6402:3cf:b0:5fb:c126:12c9 with SMTP id
+ 4fb4d7f45d1cf-615e715b8e6mr7094867a12.25.1754315253381; 
+ Mon, 04 Aug 2025 06:47:33 -0700 (PDT)
+Received: from [127.0.1.1] (athedsl-4441708.home.otenet.gr. [79.129.182.92])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241d1f0f7desm110055365ad.43.2025.08.04.06.47.04
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Aug 2025 06:47:05 -0700 (PDT)
-Message-ID: <f97ef3cf-1586-4b3d-a52f-e6e05da5a2d6@linaro.org>
-Date: Mon, 4 Aug 2025 23:47:02 +1000
+ 4fb4d7f45d1cf-615a8f15d9fsm6850590a12.17.2025.08.04.06.47.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Aug 2025 06:47:32 -0700 (PDT)
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PATCH RFC 0/5] rust: implement tracing
+Date: Mon, 04 Aug 2025 16:47:13 +0300
+Message-Id: <20250804-rust_trace-v1-0-b20cc16b0c51@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for 10.1-rc2] tests/docker: fix docker-all-test-cross
-To: qemu-devel@nongnu.org
-References: <20250804104308.250949-1-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250804104308.250949-1-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-B4-Tracking: v=1; b=H4sIAOG5kGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDCwMT3aLS4pL4kqLE5FRdC1NTi7RkS4vUZAsLJaCGgqLUtMwKsGHRSkF
+ uzkqxtbUA+Qf84GEAAAA=
+X-Change-ID: 20250804-rust_trace-8558fc98ec88
+To: qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ alex.bennee@linaro.org, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1460;
+ i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
+ bh=0cn2oznmPWML060LhdxxMoV/MOETlWb05txkOhpa9bE=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
+ 25RQWNzbVlnQm9rTG56YXdIN2RnZnluUFdndXBYUWpJcThpQk5LCkFNeW5nZVNGeFFoTHRLbjN5
+ VitKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUpDNTh3QUt
+ DUkIzS2Nkd2YzNEowTFB1RC85MnUwZ2g2RzVWRkpVSURFYWpUSG5CTFUxRUJTenNlWWg1cmZreQ
+ plMHJ6aXpUNmgyUU03RXphcm9WWnl2YVBzVlB3d05maUxyaXJYbWtqY3J3azc1VWFZUWNmSHRtO
+ GIxYTlTblZWClZ4RzRPTHpnZk4wTmptaXQ0Yk14clpjem1vY1JTUzFvZ1gwRVA4WkduK05BVS9I
+ M3R5VHlpNU4wL2I0OHVMa3UKbkRuQlpuZWtra3A0L1ZWbFFpbmpZYW9hSmxsMWdlK2pETVU5ZWI
+ 0bk9FdWVjVThlRzhrQTFQczYyYVNSZ1FPRgp2UXZ3SWVwai91dGtrWG9qdk1kajJnTHlBb1lvc2
+ t1Ymp6eG1lbnFUT3BNVVRNQ2hGLy9XYWxsbjk3TmtuQnl1CnlUVnk2cGVmcUp4d2tBd1gwYWRYb
+ WZ3UWUxNVJpOU45cldFWGo3RFF1MUFoL1JvcHBhOGlwM3NKc0lqV1d1SHQKMG9KMDR2ZDJkZHlY
+ ODlnWEdWYkplOG9LTTZURC82MFU0bTR1K3dXZTZSSXVRSUsxVk9nN1pBRm02YVpzelFlKwphSEN
+ WbzBsZ0NWMnIwQi9yK2x3NUtxL0NWY2hXMVJjK2Q0UE1YWEEvR2VYd3BvcFRRYWhPdnZUTHlaZj
+ hpN0tqCk9xUzNncDlJTzZrSmsyQlpKcjhRRmZBelprS25HQUl5dXErK1RYNGl4WXNISW1LbFhtb
+ Tc3V3RQVnZCQ0JEeFUKT3RBVkNSZ1J5OTNZR3hRVVphbCs2ajBXOWUza2tyc3VlVENKTXExVUlL
+ bXdLbk1UTlZNdDd5czZycVN5clBpdgpnU3FBdUZFY0h3M2dJakZyWXU4U2dsOS9uWGovS2crQVJ
+ teXhOT3RqbWRYSmx5UDlnbjFwTlhjR3RqaW82eVFECnQyM2c0Zz09Cj1SQXJlCi0tLS0tRU5EIF
+ BHUCBNRVNTQUdFLS0tLS0K
+X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
+ fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,36 +124,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/4/25 20:43, Alex Bennée wrote:
-> It turns out you can't easily expand an ENV var across multiple steps
-> in a dockerfile. This meant we silently dropped the architectures we
-> should have even on amd64 hosts. As the updated AVAILABLE_COMPILERS is
-> only needed for the following apt install line just merge them.
-> 
-> Fixes: 6da616bb170 (tests/docker: handle host-arch selection for all-test-cross)
-> Suggested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   tests/docker/dockerfiles/debian-all-test-cross.docker | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
-> index ef69bbc8a51..420a4e33e60 100644
-> --- a/tests/docker/dockerfiles/debian-all-test-cross.docker
-> +++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
-> @@ -62,9 +62,7 @@ RUN if dpkg-architecture -e amd64; then \
->     export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-powerpc64-linux-gnu libc6-dev-ppc64-cross"; \
->     export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-sparc64-linux-gnu libc6-dev-sparc64-cross"; \
->     fi && \
-> -  echo "compilers: ${AVAILABLE_COMPILERS}"
-> -
-> -RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-> +  DEBIAN_FRONTEND=noninteractive eatmydata \
->           apt install -y --no-install-recommends \
->           ${AVAILABLE_COMPILERS} && \
->           dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt
+This RFC series contains some simple patches I've been sitting on for
+some months to allow tracing in rust devices in a similar matter to C,
+only it's done via a proc-macro codegen instead of using tracetool
+script or equivalent.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+It also adds the same tracepoints as C in the pl011 device (cc: Philippe)
 
-r~
+TODOS:
+- Do not allocate string when calling ::qemu_api::log::LogGuard::log_fmt
+  (See commit message)
+- Properly handle&report errors in proc-macro
+- Clean up proc-macro code
+- Add test for proc-macro
+- Add dev documentation
+
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+---
+Manos Pitsidianakis (5):
+      rust/bindings: add trace headers
+      rust/qemu-api/log: add Log::Trace variant
+      rust/qemu-api-macros: Add #[trace_events] macro
+      rust/pl011: impl Copy, Clone for RegisterOffset
+      rust/pl011: add trace events
+
+ rust/hw/char/pl011/src/device.rs    |  28 +++++++-
+ rust/hw/char/pl011/src/lib.rs       |  43 +++++++++++
+ rust/hw/char/pl011/src/registers.rs |   2 +-
+ rust/qemu-api-macros/src/lib.rs     | 140 +++++++++++++++++++++++++++++++++++-
+ rust/qemu-api/src/bindings.rs       |   3 +
+ rust/qemu-api/src/log.rs            |   4 ++
+ rust/qemu-api/wrapper.h             |   2 +
+ 7 files changed, 215 insertions(+), 7 deletions(-)
+---
+base-commit: e5859141b9b6aec9e0a14dacedc9f02fe2f15844
+change-id: 20250804-rust_trace-8558fc98ec88
+
+--
+γαῖα πυρί μιχθήτω
+
 
