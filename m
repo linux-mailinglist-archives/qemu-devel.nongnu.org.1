@@ -2,113 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EA3B1A5AA
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 17:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA428B1A5B0
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 17:18:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiwvl-0003TX-QY; Mon, 04 Aug 2025 11:16:53 -0400
+	id 1uiww3-0003vB-Dn; Mon, 04 Aug 2025 11:17:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uivXM-0005Xy-Tw
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:37 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1uivXO-0005fE-MS
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:39 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uivXL-0002Y0-0I
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:36 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-61589705b08so9610734a12.0
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 06:47:34 -0700 (PDT)
+ id 1uivXM-0002YW-BN
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:38 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-61571192c3aso4213420a12.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 06:47:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754315253; x=1754920053; darn=nongnu.org;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=5dEWt1nkV51ylczEHQGWDauwKjNPPbnNW27Ct1uuvE4=;
- b=ZrDPGkR/YK7W9FzNhHfRQUJmvwAviMvm0b3aZVGtccaXYLdSszwExxm/sx+0T2PCVF
- K5TUI8YqRPr0jukTv/HDaUT3TMxWYdwWlcdzFSidtX7XikWRjeA6xB6fjw7TwEGKn7KH
- +/yIzNq0TN94PC0fEBP6qmtn6UzZggM+/c5Zk8+cFVXOvFFECPooceBV/li1dEE7VXjm
- F/060uUqIMDBBw3SynwzuoTXm0w80wS9Y5sV/mlOyMoRyptJDo2nfCP3RtP19Kh5Qr/I
- MF+oH65kc6RW7BuniJBlwyfe/opHWQLJS1gTb0yWAhDyAgOYq0epllAhORhYl7hy2rFr
- dr2A==
+ d=linaro.org; s=google; t=1754315254; x=1754920054; darn=nongnu.org;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=hEvV4qFqWB9cTuaBcclspfI/a8mVi5g2F2fZs6PHmRM=;
+ b=hrlDy2b3moG2wV+Bo/09h9QcfwprdxaBwxW8qcICA09S8X4xO9X+AalFFATV+cBtOB
+ 8JfzhwJAUMtTfNHexDkj5jwB88RXcU5XfRuI8OQ7AyNdSIJL9UUDGMtYZpZFGBCLFHpf
+ e6CaWvyjiXe+AB+4alZxzdINwfSVNXqLIQK/Eax+DWEed3KAezYWIYy4LrZ7mta8xskF
+ QboPB+esvmPZElLce6hnDQv6uXW55DQhLS3cJuCJOzrErtfKsNGM6UYX5iXMIJGIWBOS
+ SXg58aWy4K6a32l5/FrA6WnM6yl4ndW4XU/VXLPcoefCutIEGO51nJQ1ZMmb1v3nu+9n
+ uqSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754315253; x=1754920053;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5dEWt1nkV51ylczEHQGWDauwKjNPPbnNW27Ct1uuvE4=;
- b=S9myrtDEDC3NdOftVmZtv3EzbUhj3didrY0KmocuEH5s6c13kn/R2rIchlZnOlCPBe
- ur6pneV1lSaAakGhgxdR22koFKF5yu3d+LVlwUSrQSNQFmdKabPvIazAeq3AFxAN8mck
- NTFwvTa8ex+yBsAsY96ST9/LCOMdPPzxPQqWVCW65U2hcj6hgVjLfVnWsPFO1IJdOdxT
- vpgLtwx5Ek2TQ92Bi0o5gugAnxAC5qIHAKCzRncCh0mntxKKRZi91H5/qH0+hEO4EB2d
- nICUFk3c4qUjj2sXOReHmk5vtjIg1kn/wYJ4F/bNMu4CXOxagT0duUVSWkwUFJ2J+THG
- oOcg==
-X-Gm-Message-State: AOJu0YwCofE7Bhf4FT55NsAmpCGDafFqDg94oFJtzVIsSdD74CmXlKLU
- aE46IxbIlloQwyWWe3GgMJgKrAMSE+FFoyqErpHi4AnEznsxhzbxy5nHGVQ3mDetBEU=
-X-Gm-Gg: ASbGnctF8RVV67kxHlPAnyBlgP8UfSIdcq40ElkTjHefj/9CEEKjHUEgR/NgE+nZXHa
- xGLEWOl01iyGwBfmRdcykpHmQ69Gy9IShpRMDR9zIoRmo4Nd73F2+M+89Lb4neyMdEvCrMWLIpy
- 7aA342GeeqqpI1oulaglTpPBiz2T4B7ttUjfzc8kjSVS47YinROORB/9+yMEFf3oFX4Z2vwpG5G
- NrT16GNZcR9OhfCEl7kt0ZkxlNuj+Ka0U+UnxL6EsQsOQ/cukx09f7Tbu7pWHZk4giy96F+IoHw
- RokELWGyipnr7a1ay1asI+KGBjRGBQaSox3aygZ2JKokJGMVecpEfNJgcu56WTs1hGykd1AvWIz
- loexm8oPx6trcbMlqnlCAeFpJZOj61IITw3Qcr3HXVq8ZIL85qrDOVCahWwk7h07OKT8=
-X-Google-Smtp-Source: AGHT+IHIAVRmRNYSEeQR9vCfOtwn6iiIu5jXVCX7qQiVYRmoFEBxrI2dNTqMje109n7u8YmXG/hxGw==
-X-Received: by 2002:a05:6402:3cf:b0:5fb:c126:12c9 with SMTP id
- 4fb4d7f45d1cf-615e715b8e6mr7094867a12.25.1754315253381; 
- Mon, 04 Aug 2025 06:47:33 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1754315254; x=1754920054;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hEvV4qFqWB9cTuaBcclspfI/a8mVi5g2F2fZs6PHmRM=;
+ b=Z9onuYwsEbwEEs9YmNhAnKJ5ew3c28Kw0MonatuxOee6el/Kmo93te9FXOPL2curg8
+ ULbagNfCOoi1/WVwMgdG1D227PEpq64GY99fAES0waC9iS8Wyh9Jv3n+4+VmsS530pXG
+ IWekqkcCVJ6ywSLfEAnk051/eNyENZ1CNEimxr4eRUz2WE00mlDk40TCCny26NxZC076
+ BIO84uHFBGPdcybfGnK22H196KjTPPkLy0ACRwUL/JVG1u8QmK7dZ3WilDMj66Y4Zi+1
+ RbIDBOumQrtzP9tqg1QImjAbt1arQYsxVQkpLMyIgC/R9RMfItpfZGO4tmEQmuznl84Z
+ Jl+A==
+X-Gm-Message-State: AOJu0Yyg44bk/8tlqWwFGax4sibukEUd+x2X3BLsCEIaWC18BSm9U7gs
+ 32cXxcL0EyRePqgFh2GxRlX3hPRpq4Mj5UrAI9ohfeJwsyGF85hgtCx/w7M3Ae4kFuc=
+X-Gm-Gg: ASbGncvZjaDMeYRbFbgq1/ODtLHQhvGI1pdg+fk382womWBlc4q/3C/jH31euUmEOjX
+ n9Ql5bVPGUCkFzkmITk4z4siy8H5JexLhTf/GSoC1qBw6j7aB1UNg+HlgSToL9KYy7T1DkZEB63
+ EHySX9+EfkwOYjY6CSJmDsdglzMy7s5GRrdzlFiOiTb2SX5q0uUafdcgUQgYlZAzz8y/ICMFZ4s
+ H+LS5n1DNdVnwRyPi0IIx40i772P1UYh5yqr2jD+3U9SpIKDreSMv8y4bgTa05FnEtCZ0vZlBai
+ L/VkMuCcJb+ELLn9NVSqhp67iAsV5OiTmzk2cBv/CPhyw86n1CO5i4FBPWomiwxr1A7ibXkCpDB
+ K/eaAQpg7k5HngMeQcp6oyxnYTcbcQUl95mHI6mzvk6BYVNns3KGrryN9Tzf5KVwOvpM=
+X-Google-Smtp-Source: AGHT+IFAlqNGj+0nkPhQ+9IT3H+LbzRMYlhKz0ws80qY5loS3glrxXNT+jp2M/5wAQAouxqQmz9vaQ==
+X-Received: by 2002:a05:6402:354f:b0:607:28c9:c3c9 with SMTP id
+ 4fb4d7f45d1cf-615e6ebc8bemr9194835a12.6.1754315254472; 
+ Mon, 04 Aug 2025 06:47:34 -0700 (PDT)
 Received: from [127.0.1.1] (athedsl-4441708.home.otenet.gr. [79.129.182.92])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-615a8f15d9fsm6850590a12.17.2025.08.04.06.47.32
+ 4fb4d7f45d1cf-615a8f15d9fsm6850590a12.17.2025.08.04.06.47.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Aug 2025 06:47:32 -0700 (PDT)
+ Mon, 04 Aug 2025 06:47:34 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH RFC 0/5] rust: implement tracing
-Date: Mon, 04 Aug 2025 16:47:13 +0300
-Message-Id: <20250804-rust_trace-v1-0-b20cc16b0c51@linaro.org>
+Date: Mon, 04 Aug 2025 16:47:14 +0300
+Subject: [PATCH RFC 1/5] rust/bindings: add trace headers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAOG5kGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDCwMT3aLS4pL4kqLE5FRdC1NTi7RkS4vUZAsLJaCGgqLUtMwKsGHRSkF
- uzkqxtbUA+Qf84GEAAAA=
-X-Change-ID: 20250804-rust_trace-8558fc98ec88
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250804-rust_trace-v1-1-b20cc16b0c51@linaro.org>
+References: <20250804-rust_trace-v1-0-b20cc16b0c51@linaro.org>
+In-Reply-To: <20250804-rust_trace-v1-0-b20cc16b0c51@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org, 
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  alex.bennee@linaro.org, 
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1460;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1100;
  i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=0cn2oznmPWML060LhdxxMoV/MOETlWb05txkOhpa9bE=;
+ bh=oF/2Jbbj/kJRLShPsty+hf1YAhHddpc/rIM+iPuPKJc=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm9rTG56YXdIN2RnZnluUFdndXBYUWpJcThpQk5LCkFNeW5nZVNGeFFoTHRLbjN5
- VitKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUpDNTh3QUt
- DUkIzS2Nkd2YzNEowTFB1RC85MnUwZ2g2RzVWRkpVSURFYWpUSG5CTFUxRUJTenNlWWg1cmZreQ
- plMHJ6aXpUNmgyUU03RXphcm9WWnl2YVBzVlB3d05maUxyaXJYbWtqY3J3azc1VWFZUWNmSHRtO
- GIxYTlTblZWClZ4RzRPTHpnZk4wTmptaXQ0Yk14clpjem1vY1JTUzFvZ1gwRVA4WkduK05BVS9I
- M3R5VHlpNU4wL2I0OHVMa3UKbkRuQlpuZWtra3A0L1ZWbFFpbmpZYW9hSmxsMWdlK2pETVU5ZWI
- 0bk9FdWVjVThlRzhrQTFQczYyYVNSZ1FPRgp2UXZ3SWVwai91dGtrWG9qdk1kajJnTHlBb1lvc2
- t1Ymp6eG1lbnFUT3BNVVRNQ2hGLy9XYWxsbjk3TmtuQnl1CnlUVnk2cGVmcUp4d2tBd1gwYWRYb
- WZ3UWUxNVJpOU45cldFWGo3RFF1MUFoL1JvcHBhOGlwM3NKc0lqV1d1SHQKMG9KMDR2ZDJkZHlY
- ODlnWEdWYkplOG9LTTZURC82MFU0bTR1K3dXZTZSSXVRSUsxVk9nN1pBRm02YVpzelFlKwphSEN
- WbzBsZ0NWMnIwQi9yK2x3NUtxL0NWY2hXMVJjK2Q0UE1YWEEvR2VYd3BvcFRRYWhPdnZUTHlaZj
- hpN0tqCk9xUzNncDlJTzZrSmsyQlpKcjhRRmZBelprS25HQUl5dXErK1RYNGl4WXNISW1LbFhtb
- Tc3V3RQVnZCQ0JEeFUKT3RBVkNSZ1J5OTNZR3hRVVphbCs2ajBXOWUza2tyc3VlVENKTXExVUlL
- bXdLbk1UTlZNdDd5czZycVN5clBpdgpnU3FBdUZFY0h3M2dJakZyWXU4U2dsOS9uWGovS2crQVJ
- teXhOT3RqbWRYSmx5UDlnbjFwTlhjR3RqaW82eVFECnQyM2c0Zz09Cj1SQXJlCi0tLS0tRU5EIF
+ 25RQWNzbVlnQm9rTG56dU1TRFV6Y3RSOHpLK2RqcVF5YnhGRFpXCjZ5MkZ4eHRpNXhBd1JlWTNk
+ Wm1KQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUpDNTh3QUt
+ DUkIzS2Nkd2YzNEowSkswRC80OFJCNUhRQ1Y0WEp5MFVmSEJZV3NjTFRqeWZZS0xtZFJ0WGxOSg
+ p2OGdRay91c3VWendFVzBGNnVWUGRzY3MrOHdDYnRKRi9nMWt5SW9vbWlaRG9LWDdqNkFVMmZxK
+ 25yRGJiUGt5Cm41S045RlVoVnN4V05Sd09BZTY2cEJiRTFRMzRWQUFNNWtpQUMva09kaFFyNFBu
+ UVpyMEtFbWNuUVVybENxUEMKTnRhbU1zQTEzUFJmR2QwYURVNHFEaC9nQWlKL0M4NTV0TmU0WXU
+ 5SittWWZmNS9TdVdDRWNGNi81SW9CV0g4WQpIN1ZsY3hVR3FPbzB2RXc2VmZ0bWxDVkx6RzFwZn
+ hyWFQxMGRSQ3hsS2lxeCtqYlpqWFhiWFEvTkZvVWVXZFNtClNVVHZtOWErMGZPYzhVN2k1c1JWM
+ mlnUUp3MHp3eDNRZVNLczdZWkhTVFJ6OWo3V1dGUEVvK20rQmVBODhYN0QKbnVvc0xSRkkrNjZI
+ SENGQWUyeWJyVGFhKzNLakhSYWFQNU9FcE1pcFBrakhLUXJZK0YxUTFIN2phVHF2VGtDRQp2bU5
+ RU1ZDcVV4WUxtTEQ1cDBxR3VZTkFyOEFVRkZJMU9VMlJhemMxdndUck9wZVVZN3hKWHllRUF5Mj
+ N0V2M1CkdTNjA3ejk5OE5YWWE5UWR1blVjRzF1QjYvOTE4RzdNTlloWnV4dm5BaVBjeUl2cjRYU
+ 28wRlVldlhnOGt5OEkKMWdWeVlhbVZ1aFBKa29lazZoYVZWMlorcUVKTkRtUjI2Ui81VTNkWjhq
+ dUxieHIyL1BZSmwwNytrNkpleHZqeAo5N05ydTM3ZDBjd1E5M3hUY3VWaDFTV0Y0NlZFQkZZaXB
+ lMnBLekpkQTkrV0JGV1VEdkZXWFRodkhEMHZCR1BaCjlENWx5UT09Cj14dmViCi0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
  fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,43 +122,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This RFC series contains some simple patches I've been sitting on for
-some months to allow tracing in rust devices in a similar matter to C,
-only it's done via a proc-macro codegen instead of using tracetool
-script or equivalent.
-
-It also adds the same tracepoints as C in the pl011 device (cc: Philippe)
-
-TODOS:
-- Do not allocate string when calling ::qemu_api::log::LogGuard::log_fmt
-  (See commit message)
-- Properly handle&report errors in proc-macro
-- Clean up proc-macro code
-- Add test for proc-macro
-- Add dev documentation
-
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
-Manos Pitsidianakis (5):
-      rust/bindings: add trace headers
-      rust/qemu-api/log: add Log::Trace variant
-      rust/qemu-api-macros: Add #[trace_events] macro
-      rust/pl011: impl Copy, Clone for RegisterOffset
-      rust/pl011: add trace events
+ rust/qemu-api/src/bindings.rs | 3 +++
+ rust/qemu-api/wrapper.h       | 2 ++
+ 2 files changed, 5 insertions(+)
 
- rust/hw/char/pl011/src/device.rs    |  28 +++++++-
- rust/hw/char/pl011/src/lib.rs       |  43 +++++++++++
- rust/hw/char/pl011/src/registers.rs |   2 +-
- rust/qemu-api-macros/src/lib.rs     | 140 +++++++++++++++++++++++++++++++++++-
- rust/qemu-api/src/bindings.rs       |   3 +
- rust/qemu-api/src/log.rs            |   4 ++
- rust/qemu-api/wrapper.h             |   2 +
- 7 files changed, 215 insertions(+), 7 deletions(-)
----
-base-commit: e5859141b9b6aec9e0a14dacedc9f02fe2f15844
-change-id: 20250804-rust_trace-8558fc98ec88
+diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
+index b8104dea8bea4348987978d5041cfc58e4d15a8f..d863b8bd7ecd449b5fe5c6f1be3bd7b4251b2883 100644
+--- a/rust/qemu-api/src/bindings.rs
++++ b/rust/qemu-api/src/bindings.rs
+@@ -56,3 +56,6 @@ unsafe impl Sync for VMStateField {}
+ 
+ unsafe impl Send for VMStateInfo {}
+ unsafe impl Sync for VMStateInfo {}
++
++unsafe impl Send for TraceEvent {}
++unsafe impl Sync for TraceEvent {}
+diff --git a/rust/qemu-api/wrapper.h b/rust/qemu-api/wrapper.h
+index 15a1b19847f2f2ab1a1a856621abb64f757070ea..540ef5eeac840deadd2e9a6f0dcd154f8dc1487a 100644
+--- a/rust/qemu-api/wrapper.h
++++ b/rust/qemu-api/wrapper.h
+@@ -69,3 +69,5 @@ typedef enum memory_order {
+ #include "qemu/timer.h"
+ #include "system/address-spaces.h"
+ #include "hw/char/pl011.h"
++#include "trace/event-internal.h"
++#include "trace/control-internal.h"
 
---
-γαῖα πυρί μιχθήτω
+-- 
+2.47.2
 
 
