@@ -2,64 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F03B1A065
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 13:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5A7B1A067
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 13:19:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uitCg-0005cD-91; Mon, 04 Aug 2025 07:18:08 -0400
+	id 1uitDe-0006pF-NP; Mon, 04 Aug 2025 07:19:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uisxE-0007Wq-4F
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 07:02:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1uisyu-0008SW-0i
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 07:03:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uisxC-0008TD-2t
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 07:02:07 -0400
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1uisys-0000Ye-Bx
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 07:03:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754305325;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=Ns9E6VWM1rFhp1mW7TRpd0Wuk3KuLwCvfnTdGm2t3lA=;
- b=LqIC8H3TmyPi0zJbNP3uD5oqYGSZbcoe/8lAFU4d34tMqi7LWPyO0NRxgV+2DP/uBHM/Qr
- ijAnBVAVJptddtNr8vYd0KwKqjgHOfcgPT+febrYgcjXRGVuuZj7qtS/At0PiFwDIh5K0+
- JlQXopU1AfNWb+gwAiv3b3Ms1aJSu/A=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-310-G1WIJxVTO5yC7PxaHRG_RQ-1; Mon,
- 04 Aug 2025 07:02:04 -0400
-X-MC-Unique: G1WIJxVTO5yC7PxaHRG_RQ-1
-X-Mimecast-MFC-AGG-ID: G1WIJxVTO5yC7PxaHRG_RQ_1754305323
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 23C27195D027
- for <qemu-devel@nongnu.org>; Mon,  4 Aug 2025 11:02:03 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.62])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EBFF418003FC; Mon,  4 Aug 2025 11:02:00 +0000 (UTC)
-Date: Mon, 4 Aug 2025 12:01:57 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Cc: Michal Privoznik <mprivozn@redhat.com>, Jan Tomko <jtomko@redhat.com>,
- Yan Vugenfirer <yvugenfi@redhat.com>, QEMU <qemu-devel@nongnu.org>
-Subject: Re: QGA installation issue on Windows
-Message-ID: <aJCTJf67oTZseYUr@redhat.com>
-References: <CAPMcbCpSQS5yWUCcGum6nWq=+HTaxFmJjm57_cgmJp+fMtC1JQ@mail.gmail.com>
+ s=mimecast20190719; t=1754305429;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1d0CY9GSomb1CkpFeckVYckUZpK69zq9jnU0awIDjPA=;
+ b=KWNzxbUDtBMCpbkVeGyurpthGGcVi0vpBjCAs3988UX9KXbmtg22wSnBmDz1UM9qipO29H
+ cxV5ygSO0BadW21XWijs0inU66I91XdFH/USJiFrq8/R91GCGu7JcHEeko6soM1McJKBIe
+ ZfNEQR6v86e30b2HQg/JocIh9TG68E0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-FWKdA4-gMdeBoanjX583BQ-1; Mon, 04 Aug 2025 07:03:48 -0400
+X-MC-Unique: FWKdA4-gMdeBoanjX583BQ-1
+X-Mimecast-MFC-AGG-ID: FWKdA4-gMdeBoanjX583BQ_1754305425
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-458b9ded499so13442365e9.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 04:03:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754305425; x=1754910225;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1d0CY9GSomb1CkpFeckVYckUZpK69zq9jnU0awIDjPA=;
+ b=H18LnucKfv64s4ZpaOuQlJuqna2rJgNcgSFoITDF7bq2qJPvbie3xaq/iQisLWrKaN
+ IILiODb8/7z7sEdj6MfFRe0F9WD2YiirgpkNeHY+4hUyFby8ded2dFNqCEdM7zBf71rx
+ Cy+Jg14Ik9w56WgjSWrd1HlVBNYVVRuq/kA8NkJLc2WW01hdjNXTKf86HoVq8h+WHACN
+ uS1t7Gwfh0aLbBv/OK4IWMF9NyOp0jdjO1tScIU83Lq62PwuIQ7fzBwQq1rNiBwbDTsm
+ P4x9D2zIWQXDpHoD9dDwoxTMifrTBKmN0b99TjntYweBq+Ew4mkekMXft+10+gkPK+nh
+ z7Lg==
+X-Gm-Message-State: AOJu0Yx3a1vAeN0TTH7h/oSkgx+K4xGc0GytWhpvhlYZ4BaUQNj1patL
+ HOU4bWYgouYwNhOy5ZLjhc1GERPRiDmtVNTcZ7osb6gcKWZAuk2AoHcHGDoj4Rr+lx7guPTTj99
+ PoeMLpiACFYcui95q8Ry1ILc9O+G/xM7IpZ/X08b3Q88ZPx/kYnuwpe+tL2u4XXmM2kRGVxL71X
+ CRKHXSeTtoPeP6veDlIesvJfabb59I6bU=
+X-Gm-Gg: ASbGncsq8A8w/barv8wjLX9JjmKOSY/LpAUTm6B2rtHPDVXYh6AAFFIsVunuBKJvykx
+ pGtgiXhylq54sjCtqiZ2oyDMBQXztWaEbsd3ZBlsizSCNLX8YbW+QQODN2aYefiMHtqEe5XIDEZ
+ REPtBHU3Ven/l6aZa7qyXcDHw=
+X-Received: by 2002:a05:600c:5248:b0:459:d4b5:623a with SMTP id
+ 5b1f17b1804b1-459d4b56388mr36916015e9.9.1754305425221; 
+ Mon, 04 Aug 2025 04:03:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbyQXPe7QWzJDdxKh+xqR/bkaTvvAezq0RKYJYU8p+ZgTj4MQPEdrhzifgR5lH+Ocd0FGBhO3fBo4odTXmZAo=
+X-Received: by 2002:a05:600c:5248:b0:459:d4b5:623a with SMTP id
+ 5b1f17b1804b1-459d4b56388mr36915685e9.9.1754305424730; Mon, 04 Aug 2025
+ 04:03:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAPMcbCpSQS5yWUCcGum6nWq=+HTaxFmJjm57_cgmJp+fMtC1JQ@mail.gmail.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+References: <20250801170212.54409-1-berrange@redhat.com>
+ <20250801170212.54409-2-berrange@redhat.com>
+ <CAE8KmOxzskHzPsfUCZP56qmFHC7Rgi8x0HacUuZgzUv4UNiYyQ@mail.gmail.com>
+ <aJCJ-tqqimnrDDgZ@redhat.com>
+In-Reply-To: <aJCJ-tqqimnrDDgZ@redhat.com>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Mon, 4 Aug 2025 16:33:28 +0530
+X-Gm-Features: Ac12FXx3gqerdTokiC_jz6P5duck2uyaIB7L8Xwz5P9eKMbjXkPSo7eAa80on3I
+Message-ID: <CAE8KmOyGVhqQNmF1eZYWVENa6DCW0+m-mdT4ot1xSaBiEVFCiQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] migration: simplify error reporting after channel read
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,41 +101,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 04, 2025 at 01:54:09PM +0300, Kostiantyn Kostiuk wrote:
-> Hi Michal,
-> 
-> I want to discuss your patch
-> https://gitlab.com/qemu-project/qemu/-/commit/c6f5dd7ac8ef62dcdec4cdeda1467c658161afff
-> 
-> Unfortunately, we found bad behaviour on Windows. On Windows, we run QGA
-> with `-d --retry-path` options by default, so we expect that QGA will start
-> even without the vioserial driver and will wait for communication
-> forever.
-> 
-> This worked previously, but after your patch QGA service fails if the
-> vioserial communication channel is missing. This behavior is totally
-> unacceptable for us.
-> 
-> You send this patch to fix a Linux problem, but it causes a Windows problem.
-> So, what we need on Windows, if --retry-path specified, we should ignore
-> any channel error and retry the connection. If -d and --retry-path are
-> specified, it should become a daemon first to make Windows Service Manager
-> happy.
+On Mon, 4 Aug 2025 at 15:52, Daniel P. Berrang=C3=A9 <berrange@redhat.com> =
+wrote:
+> The migration protocol knows whether it is expecting more data or not.
+> If we want more data, then a call to qemu_fill_buffer must successfully
+> read at least 1 byte.
+> If we don't want more data, then we would not have triggered any call
+> to qemu_fill_buffer.
+> Thus, a call to qemu_fill_buffer which gets EOF is an error scenario.
 
-This looks pretty simple to fix - in the initialize_agent() method, if
-channel_init() fails, then simply ignore the failure if 'retry_path'
-is set, because the later code in run_agent() will already correctly
-retry the connection.
+* I see. In that case the change looks fine.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
+
+Thank you.
+---
+  - Prasad
 
 
