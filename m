@@ -2,87 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE260B1A8F8
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA30B1A92B
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:27:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uizc3-0003av-SG; Mon, 04 Aug 2025 14:08:43 -0400
+	id 1uiztB-0006wY-Pa; Mon, 04 Aug 2025 14:26:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1uixo3-0005Cu-E9
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:13:00 -0400
-Received: from p-east3-cluster5-host2-snip4-10.eps.apple.com ([57.103.86.151]
- helo=outbound.qs.icloud.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1uixo0-0000lc-GQ
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:12:58 -0400
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-east-2d-60-percent-7 (Postfix) with ESMTPS id
- E8726180086B; Mon,  4 Aug 2025 16:12:52 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=IkSU93jV9FS1GDWYWwJgNYuHfU7uKpyXDP0V+TcXxKk=;
- h=From:Message-Id:Content-Type:Mime-Version:Subject:Date:To:x-icloud-hme;
- b=RTea5JqrDYwVRal6uMogOWig8EfcRGkyzXVtfhVyk9P6DLxbJTf/1US0XfuL6d6C5EeDdG8BOV43Hv1rYPrNmjgafGvxW4oWAVykIAu7se7cctCkP5f+HZ5u5EWycU7xQiKk+W6djv54LFR/XJIbEOJpYDebav3LBz3UUNxM04OiR9Fhu9N04MJJD85IHG2zXWmiiTY0uJejqYQvwotK6JcjH1HijIiohkoFgLBIt92RwYgOPEjSwE0XLRfn9nq6IzsTkheKN2fS7qCS1qXv1Kt+1otfrB7j2/eKZVx7Wfa/b17Pg+VRs1BpPh5frOqxqi3s10+qF4xfEqxenl3Heg==
-X-Client-IP: 46.189.47.18
-Received: from smtpclient.apple (qs-asmtp-me-k8s.p00.prod.me.com
- [17.57.155.37])
- by p00-icloudmta-asmtp-us-east-2d-60-percent-7 (Postfix) with ESMTPSA id
- 8A2A9180012A; Mon,  4 Aug 2025 16:12:49 +0000 (UTC)
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-Message-Id: <59A4FF62-384F-4D43-BD56-60AA93733580@unpredictable.fr>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_0D194A2C-DD9F-4A27-BC0C-8FEF1BE86DD4"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3860.100.5.1.1\))
-Subject: Re: [PATCH v4 01/17] accel/system: Introduce hwaccel_enabled() helper
-Date: Mon, 4 Aug 2025 18:12:37 +0200
-In-Reply-To: <d18fc5c3-b68a-4afe-86b7-e1687780b67c@suse.de>
-Cc: qemu-devel@nongnu.org, Shannon Zhao <shannon.zhaosl@gmail.com>,
- Ani Sinha <anisinha@redhat.com>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Roman Bolshakov <rbolshakov@ddn.com>, Igor Mammedov <imammedo@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Mads Ynddal <mads@ynddal.dk>,
- =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>,
- Sunil Muthuswamy <sunilmut@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Alexander Graf <agraf@csgraf.de>,
- qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-To: Claudio Fontana <cfontana@suse.de>
-References: <20250804142326.72947-1-mohamed@unpredictable.fr>
- <20250804142326.72947-2-mohamed@unpredictable.fr>
- <d18fc5c3-b68a-4afe-86b7-e1687780b67c@suse.de>
-X-Mailer: Apple Mail (2.3860.100.5.1.1)
-X-Proofpoint-GUID: t0F52muVijaGYVC1nueDfv8r7Lg4KMQl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA4OSBTYWx0ZWRfX5YWKfNFnRDfN
- hY8ZftRdpqyzoB8bjLyrk8j+EGAvdelvj27qqbUr0sHvM+VwDRm6dbryCz2EijVHIZR3qXwthT6
- MZxDkX/o/7g9b5Iki2XVZ0oCCqKh3yPEqMpPwMwvSw5GRJe7i20vlPSkcr9y2fBz9E+1Sal5wvq
- GrXfFkBwSGez/6j+TFhLO7sYI4NRd4pF/ziit2QzK2hziJ2bmJPloxZMXgVKc+Eqqx1BMMdhDes
- tGqS3X6zuNPz5Z/f2RQbq7Dls0Knx2C0wwmxXwLj5kcZ6342LP37XFL9LhEE8EIFstQfOfFiU=
-X-Proofpoint-ORIG-GUID: t0F52muVijaGYVC1nueDfv8r7Lg4KMQl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-04_06,2025-08-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
- mlxscore=0 spamscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
- suspectscore=0 bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506270000 definitions=main-2508040089
-Received-SPF: pass client-ip=57.103.86.151;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uixtz-0002Em-6V
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:19:07 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uixtx-0001zf-GG
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:19:06 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-2403df11a2aso29714055ad.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:19:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1754324342; x=1754929142; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=svuoKhcAPO8Hx11IHq6pzcmbRY6dBIJmUK6cwetPPME=;
+ b=r8A95wcqbmiyvw03x5IrpQMtZZeQX345kVSs0irKNpG+U1Ttf3fAs+PXKdHi24A5db
+ 4HxCYOFpm8GcozpuI4OpoaIRx0+uFZRlR53JSUpG0hwC+ey7JtqoOe0mYRy1qoipo4t8
+ Nsp6XHfBph5bFXzPCpDlIPwhQJyN9uhqt+KSkke0Mcb3uUxlnCLBlqvQ22u5A2keXQ7M
+ Bo4N2OVNvMGYOvzGYp6a11wN5tjt/tjq/ZbP7ioMVSCawuNCNojJN0J5krWQ64DEFY+6
+ eoo7t8lUYkW0Mofa7qCKibMhF0Q2Gq9V8mR4yyaed4o7o1zjg3bP9/Jw0kfscqt5lX5C
+ 96/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754324342; x=1754929142;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=svuoKhcAPO8Hx11IHq6pzcmbRY6dBIJmUK6cwetPPME=;
+ b=f5/GCnA/CWfXdsEAIXi9W0WOYLuNMr8ISeigJlo2ONlXzkKiItcxJwb+ymrpV8ej+X
+ WGAZpj/z0FpQ8GgUTgALmW8Dxc3SqkC6zvaabQdvr3JSxvhtBjbfzLeKh9QnPatVEBgS
+ ozPsBEIM7CSg8syAHk9gVTW4L+KqEh3jSesWclfM+58yuS0gwTro0UT0qlkTYkJ93qDs
+ g8+Vx+A9I1Ebnp3tX9bebjyukAcXgtdNeX7wZotZInnSojTL+eQY1Ai4k4BwIvj0HIWg
+ ubzFWLMyMsdXOAm3U+UhyjKRBbWWh3HtGjyHWtqaRxVht1vyThyk2pNFdJ8yR06LnuuE
+ LiNA==
+X-Gm-Message-State: AOJu0YwgSYiPB4peB0+IF47CfLlYc/aCau8VwJlb6VAChpEt5nt5XnuG
+ fDA2SIqh84MzWa/j33kXc3mEyqQR+TFEsV33sMHnG7RKkOD4g1gwO75c+4UGSnZIFCHy072B0k0
+ Chcr0
+X-Gm-Gg: ASbGnctMhDRcco4GAiopXLjgIw3VadSEKmhYv6TCR2+4dwptX+lp2M+FQUVWB0ncYpG
+ QeJ9hQOVZp43gvqRYugJ6MpGvYMiyCktOfYtZNZdc9CUwX8ZJO5NCKowXsVyw1PICJGJZRo0Xsu
+ IzE7QXKA8KI01Q1bC5LN5sVLP2ZOaOoAgzwEFWG+t1EAfJ8g3TP5kthkcyFKfSw19l9rxrti7Qw
+ 40Pi3b2Vs290PMLEh0wRIj1PUGgKcU3yngeDrN8ALtCL7pMt/pgUm++CRWC3/vfuEC20tgQIrIw
+ p73Y7tmA7Auct3i8taBQ304FZMMh1rIqvS57nSWAW5IsjgAlDN1p+v6Fl7EUhnc/1whNwjMruME
+ eWUlQMYTPBIz6AKGbhbPUgD4a8RPUfGJiuzs=
+X-Google-Smtp-Source: AGHT+IF3KUa8vNf3NfGbO5v4OscOO8fqpoiAkhVTKMJHirCFmZbN1MO4Oip4bwn9UsVoVKXW4rmdCQ==
+X-Received: by 2002:a17:902:e84d:b0:240:3dbb:761c with SMTP id
+ d9443c01a7336-24246ffbce5mr171200695ad.32.1754324341917; 
+ Mon, 04 Aug 2025 09:19:01 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-241e899a814sm114178525ad.117.2025.08.04.09.19.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Aug 2025 09:19:01 -0700 (PDT)
+Message-ID: <327b7306-de98-40db-a2e4-27b4c9806a5a@linaro.org>
+Date: Mon, 4 Aug 2025 09:19:04 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] control guest time using a dilation factor
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com, richard.henderson@linaro.org,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ peter.maydell@linaro.org, philmd@linaro.org
+References: <20250628002431.41823-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20250628002431.41823-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,58 +103,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 6/27/25 5:24 PM, Pierrick Bouvier wrote:
+> Depending on host cpu speed, and QEMU optimization level, it may sometimes be
+> needed to slow or accelerate time guest is perceiving. A common scenario is
+> hitting a timeout during a boot process, because some operations were not
+> finished on time.
+> 
+> An existing solution for that is -icount shift=X, with low values, which will
+> roughly map virtual time to how many instructions were executed.
+> 
+> This series introduces another approach, based on faking host time returned to
+> the guest, by applying a time-dilation factor. Time will go slower/faster for
+> the guest, without impacting QEMU emulation speed.
+> 
+> It may eventually be used to fix some of the timeouts we hit in CI, by slowing
+> down time in VM, to be less sensitive to varying cpu performance.
+> 
+> v2
+> --
+> 
+> In review, Paolo mentioned timers deadline should redilated in the other
+> direction. After going through this part, it seems that arrival is always based
+> on one of the clocks we have (which is dilated already), so I don't think we
+> should redilate that, as this would create a discordance between time set, and
+> real time when this happen. Feel free to correct me if this is wrong.
+> 
+> - keep start time per clock and apply accordingly
+> - apply time dilation for cpu_get_host_ticks as well
+> - use a default factor of 1.0
+> - rename cli option to -rtc speed-factor
+> - forbid to use option with kvm, as time is not provided by QEMU for guest
+> 
+> Pierrick Bouvier (2):
+>    qemu/timer: introduce time dilation factor
+>    system/rtc: introduce -rtc speed-factor option
+> 
+>   include/qemu/timer.h     | 60 ++++++++++++++++++++++++++++------------
+>   system/rtc.c             | 11 ++++++++
+>   system/vl.c              |  9 ++++++
+>   util/qemu-timer-common.c |  7 +++++
+>   qemu-options.hx          |  7 ++++-
+>   5 files changed, 75 insertions(+), 19 deletions(-)
+> 
 
---Apple-Mail=_0D194A2C-DD9F-4A27-BC0C-8FEF1BE86DD4
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+Trying another ping on this series.
+It has been useful to reduce number of interruptions in a guest when 
+running on a slow machine.
 
-
-> On 4. Aug 2025, at 18:00, Claudio Fontana <cfontana@suse.de> wrote:
->=20
-> On 8/4/25 16:23, Mohamed Mediouni wrote:
->> From: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->>=20
->> hwaccel_enabled() return whether any hardware accelerator
->> is available.
->=20
-> Available or enabled?
-enabled
-
-Took the patch from =
-https://lore.kernel.org/qemu-devel/20250703105540.67664-47-philmd@linaro.o=
-rg/
-
-Should I edit the commit message locally or will be taken care of when =
-it gets merged on that series?
-
-Thank you,
-
-
---Apple-Mail=_0D194A2C-DD9F-4A27-BC0C-8FEF1BE86DD4
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
-
-<html aria-label=3D"message body"><head><meta http-equiv=3D"content-type" =
-content=3D"text/html; charset=3Dutf-8"></head><body =
-style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
-line-break: after-white-space;"><div><br><blockquote type=3D"cite"><div>On=
- 4. Aug 2025, at 18:00, Claudio Fontana &lt;cfontana@suse.de&gt; =
-wrote:</div><br class=3D"Apple-interchange-newline"><div><div>On 8/4/25 =
-16:23, Mohamed Mediouni wrote:<br><blockquote type=3D"cite">From: =
-Philippe Mathieu-Daud=C3=A9 =
-&lt;philmd@linaro.org&gt;<br><br>hwaccel_enabled() return whether any =
-hardware accelerator<br>is available.<br></blockquote><br>Available or =
-enabled?<br></div></div></blockquote>enabled<div><br></div><div>Took the =
-patch from&nbsp;<a =
-href=3D"https://lore.kernel.org/qemu-devel/20250703105540.67664-47-philmd@=
-linaro.org/">https://lore.kernel.org/qemu-devel/20250703105540.67664-47-ph=
-ilmd@linaro.org/</a><br =
-id=3D"lineBreakAtBeginningOfMessage"></div><div><br></div><div>Should I =
-edit the commit message locally or will be taken care of when it gets =
-merged on that series?</div><div><br></div><div>Thank =
-you,</div><div><br></div></div></body></html>=
-
---Apple-Mail=_0D194A2C-DD9F-4A27-BC0C-8FEF1BE86DD4--
+Regards,
+Pierrick
 
