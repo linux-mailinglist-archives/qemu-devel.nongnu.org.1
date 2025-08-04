@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60190B1A84B
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 19:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE59B1A847
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 19:00:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiyaA-0005t7-4X; Mon, 04 Aug 2025 13:02:42 -0400
+	id 1uiyX6-0001zV-7F; Mon, 04 Aug 2025 12:59:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uiwuq-0000jG-0e
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 11:15:56 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1uiwup-0000hp-Lg
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 11:15:55 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uiwum-0000aC-9L
+ id 1uiwul-0000Zv-JS
  for qemu-devel@nongnu.org; Mon, 04 Aug 2025 11:15:54 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-459ddf83023so5124435e9.0
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-459d40d16bdso9707765e9.0
  for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 08:15:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754320551; x=1754925351; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=OgUT+NYtubqKmrBWdnKwxLf5SEkQ0g2Bbn27XpVNia0=;
- b=kxwgKZhpoZlgbU3WAprVHgLFzwwUMvb35wDN6Nu/mQvEWi5g3+gCPgvRbVn5sz1X0+
- EvWFj9lUzmKcJT2rYVa95yvM93iRW3xdmx7WpDfYoY/Jb9sukTo7Ec/c7GNkS3Jre/f+
- I6ODdhBs2YifX9rolZaY19RCBqp8vKWVPEsE6/AuAwb6b5t/xu7w0esYtBIsTw41e7vZ
- onzXw3JFLZcpR7ieWj94NN/GMScCwTBTF0MGJLakDTlfp9OZiUbTY8gWrzQ7I/8KdPp5
- tbBuslNBAXSPQs+2wnVlVXTRkyYH395sZvDWjOLkZq4yOtS6vPDpOT1Dqn9/9TPzRF7J
- Bsjw==
+ d=linaro.org; s=google; t=1754320550; x=1754925350; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=E+Wh1VP6DOxrn+VlvqLuE2O5pLk0j4qlYRsPTraobhg=;
+ b=UzWMTinQF1vv2//eO3kgA40nWwVzq/mxnDDwtTCMQiASF3xjJx6JfQXir16xiWt29x
+ uKog57vH4nNHuWqXMAuDROOCuFXdozdpzdO/w/Rwjzw7KvOOgO07Z1NYIzECveAs000V
+ WfjOUIWT4k4VLMucakC2boowfvj3aWQyKU56VRICAtaYTlb4OWyIlIxSfwtOtuIwSvsx
+ doz9AjU70fQCb028KeTRefbekzzfbqLjj/FSUAib8ZqT5IqMyTEAdiJ5D7wjmQwa7u6/
+ b7197Yxy02thCPU/gVe6DekC7Gugup4DegttfUCBvIFGM+aaKQnCONCpECY9eX7RPBEa
+ ue9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754320551; x=1754925351;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OgUT+NYtubqKmrBWdnKwxLf5SEkQ0g2Bbn27XpVNia0=;
- b=qXEC7KKiM6++52RkHkGFtoqO/PoJfoslVELfnS8FGUxvS71Cio0F41a6c6tmqN9JrB
- uOQV8INxjnrGYmz2dNfPLWYYy6aGSRhclz/tRxDbUy8amP3acnLfgElM3sP1nmtSahT0
- yybEB4ridWMkjlg9caVuLXkLbhkQNyCmy0CxYNRpzvr6tJQZKuy+F9iHiRs6XtysEwsE
- KmQ2ioo9SIqyqv90ZqqiTd1toNrqI3V6icYLl65SMZD8OwhEiuimwBu1tjV2h8xQEAVh
- QD4CsaetiAZYVGb8LZN6sCk4VylJUl0BCvDrQBI9ASHEfTrJgci6hJc+UdhmWPa4xSHW
- 4kIA==
-X-Gm-Message-State: AOJu0YwCJafP4mx0JhPJDdoxo4k5mAc+b2Ttyz5StFdGrxr2CUxkL5L5
- f2LWrZIBpCsuVz+cYcqznyl+mduD0r9apHhNLX4W0nwVbwRe/8pFol1qSfWqow7vVWTf0h4gRQy
- wbRQd
-X-Gm-Gg: ASbGnctJZSPNBwVte5YZgygDvqBhZMOPHSwTdvym83kPG4hYpr3OrETqiViH+T05tgE
- QMZ4FGEIIjQEC/62VUgPFN8IX4NfVUCInKkfDVAnbzh1LO77urdjm00oVI0nOfxJSAXAaO3NHne
- 7Kq22oEKjM7iaSVjhoaoAygEDLf9Ak2Xdew/zhhsLZiaUq1KeRoDgfbaHDjiC4n1uzTFIRBabcv
- O5XLHB/cLoe9WcT2PBh3/UYRoUJ7HbHhoURzJT5h3iejh7t/vfkF8kUt1fWhx9J5Sh9pZrgJHKf
- heVxf3Meq2h+hBN/FTApxzkiXpOWSbfKh1yl7GAe9XAqI56ff/QLIezNVAcAUGdBvk1CSH7zl4R
- /GlY2mZ3LQ6wddQktuqb33mw=
-X-Google-Smtp-Source: AGHT+IH9pLgSc8hHzlCcMa6sqrtlHiQHyjIpkMM1lJK7FlgTjwlOSWbRn3m/w8zt3Bemj4R3zrJ9qA==
-X-Received: by 2002:a05:600c:4685:b0:456:161c:3d77 with SMTP id
- 5b1f17b1804b1-458b6b36b94mr80932035e9.16.1754320550641; 
- Mon, 04 Aug 2025 08:15:50 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1754320550; x=1754925350;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=E+Wh1VP6DOxrn+VlvqLuE2O5pLk0j4qlYRsPTraobhg=;
+ b=YuVP0e5EEUAIxToRMgIKdHmnHgp7TpWj9vwIR+/6pfmZu8KH2LQp57rf4ccVw+zRw+
+ CGVK0qQJWatxqJCt5+vktqcxmgo0hovjWbXXTFrtgdGEWjDZVaEe8vYoqnNrTgjwm3iS
+ OCKeXwLgAAeYm9BBgMTmj/QxfVt1COhLI9VdfCbTYz7UvE+2t8OJlzTif8b5EsR9gddN
+ 6OKyt+YmKoMVZHtGJ0o7cA1422jnisRA5Q7/0SDeY2T2CRp35znuZDJn1ulqFIHF8OAp
+ 70baoh3SlkXZwlwvfcnQade80uDpQCfQYQ2lN5QxO/F0YfchVqwF9uY0dKoVRaRlRQ6O
+ 6RIQ==
+X-Gm-Message-State: AOJu0Yx1iUZSqjE2kJbxl7cMOE2yHns1yz3wmm2oNZFzKr5Do0LeMVFR
+ RZyih2QB8+PVZYYBK8cP5dn5vXYE8zS/+GpVEEfrZBULuM+/OCijcRZuJt7LCnh29P8=
+X-Gm-Gg: ASbGncu+Ap39ugvEjzckOhLp9CGxijw7I/QPpRY0AMnPJ3ypcw7jeRIlZSIYYVmZ5Js
+ TuzmkxxGSmoqKNrXuJClpyyT7NAeBK4Euv2iTW+AjuEzkVvFGxpJhGSgW3qxmvCbhAP+WwwMehF
+ oGia+t0NFd9//RDdzJGW7JmmQZQCDE/kBs0Y965V4BnIUTz49v0sxVYUsBZ88woW5wB+jsQDPir
+ j4uTLm0rHbTN9Zk4Z1eB9dLDv8gsk8fVdIVSMgtkjNchAiz9ji33vLyPA7ZplOF1jDhXDCPeu36
+ X2gMGspdM6K7GGFOI74Zcb1bG2wvPE8bQE/N6HoipFn+7ZS/F1Ts9KKq64LAgJ9RqPzeEAepAQQ
+ Bm7IbIcqLWCMxxtET3bRGh9E=
+X-Google-Smtp-Source: AGHT+IGoxwLPYZYAX4bPbMYhrbjYfSngR483Ks3jO4CteVFsUqxuivuPHxUip/X0DACqR5JYn7M99w==
+X-Received: by 2002:a05:600c:4f14:b0:458:bdd1:b7ef with SMTP id
+ 5b1f17b1804b1-458bdd1b9a3mr64003455e9.19.1754320549948; 
+ Mon, 04 Aug 2025 08:15:49 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-459dfa64da0sm15985975e9.3.2025.08.04.08.15.46
+ ffacd0b85a97d-3b79c4a2f03sm15670698f8f.72.2025.08.04.08.15.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 04 Aug 2025 08:15:46 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1014A5F88A;
+ by draig.lan (Postfix) with ESMTP id 26BEA5F88D;
  Mon, 04 Aug 2025 16:15:46 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL for 10.1-rc2 0/3] doc and testing fixes
-Date: Mon,  4 Aug 2025 16:15:42 +0100
-Message-ID: <20250804151545.311042-1-alex.bennee@linaro.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 1/3] docs/devel/submitting-a-patch.rst: add b4 section
+Date: Mon,  4 Aug 2025 16:15:43 +0100
+Message-ID: <20250804151545.311042-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250804151545.311042-1-alex.bennee@linaro.org>
+References: <20250804151545.311042-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,40 +105,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit e5859141b9b6aec9e0a14dacedc9f02fe2f15844:
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2025-08-01 10:46:00 -0400)
+Add a section about b4, an actively maintained and widely packaged CLI
+tool for contributing to patch-based development projects.
 
-are available in the Git repository at:
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-ID: <20250717-docs_add_b4_section-v2-1-69212ed39299@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-  https://gitlab.com/stsquad/qemu.git tags/pull-10.1-rc2-maintainer-040825-2
-
-for you to fetch changes up to 61432e805e5028df0a3df5a76915cdc3007ecd41:
-
-  tests/docker: fix debian-all-test-cross (2025-08-04 16:13:38 +0100)
-
-----------------------------------------------------------------
-Testing and doc fixes
-
-  - add information about patch submission with b4
-  - fix make-release script to include all EDK submodules
-  - fix debian-all-test-cross docker image
-
-----------------------------------------------------------------
-Alex Bennée (1):
-      tests/docker: fix debian-all-test-cross
-
-Manos Pitsidianakis (1):
-      docs/devel/submitting-a-patch.rst: add b4 section
-
-Peter Maydell (1):
-      scripts/make-release: Go back to cloning all the EDK2 submodules
-
- docs/devel/submitting-a-patch.rst                  | 40 ++++++++++++++++++++--
- scripts/make-release                               | 20 +++++------
- .../dockerfiles/debian-all-test-cross.docker       |  4 +--
- 3 files changed, 48 insertions(+), 16 deletions(-)
-
+diff --git a/docs/devel/submitting-a-patch.rst b/docs/devel/submitting-a-patch.rst
+index f7917b899f6..dd1cf32ad35 100644
+--- a/docs/devel/submitting-a-patch.rst
++++ b/docs/devel/submitting-a-patch.rst
+@@ -235,6 +235,38 @@ to another list.) ``git send-email`` (`step-by-step setup guide
+ works best for delivering the patch without mangling it, but
+ attachments can be used as a last resort on a first-time submission.
+ 
++.. _use_b4:
++
++Use B4
++~~~~~~
++
++The `b4`_ tool, used for Linux kernel development, can also be used for QEMU
++development. It is packaged in most distros and PyPi. The QEMU source tree
++includes a ``b4`` project configuration file at the root: ``.b4-config``.
++
++Example workflow to prepare a patch series:
++
++1. Start with a clean checkout of the ``master`` branch.
++2. Create a new series with a topical branch name using ``b4 prep -n descriptive-name``.
++   ``b4`` will create a ``b4/descriptive-name`` branch and switch to it.
++3. Commit your changes, following this page's guidelines about proper commit messages etc.
++4. Write a descriptive cover letter with ``b4 prep --edit-cover``.
++5. Add maintainer and reviewer CCs with ``b4 prep --auto-to-cc``. You can make
++   changes to Cc: and To: recipients by editing the cover letter.
++6. Run patch checks with ``b4 prep --check``.
++7. Optionally review the patches with ``b4 send --dry-run`` which will print the
++   raw patches in standard output.
++
++To send the patches, you can:
++
++- Setup ``git-send-email`` and use ``b4 send``, or
++- Export the patches to files using ``b4 send -o OUTPUT_DIR`` and send them manually.
++
++For more details, consult the `b4 documentation`_.
++
++.. _b4 documentation: https://b4.docs.kernel.org/
++.. _b4: https://github.com/mricon/b4/
++
+ .. _use_git_publish:
+ 
+ Use git-publish
+@@ -418,7 +450,7 @@ Retrieve an existing series
+ ---------------------------
+ 
+ If you want to apply an existing series on top of your tree, you can simply use
+-`b4 <https://github.com/mricon/b4>`__.
++`b4`_.
+ 
+ ::
+ 
+@@ -533,7 +565,11 @@ summary belongs. The `git-publish
+ <https://github.com/stefanha/git-publish>`__ script can help with
+ tracking a good summary across versions. Also, the `git-backport-diff
+ <https://github.com/codyprime/git-scripts>`__ script can help focus
+-reviewers on what changed between revisions.
++reviewers on what changed between revisions. The ``b4`` tool automatically
++generates a version history section in the cover letter, including links to the
++previous versions on `Lore`_.
++
++.. _Lore: https://lore.kernel.org/
+ 
+ .. _tips_and_tricks:
+ 
 -- 
 2.47.2
 
