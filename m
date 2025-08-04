@@ -2,119 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8829AB1A959
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 21:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C3AB1A94E
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:54:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uj0S5-0001AY-KY; Mon, 04 Aug 2025 15:02:29 -0400
+	id 1uj0JO-0006Vg-Vu; Mon, 04 Aug 2025 14:53:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uiz8T-00033U-Ss; Mon, 04 Aug 2025 13:38:10 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <kbusch@kernel.org>)
+ id 1uizA0-0004VY-0K; Mon, 04 Aug 2025 13:39:45 -0400
+Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uiz8O-00062U-UA; Mon, 04 Aug 2025 13:38:07 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 574CbdFk032462;
- Mon, 4 Aug 2025 17:38:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:reply-to:subject:to; s=pp1;
- bh=kXQXYNeH6sDMBkqtuMibSavym928/HVAbUQIXW3IJDY=; b=oUnfV/ckpOsy
- xwCI0yu2bXAxYZpfbg7poJxHs49DlhntqzFiKvdoZQFE4fP687L0CVRCO8ykTjSP
- iRigLwofsQ4Vd5svGgMOSTuc0D96555HTv7FA6uhzNxslv1rm3RQYv+wZFq0Elsm
- pDRJoouht8X90QJ4S4wtOLDRBZn8tr9lardXcIpgU2uuiWgXcTmsFCBPRaDolKD9
- i4CgxwnkFrDoUYFh4w0wHTgN/FTCB81HtOa9AFoh78hDodqQSU6uvHg+68CEs5E+
- g4659hSAaYiApVEjBqlkt4eDeHmTpTSk/4nmOvwxOiDu1LUUMiJDQrT3uV62+ntq
- NXq8RL+6Mw==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48993paers-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Aug 2025 17:38:00 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 574HbncT028207;
- Mon, 4 Aug 2025 17:37:59 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48993paerq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Aug 2025 17:37:59 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 574HWa10009807;
- Mon, 4 Aug 2025 17:37:59 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 489w0tf2nb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Aug 2025 17:37:59 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 574HbvvH27525750
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Aug 2025 17:37:57 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3ECA758055;
- Mon,  4 Aug 2025 17:37:57 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 940A35804B;
- Mon,  4 Aug 2025 17:37:56 +0000 (GMT)
-Received: from mambor8.rchland.ibm.com (unknown [9.10.239.198])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  4 Aug 2025 17:37:56 +0000 (GMT)
-Message-ID: <dd46b9656f99b23a52f60b8d4150985e5934384d.camel@linux.ibm.com>
-Subject: Re: [PATCH 00/50] ppc/xive: updates for PowerVM
-From: Miles Glenn <milesg@linux.ibm.com>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>, Nicholas Piggin
- <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, =?ISO-8859-1?Q?Fr=E9d=E9ric?= Barrat
- <fbarrat@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>, Caleb
- Schlossin <calebs@linux.vnet.ibm.com>
-Date: Mon, 04 Aug 2025 12:37:56 -0500
-In-Reply-To: <56c95bf5-45bd-43c0-a6ca-62845b2bdca6@redhat.com>
-References: <20250512031100.439842-1-npiggin@gmail.com>
- <b192697a-f936-450d-8e19-6cb364b7e747@redhat.com>
- <D9X71WIPID90.1W1RJIDOU9DID@gmail.com>
- <56c95bf5-45bd-43c0-a6ca-62845b2bdca6@redhat.com>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: G-vPGGvRlL9IHWZXAvdabgayB1nR41c0
-X-Authority-Analysis: v=2.4 cv=LOFmQIW9 c=1 sm=1 tr=0 ts=6890eff8 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=-nMebG13ZnQKKsIKi0YA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: k49kimEywWtG12rDKxAZOmkbtlxxOnW0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA5OCBTYWx0ZWRfXwt4QH7LetaCU
- TNy91vDWTluHlpMpH8AiNmSNib405D8VsCCQbKsujwkpm8YxxNOj+pPNAO6Y6ANcNq15dheJ8y+
- 5Y5QNjAyBRUaI4xv7UyaQFGZDvAe4//3OlNJxRHNl9vlkeVBgoXtgFq0+KHk6a1cNW+MwRMilU1
- htjJp5/B7A5EA8mzxuIttqSNuHUOKEU8VzyLH3k0V82psByGlnJOgGNToUNvjGUa81UaTt0SkI0
- r9snSr+rKpBXOJE19vUJP6hgS4o1v0l9Fc2G20YnzTX4BApjc16WFdJc0n72RDnF+TM3SKkyxgo
- eMCFpKFRWIhnRIb3VJDhMt7vr9oTqnjF3WjSF83VBWL6it/irxPBOguwFGAOmpOAtA1StJwGbI0
- LOH/yOK3Pn0jjOERi37kuzCFAU+Q9cIQuKSraIQO4u2qIsNOOmnZd1xzSMu9eldo7PkRPawP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-04_07,2025-08-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 mlxlogscore=999 mlxscore=0 clxscore=1011
- malwarescore=0 suspectscore=0 impostorscore=0 phishscore=0 lowpriorityscore=0
- bulkscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2508040098
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=milesg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+ (Exim 4.90_1) (envelope-from <kbusch@kernel.org>)
+ id 1uiz9v-0006Bi-Qw; Mon, 04 Aug 2025 13:39:42 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id 8B467A559E9;
+ Mon,  4 Aug 2025 17:39:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AEDC4CEE7;
+ Mon,  4 Aug 2025 17:39:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1754329173;
+ bh=VOFGKbHRfr1JcCUs/oI52wfC86Udfbt5H6v3sVTxeM4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=BFzIh12giFFcAzAEF4yBUrQo0S/W0pYiHBojACJnQNuzs4tQ8JvEuUEc7MJXlLxWS
+ y2Zkr1XgJRcb/9Kc3Jgbz+PVGGRBWFl7l32vYEKuNqfotwUlzyNIkg0cVLqMMPePRQ
+ p5ixI/eOK1GZptvnxYOgD9AS48Jk0VsMP1wT1z1ClrfQ3IbgwILddplzPeT9lVbOyp
+ H6sO9rGCSQNnT+0aOsgwAGmmqJ7JPZxtJwMqQXQ9drGV7+YolmS/0IGacWb367ECdu
+ AZRPwx/Y+R1RWSMlsERcQ/hSrlFXQuQXiokNZoa+Sby4HlvnURYMUQJt5cKW2LsJnx
+ ayRbHGoeo04ug==
+Date: Mon, 4 Aug 2025 11:39:30 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Klaus Jensen <its@irrelevant.dk>
+Cc: Keith Busch <kbusch@meta.com>, qemu-devel@nongnu.org, qemu-block@nongnu.org
+Subject: Re: [PATCH] hw/nvme: cap MDTS value for internal limitation
+Message-ID: <aJDwUhgfS2b-DnLp@kbusch-mbp>
+References: <20250801142457.3012213-1-kbusch@meta.com>
+ <aJCA6oB1LZdHbAz9@AALNPWKJENSEN.aal.scsc.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJCA6oB1LZdHbAz9@AALNPWKJENSEN.aal.scsc.local>
+Received-SPF: pass client-ip=147.75.193.91; envelope-from=kbusch@kernel.org;
+ helo=nyc.source.kernel.org
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,152 +65,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: milesg@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 2025-07-20 at 23:26 +0200, Cédric Le Goater wrote:
-> On 5/16/25 03:29, Nicholas Piggin wrote:
-> > On Fri May 16, 2025 at 1:36 AM AEST, Cédric Le Goater wrote:
-> > > On 5/12/25 05:10, Nicholas Piggin wrote:
-> > > > These changes gets the powernv xive2 to the point it is able to run
-> > > > PowerVM with good stability.
-> > > > 
-> > > > * Various bug fixes around lost interrupts particularly.
-> > > > * Major group interrupt work, in particular around redistributing
-> > > >     interrupts. Upstream group support is not in a complete or usable
-> > > >     state as it is.
-> > > > * Significant context push/pull improvements, particularly pool and
-> > > >     phys context handling was quite incomplete beyond trivial OPAL
-> > > >     case that pushes at boot.
-> > > > * Improved tracing and checking for unimp and guest error situations.
-> > > > * Various other missing feature support.
-> > > > 
-> > > > The ordering and grouping of patches in the series is not perfect,
-> > > > because it had been an ongoing development, and PowerVM only started
-> > > > to become stable toward the end. I did try to rearrange and improve
-> > > > things, but some were not worth rebasing cost (e.g., some of the
-> > > > pool/phys pull redistribution patches should have ideally been squashed
-> > > > or moved together), so please bear that in mind.  Suggestions for
-> > > > further rearranging the series are fine, but I might just find they are
-> > > > too much effort to be worthwhile.
-> > > > 
-> > > > Thanks,
-> > > > Nick
-> > > > 
-> > > > Glenn Miles (12):
-> > > >     ppc/xive2: Fix calculation of END queue sizes
-> > > >     ppc/xive2: Use fair irq target search algorithm
-> > > >     ppc/xive2: Fix irq preempted by lower priority group irq
-> > > >     ppc/xive2: Fix treatment of PIPR in CPPR update
-> > > >     pnv/xive2: Support ESB Escalation
-> > > >     ppc/xive2: add interrupt priority configuration flags
-> > > >     ppc/xive2: Support redistribution of group interrupts
-> > > >     ppc/xive: Add more interrupt notification tracing
-> > > >     ppc/xive2: Improve pool regs variable name
-> > > >     ppc/xive2: Implement "Ack OS IRQ to even report line" TIMA op
-> > > >     ppc/xive2: Redistribute group interrupt precluded by CPPR update
-> > > >     ppc/xive2: redistribute irqs for pool and phys ctx pull
-> > > > 
-> > > > Michael Kowal (4):
-> > > >     ppc/xive2: Remote VSDs need to match on forwarding address
-> > > >     ppc/xive2: Reset Generation Flipped bit on END Cache Watch
-> > > >     pnv/xive2: Print value in invalid register write logging
-> > > >     pnv/xive2: Permit valid writes to VC/PC Flush Control registers
-> > > > 
-> > > > Nicholas Piggin (34):
-> > > >     ppc/xive: Fix xive trace event output
-> > > >     ppc/xive: Report access size in XIVE TM operation error logs
-> > > >     ppc/xive2: fix context push calculation of IPB priority
-> > > >     ppc/xive: Fix PHYS NSR ring matching
-> > > >     ppc/xive2: Do not present group interrupt on OS-push if precluded by
-> > > >       CPPR
-> > > >     ppc/xive2: Set CPPR delivery should account for group priority
-> > > >     ppc/xive: tctx_notify should clear the precluded interrupt
-> > > >     ppc/xive: Explicitly zero NSR after accepting
-> > > >     ppc/xive: Move NSR decoding into helper functions
-> > > >     ppc/xive: Fix pulling pool and phys contexts
-> > > >     pnv/xive2: VC_ENDC_WATCH_SPEC regs should read back WATCH_FULL
-> > > >     ppc/xive: Change presenter .match_nvt to match not present
-> > > >     ppc/xive2: Redistribute group interrupt preempted by higher priority
-> > > >       interrupt
-> > > >     ppc/xive: Add xive_tctx_pipr_present() to present new interrupt
-> > > >     ppc/xive: Fix high prio group interrupt being preempted by low prio VP
-> > > >     ppc/xive: Split xive recompute from IPB function
-> > > >     ppc/xive: tctx signaling registers rework
-> > > >     ppc/xive: tctx_accept only lower irq line if an interrupt was
-> > > >       presented
-> > > >     ppc/xive: Add xive_tctx_pipr_set() helper function
-> > > >     ppc/xive2: split tctx presentation processing from set CPPR
-> > > >     ppc/xive2: Consolidate presentation processing in context push
-> > > >     ppc/xive2: Avoid needless interrupt re-check on CPPR set
-> > > >     ppc/xive: Assert group interrupts were redistributed
-> > > >     ppc/xive2: implement NVP context save restore for POOL ring
-> > > >     ppc/xive2: Prevent pulling of pool context losing phys interrupt
-> > > >     ppc/xive: Redistribute phys after pulling of pool context
-> > > >     ppc/xive: Check TIMA operations validity
-> > > >     ppc/xive2: Implement pool context push TIMA op
-> > > >     ppc/xive2: redistribute group interrupts on context push
-> > > >     ppc/xive2: Implement set_os_pending TIMA op
-> > > >     ppc/xive2: Implement POOL LGS push TIMA op
-> > > >     ppc/xive2: Implement PHYS ring VP push TIMA op
-> > > >     ppc/xive: Split need_resend into restore_nvp
-> > > >     ppc/xive2: Enable lower level contexts on VP push
-> > > > 
-> > > >    hw/intc/pnv_xive.c          |  16 +-
-> > > >    hw/intc/pnv_xive2.c         | 139 +++++--
-> > > >    hw/intc/pnv_xive2_regs.h    |   1 +
-> > > >    hw/intc/spapr_xive.c        |  18 +-
-> > > >    hw/intc/trace-events        |  12 +-
-> > > >    hw/intc/xive.c              | 555 ++++++++++++++++++----------
-> > > >    hw/intc/xive2.c             | 717 +++++++++++++++++++++++++++---------
-> > > >    hw/ppc/pnv.c                |  48 +--
-> > > >    hw/ppc/spapr.c              |  21 +-
-> > > >    include/hw/ppc/xive.h       |  66 +++-
-> > > >    include/hw/ppc/xive2.h      |  22 +-
-> > > >    include/hw/ppc/xive2_regs.h |  22 +-
-> > > >    12 files changed, 1145 insertions(+), 492 deletions(-)
-> > > > 
-> > > 
-> > > I am impressed :) and glad that you are still taking care of XIVE.
-> > > 
-> > > I suggest adding new names under the XIVE entry in the MAINTAINERS file.
-> > 
-> > Yeah it's good to see. They are building a lot more cool stuff with
-> > powernv at the moment, hopefully almost all should get upstreamed
-> > eventually.
-> > 
-> > I will try to convince them to add MAINTAINER entries :)
-> > 
-> > Thanks,
-> > Nick
-> > 
+On Mon, Aug 04, 2025 at 11:44:10AM +0200, Klaus Jensen wrote:
+> On Aug  1 07:24, Keith Busch wrote:
 > 
-> This is a major update for XIVE and, since I am not sure anyone
-> is going to send a PR for QEMU 10.1, I am volunteering to do
-> it again on monday, once and only for these fixes.
+> This allows >2MB transfers with PRPs. However, it is not a clean fix
+> since it does not deal with the issue that remains for the CMB (which
+> uses the blk_aio api directly.
 > 
-> We should clarify in the next cycle who is charge of ppc. IMO,
-> If we don't have maintainers, we should orphan all non-pseries
-> PPC components. I can send a maintainer update on this as soon
-> as the QEMU 10.2 cycle opens.
-> 
-> 
-> Thanks,
-> 
-> C.
-> 
+> I'll queue up your patch for now. Thanks!
 
-Cédric,
+Thanks, sounds okay for the near term. 
 
-Thanks for doing the PR for these XIVE changes!  It sounds like if we
-want to continue having our XIVE changes upstreamed we will need
-someone on our IBM QEMU development team to volunteer as a maintainer.
-Does becoming a maintainer still require physically attending a key
-signing party at KVM Forum?
+Here's another idea to merge contiguous PRPs into a single segment. This
+should get around that IOV_MAX limitation for Linux because that OS
+wouldn't send such a large IO if it wasn't mostly physically contiguous:
 
-Thanks,
-
-Glenn
-
+---
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index e764ec7683..83fb1385d1 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -827,6 +827,7 @@ static uint16_t nvme_map_addr_pmr(NvmeCtrl *n, QEMUIOVector *iov, hwaddr addr,
+ static uint16_t nvme_map_addr(NvmeCtrl *n, NvmeSg *sg, hwaddr addr, size_t len)
+ {
+     bool cmb = false, pmr = false;
++    QEMUSGList *qsg;
+ 
+     if (!len) {
+         return NVME_SUCCESS;
+@@ -864,6 +865,13 @@ static uint16_t nvme_map_addr(NvmeCtrl *n, NvmeSg *sg, hwaddr addr, size_t len)
+         return NVME_INVALID_USE_OF_CMB | NVME_DNR;
+     }
+ 
++    qsg = &sg->qsg;
++    if (qsg->sg[qsg->nsg - 1].base + qsg->sg[qsg->nsg - 1].len == addr) {
++        qsg->sg[qsg->nsg].len += len;
++        qsg->size += len;
++        return NVME_SUCCESS;
++    }
++
+     if (sg->qsg.nsg + 1 > IOV_MAX) {
+         goto max_mappings_exceeded;
+     }
+--
 
