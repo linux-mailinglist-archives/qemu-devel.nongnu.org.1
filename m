@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AC9B1A892
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 19:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BBCB1A848
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 19:00:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiyqZ-0004c7-RV; Mon, 04 Aug 2025 13:19:40 -0400
+	id 1uiyX5-0001qa-Bq; Mon, 04 Aug 2025 12:59:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uiwum-0000fm-Gh
+ id 1uiwun-0000gK-P1
  for qemu-devel@nongnu.org; Mon, 04 Aug 2025 11:15:55 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uiwuj-0000Xo-Jf
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 11:15:51 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3b79bd3b1f7so2447037f8f.1
+ id 1uiwul-0000YQ-Gu
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 11:15:53 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3b7886bee77so3894981f8f.0
  for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 08:15:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1754320548; x=1754925348; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5I0P9zrEGMWC2opqsSuDg7PldX8TWbC7NgkKHaAdNlE=;
- b=rDwruqS5sQjngdFaB62Sceq/O1ANDq+fE2gbsgKSRMqbXT50gPIdri/b1PJKUmVZj/
- LD8a5R8Gkb8EsyY41OFLhbl1m73nCMhBciNZLGRcCKMCkYVrnO2laJPzUMDffq+aFy0h
- poln4jhkmM1NRke5l1ygA7E/20rIKso0aNTPmeMss1lsrymrsLBh8JsXHvBz1TFxe5Mt
- uKFqC31FI2dQAYq4txXtOGvdZr9ho6xsPM2lM00sN31PudZsga2Ud7O+tgJjSgsFWd12
- 48Rxlk07rhKtT79f36L7nYy+VLS3WomsGV70GC6N4ypeG3cNF+DGdqV/V8IVvqbFFfvj
- u1gw==
+ bh=C6oEr5Vs3fmUjzOCI3T+a06J4NOhRz8MdlL63v2ufMw=;
+ b=h+KIIX9r3v2go494ayWDJrCm0QKDC4oIadPbYR2hpU6c9XYcVwqW5XKuln1qWKkAVF
+ Nq84VY2bxSRZrUn5bn4PCGEfBQN2oDdOSOU9pO/IvHOJ00R4PhXoD0tNctEXs3j8aZ6q
+ hPIyvPAON6IaMYdU8SczAvCJayBTppZOFfrwYYWxrSV+wtyOPnFA74csDVUUOwRMDmtj
+ cSnU3MgrtjC5Z4rV9rOsWRwFwXhlY6LF1bku2MOfTbnvX5pGL6nhtJJy+A3zOP3Bgyqz
+ lIdNuUqhgf9NVEndLpqyFke1coHqUT152jCR5zjUX8l77ww0UY1e3WnG1q/nU08v7uLo
+ E+7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1754320548; x=1754925348;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5I0P9zrEGMWC2opqsSuDg7PldX8TWbC7NgkKHaAdNlE=;
- b=sg8RF8/JglOLxsqnM5F8msz32s8b/sXUHrvnspI50lhSxyG/tJQHzZA3oJLxV5tbyi
- yywXf32l9PthKoV/jpTPEdTPBJvhzUSzrk2mv7/TeUkaf6B8gOtRInXhgHN0Gpy1lbKp
- e/eEjxqIaCHAreKzXcmR/k/fmNPJmbqyXlslt3vH89RqZfQpEAfnfJz3oodNG+ZHK2lf
- 67JvYsWlKXJK2Ho40Mz0+364e4PKqNBg+BfkjBffMuRIhqdNHnzG4S8eX6gJz23h17ro
- ajv3UIMWKLMy3HZ1+LmWsSE06nRmNWWigkWD+iodnfeHLZ/mqfK4tHUVpBluAMqkM4S2
- HZiw==
-X-Gm-Message-State: AOJu0Yz9w41epcJ/s0fYDVnxsalEbCuRq24cyuHf8FbkpXEcd5qgj0Ix
- vXLL7ouTZMKeuUSHm+kXhcdcvHi+HZ5aJVcAAB2lmKgP/X1b4kEpSiWjNiDX205Am8zC9kkwm6O
- bZ7ND
-X-Gm-Gg: ASbGncsTxPANM/+tW2StKoU6J3Z5Jjr+lUbzh3zL5JCteMfybqTCqxU5lpXNKmGxpUZ
- hTrQMM9j008z/bVkD4+cnqLnJ4bp70Be9bBVcZwxXkD3l1MJ/tNQ0rV/+gbaFls1pdNQ4fccR3o
- baoJetYL6Md+4IhLK9K6Li471vroZpN+pEMGK9cJ/NGILsHRXNGMqvq0zPC8/iGdRuqMJkyvYxD
- oo3AANBBHo4G+y+Hpl4Sg2U5GwERE6PnR8vCFZsx9gcL98qp0h7bKDwPAE1Xi7ldNGZOKHMFIY2
- B16YrTdjbVcWAvjsrzF0epPrEwhI5F2DU51EfehMI7wnW/OWXr7jCw4hvMOCmLPyjChd+sPzKtb
- ctn+OJOa8jhYCHbgzub5WXJE=
-X-Google-Smtp-Source: AGHT+IHCXhQoCfQ3l5aqmuaZZiAY+csWNpKBrRrCAlzwD0yPhjxrj1x/bwmITBJKAVWRwW117NR8cA==
-X-Received: by 2002:a05:6000:2408:b0:3a4:f663:acb9 with SMTP id
- ffacd0b85a97d-3b8d9468531mr7126767f8f.9.1754320547800; 
- Mon, 04 Aug 2025 08:15:47 -0700 (PDT)
+ bh=C6oEr5Vs3fmUjzOCI3T+a06J4NOhRz8MdlL63v2ufMw=;
+ b=fHlKRRTzAzcrfYSo8ZXypQelshCQK25WsSWXDQiXQMKlFh0ZLDWAEMZt990Fj9nXji
+ FSpHE25m4/wVETeeKQjiKl+5g2cX+jfjj2PmHicXGE62SeGzAD2R2T487oqaD9l8e5Vk
+ riXBB1hs8MxHIbQy97ghRbEYbozbpgS9ChIm/SxxjIiLgUzyHHo+6ElpSHojxIey4aCX
+ lh+xzHnbFRXPB/BA5GdR9YGo3Lb9t7FORob3/ZZaY4C91YgCm9MTXdHw9Uud0HPdvyOG
+ rfRLvAPoCMq1egFWdmN7Krpc3+1fz+d4QXDUOYPxVcyQYfstfbEP2GgcOlHMTlxBAU6M
+ qVCw==
+X-Gm-Message-State: AOJu0Yxx8XMSWi8CgSqhxgGbD5wo4kNaxO3Tkz9cQcicIF+63i2o+5fs
+ UduP8jGv0uv+W2MigmTbvrB3LKfUHJQNkUm0jbqw3DIk7nS/pYtkFbXxpdik67as7Jo=
+X-Gm-Gg: ASbGncvG26H9zzgmLDwEKi6m993+tpLd2ZFQvb4cs5ufzMSF8Zu4TY/cpXEqXEbkwRr
+ abVWy0xAKR+nSgNa4g6+unp/KtvdK1y8wgYyLrVCbBIlzIaoB2IGvKXaEThq388OTTJEN7zplJa
+ 8/1epcKfQPLH73K8K0qfj7DVparWQcZgZX5Q3PhWzd1sWbijXMwNB/cQj5RKhfG16/YjTMm52ac
+ TKq2Xo/Lwj3JWV69/kY8qCCwLRAn6WDCSxn6dWzXMLkORlBNzUcGcDTX4QZfDBQ97v7d6c+mc1F
+ ccDeR9k2BpNhm46YvMbTydXINoiiqXEBQ90tZUDxEmtiSN83iRGKGUr6rzmEwlSiZASD2roNDeJ
+ /kUD886YWXckp1lsfhOf+bvs=
+X-Google-Smtp-Source: AGHT+IEJgDRoCLZ4bMDIIlTEtmkImQ41hv17qgJnXsxl68e/uIsLXxSUtOx5Zzz0yuhl9DHEKXIZ0Q==
+X-Received: by 2002:a05:6000:2409:b0:3b6:17c0:f094 with SMTP id
+ ffacd0b85a97d-3b8d9471798mr8546424f8f.14.1754320548324; 
+ Mon, 04 Aug 2025 08:15:48 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c46ee84sm15563644f8f.57.2025.08.04.08.15.46
+ ffacd0b85a97d-3b79c3ad803sm15778951f8f.6.2025.08.04.08.15.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Aug 2025 08:15:46 -0700 (PDT)
+ Mon, 04 Aug 2025 08:15:47 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3C3BF5F88E;
+ by draig.lan (Postfix) with ESMTP id 5369E5F892;
  Mon, 04 Aug 2025 16:15:46 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-stable@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 2/3] scripts/make-release: Go back to cloning all the EDK2
- submodules
-Date: Mon,  4 Aug 2025 16:15:44 +0100
-Message-ID: <20250804151545.311042-3-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 3/3] tests/docker: fix debian-all-test-cross
+Date: Mon,  4 Aug 2025 16:15:45 +0100
+Message-ID: <20250804151545.311042-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250804151545.311042-1-alex.bennee@linaro.org>
 References: <20250804151545.311042-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,80 +103,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+It turns out you can't easily expand an ENV var across multiple steps
+in a dockerfile. This meant we silently dropped the architectures we
+should have even on amd64 hosts. As the updated AVAILABLE_COMPILERS is
+only needed for the following apt install line just merge them.
 
-In commit bd0da3a3d4f we changed make-release so that instead of
-cloning every git submodule of EDK2 we only cloned a fixed list.
-The original motivation for this was that one of the submodules:
- * was from a non-github repo
- * that repo had a "SSL certificate expired" failure
- * wasn't actually needed for the set of EDK2 binaries we build
-and at the time we were trying to build the EDK2 binaries in one of
-our CI jobs.
-
-Unfortunately this change meant that we were exposed to bugs where
-EDK2 adds a new submodule and the sources we ship in the release
-tarball won't build any more.  In particular, in EDK2 commit
-c6bb7d54beb05 the MipiSysTLib submodule was added, causing failure of
-the ROM build in our tarball starting from QEMU release 8.2.0:
-
-/tmp/qemu-10.0.0/roms/edk2/MdePkg/MdePkg.dec(32): error 000E: File/directory not found in workspace
-        Library/MipiSysTLib/mipisyst/library/include is not found in packages path:
-        /tmp/qemu-10.0.0/roms/.
-        /tmp/qemu-10.0.0/roms/edk2
-
-(Building from a QEMU git checkout works fine.)
-
-In the intervening time EDK2 moved the submodule that had a problem
-to be one they mirrored themselves (and at time of writing all their
-submodules are hosted on github), and we stopped trying to build
-EDK2 binaries in our own CI jobs with commit 690ceb71936f9037f6.
-
-Go back to cloning every EDK2 submodule, so we don't have an
-untested explicit list of submodules which will break without
-our noticing it.
-
-This increases the size of the QEMU tarball .tar.xz file from
-133M to 139M in my testing.
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3041
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20250721153341.2910800-1-peter.maydell@linaro.org>
+Fixes: 6da616bb170 (tests/docker: handle host-arch selection for all-test-cross)
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-ID: <20250804104308.250949-1-alex.bennee@linaro.org>
 
-diff --git a/scripts/make-release b/scripts/make-release
-index 4509a9fabf5..87f563ef5f7 100755
---- a/scripts/make-release
-+++ b/scripts/make-release
-@@ -62,17 +62,15 @@ meson subprojects download $SUBPROJECTS
- (cd roms/skiboot && ./make_version.sh > .version)
- # Fetch edk2 submodule's submodules, since it won't have access to them via
- # the tarball later.
--#
--# A more uniform way to handle this sort of situation would be nice, but we
--# don't necessarily have much control over how a submodule handles its
--# submodule dependencies, so we continue to handle these on a case-by-case
--# basis for now.
--(cd roms/edk2 && \
--    git submodule update --init --depth 1 -- \
--        ArmPkg/Library/ArmSoftFloatLib/berkeley-softfloat-3 \
--        BaseTools/Source/C/BrotliCompress/brotli \
--        CryptoPkg/Library/OpensslLib/openssl \
--        MdeModulePkg/Library/BrotliCustomDecompressLib/brotli)
-+
-+# As recommended by the EDK2 readme, we don't use --recursive here.
-+# EDK2 won't use any code or feature from a submodule of a submodule,
-+# so we don't need to add them to the tarball.
-+# Although we don't necessarily need all of the submodules that EDK2
-+# has, we clone them all, to avoid running into problems where EDK2
-+# adds a new submodule or changes its use of an existing one and
-+# the sources we ship in the tarball then fail to build.
-+(cd roms/edk2 && git submodule update --init --depth 1)
- popd
- 
- exclude=(--exclude=.git)
+diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
+index ef69bbc8a51..420a4e33e60 100644
+--- a/tests/docker/dockerfiles/debian-all-test-cross.docker
++++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
+@@ -62,9 +62,7 @@ RUN if dpkg-architecture -e amd64; then \
+   export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-powerpc64-linux-gnu libc6-dev-ppc64-cross"; \
+   export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-sparc64-linux-gnu libc6-dev-sparc64-cross"; \
+   fi && \
+-  echo "compilers: ${AVAILABLE_COMPILERS}"
+-
+-RUN DEBIAN_FRONTEND=noninteractive eatmydata \
++  DEBIAN_FRONTEND=noninteractive eatmydata \
+         apt install -y --no-install-recommends \
+         ${AVAILABLE_COMPILERS} && \
+         dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt
 -- 
 2.47.2
 
