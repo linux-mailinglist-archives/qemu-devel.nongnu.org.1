@@ -2,105 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8BCB1AACA
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 00:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1028BB1AADA
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 00:25:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uj3U2-0004lJ-Cy; Mon, 04 Aug 2025 18:16:42 -0400
+	id 1uj3bI-0002Jr-1o; Mon, 04 Aug 2025 18:24:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uj3Tg-0004ep-Uo
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 18:16:25 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uj3b4-0002GD-C5
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 18:23:59 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uj3Te-0005Lf-TT
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 18:16:20 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-2405c0c431cso50523915ad.1
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 15:16:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uj3b0-0007N0-14
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 18:23:57 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-76b8d289f73so3404648b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 15:23:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754345777; x=1754950577; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1754346232; x=1754951032; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=g5ToaneZ0RAyMI/kf3IK8+SqKDvt+A7mZnMJ/2adNXA=;
- b=jOQ9LZlbud6QvmebzIsshc+wCrjB68Z5FxzK3Lpt1pWonJV7uz5s/V5mcHmQLZy+Ze
- i6n+ifzzyHtsFYCiUlJPjjAbVgcavoMGGUzvDnbJgAKvGTqhcp7OiXedFNUQllGw3M66
- 1hxKlaXc6qm3MzLGhXsOE8ITvbUY9I6qOO18D5kyudu6v8QrxGHtCnfBK6MwyB+H/Obr
- 5BqhO4Cl9DsIaLinmBBu7UDQ+zjAdiftfMRcw44R7laUgV5Nz+oLfLgvmlJyq6Jwz5LN
- NW52YZJpSlf2htXi8mWgkSxkRwm+W1WJa4jxknYTy2K26ukCM4+wF7yEgdDyXIwe4P5J
- KXBg==
+ bh=C11V6iyXWKp5KCR02XvUBcQUNxjQspOybdquxZQLdYA=;
+ b=HfLapiNjYRn8eFc7s7ozidJgaQcFkVml1g8+HISrSmhbch1uyq15tYL0cxWrUndyGb
+ J7Ry4rjUKRGhJg+Wzks2iqkRnwVtefdjRFTlFdzqylvg3tXjW5E+WUnv3jGHQk74lBPe
+ W9tBmL8YfkspXaJBI43J3LTYNaXIIoEscPuyOxeZ0albrkNGRqWD2RkMPWLVgiN8eAXL
+ DgJlBueSZdrtkHS4+Ti0D+RsjFd8lmRJM0t6FVWrOpmA9ijCV1nMJP6GNOOkNVZCh5sU
+ 6wlP7TNpuiCVzqykKCvlXJtLGA4lSnjm4bShNj20U6UbGfDKYEhmRp+DqiyH148r08lB
+ Zo4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754345777; x=1754950577;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1754346232; x=1754951032;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=g5ToaneZ0RAyMI/kf3IK8+SqKDvt+A7mZnMJ/2adNXA=;
- b=cOtOo6hGzfkOSLvHvbcVDNqairLP4XK0F88rKlvf3hugdFw0j7eqISNQ1leKMgt/ux
- 3KmWdvZohfFUHFkxTUdLiKAB76oofyWCtrP3ew9v0Pv9jKyMcVQho7WO2IOIwAMX3N/l
- YbjmB3HBZr1Xyicuhwm049QbJizsiLGhSoauY4hrK7HOsMppRURhpDMR4/nlz+EPl+Rh
- TesBqrYXeMuVAyiyKnf7drHZYSnjHX1Yh6zeYiTdR4bwo137FDZcV6O8y1zqSlZwbJYD
- 76iOR0uVwqMZIVFhVuV1WLkF6nrnixzxN5u/2oZSHUjEnsuteqfYwdXLiolZYe/CrYwY
- sGDw==
-X-Gm-Message-State: AOJu0YxnUavjoGCvu6XRL+snGIpuZ9rPHlht1k9ecXLimC5SS5Ff/KAZ
- 3YeJF5cCxPy/Ruc2hDjF0QzaNRDTWxj0lAwdcNR5I3+olHddFGVB/EnFVjklGFFht18aJq1YCYL
- t9+QA
-X-Gm-Gg: ASbGnctBIQ8XJrfMh9Jy9kIgc7UuB9pWAzI/gq2QfUdS8BsXmmmSit7L8cvMsEiDRjI
- rhh5I38gWHaJMfpOqPvX05My2lVEaQNYpssXhP+rP5lh+6lAA8lMPET1Lw06l6QK8MEYBfMzsm/
- N4RECJ+fYkEfkiUECnrtrxEIXHB56AN3tZWTxggFtHpE9qGMk09bIfP6JZc/3NJokGvx393bBnB
- rDBiaCRJE6BgZk2whTAmC3vahCaZ4q9Hl8SzGIGP9CnKB0o64kSxkPhAEgmPUMKlk1uGAIsG8Ic
- iaCKF7aZtLvQesv6C+VkYYthV0blf2Mroc4/7uKJL/HEd9VIPXn6dcX8p24hahaF41wrp6Zp8xl
- 511CT7eUh+c5soA2mog8Ij5cC3UcojjmBOxQ=
-X-Google-Smtp-Source: AGHT+IGm0qIPg7p0MdV0X7iprsyW/NQliyIgkc8HoGfGk22S4dDZkKJEzYHYC/LC5sK0Yqe2qAAljQ==
-X-Received: by 2002:a17:903:2351:b0:23f:c945:6081 with SMTP id
- d9443c01a7336-24246fe0988mr135717515ad.31.1754345777330; 
- Mon, 04 Aug 2025 15:16:17 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
+ bh=C11V6iyXWKp5KCR02XvUBcQUNxjQspOybdquxZQLdYA=;
+ b=AoossmkPR5Zy5cc82eVDAkqY5+xx23NLjjbFUowHU+yk3sEV2i3Y3egp6JrgudAQhe
+ McLHgBoIXATaHsazpDWeB4tkkbIWLzkIYV/beZ2NY1dQyTtHSGf3c7rz4ebTnp+0/EwQ
+ HhQekSAjONq2BgiLAKOY98UH3sz+FF+WUi5VMR+597IHkgYjLzxIZRmUraHvS9zlLWz6
+ bdtR89tTASup+yIhEW5E9BtrHsE4j71hyZL12FW4XjWhepnw6Et/lV0n6cwDiAdd5dPx
+ RSldvzBeRTgfDHLZE2PhnpXtz9u6JCd/iz9eFaHkhGADgnXz9TaOzOnUU4tE6nUMWdPF
+ t0gw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVp3ovs8dNi5Qp1BEZAsgh2jGDkxG/zLSXmpsLHIrf/m0LcOT6vRD4zIJpJDkDfA3+0hrvMFHl+uj1C@nongnu.org
+X-Gm-Message-State: AOJu0Yxgwn0sArVNG3r0Kxkv06IBtn+1Y25pLgXYLDio7U+OORD+9u9/
+ 2NIn7X6uDtdJVfCOJkATv9NC7V4gyjVxpQl6LS5DOKk7k32Zloi4TYG6czpg4jLcssU=
+X-Gm-Gg: ASbGncsj8nLZX0zFwh9D4pDpfqiGlbqcSQbXPsagVWa9y0Nuv8cgDuLEEONSjmNFynf
+ VBG7Ud0OH6Th+UHw8tmiOeLYpHmbFmr3fIKsofSCTlrgnTGpVdC+Spx1QIq+u+BUEIGsWCGK3/9
+ I+JZFlaIcM5vsVvQPOKfHC2dZ9YzP9PebV6xL2djQeXpCk1QAtVQbeemjXgYlfZH+UOS/Xirl/B
+ qbdLxaAKM6RwptNNqm82HY+RGUXJQNkZsOV62ZrQLGsjjionWerR4LhzLsHsdnjeyfUdWHAcKEi
+ D3ZHJ2N1ynAGnsRsAK8TdiCmtC5XDLWyD1PDP4OV3d4bQXlz+nvNpsj5B4b6mBgl3IO/3hvKK8f
+ NoX2OTg0831q5NiPHYlRDOtLprKbfVB2TgPVHe46s
+X-Google-Smtp-Source: AGHT+IHgod2A648kSf6cGGQtq0c1tGp7Y9bCZNi6vSLTRMEpjS8YDsia+J70EJtHTNNv6O1BPed7CA==
+X-Received: by 2002:a05:6a00:a85:b0:736:3ea8:4805 with SMTP id
+ d2e1a72fcca58-76bec314c7dmr13291605b3a.7.1754346232129; 
+ Mon, 04 Aug 2025 15:23:52 -0700 (PDT)
+Received: from [192.168.4.112] ([180.233.125.160])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31f63ee49d5sm15466546a91.22.2025.08.04.15.16.16
+ d2e1a72fcca58-76c14f98fefsm1539951b3a.122.2025.08.04.15.23.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Aug 2025 15:16:16 -0700 (PDT)
-Message-ID: <9354c51d-95b7-404b-aa9a-110c3b03f6a2@linaro.org>
-Date: Mon, 4 Aug 2025 15:16:15 -0700
+ Mon, 04 Aug 2025 15:23:51 -0700 (PDT)
+Message-ID: <88a8333f-0507-4342-8858-445e348c6807@linaro.org>
+Date: Tue, 5 Aug 2025 08:23:44 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/17] whpx: add arm64 support
+Subject: Re: [PATCH v3 04/12] semihosting/arm-compat-semi: change
+ common_semi_sys_exit_extended
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, philmd@linaro.org, Weiwei Li
+ <liwei1518@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-arm@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+References: <20250804183950.3147154-1-pierrick.bouvier@linaro.org>
+ <20250804183950.3147154-5-pierrick.bouvier@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-To: Mohamed Mediouni <mohamed@unpredictable.fr>
-Cc: qemu-devel@nongnu.org, Shannon Zhao <shannon.zhaosl@gmail.com>,
- Ani Sinha <anisinha@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Phil Dennis-Jordan <phil@philjordan.eu>,
- Roman Bolshakov <rbolshakov@ddn.com>, Igor Mammedov <imammedo@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Mads Ynddal <mads@ynddal.dk>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Sunil Muthuswamy <sunilmut@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Alexander Graf <agraf@csgraf.de>,
- qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20250804142326.72947-1-mohamed@unpredictable.fr>
- <20250804142326.72947-10-mohamed@unpredictable.fr>
- <de952126-10d3-4562-b3c5-779483eeaed1@linaro.org>
- <F3EA0A07-D4DA-4618-BA34-A999066E5496@unpredictable.fr>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <F3EA0A07-D4DA-4618-BA34-A999066E5496@unpredictable.fr>
+In-Reply-To: <20250804183950.3147154-5-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,60 +109,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/4/25 3:08 PM, Mohamed Mediouni wrote:
+On 8/5/25 04:39, Pierrick Bouvier wrote:
+> We now check only is sys_exit is extended.
+> This allows to break dependency to TARGET_SYS_EXIT_EXTENDED which will
+> not be available anymore from this code.
 > 
-> 
->> On 4. Aug 2025, at 23:59, Pierrick Bouvier <pierrick.bouvier@linaro.org> wrote:
->>
->> On 8/4/25 7:23 AM, Mohamed Mediouni wrote:
->>> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
->>> ---
->>>   accel/whpx/whpx-common.c    |   1 +
->>>   meson.build                 |  21 +-
->>>   target/arm/meson.build      |   1 +
->>>   target/arm/whpx/meson.build |   3 +
->>>   target/arm/whpx/whpx-all.c  | 845 ++++++++++++++++++++++++++++++++++++
->>>   5 files changed, 864 insertions(+), 7 deletions(-)
->>>   create mode 100644 target/arm/whpx/meson.build
->>>   create mode 100644 target/arm/whpx/whpx-all.c
->>>
->>> diff --git a/target/arm/whpx/whpx-all.c b/target/arm/whpx/whpx-all.c
->>> new file mode 100644
->>> index 0000000000..2e32debf6f
->>> --- /dev/null
->>> +++ b/target/arm/whpx/whpx-all.c
->>
->> ...
->>
->>> +    { WHvArm64RegisterDbgbvr15El1, WHPX_SYSREG(0, 15, 2, 0, 4) },
->>> +    { WHvArm64RegisterDbgbcr15El1, WHPX_SYSREG(0, 15, 2, 0, 5) },
->>> +    { WHvArm64RegisterDbgwvr15El1, WHPX_SYSREG(0, 15, 2, 0, 6) },
->>> +    { WHvArm64RegisterDbgwcr15El1, WHPX_SYSREG(0, 15, 2, 0, 7) },
->>> +#ifdef SYNC_NO_RAW_REGS
->>> +    /*
->>> +     * The registers below are manually synced on init because they are
->>> +     * marked as NO_RAW. We still list them to make number space sync easier.
->>> +     */
->>> +    { WHvArm64RegisterMidrEl1, WHPX_SYSREG(0, 0, 3, 0, 0) },
->>> +    { WHvArm64RegisterMpidrEl1, WHPX_SYSREG(0, 0, 3, 0, 5) },
->>> +    { WHvArm64RegisterIdPfr0El1, WHPX_SYSREG(0, 4, 3, 0, 0) },
->>> +#endif
->>> +    { WHvArm64RegisterIdAa64Pfr1El1, WHPX_SYSREG(0, 4, 3, 0, 1), true },
->>> +    { WHvArm64RegisterIdAa64Dfr0El1, WHPX_SYSREG(0, 5, 3, 0, 0), true },
->>> +    { WHvArm64RegisterIdAa64Dfr1El1, WHPX_SYSREG(0, 5, 3, 0, 1), true },
->>> +    { WHvArm64RegisterIdAa64Isar0El1, WHPX_SYSREG(0, 6, 3, 0, 0), true },
->>> +    { WHvArm64RegisterIdAa64Isar1El1, WHPX_SYSREG(0, 6, 3, 0, 1), true },
->>> +#ifdef SYNC_NO_MMFR0
->>> +    /* We keep the hardware MMFR0 around. HW limits are there anyway */
->>> +    { WHvArm64RegisterIdAa64Mmfr0El1, WHPX_SYSREG(0, 7, 3, 0, 0) },
->>> +#endif
->>
->> ...
->>
->> I understand this comes from existing hvf implementation, but I can't find where SYNC_NO_.* defines are supposed to come from (including on hvf side). Any idea?
-> 
-> They’re just annotations for developer use so that readers of the code know why they aren’t in the list.
-> 
+> Signed-off-by: Pierrick Bouvier<pierrick.bouvier@linaro.org>
+> ---
+>   target/arm/common-semi-target.h   | 4 ++--
+>   target/riscv/common-semi-target.h | 4 ++--
+>   semihosting/arm-compat-semi.c     | 3 ++-
+>   3 files changed, 6 insertions(+), 5 deletions(-)
 
-Ok, thanks.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+r~
 
