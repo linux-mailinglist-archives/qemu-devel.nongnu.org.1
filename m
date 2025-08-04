@@ -2,91 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50ABB1A92C
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE260B1A8F8
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:10:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uizsZ-0004nt-0C; Mon, 04 Aug 2025 14:25:47 -0400
+	id 1uizc3-0003av-SG; Mon, 04 Aug 2025 14:08:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uixgY-00088l-7i
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:05:15 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uixgV-00089s-63
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:05:13 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3b7862bd22bso3129842f8f.1
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:05:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754323509; x=1754928309; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MLwKhgsMsS29rhnm9N8Sckv8tzU3uJgHorjHxSXYiVM=;
- b=KTGRk6c97HQXU+fECxphzCksHyJcKAw8SO21xB2PZwo4RE9uZbK46nb4guSUstrbKN
- 1ItWTJyIgfFrHPYbDJXjMv4MaNEZvdyKTHLrOyh1sSbi72uq3Ze3pCWe3wK+1TGWLvJ/
- TX2Vic+a2eGu8ULTtb1c2EgMvWYD8UxZo4HmdBlS+RGopyaDY0utwx5lgNIQBadAg/cM
- JSpiz94MP1mG14e9agX1kHHT42AhesP+GI3TOb+Rigj7P37+tBFIRQm9lYiWKhtnSJsx
- PV/QcHFg6e68nTh9vF/pWs7Q4WkUqJJA88ULrUxz4/mVmk2/4JvcmCXSokddnI9yKvD1
- O/Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754323509; x=1754928309;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=MLwKhgsMsS29rhnm9N8Sckv8tzU3uJgHorjHxSXYiVM=;
- b=nPELhisPqgIuClzBev8glL/Uv0/wylIBDHaC0kSFVMN2rjXFEu51BCM5FGyNOhC/6X
- LggJXmanyJWGYsgacxScclSLpck4HZgtlUzFbSMpcG+qXh3vnL3h1I/YPSqXwyB8JteR
- Te0oPWpuvrKZn+7EgkR5R/uopuh7tJFmgjyTcyVGkx5Im1Eumd8Mf0TokvR7IBUvJpsZ
- nOOANU0KQKDk/1nnXLhOXc/uMxkDoMpmnvaqqt3ATuM2OYb70nNNxkvbXZPA5s0P1ohW
- QgmmlZY9V5h40w9GDdEsx5BhPcZhLR2wCeYmhn9cfJFbfv2J9G/G6ImXoEcO3W15ppUJ
- IVwA==
-X-Gm-Message-State: AOJu0YxYxoIGJSktnssg8Fvk5C0sf+hhX/Fhntj9tFDTK1IE6w3denBi
- 88k6iMxdX/zdAUfcdT2yMg4bPq4KFZb9HKu1cxAi8PeB+6XZOqbcG9g4/TnnL4LHU2c=
-X-Gm-Gg: ASbGncvIczU+lHmf2X45F0o6RrCounL2D0aNepzNHynS3NPkkddoUxTiNghz4Lalrb2
- 10OVqITiO/S2BHJrC7jHKan9vuiMi5trhuQ+oTrdfWNTqQPY+EM4oUuhnDjodcNRy7ATqow782n
- EKVyyS0HBg1q1/JS2sCTVsShG8/trKy4xWglcBqpki8HA7nlqhKAh2i9EHQxflWq08O1dJ1uDif
- 8dK0gS1/TpdRKbR6z1a2oMlLS/dNovh8DwXjbpJUEv6447y8zeFLhDM/waBXGKgEyYhIxf5lpo5
- L3ROAb6eCAEooGXH46FChIVoaS53zJEw2DVFwnwZCDAtTeXDFP9XOLojBezyoip/lyikOrke2yg
- TUUl7MHf9pFn3i/m0q/N4tCKizHY7S/3pTg==
-X-Google-Smtp-Source: AGHT+IEVLvQegD5v5Fxle8fYKAWQDXoZkOsiQYSqaZVAEVTbDih4606my6asIl2EY3pw0YT99T3o4Q==
-X-Received: by 2002:a05:6000:4029:b0:3a4:cec5:b59c with SMTP id
- ffacd0b85a97d-3b8ebedbfb7mr74275f8f.25.1754323508862; 
- Mon, 04 Aug 2025 09:05:08 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c3b95e9sm15842623f8f.16.2025.08.04.09.05.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Aug 2025 09:05:08 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id F15D35F88A;
- Mon, 04 Aug 2025 17:05:06 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Florian Hofhammer <florian.hofhammer@epfl.ch>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Warner Losh <imp@bsdimp.com>
-Subject: Re: New capabilities for plugins
-In-Reply-To: <205e6753-53a4-4739-99ed-26344403a437@epfl.ch> (Florian
- Hofhammer's message of "Mon, 4 Aug 2025 12:14:06 +0200")
-References: <205e6753-53a4-4739-99ed-26344403a437@epfl.ch>
-User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Mon, 04 Aug 2025 17:05:06 +0100
-Message-ID: <87tt2n5az1.fsf@draig.linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1uixo3-0005Cu-E9
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:13:00 -0400
+Received: from p-east3-cluster5-host2-snip4-10.eps.apple.com ([57.103.86.151]
+ helo=outbound.qs.icloud.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1uixo0-0000lc-GQ
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:12:58 -0400
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-east-2d-60-percent-7 (Postfix) with ESMTPS id
+ E8726180086B; Mon,  4 Aug 2025 16:12:52 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
+ s=sig1; bh=IkSU93jV9FS1GDWYWwJgNYuHfU7uKpyXDP0V+TcXxKk=;
+ h=From:Message-Id:Content-Type:Mime-Version:Subject:Date:To:x-icloud-hme;
+ b=RTea5JqrDYwVRal6uMogOWig8EfcRGkyzXVtfhVyk9P6DLxbJTf/1US0XfuL6d6C5EeDdG8BOV43Hv1rYPrNmjgafGvxW4oWAVykIAu7se7cctCkP5f+HZ5u5EWycU7xQiKk+W6djv54LFR/XJIbEOJpYDebav3LBz3UUNxM04OiR9Fhu9N04MJJD85IHG2zXWmiiTY0uJejqYQvwotK6JcjH1HijIiohkoFgLBIt92RwYgOPEjSwE0XLRfn9nq6IzsTkheKN2fS7qCS1qXv1Kt+1otfrB7j2/eKZVx7Wfa/b17Pg+VRs1BpPh5frOqxqi3s10+qF4xfEqxenl3Heg==
+X-Client-IP: 46.189.47.18
+Received: from smtpclient.apple (qs-asmtp-me-k8s.p00.prod.me.com
+ [17.57.155.37])
+ by p00-icloudmta-asmtp-us-east-2d-60-percent-7 (Postfix) with ESMTPSA id
+ 8A2A9180012A; Mon,  4 Aug 2025 16:12:49 +0000 (UTC)
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+Message-Id: <59A4FF62-384F-4D43-BD56-60AA93733580@unpredictable.fr>
+Content-Type: multipart/alternative;
+ boundary="Apple-Mail=_0D194A2C-DD9F-4A27-BC0C-8FEF1BE86DD4"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3860.100.5.1.1\))
+Subject: Re: [PATCH v4 01/17] accel/system: Introduce hwaccel_enabled() helper
+Date: Mon, 4 Aug 2025 18:12:37 +0200
+In-Reply-To: <d18fc5c3-b68a-4afe-86b7-e1687780b67c@suse.de>
+Cc: qemu-devel@nongnu.org, Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Mads Ynddal <mads@ynddal.dk>,
+ =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Alexander Graf <agraf@csgraf.de>,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+To: Claudio Fontana <cfontana@suse.de>
+References: <20250804142326.72947-1-mohamed@unpredictable.fr>
+ <20250804142326.72947-2-mohamed@unpredictable.fr>
+ <d18fc5c3-b68a-4afe-86b7-e1687780b67c@suse.de>
+X-Mailer: Apple Mail (2.3860.100.5.1.1)
+X-Proofpoint-GUID: t0F52muVijaGYVC1nueDfv8r7Lg4KMQl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA4OSBTYWx0ZWRfX5YWKfNFnRDfN
+ hY8ZftRdpqyzoB8bjLyrk8j+EGAvdelvj27qqbUr0sHvM+VwDRm6dbryCz2EijVHIZR3qXwthT6
+ MZxDkX/o/7g9b5Iki2XVZ0oCCqKh3yPEqMpPwMwvSw5GRJe7i20vlPSkcr9y2fBz9E+1Sal5wvq
+ GrXfFkBwSGez/6j+TFhLO7sYI4NRd4pF/ziit2QzK2hziJ2bmJPloxZMXgVKc+Eqqx1BMMdhDes
+ tGqS3X6zuNPz5Z/f2RQbq7Dls0Knx2C0wwmxXwLj5kcZ6342LP37XFL9LhEE8EIFstQfOfFiU=
+X-Proofpoint-ORIG-GUID: t0F52muVijaGYVC1nueDfv8r7Lg4KMQl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-04_06,2025-08-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
+ mlxscore=0 spamscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ suspectscore=0 bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506270000 definitions=main-2508040089
+Received-SPF: pass client-ip=57.103.86.151;
+ envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,78 +98,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Florian Hofhammer <florian.hofhammer@epfl.ch> writes:
 
-> Hello,
+--Apple-Mail=_0D194A2C-DD9F-4A27-BC0C-8FEF1BE86DD4
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
-(Added the *-user MAINTAINERS to the CC)
 
-> I'm currently working a lot with QEMU plugins for dynamic analysis of
-> userspace binaries (i.e., running under qemu-user). While working on
-> that, I found that the QEMU plugin API luckily has been getting more
-> and more capabilities with recent versions but that I'm still lacking
-> some functionality for my use cases.
+> On 4. Aug 2025, at 18:00, Claudio Fontana <cfontana@suse.de> wrote:
+>=20
+> On 8/4/25 16:23, Mohamed Mediouni wrote:
+>> From: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>>=20
+>> hwaccel_enabled() return whether any hardware accelerator
+>> is available.
+>=20
+> Available or enabled?
+enabled
 
-We are slowly expanding the capabilities although we don't want to go to
-fast lest we introduce APIs we need to fix later. That said we carry the
-warning that the plugin API "reserves the right to change or break the
-API should it need to do so" so hopefully plugin authors know what to
-expect.
+Took the patch from =
+https://lore.kernel.org/qemu-devel/20250703105540.67664-47-philmd@linaro.o=
+rg/
 
-> More specifically, the "vcpu_syscall_cb" and "vcpu_syscall_ret"
-> callbacks already allow me to instrument syscall translation entry and
-> exit points. While the register read/write APIs also allow me to
-> modify register contents in my syscall callback implementations, there
-> is currently no good way to emulate a syscall myself in the plugin or
-> explicitly set the syscall return value (as it will be overwritten
-> with the original syscall's return value again, even if I set the
-> corresponding guest register).
->
-> I was wondering whether the QEMU community would be open to extending
-> the plugin API so that a plugin can fully emulate a syscall without
-> the original syscall being executed by QEMU.
+Should I edit the commit message locally or will be taken care of when =
+it gets merged on that series?
 
-I will defer to the *-user maintainers here. One thing we are keen to
-avoid is plugins being used as a mechanism to work around the GPL
-requirements of QEMU itself. It would be useful if you could outline the
-use case for a plugin doing the emulation itself?
+Thank you,
 
-I'm fairly sure there are some syscalls where the plugin wouldn't be able to
-do an emulation that makes sense, for example fork/vfork/execve because
-QEMU itself has to do a bunch of housekeeping to keep track of stuff.
 
-Also while the write memory helpers can take the place of QEMU's own
-logic they come with a bunch of caveats about memory consistency. There
-is stuff we do during lock_user() which those mechanisms don't.
+--Apple-Mail=_0D194A2C-DD9F-4A27-BC0C-8FEF1BE86DD4
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
 
-> I had multiple approaches
-> for that in mind, with some working patches locally that I'd be happy
-> to share and build such a feature on:
->
-> 1. Change the API of the existing callbacks so that the syscall entry
-> point callback returns "bool" instead of "void" and if any of the
-> registered callbacks returns true, execution of the actual syscall is
-> skipped.
-> 2. Introduce a new API function that sets a flag for a specific
-> syscall to be skipped:
-> 2a. A function that's called once in the manner of "always skip the
-> syscall with this specific syscall number" or
-> 2b. a function that's called every time in the syscall entry point
-> callback in the manner of "skip this specific instance of the
-> syscall".
->
-> I'd be happy to get your opinion on those proposals and to
-> develop/submit the corresponding patches!
+<html aria-label=3D"message body"><head><meta http-equiv=3D"content-type" =
+content=3D"text/html; charset=3Dutf-8"></head><body =
+style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
+line-break: after-white-space;"><div><br><blockquote type=3D"cite"><div>On=
+ 4. Aug 2025, at 18:00, Claudio Fontana &lt;cfontana@suse.de&gt; =
+wrote:</div><br class=3D"Apple-interchange-newline"><div><div>On 8/4/25 =
+16:23, Mohamed Mediouni wrote:<br><blockquote type=3D"cite">From: =
+Philippe Mathieu-Daud=C3=A9 =
+&lt;philmd@linaro.org&gt;<br><br>hwaccel_enabled() return whether any =
+hardware accelerator<br>is available.<br></blockquote><br>Available or =
+enabled?<br></div></div></blockquote>enabled<div><br></div><div>Took the =
+patch from&nbsp;<a =
+href=3D"https://lore.kernel.org/qemu-devel/20250703105540.67664-47-philmd@=
+linaro.org/">https://lore.kernel.org/qemu-devel/20250703105540.67664-47-ph=
+ilmd@linaro.org/</a><br =
+id=3D"lineBreakAtBeginningOfMessage"></div><div><br></div><div>Should I =
+edit the commit message locally or will be taken care of when it gets =
+merged on that series?</div><div><br></div><div>Thank =
+you,</div><div><br></div></div></body></html>=
 
-Another option would be to have a set_pc function that would restart the
-execution at new PC. Then the vcpu_syscall_cb callback could set the PC
-to post the syscall with whatever state it wants to set up.
-
->
-> Thanks in advance and best regards,
-> Florian
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+--Apple-Mail=_0D194A2C-DD9F-4A27-BC0C-8FEF1BE86DD4--
 
