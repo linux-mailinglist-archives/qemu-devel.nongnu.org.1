@@ -2,96 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47130B1A963
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 21:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37266B1A9A8
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 21:28:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uj0Zn-000238-9X; Mon, 04 Aug 2025 15:10:27 -0400
+	id 1uj0nO-0007QN-6j; Mon, 04 Aug 2025 15:24:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uizUB-0000bY-D7
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 14:00:45 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uizU8-0001GR-8G
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 14:00:35 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-23ffa7b3b30so34274175ad.1
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 11:00:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754330430; x=1754935230; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Oi+dQ4SDJivmuxMBX7qDtEv89Jw/veePsuWmRb0zeog=;
- b=wPTv2S7+rvgdMI4iVOz/QRAmmEOqO9psKryBhhdDfxfO+1QFRL1aUFm3f/GQsZZUmw
- cybIRmKRapsGY9txmIkxH7co5cbbj9ps+YB84eHjq47LtG+fZMGGWa/RbHGd7K9SOHPz
- QMQ3WBT5aZNMbjSZNW3d/Cxo0NfSaGMieEm1UlUJdsKWRb59sdZAUrZlrOwn/16maA2K
- 09Mg8MeCYtG9bRNrMF9I+KcAK/H7c0bHlDAhEm/LDcvASNsI6Naf7vil0EPy8VIMM+GV
- CLNWhY4QdMZrEEZlniDTnlc66ZSaxE9dVt0JyGB+YC29CCwBreVBhuiSc33tmfh1YrDv
- 0ezw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754330430; x=1754935230;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Oi+dQ4SDJivmuxMBX7qDtEv89Jw/veePsuWmRb0zeog=;
- b=Xp9YUb4Af11s51SAZXF99EN6jKKdaDxvqYyyE+LCWzN6Imgds9kWs5Aw3yElL+hNrx
- /FE3jYy3m+0ZSTQ4+Xb+ZlzaFYxz+QoXBRThU0ZbS/ZV94Qx+rfpbFEkuTlBwXON16Ab
- CUbZeKZy19VwklgZo8wOfur98n55YTr1WG5Rmb4k5cu52IvTyXVZ5VZ1dAFki7xkcru/
- IzPbUjL7Sfp8BeiMSAeO16Qm+3SGJf5aDsB73WUpDyIa1ZzKM7r2Q2keEWJHhruG+V3Y
- jD4gZvYN/mfj4zsa87G0+qAw8fX4+XQuB3fhzzqrpxhsWFY0aM4sC5qBDo2IVAOweVss
- 4iGA==
-X-Gm-Message-State: AOJu0YyYN4ZwvtG7mJHqGKqqws+fe7oQu5dXALfc4OBQucc44OPyF+Pu
- SOnJU+RDqwqfF65/IE+4oc9VzS0Ol7gSSBUY3BictynACeEgCXqnRLuzz7rDWLiBt9k=
-X-Gm-Gg: ASbGncvUSRCXneW5hDY3XgQUIEVEB1y7+3PURAvzUBHZQKGW22Vk4GJZTGbNvndjVND
- sNEySjFJNW2tZglvLWBMO9BlD8u8R3z5DgHwybWK0W+BKd/LYmLMRlurLcx0sFOc/IMExESXGrH
- Gr5D9WYvI59QZBhWMbH8NYC3SGQoS9EJF3WrzlYcZJt4pyej4iqo8YUtaZuqnoYPzOn8C+CPeaA
- tkDodMfdNMHBeRL/w1sGTOezx8hB90Tcsu9HBSpWegB8K3AuM8NoAWjU7oDDfS89FRP7anDVj/U
- ptuBT/JDtUerI3uSE/c3YouMsibFVGh0FP3/2Knnn4kof+HpFDqqW60RweAhLfN8Kd9dm4PrUyv
- UkZ1HC7+jVBviPEJAWvmFvEAsCAj8bi08DvKVbLXZQZshxQ==
-X-Google-Smtp-Source: AGHT+IFrsOhahtbYwO5FI8a4RmJ4k/kxTGMy8cmQJPL72ToSwEigLh5/kso8bGCNrW+0LunUE1y9JQ==
-X-Received: by 2002:a17:903:2b04:b0:240:b28:22a8 with SMTP id
- d9443c01a7336-2424700fb87mr147617035ad.28.1754330430449; 
- Mon, 04 Aug 2025 11:00:30 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241e8aac4b5sm114797235ad.169.2025.08.04.11.00.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Aug 2025 11:00:29 -0700 (PDT)
-Message-ID: <89b7d0e2-f8e1-4c22-a4ff-01faa18a7d8e@linaro.org>
-Date: Mon, 4 Aug 2025 11:00:28 -0700
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uizc6-0004Dw-T6; Mon, 04 Aug 2025 14:08:47 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uizc2-0002cc-T8; Mon, 04 Aug 2025 14:08:46 -0400
+Received: from [192.168.10.111] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 574I89aZ063021
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Tue, 5 Aug 2025 03:08:10 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=SKOSpHFfOCPcb8SgPg0FstxcoWlGqk+DWsErIK62MuY=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1754330890; v=1;
+ b=Er3vupg+Kz2Atzg36oVfxwViHeW3y9Yx80j9ImDgt4VUdFKsyFtpI7aacRqBZ2nS
+ ckBZzqmi/iLHJ+C0ixNQ52R6fzcIWGC2TdXI7p4foY0x90uLaBdhf1RG0M4wg8yA
+ 2Hgqe45DLH8seVy/DZvqMJelJjeI/L1cm+z4VkfJttZjbF3wsvWfuXaFCZTRrzFQ
+ XjpJlAMOU7vETwpbhTVqft9P5XF9MjAT7GzgRLxfaftBjI5rQhozw8wjVcqr01Qc
+ UHs7QzolJDIaZ8uj20ocS8d9Ik89ZWYmXbmRywBWjxwfeC6nbB/kjzvpk4xbBL2Q
+ 4ltDzkYdprSqKg2KRWiHAQ==
+Message-ID: <0c75fd39-caa2-4ada-9cb8-a83e43119bfe@rsg.ci.i.u-tokyo.ac.jp>
+Date: Tue, 5 Aug 2025 03:08:09 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/11] semihosting/arm-compat-semi: remove
- common_semi_sys_exit_extended
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- richard.henderson@linaro.org, Palmer Dabbelt <palmer@dabbelt.com>,
- qemu-riscv@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Weiwei Li <liwei1518@gmail.com>, qemu-arm@nongnu.org, philmd@linaro.org,
+Subject: Re: [PATCH v8 23/27] migration: Propagate last encountered error in
+ vmstate_save_state_v() function
+To: Arun Menon <armenon@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org,
+ qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>
-References: <20250801232609.2744557-1-pierrick.bouvier@linaro.org>
- <20250801232609.2744557-5-pierrick.bouvier@linaro.org>
- <CAFEAcA93+MwVESZCqayPr2HVYUc+3qMFy4vDdKaDNe3sN5o3og@mail.gmail.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <CAFEAcA93+MwVESZCqayPr2HVYUc+3qMFy4vDdKaDNe3sN5o3og@mail.gmail.com>
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>
+References: <20250731-propagate_tpm_error-v8-0-28fd82fdfdb2@redhat.com>
+ <20250731-propagate_tpm_error-v8-23-28fd82fdfdb2@redhat.com>
+ <f1a331ae-f520-44d7-82a7-c5dbef3440a2@rsg.ci.i.u-tokyo.ac.jp>
+ <aIz5Hr7wDthdxgNP@armenon-kvm.bengluru.csb>
+ <8905b290-24bb-4f90-a857-64d2a0f71a27@rsg.ci.i.u-tokyo.ac.jp>
+ <aJBlvymcYCeixPGA@armenon-kvm.bengluru.csb>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <aJBlvymcYCeixPGA@armenon-kvm.bengluru.csb>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,91 +96,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/2/25 12:58 PM, Peter Maydell wrote:
-> On Sat, 2 Aug 2025 at 00:26, Pierrick Bouvier
-> <pierrick.bouvier@linaro.org> wrote:
->>
->> This allows to get rid of sizeof(target_ulong) for riscv, without
->> changing the semantic.
->>
->> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> ---
->>   target/arm/common-semi-target.h   | 5 -----
->>   target/riscv/common-semi-target.h | 5 -----
->>   semihosting/arm-compat-semi.c     | 4 +++-
->>   3 files changed, 3 insertions(+), 11 deletions(-)
->>
->> diff --git a/target/arm/common-semi-target.h b/target/arm/common-semi-target.h
->> index da51f2d7f54..7ebd2136d93 100644
->> --- a/target/arm/common-semi-target.h
->> +++ b/target/arm/common-semi-target.h
->> @@ -34,11 +34,6 @@ static inline void common_semi_set_ret(CPUState *cs, target_ulong ret)
->>       }
->>   }
->>
->> -static inline bool common_semi_sys_exit_extended(CPUState *cs, int nr)
->> -{
->> -    return nr == TARGET_SYS_EXIT_EXTENDED || is_a64(cpu_env(cs));
->> -}
->> -
->>   static inline bool is_64bit_semihosting(CPUArchState *env)
->>   {
->>       return is_a64(env);
->> diff --git a/target/riscv/common-semi-target.h b/target/riscv/common-semi-target.h
->> index 7c8a59e0cc3..63bbcd2d5fa 100644
->> --- a/target/riscv/common-semi-target.h
->> +++ b/target/riscv/common-semi-target.h
->> @@ -25,11 +25,6 @@ static inline void common_semi_set_ret(CPUState *cs, target_ulong ret)
->>       env->gpr[xA0] = ret;
->>   }
->>
->> -static inline bool common_semi_sys_exit_extended(CPUState *cs, int nr)
->> -{
->> -    return (nr == TARGET_SYS_EXIT_EXTENDED || sizeof(target_ulong) == 8);
->> -}
->> -
->>   static inline bool is_64bit_semihosting(CPUArchState *env)
->>   {
->>       return riscv_cpu_mxl(env) != MXL_RV32;
->> diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
->> index 3f653c6e7a9..ef57d7205c8 100644
->> --- a/semihosting/arm-compat-semi.c
->> +++ b/semihosting/arm-compat-semi.c
->> @@ -755,7 +755,9 @@ void do_common_semihosting(CPUState *cs)
->>       {
->>           uint32_t ret;
->>
->> -        if (common_semi_sys_exit_extended(cs, nr)) {
->> +        bool extended = (nr == TARGET_SYS_EXIT_EXTENDED ||
->> +                         is_64bit_semihosting(cpu_env(cs)));
+On 2025/08/04 16:48, Arun Menon wrote:
+> Hi Akihiko,
 > 
-> This doesn't look right. Whether a target supports the sensible
-> (extended) semantics for SYS_EXIT is a different question from
-> whether it's 32 bit or not. For Arm, it happens that the point
-> where we defined the newer semantics coincided with the A64
-> architecture. For riscv I don't know -- if they made the 32-bit
-> riscv not have SYS_EXIT_EXTENDED that was an unfortunate choice
-> but they're probably stuck with it now. For any future architecture
-> that decides to adopt Arm-compatible semihosting the right
-> choice will be to provide the extended semantics regardless of
-> bit width.
+> On Sun, Aug 03, 2025 at 04:15:16PM +0900, Akihiko Odaki wrote:
+>> On 2025/08/02 2:27, Arun Menon wrote:
+>>> Hi Akihiko,
+>>> Thanks for the review.
+>>>
+>>> On Fri, Aug 01, 2025 at 04:35:34PM +0900, Akihiko Odaki wrote:
+>>>> On 2025/07/31 22:21, Arun Menon wrote:
+>>>>> Currently post_save hook is called without checking its return. If post_save
+>>>>> fails, we need to set an error and propagate it to the caller.
+>>>>>
+>>>>> Since post_save hook is called regardless of whether there is a preceeding error,
+>>>>> it is possible that we have 2 distict errors, one from the preceeding function
+>>>>> call, and the other from the post_save call.
+>>>>>
+>>>>> Return the latest error to the caller.
+>>>>
+>>>> This needs to be explained better. This patch makes two changes on the
+>>>> behavior when there are two errors:
+>>>>
+>>>> 1) Proceeding errors were propagated before, but they are now
+>>>>      dismissed.
+>>>> 2) post_error() errors were dismissed before, but they are now
+>>>>      propagated.
+>>>>
+>>>> This message doesn't mention 1) at all. It does say 2) is necessary, but
+>>>> does not explain why.
+>>>
+>>> Please correct me if I am wrong, does the following look ok?
+>>>
+>>> Currently post_save() hook is called without checking its return.
+>>> post_save() hooks, generally does the cleanup, and that is the reason why
+>>> we have been dismissing its failure.
+>>>
+>>> We want to consider
+>>>     - the saving of the device state (save or subsection save) and
+>>>     - running the cleanup after
+>>> as an atomic operation. And that is why, post_save is called regardless
+>>> of whether there is a preceeding error.
+>>> This means that, it is possible that we have 2 distict errors, one from
+>>> the preceeding function and the other from the post_save() function.
+>>>
+>>> This patch makes two changes on the behavior when there are two errors:
+>>>
+>>> 1) Preceeding errors were propagated before, but they are now
+>>>      dismissed if there is a new post_save() error.
+>>> 2) post_save() errors were dismissed before, but they are now
+>>>      propagated.
+>>>
+>>> We intend to extend the error propagation feature (saving erros in
+>>> Error object and return to the caller) to the post/pre
+>>> save/load hooks. Therefore, it is important for the user to know
+>>> the exact reason of failure in case any of these hooks fail.
+>>>
+>>> ====
+>>> I do not know much about the operations we do, or intend to do
+>>> using the post_save() call. But my guess is that we are going to
+>>> revert things or cleanup stuff, and if reverting/cleanup fails,
+>>> then the user should be notified about that.
+>>
+>> All what you stated sounds correct to me and explains 2). But there is still
+>> no reasoning for 1).
+>>
+>> Previously I listed three possible design options:
+>>> - propagate whatever error easier to do so
+>>> - somehow combine errors
+>>>    (languages that support exceptions often do this)
+>>> - make sure that no error will happen when there is a proceeding error
+>>>    by having two callbacks:
+>>>    - One callback that is called only when there is no proceeding error
+>>>      and can raise an error
+>>>    - Another that is always called but cannot raise an error
+>>
+>> https://lore.kernel.org/qemu-devel/1ff92294-5c8c-4b33-89c1-91d37d6accb0@rsg.ci.i.u-tokyo.ac.jp/
+>>
+>> It will be a good reasoning if we can show propagating post_save() errors is
+>> easier (or more important) than propagating proceeding errors.
+>>
+>> There are alternative options. "Making sure that no error will happen when
+>> there is a proceeding error by having two callbacks" is one of them. You
+>> wrote:
+>>> We want to consider
+>>>     - the saving of the device state (save or subsection save) and
+>>>     - running the cleanup after
+>>> as an atomic operation. And that is why, post_save is called
+>>> regardless of whether there is a preceeding error.
+>>> This means that, it is possible that we have 2 distict errors, one
+>>> from the preceeding function and the other from the post_save()
+>>> function.
+>>
+>> But it may not be mandatory. In fact, I searched "post_save" in the code
+>> base and found all implementations are for cleanup and always succeeds,
+>> which makes sense; most (if not all) cleanup operations like g_free() always
+>> succeeds in general.
 > 
-> This is why there's a common_semi_sys_exit_extended() function
-> that each target architecture needs to implement.
->
+> post_save calls do succeed in general.
+> Now, we are introducing the post_save_errp() function which is an alternative to the
+> post_save() call. We are adding the feature to catch errors in Error object,
+> thereby clearly considering the case where post_save_erp can go wrong.
+> So we have already deviated from the old design that all post_save operations are
+> infalliable cleaup routines. The only catch is, these alternate functions are introduced
+> a couple of commits later.
+> 
+> If that is the case, then we need to handle both the errors, and propagate only
+> the most significant (which in my opinion is the post_save) one.
+> 
+> In other words, the reasoning for 1,
+> 	1) Proceeding errors were propagated before, but they are now dismissed.
+> 
+> is that,
+> a failure during the preceeding operation means that we failed in saving the state
+> but a failure during the post-save call, means that we failed in cleanup or restoring
+> back the system to a stable state, which is a more serious one, because it may lead to
+> the system being in an inconsistent state.
+> Can I write something on these lines, to justify the change?
 
-It happens to coincide for now, so I felt it was useless to leave this 
-function given both architecture have the exact same implementation:
-nr == TARGET_SYS_EXIT_EXTENDED ||
-is_64bit_semihosting(cpu_env(cs))
+That is better, but also gives another question: when will "cleanup or 
+restoring back the system to a stable state" fail? We already know that 
+the all post_save() always succeeds, so there should be some anticipated 
+use case that requires us to "deviate from the old design that all 
+post_save operations are infalliable cleanup routines".
 
-As you prefer we keep it for a potential new architecture, I will remove 
-this patch and keep it.
+> 
+>>
+>> So perhaps "making sure that no error will happen when there is a proceeding
+>> error" may be feasible, and it may not even require two callbacks because
+>> post_save() always succeeds.
+> 
+> I am sorry, I could not completely understand the part, where you mentioned that
+> we need to have 2 callbacks; I am assuming you are mentioning something like try..catch,
+> finally blocks from the other languages.
+> post_save (that can not raise an error) being called in the goto block.
 
-> thanks
-> -- PMM
+Such two callbacks would handle two scenarios you previously wrote, 
+respectively:
+ > We want to consider
+ >     - the saving of the device state (save or subsection save) and
+ >     - running the cleanup after
+ > as an atomic operation.
+
+An analogy with try/catch/finally will indeed clarify the idea, though 
+"catch" is not relevant here. It will look like as follows:
+
+try {
+   /* A pseudo function that represents the save operation. */
+   save();
+
+   /*
+    * A new callback that can raise an error.
+    * It will not be called if save() fails.
+    */
+   vmsd->commit_save();
+} finally {
+   /*
+    * The old callback. Returning non-zero value is deprecated.
+    * Any implementations that return a non-zero value should be
+    * gradually converted to the new commit_save() callback.
+    */
+   vmsd->post_save();
+}
+
+> 
+> So if the main operation fails, we say goto cleanup, and then execute post_save which always
+> succeeds. If the main operation succeeds then we call post_save that can raise an error. Please correct
+> me if I am wrong.
+
+Yes, that's what I meant.
 
 Regards,
-Pierrick
+Akihiko Odaki
 
