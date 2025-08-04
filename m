@@ -2,110 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B72B1A9A7
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 21:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA32B1A998
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 21:22:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uj0nm-0008Lm-Gt; Mon, 04 Aug 2025 15:24:55 -0400
+	id 1uj0lG-0003rj-LM; Mon, 04 Aug 2025 15:22:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uizgs-0008D7-JR
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 14:13:46 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uizys-0004gU-2E
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 14:32:18 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uizgq-0003XI-Eg
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 14:13:41 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A113E1F453;
- Mon,  4 Aug 2025 18:13:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1754331217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/EqJVgEGFDiLUPbSN+tynGh/c+ux8oy/JnUixkoJJu4=;
- b=ODhK3HDTgR6EoSHEc9TfFR3uhWtVVfj65TpIlWoi6AVrLJv56Giu6hPCLHWkvAk1n32R2T
- O3lRTrgqn6nr8zL1eK1ACvhr2W1uBbW3JIKgbW5gOjGhE+nwEtGkx2788fIyWKFLqrCD+j
- J/zhRg0sUhT4JgiXTZk3wKB0K2kvT+k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1754331217;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/EqJVgEGFDiLUPbSN+tynGh/c+ux8oy/JnUixkoJJu4=;
- b=knax8t3VLzg6eKdw8aAGIQHHGRS3ZqUwahBPsXEnMhTheb/lFPS3LFHPKyvTwGjqi3yY9M
- Szubkap8h55jOdDA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1754331217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/EqJVgEGFDiLUPbSN+tynGh/c+ux8oy/JnUixkoJJu4=;
- b=ODhK3HDTgR6EoSHEc9TfFR3uhWtVVfj65TpIlWoi6AVrLJv56Giu6hPCLHWkvAk1n32R2T
- O3lRTrgqn6nr8zL1eK1ACvhr2W1uBbW3JIKgbW5gOjGhE+nwEtGkx2788fIyWKFLqrCD+j
- J/zhRg0sUhT4JgiXTZk3wKB0K2kvT+k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1754331217;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/EqJVgEGFDiLUPbSN+tynGh/c+ux8oy/JnUixkoJJu4=;
- b=knax8t3VLzg6eKdw8aAGIQHHGRS3ZqUwahBPsXEnMhTheb/lFPS3LFHPKyvTwGjqi3yY9M
- Szubkap8h55jOdDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1EE32133D1;
- Mon,  4 Aug 2025 18:13:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 5ZtvNFD4kGgfKAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 04 Aug 2025 18:13:36 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Juraj Marcin <jmarcin@redhat.com>, Peter Xu <peterx@redhat.com>,
- =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PATCH 2/2] migration: fix workaround for gnutls thread safety
-In-Reply-To: <20250801170212.54409-3-berrange@redhat.com>
-References: <20250801170212.54409-1-berrange@redhat.com>
- <20250801170212.54409-3-berrange@redhat.com>
-Date: Mon, 04 Aug 2025 15:13:34 -0300
-Message-ID: <87pldb2bw1.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uizyq-0007k0-8D
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 14:32:17 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-458aee6e86aso21349155e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 11:32:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1754332334; x=1754937134; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kIVHPeNREOasjblXv0MvtDf3SMmn6Uxj8YOOKExKakM=;
+ b=tLeEhi2AJIHI4CTDA0XdLHqDMezj1inQ98023YmzPZr+uk68LO2GAXdT/Hq1jfCgOi
+ 6K9ZZiIxKSiJSI7RPyrFIkeDT6SvEMLdbFCQmmFRHBY+dAdqDQ+hNpFU5d7T1DtU8RB9
+ pGQOFW7MgmkyCdc0zri6eDG88UZiRSnNj/baqabnSWagSLp7uoWyEuLfvC1ss7GQkrWk
+ 2yj2TemS+7nRv9jdkofLz+hQJ0aVerCQABn2vn3bPKhrMP+v0+1XsRybHWPuzFhKJ2pf
+ 32/PK9Zt/EDrdRgjsRvZLhjyKW6CoBqnQXei+Ws8FbxcNO8CQ+V+I/O+myC+L8BibrN3
+ ctOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754332334; x=1754937134;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=kIVHPeNREOasjblXv0MvtDf3SMmn6Uxj8YOOKExKakM=;
+ b=VkBzzoyMCy5XaCUOv9iWYDTpiJT/6FE4Lo8drMG/KkLsJVrVMp9I81PbXPjN6OdSJv
+ fMPWI1x+G9DZp16SkVZWOYuILnrILGCQqp7qx2t8D9u9FHJ5HR+nTlewe7T4VTLpNq8g
+ iPBDaO5VPo2f24PVHsKuvuUGrklUzNBg8i3fHR1YTTAOT4FvVPDDg8uP02Aq2Q8wmzkp
+ 9t2cYgWtTrOuNMxpiGmoj13yA4VGu+ZNto6AhWKyk9Wzp8WkJrFV8BYv5zzwWco/+xxx
+ k+07k//bh/pqkB2PHzCo17LGMh7obpyDzJPf/sIYdcTX1wBSaS96r3eSmaOhWQ7Osqmu
+ I90A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXV6S3tBaN6l0Gx2bTL/GwXuR8aVnTDYT1HQDx1uUygS/nGnAX0bsPtm9mFkhCYlaMnkxi7n1szmqLN@nongnu.org
+X-Gm-Message-State: AOJu0YwitHZ7/F3iQT3DnPk3k9PHlo4Ld6fpckZRu3qnLGM2nfaxyE6t
+ 1ns9ZfSHt0bX6UWw9lUOyegLQaRTRrayv9Jo6SCmvlnsldvY9rWna3PoXTKgLZzQsac=
+X-Gm-Gg: ASbGncvarGa52lxMe9ZCN4lry9xfTUDILceWRpyTNnL3aPBIkEiD0T0gvzbiIPCierH
+ +OCk2tXu2SdovGR1uCa7S7R8494bI9QhpA4DBwv0m8EdRAW2AIk+0FuQCMm/jLMF4Wt9i0pXH8g
+ c67YvCn0jANCL5MM7Ddtol9zLdSVEN4lqr+yWLX3nYmQZLf9V8Yj/DLSHcNXvjB1hwKkn9VzVy1
+ 7xSWTwb7kRUcvBQQEZLCFn5kYgMSD4sW88H7eH/PZNp8gFQU1pg/kizp9+zlfHLdhrcSplsI41u
+ Bs3AgjBr/1t9uyDRJOjS+146hO+O7HpWy9cVYpHEysWERXlCyq2l9HHKVFs+Kw/TOKCz4wH6OM/
+ idRdzotEXwpALkZxnLinsFgE=
+X-Google-Smtp-Source: AGHT+IGb8nOLwmSu45vOb6T09NbPiCvpUWTlYP362mV0pcQvJMqWmCakY0T8CkAuLNaR+Qr6bWz9QA==
+X-Received: by 2002:a05:600c:3109:b0:459:d3d0:6507 with SMTP id
+ 5b1f17b1804b1-459d3d06751mr48200625e9.32.1754332334239; 
+ Mon, 04 Aug 2025 11:32:14 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4589ee621adsm180820365e9.30.2025.08.04.11.32.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Aug 2025 11:32:13 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 41C4C5F76F;
+ Mon, 04 Aug 2025 19:32:12 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>,  qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+Subject: Re: [PATCH v4 1/2] target/arm: Increase MAX_PACKET_LENGTH for SME
+ ZA remote gdb debugging
+In-Reply-To: <CAFEAcA8o4wEHHDXVj0Fcc3i8g+49psY7YSf1AqGiGe9vNuXiQA@mail.gmail.com>
+ (Peter Maydell's message of "Mon, 4 Aug 2025 17:49:09 +0100")
+References: <20250722201404.2368507-1-vacha.bhavsar@oss.qualcomm.com>
+ <20250722201404.2368507-2-vacha.bhavsar@oss.qualcomm.com>
+ <875xf36qyk.fsf@draig.linaro.org>
+ <CAFEAcA8o4wEHHDXVj0Fcc3i8g+49psY7YSf1AqGiGe9vNuXiQA@mail.gmail.com>
+User-Agent: mu4e 1.12.12; emacs 30.1
+Date: Mon, 04 Aug 2025 19:32:12 +0100
+Message-ID: <87ikj3545v.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; MISSING_XM_UA(0.00)[]; RCVD_TLS_ALL(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TO_DN_SOME(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
- MID_RHS_MATCH_FROM(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCVD_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email, suse.de:mid,
- imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,43 +108,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-> In previous commits
+> On Mon, 4 Aug 2025 at 16:34, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
+ote:
+>>
+>> Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com> writes:
+>>
+>> > This patch increases the value of the MAX_PACKET_LEGNTH to
+>> > 131100 from 4096 to allow the GDBState.line_buf to be large enough
+>> > to accommodate the full contents of the SME ZA storage when the
+>> > vector length is maximal. This is in preparation for a related
+>> > patch that allows SME register visibility through remote GDB
+>> > debugging.
+>> >
+>> > Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+>> > ---
+>> > Changes since v3:
+>> > - this patch was not present in version 3
+>> >
+>> >  gdbstub/internals.h | 2 +-
+>> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>> >
+>> > diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+>> > index bf5a5c6302..b58a66c201 100644
+>> > --- a/gdbstub/internals.h
+>> > +++ b/gdbstub/internals.h
+>> > @@ -11,7 +11,7 @@
+>> >
+>> >  #include "exec/cpu-common.h"
+>> >
+>> > -#define MAX_PACKET_LENGTH 4096
+>> > +#define MAX_PACKET_LENGTH 131100
+>>
+>> This is a rather large expansion for something that ends up in a static =
+at:
+>>
+>>     char line_buf[MAX_PACKET_LENGTH];
+>>
+>> I think maybe its time to get rid of this hardcoded define and make line=
+_buf a
+>> dynamically re-sizeable buffer along the lines of str_buf and mem_buf.
+>> In fact make it a GString and we can get rid of line_buf_index as well.
 >
->   eb3618e9 migration: activate TLS thread safety workaround
->   edea8183 io: add support for activating TLS thread safety workaround
->   24ad5e19 crypto: implement workaround for GNUTLS thread safety problems
->
-> an attempt was made to workaround broken gnutls thread safety when
-> TLS 1.3 rekeying is performed.
->
-> Those patches acquired locks before calling gnutls_record_{send|recv}
-> but temporarily dropped the locks in the push/pull functions, in the
-> mistaken belief that there was a race inside gnutls that did not cross
-> execution of the push/pull functions.
->
-> A non-deterministic reproducer mislead into thinking the workaround
-> was operating as expected, but this was wrong. Juraj demonstrated
-> that QEMU would still see errors from GNUTLS as well as crashes.
->
-> The issue is that a pointer to internal state is saved before the
-> the push/pull functions are called, and after they return this
-> saved pointer is potentially invalid. IOW, it is never safe to
-> temporarily drop the mutexes inside the push/pull functions. The
-> lock must be held throughout execution of gnutls_record_{send|recv}.
->
-> This would be possible with QEMU migration, except that the return
-> path thread sits in a blocking read waiting for data that very
-> rarely arrives from the destination QEMU. This blocks ability to
-> send any migration data in the other thread.
->
-> It is possible to workaround this issue, however, by proactively
-> calling poll() to check for available incoming data before trying
-> the qio_channel_read() call.
->
-> Reported-by: Juraj Marcin <jmarcin@redhat.com>
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> What exactly is the packet/response where MAX_PACKET_LENGTH is
+> causing problems? The commit message doesn't say.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+I assume it would be the g/G or p/P packets. The docs don't seem to say
+anything about them splitting them across multiple packets.
+
+> In general I thought the gdbstub protocol was supposed to handle a
+> fixed packet length (e.g. in handle_query_xfer_features() the response
+> packet indicates truncation via "l" vs "m" so the gdb end knows it needs
+> to send another request to get the rest of the data). So if we run
+> into something which seems to be fixed by raising MAX_PACKET_LENGTH
+> I would first want to look at whether the underlying problem is
+> that we're not indicating to gdb "this data is incomplete, you'll
+> need to ask for more of it" or something of that nature.
+
+The docs reference "bulk transfers":
+
+  =E2=80=98PacketSize=3Dbytes=E2=80=99
+
+      The remote stub can accept packets up to at least bytes in length.
+      GDB will send packets up to this size for bulk transfers, and will
+      never send larger packets. This is a limit on the data characters
+      in the packet, not including the frame and checksum. There is no
+      trailing NUL byte in a remote protocol packet; if the stub stores
+      packets in a NUL-terminated format, it should allow an extra byte
+      in its buffer for the NUL. If this stub feature is not supported,
+      GDB guesses based on the size of the =E2=80=98g=E2=80=99 packet respo=
+nse.
+
+
+>
+> thanks
+> -- PMM
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
