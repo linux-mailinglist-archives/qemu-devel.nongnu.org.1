@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5AEB1A690
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 17:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7410B1A67B
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 17:50:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uixSN-0005Ln-MV; Mon, 04 Aug 2025 11:50:35 -0400
+	id 1uixQz-0000ML-Qw; Mon, 04 Aug 2025 11:49:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1uiw6e-0005UL-Sy
+ id 1uiw6e-0005UT-Ve
  for qemu-devel@nongnu.org; Mon, 04 Aug 2025 10:24:17 -0400
-Received: from p-east3-cluster6-host4-snip4-10.eps.apple.com ([57.103.85.171]
+Received: from p-east3-cluster7-host12-snip4-7.eps.apple.com ([57.103.84.248]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1uiw6R-0000Jb-60
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 10:23:59 -0400
+ id 1uiw6S-0000Jq-Rg
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 10:24:00 -0400
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-east-2d-10-percent-0 (Postfix) with ESMTPS id
- 5523C180009E; Mon,  4 Aug 2025 14:23:46 +0000 (UTC)
+ 1324C180136B; Mon,  4 Aug 2025 14:23:49 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=G1XeInTOt4Nk6l9h3UXUsDeo0KoG5/UIgP9T4DoOwGM=;
+ s=sig1; bh=daTFhdSRvEgLbmXz+wZhHydiVJbikuPFzeQQVh01pwE=;
  h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
- b=E4tdMTcV9gwGcZJPQ2WLRQewPcKMEjsFZOFIycuW2GsAcf8RWtsDYrweNfXkkKcHRh3jsNm0GePrZibpbLYVZgCgeG3A6cgn2B7Q5eUKG/S7AgJxy5JsN8o157Wrjn0xohbLsymOvZvkRAx/CudZhJ99lcqKJ6UAuy6GjlE2ewyOwNqKM7WZonVTFWuhAcK63AQxz73Ia0G0yyqd4CU/PB9sjXmlptpNscHfwjK7cxyJztaCNY/SJU2dC3ng/rF88pm/q9KRsYH9/ePoiP8ntCUQJ/wWbF5xUBRJdAkl53e8JVcnT7Z9dfCdoKJ5039GbOEh0lymeumEzX9uqSn2dw==
+ b=ClIhyCCZspbZSpO7ywKN58cW7zDzNU16+4kqjGr6f2UfGYz8Hv2AG9jr60Vha27Wixoo8SRIock9i8VGdyibQyvrcV1osA7rDYZrZDeU9sq0HvDCA4lmPKPXqB0mP1p7ddN579psUzG3b6YaCT+GYxSHeoUqczV8m4wgXJDJq6SWP3ZHVNHl6SF9nn8gjqv2Yx3tCejU7IamANjU2LFsMqTr1jnA6fR4SyV262urwnd3GYtWYnfRbY1EZFnrnCS1PFiMkngjA8MQPQQeDapBaHg4zvOFXkHS0tyut1XQJm/YNom089Pk7mvbRAyQv02plzps8+uCNnumYt0W6KuFFw==
 X-Client-IP: 46.189.47.18
 Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
  [17.57.155.37])
  by p00-icloudmta-asmtp-us-east-2d-10-percent-0 (Postfix) with ESMTPSA id
- B4081180134F; Mon,  4 Aug 2025 14:23:42 +0000 (UTC)
+ 5D5351801374; Mon,  4 Aug 2025 14:23:45 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: qemu-devel@nongnu.org
 Cc: Shannon Zhao <shannon.zhaosl@gmail.com>, Ani Sinha <anisinha@redhat.com>,
@@ -48,38 +48,38 @@ Cc: Shannon Zhao <shannon.zhaosl@gmail.com>, Ani Sinha <anisinha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v4 05/17] whpx: ifdef out winhvemulation on non-x86_64
-Date: Mon,  4 Aug 2025 16:23:14 +0200
-Message-Id: <20250804142326.72947-6-mohamed@unpredictable.fr>
+Subject: [PATCH v4 06/17] whpx: common: add WHPX_INTERCEPT_DEBUG_TRAPS define
+Date: Mon,  4 Aug 2025 16:23:15 +0200
+Message-Id: <20250804142326.72947-7-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250804142326.72947-1-mohamed@unpredictable.fr>
 References: <20250804142326.72947-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: P5qPp2UuI1NLg0aK8wpN0YcSGB75WRDd
-X-Proofpoint-ORIG-GUID: P5qPp2UuI1NLg0aK8wpN0YcSGB75WRDd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA4MCBTYWx0ZWRfX5e4ou1x7C8ki
- W6PkizO2qAGWVEhGrLya6RIZjM3zXbPEpyZdy9XPG9clxNQu+1G23ENq/aiKwzXfIf2ihdGOb77
- JvC/ALCI8smKwZAm8K2jo8iwB8LoDr63vMXoYx1OlSJ8xs8HlhsCxmoKKZIyJs1Qb44qZ5eGK4m
- YiNGWJLHylDcFfvDoOGAqssZQ6aulXPwKp8XLmHjo4PEogFu8jgIKHBvS4ZxgVk7i3rlpsMl/XR
- 57zYOZDfnD/w77ky4x3Lo2zshNa+woJGQH/PJLfUW1UNJ5MqEidc8rCtsvByvRNB1kfOGxMf8=
+X-Proofpoint-GUID: PUAlrJXc-gRK3ECZgJUhRiI-K__SLoHu
+X-Proofpoint-ORIG-GUID: PUAlrJXc-gRK3ECZgJUhRiI-K__SLoHu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA4MCBTYWx0ZWRfX/s/nLnFGH1GO
+ CGxvtab+0mnK+bl5tmA+VlQgQLS8vbqBHzon3rIcU58uUjgUQnxTgP3qtZ4vxKs1tXxHDC9FzgB
+ oCIbqvEjur/eSODl6L6Vinxr28sp/vB3gE9r9zaESJG9AS9UxqjbfyofcxLsif7ptVwAEBgCRHW
+ Z9s4Qa5vY9h35IY6KQwZ/fs/fiAn7UVn/UZg9MaDym6Tg9uzQ35od5SIgASojpGppSiOg6BRrCZ
+ +rA+Gwk+gVuHWUdgS2IdC1l/jMpdHQHeCSnnvoIa+PIYKqq/VPPNn3OCkSn7QKr+LB94nloE4=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-04_06,2025-08-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0 clxscore=1030 phishscore=0 mlxlogscore=578 bulkscore=0
- malwarescore=0 adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ clxscore=1030 malwarescore=0 spamscore=0
+ bulkscore=0 mlxlogscore=999
+ adultscore=0 mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.22.0-2506270000 definitions=main-2508040080
-Received-SPF: pass client-ip=57.103.85.171;
+Received-SPF: pass client-ip=57.103.84.248;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,138 +95,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-winhvemulation is x86_64 only.
+As of why 0: WHPX on arm64 doesn't have debug trap support as of today.
 
-In the future, we might want to get rid of winhvemulation usage
-entirely.
+Keep the exception bitmap interface for now - despite that being entirely unavailable on arm64 too.
 
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 ---
- accel/whpx/whpx-common.c       | 16 ++++++++++++----
- include/system/whpx-common.h   |  2 ++
- include/system/whpx-internal.h |  7 ++++++-
- 3 files changed, 20 insertions(+), 5 deletions(-)
+ accel/whpx/whpx-common.c     | 2 +-
+ include/system/whpx-common.h | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/accel/whpx/whpx-common.c b/accel/whpx/whpx-common.c
-index b5e5fda696..e2d692126a 100644
+index e2d692126a..5c2da9de4d 100644
 --- a/accel/whpx/whpx-common.c
 +++ b/accel/whpx/whpx-common.c
-@@ -41,7 +41,9 @@
- bool whpx_allowed;
- static bool whp_dispatch_initialized;
- static HMODULE hWinHvPlatform;
-+#ifdef __x86_64__
- static HMODULE hWinHvEmulation;
-+#endif
- 
- struct whpx_state whpx_global;
- struct WHPDispatch whp_dispatch;
-@@ -141,9 +143,7 @@ int whpx_first_vcpu_starting(CPUState *cpu)
-  */
- int whpx_last_vcpu_stopping(CPUState *cpu)
- {
--#ifdef __x86_64__
-     whpx_apply_breakpoints(whpx_global.breakpoints.breakpoints, cpu, false);
--#endif
-     return 0;
- }
- 
-@@ -238,8 +238,10 @@ void whpx_destroy_vcpu(CPUState *cpu)
-     struct whpx_state *whpx = &whpx_global;
- 
-     whp_dispatch.WHvDeleteVirtualProcessor(whpx->partition, cpu->cpu_index);
-+#ifdef __x86_64__
-     AccelCPUState *vcpu = cpu->accel;
-     whp_dispatch.WHvEmulatorDestroyEmulator(vcpu->emulator);
-+#endif
-     g_free(cpu->accel);
- }
- 
-@@ -414,8 +416,12 @@ static bool load_whp_dispatch_fns(HMODULE *handle,
-         LIST_WINHVPLATFORM_FUNCTIONS(WHP_LOAD_FIELD)
-         break;
-     case WINHV_EMULATION_FNS_DEFAULT:
-+#ifdef __x86_64__
-         WHP_LOAD_LIB(WINHV_EMULATION_DLL, hLib)
-         LIST_WINHVEMULATION_FUNCTIONS(WHP_LOAD_FIELD)
-+#else
-+        abort();
-+#endif
-         break;
-     case WINHV_PLATFORM_FNS_SUPPLEMENTAL:
-         WHP_LOAD_LIB(WINHV_PLATFORM_DLL, hLib)
-@@ -541,11 +547,11 @@ bool init_whp_dispatch(void)
-     if (!load_whp_dispatch_fns(&hWinHvPlatform, WINHV_PLATFORM_FNS_DEFAULT)) {
-         goto error;
-     }
--
-+#ifdef __x86_64__
-     if (!load_whp_dispatch_fns(&hWinHvEmulation, WINHV_EMULATION_FNS_DEFAULT)) {
-         goto error;
-     }
--
-+#endif
-     assert(load_whp_dispatch_fns(&hWinHvPlatform,
-         WINHV_PLATFORM_FNS_SUPPLEMENTAL));
-     whp_dispatch_initialized = true;
-@@ -555,9 +561,11 @@ error:
-     if (hWinHvPlatform) {
-         FreeLibrary(hWinHvPlatform);
-     }
-+#ifdef __x86_64__
-     if (hWinHvEmulation) {
-         FreeLibrary(hWinHvEmulation);
-     }
-+#endif
-     return false;
- }
- 
+@@ -123,7 +123,7 @@ int whpx_first_vcpu_starting(CPUState *cpu)
+          * have one or more breakpoints enabled. Both require intercepting
+          * the WHvX64ExceptionTypeBreakpointTrap exception.
+          */
+-        exception_mask = 1UL << WHvX64ExceptionTypeDebugTrapOrFault;
++        exception_mask = 1UL << WHPX_INTERCEPT_DEBUG_TRAPS;
+     } else {
+         /* Let the guest handle all exceptions. */
+         exception_mask = 0;
 diff --git a/include/system/whpx-common.h b/include/system/whpx-common.h
-index e549c7539c..7a7c607e0a 100644
+index 7a7c607e0a..73b9f7c119 100644
 --- a/include/system/whpx-common.h
 +++ b/include/system/whpx-common.h
-@@ -3,7 +3,9 @@
- #define SYSTEM_WHPX_COMMON_H
- 
- struct AccelCPUState {
-+#ifdef __x86_64__
-     WHV_EMULATOR_HANDLE emulator;
-+#endif
-     bool window_registered;
-     bool interruptable;
-     bool ready_for_pic_interrupt;
-diff --git a/include/system/whpx-internal.h b/include/system/whpx-internal.h
-index e61375d554..e57d2c8526 100644
---- a/include/system/whpx-internal.h
-+++ b/include/system/whpx-internal.h
-@@ -4,8 +4,9 @@
- 
- #include <windows.h>
- #include <winhvplatform.h>
-+#ifdef __x86_64__
- #include <winhvemulation.h>
--
-+#endif
- typedef enum WhpxBreakpointState {
-     WHPX_BP_CLEARED = 0,
-     WHPX_BP_SET_PENDING,
-@@ -98,12 +99,16 @@ void whpx_apic_get(DeviceState *s);
- 
- /* Define function typedef */
- LIST_WINHVPLATFORM_FUNCTIONS(WHP_DEFINE_TYPE)
-+#ifdef __x86_64__
- LIST_WINHVEMULATION_FUNCTIONS(WHP_DEFINE_TYPE)
-+#endif
- LIST_WINHVPLATFORM_FUNCTIONS_SUPPLEMENTAL(WHP_DEFINE_TYPE)
- 
- struct WHPDispatch {
-     LIST_WINHVPLATFORM_FUNCTIONS(WHP_DECLARE_MEMBER)
-+#ifdef __x86_64__
-     LIST_WINHVEMULATION_FUNCTIONS(WHP_DECLARE_MEMBER)
-+#endif
-     LIST_WINHVPLATFORM_FUNCTIONS_SUPPLEMENTAL(WHP_DECLARE_MEMBER)
- };
- 
+@@ -20,4 +20,7 @@ int whpx_first_vcpu_starting(CPUState *cpu);
+ int whpx_last_vcpu_stopping(CPUState *cpu);
+ void whpx_memory_init(void);
+ struct whpx_breakpoint *whpx_lookup_breakpoint_by_addr(uint64_t address);
++
++/* On x64: same as WHvX64ExceptionTypeDebugTrapOrFault */
++#define WHPX_INTERCEPT_DEBUG_TRAPS 1
+ #endif
 -- 
 2.39.5 (Apple Git-154)
 
