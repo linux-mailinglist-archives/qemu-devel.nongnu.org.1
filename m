@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F4EB1A900
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:12:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3477BB1A932
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:29:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uizcI-0005BG-E2; Mon, 04 Aug 2025 14:08:58 -0400
+	id 1uizw0-0004IQ-Cz; Mon, 04 Aug 2025 14:29:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uixuN-0003mV-6q
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:19:32 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1uixzd-00012X-4P
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:24:59 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uixuL-00022A-AM
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:19:30 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-76bd041c431so3761191b3a.2
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:19:28 -0700 (PDT)
+ id 1uixzX-0002lb-2v
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:24:55 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-76b77a97a04so2614092b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:24:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754324367; x=1754929167; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754324687; x=1754929487; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=CpUCthRS9rIwst4F78DkhORvM6W+9I21R+2QLEH3fxc=;
- b=YIyE0u7fBflXD/iNo0fxtAM3IKhhR6JnGGm7sHV5T8RQccbOUQvkGe0n1u1PDptWPC
- WmQe0eKeUdmtXyizF+ZBAbIflo7eAxg01b+JjoiaZUGG0sp5MSc4opzzdZNeEJqP2UqX
- mTCgOGyrOhkcGIw0AKlNUhcySDs97psWkVaEOD0xnWpm8xXjTHLvEm2I2TsGRrUyZoHX
- IKBXkDcopXiBelYVri9wdyKnupGXjM6gU6WKmpDGZY1EaR8pk6Lk09lD9dKxtoj1EpQF
- P1HPIUfPw3/6A1v08dWRWTvmYfJDDYG74Jd/8d8rr7BNGfkAzFDFXns0KFZblDtMDhLi
- ssig==
+ bh=JcTFinklZFp0nOBbtJKDh/zg/5aYtHEKdq9TmxLOD0Q=;
+ b=JbX8I/Y5txJlnTJs2j2m7HhSBIhB5BsQRQ3vO4z8nSFMcjZh9WoQCO14yUKWxq/cwj
+ 5s/6btQyKgYBz7GQpHyxesl/GM8titWc0QGE0YNGYf4IT3FogFOYcy7gbcUqpCgukrUH
+ VIBuA8eicXFjWMnoAh8fR3hZoS2Cv4RWtnZhtUna95xJaJKnx5YNbxYmMpwc648dPfCM
+ MNsAQu+Hk5mzR3VQQ6h9NXbvjW9JJMh+MBk6YVH3YRAdDNVlsz0Ylc064g7kMr+KCViJ
+ OInfbSx+OKBQPTfZxOhcHvHkZQE4gImD82Vg0umFlpIYK/lqb3ZmzjQAVQzrHWwcHh28
+ rbsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754324367; x=1754929167;
+ d=1e100.net; s=20230601; t=1754324687; x=1754929487;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CpUCthRS9rIwst4F78DkhORvM6W+9I21R+2QLEH3fxc=;
- b=TEYEukfdvj5Sl6xfXJjxzPQCXmy3at63eos8IJDb3V1RdJGy12gSMrCKzkcTLY6aUl
- HGqvMvUX2ri6oQ7yzZ8xS5rdfuw4+VeRW6Xut5yvGcCG4cIOutI6DUCyLbw6zx45p2jG
- HUZNyXx4ezl+/gU/r0XDe0bC5zn67RWBuThpDx2Ma/I7vmsLTi5NDZe2CwldB2p/DI6u
- 81nOy7D2nvUch0NpPMOoFRWiWZAnuuaS8AIqe2Mo67aDJIMMXPr3qCsnfE/gQydTuhPi
- +5Uy9OKyP8+xpU+b+Vgb1WMq0pYaZEfvUGM9RLjZnsKe+Qk82LyUXImcUGzAUz/yBT1Q
- Pr6Q==
-X-Gm-Message-State: AOJu0YxF6jG75Zvf1jz0mPjAPAe5i+yguOraAsYXixnYJdQcHFDxq1cp
- 8uPxFi/b39P0ToZeMRNCRmOMrZ+7eIQqarxE3OSYKpD+E9YudlKc9Xky8oJYwaE1eJ1JvwPqXuh
- FVdMG
-X-Gm-Gg: ASbGncuChNHALH8CQhzRgkGD0jyADbFlkgiHk2yd8gb1F5vKDZZSoQPb+pkvC0rsUSu
- iLJiZ2ltB8SKI9VH6U/mzs1rT/Ag7nL731qaGRf3j783raPBgK2am48sAJ0SVb5YtZ+jZOdgcWk
- Iktuluwwtu1EMdaX4hi9dyADmHzr4CCSgu3IORoPET0eXXa6k9LRzOrLzNtXnIUgPhTtttcVUK9
- CkUP0NtqWpKRb327s4r//UltnAs1HNfPb5YAn4lMjpx8g8UYMPJWhMFOpshgdYG0yqU6ONNbbfA
- hdbLXuO2+AgZL7LJpqFAhsWDpiNrfK7i65nHR4wbVgucsOc2ehu4ljvqIgNZKl4aeKX2UFZORib
- +wVZVbRcWPVUXh1XE3DAGn6tlSG/0pCS0YEo=
-X-Google-Smtp-Source: AGHT+IHRxZpBpyDns7hvAI1UNoXTAmdYMflO+QdzuKnFR/VA+xiHQbRlLfIkcLbwQuIxSLzmTNyurw==
-X-Received: by 2002:a05:6a21:99a5:b0:234:6989:b690 with SMTP id
- adf61e73a8af0-23df917f0abmr14953011637.41.1754324367246; 
- Mon, 04 Aug 2025 09:19:27 -0700 (PDT)
+ bh=JcTFinklZFp0nOBbtJKDh/zg/5aYtHEKdq9TmxLOD0Q=;
+ b=h40ZurBP9nMyQPz3IW4VJ0INBhnGRar6UWy+GWKiN2UDe+Ang7/DCfPy8NNQ1wSROR
+ Jau/vStLvUWdQ6MzMowrq6f7sYQ4UKnT8mk6HCvrNC7LizuJ7ZoN3QGs1VMV6In0GbBF
+ nsxg2EbEg60iLvI+kyKawFk6JvNLQlgQhnnF5WoOD3qtZSeYOTZ1yvTs0pYXVz9prjqB
+ YvWjpLhVRA50iTv3kmTNN89w9MXTuxTVuBbwuAAZfGKCvIlZwYz9So7KWetBujSNy/fR
+ /kfkB3kuQG2vEMwh8AqbBaLcZrcl+DjZSUnyNaJX43vqsgx0GeuPolTO0gcTCM+YqnE/
+ krbQ==
+X-Gm-Message-State: AOJu0YzpAQtQm+LCZbrO4e5jx/mjOfQGbVRIXjmdyJiI3HNMpMOOtNQY
+ FKKdb/RoPVNVDerjyJt2wKDPp7Wip7qA3Qk1xKoU/NlCLOK97VOUyuvLWc3ax+VcWyw=
+X-Gm-Gg: ASbGncvLLlhVxvpieH7LxpBt7IZUzCmMCzkYSliMtgld1T/sOVglmIX93piZbnRLh0+
+ 93pFaLurixq7g4E1T/yLFq1NgMiruq9C+zTYxbbMIGwIab7d/1LDL9qxNE42hcEHkhgX4/Qgx4S
+ Mkhxggg3BuCcOhlgoLKz2GSXS/lkpiUYfN0P7ocv2ZoeiqxWA5LEz5gPqcwAodjwVnXYBi1OUtW
+ WDpjLMrqCRMkNyP54xejI7A8zhaCWhI5DECj9crHwRC4F99JMO17pm+ei15pTj6UVnkuZ+sCfqN
+ lCkVlPzXeOjarinhk1UjwTM74TQAERz1H2vWFfy2+h1xU9+DCDtHNyuPuUJHuAKLsDnXn5BPDEC
+ HPwiMfXlmt0iN+j2fREhTTFIfKS3r3vNILVc=
+X-Google-Smtp-Source: AGHT+IEgqWD146BRts1fSOZOPLIHtPj1raF7xKTBR5p6A5db3iJ/oLhjREAfkgSC8+SDph/B4m9VLw==
+X-Received: by 2002:a05:6a20:3d19:b0:240:a06:7821 with SMTP id
+ adf61e73a8af0-2400a06859cmr7628174637.31.1754324686761; 
+ Mon, 04 Aug 2025 09:24:46 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bd1d4e312sm10371252b3a.17.2025.08.04.09.19.26
+ 41be03b00d2f7-b424e358f5asm4704001a12.49.2025.08.04.09.24.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Aug 2025 09:19:26 -0700 (PDT)
-Message-ID: <01d39deb-5431-4631-a2ee-09deb69b4603@linaro.org>
-Date: Mon, 4 Aug 2025 09:19:30 -0700
+ Mon, 04 Aug 2025 09:24:46 -0700 (PDT)
+Message-ID: <6df0d443-4dd2-4148-b560-ece95900a083@linaro.org>
+Date: Mon, 4 Aug 2025 09:24:49 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/7] contrib/plugins: uftrace
+Subject: Re: [PULL 11/14] tests/tcg: reduce the number of plugin tests
+ combinations
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, rowan Hart <rowanbhart@gmail.com>,
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20250724204527.3175839-1-pierrick.bouvier@linaro.org>
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20250727083254.3826585-1-alex.bennee@linaro.org>
+ <20250727083254.3826585-12-alex.bennee@linaro.org>
+ <eee5b640-6c65-4796-9b36-ca324f08c07c@linaro.org>
+ <d1fc8730-19c5-4ee3-a37d-2ce9c6fe4b9b@linaro.org>
+ <874iun8oq6.fsf@draig.linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250724204527.3175839-1-pierrick.bouvier@linaro.org>
+In-Reply-To: <874iun8oq6.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x431.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,93 +106,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/24/25 1:45 PM, Pierrick Bouvier wrote:
-> This plugin generates a binary trace compatible with the excellent uftrace:
-> https://github.com/namhyung/uftrace
+On 8/4/25 1:39 AM, Alex Bennée wrote:
+> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 > 
-> In short, it tracks all function calls performed during execution, based on
-> frame pointer analysis. A big advantage over "uftrace record" is that it works
-> in system mode, allowing to trace a full system execution, which was the
-> original goal. It works as well in user mode, but uftrace itself already does
-> this. It's implemented for aarch64 only (with the intent to add x86_64 later).
+>> On 7/28/25 12:03 PM, Pierrick Bouvier wrote:
+>>> Hi Alex,
+>>> On 7/27/25 1:32 AM, Alex Bennée wrote:
+>>>> As our set of multiarch tests has grown the practice of running every
+>>>> plugin with every test is becoming unsustainable. If we switch to
+>>>> ensuring every test gets run with at least one plugin we can speed
+>>>> things up.
+>>>>
+>>>> Some plugins do need to be run with specific tests (for example the
+>>>> memory instrumentation test). We can handle this by manually adding
+>>>> them to EXTRA_RUNS. We also need to wrap rules in a CONFIG_PLUGIN test
+>>>> so we don't enable the runs when plugins are not enabled.
+>>>>
+>>>> Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>>>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>>>> Message-ID: <20250725154517.3523095-12-alex.bennee@linaro.org>
+>>>>
+>>>> diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+>>>> index a12b15637ea..18afd5be194 100644
+>>>> --- a/tests/tcg/Makefile.target
+>>>> +++ b/tests/tcg/Makefile.target
+>>>> @@ -173,14 +173,25 @@ PLUGINS=$(filter-out $(DISABLE_PLUGINS), \
+>>>>     # We need to ensure expand the run-plugin-TEST-with-PLUGIN
+>>>>     # pre-requistes manually here as we can't use stems to handle it. We
+>>>>     # only expand MULTIARCH_TESTS which are common on most of our targets
+>>>> -# to avoid an exponential explosion as new tests are added. We also
+>>>> -# add some special helpers the run-plugin- rules can use below.
+>>>> +# and rotate the plugins so we don't grow too out of control as new
+>>>> +# tests are added. Plugins that need to run with a specific test
+>>>> +# should ensure they add their combination to EXTRA_RUNS.
+>>>>        ifneq ($(MULTIARCH_TESTS),)
+>>>> -$(foreach p,$(PLUGINS), \
+>>>> -	$(foreach t,$(MULTIARCH_TESTS),\
+>>>> -		$(eval run-plugin-$(t)-with-$(p): $t $p) \
+>>>> -		$(eval RUN_TESTS+=run-plugin-$(t)-with-$(p))))
+>>>> +
+>>>> +NUM_PLUGINS := $(words $(PLUGINS))
+>>>> +NUM_TESTS := $(words $(MULTIARCH_TESTS))
+>>>> +
+>>>> +define mod_plus_one
+>>>> +  $(shell $(PYTHON) -c "print( ($(1) % $(2)) + 1 )")
+>>>> +endef
+>>>> +
+>>>> +$(foreach _idx, $(shell seq 1 $(NUM_TESTS)), \
+>>>> +	$(eval _test := $(word $(_idx), $(MULTIARCH_TESTS))) \
+>>>> +	$(eval _plugin := $(word $(call mod_plus_one, $(_idx), $(NUM_PLUGINS)), $(PLUGINS))) \
+>>>> +	$(eval run-plugin-$(_test)-with-$(_plugin): $(_test) $(_plugin)) \
+>>>> +	$(eval RUN_TESTS+=run-plugin-$(_test)-with-$(_plugin)))
+>>>> +
+>>>>     endif # MULTIARCH_TESTS
+>>>>     endif # CONFIG_PLUGIN
+>>>>     diff --git a/tests/tcg/multiarch/Makefile.target
+>>>> b/tests/tcg/multiarch/Makefile.target
+>>>> index bfdf7197a7b..38345ff8805 100644
+>>>> --- a/tests/tcg/multiarch/Makefile.target
+>>>> +++ b/tests/tcg/multiarch/Makefile.target
+>>>> @@ -189,6 +189,10 @@ run-plugin-semiconsole-with-%:
+>>>>     TESTS += semihosting semiconsole
+>>>>     endif
+>>>>     +test-plugin-mem-access: CFLAGS+=-pthread -O0
+>>>> +test-plugin-mem-access: LDFLAGS+=-pthread -O0
+>>>> +
+>>>> +ifeq ($(CONFIG_PLUGIN),y)
+>>>>     # Test plugin memory access instrumentation
+>>>>     run-plugin-test-plugin-mem-access-with-libmem.so: \
+>>>>     	PLUGIN_ARGS=$(COMMA)print-accesses=true
+>>>> @@ -197,8 +201,8 @@ run-plugin-test-plugin-mem-access-with-libmem.so: \
+>>>>     	$(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
+>>>>     	$(QEMU) $<
+>>>>     -test-plugin-mem-access: CFLAGS+=-pthread -O0
+>>>> -test-plugin-mem-access: LDFLAGS+=-pthread -O0
+>>>> +EXTRA_RUNS += run-plugin-test-plugin-mem-access-with-libmem.so
+>>>> +endif
+>>>>        # Update TESTS
+>>>>     TESTS += $(MULTIARCH_TESTS)
+>>>> diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/tcg/multiarch/system/Makefile.softmmu-target
+>>>> index 5acf2700812..4171b4e6aa0 100644
+>>>> --- a/tests/tcg/multiarch/system/Makefile.softmmu-target
+>>>> +++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
+>>>> @@ -71,8 +71,11 @@ endif
+>>>>     MULTIARCH_RUNS += run-gdbstub-memory run-gdbstub-interrupt \
+>>>>     	run-gdbstub-untimely-packet run-gdbstub-registers
+>>>>     +ifeq ($(CONFIG_PLUGIN),y)
+>>>>     # Test plugin memory access instrumentation
+>>>> -run-plugin-memory-with-libmem.so: 		\
+>>>> -	PLUGIN_ARGS=$(COMMA)region-summary=true
+>>>> -run-plugin-memory-with-libmem.so: 		\
+>>>> -	CHECK_PLUGIN_OUTPUT_COMMAND=$(MULTIARCH_SYSTEM_SRC)/validate-memory-counts.py $@.out
+>>>> +run-plugin-memory-with-libmem.so: memory libmem.so
+>>>> +run-plugin-memory-with-libmem.so: PLUGIN_ARGS=$(COMMA)region-summary=true
+>>>> +run-plugin-memory-with-libmem.so: CHECK_PLUGIN_OUTPUT_COMMAND=$(MULTIARCH_SYSTEM_SRC)/validate-memory-counts.py $@.out
+>>>> +
+>>>> +EXTRA_RUNS += run-plugin-memory-with-libmem.so
+>>>> +endif
+>>> I'm not sure how it's related, but check-tcg on aarch64 host now
+>>> fails
+>>> [1] since this series was merged, and I suspect it may be related to
+>>> this patch. I didn't spend time to reproduce and investigate it.
+>>>
+>>
+>> Reverting this patch solved the problem on my side. As well, I'm not
+>> sure if it's a real problem to run all plugins for all tests. At the
+>> moment, it takes 5 min on a slow machine with 4 cpus and a sanitized
+>> build, something we can probably live with for now.
 > 
-> Let's start with concrete examples of the result.
-> 
-> First, in system mode, booting a stack using TF-A + U-boot + Linux:
-> - Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
-> https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
-> - Stat and open syscalls in kernel
-> https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
-> - Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
-> https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
-> 
-> Full trace is available here:
-> https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz
-> You can download and open it on https://ui.perfetto.dev/ to explore it.
-> 
-> Second, in user mode, tracing qemu-aarch64 (itself) running git --help:
-> - Loading program and its interpreter
-> https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
-> - TB creation
-> https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
-> 
-> Full trace is available here:
-> https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz
-> 
-> If you had curiosity and now you're ready to give some attention, most of the
-> details you want to read are included in the documentation patch (final one).
-> 
-> Overhead is around x2 (sampling only) to x10-x15 (precise), and long traces can
-> be directly filtered with uftrace if needed.
-> 
-> The series is splitted in:
-> - implementing the plugin
-> - adding useful options (especially sampling and privilege level tracing)
-> - add a companion script to symbolize traces generated
-> - add documentation with examples
-> 
-> I hope this plugin can help people trying to understand what happens out of the
-> user space, and get a better grasp of how firmwares, bootloader, and kernel
-> interact behind the curtain.
-> 
-> v2
-> --
-> 
-> - trace active stacks on exit
-> - do not erase map generated in system_emulation
-> - add documentation to generate restricted visual traces around specific events
->    of execution
-> 
-> v3
-> --
-> 
-> - fix missing include unistd.h (build failed on MacOS only)
-> 
-> v4
-> --
-> 
-> - add support for x64
-> 
-> Pierrick Bouvier (7):
->    contrib/plugins/uftrace: new uftrace plugin
->    contrib/plugins/uftrace: add trace-sample option
->    contrib/plugins/uftrace: add trace-privilege-level option
->    contrib/plugins/uftrace: add timestamp-based-on-real-time option
->    contrib/plugins/uftrace_symbols.py
->    contrib/plugins/uftrace: add documentation
->    contrib/plugins/uftrace: add support for x64
-> 
->   docs/about/emulation.rst           |  213 ++++++
->   contrib/plugins/uftrace.c          | 1014 ++++++++++++++++++++++++++++
->   contrib/plugins/meson.build        |    3 +-
->   contrib/plugins/uftrace_symbols.py |  152 +++++
->   4 files changed, 1381 insertions(+), 1 deletion(-)
->   create mode 100644 contrib/plugins/uftrace.c
->   create mode 100755 contrib/plugins/uftrace_symbols.py
+> It definitely is - but it really shows up on linux-user builds because
+> we have an increasing number of multiarch tests and its not sustainable
+> to increase by $NARCH * $NPLUGIN everytime a new multiarch test is
+> added.
+>
+
+For information, plugins tests are responsible for 65% of check-tcg time 
+approximately, so this makes sense.
+
+>>
+>> Unfortunately Alex is out this week, but it would be nice if another
+>> maintainer could make a PR reverting this patch.
+>>
+>> Regards,
+>> Pierrick
+>>
+>>> [1]
+>>> https://github.com/pbo-linaro/qemu-ci/actions/runs/16575679153/job/46879690693
 > 
 
-Ping on this series.
-
-Regards,
-Pierrick
 
