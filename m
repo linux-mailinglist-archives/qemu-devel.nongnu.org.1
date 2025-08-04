@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D534B1A91A
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D8CB1A901
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:12:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uizlJ-0006Ff-JB; Mon, 04 Aug 2025 14:18:19 -0400
+	id 1uizfD-0003br-NS; Mon, 04 Aug 2025 14:12:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uiy8H-0006Ut-8R
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:33:54 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1uiyAX-0000oz-Aj
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:36:16 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uiy8B-0004Fi-Gv
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:33:50 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-76c18568e5eso305027b3a.1
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:33:47 -0700 (PDT)
+ id 1uiyAU-0004c7-7x
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:36:12 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-76be6f0557aso3515882b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:36:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754325226; x=1754930026; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754325366; x=1754930166; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NplfqzSq6BSIdF30eaVRfkDHWiEc+GlcOceHc23ZxuA=;
- b=RUcOeSYYYJsTOhnZxTBpdjNw1qdbEzK92hHaahwPin3uv4HFZNiIckKjxqR2Eh8PiY
- izY1PF3ap5UfcEE36wFXw2wRxSk75MokbgxkfDNAnkQVZJT7Jvuf/5YQgr1hovFRbgtA
- NFTgwVD0JsaC72ZI08Lohc6XrQZm6R5bqC1zY3qCu4GMFsa6rk233mGoUfMvRMDOH/gl
- ipNpyr5UbAYx7hLycps/IalwHR8RWExU/w4MeJrMRUCHxqGC1wcn5f+KQ7CXfz40QGR+
- N/goBDcZmgzwq31R0PFPK1YbVVLBISca+ZgGlkE+zieT9aPm7tKeXU0/MngxuvISOwap
- Kq+g==
+ bh=D063vvEj0J9OMfSTWVg+LqERRLKQeyYGp2PncOECy8s=;
+ b=fdgxXjuDrJUM+O6+VGB+ukvd58RentBfyVipv/iVL+fRnAK2y2RvkEkIHzZ/YyS/8O
+ xO1CC4RWswUUO2oL8AVg2VMQETfLkDTCXPZaKdG+XjpeLwsNGamP4HJw1kn7ZRXw8Vsg
+ q4kqO1d8fVhuR4G1LUw7BdtG3cEIaHtXL+yhAYp7zZ/bX4MkuaomCYNcvUcKRPo3wb+J
+ ripq58fn7DLv5YtHzsExXfs4jtUFjqmoRhi2xza2IJEsXgGr6aRyc2TJQ2uctSe1o9XG
+ +DTiYGDPEEvdmZ8lFSkGWs5renECdYNNLWJ6uDa1KDPXRt8y1V0EPiyvC+5YHu9sDDr7
+ RdYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754325226; x=1754930026;
+ d=1e100.net; s=20230601; t=1754325366; x=1754930166;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NplfqzSq6BSIdF30eaVRfkDHWiEc+GlcOceHc23ZxuA=;
- b=KqiV5ksjOX8P/QDKDr+9P4ndILwIOGh/we+hBQHszS1xk1yjLMjpeaNKkPAymv03fH
- 4hbwI+etPgMw7Kz/feEO9dC4/o6sDejEvvfr0+NW0CYfN13SGWf2gdz4Xww2w2sGbBdf
- OaVH6kpuc/+Y27Bw1xw9XBoW1QxNwz0T3ZT1hEphgXs1/HQqixklAOspjZCAWN8fXhO6
- rKzl3WZFyhd57yfaVL73IGLr5PfAupZl4Z0dL7ta1q5WRFiWUTmPw3mjR2lSZGD4R6vT
- 8uhxhTcEoAtVfoJHZwSwwLwqxkzs/YEwLnQOSbMEoCa9UO9iTmKgfsLip2Di8i7QhbF8
- C8kw==
+ bh=D063vvEj0J9OMfSTWVg+LqERRLKQeyYGp2PncOECy8s=;
+ b=YcNsZA+RgGFJ89NERc6pBwQZMME7MWztDyHi4ALYdkGu8HfIa4YQQy+ijh2Q9REREL
+ LxsR5th7S++4xCHBA27MdvgKfX+yqKJjtxFKWFRFozWtgTTre3ASNpOnqvjUBS/78UwC
+ 9dvdhZiGKMixxqJYH1SRYquBRqdQa5gjY5BgzumDYRzq5QBv904V0GF50lcfI5HV6DXT
+ EZ9r7/hhzwwWvqvQUc9T0EftIooDMR63YdV94s3djFukenQgOPFkFu1tSi6HSFfbkHt1
+ 5Ou9kjMjcekja2jlek55kAkLdG0W3xSW4RRTfHn17hJgRg/964jDF9eQCBAkQF8MB5gc
+ nilw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXs74dMYLVavtjBQTX/See6xs7sCtJgSCF7qqyDyJKubB+zwcB7ETwbTScuLpCds+bSWah5wkeEy7QP@nongnu.org
-X-Gm-Message-State: AOJu0YxqImRYYOwIiX9bebXVSQoyX7bRQvY6mR2FxKqFsCHjjbSVkM+x
- SrydKtvzrP7Upj4jd1TZApwjZaBcB9evi+9OYNQgHxaS0KzRsCLWWlZ3lfer2ESWPR4=
-X-Gm-Gg: ASbGncstt1e6MzY4sNxzDOU9XbElwogM4HoLxD+/qMcuw73maN3w3qCJj7UYfkyifBE
- RCjc4EJmIB7CBhLkiKgzUboa06c5y0XgoAcJCPB/4Ry2sP9FCpqKiqXvUiIlBbSbGAxarL9MaPj
- Ytg6D4Dpg8quSxrciLKb15d1P2+JiKGKA/CxzW2A2BFnMrXacoIo3uE4K+BzRya8zxISig2Yn2t
- oXEus2IPAmPxc6qBbqunyvuOIUWvlb6898eKd4q26PsF5uS1aZ97GkFMKen1ZxBzRzHvY91rxmt
- XQ/iOrYejKV/4B9Nq7YPAwcGmQlyi7bl0gCkBi6yrK81311O+MPGd7ZrI/CBIgOc/Qo313fREuC
- 3Vg7DimtyCNXwkpWNthURNjY1OP1/c4PESXM=
-X-Google-Smtp-Source: AGHT+IEorxrCHHTdXY8qTxK+1WxRBaDrIn91gd/Zg4gL1wMO35PBi1de3nGcG5OOfRUHjvnQh5niwA==
-X-Received: by 2002:a05:6a20:1596:b0:233:3036:6fae with SMTP id
- adf61e73a8af0-23df9082f78mr15693407637.27.1754325226127; 
- Mon, 04 Aug 2025 09:33:46 -0700 (PDT)
+ AJvYcCXyd8+l7sIEgRDdIu9DzCoXy0X7sLCb3QNY1s7ShIsTnSbDnXS4IioT1xlh/a0zsqOwAimSlM36m2DG@nongnu.org
+X-Gm-Message-State: AOJu0YyfssKWDW+VowQMSZQm0JyEmQSZ0F/9mIJvxutDdk9D+bWXwnSX
+ UEDrV6JqOilaj8+Ij9eZ2dE5n4fl3cqNCCg1QrcHQbjD65xKgJSNjaEh64RdGcSA9n6NCqd1kEq
+ YmQyk
+X-Gm-Gg: ASbGncuYBA4KwL0mpoHoqu592Mt+sM2ikd0t4IaCMCTzbFdcEe+w02+I5u/6neeOKae
+ 1OKIq0eTlmpQYNU/LvIX1uP+imf7lgikR0efp2ESkXgE9zbcCNEn5IRqlhkpUX8bjHq9EtbvV53
+ u1cMtnh+bfQaQbG3BBOrzzW4atJB88LZdV6BFZusQk04n12zZQRA67e2WBBVyDN2FN421PEgNAy
+ x4/Ont4HkpL/49WidaKxoNTOWoXD+OeXhZbkoGW2v5lgNiceOMzoZ49fF50tJTYdkiLEHMKj97x
+ UpLsrVgZaMOgPy4pyEUP2ghXufXt8wOugLCboZOfoq0DIQ+YBjpN6FmQsklUyrhmxyUDb8cpaq6
+ U9DXUntBioAZunvkdoxIABCR1pvd32i5fVbY=
+X-Google-Smtp-Source: AGHT+IGuuE6mknhNCAZoTqCLJK4mIGqzxnx9blivFxgD9ySAVc5eTRpZpRWJkfm9vN8bmFsMvmq+Jg==
+X-Received: by 2002:a05:6a20:12ce:b0:220:3870:c61e with SMTP id
+ adf61e73a8af0-23df9717c23mr13643392637.4.1754325366229; 
+ Mon, 04 Aug 2025 09:36:06 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-31f63da602asm14807713a91.2.2025.08.04.09.33.45
+ 41be03b00d2f7-b422b7d9dafsm9173403a12.23.2025.08.04.09.36.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Aug 2025 09:33:45 -0700 (PDT)
-Message-ID: <0b632b70-c79e-40c6-badd-50a4b3f61d53@linaro.org>
-Date: Mon, 4 Aug 2025 09:33:45 -0700
+ Mon, 04 Aug 2025 09:36:05 -0700 (PDT)
+Message-ID: <f8218125-7848-48ce-a822-7f64594695dd@linaro.org>
+Date: Mon, 4 Aug 2025 09:36:05 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] meson: Add wasm64 support to the --cpu flag
+Subject: Re: [PATCH 2/4] configure: Enable to propagate -sMEMORY64 flag to
+ Emscripten
 Content-Language: en-US
 To: Kohei Tokunaga <ktokunaga.mail@gmail.com>, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -78,13 +80,13 @@ Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>
 References: <cover.1754310749.git.ktokunaga.mail@gmail.com>
- <ac10a681d44665df56bf7f35660719b29654119d.1754310749.git.ktokunaga.mail@gmail.com>
+ <9e9d4d6e10a2eaaca2d741184ba292d699ddff7b.1754310749.git.ktokunaga.mail@gmail.com>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <ac10a681d44665df56bf7f35660719b29654119d.1754310749.git.ktokunaga.mail@gmail.com>
+In-Reply-To: <9e9d4d6e10a2eaaca2d741184ba292d699ddff7b.1754310749.git.ktokunaga.mail@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,22 +110,31 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/4/25 5:57 AM, Kohei Tokunaga wrote:
-> wasm64 target enables 64bit pointers using Emscripten's -sMEMORY64=1
-> flag[1]. This enables QEMU to run 64bit guests.
+> Currently there are some engines that don't support wasm64 (e.g. unsupported
+> on Safari[1]). To mitigate this issue, the configure script allows the user
+> to use Emscripten's compatibility feature, "-sMEMORY64=2" flag[2].
 > 
-> Although the configure script uses "uname -m" as the fallback value when
-> "cpu" is empty, this can't be used for Emscripten which targets to Wasm.
-> So, in wasm build, this commit fixes configure to require --cpu flag to be
-> explicitly specified by the user.
+> Emscripten's "-sMEMORY64=2" flag still enables 64bit pointers in C code. But
+> this flag lowers the output binary into wasm32, with limiting the maximum
+> memory size to 4GB. So QEMU can run on wasm32 engines.
 > 
-> [1] https://emscripten.org/docs/tools_reference/settings_reference.html#memory64
+> This commit adds "--wasm64-memory64" flag to the configure script. This
+> takes the value to propagate to Emscripten's -sMEMORY64. 1(default) targets
+> wasm64 engines and 2 targets wasm32 engines with still enabling 64bit
+> pointers.
+> 
+> [1] https://webassembly.org/features/
+> [2] https://emscripten.org/docs/tools_reference/settings_reference.html#memory64
 > 
 > Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 > ---
->   configure   | 6 +++++-
->   meson.build | 4 ++--
->   2 files changed, 7 insertions(+), 3 deletions(-)
+>   configure | 10 +++++++++-
+>   1 file changed, 9 insertions(+), 1 deletion(-)
+
+It could be worth adding the link to documentation in commit description 
+directly in configure also.
+As well, the --wasm64-memory64 option help could explain that in a few 
+words.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-
 
