@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8D4B1A5CB
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 17:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 394F2B1A5BE
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 17:21:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uix27-0007BQ-CE; Mon, 04 Aug 2025 11:23:27 -0400
+	id 1uiwze-0006T9-5L; Mon, 04 Aug 2025 11:20:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uivXs-0006Fg-GX
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:48:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uivXa-0002ba-Sy
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754315268;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5/eh/jwL+RZ/EYBgYWtEhJ5nGGrBj/YKTD9ih8imFIo=;
- b=cB5PpUdidMF3a1sdg9VTSCuL0rlyoaKL5Y1EP9cBXMIoce0pf7dkjhqbVQoOg0u8mympg2
- Dp2nO8HJgztLyO6WFo4c9b5fsiAS30KeZXj0KWki0lcDH324tdSyOQz55rG4E3tW/HP2ys
- RxNnJFrLB8bAdcg20JlCGkNkjFj9d4I=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-dXeUCgyOOBKc2vsqEmpx2w-1; Mon,
- 04 Aug 2025 09:47:46 -0400
-X-MC-Unique: dXeUCgyOOBKc2vsqEmpx2w-1
-X-Mimecast-MFC-AGG-ID: dXeUCgyOOBKc2vsqEmpx2w_1754315265
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BD1A11955BE0; Mon,  4 Aug 2025 13:47:44 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.224.205])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 12F6F1800B71; Mon,  4 Aug 2025 13:47:44 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 8D3D118000AF; Mon, 04 Aug 2025 15:47:41 +0200 (CEST)
-Date: Mon, 4 Aug 2025 15:47:41 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: Oliver Steffen <osteffen@redhat.com>, qemu-devel@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, Joerg Roedel <joerg.roedel@amd.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Stefano Garzarella <sgarzare@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [RFC 2/2] q35: add virtio-mmio slots
-Message-ID: <us4ixdvznr7zjy7ycj2ntil6hbtlpqefma6e2h5ysecntzo2nn@vl5vug4ygqa5>
-References: <20250701121815.523896-1-osteffen@redhat.com>
- <20250701121815.523896-3-osteffen@redhat.com>
- <aIzHUL5lbUvbuCfh@redhat.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uivb5-0004Jr-I5
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:51:27 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uivb3-0003eH-Pw
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:51:27 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-ae35f36da9dso836969766b.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 06:51:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1754315483; x=1754920283; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HD9t+q6wBaWUm1s+MeKD23B5r/HJmi1+zrbwR/NzI2Y=;
+ b=phLJGHq3GuHdf0JzOer99tLSSx/L2nUrkrbXlMENUHw5I/ajuhMo8tL6lkRKBlcp8t
+ eplYQZqSZ9ZDaCXRaDkJsyPgApdm88p1Vlbp4+JGRjKX8APwIRcMN0kk7lV9a2Sf/Qf7
+ jQb37NOoHNAZIcdAoN6vuEHI2G3zXODsFWDBhQrCbRykBOBgD7eiDiHJME1tVgl+M6sb
+ 3/bbTJVukNPALUniV7p2AThl7nQmbQ+7CkBhCBhTpfSDlGZsqQSAP4QCf1iqfmZSnTGv
+ 2Wu+JYyC5zpmzcqYD1XwE2S3VXV5LwR3dWGuzu1pFvsZBs8j+cEyxlgJlPSLYV7pz68e
+ b9RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754315483; x=1754920283;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=HD9t+q6wBaWUm1s+MeKD23B5r/HJmi1+zrbwR/NzI2Y=;
+ b=IOoxKRG13YuJvs84n3KjhCoP06G2Nn67rcBKEA6AekgdjLAMC0Asoj8kns02Gg6KmW
+ yKvJS71Z7cmq/wLDK1FQKEcn6JrLuS5dCJPPmPVocP35MpW7hNpI+ddSOgfZ0ZOx9uPa
+ GPMZbe0mMenIM0zvlen3Z5D5hhe/HzJxLYSbplxSHm3XVyf9uitK6BSZmSS2r8NJcTA0
+ JUpNAOU8yWDUUd0x4C7JoE7AAvl0D1cYVXpfZfolzl/1n3Kb6MaAnB1Y1Sq5L1wL3msH
+ 1/dCElWqMwuPAV4P8D5JELY0fLRNUCG8Lpz6EqE/jnR2enfLtGy1RRqSqlYK9Yn4joFF
+ 53gQ==
+X-Gm-Message-State: AOJu0YwD2Mfo9+iPMoXVkpyk1bQX0tJAqZKWz3MjBImp9qmPhFSLNLwu
+ c2Yxp0B/7gohJLIQkEZngcBjTPi/0yn6nglHIkcKQyuezv5gvzr6c4REulmQnilzT6PBU4CsLxk
+ 0dKWOqUD2LmxxeClWoWYKj9FpOzxYJUdkcqzEpG3Fng==
+X-Gm-Gg: ASbGncs7SY0jmq96C0qQo52f4z39D62MIPRJK3jJMw/uPgm8q8/5Jme3HnLPj0UBTr0
+ jWoiUFNYRsOGPfcyFD9JkGMiAnoPFhBGKWcgmVk3Q15IAyCAJ1UzTTof9JH8h+1jztjUNDAk83S
+ V6ZuQnrNOLpo8NeFTrd5Vdc9G2Mls74J5u/gdwuFXfDljUxIXuSjjW/C3Vd8lyIv6Kf9bqr4Ugj
+ zq/PG8izI9tVrAQ8w==
+X-Google-Smtp-Source: AGHT+IENVtBE/JNmYlYKIgJ9aKFQWtWP7ZSNpG4j9Pr7b9NWljob3CtWVDo7721p+1c2ruflM/P0jbGe/mYyWSWafC4=
+X-Received: by 2002:a17:907:7210:b0:ad8:9a86:cf52 with SMTP id
+ a640c23a62f3a-af93ffc06ddmr964345566b.11.1754315483524; Mon, 04 Aug 2025
+ 06:51:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aIzHUL5lbUvbuCfh@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250804104308.250949-1-alex.bennee@linaro.org>
+In-Reply-To: <20250804104308.250949-1-alex.bennee@linaro.org>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Mon, 4 Aug 2025 16:50:57 +0300
+X-Gm-Features: Ac12FXyYy1oyigCtMPHne6njc68j8Ail6HBXV24cr8V5pM58BI5fhpTSFj2EJvo
+Message-ID: <CAAjaMXa++WKtdZYnLVJzv1GeMJh5tzxCtS2+S10oMkjyUCQhWg@mail.gmail.com>
+Subject: Re: [PATCH for 10.1-rc2] tests/docker: fix docker-all-test-cross
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,56 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 01, 2025 at 02:55:28PM +0100, Daniel P. Berrangé wrote:
-> On Tue, Jul 01, 2025 at 02:18:15PM +0200, Oliver Steffen wrote:
-> > From: Gerd Hoffmann <kraxel@redhat.com>
-> > 
-> > Add virtio-mmio slots to the q35 machine model, intended to be used by
-> > an SVSM.
-> > 
-> > Disabled by default, enable using '-machine q35,x-svsm-virtio-mmio=on'.
-> > 
-> > When enabled it is possible to plug up to 4 virtio devices into the
-> > slots virtio-mmio using '-device virtio-${kind}-device'.
-> > 
-> > The devices can be found at base address 0xfef00000, each slot on a
-> > separate page.  No IRQ is wired up, the SVSM has to drive the devices
-> > in polling mode.
-> > 
-> > The base addresses are communicated to the SVSM via the etc/hardware-info
-> > fw_cfg file.
-> 
-> This feels a somewhat uncomfortable in that it ties QEMU to specific
-> impl details of SVSM at a point in time.
-> 
-> With the IGVM support for loading guest firmware, we've avoided QEMU
-> needing any knowledge of what the firmware actually is. It is just
-> an opaque blob that is loaded based on its own IGVM metadata. This
-> also made it possible for any hypervisor with IGVM support to be able
-> to load any firmware, including SVSM or equiv impls.
+On Mon, Aug 4, 2025 at 1:43=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linaro=
+.org> wrote:
+>
+> It turns out you can't easily expand an ENV var across multiple steps
+> in a dockerfile. This meant we silently dropped the architectures we
+> should have even on amd64 hosts. As the updated AVAILABLE_COMPILERS is
+> only needed for the following apt install line just merge them.
+>
+> Fixes: 6da616bb170 (tests/docker: handle host-arch selection for all-test=
+-cross)
+> Suggested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> ---
+>  tests/docker/dockerfiles/debian-all-test-cross.docker | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/test=
+s/docker/dockerfiles/debian-all-test-cross.docker
+> index ef69bbc8a51..420a4e33e60 100644
+> --- a/tests/docker/dockerfiles/debian-all-test-cross.docker
+> +++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
+> @@ -62,9 +62,7 @@ RUN if dpkg-architecture -e amd64; then \
+>    export AVAILABLE_COMPILERS=3D"${AVAILABLE_COMPILERS} gcc-powerpc64-lin=
+ux-gnu libc6-dev-ppc64-cross"; \
+>    export AVAILABLE_COMPILERS=3D"${AVAILABLE_COMPILERS} gcc-sparc64-linux=
+-gnu libc6-dev-sparc64-cross"; \
+>    fi && \
+> -  echo "compilers: ${AVAILABLE_COMPILERS}"
+> -
+> -RUN DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
+> +  DEBIAN_FRONTEND=3Dnoninteractive eatmydata \
+>          apt install -y --no-install-recommends \
+>          ${AVAILABLE_COMPILERS} && \
+>          dpkg-query --showformat '${Package}_${Version}_${Architecture}\n=
+' --show > /packages.txt
+> --
+> 2.47.2
+>
 
-Well, there isn't anything svsm-specific in there, it is just that svsm
-is the only user right now (and I don't expect that to change anytime
-soon).  But we could very well rename the option to "virtio-mmio=on".
-
-> Is there any way to extend IGVM to express that it supports these
-> 4 virtio-mmio slots, at the given address in polling mode, so that
-> hypervisors can auto-discover this facility ?
-
-You mean some igvm directive requesting that qemu creates virtio-mmio
-slots?
-
-Should be possible.  Not sure how much of a win that would actually be
-though.  You still have to create the devices and the corresponding
-backends on the qemu command line.
-
-> Failing that, can we make it possible to create virtio-mmio slots
-> on the QEMU command line, instead of hardcoding this SVSM-specific
-> setup in QEMU code.
-
-That would work too.
-
-take care,
-  Gerd
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
