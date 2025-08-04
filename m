@@ -2,96 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8181DB1A58B
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 17:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB701B1A5BF
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 17:21:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiwp0-0002ep-Ns; Mon, 04 Aug 2025 11:09:55 -0400
+	id 1uiwzw-00071N-M3; Mon, 04 Aug 2025 11:21:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uivLN-0001HO-4b
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:35:15 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uivWy-0004Tn-7o
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:15 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uivLG-0000K9-UJ
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:35:11 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3b78310b296so2666711f8f.2
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 06:35:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uivWv-0002UI-Gr
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 09:47:11 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-b3507b63c6fso3204785a12.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 06:47:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754314504; x=1754919304; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AmAgMWToY4+su5olx/EK5AlpIDPmCEY+1rTl/kaiArI=;
- b=cZzTcnC3sMbU2sziZI6uRFBCvesf4CoCwSnKDOo7l/fJqDyu2rGClx+4YH6ex4pZs1
- sXMenYEAwfQrL2LvS2ozEc7l7pmRpOdkVJvBVOjR4M/kaiwN0eISGEo7cqJ2oUS5SXpx
- QU8GCqqX/pteNrEtswAnOFO/EsTR0SNxUmuu2QyhXOTx8GIscXmijn/QvJ7wbFMIE+62
- HdjYeMOA3G0E/wy5z9PR1C6iKbqdpjxVTQQ5GpTfq+2RIRL5ZGhz8i8a+3yDFAnrriIi
- wJL6Ee4tZ/4lfn/na36PejloQ8XUfYeU9Kcdtt1HgDRceMiLhYTRNbC5dxt2T9cCmDJe
- sLMQ==
+ d=linaro.org; s=google; t=1754315226; x=1754920026; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=FMRBnB2Qdvymd2OVLcmIiwPYyAa//gUJuXtuwL+CVeQ=;
+ b=Y9T+OI17o9GLf4EqACQ4LyhompT4DoUrT5RBvws+Ob3V57M/lv1ozsrhW00zuaoR0J
+ dTs/9ef9KT5hcFP169z5htIYJPGlWkWTSJS2R7yAfXp1aAbwo5yJ5FNgYfnrfwrm8WdR
+ ltpe7jMs5vmjJOo1swC+Pp0VEZYSjCbFwx/Y1gwSO+LjdU5GGzOX9oiUMwTWEUrpD/Jk
+ PTRzrtl9cm2K5hTGIG7sKiCSrS3qJcESaBcmf4rK3OD2p+G0vlO8jA+AugiL0uchAihm
+ lavDwrW5TJXyCWnMlkAazDc9bmEpltY2D2WoRr0iz0g7kXZvHtv5NewYhnvC08pksY1i
+ /O3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754314504; x=1754919304;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AmAgMWToY4+su5olx/EK5AlpIDPmCEY+1rTl/kaiArI=;
- b=vU6Jmehcu+g/HKA0In5HbaAJMZiTivkVGPO1O6q9s7pf/dUrF+Xq5s6PMLnfswkz5a
- s822yHViJefKWHDlCiKT87L1qwvLa3Oc5vxB3xq9RoK6kd93rGIp/mQ1CRaUjbadH044
- 9ODh2+3vtort2xBCBGqQ8bHGtHs6R9qCeTbiaGXzDxj0fOZCPFyWtyg7eg8e/crywxRt
- vT6iTUabRBPi+RvXMiPgTRlWq9su2o5vZWMZwnQrbIOmMUrGQLxMaoDiLKpZ4P+IBUyf
- IML8vkfaWj4pUCwngCh8X7WCsz4iaKu6aCRLZR8O3WuSvYx42O6qYgGy0pIKsRZwkPvE
- a8Aw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUvmmDlXwElr7IH0Xy8fq1vFL0DEV3royb+DTXFKFIHeN/AK4/ZvGvTvlf7ya63jiQ1K15OTsMgugnb@nongnu.org
-X-Gm-Message-State: AOJu0YxK7bIykNMvCep5QmwDuFBAV5vsEPqIW44egVXqVWakwUfEK8o9
- RQqGNLwWAoshTo0yN2KzPECyzhIUS1wanqV/l1KczRtbkxhnMQWcbibA5VY5QIJPc1Q=
-X-Gm-Gg: ASbGncuYsmp0Ynde69y9QtVYNnd9rzNs6X8AJu9wW2Km76UmtCvvLMs4nzKSeur1GFp
- WtAkj830pO+yimjBPbyjHm8QI8UneHdvWB0+wPL4fjQ3pKspTnwUDWipnKSC7ttzgfFzHH/TTDH
- pk9cYILt26kJqKPK0kPWcFvBx05W3VvmgRykDNhFSPgGQOuubgmtk8iENe6bxzCZsNrTSin/l7l
- xalDR5OY6da+On1SUzKoStaimlZepeMU8Vx0svlP6ZLH2cVgFCdO2XNJwZU+naCBzDyUWQOspkp
- EhvbnvQxOyJk9bSnujDcT9+/BAkfs9BtDHPlSwNgrzBds4eC/XqBA2E0r4DPWYz71g14E0DMfq3
- k5t7kHivFrkiSr6fqITs4v07udP1/v60eENa5//xQXFcUwjQ1kIgSlHsp7BORzPERINd0qfYp
-X-Google-Smtp-Source: AGHT+IGxNG5Ow1nr5+sFQch0aLzlqqprX0lPY7GoGdyWTrgDl0zWy2hE3QfFq5v9SQuq2n7nGQJ+dw==
-X-Received: by 2002:a5d:5f87:0:b0:3b8:d360:3383 with SMTP id
- ffacd0b85a97d-3b8d94c9ff5mr7236289f8f.46.1754314503580; 
- Mon, 04 Aug 2025 06:35:03 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4589edfcdd0sm167480675e9.10.2025.08.04.06.35.02
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 04 Aug 2025 06:35:02 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ben Dooks <ben.dooks@codethink.co.uk>, qemu-riscv@nongnu.org,
- qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Guenter Roeck <linux@roeck-us.net>, Bin Meng <bmeng.cn@gmail.com>,
- Alistair Francis <Alistair.Francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH-for-10.1 v2 11/11] tests/functional: Test SD cards in SPI mode
- (using sifive_u machine)
-Date: Mon,  4 Aug 2025 15:34:05 +0200
-Message-ID: <20250804133406.17456-12-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250804133406.17456-1-philmd@linaro.org>
-References: <20250804133406.17456-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1754315226; x=1754920026;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FMRBnB2Qdvymd2OVLcmIiwPYyAa//gUJuXtuwL+CVeQ=;
+ b=EjMLsAA6Sx8rcCIinQNzdqlTGepwL2nPm229+yLtQ+u/U4wkeN5H+ILA8SNt1WY55W
+ QN6wfD8CBWqRjBtDkvs3AEN4Q13BhzD4nkcx3LUmviTrmETplNDL1dhvWKVtc4WmFf56
+ OZwn2lkyZx+LV29pweIQvcsYRH5k6MNJYBMyi7vk+7wtNV5Hc4qPPSGKzq1i34Pc3ipX
+ 5KEch5xwhLFdGaz+F831u10XPWMVeaRsPPvuPh4j/hfawFKU2tAX1PsQH14IA8LKY47c
+ wraRMU0OtgK/2x6X3my/35jvF4Y4gX12dbn5/R4tv6zGBGq7a4HwekJ9ifiSviQ/nd2I
+ 0KYw==
+X-Gm-Message-State: AOJu0YzHh7nrCBXYR4LI4bg/xPF0GoYLwYf4JPWs8leskCxpAWAWfHlX
+ knDxYts7hLFlmMNZuYHmyPeVJolsoiaigukcgt50/1qtKNYTRcOkLp+wt+yZ5xqcAdy2amD31GO
+ 2A4TO
+X-Gm-Gg: ASbGncsbYTv5WbIRKG7h9O5ul6Q4/TVnHelZqsbtHBfeo9l2sMKfwqHOh28J15RLUdz
+ o05TFwZfZ4eTmFuPKKVtuCNQdyULIbz4HkmejsAOyoHj1ho4IyJ5d369QnOO3HyQrblpEazQtJl
+ XMvZ9w9N4I8Q5IVrBjK2ZyAMEGRbNEArz3I3Dh5LnM+6yXYHf6uWZpuxkWdCZbnlUQHHcyOdBwg
+ 0OkmknsgmRZbcdRgXhh8GHe87mtKSFKOg1EdWkYtIUWcoh3UoOmua63rXzEQTUjWmaJeJ4Fte1o
+ MRkNBMLMBdd2lz5/mj2mxMOa4DGnOKatGCs7+anttV3J2yYD2PeAD0w9i9OOGlMkyfuqvSSgJJj
+ yRGkyOz+MTNtFfDSkqZdFnphD9RlxGvrJG5HLmn7E
+X-Google-Smtp-Source: AGHT+IFeFYVN2wHlio62+arBpZrJG1D5aJHuJFDhlu1zdgMzpV0vvnp2zazxxQ+/0RUwWazjQulq5A==
+X-Received: by 2002:a17:902:d2d1:b0:240:52d7:e890 with SMTP id
+ d9443c01a7336-24247058a6fmr126978055ad.47.1754315226331; 
+ Mon, 04 Aug 2025 06:47:06 -0700 (PDT)
+Received: from [192.168.4.112] ([180.233.125.160])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-241d1f0f7desm110055365ad.43.2025.08.04.06.47.04
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Aug 2025 06:47:05 -0700 (PDT)
+Message-ID: <f97ef3cf-1586-4b3d-a52f-e6e05da5a2d6@linaro.org>
+Date: Mon, 4 Aug 2025 23:47:02 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for 10.1-rc2] tests/docker: fix docker-all-test-cross
+To: qemu-devel@nongnu.org
+References: <20250804104308.250949-1-alex.bennee@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20250804104308.250949-1-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,105 +100,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test which uses the sifive_u machine to boot a Linux
-kernel from a SD card connected via a SPI interface.
+On 8/4/25 20:43, Alex Bennée wrote:
+> It turns out you can't easily expand an ENV var across multiple steps
+> in a dockerfile. This meant we silently dropped the architectures we
+> should have even on amd64 hosts. As the updated AVAILABLE_COMPILERS is
+> only needed for the following apt install line just merge them.
+> 
+> Fixes: 6da616bb170 (tests/docker: handle host-arch selection for all-test-cross)
+> Suggested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   tests/docker/dockerfiles/debian-all-test-cross.docker | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
+> index ef69bbc8a51..420a4e33e60 100644
+> --- a/tests/docker/dockerfiles/debian-all-test-cross.docker
+> +++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
+> @@ -62,9 +62,7 @@ RUN if dpkg-architecture -e amd64; then \
+>     export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-powerpc64-linux-gnu libc6-dev-ppc64-cross"; \
+>     export AVAILABLE_COMPILERS="${AVAILABLE_COMPILERS} gcc-sparc64-linux-gnu libc6-dev-sparc64-cross"; \
+>     fi && \
+> -  echo "compilers: ${AVAILABLE_COMPILERS}"
+> -
+> -RUN DEBIAN_FRONTEND=noninteractive eatmydata \
+> +  DEBIAN_FRONTEND=noninteractive eatmydata \
+>           apt install -y --no-install-recommends \
+>           ${AVAILABLE_COMPILERS} && \
+>           dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt
 
-Inspired from the command provided in:
-- https://lore.kernel.org/qemu-devel/94b2c5bf-53d0-4c74-8264-f3021916f38c@roeck-us.net/
-- https://lore.kernel.org/qemu-devel/840016d0-0d49-4ef4-8372-b62b3bcd0ac6@codethink.co.uk/
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Inspired-by: Guenter Roeck <linux@roeck-us.net>
-Inspired-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- MAINTAINERS                               |  1 +
- tests/functional/meson.build              |  1 +
- tests/functional/test_riscv64_sifive_u.py | 51 +++++++++++++++++++++++
- 3 files changed, 53 insertions(+)
- create mode 100755 tests/functional/test_riscv64_sifive_u.py
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 28cea342718..a07086ed762 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1695,6 +1695,7 @@ S: Supported
- F: docs/system/riscv/sifive_u.rst
- F: hw/*/*sifive*.c
- F: include/hw/*/*sifive*.h
-+F: tests/functional/test_riscv64_sifive_u.py
- 
- AMD Microblaze-V Generic Board
- M: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index ecf965adc6c..311c6f18065 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -274,6 +274,7 @@ tests_riscv64_system_quick = [
- ]
- 
- tests_riscv64_system_thorough = [
-+  'riscv64_sifive_u',
-   'riscv64_tuxrun',
- ]
- 
-diff --git a/tests/functional/test_riscv64_sifive_u.py b/tests/functional/test_riscv64_sifive_u.py
-new file mode 100755
-index 00000000000..dc4cb8a4a96
---- /dev/null
-+++ b/tests/functional/test_riscv64_sifive_u.py
-@@ -0,0 +1,51 @@
-+#!/usr/bin/env python3
-+#
-+# Functional test that boots a Linux kernel on a Sifive U machine
-+# and checks the console
-+#
-+# Copyright (c) Linaro Ltd.
-+#
-+# Author:
-+#  Philippe Mathieu-Daudé
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+import os
-+
-+from qemu_test import Asset, LinuxKernelTest
-+from qemu_test import skipIfMissingCommands
-+
-+
-+class SifiveU(LinuxKernelTest):
-+
-+    ASSET_KERNEL = Asset(
-+        'https://storage.tuxboot.com/buildroot/20241119/riscv64/Image',
-+        '2bd8132a3bf21570290042324fff48c987f42f2a00c08de979f43f0662ebadba')
-+    ASSET_ROOTFS = Asset(
-+        ('https://github.com/groeck/linux-build-test/raw/'
-+         '9819da19e6eef291686fdd7b029ea00e764dc62f/rootfs/riscv64/'
-+         'rootfs.ext2.gz'),
-+        'b6ed95610310b7956f9bf20c4c9c0c05fea647900df441da9dfe767d24e8b28b')
-+
-+    def test_riscv64_sifive_u_mmc_spi(self):
-+        self.set_machine('sifive_u')
-+        kernel_path = self.ASSET_KERNEL.fetch()
-+        rootfs_path = self.uncompress(self.ASSET_ROOTFS)
-+
-+        self.vm.set_console()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'root=/dev/mmcblk0 rootwait '
-+                               'earlycon=sbi console=ttySIF0 '
-+                               'panic=-1 noreboot')
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-drive', f'file={rootfs_path},if=sd,format=raw',
-+                         '-append', kernel_command_line,
-+                         '-no-reboot')
-+        self.vm.launch()
-+        self.wait_for_console_pattern('Boot successful.')
-+
-+        os.remove(rootfs_path)
-+
-+
-+if __name__ == '__main__':
-+    LinuxKernelTest.main()
--- 
-2.49.0
-
+r~
 
