@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA30B1A92B
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F4EB1A900
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Aug 2025 20:12:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uiztB-0006wY-Pa; Mon, 04 Aug 2025 14:26:28 -0400
+	id 1uizcI-0005BG-E2; Mon, 04 Aug 2025 14:08:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uixtz-0002Em-6V
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:19:07 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1uixuN-0003mV-6q
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:19:32 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uixtx-0001zf-GG
- for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:19:06 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-2403df11a2aso29714055ad.0
- for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:19:03 -0700 (PDT)
+ id 1uixuL-00022A-AM
+ for qemu-devel@nongnu.org; Mon, 04 Aug 2025 12:19:30 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-76bd041c431so3761191b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Aug 2025 09:19:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754324342; x=1754929142; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1754324367; x=1754929167; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=svuoKhcAPO8Hx11IHq6pzcmbRY6dBIJmUK6cwetPPME=;
- b=r8A95wcqbmiyvw03x5IrpQMtZZeQX345kVSs0irKNpG+U1Ttf3fAs+PXKdHi24A5db
- 4HxCYOFpm8GcozpuI4OpoaIRx0+uFZRlR53JSUpG0hwC+ey7JtqoOe0mYRy1qoipo4t8
- Nsp6XHfBph5bFXzPCpDlIPwhQJyN9uhqt+KSkke0Mcb3uUxlnCLBlqvQ22u5A2keXQ7M
- Bo4N2OVNvMGYOvzGYp6a11wN5tjt/tjq/ZbP7ioMVSCawuNCNojJN0J5krWQ64DEFY+6
- eoo7t8lUYkW0Mofa7qCKibMhF0Q2Gq9V8mR4yyaed4o7o1zjg3bP9/Jw0kfscqt5lX5C
- 96/g==
+ bh=CpUCthRS9rIwst4F78DkhORvM6W+9I21R+2QLEH3fxc=;
+ b=YIyE0u7fBflXD/iNo0fxtAM3IKhhR6JnGGm7sHV5T8RQccbOUQvkGe0n1u1PDptWPC
+ WmQe0eKeUdmtXyizF+ZBAbIflo7eAxg01b+JjoiaZUGG0sp5MSc4opzzdZNeEJqP2UqX
+ mTCgOGyrOhkcGIw0AKlNUhcySDs97psWkVaEOD0xnWpm8xXjTHLvEm2I2TsGRrUyZoHX
+ IKBXkDcopXiBelYVri9wdyKnupGXjM6gU6WKmpDGZY1EaR8pk6Lk09lD9dKxtoj1EpQF
+ P1HPIUfPw3/6A1v08dWRWTvmYfJDDYG74Jd/8d8rr7BNGfkAzFDFXns0KFZblDtMDhLi
+ ssig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754324342; x=1754929142;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1754324367; x=1754929167;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=svuoKhcAPO8Hx11IHq6pzcmbRY6dBIJmUK6cwetPPME=;
- b=f5/GCnA/CWfXdsEAIXi9W0WOYLuNMr8ISeigJlo2ONlXzkKiItcxJwb+ymrpV8ej+X
- WGAZpj/z0FpQ8GgUTgALmW8Dxc3SqkC6zvaabQdvr3JSxvhtBjbfzLeKh9QnPatVEBgS
- ozPsBEIM7CSg8syAHk9gVTW4L+KqEh3jSesWclfM+58yuS0gwTro0UT0qlkTYkJ93qDs
- g8+Vx+A9I1Ebnp3tX9bebjyukAcXgtdNeX7wZotZInnSojTL+eQY1Ai4k4BwIvj0HIWg
- ubzFWLMyMsdXOAm3U+UhyjKRBbWWh3HtGjyHWtqaRxVht1vyThyk2pNFdJ8yR06LnuuE
- LiNA==
-X-Gm-Message-State: AOJu0YwgSYiPB4peB0+IF47CfLlYc/aCau8VwJlb6VAChpEt5nt5XnuG
- fDA2SIqh84MzWa/j33kXc3mEyqQR+TFEsV33sMHnG7RKkOD4g1gwO75c+4UGSnZIFCHy072B0k0
- Chcr0
-X-Gm-Gg: ASbGnctMhDRcco4GAiopXLjgIw3VadSEKmhYv6TCR2+4dwptX+lp2M+FQUVWB0ncYpG
- QeJ9hQOVZp43gvqRYugJ6MpGvYMiyCktOfYtZNZdc9CUwX8ZJO5NCKowXsVyw1PICJGJZRo0Xsu
- IzE7QXKA8KI01Q1bC5LN5sVLP2ZOaOoAgzwEFWG+t1EAfJ8g3TP5kthkcyFKfSw19l9rxrti7Qw
- 40Pi3b2Vs290PMLEh0wRIj1PUGgKcU3yngeDrN8ALtCL7pMt/pgUm++CRWC3/vfuEC20tgQIrIw
- p73Y7tmA7Auct3i8taBQ304FZMMh1rIqvS57nSWAW5IsjgAlDN1p+v6Fl7EUhnc/1whNwjMruME
- eWUlQMYTPBIz6AKGbhbPUgD4a8RPUfGJiuzs=
-X-Google-Smtp-Source: AGHT+IF3KUa8vNf3NfGbO5v4OscOO8fqpoiAkhVTKMJHirCFmZbN1MO4Oip4bwn9UsVoVKXW4rmdCQ==
-X-Received: by 2002:a17:902:e84d:b0:240:3dbb:761c with SMTP id
- d9443c01a7336-24246ffbce5mr171200695ad.32.1754324341917; 
- Mon, 04 Aug 2025 09:19:01 -0700 (PDT)
+ bh=CpUCthRS9rIwst4F78DkhORvM6W+9I21R+2QLEH3fxc=;
+ b=TEYEukfdvj5Sl6xfXJjxzPQCXmy3at63eos8IJDb3V1RdJGy12gSMrCKzkcTLY6aUl
+ HGqvMvUX2ri6oQ7yzZ8xS5rdfuw4+VeRW6Xut5yvGcCG4cIOutI6DUCyLbw6zx45p2jG
+ HUZNyXx4ezl+/gU/r0XDe0bC5zn67RWBuThpDx2Ma/I7vmsLTi5NDZe2CwldB2p/DI6u
+ 81nOy7D2nvUch0NpPMOoFRWiWZAnuuaS8AIqe2Mo67aDJIMMXPr3qCsnfE/gQydTuhPi
+ +5Uy9OKyP8+xpU+b+Vgb1WMq0pYaZEfvUGM9RLjZnsKe+Qk82LyUXImcUGzAUz/yBT1Q
+ Pr6Q==
+X-Gm-Message-State: AOJu0YxF6jG75Zvf1jz0mPjAPAe5i+yguOraAsYXixnYJdQcHFDxq1cp
+ 8uPxFi/b39P0ToZeMRNCRmOMrZ+7eIQqarxE3OSYKpD+E9YudlKc9Xky8oJYwaE1eJ1JvwPqXuh
+ FVdMG
+X-Gm-Gg: ASbGncuChNHALH8CQhzRgkGD0jyADbFlkgiHk2yd8gb1F5vKDZZSoQPb+pkvC0rsUSu
+ iLJiZ2ltB8SKI9VH6U/mzs1rT/Ag7nL731qaGRf3j783raPBgK2am48sAJ0SVb5YtZ+jZOdgcWk
+ Iktuluwwtu1EMdaX4hi9dyADmHzr4CCSgu3IORoPET0eXXa6k9LRzOrLzNtXnIUgPhTtttcVUK9
+ CkUP0NtqWpKRb327s4r//UltnAs1HNfPb5YAn4lMjpx8g8UYMPJWhMFOpshgdYG0yqU6ONNbbfA
+ hdbLXuO2+AgZL7LJpqFAhsWDpiNrfK7i65nHR4wbVgucsOc2ehu4ljvqIgNZKl4aeKX2UFZORib
+ +wVZVbRcWPVUXh1XE3DAGn6tlSG/0pCS0YEo=
+X-Google-Smtp-Source: AGHT+IHRxZpBpyDns7hvAI1UNoXTAmdYMflO+QdzuKnFR/VA+xiHQbRlLfIkcLbwQuIxSLzmTNyurw==
+X-Received: by 2002:a05:6a21:99a5:b0:234:6989:b690 with SMTP id
+ adf61e73a8af0-23df917f0abmr14953011637.41.1754324367246; 
+ Mon, 04 Aug 2025 09:19:27 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241e899a814sm114178525ad.117.2025.08.04.09.19.01
+ d2e1a72fcca58-76bd1d4e312sm10371252b3a.17.2025.08.04.09.19.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Aug 2025 09:19:01 -0700 (PDT)
-Message-ID: <327b7306-de98-40db-a2e4-27b4c9806a5a@linaro.org>
-Date: Mon, 4 Aug 2025 09:19:04 -0700
+ Mon, 04 Aug 2025 09:19:26 -0700 (PDT)
+Message-ID: <01d39deb-5431-4631-a2ee-09deb69b4603@linaro.org>
+Date: Mon, 4 Aug 2025 09:19:30 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] control guest time using a dilation factor
-To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, richard.henderson@linaro.org,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
- peter.maydell@linaro.org, philmd@linaro.org
-References: <20250628002431.41823-1-pierrick.bouvier@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH v4 0/7] contrib/plugins: uftrace
 Content-Language: en-US
-In-Reply-To: <20250628002431.41823-1-pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, rowan Hart <rowanbhart@gmail.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20250724204527.3175839-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250724204527.3175839-1-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,52 +107,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/27/25 5:24 PM, Pierrick Bouvier wrote:
-> Depending on host cpu speed, and QEMU optimization level, it may sometimes be
-> needed to slow or accelerate time guest is perceiving. A common scenario is
-> hitting a timeout during a boot process, because some operations were not
-> finished on time.
+On 7/24/25 1:45 PM, Pierrick Bouvier wrote:
+> This plugin generates a binary trace compatible with the excellent uftrace:
+> https://github.com/namhyung/uftrace
 > 
-> An existing solution for that is -icount shift=X, with low values, which will
-> roughly map virtual time to how many instructions were executed.
+> In short, it tracks all function calls performed during execution, based on
+> frame pointer analysis. A big advantage over "uftrace record" is that it works
+> in system mode, allowing to trace a full system execution, which was the
+> original goal. It works as well in user mode, but uftrace itself already does
+> this. It's implemented for aarch64 only (with the intent to add x86_64 later).
 > 
-> This series introduces another approach, based on faking host time returned to
-> the guest, by applying a time-dilation factor. Time will go slower/faster for
-> the guest, without impacting QEMU emulation speed.
+> Let's start with concrete examples of the result.
 > 
-> It may eventually be used to fix some of the timeouts we hit in CI, by slowing
-> down time in VM, to be less sensitive to varying cpu performance.
+> First, in system mode, booting a stack using TF-A + U-boot + Linux:
+> - Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
+> https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
+> - Stat and open syscalls in kernel
+> https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
+> - Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
+> https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
+> 
+> Full trace is available here:
+> https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz
+> You can download and open it on https://ui.perfetto.dev/ to explore it.
+> 
+> Second, in user mode, tracing qemu-aarch64 (itself) running git --help:
+> - Loading program and its interpreter
+> https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
+> - TB creation
+> https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
+> 
+> Full trace is available here:
+> https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz
+> 
+> If you had curiosity and now you're ready to give some attention, most of the
+> details you want to read are included in the documentation patch (final one).
+> 
+> Overhead is around x2 (sampling only) to x10-x15 (precise), and long traces can
+> be directly filtered with uftrace if needed.
+> 
+> The series is splitted in:
+> - implementing the plugin
+> - adding useful options (especially sampling and privilege level tracing)
+> - add a companion script to symbolize traces generated
+> - add documentation with examples
+> 
+> I hope this plugin can help people trying to understand what happens out of the
+> user space, and get a better grasp of how firmwares, bootloader, and kernel
+> interact behind the curtain.
 > 
 > v2
 > --
 > 
-> In review, Paolo mentioned timers deadline should redilated in the other
-> direction. After going through this part, it seems that arrival is always based
-> on one of the clocks we have (which is dilated already), so I don't think we
-> should redilate that, as this would create a discordance between time set, and
-> real time when this happen. Feel free to correct me if this is wrong.
+> - trace active stacks on exit
+> - do not erase map generated in system_emulation
+> - add documentation to generate restricted visual traces around specific events
+>    of execution
 > 
-> - keep start time per clock and apply accordingly
-> - apply time dilation for cpu_get_host_ticks as well
-> - use a default factor of 1.0
-> - rename cli option to -rtc speed-factor
-> - forbid to use option with kvm, as time is not provided by QEMU for guest
+> v3
+> --
 > 
-> Pierrick Bouvier (2):
->    qemu/timer: introduce time dilation factor
->    system/rtc: introduce -rtc speed-factor option
+> - fix missing include unistd.h (build failed on MacOS only)
 > 
->   include/qemu/timer.h     | 60 ++++++++++++++++++++++++++++------------
->   system/rtc.c             | 11 ++++++++
->   system/vl.c              |  9 ++++++
->   util/qemu-timer-common.c |  7 +++++
->   qemu-options.hx          |  7 ++++-
->   5 files changed, 75 insertions(+), 19 deletions(-)
+> v4
+> --
+> 
+> - add support for x64
+> 
+> Pierrick Bouvier (7):
+>    contrib/plugins/uftrace: new uftrace plugin
+>    contrib/plugins/uftrace: add trace-sample option
+>    contrib/plugins/uftrace: add trace-privilege-level option
+>    contrib/plugins/uftrace: add timestamp-based-on-real-time option
+>    contrib/plugins/uftrace_symbols.py
+>    contrib/plugins/uftrace: add documentation
+>    contrib/plugins/uftrace: add support for x64
+> 
+>   docs/about/emulation.rst           |  213 ++++++
+>   contrib/plugins/uftrace.c          | 1014 ++++++++++++++++++++++++++++
+>   contrib/plugins/meson.build        |    3 +-
+>   contrib/plugins/uftrace_symbols.py |  152 +++++
+>   4 files changed, 1381 insertions(+), 1 deletion(-)
+>   create mode 100644 contrib/plugins/uftrace.c
+>   create mode 100755 contrib/plugins/uftrace_symbols.py
 > 
 
-Trying another ping on this series.
-It has been useful to reduce number of interruptions in a guest when 
-running on a slow machine.
+Ping on this series.
 
 Regards,
 Pierrick
