@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF88B1B972
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 19:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD9CB1B96B
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 19:33:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujLWn-0000aE-BG; Tue, 05 Aug 2025 13:32:45 -0400
+	id 1ujLWp-0000fc-QK; Tue, 05 Aug 2025 13:32:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLWi-0000Vi-G8
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:32:41 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLWm-0000cv-Vx
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:32:45 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLWg-00052d-KK
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:32:40 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-458ba079338so844125e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 10:32:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLWl-00053c-9e
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:32:44 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3b782cca9a0so3369509f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 10:32:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754415156; x=1755019956; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754415161; x=1755019961; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cOv0e8g7dpHxydsNkW2B2z60yaVe7rRVLXsrB8NRcV4=;
- b=o5vKEXjsuxICpKAkcOdYHqi4YyPznJebBCti5yE3Lgf+oxRwWLa2Km6jDMQ5vUsfK8
- bmn8JOMFUY0Mv1znauQWEA5DgUh8IOYoKn1OcvH8RVGxDAo9QRstC9J0sOGUiH+zR+pw
- bRn7dnWM32BTt7h+G7LUcm/UQ+CS+awj+fxh3X08SN6wwM70BGpAsrqp2Gydp3dCz+cR
- VVcYmYmQ0GGCUR0+9qRQ9s+MeFbNSwnTDTsEKj5gKiVpJoUpwp/l7nO8/57bv7iPPpyX
- vrZE3pKYZAASfZTns0XYN2uY6lJi4nQLHaivz8HrSlJ/O2K8sVU5DSZpkYgLTAD7CqJM
- 5lAw==
+ bh=Nyp0V1s1n3Qx5gTtUClK6ljJrPkZFehssseSlQktGtg=;
+ b=GpFjWfWyD5t9WvuCqJ3mA6MajciDMZ9GIjq7dGNepN9VtXFNHdZl19uGJ4q83bHQpb
+ UHNL6FffHXUECRVbSp7IQ9kOMB+M6eEzKczDSp1AqicjyeGk8bwM4s43o2YozxgbDveS
+ K14vz+ya2mAMvK7QHI680zweCIYJr8OiQszRZpa6EuC6cFMGANLCCVkwNjKrzq3jaqf0
+ IYt4uyL3sWET4kOYwoOJ2wr46WN59VCtgMINGtyTTrKManS9B9cwPg2fxsj+siRSdTXq
+ 8n9CS87mktYO5MESZ/8DEcFi7G/rbHQHW2XMxxXI5grHbv4yIIFC6iMh3nTzak+EISm9
+ Fkng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754415156; x=1755019956;
+ d=1e100.net; s=20230601; t=1754415161; x=1755019961;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cOv0e8g7dpHxydsNkW2B2z60yaVe7rRVLXsrB8NRcV4=;
- b=fYTE64+naXiubDqx8m7aiECKM6HAlDWaSSCFMgoD40DQUqLMJWpNRerFacocQMWZOC
- jwLmL/0e3qT7qrYOqXuTJ+WtcPVzCihBMFra0+ztEIhI8AKOICfDEohXvQ7K8EvrQyF+
- 6Sw1ii3ydbEcPw19h1kLH6f8ZAzKtYg9zYdKshuPICXLor4/nrqP6y+EIZfXbIO9+b1N
- XaEqxWnyAWsj2CbcO+RIonPXV7lKPxUGHunwbGWrpOMCfNZVZG8bY0nd5G5wAZLPpnCj
- uNm5r2oLasJisnsEwDAcLwnVDrYWDwPqIMJ1mNMGCdiDqioI2HPf7V2jWbMzDoha8/YQ
- 55ow==
-X-Gm-Message-State: AOJu0YyGk19oi8RAznCpHs6yQiUzHCyAB7wv2lOze7ug8PgGR/vUO0kl
- L1Xf6ggVhX/FkVAuZI4c0SGeHe4AM5HntVyPv2YgKeffUK4cgscw2o40LMAZ9AwTLj5BQRvD2aO
- AVg1p
-X-Gm-Gg: ASbGncv/D1t8eoerlaqkzCzuNeg0ZvD7mUCYDmd7O7fHSmzQY7wFeeB+iGwbYHmJ5+W
- Or0SixtE1SzdaWXV20I7/hr0EYz/oZcYMsxlxqacnIhIxHOhEmA1CvqNfQEpbAq21+ZxtAUq8vr
- LqqivzuVF5cay9Y32xcGgVfSCJcQpynCQoGtOv22VQSIMUz1/tCcR4nyOCZKdDIx+uLMt1LJaYH
- EkL/PdF1CF06ZCLJ1maQxy/m4gSjnNBpdhNyoYI/ch4BdlE/9m3z4Afab3VgrhR5FPkB+5+FXYC
- IXlHZkLL1ThRwHcqOyjzpotys6ZhtFcNXhp6xvcy6J9sX8lxqByvqmzTyLPUSk3vPxovJXurOy3
- p2Iyag2bqrX1JXqJqYzrl441lTtXzFBthlwlzYAswlJGVjmM4/v3+uYzefTIdFXs/5Gzj66Uz
-X-Google-Smtp-Source: AGHT+IH5dxVVw90egUuFXwukH6tJi9+46IfHfaT0NaYEB2/6NJ4F1AqFQlDFWLFb1r/I2aq7hxBvVw==
-X-Received: by 2002:a05:600c:15cb:b0:459:dbc2:201e with SMTP id
- 5b1f17b1804b1-459e611e82fmr3946825e9.9.1754415156349; 
- Tue, 05 Aug 2025 10:32:36 -0700 (PDT)
+ bh=Nyp0V1s1n3Qx5gTtUClK6ljJrPkZFehssseSlQktGtg=;
+ b=ARMv1SqaFWTowVEXGpNi4AG739g/iyjgbixFqpZ1za363BWh0yKCVUct5jE8U0uQBB
+ K2XATlpxH/oEcrvVun9HDT1gVHnJpzINcmt461E1OwFrITwAYnEMEzIB30xAlb7L4geY
+ brI0fGEicmw3d/omxDOI9sctOSzKdIj1kWBieDwWmMnNwCtQonwoyTYIPn9emriEHpIo
+ XVij/Lfvt7IuM6Jld0JXXOxuBeSLmYNbt5A5et9XK41EfHw/uEkX9YxZRQ0oZjSyQz1x
+ mU5dZt2/0CpaiH7KcqRVeKLVQJu5GxIlcCAzFNFbqbbD3/0W5+HRu2+3hQIYt9Rr+WQm
+ 6GSQ==
+X-Gm-Message-State: AOJu0Yw7z3unMw5wQcYtBa3XmfgqglvEsHxVkDAkZeWavPfDDkA9wO9x
+ 91ODvrkxnOkTZRRcRj8gyOOBM9EV0FqhIL6rSdXzd3tXVsK3r06uJdQmrlv6/a2loe7zntR/Uj1
+ XLhSf
+X-Gm-Gg: ASbGncuxQkTp7yLVFfx8Z/JLtRRimCXtptIXMYPElXJP6mKZmQUX28szgk0WZVi78Pj
+ OgyuhGk/lMVP3R1vDQaW51NvQZehIvydICNqpWNfCG/SxTBiKHsGJ3pR1ohA5bvBn02g7csye8L
+ yqeenOM2UATTP1vvQmPJ68iiNNYjg3VxkITpspW+qiKtmFfJscCNlMlQRzOs8eQHQ2sLjd0bizV
+ CMDKSldykin05OnSb063dpZamJUPFqzzCwlrM97JbSO5/QHboQJlPSwD6oy/q4Bp0F+RHvku7en
+ J6i6OrIX8VNK8e8iIHOCnFBUtIWsNWnbY3txm3YMTF9nS4/Mu+ipITJs6upULdNq86hLzNIYY11
+ 24zLuMpaDcHZvtuX6CqQVAIpnVdX9E0oQNLIqaIK+3VdmbXcVSP3gU+ByXztm1kIOT6eFLV7D
+X-Google-Smtp-Source: AGHT+IGBuuD2RYM/P9sr7OS1tZQ2JnZK0H8/ogIeNzrgEgakdizwS26xurZRjzk0zXnf0K44uXEZKg==
+X-Received: by 2002:a5d:50cc:0:b0:3b7:882c:790 with SMTP id
+ ffacd0b85a97d-3b8d94aaf66mr8411006f8f.37.1754415161504; 
+ Tue, 05 Aug 2025 10:32:41 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-459e5843021sm15071965e9.3.2025.08.05.10.32.35
+ ffacd0b85a97d-3b79c453aeasm20592966f8f.40.2025.08.05.10.32.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Aug 2025 10:32:35 -0700 (PDT)
+ Tue, 05 Aug 2025 10:32:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Chuang Xu <xuchuangxclwt@bytedance.com>,
+Cc: Eric Auger <eric.auger@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 12/13] target/i386/cpu: Move addressable ID encoding out of
- compat property in CPUID[0x1]
-Date: Tue,  5 Aug 2025 19:31:33 +0200
-Message-ID: <20250805173135.38045-13-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 13/13] hw/i386/microvm: Explicitly select ACPI_PCI
+Date: Tue,  5 Aug 2025 19:31:34 +0200
+Message-ID: <20250805173135.38045-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250805173135.38045-1-philmd@linaro.org>
 References: <20250805173135.38045-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,67 +102,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
 
-Currently, the addressable ID encoding for CPUID[0x1].EBX[bits 16-23]
-(Maximum number of addressable IDs for logical processors in this
-physical package) is covered by vendor_cpuid_only_v2 compat property.
-The previous consideration was to avoid breaking migration and this
-compat property makes it unfriendly to backport the commit f985a1195ba2
-("i386/cpu: Fix number of addressable IDs field for CPUID.01H.EBX
-[23:16]").
+With a microvm-only build based on a custom device config,
+we get a link failure due to undefined reference to
+build_pci_host_bridge_osc_method() which is defined in hw/acpi/pci.c and
+whose compilation depends on CONFIG_ACPI_PCI. Although CONFIG_ACPI
+and CONFIG_PCI are set with such configuration, implied CONFIG_ACPI_PCI
+in config PCI_EXPRESS_GENERIC_BRIDGE is not selected as expected.
 
-However, NetBSD booting is broken since the commit 88dd4ca06c83
-("i386/cpu: Use APIC ID info to encode cache topo in CPUID[4]"),
-because NetBSD calculates smt information via `lp_max` / `core_max` for
-legacy Intel CPUs which doesn't support 0xb leaf, where `lp_max` is from
-CPUID[0x1].EBX.bits[16-23] and `core_max` is from CPUID[0x4].0x0.bits[26
--31].
+It Looks like CONFIG_ACPI_PCI must be enforced and this patch selects
+CONFIG_ACPI_PCI in MICROVM config directly as done for PC config.
 
-The commit 88dd4ca0 changed the encoding rule of `core_max` but didn't
-update `lp_max`, so that NetBSD would get the wrong smt information,
-which leads to the module loading failure.
+Reproducer:
 
-Luckily, the commit f985a1195ba2 ("i386/cpu: Fix number of addressable
-IDs field for CPUID.01H.EBX[23:16]") updated the encoding rule for
-`lp_max` and accidentally fixed the NetBSD issue too. This also shows
-that using CPUID[0x1] and CPUID[0x4].0x0 to calculate HT/SMT information
-is a common practice to detect CPU topology on legacy Intel CPUs.
+../configure \
+ --without-default-features \
+ --target-list=x86_64-softmmu \
+ --enable-kvm --disable-tcg \
+ --enable-pixman \
+ --enable-vnc \
+ --audio-drv-list="" \
+ --without-default-devices \
+ --with-devices-x86_64=microvm \
+ --enable-vhost-user
 
-Therefore, it's necessary to backport the commit f985a1195ba2 to
-previous stable QEMU to help address the similar issues as well. Then
-the compat property is not needed any more since all stable QEMUs will
-follow the same encoding way.
+with configs/devices/x86_64-softmmu/microvm.mak:
+CONFIG_PCI_DEVICES=n
 
-So, in CPUID[0x1], move addressable ID encoding out of compat property.
+CONFIG_MICROVM=y
 
+CONFIG_VIRTIO_BLK=y
+CONFIG_VIRTIO_SERIAL=y
+CONFIG_VIRTIO_INPUT=y
+CONFIG_VIRTIO_INPUT_HOST=y
+CONFIG_VHOST_USER_INPUT=y
+CONFIG_VIRTIO_NET=y
+CONFIG_VIRTIO_SCSI=y
+CONFIG_VIRTIO_RNG=y
+CONFIG_VIRTIO_CRYPTO=y
+CONFIG_VIRTIO_BALLOON=y
+CONFIG_VIRTIO_GPU=y
+CONFIG_VHOST_USER_GPU=y
+
+FAILED: qemu-system-x86_64
+cc -m64 @qemu-system-x86_64.rsp
+/usr/bin/ld: libsystem.a.p/hw_pci-host_gpex-acpi.c.o: in function `acpi_dsdt_add_host_bridge_methods':
+hw/pci-host/gpex-acpi.c:83:(.text+0x274): undefined reference to `build_pci_host_bridge_osc_method'
+collect2: error: ld returned 1 exit status
+
+Fixes: af151d50eac24 "hw/pci-host/gpex-acpi: Use build_pci_host_bridge_osc_method"
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Reported-by: Michael Tokarev <mjt@tls.msk.ru>
-Inspired-by: Chuang Xu <xuchuangxclwt@bytedance.com>
-Fixes: commit f985a1195ba2 ("i386/cpu: Fix number of addressable IDs field for CPUID.01H.EBX[23:16]")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3061
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Tested-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20250804053548.1808629-1-zhao1.liu@intel.com>
+Message-ID: <20250804152008.247673-1-eric.auger@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/cpu.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/i386/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 251d5760a0b..673f8583c80 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7885,8 +7885,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-              * count, but Intel needs maximum number of addressable IDs for
-              * logical processors per package.
-              */
--            if (cpu->vendor_cpuid_only_v2 &&
--                (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-+            if ((IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-                 num = 1 << apicid_pkg_offset(topo_info);
-             } else {
-                 num = threads_per_pkg;
+diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+index 5139d230877..3a0e2b8ebbb 100644
+--- a/hw/i386/Kconfig
++++ b/hw/i386/Kconfig
+@@ -131,6 +131,7 @@ config MICROVM
+     select I8259
+     select MC146818RTC
+     select VIRTIO_MMIO
++    select ACPI_PCI
+     select ACPI_HW_REDUCED
+     select PCI_EXPRESS_GENERIC_BRIDGE
+     select USB_XHCI_SYSBUS
 -- 
 2.49.0
 
