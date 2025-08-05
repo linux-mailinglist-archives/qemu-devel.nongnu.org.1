@@ -2,79 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F03EB1B641
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 16:21:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA13B1B65B
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 16:26:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujIWf-0007r2-Kn; Tue, 05 Aug 2025 10:20:25 -0400
+	id 1ujIbZ-0003lc-Le; Tue, 05 Aug 2025 10:25:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ujIUo-0005fN-0s
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:18:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ujIUl-00019r-Rb
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:18:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754403503;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mGafGA9IR8EW8rQyQ2iHyi8ih1nxHy/UsLblmuH7+KU=;
- b=FQTY8mLSTLwBhiTr+MgxDFhSKaOXeKR1QiBM9L0AMx8AJTFIvHveTFEq0ej/I5kCdHJxis
- Rr1+1rVt4nEUBU5Et5ph4x/DvrgRxNizwPU0AeN5qySEpnxVfi+181Z/RkFG0sOq6AZXPm
- KcuEoieM4cyOZ3hLRoN/gA+JAiTiTs4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-LJRbzLKFM7aDVkIzfcojYw-1; Tue,
- 05 Aug 2025 10:18:22 -0400
-X-MC-Unique: LJRbzLKFM7aDVkIzfcojYw-1
-X-Mimecast-MFC-AGG-ID: LJRbzLKFM7aDVkIzfcojYw_1754403501
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F00C918002B2; Tue,  5 Aug 2025 14:18:20 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.80])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E0CBE1800359; Tue,  5 Aug 2025 14:18:18 +0000 (UTC)
-Date: Tue, 5 Aug 2025 15:18:15 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: Juraj Marcin <jmarcin@redhat.com>, qemu-devel@nongnu.org,
- Peter Xu <peterx@redhat.com>, Prasad Pandit <ppandit@redhat.com>
-Subject: Re: [PATCH for-10.1 0/2] migration: actually make gnutls workaround
- functional
-Message-ID: <aJISp1UvPCwwXyPf@redhat.com>
-References: <20250801170212.54409-1-berrange@redhat.com>
- <d5xctfzcrtbanvkndamonxgqo3tc5nejhyrvh54m3y5bhg4cms@ue7siue2yw7o>
- <87jz3i3n0u.fsf@suse.de> <aJHYSwGXTOF4o00n@redhat.com>
- <87h5yl3mt2.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <engguopeng@buaa.edu.cn>)
+ id 1ujIZS-0001i7-SV
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:23:19 -0400
+Received: from azure-sdnproxy.icoremail.net ([13.75.44.102])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <engguopeng@buaa.edu.cn>) id 1ujIZP-0002gT-QZ
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:23:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=buaa.edu.cn; s=buaa; h=Received:From:To:Cc:Subject:Date:
+ Message-ID:MIME-Version:Content-Transfer-Encoding; bh=oY3wTLwcDg
+ EfP9AArHroAbFBgswpzMgRwcjmRTugJ3I=; b=m4DEpLj1ofGCu394Q49qrAS308
+ CA8UXR9U5ozeyESYzfKB3t5jY/wOgrMQfoTus3bEnuy9NwgqU2SAXn6F2QlVvYMp
+ hMxJiQGaPdI6o8gIQ2qBgA6yCxTBDndFj/k1bktT3aXZ/+ZMGpQpC5cRuLwBEbCC
+ cJvlFt5QePbfS07iM=
+Received: from gp-VMware-Virtual-Platform.localdomain (unknown
+ [139.227.252.237])
+ by coremail-app2 (Coremail) with SMTP id Nyz+CgCHT2TGE5JoTYYtAA--.4048S2;
+ Tue, 05 Aug 2025 22:23:04 +0800 (CST)
+To: mst@redhat.com, marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
+ richard.henderson@linaro.org, eduardo@habkost.net, qemu-devel@nongnu.org
+Cc: wyguopeng@163.com, Jonathan.Cameron@huawei.com,
+ peng guo <engguopeng@buaa.edu.cn>
+Subject: [PATCH v3] hw/i386/pc: Avoid overlap between CXL window and PCI 64bit
+ BARs in QEMU
+Date: Tue,  5 Aug 2025 22:23:00 +0800
+Message-ID: <20250805142300.15226-1-engguopeng@buaa.edu.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87h5yl3mt2.fsf@suse.de>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-CM-TRANSID: Nyz+CgCHT2TGE5JoTYYtAA--.4048S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZF1DCF4DGrWktry8ArW7twb_yoWrGw4kpF
+ 93JFy5GF4rKF13GFs7Za4v9a48Ca1vk3W3CF92kr1v9FnxGrn8A340y3yYv3ykZrs3Xr17
+ XF98JFyktw1DuaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUkF1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+ w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+ IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+ 87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+ 8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
+ Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+ xGrwACjI8F5VA0II8E6IAqYI8I648v4I1l42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxF
+ aVAv8VW7tr1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGw
+ C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48J
+ MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMI
+ IF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
+ 87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUdHUDUUUUU=
+X-CM-SenderInfo: d2isijirrujqpexdthxhgxhubq/
+Received-SPF: pass client-ip=13.75.44.102; envelope-from=engguopeng@buaa.edu.cn;
+ helo=azure-sdnproxy.icoremail.net
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,90 +77,109 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-to:  peng guo <engguopeng@buaa.edu.cn>
+From:  peng guo via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 05, 2025 at 10:44:41AM -0300, Fabiano Rosas wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
-> 
-> > On Mon, Aug 04, 2025 at 04:27:45PM -0300, Fabiano Rosas wrote:
-> >> Juraj Marcin <jmarcin@redhat.com> writes:
-> >> 
-> >> > Hi Daniel,
-> >> >
-> >> > On 2025-08-01 18:02, Daniel P. Berrangé wrote:
-> >> >> This is a followup to previously merged patches that claimed to
-> >> >> workaround the gnutls bug impacting migration, but in fact were
-> >> >> essentially non-functional. Juraj Marcin pointed this out, and
-> >> >> this new patch tweaks the workaround to make it actually do
-> >> >> something useful.
-> >> >> 
-> >> >> Daniel P. Berrangé (2):
-> >> >>   migration: simplify error reporting after channel read
-> >> >>   migration: fix workaround for gnutls thread safety
-> >> >> 
-> >> >>  crypto/tlssession.c   | 16 ----------------
-> >> >>  migration/qemu-file.c | 22 +++++++++++++++++-----
-> >> >>  2 files changed, 17 insertions(+), 21 deletions(-)
-> >> >> 
-> >> >
-> >> > thanks for finding a fix for the workaround. I have tested it and it
-> >> > resolves the issue.
-> >> >
-> >> > However, it significantly slows down migration, even with the workaround
-> >> > disabled (and thus no locking). When benchmarking, I used the fixed
-> >> > version of GNUTLS, VM with 20GB of RAM which were fully written to
-> >> > before starting a normal migration with no workload during the
-> >> > migration.
-> >> >
-> >> > Test cases:
-> >> > [1]: before this patchset
-> >> > [2]: with this patchset applied and GNUTLS workaround enabled
-> >> > [2]: with this patchset applied and GNUTLS workaround disabled
-> >> >
-> >> >   | Total time | Throughput | Transfered bytes |
-> >> > --+------------+------------+------------------+
-> >> > 1 |  31 192 ms |  5450 mpbs |   21 230 973 763 |
-> >> > 2 |  74 147 ms |  2291 mbps |   21 232 849 066 |
-> >> > 3 |  72 426 ms |  2343 mbps |   21 215 009 392 |
-> >> 
-> >> Thanks testing this. I had just managed to convince myself that there
-> >> wouldn't be any performance issues.
-> >> 
-> >> The yield at every buffer fill on the incoming side is probably way more
-> >> impactful than the poll on the RP.
-> >
-> > Yeah, that's an unacceptable penalty on the incoming side for sure.
-> >
-> > How about we simply change the outbound migration channel to be in
-> > non-blocking mode ?   I originally put it in blocking mode way back
-> > in 9e4d2b98ee98f4cee50d671e500eceeefa751ee0, but if I look at the
-> > QEMUFile impl of qemu_fill_buffer and qemu_fflush, but should be
-> > coping with a non-blocking socket. qemu_fill_buffer has explicit
-> > code to wait, and qemu_fflush uses the _all() variant whcih has
-> > built-in support for waiting. So I'm not seeing an obvious need
-> > to run the channel in blocking mode.
-> >
-> 
-> It's definitely simpler and I think it works. It's uncomfortably late
-> though to add a bunch of glib event loop code to the migration
-> thread. Is the suggestion of moving the yield to tlssession.c even
-> feasible?
+When using a CXL Type 3 device together with a virtio 9p device in QEMU on a
+physical server, the 9p device fails to initialize properly. The kernel reports
+the following error:
 
-Well that'll remove the burden for the non-TLS incoming migration,
-but the incoming TLS migration will still have the redundant
-yields and so still suffer a hit.
+    virtio: device uses modern interface but does not have VIRTIO_F_VERSION_1
+    9pnet_virtio virtio0: probe with driver 9pnet_virtio failed with error -22
 
-Given where we are in freeze, I'm thinking we should just hard
-disable the workaround for this release, and re-attempt it in
-next cycle and then we can bring it back to stable afterwards.
+Further investigation revealed that the 64-bit BAR space assigned to the 9pnet
+device was overlapped by the memory window allocated for the CXL devices. As a
+result, the kernel could not correctly access the BAR region, causing the
+virtio device to malfunction.
 
-With regards,
-Daniel
+An excerpt from /proc/iomem shows:
+
+    480010000-cffffffff : CXL Window 0
+      480010000-4bfffffff : PCI Bus 0000:00
+      4c0000000-4c01fffff : PCI Bus 0000:0c
+        4c0000000-4c01fffff : PCI Bus 0000:0d
+      4c0200000-cffffffff : PCI Bus 0000:00
+        4c0200000-4c0203fff : 0000:00:03.0
+          4c0200000-4c0203fff : virtio-pci-modern
+
+To address this issue, this patch adds the reserved memory end calculation
+for cxl devices to reserve sufficient address space and ensure that CXL memory
+windows are allocated beyond all PCI 64-bit BARs. This prevents overlap with
+64-bit BARs regions such as those used by virtio or other pcie devices,
+resolving the conflict.
+
+QEMU Build Configuration:
+
+    ./configure --prefix=/home/work/qemu_master/build/ \
+                --target-list=x86_64-softmmu \
+                --enable-kvm \
+                --enable-virtfs
+
+QEMU Boot Command:
+
+    sudo /home/work/qemu_master/qemu/build/qemu-system-x86_64 \
+        -nographic -machine q35,cxl=on -enable-kvm -m 16G -smp 8 \
+        -hda /home/work/gp_qemu/rootfs.img \
+        -virtfs local,path=/home/work/gp_qemu/share,mount_tag=host0,security_model=passthrough,id=host0 \
+        -kernel /home/work/linux_output/arch/x86/boot/bzImage \
+        --append "console=ttyS0 crashkernel=256M root=/dev/sda rootfstype=ext4 rw loglevel=8" \
+        -object memory-backend-ram,id=vmem0,share=on,size=4096M \
+        -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
+        -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
+        -device cxl-type3,bus=root_port13,volatile-memdev=vmem0,id=cxl-vmem0,sn=0x123456789 \
+        -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G
+
+Fixes: 03b39fcf64bc ("hw/cxl: Make the CXL fixed memory window setup a machine parameter")
+Signed-off-by: peng guo <engguopeng@buaa.edu.cn>
+---
+ v2 -> v3: Adjust the code to match QEMU's coding style guidelines
+ v1 -> v2: Make the patch clearer and add fixes
+
+ hw/i386/pc.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 2f58e73d3347..dd6f6e721548 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -834,6 +834,7 @@ void pc_memory_init(PCMachineState *pcms,
+     hwaddr maxphysaddr, maxusedaddr;
+     hwaddr cxl_base, cxl_resv_end = 0;
+     X86CPU *cpu = X86_CPU(first_cpu);
++    uint64_t res_mem_end;
+ 
+     assert(machine->ram_size == x86ms->below_4g_mem_size +
+                                 x86ms->above_4g_mem_size);
+@@ -975,16 +976,17 @@ void pc_memory_init(PCMachineState *pcms,
+ 
+     rom_set_fw(fw_cfg);
+ 
+-    if (machine->device_memory) {
+-        uint64_t *val = g_malloc(sizeof(*val));
+-        uint64_t res_mem_end;
++    if (pcms->cxl_devices_state.is_enabled) {
++        res_mem_end = cxl_resv_end;
++    } else if (machine->device_memory) {
++        res_mem_end = machine->device_memory->base
++                      + memory_region_size(&machine->device_memory->mr);
++    } else {
++        res_mem_end = 0;
++    }
+ 
+-        if (pcms->cxl_devices_state.is_enabled) {
+-            res_mem_end = cxl_resv_end;
+-        } else {
+-            res_mem_end = machine->device_memory->base
+-                          + memory_region_size(&machine->device_memory->mr);
+-        }
++    if (res_mem_end) {
++        uint64_t *val = g_malloc(sizeof(*val));
+         *val = cpu_to_le64(ROUND_UP(res_mem_end, 1 * GiB));
+         fw_cfg_add_file(fw_cfg, "etc/reserved-memory-end", val, sizeof(*val));
+     }
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.43.0
 
 
