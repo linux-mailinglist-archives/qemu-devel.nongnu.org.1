@@ -2,108 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF17B1B361
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 14:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 415B2B1B5D9
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 16:08:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujGlD-0004He-50; Tue, 05 Aug 2025 08:27:19 -0400
+	id 1ujIL0-0005N6-IM; Tue, 05 Aug 2025 10:08:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ujGl9-0004Cg-VQ
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 08:27:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ujGl6-0004nu-4w
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 08:27:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754396804;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xtwCF+slk3iUvx5J+lbYi6HGbSFqiS4GPdt/W2+BsYg=;
- b=BejmcGrCwO/zmLnqcsxvWJdfSCFn2d3+l4XUZjjqWGalDjui7shA8orUbBJrLXdEzZrN/O
- qtbuWuexYt8yXVK5wcar0SzvGkkq+Mm4hNmD3igk53O6f9DXp7PQ0bx33V0dOVvRaoBWIY
- 391gI3SK4W2QYLDzH/Net7/65aIjSc8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-333-9M9iNbVgOpuEIKmTHPLU1A-1; Tue, 05 Aug 2025 08:26:42 -0400
-X-MC-Unique: 9M9iNbVgOpuEIKmTHPLU1A-1
-X-Mimecast-MFC-AGG-ID: 9M9iNbVgOpuEIKmTHPLU1A_1754396801
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-458f710f364so15612425e9.0
- for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 05:26:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754396801; x=1755001601;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xtwCF+slk3iUvx5J+lbYi6HGbSFqiS4GPdt/W2+BsYg=;
- b=l1MQvNkNL+oXAKxSPo3st1PyFRqWYtCAJ5pO96PXg8PbleEsvuIxdqwCD/GU6GaOG3
- ISMTog2xUp5MhdwB23lBlMutPVPc1VdVAhTSiWZscAyDsbQ91IpAg79Red9sWpWM/HD+
- Tw4dE/xgtzinK0NNhAwyTZGWq6+Fc70+Bip1sN9PQgQsg0vuruE1xVhO9nDJBr4vnNIT
- 5Qd3khGBHKsFdSpfh+tONSAEzSAu2lGuEM0D3ZFKdmIiWyD+c9eVUnl4LRQBtFY3Zm4I
- w6kOKNwkDeSTIAx/MhFqknb/PWfWCQ8mwSnDoZGZzfscApzLGu3Qrv7VmlarVDc5sWWj
- BYUg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVaH64an5pCb7jfvEowO5jTwmbiC3CZ2wjDlJbjyKq7w+3Jy7Yv3LOJNA4ajXF01LxIKa9ePKfIbubc@nongnu.org
-X-Gm-Message-State: AOJu0YyJWFd4jHFO+jN7buS3MGrLPsl4MS19r7imyaNpJcsyMOLUQjl5
- 9XaMxcCNbfLcUWgn3ExSNjjoPz/ki0pHcfUCvWfpqmnk2FXe2eKqEZ02Mk6MHEfEvcD2a5hIdaK
- HG04u2P4zdCuPASnXrolZCq7+ovnXTWbQUWqkxzhEl9/78DyuntfUMi9p
-X-Gm-Gg: ASbGnctHwzWRbrK7/7o20yh/vYMEdsZkdP8BTdAicaOhpG/oP8Um7JDcf0XvNqffess
- xGVYxdDNF6JHDBAStKoqGMmPUK9c7XYr+AWYphKAJadwGR2H2pQw69mFBiSlnywZsvjcpMyN51V
- iZhuJU1SqBZ3qmf0UrEMIKEMEVz4dVWT5OaJt4LJJOxcrhyaqMOrJnDhrHRqRH50mQEA/HZidpW
- nh4Uv02HvsrcQzulqiWlfzevFmGv5vg9CCEFZv3Fk2mH60ZgTI2VVcFFTNeCo/vvpSaKQ82YQTt
- pXcm7J7VLBBpq5CWaDBlH0VHh+wg64A8
-X-Received: by 2002:a05:600c:35d5:b0:459:e20e:be2f with SMTP id
- 5b1f17b1804b1-459e20ec22cmr22118385e9.14.1754396801146; 
- Tue, 05 Aug 2025 05:26:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2FNwrqlnGCAnA3iQgTMZJJnNmwqJ0gzhvZalTPvSAQYr3BRpFiiWhBVZ7QyqOyFtWQWZgtw==
-X-Received: by 2002:a05:600c:35d5:b0:459:e20e:be2f with SMTP id
- 5b1f17b1804b1-459e20ec22cmr22117915e9.14.1754396800633; 
- Tue, 05 Aug 2025 05:26:40 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-459e58542f3sm1595975e9.10.2025.08.05.05.26.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Aug 2025 05:26:40 -0700 (PDT)
-Date: Tue, 5 Aug 2025 08:26:36 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Cornelia Huck <cohuck@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: Re: [PATCH for-10.2] hw: add compat machines for 10.2
-Message-ID: <20250805082628-mutt-send-email-mst@kernel.org>
-References: <20250805095616.1168905-1-cohuck@redhat.com>
+ (Exim 4.90_1)
+ (envelope-from <macbookpro@macbookpros-MacBook-Pro.local>)
+ id 1ujHmF-00080f-6Z
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 09:32:27 -0400
+Received: from [205.220.128.102] (helo=macbookpros-MacBook-Pro.local)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <macbookpro@macbookpros-MacBook-Pro.local>)
+ id 1ujHmA-0007xi-Pp
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 09:32:26 -0400
+Received: by macbookpros-MacBook-Pro.local (Postfix, from userid 501)
+ id F2E75BCFF413; Tue,  5 Aug 2025 14:16:17 +0100 (BST)
+Date: Tue, 5 Aug 2025 14:16:17 +0100
+From: macbookpro <macbookpro@macbookpros-macbook-pro.local>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com
+Subject: [PATCH] ui/sdl2: Add SDL clipboard support
+Message-ID: <aJIEIS2jMQz_7skd@macbookpros-MacBook-Pro.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250805095616.1168905-1-cohuck@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 205.220.128.102 (deferred)
+Received-SPF: none client-ip=205.220.128.102;
+ envelope-from=macbookpro@macbookpros-MacBook-Pro.local;
+ helo=macbookpros-MacBook-Pro.local
+X-Spam_score_int: -1
+X-Spam_score: -0.2
+X-Spam_bar: /
+X-Spam_report: (-0.2 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_NXDOMAIN=0.9,
+ NO_DNS_FOR_FROM=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 05 Aug 2025 10:08:17 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,250 +57,315 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 05, 2025 at 11:56:16AM +0200, Cornelia Huck wrote:
-> Add 10.2 machine types for arm/i440fx/m68k/q35/s390x/spapr.
-> 
-> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+From ef834d229fda71f1773f483f4ef6ef7c50e485d0 Mon Sep 17 00:00:00 2001
+From: Test User <7897244+startergo@users.noreply.github.com>
+Date: Tue, 5 Aug 2025 13:53:00 +0100
+Subject: [PATCH] ui/sdl2: Add SDL clipboard support
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Implement bidirectional clipboard integration between QEMU and host
+system when using the SDL display backend. This allows seamless
+copy-paste operations between the guest and host environments.
 
-> ---
->  hw/arm/virt.c              |  9 ++++++++-
->  hw/core/machine.c          |  3 +++
->  hw/i386/pc.c               |  3 +++
->  hw/i386/pc_piix.c          | 13 +++++++++++--
->  hw/i386/pc_q35.c           | 13 +++++++++++--
->  hw/m68k/virt.c             |  9 ++++++++-
->  hw/ppc/spapr.c             | 15 +++++++++++++--
->  hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
->  include/hw/boards.h        |  3 +++
->  include/hw/i386/pc.h       |  3 +++
->  10 files changed, 76 insertions(+), 9 deletions(-)
-> 
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index ef6be3660f5f..9326cfc895f7 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -3455,10 +3455,17 @@ static void machvirt_machine_init(void)
->  }
->  type_init(machvirt_machine_init);
->  
-> +static void virt_machine_10_2_options(MachineClass *mc)
-> +{
-> +}
-> +DEFINE_VIRT_MACHINE_AS_LATEST(10, 2)
-> +
->  static void virt_machine_10_1_options(MachineClass *mc)
->  {
-> +    virt_machine_10_2_options(mc);
-> +    compat_props_add(mc->compat_props, hw_compat_10_1, hw_compat_10_1_len);
->  }
-> -DEFINE_VIRT_MACHINE_AS_LATEST(10, 1)
-> +DEFINE_VIRT_MACHINE(10, 1)
->  
->  static void virt_machine_10_0_options(MachineClass *mc)
->  {
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index bd47527479a7..38c949c4f2ce 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -37,6 +37,9 @@
->  #include "hw/virtio/virtio-iommu.h"
->  #include "audio/audio.h"
->  
-> +GlobalProperty hw_compat_10_1[] = {};
-> +const size_t hw_compat_10_1_len = G_N_ELEMENTS(hw_compat_10_1);
-> +
->  GlobalProperty hw_compat_10_0[] = {
->      { "scsi-hd", "dpofua", "off" },
->      { "vfio-pci", "x-migration-load-config-after-iter", "off" },
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 2f58e73d3347..bc048a6d1374 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -81,6 +81,9 @@
->      { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
->      { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
->  
-> +GlobalProperty pc_compat_10_1[] = {};
-> +const size_t pc_compat_10_1_len = G_N_ELEMENTS(pc_compat_10_1);
-> +
->  GlobalProperty pc_compat_10_0[] = {
->      { TYPE_X86_CPU, "x-consistent-cache", "false" },
->      { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index c03324281bdb..d165ac72ed75 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -504,12 +504,21 @@ static void pc_i440fx_machine_options(MachineClass *m)
->                       pc_piix_compat_defaults, pc_piix_compat_defaults_len);
->  }
->  
-> -static void pc_i440fx_machine_10_1_options(MachineClass *m)
-> +static void pc_i440fx_machine_10_2_options(MachineClass *m)
->  {
->      pc_i440fx_machine_options(m);
->  }
->  
-> -DEFINE_I440FX_MACHINE_AS_LATEST(10, 1);
-> +DEFINE_I440FX_MACHINE_AS_LATEST(10, 2);
-> +
-> +static void pc_i440fx_machine_10_1_options(MachineClass *m)
-> +{
-> +    pc_i440fx_machine_10_2_options(m);
-> +    compat_props_add(m->compat_props, hw_compat_10_1, hw_compat_10_1_len);
-> +    compat_props_add(m->compat_props, pc_compat_10_1, pc_compat_10_1_len);
-> +}
-> +
-> +DEFINE_I440FX_MACHINE(10, 1);
->  
->  static void pc_i440fx_machine_10_0_options(MachineClass *m)
->  {
-> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index b309b2b378db..e89951285e58 100644
-> --- a/hw/i386/pc_q35.c
-> +++ b/hw/i386/pc_q35.c
-> @@ -374,12 +374,21 @@ static void pc_q35_machine_options(MachineClass *m)
->                       pc_q35_compat_defaults, pc_q35_compat_defaults_len);
->  }
->  
-> -static void pc_q35_machine_10_1_options(MachineClass *m)
-> +static void pc_q35_machine_10_2_options(MachineClass *m)
->  {
->      pc_q35_machine_options(m);
->  }
->  
-> -DEFINE_Q35_MACHINE_AS_LATEST(10, 1);
-> +DEFINE_Q35_MACHINE_AS_LATEST(10, 2);
-> +
-> +static void pc_q35_machine_10_1_options(MachineClass *m)
-> +{
-> +    pc_q35_machine_10_2_options(m);
-> +    compat_props_add(m->compat_props, hw_compat_10_1, hw_compat_10_1_len);
-> +    compat_props_add(m->compat_props, pc_compat_10_1, pc_compat_10_1_len);
-> +}
-> +
-> +DEFINE_Q35_MACHINE(10, 1);
->  
->  static void pc_q35_machine_10_0_options(MachineClass *m)
->  {
-> diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-> index 875fd00ef8d2..98cfe43c73ae 100644
-> --- a/hw/m68k/virt.c
-> +++ b/hw/m68k/virt.c
-> @@ -367,10 +367,17 @@ type_init(virt_machine_register_types)
->  #define DEFINE_VIRT_MACHINE(major, minor) \
->      DEFINE_VIRT_MACHINE_IMPL(false, major, minor)
->  
-> +static void virt_machine_10_2_options(MachineClass *mc)
-> +{
-> +}
-> +DEFINE_VIRT_MACHINE_AS_LATEST(10, 2)
-> +
->  static void virt_machine_10_1_options(MachineClass *mc)
->  {
-> +    virt_machine_10_2_options(mc);
-> +    compat_props_add(mc->compat_props, hw_compat_10_1, hw_compat_10_1_len);
->  }
-> -DEFINE_VIRT_MACHINE_AS_LATEST(10, 1)
-> +DEFINE_VIRT_MACHINE(10, 1)
->  
->  static void virt_machine_10_0_options(MachineClass *mc)
->  {
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index 1855a3cd8d03..eb22333404d3 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -4761,15 +4761,26 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
->  #define DEFINE_SPAPR_MACHINE(major, minor) \
->      DEFINE_SPAPR_MACHINE_IMPL(false, major, minor)
->  
-> +/*
-> + * pseries-10.2
-> + */
-> +static void spapr_machine_10_2_class_options(MachineClass *mc)
-> +{
-> +    /* Defaults for the latest behaviour inherited from the base class */
-> +}
-> +
-> +DEFINE_SPAPR_MACHINE_AS_LATEST(10, 2);
-> +
->  /*
->   * pseries-10.1
->   */
->  static void spapr_machine_10_1_class_options(MachineClass *mc)
->  {
-> -    /* Defaults for the latest behaviour inherited from the base class */
-> +    spapr_machine_10_2_class_options(mc);
-> +    compat_props_add(mc->compat_props, hw_compat_10_1, hw_compat_10_1_len);
->  }
->  
-> -DEFINE_SPAPR_MACHINE_AS_LATEST(10, 1);
-> +DEFINE_SPAPR_MACHINE(10, 1);
->  
->  /*
->   * pseries-10.0
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index a79bd13275b9..d0c6e80cb050 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -911,14 +911,26 @@ static const TypeInfo ccw_machine_info = {
->      DEFINE_CCW_MACHINE_IMPL(false, major, minor)
->  
->  
-> +static void ccw_machine_10_2_instance_options(MachineState *machine)
-> +{
-> +}
-> +
-> +static void ccw_machine_10_2_class_options(MachineClass *mc)
-> +{
-> +}
-> +DEFINE_CCW_MACHINE_AS_LATEST(10, 2);
-> +
->  static void ccw_machine_10_1_instance_options(MachineState *machine)
->  {
-> +    ccw_machine_10_2_instance_options(machine);
->  }
->  
->  static void ccw_machine_10_1_class_options(MachineClass *mc)
->  {
-> +    ccw_machine_10_2_class_options(mc);
-> +    compat_props_add(mc->compat_props, hw_compat_10_1, hw_compat_10_1_len);
->  }
-> -DEFINE_CCW_MACHINE_AS_LATEST(10, 1);
-> +DEFINE_CCW_MACHINE(10, 1);
->  
->  static void ccw_machine_10_0_instance_options(MachineState *machine)
->  {
-> diff --git a/include/hw/boards.h b/include/hw/boards.h
-> index f94713e6e29a..665b6201214c 100644
-> --- a/include/hw/boards.h
-> +++ b/include/hw/boards.h
-> @@ -779,6 +779,9 @@ struct MachineState {
->      } \
->      type_init(machine_initfn##_register_types)
->  
-> +extern GlobalProperty hw_compat_10_1[];
-> +extern const size_t hw_compat_10_1_len;
-> +
->  extern GlobalProperty hw_compat_10_0[];
->  extern const size_t hw_compat_10_0_len;
->  
-> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-> index 79b72c54dd3f..e83157ab358f 100644
-> --- a/include/hw/i386/pc.h
-> +++ b/include/hw/i386/pc.h
-> @@ -214,6 +214,9 @@ void pc_system_parse_ovmf_flash(uint8_t *flash_ptr, size_t flash_size);
->  /* sgx.c */
->  void pc_machine_init_sgx_epc(PCMachineState *pcms);
->  
-> +extern GlobalProperty pc_compat_10_1[];
-> +extern const size_t pc_compat_10_1_len;
-> +
->  extern GlobalProperty pc_compat_10_0[];
->  extern const size_t pc_compat_10_0_len;
->  
-> -- 
-> 2.50.1
+Features:
+- Bidirectional clipboard sync (guest <-> host)
+- Async clipboard request handling to prevent blocking
+- Self-update detection to avoid clipboard manager conflicts
+- Configurable via --enable-sdl-clipboard build option
+- Text-only clipboard support (following existing QEMU patterns)
+
+The implementation follows the same patterns used by the existing
+GTK and VNC clipboard implementations, integrating with QEMU's
+clipboard subsystem through QemuClipboardPeer.
+
+Tested on macOS with successful build and runtime clipboard
+functionality verification.
+
+Co-authored-by: Kamay Xutax <admin@xutaxkamay.com>
+Signed-off-by: startergo <startergo@protonmail.com>
+---
+ include/ui/sdl2.h   |  12 ++++
+ meson.build         |   3 +
+ meson_options.txt   |   2 +
+ ui/meson.build      |   3 +
+ ui/sdl2-clipboard.c | 154 ++++++++++++++++++++++++++++++++++++++++++++
+ ui/sdl2.c           |   9 +++
+ 6 files changed, 183 insertions(+)
+ create mode 100644 ui/sdl2-clipboard.c
+
+diff --git a/include/ui/sdl2.h b/include/ui/sdl2.h
+index dbe6e3d97..0cadbe8c1 100644
+--- a/include/ui/sdl2.h
++++ b/include/ui/sdl2.h
+@@ -21,6 +21,10 @@
+ # include <SDL_image.h>
+ #endif
+ 
++#ifdef CONFIG_SDL_CLIPBOARD
++#include "ui/clipboard.h"
++#endif
++
+ #include "ui/kbd-state.h"
+ #ifdef CONFIG_OPENGL
+ # include "ui/egl-helpers.h"
+@@ -45,6 +49,9 @@ struct sdl2_console {
+     bool gui_keysym;
+     SDL_GLContext winctx;
+     QKbdState *kbd;
++#ifdef CONFIG_SDL_CLIPBOARD
++    QemuClipboardPeer cbpeer;
++#endif
+ #ifdef CONFIG_OPENGL
+     QemuGLShader *gls;
+     egl_fb guest_fb;
+@@ -97,4 +104,9 @@ void sdl2_gl_scanout_texture(DisplayChangeListener *dcl,
+ void sdl2_gl_scanout_flush(DisplayChangeListener *dcl,
+                            uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+ 
++#ifdef CONFIG_SDL_CLIPBOARD
++void sdl2_clipboard_init(struct sdl2_console *scon);
++void sdl2_clipboard_handle_request(struct sdl2_console *scon);
++#endif
++
+ #endif /* SDL2_H */
+diff --git a/meson.build b/meson.build
+index 41f68d380..4a37df966 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1596,6 +1596,8 @@ else
+   sdl_image = not_found
+ endif
+ 
++have_sdl_clipboard = sdl.found() and get_option('sdl_clipboard')
++
+ rbd = not_found
+ if not get_option('rbd').auto() or have_block
+   librados = cc.find_library('rados', required: get_option('rbd'))
+@@ -2511,6 +2513,7 @@ config_host_data.set('CONFIG_RELOCATABLE', get_option('relocatable'))
+ config_host_data.set('CONFIG_SAFESTACK', get_option('safe_stack'))
+ config_host_data.set('CONFIG_SDL', sdl.found())
+ config_host_data.set('CONFIG_SDL_IMAGE', sdl_image.found())
++config_host_data.set('CONFIG_SDL_CLIPBOARD', have_sdl_clipboard)
+ config_host_data.set('CONFIG_SECCOMP', seccomp.found())
+ if seccomp.found()
+   config_host_data.set('CONFIG_SECCOMP_SYSRAWRC', seccomp_has_sysrawrc)
+diff --git a/meson_options.txt b/meson_options.txt
+index 59d973bca..be2cba3a3 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -212,6 +212,8 @@ option('sdl', type : 'feature', value : 'auto',
+        description: 'SDL user interface')
+ option('sdl_image', type : 'feature', value : 'auto',
+        description: 'SDL Image support for icons')
++option('sdl_clipboard', type : 'boolean', value : true,
++       description: 'SDL clipboard support')
+ option('seccomp', type : 'feature', value : 'auto',
+        description: 'seccomp support')
+ option('smartcard', type : 'feature', value : 'auto',
+diff --git a/ui/meson.build b/ui/meson.build
+index 35fb04cad..6d1bf3477 100644
+--- a/ui/meson.build
++++ b/ui/meson.build
+@@ -126,6 +126,9 @@ if sdl.found()
+     'sdl2-input.c',
+     'sdl2.c',
+   ))
++  if have_sdl_clipboard
++    sdl_ss.add(files('sdl2-clipboard.c'))
++  endif
+   sdl_ss.add(when: opengl, if_true: files('sdl2-gl.c'))
+   sdl_ss.add(when: x11, if_true: files('x_keymap.c'))
+   ui_modules += {'sdl' : sdl_ss}
+diff --git a/ui/sdl2-clipboard.c b/ui/sdl2-clipboard.c
+new file mode 100644
+index 000000000..15e68af46
+--- /dev/null
++++ b/ui/sdl2-clipboard.c
+@@ -0,0 +1,154 @@
++/*
++ * SDL UI -- clipboard support (improved async version)
++ *
++ * Copyright (C) 2023 Kamay Xutax <admin@xutaxkamay.com>
++ * Copyright (C) 2025 startergo <startergo@protonmail.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "ui/console.h"
++#include "ui/clipboard.h"
++#include "ui/sdl2.h"
++#include "qemu/log.h"
++
++#ifdef CONFIG_SDL_CLIPBOARD
++
++/* Track pending clipboard requests to handle async data */
++typedef struct {
++    struct sdl2_console *scon;
++    QemuClipboardInfo *info;
++    QemuClipboardType type;
++} SDLClipboardRequest;
++
++static SDLClipboardRequest *pending_request = NULL;
++
++static void sdl2_clipboard_clear_pending(void)
++{
++    if (pending_request) {
++        if (pending_request->info) {
++            qemu_clipboard_info_unref(pending_request->info);
++        }
++        g_free(pending_request);
++        pending_request = NULL;
++    }
++}
++
++static void sdl2_clipboard_notify(Notifier *notifier, void *data)
++{
++    QemuClipboardNotify *notify = data;
++    struct sdl2_console *scon =
++        container_of(notifier, struct sdl2_console, cbpeer.notifier);
++    bool self_update = notify->info->owner == &scon->cbpeer;
++    const char *text_data;
++    size_t text_size;
++
++    switch (notify->type) {
++    case QEMU_CLIPBOARD_UPDATE_INFO:
++        {
++            /* Skip self-updates to avoid clipboard manager conflicts */
++            if (self_update) {
++                return;
++            }
++
++            if (!notify->info->types[QEMU_CLIPBOARD_TYPE_TEXT].available) {
++                return;
++            }
++
++            /* Check if this is completion of our pending request */
++            if (pending_request && pending_request->info == notify->info &&
++                pending_request->type == QEMU_CLIPBOARD_TYPE_TEXT) {
++                sdl2_clipboard_clear_pending();
++            }
++
++            /* Check if data is available, request asynchronously if not */
++            if (!notify->info->types[QEMU_CLIPBOARD_TYPE_TEXT].data) {
++                if (!pending_request) {
++                    pending_request = g_new0(SDLClipboardRequest, 1);
++                    pending_request->scon = scon;
++                    pending_request->info = qemu_clipboard_info_ref(notify->info);
++                    pending_request->type = QEMU_CLIPBOARD_TYPE_TEXT;
++                    qemu_clipboard_request(notify->info, QEMU_CLIPBOARD_TYPE_TEXT);
++                }
++                return;
++            }
++
++            /* Process available data */
++            text_size = notify->info->types[QEMU_CLIPBOARD_TYPE_TEXT].size;
++            if (text_size == 0) {
++                return;
++            }
++
++            text_data = (const char *)notify->info->types[QEMU_CLIPBOARD_TYPE_TEXT].data;
++
++            /* Ensure null termination for SDL clipboard */
++            g_autofree char *text = g_strndup(text_data, text_size);
++            if (text && text[0] != '\0') {
++                SDL_SetClipboardText(text);
++            } else if (!text) {
++                qemu_log_mask(LOG_GUEST_ERROR,
++                              "SDL clipboard: Failed to allocate memory for clipboard text\n");
++            }
++            break;
++        }
++    case QEMU_CLIPBOARD_RESET_SERIAL:
++        sdl2_clipboard_clear_pending();
++        break;
++    }
++}
++
++static void sdl2_clipboard_request(QemuClipboardInfo *info,
++                                   QemuClipboardType type)
++{
++    g_autofree char *text = NULL;
++
++    if (type != QEMU_CLIPBOARD_TYPE_TEXT) {
++        return;
++    }
++
++    text = SDL_GetClipboardText();
++    if (!text) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "SDL clipboard: Failed to get clipboard text: %s\n",
++                      SDL_GetError());
++        return;
++    }
++
++    qemu_clipboard_set_data(info->owner, info, type,
++                            strlen(text), text, true);
++}
++
++void sdl2_clipboard_init(struct sdl2_console *scon)
++{
++    scon->cbpeer.name = "sdl2-clipboard";
++    scon->cbpeer.notifier.notify = sdl2_clipboard_notify;
++    scon->cbpeer.request = sdl2_clipboard_request;
++
++    qemu_clipboard_peer_register(&scon->cbpeer);
++}
++
++void sdl2_clipboard_handle_request(struct sdl2_console *scon)
++{
++    g_autofree char *text = NULL;
++    QemuClipboardInfo *info;
++
++    text = SDL_GetClipboardText();
++    if (!text) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "SDL clipboard: Failed to get clipboard text: %s\n",
++                      SDL_GetError());
++        return;
++    }
++
++    if (text[0] == '\0') {
++        return; /* Ignore empty clipboard */
++    }
++
++    info = qemu_clipboard_info_new(&scon->cbpeer, QEMU_CLIPBOARD_SELECTION_CLIPBOARD);
++    qemu_clipboard_set_data(&scon->cbpeer, info, QEMU_CLIPBOARD_TYPE_TEXT,
++                            strlen(text), text, true);
++    qemu_clipboard_info_unref(info);
++}
++
++#endif /* CONFIG_SDL_CLIPBOARD */
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index cda4293a5..00a17b68a 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -691,6 +691,11 @@ void sdl2_poll_events(struct sdl2_console *scon)
+         case SDL_WINDOWEVENT:
+             handle_windowevent(ev);
+             break;
++#ifdef CONFIG_SDL_CLIPBOARD
++        case SDL_CLIPBOARDUPDATE:
++            sdl2_clipboard_handle_request(scon);
++            break;
++#endif
+         default:
+             break;
+         }
+@@ -901,6 +906,10 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+         }
+         register_displaychangelistener(&sdl2_console[i].dcl);
+ 
++#ifdef CONFIG_SDL_CLIPBOARD
++        sdl2_clipboard_init(&sdl2_console[i]);
++#endif
++
+ #if defined(SDL_VIDEO_DRIVER_WINDOWS) || defined(SDL_VIDEO_DRIVER_X11)
+         if (SDL_GetWindowWMInfo(sdl2_console[i].real_window, &info)) {
+ #if defined(SDL_VIDEO_DRIVER_WINDOWS)
+-- 
+2.50.1
 
 
