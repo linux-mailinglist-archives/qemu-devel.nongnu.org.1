@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80872B1B65C
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 16:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCA1B1B674
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 16:27:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujIbc-0003o7-HU; Tue, 05 Aug 2025 10:25:32 -0400
+	id 1ujIdK-0005kB-ER; Tue, 05 Aug 2025 10:27:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujIac-0002tA-K6
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:24:42 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujIcj-0005ch-1H
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:26:47 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujIaa-0002vq-Rg
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:24:30 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3b7961cf660so4451092f8f.1
- for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 07:24:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujIcg-0005a4-6W
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:26:40 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3b7886bee77so4718720f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 07:26:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754403860; x=1755008660; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754403996; x=1755008796; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rHDHY5Frpa30yUJI9j+J2Wrb3XE2xgQFNG92SzrESsc=;
- b=E6Qw4BBacanNcs3GenzhzLjHF429iDDpTz9Mc3vsVKqM4OJ7TtcW5w7M+UedtUSYQr
- AQtVK9d5pVRRMSIvsaulDgF1O7DWLXPXBJ+DRnrk4wXgqmBxcwehX+xsduJu6DeEqLMu
- 2jp1jQnD+u0hfZ5Tkxth2w7QnRD/AsI+MVPq0RfqExc9Ms8fjwtFl4c9cidMkVbrT2V9
- ZsBxLYp8BEAt0hjPT/HZcugpZuzllNsebEwh7abkls2S/sXCTnqt4EdV5DyunevAPyfG
- ik0LI72mIei/LExNZElBMPQ174bp52dZ976o6ALUtOm/C5HpWcgW9EfKnTd75IwCPHI7
- rSaQ==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=vK3VjNTz6a/Hxs4VuHlZztEZAqh8hQ2FbtCNNj6B7A0=;
+ b=ADZ8oPmkyED761ZVVOyTV3QDWPgrYB7yJ2s4Ndl027kqN7BMG4mE0oueaom5pOod0d
+ qlQWaJwPu2akmyvkFgyHQdn7Vea6ktPKQ2JhdElUbGqj7f0xiBCnGpg+7kVUX3E/u7L4
+ pZlYeCmwobpelyaT2tuMqbi58KHaqUG4nc7N9/GHYq2cQ9nsnw27q+ZA7LX2abH0vHG8
+ YWZoogBmZOT5xqWqRGxiqKGq/I3MndMgdxtsPojudrMcQaE5s2nJnRBhyFdnO3bDdr+3
+ 6hb/EdZvUXkSKqsC3WX5SJrHqmv4MHHeNZO6tQvp6FGctBCp8ScWhEzUG+u6YofipOrQ
+ PCzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754403860; x=1755008660;
+ d=1e100.net; s=20230601; t=1754403996; x=1755008796;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rHDHY5Frpa30yUJI9j+J2Wrb3XE2xgQFNG92SzrESsc=;
- b=SQ4NaQet0nHB90Ap8JK193bUa0jWu3w0kkoEieZNXuRXak9fvtC+2u0lee+yZQ7cYy
- PpR3ziHjVudcJxUqs/BqS67jLqNlMfq0mA/qZoa9lKF5USDZMCMqFccY7L7eyUJjnRNg
- Kzzqkslnj2alVTdL3OwGTroZiDXTNpaVohTGLCB6ALHOhxM+S34o5pJuza8Lj868lkU3
- GtfoSuwtWaErZ3o2nQrRx3PWcbEcl54PWVRImIcCfGox64SRdaxrP26lM2N/jfCZ/r1S
- icWz4CeeCpNiGbESx5KMxx0rclNVT6RAKZSbfsEuE+76M/HdEcrdodVzTocR1HlMNRgz
- cOlQ==
+ bh=vK3VjNTz6a/Hxs4VuHlZztEZAqh8hQ2FbtCNNj6B7A0=;
+ b=upWePS2mEx8pRSsg20oB1DM6XcywG9Y3gcLvBzxn5jimDJR62pH9AUjffXeSnfbRPm
+ HIR/MC0OeWzSEV/zyIaIRR6gP9S9dXVk5wjxqZziuAdnW0SJ0W2N67b6dNln89Qhoi1p
+ hiKQikyD+UD/qsL3kcixjKMtRjb09VOrNg7eo06BFlVs7aVPJzyrW0l19KqFJ1ysOf84
+ sfRavMGdPTuSpQSI44MA4Fy1ZyE4Oxr0fTys8FetNyUbsm8S9vKIDUs+Y939eDMrjEw4
+ B3asmFnL6bvdeT9klBzHVNRrHFxLRyNljOGAAxfirywFnRlDgt20E1TzscXzZ6YCx6jl
+ kXmw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWx4596rPjb6W8stLfZARfpRLXeWtF5CL9aPcd151d2YslyUEDf72+QitMiICeGe3it49jNKIU/bJRs@nongnu.org
-X-Gm-Message-State: AOJu0Ywvt1LuEabEJZ1SmNmBzF7YdZmSdvXWKi+rRDRw1p3wW5aet3iK
- gc2GCc7RcXj1hm+VaDSbPFuv558w3gmVGx12+mt52/ofcP8UbiZ3caSGrc274ulo6bk=
-X-Gm-Gg: ASbGncvB6LZFOfDpiC89TIg/ZD8HCkbHl4qAI4DPnbgq/iJv/1PHmAnHd0hVaALNFOP
- 0/YfSf8jL5q9efb0YkrBvKeRajU7k6koVUa5P34yWdanBPksVBrB5ZFdoZay6VHds2NIxKM7/ca
- Jf+OmzjfAurJfWRIuUtoA3i5pKlRWvCoEZy+eNHNX0aayRreFZRS4rhUw1PRvhD+B1HKj9FZRXl
- xnImI5xDVsej9+jXOUzvcqVL2z/s1qlh+60KovEqwKROrATwesoeOGXNQVCu/VZqieDsBe5OhVm
- wPKcCJVwVCZ6m1prHRpjyLoxsSMFYDyKN99+6EFclb1tMXj00uXJYCX7t0ihbRKcKK36CW+R5D+
- qcbaqglhvwA0kelDumS1Bc7uEpjIrfveco3Wo4qsCZZiu7W/OWc2b2UF/cXHCjonX0w==
-X-Google-Smtp-Source: AGHT+IHMmeGETnxyXq8niRPUyRecTjy+nmBMTCoWdC8VHWkft37PVuzGf/HDQaoyRvvUuhzDJ7u8JQ==
-X-Received: by 2002:a05:6000:200e:b0:3a4:d6ed:8e2e with SMTP id
- ffacd0b85a97d-3b8d94c4dcamr9133681f8f.41.1754403859839; 
- Tue, 05 Aug 2025 07:24:19 -0700 (PDT)
+ AJvYcCUvzUQ+qwo98lUBvzDkkZn5yj8kco2usUO11/dlHc+JwOcpJREXrVNUhrXvM+85o2dAuEzJ1pc7cIw4@nongnu.org
+X-Gm-Message-State: AOJu0YxB/JTLo2RKkbCeg7frWVSEImypBMDbERxCOB+AXMvAJ7cNWfkO
+ eaRxe1JVYMcSOHiOLVLBKdOGJYN6hPJsXIANKjC6LP9Kbs9bqzW39MTO/Ud4CDIcwu/UFP9X6kd
+ Ns9Uq
+X-Gm-Gg: ASbGncu0Qpezp3EQB+VyDgHNDqbJhUvyegsLllLLinlBO8EuuJjTBpaS07knuj8tSCr
+ WvxZbwRBg+AjrqpWfeJgk835oTS6ai1OW1PXihTnAf2JmTvuHK3kKVnbeEg908Kss0QEtBIYzFz
+ neGEMlX5ft8418FKV4RsI65ltEHKhPfKoqTkgJ3/5fQgVd9gsBZWfsTOJCLkEBY3mTLXO6ujjMd
+ EEc7DfqmnwCTJsHOd/pq5D2UlJz+zsKaCGiJUHAhwNeZIiNjDpwIKfDGmiCiL5tgwoJ5JDhmRVm
+ qLErDmiW1svQtl48+fDhlYwF7TdP1fIchtSGphX3yyciYdJY6zWUx1FkVNPLE5cddu4v8cdWu2J
+ FOk/NszuoxZhdQQi6HUTDRFjRNLZvi3xJ0gADg0dGdMPMJ4vlygg9b6tWLPspEx9ovQ==
+X-Google-Smtp-Source: AGHT+IHFWCbKIF/ewZNV96lN+p4u12+4F66NbMLJbikpNv5rAbeR8Ut5lMLPmKBpUJC4TQr8Wp0pTg==
+X-Received: by 2002:a05:6000:22c7:b0:3b8:893f:a184 with SMTP id
+ ffacd0b85a97d-3b8d94ce5admr8934430f8f.52.1754403995894; 
+ Tue, 05 Aug 2025 07:26:35 -0700 (PDT)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c47ca5fsm19079972f8f.63.2025.08.05.07.24.18
+ 5b1f17b1804b1-459dbba5210sm75383215e9.2.2025.08.05.07.26.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Aug 2025 07:24:19 -0700 (PDT)
-Message-ID: <25f098d4-c3c0-42d7-a12f-3a28d5efdeb5@linaro.org>
-Date: Tue, 5 Aug 2025 16:24:18 +0200
+ Tue, 05 Aug 2025 07:26:35 -0700 (PDT)
+Message-ID: <b37bd098-4553-4d16-be21-c230362c7c5b@linaro.org>
+Date: Tue, 5 Aug 2025 16:26:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vfio: Document 'use-legacy-x86-rom' property
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>
-References: <20250805065543.120091-1-clg@redhat.com>
+Subject: Re: [PATCH for 10.1] microvm: Explicitly select ACPI_PCI
+To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, pbonzini@redhat.com, richard.henderson@linaro.org,
+ mst@redhat.com, kraxel@redhat.com, mjt@tls.msk.ru
+References: <20250804152008.247673-1-eric.auger@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250805065543.120091-1-clg@redhat.com>
+In-Reply-To: <20250804152008.247673-1-eric.auger@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,17 +101,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/8/25 08:55, Cédric Le Goater wrote:
-> Commit 350785d41d8b ("ramfb: Add property to control if load the
-> romfile") introduced the `use-legacy-x86-rom` property for the
-> `vfio-pci-nohotplug` device. Add documentation for the property.
+On 4/8/25 17:20, Eric Auger wrote:
+> With a microvm-only build based on a custom device config,
+> we get a link failure due to undefined reference to
+> build_pci_host_bridge_osc_method() which is defined in hw/acpi/pci.c and
+> whose compilation depends on CONFIG_ACPI_PCI. Although CONFIG_ACPI
+> and CONFIG_PCI are set with such configuration, implied CONFIG_ACPI_PCI
+> in config PCI_EXPRESS_GENERIC_BRIDGE is not selected as expected.
 > 
-> Fixes: d5fcf0d960d8 ("hw/i386: Add the ramfb romfile compatibility")
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> It Looks like CONFIG_ACPI_PCI must be enforced and this patch selects
+> CONFIG_ACPI_PCI in MICROVM config directly as done for PC config.
+> 
+> Reproducer:
+> 
+> ../configure \
+>   --without-default-features \
+>   --target-list=x86_64-softmmu \
+>   --enable-kvm --disable-tcg \
+>   --enable-pixman \
+>   --enable-vnc \
+>   --audio-drv-list="" \
+>   --without-default-devices \
+>   --with-devices-x86_64=microvm \
+>   --enable-vhost-user
+> 
+> with configs/devices/x86_64-softmmu/microvm.mak:
+> CONFIG_PCI_DEVICES=n
+> 
+> CONFIG_MICROVM=y
+> 
+> CONFIG_VIRTIO_BLK=y
+> CONFIG_VIRTIO_SERIAL=y
+> CONFIG_VIRTIO_INPUT=y
+> CONFIG_VIRTIO_INPUT_HOST=y
+> CONFIG_VHOST_USER_INPUT=y
+> CONFIG_VIRTIO_NET=y
+> CONFIG_VIRTIO_SCSI=y
+> CONFIG_VIRTIO_RNG=y
+> CONFIG_VIRTIO_CRYPTO=y
+> CONFIG_VIRTIO_BALLOON=y
+> CONFIG_VIRTIO_GPU=y
+> CONFIG_VHOST_USER_GPU=y
+> 
+> FAILED: qemu-system-x86_64
+> cc -m64 @qemu-system-x86_64.rsp
+> /usr/bin/ld: libsystem.a.p/hw_pci-host_gpex-acpi.c.o: in function `acpi_dsdt_add_host_bridge_methods':
+> hw/pci-host/gpex-acpi.c:83:(.text+0x274): undefined reference to `build_pci_host_bridge_osc_method'
+> collect2: error: ld returned 1 exit status
+> 
+> Fixes: af151d50eac24 "hw/pci-host/gpex-acpi: Use build_pci_host_bridge_osc_method"
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Reported-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
->   hw/vfio/pci.c | 3 +++
->   1 file changed, 3 insertions(+)
+>   hw/i386/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+Patch queued, thanks.
 
