@@ -2,83 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F061B1B975
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 19:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E239BB1B967
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 19:33:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujLW7-0008Bu-Mk; Tue, 05 Aug 2025 13:32:03 -0400
+	id 1ujLW9-0008Hs-VU; Tue, 05 Aug 2025 13:32:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLVm-0008Af-CW
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:31:43 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLVq-0008CF-M6
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:31:49 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLVk-0004qY-7x
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:31:41 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3b78d337dd9so3060889f8f.3
- for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 10:31:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLVn-0004r7-NU
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:31:46 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3b77b8750acso85163f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 10:31:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754415097; x=1755019897; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=qtVm36dKrnjFartRX0+r1x5lteIAiCuP/BwL/1JFMeo=;
- b=IMMFs+Esl3UNo50XHbsDfGWJjyXDv3mm2LuhVWJ/afEFhcvoSYG7wSnhG896ymEqQa
- bQhQg7/zb8xnHYYuGmQ8wklFfYBRt+9OALhCb2EvpZamgaJmqJblxnF7DNPlK0jAtqob
- 0aGKx4O+lDFtdOdFhdn34y1szrTliJ2qt2C2jrfR4MISVTm8+iKeUvsEaXuwSu8h8a89
- TbFG6sO1EuXz9/Yr2mTXbQC+pxd5/W4RSmbLlq+rnkOR5EX4Gpj5dV6ac8pWukxO2NN3
- fJjXEE9ttrnLj14OKE7kNX9k7sTZg6bmzehR4Uvt0KpPVMUWuZHGJPdKEUXOyfJ0JgO4
- mVbA==
+ d=linaro.org; s=google; t=1754415102; x=1755019902; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+4uzNwmW98FQappTG9bvmpD6emypXpuyFoyZHU+E6nY=;
+ b=azAklSBOFngtRU7+qBJlg67PSQ9lmu7qv/Cl9jwkQDkHyWG41C/10yGVgWQIxO4jks
+ dc0bsc2+E5oALGYQ/FDkaNjbh0n54bvz52+byI9D9hHQAZs42kdJ2gAJ3+R+FfhaIVyG
+ RX/a5E8GgZTZUEra8aHrGvhGZRtbmm9jI/3PhXptjcUd0K4fTmdm2pxiv3xkfXiXWcxX
+ WwBGK8RWyKjgBF5Ks8tKwxteZVGUxd7OtJEs1JdEOdFT9Wudvf29iY8qRcv8QHt99eus
+ H5yG7B/k4tiW+IvS/F3M2o88eVIOdlu+ul007yReJRQX1YlKI+hlC4bdEJHBByf1srwv
+ YO+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754415097; x=1755019897;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qtVm36dKrnjFartRX0+r1x5lteIAiCuP/BwL/1JFMeo=;
- b=LWQvtuUjfSEZSYQSZgbJx7iLHSul2Sm0kcspe8knKWRvprtnIQS1+BmHRfOmOSyysJ
- /Xo8pEzWET0O0m3LjtGqKf/yBWiSIQMOW9SJzxVuCnAjjjrWF9q9o7ptMyRNrqQhLiab
- OlXVg1LR6bLZCGDYRezLqLdAyudCe/n0j4WaUsbctPyx0ZBevE2chbiVhH77MNrqW+Ck
- JC5zLqV3r5vZADllPnaOSHTgSmTUBiczBa+kTWV5gOU2rfKNIV+fZEKqH8h+qUX+Hxrw
- E1CV+U/RAV41BDJsLb9GV2J6xZBDyn7MvOi4gJrqhemV9kKpfmMraNS42bpG5XaITp6F
- Z8qA==
-X-Gm-Message-State: AOJu0YxAF44RUC6DNVrQ7a/BHikM/oUs1SQ5e6PJe0ryi+UX8YgSyxLw
- zZhI90LUB62ZE9UKAO3gxRarpHre4P7F0DqLE2R69WD79txioVHzwSDqv5XJS82ePK7dJezN8Lu
- bPwGh
-X-Gm-Gg: ASbGncvWQlQGTMX4PTCdmuc4gSAiMrwjPV7Ai85t0zHWsTMve68AHPW1jjZhtIkw51W
- 9Or09ed5qX9gV/pEjq1C+icsskvzsh1Qh3uhLW9akL3m7zd5xwE1ISztj+4W29QVEmHvk5k9jRv
- 9T9IEQGrv4q6QOrt1wcVo18Z4CxTCmIXHzXQFYwnb6EkHs2QS41JEjCFB1lOJJgzfqPUIvor5CV
- Oz2QBcVDR+Q3PrwE2P9dIFkNsBY8/AeFHlGc/uL4KgiIJrhqWRRvDPja9KP+S2co1z7GMzgwKwm
- yvOb8YBxYpI90XXzepKDBDxlE6EEbbvlLNdVTgShlFEuvGyNIx2SeYYDVHTJYMk0v6SnpB4ZIhZ
- 8WNYLNHN/BA9GB988qN5yreduA0BpfOKln6My3Uof15Ye1GXcjbbqeEGkNM06Z6zI8sPSmENZ
-X-Google-Smtp-Source: AGHT+IG+qhCr+RvwQjhMB1OqLqwhrW5gFplrVLSSX3yhHPlW3vtg2fXXPiJ2rIHL2sMlrhxgbMmR7g==
-X-Received: by 2002:a05:6000:420d:b0:3a4:f6ba:51da with SMTP id
- ffacd0b85a97d-3b8d9470777mr11559139f8f.15.1754415096773; 
- Tue, 05 Aug 2025 10:31:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1754415102; x=1755019902;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+4uzNwmW98FQappTG9bvmpD6emypXpuyFoyZHU+E6nY=;
+ b=mw6PgTLSM3UiXPyzkeim3Wvm8cs2SX+rhLzEzHsNn4p300ihI2qdceVDGN05KPulwK
+ r/T1G5JhQvqcV+VSAHOqZ9/IpU4EaxWEviA4ynirzhgTe9DVGf4iMdvxyyMNnnSLP3W/
+ vbudGeuaQdEzrdUmtihRXZ4f6bLGFVNPiNivY2+4dCoBdZog3mMo72qiOmdhrIRTHstE
+ SS63QL0P/OkEK/dId3/jH7LUusvucDuPWek6I7Yr5UhIsI6s/bo2g3ebU6lqsZHecCym
+ CoaPVUdaHIUUMW6jdXkEWhkASQaRntWByp/DsN8WDtfZGSAxIW4KKqkrG0gdPbWkyKN0
+ jvow==
+X-Gm-Message-State: AOJu0YxAfPypAMQgkSe4BfOrEA9vM6dhQXAJjuHJbmPz6MZ5/c2+TNtF
+ FB3MfBihBu7SMIs9UwAPS1IFQVp0XN4rB0SsnKUeWaPuzIPiC/ZNGQVK6tJ1DpD6+iUhX1mIhzc
+ 1nVH3
+X-Gm-Gg: ASbGncudacF81C9dj8gXTSNpIBfmgdbwybF8akgAHwvf5kcASSgUAiJTxZeUIHL+aol
+ 5fzuTDTtyVqQIp4i1yuTeRMixqVTZA0kArt3izdvJ0vEWUvH2v1N4wHzKt+kKQdWR/z9WtITPow
+ jvIFQQ9ISRQ6MApRx5iLJMtuod1TJkaGcVlaEZrOLvgTDNhu55YiIZsOTTuUpJTDUbrZoMlrjGV
+ xcJZTns0zYaGky3g0xiRXQQeFcnqRQNYqx1mryZdqUgSjdv8ngQP3ySt9XPwbCAs2fAawZBmBHJ
+ T1FTZSf1PF4/uE6WcOmuTyRnjr+OdltlNJjugt9LU5qZIj2HRykehjbyn+QsY1Lx0Tu7VAl9kiG
+ 1br2nhuGuy/8OIH3hNzhxTupBkP+tcy0Fe3d+1aRK+k6xD1j0Gqhut8rZi/VcBWr65YwKILdM
+X-Google-Smtp-Source: AGHT+IErnEge0ZqjMDhPw5DW9Ctt/Sjvk8G+yhKgGYr5kv4XaqHWRuVS0um2UIfVzC9QKVkKbyKz+g==
+X-Received: by 2002:a05:6000:2489:b0:3b4:9ade:4e8a with SMTP id
+ ffacd0b85a97d-3b8ebebe1f7mr3522846f8f.21.1754415101605; 
+ Tue, 05 Aug 2025 10:31:41 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b8e009e465sm10683226f8f.43.2025.08.05.10.31.35
+ ffacd0b85a97d-3b79c489e81sm20129178f8f.68.2025.08.05.10.31.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Aug 2025 10:31:36 -0700 (PDT)
+ Tue, 05 Aug 2025 10:31:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 00/13] Misc HW patches for 2025-08-05
-Date: Tue,  5 Aug 2025 19:31:21 +0200
-Message-ID: <20250805173135.38045-1-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org
+Subject: [PULL 01/13] hw/sd/sdcard: Do not ignore errors in
+ sd_cmd_to_sendingdata()
+Date: Tue,  5 Aug 2025 19:31:22 +0200
+Message-ID: <20250805173135.38045-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250805173135.38045-1-philmd@linaro.org>
+References: <20250805173135.38045-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,65 +100,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a41280fd5b94c49089f7631c6fa8bb9c308b7962:
+Unfortunately when adding sd_cmd_to_sendingdata() in commit
+f486bf7d109 we neglected to return any possible error. Fix.
 
-  Merge tag 'pull-aspeed-20250804' of https://github.com/legoater/qemu into staging (2025-08-04 08:57:07 -0400)
+Fixes: f486bf7d109 ("hw/sd/sdcard: Introduce sd_cmd_to_sendingdata and sd_generic_read_byte")
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20250804133406.17456-2-philmd@linaro.org>
+---
+ hw/sd/sd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-are available in the Git repository at:
-
-  https://github.com/philmd/qemu.git tags/hw-misc-20250805
-
-for you to fetch changes up to eb013cd6a11951a8d76e737e9f6e89c96b059b48:
-
-  hw/i386/microvm: Explicitly select ACPI_PCI (2025-08-05 17:30:45 +0200)
-
-----------------------------------------------------------------
-Misc HW patches
-
-- Fix SD cards wired in SPI mode
-- Fix microvm-only build by selecting Kconfig ACPI_PCI
-- Fix legacy Intel SMT info removing 'x-vendor-cpuid-only-v2' property check
-
-----------------------------------------------------------------
-
-Eric Auger (1):
-  hw/i386/microvm: Explicitly select ACPI_PCI
-
-Philippe Mathieu-Daudé (11):
-  hw/sd/sdcard: Do not ignore errors in sd_cmd_to_sendingdata()
-  hw/sd/sdcard: Factor sd_response_size() out
-  hw/sd/sdbus: Provide buffer size to sdbus_do_command()
-  hw/sd/sdcard: Fill SPI response bits in card code
-  hw/sd/sdcard: Implement SPI R2 return value
-  hw/sd/sdcard: Use complete SEND_OP_COND implementation in SPI mode
-  hw/sd/sdcard: Allow using SWITCH_FUNCTION in more SPI states
-  hw/sd/sdcard: Factor spi_cmd_SEND_CxD() out
-  hw/sd/sdcard: Disable checking STBY mode in SPI SEND_CSD/CID
-  hw/sd/sdcard: Remove SDState::mode field
-  tests/functional: Test SD cards in SPI mode (using sifive_u machine)
-
-Zhao Liu (1):
-  target/i386/cpu: Move addressable ID encoding out of compat property
-    in CPUID[0x1]
-
- MAINTAINERS                               |   1 +
- include/hw/sd/sd.h                        |  23 ++-
- hw/sd/allwinner-sdhost.c                  |   7 +-
- hw/sd/bcm2835_sdhost.c                    |   7 +-
- hw/sd/core.c                              |   5 +-
- hw/sd/omap_mmc.c                          |   5 +-
- hw/sd/pl181.c                             |   6 +-
- hw/sd/sd.c                                | 198 ++++++++++++++++------
- hw/sd/sdhci.c                             |   6 +-
- hw/sd/ssi-sd.c                            | 100 ++---------
- target/i386/cpu.c                         |   3 +-
- hw/i386/Kconfig                           |   1 +
- hw/sd/trace-events                        |   4 +-
- tests/functional/meson.build              |   1 +
- tests/functional/test_riscv64_sifive_u.py |  51 ++++++
- 15 files changed, 251 insertions(+), 167 deletions(-)
- create mode 100755 tests/functional/test_riscv64_sifive_u.py
-
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index c275fdda2d0..0bb385268ed 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -1305,7 +1305,7 @@ static sd_rsp_type_t sd_cmd_to_sendingdata(SDState *sd, SDRequest req,
+                                            const void *data, size_t size)
+ {
+     if (sd->state != sd_transfer_state) {
+-        sd_invalid_state_for_cmd(sd, req);
++        return sd_invalid_state_for_cmd(sd, req);
+     }
+ 
+     sd->state = sd_sendingdata_state;
 -- 
 2.49.0
 
