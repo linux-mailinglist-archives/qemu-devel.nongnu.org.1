@@ -2,95 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42840B1B632
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 16:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F03EB1B641
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 16:21:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujITn-0004C2-Um; Tue, 05 Aug 2025 10:17:28 -0400
+	id 1ujIWf-0007r2-Kn; Tue, 05 Aug 2025 10:20:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ujISu-0003Hf-Iw
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:16:36 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1ujISs-0000en-Fo
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:16:31 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-459e3926cbbso3339225e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 07:16:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754403389; x=1755008189; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Sn2QQeYaGNTConXGNFLWJIyjjPomB3Lr+eFkqyocCk0=;
- b=Miqulyu9pcW1bl+Q4PAnOd6UMiEk3YQElnkI573kxWzXsWRUwm4OAwb/IUwzVwxR+s
- KStT7Ef/HGgreHKBwYWgOdTSSnG5YZTJr+uVReiQqh4t7TzuEs13bkz1KNGi7TlE06/L
- qZPZJWaJ/2QAEkNoKe6YsGb4dJtGJ4V/Yb4CgctBZBHAOHaAntG9xLMC0qvpY3r5i50c
- ne7eGnua+IfRAtDpli5lEDV3mztXxnlw6E/bdE1IaKIWZJaAyvSyC6grFUWID32Vs+Yw
- g7uqTVMf8tgXg1G0/pgH51T4rvtopnwhnrPMvAIWNaA6XZ2d9uDpAw5vNrfm5wlLPgc4
- BhCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754403389; x=1755008189;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Sn2QQeYaGNTConXGNFLWJIyjjPomB3Lr+eFkqyocCk0=;
- b=Xq265S6NN51FjuVLMAa3LnlQOSuSNmJn93vBZjsK5R+Woo+4lTigKTJYCWmqTgjs8Y
- aRdK0kb+xRqfju3J9LrZvunJS14xugLHRfNw5BszF5hbxSX3Pb4Ncn6l9uooBEqZD/Ou
- wg6uQgJHRP4vGzQjN+V32rgsSmYIyzEhC3AWzag/apiOeDAKhM0+fJv+z51EeDfmcBFX
- w+K8pcCa12PwKR0Lvl9+/lHwHF96sDpjMBDTsAreEOX/BJFc9z1zsg0wdx9uSjFZ19aS
- 58muL/gKqpUy9T4mBEVpSnlFthevLNzUxNj2rwHKLH0xky57+O54wNOMBdhLthNOhypG
- 4pzA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXXham/lxV/s7BRGqinSatlepmI/20fMNh7MumnPsdW3tOR13uZ+CMOfTzWkFWMPxphUxroNYo14Fnz@nongnu.org
-X-Gm-Message-State: AOJu0YyzW2rKwG9aB84cM51h65tolQYJud8kngqtltH9j6XP9ZFJDGml
- x7l8CkNDOxCccYw4RJyCRWq38YimmK8OaLIKDHnyJ909bDxd4/o/nWzG2cy1wSqJrjM=
-X-Gm-Gg: ASbGncs5lbvPz2A9qfOxpCAPYAFz6oVXqUF9v3PrAA/F/pwYVreo+iou5bpsd4dJR1l
- 0dQACOcisOxNfEf2j50gp3xdz4i0HczbfT3NXZx7B+bcg+B8i2SzMyqS2cS8Izj7hyrh0+LhFmn
- 1PboHiWrsd5DGCivnRp5zLfg409tDXGJ/EfyTEXS2IwURRsc5rrSgMkZNEkcAkBwKtsyXBFh6SG
- skLl0A6WB28xRqOvjyea/QEmB4JzK4HBuBbDKK/gcvWW/T+U7fdKy+d31Xvwe8Zx19QU/SPnAxx
- wy+9SvG9pRKecQAYX/AQROFu7L1MJ659tkpG40EwPRk2obD47S8o4wIbaAgCw/k35JtCdCUGHJA
- 0zljIri4IUg6H4lWaJGslYys=
-X-Google-Smtp-Source: AGHT+IHKO/ij5Ade24XztOjvxa96QabVy9D6qDerWsGLm5K7/k9Kc7qSALHvyslUsgP0HqPrEJTA4A==
-X-Received: by 2002:a05:600c:1e88:b0:459:ddd6:1cc7 with SMTP id
- 5b1f17b1804b1-459ddd61f6bmr66122125e9.0.1754403388580; 
- Tue, 05 Aug 2025 07:16:28 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c47b10asm19025553f8f.60.2025.08.05.07.16.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Aug 2025 07:16:27 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E94A25F7E9;
- Tue, 05 Aug 2025 15:16:26 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Florian Hofhammer <florian.hofhammer@epfl.ch>
-Cc: pierrick.bouvier@linaro.org,  qemu-devel@nongnu.org,
- richard.henderson@linaro.org,  laurent@vivier.eu,  imp@bsdimp.com
-Subject: Re: New capabilities for plugins
-In-Reply-To: <1016eeb7-57d8-4d80-ba25-42cda2d63b0f@epfl.ch> (Florian
- Hofhammer's message of "Tue, 5 Aug 2025 15:22:35 +0200")
-References: <205e6753-53a4-4739-99ed-26344403a437@epfl.ch>
- <87tt2n5az1.fsf@draig.linaro.org>
- <1016eeb7-57d8-4d80-ba25-42cda2d63b0f@epfl.ch>
-User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Tue, 05 Aug 2025 15:16:26 +0100
-Message-ID: <874iul26rp.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ujIUo-0005fN-0s
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:18:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ujIUl-00019r-Rb
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 10:18:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754403503;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mGafGA9IR8EW8rQyQ2iHyi8ih1nxHy/UsLblmuH7+KU=;
+ b=FQTY8mLSTLwBhiTr+MgxDFhSKaOXeKR1QiBM9L0AMx8AJTFIvHveTFEq0ej/I5kCdHJxis
+ Rr1+1rVt4nEUBU5Et5ph4x/DvrgRxNizwPU0AeN5qySEpnxVfi+181Z/RkFG0sOq6AZXPm
+ KcuEoieM4cyOZ3hLRoN/gA+JAiTiTs4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-LJRbzLKFM7aDVkIzfcojYw-1; Tue,
+ 05 Aug 2025 10:18:22 -0400
+X-MC-Unique: LJRbzLKFM7aDVkIzfcojYw-1
+X-Mimecast-MFC-AGG-ID: LJRbzLKFM7aDVkIzfcojYw_1754403501
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F00C918002B2; Tue,  5 Aug 2025 14:18:20 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.80])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E0CBE1800359; Tue,  5 Aug 2025 14:18:18 +0000 (UTC)
+Date: Tue, 5 Aug 2025 15:18:15 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Juraj Marcin <jmarcin@redhat.com>, qemu-devel@nongnu.org,
+ Peter Xu <peterx@redhat.com>, Prasad Pandit <ppandit@redhat.com>
+Subject: Re: [PATCH for-10.1 0/2] migration: actually make gnutls workaround
+ functional
+Message-ID: <aJISp1UvPCwwXyPf@redhat.com>
+References: <20250801170212.54409-1-berrange@redhat.com>
+ <d5xctfzcrtbanvkndamonxgqo3tc5nejhyrvh54m3y5bhg4cms@ue7siue2yw7o>
+ <87jz3i3n0u.fsf@suse.de> <aJHYSwGXTOF4o00n@redhat.com>
+ <87h5yl3mt2.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87h5yl3mt2.fsf@suse.de>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,45 +87,90 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Florian Hofhammer <florian.hofhammer@epfl.ch> writes:
+On Tue, Aug 05, 2025 at 10:44:41AM -0300, Fabiano Rosas wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > On Mon, Aug 04, 2025 at 04:27:45PM -0300, Fabiano Rosas wrote:
+> >> Juraj Marcin <jmarcin@redhat.com> writes:
+> >> 
+> >> > Hi Daniel,
+> >> >
+> >> > On 2025-08-01 18:02, Daniel P. Berrangé wrote:
+> >> >> This is a followup to previously merged patches that claimed to
+> >> >> workaround the gnutls bug impacting migration, but in fact were
+> >> >> essentially non-functional. Juraj Marcin pointed this out, and
+> >> >> this new patch tweaks the workaround to make it actually do
+> >> >> something useful.
+> >> >> 
+> >> >> Daniel P. Berrangé (2):
+> >> >>   migration: simplify error reporting after channel read
+> >> >>   migration: fix workaround for gnutls thread safety
+> >> >> 
+> >> >>  crypto/tlssession.c   | 16 ----------------
+> >> >>  migration/qemu-file.c | 22 +++++++++++++++++-----
+> >> >>  2 files changed, 17 insertions(+), 21 deletions(-)
+> >> >> 
+> >> >
+> >> > thanks for finding a fix for the workaround. I have tested it and it
+> >> > resolves the issue.
+> >> >
+> >> > However, it significantly slows down migration, even with the workaround
+> >> > disabled (and thus no locking). When benchmarking, I used the fixed
+> >> > version of GNUTLS, VM with 20GB of RAM which were fully written to
+> >> > before starting a normal migration with no workload during the
+> >> > migration.
+> >> >
+> >> > Test cases:
+> >> > [1]: before this patchset
+> >> > [2]: with this patchset applied and GNUTLS workaround enabled
+> >> > [2]: with this patchset applied and GNUTLS workaround disabled
+> >> >
+> >> >   | Total time | Throughput | Transfered bytes |
+> >> > --+------------+------------+------------------+
+> >> > 1 |  31 192 ms |  5450 mpbs |   21 230 973 763 |
+> >> > 2 |  74 147 ms |  2291 mbps |   21 232 849 066 |
+> >> > 3 |  72 426 ms |  2343 mbps |   21 215 009 392 |
+> >> 
+> >> Thanks testing this. I had just managed to convince myself that there
+> >> wouldn't be any performance issues.
+> >> 
+> >> The yield at every buffer fill on the incoming side is probably way more
+> >> impactful than the poll on the RP.
+> >
+> > Yeah, that's an unacceptable penalty on the incoming side for sure.
+> >
+> > How about we simply change the outbound migration channel to be in
+> > non-blocking mode ?   I originally put it in blocking mode way back
+> > in 9e4d2b98ee98f4cee50d671e500eceeefa751ee0, but if I look at the
+> > QEMUFile impl of qemu_fill_buffer and qemu_fflush, but should be
+> > coping with a non-blocking socket. qemu_fill_buffer has explicit
+> > code to wait, and qemu_fflush uses the _all() variant whcih has
+> > built-in support for waiting. So I'm not seeing an obvious need
+> > to run the channel in blocking mode.
+> >
+> 
+> It's definitely simpler and I think it works. It's uncomfortably late
+> though to add a bunch of glib event loop code to the migration
+> thread. Is the suggestion of moving the yield to tlssession.c even
+> feasible?
 
-> Hi Alex, hi Pierrick,
->
-> I'm taking the freedom to reply to both of you at the same time, I
-> hope you don't mind :)
->
-> On 04/08/2025 18:05, Alex Benn=C3=A9e wrote:
->>> I was wondering whether the QEMU community would be open to extending
->>> the plugin API so that a plugin can fully emulate a syscall without
->>> the original syscall being executed by QEMU.
->>
-<snip>
->> Another option would be to have a set_pc function that would restart
->> the execution at new PC. Then the vcpu_syscall_cb callback could set
->> the PC to post the syscall with whatever state it wants to set up.
->
-> Such a set_pc functionality is already covered with the register write
-> API, as long as I have a handle to the PC register, right? Please do
-> correct me if I'm misunderstanding something here!
+Well that'll remove the burden for the non-TLS incoming migration,
+but the incoming TLS migration will still have the redundant
+yields and so still suffer a hit.
 
-Ahh we should make that clear. It requires special handling as the PC
-isn't automatically updated every instruction. For analysis this isn't a
-problem as the TB itself knows the vaddr of each instruction so can save
-it if it wants.
+Given where we are in freeze, I'm thinking we should just hard
+disable the workaround for this release, and re-attempt it in
+next cycle and then we can bring it back to stable afterwards.
 
-Currently if you write to the PC it won't change flow - and it will
-likely be reset as we exit the syscall.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-c.f. https://gitlab.com/qemu-project/qemu/-/issues/2208
-
->
-> Thanks for your input,
-> Florian
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
