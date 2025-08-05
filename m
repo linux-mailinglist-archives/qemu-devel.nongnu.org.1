@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9BEB1B96C
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 19:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3A3B1B976
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Aug 2025 19:34:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujLWF-0008OU-GK; Tue, 05 Aug 2025 13:32:11 -0400
+	id 1ujLWX-0008Tx-TI; Tue, 05 Aug 2025 13:32:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLWA-0008Lb-Hj
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:32:06 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLWE-0008On-Dl
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:32:10 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLW7-0004ti-Td
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:32:06 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-451d3f72391so51069735e9.3
- for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 10:32:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujLWC-0004ut-P2
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 13:32:10 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-459ddb41539so9215965e9.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 10:32:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754415122; x=1755019922; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754415127; x=1755019927; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fg39G0/rAAlkgbsiRQ53XTzj6ZDXzYraE5f8RxDqE+4=;
- b=QEG7R9lUZCEPUCpVFOoQFqDxpSC8m6O3D3hA8KyrvoCzdbytVuozTmes2yWsDNvkMd
- TWD6dddZVdV6txM+JtMAkOSJXOl4oZfcQVnHobqYeeAo+sqz2WZPUDUmkivqM2nBVQ5f
- XhBItQasQQBbj2VYpq7nU7WU0TRYdSfOAXNTl5o/Me4Sz8xIHvXOfEk0fWwlGTVSKnN4
- AW04IodnvXH7n7Gmt+XPS9653Mj9YaQj2DBnYq+Z9MUxld0dD5rqZvdNBGP7nPLEsf0u
- bYXJl+8GPlE8w1eId0yXuycEzbF1Xq05/y55OTIaV5f2OeSCnDtA8jvcXEZR2Jahtrgt
- UWCg==
+ bh=aFhz2sQyXixc1I4PYJPHju8JCIN1+OF459KzUdGj17s=;
+ b=RW4m4Epvvmh1PdiuG9rLmduQubctzimpgDnhWjRpUxtutewYu1PdrQ3ZhFvSPtzoIv
+ 8kBiSwjLpk9+9khMqrHn7HBDNtIkokzCCW8itR7R3GrKxp6Sg5k6H+s+rodJYvpITwyo
+ VIR09cC4wcF5NLPaQqjj3c8Trva1iANbI1v5gTXyPxHupQndR5M4b082Z2amQstJpYlI
+ aFNWM9ah6Y66qCxkfmxu2YllHtPhw90WZiBZCUR6o66qF2tigKdljWxoUnLrPHhJlkfC
+ +eckmNP8SC09aEdw49r+nuqYgKpb07rSYKhsSu0/qeaTjHSB4igL1aBywfxM4b7BRxge
+ vtAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754415122; x=1755019922;
+ d=1e100.net; s=20230601; t=1754415127; x=1755019927;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fg39G0/rAAlkgbsiRQ53XTzj6ZDXzYraE5f8RxDqE+4=;
- b=LEdWwWzGXCO4s76995XwSufZWObRfPTaCMYfqOo3f1MfbNAU2000rXeL1qrefO7oF0
- gozwP4zdr8hCDdq5A3IfGsbD6EL+p1JvtsZVLaRO+M8jAXB7dfHniuB3/w+8pv98uTFi
- cPBxF9MPdXa+TYowrIzWyXf6muNbbY8XvkIfy5hvJBH5k7vg8bnCBdHb9owQhCCDLL4T
- U2CHdBBowJTsUQA5HHKtw7X9QnhxtWTZMT3KwqSPLqcl26pf5TpR2c0w9CKrP8eKrtdc
- f9NqtgyI5e3pCxW6jr7BEo4XbDY1LdvTxZJ7d/0jrZWCAC+sKD2fFufK7wMGdDsLS3mt
- z1pg==
-X-Gm-Message-State: AOJu0YzY1sxHZbCKxOVStqf2/1n+Gwrir2lFhg7HGTsodeGHIehLF6hD
- V2lPMCGnuRKKQq46gBaOVnX0OtnjIL9yKZDOZ9PhXxg3Hn4J6BoPCu117HZ0DZ+iye2ka0iBYBj
- Ik8S/
-X-Gm-Gg: ASbGnctRsLRhybncpoPpuBYYVvOtr+Aa7sdzko5GVBvvj68oGDYTeo7yUKvfMa9dgaq
- u/PvsCI6vIq2dg5cg6KPSknpDK6lItAOxGTZRYmwlnGunRD09TM1dNnSUv5UFLRj9MG6r8UE/Hc
- AV4QSHIVY6KxQFUPL14KhR34p/vKfc2NT656MjFQ9x2YmFUPZA6EM5juDBcC67XrRaMmTX1V+ee
- XQOOTeNFQh51RhgAs3CXBDk8Lz05f3xpZOoRCy2jALuj8X/HfGtmtgetZymoPssmXkHjPgBEhy9
- Arqtr65bp/u+/hUeFc2ru7GMd64bLkAIyrDac9TmL4Dj9rV1Vhwc6uW7uFqQUwtZiwskU67v7Kl
- cTUEuwIFGPZe8NXAj3h1w+hELI4x8e6tjKZHxz2kzA1hd6ubZsIWNRWzph3VIAwbvQ19YjiSS
-X-Google-Smtp-Source: AGHT+IFsqGTnhkgxvRuh7ijZGSqtMT1b5DXgM8FF56gs5xARl8Uaj5lfh0WAYZBi562vi+R6YRguUA==
-X-Received: by 2002:a05:600c:3145:b0:458:a7b5:9f6c with SMTP id
- 5b1f17b1804b1-458b69ddc11mr109377615e9.11.1754415121900; 
- Tue, 05 Aug 2025 10:32:01 -0700 (PDT)
+ bh=aFhz2sQyXixc1I4PYJPHju8JCIN1+OF459KzUdGj17s=;
+ b=WMGIJ5LWQWRtJ7ZlKNNvP/s5c8sprNEvh5xZHA7ZPkdZIWpn0wN1cT4/v8fbPOj/br
+ CQXPo6J9e2BrQMskquw4hz1FzjxvWVIuGCSgUbXBfU/HK4+8Qg/1zYoUz09jZGmG4Hnd
+ wlCtjE1sgYzN7r1wzTK9fYbSgT1d14IaREp5RPal8Q9gD0jV2DHLmQze+W386yqbIMfz
+ v+fzrJxNz4yVlN0OpnN3aFNKMD8Drxd7sJEZVWHmMeTnjPhlT7Am0zgM6FsukYAq9lml
+ QxVOrdVIlRRIixiCBqaw5HPopeTvDgwr2kTi+6pEet2DIh/MEa/XhQb2CO4jPKPo/FlG
+ WVfQ==
+X-Gm-Message-State: AOJu0YwisneQ88Z3x2VhDtoKFBVJqanVrsHhA39tpoSGSyUc6Y17HfTC
+ VmQ65rhu0G+gAZWSM1GnTPt0i6O5eL3sBo1WdGh+PCyvd9EVkZ01yok4Q11z7vg1mz7mziNSpZE
+ rEMK6
+X-Gm-Gg: ASbGncuVsgzokeiVztn6YbdLly5WhzBk4RTZLzBqovdAscDrc17fL0zIElKb67PQTYx
+ lg1bS8TGYfq/VI8F9VfABH39hmvDjd/JHzAoxUNoC5BzqRNdhz0w8n7XvOfJ7OnRphILpmMHxpq
+ OvBSF0/VDHbWv5D1nGkRgd432ZQNLm4EF2+nijml/UCdOY/Yy1KfX8iBGDlKLz3t5bp4QBi7JrW
+ 50TRpSprRb7B7VAYZzRM9+afPe52d17pXlwoPc+HGY+IMn5NSP3TgWUDbOYKDi6kgIPqp7MtTaW
+ tgXVSv8j//DrJnZspNgQenoyFcjewcA0gjnNztPmaC3kCzqA/uz5qRqQNK30On1NKo6e6Qp1eDe
+ WrlJT21OP3NrX/qCKHVYTfb4c1Q+Ao4JQwmMdg6AhAIkjFnapD8VUtFKagKIFnrixdZ6rRZqPwy
+ cd5WNq5xI=
+X-Google-Smtp-Source: AGHT+IF4JaOiY4GLdS/dDodcBV9hNsw9XcH5JQOUofwZRX4ud99hBG6H0dpmhvVtfgt+omsv30Ym3g==
+X-Received: by 2002:a05:600c:a43:b0:456:1b93:76b with SMTP id
+ 5b1f17b1804b1-458b69cbdd9mr109507305e9.4.1754415126815; 
+ Tue, 05 Aug 2025 10:32:06 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-459e5c40e9bsm4562125e9.7.2025.08.05.10.32.00
+ ffacd0b85a97d-3b79c485444sm20043786f8f.66.2025.08.05.10.32.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Aug 2025 10:32:01 -0700 (PDT)
+ Tue, 05 Aug 2025 10:32:06 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Guenter Roeck <linux@roeck-us.net>,
  Richard Henderson <richard.henderson@linaro.org>,
  Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org
-Subject: [PULL 05/13] hw/sd/sdcard: Implement SPI R2 return value
-Date: Tue,  5 Aug 2025 19:31:26 +0200
-Message-ID: <20250805173135.38045-6-philmd@linaro.org>
+Subject: [PULL 06/13] hw/sd/sdcard: Use complete SEND_OP_COND implementation
+ in SPI mode
+Date: Tue,  5 Aug 2025 19:31:27 +0200
+Message-ID: <20250805173135.38045-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250805173135.38045-1-philmd@linaro.org>
 References: <20250805173135.38045-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,125 +101,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In SPI mode, R2 is a 2-byte value.
-Implement in spi_response_r2_make() and
-return SPI R2 in the SEND_STATUS commands.
+While spi_cmd_SEND_OP_COND() is incomplete, sd_cmd_SEND_OP_COND()
+is, except it doesn't return the correct value in SPI mode.
+Correct and use, removing the need for spi_cmd_SEND_OP_COND().
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
 Fixes: 775616c3ae8 ("Partial SD card SPI mode support")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250804133406.17456-6-philmd@linaro.org>
+Message-Id: <20250804133406.17456-7-philmd@linaro.org>
 ---
- hw/sd/sd.c     | 38 +++++++++++++++++++++++++++++++++++---
- hw/sd/ssi-sd.c |  3 ---
- 2 files changed, 35 insertions(+), 6 deletions(-)
+ hw/sd/sd.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index cbcc180f6a4..01ec6d951c8 100644
+index 01ec6d951c8..df2a272c6a2 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -61,6 +61,7 @@
- typedef enum {
-     sd_r0 = 0,    /* no response */
-     sd_r1,        /* normal response command */
-+    spi_r2,       /* STATUS */
-     sd_r2_i,      /* CID register */
-     sd_r2_s,      /* CSD register */
-     sd_r3,        /* OCR register */
-@@ -247,6 +248,7 @@ static const char *sd_response_name(sd_rsp_type_t rsp)
-     static const char *response_name[] = {
-         [sd_r0]     = "RESP#0 (no response)",
-         [sd_r1]     = "RESP#1 (normal cmd)",
-+        [spi_r2]    = "RESP#2 (STATUS reg)",
-         [sd_r2_i]   = "RESP#2 (CID reg)",
-         [sd_r2_s]   = "RESP#2 (CSD reg)",
-         [sd_r3]     = "RESP#3 (OCR reg)",
-@@ -736,6 +738,10 @@ static size_t sd_response_size(SDState *sd, sd_rsp_type_t rtype)
-     case sd_r1b:
-         return sd_is_spi(sd) ? 1 : 4;
- 
-+    case spi_r2:
-+        assert(sd_is_spi(sd));
-+        return 2;
-+
-     case sd_r2_i:
-     case sd_r2_s:
-         assert(!sd_is_spi(sd));
-@@ -778,6 +784,22 @@ static void sd_response_r1_make(SDState *sd, uint8_t *response)
-     sd->card_status &= ~CARD_STATUS_C;
+@@ -1414,14 +1414,6 @@ static sd_rsp_type_t sd_cmd_GO_IDLE_STATE(SDState *sd, SDRequest req)
+     return sd_is_spi(sd) ? sd_r1 : sd_r0;
  }
  
-+static void spi_response_r2_make(SDState *sd, uint8_t *resp)
-+{
-+    /* Prepend R1 */
-+    sd_response_r1_make(sd, resp);
-+
-+    resp[1]  = FIELD_EX32(sd->card_status, CSR, CARD_IS_LOCKED) << 0;
-+    resp[1] |= (FIELD_EX32(sd->card_status, CSR, LOCK_UNLOCK_FAILED)
-+                || FIELD_EX32(sd->card_status, CSR, WP_ERASE_SKIP)) << 1;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, ERROR) << 2;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, CC_ERROR) << 3;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, CARD_ECC_FAILED) << 4;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, WP_VIOLATION) << 5;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, ERASE_PARAM) << 6;
-+    resp[1] |= FIELD_EX32(sd->card_status, CSR, OUT_OF_RANGE) << 7;
-+}
-+
- static void sd_response_r3_make(SDState *sd, uint8_t *response)
+-/* CMD1 */
+-static sd_rsp_type_t spi_cmd_SEND_OP_COND(SDState *sd, SDRequest req)
+-{
+-    sd->state = sd_transfer_state;
+-
+-    return sd_r1;
+-}
+-
+ /* CMD2 */
+ static sd_rsp_type_t sd_cmd_ALL_SEND_CID(SDState *sd, SDRequest req)
  {
-     if (sd_is_spi(sd)) {
-@@ -1643,7 +1665,7 @@ static sd_rsp_type_t sd_cmd_SEND_STATUS(SDState *sd, SDRequest req)
+@@ -2046,6 +2038,9 @@ static sd_rsp_type_t sd_cmd_SEND_OP_COND(SDState *sd, SDRequest req)
+         sd->state = sd_ready_state;
      }
  
-     if (sd_is_spi(sd)) {
--        return sd_r2_s;
-+        return spi_r2;
-     }
- 
-     return sd_req_rca_same(sd, req) ? sd_r1 : sd_r0;
-@@ -1957,8 +1979,14 @@ static sd_rsp_type_t sd_acmd_SET_BUS_WIDTH(SDState *sd, SDRequest req)
- /* ACMD13 */
- static sd_rsp_type_t sd_acmd_SD_STATUS(SDState *sd, SDRequest req)
- {
--    return sd_cmd_to_sendingdata(sd, req, 0,
--                                 sd->sd_status, sizeof(sd->sd_status));
-+    sd_rsp_type_t rsp;
-+
-+    rsp = sd_cmd_to_sendingdata(sd, req, 0,
-+                                sd->sd_status, sizeof(sd->sd_status));
-+    if (sd_is_spi(sd) && rsp != sd_illegal) {
-+        return spi_r2;
++    if (sd_is_spi(sd)) {
++        return sd_r1;
 +    }
-+    return rsp;
+     return sd_r3;
  }
  
- /* ACMD22 */
-@@ -2264,6 +2292,10 @@ send_response:
-         sd_response_r1_make(sd, response);
-         break;
- 
-+    case spi_r2:
-+        spi_response_r2_make(sd, response);
-+        break;
-+
-     case sd_r2_i:
-         memcpy(response, sd->cid, sizeof(sd->cid));
-         break;
-diff --git a/hw/sd/ssi-sd.c b/hw/sd/ssi-sd.c
-index 2d5c0ad5016..594dead19ee 100644
---- a/hw/sd/ssi-sd.c
-+++ b/hw/sd/ssi-sd.c
-@@ -158,9 +158,6 @@ static uint32_t ssi_sd_transfer(SSIPeripheral *dev, uint32_t val)
-                                          longresp, sizeof(longresp));
-             DPRINTF("CMD%d arg 0x%08x = %d\n", s->cmd, request.arg, s->arglen);
-             assert(s->arglen > 0);
--                /* CMD13 returns a 2-byte statuse work. Other commands
--                   only return the first byte.  */
--                s->arglen = (s->cmd == 13) ? 2 : 1;
-             memcpy(s->response, longresp, s->arglen);
- 
-             /* handle R1b (busy signal) */
+@@ -2590,7 +2585,7 @@ static const SDProto sd_proto_spi = {
+     .name = "SPI",
+     .cmd = {
+         [0]  = {0,  sd_spi, "GO_IDLE_STATE", sd_cmd_GO_IDLE_STATE},
+-        [1]  = {0,  sd_spi, "SEND_OP_COND", spi_cmd_SEND_OP_COND},
++        [1]  = {0,  sd_spi, "SEND_OP_COND", sd_cmd_SEND_OP_COND},
+         [5]  = {9,  sd_spi, "IO_SEND_OP_COND", sd_cmd_optional},
+         [6]  = {10, sd_spi, "SWITCH_FUNCTION", sd_cmd_SWITCH_FUNCTION},
+         [8]  = {0,  sd_spi, "SEND_IF_COND", sd_cmd_SEND_IF_COND},
+@@ -2626,7 +2621,7 @@ static const SDProto sd_proto_spi = {
+         [13] = {8,  sd_spi, "SD_STATUS", sd_acmd_SD_STATUS},
+         [22] = {8,  sd_spi, "SEND_NUM_WR_BLOCKS", sd_acmd_SEND_NUM_WR_BLOCKS},
+         [23] = {8,  sd_spi, "SET_WR_BLK_ERASE_COUNT", sd_acmd_SET_WR_BLK_ERASE_COUNT},
+-        [41] = {8,  sd_spi, "SEND_OP_COND", spi_cmd_SEND_OP_COND},
++        [41] = {8,  sd_spi, "SEND_OP_COND", sd_cmd_SEND_OP_COND},
+         [42] = {8,  sd_spi, "SET_CLR_CARD_DETECT", sd_acmd_SET_CLR_CARD_DETECT},
+         [51] = {8,  sd_spi, "SEND_SCR", sd_acmd_SEND_SCR},
+     },
 -- 
 2.49.0
 
