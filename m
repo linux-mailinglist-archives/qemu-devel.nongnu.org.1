@@ -2,125 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2A1B1C583
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 14:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62AA5B1C0C5
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 09:00:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujcpn-0001hf-TZ; Wed, 06 Aug 2025 08:01:32 -0400
+	id 1ujY6Z-00049b-Er; Wed, 06 Aug 2025 02:58:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <werner@suse.de>) id 1ujY3J-0002Cm-Kw
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 02:55:09 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <werner@suse.de>) id 1ujY3H-0006Jl-4r
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 02:55:09 -0400
-Received: from mydomainname.com (unknown
- [IPv6:2a07:de40:a101:3:21c:c0ff:fea4:1c14])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 0B9C52124C;
- Wed,  6 Aug 2025 06:55:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1754463303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7BS65gToqlPi6L/SjsAGQaiV1rK5D2jqZBp1sOPGaH8=;
- b=i/EHIRTB03Oa+W2SP6wU7vi1VeBzGMudwOt0FHd81FHOBMIhCqBeFImCwwFcer0qBVQ5ho
- 78ngizzbos0osqdWNzpNpOVA4gNKKKWIXW9KV++/jARq9gDiImZo/n9wq0S8pW8mobxOAE
- x7cOerC+eeR1LEnl/uzES6lktd1QVZI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1754463303;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7BS65gToqlPi6L/SjsAGQaiV1rK5D2jqZBp1sOPGaH8=;
- b=R6kTvoiUq4WtruJHyMrVOYxFnp9zzDijPizSJhNqJCuY4JnQwhDDALxK7TTY+wzGceKIz+
- l0vZxvwtxu0excDQ==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b="i/EHIRTB";
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=R6kTvoiU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1754463303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7BS65gToqlPi6L/SjsAGQaiV1rK5D2jqZBp1sOPGaH8=;
- b=i/EHIRTB03Oa+W2SP6wU7vi1VeBzGMudwOt0FHd81FHOBMIhCqBeFImCwwFcer0qBVQ5ho
- 78ngizzbos0osqdWNzpNpOVA4gNKKKWIXW9KV++/jARq9gDiImZo/n9wq0S8pW8mobxOAE
- x7cOerC+eeR1LEnl/uzES6lktd1QVZI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1754463303;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7BS65gToqlPi6L/SjsAGQaiV1rK5D2jqZBp1sOPGaH8=;
- b=R6kTvoiUq4WtruJHyMrVOYxFnp9zzDijPizSJhNqJCuY4JnQwhDDALxK7TTY+wzGceKIz+
- l0vZxvwtxu0excDQ==
-Received: from boole.nue2.suse.org (localhost [127.0.0.1])
- by mydomainname.com (8.18.1/8.18.1/SUSE Linux 0.8) with ESMTPS id
- 5766t0cN007292
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Wed, 6 Aug 2025 08:55:02 +0200
-Received: (from werner@localhost)
- by boole.nue2.suse.org (8.18.1/8.18.1/Submit) id 5766t0JS007291;
- Wed, 6 Aug 2025 08:55:00 +0200
-Date: Wed, 6 Aug 2025 08:54:51 +0200
-From: "Dr. Werner Fink" <werner@suse.de>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Martin Kletzander <mkletzan@redhat.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-rust@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 2/2] tests/qemu-iotests: Indent expected error messages
-Message-ID: <aJL8RH8ePPNEteMg@boole.nue2.suse.org>
-References: <cover.1754060086.git.mkletzan@redhat.com>
- <f5be6d407c105fa199d10867f5de48bbd25c008c.1754060086.git.mkletzan@redhat.com>
- <aIzhtcg-TNZE0zH8@redhat.com> <87v7n63lld.fsf@suse.de>
- <aJCaoULvGgKjEL16@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1ujY6W-00049H-Tv; Wed, 06 Aug 2025 02:58:28 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1ujY6E-0006ko-5k; Wed, 06 Aug 2025 02:58:12 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 4F70D13EC1C;
+ Wed, 06 Aug 2025 09:57:41 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3606B25844B;
+ Wed,  6 Aug 2025 09:58:04 +0300 (MSK)
+Message-ID: <7b278bc0-4752-48fa-b8fa-8a76515069f6@tls.msk.ru>
+Date: Wed, 6 Aug 2025 09:58:04 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="mKVQr9wRQYJ9X9GZ"
-Content-Disposition: inline
-In-Reply-To: <aJCaoULvGgKjEL16@redhat.com>
-X-GPG-Fingerprint: 1B06 BF5A 3829 90FB CBA2  75BE 50E9 0D55 1DC1 6B2E
-X-MS-Reactions: disallow
-X-Spamd-Result: default: False [-1.11 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- HFILTER_HOSTNAME_UNKNOWN(2.50)[]; RDNS_NONE(2.00)[];
- SIGNED_PGP(-2.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- FROM_NAME_HAS_TITLE(1.00)[dr];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain,text/x-patch];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MX_GOOD(-0.01)[];
- RCVD_TLS_LAST(0.00)[]; MIME_TRACE(0.00)[0:+,1:+,2:+,3:+,4:~];
- ARC_NA(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_RATELIMITED(0.00)[rspamd.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; HAS_ATTACHMENT(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; RCPT_COUNT_SEVEN(0.00)[10];
- DNSWL_BLOCKED(0.00)[2a07:de40:a101:3:21c:c0ff:fea4:1c14:from];
- MISSING_XM_UA(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim]
-X-Rspamd-Queue-Id: 0B9C52124C
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -1.11
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=werner@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/6] hw/i386/amd_iommu: Cleanups and fixes
+To: Sairaj Kodilkar <sarunkod@amd.com>, qemu-devel@nongnu.org
+Cc: mst@redhat.com, marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
+ eduardo@habkost.net, richard.henderson@linaro.org,
+ alejandro.j.jimenez@oracle.com, vasant.hegde@amd.com, philmd@linaro.org,
+ Suravee.Suthikulpanit@amd.com, qemu-stable <qemu-stable@nongnu.org>
+References: <20250801060507.3382-1-sarunkod@amd.com>
+ <703d1159-7bdc-47b7-be08-64d7b000e45b@tls.msk.ru>
+ <d29ccd29-d4c6-41fa-8158-93f9a21ab3ba@amd.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <d29ccd29-d4c6-41fa-8158-93f9a21ab3ba@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 06 Aug 2025 08:01:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,251 +106,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 04.08.2025 14:06, Sairaj Kodilkar wrote:
+...
+>>> Sairaj Kodilkar (6):
+>>>    hw/i386/amd_iommu: Fix MMIO register write tracing
+>>>    hw/i386/amd_iommu: Remove unused and wrongly set ats_enabled field
+>>>    hw/i386/amd_iommu: Move IOAPIC memory region initialization to the 
+>>> end
+>>>    hw/i386/amd_iommu: Fix amdvi_write*()
+>>>    hw/i386/amd_iommu: Support MMIO writes to the status register
+>>>    hw/i386/amd_iommu: Fix event log generation
+>>>
+>>>   hw/i386/amd_iommu.c | 102 ++++++++++++++++++++++++++++++++++----------
+>>>   hw/i386/amd_iommu.h |   2 +-
+>>>   2 files changed, 80 insertions(+), 24 deletions(-)
+>>
+>> Hi!
+>>
+>> Is there anything there worth to pick up for qemu 10.0.x stable series?
+>> (the "Move IOAPIC memory init" does not apply to 10.0 already).
+> 
+> Hi MJT,
+> 
+> I will backport the patch manually and send it to qemu stable mailing list
 
---mKVQr9wRQYJ9X9GZ
-Content-Type: multipart/mixed; protected-headers=v1;
-	boundary="uH/Fd1FsaV0ujoTj"
-Content-Disposition: inline
-Date: Wed, 6 Aug 2025 08:54:51 +0200
-From: "Dr. Werner Fink" <werner@suse.de>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>,
-	Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
-	Martin Kletzander <mkletzan@redhat.com>, qemu-devel@nongnu.org,
-	qemu-block@nongnu.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, qemu-rust@nongnu.org,
-	Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 2/2] tests/qemu-iotests: Indent expected error messages
+Hi!
 
+There's no need to back-port it, -- there's just minor context fix
+required, here:
 
---uH/Fd1FsaV0ujoTj
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
++++ b/hw/i386/amd_iommu.c
+@@ -1693,19 +1693,16 @@ static void amdvi_sysbus_realize(DeviceState 
+*dev, Error **errp)
+...
 
-On 2025/08/04 13:33:53 +0200, Kevin Wolf wrote:
-> Am 01.08.2025 um 21:09 hat Fabiano Rosas geschrieben:
-> > Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
-> >=20
-> > > On Fri, Aug 01, 2025 at 04:59:50PM +0200, Martin Kletzander wrote:
-> > >> From: Martin Kletzander <mkletzan@redhat.com>
-> > >>=20
-> > >> When running all tests the expected "killed" messages are indented
-> > >> differently than the actual ones, by three more spaces.  Change it so
-> > >> that the messages match and tests pass.
-> > >
-> > > This would break the tests on my system and CI too.
-> > >
-> > > What distro are you seeing this on ?
-> > >
-> > > I'm guessing this is a different in either valgrind or C library ?
-> >=20
-> > It's bash, we have an open issue about it:
-> >=20
-> > https://gitlab.com/qemu-project/qemu/-/issues/3050
->=20
-> I see a patch has been posted to that bug, the most important part of
-> which is this added filtering:
->=20
-> --- a/tests/qemu-iotests/common.filter
-> +++ b/tests/qemu-iotests/common.filter  2025-07-25 11:39:22.419665788 +00=
-00
-> @@ -75,7 +75,7 @@ _filter_qemu_io()
->      _filter_win32 | \
->      gsed -e "s/[0-9]* ops\; [0-9/:. sec]* ([0-9/.inf]* [EPTGMKiBbytes]*\=
-/sec and [0-9/.inf]* ops\/sec)/X ops\; XX:XX:XX.X (XXX YYY\/sec and XXX ops=
-\/sec)/" \
->          -e "s/: line [0-9][0-9]*:  *[0-9][0-9]*\( Aborted\| Killed\)/:\1=
-/" \
-> -        -e "s/qemu-io> //g"
-> +        -e "s/qemu-io> //g" -e '/Killed/{ s/ \{2,\}/ /}'
->  }
->=20
->  # replace occurrences of QEMU_PROG with "qemu"
->=20
-> This approach makes sense to me, though I would have kept each sed
-> expression on a separate line.
->=20
-> And given that the context line above includes "Aborted" as well, maybe
-> have it here, too, though none of the actual test outputs have an
-> Aborted message any more since commit 3f39447. Or we could have a
-> cleanup patch first that removes the unused "Abort" above, just to keep
-> things consistent.
->=20
-> Either way, please post this as a proper patch on the mailing list.
+      s->iotlb = g_hash_table_new_full(amdvi_uint64_hash,
+                                       amdvi_uint64_equal, g_free, g_free);
 
-Just next try in tha attached patch with a fixed version of
-the sed command.
+-    /* Pseudo address space under root PCI bus. */
+-    x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
+-
+      /* set up MMIO */
+      memory_region_init_io(&s->mr_mmio, OBJECT(s), &mmio_mem_ops, s,
+                            "amdvi-mmio", AMDVI_MMIO_SIZE);
 
-Werner
+the "s->iotlb = g_hash_table_new_full" part were added by commit
+f864a3235ea1d1 "hw/i386/amd_iommu: Isolate AMDVI-PCI from amd-iommu
+device to allow full control over the PCI device creation".  It should
+be okay to just remove the 3 marked lines from here (to be moved to
+the right place).
 
---=20
-  "Having a smoking section in a restaurant is like having
-          a peeing section in a swimming pool." -- Edward Burr
+My question was not about back-porting this commit, but more about
+the set of commits which needs to be picked up for the stable series.
 
---uH/Fd1FsaV0ujoTj
-Content-Type: text/x-patch; charset=utf-8
-Content-Description: padding.patch
-Content-Disposition: attachment; filename=padding.patch
-Content-Transfer-Encoding: quoted-printable
+I picked up this commit.  Please let me know if there are other changes
+needed to be picked up.
 
-=46rom: Werner Fink <werner@suse.de>
-Date: Fri, 08 Aug 06:41:23 +0000
-Subject: [PATCH 1/1] Avoid dependency on padding on signal messages
+Thanks,
 
-New bash 5.3 uses a different padding for reporting job status.
-
-Resolves: boo#1246830
-Signed-off-by: Werner Fink <werner@suse.de>
----
- tests/qemu-iotests/039.out       |   10 +++++-----
- tests/qemu-iotests/061.out       |    4 ++--
- tests/qemu-iotests/137.out       |    2 +-
- tests/qemu-iotests/common.filter |    2 +-
- 4 files changed, 9 insertions(+), 9 deletions(-)
-
---- a/tests/qemu-iotests/039.out
-+++ b/tests/qemu-iotests/039.out	2025-07-25 11:36:51.949026116 +0000
-@@ -11,7 +11,7 @@ No errors were found on the image.
- Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D134217728
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO=
-}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@"=
- )
-+./common.rc: Killed ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO}" _qemu_proc_exe=
-c "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- incompatible_features     [0]
- ERROR cluster 5 refcount=3D0 reference=3D1
- ERROR OFLAG_COPIED data cluster: l2_entry=3D8000000000050000 refcount=3D0
-@@ -46,7 +46,7 @@ read 512/512 bytes at offset 0
- Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D134217728
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO=
-}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@"=
- )
-+./common.rc: Killed ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO}" _qemu_proc_exe=
-c "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- incompatible_features     [0]
- ERROR cluster 5 refcount=3D0 reference=3D1
- Rebuilding refcount structure
-@@ -60,7 +60,7 @@ incompatible_features     []
- Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D134217728
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO=
-}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@"=
- )
-+./common.rc: Killed ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO}" _qemu_proc_exe=
-c "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- incompatible_features     []
- No errors were found on the image.
-=20
-@@ -79,7 +79,7 @@ No errors were found on the image.
- Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D134217728
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO=
-}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@"=
- )
-+./common.rc: Killed ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO}" _qemu_proc_exe=
-c "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- incompatible_features     [0]
- ERROR cluster 5 refcount=3D0 reference=3D1
- ERROR OFLAG_COPIED data cluster: l2_entry=3D8000000000050000 refcount=3D0
-@@ -89,7 +89,7 @@ Data may be corrupted, or further writes
- Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D134217728
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO=
-}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@"=
- )
-+./common.rc: Killed ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO}" _qemu_proc_exe=
-c "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- incompatible_features     []
- No errors were found on the image.
- *** done
---- a/tests/qemu-iotests/061.out
-+++ b/tests/qemu-iotests/061.out	2025-07-25 11:36:51.949026116 +0000
-@@ -118,7 +118,7 @@ No errors were found on the image.
- Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D67108864
- wrote 131072/131072 bytes at offset 0
- 128 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO=
-}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@"=
- )
-+./common.rc: Killed ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO}" _qemu_proc_exe=
-c "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- magic                     0x514649fb
- version                   3
- backing_file_offset       0x0
-@@ -304,7 +304,7 @@ No errors were found on the image.
- Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D67108864
- wrote 131072/131072 bytes at offset 0
- 128 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO=
-}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@"=
- )
-+./common.rc: Killed ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO}" _qemu_proc_exe=
-c "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- magic                     0x514649fb
- version                   3
- backing_file_offset       0x0
---- a/tests/qemu-iotests/137.out
-+++ b/tests/qemu-iotests/137.out	2025-07-25 11:36:51.949026116 +0000
-@@ -35,7 +35,7 @@ Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGF
- qemu-io: Unsupported value 'blubb' for qcow2 option 'overlap-check'. Allow=
-ed are any of the following: none, constant, cached, all
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO=
-}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@"=
- )
-+./common.rc: Killed ( VALGRIND_QEMU=3D"${VALGRIND_QEMU_IO}" _qemu_proc_exe=
-c "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- OK: Dirty bit not set
- Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D67108864
- qemu-io: Parameter 'lazy-refcounts' expects 'on' or 'off'
---- a/tests/qemu-iotests/common.filter
-+++ b/tests/qemu-iotests/common.filter	2025-08-06 06:41:23.649980764 +0000
-@@ -74,7 +74,7 @@ _filter_qemu_io()
- {
-     _filter_win32 | \
-     gsed -e "s/[0-9]* ops\; [0-9/:. sec]* ([0-9/.inf]* [EPTGMKiBbytes]*\/s=
-ec and [0-9/.inf]* ops\/sec)/X ops\; XX:XX:XX.X (XXX YYY\/sec and XXX ops\/=
-sec)/" \
--        -e "s/: line [0-9][0-9]*:  *[0-9][0-9]*\( Aborted\| Killed\)/:\1/"=
- \
-+        -e "s/: line [0-9][0-9]*:  *[0-9][0-9]*\( Aborted\| Killed\) \{2,\=
-}/:\1 /" \
-         -e "s/qemu-io> //g"
- }
-=20
-
---uH/Fd1FsaV0ujoTj--
-
---mKVQr9wRQYJ9X9GZ
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQJgBAABCABKFiEEGwa/WjgpkPvLonW+UOkNVR3Bay4FAmiS/DwsFIAAAAAAFQAO
-cGthLWFkZHJlc3NAZ251cGcub3Jnd2VybmVyQHN1c2UuZGUACgkQUOkNVR3Bay7b
-IA/+KQ9xsawXRwAl/aZfQiRV7jQbhjIqXeDhZGe6m882q46ZkZnY3sxbyAX2Yixi
-blNfRSwoRP5fpeAYhkZiCHp2wZ6llSiNSXIoHBJHFVCQqZAAIei58mcjzOxu+RVe
-YvZSHj/lBHkdt0anfieZMa+w4sZXFCQHyHQxKc9T0DZz1bknpAQF9skC/oZiydwT
-k6QgJ5OfzonNPdDM4/Hq6k5miUMXjw/mt+kjjrTtGfZ/CF3kMUMxJHoZE3By2zIK
-oBPwyAtL/BA1XMdqFUbAeMSUA3ZhCBBWbN3VSoVzJ6LHGKykEwwMAatXMi+he8Sk
-Ka+q2ffk5enKgRZRrlpF7olq6iS1Qj7LavI/Sispwsv+B63Y9EuoTXFYqXFu6wZD
-Rmlacl5gK8wyN0a5jsaB8Sur0vt/c6F2UZQLvwlh+xONjheY6KlzHOLSqNXnrcex
-79S3iVkSfDRjz0e0JLg5e6S9nJfYSeonTERlEuFfzlD+HvXQh9VO6XW9EKlBjlSe
-Mr6/twlYOlvdfA1GSXQ1pV1N3izWaNeNzccnogkDCyWFKDW/EEhAa8r2VathBMnU
-Ody2JC67PC9TQ1mib+zfqxW1XlIDs6xMvbwQKSXeRaLSCZ7X7wWCLfdgeu0pDdcu
-8WnWqDPTd9gxjn/Lb6XcJFR4Rgpg27ZWyYX4VAgAnd1stHs=
-=yJGY
------END PGP SIGNATURE-----
-
---mKVQr9wRQYJ9X9GZ--
+/mjt
 
