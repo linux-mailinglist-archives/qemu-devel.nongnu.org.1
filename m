@@ -2,97 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A17EB1CA59
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 19:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D62C1B1CA5B
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 19:12:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujhg6-0004tW-Bi; Wed, 06 Aug 2025 13:11:50 -0400
+	id 1ujhgv-0006q7-G6; Wed, 06 Aug 2025 13:12:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1ujgzm-0003iJ-21
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:28:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1ujgzj-0007y3-B8
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:28:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754497680;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=KFXOuBsDsPbVG5C0H8Yx4j1xu12N1AGTweJIHr/znHw=;
- b=N65bb4s4/2z6FkBvwCHlfUPk9Xa928dI48rk+Rz4dBD+bV5fR0TFv7KxPifnEJc7B6fqNn
- 79e4ZFC0CUWxZKlGGmtZ+P0P2LhohGnxl6ASDnCAT58Z+tbTRn+iiM5sSYXF//FQPB8Sgk
- yVfh2gZqOR5SVZkEL7lUdJiiiqgmMYA=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-380-TKCUkcTwNuy3ovs7MK7Bqg-1; Wed, 06 Aug 2025 12:27:58 -0400
-X-MC-Unique: TKCUkcTwNuy3ovs7MK7Bqg-1
-X-Mimecast-MFC-AGG-ID: TKCUkcTwNuy3ovs7MK7Bqg_1754497678
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-71b6cb9eba5so93810477b3.1
- for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 09:27:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujhI7-0003bd-Bw
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:47:03 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujhI5-00022Z-Cu
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:47:03 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-459eb4ae596so1155295e9.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 09:47:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1754498818; x=1755103618; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ad53HRJ739v7jQzW/6MWw0lLZeql6pfvkgPUZS5ewAo=;
+ b=ZVk6q5/5B9pmBuztmUGFU9GARNQoqoUoSGyFZ9VlHCVMcPUJatflqnsQbfQsgao1Sh
+ bMIUFL4UahPZ7FsW/5B1ewMzlHgUE3+C+s5bLmeWNi4BNbu8A9PF+CzxH+j8KxR+byAi
+ nNtFSQ3CqT51ThSfLpruzSh/DZzAHQ6Cs+HQWDFLJb7dy0nWlMY5kamug3imh/CDWbbV
+ rkRdrS7CKBnlwmWB6NQ9DAmX1PjEKpV3pvMK2cxtIVQnm1BobT7jhlZy7j5YXGdIih0G
+ Ajs6w91nNpFs2MR+FDoUoaw2VmK+DPLb8NiPZpw7ogZ/yzvmbSiC6d+EdpBeBTycq9yF
+ 808A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754497678; x=1755102478;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KFXOuBsDsPbVG5C0H8Yx4j1xu12N1AGTweJIHr/znHw=;
- b=rrGpf8rKR9XmfIdi6TNHjygkLcQlOZMnY7xtZfCAqfb/O0h4YV7+2j1UevU/ThLQZF
- eDGHJWcBDnp5hLdufIzM5CyX+kGkeSlwaIWrdNJ9n7IPeu264Zf8B3f0QSFP4AmF6Ny8
- jJXTo5VJhW7P/gAK1X+JI9bXeCN9F48OPyqLuK4Jc+Bv5nshJvRS0n9hdl4HAHAA5sbL
- YNn+/Vh9EfOI/+JYiQpkRQFbTPWLomKfynUnz7uyJu0Owpatti31K/kqyXcYAJ0cLwHr
- DygKgby28hzbHUFLaO5it0QbVqoWygOU+8DVMKLBl0P43SbdiZti8kfwCu/KWtJivZKv
- zOmA==
-X-Gm-Message-State: AOJu0YyYDtKv2xTlQjOSZ/yIi/vhaBF0xndk2fNy4YkG+IHVaBNB46W1
- jdIeE/CRTrdZkLjF34wIkYsHAm4sBjHx+KOMLQxxssgkf9uE3ZA1a2eVaLdjYdmTVoF6kbZgb6v
- yrsON44w9yUHrgeuIp9A5mGy6+YQKV6CnAsc0keVJzB3Cj++vyMjas78j
-X-Gm-Gg: ASbGncs4u9mdKnpNPq1sIw2YWWYTnWzwbUPcVWcL/VsnJAiiZDlTRcc5gkMSaZKypnQ
- 9b3VkjN0jX7j1QH+La2ugoanA+s73Z+xAoxH6kyrvl17Lwqj0JCV3E2Qvl/hNk9Pr28HiGG7vNO
- O23upATN26WhwsEbJ6+3OXlNInDmirbznRDI/iGEEp/Gq+vUQINV9Po5GozmfELEGGdstJggyea
- tGj4I88PjABTxSIklh1OH0ybyi5REzfHogUaGxtbHq972W7zzQOyclatq+jSZS40izE2kc/tggl
- /miIo1toKfWuDvn9yf9vqSvHZ6496JweJNgmVT/32DVe49I+uXusmqL79IVeuq3XNtjcN9MPGKv
- 7UJnNcupc1ciQTzluN0DfxA==
-X-Received: by 2002:a0d:e706:0:b0:71b:d028:b925 with SMTP id
- 00721157ae682-71bd028bba9mr25116167b3.18.1754497678101; 
- Wed, 06 Aug 2025 09:27:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWguJbQvYH6UlCp8xDrhbenv3zCB3dNsZBZXeVrLZShu3ZLumxjOmIhneYfYZR5dwTUJ3CTw==
-X-Received: by 2002:a0d:e706:0:b0:71b:d028:b925 with SMTP id
- 00721157ae682-71bd028bba9mr25115877b3.18.1754497677719; 
- Wed, 06 Aug 2025 09:27:57 -0700 (PDT)
-Received: from x1.local
- (bras-base-aurron9134w-grc-11-174-89-135-171.dsl.bell.ca. [174.89.135.171])
- by smtp.gmail.com with ESMTPSA id
- 00721157ae682-71b5a5f9d3esm40085817b3.83.2025.08.06.09.27.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Aug 2025 09:27:57 -0700 (PDT)
-Date: Wed, 6 Aug 2025 12:27:53 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Jonah Palmer <jonah.palmer@oracle.com>
-Cc: qemu-devel@nongnu.org, farosas@suse.de, eblake@redhat.com,
- armbru@redhat.com, jasowang@redhat.com, mst@redhat.com,
- si-wei.liu@oracle.com, eperezma@redhat.com, boris.ostrovsky@oracle.com
-Subject: Re: [RFC 5/6] virtio,virtio-net: skip consistency check in
- virtio_load for iterative migration
-Message-ID: <aJOCiUPp0dckmgAn@x1.local>
-References: <20250722124127.2497406-1-jonah.palmer@oracle.com>
- <20250722124127.2497406-6-jonah.palmer@oracle.com>
+ d=1e100.net; s=20230601; t=1754498818; x=1755103618;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ad53HRJ739v7jQzW/6MWw0lLZeql6pfvkgPUZS5ewAo=;
+ b=f5kOQOwNJ1WiRxCAg3gHbOkyCLYuNsNfm8wpWh9g/zhQ5VZ/olr3VnjWK5RjLoeClR
+ 0s66PcivXhSZH6qdxO+YcT5t0GJ1CsrQtzeVxRggSP5UMpdxVFC9ewrPMU2dj7eUuO6p
+ Af8o4/NDYbZu4zhZm9gEWC788+8wHx7sLK/JN24kmyJ6AqqHTZznU3yw4JxuJnkZThzR
+ XLjD6s8iKcQyaUUM0P/0o6MBKgsS50omhO7ett+u/mB5nGecjsx2lwqViDKp5uJYGahb
+ pBIqKZ3u8qcab47KcErB5wKioAhLFXUg3T2f73zOHcP4im0i/esRi6/VEvjz7Gsgss4v
+ 4vRg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWXFChdx1fS7oVm0T3nP4EtCv4BhuGbGbLoquWBvOAacFu9qVE/25YgsKkOqLiJlJu6X3nU7u0vHRS0@nongnu.org
+X-Gm-Message-State: AOJu0Yy4tfLt6AEhkrlvF2qK2hQn3lg/aQGVVMa92IuVZ2EvQM0ii0pg
+ 9Esj/kdyTj3Ayeuu2dmjf9nO60Rk4Es7+QpXyMPsb4FJaH6uSw3YWE6rQz3O6fGa7rI=
+X-Gm-Gg: ASbGncviqMSf4Gic16mRM1JHN/quPspGhYHIoFwwToaJKP6eMooeKZXukUHnVwQWnNy
+ tCi6Wy/rtzzYOvkRY76tEGstgWRje7/uvjPVxncbEc+EMH+mgai4k3sUW2tCtOCnexyZibM7b7X
+ uv8tb2szYrRXlrDMzGLpwRCjXrlDt29SDMCTiZOonQqJIPS+tgIGdue50WEltUaD3D5ojm88bSq
+ xpkYGqG7gQ1Yzhk2YMJwFLKqRJX0VSutRyCBJVhOXi30PXHGQ4VgFyIQFKQXeVuX6d66Xy3c2iS
+ SjvPEhSQiCW/60Dg/zUVwBVdMw7e9x9a/CkrKfR00+mWrVsLOQGl/uoILdNvguUmmRp3sJkustU
+ kvkUZVznUEnWr/AQXopmNgQ1htLRdyi2kkPRgn4+zKDD62YolD26FGf1rb8+IOLr5kA==
+X-Google-Smtp-Source: AGHT+IFdGlkE/QWAAz0znRiQWp5ScIsu5NZVS7svEk3VF4a1LLkbBTHxcUYUn8Wbrq2p7aE+HtE0Bw==
+X-Received: by 2002:a05:600c:b90:b0:459:ddad:a3bd with SMTP id
+ 5b1f17b1804b1-459e742a118mr40703525e9.15.1754498818241; 
+ Wed, 06 Aug 2025 09:46:58 -0700 (PDT)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-459c58ececdsm91183015e9.1.2025.08.06.09.46.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Aug 2025 09:46:57 -0700 (PDT)
+Message-ID: <ff2a5b63-d7a1-4c72-bd10-93300a8439b4@linaro.org>
+Date: Wed, 6 Aug 2025 18:46:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250722124127.2497406-6-jonah.palmer@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] migration/vmstate: remove
+ VMSTATE_BUFFER_POINTER_UNSAFE macro
+To: Michael Tokarev <mjt@tls.msk.ru>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Akihiko Odaki
+ <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
+References: <20250802142115.41638-1-mjt@tls.msk.ru>
+ <20250802142115.41638-2-mjt@tls.msk.ru>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250802142115.41638-2-mjt@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,53 +102,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 22, 2025 at 12:41:26PM +0000, Jonah Palmer wrote:
-> Iterative live migration for virtio-net sends an initial
-> VMStateDescription while the source is still active. Because data
-> continues to flow for virtio-net, the guest's avail index continues to
-> increment after last_avail_idx had already been sent. This causes the
-> destination to often see something like this from virtio_error():
+On 2/8/25 16:21, Michael Tokarev wrote:
+> The only user of this macro was VirtIONet.vlans, which has been
+> converted to regular VMSTATE_BUFFER.
 > 
-> VQ 0 size 0x100 Guest index 0x0 inconsistent with Host index 0xc: delta 0xfff4
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>   include/migration/vmstate.h | 9 ---------
+>   1 file changed, 9 deletions(-)
 
-This is pretty much understanable, as vmstate_save() / vmstate_load() are,
-IMHO, not designed to be used while VM is running.
+Yay!
 
-To me, it's still illegal (per previous patch) to use vmstate_save_state()
-while VM is running, in a save_setup() phase.
-
-Some very high level questions from migration POV:
-
-- Have we figured out why the downtime can be shrinked just by sending the
-  vmstate twice?
-
-  If we suspect it's memory got preheated, have we tried other ways to
-  simply heat the memory up on dest side?  For example, some form of
-  mlock[all]()?  IMHO it's pretty important we figure out the root of why
-  such optimization came from.
-
-  I do remember we have downtime issue with number of max_vqueues that may
-  cause post_load() to be slow, I wonder there're other ways to improve it
-  instead of vmstate_save(), especially in setup phase.
-
-- Normally devices need iterative phase because:
-
-  (a) the device may contain huge amount of data to transfer
-
-      E.g. RAM and VFIO are good examples and fall into this category.
-
-  (b) the device states are "iterable" from concept
-
-      RAM is definitely true.  VFIO somehow mimiced that even though it was
-      a streamed binary protocol..
-
-  What's the answer for virtio-net here?  How large is the device state?
-  Is this relevant to vDPA and real hardware (so virtio-net can look
-  similar to VFIO at some point)?
-
-Thanks,
-
--- 
-Peter Xu
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
