@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E48B1CA61
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 19:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C368B1CA67
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 19:15:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujhh9-0007iO-3h; Wed, 06 Aug 2025 13:12:55 -0400
+	id 1ujhjL-0005ct-8b; Wed, 06 Aug 2025 13:15:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujhKE-0005BP-Gu
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:49:18 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujhKQ-0005EZ-JQ
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:49:27 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujhKB-0002Fu-5L
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:49:13 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-451d3f72391so1167775e9.3
- for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 09:49:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujhKO-0002H4-Ra
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:49:26 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-454f428038eso1109355e9.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 09:49:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754498948; x=1755103748; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754498962; x=1755103762; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=QM3QwiO1NJe3GKnsbAAnUZTy4SP7OQgvkiQ12EiRCAI=;
- b=g4MZsIjBKsOVBbx8aYiLXUee3OhrEDC0wnAZTn5uPBNvxk9rhjAjD4wa8pIzfFzvoN
- xJL+wVMTmeivnKpQq6kv4l67JP8iL0VK2730rc69O9oJBZWEQK2obbf3LDVThei0hP7p
- hZdAHjW4gpA4J/o87jOc4LyUepemWZS1/a/7Rk7PftlqgtEkZbp86NCcGmiKrOwl/RIf
- YRHU6COEpQm8m8j7f267+4hr+6r86/AJdq5TwPebHjve9Go7D0sRCx8zfXCzvTpgDVVR
- Zx6t+oVmLRK/gIff4nle9MejHNUcETNnt8yjBbzgQSe/oThODTWw+qasMGP5mIZJafoM
- a/UQ==
+ bh=G/IkzaX4jKGRMA+i2Ktavn4JsZl67/autyTljYzlV2g=;
+ b=Tuk/NNPI1koL4pW82q0LwWyjFLb0P4X7hNEiECJZhw0HOFrlHZBjYivoNyPPm5NNmo
+ E5uUwAuA+phUvRT7TCEU7jBDs8QrcXhKi4hrw360a5ZZSZgSLu6l9kKRDTZ+zFCS0mZd
+ tn9wOi9iHFY92B6jbfX4HLS89DR3dAkDc3Tfs77dxtpOB+An3iIMGtiRVbCk7WaIGAfb
+ +xLs22cTT+kipcJ8s91it6cd2BVWxQtxbguEYXvfWI9fPxFufkLmcYU2B7RFuJi7/MdT
+ gOQDgJ6ksv2jhTamCEe2hm1PG9XHstuZcVbuoWgd+RHL/ToDET+XFy6rtXVgRHPx3OOk
+ VaAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754498948; x=1755103748;
+ d=1e100.net; s=20230601; t=1754498962; x=1755103762;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QM3QwiO1NJe3GKnsbAAnUZTy4SP7OQgvkiQ12EiRCAI=;
- b=GWH+jat5ygqc8Lku/b+p+VIy21kV5JTweNO+VexzS9TZIpHX8tsSvUWrhW2NYSwww6
- +wN/NLJ3DzDCUY3EXMh3RFziFXsILRp3uPNpEPe/3u69W0P6j8jBToK8Th50ys3BP3+u
- l7gU5BZoG+FVni2sBhGoA0L6jNrFdHGlUlc9o6ihd49gm3F3pPBsIdu9Yf4LFI0U3Bwk
- Qmtm7oWDTDML0UpKJ/mt5v1txMjaXXZj0566TdC8lAz00mCdAXIyI/bzHZmcPbZ2V0f7
- kOI10Put5796PnxzfAFpo7lGcE8MR3IQ+x50i275ncbIWX82viB9SCvK/g6rbDX8T0ur
- Zveg==
+ bh=G/IkzaX4jKGRMA+i2Ktavn4JsZl67/autyTljYzlV2g=;
+ b=dd7nxlOUdE3XhuXw9kcs6VQbIJ+lUPLFcqAo3iNTsu5mPpRQ13yorpc7b8ixUOrcY0
+ iQONWMQ47kwaVb+oOz3rEpbLz1J9fc0j6hyczMK52FPoGcfo992ehJm8quaGa8Lci4Jk
+ nmMT4DNYCd2MjfwzNlqKhFbgcRUsZiszzpGFHxNLLA/KLI517vpIEDjFhdWsCKwiV+Rg
+ tlDDbLuYBJF08z6mA6Xg+60OYknqXYj6hdiaxJQDhq60pc7Ou57rGjYI0sBRwnI0Uxov
+ TS3LHC2BhQDCADSpbxlwmYT0Nw9ziSLKO36kc8cQWEowUWCaqdbw7cHl4JjqUfPeOxZL
+ HhMQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXt/Ggv8lGCY6hV9WYEsV41UJ2f7rYzevEsZjZqu0pMqSKCGk1oqGI6/xyeaUY4B1rZLFBuyc1vUV2j@nongnu.org
-X-Gm-Message-State: AOJu0Yzw9jNMsR6LCHceC4jKxlOwrnfX86LYIt1eNEEBoIvggu8tzg5Q
- zQMREBp+8awTV2MVzvAmfIPsomNLT4/gG6InvbG+IsAvQ/aJFWQwkPTJj7LeElbaRRELwdxFf8k
- 8oHrd
-X-Gm-Gg: ASbGncvnXjQsOSzvYghrMaHkNzsyNWry7c9cfjd/CEE/YLPrTwqvKccwzxPBXeHORDY
- KLNr9oZz2eY6rHMIho3A3TbfDghVG4RW7ZJcGVD6HWXqQJb4toTyKdEoGPo1wuYUY1pyJ0DZ+bi
- U1H6RsWLJqOc+kn2irOUji8ZHf03YA0QVxJlMrSWgVge6zrf+Fwfis8OmetSG/YQ62VUltVbqZV
- Rk6bfN1wvnURVQ40+2lSj6OKB4xbjQzhWGBghUnecqj1pYOjGwTINGOgGxCWpwXug/2Jt5EGUYe
- 6LN7iQSVgLoq46DWEN4D0rXnKtU+pQn3vK89f4N70YZZfmHjKC6GCEbfMKqmxoB9TkgXBTh66em
- ca6iMjKge51HMvDTES52UzGz9T9laHE/Dq2rl2eMMAAm5gDuynEKTnJYZR++sP80Hf2q1oHGDJe
- uc
-X-Google-Smtp-Source: AGHT+IEDaucHpuT4xCT/H7TWuNI38HvtD8TqOoCHL1bIyYA4NWGdeXw4cw+cieSSzFd1Ew4KWE+xHg==
-X-Received: by 2002:a05:6000:2dc5:b0:3b8:d0bb:7541 with SMTP id
- ffacd0b85a97d-3b8f41ad96emr3026127f8f.40.1754498948408; 
- Wed, 06 Aug 2025 09:49:08 -0700 (PDT)
+ AJvYcCX6xPVnCWqLCnRsi3QPIVzH9O9hTiD18Jm6pmm3t9n8gYsshWerqLXniHQJFSthudh2ixL1M5JMGp2N@nongnu.org
+X-Gm-Message-State: AOJu0YyHkDLqkrh4IWTvcs8i8RwEVe1+p+oq+pp+9Q80sZkkdeFrJ7i4
+ tTJoeg6YIJEmVYxYgsGMK66aEYIy9nXzhuv5FZZsjgqfTGQK8fEWGl/u38aPvh+E1Cc=
+X-Gm-Gg: ASbGncuP6Er01yhsL2nFyKbiXVEENwGSoQu1MiRHZRWxwhDQP4YyaKBwpz/Hwip4y+B
+ yv53Ak2Wxmrp1M0pIzdQNT+j6wOGs/s3E9VNMxMmKFooADk6TAHW0V1rNwBmfpcxTIEj+SknEuV
+ bxWva04VLNHddjXV6ayAbgiRpDlwB+G9wP1DktkeGM78ABtW8/OrFdHeATeaLc2xYcdIuFuhsNQ
+ orLzsFifxK0EUWBkF807xyhlSHah+M6cZ6AffM93tQnnMd+78aDCrk0fgsM0hj/u1iDRogCch6I
+ 7zVlIeDFU4SkuJ08piJ79vFwH9dHdS3nnd7nvqK993s29J4UnZKcbJO2tywTs7/gOxIFqCBMLJm
+ qgrjFDbZ4mRBdu2IotbobzAOy59711otixZU/5vHG+oP/YAVHX5Yq0G/BCZ2BY3sYKf2DC6ZR8k
+ Aw
+X-Google-Smtp-Source: AGHT+IG08PgWcvVT3UCfrEUHlpiv9B6nwRDBYC+9mW2NdYr7AnzGFzCzXGYIzFh8gK7WEzK3DY5noQ==
+X-Received: by 2002:a05:600c:840f:b0:459:d709:e5d4 with SMTP id
+ 5b1f17b1804b1-459e6fb8315mr38204015e9.0.1754498962260; 
+ Wed, 06 Aug 2025 09:49:22 -0700 (PDT)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c489e81sm23860656f8f.68.2025.08.06.09.49.07
+ ffacd0b85a97d-3b79c3abed3sm23467152f8f.10.2025.08.06.09.49.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Aug 2025 09:49:07 -0700 (PDT)
-Message-ID: <2af1d5fb-fb74-4263-83f1-c23eb25757ab@linaro.org>
-Date: Wed, 6 Aug 2025 18:49:06 +0200
+ Wed, 06 Aug 2025 09:49:21 -0700 (PDT)
+Message-ID: <51c33c4e-6c19-423c-9c69-9a61302d5a90@linaro.org>
+Date: Wed, 6 Aug 2025 18:49:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] virtio-net: make VirtIONet.vlans an array instead of
- a pointer
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Michael Tokarev <mjt@tls.msk.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 1/2] virtio-net: make VirtIONet.vlans an array instead
+ of a pointer
+To: Michael Tokarev <mjt@tls.msk.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
 References: <20250802142115.41638-1-mjt@tls.msk.ru>
- <4eff3371-542c-43bc-a4aa-e58ceb369d1e@tls.msk.ru>
- <1904c947-151b-46bb-bc66-109d258c18df@rsg.ci.i.u-tokyo.ac.jp>
+ <20250803085443.318611-1-mjt@tls.msk.ru>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <1904c947-151b-46bb-bc66-109d258c18df@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20250803085443.318611-1-mjt@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,47 +103,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/8/25 09:38, Akihiko Odaki wrote:
-> On 2025/08/02 23:45, Michael Tokarev wrote:
->> On 02.08.2025 17:21, Michael Tokarev wrote:
->>> This field is a fixed-size buffer (number of elements is MAX_VLAN,
->>> known at build time).  There's no need to allocate it dynamically,
->>> it can be made an integral part of VirtIONet structure.
->>>
->>> This field is the only user of VMSTATE_BUFFER_POINTER_UNSAFE() macro.
->>>
->>> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
->>> ---
->>>   hw/net/virtio-net.c            | 8 +++-----
->>>   include/hw/virtio/virtio-net.h | 2 +-
->>>   2 files changed, 4 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
->>> @@ -3524,7 +3524,7 @@ static const VMStateDescription 
->>> vmstate_virtio_net_device = {
->>>            * buffer; hold onto your endiannesses; it's actually used 
->>> as a bitmap
->>>            * but based on the uint.
->>>            */
->>> -        VMSTATE_BUFFER_POINTER_UNSAFE(vlans, VirtIONet, 0, MAX_VLAN 
->>> >> 3),
->>> +        VMSTATE_BUFFER(vlans, VirtIONet),
->>
->> This doesn't compile.  And I can't figure out, so far, what's needed
->> here :)
+On 3/8/25 10:54, Michael Tokarev wrote:
+> This field is a fixed-size buffer (number of elements is MAX_VLAN,
+> known at build time).  There's no need to allocate it dynamically,
+> it can be made an integral part of VirtIONet structure.
 > 
-> The type check is failing because VMSTATE_BUFFER() expects an array of 
-> uint8_t but it is an array of uint32_t.
+> This field is the only user of VMSTATE_BUFFER_POINTER_UNSAFE() macro.
 > 
-> Now I get why it used an "UNSAFE" macro. We should usually use 
-> VMSTATE_UINT32_ARRAY() instead, but we need "BUFFER" for compatibility, 
-> so it needed the "UNSAFE" variant to disable the type check.
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+> v2: use VMSTATE_BUFFER_UNSAFE instead of VMSTATE_BUFFER
+>      as suggested by Akihiko Odaki.
+>      Only the first patch is resent, patch 2/2 is the same.
 > 
-> Fortunately there is a variant that is "BUFFER" and "UNSAFE" but not 
-> "POINTER". So this should be:
-> VMSTATE_BUFFER_UNSAFE(vlans, VirtIONet, 0,
->                        sizeof(typeof_field(VirtIONet, vlans)))
+>   hw/net/virtio-net.c            | 9 ++++-----
+>   include/hw/virtio/virtio-net.h | 2 +-
+>   2 files changed, 5 insertions(+), 6 deletions(-)
 
-Nice.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
