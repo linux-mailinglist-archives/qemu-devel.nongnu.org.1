@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48397B1BDFC
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 02:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED520B1BDFE
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 02:45:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujSDj-0007bN-Nd; Tue, 05 Aug 2025 20:41:31 -0400
+	id 1ujSGm-0001F0-Bw; Tue, 05 Aug 2025 20:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ujSDh-0007a9-Fu
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 20:41:29 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1ujSGg-0001Dv-T0
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 20:44:35 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ujSDf-0000rA-Iv
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 20:41:28 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-76bc5e68d96so5205779b3a.3
- for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 17:41:26 -0700 (PDT)
+ id 1ujSGf-00017l-2f
+ for qemu-devel@nongnu.org; Tue, 05 Aug 2025 20:44:34 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-240763b322fso60440005ad.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 17:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754440884; x=1755045684; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754441071; x=1755045871; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=nbDnrL2j/rr3eGxe/QXv6bksL6YcdiGSzx7/jG0wmZU=;
- b=ASgqfP13ZS4L9BdIi/bR1Y3ydf/5xTJnBDVz6/INs8/mL5zoQqekqxDd2PA72+0ac7
- WQ4UsguQqY7Sk4OQDCJwFH43qaEJQS+LN63wJbcHZYkzeG49rGTH5hNO/a0Cyuj2AL+4
- GE6Xz9/F2ijvsi2lP54uuQ+QJORm55au4zLRRxvMvbHzNpJRcDpP08iGqWvD7ez9Ao+p
- OCYXkYty5mxw82b5SfQ8LXAGb3NbJN2LYcMHSlGrIEmcJhJxcS0fOj+MhAT52Lfd1esP
- gUtabMTm+Nf7YAJMmbw00/kN7MKPnYQv84YNsnBVfypYi/AvehMR3XAAQvo+gOUiWcSC
- Pq2Q==
+ bh=rsP6X1y1Cj+bnIdXHZ4EG3yJbcPKriXTh1lr6VN6CdU=;
+ b=oDbZMEY2K+2pBAr5iVXlby2chWkk97SIUzcWy3CNroELvJyHLdRnOhY5XjNLIrYSEp
+ UX+vhFAUzoC0lx2sPt1JFL1bz7hiGZ5KZsOMEKP6NTCXtj3I8iyMsgBqIBrW8DDOh9OD
+ LJy7SYbaKWeWCNL/ndeXP/5P7VpbDStAblxsdAv7wQU5jrbWRow7yDEcYNSUVd2q2mye
+ Aexkgbbdmu7FisKFTVnPT6n7yFS5NvfQrL8IzHKJeHH91WSO0NctutByCvbz7sBk2S2J
+ 78MhHjMAxgqJnRtfZgeHlVKyatZnykKGcYxj2HtyuTKtTU210FvnI9j/fc3CWg8Sfn9H
+ Nf9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754440884; x=1755045684;
+ d=1e100.net; s=20230601; t=1754441071; x=1755045871;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nbDnrL2j/rr3eGxe/QXv6bksL6YcdiGSzx7/jG0wmZU=;
- b=OmLky4+hHmwAk/sBMO5M4b2Jnv72fvp5/4IR0rnKpWS3k7mPFAy6qrI2zZKgd71azQ
- DBvGjI7bBU9GY+CY0zB5PjhIqKQ8ikqupC3HHbgkF8PJUoAZDSebYZuhM6CYsf+XHXOw
- ngVCSs9L3gzgEoDvCk4btItuyjNeeh96Bln2aQHcX1XNEHUkAkh9OxVU2bMqpNuhtg83
- mfV5n8PdJjFqlO3Ao8cm7gtisV07wOyvObJPUDhEHNKN99MIZrMKUbjEa8wRyAGjYe2+
- djAUb2b6Bp+LYjmn8mqptS9VBzFydNs6ABOzRkQO5B/A6wUQBYNK4Ap0egNtL0m27Nui
- hpag==
-X-Gm-Message-State: AOJu0YzeUJu1o9pmBXV4Qgm2ufBAtyksfcghadDYHP4bNYuVlTp+sJbM
- yStsZTPoiCJttm710Tz4z9xxUTLmG0mqHHnXh0Rh0v2kpoisID9EVuk+2JdO3zEgIsk=
-X-Gm-Gg: ASbGncvJwDn1eQ8UQcw8RuFfxizvqaWJXB+lD9ITop18FBHXlOgmIElaF28pmZYFUe7
- /oOUbWmPK7FSZUcDwP+CJVSQRYm3CvPg2BjZ31AFfnXSmE091oQxraKJgYHhmiuzclY3MyaTYNn
- H4pyShSSaFM4uJ6uZskbQYQkur0O8DmuiQf96iJkTEmZMkthxBZqq5GUnFz79q8xz2eSjvn0oZA
- bQPYeUw051h+zFH5Wkc0+e+YKYNLiSzzinhaYXPuTwnUiacN0eIerX937EnCJdAu3LoZQ9zAokh
- gu5IsxhIT0xL5ply1nrsNnSZ4aaY7JOUxs6IIrCY1uArXZqKkzwIxrjSTXCEqoJdCvu1gdxN7K+
- J5xlBGCMp9yEFGA7zukMUT0iOTsfnXpNSh0c=
-X-Google-Smtp-Source: AGHT+IG8zLjBOCaGzlvFeeLOA/EtPizlfIxIcQ0bQu7Sii70DRTn5eogeqFoSpWX1cN3fqA3S2R11g==
-X-Received: by 2002:a05:6a00:124e:b0:76b:ffd1:7722 with SMTP id
- d2e1a72fcca58-76c2a93df78mr947310b3a.24.1754440884217; 
- Tue, 05 Aug 2025 17:41:24 -0700 (PDT)
+ bh=rsP6X1y1Cj+bnIdXHZ4EG3yJbcPKriXTh1lr6VN6CdU=;
+ b=rq3HvfmPglzG7mRYJbxPDO4ynEkFS922L+H4cWKQesge3FWphc4hUXw3eIoKnA5blV
+ k7/AsZ52KKhaDFHkhYjdqiFpncQcfV7fZq98ZOd0KQfxEYEv8iajXCWH2URPlzK75SG+
+ g5XDzCdOU9zl72h9qsHPLSgUOs7h3GGEsmz/65RoXjPa25aelZ5kiQ29BCaKYlXzbvxR
+ BK/oGmTZwlVod3QmqZCTOVTcMB1h73W2lBoz6jCxHMYn1lHlIqaEN8ScUgSOU6A/eihc
+ uXH1MZX9HIHUYmFRMCi/uWmrZVduhqwSxqbptaHJ3CCtiWCGNr+3DI4r8YOX594C5LQx
+ /CYA==
+X-Gm-Message-State: AOJu0Yy/E/O5VaZiixxNjqrJYR5EIZu3kyKV+BHRi4QF7YgF6tRZVrYa
+ y8C5tk5NmcZ5bbuLA3sFP5pgV7jXHcSqA7uI1WTw1eGHEBVmXfJhjlMSkKwQlnJspOY=
+X-Gm-Gg: ASbGncsb/93wdlChpR1PcCyPk3vhEB3qFOzYwgO2KE4Subq32R0ndMJs7NhZJng2fm1
+ btFxT1sjtEyc2CgS/hALQjPaNpxkPnWENWP/Zhi5MZFAqHsgljjdDSUyg385LuZab11xEM+3zoz
+ mVvbKU54n81/qQHipTri1EC7Zt1CFQgEPWyTTGwFSL2gQFhqDDdhCiUZjkzz0z5Jg/dJSmGg01l
+ BcximK3ZtkqbY+Wrpk68JDZx0ZBZnGrWFL7PTNxP01z36DX7gW5Y+eLxCbxfpU8CjAG0LqvtQEF
+ hxQx01O3IE3jE8QXXl8oaNDkmPFvy4ttvSlL1r8nITU2ID7lfBO7guVOx5F44sNOaKz6DuVO1gO
+ UyMmR94Qec//KqwqRzf/akJpykJxrBBmew3o=
+X-Google-Smtp-Source: AGHT+IFsZAsYrpS4Gl+DrfnlfMSAvcjzMf6oIIsGgjh7embR0WDeU7bb4WKE0V/q16rybXud+2V8bQ==
+X-Received: by 2002:a17:903:2447:b0:224:1eab:97b2 with SMTP id
+ d9443c01a7336-2429f5aecc6mr12831195ad.53.1754441071040; 
+ Tue, 05 Aug 2025 17:44:31 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bccfd73a2sm13935404b3a.108.2025.08.05.17.41.23
+ d9443c01a7336-241d1f0e945sm143024485ad.56.2025.08.05.17.44.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Aug 2025 17:41:23 -0700 (PDT)
-Message-ID: <3dcc35e8-f49c-4dc4-a613-b57d57546b0d@linaro.org>
-Date: Tue, 5 Aug 2025 17:41:22 -0700
+ Tue, 05 Aug 2025 17:44:30 -0700 (PDT)
+Message-ID: <955bddee-fdf7-491c-b267-d0b3d77869d1@linaro.org>
+Date: Tue, 5 Aug 2025 17:44:29 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/7] contrib/plugins/uftrace: new uftrace plugin
+Subject: Re: [PATCH v4 4/7] contrib/plugins/uftrace: add
+ timestamp-based-on-real-time option
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
@@ -77,14 +78,14 @@ Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
 References: <20250724204527.3175839-1-pierrick.bouvier@linaro.org>
- <20250724204527.3175839-2-pierrick.bouvier@linaro.org>
- <871ppq5bl8.fsf@draig.linaro.org>
+ <20250724204527.3175839-5-pierrick.bouvier@linaro.org>
+ <87v7n23w4n.fsf@draig.linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <871ppq5bl8.fsf@draig.linaro.org>
+In-Reply-To: <87v7n23w4n.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,33 +108,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/5/25 3:04 AM, Alex Bennée wrote:
+On 8/5/25 3:23 AM, Alex Bennée wrote:
 > Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 > 
->> This plugin generates a binary trace compatible with:
->> https://github.com/namhyung/uftrace
+>> usage: timestamp-based-on-real-time=[on|off]
 >>
->> It tracks frame pointer during execution, detecting function
->> calls/returns and works in system and user mode.
->>
->> It's implemented for aarch64 only (adding other architecture should
->> be trivial, especially x86_64 that share the same stack layout).
+>> Instead of using number of instructions executed (which is per vcpu), we
+>> use the wall time for timestamps. This is useful when tracing user mode
+>> programs as well.
+> 
+> Arguably it is the more useful default when examining flame graphs. The
+> instruction count is entirely artificial and wouldn't map onto real
+> execution time anyway.
+> 
+> Maybe use-icount-for-ts and default to off?
+>
+
+I don't mind changing the default if you prefer so.
+
 >>
 >> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 >> ---
->>   contrib/plugins/uftrace.c   | 630
->> ++++++++++++++++++++++++++++++++++++
+>>   contrib/plugins/uftrace.c | 29 +++++++++++++++++++++++++++++
+>>   1 file changed, 29 insertions(+)
+>>
+>> diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
+>> index bd4219db693..9211f273700 100644
+>> --- a/contrib/plugins/uftrace.c
+>> +++ b/contrib/plugins/uftrace.c
+>> @@ -94,8 +94,28 @@ enum uftrace_record_type {
+>>   static struct qemu_plugin_scoreboard *score;
+>>   static uint64_t trace_sample;
+>>   static bool trace_privilege_level;
+>> +static bool timestamp_based_on_real_time;
+>>   static CpuOps arch_ops;
+>>   
+>> +static uint64_t gettime_ns(void)
+>> +{
+>> +#ifdef _WIN32
+>> +    /*
+>> +     * On Windows, timespec_get is available only with UCRT, but not with
+>> +     * MinGW64 environment. Simplify by using only gettimeofday on this
+>> +     * platform.
+>> +     */
+>> +    struct timeval tv;
+>> +    gettimeofday(&tv, NULL);
+>> +    uint64_t now_ns = tv.tv_sec * 1000 * 1000 * 1000 + tv.tv_usec * 1000;
+>> +#else
+>> +    struct timespec ts;
+>> +    timespec_get(&ts, TIME_UTC);
+>> +    uint64_t now_ns = ts.tv_sec * 1000 * 1000 * 1000 + ts.tv_nsec;
 > 
-> Is it possible to break this down into smaller commits to ease review? I
-> appreciate it takes a bit until you have something working but this is a
-> relatively big plugin.
+> Why use timspec_get here, QEMU's own timer uses:
 > 
+>    /* get host real time in nanosecond */
+>    static inline int64_t get_clock_realtime(void)
+>    {
+>        struct timeval tv;
+> 
+>        gettimeofday(&tv, NULL);
+>        return tv.tv_sec * 1000000000LL + (tv.tv_usec * 1000);
+>    }
+>
 
-I'll post another version breaking down the first version, so it's 
-easier to review all the different structures used and methods applying 
-to them.
+We need nanoseconds timestamps (which timespec offers and not 
+gettimeofday), or we lose precision for short lived functions, resulting 
+in bad shaped traces.
 
-Regards,
-Pierrick
+> 
+>> +#endif
+>> +    return now_ns;
+>> +}
+>> +
+>>   static void uftrace_write_map(bool system_emulation)
+>>   {
+>>       const char *path = "./uftrace.data/sid-0.map";
+>> @@ -454,6 +474,9 @@ static void cpu_set_new_sample(Cpu *cpu, uint64_t timestamp)
+>>   
+>>   static uint64_t cpu_get_timestamp(const Cpu *cpu)
+>>   {
+>> +    if (timestamp_based_on_real_time) {
+>> +        return gettime_ns();
+>> +    }
+>>       return cpu->insn_count;
+>>   }
+>>   
+>> @@ -866,6 +889,12 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+>>                   fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
+>>                   return -1;
+>>               }
+>> +        } else if (g_strcmp0(tokens[0], "timestamp-based-on-real-time") == 0) {
+>> +            if (!qemu_plugin_bool_parse(tokens[0], tokens[1],
+>> +                                        &timestamp_based_on_real_time)) {
+>> +                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
+>> +                return -1;
+>> +            }
+>>           } else {
+>>               fprintf(stderr, "option parsing failed: %s\n", opt);
+>>               return -1;
+> 
 
 
