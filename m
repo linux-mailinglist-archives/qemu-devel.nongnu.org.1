@@ -2,86 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C2EB1BEC0
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 04:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AF2B1BFD1
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 07:13:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujTsJ-0003gE-Ui; Tue, 05 Aug 2025 22:27:33 -0400
+	id 1ujWR0-0003hD-R6; Wed, 06 Aug 2025 01:11:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tanishdesai37@gmail.com>)
- id 1ujTs9-0003Z0-8G
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 22:27:21 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tanishdesai37@gmail.com>)
- id 1ujTs7-0005yo-Be
- for qemu-devel@nongnu.org; Tue, 05 Aug 2025 22:27:20 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-af96524c5a9so432196366b.1
- for <qemu-devel@nongnu.org>; Tue, 05 Aug 2025 19:27:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1754447235; x=1755052035; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=JIoiXM5/mkBkzVbI1Xb7LdTocLxnCXGI+nbNqs9Nx0s=;
- b=VeuBQ2FkjT5UUg4wp+hOlBqR8Tuk0IeHKTc8iLl5yoQPdggkpo8Fgd+JUOjbS1lRt8
- 9ahRVSs0TTcGidocTFsaXGPAqigFCYo3Ft2Cj3kO3dA0IgZEjvM9LF+dza5nGj6JbZ6k
- 85nYWrEVs5j5yZPG2L4f1wYZOitySySHsaeRExPIuf300Z+mE8DYCaAvdxyNUQLhoRTR
- cppUIgZ0OyHKmQiGI052bm0OZOvdhKEfy8OSifgKfmt4YB7RvyFWgdUnYJdA6Whkmt2+
- /l7SylFOu0QTSGgBqmJyrBqJ1mEyNiC2fFkIN7DcNTlu1cAUldqKeZALfvP/Su5W0F0B
- 9+fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754447235; x=1755052035;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JIoiXM5/mkBkzVbI1Xb7LdTocLxnCXGI+nbNqs9Nx0s=;
- b=qn96gR6CqQrRbkIOrQv3Xqp3FP2k74rAgHZ7xejRI17KUrFrrTnROnHJmcDi7Ch70T
- gZuUe/ya2vgnDrhUp2Q3Eh3Ni7DNy2rBSIGp4KdJTKGIjAipRASV0dcgOQ8nokveq3qI
- /OZrlGmJHdA9fGEDMvccYoIEDGgYzrh0RbiNnINEEogPldjcS6JIK6YLO1XpkXL3w3us
- cXucBOELrVvIKevsZj8F+SqpUQHN2DtR/rKyxLXGnBhoT0EBVsFhreZb/eqRPl0P5LWZ
- L/x9NHCHmoUe8AVK321AozyGQKwc2MRruN3qY6eq4Jh1N8JACJkIAD96pSkUj4m7UZ3r
- cbPQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUTbXONhGVEkFb/xuSMSMLlbQFclJmdhwT0Wuky3xni/0bLBHwWK8ClJ5Usp9JM3eO3iz1eg1DF8bJ/@nongnu.org
-X-Gm-Message-State: AOJu0YyTWGejTtBiOGY82n6wHfLmefCW3OodK+gMXrr5/pnex9L1j3+a
- A4MS9sfSrmC3FeyYGTKfMrdIOYl+do52migDqn6NUv50QCLqarFXH1LWzdrO3/Ahn/fNRtUulqu
- 9FjtLSwm7WCt7A2Kdla4kvcsfyJgpsmo=
-X-Gm-Gg: ASbGncuC7qWbwLg6GB0MxYqDdENfn36el9JpwPw/GLftGnGPUpKbzE5VWsk2Ztw8kkW
- 5I8aBeWSu9g5avOl7czpz2svw6R/ZQcaa1i1fZPdFfNExVS5XCQCzvsGDB5CSCiG2hYZLZ9Wz/j
- rzK3BL8UAQKFBO0VyKe4w7P7uHei3NHmvNRyPEf/ue2xnHs5mvZnGt4k6CHPggjq1driuWDcELz
- q0szmfuVw==
-X-Google-Smtp-Source: AGHT+IEWLjutcU3qf0dLA72/E0kJPguynxHnA0McPqvgeXaAS24CygDLtFUn48MLohMZKJWT9T1m2heTzhrECddip4A=
-X-Received: by 2002:a17:907:7f29:b0:af9:4fa9:b0fa with SMTP id
- a640c23a62f3a-af992ade9f8mr61647866b.27.1754447234917; Tue, 05 Aug 2025
- 19:27:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1ujWQw-0003ca-C0; Wed, 06 Aug 2025 01:11:26 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1ujWQr-00035i-Vd; Wed, 06 Aug 2025 01:11:26 -0400
+Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5765AfTY022550
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Wed, 6 Aug 2025 14:10:42 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=utGiHnYJ6YtJ/HU17T9qS3pEpFtDM7mXxpmltXL6oBU=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1754457042; v=1;
+ b=aQsoVaOlZDxOncOfLN89YDqTMqASjJfhsf9v7rFaZVCb9QiDqgZA+dR0cgTwf8x6
+ kWJkJERyTsmIk37RHu4yTgXp+SEWIX22L2GPCq5rqHqyNUFyWa7QVwuuLbL6LCzW
+ a8rXvmUuGtEITsRtT6yJP44NyzRqxXBwEk867DOMJmhmMR3oRMnvz1uC5iEr0iQA
+ TJx+ooBZDI5iDMm5TaOzEDVx77DZshBn76rCUOqOym87CaPFxMQeltEN5BX3JX/M
+ /GrQsPiITRYW2SN70sRivg77uhQorHWzZuxsraLW8k4PD6J+PgEtlCUgqh2TMAs5
+ TnUCtEDLtq/pRr00SXY1Ig==
+Message-ID: <293e470b-6835-4ad0-b502-8a1a0eea525d@rsg.ci.i.u-tokyo.ac.jp>
+Date: Wed, 6 Aug 2025 14:10:41 +0900
 MIME-Version: 1.0
-References: <20250804112039.16377-1-tanishdesai37@gmail.com>
- <20250804112039.16377-2-tanishdesai37@gmail.com> <aJJliv-xKgH4piH6@redhat.com>
- <3d4e5755-8512-4b01-b941-f6e763d36386@redhat.com>
-In-Reply-To: <3d4e5755-8512-4b01-b941-f6e763d36386@redhat.com>
-From: Tanish Desai <tanishdesai37@gmail.com>
-Date: Wed, 6 Aug 2025 07:57:03 +0530
-X-Gm-Features: Ac12FXxyO_YhFFtW9pvyHqrdqLC-QqAuDtAvM11gMDmAZ3AHO8jaDt5BKocuabw
-Message-ID: <CAH_Y1jeK+8r6yAXCo+vk7rYG2mfY1LdxEmiR52-EaZhx9T6d8Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] tracetool: add CHECK_TRACE_EVENT_GET_STATE
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>
-Content-Type: multipart/alternative; boundary="00000000000036eb11063ba91451"
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=tanishdesai37@gmail.com; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 23/27] migration: Refactor vmstate_save_state_v()
+ function
+To: Arun Menon <armenon@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20250805-propagate_tpm_error-v9-0-123450810db7@redhat.com>
+ <20250805-propagate_tpm_error-v9-23-123450810db7@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20250805-propagate_tpm_error-v9-23-123450810db7@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,63 +91,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000036eb11063ba91451
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 2025/08/06 3:25, Arun Menon wrote:
+> The original vmstate_save_state_v() function combined multiple
+> responsibilities like calling pre-save hooks, saving the state of
+> the device, handling subsection saves and invoking post-save hooks.
+> This led to a lengthy and less readable function.
+> 
+> To address this, introduce wrapper functions for pre-save,
+> post-save and the device-state save functionalities.
+> 
+> Signed-off-by: Arun Menon <armenon@redhat.com>
+> ---
+>   migration/vmstate.c | 78 ++++++++++++++++++++++++++++++++++++++++-------------
+>   1 file changed, 60 insertions(+), 18 deletions(-)
+> 
+> diff --git a/migration/vmstate.c b/migration/vmstate.c
+> index 60ff38858cf54277992fa5eddeadb6f3d70edec3..fbc59caadbbcc75fe6de27b459aa9aa25e76aa0a 100644
+> --- a/migration/vmstate.c
+> +++ b/migration/vmstate.c
+> @@ -414,22 +414,43 @@ int vmstate_save_state_with_err(QEMUFile *f, const VMStateDescription *vmsd,
+>       return vmstate_save_state_v(f, vmsd, opaque, vmdesc_id, vmsd->version_id, errp);
+>   }
+>   
+> -int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+> -                         void *opaque, JSONWriter *vmdesc, int version_id, Error **errp)
+> +static int pre_save_dispatch(const VMStateDescription *vmsd, void *opaque,
+> +                             Error **errp)
+>   {
+>       int ret = 0;
+> -    const VMStateField *field = vmsd->fields;
+> -
+> -    trace_vmstate_save_state_top(vmsd->name);
+> -
+>       if (vmsd->pre_save) {
+>           ret = vmsd->pre_save(opaque);
+>           trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
+>           if (ret) {
+> -            error_setg(errp, "pre-save failed: %s", vmsd->name);
+> -            return ret;
+> +            error_setg(errp, "pre-save for %s failed, ret: %d",
+> +                       vmsd->name, ret);
+>           }
+>       }
+> +    return ret;
+> +}
+> +
+> +static int post_save_dispatch(const VMStateDescription *vmsd, void *opaque,
+> +                              Error **errp)
+> +{
+> +    int ret = 0;
+> +    if (vmsd->post_save) {
+> +        ret = vmsd->post_save(opaque);
+> +        error_setg(errp, "post-save for %s failed, ret: %d",
+> +                   vmsd->name, ret);
+> +    }
+> +    return ret;
+> +}
+> +
+> +static int vmstate_save_dispatch(QEMUFile *f,
+> +                                 const VMStateDescription *vmsd,
+> +                                 void *opaque, JSONWriter *vmdesc,
+> +                                 int version_id, Error **errp)
+> +{
+> +    ERRP_GUARD();
+> +    int ret = 0;
+> +    int ps_ret = 0;
+> +    Error *local_err = NULL;
+> +    const VMStateField *field = vmsd->fields;
+>   
+>       if (vmdesc) {
+>           json_writer_str(vmdesc, "vmsd_name", vmsd->name);
+> @@ -532,9 +553,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+>                   if (ret) {
+>                       error_setg(errp, "Save of field %s/%s failed",
+>                                   vmsd->name, field->name);
+> -                    if (vmsd->post_save) {
+> -                        vmsd->post_save(opaque);
+> -                    }
+> +                    ps_ret = post_save_dispatch(vmsd, opaque, &local_err);
+>                       return ret;
+>                   }
+>   
+> @@ -557,16 +576,39 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+>       if (vmdesc) {
+>           json_writer_end_array(vmdesc);
+>       }
+> +    return ret;
+> +}
+>   
+> -    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
+>   
+> -    if (vmsd->post_save) {
+> -        int ps_ret = vmsd->post_save(opaque);
+> -        if (!ret && ps_ret) {
+> -            ret = ps_ret;
+> -            error_setg(errp, "post-save failed: %s", vmsd->name);
+> -        }
+> +int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+> +                         void *opaque, JSONWriter *vmdesc, int version_id,
+> +                         Error **errp)
+> +{
+> +    ERRP_GUARD();
+> +    int ret = 0;
+> +    Error *local_err = NULL;
+> +    int ps_ret = 0;
+> +
+> +    trace_vmstate_save_state_top(vmsd->name);
+> +
+> +    ret = pre_save_dispatch(vmsd, opaque, errp);
+> +    if (ret) {
+> +        return ret;
+> +    }
+> +
+> +    ret = vmstate_save_dispatch(f, vmsd, opaque, vmdesc,
+> +                                version_id, errp);
+> +    if (ret) {
+> +        return ret;
+>       }
+> +
+> +    ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
+> +    ps_ret = post_save_dispatch(vmsd, opaque, &local_err);
 
-Thanks for pointing out the bug and suggesting a fix for it.
+local_err leaks here.
 
-On Wed, Aug 6, 2025 at 4:02=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
+> +    if (!ret && ps_ret) {
+> +        ret = ps_ret;
+> +        error_setg(errp, "post-save failed: %s", vmsd->name);
+> +    }
+> +
+>       return ret;
+>   }
+>   
+> 
 
-> On 8/5/25 22:11, Daniel P. Berrang=C3=A9 wrote:
-> > Something here is broken with the "simple" trace backend, as the entire
-> > '.c' file content is no longer generated, causing link errors
->
-> I think the bug is here:
->
-Yes this was the bug.
-
-> +    def generate(self, event, group, check_trace_event_get_state=3DFalse=
-):
-> +        self._run_function("generate_%s", event, group,
-> check_trace_event_get_state=3Dcheck_trace_event_get_state)
->
-> The default must be None, i.e. do not filter at all, instead of False.
->
-> Paolo
->
->
-
---00000000000036eb11063ba91451
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div>Thanks for pointing out the bug=
- and suggesting a fix for it.<div><br><div><div class=3D"gmail_quote gmail_=
-quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Aug 6, 2025 =
-at 4:02=E2=80=AFAM Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com"=
->pbonzini@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
-te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
-);padding-left:1ex">On 8/5/25 22:11, Daniel P. Berrang=C3=A9 wrote:<br>
-&gt; Something here is broken with the &quot;simple&quot; trace backend, as=
- the entire<br>
-&gt; &#39;.c&#39; file content is no longer generated, causing link errors<=
-br>
-<br>
-I think the bug is here:<br></blockquote><div>Yes this was the bug.=C2=A0</=
-div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bor=
-der-left:1px solid rgb(204,204,204);padding-left:1ex">
-+=C2=A0 =C2=A0 def generate(self, event, group, check_trace_event_get_state=
-=3DFalse):<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 self._run_function(&quot;generate_%s&quot;, ev=
-ent, group, check_trace_event_get_state=3Dcheck_trace_event_get_state)<br>
-<br>
-The default must be None, i.e. do not filter at all, instead of False.<br>
-<br>
-Paolo<br>
-<br>
-</blockquote></div></div></div></div>
-
---00000000000036eb11063ba91451--
 
