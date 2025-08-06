@@ -2,77 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57EB0B1CA63
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 19:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E48B1CA61
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 19:13:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujhh6-0007Zs-2I; Wed, 06 Aug 2025 13:12:52 -0400
+	id 1ujhh9-0007iO-3h; Wed, 06 Aug 2025 13:12:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ujhKF-0005BZ-NP
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujhKE-0005BP-Gu
  for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:49:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ujhKE-0002GK-9U
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:49:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754498953;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1UpAgl57uXNyusZ5pFUvn++FTTsnpHSfYb+eyCy17Bw=;
- b=eVO3TGYbB7+xyFftkL0t5Tqw3snAQAHSBTG88tj/ekSpuQZkuaNwapKtM8czPbLrDW2HGM
- wKsBWgejwCNneha1ROIgzT/9MGfxL08tKtjM2y7LGdABXXx9Rn9Hm7T5wfNHSZbYOYrTp+
- lN2WVCkxegkp3Gx4p4z5qDJIhu1aeu8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-546-3y7GAF15Nwa64zundabshA-1; Wed,
- 06 Aug 2025 12:49:12 -0400
-X-MC-Unique: 3y7GAF15Nwa64zundabshA-1
-X-Mimecast-MFC-AGG-ID: 3y7GAF15Nwa64zundabshA_1754498951
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E00B01800378; Wed,  6 Aug 2025 16:49:10 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.223])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 60CC91956086; Wed,  6 Aug 2025 16:49:07 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mads Ynddal <mads@ynddal.dk>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 8/8] qapi: switch to use QEMU_TEST_REGENERATE env var
-Date: Wed,  6 Aug 2025 17:48:32 +0100
-Message-ID: <20250806164832.1382919-9-berrange@redhat.com>
-In-Reply-To: <20250806164832.1382919-1-berrange@redhat.com>
-References: <20250806164832.1382919-1-berrange@redhat.com>
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ujhKB-0002Fu-5L
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 12:49:13 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-451d3f72391so1167775e9.3
+ for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 09:49:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1754498948; x=1755103748; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=QM3QwiO1NJe3GKnsbAAnUZTy4SP7OQgvkiQ12EiRCAI=;
+ b=g4MZsIjBKsOVBbx8aYiLXUee3OhrEDC0wnAZTn5uPBNvxk9rhjAjD4wa8pIzfFzvoN
+ xJL+wVMTmeivnKpQq6kv4l67JP8iL0VK2730rc69O9oJBZWEQK2obbf3LDVThei0hP7p
+ hZdAHjW4gpA4J/o87jOc4LyUepemWZS1/a/7Rk7PftlqgtEkZbp86NCcGmiKrOwl/RIf
+ YRHU6COEpQm8m8j7f267+4hr+6r86/AJdq5TwPebHjve9Go7D0sRCx8zfXCzvTpgDVVR
+ Zx6t+oVmLRK/gIff4nle9MejHNUcETNnt8yjBbzgQSe/oThODTWw+qasMGP5mIZJafoM
+ a/UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754498948; x=1755103748;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QM3QwiO1NJe3GKnsbAAnUZTy4SP7OQgvkiQ12EiRCAI=;
+ b=GWH+jat5ygqc8Lku/b+p+VIy21kV5JTweNO+VexzS9TZIpHX8tsSvUWrhW2NYSwww6
+ +wN/NLJ3DzDCUY3EXMh3RFziFXsILRp3uPNpEPe/3u69W0P6j8jBToK8Th50ys3BP3+u
+ l7gU5BZoG+FVni2sBhGoA0L6jNrFdHGlUlc9o6ihd49gm3F3pPBsIdu9Yf4LFI0U3Bwk
+ Qmtm7oWDTDML0UpKJ/mt5v1txMjaXXZj0566TdC8lAz00mCdAXIyI/bzHZmcPbZ2V0f7
+ kOI10Put5796PnxzfAFpo7lGcE8MR3IQ+x50i275ncbIWX82viB9SCvK/g6rbDX8T0ur
+ Zveg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXt/Ggv8lGCY6hV9WYEsV41UJ2f7rYzevEsZjZqu0pMqSKCGk1oqGI6/xyeaUY4B1rZLFBuyc1vUV2j@nongnu.org
+X-Gm-Message-State: AOJu0Yzw9jNMsR6LCHceC4jKxlOwrnfX86LYIt1eNEEBoIvggu8tzg5Q
+ zQMREBp+8awTV2MVzvAmfIPsomNLT4/gG6InvbG+IsAvQ/aJFWQwkPTJj7LeElbaRRELwdxFf8k
+ 8oHrd
+X-Gm-Gg: ASbGncvnXjQsOSzvYghrMaHkNzsyNWry7c9cfjd/CEE/YLPrTwqvKccwzxPBXeHORDY
+ KLNr9oZz2eY6rHMIho3A3TbfDghVG4RW7ZJcGVD6HWXqQJb4toTyKdEoGPo1wuYUY1pyJ0DZ+bi
+ U1H6RsWLJqOc+kn2irOUji8ZHf03YA0QVxJlMrSWgVge6zrf+Fwfis8OmetSG/YQ62VUltVbqZV
+ Rk6bfN1wvnURVQ40+2lSj6OKB4xbjQzhWGBghUnecqj1pYOjGwTINGOgGxCWpwXug/2Jt5EGUYe
+ 6LN7iQSVgLoq46DWEN4D0rXnKtU+pQn3vK89f4N70YZZfmHjKC6GCEbfMKqmxoB9TkgXBTh66em
+ ca6iMjKge51HMvDTES52UzGz9T9laHE/Dq2rl2eMMAAm5gDuynEKTnJYZR++sP80Hf2q1oHGDJe
+ uc
+X-Google-Smtp-Source: AGHT+IEDaucHpuT4xCT/H7TWuNI38HvtD8TqOoCHL1bIyYA4NWGdeXw4cw+cieSSzFd1Ew4KWE+xHg==
+X-Received: by 2002:a05:6000:2dc5:b0:3b8:d0bb:7541 with SMTP id
+ ffacd0b85a97d-3b8f41ad96emr3026127f8f.40.1754498948408; 
+ Wed, 06 Aug 2025 09:49:08 -0700 (PDT)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b79c489e81sm23860656f8f.68.2025.08.06.09.49.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Aug 2025 09:49:07 -0700 (PDT)
+Message-ID: <2af1d5fb-fb74-4263-83f1-c23eb25757ab@linaro.org>
+Date: Wed, 6 Aug 2025 18:49:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] virtio-net: make VirtIONet.vlans an array instead of
+ a pointer
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Michael Tokarev <mjt@tls.msk.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
+References: <20250802142115.41638-1-mjt@tls.msk.ru>
+ <4eff3371-542c-43bc-a4aa-e58ceb369d1e@tls.msk.ru>
+ <1904c947-151b-46bb-bc66-109d258c18df@rsg.ci.i.u-tokyo.ac.jp>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <1904c947-151b-46bb-bc66-109d258c18df@rsg.ci.i.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,76 +105,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The QAPI_TEST_UPDATE env var can be set when running the QAPI
-schema tests to regenerate the reference output. For consistent
-naming with the tracetool test, change the env var name to
-QEMU_TEST_REGENERATE.
+On 3/8/25 09:38, Akihiko Odaki wrote:
+> On 2025/08/02 23:45, Michael Tokarev wrote:
+>> On 02.08.2025 17:21, Michael Tokarev wrote:
+>>> This field is a fixed-size buffer (number of elements is MAX_VLAN,
+>>> known at build time).  There's no need to allocate it dynamically,
+>>> it can be made an integral part of VirtIONet structure.
+>>>
+>>> This field is the only user of VMSTATE_BUFFER_POINTER_UNSAFE() macro.
+>>>
+>>> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+>>> ---
+>>>   hw/net/virtio-net.c            | 8 +++-----
+>>>   include/hw/virtio/virtio-net.h | 2 +-
+>>>   2 files changed, 4 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+>>> @@ -3524,7 +3524,7 @@ static const VMStateDescription 
+>>> vmstate_virtio_net_device = {
+>>>            * buffer; hold onto your endiannesses; it's actually used 
+>>> as a bitmap
+>>>            * but based on the uint.
+>>>            */
+>>> -        VMSTATE_BUFFER_POINTER_UNSAFE(vlans, VirtIONet, 0, MAX_VLAN 
+>>> >> 3),
+>>> +        VMSTATE_BUFFER(vlans, VirtIONet),
+>>
+>> This doesn't compile.  And I can't figure out, so far, what's needed
+>> here :)
+> 
+> The type check is failing because VMSTATE_BUFFER() expects an array of 
+> uint8_t but it is an array of uint32_t.
+> 
+> Now I get why it used an "UNSAFE" macro. We should usually use 
+> VMSTATE_UINT32_ARRAY() instead, but we need "BUFFER" for compatibility, 
+> so it needed the "UNSAFE" variant to disable the type check.
+> 
+> Fortunately there is a variant that is "BUFFER" and "UNSAFE" but not 
+> "POINTER". So this should be:
+> VMSTATE_BUFFER_UNSAFE(vlans, VirtIONet, 0,
+>                        sizeof(typeof_field(VirtIONet, vlans)))
 
-The test is modified to provide a hint about use of the new
-env var and it is also added to the developer documentation.document its usage.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- docs/devel/testing/main.rst    | 12 ++++++++++++
- tests/qapi-schema/test-qapi.py |  7 +++++--
- 2 files changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
-index 11f05c0006..fe233fcf7a 100644
---- a/docs/devel/testing/main.rst
-+++ b/docs/devel/testing/main.rst
-@@ -178,6 +178,18 @@ parser (either fixing a bug or extending/modifying the syntax). To do this:
- 
-   ``qapi-schema += foo.json``
- 
-+The reference output can be automatically updated to match the latest QAPI
-+code generator by running the tests with the QEMU_TEST_REGENERATE environment
-+variable set.
-+
-+.. code::
-+
-+   QEMU_TEST_REGENERATE=1 make check-qapi-schema
-+
-+The resulting changes must be reviewed by the author to ensure they match
-+the intended results, before adding the updated reference output to the
-+same commit that alters the generator code.
-+
- .. _tracetool-tests:
- 
- Tracetool tests
-diff --git a/tests/qapi-schema/test-qapi.py b/tests/qapi-schema/test-qapi.py
-index 4be930228c..cf7fb8a6df 100755
---- a/tests/qapi-schema/test-qapi.py
-+++ b/tests/qapi-schema/test-qapi.py
-@@ -165,7 +165,7 @@ def test_and_diff(test_name, dir_name, update):
-     if actual_out == expected_out and actual_err == expected_err:
-         return 0
- 
--    print("%s %s" % (test_name, 'UPDATE' if update else 'FAIL'),
-+    print("%s: %s" % (test_name, 'UPDATE' if update else 'FAIL'),
-           file=sys.stderr)
-     out_diff = difflib.unified_diff(expected_out, actual_out, outfp.name)
-     err_diff = difflib.unified_diff(expected_err, actual_err, errfp.name)
-@@ -173,6 +173,9 @@ def test_and_diff(test_name, dir_name, update):
-     sys.stdout.writelines(err_diff)
- 
-     if not update:
-+        print(("\n%s: set QEMU_TEST_REGENERATE=1 to recreate reference output" +
-+               "if the QAPI schema generator was intentionally changed") % test_name,
-+              file=sys.stderr)
-         return 1
- 
-     try:
-@@ -197,7 +200,7 @@ def main(argv):
-     parser.add_argument('-d', '--dir', action='store', default='',
-                         help="directory containing tests")
-     parser.add_argument('-u', '--update', action='store_true',
--                        default='QAPI_TEST_UPDATE' in os.environ,
-+                        default='QEMU_TEST_REGENERATE' in os.environ,
-                         help="update expected test results")
-     parser.add_argument('tests', nargs='*', metavar='TEST', action='store')
-     args = parser.parse_args()
--- 
-2.50.1
+Nice.
 
 
