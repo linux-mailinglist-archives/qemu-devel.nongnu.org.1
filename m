@@ -2,122 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBC9B1CDF7
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 22:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68072B1CE19
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 22:54:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujl1q-0004vv-NY; Wed, 06 Aug 2025 16:46:30 -0400
+	id 1ujl8C-0007QC-PT; Wed, 06 Aug 2025 16:53:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1ujl1m-0004tC-6h; Wed, 06 Aug 2025 16:46:26 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1ujl1j-0003wU-Qs; Wed, 06 Aug 2025 16:46:25 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 576Hk5JV012329;
- Wed, 6 Aug 2025 20:46:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:reply-to:subject:to; s=pp1;
- bh=hFUbnEmKvWsvlEmg+GoBPi41yXcU/wjsef60+KiMBNs=; b=LtIXhkUGcL3B
- 55qghxxt9vYmlb2kUVV7uHZbpYZq1ccM1Xlg01fEo0AcJqTsYbq6crUBHX8FpAex
- k8NasxbBdsNAUh+8ti2C6ttcC5E95M9Tip/7Sd9tL3303HscxUguPMuR2EcvVHA9
- dZFVnPx0TdRy4LQS552QiOwv7XWUASIfQNoC0ACp0Iv8GkU3Q8D/Om7VKtYDoD6w
- bCVmMYfMhNXVaekVHx7V+fVeUOpWiDdeJ0eLxgEnZFB20Zl541RXuyKxvyLAl9qV
- ybViPCMCaiMiWcYk8wzQ8TTb6sgheAq80uGpQDifzEFl93/eg2HsEOQ/w8A9J4qE
- i5tKYFGu+A==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63pexj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Aug 2025 20:46:22 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 576KkLqW029765;
- Wed, 6 Aug 2025 20:46:21 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63pexh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Aug 2025 20:46:21 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 576K3GCY031314;
- Wed, 6 Aug 2025 20:46:20 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwndf5c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Aug 2025 20:46:20 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 576KkJLM32309908
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Aug 2025 20:46:19 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 54D635804E;
- Wed,  6 Aug 2025 20:46:19 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 76CA75803F;
- Wed,  6 Aug 2025 20:46:18 +0000 (GMT)
-Received: from mambor8.rchland.ibm.com (unknown [9.10.239.198])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  6 Aug 2025 20:46:18 +0000 (GMT)
-Message-ID: <6afc919bdb18166a71a2dba1a3862709629d5e08.camel@linux.ibm.com>
-Subject: Re: [PULL 00/50] ppc queue
-From: Miles Glenn <milesg@linux.ibm.com>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>, Michael Tokarev
- <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, Daniel Henrique Barboza
- <danielhb413@gmail.com>, Michael Kowal <kowal@linux.ibm.com>, Caleb
- Schlossin <calebs@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>,
- qemu-stable <qemu-stable@nongnu.org>
-Date: Wed, 06 Aug 2025 15:46:18 -0500
-In-Reply-To: <4468aea8-b8cc-4313-abbe-8a5f58a35adc@redhat.com>
-References: <20250721162233.686837-1-clg@redhat.com>
- <10177005-d549-41bc-b0eb-c98b7e475f97@tls.msk.ru>
- <ce863981-3d5e-4ec4-94ee-e35d773eab78@redhat.com>
- <fe6a0924-aff9-4881-9c2a-5665776d619f@tls.msk.ru>
- <dc796c6ae712a1a63eba2c6ab9c5c59b03942f50.camel@linux.ibm.com>
- <4468aea8-b8cc-4313-abbe-8a5f58a35adc@redhat.com>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
-Mime-Version: 1.0
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1ujl89-0007Ox-7s
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 16:53:01 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1ujl87-0004yR-IA
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 16:53:00 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-b427f4a9652so208482a12.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 13:52:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1754513577; x=1755118377; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eqL2V0LXadgKcNe1lvkmywiAnDzhQh/mHa8qYCBv1WQ=;
+ b=OufXVzs4DoDe1f0WMOXHAPxWMMyAorvZWAIKg1afemuYq/Vn1rK56pItL4wPLieF1K
+ wkmF73UFOqLE/C9pxFBU14XYKQ6By0Xc5+r8zQn2YD/BO449gtm0g6SxciRYmXdzgr0i
+ VLRnAntibWxtIdP50igy1MQ5dOolbrmoh1mUvVSi4jriDWl12X3c0sU3uNbhCfNx0wl4
+ +zdCQ7Y8raFeJOFbepjmBL8yNbsI4ZgwVP/puhHl8yGXfKRPwvfT7UO/66Va0zvOUZZK
+ /5OMLj+InOTPIjPnYraAB4QNITRAXVCUcxiF+Py5FugdORza4/3lWEhA5toJAoyaYk5X
+ j+mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754513577; x=1755118377;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eqL2V0LXadgKcNe1lvkmywiAnDzhQh/mHa8qYCBv1WQ=;
+ b=O8GXlOzHv3JKdkG6GW22gmFXTFiqjazP9l/PztLssL4efsJBKWUQi9TiO3jOrgO5Kk
+ lwS7rxrVRv+m6npteB4uIBxIhzipKYndbkIW3l0AOdZwv2NJqvQ2Luy7IHLjUEajdhJu
+ YVI4fgVfBFigxModddR+11pBaenTd2kFBZB357enYOhhOtb3Kc9y195umwpc6uZ3LyQs
+ ze41PtvO/aDnq+wigLhJi3h2h9N2e/nNwj0wyArHHPS6adPMzc822ibTyozHkwFmedbw
+ fZEBXxH6XFaee4RkgrP3wh0idVQS9LfnKttOW7tzA8O0zfa7aa8qdxw2VLHBSz9deVgZ
+ QPFw==
+X-Gm-Message-State: AOJu0YzAhDryYIYP6UJ5OFvfADNmxk11R4PGGOtphve/kM6sYL2PPdgl
+ HdZYTWgrPleg9Yk7QPReqxQHcUy9pgw6RPWcg2I4uT4opUyzJkDESrhNQ6XtU12gcHA=
+X-Gm-Gg: ASbGncuw5ZRbGubLmvAVxlkjO6YmyHlVnZbLk243oyT5E/sdIzYRCSRdtRFcnVnb8Ul
+ xnJfhs/IEUacxMIJg5BG9KG/qMKhx7SWTw0k4HPRMC4qSHml5M1LoEbyglSF+3ITUdXIFz2etQu
+ ulcxhTQ4LHet95bhMFoEuLrhrhgT86R1U/+uMhErdzfRb89vroDJvESAmo6/ARRaHwW1n3uAtWT
+ cQm1yexjIOw48UaHw+Y+YEobouunJcoQDasFXctsIEatiZVCJbLjWMlJwnhJfpMGDG8CN3yClU8
+ qJRTL2Qzh5KNJfANNDnlgo8LW8vArP2o+TBnJEeGWdWCyBD0EX9nbq1a0OYlK+l5ssAPE/yON4e
+ EtaTNrsABpellrlDDDyAhbJQ94/MWR/cVmy8=
+X-Google-Smtp-Source: AGHT+IEvLzeB9SfZOtEQ9JI/BMY85z90kkdy0V8h/dzILobIrZ4zHIUcbN9MYCHv/t2zUS1oGOjgBQ==
+X-Received: by 2002:a17:903:41d2:b0:240:8704:fb9 with SMTP id
+ d9443c01a7336-2429f582b30mr58711275ad.53.1754513577539; 
+ Wed, 06 Aug 2025 13:52:57 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-241e89a3acfsm166673035ad.146.2025.08.06.13.52.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Aug 2025 13:52:57 -0700 (PDT)
+Message-ID: <4ab89a81-0463-492b-86d5-1c7af1e6453a@linaro.org>
+Date: Wed, 6 Aug 2025 13:52:56 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-10.1] meson: Fix brlapi compile test for Windows builds
+Content-Language: en-US
+To: Stefan Weil <sw@weilnetz.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+References: <20250806204624.510091-1-sw@weilnetz.de>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250806204624.510091-1-sw@weilnetz.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA2MDEzOCBTYWx0ZWRfX4/tvXDMTWMrs
- kjXyHQJOo2THShiux7nj1USbcsmYqde+Z17c42A3aWJOJb673vEhUk2dE49LrQ1QmyIN2QFVKWp
- 3YU31+pkFucjdbKktkuvNpD4tD9V3oNrqw+LEWQAdpKtWrbWuX3GdAPUuevsaPXzA1663xn9kJt
- A3JsVqy9waS/yjZ/0pWsg0/mb7elTkxVqYfh7WfbkGL0t4ksb/WtDpPyu1GfxpTKFu6H3jYS0Zn
- FKi1Ikb9Ui9Pw9Ygjn12K/WavBo2yFr4i66kMYPSZqhBFiTegHFy+y00GkelhPAwwYgFDECtN55
- +fDx745lrXipigLN8L2KsTYTvW0KVLyH01thccV/4565fUEI3jX8oWSlvpYr7GRdsTa7QaazWix
- 55DuHjOzt6NkX0R2sfIex9cM5LnSiQnk5DhXnZUCXfqWM4jHxe+UoOLJMqrjwqY7DMpQhskr
-X-Proofpoint-ORIG-GUID: I2JIuqLay92Li5KNwFMgu6N1XMy0_Euq
-X-Authority-Analysis: v=2.4 cv=LreSymdc c=1 sm=1 tr=0 ts=6893bf1e cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VuoU5WFxUHF8b41vZTMA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: g9qmyPAhcOuRN7pFI8q29-gEHl9OhOsF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-06_04,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 mlxlogscore=899 bulkscore=0
- malwarescore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
- definitions=main-2508060138
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=milesg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,85 +99,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: milesg@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2025-08-05 at 22:07 +0200, Cédric Le Goater wrote:
-> On 8/5/25 18:26, Miles Glenn wrote:
-> > On Tue, 2025-07-22 at 17:25 +0300, Michael Tokarev wrote:
-> > > On 22.07.2025 16:37, Cédric Le Goater wrote:
-> > > > + Glenn, Michael, Caleb, Gautam
-> > > > 
-> > > > On 7/22/25 13:44, Michael Tokarev wrote:
-> > > > > 21.07.2025 19:21, Cédric Le Goater wrote:
-> > > > > 
-> > > > > > ----------------------------------------------------------------
-> > > > > > ppc/xive queue:
-> > > > > > 
-> > > > > > * Various bug fixes around lost interrupts particularly.
-> > > > > > * Major group interrupt work, in particular around redistributing
-> > > > > >     interrupts. Upstream group support is not in a complete or usable
-> > > > > >     state as it is.
-> > > > > > * Significant context push/pull improvements, particularly pool and
-> > > > > >     phys context handling was quite incomplete beyond trivial OPAL
-> > > > > >     case that pushes at boot.
-> > > > > > * Improved tracing and checking for unimp and guest error situations.
-> > > > > > * Various other missing feature support.
-> > > > > 
-> > > > > Is there anything in there which should be picked up for
-> > > > > stable qemu branches?
-> > > > 
-> > > > May be the IBM simulation team can say ?
-> > > > I think this would also require some testing before applying.
-> > > > 
-> > > > Which stable branch are you targeting ? 7.2 to 10.0 ?
-> > > 
-> > > There are currently 2 active stable branches, 7.2 and 10.0.
-> > > Both are supposed to be long-term maintenance.  I think 7.2
-> > > can be left behind already.
-> > > 
-> > > Thanks,
-> > > 
-> > > /mjt
-> > 
-> > Michael T.,
-> > 
-> > All of the XIVE fixes/changes originating from myself were made in an
-> > effort to get PowerVM firmware running on PowerNV with minimal testing
-> > of OPAL firmware.  However, even with those fixes, running PowerVM on
-> > PowerNV is still pretty unstable.  While backporting these fixes would
-> > likely increase the stability of running PowerVM on PowerNV, I do think
-> > it could pose significant risk to the stability of running OPAL on
-> > PowerNV.  With that in mind, I think it's probably best if we did not
-> > backport any of my own XIVE changes.
+On 8/6/25 1:45 PM, Stefan Weil via wrote:
+> brlapi__openConnection returns a brlapi_fileDescriptor which is a pointer
+> for Windows builds.
 > 
-> These seem to be interesting to have :
+> The test for brlapi fails with cross builds on Debian trixie
+> (x86_64-w64-mingw32-gcc (GCC) 14-win32):
 > 
-> ppc/xive2: Fix treatment of PIPR in CPPR update
-> ppc/xive2: Fix irq preempted by lower priority group irq
-> ppc/xive: Fix PHYS NSR ring matching
-> ppc/xive2: fix context push calculation of IPB priority
-> ppc/xive2: Remote VSDs need to match on forwarding address
-> ppc/xive2: Fix calculation of END queue sizes
-> ppc/xive: Report access size in XIVE TM operation error logs
-> ppc/xive: Fix xive trace event output
+> testfile.c:4:30: error: returning 'brlapi_fileDescriptor' {aka 'void *'} from a function with return type 'int' makes integer from pointer without a cast [-Wint-conversion]
+>      4 |      int main(void) { return brlapi__openConnection (NULL, NULL, NULL); }
+>        |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> -----------
+> ../../../meson.build:1607: WARNING: could not link brlapi, disabling
 > 
-> ?
+> Signed-off-by: Stefan Weil <sw@weilnetz.de>
+> ---
 > 
-> Thanks,
+> I think that this patch is trivial because it does not change
+> anything for Linux.
 > 
-> C.
+> Note that this patch only fixes the configure test and allows builds
+> with the Braille API for Windows.
 > 
+> A similar change can be applied to chardev/baum.c and will be sent
+> separately because it is not required for 10.1.
+> 
+> Note that for 64 bit Windows there is an issue because brlapi_fileDescriptor
+> is a 64 bit pointer while QEMU assumes int for file descriptors. But the
+> good news is that the resulting code seems to work nevertheless – at least
+> the people who asked me for Braille support on Windows are satisfied as
+> far as I know.
+> 
+> Regards,
+> Stefan W.
+> 
+> 
+>   meson.build | 8 +++++---
+>   1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/meson.build b/meson.build
+> index e53cd5b413..d6abe1917e 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -1586,9 +1586,11 @@ if not get_option('brlapi').auto() or have_system
+>     brlapi = cc.find_library('brlapi', has_headers: ['brlapi.h'],
+>                            required: get_option('brlapi'))
+>     if brlapi.found() and not cc.links('''
+> -     #include <brlapi.h>
+> -     #include <stddef.h>
+> -     int main(void) { return brlapi__openConnection (NULL, NULL, NULL); }''', dependencies: brlapi)
+> +    #include <brlapi.h>
+> +    #include <stddef.h>
+> +    int main(void) {
+> +      return brlapi__openConnection(NULL, NULL, NULL) == BRLAPI_INVALID_FILE_DESCRIPTOR;
+> +    }''', dependencies: brlapi)
+>       brlapi = not_found
+>       if get_option('brlapi').enabled()
+>         error('could not link brlapi')
 
-I'm still not sure that the benefit is worth the effort, but I
-certainly don't have a problem with them being backported if someone
-has the desire and the time to do it.
-
-Thanks,
-
-Glenn
-
-
-
+Looks good,
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
