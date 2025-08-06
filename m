@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6F5B1C14D
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 09:26:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF48B1C157
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 09:31:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujYWW-000246-1p; Wed, 06 Aug 2025 03:25:20 -0400
+	id 1ujYbZ-0007B8-QG; Wed, 06 Aug 2025 03:30:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1ujYWS-00022K-4N
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 03:25:16 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1ujYWM-0003c7-6g
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 03:25:15 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8DxzOJLA5NoSpA5AQ--.47204S3;
- Wed, 06 Aug 2025 15:24:59 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJCxocJIA5No2444AA--.13536S3;
- Wed, 06 Aug 2025 15:24:58 +0800 (CST)
-Subject: Re: [PATCH v2] target/loongarch: Fix [X]VLDI raising exception
- incorrectly
-To: WANG Rui <wangrui@loongson.cn>, bibo mao <maobibo@loongson.cn>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu@hev.cc, Zhou Qiankang <wszqkzqk@qq.com>
-References: <20250804132212.4816-1-wangrui@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <c6320306-2533-c107-50b7-58a252fa7c2f@loongson.cn>
-Date: Wed, 6 Aug 2025 15:28:03 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ujYbN-00077R-F7
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 03:30:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ujYbH-0005Do-DL
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 03:30:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754465413;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=a6+g7nd94Bk/4TEewIZlSAr/luvcCrHVaNG8ghCZsn8=;
+ b=PrvOL9yB7w4ceOXll8DSXJ1SPHfaAYbiDHSBxnOIydKqoMRPqKexoWEXyOy6rMPUsufUbB
+ 1+zs0Zlq98z8dWmm+a8tUDWHCUStXryRsy9za3PrK5nKeKpvN2MFXry7glyTEK9As/PRX3
+ 6QwR2iQU2MHMtBLb5HQkbfgTbtdDBHU=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-ZEcGD5nAMv6WArx2yBdsqQ-1; Wed,
+ 06 Aug 2025 03:30:10 -0400
+X-MC-Unique: ZEcGD5nAMv6WArx2yBdsqQ-1
+X-Mimecast-MFC-AGG-ID: ZEcGD5nAMv6WArx2yBdsqQ_1754465409
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DD9A919560AD; Wed,  6 Aug 2025 07:30:07 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.224.228])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6F1E0180047F; Wed,  6 Aug 2025 07:30:04 +0000 (UTC)
+Date: Wed, 6 Aug 2025 09:30:01 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Eric Blake <eblake@redhat.com>, qemu-trivial@nongnu.org
+Subject: Re: [PATCH-for-10.1] tests/qemu-iotests/tests/mirror-sparse: skip if
+ O_DIRECT is not supported
+Message-ID: <aJMEeVr1BU-abnNb@redhat.com>
+References: <20250801122850.27632-1-mjt@tls.msk.ru>
+ <7893945e-6287-4f32-9e93-f28c39c7bdc8@linaro.org>
+ <4f0a804d-d448-4dc0-97e1-20b3f669c8a2@tls.msk.ru>
 MIME-Version: 1.0
-In-Reply-To: <20250804132212.4816-1-wangrui@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJCxocJIA5No2444AA--.13536S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7CFy7WFWDZr48WFyxXF18WFX_yoW8XFyDpr
- 4akF4jkrW8JFZ3AFyYyw4Utr13K395tw4xWFn3t3Z3Aa9xJwnYgF4FqrZFvFy7AFyUZr1j
- va18Zas0qa1qvacCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU70PfDUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.055, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <4f0a804d-d448-4dc0-97e1-20b3f669c8a2@tls.msk.ru>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,55 +87,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2025/8/4 ÏÂÎç9:22, WANG Rui Ð´µÀ:
-> According to the specification, [X]VLDI should trigger an invalid instruction
-> exception only when Bit[12] is 1 and Bit[11:8] > 12. This patch fixes an issue
-> where an exception was incorrectly raised even when Bit[12] was 0.
->
-> Test case:
->
-> ```
->      .global main
-> main:
->      vldi    $vr0, 3328
->      ret
-> ```
->
-> Reported-by: Zhou Qiankang <wszqkzqk@qq.com>
-> Signed-off-by: WANG Rui <wangrui@loongson.cn>
-> ---
-> v1 -> v2:
-> - Keep the INE exception prioritized over the [A]SXD.
-> ---
->   target/loongarch/tcg/insn_trans/trans_vec.c.inc | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+Am 05.08.2025 um 19:56 hat Michael Tokarev geschrieben:
+> On 05.08.2025 20:23, Philippe Mathieu-Daudé wrote:
+> 
+> > > diff --git a/tests/qemu-iotests/tests/mirror-sparse b/tests/qemu-
+> > > iotests/tests/mirror-sparse
+> > > index cfcaa600ab..19843a622c 100755
+> > > --- a/tests/qemu-iotests/tests/mirror-sparse
+> > > +++ b/tests/qemu-iotests/tests/mirror-sparse
+> > > @@ -41,6 +41,7 @@ _supported_fmt qcow2 raw  # Format of the source.
+> > > dst is always raw file
+> > >   _supported_proto file
+> > >   _supported_os Linux
+> > >   _require_disk_usage
+> > > +_require_o_direct
+> > 
+> > Could the correct use be:
+> > 
+> >    _supported_cache_modes none directsync
+> 
+> Yes that works too.  I've no idea which is "better" - we've
+> a bit too many options here, I think.  I'll change it to your
+> suggestion.
 
-Thanks
-Song Gao
-> diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-> index 78730029cb..38bccf2838 100644
-> --- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-> +++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-> @@ -3585,7 +3585,9 @@ static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
->       int sel, vece;
->       uint64_t value;
->   
-> -    if (!check_valid_vldi_mode(a)) {
-> +    sel = (a->imm >> 12) & 0x1;
-> +
-> +    if (sel && !check_valid_vldi_mode(a)) {
->           generate_exception(ctx, EXCCODE_INE);
->           return true;
->       }
-> @@ -3594,8 +3596,6 @@ static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
->           return true;
->       }
->   
-> -    sel = (a->imm >> 12) & 0x1;
-> -
->       if (sel) {
->           value = vldi_get_value(ctx, a->imm);
->           vece = MO_64;
+No, _require_o_direct is better because it directly checks if files in
+the scratch directory support O_DIRECT, which is what we need here
+because the test unconditionally opens the file this way:
+
+    -blockdev '{"driver":"file", "cache":{"direct":true, "no-flush":false},
+                "filename":"'"$TEST_IMG.base"'", "node-name":"src-file"}' \
+
+_supported_cache_modes is about the cache mode requested on the command
+line when running qemu-iotests, which is not what we're interested in.
+The relevant call doesn't even consider the command line option. It
+still "fixes" the failure because requesting "none" or "directsync"
+makes it do the O_DIRECT check, too.
+
+But the effect is different: With "_supported_cache_modes none
+directsync", the test will always be skipped if on the command line
+"writeback" was requested (it's the default, so we'll skip the test by
+default - that's a bad idea). With _require_o_direct it will only be
+skipped if the filesystem really doesn't support O_DIRECT.
+
+Kevin
 
 
