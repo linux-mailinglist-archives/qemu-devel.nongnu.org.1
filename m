@@ -2,76 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5EA9B1DA5F
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 16:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E962BB1CB21
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 19:38:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uk1v7-0007I6-ED; Thu, 07 Aug 2025 10:48:41 -0400
+	id 1uji53-0003tG-QA; Wed, 06 Aug 2025 13:37:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uk1v2-00079P-EC
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:48:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uk1uz-0002ZE-0V
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:48:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754578110;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ysT8MU9AF31vkeEwfQ6HxOO/mP9++JBcUib7zXCTAVo=;
- b=SF4o/BwPWotVxhjkb72GKnbUCk9003ry+uucQfrxLXSHfs3ROjlKB8qMuo/1ddGfljlc5X
- 3HnS6teaWosKOwXkcF0C4wzWwDiY3ULt9o7rL2uIDbMPtAiRLOm7RfeXtZ/JLRfAuCi2M9
- lHoPznw6U15rG7EW4m5Sn2KOQz37SSQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-Aq1QZt8lO_KFqxKI8tgN8g-1; Thu,
- 07 Aug 2025 10:48:23 -0400
-X-MC-Unique: Aq1QZt8lO_KFqxKI8tgN8g-1
-X-Mimecast-MFC-AGG-ID: Aq1QZt8lO_KFqxKI8tgN8g_1754578089
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6CCBC18004D4; Thu,  7 Aug 2025 14:48:08 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.191])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A9D67180035C; Thu,  7 Aug 2025 14:48:06 +0000 (UTC)
-Date: Wed, 6 Aug 2025 12:56:34 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH trivial] tests/qemu-iotests/tests/mirror-sparse: actually
- require O_DIRECT
-Message-ID: <20250806165634.GC51368@fedora>
-References: <20250806075635.3290-1-mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <markjdb@gmail.com>) id 1uji50-0003sM-RH
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 13:37:34 -0400
+Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <markjdb@gmail.com>) id 1uji4y-0000bH-SK
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 13:37:34 -0400
+Received: by mail-qk1-x72d.google.com with SMTP id
+ af79cd13be357-7e050bd078cso10017785a.3
+ for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 10:37:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1754501851; x=1755106651; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+ :reply-to; bh=W5Gc8j+Yah2WBVa5D5q+f9Gu479kK/ramh6diozHE8o=;
+ b=jPgFTPy4zB8z7iicz1tJUe5s2Ss7Vai9k7bodNG0c3OudX2KhXwih97qTqhi5adVWV
+ Z9BVPO8xcUnTPJ1n8P47745O+5fnsMMs4APgD/dS7fzpM29VKy+oXJzjwJ6YAbmsq0h/
+ KbEkZ2yRJJYLRMmWKg+1XhqynCSUBfCUVQvRcYa2VievHR74yYk7hIF5Ih8g6rmcKtOz
+ 15SjQnhEzsjCi46047/bMXhkU5qcovX3Pci0mlU6bL+c/XSTyvc17Zf775nRqUp4yQZ2
+ 61Xiu+W6KViRg9PtsxcW1C6Ti4M+HXmFV4nLGPlALAE/5tsN7egleZmQFgR1MzQeXL1J
+ 72Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754501851; x=1755106651;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=W5Gc8j+Yah2WBVa5D5q+f9Gu479kK/ramh6diozHE8o=;
+ b=fYibsW813jKvq3LbE2boeNZughOVeEXaNqhgyjb0xOTGO1xN0O1B04SJ6lY/3w5Ub1
+ ARXx+xmZTV54AdAQPJ7sgMxVhMkLTKfWh7Ht1HfIZQ5oOdw2FXO8O6Ce0zauUyBaQ7RI
+ m0ICyLJoDkeIWKbncBIfEgKcHUtjWvGPFpbBzwS7NBUVJX3sFrKzUez0DyHH8rC/RiFG
+ eGWpzN2HleHxR6DmooD0qIacVo0gcO8NDADY4FovmAeLx8QSmaEtuSq1YssIjtABS4ec
+ 2SD2LoGTcu97MtSKCzrPXC5XFyvtWP6Ihtc7DkM4vIU5q82ciPZDVp0LMSEP834HUst6
+ T6qw==
+X-Gm-Message-State: AOJu0YzpaOTZWFe8eIoUKAzWOENubLwD553b1PFn37vO4KnmPskf3FU0
+ qskHHQfzwwOWI++ewQKuq2LlpxtLU3XwSQc14q+hw7lepFVNCfa42T9P
+X-Gm-Gg: ASbGncvAHmRHpJ+yiAe1f1im6GCLlR3nmRRzSmlZUaoAWHExIkJ19Vfc3fLmsnC/6P8
+ ehHFRgDSyaKJXygh6b7wXmxQgxvkx2NDuEfHUkf4dtz8I0zygYvCNK6pFA5zbSi00eggOuy10dK
+ QfBlJcgblSSRCAxvwyoHRToD0j6RArLeu1NvmDiQn4KtACN/sj++EtAHF4tqJSA1y71mgHiRqDB
+ D8ryvuruCC0BqqpR5RkUSbhx1cxRNb74Fg88k7cxeg6xO3gUi8nCaXcycsEx4n/D9J3S7jVH2WC
+ FW3CpxUxC/W/jPrsAc1RCfG+PDO8zxCezKWvTiO386Aa2HOd3VPqr/iMurJD/8/xnHBMY7ya88/
+ 9xd1yrZV6rjtogKTHXuRSDfy2kQP1hmGktrabUk6Et65c1do=
+X-Google-Smtp-Source: AGHT+IFIuH+2xAoVztu+oI7P+nuvkKuKozPjVAZ23k/qqr9rtYv4sgOsg50lrKNEZenGn5k1FKbklA==
+X-Received: by 2002:a05:622a:1342:b0:4b0:777f:6287 with SMTP id
+ d75a77b69052e-4b09250414dmr36547601cf.3.1754501851042; 
+ Wed, 06 Aug 2025 10:37:31 -0700 (PDT)
+Received: from nuc (192-0-220-237.cpe.teksavvy.com. [192.0.220.237])
+ by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4b06ac5bd99sm41014781cf.21.2025.08.06.10.37.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Aug 2025 10:37:30 -0700 (PDT)
+Date: Wed, 6 Aug 2025 13:37:28 -0400
+From: Mark Johnston <markj@freebsd.org>
+To: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Cc: qemu-devel@nongnu.org, Greg Kurz <groug@kaod.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH] 9pfs: Add FreeBSD support
+Message-ID: <aJOS2A9dRdqks-fp@nuc>
+References: <aIEGDjMex-DG-pmr@nuc> <1989897.fkXqvmx5VE@silver>
+ <aIos9lb1dBuDBq2E@nuc> <2268148.dRjqHlHdj4@silver>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="b7AolTyeASpm/hW9"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250806075635.3290-1-mjt@tls.msk.ru>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <2268148.dRjqHlHdj4@silver>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72d;
+ envelope-from=markjdb@gmail.com; helo=mail-qk1-x72d.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+ HK_RANDOM_ENVFROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,51 +100,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Aug 05, 2025 at 01:49:44PM +0200, Christian Schoenebeck wrote:
+> On Wednesday, July 30, 2025 4:32:22 PM CEST Mark Johnston wrote:
+> > On Tue, Jul 29, 2025 at 06:09:35PM +0200, Christian Schoenebeck wrote:
+> > > On Wednesday, July 23, 2025 5:55:58 PM CEST Mark Johnston wrote:
+> [...]
+> > Thank you for taking a look.
+> > 
+> > I'll certainly be around to help deal with issues and patches relating
+> > to 9pfs+FreeBSD hosts.  It's hard to prove that, but for what it's worth
+> > I use QEMU fairly extensively for FreeBSD development when I can't use
+> > the native hypervisor, and that's not likely to change anytime soon.
+> > 
+> > Would adding myself to MAINTAINERS for virtio-9pfs (or a new
+> > virtio-9pfs-freebsd category) be appropriate in that case?
+> 
+> Good to hear that you will be around!
+> 
+> I leave it to you whether you want to add yourself as reviewer of patches to
+> MAINTAINER's 9pfs section.
 
---b7AolTyeASpm/hW9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ok.  I'll leave myself off the list for now then.  If the patch is
+applied and any FreeBSD-related problems crop up, please let me know of
+course I'll try to fix them ASAP.  If this turns out to be a regular
+occurrence (hopefully not), I can add myself and be more proactive about
+responding to patches or bug reports.
 
-On Wed, Aug 06, 2025 at 10:56:31AM +0300, Michael Tokarev wrote:
-> Commit c0ddcb2cbc146e introduced the test which uses cache=3Ddirect
-> mode, without checking if the scratch filesystem supports O_DIRECT.
-> A subsequent commit, afeb002e0ad49d, tried to fix that issue, but
-> instead of checking for o_direct, it checked for
-> `_supported_cache_modes none directsync`, which is not what the
-> original mirror-sparse test uses.  Fix both by actually checking
-> for o_direct.
->=20
-> Fixes: c0ddcb2cbc146e "tests: Add iotest mirror-sparse for recent patches"
-> Fixes: afeb002e0ad49d "tests/qemu-iotests/tests/mirror-sparse: skip if O_=
-DIRECT is not supported"
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-> ---
-> This is what happens when rushing for last-minute
-> pre-release fixes..  I'm sorry for this.
->=20
->  tests/qemu-iotests/tests/mirror-sparse | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
+> > > > index a1924fe3f0..7315b32591 100644
+> > > > --- a/hw/9pfs/9p-util.h
+> > > > +++ b/hw/9pfs/9p-util.h
+> > > > @@ -21,6 +21,14 @@
+> > > >  #define O_PATH_9P_UTIL 0
+> > > >  #endif
+> > > >  
+> > > > +#ifdef CONFIG_FREEBSD
+> > > > +/*
+> > > > + * FreeBSD does not have these flags, so we can only emulate them (racily).
+> > > > + */
+> > > > +#define XATTR_CREATE    0x1
+> > > > +#define XATTR_REPLACE   0x2
+> > > > +#endif
+> > > > +
+> > > 
+> > > What do you mean with "racily" here?
+> > 
+> > FreeBSD cannot atomically check for the existence of and set an extattr,
+> > the system call interface simply doesn't support it today.  This means
+> > that fsetxattrat_nofollow() needs back-to-back system calls to check for
+> > the existence of an attribute and then potentially set it.
+> 
+> Ah, I was misinterpreting your comment as if it were "racily defining" the
+> macros. Maybe change the comment to something like "... can only emulate their
+> intended behaviour (racily) ...".
 
-Please include this in a pull request for QEMU v10.1.0-rc3. Thanks!
-
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-
---b7AolTyeASpm/hW9
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmiTiUIACgkQnKSrs4Gr
-c8j+fgf/a5//Dw5Oo+WWm1NPqUZzkxtzBsrLrVKCy0uyRuDuMQ81gN7XYL+c6uxs
-H/0OIO0r3Chqv8Z7QVVb4Eh4WszWZIuebShi8DN1tqOYkyLDEwBWc+YtZDNUjuPx
-Fsv4gLGKSBLdChNoK4k9lwlQ93maV9QAFhQ+mlbxvQ4W3xqiarGoNOgaE0BkmNFE
-l08HOWDim+xx8yASfeA9uHWhDWDqq1zGSAgNIjIS7+zVNyjS8kdKv1JtIJIGGMM3
-Tbaob8CsJHdnUE/AjAUcjZh5jb6bDjxM0KETrYHG9q25XAGOJ9QqOGP520V/o0aL
-mSDw3Rv/SCtjr8FBRIYsO4b/usQNWA==
-=qtbB
------END PGP SIGNATURE-----
-
---b7AolTyeASpm/hW9--
-
+Done.  I'll send out a v2 shortly.
 
