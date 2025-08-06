@@ -2,88 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A40BB1CA42
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 19:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF23B1CA49
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Aug 2025 19:07:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujhZi-0003RI-Nm; Wed, 06 Aug 2025 13:05:14 -0400
+	id 1ujhbX-0006il-90; Wed, 06 Aug 2025 13:07:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1ujgR1-0003JI-Uy
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 11:52:13 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ujgTV-00038f-GH
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 11:54:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1ujgR0-0003EB-2O
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 11:52:11 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ujgTT-0003Nf-TK
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 11:54:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754495527;
+ s=mimecast20190719; t=1754495682;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=oeRoLziABdp8UyojfXFyKy01tmnu0/cdkrdzNSIePiI=;
- b=gtXhwZM+9OuCYGs2KRueJq3DTMaSw3dlaPmZ2waKpM2Higi5NNbzALwc2rE1tL/4o+FpD/
- WU2h4fSp22cJgS+8rQMPypnuRW6syAh9THYQ8s/DfrnHK27CaM6emHf83ViDk4X0j8Gq09
- ehLkrCs/j9agkWMMVxP7DTxYvyzc+Kw=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=EIEji9Eqki5ALEg2qh1z0G+6HF4P5wC1eIhCXQwtZus=;
+ b=YJX/BsUQLyqddoIReqj+sbNSmoMU8sAiXUPeT6wM2fZ+IZlvz+ZEH2TQo0wQ+oMj6YLpbY
+ AUjk4TFFvcj8PWEaaUvnYtdEBf0i0IJ/Y8Mbpmi50q4+Lw8COFUbHmePrI/PmsSL4/t/uS
+ XOwyAg3VMQfum9YCddMsBEo9yMkFr48=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-332-NAntp79dPSKtC4WoXcicFQ-1; Wed, 06 Aug 2025 11:52:05 -0400
-X-MC-Unique: NAntp79dPSKtC4WoXcicFQ-1
-X-Mimecast-MFC-AGG-ID: NAntp79dPSKtC4WoXcicFQ_1754495525
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-478f78ff9beso1283921cf.1
- for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 08:52:05 -0700 (PDT)
+ us-mta-204-ptJAf4ckMQqGPD9-dtaQGQ-1; Wed, 06 Aug 2025 11:54:41 -0400
+X-MC-Unique: ptJAf4ckMQqGPD9-dtaQGQ-1
+X-Mimecast-MFC-AGG-ID: ptJAf4ckMQqGPD9-dtaQGQ_1754495680
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-458bb0e68c6so360815e9.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 08:54:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754495525; x=1755100325;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oeRoLziABdp8UyojfXFyKy01tmnu0/cdkrdzNSIePiI=;
- b=BgCaTf3OUYnr+wr9EQjqjMQZiBc6b29bkQIekcCDJKmgm/A/4wUlR/7cqZUrhJWvtG
- GWGUmzAbKQiAVYZTJaeuAW3svkPtwAmwRaBV/hpxDvThwuCtvgup0WdxJKRMmZ899H16
- oq2D5szZAUVPH2QfZBdqeXIv+DN4Vduf7hbtETIeR9irJva0t0XIJdSGraSXkooS8HcV
- gTZnqLysBC4R4eQZx3aSLv2eAjHWJE12yOemiRMR+wxzpLfarcEZPlSsweURD63i2E2R
- wzHpUx3gcXViBvruffdFnEYqC/yGO0FKanwsI/HqsF7y0IUVgZvWlmFlUrVQ9B5rNnqz
- r2tw==
+ d=1e100.net; s=20230601; t=1754495680; x=1755100480;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EIEji9Eqki5ALEg2qh1z0G+6HF4P5wC1eIhCXQwtZus=;
+ b=cFSy+6EmB0s9HjYOUZOLj2yxKYkQQeswTE9FmCIbRVB7t+z6Qo8xMjMFSIFxxyxhxO
+ oehUg0pzwg9j+lp1aeYv0BWlKJmhu7sgU0Na/fl5uNgkKRkEQJIUoajORdi/eYPmOTpM
+ ++Pea1hlokmADwvnln4kHaaivmI0xjmzfijT5xlI/s7S0fitfGp5bv23sFTkUJqHRpCF
+ UBhjBLK4s1596cGpiJgtv7WJg09Oxv+JfwYZWIeFc91klqdkncHQoawYLmbChJtY+prB
+ vUQ9awyDqwTthIcKRfkDRxteV4SgnrNjbPkfe4bUCSZtp4f9C0HKh/fJeN5BWRfAs9+g
+ hOgA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU8hqLLLA6OKzlj9VeBmHT/CFKDIho9L5S8AcXeoLBFs/zAVPPfBqss62OxNMsBgmjrC7zA8B6/4c+K@nongnu.org
-X-Gm-Message-State: AOJu0YwxPDvcwuJ+oMjXe0wyTVQl+qm+dsaeO458KcAwhQn4pCAtdqu2
- x/eoCbGcUH2QXIROn/z5CzTAmtDY2slEZvoT+v5ONIwtn0JpHEogz6cQMSenPLCzsECiqiNvKWa
- 4aavjWqrW0cys2ovrADUPh1RbWM9E8+5AQbtW9M5NK01Gc59+99kgiSsK
-X-Gm-Gg: ASbGncvw9wh0jdypN9VRvUHPTa6tyjEcGTgqGWH7n4DtK0aAo2ZCOJevTujD9lJbiJp
- YAYMrFD1cSWoB/jy0SbJDCin0h185paHxo/07X9T6w2w+GFHLMWO74Rj3THHV4NqMiaEYsERyEP
- NKrL7uuvNtZeK5/RZDf3TmMM0g4j1HtHC4Bk2bkfIcHJ8Mw0iUNXh/K4sNT0tLIdodaVHBJzg6p
- J/yItAqzbH5SDb8Nl00nkocfkIIwE0M8pokp+UBmFrfNMvunxu7/xXTAHd+ZrsgRxQFN9AbY3Bi
- ZoYWISJBwkAPf1kkgCQbXNLSpYjRpI7z
-X-Received: by 2002:ac8:7c49:0:b0:4b0:6cfd:bbf2 with SMTP id
- d75a77b69052e-4b0912cb826mr50021951cf.11.1754495524719; 
- Wed, 06 Aug 2025 08:52:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6hVO/ynlTR6J6ukpO8ktBngaVHggbbDgd36wBKIqlUcFfbHrMjvszLjLgmpHABek/OrQSxQ==
-X-Received: by 2002:ac8:7c49:0:b0:4b0:6cfd:bbf2 with SMTP id
- d75a77b69052e-4b0912cb826mr50021491cf.11.1754495524297; 
- Wed, 06 Aug 2025 08:52:04 -0700 (PDT)
-Received: from x1.local ([174.89.135.171]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4af1bc47cd9sm52400181cf.13.2025.08.06.08.52.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Aug 2025 08:52:03 -0700 (PDT)
-Date: Wed, 6 Aug 2025 11:51:51 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Hamza Khan <hamza.khan@nutanix.com>
-Subject: Re: [RFC V2 0/8] Live update: tap and vhost
-Message-ID: <aJN6F29tcWu-Gr8y@x1.local>
-References: <1752777568-236368-1-git-send-email-steven.sistare@oracle.com>
- <87cy993mdi.fsf@suse.de>
- <a01be1bc-8604-4ed1-9c22-9fe4b45de595@oracle.com>
+ AJvYcCXnFLl5bV+9d0UbDmKP66EUy2YXnx+1jyuPNjKV+x/q9Qh8f+bjclEJ4lccCE0WiCWQxIcErM96CBKt@nongnu.org
+X-Gm-Message-State: AOJu0Yx6Dm4uhS7Dk/kiIIYhmFBYAbBV5W2ibBQvTKbPfILZusbILjl+
+ jDESkHH+xu757IDxuDvQiWJIFckIXjx8r4h0UP9Wf3Kgcba/8feoXVHGU6wTMcBNAwtnnapXSzy
+ unh/ndDyw3bKT2WCA7qHGPF/QxzEYPVUQQ8n/0HBlGjSxyFkY0tEeqngX
+X-Gm-Gg: ASbGncsHaQS4O/6hpg2oxKB70KaWxA+1d+007JD/AWARSsSdHHJB38ld5hrXEo33U1p
+ A1oLljV/RzSSFTvzV6hJ1gso+U375pYSfnXbhGf7VdUm4q7/7GyYpaJLUkqNbG1D/lwjnlPnsZd
+ xZe69c9vfEFr9C9XkMDHDlIL5/0OfgoTuVRKDjJKIkh/2kFnTUpDP6hpbswwuRV+4d7A0Rcg49a
+ pK+SvmuWxGLHyW0x/ShfMnfpSl6g9rYj4kSLBdkU5iiDtH4chAUBNxXouBoXyflvFf7cMHt4qlQ
+ roEW8OBYvWevFz8ZphLBHSTvTGM/2Iqn33tESYkS+TwuiXZRUHS8uG8ZxWmXIZyRRT6yU8MlErL
+ XdE7+OZ3zQK94R0tc3BVBDwIgEjUr7SNRjxmJxL5bNnem9vGJWNjWLjiGLTXL3bm24g==
+X-Received: by 2002:a05:600c:828f:b0:450:d30e:ff96 with SMTP id
+ 5b1f17b1804b1-459e92c38d3mr26933785e9.0.1754495680036; 
+ Wed, 06 Aug 2025 08:54:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG19szrNjTaOGDyRJz5R0orRkPYvA40KmDB+SLidKfDN7lk8B94unxT2sfnKmrZ9QAVy7F7sA==
+X-Received: by 2002:a05:600c:828f:b0:450:d30e:ff96 with SMTP id
+ 5b1f17b1804b1-459e92c38d3mr26933515e9.0.1754495679576; 
+ Wed, 06 Aug 2025 08:54:39 -0700 (PDT)
+Received: from ?IPV6:2a01:cb01:833:e4a9:b423:d450:c87f:f1f0?
+ (2a01cb010833e4a9b423d450c87ff1f0.ipv6.abo.wanadoo.fr.
+ [2a01:cb01:833:e4a9:b423:d450:c87f:f1f0])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-459e5869cccsm61110435e9.17.2025.08.06.08.54.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Aug 2025 08:54:39 -0700 (PDT)
+Message-ID: <0a634c90-847a-4b75-b36a-bca923527060@redhat.com>
+Date: Wed, 6 Aug 2025 17:54:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a01be1bc-8604-4ed1-9c22-9fe4b45de595@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-10.2 0/4] vfio: Remove 'vfio-platform'
+To: eric.auger@redhat.com, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>
+References: <20250731121947.1346927-1-clg@redhat.com>
+ <22bb66b6-998c-4cb9-a16b-386ff88bb197@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <22bb66b6-998c-4cb9-a16b-386ff88bb197@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,62 +156,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 05, 2025 at 03:53:09PM -0400, Steven Sistare wrote:
-> On 8/5/2025 9:54 AM, Fabiano Rosas wrote:
-> > Steve Sistare <steven.sistare@oracle.com> writes:
-> > 
-> > > Tap and vhost devices can be preserved during cpr-transfer using
-> > > traditional live migration methods, wherein the management layer
-> > > creates new interfaces for the target and fiddles with 'ip link'
-> > > to deactivate the old interface and activate the new.
-> > > 
-> > > However, CPR can simply send the file descriptors to new QEMU,
-> > > with no special management actions required.  The user enables
-> > > this behavior by specifing '-netdev tap,cpr=on'.  The default
-> > > is cpr=off.
-> > > 
-> > > Steve Sistare (8):
-> > >    migration: stop vm earlier for cpr
-> > >    migration: cpr setup notifier
-> > >    vhost: reset vhost devices for cpr
-> > >    cpr: delete all fds
-> > >    Revert "vhost-backend: remove vhost_kernel_reset_device()"
-> > >    tap: common return label
-> > >    tap: cpr support
-> > >    tap: postload fix for cpr
-> > > 
-> > >   qapi/net.json             |   5 +-
-> > >   include/hw/virtio/vhost.h |   1 +
-> > >   include/migration/cpr.h   |   3 +-
-> > >   include/net/tap.h         |   1 +
-> > >   hw/net/virtio-net.c       |  20 +++++++
-> > >   hw/vfio/device.c          |   2 +-
-> > >   hw/virtio/vhost-backend.c |   6 ++
-> > >   hw/virtio/vhost.c         |  32 +++++++++++
-> > >   migration/cpr.c           |  24 ++++++--
-> > >   migration/migration.c     |  38 ++++++++-----
-> > >   net/tap-win32.c           |   5 ++
-> > >   net/tap.c                 | 141 +++++++++++++++++++++++++++++++++++-----------
-> > >   12 files changed, 223 insertions(+), 55 deletions(-)
-> > 
-> > Hi Steve,
-> > 
-> > Patches 1-2 seem to potentially interact with your arm pending
-> > interrupts fix. Do we want them together?
+Hello Eric,
+
+On 8/6/25 14:51, Eric Auger wrote:
+> Hi Cédric,
 > 
-> Good observation, thanks!.  I may need patches 1-2 to completely close
-> the dropped interrupt race.  I will do more testing to verify that.
+> On 7/31/25 2:19 PM, Cédric Le Goater wrote:
+>> Hello,
+>>
+>> The VFIO_PLATFORM device type has been deprecated in the QEMU 10.0
+>> timeframe. QEMU 10.2 is the time for removal.
+>>
+>> The last patch moves vfio-region.h under hw/vfio since it no longer
+>> needs to be a public VFIO interface.
+> "tout ça... pour ça!" as we say in french ;-)
 
-Sorry to respond late.. Could I request (for each of the patches 1 & 2)
-in-code comments explaining the order of events?
+It was not for nothing !
 
-For example, patch 1 moved stop_vm even earlier for CPR.  It used to be
-early because it wants to avoid dirty tracking: this is something I didn't
-realize but remembered after re-read the doc..  Now it further needs to
-avoid the notifiers.  A comment above stop_vm for cpr explaining all these
-order of events would be really helpful (including any necessary doc update).
+vfio-platform explored device passthrough on DT platforms.
+It had limitations which were difficult to address without
+common FW specifications to expose devices. The result is
+neither good or bad, it had its time.
 
--- 
-Peter Xu
+However, the wrong choice would be to keep unused code in an
+upstream project. This would be a burden for the maintainer
+and the overall community.
+
+> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+
+Thanks,
+
+C.
 
 
