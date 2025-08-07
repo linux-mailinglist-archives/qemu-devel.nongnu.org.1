@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17AE6B1DA56
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 16:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 629DBB1DA54
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 16:46:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uk1qg-0004la-Mn; Thu, 07 Aug 2025 10:44:06 -0400
+	id 1uk1qs-0005JO-Db; Thu, 07 Aug 2025 10:44:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uk1pG-0002dW-5H
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:39 -0400
+ id 1uk1pJ-0002ez-4f
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:43 -0400
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uk1pC-00016z-4l
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:36 -0400
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uk1pH-00018U-IR
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:40 -0400
 Received: from localhost.localdomain (unknown [167.220.208.72])
- by linux.microsoft.com (Postfix) with ESMTPSA id BE86A201BC88;
- Thu,  7 Aug 2025 07:42:18 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BE86A201BC88
+ by linux.microsoft.com (Postfix) with ESMTPSA id C2415201BC8F;
+ Thu,  7 Aug 2025 07:42:23 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C2415201BC8F
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1754577743;
- bh=3+/2eC45+m6/AMOWPXDhLwN8zStY/ahX510ZouuUZLE=;
+ s=default; t=1754577748;
+ bh=8/mtb2eWWn+SXc7DzCHe6kt2AAzBbP3Jai1V55zbYYQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=FFK2OMC0izcDhDZFqfmoSQtlRs5yyZSkanOjUuAr4ddN7nve5cr1GYFsK6ahDIhN2
- xnZwPCp6FylCVBeuJRB+bkijc/eF+q/Z3nJysmP8KL7QXIhiCHY9C5rVu4Rz3/BcwL
- xxNwnmZ0+7hGDxl9hlyZnmG/V2NuElMorwgFC3tI=
+ b=r2a1pXtBo3B+gNZRjZigkzXxLkmdBdkTPa0MT3Z393hNfq12ypaWzaQLPwzyXUx5S
+ BJEpelQ5OIiL841QtFsDFpyk9n8n0Ek2a4YZUAgw5ZuwWFtiAiTjDNtijjsbX3W9Kh
+ fY8+2bCNN5qyvmZQkVwh5P5N22liE6JXkwarbC+w=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -48,9 +48,9 @@ Cc: Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Roman Bolshakov <rbolshakov@ddn.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 24/26] docs: Add mshv to documentation
-Date: Thu,  7 Aug 2025 16:39:49 +0200
-Message-Id: <20250807143951.1154713-25-magnuskulke@linux.microsoft.com>
+Subject: [PATCH v3 25/26] MAINTAINERS: Add maintainers for mshv accelerator
+Date: Thu,  7 Aug 2025 16:39:50 +0200
+Message-Id: <20250807143951.1154713-26-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
 References: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
@@ -80,75 +80,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added mshv to the list of accelerators in doc text.
+Adding Magnus Kulke and Wei Liu to the maintainers file for the
+respective folders/files.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- docs/devel/codebase.rst |  2 +-
- qemu-options.hx         | 16 ++++++++--------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ MAINTAINERS | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/docs/devel/codebase.rst b/docs/devel/codebase.rst
-index 2a3143787a..69d8827117 100644
---- a/docs/devel/codebase.rst
-+++ b/docs/devel/codebase.rst
-@@ -48,7 +48,7 @@ yet, so sometimes the source code is all you have.
- * `accel <https://gitlab.com/qemu-project/qemu/-/tree/master/accel>`_:
-   Infrastructure and architecture agnostic code related to the various
-   `accelerators <Accelerators>` supported by QEMU
--  (TCG, KVM, hvf, whpx, xen, nvmm).
-+  (TCG, KVM, hvf, whpx, xen, nvmm, mshv).
-   Contains interfaces for operations that will be implemented per
-   `target <https://gitlab.com/qemu-project/qemu/-/tree/master/target>`_.
- * `audio <https://gitlab.com/qemu-project/qemu/-/tree/master/audio>`_:
-diff --git a/qemu-options.hx b/qemu-options.hx
-index ab23f14d21..ad747eb154 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -28,7 +28,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
-     "-machine [type=]name[,prop[=value][,...]]\n"
-     "                selects emulated machine ('-machine help' for list)\n"
-     "                property accel=accel1[:accel2[:...]] selects accelerator\n"
--    "                supported accelerators are kvm, xen, hvf, nvmm, whpx or tcg (default: tcg)\n"
-+    "                supported accelerators are kvm, xen, hvf, nvmm, whpx, mshv or tcg (default: tcg)\n"
-     "                vmport=on|off|auto controls emulation of vmport (default: auto)\n"
-     "                dump-guest-core=on|off include guest memory in a core dump (default=on)\n"
-     "                mem-merge=on|off controls memory merge support (default: on)\n"
-@@ -66,10 +66,10 @@ SRST
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a07086ed76..7527264f30 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -546,6 +546,21 @@ F: target/i386/whpx/
+ F: accel/stubs/whpx-stub.c
+ F: include/system/whpx.h
  
-     ``accel=accels1[:accels2[:...]]``
-         This is used to enable an accelerator. Depending on the target
--        architecture, kvm, xen, hvf, nvmm, whpx or tcg can be available.
--        By default, tcg is used. If there is more than one accelerator
--        specified, the next one is used if the previous one fails to
--        initialize.
-+        architecture, kvm, xen, hvf, nvmm, whpx, mshv or tcg can be
-+        available. By default, tcg is used. If there is more than one
-+        accelerator specified, the next one is used if the previous one
-+        fails to initialize.
- 
-     ``vmport=on|off|auto``
-         Enables emulation of VMWare IO port, for vmmouse etc. auto says
-@@ -226,7 +226,7 @@ ERST
- 
- DEF("accel", HAS_ARG, QEMU_OPTION_accel,
-     "-accel [accel=]accelerator[,prop[=value][,...]]\n"
--    "                select accelerator (kvm, xen, hvf, nvmm, whpx or tcg; use 'help' for a list)\n"
-+    "                select accelerator (kvm, xen, hvf, nvmm, whpx, mshv or tcg; use 'help' for a list)\n"
-     "                igd-passthru=on|off (enable Xen integrated Intel graphics passthrough, default=off)\n"
-     "                kernel-irqchip=on|off|split controls accelerated irqchip support (default=on)\n"
-     "                kvm-shadow-mem=size of KVM shadow MMU in bytes\n"
-@@ -241,8 +241,8 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
- SRST
- ``-accel name[,prop=value[,...]]``
-     This is used to enable an accelerator. Depending on the target
--    architecture, kvm, xen, hvf, nvmm, whpx or tcg can be available. By
--    default, tcg is used. If there is more than one accelerator
-+    architecture, kvm, xen, hvf, nvmm, whpx, mshv or tcg can be available.
-+    By default, tcg is used. If there is more than one accelerator
-     specified, the next one is used if the previous one fails to
-     initialize.
- 
++MSHV
++M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
++R: Wei Liu <wei.liu@kernel.org>
++S: Supported
++F: accel/mshv/
++F: include/system/mshv.h
++F: include/hw/hyperv/hvgdk*.h
++F: include/hw/hyperv/hvhdk*.h
++
++MSHV CPUs
++M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
++R: Wei Liu <wei.liu@kernel.org>
++S: Supported
++F: target/i386/mshv/
++
+ X86 Instruction Emulator
+ M: Cameron Esfahani <dirty@apple.com>
+ M: Roman Bolshakov <rbolshakov@ddn.com>
 -- 
 2.34.1
 
