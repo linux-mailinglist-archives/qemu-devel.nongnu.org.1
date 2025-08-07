@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE838B1D7C1
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 14:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3408B1D7B5
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 14:19:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujzSD-0003DI-7a; Thu, 07 Aug 2025 08:10:41 -0400
+	id 1ujzTd-0004ZI-Ox; Thu, 07 Aug 2025 08:12:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ujzRy-0002HO-CL; Thu, 07 Aug 2025 08:10:26 -0400
+ id 1ujzSI-0003tn-BI; Thu, 07 Aug 2025 08:10:46 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ujzRv-0005Bp-6r; Thu, 07 Aug 2025 08:10:26 -0400
+ id 1ujzSG-0005Cn-1o; Thu, 07 Aug 2025 08:10:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754568623; x=1786104623;
+ t=1754568644; x=1786104644;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zfMJb0g3wXJyLqYM/+6g21n/rbDXZL8PB4EtRlUBfCI=;
- b=cjrPpsSq8SoJRt3DOpM7dreupnJUpeYWsnNXS1kI4oAwv8jf6sfAL55g
- nIjM0HKWmie6nQwm6qE2BLaxFXlGwJ97k6dlgAEtfTNtyJlpwtqVhKhpK
- ykVRkmED5Rt+J3VNzz+FwxdPVCj7gWMZpE0YMoZUsLQyAQogQJhDjg2vK
- DiY72oMO0i59sVUXQ1Yqd9bdNAAHvPuWY85z0vDcfn5fMIlesd81BqNq9
- ZZNgLx0yoZVkyY7nRqX9kBNMqESNxf5ymHVjBAblZY/wLmSjfOq68Kbgk
- nkhSSk75B0En7vEGQGVGgZzb1Wxy/6fU5XT8cle8KuJoSNQ6sMnTZ4vK9 g==;
-X-CSE-ConnectionGUID: wo9g8YbnSM6/F6wDmYGlWg==
-X-CSE-MsgGUID: GnXvD7CpRvyh78dCgjPo5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="57036846"
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="57036846"
+ bh=ICNg+pbeHF8H9llJc/4axDzWq6vSvnR3oi+HF/P7AgQ=;
+ b=S4yhd1fKstoBo3hqWgllUKi98kRNAiLlu+qoDHhRofm5k/OcBjKSYudl
+ C+Vl9rSQOFLpdAo0aLUxgh7rWlQ8ONRwWMwqaWhauQvE+7W+U1BfVFBsh
+ KYbaH/WgQeWsfhT0fQ8cZqtOaJY4G95bvEUsnulEH/ZcGvdKKWLQVCucP
+ 8TgXXX3Bc2UYzmpOjEEEUnhHdFcPeV2nrrD7zScJuZ3KG0mOZh9EiAXaD
+ TDrJAeZkBqy8EKSD07ITKznPTQqYsGzUqwXPyeDLF4UifJRwyeQhLgHVU
+ 3Cv1aOT2c0bqk0C8FMPut46qxxUUKyhbqazxloK+6dbzOoMRGlseMfJq4 g==;
+X-CSE-ConnectionGUID: r4uizmZQScmmECee7Mlj2Q==
+X-CSE-MsgGUID: 4aIVwCjcQnaT9Urz4ujh1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="57036861"
+X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="57036861"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2025 05:10:05 -0700
-X-CSE-ConnectionGUID: CufdCPrmTwSW55ApQmSRqA==
-X-CSE-MsgGUID: RMGy/1g2TpKZrhebzThF1g==
+ 07 Aug 2025 05:10:09 -0700
+X-CSE-ConnectionGUID: 0hU21DClSCOqIceceX82LQ==
+X-CSE-MsgGUID: wrC6lw8VRGC/QhT8EEJ2kw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="164701168"
+X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="164701194"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 07 Aug 2025 05:10:02 -0700
+ by orviesa009.jf.intel.com with ESMTP; 07 Aug 2025 05:10:06 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>,
@@ -51,9 +51,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
  Dapeng Mi <dapeng1.mi@linux.intel.com>,
  Chuanxiao Dong <chuanxiao.dong@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 19/26] memory: Add MemoryRegionSection based misc helpers
-Date: Thu,  7 Aug 2025 20:30:20 +0800
-Message-Id: <20250807123027.2910950-20-zhao1.liu@intel.com>
+Subject: [RFC 20/26] memory: Add wrappers of intermediate steps for read/write
+Date: Thu,  7 Aug 2025 20:30:21 +0800
+Message-Id: <20250807123027.2910950-21-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250807123027.2910950-1-zhao1.liu@intel.com>
 References: <20250807123027.2910950-1-zhao1.liu@intel.com>
@@ -84,140 +84,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the following helpers:
- * section_access_allowed()
-   - used to check access in GuestMemory::try_access().
+Add these 2 wrappers to allow bindgen to generate the bindings based on
+MemoryRegionSection:
+ * section_rust_write_continue_step()
+ * section_rust_read_continue_step()
 
- * section_covers_region_addr()
-   - used to implement GuestMemoryRegion::check_address().
-
- * section_get_host_addr()
-   - used to implement GuestMemoryRegion::get_host_address().
-
- * section_fuzz_dma_read()
-   - used to insert fuzz hook before read/load.
+Then Rust side could be able to re-build a full write/read processes as
+address_space_write()/address_space_read_full() did.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- include/system/memory.h | 56 +++++++++++++++++++++++++++++++++++++++++
- system/physmem.c        | 30 ++++++++++++++++++++++
- 2 files changed, 86 insertions(+)
+ include/system/memory.h | 51 +++++++++++++++++++++++++++++++++++++++++
+ system/physmem.c        | 16 +++++++++++++
+ 2 files changed, 67 insertions(+)
 
 diff --git a/include/system/memory.h b/include/system/memory.h
-index eab69e15e10f..110ad0a3b590 100644
+index 110ad0a3b590..a75c8c348f58 100644
 --- a/include/system/memory.h
 +++ b/include/system/memory.h
-@@ -3357,6 +3357,62 @@ address_space_write_cached(MemoryRegionCache *cache, hwaddr addr,
- MemTxResult address_space_set(AddressSpace *as, hwaddr addr,
-                               uint8_t c, hwaddr len, MemTxAttrs attrs);
+@@ -3413,6 +3413,57 @@ uint8_t *section_get_host_addr(const MemoryRegionSection *section,
+ void section_fuzz_dma_read(MemoryRegionSection *section,
+                            hwaddr addr, hwaddr len);
  
 +/**
-+ * section_access_allowed
++ * section_rust_write_continue_step: write to #MemoryRegionSection.
++ *
++ * Not: This function should only used by Rust side, and user shouldn't
++ * call it directly!
++ *
++ * This function provides a wrapper of flatview_write_continue_step(),
++ * and allows Rust side to re-build a full write process as
++ * address_space_write() did.
++ *
++ * Should be called from an RCU critical section.
 + *
 + * @section: #MemoryRegionSection to be accessed.
 + * @attrs: memory transaction attributes.
-+ * @addr: address within that memory region.
-+ * @len: the number of bytes to access.
++ * @buf: buffer with the data to be written.
++ * @len: the number of bytes to write.
++ * @mr_addr: address within that memory region.
++ * @l: the actual length of the data is written after function returns.
 + *
-+ * Check if a memory transaction is allowed.
-+ *
-+ * Returns: true if transaction is allowed, false if denied.
++ * Return a MemTxResult indicating whether the operation succeeded
++ * or failed (eg unassigned memory, device rejected the transaction,
++ * IOMMU fault).
 + */
-+bool section_access_allowed(MemoryRegionSection *section,
-+                            MemTxAttrs attrs, hwaddr addr,
-+                            hwaddr len);
++MemTxResult section_rust_write_continue_step(MemoryRegionSection *section,
++    MemTxAttrs attrs, const uint8_t *buf, hwaddr len, hwaddr mr_addr, hwaddr *l);
 +
 +/**
-+ * section_covers_region_addr
++ * section_read_continue_step: read from #MemoryRegionSection.
++ *
++ * Not: This function should only used by Rust side, and user shouldn't
++ * call it directly!
++ *
++ * This function provides a wrapper of flatview_read_continue_step(),
++ * and allows Rust side to re-build a full write process as
++ * address_space_read_full() did.
++ *
++ * Should be called from an RCU critical section.
 + *
 + * @section: #MemoryRegionSection to be accessed.
-+ * @region_addr: memory region address within the region, which is
-+ *               pointed by #MemoryRegionSection.
++ * @attrs: memory transaction attributes.
++ * @buf: buffer to be written.
++ * @len: the number of bytes is expected to read.
++ * @mr_addr: address within that memory region.
++ * @l: the actual length of the data is read after function returns.
 + *
-+ * Check if a region address is coverd by #MemoryRegionSection.
-+ *
-+ * Returns: true if transaction is allowed, false if denied.
++ * Return a MemTxResult indicating whether the operation succeeded
++ * or failed.
 + */
-+bool section_covers_region_addr(const MemoryRegionSection *section,
-+                                hwaddr region_addr);
-+
-+/**
-+ * section_get_host_addr
-+ *
-+ * @section: #MemoryRegionSection to be accessed.
-+ * @region_addr: memory region address within the region, which is
-+ *               pointed by #MemoryRegionSection.
-+ *
-+ * Get the pointer to the host address.
-+ *
-+ * Returns: pointer to the host address.
-+ */
-+uint8_t *section_get_host_addr(const MemoryRegionSection *section,
-+                               hwaddr region_addr);
-+
-+/**
-+ * section_fuzz_dma_read
-+ *
-+ * @section: #MemoryRegionSection to be accessed.
-+ * @addr: memory address to be fuzzed.
-+ * @len: length of the memory
-+ *
-+ * This function is wrapper of fuzz_dma_read_cb().
-+ */
-+void section_fuzz_dma_read(MemoryRegionSection *section,
-+                           hwaddr addr, hwaddr len);
++MemTxResult section_read_continue_step(MemoryRegionSection *section,
++    MemTxAttrs attrs, uint8_t *buf, hwaddr len, hwaddr mr_addr, hwaddr *l);
 +
  /*
   * Inhibit technologies that require discarding of pages in RAM blocks, e.g.,
   * to manage the actual amount of memory consumed by the VM (then, the memory
 diff --git a/system/physmem.c b/system/physmem.c
-index 8aaaab4d3a74..e06633f4d8a2 100644
+index e06633f4d8a2..0c30dea775ca 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -320,6 +320,29 @@ static inline bool section_covers_addr(const MemoryRegionSection *section,
-                              int128_getlo(section->size), addr);
+@@ -3119,6 +3119,14 @@ static MemTxResult flatview_read_continue_step(MemTxAttrs attrs, uint8_t *buf,
+     }
  }
  
-+bool section_covers_region_addr(const MemoryRegionSection *section,
-+                                hwaddr region_addr)
++MemTxResult
++section_read_continue_step(MemoryRegionSection *section, MemTxAttrs attrs,
++                           uint8_t *buf, hwaddr len, hwaddr mr_addr,
++                           hwaddr *l)
 +{
-+    return section->offset_within_region <= region_addr &&
-+           section->offset_within_region + int128_get64(section->size) >= region_addr;
++    return flatview_read_continue_step(attrs, buf, len, mr_addr, l, section->mr);
 +}
 +
-+uint8_t *section_get_host_addr(const MemoryRegionSection *section,
-+                               hwaddr region_addr)
-+{
-+    MemoryRegion *mr = section->mr;
-+    assert(mr && mr->ram_block);
-+
-+    return qemu_map_ram_ptr(mr->ram_block,
-+                            section->offset_within_region + region_addr);
-+}
-+
-+void section_fuzz_dma_read(MemoryRegionSection *section,
-+                           hwaddr addr, hwaddr len)
-+{
-+    fuzz_dma_read_cb(addr, len, section->mr);
-+}
-+
- static MemoryRegionSection *phys_page_find(AddressSpaceDispatch *d, hwaddr addr)
- {
-     PhysPageEntry lp = d->phys_map, *p;
-@@ -2947,6 +2970,13 @@ static bool memory_region_access_allowed(MemoryRegion *mr, MemTxAttrs attrs,
-     return false;
+ /* Called within RCU critical section.  */
+ MemTxResult flatview_read_continue(FlatView *fv, hwaddr addr,
+                                    MemTxAttrs attrs, void *ptr,
+@@ -3707,6 +3715,14 @@ static MemTxResult address_space_write_continue_cached(MemTxAttrs attrs,
+     return result;
  }
  
-+bool section_access_allowed(MemoryRegionSection *section,
-+                            MemTxAttrs attrs, hwaddr addr,
-+                            hwaddr len)
++MemTxResult
++section_rust_write_continue_step(MemoryRegionSection *section, MemTxAttrs attrs,
++                                 const uint8_t *buf, hwaddr len, hwaddr mr_addr,
++                                 hwaddr *l)
 +{
-+    return memory_region_access_allowed(section->mr, attrs, addr, len);
++    return flatview_write_continue_step(attrs, buf, len, mr_addr, l, section->mr);
 +}
 +
- static MemTxResult flatview_write_continue_step(MemTxAttrs attrs,
-                                                 const uint8_t *buf,
-                                                 hwaddr len, hwaddr mr_addr,
+ /* Called within RCU critical section.  */
+ static MemTxResult address_space_read_continue_cached(MemTxAttrs attrs,
+                                                       void *ptr, hwaddr len,
 -- 
 2.34.1
 
