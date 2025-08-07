@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA98B1DA59
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 16:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38BD4B1DA4B
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 16:45:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uk1pV-0002pf-EV; Thu, 07 Aug 2025 10:42:54 -0400
+	id 1uk1p9-0001oc-JN; Thu, 07 Aug 2025 10:42:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uk1oj-0000XE-NV
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:08 -0400
+ id 1uk1on-0000cf-UZ
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:11 -0400
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uk1oh-00014j-Du
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:05 -0400
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uk1om-00015c-DE
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:09 -0400
 Received: from localhost.localdomain (unknown [167.220.208.72])
- by linux.microsoft.com (Postfix) with ESMTPSA id 0536B201BC82;
- Thu,  7 Aug 2025 07:41:57 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0536B201BC82
+ by linux.microsoft.com (Postfix) with ESMTPSA id 277A1201BC95;
+ Thu,  7 Aug 2025 07:42:02 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 277A1201BC95
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1754577722;
- bh=qeH8rVcH5EfaYzXk1O1Z3GxVn9KDat5zIh6aj1YBlbw=;
+ s=default; t=1754577727;
+ bh=mMv86KD3V67oVebba8l5rBp4oHWEZhUH0wYWCzvvwqQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=F14SEMl0htnc/Nftkz8aY19FdrgLf6NzllLLOXuGyy/KAkAcJxdWVXpaOUAQXzrNe
- SBLGTZNLZfsH/lBO9FPt3aFWEueTKSYYo/1PUgKuvlCcP65DxN2z46PmR1rHBzPHiU
- HrrcoqMC8jn7yIgDZ4dbLz939Fzr2Nhbo9bskIYo=
+ b=jzeKjY3ZAa9blCel46xnxtS0vElu5Lkuna+BVJQa7VJKmNdfmWs8sPXF1WfmlZHDE
+ iHuyaR2zE06lddRKuJKo2Ta7Dpjnl71g3AsruQd3a1sv7gpU1iQENzxaFi01xYmbmF
+ p195jNR6lwqakKxoywXhGNaQrPqT2zC9u+3xMGIM=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -48,10 +48,9 @@ Cc: Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Roman Bolshakov <rbolshakov@ddn.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 20/26] target/i386/mshv: Integrate x86 instruction
- decoder/emulator
-Date: Thu,  7 Aug 2025 16:39:45 +0200
-Message-Id: <20250807143951.1154713-21-magnuskulke@linux.microsoft.com>
+Subject: [PATCH v3 21/26] target/i386/mshv: Write MSRs to the hypervisor
+Date: Thu,  7 Aug 2025 16:39:46 +0200
+Message-Id: <20250807143951.1154713-22-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
 References: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
@@ -81,281 +80,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Connect the x86 instruction decoder and emulator to the MSHV backend
-to handle intercepted instructions. This enables software emulation
-of MMIO operations in MSHV guests. MSHV has a translate_gva hypercall
-that is used to accessing the physical guest memory.
-
-A guest might read from unmapped memory regions (e.g. OVMF will probe
-0xfed40000 for a vTPM). In those cases 0xFF bytes is returned instead of
-aborting the execution.
+Push current model-specific register (MSR) values to MSHV's vCPUs as
+part of setting state to the hypervisor.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- accel/mshv/mem.c            |  65 +++++++++++++++++++
- accel/mshv/mshv-all.c       |   2 +-
- include/system/mshv.h       |   6 +-
- target/i386/mshv/mshv-cpu.c | 126 +++++++++++++++++++++++++++++++++++-
- 4 files changed, 196 insertions(+), 3 deletions(-)
+ target/i386/mshv/mshv-cpu.c | 68 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 66 insertions(+), 2 deletions(-)
 
-diff --git a/accel/mshv/mem.c b/accel/mshv/mem.c
-index 8039f35680..150fb723af 100644
---- a/accel/mshv/mem.c
-+++ b/accel/mshv/mem.c
-@@ -58,6 +58,71 @@ static int map_or_unmap(int vm_fd, const MshvMemoryRegion *mr, bool map)
-     return set_guest_memory(vm_fd, &region);
- }
- 
-+static int handle_unmapped_mmio_region_read(uint64_t gpa, uint64_t size,
-+                                            uint8_t *data)
-+{
-+    warn_report("read from unmapped mmio region gpa=0x%lx size=%lu", gpa, size);
-+
-+    if (size == 0 || size > 8) {
-+        error_report("invalid size %lu for reading from unmapped mmio region",
-+                     size);
-+        return -1;
-+    }
-+
-+    memset(data, 0xFF, size);
-+
-+    return 0;
-+}
-+
-+int mshv_guest_mem_read(uint64_t gpa, uint8_t *data, uintptr_t size,
-+                        bool is_secure_mode, bool instruction_fetch)
-+{
-+    int ret;
-+    MemTxAttrs memattr = { .secure = is_secure_mode };
-+
-+    if (instruction_fetch) {
-+        trace_mshv_insn_fetch(gpa, size);
-+    } else {
-+        trace_mshv_mem_read(gpa, size);
-+    }
-+
-+    ret = address_space_rw(&address_space_memory, gpa, memattr, (void *)data,
-+                           size, false);
-+    if (ret == MEMTX_OK) {
-+        return 0;
-+    }
-+
-+    if (ret == MEMTX_DECODE_ERROR) {
-+        return handle_unmapped_mmio_region_read(gpa, size, data);
-+    }
-+
-+    error_report("failed to read guest memory at 0x%lx", gpa);
-+    return -1;
-+}
-+
-+int mshv_guest_mem_write(uint64_t gpa, const uint8_t *data, uintptr_t size,
-+                         bool is_secure_mode)
-+{
-+    int ret;
-+    MemTxAttrs memattr = { .secure = is_secure_mode };
-+
-+    trace_mshv_mem_write(gpa, size);
-+    ret = address_space_rw(&address_space_memory, gpa, memattr, (void *)data,
-+                           size, true);
-+    if (ret == MEMTX_OK) {
-+        return 0;
-+    }
-+
-+    if (ret == MEMTX_DECODE_ERROR) {
-+        warn_report("write to unmapped mmio region gpa=0x%lx size=%lu", gpa,
-+                    size);
-+        return 0;
-+    }
-+
-+    error_report("Failed to write guest memory");
-+    return -1;
-+}
-+
- static int set_memory(const MshvMemoryRegion *mshv_mr, bool add)
- {
-     int ret = 0;
-diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
-index 65166e82b0..4f4c4b9639 100644
---- a/accel/mshv/mshv-all.c
-+++ b/accel/mshv/mshv-all.c
-@@ -431,7 +431,7 @@ static int mshv_init(AccelState *as, MachineState *ms)
-         return -1;
-     }
- 
--    mshv_init_cpu_logic();
-+    mshv_init_mmio_emu();
- 
-     mshv_init_msicontrol();
- 
-diff --git a/include/system/mshv.h b/include/system/mshv.h
-index 7f2a7dcb8a..c527acc08c 100644
---- a/include/system/mshv.h
-+++ b/include/system/mshv.h
-@@ -103,7 +103,7 @@ typedef enum MshvVmExit {
-     MshvVmExitSpecial  = 2,
- } MshvVmExit;
- 
--void mshv_init_cpu_logic(void);
-+void mshv_init_mmio_emu(void);
- int mshv_create_vcpu(int vm_fd, uint8_t vp_index, int *cpu_fd);
- void mshv_remove_vcpu(int vm_fd, int cpu_fd);
- int mshv_configure_vcpu(const CPUState *cpu, const MshvFPU *fpu, uint64_t xcr0);
-@@ -154,6 +154,10 @@ typedef struct MshvMemoryRegion {
- 
- int mshv_add_mem(int vm_fd, const MshvMemoryRegion *mr);
- int mshv_remove_mem(int vm_fd, const MshvMemoryRegion *mr);
-+int mshv_guest_mem_read(uint64_t gpa, uint8_t *data, uintptr_t size,
-+                        bool is_secure_mode, bool instruction_fetch);
-+int mshv_guest_mem_write(uint64_t gpa, const uint8_t *data, uintptr_t size,
-+                         bool is_secure_mode);
- void mshv_set_phys_mem(MshvMemoryListener *mml, MemoryRegionSection *section,
-                        bool add);
- 
 diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
-index c2c7934343..673c90f865 100644
+index 673c90f865..431bf83ff9 100644
 --- a/target/i386/mshv/mshv-cpu.c
 +++ b/target/i386/mshv/mshv-cpu.c
-@@ -103,6 +103,34 @@ static enum hv_register_name FPU_REGISTER_NAMES[26] = {
-     HV_X64_REGISTER_XMM_CONTROL_STATUS,
- };
- 
-+static int translate_gva(int cpu_fd, uint64_t gva, uint64_t *gpa,
-+                         uint64_t flags)
-+{
-+    int ret;
-+    union hv_translate_gva_result result = { 0 };
-+
-+    *gpa = 0;
-+    mshv_translate_gva args = {
-+        .gva = gva,
-+        .flags = flags,
-+        .gpa = gpa,
-+        .result = &result,
-+    };
-+
-+    ret = ioctl(cpu_fd, MSHV_TRANSLATE_GVA, &args);
-+    if (ret < 0) {
-+        error_report("failed to invoke gpa->gva translation");
-+        return -errno;
-+    }
-+    if (result.result_code != HV_TRANSLATE_GVA_SUCCESS) {
-+        error_report("failed to translate gva (" TARGET_FMT_lx ") to gpa", gva);
-+        return -1;
-+
-+    }
-+
-+    return 0;
-+}
-+
- int mshv_set_generic_regs(int cpu_fd, hv_register_assoc *assocs, size_t n_regs)
- {
-     struct mshv_vp_registers input = {
-@@ -922,8 +950,104 @@ int mshv_create_vcpu(int vm_fd, uint8_t vp_index, int *cpu_fd)
+@@ -901,6 +901,65 @@ static int put_regs(const CPUState *cpu)
      return 0;
  }
  
--void mshv_init_cpu_logic(void)
-+static int guest_mem_read_with_gva(const CPUState *cpu, uint64_t gva,
-+                                   uint8_t *data, uintptr_t size,
-+                                   bool fetch_instruction)
-+{
-+    int ret;
-+    uint64_t gpa, flags;
-+    int cpu_fd = mshv_vcpufd(cpu);
-+
-+    flags = HV_TRANSLATE_GVA_VALIDATE_READ;
-+    ret = translate_gva(cpu_fd, gva, &gpa, flags);
-+    if (ret < 0) {
-+        error_report("failed to translate gva to gpa");
-+        return -1;
-+    }
-+
-+    ret = mshv_guest_mem_read(gpa, data, size, false, fetch_instruction);
-+    if (ret < 0) {
-+        error_report("failed to read from guest memory");
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
-+static int guest_mem_write_with_gva(const CPUState *cpu, uint64_t gva,
-+                                    const uint8_t *data, uintptr_t size)
-+{
-+    int ret;
-+    uint64_t gpa, flags;
-+    int cpu_fd = mshv_vcpufd(cpu);
-+
-+    flags = HV_TRANSLATE_GVA_VALIDATE_WRITE;
-+    ret = translate_gva(cpu_fd, gva, &gpa, flags);
-+    if (ret < 0) {
-+        error_report("failed to translate gva to gpa");
-+        return -1;
-+    }
-+    ret = mshv_guest_mem_write(gpa, data, size, false);
-+    if (ret < 0) {
-+        error_report("failed to write to guest memory");
-+        return -1;
-+    }
-+    return 0;
-+}
-+
-+static void write_mem(CPUState *cpu, void *data, target_ulong addr, int bytes)
-+{
-+    if (guest_mem_write_with_gva(cpu, addr, data, bytes) < 0) {
-+        error_report("failed to write memory");
-+        abort();
-+    }
-+}
-+
-+static void read_mem(CPUState *cpu, void *data, target_ulong addr, int bytes)
-+{
-+    if (guest_mem_read_with_gva(cpu, addr, data, bytes, false) < 0) {
-+        error_report("failed to read memory");
-+        abort();
-+    }
-+}
-+
-+static void fetch_instruction(CPUState *cpu, void *data,
-+                              target_ulong addr, int bytes)
-+{
-+    if (guest_mem_read_with_gva(cpu, addr, data, bytes, true) < 0) {
-+        error_report("failed to fetch instruction");
-+        abort();
-+    }
-+}
-+
-+static void read_segment_descriptor(CPUState *cpu,
-+                                    struct x86_segment_descriptor *desc,
-+                                    enum X86Seg seg_idx)
-+{
-+    bool ret;
-+    X86CPU *x86_cpu = X86_CPU(cpu);
-+    CPUX86State *env = &x86_cpu->env;
-+    SegmentCache *seg = &env->segs[seg_idx];
-+    x86_segment_selector sel = { .sel = seg->selector & 0xFFFF };
-+
-+    ret = x86_read_segment_descriptor(cpu, desc, sel);
-+    if (ret == false) {
-+        error_report("failed to read segment descriptor");
-+        abort();
-+    }
-+}
-+
-+static const struct x86_emul_ops mshv_x86_emul_ops = {
-+    .fetch_instruction = fetch_instruction,
-+    .read_mem = read_mem,
-+    .write_mem = write_mem,
-+    .read_segment_descriptor = read_segment_descriptor,
++struct MsrPair {
++    uint32_t index;
++    uint64_t value;
 +};
 +
-+void mshv_init_mmio_emu(void)
++static int put_msrs(const CPUState *cpu)
++{
++    int ret = 0;
++    X86CPU *x86cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86cpu->env;
++    MshvMsrEntries *msrs = g_malloc0(sizeof(MshvMsrEntries));
++
++    struct MsrPair pairs[] = {
++        { MSR_IA32_SYSENTER_CS,    env->sysenter_cs },
++        { MSR_IA32_SYSENTER_ESP,   env->sysenter_esp },
++        { MSR_IA32_SYSENTER_EIP,   env->sysenter_eip },
++        { MSR_EFER,                env->efer },
++        { MSR_PAT,                 env->pat },
++        { MSR_STAR,                env->star },
++        { MSR_CSTAR,               env->cstar },
++        { MSR_LSTAR,               env->lstar },
++        { MSR_KERNELGSBASE,        env->kernelgsbase },
++        { MSR_FMASK,               env->fmask },
++        { MSR_MTRRdefType,         env->mtrr_deftype },
++        { MSR_VM_HSAVE_PA,         env->vm_hsave },
++        { MSR_SMI_COUNT,           env->msr_smi_count },
++        { MSR_IA32_PKRS,           env->pkrs },
++        { MSR_IA32_BNDCFGS,        env->msr_bndcfgs },
++        { MSR_IA32_XSS,            env->xss },
++        { MSR_IA32_UMWAIT_CONTROL, env->umwait },
++        { MSR_IA32_TSX_CTRL,       env->tsx_ctrl },
++        { MSR_AMD64_TSC_RATIO,     env->amd_tsc_scale_msr },
++        { MSR_TSC_AUX,             env->tsc_aux },
++        { MSR_TSC_ADJUST,          env->tsc_adjust },
++        { MSR_IA32_SMBASE,         env->smbase },
++        { MSR_IA32_SPEC_CTRL,      env->spec_ctrl },
++        { MSR_VIRT_SSBD,           env->virt_ssbd },
++    };
++
++    if (ARRAY_SIZE(pairs) > MSHV_MSR_ENTRIES_COUNT) {
++        error_report("MSR entries exceed maximum size");
++        g_free(msrs);
++        return -1;
++    }
++
++    for (size_t i = 0; i < ARRAY_SIZE(pairs); i++) {
++        MshvMsrEntry *entry = &msrs->entries[i];
++        entry->index = pairs[i].index;
++        entry->reserved = 0;
++        entry->data = pairs[i].value;
++        msrs->nmsrs++;
++    }
++
++    ret = mshv_configure_msr(mshv_vcpufd(cpu), &msrs->entries[0], msrs->nmsrs);
++    g_free(msrs);
++    return ret;
++}
++
++
+ int mshv_arch_put_registers(const CPUState *cpu)
  {
-+    init_decoder();
-+    init_emu(&mshv_x86_emul_ops);
+     int ret;
+@@ -911,8 +970,13 @@ int mshv_arch_put_registers(const CPUState *cpu)
+         return -1;
+     }
+ 
+-    error_report("unimplemented");
+-    abort();
++    ret = put_msrs(cpu);
++    if (ret < 0) {
++        error_report("Failed to put msrs");
++        return -1;
++    }
++
++    return 0;
  }
  
- void mshv_arch_init_vcpu(CPUState *cpu)
+ void mshv_arch_amend_proc_features(
 -- 
 2.34.1
 
