@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629DBB1DA54
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 16:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C35EB1DA4C
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 16:45:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uk1qs-0005JO-Db; Thu, 07 Aug 2025 10:44:22 -0400
+	id 1uk1po-0003ck-8U; Thu, 07 Aug 2025 10:43:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uk1pJ-0002ez-4f
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:43 -0400
+ id 1uk1pP-0002k1-BG
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:47 -0400
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uk1pH-00018U-IR
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:40 -0400
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uk1pN-00019Q-Fv
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:42:47 -0400
 Received: from localhost.localdomain (unknown [167.220.208.72])
- by linux.microsoft.com (Postfix) with ESMTPSA id C2415201BC8F;
- Thu,  7 Aug 2025 07:42:23 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C2415201BC8F
+ by linux.microsoft.com (Postfix) with ESMTPSA id C891C201BC98;
+ Thu,  7 Aug 2025 07:42:28 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C891C201BC98
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1754577748;
- bh=8/mtb2eWWn+SXc7DzCHe6kt2AAzBbP3Jai1V55zbYYQ=;
+ s=default; t=1754577753;
+ bh=TdslHxYMO2LnnYzjeOqT0wZpwVZ9Dbjhm6fZmwSEr9E=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=r2a1pXtBo3B+gNZRjZigkzXxLkmdBdkTPa0MT3Z393hNfq12ypaWzaQLPwzyXUx5S
- BJEpelQ5OIiL841QtFsDFpyk9n8n0Ek2a4YZUAgw5ZuwWFtiAiTjDNtijjsbX3W9Kh
- fY8+2bCNN5qyvmZQkVwh5P5N22liE6JXkwarbC+w=
+ b=KOl9ogjjrWrVwS4TRJacOZHY673ijxYl2aD+qVOQgCUD6gL2SsCtsg1BqxRj4Pcac
+ CBcu93qPssY5OvGQ3idVqLcozthhOP5PPCBa7xYjVF9Vqc0+DNC6ad09V4yzaSV8q2
+ 3QC245Ubs3Pw2SyqwM9VQWoj2m6ugKoe6HrCm2s0=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -48,9 +48,9 @@ Cc: Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Roman Bolshakov <rbolshakov@ddn.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 25/26] MAINTAINERS: Add maintainers for mshv accelerator
-Date: Thu,  7 Aug 2025 16:39:50 +0200
-Message-Id: <20250807143951.1154713-26-magnuskulke@linux.microsoft.com>
+Subject: [PATCH v3 26/26] qapi/accel: Allow to query mshv capabilities
+Date: Thu,  7 Aug 2025 16:39:51 +0200
+Message-Id: <20250807143951.1154713-27-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
 References: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
@@ -80,40 +80,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adding Magnus Kulke and Wei Liu to the maintainers file for the
-respective folders/files.
+From: Praveen K Paladugu <prapal@microsoft.com>
 
+Allow to query mshv capabilities via query-mshv QMP command.
+
+Signed-off-by: Praveen K Paladugu <prapal@linux.microsoft.com>
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- MAINTAINERS | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ hw/core/machine-qmp-cmds.c | 14 ++++++++++++++
+ qapi/accelerator.json      | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a07086ed76..7527264f30 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -546,6 +546,21 @@ F: target/i386/whpx/
- F: accel/stubs/whpx-stub.c
- F: include/system/whpx.h
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index 6aca1a626e..024ddb8d2d 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -28,6 +28,20 @@
+ #include "system/runstate.h"
+ #include "system/system.h"
+ #include "hw/s390x/storage-keys.h"
++#include <sys/stat.h>
++
++/*
++ * QMP query for MSHV
++ */
++MshvInfo *qmp_query_mshv(Error **errp)
++{
++    MshvInfo *info = g_malloc0(sizeof(*info));
++    struct stat st;
++
++    info->present = accel_find("mshv");
++    info->enabled = (stat("/dev/mshv", &st) == 0);
++    return info;
++}
  
-+MSHV
-+M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
-+R: Wei Liu <wei.liu@kernel.org>
-+S: Supported
-+F: accel/mshv/
-+F: include/system/mshv.h
-+F: include/hw/hyperv/hvgdk*.h
-+F: include/hw/hyperv/hvhdk*.h
+ /*
+  * fast means: we NEVER interrupt vCPU threads to retrieve
+diff --git a/qapi/accelerator.json b/qapi/accelerator.json
+index fb28c8d920..c2bfbc507f 100644
+--- a/qapi/accelerator.json
++++ b/qapi/accelerator.json
+@@ -54,3 +54,32 @@
+ { 'command': 'x-accel-stats',
+   'returns': 'HumanReadableText',
+   'features': [ 'unstable' ] }
 +
-+MSHV CPUs
-+M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
-+R: Wei Liu <wei.liu@kernel.org>
-+S: Supported
-+F: target/i386/mshv/
++##
++# @MshvInfo:
++#
++# Information about support for MSHV acceleration
++#
++# @enabled: true if MSHV acceleration is active
++#
++# @present: true if MSHV acceleration is built into this executable
++#
++# Since: 10.0.92
++##
++{ 'struct': 'MshvInfo', 'data': {'enabled': 'bool', 'present': 'bool'} }
 +
- X86 Instruction Emulator
- M: Cameron Esfahani <dirty@apple.com>
- M: Roman Bolshakov <rbolshakov@ddn.com>
++##
++# @query-mshv:
++#
++# Return information about MSHV acceleration
++#
++# Returns: @MshvInfo
++#
++# Since: 10.0.92
++#
++# .. qmp-example::
++#
++#     -> { "execute": "query-mshv" }
++#     <- { "return": { "enabled": true, "present": true } }
++##
++{ 'command': 'query-mshv', 'returns': 'MshvInfo' }
 -- 
 2.34.1
 
