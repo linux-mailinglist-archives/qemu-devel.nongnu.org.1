@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81CC6B1DAF4
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 17:46:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52AB1B1DAF9
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 17:46:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uk2nh-0005VS-Vo; Thu, 07 Aug 2025 11:45:06 -0400
+	id 1uk2nR-0005Ic-GZ; Thu, 07 Aug 2025 11:44:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
- id 1uk2nI-0005FK-DO
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 11:44:41 -0400
+ id 1uk2n4-0005DU-Cv
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 11:44:35 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
- id 1uk2n0-0003zi-Nr
+ id 1uk2n0-0003zl-Nx
  for qemu-devel@nongnu.org; Thu, 07 Aug 2025 11:44:26 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4byWYc13xKz6L56Q;
- Thu,  7 Aug 2025 23:39:32 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4byWcr3v0Pz6DB3X;
+ Thu,  7 Aug 2025 23:42:20 +0800 (CST)
 Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
- by mail.maildlp.com (Postfix) with ESMTPS id 7CE6F140121;
- Thu,  7 Aug 2025 23:44:08 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 4CD371402FE;
+ Thu,  7 Aug 2025 23:44:09 +0800 (CST)
 Received: from P_UKIT01-A7bmah.china.huawei.com (10.126.170.37) by
  frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 7 Aug 2025 17:44:07 +0200
+ 15.1.2507.39; Thu, 7 Aug 2025 17:44:08 +0200
 To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <armbru@redhat.com>, 
  <jonathan.cameron@huawei.com>, <dave@stgolabs.net>
 CC: <linuxarm@huawei.com>, <shiju.jose@huawei.com>
-Subject: [PATCH v5 4/7] hw/cxl/events: Updates for rev3.2 memory module event
- record
-Date: Thu, 7 Aug 2025 16:43:43 +0100
-Message-ID: <20250807154346.2209-5-shiju.jose@huawei.com>
+Subject: [PATCH v5 5/7] hw/cxl/cxl-mailbox-utils: Move declaration of scrub
+ and ECS feature attributes in cmd_features_set_feature()
+Date: Thu, 7 Aug 2025 16:43:44 +0100
+Message-ID: <20250807154346.2209-6-shiju.jose@huawei.com>
 X-Mailer: git-send-email 2.43.0.windows.1
 In-Reply-To: <20250807154346.2209-1-shiju.jose@huawei.com>
 References: <20250807154346.2209-1-shiju.jose@huawei.com>
@@ -74,144 +74,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Shiju Jose <shiju.jose@huawei.com>
 
-CXL spec rev3.2 section 8.2.10.2.1.3 Table 8-50, memory module
-event record has updated with following new fields.
-1. Validity Flags
-2. Component Identifier
-3. Device Event Sub-Type
-
-Add updates for the above spec changes in the CXL memory module
-event reporting and QMP command to inject memory module event.
+Move the declaration of scrub and ECS feature attributes in
+cmd_features_set_feature() to the local scope where they are used.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 ---
- hw/mem/cxl_type3.c          | 20 ++++++++++++++++++++
- hw/mem/cxl_type3_stubs.c    |  4 ++++
- include/hw/cxl/cxl_events.h |  7 +++++--
- qapi/cxl.json               | 12 +++++++++++-
- 4 files changed, 40 insertions(+), 3 deletions(-)
+ hw/cxl/cxl-mailbox-utils.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index c359a8b65c..c0578af972 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1937,6 +1937,9 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log,
-     }
- }
- 
-+#define CXL_MMER_VALID_COMPONENT                        BIT(0)
-+#define CXL_MMER_VALID_COMPONENT_ID_FORMAT              BIT(1)
-+
- void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-                                         uint32_t flags, bool has_maint_op_class,
-                                         uint8_t maint_op_class,
-@@ -1953,11 +1956,16 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-                                         uint32_t dirty_shutdown_count,
-                                         uint32_t corrected_volatile_error_count,
-                                         uint32_t corrected_persist_error_count,
-+                                        const char *component_id,
-+                                        bool has_comp_id_pldm,
-+                                        bool is_comp_id_pldm,
-+                                        uint8_t sub_type,
-                                         Error **errp)
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 8f62ea9b54..ce02ae8528 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -1350,10 +1350,6 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
+                                            CXLCCI *cci)
  {
-     Object *obj = object_resolve_path(path, NULL);
-     CXLEventMemoryModule module;
-     CXLEventRecordHdr *hdr = &module.hdr;
-+    uint16_t valid_flags = 0;
-     CXLDeviceState *cxlds;
-     CXLType3Dev *ct3d;
-     uint8_t enc_log;
-@@ -2000,6 +2008,18 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-     stl_le_p(&module.corrected_persistent_error_count,
-              corrected_persist_error_count);
- 
-+    if (component_id) {
-+        strncpy((char *)module.component_id, component_id,
-+                sizeof(module.component_id) - 1);
-+        valid_flags |= CXL_MMER_VALID_COMPONENT;
-+        if (has_comp_id_pldm && is_comp_id_pldm) {
-+            valid_flags |= CXL_MMER_VALID_COMPONENT_ID_FORMAT;
-+        }
-+    }
-+    module.sub_type = sub_type;
-+
-+    stw_le_p(&module.validity_flags, valid_flags);
-+
-     if (cxl_event_insert(cxlds, enc_log, (CXLEventRecordRaw *)&module)) {
-         cxl_event_irq_assert(ct3d);
+     CXLSetFeatureInHeader *hdr = (void *)payload_in;
+-    CXLMemPatrolScrubWriteAttrs *ps_write_attrs;
+-    CXLMemPatrolScrubSetFeature *ps_set_feature;
+-    CXLMemECSWriteAttrs *ecs_write_attrs;
+-    CXLMemECSSetFeature *ecs_set_feature;
+     CXLSetFeatureInfo *set_feat_info;
+     uint16_t bytes_to_copy = 0;
+     uint8_t data_transfer_flag;
+@@ -1395,13 +1391,14 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
      }
-diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
-index 231dda263f..98292a931c 100644
---- a/hw/mem/cxl_type3_stubs.c
-+++ b/hw/mem/cxl_type3_stubs.c
-@@ -78,6 +78,10 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-                                         uint32_t dirty_shutdown_count,
-                                         uint32_t corrected_volatile_error_count,
-                                         uint32_t corrected_persist_error_count,
-+                                        const char *component_id,
-+                                        bool has_comp_id_pldm,
-+                                        bool is_comp_id_pldm,
-+                                        uint8_t sub_type,
-                                         Error **errp) {}
  
- void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
-diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-index a3c5f2ec20..4a7836ad72 100644
---- a/include/hw/cxl/cxl_events.h
-+++ b/include/hw/cxl/cxl_events.h
-@@ -166,7 +166,7 @@ typedef struct CXLEventDram {
+     if (qemu_uuid_is_equal(&hdr->uuid, &patrol_scrub_uuid)) {
++        CXLMemPatrolScrubSetFeature *ps_set_feature = (void *)payload_in;
++        CXLMemPatrolScrubWriteAttrs *ps_write_attrs =
++                                &ps_set_feature->feat_data;
++
+         if (hdr->version != CXL_MEMDEV_PS_SET_FEATURE_VERSION) {
+             return CXL_MBOX_UNSUPPORTED;
+         }
  
- /*
-  * Memory Module Event Record
-- * CXL r3.1 Section 8.2.9.2.1.3: Table 8-47
-+ * CXL r3.2 Section 8.2.10.2.1.3: Table 8-59
-  * All fields little endian.
-  */
- typedef struct CXLEventMemoryModule {
-@@ -180,7 +180,10 @@ typedef struct CXLEventMemoryModule {
-     uint32_t dirty_shutdown_count;
-     uint32_t corrected_volatile_error_count;
-     uint32_t corrected_persistent_error_count;
--    uint8_t reserved[0x3d];
-+    uint16_t validity_flags;
-+    uint8_t component_id[CXL_EVENT_GEN_MED_COMP_ID_SIZE];
-+    uint8_t sub_type;
-+    uint8_t reserved[0x2a];
- } QEMU_PACKED CXLEventMemoryModule;
+-        ps_set_feature = (void *)payload_in;
+-        ps_write_attrs = &ps_set_feature->feat_data;
+-
+         if ((uint32_t)hdr->offset + bytes_to_copy >
+             sizeof(ct3d->patrol_scrub_wr_attrs)) {
+             return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+@@ -1422,13 +1419,13 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
+         }
+     } else if (qemu_uuid_is_equal(&hdr->uuid,
+                                   &ecs_uuid)) {
++        CXLMemECSSetFeature *ecs_set_feature = (void *)payload_in;
++        CXLMemECSWriteAttrs *ecs_write_attrs = ecs_set_feature->feat_data;
++
+         if (hdr->version != CXL_ECS_SET_FEATURE_VERSION) {
+             return CXL_MBOX_UNSUPPORTED;
+         }
  
- /*
-diff --git a/qapi/cxl.json b/qapi/cxl.json
-index 1e93f097ad..23d7bd2b4c 100644
---- a/qapi/cxl.json
-+++ b/qapi/cxl.json
-@@ -243,6 +243,14 @@
- # @corrected-persistent-error-count: Total number of correctable
- #     errors in persistent memory
- #
-+# @component-id: Device specific component identifier for the event.
-+#     May describe a field replaceable sub-component of the device.
-+#
-+# @is-comp-id-pldm: This flag specifies whether the device-specific
-+#     component identifier format follows PLDM.
-+#
-+# @sub-type: Device event sub-type.
-+#
- # Since: 8.1
- ##
- { 'struct': 'CXLMemModuleEvent',
-@@ -252,7 +260,9 @@
-             'life-used': 'uint8', 'temperature' : 'int16',
-             'dirty-shutdown-count': 'uint32',
-             'corrected-volatile-error-count': 'uint32',
--            'corrected-persistent-error-count': 'uint32'
-+            'corrected-persistent-error-count': 'uint32',
-+            '*component-id': 'str', '*is-comp-id-pldm':'bool',
-+            'sub-type':'uint8'
-             }}
- 
- ##
+-        ecs_set_feature = (void *)payload_in;
+-        ecs_write_attrs = ecs_set_feature->feat_data;
+-
+         if ((uint32_t)hdr->offset + bytes_to_copy >
+             sizeof(ct3d->ecs_wr_attrs)) {
+             return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
 -- 
 2.43.0
 
