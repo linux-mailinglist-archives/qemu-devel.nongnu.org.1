@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DA2B1D746
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 14:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2773CB1D7AF
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 14:18:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujzR2-0007XM-S8; Thu, 07 Aug 2025 08:09:33 -0400
+	id 1ujzRM-0007t1-Ob; Thu, 07 Aug 2025 08:09:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ujzQm-0007RM-Js; Thu, 07 Aug 2025 08:09:12 -0400
+ id 1ujzQn-0007Rn-3b; Thu, 07 Aug 2025 08:09:15 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ujzQi-000545-PT; Thu, 07 Aug 2025 08:09:11 -0400
+ id 1ujzQk-00054a-Bd; Thu, 07 Aug 2025 08:09:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754568549; x=1786104549;
+ t=1754568550; x=1786104550;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MnawxUnvOKw6/CZfAUA3YSLAXwZrIDsAEHY4hJuFuGw=;
- b=jTo3+0XYMh7bCA06sIAQlY5r9RhD7ExsvghWoAkDDnMgdjFVEkzdBrjo
- Xbc7hizJAlYJtGzkvmpZ6DOHMJmgH4qKhni4y5S6Pg0Eeor3boWgJBl1h
- p2Cg4YSfFHo3eSHXGZAtzx7KJsjiXL2UDCXGYeZY2SxeQ35vPyFaJYAHP
- zpkW4rQvqWqlw3HTUO75ah0YgMNgTjJ1yaW6I3z2+HY+YiQ4XlMDQ2UN0
- JrJMDL/DpsYEr7OKzGs2bYjD1HotZy/tyJ/Ba2mgDJ4hBl1tubmZbghKH
- +GzEUb7YZTVBaeFu2r2Vacd8HXCOdUvpjdK2pNe4o7IyVIK6hBAflHXTz Q==;
-X-CSE-ConnectionGUID: utDGbuXUTgm90/YUZFgflA==
-X-CSE-MsgGUID: +FSYt2XtTzqBzX8S3gF0bQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="57036698"
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="57036698"
+ bh=I+BnrSmaOgS4QOTYt1Xg56BqMt16d9NeDnkZ1ZXGGos=;
+ b=JTdWse8H1M48Nnjk1vXHS+9JmyxIEAn/oZO6xnuqgw3gqVAqafv2mFJ2
+ HorT7mQ5ZzzOtAn5IEb/9KqILAJo16PONO+4oo8WWrcr2mbGMaJ7Mf3Ws
+ pahy/0mZ87uZ9zAInrfrXzOB9Qsf7xdWwkLCSnAR0wmeSWfIJmJZEWgZo
+ GrihLz9KGd6Xw5J/nwar//AVUhoAHglq3hfGiguYxaekZxHMDoFVYdtHz
+ a52KfxDOXnadsAY115OD/XVx23xeBRXX/IWeVjAbeQDupLIxAx/LG68/8
+ TBLbSpYMWkHbszIOrP8AMTnzOdC06nYCZdcucHLeIhHoRZWlVRolFdsTd g==;
+X-CSE-ConnectionGUID: my+/uoYAT/S+DA+k04NqAQ==
+X-CSE-MsgGUID: /92FSpEwTWy7xD9+YBNiOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="57036705"
+X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="57036705"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2025 05:09:03 -0700
-X-CSE-ConnectionGUID: 7lU+aHq6QSaxtbpbRmePhQ==
-X-CSE-MsgGUID: oqnQXITGS26YA4vElYBHBw==
+ 07 Aug 2025 05:09:07 -0700
+X-CSE-ConnectionGUID: PcNirZzsQiSQjyHfgaY9pQ==
+X-CSE-MsgGUID: CORasR4+QHCEFVLsCCqYew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="164701033"
+X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="164701039"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 07 Aug 2025 05:09:01 -0700
+ by orviesa009.jf.intel.com with ESMTP; 07 Aug 2025 05:09:04 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>,
@@ -51,9 +51,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
  Dapeng Mi <dapeng1.mi@linux.intel.com>,
  Chuanxiao Dong <chuanxiao.dong@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 01/26] rust/hpet: Fix the error caused by vm-memory
-Date: Thu,  7 Aug 2025 20:30:02 +0800
-Message-Id: <20250807123027.2910950-2-zhao1.liu@intel.com>
+Subject: [RFC 02/26] rust/cargo: Add the support for vm-memory
+Date: Thu,  7 Aug 2025 20:30:03 +0800
+Message-Id: <20250807123027.2910950-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250807123027.2910950-1-zhao1.liu@intel.com>
 References: <20250807123027.2910950-1-zhao1.liu@intel.com>
@@ -84,45 +84,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-error[E0283]: type annotations needed
-   --> hw/timer/hpet/src/device.rs:884:55
-    |
-884 |         self.num_timers == self.num_timers_save.get().into()
-    |                         --                            ^^^^
-    |                         |
-    |                         type must be known at this point
-    |
-    = note: multiple `impl`s satisfying `usize: PartialEq<_>` found in the following crates: `core`, `vm_memory`:
-            - impl PartialEq<vm_memory::endian::BeSize> for usize;
-            - impl PartialEq<vm_memory::endian::LeSize> for usize;
-            - impl<host> PartialEq for usize
-              where the constant `host` has type `bool`;
-help: try using a fully qualified path to specify the expected types
-    |
-884 |         self.num_timers == <u8 as Into<T>>::into(self.num_timers_save.get())
-    |                            ++++++++++++++++++++++                          ~
-
-For more information about this error, try `rustc --explain E0283`.
-error: could not compile `hpet` (lib) due to 1 previous error
-
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/hw/timer/hpet/src/device.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/Cargo.lock          | 52 ++++++++++++++++++++++++++++++++++++++++
+ rust/qemu-api/Cargo.toml | 11 +++++++++
+ 2 files changed, 63 insertions(+)
 
-diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index acf7251029e9..9fd75bf096e4 100644
---- a/rust/hw/timer/hpet/src/device.rs
-+++ b/rust/hw/timer/hpet/src/device.rs
-@@ -881,7 +881,7 @@ fn is_offset_needed(&self) -> bool {
-     }
+diff --git a/rust/Cargo.lock b/rust/Cargo.lock
+index b785c718f315..7aedae239f66 100644
+--- a/rust/Cargo.lock
++++ b/rust/Cargo.lock
+@@ -133,6 +133,7 @@ dependencies = [
+  "foreign",
+  "libc",
+  "qemu_api_macros",
++ "vm-memory",
+ ]
  
-     fn validate_num_timers(&self, _version_id: u8) -> bool {
--        self.num_timers == self.num_timers_save.get().into()
-+        self.num_timers == Into::<usize>::into(self.num_timers_save.get())
-     }
- }
+ [[package]]
+@@ -164,6 +165,26 @@ dependencies = [
+  "unicode-ident",
+ ]
  
++[[package]]
++name = "thiserror"
++version = "1.0.65"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5d11abd9594d9b38965ef50805c5e469ca9cc6f197f883f717e0269a3057b3d5"
++dependencies = [
++ "thiserror-impl",
++]
++
++[[package]]
++name = "thiserror-impl"
++version = "1.0.65"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ae71770322cbd277e69d762a16c444af02aa0575ac0d174f0b9562d3b37f8602"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn",
++]
++
+ [[package]]
+ name = "unicode-ident"
+ version = "1.0.12"
+@@ -175,3 +196,34 @@ name = "version_check"
+ version = "0.9.4"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
++
++[[package]]
++name = "vm-memory"
++version = "0.16.1"
++source = "git+https://github.com/rust-vmm/vm-memory.git?rev=5eb996a060d7ca3844cbd2f10b1d048c0c91942f#5eb996a060d7ca3844cbd2f10b1d048c0c91942f"
++dependencies = [
++ "thiserror",
++ "winapi",
++]
++
++[[package]]
++name = "winapi"
++version = "0.3.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5c839a674fcd7a98952e593242ea400abe93992746761e38641405d28b00f419"
++dependencies = [
++ "winapi-i686-pc-windows-gnu",
++ "winapi-x86_64-pc-windows-gnu",
++]
++
++[[package]]
++name = "winapi-i686-pc-windows-gnu"
++version = "0.4.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6"
++
++[[package]]
++name = "winapi-x86_64-pc-windows-gnu"
++version = "0.4.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
+diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
+index db7000dee441..bbed3d2de514 100644
+--- a/rust/qemu-api/Cargo.toml
++++ b/rust/qemu-api/Cargo.toml
+@@ -19,6 +19,17 @@ anyhow = "~1.0"
+ libc = "0.2.162"
+ foreign = "~0.3.1"
+ 
++[dependencies.vm-memory]
++# The latest v0.16.2 didn't contain Paolo's commit 5f59e29c3d30
++# ("guest_memory: let multiple regions slice one global bitmap").
++# Once a new release has that change, switch to crates.io.
++git = "https://github.com/rust-vmm/vm-memory.git"
++rev = "5eb996a060d7ca3844cbd2f10b1d048c0c91942f"
++# Note "rawfd" (as the only default feature) is disabled by default in
++# meson. It cause compilation failure on Windows and fortunately, we
++# don't need it either.
++default-features = false
++
+ [features]
+ default = ["debug_cell"]
+ allocator = []
 -- 
 2.34.1
 
