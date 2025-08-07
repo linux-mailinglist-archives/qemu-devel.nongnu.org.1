@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD51B1D742
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 14:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D5AB1D792
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 14:16:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujzRw-0001Ye-GE; Thu, 07 Aug 2025 08:10:24 -0400
+	id 1ujzSA-0002ym-Ed; Thu, 07 Aug 2025 08:10:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ujzRM-0008QS-4d; Thu, 07 Aug 2025 08:09:48 -0400
+ id 1ujzRk-0001E9-0r; Thu, 07 Aug 2025 08:10:16 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ujzRJ-00059l-Ft; Thu, 07 Aug 2025 08:09:47 -0400
+ id 1ujzRh-0005Bp-Rz; Thu, 07 Aug 2025 08:10:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754568585; x=1786104585;
+ t=1754568610; x=1786104610;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=iavmaBU2SAHqBwyyDCas48yylc85Ev7Gp1UBZohijB8=;
- b=ZzFW7kwxkX2IrEYPo5lR+YYApuCtNyD8mjKXF8zdP4x8IJPD6ic5va/E
- MpiY8YnXTvKKrz/UsJivTMGr953lQj2IMy1BWiExKiZfYKus4T/5LvUYA
- 03lwqr3P6h3/hlOL5cYw21eTUD+/t8HnfAZpQtKMaqJVM1X93Bzw7Luk4
- zub9MxFa+yzojUdG01vDxMvhZIpMBnXbCDe72kdjPK7cTZKaaXXWDI5bn
- s03vdkArLww9Azqz7Z5dpMLf6r7u/SSmc812AdPPwnldDUxFf0H4SLZxb
- 0vmCf1tpAdfAlubfEJm/riZ0zC5jSY3qG+32yqsZjdnvVWmPxsNYiHvbo w==;
-X-CSE-ConnectionGUID: oOWLFifkSlKNHP+cCfx41Q==
-X-CSE-MsgGUID: VbmcbZiGS4qPUvXx8iSzpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="57036805"
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="57036805"
+ bh=6OOXwbQJVmFdR82woS1dR8ruocVbES2DG+qHdDaUOcA=;
+ b=jRaP2f3Hlu8aQogqs2HKjsWEerEd0nqawWKcPgLK/XmA6QlcZZS4pIN5
+ d1cUgh3qKxIKypUWWtWb8Fml0CtnS4njjqhCC5ltH8VJlSo5dV7xUcUqx
+ UhmLpf/y5cmTEKaUTDSjlzQ/fPytopUj7JTv9y8DMcfhi5ApWTpg9aA2S
+ 9yxe6U7/6Pskyk01h5YHMHmNcKuDPoOQ27VeAO+9o5nq+sim7AoKtt9EF
+ Fy7/7Vvw31HAB/khLtkBtCZd9TeYW5pYAiwmLR68VMDBdBgrQ14l3Ze4r
+ XU7Bcb8iuMqZf0xhJT1cCrZw7pEZwaXz9u0+c4UkKnnk3J1sEbj+fb42R A==;
+X-CSE-ConnectionGUID: 6XRjV1JzS3OdXJLFg8W/wA==
+X-CSE-MsgGUID: +zmjyEJ1TEOvkiikrluWYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="57036811"
+X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="57036811"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2025 05:09:44 -0700
-X-CSE-ConnectionGUID: VS83TYczTT2gR/VOhmLfQg==
-X-CSE-MsgGUID: qC0+2r7dStWdMJwsds8MUA==
+ 07 Aug 2025 05:09:48 -0700
+X-CSE-ConnectionGUID: jyeXBOXOSBOwEh2ZakcNyA==
+X-CSE-MsgGUID: UfTu5LChQJSVMyaGEkeRMQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="164701132"
+X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="164701135"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 07 Aug 2025 05:09:42 -0700
+ by orviesa009.jf.intel.com with ESMTP; 07 Aug 2025 05:09:45 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>,
@@ -51,9 +51,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
  Dapeng Mi <dapeng1.mi@linux.intel.com>,
  Chuanxiao Dong <chuanxiao.dong@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 13/26] rust: Add RCU bindings
-Date: Thu,  7 Aug 2025 20:30:14 +0800
-Message-Id: <20250807123027.2910950-14-zhao1.liu@intel.com>
+Subject: [RFC 14/26] memory: Expose interfaces about Flatview reference count
+ to Rust side
+Date: Thu,  7 Aug 2025 20:30:15 +0800
+Message-Id: <20250807123027.2910950-15-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250807123027.2910950-1-zhao1.liu@intel.com>
 References: <20250807123027.2910950-1-zhao1.liu@intel.com>
@@ -84,84 +85,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add rcu_read_lock() & rcu_read_unlock() bindings, then they can be used
-in memory access.
+Expose the following interfaces in include/system/memory.h without
+`inline`:
 
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+* address_space_to_flatview
+* flatview_ref
+* flatview_unref
+
+Then Rust side could generate related bindings.
+
+In addtion, add documentations for these 3 interface.
+
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/meson.build |  1 +
- rust/qemu-api/src/lib.rs  |  1 +
- rust/qemu-api/src/rcu.rs  | 26 ++++++++++++++++++++++++++
- rust/qemu-api/wrapper.h   |  1 +
- 4 files changed, 29 insertions(+)
- create mode 100644 rust/qemu-api/src/rcu.rs
+ include/system/memory.h  | 69 +++++++++++++++++++++++++++++++++++++---
+ system/memory-internal.h |  1 -
+ system/memory.c          |  7 +++-
+ 3 files changed, 71 insertions(+), 6 deletions(-)
 
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index a362d44ed396..d40472092248 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -68,6 +68,7 @@ _qemu_api_rs = static_library(
-       'src/prelude.rs',
-       'src/qdev.rs',
-       'src/qom.rs',
-+      'src/rcu.rs',
-       'src/sysbus.rs',
-       'src/timer.rs',
-       'src/uninit.rs',
-diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
-index 86dcd8ef17a9..4705cf9ccbc5 100644
---- a/rust/qemu-api/src/lib.rs
-+++ b/rust/qemu-api/src/lib.rs
-@@ -26,6 +26,7 @@
- pub mod module;
- pub mod qdev;
- pub mod qom;
-+pub mod rcu;
- pub mod sysbus;
- pub mod timer;
- pub mod uninit;
-diff --git a/rust/qemu-api/src/rcu.rs b/rust/qemu-api/src/rcu.rs
-new file mode 100644
-index 000000000000..30d8b9e43967
---- /dev/null
-+++ b/rust/qemu-api/src/rcu.rs
-@@ -0,0 +1,26 @@
-+// Copyright (C) 2025 Intel Corporation.
-+// Author(s): Zhao Liu <zhao1.liu@intel.com>
-+// SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/include/system/memory.h b/include/system/memory.h
+index e2cd6ed12614..4b9a2f528d86 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -1203,10 +1203,71 @@ struct FlatView {
+     MemoryRegion *root;
+ };
+ 
+-static inline FlatView *address_space_to_flatview(AddressSpace *as)
+-{
+-    return qatomic_rcu_read(&as->current_map);
+-}
++/**
++ * address_space_to_flatview: Get a transient RCU-protected pointer to
++ * the current FlatView.
++ *
++ * @as: The #AddressSpace to be accessed.
++ *
++ * This function retrieves a pointer to the current #FlatView for the
++ * given #AddressSpace.
++ *
++ * Note: This is a low-level, RCU-based accessor. It DOES NOT increment
++ * the FlatView's reference count. The returned pointer is only
++ * guaranteed to be valid within an RCU read-side critical section.
++ *
++ * Difference from address_space_get_flatview():
++ *
++ * For address_space_to_flatview() (this function), it is a lightweight
++ * "peek" operation. It is fast but unsafe for long-term use. Use it
++ * only for very short-lived access where performance is critical.
++ *
++ * For address_space_get_flatview(), it acquires a "strong" reference
++ * by safely incrementing the reference count. The returned pointer is
++ * stable and can be used for long-lived operations, even outside an
++ * RCU lock. It is the safer and generally preferred method, but it
++ * MUST be paired with a call to flatview_unref() after the use of
++ * #FlatView.
++ *
++ * Returns:
++ * A transient pointer to the current #FlatView, valid only under RCU
++ * protection.
++ */
++FlatView *address_space_to_flatview(AddressSpace *as);
 +
-+//! Bindings for `rcu_read_lock` and `rcu_read_unlock`.
-+//! More details about RCU in QEMU, please refer docs/devel/rcu.rst.
++/**
++ * flatview_ref: Atomically increment the reference count of #FlatView.
++ *
++ * @view: The #FlatView whose reference count is to be incremented.
++ *
++ * This function attempts to atomically increment the reference count
++ * of the given @view. This operation is conditional and will only
++ * succeed if the current reference count is non-zero.
++ *
++ * A non-zero reference count indicates that the FlatView is live and
++ * in use. If the reference count is already zero, it indicates that the
++ * FlatView is being deinitialized, and no new references can be
++ * acquired.
++ *
++ * Returns:
++ * 'true' if the reference count was successfully incremented (i.e., it
++ * was non-zero before the call).
++ * 'false' if the reference count was already zero and could not be
++ * incremented.
++ */
++bool flatview_ref(FlatView *view);
 +
-+use crate::bindings;
-+
-+/// Used by a reader to inform the reclaimer that the reader is
-+/// entering an RCU read-side critical section.
-+pub fn rcu_read_lock() {
-+    // SAFETY: no return and no argument, everything is done at C side.
-+    unsafe { bindings::rcu_read_lock() }
++/**
++ * flatview_unref: Atomically decrement the reference count of
++ * #FlatView.
++ *
++ * @view: The #FlatView to be unreferenced.
++ *
++ * This function atomically decrements the reference count of the given
++ * @view. When the reference count drops to zero, #FlatView will be
++ * destroied via RCU.
++ */
++void flatview_unref(FlatView *view);
+ 
+ /**
+  * typedef flatview_cb: callback for flatview_for_each_range()
+diff --git a/system/memory-internal.h b/system/memory-internal.h
+index 46f758fa7e47..b0870a6359c3 100644
+--- a/system/memory-internal.h
++++ b/system/memory-internal.h
+@@ -26,7 +26,6 @@ static inline AddressSpaceDispatch *address_space_to_dispatch(AddressSpace *as)
+ }
+ 
+ FlatView *address_space_get_flatview(AddressSpace *as);
+-void flatview_unref(FlatView *view);
+ 
+ extern const MemoryRegionOps unassigned_mem_ops;
+ 
+diff --git a/system/memory.c b/system/memory.c
+index 56465479406f..2a749081fb50 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -304,7 +304,7 @@ static void flatview_destroy(FlatView *view)
+     g_free(view);
+ }
+ 
+-static bool flatview_ref(FlatView *view)
++bool flatview_ref(FlatView *view)
+ {
+     return qatomic_fetch_inc_nonzero(&view->ref) > 0;
+ }
+@@ -818,6 +818,11 @@ static void address_space_add_del_ioeventfds(AddressSpace *as,
+     }
+ }
+ 
++FlatView *address_space_to_flatview(AddressSpace *as)
++{
++    return qatomic_rcu_read(&as->current_map);
 +}
 +
-+/// Used by a reader to inform the reclaimer that the reader is
-+/// exiting an RCU read-side critical section.  Note that RCU
-+/// read-side critical sections may be nested and/or overlapping.
-+pub fn rcu_read_unlock() {
-+    // SAFETY: no return and no argument, everything is done at C side.
-+    unsafe { bindings::rcu_read_unlock() }
-+}
-+
-+// FIXME: maybe we need rcu_read_lock_held() to check the rcu context,
-+// then make it possible to add assertion at any RCU critical section.
-diff --git a/rust/qemu-api/wrapper.h b/rust/qemu-api/wrapper.h
-index 15a1b19847f2..ce0ac8d3f550 100644
---- a/rust/qemu-api/wrapper.h
-+++ b/rust/qemu-api/wrapper.h
-@@ -69,3 +69,4 @@ typedef enum memory_order {
- #include "qemu/timer.h"
- #include "system/address-spaces.h"
- #include "hw/char/pl011.h"
-+#include "qemu/rcu.h"
+ FlatView *address_space_get_flatview(AddressSpace *as)
+ {
+     FlatView *view;
 -- 
 2.34.1
 
