@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E34B1D120
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 05:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2054AB1D11C
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 05:04:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujqvQ-0000n2-ME; Wed, 06 Aug 2025 23:04:16 -0400
+	id 1ujqts-0007g2-Q2; Wed, 06 Aug 2025 23:02:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1ujqvH-0000c1-85
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 23:04:09 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1ujqtd-0007dF-1C
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 23:02:26 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1ujqvC-0004Dp-UY
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 23:04:06 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-76bc68cc9e4so626411b3a.2
- for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 20:04:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1ujqtZ-0001LB-4H
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 23:02:23 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-23fd3fe0d81so4884995ad.3
+ for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 20:02:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1754535840; x=1755140640;
- darn=nongnu.org; 
+ d=gmail.com; s=20230601; t=1754535739; x=1755140539; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0rSQb0qVIynZFOt9/956RmkxagvpXJAJJSzQ4CsrMb0=;
- b=o/9HARUCMyL6cT7ep+XNY2iPY8AvRLD4VTgU17YoEvuY6/JAFgSJANNXsNx3NvwAfI
- ye4eRHZWHI89EGE/Oy948N0XFh9paCG/J7G+e+TQoZRiSS3d7n5SS9y8lOYek5WAnnrO
- TSPsNdA7Cqk5/DuqldjW29nRFj2W7g7pJW7rto4R/IiZy4HxbFbyTnP6rrTYRehVC84L
- cgbgVBH0ufhJrgloKi8BBd8nXIOa1hvaKHuprSTuHB7a3Ant1X/NZ+9bV9ZANn5enM+1
- ZF3eOgBvecf9k3EPFBeRjiJqeEY3KRPNgbaiW2Fath1IicFmuSum4Flufx6+ZM2fNPm3
- gp9Q==
+ bh=VNM/Alx3viiry5FgrdkPI7g05gTkH+/25lDnLA+8uy0=;
+ b=NAN9P7xqjHq1Issym6aINiwmgLK28vnzTt7MObmFvaG1rLYgeVRxmTdZxajClFlEMi
+ /R48AwPfsHYFuj55nUDZ7W3yIyAzZWxBjsu4BludLIJep6ASOM/mshhUKcOXqJMVA0Ox
+ xvXEIGstDhQroBrE5E9WFwfvSuSZGcGPeLno5ck8FZZAOMEl2U9Kp23YUQgwR687Txfz
+ TUyfw8leE84YmYyXDqQsIwqFlrzwix72nr0oz0pt5U/SwtEgcLNnPgRTn7B8z7Jg4wyl
+ RCXp7q6YZsp4pGzdYc/pmxg2XxjGZXB9K4M4QJ81nI7Kb8nr/QmypB81A0Xc2iQMU58b
+ T7JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754535840; x=1755140640;
+ d=1e100.net; s=20230601; t=1754535739; x=1755140539;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=0rSQb0qVIynZFOt9/956RmkxagvpXJAJJSzQ4CsrMb0=;
- b=Fd3knS3GvTeLOwaMrYwwvq0vzJB8HhGJClq68RWMJAyc/1w+OvCd3ERe17O2c6IVO/
- gHXbmWumW/OesCn1udeOQe334bltyja886irsp1dcwEFK6RUR07EepeS7rOS7PscF/lg
- PnhsTflt6zgryll6C54WKAtnEVxkJ2RbMhenOS9aW1DL1xknHLs/NQswjH7AbTQ2a0nd
- rw6iWjabYvC2qB3HKV2aWEqyva9cdQXJoAIHJtTVWNxjwENmAzHOUis9Bl1pju7WD1PW
- RcQbnSqpj2mnkGWBKwuIScMryu0NHZOtI18CB36uLzXR2k7R4ZOQ9L/Gvmt2zvpNHDHG
- mMeg==
-X-Gm-Message-State: AOJu0YxIBUElAmAZWuC105wodLCpIaQ8PHVsBPJ2T1ZzBPg030HSn9pZ
- jooUQWEqo8g5vVNnC4l0NSLq3g/diRqXMdb4JN0qSF1x4wUfFee8G387OUqUaDaopX7C6k52X3F
- icXujXyVKVg==
-X-Gm-Gg: ASbGncvxhPerX/oaLNd6YuAgNIlR9ln+imtZ7898Y5kKY2J+BhoeML4Mq1nDCy0RA8H
- w4TO+mwiUHJuNVw7C/mTL526ax3Bof42RVvIywf5dl59AmrWWSWqP5JJfYhK/5mize+mvJfo3Oz
- yLXW7PAed7whfCHDCCszlsMzwx9cpxmaUL11Zb5vejQwfmasMI84D5ANDJle229S0LvnS6L8MiP
- hpgJuc1VP9B1OAAI02IZYd5VCcNbcc5ynd67CcoUcxeuDqvfZ2CoSEqI9WKVFTTSJ6L7df0KRqD
- 8zBS5bB8NaKjhXwgJWqgRzKy+g6IsDoFrW93Fz+zI0KtXG8Y6eyQFcqihV7L2IEmSitGKPzC1IF
- 1mf1BoEUN2QUHyFmw4BZsAOdC9OhQMupS0bvqGQhfHTYsOYqz5l8AfK8=
-X-Google-Smtp-Source: AGHT+IHLOTisxnOSSq4dFGI9rDCloxO9YTAOy+HF/FtROEebdC1ya0mbgAyXzMtqW4jsfnuAQZdRkg==
-X-Received: by 2002:a05:6a21:32a3:b0:240:50d:4285 with SMTP id
- adf61e73a8af0-24031558d29mr9003166637.38.1754535840349; 
- Wed, 06 Aug 2025 20:04:00 -0700 (PDT)
-Received: from Hyman-Dev-Euler.zelin.local ([45.8.186.102])
+ bh=VNM/Alx3viiry5FgrdkPI7g05gTkH+/25lDnLA+8uy0=;
+ b=icwPVDJ3oWmWyqHkDqK0PjtV7bJyy7NMCJotdalvQn+gEPj2pGsn/14caxgptdU21w
+ gbNPPdtDrYICAJXBeTlN6bfUW8YNSj+ZeWvVBKddTrpZle1nCyN0Wl/P0iApUIoWX1sH
+ UfuXYPwAuQyULVgvx8lmjjswP7wjKZxTq/+Hw4DWFme0ph/cJ5FD7hxkX0zljlCCjFXY
+ z2ec173NHTuq89KbcUBdA49ZDc0LJthPHti+H2SojjaNmsnPfu1GWwQIfc4LmA+VrMIP
+ G7qOv3Af2+QrMEksejJDQbqvmm4QJyoVF5ZzvdqJSCLcmHCpRihO+WDYUoeL9Tev2Ayg
+ ZCbg==
+X-Gm-Message-State: AOJu0Yzi3E/ErZ0SnDf84TVseZ5zMUco0GdSkLXSJF/wMq7fI4RF6aJq
+ zMLU4jq9Tg+kDuPzfOJ1ESCdp8GIaFIDZoMznjv374RtxMpMCFY0Mg5qcB1nrg==
+X-Gm-Gg: ASbGncvH9QDqXq0tH8fBmGflzCt6UP1CFZpawusJU4gI9XNtKfim1JseaqUsFy2GcHU
+ e2XNMI/TKG1fh2TWRN3RMMWJX1EDaMq6Rz6V5CRKWmh1oxX6r+284Aog13a8P+CCWwUJa/2wW6P
+ h57GKNt3U4M5mhQXVbCY5AmjvQ6rqoS6ljJ37SmGqAzvGbxrK9qTuH//RfZuOkm8p3mz9llaIKl
+ VrXzE8hBqFLUAB3hvKk7SOyzSChMbc7IkMjSjIl9AcQDtAm2C2scdvL8ajwXzfxK7+y9ZR2TwDa
+ 2AUPIKpTqYIBDuAuioXNlrZgdd1oBAiNoRVWuoQw0bde7XpJzj/B2YXdM+r0NRganO7L48nIUuG
+ C/7Y6gvZiOAyGxCyRIyutxw==
+X-Google-Smtp-Source: AGHT+IFFKQ+ai/sUPnLfVuLGWVVklfwXuRwtFkM0idYpLdlA3pVwCTWmN/yp4Zz8cjOCXoEAlzOgzw==
+X-Received: by 2002:a17:902:ebd1:b0:234:d679:72e9 with SMTP id
+ d9443c01a7336-2429f1dbd61mr73472175ad.12.1754535739173; 
+ Wed, 06 Aug 2025 20:02:19 -0700 (PDT)
+Received: from ktock.. ([240d:1a:3b6:8b00:81e2:9f1d:777a:7b46])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bf067e310sm11719016b3a.25.2025.08.06.20.03.56
+ d9443c01a7336-241d1ef6ac6sm173154585ad.1.2025.08.06.20.02.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Aug 2025 20:03:59 -0700 (PDT)
-From: yong.huang@smartx.com
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- yong.huang@smartx.com
-Subject: [PATCH] multifd: Make the main thread yield periodically to the main
- loop
-Date: Thu,  7 Aug 2025 10:41:17 +0800
-Message-Id: <5512220e1005ae2bc7357b2def32639d164e84eb.1754534263.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.27.0
+ Wed, 06 Aug 2025 20:02:18 -0700 (PDT)
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, ktokunaga.mail@gmail.com
+Subject: [PATCH v3 0/4] wasm: Enable 64bit guests on TCI using wasm64
+Date: Thu,  7 Aug 2025 12:01:59 +0900
+Message-ID: <cover.1754534225.git.ktokunaga.mail@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=yong.huang@smartx.com; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,95 +101,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang <yong.huang@smartx.com>
+V3:
 
-When there are network issues like missing TCP ACKs on the send
-side during the multifd live migration. At the send side, the error
-"Connection timed out" is thrown out and source QEMU process stop
-sending data, at the receive side, The IO-channels may be blocked
-at recvmsg() and thus the main loop gets stuck and fails to respond
-to QMP commands consequently.
+- Renamed the build tests on GitLab CI("build-wasm32" ->
+  "build-wasm32-32bit", "build-wasm-wasm64" -> "build-wasm64-64bit",
+  "build-wasm-wasm64l" -> "build-wasm64-32bit"). The same change has also
+  been applied to container-cross.yml.
 
-The QEMU backtrace at the receive side with the main thread and two
-multi-channel threads is displayed as follows:
+V2:
 
-multifd thread 2:
-Thread 10 (Thread 0x7fd24d5fd700 (LWP 1413634)):
-0  0x00007fd46066d157 in __libc_recvmsg (fd=46, msg=msg@entry=0x7fd24d5fc530, flags=flags@entry=0) at ../sysdeps/unix/sysv/linux/recvmsg.c:28
-1  0x00005556d52ffb1b in qio_channel_socket_readv (ioc=<optimized out>, iov=<optimized out>, niov=<optimized out>, fds=0x0, nfds=0x0, flags=<optimized out>, errp=0x7fd24d5fc6f8) at ../io/channel-socket.c:513
-2  0x00005556d530561f in qio_channel_readv_full_all_eof (ioc=0x5556d76db290, iov=<optimized out>, niov=<optimized out>, fds=0x0, nfds=0x0, errp=errp@entry=0x7fd24d5fc6f8) at ../io/channel.c:142
-3  0x00005556d53057d9 in qio_channel_readv_full_all (ioc=<optimized out>, iov=<optimized out>, niov=<optimized out>, fds=<optimized out>, nfds=<optimized out>, errp=0x7fd24d5fc6f8) at ../io/channel.c:210
-4  0x00005556d4fa4fc9 in multifd_recv_thread (opaque=opaque@entry=0x5556d7affa60) at ../migration/multifd.c:1113
-5  0x00005556d5414826 in qemu_thread_start (args=<optimized out>) at ../util/qemu-thread-posix.c:556
-6  0x00007fd460662f1b in start_thread (arg=0x7fd24d5fd700) at pthread_create.c:486
-7  0x00007fd46059a1a0 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:98
+- Added a link to the Emscripten documentation about -sMEMORY64 in the
+  configure script.
+- Changed --wasm64-memory64 flag to --wasm64-32bit-address-limit to avoid
+  exposing the -sMEMORY64 value directly to the users.
+- Fixed GitLab CI to use --wasm64-32bit-address-limit instead of
+  --wasm64-memory64.
 
-multifd thread 1:
-Thread 9 (Thread 0x7fd24ddfe700 (LWP 1413633)):
-0  0x00007fd46066d157 in __libc_recvmsg (fd=44, msg=msg@entry=0x7fd24ddfd530, flags=flags@entry=0) at ../sysdeps/unix/sysv/linux/recvmsg.c:28
-1  0x00005556d52ffb1b in qio_channel_socket_readv (ioc=<optimized out>, iov=<optimized out>, niov=<optimized out>, fds=0x0, nfds=0x0, flags=<optimized out>, errp=0x7fd24ddfd6f8) at ../io/channel-socket.c:513
-2  0x00005556d530561f in qio_channel_readv_full_all_eof (ioc=0x5556d76dc600, iov=<optimized out>, niov=<optimized out>, fds=0x0, nfds=0x0, errp=errp@entry=0x7fd24ddfd6f8) at ../io/channel.c:142
-3  0x00005556d53057d9 in qio_channel_readv_full_all (ioc=<optimized out>, iov=<optimized out>, niov=<optimized out>, fds=<optimized out>, nfds=<optimized out>, errp=0x7fd24ddfd6f8) at ../io/channel.c:210
-4  0x00005556d4fa4fc9 in multifd_recv_thread (opaque=opaque@entry=0x5556d7aff990) at ../migration/multifd.c:1113
-5  0x00005556d5414826 in qemu_thread_start (args=<optimized out>) at ../util/qemu-thread-posix.c:556
-6  0x00007fd460662f1b in start_thread (arg=0x7fd24ddfe700) at pthread_create.c:486
-7  0x00007fd46059a1a0 in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:98
+V1:
 
-main thread:
-Thread 1 (Thread 0x7fd45f1fbe40 (LWP 1413088)):
-0  0x00007fd46066b616 in futex_abstimed_wait_cancelable (private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x5556d7604e80) at ../sysdeps/unix/sysv/linux/futex-internal.h:216
-1  do_futex_wait (sem=sem@entry=0x5556d7604e80, abstime=0x0) at sem_waitcommon.c:111
-2  0x00007fd46066b708 in __new_sem_wait_slow (sem=sem@entry=0x5556d7604e80, abstime=0x0) at sem_waitcommon.c:183
-3  0x00007fd46066b779 in __new_sem_wait (sem=sem@entry=0x5556d7604e80) at sem_wait.c:42
-4  0x00005556d5415524 in qemu_sem_wait (sem=0x5556d7604e80) at ../util/qemu-thread-posix.c:358
-5  0x00005556d4fa5e99 in multifd_recv_sync_main () at ../migration/multifd.c:1052
-6  0x00005556d521ed65 in ram_load_precopy (f=f@entry=0x5556d75dfb90) at ../migration/ram.c:4446
-7  0x00005556d521f1dd in ram_load (f=0x5556d75dfb90, opaque=<optimized out>, version_id=4) at ../migration/ram.c:4495
-8  0x00005556d4faa3e7 in vmstate_load (f=f@entry=0x5556d75dfb90, se=se@entry=0x5556d6083070) at ../migration/savevm.c:909
-9  0x00005556d4fae7a0 in qemu_loadvm_section_part_end (mis=0x5556d6082cc0, f=0x5556d75dfb90) at ../migration/savevm.c:2475
-10 qemu_loadvm_state_main (f=f@entry=0x5556d75dfb90, mis=mis@entry=0x5556d6082cc0) at ../migration/savevm.c:2634
-11 0x00005556d4fafbd5 in qemu_loadvm_state (f=0x5556d75dfb90) at ../migration/savevm.c:2706
-12 0x00005556d4f9ebdb in process_incoming_migration_co (opaque=<optimized out>) at ../migration/migration.c:561
-13 0x00005556d542513b in coroutine_trampoline (i0=<optimized out>, i1=<optimized out>) at ../util/coroutine-ucontext.c:186
-14 0x00007fd4604ef970 in ?? () from target:/lib64/libc.so.6
+This patch series enables the TCI of the Wasm build to run 64bit
+guests. Unlike the previous series[1], this patch series is implemented by
+adding support for WebAssembly's "wasm64" target which enables 64bit
+pointers.
 
-Once the QEMU process falls into the above state in the presence of
-the network errors, live migration cannot be canceled gracefully,
-leaving the destination VM in the "paused" state, since the QEMU
-process on the destination side doesn't respond to the QMP command
-"migrate_cancel".
+In the previous discussion[2], the main challenge of using wasm64 was its
+limited adoption, particularly the lack of support in our dependency
+(libffi) and some engines such as Safari.
 
-To fix that, make the main thread yield to the main loop after waiting
-too long for the multi-channels to finish receiving data during one
-iteration. 10 seconds is a sufficient timeout period to set.
+For libffi, I've completed the addition of wasm64 support upstream[3] so it
+can be used.
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- migration/multifd.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+To support wasm32 engines, this patch uses Emscripten's compatibility
+feature, -sMEMORY64=2 flag[4]. This flag still enables 64bit pointers in the
+C code while Emscripten lowers the output binary to wasm32 and limits the
+maximum memory size to 4GB. As a result, QEMU can run on wasm32 engiens
+while still supporting 64bit guests.
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index b255778855..aca0aeb341 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1228,6 +1228,16 @@ void multifd_recv_sync_main(void)
-             }
-         }
-         trace_multifd_recv_sync_main_signal(p->id);
-+        do {
-+            if (qemu_sem_timedwait(&multifd_recv_state->sem_sync, 10000) == 0) {
-+                break;
-+            }
-+            if (qemu_in_coroutine()) {
-+                aio_co_schedule(qemu_get_current_aio_context(),
-+                                qemu_coroutine_self());
-+                qemu_coroutine_yield();
-+            }
-+        } while (1);
-         qemu_sem_post(&p->sem_sync);
-     }
-     trace_multifd_recv_sync_main(multifd_recv_state->packet_num);
+# Overview of the build process
+
+To compile QEMU with Emscripten, the following dependencies are required.
+The emsdk-wasm-cross.docker environment includes all necessary components
+and can be used as the build environment:
+
+- Emscripten SDK (emsdk) v4.0.10
+- Libraries cross-compiled with Emscripten (please see also
+  emsdk-wasm-cross.docker for build steps)
+  - GLib v2.84.0
+  - zlib v1.3.1
+  - libffi v3.5.2
+  - Pixman v0.44.2
+
+The configure script supports --cpu=wasm64 flag to compile QEMU with 64bit
+pointer support.
+
+emconfigure ./configure --cpu=wasm64 \
+                        --static --disable-tools \
+                        --target-list=x86_64-softmmu \
+                        --enable-tcg-interpreter
+emmake make -j$(nproc)
+
+If the output needs to run on wasm32 engines, use
+--wasm64-32bit-address-limit flag. This flag enables Emscripten's
+-sMEMORY64=2 flag[4]. (Note: --wasm64-memory64=2 flag in the V1 patch has
+been renamed to --wasm64-32bit-address-limit in V2)
+
+emconfigure ./configure --cpu=wasm64 --wasm64-32bit-address-limit \
+                        --static --disable-tools \
+                        --target-list=x86_64-softmmu \
+                        --enable-tcg-interpreter
+emmake make -j$(nproc)
+
+Either of the above commands generates the following files:
+
+- qemu-system-x86_64.js
+- qemu-system-x86_64.wasm
+
+Guest images can be packaged using Emscripten's file_packager.py tool.
+For example, if the images are stored in a directory named "pack", the
+following command packages them, allowing QEMU to access them through
+Emscripten's virtual filesystem:
+
+/path/to/file_packager.py qemu-system-x86_64.data --preload pack > load.js
+
+This process generates the following files:
+
+- qemu-system-x86_64.data
+- load.js
+
+Emscripten allows passing arguments to the QEMU command via the Module
+object in JavaScript:
+
+Module['arguments'] = [
+    '-nographic', '-m', '512M',
+    '-L', 'pack/',
+    '-drive', 'if=virtio,format=raw,file=pack/rootfs.bin',
+    '-kernel', 'pack/bzImage',
+    '-append', 'earlyprintk=ttyS0 console=ttyS0 root=/dev/vda loglevel=7',
+];
+
+The sample repository[5] (tcidev64 branch) provides a complete setup,
+including an HTML file that implements a terminal UI.
+
+[1] https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg05376.html
+[2] https://lists.nongnu.org/archive/html/qemu-devel/2025-04/msg01795.html
+[3] https://github.com/libffi/libffi/pull/927
+[4] https://emscripten.org/docs/tools_reference/settings_reference.html#memory64
+[5] https://github.com/ktock/qemu-wasm-sample/tree/tcidev64
+
+Kohei Tokunaga (4):
+  meson: Add wasm64 support to the --cpu flag
+  configure: Enable to propagate -sMEMORY64 flag to Emscripten
+  dockerfiles: Add support for wasm64 to the wasm Dockerfile
+  .gitlab-ci.d: Add build tests for wasm64
+
+ .gitlab-ci.d/buildtest.yml                    | 26 ++++++++++++++---
+ .gitlab-ci.d/container-cross.yml              | 20 +++++++++++--
+ .gitlab-ci.d/container-template.yml           |  4 ++-
+ MAINTAINERS                                   |  2 +-
+ configure                                     | 16 +++++++++-
+ meson.build                                   |  4 +--
+ ...2-cross.docker => emsdk-wasm-cross.docker} | 29 ++++++++++++++-----
+ 7 files changed, 83 insertions(+), 18 deletions(-)
+ rename tests/docker/dockerfiles/{emsdk-wasm32-cross.docker => emsdk-wasm-cross.docker} (85%)
+
 -- 
-2.27.0
+2.43.0
 
 
