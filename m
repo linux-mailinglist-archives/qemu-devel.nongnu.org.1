@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F4EB1DA11
+	by mail.lfdr.de (Postfix) with ESMTPS id 98ADEB1DA12
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 16:41:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uk1n8-0006Iu-Pj; Thu, 07 Aug 2025 10:40:26 -0400
+	id 1uk1nB-0006N6-30; Thu, 07 Aug 2025 10:40:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uk1n6-0006Fc-5t
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:40:24 -0400
+ id 1uk1n8-0006L7-RD
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:40:26 -0400
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uk1n4-0000tU-2f
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:40:23 -0400
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uk1n7-0000u0-45
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 10:40:26 -0400
 Received: from localhost.localdomain (unknown [167.220.208.72])
- by linux.microsoft.com (Postfix) with ESMTPSA id 4A46B2030ECF;
- Thu,  7 Aug 2025 07:40:14 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4A46B2030ECF
+ by linux.microsoft.com (Postfix) with ESMTPSA id 61720201BC67;
+ Thu,  7 Aug 2025 07:40:19 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 61720201BC67
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1754577618;
- bh=MIAmCA8oj1hR9Y0M46ZLVof09K+OoNVmCSP/2O6YTjc=;
- h=From:To:Cc:Subject:Date:From;
- b=CwJDl4d7e4IZpPlF/hINkq/19Z0oMxdhpDXoOB1B1qApyjx2gUc1XFoAurgjWG2Us
- qNy2x1qV6G8VRaNaBCQHyYZlpiLN6YLwMq2DO6bwD785geYsuf132Hjvz3G5+EAqrq
- u3VrqzsWBe6GNlx2ZqUklyoQqpmHgl66T55Koapk=
+ s=default; t=1754577623;
+ bh=eiqHqTtQYb4hBWCdUXTzyoddRbEICBU93TfkiFGEmx8=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=FqdcpL9cZOhTN8Oq78p8wvOKj6If2Ry9ti/b+byVGq/lSVMShbjcCaT86hP+7jPf/
+ o/YxcOpZVW9mY6KE3SC8rlelcioc6LIWZcZNbc5Z866CQGv/AKBg7ib3y583JAn5rq
+ ZFs6vRERPRtNJ5WKDoMBHEIjo7rZfTeaTvknde60=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -48,11 +48,13 @@ Cc: Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Roman Bolshakov <rbolshakov@ddn.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 00/26] Implementing a MSHV (Microsoft Hypervisor)
+Subject: [PATCH v3 01/26] accel: Add Meson and config support for MSHV
  accelerator
-Date: Thu,  7 Aug 2025 16:39:25 +0200
-Message-Id: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
+Date: Thu,  7 Aug 2025 16:39:26 +0200
+Message-Id: <20250807143951.1154713-2-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
+References: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=13.77.154.182;
@@ -79,163 +81,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hey all,
+Introduce a Meson feature option and default-config entry to allow
+building QEMU with MSHV (Microsoft Hypervisor) acceleration support.
 
-This is the third revision of a patch set implementing an accelerator
-for the MSHV kernel driver, exposing HyperV to Linux "Dom0" hosts in various
-scenarios. Thank you for the feedback so far. Since the last revision we
-incorporated feedback from the last review and identified further areas for
-performance fixes, notably in the irqfd handling. I'm looking forward to your
-comments.
+This is the first step toward implementing an MSHV backend in QEMU.
 
-Best regards,
+Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
+---
+ accel/Kconfig                 |  3 +++
+ meson.build                   | 10 ++++++++++
+ meson_options.txt             |  2 ++
+ scripts/meson-buildoptions.sh |  3 +++
+ 4 files changed, 18 insertions(+)
 
-magnus
-
-Changelog:
-
-v2 => v3
-
-- Addressed code review comments (style)
-- Reserve GSI 01-23 for IO-APIC pins (this resolved a problem in which MSI
-  routes would be overwritten with interrupts from legacy devices, breaking
-  irqfd notification for virtio-blk queues)
-- Guard memory slot table with mutex and RCU mechanism (multiple threads
-  might access the memory slot table, and in the event of an UNMAPPED_GPA
-  exit we need to query the table for an unmapped region covering that GPA)
-- Include memory slot manager in MshvState
-- Produce mshv.h kernel header with ./scripts/update-linux-headers.sh from
-  linux 6.16 (not all UAPI definitions are defined in the upstream kernel,
-  hence we ship hw/hyper/hvgdk*.h and hw/hyperv/hvhdk*.h headers)
-- Added a QMP command query-mshv (a requirement for integration into
-  higher-level tooling)
-- Removed handling of HALT vm exit, since this is not a supported HV
-  message any more.
-- Added 2 maintainers from Microsoft for the respective file hierarchy
-- Added mshv as accelerator option in the documentation
-
-RFC (v1) => v2
-
-- Addressed code review comments (style, consilidation).
-- Rewrote the logic that handles overlap-in-userspace mappings to use
-  a static list of slots, inspired by the HVF accelerator code.
-- Fixed a bug that wrote corrupt payload in a MSHV_SET_MSI_ROUTING
-  call, preventing vhost=on to work on tap network devices.
-- Removed an erronous truncation of guest addresses to 32bit when
-  registering ioeventfd's using MSHV_IOEVENTFD. This resulted in
-  shadowing of low memory when ioevents were registered with
-  addresses beyond the 4gb barrier and thus unexpected "unmapped gpa"
-  vm exits in lower mem regions (impacting io performance).
-- Fixed problem in which the MSI routing table was committed for KVM
-  KVM instead of MSHV in virtio-pci bus initialization.
-- Added handler for HLT vm exits.
-- The above fixes removed a few limitation present in the previous
-  revision:
-  - Guest with machine type "pc" are booting (testing is still mostly
-    performed with q35)
-  - Tap network devices can be used with vhost=on option.
-  - Seabios can be used with >2.75G memory and multiple virtio-pci
-    devices
-  - I/O performance improvement as extranous MMIO vm exits are avoided
-    by registering ioevents with a correct address.
-
-Notes:
-
-- A discrete kernel ioctl "set_immediate_exit" (to avoid a race condition
-  when handling terminiation signals like ctrl-a x) has been tested and
-  proven to mitigate the problem. Since other consumers of /dev/mshv have
-  simular requirements as QEMU, we opted to iterate a bit more on the
-  respective kernel interface.
-
-Magnus Kulke (25):
-  accel: Add Meson and config support for MSHV accelerator
-  target/i386/emulate: Allow instruction decoding from stream
-  target/i386/mshv: Add x86 decoder/emu implementation
-  hw/intc: Generalize APIC helper names from kvm_* to accel_*
-  include/hw/hyperv: Add MSHV ABI header definitions
-  linux-headers/linux: Add mshv.h headers
-  accel/mshv: Add accelerator skeleton
-  accel/mshv: Register memory region listeners
-  accel/mshv: Initialize VM partition
-  accel/mshv: Add vCPU creation and execution loop
-  accel/mshv: Add vCPU signal handling
-  target/i386/mshv: Add CPU create and remove logic
-  target/i386/mshv: Implement mshv_store_regs()
-  target/i386/mshv: Implement mshv_get_standard_regs()
-  target/i386/mshv: Implement mshv_get_special_regs()
-  target/i386/mshv: Implement mshv_arch_put_registers()
-  target/i386/mshv: Set local interrupt controller state
-  target/i386/mshv: Register CPUID entries with MSHV
-  target/i386/mshv: Register MSRs with MSHV
-  target/i386/mshv: Integrate x86 instruction decoder/emulator
-  target/i386/mshv: Write MSRs to the hypervisor
-  target/i386/mshv: Implement mshv_vcpu_run()
-  accel/mshv: Handle overlapping mem mappings
-  docs: Add mshv to documentation
-  MAINTAINERS: Add maintainers for mshv accelerator
-
-Praveen K Paladugu (1):
-  qapi/accel: Allow to query mshv capabilities
-
- MAINTAINERS                      |   15 +
- accel/Kconfig                    |    3 +
- accel/accel-irq.c                |  106 ++
- accel/meson.build                |    3 +-
- accel/mshv/irq.c                 |  397 +++++++
- accel/mshv/mem.c                 |  562 ++++++++++
- accel/mshv/meson.build           |    9 +
- accel/mshv/mshv-all.c            |  726 +++++++++++++
- accel/mshv/msr.c                 |  373 +++++++
- accel/mshv/trace-events          |   30 +
- accel/mshv/trace.h               |   14 +
- docs/devel/codebase.rst          |    2 +-
- hw/core/machine-qmp-cmds.c       |   14 +
- hw/intc/apic.c                   |    8 +
- hw/intc/ioapic.c                 |   20 +-
- hw/virtio/virtio-pci.c           |   21 +-
- include/hw/hyperv/hvgdk.h        |   19 +
- include/hw/hyperv/hvgdk_mini.h   |  864 +++++++++++++++
- include/hw/hyperv/hvhdk.h        |  164 +++
- include/hw/hyperv/hvhdk_mini.h   |  105 ++
- include/system/accel-irq.h       |   37 +
- include/system/mshv.h            |  195 ++++
- linux-headers/linux/mshv.h       |  291 ++++++
- meson.build                      |   11 +
- meson_options.txt                |    2 +
- qapi/accelerator.json            |   29 +
- qemu-options.hx                  |   16 +-
- scripts/meson-buildoptions.sh    |    3 +
- scripts/update-linux-headers.sh  |    2 +-
- target/i386/cpu.h                |    4 +-
- target/i386/emulate/meson.build  |    7 +-
- target/i386/emulate/x86_decode.c |   27 +-
- target/i386/emulate/x86_decode.h |    9 +
- target/i386/emulate/x86_emu.c    |    3 +-
- target/i386/emulate/x86_emu.h    |    2 +
- target/i386/meson.build          |    2 +
- target/i386/mshv/meson.build     |    8 +
- target/i386/mshv/mshv-cpu.c      | 1674 ++++++++++++++++++++++++++++++
- target/i386/mshv/x86.c           |  297 ++++++
- 39 files changed, 6038 insertions(+), 36 deletions(-)
- create mode 100644 accel/accel-irq.c
- create mode 100644 accel/mshv/irq.c
- create mode 100644 accel/mshv/mem.c
- create mode 100644 accel/mshv/meson.build
- create mode 100644 accel/mshv/mshv-all.c
- create mode 100644 accel/mshv/msr.c
- create mode 100644 accel/mshv/trace-events
- create mode 100644 accel/mshv/trace.h
- create mode 100644 include/hw/hyperv/hvgdk.h
- create mode 100644 include/hw/hyperv/hvgdk_mini.h
- create mode 100644 include/hw/hyperv/hvhdk.h
- create mode 100644 include/hw/hyperv/hvhdk_mini.h
- create mode 100644 include/system/accel-irq.h
- create mode 100644 include/system/mshv.h
- create mode 100644 linux-headers/linux/mshv.h
- create mode 100644 target/i386/mshv/meson.build
- create mode 100644 target/i386/mshv/mshv-cpu.c
- create mode 100644 target/i386/mshv/x86.c
-
+diff --git a/accel/Kconfig b/accel/Kconfig
+index 4263cab722..a60f114923 100644
+--- a/accel/Kconfig
++++ b/accel/Kconfig
+@@ -13,6 +13,9 @@ config TCG
+ config KVM
+     bool
+ 
++config MSHV
++    bool
++
+ config XEN
+     bool
+     select FSDEV_9P if VIRTFS
+diff --git a/meson.build b/meson.build
+index e53cd5b413..b6e70714f1 100644
+--- a/meson.build
++++ b/meson.build
+@@ -334,6 +334,7 @@ elif cpu == 'x86_64'
+     'CONFIG_HVF': ['x86_64-softmmu'],
+     'CONFIG_NVMM': ['i386-softmmu', 'x86_64-softmmu'],
+     'CONFIG_WHPX': ['i386-softmmu', 'x86_64-softmmu'],
++    'CONFIG_MSHV': ['x86_64-softmmu'],
+   }
+ endif
+ 
+@@ -884,6 +885,14 @@ accelerators = []
+ if get_option('kvm').allowed() and host_os == 'linux'
+   accelerators += 'CONFIG_KVM'
+ endif
++
++if get_option('mshv').allowed() and host_os == 'linux'
++  if get_option('mshv').enabled() and host_machine.cpu() != 'x86_64'
++    error('mshv accelerator requires x64_64 host')
++  endif
++  accelerators += 'CONFIG_MSHV'
++endif
++
+ if get_option('whpx').allowed() and host_os == 'windows'
+   if get_option('whpx').enabled() and host_machine.cpu() != 'x86_64'
+     error('WHPX requires 64-bit host')
+@@ -4818,6 +4827,7 @@ if have_system
+   summary_info += {'HVF support':       config_all_accel.has_key('CONFIG_HVF')}
+   summary_info += {'WHPX support':      config_all_accel.has_key('CONFIG_WHPX')}
+   summary_info += {'NVMM support':      config_all_accel.has_key('CONFIG_NVMM')}
++  summary_info += {'MSHV support':       config_all_accel.has_key('CONFIG_MSHV')}
+   summary_info += {'Xen support':       xen.found()}
+   if xen.found()
+     summary_info += {'xen ctrl version':  xen.version()}
+diff --git a/meson_options.txt b/meson_options.txt
+index dd33530750..2a6e8dd950 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -71,6 +71,8 @@ option('malloc', type : 'combo', choices : ['system', 'tcmalloc', 'jemalloc'],
+ 
+ option('kvm', type: 'feature', value: 'auto',
+        description: 'KVM acceleration support')
++option('mshv', type: 'feature', value: 'auto',
++       description: 'MSHV acceleration support')
+ option('whpx', type: 'feature', value: 'auto',
+        description: 'WHPX acceleration support')
+ option('hvf', type: 'feature', value: 'auto',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index d559e260ed..a3bc3d195e 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -157,6 +157,7 @@ meson_options_help() {
+   printf "%s\n" '  membarrier      membarrier system call (for Linux 4.14+ or Windows'
+   printf "%s\n" '  modules         modules support (non Windows)'
+   printf "%s\n" '  mpath           Multipath persistent reservation passthrough'
++  printf "%s\n" '  mshv            MSHV acceleration support'
+   printf "%s\n" '  multiprocess    Out of process device emulation support'
+   printf "%s\n" '  netmap          netmap network backend support'
+   printf "%s\n" '  nettle          nettle cryptography support'
+@@ -413,6 +414,8 @@ _meson_option_parse() {
+     --disable-modules) printf "%s" -Dmodules=disabled ;;
+     --enable-mpath) printf "%s" -Dmpath=enabled ;;
+     --disable-mpath) printf "%s" -Dmpath=disabled ;;
++    --enable-mshv) printf "%s" -Dmshv=enabled ;;
++    --disable-mshv) printf "%s" -Dmshv=disabled ;;
+     --enable-multiprocess) printf "%s" -Dmultiprocess=enabled ;;
+     --disable-multiprocess) printf "%s" -Dmultiprocess=disabled ;;
+     --enable-netmap) printf "%s" -Dnetmap=enabled ;;
 -- 
 2.34.1
 
