@@ -2,100 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0B5B1CFB3
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 02:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB50B1D00D
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 03:22:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujo9Y-0007Rk-Kh; Wed, 06 Aug 2025 20:06:41 -0400
+	id 1ujpJY-0007Hn-Os; Wed, 06 Aug 2025 21:21:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1ujo9V-0007Qy-Ro
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 20:06:38 -0400
-Received: from skyblue.cherry.relay.mailchannels.net ([23.83.223.167])
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1ujpJL-0007G4-WA
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 21:20:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1ujo9U-0004js-2W
- for qemu-devel@nongnu.org; Wed, 06 Aug 2025 20:06:37 -0400
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id C65B31A5024;
- Thu,  7 Aug 2025 00:06:33 +0000 (UTC)
-Received: from pdx1-sub0-mail-a238.dreamhost.com
- (100-98-216-71.trex-nlb.outbound.svc.cluster.local [100.98.216.71])
- (Authenticated sender: dreamhost)
- by relay.mailchannels.net (Postfix) with ESMTPA id 56BD51A4DD7;
- Thu,  7 Aug 2025 00:06:33 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1754525193; a=rsa-sha256;
- cv=none;
- b=wKe4hBTT/6o7ZdgUirjUChtfmEYLEQOcEeu7tzmTNkONMIFDT3sY6AvgnmPfSOaHKZ9h63
- fyXZl/D0pJMNeev4eKjYRBLV8IH7A/LCFU1uFeE0l0EtJMtcCFJY0J2l15dI87okjHp74X
- zMsjPJZ+K+Ixl2T601yU8Can2IfwJ/bXfTjrvtRXKKVfTNROJJMiQHfeboaFMhXDfBWFvu
- 3WLkFf+zBCzjlKOzpOpX2ZJfluTUZGgrEmGDgVHMgarffFXxd0OoDNz3cSkgpxbiFzqpBo
- DfkAgU/MAYrvr/fQgmXVkFeViiUGCTPOse1By60gsuxuGcE0xJwHHUdpsCoKhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1754525193;
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1ujpJK-0004WG-15
+ for qemu-devel@nongnu.org; Wed, 06 Aug 2025 21:20:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754529647;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=lC+S+PMJ0IPLx3hpttP4fsD+ikeDBNPckxX0HDz441I=;
- b=m2H4hsz6AFWCYcjBtmk/IPxhqFvkWbkwnwyFLlO85mxSW/7Gb8kINDxzjr3ffIpqCBcrTK
- GLh+6PmR1BJiWRgNSpjcE2QzgN0AtPS7d4BZ8JNp+yIhPz45IJ6+GfAC7WmII0j7+Ql0lu
- HUpVSoy8n8+vRlTP4RITHU6/daKBZdjNLDVqNJjwcaf5/7MfxMfQeTixRw6EeenhDpvLf8
- nFZcw1uTzPw+R4CdqS/a8swqFSjPgBs2+6KD9/SCv5kE2dl+ZEgXvy4FL7XELFFjtFX0oK
- hpFJJUeH2KMAZdGn99HEA918WkS8dqB7QE/68n1CpIAyHuoqa0HsCmdhBXqz3g==
-ARC-Authentication-Results: i=1; rspamd-565df7d78-rkwqc;
- auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Obese-Bottle: 6e5936080bf291ed_1754525193604_1346270259
-X-MC-Loop-Signature: 1754525193603:634501519
-X-MC-Ingress-Time: 1754525193603
-Received: from pdx1-sub0-mail-a238.dreamhost.com (pop.dreamhost.com
- [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.98.216.71 (trex/7.1.3); Thu, 07 Aug 2025 00:06:33 +0000
-Received: from offworld (syn-076-167-199-067.res.spectrum.com [76.167.199.67])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- (Authenticated sender: dave@stgolabs.net)
- by pdx1-sub0-mail-a238.dreamhost.com (Postfix) with ESMTPSA id 4by6s45jSYz4w; 
- Wed,  6 Aug 2025 17:06:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
- s=dreamhost; t=1754525193;
- bh=lC+S+PMJ0IPLx3hpttP4fsD+ikeDBNPckxX0HDz441I=;
- h=Date:From:To:Cc:Subject:Content-Type;
- b=JyUSpzjkAV8zv1fVt7e+S3xHg5yS4W4UbslmT17xiWzCzqlEVjXsLCgxM2yMhdE1O
- v4P2Do564v90Ndp6iJ+DtY6NEUlvVT5j0GOi+V01vFS9LS3R9BC+SACproz5Jh1hu8
- FXjlavz6CX+fG2JmfdeWxRQI5MRUQ0jXCbpwsaJoTo4Iv3ymM0tWlmDFaIKQZ9jaAs
- MIMjdehoh5iOHXev7DuNTn/hp4QEhxzTkjyVMUnEOr1PuBWD5CElaEKq42KCl3Ak5H
- 1j1hm77ZM+RhJq2+HgC1Qa2hqmVv7Fr/XsKdsBHQdeLOS00LhfQyfGSci9hDtKl5u4
- oEWB6+g7qPeHw==
-Date: Wed, 6 Aug 2025 17:06:30 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: jonathan.cameron@huawei.com
-Cc: ira.weiny@intel.com, alucerop@amd.com, a.manzanares@samsung.com,
- linux-cxl@vger.kernel.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH 3/4] hw/cxl: Allow BI by default in Window restrictions
-Message-ID: <20250807000630.w5k6kzc3sahup6vr@offworld>
-References: <20250806055708.196851-1-dave@stgolabs.net>
- <20250806055708.196851-4-dave@stgolabs.net>
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WEWrYjjWGNjohxH9R8UlGTMdvalBWlYjle/WluhTEow=;
+ b=EP6jSgcjdNSCI/Lua8wHzgRU9x7NmOqftx1XUtmz/gXWI8PBSIQsgNsRSBVyOjsYD7Nvei
+ SOjW8ebNgvnA2FzkHEgvJ7/tCGMaccijZVACDnh2/YBnB0nUVpjVqU5f+JxR6NQ1fnbIeW
+ jwCK8m8FCHt0DX+BM6fMXWnfjOacb4o=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-403-nC83IRFuPbadkrXQW_lDTA-1; Wed, 06 Aug 2025 21:20:45 -0400
+X-MC-Unique: nC83IRFuPbadkrXQW_lDTA-1
+X-Mimecast-MFC-AGG-ID: nC83IRFuPbadkrXQW_lDTA_1754529644
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-615a06a4bf4so465188a12.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Aug 2025 18:20:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754529644; x=1755134444;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WEWrYjjWGNjohxH9R8UlGTMdvalBWlYjle/WluhTEow=;
+ b=Lz+NexNajrM+VFNicuQvxhpvB4hSXziA8voL5+fFtQPupvuOtG+JMGmokjgVSVp+hU
+ GhIGahFP2kNJtFzQU4G7p+r12Sx6XYWCQyKnDed1MvXpwYMJM3QuGJZPINMUFOr2cnrd
+ gmIb/FKL3MTN02EArJI69KrOfGgdmhkGsHaeI2uT9XITz5Sdp1QlcEHhLgTrQwgnm/MI
+ O3BkIhRjPNCGcW7jwUONXVnN4NDOD0WpfBb52DcrfIcQesXtRkscep37hjPZ555BcpI3
+ pT/7WSg9skMx/obGGLl0I4P62JZkVQXln691rlG82j5hC9I/xkYLTqC0BsVccJUszc0i
+ lHrg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUiOaNwO12aZkLH192d2h043VIfYV8Zemx0Yhh4od9Yi3IRHYliHw4TBOYgiJkGvC15ns9S5KPMBvo8@nongnu.org
+X-Gm-Message-State: AOJu0Yy2QrfD/fVeyL/sJI/J4IxwdQE0Dt5CkyvW5H1ZFbDQNp3g2Brl
+ 0GeC4XgG1MXrY2ix8ceNKMf7FG9svTl7YdPkXLoJj0jJX9xv7PHS5MDO77LNgL7FTQVwiqDE8XT
+ DbQSbGBbc29QZYw6dh3GbtIJuJEA9ZcKCnaH3hiZ30DvSImU24jgPSA2u0kIKy4ZOilBiWEjqRd
+ CN/ZVPd2fdO/wbHcCDJSzw8eZHCfc4HAA=
+X-Gm-Gg: ASbGnctGj5QnFeFor86Ckpdeg7me7yz3XL9UIO68K3AjhLM2YThTrGr4TOXHi6j8+pc
+ 4ReWLNsgx/TBnPQaZ8a1k/aPiKFHjxYSB8zSfjTohVVQeGWQ9II89NNrfDbSJQskoR2AOn9H5sC
+ Dcb8zYUloR2kBoLDPiICz1Fg==
+X-Received: by 2002:a17:906:478b:b0:ae1:f1e0:8730 with SMTP id
+ a640c23a62f3a-af992c6c33amr362296066b.57.1754529644121; 
+ Wed, 06 Aug 2025 18:20:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHuVKYcqXyRGEOsTk+t3Ivio5HYohT/1PPb5lwl05ILoEYx6eYSe0xYK8By9jiCL6X1UkZ8aNd9kBreFrsaNRE=
+X-Received: by 2002:a17:906:478b:b0:ae1:f1e0:8730 with SMTP id
+ a640c23a62f3a-af992c6c33amr362295166b.57.1754529643803; Wed, 06 Aug 2025
+ 18:20:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250806055708.196851-4-dave@stgolabs.net>
-User-Agent: NeoMutt/20220429
-Received-SPF: pass client-ip=23.83.223.167; envelope-from=dave@stgolabs.net;
- helo=skyblue.cherry.relay.mailchannels.net
+References: <20250727-vlan-v3-1-bbee738619b1@rsg.ci.i.u-tokyo.ac.jp>
+ <7b657acb-7186-42bf-9be5-8c1253c6316c@tls.msk.ru>
+ <91aec5d7-7647-41d1-ae12-c86020be4537@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <91aec5d7-7647-41d1-ae12-c86020be4537@rsg.ci.i.u-tokyo.ac.jp>
+From: Lei Yang <leiyang@redhat.com>
+Date: Thu, 7 Aug 2025 09:20:07 +0800
+X-Gm-Features: Ac12FXxj7g2hGybmIndLW3D3NWQkijy579ZCYNkErpeCG-tTNz7HqsXyOOt1tgs
+Message-ID: <CAPpAL=xEZ+U4PnOWXP0Dtk1p6TmU4F+NxZZug+-wmYBsb1KvaQ@mail.gmail.com>
+Subject: Re: [PATCH v3] virtio-net: Fix VLAN filter table reset timing
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Konstantin Shkolnyy <kshk@linux.ibm.com>,
+ qemu-devel@nongnu.org, 
+ yin31149@gmail.com, eperezma@redhat.com, mst@redhat.com, jasowang@redhat.com, 
+ virtualization@lists.linux.dev, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,65 +107,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 05 Aug 2025, Davidlohr Bueso wrote:
+Tested pass this patch with virtio-net regression tests, everything works w=
+ell.
 
->diff --git a/qemu-options.hx b/qemu-options.hx
->index 1f862b19a676..ef6072bd8b59 100644
->--- a/qemu-options.hx
->+++ b/qemu-options.hx
->@@ -142,7 +142,7 @@ SRST
->             -machine memory-backend=pc.ram
->             -m 512M
+Tested-by: Lei Yang <leiyang@redhat.com>
+
+On Sat, Aug 2, 2025 at 5:43=E2=80=AFPM Akihiko Odaki
+<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
 >
->-    ``cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]``
->+    ``cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity,restrictions=restrictions]``
->         Define a CXL Fixed Memory Window (CFMW).
+> On 2025/08/02 16:26, Michael Tokarev wrote:
+> > On 27.07.2025 09:22, Akihiko Odaki wrote:
+> > ...
+> >> @@ -3942,6 +3943,7 @@ static void
+> >> virtio_net_device_realize(DeviceState *dev, Error **errp)
+> >>       n->mac_table.macs =3D g_malloc0(MAC_TABLE_ENTRIES * ETH_ALEN);
+> >>       n->vlans =3D g_malloc0(MAX_VLAN >> 3);
+> >> +    memset(n->vlans, 0xff, MAX_VLAN >> 3);
+> >
+> > A nitpick: we don't need to init this memory with 0 before
+> > initing it with 0xff.
+> >
+> > But looking at this, why can't we embed n->vlans directly into
+> > this structure, something like the attached patch?
 >
->         Described in the CXL 2.0 ECN: CEDT CFMWS & QTG _DSM.
->@@ -168,6 +168,8 @@ SRST
->         interleave. Default 256 (bytes). Only 256, 512, 1k, 2k,
->         4k, 8k and 16k granularities supported.
+> VMState also needs a change: VMSTATE_BUFFER_POINTER_UNSAFE() should be
+> replaced with plain VMSTATE_BUFFER(). Actually this is the only user of
+> VMSTATE_BUFFER_POINTER_UNSAFE().
 >
->+	``restrictions=restrictions`` bitmask of restrictions of the CFMW.
-
-hmm so there is a doc build error I missed:
-
-qemu-options.hx:212:Block quote ends without a blank line; unexpected unindent.
-
-------
-
-diff --git a/qemu-options.hx b/qemu-options.hx
-index ef6072bd8b59..da642642eafc 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -168,7 +168,7 @@ SRST
-          interleave. Default 256 (bytes). Only 256, 512, 1k, 2k,
-          4k, 8k and 16k granularities supported.
-  
--	``restrictions=restrictions`` bitmask of restrictions of the CFMW.
-+        ``restrictions=restrictions`` bitmask of the restrictions of the CFMW.
-  
-          Example:
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->+
->         Example:
+> I appreciate if you submit the patch with this VMState change and patch
+> message.
 >
->         ::
->-- 
->2.39.5
+> >
+> > This, and maybe a few other fields like it?
 >
+> There is another candidate: n->mac_table.macs
+>
+> But it is not straightforward to embed this array because it uses
+> VMSTATE_VBUFFER_MULTIPLY().
+>
+> Regards,
+> Akihiko Odaki
+>
+
 
