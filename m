@@ -2,74 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4698AB1D7BA
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 14:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E78AFB1D7E0
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 14:31:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ujzXE-0003Lu-30; Thu, 07 Aug 2025 08:15:52 -0400
+	id 1ujzko-0001NP-5a; Thu, 07 Aug 2025 08:29:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ujzWe-00034J-Vl
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 08:15:26 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1ujzWd-0006PO-3v
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 08:15:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754568916; x=1786104916;
- h=message-id:date:mime-version:to:cc:from:subject:
- content-transfer-encoding;
- bh=yzWbJsMjTv2YdsRDPYmh9ADImqD0wqWthlSCTGglohc=;
- b=E+x037NNtP/hmztDHNrfX6Sm/zKbe3NvjIvZmBvTJKNzk2fqfOLtGLVo
- O3C3Z1g+xDWcIkGXFZIviRZAT0Mi2wr8smWVTbz6pG1v/vk4sU2LqWXEd
- /wO67BdtG8FnoMeUTeiISsdjCd/nEYS65sWSggQrdx1zXqft4zTmloZH5
- B/yyjdsOs5dvPWWqvIfbhqvcQrDkDODMgoaydxigkwtneTcYJ0Vig0NLV
- dmGc2/MS3cdIonXDlG/caVqA+pcVkE+Wjkx3RGnqWoZw7rOB2Jzg/F45n
- 21SpXUQ+bOI0+Sk9DJ5xOeWd3fxxrTn/pC4DdRCwMOMwAn8qWkjQZclYt w==;
-X-CSE-ConnectionGUID: mxrMKF5kRoy/xO1o3b7Gqw==
-X-CSE-MsgGUID: lPz7xdr5S8uehrmTSQnD8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="67170924"
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="67170924"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2025 05:15:13 -0700
-X-CSE-ConnectionGUID: SVNZpSMqToevU4EYTdA4dQ==
-X-CSE-MsgGUID: 2FfYkMcsTd2QNDd/y9PBmA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="165844543"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2025 05:15:08 -0700
-Message-ID: <eaf7e7bf-9513-49a4-b6a1-fe18f2a1a258@intel.com>
-Date: Thu, 7 Aug 2025 20:15:05 +0800
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1ujzka-0001JZ-Gq
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 08:29:40 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1ujzkY-0000go-Kz
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 08:29:40 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-6155e75a9acso1547703a12.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Aug 2025 05:29:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1754569777; x=1755174577; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kLuWjuObH0hdqtraSsu5F50TkfggzDjqnfB7BJtWoVY=;
+ b=HtKzgso59tU/EnpGFulq4mg0wvf8XOLU02XRNaOiGjuPXGzz08TJF/57yM6HayWw1P
+ R+wvtYeV774FW+1dMk5TS8Yeu+w4FEo2BHhzYf5Zaaw3gbRWU7W9Cj24/UWdwksWvnru
+ jw/iuElcE1M/6j6Mjt5LobBRVG3Lx8iSs59UOkf8rCToKeg+jcLPl2foP59S9c+iAXyD
+ kL0LCngKi9toidLK1ovYA9gJzKU5/ax3t1RuYkEu9cu3mEpGLakHK0hM6E8BgZu3s1iW
+ w92HL4D8fBFsVDIa5vcc3l7LWC1Us7QTH/r+pHGCFwM7mg0EgXfi6ng7sdj5EFZS5tMn
+ WYNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754569777; x=1755174577;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kLuWjuObH0hdqtraSsu5F50TkfggzDjqnfB7BJtWoVY=;
+ b=NkShv2g61J3CQrp84xw3MZYepfsMd9quiNOEB45MuI+bsdmcT9GNljcUmhtDl+bd++
+ 8GfVqZeCG25FE7mvKVY34+mIequw9LnLEppto48WdknqMv3/46MKllkdbzyFZKs472EJ
+ SzqNcL5JwfDsAoyOy7zA3GP0mRRuSvqNUjT+fI4CP0MCXP6c/ip/EldzlIrr0KfqbwDJ
+ TqQOvM/+Ei2T+nPW3A0m930I+fqOzfwoN11T3VorVoq5lsoL40FXY9wjxTR4akkq+joF
+ 9V1m5e5C74R8r5XjZVtBIE7yVdQkZgA/YzqJNuc6eXFEKilxgEOE+RUnwX1vXzF6OT7I
+ 6aHg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX0Sd3eEh1v1+JEimSXluRteMOp37eP13UH8L11orvzzziitLW5NYLEb7EfeUL9rcTGxg6lZX1H7zZ4@nongnu.org
+X-Gm-Message-State: AOJu0Yw8tCv2Vo/FssVB2kf8HVUGnC2CaB6qLRMd9eeSdTaG4oitOotb
+ 57cDJw3I/i3bwU6PnroqVGHsZLTKMHWywxBLH9sCQthKKjgwZxKo0wl0Yr8oM31ww1tf511YknM
+ 9FYygIT6ehL30MAnAWb+HY7XIdN3AVkHdx0qSqqAPXA==
+X-Gm-Gg: ASbGncv2/3aPyFlAmWAHK0nUks/7KslXvzWufKdQWrScfgKTcJhcep1BjudyOP9gUdK
+ 0l7fjcrzZudRY+SbmOqcX3jXYe68yiB5d5c3ONpV0vnjCx530M2Z3qJOzQ6/LdcEtlQeJuMYzi3
+ Jt3pGiFQjmxNPei9Y2uGC0p+QmsyQMnIrqNKxc/w4RuegIysHzGfDLCZdtTSnYFHbeY0NelhRGO
+ +0OnV8s
+X-Google-Smtp-Source: AGHT+IEdE8O/oaHfKrzyQCsRfDNTbtxqq2QXRKTLiXTlQQdFKtycmAcZJbE9T/sTwYG8S3hOHAlfRZgRqhofjWJTp9c=
+X-Received: by 2002:a05:6402:5210:b0:615:a2ec:667b with SMTP id
+ 4fb4d7f45d1cf-61796141dc0mr5562404a12.20.1754569776489; Thu, 07 Aug 2025
+ 05:29:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: =?UTF-8?Q?Marcus_H=C3=A4hnel?= <marcus.haehnel@kernkonzept.com>,
- Adam Lackorzynski <adam@l4re.org>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Chenyi Qiang <chenyi.qiang@intel.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: split lock issue in multiboot_dma.bin
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250807123027.2910950-1-zhao1.liu@intel.com>
+ <20250807123027.2910950-14-zhao1.liu@intel.com>
+In-Reply-To: <20250807123027.2910950-14-zhao1.liu@intel.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Thu, 7 Aug 2025 15:29:09 +0300
+X-Gm-Features: Ac12FXzOtzgiGM5SJYAlQSRveIb7qp-WUQLn_qkkTOu-7G5R3n4ZkVIy44ClGLM
+Message-ID: <CAAjaMXZ9XbEmcJVg1-8uFhnkG-qUF+sB5g26e0W3HhxK_-NFwg@mail.gmail.com>
+Subject: Re: [RFC 13/26] rust: Add RCU bindings
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Junjie Mao <junjie.mao@hotmail.com>,
+ qemu-devel@nongnu.org, 
+ qemu-rust@nongnu.org, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+ Chuanxiao Dong <chuanxiao.dong@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,62 +102,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running the kvm-unit-tests on Intel platforms with "split lock 
-disable" feature, every test triggers a kernel warning of
+On Thu, Aug 7, 2025 at 3:09=E2=80=AFPM Zhao Liu <zhao1.liu@intel.com> wrote=
+:
+>
+> Add rcu_read_lock() & rcu_read_unlock() bindings, then they can be used
+> in memory access.
+>
+> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>  rust/qemu-api/meson.build |  1 +
+>  rust/qemu-api/src/lib.rs  |  1 +
+>  rust/qemu-api/src/rcu.rs  | 26 ++++++++++++++++++++++++++
+>  rust/qemu-api/wrapper.h   |  1 +
+>  4 files changed, 29 insertions(+)
+>  create mode 100644 rust/qemu-api/src/rcu.rs
+>
+> diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+> index a362d44ed396..d40472092248 100644
+> --- a/rust/qemu-api/meson.build
+> +++ b/rust/qemu-api/meson.build
+> @@ -68,6 +68,7 @@ _qemu_api_rs =3D static_library(
+>        'src/prelude.rs',
+>        'src/qdev.rs',
+>        'src/qom.rs',
+> +      'src/rcu.rs',
+>        'src/sysbus.rs',
+>        'src/timer.rs',
+>        'src/uninit.rs',
+> diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+> index 86dcd8ef17a9..4705cf9ccbc5 100644
+> --- a/rust/qemu-api/src/lib.rs
+> +++ b/rust/qemu-api/src/lib.rs
+> @@ -26,6 +26,7 @@
+>  pub mod module;
+>  pub mod qdev;
+>  pub mod qom;
+> +pub mod rcu;
+>  pub mod sysbus;
+>  pub mod timer;
+>  pub mod uninit;
+> diff --git a/rust/qemu-api/src/rcu.rs b/rust/qemu-api/src/rcu.rs
+> new file mode 100644
+> index 000000000000..30d8b9e43967
+> --- /dev/null
+> +++ b/rust/qemu-api/src/rcu.rs
+> @@ -0,0 +1,26 @@
+> +// Copyright (C) 2025 Intel Corporation.
+> +// Author(s): Zhao Liu <zhao1.liu@intel.com>
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +//! Bindings for `rcu_read_lock` and `rcu_read_unlock`.
+> +//! More details about RCU in QEMU, please refer docs/devel/rcu.rst.
+> +
 
-     x86/split lock detection: #AC: qemu-system-x86_64/373232 took a 
-split_lock trap at address: 0x1e3
+How about a RAII guard type? e.g. RCUGuard and runs `rcu_read_unlock` on Dr=
+op.
 
-After investigation, it turns out the split lock happens from 
-multiboot_dma.bin:
+Destructors are not guaranteed to run or run only once, but the former
+should happen when things go wrong e.g. crashes/aborts. You can add a
+flag in the RCUGuard to make sure Drop runs unlock only once (since it
+takes &mut and not ownership)
 
-Hack KVM by exiting to QEMU on split lock #AC, we get
+> +use crate::bindings;
+> +
+> +/// Used by a reader to inform the reclaimer that the reader is
+> +/// entering an RCU read-side critical section.
+> +pub fn rcu_read_lock() {
+> +    // SAFETY: no return and no argument, everything is done at C side.
+> +    unsafe { bindings::rcu_read_lock() }
+> +}
+> +
+> +/// Used by a reader to inform the reclaimer that the reader is
+> +/// exiting an RCU read-side critical section.  Note that RCU
+> +/// read-side critical sections may be nested and/or overlapping.
+> +pub fn rcu_read_unlock() {
+> +    // SAFETY: no return and no argument, everything is done at C side.
+> +    unsafe { bindings::rcu_read_unlock() }
+> +}
+> +
+> +// FIXME: maybe we need rcu_read_lock_held() to check the rcu context,
+> +// then make it possible to add assertion at any RCU critical section.
 
-KVM: exception 17 exit (error code 0x0)
-EAX=00000001 EBX=00000000 ECX=00000014 EDX=0001fb80
-ESI=00000000 EDI=000000a8 EBP=00000000 ESP=00006f10
-EIP=000001e3 EFL=00010002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
-ES =0900 00009000 0000ffff 00009300 DPL=0 DS16 [-WA]
-CS =c000 000c0000 0000ffff 00009b00 DPL=0 CS16 [-RA]
-SS =0000 00000000 0000ffff 00009300 DPL=0 DS16 [-WA]
-DS =c000 000c0000 0000ffff 00009300 DPL=0 DS16 [-WA]
-FS =0950 00009500 0000ffff 00009300 DPL=0 DS16 [-WA]
-GS =06f2 00006f20 0000ffff 00009300 DPL=0 DS16 [-WA]
-LDT=0000 00000000 0000ffff 00008200 DPL=0 LDT
-TR =0000 00000000 0000ffff 00008b00 DPL=0 TSS32-busy
-GDT=     000c02b4 00000027
-IDT=     00000000 000003ff
-CR0=00000011 CR2=00000000 CR3=00000000 CR4=00000000
-DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000 
-DR3=0000000000000000
-DR6=00000000ffff0ff0 DR7=0000000000000400
-EFER=0000000000000000
-Code=89 16 08 00 65 66 0f 01 16 06 00 66 b8 01 00 00 00 0f 22 c0 <65> 66 
-ff 2e 00 00 b8 10 00 00 00 8e d0 8e d8 8e c0 8e e0 8e e8 66 b8 08 00 66 
-ba 10 05 66
+This would be less necessary with Drop, maybe.
 
-And it matches with what disassembled from multiboo_dma.bin:
-
-#objdump -b binary -m i386 -D pc-bios/multiboot_dma.bin
-
-  1d1:   08 00                   or     %al,(%eax)
-  1d3:   65 66 0f 01 16          lgdtw  %gs:(%esi)
-  1d8:   06                      push   %es
-  1d9:   00 66 b8                add    %ah,-0x48(%esi)
-  1dc:   01 00                   add    %eax,(%eax)
-  1de:   00 00                   add    %al,(%eax)
-  1e0:   0f 22 c0                mov    %eax,%cr0
- >1e3:   65 66 ff 2e             ljmpw  *%gs:(%esi)
-  1e7:   00 00                   add    %al,(%eax)
-  1e9:   b8 10 00 00 00          mov    $0x10,%eax
-  1ee:   8e d0                   mov    %eax,%ss
-  1f0:   8e d8                   mov    %eax,%ds
-  1f2:   8e c0                   mov    %eax,%es
-  1f4:   8e e0                   mov    %eax,%fs
-  1f6:   8e e8                   mov    %eax,%gs
-  1f8:   66 b8 08 00             mov    $0x8,%ax
-  1fc:   66 ba 10 05             mov    $0x510,%dx
-
-I don't know where the multiboot_dma.bin are built from so that I cannot 
-further help resolve the split lock issue.
+> diff --git a/rust/qemu-api/wrapper.h b/rust/qemu-api/wrapper.h
+> index 15a1b19847f2..ce0ac8d3f550 100644
+> --- a/rust/qemu-api/wrapper.h
+> +++ b/rust/qemu-api/wrapper.h
+> @@ -69,3 +69,4 @@ typedef enum memory_order {
+>  #include "qemu/timer.h"
+>  #include "system/address-spaces.h"
+>  #include "hw/char/pl011.h"
+> +#include "qemu/rcu.h"
+> --
+> 2.34.1
+>
 
