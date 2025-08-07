@@ -2,59 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633E9B1DAF8
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 17:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A938B1DB4B
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Aug 2025 18:05:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uk2ni-0005WJ-Nr; Thu, 07 Aug 2025 11:45:06 -0400
+	id 1uk33E-00004r-V5; Thu, 07 Aug 2025 12:01:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
- id 1uk2nL-0005Hj-Qy
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 11:44:43 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uk32p-0008Gh-2M
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 12:00:49 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
- id 1uk2nH-00040B-8M
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 11:44:43 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4byWcD4nqRz6L4yX;
- Thu,  7 Aug 2025 23:41:48 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
- by mail.maildlp.com (Postfix) with ESMTPS id B8F0F140277;
- Thu,  7 Aug 2025 23:44:10 +0800 (CST)
-Received: from P_UKIT01-A7bmah.china.huawei.com (10.126.170.37) by
- frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 7 Aug 2025 17:44:10 +0200
-To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <armbru@redhat.com>, 
- <jonathan.cameron@huawei.com>, <dave@stgolabs.net>
-CC: <linuxarm@huawei.com>, <shiju.jose@huawei.com>
-Subject: [PATCH v5 7/7] hw/cxl: Add emulation for memory sparing control
- feature
-Date: Thu, 7 Aug 2025 16:43:46 +0100
-Message-ID: <20250807154346.2209-8-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.43.0.windows.1
-In-Reply-To: <20250807154346.2209-1-shiju.jose@huawei.com>
-References: <20250807154346.2209-1-shiju.jose@huawei.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uk32j-0007sy-CY
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 12:00:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1754582438; x=1786118438;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=WUt10lvy3PPEXUjtBFUCvDRZOY3XxNQRtHK5zS1CGK4=;
+ b=kcPZQALIYztkBVRmpRm7qNM/K29oBHYTRb3kiFwz3k6NfZPjXPFzTokM
+ qalfTqM4g4qZ2kCrEHA0pbXgtJhT36Dewj2Hj6SnzK6Mi2tYIvKN4/UxQ
+ E+ZfhQ0DHAW/q0b6wMb77LTiSr4/mAbDWfCVO2dIanNNDF2ZIW+AbqiDM
+ EFOaJrSRtkEataxL8iji3RF97Mvun9hDkquXfC2A9cOEiSbHiPGNehlWy
+ u2xLBNkinBUad4Eq6aRZCxhfec+US6/7qlEJyDgYxDJpNWfp3jyCbBEhl
+ qAJrK8cYwF+z9R5dUQCGQ+zeK0n6PpUgOjKGpT7KsAwDSq1WZH2FJY5Jf w==;
+X-CSE-ConnectionGUID: gYWm0qsETBWV6HdJJ9tqCg==
+X-CSE-MsgGUID: G8IYlr5DSO+rCf9kBtd5MQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="67618698"
+X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="67618698"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Aug 2025 09:00:34 -0700
+X-CSE-ConnectionGUID: vA6ay6/ITgOS3UKHZdJarg==
+X-CSE-MsgGUID: eCnI5OFiSruNpCVFrWpb5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; d="scan'208";a="165891725"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Aug 2025 09:00:32 -0700
+Message-ID: <0344ef5a-8c6c-4c21-824e-9506bb4c7600@intel.com>
+Date: Fri, 8 Aug 2025 00:00:29 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: split lock issue in multiboot_dma.bin
+To: =?UTF-8?Q?Marcus_H=C3=A4hnel?= <marcus.haehnel@kernkonzept.com>,
+ Adam Lackorzynski <adam@l4re.org>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+References: <eaf7e7bf-9513-49a4-b6a1-fe18f2a1a258@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <eaf7e7bf-9513-49a4-b6a1-fe18f2a1a258@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.126.170.37]
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- frapeml500007.china.huawei.com (7.182.85.172)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56; envelope-from=shiju.jose@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,600 +83,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  <shiju.jose@huawei.com>
-From: shiju.jose--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shiju Jose <shiju.jose@huawei.com>
+On 8/7/2025 8:15 PM, Xiaoyao Li wrote:
+> When running the kvm-unit-tests on Intel platforms with "split lock 
+> disable" feature, every test triggers a kernel warning of
+> 
+>      x86/split lock detection: #AC: qemu-system-x86_64/373232 took a 
+> split_lock trap at address: 0x1e3
+> 
+> After investigation, it turns out the split lock happens from 
+> multiboot_dma.bin:
+> 
+> Hack KVM by exiting to QEMU on split lock #AC, we get
+> 
+> KVM: exception 17 exit (error code 0x0)
+> EAX=00000001 EBX=00000000 ECX=00000014 EDX=0001fb80
+> ESI=00000000 EDI=000000a8 EBP=00000000 ESP=00006f10
+> EIP=000001e3 EFL=00010002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
+> ES =0900 00009000 0000ffff 00009300 DPL=0 DS16 [-WA]
+> CS =c000 000c0000 0000ffff 00009b00 DPL=0 CS16 [-RA]
+> SS =0000 00000000 0000ffff 00009300 DPL=0 DS16 [-WA]
+> DS =c000 000c0000 0000ffff 00009300 DPL=0 DS16 [-WA]
+> FS =0950 00009500 0000ffff 00009300 DPL=0 DS16 [-WA]
+> GS =06f2 00006f20 0000ffff 00009300 DPL=0 DS16 [-WA]
+> LDT=0000 00000000 0000ffff 00008200 DPL=0 LDT
+> TR =0000 00000000 0000ffff 00008b00 DPL=0 TSS32-busy
+> GDT=     000c02b4 00000027
+> IDT=     00000000 000003ff
+> CR0=00000011 CR2=00000000 CR3=00000000 CR4=00000000
+> DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000 
+> DR3=0000000000000000
+> DR6=00000000ffff0ff0 DR7=0000000000000400
+> EFER=0000000000000000
+> Code=89 16 08 00 65 66 0f 01 16 06 00 66 b8 01 00 00 00 0f 22 c0 <65> 66 
+> ff 2e 00 00 b8 10 00 00 00 8e d0 8e d8 8e c0 8e e0 8e e8 66 b8 08 00 66 
+> ba 10 05 66
+> 
+> And it matches with what disassembled from multiboo_dma.bin:
+> 
+> #objdump -b binary -m i386 -D pc-bios/multiboot_dma.bin
+> 
+>   1d1:   08 00                   or     %al,(%eax)
+>   1d3:   65 66 0f 01 16          lgdtw  %gs:(%esi)
+>   1d8:   06                      push   %es
+>   1d9:   00 66 b8                add    %ah,-0x48(%esi)
+>   1dc:   01 00                   add    %eax,(%eax)
+>   1de:   00 00                   add    %al,(%eax)
+>   1e0:   0f 22 c0                mov    %eax,%cr0
+>  >1e3:   65 66 ff 2e             ljmpw  *%gs:(%esi)
+>   1e7:   00 00                   add    %al,(%eax)
+>   1e9:   b8 10 00 00 00          mov    $0x10,%eax
+>   1ee:   8e d0                   mov    %eax,%ss
+>   1f0:   8e d8                   mov    %eax,%ds
+>   1f2:   8e c0                   mov    %eax,%es
+>   1f4:   8e e0                   mov    %eax,%fs
+>   1f6:   8e e8                   mov    %eax,%gs
+>   1f8:   66 b8 08 00             mov    $0x8,%ax
+>   1fc:   66 ba 10 05             mov    $0x510,%dx
+> 
+> I don't know where the multiboot_dma.bin are built from so that I cannot 
+> further help resolve the split lock issue.
 
-Memory sparing is defined as a repair function that replaces a portion of
-memory with a portion of functional memory at that same DPA. The
-subclasses for this operation vary in terms of the scope of the sparing
-being performed. The Cacheline sparing subclass refers to a sparing
-action that can replace a full cacheline. Row sparing is provided as an
-alternative to PPR sparing functions and its scope is that of a single
-DDR row. Bank sparing allows an entire bank to be replaced. Rank sparing
-is defined as an operation in which an entire DDR rank is replaced.
-
-Memory sparing maintenance operations may be supported by CXL devices
-that implement CXL.mem protocol. A sparing maintenance operation requests
-the CXL device to perform a repair operation on its media.
-For example, a CXL device with DRAM components that support memory sparing
-features may implement sparing Maintenance operations.
-
-The host may issue a query command by setting Query Resources flag in the
-Input Payload (CXL Spec 3.2 Table 8-120) to determine availability of
-sparing resources for a given address. In response to a query request,
-the device shall report the resource availability by producing the Memory
-Sparing Event Record (CXL Spec 3.2 Table 8-60) in which the Channel, Rank,
-Nibble Mask, Bank Group, Bank, Row, Column, Sub-Channel fields are a copy
-of the values specified in the request.
-
-During the execution of a sparing maintenance operation, a CXL memory
-device:
-- May or may not retain data
-- May or may not be able to process CXL.mem requests correctly.
-These CXL memory device capabilities are specified by restriction flags
-in the memory sparing feature readable attributes.
-
-When a CXL device identifies error on a memory component, the device
-may inform the host about the need for a memory sparing maintenance
-operation by using DRAM event record, where the 'maintenance needed' flag
-may set. The event record contains some of the DPA, Channel, Rank,
-Nibble Mask, Bank Group, Bank, Row, Column, Sub-Channel fields that
-should be repaired. The userspace tool requests for maintenance operation
-if the 'maintenance needed' flag set in the CXL DRAM error record.
-
-CXL spec 3.2 section 8.2.10.7.2.3 describes the memory sparing feature
-discovery and configuration.
-
-CXL spec 3.2 section 8.2.10.7.1.4 describes the device's memory sparing
-maintenance operation feature.
-
-Add emulation for CXL memory device memory sparing control feature
-and memory sparing maintenance operation command.
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- hw/cxl/cxl-mailbox-utils.c  | 317 +++++++++++++++++++++++++++++++++++-
- hw/mem/cxl_type3.c          |  44 +++++
- include/hw/cxl/cxl_device.h |  33 ++++
- include/hw/cxl/cxl_events.h |   5 +
- 4 files changed, 395 insertions(+), 4 deletions(-)
-
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 254154ceda..a3ab3b48f2 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1134,6 +1134,10 @@ enum CXL_SUPPORTED_FEATURES_LIST {
-     CXL_FEATURE_ECS,
-     CXL_FEATURE_SPPR,
-     CXL_FEATURE_HPPR,
-+    CXL_FEATURE_CACHELINE_SPARING,
-+    CXL_FEATURE_ROW_SPARING,
-+    CXL_FEATURE_BANK_SPARING,
-+    CXL_FEATURE_RANK_SPARING,
-     CXL_FEATURE_MAX
- };
- 
-@@ -1222,6 +1226,35 @@ typedef struct CXLMemECSSetFeature {
-         CXLMemECSWriteAttrs feat_data[];
- } QEMU_PACKED QEMU_ALIGNED(16) CXLMemECSSetFeature;
- 
-+/*
-+ * CXL r3.2 section 8.2.10.7.2.3:
-+ * Memory Sparing Features Discovery and Configuration
-+ */
-+static const QemuUUID cacheline_sparing_uuid = {
-+    .data = UUID(0x96C33386, 0x91dd, 0x44c7, 0x9e, 0xcb,
-+                 0xfd, 0xaf, 0x65, 0x03, 0xba, 0xc4)
-+};
-+
-+static const QemuUUID row_sparing_uuid = {
-+    .data = UUID(0x450ebf67, 0xb135, 0x4f97, 0xa4, 0x98,
-+                 0xc2, 0xd5, 0x7f, 0x27, 0x9b, 0xed)
-+};
-+
-+static const QemuUUID bank_sparing_uuid = {
-+    .data = UUID(0x78b79636, 0x90ac, 0x4b64, 0xa4, 0xef,
-+                 0xfa, 0xac, 0x5d, 0x18, 0xa8, 0x63)
-+};
-+
-+static const QemuUUID rank_sparing_uuid = {
-+    .data = UUID(0x34dbaff5, 0x0552, 0x4281, 0x8f, 0x76,
-+                 0xda, 0x0b, 0x5e, 0x7a, 0x76, 0xa7)
-+};
-+
-+typedef struct CXLMemSparingSetFeature {
-+        CXLSetFeatureInHeader hdr;
-+        CXLMemSparingWriteAttrs feat_data;
-+} QEMU_PACKED QEMU_ALIGNED(16) CXLMemSparingSetFeature;
-+
- /* CXL r3.1 section 8.2.9.6.1: Get Supported Features (Opcode 0500h) */
- static CXLRetCode cmd_features_get_supported(const struct cxl_cmd *cmd,
-                                              uint8_t *payload_in,
-@@ -1322,6 +1355,70 @@ static CXLRetCode cmd_features_get_supported(const struct cxl_cmd *cmd,
-                                     CXL_FEAT_ENTRY_SFE_CEL_VALID,
-             };
-             break;
-+        case CXL_FEATURE_CACHELINE_SPARING:
-+            /* Fill supported feature entry for Cacheline Memory Sparing */
-+            get_feats_out->feat_entries[entry++] =
-+                           (struct CXLSupportedFeatureEntry) {
-+                .uuid = cacheline_sparing_uuid,
-+                .feat_index = index,
-+                .get_feat_size = sizeof(CXLMemSparingReadAttrs),
-+                .set_feat_size = sizeof(CXLMemSparingWriteAttrs),
-+                .attr_flags = CXL_FEAT_ENTRY_ATTR_FLAG_CHANGABLE |
-+                            CXL_FEAT_ENTRY_ATTR_FLAG_SUPPORT_DEFAULT_SEL,
-+                .get_feat_version = CXL_MEMDEV_SPARING_GET_FEATURE_VERSION,
-+                .set_feat_version = CXL_MEMDEV_SPARING_SET_FEATURE_VERSION,
-+                .set_feat_effects = CXL_FEAT_ENTRY_SFE_IMMEDIATE_CONFIG_CHANGE |
-+                                    CXL_FEAT_ENTRY_SFE_CEL_VALID,
-+            };
-+            break;
-+        case CXL_FEATURE_ROW_SPARING:
-+            /* Fill supported feature entry for Row Memory Sparing */
-+            get_feats_out->feat_entries[entry++] =
-+                           (struct CXLSupportedFeatureEntry) {
-+                .uuid = row_sparing_uuid,
-+                .feat_index = index,
-+                .get_feat_size = sizeof(CXLMemSparingReadAttrs),
-+                .set_feat_size = sizeof(CXLMemSparingWriteAttrs),
-+                .attr_flags = CXL_FEAT_ENTRY_ATTR_FLAG_CHANGABLE |
-+                            CXL_FEAT_ENTRY_ATTR_FLAG_SUPPORT_DEFAULT_SEL,
-+                .get_feat_version = CXL_MEMDEV_SPARING_GET_FEATURE_VERSION,
-+                .set_feat_version = CXL_MEMDEV_SPARING_SET_FEATURE_VERSION,
-+                .set_feat_effects = CXL_FEAT_ENTRY_SFE_IMMEDIATE_CONFIG_CHANGE |
-+                                    CXL_FEAT_ENTRY_SFE_CEL_VALID,
-+            };
-+            break;
-+        case CXL_FEATURE_BANK_SPARING:
-+            /* Fill supported feature entry for Bank Memory Sparing */
-+            get_feats_out->feat_entries[entry++] =
-+                           (struct CXLSupportedFeatureEntry) {
-+                .uuid = bank_sparing_uuid,
-+                .feat_index = index,
-+                .get_feat_size = sizeof(CXLMemSparingReadAttrs),
-+                .set_feat_size = sizeof(CXLMemSparingWriteAttrs),
-+                .attr_flags = CXL_FEAT_ENTRY_ATTR_FLAG_CHANGABLE |
-+                            CXL_FEAT_ENTRY_ATTR_FLAG_SUPPORT_DEFAULT_SEL,
-+                .get_feat_version = CXL_MEMDEV_SPARING_GET_FEATURE_VERSION,
-+                .set_feat_version = CXL_MEMDEV_SPARING_SET_FEATURE_VERSION,
-+                .set_feat_effects = CXL_FEAT_ENTRY_SFE_IMMEDIATE_CONFIG_CHANGE |
-+                                    CXL_FEAT_ENTRY_SFE_CEL_VALID,
-+            };
-+            break;
-+        case CXL_FEATURE_RANK_SPARING:
-+            /* Fill supported feature entry for Rank Memory Sparing */
-+            get_feats_out->feat_entries[entry++] =
-+                           (struct CXLSupportedFeatureEntry) {
-+                .uuid = rank_sparing_uuid,
-+                .feat_index = index,
-+                .get_feat_size = sizeof(CXLMemSparingReadAttrs),
-+                .set_feat_size = sizeof(CXLMemSparingWriteAttrs),
-+                .attr_flags = CXL_FEAT_ENTRY_ATTR_FLAG_CHANGABLE |
-+                            CXL_FEAT_ENTRY_ATTR_FLAG_SUPPORT_DEFAULT_SEL,
-+                .get_feat_version = CXL_MEMDEV_SPARING_GET_FEATURE_VERSION,
-+                .set_feat_version = CXL_MEMDEV_SPARING_SET_FEATURE_VERSION,
-+                .set_feat_effects = CXL_FEAT_ENTRY_SFE_IMMEDIATE_CONFIG_CHANGE |
-+                                    CXL_FEAT_ENTRY_SFE_CEL_VALID,
-+            };
-+            break;
-         default:
-             __builtin_unreachable();
-         }
-@@ -1410,6 +1507,47 @@ static CXLRetCode cmd_features_get_feature(const struct cxl_cmd *cmd,
-         memcpy(payload_out,
-                (uint8_t *)&ct3d->hard_ppr_attrs + get_feature->offset,
-                bytes_to_copy);
-+    } else if (qemu_uuid_is_equal(&get_feature->uuid,
-+                                  &cacheline_sparing_uuid)) {
-+        if (get_feature->offset >= sizeof(CXLMemSparingReadAttrs)) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        bytes_to_copy = sizeof(CXLMemSparingReadAttrs) -
-+                                             get_feature->offset;
-+        bytes_to_copy = MIN(bytes_to_copy, get_feature->count);
-+        memcpy(payload_out,
-+               (uint8_t *)&ct3d->cacheline_sparing_attrs + get_feature->offset,
-+               bytes_to_copy);
-+    } else if (qemu_uuid_is_equal(&get_feature->uuid, &row_sparing_uuid)) {
-+        if (get_feature->offset >= sizeof(CXLMemSparingReadAttrs)) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        bytes_to_copy = sizeof(CXLMemSparingReadAttrs) -
-+                                             get_feature->offset;
-+        bytes_to_copy = MIN(bytes_to_copy, get_feature->count);
-+        memcpy(payload_out,
-+               (uint8_t *)&ct3d->row_sparing_attrs + get_feature->offset,
-+               bytes_to_copy);
-+    } else if (qemu_uuid_is_equal(&get_feature->uuid, &bank_sparing_uuid)) {
-+        if (get_feature->offset >= sizeof(CXLMemSparingReadAttrs)) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        bytes_to_copy = sizeof(CXLMemSparingReadAttrs) -
-+                                             get_feature->offset;
-+        bytes_to_copy = MIN(bytes_to_copy, get_feature->count);
-+        memcpy(payload_out,
-+               (uint8_t *)&ct3d->bank_sparing_attrs + get_feature->offset,
-+               bytes_to_copy);
-+    } else if (qemu_uuid_is_equal(&get_feature->uuid, &rank_sparing_uuid)) {
-+        if (get_feature->offset >= sizeof(CXLMemSparingReadAttrs)) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        bytes_to_copy = sizeof(CXLMemSparingReadAttrs) -
-+                                             get_feature->offset;
-+        bytes_to_copy = MIN(bytes_to_copy, get_feature->count);
-+        memcpy(payload_out,
-+               (uint8_t *)&ct3d->rank_sparing_attrs + get_feature->offset,
-+               bytes_to_copy);
-     } else {
-         return CXL_MBOX_UNSUPPORTED;
-     }
-@@ -1559,6 +1697,78 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-             ct3d->hard_ppr_attrs.hppr_op_mode =
-                     ct3d->hard_ppr_wr_attrs.hppr_op_mode;
-         }
-+    } else if (qemu_uuid_is_equal(&hdr->uuid, &cacheline_sparing_uuid)) {
-+        CXLMemSparingSetFeature *mem_sparing_set_feature = (void *)payload_in;
-+        CXLMemSparingWriteAttrs *mem_sparing_write_attrs =
-+                            &mem_sparing_set_feature->feat_data;
-+
-+        if (hdr->version != CXL_MEMDEV_SPARING_SET_FEATURE_VERSION) {
-+            return CXL_MBOX_UNSUPPORTED;
-+        }
-+
-+        memcpy((uint8_t *)&ct3d->cacheline_sparing_wr_attrs + hdr->offset,
-+               mem_sparing_write_attrs, bytes_to_copy);
-+        set_feat_info->data_size += bytes_to_copy;
-+
-+        if (data_transfer_flag == CXL_SET_FEATURE_FLAG_FULL_DATA_TRANSFER ||
-+            data_transfer_flag == CXL_SET_FEATURE_FLAG_FINISH_DATA_TRANSFER) {
-+            ct3d->cacheline_sparing_attrs.op_mode =
-+                                    ct3d->cacheline_sparing_wr_attrs.op_mode;
-+        }
-+    } else if (qemu_uuid_is_equal(&hdr->uuid, &row_sparing_uuid)) {
-+        CXLMemSparingSetFeature *mem_sparing_set_feature = (void *)payload_in;
-+        CXLMemSparingWriteAttrs *mem_sparing_write_attrs =
-+                            &mem_sparing_set_feature->feat_data;
-+
-+        if (hdr->version != CXL_MEMDEV_SPARING_SET_FEATURE_VERSION) {
-+            return CXL_MBOX_UNSUPPORTED;
-+        }
-+
-+        memcpy((uint8_t *)&ct3d->row_sparing_wr_attrs + hdr->offset,
-+               mem_sparing_write_attrs, bytes_to_copy);
-+        set_feat_info->data_size += bytes_to_copy;
-+
-+        if (data_transfer_flag == CXL_SET_FEATURE_FLAG_FULL_DATA_TRANSFER ||
-+            data_transfer_flag == CXL_SET_FEATURE_FLAG_FINISH_DATA_TRANSFER) {
-+            ct3d->row_sparing_attrs.op_mode =
-+                              ct3d->row_sparing_wr_attrs.op_mode;
-+        }
-+    } else if (qemu_uuid_is_equal(&hdr->uuid, &bank_sparing_uuid)) {
-+        CXLMemSparingSetFeature *mem_sparing_set_feature = (void *)payload_in;
-+        CXLMemSparingWriteAttrs *mem_sparing_write_attrs =
-+                            &mem_sparing_set_feature->feat_data;
-+
-+        if (hdr->version != CXL_MEMDEV_SPARING_SET_FEATURE_VERSION) {
-+            return CXL_MBOX_UNSUPPORTED;
-+        }
-+
-+        memcpy((uint8_t *)&ct3d->bank_sparing_wr_attrs + hdr->offset,
-+               mem_sparing_write_attrs, bytes_to_copy);
-+        set_feat_info->data_size += bytes_to_copy;
-+
-+        if (data_transfer_flag == CXL_SET_FEATURE_FLAG_FULL_DATA_TRANSFER ||
-+            data_transfer_flag == CXL_SET_FEATURE_FLAG_FINISH_DATA_TRANSFER) {
-+            ct3d->bank_sparing_attrs.op_mode =
-+                              ct3d->bank_sparing_wr_attrs.op_mode;
-+        }
-+    } else if (qemu_uuid_is_equal(&hdr->uuid, &rank_sparing_uuid)) {
-+        CXLMemSparingSetFeature *mem_sparing_set_feature = (void *)payload_in;
-+        CXLMemSparingWriteAttrs *mem_sparing_write_attrs =
-+                            &mem_sparing_set_feature->feat_data;
-+
-+        if (hdr->version != CXL_MEMDEV_SPARING_SET_FEATURE_VERSION) {
-+            return CXL_MBOX_UNSUPPORTED;
-+        }
-+
-+        memcpy((uint8_t *)&ct3d->rank_sparing_wr_attrs + hdr->offset,
-+               mem_sparing_write_attrs, bytes_to_copy);
-+        set_feat_info->data_size += bytes_to_copy;
-+
-+        if (data_transfer_flag == CXL_SET_FEATURE_FLAG_FULL_DATA_TRANSFER ||
-+            data_transfer_flag == CXL_SET_FEATURE_FLAG_FINISH_DATA_TRANSFER) {
-+            ct3d->rank_sparing_attrs.op_mode =
-+                             ct3d->rank_sparing_wr_attrs.op_mode;
-+        }
-     } else {
-         return CXL_MBOX_UNSUPPORTED;
-     }
-@@ -1575,6 +1785,15 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-             memset(&ct3d->soft_ppr_wr_attrs, 0, set_feat_info->data_size);
-         } else if (qemu_uuid_is_equal(&hdr->uuid, &hard_ppr_uuid)) {
-             memset(&ct3d->hard_ppr_wr_attrs, 0, set_feat_info->data_size);
-+        } else if (qemu_uuid_is_equal(&hdr->uuid, &cacheline_sparing_uuid)) {
-+            memset(&ct3d->cacheline_sparing_wr_attrs, 0,
-+                   set_feat_info->data_size);
-+        } else if (qemu_uuid_is_equal(&hdr->uuid, &row_sparing_uuid)) {
-+            memset(&ct3d->row_sparing_wr_attrs, 0, set_feat_info->data_size);
-+        } else if (qemu_uuid_is_equal(&hdr->uuid, &bank_sparing_uuid)) {
-+            memset(&ct3d->bank_sparing_wr_attrs, 0, set_feat_info->data_size);
-+        } else if (qemu_uuid_is_equal(&hdr->uuid, &rank_sparing_uuid)) {
-+            memset(&ct3d->rank_sparing_wr_attrs, 0, set_feat_info->data_size);
-         }
-         set_feat_info->data_transfer_flag = 0;
-         set_feat_info->data_saved_across_reset = false;
-@@ -1585,9 +1804,27 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-     return CXL_MBOX_SUCCESS;
- }
- 
--static void cxl_mbox_create_mem_sparing_event_records(CXLType3Dev *ct3d,
-+#define CXL_MEM_SPARING_FLAGS_QUERY_RESOURCES BIT(0)
-+#define CXL_MEM_SPARING_FLAGS_HARD_SPARING BIT(1)
-+#define CXL_MEM_SPARING_FLAGS_SUB_CHANNEL_VALID BIT(2)
-+#define CXL_MEM_SPARING_FLAGS_NIB_MASK_VALID BIT(3)
-+
-+typedef struct CXLMemSparingMaintInPayload {
-+    uint8_t flags;
-+    uint8_t channel;
-+    uint8_t rank;
-+    uint8_t nibble_mask[3];
-+    uint8_t bank_group;
-+    uint8_t bank;
-+    uint8_t row[3];
-+    uint16_t column;
-+    uint8_t sub_channel;
-+} QEMU_PACKED CXLMemSparingMaintInPayload;
-+
-+static void cxl_create_mem_sparing_event_records(CXLType3Dev *ct3d,
-                             uint8_t maint_op_class, uint8_t maint_op_sub_class,
--                            CXLMaintenance *ent)
-+                            CXLMaintenance *ent,
-+                            CXLMemSparingMaintInPayload *sparing_pi)
- {
-     CXLEventSparing event_rec = {};
- 
-@@ -1615,6 +1852,31 @@ static void cxl_mbox_create_mem_sparing_event_records(CXLType3Dev *ct3d,
-             strncpy((char *)event_rec.component_id, (char *)ent->component_id,
-                     sizeof(event_rec.component_id));
-         }
-+    } else if (sparing_pi) {
-+        event_rec.flags = CXL_MSER_FLAGS_QUERY_RESOURCES;
-+        event_rec.result = 0;
-+        event_rec.validity_flags = CXL_MSER_VALID_CHANNEL |
-+                                   CXL_MSER_VALID_RANK |
-+                                   CXL_MSER_VALID_NIB_MASK |
-+                                   CXL_MSER_VALID_BANK_GROUP |
-+                                   CXL_MSER_VALID_BANK |
-+                                   CXL_MSER_VALID_ROW |
-+                                   CXL_MSER_VALID_COLUMN;
-+        event_rec.res_avail = 1;
-+        event_rec.channel = sparing_pi->channel;
-+        event_rec.rank = sparing_pi->rank;
-+        if (sparing_pi->flags & CXL_MEM_SPARING_FLAGS_NIB_MASK_VALID) {
-+            __builtin_memcpy(event_rec.nibble_mask, sparing_pi->nibble_mask,
-+                             sizeof(uint32_t));
-+        }
-+        event_rec.bank_group = sparing_pi->bank_group;
-+        event_rec.bank = sparing_pi->bank;
-+        event_rec.column = sparing_pi->column;
-+        __builtin_memcpy(event_rec.row, sparing_pi->row, sizeof(uint32_t));
-+        if (sparing_pi->flags & CXL_MEM_SPARING_FLAGS_SUB_CHANNEL_VALID) {
-+            event_rec.sub_channel = sparing_pi->sub_channel;
-+            event_rec.validity_flags |= CXL_MSER_VALID_SUB_CHANNEL;
-+        }
-     } else {
-         return;
-     }
-@@ -1626,6 +1888,26 @@ static void cxl_mbox_create_mem_sparing_event_records(CXLType3Dev *ct3d,
-     }
- }
- 
-+static CXLRetCode cxl_perform_mem_sparing(CXLType3Dev *ct3d, uint8_t sub_class,
-+                                          void *maint_pi)
-+{
-+    switch (sub_class) {
-+    case CXL_MEMDEV_MAINT_SUBCLASS_CACHELINE_SPARING:
-+        qemu_log("Cacheline Memory Sparing\n");
-+        return CXL_MBOX_SUCCESS;
-+    case CXL_MEMDEV_MAINT_SUBCLASS_ROW_SPARING:
-+        qemu_log("Row Memory Sparing\n");
-+        return CXL_MBOX_SUCCESS;
-+    case CXL_MEMDEV_MAINT_SUBCLASS_BANK_SPARING:
-+        qemu_log("Bank Memory Sparing\n");
-+        return CXL_MBOX_SUCCESS;
-+    case CXL_MEMDEV_MAINT_SUBCLASS_RANK_SPARING:
-+        qemu_log("Rank Memory Sparing\n");
-+        return CXL_MBOX_SUCCESS;
-+    default:
-+        return CXL_MBOX_INVALID_INPUT;
-+    }
-+}
- 
- static void cxl_perform_ppr(CXLType3Dev *ct3d, uint64_t dpa)
- {
-@@ -1636,10 +1918,10 @@ static void cxl_perform_ppr(CXLType3Dev *ct3d, uint64_t dpa)
-             /* Produce a Memory Sparing Event Record */
-             if (ct3d->soft_ppr_attrs.sppr_op_mode &
-                 CXL_MEMDEV_SPPR_OP_MODE_MEM_SPARING_EV_REC_EN) {
--                cxl_mbox_create_mem_sparing_event_records(ct3d,
-+                cxl_create_mem_sparing_event_records(ct3d,
-                                 CXL_MEMDEV_MAINT_CLASS_SPARING,
-                                 CXL_MEMDEV_MAINT_SUBCLASS_CACHELINE_SPARING,
--                                ent);
-+                                ent, NULL);
-             }
-             break;
-         }
-@@ -1663,6 +1945,7 @@ static CXLRetCode cmd_media_perform_maintenance(const struct cxl_cmd *cmd,
-                 uint64_t dpa;
-                 uint8_t nibble_mask[3];
-             } QEMU_PACKED ppr;
-+            CXLMemSparingMaintInPayload mem_sparing_pi;
-         };
-     } QEMU_PACKED *maint_in = (void *)payload_in;
-     CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-@@ -1688,6 +1971,32 @@ static CXLRetCode cmd_media_perform_maintenance(const struct cxl_cmd *cmd,
-             return CXL_MBOX_INVALID_INPUT;
-         }
-         break;
-+    case CXL_MEMDEV_MAINT_CLASS_SPARING:
-+        if (maint_in->mem_sparing_pi.flags &
-+            CXL_MEM_SPARING_FLAGS_QUERY_RESOURCES) {
-+            /*
-+             * CXL r3.2 sect 8.2.10.7.1.4 - Memory Sparing Maintenance Operation
-+             * Produce Memory Sparing Event record to report resources
-+             * availability.
-+             */
-+            cxl_create_mem_sparing_event_records(ct3d, maint_in->class,
-+                                                 maint_in->subclass, NULL,
-+                                                 &maint_in->mem_sparing_pi);
-+
-+            return CXL_MBOX_SUCCESS;
-+        }
-+
-+        switch (maint_in->subclass) {
-+        case CXL_MEMDEV_MAINT_SUBCLASS_CACHELINE_SPARING:
-+        case CXL_MEMDEV_MAINT_SUBCLASS_ROW_SPARING:
-+        case CXL_MEMDEV_MAINT_SUBCLASS_BANK_SPARING:
-+        case CXL_MEMDEV_MAINT_SUBCLASS_RANK_SPARING:
-+            return cxl_perform_mem_sparing(ct3d, maint_in->subclass,
-+                                           &maint_in->mem_sparing_pi);
-+        default:
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        break;
-     default:
-         return CXL_MBOX_INVALID_INPUT;
-     }
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 6036c610e6..2149775508 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -990,6 +990,50 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-         .hppr_op_mode = CXL_MEMDEV_HPPR_OP_MODE_MEM_SPARING_EV_REC_EN
-     };
- 
-+    /* Set default value for Cacheline Memory Sparing attributes */
-+    ct3d->cacheline_sparing_attrs = (CXLMemSparingReadAttrs) {
-+        .max_maint_latency = 0x5, /* 100 ms */
-+        .op_caps = 0, /* require host involvement */
-+        .op_mode = 0,
-+        .maint_op_class = CXL_MEMDEV_MAINT_CLASS_SPARING,
-+        .maint_op_subclass = CXL_MEMDEV_MAINT_SUBCLASS_CACHELINE_SPARING,
-+        .restriction_flags = CXL_MEMDEV_HARD_SPARING_SUPPORT_FLAG |
-+                             CXL_MEMDEV_SOFT_SPARING_SUPPORT_FLAG,
-+    };
-+
-+    /* Set default value for Row Memory Sparing attributes */
-+    ct3d->row_sparing_attrs = (CXLMemSparingReadAttrs) {
-+        .max_maint_latency = 0x5, /* 100 ms */
-+        .op_caps = 0, /* require host involvement */
-+        .op_mode = 0,
-+        .maint_op_class = CXL_MEMDEV_MAINT_CLASS_SPARING,
-+        .maint_op_subclass = CXL_MEMDEV_MAINT_SUBCLASS_ROW_SPARING,
-+        .restriction_flags = CXL_MEMDEV_HARD_SPARING_SUPPORT_FLAG |
-+                             CXL_MEMDEV_SOFT_SPARING_SUPPORT_FLAG,
-+    };
-+
-+    /* Set default value for Bank Memory Sparing attributes */
-+    ct3d->bank_sparing_attrs = (CXLMemSparingReadAttrs) {
-+        .max_maint_latency = 0x5, /* 100 ms */
-+        .op_caps = 0, /* require host involvement */
-+        .op_mode = 0,
-+        .maint_op_class = CXL_MEMDEV_MAINT_CLASS_SPARING,
-+        .maint_op_subclass = CXL_MEMDEV_MAINT_SUBCLASS_BANK_SPARING,
-+        .restriction_flags = CXL_MEMDEV_HARD_SPARING_SUPPORT_FLAG |
-+                             CXL_MEMDEV_SOFT_SPARING_SUPPORT_FLAG,
-+    };
-+
-+    /* Set default value for Rank Memory Sparing attributes */
-+    ct3d->rank_sparing_attrs = (CXLMemSparingReadAttrs) {
-+        .max_maint_latency = 0x5, /* 100 ms */
-+        .op_caps = 0, /* require host involvement */
-+        .op_mode = 0,
-+        .maint_op_class = CXL_MEMDEV_MAINT_CLASS_SPARING,
-+        .maint_op_subclass = CXL_MEMDEV_MAINT_SUBCLASS_RANK_SPARING,
-+        .restriction_flags = CXL_MEMDEV_HARD_SPARING_SUPPORT_FLAG |
-+                             CXL_MEMDEV_SOFT_SPARING_SUPPORT_FLAG,
-+    };
-+
-     return;
- 
- err_release_cdat:
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 959049aa46..59f8fa7c24 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -608,6 +608,30 @@ typedef struct CXLMemECSWriteAttrs {
-     CXLMemECSFRUWriteAttrs fru_attrs[CXL_ECS_NUM_MEDIA_FRUS];
- } QEMU_PACKED CXLMemECSWriteAttrs;
- 
-+/*
-+ * CXL r3.2 section 8.2.10.7.2.3, Table 8-134 and 8-135:
-+ * Memory Sparing Feature Readable/Writable Attributes
-+ */
-+typedef struct CXLMemSparingReadAttrs {
-+    uint8_t max_maint_latency;
-+    uint16_t op_caps;
-+    uint16_t op_mode;
-+    uint8_t maint_op_class;
-+    uint8_t maint_op_subclass;
-+    uint8_t rsvd[10];
-+    uint16_t restriction_flags;
-+} QEMU_PACKED CXLMemSparingReadAttrs;
-+
-+typedef struct CXLMemSparingWriteAttrs {
-+    uint16_t op_mode;
-+} QEMU_PACKED CXLMemSparingWriteAttrs;
-+
-+#define CXL_MEMDEV_SPARING_GET_FEATURE_VERSION    0x01
-+#define CXL_MEMDEV_SPARING_SET_FEATURE_VERSION    0x01
-+#define CXL_MEMDEV_SPARING_SAFE_IN_USE_FLAG    BIT(0)
-+#define CXL_MEMDEV_HARD_SPARING_SUPPORT_FLAG    BIT(1)
-+#define CXL_MEMDEV_SOFT_SPARING_SUPPORT_FLAG    BIT(2)
-+
- #define DCD_MAX_NUM_REGION 8
- 
- typedef struct CXLDCExtentRaw {
-@@ -735,6 +759,15 @@ struct CXLType3Dev {
-     /* ECS control attributes */
-     CXLMemECSReadAttrs ecs_attrs;
-     CXLMemECSWriteAttrs ecs_wr_attrs;
-+    /* Memory Sparing control attributes */
-+    CXLMemSparingReadAttrs cacheline_sparing_attrs;
-+    CXLMemSparingWriteAttrs cacheline_sparing_wr_attrs;
-+    CXLMemSparingReadAttrs row_sparing_attrs;
-+    CXLMemSparingWriteAttrs row_sparing_wr_attrs;
-+    CXLMemSparingReadAttrs bank_sparing_attrs;
-+    CXLMemSparingWriteAttrs bank_sparing_wr_attrs;
-+    CXLMemSparingReadAttrs rank_sparing_attrs;
-+    CXLMemSparingWriteAttrs rank_sparing_wr_attrs;
- 
-     struct dynamic_capacity {
-         HostMemoryBackend *host_dc;
-diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-index 3052bc9f18..89f6aad531 100644
---- a/include/hw/cxl/cxl_events.h
-+++ b/include/hw/cxl/cxl_events.h
-@@ -223,6 +223,11 @@ typedef enum CXLDCEventType {
-  * CXL r3.2 section Table 8-60: Memory Sparing Event Record
-  * All fields little endian.
-  */
-+
-+#define CXL_MSER_FLAGS_QUERY_RESOURCES BIT(0)
-+#define CXL_MSER_FLAGS_HARD_SPARING BIT(1)
-+#define CXL_MSER_FLAGS_DEV_INITIATED BIT(2)
-+
- #define CXL_MSER_VALID_CHANNEL BIT(0)
- #define CXL_MSER_VALID_RANK BIT(1)
- #define CXL_MSER_VALID_NIB_MASK BIT(2)
--- 
-2.43.0
-
+stupid me. The src code is just pc-bios/optionrom/multiboot.S
+But I don't know how to build a bin file from it to test my fix.
 
