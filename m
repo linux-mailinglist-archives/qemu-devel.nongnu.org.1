@@ -2,84 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7098B1E29A
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 08:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5EF8B1E2D9
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:05:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukH2g-0003Uj-Sh; Fri, 08 Aug 2025 02:57:32 -0400
+	id 1ukH70-00060e-Ry; Fri, 08 Aug 2025 03:01:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ukH0e-0001Mo-1O
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 02:55:24 -0400
-Received: from p-east3-cluster2-host2-snip4-10.eps.apple.com ([57.103.87.151]
+ id 1ukH6q-0005s9-8U
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:01:54 -0400
+Received: from p-east3-cluster1-host5-snip4-3.eps.apple.com ([57.103.87.46]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ukH0c-0004Kj-8M
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 02:55:23 -0400
+ id 1ukH6n-0005CG-VZ
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:01:47 -0400
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-east-2d-100-percent-10 (Postfix) with ESMTPS id
- 42E77180012B; Fri,  8 Aug 2025 06:55:17 +0000 (UTC)
+ by p00-icloudmta-asmtp-us-east-2d-100-percent-5 (Postfix) with ESMTPS id
+ 2E3EA1800109; Fri,  8 Aug 2025 07:01:42 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=eFnZwTXgu/xdWxzINpOSKUtnYbOtiRg2Hq78HONYGew=;
- h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
- b=MkwhuWRJwQQRZuYKfDFYl7uOUUA3432J19dDavAA0pd0mbh+cNiThzPalvj/pKuOydKn1EANlh43S6n+h3ZHSNgEmuydZDMMhqvYHt6bs0t3UU1sVH61IsdZU55uRJxZknt0GzW+ZOHBhpbJkcqVSiTGb5EhD4m4hb2LzDaqtX39KKfrVPdvt9VEs6vtImFBu8bT70NMHXux4/8MuSiP1q7ZvfKyYWLO/lvq4cJhGX0sl5DkyedAtmsPCF/+QhkyfdgdD5SsuoRmf61bDNscSBXLgXvUzpiAz88GygcjQRr1y2i3HqvAZtK1I9k12PC/fTJr1VJvWVDQgShNb9blzQ==
+ s=sig1; bh=e1qt2xIm6hFNGN+Bn3h90BoxPwxyvt7Tg+aWyda3+q8=;
+ h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type:x-icloud-hme;
+ b=bfcBUjKPYuzXnl65qyArmHntvuPzgxzI/RZo6vinUdGnpcRp5lYjfMPsrFWU6/n02ziK4nNPw3S/5tM45f/+I4P10upMaDp1sD1cdGUCxzVyqffRXOLJqseDy3jbCeziBLZHGs8Z/8rS1sCXm2AlJPElwWPYJ34fLuHh4071UJKNhUEcjP+N2MJpj2e2a7zNkZLkW/1UKL3u6J4OgO8UBAHAZrnP2YXlW2PyfHPBLI7j1btVvAWiJZA3mnQ4zeZ8v8BBnCznosLKHWWflwFrUrqCukpZe3YYHuSV3KND+8QxkJxo39EXn7Zc4PuGW594FU63JSYlInNMDF5h/Q48DA==
 X-Client-IP: 46.189.47.18
 Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
  [17.57.155.37])
- by p00-icloudmta-asmtp-us-east-2d-100-percent-10 (Postfix) with ESMTPSA id
- A7FE018000A4; Fri,  8 Aug 2025 06:55:13 +0000 (UTC)
+ by p00-icloudmta-asmtp-us-east-2d-100-percent-5 (Postfix) with ESMTPSA id
+ EE0DA1800121; Fri,  8 Aug 2025 07:01:39 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, Ani Sinha <anisinha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Alexander Graf <agraf@csgraf.de>,
- Peter Maydell <peter.maydell@linaro.org>, Mads Ynddal <mads@ynddal.dk>,
- Sunil Muthuswamy <sunilmut@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Cameron Esfahani <dirty@apple.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
  Shannon Zhao <shannon.zhaosl@gmail.com>,
- Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-arm@nongnu.org,
- Yanan Wang <wangyanan55@huawei.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v5 18/18] MAINTAINERS: Add myself as a maintainer for WHPX
-Date: Fri,  8 Aug 2025 08:54:19 +0200
-Message-Id: <20250808065419.47415-19-mohamed@unpredictable.fr>
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Igor Mammedov <imammedo@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
+ Mads Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>
+Subject: [PATCH v6 00/13] HVF: Add support for platform vGIC and nested
+ virtualisation
+Date: Fri,  8 Aug 2025 09:01:24 +0200
+Message-Id: <20250808070137.48716-1-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250808065419.47415-1-mohamed@unpredictable.fr>
-References: <20250808065419.47415-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: xLYAU-2FYnbU-VzJWU533Ix4ngmrOk2V
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA1NiBTYWx0ZWRfXwD8yJg3Jk3br
- b0hw02+Hj6UOHYE2w7ldqqCc2piGL/pSMOs1SSdHQspUj+YuEGt/ycGArcBGjmAzk1WCy79zfr5
- QClfwCeMB0ouNl6pGTlTiv5NZExUo0Jlkv/0ael3J4iOBNZ3f++GvRit5c6h43bv5SrcUQevqK2
- GhVzyy7yhU9kECcCZa9YGqQHRQ6wUyTD46mGLzz6YxRqY6dEzyxopI05FiFIb3y07y9MmKoJ6IS
- Dlsq+D1Xl2jNH26+y57xHXZ+QbRI0jMLewoW4QlJxOpi6hQkGLa5d2c5j+Whh8N729irkpcvU=
-X-Proofpoint-ORIG-GUID: xLYAU-2FYnbU-VzJWU533Ix4ngmrOk2V
+X-Proofpoint-GUID: q4bR-Sh1gsd6G58QDT2FmG2uipmSUdpK
+X-Proofpoint-ORIG-GUID: q4bR-Sh1gsd6G58QDT2FmG2uipmSUdpK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA1NyBTYWx0ZWRfX0S3DwgWa+rRS
+ vMWbQLSchG79fGaeJ5NkaEv/29yYWHYfiNKQ/uqgo+XRq28T8Va8bztsnV5MqMSlqE8ljBeyE62
+ ZAWRvmLgTij/iS4O9ApHJIZ2z2xk3ukH+EWHX8npklv/zzFIGBFc0pbXSwBuuXet99SZHrzF37M
+ v8Nh+qkNExvICR7Nn7zaVHdfiuyWmafBQvm2owD8oF0rtE4W1WElnKf7kLT6TcICMpD6sekidRo
+ 4OKr47MGN+7OC4fvFIOIkHWASE9bRjsRORXW1j2bzd1R26gGCUBO3Ts6D5yPTgIOP7Wk17Zt8=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-08_01,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- clxscore=1030 phishscore=0 mlxscore=0 adultscore=0 spamscore=0 malwarescore=0
- mlxlogscore=928 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506270000 definitions=main-2508080056
-Received-SPF: pass client-ip=57.103.87.151;
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ malwarescore=0 bulkscore=0 mlxscore=0
+ mlxlogscore=999 spamscore=0
+ adultscore=0 clxscore=1030 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506270000 definitions=main-2508080057
+Received-SPF: pass client-ip=57.103.87.46;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,35 +88,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-And add arm64 files.
+Link to branch: https://github.com/mediouni-m/qemu hvf-irqchip-and-nested
+(tag for this submission: hvf-irqchip-and-nested-v6)
 
-Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- MAINTAINERS | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+This series adds supports for nested virtualisation when using HVF on arm64 Macs.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 070ba2e9cb..0a1f6e620a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -539,11 +539,14 @@ F: accel/stubs/hvf-stub.c
- F: include/system/hvf.h
- F: include/system/hvf_int.h
- 
--WHPX CPUs
-+WHPX
- M: Sunil Muthuswamy <sunilmut@microsoft.com>
-+M: Mohamed Mediouni <mohamed@unpredictable.fr>
- S: Supported
- F: accel/whpx/
- F: target/i386/whpx/
-+F: target/arm/whpx_arm.h
-+F: target/arm/whpx/
- F: accel/stubs/whpx-stub.c
- F: include/system/whpx.h
- F: include/system/whpx-accel-ops.h
+It has three parts:
+- Apple vGICv3 support and necessary infrastructure changes for it
+- support for MSI interrupts in GICv3 + GICv2m configurations, which is independent
+from Apple platforms and can be merged independently.
+- Nested virtualisation support. Note that the nested virtualisation implementation
+shipping as of macOS 26.0 is nVHE only, and does not leverage VNCR (FEAT_NV1-style).
+
+Known issues:
+- when nested virt is enabled, no UI response within EDK2
+and a permanent wait. Workaround: -boot menu=on,splash-time=0. Interrupts do
+work later on in Linux.
+- This series doesn't contain EL2 physical timer emulation, which is
+needed if not leveraging the Apple vGIC.
+
+To do:
+- Switching ITS to off by default when using HVF w/ vGIC or WHPX (will probably do when both the series are merged)
+- After that, perhaps exit if ITS is explicitly enabled.
+
+PS: I can step up to maintain HVF support if needed.
+
+v1->v2:
+Oops. I did a mistake when preparing my patches.
+
+- Add hvf_arm_el2_enable(_) call to virt_set_virt
+- Fix nested virt support check to add HVF
+
+v2->v3:
+- LORC_EL1 patch was merged separately, remove from this series.
+- fix LPIs when kernel-irqchip disabled and using TCG
+- remove spurious if case in vGIC supported version detection (inapplicable now)
+- Add hvf_enabled() check in combination with hvf kernel-irqchip checks
+- cleanly fail on attempt to use the platform vGIC together with ITS
+
+v3->v4:
+- GIC state save improvements, including saving the opaque Apple-specific state
+- Saving HVF system register state when using the vGIC and/or EL2
+
+v5:
+- oops, fixed up save/restore to be functional
+- misc changes otherwise
+
+v6:
+- Addressing review comments
+
+Mohamed Mediouni (13):
+  hw/arm: virt: add GICv2m for the case when ITS is not available
+  hvf: switch hvf_arm_get_host_cpu_features to not create a vCPU
+  accel, hw/arm, include/system/hvf: infrastructure changes for HVF vGIC
+  hw/intc: Add hvf vGIC interrupt controller support
+  hw/arm, target/arm: nested virtualisation on HVF
+  hvf: save/restore Apple GIC state
+  target/arm: hvf: pass through CNTHCTL_EL2 and MDCCINT_EL1
+  hw/arm: virt: cleanly fail on attempt to use the platform vGIC
+    together with ITS
+  hvf: only call hvf_sync_vtimer() when running without the platform
+    vGIC
+  hvf: sync registers used at EL2
+  hvf: gate ARM_FEATURE_PMU register emulation behind not being at EL2
+  target/arm: hvf: instantiate GIC early
+  target/arm: hvf: add asserts for code paths not leveraged when using
+    the vGIC
+
+ accel/hvf/hvf-all.c        |  50 +++
+ accel/stubs/hvf-stub.c     |   1 +
+ hw/arm/virt-acpi-build.c   |   4 +-
+ hw/arm/virt.c              |  43 ++-
+ hw/intc/arm_gicv3_common.c |   3 +
+ hw/intc/arm_gicv3_hvf.c    | 723 +++++++++++++++++++++++++++++++++++++
+ hw/intc/meson.build        |   1 +
+ include/hw/arm/virt.h      |   2 +
+ include/system/hvf.h       |   3 +
+ system/vl.c                |   2 +
+ target/arm/hvf-stub.c      |  15 +
+ target/arm/hvf/hvf.c       | 240 ++++++++++--
+ target/arm/hvf_arm.h       |   3 +
+ 13 files changed, 1057 insertions(+), 33 deletions(-)
+ create mode 100644 hw/intc/arm_gicv3_hvf.c
+
 -- 
 2.39.5 (Apple Git-154)
 
