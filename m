@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57733B1ECC5
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 18:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 662B9B1ECCD
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 18:06:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukPYF-0004pt-GH; Fri, 08 Aug 2025 12:02:39 -0400
+	id 1ukPaz-0007wu-Ka; Fri, 08 Aug 2025 12:05:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukPYD-0004mk-7B
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 12:02:37 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukPaw-0007Xq-VZ
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 12:05:27 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukPYA-00075k-Fz
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 12:02:36 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-459ebb6bbdfso15242335e9.0
- for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 09:02:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukPau-00088N-Hz
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 12:05:26 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3b782cca9a0so1369520f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 09:05:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754668953; x=1755273753; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754669123; x=1755273923; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1oOym4G1Uqgj8cAdpo1OSXmVxF88jHGTUaHRF/kQ9ac=;
- b=GCH1HMuj8TbSo4FVsGKPo1UhnxErT+xt78ggn65bqPhuqHRfnx3hfQ+moiI9OB+Dr/
- l1vEmiBxWmtV51lPAxtKFUJBtfYRNt4nv87pnk3YOvbUQbG28PHI7dChTii+MxIhU+ae
- jb8irp9lfIG9vt19yq42H1ub8DscI4+xX3+ON4BZKRcF7iK9BNOFJLct48cGJYckRuWk
- 4pkilu3J+EWgseckKxEGIYuGUSEVRgm/BGrw/lzvbtJVURjHkXotTkiyrO+1gQSUfwVN
- elU/v5m/bSmLQMmUKxLpzO9y4/vt6hYknHgPBMJnFkwwcGQOmmXJGTtO8C2tbF8YbqKR
- mS5A==
+ bh=Y+DPg5+/JB+r+UDU2jDFCQd9KivoNuZf0EmbMmR0rLk=;
+ b=gqKkYPlhGdW039vJgjMjmfBp5oZfaVwUYoSQStujdP8F+OmCm3fvQ1DxGCzpZKF1uB
+ DD9y/czCj+UKITkjgMsaplMoA2wdCHpL9FuBqJDFWIO4t6DgU431hBhZMMv6MKjzDV7C
+ b0H/XIs3GoQmU+pbKatdXkH9vNwgxdnlvwpxjDNmrQPdX9Ve0XI4d1bbqCTbr45wXgUt
+ QQp4pHjVo9/brCEp2q674Z8WE0IK/Qza52Tg8uz9pjYF3tQrQWMVRo33lFgjA/ARbyA9
+ jFZI+1Xwu6vjziu9AAQTTIxR261/6y1zFDaiiuACFlIYJvo8r7I9e48/Cco5YBw+4LZV
+ vqEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754668953; x=1755273753;
+ d=1e100.net; s=20230601; t=1754669123; x=1755273923;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1oOym4G1Uqgj8cAdpo1OSXmVxF88jHGTUaHRF/kQ9ac=;
- b=D+Z3WjgqTZIPZeV195/NLZfbiARv0EWZ+prN+DhBOc4lA48ipIEmvBvl+JAGc9uGU3
- amfU8aQYS+4RYEmClxWvc/1eRlm2gT0AEniXFcd0qEdI1yr9thcKoIDaeloUxmskL5GL
- 11NBKtDQOWZuTIuZ5BY2PZU3OcIFhfBFrE5Y61vJ/8xnYIfBu/zWxOPzMxZWPQKZC0mt
- U2IE2j5Xy0jgFX5wh043OQS+/jaFfT+3D9tq2j0LpFA+wJqYfaYuXLgH5JEY7tvg+RDt
- 8EwnHrtSxzmirFCtpqa70knYy6k4wEUrFu5/E3OpCJVgBv5w98L3iqLZzr3szE55381a
- Y+KQ==
+ bh=Y+DPg5+/JB+r+UDU2jDFCQd9KivoNuZf0EmbMmR0rLk=;
+ b=U2zQDbKhwDIk0HPsr5OKymscp0WOq06ngb34JYdVzZTsKcX2UNw5nkm45wz1KnviR8
+ 8LucOKDDV5JMwVbahINGvTGS674/BRPxXzNE36MpmriiaQL0Kl3ILdnSW3rbyiTAnCdg
+ uDvDu0OtQtdhIwhCeQ9U6Dc9inGEdDqq0xGxY4sIikJY+hEBPBNnib065uO9FJs5rGeC
+ N7Na5Zomuzso/blOhYok1zXdo7yVOOvUGShyMfLT6duHZznOSPM4cv6EaWSg7D8quNG9
+ s3fP0eE2XsECU4jkJ2mgtv5P50RQFy1shNkTxS9T4YVCB90yGwetwNlZVq41GeC+UzX1
+ 78Iw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVY425S3hlxPIZ9jr1uHQ6UhzYtTkKnc+iJqVI6xjmD2T2fTqQNWJd6s6hWU8P1aO269uKJn9C3lyK6@nongnu.org
-X-Gm-Message-State: AOJu0YyAn0inllF3Sg5jRLzeUpYw35uQQrXk6KouZpnEQPDOc7JgLAYq
- 3URwM8IZiQJ0pvAyOP1F4SlPZcH2pZoxc/Z6aqSf8u/kMjeYfy32UaZZyFS+OVIDzdE=
-X-Gm-Gg: ASbGnctaPjtuJZ7Y2Pi1nLyVE0YzMltQXQpvMAeEKbfrmuv6R0tBTFgTb63862cimrD
- dCiZjzOVxnCnmFgYrRtesxEPsYeGTvY8yim9+YtuBSqKedpraGAuM7kwMcf7se2u9d/IU1NAIoY
- v3+gaDlGTg70XKZT6smPQWYLsTfPNhRxmtqW+tz4AhuZFjdaKDHL0S9uYx5zjuE3Iun6NZAb1LF
- jeQE1bZHVPxgtsuCSuJZLCkFXtH4vHROHTXRPczXMEf0lLNaKA2B3AAv9bG4xJv5kdvgTCUmbwC
- A/Ef9c+CYcU1YrsAIl5purWN7mT2DOf5Yp5QT5q7tql599lrbytCGOo49tjjg4nKGNPfFuMWcmD
- TeFQ28vQNrgaEqHM9TDJ1CPC0jWIIS2/d+3lK6pyb/YFj2MhfFPmglQ83Vgensj+jHQ==
-X-Google-Smtp-Source: AGHT+IHi1QWxohBh4U0B/OD5TWTEFQflyahwLR2+ADsoi/ZWgQa2zZq5A4rgwuuaHJXbTXPiyedN9g==
-X-Received: by 2002:a05:6000:220c:b0:3b3:9c75:acc6 with SMTP id
- ffacd0b85a97d-3b900b579abmr2912548f8f.59.1754668952577; 
- Fri, 08 Aug 2025 09:02:32 -0700 (PDT)
+ AJvYcCXTWspe+5pPXhCMvGqxuq/GkMFzRZWb5MGO8FZb/KcrJF8VMn45L15nmrWQ8wl0ZIhQsTNFXaefq7kd@nongnu.org
+X-Gm-Message-State: AOJu0YzLz1WnzcCDeSpKq6zHFvsGYgPdFnk61NGOMGXI8huMaMP3nJjs
+ u8Z7h7bSpoUT2HaoGfMvPGtJNequV+6sESUrYMzo51Vn+wTYjWr6hSDqVTPuE533CakbmAXe2HB
+ D0V9P
+X-Gm-Gg: ASbGncuSlf5MWr0JWxn4iRa4YqhI8/aEYkzWrAT2p3OOV6zz0q6f+tA729qY3kkTV6B
+ Fw58676iU2fqeVxiFeHG3avv8zcLvdp/ztmC/Q4jw0TNqtVPnqLd4nwa05p0H2FDFbwhKP5aadK
+ cF10QjWefEBYO2gU6fiB2EP3v4znsle6oBLmDdYx1r1M4fvnB+OfMwKqOQQsNyxum2PM0mLaAGu
+ 2EguxfHTYqndS4SDPduwcC9ZcaMVaIGPeTnJ6TS8zPZAAR88yuERFIKLpFJjwnqUn/80J3toSY6
+ maVBdnOb7mK4yQb0oTelqBAsnhsvdw9V10CLZRAYuxty5Xd7rMzXfkgXG1+xnQnNDQi8ihFKCqn
+ I+xKmO5R/HTzy+PGVyyCbwYlcsUTQbj5ht4tGrk4ISJUnOZ66LlTRExh44T4prVtxgg==
+X-Google-Smtp-Source: AGHT+IHSn+PpPU66r8FVzHkt1WgG16nnuZg7ad9zsYPAQQNbouTmX3coZTAY5kp2YkLKSyRy9+9tOQ==
+X-Received: by 2002:a05:6000:240d:b0:3b8:d15f:45a2 with SMTP id
+ ffacd0b85a97d-3b900942614mr2904098f8f.14.1754669122639; 
+ Fri, 08 Aug 2025 09:05:22 -0700 (PDT)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c3c33fesm31295635f8f.29.2025.08.08.09.02.31
+ ffacd0b85a97d-3b79c453328sm32453021f8f.46.2025.08.08.09.05.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Aug 2025 09:02:32 -0700 (PDT)
-Message-ID: <87427d18-af1e-4815-b95f-75bae32720d3@linaro.org>
-Date: Fri, 8 Aug 2025 18:02:31 +0200
+ Fri, 08 Aug 2025 09:05:22 -0700 (PDT)
+Message-ID: <ed6b452e-87d6-48ee-b060-aa62eda7c4a9@linaro.org>
+Date: Fri, 8 Aug 2025 18:05:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 07/14] target/riscv: Add Xmipslsp instructions
+Subject: Re: [PATCH v6 08/14] hw/misc: Add RISC-V CMGCR device implementation
 To: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
@@ -74,14 +75,14 @@ Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
  "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
  "dbarboza@ventanamicro.com" <dbarboza@ventanamicro.com>
 References: <20250717093833.402237-1-djordje.todorovic@htecgroup.com>
- <20250717093833.402237-8-djordje.todorovic@htecgroup.com>
+ <20250717093833.402237-9-djordje.todorovic@htecgroup.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250717093833.402237-8-djordje.todorovic@htecgroup.com>
+In-Reply-To: <20250717093833.402237-9-djordje.todorovic@htecgroup.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,30 +106,42 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 17/7/25 11:38, Djordje Todorovic wrote:
-> Add MIPS P8700 ldp, lwp, sdp, swp instructions.
+> Add RISC-V implementation of the Coherent Manager Global Control
+> Register (CMGCR) device. It is based on the existing MIPS CMGCR
+> implementation but adapted for RISC-V systems.
+> 
+> The CMGCR device provides global system control for multi-core
+> configurations in RISC-V systems.
+> 
+> This is needed for the MIPS BOSTON AIA board.
 > 
 > Signed-off-by: Chao-ying Fu <cfu@mips.com>
 > Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
 > ---
->   target/riscv/cpu.c                        |  3 +
->   target/riscv/cpu_cfg.h                    |  2 +-
->   target/riscv/cpu_cfg_fields.h.inc         |  1 +
->   target/riscv/insn_trans/trans_xmips.c.inc | 84 +++++++++++++++++++++++
->   target/riscv/xmips.decode                 | 23 +++++++
->   5 files changed, 112 insertions(+), 1 deletion(-)
-
-
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index 9734963035..f35d477f27 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -39,7 +39,7 @@ static inline bool always_true_p(const RISCVCPUConfig *cfg __attribute__((__unus
+>   hw/misc/Kconfig               |  10 ++
+>   hw/misc/meson.build           |   2 +
+>   hw/misc/riscv_cmgcr.c         | 234 ++++++++++++++++++++++++++++++++++
+>   include/hw/misc/riscv_cmgcr.h |  49 +++++++
+>   4 files changed, 295 insertions(+)
+>   create mode 100644 hw/misc/riscv_cmgcr.c
+>   create mode 100644 include/hw/misc/riscv_cmgcr.h
+> 
+> diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+> index ec0fa5aa9f..e3fce37c01 100644
+> --- a/hw/misc/Kconfig
+> +++ b/hw/misc/Kconfig
+> @@ -108,6 +108,16 @@ config STM32L4X5_RCC
+>   config MIPS_ITU
+>       bool
 >   
->   static inline bool has_xmips_p(const RISCVCPUConfig *cfg)
->   {
-> -    return cfg->ext_xmipscbop || cfg->ext_xmipscmov;
-> +    return cfg->ext_xmipscbop || cfg->ext_xmipscmov || cfg->ext_xmipslsp;
+> +config RISCV_CMGCR
+> +    bool
+> +    default n
 
-Checking for any XMIPS instruction implemented to return vendor
-extension presence seems odd. Can you implement them separately?
+$ git grep 'default n' $(git ls-files|fgrep Kconfig) | wc -l
+        0
+
+I remember asking that already but maybe it was a different
+series... Why don't you want this automatically selected by
+default? All our codebase does it, why change suddenly?
 
