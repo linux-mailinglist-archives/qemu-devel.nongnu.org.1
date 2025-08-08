@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C87B1E432
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 10:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 556B9B1E434
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 10:10:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukI9Y-00079S-K6; Fri, 08 Aug 2025 04:08:40 -0400
+	id 1ukI9Y-00078V-52; Fri, 08 Aug 2025 04:08:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9U-00073p-BU
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9U-00073w-F0
  for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:08:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9S-0006U6-Lr
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9S-0006UL-VI
  for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:08:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754640513;
+ s=mimecast20190719; t=1754640514;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0a8mAgbX2PYqZidFDUyDRO19lWaXvm1R8I1vvmw2cEs=;
- b=GSiwyBpKPD1vK/wyy4QW80MBzk/OuQdwz5m0Vaxe9SUfX8Wbp+6eyau+aNqWBeVaMtN0bB
- YxoFjo/c5nZZJ0L34BxEz6mqVhSCtT0PgqJ5JbxKz9SqOrTSYyX3UTTLt2rvZYbCyEDLcL
- wydv7JWL1KhjZfn+92Hnj62+CBEYitQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=V/cu/OvFWiBSGsogoGPDIWg0xj9ceLPQHP67cHpkWjo=;
+ b=iPuBD7/AAsiuqXdzm8ejRD9ucTqlvn2osR52NdpjCiOYEnk/sfu6/2jxdsYhUJA32aMnVS
+ eCrDMM//RmdpjEL3o3zK9PB9l0Fj7ZVs7j4zCzcTTpeEcwWGybIQzeLh1QGRdha60QhITn
+ qYMsvSho4//kguHdMz0QgpdmmXZBTwg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-37-IXfNtXw6NtCKghThBOYIvQ-1; Fri,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-Mw4zy1XMOVucZ_I-R5tuEw-1; Fri,
  08 Aug 2025 04:08:30 -0400
-X-MC-Unique: IXfNtXw6NtCKghThBOYIvQ-1
-X-Mimecast-MFC-AGG-ID: IXfNtXw6NtCKghThBOYIvQ_1754640509
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+X-MC-Unique: Mw4zy1XMOVucZ_I-R5tuEw-1
+X-Mimecast-MFC-AGG-ID: Mw4zy1XMOVucZ_I-R5tuEw_1754640510
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C4EB4180034F; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F295018003FC; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7241719560B4; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 76A4C30002C0; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6B35721E66D2; Fri, 08 Aug 2025 10:08:23 +0200 (CEST)
+ id 6F17521E66D3; Fri, 08 Aug 2025 10:08:23 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: odaki@rsg.ci.i.u-tokyo.ac.jp,
 	marcandre.lureau@redhat.com
-Subject: [PATCH 10/12] ui/dbus: Clean up dbus_update_gl_cb() error checking
-Date: Fri,  8 Aug 2025 10:08:21 +0200
-Message-ID: <20250808080823.2638861-11-armbru@redhat.com>
+Subject: [PATCH 11/12] ui/dbus: Consistent handling of texture mutex failure
+Date: Fri,  8 Aug 2025 10:08:22 +0200
+Message-ID: <20250808080823.2638861-12-armbru@redhat.com>
 In-Reply-To: <20250808080823.2638861-1-armbru@redhat.com>
 References: <20250808080823.2638861-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,55 +83,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From GLib "Rules for use of GError":
-
-    A GError* must be initialized to NULL before passing its address
-    to a function that can report errors.
-
-dbus_update_gl_cb() seemingly violates this rule: it passes &err to
-qemu_dbus_display1_listener_call_update_dmabuf_finish() and to
-qemu_dbus_display1_listener_win32_d3d11_call_update_texture2d_finish()
-without clearing it in between.  Harmless, because the first call is
-guarded by #ifdef CONFIG_GBM, the second by #ifdef WIN32, and the two
-are mutually exclusive.  I think.
-
-Clean this up to be obviously correct.
+We report d3d_texture2d_acquire0() and d3d_texture2d_release0()
+failure as error, except in dbus_update_gl_cb(), where we report it as
+warning.  Report it as error there as well.
 
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- ui/dbus-listener.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ ui/dbus-listener.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index 42875b8eed..09d7a319b1 100644
+index 09d7a319b1..b82e7c7115 100644
 --- a/ui/dbus-listener.c
 +++ b/ui/dbus-listener.c
-@@ -221,18 +221,21 @@ static void dbus_update_gl_cb(GObject *source_object,
+@@ -214,26 +214,31 @@ static void dbus_update_gl_cb(GObject *source_object,
+                               GAsyncResult *res,
+                               gpointer user_data)
+ {
+-    g_autoptr(GError) err = NULL;
++    g_autoptr(GError) gerr = NULL;
++#ifdef WIN32
++    Error **err = NULL;
++#endif
+     DBusDisplayListener *ddl = user_data;
+     bool success;
+ 
  #ifdef CONFIG_GBM
      success = qemu_dbus_display1_listener_call_update_dmabuf_finish(
-         ddl->proxy, res, &err);
-+    if (!success) {
-+        error_report("Failed to call update: %s", err->message);
-+    }
+-        ddl->proxy, res, &err);
++        ddl->proxy, res, &gerr);
+     if (!success) {
+-        error_report("Failed to call update: %s", err->message);
++        error_report("Failed to call update: %s", gerr->message);
+     }
  #endif
  
  #ifdef WIN32
      success = qemu_dbus_display1_listener_win32_d3d11_call_update_texture2d_finish(
-         ddl->d3d11_proxy, res, &err);
--    d3d_texture2d_acquire0(ddl->d3d_texture, &error_warn);
--#endif
--
+-        ddl->d3d11_proxy, res, &err);
++        ddl->d3d11_proxy, res, &gerr);
      if (!success) {
-         error_report("Failed to call update: %s", err->message);
+-        error_report("Failed to call update: %s", err->message);
++        error_report("Failed to call update: %s", gerr->message);
      }
  
-+    d3d_texture2d_acquire0(ddl->d3d_texture, &error_warn);
-+#endif
-+
+-    d3d_texture2d_acquire0(ddl->d3d_texture, &error_warn);
++    if (!d3d_texture2d_acquire0(ddl->d3d_texture, &err)) {
++        error_report_err(err);
++    }
+ #endif
+ 
      graphic_hw_gl_block(ddl->dcl.con, false);
-     g_object_unref(ddl);
- }
 -- 
 2.49.0
 
