@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E911B1EC73
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 17:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E051B1ECC4
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 18:03:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukPOH-0003nj-PT; Fri, 08 Aug 2025 11:52:21 -0400
+	id 1ukPXh-0003LR-OA; Fri, 08 Aug 2025 12:02:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukPOA-0003fe-SK
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 11:52:15 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukPVx-0000MZ-Bb
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 12:00:19 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukPO9-0003YR-87
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 11:52:14 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3b7862bd22bso1665403f8f.1
- for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 08:52:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukPVr-0005sn-6G
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 12:00:15 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-459ddf9019cso8600325e9.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 09:00:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754668331; x=1755273131; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754668807; x=1755273607; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=f7oT8vg7HMFo/rfWiiwua42SUDaULdyy8fUyCy39DeM=;
- b=Cy0fwPeVT7Uf0j4+xLRX8B+3AMPfUGiCuTew/dzFDo3YMSleWa2mmqubS36yf7CJ4r
- gOh/fGaxPgS5Q8/W4LWfjXL9RhDVp/QkO3uiiZGfNFPKDqlGKNUfgY7La1adSmtm08wE
- 0LHwuSnR1CnxMpXDBFe8oZ7LzzhLNGwxNxJkTm4VJpRcHisz+40xt3cHXcal1aH1EQb3
- DUd2gjlIlN8G6891j6wRlOAx92r2DDvi8I5cbg/zR08JJuHfl7VoN4r/3e1eFM8eFMJn
- U/0QWxk0VzlHKcuNRpByg8Hd7hMi4HZjjLzy9nidAvUhlrrzdA2bAmU5ZX0KTmTwPXl1
- PQ/g==
+ bh=U31oiKsgx+8pzsWRmfBacKIbeg55k+w2ihJyrAPos7o=;
+ b=Cxn0OlmCEz9Um5w2Ccji8vi/o/ZlrwhhhWu4b1xSaaU17kC7CCECQcWr3yR+AlautR
+ +KQ4NPmVZ9Ba+L3MeRK3wrr+AsPVa3zjGQKF4bKUVJC5Jn2kEF2C7N24AUx3sWxWql+W
+ Sm2PDINgkojeswO2D6IQI9YtuItEhReqFz2/hXq9zhY8VdTWcu6EtQ416cCCHBjVij6U
+ 0Hsmvv5WRTmX1+0pHc8rlnrzr4YYqn7sspfLlyGV1Jg15Ff3yJJC/dxTVxfNRiNYmtLi
+ YaB8JqJlGWdUHVXgJQGdCHgPcI+c41maMeXQrS/7KYg36K4w1TcrZXdwGga5/B0IMdIU
+ +3mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754668331; x=1755273131;
+ d=1e100.net; s=20230601; t=1754668807; x=1755273607;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f7oT8vg7HMFo/rfWiiwua42SUDaULdyy8fUyCy39DeM=;
- b=N5Dqg2IhGUEgK3m/2m0R66XeNaGUmWiA2iEDAFOAFccORAQPrWb1S7TMSaKYU2+35d
- EVxRD6fi4lYpDgE51VrznXzhhBJzE0RNed08/O0VH0m+1kLd3YrKiJcekBXzZODEj+eP
- ltvtr7KKM0E1TpUuDa+TDxMbiG1Xzx1BbJwpfAthchlGXP6qaPVdaMGS9sNqQyAjuiZr
- 54zAZ/i+27XB1xn+rw3Xe8SpPIShAXOFgXB/Xb+LJlvnSfLahJwktp4Oxmhcsmrlf0Pv
- UIbFk/9NwvLmSweeSI5V14xwxXW7ej9oPwsCO2yjRIZ/Uz/vpKfIAIo6RUSinix6ev+J
- FoXw==
+ bh=U31oiKsgx+8pzsWRmfBacKIbeg55k+w2ihJyrAPos7o=;
+ b=iotv8KOMsoOSYRkJxYIoPUh4sajLMQWePHUWwUVUSJ5jJQ6AKl16FZT0qbegWSJXPR
+ st6XFsfkRJ5vPhgRWpGYFCo4aF4yVXUvIUu3PSlWou6ApmcOXRHMcfzQCXSYGWtaAqug
+ Plsd/WZ+yHc8HYZD6MDfoWceTBwW+O3BLCAnfUY5sXIE7JUR+lErNwSsWDs4hqHWFJla
+ AaLCgRZVs3bnR+2B3NXc0WeB6mPCCZIHeII7Jm1Onmo7TR9QdwsjpkXO9ckyf2MtNAV2
+ V+/thFk3Yzbpa/b2lvCxlKJJT1m3NJ/m7iD2VaDP9jLUliqKDK+aPd3mcT0HvC5Aqzgu
+ mYow==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWuv0YaoMKq4hLtWxs3y1v7UWcVx3pRM4LkBGiJjAmb9xr5escMx7UsN1xWV+O8B0uvltYl2GX4gxRu@nongnu.org
-X-Gm-Message-State: AOJu0Yz1j7IFxmZFtA9OLu/0rNDONvBloyGUbamuQnmub7vypU7XFZyT
- O/VFWDu78Y2y4nRpJlZEFawiLzj95lmA9jO4W58kzyS8PIQewCgUS9KBGYqjDeYtmLE=
-X-Gm-Gg: ASbGncuNgl8z8cUc9Oq2MZ68Itg9Qb1xm6s7JCif6cjs+ePyulYRndnPDfSDHwiS8lQ
- YhN+/elpop4AJ2aWZRzvYbB9XNpY24KpO103mGp9eD7pWDvMTIStlufylm0jXG1ii+CheaYLu5N
- dDVBJ17/2U2HrQVJzQXXBeYpfHeg+kpstG/kaVIQ0Sv7jcNWoAUj1oWhdXWeRElt6qxHqMT6bP7
- viaxgKXXKHzmz/nqZT2KRznzE40Yoqnws0If3lrEHN3MskUd7K3mXKOALaPOY/0FQo4jgepTvDy
- mCMQjljmjEwznkBmASRJI1tXIKspw5YA9BbCEiQYVUIY3vEQNzf8pM5kl7mK9a6h8gFt5JwSUzG
- RPBDBcitwaXFjfcxKhqY/CD15HOdKkSR5HcI1bOGqFrRyGsXjoU/5hm1//jjf+S7H0A==
-X-Google-Smtp-Source: AGHT+IHYn+tlP0TPdz5qomcIZqdRf8ER/rsL3zip1JDD5AGh7alaEnE1zumE4m/yiycVxz0VGHTbvQ==
-X-Received: by 2002:a05:6000:4028:b0:3b7:8842:8a0c with SMTP id
- ffacd0b85a97d-3b8f97ec49emr7295254f8f.19.1754668331440; 
- Fri, 08 Aug 2025 08:52:11 -0700 (PDT)
+ AJvYcCXvRlz8Gpi0GzyLyMdCQbhjL2N7npRdz0H4nkHskCrfWvww9RUIWg3jzpZ6LTZJLL/p2UyE125vcsf4@nongnu.org
+X-Gm-Message-State: AOJu0YzzZNPXiYxRGUZ9jDlPahAl/onylzsVFhBJkuoUekvh8AE9nvu3
+ 3BmVo6aRoPv3KFOwCIgJbjZS5IIdRmEfIF4bevdnQmM7nNzdclWrS5Tng1WaV1ogxLE=
+X-Gm-Gg: ASbGncvKDg2tp+Jq3BG0Vmb2KJAWIxtMeEzGwcOc5nj7N8GvwSzFodcU87xaxaTwV13
+ yhR7PCs0IMZTOkddbB04ZzJJJTwI815px2zqIWnOmEdMj35VhjKYgUzTdbG7uSWpMjqV4PrzJTn
+ OybduuT8KsAjgV5yz9qTuujhscldrTfF4tb5X6B7WAG71Jpk5X4/vGYKGxAaaoXTeyUymd8lBxj
+ 2U4+HvV0Zbrp7yL5SyjyWuwxN7n2XPKp5XS6pItuFufJgGSpLokO7CzhMtdO6tGbUseUX+gYdG2
+ tYdUmo6eGNI5qyoYs+lTCSHRAilWPDrVVyTVNfL3MtgTmWsHSGrbNpCF09XVCIW/7esIE8u3fAT
+ FL+ZrMiJl9S/5V4QMWoUqE8R73k43tIKealTZOol4JToF8/XnkldCruKvHV7wNx14dQ==
+X-Google-Smtp-Source: AGHT+IHLIlXbXN8fjsUj603FuCKXF6oEaAVEnyi8xeupi0dYAUzrDVAKsLTsoa4ulHOLrE/y1mT7hw==
+X-Received: by 2002:a05:600c:4fc4:b0:459:dc99:51bf with SMTP id
+ 5b1f17b1804b1-459f4f289e7mr29396045e9.25.1754668807184; 
+ Fri, 08 Aug 2025 09:00:07 -0700 (PDT)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-459e3d37439sm88430145e9.2.2025.08.08.08.52.10
+ 5b1f17b1804b1-459e6867193sm138084875e9.6.2025.08.08.09.00.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Aug 2025 08:52:10 -0700 (PDT)
-Message-ID: <5f0fb254-fa9c-4e29-a848-6e9b3bc8274d@linaro.org>
-Date: Fri, 8 Aug 2025 17:52:09 +0200
+ Fri, 08 Aug 2025 09:00:06 -0700 (PDT)
+Message-ID: <a9874cc7-e18e-4b6c-aaac-2c6ce56c1bf7@linaro.org>
+Date: Fri, 8 Aug 2025 18:00:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/14] hw/intc: Allow gaps in hartids for aclint and
- aplic
+Subject: Re: [PATCH v6 08/14] hw/misc: Add RISC-V CMGCR device implementation
 To: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
@@ -75,21 +74,21 @@ Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
  "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
  "dbarboza@ventanamicro.com" <dbarboza@ventanamicro.com>
 References: <20250717093833.402237-1-djordje.todorovic@htecgroup.com>
- <20250717093833.402237-2-djordje.todorovic@htecgroup.com>
+ <20250717093833.402237-9-djordje.todorovic@htecgroup.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250717093833.402237-2-djordje.todorovic@htecgroup.com>
+In-Reply-To: <20250717093833.402237-9-djordje.todorovic@htecgroup.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,34 +105,35 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 17/7/25 11:38, Djordje Todorovic wrote:
-> This is needed for riscv based CPUs by MIPS since those may have
-> sparse hart-ID layouts. ACLINT and APLIC still assume a dense
-> range, and if a hart is missing, this causes NULL derefs.
+> Add RISC-V implementation of the Coherent Manager Global Control
+> Register (CMGCR) device. It is based on the existing MIPS CMGCR
+> implementation but adapted for RISC-V systems.
+> 
+> The CMGCR device provides global system control for multi-core
+> configurations in RISC-V systems.
+> 
+> This is needed for the MIPS BOSTON AIA board.
 > 
 > Signed-off-by: Chao-ying Fu <cfu@mips.com>
 > Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
 > ---
->   hw/intc/riscv_aclint.c | 21 +++++++++++++++++++--
->   hw/intc/riscv_aplic.c  | 11 ++++++++---
->   2 files changed, 27 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-> index b0139f03f5..22ac4133d5 100644
-> --- a/hw/intc/riscv_aclint.c
-> +++ b/hw/intc/riscv_aclint.c
-> @@ -292,7 +292,13 @@ static void riscv_aclint_mtimer_realize(DeviceState *dev, Error **errp)
->       s->timecmp = g_new0(uint64_t, s->num_harts);
->       /* Claim timer interrupt bits */
->       for (i = 0; i < s->num_harts; i++) {
-> -        RISCVCPU *cpu = RISCV_CPU(cpu_by_arch_id(s->hartid_base + i));
-> +        CPUState *cpu_by_hartid = cpu_by_arch_id(s->hartid_base + i);
-> +        if (cpu_by_hartid == NULL) {
-> +            qemu_log_mask(LOG_GUEST_ERROR, "aclint-mtimer: invalid hartid: %u",
-> +                          s->hartid_base + i);
+>   hw/misc/Kconfig               |  10 ++
+>   hw/misc/meson.build           |   2 +
+>   hw/misc/riscv_cmgcr.c         | 234 ++++++++++++++++++++++++++++++++++
+>   include/hw/misc/riscv_cmgcr.h |  49 +++++++
+>   4 files changed, 295 insertions(+)
+>   create mode 100644 hw/misc/riscv_cmgcr.c
+>   create mode 100644 include/hw/misc/riscv_cmgcr.h
 
-DeviceRealize() handlers are part of machine modelling, not guest uses.
 
-IOW, triggering this is a programming mistake, so we should just
-abort() here.
+> +static void riscv_gcr_realize(DeviceState *dev, Error **errp)
+> +{
+> +    RISCVGCRState *s = RISCV_GCR(dev);
 
+Please report an error for invalid num_vps values (0 or >MAX).
+
+> +
+> +    /* Create local set of registers for each VP */
+> +    s->vps = g_new(RISCVGCRVPState, s->num_vps);
+> +}
 
