@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221A9B1E7F5
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 14:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D99ADB1E7F3
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 14:04:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukLny-0003wN-Sz; Fri, 08 Aug 2025 08:02:40 -0400
+	id 1ukLp7-0007t6-7x; Fri, 08 Aug 2025 08:03:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1ukLnL-00037G-EI
+ id 1ukLnL-000385-MM
  for qemu-devel@nongnu.org; Fri, 08 Aug 2025 08:02:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1ukLnH-00076j-Vc
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 08:01:58 -0400
+ id 1ukLnJ-00077E-PW
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 08:01:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754654515;
+ s=mimecast20190719; t=1754654517;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YXMLdRLh9YwCZzYtukXOYEZwJEsXhn/JEVu/46+KzWE=;
- b=RcjLsI/cch3XOG9x2b2K8HpZab4u+L+0Z4j0KOy+Ilvv+RQ4X0+IzXX5CWoGAk7EPojM5X
- al967fbWljVHJD0jisq/KfPai9FmgTvF/xDZX1Pc7r5lfM8RvwPlTRvdtkfN3AlVF4Sh7H
- DlA46+HSdwTyyWBBQGvKW7IHnVzl4po=
+ bh=XpmwOQHX1SgGpJskyx5fWBOPbTgrLh6qjQ11c8Kgzo8=;
+ b=BXsr4bEpTMz0ZA2ORifgi2PcTXhb0pU7+FfNPqLX5HvahHDzPXiMiCiscW8gzb4jxzJgKk
+ 0MgoDQJrMwJHLHPrmOYSL/NGPcP92uEIVhDm5Tnw519ff37ckmpgP2dyZ7rWmkDkbydpiA
+ CkxayZmhqr1XyzUubuMUtW2jbVFG+wc=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-9-30p6ruSMPAegFJ3c0K-Qew-1; Fri,
- 08 Aug 2025 08:01:52 -0400
-X-MC-Unique: 30p6ruSMPAegFJ3c0K-Qew-1
-X-Mimecast-MFC-AGG-ID: 30p6ruSMPAegFJ3c0K-Qew_1754654511
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-GU4XYO6sML2Dxc5UUfB9Pg-1; Fri,
+ 08 Aug 2025 08:01:55 -0400
+X-MC-Unique: GU4XYO6sML2Dxc5UUfB9Pg-1
+X-Mimecast-MFC-AGG-ID: GU4XYO6sML2Dxc5UUfB9Pg_1754654513
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 017751800446; Fri,  8 Aug 2025 12:01:51 +0000 (UTC)
+ id 663BC180036E; Fri,  8 Aug 2025 12:01:53 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F165E19560B0; Fri,  8 Aug 2025 12:01:48 +0000 (UTC)
+ id 6770719560AD; Fri,  8 Aug 2025 12:01:51 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, pbonzini@redhat.com, peterx@redhat.com, david@redhat.com,
  philmd@linaro.org, mtosatti@redhat.com
-Subject: [PATCH v3 03/10] hpet: switch to fain-grained device locking
-Date: Fri,  8 Aug 2025 14:01:30 +0200
-Message-ID: <20250808120137.2208800-4-imammedo@redhat.com>
+Subject: [PATCH v3 04/10] hpet: move out main counter read into a separate
+ block
+Date: Fri,  8 Aug 2025 14:01:31 +0200
+Message-ID: <20250808120137.2208800-5-imammedo@redhat.com>
 In-Reply-To: <20250808120137.2208800-1-imammedo@redhat.com>
 References: <20250808120137.2208800-1-imammedo@redhat.com>
 MIME-Version: 1.0
@@ -84,61 +85,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-as a step towards lock-less HPET counter read,
-use per device locking instead of BQL.
+Follow up patche will switch main counter read to
+lock-less mode. As preparation for that move relevant
+branch into a separate top level block to make followup
+patch cleaner/simplier by reducing contextual noise
+when lock-less read is introduced.
+
+no functional changes.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/timer/hpet.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+v3:
+  * drop 'addr <= 0xff' as addr == HPET_COUNTER is sufficient
+     Peter Xu <peterx@redhat.com>
+---
+ hw/timer/hpet.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index cb48cc151f..ab5aa59ae4 100644
+index ab5aa59ae4..c776afc0f2 100644
 --- a/hw/timer/hpet.c
 +++ b/hw/timer/hpet.c
-@@ -38,6 +38,7 @@
- #include "hw/timer/i8254.h"
- #include "system/address-spaces.h"
- #include "qom/object.h"
-+#include "qemu/lockable.h"
- #include "trace.h"
- 
- struct hpet_fw_config hpet_fw_cfg = {.count = UINT8_MAX};
-@@ -69,6 +70,7 @@ struct HPETState {
-     SysBusDevice parent_obj;
-     /*< public >*/
- 
-+    QemuMutex lock;
-     MemoryRegion iomem;
-     uint64_t hpet_offset;
-     bool hpet_offset_saved;
-@@ -428,6 +430,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
-     trace_hpet_ram_read(addr);
+@@ -431,6 +431,16 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
      addr &= ~4;
  
-+    QEMU_LOCK_GUARD(&s->lock);
+     QEMU_LOCK_GUARD(&s->lock);
++    if (addr == HPET_COUNTER) {
++        if (hpet_enabled(s)) {
++            cur_tick = hpet_get_ticks(s);
++        } else {
++            cur_tick = s->hpet_counter;
++        }
++        trace_hpet_ram_read_reading_counter(addr & 4, cur_tick);
++        return cur_tick >> shift;
++    }
++
      /*address range of all global regs*/
      if (addr <= 0xff) {
          switch (addr) {
-@@ -482,6 +485,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-     int len = MIN(size * 8, 64 - shift);
-     uint64_t old_val, new_val, cleared;
- 
-+    QEMU_LOCK_GUARD(&s->lock);
-     trace_hpet_ram_write(addr, value);
-     addr &= ~4;
- 
-@@ -679,8 +683,10 @@ static void hpet_init(Object *obj)
-     SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-     HPETState *s = HPET(obj);
- 
-+    qemu_mutex_init(&s->lock);
-     /* HPET Area */
-     memory_region_init_io(&s->iomem, obj, &hpet_ram_ops, s, "hpet", HPET_LEN);
-+    memory_region_enable_lockless_io(&s->iomem);
-     sysbus_init_mmio(sbd, &s->iomem);
- }
- 
+@@ -438,14 +448,6 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
+             return s->capability >> shift;
+         case HPET_CFG:
+             return s->config >> shift;
+-        case HPET_COUNTER:
+-            if (hpet_enabled(s)) {
+-                cur_tick = hpet_get_ticks(s);
+-            } else {
+-                cur_tick = s->hpet_counter;
+-            }
+-            trace_hpet_ram_read_reading_counter(addr & 4, cur_tick);
+-            return cur_tick >> shift;
+         case HPET_STATUS:
+             return s->isr >> shift;
+         default:
 -- 
 2.47.1
 
