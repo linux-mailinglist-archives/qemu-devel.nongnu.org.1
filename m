@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACDE7B1E297
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 08:57:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B53AAB1E2B5
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:00:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukH1P-0002F3-Md; Fri, 08 Aug 2025 02:56:16 -0400
+	id 1ukH2K-0002cy-KT; Fri, 08 Aug 2025 02:57:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ukH0J-0001GF-S2
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 02:55:09 -0400
-Received: from p-east3-cluster1-host9-snip4-9.eps.apple.com ([57.103.87.92]
+ id 1ukH0M-0001HQ-J5
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 02:55:11 -0400
+Received: from p-east3-cluster1-host8-snip4-10.eps.apple.com ([57.103.87.83]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ukH0H-00046A-Kc
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 02:55:03 -0400
+ id 1ukH0K-000470-Nm
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 02:55:06 -0400
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-10 (Postfix) with ESMTPS id
- 5094E18000BD; Fri,  8 Aug 2025 06:54:57 +0000 (UTC)
+ 29FC91800110; Fri,  8 Aug 2025 06:55:00 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=hcX1ouUoxA3rBBWpI8Ii03pvg8y4VXNW/PYQiybKFb0=;
+ s=sig1; bh=tAMz6lMwfQrqOiME7sTBMz8prC5TBo0JdN8zol2zET4=;
  h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
- b=HLjig/oaeG54qmJs1/q20s1kw5Pvw9JziVUO6KbAje5LzXyKtdcI8GaPRoVnoTp1ZK2HffWM6L9QdgPjw33KaWcprNpdv7AdgmDcVxU0b1N7VzESvk4yiF2PbWF1DeU/hnCBKi3CPdsvqiEkccR5mkYbm7EgkIfcdawN/j4nlhokphKvuGaXVPkREIIJKETvSAF2dkMb8WqS94bqgdjn529kb9ltm++BahGgkFXcdW6NtNBGVbkITQePOwEg19W0nHEce/G9zrdDJreN6yYCDB2l2QlYY5LI5myqnCH1mb0+cZ3PFebhXcz/dgFSSZQi2a2PrKhkIkBMAOLzjzA/+Q==
+ b=Gbk5mDPPn/2MotbZqBLwn98WaNuc1IoyoTYVyLdzJYu8FacK+YP5zOq9jFBbx8vMCPXjNXUPwCeB5Pm4fkeTiEDyPgrXj1VjJq/7N9a/X39c4npkFXX3scXOS/wOFPJuaRVXJEoY97a8RNXpjlrNTxq/OzQTr+eTW7glJnBKJ8SOFDVNc9x/+bMw4pesydUTlKixSJgr78blRIL/BuvjmbnkRnyg85k0eg8ACVDaMG+3QshIC/B2GrdvgacwtC8gUYxjeU3dK2/momK+tbHo417Um+hoDyQv4hPlO5nqj1HYGKKTHEY0TQQTabNUrQZlJ6rUK+4hgOdTBxgVmnNAiQ==
 X-Client-IP: 46.189.47.18
 Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
  [17.57.155.37])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-10 (Postfix) with ESMTPSA id
- 156BC18000A5; Fri,  8 Aug 2025 06:54:53 +0000 (UTC)
+ D77F91800117; Fri,  8 Aug 2025 06:54:56 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -50,37 +50,39 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-arm@nongnu.org,
  Yanan Wang <wangyanan55@huawei.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v5 11/18] target/arm: cpu: mark WHPX as supporting PSCI 1.1
-Date: Fri,  8 Aug 2025 08:54:12 +0200
-Message-Id: <20250808065419.47415-12-mohamed@unpredictable.fr>
+Subject: [PATCH v5 12/18] hw/arm: virt: cleanly fail on attempt to use the
+ platform vGIC together with ITS
+Date: Fri,  8 Aug 2025 08:54:13 +0200
+Message-Id: <20250808065419.47415-13-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250808065419.47415-1-mohamed@unpredictable.fr>
 References: <20250808065419.47415-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA1NiBTYWx0ZWRfXy/PIVSnAzlej
- L2RKC6YVOHc/QeFjoRWsJxPEZ5eRJiHD4UHk7zQkaC5xZgZtqFCVYwwQxRhsvATJbfJcOqfdjah
- 9agcPW0+ggD0jrYLWgzC6caUMeu4aef2N9zw4m9gjUHxzeY5FjRI38q6fS2lsFHwepUOGTrJa/l
- oOdyFfbI12eGlcUzXnoVO9TwHocojDSEmNEInQDTmYhF37rsrp8ZbVXfJOJsufyUq9mTXwDMUQC
- 4DWBzb7k831mWdFgfUZArL4Nba4ZT3JbMbqt/sKsE3CZ61a5XBontnsPuFz2NlvpIDeHvf2zk=
-X-Proofpoint-ORIG-GUID: oNGFS7FDZfEDe27Fpj0sIHlhJCX40PkU
-X-Proofpoint-GUID: oNGFS7FDZfEDe27Fpj0sIHlhJCX40PkU
+X-Proofpoint-GUID: EYC1kpHbdBFqM53CyBXxOvEitx9dRAJp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA1NiBTYWx0ZWRfX+CxOYTCFPGKm
+ qlofri66FgCstsxuaVnlxNCwTx8vLrF0GKOeKfYveY5MHwOWyIVhnIg/6d/202Q9P8g9nNFw/5f
+ Lj6ousg3xlaNS7pHhSO5yiQ2Oub7Q2bXeIBlxHvW5x/u1Z9UDLNeAzzdtFAY/G0eDEP1vmhZjS2
+ TqxXG2axiNitNqq8YUAcYseRU8Kfn4Tc040IuXq0ZEQMK0iuNNQfikt0BiRRQus81z4ito0oa7R
+ TztkDRMQruI5HRNhw6srHuFY4i7ypIcrqo7sS/XWPUYmAjAYAMQ7Zy6QHu2PdEaXmQmDKrrJ4=
+X-Proofpoint-ORIG-GUID: EYC1kpHbdBFqM53CyBXxOvEitx9dRAJp
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-08_01,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxlogscore=920 adultscore=0 malwarescore=0 clxscore=1030 suspectscore=0
- bulkscore=0 spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ phishscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0 spamscore=0
+ clxscore=1030 bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.22.0-2506270000 definitions=main-2508080056
-Received-SPF: pass client-ip=57.103.87.92;
+Received-SPF: pass client-ip=57.103.87.83;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,38 +98,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hyper-V supports PSCI 1.3, and that implementation is exposed through
-WHPX.
+Windows Hypervisor Platform's vGIC doesn't support ITS.
+Deal with this by reporting to the user and not creating the ITS device.
+
+Regular configuration: GICv3 + ITS
+Resulting configuration here: GICv3 with no MSIs
+And its=off explicitly for the newest machine version: GICv3 + GICv2m
 
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/arm/virt.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index e2b2337399..3b69c9786a 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -23,6 +23,7 @@
- #include "qemu/timer.h"
- #include "qemu/log.h"
- #include "exec/page-vary.h"
-+#include "system/whpx.h"
- #include "target/arm/idau.h"
- #include "qemu/module.h"
- #include "qapi/error.h"
-@@ -1496,7 +1497,7 @@ static void arm_cpu_initfn(Object *obj)
-     cpu->psci_version = QEMU_PSCI_VERSION_0_1; /* By default assume PSCI v0.1 */
-     cpu->kvm_target = QEMU_KVM_ARM_TARGET_NONE;
- 
--    if (tcg_enabled() || hvf_enabled()) {
-+    if (tcg_enabled() || hvf_enabled() || whpx_enabled()) {
-         /* TCG and HVF implement PSCI 1.1 */
-         cpu->psci_version = QEMU_PSCI_VERSION_1_1;
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 98a1c74c42..0039f6a12b 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -741,6 +741,16 @@ static void create_its(VirtMachineState *vms)
+         return;
      }
+ 
++    if (whpx_enabled() && vms->tcg_its) {
++        /*
++         * Signal to the user when ITS is neither supported by the host
++         * nor emulated by the machine.
++         */
++        info_report("ITS not supported on WHPX.");
++        info_report("To support MSIs, use its=off to enable GICv3 + GICv2m.");
++        return;
++    }
++
+     dev = qdev_new(its_class_name());
+ 
+     object_property_set_link(OBJECT(dev), "parent-gicv3", OBJECT(vms->gic),
 -- 
 2.39.5 (Apple Git-154)
 
