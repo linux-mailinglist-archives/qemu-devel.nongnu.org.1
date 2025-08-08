@@ -2,219 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765CEB1E9FA
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 16:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA006B1EA7F
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 16:39:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukNmZ-0002Fn-Pl; Fri, 08 Aug 2025 10:09:21 -0400
+	id 1ukOFk-0007Zu-Lx; Fri, 08 Aug 2025 10:39:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1ukNmT-0002Ea-Fm
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 10:09:13 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1ukNmQ-0006DQ-Ql
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 10:09:13 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 578DNT3j004001;
- Fri, 8 Aug 2025 14:09:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=btmD0VlmP4elMbfSawafLc8WPSh56UIto7KjzAbn8Ms=; b=
- iH5aH2u5pgZnd361Ers/U4ymmgxHW+sICLlbeD/n7i3aaBDpJUuy1XLPeX8YiKWm
- +XKY767uNUGr1wmA1LgV7q+FlScidqNgtuLWIQtIrXspJwXYZdfBvfsGE/QoBzFS
- PQXgvGO9Dps2XNI5VGn/iydt2rDZGPzhL9zbUg/CbDLbP0zn20MZqDuk6FoDwTrC
- fTqqzthdzsm6Rm2UV4qYxbgT8koaKtoLn5eGfw69rSVLPI8cgt/Tm46o/5+R4jNT
- +/1rH1oLCiR9nRh8EeGFRDbZmMJjsHstzqMOjpuxtsbaWQ1svn8zVhjMzBdfysKC
- CLxrwej+AovnC/b3al6KPA==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48bpvf69yu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 08 Aug 2025 14:09:07 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 578DO6sR009830; Fri, 8 Aug 2025 14:09:06 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2076.outbound.protection.outlook.com [40.107.243.76])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 48bpwpsp4f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 08 Aug 2025 14:09:05 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tr9//a0HDgZpfY2V3DIqcQzE9aR/wP1wCNlCGae3hWQ6mrOl+ZdGTE6iFtKtmivV0K7yHlpudZjah9eqe7+931zivfDwMa1P6UMm57rOuqJ5+Hx+JrqvZUC2u1mS+5gFas70m8GRlWjtycWQmRkRxB/sK/0GIVhgRkrFl9zbswtxYvbVdUR0vJTNjk0ZLGluyi85poia15OumbFA0i2VtAbe+qwKwrsYCP9/5z+jKy3lz5aN5SVZSmalAjQ3VnFBox8XxZCB7wL4y+7d5XEkV1qvzOqq0Q+lNhJpIWzKk/RPrC7KFS/jUUwiTC9U9Sjb2u7nKqBltiebts0mypphfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=btmD0VlmP4elMbfSawafLc8WPSh56UIto7KjzAbn8Ms=;
- b=cqdwTCMaZQITkrONSSJR5eMdpNHRsuYHlNp/YyQ7wf6mIafOb7PmgT9c7FLVck9oUpHtioGEewHW1BPjU+Btl9cMmKSdnSb4N9oloPYTvDvNahva6d7J+C18ZoiRySgckRoqsw3ii7c+d+2LmTMIyaN3MQi33hqvJafki3g0KmCu8HHIloleFjhvpicdOsHjoR4z1XYry8riDILhOSYDTDSZlBFm09/cHjec7I279OC+ntq8ub8rq4RNZ55FHe7nTx8klCPP7S9f0WmmZJIf4kZDo6/bXGzo8VPznyY0gcO2x5vlvhMhSo4OwT2E7/5HZwoty615sFXsWw2qxXojXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <murlockkinght@gmail.com>)
+ id 1ukOFc-0007ES-Ic
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 10:39:23 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <murlockkinght@gmail.com>)
+ id 1ukOFa-0004eT-AJ
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 10:39:20 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-55ba26abd62so2492066e87.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 07:39:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=btmD0VlmP4elMbfSawafLc8WPSh56UIto7KjzAbn8Ms=;
- b=EX6k0uO8/iAlRaEKPIGM5FDVqmmg9FyFzXqqZxAoU2VEiNB9FrF9xLDtDZ365n/cTMC5A5Klk/DNuEUn7aJjGV3wMEH0Ylc7GyadlSmEMZIiKI99jO02vrAVVfzNAMJZy1Ae+asJVdpmzLVlJ3JHkPP0gv2otAJD4rYv63JaS3Y=
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
- by MW4PR10MB6557.namprd10.prod.outlook.com (2603:10b6:303:22a::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.26; Fri, 8 Aug
- 2025 14:09:01 +0000
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572%7]) with mapi id 15.20.9009.016; Fri, 8 Aug 2025
- 14:08:59 +0000
-Message-ID: <aee57c51-b7e5-4c11-b8bd-222251c4ce91@oracle.com>
-Date: Fri, 8 Aug 2025 10:08:55 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/12] migration/cpr: Clean up error reporting in
- cpr_resave_fd()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: odaki@rsg.ci.i.u-tokyo.ac.jp, marcandre.lureau@redhat.com
-References: <20250808080823.2638861-1-armbru@redhat.com>
- <20250808080823.2638861-5-armbru@redhat.com>
- <6d876750-9d7b-4556-a1e5-06f7c7487eb0@linaro.org>
-Content-Language: en-US
-From: Steven Sistare <steven.sistare@oracle.com>
-In-Reply-To: <6d876750-9d7b-4556-a1e5-06f7c7487eb0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PH7P220CA0148.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:327::16) To IA1PR10MB7447.namprd10.prod.outlook.com
- (2603:10b6:208:44c::10)
+ d=gmail.com; s=20230601; t=1754663954; x=1755268754; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ny/qF1Omn1AISxU4yIwudednICrDn3cNU1oxD+SbCwE=;
+ b=bpvY2YXpueuJq1XNvwCwUg8XnKvpmIsImhcFXd409yA+jrzlpeV7NJm6JNkfXkg/j/
+ DxSgGW+ghqBVO5ElY0G9kCGWJBvFRpQdgJ7QJXu08WYRMSCtgLili3ZXO/fxWxfdQZI7
+ wiaQaD1HSxNqsGPkMrbCb9r2DnF7dWwfJw56PbZMJiABwTd4+2ZrxVXbV0PjcWPn8HmG
+ Bh7GXuk1Myf43npEFV2w6vfWI36zFZTIxfxAM+P1fJ7aaXNCs06VEP0E3pmcRL+II2Lk
+ k7qEnPvPk3Zr7z0OUcHpt9Qq7jQUWoeRRUQYE4W6F4F6vAJvw4acBlChM5mQT0wXGH4h
+ QGkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754663954; x=1755268754;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ny/qF1Omn1AISxU4yIwudednICrDn3cNU1oxD+SbCwE=;
+ b=Ixo08Jo2WZUJb6nBTsoLgj2FhoDygXbtyiYtiiekbsevhCpG/hM5S4/PhXRc4+e85I
+ k4OBODLJRDxorngex1wSupNNK4jSCMLKjjDECqIXJKFOvTFtLKpNqdiL4fCwO1TVL4bP
+ j9U3pbisht5zk7QieH3Mpjom7uTbJ59f1sjviEHjSD2fV5lHyDLpJuvw5ELE4cO9pm8/
+ hBc1DYbiWjpEPHIHf//aPnwI6PcHnGJ0mJctmaP9Le3gkyntS4VGjax+ARLDwD0RNIVG
+ +ACS76YH5Q1fD+mVuyHbP5Nx4Z1zQaJr6A+4nCwUcyCnJzZ9L3osmygcxm1ygDk76rkl
+ w0kQ==
+X-Gm-Message-State: AOJu0Yzhz+W1Cr2BvfdG4HcYWc5bsiK/ePTsMM1KO0rEdz1FJZUXVN0s
+ qCOxSKwdNbKcCNWc0NOHpzLOSJQB1H/fpO30jldTerTNzhm6KPk66XBiizUprSTzwQA=
+X-Gm-Gg: ASbGnctRir16hZOgTVXfGw9HOEXn73NnR0Ntl5P50GFBcdCoV5oC1O9uC0cpKjqYCOj
+ VyCcexYrCa+oip8ogy8gw2R8vnq6zM4+k4aqf+mt69ZNbxiJ6w8absfc40SOsos1ekeGeXamUXC
+ X0PzYfrpVK8r4UMjesL/AfY4nwMRM9Dw+eFS6Sk/fT9ZeyqU0AslFnEMGq6xBP52oD9PjdOsDhr
+ pcMUFhX19fPQEwfIcoLnxgvnMKewyamfbZiyBe63y0zM9v9cs9ignj9El48f7kBAakCL7BZYCbF
+ REgooOweZViH9fG77T8ieBydL4gfo0Qt0zS/mnS446xMRh7Yk1obQq38Lqy1EBd1HMw7DlfLya5
+ SU60Fcfwmh9j8ACzh1ROLYjgtXFrKdUeObpZIrazPpsuRQhF26Xn1zYKJ
+X-Google-Smtp-Source: AGHT+IFxAcICAmKzeM1dhV+92TSmpbccnnxdyPJvIaNdbK1+h4WyZcLiCPFHFBej84X1SVp+cPUo2w==
+X-Received: by 2002:a05:6512:124f:b0:55b:9388:f140 with SMTP id
+ 2adb3069b0e04-55cc014c860mr936251e87.50.1754663953620; 
+ Fri, 08 Aug 2025 07:39:13 -0700 (PDT)
+Received: from MURLOC (l37-193-36-68.novotelecom.ru. [37.193.36.68])
+ by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-55b88cabb67sm3143736e87.152.2025.08.08.07.39.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Aug 2025 07:39:13 -0700 (PDT)
+From: Viktor Kurilko <murlockkinght@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: samuel.thibault@ens-lyon.org,
+	Viktor Kurilko <murlockkinght@gmail.com>
+Subject: [PATCH v5] Add a feature for mapping a host unix socket to a guest
+ tcp socket
+Date: Fri,  8 Aug 2025 21:29:25 +0700
+Message-ID: <20250808143904.363907-1-murlockkinght@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|MW4PR10MB6557:EE_
-X-MS-Office365-Filtering-Correlation-Id: 521b37bd-06e0-47c5-5c63-08ddd6851ef4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?NURHQ21YUXdzRWsrWm5DZXRleFlaTWh6YjFRSVF2Mlc3WHg4K0RsbzNPbGFN?=
- =?utf-8?B?emtzOEVpNFZ6WWNUeFlOaG10SCt0Rk5vRisxWGRlVkRCejc3ek9SSmNCUklt?=
- =?utf-8?B?dWttM0FFTEFybVlkQ1RRNG9pTi9FNXh3NUhQU01BRDNiK3dBVUU5bk9LV0dY?=
- =?utf-8?B?RnV3WEU1NUVLQkQxeTBzZXYyREtSU0xFNmw0TWM4VWErdVlFdDh0VEJQQU5N?=
- =?utf-8?B?OXdRdkIyZmRZWXNPWUZOT3MxZTgyUzh3NGNXalllelM1LzNZTnlNRG9UNWFu?=
- =?utf-8?B?c3JieUsxZVlzTUFBUGlLeWFpSUZiQ2hGT1lORkFqaUdWN1dpZlFOcTlPSllm?=
- =?utf-8?B?OVZacTlOazJYb0VrQWsyTGNsUnlmN1RGY1dKMTgwYWJ6c2tQYXMrYVhSUk01?=
- =?utf-8?B?TGltdDAvcWFIT1BJYTlrczhoUnlzS1hib3VSSkpRWG4wckZaUldGREZienlX?=
- =?utf-8?B?UVlheXRPWWI5ZmJpS2RBdUxZQkxIR1pjQ2cvNkFVL1g0TzIxZFBVbXZIQm9t?=
- =?utf-8?B?czdMbmJOWjZzY0hqcjZUMDBLS2d4VGNIeTEweTlRdjY2SnFmZWtUNW5RRTY2?=
- =?utf-8?B?NytrLzFkQnRHVVJuWXByTENXWUdieUFHVTVQc2FPZE9nUWJtRXdCdFU4MlhP?=
- =?utf-8?B?bVpiRUd2UTR6clpleGxEaXBrbkdmWkV5VFlpRXlLV2Y3UjFNNE42ZkhiMWN2?=
- =?utf-8?B?TzdNUDEzSlRPMnBaUTl1SENOZHRNZkdTU2QzK2hLdW5GUEtpQ3FvZUcwVURs?=
- =?utf-8?B?dWVRaFg4ZVI4dCtGV2p1bU9tckN5UVhFOVlyb0o0Z3Nock5pamJ0OFhkN280?=
- =?utf-8?B?dFFoUW1iN0pBVDM3RDZVd0NHMmcweXRiNy9DS0tRb0FxbVIrWGNhUHNYZ3R3?=
- =?utf-8?B?cVM4TzVMc09wN0p4ZzgwSkV5dkZQSU1hZ1VkNnZpMno3QmkxNWJZdG5MWGJP?=
- =?utf-8?B?OGJCRkRwVWpUUEs0R2k0VzdoWUt3NW9UakdxMWRTZFBFM1NNWEpxZWkySjJj?=
- =?utf-8?B?TTRQTG5sVVlWY0hNbTVCL2l1dHRycG41VFhPZ3RFWktja2dRMlkvV0YrYVgv?=
- =?utf-8?B?b1cwZlJ4SkxMdXhsRHBhZ0ZFYnNDZndTS0x1UVIveXoxeWdydE5wZ2U1YUl3?=
- =?utf-8?B?eERMbitrRjlPNk1hbVhMQU42cStFMnJRVm5RaFFSUzl6TFpvZzd1SlBrOHAy?=
- =?utf-8?B?NmZ4Z05ra1BtZXJLd000VjFtVjI2eTc1UG9IbkdDSUNveGdkNXFkeGFhdEtW?=
- =?utf-8?B?cmZwalVEREJHc1FGeFRmdlA2amZYS080cHl5K0N5aFRQWFpQcW5MM25MWEZ0?=
- =?utf-8?B?d0wySWJCTDN0TlZmUWZJdVRVZ1kxSG9INzI1dWROcUphZFp5UTlXY01YTkhW?=
- =?utf-8?B?WXRmeFQvdUJMNW9jQWpqMVU0Z2Y2ZnRiL2F3eWNDNTQ4SE9OSjRBS0NmLy9Q?=
- =?utf-8?B?d2RwalAvcUxkM1hxT3NQQnVST3hhMUJVRzJvVlBUZDUya3gvT0w4dFZmUERx?=
- =?utf-8?B?SEkyYWtKZ09HU2o4cXBjSkVEK0FhZVVYUm1ITGxjU0R6VmgvYWRXTXdzZVhR?=
- =?utf-8?B?TkRvcndmd2hCbGRKMGh0ZXQ5NDZjeEFONDluOFc5TmxoZ3N3TUpsa2hVdWsw?=
- =?utf-8?B?akZkSnZQRjhaaExXZlNrbExEaWJUTjUzL1djYkhaOFRieHdRYUJVTmZsdWJx?=
- =?utf-8?B?SXBxUkQwekNucUE0TWw2TGkvUjMwUlBMRTNvNTJDUVhmcUZWRDR1T0JYWCtP?=
- =?utf-8?B?dnFLbHJTOGFaT1h6ZVloelUrajFxSXl4WTROMC9seXFOZkJGcGIvcXFmZmI3?=
- =?utf-8?B?MEVCc29qMTh1WXE1VVpLUURhSFpCK1NjS0xjSkNxL0xpMjZMU0pkaUNBZzhh?=
- =?utf-8?B?cEZRbmtVZDZ6aUZWU2NhMFVENFdxb29XbEJZYXdxREJzdWc9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SUNHTyt5aVZ0ZHl2Rko4UzRKVU5oVVFJT0V4dGg0eWlDWTVBVENhMHR4dFV6?=
- =?utf-8?B?MGhpa1lvUHc1ZGI2UklxeFhQWmRtaUl1ODlEclBMM0ViVTFhalFlS3NqL0pn?=
- =?utf-8?B?L29hSmluRFRKQ3kvU2VSc2grM2l4QVllN3dmUmFrV2VLVXNMU3VhVk91OUJG?=
- =?utf-8?B?TjNwNmNVVUtmNWd2NE8wSlNqZmZ0dCtkak9RMXFsbk44VGdsYXpCR2FwWmpZ?=
- =?utf-8?B?aHUvWEFuNGZUN21XVk9tTm1xM1E1SFhVdGZYc0t1R2FPV1BvTml0MGpWMmwv?=
- =?utf-8?B?TkF1MHZmMFFiU003ZkNZcVQ3NFp3V1ZwMWFHb094SlVCQ09KQ0lUcXprNmg3?=
- =?utf-8?B?ZXN0QWI4Sk1TN2wzVUFDQ05BVnZ6Zkpzd05aejIydmU5ZzRYMW9SQk8rbTdq?=
- =?utf-8?B?ZkNIUUk1UERTSlZMcFZlVHN6ckIyc0dvZndwMCtqaGxIU3ZwODlLVjEzYjJW?=
- =?utf-8?B?T2R6eWlQWVRZMWxkNzJjek0zT3FKcHJVMjVpaDNyN1NkL2ZqZjI3eGZwSW1X?=
- =?utf-8?B?UkZyalptZXFSQ3hOZlRIWlh1M0FST2hSbWdSMzFKWTU5S3M1dFUvK2daY21k?=
- =?utf-8?B?VVRlNjJDVCsra1hxNWlKV3Q1OWdjUmVXdzlCUEo0SFU2NXBXRkh0SWRMaCs1?=
- =?utf-8?B?ei9ydWJMaGQ0WGs2S2RqM3NoOUtGMnBMdTN1d0RFSklmY0hHMVd1QXRWK05G?=
- =?utf-8?B?dUdoem5XMUt5bldEdVQyc3dQLzJ6NkhPaXVzNEdmemU1RVUwOU1sdFVkaVh2?=
- =?utf-8?B?U3hFT1h4ajQ0MFhWQXVkRjRYdUNwamRtNUgvN0EwdnorZ0ZzT0RCVDV3cVJj?=
- =?utf-8?B?QVV5YWJsMnZIVzZITmFkKzk4Vk5ZcVJMWVR5c0M1ZGErVVFjM0s5RGw3V2hP?=
- =?utf-8?B?YlVtMjhsV1pCMzY5a0NsUEppaUd4QnMwTHBtZG1yZTBpWWlWOXZFRk1hK040?=
- =?utf-8?B?a0ovdFNlN0w5VGhIYzJRUDE2TW8zb05pVlZJQ2xrSHpER3J6ZE5LU3ZSeEx6?=
- =?utf-8?B?d3dRY2hFOERLVmpQUGN0Q29kUlV1cnlTUE5uSUFUZnJaU1llOFdNL3VVUEJu?=
- =?utf-8?B?TzZjcE1lOWZzQllIUEpyNWgrWnpIYWZFUmhhZVpXYkZieFN3T0xqT2NRc3B6?=
- =?utf-8?B?eWxhd05yelBuMmtJUkdTSGlkMjZUQ2w1dG9ZaG01eDc5b1NNOTBuTUZLVGc0?=
- =?utf-8?B?aUtvOHVsUmwrYlNTU01WNk4xWTNGbHROTTdITnppN1lJdlBHUEs5aG1uUytl?=
- =?utf-8?B?c3QxNUxQK25sM2JadHVyb0ZEWE5rN1IzaTFqcFhId1lNeSs1RVdlWStndUVH?=
- =?utf-8?B?NzBPU3lkTjB5ZGFUZTlCN0xLS3U4bkNxL3pxRlIvemYzZDY2MURLeVVHMm5E?=
- =?utf-8?B?MEx3QjRLbkovSUtLZ3RMRnUrZVlRQ1dwVFZ1c0V6UGFJOXhjRTIwNWhzdUFJ?=
- =?utf-8?B?a3BmMmk3VEp6dzczOHRTTEhBeitGelVOUHVING5xbU5SL0JyWHVlNE8xNUs4?=
- =?utf-8?B?WlI0U3VKMjlnTzNKbXFGWGN6SUFOZFk2dmh0UVZUOEFLSklsajkyWXFBdzU2?=
- =?utf-8?B?eTl3d2ZUUkJpaW5uNjZzeFovOEIyUW95Y1BVSTgzTEkrWm1ibFE4K0VFNzZt?=
- =?utf-8?B?enhUN3Y3N25RT0dYL3c4Zjd6NGppcVdOVXVNMC84MWpSaHZSMVRWVzMzaE04?=
- =?utf-8?B?aUFoQTVZRFJVYjVtb0pzOWozZUpqeUtTMVUyM2JzSFdxRWd3RktaZGhiU0RW?=
- =?utf-8?B?V0xDRzY2WFM3bTMxWTNyTnhVUXUva3NqUkRpVnhqRzF6YmJaalpXYnRHWlIw?=
- =?utf-8?B?OFJtREVMVG42bld3ZUtqQlZDMFlEOS9GZUZwS2VRbE1zY0c2MHRxYlNZQnpu?=
- =?utf-8?B?RFF5S0hMYTNqOVNFY0RFL2crSHhGc1loa1VZbUVzeE1FcHJrVnVIbHc5Rll3?=
- =?utf-8?B?eWY3UTQrNDh5dWd5NVJLbzQzeUJLT2hGNVpIc1doT0liQ1I4VHFPK1cyb2N1?=
- =?utf-8?B?QlpQR2w0ME1wNFBBYzRnWC9zZ0R3V08zR2F5RExXSTJNeTlXd0F4aXRMOGVk?=
- =?utf-8?B?bXBTclhNWTRJSWcreS85dWYrNnB1RHFIRWIrT0FoYTk4OTdEWVNaa3c4Vkhl?=
- =?utf-8?B?SDVUR2tRWUQwMGxMNFdGdWh1a3dZRlZQbWRYU0VWTGloM2xvTnVwTEdFY2R4?=
- =?utf-8?B?WkE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: n4ffI8jbF9t0rYNg2srQ/ExufrvNfSHt4WCaGpTUUKL4IaytdikL75O2Y1kkWiKk/tYHWJjPgXan4KXQH7fgQcvatngnM0xyF1k/4AUV/S5T3r7v7A7SzSly3GEqbBX5MCcR3QDp1cSkmecMgogAL2WrrzySIjpMVCjH5vsy0QL8hyliCCZWc+K+KpRKzDTJffppdNrFSEgm1DoeKw4fb5VjlY5arM45wX/gjhAu5u6k0honNhc65llV8nPkhYNRzPsdV4UMtMPItNmah6Gwy+OCOAHHFOg34XJ2XfoBEeLki6d/xzRFshs+/iwytuy+kY0GkX+O3qPj+aYSyI1JYJyk1mKuXc3GybmMgXZjTwm3S9QbGF9EVv20DOG7vukGpmKKld8kVMfjEUVoiMDHVqii3nlpc/XiLh8ssczWo3PFKy9sGoFmuVoqx9K3bkGPkbqLvQo8hnC0m26dX1lfCWJypFpNYa9jrvOEoQX+hdmpRqCHRYjaJckuSJ6YZBGTfUraDNy8LR+bqA5+zA0MzDdscHom4EV9cdZjmlzbvAgHzz1G5jUL3dtkbX2fYyB2BHvWyqEk1T6/Gtaf0wUGPQS7tdYFTbMSPG8ldwfUBvA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 521b37bd-06e0-47c5-5c63-08ddd6851ef4
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2025 14:08:59.6581 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uViPDTT1vneDylrE/NVaxqhWdkoTgsxuRShv+DP3hcKlM7dc2pGRGDjI780ZHULVFSz1BOn/Ljed6+1S/A/fjiWzm2vV1qW1uVP2XaXZchk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6557
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-08_04,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- adultscore=0 mlxscore=0
- phishscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2507300000
- definitions=main-2508080115
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDExNSBTYWx0ZWRfXxa53MycvXDAi
- ocTnogdcOkmAyjSWPKqjeI/E2gYlfj1UBO1mL22xT8uyyfFgPmmmXZeNNxvl52NwQU1F7mMb1VJ
- UOoLbnkfiC79SVvrCGEHp+Hj5H1p3lZNJuQezHZv8y8EhiXnuvxHuzw8pgxUhUMuBhB00Ev3xWa
- KdpRrB/iWjzzkcs3j2GU5swkm/7dfDFD/fIks43vMbR4bKbReHli7TPNDXV/9dUmJ5GCoVbuvQ0
- 0Vwft4XWiNsGw71OabMh19lZkxmKRdGfNttzlnjfkOlhF0c3VBiAZLI89v+Q6H0qngkNT0QP9XE
- lmHF9pk1D3zgN9pGA1HBC8G/DVAtVldPTOhiLnCikUog1WlRL1Y9h90RI093mUf7taiduXUnhaC
- /sDHPfhgbKpkYpTzuqoXRdP14p9VJ8pOXkOXUnj5Yc0FxYi6rLk2902ix9bAAlpdJGNX1A20
-X-Authority-Analysis: v=2.4 cv=RtTFLDmK c=1 sm=1 tr=0 ts=68960503 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8
- a=bYP65l4SzxmFb3PeuIIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: WH7jZh4LnqV8BDSbrEvCxwKeebyZe2gD
-X-Proofpoint-GUID: WH7jZh4LnqV8BDSbrEvCxwKeebyZe2gD
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=murlockkinght@gmail.com; helo=mail-lf1-x12d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -230,54 +96,244 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/8/2025 9:55 AM, Philippe Mathieu-Daudé wrote:
-> On 8/8/25 10:08, Markus Armbruster wrote:
->> qapi/error.h advises:
->>
->>   * Please don't error_setg(&error_fatal, ...), use error_report() and
->>   * exit(), because that's more obvious.
->>
->> Do that.
->>
->> The error message starts with "internal error: ", so maybe this should
->> assert() instead.
->>
->> Cc: Steve Sistare <steven.sistare@oracle.com>
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> ---
->>   migration/cpr.c | 9 +++++----
->>   1 file changed, 5 insertions(+), 4 deletions(-)
->>
->> diff --git a/migration/cpr.c b/migration/cpr.c
->> index 42ad0b0d50..908bcf83b2 100644
->> --- a/migration/cpr.c
->> +++ b/migration/cpr.c
->> @@ -7,6 +7,7 @@
->>   #include "qemu/osdep.h"
->>   #include "qapi/error.h"
->> +#include "qemu/error-report.h"
->>   #include "hw/vfio/vfio-device.h"
->>   #include "migration/cpr.h"
->>   #include "migration/misc.h"
->> @@ -100,10 +101,10 @@ void cpr_resave_fd(const char *name, int id, int fd)
->>       if (old_fd < 0) {
->>           cpr_save_fd(name, id, fd);
->>       } else if (old_fd != fd) {
->> -        error_setg(&error_fatal,
->> -                   "internal error: cpr fd '%s' id %d value %d "
->> -                   "already saved with a different value %d",
->> -                   name, id, fd, old_fd);
->> +        error_report("internal error: cpr fd '%s' id %d value %d "
->> +                     "already saved with a different value %d",
->> +                     name, id, fd, old_fd);
->> +        exit(1);
-> 
-> My 2 cents, I'm not sure this information is more helpful than a plain
-> assertion (at least for users). No objection for this change.
+This patch adds the ability to map a host unix socket to a guest tcp socket when
+using the slirp backend. This feature was added in libslirp version 4.7.0.
 
-The message gives more information.  It has helped me debug
-problems in the past, in concert with enabling cpr traces.
+A new syntax for unix socket: -hostfwd=unix:hostpath-[guestaddr]:guestport
 
-- Steve
+Signed-off-by: Viktor Kurilko <murlockkinght@gmail.com>
+---
+Separator parsing has been moved to protocol-specific blocks.
+Fixed overwriting of sin_addr.
+`
+ docs/system/devices/net.rst |   2 +-
+ hmp-commands.hx             |   4 +-
+ net/slirp.c                 | 110 +++++++++++++++++++++++++++---------
+ qapi/net.json               |   2 +-
+ qemu-options.hx             |  11 +++-
+ 5 files changed, 97 insertions(+), 32 deletions(-)
+
+diff --git a/docs/system/devices/net.rst b/docs/system/devices/net.rst
+index 7d76fe88c4..13199a44fd 100644
+--- a/docs/system/devices/net.rst
++++ b/docs/system/devices/net.rst
+@@ -79,7 +79,7 @@ those sockets. To allow ping for GID 100 (usually users group)::
+ 
+ When using the built-in TFTP server, the router is also the TFTP server.
+ 
+-When using the ``'-netdev user,hostfwd=...'`` option, TCP or UDP
++When using the ``'-netdev user,hostfwd=...'`` option, TCP, UDP or UNIX
+ connections can be redirected from the host to the guest. It allows for
+ example to redirect X11, telnet or SSH connections.
+ 
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index d0e4f35a30..64a463b15b 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -1357,8 +1357,8 @@ ERST
+     {
+         .name       = "hostfwd_add",
+         .args_type  = "arg1:s,arg2:s?",
+-        .params     = "[netdev_id] [tcp|udp]:[hostaddr]:hostport-[guestaddr]:guestport",
+-        .help       = "redirect TCP or UDP connections from host to guest (requires -net user)",
++        .params     = "[netdev_id] [tcp|udp|unix]:[[hostaddr]:hostport|hostpath]-[guestaddr]:guestport",
++        .help       = "redirect TCP, UDP or UNIX connections from host to guest (requires -net user)",
+         .cmd        = hmp_hostfwd_add,
+     },
+ #endif
+diff --git a/net/slirp.c b/net/slirp.c
+index 9657e86a84..1b5e67f9d1 100644
+--- a/net/slirp.c
++++ b/net/slirp.c
+@@ -795,12 +795,13 @@ void hmp_hostfwd_remove(Monitor *mon, const QDict *qdict)
+ 
+ static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
+ {
+-    struct sockaddr_in host_addr = {
+-        .sin_family = AF_INET,
+-        .sin_addr = {
+-            .s_addr = INADDR_ANY,
+-        },
+-    };
++    union {
++        struct sockaddr_in in;
++#if !defined(WIN32) && SLIRP_CHECK_VERSION(4, 7, 0)
++        struct sockaddr_un un;
++#endif
++    } host_addr = {0};
++
+     struct sockaddr_in guest_addr = {
+         .sin_family = AF_INET,
+         .sin_addr = {
+@@ -811,9 +812,13 @@ static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
+     int host_port, guest_port;
+     const char *p;
+     char buf[256];
+-    int is_udp;
++    int is_udp = 0;
++#if !defined(WIN32) && SLIRP_CHECK_VERSION(4, 7, 0)
++    int is_unix = 0;
++#endif
+     const char *end;
+     const char *fail_reason = "Unknown reason";
++    socklen_t host_addr_size;
+ 
+     p = redir_str;
+     if (!p || get_str_sep(buf, sizeof(buf), &p, ':') < 0) {
+@@ -824,30 +829,83 @@ static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
+         is_udp = 0;
+     } else if (!strcmp(buf, "udp")) {
+         is_udp = 1;
+-    } else {
+-        fail_reason = "Bad protocol name";
+-        goto fail_syntax;
+     }
+-
+-    if (get_str_sep(buf, sizeof(buf), &p, ':') < 0) {
+-        fail_reason = "Missing : separator";
+-        goto fail_syntax;
++#if !defined(WIN32) && SLIRP_CHECK_VERSION(4, 7, 0)
++    else if (!strcmp(buf, "unix")) {
++        is_unix = 1;
+     }
+-    if (buf[0] != '\0' && !inet_aton(buf, &host_addr.sin_addr)) {
+-        fail_reason = "Bad host address";
++#endif
++    else {
++        fail_reason = "Bad protocol name";
+         goto fail_syntax;
+     }
+ 
+-    if (get_str_sep(buf, sizeof(buf), &p, '-') < 0) {
+-        fail_reason = "Bad host port separator";
+-        goto fail_syntax;
+-    }
+-    err = qemu_strtoi(buf, &end, 0, &host_port);
+-    if (err || host_port < 0 || host_port > 65535) {
+-        fail_reason = "Bad host port";
+-        goto fail_syntax;
++#if !defined(WIN32) && SLIRP_CHECK_VERSION(4, 7, 0)
++    if (is_unix) {
++        if (get_str_sep(buf, sizeof(buf), &p, '-') < 0) {
++            fail_reason = "Missing - separator";
++            goto fail_syntax;
++        }
++        if (buf[0] == '\0') {
++            fail_reason = "Missing unix socket path";
++            goto fail_syntax;
++        }
++        if (buf[0] != '/') {
++            fail_reason = "unix socket path must be absolute";
++            goto fail_syntax;
++        }
++
++        size_t path_len = strlen(buf);
++        if (path_len > sizeof(host_addr.un.sun_path) - 1) {
++            fail_reason = "Unix socket path is too long";
++            goto fail_syntax;
++        }
++
++        struct stat st;
++        if (stat(buf, &st) == 0) {
++            if (!S_ISSOCK(st.st_mode)) {
++                fail_reason = "file exists and it's not unix socket";
++                goto fail_syntax;
++            }
++
++            if (unlink(buf) < 0) {
++                error_setg_errno(errp, errno, "Failed to unlink '%s'", buf);
++                goto fail_syntax;
++            }
++        }
++        host_addr.un.sun_family = AF_UNIX;
++        memcpy(host_addr.un.sun_path, buf, path_len);
++        host_addr_size = sizeof(host_addr.un);
++    } else
++#endif
++    {
++        host_addr.in.sin_family = AF_INET;
++        host_addr.in.sin_addr.s_addr = INADDR_ANY;
++
++        if (get_str_sep(buf, sizeof(buf), &p, ':') < 0) {
++            fail_reason = "Missing : separator";
++            goto fail_syntax;
++        }
++
++        if (buf[0] != '\0' && !inet_aton(buf, &host_addr.in.sin_addr)) {
++            fail_reason = "Bad host address";
++            goto fail_syntax;
++        }
++
++        if (get_str_sep(buf, sizeof(buf), &p, '-') < 0) {
++            fail_reason = "Bad host port separator";
++            goto fail_syntax;
++        }
++
++        err = qemu_strtoi(buf, &end, 0, &host_port);
++        if (err || host_port < 0 || host_port > 65535) {
++            fail_reason = "Bad host port";
++            goto fail_syntax;
++        }
++
++        host_addr.in.sin_port = htons(host_port);
++        host_addr_size = sizeof(host_addr.in);
+     }
+-    host_addr.sin_port = htons(host_port);
+ 
+     if (get_str_sep(buf, sizeof(buf), &p, ':') < 0) {
+         fail_reason = "Missing guest address";
+@@ -867,7 +925,7 @@ static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
+ 
+ #if SLIRP_CHECK_VERSION(4, 5, 0)
+     err = slirp_add_hostxfwd(s->slirp,
+-            (struct sockaddr *) &host_addr, sizeof(host_addr),
++            (struct sockaddr *) &host_addr, host_addr_size,
+             (struct sockaddr *) &guest_addr, sizeof(guest_addr),
+             is_udp ? SLIRP_HOSTFWD_UDP : 0);
+ #else
+diff --git a/qapi/net.json b/qapi/net.json
+index 78bcc9871e..60d196afe5 100644
+--- a/qapi/net.json
++++ b/qapi/net.json
+@@ -281,7 +281,7 @@
+ #
+ # @smbserver: IP address of the built-in SMB server
+ #
+-# @hostfwd: redirect incoming TCP or UDP host connections to guest
++# @hostfwd: redirect incoming TCP, UDP or UNIX host connections to guest
+ #     endpoints
+ #
+ # @guestfwd: forward guest TCP connections
+diff --git a/qemu-options.hx b/qemu-options.hx
+index ab23f14d21..86a70e0315 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -3317,8 +3317,8 @@ SRST
+ 
+         Note that a SAMBA server must be installed on the host OS.
+ 
+-    ``hostfwd=[tcp|udp]:[hostaddr]:hostport-[guestaddr]:guestport``
+-        Redirect incoming TCP or UDP connections to the host port
++    ``hostfwd=[tcp|udp|unix]:[[hostaddr]:hostport|hostpath]-[guestaddr]:guestport``
++        Redirect incoming TCP, UDP or UNIX connections to the host port
+         hostport to the guest IP address guestaddr on guest port
+         guestport. If guestaddr is not specified, its value is x.x.x.15
+         (default first address given by the built-in DHCP server). By
+@@ -3348,6 +3348,13 @@ SRST
+         Then when you use on the host ``telnet localhost 5555``, you
+         connect to the guest telnet server.
+ 
++        To redirect host unix socket /tmp/vm to guest tcp socket 23 use
++        following:
++
++        .. parsed-literal::
++            # on the host
++            |qemu_system| -nic user,hostfwd=unix:/tmp/vm-:23
++
+     ``guestfwd=[tcp]:server:port-dev``; \ ``guestfwd=[tcp]:server:port-cmd:command``
+         Forward guest TCP connections to the IP address server on port
+         port to the character device dev or to a program executed by
+-- 
+2.50.1
 
 
