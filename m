@@ -2,120 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF067B1E7DC
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 14:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E60B1E7E4
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 14:03:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukLmJ-0008AP-F0; Fri, 08 Aug 2025 08:00:55 -0400
+	id 1ukLo5-0005I7-QX; Fri, 08 Aug 2025 08:02:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1ukLlf-0005PG-VN; Fri, 08 Aug 2025 08:00:17 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1ukLnJ-0002v3-0U
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 08:01:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1ukLle-0006vr-8F; Fri, 08 Aug 2025 08:00:15 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5783E5FB021001;
- Fri, 8 Aug 2025 12:00:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Xru3IO
- IOQa2JaHXuK3906K/qVFnhk0lup/RuWDRwA1o=; b=S9S8zmJ+oqgb2bI7VuzLQR
- 9QrkBq74XcYeOf4I+ltJZ0PjASdghRAcfs0xCFwoX8LbWTt9fNpe4wN+Nikjyqqo
- /1B6Ur/ulpBf5ADICgn+NqwTck2pIx0kgrhGlq+YbsxNXMAitjQJrJpDqHBxxy1I
- MihmARadP5xHHUIdi7mJjBZnxZ/RHoALksBvAgN/c4TxwK0GTwrabJjtlSBdZMPO
- b+RjrHiqrVbOakMUmPaKzFTCdqaaQlHMzMRaYdAy7L9XoIkoUUwx+xeZZb68ibgr
- Vjn2OKBR++Ahv/+JNfHDJmA8qhr0FmkdGbP3FMt2Q9KRlHy3VApTd4Nl0ycVqoEw
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63fufa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Aug 2025 12:00:11 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 578C0AA6025580;
- Fri, 8 Aug 2025 12:00:10 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63fuf8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Aug 2025 12:00:10 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 578B0IET031314;
- Fri, 8 Aug 2025 12:00:10 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwnng9f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Aug 2025 12:00:09 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 578C06HV30802584
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Aug 2025 12:00:06 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0563020043;
- Fri,  8 Aug 2025 12:00:06 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A907820040;
- Fri,  8 Aug 2025 12:00:02 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
- [9.124.216.151])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  8 Aug 2025 12:00:02 +0000 (GMT)
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, <qemu-devel@nongnu.org>,
- <qemu-ppc@nongnu.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH v9 7/7] tests/powernv: Add PowerNV test for Power11
-Date: Fri,  8 Aug 2025 17:29:29 +0530
-Message-ID: <20250808115929.1073910-8-adityag@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250808115929.1073910-1-adityag@linux.ibm.com>
-References: <20250808115929.1073910-1-adityag@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1ukLnE-00075w-UB
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 08:01:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754654507;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3wnoL5uKCjVb8/cZ6dTXTFWVuPc5ytY1pJh+9HjSHLw=;
+ b=Y4w+RlQFN934oETYoMfZU8Th1E8KvGr+5zx3hR5yV5laMtPdp+YSSzhxwUuzrdPQIrmh6X
+ mAUUbM8IorV2ItFuoUhBfTtGVwxRoaEaBSnltKAfkSBYHfK6STUeqgJlj0TtOVyfKYBrGg
+ l17G1l2aw6r9IAj08CV4Ut4XcczWo80=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-342-f90EzI_tMhO76XbrptpfLQ-1; Fri,
+ 08 Aug 2025 08:01:44 -0400
+X-MC-Unique: f90EzI_tMhO76XbrptpfLQ-1
+X-Mimecast-MFC-AGG-ID: f90EzI_tMhO76XbrptpfLQ_1754654503
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6A500180048E; Fri,  8 Aug 2025 12:01:43 +0000 (UTC)
+Received: from dell-r430-03.lab.eng.brq2.redhat.com
+ (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A31BB19560AD; Fri,  8 Aug 2025 12:01:40 +0000 (UTC)
+From: Igor Mammedov <imammedo@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, pbonzini@redhat.com, peterx@redhat.com, david@redhat.com,
+ philmd@linaro.org, mtosatti@redhat.com
+Subject: [PATCH v3 00/10] Reinvent BQL-free PIO/MMIO
+Date: Fri,  8 Aug 2025 14:01:27 +0200
+Message-ID: <20250808120137.2208800-1-imammedo@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=NInV+16g c=1 sm=1 tr=0 ts=6895e6cb cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=aow-egSQAAAA:8 a=VnNF1IyMAAAA:8
- a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8 a=M_iqQ_o7Tyesht7ruFAA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=gFNbaldVC-z-bsjSTzMo:22
-X-Proofpoint-GUID: JUpfRtSRRRXsPEKHRU7leh_WNNqvA2gv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA5NiBTYWx0ZWRfX1IZXBjimJN9C
- +7o3hG0HJ8rsiZaGTzvbz7k6BXW1lf2gCweePyfh6mdDy6A2a8Mzh3dqq8E8fPz+/reOtGbymyi
- nbEYCahI1nAPavzYVGDFVgxnSs2Mb5u4a5Q5gviPNEMVU321EpWqII0kVus9CkYsucdQwoS1jIU
- cdih1jrYGXViSdjxFl8/muWw/qb0+e3w1F48VQrZCtb7li2zPuQXNWH/FV46FK9oZ8NtDe9ErcG
- Ir9dMqPlcfJWhskjFdUSttZwuGl06X6fGze4J6NAO7J82VUgzz6rS6lWcwySqBggvghVgMqBqmg
- ofUK7XitN6K/kZlQjCChCRyzUT8HHvvP/kqLvOYP68XxQoniws/T4eZqnSUTC7VcNaMhAojEEuN
- 1Lbg8+9zsbj4SxHrN/n8MM0kztRGXlHayc+S0rsbiLml+EOo1CP8cRR/MFSnaAPNBr7R40kO
-X-Proofpoint-ORIG-GUID: YYrFYMk7NjiA-hJnQh0b1RGy9HhJc6r6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-08_03,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0 impostorscore=0 mlxlogscore=870
- lowpriorityscore=0 malwarescore=0 clxscore=1015 adultscore=0 mlxscore=0
- bulkscore=0 priorityscore=1501 spamscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508080096
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,34 +81,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With all Power11 support in place, add Power11 PowerNV test.
+v3:
+  * hpet: replace explicit atomics with use seqlock API  (PeterX)
+  * introduce cpu_test_interrupt() (Paolo)
+    and use it tree wide for checking interrupts
+  * don't take BQL for setting exit_request, use qatomic_set() instead. (Paolo)
+  * after above change, relace conditional BQL with unconditional
+    to simlify things a bit (Paolo)
+  * drop not needed barriers (Paolo)
+  * minor tcg:cpu_handle_interrupt() cleanup
 
-Cc: Cédric Le Goater <clg@kaod.org>
-Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
----
- tests/functional/test_ppc64_powernv.py | 4 ++++
- 1 file changed, 4 insertions(+)
+v2:
+  * Make both read and write pathes BQL-less (Gerd)
+  * Refactor HPET to handle lock-less access correctly
+    when stopping/starting counter in parallel. (Peter Maydell)
+  * Publish kvm-unit-tests HPET bench/torture test [1] to verify
+    HPET lock-less handling
 
-diff --git a/tests/functional/test_ppc64_powernv.py b/tests/functional/test_ppc64_powernv.py
-index 2b4db1cf99b4..9ada832b7816 100755
---- a/tests/functional/test_ppc64_powernv.py
-+++ b/tests/functional/test_ppc64_powernv.py
-@@ -116,5 +116,9 @@ def test_powernv10(self):
-         self.set_machine('powernv10')
-         self.do_test_ppc64_powernv('P10')
- 
-+    def test_powernv11(self):
-+        self.set_machine('powernv11')
-+        self.do_test_ppc64_powernv('Power11')
-+
- if __name__ == '__main__':
-     LinuxKernelTest.main()
+When booting WS2025 with following CLI
+ 1)   -M q35,hpet=off -cpu host -enable-kvm -smp 240,sockets=4
+the guest boots very slow and is sluggish after boot
+or it's stuck on boot at spinning circle (most of the time).
+
+pref shows that VM is experiencing heavy BQL contention on IO path
+which happens to be ACPI PM timer read access. A variation with
+HPET enabled moves contention to HPET timer read access.
+And it only gets worse with increasing number of VCPUs.
+
+Series prevents large VM vCPUs contending on BQL due to PM|HPET timer
+access and lets Windows to move on with boot process.
+
+Testing lock-less IO with HPET micro benchmark [2] shows approx 80%
+better performance than the current BLQ locked path.
+[chart https://ibb.co/MJY9999 shows much better scaling of lock-less
+IO compared to BQL one.]
+
+In my tests, with CLI WS2025 guest wasn't able to boot within 30min
+on both hosts
+  * 32 core 2NUMA nodes
+  * 448 cores 8NUMA nodes
+With ACPI PM timer in BQL-free read mode, guest boots within approx:
+ * 2min
+ * 1min
+respectively.
+
+With HPET enabled boot time shrinks ~2x
+ * 4m13 -> 2m21
+ * 2m19 -> 1m15
+respectively.
+
+2) "[kvm-unit-tests PATCH v4 0/5] x86: add HPET counter tests"
+    https://lore.kernel.org/kvm/20250725095429.1691734-1-imammedo@redhat.com/T/#t
+PS:
+Using hv-time=on cpu option helps a lot (when it works) and
+lets [1] guest boot fine in ~1-2min. Series doesn't make
+a significant impact in this case.
+
+PS2:
+Tested series with a bunch of different guests:
+ RHEL-[6..10]x64, WS2012R2, WS2016, WS2022, WS2025
+
+PS3:
+ dropped mention of https://bugzilla.redhat.com/show_bug.cgi?id=1322713
+ as it's not reproducible with current software stack or even with
+ the same qemu/seabios as reported (kernel versions mentioned in
+ the report were interim ones and no longer available,
+ so I've used nearest released at the time for testing) 
+
+Igor Mammedov (10):
+  memory: reintroduce BQL-free fine-grained PIO/MMIO
+  acpi: mark PMTIMER as unlocked
+  hpet: switch to fain-grained device locking
+  hpet: move out main counter read into a separate block
+  hpet: make main counter read lock-less
+  introduce cpu_test_interrupt() that will replace open coded checks
+  x86: kvm: use cpu_test_interrupt() instead of oppen coding checks
+  kvm: i386: irqchip: take BQL only if there is an interrupt
+  use cpu_test_interrupt() instead of oppen coding checks tree wide
+  tcg: move interrupt caching and single step masking closer to user
+
+ include/hw/core/cpu.h               | 12 ++++++++
+ include/system/memory.h             | 10 +++++++
+ accel/tcg/cpu-exec.c                | 25 +++++++---------
+ accel/tcg/tcg-accel-ops.c           |  3 +-
+ hw/acpi/core.c                      |  1 +
+ hw/timer/hpet.c                     | 38 +++++++++++++++++++-----
+ system/cpus.c                       |  3 +-
+ system/memory.c                     | 15 ++++++++++
+ system/physmem.c                    |  2 +-
+ target/alpha/cpu.c                  |  8 ++---
+ target/arm/cpu.c                    | 20 ++++++-------
+ target/arm/helper.c                 | 16 +++++-----
+ target/arm/hvf/hvf.c                |  6 ++--
+ target/avr/cpu.c                    |  2 +-
+ target/hppa/cpu.c                   |  2 +-
+ target/i386/hvf/hvf.c               |  4 +--
+ target/i386/hvf/x86hvf.c            | 21 +++++++------
+ target/i386/kvm/kvm.c               | 46 ++++++++++++++---------------
+ target/i386/nvmm/nvmm-all.c         | 24 +++++++--------
+ target/i386/tcg/system/seg_helper.c |  2 +-
+ target/i386/whpx/whpx-all.c         | 34 ++++++++++-----------
+ target/loongarch/cpu.c              |  2 +-
+ target/m68k/cpu.c                   |  2 +-
+ target/microblaze/cpu.c             |  2 +-
+ target/mips/cpu.c                   |  6 ++--
+ target/mips/kvm.c                   |  2 +-
+ target/openrisc/cpu.c               |  3 +-
+ target/ppc/cpu_init.c               |  2 +-
+ target/ppc/kvm.c                    |  2 +-
+ target/rx/cpu.c                     |  3 +-
+ target/rx/helper.c                  |  2 +-
+ target/s390x/cpu-system.c           |  2 +-
+ target/sh4/cpu.c                    |  2 +-
+ target/sh4/helper.c                 |  2 +-
+ target/sparc/cpu.c                  |  2 +-
+ target/sparc/int64_helper.c         |  4 +--
+ 36 files changed, 193 insertions(+), 139 deletions(-)
+
 -- 
-2.50.1
+2.47.1
 
 
