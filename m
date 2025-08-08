@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304D5B1E2D0
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:03:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C91B1E2CF
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:03:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukH7c-0006B6-3z; Fri, 08 Aug 2025 03:02:36 -0400
+	id 1ukH7W-00069c-3F; Fri, 08 Aug 2025 03:02:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ukH74-00065w-GV
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:02:02 -0400
-Received: from p-east3-cluster5-host5-snip4-1.eps.apple.com ([57.103.86.172]
+ id 1ukH73-00063y-6h
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:02:01 -0400
+Received: from p-east3-cluster7-host12-snip4-10.eps.apple.com ([57.103.84.251]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1ukH71-0005F9-UU
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:02:02 -0400
+ id 1ukH71-0005Ey-FE
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:02:00 -0400
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-5 (Postfix) with ESMTPS id
- 60E001800164; Fri,  8 Aug 2025 07:01:56 +0000 (UTC)
+ D6A6E180017D; Fri,  8 Aug 2025 07:01:57 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=/ppM7p2dgG+rBZSRQlt4dgyhSPzj1LQ/TSd0lA8u5U4=;
+ s=sig1; bh=h50IOS2CA6o4I9OlrTaWeva2AjGiCu/lzeLRcMS3+go=;
  h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
- b=I5Ar1MIwl9m/TBe7fazSVx8guKgUdSjaa/7PVglgowifeOTu+D9XgNPYlCXBdrUmzGJ4vDknvBStkuRNPMtCgrqwbsQEDv2zR0uBhoY4y430HkGJaAKheSqOrgjzcFSSDB8XZCLEfQAFBJv1SbRkqD+fyA3zeYnzcBaQqHi4Mz33njds0l4nMHgZbljiY5jYNi4LRynIW8SuOZJrIIKEOpJSG9EccKd8vjcRrlcUeuNbRqYWziyppfzBZextjuqYAl8z95JOUIoeh24M+Z2m+qwM3Fq1Xwnod6D6a+NQt+vSmrDTD5meitkulZYE97aVrkZfjohVeJtcRk+Zv6ptPw==
+ b=dmo0P5m5gt8h2u8KNwGjVyjOVtJnqj3ehx3dQnqsP31RmDgIwY203BTFK3qzfmBN0YAtiLG5STwtuFx3Chsw1UGegDYeM8KgPQ/m8jRU0AkYngCFcBzBZSdcnHfBRPoKkaZDhPYRBGm0J5853BGXYL0hi2vaAmugVVDMlb3bEQY5lFkDOHTXiW0XD2oqZEi7CR0Z2vK1CsaMAbSmScMT9+euqXLx2bPU45t/20/GA9lr7CL4nMwYt+iEiZxY8LTjbXNZm4uzQKYR1Ps4v+9OHs43q7a2wjc3gJUbFSwHAFASSKO5Gn4RSaNaEKNIDE89fsOrwaXV1t830T1O0RZYdw==
 X-Client-IP: 46.189.47.18
 Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
  [17.57.155.37])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-5 (Postfix) with ESMTPSA id
- 4863F1800174; Fri,  8 Aug 2025 07:01:54 +0000 (UTC)
+ 0C321180013E; Fri,  8 Aug 2025 07:01:55 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -41,38 +41,39 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
  Mads Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>,
  Mohamed Mediouni <mohamed@unpredictable.fr>
-Subject: [PATCH v6 08/13] hw/arm: virt: cleanly fail on attempt to use the
- platform vGIC together with ITS
-Date: Fri,  8 Aug 2025 09:01:32 +0200
-Message-Id: <20250808070137.48716-9-mohamed@unpredictable.fr>
+Subject: [PATCH v6 09/13] hvf: only call hvf_sync_vtimer() when running
+ without the platform vGIC
+Date: Fri,  8 Aug 2025 09:01:33 +0200
+Message-Id: <20250808070137.48716-10-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250808070137.48716-1-mohamed@unpredictable.fr>
 References: <20250808070137.48716-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: n4LmibNZrAF5jqmam66FcKpX_MyG08e-
-X-Proofpoint-GUID: n4LmibNZrAF5jqmam66FcKpX_MyG08e-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA1NyBTYWx0ZWRfX25qA4Z+TuPsQ
- tObdcTP/kn7i3GllVx8kN+1os4k4t2SgOf6FqyHIRLlqQstzm66fvwU4GuWH/03h5ZNzanklon2
- ZRvt1mszI9+35QXEBlVc7lIWih/NJmDj4iWMJQYcFzje3s1HpNoCWR9SXaCGUMXQSKgOqV3NBoi
- pMiTHNBRAvWgvySWnltXaPRycCqbU3YPOih5+LSbtOKPspm9/7e77TJWpfzQyoHjxTzypwIjiZ/
- DOibJqacbrRSmsstCO7uKL1bFjxo6806PIGqrCcZwbGOqMtO13bqukkqknCZ2qSmOMIuuMv0I=
+X-Proofpoint-GUID: tYzoptkF8mIvRllIFLvulEgnA0IFY6yf
+X-Proofpoint-ORIG-GUID: tYzoptkF8mIvRllIFLvulEgnA0IFY6yf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA1NyBTYWx0ZWRfX3r3pnp3nN/pw
+ qOwFcTRyZrIpHPnGur4JgMvCaFD3q8dVgIpP6iIZBxaSP/nu6JikVyci+toG6cHvrhh+2eHfci3
+ hB5nVk2+0xDir2Zxnz+DxeMyabasv9be05Lw1nsl3lOyKj7733gJSczV98r9LDzN1bUi6MUuf7p
+ 6FW1aL2OrABi45ZXVBU24Wx/inWtwpVElccmEBgRzHdjLZudPetF10yaTYEPyG06ABuD6cHUUCg
+ 8oqEC0PEP/+Re7yhgD1r1CZBD2RSYOticU4IRb2yKMO41au/cVwB925IHvPs3m2HBoJmsTAfU=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-08_01,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- bulkscore=0 mlxscore=0 spamscore=0 clxscore=1030 malwarescore=0 phishscore=0
- suspectscore=0 mlxlogscore=899 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ suspectscore=0 bulkscore=0 clxscore=1030 mlxscore=0 malwarescore=0
+ mlxlogscore=894 phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.22.0-2506270000 definitions=main-2508080057
-Received-SPF: pass client-ip=57.103.86.172;
+Received-SPF: pass client-ip=57.103.84.251;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,38 +89,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Apple's platform vGIC doesn't support ITS. Deal with this by reporting to the user and not creating the ITS device.
-
-Regular configuration: GICv3 + ITS
-Resulting configuration here: GICv3 with no MSIs
-And its=off explicitly for the newest machine version: GICv3 + GICv2m
+When running with the Apple vGIC, the EL1 vtimer is handled by the platform.
 
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 ---
- hw/arm/virt.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ target/arm/hvf/hvf.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 91d8cd9363..005e923a22 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -740,6 +740,16 @@ static void create_its(VirtMachineState *vms)
-         return;
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 788d0d41f4..d8741f942d 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -2008,7 +2008,8 @@ int hvf_vcpu_exec(CPUState *cpu)
+         g_assert_not_reached();
      }
  
-+    if (hvf_enabled() && hvf_irqchip_in_kernel() && vms->tcg_its) {
-+        /*
-+         * In the HVF case, inform the user that they can use the
-+         * user-mode GIC if they want to have an ITS.
-+         */
-+        info_report("ITS not supported without kernel-irqchip=off on HVF");
-+        info_report("Disabling ITS");
-+        return;
-+    }
-+
-     dev = qdev_new(its_class_name());
+-    hvf_sync_vtimer(cpu);
++    if (!hvf_irqchip_in_kernel())
++        hvf_sync_vtimer(cpu);
  
-     object_property_set_link(OBJECT(dev), "parent-gicv3", OBJECT(vms->gic),
+     switch (ec) {
+     case EC_SOFTWARESTEP: {
 -- 
 2.39.5 (Apple Git-154)
 
