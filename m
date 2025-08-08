@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA659B1E06F
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 04:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7106B1E075
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 04:10:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukCVz-0008GA-7r; Thu, 07 Aug 2025 22:07:27 -0400
+	id 1ukCVy-0008Cp-8Z; Thu, 07 Aug 2025 22:07:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ukCVt-00087n-8E
+ id 1ukCVt-000889-Un
  for qemu-devel@nongnu.org; Thu, 07 Aug 2025 22:07:23 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ukCVq-0003Uh-AP
- for qemu-devel@nongnu.org; Thu, 07 Aug 2025 22:07:20 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-32129c4e9a4so1486382a91.1
- for <qemu-devel@nongnu.org>; Thu, 07 Aug 2025 19:07:16 -0700 (PDT)
+ id 1ukCVr-0003Ur-1J
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 22:07:21 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-76bc5e68e26so1721607b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Aug 2025 19:07:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754618835; x=1755223635; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754618836; x=1755223636; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+XhHp4ICBhZSJpQEoZ4selXDuu2CQ0EBUbhnnEXKkzM=;
- b=EaXlO9dcbqHjqh0AIoxEKpX0iSPdLFaH+eQmcFcvEnUX3gHUfTuIrMArSuTPpDZKV2
- JI53iFKRfxjtciwlb11+UvQMRxgEar0wMepBtt5EefSAciWIcPHNVDL16b3RfGR9OLE8
- Ns7iBVpn17vIaphVYuTRVe88DHiZDTX6mpX6MRfQAucSEEYCUutIwZ3rIE2kRWTYqcVP
- s4lsN0vjfRPhid1+6CkFQgFfciPGAk4mqAkmC4qbu+j4rikOkEUbh4IhjXiMsTRtswYe
- IZzpAK4tbQ0YhqGPXMj5NUlj4gsJ9tELNfF2i6vVGOLgX6u//KqdAU5lxRyr2Xvbj9aG
- GIYQ==
+ bh=dcx/SXeVPZrEb+bZtbiVnjd582rVKcmddr3/xl05bmI=;
+ b=CAarvhqM1BGK6KHqZ3gy7fpFXPrSaY89zCfQBkfE8pb/Xu6EMcUKYq5bm6H3APmKD0
+ IKDC1HZBtrU52nnnJGqixQ5b47k0LLULsN1ER1svlRXgJ3CALGUWdDJQvsBJw1+W92c2
+ Hmv52ITP0Tc8xlAccVlJUwz3JiZtISAT4a9AxIUMGX62+RTftapzPTLh6oupw//mO76R
+ fn2esimtEngAqwRoQIglSxGAKZIK0HKbdexD/e5HBA0sEGPK0m8jYe0HgF+0y2WcyVDi
+ pkvgA2tyczMOT0aSKwPGF7aUEh/k8PzCKdqfMPSnUiwumbrpXAtx1jecKloF9K1QJs5Y
+ ETYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754618835; x=1755223635;
+ d=1e100.net; s=20230601; t=1754618836; x=1755223636;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+XhHp4ICBhZSJpQEoZ4selXDuu2CQ0EBUbhnnEXKkzM=;
- b=OFM83ojMj6IUFbr0bt4g6CQ2dhsfjeZLBZ2v4M9Xhwc3tveWvWxItXHq8x36E7WLS+
- SLb/wV+DV8vbfuDyVzQvNxQR0e6ey8fT03TVZySM6CShY9SizmyQuFlYJpifIJfcoEfk
- UX8MzctI2qJ83BW7gV63Zo2VgGRFQc7sNEk5Yz6htYliEb2mokiymBCWphYLfo46cX+L
- I8w87dFI0+BMl1f9kOI+Ib4DbUCPMQYCK4cvioPGyWARw4qQUQgQVWYpXazFO0ZQgWFD
- Y7O7OhENPx+yZdIN0FKpi4EMiHglkK6hhHGoStNZNs9ZAQrFd4H8zesPN18PEACh44xq
- p7dw==
+ bh=dcx/SXeVPZrEb+bZtbiVnjd582rVKcmddr3/xl05bmI=;
+ b=CKfW/7qp2DxumGnPTHc4O85/mCsxrxp8m4tyfM+yPxEzgt7eahSSt5Djveqq23NQYK
+ annbClZGnLhaaE9CxzWieuJAfU09Ck4T3KSzWW82c16tFwfbliLNEVppZT+/D6BRZKDG
+ zWpT/MzNara0Vc92zib5iY8P14F9Qeh1YCeEiPL3E8S1imHyMMjSUdbULKgirqQrE9Yf
+ RpHGqyb2iL4ozAXuA0i9jNpYe9ZlkCPS9yx5hhXBb5hif5FyL3SwsY6FA+8id5flT7UL
+ BFwzP5m9jyx9k7fxbuqWWLdjJtVpxGS5YfZqSLGwMHO/w2FhRbQK9AiBym6C+6xgyFK/
+ JfAA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXX/O5pPWEJowi42LYVrwzSvMwQWr8IaC/HcPqmn7z7kSyBs+IkpEQ2b0STtaFiJ6JQT5eTXHq88p0b@nongnu.org
-X-Gm-Message-State: AOJu0Yy3ZWgUJXSGaofjalwCFbnfB3XhVldoWhyLlO8L4hsbjhgqa4Em
- GY+IPgfQzp1OkgA7SwTamgTjPxQQV3DtLVUaGAy3MR0kH9HcQF9vodigvKfasK6M9r8=
-X-Gm-Gg: ASbGnctc5chmskMjg+c97dk9/dIlLgOURX8fjUeYCqjhRuydbdiKJo6cPghIgcwfeXt
- EdedMDobbpu7Rc67R8haYD9GXCB2DNFmEKfHh6ciwhkA1Tl6SZmSjjfmBIBG1CJj7dGaU1+SHcd
- jtxLPZX+ptojYRwWdBc2eGkysArHfu9capD+aT8CE5bCOiJP3MMP0T9M06pnSl4XCRm21r17f37
- WTPbiyxsdtVoFxyKKtkVQ65bSDOomyE0sPhK5j+2DwyLfAcPd5l2ass68VQr0/QFxcV57FcqhoH
- zkLqKtRsG5j9VD8x5kHrBDUrbtQOciztaPA73cw5XLqKgaaw0FXPTnldBV5skG4uXFHM6dyOHC0
- eI1DXTIHSNnZgBaFcmlSg6Q==
-X-Google-Smtp-Source: AGHT+IEo4NbfBL4sQ1pkIKyfPFTDOzxAVZRDrLqP+SKbmFYHLVSJzcS3A4Ubx9XAAzfqCH1HdV7HOw==
-X-Received: by 2002:a17:90b:3d8f:b0:31f:2bd7:a4d2 with SMTP id
- 98e67ed59e1d1-32183e82581mr1845756a91.35.1754618835044; 
- Thu, 07 Aug 2025 19:07:15 -0700 (PDT)
+ AJvYcCVjailiNfYXOSi13qf5Pq72/zLOxpri2KjbYgXZQK2AOx3u692+M5IVhcNb6c+KDgbvTw3hj+24CtIF@nongnu.org
+X-Gm-Message-State: AOJu0YxvCkwIAFTW6OLipJS4ln+FaYv7s9/ODcK1iZ8r9QCJuWHr1tkz
+ BC3RWSxLXWq00282dbu0Jr484VAveFHLyY69GSVzsnodtXS/qVlsJY0h9HBaLXH2T0c=
+X-Gm-Gg: ASbGncvskmwTrKjLxjVTOmtBCSdWqsQvg3PCN8VQgNdECHO7Iff53Qeq+yIPYyYlhTy
+ 8FoMrhiuzFbCM5Fwbh+PBreOqwEsmf/OOMZ5mkt1EjVfU4xxhrrHFwr31Dbj81pwW56ShYO9niR
+ CHIhh8N/6l1rHL4ssQ1A6N3X26w124SlP/BNH9E1krfI0wuCzp2SSyYLWDFZugBKc3aeA0Gopnb
+ 1IgF8wVQ5urRFyQSFVmS5/5hU3VFprfWVCwShDLkRTmfG/dupVdFMz9kp4dyepln+kkD8DH/QFZ
+ n3WrEaJR1ZyvrDuOb3IVu7CNaRzPIyhLLAWKFzqsB+pOVU2CF/AVRV6XVAICU037jWIp5am4P6G
+ ZCVrOOYzauEJocgvgUrn+OQ==
+X-Google-Smtp-Source: AGHT+IF8XLaBIVTx/8gadg/Iq9ZQ7ERVwOg8wBFmMm5548X2y+Mpn2CxkUktlhSDYjR3OGuolT/UhA==
+X-Received: by 2002:a05:6a20:6a1c:b0:23f:fbb1:c229 with SMTP id
+ adf61e73a8af0-24054d788a7mr1720360637.0.1754618836075; 
+ Thu, 07 Aug 2025 19:07:16 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b428ba4cf35sm3705433a12.14.2025.08.07.19.07.13
+ 41be03b00d2f7-b428ba4cf35sm3705433a12.14.2025.08.07.19.07.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Aug 2025 19:07:14 -0700 (PDT)
+ Thu, 07 Aug 2025 19:07:15 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: pierrick.bouvier@linaro.org,
 	qemu-devel@nongnu.org
@@ -75,17 +75,16 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v5 6/9] contrib/plugins/uftrace: generate additional files for
- uftrace
-Date: Thu,  7 Aug 2025 19:06:59 -0700
-Message-ID: <20250808020702.410109-7-pierrick.bouvier@linaro.org>
+Subject: [PATCH v5 7/9] contrib/plugins/uftrace: implement x64 support
+Date: Thu,  7 Aug 2025 19:07:00 -0700
+Message-ID: <20250808020702.410109-8-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250808020702.410109-1-pierrick.bouvier@linaro.org>
 References: <20250808020702.410109-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,189 +107,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Beyond traces per cpu, uftrace expect to find some specific files.
-- info: contains information about machine/program run
-  those values are not impacting uftrace behaviour, and we simply copied
-  a random example to keep things simple.
-- memory mapping: how every binary is mapped in memory. For system mode,
-  we generate an empty mapping (uftrace_symbols.py, coming in future
-  commit, will take care of that). For user mode, we copy current
-  /proc/self/maps. We don't need to do any special filtering, as
-  reported addresses will necessarily concern guest program, and not
-  QEMU and its libraries.
-- task: list of tasks. We present every vcpu/privilege level as a
-  separate process, as it's the best view we can have when generating a
-  (visual) chrome trace. Using threads is less convenient in terms of
-  UI.
+It's trivial to implement x64 support, as it's the same stack layout
+than aarch64.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- contrib/plugins/uftrace.c | 130 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 129 insertions(+), 1 deletion(-)
+ contrib/plugins/uftrace.c | 85 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
 
 diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
-index 7737626da2f..6628b4256fd 100644
+index 6628b4256fd..f10172eed10 100644
 --- a/contrib/plugins/uftrace.c
 +++ b/contrib/plugins/uftrace.c
-@@ -115,6 +115,126 @@ static uint64_t gettime_ns(void)
-     return now_ns;
- }
+@@ -79,6 +79,20 @@ typedef struct {
+     struct qemu_plugin_register *reg_scr_el3;
+ } Aarch64Cpu;
  
-+static void uftrace_write_map(bool system_emulation)
++typedef enum {
++    X64_RING0,
++    X64_RING1,
++    X64_RING2,
++    X64_RING3,
++    X64_REAL_MODE,
++} X64PrivilegeLevel;
++
++typedef struct {
++    struct qemu_plugin_register *reg_rbp;
++    struct qemu_plugin_register *reg_cs;
++    struct qemu_plugin_register *reg_cr0;
++} X64Cpu;
++
+ typedef struct {
+     uint64_t timestamp;
+     uint64_t data;
+@@ -565,6 +579,75 @@ static CpuOps aarch64_ops = {
+     .does_insn_modify_frame_pointer = aarch64_does_insn_modify_frame_pointer,
+ };
+ 
++static uint8_t x64_num_privilege_levels(void)
 +{
-+    const char *path = "./uftrace.data/sid-0.map";
-+
-+    if (system_emulation && access(path, F_OK) == 0) {
-+        /* do not erase existing map in system emulation, as a custom one might
-+         * already have been generated by uftrace_symbols.py */
-+        return;
-+    }
-+
-+    FILE *sid_map = fopen(path, "w");
-+    g_assert(sid_map);
-+
-+    if (system_emulation) {
-+        fprintf(sid_map,
-+                "# map stack on highest address possible, to prevent uftrace\n"
-+                "# from considering any kernel address\n");
-+        fprintf(sid_map,
-+          "ffffffffffff-ffffffffffff rw-p 00000000 00:00 0 [stack]\n");
-+    } else {
-+        /* in user mode, copy /proc/self/maps instead */
-+        FILE *self_map = fopen("/proc/self/maps", "r");
-+        g_assert(self_map);
-+        for (;;) {
-+            int c = fgetc(self_map);
-+            if (c == EOF) {
-+                break;
-+            }
-+            fputc(c, sid_map);
-+        }
-+        fclose(self_map);
-+    }
-+    fclose(sid_map);
++    return X64_REAL_MODE + 1;
 +}
 +
-+static void uftrace_write_task(const GArray *traces)
++static const char *x64_get_privilege_level_name(uint8_t pl)
 +{
-+    FILE *task = fopen("./uftrace.data/task.txt", "w");
-+    g_assert(task);
-+    for (int i = 0; i < traces->len; ++i) {
-+        Trace *t = g_array_index(traces, Trace*, i);
-+        fprintf(task, "SESS timestamp=0.0 pid=%"PRIu32" sid=0 exename=\"%s\"\n",
-+                t->id, t->name->str);
-+        fprintf(task, "TASK timestamp=0.0 tid=%"PRIu32" pid=%"PRIu32"\n",
-+                t->id, t->id);
++    switch (pl) {
++    case X64_RING0: return "Ring0";
++    case X64_RING1: return "Ring1";
++    case X64_RING2: return "Ring2";
++    case X64_RING3: return "Ring3";
++    case X64_REAL_MODE: return "RealMode";
++    default:
++        g_assert_not_reached();
 +    }
-+    fclose(task);
 +}
 +
-+static void uftrace_write_info(const GArray *traces)
++static uint8_t x64_get_privilege_level(Cpu *cpu_)
 +{
-+    g_autoptr(GString) taskinfo_tids = g_string_new("taskinfo:tids=");
-+    for (int i = 0; i < traces->len; ++i) {
-+        Trace *t = g_array_index(traces, Trace*, i);
-+        const char *delim = i > 0 ? "," : "";
-+        g_string_append_printf(taskinfo_tids, "%s%"PRIu32, delim, t->id);
++    X64Cpu *cpu = cpu_->arch;
++    uint64_t cr0 = cpu_read_register64(cpu_, cpu->reg_cr0);
++    uint64_t protected_mode = (cr0 >> 0) & 0b1;
++    if (!protected_mode) {
++        return X64_REAL_MODE;
 +    }
-+
-+    g_autoptr(GString) taskinfo_nr_tid = g_string_new("taskinfo:nr_tid=");
-+    g_string_append_printf(taskinfo_nr_tid, "%d", traces->len);
-+
-+    FILE *info = fopen("./uftrace.data/info", "w");
-+    g_assert(info);
-+    /*
-+     * $ uftrace dump --debug
-+     * uftrace file header: magic         = 4674726163652100
-+     * uftrace file header: version       = 4
-+     * uftrace file header: header size   = 40
-+     * uftrace file header: endian        = 1 (little)
-+     * uftrace file header: class          = 2 (64 bit)
-+     * uftrace file header: features      = 0x1263 (PLTHOOK | ...
-+     * uftrace file header: info          = 0x7bff (EXE_NAME | ...
-+     *  <0000000000000000>: 46 74 72 61 63 65 21 00  04 00 00 00 28 00 01 02
-+     *  <0000000000000010>: 63 12 00 00 00 00 00 00  ff 7b 00 00 00 00 00 00
-+     *  <0000000000000020>: 00 04 00 00 00 00 00 00
-+     */
-+    const uint8_t header[] = {0x46, 0x74, 0x72, 0x61, 0x63, 0x65, 0x21, 0x00,
-+                              0x04, 0x00, 0x00, 0x00, 0x28, 0x00, 0x01, 0x02,
-+                              0x63, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+                              0xff, 0x7b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+                              0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-+    fwrite(header, sizeof(header), 1, info);
-+    const char *info_data[] = {
-+        "exename:from_qemu",
-+        "build_id:0123456789abcdef0123456789abcdef01234567",
-+        "exit_status:0",
-+        "cmdline:uftrace record qemu",
-+        "cpuinfo:lines=2",
-+        "cpuinfo:nr_cpus=1 / 1 (online/possible)",
-+        "cpuinfo:desc=Intel 8086",
-+        "meminfo:1.0 / 1.0 GB (free / total)",
-+        "osinfo:lines=3",
-+        "osinfo:kernel=Linux 6.12.33",
-+        "osinfo:hostname=pc",
-+        "osinfo:distro=\"Debian GNU/Linux 13 (trixie)\"",
-+        "taskinfo:lines=2",
-+        taskinfo_nr_tid->str,
-+        taskinfo_tids->str,
-+        "usageinfo:lines=6",
-+        "usageinfo:systime=0.000000",
-+        "usageinfo:usrtime=0.000000",
-+        "usageinfo:ctxsw=0 / 0 (voluntary / involuntary)",
-+        "usageinfo:maxrss=8016",
-+        "usageinfo:pagefault=0 / 0 (major / minor)",
-+        "usageinfo:iops=0 / 0 (read / write)",
-+        "loadinfo:0.0 / 0.0 / 0.0",
-+        "record_date:Mon Jan  1 00:00:00 2025",
-+        "elapsed_time:1000000000000.0 sec",
-+        "pattern_type:regex",
-+        "uftrace_version:v0.17 ( x86_64 dwarf python3 luajit tui perf sched dynamic kernel )",
-+        "utc_offset:1751552954",
-+        0};
-+    const char **info_data_it = info_data;
-+    while (*(info_data_it)) {
-+        fprintf(info, "%s\n", *info_data_it);
-+        ++info_data_it;
-+    }
-+    fclose(info);
++    uint32_t cs = cpu_read_register32(cpu_, cpu->reg_cs);
++    uint32_t ring_level = (cs >> 0) & 0b11;
++    return ring_level;
 +}
 +
- static Callstack *callstack_new(void)
++static uint64_t x64_get_frame_pointer(Cpu *cpu_)
++{
++    X64Cpu *cpu = cpu_->arch;
++    return cpu_read_register64(cpu_, cpu->reg_rbp);
++}
++
++static void x64_init(Cpu *cpu_)
++{
++    X64Cpu *cpu = g_new0(X64Cpu, 1);
++    cpu_->arch = cpu;
++    cpu->reg_rbp = plugin_find_register("rbp");
++    g_assert(cpu->reg_rbp);
++    cpu->reg_cs = plugin_find_register("cs");
++    g_assert(cpu->reg_cs);
++    cpu->reg_cr0 = plugin_find_register("cr0");
++    g_assert(cpu->reg_cr0);
++}
++
++static void x64_end(Cpu *cpu)
++{
++    g_free(cpu->arch);
++}
++
++static bool x64_does_insn_modify_frame_pointer(const char *disas)
++{
++    return strstr(disas, "rbp");
++}
++
++static CpuOps x64_ops = {
++    .init = x64_init,
++    .end = x64_end,
++    .get_frame_pointer = x64_get_frame_pointer,
++    .get_privilege_level = x64_get_privilege_level,
++    .num_privilege_levels = x64_num_privilege_levels,
++    .get_privilege_level_name = x64_get_privilege_level_name,
++    .does_insn_modify_frame_pointer = x64_does_insn_modify_frame_pointer,
++};
++
+ static void track_privilege_change(unsigned int cpu_index, void *udata)
  {
-     Callstack *cs = g_new0(Callstack, 1);
-@@ -607,14 +727,22 @@ static void vcpu_end(unsigned int vcpu_index)
+     Cpu *cpu = qemu_plugin_scoreboard_find(score, cpu_index);
+@@ -771,6 +854,8 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
  
- static void at_exit(qemu_plugin_id_t id, void *data)
- {
-+    bool system_emulation = (bool) data;
-+    g_autoptr(GArray) traces = g_array_new(0, 0, sizeof(Trace *));
-+
-     for (size_t i = 0; i < qemu_plugin_num_vcpus(); ++i) {
-         Cpu *cpu = qemu_plugin_scoreboard_find(score, i);
-         for (size_t j = 0; j < cpu->traces->len; ++j) {
-             Trace *t = g_array_index(cpu->traces, Trace*, j);
-             trace_flush(t, true);
-+            g_array_append_val(traces, t);
-         }
-     }
- 
-+    uftrace_write_map(system_emulation);
-+    uftrace_write_info(traces);
-+    uftrace_write_task(traces);
-+
-     for (size_t i = 0; i < qemu_plugin_num_vcpus(); ++i) {
-         vcpu_end(i);
-     }
-@@ -651,7 +779,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
- 
-     score = qemu_plugin_scoreboard_new(sizeof(Cpu));
-     qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
--    qemu_plugin_register_atexit_cb(id, at_exit, NULL);
-+    qemu_plugin_register_atexit_cb(id, at_exit, (void *) info->system_emulation);
-     qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
- 
-     return 0;
+     if (!strcmp(info->target_name, "aarch64")) {
+         arch_ops = aarch64_ops;
++    } else if (!strcmp(info->target_name, "x86_64")) {
++        arch_ops = x64_ops;
+     } else {
+         fprintf(stderr, "plugin uftrace: %s target is not supported\n",
+                 info->target_name);
 -- 
 2.47.2
 
