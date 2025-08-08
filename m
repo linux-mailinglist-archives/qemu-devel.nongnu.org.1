@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30FCAB1EE9D
+	by mail.lfdr.de (Postfix) with ESMTPS id D41C3B1EEA0
 	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 21:00:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukSJD-0006Cf-SA; Fri, 08 Aug 2025 14:59:19 -0400
+	id 1ukSJI-0006Dy-3i; Fri, 08 Aug 2025 14:59:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ukSJA-0006C6-Ub
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 14:59:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1ukSJE-0006Cu-8k
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 14:59:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ukSJ9-0006fX-6T
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 14:59:16 -0400
+ id 1ukSJC-0006fp-HK
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 14:59:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754679554;
+ s=mimecast20190719; t=1754679557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sKBBDyOhm3KB0EsnURIQG+Cs3th/O37nyJmS8J3TRyU=;
- b=Ky89HJTz4RxlneOpJoKMztUK+MdLkmzJvocPPu0v03ig2UvfpCVndRBqQOums76cG/GU8v
- BlB7S7eZPj6enKbONrxLUQkWCcppaqNUbrZiO3pQqKKhS5fFixccRTHNUbINEzHobIS617
- 3EQRh5wczY5JvIzgJo+CDDxScuKCgGc=
+ bh=Kq5SJZitYm77HsWLsoPLECQfDLAC1Pk673DMPfDg9po=;
+ b=KjOI3uaEOyshB+IVXD16QUwgSddX+ZWOp5dNc2Ur01Lp5lT68FBjL7AqnK4VC85cTqzsDc
+ +v66Q66PZqIFtq17nQfJ1v3p9Aos/UpBZKICkmB2hUatMshtfHZJ83QGZBgeXSRpZqhc2E
+ xmCwWjICkHSk/LtDF4uYB8inE8fpvVg=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-37-2TJqDGNgMoixtesoVMjI9A-1; Fri, 08 Aug 2025 14:59:13 -0400
-X-MC-Unique: 2TJqDGNgMoixtesoVMjI9A-1
-X-Mimecast-MFC-AGG-ID: 2TJqDGNgMoixtesoVMjI9A_1754679552
+ us-mta-556-QfBWc6ZSOe2HFBH56MEqDg-1; Fri, 08 Aug 2025 14:59:16 -0400
+X-MC-Unique: QfBWc6ZSOe2HFBH56MEqDg-1
+X-Mimecast-MFC-AGG-ID: QfBWc6ZSOe2HFBH56MEqDg_1754679555
 Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3b793f76a46so1652398f8f.2
- for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 11:59:13 -0700 (PDT)
+ ffacd0b85a97d-3b7892c42b7so1610397f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 11:59:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754679551; x=1755284351;
+ d=1e100.net; s=20230601; t=1754679554; x=1755284354;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sKBBDyOhm3KB0EsnURIQG+Cs3th/O37nyJmS8J3TRyU=;
- b=jM+ZvOGqH11zhZGnE7LFc9r1DuOjBRG/1sOuSkaEOCYys8LqzXmZQMakGITAsWR8MG
- 8CH8Oh6E6THWy1eaolLkbz8Sd5ji/4CZkyW82oJszuu3JLL++l+AWaEKdjEFoLqpl6S5
- JDgIkWv6UB3pA5m6tiWTY12u/1JldsCu+8R95Q8AdSd/NNaa+nQS62IcXjG4fUMouya5
- 2/P1mW1UJc7gXJQSBnH6Y1bo3OE4zkFU8/oriyimER+33vcEx0jlK4y0qziFWe6azzml
- IC2mrtsdo7HPfjQ/FzfAvlIOqP97ZKAduA9RApAfNNKhfOigp4cMlpUTm/ILI1KM/Ajk
- jp/A==
-X-Gm-Message-State: AOJu0YwPXLfYfg4DyRKTyKNKOEMmm5TKRC0bOesH5Q+ID893wc4WSS3u
- l3xprxlbRgJnsMAdNSjgu/s3FAbxFbwIPIi9n69B3aQADEdH5vRrbR88cc7pF5htSm2gp4zriLv
- 8XGy39eZTWnZfuvKMhscKpIrQZSeYz4d+Kw8XguV4TWIU1cP9rDjRl7A3MVXp98MUpMqAyGQldX
- aT+/uMyUq07Bz5urdFz0cIW+UDV+2JomFfZnCHgWkL
-X-Gm-Gg: ASbGnctcE3iBm3tNoK48jdRjhS4xg+wCg8nhZUnBKNJJrv6VsU6s9bzoJaFPdyg6JSI
- /lnRw8z+T0qJe1jQhouXAWaRnvLBKDoq0DReXYl49jkeF2icJEZMIaGMjARyB06bjtBrS78+VuA
- 36pWUVAPhMfRNudf4X95VBcOwJCGf4vkqXUl6lYDzqtqu9D5IBCFqqlTdhP0kYh8lM16VV3xBTJ
- TW6Y95S1uZf9y005hwmpkdLFjEvSdpapU7z6OV1TvmikiubQEfKbTJiI5tbwN0M3mnPh5asNMD1
- 6dfcfGMD8JKBbUMlYOf2ANzPWf4GIhxABrUNoKQJqLmU
-X-Received: by 2002:a05:6000:4382:b0:3b8:f863:672c with SMTP id
- ffacd0b85a97d-3b900b7af6amr3729168f8f.33.1754679550822; 
- Fri, 08 Aug 2025 11:59:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF7NUjpOHQx3OSeNP9ENS9vtmkk/K7diUejXGwPcUJxdwJK5fbuDPzGf2XY2kVDBe5teeaeA==
-X-Received: by 2002:a05:6000:4382:b0:3b8:f863:672c with SMTP id
- ffacd0b85a97d-3b900b7af6amr3729143f8f.33.1754679550205; 
- Fri, 08 Aug 2025 11:59:10 -0700 (PDT)
+ bh=Kq5SJZitYm77HsWLsoPLECQfDLAC1Pk673DMPfDg9po=;
+ b=cOOcNbE3VIRB5zZ7WxkwyGct1it3jL+sO3kbL5n9BPxX1CMkF7EoFH+m3TPadqi+sW
+ 6nELp9+CPxY+HbH0vt/U3O48EJC7Yk9zj/tr3wbECLxLM2K6uMgdG9beeWQFjtEET4Mx
+ Fc9kCbItCROw+kliU7DFnP2+nUhQWiUr/SW0m4lndakx1niTY3Hz8hakPZ8PZxSKH5Yy
+ ksXSGdVAz4Yh0KVT1Q4rbMuK7PrgdbBGPlLXbxCzArYvT8st63NB5EkpK52BP1Lfso1k
+ e4Vmpro1SmhduJUo4HVq98g+Vcm/mJqwGdo1dcNxwJjLq2AI7vng7gvAGRCn/gGrglAg
+ E6yg==
+X-Gm-Message-State: AOJu0YxVcWHwFp2ymliTpyfsEdaFFclpf0v86+HDi+8C/swI3gLg0snf
+ qT3+17DWRHI1t/vfPReZiflaXiZjb4Lw6Gy4iIa5YrSMgY/52U8O8DJFGemQtYx68VgN9TpBdbi
+ 0uVIDxUbFLNgTWATgUdkgd0K5N4j1OueS1+7ixANg6BrO4K01oN+mTlP2JwJqIyoOJkkTakIQyK
+ KHsFBs4Z28PdgaO14X0a4XL1r9xtYpPxmzHVlfJEK3
+X-Gm-Gg: ASbGnctmWQ5QuisGiBmWpdhPuMvU4oKFCNJnb7bRdgqIXn9Ee94Cn49OdJxtzfQD0Vt
+ Un2jJUVnupuJzIbz63SAEMKrfL5lv7UfKyqxQ09UIoYH8VH2qjKNWddkyC9yzviFTvELlQUisAR
+ hwQ0f1tyKSG3qKKvsrqk3p4u/y/I82wK6v8UuHBsfNWyxJ4C+3Hg9D/9Voip4Owvmvmo7YIx0cK
+ Pge/2K2qMJ2vkNmSrpXkb3s3g/QfVk7JiXyiDGa5/E2x0494bGf8UM3gs3W6KKxzO2wB1hm9uAd
+ 5KvDanaHRx1YticvoXnSuAHgg27qEHKLi44nxsgfAPDW
+X-Received: by 2002:a05:6000:18a6:b0:3b7:825e:2d28 with SMTP id
+ ffacd0b85a97d-3b900b49901mr3270946f8f.9.1754679554216; 
+ Fri, 08 Aug 2025 11:59:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3GFDu25FZWrntGg8UCYix206t1pksINbSXuuV13Jy1TNy6Fr/3OSao3NK0zEvqZGvg25hWw==
+X-Received: by 2002:a05:6000:18a6:b0:3b7:825e:2d28 with SMTP id
+ ffacd0b85a97d-3b900b49901mr3270931f8f.9.1754679553724; 
+ Fri, 08 Aug 2025 11:59:13 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.234.144])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b8e054036bsm21594609f8f.31.2025.08.08.11.59.08
+ 5b1f17b1804b1-459e586ad64sm143572105e9.20.2025.08.08.11.59.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Aug 2025 11:59:08 -0700 (PDT)
+ Fri, 08 Aug 2025 11:59:11 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: imammedo@redhat.com,
 	richard.henderson@linaro.org,
 	peterx@redhat.com
-Subject: [PATCH 1/8] accel: use store_release/load_acquire for cross-thread
- exit_request
-Date: Fri,  8 Aug 2025 20:58:58 +0200
-Message-ID: <20250808185905.62776-2-pbonzini@redhat.com>
+Subject: [PATCH 2/8] accel/hvf: check exit_request before running the vCPU
+Date: Fri,  8 Aug 2025 20:58:59 +0200
+Message-ID: <20250808185905.62776-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250808185905.62776-1-pbonzini@redhat.com>
 References: <20250808185905.62776-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,153 +108,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu->exit_request do not use a load-acquire/store-release pair right now,
-but this means that cpu_exit() does not store it after any flags that are
-read in the slow path.
-
-Probably everything is protected one way or the other by the BQL, because
-after reading cpu->exit_request the CPU thread often goes to sleep
-(by waiting on the BQL-protected cpu->halt_cond), but it's not clear.
-Use load-acquire/store-release consistently.
+This is done by all other accelerators, but was missing for
+Hypervisor.framework.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c          | 19 +++++++++----------
- accel/tcg/cpu-exec.c         |  7 +++++--
- accel/tcg/tcg-accel-ops-rr.c |  2 +-
- hw/core/cpu-common.c         |  3 ++-
- target/i386/nvmm/nvmm-all.c  |  5 ++---
- target/i386/whpx/whpx-all.c  |  3 ++-
- 6 files changed, 21 insertions(+), 18 deletions(-)
+ target/arm/hvf/hvf.c  | 4 ++++
+ target/i386/hvf/hvf.c | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 890d5ea9f86..57e35960125 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3029,10 +3029,6 @@ static void kvm_eat_signals(CPUState *cpu)
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index b77db99079e..478bc75fee6 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -1927,6 +1927,10 @@ int hvf_vcpu_exec(CPUState *cpu)
+     flush_cpu_state(cpu);
  
-     if (kvm_immediate_exit) {
-         qatomic_set(&cpu->kvm_run->immediate_exit, 0);
--        /* Write kvm_run->immediate_exit before the cpu->exit_request
--         * write in kvm_cpu_exec.
--         */
--        smp_wmb();
-         return;
-     }
- 
-@@ -3187,7 +3183,8 @@ int kvm_cpu_exec(CPUState *cpu)
+     bql_unlock();
++    /* Corresponding store-release is in cpu_exit. */
++    if (qatomic_load_acquire(&cpu->exit_request)) {
++        hv_vcpus_exit(&cpu->accel->fd, 1);
++    }
+     r = hv_vcpu_run(cpu->accel->fd);
+     bql_lock();
+     switch (r) {
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 8445cadecec..b7c4b849cdf 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -749,6 +749,10 @@ int hvf_vcpu_exec(CPUState *cpu)
+             return EXCP_HLT;
          }
  
-         kvm_arch_pre_run(cpu, run);
--        if (qatomic_read(&cpu->exit_request)) {
 +        /* Corresponding store-release is in cpu_exit. */
 +        if (qatomic_load_acquire(&cpu->exit_request)) {
-             trace_kvm_interrupt_exit_request();
-             /*
-              * KVM requires us to reenter the kernel after IO exits to complete
-@@ -3197,13 +3194,15 @@ int kvm_cpu_exec(CPUState *cpu)
-             kvm_cpu_kick_self();
-         }
++            hv_vcpu_interrupt(&cpu->accel->fd, 1);
++        }
+         hv_return_t r = hv_vcpu_run_until(cpu->accel->fd, HV_DEADLINE_FOREVER);
+         assert_hvf_ok(r);
  
--        /* Read cpu->exit_request before KVM_RUN reads run->immediate_exit.
--         * Matching barrier in kvm_eat_signals.
--         */
--        smp_rmb();
--
-         run_ret = kvm_vcpu_ioctl(cpu, KVM_RUN, 0);
- 
-+        /*
-+         * After writing cpu->exit_request, cpu_exit() sends a signal that writes
-+         * kvm->run->immediate_exit.  The signal is always happening after the
-+         * write to cpu->exit_request so, if KVM read kvm->run->immediate_exit
-+         * as true, cpu->exit_request will always read as true.
-+         */
-+
-         attrs = kvm_arch_post_run(cpu, run);
- 
- #ifdef KVM_HAVE_MCE_INJECTION
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 82867f456c1..4bd9ee01c19 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -849,8 +849,11 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
-         bql_unlock();
-     }
- 
--    /* Finally, check if we need to exit to the main loop.  */
--    if (unlikely(qatomic_read(&cpu->exit_request)) || icount_exit_request(cpu)) {
-+    /*
-+     * Finally, check if we need to exit to the main loop.
-+     * The corresponding store-release is in cpu_exit.
-+     */
-+    if (unlikely(qatomic_load_acquire(&cpu->exit_request)) || icount_exit_request(cpu)) {
-         qatomic_set(&cpu->exit_request, 0);
-         if (cpu->exception_index == -1) {
-             cpu->exception_index = EXCP_INTERRUPT;
-diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index 6eec5c9eee9..1e551e92d6d 100644
---- a/accel/tcg/tcg-accel-ops-rr.c
-+++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -242,7 +242,7 @@ static void *rr_cpu_thread_fn(void *arg)
-             cpu = first_cpu;
-         }
- 
--        while (cpu && cpu_work_list_empty(cpu) && !cpu->exit_request) {
-+        while (cpu && cpu_work_list_empty(cpu) && !qatomic_load_acquire(&cpu->exit_request)) {
-             /* Store rr_current_cpu before evaluating cpu_can_run().  */
-             qatomic_set_mb(&rr_current_cpu, cpu);
- 
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index 39e674aca21..f189ce861c9 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -84,7 +84,8 @@ void cpu_reset_interrupt(CPUState *cpu, int mask)
- 
- void cpu_exit(CPUState *cpu)
- {
--    qatomic_set(&cpu->exit_request, 1);
-+    /* Ensure cpu_exec will see the reason why the exit request was set.  */
-+    qatomic_store_release(&cpu->exit_request, 1);
-     /* Ensure cpu_exec will see the exit request after TCG has exited.  */
-     smp_wmb();
-     qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index c1ac74c4f04..a5e3485c1f8 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -743,7 +743,8 @@ nvmm_vcpu_loop(CPUState *cpu)
- 
-         nvmm_vcpu_pre_run(cpu);
- 
--        if (qatomic_read(&cpu->exit_request)) {
-+        /* Corresponding store-release is in cpu_exit. */
-+        if (qatomic_load_acquire(&cpu->exit_request)) {
- #if NVMM_USER_VERSION >= 2
-             nvmm_vcpu_stop(vcpu);
- #else
-@@ -751,8 +752,6 @@ nvmm_vcpu_loop(CPUState *cpu)
- #endif
-         }
- 
--        /* Read exit_request before the kernel reads the immediate exit flag */
--        smp_rmb();
-         ret = nvmm_vcpu_run(mach, vcpu);
-         if (ret == -1) {
-             error_report("NVMM: Failed to exec a virtual processor,"
-diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
-index 878cdd1668c..9f88e368d4d 100644
---- a/target/i386/whpx/whpx-all.c
-+++ b/target/i386/whpx/whpx-all.c
-@@ -1714,7 +1714,8 @@ static int whpx_vcpu_run(CPUState *cpu)
-         if (exclusive_step_mode == WHPX_STEP_NONE) {
-             whpx_vcpu_pre_run(cpu);
- 
--            if (qatomic_read(&cpu->exit_request)) {
-+            /* Corresponding store-release is in cpu_exit. */
-+            if (qatomic_load_acquire(&cpu->exit_request)) {
-                 whpx_vcpu_kick(cpu);
-             }
-         }
 -- 
 2.50.1
 
