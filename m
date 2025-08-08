@@ -2,91 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61774B1EE5E
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 20:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 332EEB1EE9E
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 21:00:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukRqw-0006Tm-CU; Fri, 08 Aug 2025 14:30:06 -0400
+	id 1ukSJH-0006Ds-Jg; Fri, 08 Aug 2025 14:59:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ukRqr-0006TI-PA
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 14:30:02 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ukRqp-00033K-FZ
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 14:30:01 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-617d43a5fd3so2591614a12.0
- for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 11:29:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754677797; x=1755282597; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eiqQNJGRVIABq87XutzBDroaQVmvh+1x1UVuGnyeJcw=;
- b=ZRGcHY4qdPOEn2SRME3Fao/MPp/YwlXlaWZj6EMMYVLr93YsxXEqKCdBey2sfiSxOm
- uyklG5uWjHJneTEdI6yYeSufOKBVExavUYUhuVSEKsIZYRuNesA93+aLXICzT0qDsBRN
- 8jsX4lFsgYe2AEUigD7ye5T5Pe7XWmniWqZfPzd4GxvXJSlgzFX2bmAGBzcpP6CZnbXR
- ckkiI/03KN+shptyrv2Ci6dpooGb5RCqFOyTjRjH2b2htZQJMmxlkFeqOwpXRvIyz1hT
- oqzg4NwhGqDIybaWdclR1v4WEXhI8vVCUBhWCj4T43QW5nQo/bR6J4NMBZIQvW3a/F/1
- Enhw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ukSJA-0006C7-VK
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 14:59:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ukSJ8-0006fO-ON
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 14:59:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754679551;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=JDu00ELTMtEPeyMflQbZH6kjUPa2X2Q87W7TmgDPB6o=;
+ b=HKZyuDFh1fSYYgR5xoVU2NFfW9qLRLNs+uqXYprVezO/VRSa6aE/obUqvNFf26DqAAbYm5
+ LXXr0lXl9ikQiFk/IYQZ0McGMVCgX0AEPzxyQii8LP45KDX59ylPBUzlFFoKvA5jiD2d6o
+ r+5sZztj1kiqxurOle2LN8el3LRvpz0=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-637-4ffDlLqYMgymvkUhoMT3pA-1; Fri, 08 Aug 2025 14:59:10 -0400
+X-MC-Unique: 4ffDlLqYMgymvkUhoMT3pA-1
+X-Mimecast-MFC-AGG-ID: 4ffDlLqYMgymvkUhoMT3pA_1754679549
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3b20f50da27so1324921f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 11:59:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754677797; x=1755282597;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eiqQNJGRVIABq87XutzBDroaQVmvh+1x1UVuGnyeJcw=;
- b=dv8DmjnHlNmW9zhjwMLRTLa/G82Ez3xpD7ibO5CWwdne7fSPD0ADkGza19XtdWYtJt
- EpaJ5n7z1bwGeTT9CfDBami58t19mfpktFR09yBqgTssvAdDNN7XPKouw92ewxBJTu2s
- nht6z7zVz2gNzTMV82kMfHzf0RasNNdYs9WcQnC9SWMqOf5VG3WVNlhPlVwkNtsaJecZ
- 9klUSYQ75Er4LMMk5E+gdlvbt3sOoNygy32+Y4KZ0NmvQJuGT76kyEiB5D05fysF2P0Z
- BTS93vudfgeuOoENzZb9WvMEh82rRLCpfqlhgpJqi8fy9JlU1jTupwLmnPzWoYmGkc9B
- Al/w==
-X-Gm-Message-State: AOJu0Ywi6AQc33UQI5sSNVAWW2hJFN3w9U+mPq2WLUiMSZnf3BewmnP9
- /xGeLNX8fLT5tw8OVZp2Sp3cp7udwGE7ylWiWcIlzaL0z9w9fg75Y24T08GpVHQ5cOOySME6/4Q
- yibUcFcKBbEusExMLdnqDi0Y2IiUiSn1JTegXubqKHw==
-X-Gm-Gg: ASbGncucu5LizbSWNDcTlS0//6Pm3uMfUxLeWJN0Mul+v3t5pCLkmBnGDkYoZyyR5rW
- Y6wII+55KFcm/vNrNz+XuhJPUaSDnjEW4ADVylMZBj86E5aJNToWVrC9++9b7Gjz0oozozrVbMC
- TxyifwCBjivIjaCQXsPMnZhEoj5WTBWgfoHlNS0YS5viXRQTf80Q8dJ74CpnnJtWKebr1hmxHFU
- h6YPjtu7ZizUN9tcVo=
-X-Google-Smtp-Source: AGHT+IEalXPmE9FlqxxW0jAlPZljbYZujXgOv9wk//NuARxiNvT0RcZEU17e8kWpq798+85vhkJONNKmzeZUA8jliBI=
-X-Received: by 2002:a05:6402:1e89:b0:609:9115:60f1 with SMTP id
- 4fb4d7f45d1cf-617e2c4c6bamr3243286a12.16.1754677796725; Fri, 08 Aug 2025
- 11:29:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1754679548; x=1755284348;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JDu00ELTMtEPeyMflQbZH6kjUPa2X2Q87W7TmgDPB6o=;
+ b=xGxvOj+gmHBAtZ1OFaT6C08s7Bx5PAIHyy3aA8EjAlWTPKcA5skn271AbyIOYyYEb4
+ SMQJ8GNE/ohEv5fstIHspbIvyqKXXs6Ef3bdeHw4YO5gLMH+nXeuH/Cg7HWmdlGoyco/
+ oehp+dBAoNjJo/rvmFFOvkXyG2Nl57Kqg2D+1eE7ATXAe/sHA0UPjGjuY2PykPuuyK+T
+ OQzPoWoWFTM2JGxgWnQQCvQYwyiqXxOvgfB0bEl0tO7WEsgQ4qW8/ijJQFEmaTbEeyt7
+ n5Ve7CKUsaOSqw4aurHXeDo39TgzdNwwl4594sBwBmn7vvC2243b6tNV83ffoRVdBs6r
+ jZlg==
+X-Gm-Message-State: AOJu0YxOObD4E8b6338JMANubpfwBgFASzp3Wh9UjGXHH++EP85g97C7
+ 8/j2ewwQGx98OLCqGWDwYvNDVYcK7sdtVoyl+GhiWlao8hqeirQyfsJ0H0xzcY/Xfi7pHmv2Qiy
+ PzHm20m3L8uPcZCi7hA1UGBZ0ErsfQ7vzhjFvmncHsFkpZfKzjALO/k+1blljlDtS4OGJeok6Ot
+ VlF88H4axZdXj0x81PXtCmYKRtyaWA+nQl7SIcJ/Vk
+X-Gm-Gg: ASbGnctgnX4CSpGnwRD1583gQFXW7sJI3ERRRrPb2ngrkf7mMgjYXJArcjYYaQ9W7km
+ ri8WWvn6Je8S0l2fWwkB2MSlKXHOV/izcEAhovt0j0SRfnnbkAqi3aGm4vh3jZZXd79VthYoQ/w
+ lOKGw0oEUOk/J2+aFcbJ5L4QziU1OfDFFTOXpeGu/JOuwJYvLv2UnECvpSVXvw9qHEtJsdMsrR7
+ JK9eJyXmQ7igH9q7KY3Wx8LSq+nfccxMLSuqRfIqzs/V9u7irjX6DYD9/GTL5z8JQu3ml2SLxYs
+ RBt8xmtwE4Hrd6DyKRW/mflyGeTqGGALyFZ+lT6XxXrr
+X-Received: by 2002:adf:e004:0:b0:3b7:6e64:bed8 with SMTP id
+ ffacd0b85a97d-3b8f97f507bmr5654992f8f.28.1754679548345; 
+ Fri, 08 Aug 2025 11:59:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKaMotEfGoJvnWbhPDR92+Ma+g/Xj/mihkpYVUykqp3Ye7AzsZecGkvHNL3cMyCBDxHZ0r6Q==
+X-Received: by 2002:adf:e004:0:b0:3b7:6e64:bed8 with SMTP id
+ ffacd0b85a97d-3b8f97f507bmr5654977f8f.28.1754679547834; 
+ Fri, 08 Aug 2025 11:59:07 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.234.144])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-459e5887b7fsm145302935e9.30.2025.08.08.11.59.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Aug 2025 11:59:07 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: imammedo@redhat.com,
+	richard.henderson@linaro.org,
+	peterx@redhat.com
+Subject: [PATCH 0/8] accel, cpus: clean up cpu->exit_request
+Date: Fri,  8 Aug 2025 20:58:57 +0200
+Message-ID: <20250808185905.62776-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-References: <20250808020702.410109-1-pierrick.bouvier@linaro.org>
- <20250808020702.410109-5-pierrick.bouvier@linaro.org>
- <t0o4ts.nym46t847yx5@linaro.org>
- <401440fc-c25b-4abc-94d2-4b21593c6eac@linaro.org>
- <CAAjaMXbM_7rt_2dSjmZixcPs7=g3HU2yfJ-ZMvUJOtCeEaJZ9A@mail.gmail.com>
- <a26e72e7-aa29-4f44-97b9-f9d2ed9d47d5@linaro.org>
-In-Reply-To: <a26e72e7-aa29-4f44-97b9-f9d2ed9d47d5@linaro.org>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Fri, 8 Aug 2025 21:29:29 +0300
-X-Gm-Features: Ac12FXwn4uusaIgxyP7AgQhYEe8YOxU7DKB1LFUA8sKK9H_yc63QbVwT22tt2Kg
-Message-ID: <CAAjaMXaaoQX48+r5_WTQCPSmDc=3SU2dcf8EESf5inimdh6mOg@mail.gmail.com>
-Subject: Re: [PATCH v5 4/9] contrib/plugins/uftrace: implement tracing
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org, Mahmoud Mandour <ma.mandourr@gmail.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud_=C3=A9?= <philmd@linaro.org>, 
- rowan Hart <rowanbhart@gmail.com>, Gustavo Romero <gustavo.romero@linaro.org>, 
- =?UTF-8?Q?Alex_Benn_=C3=A9_e?= <alex.bennee@linaro.org>, 
- Alexandre Iooss <erdnaxe@crans.org>, Peter Maydell <peter.maydell@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x531.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,210 +105,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 8, 2025 at 9:23=E2=80=AFPM Pierrick Bouvier
-<pierrick.bouvier@linaro.org> wrote:
->
-> On 8/8/25 11:13 AM, Manos Pitsidianakis wrote:
-> > On Fri, Aug 8, 2025 at 9:03=E2=80=AFPM Pierrick Bouvier
-> > <pierrick.bouvier@linaro.org> wrote:
-> >>
-> >> On 8/8/25 2:11 AM, Manos Pitsidianakis wrote:
-> >>> On Fri, 08 Aug 2025 05:06, Pierrick Bouvier <pierrick.bouvier@linaro.=
-org> wrote:
-> >>>> We implement tracing, following uftrace format.
-> >>>> Trace is flushed every 32 MB, so file operations don't impact
-> >>>> performance at runtime.
-> >>>>
-> >>>> A different trace is generated per cpu, and we ensure they have a un=
-ique
-> >>>> name, based on vcpu_index, while keeping room for privilege level co=
-ming
-> >>>> in next commit.
-> >>>
-> >>> Suggestion (not a request): put some kind of documentation about the
-> >>> format this patch implements, maybe a commit sha & URL to a header fi=
-le
-> >>> from upstream uftrace.
-> >>>
-> >>>>
-> >>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> >>>> ---
-> >>>> contrib/plugins/uftrace.c | 149 ++++++++++++++++++++++++++++++++++++=
-+-
-> >>>> 1 file changed, 148 insertions(+), 1 deletion(-)
-> >>>>
-> >>>> diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
-> >>>> index d51faceb344..402a242433e 100644
-> >>>> --- a/contrib/plugins/uftrace.c
-> >>>> +++ b/contrib/plugins/uftrace.c
-> >>>> @@ -12,6 +12,13 @@
-> >>>> #include <qemu-plugin.h>
-> >>>> #include <glib.h>
-> >>>> #include <stdio.h>
-> >>>> +#include <sys/stat.h>
-> >>>> +#include <sys/time.h>
-> >>>> +#include <time.h>
-> >>>> +#include <unistd.h>
-> >>>> +
-> >>>> +#define MiB     (INT64_C(1) << 20)
-> >>>> +#define NANOSECONDS_PER_SECOND 1000000000LL
-> >>>>
-> >>>> QEMU_PLUGIN_EXPORT int qemu_plugin_version =3D QEMU_PLUGIN_VERSION;
-> >>>>
-> >>>> @@ -24,6 +31,13 @@ typedef struct {
-> >>>>       uint64_t frame_pointer;
-> >>>> } CallstackEntry;
-> >>>>
-> >>>> +typedef struct {
-> >>>> +    GArray *t;
-> >>>> +    GString *path;
-> >>>> +    GString *name;
-> >>>> +    uint32_t id;
-> >>>> +} Trace;
-> >>>> +
-> >>>> typedef struct Cpu Cpu;
-> >>>>
-> >>>> typedef struct {
-> >>>> @@ -34,6 +48,7 @@ typedef struct {
-> >>>> } CpuOps;
-> >>>>
-> >>>> typedef struct Cpu {
-> >>>> +    Trace *trace;
-> >>>>       Callstack *cs;
-> >>>>       GByteArray *buf;
-> >>>>       CpuOps ops;
-> >>>> @@ -44,9 +59,41 @@ typedef struct {
-> >>>>       struct qemu_plugin_register *reg_fp;
-> >>>> } Aarch64Cpu;
-> >>>>
-> >>>> +typedef struct {
-> >>>> +    uint64_t timestamp;
-> >>>> +    uint64_t data;
-> >>>> +} UftraceEntry;
-> >>>> +
-> >>>> +typedef enum {
-> >>>> +    UFTRACE_ENTRY,
-> >>>> +    UFTRACE_EXIT,
-> >>>> +    UFTRACE_LOST,
-> >>>> +    UFTRACE_EVENT
-> >>>> +} UftraceRecordType;
-> >>>> +
-> >>>> static struct qemu_plugin_scoreboard *score;
-> >>>> static CpuOps arch_ops;
-> >>>>
-> >>>> +static uint64_t gettime_ns(void)
-> >>>> +{
-> >>>> +#ifdef _WIN32
-> >>>> +    /*
-> >>>> +     * On Windows, timespec_get is available only with UCRT, but no=
-t with
-> >>>> +     * MinGW64 environment. Simplify by using only gettimeofday on =
-this
-> >>>> +     * platform. This may result in a precision loss.
-> >>>> +     */
-> >>>> +    struct timeval tv;
-> >>>> +    gettimeofday(&tv, NULL);
-> >>>> +    uint64_t now_ns =3D tv.tv_sec * NANOSECONDS_PER_SECOND + tv.tv_=
-usec * 1000;
-> >>>> +#else
-> >>>> +    /* We need nanosecond precision for short lived functions. */
-> >>>> +    struct timespec ts;
-> >>>> +    timespec_get(&ts, TIME_UTC);
-> >>>> +    uint64_t now_ns =3D ts.tv_sec * NANOSECONDS_PER_SECOND + ts.tv_=
-nsec;
-> >>>> +#endif
-> >>>> +    return now_ns;
-> >>>> +}
-> >>>> +
-> >>>> static Callstack *callstack_new(void)
-> >>>> {
-> >>>>       Callstack *cs =3D g_new0(Callstack, 1);
-> >>>> @@ -112,6 +159,85 @@ static CallstackEntry callstack_pop(Callstack *=
-cs)
-> >>>>       return e;
-> >>>> }
-> >>>>
-> >>>> +static Trace *trace_new(uint32_t id, GString *name)
-> >>>> +{
-> >>>> +    Trace *t =3D g_new0(Trace, 1);
-> >>>> +    t->t =3D g_array_new(false, false, sizeof(UftraceEntry));
-> >>>> +    t->path =3D g_string_new(NULL);
-> >>>> +    g_string_append_printf(t->path, "./uftrace.data/%"PRIu32".dat",=
- id);
-> >>>> +    t->name =3D g_string_new(name->str);
-> >>>> +    t->id =3D id;
-> >>>> +    return t;
-> >>>> +}
-> >>>> +
-> >>>> +static void trace_free(Trace *t)
-> >>>> +{
-> >>>> +    g_assert(t->t->len =3D=3D 0);
-> >>>> +    g_array_free(t->t, true);
-> >>>> +    t->t =3D NULL;
-> >>>> +    g_string_free(t->path, true);
-> >>>> +    t->path =3D NULL;
-> >>>> +    g_string_free(t->name, true);
-> >>>> +    t->name =3D NULL;
-> >>>> +    g_free(t);
-> >>>> +}
-> >>>> +
-> >>>> +static void trace_flush(Trace *t, bool append)
-> >>>> +{
-> >>>> +    int create_dir =3D g_mkdir_with_parents("./uftrace.data",
-> >>>> +                                          S_IRWXU | S_IRWXG | S_IRW=
-XO);
-> >>>> +    g_assert(create_dir =3D=3D 0);
-> >>>> +    FILE *dat =3D fopen(t->path->str, append ? "a" : "w");
-> >>>> +    g_assert(dat);
-> >>>> +    GArray *data =3D t->t;
-> >>>> +    if (data->len) {
-> >>>> +        fwrite(data->data, data->len, sizeof(UftraceEntry), dat);
-> >>>
-> >>> fwrite might not write all bytes, how about using the
-> >>> g_file_set_contents() wrapper?
-> >>>
-> >>
-> >> If I see correctly, g_file_set_contents does not allow to append data,
-> >> which is what we need to do here (that's the point of flushing every
-> >> 32MB).
-> >
-> > Ah you're right, my bad. It might be because it renames a temporary
-> > file to the destination filename in order to make the operation
-> > atomic.
-> >
-> >> I can add an assert on fwrite return to make sure we wrote
-> >> everything.
-> >
-> > Or a while loop with a bytes_written counter.
-> >
->
-> fwrite guarantees all data will be written (to the opposite or raw write
-> calls), including if syscall is interrupted, doing a proper write loop
-> until all data is written.
+cpu->exit_request is used to kick vCPU threads into qemu_wait_io_event().
+The code that handles the signaling of cpu->exit_request is messy, mostly
+due to no one ever taking a look at it as a whole.  In fact already in commit
+4b8523ee896 ("kvm: First step to push iothread lock out of inner run loop",
+2015-07-01), the read of cpu->exit_request was placed outside the BQL
+critical section without much attention to ordering; and it only got
+worse from that point, in no small part due to a young and naive me.
 
-Right, as the manpage says:
+This series is complementary to the cpu->interrupt_request cleanups
+that Igor did in "memory: reintroduce BQL-free fine-grained PIO/MMIO"
+(https://lore.kernel.org/qemu-devel/20250808120137.2208800-1-imammedo@redhat.com/T/),
+and is organized like this:
 
-> RETURN VALUE
->      On success, fread() and fwrite() return the number of items read or =
-written.  This number equals the number of bytes transferred only when size=
- is 1.  If an error occurs, or the
->      end of the file is reached, the return value is a short item count (=
-or zero).
+- patches 1-3 clean up accesses to the variable to properly use
+  qatomic_* accessors
 
-I thought it meant that "on error" included EAGAIN/EINTR, that's why I
-suggested a loop. But the manpage doesn't list error values or even
-mention whether it sets errno at all so I was mistaken.
+- patches 4-6 makes it possible to use cpu_exit() for all accelerators
 
-> You can check glibc source if in doubt.
-> Thus, the only situation where it might fail is if disk space is full.
-> In this case, I think that an assert (similar to a panic!) is good
-> enough because we can't really do anything to solve the problem.
->
-> > Or keep it all in memory and write it on exit? Your call
->
-> That was the first version, but it does not scale on long executions,
-> where traces can reach several gb.
->
-> By the way, adding the assert caught a bug, size and num_elems were
-> reversed, so definitely thanks for pointing this out.
+- patch 7 removes from user-mode emulation a hack that is only needed
+  by system emulation
+
+- patch 8 cleans up the way in which exit_request is cleared.
+
+Paolo
+
+
+Paolo Bonzini (8):
+  accel: use store_release/load_acquire for cross-thread exit_request
+  accel/hvf: check exit_request before running the vCPU
+  accel: use atomic accesses for exit_request
+  accel/tcg: introduce tcg_kick_vcpu_thread
+  cpus: remove TCG-ism from cpu_exit()
+  cpus: properly kick CPUs out of inner execution loop
+  tcg/user: do not set exit_request gratuitously
+  accel: make all calls to qemu_wait_io_event look the same
+
+ docs/devel/tcg-icount.rst         |  2 +-
+ accel/tcg/tcg-accel-ops-mttcg.h   |  3 ---
+ include/exec/cpu-common.h         |  1 +
+ accel/dummy-cpus.c                |  2 +-
+ accel/hvf/hvf-accel-ops.c         |  2 +-
+ accel/kvm/kvm-accel-ops.c         |  3 ++-
+ accel/kvm/kvm-all.c               | 21 +++++++---------
+ accel/tcg/cpu-exec.c              | 27 +++++++++++++++++---
+ accel/tcg/tcg-accel-ops-mttcg.c   | 12 ++-------
+ accel/tcg/tcg-accel-ops-rr.c      | 42 ++++++++++++++++---------------
+ accel/tcg/tcg-accel-ops.c         |  4 +--
+ bsd-user/main.c                   |  2 +-
+ cpu-common.c                      |  3 ++-
+ hw/core/cpu-common.c              |  7 +++---
+ hw/ppc/ppc.c                      |  2 ++
+ hw/ppc/spapr_hcall.c              |  7 +++---
+ hw/ppc/spapr_rtas.c               |  2 +-
+ linux-user/main.c                 |  2 +-
+ replay/replay-events.c            |  3 ++-
+ system/cpu-timers.c               |  6 ++---
+ system/cpus.c                     |  6 +++--
+ target/arm/hvf/hvf.c              |  3 +++
+ target/arm/tcg/mte_helper.c       |  2 +-
+ target/i386/hvf/hvf.c             |  3 +++
+ target/i386/kvm/hyperv.c          |  1 -
+ target/i386/kvm/kvm.c             |  2 +-
+ target/i386/nvmm/nvmm-accel-ops.c |  8 +++---
+ target/i386/nvmm/nvmm-all.c       |  9 +++----
+ target/i386/whpx/whpx-accel-ops.c |  6 ++---
+ target/i386/whpx/whpx-all.c       | 11 ++++----
+ 30 files changed, 106 insertions(+), 98 deletions(-)
+
+-- 
+2.50.1
+
 
