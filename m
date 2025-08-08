@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8F6B1EFCE
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 22:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2ADB1EFD6
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 22:46:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukTuy-00032p-FI; Fri, 08 Aug 2025 16:42:24 -0400
+	id 1ukTyL-0000Uj-R6; Fri, 08 Aug 2025 16:45:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ukTut-00030X-Jt
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 16:42:19 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1ukTyA-0000Tr-Ef
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 16:45:42 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ukTur-0003E2-4K
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 16:42:19 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-74264d1832eso3127097b3a.0
- for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 13:42:16 -0700 (PDT)
+ id 1ukTy4-0003dI-1F
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 16:45:42 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-b4281fabee0so1789734a12.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 13:45:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754685735; x=1755290535; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DBrgRzoZK/flg18sYa71Nd0Qxl3OyImP8+lDbDt1BL8=;
- b=KMLc3gXhpRxfE27Vri4Rj/kcpN/dfj9H7nPkc7ag7iHhm5DJ1NO0QfS3qQUaeIHWEG
- bVXh0ORqxEQt4UC1hP7ATWnKhJWTna2gObkxQOtGJJ+HYOaDKcwCBfaw7lBorDwMSs6M
- yuSo+aAv9wdrHe+QfboKnTVgqR/0Yv7Dl258hrG2w+VGhlBEAhcNzJUPTrJjPH7Uqhwy
- RSZULyXS83SuaUjPFW1AuXLoh9ra1X8w/Fu1UBpQxqgWJTQsJVqsA0z9P4DVPrTKKdY5
- 2tNyJrr3COxFzbkGp42nGW1eJIi5BlrQl956IywSbdXZERZKbogEMlO3PI+KNfwRaFvs
- +TmQ==
+ d=linaro.org; s=google; t=1754685934; x=1755290734; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4rHUI8tB617YILcHKcNvRwwm1YDzzu/wImnaDWUnf2s=;
+ b=kzABMb0Xz7hqEv8aHHsnF57io0/PzCrR63Xlp21xC680DZ695eLDMqxDMo7mYQIXrS
+ loXetN1CrPZeXQAp2Jp3ezBQ+IFwE2OLCIkUWqHMpJtW6BJD3qO2wJeta1ELPEuuVsDn
+ YfBqhimUjY9drEPc2jE7SXJjeM46kKmFI1vCcC6ODwZ+Q7mK0QXGzYN/xek9ltIGHSGp
+ Eu+J33H9XSdPHJpl/qkcl3enqSP+VBjrLBdb71E4Gm9H5Lo7CQP2rgKEJKLL9xfhXB0g
+ gprQ9wuJWxdaWQlFreS21d1wW/Mm2aWdpMGweLzV6GhjzvNxVNZlQ5H1apVEdeF3Fjpt
+ GZxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754685735; x=1755290535;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DBrgRzoZK/flg18sYa71Nd0Qxl3OyImP8+lDbDt1BL8=;
- b=Vn+CY5LNVATNZgnjyzNMQA2Fo7E0Y7w5XkTW0DJMEbkT4ZDut8xDCAobsWIumErXfp
- sVVeCLfV9A+mIK2o9I3eiDmyMzoQwF9llXBMZwvLvpoBtCUztEQC6p6kzKg8faqAyGpq
- gu+nK4jE6arSe59tJGPNnaTY1zk0xzp0xLZ+1v29F+rc9WZ+ASKkN2VOupTX20EYGlYw
- f7fgNVAbqC4Fc6Jv5ZbJ+EUg6ymMNSvsUvseza48oAJYUxcDIfs7tfh91MptjTtJ+neP
- J3mjbta8JtdoJokkP9aiGSda3bhBjoOVqjAnh/Wds98k4KElTuohu3iIrf70AK6R/70O
- SfcQ==
-X-Gm-Message-State: AOJu0YxfXDceo+pkB8XiaVYdSaPXN2R+DlbxqVfz6/DosY6q7hvdFBV3
- GxSwGBlhtGapUrjOjcMkRuaJy/kiAk92dWHKE7kxwIM18hZnRBAN36Sqjy1gJGtItSpw9ioLpN/
- OjJIXUPIDrg==
-X-Gm-Gg: ASbGncvzW1gsD5/vgSOe1c//VdKnDtoXpJRnonKiDxzj/4o6wbFAzHhhWIP9j1MWeJj
- 2QEjVFQD8vWCD/0kUZ0N2pU/4nVa8/0SHSLWLLNqMJf8w4Pb3gSzlGNoKkNgjtBDj/ndfghepoj
- CgdG6WcoFrdplucCNfS+0hlZuwk0BdW/8WvNSrY19kaFWUTGZgUaHzn8UUSYNCuIVlixweOxx7v
- e/ybJqUwOS/Gy7a61gMmZPdvTXRumNXF6mo9DuuN13m1B5V3M3sDeVLqGomc0UWTg+LbswxVIO2
- /JNAWvBpJ0fGNLvayoJX3PClmb5/WHCBH8iPLj47ekBlfft+BsUABDsDW2EJWLAv1xqNdrI4Odx
- D+4EAorGhpqq8/H1dNiVNwYS6F8mGUiob
-X-Google-Smtp-Source: AGHT+IF7UcVgLxvOp9+Ku41zFxfGi/9ehGrc/hJoGFDp15lJcH/HVvIHagevNXWPh+26SeCTJ4d+ng==
-X-Received: by 2002:a17:902:fc48:b0:242:b103:18e with SMTP id
- d9443c01a7336-242c226035amr64644015ad.50.1754685735474; 
- Fri, 08 Aug 2025 13:42:15 -0700 (PDT)
-Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241e899a814sm217789945ad.117.2025.08.08.13.42.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Aug 2025 13:42:15 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org,
-	pierrick.bouvier@linaro.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- rowan Hart <rowanbhart@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v6 9/9] contrib/plugins/uftrace: add documentation
-Date: Fri,  8 Aug 2025 13:41:56 -0700
-Message-ID: <20250808204156.659715-10-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250808204156.659715-1-pierrick.bouvier@linaro.org>
-References: <20250808204156.659715-1-pierrick.bouvier@linaro.org>
+ d=1e100.net; s=20230601; t=1754685934; x=1755290734;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4rHUI8tB617YILcHKcNvRwwm1YDzzu/wImnaDWUnf2s=;
+ b=IXuaYxHgnXDcHBAQ2+xjZ1kyC4zkMV7ZErou5Hprd76Z2z8DsCaLq6Jq6J4fGRoDqX
+ Q0W7elH5uYwShV8jYzhaLPWsOV7ugn2Os0VIq9E6z10wSlzLeey8alhoz8wMjMXuVb0R
+ s2s+MKC9FxJ8QxVgHsWAxq0i/pa+p2dOSoacx34crapcqEokRpnsB9aN0xe03MCbq0dt
+ xvUPpy5MjaibFtqIactM2SDHGt21juoe/Erj9C6uDM4Q6+1Y6IegytOEfeyr1ka4zh/B
+ arQM9UBwSiCl/TiFAw1bmOtY5Jgzt9hB+6vFlXcyODpkJAcXge0KPwsgBr1jOQruqHIY
+ DrjA==
+X-Gm-Message-State: AOJu0YzMkQ8cpCS5zXYOhiEoleHcrYtR+1eqVaGYzAQTaI1cUjyUYhYZ
+ h3eo1vY71Q9z9QnqY+4Aa65/m0Rym5PySMQIzOo9hFLMu89ryr5CQ1p6lLY04toljF2ERuNr3gX
+ N+3AQdgHcag==
+X-Gm-Gg: ASbGncsAwCbX59IL4id2Ub1IPwvk0X1xu7hDDI8zNCDnHjnWdMOqp74ooHc/NDVlcrH
+ eMPRwMks3koj3azLlVOy7YJm++B/9umn5FuUY/IyPga7RJLtiQ3wdY+SldOYRNskl8wx++uN/34
+ kudpWkdMJGDgIF0L/gPMymlTQ10bq+WnsV/sU4gsCkNTX1/+7ZUmUlf38doDiuXsQFuSn8ht9V2
+ PKg2htQcxmesR49DnGMKKGzjIajviXD18mGQlp7teu5NQfCf8swaUIlWR6Ve7HDMg2zMv0XHdSQ
+ UImjkPgHglE/NDMPVdczknipkk7jGGU6gl3QwQfRTmtCVq7+xcj9nJfgu7tR11UU6x/uQX4VzRU
+ OtMCCCaOqjfg6p81QXkcXR7ZObcZ7/QFr1Gk=
+X-Google-Smtp-Source: AGHT+IGKwEoLOn+kH4HyU1PFmEu192YTj0yYCOrzSRU/TzrTb11QUD8gJA7tan5Rg39DqVQS6+6BVQ==
+X-Received: by 2002:a17:903:19e8:b0:240:8cb5:98b4 with SMTP id
+ d9443c01a7336-242c205b7bamr57583555ad.23.1754685934339; 
+ Fri, 08 Aug 2025 13:45:34 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-241d1ef67aesm218011055ad.6.2025.08.08.13.45.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Aug 2025 13:45:33 -0700 (PDT)
+Message-ID: <676bff82-0f56-4e86-bcb1-e0a3f57096b6@linaro.org>
+Date: Fri, 8 Aug 2025 13:45:33 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/9] contrib/plugins: uftrace
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ rowan Hart <rowanbhart@gmail.com>, Gustavo Romero
+ <gustavo.romero@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Richard Henderson <richard.henderson@linaro.org>
+References: <20250808020702.410109-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250808020702.410109-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,228 +107,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This documentation summarizes how to use the plugin, and present two
-examples of the possibilities offered by it, in system and user mode.
+On 8/7/25 7:06 PM, Pierrick Bouvier wrote:
+> This plugin generates a binary trace compatible with the excellent uftrace:
+> https://github.com/namhyung/uftrace
+> 
+> In short, it tracks all function calls performed during execution, based on
+> frame pointer analysis. A big advantage over "uftrace record" is that it works
+> in system mode, allowing to trace a full system execution, which was the
+> original goal. It works as well in user mode, but uftrace itself already does
+> this. It's implemented for aarch64 and x86_64.
+> 
+> Let's start with concrete examples of the result.
+> 
+> First, in system mode, booting a stack using TF-A + U-boot + Linux:
+> - Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
+> https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
+> - Stat and open syscalls in kernel
+> https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
+> - Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
+> https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
+> 
+> Full trace is available here:
+> https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz
+> You can download and open it on https://ui.perfetto.dev/ to explore it.
+> 
+> Second, in user mode, tracing qemu-aarch64 (itself) running git --help:
+> - Loading program and its interpreter
+> https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
+> - TB creation
+> https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
+> 
+> Full trace is available here:
+> https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz
+> 
+> If you had curiosity and now you're ready to give some attention, most of the
+> details you want to read are included in the documentation patch (final one).
+> 
+> Overhead is around x5-x15, and long traces can be directly filtered with uftrace
+> if needed.
+> 
+> I hope this plugin can help people trying to understand what happens out of the
+> user space, and get a better grasp of how firmwares, bootloader, and kernel
+> interact behind the curtain.
+> 
+> v2
+> --
+> 
+> - trace active stacks on exit
+> - do not erase map generated in system_emulation
+> - add documentation to generate restricted visual traces around specific events
+>    of execution
+> 
+> v3
+> --
+> 
+> - fix missing include unistd.h (build failed on MacOS only)
+> 
+> v4
+> --
+> 
+> - add support for x64
+> 
+> v5
+> --
+> 
+> - addressed Alex comments
+> - split plugin implementation in several commits
+> - removed instruction based timestamps (only use time based timestamps)
+> - removed sampling implementation
+> 
+> Pierrick Bouvier (9):
+>    contrib/plugins/uftrace: skeleton file
+>    contrib/plugins/uftrace: define cpu operations and implement aarch64
+>    contrib/plugins/uftrace: track callstack
+>    contrib/plugins/uftrace: implement tracing
+>    contrib/plugins/uftrace: implement privilege level tracing
+>    contrib/plugins/uftrace: generate additional files for uftrace
+>    contrib/plugins/uftrace: implement x64 support
+>    contrib/plugins/uftrace_symbols.py
+>    contrib/plugins/uftrace: add documentation
+> 
+>   docs/about/emulation.rst           | 197 +++++++
+>   contrib/plugins/uftrace.c          | 871 +++++++++++++++++++++++++++++
+>   contrib/plugins/meson.build        |   3 +-
+>   contrib/plugins/uftrace_symbols.py | 152 +++++
+>   4 files changed, 1222 insertions(+), 1 deletion(-)
+>   create mode 100644 contrib/plugins/uftrace.c
+>   create mode 100755 contrib/plugins/uftrace_symbols.py
+> 
 
-As well, it explains how to rebuild and reproduce those examples.
-
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- docs/about/emulation.rst | 199 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 199 insertions(+)
-
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index 456d01d5b08..8a5e128f677 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -816,6 +816,205 @@ This plugin can limit the number of Instructions Per Second that are executed::
-       The lower the number the more accurate time will be, but the less efficient the plugin.
-       Defaults to ips/10
- 
-+Uftrace
-+.......
-+
-+``contrib/plugins/uftrace.c``
-+
-+This plugin generates a binary trace compatible with
-+`uftrace <https://github.com/namhyung/uftrace>`_.
-+
-+Plugin supports aarch64 and x64, and works in user and system mode, allowing to
-+trace a system boot, which is not something possible usually.
-+
-+In user mode, the memory mapping is directly copied from ``/proc/self/maps`` at
-+the end of execution. Uftrace should be able to retrieve symbols by itself,
-+without any additional step.
-+In system mode, the default memory mapping is empty, and you can generate
-+one (and associated symbols) using ``contrib/plugins/uftrace_symbols.py``.
-+Symbols must be present in ELF binaries.
-+
-+It tracks the call stack (based on frame pointer analysis). Thus, your program
-+and its dependencies must be compiled using ``-fno-omit-frame-pointer
-+-mno-omit-leaf-frame-pointer``. In 2024, `Ubuntu and Fedora enabled it by
-+default again on x64
-+<https://www.brendangregg.com/blog/2024-03-17/the-return-of-the-frame-pointers.html>`_.
-+On aarch64, this is less of a problem, as they are usually part of the ABI,
-+except for leaf functions. That's true for user space applications, but not
-+necessarily for bare metal code. You can read this `section
-+<uftrace_build_system_example>` to easily build a system with frame pointers.
-+
-+When tracing long scenarios (> 1 min), the generated trace can become very long,
-+making it hard to extract data from it. In this case, a simple solution is to
-+trace execution while generating a timestamped output log using
-+``qemu-system-aarch64 ... | ts "%s"``. Then, ``uftrace --time-range=start~end``
-+can be used to reduce trace for only this part of execution.
-+
-+Performance wise, overhead compared to normal tcg execution is around x5-x15.
-+
-+.. list-table:: Uftrace plugin arguments
-+  :widths: 20 80
-+  :header-rows: 1
-+
-+  * - Option
-+    - Description
-+  * - trace-privilege-level=[on|off]
-+    - Generate separate traces for each privilege level (Exception Level +
-+      Security State on aarch64, Rings on x64).
-+
-+.. list-table:: uftrace_symbols.py arguments
-+  :widths: 20 80
-+  :header-rows: 1
-+
-+  * - Option
-+    - Description
-+  * - elf_file [elf_file ...]
-+    - path to an ELF file. Use /path/to/file:0xdeadbeef to add a mapping offset.
-+  * - --prefix-symbols
-+    - prepend binary name to symbols
-+
-+Example user trace
-+++++++++++++++++++
-+
-+As an example, we can trace qemu itself running git::
-+
-+    $ ./build/qemu-aarch64 -plugin \
-+      build/contrib/plugins/libuftrace.so \
-+      ./build/qemu-aarch64 /usr/bin/git --help
-+
-+    # and generate a chrome trace directly
-+    $ uftrace dump --chrome | gzip > ~/qemu_aarch64_git_help.json.gz
-+
-+For convenience, you can download this trace `qemu_aarch64_git_help.json.gz
-+<https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz>`_.
-+Download it and open this trace on https://ui.perfetto.dev/. You can zoom in/out
-+using :kbd:`W`, :kbd:`A`, :kbd:`S`, :kbd:`D` keys.
-+Some sequences taken from this trace:
-+
-+- Loading program and its interpreter
-+
-+.. image:: https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
-+   :height: 200px
-+
-+- open syscall
-+
-+.. image:: https://fileserver.linaro.org/s/rsXPTeZZPza4PcE/preview
-+   :height: 200px
-+
-+- TB creation
-+
-+.. image:: https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
-+   :height: 200px
-+
-+It's usually better to use ``uftrace record`` directly. However, tracing
-+binaries through qemu-user can be convenient when you don't want to recompile
-+them (``uftrace record`` requires instrumentation), as long as symbols are
-+present.
-+
-+Example system trace
-+++++++++++++++++++++
-+
-+A full trace example (chrome trace, from instructions below) generated from a
-+system boot can be found `here
-+<https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz>`_.
-+Download it and open this trace on https://ui.perfetto.dev/. You can see code
-+executed for all privilege levels, and zoom in/out using
-+:kbd:`W`, :kbd:`A`, :kbd:`S`, :kbd:`D` keys. You can find below some sequences
-+taken from this trace:
-+
-+- Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
-+
-+.. image:: https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
-+   :height: 200px
-+
-+- U-boot initialization (until code relocation, after which we can't track it)
-+
-+.. image:: https://fileserver.linaro.org/s/LKTgsXNZFi5GFNC/preview
-+   :height: 200px
-+
-+- Stat and open syscalls in kernel
-+
-+.. image:: https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
-+   :height: 200px
-+
-+- Timer interrupt
-+
-+.. image:: https://fileserver.linaro.org/s/TM5yobYzJtP7P3C/preview
-+   :height: 200px
-+
-+- Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
-+
-+.. image:: https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
-+   :height: 200px
-+
-+Build and run system example
-+++++++++++++++++++++++++++++
-+
-+.. _uftrace_build_system_example:
-+
-+Building a full system image with frame pointers is not trivial.
-+
-+We provide a `simple way <https://github.com/pbo-linaro/qemu-linux-stack>`_ to
-+build an aarch64 system, combining Arm Trusted firmware, U-boot, Linux kernel
-+and debian userland. It's based on containers (``podman`` only) and
-+``qemu-user-static (binfmt)`` to make sure it's easily reproducible and does not depend
-+on machine where you build it.
-+
-+You can follow the exact same instructions for a x64 system, combining edk2,
-+Linux, and Ubuntu, simply by switching to
-+`x86_64 <https://github.com/pbo-linaro/qemu-linux-stack/tree/x86_64>`_ branch.
-+
-+To build the system::
-+
-+    # Install dependencies
-+    $ sudo apt install -y podman qemu-user-static
-+
-+    $ git clone https://github.com/pbo-linaro/qemu-linux-stack
-+    $ cd qemu-linux-stack
-+    $ ./build.sh
-+
-+    # system can be started using:
-+    $ ./run.sh /path/to/qemu-system-aarch64
-+
-+To generate a uftrace for a system boot from that::
-+
-+    # run true and poweroff the system
-+    $ env INIT=true ./run.sh path/to/qemu-system-aarch64 \
-+      -plugin path/to/contrib/plugins/libuftrace.so,trace-privilege-level=on
-+
-+    # generate symbols and memory mapping
-+    $ path/to/contrib/plugins/uftrace_symbols.py \
-+      --prefix-symbols \
-+      arm-trusted-firmware/build/qemu/debug/bl1/bl1.elf \
-+      arm-trusted-firmware/build/qemu/debug/bl2/bl2.elf \
-+      arm-trusted-firmware/build/qemu/debug/bl31/bl31.elf \
-+      u-boot/u-boot:0x60000000 \
-+      linux/vmlinux
-+
-+    # inspect trace with
-+    $ uftrace replay
-+
-+Uftrace allows to filter the trace, and dump flamegraphs, or a chrome trace.
-+This last one is very interesting to see visually the boot process::
-+
-+    $ uftrace dump --chrome > boot.json
-+    # Open your browser, and load boot.json on https://ui.perfetto.dev/.
-+
-+Long visual chrome traces can't be easily opened, thus, it might be
-+interesting to generate them around a particular point of execution::
-+
-+    # execute qemu and timestamp output log
-+    $ env INIT=true ./run.sh path/to/qemu-system-aarch64 \
-+      -plugin path/to/contrib/plugins/libuftrace.so,trace-privilege-level=on |&
-+      ts "%s" | tee exec.log
-+
-+    $ cat exec.log  | grep 'Run /init'
-+      1753122320 [   11.834391] Run /init as init process
-+      # init was launched at 1753122320
-+
-+    # generate trace around init execution (2 seconds):
-+    $ uftrace dump --chrome --time-range=1753122320~1753122322 > init.json
-+
- Other emulation features
- ------------------------
- 
--- 
-2.47.2
-
+Sent v6:
+https://lore.kernel.org/qemu-devel/20250808204156.659715-1-pierrick.bouvier@linaro.org/
 
