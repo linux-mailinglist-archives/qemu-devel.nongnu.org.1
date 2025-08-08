@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4FAB1E438
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 10:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B768AB1E43C
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 10:11:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukI9Y-00079c-UU; Fri, 08 Aug 2025 04:08:40 -0400
+	id 1ukI9V-00073u-NG; Fri, 08 Aug 2025 04:08:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9V-00075U-IG
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:08:37 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9T-00072o-26
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:08:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9T-0006Um-NX
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:08:37 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9R-0006TV-Fx
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:08:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754640514;
+ s=mimecast20190719; t=1754640512;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mLTZcSj7iNq5OuEH8/JlnbJNdOKdUQD0MxDROOyY5U8=;
- b=R7AeL6L+TOVR+MdyM+VWCvti/c10sgZBIcL2qZ885aARY3YlHZEpzx9lX2nKzqYp7cPl7L
- hrCff3Fcg1nbP5hi3cHfwF00pVSD2F23vVDty4DX/6fug6O9l5bvGKp9tO5wXaU8OCemjx
- l7hlJ6H39+gfJiZa8DYtHyu/UU7dYVA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=meKENbAgBsXeChFWuBiTb2HPp95oc+Z3Oczse6BwGbU=;
+ b=DYIqaL50Ov1mPxf8sDnoes2RJ806ZhUeQcyOfOsyPCU6j5hOdZPOkWBphJojtqtaMq//hu
+ A9pMokGN/RqqUcYTYywEc0+LwKhFJps2CURm0srcrFWTrhw94Cn6ezxpfj7yz52ldOTbYe
+ Fv9IGOieG8NzsuI1w5ai8cxYO4nXhJE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-473-KJDt79g7NeurZo2YeYiZsg-1; Fri,
- 08 Aug 2025 04:08:31 -0400
-X-MC-Unique: KJDt79g7NeurZo2YeYiZsg-1
-X-Mimecast-MFC-AGG-ID: KJDt79g7NeurZo2YeYiZsg_1754640510
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-37-BU5n0MM3O8O70kQiT9lGZQ-1; Fri,
+ 08 Aug 2025 04:08:30 -0400
+X-MC-Unique: BU5n0MM3O8O70kQiT9lGZQ-1
+X-Mimecast-MFC-AGG-ID: BU5n0MM3O8O70kQiT9lGZQ_1754640509
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0941B1956080; Fri,  8 Aug 2025 08:08:30 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D1D84180035D; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 67FDD19560B0; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 88D5C1954185; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 63A0C21E6741; Fri, 08 Aug 2025 10:08:23 +0200 (CEST)
+ id 6792A21E66C4; Fri, 08 Aug 2025 10:08:23 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: odaki@rsg.ci.i.u-tokyo.ac.jp,
 	marcandre.lureau@redhat.com
-Subject: [PATCH 08/12] util/oslib-win32: Revert warning on WSAEventSelect()
- failure
-Date: Fri,  8 Aug 2025 10:08:19 +0200
-Message-ID: <20250808080823.2638861-9-armbru@redhat.com>
+Subject: [PATCH 09/12] ui/pixman: Consistent error handling in
+ qemu_pixman_shareable_free()
+Date: Fri,  8 Aug 2025 10:08:20 +0200
+Message-ID: <20250808080823.2638861-10-armbru@redhat.com>
 In-Reply-To: <20250808080823.2638861-1-armbru@redhat.com>
 References: <20250808080823.2638861-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -84,42 +84,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_socket_select() and its wrapper qemu_socket_unselect() treat a
-NULL @errp as &error_warn.  This is wildly inappropriate.  A caller
-passing NULL specifies that errors are to be ignored.  If warnings are
-wanted, the caller must pass &error_warn.
+qemu_pixman_shareable_free() wraps around either qemu_memfd_free() or
+qemu_win32_map_free().  The former reports trouble as error, with
+error_report(), then succeeds.  The latter reports it as warning (we
+pass it &error_warn), then succeeds.
 
-I'm not familiar with the calling code, so I can't say whether it will
-work after WSAEventSelect() failure.  If it doesn't, then this should
-be an error.  If it does, then why bother the user with a warning that
-isn't actionable, and likely confusing?
-
-The warning goes back to commit f5fd677ae7cf (win32/socket: introduce
-qemu_socket_select() helper).  Before that commit, the error was
-ignored, as indicated by passing a null @errp.  Revert to that
-behavior.
+Change the latter to report as error, too.
 
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- util/oslib-win32.c | 4 ----
- 1 file changed, 4 deletions(-)
+ ui/qemu-pixman.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-index b7351634ec..136a8fe118 100644
---- a/util/oslib-win32.c
-+++ b/util/oslib-win32.c
-@@ -296,10 +296,6 @@ bool qemu_socket_select(int sockfd, WSAEVENT hEventObject,
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index ef4e71da11..e46c6232cf 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -288,7 +288,10 @@ qemu_pixman_shareable_free(qemu_pixman_shareable handle,
+                            void *ptr, size_t size)
  {
-     SOCKET s = _get_osfhandle(sockfd);
- 
--    if (errp == NULL) {
--        errp = &error_warn;
--    }
--
-     if (s == INVALID_SOCKET) {
-         error_setg(errp, "invalid socket fd=%d", sockfd);
-         return false;
+ #ifdef WIN32
+-    qemu_win32_map_free(ptr, handle, &error_warn);
++    Error *err = NULL;
++
++    qemu_win32_map_free(ptr, handle, &err);
++    error_report_err(err);
+ #else
+     qemu_memfd_free(ptr, size, handle);
+ #endif
 -- 
 2.49.0
 
