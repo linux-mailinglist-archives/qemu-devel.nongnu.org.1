@@ -2,56 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E60B1E7E4
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 14:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E22B1E7DE
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 14:03:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukLo5-0005I7-QX; Fri, 08 Aug 2025 08:02:46 -0400
+	id 1ukLnU-0003Od-Lc; Fri, 08 Aug 2025 08:02:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1ukLnJ-0002v3-0U
+ id 1ukLnJ-0002v0-07
  for qemu-devel@nongnu.org; Fri, 08 Aug 2025 08:01:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1ukLnE-00075w-UB
+ id 1ukLnE-00076G-Uc
  for qemu-devel@nongnu.org; Fri, 08 Aug 2025 08:01:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754654507;
+ s=mimecast20190719; t=1754654510;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=3wnoL5uKCjVb8/cZ6dTXTFWVuPc5ytY1pJh+9HjSHLw=;
- b=Y4w+RlQFN934oETYoMfZU8Th1E8KvGr+5zx3hR5yV5laMtPdp+YSSzhxwUuzrdPQIrmh6X
- mAUUbM8IorV2ItFuoUhBfTtGVwxRoaEaBSnltKAfkSBYHfK6STUeqgJlj0TtOVyfKYBrGg
- l17G1l2aw6r9IAj08CV4Ut4XcczWo80=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=imDXixPIMin3UoifJR9aHiy7BOYjvkrGESKTOnvCu/o=;
+ b=Wl27C+b7dj45MqkmekCvGg921lohpY0G8qMU75F/lbbjP5/hINhiAZXlXEW0hTC1m42Meo
+ HagwzF+AfvTlhunSTcLaiJ+4dv7zmnX+xmk4qC3DIsME/AFGfCcntiTbsWdy5H0pCJ5Yd4
+ oHhel1TaRxD8tuZW0hdo7WVdjtco6uM=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-342-f90EzI_tMhO76XbrptpfLQ-1; Fri,
- 08 Aug 2025 08:01:44 -0400
-X-MC-Unique: f90EzI_tMhO76XbrptpfLQ-1
-X-Mimecast-MFC-AGG-ID: f90EzI_tMhO76XbrptpfLQ_1754654503
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-7sD6mNIJP4WGXmhgNs_1OQ-1; Fri,
+ 08 Aug 2025 08:01:47 -0400
+X-MC-Unique: 7sD6mNIJP4WGXmhgNs_1OQ-1
+X-Mimecast-MFC-AGG-ID: 7sD6mNIJP4WGXmhgNs_1OQ_1754654506
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6A500180048E; Fri,  8 Aug 2025 12:01:43 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 20068195608E; Fri,  8 Aug 2025 12:01:46 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A31BB19560AD; Fri,  8 Aug 2025 12:01:40 +0000 (UTC)
+ id 05AD119560AD; Fri,  8 Aug 2025 12:01:43 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, pbonzini@redhat.com, peterx@redhat.com, david@redhat.com,
  philmd@linaro.org, mtosatti@redhat.com
-Subject: [PATCH v3 00/10] Reinvent BQL-free PIO/MMIO
-Date: Fri,  8 Aug 2025 14:01:27 +0200
-Message-ID: <20250808120137.2208800-1-imammedo@redhat.com>
+Subject: [PATCH v3 01/10] memory: reintroduce BQL-free fine-grained PIO/MMIO
+Date: Fri,  8 Aug 2025 14:01:28 +0200
+Message-ID: <20250808120137.2208800-2-imammedo@redhat.com>
+In-Reply-To: <20250808120137.2208800-1-imammedo@redhat.com>
+References: <20250808120137.2208800-1-imammedo@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -81,123 +84,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This patch brings back Jan's idea [1] of BQL-free IO access
+
+This will let us make access to ACPI PM/HPET timers cheaper,
+and prevent BQL contention in case of workload that heavily
+uses the timers with a lot of vCPUs.
+
+1) 196ea13104f (memory: Add global-locking property to memory regions)
+   ... de7ea885c539 (kvm: Switch to unlocked MMIO)
+
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+---
 v3:
-  * hpet: replace explicit atomics with use seqlock API  (PeterX)
-  * introduce cpu_test_interrupt() (Paolo)
-    and use it tree wide for checking interrupts
-  * don't take BQL for setting exit_request, use qatomic_set() instead. (Paolo)
-  * after above change, relace conditional BQL with unconditional
-    to simlify things a bit (Paolo)
-  * drop not needed barriers (Paolo)
-  * minor tcg:cpu_handle_interrupt() cleanup
+  add comment for 'mr->disable_reentrancy_guard = true'
+    Peter Xu <peterx@redhat.com>
+---
+ include/system/memory.h | 10 ++++++++++
+ system/memory.c         | 15 +++++++++++++++
+ system/physmem.c        |  2 +-
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
-v2:
-  * Make both read and write pathes BQL-less (Gerd)
-  * Refactor HPET to handle lock-less access correctly
-    when stopping/starting counter in parallel. (Peter Maydell)
-  * Publish kvm-unit-tests HPET bench/torture test [1] to verify
-    HPET lock-less handling
-
-When booting WS2025 with following CLI
- 1)   -M q35,hpet=off -cpu host -enable-kvm -smp 240,sockets=4
-the guest boots very slow and is sluggish after boot
-or it's stuck on boot at spinning circle (most of the time).
-
-pref shows that VM is experiencing heavy BQL contention on IO path
-which happens to be ACPI PM timer read access. A variation with
-HPET enabled moves contention to HPET timer read access.
-And it only gets worse with increasing number of VCPUs.
-
-Series prevents large VM vCPUs contending on BQL due to PM|HPET timer
-access and lets Windows to move on with boot process.
-
-Testing lock-less IO with HPET micro benchmark [2] shows approx 80%
-better performance than the current BLQ locked path.
-[chart https://ibb.co/MJY9999 shows much better scaling of lock-less
-IO compared to BQL one.]
-
-In my tests, with CLI WS2025 guest wasn't able to boot within 30min
-on both hosts
-  * 32 core 2NUMA nodes
-  * 448 cores 8NUMA nodes
-With ACPI PM timer in BQL-free read mode, guest boots within approx:
- * 2min
- * 1min
-respectively.
-
-With HPET enabled boot time shrinks ~2x
- * 4m13 -> 2m21
- * 2m19 -> 1m15
-respectively.
-
-2) "[kvm-unit-tests PATCH v4 0/5] x86: add HPET counter tests"
-    https://lore.kernel.org/kvm/20250725095429.1691734-1-imammedo@redhat.com/T/#t
-PS:
-Using hv-time=on cpu option helps a lot (when it works) and
-lets [1] guest boot fine in ~1-2min. Series doesn't make
-a significant impact in this case.
-
-PS2:
-Tested series with a bunch of different guests:
- RHEL-[6..10]x64, WS2012R2, WS2016, WS2022, WS2025
-
-PS3:
- dropped mention of https://bugzilla.redhat.com/show_bug.cgi?id=1322713
- as it's not reproducible with current software stack or even with
- the same qemu/seabios as reported (kernel versions mentioned in
- the report were interim ones and no longer available,
- so I've used nearest released at the time for testing) 
-
-Igor Mammedov (10):
-  memory: reintroduce BQL-free fine-grained PIO/MMIO
-  acpi: mark PMTIMER as unlocked
-  hpet: switch to fain-grained device locking
-  hpet: move out main counter read into a separate block
-  hpet: make main counter read lock-less
-  introduce cpu_test_interrupt() that will replace open coded checks
-  x86: kvm: use cpu_test_interrupt() instead of oppen coding checks
-  kvm: i386: irqchip: take BQL only if there is an interrupt
-  use cpu_test_interrupt() instead of oppen coding checks tree wide
-  tcg: move interrupt caching and single step masking closer to user
-
- include/hw/core/cpu.h               | 12 ++++++++
- include/system/memory.h             | 10 +++++++
- accel/tcg/cpu-exec.c                | 25 +++++++---------
- accel/tcg/tcg-accel-ops.c           |  3 +-
- hw/acpi/core.c                      |  1 +
- hw/timer/hpet.c                     | 38 +++++++++++++++++++-----
- system/cpus.c                       |  3 +-
- system/memory.c                     | 15 ++++++++++
- system/physmem.c                    |  2 +-
- target/alpha/cpu.c                  |  8 ++---
- target/arm/cpu.c                    | 20 ++++++-------
- target/arm/helper.c                 | 16 +++++-----
- target/arm/hvf/hvf.c                |  6 ++--
- target/avr/cpu.c                    |  2 +-
- target/hppa/cpu.c                   |  2 +-
- target/i386/hvf/hvf.c               |  4 +--
- target/i386/hvf/x86hvf.c            | 21 +++++++------
- target/i386/kvm/kvm.c               | 46 ++++++++++++++---------------
- target/i386/nvmm/nvmm-all.c         | 24 +++++++--------
- target/i386/tcg/system/seg_helper.c |  2 +-
- target/i386/whpx/whpx-all.c         | 34 ++++++++++-----------
- target/loongarch/cpu.c              |  2 +-
- target/m68k/cpu.c                   |  2 +-
- target/microblaze/cpu.c             |  2 +-
- target/mips/cpu.c                   |  6 ++--
- target/mips/kvm.c                   |  2 +-
- target/openrisc/cpu.c               |  3 +-
- target/ppc/cpu_init.c               |  2 +-
- target/ppc/kvm.c                    |  2 +-
- target/rx/cpu.c                     |  3 +-
- target/rx/helper.c                  |  2 +-
- target/s390x/cpu-system.c           |  2 +-
- target/sh4/cpu.c                    |  2 +-
- target/sh4/helper.c                 |  2 +-
- target/sparc/cpu.c                  |  2 +-
- target/sparc/int64_helper.c         |  4 +--
- 36 files changed, 193 insertions(+), 139 deletions(-)
-
+diff --git a/include/system/memory.h b/include/system/memory.h
+index e2cd6ed126..d04366c994 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -833,6 +833,7 @@ struct MemoryRegion {
+     bool nonvolatile;
+     bool rom_device;
+     bool flush_coalesced_mmio;
++    bool lockless_io;
+     bool unmergeable;
+     uint8_t dirty_log_mask;
+     bool is_iommu;
+@@ -2341,6 +2342,15 @@ void memory_region_set_flush_coalesced(MemoryRegion *mr);
+  */
+ void memory_region_clear_flush_coalesced(MemoryRegion *mr);
+ 
++/**
++ * memory_region_enable_lockless_io: Enable lockless (BQL free) acceess.
++ *
++ * Enable BQL-free access for devices with fine-grained locking.
++ *
++ * @mr: the memory region to be updated.
++ */
++void memory_region_enable_lockless_io(MemoryRegion *mr);
++
+ /**
+  * memory_region_add_eventfd: Request an eventfd to be triggered when a word
+  *                            is written to a location.
+diff --git a/system/memory.c b/system/memory.c
+index 5646547940..44701c465c 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -2546,6 +2546,21 @@ void memory_region_clear_flush_coalesced(MemoryRegion *mr)
+     }
+ }
+ 
++void memory_region_enable_lockless_io(MemoryRegion *mr)
++{
++    mr->lockless_io = true;
++    /*
++     * reentrancy_guard has per device scope, that when enabled
++     * will effectively prevent concurrent access to device's IO
++     * MemoryRegion(s) by not calling accessor callback.
++     *
++     * Turn it off for lock-less IO enabled devices, to allow
++     * concurrent IO.
++     * TODO: remove this when reentrancy_guard becomes per transaction.
++     */
++    mr->disable_reentrancy_guard = true;
++}
++
+ void memory_region_add_eventfd(MemoryRegion *mr,
+                                hwaddr addr,
+                                unsigned size,
+diff --git a/system/physmem.c b/system/physmem.c
+index e5dd760e0b..f498572fc8 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -2900,7 +2900,7 @@ bool prepare_mmio_access(MemoryRegion *mr)
+ {
+     bool release_lock = false;
+ 
+-    if (!bql_locked()) {
++    if (!bql_locked() && !mr->lockless_io) {
+         bql_lock();
+         release_lock = true;
+     }
 -- 
 2.47.1
 
