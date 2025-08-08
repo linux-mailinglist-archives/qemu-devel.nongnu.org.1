@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8975EB1E7D8
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 14:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E9E2B1E7DB
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 14:02:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukLmE-0007aK-Ko; Fri, 08 Aug 2025 08:00:50 -0400
+	id 1ukLmA-000676-FE; Fri, 08 Aug 2025 08:00:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1ukLle-0005NW-FT; Fri, 08 Aug 2025 08:00:15 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1ukLlc-0005N7-IK; Fri, 08 Aug 2025 08:00:15 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1ukLlc-0006vS-Dn; Fri, 08 Aug 2025 08:00:14 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5785KZWT028225;
- Fri, 8 Aug 2025 12:00:03 GMT
+ id 1ukLla-0006v3-EL; Fri, 08 Aug 2025 08:00:12 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5783E5FA021001;
+ Fri, 8 Aug 2025 12:00:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=toapMl
- CWEMeH3+J1u12Lo6u8lXswj/QIlOAs/def+ZI=; b=FkK6JTt9VyYliPJp7w+pAT
- SwZFVkXSiWKKI0Z0eY/szOezHlMbZtP2wWNqJevyN90UF30mSoGKa+LibNWvl/Na
- ykNvOulgbNU3GF/b4PQnMJEb2YXH5BuY6uiXJSOVOPel17lC13oT2X+sJPC2Mkb9
- Jydm3Y1OSePhNu/hvxZ4v+v0ROWsEcfKaq9DKNOwNEOLIzeYWBC7bTO9yT4xYFq2
- PHxgKw4VFansjjqvd2i6dksWP8XBE/gKDg2Jol0bNcxPaqMk1vGBAVaM3jsCIg02
- 0HSrk1uZowzxSV4p+a7ItByOA/6R1f5U3BC66VyoS+d/Avmva6c5TXayD6FlpPPg
+ :message-id:mime-version:references:subject:to; s=pp1; bh=iNilJX
+ BtPs9z9TTFk9Euq89alqfJVpxUoKhMYaJOiC4=; b=DOzbsJEa1AoJPW0Npc2boB
+ ryY6oDa0bwv2H269q7Idtx2C1QTOsavyz4s1hoaDV9Eoyks3+N1Wb5mgPyoWbnyb
+ 37IMFrnQ1aYH3DY2ZWDfZD+Jghu0FfWXpj3Oj9It/7nLrAw7jRbfvco4LrtmgwJ2
+ QCguWtzARdwjgBO7MOCM8n4qos7cHeVx4YgUcgHD0/xUWr/pG/iRYPb+fqauKpq4
+ 1AARuel4GsulUVagVRZ2C+Drfb88VFwi7L2aV2B8/nlUwV5Xp3p+y3ut5+44d7BO
+ aOt+CNVtjqpJ8Ja0nsltZ+gp7aP+L3LV4BzzLfwlOwweQWdJYzG3x27IEJ5IdRNw
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq618a33-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63fuer-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Aug 2025 12:00:03 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 578BoUJo011115;
- Fri, 8 Aug 2025 12:00:02 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq618a2m-1
+ Fri, 08 Aug 2025 12:00:07 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 578Bva3G020330;
+ Fri, 8 Aug 2025 12:00:06 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63fuek-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Aug 2025 12:00:02 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 578ATWmH020626;
- Fri, 8 Aug 2025 12:00:01 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwn5fbn-1
+ Fri, 08 Aug 2025 12:00:06 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 578A4Z4D022628;
+ Fri, 8 Aug 2025 12:00:06 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwqngwg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Aug 2025 12:00:01 +0000
+ Fri, 08 Aug 2025 12:00:06 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 578BxvYr46334430
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 578C02bD52560160
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Aug 2025 11:59:57 GMT
+ Fri, 8 Aug 2025 12:00:02 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 625A92004D;
- Fri,  8 Aug 2025 11:59:57 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 20E1A20043;
+ Fri,  8 Aug 2025 12:00:02 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2274820040;
- Fri,  8 Aug 2025 11:59:54 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0531620040;
+ Fri,  8 Aug 2025 11:59:58 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
  [9.124.216.151])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  8 Aug 2025 11:59:53 +0000 (GMT)
+ Fri,  8 Aug 2025 11:59:57 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>,
@@ -73,9 +73,10 @@ Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  <qemu-ppc@nongnu.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH v9 5/7] ppc/pnv: Add ChipTOD model for Power11
-Date: Fri,  8 Aug 2025 17:29:27 +0530
-Message-ID: <20250808115929.1073910-6-adityag@linux.ibm.com>
+Subject: [PATCH v9 6/7] tests/powernv: Switch to buildroot images instead of
+ op-build
+Date: Fri,  8 Aug 2025 17:29:28 +0530
+Message-ID: <20250808115929.1073910-7-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250808115929.1073910-1-adityag@linux.ibm.com>
 References: <20250808115929.1073910-1-adityag@linux.ibm.com>
@@ -83,31 +84,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Ho4cx93SpwUFZgb4NoCAeVFmNpMeHAnv
-X-Proofpoint-ORIG-GUID: KwBd-a0ZXbKi3wZ4FjGU2dRa0dMFdnmF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA5NiBTYWx0ZWRfXwEu0RfK1YZIT
- rRgXd/KoTB5ioI1y1BS7FVALyFnGB1wKkfWnCRLq6Li6JHlSNqVjiB6XzKV2rd8vYYI0n0HVdGm
- ObzvQyXWWlbCx8wnXsg4eBqpeBbfH2yVgCYLj/9DxZvdu99l915POzwmcRS+/6VD6x4H2KHEQuF
- vovhhTnk5aea0Jd7PKweu3dpLsXj5m6alNsCL0Ol1yawxmul2bHVWtZDbiI0LFH9FxBMdJfA6uQ
- FOvhHeNgQG9fCLLz4+XWn7mjSnQN8j119FV/+OjBkEoOttJwCRKUCK7QEFnXxW0SmY2KtOK/42B
- 2i6p4pcwQrx7jPZau222o5jkMdKTgwQa+8DegGY8nZb8PLB/VSvokU1rCTuzoHdCkrqIJ3cGVmb
- nvHRn/G6zEk73PSMlsPuFGSGhXCGs4p8C4q7AqZrG+ddbz4s7GuJqwAYblibnPUKpoJxUqdY
-X-Authority-Analysis: v=2.4 cv=TayWtQQh c=1 sm=1 tr=0 ts=6895e6c3 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=aow-egSQAAAA:8 a=VnNF1IyMAAAA:8
- a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8 a=b9eXF7Pav5jxbbk2SQIA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=gFNbaldVC-z-bsjSTzMo:22
+X-Authority-Analysis: v=2.4 cv=NInV+16g c=1 sm=1 tr=0 ts=6895e6c7 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=NEAV23lmAAAA:8 a=vTr9H3xdAAAA:8
+ a=aow-egSQAAAA:8 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8
+ a=y3lVoIMbX-Uf3sPy4QIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=gFNbaldVC-z-bsjSTzMo:22
+X-Proofpoint-GUID: 2jxQUIEDT4W7zqvrk2OOmVMiUJEN2c15
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA5NiBTYWx0ZWRfX+IB1lZSYEg3o
+ EBc7rxWzGguygoNlFRLI2AG0SjKVMX8qSxifTyvZbpkMAERvzcfNy7NhB7OXpaWMED6KfvMolfH
+ YO1IJXR98Pt8u3L/Y50CvGzdybSCqoxSTWiP/Lcp6/7H0pjpFgFc91um0n/jdMVLrXVNxA/0ad9
+ qJHYW+Dap5pEdFwz1uCLoGmElrlv6NF1CN17g/uQp880TUEBlyS8HGz3B7EG+d3/Awdo8KpSjgb
+ pJefP0ckb3NDhibjiEBY1DKBzrf4yoFAM5QabDyiDaSI9J6ZV4ITBzvXGiC9Dr8hFnzzG0U9Xbq
+ 7yTPUWzAWjIWThCkLY/cxVZVSH9+8DsFGw3oqnTx/0ULPy+xk8ZNchak7ki9xRE62hMASS6e0iU
+ bsAcN2DOYanLmGNHlF+x4U8+osf+hOgIPvtrlhUm3Ivr7uBDquXVcovK+ucNelWivmyNaGgO
+X-Proofpoint-ORIG-GUID: bgObswBaze_i_FEB1iJASZ_HpXBes9bI
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-08_03,2025-08-06_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
- mlxlogscore=999 bulkscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
- malwarescore=0 clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
- definitions=main-2508080096
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ phishscore=0 suspectscore=0 impostorscore=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 adultscore=0 mlxscore=0
+ bulkscore=0 priorityscore=1501 spamscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508080096
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -131,159 +133,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce Power11 ChipTod. The code has been copied from Power10 ChipTod
-code as the Power11 core is same as Power10 core.
+As op-build images haven't been updated from long time (and may not get
+updated in future), use buildroot images provided by cedric [1].
+
+Use existing nvme device being used in the test to mount the initrd.
+
+Also replace the check for "zImage loaded message" to skiboot's message
+when it starts the kernel: "Starting kernel at", since we are no longer
+using zImage from op-build
+
+This is required for newer processor tests such as Power11, as the
+op-build kernel image is old and doesn't support Power11.
+
+Power11 test has been added in a later patch.
+
+[1]: https://github.com/legoater/qemu-ppc-boot/tree/main/buildroot/qemu_ppc64le_powernv8-2025.02
 
 Cc: Cédric Le Goater <clg@kaod.org>
 Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
 Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>
+Suggested-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 ---
- hw/ppc/pnv.c                 | 15 +++++++++
- hw/ppc/pnv_chiptod.c         | 59 ++++++++++++++++++++++++++++++++++++
- include/hw/ppc/pnv_chiptod.h |  2 ++
- 3 files changed, 76 insertions(+)
+ tests/functional/test_ppc64_powernv.py | 30 ++++++++++++++------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 5392b1b417b6..673bb54c6789 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -2399,6 +2399,8 @@ static void pnv_chip_power11_instance_init(Object *obj)
-     object_initialize_child(obj, "xive", &chip11->xive, TYPE_PNV_XIVE2);
-     object_property_add_alias(obj, "xive-fabric", OBJECT(&chip11->xive),
-                               "xive-fabric");
-+    object_initialize_child(obj, "chiptod", &chip11->chiptod,
-+                            TYPE_PNV11_CHIPTOD);
-     object_initialize_child(obj, "n1-chiplet", &chip11->n1_chiplet,
-                             TYPE_PNV_N1_CHIPLET);
+diff --git a/tests/functional/test_ppc64_powernv.py b/tests/functional/test_ppc64_powernv.py
+index 685e2178ed78..2b4db1cf99b4 100755
+--- a/tests/functional/test_ppc64_powernv.py
++++ b/tests/functional/test_ppc64_powernv.py
+@@ -18,9 +18,14 @@ class powernvMachine(LinuxKernelTest):
+     good_message = 'VFS: Cannot open root device'
  
-@@ -2549,6 +2551,19 @@ static void pnv_chip_power11_realize(DeviceState *dev, Error **errp)
-     chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
-                                             (uint64_t) PNV11_LPCM_BASE(chip));
+     ASSET_KERNEL = Asset(
+-        ('https://archives.fedoraproject.org/pub/archive/fedora-secondary/'
+-         'releases/29/Everything/ppc64le/os/ppc/ppc64/vmlinuz'),
+-        '383c2f5c23bc0d9d32680c3924d3fd7ee25cc5ef97091ac1aa5e1d853422fc5f')
++        ('https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main/'
++         'buildroot/qemu_ppc64le_powernv8-2025.02/vmlinux'),
++        '6fd29aff9ad4362511ea5d0acbb510667c7031928e97d64ec15bbc5daf4b8151')
++
++    ASSET_INITRD = Asset(
++        ('https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main/'
++         'buildroot/qemu_ppc64le_powernv8-2025.02/rootfs.ext2'),
++        'aee2192b692077c4bde31cb56ce474424b358f17cec323d5c94af3970c9aada2')
  
-+    /* ChipTOD */
-+    object_property_set_bool(OBJECT(&chip11->chiptod), "primary",
-+                             chip->chip_id == 0, &error_abort);
-+    object_property_set_bool(OBJECT(&chip11->chiptod), "secondary",
-+                             chip->chip_id == 1, &error_abort);
-+    object_property_set_link(OBJECT(&chip11->chiptod), "chip", OBJECT(chip),
-+                             &error_abort);
-+    if (!qdev_realize(DEVICE(&chip11->chiptod), NULL, errp)) {
-+        return;
-+    }
-+    pnv_xscom_add_subregion(chip, PNV11_XSCOM_CHIPTOD_BASE,
-+                            &chip11->chiptod.xscom_regs);
-+
-     /* HOMER (must be created before OCC) */
-     object_property_set_link(OBJECT(&chip11->homer), "chip", OBJECT(chip),
-                              &error_abort);
-diff --git a/hw/ppc/pnv_chiptod.c b/hw/ppc/pnv_chiptod.c
-index b9e9c7ba3dbb..f887a18cde8d 100644
---- a/hw/ppc/pnv_chiptod.c
-+++ b/hw/ppc/pnv_chiptod.c
-@@ -210,6 +210,22 @@ static void chiptod_power10_broadcast_ttype(PnvChipTOD *sender,
-     }
- }
+     def do_test_linux_boot(self, command_line = KERNEL_COMMON_COMMAND_LINE):
+         self.require_accelerator("tcg")
+@@ -78,27 +83,24 @@ def test_linux_big_boot(self):
+         wait_for_console_pattern(self, console_pattern, self.panic_message)
+         wait_for_console_pattern(self, self.good_message, self.panic_message)
  
-+static void chiptod_power11_broadcast_ttype(PnvChipTOD *sender,
-+                                            uint32_t trigger)
-+{
-+    PnvMachineState *pnv = PNV_MACHINE(qdev_get_machine());
-+    int i;
-+
-+    for (i = 0; i < pnv->num_chips; i++) {
-+        Pnv11Chip *chip11 = PNV11_CHIP(pnv->chips[i]);
-+        PnvChipTOD *chiptod = &chip11->chiptod;
-+
-+        if (chiptod != sender) {
-+            chiptod_receive_ttype(chiptod, trigger);
-+        }
-+    }
-+}
-+
- static PnvCore *pnv_chip_get_core_by_xscom_base(PnvChip *chip,
-                                                 uint32_t xscom_base)
- {
-@@ -283,6 +299,12 @@ static PnvCore *chiptod_power10_tx_ttype_target(PnvChipTOD *chiptod,
-     }
- }
+-
+-    ASSET_EPAPR_KERNEL = Asset(
+-        ('https://github.com/open-power/op-build/releases/download/v2.7/'
+-         'zImage.epapr'),
+-        '0ab237df661727e5392cee97460e8674057a883c5f74381a128fa772588d45cd')
+-
+     def do_test_ppc64_powernv(self, proc):
+         self.require_accelerator("tcg")
+-        kernel_path = self.ASSET_EPAPR_KERNEL.fetch()
++        kernel_path = self.ASSET_KERNEL.fetch()
++        initrd_path = self.ASSET_INITRD.fetch()
+         self.vm.set_console()
+         self.vm.add_args('-kernel', kernel_path,
+-                         '-append', 'console=tty0 console=hvc0',
++                         '-drive',
++                         f'file={initrd_path},format=raw,if=none,id=drive0,readonly=on',
++                         '-append', 'root=/dev/nvme0n1 console=tty0 console=hvc0',
+                          '-device', 'pcie-pci-bridge,id=bridge1,bus=pcie.1,addr=0x0',
+-                         '-device', 'nvme,bus=pcie.2,addr=0x0,serial=1234',
++                         '-device', 'nvme,drive=drive0,bus=pcie.2,addr=0x0,serial=1234',
+                          '-device', 'e1000e,bus=bridge1,addr=0x3',
+                          '-device', 'nec-usb-xhci,bus=bridge1,addr=0x2')
+         self.vm.launch()
  
-+static PnvCore *chiptod_power11_tx_ttype_target(PnvChipTOD *chiptod,
-+                                               uint64_t val)
-+{
-+    return chiptod_power10_tx_ttype_target(chiptod, val);
-+}
-+
- static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
-                                     uint64_t val, unsigned size)
- {
-@@ -520,6 +542,42 @@ static const TypeInfo pnv_chiptod_power10_type_info = {
-     }
- };
+         self.wait_for_console_pattern("CPU: " + proc + " generation processor")
+-        self.wait_for_console_pattern("zImage starting: loaded")
+-        self.wait_for_console_pattern("Run /init as init process")
++        self.wait_for_console_pattern("INIT: Starting kernel at ")
++        self.wait_for_console_pattern("Run /sbin/init as init process")
+         # Device detection output driven by udev probing is sometimes cut off
+         # from console output, suspect S14silence-console init script.
  
-+static int pnv_chiptod_power11_dt_xscom(PnvXScomInterface *dev, void *fdt,
-+                             int xscom_offset)
-+{
-+    const char compat[] = "ibm,power-chiptod\0ibm,power11-chiptod";
-+
-+    return pnv_chiptod_dt_xscom(dev, fdt, xscom_offset, compat, sizeof(compat));
-+}
-+
-+static void pnv_chiptod_power11_class_init(ObjectClass *klass, const void *data)
-+{
-+    PnvChipTODClass *pctc = PNV_CHIPTOD_CLASS(klass);
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    PnvXScomInterfaceClass *xdc = PNV_XSCOM_INTERFACE_CLASS(klass);
-+
-+    dc->desc = "PowerNV ChipTOD Controller (Power11)";
-+    device_class_set_props(dc, pnv_chiptod_properties);
-+
-+    xdc->dt_xscom = pnv_chiptod_power11_dt_xscom;
-+
-+    pctc->broadcast_ttype = chiptod_power11_broadcast_ttype;
-+    pctc->tx_ttype_target = chiptod_power11_tx_ttype_target;
-+
-+    pctc->xscom_size = PNV_XSCOM_CHIPTOD_SIZE;
-+}
-+
-+static const TypeInfo pnv_chiptod_power11_type_info = {
-+    .name          = TYPE_PNV11_CHIPTOD,
-+    .parent        = TYPE_PNV_CHIPTOD,
-+    .instance_size = sizeof(PnvChipTOD),
-+    .class_init    = pnv_chiptod_power11_class_init,
-+    .interfaces    = (const InterfaceInfo[]) {
-+        { TYPE_PNV_XSCOM_INTERFACE },
-+        { }
-+    }
-+};
-+
- static void pnv_chiptod_reset(void *dev)
- {
-     PnvChipTOD *chiptod = PNV_CHIPTOD(dev);
-@@ -579,6 +637,7 @@ static void pnv_chiptod_register_types(void)
-     type_register_static(&pnv_chiptod_type_info);
-     type_register_static(&pnv_chiptod_power9_type_info);
-     type_register_static(&pnv_chiptod_power10_type_info);
-+    type_register_static(&pnv_chiptod_power11_type_info);
- }
- 
- type_init(pnv_chiptod_register_types);
-diff --git a/include/hw/ppc/pnv_chiptod.h b/include/hw/ppc/pnv_chiptod.h
-index fde569bcbfa9..466b06560a28 100644
---- a/include/hw/ppc/pnv_chiptod.h
-+++ b/include/hw/ppc/pnv_chiptod.h
-@@ -17,6 +17,8 @@ OBJECT_DECLARE_TYPE(PnvChipTOD, PnvChipTODClass, PNV_CHIPTOD)
- DECLARE_INSTANCE_CHECKER(PnvChipTOD, PNV9_CHIPTOD, TYPE_PNV9_CHIPTOD)
- #define TYPE_PNV10_CHIPTOD TYPE_PNV_CHIPTOD "-POWER10"
- DECLARE_INSTANCE_CHECKER(PnvChipTOD, PNV10_CHIPTOD, TYPE_PNV10_CHIPTOD)
-+#define TYPE_PNV11_CHIPTOD TYPE_PNV_CHIPTOD "-POWER11"
-+DECLARE_INSTANCE_CHECKER(PnvChipTOD, PNV11_CHIPTOD, TYPE_PNV11_CHIPTOD)
- 
- enum tod_state {
-     tod_error = 0,
 -- 
 2.50.1
 
