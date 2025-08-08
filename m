@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E22B1E7DE
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 14:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF8AB1E7E2
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 14:03:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukLnU-0003Od-Lc; Fri, 08 Aug 2025 08:02:10 -0400
+	id 1ukLnZ-0003cF-Hv; Fri, 08 Aug 2025 08:02:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1ukLnJ-0002v0-07
+ id 1ukLnJ-0002v1-07
  for qemu-devel@nongnu.org; Fri, 08 Aug 2025 08:01:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1ukLnE-00076G-Uc
+ id 1ukLnE-00076J-U8
  for qemu-devel@nongnu.org; Fri, 08 Aug 2025 08:01:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1754654510;
@@ -24,35 +24,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=imDXixPIMin3UoifJR9aHiy7BOYjvkrGESKTOnvCu/o=;
- b=Wl27C+b7dj45MqkmekCvGg921lohpY0G8qMU75F/lbbjP5/hINhiAZXlXEW0hTC1m42Meo
- HagwzF+AfvTlhunSTcLaiJ+4dv7zmnX+xmk4qC3DIsME/AFGfCcntiTbsWdy5H0pCJ5Yd4
- oHhel1TaRxD8tuZW0hdo7WVdjtco6uM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=VRDAzl4q6o2ZOj98CGNsHZ+fXsoqdX1zXUVWLEyK8NA=;
+ b=FoEueTarxXvj6lPULzrMLJDf6k3cgdoNA7o00t+GDnH2OaXUmda3ZGc1B0xT5YxVLfpm2R
+ tp2U4h3PRkGmw8vmu4f9GMP7gDmRvqq7gYAI8K03QRFxqtypy/qI+AXqT0c49ByaVLrzFi
+ Ij7fMxrIzhJfLy3MHLC13/PjZfWcGRc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-7sD6mNIJP4WGXmhgNs_1OQ-1; Fri,
- 08 Aug 2025 08:01:47 -0400
-X-MC-Unique: 7sD6mNIJP4WGXmhgNs_1OQ-1
-X-Mimecast-MFC-AGG-ID: 7sD6mNIJP4WGXmhgNs_1OQ_1754654506
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-138-Q6tVC_gUOt2CfudKGbnqeA-1; Fri,
+ 08 Aug 2025 08:01:49 -0400
+X-MC-Unique: Q6tVC_gUOt2CfudKGbnqeA-1
+X-Mimecast-MFC-AGG-ID: Q6tVC_gUOt2CfudKGbnqeA_1754654508
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 20068195608E; Fri,  8 Aug 2025 12:01:46 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8BBA518002CE; Fri,  8 Aug 2025 12:01:48 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 05AD119560AD; Fri,  8 Aug 2025 12:01:43 +0000 (UTC)
+ id 851B519560AD; Fri,  8 Aug 2025 12:01:46 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, pbonzini@redhat.com, peterx@redhat.com, david@redhat.com,
  philmd@linaro.org, mtosatti@redhat.com
-Subject: [PATCH v3 01/10] memory: reintroduce BQL-free fine-grained PIO/MMIO
-Date: Fri,  8 Aug 2025 14:01:28 +0200
-Message-ID: <20250808120137.2208800-2-imammedo@redhat.com>
+Subject: [PATCH v3 02/10] acpi: mark PMTIMER as unlocked
+Date: Fri,  8 Aug 2025 14:01:29 +0200
+Message-ID: <20250808120137.2208800-3-imammedo@redhat.com>
 In-Reply-To: <20250808120137.2208800-1-imammedo@redhat.com>
 References: <20250808120137.2208800-1-imammedo@redhat.com>
 MIME-Version: 1.0
@@ -84,93 +84,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch brings back Jan's idea [1] of BQL-free IO access
+Reading QEMU_CLOCK_VIRTUAL is thread-safe, write access is NOP.
 
-This will let us make access to ACPI PM/HPET timers cheaper,
-and prevent BQL contention in case of workload that heavily
-uses the timers with a lot of vCPUs.
+This makes possible to boot Windows with large vCPUs count when
+hv-time is not used.
 
-1) 196ea13104f (memory: Add global-locking property to memory regions)
-   ... de7ea885c539 (kvm: Switch to unlocked MMIO)
+Reproducer:
+  -M q35,hpet=off -cpu host -enable-kvm -smp 240,sockets=4 -m 8G WS2025.img
+fails to boot within 30min.
+
+With this fix it boots within 2-1min.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 ---
-v3:
-  add comment for 'mr->disable_reentrancy_guard = true'
-    Peter Xu <peterx@redhat.com>
----
- include/system/memory.h | 10 ++++++++++
- system/memory.c         | 15 +++++++++++++++
- system/physmem.c        |  2 +-
- 3 files changed, 26 insertions(+), 1 deletion(-)
+ hw/acpi/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/system/memory.h b/include/system/memory.h
-index e2cd6ed126..d04366c994 100644
---- a/include/system/memory.h
-+++ b/include/system/memory.h
-@@ -833,6 +833,7 @@ struct MemoryRegion {
-     bool nonvolatile;
-     bool rom_device;
-     bool flush_coalesced_mmio;
-+    bool lockless_io;
-     bool unmergeable;
-     uint8_t dirty_log_mask;
-     bool is_iommu;
-@@ -2341,6 +2342,15 @@ void memory_region_set_flush_coalesced(MemoryRegion *mr);
-  */
- void memory_region_clear_flush_coalesced(MemoryRegion *mr);
- 
-+/**
-+ * memory_region_enable_lockless_io: Enable lockless (BQL free) acceess.
-+ *
-+ * Enable BQL-free access for devices with fine-grained locking.
-+ *
-+ * @mr: the memory region to be updated.
-+ */
-+void memory_region_enable_lockless_io(MemoryRegion *mr);
-+
- /**
-  * memory_region_add_eventfd: Request an eventfd to be triggered when a word
-  *                            is written to a location.
-diff --git a/system/memory.c b/system/memory.c
-index 5646547940..44701c465c 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -2546,6 +2546,21 @@ void memory_region_clear_flush_coalesced(MemoryRegion *mr)
-     }
+diff --git a/hw/acpi/core.c b/hw/acpi/core.c
+index 58f8964e13..ff16582803 100644
+--- a/hw/acpi/core.c
++++ b/hw/acpi/core.c
+@@ -547,6 +547,7 @@ void acpi_pm_tmr_init(ACPIREGS *ar, acpi_update_sci_fn update_sci,
+     ar->tmr.timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, acpi_pm_tmr_timer, ar);
+     memory_region_init_io(&ar->tmr.io, memory_region_owner(parent),
+                           &acpi_pm_tmr_ops, ar, "acpi-tmr", 4);
++    memory_region_enable_lockless_io(&ar->tmr.io);
+     memory_region_add_subregion(parent, 8, &ar->tmr.io);
  }
  
-+void memory_region_enable_lockless_io(MemoryRegion *mr)
-+{
-+    mr->lockless_io = true;
-+    /*
-+     * reentrancy_guard has per device scope, that when enabled
-+     * will effectively prevent concurrent access to device's IO
-+     * MemoryRegion(s) by not calling accessor callback.
-+     *
-+     * Turn it off for lock-less IO enabled devices, to allow
-+     * concurrent IO.
-+     * TODO: remove this when reentrancy_guard becomes per transaction.
-+     */
-+    mr->disable_reentrancy_guard = true;
-+}
-+
- void memory_region_add_eventfd(MemoryRegion *mr,
-                                hwaddr addr,
-                                unsigned size,
-diff --git a/system/physmem.c b/system/physmem.c
-index e5dd760e0b..f498572fc8 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -2900,7 +2900,7 @@ bool prepare_mmio_access(MemoryRegion *mr)
- {
-     bool release_lock = false;
- 
--    if (!bql_locked()) {
-+    if (!bql_locked() && !mr->lockless_io) {
-         bql_lock();
-         release_lock = true;
-     }
 -- 
 2.47.1
 
