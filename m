@@ -2,117 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9221CB1E2D7
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48817B1E2D4
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:03:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukH86-0007Rg-Ir; Fri, 08 Aug 2025 03:03:08 -0400
+	id 1ukH77-00067h-J2; Fri, 08 Aug 2025 03:02:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1ukH7Q-0006I8-VU
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:02:29 -0400
-Received: from mout.web.de ([212.227.17.11])
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1ukH70-000611-DK
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:01:58 -0400
+Received: from p-east3-cluster7-host2-snip4-5.eps.apple.com ([57.103.84.146]
+ helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1ukH7N-0005IV-GO
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:02:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
- s=s29768273; t=1754636539; x=1755241339; i=lukasstraub2@web.de;
- bh=kY6T+IZFgTz+axUmLBc82MZSUu7k7YkgyARXRj7Umog=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
- References:MIME-Version:Content-Type:cc:content-transfer-encoding:
- content-type:date:from:message-id:mime-version:reply-to:subject:
- to;
- b=lDbBZG2nOzuRMYPLdqg2MHFYGXe9c8o8F3telhR5maaSAgNmo1XC9mp4m44buo2T
- Rux9IjwfdyAkUWXc0DL9SmZgqx1q4UmSV1zHsWFMulXBPt+gkkNKudv4s9gfKcU3P
- pcu1WFNGutwMlyRHKFmFyC2T13EmmHhMqB44QUfgEkVQv6T+AFSsRkktA2HsrfEIf
- udtjTUcHypJqhZqu4H/mHRvvLngxssAicXaUsgfSMUThh0z/LcygiEJrD3ZHS9KsG
- wU00hdTUyvx/A4H+wlY1qRWBP/Va5x8iGXtkM4JXSy8usmcyjgEAvekaveyfhP6Ck
- UWnJy2XI4xcnwuqYXA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from penguin ([84.133.41.102]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MEUS0-1urPyS439W-009la4; Fri, 08
- Aug 2025 09:02:19 +0200
-Date: Fri, 8 Aug 2025 09:01:28 +0200
-From: Lukas Straub <lukasstraub2@web.de>
-To: Yong Huang <yong.huang@smartx.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Fabiano Rosas
- <farosas@suse.de>
-Subject: Re: [PATCH] multifd: Make the main thread yield periodically to the
- main loop
-Message-ID: <20250808090054.13cb8342@penguin>
-In-Reply-To: <CAK9dgmZb=5uEwVq65Ygcza0+qtng+-5zmtQRdviX2npg_qhJRQ@mail.gmail.com>
-References: <5512220e1005ae2bc7357b2def32639d164e84eb.1754534263.git.yong.huang@smartx.com>
- <20250807113639.66d1c5bf@penguin>
- <CAK9dgmZb=5uEwVq65Ygcza0+qtng+-5zmtQRdviX2npg_qhJRQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1ukH6w-0005De-2Y
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:01:58 -0400
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-east-2d-100-percent-5 (Postfix) with ESMTPS id
+ 0B9931800166; Fri,  8 Aug 2025 07:01:50 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
+ s=sig1; bh=7/sKe2IQUhD/+/UiFUfjhN2aCI2E8McTf09LwleuqSA=;
+ h=From:To:Subject:Date:Message-Id:MIME-Version:x-icloud-hme;
+ b=BQL1xa08E3Df1yRGVJRjZ8PbFjskQ7x5Hq7iNoVEehjvO7of/MI9t4e2L8fJ3fxW+Da+t4XuTkvXAhFz+i7G8Vh3/gt3kIKGRb68dVdRLo5Q7Fd4jDaMCj86RI27UsSfmxyOMFR49ySkRqHuFg6Obel9IIKVczKFMX0zGum7HE7ibelwYAaYX4hFDfGb2SiMpXIDrG+iKYykdkgf5UN3VEoVcp0qm1KCuF6AB4uM6sNOHAnSX8VQVnNyZJJgfuhfMZnrTiiJ7BS3dWRVYPUeBCV5ped3Tax824VrlAebZe406eC8oyu8+frcfNkU3Xu5gtXoK9AWH1YX5F1KYhlsfg==
+X-Client-IP: 46.189.47.18
+Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
+ [17.57.155.37])
+ by p00-icloudmta-asmtp-us-east-2d-100-percent-5 (Postfix) with ESMTPSA id
+ E11AC1800136; Fri,  8 Aug 2025 07:01:48 +0000 (UTC)
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Igor Mammedov <imammedo@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
+ Mads Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>
+Subject: [PATCH v6 05/13] hw/arm, target/arm: nested virtualisation on HVF
+Date: Fri,  8 Aug 2025 09:01:29 +0200
+Message-Id: <20250808070137.48716-6-mohamed@unpredictable.fr>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250808070137.48716-1-mohamed@unpredictable.fr>
+References: <20250808070137.48716-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/gGnbYV52kAMFXmtUKey=5gD";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Provags-ID: V03:K1:0NCxLzQKIB0Q5dZntbybBzCPY3cBJdN3bmSq8do5aCWSU+1pSKv
- x7YTpBG8mDPtNAF+j7SU71isROgcFoT6p66SdZm6345vsFFTM4HjRLJROPgCCRr/WmehcDc
- GoATFUmal5N+Ho8CEIVzL9KzyvAUACZFaoRIZSzLFjHwqbq5vt00vN6o+x9SR7+MwVsypEN
- A1Nrq195LF5lQGRxLanRg==
-UI-OutboundReport: notjunk:1;M01:P0:6+rbDfXhPDo=;7gEr7GbRWinIO811IFn9YxQvMtO
- JeYWOhHlYgUD+lTMQnc8MJKT9af2mz+VF11FcYE8wWaxH6fWmPigjy58B85pHUaahS6RMwM5D
- 1+9AWUeWeIR4zR/3ax2Sd4IVyDN+oL33D/45f9MXxBy3ks+sB/3pO8BWxQRRD6hbzPgXnjAoY
- xawhrEWCZOY9DdxcNlK3OSuklSlamsiFBEV/rXdI8y9SXItbrTu7e7aBcDHgEUXQuWVjQDVu3
- YLqUEmDowzuMIy/I+mDl3T+Acw5PxdjSfAt1yQguWuSiKJxv8qpRLtbvAoB4Ul2puC8bZoEH5
- 57gXRMb00JNo7IGv42ns4Nxk+i1bSP6M9nLYLoHwWN5nlAjHUXCFvyQTcD1EiMAPWAiAtqgiU
- ZFAvX3BA9CW1+oJ0ivZoXbcwTwHMueMv6FSoGY81NCSdLRrh0tbUtXhUdRt+Lb3eEbEN3IS/u
- IHcGB8vXv1FT9aVVw7eOw50r88az3TDOyJ9Cg0SlQAn3NdrmOPiQZR258YpZE7LbMNmdZ5xQO
- BkGLrdv/LxcBQaqzALSG7GzDgeqo/ZsqYbgNSYif+meyB4wrMTSgMWVEe0e1oZurrEmn5z9ur
- uGeayFwnlCCanPjoWDf1uW2JMYO9QYbot6chLhuZJ0CEBd2RKigXqNJJct6xSXPMis2O9ZPhQ
- RFcA1BuosSyRKFBCvzbcFV3Fq1MsJJc/A6RQLIXW/dCmmPlM/UEsvHfJdtoaAwLJHfgTRGPrq
- p2RsNL/f/60wBdDh/Xqz12EqhokZQ4G6I3aPH/E5sze8aGwpn8etr4/jezcN2lDbBWQf84exn
- AVkfkpo3FXkQAfSp36PTMCB7rZPJ+kuw1ogzKruHraUygq6tJzAoz/QZwT9KSHFpUQGtw99KB
- PXQ0kO6h35jOJN3zoCFJyH7LCOQzhE5lgRUmAYnmT/QKhST1SpYzssVPfLgj/iFgrpJf7QJv9
- M/7Yr2P0Wr+Lty0xllXirRnPBXfjpwpTrbvseOvBSxemioGtJwNMo9TPhWaaqlvBMaWX8PmHd
- 2M3mQGFGPQb8m7+alMWSCMq9XTTuf+mVLzkgfW8b6A9qjTKfhGtLV2jjyFDKXQuQJFaUCK+zu
- cFioeZZNScW3d986jvaN+ovaBNA0ymCXtyOwi1UzQCFlq6Hto8mH7LCdxxMPvqiBxRd8TOH1D
- rIV0HohDUq1TnKABz0RVKbHCT4afUVNXmnhJ0J9e5XY8PvRqbW/D0/z0VCLHqGzrclD0MLEsi
- 5fUgTW54ARYJgOr11hvdw0U8VR49nKVbW6kTF8qnscR2mYZzSEuLxF/uAgVmfgw3cD0vEcbnt
- Le/GBf40Y+gkWmzSLZ02QTtCSIpL2UYBjryZ8oDG52+k0Qk/M2g1eswoHBA1vMbmfVpQFMLXB
- v8RpUKbH/7AykfR7oL+0hmgxwW9xhUi4LsynM29pDynjxOK8QCUS7EsK7v6m6kLZtqFy6sUP0
- dYB2Z/sYMtUIgZ8VIHIh6k9JdJ9eZuUq2NLoamFHGym6EdBsNCj+UCzqr+ZW36IL1K1BQpGBC
- 8VnVPIUUPYVfopYHSpxCPHb9S7DhzSf4Gg1pbkNFdVg6K0l8/NTOCdC4NKMOk3x4xnQ5tj6Gk
- 2zs8fMc1QoBun9OBWw+PuCryqkxYJqf+Uh6IYltau6RG6bo8/M2HVoneRutfmnSQeD4Yg4KGc
- 0Qg5SWOEcR4+kTwhDIGjn9pDiX9ucXfMkiLgKvFQ96FUb01aJ+Um2bpTh6aT7Amr7XGSVIUIZ
- nYCzZOuDnN/vPyzVlteaQD0fFgwAPg8jzBQ4dptYmwo8F+S9nL2NTFg/Xv5ZGgwLqFgvy/XWi
- 4Z/kcKeMrs6Y5Tpi/OMSCW3a76/V5wqM9b6eNWO+bLi+W+zARnzNP0NTuT3kJppwe7vk52OLm
- X/3L3snVNf/g6wMdwUtEfv/W7CIsRlegSj+bWTVqozyY4ZReexeOZJHl9KpJyZYQ0/gdVaH9a
- nvyEHjdWHVZNjR4NkIxRfAJK/r6e6CTly5uslnnYmWbgpW726TMLQaulYo0iZfY2IP33/G5yH
- 1T2g9234fzWkZJkQzPY5h6DDYGwy3yCqT6BoHskv5E4jTNOD0YTNkh4E6Nt4vdlzEn2jbsKld
- r3spNbSvqF+XiSiD3pQX1wR90hiZ2DLE04wrl+WRfPncm/Xgsgk0pJQJ3CwIIlMG9GDQMN9qF
- xflXzsuFQpRCaPfYxmnCXi4N0K01CLIfaPX0BisMQvACth1FhtlBQJyWq7A+50bny+TM3213W
- AZaOig56JBY97Ta6+y8k8Dd8gMfDndMWA6hRWZGfDUd6UNAAA27fDw3Q9dRKCNJt1smaXiIpU
- 9XwvuBuQJJDbwZvjxXK7vl4jBeLZAqZKKFYOkgzMQgdxwdHglInjvK/+A7aRpA49S7WHj6OjU
- wIFbcdLVdpGwYrCWlX+UPHXiRoA8/cJCjEE2dFOz4GTkQkClivFPo3asQpvEPzk+Wj8WJ+Kkm
- wEnhl0cSceN3knTLrLJgVgM45xZln+QySiom8uCYU2PeFKI4ghRliRhKmISkXTk3ap8beu8/T
- mIjw/wVQh4BWuGRA7SsPUuRcdk7R5970MADrwE7q3pbo4iGkPjc8N3aHZ5y7xko2UPjKb40pr
- Zbj7l3Hyg0qifyLPQWw4c4UJJInGyCRXWvQQaweeTi3I6PlDGwNASo4R8WNY0+E62657pbUpA
- iU1bXekNgxoObcGoNXLtrVq6jtxZ692R4tPRTT1ReHw2OuH61f6E90btwfnfXpVsMHOZ7/89q
- kgwMiA7W4k0DjUF1Kci9Dol+9w70v5oX0v8Dwgy5R/L8DjW60h46giSo+QA3EdpqvBpwyMgm6
- L2ZlZVdmiuQowrBaFFq1eyORcS0nibMUEu6LloIe0K+DcXu9onY9Wk9Or0kqmTIKLXsy32UU9
- e/3OKCmCcH0kZJc19W43lcvSEZIsTCDTO6uYMXADPz0H6Mz0FLwavnnoaQ5KfyqI0kZIPTNoA
- kD9SHJ7BblLUbZ00aS8tCgI1ez8m5oCpRvYtLvav5gLalm5nZXLno7+nqHdQixxS424xPXyvr
- oRBu+OSqD9KxHrjGaIvLy4ni8UQ8nrX3qdRjccRRiSUHm187S6NrNH1D9xLnTbjqtQVKAcZIN
- Fo1mQ8dF8vqMYcSfodtp9OhsOte4sE3bOGdPawKduCfMALse725NS5OjCCFapKebSCVymGwPM
- WUQa/KaZrZ3p4royvvGvZNuGLrjfNmG3yQB6C/GJ1ZYpLHl2XRvHGfCFXCgHdVMeq3iqtv5wO
- 0af2ranNyoSmfYxat7GV0D5sW8NnzCB1J4ggF5wrVt6+7d1oOpdjnkxNlVQt/i2pa1LXn0hGE
- 9XYHVJEQSaejDBFKG41VdsS0MiVUouloOU6hky9bhFLpp86bldNvOW6OFYndNbiMHLMf1W70s
- Rm/Yrwese8qMfYX0B43/eTHAmqD3lvVTsxOghB0pAmlSrrJzDLt86ZqHQ1jvJorq76jqRVLW7
- bcNYKFidZjKhMU/vXw7LigEFnGrB6dHk=
-Received-SPF: pass client-ip=212.227.17.11; envelope-from=lukasstraub2@web.de;
- helo=mout.web.de
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: buIxocPklJLrKC12GtoOJn-KG8ISKxqt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA1NyBTYWx0ZWRfX2KF4jvGb/Od6
+ 0YtCV+qtafCHk/Hle0hsf79hUxE7sRNPLPFFpJbyf3xV0VXiqmUmZvaS0p7tJz9HZ6YtyMDhNIn
+ xOJjey+sDQULuyabD8x7vYHylkp83ZglGioQkTy0zZD/kRW1ajCs27ZPmXFdgQRx5Gqd1zAW51l
+ 4iSQ1X3Aj7WuwmbYZBHEmoh5QqbzK49IJ7PTjO5tX3Z3zLzuDmnTyie6PVHJGE4t8ixUq8Yuqzu
+ ppizbWlRJFMb5A7RhjBvWORoclst21RzepidlJSIwjCf+Ww2KTxJ0BRq8GEEEm7UJRM9qNmYE=
+X-Proofpoint-GUID: buIxocPklJLrKC12GtoOJn-KG8ISKxqt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-08_01,2025-08-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ adultscore=0 mlxscore=0 clxscore=1030
+ malwarescore=0 spamscore=0 bulkscore=0
+ mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.22.0-2506270000 definitions=main-2508080057
+Received-SPF: pass client-ip=57.103.84.146;
+ envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -130,136 +88,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/gGnbYV52kAMFXmtUKey=5gD
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+---
+ hw/arm/virt.c         |  9 ++++++---
+ target/arm/hvf-stub.c | 15 +++++++++++++++
+ target/arm/hvf/hvf.c  | 41 +++++++++++++++++++++++++++++++++++++++--
+ target/arm/hvf_arm.h  |  3 +++
+ 4 files changed, 63 insertions(+), 5 deletions(-)
 
-On Fri, 8 Aug 2025 10:36:24 +0800
-Yong Huang <yong.huang@smartx.com> wrote:
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 59e6c2b9df..91d8cd9363 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -817,8 +817,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+         g_assert_not_reached();
+     }
+ 
+-    if (kvm_enabled() && vms->virt &&
+-        (revision != 3 || !kvm_irqchip_in_kernel())) {
++    if (kvm_enabled() && vms->virt && (revision != 3 || !kvm_irqchip_in_kernel())) {
+         error_report("KVM EL2 is only supported with in-kernel GICv3");
+         exit(1);
+     }
+@@ -2281,7 +2280,8 @@ static void machvirt_init(MachineState *machine)
+         exit(1);
+     }
+ 
+-    if (vms->virt && !kvm_enabled() && !tcg_enabled() && !qtest_enabled()) {
++    if (vms->virt && !kvm_enabled() && !tcg_enabled()
++       && !hvf_enabled() && !qtest_enabled()) {
+         error_report("mach-virt: %s does not support providing "
+                      "Virtualization extensions to the guest CPU",
+                      current_accel_name());
+@@ -2553,6 +2553,9 @@ static void virt_set_virt(Object *obj, bool value, Error **errp)
+     VirtMachineState *vms = VIRT_MACHINE(obj);
+ 
+     vms->virt = value;
++#if defined(CONFIG_HVF) && defined(__aarch64__)
++    hvf_arm_el2_enable(value);
++#endif
+ }
+ 
+ static bool virt_get_highmem(Object *obj, Error **errp)
+diff --git a/target/arm/hvf-stub.c b/target/arm/hvf-stub.c
+index ff137267a0..95ec4ea62f 100644
+--- a/target/arm/hvf-stub.c
++++ b/target/arm/hvf-stub.c
+@@ -18,3 +18,18 @@ uint32_t hvf_arm_get_max_ipa_bit_size(void)
+ {
+     g_assert_not_reached();
+ }
++
++bool hvf_arm_el2_supported(void)
++{
++    g_assert_not_reached();
++}
++
++bool hvf_arm_el2_enabled(void)
++{
++    g_assert_not_reached();
++}
++
++void hvf_arm_el2_enable(bool)
++{
++    g_assert_not_reached();
++}
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 460782dbc0..483a50329b 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -26,6 +26,7 @@
+ #include "system/address-spaces.h"
+ #include "system/memory.h"
+ #include "hw/boards.h"
++#include "hw/arm/virt.h"
+ #include "hw/irq.h"
+ #include "qemu/main-loop.h"
+ #include "system/cpus.h"
+@@ -891,6 +892,10 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+                      (1ULL << ARM_FEATURE_PMU) |
+                      (1ULL << ARM_FEATURE_GENERIC_TIMER);
+ 
++    if (hvf_arm_el2_enabled()) {
++        ahcf->features |= 1ULL << ARM_FEATURE_EL2;
++    }
++
+     for (i = 0; i < ARRAY_SIZE(regs); i++) {
+         r |= hv_vcpu_config_get_feature_reg(hv_vcpu_config, regs[i].reg, regs[i].val);
+     }
+@@ -958,6 +963,25 @@ uint32_t hvf_arm_get_max_ipa_bit_size(void)
+     return round_down_to_parange_bit_size(max_ipa_size);
+ }
+ 
++bool hvf_arm_el2_supported(void)
++{
++    bool is_nested_virt_supported;
++    hv_return_t ret = hv_vm_config_get_el2_supported(&is_nested_virt_supported);
++    assert_hvf_ok(ret);
++    return is_nested_virt_supported;
++}
++
++static bool is_nested_virt_enabled = false;
++bool hvf_arm_el2_enabled(void)
++{
++    return is_nested_virt_enabled;
++}
++
++void hvf_arm_el2_enable(bool enable)
++{
++    is_nested_virt_enabled = enable;
++}
++
+ void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu)
+ {
+     if (!arm_host_cpu_features.dtb_compatible) {
+@@ -994,6 +1018,13 @@ hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
+     }
+     chosen_ipa_bit_size = pa_range;
+ 
++    if (hvf_arm_el2_enabled()) {
++        ret = hv_vm_config_set_el2_enabled(config, true);
++        if (ret != HV_SUCCESS) {
++            goto cleanup;
++        }
++    }
++
+     ret = hv_vm_create(config);
+ 
+ cleanup:
+@@ -1101,6 +1132,13 @@ static void hvf_psci_cpu_off(ARMCPU *arm_cpu)
+     assert(ret == QEMU_ARM_POWERCTL_RET_SUCCESS);
+ }
+ 
++static int hvf_psci_get_target_el(void)
++{
++    if (hvf_arm_el2_enabled()) {
++        return 2;
++    }
++    return 1;
++}
+ /*
+  * Handle a PSCI call.
+  *
+@@ -1122,7 +1160,6 @@ static bool hvf_handle_psci_call(CPUState *cpu)
+     CPUState *target_cpu_state;
+     ARMCPU *target_cpu;
+     target_ulong entry;
+-    int target_el = 1;
+     int32_t ret = 0;
+ 
+     trace_hvf_psci_call(param[0], param[1], param[2], param[3],
+@@ -1176,7 +1213,7 @@ static bool hvf_handle_psci_call(CPUState *cpu)
+         entry = param[2];
+         context_id = param[3];
+         ret = arm_set_cpu_on(mpidr, entry, context_id,
+-                             target_el, target_aarch64);
++                             hvf_psci_get_target_el(), target_aarch64);
+         break;
+     case QEMU_PSCI_0_1_FN_CPU_OFF:
+     case QEMU_PSCI_0_2_FN_CPU_OFF:
+diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
+index ea82f2691d..bf55e7ae28 100644
+--- a/target/arm/hvf_arm.h
++++ b/target/arm/hvf_arm.h
+@@ -24,5 +24,8 @@ void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
+ 
+ uint32_t hvf_arm_get_default_ipa_bit_size(void);
+ uint32_t hvf_arm_get_max_ipa_bit_size(void);
++bool hvf_arm_el2_supported(void);
++bool hvf_arm_el2_enabled(void);
++void hvf_arm_el2_enable(bool);
+ 
+ #endif
+-- 
+2.39.5 (Apple Git-154)
 
-> On Thu, Aug 7, 2025 at 5:36=E2=80=AFPM Lukas Straub <lukasstraub2@web.de>=
- wrote:
->=20
-> > On Thu,  7 Aug 2025 10:41:17 +0800
-> > yong.huang@smartx.com wrote:
-> > =20
-> > > From: Hyman Huang <yong.huang@smartx.com>
-> > >
-> > > When there are network issues like missing TCP ACKs on the send
-> > > side during the multifd live migration. At the send side, the error
-> > > "Connection timed out" is thrown out and source QEMU process stop
-> > > sending data, at the receive side, The IO-channels may be blocked
-> > > at recvmsg() and thus the main loop gets stuck and fails to respond
-> > > to QMP commands consequently.
-> > > ... =20
-> >
-> > Hi Hyman Huang,
-> >
-> > Have you tried the 'yank' command to shutdown the sockets? It exactly
-> > meant to recover from hangs and should solve your issue.
-> >
-> > https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html#yank-feature=
- =20
->=20
->=20
-> Thanks for the comment and advice.
->=20
-> Let me give more details about the migration state when the issue happens:
->=20
-> On the source side, libvirt has already aborted the migration job:
->=20
-> $ virsh domjobinfo fdecd242-f278-4308-8c3b-46e144e55f63
-> Job type:         Failed
-> Operation:        Outgoing migration
->=20
-> QMP query-yank shows that there is no migration yank instance:
->=20
-> $ virsh qemu-monitor-command fdecd242-f278-4308-8c3b-46e144e55f63
-> '{"execute":"query-yank"}' --pretty
-> {
->   "return": [
->     {
->       "type": "chardev",
->       "id": "charmonitor"
->     },
->     {
->       "type": "chardev",
->       "id": "charchannel0"
->     },
->     {
->       "type": "chardev",
->       "id": "libvirt-2-virtio-format"
->     }
->   ],
->   "id": "libvirt-5217"
-> }
-
-You are supposed to run it on the destination side, there the migration
-yank instance should be present if qemu hangs in the migration code.
-
-Also, you need to execute it as an out-of-band command to bypass the
-main loop. Like this:
-
-'{"exec-oob": "yank", "id": "yank0", "arguments": {"instances": [ {"type": =
-"migration"} ] } }'
-
-I'm not sure if libvirt can do that, maybe you need to add an
-additional qmp socket and do it outside of libvirt. Note that you need
-to enable the oob feature during qmp negotiation, like this:
-
-'{ "execute": "qmp_capabilities", "arguments": { "enable": [ "oob" ] } }'
-
-Regards,
-Lukas Straub
-
->=20
-> The libvirt migration job is stuck as the following backtrace shows; it
-> shows that migration is waiting for the "Finish" RPC on the destination
-> side to return.
->=20
-> ...
->=20
-> IMHO, the key reason for the issue is that QEMU fails to run the main loop
-> and fails to respond to QMP, which is not what we usually expected.
->=20
-> Giving the Libvirt a window of time to issue a QMP and kill the VM is the
-> ideal solution for this issue; this provides an automatic method.
->=20
-> I do not dig the yank feature, perhaps it is helpful, but only manually?
->=20
-> After all, these two options are not exclusive of one another,  I think.
->=20
->=20
-> >
-> > Best regards,
-> > Lukas Straub
-> > =20
->=20
-> Thanks,
-> Yong
->=20
-
-
---Sig_/gGnbYV52kAMFXmtUKey=5gD
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmiVoMgACgkQNasLKJxd
-slhCIw/+L7wpy4/nO2ywrnXgorAUIzG3VamIUGc4JWamAJmUja+M3ajCk7x2gs1J
-mh44WXjs8dbsEPS/2/NmY5637dPR8V8siuFA9ZJ6HcyePGw9Q6Put58FuH2JOgiM
-CYgH7aqY9wYHJ2dSxdj1SfJ/QW9gOnz61YxUKe6izj0Mo8uWmnyZgE7TOZWEgLrm
-LpxBhcTZ2ed7FUtJ+RWx4hzDaXt2Cck+qx2WrxwFM2zXrOM8IqoK/GEMr7+VU3wk
-pMOWjZcAziab6Z56dg5Uzgq3Q0f+ygUCKoOXLVlAyegW7XSMKfkXnXagN8VAtGzX
-ncEOEWuQV3FStXcheFSWMqEt/gI4GXc7mpZEH81MGszmjtDNxHggYUtMjSnglkmZ
-laJuKT1WJxnbKNkCmLG8T3UKh0dxMCIHnH1SbQ+q1ksYqw97FUGQS2zQCSNIexf1
-VVDvHzcR69FFJW6d1eftlck8bB37tqHoK6pashpL+DqCo+GUrwCKPSYZWWQd7So9
-Jt1JFc42WWuAFNfOJgbHRaXcLXYpRKgiCB4nR4J37/mE+C7F+XY0oxWnd6cOR8yx
-QUL1IlQwh9X5UWL09wWBdzzr61mUhhF80Br6q2EoKbjEYMxJ0By4AQLg/wL5U0Ly
-HWtgUnSBE16BK/i0SqSK4s+VCh3uhvoc1dEObKWks8a4VRH/v1w=
-=bQOW
------END PGP SIGNATURE-----
-
---Sig_/gGnbYV52kAMFXmtUKey=5gD--
 
