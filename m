@@ -2,120 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE9CB1E311
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B05B1E2FB
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:18:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukHNj-0006D4-01; Fri, 08 Aug 2025 03:19:15 -0400
+	id 1ukHMK-0001Co-4D; Fri, 08 Aug 2025 03:17:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1ukHNG-0005g0-QW
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:18:49 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ukHKr-0006oR-OV
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:16:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1ukHNE-0007h0-NM
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:18:46 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ukHKh-0007HH-8I
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 03:16:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754637523;
+ s=mimecast20190719; t=1754637361;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IrmyOFbIa0k81LCSi2crfagyGp2pAVLdS4CCVD46SsM=;
- b=VQ3/0TpW91BAfmABgMB08zXwnBreoYMLBzea+v1WIWCRaHw0h75FR97nohFHO8zkFTQ64p
- ml1YMdDmdDLsa8p8ly13DJWIj/GXbx5zX8XhgqY5IOKorC9N5AYBuAVXYSc/URGHLFL2Ml
- XXqrgU5md8F+4c0PpLsjAP8KpD9GNl8=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=qLOmI8IlBtbgrQnUFHvVhlMj2g53HioXDwBsgVDQCOk=;
+ b=PVrDxJ4TSdOB/0YGEXcFUTuyZkgQrrtsxDk03Hyw9Wi4U7t9eU5523ABuk0FUJq6qBR/3g
+ KUxp1Kg5LynnxvOjtI4Y4mT9JRp9uGuGEHC6sdUx7LSVZK4QDEer1v58m8hwdRrmgjxCsN
+ 8tumurJlFYfsGb+iEVN9kgxLd88vHQ0=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-166-ot2Vc4ODO1OssiTVa95pcA-1; Fri, 08 Aug 2025 03:18:42 -0400
-X-MC-Unique: ot2Vc4ODO1OssiTVa95pcA-1
-X-Mimecast-MFC-AGG-ID: ot2Vc4ODO1OssiTVa95pcA_1754637521
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-b3510c0cfc7so1448969a12.2
- for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 00:18:41 -0700 (PDT)
+ us-mta-578-7M8izIrsOkua6vuKeQ91cw-1; Fri, 08 Aug 2025 03:15:59 -0400
+X-MC-Unique: 7M8izIrsOkua6vuKeQ91cw-1
+X-Mimecast-MFC-AGG-ID: 7M8izIrsOkua6vuKeQ91cw_1754637359
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-7075a0b5580so33724766d6.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 00:15:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754637521; x=1755242321;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IrmyOFbIa0k81LCSi2crfagyGp2pAVLdS4CCVD46SsM=;
- b=aXBzekfS9X36kWMV44hCZmNpZz/Vju8MG+Q0v3r6t/gDnOsx9FON2GRb94dG7tuNwT
- PNya/5bum9gg8F7mmURaxPnVXbTWGxIQWYNA0rC2lTXrxOTTeJDZx5UsVDHJYgy0nEEp
- 0pHJgu9q6zLCUD4LJ4AZKTkjDFmyv0RFPvToOFMYoOzJ4zN+om9mmr5ZnJ2Ysn/phXbX
- SRH8h37RZkGG7t4cIsqK57YqcovQEQdobw2f96Up+/46L9HiAdqjXE05uXcVoJUL36UJ
- /dTa7j4e5VLQhskv6kDGuyitou1hGvDqFy6ZqeUmlmo2bvxtNP0UpFaFz/rJaM3JDfVg
- mhFQ==
-X-Gm-Message-State: AOJu0YxNQF7PYjYJMUpxBEZINZ9aceRwz2m11LmLdM9DQ/+yhsr7TmJJ
- d2iRKbWk1NjpXEDdSzGih9TYk6OtSqS6iCHqb2N8F7zn9enflWcLC7dZk0yQWdzOzafsjpc51tm
- YypHlLQtEvMuyPffaTI/OTTDqAek+PYFahMV0Y3utLpmH9H/1PCAWhw2W
-X-Gm-Gg: ASbGnctE9A3KKWBQ+k0FKOl7FkAC4SLXCT9ncoD41o7mKhvnJ+Sv8JiR2AK2Ln8l+lK
- tGSrTWEKy5dBOy7Nq59wDwOeoRsIKx/n0or3HqP8Ru89VjfBI1Ymqd2gfT3nRLPLJD/LnsLEoza
- aOCi8Q2pKbV1Fy8tEHnwPlfxSo+D6bgZ0arlwuOiFMxmwrcXIMw5TizHmxymN4masCUjx8jsJyx
- PEiAPb1vxe2iRwmKIIokrvByVsNY2Ggni2vY8FPLNxarGcC2ANj1SL+thF2B+upikjv8Riyttt+
- hlRIFK2vFmy4o32HegEKNKITxiLWhMUm7VTEEm8pRV8+UGNrtkZI3A==
-X-Received: by 2002:a17:903:228b:b0:235:e8da:8d1 with SMTP id
- d9443c01a7336-242c1fdbfeamr25500065ad.8.1754637520978; 
- Fri, 08 Aug 2025 00:18:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEgz4KCTbP/K0Jimapi/eR1PeFrNrZ93XCRTyx0/8bn21dz+LvpqCkQy1qqd9l19+5HHQFX0Q==
-X-Received: by 2002:a17:903:228b:b0:235:e8da:8d1 with SMTP id
- d9443c01a7336-242c1fdbfeamr25499555ad.8.1754637520527; 
- Fri, 08 Aug 2025 00:18:40 -0700 (PDT)
-Received: from armenon-kvm.bengluru.csb ([49.36.101.237])
+ d=1e100.net; s=20230601; t=1754637359; x=1755242159;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qLOmI8IlBtbgrQnUFHvVhlMj2g53HioXDwBsgVDQCOk=;
+ b=EBB2PB3caKI3Qfpl6SGBcPp1tYOBYT5luVBBxUAC2nrBVCbGEzcnmMpn2fERr4c3zP
+ xMuK2BQ+I/VfuWYWzUO4oIxK9FCmwJZKuyPoSsrVvfBgzeT62UWXlfzTXG/Pl1wKfkrv
+ UEGmGnz2+2JZEZ7pY0f4FY1d3S0tuhxn9WtPbEp+X7Qnhf8YSc/lNcvJKQx/3DHLQwxN
+ 6QKHkQbfnNZaH3+jKqeuqpH9itVAkzFW82zmca9Cru02moeGs9qKs+lFega8WlyIIYAt
+ PC0Hf1mw0tu8i5e07RBqTGtw9KkIQGxJNRLxunh6oQhqh4TPVyce3L/zzeh8fYMFlsBd
+ MxTw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXDUO3Bk4AM84lMcoqsHAOctdgkCX4NYFjukxRPVY2/3+wODXq+PdwfMoiRYSu162gbeOIxx5QH0S8n@nongnu.org
+X-Gm-Message-State: AOJu0YwFzvj9L+nGGvBfOBeZ7EphDXgiCw+5KbaSaxY+YqegeZhzBrHp
+ iETzXXFTmEOekv/ixXU//4E1faDzWIuY9GNrb9LBG2YtWsU1BaiiJJEJYw1JHdKpLZg8bXJhR3w
+ e/pAJ8F5L8+iElyTqOvL7VXwjiVY1ZQiplkNC+ulrf0GIVql2nkCzSVOk
+X-Gm-Gg: ASbGncvsn71cbkz6Tyk+jkZPZmXCz1K+dfpimUlykl1fgVo5hCuv+qS8p3VUBiOET46
+ b1GQeS/c/To8lKgQ1CUohUYQwBF1ZB5+HS0rBVSpnDeootB6hkq+V9RRl1ZijiM/w9A5WWB4mMP
+ rsvgaRB3TKyziCLXpFcJV2x7smRLo3vAD25Zxf96j+KGMLBdExI2sE2YuRDDB9CIfsv6yegUjqi
+ 4DQMnZayKu7lV6JrBZz913xJ4INclKoHzenHle3uj7JQBqwqR3gOi5iKcEyc27PHK7U9foPGTHK
+ 9dY1yb9XGTYD/i82TQpRPJ7SRk4naLFraCrO34eIxj6VXM+71VOEaYzA3GkiiTEXbWqdW6IBpLn
+ I3w==
+X-Received: by 2002:a05:6214:600b:b0:709:9f2e:6b61 with SMTP id
+ 6a1803df08f44-7099f2e6c5bmr10673896d6.21.1754637359348; 
+ Fri, 08 Aug 2025 00:15:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGONpWk2UpgSaRYRUPQqU6zInU2DWV0Co9EQmOS9jTdATYFBPIcqscpwWnxdiYrjCLzVElUMQ==
+X-Received: by 2002:a05:6214:600b:b0:709:9f2e:6b61 with SMTP id
+ 6a1803df08f44-7099f2e6c5bmr10673696d6.21.1754637358818; 
+ Fri, 08 Aug 2025 00:15:58 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241e899d347sm199659385ad.140.2025.08.08.00.18.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Aug 2025 00:18:40 -0700 (PDT)
-From: Arun Menon <armenon@redhat.com>
-Date: Fri, 08 Aug 2025 12:43:53 +0530
-Subject: [PATCH v10 27/27] backends/tpm: Propagate vTPM error on migration
- failure
+ 6a1803df08f44-7077ca3621asm110601706d6.33.2025.08.08.00.15.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Aug 2025 00:15:58 -0700 (PDT)
+Message-ID: <5b9e0a81-c2d9-4c55-b761-a43a69ec400c@redhat.com>
+Date: Fri, 8 Aug 2025 09:15:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250808-propagate_tpm_error-v10-27-3e81a1d419b2@redhat.com>
-References: <20250808-propagate_tpm_error-v10-0-3e81a1d419b2@redhat.com>
-In-Reply-To: <20250808-propagate_tpm_error-v10-0-3e81a1d419b2@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, 
- Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Matthew Rosato <mjrosato@linux.ibm.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Steve Sistare <steven.sistare@oracle.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, 
- Hailiang Zhang <zhanghailiang@xfusion.com>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
- Arun Menon <armenon@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6695; i=armenon@redhat.com;
- h=from:subject:message-id; bh=qkfEA7ojmGiLCP4BOBgR+X9tFhQoPaG7uEYFJBJjL/Q=;
- b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ8bUxddmnF1avtRZ7b69UumBRctZZnk3PXy4cYkqw5XFh
- nIKl9nPdJSyMIhxMciKKbI0fA2QbQoojIi0fXkdZg4rE8gQBi5OAZiI9g6G/8EbtgTPVvj3S32R
- gu/FDcH3d+RYLAtas0Voy1Ym4Z2dorMZ/sqEqE/rWnn3y7r+ZLH/Rt+qj+2eabu78tjx6uuBou0
- vmtgA
-X-Developer-Key: i=armenon@redhat.com; a=openpgp;
- fpr=80F5501D82507158593DE9D76A7A2538D90F328E
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armenon@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/2] Deprecate Power8E and Power8NVL
+To: Aditya Gupta <adityag@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+References: <20250607110412.2342511-1-adityag@linux.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250607110412.2342511-1-adityag@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -140,146 +159,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- When migration of a VM with encrypted vTPM fails on the
-  destination host, (e.g., due to a mismatch in secret values),
-  the error message displayed on the source host is generic and unhelpful.
-- For example, a typical error looks like this:
-  "operation failed: job 'migration out' failed: Sibling indicated error 1.
-  operation failed: job 'migration in' failed: load of migration failed:
-  Input/output error"
-- Such generic errors are logged using error_report(), which prints to
-  the console/monitor but does not make the detailed error accessible via
-  the QMP query-migrate command.
-- This change, along with the set of changes of passing errp Error object
-  to the VM state loading functions, help in addressing the issue.
-  We use the post_load_errp hook of VMStateDescription to propagate errors
-  by setting Error **errp objects in case of failure in the TPM backend.
-- It can then be retrieved using QMP command:
-  {"execute" : "query-migrate"}
+On 6/7/25 13:04, Aditya Gupta wrote:
+> Note: No changes, only change compared to v6 is rebased to upstream
+> 
+> Power8E and Power8NVL are not maintained, and not useful to qemu, and
+> upstream skiboot also has removed support till Power8 DD1.
+> Power8NVL CPU doesn't boot since skiboot v7.0, or following skiboot commit
+> to be exact:
+> 
+>      commit c5424f683ee3 ("Remove support for POWER8 DD1")
+> 
+> No direct way to deprecate the pnv chips, a field like deprecation_note
+> could be added, but felt not needed as the chip will only get used if
+> the user requests corresponding 8E / 8NVL CPU, which will print
+> deprecation warning.
+> 
+> Also, no separate pnv machine for 8E and 8NVL, user has to pass --cpu,
+> which will throw the deprecation warning. So just deprecating CPUs should
+> be enough.
+> 
+> Changelog
+> =========
+> v7:
+>    + rebased to upstream
+> v6:
+>    + change qemu version from 10.0 to 10.1 in doc
+> v5 (https://lore.kernel.org/qemu-devel/20250422043843.26115-1-adityag@linux.ibm.com/):
+>    + split into 2 patches, defining macro, and deprecating 8e & 8nvl
+> v4 (https://lore.kernel.org/qemu-devel/20250330211012.2932258-1-adityag@linux.ibm.com/):
+>    + remove unnecessary 'if'
+> v3:
+>    + add 'deprecation_note' argument to the POWERPC_DEPRECATED_CPU macro
+> v2:
+>    + add mention to docs/about/deprecated.rst
+>    + add '(deprecated)' in output of qemu-system-ppc64 --cpu help
+> 
+> Base Commit: 96215036f47403438c7c7869b7cd419bd7a11f82
+> 
+> Aditya Gupta (2):
+>    target/ppc: Introduce macro for deprecating PowerPC CPUs
+>    target/ppc: Deprecate Power8E and Power8NVL
+> 
+>   docs/about/deprecated.rst |  9 +++++++++
+>   target/ppc/cpu-models.c   | 20 +++++++++++++++-----
+>   target/ppc/cpu_init.c     |  7 ++++++-
+>   3 files changed, 30 insertions(+), 6 deletions(-)
+> 
 
-Buglink: https://issues.redhat.com/browse/RHEL-82826
+It's too late for QEMU 10.1. Let's not forget these for the next cycle.
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Arun Menon <armenon@redhat.com>
----
- backends/tpm/tpm_emulator.c | 40 +++++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 19 deletions(-)
+Thanks,
 
-diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
-index 4a234ab2c0b19b2604bf0dd8cb5f4540c72a9438..dacfca5ab7eb0445ddc1ced97513068501b468bf 100644
---- a/backends/tpm/tpm_emulator.c
-+++ b/backends/tpm/tpm_emulator.c
-@@ -819,7 +819,8 @@ static int tpm_emulator_get_state_blobs(TPMEmulator *tpm_emu)
- static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-                                        uint32_t type,
-                                        TPMSizedBuffer *tsb,
--                                       uint32_t flags)
-+                                       uint32_t flags,
-+                                       Error **errp)
- {
-     ssize_t n;
-     ptm_setstate pss;
-@@ -838,17 +839,18 @@ static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-     /* write the header only */
-     if (tpm_emulator_ctrlcmd(tpm_emu, CMD_SET_STATEBLOB, &pss,
-                              offsetof(ptm_setstate, u.req.data), 0, 0) < 0) {
--        error_report("tpm-emulator: could not set state blob type %d : %s",
--                     type, strerror(errno));
-+        error_setg_errno(errp, errno,
-+                         "tpm-emulator: could not set state blob type %d",
-+                         type);
-         return -1;
-     }
- 
-     /* now the body */
-     n = qemu_chr_fe_write_all(&tpm_emu->ctrl_chr, tsb->buffer, tsb->size);
-     if (n != tsb->size) {
--        error_report("tpm-emulator: Writing the stateblob (type %d) "
--                     "failed; could not write %u bytes, but only %zd",
--                     type, tsb->size, n);
-+        error_setg(errp, "tpm-emulator: Writing the stateblob (type %d) "
-+                   "failed; could not write %u bytes, but only %zd",
-+                   type, tsb->size, n);
-         return -1;
-     }
- 
-@@ -856,17 +858,17 @@ static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-     n = qemu_chr_fe_read_all(&tpm_emu->ctrl_chr,
-                              (uint8_t *)&pss, sizeof(pss.u.resp));
-     if (n != sizeof(pss.u.resp)) {
--        error_report("tpm-emulator: Reading response from writing stateblob "
--                     "(type %d) failed; expected %zu bytes, got %zd", type,
--                     sizeof(pss.u.resp), n);
-+        error_setg(errp, "tpm-emulator: Reading response from writing "
-+                   "stateblob (type %d) failed; expected %zu bytes, "
-+                   "got %zd", type, sizeof(pss.u.resp), n);
-         return -1;
-     }
- 
-     tpm_result = be32_to_cpu(pss.u.resp.tpm_result);
-     if (tpm_result != 0) {
--        error_report("tpm-emulator: Setting the stateblob (type %d) failed "
--                     "with a TPM error 0x%x %s", type, tpm_result,
--                     tpm_emulator_strerror(tpm_result));
-+        error_setg(errp, "tpm-emulator: Setting the stateblob (type %d) "
-+                   "failed with a TPM error 0x%x %s", type, tpm_result,
-+                   tpm_emulator_strerror(tpm_result));
-         return -1;
-     }
- 
-@@ -880,7 +882,7 @@ static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-  *
-  * Returns a negative errno code in case of error.
-  */
--static int tpm_emulator_set_state_blobs(TPMBackend *tb)
-+static int tpm_emulator_set_state_blobs(TPMBackend *tb, Error **errp)
- {
-     TPMEmulator *tpm_emu = TPM_EMULATOR(tb);
-     TPMBlobBuffers *state_blobs = &tpm_emu->state_blobs;
-@@ -894,13 +896,13 @@ static int tpm_emulator_set_state_blobs(TPMBackend *tb)
- 
-     if (tpm_emulator_set_state_blob(tpm_emu, PTM_BLOB_TYPE_PERMANENT,
-                                     &state_blobs->permanent,
--                                    state_blobs->permanent_flags) < 0 ||
-+                                    state_blobs->permanent_flags, errp) < 0 ||
-         tpm_emulator_set_state_blob(tpm_emu, PTM_BLOB_TYPE_VOLATILE,
-                                     &state_blobs->volatil,
--                                    state_blobs->volatil_flags) < 0 ||
-+                                    state_blobs->volatil_flags, errp) < 0 ||
-         tpm_emulator_set_state_blob(tpm_emu, PTM_BLOB_TYPE_SAVESTATE,
-                                     &state_blobs->savestate,
--                                    state_blobs->savestate_flags) < 0) {
-+                                    state_blobs->savestate_flags, errp) < 0) {
-         return -EIO;
-     }
- 
-@@ -948,12 +950,12 @@ static void tpm_emulator_vm_state_change(void *opaque, bool running,
-  *
-  * Returns negative errno codes in case of error.
-  */
--static int tpm_emulator_post_load(void *opaque, int version_id)
-+static int tpm_emulator_post_load(void *opaque, int version_id, Error **errp)
- {
-     TPMBackend *tb = opaque;
-     int ret;
- 
--    ret = tpm_emulator_set_state_blobs(tb);
-+    ret = tpm_emulator_set_state_blobs(tb, errp);
-     if (ret < 0) {
-         return ret;
-     }
-@@ -969,7 +971,7 @@ static const VMStateDescription vmstate_tpm_emulator = {
-     .name = "tpm-emulator",
-     .version_id = 0,
-     .pre_save = tpm_emulator_pre_save,
--    .post_load = tpm_emulator_post_load,
-+    .post_load_errp = tpm_emulator_post_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(state_blobs.permanent_flags, TPMEmulator),
-         VMSTATE_UINT32(state_blobs.permanent.size, TPMEmulator),
-
--- 
-2.50.1
+C.
 
 
