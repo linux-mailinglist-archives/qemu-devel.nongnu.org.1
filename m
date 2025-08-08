@@ -2,75 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18435B1E3F3
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B587B1E450
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 10:23:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukHzN-0000Yo-Ep; Fri, 08 Aug 2025 03:58:09 -0400
+	id 1ukIMz-0001Yi-MZ; Fri, 08 Aug 2025 04:22:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ukHzJ-0000XJ-RU; Fri, 08 Aug 2025 03:58:05 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1ukIMr-0001Xl-73
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:22:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ukHzI-00050v-28; Fri, 08 Aug 2025 03:58:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754639884; x=1786175884;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=f17BCqH/n87YEHOn/wUQzGafUtKeGj3M1STeSfJLWAM=;
- b=e/6YdPtbN1ULB3R+kh1p50UHEVfMukwEpFnYgJXltq07UdmkTp9dGg+P
- JFD1H/2D50NgdUbpw0zoALFQQnWQyTVAZuKzw/az/FVylSinGJoNE3jb1
- /Mvsq+JTKIq1cbSyPfnoCep+DY5qQH8u04ORgTt2zBslxkqaPAnZ/Dt68
- qxjOvuu37QdgyFWn7oigkGhbgDacXati2oHn2Ylnl+imb7Jv+hnaYztae
- JQpPTBedPnAEGxcd5rcOQg7DOJlFEA5CBQhtXWUOF2s06PO5tAPbMIPzf
- bhRIhvVWySvuI1PI4cXRME8g/o/VXuzIJqbGpClEaocXfd4JV39NXCeIw w==;
-X-CSE-ConnectionGUID: FU3HZwO4Q7qynmwM1w/Tpw==
-X-CSE-MsgGUID: WJ3+xd+CRoifOHKnoMmC9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="57116937"
-X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; d="scan'208";a="57116937"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2025 00:57:53 -0700
-X-CSE-ConnectionGUID: 9l6oqGecRcmwZdnWDR2Oyg==
-X-CSE-MsgGUID: opw0ZfZRQTi8bPUWYgFwZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; d="scan'208";a="164786127"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 08 Aug 2025 00:57:50 -0700
-Date: Fri, 8 Aug 2025 16:19:30 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Junjie Mao <junjie.mao@hotmail.com>,
- qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Chuanxiao Dong <chuanxiao.dong@intel.com>
-Subject: Re: [RFC 12/26] rcu: Make rcu_read_lock & rcu_read_unlock not inline
-Message-ID: <aJWzEoIX+MdRuTUK@intel.com>
-References: <20250807123027.2910950-1-zhao1.liu@intel.com>
- <20250807123027.2910950-13-zhao1.liu@intel.com>
- <262b5b35-e8f4-4bd7-8e7c-0d2acc2c9742@redhat.com>
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1ukIMn-0008Vu-EZ
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:22:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754641338;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=3wgrZDDLhToR7A4ZXVeTiRcGyYTPAAfPkrCsa6nZhzY=;
+ b=C70yGPEUOJPRo8gDx4u65jeRkJtTr8To0qbAKiL9xw8D8zsl94fK7bcTdlvSbf5FrqDaHn
+ 0c0xoTrdNK8DCi3A9tBjG/BWyFkMd+RMGJbVrAMExVgvEdxrYzbV11l22ux2/pWxp7W4EJ
+ EyB3D7DlAStCbno/T+fxAcjU9vkqFU4=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-259-81LvAU4xPEaWb7MmNOt7PQ-1; Fri, 08 Aug 2025 04:22:16 -0400
+X-MC-Unique: 81LvAU4xPEaWb7MmNOt7PQ-1
+X-Mimecast-MFC-AGG-ID: 81LvAU4xPEaWb7MmNOt7PQ_1754641336
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-31ed2a7d475so2062042a91.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 01:22:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754641335; x=1755246135;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3wgrZDDLhToR7A4ZXVeTiRcGyYTPAAfPkrCsa6nZhzY=;
+ b=In8tMHqafvjCLtu47XR8NTNL40THKUxiy4MbJBndb0MAjrjyDJ9h5bS7pSXw74WsCK
+ SP5EeFip+ywYu3ZPJjibjBiskcSj0qOPKyXQXlE9Vcd0pJ13JNvG/qpGzoPPKeJGtmqO
+ 0H2BSNJIqeRn7bv0aGe6dNLJad1BlIsHbg/3+zAjsErA7eNKmGXhp3kttuhlNyZKRQRB
+ z0hc0NSjO0gTi7nmhwU4NJ9jgXRE5W+45+fm0QezlK4zH+iwrj3CE8nqduwWbcy2zsEU
+ w1pfYLEAavydK9fFKUx30RQsTMJ17U0GVpVNlR0kfCZMl74Qs2mwJYQ4gJuVQ+iwsnYa
+ u7rw==
+X-Gm-Message-State: AOJu0YxNwJzONYzwjUyY4Qn1VesREKwpm62Hti0bDPIk7VMQvf+oURoQ
+ Nrz8TnYhLSM3A6jfjCHEidu9M1qiUdDbCajNF0+EVxAGxDbxuiWwxJyk9tjo6nW+j1g/CXuntlC
+ NT1yB/xdLtsLkLcB93riBIWdf6buyNECOuUqjvULM54Iz/L6DKDyxwWhp0waEa+zCukQJJQ+JpT
+ MkNzSB8+zN7vMNrQAa2jhSJj1sL1W3ehA7l1m00nzbyyMd
+X-Gm-Gg: ASbGncuqTKtji+dJv2z2BeLhrk9cIR9muaQrddmEBymy/ACfObbUr6v9TxU3HT3u2yU
+ FJniVzu7LeTmTt68yS72CQUycxWKt5oMdflVPKiC13dDcCksOQr9kTbkV1SLsQh2TnnymqNLae6
+ b2be1gagfMyzw6HDKM1xCNYQ==
+X-Received: by 2002:a17:90b:2e49:b0:31f:d0:95bc with SMTP id
+ 98e67ed59e1d1-32183c4585dmr2805622a91.25.1754641335326; 
+ Fri, 08 Aug 2025 01:22:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFwGe3VwcMcxUVVZqZ5dIvfo3Q7JgcAlR27GyK5qmZm4kMrc09Xo4OR27WyofhvUWM1IYlK95aiofsi9HIArdY=
+X-Received: by 2002:a17:90b:2e49:b0:31f:d0:95bc with SMTP id
+ 98e67ed59e1d1-32183c4585dmr2805600a91.25.1754641334901; Fri, 08 Aug 2025
+ 01:22:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <262b5b35-e8f4-4bd7-8e7c-0d2acc2c9742@redhat.com>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20250808080823.2638861-1-armbru@redhat.com>
+ <20250808080823.2638861-9-armbru@redhat.com>
+In-Reply-To: <20250808080823.2638861-9-armbru@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Fri, 8 Aug 2025 12:22:03 +0400
+X-Gm-Features: Ac12FXwojLE14ID537lBDQPStjrtSyJkwSZFthNBmDOQwkDSscEAxSGs6ZZFaWM
+Message-ID: <CAMxuvaxjMbvGtwpai6M75zRZMQPVZAusmSX7hs=OeDDThc7-Lw@mail.gmail.com>
+Subject: Re: [PATCH 08/12] util/oslib-win32: Revert warning on
+ WSAEventSelect() failure
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, odaki@rsg.ci.i.u-tokyo.ac.jp
+Content-Type: multipart/alternative; boundary="00000000000079b728063bd64548"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,26 +101,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 07, 2025 at 03:54:06PM +0200, Paolo Bonzini wrote:
-> Date: Thu, 7 Aug 2025 15:54:06 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [RFC 12/26] rcu: Make rcu_read_lock & rcu_read_unlock not
->  inline
-> 
-> On 8/7/25 14:30, Zhao Liu wrote:
-> > Make rcu_read_lock & rcu_read_unlock not inline, then bindgen could
-> > generate the bindings.
-> > 
-> > Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> 
-> Either this, or keep it inline and add wrappers rust_rcu_read_lock() and
-> rust_rcu_read_unlock().
+--00000000000079b728063bd64548
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I see, the wrappers are better - we can keep the performance gain from
-inline at C side.
+Hi
 
-Thanks,
-Zhao
+On Fri, Aug 8, 2025 at 12:08=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+
+> qemu_socket_select() and its wrapper qemu_socket_unselect() treat a
+> NULL @errp as &error_warn.  This is wildly inappropriate.  A caller
+> passing NULL specifies that errors are to be ignored.  If warnings are
+> wanted, the caller must pass &error_warn.
+>
+> I'm not familiar with the calling code, so I can't say whether it will
+> work after WSAEventSelect() failure.  If it doesn't, then this should
+> be an error.  If it does, then why bother the user with a warning that
+> isn't actionable, and likely confusing?
+>
+> The warning goes back to commit f5fd677ae7cf (win32/socket: introduce
+> qemu_socket_select() helper).  Before that commit, the error was
+> ignored, as indicated by passing a null @errp.  Revert to that
+> behavior.
+>
+
+Yes, the potential errors before introducing the wrapper were simply
+ignored. I think we should fix the users or maybe just report the warning
+and drop errp from the wrapper function. wdyt?
+
+
+>
+> Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+
+---
+>  util/oslib-win32.c | 4 ----
+>  1 file changed, 4 deletions(-)
+>
+> diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+> index b7351634ec..136a8fe118 100644
+> --- a/util/oslib-win32.c
+> +++ b/util/oslib-win32.c
+> @@ -296,10 +296,6 @@ bool qemu_socket_select(int sockfd, WSAEVENT
+> hEventObject,
+>  {
+>      SOCKET s =3D _get_osfhandle(sockfd);
+>
+> -    if (errp =3D=3D NULL) {
+> -        errp =3D &error_warn;
+> -    }
+> -
+>      if (s =3D=3D INVALID_SOCKET) {
+>          error_setg(errp, "invalid socket fd=3D%d", sockfd);
+>          return false;
+> --
+> 2.49.0
+>
+>
+
+--00000000000079b728063bd64548
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi</div><br><div class=3D"gmail_quote gma=
+il_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Aug 8, 20=
+25 at 12:08=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@redha=
+t.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
+_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
+,204);padding-left:1ex">qemu_socket_select() and its wrapper qemu_socket_un=
+select() treat a<br>
+NULL @errp as &amp;error_warn.=C2=A0 This is wildly inappropriate.=C2=A0 A =
+caller<br>
+passing NULL specifies that errors are to be ignored.=C2=A0 If warnings are=
+<br>
+wanted, the caller must pass &amp;error_warn.<br>
+<br>
+I&#39;m not familiar with the calling code, so I can&#39;t say whether it w=
+ill<br>
+work after WSAEventSelect() failure.=C2=A0 If it doesn&#39;t, then this sho=
+uld<br>
+be an error.=C2=A0 If it does, then why bother the user with a warning that=
+<br>
+isn&#39;t actionable, and likely confusing?<br>
+<br>
+The warning goes back to commit f5fd677ae7cf (win32/socket: introduce<br>
+qemu_socket_select() helper).=C2=A0 Before that commit, the error was<br>
+ignored, as indicated by passing a null @errp.=C2=A0 Revert to that<br>
+behavior.<br></blockquote><div><br></div><div>Yes, the potential errors bef=
+ore introducing the wrapper were=C2=A0simply ignored. I think we should fix=
+ the users or maybe just report the warning and drop errp from the wrapper =
+function. wdyt?</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex">
+<br>
+Cc: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.co=
+m" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
+Signed-off-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" t=
+arget=3D"_blank">armbru@redhat.com</a>&gt;=C2=A0</blockquote><blockquote cl=
+ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
+ rgb(204,204,204);padding-left:1ex">
+---<br>
+=C2=A0util/oslib-win32.c | 4 ----<br>
+=C2=A01 file changed, 4 deletions(-)<br>
+<br>
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c<br>
+index b7351634ec..136a8fe118 100644<br>
+--- a/util/oslib-win32.c<br>
++++ b/util/oslib-win32.c<br>
+@@ -296,10 +296,6 @@ bool qemu_socket_select(int sockfd, WSAEVENT hEventObj=
+ect,<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0SOCKET s =3D _get_osfhandle(sockfd);<br>
+<br>
+-=C2=A0 =C2=A0 if (errp =3D=3D NULL) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 errp =3D &amp;error_warn;<br>
+-=C2=A0 =C2=A0 }<br>
+-<br>
+=C2=A0 =C2=A0 =C2=A0if (s =3D=3D INVALID_SOCKET) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0error_setg(errp, &quot;invalid socket fd=
+=3D%d&quot;, sockfd);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return false;<br>
+-- <br>
+2.49.0<br>
+<br>
+</blockquote></div></div>
+
+--00000000000079b728063bd64548--
 
 
