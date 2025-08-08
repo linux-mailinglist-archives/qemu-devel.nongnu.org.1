@@ -2,120 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9828CB1E310
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE57B1E2DC
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 09:06:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukHOf-0002Kh-BU; Fri, 08 Aug 2025 03:20:13 -0400
+	id 1ukHBJ-00081Z-7C; Fri, 08 Aug 2025 03:06:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1ukHOY-0001l7-FX; Fri, 08 Aug 2025 03:20:06 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1ukHBC-0007ua-D5; Fri, 08 Aug 2025 03:06:19 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1ukHOP-0007qo-Vf; Fri, 08 Aug 2025 03:20:03 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5781ipej017889;
- Fri, 8 Aug 2025 07:19:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=sVdIAN
- +g4D7hBDoHMxTIcwUZ6ffhMYyq5BTpxtJwGgQ=; b=CjFaT9Uv7tKzztvUJPKCXo
- 78VRXYdU6opE8DLHkKgjtzRHipR7sMNYb4CAleykP4AxAcqoO9reUOyGB3JbqAaq
- 7juB7ikUIuEEGSnWAZAQFBoFLNM4mESdphNqx3PCuWcyaIdP4n43jbYobR0H+/a/
- t/GMK3pSjJBWtbvLzJzE5Xjx3FRN2//tPc+6Rnt2mS4BzwQCBx/Suu+HjxF0FL0x
- 6avTYmE3pR85qA5AZ/b7D7FeZwitzGg7blzSaIKDjT5NsEGJwAsLPJNCnDoeUUoe
- WAquenzn9/jZS1G00Izq+S+HvrRYztTJFuHiT9UvDacMVLuQGckpnzsj4W/THPTA
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63ep4e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Aug 2025 07:19:53 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5787Gb11001240;
- Fri, 8 Aug 2025 07:19:53 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63ep4c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Aug 2025 07:19:53 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5785tGLW001574;
- Fri, 8 Aug 2025 07:19:52 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48bpwr4kdp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Aug 2025 07:19:52 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5787JgnJ62915046
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Aug 2025 07:19:43 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 588865805E;
- Fri,  8 Aug 2025 07:19:50 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 537665805A;
- Fri,  8 Aug 2025 07:19:47 +0000 (GMT)
-Received: from [9.124.215.193] (unknown [9.124.215.193])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  8 Aug 2025 07:19:47 +0000 (GMT)
-Message-ID: <46273c1e-c008-4ec6-8ccb-2cf55b467f72@linux.ibm.com>
-Date: Fri, 8 Aug 2025 12:49:45 +0530
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1ukHB6-0005i0-LE; Fri, 08 Aug 2025 03:06:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1754636773; x=1786172773;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=yVQb7GzZ+6mRw2zoMaUmO0SwVuUfkzOoA0gOIt6c0sI=;
+ b=WP2Q0tds5IRZWqhw4aSD24MycJVXhg7oyXYPvbo5hyyZGs8+ND4CbB1V
+ mFh+Duy3kFB5KoYayc6Ngt0DGTEhNtKzoaCsgE4NuE6YwtJpxekOEmnRj
+ aUUyVrjXJCpzoUuaVI3Z0bnS5FRFXNQi9l+1mIkBA/hc4WkR6I0ygzx01
+ 9W/vmM05qdTtmjUI+p9AkdSi6L1BG3n8Y47t9MGQTTKJ+Mxxwovqu5Zv9
+ YfgIspjEq9YrOIVz8VGv4PKqLUnZ37a79xsofqcyfwTN8lxM8WR/+XluN
+ ItcxdB2H4oxwK+sR+glO/cBmgt9AoIzxb99HKXtFWZdRFEdJkdtMn7trv w==;
+X-CSE-ConnectionGUID: Y7GP1yVVR7G02cJk2ANaeQ==
+X-CSE-MsgGUID: 0jbVo7ZASVmaoasGz7ZCzg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="56185613"
+X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; d="scan'208";a="56185613"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Aug 2025 00:06:07 -0700
+X-CSE-ConnectionGUID: R+NkKz1gSxi7GCka/HlDrw==
+X-CSE-MsgGUID: 81lNukn0SJm+zrlFcvmK4Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; d="scan'208";a="165279225"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa007.jf.intel.com with ESMTP; 08 Aug 2025 00:06:04 -0700
+Date: Fri, 8 Aug 2025 15:27:43 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Junjie Mao <junjie.mao@hotmail.com>,
+ qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Chuanxiao Dong <chuanxiao.dong@intel.com>
+Subject: Re: [RFC 01/26] rust/hpet: Fix the error caused by vm-memory
+Message-ID: <aJWm737GvsHtz/On@intel.com>
+References: <20250807123027.2910950-1-zhao1.liu@intel.com>
+ <20250807123027.2910950-2-zhao1.liu@intel.com>
+ <4cc91b3d-ce3a-46fa-80da-fa5039f6a490@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/2] Deprecate Power8E and Power8NVL
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Aditya Gupta <adityag@linux.ibm.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-References: <20250607110412.2342511-1-adityag@linux.ibm.com>
- <5b9e0a81-c2d9-4c55-b761-a43a69ec400c@redhat.com>
-Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <5b9e0a81-c2d9-4c55-b761-a43a69ec400c@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA1NSBTYWx0ZWRfX9sxZqz0ZRwKs
- JJqcHqQHeREyahk8/UWxTljFVC4UtwZs7WOs49ijTfmNuJTygXjkXOwDIhLDLs6Ie8dQjToQ0Gl
- JuqAVIV+EY0pr/KERvb3C802pPPY1GBrv5RLV7Xo5wBaYLSU4gTSXtcnVLEu1l6yr4gddJyTqOb
- vjgitQ+9uDL2liMqvf14Bhgvanz7XA8IpXP68aSzj78Bzorbn9TLRw/lXi/Fv2FJ/pzn9Jwj0s1
- 2a7Jreu+sX6L/ujs0na8ZLFgX6ohpJDqnlz+/w3wfC5yhBNfvjHzeqpU9/N/KkXfKAu5gxavHac
- TonIl9f9vR/Cgax1bvEIiyZKojpAdDzzGwsIA0FZ9X2sBgmSf6MaXjXIreoDM1Z5uaFqLBtZbLy
- o1C0FYajjYcWkxW1Q1DbLwuRamPkjZ50uwqO6nxAYzA+9BBJzfmSFyDjmaDXB7jvfi+ch+Mb
-X-Proofpoint-GUID: uO87sP5C3Cn9iPj4Nrw-jdnFeyvaEWvG
-X-Authority-Analysis: v=2.4 cv=PoCTbxM3 c=1 sm=1 tr=0 ts=6895a519 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=f7IdgyKtn90A:10
- a=ycksN_SKXF7NdCnFZcMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: TXJP1HVQNN_n-qezLsWNda2jvp4RIZCx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-08_01,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 adultscore=0 clxscore=1015 bulkscore=0
- priorityscore=1501 impostorscore=0 mlxlogscore=953 mlxscore=0 phishscore=0
- lowpriorityscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
- definitions=main-2508080055
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4cc91b3d-ce3a-46fa-80da-fa5039f6a490@redhat.com>
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,28 +87,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cedric,
-
-On 8/8/25 12:45, Cédric Le Goater wrote:
->> Aditya Gupta (2):
->>    target/ppc: Introduce macro for deprecating PowerPC CPUs
->>    target/ppc: Deprecate Power8E and Power8NVL
->>
->>   docs/about/deprecated.rst |  9 +++++++++
->>   target/ppc/cpu-models.c   | 20 +++++++++++++++-----
->>   target/ppc/cpu_init.c     |  7 ++++++-
->>   3 files changed, 30 insertions(+), 6 deletions(-)
->>
+On Thu, Aug 07, 2025 at 03:52:37PM +0200, Paolo Bonzini wrote:
+> Date: Thu, 7 Aug 2025 15:52:37 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [RFC 01/26] rust/hpet: Fix the error caused by vm-memory
 > 
-> It's too late for QEMU 10.1. Let's not forget these for the next cycle.
-
-Sure, will add it in ppc-for-10.2 queue.
-
-regards,
-Harsh
-
+> On 8/7/25 14:30, Zhao Liu wrote:
+> > error[E0283]: type annotations needed
+> >     --> hw/timer/hpet/src/device.rs:884:55
+> >      |
+> > 884 |         self.num_timers == self.num_timers_save.get().into()
+> >      |                         --                            ^^^^
+> >      |                         |
+> >      |                         type must be known at this point
+> >      |
+> >      = note: multiple `impl`s satisfying `usize: PartialEq<_>` found in the following crates: `core`, `vm_memory`:
+> >              - impl PartialEq<vm_memory::endian::BeSize> for usize;
+> >              - impl PartialEq<vm_memory::endian::LeSize> for usize;
+> >              - impl<host> PartialEq for usize
+> >                where the constant `host` has type `bool`;
+> > help: try using a fully qualified path to specify the expected types
+> >      |
+> > 884 |         self.num_timers == <u8 as Into<T>>::into(self.num_timers_save.get())
+> >      |                            ++++++++++++++++++++++                          ~
 > 
-> Thanks,
+> Oh, interesting.  In this case, you can write:
 > 
-> C.
+>     usize::from(self.num_timers_save.get())
+
+Ah, yes, this way is simpler! Thanks.
+
+-Zhao
+
+
 
