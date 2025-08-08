@@ -2,218 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5301B1E49F
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 10:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2BFB1E557
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 11:09:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukIje-00028S-Ti; Fri, 08 Aug 2025 04:45:58 -0400
+	id 1ukJ5U-0005U8-LP; Fri, 08 Aug 2025 05:08:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1ukIja-00027f-Kb
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:45:54 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1ukIjX-0003LX-F2
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:45:54 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5786YJJ4027798;
- Fri, 8 Aug 2025 08:45:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=17Wz4NF+Z62D/lYso69MJIalTEQAe9aB3JNxtxIVfAk=; b=
- ppbtokS2VPHx/tqyI2kHFGYM1IyzAP1SScOrWf8sZNZMRITrYYpvbA/oB3lplTgi
- 8QKo9jITKjNlV03UdvpuJKWBFlzzywpj5hOMRaTDNeqsmR9toIKUhkHBidbrQvfu
- vupMnNXb6Gxao7MSQCchbGm2w1tC6WW3+qj2h62F3DpOOiY6HUBF+7H94trcY71n
- NzMirxjutrF7FIoUO6fKQLSBHfo1MB7Zn27vez5Le5Llatd/5j/0X5t2trWheyf4
- xLbr2O/ifRFOycpvEuUCBIHou3z375IS7saDl7xrPTMLO8dNYmL+Aiex6gccCal/
- kvoQ8sbjkU6pglYhqW7peg==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48bpvgws45-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 08 Aug 2025 08:45:16 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 57888xBM018420; Fri, 8 Aug 2025 08:45:15 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2048.outbound.protection.outlook.com [40.107.237.48])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 48bpwth62b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 08 Aug 2025 08:45:15 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fsgP3v8pWd5qbMcDcJcexSAilA8QP02+OUlF2N3Rsp0EQJfLn/H0peMn5cYsFcfa0ZDH+g2biTyD/L1HQLGzSWkhClbTx6L+pSB5ChBjcWsdw5nfDf8KWUh1vDT5bh1oAF0QxclswZgeRlFaCtfuiLjLDNUZ8hOW8ddtruvgVefHNIjsATTMc7y5oaDpjcBNJG4o7YD/7k74jY/W6j850JiZlrHtOrV8Lp3/ZzzRCvem/ChnDtKagKLxetSagYiG+2YOy+0TCZqmJwwJcf0qMd/VmUuFnPy8kiulTe6+eVmgf5NW/V4FPjPMoY6zEemYf83wNvPH/BbPXMeVyWm9RQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=17Wz4NF+Z62D/lYso69MJIalTEQAe9aB3JNxtxIVfAk=;
- b=YQxH8hJCYBHisJUZf9CwP5Jgn8n2KVpBSNilTrxrbUv/nQXE2LnZTctMB5CM/FghcyLmW7Y/5Kj2gjuVxA3eZiBOsYUGW3qhIsVh084ParAtcN1axzTSUDpi1QDJPPDeFNZKUzxoT+E/w/EZaa/ZLJO/hXV+toGs9m/CwDVHLKJWrkwXAJuR2V96K/YAMjiLMPJ1DT5V7MDBIo1WDIQ8wLnXv5cFT7bkdjjdWqzgYDH5MpZsQe8rROD61nebSm87CR8N6CbAXcepniM7h3zXO30ZX0iV7pbPUkzXTplszLRzNK986t5xn/9Tkvl6VURiQlZme13rHNr2A7Zujp59iQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1ukJ5S-0005To-I3
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 05:08:30 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1ukJ5Q-000634-AO
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 05:08:30 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-af93c3bac8fso278371466b.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 02:08:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=17Wz4NF+Z62D/lYso69MJIalTEQAe9aB3JNxtxIVfAk=;
- b=OOfRmTKUDUMC2xrHxzFH1d++VRFA+peRlG90jQG3e80yZGmDs9/TVZvfnEjcbFnEshhRgQVPnlHjrvL26Gh3IRxXY/GwF//uhQFDov3MpDxN+ERX9SxfE1gd3dqHXSezu1n/AqXkihZaJ+oMYOvvI1VM6cxXxci871HMD7dDqi0=
-Received: from PH3PPFE6F9E2E1D.namprd10.prod.outlook.com
- (2603:10b6:518:1::7d4) by MW4PR10MB5812.namprd10.prod.outlook.com
- (2603:10b6:303:18e::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.13; Fri, 8 Aug
- 2025 08:45:11 +0000
-Received: from PH3PPFE6F9E2E1D.namprd10.prod.outlook.com
- ([fe80::39ac:d97e:eafa:8d61]) by PH3PPFE6F9E2E1D.namprd10.prod.outlook.com
- ([fe80::39ac:d97e:eafa:8d61%3]) with mapi id 15.20.9009.016; Fri, 8 Aug 2025
- 08:45:05 +0000
-Message-ID: <9202e1ea-7b83-4caa-85ab-7621413a50f2@oracle.com>
-Date: Fri, 8 Aug 2025 09:45:00 +0100
-Subject: Re: [PATCH] vfio: Allow live migration with VFIO devices which use
- iommu dirty tracking
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- mst@redhat.com, jasowang@redhat.com
-References: <20250808040914.19837-1-zhenzhong.duan@intel.com>
-Content-Language: en-US
-From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <20250808040914.19837-1-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0171.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a0::7) To PH3PPFE6F9E2E1D.namprd10.prod.outlook.com
- (2603:10b6:518:1::7d4)
+ d=linaro.org; s=google; t=1754644106; x=1755248906; darn=nongnu.org;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=4uWW4/OI7oNNN8Qt6MsN5xTp7YNTk2oyZefI5zLj/N8=;
+ b=IUv+cItvO/0ZmeImyOOQw0yEEbUd5z5gUF60cwzB0mha8vwCPqIAn6NW+vGl9y1IXM
+ 5eGbExUOoaZ6y46JNxszrfUgeto6Zd1/9Uz9NzTpmO9vYIRRo5xajDGiFu0Mz4DKuRV9
+ jwkuPNd2DghiPeXG9zFZKLRguYlpEXArGpttomzDST62N190rpck7ENTIhbebVTPv0rQ
+ tK1q35eUOFUqWRc41RbXyqredhLqpl/BoZzL2vDnHeblZm9UvJm5UOeC2780JxBEqlFL
+ n3La2JP8k92ylmgnmtMztavubKGnVmuBWgBqzc5BHstGN41TbBDQ/J75XTptXGVtxnsa
+ 2OIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754644106; x=1755248906;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4uWW4/OI7oNNN8Qt6MsN5xTp7YNTk2oyZefI5zLj/N8=;
+ b=SqOlvHKwtthg6SAHsl0b2SwR4Xh+wj1LanhByODO6Co1XtLQ+OaoxmtTiEmWI5h69K
+ 4nQVM8ZPZCScvjJCx0L0pFXbmfOMSEQuuZskWpHcBHfHf3skG7lYJLLycHiZnKHXjE0Q
+ mGsfFtFmaIRa7r+C7jRi0NcUfu6dpNt5Q3V9QrVERiHOPDTBA0PMXWSW8jrhdAnpfyU1
+ t1R9DS8+9uMOcOrdhe9iO1fnWfzbro3vRDdlW7XxP6gpn4WIL44uQmtdiFEGQ7Kih07q
+ S8Xep+/nMSlVyaiNwJpDTHRXJVQp83C9Sq2mV5u7dSSVwj+aVjdHjU46DV61FZxhK4lz
+ GuMg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVfGvhbhcZWFEv3aCeNwok+hp32FDYSOXluX8czbyf3sry/ytbAJCsryrTv4Q8sWpROAI0Zhbwb0ghv@nongnu.org
+X-Gm-Message-State: AOJu0YyO26fp2pMzS6G13F6Gqe4k00z+kmkUtthRJlPSUZ4O+DQPSuES
+ 67ZLSGxZEgmEV2RP9OSYKMpabcJ3Awn5qumw1ikVRuzOzxDyOR6wrqqvwaRzO1j/8GU=
+X-Gm-Gg: ASbGncvv/nGAh3T1gqThVD0CJ0ub5Knl4w1u4B8q33WQoJjy8ft252Kr1wMmL9CvJiH
+ RncrO8qKrefFFlCvbapwpQlaCVVlRReomAU0fLZS0J47ahNkzVfJyJn6D2ywjDUvg7mfAK04NdP
+ ovSMxO/dUNqBkWT1cMlrIEGKfOcixB2ZkNkmsp14Xu5VNr9rL11pypmI7LJZs0ZgkbqkQuyv1vX
+ 1421F1XYuoc32OBOYZJrGgZciiYoThAqiWOlQf/AbporQETDg/UckA2BscYJLDUi9DJzmGGjSsR
+ CANVvAN+cur1QPvLndHGJckYzSzMdXVasvH4Tq+Xy8MwpwCVu4XRBqgj9aA3Jo21oQ+0CGI5xXJ
+ TEroRWdRNotEpgyFAXxeKcR/U0gWbt3TX8L488J7X6E7I6F6eRU7CUQZlJ38KU0VcwwxAUqFw
+X-Google-Smtp-Source: AGHT+IEzXu2oUR0J1EMb97B5LLhE+oQ7HeaxjKM9+XApX/yUhBQlfArKNzLjOscfdxDyz6OSR8ZC5A==
+X-Received: by 2002:a17:907:da2:b0:ae3:696c:60a with SMTP id
+ a640c23a62f3a-af9c6375a29mr159752666b.8.1754644105625; 
+ Fri, 08 Aug 2025 02:08:25 -0700 (PDT)
+Received: from meli-email.org (athedsl-4440194.home.otenet.gr.
+ [79.129.176.114]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-af91a750253sm1466301466b.86.2025.08.08.02.08.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Aug 2025 02:08:25 -0700 (PDT)
+Date: Fri, 08 Aug 2025 11:49:55 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ rowan Hart <rowanbhart@gmail.com>, Gustavo Romero <gustavo.romero@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Alex Benn=?UTF-8?B?w6k=?=e <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v5 3/9] contrib/plugins/uftrace: track callstack
+User-Agent: meli/0.8.12
+References: <20250808020702.410109-1-pierrick.bouvier@linaro.org>
+ <20250808020702.410109-4-pierrick.bouvier@linaro.org>
+In-Reply-To: <20250808020702.410109-4-pierrick.bouvier@linaro.org>
+Message-ID: <t0o41z.23tpc2iz8vjf3@linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH3PPFE6F9E2E1D:EE_|MW4PR10MB5812:EE_
-X-MS-Office365-Filtering-Correlation-Id: 129c025b-eeca-457b-745a-08ddd657df65
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?a2drOUxaQkVteHNEWjBjTFJWSjh0YjgxbnkrTXJZbnZaQ3RndjdPNFhWSDRL?=
- =?utf-8?B?dC9HOU9xMXhCTXUvbnRUQjlsTkloYWpHQlFlQW43N0JUa0VJa0FrT0ttOC9T?=
- =?utf-8?B?NnhNSVp0a2NQeHdCZHJ0ZzdDRkZHTTYzOWFnbERYdit6enVwRDNrUFJEOHQ0?=
- =?utf-8?B?MTNOclhtbkVncW1FTXl3ZnpvcXJkNncyZ1JzVVlZRTA5d0VGaWxyRDF2Y3dq?=
- =?utf-8?B?NkVhQ3Byb3BCUjVDTnRSZEZLbmpkQTBzVDR2S3BEeEhGNzNuTTJYemN6RDVZ?=
- =?utf-8?B?TlZqbUlCWXFtMUNvRGxlMUFRb2xlQ0tIZS9NU0l3RmY5SVBac0RnQUJ1ekh1?=
- =?utf-8?B?L2JOQi92OEE4WGN3ZkdpK0xTM0QrbUpucUJwTmlQNmxMZ3BWSUpJajVxSk9B?=
- =?utf-8?B?bW1kVFpiOFNpaU0wdEd2M2VlUThnaXRGbjVIWklzMHVBZlFkRGpubGpsTnUx?=
- =?utf-8?B?N3NQQ3BpMlgwVk05amFra0NZaVZ5dWZJeDFzQ2RraVVmb3pIeXdHVHFWYWZY?=
- =?utf-8?B?VkJuV3c5K0gzLzJRVEFSdVZEQWRqNkdzbmtnamZhSjd1dzdaVVdTTWNNSzZV?=
- =?utf-8?B?Q3hTRHRtWVovVEh3czR4K0lnSHJlcFQxMzZiU2FtZEZMMWpzUnU3VTJwSzZr?=
- =?utf-8?B?RHVJUUhZMncwMmFqVzVSR1FpM09Gc21TbHR6NmVLQmM1S2JISXk1ZTluWWdE?=
- =?utf-8?B?bXBkVXlMUnNxcGV5ZFlHbXlSSEVEalM1MzBBZDBUZFgvV3EzWllVZnErVm1j?=
- =?utf-8?B?MWVjM3RYb0xQWmhUZklNQzNsVEZVVlJzTFhxWVRxZXErQkQ3blhyaGpEQU8x?=
- =?utf-8?B?eFBwOURvaDl6emdTMFRaNEhxQi9xeFVtNkU0blV4Qys0ZXJnLzNSVjZOd05S?=
- =?utf-8?B?UGw5aEIwQWZKT3VpaTJROU1jN3haVVRMbDNKd0s2WDMvU1RwOHNOWW95VGlu?=
- =?utf-8?B?SXN1emNQT2JqOHIwMVRHNjYzYnZ6dHBWdU4vVHVlTXVvanZrUTBqN2VYWDRr?=
- =?utf-8?B?akx1RU5tZWlVcUtJY0ozdEh2dlQ3cUFpeFdBZUdtdnR0TE1uQTUzSkYra2tG?=
- =?utf-8?B?dmxTZjRUcjhWVFAxaVhDSjZieENDOEI2OEpDaWxxekh4RU0vNmFjTStLajhS?=
- =?utf-8?B?TnZRdzBNTDJBNWkvQ3JabXpMOUM0bWYxNURIaWNVVjNhVENNOGNOZDR3SmV0?=
- =?utf-8?B?VDJsR2l4SndmYnM5M3lXaUNFN2xINTAxUWp3YzBWMUV2UU1RNDdxMnJJYkN5?=
- =?utf-8?B?OUpnalEvK1pZS25pOE9kYW45dUREaWpKUHRaKzJCeWhRaTFYL1RmcWZSUjVH?=
- =?utf-8?B?dlQyNmc5WmxWcXg3NkJ0cEY1K244NE5JQUVXcFNwV3ArUVJVd0haZjdRQVNY?=
- =?utf-8?B?Z2w4cm5Ialp5aVBPS1RwTTN0bXdZT25lTTc3Tmh2YVkrd3hEZ3NUaGVxK1hC?=
- =?utf-8?B?RXA0d2sxeW9IVTRtOUI5VE11SDNsS3k3dE5nWXFMUERSZzRONGZ5K2JYckJ3?=
- =?utf-8?B?dWtwaUtjZ0hUcjk0ZXhqTUNMU1JJSzJ4cldWMjRZbWpIT2pqVStMZlV4ZzJN?=
- =?utf-8?B?VlhqUkkxMEtmZHBwZFdEc0lXbWx5NHFzUGtiRG1HbEVuU1pnMzBObExrcC8w?=
- =?utf-8?B?Q3dKc3djR2s2a3gwMXlSczcyRk9jQ1pLT1VVZVNVQmVncFRSMk8vMEZSdWdj?=
- =?utf-8?B?SGRlQ1lYMEJEQWIvZndIcGpJRU5NdDJiM1YzeHEzY1Y2bVljQ0R5YU1wRUhX?=
- =?utf-8?B?WDNYNVZjd0ZFWDJ1NDlJVGJqOWNsVE5Xa3hRcFdZTlI4TUZZajVhRElXajBp?=
- =?utf-8?B?ak1YT1BhY20zQ0NwMDJOMFZSamhJNC9YSHo0RkkzYXdkSEJXNndPSkt5ZjV6?=
- =?utf-8?B?VmtINjRjcS9BUUdldExmN1JiMi9nUnMzUlFEWHp1L2EvS1BMSldxaUFmWG9K?=
- =?utf-8?Q?RFIdf1qhkaw=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH3PPFE6F9E2E1D.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(7053199007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z2RWbXBnbXpPRzU1NFRON2NYTDFLVWdGd3lSMmNrL1dyV01HYUxDTW9DMFRH?=
- =?utf-8?B?UWsyWVBBakd1eGliQVpoMFRVL1JxNi9WL3gwbW9qNXppVXFWd0l3ODNaSXFR?=
- =?utf-8?B?UnQ5dUt4VU9rR1BESVU2aEJkNmVxTmNuZE1PTDIvSnR1d1ZYMHU4d2ZBWHFW?=
- =?utf-8?B?RkJrbWxPcFpmMHlLSTZ6MXRQZHk2OUFKTVpVY0hTcWpZWUtybnBtajFERUZG?=
- =?utf-8?B?V3Y2SzQyK0NaRjRGcmhtL3EwbVZiNS9aZi9ESjJxM0o5cFQrbzFPRHdvdUht?=
- =?utf-8?B?c1ZtTUs4aTlzcFhWQkc2QVgzNm5VSmtYSjcyZTZDT3FoZFlTTHFxZXZwV25S?=
- =?utf-8?B?RHFRRlFVaWgrTTBLV1NOeEZhOGlFdGgyRzRRS3dVQS8yNmI4cUFvSTN3dWc2?=
- =?utf-8?B?b1FnbWpMdy93bUZGb2tpQkc4cWRnUGQyaXZFaGxzbldKQzZYaFFsVzBlbkI1?=
- =?utf-8?B?WHhrdlV4MVVaQTZRN3IxbVpaS1lQcnFETjhyeXR4VHFtMzg3eXYxMzFqNXoy?=
- =?utf-8?B?V05ld0Q1VzFreEVGTFVKdEU0czdXTElVNk9ic2dVcnp6cFMvN083bjkwVXpy?=
- =?utf-8?B?MnBKZmxwakswRVFjMSs5ZzEwRU8zMnVUWkNGVlRWNHcvY3lEMlJrTnJPWHM1?=
- =?utf-8?B?c0lxREJvaGd0L0JVblVMbjY3R3E5NEV6dEJ2WE50MVBrOHRUK0VXQzNIRXBx?=
- =?utf-8?B?UU53STlRWWxic0pyWC9uK0Zabm50U2EzWVVxTzMxdmZSOUdkZm5DWTl3Rk5R?=
- =?utf-8?B?elpzWkc1WDM3dXc5cVdnWlFCZVR4dHNvQlFUKzVKcDU0cldSMDVUQk1PQmVn?=
- =?utf-8?B?NFVRRGJNcE9idGJKWlpyN0hYWE5yTzJZdXV1RCttd1A4cm8wcThvdFVRS01C?=
- =?utf-8?B?MmxxY3FEWFlmMUJJc2ZkdEdOelFsYkFMeGxjWnlQOXNxQTYyWDNEYVJXdTVE?=
- =?utf-8?B?TFBzV0FYU2pwd1FSTkRQRXBjUXUvck9GRnNESHY3QzZxS0wrVk9HL3lLaitM?=
- =?utf-8?B?aElSbkIvMHZDbVdBNGsxZkNYMDRHK3dtR25MYVh5TlBTS2xFbE4yWU4xbkkw?=
- =?utf-8?B?djA4d25iYVFOWkdBKzRuRFpxOGxhd3VEZnV5ZzJXZjcySlNOWTl2eWVqdUVI?=
- =?utf-8?B?Mk40Mk5JbFFNY0JpME9qRllURnRVb3FmeURCd1hReDFvVXkwYzEyQ3ZVa3ZC?=
- =?utf-8?B?OVEzdmZOdUVOeEdldDhpNjhaK2xKcnMwS1FkSnRMQllXdWdlRUJaVnJOcitS?=
- =?utf-8?B?NExTQVVKcnlYM2NVQm5VOEd2ZzJyakptMEoyUUhxSGhoTzMrL1JOMU5SRTF1?=
- =?utf-8?B?cmtaVE83RVdPNGk5SE1CNHo1MXEzQjduZS9GZThqVDAwcnVKQWFTeHZ2R1Zm?=
- =?utf-8?B?c0VLK3RQTUxtTXVwT0JwY2FHYnRzQTZIRU9FQW85Vld6bXpFemV4N1lFcXBF?=
- =?utf-8?B?WEVRZ0ZYMVVxb2pPZURtTVh4Y3gzQUNmKzZpM0tVRVhwZ282TFEwN0UzYWZv?=
- =?utf-8?B?UWpVRkUyb0dzejFqWUdCS2hKUktJdEdicXJ4WGlPZkN3d2tIVXYrVWMxYjFS?=
- =?utf-8?B?SUhTb0dJTmJYSDN1S3FaTDhyLzhkTGVqUllPemc0aVRuYXlkVEdDc1RWTXBk?=
- =?utf-8?B?elM4ekZRRnduekR4bk80cUJDQkp1UFBnQ295L1BOR0pibHc2aGFVYzhGVkZV?=
- =?utf-8?B?YlpPeEltemYzRWN4Q08waExWaFdhQkNJYUthODJWcGdJSjRabjZpODByclRn?=
- =?utf-8?B?MldhL3VCYXpNWFR3RkU2alVXM3VhR1VEdlpaRldvd29ZdUVYYW1kT2k4OTQw?=
- =?utf-8?B?bXZDL2tWRDdKVnEraGRvT1R2RWxHczJiK1dKcEFyYlVzcU5ySWZraEh4NEs2?=
- =?utf-8?B?NU1ncDJvdFVYQitDcU9BQkY5aDRUbFV0TTVVMVZ2NThIdHdyUk1zejA3ZURQ?=
- =?utf-8?B?a1Q4RTh3cm52MW11b1AyMzlBS0FBVDNxbzFRaG0veXo3Tk9WaTkwMTBoMWox?=
- =?utf-8?B?N01BS2UwTWs5and4TlFXMUJMbkNxZEMvYWJrR2NaOFB5UzJ3RkpHdVhjckcz?=
- =?utf-8?B?QTFJb1NXR2hpRmlWUkJHY3p6b25TOHEyeUZrZGJBU01xSTB1TVB4MVA3djVW?=
- =?utf-8?B?Q3h5U2crS1Q5c3F4N1BadHBNY2ZWWjlaR0lzdWhBNkk3UjQwc1hLSWptOTgy?=
- =?utf-8?B?NkE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: s+4s16Nnz7+0/gFBpb1wuvbXIpOc35C2ppSjRev0xZA+XP8iqvE7ktm8UWGrUaQbpobPKk+vmBxWHTfmGPnwQv9lXCTdsPbWnE2HPmGNKa87UzivTmNdBOp/nKoVfEH1WL1KrITbmGD3sF/mwhh2X5+dLyoAfE9PVfJZ/E8rYLpi7oa1FYFjkVEkCDJzLKdVZ4NIQ/I6XuSU+tMZYYIxEap8mPah9utgzFigyEcps+InEF5JyYTJclEbw+Xooh3QYy8pzOilY0DwqP4FPZ4BXszatRh7/eotdCUa++mrYVJMOo1xEqaShrNaRgB6/DzlcE3MP0mv4pdWlWn7RN+5s5A36LlSQEdJOP8HQ4R/sbSjX+/H27RD2H6FoHVWm0QXHVlkPI4TcPF/3cpeT9Fg6CAHKvAnGMV96mlvloQRUn6KYGyhI6stZEuE41g3UUf+5yQON0BiilsNncXBHanVrak4dw0aZ6Ou55gev61tHeQTmMNRayKoeIkFZLfqxVbG2GfGgWEijl6fSAX17gNr/oXJOV0w4i6Rb96gCdxdoSPL8FNC3u5PpHCtCObfRqHSn1khlBD++8kzY4lTd/aaVYuaBH3bHJAKcl5hbXPile0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 129c025b-eeca-457b-745a-08ddd657df65
-X-MS-Exchange-CrossTenant-AuthSource: PH3PPFE6F9E2E1D.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2025 08:45:05.7510 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fBwy5F2RJwxv0MZV+tTG2HIYxNSigD5bv1gZyzrtBKHEKCCX3PT4OrHEPYM1Uuw2+Ggc/FOHuNwGXvnKIrXG/u073RvyDlEPAnr457+br3o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB5812
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-08_02,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- bulkscore=0 phishscore=0
- mlxlogscore=978 adultscore=0 spamscore=0 suspectscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2507300000
- definitions=main-2508080071
-X-Authority-Analysis: v=2.4 cv=WMp/XmsR c=1 sm=1 tr=0 ts=6895b91c b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117
- a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=NEAV23lmAAAA:8 a=QyXUC8HyAAAA:8
- a=G3LUnnKrErrm32wFjTMA:9 a=QEXdDO2ut3YA:10 cc=ntf awl=host:12070
-X-Proofpoint-GUID: kONplHuqWbddzV0k_labylUOAY1WlTqr
-X-Proofpoint-ORIG-GUID: kONplHuqWbddzV0k_labylUOAY1WlTqr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA3MSBTYWx0ZWRfXzEyr5R5atjdj
- MQfrUrlJ7QmT+N9H3WaWkpa1tzNNt4wOAFd+4NIpnR19ky9PqvhU4uCscbj3ApnMSaLNSVFpMtj
- wv4tBdU0Ug5myyYvlXNLMSeX7X3wRH046m7jRjUr9kgW3jlONawRjxobBIcmdJXOP58fR+7oNuS
- aUtPesUoJsH9gQkyeFAOdFVHO2t4244CNWIgbtXsENL1eghUbkYmH6+WTpwkITNk+jIeTAKIwO5
- HsB2f8HGDfW6kj2TKq1mLYe5ykb2DFAzuMEby76YryRpaGf2qZ1uH0jBJ8Itw4e38rtGwNC7UDc
- LHPJ7KQTkxu/8DMCdeVQUAMB9SLnNZzZum3IH9q2CRg21splup9eyce6XD5P1OoMapUZXe2GiAX
- XKlCnCdgxUtrYmDzTYYnhj2OQ09tevrflRv9j7pFyLx50q7mG/ik/nVyh42N9C+pZGuTh7iG
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset="utf-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -229,51 +105,241 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/08/2025 05:09, Zhenzhong Duan wrote:
-> Commit e46883204c38 ("vfio/migration: Block migration with vIOMMU")
-> introduces a migration blocker when vIOMMU is enabled, because we need
-> to calculate the IOVA ranges for device dirty tracking. But this is
-> unnecessary for iommu dirty tracking.
+On Fri, 08 Aug 2025 05:06, Pierrick Bouvier <pierrick.bouvier@linaro.org> wrote:
+>We now track callstack, based on frame pointer analysis. We can detect
+>function calls, returns, and discontinuities.
+>We implement a frame pointer based unwinding that is used for
+>discontinuities.
+
+
+Nit: Never heard of the "discontinuity" term for program execution 
+before :D Maybe "async control flow (signals, interrupts)"?
+
+>
+>Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>---
+> contrib/plugins/uftrace.c | 160 ++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 160 insertions(+)
+>
+>diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
+>index 4b1a2f38143..d51faceb344 100644
+>--- a/contrib/plugins/uftrace.c
+>+++ b/contrib/plugins/uftrace.c
+>@@ -15,6 +15,15 @@
 > 
-> Limit the vfio_viommu_preset() check to those devices which use device
-> dirty tracking. This allows live migration with VFIO devices which use
-> iommu dirty tracking.
+> QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
 > 
-
-The subject of the patch is a little misleading because LM is already allowed
-with VFIO devices and IOMMU dirty tracking. Yet the patch is about VMs with
-vIOMMU that get this blocked due to VF device dirty tracking. I suggest instead:
-
-vfio/migration: Allow live migration with vIOMMU without VFs using device dirty
-tracking
-
-... It's longer but I think it rings a bit more honest on what we are doing :)
-
-> Introduce a helper vfio_device_dirty_pages_disabled() to facilicate it.
+>+typedef struct {
+>+    GArray *s;
+>+} Callstack;
+>+
+>+typedef struct {
+>+    uint64_t pc;
+>+    uint64_t frame_pointer;
+>+} CallstackEntry;
+>+
+> typedef struct Cpu Cpu;
 > 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> typedef struct {
+>@@ -25,6 +34,7 @@ typedef struct {
+> } CpuOps;
+> 
+> typedef struct Cpu {
+>+    Callstack *cs;
+>     GByteArray *buf;
+>     CpuOps ops;
+>     void *arch;
+>@@ -37,6 +47,71 @@ typedef struct {
+> static struct qemu_plugin_scoreboard *score;
+> static CpuOps arch_ops;
+> 
+>+static Callstack *callstack_new(void)
+>+{
+>+    Callstack *cs = g_new0(Callstack, 1);
+>+    cs->s = g_array_new(false, false, sizeof(CallstackEntry));
+>+    return cs;
+>+}
+>+
+>+static void callstack_free(Callstack *cs)
+>+{
+>+    g_array_free(cs->s, true);
+>+    cs->s = NULL;
+>+    g_free(cs);
+>+}
+>+
+>+static size_t callstack_depth(const Callstack *cs)
+>+{
+>+    return cs->s->len;
+>+}
+>+
+>+static size_t callstack_empty(const Callstack *cs)
+>+{
+>+    return callstack_depth(cs) == 0;
+>+}
+>+
+>+static void callstack_clear(Callstack *cs)
+>+{
+>+    g_array_set_size(cs->s, 0);
+>+}
+>+
+>+static const CallstackEntry *callstack_at(const Callstack *cs, size_t depth)
+>+{
+>+    g_assert(depth > 0);
+>+    g_assert(depth <= callstack_depth(cs));
+>+    return &g_array_index(cs->s, CallstackEntry, depth - 1);
+>+}
+>+
+>+static CallstackEntry callstack_top(const Callstack *cs)
+>+{
+>+    if (callstack_depth(cs) >= 1) {
+>+        return *callstack_at(cs, callstack_depth(cs));
+>+    }
+>+    return (CallstackEntry){};
+>+}
+>+
+>+static CallstackEntry callstack_caller(const Callstack *cs)
+>+{
+>+    if (callstack_depth(cs) >= 2) {
+>+        return *callstack_at(cs, callstack_depth(cs) - 1);
+>+    }
+>+    return (CallstackEntry){};
+>+}
+>+
+>+static void callstack_push(Callstack *cs, CallstackEntry e)
+>+{
+>+    g_array_append_val(cs->s, e);
+>+}
+>+
+>+static CallstackEntry callstack_pop(Callstack *cs)
+>+{
+>+    g_assert(!callstack_empty(cs));
+>+    CallstackEntry e = callstack_top(cs);
+>+    g_array_set_size(cs->s, callstack_depth(cs) - 1);
+>+    return e;
+>+}
+>+
+> static uint64_t cpu_read_register64(Cpu *cpu, struct qemu_plugin_register *reg)
+> {
+>     GByteArray *buf = cpu->buf;
+>@@ -47,6 +122,50 @@ static uint64_t cpu_read_register64(Cpu *cpu, struct qemu_plugin_register *reg)
+>     return *((uint64_t *) buf->data);
+> }
+> 
+>+static uint64_t cpu_read_memory64(Cpu *cpu, uint64_t addr)
+>+{
+>+    g_assert(addr);
+>+    GByteArray *buf = cpu->buf;
+>+    g_byte_array_set_size(buf, 0);
+>+    bool read = qemu_plugin_read_memory_vaddr(addr, buf, 8);
+>+    if (!read) {
+>+        return 0;
+>+    }
+>+    g_assert(buf->len == 8);
+>+    return *((uint64_t *) buf->data);
+>+}
+>+
+>+static void cpu_unwind_stack(Cpu *cpu, uint64_t frame_pointer, uint64_t pc)
+>+{
+>+    g_assert(callstack_empty(cpu->cs));
+>+
+>+    #define UNWIND_STACK_MAX_DEPTH 1024
+>+    CallstackEntry unwind[UNWIND_STACK_MAX_DEPTH];
+>+    size_t depth = 0;
+>+    do {
+>+        /* check we don't have an infinite stack */
+>+        for (size_t i = 0; i < depth; ++i) {
+>+            if (frame_pointer == unwind[i].frame_pointer) {
+>+                break;
+>+            }
+>+        }
+>+        CallstackEntry e = {.frame_pointer = frame_pointer, .pc = pc};
+>+        unwind[depth] = e;
+>+        depth++;
+>+        if (frame_pointer) {
+>+            frame_pointer = cpu_read_memory64(cpu, frame_pointer);
+>+        }
+>+        pc = cpu_read_memory64(cpu, frame_pointer + 8); /* read previous lr */
+>+    } while (frame_pointer && pc && depth < UNWIND_STACK_MAX_DEPTH);
+>+    #undef UNWIND_STACK_MAX_DEPTH
+>+
+>+    /* push it from bottom to top */
+>+    while (depth) {
+>+        callstack_push(cpu->cs, unwind[depth - 1]);
+>+        --depth;
+>+    }
+>+}
 
-This is unfortunately not enough to unblock vIOMMU migration with IOMMUs.
-Have a look at the first four patches of this series:
+Nice.
 
-	https://github.com/jpemartins/qemu/commits/vfio-migration-viommu/
+>+
+> static struct qemu_plugin_register *plugin_find_register(const char *name)
+> {
+>     g_autoptr(GArray) regs = qemu_plugin_get_registers();
+>@@ -102,6 +221,43 @@ static CpuOps aarch64_ops = {
+> 
+> static void track_callstack(unsigned int cpu_index, void *udata)
+> {
+>+    uint64_t pc = (uintptr_t) udata;
+>+    Cpu *cpu = qemu_plugin_scoreboard_find(score, cpu_index);
+>+    Callstack *cs = cpu->cs;
+>+
+>+    uint64_t fp = cpu->ops.get_frame_pointer(cpu);
+>+    if (!fp && callstack_empty(cs)) {
+>+        /*
+>+         * We simply push current pc. Note that we won't detect symbol change as
+>+         * long as a proper call does not happen.
+>+         */
+>+        callstack_push(cs, (CallstackEntry){.frame_pointer = fp, .pc = pc});
+>+        return;
+>+    }
+>+
+>+    CallstackEntry top = callstack_top(cs);
+>+    if (fp == top.frame_pointer) {
+>+        /* same function */
+>+        return;
+>+    }
+>+
+>+    CallstackEntry caller = callstack_caller(cs);
+>+    if (fp == caller.frame_pointer) {
+>+        /* return */
+>+        callstack_pop(cs);
+>+        return;
+>+    }
+>+
+>+    uint64_t caller_fp = fp ? cpu_read_memory64(cpu, fp) : 0;
+>+    if (caller_fp == top.frame_pointer) {
+>+        /* call */
+>+        callstack_push(cs, (CallstackEntry){.frame_pointer = fp, .pc = pc});
+>+        return;
+>+    }
+>+
+>+    /* discontinuity, exit current stack and unwind new one */
+>+    callstack_clear(cs);
+>+    cpu_unwind_stack(cpu, fp, pc);
+> }
+> 
+> static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+>@@ -139,12 +295,16 @@ static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
+> 
+>     cpu->ops.init(cpu);
+>     cpu->buf = g_byte_array_new();
+>+
+>+    cpu->cs = callstack_new();
+> }
+> 
+> static void vcpu_end(unsigned int vcpu_index)
+> {
+>     Cpu *cpu = qemu_plugin_scoreboard_find(score, vcpu_index);
+>     g_byte_array_free(cpu->buf, true);
+>+
+>+    callstack_free(cpu->cs);
+>     memset(cpu, 0, sizeof(Cpu));
+> }
+> 
+>-- 
+>2.47.2
+>
+Looks good I think,
 
-These 4 are meant do this (41d778dda00^..d27e5a5db5f4). Feel free to pick them
-up. I hope to take care of the rest of the series; though I have been heavily
-preempted internally that I hadn't had the time to clear this series but I think
-it's finally coming to an end
-
-The gist of these first four patches is essentially that we need to query the
-dirty bitmap before unmap, and we have an extra optimization that let us simply
-read the Dirty bit (without clearing it) and so the query is much faster as you
-don't have a TLB flush.
-
-I think you can replace the fourth patch with yours as yours it's much
-cleaner/simpler.
-
-Mine was specific to IOMMUFD given that perpectual dirty tracking (type1)
-required forcefully enabling migration to let it go through. But I think it's ok
-for both to work
-
-	Joao
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
