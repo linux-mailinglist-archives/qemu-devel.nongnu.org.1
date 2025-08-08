@@ -2,88 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B121DB1E457
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 10:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13108B1E4A3
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 10:48:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukINp-0001v2-19; Fri, 08 Aug 2025 04:23:25 -0400
+	id 1ukIlJ-0003bO-Pw; Fri, 08 Aug 2025 04:47:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1ukINJ-0001mb-WD
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:22:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1ukING-0000Fn-DL
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:22:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754641369;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3DN2VvnkwUjYu78kHT6V3QVIkwubW97ABiUntNoWNSk=;
- b=MjuCvs8RRCjAUi2cTIlj63zSbGHSzQqJlDgt3OPF92Moh2tDphWgG5DmN5SfK6AkKhWNLx
- J3Gl6wiPIXXlOPdfmY19e/iHAcgHORm6xFYd8J0OnM7cnz6y0xquwu7squnxSouX+FqwXI
- OoZlO10pKaYTuZVT4US/N3dkywD2J/s=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-307-4j45HimTO2Ol41hY5WQP-w-1; Fri, 08 Aug 2025 04:22:46 -0400
-X-MC-Unique: 4j45HimTO2Ol41hY5WQP-w-1
-X-Mimecast-MFC-AGG-ID: 4j45HimTO2Ol41hY5WQP-w_1754641365
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-31effad1358so1769474a91.1
- for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 01:22:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1ukIlG-0003aI-3I
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:47:38 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1ukIl4-0003my-7l
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:47:29 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-458aee6e86aso11461445e9.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 01:47:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1754642842; x=1755247642; darn=nongnu.org;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=zXwNKmnko2/AYlR9DsU3B2PeYMyf9/XW40u2WUn77cE=;
+ b=S4Gv87woLA7iKMwQm4XVlSF9Y+W8xWwOdoQG6JZ2mnGnG2LXnP3yxN7d6ixAqeSKTP
+ w2y9e1pfAD/QDPI0FAW1FwCcmW9Jryu6OPCutGwbAcV5u33fMNgClm2EG4TJSskHuoDo
+ rItwmTGu3tS6R9Gzc2bWg7RTVSOE3lR01BfLZSXXeDlLWeOlAcEWeF3tBpIoj8od6RNX
+ Zk+KQ8Y0gxSRmAypbqls9Yhq0pF1sVIf3eAsIqqrBgpboWDguDE7zdNY10NM2zBWsgF9
+ /SdHnrClrY56LK1YwTzg2Xzwaral5acD6wFq8NZPfrtQpcdiEa6whGQzXUberELJGHSA
+ WZyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754641365; x=1755246165;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3DN2VvnkwUjYu78kHT6V3QVIkwubW97ABiUntNoWNSk=;
- b=GabwFaucVVWgFe6986TSYnb16wNjCshudMOQB957X9odzUQbcfp5GvgOx5XK7g8hOX
- 002VcoIMKlUraNB6nCOW7xf9tDZin+Rv7OmFNWwPVWLuOFJ68NMmUl0rX117imUZTJ3X
- LLu73owYZtVzX7IcapW4CgQxl5HwQWgJ4zx2OomV2ZmsnfF8sM6ddIzzuk6WJaD16Oeu
- kQ2zmVhYWyG5leiOoMwvWo81lt/7M0soYiEkAad2i8I9lVvUMqSCK/J2F/bwgfZTXzw2
- XWjK3BCPswLqnoSYLS3SLDbBA+kPF7srnZVuUGBrH23H+LwXns+cu+fgGAKBZ9ewynSl
- vp6Q==
-X-Gm-Message-State: AOJu0YwA6MWqV1JcUixk3C8OFvRMsaeE3c7MpGifCo+cVamRJmv7fm+8
- EmF48vbi2Eun4PmEAMbwrNdidwEjGfS9ZQSUOE50CL2V1mYRHLQtre+Vv3v01hgoSEenHNxE75j
- CBt7MhHae1aPK/9m/esuiOXwWYmHGvyfdf2yA/ardDe46iPbGU+7J3MEL70fojWIPR/DHxr3O1r
- LLAiRjl/hkMGAfsqNgpGfIkKo9YEgxeZs=
-X-Gm-Gg: ASbGncursxoXm5cDctCXqCHGBr8LUMrUUJZGltqC5nsHA7Ft1eOwrkHHvOzkVaji9+R
- tHbu54Xi8VyNMRF6lyM6xgqhzSdo+EENefDzueiM+f0zOjSXHbUFQMU6abuzb5d051vTfIbdZ1W
- q6svcJ37WQFfco0qT3ZaMPJA==
-X-Received: by 2002:a17:90b:3a0c:b0:312:e73e:cded with SMTP id
- 98e67ed59e1d1-3217562b0a5mr9001869a91.16.1754641365259; 
- Fri, 08 Aug 2025 01:22:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHmH0DRoBGEFas6tnSaTZvZso2UFkiG0U47d2b4BOMc0tKZQQ1TtjTTmXzjtPa9CXVxmhlkC31Aru2XlXqB+oo=
-X-Received: by 2002:a17:90b:3a0c:b0:312:e73e:cded with SMTP id
- 98e67ed59e1d1-3217562b0a5mr9001843a91.16.1754641364807; Fri, 08 Aug 2025
- 01:22:44 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1754642842; x=1755247642;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zXwNKmnko2/AYlR9DsU3B2PeYMyf9/XW40u2WUn77cE=;
+ b=AOe5I0NDNplxlr3PYkI6lb2+7sjtTTbF4uNSwlHbYs+RvM48NCIkanB2xszDYhSEnu
+ ARnOl4sV8NauXakim6nvcgm9phYJBV9kCZbgtDsuhGGMq1fQWssaSM7CHBY94JdPoiPY
+ WVMPOLNTOQBZbt+4LfDU7GHGU1p0YhuJ3km3CNnnyLjB4ZPVkocWIqAaBoFhU+8LmQfG
+ oIkgpBZh3epuND4JyGBcZxnvZZ5gWvGdNPUGfy1bWdOZOobkVtRdqBiFnwfIInaX73+B
+ sEPDN9rjqJiW745jnr3qeKFUviT1Na5jwGDEINMDqk4vFLTOKq8yA5HZpl9b2QL/3wDb
+ jJrg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW3GJHb8nCRSI9qQ+E2JJQsc55V/JhG2RHQ/GoggisSeliZWA4o/UgEjczvEznCdZ4tSg3p02Hh8oZ0@nongnu.org
+X-Gm-Message-State: AOJu0YzycavNnQstIELbv8mzQMZmcZmlbZ1QDcylohqZD7KZimFHuRTO
+ eniSsszTrOhIKBhHr2YA4v3AKR50NKoJTGwNccoYmI4RrYmCEG8O8PWHWMCGMVDMYV0=
+X-Gm-Gg: ASbGncsGAFCTiCIGjNvV8hiS/uBCZ+ugK2c2U4ZpcaMFQ503o5OE0v1seCz3fI8M2NW
+ ljKuYfz3i4fM/NR+3usNmKPrlP7bcFBNyFDEQWocBcNVNfEyovSdsXuIchpPyjy5Jtq7jcMxkyi
+ uMMV0SNwvVl7Q37iJIpZybruQYEnAioeRMeDCufodzJ1DbBA/tChDGI3PUyL4AYApnuJgf2g67L
+ xs0ldcgc0P/ZQ/ZRE/xniVDDLylh/RyslvyHXsbQNhwUMzevXbIgULafdnArlSondkYvA+g44f0
+ Hvy1Yj0RfolmAExvdh3oIr//IXBtbEX3LFP3UMxWNNw4RHNUELnVDrOoggmdNVz2pG4ZVeAiOyU
+ KwP8ew3MGJ04pE9jemNUXYq5POOEUcVDWt1sViA7nOW+smlrdBJ0fhWvNPusAdGGqyicMYX/r
+X-Google-Smtp-Source: AGHT+IFQXtuLqMeyGmRFVIPwvBegw7RbosSuY0m6miCV8N8GKrdT4ReIaI+g+8EB5gpFrn/r4hpQ4A==
+X-Received: by 2002:a05:6000:40cc:b0:3b8:ffd1:136e with SMTP id
+ ffacd0b85a97d-3b9008c7094mr1883287f8f.0.1754642841922; 
+ Fri, 08 Aug 2025 01:47:21 -0700 (PDT)
+Received: from meli-email.org (athedsl-4440194.home.otenet.gr.
+ [79.129.176.114]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3b8fc28a830sm5066561f8f.16.2025.08.08.01.47.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Aug 2025 01:47:21 -0700 (PDT)
+Date: Fri, 08 Aug 2025 11:28:16 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ rowan Hart <rowanbhart@gmail.com>, Gustavo Romero <gustavo.romero@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Alex Benn=?UTF-8?B?w6k=?=e <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v5 2/9] contrib/plugins/uftrace: define cpu operations and
+ implement aarch64
+User-Agent: meli/0.8.12
+References: <20250808020702.410109-1-pierrick.bouvier@linaro.org>
+ <20250808020702.410109-3-pierrick.bouvier@linaro.org>
+In-Reply-To: <20250808020702.410109-3-pierrick.bouvier@linaro.org>
+Message-ID: <t0o32w.19lmgtfzlutzr@linaro.org>
 MIME-Version: 1.0
-References: <20250808080823.2638861-1-armbru@redhat.com>
- <20250808080823.2638861-8-armbru@redhat.com>
-In-Reply-To: <20250808080823.2638861-8-armbru@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Fri, 8 Aug 2025 12:22:33 +0400
-X-Gm-Features: Ac12FXwv5HNN_xrctYjYKK8fmecfy5R_08jOm66YTZ7YPA9SlqZKtzvM6FVnAsk
-Message-ID: <CAMxuvawKyiqOPRNcouZxar+5+oXoOmcN0VtbY8VGi5MjKmJQWw@mail.gmail.com>
-Subject: Re: [PATCH 07/12] ui/spice-core: Clean up error reporting
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, odaki@rsg.ci.i.u-tokyo.ac.jp
-Content-Type: multipart/alternative; boundary="000000000000420a5b063bd64742"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,123 +106,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000420a5b063bd64742
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi
-
-On Fri, Aug 8, 2025 at 12:08=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
-m> wrote:
-
-> watch_add() reports _open_osfhandle() failure with
-> error_setg(&error_warn, ...).
+On Fri, 08 Aug 2025 05:06, Pierrick Bouvier <pierrick.bouvier@linaro.org> wrote:
+>We define a new CpuOps structure that will be used to implement tracking
+>independently of guest architecture.
 >
-> I'm not familiar with Spice, so I can't say whether it will work after
-> such a failure.  If it doesn't, then this should be an error.  If it
-> does, then why bother the user with a warning that isn't actionable,
-> and likely confusing?
+>As well, we now instrument only instructions following ones that might
+>have touch the frame pointer.
+
+s/touch/touched
+
 >
-> Regardless of that, error_setg_win32(&error_warn, ...) is undesirable
-> just like error_setg(&error_fatal, ...) and error_setg(&error_abort,
-> ...) are.  Replace by warn_report().
+>Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>---
+> contrib/plugins/uftrace.c | 112 ++++++++++++++++++++++++++++++++++++--
+> 1 file changed, 108 insertions(+), 4 deletions(-)
 >
-> Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
+>index d60c1077496..4b1a2f38143 100644
+>--- a/contrib/plugins/uftrace.c
+>+++ b/contrib/plugins/uftrace.c
+>@@ -11,14 +11,94 @@
+> 
+> #include <qemu-plugin.h>
+> #include <glib.h>
+>+#include <stdio.h>
+> 
+> QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
+> 
+>+typedef struct Cpu Cpu;
+>+
+>+typedef struct {
+>+    void (*init)(Cpu *cpu);
+>+    void (*end)(Cpu *cpu);
+>+    uint64_t (*get_frame_pointer)(Cpu *cpu);
+>+    bool (*does_insn_modify_frame_pointer)(const char *disas);
+>+} CpuOps;
+>+
+> typedef struct Cpu {
+>     GByteArray *buf;
+>+    CpuOps ops;
+>+    void *arch;
+> } Cpu;
+> 
+>+typedef struct {
+>+    struct qemu_plugin_register *reg_fp;
+>+} Aarch64Cpu;
+>+
+> static struct qemu_plugin_scoreboard *score;
+>+static CpuOps arch_ops;
+>+
+>+static uint64_t cpu_read_register64(Cpu *cpu, struct qemu_plugin_register *reg)
+>+{
+>+    GByteArray *buf = cpu->buf;
+>+    g_byte_array_set_size(buf, 0);
+>+    size_t sz = qemu_plugin_read_register(reg, buf);
+>+    g_assert(sz == 8);
+>+    g_assert(buf->len == 8);
+>+    return *((uint64_t *) buf->data);
+>+}
+>+
+>+static struct qemu_plugin_register *plugin_find_register(const char *name)
+>+{
+>+    g_autoptr(GArray) regs = qemu_plugin_get_registers();
+
+Question about the plugin API and not this patch per se, if the cpu is 
+in a32/thumb mode does it still return the aarch64 registers?
+
+>+    for (int i = 0; i < regs->len; ++i) {
+>+        qemu_plugin_reg_descriptor *reg;
+>+        reg = &g_array_index(regs, qemu_plugin_reg_descriptor, i);
+>+        if (!strcmp(reg->name, name)) {
+>+            return reg->handle;
+>+        }
+>+    }
+>+    return NULL;
+>+}
+>+
+>+static uint64_t aarch64_get_frame_pointer(Cpu *cpu_)
+>+{
+>+    Aarch64Cpu *cpu = cpu_->arch;
+>+    return cpu_read_register64(cpu_, cpu->reg_fp);
+>+}
+>+
+>+static void aarch64_init(Cpu *cpu_)
+>+{
+>+    Aarch64Cpu *cpu = g_new0(Aarch64Cpu, 1);
+>+    cpu_->arch = cpu;
+>+    cpu->reg_fp = plugin_find_register("x29");
+>+    if (!cpu->reg_fp) {
+>+        fprintf(stderr, "uftrace plugin: frame pointer register (x29) is not "
+>+                        "available. Please use an AArch64 cpu (or -cpu max).\n");
+>+        g_abort();
+>+    }
+>+}
+>+
+>+static void aarch64_end(Cpu *cpu)
+>+{
+>+    g_free(cpu->arch);
+>+}
+>+
+>+static bool aarch64_does_insn_modify_frame_pointer(const char *disas)
+>+{
+>+    /*
+>+     * Check if current instruction concerns fp register "x29".
+>+     * We add a prefix space to make sure we don't match addresses dump
+>+     * in disassembly.
+>+     */
+>+    return strstr(disas, " x29");
+
+Hm is the whitespace before x29 guaranteed? Neat trick otherwise.
+
+>+}
+>+
+>+static CpuOps aarch64_ops = {
+>+    .init = aarch64_init,
+>+    .end = aarch64_end,
+>+    .get_frame_pointer = aarch64_get_frame_pointer,
+>+    .does_insn_modify_frame_pointer = aarch64_does_insn_modify_frame_pointer,
+>+};
+> 
+> static void track_callstack(unsigned int cpu_index, void *udata)
+> {
+>@@ -28,20 +108,36 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+> {
+>     size_t n_insns = qemu_plugin_tb_n_insns(tb);
+> 
+>+    /*
+>+     * We instrument all instructions following one that might have updated
+>+     * the frame pointer. We always instrument first instruction in block, as
+>+     * last executed instruction, in previous tb, may have modified it.
+
+Modified it how?
+
+>+     */
+>+    bool instrument_insn = true;
+>     for (int i = 0; i < n_insns; i++) {
+>         struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
+> 
+>-        uintptr_t pc = qemu_plugin_insn_vaddr(insn);
+>-        qemu_plugin_register_vcpu_insn_exec_cb(insn, track_callstack,
+>-                QEMU_PLUGIN_CB_R_REGS,
+>-                (void *) pc);
+>+        if (instrument_insn) {
+>+            uintptr_t pc = qemu_plugin_insn_vaddr(insn);
+>+            qemu_plugin_register_vcpu_insn_exec_cb(insn, track_callstack,
+>+                                                   QEMU_PLUGIN_CB_R_REGS,
+>+                                                   (void *) pc);
+>+            instrument_insn = false;
+>+        }
+> 
+>+        char *disas = qemu_plugin_insn_disas(insn);
+>+        if (arch_ops.does_insn_modify_frame_pointer(disas)) {
+>+            instrument_insn = true;
+>+        }
+
+So if I understand correctly you check if an instruction needs to be 
+instrumented and then do it in the next forloop. This means if the last 
+insn needs to be instrumented too it is not done, is that ok?
+
+>     }
+> }
+> 
+> static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
+> {
+>     Cpu *cpu = qemu_plugin_scoreboard_find(score, vcpu_index);
+>+    cpu->ops = arch_ops;
+>+
+>+    cpu->ops.init(cpu);
+>     cpu->buf = g_byte_array_new();
+> }
+> 
+>@@ -65,6 +161,14 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+>                                            const qemu_info_t *info,
+>                                            int argc, char **argv)
+> {
+>+    if (!strcmp(info->target_name, "aarch64")) {
+>+        arch_ops = aarch64_ops;
+>+    } else {
+>+        fprintf(stderr, "plugin uftrace: %s target is not supported\n",
+>+                info->target_name);
+>+        return 1;
+>+    }
+>+
+>     score = qemu_plugin_scoreboard_new(sizeof(Cpu));
+>     qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
+>     qemu_plugin_register_atexit_cb(id, at_exit, NULL);
+>-- 
+>2.47.2
 >
 
-
-lgtm, thanks
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-
-
-> ---
->  ui/spice-core.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/ui/spice-core.c b/ui/spice-core.c
-> index 5992f9daec..97bdd171cd 100644
-> --- a/ui/spice-core.c
-> +++ b/ui/spice-core.c
-> @@ -132,7 +132,8 @@ static SpiceWatch *watch_add(int fd, int event_mask,
-> SpiceWatchFunc func, void *
->  #ifdef WIN32
->      fd =3D _open_osfhandle(fd, _O_BINARY);
->      if (fd < 0) {
-> -        error_setg_win32(&error_warn, WSAGetLastError(), "Couldn't
-> associate a FD with the SOCKET");
-> +        warn_report("Couldn't associate a FD with the SOCKET: %s"
-> +                    g_win32_error_message(WSAGetLastError()));
->          return NULL;
->      }
->  #endif
-> --
-> 2.49.0
->
->
-
---000000000000420a5b063bd64742
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi</div><br><div class=3D"gmail_quote gmail_quote_con=
-tainer"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Aug 8, 2025 at 12:08=
-=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com">armb=
-ru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" sty=
-le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
-ng-left:1ex">watch_add() reports _open_osfhandle() failure with<br>
-error_setg(&amp;error_warn, ...).<br>
-<br>
-I&#39;m not familiar with Spice, so I can&#39;t say whether it will work af=
-ter<br>
-such a failure.=C2=A0 If it doesn&#39;t, then this should be an error.=C2=
-=A0 If it<br>
-does, then why bother the user with a warning that isn&#39;t actionable,<br=
->
-and likely confusing?<br>
-<br>
-Regardless of that, error_setg_win32(&amp;error_warn, ...) is undesirable<b=
-r>
-just like error_setg(&amp;error_fatal, ...) and error_setg(&amp;error_abort=
-,<br>
-...) are.=C2=A0 Replace by warn_report().<br>
-<br>
-Cc: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.co=
-m" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
-Signed-off-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" t=
-arget=3D"_blank">armbru@redhat.com</a>&gt;<br></blockquote><div><br></div><=
-div><br></div><div>lgtm, thanks</div><div>Reviewed-by: Marc-Andr=C3=A9 Lure=
-au &lt;<a href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lureau@redh=
-at.com</a>&gt;</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" styl=
-e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex">
----<br>
-=C2=A0ui/spice-core.c | 3 ++-<br>
-=C2=A01 file changed, 2 insertions(+), 1 deletion(-)<br>
-<br>
-diff --git a/ui/spice-core.c b/ui/spice-core.c<br>
-index 5992f9daec..97bdd171cd 100644<br>
---- a/ui/spice-core.c<br>
-+++ b/ui/spice-core.c<br>
-@@ -132,7 +132,8 @@ static SpiceWatch *watch_add(int fd, int event_mask, Sp=
-iceWatchFunc func, void *<br>
-=C2=A0#ifdef WIN32<br>
-=C2=A0 =C2=A0 =C2=A0fd =3D _open_osfhandle(fd, _O_BINARY);<br>
-=C2=A0 =C2=A0 =C2=A0if (fd &lt; 0) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg_win32(&amp;error_warn, WSAGetLastEr=
-ror(), &quot;Couldn&#39;t associate a FD with the SOCKET&quot;);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 warn_report(&quot;Couldn&#39;t associate a FD =
-with the SOCKET: %s&quot;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 g_wi=
-n32_error_message(WSAGetLastError()));<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NULL;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0#endif<br>
--- <br>
-2.49.0<br>
-<br>
-</blockquote></div></div>
-
---000000000000420a5b063bd64742--
-
+LGTM overall, it makes sense.
 
