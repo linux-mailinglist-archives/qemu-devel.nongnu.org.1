@@ -2,51 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF174B1E032
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 03:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3402B1E074
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 04:10:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukC19-0005kQ-MK; Thu, 07 Aug 2025 21:35:35 -0400
+	id 1ukCW4-0008Qx-4e; Thu, 07 Aug 2025 22:07:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1ukC0x-0005Uh-8p; Thu, 07 Aug 2025 21:35:25 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>)
- id 1ukC0u-0006JZ-6b; Thu, 07 Aug 2025 21:35:22 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxlmlSVJVokYM7AQ--.49763S3;
- Fri, 08 Aug 2025 09:35:15 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowJAxT+ZHVJVosPY7AA--.25968S3;
- Fri, 08 Aug 2025 09:35:14 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: stefanha@gmail.com, qemu-stable@nongnu.org, WANG Rui <wangrui@loongson.cn>,
- Zhou Qiankang <wszqkzqk@qq.com>
-Subject: [PULL 1/1] target/loongarch: Fix [X]VLDI raising exception incorrectly
-Date: Fri,  8 Aug 2025 09:11:57 +0800
-Message-Id: <20250808011157.375125-2-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20250808011157.375125-1-gaosong@loongson.cn>
-References: <20250808011157.375125-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1ukCVs-00087Z-7w
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 22:07:21 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1ukCVl-0003Te-3L
+ for qemu-devel@nongnu.org; Thu, 07 Aug 2025 22:07:16 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-76bde897110so1439728b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Aug 2025 19:07:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1754618829; x=1755223629; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=srUf+JNV3nKSoU+LY8XDAhFoKmESVt4f02H+j9OZ9vQ=;
+ b=qHYe0B0mmwhVES2+ShDZaQll9sqnRctCbyGB4LfUuw50MPcX/DPKWHZEga7L6yn+Ns
+ 9t44rAdrtJJz+HU4D6qifw5W9H8lzaUmITs8KG/asIcf7Hc+LugoTPRKyAoJe2Y0ukK1
+ ZejCHicQSY3wYI2fbPJGSFR6YSHlSOveiZiBlLk9+kQ/xMRYPLYS3c/ORjmMRglNRka5
+ zqFHkfjNgL+JtAIXwcszZ4x6GxL83mKWYlLXjf1lDZIkkx24CpQ5l8I2l8nb9IDmon0o
+ EpK4+gQXq1PUtR43XM4b2DzhN/NQDAqxI3BDBACrKXoW5Nt5aTMmrhLP/b/Xsa45o/YM
+ IpHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1754618829; x=1755223629;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=srUf+JNV3nKSoU+LY8XDAhFoKmESVt4f02H+j9OZ9vQ=;
+ b=IeP/tm4xjD9c7bet43XmkCwqJGIpM9DceP6R0z43qhKuuKAwLw5aWdtSvsYDI68UnI
+ kVn3rF1NzmyvqyKU4r+cgQ0Ij9Xo3v1vMO2Moiw6GtS7HhQLgLQe7k1Vjhr1Rp9nPDkP
+ n2DRd2+6YPBfbADbvqJneQUIt/1TRb2iuuD6+dAYEDZAhoGmJhLROK9Kc1u29dJ8zBKa
+ W+fkG/nrSOXgtt/OnetoqITj3X07OEj7J4JyaYiEjoMeFBz0x+UrGVxrGY5hX/yux/3Q
+ WiZnZDIPhg9XlMzOTzqexJoWfCq49vF6ig4HR9w0Q+yCIBI3o8v/8MndD3Tjpngj4VBx
+ hn8g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW3GdyBmAj7OXjsj3y8ZqU5Hu4t247u/TxulGxIy6cX1QS2b08w8Gy7Rfa39KwbxiKyNOtByQxHQyT0@nongnu.org
+X-Gm-Message-State: AOJu0YyZPrGmcWKtDPHOH7zvYodfBsyC2A0poqWrimRmd3QHV1hZvtAD
+ JfQx1KLK7EZVo8ipzR0QEao0pIB9Y+IvXV2eSkvg9rBNDUG7A0TcFx8tTSRG/yW+Mzo=
+X-Gm-Gg: ASbGnct0mWqmOe0Gm7RKFx55vJE7n8EdUvmTe4kQfAAM8lTCbAz2jG+rs/DFQwsioZ7
+ PIQfk9DbaqDUbxGNti0ESSZkPVOqrgya23ff3ML3vLba43Sd03v/wjokE67KBULWkzGlvfyiOfx
+ 96Y0frt/Q5oky+qqSo+5BXqTAnZ7busNdX/IVmpMu8k9On2Ex7hcyD5y0B1G2WVu9p1b2uL/cSC
+ 80cZuKdedWM3L3rkAmyEM+xoIUyVKjUi3hmkucL0UbHbtwvT/jEFQfdKb0eIOvSwXGet3i0mCXR
+ 5QLCFtICwIDp6AarfNf3DztPdjScu5DE1eZSSEYqhFgocSWy7w+h+zTmUkrOtfZbP4ZDGWAMZ51
+ Z3QiOtxlYJnX4biu/UBUUBA3AA8k6vVi5
+X-Google-Smtp-Source: AGHT+IHWUMcISonCl9drvS2jmEhhwn4fAf7HZ9o4n7hvvPqc+Mz1WOjc0EGaS5v4hqb+laKgwL6Suw==
+X-Received: by 2002:a05:6a21:9988:b0:23d:781f:1516 with SMTP id
+ adf61e73a8af0-240551604f0mr1712010637.22.1754618828650; 
+ Thu, 07 Aug 2025 19:07:08 -0700 (PDT)
+Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b428ba4cf35sm3705433a12.14.2025.08.07.19.07.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Aug 2025 19:07:08 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: pierrick.bouvier@linaro.org,
+	qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ rowan Hart <rowanbhart@gmail.com>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v5 0/9] contrib/plugins: uftrace
+Date: Thu,  7 Aug 2025 19:06:53 -0700
+Message-ID: <20250808020702.410109-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.47.2
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJAxT+ZHVJVosPY7AA--.25968S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,55 +105,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: WANG Rui <wangrui@loongson.cn>
+This plugin generates a binary trace compatible with the excellent uftrace:
+https://github.com/namhyung/uftrace
 
-According to the specification, [X]VLDI should trigger an invalid instruction
-exception only when Bit[12] is 1 and Bit[11:8] > 12. This patch fixes an issue
-where an exception was incorrectly raised even when Bit[12] was 0.
+In short, it tracks all function calls performed during execution, based on
+frame pointer analysis. A big advantage over "uftrace record" is that it works
+in system mode, allowing to trace a full system execution, which was the
+original goal. It works as well in user mode, but uftrace itself already does
+this. It's implemented for aarch64 and x86_64.
 
-Test case:
+Let's start with concrete examples of the result.
 
-```
-    .global main
-main:
-    vldi    $vr0, 3328
-    ret
-```
+First, in system mode, booting a stack using TF-A + U-boot + Linux:
+- Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
+https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
+- Stat and open syscalls in kernel
+https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
+- Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
+https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
 
-Reported-by: Zhou Qiankang <wszqkzqk@qq.com>
-Signed-off-by: WANG Rui <wangrui@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-ID: <20250804132212.4816-1-wangrui@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/tcg/insn_trans/trans_vec.c.inc | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Full trace is available here:
+https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz
+You can download and open it on https://ui.perfetto.dev/ to explore it.
 
-diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-index 78730029cb..38bccf2838 100644
---- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-+++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-@@ -3585,7 +3585,9 @@ static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
-     int sel, vece;
-     uint64_t value;
- 
--    if (!check_valid_vldi_mode(a)) {
-+    sel = (a->imm >> 12) & 0x1;
-+
-+    if (sel && !check_valid_vldi_mode(a)) {
-         generate_exception(ctx, EXCCODE_INE);
-         return true;
-     }
-@@ -3594,8 +3596,6 @@ static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
-         return true;
-     }
- 
--    sel = (a->imm >> 12) & 0x1;
--
-     if (sel) {
-         value = vldi_get_value(ctx, a->imm);
-         vece = MO_64;
+Second, in user mode, tracing qemu-aarch64 (itself) running git --help:
+- Loading program and its interpreter
+https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
+- TB creation
+https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
+
+Full trace is available here:
+https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz
+
+If you had curiosity and now you're ready to give some attention, most of the
+details you want to read are included in the documentation patch (final one).
+
+Overhead is around x5-x15, and long traces can be directly filtered with uftrace
+if needed.
+
+I hope this plugin can help people trying to understand what happens out of the
+user space, and get a better grasp of how firmwares, bootloader, and kernel
+interact behind the curtain.
+
+v2
+--
+
+- trace active stacks on exit
+- do not erase map generated in system_emulation
+- add documentation to generate restricted visual traces around specific events
+  of execution
+
+v3
+--
+
+- fix missing include unistd.h (build failed on MacOS only)
+
+v4
+--
+
+- add support for x64
+
+v5
+--
+
+- addressed Alex comments
+- split plugin implementation in several commits
+- removed instruction based timestamps (only use time based timestamps)
+- removed sampling implementation
+
+Pierrick Bouvier (9):
+  contrib/plugins/uftrace: skeleton file
+  contrib/plugins/uftrace: define cpu operations and implement aarch64
+  contrib/plugins/uftrace: track callstack
+  contrib/plugins/uftrace: implement tracing
+  contrib/plugins/uftrace: implement privilege level tracing
+  contrib/plugins/uftrace: generate additional files for uftrace
+  contrib/plugins/uftrace: implement x64 support
+  contrib/plugins/uftrace_symbols.py
+  contrib/plugins/uftrace: add documentation
+
+ docs/about/emulation.rst           | 197 +++++++
+ contrib/plugins/uftrace.c          | 871 +++++++++++++++++++++++++++++
+ contrib/plugins/meson.build        |   3 +-
+ contrib/plugins/uftrace_symbols.py | 152 +++++
+ 4 files changed, 1222 insertions(+), 1 deletion(-)
+ create mode 100644 contrib/plugins/uftrace.c
+ create mode 100755 contrib/plugins/uftrace_symbols.py
+
 -- 
-2.47.0
+2.47.2
 
 
