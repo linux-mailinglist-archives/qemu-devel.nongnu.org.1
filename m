@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E200B1E993
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 15:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A134B1E99D
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 15:53:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukNVu-0003ic-MZ; Fri, 08 Aug 2025 09:52:06 -0400
+	id 1ukNVu-0003im-Ve; Fri, 08 Aug 2025 09:52:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukNVK-0003Xo-PT
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 09:51:36 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukNVN-0003aO-MW
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 09:51:39 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukNVF-0002HT-0D
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 09:51:29 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-459e3926cbbso10800765e9.1
- for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 06:51:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ukNVK-0002Hz-Ih
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 09:51:33 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-459d62184c9so13258875e9.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 06:51:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754661082; x=1755265882; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754661087; x=1755265887; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yp5m4fBeXwoDwGsolCybQprn+LgJAPEoEeKEA8EAqcs=;
- b=XuaBiGNa5pp9iCF4vSkda8Tfep44dqeoPdjhACcAr2eflB2iE60DlkbaMZdUnl0srK
- waUyVhAzDdBZRxwlY1PvhkLFdOT2mWbSAsJh/cbkOfe64+LZ6fgJFnk2DxN0zG7g5yrC
- YKWsTW0MB9QqxmT2BEzDlMJEwtTSeIu8irLBklEnL73GMTDZXKSVcvSiDy0rjRz/w3cX
- XBHGWjpx6R9IZams1VhrhgIc+LOFd61gbZA5XueRzVkDqlGdmdRqjBARn4og9iLGM43j
- /B4j3uYCZRgxJ+reaSLIgPcmrzqFgEACPBfgyrmVnnkr6/NTGCSvI6jiTyYzKnBJyuvR
- ybjQ==
+ bh=5l7n3D9ctZbGZm4ngX5c30d2jXCKAPPPYSiErk+U9JA=;
+ b=ta3vhjwLZFf5A9TsOptl2/6EW7gKCzTL5GqybHhKJ4r/ip2yf8KuNanoQMKmLeeSld
+ qYnqANjQnZdhgYjv80OIZwsZ0DqSar+caYJ5uoGS0N18oMvP14es9hI0kyWRg43qZqql
+ 9Q7ZjqmwItiMh9oY21Weta5xm/Ker7R2aoTJ/AMk2/5OwBDXHGCGvDY3w+BIBu6/1gCy
+ P8BOBH2mGPpx/zaGnEvelVJr03q6ytCZwIHfIsepnd1gfq9Z8uxEESUcpPNaKj5JsjVR
+ DrFM3i813kJf/uXqmxiW26Cpqty15n/P6x+89tcSSli1onjjxqI+mSVFCgXBlg0DbixR
+ wkyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754661082; x=1755265882;
+ d=1e100.net; s=20230601; t=1754661087; x=1755265887;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yp5m4fBeXwoDwGsolCybQprn+LgJAPEoEeKEA8EAqcs=;
- b=g737XzZLEMyUNBcqmMXQp+54mAEzdxniMqUS8mxSkIvSUfwZEqjrBAzuGzXf79/hH8
- oKucU262s16c2fpAsEej5lTtLpIM6T6fgCr1vWMdNxfb6gmCuvPBI4rzqNVozCRGzlsD
- rokNEh19bnNC8OsqMwJVrXYUpCsy78G5jzmlHKNaLAW2+8/a1eHcMB4An0UgTFN+haxl
- 4YcH0dcnBx91GKnoMZQD9Da2MkBG6OtV0wpoghRRCq+HGxkJLKhJHyy489uVh9SmcYgN
- N9xX1K2ZgZFsa2TI0a1wU1PMHR+zUA52RgiBf/7bl8dw8V4TAR49xEoOuSOftr6X/5hX
- BPdA==
-X-Gm-Message-State: AOJu0YzcC4yFqo3/hYGZTD4v5W+KywRMXN3R+288cCAVjshYc5ayxWrk
- h6r6jG7FbXsycTUc3NwkeknWK3zTYK0/qHLyQRIjwYWmsge+KMVOeYPskZriwpTtGi12W9mqRCX
- tq8EP
-X-Gm-Gg: ASbGncvAc71vqhIDXOuoZNusvwEBdcCMlvzRvvbP+U7TLNq6y2MHdKXfpRumvt3SUY1
- jR640PevQsd7fW0Na/nFQ6hkPpXlB+wfaHmfWEj36QfgJ56Ofky+5c7xO8iAdL9WTdvu1L4+rwy
- opN+dYj30gJO7NzojHibpY4E1r4ATqcLEHw4eNcVPQ9/tbvX8C6Qzb6rSOvvG1tC8wNkoUa49oX
- eCcSNdu1rzrjVW63rMEYOVcQtMcWjvEEiL8K5rEgXh0c6RQnPRm9f36WmHLHC2+A/wxemZx0evQ
- Ks82juFiWbkRy94tjkly1aCWNY8sz2uLOAMCHrQnhjhDbP1ZtbWh5624cjSOCeeonkJH0pZth9G
- gVxXfGoM0cJnCzWcS/lQQDuwTZbJOXl5qvfcOuTjSwNlsKxwTfPTmNSX+EVrrc0YLmrFy/U29
-X-Google-Smtp-Source: AGHT+IH3QzYs9RNN20Qu6V7lCJ2JNao/2tPqE48hw5Wq0pUV7w8Xs6EwFYfGdwSp2ie8wCIX589xjw==
-X-Received: by 2002:a05:600c:b93:b0:459:d408:d890 with SMTP id
- 5b1f17b1804b1-459f4fc4a95mr26491155e9.33.1754661082297; 
- Fri, 08 Aug 2025 06:51:22 -0700 (PDT)
+ bh=5l7n3D9ctZbGZm4ngX5c30d2jXCKAPPPYSiErk+U9JA=;
+ b=eb8kvUG6GbKFOOQW8iIJAHmcha0R+6/4i5Maw1eWViD8vFIOxE9txwbOT4OZC5AO3f
+ FaSxi4UmnepwocO9DKumMisqIuvgDsloeGsl6W1S1aUaFPSuUt7gnIxQDmYO/dMQp3XC
+ f9NlyT/ooULW/XeL/szU7STmJOhF0wlDNvxRHFxZCbHXfHcQtzwNb1GW7uEAZ6+x0kBS
+ GoXPbMUjxAaloVYQUJNCvfMWRkE5VG6Xm2B9drixAoY1Y4l+LmsAPaw43E9l0Y9GEoZb
+ 4Qh+4xTotXEnBfPB9K8VBedVmBeTuRs4QgewwoqCpqcqalb1iXenG1D7jW4bvIH7pfv0
+ yTAw==
+X-Gm-Message-State: AOJu0YxCeM1O75wN99vcrRinysjMqiRvYfksxNiVei91GjpeO3nj7zr2
+ K0C/cStBC8aQhKAnxmfYrLMG3wqnfSM/1GMqCEj71gUr90052roDrhyEHFLkjCV5QvvYXbE1iIS
+ ltq8H
+X-Gm-Gg: ASbGncsFOJFSulgvJGEMM1eqtEoKJJa18HblU/h6GdfZjfawlzAdDjn4Bxg7u67mtZE
+ 4o4EMgknHaPobAigxAxGAlGZK79gZMcbBNidX2VjFZsSj2ssYCQfwKsCTshpKdyDN7FI3VLkZ6c
+ zQCqCaEsWuMebpSwuVcTKvtaWf70/IsQ25H5EoDA2qvuqg63qwJAXdhwu2oHtCQiOvgGt5Kho+X
+ 6RhQJY2bDuRHyhfRhh0OAIbZ86ur3GpmOJrEUWPoYQG8IZzl/CdNyl5xyYnjX1bHBP5liICcyhB
+ 2YGaguMIDvu03DeMzahVv5XHjBzjGDuaWwFMZAI2tsqWPazXGla3PN5hE9+aliU/qLs8cPR0GTZ
+ BF5D9vUU276UU3bn7NHb3DHlq0cBJJrbK7WBABg7WCnSbW7EFostw30ER72GpKRHepFafHhPm
+X-Google-Smtp-Source: AGHT+IHjP+LfvGq0+GFppwTBcfZwQeILlxu//QZAS1Vn2mW1Idvjp5FeSBKD1eY8d2GZM727Rjua+g==
+X-Received: by 2002:a05:600c:4449:b0:459:dfde:332e with SMTP id
+ 5b1f17b1804b1-459f4f1447cmr25906755e9.29.1754661087139; 
+ Fri, 08 Aug 2025 06:51:27 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-459e585430csm136755615e9.11.2025.08.08.06.51.21
+ ffacd0b85a97d-3b8e9464f46sm16174067f8f.19.2025.08.08.06.51.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 08 Aug 2025 06:51:21 -0700 (PDT)
+ Fri, 08 Aug 2025 06:51:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Guenter Roeck <linux@roeck-us.net>, qemu-riscv@nongnu.org,
@@ -70,18 +70,18 @@ Cc: Guenter Roeck <linux@roeck-us.net>, qemu-riscv@nongnu.org,
  Weiwei Li <liwei1518@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Palmer Dabbelt <palmer@dabbelt.com>, qemu-block@nongnu.org
-Subject: [PATCH-for-10.1 1/2] hw/sd/ssi-sd: Return noise (dummy byte) when no
+Subject: [PATCH-for-10.1 2/2] tests/functional: Test SPI-SD adapter without SD
  card connected
-Date: Fri,  8 Aug 2025 15:51:14 +0200
-Message-ID: <20250808135115.77310-2-philmd@linaro.org>
+Date: Fri,  8 Aug 2025 15:51:15 +0200
+Message-ID: <20250808135115.77310-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250808135115.77310-1-philmd@linaro.org>
 References: <20250808135115.77310-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,35 +104,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 1585ab9f1ba ("hw/sd/sdcard: Fill SPI response bits in card
-code") exposed a bug in the SPI adapter: if no SD card is plugged,
-we shouldn't return any particular packet response, but the noise
-shifted on the MISO line. Return the dummy byte, otherwise we get:
+SPI-SD adapter should be usable, even without any SD card
+wired. Refactor test_riscv64_sifive_u_mmc_spi() to make it
+more generic and add another test, inspired by this report:
+https://lore.kernel.org/qemu-devel/5b2dc427-f0db-4332-a997-fe0c82415acd@roeck-us.net/
 
-  qemu-system-riscv64: ../hw/sd/ssi-sd.c:160: ssi_sd_transfer: Assertion `s->arglen > 0' failed.
-
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: 775616c3ae8 ("Partial SD card SPI mode support")
+Inspired-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/ssi-sd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/functional/test_riscv64_sifive_u.py | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/hw/sd/ssi-sd.c b/hw/sd/ssi-sd.c
-index 594dead19ee..3aacbd03871 100644
---- a/hw/sd/ssi-sd.c
-+++ b/hw/sd/ssi-sd.c
-@@ -89,6 +89,10 @@ static uint32_t ssi_sd_transfer(SSIPeripheral *dev, uint32_t val)
-     SDRequest request;
-     uint8_t longresp[5];
+diff --git a/tests/functional/test_riscv64_sifive_u.py b/tests/functional/test_riscv64_sifive_u.py
+index dc4cb8a4a96..f7ab1abfd56 100755
+--- a/tests/functional/test_riscv64_sifive_u.py
++++ b/tests/functional/test_riscv64_sifive_u.py
+@@ -27,25 +27,37 @@ class SifiveU(LinuxKernelTest):
+          'rootfs.ext2.gz'),
+         'b6ed95610310b7956f9bf20c4c9c0c05fea647900df441da9dfe767d24e8b28b')
  
-+    if (!sdbus_get_inserted(&s->sdbus)) {
-+        return SSI_DUMMY;
-+    }
+-    def test_riscv64_sifive_u_mmc_spi(self):
++    def do_test_riscv64_sifive_u_mmc_spi(self, connect_card):
+         self.set_machine('sifive_u')
+         kernel_path = self.ASSET_KERNEL.fetch()
+         rootfs_path = self.uncompress(self.ASSET_ROOTFS)
+ 
+         self.vm.set_console()
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               'root=/dev/mmcblk0 rootwait '
+                                'earlycon=sbi console=ttySIF0 '
+-                               'panic=-1 noreboot')
++                               'root=/dev/mmcblk0 ')
+         self.vm.add_args('-kernel', kernel_path,
+-                         '-drive', f'file={rootfs_path},if=sd,format=raw',
+                          '-append', kernel_command_line,
+                          '-no-reboot')
++        if connect_card:
++            self.vm.add_args('-drive', f'file={rootfs_path},if=sd,format=raw')
++            kernel_command_line += 'panic=-1 noreboot rootwait '
++            pattern = 'Boot successful.'
++        else:
++            kernel_command_line += 'panic=0 noreboot '
++            pattern = 'Cannot open root device "mmcblk0" or unknown-block(0,0)'
 +
-     /*
-      * Special case: allow CMD12 (STOP TRANSMISSION) while reading data.
-      *
+         self.vm.launch()
+-        self.wait_for_console_pattern('Boot successful.')
++        self.wait_for_console_pattern(pattern)
+ 
+         os.remove(rootfs_path)
+ 
++    def _test_riscv64_sifive_u_nommc_spi(self):
++        self.do_test_riscv64_sifive_u_mmc_spi(False)
++
++    def test_riscv64_sifive_u_mmc_spi(self):
++        self.do_test_riscv64_sifive_u_mmc_spi(True)
++
+ 
+ if __name__ == '__main__':
+     LinuxKernelTest.main()
 -- 
 2.49.0
 
