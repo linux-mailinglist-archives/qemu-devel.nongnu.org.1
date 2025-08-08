@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97760B1E439
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 10:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB8BB1E42F
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 10:09:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukI9c-0007Df-PR; Fri, 08 Aug 2025 04:08:44 -0400
+	id 1ukI9Z-00079v-EL; Fri, 08 Aug 2025 04:08:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9V-000750-CT
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9U-000748-WA
  for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:08:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9T-0006UN-5o
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:08:37 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukI9T-0006UA-1R
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 04:08:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1754640514;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DQlc2J4S+Y7sWvNha6HkIII0V/76lM4iGtQgm82KWy8=;
- b=NNNJoONZ5JajCDkBTf9yG0fJBDLj3zXd4Oo2dVCk1jh1jYLoeRQZJxxziD1fsQFQmlCNrQ
- dpo3m7FpRKz+iGZfUriq3zVP2psfpDdmyPGmhmAvrKnC/b1T28YQ5QVDY/Q6fKngm//vLD
- PjjzLFeZdpJB7umM4g0bELSQBiUOJw4=
+ bh=CKNHjrkE+SV7LG40jEVf1ht2LSznPIly+hKCp2dcHGI=;
+ b=V3nYX2W+rcJn1gkwP/I0ZFz358zfalYUpFd8hPTN0rC4nyTgE/8W+/KVr315yWK1R7WDOI
+ KPoUEAiSqx6UqTaL7T2wbi3JZSRbagn37LjVwvOGeQILXlWo+J2T941os7bhpVx0rzVp9x
+ /Kkxdk8+Ga/RKyzx86TOm9Ckx7AC5gY=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-121-Oc_0CyiUMH69vDZlPe1n_A-1; Fri,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-208-PRP5d_yOMk-NkE5wPjTg8g-1; Fri,
  08 Aug 2025 04:08:30 -0400
-X-MC-Unique: Oc_0CyiUMH69vDZlPe1n_A-1
-X-Mimecast-MFC-AGG-ID: Oc_0CyiUMH69vDZlPe1n_A_1754640509
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+X-MC-Unique: PRP5d_yOMk-NkE5wPjTg8g-1
+X-Mimecast-MFC-AGG-ID: PRP5d_yOMk-NkE5wPjTg8g_1754640509
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D5FF6180036F; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
+ id CB4D11800359; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8D16E19560B5; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 82E24180028A; Fri,  8 Aug 2025 08:08:29 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 579B821E6775; Fri, 08 Aug 2025 10:08:23 +0200 (CEST)
+ id 5C03C21E6779; Fri, 08 Aug 2025 10:08:23 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: odaki@rsg.ci.i.u-tokyo.ac.jp, marcandre.lureau@redhat.com,
- Jagannathan Raman <jag.raman@oracle.com>
-Subject: [PATCH 05/12] hw/remote/vfio-user: Clean up error reporting
-Date: Fri,  8 Aug 2025 10:08:16 +0200
-Message-ID: <20250808080823.2638861-6-armbru@redhat.com>
+Cc: odaki@rsg.ci.i.u-tokyo.ac.jp,
+	marcandre.lureau@redhat.com
+Subject: [PATCH 06/12] net/slirp: Clean up error reporting
+Date: Fri,  8 Aug 2025 10:08:17 +0200
+Message-ID: <20250808080823.2638861-7-armbru@redhat.com>
 In-Reply-To: <20250808080823.2638861-1-armbru@redhat.com>
 References: <20250808080823.2638861-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,49 +83,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VFU_OBJECT_ERROR() reports the error with error_setg(&error_abort,
-...) when auto-shutdown is enabled, else with error_report().
+net_slirp_register_poll_sock() and net_slirp_unregister_poll_sock()
+report WSAEventSelect() failure with error_setg(&error_warn, ...).
 
-Issues:
+I'm not familiar with liblirp, so I can't say whether the network
+backend will work after such a failure.  If it doesn't, then this
+should be an error.  If it does, then why bother the user with a
+warning that isn't actionable, and likely confusing?
 
-1. The error is serious enough to warrant aborting the process when
-auto-shutdown is enabled, yet harmless enough to permit carrying on
-when it's disabled.  This makes no sense to me.
+Regardless of that, error_setg_win32(&error_warn, ...) is undesirable
+just like error_setg(&error_fatal, ...) and error_setg(&error_abort,
+...)  are.  Replace by warn_report().
 
-2. Like assert(), &error_abort is strictly for programming errors.  Is
-this one?  Or should we exit(1) instead?
-
-3. qapi/error.h advises "don't error_setg(&error_abort, ...), use
-assert()."
-
-This patch addresses just 3.
-
-Cc: Jagannathan Raman <jag.raman@oracle.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- hw/remote/vfio-user-obj.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ net/slirp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-index ea6165ebdc..eb96982a3a 100644
---- a/hw/remote/vfio-user-obj.c
-+++ b/hw/remote/vfio-user-obj.c
-@@ -75,12 +75,9 @@ OBJECT_DECLARE_TYPE(VfuObject, VfuObjectClass, VFU_OBJECT)
-  */
- #define VFU_OBJECT_ERROR(o, fmt, ...)                                     \
-     {                                                                     \
--        if (vfu_object_auto_shutdown()) {                                 \
--            error_setg(&error_abort, (fmt), ## __VA_ARGS__);              \
--        } else {                                                          \
--            error_report((fmt), ## __VA_ARGS__);                          \
--        }                                                                 \
--    }                                                                     \
-+        error_report((fmt), ## __VA_ARGS__);                              \
-+        assert(!vfu_object_auto_shutdown());                              \
-+    }
- 
- struct VfuObjectClass {
-     ObjectClass parent_class;
+diff --git a/net/slirp.c b/net/slirp.c
+index 9657e86a84..d75b09f16b 100644
+--- a/net/slirp.c
++++ b/net/slirp.c
+@@ -262,7 +262,8 @@ static void net_slirp_register_poll_sock(slirp_os_socket fd, void *opaque)
+     if (WSAEventSelect(fd, event_notifier_get_handle(&ctxt->notifier),
+                        FD_READ | FD_ACCEPT | FD_CLOSE |
+                        FD_CONNECT | FD_WRITE | FD_OOB) != 0) {
+-        error_setg_win32(&error_warn, WSAGetLastError(), "failed to WSAEventSelect()");
++        warn_report("failed to WSAEventSelect(): %s",
++                    g_win32_error_message(WSAGetLastError()));
+     }
+ #endif
+ }
+@@ -271,7 +272,8 @@ static void net_slirp_unregister_poll_sock(slirp_os_socket fd, void *opaque)
+ {
+ #ifdef WIN32
+     if (WSAEventSelect(fd, NULL, 0) != 0) {
+-        error_setg_win32(&error_warn, WSAGetLastError(), "failed to WSAEventSelect()");
++        warn_report("failed to WSAEventSelect()",
++                    g_win32_error_message(WSAGetLastError()));
+     }
+ #endif
+ }
 -- 
 2.49.0
 
