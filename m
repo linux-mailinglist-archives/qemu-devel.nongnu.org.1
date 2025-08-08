@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC08AB1E763
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 13:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE70B1E761
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Aug 2025 13:33:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukLK1-0000XB-Tx; Fri, 08 Aug 2025 07:31:41 -0400
+	id 1ukLJz-0000Jt-MS; Fri, 08 Aug 2025 07:31:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ukLIw-0008FB-VF
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 07:30:36 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1ukLIy-0008L7-Rb
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 07:30:40 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ukLIu-0002yR-FB
- for qemu-devel@nongnu.org; Fri, 08 Aug 2025 07:30:34 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3b794a013bcso1533158f8f.2
- for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 04:30:31 -0700 (PDT)
+ id 1ukLIw-0002yj-Lv
+ for qemu-devel@nongnu.org; Fri, 08 Aug 2025 07:30:36 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3b77b8750acso1273571f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Aug 2025 04:30:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754652630; x=1755257430; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754652632; x=1755257432; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GwpFYhGeznRr6+q3T7zVU58Gdck7R9DYOTkt4rNGfxc=;
- b=x44ktx+Wkr8zWx+/NcfasFSSvVaF9wCxqpjf9hJqv8Pq9XUe/YuvLmiewtML2wSclV
- Fs/fQpApMJgTfcHBEppMUC7VM3kJqgJHY1V95GB3Cdhve5tXhHTM3cP+eTzdNyQ5WTWh
- MsuS5Nb2+hwnZTy0b9xWJTLQy8N4Fev5KemCkIyMkNU/q0zeljdP0kjs8fl/pjpNZCoV
- sJti8jBI270iFerPj7CuB1V+Qhl+MFYS27OHRkhV+tXLnWUz6Quv+e34tDYQpe6MEKlt
- fwMMscjybQgcUyafi+yo8fTDFULpgvyCIAeoPL/ks1nd/JIJ9u0AtwQz9hxKrl/x1nI7
- /spQ==
+ :reply-to; bh=+wacFuJvSwCjdGK+yHs0J/J5a0AOT1HDGQitNzCH8BM=;
+ b=iI1aKK16JmS5vGwDTTYZ3IplbFMPjf+qZK4uMsv14amhl5zQ19aFNfjIKf7jirhYbr
+ FFUoP4OKgNfLmhMPoupxJVOvCNloSvgkua2Kqr5y7sBKzud+0xdaJLwfLvJ+e9msZeww
+ eTdLlpaD5ucu8cgW3lD2O71Nmav4Lpr2GApzKStrapg5r3qJ6c/lYsiYJnihCQ9aN6+7
+ WjWLG0b9A76u7wqrJqRmqG1MfbYFD7AVDL29l7yT08AR6JkYEEJ8TpfnCxmqx4qodjYZ
+ X51w1Gigf0pZBFdzi3oXFqnM1j1GBpyN0jfKSJPBhQ7E+SKH5ryXSkYyqdzCvqg5x57P
+ Vgow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754652631; x=1755257431;
+ d=1e100.net; s=20230601; t=1754652632; x=1755257432;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GwpFYhGeznRr6+q3T7zVU58Gdck7R9DYOTkt4rNGfxc=;
- b=nhQq7r0PjrGAFXrQr1iQ/iUDcH8cpz4o+AiQzWFLRAqS1UQJMCvpGuM14wON1+Mm5a
- jX7p+DUDLFnoBQOuOUWhciHqq+ibaBgRS7l/aBJFE03TUry+K32bxvodN2Ff2M7PSVhV
- UklxRhbiIsduZtI2YwUxq2zV87bF5xN6avXuh/fHORjmg8W7rNtWNn57TKKzWQ/ajKpr
- mtVJ+o8j1pNAlBqKudNid7NtBrjJ6GwyYHRmH7DE2Ux/jXuF+2OJp27oMfAQ0/H+L3+1
- xdpDdO3eQINsZfMWoH+E6G1EDb11ZkPr6jM4ps5uib3P7VlZFYitF2fKFN3h3Izsl/3K
- LCLA==
-X-Gm-Message-State: AOJu0Yz5KeFjHIXCsyXIJDg+xCp6kIUXlRRmu/pXndUdJJf4bgRAhvwo
- JWbLTVYg1+6I6ujvdSGrSRlIoYSHBzVv7zMkPXwNaPsUnD5/lCXSPS9WPVSGBMm8BVM=
-X-Gm-Gg: ASbGncu9cyU4p/U+856zZj9mqQD/lnzGwecVixsij6OvdxtlS5mL/4QXs1Bjtdzehmp
- Ayyyu75GRSf7d8Fy5ZT0B93wOH4NLGw9//Fy5puNSA3XMwD29h7HLR8kTVzvr/waoy/rK4HZGqB
- PzinVG3GPdfg8+9BRO+nYqAj15U7yBmzXIqwP03BjqBg7oTdwbEMhNwHBvCkedEGrRmG39Ljnw+
- MkG1fQH02FFQzIU+26HZMg7iavsyD8nvFWRW78U4Q7pWU4x7h4Jb20YIvCaUxeMRmNa7nr6UBGZ
- EegULFCiElbKS7tMxcoXEAEncVg+5uHFc1EmXlEz/ggd4macDqzu5F2vIipKTI7CbXIcuG3vuIO
- rgogy+ZrKa4Q3kfO2Af33Uvrh/Cq/wZ4JvgyORTjZYfmADJIaREhhjp4EaNPZt7rsZ4U1
-X-Google-Smtp-Source: AGHT+IGN4QUS09lseJvhZXQxtEUb+QSmc/a4dzcpZQQ1cjD+ioi62Zx0FFDz0cunx1K+Nv2Vdd+zwg==
-X-Received: by 2002:a05:6000:288b:b0:3b5:f0aa:b1e5 with SMTP id
- ffacd0b85a97d-3b900b4dac6mr1936506f8f.19.1754652630524; 
- Fri, 08 Aug 2025 04:30:30 -0700 (PDT)
+ bh=+wacFuJvSwCjdGK+yHs0J/J5a0AOT1HDGQitNzCH8BM=;
+ b=Ys23b01J/Mbpfuq5l+gEm5KPaxQ5ynLPJ2r88Ju13WvisDUHJIag+7za+NQEvPUP/t
+ VWCCroyRnGgBl3utZoXtpmNi2yGSBh0X2Y0TMIl+iCajRb034D1Shn+mtdboEAULJkp1
+ 758YT1+oPOGex70/WCqn3BaAPDMAZJ44RFxK1plQdXHOO1foTmEwgJQ8eG+JfkrQFnQX
+ 3XVSQhB3JVKE/oF1TnKe8ZolCky8DH9rLdRWU1WRw2CbE7hp4r2PQsy+d0J1kQMRyP3J
+ iN8Hfy6l3Us/tbM9E+Ior4Cs+6Yck7SY7xqsd3OT9ti4bTcBuXO8/hpMHuCu4pt8f674
+ x95g==
+X-Gm-Message-State: AOJu0YxYK4KwZvyLVZ5f6LauLnZgoPCeZYZMUw1saSc7zShbci43HsAl
+ /xCxpKWYdIX7xHLoHeM2e620NL6JjaPOFAQAXjRt6PdwpvB0uW9R7f58aj0PonU9WHs=
+X-Gm-Gg: ASbGncumEhuS6H14f9kcld8qEHjlPrgbQ8DJPNdj1wG8tJl8GL64hZVl6hFwh1VAyvE
+ R5N0bX7ARWGQZV6zHT5382XeELmuYi8iywIf1yniQr40yr1qdz8PybVUlskTx0meZjcF27MBfY6
+ 1sPeJnubPxHLIvUuOu4JAoVnTnELUH9rnnMG7W+Y8I0uvj/oHaiDgTqSEygXomS3wDcwX3CTixF
+ muOx2BtB+XWDcCVUBhGgf/MjSXQI+GdTBb/6FIC4H1eZUSBTj6RoIyz7iyeHCafqGLHKEvojx6u
+ huzgJv8rmF9i3zxnPyQzzrgAGzXjBZL9pk3zmOFSA4x5yAinH5tItP5WNwBwRpqtYwTaYv+8jzv
+ h6sEBUn2WaNq44vZrTnrDddNLB1g0CI/gX+5WuZJJT8Hw4BszqyutTv2TERnrK7fhnS4c
+X-Google-Smtp-Source: AGHT+IFeJ8yRkBe3aeVWRlJSj7l0WY3ou+kv2a1em8V/MmfBMa1mOfVdSINeuxXWNj9CiylFHFCe/g==
+X-Received: by 2002:a5d:5f8b:0:b0:3b7:8f3b:1726 with SMTP id
+ ffacd0b85a97d-3b900fc84camr2130737f8f.7.1754652631914; 
+ Fri, 08 Aug 2025 04:30:31 -0700 (PDT)
 Received: from [127.0.1.1] (athedsl-4440194.home.otenet.gr. [79.129.176.114])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c3b9386sm30034248f8f.18.2025.08.08.04.30.29
+ ffacd0b85a97d-3b79c3b9386sm30034248f8f.18.2025.08.08.04.30.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Aug 2025 04:30:29 -0700 (PDT)
+ Fri, 08 Aug 2025 04:30:31 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Fri, 08 Aug 2025 14:30:14 +0300
-Subject: [PATCH 2/4] gdbstub/aarch64: add NZCV register
+Date: Fri, 08 Aug 2025 14:30:15 +0300
+Subject: [PATCH 3/4] gdbstub/aarch64: add DAIF register
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250808-gdbstub-aarch64-pstate-regs-v1-2-14ba70be1b3d@linaro.org>
+Message-Id: <20250808-gdbstub-aarch64-pstate-regs-v1-3-14ba70be1b3d@linaro.org>
 References: <20250808-gdbstub-aarch64-pstate-regs-v1-0-14ba70be1b3d@linaro.org>
 In-Reply-To: <20250808-gdbstub-aarch64-pstate-regs-v1-0-14ba70be1b3d@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,30 +79,30 @@ Cc: =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org, 
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2101;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1948;
  i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=M+o0NxtbVX/WeQLjyp8sVxOp2zp/MN1L8BDmz068olY=;
+ bh=pdsXwnZTWgdqtptBVXPmXR1JF3tTkJfujnXQK7E62KQ=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm9sZC9SYkFDZy9qRVFKMTl5WTVoc0VINmVwV1ZWClBiMkZidm1heG5hSEtyUnBN
- T1NKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUpYZjBRQUt
- DUkIzS2Nkd2YzNEowSVB2RC85VHVUSGRLZ2FneFc4czJzaFRaSUlBZE5iTnZrZHM3YVZiM24xbw
- p6a0Z0VXhhcVBrWnBwR0dUaXIySlVQcnZRSk8ybmNaM0JMZWJENEFHUlp1MmFuQzF4VGhlNGxXa
- XRoQ3hNbEtsCnNnbkhZaEtOOWpjalNTclVLWi8wMlVTRWlqdzdId0d1b3ZNV1oxS0Y5UTVrK0lE
- eDZDU0RyVkdRL1pNLzVMakoKeGMvaXF6WDU2RHJhenhVaE41YUdvWkJpQjNzdnZJWkhEL2RhTFR
- OWXhKSmEvL21TR01CT2lUS2piSExYZXQyMgp1RVNhUXY0Q3ptTFdLNEIrQnk3TktObjVuZEtXQ2
- 5Ua3VrWElZZFZ5L1NmQVROamVjWVpRUHN1dlRNVStwM2xsCkpvVytrWjdvemUrTW1xRWtHSTQyM
- DFkWk5DQ3RWZjlJTVBiaFFsVHMrUmFpSndha2VHOEgxV2dDTHNYR29ZWHoKY3YyeWZzaFhONkox
- bitlbW5maWRwdVJ0bnhMc3U0RXU3dTlGZmxjM1Zwd1JZUzRmUm4rS0NDTFZub0Z6aXlnaAphQlF
- nRG1Kd29LeldJTm1aLyt4TEFwNjVETG5kYnBIU09paG1xU0JqNUMzNnM0cXNoVW1nWHVKTkFuU0
- YvQzZ1CklGWmcrd2pqTEI0cWRzVEUvbzJGVzl1ZytpQVl2ekdxaEpwckVEMTU3Um9Fa2JMQTFtS
- 1RKOVZ2QlB2b2lneUgKZ1VsY3M5aFJCVzA4WEJlKzBpZWY4S3l6bVBnWURFdTRPOTkyTVhUYW1y
- MmFhOUpYMFlCWUJrR213U0hYQ3hvTgp3T1o3V05aRDMzWjJBYTUvYTVSRDZiN3ZROEVQRldFL0c
- 0RlRLckN6dFBFaXB3Mm51NWZUNUEwMURBWXR0dnBBCkgrZFk3QT09Cj1WMUxPCi0tLS0tRU5EIF
+ 25RQWNzbVlnQm9sZC9TYkl4eWdRNDJOaEdZNFF4a2Z1M3ZBMmhxCmFmVHZSNVI0eTZ0cStXcGtJ
+ clNKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUpYZjBnQUt
+ DUkIzS2Nkd2YzNEowS1RpRC80cVJXbVZ3ZFp1ckk2bmhRSXBYV0d4U2tnU21wdGhNeXRLUlVKVA
+ pDcDdVVk80SFFoNjVHNElqVVRvMkt2dmdJdjhqOGJMd2tKS2hwZ2MxTGlYMTZVbVh5VTQvUnROa
+ Gd2blVXbCtFClN5SmlZZWtNVnY3TjhnSFRsU3ZUNXN1MEczN1RSRjZZRkdFTjNicE5wVnF2VHpX
+ TnJyR0VWWFlZeFA5c3pCR3QKQTN1Z0IzVWJFZDcwT3VvTndGak05ZUkyTEg4UmFiaUM2ek1DUVp
+ ocXdlT2tDVGZ1R3B5ZytoZzhITXpxc2g1TAo3ZkxvNURiK1AvTms5M0hOY0VLeGh5TnBjQW03Yk
+ FlNklsVkowTXN4cWtJVHNSd2Z4dnZGeEFmQTFNZGcxUmg3CjBWOEhXTnVsc0E1VWtxOUtrUGhxM
+ GZueDRoTEdxbjJhbVMxaE55R3JyRXhBa3VBa2FIWVVXRXR5SE5CaWhYeEUKM1lzeDEzMkIxRDRk
+ dU4xTXdNRzZpTnJUeFpMRlE4ZGlsNHRRWTJHdlVmTnpwSisycFNnWVBwUUh4aVZ0Vm0vbwpCd2J
+ nWFowd3RWclZsVzYwcE0zUXhrbDBBZFNWeWI3M3BhRGZvWGFFejJoQzJXYTloNkNzci9jVHFhel
+ VLaG9qClNuR1A4RkNPamVUbWM1TndiR2JOVGpiNFJZRU02c2QxRXV3dGdnYXNDYW5VanFxQVdZV
+ Dk3VUJZNlJnQW1NYk8KWlpGcnlENlphSnZScHJVUmlFL3hhQlMrWG9Sb1Y0U2k1YmJxU05PYWt4
+ MUNpKytSRVFFMWNnU25HTG5KNWZORAo0ZGxHWWxHdGpPRHFvbWNEVmNWdzBSSVQyM0piMWxuZ1l
+ mMXRLam41UlFaUEdkaUhSYy9KVEt3U3VGWE0rUjljCjlJaERWUT09Cj1YZEhXCi0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
  fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,55 +127,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- gdb-xml/aarch64-core.xml | 14 +++++++++++++-
- target/arm/gdbstub64.c   |  8 ++++++++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ gdb-xml/aarch64-core.xml | 12 ++++++++++++
+ target/arm/gdbstub64.c   |  7 +++++++
+ 2 files changed, 19 insertions(+)
 
 diff --git a/gdb-xml/aarch64-core.xml b/gdb-xml/aarch64-core.xml
-index 19ad743dc5607b4021fb795bfb9b8e9cf0adef68..2b74b87f908f792c24f76f212e4f7eaf335ddbc2 100644
+index 2b74b87f908f792c24f76f212e4f7eaf335ddbc2..dffc92303fc7b7e8221cf6afd6009101f34352ed 100644
 --- a/gdb-xml/aarch64-core.xml
 +++ b/gdb-xml/aarch64-core.xml
-@@ -95,5 +95,17 @@
-     <!-- Exception Level.  -->
-     <field name="EL" start="2" end="3"/>
+@@ -108,4 +108,16 @@
+     <field name="N" start="31" end="31"/>
    </flags>
--  <reg name="CurrentEL" bitsize="64" type="current_el"/>
-+  <reg name="CurrentEL" bitsize="64" type="current_el_flags"/>
+   <reg name="NZCV" bitsize="64" type="nzcv_flags"/>
 +
-+  <flags id="nzcv_flags" size="8">
-+    <!-- Overflow Condition flag.  -->
-+    <field name="V" start="28" end="28"/>
-+    <!-- Carry Condition flag.  -->
-+    <field name="C" start="29" end="29"/>
-+    <!-- Zero Condition flag.  -->
-+    <field name="Z" start="30" end="30"/>
-+    <!-- Negative Condition flag.  -->
-+    <field name="N" start="31" end="31"/>
++  <flags id="daif_flags" size="8">
++    <!-- FIQ interrupt mask.  -->
++    <field name="F" start="6" end="6"/>
++    <!-- IRQ interrupt mask.  -->
++    <field name="I" start="7" end="7"/>
++    <!-- SError interrupt mask.  -->
++    <field name="A" start="8" end="8"/>
++    <!-- Debug exception mask.  -->
++    <field name="D" start="9" end="9"/>
 +  </flags>
-+  <reg name="NZCV" bitsize="64" type="nzcv_flags"/>
++  <reg name="DAIF" bitsize="64" type="daif_flags"/>
  </feature>
 diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-index 16b564e1a970cb5e854a705619f71ffc61545a73..dd3c6222a577efa03753cf07371afdedeefdb771 100644
+index dd3c6222a577efa03753cf07371afdedeefdb771..6c424ed361e32e12836c6ef00a06397bd684bac4 100644
 --- a/target/arm/gdbstub64.c
 +++ b/target/arm/gdbstub64.c
-@@ -51,6 +51,9 @@ int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-     case 34:
-         /* CurrentEL */
-         return gdb_get_reg64(mem_buf, env->pstate & PSTATE_EL);
-+    case 35:
-+        /* NZCV */
-+        return gdb_get_reg64(mem_buf, pstate_read(env) & PSTATE_NZCV);
+@@ -54,6 +54,9 @@ int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+     case 35:
+         /* NZCV */
+         return gdb_get_reg64(mem_buf, pstate_read(env) & PSTATE_NZCV);
++    case 36:
++        /* DAIF */
++        return gdb_get_reg64(mem_buf, env->daif);
      }
      /* Unknown register.  */
      return 0;
-@@ -83,6 +86,11 @@ int aarch64_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-     case 34:
-         /* CurrentEL */
-         return 0;
-+    case 35:
-+        /* NZCV */
-+        tmp = (pstate_read(env) & ~PSTATE_NZCV) | (tmp & PSTATE_NZCV);
-+        pstate_write(env, tmp);
+@@ -91,6 +94,10 @@ int aarch64_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+         tmp = (pstate_read(env) & ~PSTATE_NZCV) | (tmp & PSTATE_NZCV);
+         pstate_write(env, tmp);
+         return 8;
++    case 36:
++        /* DAIF */
++        env->daif = tmp & PSTATE_DAIF;
 +        return 8;
      }
      /* Unknown register.  */
