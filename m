@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27A8B1F267
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Aug 2025 07:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDDBB1F265
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Aug 2025 07:51:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukcTa-0001w7-Tl; Sat, 09 Aug 2025 01:50:42 -0400
+	id 1ukcTY-0001tz-Ug; Sat, 09 Aug 2025 01:50:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukcTW-0001tC-4i
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukcTW-0001tA-1m
  for qemu-devel@nongnu.org; Sat, 09 Aug 2025 01:50:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukcTS-0002Hb-NV
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukcTS-0002Hd-Nq
  for qemu-devel@nongnu.org; Sat, 09 Aug 2025 01:50:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1754718633;
@@ -22,39 +22,38 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QaDoeL5DyFczd3jVxAe2QCI8h3IBnZohyaWArlgB8R4=;
- b=Ze4YctLGkn8rRH0+xo0CIE8LqqWKcPS0chqR0UKDlNt4ZQd22jr7TD40tXnU535pcVAJ09
- jsG4qrOImaimt/UI8pyGo6tZlFygMAhcuNulR5Z8jRZNoAp3l4wFaFJ+G3nb+U+6/lUVmm
- Wgliq3ZVqQk9Ue3niZIKTwvpZfXu8is=
+ bh=mBh4s9w4E0rzgSovMPgUd6Go9+lWP90O+HqnEfxoKb0=;
+ b=C6UOj+t7j/Q+VEm69rKFSxFvwIT5SBTjfOdbN3QCAK2IdBwnCwczCSHE4NESxl9rt0TvVi
+ i907NH0LyJkVUz90kZ1q9jHhPPzDpLM6jIfm5cVfBo3uiJTZcYvDS7E7VoLgOnJoS/DnCB
+ cJyyCtRdPcNUtfF1l11h/TzYWtfWzUE=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-p_-hkcOuODu2DJ4ea2l2gg-1; Sat,
- 09 Aug 2025 01:50:31 -0400
-X-MC-Unique: p_-hkcOuODu2DJ4ea2l2gg-1
-X-Mimecast-MFC-AGG-ID: p_-hkcOuODu2DJ4ea2l2gg_1754718630
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-501-W8pNU6FBOIuyvwp-Me1trw-1; Sat,
+ 09 Aug 2025 01:50:30 -0400
+X-MC-Unique: W8pNU6FBOIuyvwp-Me1trw-1
+X-Mimecast-MFC-AGG-ID: W8pNU6FBOIuyvwp-Me1trw_1754718630
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 846771800347
+ id 3914D1800342
  for <qemu-devel@nongnu.org>; Sat,  9 Aug 2025 05:50:30 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DDAD519560B0
+ id C8B2019560AD
  for <qemu-devel@nongnu.org>; Sat,  9 Aug 2025 05:50:29 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id ED36421E6925; Sat, 09 Aug 2025 07:50:26 +0200 (CEST)
+ id F1EAA21E6935; Sat, 09 Aug 2025 07:50:26 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 2/3] docs/devel/qapi-code-gen: Fix typos in QAPI schema
- language grammar
-Date: Sat,  9 Aug 2025 07:50:25 +0200
-Message-ID: <20250809055026.2944835-3-armbru@redhat.com>
+Subject: [PULL 3/3] docs/devel/qapi-code-gen: Update cross-reference syntax
+Date: Sat,  9 Aug 2025 07:50:26 +0200
+Message-ID: <20250809055026.2944835-4-armbru@redhat.com>
 In-Reply-To: <20250809055026.2944835-1-armbru@redhat.com>
 References: <20250809055026.2944835-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -85,29 +84,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: 3248c1aaf2db (docs: update the documentation upfront about schema configuration)
+The new QAPI code generator creates a cross-reference target for each
+definition documentation.  Enabled for the QEMU QMP Reference manual
+in commit a377f39f38f, and for the QEMU Storage Daemon QMP Reference
+Manual and the QEMU Guest Agent Protocol Reference in commit
+a6af5443440.  We've put these targets to use since, but neglected to
+update doc comment markup documentation.  Do that now.
+
+Co-developed-by: John Snow <jsnow@redhat.com>
+Signed-off-by: John Snow <jsnow@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250731054044.4011789-3-armbru@redhat.com>
-Reviewed-by: John Snow <jsnow@redhat.com>
+Message-ID: <20250731054044.4011789-4-armbru@redhat.com>
 ---
- docs/devel/qapi-code-gen.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ docs/devel/qapi-code-gen.rst | 11 ++++++++---
+ docs/devel/qapi-domain.rst   |  1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
-index 138921b386..2cd51729c3 100644
+index 2cd51729c3..d97602f464 100644
 --- a/docs/devel/qapi-code-gen.rst
 +++ b/docs/devel/qapi-code-gen.rst
-@@ -786,8 +786,8 @@ Configuring the schema
- Syntax::
+@@ -943,9 +943,14 @@ The usual ****strong****, *\*emphasized\** and ````literal```` markup
+ should be used.  If you need a single literal ``*``, you will need to
+ backslash-escape it.
  
-     COND = STRING
--         | { 'all: [ COND, ... ] }
--         | { 'any: [ COND, ... ] }
-+         | { 'all': [ COND, ... ] }
-+         | { 'any': [ COND, ... ] }
-          | { 'not': COND }
+-Use ``@foo`` to reference a name in the schema.  This is an rST
+-extension.  It is rendered the same way as ````foo````, but carries
+-additional meaning.
++Use ```foo``` to reference a definition in the schema.  This generates
++a link to the definition.  In the event that such a cross-reference is
++ambiguous, you can use `QAPI cross-reference roles
++<QAPI-domain-cross-references>` to disambiguate.
++
++Use @foo to reference a member description within the current
++definition.  This is an rST extension.  It is currently rendered the
++same way as ````foo````, but carries additional meaning.
  
- All definitions take an optional 'if' member.  Its value must be a
+ Example::
+ 
+diff --git a/docs/devel/qapi-domain.rst b/docs/devel/qapi-domain.rst
+index fe540d1e40..1924f12d42 100644
+--- a/docs/devel/qapi-domain.rst
++++ b/docs/devel/qapi-domain.rst
+@@ -375,6 +375,7 @@ Will allow you to add arbitrary field lists in QAPI directives::
+ 
+       :see also: Lorem ipsum, dolor sit amet ...
+ 
++.. _QAPI-domain-cross-references:
+ 
+ Cross-references
+ ================
 -- 
 2.49.0
 
