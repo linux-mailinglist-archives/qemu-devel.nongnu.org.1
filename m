@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB9CB1F645
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Aug 2025 23:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB692B1F722
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Aug 2025 00:43:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukqqX-0002y6-E0; Sat, 09 Aug 2025 17:11:21 -0400
+	id 1uksGO-0007Ho-UA; Sat, 09 Aug 2025 18:42:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chichikalyuk@gmail.com>)
- id 1ukqqM-0002oG-K2; Sat, 09 Aug 2025 17:11:10 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uksGM-0007HZ-8z
+ for qemu-devel@nongnu.org; Sat, 09 Aug 2025 18:42:06 -0400
+Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chichikalyuk@gmail.com>)
- id 1ukqqK-0000TM-Th; Sat, 09 Aug 2025 17:11:10 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-af9180a11bcso660389066b.0; 
- Sat, 09 Aug 2025 14:11:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uksGK-0006hF-89
+ for qemu-devel@nongnu.org; Sat, 09 Aug 2025 18:42:06 -0400
+Received: by mail-il1-x134.google.com with SMTP id
+ e9e14a558f8ab-3e543e231f4so1846205ab.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Aug 2025 15:42:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1754773867; x=1755378667; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hy0jRWoRKSa/ItelcnJbwYMxz/tJPxS++i76CTjN9hM=;
- b=QeZjXYxqeFQcVXHoJ5nfZe7kaFZFNkB0MqgQj3l1e60DkST6GzLqlTcBUEm0jiX2Of
- /eNyh+0LXvU2DIm5wHdzV8rRUdRpxwg3Wobq7VL1ejFqkSKqMFIfGRLaxuTu7WErrLzQ
- LptLkW2dkVSriMKxv75QSFW+1IWaEUg7VBcgi14McJLvpj4vr5bW+rFkHWTbJi8ps6Tz
- V4POCfmiQNhaqnVFCYUSO9vP3poKOsMztkKKAhYqiJOoJm/gRFM7o1am/y9zGC4JoDyN
- Ja9i73rltLQxDKc4ocx2dZPJAP2R+CxbJ+daVQHW2RfmCmTbKUisyegbLE2tCvqnerE4
- Zk3w==
+ d=linaro.org; s=google; t=1754779322; x=1755384122; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aYUaC+w1msnD21FD1YQF/q46+yp67v/LMkyamV0bwTU=;
+ b=fNnsAO76Bv77iIWgRaW0fIJZVamcMzXFXRm4pq/oaFNvp7rqJ0zPEPtjsmr64ksHnT
+ RCXgMKaSucnZYc6Bsh7CMuVW8HAuy2SvWAprXU4lQrOue98Ix/DHgO7qbMD/ZV0daEc6
+ uxsazzDGA0pOOYlLhUdE4WYzbq+2YBpfSjnTHynkkqWy8fx4WnfaisCyeJ5A3fw5fHpk
+ oFiX1ODsVtheKmssOk7xNZwNd9hc59eJ6muElCNotAaC5hS5+jUz5hB13l60UdBs+K3z
+ l1p+EbtZ1doui/hj1ka8JT/wD/AoMg0ydH+Q9GDM2VgEy0LdKEBN0G6Y9kUSByl66xG9
+ W8EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754773867; x=1755378667;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hy0jRWoRKSa/ItelcnJbwYMxz/tJPxS++i76CTjN9hM=;
- b=j0hpo4kPBgbn2kxsFK55HxJX4HLh0bbNVXQbwAZQVuFO/D7jrZGY9aNhfehaXJlHIy
- /snEeRQtnmdj0q1nlAl1QpeLZ0jyVXy8YVpFOioZ6xHjdtzz0Mnjfu3g07b1skozZat6
- eyymARSjOQOUHlUA8Gmo/3pqpitI93z5+e2PFyITSmkV+cND0SmX7u6sKtl8CXPldp3J
- oNQELs1Ql3yx0xQCl2OJEZlrUFdds4hVx089hCPSWMCg7Fx2rlYMzoXZkeYeWEnmORyx
- tu1gfwU86WGDmj8GIgRfKugj3mImRyoDSwSeDhahP+KThA/07OQx+57Mzaw+EewEN8ns
- OCVw==
-X-Gm-Message-State: AOJu0Yy61jefj34INXhe8g28ehz/A4LIfbPofnwT9MJEivgZvq2dTnnE
- LCAcuJNmkP+s+0d5ukJgT3VOfjKDcBiW9aZn6bcA1mNcFg2vR1pKwprSNyKCJ8vCBIQ=
-X-Gm-Gg: ASbGncs5TbbFWREr9SNcfUn12yCvoQ3eIN0FjT7mTdehimyU9ktixZKKvcAgIHh6pHM
- l/JZTMur0wmuXr23vj0QP1aZKnjeJRNWGkLzW/mHG1cCsBfqCwu5hp9OZ0+V3+XgbhpOtC8HrzN
- I8bCA2n4iwxCxKWuqdg9HZ8nMQAlsUOyedFi6Uaqdd2Ygzj3YOB7lqhfSSXrczaMFDKlmvK4sdQ
- OijBoOCL1BdBmWzgNiQD/jUAS+X5xWXu1uewluKw8c3vAP2a15oIYVYtjB/vGXit8FgrTeQgd+M
- qapK/mNDFEKsPNnvZjEkP0GEjAFQiyRslh3HxfFaFirI2ugwgNjCszX0dOsam1bwLKCsa4Z4EbO
- ZrhErPr28r4+ZmAnWaeukSaNXBbKuLin5snEldgAori+Hbh0O
-X-Google-Smtp-Source: AGHT+IF66LENE1fFLXx2cWgIkhikOv2s+KX10w26arXhQyxhLvSmGNR/IFog2DM3TFpiWm4/WtUG8w==
-X-Received: by 2002:a17:907:948d:b0:af9:21ed:6ebe with SMTP id
- a640c23a62f3a-af9c700b437mr659975466b.21.1754773866577; 
- Sat, 09 Aug 2025 14:11:06 -0700 (PDT)
-Received: from localhost.localdomain ([87.251.30.120])
- by smtp.googlemail.com with ESMTPSA id
- a640c23a62f3a-af91a078a11sm1759490766b.7.2025.08.09.14.11.05
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 09 Aug 2025 14:11:06 -0700 (PDT)
-From: Vadim Chichikalyuk <chichikalyuk@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Vadim Chichikalyuk <chichikalyuk@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Shannon Zhao <shannon.zhaosl@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 3/3] tests: acpi: update expected blobs
-Date: Sun, 10 Aug 2025 00:10:51 +0300
-Message-Id: <20250809211051.68824-4-chichikalyuk@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250809211051.68824-1-chichikalyuk@gmail.com>
-References: <20250809211051.68824-1-chichikalyuk@gmail.com>
+ d=1e100.net; s=20230601; t=1754779322; x=1755384122;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aYUaC+w1msnD21FD1YQF/q46+yp67v/LMkyamV0bwTU=;
+ b=nEArc5RPhmcf4CwR5sV5KRjVO2DkaCjut5HworL71Do3Uo9qkmOAPcRdlyuGqKoXgV
+ 3iF/9FzUdSI8LU5wksz+Qp06+SKyjyM1ceJOZMXzTgV61E4Kv6YqTDouGH059ibf7diQ
+ 6MMEmJC5vNes7zqV2QiiaoCnl0l93RXNItQVd+DGuj/bTfwST2eaerwFxP+ZPbAwLmbv
+ q8NxQJK+Mcd5IKKkXyt4lNxGFqPIIPQ1WSvUzp5l1lYrDz94TrnMsGuo/s8+B/iBG1mF
+ ByKPWD/Ow6mZcnpXKk4hum0XhGWtPb3tcF96fQNQJbCQ3+QGZhYIw7CqY2YGF3V0cDgy
+ TSqA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVqIcV4o6Hewj9UVKYEYWr7pG4IMPagTHVVPiE+AIZ22/qIt9+fQ8fX+uZou26ml/oAF7kt2zWqIqh2@nongnu.org
+X-Gm-Message-State: AOJu0Yw4Nf1G3ETlWJWyY6Y3vFGh9MhVq1H8MBTPLT/YLeaVSHOAiVpw
+ pvVByd6eEqARFY+IYze7K62fXZiImQ+r+UeGrv0asbrDSW/AgBRbYpPiUPMEm1xjy0M=
+X-Gm-Gg: ASbGnctSfIWJcsrRLrhEMDc2+a2isNuZjPLqfDAfSxR7ALmE50Y3A0kX9JyAYnmk1sG
+ PASKWt9spkFpZiwW+RIyCkWGqxwHqSNPoMzZEfR0blw08i+zl2LxJLL3GMAvBbZGrJAhTxxC1BH
+ Jjo9mFogdz2ROd4nEVW9/CeoBBz2/tx34kuBqcxZFJD1RgYJikmBdtenbBP5bhL4iybZadRhwIo
+ OaerCLkke5mp3yOksO/WpG3WiZzMF+87fbQW6x08OqfWbuUBeDdg4XsVI+Ga41MB0TEPXlSXcUs
+ /3ewo91AwpEP9Wk6ytdRyOP+z1qETMQY+TB5Hd3zDOu1rtjPEYAifmF3tFV0SnYoH7R/PDgnOzx
+ HTyPA3G/VRihtA2pBzaC0PcoqdjW2ABwFi/DUE2KYMDG6ijFMiyy/NestbdmEWN60b2PyUyHWs/
+ 3Lsq5hTHyArhOjpuam
+X-Google-Smtp-Source: AGHT+IGENvWHKO/HaWvjIPBtGtieSz4qjPpikKHWlJw5onVPrrmvLUkzhOx1XGtove8dpV8y7e9tFw==
+X-Received: by 2002:a05:6e02:1d85:b0:3e3:ed80:843f with SMTP id
+ e9e14a558f8ab-3e533aee918mr122727825ab.9.1754779321926; 
+ Sat, 09 Aug 2025 15:42:01 -0700 (PDT)
+Received: from [10.153.194.227] ([172.58.166.125])
+ by smtp.gmail.com with ESMTPSA id
+ e9e14a558f8ab-3e533bd1b44sm21029665ab.4.2025.08.09.15.41.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 09 Aug 2025 15:42:01 -0700 (PDT)
+Message-ID: <eff1c21d-bec0-44c1-ab82-5ec53de06c24@linaro.org>
+Date: Sun, 10 Aug 2025 08:41:50 +1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=chichikalyuk@gmail.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] accel: use store_release/load_acquire for
+ cross-thread exit_request
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: imammedo@redhat.com, peterx@redhat.com
+References: <20250808185905.62776-1-pbonzini@redhat.com>
+ <20250808185905.62776-2-pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20250808185905.62776-2-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x134.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,41 +104,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previous patch changed the SPCR ACPI table for AArch64 virt.
-Hexdump diff:
-@@ -1 +1 @@
--00000000  53 50 43 52 50 00 00 00  02 b1 42 4f 43 48 53 20
-+00000000  53 50 43 52 5a 00 00 00  04 78 42 4f 43 48 53 20
-@@ -5,2 +5,3 @@
--00000040  ff ff ff ff 00 00 00 00  00 00 00 00 00 00 00 00
--00000050
-+00000040  ff ff ff ff 00 00 00 00  00 00 00 00 00 36 6e 01
-+00000050  00 00 00 00 02 00 58 00  2e 00
-+0000005a
+On 8/9/25 04:58, Paolo Bonzini wrote:
+> cpu->exit_request do not use a load-acquire/store-release pair right now,
+> but this means that cpu_exit() does not store it after any flags that are
+> read in the slow path.
+> 
+> Probably everything is protected one way or the other by the BQL, because
+> after reading cpu->exit_request the CPU thread often goes to sleep
+> (by waiting on the BQL-protected cpu->halt_cond), but it's not clear.
+> Use load-acquire/store-release consistently.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   accel/kvm/kvm-all.c          | 19 +++++++++----------
+>   accel/tcg/cpu-exec.c         |  7 +++++--
+>   accel/tcg/tcg-accel-ops-rr.c |  2 +-
+>   hw/core/cpu-common.c         |  3 ++-
+>   target/i386/nvmm/nvmm-all.c  |  5 ++---
+>   target/i386/whpx/whpx-all.c  |  3 ++-
+>   6 files changed, 21 insertions(+), 18 deletions(-)
 
-Signed-off-by: Vadim Chichikalyuk <chichikalyuk@gmail.com>
----
- tests/data/acpi/aarch64/virt/SPCR           | Bin 80 -> 90 bytes
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- 2 files changed, 1 deletion(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/tests/data/acpi/aarch64/virt/SPCR b/tests/data/acpi/aarch64/virt/SPCR
-index cf0f2b75226515097c08d2e2016a83a4f08812ba..6df47f5c95dfbad2a0b060151c0733bdbc9f7392 100644
-GIT binary patch
-delta 30
-kcmWHD;tCFM4vJ!6U|^}3$mPsymd6NWGcYkkFz7J=09{iA+W-In
+> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+> index 39e674aca21..f189ce861c9 100644
+> --- a/hw/core/cpu-common.c
+> +++ b/hw/core/cpu-common.c
+> @@ -84,7 +84,8 @@ void cpu_reset_interrupt(CPUState *cpu, int mask)
+>   
+>   void cpu_exit(CPUState *cpu)
+>   {
+> -    qatomic_set(&cpu->exit_request, 1);
+> +    /* Ensure cpu_exec will see the reason why the exit request was set.  */
+> +    qatomic_store_release(&cpu->exit_request, 1);
 
-delta 20
-acmazF;0g|K4hmpkU|`xfk;|DG$N&H@<O9(F
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index a60794a3f6..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/aarch64/virt/SPCR",
--- 
-2.39.5 (Apple Git-154)
+While you're touching the lines, since exit_request is bool, let's use true (and elsewhere 
+in other patches, false).
 
+
+r~
 
