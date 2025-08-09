@@ -2,76 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0C5B1F2B0
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Aug 2025 09:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19239B1F33A
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Aug 2025 10:19:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukdZR-0007Ot-Sq; Sat, 09 Aug 2025 03:00:50 -0400
+	id 1ukelW-0001bL-KN; Sat, 09 Aug 2025 04:17:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ukdYw-0007LK-Fz; Sat, 09 Aug 2025 03:00:18 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukelT-0001XT-Aq
+ for qemu-devel@nongnu.org; Sat, 09 Aug 2025 04:17:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ukdYt-0001pZ-ML; Sat, 09 Aug 2025 03:00:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754722816; x=1786258816;
- h=date:from:to:subject:message-id:references:mime-version:
- in-reply-to; bh=jWAJJZJYoSL/1+1FyWJ/8dG4v148oK9n9O/bfalXsNg=;
- b=UFVCCbjmD5Llc0PBwFHWSHgkcFGXAIfMNKtEXU/ryzm6kVs7CzWbOAi/
- 3hi9KAAKIotqdA8VLwjvgTzIJFVpWqBxg9+lN5kmC3YNbwBTKHq2pGe6C
- 7SJAYt7Caq4uuq8Nz0/ka8iJfaGPzUGPWJ82S3Qe+akhMGnEBU+FCUqFK
- WtE8iWAivR5n4kIYBWApu39ZdfHM2cJq08UsWmGYF1R2/D/NWe5dzRvfc
- 1YEbrMzWdvfIVfnXgf52blQ+aVO8EdCZWW8nrYJAy4dVDzFW04nezzs0S
- agbsP2DDxX+4XB13OgvD/zJpqW+suFhAcCUWiz+HoeY4d6BF46As0Bs7B w==;
-X-CSE-ConnectionGUID: qAiOVuBoRNmYyFi0qK9oYA==
-X-CSE-MsgGUID: xNNOg4SJQT62XLoY6JRQGQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11515"; a="59673186"
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="59673186"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2025 00:00:11 -0700
-X-CSE-ConnectionGUID: K18upPvaR5ugUhEkd5SnVg==
-X-CSE-MsgGUID: iM54Oq14RiqtsZBadXQU+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="165147944"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 09 Aug 2025 00:00:08 -0700
-Date: Sat, 9 Aug 2025 15:21:47 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Junjie Mao <junjie.mao@hotmail.com>,
- qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Chuanxiao Dong <chuanxiao.dong@intel.com>
-Subject: Re: [RFC 13/26] rust: Add RCU bindings
-Message-ID: <aJb3C8qbXQ1zx306@intel.com>
-References: <20250807123027.2910950-1-zhao1.liu@intel.com>
- <20250807123027.2910950-14-zhao1.liu@intel.com>
- <CAAjaMXZ9XbEmcJVg1-8uFhnkG-qUF+sB5g26e0W3HhxK_-NFwg@mail.gmail.com>
- <c641dbf2-a2e7-4c44-b231-fc872df1fe69@redhat.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukelN-0002R2-8y
+ for qemu-devel@nongnu.org; Sat, 09 Aug 2025 04:17:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754727431;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Kja8k2Pd9qn03SdqdMJVljXryydYYIonoY5NBiUYyyk=;
+ b=cyXumuPjYq9vcKG/n0qNPuXwVWb27Hy199o9/JFZ04zM9DyWGIpaOM63X1W/Jge2ByGn0w
+ 4K5cPkBXJWgdnz1gsYk4z3CIT5wEK9QdYW7rhhGmNaIDbGmT/euOQlt7C/trjJRWHZqrVn
+ 003VEu/Dha767aLGg9Snhm/JcIEbmVs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-101-2xknEsXsN0GzRDWg59w2yg-1; Sat,
+ 09 Aug 2025 04:17:09 -0400
+X-MC-Unique: 2xknEsXsN0GzRDWg59w2yg-1
+X-Mimecast-MFC-AGG-ID: 2xknEsXsN0GzRDWg59w2yg_1754727427
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ED3911800446; Sat,  9 Aug 2025 08:17:05 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 26CC31800280; Sat,  9 Aug 2025 08:17:04 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 462A621E6A27; Sat, 09 Aug 2025 10:17:01 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Arun Menon
+ <armenon@redhat.com>,  qemu-devel@nongnu.org,  "Michael S. Tsirkin"
+ <mst@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Cornelia Huck <cohuck@redhat.com>,  Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,  Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Fam Zheng <fam@euphon.net>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,  Alex Williamson
+ <alex.williamson@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,  Peter
+ Xu <peterx@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Hailiang Zhang
+ <zhanghailiang@xfusion.com>,  Steve Sistare <steven.sistare@oracle.com>,
+ qemu-s390x@nongnu.org,  qemu-ppc@nongnu.org,  Stefan Berger
+ <stefanb@linux.vnet.ibm.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,  Matthew Rosato
+ <mjrosato@linux.ibm.com>
+Subject: Re: [PATCH v6 23/24] migration: Add error-parameterized function
+ variants in VMSD struct
+In-Reply-To: <9c552525-72fa-4d1e-89a2-b5c0e446935a@rsg.ci.i.u-tokyo.ac.jp>
+ (Akihiko Odaki's message of "Tue, 22 Jul 2025 00:15:54 +0900")
+References: <20250721-propagate_tpm_error-v6-0-fef740e15e17@redhat.com>
+ <20250721-propagate_tpm_error-v6-23-fef740e15e17@redhat.com>
+ <3e9aa703-2805-4ac4-9f10-f4ba71c10c8a@rsg.ci.i.u-tokyo.ac.jp>
+ <aH5AtUcjI3HYXdBe@redhat.com>
+ <9c552525-72fa-4d1e-89a2-b5c0e446935a@rsg.ci.i.u-tokyo.ac.jp>
+Date: Sat, 09 Aug 2025 10:17:01 +0200
+Message-ID: <87fre0ucxu.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c641dbf2-a2e7-4c44-b231-fc872df1fe69@redhat.com>
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,96 +109,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thank you both!!
+Almost missed this, sorry.
 
-Please correct me is I'm wrong :).
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp> writes:
 
-On Thu, Aug 07, 2025 at 03:38:52PM +0200, Paolo Bonzini wrote:
-> Date: Thu, 7 Aug 2025 15:38:52 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [RFC 13/26] rust: Add RCU bindings
-> 
-> On 8/7/25 14:29, Manos Pitsidianakis wrote:
-> 
-> > > +//! Bindings for `rcu_read_lock` and `rcu_read_unlock`.
-> > > +//! More details about RCU in QEMU, please refer docs/devel/rcu.rst.
-> > > +
-> > 
-> > How about a RAII guard type? e.g. RCUGuard and runs `rcu_read_unlock` on Drop.
-> 
-> Clippy says Rcu not RCU.  :)
-> 
-> You're right, not just because it's nice but also because it bounds the
-> dereference of the FlatView.  Something like this build on top of the guard
-> object:
-> 
-> pub struct RcuCell<T> {
->     data: AtomicPtr<T>
-> }
-> 
-> impl<T> RcuCell {
->     pub fn raw_get(&self) -> *mut T {
->         self.data.load(Ordering::Acquire)
+> On 2025/07/21 22:29, Daniel P. Berrang=C3=A9 wrote:
+>> On Mon, Jul 21, 2025 at 10:14:30PM +0900, Akihiko Odaki wrote:
+>>> On 2025/07/21 20:29, Arun Menon wrote:
+>>>> - We need to have good error reporting in the callbacks in
+>>>>   VMStateDescription struct. Specifically pre_save, post_save,
+>>>>   pre_load and post_load callbacks.
+>>>> - It is not possible to change these functions everywhere in one
+>>>>   patch, therefore, we introduce a duplicate set of callbacks
+>>>>   with Error object passed to them.
+>>>> - So, in this commit, we implement 'errp' variants of these callbacks,
+>>>>   introducing an explicit Error object parameter.
+>>>> - This is a functional step towards transitioning the entire codebase
+>>>>   to the new error-parameterized functions.
+>>>> - Deliberately called in mutual exclusion from their counterparts,
+>>>>   to prevent conflicts during the transition.
+>>>> - New impls should preferentally use 'errp' variants of
+>>>>   these methods, and existing impls incrementally converted.
+>>>>   The variants without 'errp' are intended to be removed
+>>>>   once all usage is converted.
+>>>>
+>>>> Signed-off-by: Arun Menon <armenon@redhat.com>
+>>>> ---
+>>>>  include/migration/vmstate.h | 11 +++++++++++
+>>>>  migration/vmstate.c         | 47 ++++++++++++++++++++++++++++++++++++=
++++------
+>>>>  2 files changed, 52 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+>>>> index 056781b1c21e737583f081594d9f88b32adfd674..53fa72c1bbde399be02c88=
+fc8745fdbb79bfd7c8 100644
+>>>> --- a/include/migration/vmstate.h
+>>>> +++ b/include/migration/vmstate.h
+>>>> @@ -200,15 +200,26 @@ struct VMStateDescription {
+>>>>       * exclusive. For this reason, also early_setup VMSDs are migrate=
+d in a
+>>>>       * QEMU_VM_SECTION_FULL section, while save_setup() data is migra=
+ted in
+>>>>       * a QEMU_VM_SECTION_START section.
+>>>> +     *
+>>>> +     * There are duplicate impls of the post/pre save/load hooks.
+>>>> +     * New impls should preferentally use 'errp' variants of these
+>>>> +     * methods and existing impls incrementally converted.
+>>>> +     * The variants without 'errp' are intended to be removed
+>>>> +     * once all usage is converted.
+>>>>       */
+>>>> +
+>>>>      bool early_setup;
+>>>>      int version_id;
+>>>>      int minimum_version_id;
+>>>>      MigrationPriority priority;
+>>>>      int (*pre_load)(void *opaque);
+>>>> +    int (*pre_load_errp)(void *opaque, Error **errp);
+>>>>      int (*post_load)(void *opaque, int version_id);
+>>>> +    int (*post_load_errp)(void *opaque, int version_id, Error **errp);
+>>>>      int (*pre_save)(void *opaque);
+>>>> +    int (*pre_save_errp)(void *opaque, Error **errp);
+>>>>      int (*post_save)(void *opaque);
+>>>> +    int (*post_save_errp)(void *opaque, Error **errp);
+>>>
+>>> I think the new functions should have void as return value instead.
+>>>
+>>> As I discussed before, I think having an integer return value is a sour=
+ce of
+>>> confusion:
+>>> https://lore.kernel.org/qemu-devel/0447e269-c242-4cd7-b68e-d0c7211784a7=
+@rsg.ci.i.u-tokyo.ac.jp/
 
-I understand this tries to provide an equivalent to qatomic_rcu_read.
-Ordering::Acquire is especially necessary, because at C side,
-qatomic_rcu_read has a barrier.
+I disagree.
 
->     }
-> 
->     pub fn get<'g>(&self, _: &'g RcuGuard) -> Option<&'g T> {
->         unsafe {
->             self.raw_get().as_ref()
->         }
->     }
-> }
-> 
-> Using this is a bit ugly, because you need transmute, but it's isolated:
-> 
-> impl AddressSpace {
->    pub fn get_flatview(&self, rcu: &'g Guard) -> &'g FlatView {
+We've discussed this a few times.  Here's a recent instance:
+https://lore.kernel.org/qemu-devel/87jz5tbbqx.fsf@pond.sub.org/
 
-IIUC, this lifetime is using the "branded type" pattern as ParentInit.
+>>> In the previous discussion, I suggested using bool, but void fits bette=
+r in
+>>> this particular case.
+>>>
+>>> include/qapi/error.h says:
+>>>> Whenever practical, also return a value that indicates success /
+>>>> failure.  This can make the error checking more concise, and can avoid
+>>>> useless error object creation and destruction.  Note that we still
+>>>> have many functions returning void.
+>>>
+>>> There will be more implementations of these function pointers than their
+>>> callers, so it makes more sense to let return void and make implementat=
+ions
+>>> more concise while making the callers less so. There is also DeviceReal=
+ize,
+>>> an example of function pointer type that takes errp but returns void.
+>>
+>> No, please do NOT make these functions void. As that text you quote
+>> says, we want functions to return a value indicating success/failure.
+>> 'void' return is a historical practice we don't want to continue
+>> in QEMU.
+>>
+>> Given that the existing methods all return 'int', we should remain
+>> consistent with the new functions and return 'int', with -1 for
+>> failure, 0 for success, and not use bool.
+>
+> Markus, I'd also like to hear your opinion since you are the maintainer o=
+f the error reporting facility.
 
->        let flatp = unsafe {
->            std::mem::transmute::<&*mut FlatView, &RcuCell<FlatView>>(
->                &self.0.as_ptr().current_map)
->        };
->        flatp.get(rcu)
->    }
-> }
-> 
-> impl GuestAddressSpace for AddressSpace {
->     fn memory(&self) -> Self::T {
->         let rcu = RcuGuard::guard();
->         FlatViewRefGuard::new(self.get_flatview(rcu))
->     }
-> }
+I'm with Daniel.
 
-With RcuGuard, then we are actually calling qatomic_rcu_read in the
-rcu critical section, which greatly enhances safety. This is a good
-design for RCU binding.
+New code should stick to the rules.
 
-> > Destructors are not guaranteed to run or run only once, but the former
-> > should happen when things go wrong e.g. crashes/aborts. You can add a
-> > flag in the RCUGuard to make sure Drop runs unlock only once (since it
-> > takes &mut and not ownership)
-> 
-> Yeah I think many things would go wrong if Arc could run its drop
-> implementation more than once.
- 
-Good point.
+Changing existing code from "sticks to the rules" to not requires pretty
+compelling justification.
 
-In addition, about rcu_read_lock_held(), I thought at C side, there're
-so many comments are saying "Called within RCU critical section" but
-without any check.
-
-So I wonder whether we should do some check for RCU critical section,
-just like bql check via `assert!(bql_locked())`. Maybe we can have a
-Rcu debug feature to cover all these checks.
-
-Thanks,
-Zhao
-
+The other direction is more welcome, but whether the juice is worth the
+squeeze still needs to be decided case by case.
 
 
