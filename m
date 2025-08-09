@@ -2,47 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F9DB1F263
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Aug 2025 07:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0436B1F266
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Aug 2025 07:51:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ukcQT-0000Vv-1M; Sat, 09 Aug 2025 01:47:29 -0400
+	id 1ukcTY-0001tr-I1; Sat, 09 Aug 2025 01:50:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ukcQE-0000Re-Dd; Sat, 09 Aug 2025 01:47:15 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukcTU-0001sY-Oz
+ for qemu-devel@nongnu.org; Sat, 09 Aug 2025 01:50:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ukcQC-0001pU-5e; Sat, 09 Aug 2025 01:47:14 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 12773140006;
- Sat, 09 Aug 2025 08:46:27 +0300 (MSK)
-Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 423A025C264;
- Sat,  9 Aug 2025 08:46:55 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org,
-	Stefan Weil <sw@weilnetz.de>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH trivial] chardev/baum.c: fix error return check for windows
-Date: Sat,  9 Aug 2025 08:46:53 +0300
-Message-ID: <20250809054654.562361-1-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.2
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ukcTS-0002Hc-OB
+ for qemu-devel@nongnu.org; Sat, 09 Aug 2025 01:50:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754718633;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=b+XtEW6a+uvMAeiTCwif7B3pbtKpCw6If5PGOYykHkE=;
+ b=Pf/DX4SoYiTy6Yq8TbJd/n4yRC+zgHbl4SZRrd3VyAmPonWERgutKqn6La1qVa+MKHZ/91
+ nIGj+Fz/UrPalFLuyodJNjz3V7mVuHdwQz2u0HmLMHiLwZ7WUe3XlsDXW4lhqPUCaezwhV
+ wdyKF3r9NBdTmJbYusKf4VfZQOXEw9k=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-JOgAo1Z_P0STedTsMchHTA-1; Sat,
+ 09 Aug 2025 01:50:31 -0400
+X-MC-Unique: JOgAo1Z_P0STedTsMchHTA-1
+X-Mimecast-MFC-AGG-ID: JOgAo1Z_P0STedTsMchHTA_1754718630
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 370B91956089
+ for <qemu-devel@nongnu.org>; Sat,  9 Aug 2025 05:50:30 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DF93E195419C
+ for <qemu-devel@nongnu.org>; Sat,  9 Aug 2025 05:50:29 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E746721E6A27; Sat, 09 Aug 2025 07:50:26 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: stefanha@redhat.com
+Subject: [PULL 0/3] QAPI patches for 2025-08-09
+Date: Sat,  9 Aug 2025 07:50:23 +0200
+Message-ID: <20250809055026.2944835-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,31 +80,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 3736506e25ac7bb "meson: Fix brlapi compile test for
-Windows builds" fixed brlapi configure-time test to use
-BRLAPI_INVALID_FILE_DESCRIPTOR instead of -1, b/c on windows,
-it is not -1.  But the same test is used at run time when
-initing brlapi in chardev/baum.c.  Fix this one too.
+The following changes since commit a74434580e1051bff12ab5eee5586058295c497f:
 
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- chardev/baum.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  Merge tag 'pull-loongarch-20250808' of https://github.com/gaosong715/qemu into staging (2025-08-08 09:49:06 -0400)
 
-diff --git a/chardev/baum.c b/chardev/baum.c
-index f3e8cd27f0..ecbcd2e5c6 100644
---- a/chardev/baum.c
-+++ b/chardev/baum.c
-@@ -654,7 +654,7 @@ static void baum_chr_open(Chardev *chr,
-     baum->brlapi = handle;
- 
-     baum->brlapi_fd = brlapi__openConnection(handle, NULL, NULL);
--    if (baum->brlapi_fd == -1) {
-+    if (baum->brlapi_fd == BRLAPI_INVALID_FILE_DESCRIPTOR) {
-         error_setg(errp, "brlapi__openConnection: %s",
-                    brlapi_strerror(brlapi_error_location()));
-         g_free(handle);
+are available in the Git repository at:
+
+  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2025-08-09
+
+for you to fetch changes up to 79f57adce686d0027608af4be363cde2409e5740:
+
+  docs/devel/qapi-code-gen: Update cross-reference syntax (2025-08-09 07:20:24 +0200)
+
+----------------------------------------------------------------
+QAPI patches for 2025-08-09
+
+----------------------------------------------------------------
+Markus Armbruster (3):
+      docs/devel/qapi-code-gen: Add two cross-references we missed
+      docs/devel/qapi-code-gen: Fix typos in QAPI schema language grammar
+      docs/devel/qapi-code-gen: Update cross-reference syntax
+
+ docs/devel/qapi-code-gen.rst | 19 ++++++++++++-------
+ docs/devel/qapi-domain.rst   |  1 +
+ 2 files changed, 13 insertions(+), 7 deletions(-)
+
 -- 
-2.47.2
+2.49.0
 
 
