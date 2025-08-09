@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374AFB1F74A
+	by mail.lfdr.de (Postfix) with ESMTPS id 73665B1F74B
 	for <lists+qemu-devel@lfdr.de>; Sun, 10 Aug 2025 01:43:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uktCr-0005j1-MZ; Sat, 09 Aug 2025 19:42:33 -0400
+	id 1uktCu-0005jh-3G; Sat, 09 Aug 2025 19:42:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uktCn-0005i6-EY
- for qemu-devel@nongnu.org; Sat, 09 Aug 2025 19:42:31 -0400
-Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
+ id 1uktCr-0005j8-BE
+ for qemu-devel@nongnu.org; Sat, 09 Aug 2025 19:42:33 -0400
+Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uktCl-0005hI-UJ
- for qemu-devel@nongnu.org; Sat, 09 Aug 2025 19:42:29 -0400
-Received: by mail-qt1-x82f.google.com with SMTP id
- d75a77b69052e-4af123c6fc4so32601251cf.0
- for <qemu-devel@nongnu.org>; Sat, 09 Aug 2025 16:42:27 -0700 (PDT)
+ id 1uktCp-0005hZ-NV
+ for qemu-devel@nongnu.org; Sat, 09 Aug 2025 19:42:33 -0400
+Received: by mail-qt1-x832.google.com with SMTP id
+ d75a77b69052e-4b08c56d838so41746201cf.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Aug 2025 16:42:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754782947; x=1755387747; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754782950; x=1755387750; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1G3tyzVolSQP8KoEaSpUQ9g+A1OBOYb9Sx6tiF8VyrU=;
- b=DdRArAb/VU1mvSPtWEeUaeqV1AUmOlUDHlmGHEWWoKg/peTAn7ZZHcGpFI39i26Vkp
- H21XQ0L7a3iSBOya3b5/7f2oj06gi9pd2pHmyTJQ1XKgGRPJRpFKSlU26qI2n4w2m2c3
- BIBAIAtbsZaCB66ZTME/2nw8YaFy00KfIpw0KyDl6NQkkLG7meODS/4awcb7PKnh2zpk
- 7lpO8o745fE/5uxMTKIaO+fz24JmeDguZmTjoI5vkqTlZj2VRc6eQOXadjusvzhkENA5
- dMzmswxcoUFGt90+RFZOqIG71sYD7B2KuZ8RQ2ndQRHZb4DO+v3jnBNBLqlTEiaWn3Ga
- 04Cw==
+ :reply-to; bh=N4OkU+DgDKGb66i12ye1eGOR4zW3QJF0mGHVePO3CKA=;
+ b=rrnxyEOAuU8uUDcs84cVET7DTOJkQX9ouqEnLZrupKYGi3rkUjZ7O/GkWsC/Xi06sC
+ LnfkdBB1AwqJRFsV7vom5AV3UUvSLqmjoHqXLqB0qW2TGHorRCOhrDlk6uAAYipX8gLd
+ bC8CLsaUa7cFHsJXLnkQTN/bpiELvwsWOb/ASQ2xovmLlltc/LgDSwqG53c4tqpgt5Pn
+ K+viNvs9fVpfn+y1CiRPV3DIGIh8gYk7CQTWSZip//ttDSfx3ahtpk86Ya+2diZpwKtz
+ GZdGHyuY7CsuwxRxI7bW7yzgFIwNwAt8janVaVUyQn8PeSWdc2uVNZFNLAp/I0L/NaBY
+ VSqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754782947; x=1755387747;
+ d=1e100.net; s=20230601; t=1754782950; x=1755387750;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1G3tyzVolSQP8KoEaSpUQ9g+A1OBOYb9Sx6tiF8VyrU=;
- b=xKn+sk8aecMrd1ps8YEw5/Ih+vmbHYXGyBQPPTtdoQtKIr2duPB1XDF/QkHHSIWGb/
- 1jIUhokXBZ+E8KPFUzzTH8NI3sCcGM2O0xvDROvaIdK8wl973leB+MjbBKW3RwhGxSNL
- VDEqfzY1jrg+ZG7QF3YQwX05b3BbkO9auuEHaHerixZrbLS7IR3GLydAwajMwoELN/1r
- 2lTcMjcYP9aUWqiioUV78I7HU3kzgr5ZrXqSaMlOeevL/dSOaaNXQOE5uo4JVQIXrIS2
- 8Qxt8D+4IiMvK4r2DMZRMdUA39Gsil3XK2cbz7OCzqgSBvGvtZVytgQk4sdFt9OUHG0D
- GyXQ==
-X-Gm-Message-State: AOJu0YxtB5T/K1Dbb96IrjDlfmMIfeaMemXbYM1VTTqQ8TyXXGf849fh
- Mj02tS/BMC/UyaJcXs/GjzDS+1J4n+2jGG6lwIJw6CkXXueFxoPuhlQtoRtwfztDQIZ9wmiCYOj
- DrIMO
-X-Gm-Gg: ASbGncuLbdskMlzRAiIihr8SFP511LbcBlzZ2uJhS62AIYI5vwstHEqAu8T4U1zmlbX
- 7jQg8SkPnIQKuhYKDj9lztKBrJ3r37eE2KE8Tdp25QQcz6yMNfcCgvBaLfRX96nxJbGkeTG041s
- eORfHB8PF/p+Lj1vrKFl5+yWKHVeUFkqMopeoKhxEBEwzYJ9yYl68a11wBkqgPFKpmP/Yi5KYfS
- Z0k+FozvV/R7zNdQYS3+HXawVSgVCHK4HX163vlmmr9Cg692zzWccegbawq6Qc5BhbfP0XYxU2r
- htQsjFaz1hX50LNP4h2ct4yO9r/JYe2HZ6J48bqjQ+wCNsju/a8UCLy57JwKL9jbMtzBDBhDWfu
- yCVzluWW4Jp5dawEpVmKROHN0HYgEF+o/qzywe+4Tsej+DmMTSt8b89SUSWs3LAQpcLPpIp4MnV
- /+6DYVQj3rTNaciRA=
-X-Google-Smtp-Source: AGHT+IG6ggpVHmSVNk2CXSnmU9eSl/24yzgwXrGosTdvYV0PzaaG6CW/7xd44h4+RytRe2tLULaBVw==
-X-Received: by 2002:ac8:5850:0:b0:4b0:89c2:68e0 with SMTP id
- d75a77b69052e-4b0aed91060mr131000931cf.60.1754782946766; 
- Sat, 09 Aug 2025 16:42:26 -0700 (PDT)
+ bh=N4OkU+DgDKGb66i12ye1eGOR4zW3QJF0mGHVePO3CKA=;
+ b=Hwt5Ss4TD/RK2Qs0K80vc31kh/W2AcWnAPiDbNcWWmRvTh6vPRLF2GhXBq7KAzylMe
+ UTkM+ha0DBgXnQmIU7500ZAZSzkSspDetcPkO0ofQy7tBmsPOEys0bkTggQWei0h8nRd
+ 17iyNd5hKJZED42rC7ST7QAvJwX7BlB8oPmmPbhX8wDemFpaBT1EDSVxoW479mrxNJsv
+ aHFATvPJPhw8W7u6SYM4J/AcGZ4S6uZ6nJEAQCh44EAAnTs1qkNiJWz5JC3oI8HgGMzc
+ D5p/VYht27tG66fKF/PKL34qYBLqhv9+EJLnvaaZ6Nzpe8FLXyxLPny9DOGCeaBskT78
+ w/Ug==
+X-Gm-Message-State: AOJu0YyPS2/GmJBEK9QlPUjd2UJl3FRNdeGnIP9vDu2+vdLYV88MwxBW
+ cOWBJkoRkkCdyDAiAb4MCbchfPJoUSyASDRLgk/Vm/3W0vRtU68mOSIcPWX0WLfvlcczohQuE2q
+ dtjhw
+X-Gm-Gg: ASbGncs7vbzSizBby/b1dNnN00SLH/IHFEr8JGju0+ENeQtd/8npvcpLUnEoBTiHezx
+ 39oFmBd+I/qXA50Z3A18+wYnfessljjxIrhgkOT7ysPRIrqpPqBfIGAaZOe26P9k0LBI2ECVjQH
+ X4ucIXSIkkD+v2f9QGSKkj10htjKnR3DNN4Ohjy9SpkS2KV+wi0dmcKW930wp2A5iPetwbIrsNF
+ iO8L9rY+X5OCN6JzxekFYIhQpuutQW3AZe3KHeg55xYhftVAb+sNqGVd6N8e0z6cht6ObrIEmN7
+ 2bemtQaKQpR299YISB9hRDkVi7ebaKTkGM4Rnfv8lglxR/rcMt5fuQ8eE0X8gv4xNZz4KROlyYd
+ uMoQbVfYmrNWKo4FSS8ubRRgLZdatIlLWRLcqSqhIHZ1NwAFltqzUA0olaufPECW8kGYFOr7DjY
+ wzipTm
+X-Google-Smtp-Source: AGHT+IGV3hR5B+EyX8W8ZCDmnLBWoBGij2ZL2P/R6DtI05fDgLnksrPOjvJdqN+3TP488YGjQkcTwg==
+X-Received: by 2002:a05:622a:1aa0:b0:4ab:640d:414e with SMTP id
+ d75a77b69052e-4b0a06eedfdmr186607741cf.3.1754782950476; 
+ Sat, 09 Aug 2025 16:42:30 -0700 (PDT)
 Received: from stoup.. ([172.58.166.125]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-7077cd56226sm132135636d6.44.2025.08.09.16.42.24
+ 6a1803df08f44-7077cd56226sm132135636d6.44.2025.08.09.16.42.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 09 Aug 2025 16:42:26 -0700 (PDT)
+ Sat, 09 Aug 2025 16:42:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 2/3] tcg/i386: Add INDEX_op_x86_vgf2p8affineqb_vec
-Date: Sun, 10 Aug 2025 09:42:07 +1000
-Message-ID: <20250809234208.12158-3-richard.henderson@linaro.org>
+Subject: [PATCH 3/3] tcg/i386: Use vgf2p8affineqb for MO_8 vector shifts
+Date: Sun, 10 Aug 2025 09:42:08 +1000
+Message-ID: <20250809234208.12158-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250809234208.12158-1-richard.henderson@linaro.org>
 References: <20250809234208.12158-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
- envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x82f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x832.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -97,56 +97,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a backend-specific opcode for expanding the
-GFNI vgf2p8affineqb instruction, which we can use
-for expanding 8-bit immediate shifts and rotates.
+A constant matrix can describe the movement of the 8 bits,
+so these shifts can be performed with one instruction.
+
+Logic courtesy of Andi Kleen <ak@linux.intel.com>:
+https://gcc.gnu.org/pipermail/gcc-patches/2025-August/691624.html
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target-opc.h.inc | 1 +
- tcg/i386/tcg-target.c.inc     | 6 ++++++
- 2 files changed, 7 insertions(+)
+ tcg/i386/tcg-target.c.inc | 75 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 71 insertions(+), 4 deletions(-)
 
-diff --git a/tcg/i386/tcg-target-opc.h.inc b/tcg/i386/tcg-target-opc.h.inc
-index 8cc0dbaeaf..8a5cb34dbe 100644
---- a/tcg/i386/tcg-target-opc.h.inc
-+++ b/tcg/i386/tcg-target-opc.h.inc
-@@ -35,3 +35,4 @@ DEF(x86_punpckh_vec, 1, 2, 0, TCG_OPF_VECTOR)
- DEF(x86_vpshldi_vec, 1, 2, 1, TCG_OPF_VECTOR)
- DEF(x86_vpshldv_vec, 1, 3, 0, TCG_OPF_VECTOR)
- DEF(x86_vpshrdv_vec, 1, 3, 0, TCG_OPF_VECTOR)
-+DEF(x86_vgf2p8affineqb_vec, 1, 2, 1, TCG_OPF_VECTOR)
 diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index 088c6c9264..9dd588fc41 100644
+index 9dd588fc41..fb76724941 100644
 --- a/tcg/i386/tcg-target.c.inc
 +++ b/tcg/i386/tcg-target.c.inc
-@@ -451,6 +451,7 @@ static bool tcg_target_const_match(int64_t val, int ct,
- #define OPC_VPBROADCASTW (0x79 | P_EXT38 | P_DATA16)
- #define OPC_VPBROADCASTD (0x58 | P_EXT38 | P_DATA16)
- #define OPC_VPBROADCASTQ (0x59 | P_EXT38 | P_DATA16)
-+#define OPC_VGF2P8AFFINEQB (0xce | P_EXT3A | P_DATA16 | P_VEXW)
- #define OPC_VPMOVM2B    (0x28 | P_EXT38 | P_SIMDF3 | P_EVEX)
- #define OPC_VPMOVM2W    (0x28 | P_EXT38 | P_SIMDF3 | P_VEXW | P_EVEX)
- #define OPC_VPMOVM2D    (0x38 | P_EXT38 | P_SIMDF3 | P_EVEX)
-@@ -4084,6 +4085,10 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-         insn = vpshldi_insn[vece];
-         sub = args[3];
-         goto gen_simd_imm8;
-+    case INDEX_op_x86_vgf2p8affineqb_vec:
-+        insn = OPC_VGF2P8AFFINEQB;
-+        sub = args[3];
-+        goto gen_simd_imm8;
+@@ -4342,12 +4342,46 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
+     }
+ }
  
-     case INDEX_op_not_vec:
-         insn = OPC_VPTERNLOGQ;
-@@ -4188,6 +4193,7 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
-     case INDEX_op_x86_punpckl_vec:
-     case INDEX_op_x86_punpckh_vec:
-     case INDEX_op_x86_vpshldi_vec:
-+    case INDEX_op_x86_vgf2p8affineqb_vec:
- #if TCG_TARGET_REG_BITS == 32
-     case INDEX_op_dup2_vec:
- #endif
++static void gen_vgf2p8affineqb0(TCGType type, TCGv_vec v0,
++                                TCGv_vec v1, uint64_t matrix)
++{
++    vec_gen_4(INDEX_op_x86_vgf2p8affineqb_vec, type, MO_8,
++              tcgv_vec_arg(v0), tcgv_vec_arg(v1),
++              tcgv_vec_arg(tcg_constant_vec(type, MO_64, matrix)), 0);
++}
++
+ static void expand_vec_shi(TCGType type, unsigned vece, bool right,
+                            TCGv_vec v0, TCGv_vec v1, TCGArg imm)
+ {
++    static const uint64_t gf2_shi[2][8] = {
++        /* left shift */
++        { 0,
++          0x0001020408102040ull,
++          0x0000010204081020ull,
++          0x0000000102040810ull,
++          0x0000000001020408ull,
++          0x0000000000010204ull,
++          0x0000000000000102ull,
++          0x0000000000000001ull },
++        /* right shift */
++        { 0,
++          0x0204081020408000ull,
++          0x0408102040800000ull,
++          0x0810204080000000ull,
++          0x1020408000000000ull,
++          0x2040800000000000ull,
++          0x4080000000000000ull,
++          0x8000000000000000ull }
++    };
+     uint8_t mask;
+ 
+     tcg_debug_assert(vece == MO_8);
++
++    if (cpuinfo & CPUINFO_GFNI) {
++        gen_vgf2p8affineqb0(type, v0, v1, gf2_shi[right][imm]);
++        return;
++    }
++
+     if (right) {
+         mask = 0xff >> imm;
+         tcg_gen_shri_vec(MO_16, v0, v1, imm);
+@@ -4361,10 +4395,25 @@ static void expand_vec_shi(TCGType type, unsigned vece, bool right,
+ static void expand_vec_sari(TCGType type, unsigned vece,
+                             TCGv_vec v0, TCGv_vec v1, TCGArg imm)
+ {
++    static const uint64_t gf2_sar[8] = {
++        0,
++        0x0204081020408080ull,
++        0x0408102040808080ull,
++        0x0810204080808080ull,
++        0x1020408080808080ull,
++        0x2040808080808080ull,
++        0x4080808080808080ull,
++        0x8080808080808080ull,
++    };
+     TCGv_vec t1, t2;
+ 
+     switch (vece) {
+     case MO_8:
++        if (cpuinfo & CPUINFO_GFNI) {
++            gen_vgf2p8affineqb0(type, v0, v1, gf2_sar[imm]);
++            break;
++        }
++
+         /* Unpack to 16-bit, shift, and repack.  */
+         t1 = tcg_temp_new_vec(type);
+         t2 = tcg_temp_new_vec(type);
+@@ -4416,12 +4465,30 @@ static void expand_vec_sari(TCGType type, unsigned vece,
+ static void expand_vec_rotli(TCGType type, unsigned vece,
+                              TCGv_vec v0, TCGv_vec v1, TCGArg imm)
+ {
++    static const uint64_t gf2_rol[8] = {
++        0,
++        0x8001020408102040ull,
++        0x4080010204081020ull,
++        0x2040800102040810ull,
++        0x1020408001020408ull,
++        0x0810204080010204ull,
++        0x0408102040800102ull,
++        0x0204081020408001ull,
++    };
+     TCGv_vec t;
+ 
+-    if (vece != MO_8 && have_avx512vbmi2) {
+-        vec_gen_4(INDEX_op_x86_vpshldi_vec, type, vece,
+-                  tcgv_vec_arg(v0), tcgv_vec_arg(v1), tcgv_vec_arg(v1), imm);
+-        return;
++    if (vece == MO_8) {
++        if (cpuinfo & CPUINFO_GFNI) {
++            gen_vgf2p8affineqb0(type, v0, v1, gf2_rol[imm]);
++            return;
++        }
++    } else {
++        if (have_avx512vbmi2) {
++            vec_gen_4(INDEX_op_x86_vpshldi_vec, type, vece,
++                      tcgv_vec_arg(v0), tcgv_vec_arg(v1),
++                      tcgv_vec_arg(v1), imm);
++            return;
++        }
+     }
+ 
+     t = tcg_temp_new_vec(type);
 -- 
 2.43.0
 
