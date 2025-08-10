@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245F0B1F8F7
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Aug 2025 09:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C45B1F8F8
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Aug 2025 09:58:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ul0uH-00078T-7K; Sun, 10 Aug 2025 03:55:53 -0400
+	id 1ul0wO-0000Hf-AV; Sun, 10 Aug 2025 03:58:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ul0tx-00074Q-Pu; Sun, 10 Aug 2025 03:55:36 -0400
+ id 1ul0wK-0000H9-Ea; Sun, 10 Aug 2025 03:58:00 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ul0tv-0004Qd-Ki; Sun, 10 Aug 2025 03:55:33 -0400
+ id 1ul0wI-0004ap-AJ; Sun, 10 Aug 2025 03:58:00 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AA87E14041C;
- Sun, 10 Aug 2025 10:54:52 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 15131140420;
+ Sun, 10 Aug 2025 10:57:26 +0300 (MSK)
 Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id BE79025D10C;
- Sun, 10 Aug 2025 10:55:22 +0300 (MSK)
-Message-ID: <44424b1a-1d85-4eda-8cc6-3fa38b23200d@tls.msk.ru>
-Date: Sun, 10 Aug 2025 10:55:22 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 31BBF25D10D;
+ Sun, 10 Aug 2025 10:57:56 +0300 (MSK)
+Message-ID: <b06c4273-650b-4ba3-bf35-9af16bfc70e7@tls.msk.ru>
+Date: Sun, 10 Aug 2025 10:57:56 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH trivial] chardev/baum: Fix compiler warning for Windows
- builds
-To: Stefan Weil <sw@weilnetz.de>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- rent Vivier <laurent@vivier.eu>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-References: <20250809061302.596931-1-sw@weilnetz.de>
+Subject: Re: [PATCH] target/arm: Trap PMCR when MDCR_EL2.TPMCR is set
+To: Smail AIDER <smail.aider@huawei.com>, qemu-devel@nongnu.org
+Cc: alexander.spyridakis@huawei.com, zhangyue165@huawei.com,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ liuyutao2@huawei.com, qemu-stable@nongnu.org
+References: <20250722131925.2119169-1-smail.aider@huawei.com>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -79,7 +77,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20250809061302.596931-1-sw@weilnetz.de>
+In-Reply-To: <20250722131925.2119169-1-smail.aider@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
@@ -105,40 +103,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09.08.2025 09:13, Stefan Weil via wrote:
-> Compiler warning:
-> 
-> ../chardev/baum.c:657:25: warning: comparison between pointer and integer
-> 
-> Use brlapi_fileDescriptor instead of int for brlapi_fd and
-> BRLAPI_INVALID_FILE_DESCRIPTOR instead of -1.
-> 
-> Signed-off-by: Stefan Weil <sw@weilnetz.de>
-> ---
-> 
-> This is a rather old patch which I now use since more than two years
-> to support Braille with QEMU on Windows.
-> 
-> It's a hack (because Windows uses a pointer (64 bit) which is
-> assigned to an int (32 bit), but it seems to work.
+On 22.07.2025 16:19, Smail AIDER via wrote:
+> Trap PMCR_EL0 or PMCR accesses to EL2 when MDCR_EL2.TPMCR is set.
+> Similar to MDCR_EL2.TPM, MDCR_EL2.TPMCR allows trapping EL0 and EL1
+> accesses to the PMCR register to EL2.
 
-Queued to the trivial-patches tree, with the following addition:
+Ping?
 
-diff --git a/chardev/baum.c b/chardev/baum.c
-index 5c3587dda5..ad68321504 100644
---- a/chardev/baum.c
-+++ b/chardev/baum.c
-@@ -665,6 +665,10 @@ static void baum_chr_open(Chardev *chr,
-
-      baum->cellCount_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, 
-baum_cellCount_timer_cb, baum);
-
-+    /*
-+     * On Windows, brlapi_fd is a pointer, which is being used here
-+     * as an integer, but in practice it seems to work
-+     */
-      qemu_set_fd_handler(baum->brlapi_fd, baum_chr_read, NULL, baum);
-  }
+Has this patch been forgotten?
 
 Thanks,
 
