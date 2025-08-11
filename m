@@ -2,99 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52F8B20992
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 15:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6ADCB209E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 15:16:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulSBA-0002l7-AD; Mon, 11 Aug 2025 09:03:08 -0400
+	id 1ulSLx-0008Jk-2b; Mon, 11 Aug 2025 09:14:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1ulSAl-00026H-9t
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:02:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1ulSAh-0005y0-1w
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:02:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754917355;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CB9Fp17VbM9IJuCixfnk/+GdwDgh1BERwJojw1nqQ3k=;
- b=EFY7Xz1UjvEDC4tsLbbxHV/CtZtPLcE0qaOqknaemqH8ElzHY6yBs5AiqCjjD/hx5lagM9
- sVmHbpXTwmyBgouapkjTIM2lJTrYGlsEQqth4HR6nWYKLREdL21BiHrPRdhYrXiFJuoLen
- /6pjwda3hTD7qfHv5IvS1swYnkfhut0=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-kf5VQcb9NtOe189gvd6TqQ-1; Mon, 11 Aug 2025 09:02:34 -0400
-X-MC-Unique: kf5VQcb9NtOe189gvd6TqQ-1
-X-Mimecast-MFC-AGG-ID: kf5VQcb9NtOe189gvd6TqQ_1754917353
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-7075d48a15bso88320816d6.3
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 06:02:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulSLs-0008J5-Cg
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:14:13 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulSLk-0000R6-Cg
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:14:12 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-458ba079338so33712825e9.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 06:14:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1754918039; x=1755522839; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=1Vf6DemP29pm+5eGz56PNcfCPAyi0gzIgp3lFXVeRfc=;
+ b=cru9tK0WfE45+K16wMA9lPu/WWXYf6B2GB7o9gWOOY2IcFLRAHDDVP1K8gGo0WMBku
+ +QXwxVAamBBZDqOG/vgD/CnwVTaHgmyLJKOxuqT/osQai9AwAY3G2ap+A9YDLFT3yvjJ
+ zs/M6M6ac1BJoI7ZMFUatJ0Nt2ITR9vsO02qbuA0wSJz/z459T+J6YoHC5QG0SBnUzYA
+ xg4ptojw6SyhdmqgOhcurSMvvIpOYbrkVp+272tKYiu4OcZpSG2G2+iE7wLRkZe4AWCo
+ 2ars3ap9lHnePO2EkhyetKltFnQW9pooPtjFRNf/kTyyEa6H0BIMCZimg5i/8KSC9Hs8
+ sPdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754917353; x=1755522153;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CB9Fp17VbM9IJuCixfnk/+GdwDgh1BERwJojw1nqQ3k=;
- b=oyFYaXwGBIqJL9K6BuUVeV2npOHDzi9QsRTrTjIzAUTSlmTp01yLk0iOyROqEx3RK7
- fbVovTa473M4N5LhsxA5Yi0WmjTrrCBHOy0zhsIEjd3HRgBbSKaWeeFpubNbJzEOnPUA
- t09aXmKxJ4kLFgi/vU80264F18MkXdwWmJO9nldlCjKASRaY1vtbsDOpylaEcs3sz8wJ
- ayWDtdckASwzw9Z8c007ix+ZXm82gCM/EFmeLCTRVYy29brHoGKCZK2GVVL+NjE2pVEb
- +M8EjjEJfPVC/HT+WRvND/nJQL5ePF7gnNv/58VNYMAUHIvAk1nBozyVh9Ed+AAp+smH
- t0/w==
-X-Gm-Message-State: AOJu0Yx6kt0l92CxvjMjZMBFLp38wpEK1c79PGozxKQfBp35YWhyHFrc
- mFb0eMBPZBjkedLFJB+4SFTGMOaZnYLqHOQIjBSXIg9/q/7OYh5h/uoxXzWUSxv4haEDHQpc6Er
- aF9OIu10OKSTnL+3fE7EWM6vcHlqOcwXLyGFd4ZZEcqhpNtvDYdKKXCbv
-X-Gm-Gg: ASbGncs4SIRjBvtJhzYmdY/bfnaLvThIqIWn+EN6r8FirkqGld5NdY71RoRe7ieifNi
- MkjR/Aqs9YdoE4jenVY2orvhKJ6+SHJESMOV10jg3hBUAbf5LuY7cvcHFlqeTfBnvBh4vRKBGnq
- Co+slpa87bX3r8eXB1yluSKE+qNUoHgd4TEP9JeDg4XiMBcqMluCOBA8dyluT/zSEFCxKLZd3tX
- WeZqUP3UGQ/EmFGK9W8ekXvTgzT3GqvkhjwUVn24GAec+guHNaaiLIz4J7T/roDgNwf06EDwf8Q
- EcapwlQEGvv02PbfOEPCRrs4pXHVX204Bvnohd70Q7maj5sedtd5WmRfgQ==
-X-Received: by 2002:a05:6214:2aaf:b0:707:49ae:cd47 with SMTP id
- 6a1803df08f44-7099a332e69mr145704016d6.30.1754917353102; 
- Mon, 11 Aug 2025 06:02:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+HfdEVOQDC0UUmsSxtSHy/VQitGHz+Oupya0T4OcCtbqCt3iK1XyZNfwb/Y/RMndsblkXVw==
-X-Received: by 2002:a05:6214:2aaf:b0:707:49ae:cd47 with SMTP id
- 6a1803df08f44-7099a332e69mr145703266d6.30.1754917352419; 
- Mon, 11 Aug 2025 06:02:32 -0700 (PDT)
-Received: from fedora (78-80-81-60.customers.tmcz.cz. [78.80.81.60])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-7094e245309sm116609696d6.1.2025.08.11.06.02.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Aug 2025 06:02:32 -0700 (PDT)
-Date: Mon, 11 Aug 2025 15:02:28 +0200
-From: Juraj Marcin <jmarcin@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Jiri Denemark <jdenemar@redhat.com>, 
- Stefan Weil <sw@weilnetz.de>, Paolo Bonzini <pbonzini@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [RFC PATCH 3/4] migration: Make listen thread joinable
-Message-ID: <4hfdomtaolsdjodyqbrvnoit4gpcizvbiv54psnk4sxuwp4zpu@t74oeypruhli>
-References: <20250807114922.1013286-1-jmarcin@redhat.com>
- <20250807114922.1013286-4-jmarcin@redhat.com>
- <aJUTO0n9NyIWaFNj@x1.local>
- <2svq64am2z4dr7q7x2jozlgzhiwluzi3je3f4acjylxqyzbxml@mnqscmlofjro>
- <aJYuWKjb8ij7NRx6@x1.local>
+ d=1e100.net; s=20230601; t=1754918039; x=1755522839;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1Vf6DemP29pm+5eGz56PNcfCPAyi0gzIgp3lFXVeRfc=;
+ b=jKwNapxALWRmSAARrQzsiUhGtZD/pNTzT04lH/VCf66I9YouGjQpUAdjnOnO5cThG5
+ JRB1GbUkvYJrNfZlYkVGI+NJ02RXr2ExPdefHZlbhsbmjyams6HCiqlQgKc+ZxtWLgFa
+ 7ezs27gGyO/B+SXGlo6gzKaLZd1POSjaIUVlB7VlPK7MtoKAE6/c8mbawIgUXLqJiQlN
+ cQpW4S6i33FGerzXa4HVXcCozzrEVkw44WnfFKhfkZA10uprQg0hh6jEj3H376o6zopE
+ 5m6touYLJgbEQRFo6EouSYafZjMIcNR6CaqMUNZJLgmmbHDL/x6VrTbk0UVHmfHp9+8F
+ Dc1g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVMIpVdsDWYRIyVogrbVpdVdHB0qtlBMgzXJtcHT1LoH8oAHNyUohMKJK8O+/KRUo42PB4C4qZOse9S@nongnu.org
+X-Gm-Message-State: AOJu0Yydd1yir3WgYTPkmFHxsaCJ5Yl5OLaQecnOJzmtt/RW2c8Bnxqj
+ sPCea9PTP5kNZq9WfQlb3cFwYmUAG5R9bPk81mKWVBBDKNPWS8tPeJxnFV30gNlv3ek=
+X-Gm-Gg: ASbGncugv8QCxu42Bi37v70FOv0j2wifM9wIyFOEThJE6nTDzJDk9cYtEodyTFY3Say
+ NhbKtlkYg5oKPTd4iJ01A0XebBP2uWtD4p4j3v4QNO31Qr5HtTcu2s/39K7ayT5qPKp30tDWXyW
+ Jg6p7WssRg0EfWoM9+5s42FcD5a6YfS+aLh9xmXjD/XF+iq53/XUEIW13DwZjxmWg6UJPnl0YJy
+ YOUTm9IsUOhaNiHxU7hOQ/Z5+2kEtt7nJivbH7/Dso18d3kw7gn2SIB+Ycf6v8HqBLHIihtXD1t
+ W9kmmJsCGG0m2bgUsnC1SdTG7SbTxhiHhvdHBoB66KTDnSQcSA/GY5yAAi6puSlOf3OcmW7fyej
+ vxX0t3PMcV1SJLffRDtHPeeo7fXi21UuUgeC35FdqrOkHm3xs0Y2WiE1TpkrITrnO+P4JKAg=
+X-Google-Smtp-Source: AGHT+IHtXlkJF52pKXyI4ynue+qvczxNrS82n04iCAA6R4HiYeMOKqtRF0NXzoVqtZ/71Ou288UyXg==
+X-Received: by 2002:a05:600c:1f89:b0:458:bade:72c5 with SMTP id
+ 5b1f17b1804b1-459f51c662emr132435815e9.8.1754918038728; 
+ Mon, 11 Aug 2025 06:13:58 -0700 (PDT)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-459e586eef8sm251813365e9.21.2025.08.11.06.13.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Aug 2025 06:13:58 -0700 (PDT)
+Message-ID: <7de5cc4e-474c-4e42-ae60-70d1fafa837f@linaro.org>
+Date: Mon, 11 Aug 2025 15:13:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJYuWKjb8ij7NRx6@x1.local>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 05/13] hw/arm, target/arm: nested virtualisation on HVF
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Igor Mammedov <imammedo@redhat.com>, Phil Dennis-Jordan
+ <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
+ Mads Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>
+References: <20250808070137.48716-1-mohamed@unpredictable.fr>
+ <20250808070137.48716-6-mohamed@unpredictable.fr>
+ <caeafe09-4c2c-48bf-9f46-f6e739931b26@linaro.org>
+Content-Language: en-US
+In-Reply-To: <caeafe09-4c2c-48bf-9f46-f6e739931b26@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,93 +107,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter
+On 11/8/25 14:56, Philippe Mathieu-Daudé wrote:
+> On 8/8/25 09:01, Mohamed Mediouni wrote:
+>> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+>> ---
+>>   hw/arm/virt.c         |  9 ++++++---
+>>   target/arm/hvf-stub.c | 15 +++++++++++++++
+>>   target/arm/hvf/hvf.c  | 41 +++++++++++++++++++++++++++++++++++++++--
+>>   target/arm/hvf_arm.h  |  3 +++
+>>   4 files changed, 63 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+>> index 59e6c2b9df..91d8cd9363 100644
+>> --- a/hw/arm/virt.c
+>> +++ b/hw/arm/virt.c
+>> @@ -817,8 +817,7 @@ static void create_gic(VirtMachineState *vms, 
+>> MemoryRegion *mem)
+>>           g_assert_not_reached();
+>>       }
+>> -    if (kvm_enabled() && vms->virt &&
+>> -        (revision != 3 || !kvm_irqchip_in_kernel())) {
+>> +    if (kvm_enabled() && vms->virt && (revision != 3 || ! 
+>> kvm_irqchip_in_kernel())) {
+>>           error_report("KVM EL2 is only supported with in-kernel GICv3");
+>>           exit(1);
+>>       }
+>> @@ -2281,7 +2280,8 @@ static void machvirt_init(MachineState *machine)
+>>           exit(1);
+>>       }
+>> -    if (vms->virt && !kvm_enabled() && !tcg_enabled() && ! 
+>> qtest_enabled()) {
+>> +    if (vms->virt && !kvm_enabled() && !tcg_enabled()
+>> +       && !hvf_enabled() && !qtest_enabled()) {
+>>           error_report("mach-virt: %s does not support providing "
+>>                        "Virtualization extensions to the guest CPU",
+>>                        current_accel_name());
+>> @@ -2553,6 +2553,9 @@ static void virt_set_virt(Object *obj, bool 
+>> value, Error **errp)
+>>       VirtMachineState *vms = VIRT_MACHINE(obj);
+>>       vms->virt = value;
+>> +#if defined(CONFIG_HVF) && defined(__aarch64__)
+>> +    hvf_arm_el2_enable(value);
+>> +#endif
+>>   }
 
-On 2025-08-08 13:05, Peter Xu wrote:
-> On Fri, Aug 08, 2025 at 01:08:39PM +0200, Juraj Marcin wrote:
-> > Hi Peter,
-> > 
-> > On 2025-08-07 16:57, Peter Xu wrote:
-> > > On Thu, Aug 07, 2025 at 01:49:11PM +0200, Juraj Marcin wrote:
-> > > > From: Juraj Marcin <jmarcin@redhat.com>
-> > > > 
-> > > > This patch allows joining the migration listen thread. This is done in
-> > > > preparation for the introduction of "postcopy-setup" state at the
-> > > > beginning of a postcopy migration, when destination can fail gracefully
-> > > > and source side then resume to a running state.
-> > > > 
-> > > > In case of such failure, to gracefully perform all cleanup in the main
-> > > > migration thread, we need to wait for the listen thread to exit, which
-> > > > can be done by joining it.
-> > > > 
-> > > > Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
-> > > > ---
-> > > >  migration/migration.c | 1 +
-> > > >  migration/savevm.c    | 2 +-
-> > > >  2 files changed, 2 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/migration/migration.c b/migration/migration.c
-> > > > index e5ce2940d5..8174e811eb 100644
-> > > > --- a/migration/migration.c
-> > > > +++ b/migration/migration.c
-> > > > @@ -901,6 +901,7 @@ process_incoming_migration_co(void *opaque)
-> > > >               * Postcopy was started, cleanup should happen at the end of the
-> > > >               * postcopy thread.
-> > > >               */
-> > > > +            qemu_thread_detach(&mis->listen_thread);
-> > > >              trace_process_incoming_migration_co_postcopy_end_main();
-> > > >              goto out;
-> > > >          }
-> > > > diff --git a/migration/savevm.c b/migration/savevm.c
-> > > > index fabbeb296a..d2360be53c 100644
-> > > > --- a/migration/savevm.c
-> > > > +++ b/migration/savevm.c
-> > > > @@ -2217,7 +2217,7 @@ static int loadvm_postcopy_handle_listen(MigrationIncomingState *mis)
-> > > >      mis->have_listen_thread = true;
-> > > >      postcopy_thread_create(mis, &mis->listen_thread,
-> > > >                             MIGRATION_THREAD_DST_LISTEN,
-> > > > -                           postcopy_ram_listen_thread, QEMU_THREAD_DETACHED);
-> > > > +                           postcopy_ram_listen_thread, QEMU_THREAD_JOINABLE);
-> > > 
-> > > This is good; I actually forgot it used to be detached..
-> > > 
-> > > Instead of proactively detach it above, could we always properly join it
-> > 
-> > However, after the main thread finishes loading device state from the
-> > package, process_incoming_migration_co() exits, and IIUC main thread is
-> > then no longer occupied with migration. So, if we should instead join
-> > the listen thread, we probably should yield the coroutine until the
-> > listen thread can be joined, so we are not blocking the main thread?
-> 
-> Or could we schedule a bottom half at the end of
-> postcopy_ram_listen_thread() to join itself?  We could move something over
-> into the BH:
-> 
->     ... join() ...
->     mis->have_listen_thread = false;
->     migration_incoming_state_destroy();
->     object_unref(OBJECT(migr));
+> We don't have hvf_arm_el1_enable(). I think we just want to always
+> provide the most performant configuration to users.
+> IOW, we don't need hvf_arm_el2_enable(). I'd just always enable EL2
+> (if supported) in hvf_arm_get_host_cpu_features().
 
-That sounds like a good idea, I will certainly try that, thank you.
-
-Best regards,
-
-Juraj Marcin
-
-> 
-> > 
-> > > (and hopefully every migration thread)?  Then we could drop patch 1 too.
-> > 
-> > If I haven't missed any, there are no detached migration threads except
-> > listen and get dirty rate threads.
-> 
-> Yep.
-> 
-> From mgmt pov, IMHO it's always good we create joinable threads.  But we
-> can leave the calc_dirty_rate thread until necessary.
-> 
-> -- 
-> Peter Xu
-> 
-
+We create vCPUs in machvirt_init(). Upon vCPU INITialization, we check
+host features. Then during REALIZation, we check the QOM properties.
+If 'virt' flag is disabled, machvirt_init() sets "has_el2" property
+to false, effectively setting ARMCPU::has_el2 field to %false.
+In arm_cpu_realizefn(), if ARMCPU::has_el2 we unset ARM_FEATURE_EL2.
 
