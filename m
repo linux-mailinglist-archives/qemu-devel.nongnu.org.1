@@ -2,87 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B07B1FDEC
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 04:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 364F0B1FE31
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 05:37:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulIGL-0001L4-NV; Sun, 10 Aug 2025 22:27:49 -0400
+	id 1ulJJI-000501-3n; Sun, 10 Aug 2025 23:34:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1ulIGD-0001ID-QL
- for qemu-devel@nongnu.org; Sun, 10 Aug 2025 22:27:42 -0400
-Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1ulIGA-0003Xa-Sr
- for qemu-devel@nongnu.org; Sun, 10 Aug 2025 22:27:41 -0400
-Received: by mail-oa1-x2f.google.com with SMTP id
- 586e51a60fabf-30c15376c70so1990817fac.3
- for <qemu-devel@nongnu.org>; Sun, 10 Aug 2025 19:27:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1754879256; x=1755484056;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=4FFtL5AqjBg5FDx4SBRCYPPGuC8tABM8XJeZksZ+9Og=;
- b=LTYvfi7g+CBVNTIFHSsrBwXuxBgcMSn29Dhf5uDKZiUST/SacegUlgcccoAm0XxbpA
- qq8MqLOuHnS7/iwsMVXahaWgxty/PQSRXW3gj3Ah4C4gEUNNrGtoZlfRlsFnC4LywZz/
- of/4ISL1qpJJI7prwTSTMVnmAFsClb34fnIFgpcRFwlOkv0pKYs4JZkJd70A5G6r7ZKJ
- q3CeJljqZ6chcUbAQj/MSvvZcZLKhY+MIBk3MCfD3wZap3b2wgXelpstw3Td2HHRibYr
- 9PEfujYVn2rKivKy2XS4M2rmvtkVg6qdZg7gkYCvltt+rvz6ko5OwmOPwYTgSvpxTjiE
- LKZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754879256; x=1755484056;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4FFtL5AqjBg5FDx4SBRCYPPGuC8tABM8XJeZksZ+9Og=;
- b=MaYnKgibn2VMXhqoaTan87hU7CrKW+933INXTb5Ocz7z5yC52isQ+R24tUve0Eeqfy
- 1Hx3HWRDls6l0Zh+QdJ4CP5x6Bn3VTLDXSVX31w/08xklvQ0JOjhNb2JKC1kql+xQEkq
- XBzOFC0GJMttJ7oObGe9wSkWgguvD4Qd47hQLgc37M6OGy9MHSM74ztpNV75Wr3EtM2G
- kck6zRYPiJZviK0LCD8T0czemGIwknjUPMU3iGQQ1D6Ty73676kgYE4yBATndgXPauRw
- LndgQUdOAioVeclxL7T5QOMtvK84hN1va0kbJxdHJ9hWw8tbxbBP9uBRXyrT2+wqyAwR
- x8dg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWt0dvxas8uxXI1aNB5PijBCQjbLqgKkrbi/D8iyevnA2JuTzTllaTqBIrX1EoLYXAeuo7tHbwvfAW6@nongnu.org
-X-Gm-Message-State: AOJu0YxNZDzS3h63v5+/BiQfjYMvcRdncLz9BmDe2muwW6J6hrI4OtVn
- FUDFxg2YTr9u7gczCSY66Zid6AqsRHi0P7hdb22l9XU/Bd2mHek+WLqEmSYwme/wE88qfbRVFa/
- e9H75KQEKkZsj4bC1ANnjLFS4f+hTKU0nBf38dGq96A==
-X-Gm-Gg: ASbGncuX3eQ/HAZMdR2uahyEk/5Tn3ddZQm+4aPzl2Hue39XHA/ihIf3iIBbDZkVtCW
- Eo3HdpHqJzTZAiIq8yydoTVYzGTuA3n43i2kXkl4v0UvKzb/+y2XNKUyW8GiLhIW7MN6A9tQS34
- Zo4V22VoKZiU1PET3hW9tKKhAYolukS6H2nwsphMUNeDTpmFyLo1UUgammQbDlT+jLJQnF/poqJ
- xHQXHDDrwoIO5V2ENI=
-X-Google-Smtp-Source: AGHT+IEVSWYL6ZQ2fk6EjQtKtowYKoAhijGq71tNIMOqqvKMiDekPZVA5mda/sGO9kQE0hu3L/bw6eowik81bS6NJLE=
-X-Received: by 2002:a05:6870:a11e:b0:30b:b393:802e with SMTP id
- 586e51a60fabf-30c20f2d947mr7070632fac.16.1754879255918; Sun, 10 Aug 2025
- 19:27:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1ulJJ3-0004xO-5U
+ for qemu-devel@nongnu.org; Sun, 10 Aug 2025 23:34:42 -0400
+Received: from iguana.tulip.relay.mailchannels.net ([23.83.218.253])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1ulJIw-00049i-Ex
+ for qemu-devel@nongnu.org; Sun, 10 Aug 2025 23:34:40 -0400
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id 0EBBC2C58B5;
+ Mon, 11 Aug 2025 03:34:27 +0000 (UTC)
+Received: from pdx1-sub0-mail-a236.dreamhost.com
+ (100-96-42-182.trex-nlb.outbound.svc.cluster.local [100.96.42.182])
+ (Authenticated sender: dreamhost)
+ by relay.mailchannels.net (Postfix) with ESMTPA id 9E8042C5C57;
+ Mon, 11 Aug 2025 03:34:26 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1754883266; a=rsa-sha256;
+ cv=none;
+ b=0lL7Vboa99amW95g81C6FP2Ai04Sl4CDd4bF7mGtVY92Gy4vK/j/t0hvL0rRlyYUp57UCI
+ 9boYTiE/STN/a69HYFWd2h77QMUbiIOReqloaqsaw3XYz5Rr/M/kbnhRGJ5wXx2/Tcvu4V
+ JvZFHeK0JSMDUPod8IdnM277a58/FRe2aTcGaLcp4Sy2I6iCjNCnZBChzUIchdrZwikTNN
+ Z0X0T7mUuQNg+6Em3GWfce02Gp6BGpEglcmWjmPeF13amL6grd/lPkoO/W6QbwU0K3nc1H
+ vUQYkycOESQklyvtFSoAqwuC1fpd0deSDPDDCaqEqotNqmadDo+kev81DEhmpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net; s=arc-2022; t=1754883266;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:dkim-signature;
+ bh=0XWSHvmyXiq4ud4xYsKRJPgbRJy5sP9HaxHzqSo7Tso=;
+ b=1ofwbbyu1Q2p/nZ3XHub3WN95edmUmo+jTjNGxw3Gl78kt21+ir++BFKsxwRviCNocKKPI
+ eVF6pL9hFQx53Z1e/2VpzDWcta6zNXG/k6uZPGmmM80+Ly/HbtWBVw+skmwop7qMPrd0yP
+ vgoQqDY8AN6Y/nO1/EAGOgpBnbj141wW2OA+buTplh/6p6auIF1h1RkWERT2yvA6C82X5j
+ fx5FqcW9pDdlsqWq9K6mJ8/+8o9gUHTpqfgmcaGSzzSPArrJRCJZrBLWhjCzHDFvqm7IyQ
+ awfoyV6MVSuV2qyUwQuPO/gQVF9R1hAbqxVUWaNkZzmmbEIndknW4D89pZA6PA==
+ARC-Authentication-Results: i=1; rspamd-64567b6586-knbzh;
+ auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Army-Society: 309e33e878c7f21b_1754883266901_1252089449
+X-MC-Loop-Signature: 1754883266901:355089586
+X-MC-Ingress-Time: 1754883266901
+Received: from pdx1-sub0-mail-a236.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.96.42.182 (trex/7.1.3); Mon, 11 Aug 2025 03:34:26 +0000
+Received: from offworld.lan (syn-076-167-199-067.res.spectrum.com
+ [76.167.199.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ (Authenticated sender: dave@stgolabs.net)
+ by pdx1-sub0-mail-a236.dreamhost.com (Postfix) with ESMTPSA id 4c0gH60fn8z6f; 
+ Sun, 10 Aug 2025 20:34:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+ s=dreamhost; t=1754883266;
+ bh=0XWSHvmyXiq4ud4xYsKRJPgbRJy5sP9HaxHzqSo7Tso=;
+ h=From:To:Cc:Subject:Date:Content-Transfer-Encoding;
+ b=Nz53jo4cqCsnVpYGkqflP7yiONm5gD1U0weIW/NAgqfLdTX/6DTRb+5uzlPwXEpxp
+ PdHGj9CDWnLBXwmFEsJQ7BcrDU7QN2HM93g6Rlak5yyoIo11eGVzMWzVtE/Z0v+kUf
+ Xt6Ofvr+/sO27wphzdg82EWG5MKxE5z7AhRcUadnujnd2LC4PnVwU5C+bLcpa+J+4j
+ cmxlJViEDMz5Di/iNCBgjnG/GDLs4pDSSHfkIXAFTtNVDdj4p/VhTgvMtib1ouWHOW
+ r1pqutERAvZJxTyY4bnUezgv3ZQ9iZ3Mcv6gUwxI0U9dYx0AzU7j4nQKnwJFEdeOlW
+ 1PHphUud8vBlg==
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: jonathan.cameron@huawei.com
+Cc: ira.weiny@intel.com, alucerop@amd.com, a.manzanares@samsung.com,
+ linux-cxl@vger.kernel.org, qemu-devel@nongnu.org,
+ Davidlohr Bueso <dave@stgolabs.net>
+Subject: [PATCH v2 -qemu 0/4] hw/cxl: Support Back-Invalidate
+Date: Sun, 10 Aug 2025 20:34:01 -0700
+Message-Id: <20250811033405.332295-1-dave@stgolabs.net>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <5512220e1005ae2bc7357b2def32639d164e84eb.1754534263.git.yong.huang@smartx.com>
- <20250807113639.66d1c5bf@penguin>
- <CAK9dgmZb=5uEwVq65Ygcza0+qtng+-5zmtQRdviX2npg_qhJRQ@mail.gmail.com>
- <20250808090054.13cb8342@penguin>
- <CAK9dgmbybw+WkC2C_qdZnwSYjGn3Q2Du4yjLOz+EmCx1po8YPg@mail.gmail.com>
- <87o6sp2a0i.fsf@suse.de>
-In-Reply-To: <87o6sp2a0i.fsf@suse.de>
-From: Yong Huang <yong.huang@smartx.com>
-Date: Mon, 11 Aug 2025 10:27:17 +0800
-X-Gm-Features: Ac12FXynZbnHX_mKMs3oNG6Y1PiNghS3E3YUewm24KPBFB0IlISeHV2BfHAkres
-Message-ID: <CAK9dgmZ6r8x8g_JBurmVW95-PVGNgyecvJjb_4L_JzpysvQStQ@mail.gmail.com>
-Subject: Re: [PATCH] multifd: Make the main thread yield periodically to the
- main loop
-To: Fabiano Rosas <farosas@suse.de>
-Cc: Lukas Straub <lukasstraub2@web.de>, qemu-devel@nongnu.org, 
- Peter Xu <peterx@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000ac4d02063c0daa09"
-Received-SPF: pass client-ip=2001:4860:4864:20::2f;
- envelope-from=yong.huang@smartx.com; helo=mail-oa1-x2f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=23.83.218.253; envelope-from=dave@stgolabs.net;
+ helo=iguana.tulip.relay.mailchannels.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,410 +109,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000ac4d02063c0daa09
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The following allows support for component basic back invalidation discovery
+and config, by exposing the BI routing table and decoder registers. Instead
+of going the type2[0] route, this series proposes adding support for type3
+hdm-db, which allows a more direct way of supporting BI in qemu.
 
-On Fri, Aug 8, 2025 at 9:55=E2=80=AFPM Fabiano Rosas <farosas@suse.de> wrot=
-e:
+Changes from v1 (https://lore.kernel.org/qemu-devel/20250806055708.196851-1-dave@stgolabs.net/):
+  o Further lnk training in patch 1. (Jonathan)
+  o Flit parameter changed to bool in patch 1. (Jonathan)
+  o Do not set 68B in component Flexbus Port when in flitmode in patch 1.
+  o Doc build fixlet in patch 3.
+  o Pass the exact type3 type in cxl_component_create_dvsec() - unused, but better
+    for keeping track, in patch 4.
+  o Change doc example to volatile device in patch 4.
 
-> Yong Huang <yong.huang@smartx.com> writes:
->
-> > On Fri, Aug 8, 2025 at 3:02=E2=80=AFPM Lukas Straub <lukasstraub2@web.d=
-e> wrote:
-> >
-> >> On Fri, 8 Aug 2025 10:36:24 +0800
-> >> Yong Huang <yong.huang@smartx.com> wrote:
-> >>
-> >> > On Thu, Aug 7, 2025 at 5:36=E2=80=AFPM Lukas Straub <lukasstraub2@we=
-b.de>
-> wrote:
-> >> >
-> >> > > On Thu,  7 Aug 2025 10:41:17 +0800
-> >> > > yong.huang@smartx.com wrote:
-> >> > >
-> >> > > > From: Hyman Huang <yong.huang@smartx.com>
-> >> > > >
-> >> > > > When there are network issues like missing TCP ACKs on the send
-> >> > > > side during the multifd live migration. At the send side, the
-> error
-> >> > > > "Connection timed out" is thrown out and source QEMU process sto=
-p
-> >> > > > sending data, at the receive side, The IO-channels may be blocke=
-d
-> >> > > > at recvmsg() and thus the main loop gets stuck and fails to
-> respond
-> >> > > > to QMP commands consequently.
-> >> > > > ...
-> >> > >
-> >> > > Hi Hyman Huang,
-> >> > >
-> >> > > Have you tried the 'yank' command to shutdown the sockets? It
-> exactly
-> >> > > meant to recover from hangs and should solve your issue.
-> >> > >
-> >> > >
-> >> https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html#yank-featur=
-e
-> >> >
-> >> >
-> >> > Thanks for the comment and advice.
-> >> >
-> >> > Let me give more details about the migration state when the issue
-> >> happens:
-> >> >
-> >> > On the source side, libvirt has already aborted the migration job:
-> >> >
-> >> > $ virsh domjobinfo fdecd242-f278-4308-8c3b-46e144e55f63
-> >> > Job type:         Failed
-> >> > Operation:        Outgoing migration
-> >> >
-> >> > QMP query-yank shows that there is no migration yank instance:
-> >> >
-> >> > $ virsh qemu-monitor-command fdecd242-f278-4308-8c3b-46e144e55f63
-> >> > '{"execute":"query-yank"}' --pretty
-> >> > {
-> >> >   "return": [
-> >> >     {
-> >> >       "type": "chardev",
-> >> >       "id": "charmonitor"
-> >> >     },
-> >> >     {
-> >> >       "type": "chardev",
-> >> >       "id": "charchannel0"
-> >> >     },
-> >> >     {
-> >> >       "type": "chardev",
-> >> >       "id": "libvirt-2-virtio-format"
-> >> >     }
-> >> >   ],
-> >> >   "id": "libvirt-5217"
-> >> > }
-> >>
-> >> You are supposed to run it on the destination side, there the migratio=
-n
-> >> yank instance should be present if qemu hangs in the migration code.
-> >>
-> >> Also, you need to execute it as an out-of-band command to bypass the
-> >> main loop. Like this:
-> >>
-> >> '{"exec-oob": "yank", "id": "yank0", "arguments": {"instances": [
-> {"type":
-> >> "migration"} ] } }'
-> >
-> > In our case, Libvirt's operation about the VM on the destination side h=
-as
-> > been blocked
-> > by Migration JOB:
-> >
-> > $ virsh qemu-monitor-command fdecd242-f278-4308-8c3b-46e144e55f63
-> > '{"query-commands"}' --pretty
-> > error: Timed out during operation: cannot acquire state change lock (he=
-ld
-> > by monitor=3DremoteDispatchDomainMigratePrepare3Params)
-> > Using Libvirt to issue the yank command can not be taken into account.
-> >
-> >
-> >>
-> >>
-> >> I'm not sure if libvirt can do that, maybe you need to add an
-> >> additional qmp socket and do it outside of libvirt. Note that you need
-> >> to enable the oob feature during qmp negotiation, like this:
-> >>
-> >> '{ "execute": "qmp_capabilities", "arguments": { "enable": [ "oob" ] }
-> }'
-> >
-> >
-> > No, I checked Libvirt's source code and figured out that when the QEMU
-> > monitor is initialized, Libvirt by default disables the OOB.
-> >
-> > Therefore, perhaps we can first enable the OOB and add the yank
-> capability
-> > to Libvirt then adding the yank logic to the necessary path=E2=80=94in =
-our
-> > instance, the migration code:
-> >
-> > qemuMigrationDstFinish=EF=BC=9A
-> >     if (retcode !=3D 0) {
-> >         /* Check for a possible error on the monitor in case Finish was
-> called
-> >          * earlier than monitor EOF handler got a chance to process the
-> error
-> >          */
-> >         qemuDomainCheckMonitor(driver, vm, QEMU_ASYNC_JOB_MIGRATION_IN)=
-;
-> >         goto endjob;
-> >     }
-> >
-> >
-> >
-> >>
-> >> Regards,
-> >> Lukas Straub
-> >>
-> >> >
-> >> > The libvirt migration job is stuck as the following backtrace shows;
-> it
-> >> > shows that migration is waiting for the "Finish" RPC on the
-> destination
-> >> > side to return.
-> >> >
-> >> > ...
-> >> >
-> >> > IMHO, the key reason for the issue is that QEMU fails to run the mai=
-n
-> >> loop
-> >> > and fails to respond to QMP, which is not what we usually expected.
-> >> >
-> >> > Giving the Libvirt a window of time to issue a QMP and kill the VM i=
-s
-> the
-> >> > ideal solution for this issue; this provides an automatic method.
-> >> >
-> >> > I do not dig the yank feature, perhaps it is helpful, but only
-> manually?
-> >> >
-> >> > After all, these two options are not exclusive of one another,  I
-> think.
-> >> >
->
-> Please work with Lukas to figure out whether yank can be used here. I
-> think that's the correct approach. If the main loop is blocked, then
-> some out-of-band cancellation routine is needed. migrate_cancel() could
-> be it, but at the moment it's not. Yank is the second best thing.
+Changes from rfc (https://lore.kernel.org/qemu-devel/20250729165441.1898150-1-dave@stgolabs.net/):
+  o Added 256b-flit parameter, per Jonathan.
+  o Added window restrictions changes.
+  o Dropped rfc tag.
 
+Patch 1 introduces the flit mode parameter.
+Patch 2 is lifted from Ira's series with some small (but non-trivial) changes.
+Patch 3 updates the cfmw restrictions option.
+Patch 4 adds BI decoder/rt register support to enable type3 HDM-DB.
 
-Ok, get it.
+Testing wise, this has passed relevant kernel side BI register IO flows for
+BI-ID setup and deallocation.
 
+The next step for this would be to add UIO support to qemu.
 
->
->
-> The need for a timeout is usually indicative of a design issue. In this
-> case, the choice of a coroutine for the incoming side is the obvious
-> one. Peter will tell you all about it! =3D)
->
+Applies against branch 'origin/cxl-2025-07-03' from Jonathan's repository.
 
+Thanks!
 
---=20
-Best regards
+Davidlohr Bueso (3):
+  hw/pcie: Support enabling flit mode
+  hw/cxl: Allow BI by default in Window restrictions
+  hw/cxl: Support type3 HDM-DB
 
---000000000000ac4d02063c0daa09
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Ira Weiny (1):
+  hw/cxl: Refactor component register initialization
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
-t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
-ss=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_at=
-tr">On Fri, Aug 8, 2025 at 9:55=E2=80=AFPM Fabiano Rosas &lt;<a href=3D"mai=
-lto:farosas@suse.de">farosas@suse.de</a>&gt; wrote:<br></div><blockquote cl=
-ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px=
-;border-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1e=
-x">Yong Huang &lt;<a href=3D"mailto:yong.huang@smartx.com" target=3D"_blank=
-">yong.huang@smartx.com</a>&gt; writes:<br>
-<br>
-&gt; On Fri, Aug 8, 2025 at 3:02=E2=80=AFPM Lukas Straub &lt;<a href=3D"mai=
-lto:lukasstraub2@web.de" target=3D"_blank">lukasstraub2@web.de</a>&gt; wrot=
-e:<br>
-&gt;<br>
-&gt;&gt; On Fri, 8 Aug 2025 10:36:24 +0800<br>
-&gt;&gt; Yong Huang &lt;<a href=3D"mailto:yong.huang@smartx.com" target=3D"=
-_blank">yong.huang@smartx.com</a>&gt; wrote:<br>
-&gt;&gt;<br>
-&gt;&gt; &gt; On Thu, Aug 7, 2025 at 5:36=E2=80=AFPM Lukas Straub &lt;<a hr=
-ef=3D"mailto:lukasstraub2@web.de" target=3D"_blank">lukasstraub2@web.de</a>=
-&gt; wrote:<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; &gt; On Thu,=C2=A0 7 Aug 2025 10:41:17 +0800<br>
-&gt;&gt; &gt; &gt; <a href=3D"mailto:yong.huang@smartx.com" target=3D"_blan=
-k">yong.huang@smartx.com</a> wrote:<br>
-&gt;&gt; &gt; &gt;<br>
-&gt;&gt; &gt; &gt; &gt; From: Hyman Huang &lt;<a href=3D"mailto:yong.huang@=
-smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
-&gt;&gt; &gt; &gt; &gt;<br>
-&gt;&gt; &gt; &gt; &gt; When there are network issues like missing TCP ACKs=
- on the send<br>
-&gt;&gt; &gt; &gt; &gt; side during the multifd live migration. At the send=
- side, the error<br>
-&gt;&gt; &gt; &gt; &gt; &quot;Connection timed out&quot; is thrown out and =
-source QEMU process stop<br>
-&gt;&gt; &gt; &gt; &gt; sending data, at the receive side, The IO-channels =
-may be blocked<br>
-&gt;&gt; &gt; &gt; &gt; at recvmsg() and thus the main loop gets stuck and =
-fails to respond<br>
-&gt;&gt; &gt; &gt; &gt; to QMP commands consequently.<br>
-&gt;&gt; &gt; &gt; &gt; ...<br>
-&gt;&gt; &gt; &gt;<br>
-&gt;&gt; &gt; &gt; Hi Hyman Huang,<br>
-&gt;&gt; &gt; &gt;<br>
-&gt;&gt; &gt; &gt; Have you tried the &#39;yank&#39; command to shutdown th=
-e sockets? It exactly<br>
-&gt;&gt; &gt; &gt; meant to recover from hangs and should solve your issue.=
-<br>
-&gt;&gt; &gt; &gt;<br>
-&gt;&gt; &gt; &gt;<br>
-&gt;&gt; <a href=3D"https://www.qemu.org/docs/master/interop/qemu-qmp-ref.h=
-tml#yank-feature" rel=3D"noreferrer" target=3D"_blank">https://www.qemu.org=
-/docs/master/interop/qemu-qmp-ref.html#yank-feature</a><br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; Thanks for the comment and advice.<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; Let me give more details about the migration state when the i=
-ssue<br>
-&gt;&gt; happens:<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; On the source side, libvirt has already aborted the migration=
- job:<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; $ virsh domjobinfo fdecd242-f278-4308-8c3b-46e144e55f63<br>
-&gt;&gt; &gt; Job type:=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Failed<br>
-&gt;&gt; &gt; Operation:=C2=A0 =C2=A0 =C2=A0 =C2=A0 Outgoing migration<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; QMP query-yank shows that there is no migration yank instance=
-:<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; $ virsh qemu-monitor-command fdecd242-f278-4308-8c3b-46e144e5=
-5f63<br>
-&gt;&gt; &gt; &#39;{&quot;execute&quot;:&quot;query-yank&quot;}&#39; --pret=
-ty<br>
-&gt;&gt; &gt; {<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0&quot;return&quot;: [<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0{<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;type&quot;: &quot;chardev&quo=
-t;,<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;id&quot;: &quot;charmonitor&q=
-uot;<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0},<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0{<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;type&quot;: &quot;chardev&quo=
-t;,<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;id&quot;: &quot;charchannel0&=
-quot;<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0},<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0{<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;type&quot;: &quot;chardev&quo=
-t;,<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;id&quot;: &quot;libvirt-2-vir=
-tio-format&quot;<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0}<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0],<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0&quot;id&quot;: &quot;libvirt-5217&quot;<br>
-&gt;&gt; &gt; }<br>
-&gt;&gt;<br>
-&gt;&gt; You are supposed to run it on the destination side, there the migr=
-ation<br>
-&gt;&gt; yank instance should be present if qemu hangs in the migration cod=
-e.<br>
-&gt;&gt;<br>
-&gt;&gt; Also, you need to execute it as an out-of-band command to bypass t=
-he<br>
-&gt;&gt; main loop. Like this:<br>
-&gt;&gt;<br>
-&gt;&gt; &#39;{&quot;exec-oob&quot;: &quot;yank&quot;, &quot;id&quot;: &quo=
-t;yank0&quot;, &quot;arguments&quot;: {&quot;instances&quot;: [ {&quot;type=
-&quot;:<br>
-&gt;&gt; &quot;migration&quot;} ] } }&#39;<br>
-&gt;<br>
-&gt; In our case, Libvirt&#39;s operation about the VM on the destination s=
-ide has<br>
-&gt; been blocked<br>
-&gt; by Migration JOB:<br>
-&gt;<br>
-&gt; $ virsh qemu-monitor-command fdecd242-f278-4308-8c3b-46e144e55f63<br>
-&gt; &#39;{&quot;query-commands&quot;}&#39; --pretty<br>
-&gt; error: Timed out during operation: cannot acquire state change lock (h=
-eld<br>
-&gt; by monitor=3DremoteDispatchDomainMigratePrepare3Params)<br>
-&gt; Using Libvirt to issue the yank command can not be taken into account.=
-<br>
-&gt;<br>
-&gt;<br>
-&gt;&gt;<br>
-&gt;&gt;<br>
-&gt;&gt; I&#39;m not sure if libvirt can do that, maybe you need to add an<=
-br>
-&gt;&gt; additional qmp socket and do it outside of libvirt. Note that you =
-need<br>
-&gt;&gt; to enable the oob feature during qmp negotiation, like this:<br>
-&gt;&gt;<br>
-&gt;&gt; &#39;{ &quot;execute&quot;: &quot;qmp_capabilities&quot;, &quot;ar=
-guments&quot;: { &quot;enable&quot;: [ &quot;oob&quot; ] } }&#39;<br>
-&gt;<br>
-&gt;<br>
-&gt; No, I checked Libvirt&#39;s source code and figured out that when the =
-QEMU<br>
-&gt; monitor is initialized, Libvirt by default disables the OOB.<br>
-&gt;<br>
-&gt; Therefore, perhaps we can first enable the OOB and add the yank capabi=
-lity<br>
-&gt; to Libvirt then adding the yank logic to the necessary path=E2=80=94in=
- our<br>
-&gt; instance, the migration code:<br>
-&gt;<br>
-&gt; qemuMigrationDstFinish=EF=BC=9A<br>
-&gt;=C2=A0 =C2=A0 =C2=A0if (retcode !=3D 0) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Check for a possible error on the =
-monitor in case Finish was called<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * earlier than monitor EOF handler g=
-ot a chance to process the error<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qemuDomainCheckMonitor(driver, vm, QE=
-MU_ASYNC_JOB_MIGRATION_IN);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto endjob;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0}<br>
-&gt;<br>
-&gt;<br>
-&gt;<br>
-&gt;&gt;<br>
-&gt;&gt; Regards,<br>
-&gt;&gt; Lukas Straub<br>
-&gt;&gt;<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; The libvirt migration job is stuck as the following backtrace=
- shows; it<br>
-&gt;&gt; &gt; shows that migration is waiting for the &quot;Finish&quot; RP=
-C on the destination<br>
-&gt;&gt; &gt; side to return.<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; ...<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; IMHO, the key reason for the issue is that QEMU fails to run =
-the main<br>
-&gt;&gt; loop<br>
-&gt;&gt; &gt; and fails to respond to QMP, which is not what we usually exp=
-ected.<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; Giving the Libvirt a window of time to issue a QMP and kill t=
-he VM is the<br>
-&gt;&gt; &gt; ideal solution for this issue; this provides an automatic met=
-hod.<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; I do not dig the yank feature, perhaps it is helpful, but onl=
-y manually?<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; After all, these two options are not exclusive of one another=
-,=C2=A0 I think.<br>
-&gt;&gt; &gt;<br>
-<br>
-Please work with Lukas to figure out whether yank can be used here. I<br>
-think that&#39;s the correct approach. If the main loop is blocked, then<br=
->
-some out-of-band cancellation routine is needed. migrate_cancel() could<br>
-be it, but at the moment it&#39;s not. Yank is the second best thing.<span =
-class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans=
--serif"></span></blockquote><div><br></div><div><div style=3D"font-family:&=
-quot;comic sans ms&quot;,sans-serif" class=3D"gmail_default">Ok, get it.</d=
-iv></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin=
-:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:solid;border-lef=
-t-color:rgb(204,204,204);padding-left:1ex"><br>
-<br>
-The need for a timeout is usually indicative of a design issue. In this<br>
-case, the choice of a coroutine for the incoming side is the obvious<br>
-one. Peter will tell you all about it! =3D)<br>
-</blockquote></div><div><br clear=3D"all"></div><div><br></div><span class=
-=3D"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_s=
-ignature"><div dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best re=
-gards</font></div></div></div>
+ docs/system/devices/cxl.rst               |  23 +++
+ hw/cxl/cxl-component-utils.c              | 206 ++++++++++++++++------
+ hw/cxl/cxl-host.c                         |   2 +-
+ hw/mem/cxl_type3.c                        |  23 ++-
+ hw/pci-bridge/cxl_downstream.c            |  11 +-
+ hw/pci-bridge/cxl_root_port.c             |  11 +-
+ hw/pci-bridge/cxl_upstream.c              |  19 +-
+ hw/pci-bridge/gen_pcie_root_port.c        |   1 +
+ hw/pci/pcie.c                             |  23 ++-
+ include/hw/cxl/cxl_component.h            |  87 +++++++--
+ include/hw/cxl/cxl_device.h               |   4 +
+ include/hw/pci-bridge/cxl_upstream_port.h |   1 +
+ include/hw/pci/pcie.h                     |   2 +-
+ include/hw/pci/pcie_port.h                |   1 +
+ qapi/machine.json                         |   3 +-
+ qemu-options.hx                           |   4 +-
+ 16 files changed, 322 insertions(+), 99 deletions(-)
 
---000000000000ac4d02063c0daa09--
+-- 
+2.39.5
+
 
