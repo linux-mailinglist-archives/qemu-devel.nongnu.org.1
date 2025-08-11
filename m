@@ -2,89 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A4CB20A84
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 15:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F59B20A8A
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 15:41:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulSkh-0001ak-O9; Mon, 11 Aug 2025 09:39:53 -0400
+	id 1ulSlr-0002qS-D7; Mon, 11 Aug 2025 09:41:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1ulSkX-0001T2-H4
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:39:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ulSli-0002fu-QI
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:40:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1ulSkO-0006FK-M5
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:39:40 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ulSlZ-0006h4-Dw
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:40:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754919559;
+ s=mimecast20190719; t=1754919641;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FGcKu2tfTvYPWedmC8CfMG94S4hhkTz76fC8GghDQXg=;
- b=LltyeYkUb5WqChDHt/VVrjZd9Vp5lnIotwBAxuVz98abiki6Q/dwbYe5CbmeztpWv0lWiT
- JNNzCRZFTHbk0okOj/wMuLTGVHK4gr//deWuyY2f0WNAF5FqwLRSSGz3pUBsTrK0xj91rn
- wQJYjw8ka/ApvzwZtWMf6EHhJm5lDFw=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-154-tHA4AJ9_NkaO-rK3db5I7A-1; Mon, 11 Aug 2025 09:39:18 -0400
-X-MC-Unique: tHA4AJ9_NkaO-rK3db5I7A-1
-X-Mimecast-MFC-AGG-ID: tHA4AJ9_NkaO-rK3db5I7A_1754919557
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-71b6c56ca46so68831737b3.0
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 06:39:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754919557; x=1755524357;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FGcKu2tfTvYPWedmC8CfMG94S4hhkTz76fC8GghDQXg=;
- b=a5X3oRgudjek1lskO/o1G2CgX3Gi/efDQaRMuJy0maKREm2PB1jljWMUN1eBjGPrbP
- YjaM66ORnrb5K+GZ+gPeecQKUYrcugWXw6MZ7dhkMWu61wDVxcGqmAoTIhoKjjTf2ECS
- x07xRuwY82wOcEJCNSkloRLFAMM+uH5v1G2Z5Wm7SgWMxa/Z8OWY4d11O+jQUlDuwkt2
- CoCIplJqst/fPrss+BMu4wZdJsnsUVZPFsyIA4lCoH51A7HJHctb3y+q84dv8dnF+yCs
- 157UV28zlhxOY1zBwOIwb9aVaZPT+kuaKaxagMKA2ny3KaxDZqx4L533/DXWqM7cO9d6
- nGBg==
-X-Gm-Message-State: AOJu0YwiNvBnLnuhJLVUmdLs9VYd+gyKftt8tS5CxHaJ9DUJQhhRJaYv
- +R4k+GTcMse6H4EUHp3Y/oZMZIgctez3dWmIUEmbIKAsiBhun1/nEJMcywyTnw6Bhb/pcupSzMt
- Fsr4MmYW+xSm6DnVOBwE0bLETORsYwVH03d93GNcKZslhtYp7HhYNVbaD
-X-Gm-Gg: ASbGncugR+ZC98WE7WXujvb45kMqmQwNHwlcXMWWls6a6jiHbsimb3ehtmY5rI1E+LD
- mKjG7wDMHy8KZxz3Ps51m6cOch8VPZCx+/s49BsZUZak9Rw7h10sER7qQVmSCzZrsIjAeWMn0Um
- WilfxXMavVEbgxipJuSSDuk3k0b/r3660U8lIN7eZthZA1j53iND/Hhe2YobjIrQtA770RD2pKX
- BA1mJ/weSar0d7QbE58QE/p9dKfvdPwG5+8f0lTnHtyUgBbclyOlgMt6TIKd6FhjF7oZEcBR6Ql
- BnyY2Oh2qeYSxv1ZFo3bYMLfK4vz9wNh
-X-Received: by 2002:a05:690c:4a06:b0:71a:2d5f:49b4 with SMTP id
- 00721157ae682-71bf0e09bb1mr150156807b3.25.1754919557110; 
- Mon, 11 Aug 2025 06:39:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF76zzrLQto4tTuVCBUsIqGM5hkloZ0CRCmKQ33zZ6PVE47HEmAJyLnCVNCUZKS/ffcYZ3Qcg==
-X-Received: by 2002:a05:690c:4a06:b0:71a:2d5f:49b4 with SMTP id
- 00721157ae682-71bf0e09bb1mr150156447b3.25.1754919556658; 
- Mon, 11 Aug 2025 06:39:16 -0700 (PDT)
-Received: from x1.local ([174.89.135.171]) by smtp.gmail.com with ESMTPSA id
- 00721157ae682-71b5a3f9c3bsm69287147b3.33.2025.08.11.06.39.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Aug 2025 06:39:16 -0700 (PDT)
-Date: Mon, 11 Aug 2025 09:39:02 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Jonah Palmer <jonah.palmer@oracle.com>
-Cc: qemu-devel@nongnu.org, farosas@suse.de, eblake@redhat.com,
- armbru@redhat.com, jasowang@redhat.com, mst@redhat.com,
- si-wei.liu@oracle.com, eperezma@redhat.com, boris.ostrovsky@oracle.com
-Subject: Re: [RFC 5/6] virtio,virtio-net: skip consistency check in
- virtio_load for iterative migration
-Message-ID: <aJnydjxFzKwVzi7Y@x1.local>
-References: <20250722124127.2497406-1-jonah.palmer@oracle.com>
- <20250722124127.2497406-6-jonah.palmer@oracle.com>
- <aJOCiUPp0dckmgAn@x1.local>
- <5e276607-cd86-4a1d-99f3-47dd2f0f3bc0@oracle.com>
- <aJTU641465aGKWRU@x1.local>
- <0cf99747-443e-4a29-a0da-64012548a994@oracle.com>
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=8ifXcbcW3LahlNhz9WFHoplhn53S+cE/3EcIegOCnb4=;
+ b=P1aro1B0JbPstFDPVxnAkswDICnHo09DgQQqUqWEjiri8UaxKtsGgTtw/gDWDYLvsIwtuI
+ mMHwJy5wB+ficJ2TRtxKf/KnhLzDfVgyMmhmJhmknr1qRB14ssthbNPXLhop+bS1CvMZJx
+ y/sw7G9jLTa89zTJJMEigfBjM+dGLW4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-vyfeHHlrPVaAiwVugN1kMQ-1; Mon,
+ 11 Aug 2025 09:40:37 -0400
+X-MC-Unique: vyfeHHlrPVaAiwVugN1kMQ-1
+X-Mimecast-MFC-AGG-ID: vyfeHHlrPVaAiwVugN1kMQ_1754919635
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 057F21956058; Mon, 11 Aug 2025 13:40:35 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.44.33.151])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id CE2581955F16; Mon, 11 Aug 2025 13:40:31 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, idryomov@gmail.com, pl@dlhnet.de,
+ eblake@redhat.com, armbru@redhat.com, oro@il.ibm.com, qemu-devel@nongnu.org
+Subject: [PATCH] rbd: Fix .bdrv_get_specific_info implementation
+Date: Mon, 11 Aug 2025 15:40:10 +0200
+Message-ID: <20250811134010.81787-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <0cf99747-443e-4a29-a0da-64012548a994@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -93,7 +61,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,152 +77,259 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 11, 2025 at 08:30:19AM -0400, Jonah Palmer wrote:
-> 
-> 
-> On 8/7/25 12:31 PM, Peter Xu wrote:
-> > On Thu, Aug 07, 2025 at 10:18:38AM -0400, Jonah Palmer wrote:
-> > > 
-> > > 
-> > > On 8/6/25 12:27 PM, Peter Xu wrote:
-> > > > On Tue, Jul 22, 2025 at 12:41:26PM +0000, Jonah Palmer wrote:
-> > > > > Iterative live migration for virtio-net sends an initial
-> > > > > VMStateDescription while the source is still active. Because data
-> > > > > continues to flow for virtio-net, the guest's avail index continues to
-> > > > > increment after last_avail_idx had already been sent. This causes the
-> > > > > destination to often see something like this from virtio_error():
-> > > > > 
-> > > > > VQ 0 size 0x100 Guest index 0x0 inconsistent with Host index 0xc: delta 0xfff4
-> > > > 
-> > > > This is pretty much understanable, as vmstate_save() / vmstate_load() are,
-> > > > IMHO, not designed to be used while VM is running.
-> > > > 
-> > > > To me, it's still illegal (per previous patch) to use vmstate_save_state()
-> > > > while VM is running, in a save_setup() phase.
-> > > 
-> > > Yea I understand where you're coming from. It just seemed too good to pass
-> > > up on as a way to send and receive the entire state of a device.
-> > > 
-> > > I felt that if I were to implement something similar for iterative migration
-> > > only that I'd, more or less, be duplicating a lot of already existing code
-> > > or vmstate logic.
-> > > 
-> > > > 
-> > > > Some very high level questions from migration POV:
-> > > > 
-> > > > - Have we figured out why the downtime can be shrinked just by sending the
-> > > >     vmstate twice?
-> > > > 
-> > > >     If we suspect it's memory got preheated, have we tried other ways to
-> > > >     simply heat the memory up on dest side?  For example, some form of
-> > > >     mlock[all]()?  IMHO it's pretty important we figure out the root of why
-> > > >     such optimization came from.
-> > > > 
-> > > >     I do remember we have downtime issue with number of max_vqueues that may
-> > > >     cause post_load() to be slow, I wonder there're other ways to improve it
-> > > >     instead of vmstate_save(), especially in setup phase.
-> > > > 
-> > > 
-> > > Yea I believe that the downtime shrinks on the second vmstate_load_state due
-> > > to preheated memory. But I'd like to stress that it's not my intention to
-> > > resend the entire vmstate again during the stop-and-copy phase if iterative
-> > > migration was used. A future iteration of this series will eventually
-> > > include a more efficient approach to update the destination with any deltas
-> > > since the vmstate was sent during the iterative portion (instead of just
-> > > resending the entire vmstate again).
-> > > 
-> > > And yea there is an inefficiency regarding walking through VIRTIO_QUEUE_MAX
-> > > (1024) VQs (twice with PCI) that I mentioned here in another comment: https://urldefense.com/v3/__https://lore.kernel.org/qemu-devel/0f5b804d-3852-4159-b151-308a57f1ec74@oracle.com/__;!!ACWV5N9M2RV99hQ!Oyhh-o4V5gzcWsbmSxAkonhYn3xcLBF50-h-a9-D5MiKgbiHvkaAqdu1VZP5SVmuCk5GQu-sjFhL0IUC$
-> > > 
-> > > This might be better handled in a separate series though rather than as part
-> > > of this one.
-> > 
-> > One thing to mention is I recall some other developer was trying to
-> > optimize device load from memory side:
-> > 
-> > https://urldefense.com/v3/__https://lore.kernel.org/all/20230317081904.24389-1-xuchuangxclwt@bytedance.com/__;!!ACWV5N9M2RV99hQ!Oyhh-o4V5gzcWsbmSxAkonhYn3xcLBF50-h-a9-D5MiKgbiHvkaAqdu1VZP5SVmuCk5GQu-sjBifRrAz$
-> > 
-> > So maybe there're more than one way of doing this, and I'm not sure which
-> > way is better, or both.
-> > 
-> 
-> Ack. I'll take a look at this.
-> 
-> > > 
-> > > > - Normally devices need iterative phase because:
-> > > > 
-> > > >     (a) the device may contain huge amount of data to transfer
-> > > > 
-> > > >         E.g. RAM and VFIO are good examples and fall into this category.
-> > > > 
-> > > >     (b) the device states are "iterable" from concept
-> > > > 
-> > > >         RAM is definitely true.  VFIO somehow mimiced that even though it was
-> > > >         a streamed binary protocol..
-> > > > 
-> > > >     What's the answer for virtio-net here?  How large is the device state?
-> > > >     Is this relevant to vDPA and real hardware (so virtio-net can look
-> > > >     similar to VFIO at some point)?
-> > > 
-> > > 
-> > > The main motivation behind implementing iterative migration for virtio-net
-> > > is really to improve the guest visible downtime seen when migrating a vDPA
-> > > device.
-> > > 
-> > > That is, by implementing iterative migration for virtio-net, we can see the
-> > > state of the device early on and get a head start on work that's currently
-> > > being done during the stop-and-copy phase. If we do this work before the
-> > > stop-and-copy phase, we can further decrease the time spent in this window.
-> > > 
-> > > This would include work such as sending down the CVQ commands for queue-pair
-> > > creation (even more beneficial for multiqueue), RSS, filters, etc.
-> > > 
-> > > I'm hoping to show this more explicitly in the next version of this RFC
-> > > series that I'm working on now.
-> > 
-> > OK, thanks for the context. I can wait and read the new version.
-> > 
-> > In all cases, please be noted that since migration thread does not take
-> > BQL, it means either the setup or iterable phase may happen concurrently
-> > with any of the vCPU threads.  I think it means maybe it's not wise to try
-> > to iterate everything: please be ready to see e.g. 64bits MMIO register
-> > being partially updated when dumping it to the wire, for example.
-> > 
-> 
-> Gotcha. Some of the iterative hooks though like .save_setup, .load_state,
-> etc. do hold the BQL though, right?
+qemu_rbd_get_specific_info() has at least two problems:
 
-load_state() definitely needs the lock.
+The first is that it issues a blocking rbd_read() call in order to probe
+the encryption format for the image while querying the node. This means
+that if the connection to the server goes down, not only I/O is stuck
+(which is unavoidable), but query-names-block-nodes will actually make
+the whole QEMU instance unresponsive. .bdrv_get_specific_info
+implementations shouldn't perform blocking operations, but only return
+what is already known.
 
-save_setup(), yes we have bql, but I really wish we don't depend on it, and
-I don't know whether it'll keep holding true - AFAIU, the majority of it
-really doesn't need the lock..  and I always wanted to see whether I can
-remove it.
+The second is that the information returned isn't even correct. If the
+image is already opened with encryption enabled at the RBD level, we'll
+probe for "double encryption", i.e. if the encrypted data contains
+another encryption header. If it doesn't (which is the normal case), we
+won't return the encryption format. If it does, we return misleading
+information because it looks like we're talking about the outer level
+(the encryption format of the image itself) while the information is
+about an encryption header in the guest data.
 
-Normal iterations definitely runs without the lock.
+Fix this by storing the encryption format in BDRVRBDState when the image
+is opened (and we do blocking operations anyway) and returning only the
+stored information in qemu_rbd_get_specific_info().
 
-> 
-> > Do you have a rough estimation of the size of the device states to migrate?
-> > 
-> 
-> Do you have a method at how I might be able to estimate this? I've been
-> trying to get some kind of rough estimation but failing to do so.
+The information we'll store is either the actual encryption format that
+we enabled on the RBD level, or if the image is unencrypted, the result
+of the same probing as we previously did when querying the node. Probing
+image formats based on content that can be modified by the guest has
+long been known as problematic, but as long as we only output it to the
+user instead of making decisions based on it, it should be okay. It is
+undoubtedly useful in the context of 'qemu-img info' when you're trying
+to figure out which encryption options you have to use to open the
+image successfully.
 
-Could I ask why you started this "migrate virtio-net in iteration phase"
-effort?
+Fixes: 42e4ac9ef5a6 ("block/rbd: Add support for rbd image encryption")
+Buglink: https://issues.redhat.com/browse/RHEL-105440
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ qapi/block-core.json |   9 +++-
+ block/rbd.c          | 103 ++++++++++++++++++++++++++++---------------
+ 2 files changed, 75 insertions(+), 37 deletions(-)
 
-I thought it was because there're a lot of data to migrate, and there
-should be a way to estimate the minumum.  So is it not the case?
-
-How about vDPA devices?  Do those devices have a lot of data to migrate?
-
-We really need a good enough reason to have a device provide
-save_iterate().  If it's only about "preheat some MMIO registers", we
-should, IMHO, look at more generic ways first.
-
-Thanks,
-
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index ebbe95b3d8..cbd2bc84fe 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -159,7 +159,14 @@
+ ##
+ # @ImageInfoSpecificRbd:
+ #
+-# @encryption-format: Image encryption format
++# @encryption-format: Image encryption format. If encryption is enabled for the
++#     image (see encrpyted in BlockNodeInfo), this is the actual format in which the
++#     image is accessed. If encryption is not enabled, this is the result of
++#     probing when the image was opened, to give a suggestion which encryption
++#     format could be enabled. Note that probing results can be changed by the
++#     guest by writing a (possibly partial) encryption format header to the
++#     image, so don't treat this information as trusted if the guest is not
++#     trusted.
+ #
+ # Since: 6.1
+ ##
+diff --git a/block/rbd.c b/block/rbd.c
+index 951cd63f9a..8582bc8360 100644
+--- a/block/rbd.c
++++ b/block/rbd.c
+@@ -99,6 +99,14 @@ typedef struct BDRVRBDState {
+     char *namespace;
+     uint64_t image_size;
+     uint64_t object_size;
++
++    /*
++     * If @bs->encrypted is true, this is the encryption format actually loaded
++     * at the librbd level. If it is false, it is the result of probing.
++     * RBD_IMAGE_ENCRYPTION_FORMAT__MAX means that encryption is not enabled and
++     * probing didn't find any known encryption header either.
++     */
++    RbdImageEncryptionFormat encryption_format;
+ } BDRVRBDState;
+ 
+ typedef struct RBDTask {
+@@ -470,10 +478,12 @@ static int qemu_rbd_encryption_format(rbd_image_t image,
+     return 0;
+ }
+ 
+-static int qemu_rbd_encryption_load(rbd_image_t image,
++static int qemu_rbd_encryption_load(BlockDriverState *bs,
++                                    rbd_image_t image,
+                                     RbdEncryptionOptions *encrypt,
+                                     Error **errp)
+ {
++    BDRVRBDState *s = bs->opaque;
+     int r = 0;
+     g_autofree char *passphrase = NULL;
+     rbd_encryption_luks1_format_options_t luks_opts;
+@@ -544,15 +554,19 @@ static int qemu_rbd_encryption_load(rbd_image_t image,
+         error_setg_errno(errp, -r, "encryption load fail");
+         return r;
+     }
++    bs->encrypted = true;
++    s->encryption_format = encrypt->format;
+ 
+     return 0;
+ }
+ 
+ #ifdef LIBRBD_SUPPORTS_ENCRYPTION_LOAD2
+-static int qemu_rbd_encryption_load2(rbd_image_t image,
++static int qemu_rbd_encryption_load2(BlockDriverState *bs,
++                                     rbd_image_t image,
+                                      RbdEncryptionOptions *encrypt,
+                                      Error **errp)
+ {
++    BDRVRBDState *s = bs->opaque;
+     int r = 0;
+     int encrypt_count = 1;
+     int i;
+@@ -638,6 +652,8 @@ static int qemu_rbd_encryption_load2(rbd_image_t image,
+         error_setg_errno(errp, -r, "layered encryption load fail");
+         goto exit;
+     }
++    bs->encrypted = true;
++    s->encryption_format = encrypt->format;
+ 
+ exit:
+     for (i = 0; i < encrypt_count; ++i) {
+@@ -671,6 +687,44 @@ exit:
+ #endif
+ #endif
+ 
++/*
++ * For an image without encryption enabled on the rbd layer, probe the start of
++ * the image if it could be opened as an encrypted image so that we can display
++ * it when the user queries the node (most importantly in qemu-img).
++ *
++ * If the guest writes an encryption header to its disk after this probing, but
++ * that's okay. There is no reason why the user should want to apply encryption
++ * at the rbd level while the image is still in use. This is just guest data.
++ */
++static void qemu_rbd_encryption_probe(BlockDriverState *bs)
++{
++    BDRVRBDState *s = bs->opaque;
++    char buf[RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN] = {0};
++    int r;
++
++    assert(s->encryption_format == RBD_IMAGE_ENCRYPTION_FORMAT__MAX);
++
++    r = rbd_read(s->image, 0,
++                 RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN, buf);
++    if (r < RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN) {
++        return;
++    }
++
++    if (memcmp(buf, rbd_luks_header_verification,
++               RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN) == 0) {
++        s->encryption_format = RBD_IMAGE_ENCRYPTION_FORMAT_LUKS;
++    } else if (memcmp(buf, rbd_luks2_header_verification,
++               RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN) == 0) {
++        s->encryption_format = RBD_IMAGE_ENCRYPTION_FORMAT_LUKS2;
++    } else if (memcmp(buf, rbd_layered_luks_header_verification,
++               RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN) == 0) {
++        s->encryption_format = RBD_IMAGE_ENCRYPTION_FORMAT_LUKS;
++    } else if (memcmp(buf, rbd_layered_luks2_header_verification,
++               RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN) == 0) {
++        s->encryption_format = RBD_IMAGE_ENCRYPTION_FORMAT_LUKS2;
++    }
++}
++
+ /* FIXME Deprecate and remove keypairs or make it available in QMP. */
+ static int qemu_rbd_do_create(BlockdevCreateOptions *options,
+                               const char *keypairs, const char *password_secret,
+@@ -1133,17 +1187,18 @@ static int qemu_rbd_open(BlockDriverState *bs, QDict *options, int flags,
+         goto failed_open;
+     }
+ 
++    s->encryption_format = RBD_IMAGE_ENCRYPTION_FORMAT__MAX;
+     if (opts->encrypt) {
+ #ifdef LIBRBD_SUPPORTS_ENCRYPTION
+         if (opts->encrypt->parent) {
+ #ifdef LIBRBD_SUPPORTS_ENCRYPTION_LOAD2
+-            r = qemu_rbd_encryption_load2(s->image, opts->encrypt, errp);
++            r = qemu_rbd_encryption_load2(bs, s->image, opts->encrypt, errp);
+ #else
+             r = -ENOTSUP;
+             error_setg(errp, "RBD library does not support layered encryption");
+ #endif
+         } else {
+-            r = qemu_rbd_encryption_load(s->image, opts->encrypt, errp);
++            r = qemu_rbd_encryption_load(bs, s->image, opts->encrypt, errp);
+         }
+         if (r < 0) {
+             goto failed_post_open;
+@@ -1153,6 +1208,8 @@ static int qemu_rbd_open(BlockDriverState *bs, QDict *options, int flags,
+         error_setg(errp, "RBD library does not support image encryption");
+         goto failed_post_open;
+ #endif
++    } else {
++        qemu_rbd_encryption_probe(bs);
+     }
+ 
+     r = rbd_stat(s->image, &info, sizeof(info));
+@@ -1412,17 +1469,6 @@ static ImageInfoSpecific *qemu_rbd_get_specific_info(BlockDriverState *bs,
+ {
+     BDRVRBDState *s = bs->opaque;
+     ImageInfoSpecific *spec_info;
+-    char buf[RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN] = {0};
+-    int r;
+-
+-    if (s->image_size >= RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN) {
+-        r = rbd_read(s->image, 0,
+-                     RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN, buf);
+-        if (r < 0) {
+-            error_setg_errno(errp, -r, "cannot read image start for probe");
+-            return NULL;
+-        }
+-    }
+ 
+     spec_info = g_new(ImageInfoSpecific, 1);
+     *spec_info = (ImageInfoSpecific){
+@@ -1430,28 +1476,13 @@ static ImageInfoSpecific *qemu_rbd_get_specific_info(BlockDriverState *bs,
+         .u.rbd.data = g_new0(ImageInfoSpecificRbd, 1),
+     };
+ 
+-    if (memcmp(buf, rbd_luks_header_verification,
+-               RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN) == 0) {
+-        spec_info->u.rbd.data->encryption_format =
+-                RBD_IMAGE_ENCRYPTION_FORMAT_LUKS;
+-        spec_info->u.rbd.data->has_encryption_format = true;
+-    } else if (memcmp(buf, rbd_luks2_header_verification,
+-               RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN) == 0) {
+-        spec_info->u.rbd.data->encryption_format =
+-                RBD_IMAGE_ENCRYPTION_FORMAT_LUKS2;
+-        spec_info->u.rbd.data->has_encryption_format = true;
+-    } else if (memcmp(buf, rbd_layered_luks_header_verification,
+-               RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN) == 0) {
+-        spec_info->u.rbd.data->encryption_format =
+-                RBD_IMAGE_ENCRYPTION_FORMAT_LUKS;
+-        spec_info->u.rbd.data->has_encryption_format = true;
+-    } else if (memcmp(buf, rbd_layered_luks2_header_verification,
+-               RBD_ENCRYPTION_LUKS_HEADER_VERIFICATION_LEN) == 0) {
+-        spec_info->u.rbd.data->encryption_format =
+-                RBD_IMAGE_ENCRYPTION_FORMAT_LUKS2;
+-        spec_info->u.rbd.data->has_encryption_format = true;
++    if (s->encryption_format == RBD_IMAGE_ENCRYPTION_FORMAT__MAX) {
++        assert(!bs->encrypted);
+     } else {
+-        spec_info->u.rbd.data->has_encryption_format = false;
++        ImageInfoSpecificRbd *rbd_info = spec_info->u.rbd.data;
++
++        rbd_info->has_encryption_format = true;
++        rbd_info->encryption_format = s->encryption_format;
+     }
+ 
+     return spec_info;
 -- 
-Peter Xu
+2.50.1
 
 
