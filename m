@@ -2,58 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DBDAB206E3
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 13:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D56B20831
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 13:49:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulQMk-00078A-Jx; Mon, 11 Aug 2025 07:06:58 -0400
+	id 1ulR18-0004k9-Bc; Mon, 11 Aug 2025 07:48:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1ulQMg-00077t-Ea
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 07:06:54 -0400
+ (Exim 4.90_1) (envelope-from <smail.aider@huawei.com>)
+ id 1ulR0j-0004fi-2V; Mon, 11 Aug 2025 07:48:19 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1ulQMa-0000MA-89
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 07:06:53 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c0sFk1zMTz6L5pS;
- Mon, 11 Aug 2025 19:03:54 +0800 (CST)
+ (Exim 4.90_1) (envelope-from <smail.aider@huawei.com>)
+ id 1ulR0f-0000XU-0i; Mon, 11 Aug 2025 07:48:16 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c0scJ2p3gz6M59t;
+ Mon, 11 Aug 2025 19:20:00 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 732D61402EF;
- Mon, 11 Aug 2025 19:06:28 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ by mail.maildlp.com (Postfix) with ESMTPS id 15CC3140121;
+ Mon, 11 Aug 2025 19:21:55 +0800 (CST)
+Received: from china (7.182.10.167) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 11 Aug
- 2025 13:06:27 +0200
-Date: Mon, 11 Aug 2025 12:06:26 +0100
-To: <shiju.jose@huawei.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <armbru@redhat.com>, 
- <dave@stgolabs.net>, <linuxarm@huawei.com>
-Subject: Re: [PATCH v6 1/8] qapi: cxl: Refactor CXL event injection for
- common commands arguments
-Message-ID: <20250811120626.00003170@huawei.com>
-In-Reply-To: <20250811085530.2263-2-shiju.jose@huawei.com>
-References: <20250811085530.2263-1-shiju.jose@huawei.com>
- <20250811085530.2263-2-shiju.jose@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ 2025 13:21:49 +0200
+To: <qemu-devel@nongnu.org>
+CC: <alexander.spyridakis@huawei.com>, <zhangyue165@huawei.com>,
+ <liuyutao2@huawei.com>, <mjt@tls.msk.ru>, Peter Maydell
+ <peter.maydell@linaro.org>, <qemu-stable@nongnu.org>, <qemu-arm@nongnu.org>,
+ <richard.henderson@linaro.org>, <smail.aider@huawei.com>
+Subject: [PATCH v3 0/1] ARM_PMU: Trap PMCR when MDCR_EL2.TPMCR is set
+Date: Mon, 11 Aug 2025 19:21:42 +0800
+Message-ID: <20250811112143.1577055-1-smail.aider@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [7.182.10.167]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  frapeml500008.china.huawei.com (7.182.85.71)
 X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
 Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ envelope-from=smail.aider@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -68,25 +64,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
+Reply-to:  Smail AIDER <smail.aider@huawei.com>
+From:  Smail AIDER via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 11 Aug 2025 09:55:23 +0100
-<shiju.jose@huawei.com> wrote:
+Trap PMCR_EL0 or PMCR accesses to EL2 when MDCR_EL2.TPMCR is set.
+Similar to MDCR_EL2.TPM, MDCR_EL2.TPMCR allows trapping EL0 and EL1
+accesses to the PMCR register to EL2.
 
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> Refactor CXL event injection to use struct for common command
-> arguments.
-> 
-> Suggested-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-Very nice.
+Changes from v2:
+- Squashed patches, no other changes.
 
-no tag as this will get my SoB anyway as I'll queue it up for
-next cycle.
+Changes from v1:
+- Some refactoring to simplify code.
 
-J
+Smail AIDER (1):
+  target/arm: Trap PMCR when MDCR_EL2.TPMCR is set
+
+ target/arm/cpregs-pmu.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
+
+-- 
+2.34.1
+
 
