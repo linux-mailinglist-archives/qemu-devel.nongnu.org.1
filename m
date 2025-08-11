@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF7DB208A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 14:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F692B208B2
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 14:24:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulRVw-0007n6-SZ; Mon, 11 Aug 2025 08:20:32 -0400
+	id 1ulRYm-0001cc-Ni; Mon, 11 Aug 2025 08:23:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ulRVs-0007jR-AG
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 08:20:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ulRYf-0001br-DT
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 08:23:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ulRVn-0006Ex-Uj
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 08:20:27 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ulRYY-0006hP-Gj
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 08:23:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754914822;
+ s=mimecast20190719; t=1754914991;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=OABkDX/B/nJ4F8u+LUAvZtrLRd/t0gPeOfA5m6it2cs=;
- b=Wm9yJpquvKHS+smO1hUXRcJUj1iQSe/WUloxUdzYMRrwBlURQbH+y+mlXRNCw6kAgtv6y7
- tna8Fy56M55wbR8Yfk8qlbC+/dpLCYaiYGzSFzs251naOqDPbC80WeDuOjtyLN1rTU1JVL
- BWj+bHM3LZg+dSWdKD/QQyFYo5xn7HY=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rh7tOCyr81WUFxInAfAjFhoG5mdgKmklcUAXGgVBs1A=;
+ b=BWgvF3+z9XSGI38Onn2OHy0xVSrIGt5L7QfJe0MvZ9C2P4JPSGhtBCYegA0t7nsl2nES1Q
+ 9sd3Rt4ULjU5q73AOLGTgqVlsZLFB96ym+HO7M1Y2ZGNXKF54blJzpECiF0X1WIxT2N1ut
+ VpeRQ229um7vHg9I0vPZmzR+3lt+2Yg=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-130-EqF4wZbYO7W0BP-6tas6Uw-1; Mon, 11 Aug 2025 08:20:20 -0400
-X-MC-Unique: EqF4wZbYO7W0BP-6tas6Uw-1
-X-Mimecast-MFC-AGG-ID: EqF4wZbYO7W0BP-6tas6Uw_1754914820
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7e69c14e992so846927785a.3
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 05:20:20 -0700 (PDT)
+ us-mta-677-_397ix0HPkKi6Yj7XP-x_w-1; Mon, 11 Aug 2025 08:23:10 -0400
+X-MC-Unique: _397ix0HPkKi6Yj7XP-x_w-1
+X-Mimecast-MFC-AGG-ID: _397ix0HPkKi6Yj7XP-x_w_1754914989
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7e84d132874so288646985a.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 05:23:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754914820; x=1755519620;
+ d=1e100.net; s=20230601; t=1754914989; x=1755519789;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OABkDX/B/nJ4F8u+LUAvZtrLRd/t0gPeOfA5m6it2cs=;
- b=Pc83D5j0/8PLp6hSK6w8KAVkm4JaKawT5qwfuWeiXy80sAlV/x+Ai5N9RSNHEgObTY
- sJrpDNnTnyTJ+9eYwrLnAq/jUzNI9adJlawUztjQQPHJGSpMDRk/IJOEjB2me2tyUWYv
- 7bW1EOzG0tLH2nzyFPIrEfBBFJo/dNc7SRziol6ic2ADLXkEDizvn4PNZAAc9rJ9q81Y
- b/UT3k7JgRd9cbAq5ErIRZKA+EbmkiMotY8VKCm4fKXA/uz10Cxu10w7thpq5Ideh54G
- b370ckdZt4VB8zbbdiwJOMLxix0+lJwbZtjfOkalChqnG7Nx9TQrEAeZwSmZgcwnnRuI
- MH8A==
+ bh=rh7tOCyr81WUFxInAfAjFhoG5mdgKmklcUAXGgVBs1A=;
+ b=G2pz2iRX98qpFhBIAKNifo58mPKcRTbk9Ph6eu8Qff7fsFbPyDCecz6kd2pZ7M0FVa
+ WKZ/YSkdDe2U681YZbTsp87yKJXsI/qgg6vrYSBL2QEaFJCWaU2/Xi5ivRnVklqkQIvu
+ zRzf6uD6QmUs734Zk/qw9MlA3AxqsDdEbrJSUA7fgZRrrAICoZH74CQ22xhSNGD+ueBJ
+ OSFr/V3ODedrR7sP0pSMzZEFpZIeXbT+0jCapWF+GlHnwpxhC+s5yu9sWFYK4BxcS1Mq
+ 8oZTM/kvgyiQVWmDcq/KHYXiP/+/qapoKR7yPzx3Qbi3sYFOImjkdgU9qj2Fo6Ie/Yh/
+ SaTw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU2gRzfnFbIaqhnKqh+lbmqZJTleZQBVVS9LnuAxbTK5tKZ8ipqPq2IzQdhQmRUFY51fiImWpCPQSmJ@nongnu.org
-X-Gm-Message-State: AOJu0YzmUMueHiTjGHlNeRCvjGvLMzrDBO5r616HZDvLzEOepuWxhUZB
- t+J5RqhUS6UoMRSWahH6VKBAtHEmItQkV/Peh7xe94gZoCntGACS7ZHi723VehGRAxvfdYZnxoC
- 2BEWIRmns4ZW+6xp9lu3LwSk2OpSwo8Z1iMkjtJkKMxDIEB19pFGxFreT
-X-Gm-Gg: ASbGncs/cwSPRV3cq049lHOQNFtXe+bOr7IFDGbIQqYbLWlMClaYTp/V4n2VEF+YBhs
- vPfjQrajwWLN08x7510grZP+tsRu0+sGX3QK5MQmYTI/uajMvG942yftIzKgZmUo2COhhdrbx57
- oXeqjzBSGLYTGY/lUW+mk0Nx2JzKn2wn+t+urR0ZPDWfyiU5htItqMepPQ8PPX6yPx6hzyMSJ7Z
- 2WnGRo8bIpkkw4fKq5KrhSAGb/UzxcTzgPOqxoJHz4N3SIyCnRIJuTD4VnUnSRjrvsRACwNrlvA
- irAJ9kgoy7lpCIR0Mbb+puEkZ4ZMOEf6rpIDGcbHBCdcdIJvFcU12JfATico0EcPn1yzYLtBoii
- oEQ==
-X-Received: by 2002:a05:6214:19c6:b0:707:2472:dc3b with SMTP id
- 6a1803df08f44-7099a351fc5mr185697626d6.42.1754914820253; 
- Mon, 11 Aug 2025 05:20:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMziybW0yYKN9+bPtmdxs+xNdVn2+ufpPX4cHPr1V2OyVUji5Gcu06woUszk+2lp3xm94KKQ==
-X-Received: by 2002:a05:6214:19c6:b0:707:2472:dc3b with SMTP id
- 6a1803df08f44-7099a351fc5mr185696926d6.42.1754914819636; 
- Mon, 11 Aug 2025 05:20:19 -0700 (PDT)
+ AJvYcCXXPZtjx06tlI2oYPamXqaaX684mKk6BCg5wH141SE9rJEypX2Y6S9wsjdXew9pQ/8YKEEz99vYLCKV@nongnu.org
+X-Gm-Message-State: AOJu0YwCW/1Uca2slpHlIcn29sK40OwDigcqBnU19Z2GtY6Xfk8Qbr+g
+ EUk2oJDRBnmbwSJBinD7mjavHIH8Fz+m0FzOpWu5eV7sIgzNfDUjRG3zJOqFtYl2bOgvGoV1REy
+ /hrEWCb4fO7t5tQAYxy7my6c3gljfvShGBx9pT735N+pA7R8Jqqm82SUk
+X-Gm-Gg: ASbGncu20gTfXP1IymylRHVZGwgG7KnrlbRiZNmpYjJU6ZALA1ACXx6hRo0TRTWdVz9
+ EwsSMyFGEJAUS2vTyZ/myKNzL42sPNa8Hb+DEhwaeFHj+m0zpQFpcz7GnUscXKeIWv9rgwLbjPW
+ xoih5kzA3RnOgjOklNZRhvxdldrPOJPeKdVtRVqOj69sCyEnB1SIweZKb3jPQeZVyks6fRtAJ8U
+ EG8unzEZdMhpNWKCJe8+simAiy/wAyYszfF5BYv05w90IJqZ+9p/AoaWrPjDZY7IAkr5exLRecE
+ tZbkSv3krsNWU1NXjO5drpwHi5wuJkeE3DXMrnpLeslcEZY9mGID2dkESSCWs92A2/SplsY6Gfi
+ b0A==
+X-Received: by 2002:a05:622a:1485:b0:4ab:6e71:3c58 with SMTP id
+ d75a77b69052e-4b0aee03e44mr197132801cf.41.1754914989384; 
+ Mon, 11 Aug 2025 05:23:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGBRk/U5hZGJUSvQbb4I6soJDRks+xnqt6+mw1uR97uJKOLxQKRPuNW3mq/1Y4cv3M/U/MT+A==
+X-Received: by 2002:a05:622a:1485:b0:4ab:6e71:3c58 with SMTP id
+ d75a77b69052e-4b0aee03e44mr197132221cf.41.1754914988745; 
+ Mon, 11 Aug 2025 05:23:08 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
  ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-709a0d74acfsm45992896d6.58.2025.08.11.05.20.16
+ d75a77b69052e-4b06f790834sm98835191cf.60.2025.08.11.05.23.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Aug 2025 05:20:19 -0700 (PDT)
-Message-ID: <67cf5108-c2f7-49bd-a81e-266c7c93631e@redhat.com>
-Date: Mon, 11 Aug 2025 14:20:15 +0200
+ Mon, 11 Aug 2025 05:23:08 -0700 (PDT)
+Message-ID: <7dcf106d-c186-4ab1-8a8e-4dc7f7ff2803@redhat.com>
+Date: Mon, 11 Aug 2025 14:23:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/22] vfio/spapr.c: use QOM casts where appropriate
+Subject: Re: [PATCH 07/22] vfio/vfio-container.h: rename VFIOContainer
+ bcontainer field to parent_obj
 To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
  danielhb413@gmail.com, harshpb@linux.ibm.com, mjrosato@linux.ibm.com,
  farman@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
@@ -85,7 +86,7 @@ To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
  tomitamoeko@gmail.com, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
  qemu-devel@nongnu.org
 References: <20250715093110.107317-1-mark.caveayland@nutanix.com>
- <20250715093110.107317-7-mark.caveayland@nutanix.com>
+ <20250715093110.107317-8-mark.caveayland@nutanix.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -131,10 +132,10 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250715093110.107317-7-mark.caveayland@nutanix.com>
+In-Reply-To: <20250715093110.107317-8-mark.caveayland@nutanix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -160,11 +161,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/15/25 11:25, Mark Cave-Ayland wrote:
-> Use QOM casts to convert between VFIOContainer and VFIOContainerBase instead
-> of accessing bcontainer directly.
+> Now that nothing accesses the bcontainer field directly, rename bcontainer to
+> parent_obj as per our current coding guidelines.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-
 
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
@@ -175,70 +175,21 @@ C.
 
 
 > ---
->   hw/vfio/spapr.c | 16 ++++++----------
->   1 file changed, 6 insertions(+), 10 deletions(-)
+>   include/hw/vfio/vfio-container.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-> index 564b70ef97..c41e4588d6 100644
-> --- a/hw/vfio/spapr.c
-> +++ b/hw/vfio/spapr.c
-> @@ -62,7 +62,7 @@ static void vfio_prereg_listener_region_add(MemoryListener *listener,
->       VFIOSpaprContainer *scontainer = container_of(listener, VFIOSpaprContainer,
->                                                     prereg_listener);
->       VFIOContainer *container = &scontainer->container;
-> -    VFIOContainerBase *bcontainer = &container->bcontainer;
-> +    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
->       const hwaddr gpa = section->offset_within_address_space;
->       hwaddr end;
->       int ret;
-> @@ -244,7 +244,7 @@ static bool vfio_spapr_create_window(VFIOContainer *container,
->                                       hwaddr *pgsize, Error **errp)
->   {
->       int ret = 0;
-> -    VFIOContainerBase *bcontainer = &container->bcontainer;
-> +    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
->       VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
->                                                     container);
->       IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
-> @@ -352,8 +352,7 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
->                                           MemoryRegionSection *section,
->                                           Error **errp)
->   {
-> -    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> -                                            bcontainer);
-> +    VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
->       VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
->                                                     container);
->       VFIOHostDMAWindow *hostwin;
-> @@ -443,8 +442,7 @@ static void
->   vfio_spapr_container_del_section_window(VFIOContainerBase *bcontainer,
->                                           MemoryRegionSection *section)
->   {
-> -    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> -                                            bcontainer);
-> +    VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
->       VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
->                                                     container);
+> diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
+> index 50c91788d5..240f566993 100644
+> --- a/include/hw/vfio/vfio-container.h
+> +++ b/include/hw/vfio/vfio-container.h
+> @@ -26,7 +26,7 @@ typedef struct VFIOGroup {
+>   } VFIOGroup;
 >   
-> @@ -465,8 +463,7 @@ vfio_spapr_container_del_section_window(VFIOContainerBase *bcontainer,
+>   struct VFIOContainer {
+> -    VFIOContainerBase bcontainer;
+> +    VFIOContainerBase parent_obj;
 >   
->   static void vfio_spapr_container_release(VFIOContainerBase *bcontainer)
->   {
-> -    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> -                                            bcontainer);
-> +    VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
->       VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
->                                                     container);
->       VFIOHostDMAWindow *hostwin, *next;
-> @@ -484,8 +481,7 @@ static void vfio_spapr_container_release(VFIOContainerBase *bcontainer)
->   static bool vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
->                                          Error **errp)
->   {
-> -    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> -                                            bcontainer);
-> +    VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
->       VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
->                                                     container);
->       struct vfio_iommu_spapr_tce_info info;
+>       int fd; /* /dev/vfio/vfio, empowered by the attached groups */
+>       unsigned iommu_type;
 
 
