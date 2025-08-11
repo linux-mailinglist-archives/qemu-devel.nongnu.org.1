@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A804B208B0
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 14:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F714B208B1
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 14:24:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulRYw-0001ie-Ek; Mon, 11 Aug 2025 08:23:38 -0400
+	id 1ulRZK-0001rj-9K; Mon, 11 Aug 2025 08:24:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ulRYr-0001gK-DC
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 08:23:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ulRZG-0001r1-G1
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 08:23:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ulRYo-0006lV-4Q
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 08:23:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ulRZ8-0006rV-UX
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 08:23:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1754915007;
+ s=mimecast20190719; t=1754915028;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=igxuoWIsimUw0nIoaQdNMk/nZ9l37+GrYNS35PFY6Ok=;
- b=H8Gv4WHpfUXHEk4HT8oVhBtj3cGbJVSaxJ82DTRLUY/hwXTNYZwKLYxiZd02IoKOCeKoRE
- Q9KCjPqI+Qe7Z2+/+TqXB109ukrLfb5HCvbtOKtfCdDsoESsuZsSx/g7rGI68YQ+DGmBX7
- B01vBdL5M0LWKCErm1rRcxHQIPkfkKI=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EgAnCxOHEmFVO+Xq53AOrvQuoK5Fn8Mzsm1xshXkqPA=;
+ b=UB94f3uBec5Dp+Ys+DD8s5mpy6W+Tr2WsgjvKAYlSxbK3ihYox64pqlIKMB1g7DC0LJDEd
+ pAOoR9IJ9CgrVHmD9fziwcwlftk2JOO9y1u+ArVUVQyl+Cxw4TQvju2AciB1JeRHy9MXzE
+ QTbjiEgz/NKXf1EJB1CbJBMXYrKno4E=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-292-RbuTc0oYNn2OLt24Y83OSg-1; Mon, 11 Aug 2025 08:23:26 -0400
-X-MC-Unique: RbuTc0oYNn2OLt24Y83OSg-1
-X-Mimecast-MFC-AGG-ID: RbuTc0oYNn2OLt24Y83OSg_1754915006
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-4b08b271095so119328541cf.0
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 05:23:26 -0700 (PDT)
+ us-mta-377--Kks487bPEKsj5FvmzhVPw-1; Mon, 11 Aug 2025 08:23:47 -0400
+X-MC-Unique: -Kks487bPEKsj5FvmzhVPw-1
+X-Mimecast-MFC-AGG-ID: -Kks487bPEKsj5FvmzhVPw_1754915027
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-7074cb63bccso87376566d6.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 05:23:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754915006; x=1755519806;
+ d=1e100.net; s=20230601; t=1754915027; x=1755519827;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=igxuoWIsimUw0nIoaQdNMk/nZ9l37+GrYNS35PFY6Ok=;
- b=iJu2wN/lDaLXXHvPMehofaafZ2jzsRUJ1Rkk/8nkwlxn7nOFLGsrsSMrIxMTWTcLgn
- exwUNdFpu4+uYjABD8UKoQ1JCtOahei1e4wHcFvj2J5+6lOP0w4uhddbUZDs+pxSBF+w
- eixE/kFZ8fQSYvEXJQBqhmh/2UES8gyL/ztSLElTlgYZtawTGcujykqHvSTFvYzhjqC9
- Lc+F/I6Zr6kTI6aBE1bdF0frCWOexObL9EvTqyddo6Il3XymQUmAurVbiCN+j3B8bnAS
- qm0Ydm7Y3Xvvk/4Z9U0jXzCpsBvi4TI0rVziJl338L0PQbZW7TNRmiSdtDzM9gIN7S7D
- HnWw==
+ bh=EgAnCxOHEmFVO+Xq53AOrvQuoK5Fn8Mzsm1xshXkqPA=;
+ b=rAcCQJBiOmAHBiOhjsSqYAf+BXsKVjmOWlRyDj8LBlryhWEvBus2pg2qzXz6SRZg3k
+ lHEV8r2VgnhZlGZX1fWfvepaBGAeeyf5yhUl+I8GMaxvJeTrpBAUg+8ShsCqwRzgRYqm
+ q+wgn8EtXAMb4w2mH1cTms2XEmixgkflupODgEDLUr6Ie8cdVOJX0oh3ybJuQzLFDk3l
+ hUYlYZzONYQHImqJ14GgvJIisHaFZSIyrGeVgtazYQ1Yn2O7ZGGD5WdH2bq0G7sHWamZ
+ BJEOoUFi6OmQbXQ6ICy7hMRg2KpmlFHcT+zH8I9HdSfDqFeUP81Xe7yM9ZplnZfaDLLD
+ si3g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXifUzz0wnbK/eES1MOEzJrucSzSqLKepxYnieMtjQSeTFNrI1g1jTlCBMG0a5vwAGixTBM3Xjb9zNc@nongnu.org
-X-Gm-Message-State: AOJu0Yx4Xst0+c33pmCV+Qzrq960y+f3AaQIoKfaKYmN5pliulu2AoJm
- Ur0TKNwh3twOTMTg0weFzimtBMruqmU1ROvCxNnMRIzOojc9Ye96hWBEaUZzHaSO4wraRdG0qqS
- qfTxCXJ62YgUDmFSQcdoA53AC0gKQJmBib8RNMdlK7k+8HVbAzoQVKBLe
-X-Gm-Gg: ASbGncs5VMFvO2oRAnWazwGheXaAFnlN9MFdv7Fd11JhB9E7nHBOV3b3UgtUbfcHsS+
- BHuLwFTjpCmQeom4G8cjYSyooJMHw007ijQEkYJlflZl/FrzBtUMacuREb9T7SqF6QMY8P54cLy
- xXFslNvkjlOSr4nNbQVXrVQhbEPc1egBE1z5EP5z6Qry1RIfdYcrdEvFe86ljBIn9MwZ/ac/3Ml
- 0Ynh4hkqn1TfEe6fOtbcOxSL5lOgDHtvainLsCKF8AXIuE2ZusbsR91aX36z6X3cYTnlEmDLcP3
- 5vjymF2ewuUjGG9qHfxxKVTm2iGUGlJMEQ+9e4olpBBbq3+fNGtaV/fQRURDW4ATEKNoWpn6wuQ
- Aww==
-X-Received: by 2002:ac8:59cc:0:b0:4ab:65c3:37d9 with SMTP id
- d75a77b69052e-4b0aedd7d47mr175897851cf.33.1754915005789; 
- Mon, 11 Aug 2025 05:23:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHDWlNrB0omDL/iVEIQ6GFpxyX5vnxpbbNzAiSkidfa3LejzdBbdSp0qCM5IPpoEoeOR36Kjw==
-X-Received: by 2002:ac8:59cc:0:b0:4ab:65c3:37d9 with SMTP id
- d75a77b69052e-4b0aedd7d47mr175897301cf.33.1754915005252; 
- Mon, 11 Aug 2025 05:23:25 -0700 (PDT)
+ AJvYcCWcPGKrkywAHp/OHz7IebcmCrbW5k48XZd5+QMOCvCp2LkANVmT68GHySeCWgpxCsb7rW1uLA1VIDgM@nongnu.org
+X-Gm-Message-State: AOJu0YyGd/wM3Zkcw21i4u6EAbwTQNjhT1mEieSeXkwnursRK0b0SmGB
+ +EKyz7zM9eUANNoyFv0q5by4VQODGjbcLNaKIH4vqnqZ/pUaFtLqKHSQYuPn6AMLNX/ZWArQtzQ
+ BLoviS6Ca6OIQRKkuzbeo4pIVkJb/K7FxiQopNXmgti4+3486Kt18XARQ
+X-Gm-Gg: ASbGncvOVmpnPDVDGzsA1+UyiL+olwEsNK+l1z/WiPUw1dIs/VzZ+ksDejHuObD5MMu
+ 2iVFayIEotE67wf8TtKLKQQtVg1xk7Jm3nF9vS6rZ7bHIglmBIPQva/HjPnz01WPkxfTVZIENMr
+ Jy3R6reRY0NGfDCNZEcFsOEXvPSTZUUtDTeyGhnNMGNiJHfdU4nLW9SoChyrqK2fE8fUMPmYYqf
+ 3Nm1eqBZHooeB7aNPPP/U6MHuth8a6AbSZlSJu4AuL1nMZUStU4ui6ouIgOT4eDm30IeminKNgj
+ rbgZ+5IyOxohIHee1pMUsaklF5xhXmZc9bEms0KeAW/Q/kym8PwPImHGKVk3FAwqwa5+usC5Hko
+ 64Q==
+X-Received: by 2002:a05:6214:c23:b0:707:39f7:c607 with SMTP id
+ 6a1803df08f44-7099a199157mr186129276d6.7.1754915026759; 
+ Mon, 11 Aug 2025 05:23:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbERKcHXnIcJF9rrzGrejaAhZholx+f6gZxdO7QToqtTjJHN41gzTtOg3Zcgjhiv9Qmu+gwg==
+X-Received: by 2002:a05:6214:c23:b0:707:39f7:c607 with SMTP id
+ 6a1803df08f44-7099a199157mr186128516d6.7.1754915025852; 
+ Mon, 11 Aug 2025 05:23:45 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
  ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4b095e6c7d4sm69730641cf.54.2025.08.11.05.23.22
+ 6a1803df08f44-7077cdf4831sm153759036d6.75.2025.08.11.05.23.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Aug 2025 05:23:24 -0700 (PDT)
-Message-ID: <34e36f6a-0c77-40c3-8270-26615859a4db@redhat.com>
-Date: Mon, 11 Aug 2025 14:23:21 +0200
+ Mon, 11 Aug 2025 05:23:45 -0700 (PDT)
+Message-ID: <9431a6c6-71fe-49bf-9ab5-08d6053d59a4@redhat.com>
+Date: Mon, 11 Aug 2025 14:23:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/22] vfio-user/container.h: update VFIOUserContainer
- declaration
+Subject: Re: [PATCH 09/22] vfio/container.c: use QOM casts where appropriate
 To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
  danielhb413@gmail.com, harshpb@linux.ibm.com, mjrosato@linux.ibm.com,
  farman@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
@@ -86,7 +85,7 @@ To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
  tomitamoeko@gmail.com, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
  qemu-devel@nongnu.org
 References: <20250715093110.107317-1-mark.caveayland@nutanix.com>
- <20250715093110.107317-9-mark.caveayland@nutanix.com>
+ <20250715093110.107317-10-mark.caveayland@nutanix.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -132,10 +131,10 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250715093110.107317-9-mark.caveayland@nutanix.com>
+In-Reply-To: <20250715093110.107317-10-mark.caveayland@nutanix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -161,9 +160,8 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/15/25 11:25, Mark Cave-Ayland wrote:
-> Update the VFIOUserContainer declaration so that it is closer to our coding
-> guidelines: remove the explicit typedef (this is already handled by the
-> OBJECT_DECLARE_TYPE() macro) and add a blank line after the parent object.
+> Use QOM casts to convert between VFIOUserContainer and VFIOContainerBase instead
+> of accessing bcontainer directly.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
@@ -176,26 +174,100 @@ C.
 
 
 > ---
->   hw/vfio-user/container.h | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>   hw/vfio-user/container.c | 26 +++++++++++---------------
+>   1 file changed, 11 insertions(+), 15 deletions(-)
 > 
-> diff --git a/hw/vfio-user/container.h b/hw/vfio-user/container.h
-> index 2bb1fa1343..d5d2275af7 100644
-> --- a/hw/vfio-user/container.h
-> +++ b/hw/vfio-user/container.h
-> @@ -13,10 +13,11 @@
->   #include "hw/vfio-user/proxy.h"
+> diff --git a/hw/vfio-user/container.c b/hw/vfio-user/container.c
+> index d318e6a339..025db93ff3 100644
+> --- a/hw/vfio-user/container.c
+> +++ b/hw/vfio-user/container.c
+> @@ -24,16 +24,14 @@
+>    */
+>   static void vfio_user_listener_begin(VFIOContainerBase *bcontainer)
+>   {
+> -    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
+> -                                                 bcontainer);
+> +    VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
 >   
->   /* MMU container sub-class for vfio-user. */
-> -typedef struct VFIOUserContainer {
-> +struct VFIOUserContainer {
->       VFIOContainerBase bcontainer;
+>       container->proxy->async_ops = true;
+>   }
+>   
+>   static void vfio_user_listener_commit(VFIOContainerBase *bcontainer)
+>   {
+> -    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
+> -                                            bcontainer);
+> +    VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
+>   
+>       /* wait here for any async requests sent during the transaction */
+>       container->proxy->async_ops = false;
+> @@ -44,8 +42,8 @@ static int vfio_user_dma_unmap(const VFIOContainerBase *bcontainer,
+>                                  hwaddr iova, ram_addr_t size,
+>                                  IOMMUTLBEntry *iotlb, bool unmap_all)
+>   {
+> -    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
+> -                                            bcontainer);
+> +    VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
 > +
->       VFIOUserProxy *proxy;
-> -} VFIOUserContainer;
-> +};
+>       Error *local_err = NULL;
+>       int ret = 0;
 >   
->   OBJECT_DECLARE_SIMPLE_TYPE(VFIOUserContainer, VFIO_IOMMU_USER);
+> @@ -88,8 +86,8 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+>                                ram_addr_t size, void *vaddr, bool readonly,
+>                                MemoryRegion *mrp)
+>   {
+> -    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
+> -                                                bcontainer);
+> +    VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
+> +
+>       int fd = memory_region_get_fd(mrp);
+>       Error *local_err = NULL;
+>       int ret;
+> @@ -177,8 +175,7 @@ static int vfio_user_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+>   
+>   static bool vfio_user_setup(VFIOContainerBase *bcontainer, Error **errp)
+>   {
+> -    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
+> -                                                bcontainer);
+> +    VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
+>   
+>       assert(container->proxy->dma_pgsizes != 0);
+>       bcontainer->pgsizes = container->proxy->dma_pgsizes;
+> @@ -222,7 +219,7 @@ vfio_user_container_connect(AddressSpace *as, VFIODevice *vbasedev,
+>           goto put_space_exit;
+>       }
+>   
+> -    bcontainer = &container->bcontainer;
+> +    bcontainer = VFIO_IOMMU(container);
+>   
+>       ret = ram_block_uncoordinated_discard_disable(true);
+>       if (ret) {
+> @@ -267,7 +264,7 @@ put_space_exit:
+>   
+>   static void vfio_user_container_disconnect(VFIOUserContainer *container)
+>   {
+> -    VFIOContainerBase *bcontainer = &container->bcontainer;
+> +    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
+>       VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
+>       VFIOAddressSpace *space = bcontainer->space;
+>   
+> @@ -295,7 +292,7 @@ static bool vfio_user_device_get(VFIOUserContainer *container,
+>   
+>       vbasedev->fd = -1;
+>   
+> -    vfio_device_prepare(vbasedev, &container->bcontainer, &info);
+> +    vfio_device_prepare(vbasedev, VFIO_IOMMU(container), &info);
+>   
+>       return true;
+>   }
+> @@ -319,8 +316,7 @@ static bool vfio_user_device_attach(const char *name, VFIODevice *vbasedev,
+>   
+>   static void vfio_user_device_detach(VFIODevice *vbasedev)
+>   {
+> -    VFIOUserContainer *container = container_of(vbasedev->bcontainer,
+> -                                                VFIOUserContainer, bcontainer);
+> +    VFIOUserContainer *container = VFIO_IOMMU_USER(vbasedev->bcontainer);
+>   
+>       vfio_device_unprepare(vbasedev);
 >   
 
 
