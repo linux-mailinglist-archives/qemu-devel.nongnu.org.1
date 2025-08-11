@@ -2,85 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7281B204E9
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 12:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD15B204FE
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 12:13:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulPSH-0004mD-C4; Mon, 11 Aug 2025 06:08:37 -0400
+	id 1ulPVp-000762-2m; Mon, 11 Aug 2025 06:12:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulPSB-0004le-Nx
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 06:08:32 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulPS9-0006MI-58
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 06:08:31 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3b7910123a0so3878790f8f.1
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 03:08:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754906905; x=1755511705; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=kpmDvRWC/brKYpYi3H1Xhgtpr9AfpeYTXO2kVXk6was=;
- b=ViT+0s/9kDQ4QxK4KaRT4b/BW+8B+KS4z+x5WNN9eqCM1PCNdr24Ac0lXOV665vpJC
- lDZZNiOV2/qX23+TOd+FAckhYIP6BLzWVgzqEzfPBXKvtSU9jjyY7hmo271T5F4sf1mO
- G5RxCyvxWfGDRCA+W1LgnzMdNKkOmeBxDnmSLpVUNirU1VUbQhdjmEH5M49tHG3rjT3p
- B+LXl9nXNEMcSu4/ZVdSb6jeN3qdrbDOa7j87wMAGeF7PDnWAxxTyaRHb5N1G25nXAFf
- 0sUOcfAphGdR71v/6xKMb3xmox216dSsNYCtLikjKLFog69Frhy9ssO8+pp62jnZsFqt
- /qGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754906905; x=1755511705;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kpmDvRWC/brKYpYi3H1Xhgtpr9AfpeYTXO2kVXk6was=;
- b=EvlsKKQWrgZ0q4T9N/hL7dES3YNpK9KF5OI2Q6WogUAfHJZHMiJ2d4GVP2mOcCNr4U
- hB2qu/vslkrZds1UwAV6VLT8yfCWBFWpW8NSco7Se0JlJNpdZgn5+JPgTHGt0n2wCIec
- 1idYqOym0N8L0dktOe/rvw6AbVAlNf43xapDqhEg+K4kwpqftvfmMHufHeg7yQ/vmjoR
- UGhj9kTtivlSOxF5FQ11LMpsebpc80S5wjk7rEUxuhhhbYtQqZXUD9wcIoL+rwzJtQfL
- Jg22aowlw/VWsoy01MR6b/dTN6OZnmtpRHe8i7nrovMd9PUQkSf0IOxciuZxPzvXB3Fq
- 2ebA==
-X-Gm-Message-State: AOJu0YzAKxjITC41fMpBLvdPZA1HJ2JnnIE1O4SF3lq6qgb/G7yMETK9
- pcFLXnxtYDcQV3FqguJEMLwuqbqVlaJ3YyMpOK4XrXb+Yio87PWGd/3wB9ocxi2lwtnJyoHj0o2
- updfx
-X-Gm-Gg: ASbGncvI0cuB/KHzI07LaA4PZS5QJvhyvK6fo33arzY4Me76xaT9hrwWXJaRYQG3tvs
- 6CatNvW0TcJe7do4Nz9SReuLkPejCVuHBHnna80MDjVh2jWODDHd+Bxn1ecNbj9BSa7RYIs1WYp
- 3sQPBJx//OUqjFyl0TcxI4piSAySf718TcG2xl8rfw0MnsM88G6WBrhg/p2Oq0SoniEohsMTzPy
- sZxcxgXTnMDRJ2hA8eywwO0sZpCK4C6q9W41gGSf0zUXXQvQrRjch4hbqIyOecJ6uombRZLW7eO
- ly4ln+hsvTvzQzkwEJys01LYdzWFbz+w2GMoA+OQ0fPqUPC1K/rxqaaJOgpdNQwacMwaAzGoYli
- cawjcPefciFkeE3sLwdW9DtrbeMT0I/9ln+LEFl/LUbJI3wu39RYHPbjUtLrJaaLf6P1EWouX
-X-Google-Smtp-Source: AGHT+IFWBUOE8r4jbw7kq6+AI3A7ygVdEHOlwK08NhKgWZhAHgLMHS+8ZyxMP893pdn4RVzWt5eWDA==
-X-Received: by 2002:a05:6000:2207:b0:3b7:93d3:f478 with SMTP id
- ffacd0b85a97d-3b900b8bd5bmr10645435f8f.51.1754906905426; 
- Mon, 11 Aug 2025 03:08:25 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c4a2848sm39534016f8f.71.2025.08.11.03.08.24
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Aug 2025 03:08:24 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1ulPVl-00075J-DZ
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 06:12:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1ulPVh-0007GU-AV
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 06:12:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1754907119;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=xF5yoHc+2beu6J3VT/748F6+IGRKBcTxaiNePhTe8mQ=;
+ b=CIZrNPHXcFkRd+AP0dwdSdX42rFAtuvY4cFfh1gP+Akf/68oA9LhZaSgPaFH370C7ap10f
+ a45jrSF6T/ZlPKEAWxkOO5t6xSzxtYMV5P2jEPXCfL7MOQ18edDHV5hbzBZIGhEwf09yOk
+ e8sfKAAAGFIASacz1a79bGrOSrarNsI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-21-BXeEPZCqMgqhyMUXzYei1w-1; Mon,
+ 11 Aug 2025 06:11:56 -0400
+X-MC-Unique: BXeEPZCqMgqhyMUXzYei1w-1
+X-Mimecast-MFC-AGG-ID: BXeEPZCqMgqhyMUXzYei1w_1754907115
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4E7F71956088; Mon, 11 Aug 2025 10:11:55 +0000 (UTC)
+Received: from fedora (unknown [10.45.225.64])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 68D5518003FC; Mon, 11 Aug 2025 10:11:53 +0000 (UTC)
+From: Mauro Matteo Cascella <mcascell@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] system/rtc: Silent overflow in qemu_timedate_diff()
-Date: Mon, 11 Aug 2025 12:08:23 +0200
-Message-ID: <20250811100823.94105-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
+Cc: mcascell@redhat.com,
+	zdi-disclosures@trendmicro.com,
+	kraxel@redhat.com
+Subject: [PATCH] hw/uefi: clear uefi-vars buffer in uefi_vars_write callback
+Date: Mon, 11 Aug 2025 12:11:24 +0200
+Message-ID: <20250811101128.17661-1-mcascell@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcascell@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,43 +80,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per ctime(3) man-page:
+When the guest writes to register UEFI_VARS_REG_BUFFER_SIZE, the .write
+callback `uefi_vars_write` is invoked. The function allocates a
+heap buffer without zeroing the memory, leaving the buffer filled with
+residual data from prior allocations. When the guest later reads from
+register UEFI_VARS_REG_PIO_BUFFER_TRANSFER, the .read callback
+`uefi_vars_read` returns leftover metadata or other sensitive process
+memory from the previously allocated buffer, leading to an information
+disclosure vulnerability.
 
-  A negative value for tm_isdst causes the mktime() function to
-  attempt to divine whether summer time is in effect for the
-  specified time.  The tm_isdst and tm_gmtoff members are forced
-  to zero by timegm().
-
-  The mktime() function returns the specified calendar time; if
-  the calendar time cannot be represented, it returns -1;
-
-Coverity reports (CID 1547724 Overflowed return value) the
-qemu_timedate_diff() method doesn't handle this error path.
-
-Since this method was added in commit f650305967f ("Unify RTCs
-that use host time, fix M48t59 alarm") in 2008, and there is no
-open issue related to it, keep ignoring this unlikely case, but
-add an assertion to make Coverity happy.
-
-Fixes: CID 1547724
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fixes: CVE-2025-8860
+Fixes: 90ca4e03c27d ("hw/uefi: add var-service-core.c")
+Reported-by: ZDI <zdi-disclosures@trendmicro.com>
+Suggested-by: Gerd Hoffmann <kraxel@redhat.com>
+Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
 ---
- system/rtc.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/uefi/var-service-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/system/rtc.c b/system/rtc.c
-index 56951288c40..070b99fe6ad 100644
---- a/system/rtc.c
-+++ b/system/rtc.c
-@@ -98,6 +98,7 @@ time_t qemu_timedate_diff(struct tm *tm)
-         struct tm tmp = *tm;
-         tmp.tm_isdst = -1; /* use timezone to figure it out */
-         seconds = mktime(&tmp);
-+        assert(seconds >= 0);
+diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
+index feec5a5958..6ab8df091a 100644
+--- a/hw/uefi/var-service-core.c
++++ b/hw/uefi/var-service-core.c
+@@ -259,8 +259,8 @@ static void uefi_vars_write(void *opaque, hwaddr addr, uint64_t val, unsigned si
+         uv->buf_size = val;
+         g_free(uv->buffer);
+         g_free(uv->pio_xfer_buffer);
+-        uv->buffer = g_malloc(uv->buf_size);
+-        uv->pio_xfer_buffer = g_malloc(uv->buf_size);
++        uv->buffer = g_malloc0(uv->buf_size);
++        uv->pio_xfer_buffer = g_malloc0(uv->buf_size);
          break;
-     }
-     default:
+     case UEFI_VARS_REG_DMA_BUFFER_ADDR_LO:
+         uv->buf_addr_lo = val;
 -- 
-2.49.0
+2.50.1
 
 
