@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E7EB212F7
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 19:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77C46B212F6
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 19:12:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulVzx-0005Jf-2R; Mon, 11 Aug 2025 13:07:49 -0400
+	id 1ulVzx-0005II-1h; Mon, 11 Aug 2025 13:07:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulVzR-0004zu-94
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulVzU-000512-8d
  for qemu-devel@nongnu.org; Mon, 11 Aug 2025 13:07:25 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulVzC-0001qy-Nv
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 13:07:14 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-45a0dc77a15so5423285e9.2
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 10:07:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulVzI-0001s3-NX
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 13:07:18 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3b7910123a0so4251316f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 10:07:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754932017; x=1755536817; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754932023; x=1755536823; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tTxLOjP4FhmiKvW9Jt5SVA/50ytmZzwnIVFBfjDcbbg=;
- b=tWU74dEgB3EVpn7rAjr+e77kFYrWhEh06tRS+95tcgAINtDcISArOQ42gFZ03dJjb6
- 1I2D/UPUKEDeJUN6X618wcDu0YVHHA9DjQaWX1jYJarbkaOdjSaRSdKQZ3ItkGncYdZS
- /oLYGg5iruAv/mH5N90Ggfs36ExhhNomD/gkmtSlNXugSBSAxaxFt9Sn0YPGkD+C0aOT
- 0mL/XniRbs5+MpT7wbwpx11a6Ru/2Q8h9bMgZT6zMFBxKlhHagycgbo1CJ5Z+JtE7+Fs
- eyEq6akGqTly/RFcVyEIyT6cAuDnZVrYltGYNusEtsEf4B+qEI/Ue9MznlVPAOgNnhxi
- ZJyg==
+ bh=wXHYeE/dbTRdflhUmCNmx7Q9a47atxr+CRA/ufWMQVM=;
+ b=SNku07GjtRGK5Zp5BGpsUb2eb3fJD/wrlu8en9z+x6mH1pzz0bLRmGgffnEKbipp0J
+ cUMIIFvmbrZBMjaeVvgTbDKAhDbuG/Vy77kg8GqRG1yDW/AsYDIrIYBy9CytRViTipnZ
+ eYiM+bI41NO7kYyT36qW7t/zRfqKzP+Yy3f+lpwI8ZMvydFr8EVVrmZ6GlIsdX6BpxUh
+ MveaNjWsJG3epysNZRF8xVtMS72WDpRn7zcw6CfrZjAx+we2K4Ar6ia4zpMY+/9k3tgP
+ 9T5yNNGc2k8io/PME7LVx7wLTbapeOZuDXCoiXrMiZnW4NObtU5hDDpjaeuvJrBd08Xu
+ 4whw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754932017; x=1755536817;
+ d=1e100.net; s=20230601; t=1754932023; x=1755536823;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tTxLOjP4FhmiKvW9Jt5SVA/50ytmZzwnIVFBfjDcbbg=;
- b=gMhZfmvO3U7Jr6i798hsEjpbGCZ4qwUJ6dQmTb/Ay3kzrrlseaLK+I3zAL7zYeFV8n
- jSMsI68P4SGowkPo/pKxQpDlFtCmkizkmGdjcVcsBjdlSbHl/u+wgzVInRlUo+goSdZ4
- gb0Uwo2chOSbwUgAQGLBEy0lEgYOgpfOrzoE7zKzHxcNez3a47DnSukc3TsAeoxKRk+2
- zIHzLFD6Z3ad3RDpPNTUs2sR8Vdrr3jL71xgZ9LGgrn1l2mDLLqUv0ORducx2vQa7FBj
- NbOvypq9a0uMniioDNdVdUUHC3oOKe2Lr18PK9DeOJffQU9WAEChAbHnaX+C7/4I2FwE
- qo9A==
-X-Gm-Message-State: AOJu0YwqN5ni+ujpCoNy9ziw6mmWhnJeYZVX9zwuUNx4mzaAPwsucXC5
- RI1WzulV/Hsp8qQlELs+plEMW4om+RNNB5X+8KcReBU2+Cj/jtzQZYUK4d0X5Y8b8aJnxi1o88u
- TAK2W
-X-Gm-Gg: ASbGncvlmVHUSIyXggimya+tvDg6nz9XdB5Y+931ru/wC+mQSlTXJRATtUjqEtx4fVl
- zJC6g1/danlyZ7iAfUGXHOnXDMMNr0BFQeEZY7u5PgppvFf4cy2HwSrxsb59ZI5q7Co6oGMNg2U
- p3vFlaGTaO6+iriae/7Fx6QjywzUBEZxxkGfJiTNsDaIZy/mj/nTa+syEpzrsy9PXm2B8wtBNTY
- mS8jBUvSq4jkACYjd60DeEoofBgA8JOZyzSutSixWNvphg3kb7Zo7jVdEygHCHyNh2ipX54gepE
- BPHjSjNDAuSdNoVPq4iqpR0bj5sH3wqvBfaDfwXizyAA9Ol0gJVrseDb5kXyw153I0HXwRuS+lY
- 6x6rJ06McJa7HSUrgRSiU/HKUZ8oFxLfinegWeciuALDTJ+2L3mpi0qG1klJ9trm8WIE/tGHuNQ
- gtaoDQa1k=
-X-Google-Smtp-Source: AGHT+IEMcG/Ev4eyU/L7hIS6KC5DMgPfd5GRoRtRkLPDfgT0WRaP7S9VSCoMBvoitgce/yrC+B3d3w==
-X-Received: by 2002:a05:600c:470c:b0:459:d709:e5cf with SMTP id
- 5b1f17b1804b1-45a10bad987mr5229185e9.3.1754932017284; 
- Mon, 11 Aug 2025 10:06:57 -0700 (PDT)
+ bh=wXHYeE/dbTRdflhUmCNmx7Q9a47atxr+CRA/ufWMQVM=;
+ b=QOAnRtxe6kOOdXTYMSNKSmef0XUCqRnS/238dcy01hJqZhjxkTYKW7EjIZP4yGa5dJ
+ /ZuNmHbNmqA+PfCYXu5Za18toldD02uwJK/ACAis05CI1eWGYyP6oRrkomhOxMDYt2xW
+ CFzeLw4C3CK6sJ9FchLSID3uqBPeHYQXOjqDLCBd2bv2YRu+hsGwc213vaeeg5nmpkSb
+ QDQF8fvlkerJn74QmbOB3ZW3x1raP5yAUQaiWd3lPbjfL3vSrME4alVteiVpFebiS/O1
+ JXzxZ+mNfEDsjPVqpHDuo7dLWhW43UWUUT3LibxAHZImKB+XQCWu2xDpats3yOdfxnXx
+ BhuA==
+X-Gm-Message-State: AOJu0Yx0KVsn/GHmjDOdIhq7GEHFCeEoOKhbxYc71z5PN6D9wVgiRga/
+ yj1Vu6aFjZsatBa7r9uurem63KApKPJ25w03cJNMfkBPTk+sneYkV6PEWoK61GbYqVyzyGL0ltv
+ isEgA
+X-Gm-Gg: ASbGnctGHH3rkXOqzcw4hegc+pL1NKKjP4caj8Ss9/gjq6odVWEoDpvdTKnGeJiThjd
+ +o/KNcB4EQPcB6o8wEdF0yb/qthS4FQ27F8XyIgXCa2550bEFJAfFK9pE/FeknHFPwyaHqTivBV
+ onC3/gLjPXgCebdRwMrmFiFoMJ5BkHG73BiOTQkQRRHaBPlpi3vn+c+7dhDxs89qE65HXlVhsDR
+ PmV3vgVXz53Ptsf4njmk+5dbbPmb9K+zKqRFL6tlkVat2OTBRQ9noXYz1QwwwZXLiwI7PMcVsq3
+ m6ZinYIay8NGq2gn7wopFUboVG78980v9rxr475jWgIfYoag3kzlzRGOLGBz+0ZMVadZTR/qF6B
+ Ea+1Ogxaf955ljGnUFxFjC6AdxuxOrjTpgEnbdUX92h5xxHH6N25q7yiZ2nGkrjuqM8vobTN6
+X-Google-Smtp-Source: AGHT+IFUuly7Dqrg66psU4QHCuRXsJhkEzRy6aRPP2+eyqivHdPhhh2IohEjZISBtH74GHrPxa9how==
+X-Received: by 2002:a05:6000:2c09:b0:3b7:806e:7773 with SMTP id
+ ffacd0b85a97d-3b910fd97fbmr541303f8f.15.1754932022551; 
+ Mon, 11 Aug 2025 10:07:02 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-459e5887b7fsm261545415e9.30.2025.08.11.10.06.55
+ ffacd0b85a97d-3b79c3abf33sm41526775f8f.7.2025.08.11.10.07.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Aug 2025 10:06:56 -0700 (PDT)
+ Mon, 11 Aug 2025 10:07:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Miguel Luis <miguel.luis@oracle.com>,
@@ -75,25 +74,24 @@ Cc: Miguel Luis <miguel.luis@oracle.com>,
  Mads Ynddal <mads@ynddal.dk>, Eric Auger <eric.auger@redhat.com>,
  qemu-arm@nongnu.org, Cameron Esfahani <dirty@apple.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 08/11] target/arm: Replace kvm_arm_el2_supported by
- host_cpu_feature_supported
-Date: Mon, 11 Aug 2025 19:06:08 +0200
-Message-ID: <20250811170611.37482-9-philmd@linaro.org>
+Subject: [RFC PATCH 09/11] target/arm/hvf: Sync registers used at EL2
+Date: Mon, 11 Aug 2025 19:06:09 +0200
+Message-ID: <20250811170611.37482-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250811170611.37482-1-philmd@linaro.org>
 References: <20250811170611.37482-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,113 +107,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the generic host_cpu_feature_supported() helper to
-check for the EL2 feature support. This will allow to
-expand to non-KVM accelerators such HVF.
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
 
+When starting up the VM at EL2, more sysregs are available. Sync the state of those.
+
+Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+[PMD: Adapted to host_cpu_feature_supported() API]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/kvm_arm.h  | 11 -----------
- hw/arm/virt.c         |  8 +-------
- target/arm/kvm-stub.c |  5 -----
- target/arm/kvm.c      |  6 +++---
- 4 files changed, 4 insertions(+), 26 deletions(-)
+ target/arm/hvf/hvf.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 364578c50d6..7e5755d76b2 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -191,12 +191,6 @@ bool kvm_arm_sve_supported(void);
-  */
- bool kvm_arm_mte_supported(void);
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 5174973991f..778dc3cedf7 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -400,6 +400,7 @@ static const struct hvf_reg_match hvf_fpreg_match[] = {
+ struct hvf_sreg_match {
+     int reg;
+     uint32_t key;
++    bool el2;
+     uint32_t cp_idx;
+ };
  
--/**
-- * kvm_arm_el2_supported:
-- *
-- * Returns true if KVM can enable EL2 and false otherwise.
-- */
--bool kvm_arm_el2_supported(void);
- #else
+@@ -545,6 +546,27 @@ static struct hvf_sreg_match hvf_sreg_match[] = {
+     { HV_SYS_REG_CNTV_CTL_EL0, HVF_SYSREG(14, 3, 3, 3, 1) },
+     { HV_SYS_REG_CNTV_CVAL_EL0, HVF_SYSREG(14, 3, 3, 3, 2) },
+     { HV_SYS_REG_SP_EL1, HVF_SYSREG(4, 1, 3, 4, 0) },
++    /* EL2 */
++    { HV_SYS_REG_CPTR_EL2, HVF_SYSREG(1, 1, 3, 4, 2), .el2 = true },
++    { HV_SYS_REG_ELR_EL2, HVF_SYSREG(4, 0, 3, 4, 1), .el2 = true },
++    { HV_SYS_REG_ESR_EL2, HVF_SYSREG(5, 2, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_FAR_EL2, HVF_SYSREG(6, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_HCR_EL2, HVF_SYSREG(1, 1, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_HPFAR_EL2, HVF_SYSREG(6, 0, 3, 4, 4), .el2 = true },
++    { HV_SYS_REG_MAIR_EL2, HVF_SYSREG(10, 2, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_MDCR_EL2, HVF_SYSREG(1, 1, 3, 4, 1), .el2 = true },
++    { HV_SYS_REG_SCTLR_EL2, HVF_SYSREG(1, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_SPSR_EL2, HVF_SYSREG(4, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_SP_EL2, HVF_SYSREG(4, 1, 3, 6, 0), .el2 = true},
++    { HV_SYS_REG_TCR_EL2, HVF_SYSREG(2, 0, 3, 4, 2), .el2 = true },
++    { HV_SYS_REG_TPIDR_EL2, HVF_SYSREG(13, 0, 3, 4, 2), .el2 = true },
++    { HV_SYS_REG_TTBR0_EL2, HVF_SYSREG(2, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_TTBR1_EL2, HVF_SYSREG(2, 0, 3, 4, 1), .el2 = true },
++    { HV_SYS_REG_VBAR_EL2, HVF_SYSREG(12, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_VMPIDR_EL2, HVF_SYSREG(0, 0, 3, 4, 5), .el2 = true },
++    { HV_SYS_REG_VPIDR_EL2, HVF_SYSREG(0, 0, 3, 4, 0), .el2 = true },
++    { HV_SYS_REG_VTCR_EL2, HVF_SYSREG(2, 1, 3, 4, 2), .el2 = true },
++    { HV_SYS_REG_VTTBR_EL2, HVF_SYSREG(2, 1, 3, 4, 0), .el2 = true },
+ };
  
- static inline bool kvm_arm_aarch32_supported(void)
-@@ -213,11 +207,6 @@ static inline bool kvm_arm_mte_supported(void)
- {
-     return false;
- }
--
--static inline bool kvm_arm_el2_supported(void)
--{
--    return false;
--}
- #endif
+ int hvf_get_registers(CPUState *cpu)
+@@ -588,6 +610,12 @@ int hvf_get_registers(CPUState *cpu)
+             continue;
+         }
  
- /**
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index ef6be3660f5..c2f71ecbfa7 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2267,13 +2267,7 @@ static void machvirt_init(MachineState *machine)
-         exit(1);
-     }
++        if (hvf_sreg_match[i].el2
++            && arm_feature(env, ARM_FEATURE_EL2)
++            && !host_cpu_feature_supported(ARM_FEATURE_EL2, false)) {
++            continue;
++        }
++
+         if (cpu->accel->guest_debug_enabled) {
+             /* Handle debug registers */
+             switch (hvf_sreg_match[i].reg) {
+@@ -725,6 +753,12 @@ int hvf_put_registers(CPUState *cpu)
+             continue;
+         }
  
--    if (vms->virt && kvm_enabled() && !kvm_arm_el2_supported()) {
--        error_report("mach-virt: host kernel KVM does not support providing "
--                     "Virtualization extensions to the guest CPU");
--        exit(1);
--    }
--
--    if (vms->virt && !kvm_enabled() && !tcg_enabled() && !qtest_enabled()) {
-+    if (vms->virt && !host_cpu_feature_supported(ARM_FEATURE_EL2, true)) {
-         error_report("mach-virt: %s does not support providing "
-                      "Virtualization extensions to the guest CPU",
-                      current_accel_name());
-diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
-index 3beb336416d..35afcc7d6f9 100644
---- a/target/arm/kvm-stub.c
-+++ b/target/arm/kvm-stub.c
-@@ -42,11 +42,6 @@ bool kvm_arm_mte_supported(void)
-     return false;
- }
- 
--bool kvm_arm_el2_supported(void)
--{
--    return false;
--}
--
- /*
-  * These functions should never actually be called without KVM support.
-  */
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 0fe0f89f931..a9f05bfa7ea 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -274,7 +274,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     /*
-      * Ask for EL2 if supported.
-      */
--    el2_supported = kvm_arm_el2_supported();
-+    el2_supported = host_cpu_feature_supported(ARM_FEATURE_EL2, false);
-     if (el2_supported) {
-         init.features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2;
-     }
-@@ -1780,7 +1780,7 @@ bool arm_hw_accel_cpu_feature_supported(enum arm_features feat, bool can_emulate
-     case ARM_FEATURE_PMU:
-         return kvm_check_extension(kvm_state, KVM_CAP_ARM_PMU_V3);
-     case ARM_FEATURE_EL2:
--        return kvm_arm_el2_supported();
-+        return kvm_check_extension(kvm_state, KVM_CAP_ARM_EL2);
-     case ARM_FEATURE_EL3:
-         return false;
-     default:
-@@ -1918,7 +1918,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
-         cpu->kvm_init_features[0] |= (1 << KVM_ARM_VCPU_PTRAUTH_ADDRESS |
-                                       1 << KVM_ARM_VCPU_PTRAUTH_GENERIC);
-     }
--    if (cpu->has_el2 && kvm_arm_el2_supported()) {
-+    if (cpu->has_el2 && host_cpu_feature_supported(ARM_FEATURE_EL2, false)) {
-         cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2;
-     }
- 
++        if (hvf_sreg_match[i].el2
++            && arm_feature(env, ARM_FEATURE_EL2)
++            && !host_cpu_feature_supported(ARM_FEATURE_EL2, false)) {
++            continue;
++        }
++
+         if (cpu->accel->guest_debug_enabled) {
+             /* Handle debug registers */
+             switch (hvf_sreg_match[i].reg) {
 -- 
 2.49.0
 
