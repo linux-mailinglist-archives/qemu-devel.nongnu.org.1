@@ -2,120 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417E2B21581
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 21:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB4FB21571
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 21:40:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulYL0-0007If-Sh; Mon, 11 Aug 2025 15:37:42 -0400
+	id 1ulYLB-0007K0-7q; Mon, 11 Aug 2025 15:37:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
- id 1ulYKi-0007Dt-OX
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 15:37:27 -0400
+ id 1ulYKu-0007GY-A8
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 15:37:36 -0400
 Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
- id 1ulYKS-0003sS-5S
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 15:37:23 -0400
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57BFVDIY019150
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 19:37:04 GMT
+ id 1ulYKk-0003xb-Tm
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 15:37:35 -0400
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57BGESoe010041
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 19:37:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=qcppdkim1; bh=oeFCTcBeYBu
- AaNVMoPz5tm7BdWNU7A6jatOQ6V3bflg=; b=fYk00oh16WmjmWtnJInz1VQsMHN
- JFG14giDhCTgLVNTpXn2LN6MViKVVzSb2z40fc6F0EijDfWCSKzmwCYDkEWjcZwH
- jlrlOyLxGu7+7ZsW4/66zFTRaKGSBSF/lEJSDJPQ7LNTs1DayYB4LEnijocnSRw7
- z1ae4aR1npCfxAFin6wAZVm6eozw9eI1fS1Tby5VjiLDk0dXk1z9TC6qCP0Za4zL
- kTCVhZ8AQGVYYBPWj22rpIpNbOJ8SOVM7XhksQbM7jQkuc/3inouy8pGAaK6V9TB
- LlShzbifmBA0fCCLs/YuHFPyJhT0Iykm0E47xyhEYOT7zp+s2hAVVq8g0Iw==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48dxduwm2u-1
+ cc:content-type:date:from:in-reply-to:message-id:mime-version
+ :references:subject:to; s=qcppdkim1; bh=MyOgHjBYYMKt9HMvenjZWbkT
+ C9+ScgzNIWdSuMydwfY=; b=Rgf213w76ynB3um7vMlJnfcfej/d9xJY3K+JuMzP
+ TCN1GI/GAuwSbtPX7dfAJ/DjLCOI9EbrnDcuNJZ6yW7Zm4WX9iQPA3XHWQDFPe1w
+ zb7f5o62lLe4czdxAe2bYcNxY3P70pHq48G2PSG7+goOtsWmlixNUi4YcW5l+uLx
+ acj/xlp568N7VYfJ6RdwrFYfT0Q7pzZG7rg1jVVRIl2QozrEWjNzcV1uh7ohdOS1
+ 2QuEzFgzp1BkGEfXgFEEvKUWLE254/zA5C2QXzB6ed27vyktUQ8/qi+xh0EID+W7
+ nRq0C5si6Fq0odWKZUFsOTHdSAsitrLOe1sbPEqtSYSgdA==
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48eqhx3ug6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 19:37:03 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-74b29ee4f8bso4792604b3a.2
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 12:37:03 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 19:37:25 +0000 (GMT)
+Received: by mail-yb1-f198.google.com with SMTP id
+ 3f1490d57ef6-e8e1b5e7e26so6318275276.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 12:37:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754941022; x=1755545822;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oeFCTcBeYBuAaNVMoPz5tm7BdWNU7A6jatOQ6V3bflg=;
- b=kvOG+NmUN7rVdkmqjXCklDPBqIIpZMWYQjghxHt+gh0p4HT8dN3JU0BErML+q8Dluv
- UAPZzzL+aLYLEuJSouk4C7AxO1np23UEcHz9ku90h6KbK9j8NN0NZycBlE8gPR3vOGNf
- OaUN9Z5TxX4Sc31T9FtNIlKk8uLCbyt2g1xTjeSn65owPOOTJsjFVSq6sOYqh0DydEY4
- lfw62Fh2Ktk34P98hpnHPf/9QqKeVjQRY4FmhZ4ZrOs4vI5OMtK5oNLgI1TRxmUO0Wmp
- yPJyKyJnUHgF1wVidBibo/TFHRKmbZzwyGfKTxvxA8sUlb5/JjDcT0rRTyDoMANkXEOq
- L+fg==
-X-Gm-Message-State: AOJu0Yzu98wBB2FifhRg2JoF9vjpcIbgsjYF01/qKTAYi30STwm0NjLn
- ZzdhwKFdjEtgUf8otnTUj60BA66fr1V1Ab1NzUTTVzP5zLYD7tir+Slc/A3adGKiI8NkM3AbWxn
- zP4C07roaan2818Exob5WEszHSm+qGn7wsKVhErg+hSW+PGyPhlTrFBC6JxzSPeKHz7US
-X-Gm-Gg: ASbGncvB0io7pwpgZCgddi9lP7FKul5ZP7xzJFNMsvGd39x1RuqXoG/rSgFpEbm5kMR
- 2grwl4nyHUga4l5ktGLXP/dfwXsFqDE0utHUJsBjCsJbb6DnSFZap4xKKzCEPMrhnY+tWoAe4y+
- 3enTa6MMr+H169XRl5aIWh4neJwNVBxvlJdk92yvNmw9pXg8DxGJ5M5nFtftItdr3ZV2a7nnX1n
- P2274K9a8bFFypYZnLgoxZjJ+/F6b1ZG1CMtG7za/3SpQuwj3x7Pu0ydIK8yU6NmQA3rXdS6XAM
- BFg9xJU+Ckad9sXCGMB1XLKkDGOiA4MxSusInJGxsJMj7lyomMgSXGn+comrg00o2bUwv/yn0rw
- qjsvYDkTE2386wuM=
-X-Received: by 2002:a05:6a20:3944:b0:23f:fbb1:c21b with SMTP id
- adf61e73a8af0-24055046d01mr23603461637.17.1754941022354; 
- Mon, 11 Aug 2025 12:37:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHNK6WAXYBIufEApoPMX97MHuwAocEaR3meWsnutyVRxqqNJv9Aoff5E/Xn/5+qA3fM3rtxkQ==
-X-Received: by 2002:a05:6a20:3944:b0:23f:fbb1:c21b with SMTP id
- adf61e73a8af0-24055046d01mr23603411637.17.1754941021818; 
- Mon, 11 Aug 2025 12:37:01 -0700 (PDT)
-Received: from admin15.qualcomm.com (i-global254.qualcomm.com.
- [199.106.103.254]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bccfbcef6sm27677171b3a.85.2025.08.11.12.37.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Aug 2025 12:37:01 -0700 (PDT)
-From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Subject: [PATCH v5 4/4] target/arm: Added test case for SME register exposure
-Date: Mon, 11 Aug 2025 19:36:54 +0000
-Message-Id: <20250811193654.4012878-5-vacha.bhavsar@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250811193654.4012878-1-vacha.bhavsar@oss.qualcomm.com>
-References: <20250811193654.4012878-1-vacha.bhavsar@oss.qualcomm.com>
+ d=1e100.net; s=20230601; t=1754941044; x=1755545844;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MyOgHjBYYMKt9HMvenjZWbkTC9+ScgzNIWdSuMydwfY=;
+ b=Xhn91/uNq16qRH3cjLtokro1NxnsaZCXn+FHp/Q6RNW/QHJe+jb2+5VVInf2zizzhc
+ jEZIECKs3dZ4srVbCx/KIPnMmbxe5LBBgUtlzRDsbaWzfMgVB5eAySLJVihQcvBkbkm0
+ 9vt/NiIlpuFakxuAfLrP8eLw1vmgHxLJnsQ4ooHfmQiBfBDeBo4rjqf/pCcYu8uMSnjH
+ NSvd8xrMkPGZbjjawOOkNBcUe3Z8tbalV09wtP4f2tfnuZA1eCq+00FBj+N+Y+RGXptH
+ AZ+jTUFnWQ3/NazqnEAP4GX3aY7mTvyMXDcpPIXx3FvQa/PnxGBC8a4nS26tIoTb7xVx
+ AzRQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUjVK3H++s7472Ynt78JVd/HqeH37rtMVpsQwllu3gFfJNA9P5r2XGAeFTttBO8lotnGA6wp6QNgTId@nongnu.org
+X-Gm-Message-State: AOJu0YwPTw4UNV0XErAI/H+zECGK0l0PTffT6a+EQl5PhTyAywapun+Y
+ 6PC8q93ATX+vx0cuR5swo9cbA1bLUDwrrSNqnMUSVbAABVTGn7ToQ2Fu5ldk3znJQUuC3zTM99u
+ fqWrkeNh75LDr5BiMxk6ZIugZwRSSrlSdIBhxM8B17rWGHV+nVF33vnV4twvjQebm705r/1liHO
+ HkH0aXpla+jrJ41ZkJODxdFpmLtcSGuFu0OH1z1UUAgqcAlQ==
+X-Gm-Gg: ASbGncte0fZX7mKTsnZlIjpix8g1PHiGtiuEhL3wern0YTP0qLx7RTvXUfr+F+p/nLh
+ pmVoyKD7JBrZPquDshWz/klxpkR0oQ+xuqKb9WEbKhWa7hJcaYr+RFQjnKhlcs58BPmCcP0zNM6
+ TDUo6EsqWJEyOPATRR1J4j59s=
+X-Received: by 2002:a05:6902:e04:b0:e90:69a1:1799 with SMTP id
+ 3f1490d57ef6-e917a263991mr1340150276.32.1754941044478; 
+ Mon, 11 Aug 2025 12:37:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHTNToA+ZCADla3FaB1yevm9lcgeRsr5CFijkpJHKu1ww3BP+GfaGbWTUgD3TEnPQh7G3OiQd5UP5/osfVLwIA=
+X-Received: by 2002:a05:6902:e04:b0:e90:69a1:1799 with SMTP id
+ 3f1490d57ef6-e917a263991mr1340118276.32.1754941044044; Mon, 11 Aug 2025
+ 12:37:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=IuYecK/g c=1 sm=1 tr=0 ts=689a465f cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=hapuXSQWAQPwXaHXDnUA:9
- a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-ORIG-GUID: b9aQUFnquVpE5Dr6vXNmvaVkfSFr6Acr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA5MDAyNSBTYWx0ZWRfX+oYIzkmpBbjB
- yL9G18lZXmTVwBoAy34PG9wE5/m5LR3kL46oM/3B813ojHrCaPuTLCBPODYpcGUgCAsg9GHrZat
- UZF7jAi9Wz6Q6VMneNP7kP3bUxUtPcONAQNgxluCVWgFabppIRSpTku6o43fZ3GfXXO8jwhvTpD
- Q/jTw1PM9XNMCXrR7rorclIo/N6JpjzpVzcTzX1upHG64jNviF/fLFJgFv+4YFZxKy0V+VURnCU
- xbFv8WzI9qJSxMEMBE4Bv5Se8uGlnaSzM74ropCv2EZZbOpZvokWqPknIszLM1e13IpAiL0mQ+T
- 0Glrl26DJwjbI9cH3kzVzE7zPgymc7BcIL7JMar1zE/lwhwiBC4CGPzB7osL+Qg7cCCmXU+6KAW
- KPjgCNWj
-X-Proofpoint-GUID: b9aQUFnquVpE5Dr6vXNmvaVkfSFr6Acr
+References: <20250722201404.2368507-1-vacha.bhavsar@oss.qualcomm.com>
+ <20250722201404.2368507-2-vacha.bhavsar@oss.qualcomm.com>
+ <875xf36qyk.fsf@draig.linaro.org>
+ <CAFEAcA8o4wEHHDXVj0Fcc3i8g+49psY7YSf1AqGiGe9vNuXiQA@mail.gmail.com>
+ <87ikj3545v.fsf@draig.linaro.org>
+ <CAFEAcA-Y7utLb9cciGJOVAPF8Y0W4RxcOLDnNS7ptpHtYVG_EQ@mail.gmail.com>
+ <CAEWVDmsOD-vNc6YbwfND9yzfz-G8kEsFfpEtJ5A+duhUzGU2Pg@mail.gmail.com>
+ <CAEWVDms3R+_dv79GTdmzbJBJ3rb=hSi7rRj=f4rzRFwsHnzXJg@mail.gmail.com>
+ <CAFEAcA_Q-MhmFNvXUwUXF2_MJqHxujPL7C3=PxC8=hMprerDxA@mail.gmail.com>
+In-Reply-To: <CAFEAcA_Q-MhmFNvXUwUXF2_MJqHxujPL7C3=PxC8=hMprerDxA@mail.gmail.com>
+From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+Date: Mon, 11 Aug 2025 15:37:13 -0400
+X-Gm-Features: Ac12FXzkirCQSzrqBa8EGJFIE1R_sCI49lZB169IkkBVUMG83req9LEARYgGmNs
+Message-ID: <CAEWVDmv3ZCs8tW0pzH0sX_SUOdj-fyFwVz0uSRowziga=hCF1Q@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] target/arm: Increase MAX_PACKET_LENGTH for SME ZA
+ remote gdb debugging
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000884853063c1c0dc0"
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEwMDA1NyBTYWx0ZWRfX2IEqyNYuuzbK
+ gXThsWyb1WkQPC1nIpS6iUWnAzPXNEwE6eOs3ODBKdudIy0hhVFEy3esstPal9zKjA/YUB6i39l
+ SBZXIbdICFnXBme48qDWMUf13LmQzcBITMv+/XVXWnYfyGgb46Ys9KWuyf65YB0bN1kXyc7rRG7
+ yaQOAkNLy6G17Q9NDCNkb9jhT1V7aI0QBw54ghOtYBDoz8dm/MYdtka1mm+llqgZLrXv2a+ec9Q
+ yk5+lxf+03SBzvZDWJNCj/hzzlywfnoedvkFYVw4SbMd7DZhlcLaFwLYxkUEIIiM5wAZIDw5sYa
+ ifwJkHUTKWMc0dAyQXDTP9x/sDIpKlsnJqS2j1mbczSyOPWjed/0cuz19GTUREB3og/1kRkl2af
+ 9dUsA+P6
+X-Proofpoint-GUID: x-ojEPhpQhYWtWwdYb70ssfSW8wMxgHj
+X-Authority-Analysis: v=2.4 cv=aYNhnQot c=1 sm=1 tr=0 ts=689a4675 cx=c_pps
+ a=OxDXTYJfYfhXdKRNwaci0A==:117 a=2OwXVqhp2XgA:10 a=tk1fAI5CypgQKhaZt9gA:9
+ a=QEXdDO2ut3YA:10 a=VWM_7Ik0QpPsEaYKe28A:9 a=cxVRdw0VslE0MYWkNwNp:22
+X-Proofpoint-ORIG-GUID: x-ojEPhpQhYWtWwdYb70ssfSW8wMxgHj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-11_04,2025-08-11_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0
- clxscore=1015 phishscore=0 suspectscore=0 bulkscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508090025
+ spamscore=0 adultscore=0 priorityscore=1501 suspectscore=0 phishscore=0
+ impostorscore=0 bulkscore=0 malwarescore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508100057
 Received-SPF: pass client-ip=205.220.180.131;
  envelope-from=vacha.bhavsar@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,200 +132,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds a test case to test SME register exposure to
-a remote gdb debugging session. This test simply sets and
-reads SME registers.
+--000000000000884853063c1c0dc0
+Content-Type: text/plain; charset="UTF-8"
 
-Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
----
-Changes since v4:
-- this patch was not present in v4, it was added based on
-suggestions during the review of v4
----
- configure                             |   6 ++
- tests/tcg/aarch64/Makefile.target     |  23 ++++-
- tests/tcg/aarch64/gdbstub/test-sme.py | 119 ++++++++++++++++++++++++++
- 3 files changed, 147 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/aarch64/gdbstub/test-sme.py
+Hi,
 
-diff --git a/configure b/configure
-index 825057ebf1..177d3775ac 100755
---- a/configure
-+++ b/configure
-@@ -1837,6 +1837,12 @@ for target in $target_list; do
-           echo "GDB=$gdb_bin" >> $config_target_mak
-       fi
- 
-+      if test "${gdb_arches#*$arch}" != "$gdb_arches" && version_ge $gdb_version 14.1; then
-+          echo "GDB_HAS_SME_TILES=y" >> $config_target_mak
-+       else
-+          echo "GDB_HAS_SME_TILES=n" >> $config_target_mak
-+      fi
-+
-       if test "${gdb_arches#*aarch64}" != "$gdb_arches" && version_ge $gdb_version 15.1; then
-           echo "GDB_HAS_MTE=y" >> $config_target_mak
-       fi
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 16ddcf4f88..1a33ef17a0 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -132,7 +132,28 @@ run-gdbstub-sve-ioctls: sve-ioctls
- 		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sve-ioctl.py, \
- 	basic gdbstub SVE ZLEN support)
- 
--EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls
-+ifneq ($(CROSS_AS_HAS_ARMV9_SME),)
-+# SME gdbstub test
-+ifeq ($(GDB_HAS_SME_TILES),y)
-+run-gdbstub-sysregs-sme: sysregs
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sme.py \
-+		-- test_sme --gdb_sme_tile_support, \
-+	basic gdbstub SME support)
-+else
-+run-gdbstub-sysregs-sme: sysregs
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sme.py, \
-+	basic gdbstub SME support)
-+
-+endif
-+endif
-+
-+EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls run-gdbstub-sysregs-sme
- 
- ifeq ($(GDB_HAS_MTE),y)
- run-gdbstub-mte: mte-8
-diff --git a/tests/tcg/aarch64/gdbstub/test-sme.py b/tests/tcg/aarch64/gdbstub/test-sme.py
-new file mode 100644
-index 0000000000..c2b9d774ae
---- /dev/null
-+++ b/tests/tcg/aarch64/gdbstub/test-sme.py
-@@ -0,0 +1,119 @@
-+from __future__ import print_function
-+#
-+# Test the SME registers are visible and changeable via gdbstub
-+#
-+# This is launched via tests/guest-debug/run-test.py
-+#
-+
-+import argparse
-+import gdb
-+from test_gdbstub import main, report
-+
-+MAGIC = 0x01020304
-+
-+def run_test():
-+    "Run through the tests one by one"
-+
-+    frame = gdb.selected_frame()
-+    rname = "za"
-+    za = frame.read_register(rname)
-+    report(True, "Reading %s" % rname)
-+
-+    for i in range(0, 16):
-+        for j in range(0, 16):
-+            cmd = "set $za[%d][%d] = 0x01" % (i, j)
-+            gdb.execute(cmd)
-+            report(True, "%s" % cmd)
-+    for i in range(0, 16):
-+        for j in range(0, 16):
-+            reg = "$za[%d][%d]" % (i, j)
-+            v = gdb.parse_and_eval(reg)
-+            report(str(v.type) == "uint8_t",
-+                    "size of %s" % (reg))
-+            report(int(v) == 0x1, "%s is 0x%x" % (reg, 0x1))
-+
-+def run_test_slices():
-+    "Run through the tests one by one"
-+
-+    frame = gdb.selected_frame()
-+    rname = "za"
-+    za = frame.read_register(rname)
-+    report(True, "Reading %s" % rname)
-+
-+    for i in range(0, 16):
-+        for j in range(0, 16):
-+            cmd = "set $za[%d][%d] = 0x01" % (i, j)
-+            gdb.execute(cmd)
-+            report(True, "%s" % cmd)
-+    for i in range(0, 16):
-+        for j in range(0, 16):
-+            reg = "$za[%d][%d]" % (i, j)
-+            v = gdb.parse_and_eval(reg)
-+            report(str(v.type) == "uint8_t",
-+                    "size of %s" % (reg))
-+            report(int(v) == 0x1, "%s is 0x%x" % (reg, 0x1))
-+
-+    for i in range(0, 4):
-+        for j in range(0, 4):
-+            for k in range(0, 4):
-+                cmd = "set $za%dhq%d[%d] = 0x%x" % (i, j, k, MAGIC)
-+                gdb.execute(cmd)
-+                report(True, "%s" % cmd)
-+        for j in range(0, 4):
-+            for k in range(0, 4):
-+                reg = "$za%dhq%d[%d]" % (i, j, k)
-+                v = gdb.parse_and_eval(reg)
-+                report(str(v.type) == "uint128_t",
-+                    "size of %s" % (reg))
-+                report(int(v) == MAGIC, "%s is 0x%x" % (reg, MAGIC))
-+        
-+        for j in range(0, 4):
-+            for k in range(0, 4):
-+                cmd = "set $za%dvq%d[%d] = 0x%x" % (i, j, k, MAGIC)
-+                gdb.execute(cmd)
-+                report(True, "%s" % cmd)
-+        for j in range(0, 4):
-+            for k in range(0, 4):
-+                reg = "$za%dvq%d[%d]" % (i, j, k)
-+                v = gdb.parse_and_eval(reg)
-+                report(str(v.type) == "uint128_t",
-+                    "size of %s" % (reg))
-+                report(int(v) == MAGIC, "%s is 0x%x" % (reg, MAGIC))
-+
-+    for i in range(0, 4):
-+        for j in range(0, 4):
-+            for k in range(0, 4):
-+                cmd = "set $za%dhd%d[%d] = 0x%x" % (i, j, k, MAGIC)
-+                gdb.execute(cmd)
-+                report(True, "%s" % cmd)
-+        for j in range(0, 4):
-+            for k in range(0, 4):
-+                reg = "$za%dhd%d[%d]" % (i, j, k)
-+                v = gdb.parse_and_eval(reg)
-+                report(str(v.type) == "uint64_t",
-+                    "size of %s" % (reg))
-+                report(int(v) == MAGIC, "%s is 0x%x" % (reg, MAGIC))
-+        
-+        for j in range(0, 4):
-+            for k in range(0, 4):
-+                cmd = "set $za%dvd%d[%d] = 0x%x" % (i, j, k, MAGIC)
-+                gdb.execute(cmd)
-+                report(True, "%s" % cmd)
-+        for j in range(0, 4):
-+            for k in range(0, 4):
-+                reg = "$za%dvd%d[%d]" % (i, j, k)
-+                v = gdb.parse_and_eval(reg)
-+                report(str(v.type) == "uint64_t",
-+                    "size of %s" % (reg))
-+                report(int(v) == MAGIC, "%s is 0x%x" % (reg, MAGIC))
-+
-+
-+parser = argparse.ArgumentParser(description="A gdbstub test for SME support")
-+parser.add_argument("--gdb_sme_tile_support", help="GDB support for SME tiles", \
-+                    action="store_true")
-+args = parser.parse_args()
-+
-+if args.gdb_sme_tile_support:
-+    main(run_test_slices, expected_arch="aarch64")
-+else:
-+    main(run_test, expected_arch="aarch64")
-\ No newline at end of file
--- 
-2.34.1
+From testing with a max vector length, the minimum size the buffer needs to
+be is 131077 to survive the worst case of a P packet with the ZA register.
+This is enough to fit the whole ZA register plus the overhead for the P
+packet (command + register number, the checksum is not stored in line_buf)
+and the null terminator. I had overshot and rounded it safely to 131100,
+and it seems gdbserver has done the same thing but they specifically
+counted 32 bytes for overhead, it's not specified why. So the 131100 is
+large enough, however I have changed it to 131104 just to stay consistent
+with gdbserver and have added this note to the comment you've suggested to
+be placed above MAX_PACKET_LENGTH. I've also changed line_buf to be a
+GString as Alex suggested.
 
+I have sent a new version with these changes. Looking forward to your
+feedback!
+
+Thanks,
+Vacha
+
+--000000000000884853063c1c0dc0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi,<br><br>From testing with a max vector length, the mini=
+mum size the buffer needs to be is 131077 to survive the worst case of a P =
+packet with the ZA register. This is enough to fit the whole ZA register pl=
+us the overhead for the P packet (command + register number, the checksum i=
+s not stored in line_buf) and the null terminator. I had overshot and round=
+ed it safely to 131100, and it seems gdbserver has done the same thing but =
+they specifically counted 32 bytes for overhead, it&#39;s not specified why=
+. So the 131100 is large enough, however I have changed it to 131104 just t=
+o stay consistent with gdbserver and have added this note to the comment yo=
+u&#39;ve suggested to be placed above MAX_PACKET_LENGTH. I&#39;ve also chan=
+ged line_buf to be a GString as Alex suggested.<div><br></div><div>I have s=
+ent a new version with these changes. Looking forward to your feedback!</di=
+v><div><br></div><div>Thanks,</div><div>Vacha</div></div>
+
+--000000000000884853063c1c0dc0--
 
