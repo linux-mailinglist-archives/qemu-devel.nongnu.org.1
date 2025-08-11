@@ -2,98 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F058B207B7
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 13:27:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3E9B207FD
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 13:36:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulQfb-0002uf-Ta; Mon, 11 Aug 2025 07:26:27 -0400
+	id 1ulQnj-0005mR-JC; Mon, 11 Aug 2025 07:34:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1ulQfY-0002ta-94; Mon, 11 Aug 2025 07:26:24 -0400
-Received: from fhigh-b7-smtp.messagingengine.com ([202.12.124.158])
+ (Exim 4.90_1) (envelope-from <smail.aider@huawei.com>)
+ id 1ulQnb-0005mE-Ox
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 07:34:43 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1ulQfQ-0004eW-Ec; Mon, 11 Aug 2025 07:26:23 -0400
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
- by mailfhigh.stl.internal (Postfix) with ESMTP id 157997A0081;
- Mon, 11 Aug 2025 07:26:13 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-01.internal (MEProxy); Mon, 11 Aug 2025 07:26:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:date:date:from
- :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1754911572; x=
- 1754997972; bh=mi9pZ3LFQVGMrdUdfVF65b2q7BTmwvZnwSwFJjAwaCc=; b=g
- VO8dMLaiNQZaDLTBHXJ6x6MvoA7Fh2jS04/jCi8sM2TrvjZmonGwcBzc+PXt/bXy
- EL9iFO4j1KurjnTygDC9tKC9yu+OnBzJWBweDvfV1+DDSsluGkaX1AEwj8KxAUP8
- /Eb/KuV2X5H8eaolgY5uLGARuScgyzSKJ92QatnBPfbyLryDATGKBK9XN1c5cEuj
- hHkvcxteIJUR1F0YRKwxfMjtooQmWo8QuLKth5oKJcqxyVWZz974vHdiny6JMLTi
- qF4/rQL7Z88pZ+A9/cG/aqOy5FPIIMhYESNqzj4hTjQqYRuqZkhhQOMHuK6cq4fp
- OW539Z/lec633/mj55KFw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm3; t=1754911572; x=1754997972; bh=m
- i9pZ3LFQVGMrdUdfVF65b2q7BTmwvZnwSwFJjAwaCc=; b=VQcKm+r5ses9FD+FO
- SKb80SuHbyPvCUMlUTCyx7HyhcqcoDZrS4LSNaNdytTU51p72vilR0cKHTICQA3X
- V6dYJY4VOcGrQ4dQ7mRwpRamJrhSYHfdrncD72+a2rUDzJNeJJde3PNChTuTkQm3
- VWO0kZ16NHuUVNASrfnImOpJ53yoT11bqVi55n7/ZJJR2IJshPFxTKoO/cheRvwb
- OTbOlkJm78Fg03gyB+UX52Wp9Oz9j+8w3nzaSPhinqyH/aBt+E4fmHYuywUOhYPJ
- PzC6gIsALypMUXVvA606zOlPb+kzqtDf5cL3tl51Ix4E5xX2sztfocEo4ncXTUAG
- g0Tgg==
-X-ME-Sender: <xms:VNOZaAtpxbuw2gtHMIGgJ9Qh7OSylK9yVlIAtJpM19JQYo-kH47UPw>
- <xme:VNOZaE0Smr0uqUkEaDJmZtVD0HfFZMBjB_Bx6urGpOjOQvw9wdy5OAY5IY_5aayAf
- JNj0hsZRGDAK23z_PU>
-X-ME-Received: <xmr:VNOZaBX91MoK17U_UA0kXpjRXhsZ0w_f35ZPp-PKa768xqpX6iq6s48FcUgVCkrHPiStigO67ZGnGQt0PFRZxkdR>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufedvfeefucetufdoteggodetrf
- dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
- rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
- gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhlrghushcu
- lfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrthhtvg
- hrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudejudeg
- necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtsh
- esihhrrhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghpthhtohepjedpmhhouggvpehsmhht
- phhouhhtpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprh
- gtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgtphht
- thhopehksghushgthheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhdrjhgvnhhsvg
- hnsehsrghmshhunhhgrdgtohhmpdhrtghpthhtohepihhtshesihhrrhgvlhgvvhgrnhht
- rdgukhdprhgtphhtthhopehfohhsshesuggvfhhmrggtrhhordhithdprhgtphhtthhope
- hqvghmuhdqsghlohgtkhesnhhonhhgnhhurdhorhhg
-X-ME-Proxy: <xmx:VNOZaPJ7sCgKZNxAYrUwUimsXvdgu7p7HSmNs554_JaePVjR6YdkmQ>
- <xmx:VNOZaD2gR5DZR8BaBht4Zj6sElFSn83O57A9axumZpEw1ix3NfCoZg>
- <xmx:VNOZaF7cZq6LndRxVaY2EWOUaw-3LlKr1Fx57MQ1XoaSQeJ-Iuxjrw>
- <xmx:VNOZaM-nvaig_u4Gq4mulB_3fgNODl4T3YwfkZ3y79JPhPpyvCwq0Q>
- <xmx:VNOZaHvetKOFEU9bnjmiFNfANWfRYYirafJ81STxa4AG4RxlhoBv_ECN>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 11 Aug 2025 07:26:11 -0400 (EDT)
-From: Klaus Jensen <its@irrelevant.dk>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <k.jensen@samsung.com>, Klaus Jensen <its@irrelevant.dk>,
- Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org
-Subject: [PULL 3/3] hw/nvme: cap MDTS value for internal limitation
-Date: Mon, 11 Aug 2025 13:25:57 +0200
-Message-ID: <20250811112557.521-4-its@irrelevant.dk>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250811112557.521-1-its@irrelevant.dk>
-References: <20250811112557.521-1-its@irrelevant.dk>
+ (Exim 4.90_1) (envelope-from <smail.aider@huawei.com>)
+ id 1ulQnR-0005ZP-KZ
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 07:34:43 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c0std1ngHz6M5Dc;
+ Mon, 11 Aug 2025 19:32:25 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id ED519140275;
+ Mon, 11 Aug 2025 19:34:19 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 11 Aug 2025 13:34:19 +0200
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Mon, 11 Aug 2025 13:34:19 +0200
+To: Michael Tokarev <mjt@tls.msk.ru>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: Peter Maydell <peter.maydell@linaro.org>, "zhangyue (BA)"
+ <zhangyue165@huawei.com>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "Liuyutao(DRC)" <liuyutao2@huawei.com>
+Subject: RE: [PATCH v2 1/2] target/arm: Trap PMCR when MDCR_EL2.TPMCR is set
+Thread-Topic: [PATCH v2 1/2] target/arm: Trap PMCR when MDCR_EL2.TPMCR is set
+Thread-Index: AQHcAsOko37zELmrqkOCgijqUwHZTrRb4nUAgAF/HsA=
+Date: Mon, 11 Aug 2025 11:34:19 +0000
+Message-ID: <21e242a15cf64bf4b5c4cd7da523aca3@huawei.com>
+References: <20250801090645.2205449-1-smail.aider@huawei.com>
+ <20250801090645.2205449-2-smail.aider@huawei.com>
+ <4288fe0a-a9ed-4a85-8edd-5af8256ff647@tls.msk.ru>
+In-Reply-To: <4288fe0a-a9ed-4a85-8edd-5af8256ff647@tls.msk.ru>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.206.134.11]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=202.12.124.158; envelope-from=its@irrelevant.dk;
- helo=fhigh-b7-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=smail.aider@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,44 +76,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Smail AIDER <smail.aider@huawei.com>
+From:  Smail AIDER via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Keith Busch <kbusch@kernel.org>
-
-The emulated device had let the user set whatever max transfers size
-they wanted, including no limit. However the device does have an
-internal limit of 1024 segments. NVMe doesn't report max segments,
-though. This is implicitly inferred based on the MDTS and MPSMIN values.
-
-IOV_MAX is currently 1024 which 4k PRPs can exceed with 2MB transfers.
-Don't allow MDTS values that can exceed this, otherwise users risk
-seeing "internal error" status to their otherwise protocol compliant
-commands.
-
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
----
- hw/nvme/ctrl.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index fa48412ef48e..f5ee6bf260f1 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8339,6 +8339,11 @@ static bool nvme_check_params(NvmeCtrl *n, Error **errp)
-         host_memory_backend_set_mapped(n->pmr.dev, true);
-     }
- 
-+    if (!n->params.mdts || ((1 << n->params.mdts) + 1) > IOV_MAX) {
-+        error_setg(errp, "mdts exceeds IOV_MAX");
-+        return false;
-+    }
-+
-     if (n->params.zasl > n->params.mdts) {
-         error_setg(errp, "zoned.zasl (Zone Append Size Limit) must be less "
-                    "than or equal to mdts (Maximum Data Transfer Size)");
--- 
-2.47.2
-
+WWVzLCB0aGlzIHBhdGNoIGlzIGFsc28gaW50ZW5kZWQgdG8gcWVtdS1zdGFibGUuDQoNClRoYW5r
+IHlvdS4NCg0KLS0NCkJlc3QgUmVnYXJkcywNClNtYWlsIEFJREVSDQpFLU1haWw6IHNtYWlsLmFp
+ZGVyQGh1YXdlaS5jb20NCk9wZXJhdGluZyBTeXN0ZW0gUmVzZWFyY2hlci9EZXZlbG9wZXINCkRy
+ZXNkZW4gUmVzZWFyY2ggQ2VudGVyLCBPUyBLZXJuZWwgTGFiDQpIdWF3ZWkgVGVjaG5vbG9naWVz
+IENvLiwgTHRkDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBNaWNoYWVsIFRv
+a2FyZXYgPG1qdEB0bHMubXNrLnJ1PiANClNlbnQ6IFN1bmRheSwgQXVndXN0IDEwLCAyMDI1IDQ6
+NDEgUE0NClRvOiBTbWFpbCBBSURFUiA8c21haWwuYWlkZXJAaHVhd2VpLmNvbT47IHFlbXUtZGV2
+ZWxAbm9uZ251Lm9yZw0KQ2M6IEFsZXhhbmRlciBTcHlyaWRha2lzIDxhbGV4YW5kZXIuc3B5cmlk
+YWtpc0BodWF3ZWkuY29tPjsgcWVtdS1hcm1Abm9uZ251Lm9yZzsgUGV0ZXIgTWF5ZGVsbCA8cGV0
+ZXIubWF5ZGVsbEBsaW5hcm8ub3JnPjsgemhhbmd5dWUgKEJBKSA8emhhbmd5dWUxNjVAaHVhd2Vp
+LmNvbT47IHJpY2hhcmQuaGVuZGVyc29uQGxpbmFyby5vcmc7IExpdXl1dGFvKERSQykgPGxpdXl1
+dGFvMkBodWF3ZWkuY29tPjsgcWVtdS1zdGFibGUgPHFlbXUtc3RhYmxlQG5vbmdudS5vcmc+DQpT
+dWJqZWN0OiBSZTogW1BBVENIIHYyIDEvMl0gdGFyZ2V0L2FybTogVHJhcCBQTUNSIHdoZW4gTURD
+Ul9FTDIuVFBNQ1IgaXMgc2V0DQoNCk9uIDAxLjA4LjIwMjUgMTI6MDYsIFNtYWlsIEFJREVSIHZp
+YSB3cm90ZToNCj4gRnJvbTogU21haWwgQUlERVIgdmlhIDxxZW11LWRldmVsQG5vbmdudS5vcmc+
+DQo+IA0KPiBUcmFwIFBNQ1JfRUwwIG9yIFBNQ1IgYWNjZXNzZXMgdG8gRUwyIHdoZW4gTURDUl9F
+TDIuVFBNQ1IgaXMgc2V0Lg0KPiBTaW1pbGFyIHRvIE1EQ1JfRUwyLlRQTSwgTURDUl9FTDIuVFBN
+Q1IgYWxsb3dzIHRyYXBwaW5nIEVMMCBhbmQgRUwxDQo+IGFjY2Vzc2VzIHRvIHRoZSBQTUNSIHJl
+Z2lzdGVyIHRvIEVMMi4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFNtYWlsIEFJREVSIDxzbWFpbC5h
+aWRlckBodWF3ZWkuY29tPg0KPiBNZXNzYWdlLUlkOiA8MjAyNTA3MjIxMzE5MjUuMjExOTE2OS0x
+LXNtYWlsLmFpZGVyQGh1YXdlaS5jb20+DQoNCkknbSBhc3N1bWluZyB0aGlzIGlzIGZvciBxZW11
+LXN0YWJsZSB0b28gKENjJ2VkKSwganVzdCBsaWtlIHRoZQ0KdjEgb2YgdGhpcyBwYXRjaCB3YXMu
+ICBQbGVhc2UgbGV0IG1lIGtub3cgaXQgaXQgaXNuJ3QuDQoNClRoYW5rcywNCg0KL21qdA0K
 
