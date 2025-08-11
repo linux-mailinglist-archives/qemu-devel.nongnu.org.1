@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF01B20A79
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 15:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A238CB20A82
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 15:40:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulSjD-0000Pf-QT; Mon, 11 Aug 2025 09:38:19 -0400
+	id 1ulSkb-0001Nh-F8; Mon, 11 Aug 2025 09:39:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulSj8-0000OZ-NH
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:38:14 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulSk0-00018d-Be
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:39:11 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulSiz-0005xw-9J
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:38:14 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3b78bca0890so2113536f8f.3
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 06:38:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulSjn-0006AY-KD
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 09:39:03 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-458baf449cbso42642895e9.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 06:38:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754919481; x=1755524281; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754919531; x=1755524331; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=u9QyDmOD3c7gJoYxpeNy2D55L6583VGCZiRZgC+aA3M=;
- b=eN5PxInx6aG8d1FSCqrjWMmjc3FAunpaVHqZyQSARBlXbjXK3xntrSfcOorK9Q7/EB
- EineE16iByMUG9+ax3ZT6YKQ2Kj16s9K2r8x1YQniWpwIAxdpRV5q5+TtgfQm0thaDCX
- el3tktHDptzHrlX/diN8asHKBylLPdnK8lTOAzpywJHzo+iiyTav6J/c83Q7PLeOVq+f
- ZSTni4iVX/TyflaKLPgrrQcPQlCUWGFFJfMQwqOx2Xj0nLCk1hFITWsJIz0b5B8Utr73
- qFKFNLUyEeluTeDfb8bNVPxUFis06JyJ708kYxcD/ZWqTjmiIXwBlHynxhMjrWGDsxxF
- B6eg==
+ bh=JariJnbRh2SIVsx43ZoyoG0qSarOLEjJhdGnOzTfJXI=;
+ b=IwG6EBpsvqOTWE58ayWI0DMVGuaT0v9C7jQR7aJXUesAb1vkAhLPUTb4ID3k6JMoHr
+ hyUhl3IXHFc2a2O0S2sqW6A9KR2dIRgS2lPrpP4cT2y/HX5i/wg8RvE27sPsv0rRU1vt
+ ywfpEtL9YuJnNZ7qVanaBf9HNBv/94O6ZVdYw+4MLDs+J9UDqOqPNlA4G6+0FKK4OGr2
+ qILg5HmVXTIC8NnNAuBetsJZZDMr4aXlyy0kvQHDb6de8HPOEtNMewWJsXU/gYDklFqd
+ FJaNTOPqZdi454LZ09PzUhZFp8RrUspeyZ59/v1qSeUX05c0PvvvZ9oMnJnz6iAe2VJP
+ 4piA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754919481; x=1755524281;
+ d=1e100.net; s=20230601; t=1754919531; x=1755524331;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=u9QyDmOD3c7gJoYxpeNy2D55L6583VGCZiRZgC+aA3M=;
- b=NBFSuveDkFu9tSU0Q2f1ZZ9+i7R0oP/Wqwbn384oDW8tu9zEXjvSLihOYAnaPeNVpn
- I1Cieoex3ZY/41oKxzu/wkG+86egnyarHSUAr5HYRz2kZnWMlDCbDHn+19WDZXmB8CKW
- 9TNzSiw9pU3gmpepil2kF6kFRyTxnx5JAVv3J+/o7HzfwnnbKLoFCfDFZUnVK5eLAccR
- aQmeD217OljomIEg4rEXdvi7RZtg0ObFOvFdNKSj0urACPN9b14YFlBmNJxI8jx6R4ES
- iZ8mI+bPRlQxzhCnd9kVwz9eFH09E+O1/C766kLHTP9/ELkFTtEB1IdvrWWKMO3dZSVI
- +4zA==
+ bh=JariJnbRh2SIVsx43ZoyoG0qSarOLEjJhdGnOzTfJXI=;
+ b=EEPIAQcpzwqZ7O31cnvjkf0aDR86ie5/inmqX7r6x+0YmvL9P79IeCI6DCw/inpUbB
+ x8rUmzuRIj3nZ+jtUHZmzWqQ+qiQ3WiWcBwKmXxwF7L+oZDRAih6LXk5kF6bOMD8438v
+ sXFeDlskXx+tUp9SRrlGxg/4TnymepUPrbULhCCVzawmpJ258DTr9c6BVyapF1ENGrkU
+ MLWVJyJaClujlVVDkfrXRccIOz1TlqlLUCFqfhosyoMZWsQfpK3Y4ad/3pL1E3RMc+iQ
+ Ne8s0EJfOSQDiDVWoaRjxPUBzXUCSTMxrCFPQwxH/bkn6KS/saJjxmKzzBvHzYge8hpU
+ +gMA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUrF4Wk13qmk/0oTsYAKBTgIsmyqgQMirqXtWq2QXj1FXnd2b+RrBESgnol6fKdK6rKpeA/snFLDfyC@nongnu.org
-X-Gm-Message-State: AOJu0YzsWSNPb3U6IWGAOKdnaW0omsHD7hWcAdDSNpR+X7Bt98gjI8ox
- zG+mkb5MnatFSoM+zEcwMxv9DmUtW33/xGox8UJLczaUsdO92JVfX9rqv1Vf4qFXps8=
-X-Gm-Gg: ASbGncvOBGv53FcweIfc1/Xy/JoTKvRGToLBbA2CZvGDhZ2uXI0hkvOvyPhcQnzVuWA
- OKLHb6MxmjskrBAlFo/UppJWm65xcEta7j5WxoB6QutIoDfLFo2cRAQEBQYKXuLqy5rVkBa0V90
- GHBy8kpfq/cM3AQ+5aKQcqyV71L6F+PuWtVllIEIOKDaY+TV7ypksDCGmtDV61SbrJkjIZat3eA
- 3yKq1XOcXVd+HZYyATBX9mtKsK0eWc99P3YiAQgcJZD0UQvFR3YX1e3n6BNPI85FC8sL3rBcRH9
- vEW6pBXWKVzQNVdERr4OiP+a0nWmc/dSAeqRTkfVfmh2AZ3gP+Fp3mcDs1RRFPj8us7Mz8BjAaX
- 6QxKKSS+Q0B7HB2Z/PqbZ+XEyRf1ZNenOsIV2CJ/ww2w0LD9rWEOoxuEdzM2YwZfz84O0+wg=
-X-Google-Smtp-Source: AGHT+IFFsCdbSe+a4IDaI9gkPILHsi2007VwgyPQmoGnqPA/wd7/l4pc63ukIbi/FWeaOH/WO5yQog==
-X-Received: by 2002:a05:6000:2388:b0:3b8:d7c7:62d7 with SMTP id
- ffacd0b85a97d-3b900b2de7bmr8953367f8f.16.1754919481284; 
- Mon, 11 Aug 2025 06:38:01 -0700 (PDT)
+ AJvYcCUbktFhdN60rC3ta5+fbOm0v9eEGWj7cLA9b0XL33vQIEJnPMev6H+DOQ5s+99f4Fp4VgqE7ST1QAEQ@nongnu.org
+X-Gm-Message-State: AOJu0YxHMKIpSL8gojcsEUHeIdGnI4I3HfdFtIXWEL2gcoAxi5DKgmmE
+ KQ2l2F/bxnrHxxa1EFs1eWmP2mLEUIm2y5EbWrAJog3plw/pzDEe4P6qopSr8NjQMGc=
+X-Gm-Gg: ASbGncs3B/8VdLSMOOjNRMyF7POUkvAXY2GtFpAkikEq/NftKDpKw/fNaMVDuboQSab
+ vruQNCxinA6vW4smkNnz2nnamzeY4wtuswAiacqbq7DxGnkrQiq8TnCj8lhblyiTg27/WKXornD
+ GLu4gN3DISsDEVN2sSKJC1BkTA7RR5KGW6N8vgUu8cHEGhOmEUvDkdgGH4XkLBk+qBU1lgljx9g
+ JEtga+cZ5MzjCuFuHsu+a7GbBefMhQuqsL8X850QKgJYjsLkdr1hhK2JSIOtBZeydtn3z0tguF/
+ vfLHVzcnmmGnOFDfcbRTWrWiXAXiNrHGO6PnVLAxXjscFad89KLWcRhYXp02ogJBcQBCiywgq2j
+ HKOSfXdAdr81v6eJ6QST1KjCfzzHUdiiZfvTWEwxlYYKDNMBZrNvLTUmYYFva6pDCibr2Iq4=
+X-Google-Smtp-Source: AGHT+IF3JRpQlQC6Aw1u4qosjefhmeNsvB07i8k14PBpsNcj0J/lEi2CpF16KTbigZnrp30QFlsOLA==
+X-Received: by 2002:a5d:64cd:0:b0:3b7:9c38:e8a5 with SMTP id
+ ffacd0b85a97d-3b900b8bd0emr10240670f8f.56.1754919530913; 
+ Mon, 11 Aug 2025 06:38:50 -0700 (PDT)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c48de68sm40960295f8f.67.2025.08.11.06.38.00
+ 5b1f17b1804b1-459e5e99e04sm254070495e9.11.2025.08.11.06.38.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Aug 2025 06:38:00 -0700 (PDT)
-Message-ID: <b76d242e-d18f-4ec9-b436-11d8d8c09ebb@linaro.org>
-Date: Mon, 11 Aug 2025 15:37:59 +0200
+ Mon, 11 Aug 2025 06:38:50 -0700 (PDT)
+Message-ID: <4ee9aac5-05d8-4770-8712-dce95958cbcd@linaro.org>
+Date: Mon, 11 Aug 2025 15:38:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] hw/uefi: open json file in binary mode
+Subject: Re: [PATCH 2/3] hw/uefi: check access for first variable
 To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
 Cc: Kashyap Chamarthy <kchamart@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -77,19 +77,20 @@ Cc: Kashyap Chamarthy <kchamart@redhat.com>,
  Weiwei Li <liwei1518@gmail.com>, Alistair Francis
  <alistair.francis@wdc.com>, qemu-riscv@nongnu.org
 References: <20250811130110.820958-1-kraxel@redhat.com>
- <20250811130110.820958-4-kraxel@redhat.com>
+ <20250811130110.820958-3-kraxel@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250811130110.820958-4-kraxel@redhat.com>
+In-Reply-To: <20250811130110.820958-3-kraxel@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,14 +108,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/8/25 15:01, Gerd Hoffmann wrote:
-> Fixes file length discrepancies due to line ending conversions
-> on windows hosts.
+> When listing variables (via get-next-variable-name) only the names of
+> variables which can be accessed will be returned.  That check was
+> missing for the first variable though.  Add it.
 > 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3058
 > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 > ---
->   hw/uefi/var-service-json.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   hw/uefi/var-service-vars.c | 3 +++
+>   1 file changed, 3 insertions(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
