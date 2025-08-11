@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C46B212F6
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 19:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0BFB212EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 19:11:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulVzx-0005II-1h; Mon, 11 Aug 2025 13:07:50 -0400
+	id 1ulVzx-0005Kl-Fv; Mon, 11 Aug 2025 13:07:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulVzU-000512-8d
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 13:07:25 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulVzd-00054t-BW
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 13:07:33 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulVzI-0001s3-NX
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 13:07:18 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3b7910123a0so4251316f8f.1
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 10:07:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulVzP-0001t1-C6
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 13:07:26 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-458b885d6eeso29538855e9.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 10:07:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1754932023; x=1755536823; darn=nongnu.org;
+ d=linaro.org; s=google; t=1754932028; x=1755536828; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wXHYeE/dbTRdflhUmCNmx7Q9a47atxr+CRA/ufWMQVM=;
- b=SNku07GjtRGK5Zp5BGpsUb2eb3fJD/wrlu8en9z+x6mH1pzz0bLRmGgffnEKbipp0J
- cUMIIFvmbrZBMjaeVvgTbDKAhDbuG/Vy77kg8GqRG1yDW/AsYDIrIYBy9CytRViTipnZ
- eYiM+bI41NO7kYyT36qW7t/zRfqKzP+Yy3f+lpwI8ZMvydFr8EVVrmZ6GlIsdX6BpxUh
- MveaNjWsJG3epysNZRF8xVtMS72WDpRn7zcw6CfrZjAx+we2K4Ar6ia4zpMY+/9k3tgP
- 9T5yNNGc2k8io/PME7LVx7wLTbapeOZuDXCoiXrMiZnW4NObtU5hDDpjaeuvJrBd08Xu
- 4whw==
+ bh=SL9BjJEaO0GjattCvBT1sYPxfZkwHVSu+LlGdRsmcAg=;
+ b=V8abu0MXhk47x0rElHb6U4LfPfhuu82xDMcWKcWrUTEo7W55rT36w8OeF6LN8rOsom
+ VK3eBtojb9ufCF54hbGcORVUIviY6XUdasF3AIoTYRyFlL2bBhUa+LcQKuzJDfskQ31+
+ F+HrjYd4VX3gGnfWmsUYIHULHuowjJmbjsGbiZMTmYZDs8/8veCVG3DnO2AmCRvdC9Oe
+ mEeK0je60+SWjBmam6QDVX9XPxm+IgPtHp9AsNBRh7Qfoh+FmkqfzmCh38IwpzQ4usuU
+ Haj2YTBWpxS5iKVMzAxHhXheMbLE8AtrO1I+VTsEZegCqLAQFleLClrMQfWTYISnxH6F
+ 8Zug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754932023; x=1755536823;
+ d=1e100.net; s=20230601; t=1754932028; x=1755536828;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wXHYeE/dbTRdflhUmCNmx7Q9a47atxr+CRA/ufWMQVM=;
- b=QOAnRtxe6kOOdXTYMSNKSmef0XUCqRnS/238dcy01hJqZhjxkTYKW7EjIZP4yGa5dJ
- /ZuNmHbNmqA+PfCYXu5Za18toldD02uwJK/ACAis05CI1eWGYyP6oRrkomhOxMDYt2xW
- CFzeLw4C3CK6sJ9FchLSID3uqBPeHYQXOjqDLCBd2bv2YRu+hsGwc213vaeeg5nmpkSb
- QDQF8fvlkerJn74QmbOB3ZW3x1raP5yAUQaiWd3lPbjfL3vSrME4alVteiVpFebiS/O1
- JXzxZ+mNfEDsjPVqpHDuo7dLWhW43UWUUT3LibxAHZImKB+XQCWu2xDpats3yOdfxnXx
- BhuA==
-X-Gm-Message-State: AOJu0Yx0KVsn/GHmjDOdIhq7GEHFCeEoOKhbxYc71z5PN6D9wVgiRga/
- yj1Vu6aFjZsatBa7r9uurem63KApKPJ25w03cJNMfkBPTk+sneYkV6PEWoK61GbYqVyzyGL0ltv
- isEgA
-X-Gm-Gg: ASbGnctGHH3rkXOqzcw4hegc+pL1NKKjP4caj8Ss9/gjq6odVWEoDpvdTKnGeJiThjd
- +o/KNcB4EQPcB6o8wEdF0yb/qthS4FQ27F8XyIgXCa2550bEFJAfFK9pE/FeknHFPwyaHqTivBV
- onC3/gLjPXgCebdRwMrmFiFoMJ5BkHG73BiOTQkQRRHaBPlpi3vn+c+7dhDxs89qE65HXlVhsDR
- PmV3vgVXz53Ptsf4njmk+5dbbPmb9K+zKqRFL6tlkVat2OTBRQ9noXYz1QwwwZXLiwI7PMcVsq3
- m6ZinYIay8NGq2gn7wopFUboVG78980v9rxr475jWgIfYoag3kzlzRGOLGBz+0ZMVadZTR/qF6B
- Ea+1Ogxaf955ljGnUFxFjC6AdxuxOrjTpgEnbdUX92h5xxHH6N25q7yiZ2nGkrjuqM8vobTN6
-X-Google-Smtp-Source: AGHT+IFUuly7Dqrg66psU4QHCuRXsJhkEzRy6aRPP2+eyqivHdPhhh2IohEjZISBtH74GHrPxa9how==
-X-Received: by 2002:a05:6000:2c09:b0:3b7:806e:7773 with SMTP id
- ffacd0b85a97d-3b910fd97fbmr541303f8f.15.1754932022551; 
- Mon, 11 Aug 2025 10:07:02 -0700 (PDT)
+ bh=SL9BjJEaO0GjattCvBT1sYPxfZkwHVSu+LlGdRsmcAg=;
+ b=E5I47hiJysFfe8CUUtpNxWDt0ZJBY96H+YFwnev9tAGg8NBVn9MTiPXVH/oG1x3A6/
+ duVN5zUQQs1E6ZbZNDauyC02HSfys4CHOYGEAKkIc1ZuoUtzz4LBLLtkfEwpOkz2/b1T
+ HMbSOBTme5u5R/X/CWlnVQBLy78hPCVAP8otSGynoGIM9ZdjdPd3PSq54LUUCn5nMGQl
+ DFMhz0/UZZfBc6bTLCyJltUfGe1s4EpnUJnlf51vrGPovrILGMnMxwOPfn7Ob0iIc5rx
+ o8MBxcigPy5TF4SNjkXQnDv2X97CWr1qy5RO1Ebe6HtgUGkkCqLKPOw0kQ48QZNzDUD2
+ 4o4A==
+X-Gm-Message-State: AOJu0YyHYVZRu1gNRLvbmpPx8o6dZhaHfpJFFu4U5OQuERJJAyOlmvGO
+ GynJ/mZ9luW9CWz6shoWMdYLuFz0SDd01PekS0yRml/WpZwZWme59J3ciQ+yTOUwKn8ZQCme5fi
+ OVolM
+X-Gm-Gg: ASbGnctDhJ/QfDAH7dN7ZDHRXx0Y7ZpomkxND606+PmeXLcNwmsd8BSdRzx7Hjj5FDr
+ K4vQ12V33ocm0OynAIyvSGbTxU3pYRraXrBwi/hHUvSZiLmj0VxVYwuDj1uyyBopFq2X+X1dQX1
+ uv2uV7fw3YiVMM0JxWQDS1MyiwFtc9DQuYWIE5eiHmdk1JKRpVhyiiUy6kCM2qpAi4gJ3X0SdAZ
+ WNcF93OLmuDRA0yuk/gS2wH3zIzt/vZMYACLHpBOknCtJ27GHjETrDR3iquXMIFVNXWOctdFNBB
+ htETtDINEIM45HHTFAC7u6oMt2SD9rZc69tZE4skD7mRckTHKIefYDKl4qNSDR9gDmBUIJuucBy
+ 5wqEL6/Knrv8tp6KrYwrMKMLPH+K8LXbVnmP4vTLPuPk8eqSvv7S3T6Dp8qpw75R4MfEGcIYN
+X-Google-Smtp-Source: AGHT+IHfoaigvwFcg4KswaUsW5gj91pCHoOh4NHtbdx2nxS2EGq2EkpPF+O3AaqXm2LpMC3Avw3iGQ==
+X-Received: by 2002:a05:600c:1c12:b0:450:d386:1afb with SMTP id
+ 5b1f17b1804b1-45a10baf6f9mr5082985e9.9.1754932027824; 
+ Mon, 11 Aug 2025 10:07:07 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c3abf33sm41526775f8f.7.2025.08.11.10.07.01
+ 5b1f17b1804b1-459dcb86d6asm311891055e9.5.2025.08.11.10.07.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Aug 2025 10:07:02 -0700 (PDT)
+ Mon, 11 Aug 2025 10:07:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Miguel Luis <miguel.luis@oracle.com>,
@@ -74,24 +74,24 @@ Cc: Miguel Luis <miguel.luis@oracle.com>,
  Mads Ynddal <mads@ynddal.dk>, Eric Auger <eric.auger@redhat.com>,
  qemu-arm@nongnu.org, Cameron Esfahani <dirty@apple.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 09/11] target/arm/hvf: Sync registers used at EL2
-Date: Mon, 11 Aug 2025 19:06:09 +0200
-Message-ID: <20250811170611.37482-10-philmd@linaro.org>
+Subject: [RFC PATCH 10/11] target/arm/hvf: Consider EL2 acceleration for
+ Silicon M3+ chipsets
+Date: Mon, 11 Aug 2025 19:06:10 +0200
+Message-ID: <20250811170611.37482-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250811170611.37482-1-philmd@linaro.org>
 References: <20250811170611.37482-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,83 +107,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-
-When starting up the VM at EL2, more sysregs are available. Sync the state of those.
-
-Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
-[PMD: Adapted to host_cpu_feature_supported() API]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/hvf/hvf.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+Just a proof-of-concept...
+---
+ target/arm/hvf/hvf.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 5174973991f..778dc3cedf7 100644
+index 778dc3cedf7..d74f576b103 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -400,6 +400,7 @@ static const struct hvf_reg_match hvf_fpreg_match[] = {
- struct hvf_sreg_match {
-     int reg;
-     uint32_t key;
-+    bool el2;
-     uint32_t cp_idx;
- };
+@@ -1000,6 +1000,9 @@ uint32_t hvf_arm_get_max_ipa_bit_size(void)
  
-@@ -545,6 +546,27 @@ static struct hvf_sreg_match hvf_sreg_match[] = {
-     { HV_SYS_REG_CNTV_CTL_EL0, HVF_SYSREG(14, 3, 3, 3, 1) },
-     { HV_SYS_REG_CNTV_CVAL_EL0, HVF_SYSREG(14, 3, 3, 3, 2) },
-     { HV_SYS_REG_SP_EL1, HVF_SYSREG(4, 1, 3, 4, 0) },
-+    /* EL2 */
-+    { HV_SYS_REG_CPTR_EL2, HVF_SYSREG(1, 1, 3, 4, 2), .el2 = true },
-+    { HV_SYS_REG_ELR_EL2, HVF_SYSREG(4, 0, 3, 4, 1), .el2 = true },
-+    { HV_SYS_REG_ESR_EL2, HVF_SYSREG(5, 2, 3, 4, 0), .el2 = true },
-+    { HV_SYS_REG_FAR_EL2, HVF_SYSREG(6, 0, 3, 4, 0), .el2 = true },
-+    { HV_SYS_REG_HCR_EL2, HVF_SYSREG(1, 1, 3, 4, 0), .el2 = true },
-+    { HV_SYS_REG_HPFAR_EL2, HVF_SYSREG(6, 0, 3, 4, 4), .el2 = true },
-+    { HV_SYS_REG_MAIR_EL2, HVF_SYSREG(10, 2, 3, 4, 0), .el2 = true },
-+    { HV_SYS_REG_MDCR_EL2, HVF_SYSREG(1, 1, 3, 4, 1), .el2 = true },
-+    { HV_SYS_REG_SCTLR_EL2, HVF_SYSREG(1, 0, 3, 4, 0), .el2 = true },
-+    { HV_SYS_REG_SPSR_EL2, HVF_SYSREG(4, 0, 3, 4, 0), .el2 = true },
-+    { HV_SYS_REG_SP_EL2, HVF_SYSREG(4, 1, 3, 6, 0), .el2 = true},
-+    { HV_SYS_REG_TCR_EL2, HVF_SYSREG(2, 0, 3, 4, 2), .el2 = true },
-+    { HV_SYS_REG_TPIDR_EL2, HVF_SYSREG(13, 0, 3, 4, 2), .el2 = true },
-+    { HV_SYS_REG_TTBR0_EL2, HVF_SYSREG(2, 0, 3, 4, 0), .el2 = true },
-+    { HV_SYS_REG_TTBR1_EL2, HVF_SYSREG(2, 0, 3, 4, 1), .el2 = true },
-+    { HV_SYS_REG_VBAR_EL2, HVF_SYSREG(12, 0, 3, 4, 0), .el2 = true },
-+    { HV_SYS_REG_VMPIDR_EL2, HVF_SYSREG(0, 0, 3, 4, 5), .el2 = true },
-+    { HV_SYS_REG_VPIDR_EL2, HVF_SYSREG(0, 0, 3, 4, 0), .el2 = true },
-+    { HV_SYS_REG_VTCR_EL2, HVF_SYSREG(2, 1, 3, 4, 2), .el2 = true },
-+    { HV_SYS_REG_VTTBR_EL2, HVF_SYSREG(2, 1, 3, 4, 0), .el2 = true },
- };
- 
- int hvf_get_registers(CPUState *cpu)
-@@ -588,6 +610,12 @@ int hvf_get_registers(CPUState *cpu)
-             continue;
-         }
- 
-+        if (hvf_sreg_match[i].el2
-+            && arm_feature(env, ARM_FEATURE_EL2)
-+            && !host_cpu_feature_supported(ARM_FEATURE_EL2, false)) {
-+            continue;
-+        }
+ bool arm_hw_accel_cpu_feature_supported(enum arm_features feat, bool can_emulate)
+ {
++    hv_return_t ret;
++    bool supported;
 +
-         if (cpu->accel->guest_debug_enabled) {
-             /* Handle debug registers */
-             switch (hvf_sreg_match[i].reg) {
-@@ -725,6 +753,12 @@ int hvf_put_registers(CPUState *cpu)
-             continue;
-         }
- 
-+        if (hvf_sreg_match[i].el2
-+            && arm_feature(env, ARM_FEATURE_EL2)
-+            && !host_cpu_feature_supported(ARM_FEATURE_EL2, false)) {
-+            continue;
-+        }
-+
-         if (cpu->accel->guest_debug_enabled) {
-             /* Handle debug registers */
-             switch (hvf_sreg_match[i].reg) {
+     if (!hvf_enabled()) {
+         return false;
+     }
+@@ -1011,6 +1014,9 @@ bool arm_hw_accel_cpu_feature_supported(enum arm_features feat, bool can_emulate
+     case ARM_FEATURE_GENERIC_TIMER:
+         return true;
+     case ARM_FEATURE_EL2:
++        ret = hv_vm_config_get_el2_supported(&supported);
++        assert_hvf_ok(ret);
++        return supported;
+     case ARM_FEATURE_EL3:
+         return false;
+     default:
 -- 
 2.49.0
 
