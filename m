@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B84CB21572
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 21:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A84B2157A
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Aug 2025 21:40:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulYL4-0007JC-2D; Mon, 11 Aug 2025 15:37:46 -0400
+	id 1ulYKx-0007HK-N2; Mon, 11 Aug 2025 15:37:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
- id 1ulYKh-0007Dn-Ft
+ id 1ulYKj-0007E1-2r
  for qemu-devel@nongnu.org; Mon, 11 Aug 2025 15:37:27 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
- id 1ulYKR-0003rX-Jv
- for qemu-devel@nongnu.org; Mon, 11 Aug 2025 15:37:22 -0400
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57BGW383022560
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 19:37:01 GMT
+ id 1ulYKS-0003rz-Vh
+ for qemu-devel@nongnu.org; Mon, 11 Aug 2025 15:37:24 -0400
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57BGwLmv018342
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 19:37:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=qcppdkim1; bh=kTCG4odqlk4
- I31FckedmmBZfTyjLctBkXvzLD9hftMI=; b=YvyoM7Nrz9Utd/f3AJsGiHbc830
- p7dJ1sXW40ZAOaP90AEaY4sqmg5MnpuqXYt/nyqjkgmsxqodT3BNJr2ONMdva8Om
- aK/a3t9RVIYOhSnbOxKG6LvkoxnzkaXIj19emqN2QZVMvW/y7AeogjcCGGpUUrNp
- la4PsuC+rDoLStZrVJWzajJ5A8OnicHA+EeFD/XOAAegFqN7r/f/n34NIsNqvKe0
- 5BjDct9PuhB2hcRa3BpM3yo9BUibpUjpwKqmmC+XpA88Jo/w7gqxaaqJiEqcFK9G
- rMzI9WGD2laBPXbZH4oUEu09XEtohvCch7QXQs0WAJXmlFZ2EojZlxhFZgg==
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48fm3vggcn-1
+ :mime-version:references:subject:to; s=qcppdkim1; bh=7rQftNpdawu
+ un3GG01df+hVC7NJaB4/u1DcHDd2SFC8=; b=pE4gYxzd/VwzSgneXnLHIm0YRPs
+ CLGweaQX1Rsr6tGvSl99e85nJdhMzSufSXSNVDinZRydbTkDdOSg5JTef0cuNHJI
+ ufUHTPfggEe6tgIdd/KxFsE4O515UvtXKZrLdupQQjp/QXNi8+akCUt/8nFnSr02
+ TWykuNoO2dO6xf5QkztvLiKEZOf8sVEmAu5BAxDGb/Hr0gGSZvplaK54npgu2zv+
+ eQpTzeyOIaSDtGCh65aroJbgO1OFiYMGUBwpHuIYijfkTcG+PjsOMwYZ3wu5OJTq
+ Hf8OeVSKYdSuXF7htWSvuECfefSrfwR3ZTwS4nr1A+yeC2k1RbtpRK+/IQA==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48dy3g5jj7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 19:37:01 +0000 (GMT)
-Received: by mail-pf1-f199.google.com with SMTP id
- d2e1a72fcca58-76bf8e79828so9094079b3a.3
- for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 12:37:01 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 19:37:02 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-76be6f0bbfdso6123680b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Aug 2025 12:37:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754941020; x=1755545820;
+ d=1e100.net; s=20230601; t=1754941021; x=1755545821;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kTCG4odqlk4I31FckedmmBZfTyjLctBkXvzLD9hftMI=;
- b=El166ZYROAObLZUidH8FjbuQlCPVNc13gCAGuE5W5WEPNh7WwWDlfuVz+tjmp2H+Jj
- /aKUS0tYHrKBhVvm6LuqozlQS7j78tUOQKLAkVh4VRAQ9jCr+BNkEeuBZFnllXEVfKcW
- 6Z383EiOcpssh+3PEmGxC4FogPv9BgiTKiNCWZqMDYSVp2w16KRtTEaY7yRgFeq7MaSV
- 4aCkZXci+1YpYb6opKxM6A+Y4muBwLwwQavoM4SGjoHmAUBdz75FxNPnLt1FsDjaSAlv
- dB25eXcd/LyVA7BSl/CgQkBxEXrfLDdEmk/PwcG3aIHtsNJqeWwf0w8+A7LXZ79WsERh
- 7zbQ==
-X-Gm-Message-State: AOJu0YwGKWzik0Bees+aUXt3qxaWsNtHHpsRO6/IIh0zIb0Vwn1LFCRu
- Pwf2Bs9FwsUEY+bTar+QQ6UdpEy4bBaNh+n8VklV4WpjHKzZEtGQ2l4GryZMd5wm91x9RAsfAA/
- 1cfEu6xx6ayYGkYt1SWcFC+uXgYHiqkm7h4GklW+uScyFbIJFmUJazlqlHlssHfkaJ9aY
-X-Gm-Gg: ASbGncs1qzzll7E5kRJYPNaE37e8GoydlrVxodFY4UFTobFaPgeKBj9W0nn1WA72V7o
- UO3ytWbaGC7HOIT8hIBA1IknUX3QAU85r6lTl4FXrtI2Er+I7f6jpIIHRNjHZNSHb92GZaddBj0
- VOQsCP1lQnEauC5h/6+WYYiDq9JzCs372padeyRfC/71TklDLJ+ah7fGLs6Jv66oI8hkmBUWUoI
- Uczzrh6NIKu4VpaAFfb7y6X7g6R6b2o5VXguTAdey3dP4tEJBKLqnPZyX8K83MvD73zjiyV4AGe
- wwPvpj4l+FZWoysY5vMVYt5ckGO2F/4HsFAvsj7egHrEJjZ8xIovt7NMwzGvBG6wsJbHlLqXjSm
- H0wjzSVvZa8nNvqM=
-X-Received: by 2002:a05:6a00:14cc:b0:748:f750:14c6 with SMTP id
- d2e1a72fcca58-76c4615bd8cmr20210597b3a.14.1754941019698; 
- Mon, 11 Aug 2025 12:36:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKY/+VMA4PGeSzQIazQ5ZD0pwlpk82BzSIgQzHx6RHSkmcgZaY3DKMeQMifr4wZ3Y0/xK7dQ==
-X-Received: by 2002:a05:6a00:14cc:b0:748:f750:14c6 with SMTP id
- d2e1a72fcca58-76c4615bd8cmr20210563b3a.14.1754941019262; 
- Mon, 11 Aug 2025 12:36:59 -0700 (PDT)
+ bh=7rQftNpdawuun3GG01df+hVC7NJaB4/u1DcHDd2SFC8=;
+ b=qxTiEDQ1+E1BRKS8bWenGos+QVrQWhD/MRw8OvtmELPNIWUVb8kCb/Sb4x01sFax3D
+ 7UKMNiVah3GRs5NulUZRS+NywAILfjJAZ+VG1R7FHtNSqSwDuSwpoom9g5KZCcKjS/qu
+ Nfp2XeW0wPsIraYCXWxUMelOzU6bWj9sCidrEwSRoI/XquqGZTH08cP4KDHDt36zZm+t
+ BZd1c1X6tgZb/hyguDLrDDGh9A5gOI+5yrv7sfzStgaLTwlBR4vAMfA1aoq9TleYwQrU
+ /e1El1CDBfX8KUmTW2FMdITsgO2MvH0d8W3vMUH4588YZtR7s//B/1Fhr3DeyXT3zv2J
+ 8gig==
+X-Gm-Message-State: AOJu0YzfM3+wc2nqlQ3qlQhzqzM12K7Kt4528mubgehNwujHdrRtIjfJ
+ 7ULqgUyFBUPRTRAKTF36p+j9zsfCbKfl5zdx7d+repr33tLmQaJoxnjP/amyHOUIw9S0YgP46zC
+ uq1dnSPtt48CRkT/1lLNdGy6JEMhFYdHRv/c0cwSv0sg7NcLSSvhpR3x3nGCssi0DZlBV
+X-Gm-Gg: ASbGncusDlbHIg1RrP+LNRHGN2zyFNuOVNtH9QliLy2Td2yX+u23tH/qGY3y54OUEsf
+ XvEfbdEqxiFCD/XhviQg0LnGKBxNp7aDRMqkMmDEsEM9cyUW+LbRFV6grfTrL8lj2h3QDO5xU0d
+ 0KWNJ1VrTDd+AFSZz25cOjYlt3wsde7NMdOyH/mH35SjRAOJG+FNPtH1Skwun2D6OqyispHUyGY
+ oz/ObmEVNJdB4FsOv3uWTPYKeHMZsDBPyXGsKoO8oYlv/+OirdTiLizJX2KoapCYMOljD91rndN
+ yVKOhX3aA+aYvkn0q1gV6826/uKLSaM8WKLPOh0dy/YLy5LW+y2otzygI6ridHs5aOoSwZkwkup
+ FDlK8mL1kd4looyg=
+X-Received: by 2002:a05:6a00:852:b0:76b:42e5:fa84 with SMTP id
+ d2e1a72fcca58-76c460af27bmr18420228b3a.7.1754941020997; 
+ Mon, 11 Aug 2025 12:37:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdfQOSV/vy73V1stugvh+APrpPn3MN/3GDT0yWkuig7fCUn3k2T3W3oxzQzrTDLpAWt2Q1Mg==
+X-Received: by 2002:a05:6a00:852:b0:76b:42e5:fa84 with SMTP id
+ d2e1a72fcca58-76c460af27bmr18420199b3a.7.1754941020521; 
+ Mon, 11 Aug 2025 12:37:00 -0700 (PDT)
 Received: from admin15.qualcomm.com (i-global254.qualcomm.com.
  [199.106.103.254]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bccfbcef6sm27677171b3a.85.2025.08.11.12.36.58
+ d2e1a72fcca58-76bccfbcef6sm27677171b3a.85.2025.08.11.12.36.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Aug 2025 12:36:58 -0700 (PDT)
+ Mon, 11 Aug 2025 12:37:00 -0700 (PDT)
 From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
@@ -78,37 +78,37 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Subject: [PATCH v5 2/4] target/arm: Change GDBState's line_buf to a GString
-Date: Mon, 11 Aug 2025 19:36:52 +0000
-Message-Id: <20250811193654.4012878-3-vacha.bhavsar@oss.qualcomm.com>
+Subject: [PATCH v5 3/4] target/arm: Added support for SME register exposure to
+Date: Mon, 11 Aug 2025 19:36:53 +0000
+Message-Id: <20250811193654.4012878-4-vacha.bhavsar@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250811193654.4012878-1-vacha.bhavsar@oss.qualcomm.com>
 References: <20250811193654.4012878-1-vacha.bhavsar@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDEwNyBTYWx0ZWRfX7rg3lAmh9H4Z
- 9aoCjSZ8o+Sx6SZTP0CitobNhP/WjLDQpo1cQlH+bfKDEW5saewyZ5Ei+2zkg7HKu/fE391psHq
- v1rYz07Cc+skWVggVZ8TwzX3aSE4r+NkBR14nCsXZf0uLeFqetC+oygZNX9rB+R2pz3xWJPpKUY
- 4gwJJSvGp/vyeB0PHwWfJSGsNrpSjDAd+uWgTd1Yrp2TyEvwCrKawsuWgCR4FJbY7jjISuxvnl7
- gEuGmabCAoQBTlpfX1jLju3Qh66R3KKD8Y6tNAxUsw/vUW7i50NKckxzEma14GcROlpNjibEu1p
- nKqh7D1K6he3Qli5YVUiH+nx9EraXiklEXCYkMsZ918aRRVy8eST9+qbs9v6eTV3mGrSQij/Ihm
- qrSHTXie
-X-Proofpoint-GUID: VH6TMhomdvMMGg8Ik19t1DSC5yIbiJMe
-X-Authority-Analysis: v=2.4 cv=A+1sP7WG c=1 sm=1 tr=0 ts=689a465d cx=c_pps
- a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=w1AtNIWgmVDSpf7mFgMA:9
- a=OpyuDcXvxspvyRM73sMx:22
-X-Proofpoint-ORIG-GUID: VH6TMhomdvMMGg8Ik19t1DSC5yIbiJMe
+X-Authority-Analysis: v=2.4 cv=X4lSKHTe c=1 sm=1 tr=0 ts=689a465e cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=BNg5ujFbbBWOBbuzlAkA:9
+ a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA5MDAzMSBTYWx0ZWRfX7F8So1zjpcBG
+ XYqjHAw3x9uyuOvDcLgpQsYXW1BqG4zI2NVptKl6fleKvIO+BsmYEP6yLgC47OU11xQkfkpWt9I
+ Uc/ASeIjU0c0U14qOsQd7k7qkojtKPgZnq8GvaYx1OYCQEaua7RzjJF+HWpkBJA2EfFkhdOtt5k
+ u9nWTw6doak1gJbvC2yd6sNuXZCcm7V6kOHgPSlfvzu3xPbwOk5bmdzPOwT7/oODfeM+Xs6Wa9L
+ LAcqdJnIXIcO1iIaiHSmPJb9MYpA6T3gkg+plGwLDufKcvMHtWcaIvd5xOEcnKdSdExPopLRrQP
+ h2IGjJppw7n/FnGQZ+kbxE0zU72yY/PmsUCAyerAbo6pTDFtajTkbOtAenk6sXQV5VKWtkwJjJ7
+ T4gg+wbu
+X-Proofpoint-GUID: m3jtNUtG5yBkoRZcxdN6EEyhtKlXzu2K
+X-Proofpoint-ORIG-GUID: m3jtNUtG5yBkoRZcxdN6EEyhtKlXzu2K
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-11_04,2025-08-11_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 priorityscore=1501 malwarescore=0 spamscore=0
- phishscore=0 clxscore=1015 adultscore=0 bulkscore=0 classifier=typeunknown
+ phishscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 adultscore=0
+ spamscore=0 bulkscore=0 suspectscore=0 impostorscore=0 classifier=typeunknown
  authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508110107
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=vacha.bhavsar@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
+ engine=8.19.0-2507300000 definitions=main-2508090031
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=vacha.bhavsar@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -131,129 +131,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch changes GDBState's line_buf from a character
-array to a GString. This allows line_buf to be dynamically
-re-sizeable.
+The QEMU GDB stub does not expose the ZA storage SME register to GDB via
+the remote serial protocol, which can be a useful functionality to debug SME
+code. To provide this functionality in Aarch64 target, this patch registers the
+SME register set with the GDB stub. To do so, this patch implements the
+aarch64_gdb_get_sme_reg() and aarch64_gdb_set_sme_reg() functions to
+specify how to get and set the SME registers, and the
+arm_gen_dynamic_smereg_feature() function to generate the target
+description in XML format to indicate the target architecture supports SME.
+Finally, this patch includes a dyn_smereg_feature structure to hold this
+GDB XML description of the SME registers for each CPU.
 
 Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
 ---
-Changes since v4:
-- this patch was not present in v4, it has been added as
-suggested during review of v4
----
- gdbstub/gdbstub.c   | 25 +++++++++++++------------
- gdbstub/internals.h |  3 +--
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ target/arm/cpu.h       |   1 +
+ target/arm/gdbstub.c   |   6 ++
+ target/arm/gdbstub64.c | 122 +++++++++++++++++++++++++++++++++++++++++
+ target/arm/internals.h |   3 +
+ 4 files changed, 132 insertions(+)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index dd5fb5667c..0634ff9e91 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -64,6 +64,7 @@ void gdb_init_gdbserver_state(void)
-     memset(&gdbserver_state, 0, sizeof(GDBState));
-     gdbserver_state.init = true;
-     gdbserver_state.str_buf = g_string_new(NULL);
-+    gdbserver_state.line_buf = g_string_new(NULL);
-     gdbserver_state.mem_buf = g_byte_array_sized_new(MAX_PACKET_LENGTH);
-     gdbserver_state.last_packet = g_byte_array_sized_new(MAX_PACKET_LENGTH + 4);
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index dc9b6dce4c..8bd66d7049 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -933,6 +933,7 @@ struct ArchCPU {
  
-@@ -2369,7 +2370,7 @@ void gdb_read_byte(uint8_t ch)
-         case RS_IDLE:
-             if (ch == '$') {
-                 /* start of command packet */
--                gdbserver_state.line_buf_index = 0;
-+                g_string_set_size(gdbserver_state.line_buf, 0);
-                 gdbserver_state.line_sum = 0;
-                 gdbserver_state.state = RS_GETLINE;
-             } else if (ch == '+') {
-@@ -2393,12 +2394,12 @@ void gdb_read_byte(uint8_t ch)
-             } else if (ch == '#') {
-                 /* end of command, start of checksum*/
-                 gdbserver_state.state = RS_CHKSUM1;
--            } else if (gdbserver_state.line_buf_index >= sizeof(gdbserver_state.line_buf) - 1) {
-+            } else if (gdbserver_state.line_buf->len >= MAX_PACKET_LENGTH) {
-                 trace_gdbstub_err_overrun();
-                 gdbserver_state.state = RS_IDLE;
-             } else {
-                 /* unescaped command character */
--                gdbserver_state.line_buf[gdbserver_state.line_buf_index++] = ch;
-+                g_string_append_c(gdbserver_state.line_buf, (gchar) ch);
-                 gdbserver_state.line_sum += ch;
-             }
-             break;
-@@ -2406,13 +2407,13 @@ void gdb_read_byte(uint8_t ch)
-             if (ch == '#') {
-                 /* unexpected end of command in escape sequence */
-                 gdbserver_state.state = RS_CHKSUM1;
--            } else if (gdbserver_state.line_buf_index >= sizeof(gdbserver_state.line_buf) - 1) {
-+            } else if (gdbserver_state.line_buf->len >= MAX_PACKET_LENGTH) {
-                 /* command buffer overrun */
-                 trace_gdbstub_err_overrun();
-                 gdbserver_state.state = RS_IDLE;
-             } else {
-                 /* parse escaped character and leave escape state */
--                gdbserver_state.line_buf[gdbserver_state.line_buf_index++] = ch ^ 0x20;
-+                g_string_append_c(gdbserver_state.line_buf, (gchar) ch ^ 0x20);
-                 gdbserver_state.line_sum += ch;
-                 gdbserver_state.state = RS_GETLINE;
-             }
-@@ -2429,19 +2430,20 @@ void gdb_read_byte(uint8_t ch)
-             } else {
-                 /* decode repeat length */
-                 int repeat = ch - ' ' + 3;
--                if (gdbserver_state.line_buf_index + repeat >= sizeof(gdbserver_state.line_buf) - 1) {
-+                if (gdbserver_state.line_buf->len + repeat >= MAX_PACKET_LENGTH) {
-                     /* that many repeats would overrun the command buffer */
-                     trace_gdbstub_err_overrun();
-                     gdbserver_state.state = RS_IDLE;
--                } else if (gdbserver_state.line_buf_index < 1) {
-+                } else if (gdbserver_state.line_buf->len < 1) {
-                     /* got a repeat but we have nothing to repeat */
-                     trace_gdbstub_err_invalid_rle();
-                     gdbserver_state.state = RS_GETLINE;
-                 } else {
-                     /* repeat the last character */
--                    memset(gdbserver_state.line_buf + gdbserver_state.line_buf_index,
--                           gdbserver_state.line_buf[gdbserver_state.line_buf_index - 1], repeat);
--                    gdbserver_state.line_buf_index += repeat;
-+                    for (int i = 0; i < repeat; i ++){
-+                        g_string_append_c(gdbserver_state.line_buf, 
-+                            gdbserver_state.line_buf->str[gdbserver_state.line_buf->len - 1]);
-+                    }
-                     gdbserver_state.line_sum += ch;
-                     gdbserver_state.state = RS_GETLINE;
-                 }
-@@ -2454,7 +2456,6 @@ void gdb_read_byte(uint8_t ch)
-                 gdbserver_state.state = RS_GETLINE;
-                 break;
-             }
--            gdbserver_state.line_buf[gdbserver_state.line_buf_index] = '\0';
-             gdbserver_state.line_csum = fromhex(ch) << 4;
-             gdbserver_state.state = RS_CHKSUM2;
-             break;
-@@ -2477,7 +2478,7 @@ void gdb_read_byte(uint8_t ch)
-                 /* send ACK reply */
-                 reply = '+';
-                 gdb_put_buffer(&reply, 1);
--                gdbserver_state.state = gdb_handle_packet(gdbserver_state.line_buf);
-+                gdbserver_state.state = gdb_handle_packet((char *) gdbserver_state.line_buf->str);
-             }
-             break;
-         default:
-diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index 87f64b6318..27afbef4f5 100644
---- a/gdbstub/internals.h
-+++ b/gdbstub/internals.h
-@@ -72,8 +72,7 @@ typedef struct GDBState {
-     CPUState *g_cpu; /* current CPU for other ops */
-     CPUState *query_cpu; /* for q{f|s}ThreadInfo */
-     enum RSState state; /* parsing state */
--    char line_buf[MAX_PACKET_LENGTH];
--    int line_buf_index;
-+    GString *line_buf;
-     int line_sum; /* running checksum */
-     int line_csum; /* checksum at the end of the packet */
-     GByteArray *last_packet;
+     DynamicGDBFeatureInfo dyn_sysreg_feature;
+     DynamicGDBFeatureInfo dyn_svereg_feature;
++    DynamicGDBFeatureInfo dyn_smereg_feature;
+     DynamicGDBFeatureInfo dyn_m_systemreg_feature;
+     DynamicGDBFeatureInfo dyn_m_secextreg_feature;
+ 
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index ce4497ad7c..4371a367a0 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -531,6 +531,12 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+             GDBFeature *feature = arm_gen_dynamic_svereg_feature(cs, cs->gdb_num_regs);
+             gdb_register_coprocessor(cs, aarch64_gdb_get_sve_reg,
+                                      aarch64_gdb_set_sve_reg, feature, 0);
++            if (isar_feature_aa64_sme(&cpu->isar)) {
++                GDBFeature *sme_feature = arm_gen_dynamic_smereg_feature(cs,
++                    cs->gdb_num_regs);
++                gdb_register_coprocessor(cs, aarch64_gdb_get_sme_reg,
++                    aarch64_gdb_set_sme_reg, sme_feature, 0);
++            }
+         } else {
+             gdb_register_coprocessor(cs, aarch64_gdb_get_fpu_reg,
+                                      aarch64_gdb_set_fpu_reg,
+diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+index 08e2858539..047b1f8133 100644
+--- a/target/arm/gdbstub64.c
++++ b/target/arm/gdbstub64.c
+@@ -249,6 +249,91 @@ int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg)
+     return 0;
+ }
+ 
++int aarch64_gdb_get_sme_reg(CPUState *cs, GByteArray *buf, int reg)
++{
++    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
++
++    switch (reg) {
++    /* Svg register */
++    case 0:
++    {
++        int vq = 0;
++        if (FIELD_EX64(env->svcr, SVCR, SM)) {
++            vq = sve_vqm1_for_el_sm(env, arm_current_el(env),
++                     FIELD_EX64(env->svcr, SVCR, SM)) + 1;
++        }
++        /* svg = vector granules (2 * vector quardwords) in streaming mode */
++        return gdb_get_reg64(buf, vq * 2);
++    }
++    case 1:
++        return gdb_get_reg64(buf, env->svcr);
++    case 2:
++    {
++        int len = 0;
++        int vq = cpu->sme_max_vq;
++        int svl = vq * 16;
++        for (int i = 0; i < svl; i++) {
++            for (int q = 0; q < vq; q++) {
++                len += gdb_get_reg128(buf,
++                           env->za_state.za[i].d[q * 2 + 1],
++                           env->za_state.za[i].d[q * 2]);
++            }
++        }
++        return len;
++    }
++    default:
++        /* gdbstub asked for something out of range */
++        qemu_log_mask(LOG_UNIMP, "%s: out of range register %d", __func__, reg);
++        break;
++    }
++
++    return 0;
++}
++
++int aarch64_gdb_set_sme_reg(CPUState *cs, uint8_t *buf, int reg)
++{
++    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
++
++    switch (reg) {
++    case 0:
++    {
++        /* cannot set svg via gdbstub */
++        return 8;
++    }
++    case 1:
++        aarch64_set_svcr(env, ldq_le_p(buf),
++            R_SVCR_SM_MASK | R_SVCR_ZA_MASK);
++        return 8;
++    case 2:
++        int len = 0;
++        int vq = cpu->sme_max_vq;
++        int svl = vq * 16;
++        for (int i = 0; i < svl; i++) {
++            for (int q = 0; q < vq; q++) {
++                if (target_big_endian()){
++                    env->za_state.za[i].d[q * 2 + 1] = ldq_p(buf);
++                    buf += 8;
++                    env->za_state.za[i].d[q * 2] = ldq_p(buf);
++                } else{
++                    env->za_state.za[i].d[q * 2] = ldq_p(buf);
++                    buf += 8;
++                    env->za_state.za[i].d[q * 2 + 1] = ldq_p(buf);
++                }
++                buf += 8;
++                len += 16;
++            }
++        }
++        return len;
++    default:
++        /* gdbstub asked for something out of range */
++        break;
++    }
++
++    return 0;
++}
++
+ int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+@@ -413,6 +498,43 @@ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
+     return &cpu->dyn_svereg_feature.desc;
+ }
+ 
++GDBFeature *arm_gen_dynamic_smereg_feature(CPUState *cs, int base_reg)
++{
++    ARMCPU *cpu = ARM_CPU(cs);
++    int vq = cpu->sme_max_vq;
++    int svl = vq * 16;
++    GDBFeatureBuilder builder;
++    int reg = 0;
++
++    gdb_feature_builder_init(&builder, &cpu->dyn_smereg_feature.desc,
++        "org.gnu.gdb.aarch64.sme", "sme-registers.xml", base_reg);
++
++
++    /* Create the sme_bv vector type. */
++    gdb_feature_builder_append_tag(&builder,
++        "<vector id=\"sme_bv\" type=\"uint8\" count=\"%d\"/>",
++        svl);
++
++    /* Create the sme_bvv vector type. */
++    gdb_feature_builder_append_tag(
++        &builder, "<vector id=\"sme_bvv\" type=\"sme_bv\" count=\"%d\"/>",
++        svl);
++
++    /* Define the svg, svcr, and za registers. */
++
++    /* fpscr & status registers */
++    gdb_feature_builder_append_reg(&builder, "svg", 64, reg++,
++        "int", NULL);
++    gdb_feature_builder_append_reg(&builder, "svcr", 64, reg++,
++        "int", NULL);
++    gdb_feature_builder_append_reg(&builder, "za", svl * svl * 8, reg++,
++        "sme_bvv", NULL);
++
++    gdb_feature_builder_end(&builder);
++
++    return &cpu->dyn_smereg_feature.desc;
++}
++
+ #ifdef CONFIG_USER_ONLY
+ int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg)
+ {
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 1b3d0244fd..41e05066b9 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1802,8 +1802,11 @@ static inline uint64_t pmu_counter_mask(CPUARMState *env)
+ }
+ 
+ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cpu, int base_reg);
++GDBFeature *arm_gen_dynamic_smereg_feature(CPUState *cpu, int base_reg);
+ int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg);
+ int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg);
++int aarch64_gdb_get_sme_reg(CPUState *cs, GByteArray *buf, int reg);
++int aarch64_gdb_set_sme_reg(CPUState *cs, uint8_t *buf, int reg);
+ int aarch64_gdb_get_fpu_reg(CPUState *cs, GByteArray *buf, int reg);
+ int aarch64_gdb_set_fpu_reg(CPUState *cs, uint8_t *buf, int reg);
+ int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg);
 -- 
 2.34.1
 
