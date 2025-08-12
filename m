@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2033B22BCD
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 17:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D01B22B8B
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 17:20:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulr2p-0005R6-Td; Tue, 12 Aug 2025 11:36:12 -0400
+	id 1ulqlU-0001HD-O8; Tue, 12 Aug 2025 11:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ulr2i-0005Nt-0H
- for qemu-devel@nongnu.org; Tue, 12 Aug 2025 11:36:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1ulql7-0001Fp-QV; Tue, 12 Aug 2025 11:17:55 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ulr2Y-0004Zb-LV
- for qemu-devel@nongnu.org; Tue, 12 Aug 2025 11:36:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755012949;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RdbFae0a7i+vYfkxG1F8H0ckQQcLNnNJoBFXlpG8kqI=;
- b=Af5wi0317JtwtDjIN06+tVTQG7YXtTwhZJF9VX9+UGeh3RcyEovcw8xFFxmAYEPe9t+PGo
- aAqGdBe8RhRZ+jFdaKw5S00ybIupzyRXyhyM1mazP2m+dOT83FhRu5CVIqe4a0hZ9jcK5T
- usY4dfk+KTnJCciF9mm6GK/ljCn8AeQ=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-177-n9Djet4POMmFjz1TpflV_Q-1; Tue,
- 12 Aug 2025 11:35:48 -0400
-X-MC-Unique: n9Djet4POMmFjz1TpflV_Q-1
-X-Mimecast-MFC-AGG-ID: n9Djet4POMmFjz1TpflV_Q_1755012947
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E449719560B6; Tue, 12 Aug 2025 15:35:46 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.33.181])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2291F1800290; Tue, 12 Aug 2025 15:35:42 +0000 (UTC)
-Date: Tue, 12 Aug 2025 17:35:40 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Martin Kletzander <mkletzan@redhat.com>
-Cc: "Dr. Werner Fink" <werner@suse.de>, Fabiano Rosas <farosas@suse.de>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1ulqkx-0001Sy-As; Tue, 12 Aug 2025 11:17:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755011863; x=1786547863;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=3uVy5fm0KqGsfq4C65CV/shj9B2bZzaaYfgbLDrDKd4=;
+ b=b4WTyg77FRB3mdODjRTTy3Mjvwl5KM7yccnhwCW4UT+1+rZActfDtUmk
+ c+DDWNs72jJYnwZNJDGbkuz4OMV/Q5pHXP474AZgmZ3LuhDHOUKXU75en
+ j4hGBFURZ6z+qQBQRLe7UWIo+ozGut73rHYtWqBisWk3SDCn/dx3SMbgK
+ LSW0SAk02IYQyy/d3nBj7OrwB9M85X+xtnfZ9R7+mCpzO2dx3BViKv9nV
+ 6WvMyyrG5RqzQP0uafUCNKk6Bi8Riqxmr1+/2J92I6ND3H4ahUeftaGZd
+ 3sY4JSYpPuPP+O6K+j1mJYBD53vbm4X9j4EKas0k8TrWDXb+v6wkJdAdY g==;
+X-CSE-ConnectionGUID: MEJXTqZSRuWYAlbqgUV+2A==
+X-CSE-MsgGUID: k7EOh7dWRrCUJoMAdtdqcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="74870784"
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; d="scan'208";a="74870784"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Aug 2025 08:17:34 -0700
+X-CSE-ConnectionGUID: Fh55jcrgR36fEdysJB96RQ==
+X-CSE-MsgGUID: Sgv1v1ZFScKU4cHjz+EOvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; d="scan'208";a="171552087"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa005.jf.intel.com with ESMTP; 12 Aug 2025 08:17:31 -0700
+Date: Tue, 12 Aug 2025 23:39:12 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-rust@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 2/2] tests/qemu-iotests: Indent expected error messages
-Message-ID: <aJtfTBrqAd7x-q7k@redhat.com>
-References: <cover.1754060086.git.mkletzan@redhat.com>
- <f5be6d407c105fa199d10867f5de48bbd25c008c.1754060086.git.mkletzan@redhat.com>
- <aIzhtcg-TNZE0zH8@redhat.com> <87v7n63lld.fsf@suse.de>
- <aJCaoULvGgKjEL16@redhat.com>
- <aJL8RH8ePPNEteMg@boole.nue2.suse.org>
- <aJmyZjo0ridS7XXz@wheatley.k8r.cz>
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Junjie Mao <junjie.mao@hotmail.com>,
+ qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Chuanxiao Dong <chuanxiao.dong@intel.com>
+Subject: Re: [RFC 16/26] memory: Make flatview_do_translate() return a
+ pointer to MemoryRegionSection
+Message-ID: <aJtgIBgl8JzDsJ1O@intel.com>
+References: <20250807123027.2910950-1-zhao1.liu@intel.com>
+ <20250807123027.2910950-17-zhao1.liu@intel.com>
+ <beab841b-9c69-43d2-b996-879eee9e1120@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="BwU4UP9CK+8Knz70"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aJmyZjo0ridS7XXz@wheatley.k8r.cz>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <beab841b-9c69-43d2-b996-879eee9e1120@redhat.com>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,121 +88,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Aug 07, 2025 at 03:57:17PM +0200, Paolo Bonzini wrote:
+> Date: Thu, 7 Aug 2025 15:57:17 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [RFC 16/26] memory: Make flatview_do_translate() return a
+>  pointer to MemoryRegionSection
+> 
+> On 8/7/25 14:30, Zhao Liu wrote:
+> > Rust side will use cell::Opaque<> to hide details of C structure, and
+> > this could help avoid the direct operation on C memory from Rust side.
+> > 
+> > Therefore, it's necessary to wrap a translation binding and make it only
+> > return the pointer to MemoryRegionSection, instead of the copy.
+> > 
+> > As the first step, make flatview_do_translate return a pointer to
+> > MemoryRegionSection, so that we can build a wrapper based on it.
+> 
+> Independent of Rust, doing the copy as late as possible is good, but make it
+> return a "const MemoryRegionSection*" so that there's no risk of overwriting
+> data.
 
---BwU4UP9CK+8Knz70
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, const MemoryRegionSection* is helpful...
 
-Am 11.08.2025 um 11:05 hat Martin Kletzander geschrieben:
-> On Wed, Aug 06, 2025 at 08:54:51AM +0200, Dr. Werner Fink wrote:
-> > On 2025/08/04 13:33:53 +0200, Kevin Wolf wrote:
-> > > Am 01.08.2025 um 21:09 hat Fabiano Rosas geschrieben:
-> > > > Daniel P. Berrang=E9 <berrange@redhat.com> writes:
-> > > >
-> > > > > On Fri, Aug 01, 2025 at 04:59:50PM +0200, Martin Kletzander wrote:
-> > > > >> From: Martin Kletzander <mkletzan@redhat.com>
-> > > > >>
-> > > > >> When running all tests the expected "killed" messages are indent=
-ed
-> > > > >> differently than the actual ones, by three more spaces.  Change =
-it so
-> > > > >> that the messages match and tests pass.
-> > > > >
-> > > > > This would break the tests on my system and CI too.
-> > > > >
-> > > > > What distro are you seeing this on ?
-> > > > >
-> > > > > I'm guessing this is a different in either valgrind or C library ?
-> > > >
-> > > > It's bash, we have an open issue about it:
-> > > >
-> > > > https://gitlab.com/qemu-project/qemu/-/issues/3050
-> > >=20
-> > > I see a patch has been posted to that bug, the most important part of
-> > > which is this added filtering:
-> > >=20
-> > > --- a/tests/qemu-iotests/common.filter
-> > > +++ b/tests/qemu-iotests/common.filter  2025-07-25 11:39:22.419665788=
- +0000
-> > > @@ -75,7 +75,7 @@ _filter_qemu_io()
-> > >      _filter_win32 | \
-> > >      gsed -e "s/[0-9]* ops\; [0-9/:. sec]* ([0-9/.inf]* [EPTGMKiBbyte=
-s]*\/sec and [0-9/.inf]* ops\/sec)/X ops\; XX:XX:XX.X (XXX YYY\/sec and XXX=
- ops\/sec)/" \
-> > >          -e "s/: line [0-9][0-9]*:  *[0-9][0-9]*\( Aborted\| Killed\)=
-/:\1/" \
-> > > -        -e "s/qemu-io> //g"
-> > > +        -e "s/qemu-io> //g" -e '/Killed/{ s/ \{2,\}/ /}'
-> > >  }
-> > >=20
-> > >  # replace occurrences of QEMU_PROG with "qemu"
-> > >=20
-> > > This approach makes sense to me, though I would have kept each sed
-> > > expression on a separate line.
-> > >=20
-> > > And given that the context line above includes "Aborted" as well, may=
-be
-> > > have it here, too, though none of the actual test outputs have an
-> > > Aborted message any more since commit 3f39447. Or we could have a
-> > > cleanup patch first that removes the unused "Abort" above, just to ke=
-ep
-> > > things consistent.
-> > >=20
-> > > Either way, please post this as a proper patch on the mailing list.
-> >=20
-> > Just next try in tha attached patch with a fixed version of
-> > the sed command.
-> >=20
-> > Werner
-> >=20
-> > --=20
-> >  "Having a smoking section in a restaurant is like having
-> >          a peeing section in a swimming pool." -- Edward Burr
->=20
-> > From: Werner Fink <werner@suse.de>
-> > Date: Fri, 08 Aug 06:41:23 +0000
-> > Subject: [PATCH 1/1] Avoid dependency on padding on signal messages
-> >=20
-> > New bash 5.3 uses a different padding for reporting job status.
-> >=20
-> > Resolves: boo#1246830
->=20
-> Not sure you meant that or
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3050
+> Hopefully this does not show a bigger problem!
 
-I just updated the commit message to contain both.
+...then we will get `*const bindings::MemoryRegionSection` from
+flatview_translate_section().
 
-> > Signed-off-by: Werner Fink <werner@suse.de>
->=20
-> but, FWIW, if that makes any difference,
->=20
-> Tested-by: Martin Kletzander <mkletzan@redhat.com>
+This is mainly about how to construct Opaque<T> from `*cont T`:
 
-Thanks, applied to the block branch.
+impl FlatView {
+    fn translate(
+        &self,
+        addr: GuestAddress,
+        len: GuestUsize,
+        is_write: bool,
+    ) -> Option<(&MemoryRegionSection, MemoryRegionAddress, GuestUsize)> {
+        ...
+        let ptr = unsafe {
+            flatview_translate_section(
+                self.as_mut_ptr(),
+                addr.raw_value(),
+                &mut raw_addr,
+                &mut remain,
+                is_write,
+                MEMTXATTRS_UNSPECIFIED,
+            )
+        };
 
-Kevin
+        ...
 
---BwU4UP9CK+8Knz70
-Content-Type: application/pgp-signature; name=signature.asc
+------> // Note here, Opaque<>::from_raw() requires *mut T.
+	// And we can definitely convert *cont T to *mut T!
+        let s = unsafe { <FlatView as GuestMemory>::R::from_raw(ptr as *mut _) };
+        ...
+    }
 
------BEGIN PGP SIGNATURE-----
+But look closer to Opaque<>, it has 2 safe methods: as_mut_ptr() &
+raw_get().
 
-iQIzBAEBCgAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmibX0wACgkQfwmycsiP
-L9Y0ABAAtfaqDF2JvURfP8yGFY0mkupg3mkgypPOLLjkGuuWUOaEVO4q35qNeMRJ
-sltBSD7NENYDhjoA7C7HP6P3rRvyzDYaeJuIa/B0YYhut1v8zihg65uhlzfHfjDe
-y09bccFBE4wLEQg6zYSfxBvmK2yLfZcM6wqcnr8pUjXbsUDQThAst3HndvnKxml3
-Kt9UF/mi1NmtQgUqynbynNmhGnf88U0HGzapBthW+jldiHlIyFndJmWIt+vgAuSN
-wzNtdQebN8pcDWlOcE2XsB2BRbUpydh+3Gbpm8hIb9mejP21FMmcho8Fcrm4T7z5
-jkSmjcRzsyVppA6pXesIEtdCQw0MUJtjUvXHUXk+X42IsObBwiuuYTpXqzUYdStO
-F4r/2ZF3nL/DbpZWp3P/B2R4OCmq0hUVsvaSS9AXVATxtSUSLRA3tA0InPOkhyA3
-Fu1ZekqSI7+H1I5L/wOgm9f7mjZ1RDNlIpapm+r8uL4yJq6mDj9VLl8ZBuFxfImb
-FqJhRZHzav96ove0QHKiPh0mrsECkuym7yxuZW1xKX2WrxUolo2VkM+AjLrHmXSW
-lLuhoF1A4TV3eQ11q26yiZwzGg3mfzriJsYsj3REscCQOPAhlCrI6u38YELs9Rg5
-sJrmZfu6K5yMAzmVZtbuKyFPEyy/AYb/dOjmzu/YMKPIn8SIxo0=
-=PtQ3
------END PGP SIGNATURE-----
+These 2 methods indicate that the T pointed by Qpaque<T> is mutable,
+which has the conflict with the original `*const bindings::MemoryRegionSection`.
 
---BwU4UP9CK+8Knz70--
+So from this point, it seems unsafe to use Qpaque<> on this case.
+
+To address this, I think we need:
+ - rich comments about this MemoryRegionSection is actually immuatble.
+ - modify other C functions to accept `const *MemoryRegionSection` as
+   argument.
+
+What do you think?
+
+Thanks,
+Zhao
 
 
