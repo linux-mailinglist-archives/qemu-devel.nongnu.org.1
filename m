@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C8DB22F13
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 19:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D7EB22F14
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 19:30:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulsny-00043Z-2m; Tue, 12 Aug 2025 13:28:59 -0400
+	id 1ulsoB-0004Bd-Jd; Tue, 12 Aug 2025 13:29:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulsnt-00042U-Ot
- for qemu-devel@nongnu.org; Tue, 12 Aug 2025 13:28:53 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulsnx-000487-OU
+ for qemu-devel@nongnu.org; Tue, 12 Aug 2025 13:28:57 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulsnk-0003TX-GW
- for qemu-devel@nongnu.org; Tue, 12 Aug 2025 13:28:53 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3b914a9c77dso588797f8f.2
- for <qemu-devel@nongnu.org>; Tue, 12 Aug 2025 10:28:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ulsnr-0003UD-8J
+ for qemu-devel@nongnu.org; Tue, 12 Aug 2025 13:28:57 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-455fdfb5d04so29353335e9.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Aug 2025 10:28:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755019721; x=1755624521; darn=nongnu.org;
+ d=linaro.org; s=google; t=1755019726; x=1755624526; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EYt3XWa5JdTgcAHas+NCLzX0AYSjTul5kKCxbeujNLY=;
- b=Z2ihcJ1EAyCjFwgMy7IQlVLclK4UJiVtHBoNowFPUybzb45APK9Lbn0il0CFCf+aQM
- zKewH2inznIKjaGnFd8ZzwTBnp4SqfyEFJz26loE3Nz+vPqPto/z3nMSv7fyO2Gqi4V6
- SGVToK9XBGk7QEQKeHNQH2wqSuY9pdxx4FJY5pHv9Gn0JdxTezY6eBEK1dwlYsc+BKQR
- KSZ38jsVUGmcnkpKbyLEn5vqSId/gquPHzinj42EurcdX05dbzETUWdwK8Njl9SvGX3y
- bL2StaI7Rp4nTodnh4AkOArvL81RvjFS2eJkYwgnH7GxZOQbTBZJM+TQ953evT1KaDsZ
- ligg==
+ bh=5Gx01KlGJnh6U0DX4MaOA7JQNq9Sq+XdhCp2GXJJ2aM=;
+ b=OIgfbL/ZethhyXS9sOqXPWgnY1IG2yI8Xz0jQaR4/VCM/Owx2XT36YBlPs6+ic+EzN
+ QKdUGluPJNfCz6Medvtsqgx8GcsFibbPBwNHIeTDldc0hMlLsGjEn6Jv98PfPDdLjuJT
+ WPKVOvo17bSz1tpShyFR/4WmKdX1v5tz+89xoVVb3HemkraP6ZXO+Z/XVsQ4P6ZBPOhS
+ VEUlviUn0MwgpWqDqf++bQGCbIcNNcAXevYoEbr8fi4kNVcq7O4dA52RzeQLOZhE/vXm
+ H9ATb6bX2GMfwWbS9YUNBKUURPa7t1EC8Kkb1dCleAPtNqwzGpVRXciBXt4q2wPs6JjF
+ E37A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755019721; x=1755624521;
+ d=1e100.net; s=20230601; t=1755019726; x=1755624526;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EYt3XWa5JdTgcAHas+NCLzX0AYSjTul5kKCxbeujNLY=;
- b=L0O6EvP+ip2F/MktEROQMdvnfO2GKhmiZBjn0OUvN6oPCa/vaFbvcdAQOvLh/7qWYK
- 3+1yFQpXTLVTq4GOnCVnn5hBKwwEO6FJ9JroWeBs010XdKZhxZnlH5sxd9vkUtMvBy8k
- NB5VfUYP0GUNVKeSVxhZ1hAMi/q/s+8yEWSekpnIYvBhjFYecBpP8EkrbKHpCoo7Uk+/
- T+jrQc4BMu4WeomyTIAHF4rpjhXlOq+VX/1pWsbPM0BKfll6God4BR58kU7JNe2lxIxn
- +bqioeTFAg5XPKHeVJZQld+nms9s81XO/Yz4wkcnZO5gv4IlfYgiFTgQKBJrZJMHX5b6
- yDfg==
-X-Gm-Message-State: AOJu0Yy/r2lG2dhdl7rCHEiwPrpzXssghXa8j0RcsgP9NpQqshSdunvs
- GnSR53iNuPjACWmvn8Sx/Nsj7ssiVVKl7pM/IggpapVXrLELadKCJK8+vXbQK8RSSPls3iRxBIM
- iVtVv
-X-Gm-Gg: ASbGncu5+JvJqtaKITRXJ65zKJPl61K8aExiNPX68CUR2zd4GRNgxSBnXNoQN/zkR9q
- ATvj5EDV/ON6cyV8WDEDsxdByzAG+mRr55WPjLtcfXc23RXU7bYSfPBQL4UVgjYTPZzqNi0h5CU
- wPJNVzMnDIBuwht0x8ZJN2HheoeJ4vlXyyYsoUJTxLHG64z+D4KEoIz7TwreXx4ZsAN7DclGsXx
- tIAJ4uj5ybRb8qfZvdfdXV19PEoolCYfdxwDOlD/YYizFgQjYPnjIlLngOfljaBmY9M5PIZYinJ
- /y68mpONPs/OG7mLIWSi/pHRst0pNv1CB7Sf9BNcWHWo/I8NssL9jSRyaNo+AnrD5xU6NdvHyyb
- pSRjiA694/AGqxwJ8YXOZ3gM+owtNJdUXgFNdTEWfKd97LmkTrxpPRbk1+WgBgeIzAA4Qq+D0
-X-Google-Smtp-Source: AGHT+IFKDzIxMpZiGj7vZDL7rXt0avmWUA3RyLwDmE7PF+XxnCDfzncjSb/8L6jk6S1QcyKG6JKIiw==
-X-Received: by 2002:a05:6000:178d:b0:3b4:9721:2b32 with SMTP id
- ffacd0b85a97d-3b91724ec5fmr221527f8f.10.1755019720839; 
- Tue, 12 Aug 2025 10:28:40 -0700 (PDT)
+ bh=5Gx01KlGJnh6U0DX4MaOA7JQNq9Sq+XdhCp2GXJJ2aM=;
+ b=KNEWUbQn6rRMCKogSvGNKBuwJyKdhrgTahAPL6ZKvBoARzbgVdCgmS63Y5tR5NGFl+
+ tgyMPY8h3ZLxo1k4DmNAGlplGZFmvqGLH4KCxEuHPJJBEb2nyIMIg/2EQDJlLJDjnCaG
+ wSUZ+jxPiCrCxt60p5JFc5nSweSwR6Wpd69fNGpEdYsE1NbTd2B2jz0rijjQXzi1G500
+ VCPL1jngxWuJrnbjbgL56n+kdYlMRCTFOcT0KvJKop6Jg9O9iU4T/zpAofXM6+FhhUwa
+ 1OEKBodlfHNSRymYshjExx63iTTwha+49xnMtbepl1ZO9NAQdjgPjiSQgd3SJfURw2bT
+ vsdw==
+X-Gm-Message-State: AOJu0YzhZsur3BmghYi1oYPTGhdarv4y64ti6fEox5rJWy2WqKqQpKdA
+ 8G81aCROYKAx1TMDCqYmCDSqogS/jA2w87kd5l/PPpDACny47E1CK1jck/4bK9IlN8q1Hg6Hsts
+ vHwVe
+X-Gm-Gg: ASbGncttSutz/Di6opHT6C5+Svbe9Xu8WlRSjK88WR+eU+wg+OfNYwiBk9zPdGo+JkQ
+ 25q3Rs0lmo3p5+3uRl0SyChFXDYl14H+g47z8CuzdOBosIisqPD6jzrXYTEpO0kiPhstNQs12Jq
+ iWG4goJFO1lQvXdnt3TYRv+162tSOSymp9STVekBxgWc4w4hf1kjaA5GPYhebNTXfrdjlPcDvMx
+ kafxbJCOCZbaOL/iG/KlHX/RAXWTGOFHczIatqZKHCtxwAYkqfTvSPkUzEFjF/9U2ZS3YR1L2H7
+ GlcxFpFdbz4d60KyIc11+nzmqbodsJCNbHNZN6904NukFTNQacnAB5e+uUYWrJtKfCZD7TK4IYQ
+ mIYZJ7Ovt81UUEo7UEk2NXKOwhvKTDLV1Dcv6QosYd7xDvl21obL/td9Ie8+blFXrScng7R8H
+X-Google-Smtp-Source: AGHT+IEZ2BdB+DDDUDUmqAGCaLdS1J0twMRD6GrR7y46Lkn0qIPsngqJjPbgGbfbHEgD6hhro3LQXw==
+X-Received: by 2002:a05:600c:548f:b0:458:bfe1:4a82 with SMTP id
+ 5b1f17b1804b1-45a165e430fmr31995e9.16.1755019726154; 
+ Tue, 12 Aug 2025 10:28:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c3ac036sm44716290f8f.15.2025.08.12.10.28.39
+ ffacd0b85a97d-3b9163ae600sm918558f8f.5.2025.08.12.10.28.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Aug 2025 10:28:40 -0700 (PDT)
+ Tue, 12 Aug 2025 10:28:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Claudio Fontana <cfontana@suse.de>, Cameron Esfahani <dirty@apple.com>,
@@ -73,24 +73,23 @@ Cc: Claudio Fontana <cfontana@suse.de>, Cameron Esfahani <dirty@apple.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Miguel Luis <miguel.luis@oracle.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 03/10] target/arm: Restrict PMU to system mode
-Date: Tue, 12 Aug 2025 19:28:15 +0200
-Message-ID: <20250812172823.86329-4-philmd@linaro.org>
+Subject: [PATCH v2 04/10] target/arm: Factor hvf_psci_get_target_el() out
+Date: Tue, 12 Aug 2025 19:28:16 +0200
+Message-ID: <20250812172823.86329-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250812172823.86329-1-philmd@linaro.org>
 References: <20250812172823.86329-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,47 +105,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+
+Factor hvf_psci_get_target_el() out so it will be easier
+to allow switching to other EL later.
+
+Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ target/arm/hvf/hvf.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index d9a8f62934d..1dc2a8330d8 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1551,7 +1551,6 @@ static const Property arm_cpu_pmsav7_dregion_property =
-             DEFINE_PROP_UNSIGNED_NODEFAULT("pmsav7-dregion", ARMCPU,
-                                            pmsav7_dregion,
-                                            qdev_prop_uint32, uint32_t);
--#endif
- 
- static bool arm_get_pmu(Object *obj, Error **errp)
- {
-@@ -1576,6 +1575,8 @@ static void arm_set_pmu(Object *obj, bool value, Error **errp)
-     cpu->has_pmu = value;
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 47b0cd3a351..48e86e62945 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -1107,6 +1107,10 @@ static void hvf_psci_cpu_off(ARMCPU *arm_cpu)
+     assert(ret == QEMU_ARM_POWERCTL_RET_SUCCESS);
  }
  
-+#endif
-+
- static bool aarch64_cpu_get_aarch64(Object *obj, Error **errp)
- {
-     ARMCPU *cpu = ARM_CPU(obj);
-@@ -1771,12 +1772,12 @@ static void arm_cpu_post_init(Object *obj)
-     if (arm_feature(&cpu->env, ARM_FEATURE_EL2)) {
-         qdev_property_add_static(DEVICE(obj), &arm_cpu_has_el2_property);
-     }
--#endif
++static int hvf_psci_get_target_el(CPUARMState *env)
++{
++    return 1;
++}
+ /*
+  * Handle a PSCI call.
+  *
+@@ -1128,7 +1132,6 @@ static bool hvf_handle_psci_call(CPUState *cpu)
+     CPUState *target_cpu_state;
+     ARMCPU *target_cpu;
+     target_ulong entry;
+-    int target_el = 1;
+     int32_t ret = 0;
  
-     if (arm_feature(&cpu->env, ARM_FEATURE_PMU)) {
-         cpu->has_pmu = true;
-         object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
-     }
-+#endif
- 
-     /*
-      * Allow user to turn off VFP and Neon support, but only for TCG --
+     trace_hvf_psci_call(param[0], param[1], param[2], param[3],
+@@ -1182,7 +1185,7 @@ static bool hvf_handle_psci_call(CPUState *cpu)
+         entry = param[2];
+         context_id = param[3];
+         ret = arm_set_cpu_on(mpidr, entry, context_id,
+-                             target_el, target_aarch64);
++                             hvf_psci_get_target_el(env), target_aarch64);
+         break;
+     case QEMU_PSCI_0_1_FN_CPU_OFF:
+     case QEMU_PSCI_0_2_FN_CPU_OFF:
 -- 
 2.49.0
 
