@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D970B2237B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 11:42:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3389B22379
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 11:42:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ullVR-0007ZY-QC; Tue, 12 Aug 2025 05:41:22 -0400
+	id 1ullVU-0007ee-Li; Tue, 12 Aug 2025 05:41:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1ullUs-0007R7-DE; Tue, 12 Aug 2025 05:40:47 -0400
+ id 1ullUw-0007SE-R5; Tue, 12 Aug 2025 05:40:51 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1ullUo-0000Yh-HX; Tue, 12 Aug 2025 05:40:46 -0400
+ id 1ullUu-0000Yh-9V; Tue, 12 Aug 2025 05:40:50 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 12 Aug
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v5 03/10] hw/arm: Integrate ASPEED OTP memory support into
- AST2600 SoCs
-Date: Tue, 12 Aug 2025 17:40:00 +0800
-Message-ID: <20250812094011.2617526-4-kane_chen@aspeedtech.com>
+Subject: [PATCH v5 04/10] hw/nvram/aspeed_otp: Add 'drive' property to support
+ block backend
+Date: Tue, 12 Aug 2025 17:40:01 +0800
+Message-ID: <20250812094011.2617526-5-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250812094011.2617526-1-kane_chen@aspeedtech.com>
 References: <20250812094011.2617526-1-kane_chen@aspeedtech.com>
@@ -68,44 +68,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-The has_otp attribute is enabled in the SBC subclasses for AST2600 to
-control the presence of OTP support per SoC type.
+This patch introduces a 'drive' property to the Aspeed OTP device,
+allowing it to be backed by a block device. Users can now preload
+OTP data via QEMU CLI using a block backend.
+
+Example usage:
+  ./qemu-system-arm \
+    -blockdev driver=file,filename=otpmem.img,node-name=otp \
+    -global aspeed-otp.drive=otp \
+    ...
+
+If the drive is provided, its content will be loaded as the initial OTP
+state. Otherwise, an internal memory buffer will be used.
 
 Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed_ast2600.c | 2 +-
- hw/misc/aspeed_sbc.c    | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ hw/nvram/aspeed_otp.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index d12707f0ab..59ffd41a4a 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -261,7 +261,7 @@ static void aspeed_soc_ast2600_init(Object *obj)
- 
-     object_initialize_child(obj, "i3c", &s->i3c, TYPE_ASPEED_I3C);
- 
--    object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_SBC);
-+    object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_AST2600_SBC);
- 
-     object_initialize_child(obj, "iomem", &s->iomem, TYPE_UNIMPLEMENTED_DEVICE);
-     object_initialize_child(obj, "video", &s->video, TYPE_UNIMPLEMENTED_DEVICE);
-diff --git a/hw/misc/aspeed_sbc.c b/hw/misc/aspeed_sbc.c
-index 46a038337c..b56a8b7678 100644
---- a/hw/misc/aspeed_sbc.c
-+++ b/hw/misc/aspeed_sbc.c
-@@ -273,8 +273,10 @@ static const TypeInfo aspeed_sbc_info = {
- static void aspeed_ast2600_sbc_class_init(ObjectClass *klass, const void *data)
+diff --git a/hw/nvram/aspeed_otp.c b/hw/nvram/aspeed_otp.c
+index e5b7ca9676..abb3731823 100644
+--- a/hw/nvram/aspeed_otp.c
++++ b/hw/nvram/aspeed_otp.c
+@@ -35,13 +35,25 @@ static bool aspeed_otp_init_storage(AspeedOTPState *s, Error **errp)
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedSBCClass *sc = ASPEED_SBC_CLASS(klass);
+     uint32_t *p;
+     int i, num;
++    uint64_t perm;
  
-     dc->desc = "AST2600 Secure Boot Controller";
-+    sc->has_otp = true;
++    if (s->blk) {
++        perm = BLK_PERM_CONSISTENT_READ |
++               (blk_supports_write_perm(s->blk) ? BLK_PERM_WRITE : 0);
++        if (blk_set_perm(s->blk, perm, BLK_PERM_ALL, errp) < 0) {
++            return false;
++        }
++        if (blk_pread(s->blk, 0, s->size, s->storage, 0) < 0) {
++            error_setg(errp, "Failed to read the initial flash content");
++            return false;
++        }
++    } else {
+         num = s->size / sizeof(uint32_t);
+         p = (uint32_t *)s->storage;
+         for (i = 0; i < num; i++) {
+             p[i] = (i % 2 == 0) ? 0x00000000 : 0xFFFFFFFF;
+         }
+-
++    }
+     return true;
  }
  
- static const TypeInfo aspeed_ast2600_sbc_info = {
+@@ -75,6 +87,7 @@ static void aspeed_otp_realize(DeviceState *dev, Error **errp)
+ 
+ static const Property aspeed_otp_properties[] = {
+     DEFINE_PROP_UINT64("size", AspeedOTPState, size, 0),
++    DEFINE_PROP_DRIVE("drive", AspeedOTPState, blk),
+ };
+ 
+ static void aspeed_otp_class_init(ObjectClass *klass, const void *data)
 -- 
 2.43.0
 
