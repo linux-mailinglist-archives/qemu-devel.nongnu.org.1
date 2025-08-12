@@ -2,91 +2,224 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AF5B22BF2
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 17:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 018D4B22C2F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 17:53:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulrA1-0007lP-GB; Tue, 12 Aug 2025 11:43:37 -0400
+	id 1ulrIC-00027e-U1; Tue, 12 Aug 2025 11:52:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ulr9r-0007k0-3n
- for qemu-devel@nongnu.org; Tue, 12 Aug 2025 11:43:27 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1ulr9d-0005Zo-He
- for qemu-devel@nongnu.org; Tue, 12 Aug 2025 11:43:26 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-61568fbed16so8827333a12.3
- for <qemu-devel@nongnu.org>; Tue, 12 Aug 2025 08:43:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1ulrI5-000270-2I
+ for qemu-devel@nongnu.org; Tue, 12 Aug 2025 11:51:57 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1ulrI1-00075X-L3
+ for qemu-devel@nongnu.org; Tue, 12 Aug 2025 11:51:56 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CDBx1M007847;
+ Tue, 12 Aug 2025 15:51:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=6YZXAHMGb++HVCAwDj4dnBfNpjcdCt0My5IOW19kCCU=; b=
+ ieIm3rfGzkT40fwX1KX07sYOzuqNE6OXKRQKIrLXmT+/TTJh77QaUWKzl2ZYwxye
+ tFkitbZOOC2r2ay4Ce0k4Q7d5iWdcuaEWTvddngxYCHgm3iVW4e1ZZRLB3CHdapN
+ zt8htpCuqFA5w4OVtdu6E0/7rYsLVAs12co5nJLfLJl1jIHIgWziiXWnx5+rwDcL
+ 687wfPdVy1UlH8OvsTFjt7UDoMEeUdaLg0bTDaCt19aalxgV5KIWJZP+C6WTdcur
+ bskfrdMK6oKATYLHmNGCsj5P8SEDRPZuA8PiLMoD1icRFnyTA9eveg/iqULuoSmy
+ DQBLBAbFFDTJNrRXlp8s9w==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dxvwvxh4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Aug 2025 15:51:43 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 57CFJrdV030304; Tue, 12 Aug 2025 15:51:42 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2081.outbound.protection.outlook.com [40.107.94.81])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 48dvsa56dk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Aug 2025 15:51:42 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=onU3iH8lQGDUmKrG7sOA+YT/Jvh2QDMXbMTtlfPEhOerdtzaQTV+KL/o5qmOUG7AAkaONFequyZrxueoouDg+ANcdJsjFdJaQwMh86lXWgWVlib5nokh50YzQ+48cDbtHkW0xsNucDf3hf319vxcnRF9mkNl9UyTrVeFTPwGIR34e/9dJD2Hs4Zs8vv+5y6NPUVw1eV0BrMlJ1GSDd2xVoZP2CM1uZ8cdpcgDNHjIX7E/hPhEs8MHBaeg6b1zeEGagYqBlm9c05WX2C4bqkihiYQebSgrIlSEmW0sWi3JncHFhexJG0IVi3OH1JTUNRaZPqKmShu9jvUfq4Ptp0Stg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6YZXAHMGb++HVCAwDj4dnBfNpjcdCt0My5IOW19kCCU=;
+ b=RfxAPmwMVNYhAOgzQDz8PamBC8y9DowUn++clFTI664VOnvsk6DjszQYVIHGdb2ohWeZ1Si4xWyzbgWyHaMu0v4fRGDI45m7DJCEEd1RqrlRS95cxyAeNn6vlW8tY9jIM/wsxm1jPswC6NibrEa7zwPl+pyuguFhknrHCf1LGSZ7NZPpLJNKcplkzgpX96TOSb6GZ93fCKBy+EAnEKMDQn/PCsLMh2y3HpIR0JUz4S6VUnBbWYPXzDxL2LIlG4dc7PvQvMP2jcxMV2HL84QGdK8wF9TcxwM0IfEpC36iV6sW1LBtY3lVcIKvz8MAPXA1lgP0hFp5Xa7fgxulsrx0VQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755013382; x=1755618182; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ESxGQXRyDp3+M4ttufl64PylDHK0z3nBpNs2rbSIejU=;
- b=CNcI9mXH+pX7lWnMZYyCaSP+wFvPr1ItwXlJlOKUQUnnSprMCf7O764xhXS5g5Tb6R
- 0ZJCoAhyhpaO1FO3/t/rQ01jXDF8nJXh9Ac3o1PTxmeFfx32JpXPXQU/xhjVpZWpPQ1T
- +i1LDSeUsgIf5nPCasxt2P5ir09uHXh/t87Z68JPSFWNdgPeDE/+uvHYVqAJG3FjeJal
- S1V/ysezEHUqoTxtQxM9E/HKreuJi63POOZgArie5q98tNfP6TjRxegs9gGeA/EuBC2t
- SYoYZ/jvXHx0oLNDJS/Bilgk5JG6DwW3hyB8TkxkunWNoqKEvACOX2oOLgc7pglCnFYV
- RtwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755013382; x=1755618182;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ESxGQXRyDp3+M4ttufl64PylDHK0z3nBpNs2rbSIejU=;
- b=fokRQnPBpjrZYJVjRBmC7NxMpjSVX06v2h+AmmVpCSRuxWshqCKdmF4iEnJA87Y2Jq
- 1wzSbVY7wdFLiTvtkGIr8wTgFmRPe8eLNj79twCiAl6pe2Gb9WKYWDcr3fuk4hhhUiEQ
- PYx5UwazYIkgWB2WlSDyWqmLz3FDPJlRbIGg12jNXEU2LBdMTTrvW3ATS73kfWvKc1YT
- 3kv4lDCdRBSczQZMMb68MtYk3US+G8nMGmQxqPrsJ8dlrMlE6IboDnl9kgi+xfs+93hW
- EIq0+4O6GYW+ERt8CG25HeAk1cyKaXd9yOUB2k9rRCI7cK0RDoeh0Uu/QYa6zrnDsP7C
- CYqg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXCDAj3lCQ8CRptwCcLaWr43ZpXquqm7Hir0snIAEwY6xzJQUQPKGDuCVKzw0tlI8YgUnmMfkFF2Kc6@nongnu.org
-X-Gm-Message-State: AOJu0Yxk7Q2q0hc8+g/IxRfawz/5NSHakRBwDZ41AqdEqNpbXLVfJyEb
- 26vG/gbRpW5SjB2Z/9YLJmw1ajB0kxcuV6Jmmsni6F1IPTzYUol7VeskgNyKv5wQiPgzGzlsp0a
- U1/rqyb9Aw1wOW+ykeJqs6g1+yFq3N920wni09mVAEQ==
-X-Gm-Gg: ASbGncvGNcjCCjDknKwnAn91egJNd+TGxMPvIEZoJecrfZ8d6ytQ3vsEuyzffnHdvOq
- r/aqT9iYCPxCBbp5bqz6D1P1BoJfBormtV8dsPslqVDG+FB8/WQ2r6RoNgv0d9V9ncztCWxt1YI
- 3zVf3r4wR73B0MPiHwCZn1f96t7TcWj92OrILVjhjw78Fcx56qnlGLaLcYGFM2kiOpOGvVCYoec
- CyovMeepNG8IfBQ5Eu0KPqhYBMSGPbdb7gjCC6q
-X-Google-Smtp-Source: AGHT+IFktJtrbm362zHECq1OJnrUUlsMBUFZEAAT00cdsV901Nce9n1RBS+emrDLz91zJRRCC1A3/SjLMCdK+rOUOcw=
-X-Received: by 2002:a05:6402:239b:b0:614:fead:3d56 with SMTP id
- 4fb4d7f45d1cf-6186785228cmr162445a12.32.1755013381969; Tue, 12 Aug 2025
- 08:43:01 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6YZXAHMGb++HVCAwDj4dnBfNpjcdCt0My5IOW19kCCU=;
+ b=t/Rs7OGxiHhnlKiuH3TvSuTVJY430uo+Bz0tORjq6WX52lRWI8JymMdNjtnrjZHGdDqTWqvzolVbOig5/VSuRE7PWocGAPNzpDVdRcX+JNAZJNbhnhUDA3qDIL4bRhBe4gPtBVsvYQHXGCf+/KP4O54JSoCqRDftCN9T1ujrYEE=
+Received: from DM6PR10MB4363.namprd10.prod.outlook.com (2603:10b6:5:21e::21)
+ by MN2PR10MB4142.namprd10.prod.outlook.com (2603:10b6:208:1d2::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Tue, 12 Aug
+ 2025 15:51:38 +0000
+Received: from DM6PR10MB4363.namprd10.prod.outlook.com
+ ([fe80::999b:18e4:cc6a:7cc6]) by DM6PR10MB4363.namprd10.prod.outlook.com
+ ([fe80::999b:18e4:cc6a:7cc6%7]) with mapi id 15.20.8989.018; Tue, 12 Aug 2025
+ 15:51:38 +0000
+Message-ID: <5d7a5a85-bd95-4aa7-841e-0bdc8d726180@oracle.com>
+Date: Tue, 12 Aug 2025 11:51:34 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 5/6] virtio,virtio-net: skip consistency check in
+ virtio_load for iterative migration
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, farosas@suse.de, eblake@redhat.com,
+ armbru@redhat.com, jasowang@redhat.com, mst@redhat.com,
+ si-wei.liu@oracle.com, eperezma@redhat.com, boris.ostrovsky@oracle.com
+References: <20250722124127.2497406-1-jonah.palmer@oracle.com>
+ <20250722124127.2497406-6-jonah.palmer@oracle.com>
+ <aJOCiUPp0dckmgAn@x1.local> <5e276607-cd86-4a1d-99f3-47dd2f0f3bc0@oracle.com>
+ <aJTU641465aGKWRU@x1.local> <0cf99747-443e-4a29-a0da-64012548a994@oracle.com>
+ <aJnydjxFzKwVzi7Y@x1.local> <eafcf9ca-f23f-42d5-b8c2-69f81a395d11@oracle.com>
+ <aJpm4-JfmevsI7Ei@x1.local>
+Content-Language: en-US
+From: Jonah Palmer <jonah.palmer@oracle.com>
+In-Reply-To: <aJpm4-JfmevsI7Ei@x1.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PH0PR07CA0054.namprd07.prod.outlook.com
+ (2603:10b6:510:e::29) To DM6PR10MB4363.namprd10.prod.outlook.com
+ (2603:10b6:5:21e::21)
 MIME-Version: 1.0
-References: <20250807123027.2910950-1-zhao1.liu@intel.com>
- <20250807123027.2910950-17-zhao1.liu@intel.com>
- <beab841b-9c69-43d2-b996-879eee9e1120@redhat.com> <aJtgIBgl8JzDsJ1O@intel.com>
-In-Reply-To: <aJtgIBgl8JzDsJ1O@intel.com>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Tue, 12 Aug 2025 18:42:49 +0300
-X-Gm-Features: Ac12FXwg0QN5hLWXvv31GGvtF8Pco5KVQ4rcc8u6N1Hr1b_NWiald0fwSybUuQ8
-Message-ID: <CAAjaMXaHQs=oKGRGDwpvVCmRH0xLNZZCTvEaeWJ8x0znBCiY7A@mail.gmail.com>
-Subject: Re: [RFC 16/26] memory: Make flatview_do_translate() return a pointer
- to MemoryRegionSection
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, Junjie Mao <junjie.mao@hotmail.com>, 
- "open list:ARM SMMU <qemu-arm@nongnu.org>, " <qemu-devel@nongnu.org>,
- qemu-rust@nongnu.org, Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Chuanxiao Dong <chuanxiao.dong@intel.com>
-Content-Type: multipart/alternative; boundary="0000000000003571f4063c2ce584"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR10MB4363:EE_|MN2PR10MB4142:EE_
+X-MS-Office365-Filtering-Correlation-Id: e725d18d-f256-49b5-a365-08ddd9b81f98
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?OExxd1FrZVhIZEdRSmhWRjVQK3NFVHQ5Q1I3a2hTT1lzczNCYzFsaU1LTVl2?=
+ =?utf-8?B?eVovR2hWOFVaclc0cU5LK3cyVVJIT1hkUmFpUE9PSnVTcWVvaFlZVFRNYkdy?=
+ =?utf-8?B?NWVtOEZTVS9GL0RoL3ZMaTNMWGFZcTFtQ1RvWG9PYnlGWW8yb0ViempoWnFN?=
+ =?utf-8?B?KzJqNW1DUjhuRG53R1BEekgwbk0xRUR6eEZ4Uk5jb0VZekxiQnM1UVZ3NkQ2?=
+ =?utf-8?B?REtKZ1hxMVJFclR5b29meFpDUGMvTlI3RE1nZTZhc2d4UGdRa0lCV3Q5QllK?=
+ =?utf-8?B?bURqdFc3OThJZzFRQlhlT2E2QjhwcnFYT1RPMXk4bzNURG1oa1FOM3JBeU5N?=
+ =?utf-8?B?ZjhLUHZIcklHN0cwNnRHdFAwaWI3L2cxNDhPN2hHQWMrKzVjR0tqQkNoOEhh?=
+ =?utf-8?B?WEwxMStnV05vbTBhaTEyb0I3RWEydEV5WHA0c1ZDRW1IMGJ2Z0tsZ2E4dTFq?=
+ =?utf-8?B?eHg3UmlhaU1yRXBDL25EdGhTcDVTVzFPWmVUcnBFN1ZES0ZPOG5UK0hEVWpZ?=
+ =?utf-8?B?cHFSV0oxUVBWaDdGNVcwYWo4eXp2d1NMbFdzNVI0bXpMSFcwb2pwSUdJUHpk?=
+ =?utf-8?B?Z1BkZHZTU3JXMWRjQ0g0MURWZnBiOXVnVDB0Yk0wT1BMd0lNdDY1QVkyUTgv?=
+ =?utf-8?B?OGFLTHJ4U3U3NzlJTkxDa1crdzNSVXFjWWxHTWhBQ2U2VHM4ZnlMUEJnbEVU?=
+ =?utf-8?B?aEVmS003Q0MyalpUc1JjT21vU1FENXlrZ3MxOTh5OXY1Yjl0UDdDWjdzaGJh?=
+ =?utf-8?B?Q3dkTWFWWlZGbFByT1NwV09STEwyUzlWL2ZKQWRlNk1jcUFsSGh0RWoySlJo?=
+ =?utf-8?B?b1VaQnlhRzdsRnRYd2VEVmk3UUV3Wi93TWMwSVcycXU2bGlPTVRqbnN4eWpH?=
+ =?utf-8?B?YXBneGdtd3ltNnRveVBSN0lEaW51VUtCNWNtQjJ6KzZKOUFoaTZnTUtEa0tY?=
+ =?utf-8?B?MmlvT1ZIVk9rczdtUTdqOXFRNmNIZzkxendEcEJhazZYZ3VtRThpdnI0MmU1?=
+ =?utf-8?B?YW9mMktPM2VZVXY5QnVqWVhtQWluQlNSQjBETkY0dHpMSWVTVUlaSkwzdTdi?=
+ =?utf-8?B?d1J2SjNWZm91WU9tWnJvUkJKbWhmcC93OXl4TldBY3VXMDF0VHpsRDNDdFY3?=
+ =?utf-8?B?UHphRjRQdXA3aW40SWMxd3R2WWpjZ3ZJeVhYYWRGVDY5YlBtMDV4NTVNL0Ni?=
+ =?utf-8?B?d3hPejdoUmtSUmxOMlNrelhyWHRpNk40ZmhPV3RaVVlIMjlvZVlVc05oUmRX?=
+ =?utf-8?B?UTVlRU5TYk1RSUM0cm0wUGp3emtSUWJtYjg3eTNhOGtJWTE2SUV4MlZsdVFu?=
+ =?utf-8?B?OHh2QWlyblVUWkhPbjh0VnRrUHFvdE9senBFS3FBUzFIY21WTjk1WEg5TFc3?=
+ =?utf-8?B?VVFLSSszTWZ1SEZsSXFpTkEvZFF5WUhhOEFDdk83T1BCSEhveFYxQ3BhZ0NW?=
+ =?utf-8?B?bDFkbnkwSnRvUGJlQUEvWG5qSm5USGZSY0hNSmdhczNGaWRHWUVmbEhEK1Mr?=
+ =?utf-8?B?dXhiaFhkMVFjQkg3QXR3M1dEd0l6Zlp4YjF4ZTVTTUxDamUxM2JpS0pMcXht?=
+ =?utf-8?B?YmJZZ3ovNS92dHV6NFZydGgwTnIvTWVDeW9BWmVpeGc2eERZS1ZlYlN2d0E0?=
+ =?utf-8?B?ZTMzZFNSUnV6NUZHcDJXTUd2RnN5VG10SDh1cnlQSkxDUE5kOFZHMmdzeE9l?=
+ =?utf-8?B?b1hQS2cyL1loSHJ2Z1NkVlBNU1RTVGtubUFSd1dZeVhqb0pDcmplSTdYOWtx?=
+ =?utf-8?B?ZnJSYjVWTFc4VlZ4UFV2RUZFUm9IQ2lIdmVhWW9CM2x1WjN2VHpsWG9GaVVM?=
+ =?utf-8?B?bGIxVlF3cXlLbXlFZVdTWTFQRmRJUUx3NmgrbGRQTDJlbjBsV3g2OXd1Z0Vx?=
+ =?utf-8?B?Y1cxdnZ3S2ptd0lBQW9jSWdQSlFVcEMvOWZkUFN1M3lhdkZ5bnRaMWgzTThF?=
+ =?utf-8?Q?mEY/jxULZNk=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR10MB4363.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eHdLMzBmWUZFSUxHa2dDL1ozbFpPQlVRRm1MVW1Kd25wRTI4NXVnYkt2a05Z?=
+ =?utf-8?B?bHZtb1M0QkxSUUxQVnRaVU5zemJLTjVUMmhobkVNb2xKZG9GVklRUGhvWXVL?=
+ =?utf-8?B?bHpoZUxkWWRXamo2b1VWNGdRRjI0VVJFcUlic1JDaHFoZWRrYlBiU3pCYVh1?=
+ =?utf-8?B?L1FRdFN2Y2pOZTk1SHZRVW1rdER3ZzlCeWdLL1M5bVl5TzBDRURkUk9aZDhD?=
+ =?utf-8?B?V2xpVzZudnVZQTNYTU5GMHFDZTlycWprM1dObWRIb084OHhCNEErdUtsL0d6?=
+ =?utf-8?B?V2pkZDAvbTYzaFZFUzFhWHZLVGJtcWN2WHNDTDFrVy9aMkR1N0t3ZjFoekhq?=
+ =?utf-8?B?aHFxTVZMbXN1MkxpRzZoaWxHWmlKWFFldHFlcFB0UElNVTh4RHVNb09PR1o2?=
+ =?utf-8?B?NkcwQUhGYTE4ZHFaWFYrUXZSekNuSGZRY1hnb0RrUnI1NG5KU1M1UGJuN0Fw?=
+ =?utf-8?B?dnY2czVLTm00NERzc2x1TjJ4aFZMQnNUeEpSNXhWbUwyTTdEWWdiQ2RhOEFN?=
+ =?utf-8?B?b0h5dTRXUXFmN3hWbWFLRHlLWmh4dzQwdXE4WGJTOHIvT1B3MisrcjdzOXRt?=
+ =?utf-8?B?M1JyQWJpSlM1clFqb21HTmxaT05jL0U1KzFDYmJncWlRdWk2VnE1NGI5RWFr?=
+ =?utf-8?B?SGU2K2dQRjlYUU51ck1mVXlLK0crckx2K2JKUjBVRFhWU21lTTNEdlVJNEpG?=
+ =?utf-8?B?aTloSXFOaUdQUnVJTmxnYnQ0YSswdmt4VkwwdEh1ZG53T2FDcFJyVUhVblM4?=
+ =?utf-8?B?ckRMYTROSFYxWE5FbXZJOXhERGJtckg4MFpPWVI1R0VWaVBrNTB6S0tIaVdP?=
+ =?utf-8?B?SlhPQmEyR2pSMFlnTXJBbU9XMzRYWlY1UjByVVJUMlliU042Z1dFSkhpclFr?=
+ =?utf-8?B?Tm0rVHdlNTZZSzlXSUh1UzgycHRQeVlPMnpwVnB2bmlyOUMyeUpyODJDK0dk?=
+ =?utf-8?B?Q3VLaDZ6N0oyRkdYQjE0MlBFWW5zdVhCOEgrZmNuT25iaTdQOENCdGpZaUkr?=
+ =?utf-8?B?Z3MyMHdlbG81Mzl4SlJLdk9pNHVVV2FpWTdCZlNiOWlwWXBKZ05IajRLOHIy?=
+ =?utf-8?B?YnFscm8wUENYNlBJZjdwTTJTbTZUSW1PazY4bVVTZWU5bkdja2c3L1NxNS92?=
+ =?utf-8?B?bG5jRUdHL0NudEZKNUNnK3krR3BxemQ5MXRNdDBrTW1xaEhWblZsNitZdS9Z?=
+ =?utf-8?B?WVBweW4zN1dGcVNGSFI4YXUza2Zsb1Jab3FlM1pJZFQya2JPVmdFMGs2dVdu?=
+ =?utf-8?B?cnViY3crRnVnZmhOdUpXY01CTXZ5Tm9wQXpnd3dwRHNmbjRWczNiTlFoYWFN?=
+ =?utf-8?B?YkcvRzQ2anp6MEEvMGR1U0dFTjV2Q2p5azdkTHFyeExXMThxRHRIRS9GNFJo?=
+ =?utf-8?B?TE92RWxJQWF1UkVjYW4xRXJzaDRsVndFaUdHR0pNaWZTVEZUZjRScWwwKy8x?=
+ =?utf-8?B?Qk1nMTgvczJTclJvZWhkM2x2WDNwczVSQUthY1FyYmtLYWwybUJNa3M2dG94?=
+ =?utf-8?B?SlBCa0JSMlJXaUNsT1AzTVY0WFkzM3J3NllRcmhKMURLY2RqZnlXTVRrczBX?=
+ =?utf-8?B?WXZOa3hqM3pWTE9JOEhXUGRRNW5LK1MxZ0Q5TVlObmVJTVJQd0VFalRneW5l?=
+ =?utf-8?B?M2hZbXVmY2ZsUUJvSjIzdVdvRlcyRmVSc1M4bk0xS1N0enBtdGlsRzNPM0hI?=
+ =?utf-8?B?YzFiRmxQbEREMHI0M0ZtRStjY1czMXJRN1VWUU5MLzVYME1GYVpsVUtiVlFQ?=
+ =?utf-8?B?Q3RDYmJDTm9xZEdTU3FjZnR3Vk5RTmVvdnFqYWh1cklLQlFIL3pDRFNlME9i?=
+ =?utf-8?B?V3NSM1VlU3EvSW1nZmxLZm9rMU8vQm0rRHQ4OVovNnJpNTZNVURuT29OaUg2?=
+ =?utf-8?B?cFMyMFIrUkVPTWxQeml2QU9vNzVDLy9sOFFjdW9ndUgvQ3hEUjNzTmF2R3hz?=
+ =?utf-8?B?S09iTDFDRytLaFo2N1RMNVlMNjl1M1hTczlRSDRTWUpNdTFvS0lWSlBacnE0?=
+ =?utf-8?B?MVB2dnFCeDdtZTZhZEpXTGVFL3kvK2lLN0pNQTJMMS9peW1HcWdCUC9NMVBP?=
+ =?utf-8?B?SG4wNXNpME8zYWVRbUJFeUJaUnB1SkNtNk9iU3h4TkxvdWNWOXEzeWZ0SGR4?=
+ =?utf-8?B?cmhVa1lNT2o5SU9XSkVpaGRxYUtYZEVmMVpZME5YM0xLRlYrdGI2UVZCT2s4?=
+ =?utf-8?B?dHc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: nI2Vgm0u7Yndios3QIn7xK7QS7QKfBpSm4oIA/xfqSdp6Lnm5wfu4afevGQmjIWJA/tdPZtLd99zaxzTXnSaDLSDlNWX17J8ufRP7VfsZcCvOB0wtw2xuD8g/jAUBaHifUzvZbIZRbcY/oL9X0wo8UIIijnGpqJ9CCTafAU1PpnSipGGvLcu64J2v92+VXeR+mNRH2UVFrIyuYRDP2RiOsdCELKCZESz3gJLrOxRHxxJwpNNO3em1d2dKlBSRPoYdzp8os/VTq0QoQjaXdt8V7/6ktri5hvthoK4IE+jkbry+sRjIW1TvMnCypoU5ysgT6p/OqIZRVWv6bfpDK+OQgoPqL/dxxgusHeCH+MYkk3hitptmlPI/22nEvWXxHwDQ6LqQtOztohdkFt2f1WJf/K/rkYRWm2ZRef8G/1enM48hxFhOQYBXbupp+uKLAyF8sYJ8PXNERnrlhvEr5mzlUiZQzEKNuMLcBLhsEtd/8AOkuqQ8XTcb0kVNMCQdF7r2RMidK6ChRJxZvqFiGzHiEdCmKop7IWjQ5lTSpXEOMt7B7CkKj0LC30pGiw89rt0yBbAb1J7dZUHVyI6FvZB1wDsL65YDrDbASDsM5xL7rE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e725d18d-f256-49b5-a365-08ddd9b81f98
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB4363.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 15:51:38.6338 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Nq3JeP6G1uAoxG1HifWOW2GU2tqvGaI/EqC+/MFLpBZ/rbm71V4yJ1nd9OoHgtMQFAFvXhs7jmH76EXSLqPzJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR10MB4142
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ phishscore=0
+ adultscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=947
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2507300000 definitions=main-2508120152
+X-Proofpoint-GUID: 7kf0iqKi0xxqLFS8sjNwrVm9quQzURpv
+X-Proofpoint-ORIG-GUID: 7kf0iqKi0xxqLFS8sjNwrVm9quQzURpv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE1MiBTYWx0ZWRfX/s8508jbQFzy
+ sD9Z0f9UQ1/aWcsbH+NCfVjO600km5bSzd7EO26Xev0Rvp5yKZRO+45X2k8T0V+wTsqAj5Mi3BH
+ RVFLorbohHfHBb8JtzLik9iYDOOtcaEPzRGz8eVl7MNW0GaAFnXJLVvpIqWtNlE26pLaqD6axgr
+ cVZkl94uxxjQ4XqgC0mIPNmafUjuuHaltWHLc61BJecAUrdIpF6BoqglQntcjDrRPYcWjlf7x9J
+ /386Ne0kiTI0HI3tj+DatXI7n9pJqyZwDc2mKWdTonaXB2rJstI0Vd9pHyycKwEjn5NrOHoKly2
+ qAuAPZwujT14uaH3RyT5wr5KEpw1GVA0GiQfVrj0vlYjJB9aylRQ24tkSnLei6YFTInsYl6ei2o
+ zPpUhwNdHO8KMn1585I01uVK7sZDCXdK69rVak8ZMdCOHVmci4bqLgzK5X5+JZC4pJT2oMjB
+X-Authority-Analysis: v=2.4 cv=dpnbC0g4 c=1 sm=1 tr=0 ts=689b630f cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=e1X4v4M6vOgMd6Xu3-4A:9
+ a=QEXdDO2ut3YA:10
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,213 +235,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000003571f4063c2ce584
-Content-Type: text/plain; charset="UTF-8"
-
-On Tue, 12 Aug 2025, 18:17 Zhao Liu, <zhao1.liu@intel.com> wrote:
-
-> On Thu, Aug 07, 2025 at 03:57:17PM +0200, Paolo Bonzini wrote:
-> > Date: Thu, 7 Aug 2025 15:57:17 +0200
-> > From: Paolo Bonzini <pbonzini@redhat.com>
-> > Subject: Re: [RFC 16/26] memory: Make flatview_do_translate() return a
-> >  pointer to MemoryRegionSection
-> >
-> > On 8/7/25 14:30, Zhao Liu wrote:
-> > > Rust side will use cell::Opaque<> to hide details of C structure, and
-> > > this could help avoid the direct operation on C memory from Rust side.
-> > >
-> > > Therefore, it's necessary to wrap a translation binding and make it
-> only
-> > > return the pointer to MemoryRegionSection, instead of the copy.
-> > >
-> > > As the first step, make flatview_do_translate return a pointer to
-> > > MemoryRegionSection, so that we can build a wrapper based on it.
-> >
-> > Independent of Rust, doing the copy as late as possible is good, but
-> make it
-> > return a "const MemoryRegionSection*" so that there's no risk of
-> overwriting
-> > data.
->
-> Yes, const MemoryRegionSection* is helpful...
->
-> > Hopefully this does not show a bigger problem!
->
-> ...then we will get `*const bindings::MemoryRegionSection` from
-> flatview_translate_section().
->
-> This is mainly about how to construct Opaque<T> from `*cont T`:
->
-> impl FlatView {
->     fn translate(
->         &self,
->         addr: GuestAddress,
->         len: GuestUsize,
->         is_write: bool,
->     ) -> Option<(&MemoryRegionSection, MemoryRegionAddress, GuestUsize)> {
->         ...
->         let ptr = unsafe {
->             flatview_translate_section(
->                 self.as_mut_ptr(),
->                 addr.raw_value(),
->                 &mut raw_addr,
->                 &mut remain,
->                 is_write,
->                 MEMTXATTRS_UNSPECIFIED,
->             )
->         };
->
->         ...
->
-> ------> // Note here, Opaque<>::from_raw() requires *mut T.
->         // And we can definitely convert *cont T to *mut T!
->         let s = unsafe { <FlatView as GuestMemory>::R::from_raw(ptr as
-> *mut _) };
->         ...
->     }
->
-> But look closer to Opaque<>, it has 2 safe methods: as_mut_ptr() &
-> raw_get().
->
-> These 2 methods indicate that the T pointed by Qpaque<T> is mutable,
-> which has the conflict with the original `*const
-> bindings::MemoryRegionSection`.
->
-> So from this point, it seems unsafe to use Qpaque<> on this case.
->
-
-Yes, the usual approach is to have a Ref and a RefMut type e.g. Opaque and
-OpaqueMut, and the OpaqueMut type can dereference immutably as an Opaque.
-
-See std::cell::{Ref, RefMut} for inspiration.
 
 
-To address this, I think we need:
->  - rich comments about this MemoryRegionSection is actually immuatble.
->  - modify other C functions to accept `const *MemoryRegionSection` as
->    argument.
->
-> What do you think?
->
+On 8/11/25 5:55 PM, Peter Xu wrote:
+> On Mon, Aug 11, 2025 at 05:26:05PM -0400, Jonah Palmer wrote:
+>> This effort was started to reduce the guest visible downtime by
+>> virtio-net/vhost-net/vhost-vDPA during live migration, especially
+>> vhost-vDPA.
+>>
+>> The downtime contributed by vhost-vDPA, for example, is not from having to
+>> migrate a lot of state but rather expensive backend control-plane latency
+>> like CVQ configurations (e.g. MQ queue pairs, RSS, MAC/VLAN filters, offload
+>> settings, MTU, etc.). Doing this requires kernel/HW NIC operations which
+>> dominates its downtime.
+>>
+>> In other words, by migrating the state of virtio-net early (before the
+>> stop-and-copy phase), we can also start staging backend configurations,
+>> which is the main contributor of downtime when migrating a vhost-vDPA
+>> device.
+>>
+>> I apologize if this series gives the impression that we're migrating a lot
+>> of data here. It's more along the lines of moving control-plane latency out
+>> of the stop-and-copy phase.
+> 
+> I see, thanks.
+> 
+> Please add these into the cover letter of the next post.  IMHO it's
+> extremely important information to explain the real goal of this work.  I
+> bet it is not expected for most people when reading the current cover
+> letter.
+> 
+> Then it could have nothing to do with iterative phase, am I right?
+> 
+> What are the data needed for the dest QEMU to start staging backend
+> configurations to the HWs underneath?  Does dest QEMU already have them in
+> the cmdlines?
+> 
+> Asking this because I want to know whether it can be done completely
+> without src QEMU at all, e.g. when dest QEMU starts.
+> 
+> If src QEMU's data is still needed, please also first consider providing
+> such facility using an "early VMSD" if it is ever possible: feel free to
+> refer to commit 3b95a71b22827d26178.
+> 
+> So the data to be transferred is still in VMSD form, aka, data are still
+> described by VMSD macros, instead of hard-coded streamline protocols using
+> e.g. qemufile APIs using save_setup()/load_setup().
+> 
+> When things are described in VMSDs, it get the most benefit from the live
+> migration framework, and it's much, much more flexible.  It's the most
+> suggested way for device to cooperate with live migration, savevmhandlers
+> are only the last resort because it's almost not in control of migration..
+> 
+> In short, please avoid using savevmhandlers as long as there can be any
+> other way to achieve similar results.
+> 
+
+Oh this early VMSD is interesting and, at first glance, appears to be 
+suitable for what we're trying to do here. I'll take a look at it and 
+see if this is something we can use instead of the SaveVMHandlers hooks.
+
+Thank you for mentioning this.
+
+Jonah
+
 > Thanks,
-> Zhao
->
->
+> 
 
---0000000000003571f4063c2ce584
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Tue, 12 Aug 2025, 18:17 Zhao Liu, &lt;<a href=3D"ma=
-ilto:zhao1.liu@intel.com" target=3D"_blank" rel=3D"noreferrer">zhao1.liu@in=
-tel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"=
-margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-lef=
-t:1ex">On Thu, Aug 07, 2025 at 03:57:17PM +0200, Paolo Bonzini wrote:<br>
-&gt; Date: Thu, 7 Aug 2025 15:57:17 +0200<br>
-&gt; From: Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com" rel=3D"=
-noreferrer noreferrer" target=3D"_blank">pbonzini@redhat.com</a>&gt;<br>
-&gt; Subject: Re: [RFC 16/26] memory: Make flatview_do_translate() return a=
-<br>
-&gt;=C2=A0 pointer to MemoryRegionSection<br>
-&gt; <br>
-&gt; On 8/7/25 14:30, Zhao Liu wrote:<br>
-&gt; &gt; Rust side will use cell::Opaque&lt;&gt; to hide details of C stru=
-cture, and<br>
-&gt; &gt; this could help avoid the direct operation on C memory from Rust =
-side.<br>
-&gt; &gt; <br>
-&gt; &gt; Therefore, it&#39;s necessary to wrap a translation binding and m=
-ake it only<br>
-&gt; &gt; return the pointer to MemoryRegionSection, instead of the copy.<b=
-r>
-&gt; &gt; <br>
-&gt; &gt; As the first step, make flatview_do_translate return a pointer to=
-<br>
-&gt; &gt; MemoryRegionSection, so that we can build a wrapper based on it.<=
-br>
-&gt; <br>
-&gt; Independent of Rust, doing the copy as late as possible is good, but m=
-ake it<br>
-&gt; return a &quot;const MemoryRegionSection*&quot; so that there&#39;s no=
- risk of overwriting<br>
-&gt; data.<br>
-<br>
-Yes, const MemoryRegionSection* is helpful...<br>
-<br>
-&gt; Hopefully this does not show a bigger problem!<br>
-<br>
-...then we will get `*const bindings::MemoryRegionSection` from<br>
-flatview_translate_section().<br>
-<br>
-This is mainly about how to construct Opaque&lt;T&gt; from `*cont T`:<br>
-<br>
-impl FlatView {<br>
-=C2=A0 =C2=A0 fn translate(<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 &amp;self,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 addr: GuestAddress,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 len: GuestUsize,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 is_write: bool,<br>
-=C2=A0 =C2=A0 ) -&gt; Option&lt;(&amp;MemoryRegionSection, MemoryRegionAddr=
-ess, GuestUsize)&gt; {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 ...<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 let ptr =3D unsafe {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 flatview_translate_section(<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.as_mut_ptr(),<=
-br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 addr.raw_value(),<b=
-r>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &amp;mut raw_addr,<=
-br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &amp;mut remain,<br=
->
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 is_write,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 MEMTXATTRS_UNSPECIF=
-IED,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 )<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 };<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 ...<br>
-<br>
-------&gt; // Note here, Opaque&lt;&gt;::from_raw() requires *mut T.<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 // And we can definitely convert *cont T to *mu=
-t T!<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 let s =3D unsafe { &lt;FlatView as GuestMemory&=
-gt;::R::from_raw(ptr as *mut _) };<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 ...<br>
-=C2=A0 =C2=A0 }<br>
-<br>
-But look closer to Opaque&lt;&gt;, it has 2 safe methods: as_mut_ptr() &amp=
-;<br>
-raw_get().<br>
-<br>
-These 2 methods indicate that the T pointed by Qpaque&lt;T&gt; is mutable,<=
-br>
-which has the conflict with the original `*const bindings::MemoryRegionSect=
-ion`.<br>
-<br>
-So from this point, it seems unsafe to use Qpaque&lt;&gt; on this case.<br>=
-</blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">Yes,=
- the usual approach is to have a Ref and a RefMut type e.g. Opaque and Opaq=
-ueMut, and the OpaqueMut type can dereference immutably as an Opaque.</div>=
-<div dir=3D"auto"><br></div><div dir=3D"auto">See std::cell::{Ref, RefMut} =
-for inspiration.</div><div dir=3D"auto"><br></div><div dir=3D"auto"><br></d=
-iv><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
-204);padding-left:1ex">
-To address this, I think we need:<br>
-=C2=A0- rich comments about this MemoryRegionSection is actually immuatble.=
-<br>
-=C2=A0- modify other C functions to accept `const *MemoryRegionSection` as<=
-br>
-=C2=A0 =C2=A0argument.<br>
-<br>
-What do you think?<br>
-<br>
-Thanks,<br>
-Zhao<br>
-<br>
-</blockquote></div></div></div>
-
---0000000000003571f4063c2ce584--
 
