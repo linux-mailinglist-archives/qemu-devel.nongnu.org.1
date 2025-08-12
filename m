@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6270FB22382
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 11:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D72B2237F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 11:42:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ullVZ-0007wc-AE; Tue, 12 Aug 2025 05:41:29 -0400
+	id 1ullVa-0007yC-8l; Tue, 12 Aug 2025 05:41:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1ullVF-0007WQ-Qa; Tue, 12 Aug 2025 05:41:12 -0400
+ id 1ullVM-0007cL-Gq; Tue, 12 Aug 2025 05:41:16 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1ullVB-0000Yh-Eh; Tue, 12 Aug 2025 05:41:09 -0400
+ id 1ullVK-0000lv-Lt; Tue, 12 Aug 2025 05:41:16 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 12 Aug
- 2025 17:40:14 +0800
+ 2025 17:40:15 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Tue, 12 Aug 2025 17:40:14 +0800
+ Transport; Tue, 12 Aug 2025 17:40:15 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [PATCH v5 06/10] hw/arm: Integrate ASPEED OTP memory support into
- AST1030 SoCs
-Date: Tue, 12 Aug 2025 17:40:03 +0800
-Message-ID: <20250812094011.2617526-7-kane_chen@aspeedtech.com>
+Subject: [PATCH v5 07/10] hw/misc/aspeed_sbc: Add CAMP2 support for OTP data
+ reads
+Date: Tue, 12 Aug 2025 17:40:04 +0800
+Message-ID: <20250812094011.2617526-8-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250812094011.2617526-1-kane_chen@aspeedtech.com>
 References: <20250812094011.2617526-1-kane_chen@aspeedtech.com>
@@ -67,69 +67,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-The has_otp attribute is enabled in the SBC subclasses for AST1030 to
-control the presence of OTP support per SoC type.
+The OTP space contains three types of entries: data, conf, and strap.
+Data entries consist of two DWORDs, while the other types contain
+only one DWORD. This change adds the R_CAMP2 register (0x024 / 4) to
+store the second DWORD when reading from the OTP data region.
+
+With this enhancement, OTP reads now correctly return both DWORDs for
+data entries via the CAMP registers, along with improved address
+validation and error handling.
 
 Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 ---
- include/hw/misc/aspeed_sbc.h |  1 +
- hw/arm/aspeed_ast10x0.c      |  2 +-
- hw/misc/aspeed_sbc.c         | 16 ++++++++++++++++
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ hw/misc/aspeed_sbc.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/include/hw/misc/aspeed_sbc.h b/include/hw/misc/aspeed_sbc.h
-index 0c2746d392..7d640a022e 100644
---- a/include/hw/misc/aspeed_sbc.h
-+++ b/include/hw/misc/aspeed_sbc.h
-@@ -14,6 +14,7 @@
- 
- #define TYPE_ASPEED_SBC "aspeed.sbc"
- #define TYPE_ASPEED_AST2600_SBC TYPE_ASPEED_SBC "-ast2600"
-+#define TYPE_ASPEED_AST10X0_SBC TYPE_ASPEED_SBC "-ast10x0"
- OBJECT_DECLARE_TYPE(AspeedSBCState, AspeedSBCClass, ASPEED_SBC)
- 
- #define ASPEED_SBC_NR_REGS (0x93c >> 2)
-diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
-index e6e1ee63c1..c446e70b24 100644
---- a/hw/arm/aspeed_ast10x0.c
-+++ b/hw/arm/aspeed_ast10x0.c
-@@ -154,7 +154,7 @@ static void aspeed_soc_ast1030_init(Object *obj)
- 
-     object_initialize_child(obj, "peci", &s->peci, TYPE_ASPEED_PECI);
- 
--    object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_SBC);
-+    object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_AST10X0_SBC);
- 
-     for (i = 0; i < sc->wdts_num; i++) {
-         snprintf(typename, sizeof(typename), "aspeed.wdt-%s", socname);
 diff --git a/hw/misc/aspeed_sbc.c b/hw/misc/aspeed_sbc.c
-index b56a8b7678..052c70fd42 100644
+index 052c70fd42..787e2d0489 100644
 --- a/hw/misc/aspeed_sbc.c
 +++ b/hw/misc/aspeed_sbc.c
-@@ -285,9 +285,25 @@ static const TypeInfo aspeed_ast2600_sbc_info = {
-     .class_init = aspeed_ast2600_sbc_class_init,
- };
+@@ -22,6 +22,7 @@
+ #define R_ADDR          (0x010 / 4)
+ #define R_STATUS        (0x014 / 4)
+ #define R_CAMP1         (0x020 / 4)
++#define R_CAMP2         (0x024 / 4)
+ #define R_QSR           (0x040 / 4)
  
-+static void aspeed_ast10x0_sbc_class_init(ObjectClass *klass, const void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedSBCClass *sc = ASPEED_SBC_CLASS(klass);
-+
-+    dc->desc = "AST10X0 Secure Boot Controller";
-+    sc->has_otp = true;
-+}
-+
-+static const TypeInfo aspeed_ast10x0_sbc_info = {
-+    .name = TYPE_ASPEED_AST10X0_SBC,
-+    .parent = TYPE_ASPEED_SBC,
-+    .class_init = aspeed_ast10x0_sbc_class_init,
-+};
-+
- static void aspeed_sbc_register_types(void)
+ /* R_STATUS */
+@@ -50,6 +51,8 @@
+ #define SBC_OTP_CMD_READ 0x23b1e361
+ #define SBC_OTP_CMD_PROG 0x23b1e364
+ 
++#define OTP_DATA_DWORD_COUNT        (0x800)
++#define OTP_TOTAL_DWORD_COUNT       (0x1000)
+ static uint64_t aspeed_sbc_read(void *opaque, hwaddr addr, unsigned int size)
  {
-     type_register_static(&aspeed_ast2600_sbc_info);
-+    type_register_static(&aspeed_ast10x0_sbc_info);
-     type_register_static(&aspeed_sbc_info);
+     AspeedSBCState *s = ASPEED_SBC(opaque);
+@@ -72,6 +75,16 @@ static bool aspeed_sbc_otp_read(AspeedSBCState *s,
+     MemTxResult ret;
+     AspeedOTPState *otp = &s->otp;
+     uint32_t value, otp_offset;
++    bool is_data = false;
++
++    if (otp_addr < OTP_DATA_DWORD_COUNT) {
++        is_data = true;
++    } else if (otp_addr >= OTP_TOTAL_DWORD_COUNT) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "Invalid OTP addr 0x%x\n",
++                      otp_addr);
++        return false;
++    }
+ 
+     otp_offset = otp_addr << 2;
+     ret = address_space_read(&otp->as, otp_offset, MEMTXATTRS_UNSPECIFIED,
+@@ -85,6 +98,20 @@ static bool aspeed_sbc_otp_read(AspeedSBCState *s,
+     s->regs[R_CAMP1] = value;
+     trace_aspeed_sbc_otp_read(otp_addr, value);
+ 
++    if (is_data) {
++        ret = address_space_read(&otp->as, otp_offset + 4,
++                                 MEMTXATTRS_UNSPECIFIED,
++                                 &value, sizeof(value));
++        if (ret != MEMTX_OK) {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "Failed to read OTP memory, addr = %x\n",
++                          otp_addr);
++            return false;
++        }
++        s->regs[R_CAMP2] = value;
++        trace_aspeed_sbc_otp_read(otp_addr + 1, value);
++    }
++
+     return true;
  }
  
 -- 
