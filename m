@@ -2,94 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E000AB22697
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 14:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA15EB226FA
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 14:34:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ulnvJ-0005Lv-Nk; Tue, 12 Aug 2025 08:16:15 -0400
+	id 1uloC1-0002tB-HZ; Tue, 12 Aug 2025 08:33:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ulnvE-0005Kc-6V
- for qemu-devel@nongnu.org; Tue, 12 Aug 2025 08:16:08 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ulnuP-0004Ff-RQ
- for qemu-devel@nongnu.org; Tue, 12 Aug 2025 08:15:31 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-b3bdab4bf19so4350735a12.2
- for <qemu-devel@nongnu.org>; Tue, 12 Aug 2025 05:15:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755000911; x=1755605711; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/Bxrg56B2/1q5rYYI/G2b6ZimfDVJ2Y7Pz0uWdUj5Bg=;
- b=GVsUaD9TEisCJuuJ5Tv1ZGgMnXWcwlBtAy3VaDNqrfvWW8cNNmSmMoqD0N4gtZNZHW
- VsnVR4k1DnDRzoJZ2n6mPzyWiJ90XJLeHB9U+hooMJtbIDlSSmE0y9JBpKUDqcRAsHbL
- WURXKrGX9A2sRVKEX4dmLnQqJSCU24rA+UwU0tgxpPrNhxe0xiKNh4i/y3NsC2lVhYFS
- 8GOqGVPh5KdY5W7TCUy8xgkFHlvVUUQss1U81SGJ+J/879XuR37E9QzTROEcRO+KfDiZ
- xpkNUtW9taJW1CcDeHAK1IhJFxAvJ7L28BgB+C5ROg/a+LjgKA74TLgnhziHT6PZ2QA/
- nB6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755000911; x=1755605711;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/Bxrg56B2/1q5rYYI/G2b6ZimfDVJ2Y7Pz0uWdUj5Bg=;
- b=HpI54GMve9CgTXy9K3K3NuVx+H/upqO9v7IfJP5/HHfTdKoZpqa3obiSugkbePSDX9
- gBGTNjCFwtCMuKJJDNhDgO4VVZEfeWSNHfWN3hJUxGGOXzuSxC3PCGCwR7uyamKXbzF5
- 9Bn9LWE/PRii5wex/dT9+TdtlnXeGphmoDKdtQhH37PpvUqZO+R7b7orN/EbmDM1FJ76
- aYyG59uUUvRdAE9idnupR8JI60wCrm6gvAneYvPlP0wTn0m6SIeaVpaYi+oCAv+kZEpj
- yQGJV90Pxk20koG2QuE/afnZ222pvOnYWY4z17xAP8+oECgsuZhb7yrGCUyVgtC6rcDZ
- dHXw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXEnvls8lVfxVKwgmhYKfnyWUcXM74FYNG7oQ2CAVWAvF+JxmKRYpWpOlEmJTCpqpZSJz3lJgoK09kL@nongnu.org
-X-Gm-Message-State: AOJu0Yy9umFy9FV58aOWdTYMw1OhLuG1dOMJtmHZbAa/2LL+7F/cTuWw
- IQBzlzhqryo1/LALDztaJehpUKmp1qIyFSOgij6HNjXRxPHvvDSsvB0tgZwf6ZEvyjE=
-X-Gm-Gg: ASbGncvRV78wvJJMGqxEYQZ0YoOT6Vc3z1s0QmxUPOkPKtHOZ+w+UrEzLSFhdQcI0Bf
- IsjDe8TiUBAP9NhiZF4xfd8y0iSxdOjxIJkld8dn4BAx/Ij/rHitEQfE52BkIE6ybHIQAJwyV35
- 1WA5HiFLm4EvmBax2C5xu5tx1v4ktq8vPC84ldCi3iMMSq0MyVbkEFswpXOnhVtRyW6zkJ9gFTJ
- 61c45Ykg+Qn/vE+Qkzefa3qEfhix3M4bIVa6O+h94xetVPvEulqVUf3RjuDSXA1afTaUo5KNDB6
- 9wPbO+Mvy9dPF5++GDZgxxVbumIDCek4/ItIDq6vse7EPwhq4DMVzla1jacuHB8tEELL6EA1zkh
- kzAswX2ZXtH0Hh0wJy4y/U5kyOapH9rJFjmAgr+tg
-X-Google-Smtp-Source: AGHT+IFgEEPe1PYImXF6BdjNXMF+vuKs+96kB+FXLsF9hCy3+s8nYPHK1OoZI08fRo0TXTkFhTwKaQ==
-X-Received: by 2002:a17:902:f78b:b0:240:66ff:b276 with SMTP id
- d9443c01a7336-242fc315e6amr49899765ad.31.1755000911106; 
- Tue, 12 Aug 2025 05:15:11 -0700 (PDT)
-Received: from [192.168.4.112] ([168.140.255.211])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-241e8976a48sm297685785ad.104.2025.08.12.05.15.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Aug 2025 05:15:10 -0700 (PDT)
-Message-ID: <d7e55a44-03ef-4d13-9705-a743921138be@linaro.org>
-Date: Tue, 12 Aug 2025 22:15:05 +1000
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1uloBW-0002av-8P; Tue, 12 Aug 2025 08:32:59 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1uloBO-0006u5-Ni; Tue, 12 Aug 2025 08:32:56 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c1VzP01Jbz6L54T;
+ Tue, 12 Aug 2025 20:23:45 +0800 (CST)
+Received: from frapeml500003.china.huawei.com (unknown [7.182.85.28])
+ by mail.maildlp.com (Postfix) with ESMTPS id B3F6814033C;
+ Tue, 12 Aug 2025 20:28:34 +0800 (CST)
+Received: from a2303103017.china.huawei.com (10.47.65.66) by
+ frapeml500003.china.huawei.com (7.182.85.28) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 12 Aug 2025 14:28:33 +0200
+To: <qemu-devel@nongnu.org>
+CC: <anisinha@redhat.com>, <armbru@redhat.com>, <berrange@redhat.com>,
+ <dapeng1.mi@linux.intel.com>, <eric.auger@redhat.com>,
+ <farman@linux.ibm.com>, <gustavo.romero@linaro.org>, <imammedo@redhat.com>,
+ <jiangkunkun@huawei.com>, <jonathan.cameron@huawei.com>,
+ <linuxarm@huawei.com>, <maobibo@loongson.cn>, <mst@redhat.com>,
+ <mtosatti@redhat.com>, <peter.maydell@linaro.org>, <philmd@linaro.org>,
+ <qemu-arm@nongnu.org>, <richard.henderson@linaro.org>,
+ <shameerali.kolothum.thodi@huawei.com>, <shannon.zhaosl@gmail.com>,
+ <yangyicong@hisilicon.com>, <zhao1.liu@intel.com>
+Subject: [PATCH v15 0/8] Specifying cache topology on ARM
+Date: Tue, 12 Aug 2025 13:28:21 +0100
+Message-ID: <20250812122829.204-1-alireza.sanaee@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 23/85] target/arm: Expand syndrome parameter to
- raise_exception*
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20250802232953.413294-1-richard.henderson@linaro.org>
- <20250802232953.413294-24-richard.henderson@linaro.org>
- <3abbb8de-bbe6-4404-9714-50b487c46a8d@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <3abbb8de-bbe6-4404-9714-50b487c46a8d@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.47.65.66]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ frapeml500003.china.huawei.com (7.182.85.28)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,29 +68,175 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
+From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/12/25 16:26, Philippe Mathieu-Daudé wrote:
-> On 3/8/25 01:28, Richard Henderson wrote:
->> Prepare for raising exceptions with 64-bit syndromes.
->>
->> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   target/arm/internals.h     | 6 +++---
->>   target/arm/tcg-stubs.c     | 2 +-
->>   target/arm/tcg/op_helper.c | 4 ++--
->>   3 files changed, 6 insertions(+), 6 deletions(-)
-> 
-> Maybe re-order with previous patch?
+Specifying the cache layout in virtual machines is useful for
+applications and operating systems to fetch accurate information about
+the cache structure and make appropriate adjustments. Enforcing correct
+sharing information can lead to better optimizations. Patches that allow
+for an interface to express caches was landed in the prior cycles. This
+patchset uses the interface as a foundation.  Thus, the device tree and
+ACPI/PPTT table, and device tree are populated based on
+user-provided information and CPU topology.
 
-No.  With this order, the destination is never smaller than the source.
+Example:
 
-(1) Widen env->exception.syndrome
-(2) Widen raise_exception syndrome
-(3) Generate a 64-bit syndrome during translate.
++----------------+                         +----------------+
+|    Socket 0    |                         |    Socket 1    |
+|    (L3 Cache)  |                         |    (L3 Cache)  |
++--------+-------+                         +--------+-------+
+         |                                          |
++--------+--------+                        +--------+--------+
+|   Cluster 0     |                        |   Cluster 0     |
+|   (L2 Cache)    |                        |   (L2 Cache)    |
++--------+--------+                        +--------+--------+
+         |                                          |
++--------+--------+  +--------+--------+   +--------+--------+  +--------+----+
+|   Core 0         | |   Core 1        |   |   Core 0        |  |   Core 1    |
+|   (L1i, L1d)     | |   (L1i, L1d)    |   |   (L1i, L1d)    |  |   (L1i, L1d)|
++--------+--------+  +--------+--------+   +--------+--------+  +--------+----+
+         |                    |                     |                    |
++--------+              +--------+             +--------+           +--------+
+|Thread 0|              |Thread 1|             |Thread 1|           |Thread 0|
++--------+              +--------+             +--------+           +--------+
+|Thread 1|              |Thread 0|             |Thread 0|           |Thread 1|
++--------+              +--------+             +--------+           +--------+
 
 
-r~
+The following command will represent the system relying on **ACPI PPTT tables**.
+
+./qemu-system-aarch64 \
+ -machine virt,smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=cluster,smp-cache.3.cache=l3,smp-cache.3.topology=socket \
+ -cpu max \
+ -m 2048 \
+ -smp sockets=2,clusters=1,cores=2,threads=2 \
+ -kernel ./Image.gz \
+ -append "console=ttyAMA0 root=/dev/ram rdinit=/init acpi=force" \
+ -initrd rootfs.cpio.gz \
+ -bios ./edk2-aarch64-code.fd \
+ -nographic
+
+The following command will represent the system relying on **the device tree**.
+
+./qemu-system-aarch64 \
+ -machine virt,acpi=off,smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=cluster,smp-cache.3.cache=l3,smp-cache.3.topology=socket \
+ -cpu max \
+ -m 2048 \
+ -smp sockets=2,clusters=1,cores=2,threads=2 \
+ -kernel ./Image.gz \
+ -append "console=ttyAMA0 root=/dev/ram rdinit=/init acpi=off" \
+ -initrd rootfs.cpio.gz \
+ -nographic
+
+Failure cases:
+    1) There are scenarios where caches exist in systems' registers but
+    left unspecified by users. In this case qemu returns failure.
+
+    2) SMT threads cannot share caches which is not very common. More
+    discussions here [1].
+
+Currently only three levels of caches are supported to be specified from
+the command line. However, increasing the value does not require
+significant changes. Further, this patch assumes l2 and l3 unified
+caches and does not allow l(2/3)(i/d). The level terminology is
+thread/core/cluster/socket. Hierarchy assumed in this patch:
+Socket level = Cluster level + 1 = Core level + 2 = Thread level + 3;
+
+Possible future enhancements:
+  1) Separated data and instruction cache at L2 and L3.
+  2) Additional cache controls.  e.g. size of L3 may not want to just
+  match the underlying system, because only some of the associated host
+  CPUs may be bound to this VM.
+
+[1] https://lore.kernel.org/devicetree-spec/20250203120527.3534-1-alireza.sanaee@huawei.com/
+
+Change Log:
+  v14->v15:
+   * Introduced a separate patch for loongarch64 build_pptt function.
+   * Made sure loongarch64 tests pass.
+   * Downgraded to V2 for ACPI PPTT. Removed PPTT IDs as was not necessary.
+   * Removed dependency as it's been merged in the recent cycle.
+     -- 20250604115233.1234-1-alireza.sanaee@huawei.com
+   * Fixed styling issues and removed irrelevant changes.
+   * Moved cache headers to core/cpu.h to be used in both acpi and virt.
+   * v14: https://lore.kernel.org/qemu-devel/20250707121908.155-1-alireza.sanaee@huawei.com/
+   # Thanks to Jonathan and Zhao for their comments.
+
+  v13->v14:
+   * Rebased on latest staging.
+   * Made some naming changes to machine-smp.c, addd docs added to the
+        same file.
+
+  v12->v13:
+   * Applied comments from Zhao.
+   * Introduced a new patch for machine specific cache topology functions.
+   * Base: bc98ffdc7577e55ab8373c579c28fe24d600c40f.
+
+  v11->v12:
+   * Patch #4 couldn't not merge properly as the main file diverged. Now it is fixed (hopefully).
+   * Loonarch build_pptt function updated.
+   * Rebased on 09be8a511a2e278b45729d7b065d30c68dd699d0.
+
+  v10->v11:
+   * Fix some coding style issues.
+   * Rename some variables.
+
+  v9->v10:
+   * PPTT rev down to 2.
+
+  v8->v9:
+   * rebase to 10
+   * Fixed a bug in device-tree generation related to a scenario when
+        caches are shared at core in higher levels than 1.
+  v7->v8:
+   * rebase: Merge tag 'pull-nbd-2024-08-26' of https://repo.or.cz/qemu/ericb into staging
+   * I mis-included a file in patch #4 and I removed it in this one.
+
+  v6->v7:
+   * Intel stuff got pulled up, so rebase.
+   * added some discussions on device tree.
+
+  v5->v6:
+   * Minor bug fix.
+   * rebase based on new Intel patchset.
+     - https://lore.kernel.org/qemu-devel/20250110145115.1574345-1-zhao1.liu@intel.com/
+
+  v4->v5:
+    * Added Reviewed-by tags.
+    * Applied some comments.
+
+  v3->v4:
+    * Device tree added.
+
+Alireza Sanaee (8):
+  target/arm/tcg: increase cache level for cpu=max
+  hw/core/machine: topology functions capabilities added
+  hw/arm/virt: add cache hierarchy to device tree
+  bios-tables-test: prepare to change ARM ACPI virt PPTT
+  acpi: add caches to ACPI build_pptt table function
+  hw/acpi: add cache hierarchy to pptt table
+  tests/qtest/bios-table-test: testing new ARM ACPI PPTT topology
+  Update the ACPI tables based on new aml-build.c
+
+ hw/acpi/aml-build.c                        | 203 +++++++++-
+ hw/arm/virt-acpi-build.c                   |   8 +-
+ hw/arm/virt.c                              | 412 ++++++++++++++++++++-
+ hw/core/machine-smp.c                      |  56 +++
+ hw/loongarch/virt-acpi-build.c             |   4 +-
+ include/hw/acpi/aml-build.h                |   4 +-
+ include/hw/acpi/cpu.h                      |  10 +
+ include/hw/arm/virt.h                      |   7 +-
+ include/hw/boards.h                        |   5 +
+ include/hw/core/cpu.h                      |  12 +
+ target/arm/tcg/cpu64.c                     |  13 +
+ tests/data/acpi/aarch64/virt/PPTT.topology | Bin 356 -> 516 bytes
+ tests/qtest/bios-tables-test.c             |   4 +
+ 13 files changed, 723 insertions(+), 15 deletions(-)
+
+-- 
+2.43.0
+
 
