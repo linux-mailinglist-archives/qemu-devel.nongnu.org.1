@@ -2,106 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128E6B226F2
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 14:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C1CB22741
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 14:45:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uloBN-0002Gh-DI; Tue, 12 Aug 2025 08:32:49 -0400
+	id 1uloLd-0007Wi-J7; Tue, 12 Aug 2025 08:43:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
- id 1uloB8-0001zs-5d; Tue, 12 Aug 2025 08:32:35 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
- id 1uloAz-0007Sd-7p; Tue, 12 Aug 2025 08:32:33 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CAjRrt014766;
- Tue, 12 Aug 2025 12:31:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=h48j8FAfIr0CZrrU9Lg8q8WzJiHZXXkgxdj1Mpj3Y
- lY=; b=CaYNYTda7R4jDGebWxKsJKzofJ+E9IENSqfTN4KMSEBrHdIwgs8TAHzkv
- VFzfKexYLXyu71JZeCM9QU84AFWGlcy5/FeHzWHWXuGY3Pvl4NtHZZiZSO3/hGKB
- nqXRicJ81YcXAZUUACWUlR32s+fAl4HsyCnmebtguv+ESiTDpiwBciYLw7654nPy
- WZOmtpVT6QAbNaoQTgK9mdkQpU5UPPoqdTb9vlzhNEmSL0U/DFaj9iNKlNQA6I6b
- 4cSj6b/1AP31sx/FClsMYvTv3Cd0fvm+Wh+76I8qiGGz6XJJT6cbZsnaK6z7U0+q
- FXvxjV/B+11aLmk843eQzD+LE4MoA==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx14e9ju-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Aug 2025 12:31:38 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57CA2kKk028585;
- Tue, 12 Aug 2025 12:31:37 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48ej5n27w9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Aug 2025 12:31:36 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 57CCVXeU52953526
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Aug 2025 12:31:33 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1234D2004E;
- Tue, 12 Aug 2025 12:31:33 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E36F22004B;
- Tue, 12 Aug 2025 12:31:32 +0000 (GMT)
-Received: from a46lp68.lnxne.boe (unknown [9.152.108.100])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 12 Aug 2025 12:31:32 +0000 (GMT)
-From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-To: qemu-s390x mailing list <qemu-s390x@nongnu.org>,
- Thomas Huth <thuth@redhat.com>
-Cc: Daniel Berrange <berrange@redhat.com>,
- qemu-devel mailing list <qemu-devel@nongnu.org>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- Hendrik Brueckner <brueckner@linux.ibm.com>,
- Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-Subject: [PATCH RFC] tests/functional: add tests for SCLP event CPI
-Date: Tue, 12 Aug 2025 14:31:24 +0200
-Message-ID: <20250812123124.382696-1-shalini@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uloLT-0007VE-HR
+ for qemu-devel@nongnu.org; Tue, 12 Aug 2025 08:43:15 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uloLK-00011A-K1
+ for qemu-devel@nongnu.org; Tue, 12 Aug 2025 08:43:14 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-321c346ca4eso460492a91.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Aug 2025 05:43:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1755002584; x=1755607384; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=xCBX+AliGxawRd3gfdJGIFt6ukILHm7Yn5PWoCDY74Q=;
+ b=siiMUeKKyDshs63PUF3LWilxmV1p1NKhM5lS+LbXByWL3/AVWwLncyrUz7KVadDH1j
+ HyvAbBZLevbkIGHUASyw3Rr2m/nUEMG5Sy04rJ+6CqU9UxX2gkOoJRuj4wZ6WbveG7kb
+ v1A5HM0VneOl6etZ18bOCoc3cLwA/Ej2eJeYHa7LkvRePdlI+DqOoctdkLSwU3djdWs1
+ kaVIYhtZS6aOARs75r55Isaaj6rA07jGLa65btdtmn5yypmHq3Hpqdshq5ZvbCC/1mPv
+ yABfkZSMQ23Ec5vFVXLBw57jjkiYK1GPxRKN50JXfNmW7P0SSwRkGCPh9GRSN58J3Yce
+ kj5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755002584; x=1755607384;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xCBX+AliGxawRd3gfdJGIFt6ukILHm7Yn5PWoCDY74Q=;
+ b=DZ7Dhx7mehd6x2mBacgR7UUjsmxBbf150hAEUSqtGBNdvamUq7ZumM24HzQ3OJA5tk
+ n2pq/TJQx6cDMJIpiy5jVAecegb6wV489s4g+LulMONVqHAomvcQJ2cPmsSJs4sHCG7p
+ cITe0a5UivvcB0RJ9Mri93HLHLy2VXqxEr0jOHAQQRkwPPJqn237Y6kyRmRSPQgOsn8b
+ afv0O74YiVkQKmvBaBPns+iPULn14H1PTQR2Kv+iTwTaOclj5ln1wjH+shE3zlHQRDXP
+ ZCQiKD2j5wVOPQxql3JamhZ1RlCWep3ONCmc24SZImME3MN0aspXkT4RBfLg0djX4vvZ
+ LMjQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW8XiqzXC20OphPeJkVWUjG1NxaRbI72wEgRY49bv6dMGQnppmacxqqqCG19vNZV9dUmwsvcCj8tgXj@nongnu.org
+X-Gm-Message-State: AOJu0YzpVgR1jdkMvrm6Rb+Lm4V1kugNDFkjfmDDvm/qirTbfj1ugPPt
+ Xk5r+ndw2biZXgaCHBB91IBUU/t2i2itFTS+cX82UciAMze/lojjY7jQvcK8np8zsFU=
+X-Gm-Gg: ASbGncuH8eXn8Q4z3u7R4G5Xs6TUrJqM2mpwPX46t+iAK5ljMZjwmQ6zFGj1SzeabCe
+ zlLquroK/usyljY82jX8th+l7Glw1zKqZZELyY4xnd4Ih0uZusFwBe67QoC7jv8ii54LnWd4z+5
+ +uFgeTTKFYE0Rss0vOjkM9RsdvgY8MAL4TOyOXDdJN4v3M//H9apkS/rm3r71xoMGUyncVnvN1h
+ cY9MZZYsXoQeoWP9VtT7etztJQA42z2SPomN6nwuwED3kyLD9I6FBnuEoohCN1JjhxAIZjOyn/b
+ p0BgJZgXUHlzTyeJzbIHMbfpAlMtX6483KC4jjgghyXmFlx3FBb0gJ7zQgPhIaniEyXD4/D4gOt
+ a07RJ9+Hmio6ASF2MeQUBv43+TasPxi/+1IL3tKPBXLYiGGbjDbc=
+X-Google-Smtp-Source: AGHT+IF/ptFIqONoiByZR9Vd2FWr/hpcmIsSQZGWhfklIqgwytlweB0hkEYGkXWypeQnpdqVO0me1Q==
+X-Received: by 2002:a17:90b:1e02:b0:321:c8b1:5bb4 with SMTP id
+ 98e67ed59e1d1-321c8b15de9mr1747188a91.15.1755002584260; 
+ Tue, 12 Aug 2025 05:43:04 -0700 (PDT)
+Received: from [192.168.4.112] ([168.140.255.211])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-32161252edcsm17214301a91.15.2025.08.12.05.43.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Aug 2025 05:43:03 -0700 (PDT)
+Message-ID: <9fd617db-8ea4-49b5-98f7-0b949b02f26a@linaro.org>
+Date: Tue, 12 Aug 2025 22:42:59 +1000
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 07/11] target/arm: Replace kvm_arm_pmu_supported by
+ host_cpu_feature_supported
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20250811170611.37482-1-philmd@linaro.org>
+ <20250811170611.37482-8-philmd@linaro.org>
+ <8efcc809-f548-4383-b742-e435d622da73@linaro.org>
+ <14d7d948-e840-4ae7-ae93-122755d6a421@linaro.org>
+ <3d88ea9c-9cfe-4cd4-a282-2f467f2a502f@linaro.org>
+ <cb6e02cc-1959-419a-bafa-5bb43818c159@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <cb6e02cc-1959-419a-bafa-5bb43818c159@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2upH50nkezd9_8nZGkDiVGV_7FCdYBkF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDExOCBTYWx0ZWRfXz8HTBb5mnMgU
- yeqYGmK7e9r50Qe2ZkILQKaput+JRrPmk5I3rUccxqUyXtSqHHVdnY9vnVzSBYDjIAgsMLE/xcq
- CmaCnKw9LUQ9i83XunT69faMaYGJjqTM3VizcjZtzNtACSPnuYqoAYOKheDEe/Txqe9g7gfLQol
- LnJRRISGYAMBMKjSyJ7XfCFNbC9zzeu5BSSMAWYuDv01Cw9gwzEw2qLE8iCmZUkJmMy9thRGg+O
- RdQ10GsCOlZwhigC+6Xk6zkaO5HnsIehplycctMRCZgXLNM7EwQSwkUdlh0Pm5COQt6bjNZX5zt
- nOsf3uwQ3MiMDzCCail/9v605KqbYLOG6XK9Pdf2MAU/uqbBPVp5loKuwu4ISYecHtx8zmqhemN
- Jy4PkqrT+b2iifsQc3NxZARC3tB20WWLRQtqGmxJiumDLJZ3UyQ5fkjc/MFmvfgLl767JWij
-X-Proofpoint-GUID: 2upH50nkezd9_8nZGkDiVGV_7FCdYBkF
-X-Authority-Analysis: v=2.4 cv=fLg53Yae c=1 sm=1 tr=0 ts=689b342a cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=WP5zsaevAAAA:8
- a=PjYKRGzYlDL-BbGx_40A:9 a=t8Kx07QrZZTALmIZmm-o:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-12_06,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 priorityscore=1501
- impostorscore=0 phishscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0
- mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
- definitions=main-2508120118
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=shalini@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,63 +107,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add tests for SCLP event type Control-Program Identification
-(CPI) to s390x CCW virtio tests.
+On 8/12/25 17:33, Philippe Mathieu-Daudé wrote:
+>>>>> -    if (kvm_arm_pmu_supported()) {
+>>>>> +    if (host_cpu_feature_supported(ARM_FEATURE_PMU, false)) {
+>>>>
+>>>> Why is false correct here?  Alternately, in the next patch, why is it correct to pass 
+>>>> true for the EL2 test?
+>>>
+>>> I think I copied to KVM the HVF use, adapted on top of:
+>>> https://lore.kernel.org/qemu-devel/20250808070137.48716-12- mohamed@unpredictable.fr/
+>>>
+>>>>
+>>>> What is the purpose of the can_emulate parameter at all?
+>>>
+>>> When using split-accel on pre-M3, we might emulate EL2:
+>>>
+>>>         |   feat            |    can_emulate   |    retval
+>>>         +   ----            +      -----       +     ----
+>>  > M1/M2  |  ARM_FEATURE_EL2         false            false> M1/M2  | 
+>> ARM_FEATURE_EL2         true             true
+>>> M3/M4  |  ARM_FEATURE_EL2         any              true
+>>
+>> For example in hvf.c:
+>>
+>> static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+>> {
+>>      ...
+>>      if (host_cpu_feature_supported(ARM_FEATURE_EL2, true)) {
+>>          ahcf->features |= 1ULL << ARM_FEATURE_EL2;
+>>      }
+>>
+>> and then only when split-accel is not enabled:
+>>
+>> hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
+>> {
+>>      ...
+>>      if (host_cpu_feature_supported(ARM_FEATURE_EL2, false)) {
+>>          ret = hv_vm_config_set_el2_enabled(config, true);
+>>          if (ret != HV_SUCCESS) {
+>>              goto cleanup;
+>>          }
+>>      }
+>>
+> 
+> What I'm looking for:
+> 
+> - Is this feature supported BY HW?
+> 
+>    -> hw_init_feature
+> 
+> - Is this feature supported BY SW?
+> 
+>    -> sw_init_feature
+> 
+> - Is this feature supported BY ANY?
+> 
+>    -> do smth with feature
+> 
+> With split-accel, this isn't specific to HVF/ARM.
+> 
+> I can use a tri-state enum { ANY, HW, SW }.
 
-Please note that these tests are skipped as the guest OS does not
-trigger the SCLP event type CPI when the command
-'echo 1 > /sys/firmware/cpi/set' is executed in the guest. I
-believe that the guest OS must to be updated to support the SCLP
-event type CPI.
+My point, I guess, is:  tcg_enabled() appears to be the only correct setting for 
+can_emulate, and since that's the case, it's clearer to not have the parameter and simply 
+test can_emulate within any subroutines.
 
-Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-Suggested-by: Thomas Huth <thuth@redhat.com>
----
- tests/functional/test_s390x_ccw_virtio.py | 24 +++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
 
-diff --git a/tests/functional/test_s390x_ccw_virtio.py b/tests/functional/test_s390x_ccw_virtio.py
-index 453711aa0f..c14379cbaa 100755
---- a/tests/functional/test_s390x_ccw_virtio.py
-+++ b/tests/functional/test_s390x_ccw_virtio.py
-@@ -15,6 +15,7 @@
- import tempfile
- 
- from qemu_test import QemuSystemTest, Asset
-+from qemu_test import exec_command
- from qemu_test import exec_command_and_wait_for_pattern
- from qemu_test import wait_for_console_pattern
- 
-@@ -270,5 +271,28 @@ def test_s390x_fedora(self):
-                         'while ! (dmesg -c | grep Start.virtcrypto_remove) ; do'
-                         ' sleep 1 ; done', 'Start virtcrypto_remove.')
- 
-+        # Test SCLP event Control-Program Identification (CPI)
-+        cpi = '/sys/firmware/cpi/'
-+        sclpcpi = '/machine/sclp/s390-sclp-event-facility/sclpcpi'
-+        self.log.info("Test SCLP event CPI")
-+        exec_command(self, 'echo TESTVM > ' + cpi + 'system_name')
-+        exec_command(self, 'echo LINUX > ' + cpi + 'system_type')
-+        exec_command(self, 'echo TESTPLEX > ' + cpi + 'sysplex_name')
-+        exec_command(self, 'echo 1 > ' + cpi + 'set')
-+        try:
-+            event = self.vm.event_wait('SCLP_EVENT_CTRL_PGM_ID')
-+        except TimeoutError:
-+            self.skipTest('SCLP Event type CPI is not supported by guest OS')
-+        ts = self.vm.cmd('qom-get', path=sclpcpi, property='timestamp')
-+        self.assertNotEqual(int(ts), 0)
-+        name = self.vm.cmd('qom-get', path=sclpcpi, property='system_name')
-+        self.assertEqual(name, 'TESTVM')
-+        typ = self.vm.cmd('qom-get', path=sclpcpi, property='system_type')
-+        self.assertEqual(typ, 'LINUX')
-+        sysplex = self.vm.cmd('qom-get', path=sclpcpi, property='sysplex_name')
-+        self.assertEqual(sysplex, 'TESTPLEX')
-+        level = self.vm.cmd('qom-get', path=sclpcpi, property='system_level')
-+        self.assertNotEqual(int(level), 0)
-+
- if __name__ == '__main__':
-     QemuSystemTest.main()
--- 
-2.49.0
-
+r~
 
